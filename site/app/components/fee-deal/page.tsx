@@ -1,5 +1,5 @@
 // The fee page (method §10.6): the head, the bar of the deal, the columns for entering it (a card with what the deal is about, over the
-// cards of its fees, and the toolbox for the case open in place), and under them the reading, which opens with the picks it is read for and the deal at a glance. The deal is kept
+// cards of its fees, and the toolbox for the case open in place), and under them the reading, which opens with the picks it is read for. The deal is kept
 // on this device, saved as it changes from its first fee or a typed name. It opens from the address (a deal in `#d=`, or in `?d=` as links
 // were written before, the saved one where the link's deal is one already; a kind in `?wrapper=`, a track in `?track=`), else the deal
 // last worked on, else an empty deal with the kinds to choose from. "Today" is the device's day, read after the page loads: the
@@ -13,7 +13,7 @@
 // column of its own where the window has the room, and anywhere narrower (a phone, a tablet) in a short sheet pinned to the foot of the
 // screen, the page keeping room under its end for it; the sheet comes folded to its groups' names with a deal, and unfolds
 // when a fee or a case is opened. The columns and the reading are one thing: a fee under the pointer or
-// the focus in one is marked in the others, and a fee's name in the summary or the reading opens it (`FeeLinks`). On a computer a card
+// the focus in one is marked in the others, and a fee's name in the reading opens it (`FeeLinks`). On a computer a card
 // dragged from the toolbox onto the open fee, or one of its cases, does there what its tap does (`ToolDrop`). A change that loses
 // something (a fee taken away, a fee filled from a price list, a price, a case or a thing taken away, a saved deal deleted) leaves one
 // undo line where it happened (lib/fee-deal/undo.ts), which takes the focus as it appears and lives through edits elsewhere until it is
@@ -32,7 +32,7 @@ import { hasCases, newDeal, pricedOf, toolPrice, toolStages, type Fee, type FeeD
 import { pickKind, type ByKind } from "../../lib/fee-deal/offers/conditions";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
-import { glance } from "../../lib/fee-deal/glance";
+import { leftOut } from "../../lib/fee-deal/left-out";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { productOffered } from "../../lib/fee-deal/offers/offer";
@@ -42,7 +42,7 @@ import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith, unreadDeals } from "../../lib/fee-deal/store";
 import { copyHouseFee, dataBar, feeAlone, feePriceLists, houseName, housesToCopy, templateSource } from "../../lib/fee-deal/templates";
 import { addByKept, fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
-import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy, rowParts, toolToCases } from "../../lib/fee-deal/lifted";
+import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy, rowParts, toolAsks, toolToCases } from "../../lib/fee-deal/lifted";
 import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -57,7 +57,7 @@ import { UNDO_MS } from "./use-undo";
 import { FeeLinksProvider } from "./links";
 import { partPlaceId } from "./figures";
 import { UndoLine } from "./undo-line";
-import { GlanceCard, READING_ID } from "./glance";
+import { READING_ID } from "./left-out";
 import { SlotMenu, WhenText, whenText } from "./open-case";
 import { TemplatePicker } from "./picker";
 import { ToolboxCard, ToolboxColumn, applyTool, type ToolHands } from "./toolbox";
@@ -304,9 +304,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   // the products the picker offers: each with a fee it is offered, the fees its data bars left out
   const offeredKinds = useMemo(() => data.kinds.filter((k) => productOffered(k, dataBar(k.id, data, today))), [data, today]);
   const { unitPrice, onUnitPrice } = useUnitPrice(read, deal.id);
-  // the glance and the panel for a deal with a fee, the reading for one with a fee read: one with none shows neither
-  const summary = useMemo(() => (read.deal.fees.length > 0 ? glance(read) : null), [read]);
-  const views = useMemo(() => (summary ? { glance: summary, reading: readingOf(read, data.fx, unitPrice) } : null), [summary, read, data.fx, unitPrice]);
+  // the reading and the panel for a deal with a fee, with the fees the reading leaves out: one with none shows neither
+  const views = useMemo(() => (read.deal.fees.length > 0 ? { left: leftOut(read), reading: readingOf(read, data.fx, unitPrice) } : null), [read, data.fx, unitPrice]);
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
   const pending = oc.pending.here;
   const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending, editingK, editingSide) : null), [read, chosen, caseId, pending, editingK, editingSide]);
@@ -334,6 +333,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       const next = toolOnHead(feeId, cases, along, item);
       if (next) onFee(next);
     },
+    asksCases: (feeId, cases, item) => (feeId === chosen ? toolAsks(read, feeId, cases, item) : null),
     accepts: (feeId, at, item) => !!toolsFor(feeId, at)?.groups.some((g) => g.parts.some((x) => x.id === item && !x.used && !x.off)),
     onDrop: (feeId, at, item) => {
       const fee = deal.fees.find((f) => f.id === feeId);
@@ -391,10 +391,6 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const thingView = thingOpen ? thingMenu(read, thingOpen.fee, thingOpen.t) : null;
   // a product that saves charges its fees from what has built up: a share of what is held reads so
   const saves = !!kind?.bases.includes("balance");
-  const nameOf = (feeId: string) => {
-    const f = deal.fees.find((x) => x.id === feeId);
-    return f ? feeName(f.kind, f.name, read.copied[f.id]) : feeId;
-  };
   const priceLists = useMemo(() => (chosenFee && chosenFee.kind !== "own" ? feePriceLists(deal, chosenFee.kind, data) : []), [chosenFee, deal, data]);
   const { shown, words } = doc.undo;
   const lines = doc.undo.lines;
@@ -583,7 +579,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
             read={readSome}
             unitPrice={unitPrice}
             onUnitPrice={onUnitPrice}
-            glance={<GlanceCard glance={views.glance} law={views.reading.law} saved={saves} names={nameOf} empty={!readSome} />}
+            left={views.left}
+            foreign={read.engine.foreign}
           />
         </Section>
       )}

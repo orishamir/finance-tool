@@ -77,8 +77,19 @@ export function TabCards({ tabs, current, onChange, ariaLabel, idBase, openWord,
 /**
  * How every panel under the cards opens: a small line naming the analysis in the action colour, then its conclusion as the headline.
  * `end`: a control at the end of the small line's row (a chart card's switch between periods), which wraps under it where the row is short.
+ * `sub`: the lines under the headline, at the reading width; with them the headline wraps evenly, and a control in `end` stands after them
+ * on a phone, so the card reads its words first, and at the end of the small line's row from 768 px.
  */
-export function PanelHead({ kicker, end, children }: { kicker: ReactNode; end?: ReactNode; /** The conclusion. */ children: ReactNode }) {
+export function PanelHead({ kicker, end, sub, children }: { kicker: ReactNode; end?: ReactNode; sub?: ReactNode; /** The conclusion. */ children: ReactNode }) {
+  if (sub !== undefined)
+    return (
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-y-1 [grid-template-areas:'kicker'_'head'_'sub'_'end'] md:grid-cols-[minmax(0,1fr)_auto] md:gap-x-3 md:[grid-template-areas:'kicker_end'_'head_head'_'sub_sub']">
+        <p className="self-center text-sm text-primary [grid-area:kicker]">{kicker}</p>
+        {end && <div className="mt-3 [grid-area:end] md:mt-0 md:self-center">{end}</div>}
+        <h3 className="text-xl font-semibold leading-snug text-balance [grid-area:head]">{children}</h3>
+        <div className="mt-1 max-w-measure text-pretty [grid-area:sub]">{sub}</div>
+      </div>
+    );
   return (
     <div className="flex flex-col gap-1">
       {end ? (

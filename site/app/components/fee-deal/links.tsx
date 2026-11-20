@@ -1,10 +1,9 @@
 // The fee page's columns as one thing (method §10.6 reads one deal, and each column shows it another way): a fee under the pointer or the
-// focus in the glance marks its card in the builder, and a card marks the fee's lines in the glance; pressing a fee's name in the glance or
-// in the reading chooses it and brings its card and panel into view; a fee's standing tag on its card or in the glance brings its row of
-// the reading's law card into view. Each column reads the page's `FeeLinks` from here.
+// focus in the reading's list of fees left out marks its card in the builder, and a card marks the fee's lines there; pressing a fee's name
+// in the reading chooses it and brings its card and panel into view; a fee's standing tag on its card brings its row of the reading's law
+// card into view. Each column reads the page's `FeeLinks` from here.
 import { createContext, useContext, type HTMLAttributes, type ReactNode } from "react";
 import type { FeeRef, StandingView } from "../../lib/fee-deal/deal-read";
-import type { LawRow } from "../../lib/fee-deal/reading";
 import { cx } from "../kit";
 import { feeDeal as copy } from "../../copy";
 import { FeeName, StandingTag } from "./words";
@@ -65,13 +64,13 @@ export function useLineOpen(feeId: string): ((e: { target: EventTarget }) => voi
  * A fee's name that chooses the fee (its swatch and name, as `FeeName` draws them), on the page; plain words outside it. `before` and
  * `after` are held to the name as `FeeName` holds them.
  */
-export function FeeOpen({ fee, className, before, after }: { fee: FeeRef; className?: string; before?: string; after?: string }) {
+export function FeeOpen({ fee, className, before, after, inLine = false }: { fee: FeeRef; className?: string; before?: string; after?: string; /** The name runs on into words on its line that may wrap: its target's height takes no room from that line, so the line under it keeps its usual spacing. */ inLine?: boolean }) {
   const links = useContext(FeeLinksCtx);
   if (!links) return <FeeName fee={fee} className={className} before={before} after={after} />;
   return (
     // a 44 px tap area round a name a line tall (`tap-area`); on a phone the name's line is the target's height, so the areas of names on
     // lines one under the other never take each other's room
-    <button type="button" data-fee-open="" onClick={() => links.open(fee.of ?? fee.fee)} className="tap-area inline-flex min-w-0 items-center rounded-sm text-start max-md:min-h-target hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-ring">
+    <button type="button" data-fee-open="" onClick={() => links.open(fee.of ?? fee.fee)} className={cx("tap-area inline-flex min-w-0 items-center rounded-sm text-start max-md:min-h-target hover:underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-ring", inLine && "align-middle max-md:my-[calc((1lh-var(--target))/2)]")}>
       <FeeName fee={fee} className={className} before={before} after={after} />
     </button>
   );
@@ -100,9 +99,4 @@ export function LawTag({ fee, standing }: { fee: string; standing: StandingView 
       <span className="sr-only">{copy.standing.toLaw}</span>
     </button>
   );
-}
-
-/** The tag of a fee's law row, as `CapBlock` draws it: of its standing now. */
-export function LawRowTag({ row }: { row: LawRow }) {
-  return row.now ? <LawTag fee={row.fee} standing={row.now} /> : null;
 }

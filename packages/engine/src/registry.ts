@@ -1,7 +1,7 @@
 // Formula registry: method.md F-ID → implementation (docs/architecture.md 3.4).
 // Wrapper records name their formulas; the engine dispatches through this map. A test checks every key
 // against docs/method.md, and that every F-ID in the method is either here or in `pending`.
-import { actionShare, capStanding, caseFor, dealMarks, dealPeriods, discounted, groupRate, inStep } from "./formulas/deal.ts";
+import { acrossDrop, actionShare, capStanding, caseFor, costShare, coverFrom, dealMarks, dealPeriods, discounted, groupRate, heldCrossover, idleMonth, inStep } from "./formulas/deal.ts";
 import { balanceFee, corporateEventFee, currentAccountFee, custodyFee, depositFee, feeForMonth, fixedFee, navBought, tradeCommission } from "./formulas/fees.ts";
 import { earlySettlement, limitStanding, moneyStory } from "./formulas/study-story.ts";
 import { kindRecord, stretchRange, trackingBeyondFees } from "./formulas/fund-gap.ts";
@@ -159,6 +159,11 @@ export const formulas = {
   "F-120": cpiLinkedAmount,
   "F-121": promotedDrag,
   "F-122": averageRange,
+  "F-123": costShare,
+  "F-124": heldCrossover,
+  "F-125": acrossDrop,
+  "F-126": idleMonth,
+  "F-127": coverFrom,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */

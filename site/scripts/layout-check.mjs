@@ -36,6 +36,10 @@
 //            scrollbar down at rest, and the page scrolling by the screen's foot or top other than steadily toward that edge.
 //   lines    on the kit page and the fee page's deal at 1440, a fee grid's line between two rows (`data-hairline`, kit/case-table.tsx)
 //            over a tile, a part line or a head's words, or one that takes a press (2026-11-20: the line between two rows' heads only).
+//   ask      on the fee page's deal, a part that asks its amount typed key by key and given by Enter not holding every digit typed, or given
+//            before Enter or the box is left: the custody fee's "+ חלק לכל המקרים" at 1440 and 390, its first grid row's "+ חלק לכל
+//            השורה" and the open case's own prompt (the toolbox's "מינימום") at 1440: a first keystroke that gives a minimum of 1 ₪ and
+//            loses the next digits; and Escape, the box left empty, or the ask's bin pressed with digits typed, adding the part.
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
 // Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages, the kit, and the fee
 // page with a filled deal (its link in layout-check-deal.txt). Needs a build (npm run build). Exits 1 when a
@@ -78,6 +82,7 @@ const missed = await selfTest();
 const keyFindings = await keysCheck();
 const lineFindings = await linesCheck();
 const dragFindings = await dragCheck();
+const askFindings = await askCheck();
 const results = await Promise.all(WIDTHS.map(checkWidth));
 await browser.close();
 await server.close();
@@ -95,6 +100,10 @@ for (const f of lineFindings) {
 for (const f of dragFindings) {
   failed++;
   console.log(`FAIL  the fee page's deal at 1440\n      drag: ${f}`);
+}
+for (const f of askFindings) {
+  failed++;
+  console.log(`FAIL  the fee page's deal at ${f.width}\n      ask: ${f.detail}`);
 }
 let sheets = 0;
 let known = 0;
@@ -255,6 +264,131 @@ function gridLines(within) {
     }
   }
   return { hairlines, findings };
+}
+
+/**
+ * A part that asks its amount, on the fee page's filled deal (`ask` above): asked for every case of the custody fee ("+ חלק לכל המקרים",
+ * at 1440 and 390), for its first grid row ("+ חלק לכל השורה", at 1440) and in the open case (its minimum taken away, then the toolbox's
+ * "מינימום" pressed, at 1440). Each box is typed key by key: nothing is given while typing, and Enter gives every digit typed. In every
+ * case's ask, Escape and a box left empty add nothing, and its bin pressed with digits typed drops it. Returns what failed, each with its
+ * width.
+ */
+async function askCheck() {
+  const file = join(here, "layout-check-deal.txt");
+  if (!existsSync(file)) return [];
+  const dealPath = readFileSync(file, "utf8").trim();
+  const found = [];
+  const fail = (width, detail) => found.push({ width, detail });
+  const open = async (width) => {
+    const ctx = await browser.newContext({ viewport: { width, height: HEIGHT[width] }, colorScheme: "dark", locale: "he-IL", hasTouch: width < 600 });
+    const page = await ctx.newPage();
+    await page.goto(base + dealPath, { waitUntil: "networkidle" });
+    await page.evaluate(settled);
+    const fee = await page.evaluate(() => {
+      const head = [...document.querySelectorAll("[data-fee-head]")].find((h) => h.textContent.includes("דמי ניהול פיקדון ניירות ערך"));
+      head?.parentElement.setAttribute("data-ask-fee", "");
+      return !!head;
+    });
+    return { ctx, page, fee: fee ? page.locator("[data-ask-fee]") : null };
+  };
+  // the minimum's words wherever the custody fee states it ("מינימום 15 ₪ לכל חיוב"), its cells' and its rows' alike
+  const minimums = (page) => page.locator("[data-ask-fee]").evaluate((f) => [...f.querySelectorAll("[role=gridcell], [data-every-cell]")].map((c) => c.innerText.replace(/\s+/g, " ").trim()).filter((t) => t.includes("מינימום")));
+  const typeIn = async (page, width, where, digits) => {
+    const box = await page.evaluate(() => document.activeElement?.matches("input[data-figure]") ? document.activeElement.id : null);
+    if (!box) return fail(width, `${where}: the box asking the amount did not take the focus`), false;
+    for (const [i, d] of [...digits].entries()) {
+      await page.keyboard.type(d);
+      const still = await page.evaluate(([id, typed]) => { const el = document.getElementById(id); return !!el && document.activeElement === el && el.value === typed; }, [box, digits.slice(0, i + 1)]);
+      if (!still) return fail(width, `${where}: after "${digits.slice(0, i + 1)}" typed key by key the box asking the amount is gone or no longer holds it (given before Enter)`), false;
+    }
+    return true;
+  };
+  const askEvery = async (page, fee, row) => {
+    const add = fee.locator(row ? 'button[aria-label^="הוספת חלק לכל השורה"]' : 'button[aria-label="הוספת חלק לכל המקרים"]').first();
+    if (!(await add.count())) return false;
+    await add.scrollIntoViewIfNeeded();
+    // the row's strip shows under a pointer over its row: pressed as the keyboard would
+    await add.evaluate((b) => b.click());
+    const min = page.getByRole("menuitem", { name: "מינימום", exact: true }).first();
+    if (!(await min.count())) return false;
+    await min.click();
+    await page.evaluate(settled);
+    return true;
+  };
+  for (const width of [1440, 390]) {
+    // every case: typed key by key and given by Enter
+    {
+      const { ctx, page, fee } = await open(width);
+      if (!fee || !(await askEvery(page, fee, false))) fail(width, `the custody fee offers no "מינימום" under "+ חלק לכל המקרים"`);
+      else if (await typeIn(page, width, `"+ חלק לכל המקרים"`, "15")) {
+        await page.keyboard.press("Enter");
+        await page.evaluate(settled);
+        const said = await minimums(page);
+        if (!said.some((t) => /מינימום 15 ₪/.test(t))) fail(width, `"+ חלק לכל המקרים": "15" typed and Enter gave no "מינימום 15 ₪" (${said.join(" | ") || "no minimum"})`);
+      }
+      await ctx.close();
+    }
+    // every case: Escape, then the box left empty, add nothing
+    {
+      const { ctx, page, fee } = await open(width);
+      if (fee && (await askEvery(page, fee, false)) && (await typeIn(page, width, `"+ חלק לכל המקרים"`, "7"))) {
+        await page.keyboard.press("Escape");
+        await page.keyboard.press("Tab");
+        await page.evaluate(settled);
+        const said = await minimums(page);
+        if (said.length) fail(width, `"+ חלק לכל המקרים": Escape, then the empty box left, added a minimum (${said.join(" | ")})`);
+      }
+      await ctx.close();
+    }
+    // every case: the ask's bin pressed with digits typed drops it, adding nothing
+    {
+      const { ctx, page, fee } = await open(width);
+      if (fee && (await askEvery(page, fee, false)) && (await typeIn(page, width, `"+ חלק לכל המקרים"`, "9"))) {
+        await page.locator("input[data-figure]:focus").locator("xpath=ancestor::*[@data-liftable][1]").locator("button").last().click();
+        await page.evaluate(settled);
+        const said = await minimums(page);
+        const asking = await page.evaluate(() => !!document.querySelector('input[id$="-min-across"]'));
+        if (said.length || asking) fail(width, `"+ חלק לכל המקרים": the ask's bin pressed with "9" typed ${said.length ? `added a minimum (${said.join(" | ")})` : "left the ask standing"}`);
+      }
+      await ctx.close();
+    }
+  }
+  // a grid row's "+ חלק לכל השורה", at 1440
+  {
+    const { ctx, page, fee } = await open(1440);
+    if (!fee || !(await askEvery(page, fee, true))) fail(1440, `the custody fee's first grid row offers no "מינימום" under "+ חלק לכל השורה"`);
+    else if (await typeIn(page, 1440, `"+ חלק לכל השורה"`, "15")) {
+      await page.keyboard.press("Enter");
+      await page.evaluate(settled);
+      const said = await minimums(page);
+      if (!said.length || !said.every((t) => /מינימום 15 ₪/.test(t))) fail(1440, `"+ חלק לכל השורה": "15" typed and Enter did not give "מינימום 15 ₪" in the row (${said.join(" | ") || "no minimum"})`);
+    }
+    await ctx.close();
+  }
+  // the open case's own prompt: the deal opens on a case with a minimum; taken away, the toolbox's "מינימום" asks it again, at 1440
+  {
+    const { ctx, page } = await open(1440);
+    const bin = await page.evaluate(() => {
+      const b = [...document.querySelectorAll('button[aria-label="להסיר מהמקרה: מינימום"]')].find((x) => x.checkVisibility());
+      b?.click();
+      return !!b;
+    });
+    await page.evaluate(settled);
+    const tool = page.locator("button").filter({ hasText: /^מינימום$/ }).first();
+    if (!bin || !(await tool.count())) fail(1440, `the open case has no minimum to take away and ask again from the toolbox`);
+    else {
+      await tool.click();
+      await page.evaluate(settled);
+      if (await typeIn(page, 1440, "the open case's prompt", "250")) {
+        await page.keyboard.press("Enter");
+        await page.evaluate(settled);
+        const boxes = await page.evaluate(() => [...document.querySelectorAll("input[data-figure]")].filter((i) => /-min-min$/.test(i.id)).map((i) => i.value));
+        if (!boxes.includes("250")) fail(1440, `the open case's prompt: "250" typed and Enter gave no minimum of 250 (${boxes.join(" | ") || "no minimum's box"})`);
+      }
+    }
+    await ctx.close();
+  }
+  return found;
 }
 
 /**
@@ -473,8 +607,8 @@ async function dragCheck() {
     const rows = await grid.evaluate((g) =>
       [...g.querySelectorAll("[role=rowheader]")].map((h) => {
         const j = Number(h.dataset.rowpos);
-        // the row's own line: its head's first line in the grid
-        const line = Number(getComputedStyle(h).gridRowStart) - 2;
+        // the row's own line: its head's first track, less the heads' track and the track between each two rows above it (CaseGrid's `track`)
+        const line = Number(getComputedStyle(h).gridRowStart) - 2 - j;
         const cells = [...g.querySelectorAll(`[role=gridcell][data-liftable]:not([data-part-cell])[data-row="${line}"]`)];
         return { j, line, name: h.innerText.trim(), cases: cells.length, from: cells[0] ? Number(cells[0].dataset.from) : -1 };
       }),

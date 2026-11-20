@@ -17,7 +17,8 @@ import { removeCase, setWhen } from "./edits/case";
 import { updateFee } from "./edits/deal";
 import { toolbox } from "./toolbox";
 import type { DealRead } from "./deal-read";
-import { PARTS, isPending, type PartId } from "./offers/parts";
+import { PARTS, asksAmount, isPending, type PartId } from "./offers/parts";
+import { askAcross } from "./every-case";
 import { ROW_OF } from "./part-rows";
 
 /** A thing lifted by its grip, with the words it is named by (`name`) where its undo line names it. */
@@ -361,15 +362,19 @@ export function liftRemove(deal: FeeDeal, l: Lifted): LiftResult | null {
 }
 
 /**
- * What a row's strip ("+ חלק לכל השורה", `partAcross`) offers for a fee's cases `cases`: the toolbox's parts that every one of them can take
- * now and none holds yet, other than a form of the price, a thing to change by, and a part that asks a question first (a month, another
- * fee); each with its words, its row's head ("מינימום"), or for a note its own words ("גם על הוראה שלא בוצעה").
+ * What a strip that adds a part to several of a fee's cases offers for its cases `cases` (a grid row's "+ חלק לכל השורה", the fee's "+ חלק
+ * לכל המקרים", `partAcross`): the toolbox's parts that every one of them can take now and none holds yet, other than a form of the price,
+ * a thing to change by, and a part that asks a month or another fee first; a part that asks an amount (a minimum, a maximum, a percent
+ * maximum) where the cases would ask it alike (`askAcross`), the strip then asking it once for them all. Each with its words: its row's
+ * head ("מינימום"), or for a note its own words ("גם על הוראה שלא בוצעה").
  */
 export function rowParts(r: DealRead, feeId: string, cases: readonly string[]): { id: PartId; label: string }[] {
+  const fee = feeOf(r.deal, feeId);
   const boxes = cases.map((id) => toolbox(r, feeId, id));
-  if (boxes.length === 0 || boxes.some((b) => !b)) return [];
+  if (!fee || !hasCases(fee) || boxes.length === 0 || boxes.some((b) => !b)) return [];
+  const asks = (id: PartId) => !isPending(id) || askAcross(fee, cases, id) !== null;
   const free = (b: NonNullable<(typeof boxes)[number]>) =>
-    new Set(b.groups.flatMap((g) => g.parts.filter((p) => !p.used && !p.off && !p.id.startsWith("by:") && !PARTS[p.id as PartId].form && !isPending(p.id as PartId)).map((p) => p.id as PartId)));
+    new Set(b.groups.flatMap((g) => g.parts.filter((p) => !p.used && !p.off && !p.id.startsWith("by:") && !PARTS[p.id as PartId].form && asks(p.id as PartId)).map((p) => p.id as PartId)));
   const sets = boxes.map((b) => free(b!));
   const first = boxes[0]!;
   return first.groups.flatMap((g) =>
@@ -383,21 +388,37 @@ export function rowParts(r: DealRead, feeId: string, cases: readonly string[]): 
   );
 }
 
+/** The cases of `cases` that have nothing in part `part`'s row yet: those a part added to them all goes into. */
+function lackingOf(fee: Fee, cases: readonly string[], part: PartId): string[] {
+  return cases.filter((c) => {
+    const x = caseIn(fee, c);
+    return !!x && !cellHolds(x, ROW_OF[part]);
+  });
+}
+
 /**
  * A toolbox part (`part`, its card's id) dropped on a head of fee `feeId` (its cases `cases`, standing along thing `along`): every case
  * that has nothing in that part's row yet takes it, all alike, as one cell (`partAcross`), starting as the toolbox adds it; the cases that
- * hold that row keep their own. Null where none takes it: a part a row's strip would not offer them (a form of the price, a thing to change
- * by, a part that asks a question first, `rowParts`).
+ * hold that row keep their own. A part that asks an amount takes `value`, typed once for them all (`toolAsks` says which cases ask it).
+ * Null where none takes it: a part a strip would not offer them (`rowParts`), or an amount not given.
  */
-export function toolToCases(r: DealRead, feeId: string, cases: readonly string[], part: string, along: number): Fee | null {
+export function toolToCases(r: DealRead, feeId: string, cases: readonly string[], part: string, along: number, value?: number): Fee | null {
   const fee = feeOf(r.deal, feeId);
   if (!fee || !hasCases(fee) || !(part in PARTS)) return null;
   const id = part as PartId;
-  const lacking = cases.filter((c) => {
-    const x = caseIn(fee, c);
-    return !!x && !cellHolds(x, ROW_OF[id]);
-  });
+  const lacking = lackingOf(fee, cases, id);
   if (lacking.length === 0 || !rowParts(r, feeId, lacking).some((p) => p.id === id)) return null;
-  const next = partAcross(fee, lacking, id, along);
+  const next = partAcross(fee, lacking, id, along, value);
   return next === fee ? null : next;
+}
+
+/**
+ * The cases a toolbox part that asks an amount (`asksAmount`), dropped on cases `cases` of fee `feeId`, asks it for: those that have nothing
+ * in its row yet, where a strip offers it to them (`rowParts`). Null for any other part, or where none would take it.
+ */
+export function toolAsks(r: DealRead, feeId: string, cases: readonly string[], part: string): string[] | null {
+  const fee = feeOf(r.deal, feeId);
+  if (!fee || !hasCases(fee) || !(part in PARTS) || !asksAmount(part as PartId)) return null;
+  const lacking = lackingOf(fee, cases, part as PartId);
+  return lacking.length > 0 && rowParts(r, feeId, lacking).some((p) => p.id === part) ? lacking : null;
 }

@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, AmountChart, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
+import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -60,6 +60,126 @@ function averageSample(today: string, lo: number, hi: number, fee: "trade" | "cu
 }
 
 /** One component: its name (beside it, left to right), when to use it, and its states. */
+// the made-up curves the chart demos draw: a fee with a 20 ₪ minimum and 0.2% above it, and a year of a 0.25% share with 120 ₪ fixed
+const ACTION_RANGE = { lo: 1000, hi: 1_000_000 };
+const actionShare = (a: number) => (Math.max(20, 0.002 * a) / a) * 100;
+const logSamples = (lo: number, hi: number, n: number, cuts: number[] = []) => [...Array.from({ length: n + 1 }, (_, i) => lo * (hi / lo) ** (i / n)), ...cuts].filter((a) => a >= lo && a <= hi).sort((x, y) => x - y);
+
+function ActionShareDemo() {
+  const [at, setAt] = useState(10_000);
+  const points = logSamples(ACTION_RANGE.lo, ACTION_RANGE.hi, 200, [10_000]).map((a) => ({ at: a, share: actionShare(a) }));
+  const s = g.sample.amount;
+  return (
+    <ShareChart
+      range={ACTION_RANGE}
+      points={points}
+      top={actionShare(10_000) * 6}
+      over={s.over(fmt.pct(actionShare(1000)), fmt.number(1000))}
+      zones={[
+        { from: 1000, to: 10_000, label: s.zones.min },
+        { from: 10_000, to: 1_000_000, label: s.zones.rate },
+      ]}
+      marks={[{ id: "m", at: 10_000, label: fmt.nisWhole(10_000) }]}
+      point={{ at, tag: `${fmt.nisWhole(at)} · ${fmt.pct(actionShare(at))}` }}
+      onPoint={(a) => setAt(Math.round(a))}
+      spoken={s.point}
+      xTitle={s.x}
+    />
+  );
+}
+
+function HeldShareDemo() {
+  const [range, setRange] = useState({ lo: 10_000, hi: 2_000_000 });
+  const [strong, setStrong] = useState<string | null>(null);
+  const points = logSamples(range.lo, range.hi, 200).map((a) => ({ at: a, share: 0.25 + (120 / a) * 100, layers: [0.25, (120 / a) * 100] }));
+  const s = g.sample.amount;
+  return (
+    <ShareChart
+      range={range}
+      points={points}
+      top={Math.max(...points.map((p) => p.share)) * 1.06}
+      layers={[
+        { id: "a", fill: "fill-fee-custody", group: "share" },
+        { id: "b", fill: "fill-fee-account", group: "fixed" },
+      ]}
+      groups={[
+        { id: "share", label: s.groups.share },
+        { id: "fixed", label: s.groups.fixed },
+      ]}
+      strong={strong}
+      onStrong={setStrong}
+      marks={[{ id: "x", at: 48_000, label: fmt.nisWhole(48_000), sub: s.crossSub, note: [...s.note] }]}
+      tip={(a) => <span>{s.tip(fmt.nisWhole(a))}</span>}
+      onRange={(lo, hi) => setRange({ lo: Math.max(1000, lo), hi: Math.max(hi, lo * 2) })}
+      xTitle={s.x}
+    />
+  );
+}
+
+function LanesDemo({ start = 30_000 }: { start?: number }) {
+  const [at, setAt] = useState(start);
+  return <SampleLanes at={at} onAt={setAt} />;
+}
+
+function SampleLanes({ at, onAt }: { at: number; onAt: (a: number) => void }) {
+  const s = g.sample.amount;
+  return (
+    <AmountLanes
+      title={s.lanes}
+      range={ACTION_RANGE}
+      groups={[
+        { id: "share", label: s.laneGroups.share },
+        { id: "fixed", label: s.laneGroups.fixed },
+      ]}
+      lanes={[
+        {
+          id: "a",
+          name: s.a,
+          swatch: "bg-fee-trade",
+          group: "share",
+          parts: [
+            { id: "min", from: 0, to: 10_000, label: s.parts.min },
+            { id: "rate", from: 10_000, to: 900_000, label: s.parts.rate },
+            { id: "max", from: 900_000, to: null, label: s.parts.max },
+          ],
+        },
+        { id: "b", name: s.b, swatch: "bg-fee-custody", group: "share", parts: [{ id: "held", from: 0, to: null, label: s.parts.held, short: s.parts.short }], per: s.parts.per },
+        { id: "c", name: s.b, swatch: "bg-fee-account", group: "fixed", parts: null, price: s.price },
+      ]}
+      at={at}
+      entered
+      onPart={(_, p) => onAt(Math.sqrt(Math.max(p.from, 1000) * (p.to ?? 1_000_000)))}
+    />
+  );
+}
+
+function StackDemo() {
+  const [at, setAt] = useState(4_000);
+  const points = logSamples(ACTION_RANGE.lo, ACTION_RANGE.hi, 200, [10_000]).map((a) => ({ at: a, share: actionShare(a) }));
+  const s = g.sample.amount;
+  return (
+    <ShareStack range={ACTION_RANGE} at={at} entered>
+      <ShareChart
+        range={ACTION_RANGE}
+        points={points}
+        top={actionShare(10_000) * 6}
+        marks={[{ id: "m", at: 10_000, label: fmt.nisWhole(10_000) }]}
+        point={{ at, tag: `${fmt.nisWhole(at)} · ${fmt.pct(actionShare(at))}` }}
+        onPoint={(a) => setAt(Math.round(a))}
+        spoken={s.point}
+        xTitle={s.x}
+      />
+      <SampleLanes at={at} onAt={setAt} />
+    </ShareStack>
+  );
+}
+
+function RangeDemo() {
+  const [range, setRange] = useState({ lo: 10_000, hi: 3_000_000 });
+  const moved = range.lo !== 10_000 || range.hi !== 3_000_000;
+  return <RangeFields lo={range.lo} hi={range.hi} moved={moved} onRange={(lo, hi) => setRange({ lo, hi: Math.max(hi, lo * 2) })} onReset={() => setRange({ lo: 10_000, hi: 3_000_000 })} words={g.sample.amount.range} />;
+}
+
 function Demo({ name, use, children }: { name: string; use: string; children: ReactNode }) {
   return (
     <Card as="article" className="flex flex-col gap-4" aria-label={name}>
@@ -2693,33 +2813,43 @@ function DealDemos({ today }: { today: string }) {
           </Card>
         </State>
       </Demo>
-      <Demo name="AmountChart" use={g.uses.AmountChart}>
-        <State label={`a minimum up to 6,000 and a share above it, under a second share; ${g.states.interactive}: point at the plot or tap it`} wide>
-          <Card className="max-w-2xl">
-            <AmountChart
-              amounts={[0, 6000, 20000]}
-              bands={[
-                { id: "a", label: g.sample.amount.a, fill: "fill-fee-trade", stroke: "stroke-fee-trade", swatch: "bg-fee-trade", values: [15, 15, 50] },
-                { id: "b", label: g.sample.amount.b, fill: "fill-fee-fx", stroke: "stroke-fee-fx", swatch: "bg-fee-fx", values: [0, 12, 40] },
-              ]}
-              marks={[{ id: "m", at: 6000, label: fmt.nisWhole(6000) }]}
-              xTitle={g.sample.amount.x}
-              tip={(a) => g.sample.amount.tip(fmt.nisWhole(a))}
-              total={g.sample.amount.total}
-            />
+      <Demo name="ShareChart" use={g.uses.ShareChart}>
+        <State label={`one line: a minimum up to 10,000 and a share above it, the zones over it, the curve leaving the axis's top; ${g.states.interactive}: drag the point, or the arrow keys on it`} wide>
+          <Card className="max-w-3xl">
+            <ActionShareDemo />
           </Card>
         </State>
-        <State label="a mark near the start at the height of a value on the axis: its label moves past the axis's words" wide>
-          <Card className="max-w-2xl">
-            <AmountChart
-              amounts={[0, 1500, 50000]}
-              bands={[{ id: "a", label: g.sample.amount.a, fill: "fill-fee-trade", stroke: "stroke-fee-trade", swatch: "bg-fee-trade", values: [200, 200, 600] }]}
-              marks={[{ id: "m", at: 1500, label: fmt.nisWhole(1500) }]}
-              xTitle={g.sample.amount.x}
-              tip={(a) => g.sample.amount.tip(fmt.nisWhole(a))}
-              total={g.sample.amount.total}
-            />
+        <State label={`layers: a share at the bottom and a fixed sum above it, the crossover marked with a note; ${g.states.interactive}: point at it, drag across it to zoom`} wide>
+          <Card className="max-w-3xl">
+            <HeldShareDemo />
           </Card>
+        </State>
+      </Demo>
+      <Demo name="ShareStack" use={g.uses.ShareStack}>
+        <State label={`a chart with its point and its lanes on one axis, the point's line unbroken from the plot's top through the last lane; ${g.states.interactive}: drag the point, or tap a part`} wide>
+          <Card className="max-w-3xl">
+            <StackDemo />
+          </Card>
+        </State>
+      </Demo>
+      <Demo name="AmountLanes" use={g.uses.AmountLanes}>
+        <State label={`a lane with three parts, the last too narrow for its words, a quiet lane, the reader's amount at 30,000; ${g.states.interactive}: tap a part`} wide>
+          <Card className="max-w-3xl">
+            <LanesDemo />
+          </Card>
+        </State>
+      </Demo>
+      <Demo name="RangeFields" use={g.uses.RangeFields}>
+        <State label={`the range a chart opened at, and the reader's own with its reset; ${g.states.interactive}`} wide>
+          <RangeDemo />
+        </State>
+      </Demo>
+      <Demo name="PeriodTrack" use={g.uses.PeriodTrack}>
+        <State label="two periods, the first today's and the second with a change; three periods, the second today's" wide>
+          <div className="flex max-w-xl flex-col gap-4">
+            <PeriodTrack weights={[1, PERIOD_WIDE]} current={0} />
+            <PeriodTrack weights={[1, PERIOD_WIDE, PERIOD_WIDE]} current={1} />
+          </div>
         </State>
       </Demo>
       <Demo name="AddLine" use={g.uses.AddLine}>
@@ -3116,7 +3246,8 @@ function PhoneFrame({ children }: { children: ReactNode }) {
 /** A sample figure written whole, its unit with it as the page writes it ("0.15%", "20 ₪"): a rate with every decimal it has. */
 const fig = (n: number, unit: Unit, today: string) => <Num value={listed(n, unit, today)} {...(unit.startsWith("pct") ? { display: fmt.pctPrinted } : {})} />;
 /**
- * Custody by what is held: each case a tile, its whole price in its cell a part a line, the condition on the fee's name's line; a value
+ * Custody by what is held: each case a tile, its whole price in its cell a part a line, the maximum both hold once over the band with "+
+ * חלק לכל המקרים" after it, the condition heading the band; a value
  * no case names, a tile whose slot adds its case; the bare "+" after the tiles.
  */
 function CustodyTable({ today }: { today: string }) {
@@ -3127,26 +3258,36 @@ function CustodyTable({ today }: { today: string }) {
   ];
   const unnamed = { id: "makam", head: sc.what.makam, label: sc.what.makam, onOpen: () => undefined, empty: { label: dealWords.cases.addSlot.case, spoken: `${dealWords.cases.emptyPlace}${sc.what.makam}`, onAdd: () => undefined } };
   const price = (rate: number) => (
-    <>
-      <span className="basis-full">
-        <KindDot kind="charge" />
-        {fig(rate, "pct_of_balance_per_period", today)} {dealWords.price.per[3]}
-      </span>
-      <span className="basis-full">
-        <KindDot kind="bound" />
-        {dealWords.cases.parts.max}
-        {fig(10000, "nis", today)} {sc.perCharge}
-      </span>
-    </>
+    <span className="basis-full">
+      <KindDot kind="charge" />
+      {fig(rate, "pct_of_balance_per_period", today)} {dealWords.price.per[3]}
+    </span>
+  );
+  // the maximum both cases hold alike stands apart, over the band, once
+  const max = (
+    <span>
+      <KindDot kind="bound" />
+      {dealWords.cases.parts.max}
+      {fig(10000, "nis", today)} {sc.perCharge}
+    </span>
   );
   return (
-    <FeeBlock dot="bg-fee-custody" name={sc.custody} by={<ConditionHead inline things={[{ id: "held", name: sc.things.held }]} onThing={() => undefined} />}>
+    <FeeBlock dot="bg-fee-custody" name={sc.custody}>
+      <EveryCaseParts
+        label={dealWords.cases.everyCase.parts}
+        cells={[{ id: "max", content: max, onRemove: () => undefined, removeLabel: dealWords.cases.lifted.binCell.replace("{where}", `${dealWords.cases.rowHeads.max} · ${dealWords.cases.everyCase.where}`) }]}
+        add={{ label: dealWords.cases.rowAdd.allCases, spoken: dealWords.cases.lifted.menu.addAllCases, onAdd: () => undefined }}
+      />
+      <ConditionBand things={[{ id: "held", name: sc.things.held }]} onThing={() => undefined}>
+      <div className="px-3">
       <CaseTable
         columns={[...cols.map((c) => ({ id: c.id, head: c.head, label: sc.open(c.head), onOpen: () => setOpen(c.id), open: open === c.id })), unnamed]}
         rows={[{ id: "price", cells: cols.map((c, k) => ({ from: k, span: 1, onOpen: () => setOpen(c.id), content: price(c.rate) })) }]}
         add={{ label: dealWords.cases.addKnob.case, onAdd: () => undefined }}
         insert={() => ({ label: dealWords.cases.addKnob.case, spoken: dealWords.cases.addKnob.between.replace("{add}", dealWords.cases.addKnob.value.held!).replace("{a}", sc.heldValues.ta).replace("{b}", sc.heldValues.abroad), onAdd: () => undefined })}
       />
+      </div>
+      </ConditionBand>
     </FeeBlock>
   );
 }
@@ -3193,13 +3334,17 @@ function LadderTable({ today }: { today: string }) {
 
 
   return (
-    <FeeBlock dot="bg-fee-custody" name={sc.custody} by={<ConditionHead inline things={[{ id: "size", name: sc.things.portfolio }]} onThing={() => undefined} />}>
+    <FeeBlock dot="bg-fee-custody" name={sc.custody}>
+      <ConditionBand things={[{ id: "size", name: sc.things.portfolio }]} onThing={() => undefined}>
+      <div className="px-3">
       <CaseTable
         ladder
         columns={heads.map((h, k) => ({ id: String(k), head: h, label: sc.open(String(k + 1)), onOpen: () => setOpen((o) => (o === k ? null : k)), open: open === k }))}
         rows={[{ id: "price", cells: rates.map((r, k) => ({ from: k, span: 1, onOpen: () => setOpen((o) => (o === k ? null : k)), content: <span>{fig(r, "pct_of_balance_per_period", today)} {dealWords.price.per[12]}</span> })) }]}
         add={{ label: dealWords.cases.addKnob.step, onAdd: () => undefined }}
       />
+      </div>
+      </ConditionBand>
     </FeeBlock>
   );
 }
@@ -3213,7 +3358,9 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
   const [track, setTrack] = useState("1");
   const cell = (id: string, rate: number, more?: ReactNode) => ({ onOpen: () => setOpen(id), open: open === id, content: <span>{fig(rate, "pct_of_trade", today)} {perAction}{more}</span> });
   return (
-    <FeeBlock dot="bg-fee-trade" name={sc.trade} by={<ConditionHead inline things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }, ...(three ? [{ id: "track", name: sc.things.track }] : [])]} onThing={() => undefined} />}>
+    <FeeBlock dot="bg-fee-trade" name={sc.trade}>
+      <ConditionBand things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }, ...(three ? [{ id: "track", name: sc.things.track }] : [])]} onThing={() => undefined}>
+      <div className="px-3">
       <CaseGrid
         above={three && <SegmentedControl fit label={sc.things.track} options={sc.tracks.slice(0, 2).map((t, k) => ({ value: String(k + 1), label: t }))} value={track} onChange={setTrack} />}
         columns={[
@@ -3236,6 +3383,8 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
         addRow={{ label: dealWords.cases.addKnob.value.what!, onAdd: () => undefined }}
         addColumn={{ label: dealWords.cases.addKnob.value.channel!, onAdd: () => undefined }}
       />
+      </div>
+      </ConditionBand>
     </FeeBlock>
   );
 }
@@ -3319,23 +3468,28 @@ function LiftDemo({ today }: { today: string }) {
     </EditInPlace>
   );
   return (
-    <FeeBlock
-      dot="bg-fee-fx"
-      name={sc.fx}
-      by={
-        // the condition's head takes a cell for every case: dropped there, each row's price covers its whole row
-        <ConditionHead
-          inline
-          things={[{ id: "channel", name: sc.things.channel }, { id: "size", name: sc.things.size }]}
-          onThing={() => undefined}
-          zone={(h) => (
-            <DropZone accepts={(it) => it.startsWith("kit:cell:")} onDrop={() => setStarts((x) => x.map(() => 0))}>
-              {h}
-            </DropZone>
-          )}
-        />
-      }
-    >
+    <FeeBlock dot="bg-fee-fx" name={sc.fx}>
+      {/* the condition's head takes a cell for every case: dropped there, each row's price covers its whole row */}
+      <ConditionBand
+        things={[{ id: "channel", name: sc.things.channel }, { id: "size", name: sc.things.size }]}
+        onThing={() => undefined}
+        zone={(h) => (
+          <DropZone accepts={(it) => it.startsWith("kit:cell:")} onDrop={() => setStarts((x) => x.map(() => 0))}>
+            {h}
+          </DropZone>
+        )}
+        foot={
+          <DropBin
+            accepts={(it) => it.startsWith("kit:col:")}
+            onDrop={(it) => {
+              const k = Number(it.split(":")[2]);
+              setGone(steps[cols[k]!]!);
+              setCols((x) => x.filter((_, i) => i !== k));
+            }}
+          />
+        }
+      >
+      <div className="px-3">
       <CaseGrid
         steps
         label={sc.fx}
@@ -3388,17 +3542,9 @@ function LiftDemo({ today }: { today: string }) {
         })}
         addColumn={{ label: dealWords.cases.addKnob.step, onAdd: () => undefined }}
         addRow={{ label: dealWords.cases.addKnob.value.channel!, onAdd: () => undefined }}
-        foot={
-          <DropBin
-            accepts={(it) => it.startsWith("kit:col:")}
-            onDrop={(it) => {
-              const k = Number(it.split(":")[2]);
-              setGone(steps[cols[k]!]!);
-              setCols((x) => x.filter((_, i) => i !== k));
-            }}
-          />
-        }
       />
+      </div>
+      </ConditionBand>
       {/* a menu of actions from any control (the row strip's parts) */}
       <AddSlot add={{ label: dealWords.cases.rowAdd.strip, expanded: !!menuAt, onAdd: (at) => setMenuAt((m) => (m ? null : at)) }} />
       {menuAt && <ActionMenu actions={["min", "max", "discount"].map((row) => ({ label: dealWords.cases.rowHeads[row]!, onPick: () => undefined }))} back={{ current: menuAt }} onClose={() => setMenuAt(null)} />}
@@ -3476,8 +3622,8 @@ function CaseDemos({ today }: { today: string }) {
           </div>
         </State>
       </Demo>
-      <Demo name="CaseTable, CaseGrid, SharedLine, AddSlot" use={g.uses.CaseTable}>
-        <State label={`one thing: each case a column tile, its head over a line and its whole price under it, a part a line; what the price changes by on the fee's name's line; a value no case names, a tile whose slot adds its case; a bare "+" after the tiles; ${g.states.interactive}: a tile's head or cell opens its case, its whole tile outlined`} wide>
+      <Demo name="CaseTable, CaseGrid, EveryCaseParts, SharedLine, AddSlot" use={g.uses.CaseTable}>
+        <State label={`one thing: each case a column tile, its head over a line and its whole price under it, a part a line; the maximum both cases hold alike once over the band, in a cell of its own, then the quiet "+ חלק לכל המקרים" (founder, 2026-11-20); what the price changes by heading the band; a value no case names, a tile whose slot adds its case; a bare "+" after the tiles; ${g.states.interactive}: a tile's head or cell opens its case, its whole tile outlined`} wide>
           <div className="max-w-2xl">
             <CustodyTable today={today} />
           </div>

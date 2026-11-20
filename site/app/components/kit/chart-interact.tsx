@@ -254,16 +254,22 @@ export const pickDim = (active: string | null | undefined, id: string) => cx("tr
  * is `width` px wide; `x` is the point's px from the parent's left. The box stands beside the point, to its left past `width / 2`, and is
  * then held inside the parent: it wraps its lines at the parent's width (at most 20rem), and it is moved along so no edge leaves the parent
  * (one line of two long fund names was 575 px; on a phone it widened the page, at 1440 the right-hand year put it off the left
- * edge). Measured before paint, so it never shows in the wrong place.
+ * edge). Measured before paint, so it never shows in the wrong place. `near`: the point it reads, in px from the parent's top (`y`), with the
+ * lowest its foot may reach (`bottom`): the box then opens beside the point, to its right unless it would leave the parent, its foot 10 px
+ * over the point, or under the point where there is no room above it.
  */
-export function ChartTip({ x, top = 0, width, children }: { x: number; top?: number; width: number; children: ReactNode }) {
+export function ChartTip({ x, top = 0, width, near, children }: { x: number; top?: number; width: number; near?: { y: number; bottom: number }; children: ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const el = box.current;
     if (!el) return;
     const w = el.offsetWidth;
-    const want = x > width / 2 ? x - 8 - w : x + 8;
+    const want = near ? (x + 14 + w > width ? x - 14 - w : x + 14) : x > width / 2 ? x - 8 - w : x + 8;
     el.style.transform = `translateX(${Math.max(0, Math.min(want, width - w))}px)`;
+    if (near) {
+      const h = el.offsetHeight;
+      el.style.top = `${near.y - h - 10 >= 0 ? near.y - h - 10 : Math.max(0, Math.min(near.y + 10, near.bottom - h))}px`;
+    }
   });
   return (
     <div ref={box} dir="rtl" className="absolute z-20 pointer-events-none w-max max-w-[min(100%,20rem)] rounded-md border border-border bg-popover px-2 py-1 text-xs leading-snug shadow-sm [&_bdi[dir=ltr]]:whitespace-nowrap" style={{ left: 0, top }}>

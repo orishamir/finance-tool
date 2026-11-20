@@ -1,6 +1,7 @@
-// A fee whose price changes by one to three things (what is bought, the channel, the track, a range): its head in the cases' colour naming
-// the things (`ConditionHead`), on the fee's name's line over a table or a grid of its cases (case-table.tsx), or, read as rows, one band in
-// that colour, its head then one flat row per case (design-system 11, "Cases and parts"). Never a band inside a band. A case's condition is
+// A fee whose price changes by one to three things (what is bought, the channel, the track, a range): one band in the cases' colour, its
+// head naming the things (`ConditionHead`), then its cases, a table or a grid of them (case-table.tsx) or, read as rows, one flat row per
+// case (design-system 11, "Cases and parts"). The band is the table's: the parts every case holds alike stand outside it, over it, in the
+// fee's card (`EveryCaseParts`). Never a band inside a band. A case's condition is
 // words in the band at the row's start (a fixed column where the band is wide, above the parts where it is narrow, by the band's own
 // width: from 25 rem, a computer's column), its parts in the dark cell beside them. One case may be open, in place: its condition's values as slots, its parts with their
 // boxes, and the actions on the case as icons in its head.
@@ -45,18 +46,17 @@ export interface HeadThing {
  * Each pill is a button with its chevron whose menu the page opens (`onThing`; `ThingMenu`: the thing's values, and the action that
  * drops it), the fee open or not, so a thing is taken away from its own menu and no bin stands beside it (founder, 2026-11-20);
  * `openThing` the one whose menu is open, ringed. Each pill stands in one element marked `data-thing-place` with the thing's id, where
- * the page gives the focus back to its button after an undo. `inline`: the head stands on its fee's name's line (`FeeBlock`'s `by`), over
- * a table or a grid, with no frame or fill of its own and its words in the regular weight (founder, 2026-11-19); else it heads a band's
- * rows. `zone` wraps the whole head, the place a thing for the whole condition drops on (a part applied to every case); a pill's own zone
+ * the page gives the focus back to its button after an undo. It heads its band (`ConditionBand`), over the cases' table, grid or rows.
+ * `zone` wraps the whole head, the place a thing for the whole condition drops on (a part applied to every case); a pill's own zone
  * inside it takes what the pill takes.
  */
-export function ConditionHead({ things, onThing, openThing, label = copy.changesBy, inline, zone }: { things: HeadThing[]; onThing: (id: string, at: HTMLElement) => void; openThing?: string | null; label?: ReactNode; inline?: boolean; zone?: (head: ReactNode) => ReactNode }) {
+export function ConditionHead({ things, onThing, openThing, label = copy.changesBy, zone }: { things: HeadThing[]; onThing: (id: string, at: HTMLElement) => void; openThing?: string | null; label?: ReactNode; zone?: (head: ReactNode) => ReactNode }) {
   const head = (
-    // in a band, 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge; 12 px
-    // between wrapped lines, so two pills' tap areas never meet
-    <div className={cx("flex min-h-target flex-wrap items-center gap-y-3 text-sm text-when-ink", inline ? "gap-x-1.5" : "gap-x-2 px-3 py-2")}>
+    // 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge; 12 px between
+    // wrapped lines, so two pills' tap areas never meet
+    <div className="flex min-h-target flex-wrap items-center gap-x-2 gap-y-3 px-3 py-2 text-sm text-when-ink">
       <Split {...icon} />
-      <span className={inline ? undefined : "font-medium"}>{label}</span>
+      <span className="font-medium">{label}</span>
       {things.map((t) => {
         const pill = (
         <span key={t.id} data-thing-place={t.id} data-liftable="" className="inline-flex items-center gap-0.5 rounded-full">
@@ -75,15 +75,25 @@ export function ConditionHead({ things, onThing, openThing, label = copy.changes
 }
 
 /**
- * The band, for cases read as rows (a phone, or a grid whose cases do not fall one to a place): its head (`ConditionHead`) and its rows as `children`
- * (`CaseRow`, `CaseGroup`, `OpenCase`, an `AddSlot` row), 4 px apart, in the cases' blue.
+ * The band of a fee's cases, in the cases' colour: its head (`ConditionHead`), then its cases as `children`, 4 px apart: a `CaseTable` or a
+ * `CaseGrid` where they stand as one (a computer), 12 px in from the band's edges, or read as rows (a phone, or a grid whose cases do not
+ * fall one to a place), `CaseRow`, `CaseGroup`, `OpenCase`, an `AddSlot` row. `foot`: what stands under the band, outside its clipped
+ * frame (the bin while something is lifted, laid over what follows: the band is the element it is placed by).
  */
-export function ConditionBand({ children, ...head }: { things: HeadThing[]; onThing: (id: string, at: HTMLElement) => void; openThing?: string | null; label?: ReactNode; zone?: (head: ReactNode) => ReactNode; children: ReactNode }) {
-  return (
+export function ConditionBand({ children, foot, ...head }: { things: HeadThing[]; onThing: (id: string, at: HTMLElement) => void; openThing?: string | null; label?: ReactNode; zone?: (head: ReactNode) => ReactNode; foot?: ReactNode; children: ReactNode }) {
+  const band = (
     <div className="@container overflow-hidden rounded-lg border border-when-edge bg-when-fill pb-1">
       <ConditionHead {...head} />
       <div className="flex flex-col gap-1">{children}</div>
     </div>
+  );
+  return foot ? (
+    <div className="relative">
+      {band}
+      {foot}
+    </div>
+  ) : (
+    band
   );
 }
 

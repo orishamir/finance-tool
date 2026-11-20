@@ -166,6 +166,13 @@
   }
 }
 
+/* A block of short lines whose figures often stand alone among their words (a deal's reading): each figure's tap area reaches 44 px wide
+   as well as tall, centred on it, as `tap-wide` does for a short control, and the look does not change (the area's rule reads
+   `--num-reach`). Each figure's own box still sits above every area, so a figure beside it keeps its own click. */
+@utility nums-wide {
+  --num-reach: min(-4px, calc((100% - var(--target)) / 2));
+}
+
 /* A field's reset stands at the foot of its label line, the field's 6 px gap over the box: its tap area reaches its 44 px upward from the
    box's top edge instead of centred on it, so it never covers the box nor loses its foot to it. Outside the layers, so it wins over the
    `tap-area` utility's own placing. */
@@ -229,7 +236,8 @@
     content: "";
     position: absolute;
     z-index: 0;
-    inset-inline: -4px;
+    /* 4 px past each side; wider inside a block that asks for it (`nums-wide`) */
+    inset-inline: var(--num-reach, -4px);
     top: 50%;
     height: max(calc(100% + 22px), 44px);
     translate: 0 -50%;
@@ -788,7 +796,7 @@
     opacity: 0 !important;
     pointer-events: none;
   }
-  /* The strip under a grid's row (or a table's last row) that adds a part to every case of it (kit/case-table.tsx): drawn only while the
+  /* The strip under a grid's row that adds a part to every case of it (kit/case-table.tsx): drawn only while the
      pointer has rested on the row `--hover-rest` or the focus is in it, on a fine pointer (hidden, it takes no press); touch and the
      keyboard reach it in the row head's menu */
   [data-row-add] {
@@ -796,14 +804,12 @@
     visibility: hidden;
   }
   @media (pointer: fine) {
-    [data-grid-row]:hover [data-row-add],
-    [data-case-table]:hover [data-row-add] {
+    [data-grid-row]:hover [data-row-add] {
       opacity: 1;
       visibility: visible;
       transition: opacity var(--duration-fast) linear var(--hover-rest), visibility 0s linear var(--hover-rest);
     }
     [data-grid-row]:focus-within [data-row-add],
-    [data-case-table]:focus-within [data-row-add],
     [data-row-add][aria-expanded="true"] {
       opacity: 1;
       visibility: visible;
@@ -897,6 +903,12 @@
   }
   :root:has([data-lift-ghost]) [data-carry-hold] {
     position: relative;
+  }
+  /* A case grid holds its rows' tracks while something is carried (`data-carry-tracks`): the place a preview draws taller than its row
+     stands over the rows under it, so its words read over them rather than under */
+  :root:has([data-lift-ghost]) [data-carry-tracks] [data-drop-over] {
+    position: relative;
+    z-index: 1;
   }
   /* The carried thing's own place (kit/lift.tsx), wherever the page draws it now: the gap the others open, a soft slot of its size with
      nothing in it */

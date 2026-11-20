@@ -4,7 +4,7 @@
 import { caseFor, stepOf, type CaseCond } from "@finance-tool/engine";
 import { BOUND_CURRENCIES, pickKey, pickedPlace, hasCases, isRange, type BoundCurrency, type Price, type Stage, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Num, type ReadPick, type RangeBy, type SlimFee, type When } from "./model";
 import { CURRENCY_IDS, holdsFunds, onHolding } from "./shapes";
-import { isPicked, readAcross, TAKEN_KEYS } from "./offers/conditions";
+import { isPicked, monthOf, readAcross, TAKEN_KEYS } from "./offers/conditions";
 
 /**
  * Where a read fee comes from (F-114, F-115): the deal's fee (`of`), the case it is read in where the fee has cases, and, where its price
@@ -48,6 +48,33 @@ export function chargedOnHolding(fee: Fee): boolean {
 
 /** A thing whose values the reading picks: every one but a size read across sizes (F-115). */
 export const picked = (fee: Fee, b: By): boolean => !(isRange(b) && readAcross(chargedOnHolding(fee), b.kind));
+
+/**
+ * A month the method reads as it is rather than as the reading picks it (F-126, F-127): the number of actions in it, and its trading, a
+ * sum (0 for none) or the one action's own size (`action`), so a price that changes by the trading is read across it as a size of the
+ * action (F-115).
+ */
+export interface MonthHeld {
+  actions: number;
+  trading: number | "action";
+}
+
+/** Whether a fee's thing is read across sizes for a month (`MonthHeld`): a size read across sizes, or the trading where it is the action's size. */
+const acrossIn = (fee: Fee, b: By, month: MonthHeld | undefined): boolean => !picked(fee, b) || (!!month && isRange(b) && monthOf(b.kind) === "trading" && month.trading === "action");
+
+/** The picks for a month (`MonthHeld`): each thing that counts a month's activity set to the step that holds what the month does. */
+function monthPicks(fees: readonly Fee[], picks: readonly ReadPick[], month: MonthHeld): ReadPick[] {
+  const set = new Map<string, string>();
+  for (const fee of fees) {
+    if (!hasCases(fee)) continue;
+    for (const b of fee.by) {
+      const m = isRange(b) ? monthOf(b.kind) : undefined;
+      if (m === "actions") set.set(pickKey(b), stepPick(month.actions));
+      else if (m === "trading" && month.trading !== "action") set.set(pickKey(b), stepPick(month.trading));
+    }
+  }
+  return [...picks.filter((p) => !set.has(p.by)), ...[...set].map(([by, is]) => ({ by, is }))];
+}
 
 /** The first value a case names for thing `t`, where it names one (a range's step as its pick). */
 function valueOf(fee: CasesFee, c: Case, t: number): string | null {
@@ -118,26 +145,34 @@ function fromCase(fee: CasesFee, c: Case, id: string, step?: ReadOf["step"]): Re
 /**
  * F-114, F-115 A fee as the reading reads it for the picks: a fee whose price changes by nothing, as it is; a fee with cases, in the case
  * the picks give it; where its price changes by a size read across sizes, one fee per stretch of steps read in one case (neighbouring steps
- * in the same case are one stretch, and a single stretch is the fee itself). Null where the picks give it no case, or a step none.
+ * in the same case are one stretch, and a single stretch is the fee itself). Null where the picks give it no case, or a step none. For a
+ * month whose trading is its one action (`month`, F-127), the trading is read across as a size of the action too; two ranges read across
+ * at once are one range whose tops are both's, read on the action, which needs both counted in one currency (else null).
  */
-export function readFee(fee: Fee, picks: readonly ReadPick[]): ReadFee[] | null {
+export function readFee(fee: Fee, picks: readonly ReadPick[], month?: MonthHeld): ReadFee[] | null {
   if (!hasCases(fee)) return [fee];
-  const across = fee.by.findIndex((b) => !picked(fee, b));
+  const across = fee.by.flatMap((b, t) => (acrossIn(fee, b, month) ? [t] : []));
   const vector = fee.by.map((b, t): string | number => {
-    if (t === across) return 0;
+    if (across.includes(t)) return 0;
     const is = picks.find((p) => p.by === pickKey(b))?.is;
     if (isRange(b)) return is === undefined ? 0 : (stepForPick(b.tops.map((n) => n.v), is) ?? -1);
     return is ?? "";
   });
   const conds = fee.cases.map(condsOf);
-  if (across < 0) {
+  if (!across.length) {
     const k = caseFor(conds, vector);
     return k === null ? null : [fromCase(fee, fee.cases[k]!, fee.id)];
   }
-  const range = fee.by[across] as RangeBy;
+  const ranges = across.map((t) => fee.by[t] as RangeBy);
+  // ranges read across together share one currency and are on the action (the portfolio's size alone is on what is held)
+  if (ranges.some((r) => r.unit !== ranges[0]!.unit || (ranges.length > 1 && r.kind === "portfolioSize")) || !(BOUND_CURRENCIES as readonly string[]).includes(ranges[0]!.unit)) return null;
+  // the tops of every range read across, in order: each step between two of them is one step of each range
+  const tops = [...new Map(ranges.flatMap((r) => r.tops).map((n) => [n.v, n])).values()].sort((a, b) => a.v - b.v);
   const steps: number[] = [];
-  for (let s = 0; s <= range.tops.length; s++) {
-    const k = caseFor(conds, vector.map((v, t) => (t === across ? s : v)));
+  for (let s = 0; s <= tops.length; s++) {
+    // a step's amount: its top, or past the last top for the last step
+    const x = s < tops.length ? tops[s]!.v : (tops.at(-1)?.v ?? 0) + 1;
+    const k = caseFor(conds, vector.map((v, t) => (across.includes(t) ? stepOf((fee.by[t] as RangeBy).tops.map((n) => n.v), x) : v)));
     if (k === null) return null;
     steps.push(k);
   }
@@ -149,11 +184,11 @@ export function readFee(fee: Fee, picks: readonly ReadPick[]): ReadFee[] | null 
     else stretches.push({ k, from: s, to: s });
   });
   if (stretches.length === 1) return [fromCase(fee, fee.cases[stretches[0]!.k]!, fee.id)];
-  // the size of the action is read across on an action, the size of the portfolio on what is held (F-115)
-  const on = range.kind === "actionSize" ? "action" : "held";
-  const currency = range.unit as BoundCurrency;
+  // the size of the portfolio is read across on what is held, any other size (the action's, a month's trading as its one action) on an action (F-115)
+  const on = ranges.length === 1 && ranges[0]!.kind === "portfolioSize" ? "held" : "action";
+  const currency = ranges[0]!.unit as BoundCurrency;
   return stretches.map((x, j) =>
-    fromCase(fee, fee.cases[x.k]!, `${fee.id}-s${j}`, { on, from: x.from === 0 ? null : range.tops[x.from - 1]!, to: x.to < range.tops.length ? range.tops[x.to]! : null, currency }),
+    fromCase(fee, fee.cases[x.k]!, `${fee.id}-s${j}`, { on, from: x.from === 0 ? null : tops[x.from - 1]!, to: x.to < tops.length ? tops[x.to]! : null, currency }),
   );
 }
 
@@ -184,12 +219,12 @@ const asksTrade = (f: ReadFee): boolean => [...f.stages, ...(f.sale ?? [])].some
 const notPrintedFor = (f: ReadFee, currency: BoundCurrency): boolean => [...f.stages, ...(f.sale ?? [])].some((s) => "inTrade" in s.price && Array.isArray(s.price.inTrade) && !s.price.inTrade.includes(currency));
 
 /**
- * The deal read for its picks: the fees read (`readFee`), in the deal's order, each price whose sums are in the action's currency in what is
+ * The deal read for its picks (for a month the method reads as it is, `month`, with its picks set by `monthPicks`): the fees read (`readFee`), in the deal's order, each price whose sums are in the action's currency in what is
  * bought's (`tradeCurrency`); the ids of the fees the picks give no case (`unmatched`), and among them the ones read in a case whose sums
  * are in a currency the deal does not know (`noCurrency`) or in one the list prints them not for (`notPrinted`).
  */
-export function readFees(deal: FeeDeal): { fees: ReadFee[]; unmatched: string[]; noCurrency: string[]; notPrinted: string[]; picks: ReadPick[] } {
-  const picks = picksOf(deal);
+export function readFees(deal: FeeDeal, month?: MonthHeld): { fees: ReadFee[]; unmatched: string[]; noCurrency: string[]; notPrinted: string[]; picks: ReadPick[] } {
+  const picks = month ? monthPicks(deal.fees, picksOf(deal), month) : picksOf(deal);
   const trade = tradeCurrency(deal.fees, picks);
   const fees: ReadFee[] = [];
   const unmatched: string[] = [];
@@ -197,7 +232,7 @@ export function readFees(deal: FeeDeal): { fees: ReadFee[]; unmatched: string[];
   const notPrinted: string[] = [];
   const resolve = (stages: readonly Stage[]): Stage[] => stages.map((s) => ({ ...s, price: inCurrency(s.price, trade!) }));
   for (const fee of deal.fees) {
-    const read = readFee(fee, picks);
+    const read = readFee(fee, picks, month);
     if (!read) unmatched.push(fee.id);
     else if (read.some(asksTrade) && !trade) {
       unmatched.push(fee.id);

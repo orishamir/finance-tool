@@ -36,7 +36,7 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
   // the fee under the pointer or the focus in any column, which the others mark
   const [marked, setMarked] = useState<string | null>(null);
   const panelCard = useRef<HTMLDivElement>(null);
-  // a fee chosen from the keyboard, or from the glance or the reading: its panel's first field, or its card and panel, once drawn
+  // a fee chosen from the keyboard, or from the reading or what it leaves out: its panel's first field, or its card and panel, once drawn
   const after = useRef<{ fee: string; how: "panel" | "view" } | null>(null);
   useIsoLayoutEffect(() => {
     const a = after.current;

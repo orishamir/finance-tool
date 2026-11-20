@@ -20,7 +20,7 @@ export interface SegmentOption<T extends string> {
  * chosen weight, so choosing moves nothing. A disabled option is faint and cannot be chosen. Options too long to stand side by side in
  * the room given go onto a second row, each still on one line, rather than out of the box.
  */
-export function SegmentedControl<T extends string>({ label, options, value, onChange, className, labelledBy, check = true, fit, long }: { label?: string; options: SegmentOption<T>[]; value: T | null; onChange: (v: T) => void; className?: string; labelledBy?: string; /** As wide as its options from 640 px, not the full width. */ fit?: boolean; /** Options of several words that may each wrap inside it on a narrow screen, so it never runs past what holds it. */ long?: boolean; /** The check on the pressed option; a company page's controls go without it, the fill alone (the designer's mocks). */ check?: boolean }) {
+export function SegmentedControl<T extends string>({ label, options, value, onChange, className, labelledBy, check = true, fit, long }: { label?: string; options: SegmentOption<T>[]; value: T | null; onChange: (v: T) => void; className?: string; labelledBy?: string; /** As wide as its options from 640 px, not the full width; `"always"`, at every width, at the start of its line (a card's tabs on a phone). */ fit?: boolean | "always"; /** Options of several words that may each wrap inside it on a narrow screen, so it never runs past what holds it. */ long?: boolean; /** The check on the pressed option; a company page's controls go without it, the fill alone (the designer's mocks). */ check?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
     if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(e.key)) return;
@@ -34,7 +34,7 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
     ref.current?.querySelectorAll("button")[options.indexOf(enabled[next]!)]?.focus();
   };
   return (
-    <div ref={ref} role="group" aria-label={label} aria-labelledby={labelledBy} onKeyDown={onKey} className={cx("inline-flex flex-wrap w-full max-w-full rounded-[10px] border border-input", fit && "sm:w-fit", className)}>
+    <div ref={ref} role="group" aria-label={label} aria-labelledby={labelledBy} onKeyDown={onKey} className={cx("inline-flex flex-wrap max-w-full rounded-[10px] border border-input", fit === "always" ? "w-fit" : cx("w-full", fit && "sm:w-fit"), className)}>
       {options.map((o) => {
         const on = value === o.value;
         const words = typeof o.label === "string" ? gershayim(o.label) : o.label;
@@ -51,7 +51,7 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
             onClick={() => onChange(o.value)}
             className={cx(
               "flex-1 inline-flex items-center justify-center gap-1 min-h-[30px] tap-area px-3 text-sm rounded-[9px]",
-              long ? cx("min-w-0 text-center", fit && "sm:flex-auto") : "whitespace-nowrap",
+              long ? cx("min-w-0 text-center", fit === "always" ? "flex-auto" : fit && "sm:flex-auto") : "whitespace-nowrap",
               "transition-colors duration-[var(--duration-fast)] disabled:opacity-40 disabled:cursor-not-allowed",
               on ? "bg-primary-subtle text-foreground" : "text-muted-foreground enabled:hover:bg-accent/60 enabled:hover:text-foreground",
             )}

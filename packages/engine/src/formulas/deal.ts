@@ -442,13 +442,19 @@ export function groupRate(deal: Deal, period: DealPeriod): DealGroup[] {
  * price, on every action up to `amount`; `cap`, the percent maximum, up to `amount`; `min`, the minimum, up to `amount`; `max`, the
  * maximum, above `amount`. A stretch that starts above nothing starts at `from` (the end of the flat price's or the cap's stretch before
  * it). The sums are in the price's own currency (`currency`), except that `amount` counts units where `units` is set: a price per unit
- * (F-12) reaches its minimum and its maximum at a number of units, whatever a unit costs. `on` says which curve the mark falls on. `meet`:
- * the yearly sums on the account (`sum`, of `fees`) equal the yearly rate of the custody fees (`rate`, of `against`) on a value of `amount`
- * shekels. `edge` (F-115): the top of a step of a price that changes by size, where the next step's price takes over above `amount`.
+ * (F-12) reaches its minimum and its maximum at a number of units, whatever a unit costs. `on` says which curve the mark falls on. `edge`
+ * (F-115): the top of a step of a price that changes by size, where the next step's price takes over above `amount`.
  */
-export type DealMark =
-  | { kind: "min" | "max" | "cap" | "flat" | "edge"; on: "action" | "held"; fee: number; side: DealSide; amount: number; from?: number; units?: true; currency: string }
-  | { kind: "meet"; on: "held"; fees: number[]; against: number[]; sum: number; rate: number; side: "all"; amount: number; currency: "ILS" };
+export interface DealMark {
+  kind: "min" | "max" | "cap" | "flat" | "edge";
+  on: "action" | "held";
+  fee: number;
+  side: DealSide;
+  amount: number;
+  from?: number;
+  units?: true;
+  currency: string;
+}
 
 /** What decides a price over a stretch of the amount (F-112): its flat price, its cap, its minimum, its rate, or its maximum. */
 type Decider = "flat" | "cap" | "min" | "rate" | "max";
@@ -537,17 +543,15 @@ function priceMarks(price: DealPrice, fee: number, side: DealSide): DealMark[] {
 }
 
 const sameMark = (a: DealMark, b: DealMark): boolean =>
-  a.kind !== "meet" && b.kind !== "meet" && a.kind === b.kind && a.on === b.on && a.currency === b.currency && a.units === b.units && near(a.amount, b.amount) && near(a.from ?? 0, b.from ?? 0);
+  a.kind === b.kind && a.on === b.on && a.currency === b.currency && a.units === b.units && near(a.amount, b.amount) && near(a.from ?? 0, b.from ?? 0);
 
 /**
  * F-112 The sums a deal's own prices mark, in one period of F-110. (1) A share of an action (F-12, F-13) or of what is held per charging
  * period (F-14), and a sum per unit (F-12), mark where each of their parts stops deciding the price (`priceMarks`): a flat price up to its
  * sum, a cap and a minimum up to where they give way, a maximum from where it takes over; each in the price's own currency, a price per
  * unit's minimum and maximum in units. A mark that falls on the same sum for a purchase and for a sale is one mark, on both (`all`).
- * (3) The yearly sums on the account, added (`A`), against the yearly rates of the deal's custody fees, added (`ρ`, F-111): one mark at
- * `B = A / ρ`, where both are above nothing and no custody fee's minimum or maximum binds at `B` (where one does, the two costs do not
- * meet there). Cover (`insurance_premium`) marks nothing. A fee charged on one step of sizes (F-115) marks what falls in its step, and
- * its step's top (`stepMarks`); it is not among the sums and custody fees of (3).
+ * (2) A share of what is held is (1) without a cap or a flat price, per charging period. Cover (`insurance_premium`) marks nothing. A fee
+ * charged on one step of sizes (F-115) marks what falls in its step, and its step's top (`stepMarks`).
  */
 export function dealMarks(deal: Deal, period: DealPeriod): DealMark[] {
   const marks: DealMark[] = [];
@@ -563,24 +567,6 @@ export function dealMarks(deal: Deal, period: DealPeriod): DealMark[] {
     }
     marks.push(...(f.within ? stepMarks(f, i, own) : own));
   });
-  const sums = deal.fees.flatMap((f, i) => {
-    const p = period.prices[i]!.price;
-    return p.kind === "sum" && p.amount > 0 && !isCover(f.base) && !f.within ? [{ i, year: perYear(p)! }] : [];
-  });
-  const custody = deal.fees.flatMap((f, i) => {
-    const p = period.prices[i]!.price;
-    return "key" in f.base && f.base.key === "custody" && p.kind === "held" && p.rate > 0 && !f.within ? [{ i, p, year: perYear(p)! }] : [];
-  });
-  if (sums.length && custody.length) {
-    const sum = sums.reduce((a, x) => a + x.year, 0), rate = custody.reduce((a, x) => a + x.year, 0);
-    const amount = sum / rate;
-    // a charge's share at B against its bounds: below the minimum the minimum binds, above the maximum the maximum does
-    const binds = custody.some(({ p }) => {
-      const charge = p.rate * amount;
-      return (p.min !== undefined && charge < p.min && !near(charge, p.min)) || (p.max !== undefined && charge > p.max && !near(charge, p.max));
-    });
-    if (!binds) marks.push({ kind: "meet", on: "held", fees: sums.map((x) => x.i), against: custody.map((x) => x.i), sum, rate, side: "all", amount, currency: "ILS" });
-  }
   return marks;
 }
 
@@ -593,7 +579,7 @@ function stepMarks(f: DealFee, i: number, own: readonly DealMark[]): DealMark[] 
   const w = f.within!;
   const out: DealMark[] = [];
   for (const m of own) {
-    if (m.kind === "meet" || m.units || m.currency !== w.currency) {
+    if (m.units || m.currency !== w.currency) {
       out.push(m);
       continue;
     }
@@ -731,6 +717,282 @@ export function curveEnd(largestMark: number): number {
   const power = 10 ** Math.floor(Math.log10(target));
   for (const step of [1, 2, 5, 10]) if (step * power >= target * (1 - 1e-12)) return step * power;
   return 10 * power;
+}
+
+// ---------------------------------------------------------------- the reading's charts (F-123 to F-127)
+
+/** The part of a price that decides it over a stretch of sizes (F-112), as the reading's lanes draw it: `sum` is a sum per action. */
+export type PricePart = "free" | "flat" | "cap" | "min" | "rate" | "max" | "sum";
+
+/** A stretch of sizes, from `from` up to `to` (open where `to` is null), in the price's currency, over which one part decides the price. */
+export interface PartStretch {
+  part: PricePart;
+  from: number;
+  to: number | null;
+}
+
+/**
+ * F-112 The parts of one price along the size of the action, or of the value held per charge: F-112's stretches (`stretchesOf`), each
+ * read at its middle, in the price's currency. A free price is free throughout; a sum per action is its sum throughout, and under a
+ * percent maximum its cap up to `amount / cap`, then the sum; a sum per unit is read as a share of `amount / unitPrice` (F-12's `c × n`
+ * on `a / U` units), so it needs `unitPrice`, what one unit costs in the price's currency. Null for a sum per period, which no size
+ * moves, and for a sum per unit without its unit's price.
+ */
+export function priceParts(price: DealPrice, unitPrice?: number): PartStretch[] | null {
+  switch (price.kind) {
+    case "free":
+      return [{ part: "free", from: 0, to: null }];
+    case "sum":
+      return null;
+    case "perAction":
+      if (price.cap === undefined || !(price.cap > 0)) return [{ part: "sum", from: 0, to: null }];
+      return stretchesOf({ rate: 0, min: price.amount, max: price.amount, cap: price.cap }).map((s) => ({ ...s, part: s.part === "cap" ? "cap" : "sum" }));
+    case "perUnit":
+      if (!(unitPrice !== undefined && unitPrice > 0)) return null;
+      return stretchesOf({ rate: price.amount / unitPrice, ...bounds(price) });
+    case "action":
+    case "held":
+      return stretchesOf({ rate: price.rate, ...bounds(price) });
+  }
+}
+
+/** A price's bounds, its cap and its flat price, where typed. */
+function bounds(p: { min?: number; max?: number; cap?: number; flat?: DealFlat }): { min?: number; max?: number; cap?: number; flat?: DealFlat } {
+  return { ...(p.min !== undefined ? { min: p.min } : {}), ...(p.max !== undefined ? { max: p.max } : {}), ...(p.cap !== undefined ? { cap: p.cap } : {}), ...(p.flat ? { flat: p.flat } : {}) };
+}
+
+/**
+ * F-123 The share a cost is of the amount it is paid on: the cost of one action over the action (F-112's action curve), or a year's
+ * holding over the value held (F-112's holding curve). Infinite on nothing: a minimum or a sum is charged in full there.
+ */
+export function costShare(cost: number, amount: number): number {
+  return amount > 0 ? cost / amount : cost > 0 ? Infinity : 0;
+}
+
+/** A fee's yearly cost of holding a value, and its layer: a share of the value, or a fixed sum at that value (F-123). */
+export interface HeldLayer {
+  fee: number;
+  cost: number;
+  layer: "share" | "fixed";
+}
+
+/**
+ * F-123 The yearly cost of holding a value, fee by fee as `holdingCost` prices it, each in its layer at that value: a share of what is held
+ * whose rate decides its charge is a `share`, which grows with the value; a sum per period, and a share whose minimum or maximum decides
+ * its charge there (a charge exactly at a bound counts as the rate's), is `fixed`, the same at nearby values. A fee charged on one step of
+ * the value held is counted only while the value is in its step (F-115). Cover is left out.
+ */
+export function heldLayers(deal: Deal, period: DealPeriod, value: number, rates: Readonly<Record<string, number>> = {}): HeldLayer[] {
+  const cost = holdingCost(deal, period, value, rates);
+  return cost.parts.map(({ fee, cost: c }) => {
+    const p = period.prices[fee]!.price;
+    if (p.kind !== "held") return { fee, cost: c, layer: "fixed" };
+    const charge = p.rate * value;
+    const bound = (p.min !== undefined && charge < p.min && !near(charge, p.min)) || (p.max !== undefined && charge > p.max && !near(charge, p.max));
+    return { fee, cost: c, layer: bound ? "fixed" : "share" };
+  });
+}
+
+/**
+ * F-123 The share of the amount where every fee charged there is at its rate: the sum of their rates, F-111's rate taken step by step
+ * (F-115). On an action (`on`, with its side) each fee charged on an action of `amount` shekels must be a share of it whose rate decides
+ * there (no minimum, maximum, cap or flat price), with a third party's share added where it is a share with no bound (F-117); on what is
+ * held, each share of what is held charged there must be at its rate (`heldLayers`), counted a year (F-111), and a sum per period, which
+ * is no share, is left out. A free price adds nothing. Null where any share charged there is not at its rate, or where an action's fee is
+ * not a share.
+ */
+export function rateAt(deal: Deal, period: DealPeriod, on: { action: DealAction; side: "buy" | "sell" } | "held", amount: number, rates: Readonly<Record<string, number>> = {}): number | null {
+  if (on === "held") {
+    const layers = heldLayers(deal, period, amount, rates).filter((l) => period.prices[l.fee]!.price.kind === "held");
+    if (layers.some((l) => l.layer === "fixed")) return null;
+    return layers.reduce((a, l) => a + perYear(period.prices[l.fee]!.price)!, 0);
+  }
+  let rate = 0;
+  for (const i of onAction(deal, period, on.action).fees) {
+    const fee = deal.fees[i]!;
+    const price = priceOn(fee, period.prices[i]!, on.side);
+    if (!price || groupAction(deal, fee.base, price) !== on.action) continue;
+    if (fee.within?.on === "action" && !inStep(fee.within, amount / shekelsPer(fee.within.currency, rates))) continue;
+    if (price.kind === "free") continue;
+    if (price.kind !== "action") return null;
+    // a cap of 0 holds every action to nothing: such a price charges nothing, as a free one (F-110), unless a flat price above nothing is
+    // typed, which decides alone on a small action and leaves no rate there
+    if (price.cap !== undefined && !(price.cap > 0) && !(price.flat && price.flat.amount > 0 && amount / shekelsPer(price.currency ?? "ILS", rates) <= price.flat.upTo)) continue;
+    const priced = price.min !== undefined || price.max !== undefined || price.flat !== undefined || price.cap !== undefined;
+    if (priced && deciderAt(price, amount / shekelsPer(price.currency ?? "ILS", rates)) !== "rate") return null;
+    const t = price.third;
+    if (t && (t.kind !== "action" || t.min !== undefined || t.max !== undefined)) return null;
+    rate += actionShare(price);
+  }
+  return rate;
+}
+
+/**
+ * F-124 Where the shares of what is held come to cost a year as much as the fixed sums (`heldLayers`): the smallest value below the first
+ * maximum from which their yearly cost is at least the fixed sums' at every larger value up to that maximum. Between two cuts (a step's
+ * bottom or top, F-115, and the value where a share's minimum or maximum per charge meets its rate, F-112) each fee keeps its layer, the
+ * shares cost `s × B` and the fixed sums `F`, so they meet at `B = F / s` where that falls inside, or at the cut where the shares jump past
+ * the sums. A share held to its maximum is no share of what is held: its whole cost is fixed there, so the stretches from the first value
+ * where a maximum holds a share are left out (`maxHolds`). Null where nothing is fixed on a small value, where no share is charged, where
+ * the shares do not reach the sums below the first maximum, or where they fall back below them at a larger value below it.
+ */
+export function heldCrossover(deal: Deal, period: DealPeriod, rates: Readonly<Record<string, number>> = {}): number | null {
+  const pts = [0, ...heldCuts(deal, period, rates)];
+  const mid = (k: number) => (k + 1 < pts.length ? (pts[k]! + pts[k + 1]!) / 2 : Math.max(2 * pts[k]!, 1));
+  // the stretches below the first where a share's maximum holds its charge
+  let end = pts.length;
+  for (let k = 0; k < pts.length; k++)
+    if (maxHolds(deal, period, mid(k), rates)) {
+      end = k;
+      break;
+    }
+  // within a stretch: the fixed sums, and the shares' yearly cost per shekel held
+  const split = (k: number) => {
+    const v = mid(k);
+    const layers = heldLayers(deal, period, v, rates);
+    const fixed = layers.filter((l) => l.layer === "fixed").reduce((a, l) => a + l.cost, 0);
+    const slope = layers.filter((l) => l.layer === "share").reduce((a, l) => a + l.cost, 0) / v;
+    return { fixed, slope };
+  };
+  const reached = (lo: number, s: { fixed: number; slope: number }) => s.slope * lo >= s.fixed * (1 - 1e-12);
+  let found: { at: number; k: number } | null = null;
+  for (let k = 0; k < end && !found; k++) {
+    const lo = pts[k]!;
+    // a stretch's top: the next cut, or none for the last; the first maximum's value ends the last stretch read
+    const hi = k + 1 < pts.length ? pts[k + 1]! : null;
+    const s = split(k);
+    if (k === 0 && !(s.fixed > 0)) return null;
+    if (lo > 0 && reached(lo, s)) found = { at: lo, k };
+    else if (s.slope > 0 && (hi === null || s.fixed / s.slope < hi)) found = { at: s.fixed / s.slope, k };
+  }
+  if (!found) return null;
+  // past it, up to the first maximum, the shares must stay at or above the fixed sums: each later stretch from its start (each stretch's
+  // gap only narrows inside it)
+  for (let k = found.k + 1; k < end; k++) if (!reached(pts[k]!, split(k))) return null;
+  return found.at;
+}
+
+/**
+ * The values held, in shekels and in order, where a price on what is held changes how it charges: each step's bottom and top (F-115) and
+ * each value where a share's minimum or maximum per charge meets its rate (F-112). Between two of them every fee keeps its layer (F-123).
+ */
+function heldCuts(deal: Deal, period: DealPeriod, rates: Readonly<Record<string, number>>): number[] {
+  const cuts = new Set<number>();
+  deal.fees.forEach((f, i) => {
+    if (isCover(f.base)) return;
+    if (f.within?.on === "held") {
+      const r = shekelsPer(f.within.currency, rates);
+      if (f.within.from > 0) cuts.add(f.within.from * r);
+      if (f.within.to !== null) cuts.add(f.within.to * r);
+    }
+    const p = period.prices[i]!.price;
+    if (p.kind === "held" && p.rate > 0) for (const b of [p.min, p.max]) if (b !== undefined && b > 0) cuts.add(b / p.rate);
+  });
+  return [...cuts].sort((a, b) => a - b);
+}
+
+/** Whether a share of what is held charged at `value` is held to its maximum there (a charge exactly at it is the rate's, F-123). */
+function maxHolds(deal: Deal, period: DealPeriod, value: number, rates: Readonly<Record<string, number>>): boolean {
+  return deal.fees.some((f, i) => {
+    if (isCover(f.base)) return false;
+    if (f.within?.on === "held" && !inStep(f.within, value / shekelsPer(f.within.currency, rates))) return false;
+    const p = period.prices[i]!.price;
+    if (p.kind !== "held" || p.max === undefined) return false;
+    const charge = p.rate * value;
+    return charge > p.max && !near(charge, p.max);
+  });
+}
+
+/** How far either side of a drop F-125 reads the cost: a hundredth of the value. */
+export const DROP_SIDE = 0.01;
+
+/**
+ * F-125 A year's holding just under and just over a value where a price changes on the whole amount (a step's top of the value held,
+ * F-115): the cost of holding `at × (1 − 1/100)` and `at × (1 + 1/100)` for a year (`holdingCost`), so the page can set the two side by
+ * side. Each side stops halfway to the next value where a price on what is held changes (`heldCuts`) where that is nearer, so neither
+ * reads past another change.
+ */
+export function acrossDrop(deal: Deal, period: DealPeriod, at: number, rates: Readonly<Record<string, number>> = {}): { under: { value: number; cost: number }; over: { value: number; cost: number } } {
+  const cuts = heldCuts(deal, period, rates).filter((c) => !near(c, at));
+  const below = cuts.filter((c) => c < at).at(-1);
+  const above = cuts.find((c) => c > at);
+  const under = Math.max(at * (1 - DROP_SIDE), below !== undefined ? (below + at) / 2 : 0);
+  const over = Math.min(at * (1 + DROP_SIDE), above !== undefined ? (above + at) / 2 : Infinity);
+  return { under: { value: under, cost: holdingCost(deal, period, under, rates).total }, over: { value: over, cost: holdingCost(deal, period, over, rates).total } };
+}
+
+/**
+ * F-126 What a month with no action and nothing held costs: each sum per period charged every month, in full (a sum offset against
+ * another fee's charges is charged in full where there are none). `deal` is the deal read for such a month: every price that changes by
+ * the month's trading or its number of actions in its case for none of either (F-114, the page's reading). Each fee is first asked
+ * whether it charges anything on nothing: cover is left out, and a fee charged on one step of sizes whose step does not hold nothing
+ * charges nothing. Of the rest, null where a sum is charged at longer intervals, which no single month says, or where a share of what is
+ * held has a minimum: the holding curve charges that minimum on nothing held (F-112, `holdingCost`) and a run does not (F-14 holds a
+ * charge to what is held), so the method does not settle what such a month costs.
+ */
+export function idleMonth(deal: Deal, period: DealPeriod): DealCost | null {
+  const parts: DealCost["parts"] = [];
+  for (const [i, f] of deal.fees.entries()) {
+    if (isCover(f.base)) continue;
+    if (f.within && !inStep(f.within, 0)) continue;
+    const p = period.prices[i]!.price;
+    if (p.kind === "held" && p.min !== undefined && p.min > 0) return null;
+    if (p.kind !== "sum" || !(p.amount > 0)) continue;
+    if (p.everyMonths !== 1) return null;
+    parts.push({ fee: i, cost: p.amount });
+  }
+  return { total: parts.reduce((a, p) => a + p.cost, 0), parts };
+}
+
+/**
+ * F-127 The smallest action from which the charges of `fees` on it reach `sum`, on every larger action too: what an action must cost
+ * for a fee offset against those charges, up to its own sum, to cost nothing in its month (§10.6's stated parts). Each part of an action's
+ * price grows with the action (F-12), so the charges fall only where a flat price ends or a step of sizes ends (F-115); between two such
+ * places they never fall, and the amount where they reach `sum` is found by halving. 0 where every action reaches it; null where none does.
+ * `rates` and `unitPrice` as `actionCost` reads them.
+ */
+export function coverFrom(
+  deal: Deal,
+  period: DealPeriod,
+  fees: readonly number[],
+  action: DealAction,
+  side: "buy" | "sell",
+  sum: number,
+  rates: Readonly<Record<string, number>> = {},
+  unitPrice?: number,
+): number | null {
+  const cost = (a: number) =>
+    actionCost(deal, period, action, a, side, rates, unitPrice)
+      .parts.filter((p) => fees.includes(p.fee))
+      .reduce((x, p) => x + p.cost, 0);
+  const falls = new Set<number>();
+  for (const i of fees) {
+    const f = deal.fees[i]!;
+    if (f.within?.on === "action") {
+      const r = shekelsPer(f.within.currency, rates);
+      if (f.within.to !== null) falls.add(f.within.to * r);
+    }
+    const p = period.prices[i]!;
+    for (const x of [p.price, p.sale]) if (x && (x.kind === "action" || x.kind === "perUnit") && x.flat) falls.add(x.flat.upTo * shekelsPer(x.currency ?? "ILS", rates));
+  }
+  const pts = [0, ...[...falls].filter((x) => x > 0).sort((a, b) => a - b)];
+  const top = 1e13;
+  if (cost(top) < sum) return null;
+  for (let k = pts.length - 1; k >= 0; k--) {
+    const lo = pts[k]!;
+    const hi = k + 1 < pts.length ? pts[k + 1]! : top;
+    const start = lo > 0 ? lo * (1 + 1e-12) : 0;
+    if (cost(start) >= sum) continue;
+    // the charges never fall inside (lo, hi]: halve towards the first amount that reaches the sum
+    let [a, b] = [start, hi];
+    for (let n = 0; n < 200 && b - a > 1e-9 * Math.max(1, b); n++) {
+      const m = (a + b) / 2;
+      if (cost(m) >= sum) b = m;
+      else a = m;
+    }
+    return b;
+  }
+  return 0;
 }
 
 /** The part of a `fee_caps` entry F-113 reads (`feeCap` in packages/schema). */
