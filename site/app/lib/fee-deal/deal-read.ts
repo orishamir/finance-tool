@@ -3,7 +3,7 @@
 // charged on (F-111). The views (rows.ts, panel.ts, reading.ts, charts.ts) only arrange these.
 import { chargedOn, dealPeriods, groupAction, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealReading } from "@finance-tool/engine";
 import type { SiteValue } from "../value";
-import { feeOf, readFees, type ReadFee } from "./cases";
+import { feeOf, readFees, type MonthHeld, type ReadFee } from "./cases";
 import { capOf, kindById, standingOf, type BanSaid, type DealKind, type Standing } from "./kinds";
 import { feeInOrder, feePriced, mainFigure, monthKey, monthOf, monthOfDate, monthsBetween, type FeeDeal, type MonthKey, type Months, type Note, type Price, type ReadPick, type SlimFee } from "./model";
 import { charged, onAction } from "./offers/capabilities";
@@ -86,17 +86,25 @@ export function copiedFees(deal: FeeDeal, houses: (id: string) => string | null)
  * `unmatched`, and all are left out. `houses`: a house's name by its price list's id, for the fees copied from another list (`copied`).
  */
 export function readDealFor(deal: FeeDeal, kinds: readonly DealKind[], today: string, houses?: (id: string) => string | null): DealRead {
+  return readWith(deal, kindById(kinds, deal.kind), today, houses ? copiedFees(deal, houses) : {});
+}
+
+/**
+ * The deal read again for a month the method reads as it is (F-126's month with nothing in it, F-127's month of one action): the same
+ * deal, day and copied fees, each thing that counts a month's activity set to what that month holds (`MonthHeld`).
+ */
+export const readForMonth = (r: DealRead, month: MonthHeld): DealRead => readWith(r.deal, r.kind, r.today, r.copied, month);
+
+function readWith(deal: FeeDeal, kind: DealKind | null, today: string, copied: Record<string, string>, held?: MonthHeld): DealRead {
   const month = monthOfDate(today);
   // the reading's first month (F-110: the device's): a price given or not before it is past
   const from = monthKey(month);
-  const kind = kindById(kinds, deal.kind);
-  const read = readFees(deal);
+  const read = readFees(deal, held);
   const banned = deal.fees.flatMap((f) => {
     const ban = banFor(kind, f.kind, deal.provider, read.picks);
     return ban ? [{ fee: f.id, ...banSaid(ban) }] : [];
   });
   const kept = (id: string) => !banned.some((b) => b.fee === id);
-  const copied = houses ? copiedFees(deal, houses) : {};
   const ids = (xs: ReadFee[]) => [...new Set(xs.map(feeOf))].filter(kept);
   const unread = ids(read.fees.filter((f) => !feeInOrder(f)));
   const unpriced = ids(read.fees.filter((f) => feeInOrder(f) && !feePriced(f, from))).filter((id) => !unread.includes(id));

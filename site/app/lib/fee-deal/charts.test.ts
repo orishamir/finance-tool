@@ -20,15 +20,19 @@ const chartOf = (v: { chart: ActionView } | object) => (v as { chart: ActionView
 const heldOf = (v: { chart: HeldView } | object) => (v as { chart: HeldView }).chart;
 
 describe("the axis", () => {
-  it("opens from the largest power of ten at most half the smallest mark to the curve's end, held inside the settable range on what is held", () => {
-    expect(openingRange([18_650, 9_232_057], false)).toEqual({ lo: 1000, hi: 50_000_000 });
-    expect(openingRange([25_446, 500_000], true)).toEqual({ lo: 10_000, hi: 2_000_000 });
-    expect(openingRange([1_200, 90_000_000], true).hi).toBe(10_000_000);
+  it("opens from the largest power of ten at most half the smallest mark to the curve's end, never cut to the bounds", () => {
+    expect(openingRange([18_650, 9_232_057])).toEqual({ lo: 1000, hi: 50_000_000 });
+    expect(openingRange([25_446, 500_000])).toEqual({ lo: 10_000, hi: 2_000_000 });
+    expect(openingRange([1_200, 90_000_000]).hi).toBe(500_000_000);
   });
   it("settles a typed or dragged range inside the bounds, at least twice as wide, its ends in order", () => {
-    expect(settleRange(50_000, 20_000)).toEqual({ lo: 20_000, hi: 50_000 });
-    expect(settleRange(100, 150)).toEqual({ lo: 1000, hi: 2000 });
-    expect(settleRange(9_000_000, 9_500_000)).toEqual({ lo: 5_000_000, hi: 10_000_000 });
+    const opening = { lo: 10_000, hi: 2_000_000 };
+    expect(settleRange(50_000, 20_000, opening)).toEqual({ lo: 20_000, hi: 50_000 });
+    expect(settleRange(100, 150, opening)).toEqual({ lo: 1000, hi: 2000 });
+    expect(settleRange(9_000_000, 9_500_000, opening)).toEqual({ lo: 5_000_000, hi: 10_000_000 });
+  });
+  it("widens the bounds to the opening range, so a mark above 10,000,000 stays reachable", () => {
+    expect(settleRange(1_000_000, 90_000_000, { lo: 1000, hi: 500_000_000 })).toEqual({ lo: 1_000_000, hi: 90_000_000 });
   });
   it("reads an amount the reader points at to two figures", () => {
     expect(roundAmount(18_650.62)).toBe(19_000);
@@ -42,8 +46,8 @@ describe("what a purchase or sale costs", () => {
     expect(tab.views).toHaveLength(1);
     const c = chartOf(tab.views[0]!);
     expect(c.periods).toEqual(["2026-11", "2027-01"]);
-    // the conversion's minimum ends at 5,714 $ (5 $ / 0.0875%), the deal's first mark
-    expect(c.start).toBe(c.marks[0]!.at);
+    // the conversion's minimum ends at 5,714 $ (5 $ / 0.0875%), the deal's first mark; the point starts at it as said, 5,714 $ in whole shekels
+    expect(c.start).toBe(Math.round(5714 * (c.marks[0]!.at / (c.marks[0]!.label.value as number))));
     expect(c.marks[0]!.label).toMatchObject({ unit: "usd" });
     expect(c.marks[0]!.label.value).toBeCloseTo(5 / 0.000875, 6);
     expect(c.zones.map((z) => z.kind)).toEqual(["min", "rate", "max"]);
@@ -63,7 +67,7 @@ describe("what a purchase or sale costs", () => {
     const c = chartOf((await reading()).panels.actions.find((t) => t.key === "trade:all")!.views[0]!);
     const r = c.readAt(c.start);
     expect(r.total.value).toBeCloseTo(143.61, 2);
-    expect(r.share.value).toBeCloseTo(0.77, 9);
+    expect(r.share.value).toBeCloseTo(0.77, 4);
     expect(r.parts.map((p) => p.part?.part)).toEqual(["min", "min"]);
     expect(r.parts[0]!.rateAlone!.value).toBeCloseTo(c.start * 0.0025, 9);
   });

@@ -632,7 +632,7 @@ function HeldChart({ view, stated, saved }: { view: HeldView; stated: StatedPart
       ...(d ? { note: [w.held.drop.lead, `${textOf(d.over.value)}${w.held.drop.costs}${textOf(d.over.cost)}${w.held.drop.year}${textOf(d.under.value)}${w.held.drop.costs}${textOf(d.under.cost)}`] } : {}),
     };
   });
-  const setFrom = (lo: number, hi: number) => setRange(settleRange(lo, hi));
+  const setFrom = (lo: number, hi: number) => setRange(settleRange(lo, hi, view.range));
   const r = w.held.range;
   const notes = statedOf(stated, view.fees, view.offsets);
   return (

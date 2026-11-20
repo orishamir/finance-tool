@@ -94,6 +94,17 @@ describe("F-123 the share a cost is of its amount, and the layers of holding", (
     expect(rateAt(d, p, { action: "trade", side: "buy" }, 10000 * USD, rates)).toBeNull();
   });
 
+  it("reads a price held to a cap of 0 as free: 0.1% capped at 0 beside a conversion of 0.2% is 0.2%", () => {
+    const d: Deal = {
+      foreign: true,
+      fees: [
+        { base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001, cap: 0 } }] },
+        { base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.002 } }] },
+      ],
+    };
+    expect(rateAt(d, dealPeriods(d, today).periods[0]!, { action: "trade", side: "buy" }, 50000)).toBeCloseTo(0.002, 12);
+  });
+
   it("adds the yearly shares of what is held step by step, leaving the sums out", () => {
     expect(rateAt(account, now, "held", 50000)).toBeCloseTo(0.00896, 9);
     expect(rateAt(account, now, "held", 200000)).toBeCloseTo(0.007, 9);
@@ -129,6 +140,33 @@ describe("F-124 where the shares come to cost as much as the fixed sums", () => 
     const capped: Deal = { foreign: false, fees: [{ base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.004, everyMonths: 12, max: 50 } }] }, account.fees[5]!] };
     expect(heldCrossover(capped, dealPeriods(capped, today).periods[0]!)).toBeNull();
   });
+
+  it("is found below a custody maximum: 228 ₪ a year against 0.15% a quarter with at most 3,700 ₪ a quarter is 38,000 ₪", () => {
+    // 0.15% a quarter is 0.6% a year, so 228 / 0.006 = 38,000 ₪; the maximum holds from 3,700 / 0.0015 = 2,466,667 ₪, where the whole
+    // charge is fixed, and the stretch above it is no share
+    const d: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.0015, everyMonths: 3, max: 3700 } }] },
+        { base: { name: "current_account" }, stages: [{ price: { kind: "sum", amount: 9, everyMonths: 1 } }] },
+        { base: { name: "data" }, stages: [{ price: { kind: "sum", amount: 10, everyMonths: 1 } }] },
+      ],
+    };
+    expect(heldCrossover(d, dealPeriods(d, today).periods[0]!)).toBeCloseTo(38000, 6);
+  });
+
+  it("is found below a maximum per charge on the whole deposit charged every month", () => {
+    // 0.05% a month (0.6% a year) with at most 250 ₪ a month on the deposit, against 600 ₪ a year: 100,000 ₪, below 500,000 ₪ where the
+    // maximum holds
+    const d: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.0005, everyMonths: 1, max: 250 } }] },
+        { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 50, everyMonths: 1 } }] },
+      ],
+    };
+    expect(heldCrossover(d, dealPeriods(d, today).periods[0]!)).toBeCloseTo(100000, 6);
+  });
 });
 
 describe("F-125 a year just under and just over a drop", () => {
@@ -139,6 +177,16 @@ describe("F-125 a year just under and just over a drop", () => {
     // 99,000 × (0.796% + 0.1%) + 228 = 1,115.04; 101,000 × (0.6% + 0.1%) + 228 = 935
     expect(x.under.cost).toBeCloseTo(1115.04, 6);
     expect(x.over.cost).toBeCloseTo(935, 6);
+  });
+
+  it("stops halfway to a neighbouring change within a hundredth: a step from 100,000 ₪ to 100,400 ₪", () => {
+    // 0.2% a year up to 100,000 ₪, 0.1% up to 100,400 ₪ and 0.05% above: the side over 100,000 ₪ reads 100,200 ₪, inside the middle step
+    const step = (rate: number, from: number, to: number | null) => ({ base: { key: "custody" as const }, stages: [{ price: { kind: "held" as const, rate, everyMonths: 12 } }], within: { on: "held" as const, from, to, currency: "ILS" } });
+    const d: Deal = { foreign: false, fees: [step(0.002, 0, 100000), step(0.001, 100000, 100400), step(0.0005, 100400, null)] };
+    const x = acrossDrop(d, dealPeriods(d, today).periods[0]!, 100000);
+    expect(x.under.value).toBeCloseTo(99000, 6);
+    expect(x.over.value).toBeCloseTo(100200, 6);
+    expect(x.over.cost).toBeCloseTo(100.2, 6);
   });
 });
 
@@ -154,6 +202,18 @@ describe("F-126 a month with no action and nothing held", () => {
     expect(idleMonth(quarter, dealPeriods(quarter, today).periods[0]!)).toBeNull();
     const min: Deal = { foreign: false, fees: [{ base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 3, min: 40 } }] }] };
     expect(idleMonth(min, dealPeriods(min, today).periods[0]!)).toBeNull();
+  });
+
+  it("first asks whether a fee charges anything on nothing: 10 ₪ a month, and 30 ₪ a quarter on a step from 100,000 ₪, is 10 ₪", () => {
+    const d: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 10, everyMonths: 1 } }] },
+        { base: { name: "large" }, stages: [{ price: { kind: "sum", amount: 30, everyMonths: 3 } }], within: { on: "held", from: 100000, to: null, currency: "ILS" } },
+        { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 3, min: 40 } }], within: { on: "held", from: 100000, to: null, currency: "ILS" } },
+      ],
+    };
+    expect(idleMonth(d, dealPeriods(d, today).periods[0]!)).toEqual({ total: 10, parts: [{ fee: 0, cost: 10 }] });
   });
 });
 

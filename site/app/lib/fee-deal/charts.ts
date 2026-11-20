@@ -26,7 +26,7 @@ import {
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
 import { entered, type SiteValue } from "../value";
 import { feeOf, type ReadFee } from "./cases";
-import { priceAt, priceView, refOf, type DealRead, type FeeRef, type PriceView } from "./deal-read";
+import { priceAt, priceView, readForMonth, refOf, type DealRead, type FeeRef, type PriceView } from "./deal-read";
 import { monthKey, type MonthKey, type Months, type Price } from "./model";
 import { capacity } from "./offers/capacity";
 import { figure, inputKey, priceFigures, reading, sumUnit, type PriceFigures } from "./values";
@@ -35,7 +35,10 @@ import type { FeeKindId } from "./shapes";
 
 // ---------------------------------------------------------------- the axis
 
-/** The range the person may set the holding chart to, in shekels (method F-112), and how much wider its top must be than its bottom. */
+/**
+ * The range the person may set the holding chart to, in shekels (method F-112), each end widened to the opening range's where that lies
+ * past it, and how much wider its top must be than its bottom.
+ */
 export const RANGE_BOUNDS = [1_000, 10_000_000] as const;
 export const RANGE_RATIO = 2;
 
@@ -46,25 +49,31 @@ export interface AmountRange {
 }
 
 /**
- * A range the person typed or dragged, held inside the bounds and at least `RANGE_RATIO` wide (its top raised, or its bottom lowered at
- * the bounds' top); its two ends in order.
+ * A range the person typed or dragged, held inside the bounds (`RANGE_BOUNDS`, widened to the chart's opening range `opening` where it
+ * lies past them) and at least `RANGE_RATIO` wide (its top raised, or its bottom lowered at the bounds' top); its two ends in order.
  */
-export function settleRange(a: number, b: number): AmountRange {
+export function settleRange(a: number, b: number, opening: AmountRange): AmountRange {
+  const floor = Math.min(RANGE_BOUNDS[0], opening.lo);
+  const ceiling = Math.max(RANGE_BOUNDS[1], opening.hi);
   const [lo0, hi0] = a <= b ? [a, b] : [b, a];
-  const lo = Math.min(Math.max(lo0, RANGE_BOUNDS[0]), RANGE_BOUNDS[1] / RANGE_RATIO);
-  const hi = Math.min(Math.max(hi0, lo * RANGE_RATIO), RANGE_BOUNDS[1]);
+  const lo = Math.min(Math.max(lo0, floor), ceiling / RANGE_RATIO);
+  const hi = Math.min(Math.max(hi0, lo * RANGE_RATIO), ceiling);
   return { lo, hi };
 }
 
 /**
- * A curve's opening range (method F-112): from the largest power of ten at most half its smallest mark to `curveEnd` of its largest. On
- * what is held it is held inside the range the person may set.
+ * A curve's opening range (method F-112): from the largest power of ten at most half its smallest mark to `curveEnd` of its largest, never
+ * cut to the bounds the person may set, so every mark of the deal falls inside it.
  */
-export function openingRange(marks: readonly number[], held: boolean): AmountRange {
-  const lo = 10 ** Math.floor(Math.log10(Math.min(...marks) / 2));
-  const hi = curveEnd(Math.max(...marks));
-  return held ? settleRange(lo, hi) : { lo, hi };
+export function openingRange(marks: readonly number[]): AmountRange {
+  return { lo: 10 ** Math.floor(Math.log10(Math.min(...marks) / 2)), hi: curveEnd(Math.max(...marks)) };
 }
+
+/** Where the reader's point starts at a mark: the amount the mark is said at (its label's figure in whole units, "5,714 $"), in whole shekels. */
+const saidAt = (m: ChartMark): number => {
+  const v = m.label.value as number;
+  return Math.round(v > 0 ? Math.round(v) * (m.at / v) : m.at);
+};
 
 /** An amount the person points at on a chart, read to two figures (18,650 ₪ reads as 19,000 ₪), so the point lands on a round sum. */
 export const roundAmount = (a: number): number => {
@@ -520,10 +529,10 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
   });
   const all = boundaries(lanes);
   if (!all.length) return { one: oneAction(r, p, action, side, fees, rates, unitNis) };
-  // the range is set by where a minimum ends, a rate gives way (to a maximum, or to a step's other rate) and a maximum starts; a cap, a free
-  // stretch or a flat price below them is said under the chart
+  // the range is set by where a minimum's stretch ends, a rate's ends (at a maximum, or at a step's top) and a maximum's starts; a cap, a
+  // free stretch or a flat price below them is said under the chart. Where the action has none of these, every mark sets it (F-112).
   const bounds = all.filter((b) => b.part.part === "min" || b.part.part === "rate" || nextPart(b.lane, b.at)?.part === "max");
-  const range = openingRange((bounds.length ? bounds : all).map((b) => b.at), false);
+  const range = openingRange((bounds.length ? bounds : all).map((b) => b.at));
   // a sum per unit rests on the unit's price the person gave as well
   const inputs = { ...chartInputs(r, p, idx, side, values), ...(perUnit ? { "deal:unit-price": entered(unit.price!, sumUnit(unit.currency!), r.today) } : {}) };
   const cost = (a: number) => actionCost(r.engine, p, action, a, eside, rates, unitNis);
@@ -554,7 +563,8 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
     };
   };
   const head = actionHead(r, p, action, eside, lanes, zones, cost, rates, inputs);
-  const firstMark = marks.find((m) => m.at >= range.lo)?.at ?? range.lo;
+  const first = marks.find((m) => m.at >= range.lo);
+  const firstMark = first ? Math.min(range.hi, Math.max(range.lo, saidAt(first))) : range.lo;
   return {
     chart: {
       periods: [at],
@@ -691,7 +701,7 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
   const crossValue = cross !== null ? reading(cross, "nis", "F-124", inputs, r.today) : null;
   const markAts = [...all.map((b) => b.at), ...(cross !== null ? [cross] : [])];
   if (!markAts.length) return { one: oneHeld(r, p, fees, lanes, inputs) };
-  const range = openingRange(markAts, true);
+  const range = openingRange(markAts);
   const cost = (v: number) => holdingCost(r.engine, p, v, rates);
   const layerOf = (v: number) => {
     const c = cost(v);
@@ -875,56 +885,86 @@ function offsetAction(r: DealRead, p: DealPeriod, kind: FeeKindId): DealAction |
   return againstOf(r, kind).map((j) => groupAction(r.engine, r.engine.fees[j]!.base, p.prices[j]!.price)).find((a): a is DealAction => !!a) ?? null;
 }
 
-/** A period on the timeline: its card, what a month with nothing in it costs (F-126), and the action that covers each offset fee (F-127). */
+/**
+ * A period on the timeline: its card, what a month with nothing in it costs (F-126, with the bank's caveat where the deal's provider is a
+ * bank, `atBank`), and the action that covers each offset fee (F-127).
+ */
 export interface TimelinePeriod {
   card: PeriodCard;
-  idle: { total: SiteValue; parts: { fee: FeeRef; amount: SiteValue }[] } | null;
+  idle: { total: SiteValue; parts: { fee: FeeRef; amount: SiteValue }[]; atBank: boolean } | null;
   covers: { fee: FeeRef; against: FeeKindId; action: DealAction; from: SiteValue | "any"; side: DealSide }[];
   /** Whether a fee kept its price from the period before (the period's own words say the rest stays). */
   rest: boolean;
 }
 
+/** The periods of a deal read again for a month (`readForMonth`) that overlap a period of the reading: the month's figures read in each. */
+const overlapping = (alt: DealRead, p: DealPeriod): DealPeriod[] =>
+  alt.reading.periods.filter((q) => (p.to === null || monthKey(q.from) < monthKey(p.to)) && (q.to === null || monthKey(q.to) > monthKey(p.from)));
+
+/** One figure for a whole period, from each overlapping period's (`overlapping`): said only where they are all the same. */
+function throughout<T>(items: readonly (T | null)[], key: (x: T) => string): T | null {
+  if (!items.length || items.some((x) => x === null)) return null;
+  const first = items[0]!;
+  return items.every((x) => key(x!) === key(first)) ? first : null;
+}
+
+/** What a month with nothing in it costs in a period of a deal read for such a month (F-126). */
+function idleIn(r: DealRead, p: DealPeriod): Omit<NonNullable<TimelinePeriod["idle"]>, "atBank"> | null {
+  const idle = idleMonth(r.engine, p);
+  if (!idle || !(idle.total > 0)) return null;
+  const parts = chartFees(r, idle.parts.map((x) => x.fee)).map((fee) => ({ fee: fee.ref, amount: viewOf(r, p, fee.idx[0]!, "all").figures.amount! }));
+  const inputs = Object.fromEntries(idle.parts.map((x) => [inputKey(r.fees, x.fee), viewOf(r, p, x.fee, "all").figures.amount!]));
+  return { total: idle.parts.length === 1 ? parts[0]!.amount : reading(idle.total, "nis", "F-126", inputs, r.today), parts };
+}
+
+/** The action that covers each offset fee charged every month in a period of a deal read for a month of one action (F-127). */
+function coversIn(r: DealRead, p: DealPeriod, fx: FxSnapshot | null, unit: { price: number | null; currency: string | null }): TimelinePeriod["covers"] {
+  return r.fees.flatMap((f, i) => {
+    const s = priceAt(f, p.from);
+    const e = p.prices[i]!.price;
+    // the offset is within one month: only a sum charged every month is covered
+    if (s.form === "free" || !("offset" in s) || !s.offset || e.kind !== "sum" || e.everyMonths !== 1) return [];
+    const against = againstOf(r, s.offset.kind);
+    const action = offsetAction(r, p, s.offset.kind);
+    if (!action) return [];
+    const perUnit = against.some((j) => p.prices[j]!.price.kind === "perUnit" || p.prices[j]!.sale?.kind === "perUnit");
+    const got = ratesFor(r, p, against, fx, perUnit && unit.currency ? [unit.currency] : []);
+    if ("missing" in got || (perUnit && (unit.price === null || unit.currency === null))) return [];
+    const unitNis = perUnit ? unit.price! * (unit.currency === "ILS" ? 1 : got.rates[unit.currency!]!) : undefined;
+    const sides: ("buy" | "sell")[] = against.some((j) => p.prices[j]!.sale) ? ["buy", "sell"] : ["buy"];
+    const found = sides.map((side) => ({ side, at: coverFrom(r.engine, p, against, action, side, e.amount, got.rates, unitNis) }));
+    if (found.some((x) => x.at === null)) return [];
+    const one = found.every((x) => x.at === found[0]!.at);
+    const inputs = { [inputKey(r.fees, i)]: viewOf(r, p, i, "all").figures.amount!, ...chartInputs(r, p, against, "all", got.values) };
+    // coverFrom stops within a billionth of the amount above it: the first whole shekel is read under that
+    return (one ? [found[0]!] : found).map((x) => ({
+      fee: refOf(f, r.today),
+      against: s.offset!.kind,
+      action,
+      from: x.at === 0 ? ("any" as const) : reading(Math.ceil(x.at! * (1 - 1e-8)), "nis", "F-127", inputs, r.today),
+      side: one ? ("all" as DealSide) : x.side,
+    }));
+  });
+}
+
+/** A cover as a key two periods compare by: the fee, the side and the amount. */
+const coverKey = (cs: TimelinePeriod["covers"]) => JSON.stringify(cs.map((c) => [c.fee.fee, c.side, c.from === "any" ? "any" : c.from.value]));
+
 /**
  * The deal's periods on the timeline. `unit`: the unit's price the person gave and the currency it is asked in, which an offset set against
- * a sum per unit needs; without it, that offset's cover is not said.
+ * a sum per unit needs; without it, that offset's cover is not said. The month with nothing in it is read from the deal read for a month
+ * with no action and no trading, and each cover from the deal read for a month of one action whose trading is its size (`readForMonth`),
+ * each said for a period only where it is one figure through it.
  */
 export function timelineOf(r: DealRead, cards: readonly PeriodCard[], fx: FxSnapshot | null, unit: { price: number | null; currency: string | null }): TimelinePeriod[] {
+  const empty = readForMonth(r, { actions: 0, trading: 0 });
+  const single = readForMonth(r, { actions: 1, trading: "action" });
+  const atBank = r.engine.provider === "bank";
   return r.reading.periods.map((p, k) => {
     const card = cards[k]!;
-    const idle = idleMonth(r.engine, p);
-    const idleView =
-      idle && idle.total > 0
-        ? (() => {
-            const parts = chartFees(r, idle.parts.map((x) => x.fee)).map((fee) => ({ fee: fee.ref, amount: viewOf(r, p, fee.idx[0]!, "all").figures.amount! }));
-            const inputs = Object.fromEntries(idle.parts.map((x) => [inputKey(r.fees, x.fee), viewOf(r, p, x.fee, "all").figures.amount!]));
-            return { total: idle.parts.length === 1 ? parts[0]!.amount : reading(idle.total, "nis", "F-126", inputs, r.today), parts };
-          })()
-        : null;
-    const covers = r.fees.flatMap((f, i) => {
-      const s = priceAt(f, p.from);
-      const e = p.prices[i]!.price;
-      if (s.form === "free" || !("offset" in s) || !s.offset || e.kind !== "sum") return [];
-      const against = againstOf(r, s.offset.kind);
-      const action = offsetAction(r, p, s.offset.kind);
-      if (!action) return [];
-      const perUnit = against.some((j) => p.prices[j]!.price.kind === "perUnit" || p.prices[j]!.sale?.kind === "perUnit");
-      const got = ratesFor(r, p, against, fx, perUnit && unit.currency ? [unit.currency] : []);
-      if ("missing" in got || (perUnit && (unit.price === null || unit.currency === null))) return [];
-      const unitNis = perUnit ? unit.price! * (unit.currency === "ILS" ? 1 : got.rates[unit.currency!]!) : undefined;
-      const sides: ("buy" | "sell")[] = against.some((j) => p.prices[j]!.sale) ? ["buy", "sell"] : ["buy"];
-      const found = sides.map((side) => ({ side, at: coverFrom(r.engine, p, against, action, side, e.amount, got.rates, unitNis) }));
-      if (found.some((x) => x.at === null)) return [];
-      const one = found.every((x) => x.at === found[0]!.at);
-      const inputs = { [inputKey(r.fees, i)]: viewOf(r, p, i, "all").figures.amount!, ...chartInputs(r, p, against, "all", got.values) };
-      return (one ? [found[0]!] : found).map((x) => ({
-        fee: refOf(f, r.today),
-        against: s.offset!.kind,
-        action,
-        from: x.at === 0 ? ("any" as const) : reading(Math.ceil(x.at! - 1e-9), "nis", "F-127", inputs, r.today),
-        side: one ? ("all" as DealSide) : x.side,
-      }));
-    });
+    const idle = throughout(overlapping(empty, p).map((q) => idleIn(empty, q)), (x) => JSON.stringify([x.total.value, x.parts.map((y) => [y.fee.fee, y.amount.value])]));
+    const covers = throughout(overlapping(single, p).map((q) => coversIn(single, q, fx, unit)), coverKey) ?? [];
     const rest = k > 0 && card.rows.some((row) => !row.change && !row.sale?.change);
-    return { card, idle: idleView, covers, rest };
+    return { card, idle: idle ? { ...idle, atBank } : null, covers, rest };
   });
 }

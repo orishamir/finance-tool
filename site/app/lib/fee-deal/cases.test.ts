@@ -814,3 +814,46 @@ describe("a provident-family product's management fees", () => {
     expect(panel(read(deal), "fee-dep")!.open.buy[0]!.parts.map((x) => x.id)).toContain("discount");
   });
 });
+
+describe("a month the method reads as it is (F-126, F-127)", () => {
+  /** An account fee by the number of actions in the month: one or more free, none 15 ₪ (the free case first, so the reading picks it). */
+  const byCount = (): CasesFee => ({
+    id: "fee-acct",
+    kind: "fixed_period",
+    by: [{ kind: "count", unit: "actions", tops: [typed(0)] }],
+    cases: [
+      { id: "k1", when: [1], stages: [{ price: { form: "free" } }] },
+      { id: "k0", when: [0], stages: [{ price: { form: "sum", amount: typed(15), every: 1 } }] },
+    ],
+  });
+  const local = (fees: Fee[]): FeeDeal => ({ id: "deal-m", name: "", kind: "brokerage-account", fees });
+
+  it("reads the idle month in the case for no action, whatever the reading picks: 15 ₪", () => {
+    const r = read(local([byCount()]));
+    expect(r.engine.fees[0]!.stages[0]!.price).toEqual({ kind: "free" });
+    expect(readingOf(r, data.fx).timeline[0]!.idle!.total.value).toBe(15);
+  });
+
+  it("reads the cover in the case for one action, the month's trading read across as the action's size", () => {
+    // a trade fee by the month's trading: 0.1% up to 10,000 ₪ of trading, 0.05% above, against 15 ₪ a month: 15,000 ₪ covers it at 0.1%,
+    // and 30,000 ₪ at 0.05%, so the cover is 30,000 ₪ (from 10,000 ₪ to 15,000 ₪ the month does not reach 15 ₪)
+    const trades: CasesFee = {
+      id: "fee-trade",
+      kind: "trade",
+      by: [{ kind: "volume", unit: "ILS", tops: [typed(10000)] }],
+      cases: [
+        { id: "v1", when: [1], stages: [{ price: { form: "action", rate: typed(0.05) } }] },
+        { id: "v0", when: [0], stages: [{ price: { form: "action", rate: typed(0.1) } }] },
+      ],
+    };
+    const fixed: Fee = { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(15), every: 1, offset: { kind: "trade" } } }] };
+    const [stop] = readingOf(read(local([trades, fixed])), data.fx).timeline;
+    expect(stop!.covers).toEqual([expect.objectContaining({ against: "trade", from: expect.objectContaining({ value: 30000 }) })]);
+  });
+
+  it("covers no offset sum charged every quarter", () => {
+    const trades: Fee = { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] };
+    const fixed: Fee = { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(45), every: 3, offset: { kind: "trade" } } }] };
+    expect(readingOf(read(local([trades, fixed])), data.fx).timeline[0]!.covers).toEqual([]);
+  });
+});
