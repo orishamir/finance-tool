@@ -6,10 +6,10 @@ import { dealCases, feeDeal as copy } from "../../copy";
 import type { LinePart, OpenPart, OpenPending, PartField } from "../../lib/fee-deal/panel";
 import { withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho } from "../../lib/fee-deal/edits/price";
 import { type Side } from "../../lib/fee-deal/model";
-import { MONTHS, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
+import { hasCases, MONTHS, pricedOf, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
 import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
 import { PARTS, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
-import { samePlace, type Place } from "../../lib/fee-deal/places";
+import { partAt, samePlace, stillWaits, type Waiting } from "../../lib/fee-deal/places";
 import type { PartGiven } from "../../lib/fee-deal/edits/cells";
 import type { PendingWords } from "../../lib/fee-deal/part-words";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
@@ -25,22 +25,31 @@ const cp = copy.cases.parts;
 export const PART_MARK: Partial<Record<PartId, PartMark>> = { min: "min", max: "max", cap: "max", maxPerSecurity: "max", offset: "link", refund: "link" };
 
 /**
- * Where a pending part stands: its fee, its case (null for a slim fee), the part, and the place it was added at (places.ts: a price, or a
- * side's prices for the month a price changes from).
+ * Where a pending part stands: its fee, its case (null for a slim fee), and the part waiting at the place it was added at, with that
+ * place's prices as they were (places.ts `Waiting`: a price, or a side's prices for the month a price changes from).
  */
-export interface Pending {
+export interface Pending extends Waiting {
   fee: string;
   case: string | null;
-  part: PendingPart;
-  place: Place;
 }
 
 /**
- * The pending part once `next` is set over `now`: `now` itself where `next` is the same part in the same place (a second tap or drop of
- * its card), so the part already drawn stays the one drawn, and its box, which took the focus once, takes it no more.
+ * The pending part once `next` is set over `now`: `now` itself where `next` is the same part in the same place among the same prices (a
+ * second tap or drop of its card), so the part already drawn stays the one drawn, and its box, which took the focus once, takes it no more.
  */
 export const pendingAfter = (now: Pending | null, next: Pending | null): Pending | null =>
-  now && next && now.fee === next.fee && now.case === next.case && now.part === next.part && samePlace(now.place, next.place) ? now : next;
+  now && next && now.fee === next.fee && now.case === next.case && now.part === next.part && samePlace(now.place, next.place) && now.seen === next.seen ? now : next;
+
+/**
+ * Whether pending part `p` still waits in deal `deal`: its fee and its case are there, and it still waits at its place (`stillWaits`).
+ * A change that leaves it no place (its side's prices changed, its side or its price gone, a price that can no longer hold it) drops it;
+ * any other change leaves it waiting.
+ */
+export function pendingStands(deal: FeeDeal, p: Pending): boolean {
+  const fee = deal.fees.find((f) => f.id === p.fee);
+  if (!fee || hasCases(fee) !== (p.case !== null) || (hasCases(fee) && !fee.cases.some((c) => c.id === p.case))) return false;
+  return stillWaits(fee.kind, pricedOf(fee, p.case ?? undefined), p);
+}
 
 /** Whether the pending part `now` is drawn for the first time, so its box takes the focus: it is not the one `shown` was, whose box had it. */
 export const pendingFresh = (now: Pending | null, shown: Pending | null): boolean => now !== null && now !== shown;
@@ -264,8 +273,8 @@ export interface PendingHands {
  */
 export function PendingEdit({ fee, caseId, pending, deal, name, onFee, hands }: { fee: Fee; caseId?: string; pending: OpenPending; deal: FeeDeal; name: string; onFee: (f: Fee) => void; hands: PendingHands }) {
   const onDone = hands.onDone;
-  const { part, ask, k, side, words, field, sign, figure } = pending;
-  const at = { side, k, ...(caseId ? { caseId } : {}) } as const;
+  const { part, ask, place, words, field, sign, figure } = pending;
+  const at = partAt(place, caseId);
   const label = copy.builder.fieldName(name, field);
   const asksFigure = figure !== undefined;
   // the part asks where it stands: drawn for the first time, its box takes the focus, above a phone's pinned sheet
@@ -300,7 +309,7 @@ export function PendingEdit({ fee, caseId, pending, deal, name, onFee, hands }: 
       </>
     );
   } else {
-    body = <AmountBox id={partFieldId(fee.id, `${part}-pending`)} label={label} sign={sign} tail={tail} onCommit={(n, by) => done(setPart(fee, part, true, { ...at, value: n }), by === "enter" ? `${side}${k}-${part}-${figure}` : undefined)} />;
+    body = <AmountBox id={partFieldId(fee.id, `${part}-pending`)} label={label} sign={sign} tail={tail} onCommit={(n, by) => done(setPart(fee, part, true, { ...at, value: n }), by === "enter" && place.on === "price" ? `${partPlaceId(place.side, place.k, part)}-${figure}` : undefined)} />;
   }
   return (
     <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.lead)} onRemove={onDone} removeLabel={copy.builder.fieldName(name, dealCases.removePart)} asking={asksFigure}>

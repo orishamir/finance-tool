@@ -2,12 +2,12 @@
 // currency chooser beside its first sum, a part the toolbox added that asks for what it needs at the place it was added (places.ts), and
 // what the case can do (be copied, be taken away).
 import { feeOf } from "./cases";
-import { anySourced, hasCases, pricedOf, type BoundCurrency, type Case, type Fee, type MonthKey, type Price, type Priced, type Side } from "./model";
+import { anySourced, hasCases, pricedOf, type BoundCurrency, type Case, type Fee, type MonthKey, type Price, type Priced } from "./model";
 import { boundsAction } from "./offers/capabilities";
 import { keeps, sumCurrency } from "./offers/capacity";
 import { type Figure } from "./offers/figures";
 import { PART_IDS, PARTS, type Ask, type PartId, type PartKind, type PendingPart } from "./offers/parts";
-import type { Place } from "./places";
+import { placePrice, stillWaits, type Place, type Waiting } from "./places";
 import { FLAT_BLANK, PENDING, type PartWords, type PendingWords } from "./part-words";
 import { priceView, refOf, type DealRead, type FeeRef, type PriceView } from "./deal-read";
 import { type ByKind } from "./offers/conditions";
@@ -64,16 +64,14 @@ export interface OpenStage {
 }
 
 /**
- * A part the toolbox added that asks, where it will stand, for what it needs: the part and what it asks, the price it asks on (`k` on
- * `side`, the place it was added at; for the month a price changes from, the side's last, at whose foot it asks), its words, its box's
- * spoken name and sign (`PENDING`), and the figure whose box it becomes once given.
+ * A part the toolbox added that asks, where it will stand, for what it needs: the part and what it asks, the place it asks at (the place it
+ * was added at: on its price; for the month a price changes from, at the foot of its side's prices), its words (said for the price at the
+ * place, `placePrice`), its box's spoken name and sign (`PENDING`), and the figure whose box it becomes once given.
  */
 export interface OpenPending extends PendingWords {
   part: PendingPart;
   ask: Exclude<Ask, null>;
-  k: number;
-  /** The side of the price it asks on: the purchase's, or a sale priced apart. */
-  side: Side;
+  place: Place;
   figure?: Figure;
 }
 
@@ -128,23 +126,18 @@ function withChooser(fee: Fee, p: Price, parts: OpenPart[]): { parts: OpenPart[]
 }
 
 /** A part the toolbox added that still asks for what it needs, at the place it was added (places.ts). */
-export interface PendingAt {
-  part: PendingPart;
-  place: Place;
-}
+export type PendingAt = Waiting;
 
 /**
- * A pending part as the open case asks it, at its place in case `x`: on its price, or at the foot of its side's prices (the side's last);
- * null where the place is gone (a price taken away since).
+ * A pending part as the open case asks it, at its place in case `x`; null where it waits there no more (`stillWaits`: its side's prices
+ * changed, its side or its price is gone, or the price can no longer hold it), so it never asks on another price.
  */
-function pendingOn(fee: Fee, x: Priced, { part, place }: PendingAt): OpenPending | null {
-  const side: Side = place.on !== "fee" && place.side === "sell" && x.sale ? "sell" : "buy";
-  const stages = side === "sell" && x.sale ? x.sale : x.stages;
-  const k = place.on === "price" ? place.k : stages.length - 1;
-  if (!stages[k]) return null;
+function pendingOn(fee: Fee, x: Priced, w: Waiting): OpenPending | null {
+  if (!stillWaits(fee.kind, x, w)) return null;
+  const { part, place } = w;
   const ask = PARTS[part].ask;
   const figure = ask === "sum" || ask === "pct" ? PARTS[part].figures[0] : undefined;
-  return { part, ask, k, side, ...PENDING[part]({ kind: fee.kind, p: stages[k]!.price }), ...(figure ? { figure } : {}) };
+  return { part, ask, place, ...PENDING[part]({ kind: fee.kind, p: placePrice(x, place) }), ...(figure ? { figure } : {}) };
 }
 
 /** The case open in place: the fee's slots for the case, its prices' parts, and the part `pending` asking at its place. */

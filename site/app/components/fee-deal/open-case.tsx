@@ -12,12 +12,12 @@ import { editPrice, moveChange, setSaleApart } from "../../lib/fee-deal/edits/st
 import { withCurrency } from "../../lib/fee-deal/edits/price";
 import { BOUND_CURRENCIES, namesPlaces, pricedOf, pricesOn, untilRange, type BoundCurrency, type Fee, type FeeDeal, type Price, type Side } from "../../lib/fee-deal/model";
 import { setPart, type PartId } from "../../lib/fee-deal/offers/parts";
-import { placeWords, samePlace, type Place } from "../../lib/fee-deal/places";
+import { partAt, placeWords, samePlace, type Place } from "../../lib/fee-deal/places";
 import { SPOKEN } from "../../lib/fee-deal/part-words";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { amountWords, fmt, formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
-import { AddHere, ChangeDivider, DropZone, FigureField, InlineSelect, MonthField, RangeMenu, RemoveButton, TextField, TickMenu, TrackMenu, monthText } from "../kit";
+import { AddHere, ChangeDivider, DropZone, FigureField, InlineSelect, MonthField, RangeMenu, RemoveButton, TextField, TickMenu, TrackMenu, monthText, useCarried } from "../kit";
 import { bringIntoView } from "./in-view";
 import { PriceFigure, partFieldId, partPlaceId } from "./figures";
 import { NEW_OWN, OwnValueForm, type OwnTyped } from "./own-value";
@@ -48,7 +48,7 @@ function PriceParts({
   stage: OpenStage;
   name: string;
   deal: FeeDeal;
-  /** The part asking for its figure or fee here, where it was added on this price. */
+  /** The part asking for what it needs here, where it was added on this price. */
   pending: OpenPending | null;
   onFee: (f: Fee) => void;
   onRemoveCharge: () => void;
@@ -104,7 +104,7 @@ function PriceParts({
       {parts.map((p) => (
         <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} grip={grip?.(p.id, side, k)} />
       ))}
-      {pending && pending.ask !== "month" && <PendingEdit key={pending.part} fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} onFee={onFee} hands={pendingHands} />}
+      {pending && <AskPart key={pending.part} fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} onFee={onFee} hands={pendingHands} />}
     </>
   );
 }
@@ -126,13 +126,16 @@ export interface PlaceHands {
 
 /**
  * A place of the open case, as a drop zone for a carried card (drawing no frame: its round "+" shows it takes the card), around what
- * `children` draws with the place's "+" (`plus`): the held card's button, or the carried card's mark, where the place takes either.
+ * `children` draws with the place's "+" (`plus`): while a card is carried, its mark where the place takes it, filled while it is over the
+ * place; else the held card's button, where the place takes that.
  */
 function PlaceZone({ place, hands, label, children }: { place: Place; hands: PlaceHands; label: string; children: (plus: ReactNode) => ReactNode }) {
   const held = !!hands.held?.places.some((p) => samePlace(p, place));
+  // while a card is carried, the places show the carried card's "+" alone, never the held card's (the page lets the held card go)
+  const carrying = useCarried() !== null;
   return (
     <DropZone accepts={(it) => hands.takes(it, place)} onDrop={(it) => hands.onDrop(it, place)}>
-      {({ takes, over }) => children(held ? <AddHere label={label} onAdd={() => hands.onPlace(place)} /> : takes ? <AddHere over={over} /> : null)}
+      {({ takes, over }) => children(takes ? <AddHere over={over} /> : held && !carrying ? <AddHere label={label} onAdd={() => hands.onPlace(place)} /> : null)}
     </DropZone>
   );
 }
@@ -142,8 +145,8 @@ function PlaceZone({ place, hands, label, children }: { place: Place; hands: Pla
  * in place and kept between its neighbours (`moveChange`), and its bin, which takes the change away (`onRemoveChange`, kept for the undo);
  * then a sale priced apart under its head, the same way. Each price is a place a toolbox card can go, and so is each side's prices where
  * the sale is priced apart (the month a price changes from), its "+" at the end of the side's head (`places`). A part the toolbox added
- * that asks for its figure, fee or month asks where it was added (`open.pending`), the month as a divider at the foot of its side's
- * prices (`AskChange`).
+ * that asks for its figure, fee or month asks at the place it was added (`open.pending`, by its place's kind): on its price, at the foot
+ * of its side's prices, or at the foot of the case (`AskPart`).
  */
 export function OpenParts({
   fee,
@@ -174,6 +177,12 @@ export function OpenParts({
   const caseId = open.case ?? undefined;
   const c = copy.panel.change;
   const priced = pricedOf(fee, caseId);
+  // the part asking for what it needs, at the place it was added: a price, the foot of a side's prices, the foot of the case
+  const waitingAt = (place: Place): OpenPending | null => (open.pending && samePlace(open.pending.place, place) ? open.pending : null);
+  const asking = (place: Place) => {
+    const w = waitingAt(place);
+    return w && <AskPart key={w.part} fee={fee} caseId={caseId} pending={w} deal={deal} name={name} onFee={onFee} hands={pendingHands} />;
+  };
   const plusLabel = (place: Place) => copy.cases.addHere.replace("{card}", places.held?.words ?? "").replace("{place}", placeWords(priced, place, !open.case));
   const side = (s: Side, stages: readonly OpenStage[]) => (
     <>
@@ -196,7 +205,7 @@ export function OpenParts({
                 // the price's parts, and at their end, while a card can go on it, its round "+"
                 <div className="flex items-center gap-3" {...(from ? { "data-stage-from": `${s}:${from}` } : {})}>
                   <div className="flex min-w-0 flex-col gap-2">
-                    <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={open.pending?.side === s && open.pending.k === st.k ? open.pending : null} onFee={onFee} onRemoveCharge={() => onRemoveCharge(s, st.k, caseId)} pendingHands={pendingHands} {...(grip ? { grip } : {})} />
+                    <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={waitingAt(place)} onFee={onFee} onRemoveCharge={() => onRemoveCharge(s, st.k, caseId)} pendingHands={pendingHands} {...(grip ? { grip } : {})} />
                   </div>
                   {plus}
                 </div>
@@ -205,8 +214,8 @@ export function OpenParts({
           </div>
         );
       })}
-      {/* the month a price changes from, asked at the foot of the side's prices */}
-      {open.pending?.ask === "month" && open.pending.side === s && <AskChange key={open.pending.part} fee={fee} caseId={caseId} pending={open.pending} name={name} onFee={onFee} hands={pendingHands} />}
+      {/* a part that goes on the side's prices as a whole (the month a price changes from), asked at their foot */}
+      {asking({ on: "side", side: s })}
     </>
   );
   // a side's prices under its head, where the sale is priced apart: the side is a place for the month a price changes from, its "+" in the head
@@ -226,7 +235,15 @@ export function OpenParts({
       </PlaceZone>
     );
   };
-  if (!open.sell) return side("buy", open.buy);
+  // a part that goes on the case as a whole, asked at the foot of its prices
+  const atCase = asking({ on: "fee" });
+  if (!open.sell)
+    return (
+      <>
+        {side("buy", open.buy)}
+        {atCase}
+      </>
+    );
   return (
     <>
       {headed("buy", <p className="text-sm font-medium">{copy.panel.buyPrices}</p>, open.buy)}
@@ -238,8 +255,18 @@ export function OpenParts({
         </>,
         open.sell,
       )}
+      {atCase}
     </>
   );
+}
+
+/**
+ * A part the toolbox added that asks for what it needs, by what it asks (the part registry's `ask`): a month as a divider (`AskChange`),
+ * a figure or a fee as the part's line with its empty box (`PendingEdit`). Where it stands is its place's (`OpenParts`).
+ */
+function AskPart({ fee, caseId, pending, deal, name, onFee, hands }: { fee: Fee; caseId: string | undefined; pending: OpenPending; deal: FeeDeal; name: string; onFee: (f: Fee) => void; hands: PendingHands }) {
+  if (pending.ask === "month") return <AskChange fee={fee} caseId={caseId} pending={pending} name={name} onFee={onFee} hands={hands} />;
+  return <PendingEdit fee={fee} caseId={caseId} pending={pending} deal={deal} name={name} onFee={onFee} hands={hands} />;
 }
 
 /**
@@ -251,7 +278,9 @@ export function OpenParts({
  */
 function AskChange({ fee, caseId, pending, name, onFee, hands }: { fee: Fee; caseId: string | undefined; pending: OpenPending; name: string; onFee: (f: Fee) => void; hands: PendingHands }) {
   const c = copy.panel.change;
-  const { side } = pending;
+  const at = partAt(pending.place, caseId);
+  // the prices it splits: its side's, the purchase's where it names none (`setPart`)
+  const side = at.side ?? "buy";
   const root = useRef<HTMLDivElement>(null);
   const [fresh] = useState(hands.fresh);
   useEffect(() => {
@@ -266,7 +295,7 @@ function AskChange({ fee, caseId, pending, name, onFee, hands }: { fee: Fee; cas
     requestAnimationFrame(() => document.querySelector<HTMLElement>(`[data-part="${pending.part}"]`)?.focus({ preventScroll: true }));
   };
   const add = (month: string) => {
-    onFee(setPart(fee, pending.part, true, { side, month, ...(caseId ? { caseId } : {}) }));
+    onFee(setPart(fee, pending.part, true, { ...at, month }));
     hands.onDone();
     requestAnimationFrame(() => {
       // the later price is drawn anew under its divider: the fee's block is found by the fee

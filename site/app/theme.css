@@ -383,9 +383,9 @@
   --z-popover: 30; /* the search results under the page field (audit 2026-10-24, A5) */
 }
 
-/* A part's kind on an element (`data-kind`) sets its hue (`--kind`) and the fills mixed from it: the toolbox's hover on a form of the
-   price, on its line and on a card the case has (`kind-tile`), a card or a form the case has (`kind-tile-on`, a card's under the kind's
-   outline), and the open case's line over the secondary surface (`kind-row`). */
+/* A part's kind on an element (`data-kind`) sets its hue (`--kind`) and the fills mixed from it: the toolbox's hover on its line and on a
+   card the case has that a tap takes away (`kind-tile`), a card the case has (`kind-tile-on`, under the kind's outline), and the open
+   case's line over the secondary surface (`kind-row`). */
 [data-kind] {
   --kind-tile: color-mix(in oklab, var(--kind) 8%, var(--card));
   --kind-tile-on: color-mix(in oklab, var(--kind) 18%, var(--card));

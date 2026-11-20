@@ -31,10 +31,10 @@ import { panel as panelOf } from "../../lib/fee-deal/panel";
 import { cardOf, casesTool, casesToolbox, targetCases, toolbox as toolboxOf, type CasesTarget, type Toolbox } from "../../lib/fee-deal/toolbox";
 import { slotEdit, thingMenu, usualBy } from "../../lib/fee-deal/things";
 import { addOfferedFee, duplicateFee, setPick, updateFee } from "../../lib/fee-deal/edits/deal";
-import { hasCases, newDeal, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
+import { hasCases, newDeal, pricedOf, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
 import { pickKind, type ByKind } from "../../lib/fee-deal/offers/conditions";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
-import { samePlace, tapCard, type Place } from "../../lib/fee-deal/places";
+import { dropTakes, holdWords, letGoStep, samePlace, tapStep, waitAt, type HoldStep, type Place } from "../../lib/fee-deal/places";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { leftOut } from "../../lib/fee-deal/left-out";
 import { readingOf } from "../../lib/fee-deal/reading";
@@ -244,10 +244,9 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (to) kept(setKindKept(deal, to, dataBar(id, data, today), chosen));
   };
   const onRemoveChange = (feeId: string, side: Side, k: number, caseId: string | undefined) => kept(removeChangeKept(deal, feeId, side, k, chosen, caseId));
-  // a charge the toolbox puts on a price that charges nothing, or the bin of a price's charge ("free"), on price `k` on `side`
-  const onCharge = (feeId: string, part: PartId, caseId: string | null, at: { side: Side; k: number }) => {
-    if (doc.changeForm(feeId, part, caseId, at)) oc.pending.set(null);
-  };
+  // a charge the toolbox puts on a price that charges nothing, or the bin of a price's charge ("free"), on price `k` on `side`; a part
+  // waiting for what it asks waits on, unless the change leaves it no place (`useOpenCase`, `pendingStands`)
+  const onCharge = (feeId: string, part: PartId, caseId: string | null, at: { side: Side; k: number }) => void doc.changeForm(feeId, part, caseId, at);
   const onRemoveCase = (feeId: string, caseId: string) => {
     oc.menus.closeSlot();
     kept(removeCaseKept(deal, feeId, caseId, chosen));
@@ -323,7 +322,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const applyAt = (item: string, fee: Fee, on: string | null, place: Place) =>
     applyTool(item, fee, on, place, {
       onAsk: (kind) => onAddBy(fee.id, kind),
-      onPending: (part, at) => oc.pending.set({ fee: fee.id, case: on, part, place: at }),
+      onPending: (part, at) => oc.pending.set({ fee: fee.id, case: on, ...waitAt(pricedOf(fee, on ?? undefined), part, at) }),
       onCharge: (part, at) => at.on === "price" && onCharge(fee.id, part, on, { side: at.side, k: at.k }),
       onPart: onPart(fee),
     });
@@ -357,23 +356,27 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const held = oc.hold.here;
   const heldCard = held && tools ? cardOf(tools, held.card) : null;
   const heldPlaces = heldCard?.places ?? [];
-  const letGo = () => {
-    if (!held) return;
-    oc.hold.set(null);
-    requestAnimationFrame(() => document.querySelector<HTMLElement>(`[data-part="${CSS.escape(held.card)}"]`)?.focus({ preventScroll: true }));
+  // the held card's words: a line's own words while it is held, a part's card's words
+  const heldWords = heldCard ? (heldCard.k === "line" ? heldCard.held : partLabel(heldCard)) : "";
+  const holdLine = holdWords(heldWords, heldPlaces);
+  // a step of the hold (places.ts `HoldStep`): the card held next, card `item` added at its place, and the focus on the earliest place's
+  // "+", so Enter adds there and Tab goes round the others (use-let-go.ts), or back on the card
+  const holdStep = (step: HoldStep | null, item?: string) => {
+    if (!step) return;
+    oc.hold.set(step.held);
+    if (step.add && item && chosenFee) applyAt(item, chosenFee, caseId, step.add);
+    const f = step.focus;
+    if (f) requestAnimationFrame(() => document.querySelector<HTMLElement>(f.on === "plus" ? "button[data-add-here]" : `[data-part="${CSS.escape(f.card)}"]`)?.focus({ preventScroll: true }));
   };
-  useLetGo(!!held && heldPlaces.length > 0, letGo);
+  const letGo = (refocus = true) => holdStep(letGoStep(held, refocus));
+  useLetGo(!!held && holdLine !== null, letGo);
   const onTap = (item: string) => {
     if (!chosenFee) return;
     if (several) return onCasesCard(several, item);
-    const t = tapCard(held, { fee: chosenFee.id, case: caseId, card: item }, placesOf(chosenFee.id, caseId, item));
-    if (t.k === "letGo") return letGo();
-    if (t.k === "hold") return oc.hold.set(t.held);
-    oc.hold.set(null);
-    if (t.k === "add") applyAt(item, chosenFee, caseId, t.place);
+    holdStep(tapStep(held, { fee: chosenFee.id, case: caseId, card: item }, placesOf(chosenFee.id, caseId, item)), item);
   };
   const places: PlaceHands = {
-    held: heldCard && heldPlaces.length > 0 ? { words: "held" in heldCard ? heldCard.held : partLabel(heldCard), places: heldPlaces } : null,
+    held: holdLine !== null ? { words: heldWords, places: heldPlaces } : null,
     onPlace: (place) => {
       if (!held || !chosenFee) return;
       oc.hold.set(null);
@@ -399,9 +402,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     },
     accepts: (feeId, at, item) => {
       if (cardThing(item)) return !!toolsFor(feeId, at)?.groups.some((g) => g.parts.some((x) => x.id === item && !x.used && !x.off));
-      const ps = placesOf(feeId, at, item);
-      const open = !several && (at === null || at === caseId);
-      return ps.length === 1 && (!open || ps[0]!.on !== "price");
+      return dropTakes(placesOf(feeId, at, item), !several && (at === null || at === caseId));
     },
     onDrop: (feeId, at, item) => {
       const fee = deal.fees.find((f) => f.id === feeId);
@@ -474,7 +475,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         line={lines.fill}
         folded={oc.sheet.folded}
         onFold={oc.sheet.setFolded}
-        held={held && places.held ? { card: held.card, words: places.held.words } : null}
+        held={held && holdLine !== null ? { card: held.card, words: holdLine } : null}
         onCard={onTap}
         onLetGo={letGo}
         onFee={onFee}

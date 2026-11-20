@@ -559,7 +559,7 @@ export function FeeCases({
    * whole (a sale priced apart), nor where the cell shows one part (its bin does it).
    */
   const partOff = (cases: readonly string[], shown: number) => (p: SlimPart): PartOff | null => {
-    if (shown < 2 || p.id === "free" || p.stage || PARTS[p.id].apply.on === "fee") return null;
+    if (shown < 2 || p.id === "free" || p.stage || PARTS[p.id].apply.on !== "price") return null;
     const row = ROW_OF[p.id];
     const name = row === "notes" ? [p.words.lead, p.words.tail].filter(Boolean).join("").trim() : (c.rowHeads[row] ?? p.id);
     return {

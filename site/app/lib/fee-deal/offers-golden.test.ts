@@ -34,7 +34,7 @@ function fullPrice(fee: FeeKindId, form: FormId): Price {
   if (keeps(fee, form, "currency")) p = { ...p, currency: "USD" } as Price;
   for (const id of PART_IDS) {
     const def: PartDef = PARTS[id];
-    if (isFormPart(id) || def.apply.on === "fee" || !def.holds(fee, p)) continue;
+    if (isFormPart(id) || def.apply.on !== "price" || !def.holds(fee, p)) continue;
     p = putPart(fee, p, id, true, { value: SAMPLE[def.figures[0] ?? "min"], against: "fixed_period" });
     for (const f of def.figures) if (FIGURES[f].placed(p)) p = FIGURES[f].set(p, typed(SAMPLE[f]));
   }
