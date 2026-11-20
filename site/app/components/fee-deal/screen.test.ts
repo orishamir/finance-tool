@@ -80,7 +80,9 @@ const toolboxOf = (deal: FeeDeal, feeId: string) => {
     line: null,
     folded: false,
     onFold: () => {},
+    held: null,
     onCard: () => {},
+    onLetGo: () => {},
     onFee: () => {},
     onStopBy: () => {},
     onClose: () => {},
@@ -104,7 +106,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     onFocused: () => {},
     onDeal: () => {},
     onAdd: () => {},
-    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {} }, onRemoveChange: () => {}, onEditPrice: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, onResult: () => undefined, phone: false }, cases: { onOpen: () => {}, onAsk: () => {} } },
+    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {} }, onRemoveChange: () => {}, onRemoveCharge: () => {}, places: { held: null, onPlace: () => {}, takes: () => false, onDrop: () => {} }, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, onResult: () => undefined, phone: false }, cases: { onOpen: () => {}, onAsk: () => {} } },
     ask: ask ? { kind: ask } : null,
     adding: "line",
   });
@@ -392,10 +394,10 @@ describe("the parts every case holds alike", () => {
     const fee = d.fees[0]!;
     if (!hasCases(fee)) throw new Error("custody has cases");
     const target = { fee: fee.id, cases: fee.cases.map((c) => c.id), along: 1 };
-    const box = text(createElement(ToolboxColumn, { view: casesToolbox(readDealFor(d, data.kinds, TODAY), target)!, fee, sheet: false, product: d.kind, fill: null, line: null, folded: false, onFold: () => {}, onCard: () => {}, onFee: () => {}, onStopBy: () => {}, onClose: () => {} }));
+    const box = text(createElement(ToolboxColumn, { view: casesToolbox(readDealFor(d, data.kinds, TODAY), target)!, fee, sheet: false, product: d.kind, fill: null, line: null, folded: false, onFold: () => {}, held: null, onCard: () => {}, onLetGo: () => {}, onFee: () => {}, onStopBy: () => {}, onClose: () => {} }));
     expect(box).toContain(feeDeal.cases.addToAll);
     expect(box).not.toContain(dealCases.toolbox.target);
-    // a form of the price is off, its group saying why
+    // a charge is off, its group saying why
     expect(box).toContain(feeDeal.cases.casesOff.perCase);
     const html = markup(builderOf(d, fee.id, null, { target, ask: { part: "max", cases: target.cases, along: 1 } }));
     // no case open in place, and no case outlined: the toolbox's line names them all

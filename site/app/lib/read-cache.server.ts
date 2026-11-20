@@ -14,11 +14,13 @@ interface Entry<T> {
 }
 
 /**
- * Whether a file can change while this process runs: in the dev server and the tests, so a read checks the file's time; not in a
- * production build, whose prerender reads every file once (checking two file times on every read was a fifth of the prerender's time).
- * Plain node (vite.config.ts reading data-as-of.ts) has no import.meta.env, and checks.
+ * Whether a file can change while this process runs: in the dev server and in `vitest --watch`, so a read checks the file's time; not
+ * in a production build, whose prerender reads every file once (checking two file times on every read was a fifth of the prerender's
+ * time), nor in one `vitest run`, where nothing under data/ changes while the tests run and the checks were about a twentieth of the
+ * suite's time (2026-11-20; a test that writes files writes new ones in a fresh temporary folder). Plain node (vite.config.ts reading
+ * data-as-of.ts) has no import.meta.env, and checks.
  */
-export const watching = import.meta.env?.DEV !== false;
+export const watching = import.meta.env?.DEV !== false && process.env.VITEST_MODE !== "RUN";
 
 /**
  * A value built from files that is the same for every page (the root loader's): built once in a production build, and again on every call

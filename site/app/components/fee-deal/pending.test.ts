@@ -17,7 +17,7 @@ function page() {
 }
 
 describe("a pending part's focus", () => {
-  const min: Pending = { fee: "fee-custody", case: null, part: "min" };
+  const min: Pending = { fee: "fee-custody", case: null, part: "min", place: { on: "price", side: "buy", k: 0 } };
 
   it("is taken once: the same card tapped again keeps the part asking as it was drawn", () => {
     const p = page();
@@ -29,8 +29,8 @@ describe("a pending part's focus", () => {
     expect(pendingAfter(min, { ...min })).toBe(min);
   });
 
-  it("is taken again by another part, the same part on another case or fee, and the same part once the one asking was given or dropped", () => {
-    for (const other of [{ ...min, part: "max" }, { ...min, case: "case-2" }, { ...min, fee: "fee-trade" }] satisfies Pending[]) {
+  it("is taken again by another part, the same part on another price, case or fee, and the same part once the one asking was given or dropped", () => {
+    for (const other of [{ ...min, part: "max" }, { ...min, place: { on: "price", side: "buy", k: 1 } }, { ...min, case: "case-2" }, { ...min, fee: "fee-trade" }] satisfies Pending[]) {
       const p = page();
       p.set(min);
       p.onShown();

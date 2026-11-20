@@ -12,7 +12,7 @@ import type { ProductId } from "@finance-tool/schema";
 import { thingName, valueWords } from "./case-words";
 import { changeUntouched, editPrice, removeChange } from "./edits/stage";
 import { withCurrency } from "./edits/price";
-import { onAction, pricedCurrency } from "./offers/capabilities";
+import { charged, onAction, pricedCurrency } from "./offers/capabilities";
 import { keeps } from "./offers/capacity";
 import type { BoundCurrency } from "./core";
 import { addBy, ownKept, removeBy, removeCase, type NewBy } from "./edits/case";
@@ -21,7 +21,7 @@ import { inOrderOf, sameButOrder } from "./edits/arrange";
 import { type Side } from "./model";
 import { lostParts, PARTS, setPart, type LostPart, type PartId } from "./offers/parts";
 import type { DealKind } from "./kinds";
-import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, toolPrice, type Fee, type FeeDeal, type ProviderKind } from "./model";
+import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type Price, type ProviderKind } from "./model";
 import type { DataBar } from "./offers/offer";
 import { fillFee, houseName } from "./templates";
 import type { FeesData } from "../fee-page-data";
@@ -29,8 +29,8 @@ import type { LiftResult } from "./lifted";
 
 /**
  * What the change did, for its line's words and its place: the fee taken away and where it stood, the fee filled and from which house,
- * price `k` taken away, the prices after price `k` taken away (`chain`), a case taken away, thing `t` taken away (`by`), or price `k` put
- * in another form by the toolbox (`form`).
+ * price `k` taken away, the prices after price `k` taken away (`chain`), a case taken away, thing `t` taken away (`by`), or price `k`
+ * made free by its charge's bin (`form`).
  */
 export type UndoWhat =
   | { kind: "remove"; feeId: string; at: number; beside?: string[] }
@@ -133,22 +133,25 @@ export function removeByKept(deal: FeeDeal, feeId: string, t: number, chosen: st
 }
 
 /**
- * The deal with the price the toolbox acts on (`toolPrice`) put in the form a toolbox part sets (`setPart`; in case `caseId` where the fee has cases):
- * what carries over carries (`withForm`), and the price as it stood is kept for the undo where it held anything given, typed or filled;
- * a price still blank, as the builder added it, changes silently. A free price put in a form with sums takes them in the case's currency
- * (`currency`: what the price was in before it was made free, `freedCurrency`; else its other prices'), never the shekel by default. Null
- * where the part sets no form, or the price is in it already.
+ * The deal with price `at` of a fee's prices on side `on` (the last where none is said; in case `caseId` where the fee has cases) put in
+ * the form a part sets (`setPart`): a charge the toolbox adds to a price that charges nothing, or "free" from the bin of a price's charge.
+ * The toolbox never swaps one charge for another, so a price that charges is made free first. What carries over carries (`withForm`), and
+ * the price as it stood is kept for the undo where it held anything given, typed or filled; a price still blank, as the builder added it,
+ * and a free price taking a charge, change silently. A free price put in a form with sums takes them in the case's currency (`currency`:
+ * what the price was in before it was made free, `freedCurrency`; else its other prices'), never the shekel by default. Null where the
+ * part sets no form, the price is in it already, or it charges in another.
  */
 export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chosen: string | null, caseId?: string, at?: number, currency?: BoundCurrency, on: Side = "buy"): MaybeUndoable | null {
   const fee = deal.fees.find((f) => f.id === feeId);
   const form = PARTS[part].form;
   if (!fee || !form) return null;
   const side: Side = on === "sell" && pricedOf(fee, caseId).sale ? "sell" : "buy";
-  const k = toolPrice({ stages: pricesOn(fee, side, caseId) }, at);
-  const was = pricesOn(fee, side, caseId)[k]!.price;
-  if (was.form === form) return null;
+  const stages = pricesOn(fee, side, caseId);
+  const k = at !== undefined && at >= 0 && at < stages.length ? at : stages.length - 1;
+  const was = stages[k]!.price;
+  if (was.form === form || (charged(was) && form !== "free")) return null;
   const set = setPart(fee, part, true, { side, k, ...(caseId ? { caseId } : {}) });
-  const own = was.form === "free" ? (currency ?? pricesOn(fee, side, caseId).map((s) => pricedCurrency(s.price)).find(Boolean)) : undefined;
+  const own = was.form === "free" ? (currency ?? stages.map((s) => pricedCurrency(s.price)).find(Boolean)) : undefined;
   const now = pricesOn(set, side, caseId)[k]?.price;
   const changed = own && now && onAction(now) && !now.currency && keeps(fee.kind, now.form, "currency") ? editPrice(set, side, k, (p) => withCurrency(p, own), caseId) : set;
   if (changed === fee || sameContent(changed, fee)) return null;
@@ -156,30 +159,34 @@ export function changeFormKept(deal: FeeDeal, feeId: string, part: PartId, chose
   return feeChange(deal, fee, changed, { kind: "form", feeId, k, ...(caseId ? { caseId } : {}), ...(side === "sell" ? { side } : {}) }, chosen);
 }
 
-/**
- * Whether choosing form `part` for a fee's price (in case `caseId`) puts back the price an undo keeps: the undo is of that price made free
- * (from the toolbox's "חינם"), it still stands, the price is still free, and before it was in that form. The page then undoes, so the
- * parts it had come back with the form.
- */
-export function formBack(u: Undo | KindUndo | null, deal: FeeDeal, feeId: string, part: PartId, caseId?: string): boolean {
-  if (!u || u.what.kind !== "form" || !standing(u, deal)) return false;
-  const f = u as Undo;
-  const w = f.what as Extract<UndoWhat, { kind: "form" }>;
-  if (w.feeId !== feeId || w.caseId !== caseId || w.side) return false;
+/** The price a change of form still standing made free (`u`), where it is price `k` on side `side` of fee `feeId`'s case `caseId`. */
+function freedAt(u: Undo | KindUndo | null, deal: FeeDeal, feeId: string, caseId: string | undefined, k: number, side: Side): { was: Price; now: Price } | null {
+  if (!u || u.what.kind !== "form" || !standing(u, deal)) return null;
+  const w = (u as Undo).what as Extract<UndoWhat, { kind: "form" }>;
+  if (w.feeId !== feeId || w.caseId !== caseId || w.k !== k || (w.side ?? "buy") !== side) return null;
   const now = deal.fees.find((x) => x.id === feeId);
-  const was = pricesOn(f.before, "buy", caseId)[w.k]?.price;
-  return !!now && pricesOn(now, "buy", caseId)[w.k]?.price.form === "free" && !!was && was.form === PARTS[part].form;
+  const was = pricesOn((u as Undo).before, side, caseId)[k]?.price;
+  const after = now && pricesOn(now, side, caseId)[k]?.price;
+  return was && after?.form === "free" ? { was, now: after } : null;
 }
 
 /**
- * The currency of the price an undo of "חינם" keeps (`u`, a change of form still standing that left the fee's price in case `caseId` free),
- * where its sums were in one: what a form chosen next takes, so a dollar case made free and priced again stays in dollars.
+ * Whether adding charge `part` to price `k` on side `side` of a fee (in case `caseId`) puts back the price an undo keeps: the undo is of
+ * that price made free (its charge's bin), it still stands, the price is still free, and before it charged in that form. The page then
+ * undoes, so the parts it had come back with the charge.
  */
-export function freedCurrency(u: Undo | KindUndo | null, deal: FeeDeal, feeId: string, caseId?: string): BoundCurrency | undefined {
-  if (!u || u.what.kind !== "form" || !standing(u, deal)) return undefined;
-  const w = (u as Undo).what as Extract<UndoWhat, { kind: "form" }>;
-  if (w.feeId !== feeId || w.caseId !== caseId || w.side) return undefined;
-  const was = pricesOn((u as Undo).before, "buy", caseId)[w.k]?.price;
+export function formBack(u: Undo | KindUndo | null, deal: FeeDeal, feeId: string, part: PartId, caseId: string | undefined, k: number, side: Side = "buy"): boolean {
+  const f = freedAt(u, deal, feeId, caseId, k, side);
+  return !!f && f.was.form === PARTS[part].form;
+}
+
+/**
+ * The currency of the price an undo of its charge's bin keeps (`u`, a change of form still standing that left price `k` on side `side` of
+ * the fee's case `caseId` free), where its sums were in one: what a charge added next takes, so a dollar case made free and priced again
+ * stays in dollars.
+ */
+export function freedCurrency(u: Undo | KindUndo | null, deal: FeeDeal, feeId: string, caseId: string | undefined, k: number, side: Side = "buy"): BoundCurrency | undefined {
+  const was = freedAt(u, deal, feeId, caseId, k, side)?.was;
   return was && onAction(was) && was.currency && was.currency !== "ILS" ? was.currency : undefined;
 }
 
@@ -343,10 +350,7 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
 /** Each part a change of form names when it leaves it behind (`PARTS[id].lost`), by its words. */
 const LOST_WORDS: Readonly<Record<LostPart, string>> = copy.cases.formChanged.parts;
 
-/**
- * The words of a price put in another form: that it changed, and the bounds, the percent maximum and the flat price it left behind, by
- * name, where it left any.
- */
+/** The words of a price made free by its charge's bin: that it charges nothing now, and the bounds and other parts that went with the charge, by name. */
 function formWords(u: Undo): string {
   const w = copy.cases.formChanged;
   const { caseId, k, side } = u.what.kind === "form" ? u.what : { caseId: undefined, k: 0, side: undefined };

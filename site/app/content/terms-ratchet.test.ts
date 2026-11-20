@@ -147,7 +147,8 @@ const named = (phrase: string) => new RegExp(`(?<![${HE}])[והבלמשכ]{0,4}$
 /** What a page says outside its <Term> marks and its termIds, with every spelling of a row blanked, longest first. */
 const unmarkedText = (src: string, rowSpellings: Iterable<string>): string => {
   let s = norm(entities(code(src).replace(/<Term\b[^>]*\/>|<Term\b[^>]*>[\s\S]*?<\/Term>/g, " ¤ ").replace(/termIds\s*[:=]\s*\[[^\]]*\]/g, " ")));
-  for (const k of [...rowSpellings].filter((x) => x.length >= 3).sort((a, b) => b.length - a.length)) s = s.replace(named(k), " ¤ ");
+  // a phrase not in the text as plain characters cannot match its pattern: the check skips most patterns, and blanks the same words
+  for (const k of [...rowSpellings].filter((x) => x.length >= 3).sort((a, b) => b.length - a.length)) if (s.includes(k)) s = s.replace(named(k), " ¤ ");
   return s;
 };
 /** Rule-base phrases on each page that have no row, page by page. */
@@ -156,7 +157,7 @@ const unexplained = (pages: Record<string, string>, vocabulary: Iterable<string>
   const vocab = [...vocabulary].filter((v) => !rowSpellings.has(v));
   for (const [page, src] of Object.entries(pages)) {
     const text = unmarkedText(src, rowSpellings);
-    const hits = vocab.filter((v) => named(v).test(text)).sort();
+    const hits = vocab.filter((v) => text.includes(v) && named(v).test(text)).sort();
     if (hits.length) out[page] = hits;
   }
   return out;
@@ -451,7 +452,7 @@ const usesOf = (src: string, rowOf: ReadonlyMap<string, string>, otherSense: rea
   );
   for (const o of otherSense) s = s.split(normInPlace(o)).join(blankOut(o));
   for (const sp of [...rowOf.keys()].filter((x) => x.length >= 3).sort((a, b) => b.length - a.length))
-    s = s.replace(named(sp), (m, at: number) => (uses.push({ at, row: rowOf.get(sp)!, marked: false }), " ".repeat(m.length)));
+    if (s.includes(sp)) s = s.replace(named(sp), (m, at: number) => (uses.push({ at, row: rowOf.get(sp)!, marked: false }), " ".repeat(m.length)));
   return uses.map((u) => ({ ...u, rank: rank(u.at) })).sort((a, b) => a.rank - b.rank);
 };
 /** Where a page's visual ends its sections' order: under "use", or under "what" when the page has no "use" (routes/guide.tsx). */

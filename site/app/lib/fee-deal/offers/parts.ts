@@ -99,6 +99,11 @@ interface PartSpec {
   capField?: PartFieldId;
   /** Whether a fee can hold it, for a part of the fee's prices (a later price, a sale) rather than of one price. */
   feeHolds?: (kind: FeeKindId) => boolean;
+  /**
+   * A part of the fee's prices that goes on one side's prices as a whole (the purchase's, or a sale priced apart's) rather than on the
+   * fee: the month a price changes from, which splits whichever of that side's prices holds in the month it asks.
+   */
+  onSide?: true;
   /** The figures it holds, in the order its boxes stand. */
   figures: readonly Figure[];
   /** What it asks for before it stands (the toolbox hands it to the open case to ask); null where it stands at once. */
@@ -151,13 +156,16 @@ const SPECS = {
   perAction: { kind: "charge", form: "perAction", figures: ["amount"], ask: null, tool: "charge", ...formEdit("perAction") },
   held: { kind: "charge", form: "held", figures: ["rate"], ask: null, tool: "charge", ...formEdit("held") },
   sum: { kind: "charge", form: "sum", figures: ["amount"], ask: null, tool: "charge", ...formEdit("sum") },
-  free: { kind: "charge", form: "free", figures: [], ask: null, tool: "charge", ...formEdit("free") },
+  // a price that charges nothing reads "חינם": no card adds it; the toolbox adds a charge to it, and the bin of its charge makes it free
+  free: { kind: "charge", form: "free", figures: [], ask: null, tool: null, ...formEdit("free") },
   discount: { kind: "off", lost: true, field: "discount", figures: ["discount"], ask: null, tool: "off", used: (p: Price) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
   third: { kind: "charge", lost: true, field: "third", figures: ["third", "thirdMin", "thirdMax"], ask: null, tool: "charge", stated: true, used: (p: Price) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
   // the month a price changes from (F-110): the toolbox draws it as the line it adds, not as a card of a group's (toolbox.ts `TOOLBOX`
-  // lines); it asks its month on the price the toolbox acts on, and is taken away at its divider
+  // lines); it goes on one side's prices, asks its month at their foot, splits the price in force that month, and is taken away at its
+  // divider
   until: {
     kind: "when",
+    onSide: true,
     feeHolds: () => true,
     figures: [],
     ask: "month",
@@ -241,6 +249,12 @@ export const asksAmount = (id: PartId): id is AmountPart => PARTS[id].ask === "p
 export const besideThePrice = (id: PartId): boolean => PARTS[id].field !== undefined;
 /** Whether a part is a form of the price. */
 export const isFormPart = (id: PartId): id is FormPart => PARTS[id].form !== undefined;
+
+/**
+ * Where a part goes (places.ts): on one price (`price`, a part the price keeps, or the form it charges in), on one side's prices as a whole
+ * (`side`, the month a price changes from), or on the fee, or the case, as a whole (`fee`, a sale priced apart).
+ */
+export const partGoes = (id: PartId): "price" | "side" | "fee" => (PARTS[id].apply.on === "price" ? "price" : (PARTS[id] as PartDef).onSide ? "side" : "fee");
 
 /**
  * The parts a price says, in the registry's order (its price, its end, its bounds, its links, its notes): the parts it has, its notes in

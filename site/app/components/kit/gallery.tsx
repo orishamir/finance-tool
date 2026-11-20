@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
+import { ActionMenu, AddHere, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -3147,10 +3147,9 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
       kind: "charge",
       name: sc.groups.charge,
       parts: [
-        { id: "pct", label: `% ${perAction}`, used: u("pct"), form: true },
-        { id: "unit", label: `$ ${dealWords.price.perUnit}`, used: u("unit"), form: true },
-        { id: "sum", label: `$ ${perAction}`, used: u("sum"), form: true },
-        { id: "free", label: dealWords.price.free, used: u("free"), form: true },
+        { id: "pct", label: `% ${perAction}`, used: u("pct") },
+        { id: "unit", label: `$ ${dealWords.price.perUnit}`, used: u("unit") },
+        { id: "sum", label: `$ ${perAction}`, used: u("sum") },
         { id: "third", label: sc.thirdPartyPart, used: u("third") },
       ],
     },
@@ -3189,14 +3188,17 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
   ];
 }
 
+/** The charges among the gallery's toolbox cards: each goes only on a price that charges nothing. */
+const CHARGES = new Set(["pct", "unit", "sum"]);
+
 /**
- * The toolbox on several cases at once: every case is in one form, has a maximum and keeps its sums in shekels or dollars, so the other
- * forms, the sale priced apart and the date line are set in each case alone, and a minimum would ask two currencies; each group says why.
+ * The toolbox on several cases at once: every case charges a share, has a maximum and keeps its sums in shekels or dollars, so the other
+ * charges, the sale priced apart and the date line are set in each case alone, and a minimum would ask two currencies; each group says why.
  */
 function severalGroups(): ToolGroup[] {
   const off = dealWords.cases.casesOff;
   return toolGroups(["pct", "max", "what", "channel"]).map((gr) => {
-    if (gr.kind === "charge") return { ...gr, parts: gr.parts.map((p) => (p.form && !p.used ? { ...p, off: true } : p)), offWhy: off.perCase };
+    if (gr.kind === "charge") return { ...gr, parts: gr.parts.map((p) => (CHARGES.has(p.id) && !p.used ? { ...p, off: true } : p)), offWhy: off.perCase };
     if (gr.kind === "bound") return { ...gr, parts: gr.parts.map((p) => (p.id === "min" ? { ...p, off: true } : p)), offWhy: off.currencies };
     if (gr.kind === "when")
       return { ...gr, parts: gr.parts.map((p) => (p.id === "sale" ? { ...p, off: true } : p)), lines: gr.lines?.map((l) => ({ ...l, off: true })), offWhy: off.perCase };
@@ -3204,16 +3206,69 @@ function severalGroups(): ToolGroup[] {
   });
 }
 
-/** A tap adds a part (its card takes the ✓); a tap on "הערוץ" asks for the channels first; a tap on a thing with its ✓ takes it away. */
+/** The line that names the open case the gallery's toolbox adds to. */
+const caseLine = { lead: caseWords.toolbox.target, target: sc.target };
+
+/**
+ * A tap adds a part (its card takes the ✓); a tap on "הערוץ" asks for the channels first; a tap on a thing with its ✓ takes it away. The
+ * case charges per unit, so the other charges are off, the group saying why.
+ */
 function ToolboxDemo() {
   const [used, setUsed] = useState(["unit", "min", "cap", "what", "track", "unexecuted"]);
   const [asking, setAsking] = useState(false);
   const [channels, setChannels] = useState(["branch", "web"]);
   const ask = asking && <AskValuesDemo chosen={channels} onToggle={(id) => setChannels((c) => (c.includes(id) ? c.filter((x) => x !== id) : [...c, id]))} onDone={(add) => (setAsking(false), add && setUsed((u) => [...u, "channel"]))} />;
+  const charging = [...CHARGES].some((id) => used.includes(id));
+  const groups = toolGroups(used).map((gr) => (gr.kind === "charge" && charging ? { ...gr, parts: gr.parts.map((p) => (CHARGES.has(p.id) && !p.used ? { ...p, off: true } : p)), offWhy: dealWords.cases.charging } : gr));
   return (
     <div className="flex max-w-lg flex-col gap-4">
       {ask}
-      <Toolbox target={sc.target} groups={toolGroups(used)} onAdd={(group, part) => (group === "when" && part === "channel" ? setAsking(true) : setUsed((u) => [...u, part]))} onRemove={(_group, part) => setUsed((u) => u.filter((x) => x !== part))} />
+      <Toolbox addTo={caseLine} groups={groups} onAdd={(group, part) => (group === "when" && part === "channel" ? setAsking(true) : setUsed((u) => [...u, part]))} onRemove={(_group, part) => setUsed((u) => u.filter((x) => x !== part))} />
+    </div>
+  );
+}
+
+/**
+ * A card held while its place is picked: a slim trade fee whose price changes in January 2027, both prices taking "הנחה % מהמחיר", so a
+ * tap on it holds it, the line under the toolbox's head saying so; a tap on a price's round "+" adds the discount there, and "ביטול", or
+ * the card again, lets it go. Once one price has it, a tap adds it to the other at once; once both have it, the card has its ✓.
+ */
+function HoldDemo({ today }: { today: string }) {
+  const [held, setHeld] = useState(false);
+  const [on, setOn] = useState<number[]>([]);
+  const w = dealWords.cases.place;
+  const c = dealWords.panel.change;
+  const [card] = toolGroups([]).find((gr) => gr.kind === "off")!.parts;
+  const label = String(card!.label);
+  const january = fmt.date("2027-01");
+  const prices = [
+    { part: { id: "rate0", kind: "charge" as const, n: 0.05, ...pct, words: perAction }, place: `${w.price} ${w.until}${fmt.date("2026-12")}` },
+    { part: { id: "rate1", kind: "charge" as const, n: 0.1, ...pct, words: perAction }, place: `${w.price} ${joinLead(w.from, january)}${january}` },
+  ];
+  const free = prices.map((_, k) => k).filter((k) => !on.includes(k));
+  const add = (k: number) => {
+    setOn((o) => [...o, k]);
+    setHeld(false);
+  };
+  const tap = () => (free.length === 1 ? add(free[0]!) : free.length > 1 && setHeld(!held));
+  const groups = [{ ...toolGroups([]).find((gr) => gr.kind === "off")!, parts: [{ ...card!, used: free.length === 0 }] }];
+  return (
+    <div className="grid items-start gap-4 lg:grid-cols-2">
+      <SlimFee dot="bg-fee-trade" name={sc.trade} label={sc.openFee(sc.trade)} open onOpen={() => undefined}>
+        {prices.map((x, k) => (
+          <div key={x.part.id} className="flex w-full flex-col gap-2">
+            {k > 0 && <ChangeDivider lead={c.from} month={<MonthField value="2027-01" label={c.month} tight onCommit={() => undefined} />} removeLabel={c.remove} onRemove={() => undefined} />}
+            <div className="flex items-center gap-3">
+              <div className="flex min-w-0 flex-col gap-2">
+                <Edit part={x.part} today={today} onRemove={() => undefined} />
+                {on.includes(k) && <Edit part={{ id: `discount${k}`, kind: "off", lead: sc.discount.trim(), n: 10, ...pct, words: sc.ofPrice.split(",")[0]! }} today={today} onRemove={() => setOn((o) => o.filter((j) => j !== k))} />}
+              </div>
+              {held && !on.includes(k) && <AddHere label={dealWords.cases.addHere.replace("{card}", label).replace("{place}", x.place)} onAdd={() => add(k)} />}
+            </div>
+          </div>
+        ))}
+      </SlimFee>
+      <Toolbox addTo={null} held={held ? { part: card!.id, words: dealWords.cases.hold.replace("{card}", label), onCancel: () => setHeld(false) } : null} groups={groups} onAdd={tap} />
     </div>
   );
 }
@@ -3233,7 +3288,7 @@ function DragDemo({ today }: { today: string }) {
   );
   return (
     <div className="grid items-start gap-4 lg:grid-cols-2">
-      <Toolbox target={sc.target} groups={toolGroups(used).filter((gr) => gr.kind === "charge" || gr.kind === "bound")} onAdd={(_group, part) => add(part)} />
+      <Toolbox addTo={caseLine} groups={toolGroups(used).filter((gr) => gr.kind === "charge" || gr.kind === "bound")} onAdd={(_group, part) => add(part)} />
       <FeeBlock dot="bg-fee-trade" name={sc.trade}>
         <ConditionBand things={[{ id: "what", name: sc.things.what }]} onThing={() => undefined}>
           <div className="px-3 pt-1">
@@ -3710,18 +3765,34 @@ function CaseDemos({ today }: { today: string }) {
         </State>
         <State label="several cases at once: the line names them all; a form, a sale priced apart and the date line are off (set in each case alone), a minimum is off where the cases keep two currencies; each group says why" wide>
           <div className="max-w-lg">
-            <Toolbox target={undefined} targetLead={dealWords.cases.addToAll} groups={severalGroups()} onAdd={() => undefined} />
+            <Toolbox addTo={{ lead: dealWords.cases.addToAll }} groups={severalGroups()} onAdd={() => undefined} />
           </div>
         </State>
         <State label="a fee that changes by three things: the fourth is off, and the group says why" wide>
           <div className="max-w-lg">
-            <Toolbox target={sc.target} groups={toolGroups(["unit", "what", "track", "channel"], true).filter((gr) => gr.kind === "when")} onAdd={() => undefined} />
+            <Toolbox addTo={caseLine} groups={toolGroups(["unit", "what", "track", "channel"], true).filter((gr) => gr.kind === "when")} onAdd={() => undefined} />
           </div>
         </State>
         <State label={`the phone's short sheet, drawn where it stands (on the page it is pinned to the foot of the screen): one group at a time, the groups a row that scrolls and fades at its end; ${g.states.interactive}`} wide>
           <PhoneFrame>
-            <Toolbox sheet target={sc.target} groups={toolGroups(["unit", "min", "cap", "what", "track", "unexecuted"])} onAdd={() => undefined} />
+            <Toolbox sheet addTo={caseLine} groups={toolGroups(["unit", "min", "cap", "what", "track", "unexecuted"])} onAdd={() => undefined} />
           </PhoneFrame>
+        </State>
+        <State label="the phone's sheet while a card is held: its handle and the line that says so alone, so the places above it stay in view; it opens again as it was once the card is let go" wide>
+          <PhoneFrame>
+            <Toolbox sheet addTo={caseLine} held={{ part: "discount", words: dealWords.cases.hold.replace("{card}", `${sc.discount.trim()} % ${sc.ofPrice.split(",")[0]!}`), onCancel: () => undefined }} groups={toolGroups(["unit"])} onAdd={() => undefined} />
+          </PhoneFrame>
+        </State>
+      </Demo>
+      <Demo name="AddHere" use={g.uses.AddHere}>
+        <State label={`a slim fee with two prices over time, with no first line in its toolbox; ${g.states.interactive}: a tap on "הנחה % מהמחיר" holds it and each price shows its round "+", filled under the pointer and on the keyboard's focus; a tap on one adds the discount there`} wide>
+          <HoldDemo today={today} />
+        </State>
+        <State label="the marks alone: at rest, and filled (under the pointer, on focus, or a carried card over its place)">
+          <div className="flex items-center gap-6">
+            <AddHere label={dealWords.cases.addHere.replace("{card}", sc.discount.trim()).replace("{place}", dealWords.cases.place.price)} onAdd={() => undefined} />
+            <AddHere over />
+          </div>
         </State>
       </Demo>
       <Demo name="RemoveButton" use={g.uses.RemoveButton}>

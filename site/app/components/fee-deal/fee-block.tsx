@@ -3,10 +3,11 @@
 // (fee-cases.tsx), every case shown. The fee or case open shows its slots, its parts with their
 // boxes (`OpenParts`) and the actions on the case; while a fee is open, its bin stands beside its name. Each thing of the head opens its
 // menu, the fee open or not: its values, and the action that stops the price changing by it. The question of a thing being added stands in the open
-// fee's block, above its cases or its price. On a computer a part dragged from the toolbox drops on a slim fee or a case of the open fee,
-// and a thing to change by on the open fee's block, or on one case's head, which splits that case alone (`ToolDrop`); a part dropped on
-// the parts said once for every case, or on a grid row's head, does what its tap does with the toolbox on those cases (`CasesTarget`). A
-// thing lifted by its grip drops on the places that take it (lifted.ts, `LiftHands`): every case, cell and head of the fee is one.
+// fee's block, above its cases or its price. On a computer a part dragged from the toolbox drops on a place of the open case that can
+// take it (a price, shown by its round "+", `PlaceHands`), or on another case where it has one place there; a thing to change by on the
+// open fee's block, or on one case's head, which splits that case alone (`ToolDrop`); a part dropped on the parts said once for every
+// case, or on a grid row's head, does what its tap does with the toolbox on those cases (`CasesTarget`). A thing lifted by its grip drops
+// on the places that take it (lifted.ts, `LiftHands`): every case, cell and head of the fee is one.
 import type { ReactNode } from "react";
 import { feeDeal as copy } from "../../copy";
 import type { BuilderRow } from "../../lib/fee-deal/rows";
@@ -14,14 +15,14 @@ import type { OpenCase as OpenCaseView } from "../../lib/fee-deal/panel";
 import { cardThing, type CasesTarget } from "../../lib/fee-deal/toolbox";
 import type { CasesAsk } from "../../lib/fee-deal/every-case";
 import { type Side } from "../../lib/fee-deal/model";
-import { hasCases, pricesOn, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { hasCases, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { keeps } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
-import { DropZone, FeeBlock, Grip, SlimFee, cx, type DropHow, type SortOf } from "../kit";
+import { DropZone, FeeBlock, Grip, SlimFee, type DropHow, type SortOf } from "../kit";
 import { liftId, liftedOf, type Lifted, type LiftResult, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { AskThing } from "./ask-thing";
 import { FeeCases, RestPart, RowStanding } from "./fee-cases";
-import { OpenParts, type PartGrip } from "./open-case";
+import { OpenParts, type PartGrip, type PlaceHands } from "./open-case";
 import { EditHere } from "./edit-here";
 import { ROW_OF } from "../../lib/fee-deal/part-rows";
 import type { Note } from "../../lib/fee-deal/core";
@@ -64,8 +65,10 @@ export interface BlockActions {
   drop: ToolDrop;
   /** A change of a price with time taken away at its divider (change `k`, between price `k` and the next), kept for the undo. */
   onRemoveChange: (feeId: string, side: Side, k: number, caseId: string | undefined) => void;
-  /** The person is in price `k` of the open case's prices over time (its parts took the focus or a press): the toolbox adds to it. */
-  onEditPrice: (feeId: string, caseId: string | undefined, k: number, side?: Side) => void;
+  /** A price's charge taken away by its bin (price `k` on `side`): the price free, kept for the undo. */
+  onRemoveCharge: (feeId: string, caseId: string | undefined, side: Side, k: number) => void;
+  /** Where the open case's places take toolbox cards: the card held, and a card carried. */
+  places: PlaceHands;
   /** A part the toolbox added that asks for what it needs: given or dropped, and whether its box takes the focus (`PendingHands`). */
   pendingHands: PendingHands;
   /** The question closed: the thing added, or not. */
@@ -109,7 +112,7 @@ export type ZoneOf = (on: LiftTarget[], key: string, el: ReactNode, sort?: SortO
 
 /**
  * A toolbox card dropped in the fees' column (its id, `ToolPart.id`): whether the open fee's case `caseId` (null for a slim fee, or the fee
- * as a whole) takes it, and what its tap does there.
+ * as a whole) takes it, and what its tap does there. A card that goes on a price of the open case drops on that price (`PlaceHands`).
  */
 export interface ToolDrop {
   accepts: (feeId: string, caseId: string | null, item: string) => boolean;
@@ -156,7 +159,7 @@ function RowNotes({ row, fee, onOpen }: { row: BuilderRow; fee: Fee; onOpen: () 
 
 /**
  * One fee's block (`row`, its view; none for a fee whose prices are out of order): its slim line or its band, the case open in place with
- * its parts and `formLine` (the undo line of its price put in another form) under them, and the question `ask` of a thing being added.
+ * its parts and `formLine` (the undo line of its price made free by its charge's bin) under them, and the question `ask` of a thing being added.
  */
 export function FeeBlockView({
   fee,
@@ -186,7 +189,7 @@ export function FeeBlockView({
   /** Closed, the knobs in its card's corner (its bin, its duplicate). */
   corner?: ReactNode;
 }) {
-  const { onOpen, onRemoveFee, onRemoveChange, onEditPrice, pendingHands, onAskDone, drop } = actions;
+  const { onOpen, onRemoveFee, onRemoveChange, onRemoveCharge, pendingHands, onAskDone, drop } = actions;
   const name = feeName(fee.kind, fee.name, row?.house);
   const isOpen = open.fee === fee.id;
   // the question of a thing being added, in place: above the fee's cases, or above its price where it has none
@@ -195,7 +198,7 @@ export function FeeBlockView({
   const openParts = (spoken: string, heads: readonly HeadApply[] = []) =>
     open.view && (
       <>
-        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} onEditing={(k, caseId, side) => onEditPrice(fee.id, caseId, k, side)} pendingHands={pendingHands} grip={partGrip(heads)} />
+        <OpenParts fee={fee} open={open.view} deal={deal} name={spoken} onFee={onFee} onRemoveChange={(side, k, caseId) => onRemoveChange(fee.id, side, k, caseId)} onRemoveCharge={(side, k, caseId) => onRemoveCharge(fee.id, caseId, side, k)} places={actions.places} pendingHands={pendingHands} grip={partGrip(heads)} />
         {formLine}
       </>
     );
@@ -261,12 +264,6 @@ export function FeeBlockView({
     );
   };
   const slimTarget: LiftTarget = { k: "case", fee: fee.id, case: null };
-  // a slim fee whose price changes over time: a press on one of its prices opens the fee with the toolbox adding to that price
-  const timed = !hasCases(fee) && pricesOn(fee, "buy").length > 1;
-  const openAt = (k: number) => {
-    onEditPrice(fee.id, undefined, k);
-    onOpen(fee.id, null, "pointer");
-  };
 
   if (!row) return <p className="text-sm text-muted-foreground">{b.unread}</p>;
   if (row.block.kind === "slim")
@@ -297,16 +294,9 @@ export function FeeBlockView({
               openParts(name)
             ) : (
               <EditHere.Provider value={{ fee, cases: null, onFee }}>
-                {row.block.parts.map((p) =>
-                  // a price among several over time opens the fee at that price, the toolbox adding to it, above the card's own button
-                  timed ? (
-                    <span key={`${p.stage ?? 0}:${p.id}`} data-lift="" className={cx("inline-flex max-w-full", p.kind === "when" && "basis-full")} onClick={() => openAt(p.stage ?? 0)}>
-                      <RestPart part={p} />
-                    </span>
-                  ) : (
-                    <RestPart key={`${p.stage ?? 0}:${p.id}`} part={p} />
-                  ),
-                )}
+                {row.block.parts.map((p) => (
+                  <RestPart key={`${p.stage ?? 0}:${p.id}`} part={p} />
+                ))}
               </EditHere.Provider>
             )}
             {!isOpen && <RowStanding fee={row.fee} priced={row.priced} standing={row.standingNow} />}

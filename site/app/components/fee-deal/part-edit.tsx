@@ -9,6 +9,7 @@ import { type Side } from "../../lib/fee-deal/model";
 import { MONTHS, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
 import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
 import { PARTS, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
+import { samePlace, type Place } from "../../lib/fee-deal/places";
 import type { PartGiven } from "../../lib/fee-deal/edits/cells";
 import type { PendingWords } from "../../lib/fee-deal/part-words";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
@@ -24,13 +25,14 @@ const cp = copy.cases.parts;
 export const PART_MARK: Partial<Record<PartId, PartMark>> = { min: "min", max: "max", cap: "max", maxPerSecurity: "max", offset: "link", refund: "link" };
 
 /**
- * Where a pending part stands: its fee, its case (null for a slim fee), and the part. These three are the whole of what it is: the price it
- * asks on is the toolbox's, read when it is drawn (`OpenPending.k`).
+ * Where a pending part stands: its fee, its case (null for a slim fee), the part, and the place it was added at (places.ts: a price, or a
+ * side's prices for the month a price changes from).
  */
 export interface Pending {
   fee: string;
   case: string | null;
   part: PendingPart;
+  place: Place;
 }
 
 /**
@@ -38,7 +40,7 @@ export interface Pending {
  * its card), so the part already drawn stays the one drawn, and its box, which took the focus once, takes it no more.
  */
 export const pendingAfter = (now: Pending | null, next: Pending | null): Pending | null =>
-  now && next && now.fee === next.fee && now.case === next.case && now.part === next.part ? now : next;
+  now && next && now.fee === next.fee && now.case === next.case && now.part === next.part && samePlace(now.place, next.place) ? now : next;
 
 /** Whether the pending part `now` is drawn for the first time, so its box takes the focus: it is not the one `shown` was, whose box had it. */
 export const pendingFresh = (now: Pending | null, shown: Pending | null): boolean => now !== null && now !== shown;
@@ -227,7 +229,7 @@ const BODIES: Readonly<Record<LinePart, { Body: ComponentType<BodyProps>; lead?:
   sale: { Body: QuietBody },
 };
 
-/** One part of the open case's price in edit: its icon and lead, its body, and its bin (`onRemove`; none for a free price). */
+/** One part of the open case's price in edit: its icon and lead, its body, and its bin (`onRemove`; a charge's makes the price free; none for a free price). */
 export function PartLine({ part, at, onRemove, grip }: { part: OpenPart; at: PartPlace; onRemove: (() => void) | undefined; /** Its grip (⋮⋮), where it can be lifted. */ grip?: ReactNode }) {
   const { Body, lead } = BODIES[part.id];
   return (

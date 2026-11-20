@@ -48,13 +48,13 @@ describe("the toolbox on every case of a fee", () => {
     const r = read(deal);
     const fee = tradeOf(deal);
     const view = casesToolbox(r, every(deal))!;
-    expect(view.addTo.lead).toBe(copy.addToAll);
+    expect(view.addTo!.lead).toBe(copy.addToAll);
     const ids = new Set(view.groups.flatMap((g) => [...g.parts.map((p) => p.id), ...g.lines.map((l) => l.id)]));
     for (const c of fee.cases) for (const g of toolbox(r, fee.id, c.id)!.groups) for (const p of [...g.parts, ...g.lines]) expect(ids.has(p.id), p.id).toBe(true);
     // a grid row's names its row
     const row = casesToolbox(r, { ...every(deal), cases: ["c1", "c2"], row: "tase" })!;
-    expect(row.addTo.lead).toBe(copy.addToRow);
-    expect(row.addTo.when).toHaveLength(1);
+    expect(row.addTo!.lead).toBe(copy.addToRow);
+    expect(row.addTo!.when).toHaveLength(1);
   });
 
   it("marks a maximum every case holds as had, whatever each case's figure", () => {

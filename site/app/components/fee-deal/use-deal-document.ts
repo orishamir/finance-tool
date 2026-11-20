@@ -21,6 +21,7 @@ import type { PartId } from "../../lib/fee-deal/offers/parts";
 import type { Side } from "../../lib/fee-deal/model";
 import type { FeesData } from "../../lib/fee-page-data";
 import { dealLabel } from "./bar-end";
+import { partPlaceId } from "./figures";
 import type { FeeFocus } from "./builder";
 import { undoLines, useUndo, type AnyUndo } from "./use-undo";
 import { emptyHistory, historyKey, recorded, stepAhead, stepBack, type History, type Step } from "../../lib/fee-deal/history";
@@ -185,25 +186,28 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
     dealStore.update((ds) => savedWith(ds, deal, today));
   };
   /**
-   * A form of the price from the toolbox: what carries over carries, and the price it replaces is kept for the undo, whose line stands
-   * under the fee's block without taking the focus; the focus goes to the new price's box, so typing goes on there, except a free price,
-   * which has none: the focus stays on "חינם" in the toolbox. False where nothing changed.
+   * A charge put on price `at.k` on side `at.side` of a fee (in case `caseId`): the toolbox's, on a price that charges nothing, or "free"
+   * from the bin of the price's charge, which keeps the price as it stood for the undo, whose line stands under the fee's block without
+   * taking the focus. The focus goes to the part now there: the charge's blank figure, so typing goes on there, or the free price's
+   * "חינם". False where nothing changed.
    */
-  const changeForm = (feeId: string, part: PartId, caseId: string | null, at?: number, side: Side = "buy"): boolean => {
-    // a form chosen again right after "חינם" puts the price back as it was, with its parts
-    if (side === "buy" && undoing && "dealId" in undoing && formBack(undoing, deal, feeId, part, caseId ?? undefined)) {
+  const changeForm = (feeId: string, part: PartId, caseId: string | null, at: { side: Side; k: number }): boolean => {
+    const focusPart = () => setFocus({ fee: feeId, on: "part", part: partPlaceId(at.side, at.k, part) });
+    const kept = undoing && "dealId" in undoing ? undoing : null;
+    // a charge added again right after its bin made the price free puts the price back as it was, with its parts
+    if (formBack(kept, deal, feeId, part, caseId ?? undefined, at.k, at.side)) {
       onUndo();
-      setFocus({ fee: feeId, on: "box" });
+      focusPart();
       return true;
     }
-    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at, undoing && "dealId" in undoing && side === "buy" ? freedCurrency(undoing, deal, feeId, caseId ?? undefined) : undefined, side);
+    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at.k, freedCurrency(kept, deal, feeId, caseId ?? undefined, at.k, at.side), at.side);
     if (!r) return false;
     if (r.undo) {
       if (!keep(r.deal)) return false;
       setUndoing(r.undo);
       lineAfter.current = { u: r.undo, deal: r.deal };
     } else change(r.deal);
-    if (part !== "free") setFocus({ fee: feeId, on: "box" });
+    focusPart();
     return true;
   };
   // the fee put back takes the focus on its card; a fill's and a chain's lines hand it on themselves; a deleted deal put back that was on

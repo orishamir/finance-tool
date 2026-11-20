@@ -14,5 +14,7 @@ export default defineConfig({
     // At most eight workers (2026-11-14): with one per core (31 here) and every worker holding the data, a check beside a
     // build used most of this machine's 20 GB, and two at once ran it out of memory.
     maxWorkers: 8,
+    // Turns on the engine's memory of ledger runs (packages/engine/src/run-memo.ts), off on the site.
+    setupFiles: ["tests/setup.ts"],
   },
 });

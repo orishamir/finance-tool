@@ -1,7 +1,7 @@
 // The picker a month's box opens (kit MonthField): the year, with a control a year back and a year on, and its twelve months as a grid
 // of buttons named as the site writes a month ("מרץ", spoken "מרץ 2027"). The month the box holds is chosen (filled, bold, and
 // `aria-selected` on its cell), today's month has a quiet edge (`aria-current="date"`), and a month outside the box's earliest and latest
-// is drawn struck through and refuses a press (`aria-disabled`), where the page around the box would refuse it. Next to a box it floats in
+// or among the months it refuses (`taken`) is drawn struck through and refuses a press (`aria-disabled`), where the page around the box would refuse it. Next to a box it floats in
 // the browser's top layer, placed against the box and kept inside the visible window, so a card that scrolls or clips never cuts it and
 // nothing around the box moves; on its own (the gallery) it stands in the page.
 //
@@ -13,10 +13,11 @@ import { fmt } from "../../lib/format";
 import { IconBack, IconDrillIn } from "../icons";
 import { cx } from "./cx";
 
-/** The months a box takes from its picker, as `YYYY-MM` keys, both ends included; either may be open. */
+/** The months a box takes from its picker, as `YYYY-MM` keys, both ends included; either may be open; `taken`, months between them it refuses. */
 export interface MonthBounds {
   earliest?: string;
   latest?: string;
+  taken?: readonly string[];
 }
 
 /** The months a row of the grid holds. */
@@ -34,8 +35,8 @@ export function shiftMonth(key: string, by: number): string {
 
 export const yearOf = (key: string) => Number(key.slice(0, 4));
 
-/** Whether the picker offers `key`: on or after the earliest and on or before the latest, where the box has them. */
-export const offered = (key: string, b: MonthBounds) => (b.earliest === undefined || key >= b.earliest) && (b.latest === undefined || key <= b.latest);
+/** Whether the picker offers `key`: on or after the earliest and on or before the latest, where the box has them, and not taken. */
+export const offered = (key: string, b: MonthBounds) => (b.earliest === undefined || key >= b.earliest) && (b.latest === undefined || key <= b.latest) && !b.taken?.includes(key);
 
 /** A year's twelve months, in order, each with whether the picker offers it. */
 export function yearMonths(year: number, b: MonthBounds): { key: string; offered: boolean }[] {

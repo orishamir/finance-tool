@@ -13,8 +13,11 @@
 // column of its own where the window has the room, and anywhere narrower (a phone, a tablet) in a short sheet pinned to the foot of the
 // screen, the page keeping room under its end for it; the sheet comes folded to its groups' names with a deal, and unfolds
 // when a fee or a case is opened. The columns and the reading are one thing: a fee under the pointer or
-// the focus in one is marked in the others, and a fee's name in the reading opens it (`FeeLinks`). On a computer a card
-// dragged from the toolbox onto the open fee, or one of its cases, does there what its tap does (`ToolDrop`). A change that loses
+// the focus in one is marked in the others, and a fee's name in the reading opens it (`FeeLinks`). A toolbox card only adds: tapped, it
+// goes to its one place in the open case, or with several places it is held, each place drawing a round "+", until one is tapped or the
+// hold ends (Escape, "ביטול", the card again, a tap anywhere else), the focus then back on the card (places.ts). On a computer a card
+// dragged from the toolbox onto one of its places, or onto another case where it has one place, does there what its tap does
+// (`ToolDrop`, `PlaceHands`). A change that loses
 // something (a fee taken away, a fee filled from a price list, a price, a case or a thing taken away, a saved deal deleted) leaves one
 // undo line where it happened (lib/fee-deal/undo.ts), which takes the focus as it appears and lives through edits elsewhere until it is
 // undone, a newer such change replaces it, another deal opens, the part it would put back into changes, or ten seconds pass while neither
@@ -25,12 +28,13 @@ import type { ProductId } from "@finance-tool/schema";
 import { dealCases, feeDeal as copy } from "../../copy";
 import { builder } from "../../lib/fee-deal/rows";
 import { panel as panelOf } from "../../lib/fee-deal/panel";
-import { casesTool, casesToolbox, targetCases, toolbox as toolboxOf, type CasesTarget } from "../../lib/fee-deal/toolbox";
+import { cardOf, casesTool, casesToolbox, targetCases, toolbox as toolboxOf, type CasesTarget, type Toolbox } from "../../lib/fee-deal/toolbox";
 import { slotEdit, thingMenu, usualBy } from "../../lib/fee-deal/things";
 import { addOfferedFee, duplicateFee, setPick, updateFee } from "../../lib/fee-deal/edits/deal";
-import { hasCases, newDeal, pricedOf, toolPrice, toolStages, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
+import { hasCases, newDeal, type Fee, type FeeDeal, type Side } from "../../lib/fee-deal/model";
 import { pickKind, type ByKind } from "../../lib/fee-deal/offers/conditions";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
+import { samePlace, tapCard, type Place } from "../../lib/fee-deal/places";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { leftOut } from "../../lib/fee-deal/left-out";
 import { readingOf } from "../../lib/fee-deal/reading";
@@ -60,8 +64,10 @@ import { UndoLine } from "./undo-line";
 import { READING_ID } from "./left-out";
 import { SlotMenu, WhenText, whenText } from "./open-case";
 import { TemplatePicker } from "./picker";
-import { ToolboxCard, ToolboxColumn, applyTool, type ToolHands } from "./toolbox";
+import { ToolboxCard, ToolboxColumn, applyTool, partLabel, type ToolHands } from "./toolbox";
+import { useLetGo } from "./use-let-go";
 import type { LiftHands, ToolDrop } from "./fee-block";
+import type { PlaceHands } from "./open-case";
 import { ReadingCards } from "./reading";
 import { useUnitPrice } from "./use-unit-price";
 import { refusalWords, useDealDocument, useOpenedDeal } from "./use-deal-document";
@@ -238,16 +244,9 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (to) kept(setKindKept(deal, to, dataBar(id, data, today), chosen));
   };
   const onRemoveChange = (feeId: string, side: Side, k: number, caseId: string | undefined) => kept(removeChangeKept(deal, feeId, side, k, chosen, caseId));
-  // the price of the open case the person is in, where the case has several over time: the toolbox adds to it, the panel's question asks
-  // on it, a form changes it; it belongs to the fee and case it was set in, and any other open goes back to the last price
-  // the price the toolbox follows: its place among its side's prices, and the side (a sale priced apart, once the person is in it)
-  const [editing, setEditing] = useState<{ fee: string; case: string | null; k: number; side: Side } | null>(null);
-  const editingHere = !!editing && editing.fee === chosen && editing.case === caseId;
-  const editingK = editingHere ? editing!.k : undefined;
-  const editingSide: Side = editingHere ? editing!.side : "buy";
-  const onForm = (feeId: string, part: PartId, caseId: string | null) => {
-    const here = feeId === chosen && caseId === oc.caseId;
-    if (doc.changeForm(feeId, part, caseId, here ? editingK : undefined, here ? editingSide : "buy")) oc.pending.set(null);
+  // a charge the toolbox puts on a price that charges nothing, or the bin of a price's charge ("free"), on price `k` on `side`
+  const onCharge = (feeId: string, part: PartId, caseId: string | null, at: { side: Side; k: number }) => {
+    if (doc.changeForm(feeId, part, caseId, at)) oc.pending.set(null);
   };
   const onRemoveCase = (feeId: string, caseId: string) => {
     oc.menus.closeSlot();
@@ -308,20 +307,26 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const views = useMemo(() => (read.deal.fees.length > 0 ? { left: leftOut(read), reading: readingOf(read, data.fx, unitPrice) } : null), [read, data.fx, unitPrice]);
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
   const pending = oc.pending.here;
-  const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending, editingK, editingSide) : null), [read, chosen, caseId, pending, editingK, editingSide]);
+  const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending) : null), [read, chosen, caseId, pending]);
   // while a carried thing is over a place, the fees' column draws the deal as a drop there would leave it (lifted.ts); the reading below,
   // the toolbox and the saved deal stay as they are until it is let go
   const [preview, setPreview] = useState<FeeDeal | null>(null);
   const previewRead = useMemo(() => (preview ? readDealFor(preview, data.kinds, today) : null), [preview, data.kinds, today]);
   const shownBuilder = useMemo(() => (previewRead ? builder(previewRead, bar, chosen ? { fee: chosen, case: caseId } : null) : builderView), [previewRead, builderView, bar, chosen, caseId]);
-  const shownOpen = useMemo(() => (previewRead && chosen ? (panelOf(previewRead, chosen, caseId ?? undefined, pending, editingK, editingSide)?.open ?? null) : (panel?.open ?? null)), [previewRead, chosen, caseId, pending, editingK, editingSide, panel]);
+  const shownOpen = useMemo(() => (previewRead && chosen ? (panelOf(previewRead, chosen, caseId ?? undefined, pending)?.open ?? null) : (panel?.open ?? null)), [previewRead, chosen, caseId, pending, panel]);
   // the several cases of the open fee the toolbox adds to at once, while the fee still has some of them; else it adds to the open case
   const several = oc.cases.target && targetCases(read, oc.cases.target) ? oc.cases.target : null;
-  const tools = useMemo(() => (!chosen ? null : several ? casesToolbox(read, several) : toolboxOf(read, chosen, caseId ?? undefined, editingK, editingSide)), [read, chosen, several, caseId, editingK, editingSide]);
-  // a toolbox card dropped on the open fee (`caseId` null: a slim fee, or the fee as a whole) or one of its cases takes it where that case's
-  // own toolbox offers it and the case has it not yet; dropped on another case than the open one, or while the toolbox adds to several
-  // cases, that case opens first
-  const toolsFor = (feeId: string, at: string | null) => (feeId !== chosen ? null : !several && (at === null || at === caseId) ? tools : toolboxOf(read, feeId, at ?? undefined));
+  const tools = useMemo(() => (!chosen ? null : several ? casesToolbox(read, several) : toolboxOf(read, chosen, caseId ?? undefined)), [read, chosen, several, caseId]);
+  // the toolbox of a case of the open fee (`at` null: a slim fee, or the open case): the one drawn where it is the open case's
+  const toolsFor = (feeId: string, at: string | null): Toolbox | null => (feeId !== chosen ? null : !several && (at === null || at === caseId) ? tools : toolboxOf(read, feeId, at ?? undefined));
+  // a toolbox card at a place of case `on` of fee `fee` (null: a slim fee): what its tap does there (`applyTool`)
+  const applyAt = (item: string, fee: Fee, on: string | null, place: Place) =>
+    applyTool(item, fee, on, place, {
+      onAsk: (kind) => onAddBy(fee.id, kind),
+      onPending: (part, at) => oc.pending.set({ fee: fee.id, case: on, part, place: at }),
+      onCharge: (part, at) => at.on === "price" && onCharge(fee.id, part, on, { side: at.side, k: at.k }),
+      onPart: onPart(fee),
+    });
   /**
    * A card tapped, or dropped, with the toolbox on several cases of a fee (`target`), each an edit of its own, one step of the undo: a
    * thing to change by asks its question, for the whole fee; a part that asks for something asks it once where those cases stand; any
@@ -343,6 +348,48 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (!onCases.has(key)) onCases.set(key, casesTool(read, target, item) !== null);
     return onCases.get(key)!;
   };
+  // the places of a card on case `at` of the open fee (places.ts)
+  const placesOf = (feeId: string, at: string | null, item: string): readonly Place[] => {
+    const t = toolsFor(feeId, at);
+    return (t && cardOf(t, item)?.places) ?? [];
+  };
+  // a card held while the person picks one of its places, on the open case; it goes on the place picked, or is let go, the focus back on it
+  const held = oc.hold.here;
+  const heldCard = held && tools ? cardOf(tools, held.card) : null;
+  const heldPlaces = heldCard?.places ?? [];
+  const letGo = () => {
+    if (!held) return;
+    oc.hold.set(null);
+    requestAnimationFrame(() => document.querySelector<HTMLElement>(`[data-part="${CSS.escape(held.card)}"]`)?.focus({ preventScroll: true }));
+  };
+  useLetGo(!!held && heldPlaces.length > 0, letGo);
+  const onTap = (item: string) => {
+    if (!chosenFee) return;
+    if (several) return onCasesCard(several, item);
+    const t = tapCard(held, { fee: chosenFee.id, case: caseId, card: item }, placesOf(chosenFee.id, caseId, item));
+    if (t.k === "letGo") return letGo();
+    if (t.k === "hold") return oc.hold.set(t.held);
+    oc.hold.set(null);
+    if (t.k === "add") applyAt(item, chosenFee, caseId, t.place);
+  };
+  const places: PlaceHands = {
+    held: heldCard && heldPlaces.length > 0 ? { words: "held" in heldCard ? heldCard.held : partLabel(heldCard), places: heldPlaces } : null,
+    onPlace: (place) => {
+      if (!held || !chosenFee) return;
+      oc.hold.set(null);
+      applyAt(held.card, chosenFee, caseId, place);
+    },
+    takes: (item, place) => placesOf(chosen ?? "", several ? null : caseId, item).some((p) => samePlace(p, place)),
+    onDrop: (item, place) => {
+      if (!chosenFee) return;
+      oc.hold.set(null);
+      applyAt(item, chosenFee, caseId, place);
+    },
+  };
+  // a toolbox card dropped on the open fee (`caseId` null: a slim fee, or the fee as a whole) or one of its cases: a thing to change by
+  // where that case's toolbox offers it; a part where it has one place in that case, and on the open case one that is no single price's
+  // (a price takes its own drop, by its "+"); dropped on another case than the open one, or while the toolbox adds to several cases, that
+  // case opens first
   const drop: ToolDrop = {
     acceptsCases: casesTake,
     onDropCases: (target, item) => {
@@ -350,7 +397,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       oc.onOpenCases(target);
       onCasesCard(target, item);
     },
-    accepts: (feeId, at, item) => !!toolsFor(feeId, at)?.groups.some((g) => g.parts.some((x) => x.id === item && !x.used && !x.off)),
+    accepts: (feeId, at, item) => {
+      if (cardThing(item)) return !!toolsFor(feeId, at)?.groups.some((g) => g.parts.some((x) => x.id === item && !x.used && !x.off));
+      const ps = placesOf(feeId, at, item);
+      const open = !several && (at === null || at === caseId);
+      return ps.length === 1 && (!open || ps[0]!.on !== "price");
+    },
     onDrop: (feeId, at, item) => {
       const fee = deal.fees.find((f) => f.id === feeId);
       if (!fee) return;
@@ -358,14 +410,11 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       const thing = cardThing(item);
       if (thing && at !== null && hasCases(fee)) return oc.ask.onAsk(thing, at);
       const on = at ?? caseId;
+      const ps = thing ? [{ on: "fee" as const }] : placesOf(feeId, on, item);
+      if (ps.length !== 1) return;
       if (on !== caseId || several) oc.onOpenCase(feeId, on, "pointer");
-      const side = on === caseId ? editingSide : "buy";
-      applyTool(item, fee, on, toolPrice({ stages: toolStages(pricedOf(fee, on ?? undefined), side) }, on === caseId ? editingK : undefined), {
-        onAsk: (kind) => onAddBy(feeId, kind),
-        onPending: (part) => oc.pending.set({ fee: feeId, case: on, part }),
-        onForm: (part) => onForm(feeId, part, on),
-        onPart: onPart(fee),
-      }, side);
+      oc.hold.set(null);
+      applyAt(item, fee, on, ps[0]!);
     },
   };
   // a thing lifted by its grip (lifted.ts): dropped on a place, or in a fee's bin, kept for the undo where it took something
@@ -425,12 +474,9 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         line={lines.fill}
         folded={oc.sheet.folded}
         onFold={oc.sheet.setFolded}
-        onCard={(item) =>
-          several
-            ? onCasesCard(several, item)
-            : applyTool(item, chosenFee, caseId, tools.k, { onAsk: (kind) => onAddBy(chosenFee.id, kind), onPending: (part) => oc.pending.set({ fee: chosenFee.id, case: caseId, part }), onForm: (part) => onForm(chosenFee.id, part, caseId), onPart: onPart(chosenFee) }, tools.side)
-        }
-        onPrice={(k) => setEditing({ fee: chosenFee.id, case: caseId, k, side: editingSide })}
+        held={held && places.held ? { card: held.card, words: places.held.words } : null}
+        onCard={onTap}
+        onLetGo={letGo}
         onFee={onFee}
         onStopBy={(kind) => onStopBy(chosenFee.id, kind)}
         onClose={oc.onClosePanel}
@@ -552,7 +598,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
                 onRemoveFee,
                 drop,
                 onRemoveChange,
-                onEditPrice: (feeId, caseId, k, side = "buy") => setEditing({ fee: feeId, case: caseId ?? null, k, side }),
+                onRemoveCharge: (feeId, caseId, side, k) => onCharge(feeId, "free", caseId ?? null, { side, k }),
+                places,
                 pendingHands: { onDone: () => oc.pending.set(null), fresh: oc.pending.fresh, onShown: oc.pending.onShown },
                 onAskDone: oc.ask.onAskDone,
                 lift: liftHands,

@@ -28,6 +28,7 @@ export * from "./ledgers/child-savings.ts";
 export * from "./timeline.ts";
 export * from "./resolver.ts";
 export * from "./open-readings.ts";
+export { withRunMemo } from "./run-memo.ts";
 export * from "./result.ts";
 export * from "./registry.ts";
 export * from "./inputs.ts";
