@@ -34,8 +34,19 @@ export interface FeeRemove {
   onRemove: () => void;
 }
 
-/** The thin stripe of the fee's colour along its card's top edge. */
-const Stripe = ({ dot }: { dot: string }) => <span aria-hidden className={cx("pointer-events-none absolute -inset-x-px -top-px h-[3px] rounded-t-lg", dot)} />;
+/**
+ * The thin stripe of the fee's colour along its card's top edge, bending down its rounded corners as a top border does (founder,
+ * 2026-11-20: a straight bar stood over the curve): the card's shape in the fee's colour, masked to its 3 px top border.
+ */
+const Stripe = ({ dot }: { dot: string }) => (
+  <span
+    aria-hidden
+    className={cx(
+      "fee-stripe pointer-events-none absolute -inset-px rounded-lg border-t-[3px] border-transparent",
+      dot,
+    )}
+  />
+);
 
 /** A closed card's corner actions: knobs on its top edge at its end, over nothing of it. */
 function Corner({ children }: { children: ReactNode }) {

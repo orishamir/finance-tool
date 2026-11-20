@@ -1860,6 +1860,40 @@ export const feeDeal = {
       insideFund: "נגבים בתוך הקרן",
     },
   },
+  /**
+   * A fee the reading leaves out because a figure of its price is not given yet (lib/fee-deal/unpriced.ts): its card's note, the line under
+   * the cell that misses it, and the reading's tab for an action whose every fee is so.
+   */
+  unpriced: {
+    /** The note's lead, agreeing with the fee's name (`nameForms`; a fee of the person's own takes `m`): "לא מחושבת: חסר מחיר בניירות ערך בתל אביב, באינטרנט ובאפליקציה." */
+    label: { m: "לא מחושב", f: "לא מחושבת", mp: "לא מחושבים", fp: "לא מחושבות" } as Record<string, string>,
+    /** After it, the cases named inside a sentence (`casesWhere`; none for a fee whose price changes by nothing). */
+    noPrice: (where: string | null) => (where ? `חסר מחיר ${where}.` : "חסר מחיר."),
+    /** The link after the note: to the case whose price is missing, or to the price of a fee whose price changes by nothing. */
+    toCase: "למקרה הזה",
+    toPrice: "למחיר",
+    /** What a price is missing, by the figure (`Missing`): the cell's line ("חסר הסכום ליחידה."), and the reading's line about the fee. */
+    missing: { rate: "חסר האחוז", unit: "חסר הסכום ליחידה", sum: "חסר הסכום", price: "חסר מחיר" } as Record<string, string>,
+    /** What is missing as the cell's line says it, a sentence of its own. */
+    line: (missing: string) => `${missing}.`,
+    /** The reading's button that opens where it is missing, by the figure. */
+    enter: { rate: "להזין את האחוז", unit: "להזין את הסכום", sum: "להזין את הסכום", price: "להזין את המחיר" } as Record<string, string>,
+    /** The reading's tab whose every fee is so, in place of its chart: "קנייה או מכירה עוד לא מחושבת" (`male`: "מחושב"). */
+    tab: (noun: string, male: boolean) => `${noun} עוד לא ${male ? "מחושב" : "מחושבת"}`,
+    /**
+     * Its line about each fee: "בעמלת קנייה ומכירה חסר הסכום ליחידה, בניירות ערך בתל אביב, באינטרנט ובאפליקציה."; `fee`, its name after the
+     * lead `feeIn`, and `missing`, the figure (`missing`).
+     */
+    feeIn: "ב־",
+    feeLine: (fee: string, missing: string, where: string | null) => (where ? `${fee} ${missing}, ${where}.` : `${fee} ${missing}.`),
+    /**
+     * A case named inside a sentence: the lead a named value takes by its thing, where its words say no place of their own ("ניירות ערך
+     * בתל אביב" is said "בניירות ערך בתל אביב"; "בסניף" as it is); between its things; and between two cases.
+     */
+    inSentence: { what: "ב־", held: "ב־", track: "ב־" } as Record<string, string>,
+    thingSep: ", ",
+    caseSep: "; ",
+  },
   /** The left column: every field of the chosen fee. */
   panel: {
     title: "העמלה שבחרתם",
@@ -2292,48 +2326,56 @@ export const feeDeal = {
     },
     /** What one action costs by its size (F-112, F-123): a tab per action and side the deal prices, by the key `{action}:{side}`. */
     action: {
-      kicker: "מה עולה כל פעולה, לפי הגודל שלה",
+      kicker: "מה עולה פעולה, לפי הגודל",
       tabs: { "trade:all": "קנייה או מכירה", "trade:buy": "קנייה", "trade:sell": "מכירה", "conversion:all": "המרה", "conversion:buy": "המרה בקנייה", "conversion:sell": "המרה במכירה", "deposit:all": "הפקדה", "distribution:all": "תשלום של ריבית או דיבידנד", "transfer_out:all": "העברה החוצה" } as Record<string, string>,
       /** The tabs' spoken name. */
       tabsName: "הפעולה",
       /** The action in a sentence, by its tab's key or its action, and the gender the words after it take (`f` where not listed). */
       noun: { trade: "קנייה", "trade:sell": "מכירה", conversion: "המרה", deposit: "הפקדה", distribution: "תשלום", transfer_out: "העברה", none: "פעולה" } as Record<string, string>,
       male: { distribution: true } as Record<string, boolean>,
-      /** The headline where a minimum, a cap or a flat price decides below a sum: "קנייה קטנה מ־15,600 $ עולה יותר מ־0.3375% ממנה". */
-      below: { f: { small: " קטנה מ־", more: " עולה יותר מ־", of: " ממנה" }, m: { small: " קטן מ־", more: " עולה יותר מ־", of: " ממנו" } },
+      /**
+       * The headline where a minimum, a cap or a flat price decides below a sum, by an action at the axis's start: "קנייה של 1,000 ₪ עולה
+       * 39 ₪, שהם 3.9% ממנה. רק מ־13,000 ₪ המחיר יורד ל־0.3%". The gender is the noun's.
+       */
+      below: { costs: " עולה ", which: ", שהם ", of: { f: " ממנה", m: " ממנו" }, only: ". רק מ־", falls: " המחיר יורד ל־" },
       /** The headline where a maximum decides above a sum. */
       max: { before: "מעל ", after: " המקסימום קובע" },
       marks: { one: "העלות משנה התנהגות בסכום אחד", two: "העלות משנה התנהגות בשני סכומים", many: "העלות משנה התנהגות ב־{n} סכומים" },
-      /** The sub: "עד שם המינימום של {fee}, 39 $, קובע. מעל זה קנייה עולה 0.3375%: {fee} 0.25% ועוד {fee} 0.0875%." */
-      upTo: { lead: "עד שם ", of: " של ", decides: ", קובע. " },
       part: { min: "המינימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע", sum: "המחיר", free: "הפטור", max: "המקסימום", rate: "האחוז" } as Record<string, string>,
-      above: { lead: "מעל זה ", costs: " עולה ", list: ": ", and: " ועוד ", end: "." },
-      /** A maximum of one fee above a sum: "מעל 312,000 ₪ קובע המקסימום של {fee}, 780 ₪." */
-      maxAt: { lead: "מעל ", the: " קובע המקסימום של ", sep: ", ", end: "." },
+      /** The sub, where several fees add to the headline's rate: "ה־0.45% הם {fee} 0.25% ועוד {fee} 0.2%." */
+      above: { lead: "ה־", are: " הם ", and: " ועוד ", end: "." },
+      /**
+       * A maximum above a sum: "מעל 2,300,000 ₪ המחיר נעצר על 6,900 ₪, ובאחוזים הוא יורד עוד." where the action has one fee, and "מעל
+       * 312,000 ₪ המחיר של {fee} נעצר על 780 ₪." where it has several.
+       */
+      maxAt: { lead: "מעל ", stops: " המחיר נעצר על ", falls: ", ובאחוזים הוא יורד עוד", of: " המחיר של ", feeStops: " נעצר על ", end: "." },
       sameSale: "מכירה עולה אותו דבר.",
       /** The amount under the chart, by the tab's key or its action. */
       x: { trade: "גודל הקנייה (₪)", "trade:sell": "גודל המכירה (₪)", conversion: "גודל ההמרה (₪)", deposit: "גודל ההפקדה (₪)", distribution: "גודל התשלום (₪)", transfer_out: "גודל ההעברה (₪)" } as Record<string, string>,
       /** The zones over the chart: which part decides there. */
-      zones: { min: "המינימום קובע", cap: "המקסימום באחוזים קובע", flat: "המחיר הקבוע קובע", sum: "הסכום קובע", rate: "האחוזים", max: "המקסימום" } as Record<string, string>,
-      /** Over the value axis where the curve leaves its top: its value at the axis's start. */
+      zones: { min: "מינימום", cap: "מקסימום באחוזים", flat: "מחיר קבוע", sum: "סכום קבוע", rate: "אחוז", max: "מקסימום" } as Record<string, string>,
+      /** Over the value axis where the curve leaves its top: its value at the axis's start, an amount in shekels. */
       over: (share: string, at: string) => `↑ ${share} ב־${at}`,
       /** The reader's point, as a control's spoken name. */
       point: "גודל הפעולה בגרף",
       /** The reading beside the chart: "{noun} של {amount}", and the share's words after it, by the tab's key or its action. */
       of: " של ",
       share: { trade: "מהקנייה", "trade:sell": "מהמכירה", conversion: "מההמרה", deposit: "מההפקדה", distribution: "מהתשלום", transfer_out: "מההעברה" } as Record<string, string>,
-      /** Why a part costs what it does: "המינימום, 39 $, קובע: 0.25% היו 47 ₪". */
-      why: { sep: ", ", decides: ", קובע", alone: ": ", would: " היו " },
+      /**
+       * Why a part costs what it does, by how far it is from its rate alone: "המקסימום חוסך 7,500 ₪: לפי 0.3% זה היה 14,400 ₪." or
+       * "המינימום מוסיף 9 ₪: לפי 0.3% זה היה 30 ₪."; where that is not known, "המינימום, 39 $, קובע". Every part's name is masculine.
+       */
+      why: { sep: ", ", decides: ", קובע", adds: " מוסיף ", saves: " חוסך ", alone: ": לפי ", would: " זה היה ", end: "." },
       bar: "העלות לפי עמלה",
-      lanes: "מה קובע את המחיר של כל עמלה, לפי הגודל",
+      /** Over the lanes: the deciding part of one fee, or of each of several. */
+      lanes: "מה קובע את המחיר",
+      lanesEach: "מה קובע את המחיר של כל עמלה",
       /** A part's words on its lane, before its figure; a part free of charge. */
       lane: { min: "מינימום ", max: "מקסימום ", cap: "עד ", flat: "", sum: "", rate: "", free: "חינם" } as Record<string, string>,
       /** On a phone, between a lane's name and the period its parts are per: "דמי ניהול פיקדון ניירות ערך · ברבעון". */
       lanePer: " · ",
       /** The reading at the point on one line, over the chart where the card stands under it: "קנייה של 18,650 ₪ (5,714 $): 144 ₪, 0.77% מהקנייה". */
       line: { sep: ": ", and: ", " },
-      /** The parts of a lane under the axis's start, in words: "{fee}: עד 130 $ לכל היותר 30% מהפעולה; עד 10 $ חינם." */
-      under: { upTo: "עד ", sep: "; ", end: ".", capLead: "לכל היותר ", minLead: "מינימום " },
       /** Where nothing varies: one number, a share or a sum, in every size. */
       one: { share: " מכל {noun}, בכל גודל", sum: " לכל {noun}, בכל גודל" },
     },
@@ -2562,6 +2604,7 @@ function dealInputNames(): Record<string, string> {
   // the amount a chart reads at, what it costs there, and the top of a step a drop is at (charts.ts)
   out["deal:amount"] = "הסכום שבגרף";
   out["deal:cost"] = "העלות בסכום הזה";
+  out["deal:rate-alone"] = "מה שהאחוז לבד היה גובה";
   out["deal:step-top"] = "הסכום שבו המדרגה נגמרת";
   return out;
 }
@@ -5403,7 +5446,7 @@ export const kit = {
         b: "עמלה נוספת לדוגמה",
         x: "הסכום, לדוגמה (₪)",
         tip: (a: string) => `סכום של ${a}`,
-        zones: { min: "המינימום קובע", rate: "האחוזים" },
+        zones: { min: "מינימום", rate: "אחוז" },
         groups: { share: "אחוזים", fixed: "סכומים קבועים" },
         laneGroups: { share: "אחוזים, לדוגמה", fixed: "סכומים קבועים, לדוגמה" },
         crossSub: "נקודה לדוגמה",

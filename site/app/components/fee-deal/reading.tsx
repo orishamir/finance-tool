@@ -12,14 +12,14 @@ import { countPhrase, fmt, formatValue, joinLead } from "../../lib/format";
 import type { MonthKey } from "../../lib/fee-deal/model";
 import type { FeeRef } from "../../lib/fee-deal/deal-read";
 import type { LawRow, PeriodCard, PeriodRow, Reading, StatedPart } from "../../lib/fee-deal/reading";
-import { roundAmount, settleRange, type ActionReading, type ActionTab, type ActionView, type AmountRange, type ChartFee, type CurvePoint, type HeldReading, type HeldView, type Lane, type LanePart, type OneView, type TimelinePeriod, type UndrawnView } from "../../lib/fee-deal/charts";
+import { roundAmount, settleRange, type ActionReading, type ActionTab, type ActionView, type AmountRange, type ChartFee, type CurvePoint, type HeldReading, type HeldView, type Lane, type LanePart, type OneView, type TimelinePeriod, type UndrawnView, type UnpricedView } from "../../lib/fee-deal/charts";
 import { lawHead, periodsHead, type PeriodsHead } from "../../lib/fee-deal/reading-heads";
-import { AmountLanes, Card, NumberField, PanelHead, PERIOD_WIDE, PeriodTrack, periodColumns, RangeFields, SegmentedControl, ShareBar, ShareChart, ShareStack, Swatch, Tag, TypedPlain, When, cx, fill, shareAt, shareTicks, type AmountLane, type AmountLanePart, type ShareMark } from "../kit";
+import { AmountLanes, Card, EmptyState, NumberField, PanelHead, PERIOD_WIDE, PeriodTrack, periodColumns, RangeFields, SegmentedControl, ShareBar, ShareChart, ShareStack, Swatch, Tag, TypedPlain, When, cx, fill, shareAt, shareTicks, type AmountLane, type AmountLanePart, type ShareMark } from "../kit";
 import { Num, Ruled } from "../provenance";
 import { leftByPanel, type LeftOut } from "../../lib/fee-deal/left-out";
-import { FeeOpen } from "./links";
+import { FeeOpen, useFeeLinks } from "./links";
 import { LeftOutList, LeftOutNotes } from "./left-out";
-import { CapRules, Fig, LawBlock, PriceWords, feeColour, feeName, refName, sumDisplay } from "./words";
+import { CapRules, Fig, LawBlock, PriceWords, feeColour, feeName, formOf, refName, sumDisplay } from "./words";
 import { sumUnit } from "../../lib/fee-deal/values";
 
 const w = copy.read;
@@ -28,8 +28,6 @@ const w = copy.read;
 const textOf = (v: SiteValue): string => sumDisplay(v)?.(v.value as number) ?? formatValue(v.value as number, v.unit, v.state);
 /** A word of an action's tab, by the tab's key where it has its own ("trade:sell"), else by its action. */
 const tabWord = (table: Record<string, string>, tab: { key: string; action: string }) => table[tab.key] ?? table[tab.action] ?? "";
-/** The gender and number a word agreeing with a fee's name takes; a fee of the person's own agrees with nothing, and takes the plain form. */
-const formOf = (f: FeeRef) => (f.kind !== "own" && copy.nameForms[f.kind]?.g) || "m";
 /** A period's first month in words with its lead ("מינואר 2027"), as a plain string for a control's option. */
 const fromText = (m: MonthKey) => `${joinLead(w.periods.from, fmt.period(m))}${fmt.period(m)}`;
 const colourOf = (f: ChartFee) => feeColour(f.ref.kind, f.ref.house);
@@ -108,35 +106,6 @@ function laneOf(l: Lane, saved: boolean): AmountLane {
     ...(per ? { per: `${w.action.lanePer}${copy.price.per[per] ?? ""}` } : {}),
     ...(l.group ? { group: l.group } : {}),
   };
-}
-
-/** A lane's parts under the axis's start, in words: "{fee}: עד 130 $ לכל היותר 30% מהפעולה; עד 10 $ חינם." */
-function UnderLine({ fee, parts }: { fee: ChartFee; parts: LanePart[] }) {
-  const u = w.action.under;
-  const of = copy.price.of[fee.ref.kind] ?? copy.price.of.default;
-  return (
-    <li className="flex items-baseline gap-2">
-      <Swatch shape="box" className={cx("translate-y-px", colourOf(fee).bg)} />
-      <p>
-        {refName(fee.ref)}
-        {copy.price.sep}
-        {parts.map((p, k) => (
-          <span key={k}>
-            {k > 0 && u.sep}
-            {p.end && <FigAfter value={p.end} lead={u.upTo} />}{" "}
-            {p.part === "free" ? copy.price.free : p.figure ? (
-              <>
-                {p.part === "cap" ? u.capLead : p.part === "min" ? u.minLead : ""}
-                <Fig value={p.figure} />
-                {p.part === "cap" ? ` ${of}` : ""}
-              </>
-            ) : null}
-          </span>
-        ))}
-        {u.end}
-      </p>
-    </li>
-  );
 }
 
 // ---------------------------------------------------------------- around a chart
@@ -233,6 +202,29 @@ function Undrawn({ view }: { view: UndrawnView }) {
   return view.why === "rate" ? <p className="text-sm text-muted-foreground">{w.chart.undrawn(copy.panel.currencies[view.currency] ?? view.currency)}</p> : null;
 }
 
+/**
+ * An action whose every fee is left out for a price not given, in place of its chart (`UnpricedView`): that it is not worked out yet, what
+ * each fee's price is missing and where, and the button that opens the first fee's case missing it, as the fee's own note does.
+ */
+function UnpricedBody({ view, tab }: { view: UnpricedView; tab: ActionTab }) {
+  const links = useFeeLinks();
+  const u = copy.unpriced;
+  const first = view.fees[0]!;
+  const lines = view.fees.map(({ fee, unpriced }) => {
+    const name = refName(fee);
+    return u.feeLine(`${joinLead(u.feeIn, name)}${name}`, u.missing[unpriced.missing]!, unpriced.where);
+  });
+  return (
+    <EmptyState inPanel title={u.tab(tabWord(w.action.tabs, tab), !!w.action.male[tab.action])} action={{ label: u.enter[first.unpriced.missing], onClick: () => links?.openCase(first.fee.fee, first.unpriced.cases[0] ?? null) }}>
+      {lines.join(" ")}
+    </EmptyState>
+  );
+}
+
+/** What a panel leaves out but the fees its unpriced view already names (`UnpricedView`), which say it there. */
+const leftBut = (left: LeftOut | undefined, view: UnpricedView): LeftOut | undefined =>
+  left && { ...left, unpriced: left.unpriced.filter((f) => !view.fees.some((x) => x.fee.fee === f.fee)) };
+
 /** The choice of period where a chart differs by period: "היום" for the one today is in, the others by their first month. */
 function PeriodChoice({ periods, reading, value, onChange }: { periods: MonthKey[]; reading: Reading; value: number; onChange: (k: number) => void }) {
   const label = (m: MonthKey) => (reading.periods.find((p) => p.from === m)?.current ? w.held.today : fromText(m));
@@ -245,13 +237,20 @@ function ActionHeadline({ view, tab }: { view: ActionView; tab: ActionTab }) {
   const h = view.head;
   const a = w.action;
   if (h.kind === "below") {
-    const g = a.male[tab.action] ? a.below.m : a.below.f;
+    // an action at the axis's start: below `below` every action costs more than the rate, and this one the most on the chart
+    const small = view.readAt(view.range.lo);
     return (
       <>
         {tabWord(a.noun, tab)}
-        <FigAfter value={h.below} lead={g.small} />
-        <NumAfter value={h.rate} lead={g.more} display={fmt.pctPrinted} />
-        {g.of}
+        {a.of}
+        <Num value={small.amount} display={fmt.nisWhole} />
+        {a.below.costs}
+        <Fig value={small.total} />
+        {a.below.which}
+        <Num value={small.share} />
+        {a.male[tab.action] ? a.below.of.m : a.below.of.f}
+        <FigAfter value={h.below} lead={a.below.only} />
+        <NumAfter value={h.rate} lead={a.below.falls} display={fmt.pctPrinted} />
       </>
     );
   }
@@ -265,49 +264,45 @@ function ActionHeadline({ view, tab }: { view: ActionView; tab: ActionTab }) {
   return <>{countPhrase(h.n, a.marks)}</>;
 }
 
-/** The sub of an action's headline: the part that decides up to its sum, the rate above it and the fees it adds, a maximum, and the sale. */
+/** The sub of an action's headline: the fees its rate adds up from, where several; a maximum; and the sale. */
 function ActionSub({ view, tab }: { view: ActionView; tab: ActionTab }) {
   const h = view.head;
   const a = w.action;
   const sale = tab.action === "trade" && tab.side === "all" ? a.sameSale : "";
-  if (h.kind !== "below") return sale ? <p className="text-muted-foreground">{sale}</p> : null;
+  if (h.kind !== "below" || (h.adds.length < 2 && !h.max)) return sale ? <p className="text-muted-foreground">{sale}</p> : null;
   return (
     <p className="text-muted-foreground">
-      {a.upTo.lead}
-      {a.part[h.by.part.part]}
-      {a.upTo.of}
-      {refName(h.by.fee.ref)}
-      {h.by.part.figure && (
-        <>
-          {a.why.sep}
-          <Fig value={h.by.part.figure} />
-        </>
-      )}
-      {a.upTo.decides}
-      {a.above.lead}
-      {tabWord(a.noun, tab)}
-      {a.above.costs}
-      <Num value={h.rate} display={fmt.pctPrinted} />
       {h.adds.length > 1 && (
         <>
-          {a.above.list}
+          <NumAfter value={h.rate} lead={a.above.lead} display={fmt.pctPrinted} />
+          {a.above.are}
           {h.adds.map((x, k) => (
             <span key={x.fee.ref.fee}>
               {k > 0 && a.above.and}
               {refName(x.fee.ref)} <Fig value={x.rate} />
             </span>
           ))}
+          {a.above.end}
         </>
       )}
-      {a.above.end}
       {h.max && (
         <>
-          {" "}
+          {h.adds.length > 1 && " "}
           <FigAfter value={h.max.at} lead={a.maxAt.lead} />
-          {a.maxAt.the}
-          {refName(h.by.fee.ref)}
-          {a.maxAt.sep}
-          <Fig value={h.max.figure} />
+          {view.lanes.length === 1 ? (
+            <>
+              {a.maxAt.stops}
+              <Fig value={h.max.figure} />
+              {a.maxAt.falls}
+            </>
+          ) : (
+            <>
+              {a.maxAt.of}
+              {refName(h.max.fee.ref)}
+              {a.maxAt.feeStops}
+              <Fig value={h.max.figure} />
+            </>
+          )}
           {a.maxAt.end}
         </>
       )}
@@ -324,6 +319,18 @@ function WhyLine({ part, lane, share }: { part: ActionReading["parts"][number]; 
   if (p.part === "free") return <>{copy.price.free}</>;
   if (p.part === "rate") return p.figure ? <><Fig value={p.figure} /> {share}</> : null;
   const rate = lane?.parts?.find((x) => x.part === "rate")?.figure;
+  // what the part adds to its rate alone, or saves off it, where both are known and differ
+  if (rate && part.rateAlone && part.apart && (part.apart.value as number) > 0)
+    return (
+      <>
+        {a.part[p.part]}
+        <FigAfter value={part.apart} lead={(part.cost.value as number) > (part.rateAlone.value as number) ? a.why.adds : a.why.saves} />
+        {a.why.alone}
+        <Fig value={rate} />
+        <FigAfter value={part.rateAlone} lead={a.why.would} />
+        {a.why.end}
+      </>
+    );
   return (
     <>
       {a.part[p.part]}
@@ -334,13 +341,6 @@ function WhyLine({ part, lane, share }: { part: ActionReading["parts"][number]; 
         </>
       )}
       {a.why.decides}
-      {rate && part.rateAlone && (
-        <>
-          {a.why.alone}
-          <Fig value={rate} />
-          <FigAfter value={part.rateAlone} lead={a.why.would} />
-        </>
-      )}
     </>
   );
 }
@@ -441,7 +441,7 @@ function ActionChart({ view, tab, stated, fx, left }: { view: ActionView; tab: A
   const first = shareAt(points, view.start);
   const top = first > 0 ? Math.min(most, first * 6) : most;
   const yTop = shareTicks(top).at(-1) ?? top;
-  const over = points[0] && points[0].share > yTop ? w.action.over(fmt.pct(points[0].share >= 10 ? Math.round(points[0].share * 10) / 10 : points[0].share), fmt.number(range.lo)) : undefined;
+  const over = points[0] && points[0].share > yTop ? w.action.over(fmt.pct(points[0].share >= 10 ? Math.round(points[0].share * 10) / 10 : points[0].share), fmt.nisWhole(range.lo)) : undefined;
   const share = read.share.value as number;
   const marks: ShareMark[] = view.marks.filter((m) => Math.abs(Math.log(m.at / at)) > 0.01).map((m, k) => ({ id: String(k), at: m.at, label: textOf(m.label) }));
   const move = (a: number) => setAt(Math.max(range.lo, Math.min(range.hi, roundAmount(a))));
@@ -449,9 +449,6 @@ function ActionChart({ view, tab, stated, fx, left }: { view: ActionView; tab: A
     <ul className="flex flex-col gap-1.5 border-t border-border pt-3 text-xs text-muted-foreground">
       {statedOf(stated, view.fees).map((s) => (
         <StatedLine key={`${s.fee.fee}:${s.part}`} part={s} />
-      ))}
-      {view.below.map((b) => (
-        <UnderLine key={b.fee.ref.fee} fee={b.fee} parts={b.parts} />
       ))}
       {view.rates.map((r) => (
         <li key={r.currency}>
@@ -478,7 +475,7 @@ function ActionChart({ view, tab, stated, fx, left }: { view: ActionView; tab: A
             spoken={w.action.point}
             xTitle={tabWord(w.action.x, tab)}
           />
-          <AmountLanes title={w.action.lanes} range={range} lanes={view.lanes.map((l) => laneOf(l, false))} at={at} entered strong={strong} onLane={setStrong} onPart={(_, p) => setAt(middleOf(p, range))} />
+          <AmountLanes title={view.lanes.length > 1 ? w.action.lanesEach : w.action.lanes} range={range} lanes={view.lanes.map((l) => laneOf(l, false))} at={at} entered strong={strong} onLane={setStrong} onPart={(_, p) => setAt(middleOf(p, range))} />
         </ShareStack>
       </div>
       <ActionCard read={read} view={view} tab={tab} strong={strong} onStrong={setStrong} notes={notes} />
@@ -511,8 +508,8 @@ function ActionPanel({ reading, fx, saved, unitPrice, onUnitPrice, left }: { rea
   const [k, setK] = useState(0);
   const tab = tabs.find((t) => t.key === key) ?? tabs[0]!;
   const view = tab.views[Math.min(k, tab.views.length - 1)]!;
-  const periods = tab.views.map((v) => ("chart" in v ? v.chart.periods : "one" in v ? v.one.periods : v.undrawn.periods)[0]!);
-  const unitFee = reading.unitPrice && tab.action === "trade" ? unitFeeOf(reading, tab) : null;
+  const periods = tab.views.map((v) => ("chart" in v ? v.chart.periods : "one" in v ? v.one.periods : "undrawn" in v ? v.undrawn.periods : v.unpriced.periods)[0]!);
+  const unitFee = reading.unitPrice && tab.action === "trade" && !("unpriced" in view) ? unitFeeOf(reading, tab) : null;
   return (
     <Card className="flex flex-col gap-4">
       <PanelHead
@@ -533,7 +530,7 @@ function ActionPanel({ reading, fx, saved, unitPrice, onUnitPrice, left }: { rea
           ) : undefined
         }
       >
-        {"chart" in view ? <ActionHeadline view={view.chart} tab={tab} /> : "one" in view ? <OneHeadline one={view.one} noun={tabWord(w.action.noun, tab)} held={false} /> : w.action.tabs[tab.key]}
+        {"chart" in view ? <ActionHeadline view={view.chart} tab={tab} /> : "one" in view ? <OneHeadline one={view.one} noun={tabWord(w.action.noun, tab)} held={false} /> : "unpriced" in view ? null : w.action.tabs[tab.key]}
       </PanelHead>
       {tab.views.length > 1 && <PeriodChoice periods={periods} reading={reading} value={k} onChange={setK} />}
       {reading.unitPrice && unitFee && <UnitPriceField unit={reading.unitPrice} fee={unitFee} value={unitPrice} onChange={onUnitPrice} />}
@@ -541,10 +538,12 @@ function ActionPanel({ reading, fx, saved, unitPrice, onUnitPrice, left }: { rea
         <ActionChart key={`${tab.key}:${k}`} view={view.chart} tab={tab} stated={reading.panels.stated[tab.key] ?? []} fx={fx} left={left[tab.key]} />
       ) : "one" in view ? (
         <OnePrices one={view.one} saved={saved} />
+      ) : "unpriced" in view ? (
+        <UnpricedBody view={view.unpriced} tab={tab} />
       ) : (
         <Undrawn view={view.undrawn} />
       )}
-      {!("chart" in view) && <LeftNotes left={left[tab.key]} />}
+      {!("chart" in view) && <LeftNotes left={"unpriced" in view ? leftBut(left[tab.key], view.unpriced) : left[tab.key]} />}
     </Card>
   );
 }
@@ -744,9 +743,6 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
       <ul className="grid gap-x-8 gap-y-1.5 border-t border-border pt-3 text-xs text-muted-foreground empty:hidden md:grid-cols-2">
         {notes.map((s) => (
           <StatedLine key={`${s.fee.fee}:${s.part}`} part={s} />
-        ))}
-        {view.below.map((b) => (
-          <UnderLine key={b.fee.ref.fee} fee={b.fee} parts={b.parts} />
         ))}
         <LeftOutNotes left={left} />
       </ul>

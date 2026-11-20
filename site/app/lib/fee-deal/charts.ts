@@ -32,6 +32,8 @@ import { capacity } from "./offers/capacity";
 import { figure, inputKey, priceFigures, reading, sumUnit, type PriceFigures } from "./values";
 import type { PeriodCard, PeriodRow, StatedPart } from "./reading";
 import type { FeeKindId } from "./shapes";
+import { unpricedSaid, type UnpricedSaid } from "./case-words";
+import { actionOfLeft, leftRef } from "./left-out";
 
 // ---------------------------------------------------------------- the axis
 
@@ -286,6 +288,8 @@ export interface ActionPart {
   part: LanePart | undefined;
   /** `rate × a` in shekels, where a minimum or a maximum decides instead (F-123). */
   rateAlone?: SiteValue;
+  /** How far the cost is from `rateAlone`, in shekels: what the minimum adds or the maximum saves (F-123). */
+  apart?: SiteValue;
 }
 
 /** What one action of the reader's amount costs (F-112, F-123): the amount, in the curve's currency too, its cost, its share and its parts. */
@@ -322,7 +326,7 @@ export interface CurvePoint {
 /** What the headline of an action's chart says (F-123), from the deal's marks. */
 export type ActionHead =
   /** An action under `below` costs more than `rate` of it: the part that ends there and its fee, the fees that add to the rate, and the maximum where one fee's is. */
-  | { kind: "below"; below: SiteValue; rate: SiteValue; by: { fee: ChartFee; part: LanePart }; adds: { fee: ChartFee; rate: SiteValue }[]; max?: { at: SiteValue; figure: SiteValue } }
+  | { kind: "below"; below: SiteValue; rate: SiteValue; by: { fee: ChartFee; part: LanePart }; adds: { fee: ChartFee; rate: SiteValue }[]; max?: { at: SiteValue; figure: SiteValue; fee: ChartFee } }
   /** Above `at` a maximum decides. */
   | { kind: "max"; at: SiteValue }
   /** The cost changes behaviour at `n` amounts. */
@@ -356,8 +360,6 @@ export interface ChartView {
   /** The curve's samples over a range (F-123). */
   sample: (range: AmountRange, n?: number) => CurvePoint[];
   rates: CurveRate[];
-  /** The notes under the chart: each lane's parts below the range, in words. */
-  below: { fee: ChartFee; parts: LanePart[] }[];
 }
 
 /** An action's chart, or one number where nothing in it varies. */
@@ -397,7 +399,16 @@ export interface UndrawnView {
   currency: string;
 }
 
-export type ActionPanelView = { chart: ActionView } | { one: OneView } | { undrawn: UndrawnView };
+/**
+ * An action whose every fee the reading leaves out for a price not given (`DealRead.unpricedAt`): its tab stands, and in place of a chart
+ * says the action is not worked out yet and, for each such fee, what its price is missing and where (`UnpricedSaid`).
+ */
+export interface UnpricedView {
+  periods: MonthKey[];
+  fees: { fee: FeeRef; unpriced: UnpricedSaid }[];
+}
+
+export type ActionPanelView = { chart: ActionView } | { one: OneView } | { undrawn: UndrawnView } | { unpriced: UnpricedView };
 export type HeldPanelView = { chart: HeldView } | { one: OneView } | { undrawn: UndrawnView };
 
 /** An action's tab: one action on one side, and its view in each period whose prices differ. */
@@ -558,7 +569,9 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
         const ePrice = part ? pricesOf(r, p, part.i, side).e : null;
         const alone = part && (part.part === "min" || part.part === "max") && ePrice?.kind === "action" ? reading(ePrice.rate * a, "nis", "F-123", { ...amountIn, ...endInputs(r, part.i, ePrice, priceAt(r.fees[part.i]!, p.from, side === "sell")) }, r.today) : undefined;
         if (!(v > 0) && part?.part !== "free") return [];
-        return [{ fee, cost: reading(v, "nis", "F-112", { ...inputs, ...amountIn }, r.today), part, ...(alone ? { rateAlone: alone } : {}) }];
+        const feeCost = reading(v, "nis", "F-112", { ...inputs, ...amountIn }, r.today);
+        const apart = alone ? reading(Math.abs(v - (alone.value as number)), "nis", "F-123", { "deal:cost": feeCost, "deal:rate-alone": alone }, r.today) : undefined;
+        return [{ fee, cost: feeCost, part, ...(alone ? { rateAlone: alone } : {}), ...(apart ? { apart } : {}) }];
       }),
     };
   };
@@ -575,10 +588,6 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
       range,
       sample,
       rates: values,
-      below: lanes.flatMap((l) => {
-        const parts = (l.parts ?? []).filter((x) => x.to !== null && x.to <= range.lo);
-        return parts.length ? [{ fee: l.fee, parts }] : [];
-      }),
       zones,
       head,
       readAt,
@@ -648,7 +657,7 @@ function actionHead(r: DealRead, p: DealPeriod, action: DealAction, side: "buy" 
         rate,
         by: { fee: by.lane.fee, part: by.part },
         adds: rIn.length > 1 ? rIn : [],
-        ...(maxPart && maxPart.figure ? { max: { at: maxes[0]!.part.end!, figure: maxPart.figure } } : {}),
+        ...(maxPart && maxPart.figure ? { max: { at: maxes[0]!.part.end!, figure: maxPart.figure, fee: maxes[0]!.lane.fee } } : {}),
       };
     }
   }
@@ -790,7 +799,6 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
       range,
       sample,
       rates: values,
-      below: [],
       head: crossValue ? { kind: "cross", at: crossValue } : { kind: "marks", n: marks.length },
       cross,
       bands,
@@ -837,7 +845,31 @@ function merged<V>(items: readonly { sig: string; at: MonthKey; make: () => V }[
   return out.map((o) => o.v);
 }
 
-const periodsOf = (v: ActionPanelView | HeldPanelView): MonthKey[] => ("chart" in v ? v.chart.periods : "one" in v ? v.one.periods : v.undrawn.periods);
+const periodsOf = (v: ActionPanelView | HeldPanelView): MonthKey[] => ("chart" in v ? v.chart.periods : "one" in v ? v.one.periods : "undrawn" in v ? v.undrawn.periods : v.unpriced.periods);
+
+/**
+ * The reading's action tabs with a tab for each action whose every fee is left out for a price not given (`UnpricedView`), each where its
+ * action stands in `ACTIONS` among the tabs drawn; an action that has a tab already says such a fee among what it leaves out.
+ */
+function withUnpriced(r: DealRead, tabs: readonly ActionTab[]): ActionTab[] {
+  const added = new Map<string, ActionTab & { fees: UnpricedView["fees"] }>();
+  for (const id of r.unpriced) {
+    const fee = r.deal.fees.find((f) => f.id === id);
+    const said = unpricedSaid(r, id);
+    const on = fee ? actionOfLeft(fee.kind, r.engine) : null;
+    if (!fee || !said || !on || tabs.some((t) => t.action === on.action)) continue;
+    const key = `${on.action}:${on.side}`;
+    const tab = added.get(key) ?? { key, action: on.action, side: on.side, views: [], fees: [] };
+    tab.fees.push({ fee: leftRef(r, fee), unpriced: said });
+    added.set(key, tab);
+  }
+  const out = [...tabs];
+  for (const { fees, ...tab } of added.values()) {
+    const k = out.findIndex((t) => ACTIONS.indexOf(t.action) > ACTIONS.indexOf(tab.action));
+    out.splice(k < 0 ? out.length : k, 0, { ...tab, views: [{ unpriced: { periods: [monthKey(r.reading.from)], fees } }] });
+  }
+  return out;
+}
 
 /**
  * The reading's panels: a tab per action and side the deal prices, a view per run of periods whose prices on it are the same; the holding
@@ -856,7 +888,7 @@ export function panelsOf(r: DealRead, fx: FxSnapshot | null, unit: { price: numb
         tab.items.push({ sig: signature(r, p, idx), at: monthKey(p.from), make: () => actionView(r, p, action, side, fx, unit) });
       }
   });
-  const actions: ActionTab[] = [...tabs.entries()].map(([key, t]) => ({ key, action: t.action, side: t.side, views: merged(t.items, periodsOf) }));
+  const actions = withUnpriced(r, [...tabs.entries()].map(([key, t]) => ({ key, action: t.action, side: t.side, views: merged(t.items, periodsOf) })));
   const held = merged(
     r.reading.periods.map((p, k) => ({
       sig: signature(r, p, onHolding(r, p)),

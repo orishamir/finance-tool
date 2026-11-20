@@ -36,6 +36,19 @@ function boxLook(state: "entered" | "sourced" | "empty", error: boolean, tight?:
 }
 
 /**
+ * A figure not given yet, at rest where its price is read (a fee's cell): the empty box `FigureField` draws for a figure not given, dashed,
+ * holding only its unit's sign at the end where the number's would stand (`sign`: "%", "₪"), so the price reads as missing that figure,
+ * never as whole without it. A tap on it is the figure's edit where the page puts it in one (`EditInPlace`).
+ */
+export function EmptyFigure({ sign }: { sign: string }) {
+  return (
+    <span dir="ltr" data-figure-blank="" className="inline-flex h-[1.875rem] min-w-[4.5rem] items-center justify-end rounded-md border-[1.5px] border-dashed border-input px-2.5 align-middle text-sm text-muted-foreground">
+      {sign}
+    </span>
+  );
+}
+
+/**
  * A press anywhere in a box (its padding, its unit, the words in it) goes to its field, and a press that brings the focus into the field
  * selects what it holds, as Tab does, so typing replaces it; a press in a field that already has the focus places the caret. A choice in
  * the box (a bound's currency) keeps its own press. So the field's tap area is the box's 44 px, and the hit check (tools/hit-check.mjs)

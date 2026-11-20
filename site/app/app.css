@@ -205,6 +205,12 @@
 }
 
 @layer components {
+  /* a fee card's stripe (kit/fee-block.tsx): the card's shape in the fee's colour, masked to its top border, so it bends down the corners */
+  .fee-stripe {
+    mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
   /* ---- the provenance number (D7) */
   .num {
     display: inline;

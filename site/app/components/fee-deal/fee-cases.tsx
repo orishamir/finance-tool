@@ -108,7 +108,7 @@ export function RestPart({ part }: { part: SlimPart }) {
   if (part.kind === "when") return <WhenRule>{w.lead}</WhenRule>;
   const tail = [w.tail, w.quiet].filter(Boolean).join("").trim();
   return (
-    <PartChip kind={part.kind} mark={PART_MARK[part.id]} lead={w.lead?.trim()} figure={w.figure ? <PartFig part={part} n={0} value={w.figure} /> : undefined} words={tail || undefined}>
+    <PartChip kind={part.kind} mark={PART_MARK[part.id]} lead={w.lead?.trim()} figure={w.figure || w.missing ? <PartFig part={part} n={0} value={w.figure ?? null} /> : undefined} words={tail || undefined}>
       {w.mid && <span className="text-muted-foreground">{w.mid.trim()}</span>}
       {w.second && <PartFig part={part} n={1} value={w.second} />}
       {w.month && <bdi dir="ltr">{monthText(w.month)}</bdi>}
@@ -123,7 +123,7 @@ function PartText({ part, bare }: { part: SlimPart; bare?: boolean }) {
   return (
     <span>
       {!bare && w.lead}
-      {w.figure && <PartFig part={part} n={0} value={w.figure} />}
+      {(w.figure || w.missing) && <PartFig part={part} n={0} value={w.figure ?? null} />}
       {w.mid}
       {w.second && <PartFig part={part} n={1} value={w.second} />}
       {w.month && <bdi dir="ltr">{monthText(w.month)}</bdi>}
@@ -133,6 +133,15 @@ function PartText({ part, bare }: { part: SlimPart; bare?: boolean }) {
     </span>
   );
 }
+
+/**
+ * What a cell's or a row's parts miss, said on a line under them (`CellExtras.missing`): the main figure of a price not given yet
+ * (`PartWords.missing`), "חסר הסכום ליחידה."; nothing where none is missing.
+ */
+const missingSaid = (parts: readonly SlimPart[]): { missing?: string } => {
+  const m = parts.find((p) => p.words.missing)?.words.missing;
+  return m ? { missing: copy.unpriced.line(copy.unpriced.missing[m]!) } : {};
+};
 
 /** What the ✕ at a part line's end does: its spoken name and title, and the part taken away. */
 type PartOff = { label: string; onOff: () => void };
@@ -751,7 +760,7 @@ export function FeeCases({
       : zone(
           [...(o.also ?? []), caseTarget(r.case)],
           r.case,
-          <CaseRow when={when} label={label(r)} onOpen={openIt(r.case)} open={shownOpen([r.case], null)} grip={grip(l, spoken, o.more ?? [], { ...(o.name ? { name: o.name } : {}), ...(o.still ? { still: true } : {}) })}>
+          <CaseRow when={when} label={label(r)} onOpen={openIt(r.case)} open={shownOpen([r.case], null)} {...missingSaid(shownParts(r.case))} grip={grip(l, spoken, o.more ?? [], { ...(o.name ? { name: o.name } : {}), ...(o.still ? { still: true } : {}) })}>
             {here(
               [r.case],
               shownParts(r.case).map((p) => <RestPart key={`${p.stage ?? 0}:${p.id}`} part={p} />),
@@ -776,6 +785,7 @@ export function FeeCases({
     return {
       id: row,
       content: here(allIds, <Joined parts={shown} off={partOff(allIds, shown.length)} />),
+      ...missingSaid(shown),
       grip: grip(l, `${lw.grip.cell}${words}`, [], { name: words, place: "outside" }),
       ...(lift.binTakes(l) ? { onRemove: () => lift.onBin(l), removeLabel: binWords(`${words}${sep}${c.everyCase.where}`) } : {}),
       ...copyable(`${EVERY}:${row}`, l as Extract<Lifted, { k: "cell" }>),
@@ -903,6 +913,7 @@ export function FeeCases({
                   span: 1,
                   onOpen: openIt(id),
                   content: parts.length ? here([id], <Joined parts={parts} lines off={partOff([id], parts.length)} />) : null,
+                  ...missingSaid(parts),
                   ...(lift.binTakes(cl) ? { onRemove: () => lift.onBin(cl), removeLabel: binWords(caseText(r.when)) } : {}),
                   zone: (el: ReactNode) => zone([caseTarget(id)], `case:${id}`, el),
                   ...copyable(`case:${id}`, cl as Extract<Lifted, { k: "cell" }>),
@@ -938,6 +949,7 @@ export function FeeCases({
               from: cell.from,
               span: cell.span,
               open: shownOpen(cell.cases, `line:${lineKey}:${cell.from}`),
+              ...missingSaid(shown),
               onOpen: openIt(cell.cases[0]!, `line:${lineKey}:${cell.from}`),
               content,
               grip: grip(l, `${lw.grip.cell}${words}`, applyActions(l, applyTo([[lw.menu.applyRow, row.cases, 1], allHead])), { name: words, place: "outside" }),
@@ -1056,6 +1068,7 @@ export function FeeCases({
                 onOpen: openIt(cell.case),
                 open: shownOpen(cell.cases, null),
                 content,
+                ...missingSaid(mergedParts(cell.cases, cellParts)),
                 ...(cell.whole ? { across: <WhenText words={r.when[1]!} /> } : {}),
                 grip: grip(cl, `${lw.grip.cell}${caseText(r.when)}`, cellMoves(cl, j, cell), { name: lw.name.case.replace("{name}", caseText(r.when)), place: "outside" }),
                 ...(acrossKnobs || downward
