@@ -282,7 +282,8 @@ export function Toolbox({ addTo, held, groups, onAdd, onRemove, foot, sheet, doc
           <>
             {/* one line in the sheet, so the parts keep their room; the open case above says its values whole */}
             {!folded && lead && <div className="shrink-0 truncate [&>p]:truncate">{lead}</div>}
-            <div ref={names} className="relative shrink-0">
+            {groups.length === 0 && !folded && <p className="text-sm text-muted-foreground">{copy.toolbox.none}</p>}
+            <div ref={names} hidden={groups.length === 0} className="relative shrink-0">
               <ChoiceChips
                 line
                 bleed="-mx-4 px-4"
@@ -322,7 +323,7 @@ export function Toolbox({ addTo, held, groups, onAdd, onRemove, foot, sheet, doc
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
         {lead}
-        {held ? <HoldLine held={held} /> : <p className="text-sm text-muted-foreground">{canDrag ? copy.toolbox.hintDrag : copy.toolbox.hint}</p>}
+        {held ? <HoldLine held={held} /> : <p className="text-sm text-muted-foreground">{groups.length === 0 ? copy.toolbox.none : canDrag ? copy.toolbox.hintDrag : copy.toolbox.hint}</p>}
       </div>
       {groups.map((g) => {
         return (

@@ -5105,6 +5105,8 @@ export const dealCases = {
     hint: "מקישים על חלק כדי להוסיף אותו.",
     /** The hint where a part can also be dragged (a computer's fine pointer). */
     hintDrag: "מקישים על חלק, או גוררים אותו אל העמלה, כדי להוסיף אותו.",
+    /** In place of the hint where the fee takes no part at all (a fee its product only ever has free): nothing to tap. */
+    none: "לעמלה הזו אין חלקים להוסיף.",
     /** Said, not shown, of a part the case already has: its ✓ shows it. */
     used: "כבר במקרה",
     /** The button on the line that says a card is held: it lets the card go, nothing added. */
