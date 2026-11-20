@@ -796,7 +796,7 @@
     opacity: 0 !important;
     pointer-events: none;
   }
-  /* The strip under a grid's row (or a table's last row) that adds a part to every case of it (kit/case-table.tsx): drawn only while the
+  /* The strip under a grid's row that adds a part to every case of it (kit/case-table.tsx): drawn only while the
      pointer has rested on the row `--hover-rest` or the focus is in it, on a fine pointer (hidden, it takes no press); touch and the
      keyboard reach it in the row head's menu */
   [data-row-add] {
@@ -804,14 +804,12 @@
     visibility: hidden;
   }
   @media (pointer: fine) {
-    [data-grid-row]:hover [data-row-add],
-    [data-case-table]:hover [data-row-add] {
+    [data-grid-row]:hover [data-row-add] {
       opacity: 1;
       visibility: visible;
       transition: opacity var(--duration-fast) linear var(--hover-rest), visibility 0s linear var(--hover-rest);
     }
     [data-grid-row]:focus-within [data-row-add],
-    [data-case-table]:focus-within [data-row-add],
     [data-row-add][aria-expanded="true"] {
       opacity: 1;
       visibility: visible;
@@ -905,6 +903,12 @@
   }
   :root:has([data-lift-ghost]) [data-carry-hold] {
     position: relative;
+  }
+  /* A case grid holds its rows' tracks while something is carried (`data-carry-tracks`): the place a preview draws taller than its row
+     stands over the rows under it, so its words read over them rather than under */
+  :root:has([data-lift-ghost]) [data-carry-tracks] [data-drop-over] {
+    position: relative;
+    z-index: 1;
   }
   /* The carried thing's own place (kit/lift.tsx), wherever the page draws it now: the gap the others open, a soft slot of its size with
      nothing in it */

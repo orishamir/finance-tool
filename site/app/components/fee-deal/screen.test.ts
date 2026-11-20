@@ -15,6 +15,7 @@ import { leftOut } from "../../lib/fee-deal/left-out";
 import { hasCases, typed, type FeeDeal } from "../../lib/fee-deal/model";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
+import { rowParts } from "../../lib/fee-deal/lifted";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
 import { FeesColumn, feeGroup, paletteItems } from "./builder";
@@ -107,7 +108,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
     onFocused: () => {},
     onDeal: () => {},
     onAdd: () => {},
-    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {} }, onRemoveChange: () => {}, onEditPrice: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, rowParts: () => [], onResult: () => undefined, phone: false } },
+    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {}, asksCases: () => null }, onRemoveChange: () => {}, onEditPrice: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, rowParts: (feeId: string, cases: readonly string[]) => rowParts(r, feeId, cases), onResult: () => undefined, phone: false } },
     ask: ask ? { kind: ask } : null,
     adding: "line",
   });
@@ -349,6 +350,43 @@ describe("the fees' column", () => {
     const shown = text(builderOf(d, null));
     expect(count(shown, feeDeal.standing.shareShort.trim())).toBe(1);
     expect(shown).toContain(feeDeal.standing.tag.above);
+  });
+});
+
+describe("the parts every case holds alike", () => {
+  /** Custody by what is held and the portfolio's size, every case with the same maximum on each security and a rate of its own. */
+  const custody = (): FeeDeal => {
+    const d = account();
+    d.fees = [
+      {
+        id: "fee-custody",
+        kind: "custody",
+        by: [{ kind: "held", values: [] }, { kind: "portfolioSize", unit: "ILS", tops: [typed(100_000), typed(500_000)] }],
+        cases: (["tase", "us"] as const).flatMap((what, j) => [0, 1, 2].map((step) => ({ id: `${what}${step}`, when: [[what], step], stages: [{ price: { form: "held" as const, rate: typed(0.1 + j / 100 + step / 1000), per: 12 as const, every: 12 as const, perSecurity: typed(4000) } }] }))),
+      },
+    ];
+    return d;
+  };
+  it("stand apart over the cases' band, said once, the band and its groups not saying them, with the add for every case after them", () => {
+    const html = drawBuilder(custody(), null);
+    expect(count(html, "data-every-case=")).toBe(1);
+    expect(count(html, 'data-every-cell="maxPerSecurity"')).toBe(1);
+    // said once: the figure stands in the row of parts for every case, not in each group's line or each case's row
+    expect(count(html.replace(/<[^>]+>/g, ""), "4,000")).toBe(1);
+    expect(html.indexOf("data-every-case=")).toBeLessThan(html.indexOf(feeDeal.cases.changesBy));
+    expect(count(html, `aria-label="${feeDeal.cases.lifted.menu.addAllCases}"`)).toBe(1);
+    expect(html).toContain(`aria-label="${feeDeal.cases.everyCase.parts}"`);
+    // no any-words under the part said once: standing outside the band says it holds for every case
+    expect(html.replace(/<[^>]+>/g, "")).not.toContain(feeDeal.cases.onceLead.replace("{any}", feeDeal.cases.any.portfolioSize ?? ""));
+  });
+  it("go back into the cases once one of them holds the part otherwise", () => {
+    const d = custody();
+    const fee = d.fees[0]!;
+    if (!hasCases(fee)) throw new Error("custody has cases");
+    fee.cases[4]!.stages = [{ price: { form: "held", rate: typed(0.3), per: 12, every: 12, perSecurity: typed(7400) } }];
+    const html = drawBuilder(d, null);
+    expect(count(html, "data-every-cell=")).toBe(0);
+    expect(count(html.replace(/<[^>]+>/g, ""), "4,000")).toBeGreaterThan(1);
   });
 });
 

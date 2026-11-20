@@ -7,6 +7,7 @@
 // the controls' layer, out of the Tab order (the keyboard has Delete, or the grip's menu), and its press is its own alone. A ✕ closes
 // something (a panel, a sheet, a menu), or takes one part line out of a table's cell, standing at that line's end; anything else is taken
 // away by this bin.
+import type { MouseEvent } from "react";
 import { Trash2 } from "lucide-react";
 import { Button } from "./button";
 import { cx } from "./cx";
@@ -15,7 +16,7 @@ import { KnobButton } from "./knob-button";
 /** The bin's icon, for a picture of the control that is not itself a button (a pill drawn under the pointer while it is dragged). */
 export const BinIcon = () => <Trash2 size={16} strokeWidth={1.75} aria-hidden className="shrink-0" />;
 
-export function RemoveButton({ label, onRemove, expanded, knob, cell, tabIndex = -1, className }: {
+export function RemoveButton({ label, onRemove, expanded, knob, cell, keepsFocus, tabIndex = -1, className }: {
   label: string;
   onRemove: () => void;
   /** The bin opens a question before it takes anything away: whether that question is open. */
@@ -24,6 +25,11 @@ export function RemoveButton({ label, onRemove, expanded, knob, cell, tabIndex =
   knob?: boolean;
   /** A knob that is a cell's own bin (`data-cell-bin`). */
   cell?: boolean;
+  /**
+   * A press leaves the focus where it is: the bin of a part still asking its amount, whose box gives the amount when it is left, so the
+   * press that drops the part does not first give it.
+   */
+  keepsFocus?: boolean;
   /** A knob's place in the Tab order: none, by default. */
   tabIndex?: number;
   className?: string;
@@ -45,7 +51,7 @@ export function RemoveButton({ label, onRemove, expanded, knob, cell, tabIndex =
       />
     );
   return (
-    <Button variant="ghost" aria-label={label} title={label} aria-expanded={expanded} onClick={onRemove} className={cx("shrink-0", className)}>
+    <Button variant="ghost" aria-label={label} title={label} aria-expanded={expanded} onClick={onRemove} {...(keepsFocus ? { onMouseDown: (e: MouseEvent) => e.preventDefault() } : {})} className={cx("shrink-0", className)}>
       <BinIcon />
     </Button>
   );

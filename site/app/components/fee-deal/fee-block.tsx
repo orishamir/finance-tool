@@ -110,6 +110,8 @@ export interface ToolDrop {
   /** The same on a head of the open fee (its cases `cases`, standing along thing `along`): the part goes into each that lacks it (`toolToCases`). */
   acceptsCases: (feeId: string, cases: readonly string[], along: number, item: string) => boolean;
   onDropCases: (feeId: string, cases: readonly string[], along: number, item: string) => void;
+  /** The cases of `cases` a part that asks an amount, dropped on them, asks it for once (`toolAsks`); null for any other card, or none. */
+  asksCases: (feeId: string, cases: readonly string[], item: string) => string[] | null;
 }
 
 /**
@@ -307,8 +309,8 @@ export function FeeBlockView({
   return (
     <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
       <FeeCases fee={fee} band={band} open={open} name={name} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)}>
-        {(by, cases) => (
-          <FeeBlock dot={dot} mark={FEE_MARK[fee.kind]} name={name} remove={remove} open={isOpen} grip={grip} corner={corner} by={by}>
+        {(cases) => (
+          <FeeBlock dot={dot} mark={FEE_MARK[fee.kind]} name={name} remove={remove} open={isOpen} grip={grip} corner={corner}>
             {question}
             {cases}
           </FeeBlock>

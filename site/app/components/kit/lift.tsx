@@ -10,7 +10,7 @@
 // what a drop would do (`onPreview`), and moving away or Esc puts it back. Which place the pointer is over is read from the page as it
 // stood when the thing was lifted, so what a place shows never moves the target under a still pointer. What a place shows never moves the
 // page either: the blocks marked `data-carry-hold` keep the height they had when the thing was lifted, a shorter drawing leaving room in
-// them and a taller one drawn over what follows, and the bin is laid over the page, so the page's height, its scrollbar and its scroll
+// them and a taller one drawn over what follows (a case grid, `data-carry-tracks`, its rows the same way), and the bin is laid over the page, so the page's height, its scrollbar and its scroll
 // stay as they were. Over the bin the picture dims and the bin says what goes. Let go, the thing settles where it lands; let go anywhere else, it goes back. Near the screen's top or foot the
 // page scrolls, once the pointer moves that way. A tap on a grip opens its menu (`GripMenu`), which does the same by keyboard, the things
 // moving there the same way. A knob (↔, `SpanKnob`), a strip along a cell's whole edge, stretches the cell over its neighbours or back, its
@@ -362,14 +362,23 @@ function freeze(item: string, from: HTMLElement): { zones: Map<string, Frozen>; 
  * Holds every block marked `data-carry-hold` at the height it has now, until the returned function lets go: what a place shows while the
  * thing is over it draws inside, a shorter drawing leaving room at the block's foot and a taller one drawn over what follows it (app.css
  * draws the block after it while something is carried), so nothing after the block moves and the page keeps its height and its scrollbar.
+ * A grid marked `data-carry-tracks` (a case grid) holds its rows' tracks the same way: a cell a preview draws taller reads over the rows
+ * under it, so no row below it moves, the carried thing's own place among them.
  */
 function holdBlocks(): () => void {
   const els = [...document.querySelectorAll<HTMLElement>("[data-carry-hold]")];
-  // read every height before setting any, the used height to the fraction of a pixel (a rounded one would move the page by it)
+  const grids = [...document.querySelectorAll<HTMLElement>("[data-carry-tracks]")];
+  // read every size before setting any, to the fraction of a pixel (a rounded one would move the page by it)
   const heights = els.map((el) => getComputedStyle(el).height);
+  const tracks = grids.map((el) => getComputedStyle(el).gridTemplateRows);
   const was = els.map((el) => el.style.height);
+  const wasTracks = grids.map((el) => el.style.gridTemplateRows);
   els.forEach((el, i) => (el.style.height = heights[i]!));
-  return () => els.forEach((el, i) => (el.style.height = was[i]!));
+  grids.forEach((el, i) => (el.style.gridTemplateRows = tracks[i]!));
+  return () => {
+    els.forEach((el, i) => (el.style.height = was[i]!));
+    grids.forEach((el, i) => (el.style.gridTemplateRows = wasTracks[i]!));
+  };
 }
 
 /** What the page tells `lift` about the thing: its words, for the bin to say what goes; `keep`, it stays where it was (a chip, which adds a copy of itself). */

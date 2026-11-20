@@ -76,7 +76,7 @@ export function PartChip({ kind, mark, lead, figure, unit, words, children }: { 
  * the focus (`focusPartEdit`): the part itself then takes it, out of the Tab order and named by its own words, where it has no box or
  * choice.
  */
-export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.removePart, grip, children }: { /** Its element's id, where the page gives the focus into it. */ id?: string; kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The bin's spoken name: what it removes. */ removeLabel?: string; /** A grip (⋮⋮) at its start that lifts it (lift.tsx). */ grip?: ReactNode; children?: ReactNode }) {
+export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.removePart, asking, grip, children }: { /** Its element's id, where the page gives the focus into it. */ id?: string; kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The bin's spoken name: what it removes. */ removeLabel?: string; /** A part still asking its amount, in a box that gives it when left: a press on its bin leaves the focus in the box (`RemoveButton`'s `keepsFocus`). */ asking?: boolean; /** A grip (⋮⋮) at its start that lifts it (lift.tsx). */ grip?: ReactNode; children?: ReactNode }) {
   const words = id ? `${id}-words` : undefined;
   return (
     <div
@@ -92,7 +92,7 @@ export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.re
         {children}
       </div>
       {onRemove && (
-        <RemoveButton label={removeLabel} onRemove={onRemove} className="mt-0.5" />
+        <RemoveButton label={removeLabel} onRemove={onRemove} {...(asking ? { keepsFocus: true } : {})} className="mt-0.5" />
       )}
     </div>
   );
