@@ -122,13 +122,18 @@ export function readTyped(text: string, { sign, kind, validate, clearable, left 
  * What a keystroke does to the figure the page holds, by what the box makes of its whole text (`readTyped`): a number commits; while the
  * text is no number (empty, unfinished, wrong), a figure the page keeps (a deal's) is back as it was when the box took the focus, where the
  * box changed it since (`changed`), so the deal never keeps a prefix of what is being typed ("15" of "150"); and a figure a question waits
- * for (`asks`: the boundary of a "+ מדרגה") is none, so its "להוסיף" cannot add it.
+ * for (`asks`: the boundary of a "+ מדרגה") is none, so its "להוסיף" cannot add it. A box that `settles` gives its figure only when it is
+ * left or Enter is pressed, so a keystroke does nothing to the page.
  */
-export function onTyping(r: Typed, { asks, changed }: { asks: boolean; changed: boolean }): "commit" | "clear" | "revert" | "none" {
+export function onTyping(r: Typed, { asks, changed, settles = false }: { asks: boolean; changed: boolean; settles?: boolean }): "commit" | "clear" | "revert" | "none" {
+  if (settles) return "none";
   if (r.kind === "commit") return "commit";
   if (asks) return "clear";
   return changed ? "revert" : "none";
 }
+
+/** How a box that `settles` gave its figure: by Enter, or by the focus leaving it. */
+export type Settled = "enter" | "left";
 
 /**
  * An input as wide as what it holds, so a short figure takes a short box and a long one never cuts. A tight box is as wide as its own
@@ -194,8 +199,12 @@ function placeNote(note: HTMLElement, field: HTMLElement) {
  * as its source) and keeps the focus; in a box as it was then, Escape goes on to what is around it (a panel closes). Decimals are allowed:
  * a price list's fee keeps its agorot. The up and down arrows step the figure by `step`, never below zero, keeping the decimals typed,
  * and do nothing in an empty box; Enter moves on (`enterToNext`). The figure is written in the site's form once the person leaves the box.
+ * `settles`: the figure is given whole, once, when the box is left or Enter is pressed (`onCommit`'s `by` says which), never as it is
+ * typed: for a box the figure takes away once given (a part that asks its amount, whose box gives way to the part), so no keystroke takes
+ * the box from under the typing. Nothing given while typing, Escape only puts back the text; a box left empty or holding no number gives
+ * nothing; Enter that gives the figure does not move on, as the page draws what it gave in the box's place and places the focus.
  */
-export function FigureField({ value, label, from, unit, sign, kind, words, inside, tight, wide, asks, onCommit, onClear, onFocus, onRevert, validate, placeholder, step, id: givenId, className }: {
+export function FigureField({ value, label, from, unit, sign, kind, words, inside, tight, wide, asks, settles, onCommit, onClear, onFocus, onRevert, validate, placeholder, step, id: givenId, className }: {
   value: SiteValue | null;
   /** The spoken name: what the figure is. */
   label: string;
@@ -217,7 +226,9 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
   wide?: boolean;
   /** The figure waits for a question's button ("להוסיף"): while the text is no number, it is none (`onClear`). */
   asks?: boolean;
-  onCommit: (n: number) => void;
+  /** The figure is given only when the box is left or Enter is pressed, with how (`by`), never as it is typed. */
+  settles?: boolean;
+  onCommit: (n: number, by?: Settled) => void;
   /** An optional figure: a box left empty clears it. */
   onClear?: () => void;
   /** The box takes the focus: what it holds now is what Escape puts back. */
@@ -243,6 +254,9 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
   const atFocus = useRef(shown);
   const atFocusN = useRef<number | null>(typeof value?.value === "number" ? value.value : null);
   const changed = useRef(false);
+  // the figure a box that settles gave since the focus came into it or its text last changed: Enter gives it, and the focus leaving after
+  // Enter does not give it again
+  const given = useRef<number | null>(null);
   // the note of where a sourced figure is from, open from the focus in its box until typing or the focus leaves
   const [noting, setNoting] = useState(false);
   const root = useRef<HTMLSpanElement>(null);
@@ -278,6 +292,7 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
   // the figure as it was when the box took the focus
   const revert = () => {
     changed.current = false;
+    if (settles) return;
     if (onRevert) onRevert();
     else if (atFocusN.current === null) onClear?.();
     else onCommit(atFocusN.current);
@@ -285,19 +300,29 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
   const change = (t: string) => {
     setNoting(false);
     setText(t);
+    given.current = null;
     const r = read(t, false);
     setError(r.kind === "error" ? r.message : null);
-    const does = onTyping(r, { asks: !!asks, changed: changed.current });
+    const does = onTyping(r, { asks: !!asks, changed: changed.current, settles: !!settles });
     if (does === "commit" && r.kind === "commit") commit(r.n);
     else if (does === "clear") onClear?.();
     else if (does === "revert") revert();
   };
-  // the box left, or Enter: what its whole text makes of the figure; false where it holds no number, and stays as typed with its message
-  const settle = (): boolean => {
+  // the box left, or Enter (`by`): what its whole text makes of the figure; false where it holds no number, and stays as typed with its
+  // message. A box that settles gives its figure here, once.
+  const settle = (by: Settled): boolean => {
     const r = read(text, true);
     if (r.kind === "error") {
       setError(r.message);
       return false;
+    }
+    if (settles) {
+      if (r.kind === "commit" && given.current !== r.n) {
+        given.current = r.n;
+        setText(formatTyped(r.n));
+        onCommit(r.n, by);
+      } else if (r.kind !== "commit") setText(atFocus.current);
+      return true;
     }
     if (r.kind === "clear") {
       if (value !== null) onClear?.();
@@ -323,7 +348,9 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
     } else if (e.key === "Enter") {
       e.preventDefault();
       // a text that is no number keeps the focus, with its message; a figure edited in place stays open
-      if (settle()) enterToNext(e.currentTarget);
+      const before = given.current;
+      // a box that settles and has just given its figure stays where it is: the page draws what it gave in its place
+      if (settle("enter") && !(settles && given.current !== before)) enterToNext(e.currentTarget);
     } else if ((e.key === "ArrowUp" || e.key === "ArrowDown") && step) {
       if (text.trim() === "") return;
       e.preventDefault();
@@ -373,12 +400,13 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
                 atFocus.current = error ? shown : text.trim();
                 atFocusN.current = typeof value?.value === "number" ? value.value : null;
                 changed.current = false;
+                given.current = null;
                 if (sourced) setNoting(true);
                 onFocus?.();
               }}
               onBlur={() => {
                 focused.current = false;
-                settle();
+                settle("left");
               }}
               style={{ width: widthOf(text, placeholder, tight, wide ? 6 : 0) }}
               // an empty box beside its unit keeps room to be typed in, so it never reads as the unit alone

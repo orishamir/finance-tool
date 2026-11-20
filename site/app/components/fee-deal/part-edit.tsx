@@ -11,7 +11,7 @@ import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/ca
 import { PARTS, setPart, type AmountPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
 import type { PendingWords } from "../../lib/fee-deal/part-words";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
-import { FigureField, InlineSelect, PartEdit, Switch, TextField, type PartMark } from "../kit";
+import { FigureField, InlineSelect, PartEdit, Switch, TextField, type PartMark, type Settled } from "../kit";
 import { partFieldId, partPlaceId, signText } from "./figures";
 import { bringIntoView } from "./in-view";
 import { IdRef } from "../provenance";
@@ -275,7 +275,8 @@ export function PendingEdit({ fee, caseId, pending, deal, name, onFee, hands }: 
     bringIntoView(box?.closest("[data-lift]"));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // the bound's box is drawn anew as the bound it now is: the focus goes on to it, where the typing goes on
+  // the part given by Enter: its box is drawn anew as the part it now is, and the focus goes on to it (given by the focus leaving, the
+  // focus stays where it went)
   const done = (next: Fee, box?: string) => {
     onFee(next);
     onDone();
@@ -296,28 +297,33 @@ export function PendingEdit({ fee, caseId, pending, deal, name, onFee, hands }: 
       </>
     );
   } else {
-    body = <AmountBox id={partFieldId(fee.id, `${part}-pending`)} label={label} sign={sign} tail={tail} onCommit={(n) => done(setPart(fee, part, true, { ...at, value: n }), `${side}${k}-${part}-${figure}`)} />;
+    body = <AmountBox id={partFieldId(fee.id, `${part}-pending`)} label={label} sign={sign} tail={tail} onCommit={(n, by) => done(setPart(fee, part, true, { ...at, value: n }), by === "enter" ? `${side}${k}-${part}-${figure}` : undefined)} />;
   }
   return (
-    <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.lead)} onRemove={onDone} removeLabel={copy.builder.fieldName(name, dealCases.removePart)}>
+    <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.lead)} onRemove={onDone} removeLabel={copy.builder.fieldName(name, dealCases.removePart)} asking={asksFigure}>
       {body}
     </PartEdit>
   );
 }
 
-/** The box a part that asks an amount is asked in: empty, its sign inside it (a percent, or the currency its sums are kept in), the words after it. */
-function AmountBox({ id, label, sign, tail, onCommit }: { id: string; label: string; sign: string | undefined; tail: string | undefined; onCommit: (n: number) => void }) {
+/**
+ * The box a part that asks an amount is asked in: empty, its sign inside it (a percent, or the currency its sums are kept in), the words
+ * after it. The amount is given whole when the box is left or Enter is pressed (`settles`, and `by` says which), as giving it puts the
+ * part in its place; Escape, or a box left empty, gives nothing.
+ */
+function AmountBox({ id, label, sign, tail, onCommit }: { id: string; label: string; sign: string | undefined; tail: string | undefined; onCommit: (n: number, by: Settled) => void }) {
   const shown = signText(sign ?? "pct");
-  return <FigureField value={null} label={label} unit={shown} sign={shown} tight id={id} words={<span className="text-muted-foreground">{tail}</span>} onCommit={onCommit} />;
+  return <FigureField value={null} label={label} unit={shown} sign={shown} tight settles id={id} words={<span className="text-muted-foreground">{tail}</span>} onCommit={(n, by) => onCommit(n, by ?? "left")} />;
 }
 
 /**
  * A part that asks an amount, added to several cases at once (a fee's "+ חלק לכל המקרים", a grid row's "+ חלק לכל השורה", a toolbox card
  * dropped on the parts said once for every case): asked once for them all, as the open case asks it for one case (`PendingEdit`), with the
- * words, box name and sign every one of them asks it with (`askAcross`). Its box takes the focus as it appears; an amount given puts the
- * part in each of them (`onGive`); its bin drops it (`onDrop`). No figure is put in before the person types one.
+ * words, box name and sign every one of them asks it with (`askAcross`). Its box takes the focus as it appears; an amount given, by Enter
+ * or by leaving the box (`by`), puts the part in each of them (`onGive`); its bin drops it (`onDrop`). No figure is put in before the
+ * person has typed one whole.
  */
-export function AskAmount({ fee, part, words, name, onGive, onDrop }: { fee: Fee; part: AmountPart; words: PendingWords; name: string; onGive: (n: number) => void; onDrop: () => void }) {
+export function AskAmount({ fee, part, words, name, onGive, onDrop }: { fee: Fee; part: AmountPart; words: PendingWords; name: string; onGive: (n: number, by: Settled) => void; onDrop: () => void }) {
   const id = partFieldId(fee.id, `${part}-across`);
   useEffect(() => {
     const box = document.getElementById(id);
@@ -326,7 +332,7 @@ export function AskAmount({ fee, part, words, name, onGive, onDrop }: { fee: Fee
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.words.lead)} onRemove={onDrop} removeLabel={copy.builder.fieldName(name, dealCases.removePart)}>
+    <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.words.lead)} onRemove={onDrop} removeLabel={copy.builder.fieldName(name, dealCases.removePart)} asking>
       <AmountBox id={id} label={copy.builder.fieldName(name, words.field)} sign={words.sign} tail={bare(words.words.tail)} onCommit={onGive} />
     </PartEdit>
   );

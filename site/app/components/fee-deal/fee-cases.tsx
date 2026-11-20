@@ -483,10 +483,11 @@ export function FeeCases({
         words={asked}
         name={name}
         onDrop={() => setAskPart(null)}
-        onGive={(n) => {
+        onGive={(n, by) => {
           setAskPart(null);
           onFee(partAcross(fee, cases, part, along, n));
-          requestAnimationFrame(() => box.current?.querySelector<HTMLElement>(`[data-every-cell="${row}"]`)?.focus({ preventScroll: true }));
+          // given by Enter, the focus goes on to the part where it now stands; given by leaving the box, it stays where it went
+          if (by === "enter") requestAnimationFrame(() => box.current?.querySelector<HTMLElement>(`[data-every-cell="${row}"]`)?.focus({ preventScroll: true }));
         }}
       />
     );

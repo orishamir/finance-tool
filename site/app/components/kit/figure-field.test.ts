@@ -77,6 +77,12 @@ describe("what a keystroke does to the figure the page holds", () => {
     expect(onTyping(error, { asks: true, changed: false })).toBe("clear");
     expect(onTyping({ kind: "wait" }, { asks: true, changed: true })).toBe("clear");
   });
+  it("does nothing to the page in a box that settles, whose figure is given when the box is left or Enter is pressed (1 of 15 never given)", () => {
+    for (const r of [{ kind: "commit", n: 1 }, { kind: "wait" }, error] as const) {
+      expect(onTyping(r, { asks: false, changed: false, settles: true })).toBe("none");
+      expect(onTyping(r, { asks: true, changed: true, settles: true })).toBe("none");
+    }
+  });
 });
 
 describe("a month typed in its box", () => {
