@@ -6,7 +6,7 @@ import { feesData } from "../fees.server";
 import { bandLayout } from "./band-layout";
 import type { CaseRow } from "./rows";
 import { readDealFor } from "./deal-read";
-import { glance } from "./glance";
+import { leftOut } from "./left-out";
 import { pickLine, readingOf } from "./reading";
 import { liftDrop, liftRemove } from "./lifted";
 import { decodeDeal, encodeDeal } from "./link";
@@ -154,7 +154,7 @@ describe("the reading of a value no case names (F-114)", () => {
   it("reads no price for it: the fee is not read, as for a place no case holds", () => {
     const r = readDealFor(dealOf(empty(), [{ by: "what", is: "makam" }]), data.kinds, TODAY);
     expect(r.unmatched).toEqual(["fee-trade"]);
-    expect(glance(r).unmatched.map((f) => f.fee)).toEqual(["fee-trade"]);
+    expect(leftOut(r).unmatched.map((f) => f.fee)).toEqual(["fee-trade"]);
     expect(readingOf(r, data.fx).unmatched.map((f) => f.fee)).toEqual(["fee-trade"]);
     // the channel picked still offers both channels
     expect(pickLine(r)!.things.find((x) => x.by === "channel")!.options.map((o) => o.is)).toEqual(["direct", "branch"]);

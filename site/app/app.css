@@ -166,6 +166,13 @@
   }
 }
 
+/* A block of short lines whose figures often stand alone among their words (a deal's reading): each figure's tap area reaches 44 px wide
+   as well as tall, centred on it, as `tap-wide` does for a short control, and the look does not change (the area's rule reads
+   `--num-reach`). Each figure's own box still sits above every area, so a figure beside it keeps its own click. */
+@utility nums-wide {
+  --num-reach: min(-4px, calc((100% - var(--target)) / 2));
+}
+
 /* A field's reset stands at the foot of its label line, the field's 6 px gap over the box: its tap area reaches its 44 px upward from the
    box's top edge instead of centred on it, so it never covers the box nor loses its foot to it. Outside the layers, so it wins over the
    `tap-area` utility's own placing. */
@@ -229,7 +236,8 @@
     content: "";
     position: absolute;
     z-index: 0;
-    inset-inline: -4px;
+    /* 4 px past each side; wider inside a block that asks for it (`nums-wide`) */
+    inset-inline: var(--num-reach, -4px);
     top: 50%;
     height: max(calc(100% + 22px), 44px);
     translate: 0 -50%;

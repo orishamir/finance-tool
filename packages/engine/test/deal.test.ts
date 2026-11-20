@@ -224,7 +224,7 @@ describe("F-111 what a fee is charged on, and what adds", () => {
     const held = groupRate(deal, p!).find((g) => g.on === "held")!;
     expect(held.fees).toEqual([0, 2]);
     expect(held.rate).toBeCloseTo(0.0062, 12);
-    // no minimum of cover is marked, no sum of cover meets custody, and cover is no cost of holding
+    // no minimum of cover is marked, and cover is no cost of holding
     expect(dealMarks(deal, p!)).toEqual([]);
     expect(holdingCost(deal, p!, 10000).parts.map((x) => x.fee)).toEqual([0, 2]);
   });
@@ -297,37 +297,13 @@ describe("F-112 the sums a deal's prices mark", () => {
     expect(at8000.total).toBeCloseTo(36, 10);
   });
 
-  it("marks 10 ₪ a month against custody of 0.4% a year meeting at 30,000 ₪", () => {
+  it("prices a year of 10 ₪ a month and custody of 0.4% a year at 30,000 ₪", () => {
     const periods = dealPeriods(example, today).periods;
-    expect(dealMarks(example, periods[1]!).filter((m) => m.kind === "meet")).toEqual([]);
-    const meet = dealMarks(example, periods[2]!).find((m) => m.kind === "meet")!;
-    expect(meet).toMatchObject({ on: "held", fees: [2], against: [1], sum: 120, currency: "ILS" });
-    expect(meet.amount).toBeCloseTo(30000, 8);
     const at = holdingCost(example, periods[2]!, 30000);
     expect(at.parts.map((x) => x.fee)).toEqual([1, 2, 4]);
     expect(at.parts[0]!.cost).toBeCloseTo(120, 10);
     expect(at.parts[1]!.cost).toBe(120);
     expect(at.total).toBeCloseTo(120 + 120 + 21, 10);
-  });
-
-  it("adds every sum on the account against every custody fee, in one mark per period", () => {
-    const deal: Deal = {
-      foreign: false,
-      fees: [
-        { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 10, everyMonths: 1 } }] },
-        { base: { name: "current account" }, stages: [{ price: { kind: "sum", amount: 30, everyMonths: 3 } }] },
-        { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 3 } }] },
-        { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 12 } }] },
-        // a share of what is held paid inside a fund is not the account's custody
-        { base: { name: "fund" }, stages: [{ price: fundFee }] },
-      ],
-    };
-    const meets = dealMarks(deal, dealPeriods(deal, today).periods[0]!).filter((m) => m.kind === "meet");
-    expect(meets).toHaveLength(1);
-    // (120 + 120) ₪ a year against (0.4% + 0.1%) a year: 48,000 ₪
-    expect(meets[0]).toMatchObject({ fees: [0, 1], against: [2, 3], sum: 240 });
-    expect(meets[0]!.kind === "meet" && meets[0]!.rate).toBeCloseTo(0.005, 12);
-    expect(meets[0]!.amount).toBeCloseTo(48000, 6);
   });
 
   it("marks a maximum and a minimum per charge of a held share, and prices each charge of a year", () => {
@@ -366,22 +342,6 @@ describe("F-112 the sums a deal's prices mark", () => {
     expect(actionCost(deal, p!, "trade", 0).parts).toEqual([{ fee: 0, cost: 15 }, { fee: 1, cost: 2 }, { fee: 2, cost: 0 }]);
   });
 
-  it("marks no meeting where a custody minimum or maximum binds at the sum where the two would meet", () => {
-    // 120 ₪ a year against 0.1% a quarter (0.4% a year) would meet at 30,000 ₪, where one charge is 30 ₪
-    const deal = (bounds: { min?: number; max?: number }): Deal => ({
-      foreign: false,
-      fees: [
-        { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 3, ...bounds } }] },
-        { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 10, everyMonths: 1 } }] },
-      ],
-    });
-    const meets = (d: Deal) => dealMarks(d, dealPeriods(d, today).periods[0]!).filter((m) => m.kind === "meet");
-    expect(meets(deal({ min: 10, max: 100 }))).toHaveLength(1);
-    expect(meets(deal({ min: 30 }))).toHaveLength(1);
-    expect(meets(deal({ min: 50 }))).toEqual([]);
-    expect(meets(deal({ max: 20 }))).toEqual([]);
-  });
-
   it("gives a mark on the same sum for a purchase and for a sale once, on both", () => {
     const deal: Deal = {
       foreign: false,
@@ -411,7 +371,7 @@ describe("F-112 the sums a deal's prices mark", () => {
     expect(() => actionCost(deal, p!, "trade", 100)).toThrow(RangeError);
   });
 
-  it("marks nothing for a bound with no rate or a free price, and no meeting where custody is free", () => {
+  it("marks nothing for a bound with no rate or a free price", () => {
     const deal: Deal = {
       foreign: false,
       fees: [
@@ -522,7 +482,7 @@ describe("F-112 a percent maximum, a flat price for a small action, a sum per un
     // the cap up to 25 / 25% = 100 $; the minimum from 100 $ to 25 / 0.3% = 8,333.33 $; the maximum above 6,750 / 0.3% = 2,250,000 $
     expect(marks[0]).toMatchObject({ kind: "cap", amount: 100, currency: "USD" });
     expect(marks[0]).not.toHaveProperty("from");
-    expect(marks[1]!.kind !== "meet" && marks[1]!.from).toBeCloseTo(100, 10);
+    expect(marks[1]!.from).toBeCloseTo(100, 10);
     expect(marks[1]!.amount).toBeCloseTo(25 / 0.003, 8);
     expect(marks[2]!.amount).toBeCloseTo(2_250_000, 6);
     // an action of 50 $ at 3.70: 25% of 185 ₪ is 46.25 ₪, under the minimum's 92.50 ₪
@@ -578,7 +538,7 @@ describe("F-112 a percent maximum, a flat price for a small action, a sum per un
 
   it("leaves no stretch to a minimum and a cap that a flat price covers (PEPPER: 4 ₪ up to 30,000 ₪)", () => {
     const d = one({ kind: "action", rate: 0.004, min: 26, max: 6300, cap: 0.27, flat: { amount: 4, upTo: 30000 } });
-    expect(dealMarks(d, first(d)).map((m) => [m.kind, m.kind === "meet" ? null : (m.from ?? null), m.amount])).toEqual([["flat", null, 30000], ["max", null, 1_575_000]]);
+    expect(dealMarks(d, first(d)).map((m) => [m.kind, m.from ?? null, m.amount])).toEqual([["flat", null, 30000], ["max", null, 1_575_000]]);
     expect(actionCost(d, first(d), "trade", 30000).total).toBe(4);
     expect(actionCost(d, first(d), "trade", 30001).total).toBeCloseTo(120.004, 10);
   });
@@ -707,7 +667,7 @@ describe("F-115 a fee charged on one step of sizes", () => {
     const marks = dealMarks(steps, first(steps));
     // the half price's minimum would decide up to 3,579 $, past its step: only its top is marked; the full price's minimum from 100 $ up
     // to 3,579 $, and its maximum above 565,789 $
-    expect(marks.map((m) => [m.kind, m.kind === "meet" ? null : m.fee, Math.round(m.amount), m.kind === "meet" ? null : (m.from ?? null)])).toEqual([
+    expect(marks.map((m) => [m.kind, m.fee, Math.round(m.amount), m.from ?? null])).toEqual([
       ["edge", 0, 10, null],
       ["edge", 1, 100, null],
       ["min", 2, 3579, 100],

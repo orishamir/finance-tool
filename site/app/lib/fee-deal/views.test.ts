@@ -8,13 +8,14 @@ import { toolbox } from "./toolbox";
 import { feeDeal as copy } from "../../copy";
 import { fmt } from "../format";
 import { panel } from "./panel";
-import { glance } from "./glance";
+import { leftOut } from "./left-out";
 import { capLine, kindById, standingOf } from "./kinds";
 import { decodeDeal, encodeDeal, packDeal, unpackDeal } from "./link";
 import { NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num, type SlimFee, type Stage } from "./model";
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
+import type { ActionView } from "./charts";
 import { dataBar, dealFromTemplate, dealFromTrack, dealName, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
 import { addFee, updateFee } from "./edits/deal";
 import { withFigure } from "./edits/price";
@@ -293,67 +294,6 @@ describe("templates", () => {
 });
 
 describe("the securities account of the picture, on 11.2026", () => {
-  it("at a glance: the trade with its conversion at 0.45% and no mark; the fund's 0.07%", () => {
-    const g = glance(read(account()));
-    expect(g.from).toBe("2026-11");
-    const [trade, held] = g.throughout;
-    expect(trade!.on).toEqual({ on: "action", action: "trade" });
-    expect(trade!.fees.map((f) => f.kind)).toEqual(["trade", "fx"]);
-    expect(trade!.rates).toHaveLength(1);
-    expect(v(trade!.rates[0]!.rate)).toBeCloseTo(0.45, 10);
-    expect(trade!.rates[0]!.rate).toMatchObject({ state: "computed", computed_from: { formula: "F-111" } });
-    expect(held!.on).toEqual({ on: "held" });
-    // custody joins what is held from 03.2028, so the fund's 0.07% is not what is held costs throughout: no rate here
-    expect(held!.fees.map((f) => f.kind)).toEqual(["fund_management"]);
-    expect(held!.rates).toEqual([]);
-    expect(g.changing.map((x) => x.on.on)).toEqual(["held", "account"]);
-  });
-  it("at a glance: gives no rate throughout for the fees of a group that hold where another of its fees changes", () => {
-    const d = account();
-    d.fees.push({ id: "fee-spread", kind: "fx_spread", stages: [{ price: { form: "action", rate: typed(0.1) } }] });
-    d.fees[3]!.stages = [{ price: { form: "action", rate: typed(0.2) }, until: "2027-06" }, { price: { form: "action", rate: typed(0.3) } }];
-    const g = glance(read(d));
-    const trade = g.throughout.find((x) => x.on.on === "action")!;
-    expect(trade.fees.map((f) => f.kind)).toEqual(["trade", "fx_spread"]);
-    expect(trade.rates).toEqual([]);
-    // the group's rate is given under the date, all of its fees together
-    const date = g.dates.find((x) => x.at === "2027-06")!;
-    expect(v(date.groups[0]!.rate)).toBeCloseTo(0.25 + 0.3 + 0.1, 10);
-    // and today's, where the fee that changes is listed at today's price, with the fees that hold throughout added in
-    const now = g.changing.find((x) => x.on.on === "action")!;
-    expect(now.fees.map((f) => f.kind)).toEqual(["fx"]);
-    expect(now.rates).toHaveLength(1);
-    expect(now.rates[0]!.fees.map((f) => f.kind)).toEqual(["trade", "fx", "fx_spread"]);
-    expect(v(now.rates[0]!.rate)).toBeCloseTo(0.25 + 0.2 + 0.1, 10);
-    expect(now.rates[0]!.rate).toMatchObject({ state: "computed", computed_from: { formula: "F-111" } });
-  });
-  it("at a glance: gives a group of fees that change its rate today, also where a fee of it is free today", () => {
-    const g = glance(read(account()));
-    // custody is free until 03.2028: what is held costs the fund's 0.07% alone today, one fee, so the column adds nothing up
-    const held = g.changing.find((x) => x.on.on === "held")!;
-    expect(held.rates.map((r) => r.fees.map((f) => f.kind))).toEqual([["fund_management"]]);
-    expect(v(held.rates[0]!.rate)).toBeCloseTo(0.07, 10);
-    // a conversion free until 06.2027: the trade and the spread add to today's rate of a purchase or sale
-    const d = account();
-    d.fees.push({ id: "fee-spread", kind: "fx_spread", stages: [{ price: { form: "action", rate: typed(0.1) } }] });
-    d.fees[3]!.stages = [{ price: { form: "free" }, until: "2027-06" }, { price: { form: "action", rate: typed(0.2) } }];
-    const trade = glance(read(d)).changing.find((x) => x.on.on === "action")!;
-    expect(trade.fees.map((f) => f.kind)).toEqual(["fx"]);
-    expect(trade.rates[0]!.fees.map((f) => f.kind)).toEqual(["trade", "fx_spread"]);
-    expect(v(trade.rates[0]!.rate)).toBeCloseTo(0.35, 10);
-  });
-  it("at a glance: the monthly sum starts in 03.2027, four months on; custody starts in 03.2028 and what is held costs 0.47% a year", () => {
-    const g = glance(read(account()));
-    expect(g.dates.map((d) => d.at)).toEqual(["2027-03", "2028-03"]);
-    const [first, second] = g.dates;
-    expect(v(first!.months)).toBe(4);
-    expect(first!.months).toMatchObject({ state: "computed", computed_from: { formula: "F-110" } });
-    expect(first!.changes).toMatchObject([{ kind: "fixed_period", change: "starts" }]);
-    expect(second!.months).toBeNull();
-    expect(second!.changes).toMatchObject([{ kind: "custody", change: "starts" }]);
-    expect(second!.groups).toHaveLength(1);
-    expect(v(second!.groups[0]!.rate)).toBeCloseTo(0.47, 10);
-  });
   it("in the builder: a row per fee, the minimum said, custody's start in its line, the fund's fee inside the fund, the suggestions", () => {
     const b = builder(read(account()));
     expect(b.rows.map((r) => r.kind)).toEqual(["trade", "custody", "fixed_period", "fx", "fund_management"]);
@@ -367,69 +307,41 @@ describe("the securities account of the picture, on 11.2026", () => {
     expect(b.suggestions.rarer).toEqual(["fx_spread", "corporate_event", "current_account", "own"]);
     expect(b.rows.map((r) => r.block.kind)).toEqual(["slim", "slim", "slim", "slim", "slim"]);
   });
-  it("in the reading: three periods, the sums against custody meeting at 30,000 from 03.2028, and the two curves", () => {
+  it("in the reading: three periods, one chart of a purchase or sale, and a holding chart per period whose fees differ", () => {
     const r = readingOf(read(account()), data.fx);
     expect(r.periods.map((p) => [p.from, p.to])).toEqual([["2026-11", "2027-03"], ["2027-03", "2028-03"], ["2028-03", null]]);
     expect(r.periods[0]).toMatchObject({ current: true, started: true });
     expect(v(r.periods[0]!.left)).toBe(4);
     expect(v(r.periods[1]!.length)).toBe(12);
     expect(r.periods[1]!.rows.find((x) => x.kind === "fixed_period")!.change).toBe("starts");
-    const marks = r.statements.filter((s) => s.kind === "mark");
-    const min = marks.find((s) => s.kind === "mark" && s.mark.kind === "min")!;
-    expect(min.periods).toEqual(["2026-11", "2027-03", "2028-03"]);
-    const meet = marks.find((s) => s.kind === "mark" && s.mark.kind === "meet")!;
-    expect(meet.periods).toEqual(["2028-03"]);
-    if (meet.kind === "mark" && meet.mark.kind === "meet") expect(v(meet.mark.amount)).toBeCloseTo(30000, 6);
-    expect(r.statements.some((s) => s.kind === "no-max" && s.fee.kind === "trade" && s.on === "action")).toBe(true);
-    // a sum per unit with a minimum and no maximum grows with each action, not with what is held
-    const perUnit = account();
-    perUnit.fees = [{ id: "fee-trade", kind: "trade", stages: [{ price: { form: "perUnit", amount: typed(0.005), min: typed(1), currency: "USD" } }] }];
-    expect(readingOf(read(perUnit), data.fx).statements.find((s) => s.kind === "no-max")).toMatchObject({ on: "action" });
-
-    const action = r.curves.find((c) => c.on === "action")!;
-    expect(action).toMatchObject({ action: "trade", side: "all", periods: ["2026-11", "2027-03", "2028-03"] });
-    expect(v(action.end)).toBe(20000);
-    expect(action.end).toMatchObject({ computed_from: { formula: "F-112" } });
-    expect(action.amounts).toEqual([0, expect.closeTo(6000, 6), 20000]);
-    expect(action.total[2]).toBeCloseTo(20000 * 0.0045, 6);
-    expect(action.series.map((s) => s.fee.kind)).toEqual(["trade", "fx"]);
-
-    // the curve starts at the minimum: 15 ₪ on the smallest purchase, and 15 ₪ on 3,000 ₪, read straight between its amounts
-    const trade = action.series.find((s) => s.fee.kind === "trade")!;
-    expect(trade.costs[0]).toBe(15);
-    const at = (amounts: number[], costs: number[], a: number) => {
-      const k = amounts.findIndex((x) => x >= a);
-      return costs[k - 1]! + ((costs[k]! - costs[k - 1]!) * (a - amounts[k - 1]!)) / (amounts[k]! - amounts[k - 1]!);
-    };
-    expect(at(action.amounts, trade.costs, 3000)).toBeCloseTo(15, 10);
-    expect(at(action.amounts, trade.costs, 10000)).toBeCloseTo(25, 10);
-
-    const held = r.curves.filter((c) => c.on === "held");
-    expect(held).toHaveLength(1);
-    expect(held[0]!.periods).toEqual(["2028-03"]);
-    expect(v(held[0]!.end)).toBe(100000);
-    expect(held[0]!.total[1]).toBeCloseTo(120 + 120 + 30000 * 0.0007, 6);
-
+    // a purchase or sale costs the same in every period: one chart, from 1,000 ₪ to 20,000 ₪ round its mark at 6,000 ₪ (F-112)
+    const tab = r.panels.actions.find((t) => t.action === "trade")!;
+    expect(tab.side).toBe("all");
+    expect(tab.views).toHaveLength(1);
+    const action = (tab.views[0] as { chart: ActionView }).chart;
+    expect(action.periods).toEqual(["2026-11", "2027-03", "2028-03"]);
+    expect(action.range).toEqual({ lo: 1000, hi: 20000 });
+    expect(action.marks.map((m) => m.at)).toEqual([expect.closeTo(6000, 6)]);
+    expect(action.start).toBeCloseTo(6000, 6);
+    expect(action.lanes.map((l) => l.fee.ref.kind)).toEqual(["trade", "fx"]);
+    // the minimum decides up to 6,000 ₪: 15 ₪ on 3,000 ₪, and 0.25% (25 ₪) on 10,000 ₪, with the conversion's 0.2% on top
+    const part = (a: number, kind: string) => action.readAt(a).parts.find((x) => x.fee.ref.kind === kind)!.cost.value;
+    expect(part(3000, "trade")).toBeCloseTo(15, 10);
+    expect(part(10000, "trade")).toBeCloseTo(25, 10);
+    expect(action.readAt(20000).total.value).toBeCloseTo(20000 * 0.0045, 6);
+    expect(action.head).toMatchObject({ kind: "below", rate: { value: expect.closeTo(0.45, 10) } });
+    // holding: nothing until the sums start, then the sums against the fund's fee, then against custody and the fund's fee (F-124)
+    const held = r.panels.held.map((x) => ("chart" in x ? x.chart : null));
+    expect(held.map((x) => x?.periods ?? null)).toEqual([null, ["2027-03"], ["2028-03"]]);
+    expect(held[1]!.cross).toBeCloseTo(120 / 0.0007, 6);
+    expect(held[2]!.cross).toBeCloseTo(120 / 0.0047, 6);
+    expect(held[2]!.readAt(30000).total.value).toBeCloseTo(120 + 30000 * 0.0047, 6);
     expect(r.law.map((l) => l.kind)).toEqual(["trade", "custody", "fixed_period", "fx"]);
     expect(r.law.every((l) => l.cap.state === "none")).toBe(true);
   });
 });
 
 describe("the provident fund of the picture, on 11.2026", () => {
-  it("at a glance: the deposit fee at a quarter of its cap; the fee on the savings at 57% of it, at it from 03.2028, sixteen months on", () => {
-    const g = glance(read(provident()));
-    const deposit = g.throughout[0]!;
-    expect(deposit.on).toEqual({ on: "action", action: "deposit" });
-    expect(deposit.fees[0]!.standing.standing).toMatchObject({ judged: true, standing: "below" });
-    expect(v(deposit.fees[0]!.standing.share)).toBeCloseTo(25, 10);
-    const balance = g.changing[0]!.fees[0]!;
-    expect(v(balance.standing.share)).toBeCloseTo((0.6 / 1.05) * 100, 10);
-    expect(balance.standing.share).toMatchObject({ computed_from: { formula: "F-113" } });
-    const [date] = g.dates;
-    expect(date!.at).toBe("2028-03");
-    expect(v(date!.months)).toBe(16);
-    expect(date!.changes[0]).toMatchObject({ kind: "balance", change: "rises", standing: { standing: { judged: true, standing: "at" } } });
-  });
   it("in the builder: the fee on the savings tagged below the cap, as it stands now, its rise in 03.2028 in its line", () => {
     const row = builder(read(provident())).rows[0]!;
     expect(row.standingNow.standing).toMatchObject({ standing: "below" });
@@ -457,7 +369,8 @@ describe("the provident fund of the picture, on 11.2026", () => {
       ["2028-03", null, expect.objectContaining({ standing: "at" })],
     ]);
     expect(r.law.find((l) => l.kind === "deposit")!.prices).toHaveLength(1);
-    expect(r.curves).toEqual([]);
+    // nothing in the fund's prices varies by size: each panel is one number
+    expect([...r.panels.actions.flatMap((t) => t.views), ...r.panels.held].every((x) => "one" in x)).toBe(true);
   });
 });
 
@@ -506,7 +419,7 @@ describe("a fee the law bans at a bank (BRK-17, MF-71)", () => {
     const row = builder(r).rows.find((x) => x.fee === custody.id)!;
     expect(row.banned).toEqual({ rules: ["BRK-17", "BANK-18", "MF-71", "BANK-51"] });
     expect(row.priced).toBe(false);
-    expect(glance(r).banned.map((f) => f.fee)).toEqual([custody.id]);
+    expect(leftOut(r).banned.map((f) => f.fee)).toEqual([custody.id]);
     const law = readingOf(r, data.fx).law.find((x) => x.fee === custody.id)!;
     expect(law.cap).toEqual({ state: "banned", ban: { rules: ["BRK-17", "BANK-18", "MF-71", "BANK-51"] } });
     expect(law.prices).toEqual([]);
@@ -538,7 +451,7 @@ describe("a deal the views cannot read whole", () => {
   it("leaves a fee whose prices are out of order out, and names it", () => {
     const d = account();
     d.fees[1]!.stages = [{ price: { form: "free" } }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }];
-    expect(glance(read(d)).unread).toEqual(["fee-custody"]);
+    expect(leftOut(read(d)).unread.map((f) => f.fee)).toEqual(["fee-custody"]);
     expect(builder(read(d)).rows.map((r) => r.fee)).not.toContain("fee-custody");
     // it still opens with its prices to edit, and the reading has no law row for it
     expect(panel(read(d), "fee-custody")!.open.buy).toHaveLength(2);
@@ -547,14 +460,12 @@ describe("a deal the views cannot read whole", () => {
   it("draws no curve whose bound is in a currency it has no rate for, and says so", () => {
     const d = account();
     d.fees[0]!.stages![0]!.price = { form: "action", rate: typed(0.1), min: typed(7), currency: "USD" };
-    const none = readingOf(read(d), null);
-    expect(none.curves.some((c) => c.on === "action")).toBe(false);
-    expect(none.undrawn).toMatchObject([{ action: "trade", currency: "USD" }]);
+    const trade = (fx: typeof data.fx) => readingOf(read(d), fx).panels.actions.find((t) => t.action === "trade")!.views[0]!;
+    expect(trade(null)).toMatchObject({ undrawn: { why: "rate", currency: "USD" } });
     if (data.fx) {
-      const r = readingOf(read(d), data.fx);
-      const c = r.curves.find((x) => x.on === "action")!;
+      const c = (trade(data.fx) as { chart: ActionView }).chart;
       expect(c.rates).toHaveLength(1);
-      expect(c.at[0]).toBeGreaterThan(7000);
+      expect(c.marks[0]!.at).toBeGreaterThan(7000);
     }
   });
 });
@@ -719,13 +630,10 @@ describe("a fee with a price not given yet", () => {
     const d = provident();
     return { ...d, fees: [d.fees[0]!, { id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] }] };
   };
-  it("is read nowhere: not at a glance, not in the reading's periods, curves or law rows, and never judged against its cap", () => {
+  it("is read nowhere: not in the reading's periods, panels or law rows, and never judged against its cap", () => {
     const r = read(withBlank());
     expect(r.fees.map((f) => f.id)).not.toContain("fee-deposit");
     expect(r.unpriced).toEqual(["fee-deposit"]);
-    const g = glance(r);
-    const inGlance = [...g.throughout, ...g.changing].flatMap((x) => x.fees.map((f) => f.fee));
-    expect(inGlance).not.toContain("fee-deposit");
     const reading = readingOf(r, data.fx);
     expect(reading.law.map((x) => x.fee)).not.toContain("fee-deposit");
     expect(reading.periods.flatMap((p) => p.rows.map((x) => x.fee))).not.toContain("fee-deposit");
@@ -742,10 +650,10 @@ describe("a fee with a price not given yet", () => {
     const typedZero = updateFee(withBlank(), "fee-deposit", (f) => editPrice(f, "buy", 0, (p) => withFigure(p, "rate", 0)));
     expect(read(typedZero).fees.map((f) => f.id)).toContain("fee-deposit");
   });
-  it("is listed at a glance by its name, apart from the fees read", () => {
-    const g = glance(read(withBlank()));
+  it("is listed among the fees the reading leaves out, by its name, apart from the fees read", () => {
+    const g = leftOut(read(withBlank()));
     expect(g.unpriced.map((f) => f.fee)).toEqual(["fee-deposit"]);
-    expect(glance(read(provident())).unpriced).toEqual([]);
+    expect(leftOut(read(provident())).unpriced).toEqual([]);
   });
   it("counts only from the month the reading starts: a blank price that has ended does not hold the fee back, a later blank one does", () => {
     const blank: Num = { v: 0, blank: true };

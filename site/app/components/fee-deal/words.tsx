@@ -5,7 +5,7 @@ import type { DealSide } from "@finance-tool/engine";
 import { dealCases, feeDeal as copy, guideBlocks } from "../../copy";
 import type { BanSaid, CapLine } from "../../lib/fee-deal/kinds";
 import type { MonthKey } from "../../lib/fee-deal/model";
-import { unreadReason, type FeeRef, type MarkView, type PriceView, type StandingView } from "../../lib/fee-deal/deal-read";
+import { unreadReason, type FeeRef, type PriceView, type StandingView } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { amountWords, computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
@@ -42,31 +42,31 @@ export const perActionWord = (kind: FeeKindId): string => copy.price.perAction[k
 
 /**
  * Each fee's one colour on the whole page (theme.css, the `--fee-*` roles): a `bg-*` for its swatch, a `fill-*` and a `stroke-*` for its
- * band on a curve. Written out whole, so the stylesheet keeps every class.
+ * band on a curve, a `border-*` for its parts on a lane. Written out whole, so the stylesheet keeps every class.
  */
-const COLOUR: Record<FeeKindId, { bg: string; fill: string; stroke: string }> = {
-  trade: { bg: "bg-fee-trade", fill: "fill-fee-trade", stroke: "stroke-fee-trade" },
-  spread: { bg: "bg-fee-spread", fill: "fill-fee-spread", stroke: "stroke-fee-spread" },
-  creation_redemption: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  load: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  redemption_deduction: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  fx: { bg: "bg-fee-fx", fill: "fill-fee-fx", stroke: "stroke-fee-fx" },
-  fx_spread: { bg: "bg-fee-spread", fill: "fill-fee-spread", stroke: "stroke-fee-spread" },
-  deposit: { bg: "bg-fee-deposit", fill: "fill-fee-deposit", stroke: "stroke-fee-deposit" },
-  distribution_handling: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  corporate_event: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  transfer_out: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  exit: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  balance: { bg: "bg-fee-balance", fill: "fill-fee-balance", stroke: "stroke-fee-balance" },
-  custody: { bg: "bg-fee-custody", fill: "fill-fee-custody", stroke: "stroke-fee-custody" },
-  variable_management: { bg: "bg-fee-manager", fill: "fill-fee-manager", stroke: "stroke-fee-manager" },
-  trustee: { bg: "bg-fee-manager", fill: "fill-fee-manager", stroke: "stroke-fee-manager" },
-  direct_expenses: { bg: "bg-fee-direct", fill: "fill-fee-direct", stroke: "stroke-fee-direct" },
-  fund_management: { bg: "bg-fee-fund", fill: "fill-fee-fund", stroke: "stroke-fee-fund" },
-  fixed_period: { bg: "bg-fee-fixed", fill: "fill-fee-fixed", stroke: "stroke-fee-fixed" },
-  current_account: { bg: "bg-fee-account", fill: "fill-fee-account", stroke: "stroke-fee-account" },
-  insurance_premium: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
-  own: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other" },
+const COLOUR: Record<FeeKindId, { bg: string; fill: string; stroke: string; border: string }> = {
+  trade: { bg: "bg-fee-trade", fill: "fill-fee-trade", stroke: "stroke-fee-trade", border: "border-fee-trade" },
+  spread: { bg: "bg-fee-spread", fill: "fill-fee-spread", stroke: "stroke-fee-spread", border: "border-fee-spread" },
+  creation_redemption: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other", border: "border-fee-other" },
+  load: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other", border: "border-fee-other" },
+  redemption_deduction: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other", border: "border-fee-other" },
+  fx: { bg: "bg-fee-fx", fill: "fill-fee-fx", stroke: "stroke-fee-fx", border: "border-fee-fx" },
+  fx_spread: { bg: "bg-fee-spread", fill: "fill-fee-spread", stroke: "stroke-fee-spread", border: "border-fee-spread" },
+  deposit: { bg: "bg-fee-deposit", fill: "fill-fee-deposit", stroke: "stroke-fee-deposit", border: "border-fee-deposit" },
+  distribution_handling: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other", border: "border-fee-other" },
+  corporate_event: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other", border: "border-fee-other" },
+  transfer_out: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other", border: "border-fee-other" },
+  exit: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other", border: "border-fee-other" },
+  balance: { bg: "bg-fee-balance", fill: "fill-fee-balance", stroke: "stroke-fee-balance", border: "border-fee-balance" },
+  custody: { bg: "bg-fee-custody", fill: "fill-fee-custody", stroke: "stroke-fee-custody", border: "border-fee-custody" },
+  variable_management: { bg: "bg-fee-manager", fill: "fill-fee-manager", stroke: "stroke-fee-manager", border: "border-fee-manager" },
+  trustee: { bg: "bg-fee-manager", fill: "fill-fee-manager", stroke: "stroke-fee-manager", border: "border-fee-manager" },
+  direct_expenses: { bg: "bg-fee-direct", fill: "fill-fee-direct", stroke: "stroke-fee-direct", border: "border-fee-direct" },
+  fund_management: { bg: "bg-fee-fund", fill: "fill-fee-fund", stroke: "stroke-fee-fund", border: "border-fee-fund" },
+  fixed_period: { bg: "bg-fee-fixed", fill: "fill-fee-fixed", stroke: "stroke-fee-fixed", border: "border-fee-fixed" },
+  current_account: { bg: "bg-fee-account", fill: "fill-fee-account", stroke: "stroke-fee-account", border: "border-fee-account" },
+  insurance_premium: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other", border: "border-fee-other" },
+  own: { bg: "bg-fee-other", fill: "fill-fee-other", stroke: "stroke-fee-other", border: "border-fee-other" },
 };
 
 /**
@@ -99,7 +99,7 @@ export const FEE_MARK: Record<FeeKindId, string> = {
 };
 
 /** The colour of a fee copied from another house's price list (`DealRead.copied`): its own, so it never shares a dot with the deal's fee of its kind. */
-const COPIED = { bg: "bg-fee-copy", fill: "fill-fee-copy", stroke: "stroke-fee-copy" };
+const COPIED = { bg: "bg-fee-copy", fill: "fill-fee-copy", stroke: "stroke-fee-copy", border: "border-fee-copy" };
 
 /** A fee's colour: its kind's, or a copied fee's own where it is filled from another house's list (`copied`, a `FeeRef`'s `house`). */
 export const feeColour = (kind: FeeKindId, copied?: string | boolean) => (copied ? COPIED : COLOUR[kind]);
@@ -146,9 +146,10 @@ const Bound = ({ lead, value, per }: { lead: string; value: SiteValue; per?: str
  * share of nothing whose minimum and maximum are one sum is that sum on each action ("11 $ לכל פעולה"), as the price lists print it. Every
  * figure reads as the fee's card shows it (`Fig`): a rate with every decimal the price list prints or the person typed ("0.0875%").
  * `saved`: the product saves (its fees are charged from what has built up), so a share of what is held reads "ממה שנצבר". A fee charged
- * inside a fund says so in place of what it is a share of.
+ * inside a fund says so in place of what it is a share of. `ofSaid`: the words around the price say already what a share of what is held
+ * is of (a lane under "אחוזים ממה שמוחזק"), so the price leaves it out ("0.1% בשנה").
  */
-export function PriceWords({ price, kind, saved, insideFund }: { price: PriceView; kind: FeeKindId; saved?: boolean; insideFund?: boolean }) {
+export function PriceWords({ price, kind, saved, insideFund, ofSaid }: { price: PriceView; kind: FeeKindId; saved?: boolean; insideFund?: boolean; ofSaid?: boolean }) {
   const p = copy.price;
   const f = price.figures;
   const of = p.of[kind] ?? p.of.default;
@@ -206,7 +207,8 @@ export function PriceWords({ price, kind, saved, insideFund }: { price: PriceVie
     case "held":
       body = (
         <>
-          <Fig value={f.rate!} /> {p.per[price.per!]} {insideFund ? p.insideFund : saved ? p.heldSaved : p.held}
+          <Fig value={f.rate!} /> {p.per[price.per!]}
+          {ofSaid ? "" : ` ${insideFund ? p.insideFund : saved ? p.heldSaved : p.held}`}
           {price.every !== price.per && <>, {p.charged[price.every!]}</>}
           {f.min && <Bound lead={p.min} value={f.min} {...(price.boundsEvery ? { per: p.per[price.boundsEvery] } : {})} />}
           {f.max && <Bound lead={p.max} value={f.max} {...(price.boundsEvery ? { per: p.per[price.boundsEvery] } : {})} />}
@@ -257,7 +259,14 @@ export function StandingTag({ standing }: { standing: StandingView }) {
  * charged; above it, that the law allows less and the typed price stays; not judged, why. `binds` says whom a cap binds where it binds
  * some providers only. A cap with a caveat says nothing per price: the cap's line says it once, in the caveat's words (`CapCaveat`).
  */
-export function StandingWords({ standing, binds }: { standing: StandingView; binds?: string }) {
+/** Whether a price's standing says more than the full stop that ends its line (`StandingWords`). */
+const standingSays = (standing: StandingView): boolean => {
+  const s = standing.standing;
+  if (s.judged) return (s.standing === "below" && !!standing.share) || s.standing === "at" || s.standing === "above";
+  return s.why === "binds" || s.why === "other-form" || s.why === "not-sourced";
+};
+
+function StandingWords({ standing, binds }: { standing: StandingView; binds?: string }) {
   const s = standing.standing;
   const w = copy.standing;
   if (s.judged) {
@@ -288,7 +297,7 @@ export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
 /**
  * That a bank may not charge a fee here, read as nothing charged (the rule table's `ban`), with the rules that ban it: as the rules' words,
  * or as the site's reading of them (`reading`); that a new bank is outside those rules for its first five years (BANK-51, among each ban's rules); and, where the
- * rules leave one, the distribution fee a bank may still charge on the units (MF-71). What a fee's card, its line in the glance and the law
+ * rules leave one, the distribution fee a bank may still charge on the units (MF-71). What a fee's card, its line in what the reading leaves out and the law
  * card say in place of "no price".
  */
 export function BannedWords({ ban, fee }: { ban: BanSaid; fee?: string }) {
@@ -326,7 +335,7 @@ function DistributionWords() {
   );
 }
 
-/** Why a fee is not read (`unreadReason`), as its card and its line in the glance say it. `fee`: its name, heading the list the ban's words open. */
+/** Why a fee is not read (`unreadReason`), as its card and its line in what the reading leaves out say it. `fee`: its name, heading the list the ban's words open. */
 export function UnreadWords({ banned, noCurrency, notPrinted, unmatched, fee }: { banned?: BanSaid | undefined; noCurrency?: boolean; notPrinted?: boolean; unmatched?: boolean; fee?: string }) {
   const why = unreadReason({ banned, noCurrency, notPrinted, unmatched });
   if (why === "banned") return <BannedWords ban={banned!} {...(fee ? { fee } : {})} />;
@@ -388,12 +397,12 @@ function LawPrices({ row, saved, first }: { row: LawRow; saved: boolean; first: 
 }
 
 /**
- * A fee against its cap (F-113), the one block the glance and the law card draw: its name and the tag of its standing now (a later price's
+ * A fee against its cap (F-113), the block the law card draws for a fee with a cap: its name and the tag of its standing now (a later price's
  * standing is said with that price), then `children` (its price or prices in words, and the cap's line where the place says it). It
  * reads the fee's law row of the reading, so the two never disagree. The standing is said in words only: no bar. Its container lays the
  * pieces out as a column. Nothing where the cap has no figure.
  */
-export function CapBlock({ row, name, tag, children }: { row: LawRow; /** The fee's name as the place draws it (one that chooses the fee); its plain name otherwise. */ name?: ReactNode; /** The standing's tag as the place draws it (one that leads to the law card); the plain tag otherwise. */ tag?: ReactNode; children?: ReactNode }) {
+function CapBlock({ row, name, tag, children }: { row: LawRow; /** The fee's name as the place draws it (one that chooses the fee); its plain name otherwise. */ name?: ReactNode; /** The standing's tag as the place draws it (one that leads to the law card); the plain tag otherwise. */ tag?: ReactNode; children?: ReactNode }) {
   if (row.cap.state !== "value") return null;
   return (
     <>
@@ -406,37 +415,36 @@ export function CapBlock({ row, name, tag, children }: { row: LawRow; /** The fe
   );
 }
 
-/** A fee's law row whole, as the law card shows it: the block against its cap, each price from the reading's month on, and the cap's line. */
-export function LawBlock({ row, saved, first, name }: { row: LawRow; saved: boolean; first: MonthKey; name?: ReactNode }) {
+/**
+ * A fee's law row whole, as the law card shows it: the block against its cap, each price from the reading's month on, and the cap's line.
+ * A fee with one price on both sides whose standing says nothing more has its price on its name's line ("העברה החוצה · 0.25% מההעברה, …").
+ * `name`: the fee's name as the place draws it, told whether words run on after it on its line (`inLine`).
+ */
+export function LawBlock({ row, saved, first, name }: { row: LawRow; saved: boolean; first: MonthKey; name?: (inLine: boolean) => ReactNode }) {
+  const one = row.prices.length === 1 && row.prices[0]!.side === "all" && !standingSays(row.prices[0]!.standing) ? row.prices[0]! : null;
+  if (one)
+    return (
+      <CapBlock
+        row={row}
+        name={
+          <span>
+            {name ? name(true) : <FeeName fee={row} className="font-medium" />}
+            <span className="text-sm text-muted-foreground">
+              {copy.read.law.priceSep}
+              <PriceWords price={one.price} kind={row.kind} saved={saved} />
+            </span>
+          </span>
+        }
+      >
+        <CapRules cap={row.cap} fee={refName(row)} />
+      </CapBlock>
+    );
   return (
-    <CapBlock row={row} name={name}>
+    <CapBlock row={row} name={name?.(false)}>
       <LawPrices row={row} saved={saved} first={first} />
       <CapRules cap={row.cap} fee={refName(row)} />
     </CapBlock>
   );
-}
-
-/** The value held at which the yearly sums on the account and the custody rate cost the same (F-112), as a sentence's words and figures. */
-export function MeetSentence({ mark }: { mark: Extract<MarkView, { kind: "meet" }> }) {
-  const m = copy.marks.meet;
-  return (
-    <>
-      {m.before}
-      <Fig value={mark.sum} />
-      {m.sum}
-      <Fig value={mark.rate} />
-      {m.rate}
-      <Fig value={mark.amount} />
-      {mark.largest ? m.after : `${m.smaller}${custodyName(mark.against)}.`}
-    </>
-  );
-}
-
-/** The custody fees a meet mark weighs the sums against, by name with the article where the deal has one ("דמי ניהול פיקדון ניירות הערך"). */
-export function custodyName(against: readonly FeeRef[]): string {
-  if (against.length !== 1) return copy.marks.meet.custody;
-  const one = against[0]!;
-  return (one.kind !== "own" && copy.nameForms[one.kind]?.the) || refName(one);
 }
 
 /** A cap's figure with its unit's words ("1.05% בשנה"), as the guide writes a cap. */
