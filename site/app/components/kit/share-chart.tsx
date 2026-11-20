@@ -98,10 +98,10 @@ function crosses(b: Box, l: LabelLine): boolean {
  * after it along the line, each a row higher in turn, up to `MARK_ROWS` rows and never above the chart's top; then beside it before it,
  * row by row. Each is held inside the plot (from `plotL` to `plotR`) and moved past the end of the value axis's words where it would meet
  * one. A place is free where the label meets no word of the axis, no mark's point, no label already placed and no line (`lines`), and
- * stands no further than its `reach` (`JOIN_MAX`) from its point. `lx`, `by`: the label's middle and its first line's baseline; one not
+ * stands no further than its `reach` (`JOIN_MAX`) from its point, and meets nothing in `keepOut` (the reader's point and its tag). `lx`, `by`: the label's middle and its first line's baseline; one not
  * right at its point is `joined` to it by a line. A label with no free place gives way (null): its point stays.
  */
-export function markLabels(points: readonly { cx: number; cy: number; half: number; up?: number; reach?: number }[], axisWords: readonly { right: number; top: number; bottom: number }[], plotR: number, lines: readonly LabelLine[] = [], plotL = 0): ({ lx: number; by: number; joined: boolean } | null)[] {
+export function markLabels(points: readonly { cx: number; cy: number; half: number; up?: number; reach?: number }[], axisWords: readonly { right: number; top: number; bottom: number }[], plotR: number, lines: readonly LabelLine[] = [], plotL = 0, keepOut: readonly Box[] = []): ({ lx: number; by: number; joined: boolean } | null)[] {
   const axis: Box[] = axisWords.map((a) => ({ left: 0, right: a.right, top: a.top, bottom: a.bottom }));
   const dots: Box[] = points.map((p) => ({ left: p.cx - POINT_CLEAR, right: p.cx + POINT_CLEAR, top: p.cy - POINT_CLEAR, bottom: p.cy + POINT_CLEAR }));
   const taken: Box[] = [];
@@ -127,7 +127,7 @@ export function markLabels(points: readonly { cx: number; cy: number; half: numb
           for (const a of axis) if (meet(box(lx, by), a, LABEL_GAP)) lx = a.right + LABEL_GAP + half;
           const b = box(lx, by);
           if (b.right > plotR || away(b) > reach) continue;
-          if (axis.some((a) => meet(b, a, LABEL_GAP - 1)) || dots.some((d) => meet(b, d, 0)) || taken.some((t) => meet(b, t, LABEL_GAP)) || others.some((l) => crosses(b, l))) continue;
+          if (axis.some((a) => meet(b, a, LABEL_GAP - 1)) || dots.some((d) => meet(b, d, 0)) || taken.some((t) => meet(b, t, LABEL_GAP)) || keepOut.some((k) => meet(b, k, LABEL_GAP)) || others.some((l) => crosses(b, l))) continue;
           taken.push(b);
           // a label right over its point or level beside it needs no line; one higher, or moved along the line off its point, is joined to it
           return { lx, by, joined: away(b) > MARK_LABEL };
@@ -254,6 +254,18 @@ export function ShareChart({
     return { z, mid, from, to, shown };
   });
 
+  // the reader's point and its tag over it, held inside the plot
+  const pointY = point ? y(Math.min(shareAt(points, point.at), yTop)) : 0;
+  const tagWide = point ? chartTextWidth(point.tag, CHART_TEXT_PX) + 20 : 0;
+  const tagX = point ? Math.max(plotL, Math.min(plotR - tagWide, x(point.at) - tagWide / 2)) : 0;
+  const tagY = Math.max(2, pointY - 38);
+  const pointBoxes: Box[] = point
+    ? [
+        { left: tagX, right: tagX + tagWide, top: tagY, bottom: tagY + 22 },
+        { left: x(point.at) - 8, right: x(point.at) + 8, top: pointY - 8, bottom: pointY + 8 },
+      ]
+    : [];
+
   // the marks' words over their points, clear of the axis's words, the curve, each other and the reader's point
   const inRange = marks.filter((m) => m.at >= range.lo * (1 - 1e-9) && m.at <= range.hi * (1 + 1e-9)).sort((p, q) => p.at - q.at);
   const cy = (a: number) => y(shareAt(points, a * (1 + 1e-12)) > yTop ? yTop : shareAt(points, a * (1 - 1e-12)));
@@ -274,6 +286,7 @@ export function ShareChart({
     plotR,
     [curveLine, ...drops],
     plotL,
+    pointBoxes,
   );
 
   // the group names on their bands, where the band is tallest in the range and the name fits inside it
@@ -357,10 +370,9 @@ export function ShareChart({
   };
 
   const line = point ? point.at : at;
-  const pointY = point ? y(Math.min(shareAt(points, point.at), yTop)) : 0;
-  const tagWide = point ? chartTextWidth(point.tag, CHART_TEXT_PX) + 20 : 0;
-  const tagX = point ? Math.max(plotL, Math.min(plotR - tagWide, x(point.at) - tagWide / 2)) : 0;
-  const dim = (id: string) => (strong && strong !== id ? 0.3 : strong === id ? 0.85 : 0.6);
+  // the layers in their fee colours a little under half over the card, so the group names in the foreground read on them at 4.5:1; a layer
+  // set apart keeps that, the others step back
+  const dim = (id: string) => (strong && strong !== id ? 0.15 : 0.45);
 
   return (
     <div className={cx("flex flex-col", className)}>
@@ -397,7 +409,7 @@ export function ShareChart({
           ))}
           <g clipPath={`url(#share-plot-${Math.round(w)}-${Math.round(height)})`}>
             {layers?.map((l, k) => <path key={l.id} d={area(k)} className={l.fill} fillOpacity={dim(l.id)} data-mark="area" />)}
-            {layers?.map((l, k) => <path key={`${l.id}:top`} d={path(tops[k]!)} fill="none" className="stroke-card" strokeOpacity={0.5} strokeWidth={1} />)}
+            {layers?.map((l, k) => <path key={`${l.id}:top`} d={path(tops[k]!)} fill="none" className="stroke-card" strokeWidth={1} />)}
             <path d={path((p) => p.share)} fill="none" className="stroke-foreground" strokeWidth={2} strokeLinejoin="round" />
           </g>
           {names.map((n) => (
@@ -448,8 +460,8 @@ export function ShareChart({
           {point && (
             <g role="slider" tabIndex={0} aria-label={spoken} aria-valuemin={range.lo} aria-valuemax={range.hi} aria-valuenow={Math.round(point.at)} aria-valuetext={point.tag} onKeyDown={key} className="cursor-grab outline-none [&:focus-visible>circle]:stroke-ring">
               <circle cx={x(point.at)} cy={pointY} r={6} className="fill-entered stroke-card" strokeWidth={2} />
-              <rect x={tagX} y={Math.max(2, pointY - 38)} width={tagWide} height={22} rx={6} className="fill-entered" />
-              <text x={tagX + tagWide / 2} y={Math.max(2, pointY - 38) + 15} textAnchor="middle" direction="rtl" className="fill-background text-xs font-semibold tabular-nums">
+              <rect x={tagX} y={tagY} width={tagWide} height={22} rx={6} className="fill-entered" />
+              <text x={tagX + tagWide / 2} y={tagY + 15} textAnchor="middle" direction="rtl" className="fill-background text-xs font-semibold tabular-nums">
                 {point.tag}
               </text>
             </g>

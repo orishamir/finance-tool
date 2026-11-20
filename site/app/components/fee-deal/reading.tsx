@@ -51,6 +51,34 @@ function middleOf(p: { from: number; to: number | null }, range: AmountRange): n
   return Math.max(range.lo, Math.min(range.hi, roundAmount(Math.sqrt(lo * hi))));
 }
 
+
+/**
+ * A figure after its lead in a sentence: the lead's last word held to the figure ("מ־15,600 $") and the words before it free to break. A
+ * lead of several words inside the figure's one no-wrap span would hold a whole headline on one line, past a phone's width.
+ */
+const splitLead = (lead: string): [string, string] => {
+  const i = lead.trimEnd().lastIndexOf(" ");
+  return i < 0 ? ["", lead] : [lead.slice(0, i + 1), lead.slice(i + 1)];
+};
+function FigAfter({ lead, ...rest }: { lead: string } & Omit<Parameters<typeof Fig>[0], "prefix">) {
+  const [free, held] = splitLead(lead);
+  return (
+    <>
+      {free}
+      <Fig {...rest} prefix={held} />
+    </>
+  );
+}
+function NumAfter({ lead, ...rest }: { lead: string } & Omit<Parameters<typeof Num>[0], "prefix">) {
+  const [free, held] = splitLead(lead);
+  return (
+    <>
+      {free}
+      <Num {...rest} prefix={held} />
+    </>
+  );
+}
+
 // ---------------------------------------------------------------- the lanes
 
 /** A part's words on its lane: its kind's lead and its figure ("מינימום 39 $", "0.199% ברבעון"); on a phone, without its period. */
@@ -89,7 +117,7 @@ function UnderLine({ fee, parts }: { fee: ChartFee; parts: LanePart[] }) {
         {parts.map((p, k) => (
           <span key={k}>
             {k > 0 && u.sep}
-            {p.end && <Fig value={p.end} prefix={u.upTo} />}{" "}
+            {p.end && <FigAfter value={p.end} lead={u.upTo} />}{" "}
             {p.part === "free" ? copy.price.free : p.figure ? (
               <>
                 {p.part === "cap" ? u.capLead : p.part === "min" ? u.minLead : ""}
@@ -215,8 +243,8 @@ function ActionHeadline({ view, tab }: { view: ActionView; tab: ActionTab }) {
     return (
       <>
         {tabWord(a.noun, tab)}
-        <Fig value={h.below} prefix={g.small} />
-        <Num value={h.rate} prefix={g.more} display={fmt.pctPrinted} />
+        <FigAfter value={h.below} lead={g.small} />
+        <NumAfter value={h.rate} lead={g.more} display={fmt.pctPrinted} />
         {g.of}
       </>
     );
@@ -224,7 +252,7 @@ function ActionHeadline({ view, tab }: { view: ActionView; tab: ActionTab }) {
   if (h.kind === "max")
     return (
       <>
-        <Fig value={h.at} prefix={a.max.before} />
+        <FigAfter value={h.at} lead={a.max.before} />
         {a.max.after}
       </>
     );
@@ -269,7 +297,7 @@ function ActionSub({ view, tab }: { view: ActionView; tab: ActionTab }) {
       {h.max && (
         <>
           {" "}
-          <Fig value={h.max.at} prefix={a.maxAt.lead} />
+          <FigAfter value={h.max.at} lead={a.maxAt.lead} />
           {a.maxAt.the}
           {refName(h.by.fee.ref)}
           {a.maxAt.sep}
@@ -304,7 +332,7 @@ function WhyLine({ part, lane, share }: { part: ActionReading["parts"][number]; 
         <>
           {a.why.alone}
           <Fig value={rate} />
-          <Fig value={part.rateAlone} prefix={a.why.would} />
+          <FigAfter value={part.rateAlone} lead={a.why.would} />
         </>
       )}
     </>
@@ -477,7 +505,7 @@ function HeldHeadline({ view, later, from }: { view: HeldView; later: boolean; f
           {c.month}
         </>
       )}
-      <Fig value={h.at} prefix={c.lead} />
+      <FigAfter value={h.at} lead={c.lead} />
       {c.after}
     </>
   );
@@ -524,14 +552,14 @@ function HeldSub({ view, saved }: { view: HeldView; saved: boolean }) {
       {view.falls && (saved ? w.held.fallsSaved : w.held.falls)}
       {view.cross !== null && view.head.kind === "cross" && view.bands.length > 0 && (
         <>
-          <Fig value={view.head.at} prefix={b.lead} />
+          <FigAfter value={view.head.at} lead={b.lead} />
           {b.decides}
           {joined(
             view.bands.map((band, k) => (
               <>
                 <Fig value={band.rate} />
                 {k === 0 && b.perYear}
-                {band.to ? <Fig value={band.to} prefix={b.upTo} /> : view.bands.length > 1 ? b.above : ""}
+                {band.to ? <FigAfter value={band.to} lead={b.upTo} /> : view.bands.length > 1 ? b.above : ""}
               </>
             )),
             b.sep,
@@ -551,7 +579,7 @@ function HeldBox({ read, strong, saved }: { read: HeldReading; strong: string | 
   return (
     <div className="flex min-w-48 flex-col gap-1 text-xs">
       <p className="font-semibold">
-        <Num value={read.amount} prefix={x.head} display={fmt.nisWhole} />
+        <NumAfter value={read.amount} lead={x.head} display={fmt.nisWhole} />
       </p>
       <p className="text-muted-foreground">
         <Fig value={read.total} className="font-semibold text-foreground" />
@@ -741,7 +769,7 @@ function StopHead({ period }: { period: PeriodCard }) {
       {period.to && (
         <p className="text-sm text-muted-foreground">
           <When iso={period.to} lead={p.until} />
-          {period.left ? <Num value={period.left} prefix={`, ${p.left}`} display={fmt.months} /> : period.length ? <Num value={period.length} prefix=", " display={fmt.months} /> : null}
+          {period.left ? <NumAfter value={period.left} lead={`, ${p.left}`} display={fmt.months} /> : period.length ? <NumAfter value={period.length} lead=", " display={fmt.months} /> : null}
         </p>
       )}
     </div>
@@ -813,7 +841,7 @@ function TimelineStop({ stop, before, saved }: { stop: TimelinePeriod; before: T
         <p>
           {idle && (
             <>
-              <Fig value={idle.total} prefix={t.idle.lead} className="font-semibold" />
+              <FigAfter value={idle.total} lead={t.idle.lead} className="font-semibold" />
               {!before && idle.parts.length > 1 ? (
                 <>
                   {t.idle.parts}
