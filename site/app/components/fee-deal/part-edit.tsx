@@ -8,10 +8,11 @@ import { withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho 
 import { type Side } from "../../lib/fee-deal/model";
 import { MONTHS, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
 import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
-import { PARTS, setPart, type AmountPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
+import { PARTS, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
+import type { PartGiven } from "../../lib/fee-deal/edits/cells";
 import type { PendingWords } from "../../lib/fee-deal/part-words";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
-import { FigureField, InlineSelect, PartEdit, Switch, TextField, type PartMark, type Settled } from "../kit";
+import { FigureField, InlineSelect, PartEdit, Switch, TextField, focusPartEdit, type PartMark, type Settled } from "../kit";
 import { partFieldId, partPlaceId, signText } from "./figures";
 import { bringIntoView } from "./in-view";
 import { IdRef } from "../provenance";
@@ -317,23 +318,35 @@ function AmountBox({ id, label, sign, tail, onCommit }: { id: string; label: str
 }
 
 /**
- * A part that asks an amount, added to several cases at once (a fee's "+ חלק לכל המקרים", a grid row's "+ חלק לכל השורה", a toolbox card
- * dropped on the parts said once for every case): asked once for them all, as the open case asks it for one case (`PendingEdit`), with the
- * words, box name and sign every one of them asks it with (`askAcross`). Its box takes the focus as it appears; an amount given, by Enter
- * or by leaving the box (`by`), puts the part in each of them (`onGive`); its bin drops it (`onDrop`). No figure is put in before the
- * person has typed one whole.
+ * A part that asks for something, added from the toolbox to several cases at once (every case of a fee, or a grid row's): asked once for
+ * them all, where they stand, as the open case asks it for one case (`PendingEdit`), in the words, box name and sign every one of them
+ * asks it with (`askAcross`): an amount in its box, which takes the focus as it appears, or the fee an offset is against. What is given
+ * (`onGive`: by Enter or by leaving the box, `by`; a fee once chosen) puts the part in each of them; its bin drops it (`onDrop`). Nothing
+ * is put in before the person has given it whole.
  */
-export function AskAmount({ fee, part, words, name, onGive, onDrop }: { fee: Fee; part: AmountPart; words: PendingWords; name: string; onGive: (n: number, by: Settled) => void; onDrop: () => void }) {
-  const id = partFieldId(fee.id, `${part}-across`);
+export function AskOnce({ fee, deal, part, words, name, onGive, onDrop }: { fee: Fee; deal: FeeDeal; part: PendingPart; words: PendingWords; name: string; onGive: (given: PartGiven, by: Settled) => void; onDrop: () => void }) {
+  // its box's id, which the page looks for; the part's own, which takes the focus into its box or its choice
+  const box = partFieldId(fee.id, `${part}-across`);
+  const id = `${box}-part`;
+  const label = copy.builder.fieldName(name, words.field);
+  const tail = bare(words.words.tail);
   useEffect(() => {
-    const box = document.getElementById(id);
-    box?.focus({ preventScroll: true });
-    bringIntoView(box?.closest("[data-lift]") ?? box);
+    const at = focusPartEdit(id);
+    bringIntoView(at?.closest("[data-lift]") ?? at);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const body =
+    PARTS[part].ask === "fee" ? (
+      <>
+        <OffsetChoice deal={deal} fee={fee} value={null} label={label} onChange={(kind) => onGive({ against: kind }, "left")} />
+        <span className="text-muted-foreground">{tail}</span>
+      </>
+    ) : (
+      <AmountBox id={box} label={label} sign={words.sign} tail={tail} onCommit={(n, by) => onGive({ value: n }, by)} />
+    );
   return (
-    <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.words.lead)} onRemove={onDrop} removeLabel={copy.builder.fieldName(name, dealCases.removePart)} asking>
-      <AmountBox id={id} label={copy.builder.fieldName(name, words.field)} sign={words.sign} tail={bare(words.words.tail)} onCommit={onGive} />
+    <PartEdit id={id} kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.words.lead)} onRemove={onDrop} removeLabel={copy.builder.fieldName(name, dealCases.removePart)} asking={PARTS[part].ask !== "fee"}>
+      {body}
     </PartEdit>
   );
 }

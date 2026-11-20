@@ -8,7 +8,8 @@
 // stretches it over its neighbours and, where it can be taken away, a small bin in its top end corner; a cell covering its whole row says
 // so under its parts. A
 // part every case of the fee holds alike stands apart from the table, over it (`EveryCaseParts`); one some neighbouring cases hold alike is
-// one cell over their columns. Under a grid's row a slim strip drawn while the pointer is there adds a part to every case of it. A column or a row carried stands as its gap with its cells, and each cell keeps its id, so a move
+// one cell over their columns. Under a grid's row a plus drawn while the pointer is there opens the toolbox on every case of it. A column
+// or a row carried stands as its gap with its cells, and each cell keeps its id, so a move
 // slides it. Narrower than a computer's block, the page reads the same cases as rows (`ConditionBand`, `CaseRow`, `CaseGroup`); a table
 // wider than its block scrolls inside itself, never widening the page. A table's and a grid's cases are tiles raised on the band. The
 // case open stands under the table or the grid, its tile outlined in the action colour. A cell with a
@@ -350,7 +351,7 @@ const carriedAt = (heads: readonly { liftItem?: string }[], carried: string | nu
 const betweenOf = (n: number, insert: (k: number) => AddSpec | null) => Array.from({ length: Math.max(0, n - 1) }, (_, i) => ({ k: i + 1, add: insert(i + 1) })).filter((x): x is { k: number; add: AddSpec } => x.add !== null);
 
 /**
- * The plus under a grid's row that adds a part to every case of it (`add`): a small knob like a cell's stretch knob, in the
+ * The plus under a grid's row that opens the toolbox on every case of it (`add`): a small knob like a cell's stretch knob, in the
  * middle of the row's foot, its words only spoken and in its title; drawn only while the pointer is over the row or the focus is in it
  * (`data-row-add`, app.css), straddling the room under it, so it takes none and moves nothing. The keyboard and touch reach the same
  * through the row head's menu.
@@ -625,7 +626,7 @@ function HeadWords({ head, end, grip, onRename }: { head: ReactNode; end?: boole
  * in the row heads' column only, a 1 px line in the border's colour in the middle of the room between them, never across the tiles. A
  * bare plus at the end of the column heads adds a value across (`addColumn`), and one under the row heads a value down (`addRow`);
  * between two heads, the plus that adds one exactly there (`insertColumn`, `insertRow`).
- * A row's head is as tall as its tiles and its lines; a row's `addPart`, the strip under it that adds a part to every case of the row.
+ * A row's head is as tall as its tiles and its lines; a row's `addPart`, the plus under it that opens the toolbox on every case of the row.
  * `above`: the switch of a third thing. `steps`: the values across are a ladder's steps, whose heads hold a box each while their fee is
  * open, and take the room for it. `foot`: what stands under the grid (the bin while something is lifted, laid over what follows). Wider
  * than its block, it scrolls inside itself, sideways only, as a table does.

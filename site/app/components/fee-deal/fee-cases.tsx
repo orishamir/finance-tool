@@ -1,6 +1,7 @@
 // A fee whose price changes by things, laid out by its shape (method §10.6, F-114; lib/fee-deal/band-layout.ts and layout.ts): first, under
 // the fee's name's line, the parts every case of the fee holds alike (every-case.ts), one cell each, said once and left out of the table, and
-// after them "+ חלק לכל המקרים", which adds a part to every case (a part that asks its amount asks it there first); then the cases' band,
+// after them "+ חלק לכל המקרים", which opens the toolbox on every case of the fee (a part it adds that asks its amount asks it there
+// first); then the cases' band,
 // headed by the condition. Where its block has the room, the band holds a table of its cases (one thing; a range as a ladder whose step tops
 // are typed in place) or a grid (two things; a third a switch above it; under a row's cells, a cell for each part its cells hold alike), the
 // case open under the band; on a block narrower than a computer's, the same cases as rows in the band, a grid's in one group per value of
@@ -17,10 +18,11 @@
 // keyboard; a table's columns, a grid's rows and columns and the cases read as rows are sortable lists, the others opening the gap where
 // the pointer stands, and every place shows what a drop would do while a thing is over it (the page draws the deal as it would leave it).
 // Every cell of a table or a grid has knobs that stretch it where nothing is overwritten (reach.ts), the cells it would cover showing its
-// price while it is pulled, a cell over its whole row saying so. Under a grid's row a strip drawn while the pointer is there adds a part
-// to every case of it as one stretched cell (`partAcross`), as its head's menu does, a part that asks its amount asking it on a line under
-// the row. A toolbox part dragged here drops on a case's head, cell or row, on the open case, or on the parts said once for every case,
-// which puts it in every case; a thing to change by, on a case's head, splits that case alone.
+// price while it is pulled, a cell over its whole row saying so. Under a grid's row a plus drawn while the pointer is there opens the
+// toolbox on every case of it, as its head's menu does, a part it adds that asks its amount asking it on a line under the row; while the
+// toolbox adds to several cases, each of them is drawn open. A toolbox part dragged here drops on a case's cell, on the open case, or on
+// the parts said once for every case or a grid row's head, which does what its tap does with the toolbox on those cases; a thing to
+// change by, on a case's head, splits that case alone.
 // Ctrl+C copies a cell and Ctrl+V pastes it on another cell, a head or the fee's head (paste.ts).
 import { useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { X } from "lucide-react";
@@ -37,19 +39,20 @@ import { bandLayout, inTime, laterChanges, mergedParts, partsByRow, rangeSign, r
 import { valueKey, WHOLE, type FeeLayout, type GridRow, type Head, type Shared } from "../../lib/fee-deal/layout";
 import { clashWords, liftId, liftedOf, type Lifted, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { askAcross, everyCaseRows, withoutRows } from "../../lib/fee-deal/every-case";
-import { BOUND_CURRENCIES, hasCases, isRange, NAME_MAX, namesPlaces, NEW_PLACE, type CasesFee, type Fee, type When } from "../../lib/fee-deal/model";
+import type { CasesTarget } from "../../lib/fee-deal/toolbox";
+import { BOUND_CURRENCIES, hasCases, isRange, NAME_MAX, namesPlaces, NEW_PLACE, type CasesFee, type Fee, type FeeDeal, type When } from "../../lib/fee-deal/model";
 import { LIST_IDS } from "../../lib/fee-deal/offers/conditions";
 import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits, reachOf, type Slot } from "../../lib/fee-deal/reach";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
-import { ActionMenu, AddSlot, RenameInput, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, DropBin, DropZone, EveryCaseParts, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, KindDot, WhenRule, monthText, useCarried, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
+import { AddSlot, RenameInput, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, DropBin, DropZone, EveryCaseParts, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, KindDot, WhenRule, monthText, useCarried, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
 import { IdRef, Num } from "../provenance";
 import { Fig } from "./words";
 import { AskStep } from "./ask-thing";
 import { LawTag } from "./links";
 import { WhenText, numText, whenText } from "./open-case";
-import { AskAmount, PART_MARK } from "./part-edit";
-import { asksAmount, PARTS, setPart, type AmountPart } from "../../lib/fee-deal/offers/parts";
+import { AskOnce, PART_MARK } from "./part-edit";
+import { PARTS, setPart } from "../../lib/fee-deal/offers/parts";
 import { clipOf, pasteOn, type PastePlace } from "../../lib/fee-deal/paste";
 import { clipboard } from "./clipboard";
 import { ROW_OF } from "../../lib/fee-deal/part-rows";
@@ -57,7 +60,7 @@ import { EditHere, PartFig } from "./edit-here";
 import type { BlockActions, HeadApply, OpenHere, ZoneOf } from "./fee-block";
 
 const sep = copy.cases.sep;
-/** The place a part is asked at and the menu is opened from when it goes into every case of the fee (`askPart`, `rowMenu`). */
+/** The place every case of the fee is named by among the places the toolbox adds to several cases at once (a key no grid row has). */
 const EVERY = "every";
 
 /** A case's value for each thing in plain words, joined, for its spoken name and the toolbox's line ("ניירות ערך בחו״ל, בארה״ב · מסלול 1"). */
@@ -213,6 +216,7 @@ export function FeeCases({
   band,
   open,
   name,
+  deal,
   onFee,
   actions,
   zone,
@@ -223,6 +227,8 @@ export function FeeCases({
   band: Extract<BlockView, { kind: "band" }>;
   open: OpenHere;
   name: string;
+  /** The deal the fee is of: an offset asked once for several cases offers its other fees. */
+  deal: FeeDeal;
   onFee: (f: Fee) => void;
   actions: BlockActions;
   /** A drop zone around `el` for the places `on` (the first that takes a thing gets it): it takes a toolbox part, and lifted things. */
@@ -293,9 +299,12 @@ export function FeeCases({
     setPicked(key ? { key, case: caseId } : null);
     onOpen(fee.id, caseId, "pointer");
   };
-  /** Whether a cell or line over `cases` shows as the open case's: the one tapped, or, where the case was opened otherwise, its own cell. */
+  /**
+   * Whether a cell or line over `cases` shows as open: the open case's, the one tapped, or, where the case was opened otherwise, its own
+   * cell; while the toolbox adds to several cases at once, each of their own cells.
+   */
   const shownOpen = (cases: readonly string[], key: string | null) =>
-    !!openCase && cases.includes(openCase) && (picked?.case === openCase ? picked.key === key : key === null);
+    (!!openCase && cases.includes(openCase) && (picked?.case === openCase ? picked.key === key : key === null)) || (key === null && !!open.several && isOpen && cases.length > 0 && cases.every((id) => open.several!.target.cases.includes(id)));
   // a case or a step added opens: the first case the fee did not have
   const addAndOpen = (next: Fee) => {
     onFee(next);
@@ -469,50 +478,40 @@ export function FeeCases({
     return l ? { liftItem: liftId(l) } : {};
   };
 
-  // ---------------------------------------------------------------- a part added to several cases at once: a grid's row ("+ חלק לכל
-  // השורה", its strip and its head's menu) or every case of the fee ("+ חלק לכל המקרים"); `where` names the place it was asked at
-  const [rowMenu, setRowMenu] = useState<{ at: HTMLElement; cases: string[]; along: number; where: string } | null>(null);
-  /** A part that asks its amount first, being added to cases `cases`: asked where it was chosen (`where`: a grid row's key, or `EVERY`). */
-  const [askPart, setAskPart] = useState<{ part: AmountPart; cases: string[]; along: number; where: string } | null>(null);
+  // ---------------------------------------------------------------- the toolbox on several cases at once: every case of the fee ("+ חלק
+  // לכל המקרים") or a grid row's ("+ חלק לכל השורה", its knob and its head's menu)
+  const several = isOpen ? open.several : null;
+  /** The toolbox opened on the cases of a grid's row `key` (`inRow`), or, with no row, on every case of the fee. */
+  const targetOf = (cases: readonly string[], along: number, row?: string): CasesTarget => ({ fee: fee.id, cases: [...cases], along, ...(row !== undefined ? { row } : {}) });
+  /** Whether the toolbox adds to the cases of grid row `row` (none: every case of the fee) now. */
+  const targetOpen = (row?: string) => !!several && several.target.row === row;
+  /** The add that opens the toolbox on `target`: a quiet button or a row's knob, marked while the toolbox adds there. */
+  const addOn = (target: CasesTarget, label: string, spoken: string): AddSpec => ({ label, spoken, expanded: targetOpen(target.row), onAdd: () => actions.cases.onOpen(target) });
   /**
-   * The parts cases `cases` can all take, each an action that puts it in every one of them as one stretched cell (`partAcross`); a part that
-   * asks an amount asks it first, once for them all, where it was chosen (`where`).
+   * What a part the toolbox added to several cases still asks of them all (`open.several.ask`), at the place of those cases (`row`: a grid
+   * row's key; none, every case of the fee): one box, as the open case asks it for one case (`AskOnce`). Given, the part stands in every
+   * one of them, as one cell, and the focus goes, given by Enter, to the cell said once for every case where it stands there.
    */
-  const partChoices = (cases: readonly string[], along: number, where: string): GripAction[] =>
-    lift.rowParts(fee.id, cases).map((p) => ({ label: p.label, onPick: () => (asksAmount(p.id) ? setAskPart({ part: p.id, cases: [...cases], along, where }) : onFee(partAcross(fee, cases, p.id, along))) }));
-  /** The strip that adds a part to every case of `cases`, and the same in a head's menu; none where no part fits them all. */
-  const rowAdd = (cases: readonly string[], along: number, where: string, words: { strip: string; menu: string; spoken: string }) => {
-    const choices = cases.length ? partChoices(cases, along, where) : [];
-    if (choices.length === 0) return { strip: undefined, menu: [] as GripAction[] };
-    return {
-      strip: { label: words.strip, spoken: words.spoken, expanded: rowMenu?.where === where, onAdd: (at: HTMLElement) => setRowMenu((m) => (m && m.at === at ? null : { at, cases: [...cases], along, where })) } as AddSpec,
-      menu: [{ label: words.menu, onPick: () => undefined, then: choices }] as GripAction[],
-    };
-  };
-  /**
-   * The part being added that asks its amount, where it was chosen (`where`), asked once for its cases (`AskAmount`): given, it stands in
-   * each of them as one cell, and the focus goes to the cell said once for every case where it stands there; none where the cases would no
-   * longer ask it alike.
-   */
-  const askAt = (where: string): ReactNode => {
-    if (!askPart || askPart.where !== where) return null;
-    const asked = askAcross(fee, askPart.cases, askPart.part);
-    if (!asked) return null;
-    const { part, cases, along } = askPart;
-    const row = ROW_OF[part];
+  const askAt = (row?: string): ReactNode => {
+    const ask = several?.ask;
+    if (!ask || !targetOpen(row)) return null;
+    const words = askAcross(fee, ask.cases, ask.part);
+    if (!words) return null;
+    const { part, cases, along } = ask;
     return (
-      <AskAmount
-        key={`${where}:${part}`}
+      <AskOnce
+        key={`${row ?? EVERY}:${part}`}
         fee={fee}
+        deal={deal}
         part={part}
-        words={asked}
+        words={words}
         name={name}
-        onDrop={() => setAskPart(null)}
-        onGive={(n, by) => {
-          setAskPart(null);
-          onFee(partAcross(fee, cases, part, along, n));
+        onDrop={() => actions.cases.onAsk(null)}
+        onGive={(given, by) => {
+          actions.cases.onAsk(null);
+          onFee(partAcross(fee, cases, part, along, given));
           // given by Enter, the focus goes on to the part where it now stands; given by leaving the box, it stays where it went
-          if (by === "enter") requestAnimationFrame(() => box.current?.querySelector<HTMLElement>(`[data-every-cell="${row}"]`)?.focus({ preventScroll: true }));
+          if (by === "enter") requestAnimationFrame(() => box.current?.querySelector<HTMLElement>(`[data-every-cell="${ROW_OF[part]}"]`)?.focus({ preventScroll: true }));
         }}
       />
     );
@@ -750,7 +749,7 @@ export function FeeCases({
       : zone(
           [...(o.also ?? []), caseTarget(r.case)],
           r.case,
-          <CaseRow when={when} label={label(r)} onOpen={openIt(r.case)} grip={grip(l, spoken, o.more ?? [], { ...(o.name ? { name: o.name } : {}), ...(o.still ? { still: true } : {}) })}>
+          <CaseRow when={when} label={label(r)} onOpen={openIt(r.case)} open={shownOpen([r.case], null)} grip={grip(l, spoken, o.more ?? [], { ...(o.name ? { name: o.name } : {}), ...(o.still ? { still: true } : {}) })}>
             {here(
               [r.case],
               shownParts(r.case).map((p) => <RestPart key={`${p.stage ?? 0}:${p.id}`} part={p} />),
@@ -764,8 +763,6 @@ export function FeeCases({
   // the bin, while something of this fee is lifted: under its table, grid or band, laid over what follows (its wrapper places it); on a
   // phone at the foot of the screen
   const bin = <DropBin phone={lift.phone} accepts={(it) => lift.binTakesItem(fee.id, it)} onDrop={(it) => lift.onBinItem(it)} />;
-  /** The menu a strip opens: the parts every case of its row, or of the fee, can take. */
-  const rowMenuView = rowMenu && rowMenu.at.isConnected ? <ActionMenu key={rowMenu.where} actions={partChoices(rowMenu.cases, rowMenu.along, rowMenu.where)} back={{ current: rowMenu.at }} onClose={() => setRowMenu(null)} /> : null;
 
   // ---------------------------------------------------------------- the parts every case holds alike, said once over the band
   const allIds = fee.cases.map((x) => x.id);
@@ -782,11 +779,13 @@ export function FeeCases({
       ...copyable(`${EVERY}:${row}`, l as Extract<Lifted, { k: "cell" }>),
     };
   });
-  // "+ חלק לכל המקרים": the parts every case can take and none holds yet, for a fee of two cases or more
-  const everyAdd = allIds.length > 1 ? rowAdd(allIds, allAlong, EVERY, { strip: c.rowAdd.allCases, menu: lw.menu.addAllCases, spoken: lw.menu.addAllCases }).strip : undefined;
+  // "+ חלק לכל המקרים", for a fee of two cases or more: the toolbox opens on every case of the fee
+  const everyTarget = targetOf(allIds, allAlong);
+  const everyAdd = allIds.length > 1 ? addOn(everyTarget, c.rowAdd.allCases, lw.menu.addAllCases) : undefined;
   /**
    * The row of the parts said once takes what lands there for every case: a part lifted from a case or a cell, as the fee's head would
-   * (`everyCase`), and a toolbox card, the cases that lack its row taking it (a part that asks an amount asks it there first).
+   * (`everyCase`), and a toolbox card, which does what its tap does with the toolbox on every case (`acceptsCases`), refused where it is
+   * off there.
    */
   const everyZone = (el: ReactNode) => (
     <DropZone
@@ -796,14 +795,12 @@ export function FeeCases({
       }}
       accepts={(it) => {
         const l = liftedOf(it);
-        return l ? lift.takes(l, everyCase) : actions.drop.acceptsCases(fee.id, allIds, allAlong, it) || actions.drop.asksCases(fee.id, allIds, it) !== null;
+        return l ? lift.takes(l, everyCase) : actions.drop.acceptsCases(everyTarget, it);
       }}
       onDrop={(it, how) => {
         const l = liftedOf(it);
         if (l) return lift.onDrop(l, everyCase, how);
-        if (actions.drop.acceptsCases(fee.id, allIds, allAlong, it)) return actions.drop.onDropCases(fee.id, allIds, allAlong, it);
-        const asks = actions.drop.asksCases(fee.id, allIds, it);
-        if (asks) setAskPart({ part: it as AmountPart, cases: asks, along: allAlong, where: EVERY });
+        if (actions.drop.acceptsCases(everyTarget, it)) actions.drop.onDropCases(everyTarget, it);
       }}
       why={(it) => {
         const l = liftedOf(it);
@@ -813,7 +810,7 @@ export function FeeCases({
       {el}
     </DropZone>
   );
-  const everyRow = <EveryCaseParts label={c.everyCase.parts} cells={everyCells} asking={askAt(EVERY)} {...(everyAdd ? { add: everyAdd } : {})} zone={everyZone} />;
+  const everyRow = <EveryCaseParts label={c.everyCase.parts} cells={everyCells} asking={askAt()} {...(everyAdd ? { add: everyAdd } : {})} zone={everyZone} />;
   // the band's head over a table or a grid: a paste on it goes into every case
   const pasteHead = { ...head, zone: (h: ReactNode) => head.zone(<div data-paste-head="" className="contents">{h}</div>) };
   let body: ReactNode;
@@ -1004,9 +1001,10 @@ export function FeeCases({
           const rc = gridRowSlots(g, row);
           const inRow = row.cells.filter((x) => x.case && !x.covered && !x.whole).flatMap((x) => x.cases.filter((id) => row.cases.includes(id)));
           const words = headName(row, 0);
-          const strip = rowAdd(inRow, 1, row.key, { strip: c.rowAdd.strip, menu: lw.menu.addRow, spoken: `${lw.menu.addRow}${sep}${words}` });
-          const hg = headGrip(row, 0, g.rows, [...strip.menu, ...insertActions(0, j, rowHeads)]);
-          // a part chosen from the row's strip that asks its amount asks it on a line of its own under the row, over the row's cases
+          const rt = targetOf(inRow, 1, row.key);
+          const strip = inRow.length ? addOn(rt, c.rowAdd.strip, `${lw.menu.addRow}${sep}${words}`) : undefined;
+          const hg = headGrip(row, 0, g.rows, [...(strip ? [{ label: lw.menu.addRow, onPick: () => actions.cases.onOpen(rt) }] : []), ...insertActions(0, j, rowHeads)]);
+          // a part the toolbox on the row's cases added that asks its amount asks it on a line of its own under the row, over the row's cases
           const asking = askAt(row.key);
           const filled = row.cells.filter((x) => x.case && !x.covered);
           const askLine = asking && filled.length ? [{ id: "ask", cells: [{ from: Math.min(...filled.map((x) => x.from)), span: Math.max(...filled.map((x) => x.from + x.span)) - Math.min(...filled.map((x) => x.from)), content: asking }] }] : [];
@@ -1017,8 +1015,8 @@ export function FeeCases({
             ...(hg ? { grip: hg } : {}),
             ...headItem(row, 0),
             lines: [...partLines(row), ...askLine],
-            ...(strip.strip ? { addPart: strip.strip } : {}),
-            zone: (h: ReactNode) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }, headCases(row.cases, 1)], `row:${row.key}`, h, downList),
+            ...(strip ? { addPart: strip } : {}),
+            zone: (h: ReactNode) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }, headCases(row.cases, 1)], `row:${row.key}`, h, downList, inRow.length ? rt : undefined),
             cells: row.cells.filter((cell) => !cell.covered).map((cell) => {
               const col = g.columns[cell.from]!;
               if (!cell.case) {
@@ -1101,9 +1099,9 @@ export function FeeCases({
         {g.rows.map((row) => {
           const inRow = row.cells.filter((x) => x.case && !x.covered && !x.whole).flatMap((x) => x.cases.filter((id) => row.cases.includes(id)));
           const words = headName(row, 0);
-          const strip = rowAdd(inRow, 1, row.key, { strip: c.rowAdd.strip, menu: lw.menu.addRow, spoken: `${lw.menu.addRow}${sep}${words}` });
-          const hg = headGrip(row, 0, g.rows, strip.menu);
-          // a part chosen from the group head's menu that asks its amount asks it under the group's head, with what the group says once
+          const rt = targetOf(inRow, 1, row.key);
+          const hg = headGrip(row, 0, g.rows, inRow.length ? [{ label: lw.menu.addRow, onPick: () => actions.cases.onOpen(rt) }] : []);
+          // a part the toolbox on the group's cases added that asks its amount asks it under the group's head, with what the group says once
           const asking = askAt(row.key);
           const shared = row.once.length || asking ? (
             <>
@@ -1112,7 +1110,7 @@ export function FeeCases({
             </>
           ) : null;
           return (
-            <CaseGroup key={row.key} head={named(0, row.key, words, headOfValue(row, 0))} {...(shared ? { shared } : {})} {...(hg ? { grip: hg } : {})} zone={(h) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }, headCases(row.cases, 1)], `row:${row.key}`, h, downList)}>
+            <CaseGroup key={row.key} head={named(0, row.key, words, headOfValue(row, 0))} {...(shared ? { shared } : {})} {...(hg ? { grip: hg } : {})} zone={(h) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }, headCases(row.cases, 1)], `row:${row.key}`, h, downList, inRow.length ? rt : undefined)}>
               {row.cells.flatMap((cell) => {
                 if (cell.case)
                   return cell.cases.filter((id) => row.cases.includes(id)).map((id) => {
@@ -1195,7 +1193,6 @@ export function FeeCases({
       {everyRow}
       {body}
       {question}
-      {rowMenuView}
       {wide && openRow && openView(openRow)}
     </div>,
   );

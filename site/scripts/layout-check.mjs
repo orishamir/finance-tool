@@ -39,9 +39,9 @@
 //   lines    on the kit page and the fee page's deal at 1440, a fee grid's line between two rows (`data-hairline`, kit/case-table.tsx)
 //            over a tile, a part line or a head's words, or one that takes a press (2026-11-20: the line between two rows' heads only).
 //   ask      on the fee page's deal, a part that asks its amount typed key by key and given by Enter not holding every digit typed, or given
-//            before Enter or the box is left: the custody fee's "+ חלק לכל המקרים" at 1440 and 390, its first grid row's "+ חלק לכל
-//            השורה" and the open case's own prompt (the toolbox's "מינימום") at 1440: a first keystroke that gives a minimum of 1 ₪ and
-//            loses the next digits; and Escape, the box left empty, or the ask's bin pressed with digits typed, adding the part.
+//            before Enter or the box is left: the toolbox's "מינימום" on every case of the custody fee ("+ חלק לכל המקרים") at 1440 and
+//            390, on its first grid row's cases ("+ חלק לכל השורה") and in the open case at 1440: a first keystroke that gives a minimum
+//            of 1 ₪ and loses the next digits; and Escape, the box left empty, or the ask's bin pressed with digits typed, adding the part.
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
 // Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages, the kit, and the fee
 // page with a filled deal (its link in layout-check-deal.txt). Needs a build (npm run build). Exits 1 when a
@@ -269,9 +269,9 @@ function gridLines(within) {
 }
 
 /**
- * A part that asks its amount, on the fee page's filled deal (`ask` above): asked for every case of the custody fee ("+ חלק לכל המקרים",
- * at 1440 and 390), for its first grid row ("+ חלק לכל השורה", at 1440) and in the open case (its minimum taken away, then the toolbox's
- * "מינימום" pressed, at 1440). Each box is typed key by key: nothing is given while typing, and Enter gives every digit typed. In every
+ * A part that asks its amount, on the fee page's filled deal (`ask` above): the toolbox's "מינימום" pressed with the toolbox on every case
+ * of the custody fee ("+ חלק לכל המקרים", at 1440 and 390), on its first grid row's cases ("+ חלק לכל השורה", at 1440) and in the open
+ * case (its minimum taken away first, at 1440). Each box is typed key by key: nothing is given while typing, and Enter gives every digit typed. In every
  * case's ask, Escape and a box left empty add nothing, and its bin pressed with digits typed drops it. Returns what failed, each with its
  * width.
  */
@@ -309,11 +309,15 @@ async function askCheck() {
     const add = fee.locator(row ? 'button[aria-label^="הוספת חלק לכל השורה"]' : 'button[aria-label="הוספת חלק לכל המקרים"]').first();
     if (!(await add.count())) return false;
     await add.scrollIntoViewIfNeeded();
-    // the row's strip shows under a pointer over its row: pressed as the keyboard would
+    // the row's plus shows under a pointer over its row: pressed as the keyboard would; it opens the toolbox on those cases
     await add.evaluate((b) => b.click());
-    const min = page.getByRole("menuitem", { name: "מינימום", exact: true }).first();
+    await page.evaluate(settled);
+    // a phone's sheet shows one group at a time: its bounds' group first
+    const group = page.locator("[data-tool-sheet] button").filter({ hasText: "מינימום ומקסימום" }).first();
+    if (await group.count()) await group.evaluate((b) => b.click());
+    const min = page.locator('button[data-part="min"]:not([disabled])').first();
     if (!(await min.count())) return false;
-    await min.click();
+    await min.evaluate((b) => b.click());
     await page.evaluate(settled);
     return true;
   };
@@ -321,7 +325,7 @@ async function askCheck() {
     // every case: typed key by key and given by Enter
     {
       const { ctx, page, fee } = await open(width);
-      if (!fee || !(await askEvery(page, fee, false))) fail(width, `the custody fee offers no "מינימום" under "+ חלק לכל המקרים"`);
+      if (!fee || !(await askEvery(page, fee, false))) fail(width, `the toolbox on every case of the custody fee ("+ חלק לכל המקרים") offers no "מינימום"`);
       else if (await typeIn(page, width, `"+ חלק לכל המקרים"`, "15")) {
         await page.keyboard.press("Enter");
         await page.evaluate(settled);
@@ -358,7 +362,7 @@ async function askCheck() {
   // a grid row's "+ חלק לכל השורה", at 1440
   {
     const { ctx, page, fee } = await open(1440);
-    if (!fee || !(await askEvery(page, fee, true))) fail(1440, `the custody fee's first grid row offers no "מינימום" under "+ חלק לכל השורה"`);
+    if (!fee || !(await askEvery(page, fee, true))) fail(1440, `the toolbox on the custody fee's first grid row ("+ חלק לכל השורה") offers no "מינימום"`);
     else if (await typeIn(page, 1440, `"+ חלק לכל השורה"`, "15")) {
       await page.keyboard.press("Enter");
       await page.evaluate(settled);

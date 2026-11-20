@@ -2,9 +2,12 @@
 // where the one named is gone), the slot whose menu is open, the thing of its band's head whose menu is open, a part the toolbox added that
 // asks for its figure, month or fee, the question of a thing being added (ask-thing.tsx), whether a phone's toolbox sheet is folded, the
 // fee marked in every column, and where the focus and the view go when a fee or a case opens. Each of these belongs to the fee and case
-// it was opened on.
+// it was opened on. In place of one case, the toolbox may add to several of the fee's cases at once (`CasesTarget`: every case, or a grid
+// row's), with what a part it added asks of them all (`CasesAsk`); opening one case brings it back to that case.
 import { useEffect, useRef, useState } from "react";
 import { hasCases, type FeeDeal } from "../../lib/fee-deal/model";
+import type { CasesTarget } from "../../lib/fee-deal/toolbox";
+import type { CasesAsk } from "../../lib/fee-deal/every-case";
 import type { DealRead } from "../../lib/fee-deal/deal-read";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { useAskThing } from "./ask-thing";
@@ -22,6 +25,9 @@ const feeCard = (feeId: string) => document.querySelector(`li[data-fee="${CSS.es
  */
 export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn }: { deal: FeeDeal; read: DealRead; chosen: string | null; setChosen: (id: string | null) => void; phone: boolean; panelColumn: boolean }) {
   const [caseOpen, setCaseOpen] = useState<{ fee: string; case: string } | null>(null);
+  // the toolbox adding to several of a fee's cases at once, and what a part it added asks of them all
+  const [several, setSeveral] = useState<CasesTarget | null>(null);
+  const [casesAsk, setCasesAsk] = useState<CasesAsk | null>(null);
   const [menu, setMenu] = useState<{ fee: string; case: string; t: number; at: HTMLElement } | null>(null);
   const [thingOpen, setThingOpen] = useState<{ fee: string; t: number; at: HTMLElement } | null>(null);
   const [pending, setPending] = useState<Pending | null>(null);
@@ -77,16 +83,32 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     if (caseId) setCaseShown((n) => n + 1);
     setChosen(feeId);
     setCaseOpen(caseId ? { fee: feeId, case: caseId } : null);
+    setSeveral(null);
+    setCasesAsk(null);
     setSheetFolded(false);
     setMenu(null);
     if (thingOpen && thingOpen.fee !== feeId) setThingOpen(null);
     if (pending && (pending.fee !== feeId || pending.case !== caseId)) setPending(null);
     if (asking && asking.fee !== feeId) dropAsk();
   };
+  // the toolbox opened on several of a fee's cases at once: the fee open, no case of it open, a phone's sheet unfolded
+  const onOpenCases = (target: CasesTarget) => {
+    const same = several && several.fee === target.fee && several.row === target.row;
+    setChosen(target.fee);
+    setSeveral(target);
+    if (!same) setCasesAsk(null);
+    setSheetFolded(false);
+    setMenu(null);
+    setPending(null);
+    if (thingOpen && thingOpen.fee !== target.fee) setThingOpen(null);
+    if (asking && asking.fee !== target.fee) dropAsk();
+  };
   // the toolbox closed: no fee open, and the focus back on the fee it was for
   const onClosePanel = () => {
     const was = chosen;
     setChosen(null);
+    setSeveral(null);
+    setCasesAsk(null);
     setMenu(null);
     setThingOpen(null);
     setPending(null);
@@ -101,6 +123,8 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     open: (given) => {
       const feeId = dealFeeOf(given);
       setCaseOpen(null);
+      setSeveral(null);
+      setCasesAsk(null);
       setMenu(null);
       after.current = { fee: feeId, how: "view" };
       setChosen(feeId);
@@ -123,7 +147,17 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
     caseId,
     links,
     onOpenCase,
+    onOpenCases,
     onClosePanel,
+    /**
+     * The several cases of the open fee the toolbox adds to at once, in place of its open case (null where it adds to one case), and what a
+     * part it added still asks of them all (`ask`, `setAsk`: null once given or dropped).
+     */
+    cases: {
+      target: several && several.fee === chosen ? several : null,
+      ask: several && several.fee === chosen ? casesAsk : null,
+      setAsk: setCasesAsk,
+    },
     /** Another deal on screen: the sheet folded, no thing's menu open. */
     reset: () => {
       setSheetFolded(true);
