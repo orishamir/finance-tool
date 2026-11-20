@@ -194,7 +194,7 @@ Importance is a judgement, so it is a parameter: the data-driven score (engine u
 
 P-10, `data/parameters/home-guide-door.json`. Chosen by the founder (option A of the door sketch); revisable. No formula reads P-10.
 
-**Value:** the six kinds of saving the first page's guide door names as pills, in order, each opening its own guide page: keren-hishtalmut, kupat-gemel-lehashkaa, money-market-fund-daily, bank-deposit, brokerage-account, child-savings-provident. The rest are one link away in the guide list.
+**Value:** the six kinds of saving the first page's guide door names as chips, in order, each opening its own guide page: keren-hishtalmut, kupat-gemel-lehashkaa, money-market-fund-daily, bank-deposit, brokerage-account, child-savings-provident. The rest are one link away in the guide list.
 
 **Why:** the kinds most people in the audience hold or are offered first (popular first), from the everyday short-term ones to the tax-benefit ones.
 
