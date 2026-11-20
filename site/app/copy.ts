@@ -25,7 +25,7 @@ export const site = {
   // the menu's second group, the home crumb, the footer lines, back to top
   menuBehind: "מאחורי הקלעים",
   homeCrumb: "ראשי",
-  footerNote: "אתר אישי, לא מסחרי, בלי קישורי שיווק; הכול נשמר במכשיר שלכם",
+  footerNote: "אתר אישי, לא מסחרי, בלי קישורי שיווק. הכול נשמר במכשיר שלכם",
   /** The newest date any figure on the site was checked: not the date of the prices on a page, which say their own. */
   footerAsOf: "הנתון האחרון באתר נבדק ב־",
   toTop: "חזרה למעלה",
@@ -336,12 +336,12 @@ export const guide = {
   // the study fund's deposit-side row by employment (TXH-04, TXH-01, TXH-03 for employees; TXH-05 for the self-employed)
   hishtalmutDeposit: {
     unknown: { headline: "תלוי אם אתם שכירים או עצמאים", employee: "שכירים:", selfEmployed: "עצמאים:" },
-    employee: { headline: "ההפקדה שלכם לא מקטינה את מס ההכנסה", text: "היא יורדת מהשכר אחרי מס. הפקדת המעסיק עד הגבול לא נחשבת הכנסה כשהיא נכנסת לקרן; מה שמעל הגבול ממוסה כשכר." },
-    employeeShort: "ההפקדה שלכם יורדת מהשכר אחרי מס, ולא מקטינה את מס ההכנסה. הפקדת המעסיק עד הגבול לא נחשבת הכנסה כשהיא נכנסת לקרן; מה שמעל הגבול ממוסה כשכר.",
+    employee: { headline: "ההפקדה שלכם לא מקטינה את מס ההכנסה", text: "היא יורדת מהשכר אחרי מס. הפקדת המעסיק עד הגבול לא נחשבת הכנסה כשהיא נכנסת לקרן. מה שמעל הגבול ממוסה כשכר." },
+    employeeShort: "ההפקדה שלכם יורדת מהשכר אחרי מס, ולא מקטינה את מס ההכנסה. הפקדת המעסיק עד הגבול לא נחשבת הכנסה כשהיא נכנסת לקרן. מה שמעל הגבול ממוסה כשכר.",
     selfEmployed: { headline: "ההפקדה מקטינה את מס ההכנסה, עד תקרה", before: "אפשר להפחית מההכנסה מהעסק או מהמקצוע עד", middle: "ממנה, ורק על הכנסה של עד", after: "בשנה, ופחות למי שגם שכיר. זה גבול נפרד מהגבול של הפטור כשמושכים." },
   },
   related: "כדאי להכיר גם:",
-  checklist: { blocked: "חסום:", considered: "נלקח בחשבון", uncovered: "עוד לא נלקח בחשבון", blockedMark: "חסום: שאלה פתוחה", expand: "מאיפה זה", blockedLast: "עד שהשאלה תיסגר, האתר לא מחשב את זה.", intro: "כך האתר בודק כל מוצר, מול אותן שאלות. כאן מה שעוד פתוח; את כל הבדיקות אפשר לפתוח למטה.", showAll: "הצגת כל הבדיקות", hideAll: "הסתרת הבדיקות" },
+  checklist: { blocked: "חסום:", considered: "נלקח בחשבון", uncovered: "עוד לא נלקח בחשבון", blockedMark: "חסום: שאלה פתוחה", expand: "מאיפה זה", blockedLast: "עד שהשאלה תיסגר, האתר לא מחשב את זה.", intro: "כך האתר בודק כל מוצר, מול אותן שאלות. כאן מה שעוד פתוח. את כל הבדיקות אפשר לפתוח למטה.", showAll: "הצגת כל הבדיקות", hideAll: "הסתרת הבדיקות" },
   pcChooseHint: "בחרו מסלול כדי לראות את כל הפרטים ומה לבדוק", // from the approved company mockup
   sliderAria: "מחוון",
 } as const;
@@ -352,7 +352,7 @@ export const values = {
   optional: "(לא חובה)",
   employment: { employee: "שכירים", "self-employed": "עצמאים" },
   units: { nis: "₪", pct: "%", years: "שנים", usd: "$", eur: "€", gbp: "£" },
-  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שהכי הרבה בנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם; ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא ריבית בנק ישראל: הנחה של האתר, לא התשואה של המוצר הזה.", cashRenews: { deposit: "אחרי התקופה הראשונה זו הנחה: בכל חידוש הפיקדון מקבל את הריבית שהבנק מפרסם באותו יום, והגרף מניח שהיא נשארת כמו היום.", "savings-plan": "אחרי התקופה הראשונה זו הנחה: תוכנית חדשה מקבלת את הריבית שהבנק מפרסם באותו יום, והגרף מניח שהיא נשארת כמו היום." }, asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
+  hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שהכי הרבה בנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם. ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא ריבית בנק ישראל: הנחה של האתר, לא התשואה של המוצר הזה.", cashRenews: { deposit: "אחרי התקופה הראשונה זו הנחה: בכל חידוש הפיקדון מקבל את הריבית שהבנק מפרסם באותו יום. הגרף מניח שהריבית הזו נשארת כמו היום.", "savings-plan": "אחרי התקופה הראשונה זו הנחה: תוכנית חדשה מקבלת את הריבית שהבנק מפרסם באותו יום. הגרף מניח שהריבית הזו נשארת כמו היום." }, asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
   agePlaceholder: "למשל 30", // from the approved mockup
@@ -375,7 +375,7 @@ export const provenance = {
     localFile: "קובץ נתונים של האתר",
     lineBefore: "הנתון נלקח מהמקור שלמטה.",
     noValue: "הנתון הזה לא נמצא במקור, ולכן האתר לא מציג מספר.",
-    notYetInForce: "עד אז הנתון הזה עוד לא חל; האתר מציג אותו כפי שפורסם.",
+    notYetInForce: "עד אז הנתון הזה עוד לא חל. האתר מציג אותו כפי שפורסם.",
   },
   /** A glossary card's other names; each is drawn with its gershayim (copy 10.4). */
   termAlso: "נקרא גם:",
@@ -413,7 +413,7 @@ export const provenance = {
   },
   entered: { line: "הזנתם את הערך הזה.", instead: "במקום:" },
   // `more` folds the parameter file's general line away from the clicked number's own line
-  parameter: { why: "למה הערך הזה", more: "עוד על הפרמטר", noRationale: "ערך שהאתר קבע בעצמו; הוא לא בא מהחוק." },
+  parameter: { why: "למה הערך הזה", more: "עוד על הפרמטר", noRationale: "ערך שהאתר קבע בעצמו. הוא לא בא מהחוק." },
   stale: { before: "לא עודכן מאז", middle: "בדרך כלל מתעדכן", cadence: { daily: "כל יום", monthly: "כל חודש", quarterly: "כל רבעון", yearly: "כל שנה" } },
   allRulesOf: "לכל החוקים והכללים של",
   unit: {
@@ -439,7 +439,7 @@ export const rule = {
   all: "לכל החוקים והכללים",
   open: { title: "שאלה פתוחה:", unknown: "מה עוד לא ידוע", waiting: "מה מחכה לתשובה", last: "בינתיים האתר לא מחשב את זה." },
   dimensions: "נוגע ל",
-  noText: "הנוסח במילים פשוטות עוד לא נכתב; הכותרת מופיעה כפי שהיא במאגר החוקים והכללים.",
+  noText: "הנוסח במילים פשוטות עוד לא נכתב. הכותרת מופיעה כפי שהיא במאגר החוקים והכללים.",
   // the "מקור" row of a rule with no link yet
   sourceMissing: "הקישור למקור עוד לא צורף.",
 } as const;
@@ -671,7 +671,7 @@ export const company = {
     missing: "לא דווח",
     noAssets: "אין נכסים",
     /** The sheet's note on every share (F-87): what the regulator's circular defines (CAT-44), and what of it is the site's reading. */
-    note: "לפי דיווח המסלול לרשות שוק ההון. חוזר של הרשות מ־2015 מגדיר את החשיפה כחשיפה כוללת, גם דרך נגזרים, ולכן היא יכולה להיות גבוהה מ־100%. הנוסח העדכני של החוזר לא נקרא, והקביעה שהנתון כאן הוא החשיפה הזו היא קריאה של האתר משם השדה.",
+    note: "לפי דיווח המסלול לרשות שוק ההון. חוזר של הרשות מ־2015 מגדיר את החשיפה כחשיפה כוללת, גם דרך נגזרים, ולכן היא יכולה להיות גבוהה מ־100%. האתר לא קרא את הנוסח העדכני של החוזר. הקביעה שהנתון כאן הוא החשיפה הזו היא קריאה של האתר משם השדה.",
     noteMissing: "המסלול לא דיווח לרשות את סך הנכסים או את החשיפה לתקופה הזו.",
     noteNoAssets: "המסלול דיווח לרשות על סך נכסים 0 לתקופה הזו, ולכן אין חלק לחשב.",
   },
@@ -712,14 +712,14 @@ export const notCovered = {
   openOne: "שאלה פתוחה: {question}",
   openMany: "{n} שאלות עוד פתוחות",
   /** No question left open: what is still missing. */
-  remaining: "לכל השאלות יש תשובה; נותר: {list}",
+  remaining: "לכל השאלות יש תשובה. נותר: {list}",
   remainingItems: { record: "נתונים עם מקור", formula: "שיטת חישוב" } as Record<string, string>,
   /** The fold under each row: the rest of what is known. */
   known: "מה כבר ידוע",
   openHeading: "השאלות שעוד פתוחות",
   narrowed: "לחלק מהשאלה כבר יש תשובה, לפי הכללים האלה:", // "…, לפי" before the chip read as cut off
   /** copy.md 7 (D23): `stated` is the words that state the institution's answer, which open it (D116). */
-  institution: { stated: "יש תשובה של מוסד", after: "; האתר מחשב לפיה ומסמן ״לפי החברה״, אבל היא לא סוגרת שאלת מס לצורך מעבר לכיסוי מלא." },
+  institution: { stated: "יש תשובה של מוסד", after: ". האתר מחשב לפיה ומסמן ״לפי החברה״. אבל היא לא סוגרת שאלת מס לצורך מעבר לכיסוי מלא." },
   answeredHeading: "שאלות שכבר יש להן תשובה",
   /**
    * An answered question in words, by the row's id and the rules that answered it joined with a space (the rule base keeps no
@@ -761,7 +761,7 @@ export const notCovered = {
 
 /** Plain-Hebrew reasons a run can fail with, carried as `messageHe` on a failure result (copy.md 7.1, txh-limit). No engine message reaches the page. */
 export const runFailure = {
-  employerAboveTotal: "הפקדת המעסיק שהוזנה גבוהה מסך ההפקדה החודשית. בדקו שסכום ההפקדה כולל את חלק העובד וחלק המעסיק.",
+  employerAboveTotal: "הפקדת המעסיק שהזנתם גבוהה מסך ההפקדה החודשית. בדקו שסכום ההפקדה כולל את חלק העובד וחלק המעסיק.",
   blocked: "החישוב הזה תלוי בשאלה פתוחה, ולכן האתר לא מחשב אותו.",
   figureNotUpdated: "אחד הנתונים בחישוב לא עודכן, ולכן האתר לא מחשב אותו.",
   generic: "האתר לא הצליח להריץ את החישוב עם הערכים שבהנחות.",
@@ -979,37 +979,37 @@ export const formulaKeys: Record<string, { lines?: string[]; symbols: [tex: stri
 export const flags: Record<string, string> = {
   // F-107 at TXF-16's rate, which a fund obtains only if it passes the treaty's limitation-on-benefits article (TXF OQ7, method G-33)
   // F-12 at Interactive Israel's European minimum, 2.5 in the trade's currency, beside its collection sentence (BRK OQ25)
-  "BRK-OQ25": "עמלת המינימום בקנייה ובמכירה כאן חושבה לפי 2.5 במטבע העסקה, כלשון התעריפון. אותו עמוד אומר גם שהעמלה נגבית במטבע הראשי של הבורסה, ולא אומר איך זה מתיישב עם מינימום בעסקה בדולרים, ולכן העמלה בפועל יכולה להיות שונה.",
-  "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה, ועוד לא נבדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
-  "G-14": "הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב.",
+  "BRK-OQ25": "עמלת המינימום בקנייה ובמכירה כאן חושבה לפי 2.5 במטבע העסקה, כלשון התעריפון. אותו עמוד אומר גם שהעמלה נגבית במטבע הראשי של הבורסה. הוא לא אומר איך זה מתיישב עם מינימום בעסקה בדולרים, ולכן העמלה בפועל יכולה להיות שונה.",
+  "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה. האתר עוד לא בדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
+  "G-14": "הוצאות ישירות של המסלול עוד לא נאספו, ולכן לא נכללו בחישוב.",
   // F-119: an s.120ב amount read for a year after its freeze; TXG OQ16 (the rounding, the CPI readings, the unrounded 2024 amount) keeps it from being exact
   // the person's income stays as entered (A-12, A-13), and the figures linked to the average wage stay at 2026's (method G-36); a fall of the CPI is TXG OQ17,
   // run under each of its readings (method §13)
-  "G-36": "מ־2028 החישוב מעלה כל שנה, לפי האינפלציה שבחישוב, את מדרגות המס, את הסף של המס הנוסף ואת הסכומים שהחוק הקפיא עד 2027 בהטבות על ההפקדות. ההכנסה שלכם נשארת בחישוב כפי שהזנתם, ולכן עם השנים חלק גדול יותר ממנה נופל במדרגות הנמוכות. סכומים שצמודים לשכר הממוצע נשארים כמו ב־2026, כי האתר לא מניח איך השכר הממוצע ישתנה. לא ידוע איך רשות המסים תעגל את הסכומים ולפי אילו מדדים, ולכן הסכומים המדויקים יכולים להיות שונים במעט. גם לא ידוע אם הסכומים יורדים כשהמדד יורד. באינפלציה שלילית החישוב נעשה בכל אחת מהאפשרויות, ואם התוצאות שונות, אין חישוב לשנים שאחרי 2027.",
+  "G-36": "מ־2028 החישוב מעלה כל שנה את מדרגות המס, את הסף של המס הנוסף ואת הסכומים שהחוק הקפיא עד 2027 בהטבות על ההפקדות. הוא מעלה אותם לפי האינפלציה שבחישוב. ההכנסה שלכם נשארת בחישוב כפי שהזנתם, ולכן עם השנים חלק גדול יותר ממנה נופל במדרגות הנמוכות. סכומים שצמודים לשכר הממוצע נשארים כמו ב־2026, כי האתר לא מניח איך השכר הממוצע ישתנה. לא ידוע איך רשות המסים תעגל את הסכומים ולפי אילו מדדים, ולכן הסכומים המדויקים יכולים להיות שונים במעט. גם לא ידוע אם הסכומים יורדים כשהמדד יורד. באינפלציה שלילית החישוב נעשה בכל אחת מהאפשרויות, ואם התוצאות שונות, אין חישוב לשנים שאחרי 2027.",
   // an open reading every reading of which gave the same run (method §13, `acrossReadings`): F-119 at a falling CPI (TXG OQ17)
-  "TXG-OQ17": "הסכום כאן לא תלוי בשאלה שהחוק משאיר פתוחה. המדד יורד בחישוב הזה, והחוק לא אומר מה ירידה כזו עושה מ־2028 למדרגות המס ולסכומים שהוקפאו עד 2027: אם הם יורדים, נשארים כמו שהיו, או שהירידה מתקזזת מעלייה מאוחרת יותר. החישוב נעשה בכל אחת מהדרכים, ובכולן יצא אותו סכום.",
+  "TXG-OQ17": "הסכום כאן לא תלוי בשאלה שהחוק משאיר פתוחה. המדד יורד בחישוב הזה. החוק לא אומר מה ירידה כזו עושה מ־2028 למדרגות המס ולסכומים שהוקפאו עד 2027: אם הם יורדים, נשארים כמו שהיו, או שהירידה מתקזזת מעלייה מאוחרת יותר. החישוב נעשה בכל אחת מהדרכים, ובכולן יצא אותו סכום.",
   // the same for F-120 at a falling CPI: KGL-03's yearly ceiling (KGL OQ15)
-  "KGL-OQ15": "הסכום כאן לא תלוי בשאלה שהחוק משאיר פתוחה. המדד יורד בחישוב הזה, והחוק לא אומר מה ירידה כזו עושה לתקרת ההפקדה השנתית לקופת גמל להשקעה: אם היא יורדת, נשארת כמו שהייתה, או שהירידה מתקזזת מעלייה מאוחרת יותר. החישוב נעשה בכל אחת מהדרכים, ובכולן יצא אותו סכום.",
+  "KGL-OQ15": "הסכום כאן לא תלוי בשאלה שהחוק משאיר פתוחה. המדד יורד בחישוב הזה. החוק לא אומר מה ירידה כזו עושה לתקרת ההפקדה השנתית לקופת גמל להשקעה: אם היא יורדת, נשארת כמו שהייתה, או שהירידה מתקזזת מעלייה מאוחרת יותר. החישוב נעשה בכל אחת מהדרכים, ובכולן יצא אותו סכום.",
   // A-30: a yearly cap on deposits reached in the run date's tax year, which the run starts with nothing deposited (method F-01)
   "A-30": "החישוב מניח שלא הפקדתם עוד מתחילת השנה, ולכן התקרה השנתית של השנה הזו נשארת כולה להפקדות מהיום ועד סוף השנה. הפקדות שכבר עשיתם השנה נספרות באותה תקרה ומקטינות אותה.",
-  "G-16": "בסוף התקופה יש כסף בפיקדון שעוד לא הסתיים. החישוב מחשיב אותו כאילו הפיקדון הסתיים באותו יום, עם הריבית שנצברה עד אז, ולא מחשב שבירת פיקדון. בפיקדון שאי אפשר לשבור, הכסף משתחרר רק כשהפיקדון מסתיים או בתחנת יציאה, ולכן הסכום כאן יכול להיות גבוה ממה שאפשר למשוך באותו יום.", // F-41: the run prices a piece inside its term at the horizon as matured and prices no break; an unlinked piece at an exit point takes G-34 instead (method G-16)
-  "G-34": "הסכום שמקבלים יכול להיות שונה מהסכום כאן, כי בסוף התקופה יש כסף בפיקדון שעוד לא הסתיים, והחישוב מניח שמושכים אותו אז בתחנת יציאה עם כל הריבית שנצברה. תחנת יציאה היא מועד שבו אפשר למשוך בלי לשבור את הפיקדון, אבל מה משלמים בה, ואם צריך להודיע מראש, קובע כל בנק בתנאי הפיקדון.", // F-41: an unlinked piece at an exit point on the last day is priced with interest to date; it can be withdrawn there without a break (BANK-27); what an exit point pays and the notice it needs are each product's terms, not in the records, and a product may pay less or more (BANK OQ20, method G-34)
+  "G-16": "בסוף התקופה יש כסף בפיקדון שעוד לא הסתיים. החישוב מחשיב אותו כאילו הפיקדון הסתיים באותו יום, עם הריבית שנצברה עד אז, ולא מחשב שבירת פיקדון. בפיקדון שאי אפשר לשבור, הכסף משתחרר רק כשהפיקדון מסתיים או בתחנת יציאה. לכן הסכום כאן יכול להיות גבוה ממה שאפשר למשוך באותו יום.", // F-41: the run prices a piece inside its term at the horizon as matured and prices no break; an unlinked piece at an exit point takes G-34 instead (method G-16)
+  "G-34": "הסכום שמקבלים יכול להיות שונה מהסכום כאן, כי בסוף התקופה יש כסף בפיקדון שעוד לא הסתיים. החישוב מניח שמושכים אותו אז בתחנת יציאה, עם כל הריבית שנצברה. תחנת יציאה היא מועד שבו אפשר למשוך בלי לשבור את הפיקדון. מה משלמים בה, ואם צריך להודיע מראש, קובע כל בנק בתנאי הפיקדון.", // F-41: an unlinked piece at an exit point on the last day is priced with interest to date; it can be withdrawn there without a break (BANK-27); what an exit point pays and the notice it needs are each product's terms, not in the records, and a product may pay less or more (BANK OQ20, method G-34)
   "G-21": "חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור.",
   "PF-13": "בחישוב, ההנחה בדמי הניהול נמשכת {PF-13:min_discount_years}, התקופה הקצרה ביותר שחוזר רשות שוק ההון מתיר, גם אם החברה כתבה תקופה קצרה יותר.",
   // D87, now the cautious reading (guidelines/research.md step 6): one deposit and no more, the run ends the discount after six months (PF OQ18)
-  "PF-OQ18": "בחישוב, ההנחה בדמי הניהול מסתיימת {PF-14:months_after_deposits_stop} אחרי ההפקדה, ומשם דמי הניהול הם בלי ההנחה. חוזר של רשות שוק ההון מתיר להעלות דמי ניהול {PF-14:months_after_deposits_stop} אחרי שההפקדות נפסקות, ועוד לא נמצא אם זה חל על מי שהפקיד פעם אחת בלבד. אם לא, ההנחה תימשך, והתוצאה תהיה גבוהה יותר.",
+  "PF-OQ18": "בחישוב, ההנחה בדמי הניהול מסתיימת {PF-14:months_after_deposits_stop} אחרי ההפקדה, ומשם דמי הניהול הם בלי ההנחה. חוזר של רשות שוק ההון מתיר להעלות דמי ניהול {PF-14:months_after_deposits_stop} אחרי שההפקדות נפסקות. האתר עוד לא מצא אם זה חל על מי שהפקיד פעם אחת בלבד. אם לא, ההנחה תימשך, והתוצאה תהיה גבוהה יותר.",
   // any figure valued at the brackets (a tax, a relief, a room, a line of the timeline): TXG-05, with the cases it names where credit points are limited; method G-23 names the input it would need
-  "G-23": "נקודות הזיכוי שלכם לא נלקחו בחשבון בחישוב המס כאן, כי האתר לא יודע כמה יש לכם. נקודות זיכוי מקטינות את כל המס של השנה, גם את המס על רווחים ועל ריבית, חוץ מכמה מקרים שרשות המסים מונה שבהם הן מוגבלות. לכן בשנה שבה המס שלכם נמוך, למשל בשנה בלי משכורת, הסכום כאן יכול להיות שונה.",
+  "G-23": "נקודות הזיכוי שלכם לא נלקחו בחשבון בחישוב המס כאן, כי האתר לא יודע כמה יש לכם. נקודות זיכוי מקטינות את כל המס של השנה, גם את המס על רווחים ועל ריבית. יש כמה מקרים שבהם הן מוגבלות, ורשות המסים מונה אותם. לכן בשנה שבה המס שלכם נמוך, למשל בשנה בלי משכורת, הסכום כאן יכול להיות שונה.",
   // F-31, F-32: the s.45A credit is capped at the year's tax, the rest lost on the cautious reading (TXP-01, TXP OQ20); that tax leaves out
   // credit points, which G-23's line beside it says (method G-23)
-  "TXP-OQ20": "הזיכוי כאן הוא עד גובה מס ההכנסה שלכם באותה שנה. לא נמצא חוק שמחזיר את החלק שמעל המס או מעביר אותו לשנים הבאות, ולכן החישוב מניח שהחלק הזה הולך לאיבוד. אם המס שאתם משלמים נמוך מהזיכוי, תקבלו פחות מהסכום כאן.",
+  "TXP-OQ20": "הזיכוי כאן הוא עד גובה מס ההכנסה שלכם באותה שנה. האתר לא מצא חוק שמחזיר את החלק שמעל המס או מעביר אותו לשנים הבאות. לכן החישוב מניח שהחלק הזה הולך לאיבוד. אם המס שאתם משלמים נמוך מהזיכוי, תקבלו פחות מהסכום כאן.",
   "CS-18": "דמי הניהול אחרי גיל עשרים ואחת חושבו לפי התקרה שבתקנות, ולכן הם ״עד״: בקופה שלכם השיעור יכול להיות נמוך יותר.", // the child-savings fee after 21 runs on CS-18's cap unless the person enters a rate (F-54)
-  "TXK-06": "בחישוב הזה לא מגישים דוח שנתי או בקשת החזר מס, ולכן המס הוא מה שהחברה המנהלת מנכה במקור: {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם על הרווח, ומי שמגיש דוח או בקשת החזר יכול לקבל חלק מהמס בחזרה.", // F-44 applies the brackets (F-42); the flag marks only a run with the refund not claimed (A-14 off). The manager withholds 25% of the gains (TXK-26, Tax Authority file 856), so the flat rate is what is withheld, not an upper bound
-  "TXK-26": "בחישוב הזה מגישים דוח שנתי או בקשת החזר מס. החברה המנהלת מנכה במקור {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם, ועל חלק הרווח שהמדרגה שלו נמוכה מזה מקבלים את ההפרש בחזרה אחרי הדוח. המספר כאן הוא המס אחרי ההחזר.", // the kupat gemel lehashkaa exit from 60 settles against the manager's withholding (TXK-26), not G-21 (a bank's or TASE member's withholding). That withholding is 25% of the gains (Tax Authority file 856), the maximum rate of TXK-06, so no part is above it
-  "BANK-35": "מ{BANK-35:account_fee_up_to_2_actions.from} הסכום כאן יכול להיות גבוה מדי. צו של נגיד בנק ישראל קובע אז תקרה לדמי הניהול של חשבון עו״ש לפי מספר הפעולות בחודש, ובחשבון עם עד שתי פעולות בחודש התקרה נמוכה מדמי הניהול שנספרו כאן. תיקון לכללי העמלות מפרט אילו שירותים נספרים כפעולה, והאתר לא מצא בכללים שקרא אם קנייה חודשית של ניירות ערך, או ההעברה שמשלמת עליה, היא אחת מהן. לכן החישוב משאיר את דמי הניהול של היום לכל התקופה.", // D64: F-102 keeps the price list's minimum; the engine flags the month the cap starts where a counted minimum is above the cap for 0 to 2 actions
-  "G-32": "הסכום שנגבה על כל דיבידנד בשביל הגוף ששומר את ניירות הערך בחו״ל לא הופחת מהרווח במכירה. החוק מפחית מהרווח את דמי המשמרת של שנת המכירה, ועוד לא ברור אם גם הסכום הזה נחשב דמי משמרת. אם כן, המס כאן מעט גבוה מדי.", // D67: F-103 stays out of the sale gain; the engine flags a charge in the exit tax year (method G-32)
+  "TXK-06": "בחישוב הזה לא מגישים דוח שנתי או בקשת החזר מס, ולכן המס הוא מה שהחברה המנהלת מנכה במקור: {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם על הרווח. מי שמגיש דוח או בקשת החזר יכול לקבל חלק מהמס בחזרה.", // F-44 applies the brackets (F-42); the flag marks only a run with the refund not claimed (A-14 off). The manager withholds 25% of the gains (TXK-26, Tax Authority file 856), so the flat rate is what is withheld, not an upper bound
+  "TXK-26": "בחישוב הזה מגישים דוח שנתי או בקשת החזר מס. החברה המנהלת מנכה במקור {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם. על חלק הרווח שהמדרגה שלו נמוכה מזה, מקבלים את ההפרש בחזרה אחרי הדוח. המספר כאן הוא המס אחרי ההחזר.", // the kupat gemel lehashkaa exit from 60 settles against the manager's withholding (TXK-26), not G-21 (a bank's or TASE member's withholding). That withholding is 25% of the gains (Tax Authority file 856), the maximum rate of TXK-06, so no part is above it
+  "BANK-35": "מ{BANK-35:account_fee_up_to_2_actions.from} הסכום כאן יכול להיות גבוה מדי. צו של נגיד בנק ישראל קובע אז תקרה לדמי הניהול של חשבון עו״ש לפי מספר הפעולות בחודש. בחשבון עם עד שתי פעולות בחודש, התקרה נמוכה מדמי הניהול שנספרו כאן. תיקון לכללי העמלות מפרט אילו שירותים נספרים כפעולה. האתר לא מצא בכללים שקרא אם קנייה חודשית של ניירות ערך, או ההעברה שמשלמת עליה, היא אחת מהן. לכן החישוב משאיר את דמי הניהול של היום לכל התקופה.", // D64: F-102 keeps the price list's minimum; the engine flags the month the cap starts where a counted minimum is above the cap for 0 to 2 actions
+  "G-32": "על כל דיבידנד נגבה סכום בשביל הגוף ששומר את ניירות הערך בחו״ל. החישוב לא הפחית את הסכום הזה מהרווח במכירה. החוק מפחית מהרווח את דמי המשמרת של שנת המכירה. עוד לא ברור אם גם הסכום הזה נחשב דמי משמרת. אם כן, המס כאן מעט גבוה מדי.", // D67: F-103 stays out of the sale gain; the engine flags a charge in the exit tax year (method G-32)
   // F-49 (method G-03): the pension's exit is an annuity, whose part above the minimum annuity may be commuted (PEN-28, TXA-20); its value needs each fund's conversion factors (PEN OQ7) and its exemption needs them (TXP-14 to TXP-17)
-  "G-03": "זה הסכום בקופה לפני הקצבה. מה שמקבלים בפועל הוא קצבה חודשית, ואת החלק שלה שמעל סכום הקצבה המזערי אפשר גם להוון לסכום חד־פעמי. האתר עוד לא מחשב את הקצבה: היא תלויה במקדמי ההמרה של כל קרן, שעוד לא נאספו, וגם הפטור ממס על הקצבה תלוי בהם.",
+  "G-03": "זה הסכום בקופה לפני הקצבה. בפועל מקבלים קצבה חודשית. את החלק שלה שמעל סכום הקצבה המזערי אפשר גם להוון לסכום חד־פעמי. האתר עוד לא מחשב את הקצבה: היא תלויה במקדמי ההמרה של כל קרן, והם עוד לא נאספו. גם הפטור ממס על הקצבה תלוי בהם.",
   // PEN OQ7: the funds' conversion and insurance tables are not collected as data
   "PEN-OQ7": "טבלאות מקדמי ההמרה ועלות הביטוח של קרנות הפנסיה עוד לא נאספו, ולכן האתר לא מחשב קצבה ולא משווה את עלות הביטוח בין הקרנות.",
   // A-17 entered, the tables not collected (method G-12)
@@ -1019,40 +1019,40 @@ export const flags: Record<string, string> = {
   // F-24 charges TXI-11's 15% on the makam discount, interest on an unlinked asset (method G-09)
   "G-09": "המס על דמי הניכיון במק״ם חושב לפי 15%, השיעור שבחוק על ריבית מנכס לא צמוד.",
   // F-25 leaves out the accrued interest a purchase between coupon dates pays, a payment the method assumes; its tax is open (TXI OQ5, method G-10)
-  "G-10": "כשקונים אג״ח בין שני מועדי תשלום של ריבית, האתר מניח שמשלמים למוכר גם את הריבית שהצטברה מאז התשלום הקודם. החישוב לא כולל את הסכום הזה, ואיך הוא ממוסה עוד לא ברור.",
+  "G-10": "כשקונים אג״ח בין שני מועדי תשלום של ריבית, האתר מניח שמשלמים למוכר גם את הריבית שהצטברה מאז התשלום הקודם. החישוב לא כולל את הסכום הזה. עוד לא ברור איך הוא ממוסה.",
   // F-40 takes the real gain at no less than zero and carries no loss (method G-07)
-  "G-07": "הרווח הריאלי כאן שלילי. החישוב לא מקזז הפסדים מרווחים אחרים ולא מעביר אותם לשנים הבאות, ולכן אם יש כאן הפסד שאפשר לקזז, הוא לא מופיע בחישוב.",
+  "G-07": "הרווח הריאלי כאן שלילי. החישוב לא מקזז הפסדים מרווחים אחרים ולא מעביר אותם לשנים הבאות. לכן אם יש כאן הפסד שאפשר לקזז, הוא לא מופיע בחישוב.",
   // a loss carried from an earlier leg offset the gain (TXS-18; circular 10/2025 s.4.3: a return for both years)
   "TXS-18": "הפסד משנים קודמות קוזז כאן מהרווח. הפסד כזה עובר לשנים הבאות רק אם הגשתם דוח שנתי לשנה שבה היה ההפסד, וגם לשנה שבה מקזזים אותו.",
   // F-08 and F-09 leave commissions and conversion fees out of the gain, the method's choice; form 1325 puts transaction commissions into cost and proceeds (TXS-06, method G-20)
-  "G-20": "עמלות הקנייה והמכירה ועמלות המרת המטבע לא הופחתו מהרווח בחישוב המס, וזו בחירה של האתר. בטופס הדוח על רווח הון מניירות ערך (טופס 1325) רשות המסים מכניסה את עמלות הקנייה והמכירה לעלות ולתמורה, ולכן המס כאן יכול להיות מעט גבוה מדי.",
+  "G-20": "האתר בחר לא להפחית מהרווח בחישוב המס את עמלות הקנייה והמכירה ואת עמלות המרת המטבע. בטופס הדוח על רווח הון מניירות ערך (טופס 1325) רשות המסים מכניסה את עמלות הקנייה והמכירה לעלות ולתמורה. לכן המס כאן יכול להיות מעט גבוה מדי.",
   // F-24: a makam held to redemption, its discount taxed as interest (TXI-11) with the purchase and redemption commissions left out; whether a
   // commission lowers that discount is not in the rule base (nearest: TX2 OQ11, on fees as a capital loss) (method G-39)
-  "G-39": "עמלות הקנייה והפדיון של המק״ם לא הופחתו מדמי הניכיון שחויבו במס בפדיון. אם עמלה מקטינה את דמי הניכיון החייבים במס, זה עוד לא נמצא במקורות.",
+  "G-39": "החישוב לא הפחית את עמלות הקנייה והפדיון של המק״ם מדמי הניכיון שחויבו במס בפדיון. האתר עוד לא מצא במקורות אם עמלה מקטינה את דמי הניכיון החייבים במס.",
   // F-120 at a falling CPI: a figure linked to the CPI every 1 January, of a rule no open reading covers, has no reading (method G-38); the
   // timeline's band shows this beside the rule the run stopped on (CS-03 on the child savings guides)
-  "G-38": "הסכום של הכלל הזה מתעדכן בכל 1 בינואר לפי עליית המדד. מה קורה לו כשהמדד יורד, לא נמצא במקורות, ולאתר אין הנחה משלו. לכן כשהאינפלציה בחישוב שלילית, האתר לא מחשב את השנים שאחרי השנה הראשונה.",
+  "G-38": "הסכום של הכלל הזה מתעדכן בכל 1 בינואר לפי עליית המדד. האתר לא מצא במקורות מה קורה לו כשהמדד יורד, ואין לו הנחה משלו. לכן כשהאינפלציה בחישוב שלילית, האתר לא מחשב את השנים שאחרי השנה הראשונה.",
   // F-20: a distribution at a foreign broker is not withheld in Israel; its advance is due by 30 April after the tax year (TXF-21), and the run charges it in the month
-  "TXF-21": "בבית השקעות בחו״ל לא מנכים בישראל את המס על דיבידנד או ריבית שהקרן מחלקת. משלמים אותו בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי, והחישוב מחשיב אותו כאילו שולם כבר בחודש החלוקה.",
+  "TXF-21": "בבית השקעות בחו״ל לא מנכים בישראל את המס על דיבידנד או ריבית שהקרן מחלקת. משלמים אותו בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי. החישוב מחשיב אותו כאילו שולם כבר בחודש החלוקה.",
   // F-09: a sale at a foreign broker is not withheld in Israel; the gain is reported with an advance by 31 July and 31 January, and a return is due (TXF-22); the run charges it in the month of the sale
   "TXF-22": "בבית השקעות בחו״ל לא מנכים בישראל מס רווחי הון במכירה. מדווחים על הרווח ומשלמים מקדמה בעצמכם: עד 31 ביולי על מכירות של ינואר עד יוני, ועד 31 בינואר על מכירות של יולי עד דצמבר. חייבים גם להגיש דוח שנתי. החישוב מחשיב את המס כאילו שולם כבר בחודש המכירה.",
   // F-107: US-situs holdings above TXF-27's filing threshold; for a fund organised as a trust, US situs is TXF-27's reading with its gaps stated; Israel has no estate tax treaty with the United States
-  "TXF-27": "ההחזקה בקרן אמריקנית עוברת כאן את הסף שמעליו עיזבון של מי שאינו אזרח ארצות הברית ואינו תושב בה חייב בדיווח לרשויות המס האמריקניות, ועשוי לשלם מס עיזבון. בקרן שהתאגדה כנאמנות (trust) ולא כחברה, זו קריאה של האתר שיש בה פערים: לא נמצא טקסט שקובע שקרן כזו נחשבת חברה אמריקנית לעניין מס העיזבון. לישראל אין אמנה עם ארצות הברית על מס עיזבון, והחישוב לא כולל את המס הזה.",
+  "TXF-27": "ההחזקה בקרן אמריקנית עוברת כאן סף. מעל הסף הזה, עיזבון של מי שלא אזרח ארצות הברית ולא תושב בה חייב בדיווח לרשויות המס האמריקניות, ועשוי לשלם מס עיזבון. בקרן שהתאגדה כנאמנות (trust) ולא כחברה, זו קריאה של האתר שיש בה פערים: לא נמצא טקסט שקובע שקרן כזו נחשבת חברה אמריקנית לעניין מס העיזבון. לישראל אין אמנה עם ארצות הברית על מס עיזבון. החישוב לא כולל את המס הזה.",
   // F-44: a kupat gemel lehashkaa balance already held whose gain is not known; the annual report states no tax a withdrawal would bear (PF-36)
   "PF-36": "המס במשיכה לא חושב: בכסף שכבר נמצא בקופה צריך לדעת כמה ממנו הוא רווח, והאתר לא יודע את זה. גם הדוח השנתי של הקופה לא מראה את המס שיחול במשיכה.",
   // F-30 between the two sides of TXP-03's threshold: the run deposits up to it as a beneficiary member
-  "TXP-03": "ההפקדות שלכם בשנה קרובות לסף שמעליו אתם עמית מוטב, 16% מהשכר הממוצע במשק, והטבת המס שונה משני צדי הסף. החישוב מניח שאתם מפקידים בדיוק עד הסף ומקבלים את ההטבה של עמית מוטב.",
+  "TXP-03": "ההפקדות שלכם בשנה קרובות לסף שמעליו אתם עמית מוטב: 16% מהשכר הממוצע במשק. הטבת המס שונה משני צדי הסף. החישוב מניח שאתם מפקידים בדיוק עד הסף ומקבלים את ההטבה של עמית מוטב.",
   // the comprehensive fund's monthly deposit ceiling (PEN-08); routing the excess to the general fund (PEN-10) is not modelled
-  "PEN-08": "ההפקדה החודשית עוברת את תקרת ההפקדה לקרן פנסיה מקיפה. החלק שמעל התקרה עובר לקרן פנסיה כללית של אותה חברה, והחישוב לא מחשב את המעבר הזה.",
+  "PEN-08": "ההפקדה החודשית עוברת את תקרת ההפקדה לקרן פנסיה מקיפה. החלק שמעל התקרה עובר לקרן פנסיה כללית של אותה חברה. החישוב לא מחשב את המעבר הזה.",
   // F-47 charges income tax only on gains taxed at the brackets (TXG-27, TXG OQ2(b); method G-27)
-  "G-27": "על רווח שנמשך לפני הזמן וממוסה לפי מדרגות המס ייתכן שחלים גם ביטוח לאומי ומס בריאות, והאתר עוד לא מחשב אותם. החישוב כולל רק את מס ההכנסה.",
+  "G-27": "על רווח שנמשך לפני הזמן וממוסה לפי מדרגות המס ייתכן שחלים גם ביטוח לאומי ומס בריאות. האתר עוד לא מחשב אותם. החישוב כולל רק את מס ההכנסה.",
   // F-50's bank route runs on the rate entered (A-26); the Ministry of Finance's dataset holds each bank's rates (CS-23)
   "CS-23": "הריבית בחיסכון בבנק היא הריבית שהזנתם. הריביות של כל הבנקים מתפרסמות במאגר הנתונים של משרד האוצר, ומתעדכנות בערך כל יומיים.",
   // compare and the indices page: a foreign fund that does not distribute (method G-18), the foreign funds traded abroad (G-29), a fee on distributions (F-18)
-  "G-18": "קרן זרה שאינה מחלקת: רשות המסים לא אישרה שהיא ממוסה רק במכירה. האתר מחשב לפי מקור משני ולא מדרג.",
+  "G-18": "קרן זרה שלא מחלקת: רשות המסים לא אישרה שהיא ממוסה רק במכירה. האתר מחשב לפי מקור משני ולא מדרג.",
   "G-29": "לקרנות זרות הנסחרות בחו״ל אין רשימה מלאה: האתר משווה את אלה שאסף אחת־אחת, והשאר הן שורה אחת.",
   "F-18": "העמלה על חלוקת רווחים עוד לא מחושבת, ולכן התוצאה חלקית.",
-  "TXP-11": "הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שנבדקת כל חודש: החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה, והאתר עוד לא מחשב את המס עליו.", // the monthly test is circular 4/2019 s.2.1.1 (TXP-11); the engine flag had been the open question
+  "TXP-11": "הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שנבדקת כל חודש. החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה. האתר עוד לא מחשב את המס עליו.", // the monthly test is circular 4/2019 s.2.1.1 (TXP-11); the engine flag had been the open question
 };
 
 /** Labels of the values a computation reads, shown in the number sheet (copy.md 3.8 "ערכים שנכנסו לחישוב"). */
