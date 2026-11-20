@@ -886,12 +886,19 @@ function offsetAction(r: DealRead, p: DealPeriod, kind: FeeKindId): DealAction |
 }
 
 /**
- * A period on the timeline: its card, what a month with nothing in it costs (F-126, with the bank's caveat where the deal's provider is a
- * bank, `atBank`), and the action that covers each offset fee (F-127).
+ * The rule a month with nothing in it is stated beside where the deal's provider is a bank (method F-126): directive 415 s.2(ה) bounds a
+ * bank's fee on a deposit account with no activity, and the rules do not say whether such a month is one, so the page states it and
+ * computes nothing from it.
+ */
+export const IDLE_AT_BANK = ["BRK-61"] as const;
+
+/**
+ * A period on the timeline: its card, what a month with nothing in it costs (F-126, with the rules stated beside it, `bank`: `IDLE_AT_BANK`
+ * where the deal's provider is a bank, else none), and the action that covers each offset fee (F-127).
  */
 export interface TimelinePeriod {
   card: PeriodCard;
-  idle: { total: SiteValue; parts: { fee: FeeRef; amount: SiteValue }[]; atBank: boolean } | null;
+  idle: { total: SiteValue; parts: { fee: FeeRef; amount: SiteValue }[]; bank: readonly string[] } | null;
   covers: { fee: FeeRef; against: FeeKindId; action: DealAction; from: SiteValue | "any"; side: DealSide }[];
   /** Whether a fee kept its price from the period before (the period's own words say the rest stays). */
   rest: boolean;
@@ -909,7 +916,7 @@ function throughout<T>(items: readonly (T | null)[], key: (x: T) => string): T |
 }
 
 /** What a month with nothing in it costs in a period of a deal read for such a month (F-126). */
-function idleIn(r: DealRead, p: DealPeriod): Omit<NonNullable<TimelinePeriod["idle"]>, "atBank"> | null {
+function idleIn(r: DealRead, p: DealPeriod): Omit<NonNullable<TimelinePeriod["idle"]>, "bank"> | null {
   const idle = idleMonth(r.engine, p);
   if (!idle || !(idle.total > 0)) return null;
   const parts = chartFees(r, idle.parts.map((x) => x.fee)).map((fee) => ({ fee: fee.ref, amount: viewOf(r, p, fee.idx[0]!, "all").figures.amount! }));
@@ -959,12 +966,12 @@ const coverKey = (cs: TimelinePeriod["covers"]) => JSON.stringify(cs.map((c) => 
 export function timelineOf(r: DealRead, cards: readonly PeriodCard[], fx: FxSnapshot | null, unit: { price: number | null; currency: string | null }): TimelinePeriod[] {
   const empty = readForMonth(r, { actions: 0, trading: 0 });
   const single = readForMonth(r, { actions: 1, trading: "action" });
-  const atBank = r.engine.provider === "bank";
+  const bank: readonly string[] = r.engine.provider === "bank" ? IDLE_AT_BANK : [];
   return r.reading.periods.map((p, k) => {
     const card = cards[k]!;
     const idle = throughout(overlapping(empty, p).map((q) => idleIn(empty, q)), (x) => JSON.stringify([x.total.value, x.parts.map((y) => [y.fee.fee, y.amount.value])]));
     const covers = throughout(overlapping(single, p).map((q) => coversIn(single, q, fx, unit)), coverKey) ?? [];
     const rest = k > 0 && card.rows.some((row) => !row.change && !row.sale?.change);
-    return { card, idle: idle ? { ...idle, atBank } : null, covers, rest };
+    return { card, idle: idle ? { ...idle, bank } : null, covers, rest };
   });
 }

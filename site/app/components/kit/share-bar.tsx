@@ -1,7 +1,8 @@
 // A whole split into a few parts as one bar of shares (the index page's receipt: what went on the way, by who took it): the parts side by
 // side from the start, 2 px apart (charts.md), each as long as its share. One key above the bar, in the bar's order, names every part by its
 // colour with its share, so each part is read in the same place whatever its size; nothing is written inside the bar, where only the
-// largest part ever had room. A bare bar has no key (the rows beside it name its parts) and carries its largest part's sum inside it. The amounts themselves are the caller's, written beside the bar; the bar says shares only. The chart check
+// largest part ever had room. A bare bar has no key (the rows beside it name its parts, in its order) and runs left to right from its
+// largest part, which carries its sum inside it. The amounts themselves are the caller's, written beside the bar; the bar says shares only. The chart check
 // finds it by `data-chart` and reads its start (`data-zero`) and its parts (`data-mark`).
 import { cx } from "./cx";
 
@@ -16,14 +17,15 @@ export interface SharePart {
   words?: string;
 }
 
-export function ShareBar({ parts, label, bare }: { parts: SharePart[]; /** The bar's spoken summary. */ label: string; /** No key: the rows beside the bar name its parts (a reading's list), and the largest part's `words` are written inside it, 24 px tall. */ bare?: boolean }) {
+export function ShareBar({ parts, label, bare }: { parts: SharePart[]; /** The bar's spoken summary. */ label: string; /** No key: the rows beside the bar name its parts (a reading's list, largest first as the bar runs), the parts run left to right from the largest, and the largest part's `words` are written inside it, 24 px tall. */ bare?: boolean }) {
   const live = parts.filter((p) => p.share > 0);
   if (bare) {
-    const largest = live.reduce<SharePart | null>((m, p) => (!m || p.share > m.share ? p : m), null);
+    const sorted = [...live].sort((a, b) => b.share - a.share);
+    const largest = sorted[0] ?? null;
     return (
-      <div role="img" aria-label={label} className="flex h-6 w-full min-w-0 gap-0.5" data-chart="share-bar" data-zero="">
-        {live.map((p, i) => (
-          <span key={p.id} className={cx("flex min-w-1.5 items-center justify-center overflow-hidden text-xs font-semibold text-background tabular-nums", i === 0 && "rounded-s-sm", i === live.length - 1 && "rounded-e-sm", p.className)} style={{ flex: `${p.share} 1 0` }} data-mark="part">
+      <div role="img" aria-label={label} dir="ltr" className="flex h-6 w-full min-w-0 gap-0.5" data-chart="share-bar" data-zero="">
+        {sorted.map((p, i) => (
+          <span key={p.id} className={cx("flex min-w-1.5 items-center justify-center overflow-hidden text-xs font-semibold text-background tabular-nums", i === 0 && "rounded-s-sm", i === sorted.length - 1 && "rounded-e-sm", p.className)} style={{ flex: `${p.share} 1 0` }} data-mark="part">
             {p === largest && p.words && p.share >= 30 ? <bdi className="whitespace-nowrap">{p.words}</bdi> : null}
           </span>
         ))}

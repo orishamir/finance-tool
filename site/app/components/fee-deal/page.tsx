@@ -1,5 +1,5 @@
 // The fee page (method §10.6): the head, the bar of the deal, the columns for entering it (a card with what the deal is about, over the
-// cards of its fees, and the toolbox for the case open in place), and under them the reading, which opens with the picks it is read for and the fees it leaves out. The deal is kept
+// cards of its fees, and the toolbox for the case open in place), and under them the reading, which opens with the picks it is read for. The deal is kept
 // on this device, saved as it changes from its first fee or a typed name. It opens from the address (a deal in `#d=`, or in `?d=` as links
 // were written before, the saved one where the link's deal is one already; a kind in `?wrapper=`, a track in `?track=`), else the deal
 // last worked on, else an empty deal with the kinds to choose from. "Today" is the device's day, read after the page loads: the
@@ -57,7 +57,7 @@ import { UNDO_MS } from "./use-undo";
 import { FeeLinksProvider } from "./links";
 import { partPlaceId } from "./figures";
 import { UndoLine } from "./undo-line";
-import { LeftOutCard, READING_ID } from "./left-out";
+import { READING_ID } from "./left-out";
 import { SlotMenu, WhenText, whenText } from "./open-case";
 import { TemplatePicker } from "./picker";
 import { ToolboxCard, ToolboxColumn, applyTool, type ToolHands } from "./toolbox";
@@ -390,10 +390,6 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const thingView = thingOpen ? thingMenu(read, thingOpen.fee, thingOpen.t) : null;
   // a product that saves charges its fees from what has built up: a share of what is held reads so
   const saves = !!kind?.bases.includes("balance");
-  const nameOf = (feeId: string) => {
-    const f = deal.fees.find((x) => x.id === feeId);
-    return f ? feeName(f.kind, f.name, read.copied[f.id]) : feeId;
-  };
   const priceLists = useMemo(() => (chosenFee && chosenFee.kind !== "own" ? feePriceLists(deal, chosenFee.kind, data) : []), [chosenFee, deal, data]);
   const { shown, words } = doc.undo;
   const lines = doc.undo.lines;
@@ -582,7 +578,8 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
             read={readSome}
             unitPrice={unitPrice}
             onUnitPrice={onUnitPrice}
-            leftOut={<LeftOutCard left={views.left} names={nameOf} empty={!readSome} />}
+            left={views.left}
+            foreign={read.engine.foreign}
           />
         </Section>
       )}

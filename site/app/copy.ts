@@ -2307,6 +2307,10 @@ export const feeDeal = {
       lanes: "מה קובע את המחיר של כל עמלה, לפי הגודל",
       /** A part's words on its lane, before its figure; a part free of charge. */
       lane: { min: "מינימום ", max: "מקסימום ", cap: "עד ", flat: "", sum: "", rate: "", free: "חינם" } as Record<string, string>,
+      /** On a phone, between a lane's name and the period its parts are per: "דמי ניהול פיקדון ניירות ערך · ברבעון". */
+      lanePer: " · ",
+      /** The reading at the point on one line, over the chart where the card stands under it: "קנייה של 18,650 ₪ (5,714 $): 144 ₪, 0.77% מהקנייה". */
+      line: { sep: ": ", and: ", " },
       /** The parts of a lane under the axis's start, in words: "{fee}: עד 130 $ לכל היותר 30% מהפעולה; עד 10 $ חינם." */
       under: { upTo: "עד ", sep: "; ", end: ".", capLead: "לכל היותר ", minLead: "מינימום " },
       /** Where nothing varies: one number, a share or a sum, in every size. */
@@ -2331,6 +2335,9 @@ export const feeDeal = {
       offset: { lead: "הסכום הזה מתקזז מול ", month: " של אותו חודש, ולכן הגרף מראה שנה בלי ", end: "." },
       x: "הסכום שמוחזק (₪) · כל הגרף: שנה שלמה, באחוזים ממה שמוחזק",
       xSaved: "הסכום שנצבר (₪) · כל הגרף: שנה שלמה, באחוזים ממה שנצבר",
+      /** The axis's name on a phone. */
+      xShort: "הסכום שמוחזק (₪)",
+      xShortSaved: "הסכום שנצבר (₪)",
       /** The layers' groups, named on the chart. */
       groups: { share: "אחוזים", fixed: "סכומים קבועים" } as Record<string, string>,
       lanes: "מה קובע את המחיר של כל עמלה, לפי הסכום",
@@ -2362,13 +2369,22 @@ export const feeDeal = {
       rest: "שאר העמלות נשארות כמו היום.",
       /** A price that changed: from, an arrow, to. */
       arrow: " ← ",
-      /** An offset fee and the action that covers it, by the fee's gender and number: "{fee} מתקזזים מול {fee} של אותו חודש, עד הסכום שלהם: קנייה או מכירה של 67 ₪ ומעלה מכסה אותם." */
+      /**
+       * An offset fee and the action that covers it, by the offset fee's gender and number: "{fee} מתקזזים מול {fee} של אותו חודש, עד
+       * הסכום שלה: קנייה או מכירה של 67 ₪ ומעלה מכסה אותם." The sum it is offset up to is the other fee's: its word, by that fee's (`theirs`).
+       */
       covers: {
-        m: { offsets: " מתקזז מול ", own: " של אותו חודש, עד הסכום שלו: ", from: " ומעלה מכסה אותו.", any: " מכסה אותו." },
-        f: { offsets: " מתקזזת מול ", own: " של אותו חודש, עד הסכום שלה: ", from: " ומעלה מכסה אותה.", any: " מכסה אותה." },
-        mp: { offsets: " מתקזזים מול ", own: " של אותו חודש, עד הסכום שלהם: ", from: " ומעלה מכסה אותם.", any: " מכסה אותם." },
-        fp: { offsets: " מתקזזות מול ", own: " של אותו חודש, עד הסכום שלהן: ", from: " ומעלה מכסה אותן.", any: " מכסה אותן." },
+        m: { offsets: " מתקזז מול ", own: " של אותו חודש, עד הסכום ", from: " ומעלה מכסה אותו.", any: " מכסה אותו." },
+        f: { offsets: " מתקזזת מול ", own: " של אותו חודש, עד הסכום ", from: " ומעלה מכסה אותה.", any: " מכסה אותה." },
+        mp: { offsets: " מתקזזים מול ", own: " של אותו חודש, עד הסכום ", from: " ומעלה מכסה אותם.", any: " מכסה אותם." },
+        fp: { offsets: " מתקזזות מול ", own: " של אותו חודש, עד הסכום ", from: " ומעלה מכסה אותן.", any: " מכסה אותן." },
       } as Record<string, { offsets: string; own: string; from: string; any: string }>,
+      theirs: { m: "שלו: ", f: "שלה: ", mp: "שלהם: ", fp: "שלהן: " } as Record<string, string>,
+      /**
+       * Beside a month with nothing in it where the deal's provider is a bank (method F-126): directive 415's bound on a deposit account
+       * with no activity, stated, and that the rules do not say whether it reaches such a month.
+       */
+      bank: { lead: "בבנק, ", stated: "עמלת ניהול של חשבון פיקדון שאין בו תנועה לא תעלה על יתרת הזכות בחשבון", tail: ". הכללים לא אומרים אם זה חל על חודש בלי פעולה ובלי החזקה, ולכן האתר לא מחשב את זה." },
       /** The action that covers it: "קנייה או מכירה של", or any one of them ("כל קנייה או מכירה"). */
       coverOf: " של ",
       any: "כל ",
@@ -2388,6 +2404,8 @@ export const feeDeal = {
       banned: { one: "עמלה אחת בעסקה בנק לא גובה, לפי כללי הבנקאות", several: "יש בעסקה עמלות שבנק לא גובה, לפי כללי הבנקאות" },
       /** Before a price after the first: the month it starts. */
       from: "מ־",
+      /** Between a fee's name and its one price on the name's line: "העברה החוצה · 0.25% מההעברה". */
+      priceSep: " · ",
     },
   },
   /** The bar's end: the deals this device keeps, a link to the deal, and the template picker. */

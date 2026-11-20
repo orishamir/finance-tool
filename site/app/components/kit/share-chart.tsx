@@ -1,9 +1,11 @@
 // What something costs as a share of an amount, the amount on a log axis (the deal's charts by size, method F-112 and F-123). Its curve is
 // either one line (what one action costs) or layers stacked from zero with their total as a line on top (what a year of holding costs, the
-// layers a fee each, named by group on the plot where a group's band has room). Over the plot it may carry zones named above it (which
+// layers a fee each, named by group on the plot where a group's band holds the name). Over the plot it may carry zones named above it (which
 // part decides), the amounts where the cost changes behaviour as points with their words (charts.md, "Labels"), and where the curve leaves
 // the top of the axis, its value at the axis's start written over the value axis. A point the reader drags reads one amount (an action's
-// size); on a chart without one, the pointer reads the amount under it, a tap on a phone, and a drag with a mouse picks a range to zoom to.
+// size); on a chart without one, the pointer reads the amount under it with a box of its values beside it, a tap on a phone, and a drag
+// with a mouse picks a range to zoom to. On a phone the chart says less: no group names, a mark's label without the line over it, and on a
+// chart with a point no labels and no tag, the point held by a knob on the amount axis.
 // The lanes under the chart (`AmountLanes`) stand on the same plot: both keep `SHARE_PLOT`'s room at the sides. Own SVG.
 import { useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import { fmt } from "../../lib/format";
@@ -23,14 +25,15 @@ export interface SharePoint {
   layers?: number[];
 }
 
-/** A layer of a layered chart, bottom up: its fill (`fill-fee-custody`) and the group it is named with. */
+/** A layer of a layered chart, bottom up: its fill (`fill-fee-custody`), its edge while it is set apart (`stroke-fee-custody`), and the group it is named with. */
 export interface ShareLayer {
   id: string;
   fill: string;
+  edge?: string;
   group: string;
 }
 
-/** A group of layers, named on the plot where its band is tallest (and the name fits). */
+/** A group of layers, named on its band where the band holds the name (`groupNameAt`). */
 export interface ShareGroup {
   id: string;
   label: string;
@@ -99,14 +102,17 @@ function crosses(b: Box, l: LabelLine): boolean {
  * row by row. Each is held inside the plot (from `plotL` to `plotR`) and moved past the end of the value axis's words where it would meet
  * one. A place is free where the label meets no word of the axis, no mark's point, no label already placed and no line (`lines`), and
  * stands no further than its `reach` (`JOIN_MAX`) from its point, and meets nothing in `keepOut` (the reader's point and its tag). `lx`, `by`: the label's middle and its first line's baseline; one not
- * right at its point is `joined` to it by a line. A label with no free place gives way (null): its point stays.
+ * right at its point is `joined` to it by a line. A label with no free place gives way (null): its point stays. So does a label that
+ * `yields` where its place over its point meets a label placed before it: two marks close together keep the earlier one's words, never a
+ * second label stacked over the first.
  */
-export function markLabels(points: readonly { cx: number; cy: number; half: number; up?: number; reach?: number }[], axisWords: readonly { right: number; top: number; bottom: number }[], plotR: number, lines: readonly LabelLine[] = [], plotL = 0, keepOut: readonly Box[] = []): ({ lx: number; by: number; joined: boolean } | null)[] {
+export function markLabels(points: readonly { cx: number; cy: number; half: number; up?: number; reach?: number; yields?: boolean }[], axisWords: readonly { right: number; top: number; bottom: number }[], plotR: number, lines: readonly LabelLine[] = [], plotL = 0, keepOut: readonly Box[] = []): ({ lx: number; by: number; joined: boolean } | null)[] {
   const axis: Box[] = axisWords.map((a) => ({ left: 0, right: a.right, top: a.top, bottom: a.bottom }));
   const dots: Box[] = points.map((p) => ({ left: p.cx - POINT_CLEAR, right: p.cx + POINT_CLEAR, top: p.cy - POINT_CLEAR, bottom: p.cy + POINT_CLEAR }));
   const taken: Box[] = [];
-  return points.map(({ cx, cy, half, up = 0, reach = JOIN_MAX }) => {
+  return points.map(({ cx, cy, half, up = 0, reach = JOIN_MAX, yields = false }) => {
     const box = (lx: number, by: number): Box => ({ left: lx - half, right: lx + half, top: by - TEXT_UP - up, bottom: by + TEXT_DOWN });
+    if (yields && taken.some((t) => meet(box(Math.max(plotL + half, Math.min(plotR - half, cx)), cy - MARK_LABEL), t, LABEL_GAP))) return null;
     // how far a label's box stands from its point: nothing where the point is under it or at its side
     const away = (b: Box) => Math.hypot(Math.max(0, b.left - cx, cx - b.right), Math.max(0, b.top - cy, cy - b.bottom));
     // a mark's own drop runs down from its point, under any place its label takes
@@ -150,14 +156,53 @@ export function shareAt(points: readonly SharePoint[], a: number, of: (p: ShareP
 
 const pct = (v: number) => fmt.pct(v);
 
+/** Narrower than this a chart is a phone's: no group names, no lines over a mark's label, the axis's short name, the point as a knob. */
+const NARROW = 560;
+/** A label's text box, its baseline to its top and bottom, with room round it: what a group's band must hold along the name's width. */
+const NAME_ROOM = TEXT_UP + TEXT_DOWN + 8;
+/** The point's knob on the amount axis on a phone, its radius. */
+const KNOB = 11;
+/** How far from the pointer's line a mark's label gives way to the box of values beside it. */
+const TIP_CLEAR = 40;
+
+/**
+ * Where a group's name stands on its band (charts.md, "Labels"): in a stretch between two of the marks' amounts (or the axis's ends), the
+ * one nearest the axis's middle whose band holds the name's whole box along its whole width, clear of the band's edges and the curve on
+ * top, centred in the stretch. `cuts`: those amounts in px, in order; `band(px)`: the band's top and bottom in px there. Null where no
+ * stretch holds it.
+ */
+export function groupNameAt(cuts: readonly number[], wide: number, band: (px: number) => { top: number; bottom: number }): { px: number; mid: number } | null {
+  if (cuts.length < 2) return null;
+  const middle = (cuts[0]! + cuts.at(-1)!) / 2;
+  const stretches = cuts.slice(1).map((r, k) => ({ l: cuts[k]!, r }));
+  const far = (s: { l: number; r: number }) => (middle >= s.l && middle <= s.r ? 0 : Math.min(Math.abs(middle - s.l), Math.abs(middle - s.r)));
+  for (const s of [...stretches].sort((a, b) => far(a) - far(b))) {
+    if (s.r - s.l < wide + 8) continue;
+    const c = (s.l + s.r) / 2;
+    let top = -Infinity;
+    let bottom = Infinity;
+    for (let px = c - wide / 2; px <= c + wide / 2; px += 3) {
+      const b = band(px);
+      top = Math.max(top, b.top);
+      bottom = Math.min(bottom, b.bottom);
+    }
+    if (bottom - top >= NAME_ROOM) return { px: c, mid: (top + bottom) / 2 };
+  }
+  return null;
+}
+
 /**
  * `range`: the amounts the axis spans. `points`: the curve sampled over it, rising (two samples at one amount where it jumps). `top`: the
  * least the value axis reaches (its nice step at or above it is its top); the curve above it is cut at the top, and `over` is then written
- * over the value axis ("↑ 14.4% ב־1,000"). `layers` and `groups`: a layered chart's layers bottom up, each sample's `layers` their shares;
- * `strong`, a layer set apart (the others step back), and `onStrong`, the layer under the pointer. `marks`, `zones`: as their types say.
- * `point`: the reader's amount and its tag, which a drag, a tap or the arrow keys move (`onPoint`); `spoken` names it. Without a point, the
- * pointer reads the amount under it (`onRead`, null as it leaves; `boxed` where the chart shows `tip`'s box of values beside it, from 640 px); `onRange`, a
- * mouse's drag across the plot. `xTitle` names the amount under the axis. `height`: the plot's.
+ * over the value axis ("↑ 14.4% ב־1,000"), on a row of its own where the first zone's name would meet it. `layers` and `groups`: a layered
+ * chart's layers bottom up, each sample's `layers` their shares; `strong`, a layer set apart (it turns near solid with an edge in its own
+ * colour, `edge`, and the others step back), and `onStrong`, the layer under the pointer. `marks`, `zones`: as their types say.
+ * `point`: the reader's amount and its tag, which a drag, a tap or the arrow keys move (`onPoint`); `spoken` names it; on a phone the tag
+ * and the marks' words give way and the point is held by a large knob on the amount axis. Without a point, the pointer reads the amount
+ * under it (`onRead`, null as it leaves; `boxed` where the chart shows `tip`'s box of values beside it, from 640 px), with a dot where its
+ * line meets the curve; the drop's sentence and any mark's words near the line give way to the box. `onRange`, a mouse's drag across the
+ * plot, which shows only the range and its two ends while it lasts. `xTitle` names the amount under the axis, `xShort` on a phone.
+ * `height`: the plot's.
  */
 export function ShareChart({
   range,
@@ -177,6 +222,7 @@ export function ShareChart({
   tip,
   onRange,
   xTitle,
+  xShort,
   height = 280,
   className,
 }: {
@@ -197,6 +243,7 @@ export function ShareChart({
   tip?: (at: number) => ReactNode;
   onRange?: (lo: number, hi: number) => void;
   xTitle: string;
+  xShort?: string;
   height?: number;
   className?: string;
 }) {
@@ -205,17 +252,34 @@ export function ShareChart({
   const [brush, setBrush] = useState<{ a: number; b: number } | null>(null);
   const press = useRef<{ x: number; dragging: boolean; id: number } | null>(null);
 
+  const narrow = w < NARROW;
   // the box of values beside the pointer stands over the plot where the chart is wide enough; narrower, the page puts it under the chart
   const boxed = !!tip && w >= 640;
   const ticks = shareTicks(top);
   const yTop = ticks.at(-1) || 1;
-  const plotT = ZONE_ROW + (zones.length || over ? 6 : 0);
-  const base = plotT + height;
-  const H = base + BOTTOM;
   const plotL = SHARE_PLOT.left;
   const plotR = w - SHARE_PLOT.right;
   const x = (a: number) => plotL + logAt(range, a) * (plotR - plotL);
   const amountOf = (px: number) => amountAt(range, Math.max(0, Math.min(1, (px - plotL) / (plotR - plotL || 1))));
+
+  // the zones' names above the plot, each at its zone's middle held inside the plot; one that would meet the name before it gives way
+  let zoneEnd = -Infinity;
+  const zoneNames = zones.map((z) => {
+    const wide = chartTextWidth(z.label, CHART_TEXT_PX);
+    const from = x(Math.max(z.from, range.lo));
+    const to = x(Math.min(z.to, range.hi));
+    const mid = Math.max(plotL + wide / 2, Math.min(plotR - wide / 2, (from + to) / 2));
+    const shown = to > from && mid - wide / 2 >= zoneEnd + 8;
+    if (shown) zoneEnd = mid + wide / 2;
+    return { z, mid, wide, from, to, shown };
+  });
+  // the value over the axis shares the zones' row where it meets none of their names, else it takes a row of its own above them
+  const overWide = over ? chartTextWidth(over, CHART_TEXT_PX) + 4 : 0;
+  const overOwn = !!over && zoneNames.some((n) => n.shown && n.mid - n.wide / 2 < 2 + overWide + 8);
+  const zoneY = ZONE_ROW - 4 + (overOwn ? MARK_ROW : 0);
+  const plotT = ZONE_ROW + (zones.length || over ? 6 : 0) + (overOwn ? MARK_ROW : 0);
+  const base = plotT + height;
+  const H = base + BOTTOM;
   const y = (v: number) => base - (Math.min(v, yTop * 1.5) / yTop) * height;
 
   const path = (of: (p: SharePoint) => number) => points.map((p, i) => `${i ? "L" : "M"}${x(p.at).toFixed(1)} ${y(of(p)).toFixed(1)}`).join("");
@@ -235,77 +299,79 @@ export function ShareChart({
     const l = Math.max(plotL - 20, Math.min(c - wide / 2, plotR + 10 - wide));
     return [l, l + wide];
   };
+  // on a phone an amount under the point's knob gives way to it
+  const knobAt = point && narrow ? x(point.at) : null;
   const written: number[] = [];
   for (const v of amounts) {
     const before = written.length ? xSpan(written.at(-1)!)[1] : -Infinity;
-    if (xSpan(v)[0] >= before + X_LABEL_GAP) written.push(v);
+    const [l, r] = xSpan(v);
+    if (l >= before + X_LABEL_GAP && !(knobAt !== null && l < knobAt + KNOB + 2 && r > knobAt - KNOB - 2)) written.push(v);
   }
 
-  // the zones' names above the plot, each at its zone's middle held inside the plot; one that would meet the name before it gives way
-  const overWide = over ? chartTextWidth(over, CHART_TEXT_PX) + 4 : 0;
-  let zoneEnd = overWide;
-  const zoneNames = zones.map((z) => {
-    const wide = chartTextWidth(z.label, CHART_TEXT_PX);
-    const from = x(Math.max(z.from, range.lo));
-    const to = x(Math.min(z.to, range.hi));
-    const mid = Math.max(plotL + wide / 2, Math.min(plotR - wide / 2, (from + to) / 2));
-    const shown = to > from && mid - wide / 2 >= zoneEnd + 8;
-    if (shown) zoneEnd = mid + wide / 2;
-    return { z, mid, from, to, shown };
-  });
-
-  // the reader's point and its tag over it, held inside the plot
+  // the reader's point and its tag over it, held inside the plot; on a phone no tag, and the knob on the amount axis holds it
+  const tagged = !!point && !narrow;
   const pointY = point ? y(Math.min(shareAt(points, point.at), yTop)) : 0;
   const tagWide = point ? chartTextWidth(point.tag, CHART_TEXT_PX) + 20 : 0;
   const tagX = point ? Math.max(plotL, Math.min(plotR - tagWide, x(point.at) - tagWide / 2)) : 0;
   const tagY = Math.max(2, pointY - 38);
   const pointBoxes: Box[] = point
     ? [
-        { left: tagX, right: tagX + tagWide, top: tagY, bottom: tagY + 22 },
+        ...(tagged ? [{ left: tagX, right: tagX + tagWide, top: tagY, bottom: tagY + 22 }] : []),
         { left: x(point.at) - 8, right: x(point.at) + 8, top: pointY - 8, bottom: pointY + 8 },
       ]
     : [];
 
-  // the marks' words over their points, clear of the axis's words, the curve, each other and the reader's point
+  // the amount the pointer reads, its dot on the curve and the box of values beside it; none while a range is dragged
+  const reading = !point && !brush ? at : null;
+  const readY = reading !== null ? y(Math.min(shareAt(points, reading), yTop)) : 0;
+  const tipOpen = reading !== null && !!tip && boxed;
+
+  // the marks' words over their points, clear of the axis's words, the curve, each other and the reader's point; on a phone a chart with a
+  // point writes none (its point and its reading say the amount), and no mark carries a line over its label
   const inRange = marks.filter((m) => m.at >= range.lo * (1 - 1e-9) && m.at <= range.hi * (1 + 1e-9)).sort((p, q) => p.at - q.at);
   const cy = (a: number) => y(shareAt(points, a * (1 + 1e-12)) > yTop ? yTop : shareAt(points, a * (1 - 1e-12)));
   const axisWords = ticks.filter((t) => t > 0).map((t) => ({ right: 2 + chartTextWidth(pct(t), CHART_TEXT_PX), top: y(t) - 4 - TEXT_UP, bottom: y(t) - 4 + TEXT_DOWN }));
   const curveLine: LabelLine = { y: (px: number) => y(shareAt(points, amountOf(px))) };
+  const wordsOf = (m: ShareMark) => [narrow ? undefined : m.sub, m.label].filter((s): s is string => !!s);
   const entries = inRange.flatMap((m) => {
-    const lines = [m.sub, m.label].filter((s): s is string => !!s);
+    const lines = wordsOf(m);
     const half = Math.max(...lines.map((s) => chartTextWidth(s, CHART_TEXT_PX))) / 2 + 2;
     const own = { m, note: false, cx: x(m.at), cy: cy(m.at), half, up: (lines.length - 1) * LINE, reach: JOIN_MAX };
     if (!m.note?.length) return [own];
     const nHalf = Math.max(...m.note.map((s) => chartTextWidth(s, CHART_TEXT_PX))) / 2 + 2;
     return [own, { m, note: true, cx: own.cx, cy: own.cy, half: nHalf, up: (m.note.length - 1) * LINE, reach: 110 }];
   });
+  const worded = (e: (typeof entries)[number]) => !(point && narrow) && !(e.note && narrow) && !(tipOpen && (e.note || Math.abs(e.cx - x(reading!)) < TIP_CLEAR));
   const drops: LabelLine[] = entries.filter((e) => !e.note).map((e) => ({ x: e.cx, top: e.cy, bottom: base }));
-  const placed = markLabels(
-    entries.map((e) => ({ cx: e.cx, cy: e.cy, half: e.half, up: e.up, reach: e.reach })),
-    axisWords,
-    plotR,
-    [curveLine, ...drops],
-    plotL,
-    pointBoxes,
+  const labelled = entries.filter(worded);
+  const placedOf = new Map(
+    markLabels(
+      labelled.map((e) => ({ cx: e.cx, cy: e.cy, half: e.half, up: e.up, reach: e.reach, yields: !e.note })),
+      axisWords,
+      plotR,
+      [curveLine, ...drops],
+      plotL,
+      pointBoxes,
+    ).map((l, k) => [labelled[k]!, l] as const),
   );
+  const placed = entries.map((e) => placedOf.get(e) ?? null);
 
-  // the group names on their bands, where the band is tallest in the range and the name fits inside it
-  const names = (groups ?? []).flatMap((g) => {
-    const ks = (layers ?? []).flatMap((l, k) => (l.group === g.id ? [k] : []));
-    if (ks.length === 0) return [];
-    const lo = Math.min(...ks);
-    const hi = Math.max(...ks);
-    const wide = chartTextWidth(g.label, CHART_TEXT_PX) + 8;
-    let best: { px: number; h: number; mid: number } | null = null;
-    for (let px = plotL + wide / 2 + 4; px <= plotR - wide / 2 - 4; px += 6) {
-      const a = amountOf(px);
-      const bottom = lo ? shareAt(points, a, tops[lo - 1]!) : 0;
-      const topV = shareAt(points, a, tops[hi]!);
-      const h = y(bottom) - y(topV);
-      if (!best || h > best.h + 0.5) best = { px, h, mid: (y(bottom) + y(topV)) / 2 };
-    }
-    return best && best.h >= 18 ? [{ g, ...best }] : [];
-  });
+  // the group names on their bands (`groupNameAt`), between the marks' amounts; none on a phone
+  const cuts = [x(range.lo), ...inRange.map((m) => x(m.at)).filter((px) => px > plotL + 1 && px < plotR - 1), x(range.hi)];
+  const names = narrow
+    ? []
+    : (groups ?? []).flatMap((g) => {
+        const ks = (layers ?? []).flatMap((l, k) => (l.group === g.id ? [k] : []));
+        if (ks.length === 0) return [];
+        const lo = Math.min(...ks);
+        const hi = Math.max(...ks);
+        const wide = chartTextWidth(g.label, CHART_TEXT_PX) + 8;
+        const at = groupNameAt(cuts, wide, (px) => {
+          const a = amountOf(px);
+          return { top: Math.max(plotT, y(shareAt(points, a, tops[hi]!))), bottom: lo ? y(shareAt(points, a, tops[lo - 1]!)) : base };
+        });
+        return at ? [{ g, ...at }] : [];
+      });
 
   // the pointer: a press on the plot moves the reader's point there; without a point, a mouse reads and drags a range, a finger taps to read
   const amountFrom = (e: PointerEvent<SVGSVGElement>) => amountOf(e.clientX - e.currentTarget.getBoundingClientRect().left);
@@ -336,6 +402,12 @@ export function ShareChart({
     }
     if (e.pointerType !== "mouse") return;
     if (p && onRange && (p.dragging || Math.abs(e.clientX - p.x) > DRAG)) {
+      // a range being dragged shows alone: the reading, its line and the fee set apart let go
+      if (!p.dragging) {
+        setAt(null);
+        onRead?.(null, boxed);
+        onStrong?.(null);
+      }
       p.dragging = true;
       setBrush({ a: amountOf(p.x - e.currentTarget.getBoundingClientRect().left), b: a });
       return;
@@ -369,17 +441,19 @@ export function ShareChart({
     onPoint(Math.max(range.lo, Math.min(range.hi, to)));
   };
 
-  const line = point ? point.at : at;
-  // the layers in their fee colours a little under half over the card, so the group names in the foreground read on them at 4.5:1; a layer
-  // set apart keeps that, the others step back
-  const dim = (id: string) => (strong && strong !== id ? 0.15 : 0.45);
+  const line = point ? point.at : reading;
+  // the layers in their fee colours a little under half over the card, so the group names in the foreground read on them at 4.5:1; the
+  // layer set apart turns near solid and the others step back to under half of that
+  const opacity = (id: string) => (!strong ? 0.45 : strong === id ? 0.8 : 0.2);
+  const hot = strong ? (layers ?? []).findIndex((l) => l.id === strong) : -1;
+  const clipId = `share-plot-${Math.round(w)}-${Math.round(height)}`;
 
   return (
     <div className={cx("flex flex-col", className)}>
       <div ref={ref} dir="ltr" className="relative select-none">
         <svg width={w} height={H} aria-hidden={point ? undefined : true} className="block touch-pan-y" onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up} onPointerLeave={leave}>
           <defs>
-            <clipPath id={`share-plot-${Math.round(w)}-${Math.round(height)}`}>
+            <clipPath id={clipId}>
               <rect x={plotL} y={plotT} width={Math.max(0, plotR - plotL)} height={height} />
             </clipPath>
           </defs>
@@ -389,7 +463,7 @@ export function ShareChart({
           {zoneNames.map(
             (n, k) =>
               n.shown && (
-                <text key={`zone-name-${k}`} x={n.mid} y={ZONE_ROW - 4} textAnchor="middle" direction="rtl" className="fill-chart-text text-xs">
+                <text key={`zone-name-${k}`} x={n.mid} y={zoneY} textAnchor="middle" direction="rtl" className="fill-chart-text text-xs">
                   {n.z.label}
                 </text>
               ),
@@ -407,9 +481,15 @@ export function ShareChart({
               </text>
             </g>
           ))}
-          <g clipPath={`url(#share-plot-${Math.round(w)}-${Math.round(height)})`}>
-            {layers?.map((l, k) => <path key={l.id} d={area(k)} className={l.fill} fillOpacity={dim(l.id)} data-mark="area" />)}
+          <g clipPath={`url(#${clipId})`}>
+            {layers?.map((l, k) => <path key={l.id} d={area(k)} className={l.fill} fillOpacity={opacity(l.id)} data-mark="area" />)}
             {layers?.map((l, k) => <path key={`${l.id}:top`} d={path(tops[k]!)} fill="none" className="stroke-card" strokeWidth={1} />)}
+            {hot >= 0 && layers![hot]!.edge && (
+              <g fill="none" className={layers![hot]!.edge} strokeWidth={2}>
+                <path d={path(tops[hot]!)} />
+                <path d={hot ? path(tops[hot - 1]!) : `M${plotL} ${base}H${plotR}`} />
+              </g>
+            )}
             <path d={path((p) => p.share)} fill="none" className="stroke-foreground" strokeWidth={2} strokeLinejoin="round" />
           </g>
           {names.map((n) => (
@@ -431,7 +511,7 @@ export function ShareChart({
           {entries.map((e, k) => {
             const l = placed[k];
             if (!l) return null;
-            const lines = e.note ? e.m.note! : [e.m.sub, e.m.label].filter((s): s is string => !!s);
+            const lines = e.note ? e.m.note! : wordsOf(e.m);
             return lines.map((s, j) => (
               <text
                 key={`${e.m.id}:${e.note ? "note" : "label"}:${j}`}
@@ -447,6 +527,7 @@ export function ShareChart({
             ));
           })}
           {line !== null && <line x1={x(line)} x2={x(line)} y1={plotT} y2={base} className={point ? "stroke-entered" : "stroke-chart-crosshair"} strokeWidth={1} />}
+          {reading !== null && <circle cx={x(reading)} cy={readY} r={5} className="fill-foreground stroke-card" strokeWidth={2} />}
           {brush && (
             <g>
               <rect x={Math.min(x(brush.a), x(brush.b))} y={plotT} width={Math.abs(x(brush.b) - x(brush.a))} height={height} className="fill-entered/15 stroke-entered" strokeWidth={1} />
@@ -460,20 +541,26 @@ export function ShareChart({
           {point && (
             <g role="slider" tabIndex={0} aria-label={spoken} aria-valuemin={range.lo} aria-valuemax={range.hi} aria-valuenow={Math.round(point.at)} aria-valuetext={point.tag} onKeyDown={key} className="cursor-grab outline-none [&:focus-visible>circle]:stroke-ring">
               <circle cx={x(point.at)} cy={pointY} r={6} className="fill-entered stroke-card" strokeWidth={2} />
-              <rect x={tagX} y={tagY} width={tagWide} height={22} rx={6} className="fill-entered" />
-              <text x={tagX + tagWide / 2} y={tagY + 15} textAnchor="middle" direction="rtl" className="fill-background text-xs font-semibold tabular-nums">
-                {point.tag}
-              </text>
+              {tagged ? (
+                <>
+                  <rect x={tagX} y={tagY} width={tagWide} height={22} rx={6} className="fill-entered" />
+                  <text x={tagX + tagWide / 2} y={tagY + 15} textAnchor="middle" direction="rtl" className="fill-background text-xs font-semibold tabular-nums">
+                    {point.tag}
+                  </text>
+                </>
+              ) : (
+                <circle cx={x(point.at)} cy={base} r={KNOB} className="fill-entered stroke-card" strokeWidth={3} />
+              )}
             </g>
           )}
         </svg>
-        {!point && at !== null && tip && boxed && (
-          <ChartTip x={x(at)} top={plotT} width={w}>
-            {tip(at)}
+        {tipOpen && (
+          <ChartTip x={x(reading!)} top={plotT} width={w} near={{ y: readY, bottom: base }}>
+            {tip!(reading!)}
           </ChartTip>
         )}
       </div>
-      <p className="-mt-4 text-center text-xs text-muted-foreground">{xTitle}</p>
+      <p className="-mt-4 text-center text-xs text-muted-foreground">{narrow && xShort ? xShort : xTitle}</p>
     </div>
   );
 }

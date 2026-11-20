@@ -451,7 +451,7 @@ describe("a deal the views cannot read whole", () => {
   it("leaves a fee whose prices are out of order out, and names it", () => {
     const d = account();
     d.fees[1]!.stages = [{ price: { form: "free" } }, { price: { form: "held", rate: typed(0.4), per: 12, every: 12 } }];
-    expect(leftOut(read(d)).unread).toEqual(["fee-custody"]);
+    expect(leftOut(read(d)).unread.map((f) => f.fee)).toEqual(["fee-custody"]);
     expect(builder(read(d)).rows.map((r) => r.fee)).not.toContain("fee-custody");
     // it still opens with its prices to edit, and the reading has no law row for it
     expect(panel(read(d), "fee-custody")!.open.buy).toHaveLength(2);

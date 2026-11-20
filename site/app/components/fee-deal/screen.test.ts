@@ -18,7 +18,7 @@ import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
 import { FeesColumn, feeGroup, paletteItems } from "./builder";
-import { LeftOutCard } from "./left-out";
+import { LeftOutList } from "./left-out";
 import { feeName } from "./words";
 import { ToolboxColumn } from "./toolbox";
 import { ReadingCards } from "./reading";
@@ -114,7 +114,7 @@ const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = nu
 };
 const drawBuilder = (deal: FeeDeal, chosen: string | null) => markup(builderOf(deal, chosen));
 
-const drawLeftOut = (deal: FeeDeal) => text(createElement(LeftOutCard, { left: leftOut(readDealFor(deal, data.kinds, TODAY)), names: (id: string) => id }));
+const drawLeftOut = (deal: FeeDeal) => text(createElement(LeftOutList, { left: leftOut(readDealFor(deal, data.kinds, TODAY)) }));
 
 const drawReading = (deal: FeeDeal) => text(createElement(ReadingCards, { reading: readingOf(readDealFor(deal, data.kinds, TODAY), data.fx), saved: saves(deal), fx: data.fx }));
 
@@ -145,6 +145,17 @@ describe("the fees the reading leaves out", () => {
     const blank: FeeDeal = { ...deal, fees: [deal.fees[0]!, { id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] }] };
     expect(drawLeftOut(blank)).toContain(`${feeName("deposit")}${feeDeal.price.sep}${feeDeal.builder.facts.noPrice}`);
     expect(drawLeftOut(deal)).not.toContain(feeDeal.builder.facts.noPrice);
+  });
+  it("says it as a note in the panel the fee stands on, not in a card of its own above the panels", () => {
+    const deal = provident();
+    const blank: FeeDeal = { ...deal, fees: [deal.fees[0]!, { id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] }] };
+    const r = readDealFor(blank, data.kinds, TODAY);
+    const html = markup(createElement(ReadingCards, { reading: readingOf(r, data.fx), saved: saves(blank), fx: data.fx, left: leftOut(r), foreign: r.engine.foreign }));
+    const line = html.indexOf('data-left-out="fee-deposit"');
+    expect(line).toBeGreaterThan(-1);
+    // inside the first panel's card, after its headline
+    expect(html.indexOf("<h3")).toBeLessThan(line);
+    expect(text(createElement(ReadingCards, { reading: readingOf(r, data.fx), saved: saves(blank), fx: data.fx, left: leftOut(r), foreign: r.engine.foreign }))).toContain(`${feeName("deposit")}${feeDeal.price.sep}${feeDeal.builder.facts.noPrice}`);
   });
 });
 
