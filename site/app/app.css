@@ -1541,14 +1541,11 @@
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
-  /* A column that scrolls inside itself (the toolbox beside the fees): a thin thumb in the fields' edge grey on no track, lighter under
-     the pointer, in place of the browser's wide grey bar (founder, 2026-11-19). */
-  .scrollbar-quiet {
-    scrollbar-width: thin;
-    scrollbar-color: var(--input) transparent;
-  }
-  .scrollbar-quiet:hover {
-    scrollbar-color: var(--muted-foreground) transparent;
+  /* A column that scrolls inside itself with no scrollbar (the toolbox beside the fees, useStickyColumn): while more of it is below, its
+     last 3rem fade out, so a cut-off line reads as "more here" (founder, 2026-11-20). */
+  [data-more-below] {
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
   }
 }
 

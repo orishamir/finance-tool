@@ -80,13 +80,6 @@
   create them. What waits
   on him or comes later goes in the report.
 
-## Budget
-
-- Read the weekly meter (`get_usage`) before and after a job; mention it only
-  for a big job or near a limit.
-- A job likely to use more than 5% of the week gets a one-line estimate and
-  the founder's yes first. One subagent's job costs about 1 to 3%.
-
 ## The founder's Chrome
 
 - Search open rules there when needed. Never click a download button in it:

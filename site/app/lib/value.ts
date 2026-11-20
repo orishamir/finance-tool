@@ -144,7 +144,7 @@ export function entered(value: number, unit: ValueObject["unit"], today: string,
   return {
     value,
     unit,
-    source: { url: "local", title: "הוזן על ידך", publisher: "אתם", strength: "entered" },
+    source: { url: "local", title: "הזנתם", publisher: "אתם", strength: "entered" },
     checked: today,
     effective_from: today,
     effective_to: null,

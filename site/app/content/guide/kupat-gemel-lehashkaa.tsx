@@ -66,12 +66,12 @@ export const content: GuideContent = {
           <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח יכול להיות נמוך יותר.</span> {rate ? <Num value={rate} /> : "השיעור על הרווח"} הוא <Ruled id="TXG-07">תקרה, לא שיעור קבוע</Ruled>. מגיל {sixty ? <Num value={sixty} /> : null} <Ruled id="TXG-04">חלות על ההכנסה מדרגות המס הנמוכות</Ruled>, ואם המדרגה נמוכה מהתקרה, משלמים לפיה. הרווח <Ruled id="TXK-06">נספר כחלק העליון של ההכנסה</Ruled>, ולכן זה עוזר רק כשהכנסות אחרות לא ממלאות את המדרגות הנמוכות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב.
         </Callout>
         <Sentence measure>
-          החברה המנהלת <Ruled id="TXK-26">מנכה במקור</Ruled> {withheld ? <Num value={withheld} /> : "מס"} מהרווח, ולא מנכה כלום מהסכום שהופקד <Term prefix="ומה" id="הצמדה">הצמדה</Term> עליו. השיעור הזה כתוב בקובץ <Term prefix="ש" id="רשות המסים">רשות המסים</Term> מפרסמת לגופים שמנכים במקור; בתקנות, כפי שפורסמו, השיעור {regulationRate ? <Num value={regulationRate} /> : "נמוך יותר"}, והאתר לא מצא את ההוראה שקובעת את השיעור שבקובץ. זו מקדמה: את מה שנוכה יותר מדי מקבלים בחזרה רק <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term> או בבקשה <Term prefix="ל" id="החזר מס">החזר מס</Term>.
+          החברה המנהלת <Ruled id="TXK-26">מנכה במקור</Ruled> {withheld ? <Num value={withheld} /> : "מס"} מהרווח, ולא מנכה כלום מהסכום שהופקד <Term prefix="ומה" id="הצמדה">הצמדה</Term> עליו. השיעור הזה כתוב בקובץ <Term prefix="ש" id="רשות המסים">רשות המסים</Term> מפרסמת לגופים שמנכים במקור. בתקנות, כפי שפורסמו, השיעור {regulationRate ? <Num value={regulationRate} /> : "נמוך יותר"}. האתר לא מצא את ההוראה שקובעת את השיעור שבקובץ. זו מקדמה: את מה שנוכה יותר מדי מקבלים בחזרה רק <Term prefix="ב" id="דוח שנתי">דוח שנתי</Term> או בבקשה <Term prefix="ל" id="החזר מס">החזר מס</Term>.
         </Sentence>
         {/* whether a deposit fee is part of the principal the gain is measured from is open (TXK-05 does not settle it); the ledger
             records each deposit after its fee (F-08), so the fee is taxed as gain */}
         <p className="max-w-measure">
-          אם <Term id="דמי ניהול מהפקדה">דמי הניהול מההפקדה</Term> נחשבים חלק מהסכום שהופקד, לא ידוע. בחישוב בעמוד הם לא נחשבים חלק ממנו, ולכן מס ההכנסה מחושב גם עליהם, כמו על רווח.
+          לא ידוע אם <Term id="דמי ניהול מהפקדה">דמי הניהול מההפקדה</Term> נחשבים חלק מהסכום שהופקד. בחישוב בעמוד הם לא נחשבים חלק ממנו, ולכן מס ההכנסה מחושב גם עליהם, כמו על רווח.
         </p>
         <OpenLossOffset />
       </>

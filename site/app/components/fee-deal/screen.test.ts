@@ -375,7 +375,7 @@ describe("the parts every case holds alike", () => {
     // no any-words under the part said once: standing outside the band says it holds for every case
     expect(html.replace(/<[^>]+>/g, "")).not.toContain(feeDeal.cases.onceLead.replace("{any}", feeDeal.cases.any.portfolioSize ?? ""));
   });
-  it("open the toolbox on every case from the add after them: its line names them all, each case drawn open, a part's amount asked once among them", () => {
+  it("open the toolbox on every case from the add after them: its line names them all, no case drawn open, a part's amount asked once among them", () => {
     const d = custody();
     const fee = d.fees[0]!;
     if (!hasCases(fee)) throw new Error("custody has cases");
@@ -386,9 +386,9 @@ describe("the parts every case holds alike", () => {
     // a form of the price is off, its group saying why
     expect(box).toContain(feeDeal.cases.casesOff.perCase);
     const html = markup(builderOf(d, fee.id, null, { target, ask: { part: "max", cases: target.cases, along: 1 } }));
-    // no case open in place: every case's cell outlined instead
+    // no case open in place, and no case outlined: the toolbox's line names them all
     expect(html).not.toContain("data-open-case");
-    expect(count(html, "outline-primary")).toBeGreaterThanOrEqual(fee.cases.length);
+    expect(count(html, "outline-primary")).toBe(0);
     // the maximum's box once, in the row of the parts said once
     expect(count(html, `id="part-${fee.id}-max-across"`)).toBe(1);
     const row = html.slice(html.indexOf("data-every-case="), html.indexOf(feeDeal.cases.changesBy));

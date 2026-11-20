@@ -48,7 +48,7 @@
     "variants_he": [
       "פוליסה משתתפת ברווחים"
     ],
-    "explain_he": "ביטוח חיים שבו החיסכון עולה ויורד לפי תוצאות ההשקעה; כך בנויות פוליסות חיסכון וגם חלק מפוליסות ביטוח המנהלים.",
+    "explain_he": "ביטוח חיים שבו החיסכון עולה ויורד לפי תוצאות ההשקעה, וכך בנויות פוליסות חיסכון וגם חלק מפוליסות ביטוח המנהלים.",
     "blocking_questions": [
       "INS OQ1: legal definition in the Insurance Contract Regulations not opened",
       "TXA OQ1: whether today's savings policies are approved as profit-sharing policies"
@@ -185,7 +185,7 @@
     "variants_he": [
       "תכנית ביטוח"
     ],
-    "explain_he": "השם בחוק לתכנית ביטוח שאושרה כקופת גמל; בשוק קוראים לה ביטוח מנהלים.",
+    "explain_he": "השם בחוק לתכנית ביטוח שאושרה כקופת גמל, ובשוק קוראים לה ביטוח מנהלים.",
     "blocking_questions": [
       "TXA OQ6: how growth inside an insurance fund is taxed",
       "TXA OQ7: tax on risk and disability components"
@@ -256,7 +256,7 @@
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=51"
     },
     "variants_he": [],
-    "explain_he": "קבלת קצבה מוכרת כסכום חד־פעמי במקום תשלומים חודשיים; המס מוטל רק על חלק הרווח.",
+    "explain_he": "קבלת קצבה מוכרת כסכום חד־פעמי במקום תשלומים חודשיים, והמס מוטל רק על חלק הרווח.",
     "blocking_questions": [
       "TXA OQ10: statutory basis of the age-60 and three-payslip conditions",
       "TXA OQ11: interaction with the s.9A(e)(1) exempt commutation",
@@ -294,7 +294,7 @@
       "פיקדון דולרי",
       "פקדונות מטבע"
     ],
-    "explain_he": "פיקדון בבנק במטבע זר, כמו דולר או אירו; שוויו בשקלים עולה ויורד עם שער החליפין.",
+    "explain_he": "פיקדון בבנק במטבע זר, כמו דולר או אירו, ושוויו בשקלים עולה ויורד עם שער החליפין.",
     "blocking_questions": [
       "TX2 OQ1: tax when the deposit currency weakens against the shekel (also TXF OQ5, named in method G-24)",
       "TX2 OQ2: withholding base and legal basis of the 25% banks withhold",
@@ -368,7 +368,7 @@
     "variants_he": [
       "צמודי מט\"ח"
     ],
-    "explain_he": "פיקדון בשקלים שצמוד לשער הדולר; הבנק צריך לגלות אם ההצמדה חלה רק כשהשער עולה או גם כשהוא יורד.",
+    "explain_he": "פיקדון בשקלים שצמוד לשער הדולר, והבנק צריך לגלות אם ההצמדה חלה רק כשהשער עולה או גם כשהוא יורד.",
     "blocking_questions": [
       "FXD OQ5: deposit agreements unread (linkage when the dollar falls, whether principal can fall)",
       "TX2 OQ1: tax when the currency weakens",
@@ -402,7 +402,7 @@
     "variants_he": [
       "פיקדונות מובנים"
     ],
-    "explain_he": "פיקדון שהתשואה עליו או הסיכון בו נקבעים לפי נוסחה שתלויה במדד, במחיר של ניירות ערך או סחורות, בריבית או בשערי מטבע; בחוק זה ״מוצר מובנה״.",
+    "explain_he": "פיקדון שהתשואה עליו או הסיכון בו נקבעים לפי נוסחה שתלויה במדד, במחיר של ניירות ערך או סחורות, בריבית או בשערי מטבע. בחוק זה ״מוצר מובנה״.",
     "blocking_questions": [
       "TX2 OQ5: tax classification and rate of the structured payout (named in method G-24)",
       "FXD OQ6: whether a guaranteed-principal deposit with a conditional grant is a 'מוצר מובנה' in law",
@@ -462,7 +462,7 @@
       "url": "https://www.fibi.co.il/private/depositsandsavings/structured/"
     },
     "variants_he": [],
-    "explain_he": "בפיקדון מובנה: תוספת שמשולמת רק אם מתקיים תנאי שוק שנקבע בתנאי המוצר; כך קורא לה הבינלאומי.",
+    "explain_he": "בפיקדון מובנה, כך קורא הבינלאומי לתוספת שמשולמת רק אם מתקיים תנאי שוק שנקבע בתנאי המוצר.",
     "blocking_questions": [
       "TX2 OQ5: how the grant is classified and taxed",
       "FXD OQ6: legal status of a conditional grant on guaranteed principal"
@@ -524,7 +524,7 @@
       "url": "https://www.as-invest.co.il/"
     },
     "variants_he": [],
-    "explain_he": "כך קוראת לאיה (LAYA) לחשבון התשלום הדיגיטלי שלה, שמחזיק יתרות בכמה מטבעות; בתנאי השימוש שלה היתרה לא נקראת פיקדון.",
+    "explain_he": "כך קוראת לאיה (LAYA) לחשבון התשלום הדיגיטלי שלה, שמחזיק יתרות בכמה מטבעות, אבל בתנאי השימוש שלה היתרה לא נקראת פיקדון.",
     "blocking_questions": [
       "coverage.md F7: whether payment-wallet balances are in scope at all",
       "FXD OQ9: safeguarding of wallet balances and the ISA licence list"
@@ -556,7 +556,7 @@
       "איגרות חוב תאגידיות",
       "איגרות החוב הקונצרניות"
     ],
-    "explain_he": "נייר ערך שחברה מנפיקה לציבור ומתחייבת לשלם עליו קרן וריבית; המדינה אינה ערבה לו.",
+    "explain_he": "נייר ערך שחברה מנפיקה לציבור ומתחייבת לשלם עליו קרן וריבית, והמדינה לא ערבה לו.",
     "blocking_questions": [
       "CORP OQ1: which rating companies are registered with the ISA",
       "CORP OQ2: names in the ISA trustees register",
@@ -660,7 +660,7 @@
       "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=38"
     },
     "variants_he": [],
-    "explain_he": "חברה שהמנפיק חייב למנות, שמשגיחה עליו ופועלת לטובת כלל המחזיקים באג\"ח, למשל כשאינו משלם.",
+    "explain_he": "חברה שהמנפיק חייב למנות, שמשגיחה עליו ופועלת לטובת כלל המחזיקים באג\"ח, למשל כשהוא לא משלם.",
     "blocking_questions": [
       "CORP OQ2: names in the ISA trustees register",
       "CORP OQ11: ISA staff position 108-5 read only in a law-firm summary",
@@ -825,7 +825,7 @@
     "variants_he": [
       "ניהול תיק השקעות דיגיטלי"
     ],
-    "explain_he": "ניהול תיק השקעות שניתן באופן מקוון: את בירור הצרכים ואת ההסכם עושים באינטרנט, ואלגוריתם יכול לקבוע את רמת הסיכון ומדיניות ההשקעה.",
+    "explain_he": "ניהול תיק השקעות מקוון: את בירור הצרכים ואת ההסכם עושים באינטרנט, ואלגוריתם יכול לקבוע את רמת הסיכון ומדיניות ההשקעה.",
     "blocking_questions": [
       "MGD OQ1: which licensees offer digital or low-minimum portfolios",
       "MGD OQ2: ISA technology directive text not read",
@@ -971,7 +971,7 @@
       "LBMA Gold Price AM",
       "LBMA Gold Price PM"
     ],
-    "explain_he": "מחיר הייחוס העולמי לזהב, שנקבע בדולרים במכרז אלקטרוני בלונדון פעמיים ביום, בבוקר (AM) ואחר הצהריים (PM); מנהלת אותו ICE Benchmark Administration.",
+    "explain_he": "מחיר הייחוס העולמי לזהב, שנקבע בדולרים במכרז אלקטרוני בלונדון פעמיים ביום, בבוקר (AM) ואחר הצהריים (PM), ומנהלת אותו ICE Benchmark Administration.",
     "blocking_questions": [],
     "rule_ids": [
       "RG-18"
