@@ -12,14 +12,14 @@ import { countPhrase, fmt, formatValue, joinLead } from "../../lib/format";
 import type { MonthKey } from "../../lib/fee-deal/model";
 import type { FeeRef } from "../../lib/fee-deal/deal-read";
 import type { LawRow, PeriodCard, PeriodRow, Reading, StatedPart } from "../../lib/fee-deal/reading";
-import { roundAmount, settleRange, type ActionReading, type ActionTab, type ActionView, type AmountRange, type ChartFee, type CurvePoint, type HeldReading, type HeldView, type Lane, type LanePart, type OneView, type TimelinePeriod, type UndrawnView } from "../../lib/fee-deal/charts";
+import { roundAmount, settleRange, type ActionReading, type ActionTab, type ActionView, type AmountRange, type ChartFee, type CurvePoint, type HeldReading, type HeldView, type Lane, type LanePart, type OneView, type TimelinePeriod, type UndrawnView, type UnpricedView } from "../../lib/fee-deal/charts";
 import { lawHead, periodsHead, type PeriodsHead } from "../../lib/fee-deal/reading-heads";
-import { AmountLanes, Card, NumberField, PanelHead, PERIOD_WIDE, PeriodTrack, periodColumns, RangeFields, SegmentedControl, ShareBar, ShareChart, ShareStack, Swatch, Tag, TypedPlain, When, cx, fill, shareAt, shareTicks, type AmountLane, type AmountLanePart, type ShareMark } from "../kit";
+import { AmountLanes, Card, EmptyState, NumberField, PanelHead, PERIOD_WIDE, PeriodTrack, periodColumns, RangeFields, SegmentedControl, ShareBar, ShareChart, ShareStack, Swatch, Tag, TypedPlain, When, cx, fill, shareAt, shareTicks, type AmountLane, type AmountLanePart, type ShareMark } from "../kit";
 import { Num, Ruled } from "../provenance";
 import { leftByPanel, type LeftOut } from "../../lib/fee-deal/left-out";
-import { FeeOpen } from "./links";
+import { FeeOpen, useFeeLinks } from "./links";
 import { LeftOutList, LeftOutNotes } from "./left-out";
-import { CapRules, Fig, LawBlock, PriceWords, feeColour, feeName, refName, sumDisplay } from "./words";
+import { CapRules, Fig, LawBlock, PriceWords, feeColour, feeName, formOf, refName, sumDisplay } from "./words";
 import { sumUnit } from "../../lib/fee-deal/values";
 
 const w = copy.read;
@@ -28,8 +28,6 @@ const w = copy.read;
 const textOf = (v: SiteValue): string => sumDisplay(v)?.(v.value as number) ?? formatValue(v.value as number, v.unit, v.state);
 /** A word of an action's tab, by the tab's key where it has its own ("trade:sell"), else by its action. */
 const tabWord = (table: Record<string, string>, tab: { key: string; action: string }) => table[tab.key] ?? table[tab.action] ?? "";
-/** The gender and number a word agreeing with a fee's name takes; a fee of the person's own agrees with nothing, and takes the plain form. */
-const formOf = (f: FeeRef) => (f.kind !== "own" && copy.nameForms[f.kind]?.g) || "m";
 /** A period's first month in words with its lead ("מינואר 2027"), as a plain string for a control's option. */
 const fromText = (m: MonthKey) => `${joinLead(w.periods.from, fmt.period(m))}${fmt.period(m)}`;
 const colourOf = (f: ChartFee) => feeColour(f.ref.kind, f.ref.house);
@@ -232,6 +230,29 @@ function OnePrices({ one, saved }: { one: OneView; saved: boolean }) {
 function Undrawn({ view }: { view: UndrawnView }) {
   return view.why === "rate" ? <p className="text-sm text-muted-foreground">{w.chart.undrawn(copy.panel.currencies[view.currency] ?? view.currency)}</p> : null;
 }
+
+/**
+ * An action whose every fee is left out for a price not given, in place of its chart (`UnpricedView`): that it is not worked out yet, what
+ * each fee's price is missing and where, and the button that opens the first fee's case missing it, as the fee's own note does.
+ */
+function UnpricedBody({ view, tab }: { view: UnpricedView; tab: ActionTab }) {
+  const links = useFeeLinks();
+  const u = copy.unpriced;
+  const first = view.fees[0]!;
+  const lines = view.fees.map(({ fee, unpriced }) => {
+    const name = refName(fee);
+    return u.feeLine(`${joinLead(u.feeIn, name)}${name}`, u.missing[unpriced.missing]!, unpriced.where);
+  });
+  return (
+    <EmptyState inPanel title={u.tab(tabWord(w.action.tabs, tab), !!w.action.male[tab.action])} action={{ label: u.enter[first.unpriced.missing], onClick: () => links?.openCase(first.fee.fee, first.unpriced.cases[0] ?? null) }}>
+      {lines.join(" ")}
+    </EmptyState>
+  );
+}
+
+/** What a panel leaves out but the fees its unpriced view already names (`UnpricedView`), which say it there. */
+const leftBut = (left: LeftOut | undefined, view: UnpricedView): LeftOut | undefined =>
+  left && { ...left, unpriced: left.unpriced.filter((f) => !view.fees.some((x) => x.fee.fee === f.fee)) };
 
 /** The choice of period where a chart differs by period: "היום" for the one today is in, the others by their first month. */
 function PeriodChoice({ periods, reading, value, onChange }: { periods: MonthKey[]; reading: Reading; value: number; onChange: (k: number) => void }) {
@@ -511,8 +532,8 @@ function ActionPanel({ reading, fx, saved, unitPrice, onUnitPrice, left }: { rea
   const [k, setK] = useState(0);
   const tab = tabs.find((t) => t.key === key) ?? tabs[0]!;
   const view = tab.views[Math.min(k, tab.views.length - 1)]!;
-  const periods = tab.views.map((v) => ("chart" in v ? v.chart.periods : "one" in v ? v.one.periods : v.undrawn.periods)[0]!);
-  const unitFee = reading.unitPrice && tab.action === "trade" ? unitFeeOf(reading, tab) : null;
+  const periods = tab.views.map((v) => ("chart" in v ? v.chart.periods : "one" in v ? v.one.periods : "undrawn" in v ? v.undrawn.periods : v.unpriced.periods)[0]!);
+  const unitFee = reading.unitPrice && tab.action === "trade" && !("unpriced" in view) ? unitFeeOf(reading, tab) : null;
   return (
     <Card className="flex flex-col gap-4">
       <PanelHead
@@ -533,7 +554,7 @@ function ActionPanel({ reading, fx, saved, unitPrice, onUnitPrice, left }: { rea
           ) : undefined
         }
       >
-        {"chart" in view ? <ActionHeadline view={view.chart} tab={tab} /> : "one" in view ? <OneHeadline one={view.one} noun={tabWord(w.action.noun, tab)} held={false} /> : w.action.tabs[tab.key]}
+        {"chart" in view ? <ActionHeadline view={view.chart} tab={tab} /> : "one" in view ? <OneHeadline one={view.one} noun={tabWord(w.action.noun, tab)} held={false} /> : "unpriced" in view ? null : w.action.tabs[tab.key]}
       </PanelHead>
       {tab.views.length > 1 && <PeriodChoice periods={periods} reading={reading} value={k} onChange={setK} />}
       {reading.unitPrice && unitFee && <UnitPriceField unit={reading.unitPrice} fee={unitFee} value={unitPrice} onChange={onUnitPrice} />}
@@ -541,10 +562,12 @@ function ActionPanel({ reading, fx, saved, unitPrice, onUnitPrice, left }: { rea
         <ActionChart key={`${tab.key}:${k}`} view={view.chart} tab={tab} stated={reading.panels.stated[tab.key] ?? []} fx={fx} left={left[tab.key]} />
       ) : "one" in view ? (
         <OnePrices one={view.one} saved={saved} />
+      ) : "unpriced" in view ? (
+        <UnpricedBody view={view.unpriced} tab={tab} />
       ) : (
         <Undrawn view={view.undrawn} />
       )}
-      {!("chart" in view) && <LeftNotes left={left[tab.key]} />}
+      {!("chart" in view) && <LeftNotes left={"unpriced" in view ? leftBut(left[tab.key], view.unpriced) : left[tab.key]} />}
     </Card>
   );
 }

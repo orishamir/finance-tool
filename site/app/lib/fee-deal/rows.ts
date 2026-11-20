@@ -12,7 +12,7 @@ import { insideFund } from "./values";
 import type { SiteValue } from "../value";
 import { stepBounds, type StepBounds } from "./band-layout";
 import { valueKey } from "./layout";
-import { firstCase, slimParts, thingName, whenWords, type SlimPart, type WhenWords } from "./case-words";
+import { firstCase, slimParts, thingName, unpricedSaid, whenWords, type SlimPart, type UnpricedSaid, type WhenWords } from "./case-words";
 
 /** A price of a fee as a row shows it: the price, the month it ends where it ends, and its standing against the cap. */
 export interface StageView {
@@ -32,6 +32,8 @@ export interface BuilderRow extends FeeRef {
    * case, shows its boxes and no standing or change.
    */
   priced: boolean;
+  /** Where the reading leaves the fee out for a price not given (`DealRead.unpricedAt`): its card's note names the cases and opens the first. */
+  unpriced?: UnpricedSaid;
   /** Whether the picks give the fee no case (F-114): it is not read, and its card says so rather than that a price is missing. */
   unmatched: boolean;
   /** Whether its case's sums are in the action's currency, which the deal does not know for the picks: its card says so. */
@@ -195,11 +197,13 @@ function rowOf(r: DealRead, fee: Fee, open: { fee: string; case: string | null }
   const given = !banned && (i >= 0 || (hasCases(fee) && !r.unmatched.includes(fee.id) && feeInOrder(priced) && feePriced(priced, monthKey(r.reading.from))));
   const sale = priced.sale ? readStages(r, stageViews(r, fees, at, priced.sale)) : undefined;
   const has = (k: "min" | "max") => !!now.price.figures[k] || !!sale?.[0]?.price.figures[k];
+  const unpriced = unpricedSaid(r, fee.id);
   return {
     ...refOf(i >= 0 ? r.fees[i]! : { fee: fee.id, kind: fee.kind, ...(fee.name ? { name: fee.name } : {}), ...(r.copied[fee.id] ? { house: r.copied[fee.id] } : {}) }, r.today),
     fee: fee.id,
     stages: stages.length ? stages : [now],
     priced: given,
+    ...(unpriced ? { unpriced } : {}),
     unmatched: r.unmatched.includes(fee.id),
     noCurrency: r.noCurrency.includes(fee.id),
     notPrinted: r.notPrinted.includes(fee.id),

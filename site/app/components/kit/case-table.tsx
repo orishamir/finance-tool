@@ -278,6 +278,8 @@ export interface CellExtras {
   zone?: (cell: ReactNode) => ReactNode;
   /** Its key for the page's copy and paste (`data-copy-key`): Ctrl+C copies it where it has the focus, Ctrl+V pastes on it. */
   copyKey?: string;
+  /** Its price misses a figure (an empty box in it): what is missing, said on a line under its content ("חסר הסכום ליחידה."), the cell's edge dashed. */
+  missing?: ReactNode;
 }
 
 /**
@@ -305,6 +307,12 @@ const copyAttr = (key: string | undefined) => (key !== undefined ? { "data-copy-
 
 /** A knob's stretch reaching a cell: the action colour's outline, the cell taking the price it would cover. */
 const LIT = "outline-2 -outline-offset-2 outline-primary bg-accent";
+
+/** A cell whose price misses a figure (`CellExtras.missing`): a dashed edge in the foreground ink, where it is neither open nor lit. */
+export const MISSING = "outline-[1.5px] -outline-offset-[1.5px] outline-dashed outline-foreground";
+const missingEdge = (cell: CellExtras & { open?: boolean }) => (cell.missing != null && !cell.open && !cell.lit ? MISSING : undefined);
+/** The line under a cell's content that says what its price misses. */
+const missingLine = (cell: CellExtras) => (cell.missing != null ? <span className="basis-full text-foreground">{cell.missing}</span> : null);
 
 /** What a cell shows: its own content, or, while a knob's stretch reaches it, the price it would take, faint until it is let go. */
 function CellBody({ content, fill, lit }: { content: ReactNode; fill?: ReactNode; lit?: boolean }) {
@@ -440,11 +448,12 @@ export function CaseTable({ columns, rows, add, insert, ladder, foot, label }: {
                 );
               }
               const el = (
-                <div {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lift-body="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(TILE_CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.lit && LIT)}>
+                <div {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lift-body="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(TILE_CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.lit && LIT, missingEdge(cell))}>
                   {cell.grip}
                   <span id={keys.wordsId(j, cell.from)} className="contents">
                     <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
                     {cell.whole && <span className="basis-full text-muted-foreground">{cell.whole}</span>}
+                    {!cell.lit && missingLine(cell)}
                   </span>
                   {cell.knobs}
                   {binOf(cell)}
@@ -475,7 +484,7 @@ export function CaseTable({ columns, rows, add, insert, ladder, foot, label }: {
 }
 
 /** A part said once for every case of a fee (`EveryCaseParts`): its id, its words, and what a table's cell carries beside them. */
-export interface EveryCaseCell extends Pick<CellExtras, "grip" | "onRemove" | "removeLabel" | "copyKey"> {
+export interface EveryCaseCell extends Pick<CellExtras, "grip" | "onRemove" | "removeLabel" | "copyKey" | "missing"> {
   id: string;
   content: ReactNode;
 }
@@ -512,9 +521,10 @@ export function EveryCaseParts({ label, cells, asking, add, zone }: { label: str
   const row = (
     <div role="group" aria-label={label} data-every-case="" className="flex flex-wrap items-center gap-2">
       {cells.map((cell) => (
-        <div key={cell.id} tabIndex={0} {...copyAttr(cell.copyKey)} data-liftable="" data-lift-body="" data-every-cell={cell.id} onKeyDown={onKeyDown(cell)} className={cx(CELL, CELL_FOCUS, "group/cell relative max-w-full", binRoom(cell))}>
+        <div key={cell.id} tabIndex={0} {...copyAttr(cell.copyKey)} data-liftable="" data-lift-body="" data-every-cell={cell.id} onKeyDown={onKeyDown(cell)} className={cx(CELL, CELL_FOCUS, "group/cell relative max-w-full", binRoom(cell), missingEdge(cell))}>
           {cell.grip}
           {cell.content}
+          {missingLine(cell)}
           {binOf(cell)}
         </div>
       ))}
@@ -710,12 +720,13 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                 }
                 const el = (
                   <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lift-body="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
-                    <div data-cell-face="" className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open && OPEN, cell.lit && LIT)}>
+                    <div data-cell-face="" className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open && OPEN, cell.lit && LIT, missingEdge(cell))}>
                       {cell.grip}
                       <span id={keys.wordsId(line, cell.from)} className="contents">
                         <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
                         {cell.across && <span className="text-muted-foreground">{cell.across}</span>}
                         {cell.whole && <span className="basis-full text-muted-foreground">{cell.whole}</span>}
+                        {!cell.lit && missingLine(cell)}
                       </span>
                     </div>
                     {cell.knobs}
@@ -733,11 +744,12 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                   const at = line + 1 + L;
                   const cp = keys.cellProps(at, cell.from, cell.span, false, 1, j);
                   const el = (
-                    <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lift-body="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && OPEN, cell.lit && LIT)}>
+                    <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lift-body="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && OPEN, cell.lit && LIT, missingEdge(cell))}>
                       {cell.grip}
                       <span id={keys.wordsId(at, cell.from)} className="contents">
                         <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
                         {cell.whole && <span className="basis-full text-muted-foreground">{cell.whole}</span>}
+                        {!cell.lit && missingLine(cell)}
                       </span>
                       {cell.knobs}
                       {binOf(cell)}

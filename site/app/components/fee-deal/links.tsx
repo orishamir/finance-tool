@@ -14,11 +14,16 @@ export interface FeeLinks {
   mark: (feeId: string | null) => void;
   /** Chooses a fee and brings its card and panel into view. */
   open: (feeId: string) => void;
+  /** Opens a case of a fee in place and brings it into view, its first box taking the focus once drawn (the link that asked is often out of view by then); null: the fee, whose price changes by nothing (`open`). */
+  openCase: (feeId: string, caseId: string | null) => void;
   /** Brings the fee's row of the law card into view, the focus on it. */
   toLaw: (feeId: string) => void;
 }
 
 const FeeLinksCtx = createContext<FeeLinks | null>(null);
+
+/** The page's `FeeLinks`; null outside the page (a test drawing one column). */
+export const useFeeLinks = (): FeeLinks | null => useContext(FeeLinksCtx);
 
 export function FeeLinksProvider({ value, children }: { value: FeeLinks; children: ReactNode }) {
   return <FeeLinksCtx.Provider value={value}>{children}</FeeLinksCtx.Provider>;

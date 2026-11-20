@@ -13,6 +13,7 @@ import type { PriceFigures } from "./values";
 import type { PriceView } from "./deal-read";
 import { type FeeKindId, type FormId } from "./shapes";
 import { sumCurrency } from "./offers/capacity";
+import { missingOfForm, type Missing } from "./unpriced";
 
 /**
  * The words of one part of a price, in order: `lead` before its figure, the figure (`figure`, in its number state), `mid` and a second
@@ -29,6 +30,11 @@ export interface PartWords {
   /** In a stated part's sentence, after `lead`: the words that state the part's rules (`StatedPart.rules`), which open them (D116). */
   stated?: string;
   quiet?: string;
+  /**
+   * The price's main figure is not given yet (`PriceView.blank`): in place of `figure`, the figure missing (`Missing`), which a cell shows
+   * as an empty box and names on a line under its price.
+   */
+  missing?: Missing;
   /** Open questions the part rests on, each a chip after its words (a reading the site took where the list leaves it open, D56). */
   questions?: readonly string[];
 }
@@ -52,6 +58,11 @@ const perAction = (kind: FeeKindId): string => copy.price.perAction[kind] ?? cop
 const shareOf = (kind: FeeKindId): string => copy.price.of[kind] ?? copy.price.of.default!;
 const boundPer = (kind: FeeKindId): string => pp.boundPer[kind] ?? pp.boundPer.default!;
 const fig = (v: SiteValue | undefined) => (v ? { figure: v } : {});
+/** A price's main figure: its value, or, not given yet, the figure missing in its place (`PartWords.missing`). */
+const main = (view: PriceView, v: SiteValue | undefined): Pick<PartWords, "figure" | "missing"> => {
+  const missing = view.blank ? missingOfForm(view.form) : null;
+  return missing ? { missing } : fig(v);
+};
 /** The open questions a price on an action rests on (data-schema §3.6), said after its main figure with their chips. */
 const questionsOf = (p: Price): Pick<PartWords, "questions"> => (onAction(p) && p.questions?.length ? { questions: p.questions } : {});
 
@@ -106,11 +117,11 @@ const note = (id: Note) => (): PartWords => ({ lead: pp.notes[id]! });
 export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>> = {
   // a free price a template filled is its sourced value, which says it and opens its source; one the person made is the word alone
   free: ({ view }) => (view.free ? { figure: view.free } : { lead: copy.price.free }),
-  share: ({ kind, p, view }) => ({ ...fig(view.figures.rate), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
-  perUnit: ({ p, view }) => ({ ...fig(view.figures.amount), tail: ` ${pp.perUnit}`, ...questionsOf(p) }),
-  perAction: ({ kind, p, view }) => ({ ...fig(view.figures.amount), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
-  held: ({ p, view }) => (p.form === "held" ? { ...fig(view.figures.rate), tail: ` ${copy.price.per[p.per]}` } : null),
-  sum: ({ p, view }) => (p.form === "sum" ? { ...fig(view.figures.amount), tail: ` ${copy.price.per[p.every]}` } : null),
+  share: ({ kind, p, view }) => ({ ...main(view, view.figures.rate), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
+  perUnit: ({ p, view }) => ({ ...main(view, view.figures.amount), tail: ` ${pp.perUnit}`, ...questionsOf(p) }),
+  perAction: ({ kind, p, view }) => ({ ...main(view, view.figures.amount), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
+  held: ({ p, view }) => (p.form === "held" ? { ...main(view, view.figures.rate), tail: ` ${copy.price.per[p.per]}` } : null),
+  sum: ({ p, view }) => (p.form === "sum" ? { ...main(view, view.figures.amount), tail: ` ${copy.price.per[p.every]}` } : null),
   discount: ({ p, view }) => (onAction(p) && p.discount ? { lead: pp.discount.lead, ...fig(view.figures.discount), tail: `${pp.discount.tail}${p.discount.alsoMin ? pp.discount.alsoMin : ""}` } : null),
   third: ({ p, view }) => {
     if (!onAction(p) || !p.third) return null;

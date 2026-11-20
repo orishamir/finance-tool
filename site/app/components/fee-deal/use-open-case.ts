@@ -134,6 +134,7 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
         if (!panelColumn) bringIntoView(panelCard.current);
       }
     },
+    openCase: (feeId, caseId) => (caseId ? onOpenCase(feeId, caseId, "keyboard") : links.open(feeId)),
     toLaw: (feeId) => {
       const row = document.querySelector<HTMLElement>(`[data-law-row="${CSS.escape(feeId)}"]`);
       if (!row) return;

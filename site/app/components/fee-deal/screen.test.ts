@@ -145,14 +145,14 @@ describe("the fees the reading leaves out", () => {
   });
   it("says it as a note in the panel the fee stands on, not in a card of its own above the panels", () => {
     const deal = provident();
-    const blank: FeeDeal = { ...deal, fees: [deal.fees[0]!, { id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] }] };
+    const blank: FeeDeal = { ...deal, fees: [{ id: "fee-balance", kind: "balance", stages: [{ price: { form: "held", rate: { v: 0, blank: true }, per: 12, every: 1 } }] }, deal.fees[1]!] };
     const r = readDealFor(blank, data.kinds, TODAY);
     const html = markup(createElement(ReadingCards, { reading: readingOf(r, data.fx), saved: saves(blank), fx: data.fx, left: leftOut(r), foreign: r.engine.foreign }));
-    const line = html.indexOf('data-left-out="fee-deposit"');
+    const line = html.indexOf('data-left-out="fee-balance"');
     expect(line).toBeGreaterThan(-1);
     // inside the first panel's card, after its headline
     expect(html.indexOf("<h3")).toBeLessThan(line);
-    expect(text(createElement(ReadingCards, { reading: readingOf(r, data.fx), saved: saves(blank), fx: data.fx, left: leftOut(r), foreign: r.engine.foreign }))).toContain(`${feeName("deposit")}${feeDeal.price.sep}${feeDeal.builder.facts.noPrice}`);
+    expect(text(createElement(ReadingCards, { reading: readingOf(r, data.fx), saved: saves(blank), fx: data.fx, left: leftOut(r), foreign: r.engine.foreign }))).toContain(`${feeName("balance")}${feeDeal.price.sep}${feeDeal.builder.facts.noPrice}`);
   });
 });
 
@@ -536,5 +536,53 @@ describe("the workbench's closed fees and the fees to add", () => {
     expect(items.map((x) => x.id)).not.toContain("trade");
     for (const it of items) expect(Object.values(feeDeal.on)).toContain(it.line);
     expect(items.find((x) => x.id === "transfer_out")?.line).toBe(feeDeal.on["action:transfer_out"]);
+  });
+});
+
+describe("a fee whose price is not given in the case the reading reads", () => {
+  const blank = { v: 0, blank: true } as const;
+  const priced = (): FeeDeal => ({
+    id: "deal-u",
+    name: "",
+    kind: "brokerage-account",
+    readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "direct" }],
+    fees: [
+      {
+        id: "fee-trade",
+        kind: "trade",
+        by: [{ kind: "what", values: ["tase", "makam"] }, { kind: "channel", values: ["direct", "branch"] }],
+        cases: [
+          { id: "c1", when: [["tase"], ["direct"]], stages: [{ price: { form: "perUnit", amount: blank, min: typed(39), max: typed(6900) } }] },
+          { id: "c2", when: [["tase"], ["branch"]], stages: [{ price: { form: "action", rate: typed(0.64), min: typed(40) } }] },
+          { id: "c3", when: [["makam"], "any"], stages: [{ price: { form: "action", rate: typed(0.1), min: typed(15) } }] },
+        ],
+      },
+      { id: "fee-fx", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.2) } }] },
+    ],
+  });
+  const u = feeDeal.unpriced;
+  it("draws the blank sum as an empty box with its sign before its words, and says under the cell what is missing", () => {
+    const out = drawBuilder(priced(), null);
+    expect(out).toMatch(/data-figure-blank=""[^>]*>₪<\/span>/);
+    expect(out).toContain(u.line(u.missing.unit!));
+    expect(out).toContain("outline-dashed");
+    expect(count(out, "data-figure-blank")).toBe(1);
+  });
+  it("says on its card that it is not worked out, in which case, with the way to it", () => {
+    const words = text(builderOf(priced(), null));
+    expect(words).toContain(`${u.label.f}: ${u.noPrice("בניירות ערך בתל אביב, באינטרנט ובאפליקציה")} ${u.toCase}`);
+    expect(words).not.toContain(feeDeal.builder.facts.noPrice);
+  });
+  it("names no case on the card of a fee with one price, its link to the price", () => {
+    const slim: FeeDeal = { ...priced(), fees: [{ id: "fee-s", kind: "trade", stages: [{ price: { form: "perUnit", amount: blank } }] }] };
+    expect(text(builderOf(slim, null))).toContain(`${u.label.f}: ${u.noPrice(null)} ${u.toPrice}`);
+  });
+  it("keeps the action's tab in the reading, saying what is missing and where, with the button to enter it", () => {
+    const r = readDealFor(priced(), data.kinds, TODAY);
+    const words = text(createElement(ReadingCards, { reading: readingOf(r, data.fx), saved: false, fx: data.fx, left: leftOut(r), foreign: r.engine.foreign }));
+    expect(words).toContain(u.tab(feeDeal.read.action.tabs["trade:all"]!, false));
+    expect(words).toContain(u.feeLine("בעמלת קנייה ומכירה", u.missing.unit!, "בניירות ערך בתל אביב, באינטרנט ובאפליקציה"));
+    expect(words).toContain(u.enter.unit!);
+    expect(words).not.toContain(feeDeal.builder.facts.noPrice);
   });
 });

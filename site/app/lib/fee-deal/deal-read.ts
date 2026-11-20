@@ -11,6 +11,7 @@ import { banFor, type Ban } from "./offers/offer";
 import { type FeeKindId, type FormId } from "./shapes";
 import { engineDeal, engineFee } from "./to-engine";
 import { figure, freeValue, inputKey, priceFigures, reading, sumUnit, type PriceFigures } from "./values";
+import { unpricedOf, type Unpriced } from "./unpriced";
 
 /**
  * Why a fee is not read, in the order the page says it: banned here, its sums in a currency the deal does not know, its sums printed for
@@ -33,6 +34,8 @@ export interface DealRead {
   unread: string[];
   /** The ids of the deal's fees in order left out of the reading because a price of theirs is not given yet (`feePriced`). */
   unpriced: string[];
+  /** Each fee of `unpriced`, by id: the cases the reading reads it in with a price not given, and the figure missing (`Unpriced`). */
+  unpricedAt: Record<string, Unpriced>;
   /** The ids of the deal's fees the picks give no case (F-114): the price list prints no price for what is picked. */
   unmatched: string[];
   /** Of `unmatched`, the fees read in a case whose sums are in the action's currency, which the deal does not know for the picks (`inTrade`). */
@@ -111,7 +114,8 @@ function readWith(deal: FeeDeal, kind: DealKind | null, today: string, copied: R
   // a fee is read whole or not at all: a size read across sizes with one step out of order or not priced reads none of its steps (§10.6)
   const fees = read.fees.filter((f) => kept(feeOf(f)) && !unread.includes(feeOf(f)) && !unpriced.includes(feeOf(f))).map((f) => (copied[feeOf(f)] ? { ...f, from: copied[feeOf(f)] } : f));
   const engine = engineDeal(deal, fees, read.picks);
-  return { deal, kind, fees, picks: read.picks, unread, unpriced, unmatched: read.unmatched.filter(kept), noCurrency: read.noCurrency.filter(kept), notPrinted: read.notPrinted.filter(kept), banned, engine, reading: dealPeriods(engine, month), today, month, copied };
+  const unpricedAt = Object.fromEntries(unpriced.map((id) => [id, unpricedOf(read.fees, id, from)]));
+  return { deal, kind, fees, picks: read.picks, unread, unpriced, unpricedAt, unmatched: read.unmatched.filter(kept), noCurrency: read.noCurrency.filter(kept), notPrinted: read.notPrinted.filter(kept), banned, engine, reading: dealPeriods(engine, month), today, month, copied };
 }
 
 // ---------------------------------------------------------------- one price

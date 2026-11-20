@@ -26,7 +26,7 @@ import { EditHere } from "./edit-here";
 import { ROW_OF } from "../../lib/fee-deal/part-rows";
 import type { Note } from "../../lib/fee-deal/core";
 import { type PendingHands } from "./part-edit";
-import { FEE_MARK, UnreadWords, feeColour, feeName } from "./words";
+import { FEE_MARK, UnpricedNote, UnreadWords, feeColour, feeName } from "./words";
 import { WHOLE } from "../../lib/fee-deal/layout";
 
 const b = copy.builder;
@@ -134,10 +134,14 @@ export interface HeadApply {
 /** A thing to change by among the toolbox's cards (`cardThing`): it drops on the fee's block; a part drops on a slim fee or a case. */
 const isThing = (item: string): boolean => cardThing(item) !== null;
 
-/** The facts a slim line says at its end, in its card on a line of their own: that its price is not given yet or not read, its next change, where it is charged, its bounds. */
-function RowNotes({ row, fee }: { row: BuilderRow; fee: Fee }) {
+/**
+ * The facts a slim line says at its end, in its card on a line of their own: that its price is not given yet (`UnpricedNote`, whose link
+ * `onOpen` opens the price) or not read, its next change, where it is charged, its bounds.
+ */
+function RowNotes({ row, fee, onOpen }: { row: BuilderRow; fee: Fee; onOpen: () => void }) {
   const notes: ReactNode[] = [];
-  if (row.banned || !row.priced) notes.push(<UnreadWords key="unread" banned={row.banned} noCurrency={row.noCurrency} notPrinted={row.notPrinted} unmatched={row.unmatched} />);
+  if (row.unpriced) notes.push(<UnpricedNote key="unread" fee={fee} unpriced={row.unpriced} onOpen={onOpen} />);
+  else if (row.banned || !row.priced) notes.push(<UnreadWords key="unread" banned={row.banned} noCurrency={row.noCurrency} notPrinted={row.notPrinted} unmatched={row.unmatched} />);
   if (row.insideFund) notes.push(b.facts.insideFund);
   if (row.priced && row.stages[0]!.price.form === "action" && keeps(fee.kind, "action", "min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
   if (notes.length === 0) return null;
@@ -307,18 +311,21 @@ export function FeeBlockView({
             )}
             {!isOpen && <RowStanding fee={row.fee} priced={row.priced} standing={row.standingNow} />}
             {/* the line's notes stand in its card, under its prices, never between two cards */}
-            {!isOpen && <RowNotes row={row} fee={fee} />}
+            {!isOpen && <RowNotes row={row} fee={fee} onOpen={() => onOpen(fee.id, null, "pointer")} />}
           </SlimFee>
         </DropZone>
       </div>
     );
   const band = row.block;
+  const unpriced = row.unpriced;
   if (!hasCases(fee)) return null;
   return (
     <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
       <FeeCases fee={fee} band={band} open={open} name={name} deal={deal} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)}>
         {(cases) => (
           <FeeBlock dot={dot} mark={FEE_MARK[fee.kind]} name={name} remove={remove} open={isOpen} grip={grip} corner={corner}>
+            {/* a price not given: under the name's line, naming the cases missing it, its link opening the first */}
+            {unpriced && <UnpricedNote fee={fee} unpriced={unpriced} onOpen={() => onOpen(fee.id, unpriced.cases[0] ?? null, "pointer")} />}
             {question}
             {cases}
           </FeeBlock>

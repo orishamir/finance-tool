@@ -33,11 +33,26 @@ export function DotLine({ items, className }: { items: ReactNode[]; className?: 
   );
 }
 
-/** "עוד לא חושב" with its reason: for a part the data cannot compute yet. Says so in words; never leaves a blank. */
-export function GapNote({ reason, label = copy.common.notComputed, className }: { reason: ReactNode; label?: ReactNode; className?: string }) {
-  return (
-    <p className={cx("text-sm text-muted-foreground max-w-measure", className)}>
+/**
+ * "עוד לא חושב" with its reason: for a part the data cannot compute yet. Says so in words; never leaves a blank. `mark`: the alert's
+ * circle before it, in the foreground ink, where the note stands among a card's own lines (a fee left out of the fee page's reading).
+ */
+export function GapNote({ reason, label = copy.common.notComputed, mark, className }: { reason: ReactNode; label?: ReactNode; mark?: boolean; className?: string }) {
+  const words = (
+    <>
       <span className="font-medium text-foreground">{label}:</span> {reason}
+    </>
+  );
+  return (
+    <p className={cx("text-sm text-muted-foreground max-w-measure", mark && "flex items-start gap-2", className)}>
+      {mark ? (
+        <>
+          <IconAlert size={18} className="mt-0.5 shrink-0 text-foreground" aria-hidden="true" />
+          <span>{words}</span>
+        </>
+      ) : (
+        words
+      )}
     </p>
   );
 }

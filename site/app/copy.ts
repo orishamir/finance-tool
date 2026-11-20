@@ -1860,6 +1860,40 @@ export const feeDeal = {
       insideFund: "נגבים בתוך הקרן",
     },
   },
+  /**
+   * A fee the reading leaves out because a figure of its price is not given yet (lib/fee-deal/unpriced.ts): its card's note, the line under
+   * the cell that misses it, and the reading's tab for an action whose every fee is so.
+   */
+  unpriced: {
+    /** The note's lead, agreeing with the fee's name (`nameForms`; a fee of the person's own takes `m`): "לא מחושבת: חסר מחיר בניירות ערך בתל אביב, באינטרנט ובאפליקציה." */
+    label: { m: "לא מחושב", f: "לא מחושבת", mp: "לא מחושבים", fp: "לא מחושבות" } as Record<string, string>,
+    /** After it, the cases named inside a sentence (`casesWhere`; none for a fee whose price changes by nothing). */
+    noPrice: (where: string | null) => (where ? `חסר מחיר ${where}.` : "חסר מחיר."),
+    /** The link after the note: to the case whose price is missing, or to the price of a fee whose price changes by nothing. */
+    toCase: "למקרה הזה",
+    toPrice: "למחיר",
+    /** What a price is missing, by the figure (`Missing`): the cell's line ("חסר הסכום ליחידה."), and the reading's line about the fee. */
+    missing: { rate: "חסר האחוז", unit: "חסר הסכום ליחידה", sum: "חסר הסכום", price: "חסר מחיר" } as Record<string, string>,
+    /** What is missing as the cell's line says it, a sentence of its own. */
+    line: (missing: string) => `${missing}.`,
+    /** The reading's button that opens where it is missing, by the figure. */
+    enter: { rate: "להזין את האחוז", unit: "להזין את הסכום", sum: "להזין את הסכום", price: "להזין את המחיר" } as Record<string, string>,
+    /** The reading's tab whose every fee is so, in place of its chart: "קנייה או מכירה עוד לא מחושבת" (`male`: "מחושב"). */
+    tab: (noun: string, male: boolean) => `${noun} עוד לא ${male ? "מחושב" : "מחושבת"}`,
+    /**
+     * Its line about each fee: "בעמלת קנייה ומכירה חסר הסכום ליחידה, בניירות ערך בתל אביב, באינטרנט ובאפליקציה."; `fee`, its name after the
+     * lead `feeIn`, and `missing`, the figure (`missing`).
+     */
+    feeIn: "ב־",
+    feeLine: (fee: string, missing: string, where: string | null) => (where ? `${fee} ${missing}, ${where}.` : `${fee} ${missing}.`),
+    /**
+     * A case named inside a sentence: the lead a named value takes by its thing, where its words say no place of their own ("ניירות ערך
+     * בתל אביב" is said "בניירות ערך בתל אביב"; "בסניף" as it is); between its things; and between two cases.
+     */
+    inSentence: { what: "ב־", held: "ב־", track: "ב־" } as Record<string, string>,
+    thingSep: ", ",
+    caseSep: "; ",
+  },
   /** The left column: every field of the chosen fee. */
   panel: {
     title: "העמלה שבחרתם",

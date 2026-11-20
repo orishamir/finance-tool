@@ -10,8 +10,8 @@ import { hasCases, type Fee } from "../../lib/fee-deal/model";
 import { SPOKEN } from "../../lib/fee-deal/part-words";
 import type { Figure } from "../../lib/fee-deal/offers/figures";
 import type { SiteValue } from "../../lib/value";
-import { EditInPlace } from "../kit";
-import { FromEach, PriceFigure } from "./figures";
+import { EditInPlace, EmptyFigure } from "../kit";
+import { FromEach, PriceFigure, signText } from "./figures";
 import { Fig } from "./words";
 
 /**
@@ -32,18 +32,19 @@ export const EditHere = createContext<EditPlace | null>(null);
 const OPTIONAL: ReadonlySet<Figure> = new Set<Figure>(["min", "max", "cap", "thirdMin", "thirdMax"]);
 
 /**
- * Figure `n` of a part at rest (`value`): edited in place where the page says where (`EditHere`) and the part has that figure's field. A
+ * Figure `n` of a part at rest (`value`; null: a price's main figure not given yet, `PartWords.missing`, an empty box with its unit's
+ * sign): edited in place where the page says where (`EditHere`) and the part has that figure's field. A
  * figure the cases of its cell hold from different places (`SlimPart.froms`) wears the mark of each state they hold it in, the source's
  * line under it and, where a case holds it as the person's, the entered ink (`num-mixed`); its box's note names where each case's is from.
  */
-export function PartFig({ part, n, value }: { part: SlimPart; n: number; value: SiteValue }) {
+export function PartFig({ part, n, value }: { part: SlimPart; n: number; value: SiteValue | null }) {
   const at = useContext(EditHere);
   // the fee as the field opened: Esc puts each case's figure back as it stood then, its source with it
   const was = useRef<Fee | null>(null);
   const f = part.fields?.[n];
   const froms = part.froms?.[n] ?? null;
-  const mixed = !!froms && value.state === "sourced" && froms.some((x) => x.value.state === "entered");
-  const rest = <Fig value={value} {...(mixed ? { className: "num-mixed" } : {})} />;
+  const mixed = !!froms && value?.state === "sourced" && froms.some((x) => x.value.state === "entered");
+  const rest = value ? <Fig value={value} {...(mixed ? { className: "num-mixed" } : {})} /> : <EmptyFigure sign={f ? signText(f.sign) : ""} />;
   if (!at || !f || (hasCases(at.fee) && !at.cases?.length)) return rest;
   const k = part.stage ?? 0;
   const caseId = at.cases?.[0];

@@ -4,7 +4,7 @@
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
 import { hasCases, isRange, namesPlaces, thingValues, type CasesFee, type Fee, type Price, type Priced, type Stage, type When } from "./model";
-import { amountWords, formatValue } from "../format";
+import { amountWords, formatValue, joinLead } from "../format";
 import { FIGURES, type Figure } from "./offers/figures";
 import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
 import { SAID, signOfUnit, type PartContext, type PartWords } from "./part-words";
@@ -13,6 +13,7 @@ import { WHAT_VALUES, type FeeKindId } from "./shapes";
 import { CONDITIONS, pickKind, type ByKind } from "./offers/conditions";
 import { figure, sumUnit } from "./values";
 import { heldAlike } from "./alike";
+import type { Unpriced } from "./unpriced";
 
 /** A figure of a part, as its box edits it: which figure of the price, its value, and its box's sign (a percent, or a currency's sign). */
 export interface PartField {
@@ -199,3 +200,42 @@ export function onceLead(fee: CasesFee, t: number): string {
 
 /** The case a fee's card, panel and toolbox show where none is named: its first, the one the edits edit where none is named (edits/stage.ts). */
 export const firstCase = (fee: Fee): string | undefined => (hasCases(fee) ? fee.cases[0]!.id : undefined);
+
+// ---------------------------------------------------------------- a price not given
+
+/**
+ * A case's value of thing `t` inside a sentence: words that say a place of their own ("בסניף", "בכל ערוץ") as they are, a range's step
+ * as its range ("עד 100,000 ₪"), and a named value of a thing whose words say no place after that thing's lead (`unpriced.inSentence`,
+ * "בניירות ערך בתל אביב").
+ */
+function whenIn(fee: CasesFee, w: When, t: number, today: string): string {
+  const words = whenWords(fee, w, t, today);
+  if (words.figure) return `${words.lead ?? ""}${amountWords(formatValue(words.figure.value as number, words.figure.unit))}`;
+  const text = words.text ?? "";
+  if (words.any) return text;
+  const lead = copy.unpriced.inSentence[fee.by[t]!.kind] ?? "";
+  return `${joinLead(lead, text)}${text}`;
+}
+
+/**
+ * Cases of a fee named inside a sentence, after what is missing there ("חסר מחיר בניירות ערך בתל אביב, באינטרנט ובאפליקציה"): each case's
+ * values of its things (`whenIn`), joined, the cases in the fee's order one after the other. Null for a fee whose price changes by nothing,
+ * or where none of `ids` is its case.
+ */
+export function casesWhere(fee: Fee, ids: readonly string[], today: string): string | null {
+  if (!hasCases(fee)) return null;
+  const said = fee.cases.filter((c) => ids.includes(c.id)).map((c) => c.when.map((w, t) => whenIn(fee, w, t, today)).join(copy.unpriced.thingSep));
+  return said.length ? said.join(copy.unpriced.caseSep) : null;
+}
+
+/** A fee left out for a price not given (`Unpriced`), with its cases named inside a sentence (`casesWhere`; null for none). */
+export interface UnpricedSaid extends Unpriced {
+  where: string | null;
+}
+
+/** How fee `id` is left out for a price not given, said (`UnpricedSaid`); undefined where the reading does not leave it out so. */
+export function unpricedSaid(r: Pick<DealRead, "deal" | "unpricedAt" | "today">, id: string): UnpricedSaid | undefined {
+  const u = r.unpricedAt[id];
+  const fee = r.deal.fees.find((f) => f.id === id);
+  return u && fee ? { ...u, where: casesWhere(fee, u.cases, r.today) } : undefined;
+}

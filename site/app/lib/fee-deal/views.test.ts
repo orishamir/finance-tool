@@ -630,15 +630,18 @@ describe("a fee with a price not given yet", () => {
     const d = provident();
     return { ...d, fees: [d.fees[0]!, { id: "fee-deposit", kind: "deposit", stages: [{ price: { form: "action", rate: { v: 0, blank: true } } }] }] };
   };
-  it("is read nowhere: not in the reading's periods, panels or law rows, and never judged against its cap", () => {
+  it("is read nowhere: not in the reading's periods, charts or law rows, and never judged against its cap; its action's tab says so", () => {
     const r = read(withBlank());
     expect(r.fees.map((f) => f.id)).not.toContain("fee-deposit");
     expect(r.unpriced).toEqual(["fee-deposit"]);
     const reading = readingOf(r, data.fx);
     expect(reading.law.map((x) => x.fee)).not.toContain("fee-deposit");
     expect(reading.periods.flatMap((p) => p.rows.map((x) => x.fee))).not.toContain("fee-deposit");
+    // the deposit's tab stands, saying the fee is not worked out, in place of a chart; the rest is the reading without the fee
+    const [deposit, ...others] = reading.panels.actions;
+    expect(deposit).toMatchObject({ key: "deposit:all", views: [{ unpriced: { fees: [{ fee: { fee: "fee-deposit" }, unpriced: { cases: [], missing: "rate" } }] } }] });
     const alone = provident();
-    expect(reading).toEqual(readingOf(read({ ...alone, fees: [alone.fees[0]!] }), data.fx));
+    expect({ ...reading, panels: { ...reading.panels, actions: others } }).toEqual(readingOf(read({ ...alone, fees: [alone.fees[0]!] }), data.fx));
   });
   it("keeps its line in the builder, with its box empty and no standing, open with its box empty", () => {
     const row = builder(read(withBlank())).rows.find((x) => x.fee === "fee-deposit")!;

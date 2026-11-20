@@ -7,10 +7,11 @@ import type { BanSaid, CapLine } from "../../lib/fee-deal/kinds";
 import type { MonthKey } from "../../lib/fee-deal/model";
 import { unreadReason, type FeeRef, type PriceView, type StandingView } from "../../lib/fee-deal/deal-read";
 import type { LawRow } from "../../lib/fee-deal/reading";
+import type { UnpricedSaid } from "../../lib/fee-deal/case-words";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { amountWords, computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
 import { ruleFigure, type SiteValue } from "../../lib/value";
-import { Swatch, Tag, When, cx } from "../kit";
+import { Button, GapNote, Swatch, Tag, When, cx } from "../kit";
 import { Num, Ruled, useProvenanceData } from "../provenance";
 
 /**
@@ -332,6 +333,32 @@ function DistributionWords() {
     <>
       {w.before} <Num value={cap} /> {w.after}
     </>
+  );
+}
+
+/** The gender and number a word agreeing with a fee's name takes (`nameForms`); a fee of the person's own agrees with nothing, and takes the plain form. */
+export const formOf = (f: Pick<FeeRef, "kind">) => (f.kind !== "own" && copy.nameForms[f.kind]?.g) || "m";
+
+/**
+ * A fee left out of the reading for a price not given (`UnpricedSaid`), as its card says it, with the alert's mark: "לא מחושבת: חסר מחיר
+ * בניירות ערך בתל אביב, באינטרנט ובאפליקציה.", agreeing with the fee's name (`formOf`), then the way to the first case missing it ("למקרה
+ * הזה"), or to the price of a fee whose price changes by nothing ("למחיר"), which `onOpen` opens.
+ */
+export function UnpricedNote({ fee, unpriced, onOpen }: { fee: Pick<FeeRef, "kind">; unpriced: UnpricedSaid; onOpen: () => void }) {
+  const u = copy.unpriced;
+  return (
+    <GapNote
+      mark
+      label={u.label[formOf(fee)]}
+      reason={
+        <>
+          {u.noPrice(unpriced.where)}{" "}
+          <Button variant="inline" onClick={onOpen}>
+            {unpriced.where ? u.toCase : u.toPrice}
+          </Button>
+        </>
+      }
+    />
   );
 }
 
