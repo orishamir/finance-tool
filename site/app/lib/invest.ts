@@ -9,7 +9,7 @@ import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput, isShekel, nisPer } from "./fx";
-import { agreedClasses, houseSnapshots, instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
+import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
 import { computed, differenceOf, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
@@ -43,7 +43,7 @@ export function optionOfFund(rec: FundRecord, exposure: ExposureRecord | undefin
 export type Venue = "us" | "europe";
 const US_RE = /ארה["״]ב|ארצות הברית/;
 const EU_RE = /אירופה|לונדון|London|LSE/;
-const OUTSIDE_US_RE = /מחוץ לארה/;
+const OUTSIDE_US_RE = /מחוץ לארה|למעט ארה/;
 export const venueOfBand = (band: string | null | undefined): Venue | null => (!band ? null : OUTSIDE_US_RE.test(band) ? "europe" : US_RE.test(band) ? "us" : EU_RE.test(band) ? "europe" : null);
 
 /** The exchange a fund bought abroad trades on, from its tickers and domicile; null when the record does not say. */
@@ -393,10 +393,6 @@ export interface InvestView {
 
 // ---------------------------------------------------------------- the providers and their lines
 
-/** A conversion between two foreign currencies is not the conversion a shekel investor pays: the shekel-to-currency line is read. */
-const FX_TO_FX = /מט["״]ח ל?מט["״]ח|בין שני מטבעות זרים/;
-/** The line is a conversion between two foreign currencies, by the price list's own words: the ranking leaves it out, a house's page names it. */
-export const isFxToFx = (l: Pick<FeesSnapshot["lines"][number], "base" | "names">) => l.base === "fx" && FX_TO_FX.test(l.names.tariff.join(" "));
 
 const scopedCache = new WeakMap<BundleSnapshot, FeesSnapshot>();
 /**

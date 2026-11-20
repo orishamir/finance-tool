@@ -10,18 +10,18 @@ import { fmt, formatValue } from "../../lib/format";
 import { feesData } from "../../lib/fees.server";
 import { builder } from "../../lib/fee-deal/rows";
 import { panel } from "../../lib/fee-deal/panel";
-import { toolbox } from "../../lib/fee-deal/toolbox";
+import { casesToolbox, toolbox } from "../../lib/fee-deal/toolbox";
 import { leftOut } from "../../lib/fee-deal/left-out";
 import { hasCases, typed, type FeeDeal } from "../../lib/fee-deal/model";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
-import { rowParts } from "../../lib/fee-deal/lifted";
 import { readingOf } from "../../lib/fee-deal/reading";
 import { ProvenanceProvider } from "../provenance";
 import { FeesColumn, feeGroup, paletteItems } from "./builder";
 import { LeftOutList } from "./left-out";
 import { feeName } from "./words";
 import { ToolboxColumn } from "./toolbox";
+import type { OpenHere } from "./fee-block";
 import { ReadingCards } from "./reading";
 import { sumDisplay, upToDisplay } from "./words";
 
@@ -74,41 +74,37 @@ const toolboxOf = (deal: FeeDeal, feeId: string) => {
   return createElement(ToolboxColumn, {
     view: toolbox(r, feeId)!,
     fee,
-    caseId: null,
     sheet: false,
     product: deal.kind,
     fill: null,
     line: null,
     folded: false,
     onFold: () => {},
-    onAsk: () => {},
+    onCard: () => {},
     onFee: () => {},
-    onPart: () => {},
-    onForm: () => {},
-    onPending: () => {},
     onStopBy: () => {},
     onClose: () => {},
   });
 };
 const drawToolbox = (deal: FeeDeal, feeId: string) => text(toolboxOf(deal, feeId));
 
-/** The fees' column, `chosen` open in place (its first case, where it has cases). */
-const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = null) => {
+/** The fees' column, `chosen` open in place (its first case, where it has cases, or `several` of its cases at once). */
+const builderOf = (deal: FeeDeal, chosen: string | null, ask: ByKind | null = null, several: OpenHere["several"] = null) => {
   const r = readDealFor(deal, data.kinds, TODAY);
   const fee = deal.fees.find((f) => f.id === chosen);
-  const caseId = fee && hasCases(fee) ? fee.cases[0]!.id : null;
+  const caseId = fee && hasCases(fee) && !several ? fee.cases[0]!.id : null;
   return createElement(FeesColumn, {
     deal,
     view: builder(r, null, chosen ? { fee: chosen, case: caseId } : null),
     groupOf: (f) => feeGroup(r, f, saves(deal)),
-    open: { fee: chosen, case: caseId, view: chosen ? panel(r, chosen)!.open : null, menu: null, thing: null },
+    open: { fee: chosen, case: caseId, view: chosen && !several ? panel(r, chosen)!.open : null, menu: null, thing: null, several },
     line: null,
     caseLine: null,
     focus: null,
     onFocused: () => {},
     onDeal: () => {},
     onAdd: () => {},
-    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {}, asksCases: () => null }, onRemoveChange: () => {}, onEditPrice: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, rowParts: (feeId: string, cases: readonly string[]) => rowParts(r, feeId, cases), onResult: () => undefined, phone: false } },
+    actions: { onOpen: () => {}, onSlot: () => {}, onThing: () => {}, onRemoveCase: () => {}, onRemoveFee: () => {}, drop: { accepts: () => false, onDrop: () => {}, acceptsCases: () => false, onDropCases: () => {} }, onRemoveChange: () => {}, onEditPrice: () => {}, pendingHands: { onDone: () => {}, fresh: () => false, onShown: () => {} }, onAskDone: () => {}, lift: { takes: () => false, why: () => null, onDrop: () => {}, binTakes: () => false, onBin: () => {}, binTakesItem: () => false, onBinItem: () => {}, onStretch: () => {}, preview: () => {}, onResult: () => undefined, phone: false }, cases: { onOpen: () => {}, onAsk: () => {} } },
     ask: ask ? { kind: ask } : null,
     adding: "line",
   });
@@ -378,6 +374,25 @@ describe("the parts every case holds alike", () => {
     expect(html).toContain(`aria-label="${feeDeal.cases.everyCase.parts}"`);
     // no any-words under the part said once: standing outside the band says it holds for every case
     expect(html.replace(/<[^>]+>/g, "")).not.toContain(feeDeal.cases.onceLead.replace("{any}", feeDeal.cases.any.portfolioSize ?? ""));
+  });
+  it("open the toolbox on every case from the add after them: its line names them all, each case drawn open, a part's amount asked once among them", () => {
+    const d = custody();
+    const fee = d.fees[0]!;
+    if (!hasCases(fee)) throw new Error("custody has cases");
+    const target = { fee: fee.id, cases: fee.cases.map((c) => c.id), along: 1 };
+    const box = text(createElement(ToolboxColumn, { view: casesToolbox(readDealFor(d, data.kinds, TODAY), target)!, fee, sheet: false, product: d.kind, fill: null, line: null, folded: false, onFold: () => {}, onCard: () => {}, onFee: () => {}, onStopBy: () => {}, onClose: () => {} }));
+    expect(box).toContain(feeDeal.cases.addToAll);
+    expect(box).not.toContain(dealCases.toolbox.target);
+    // a form of the price is off, its group saying why
+    expect(box).toContain(feeDeal.cases.casesOff.perCase);
+    const html = markup(builderOf(d, fee.id, null, { target, ask: { part: "max", cases: target.cases, along: 1 } }));
+    // no case open in place: every case's cell outlined instead
+    expect(html).not.toContain("data-open-case");
+    expect(count(html, "outline-primary")).toBeGreaterThanOrEqual(fee.cases.length);
+    // the maximum's box once, in the row of the parts said once
+    expect(count(html, `id="part-${fee.id}-max-across"`)).toBe(1);
+    const row = html.slice(html.indexOf("data-every-case="), html.indexOf(feeDeal.cases.changesBy));
+    expect(row).toContain(`id="part-${fee.id}-max-across"`);
   });
   it("go back into the cases once one of them holds the part otherwise", () => {
     const d = custody();

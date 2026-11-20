@@ -2,7 +2,7 @@
 // picks give each fee, a size read across sizes, a price's new parts, the views the page renders, and the edits that make cases.
 import { readdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { PICK_KEYS } from "./offers/conditions";
+import { LIST_IDS, PICK_KEYS } from "./offers/conditions";
 import { describe, expect, it } from "vitest";
 import { actionCost, dealMarks } from "@finance-tool/engine";
 import { feesData } from "../fees.server";
@@ -12,14 +12,16 @@ import { byQuestion, copiesWords, nextValue, slotEdit, thingMenu, usualBy } from
 import { panel } from "./panel";
 import { toolbox } from "./toolbox";
 import { picksOf, readFee, readFees } from "./cases";
-import { addBy, addCase, addValuesAt, canAddBy, canRename, renameValue, copyCase, keptOf, ownKept, removeBy, removeCase, setMine, setStep, setTop, setWhen } from "./edits/case";
+import { addBy, addCase, addValuesAt, canAddBy, canRename, renameValue, setOwnPlace, copyCase, keptOf, ownKept, removeBy, removeCase, setMine, setStep, setTop, setWhen } from "./edits/case";
 import { editPrice } from "./edits/stage";
+import { renameValueIn } from "./edits/deal";
 import { withFigure } from "./edits/price";
 import { setPart } from "./offers/parts";
 import { providentFamily } from "./offers/rules";
 import { leftOut } from "./left-out";
 import { decodeDeal, encodeDeal } from "./link";
-import { newDeal, newFee, readDeal, typed, type CasesFee, type Fee, type FeeDeal, type Price, type SlimFee, type When } from "./model";
+import { NEW_PLACE, newDeal, newFee, readDeal, thingValues, typed, type CasesFee, type Fee, type FeeDeal, type Price, type SlimFee, type When } from "./model";
+import { onceLead, whenWords } from "./case-words";
 import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
 import { fillDeal } from "./templates";
@@ -696,10 +698,31 @@ describe("a thing of the band's head, opened", () => {
     expect(renameValue(byTrack, 0, "מסלול 1", "  ")).toBe(byTrack);
     expect(canRename(byChannel.by[0]!, "branch")).toBe(false);
     expect(canRename(all.by[0]!, "ערוץ 4")).toBe(true);
-    // what is bought: every value carries its place, so its plus asks once the site's run out
+    // what is bought: the site's values first, then one in the person's words, added with a place of its own and renamed with it kept
     const byWhat = addByKept(slim, "f", usualBy("what")!, null)!.deal.fees[0] as CasesFee;
     expect(nextValue(byWhat, 0)).toBe("mutualFunds");
     expect(canRename(byWhat.by[0]!, "tase")).toBe(false);
+    const every = addValuesAt(byWhat, 0, LIST_IDS.what.filter((v) => !thingValues(byWhat, 0).includes(v))) as CasesFee;
+    const mine = nextValue(every, 0)!;
+    expect(mine).toBe(`סוג ${LIST_IDS.what.length + 1}`);
+    const placed = addValuesAt(every, 0, [mine], [{ name: mine, ...NEW_PLACE }]) as CasesFee;
+    expect(canRename(placed.by[0]!, mine)).toBe(true);
+    const bonds = renameValue(placed, 0, mine, "אג״ח") as CasesFee;
+    expect(bonds.by[0]).toMatchObject({ own: [{ name: "אג״ח", place: "abroad", currency: "USD" }] });
+    expect(thingValues(bonds, 0)).toContain("אג״ח");
+    // a name the site keeps for what is bought is refused
+    expect(renameValue(placed, 0, mine, "tase")).toBe(placed);
+    // its place brings its usual currency, which then changes alone
+    const home = setOwnPlace(bonds, 0, "אג״ח", { place: "israel" }) as CasesFee;
+    expect(home.by[0]).toMatchObject({ own: [{ name: "אג״ח", place: "israel", currency: "ILS" }] });
+    expect((setOwnPlace(home, 0, "אג״ח", { currency: "EUR" }) as CasesFee).by[0]).toMatchObject({ own: [{ name: "אג״ח", place: "israel", currency: "EUR" }] });
+    expect(setOwnPlace(home, 0, "tase", { place: "abroad" })).toBe(home);
+    // the reading's pick of a value renamed follows it, where no other fee names the old one
+    const picked: FeeDeal = { ...deal(), fees: [placed], readFor: [{ by: "what", is: mine }] };
+    expect(renameValueIn(picked, "f", 0, mine, "אג״ח").readFor).toEqual([{ by: "what", is: "אג״ח" }]);
+    const two: FeeDeal = { ...picked, fees: [placed, { ...placed, id: "g" }] };
+    expect(renameValueIn(two, "f", 0, mine, "אג״ח").readFor).toEqual([{ by: "what", is: mine }]);
+    expect(renameValueIn(picked, "f", 0, mine, " ")).toBe(picked);
   });
   it("splits a fee at one tap into a list's or a track's usual values, kept for the undo; a range or an own condition asks first", () => {
     expect(usualBy("actionSize")).toBeNull();
@@ -855,5 +878,22 @@ describe("a month the method reads as it is (F-126, F-127)", () => {
     const trades: Fee = { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] };
     const fixed: Fee = { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(45), every: 3, offset: { kind: "trade" } } }] };
     expect(readingOf(read(local([trades, fixed])), data.fx).timeline[0]!.covers).toEqual([]);
+  });
+});
+
+describe("a case's values in words", () => {
+  const fee = (values: string[][]): CasesFee => ({ id: "f", kind: "transfer_out", by: [{ kind: "what", values: ["tase", "makam", "us", "europe", "world"] }], cases: values.map((v, k) => ({ id: `c${k}`, when: [v], stages: [{ price: { form: "free" } }] })) });
+  const words = (f: CasesFee, k: number) => whenWords(f, f.cases[k]!.when[0]!, 0, "2026-11-20").text;
+  it("say every value abroad as abroad alone, also beside a value in Israel, and a lead the values share once", () => {
+    const abroad = copy.cases.values.what.us!.split(", ")[0]!;
+    expect(words(fee([["tase", "us", "europe", "world"], ["makam"]]), 0)).toBe(`${copy.cases.values.what.tase}, ${abroad}`);
+    expect(words(fee([["tase", "us", "europe"], ["makam", "world"]]), 0)).toBe(`${copy.cases.values.what.tase}, ${abroad}, ${copy.cases.values.what.us!.split(", ")[1]}, ${copy.cases.values.what.europe!.split(", ")[1]}`);
+    expect(words(fee([["us", "europe", "world"], ["tase", "makam"]]), 0)).toBe(abroad);
+  });
+  it("lead a table's line of what every case holds by the thing's any-words only where every value has a case", () => {
+    const some = fee([["tase"], ["us"]]);
+    expect(onceLead(some, 0)).toBe(copy.cases.onceLead.replace("{any}", copy.cases.everyCase.where));
+    const all = fee([["tase", "makam", "mutualFunds", "moneyMarket"], ["us", "europe", "world"]]);
+    expect(onceLead(all, 0)).toBe(copy.cases.onceLead.replace("{any}", copy.cases.any.what!));
   });
 });

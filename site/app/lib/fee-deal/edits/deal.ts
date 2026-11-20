@@ -1,7 +1,8 @@
 // The changes the fee page makes to a deal as a whole, each a pure function from a deal to the next: a fee added, replaced or taken away,
 // the deal's product and name, a fee duplicated, and the reading's picks (F-114). These alone ask the offer (offers/offer.ts), for the fees a product is
 // offered; the edits of a fee's prices, stages and cases are in price.ts, stage.ts and case.ts.
-import { newFee, newFeeId, type Fee, type FeeDeal, type ReadPick } from "../model";
+import { hasCases, newFee, newFeeId, pickKey, thingValues, type Fee, type FeeDeal, type ReadPick } from "../model";
+import { renameValue } from "./case";
 import type { DealKind } from "../kinds";
 import { feeRoom, PICKS_MAX } from "../limits";
 import { type FeeKindId, type FormId } from "../shapes";
@@ -57,6 +58,22 @@ export const setFeeName = <F extends Fee>(fee: F, name: string): F => ({ ...fee,
 
 
 // ---------------------------------------------------------------- the reading's picks (F-114)
+
+/**
+ * Value `from` of thing `t` of fee `feeId` renamed `to` (`renameValue`), and the reading's pick of it renamed with it, where no fee names
+ * `from` for that thing any more; unchanged where the fee does not rename it.
+ */
+export function renameValueIn(deal: FeeDeal, feeId: string, t: number, from: string, to: string): FeeDeal {
+  const fee = deal.fees.find((f) => f.id === feeId);
+  if (!fee || !hasCases(fee) || !fee.by[t]) return deal;
+  const next = renameValue(fee, t, from, to);
+  if (next === fee) return deal;
+  const fees = deal.fees.map((f) => (f.id === feeId ? next : f));
+  const key = pickKey(fee.by[t]!);
+  const still = fees.some((f) => hasCases(f) && f.by.some((b, j) => pickKey(b) === key && thingValues(f, j).includes(from)));
+  const readFor = still ? deal.readFor : deal.readFor?.map((p) => (p.by === key && p.is === from ? { ...p, is: to.trim() } : p));
+  return { ...deal, fees, ...(readFor ? { readFor } : {}) };
+}
 
 /**
  * The deal read for `is` of the thing keyed `by` (`pickKey`); `null` takes the pick away, and the thing starts as F-114 says. A new pick

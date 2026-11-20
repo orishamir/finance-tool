@@ -14,7 +14,7 @@ import type { BoundCurrency, Note, Price } from "../core";
 import { WHOLE } from "../layout";
 import { addCaseAt, removeCase } from "./case";
 import { PART_ROWS, ROW_OF, isPartRow, type PartRow } from "../part-rows";
-import { PARTS, PART_IDS, fitted, partsSaid, setPart, type PartId } from "../offers/parts";
+import { PARTS, PART_IDS, fitted, partsSaid, setPart, type PartAt, type PartId } from "../offers/parts";
 import { KEY_FORMS, type PartKey } from "../offers/capabilities";
 import type { FeeKindId } from "../shapes";
 
@@ -184,6 +184,15 @@ function notGiven(p: Price, kind: FeeKindId): Price {
 
 /** Whether a cell holds anything: a part row a case has parts in, or a whole case. */
 export const cellHolds = (x: Priced, row: CellRow): boolean => row === WHOLE || (isPartRow(row) && partsIn(x.stages[0]!.price, x, row).length > 0) || (row === "until" && x.stages.length > 1);
+
+/**
+ * Whether case prices `x` hold part `part` itself on their first price: of the notes, which share a row, that very one; of the price's
+ * forms, that form; of any other row, which holds one part, the row's.
+ */
+export const holdsPart = (x: Priced, part: PartId): boolean => partsIn(x.stages[0]!.price, x, ROW_OF[part]).includes(part);
+
+/** The rows whose parts stand side by side, each case keeping its own beside one more: the notes (part-rows.ts). */
+const SIDE_BY_SIDE: readonly PartRow[] = ["notes"];
 
 /** A case with its prices replaced (its id, values, mark and spans kept). */
 const priced = (c: Case, x: Priced): Case => {
@@ -412,19 +421,32 @@ export function figureOnward(fee: Fee, was: Fee, cases: readonly string[] | null
   return cases ? cases.reduce((x, c) => on(x, c), fee) : on(fee);
 }
 
+/** What a part asks for, given once for several cases: its figure (`value`), or the fee it is against. */
+export type PartGiven = Pick<PartAt, "value" | "against">;
+
+/** Whether part `part` stands beside the others of its row (a note beside the case's other notes), not alone in it. */
+export const standsBeside = (part: PartId): boolean => SIDE_BY_SIDE.includes(ROW_OF[part]);
+
 /**
- * A fee whose cases `ids` each take part `part` on their first price, all alike, as one cell stretched over them (a grid row's strip or a
- * table's foot, "+ חלק לכל השורה"): the first case takes it as the toolbox adds it (`setPart`), and the cell is stretched over the others
- * along thing `along` (`stretch`). A part that asks an amount (`asksAmount`) takes `value`, the amount the person typed for them all, and
- * stands nowhere without it. Refused where a case holds that part row already (nothing the person gave is overwritten) or where the first
- * cannot take it.
+ * A fee whose cases `ids` each take part `part` on their first price, as the toolbox adds it (`setPart`), from the toolbox acting on several
+ * cases at once: where none of them holds anything in the part's row, all alike, as one cell stretched over them along thing `along` (the
+ * first takes it, `stretch` gives it to the others); in a row whose parts stand side by side (the notes), where some of them hold others
+ * there, each beside its own. A part that asks for something takes `given`, what the person gave once for them all, and stands nowhere
+ * without it. Refused where a case holds that part already, or another part of a row that holds one (nothing the person gave is
+ * overwritten), or where the first cannot take it.
  */
-export function partAcross(fee: Fee, ids: readonly string[], part: PartId, along: number, value?: number): Fee {
+export function partAcross(fee: Fee, ids: readonly string[], part: PartId, along: number, given: PartGiven = {}): Fee {
   if (!hasCases(fee) || ids.length === 0 || !fee.by[along]) return fee;
   const row = ROW_OF[part];
   const cases = ids.map((id) => fee.cases.find((c) => c.id === id));
-  if (cases.some((c) => !c || cellHolds(c, row))) return fee;
-  const first = setPart(fee, part, true, { k: 0, caseId: ids[0]!, ...(value !== undefined ? { value } : {}) });
+  if (cases.some((c) => !c || holdsPart(c, part))) return fee;
+  const at = (caseId: string): PartAt => ({ k: 0, caseId, ...given });
+  if (cases.some((c) => cellHolds(c!, row))) {
+    if (!standsBeside(part)) return fee;
+    const next = ids.reduce((x, id) => setPart(x, part, true, at(id)), fee);
+    return sameContent(next, fee) ? fee : next;
+  }
+  const first = setPart(fee, part, true, at(ids[0]!));
   if (first === fee) return fee;
   return ids.length > 1 ? stretch(first, ids[0]!, ids.slice(1), row, along) : first;
 }

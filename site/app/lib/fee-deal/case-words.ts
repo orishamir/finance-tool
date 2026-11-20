@@ -10,7 +10,7 @@ import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
 import { SAID, signOfUnit, type PartContext, type PartWords } from "./part-words";
 import { priceView, type DealRead, type PriceView } from "./deal-read";
 import { WHAT_VALUES, type FeeKindId } from "./shapes";
-import { pickKind, type ByKind } from "./offers/conditions";
+import { CONDITIONS, pickKind, type ByKind } from "./offers/conditions";
 import { figure, sumUnit } from "./values";
 import { heldAlike } from "./alike";
 
@@ -132,12 +132,23 @@ export function whenWords(fee: CasesFee, w: When, t: number, today: string): Whe
   return { thing: t, any: false, text: listWords(fee, t, w as string[]) };
 }
 
-/** Words that share a lead ending in ", " say it once: "ניירות ערך בחו״ל, באירופה, בשאר העולם". */
+/**
+ * Words that share a lead ending in ", " say it once, each run of them where the others do not share it: "ניירות ערך בחו״ל, באירופה, בשאר
+ * העולם", and "ניירות ערך בתל אביב, ניירות ערך בחו״ל, בארה״ב, באירופה" where a word without that lead comes first.
+ */
 function sharedLead(words: readonly string[]): string {
-  const cut = words[0]?.indexOf(", ") ?? -1;
-  const lead = cut > 0 ? words[0]!.slice(0, cut + 2) : "";
-  if (words.length < 2 || !lead || !words.every((x) => x.startsWith(lead) && x.length > lead.length)) return words.join(", ");
-  return lead + words.map((x) => x.slice(lead.length)).join(", ");
+  const leadOf = (x: string) => {
+    const cut = x.indexOf(", ");
+    return cut > 0 && x.length > cut + 2 ? x.slice(0, cut + 2) : "";
+  };
+  const groups: { lead: string; words: string[] }[] = [];
+  for (const x of words) {
+    const lead = leadOf(x);
+    const g = lead ? groups.find((y) => y.lead === lead) : undefined;
+    if (g) g.words.push(x);
+    else groups.push({ lead, words: [x] });
+  }
+  return groups.map((g) => (g.lead && g.words.length > 1 ? g.lead + g.words.map((x) => x.slice(g.lead.length)).join(", ") : g.words.join(", "))).join(", ");
 }
 
 /**
@@ -150,8 +161,16 @@ function listWords(fee: CasesFee, t: number, values: readonly string[]): string 
   const words = values.map((v) => valueWords(b.kind, v));
   if (!namesPlaces(b)) return sharedLead(words);
   const abroad = Object.keys(WHAT_VALUES).filter((v) => WHAT_VALUES[v]!.place === "abroad");
-  // every value abroad and nothing else: the lead they share alone ("ניירות ערך בחו״ל")
-  if (values.length > 1 && values.length === abroad.length && abroad.every((v) => values.includes(v))) return valueWords(b.kind, abroad[0]!).split(", ")[0]!;
+  // every value abroad and nothing else: the lead they share alone ("ניירות ערך בחו״ל"); beside other values, that lead in their place
+  const everyAbroad = abroad.length > 1 && abroad.every((v) => values.includes(v));
+  if (everyAbroad && values.length === abroad.length) return valueWords(b.kind, abroad[0]!).split(", ")[0]!;
+  if (everyAbroad) {
+    const at = values.findIndex((v) => abroad.includes(v));
+    const rest = values.filter((v) => !abroad.includes(v));
+    const said = rest.map((v) => valueWords(b.kind, v));
+    said.splice(at, 0, valueWords(b.kind, abroad[0]!).split(", ")[0]!);
+    return sharedLead(said);
+  }
   // the thing's other values abroad, a row or a column no case holds among them
   const others = new Set(thingValues(fee, t).filter((v) => abroad.includes(v) && !values.includes(v)));
   const all = values.length > 1 && values.every((v) => abroad.includes(v)) && others.size > 0 && abroad.every((v) => values.includes(v) || others.has(v));
@@ -161,6 +180,21 @@ function listWords(fee: CasesFee, t: number, values: readonly string[]): string 
   const lead = valueWords(b.kind, abroad[0]!).split(", ")[0]!;
   const names = abroad.filter((v) => others.has(v)).map((v) => o.names[v] ?? valueWords(b.kind, v));
   return `${lead}, ${o.lead}${names.join(o.and)}`;
+}
+
+/**
+ * The lead of a table's line of the parts every case of it holds: the thing's any-words where its cases name every value it can take (on a
+ * list the site closes, what is bought or held, the currency or the channel, every one of them and each value of the fee's own; a range's
+ * steps always), else "in every case", since some values have no case there ("בכל מה שקונים" would say a price for what has none).
+ */
+export function onceLead(fee: CasesFee, t: number): string {
+  const b = fee.by[t]!;
+  const def = CONDITIONS[b.kind].values;
+  const any = fee.cases.some((c) => c.when[t] === "any");
+  const named = (v: string) => fee.cases.some((c) => Array.isArray(c.when[t]) && (c.when[t] as string[]).includes(v));
+  const own = "own" in b && b.own ? b.own.map((o) => o.name) : [];
+  const every = any || def.kind === "range" || (def.kind === "list" ? [...def.ids, ...own].every(named) : thingValues(fee, t).every(named));
+  return copy.cases.onceLead.replace("{any}", every ? copy.cases.any[b.kind]! : copy.cases.everyCase.where);
 }
 
 /** The case a fee's card, panel and toolbox show where none is named: its first, the one the edits edit where none is named (edits/stage.ts). */

@@ -485,7 +485,7 @@
           "BRK-19"
         ],
         "state": "sourced",
-        "notes": "'0.79% משווי העסקה', charged on execution. Additional expenses column: 'עמלת סוכן, Sec fee, מס מלכה, Option regulatory fee, הוצאות סוויפט' (third-party charges on top). Note (7): US TBILL/CD/CP trades pay a reduced 0.15%. Note (9): DR securities may carry third-party costs. Re-read 2026-11-04, unchanged (4.4.1, p.14). Added costs, not limited by the documents: 'עמלת סוכן, Sec fee, מס מלכה, Option regulatory fee, הוצאות סוויפט' (the line's 'הוצאות נוספות' column), part 11.9 'משתנה בהתאם לסוג נייר / הסוכן / השוק בו נסחר הנייר / סוג הפעולה' and 11.17 'בהתאם להוצאה הממשית' (p.29)."
+        "notes": "'0.79% משווי העסקה', charged on execution. Additional expenses column: 'עמלת סוכן, Sec fee, מס מלכה, Option regulatory fee, הוצאות סוויפט' (third-party charges on top). Note (7): US TBILL/CD/CP trades pay a reduced 0.15%. Note (9): DR securities may carry third-party costs. Re-read 2026-11-04, unchanged (4.4.1, p.14). Added costs, not limited by the documents: 'עמלת סוכן, Sec fee, מס מלכה, Option regulatory fee, הוצאות סוויפט' (the line's 'הוצאות נוספות' column), part 11.9 'משתנה בהתאם לסוג נייר / הסוכן / השוק בו נסחר הנייר / סוג הפעולה' and 11.17 'בהתאם להוצאה הממשית' (p.29). Channel (2026-11-20): the printed row 4.4.1 limits no channel. Note (8) prices orders through a direct channel at 0.59%, and annex E (p.38) gives that service 'באינטרנט, בסלולר' with '(**) השרות ניתן עבור מניות בארה\"ב בלבד'. The bank's own documents name exchange-traded funds apart from shares: its execution policy (July 2025, p.5) lists 'מניות הנסחרות בישראל ומחוץ לישראל' and 'קרנות סל סחירות' as separate products, and its instruments disclosure (p.7, 3.3.2) says 'קרנות הסל נסחרות בבורסה כמו מניה'. Words that name shares are silence for a fund (D56), so a fund bought abroad pays this row on any channel; the direct price is in left_out."
       },
       "min": {
         "value": 25,
@@ -532,99 +532,13 @@
         "notes": "'$ 10900' per trade (US dollars)."
       },
       "period": null,
-      "channel": "branch",
+      "channel": null,
       "band": null,
       "statement_code": null,
       "names": {
         "tariff": [
           "קניה מכירה ופדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (כולל קניה או מכירה שלא בוצעה)",
           "מניות, אגרות חוב וקרנות נאמנות"
-        ]
-      }
-    },
-    {
-      "id": "mercantile-buy-sell-foreign-direct",
-      "base": "trade",
-      "applies_to": [
-        "foreign_securities"
-      ],
-      "level": "list",
-      "rate": {
-        "value": 0.59,
-        "unit": "pct_of_trade",
-        "source": {
-          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
-          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.4.1, הערה (8) (עמ' 14 מתוך 42, עודכן 07/02/2025); נספח ה' - הטבות בערוצי בנקאות בתקשורת, חלק 4, סעיף 4.4.1 (עמ' 38 מתוך 42)",
-          "publisher": "Mercantile Discount Bank Ltd.",
-          "strength": "institution",
-          "page": 14,
-          "quote": "עבור קניה ומכירה המבוצעת באמצעות ערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680"
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2025-02-07",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
-        "state": "sourced",
-        "notes": "Note (8): 'עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680'. Appendix E prints the same under 'באינטרנט, בסלולר' and adds '(**) השרות ניתן עבור מניות בארה\"ב בלבד' (direct-channel foreign trading is for US shares only). Re-read 2026-11-04, unchanged (4.4.1, p.14). Added costs, not limited by the documents: 'עמלת סוכן, Sec fee, מס מלכה, Option regulatory fee, הוצאות סוויפט' (the line's 'הוצאות נוספות' column), part 11.9 'משתנה בהתאם לסוג נייר / הסוכן / השוק בו נסחר הנייר / סוג הפעולה' and 11.17 'בהתאם להוצאה הממשית' (p.29)."
-      },
-      "min": {
-        "value": 23.5,
-        "unit": "usd",
-        "source": {
-          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
-          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.4.1, הערה (8) (עמ' 14 מתוך 42, עודכן 07/02/2025)",
-          "publisher": "Mercantile Discount Bank Ltd.",
-          "strength": "institution",
-          "page": 14,
-          "quote": "עבור קניה ומכירה המבוצעת באמצעות ערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680"
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2025-02-07",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מינימום של $ 23.5' per trade (US dollars)."
-      },
-      "max": {
-        "value": 10680,
-        "unit": "usd",
-        "source": {
-          "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
-          "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט (תעריפון מלא, 01/10/2026, 42 עמ'), חלק 4 - ניירות ערך, סעיף 4.4.1, הערה (8) (עמ' 14 מתוך 42, עודכן 07/02/2025)",
-          "publisher": "Mercantile Discount Bank Ltd.",
-          "strength": "institution",
-          "page": 14,
-          "quote": "עבור קניה ומכירה המבוצעת באמצעות ערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680"
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2025-02-07",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מקסימום $ 10,680' per trade (US dollars)."
-      },
-      "period": null,
-      "channel": "direct",
-      "band": null,
-      "statement_code": null,
-      "names": {
-        "tariff": [
-          "קניה מכירה ופדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (כולל קניה או מכירה שלא בוצעה)",
-          "מניות, אגרות חוב וקרנות נאמנות",
-          "באינטרנט, בסלולר"
         ]
       }
     },
@@ -1460,6 +1374,13 @@
       "page": 29,
       "why": "Part 11 prices them 'משתנה' or 'בהתאם להוצאה הממשית'; not limited by the documents, not priced.",
       "why_he": "על ניירות ערך בחו״ל הבנק מוסיף לעמלה שלו הוצאות של צד שלישי: עמלת הסוכן בחו״ל על כל עסקה, עמלה לרשות ניירות הערך האמריקאית והוצאות המשמורן בחו״ל. התעריפון לא נוקב בסכום שלהן אלא ״בהתאם להוצאה הממשית״ או ״משתנה״, ולכן האתר לא מחשב אותן והמחיר בחו״ל יכול לצאת יקר יותר.",
+      "could_change_price": true
+    },
+    {
+      "what": "מחיר מופחת בערוץ ישיר למניות בארה\"ב: 0.59%, מינימום 23.5 דולר, מקסימום 10,680 דולר (הערה (8) לסעיף 4.4.1; נספח ה': 'השרות ניתן עבור מניות בארה\"ב בלבד')",
+      "page": 38,
+      "why": "Note (8) to 4.4.1 (p.14) prices orders through a direct channel at 0.59%, min $23.5, max $10,680; annex E (p.38) prints the same under 'באינטרנט, בסלולר' and adds '(**) השרות ניתן עבור מניות בארה\"ב בלבד'. The service is named for US shares, and the bank's own documents name exchange-traded funds apart from shares: its execution policy (mediniyut_bitua.pdf, July 2025, p.5) lists 'מניות הנסחרות בישראל ומחוץ לישראל' beside 'קרנות סל סחירות' and 'קרנות נאמנות סחירות', and its instruments disclosure (mutzarim_vesicunim.pdf, p.7, 3.3.2) says 'קרנות הסל נסחרות בבורסה כמו מניה'. The record already reads the group annex's 'מניות' as naming no fund. Words that name shares are silence for a fund (D56; founder, 2026-10-31: no price from analogy), so a fund bought abroad, a US-listed ETF included, is priced on 4.4.1's 0.79%, min $25, max $10,900. The gap: a small order pays the minimum on either price ($25 against $23.5); $10,000 pays $79 against $59. A written answer from the bank would settle it.",
+      "why_he": "בערוץ הישיר הבנק גובה 0.59% במינימום 23.5 דולר, אבל נספח הערוצים הישירים אומר שהשירות ניתן \"עבור מניות בארה״ב בלבד\", ומסמכי הבנק מונים קרנות סל בנפרד ממניות. לכן האתר מחשב קרן שנקנית בחו״ל לפי 0.79% במינימום 25 דולר. אם הבנק נותן את המחיר המופחת גם על קרן סל בארה״ב, המחיר זול יותר מזה שמוצג.",
       "could_change_price": true
     },
     {

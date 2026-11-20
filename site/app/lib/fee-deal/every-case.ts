@@ -1,10 +1,10 @@
 // The parts every case of a fee holds alike (method §10.6, F-114): the workbench says them once, apart from the fee's table or grid, and
 // leaves them out of it, so the table shows only what tells the cases apart. It is a view of the cases, not stored state: the model keeps
 // the part in every case, an edit of the cell said once edits it in each of them, and an edit inside the table that makes the cases differ
-// puts the part back in the table on its own. The reading never reads it. And what a part that asks an amount asks when it is added to
-// several cases at once. Pure; no Hebrew.
+// puts the part back in the table on its own. The reading never reads it. And what a part that asks for something asks when it is added
+// to several cases at once, asked once for them all. Pure; no Hebrew.
 import { pricedOf, type CasesFee } from "./model";
-import { asksAmount, besideThePrice, type PartId } from "./offers/parts";
+import { besideThePrice, isPending, type PartId, type PendingPart } from "./offers/parts";
 import { PART_ROWS, rowOf, type PartRow } from "./part-rows";
 import { partKey } from "./band-layout";
 import { PENDING, type PendingWords } from "./part-words";
@@ -40,13 +40,21 @@ export function withoutRows<R extends { parts: readonly SlimPart[] }>(rows: read
 }
 
 /**
- * What a part that asks an amount (`asksAmount`) asks when cases `cases` of a fee take it at once: its words, its box's spoken name and its
- * sign as the open case asks them (`PENDING`), on each case's first price, where the part goes. Null where the part asks no amount, or where
- * the cases would ask it differently (their sums kept in two currencies), since one amount typed once cannot stand for them all.
+ * What a part that asks for something (`isPending`: an amount, or another fee) asks when cases `cases` of a fee take it at once: its words,
+ * its box's spoken name and its sign as the open case asks them (`PENDING`), on each case's first price, where the part goes. Null where
+ * the part asks nothing, or where the cases would ask it differently (their sums kept in two currencies, or bounds over different
+ * periods), since one answer given once cannot stand for them all.
  */
 export function askAcross(fee: CasesFee, cases: readonly string[], part: PartId): PendingWords | null {
-  if (!asksAmount(part) || cases.length === 0) return null;
+  if (!isPending(part) || cases.length === 0) return null;
   const asked = cases.map((id) => PENDING[part]({ kind: fee.kind, p: pricedOf(fee, id).stages[0]!.price }));
   const same = (a: PendingWords) => JSON.stringify(a) === JSON.stringify(asked[0]);
   return asked.every(same) ? asked[0]! : null;
+}
+
+/** A part that asks for something, chosen for several cases of a fee at once and not given yet: its cases, and the thing they stand along. */
+export interface CasesAsk {
+  part: PendingPart;
+  cases: string[];
+  along: number;
 }

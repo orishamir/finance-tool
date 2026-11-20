@@ -1,7 +1,7 @@
 // A small square control that takes no room of its own (design-system 11, `KnobButton`): a bordered square on the popover's surface, a
 // 12 px icon in it, muted and the foreground under the pointer, its words spoken and in its title only. It is the look of every small
 // action that stands at an edge or a corner of what it acts on: the plus that adds a column, a row or a step at the heads' end or between
-// two heads, the plus under a row that adds a part to every case of it, the ✕ at a part line's end, and a closed fee card's corner
+// two heads, the plus under a row that opens the toolbox on every case of it, the ✕ at a part line's end, and a closed fee card's corner
 // actions. Where it stands alone its press reaches 44 px both ways (`wide`); beside other controls, 44 px tall. It carries no transition
 // of its own: where it is drawn only on hover, app.css fades it in after the pointer rests (`--hover-rest`).
 import type { ComponentType, MouseEvent } from "react";
