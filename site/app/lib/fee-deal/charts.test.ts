@@ -69,7 +69,7 @@ describe("what a purchase or sale costs", () => {
     const r = c.readAt(c.start);
     // the minimums are set in dollars, so the shekel sum moves with each data/series/ecb-fx.json refresh
     expect(r.total.value).toBeCloseTo(44 * nisPerNumber(data.fx!, "USD")!, 6);
-    expect(r.share.value).toBeCloseTo((r.total.value / c.start) * 100, 9);
+    expect(r.share.value).toBeCloseTo((Number(r.total.value) / c.start) * 100, 9);
     expect(r.share.value).toBeCloseTo(0.77, 3);
     expect(r.parts.map((p) => p.part?.part)).toEqual(["min", "min"]);
     expect(r.parts[0]!.rateAlone!.value).toBeCloseTo(c.start * 0.0025, 9);
