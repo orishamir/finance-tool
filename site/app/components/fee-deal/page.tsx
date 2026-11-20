@@ -42,7 +42,7 @@ import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { dealStore, savedWith, unreadDeals } from "../../lib/fee-deal/store";
 import { copyHouseFee, dataBar, feeAlone, feePriceLists, houseName, housesToCopy, templateSource } from "../../lib/fee-deal/templates";
 import { addByKept, fillFeeKept, liftKept, removeByKept, removeChangeKept, removeCaseKept, removeFeeKept, setKindKept, type DealUndo } from "../../lib/fee-deal/undo";
-import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy, rowParts, toolToCases } from "../../lib/fee-deal/lifted";
+import { binTakes, liftDrop, liftedOf, liftRemove, liftTakes, liftWhy, rowParts, toolAsks, toolToCases } from "../../lib/fee-deal/lifted";
 import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
@@ -333,6 +333,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       const next = toolOnHead(feeId, cases, along, item);
       if (next) onFee(next);
     },
+    asksCases: (feeId, cases, item) => (feeId === chosen ? toolAsks(read, feeId, cases, item) : null),
     accepts: (feeId, at, item) => !!toolsFor(feeId, at)?.groups.some((g) => g.parts.some((x) => x.id === item && !x.used && !x.off)),
     onDrop: (feeId, at, item) => {
       const fee = deal.fees.find((f) => f.id === feeId);

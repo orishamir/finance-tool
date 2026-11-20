@@ -1,8 +1,10 @@
-// A fee whose price changes by things, laid out by its shape (method §10.6, F-114; lib/fee-deal/band-layout.ts and layout.ts): where its
-// block has the room, its condition's head on the fee's name's line (`FeeBlock`'s `by`) and under it a table of its cases (one thing; a range as a ladder whose step tops are typed in
-// place) or a grid (two things; a third a switch above it; under a row's cells, a cell for each part its cells hold alike), the case open
-// under them; on a block narrower than a computer's, the same cases as rows in the cases' band, a grid's in one group per value of its first thing,
-// a part one cell holds for every case said once above them. Each add is a bare plus beside the heads (at the end of the column heads,
+// A fee whose price changes by things, laid out by its shape (method §10.6, F-114; lib/fee-deal/band-layout.ts and layout.ts): first, under
+// the fee's name's line, the parts every case of the fee holds alike (every-case.ts), one cell each, said once and left out of the table, and
+// after them "+ חלק לכל המקרים", which adds a part to every case (a part that asks its amount asks it there first); then the cases' band,
+// headed by the condition. Where its block has the room, the band holds a table of its cases (one thing; a range as a ladder whose step tops
+// are typed in place) or a grid (two things; a third a switch above it; under a row's cells, a cell for each part its cells hold alike), the
+// case open under the band; on a block narrower than a computer's, the same cases as rows in the band, a grid's in one group per value of
+// its first thing, a part one cell holds for every case said once above them. Each add is a bare plus beside the heads (at the end of the column heads,
 // under the row heads), a plus knob on the line between two heads, which adds exactly there (the head's menu adds before or after it), a row of
 // its own after a band's rows: on a list thing's table and a grid's row and column it adds one value at once (`nextValue`: the site's
 // next, else one in the person's words, whose head opens for its name; what is bought or held asks once the site's run out,
@@ -15,9 +17,10 @@
 // keyboard; a table's columns, a grid's rows and columns and the cases read as rows are sortable lists, the others opening the gap where
 // the pointer stands, and every place shows what a drop would do while a thing is over it (the page draws the deal as it would leave it).
 // Every cell of a table or a grid has knobs that stretch it where nothing is overwritten (reach.ts), the cells it would cover showing its
-// price while it is pulled, a cell over its whole row saying so. Under a grid's row, or a table's last row, a strip drawn while the
-// pointer is there adds a part to every case of it as one stretched cell (`partAcross`), as its head's menu does. A toolbox part dragged
-// here drops on a case's head, cell or row, or on the open case; a thing to change by, on a case's head, splits that case alone.
+// price while it is pulled, a cell over its whole row saying so. Under a grid's row a strip drawn while the pointer is there adds a part
+// to every case of it as one stretched cell (`partAcross`), as its head's menu does, a part that asks its amount asking it on a line under
+// the row. A toolbox part dragged here drops on a case's head, cell or row, on the open case, or on the parts said once for every case,
+// which puts it in every case; a thing to change by, on a case's head, splits that case alone.
 // Ctrl+C copies a cell and Ctrl+V pastes it on another cell, a head or the fee's head (paste.ts).
 import { useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { X } from "lucide-react";
@@ -31,19 +34,20 @@ import { duplicateValue, moveCase, moveValue, swapThings } from "../../lib/fee-d
 import { currencyClash, partAcross, shrink, shrinkAway, shrinkEmpties, stretch, stretchOver } from "../../lib/fee-deal/edits/cells";
 import { bandLayout, inTime, laterChanges, mergedParts, partsByRow, rangeSign, rowHead, type PartRow, type StepBounds } from "../../lib/fee-deal/band-layout";
 import { valueKey, WHOLE, type FeeLayout, type GridRow, type Head, type Shared } from "../../lib/fee-deal/layout";
-import { clashWords, liftId, type Lifted, type LiftTarget } from "../../lib/fee-deal/lifted";
+import { clashWords, liftId, liftedOf, type Lifted, type LiftTarget } from "../../lib/fee-deal/lifted";
+import { askAcross, everyCaseRows, withoutRows } from "../../lib/fee-deal/every-case";
 import { isRange, NAME_MAX, type CasesFee, type Fee, type When } from "../../lib/fee-deal/model";
 import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits, reachOf, type Slot } from "../../lib/fee-deal/reach";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
-import { ActionMenu, AddSlot, RenameInput, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, ConditionHead, DropBin, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, KindDot, WhenRule, monthText, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
+import { ActionMenu, AddSlot, RenameInput, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, DropBin, DropZone, EveryCaseParts, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, KindDot, WhenRule, monthText, useCarried, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
 import { IdRef, Num } from "../provenance";
 import { Fig } from "./words";
 import { AskStep, AskValuesOf } from "./ask-thing";
 import { LawTag } from "./links";
 import { WhenText, numText, whenText } from "./open-case";
-import { PART_MARK } from "./part-edit";
-import { PARTS, setPart } from "../../lib/fee-deal/offers/parts";
+import { AskAmount, PART_MARK } from "./part-edit";
+import { asksAmount, PARTS, setPart, type AmountPart } from "../../lib/fee-deal/offers/parts";
 import { clipOf, pasteOn, type PastePlace } from "../../lib/fee-deal/paste";
 import { clipboard } from "./clipboard";
 import { ROW_OF } from "../../lib/fee-deal/part-rows";
@@ -51,6 +55,8 @@ import { EditHere, PartFig } from "./edit-here";
 import type { BlockActions, HeadApply, OpenHere, ZoneOf } from "./fee-block";
 
 const sep = copy.cases.sep;
+/** The place a part is asked at and the menu is opened from when it goes into every case of the fee (`askPart`, `rowMenu`). */
+const EVERY = "every";
 
 /** A case's value for each thing in plain words, joined, for its spoken name and the toolbox's line ("ניירות ערך בחו״ל, בארה״ב · מסלול 1"). */
 export const caseText = (when: readonly WhenWords[]): string => when.map(whenText).join(sep);
@@ -165,17 +171,20 @@ function Joined({ parts, bare, lines, off }: { parts: readonly SlimPart[]; bare?
 }
 
 /**
- * Whether a table or a grid is drawn: where its block has the room it needs (a head column, each case's or value's, and the add pill), or
- * a computer's room (`TABLE_ROOM`), where a table wider than its block scrolls inside itself rather than falling back to rows; narrower,
- * the cases read as rows.
+ * Whether a table or a grid is drawn: where its block has the room it needs inside the cases' band (a head column, each case's or value's,
+ * and the add pill), or a computer's room (`TABLE_ROOM`), where a table wider than its block scrolls inside itself rather than falling back
+ * to rows; narrower, the cases read as rows.
  */
 function fits(layout: FeeLayout, width: number): boolean {
   const need = layout.shape === "table" ? 96 + layout.columns.length * (layout.ladder ? STEP_COLUMN : 128) + 96 : layout.shape === "grid" ? 128 + layout.columns.length * (layout.across.range ? STEP_COLUMN : 136) + 96 : Infinity;
-  return layout.shape !== "rows" && (width >= need || width >= TABLE_ROOM);
+  return layout.shape !== "rows" && (width - BAND_INSET >= need || width >= TABLE_ROOM);
 }
 
 /** A block this wide, in px, is a computer's: its table is drawn whatever its cases, and scrolls inside itself where it is wider. */
 const TABLE_ROOM = 600;
+
+/** What the cases' band takes of its block's width around a table or a grid, in px: its 1 px edge and the 12 px in from it, on both sides. */
+const BAND_INSET = 26;
 
 /** A ladder's column, in px: room for its head on one line, "100,000 עד" and its top's box (`CaseTable`'s and `CaseGrid`'s `steps`). */
 const STEP_COLUMN = 184;
@@ -218,11 +227,8 @@ export function FeeCases({
   zone: ZoneOf;
   /** The open case's parts in edit, with the spoken name of its boxes and the heads over it its parts' menus apply them to. */
   openParts: (spoken: string, heads?: readonly HeadApply[]) => ReactNode;
-  /**
-   * The fee's card around its cases (`cases`), with `by` on its name's line: the condition's head where the cases stand as a table or a
-   * grid; null where they read as rows, the band then heading them itself.
-   */
-  children: (by: ReactNode, cases: ReactNode) => ReactNode;
+  /** The fee's card around its cases (`cases`: the parts every case holds alike, then the cases' band, under the fee's name's line). */
+  children: (cases: ReactNode) => ReactNode;
 }) {
   const { onOpen, onSlot, onThing, onRemoveCase, lift } = actions;
   const isOpen = open.fee === fee.id;
@@ -239,7 +245,15 @@ export function FeeCases({
   // every case, in the fee's order: none is set apart for not being the person's; a later price says only what it changes
   const rows = useMemo(() => band.rows.map((r) => ({ ...r, parts: laterChanges(r.parts) })), [band.rows]);
   const byCase = new Map(rows.map((r) => [r.case, r]));
-  const layout = useMemo(() => bandLayout(fee, rows, switchTo), [fee, rows, switchTo]);
+  // the part rows every case holds alike stand apart, said once over the band; the table, the grid and the rows lay out the rest
+  // While something is carried, a preview that makes a row alike in every case leaves it in the grid: the rows stand as they did at rest,
+  // so a preview never moves the carried thing's own place (kit/lift.tsx)
+  const carried = useCarried();
+  const alike = useMemo(() => everyCaseRows(band.rows), [band.rows]);
+  const atRest = useRef(alike);
+  if (carried === null) atRest.current = alike;
+  const every = useMemo(() => (carried === null ? alike : alike.filter((r) => atRest.current.includes(r))), [carried, alike]);
+  const layout = useMemo(() => bandLayout(fee, withoutRows(rows, every), switchTo), [fee, rows, every, switchTo]);
   const wide = fits(layout, width);
   const c = copy.cases;
   const lw = c.lifted;
@@ -430,19 +444,52 @@ export function FeeCases({
     return l ? { liftItem: liftId(l) } : {};
   };
 
-  // ---------------------------------------------------------------- a part across a whole row ("+ חלק לכל השורה", SPEC-table-3)
-  const [rowMenu, setRowMenu] = useState<{ at: HTMLElement; cases: string[]; along: number } | null>(null);
-  /** The parts a row's cases can all take, each an action that puts it in every one of them as one stretched cell (`partAcross`). */
-  const partChoices = (cases: readonly string[], along: number): GripAction[] =>
-    lift.rowParts(fee.id, cases).map((p) => ({ label: p.label, onPick: () => onFee(partAcross(fee, cases, p.id, along)) }));
-  /** The strip under a row that adds a part to every case of it, and the same in its head's menu; none where no part fits them all. */
-  const rowAdd = (cases: readonly string[], along: number, words: { strip: string; menu: string; spoken: string }) => {
-    const choices = cases.length ? partChoices(cases, along) : [];
+  // ---------------------------------------------------------------- a part added to several cases at once: a grid's row ("+ חלק לכל
+  // השורה", its strip and its head's menu) or every case of the fee ("+ חלק לכל המקרים"); `where` names the place it was asked at
+  const [rowMenu, setRowMenu] = useState<{ at: HTMLElement; cases: string[]; along: number; where: string } | null>(null);
+  /** A part that asks its amount first, being added to cases `cases`: asked where it was chosen (`where`: a grid row's key, or `EVERY`). */
+  const [askPart, setAskPart] = useState<{ part: AmountPart; cases: string[]; along: number; where: string } | null>(null);
+  /**
+   * The parts cases `cases` can all take, each an action that puts it in every one of them as one stretched cell (`partAcross`); a part that
+   * asks an amount asks it first, once for them all, where it was chosen (`where`).
+   */
+  const partChoices = (cases: readonly string[], along: number, where: string): GripAction[] =>
+    lift.rowParts(fee.id, cases).map((p) => ({ label: p.label, onPick: () => (asksAmount(p.id) ? setAskPart({ part: p.id, cases: [...cases], along, where }) : onFee(partAcross(fee, cases, p.id, along))) }));
+  /** The strip that adds a part to every case of `cases`, and the same in a head's menu; none where no part fits them all. */
+  const rowAdd = (cases: readonly string[], along: number, where: string, words: { strip: string; menu: string; spoken: string }) => {
+    const choices = cases.length ? partChoices(cases, along, where) : [];
     if (choices.length === 0) return { strip: undefined, menu: [] as GripAction[] };
     return {
-      strip: { label: words.strip, spoken: words.spoken, expanded: rowMenu?.cases.join() === cases.join(), onAdd: (at: HTMLElement) => setRowMenu((m) => (m && m.at === at ? null : { at, cases: [...cases], along })) } as AddSpec,
+      strip: { label: words.strip, spoken: words.spoken, expanded: rowMenu?.where === where, onAdd: (at: HTMLElement) => setRowMenu((m) => (m && m.at === at ? null : { at, cases: [...cases], along, where })) } as AddSpec,
       menu: [{ label: words.menu, onPick: () => undefined, then: choices }] as GripAction[],
     };
+  };
+  /**
+   * The part being added that asks its amount, where it was chosen (`where`), asked once for its cases (`AskAmount`): given, it stands in
+   * each of them as one cell, and the focus goes to the cell said once for every case where it stands there; none where the cases would no
+   * longer ask it alike.
+   */
+  const askAt = (where: string): ReactNode => {
+    if (!askPart || askPart.where !== where) return null;
+    const asked = askAcross(fee, askPart.cases, askPart.part);
+    if (!asked) return null;
+    const { part, cases, along } = askPart;
+    const row = ROW_OF[part];
+    return (
+      <AskAmount
+        key={`${where}:${part}`}
+        fee={fee}
+        part={part}
+        words={asked}
+        name={name}
+        onDrop={() => setAskPart(null)}
+        onGive={(n) => {
+          setAskPart(null);
+          onFee(partAcross(fee, cases, part, along, n));
+          requestAnimationFrame(() => box.current?.querySelector<HTMLElement>(`[data-every-cell="${row}"]`)?.focus({ preventScroll: true }));
+        }}
+      />
+    );
   };
   const caseTarget = (caseId: string): LiftTarget => ({ k: "case", fee: fee.id, case: caseId });
   /** A head's cases, standing along thing `along`, as the place a part dropped on the head goes into each of (lifted.ts), each named by what tells it apart. */
@@ -691,22 +738,63 @@ export function FeeCases({
   // the bin, while something of this fee is lifted: under its table, grid or band, laid over what follows (its wrapper places it); on a
   // phone at the foot of the screen
   const bin = <DropBin phone={lift.phone} accepts={(it) => lift.binTakesItem(fee.id, it)} onDrop={(it) => lift.onBinItem(it)} />;
-  /** The menu a row's strip opens: the parts every case of the row can take. */
-  const rowMenuView = rowMenu && rowMenu.at.isConnected ? <ActionMenu key={rowMenu.cases.join()} actions={partChoices(rowMenu.cases, rowMenu.along)} back={{ current: rowMenu.at }} onClose={() => setRowMenu(null)} /> : null;
+  /** The menu a strip opens: the parts every case of its row, or of the fee, can take. */
+  const rowMenuView = rowMenu && rowMenu.at.isConnected ? <ActionMenu key={rowMenu.where} actions={partChoices(rowMenu.cases, rowMenu.along, rowMenu.where)} back={{ current: rowMenu.at }} onClose={() => setRowMenu(null)} /> : null;
 
-  // the condition's head on the fee's name's line, over a table or a grid: a paste on it goes into every case
-  const byLine = (
-    <div data-paste-head="" className="contents" onKeyDown={onKeys}>
-      <ConditionHead inline {...head} />
-    </div>
+  // ---------------------------------------------------------------- the parts every case holds alike, said once over the band
+  const allIds = fee.cases.map((x) => x.id);
+  /** Each part row every case holds alike as one cell: edited in place for every case, lifted, taken away from every case, copied and pasted on. */
+  const everyCells = every.map((row) => {
+    const shown = mergedParts(allIds, (id) => partsOf(id, row));
+    const l: Lifted = { k: "cell", fee: fee.id, cases: allIds, row, along: allAlong };
+    const words = rowHead(row, shown);
+    return {
+      id: row,
+      content: here(allIds, <Joined parts={shown} off={partOff(allIds, shown.length)} />),
+      grip: grip(l, `${lw.grip.cell}${words}`, [], { name: words, place: "outside" }),
+      ...(lift.binTakes(l) ? { onRemove: () => lift.onBin(l), removeLabel: binWords(`${words}${sep}${c.everyCase.where}`) } : {}),
+      ...copyable(`${EVERY}:${row}`, l as Extract<Lifted, { k: "cell" }>),
+    };
+  });
+  // "+ חלק לכל המקרים": the parts every case can take and none holds yet, for a fee of two cases or more
+  const everyAdd = allIds.length > 1 ? rowAdd(allIds, allAlong, EVERY, { strip: c.rowAdd.allCases, menu: lw.menu.addAllCases, spoken: lw.menu.addAllCases }).strip : undefined;
+  /**
+   * The row of the parts said once takes what lands there for every case: a part lifted from a case or a cell, as the fee's head would
+   * (`everyCase`), and a toolbox card, the cases that lack its row taking it (a part that asks an amount asks it there first).
+   */
+  const everyZone = (el: ReactNode) => (
+    <DropZone
+      onPreview={(it, how) => {
+        const l = it === null ? null : liftedOf(it);
+        lift.preview(l && lift.takes(l, everyCase) ? { l, on: everyCase, how } : null);
+      }}
+      accepts={(it) => {
+        const l = liftedOf(it);
+        return l ? lift.takes(l, everyCase) : actions.drop.acceptsCases(fee.id, allIds, allAlong, it) || actions.drop.asksCases(fee.id, allIds, it) !== null;
+      }}
+      onDrop={(it, how) => {
+        const l = liftedOf(it);
+        if (l) return lift.onDrop(l, everyCase, how);
+        if (actions.drop.acceptsCases(fee.id, allIds, allAlong, it)) return actions.drop.onDropCases(fee.id, allIds, allAlong, it);
+        const asks = actions.drop.asksCases(fee.id, allIds, it);
+        if (asks) setAskPart({ part: it as AmountPart, cases: asks, along: allAlong, where: EVERY });
+      }}
+      why={(it) => {
+        const l = liftedOf(it);
+        return l ? lift.why(l, everyCase) : null;
+      }}
+    >
+      {el}
+    </DropZone>
   );
+  const everyRow = <EveryCaseParts label={c.everyCase.parts} cells={everyCells} asking={askAt(EVERY)} {...(everyAdd ? { add: everyAdd } : {})} zone={everyZone} />;
+  // the band's head over a table or a grid: a paste on it goes into every case
+  const pasteHead = { ...head, zone: (h: ReactNode) => head.zone(<div data-paste-head="" className="contents">{h}</div>) };
   let body: ReactNode;
   if (wide && layout.shape === "table") {
     const t = layout.thing;
     const n = layout.columns.length;
     const listThing = !layout.ladder && layout.split === null && !isRange(fee.by[t]!);
-    const allCases = layout.columns.flatMap((x) => (x.case ? [x.case] : []));
-    const across = rowAdd(allCases, t, { strip: c.rowAdd.allCases, menu: lw.menu.addAllCases, spoken: lw.menu.addAllCases });
     /** A column's value in words: its case's (a ladder's step as its bounds), or, with no case, its thing's own. */
     const colWords = (col: (typeof layout.columns)[number]) => {
       if (!col.case) return whenText(band.unnamed[t]![valueKey(col.when)]!);
@@ -732,6 +820,8 @@ export function FeeCases({
     // a column with no case: its values for a new case, the table's other thing as its cases name it (one value along the second) or any
     const otherWhen = t === 1 ? fee.cases[0]!.when[0]! : "any";
     body = (
+      <ConditionBand {...pasteHead} foot={bin}>
+      <div className="px-3">
       <CaseTable
         label={name}
         ladder={layout.ladder}
@@ -798,9 +888,9 @@ export function FeeCases({
         ]}
         add={layout.ladder ? stepSlot(t) : listThing ? valuesSlot(t, undefined, c.addKnob.case) : addOne}
         {...(inserts ? { insert: insertAt(t, heads) } : {})}
-        {...(across.strip ? { addPart: across.strip } : {})}
-        foot={bin}
       />
+      </div>
+      </ConditionBand>
     );
   } else if (wide && layout.shape === "grid") {
     const g = layout;
@@ -874,6 +964,8 @@ export function FeeCases({
       return el.closest("[data-paste-head]") ? (everyCase as PastePlace) : null;
     };
     body = (
+      <ConditionBand {...pasteHead} foot={bin}>
+      <div className="px-3">
       <CaseGrid
         label={name}
         steps={g.across.range}
@@ -886,15 +978,19 @@ export function FeeCases({
           const rc = gridRowSlots(g, row);
           const inRow = row.cells.filter((x) => x.case && !x.covered && !x.whole).flatMap((x) => x.cases.filter((id) => row.cases.includes(id)));
           const words = headName(row, 0);
-          const strip = rowAdd(inRow, 1, { strip: c.rowAdd.strip, menu: lw.menu.addRow, spoken: `${lw.menu.addRow}${sep}${words}` });
+          const strip = rowAdd(inRow, 1, row.key, { strip: c.rowAdd.strip, menu: lw.menu.addRow, spoken: `${lw.menu.addRow}${sep}${words}` });
           const hg = headGrip(row, 0, g.rows, [...strip.menu, ...insertActions(0, j, rowHeads)]);
+          // a part chosen from the row's strip that asks its amount asks it on a line of its own under the row, over the row's cases
+          const asking = askAt(row.key);
+          const filled = row.cells.filter((x) => x.case && !x.covered);
+          const askLine = asking && filled.length ? [{ id: "ask", cells: [{ from: Math.min(...filled.map((x) => x.from)), span: Math.max(...filled.map((x) => x.from + x.span)) - Math.min(...filled.map((x) => x.from)), content: asking }] }] : [];
           return {
             id: row.key,
             head: named(0, row.key, words, headOfValue(row, 0)),
             ...renameOn(0, row.key),
             ...(hg ? { grip: hg } : {}),
             ...headItem(row, 0),
-            lines: partLines(row),
+            lines: [...partLines(row), ...askLine],
             ...(strip.strip ? { addPart: strip.strip } : {}),
             zone: (h: ReactNode) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }, headCases(row.cases, 1)], `row:${row.key}`, h, downList),
             cells: row.cells.filter((cell) => !cell.covered).map((cell) => {
@@ -961,8 +1057,9 @@ export function FeeCases({
         addColumn={slotOf(g.across.thing, g.across.range)}
         insertRow={insertAt(0, rowHeads)}
         insertColumn={insertAt(1, colHeads)}
-        foot={bin}
       />
+      </div>
+      </ConditionBand>
     );
   } else if (layout.shape === "grid") {
     // a grid read as rows: one group per value of the first thing, its cases' rows naming the second thing alone
@@ -978,10 +1075,18 @@ export function FeeCases({
         {g.rows.map((row) => {
           const inRow = row.cells.filter((x) => x.case && !x.covered && !x.whole).flatMap((x) => x.cases.filter((id) => row.cases.includes(id)));
           const words = headName(row, 0);
-          const strip = rowAdd(inRow, 1, { strip: c.rowAdd.strip, menu: lw.menu.addRow, spoken: `${lw.menu.addRow}${sep}${words}` });
+          const strip = rowAdd(inRow, 1, row.key, { strip: c.rowAdd.strip, menu: lw.menu.addRow, spoken: `${lw.menu.addRow}${sep}${words}` });
           const hg = headGrip(row, 0, g.rows, strip.menu);
+          // a part chosen from the group head's menu that asks its amount asks it under the group's head, with what the group says once
+          const asking = askAt(row.key);
+          const shared = row.once.length || asking ? (
+            <>
+              {row.once.length > 0 && saidJoined(row.once)}
+              {asking}
+            </>
+          ) : null;
           return (
-            <CaseGroup key={row.key} head={headOfValue(row, 0)} {...(row.once.length ? { shared: saidJoined(row.once) } : {})} {...(hg ? { grip: hg } : {})} zone={(h) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }, headCases(row.cases, 1)], `row:${row.key}`, h, downList)}>
+            <CaseGroup key={row.key} head={headOfValue(row, 0)} {...(shared ? { shared } : {})} {...(hg ? { grip: hg } : {})} zone={(h) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }, headCases(row.cases, 1)], `row:${row.key}`, h, downList)}>
               {row.cells.flatMap((cell) => {
                 if (cell.case)
                   return cell.cases.filter((id) => row.cases.includes(id)).map((id) => {
@@ -1060,8 +1165,8 @@ export function FeeCases({
     );
   }
   return children(
-    wide ? byLine : null,
     <div ref={box} className="flex flex-col gap-2" onKeyDown={onKeys}>
+      {everyRow}
       {body}
       {question}
       {rowMenuView}

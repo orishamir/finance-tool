@@ -8,7 +8,8 @@ import { withDiscountOnMin, withMonths, withOffset, withThirdForm, withThirdWho 
 import { type Side } from "../../lib/fee-deal/model";
 import { MONTHS, type Fee, type FeeDeal, type MonthKey, type Months, type Price, type Stage, type ThirdPrice } from "../../lib/fee-deal/model";
 import { charged, onAction, ON_ACTION_FORMS } from "../../lib/fee-deal/offers/capabilities";
-import { PARTS, setPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
+import { PARTS, setPart, type AmountPart, type PartId, type PendingPart } from "../../lib/fee-deal/offers/parts";
+import type { PendingWords } from "../../lib/fee-deal/part-words";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { FigureField, InlineSelect, PartEdit, Switch, TextField, type PartMark } from "../kit";
 import { partFieldId, partPlaceId, signText } from "./figures";
@@ -295,23 +296,38 @@ export function PendingEdit({ fee, caseId, pending, deal, name, onFee, hands }: 
       </>
     );
   } else {
-    const shown = signText(sign ?? "pct");
-    body = (
-      <FigureField
-        value={null}
-        label={label}
-        unit={shown}
-        sign={shown}
-        tight
-        id={partFieldId(fee.id, `${part}-pending`)}
-        words={<span className="text-muted-foreground">{tail}</span>}
-        onCommit={(n) => done(setPart(fee, part, true, { ...at, value: n }), `${side}${k}-${part}-${figure}`)}
-      />
-    );
+    body = <AmountBox id={partFieldId(fee.id, `${part}-pending`)} label={label} sign={sign} tail={tail} onCommit={(n) => done(setPart(fee, part, true, { ...at, value: n }), `${side}${k}-${part}-${figure}`)} />;
   }
   return (
     <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.lead)} onRemove={onDone} removeLabel={copy.builder.fieldName(name, dealCases.removePart)}>
       {body}
+    </PartEdit>
+  );
+}
+
+/** The box a part that asks an amount is asked in: empty, its sign inside it (a percent, or the currency its sums are kept in), the words after it. */
+function AmountBox({ id, label, sign, tail, onCommit }: { id: string; label: string; sign: string | undefined; tail: string | undefined; onCommit: (n: number) => void }) {
+  const shown = signText(sign ?? "pct");
+  return <FigureField value={null} label={label} unit={shown} sign={shown} tight id={id} words={<span className="text-muted-foreground">{tail}</span>} onCommit={onCommit} />;
+}
+
+/**
+ * A part that asks an amount, added to several cases at once (a fee's "+ חלק לכל המקרים", a grid row's "+ חלק לכל השורה", a toolbox card
+ * dropped on the parts said once for every case): asked once for them all, as the open case asks it for one case (`PendingEdit`), with the
+ * words, box name and sign every one of them asks it with (`askAcross`). Its box takes the focus as it appears; an amount given puts the
+ * part in each of them (`onGive`); its bin drops it (`onDrop`). No figure is put in before the person types one.
+ */
+export function AskAmount({ fee, part, words, name, onGive, onDrop }: { fee: Fee; part: AmountPart; words: PendingWords; name: string; onGive: (n: number) => void; onDrop: () => void }) {
+  const id = partFieldId(fee.id, `${part}-across`);
+  useEffect(() => {
+    const box = document.getElementById(id);
+    box?.focus({ preventScroll: true });
+    bringIntoView(box?.closest("[data-lift]") ?? box);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return (
+    <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.words.lead)} onRemove={onDrop} removeLabel={copy.builder.fieldName(name, dealCases.removePart)}>
+      <AmountBox id={id} label={copy.builder.fieldName(name, words.field)} sign={words.sign} tail={bare(words.words.tail)} onCommit={onGive} />
     </PartEdit>
   );
 }

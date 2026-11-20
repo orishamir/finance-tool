@@ -473,8 +473,8 @@ async function dragCheck() {
     const rows = await grid.evaluate((g) =>
       [...g.querySelectorAll("[role=rowheader]")].map((h) => {
         const j = Number(h.dataset.rowpos);
-        // the row's own line: its head's first line in the grid
-        const line = Number(getComputedStyle(h).gridRowStart) - 2;
+        // the row's own line: its head's first track, less the heads' track and the track between each two rows above it (CaseGrid's `track`)
+        const line = Number(getComputedStyle(h).gridRowStart) - 2 - j;
         const cells = [...g.querySelectorAll(`[role=gridcell][data-liftable]:not([data-part-cell])[data-row="${line}"]`)];
         return { j, line, name: h.innerText.trim(), cases: cells.length, from: cells[0] ? Number(cells[0].dataset.from) : -1 };
       }),
