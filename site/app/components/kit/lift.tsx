@@ -634,7 +634,7 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
           if (actions.length) setMenu((m) => !m);
         }}
         onKeyDown={onKeyDown}
-        className={cx("tap-area inline-flex h-7 w-5 shrink-0 touch-none select-none items-center justify-center rounded border border-border bg-popover text-muted-foreground shadow-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring", still ? "cursor-pointer" : "cursor-grab active:cursor-grabbing")}
+        className={cx("tap-wide inline-flex h-7 w-5 shrink-0 touch-none select-none items-center justify-center rounded border border-border bg-popover text-muted-foreground shadow-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring", still ? "cursor-pointer" : "cursor-grab active:cursor-grabbing")}
       >
         <GripVertical size={14} strokeWidth={1.75} aria-hidden />
       </button>
