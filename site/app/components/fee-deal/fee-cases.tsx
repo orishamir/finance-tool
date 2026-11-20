@@ -20,7 +20,7 @@
 // Every cell of a table or a grid has knobs that stretch it where nothing is overwritten (reach.ts), the cells it would cover showing its
 // price while it is pulled, a cell over its whole row saying so. Under a grid's row a plus drawn while the pointer is there opens the
 // toolbox on every case of it, as its head's menu does, a part it adds that asks its amount asking it on a line under the row; while the
-// toolbox adds to several cases, each of them is drawn open. A toolbox part dragged here drops on a case's cell, on the open case, or on
+// toolbox adds to a grid row's cases, each of them is drawn open (to every case of the fee, none). A toolbox part dragged here drops on a case's cell, on the open case, or on
 // the parts said once for every case or a grid row's head, which does what its tap does with the toolbox on those cases; a thing to
 // change by, on a case's head, splits that case alone.
 // Ctrl+C copies a cell and Ctrl+V pastes it on another cell, a head or the fee's head (paste.ts).
@@ -301,10 +301,12 @@ export function FeeCases({
   };
   /**
    * Whether a cell or line over `cases` shows as open: the open case's, the one tapped, or, where the case was opened otherwise, its own
-   * cell; while the toolbox adds to several cases at once, each of their own cells.
+   * cell; while the toolbox adds to a grid row's cases at once, each of their own cells (adding to every case of the fee, none: the
+   * toolbox's line says so, and every case outlined would only repeat it).
    */
   const shownOpen = (cases: readonly string[], key: string | null) =>
-    (!!openCase && cases.includes(openCase) && (picked?.case === openCase ? picked.key === key : key === null)) || (key === null && !!open.several && isOpen && cases.length > 0 && cases.every((id) => open.several!.target.cases.includes(id)));
+    (!!openCase && cases.includes(openCase) && (picked?.case === openCase ? picked.key === key : key === null)) ||
+    (key === null && !!open.several && isOpen && open.several.target.row !== undefined && cases.length > 0 && cases.every((id) => open.several!.target.cases.includes(id)));
   // a case or a step added opens: the first case the fee did not have
   const addAndOpen = (next: Fee) => {
     onFee(next);
