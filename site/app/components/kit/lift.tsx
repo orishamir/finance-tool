@@ -644,6 +644,12 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
 }
 
 /**
+ * The room a grip takes where it stands inside (`Grip`'s `inside`), with no grip in it: a part's landing copy keeps the room of the grip the
+ * part will have (on touch, inside the open fee, the padding a grip's part makes for it), and lifts nothing.
+ */
+export const GripRoom = () => <span aria-hidden data-grip-box="inside" />;
+
+/**
  * A grip's menu, or any small menu of actions opened from a control (`back`): its actions in a small list under the control, or over it
  * where the screen has no room under it, fixed to the screen so a table that scrolls inside itself never cuts it, and following the
  * control as the page scrolls. It opens with the focus on its first action. Esc, a press outside, the control leaving the screen or an

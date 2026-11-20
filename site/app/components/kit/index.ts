@@ -87,7 +87,7 @@ export { amountTick, logAt, logTicks, shareTicks, type LogRange } from "./log-ax
 export { KindDot, PartChip, PartEdit, focusPartEdit, type PartKind, type PartMark } from "./part-chip";
 export { CaseGroup, CaseRow, CaseSlot, ConditionBand, ConditionHead, OpenCase, type CaseWord, type HeadThing } from "./case-band";
 export { AddSlot, CaseGrid, CaseTable, EveryCaseParts, SharedLine, type AddSpec, type CaseColumn, type CaseTableRow, type CellExtras, type EveryCaseCell, type GridCellView, type GridHead } from "./case-table";
-export { ActionMenu, DropBin, Grip, SpanKnob, lift, useCanDrag, useDragSource, type DragSourceProps, type GripAction, type LiftAbout } from "./lift";
+export { ActionMenu, DropBin, Grip, GripRoom, SpanKnob, lift, useCanDrag, useDragSource, type DragSourceProps, type GripAction, type LiftAbout } from "./lift";
 export { flip } from "./flip";
 export { KnobButton } from "./knob-button";
 export { EditInPlace } from "./edit-in-place";
@@ -97,7 +97,7 @@ export { FeeBlock, SlimFee, type FeeRemove } from "./fee-block";
 export { RemoveButton } from "./remove-button";
 export { DropZone, useCarried, type DropHow, type SortOf } from "./drag-drop";
 export { Toolbox, type ToolGroup, type ToolHeld, type ToolKind, type ToolPart } from "./toolbox";
-export { AddHere } from "./add-here";
+export type { Landing } from "./landing";
 export { AskValues } from "./ask-values";
 export { RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet } from "./value-menus";
 export { ReadForBand, type ReadPick } from "./read-for-band";

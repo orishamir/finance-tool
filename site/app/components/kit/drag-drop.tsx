@@ -97,7 +97,7 @@ export function useOver(key: string): boolean {
  * drops on the row). A plain place that takes the thing draws its
  * frame on what it wraps, on that element's own edge and rounding, over its border: one frame, dashed, solid and filled while the thing is
  * over it. `children` given as a function of whether the place takes the carried thing and whether the thing is over it draws its own sign
- * of both, and the zone draws no frame (a price of the open case, whose round "+" shows it takes a toolbox card, `AddHere`). `tone="danger"`:
+ * of both, and the zone draws no frame (a price of the open case, where a toolbox card's landing copy shows it takes it, `Landing`). `tone="danger"`:
  * a bin, in the danger colour. `className` is the zone's own layout, `rounded` its rounding.
  */
 export function DropZone({ accepts, onDrop, onPreview, sort: sortOf, why, rounded = "rounded-lg", tone, className, children }: { accepts: (item: string) => boolean; onDrop: (item: string, how: DropHow) => void; onPreview?: (item: string | null, how: DropHow) => void; sort?: SortOf | ((item: string) => SortOf | null); why?: (item: string) => string | null; rounded?: string; tone?: "danger"; className?: string; children: ReactNode | ((at: { takes: boolean; over: boolean }) => ReactNode) }) {

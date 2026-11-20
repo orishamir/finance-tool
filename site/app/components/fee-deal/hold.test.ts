@@ -1,6 +1,6 @@
-// What ends the hold on a toolbox card, and where Tab goes while it is held (use-let-go.ts): Tab and Shift+Tab go round the places' "+"
-// and "ביטול", Escape lets go with the focus back on the card, a click on a place, a card or the hold line keeps the card held, and a
-// click elsewhere lets go, leaving the focus on the box or button it landed on, else putting it back on the card.
+// What ends the hold on a toolbox card, and where Tab goes while it is held (use-let-go.ts): Tab and Shift+Tab go round the places' landing
+// copies and "ביטול", Escape lets go with the focus back on the card, a click on a place, a card or the hold line keeps the card held, and
+// a click elsewhere lets go, leaving the focus on the box or button it landed on, else putting it back on the card.
 import { describe, expect, it } from "vitest";
 import { HOLD_RING, KEEPS_HOLD, TAKES_FOCUS, holdClick, holdKey, type Landed } from "./use-let-go";
 

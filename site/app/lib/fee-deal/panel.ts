@@ -128,6 +128,31 @@ function withChooser(fee: Fee, p: Price, parts: OpenPart[]): { parts: OpenPart[]
 /** A part the toolbox added that still asks for what it needs, at the place it was added (places.ts). */
 export type PendingAt = Waiting;
 
+/** A part of a price as a toolbox card's landing copy draws it: the part, and whether it is the copy of one the card's tap puts there. */
+export interface LandedPart {
+  part: OpenPart;
+  lands: boolean;
+}
+
+/**
+ * A price's parts while a toolbox card shows where it would land on it: the parts it has after the card's tap (`after`, the open case
+ * as the tap leaves it, places.ts), in their fixed order, each it has now drawn as it is now (`now`), each the tap puts on drawn as its
+ * landing copy; one the tap takes away (the "חינם" of a free price a charge stands in) is not drawn.
+ */
+export const landedParts = (now: OpenStage, after: OpenStage): LandedPart[] =>
+  after.parts.map((p) => {
+    const was = now.parts.find((x) => x.id === p.id);
+    return was ? { part: was, lands: false } : { part: p, lands: true };
+  });
+
+/**
+ * The part asking at a place while a toolbox card shows where it would land there: the one asking there after the card's tap (`after`),
+ * drawn as it is now where it is the one asking now (`now`), else as the landing copy of the part the tap leaves asking there; none where
+ * none asks there after it.
+ */
+export const landedPending = (now: OpenPending | null, after: OpenPending | null): { pending: OpenPending; lands: boolean } | null =>
+  !after ? null : now && now.part === after.part ? { pending: now, lands: false } : { pending: after, lands: true };
+
 /**
  * A pending part as the open case asks it, at its place in case `x`; null where it waits there no more (`stillWaits`: its side's prices
  * changed, its side or its price is gone, or the price can no longer hold it), so it never asks on another price.

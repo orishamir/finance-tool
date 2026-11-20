@@ -1,16 +1,16 @@
 // What ends the hold on a toolbox card besides "ביטול" and a tap on the card again (places.ts `tapCard`): Escape anywhere, a tap
-// anywhere but on a place's round "+" (`data-add-here`), a toolbox card (`data-part`, whose tap is its own: another card is tapped in
-// its turn) or the line that says the card is held (`data-tool-hold`), and a drag starting, whose own "+" the places then show. Escape is
-// taken before the toolbox's card sees it, so it lets the card go rather than closing the toolbox. A tap is a click, so a finger that
-// scrolls the page to reach a place keeps the card held. While a card is held, Tab and Shift+Tab go round the places' "+" and "ביטול"
-// only; a click on another box or button lets the card go and leaves the focus there. What a key or a click does is pure (`holdKey`,
+// anywhere but on a place's landing copy (`data-add-here`), a toolbox card (`data-part`, whose tap is its own: another card is tapped in
+// its turn) or the line that says the card is held (`data-tool-hold`), and a drag starting, whose own copies the places then show. Escape
+// is taken before the toolbox's card sees it, so it lets the card go rather than closing the toolbox. A tap is a click, so a finger that
+// scrolls the page to reach a place keeps the card held. While a card is held, Tab and Shift+Tab go round the places' landing copies and
+// "ביטול" only; a click on another box or button lets the card go and leaves the focus there. What a key or a click does is pure (`holdKey`,
 // `holdClick`), so it is tested without a page.
 import { useEffect, useRef } from "react";
 import { useCarried } from "../kit";
 
-/** The ring Tab goes round while a card is held: each place's round "+", then the hold line's "ביטול". */
+/** The ring Tab goes round while a card is held: each place's landing copy, then the hold line's "ביטול". */
 export const HOLD_RING = "button[data-add-here], [data-tool-hold] button";
-/** What a click may land on and keep the card held: a place's "+", a toolbox card, the hold line. */
+/** What a click may land on and keep the card held: a place's landing copy, a toolbox card, the hold line. */
 export const KEEPS_HOLD = "[data-add-here], [data-part], [data-tool-hold]";
 /** What takes the focus where a click lands: a box or a button, which keeps it as the card is let go. */
 export const TAKES_FOCUS = "input, select, textarea, button, a[href], [tabindex]";
@@ -43,7 +43,7 @@ export function holdClick(at: Landed | null): "keep" | "refocus" | "stay" {
 export function useLetGo(holding: boolean, letGo: (refocus: boolean) => void): void {
   const hand = useRef(letGo);
   hand.current = letGo;
-  // a drag starting lets the held card go, the focus left alone: the places then show the dragged card's "+"
+  // a drag starting lets the held card go, the focus left alone: the places then show the dragged card's landing copy
   const carrying = useCarried() !== null;
   useEffect(() => {
     if (holding && carrying) hand.current(false);

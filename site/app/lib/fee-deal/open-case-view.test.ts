@@ -107,7 +107,7 @@ describe("a part waiting for its value", () => {
   const asked = (deal: FeeDeal, w: Waiting) => panel(read(deal), "fee-trade", undefined, w)!.open.pending;
 
   it("is dropped, never moved to the purchase, when the sale priced apart it waits on is taken away", () => {
-    // hold "מינימום", tap the sale's "+": the minimum waits on the sale's later price
+    // hold "מינימום", tap its landing copy on the sale's later price: the minimum waits there
     const deal = trade([{ price: share(0.25) }], [{ price: { form: "free" }, until: "2027-01" }, { price: share(0.1) }]);
     const sellPlace: Place = { on: "price", side: "sell", k: 1 };
     expect(cardOf(toolbox(read(deal), "fee-trade")!, "min")!.places).toEqual([{ on: "price", side: "buy", k: 0 }, sellPlace]);

@@ -4,7 +4,7 @@
 // boxes (`OpenParts`) and the actions on the case; while a fee is open, its bin stands beside its name. Each thing of the head opens its
 // menu, the fee open or not: its values, and the action that stops the price changing by it. The question of a thing being added stands in the open
 // fee's block, above its cases or its price. On a computer a part dragged from the toolbox drops on a place of the open case that can
-// take it (a price, shown by its round "+", `PlaceHands`), or on another case where it has one place there; a thing to change by on the
+// take it (a price, shown by the card's landing copy, `PlaceHands`), or on another case where it has one place there; a thing to change by on the
 // open fee's block, or on one case's head, which splits that case alone (`ToolDrop`); a part dropped on the parts said once for every
 // case, or on a grid row's head, does what its tap does with the toolbox on those cases (`CasesTarget`). A thing lifted by its grip drops
 // on the places that take it (lifted.ts, `LiftHands`): every case, cell and head of the fee is one.

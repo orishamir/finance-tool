@@ -14,9 +14,10 @@
 // screen, the page keeping room under its end for it; the sheet comes folded to its groups' names with a deal, and unfolds
 // when a fee or a case is opened. The columns and the reading are one thing: a fee under the pointer or
 // the focus in one is marked in the others, and a fee's name in the reading opens it (`FeeLinks`). A toolbox card only adds: tapped, it
-// goes to its one place in the open case, or with several places it is held, each place drawing a round "+", until one is tapped or the
-// hold ends (Escape, "ביטול", the card again, a tap anywhere else), the focus then back on the card (places.ts). On a computer a card
-// dragged from the toolbox onto one of its places, or onto another case where it has one place, does there what its tap does
+// goes to its one place in the open case, or with several places it is held, each place drawing the card's landing copy where its tap
+// would put it (the open case as that tap would leave it, `toolStep`), until one is tapped or the hold ends (Escape, "ביטול", the card
+// again, a tap anywhere else), the focus then back on the card (places.ts). On a computer a card dragged from the toolbox onto one of its
+// places, or onto another case where it has one place, does there what its tap does, each place that takes it showing the same copy
 // (`ToolDrop`, `PlaceHands`). A change that loses
 // something (a fee taken away, a fee filled from a price list, a price, a case or a thing taken away, a saved deal deleted) leaves one
 // undo line where it happened (lib/fee-deal/undo.ts), which takes the focus as it appears and lives through edits elsewhere until it is
@@ -64,10 +65,10 @@ import { UndoLine } from "./undo-line";
 import { READING_ID } from "./left-out";
 import { SlotMenu, WhenText, whenText } from "./open-case";
 import { TemplatePicker } from "./picker";
-import { ToolboxCard, ToolboxColumn, applyTool, partLabel, type ToolHands } from "./toolbox";
+import { ToolboxCard, ToolboxColumn, applyTool, landingOf, partLabel, type ToolHands } from "./toolbox";
 import { useLetGo } from "./use-let-go";
 import type { LiftHands, ToolDrop } from "./fee-block";
-import type { PlaceHands } from "./open-case";
+import type { Landed, PlaceHands } from "./open-case";
 import { ReadingCards } from "./reading";
 import { useUnitPrice } from "./use-unit-price";
 import { refusalWords, useDealDocument, useOpenedDeal } from "./use-deal-document";
@@ -360,7 +361,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const heldWords = heldCard ? (heldCard.k === "line" ? heldCard.held : partLabel(heldCard)) : "";
   const holdLine = holdWords(heldWords, heldPlaces);
   // a step of the hold (places.ts `HoldStep`): the card held next, card `item` added at its place, and the focus on the earliest place's
-  // "+", so Enter adds there and Tab goes round the others (use-let-go.ts), or back on the card
+  // landing copy, so Enter adds there and Tab goes round the others (use-let-go.ts), or back on the card
   const holdStep = (step: HoldStep | null, item?: string) => {
     if (!step) return;
     oc.hold.set(step.held);
@@ -375,8 +376,12 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (several) return onCasesCard(several, item);
     holdStep(tapStep(held, { fee: chosenFee.id, case: caseId, card: item }, placesOf(chosenFee.id, caseId, item)), item);
   };
+  // what card `item`'s tap at place `place` of the open case would leave there, for its landing copy (`landingOf`), a charge as
+  // `changeForm` would put it on (`formAfter`)
+  const lands = (item: string, place: Place): Landed | null =>
+    chosenFee && !several ? landingOf(read, chosenFee, caseId, item, place, pending, (part, at) => doc.formAfter(chosenFee.id, part, caseId, at)) : null;
   const places: PlaceHands = {
-    held: holdLine !== null ? { words: heldWords, places: heldPlaces } : null,
+    held: holdLine !== null && held ? { card: held.card, words: heldWords, places: heldPlaces } : null,
     onPlace: (place) => {
       if (!held || !chosenFee) return;
       oc.hold.set(null);
@@ -388,10 +393,11 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
       oc.hold.set(null);
       applyAt(item, chosenFee, caseId, place);
     },
+    lands,
   };
   // a toolbox card dropped on the open fee (`caseId` null: a slim fee, or the fee as a whole) or one of its cases: a thing to change by
   // where that case's toolbox offers it; a part where it has one place in that case, and on the open case one that is no single price's
-  // (a price takes its own drop, by its "+"); dropped on another case than the open one, or while the toolbox adds to several cases, that
+  // (a price takes its own drop, where its landing copy shows); dropped on another case than the open one, or while the toolbox adds to several cases, that
   // case opens first
   const drop: ToolDrop = {
     acceptsCases: casesTake,

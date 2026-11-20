@@ -1,6 +1,7 @@
 // One part of a price in the case open in place (method §10.6): its body, a small component looked up by the part's id (`BODIES`), around
 // the boxes of its figures (`PriceFigure`); and a part the toolbox added that still asks for what it needs (a figure, a month, a fee),
-// asking for it by what it asks (`PendingEdit`, the part registry's `ask`).
+// asking for it by what it asks (`PendingEdit`, the part registry's `ask`). Each is drawn the same way as the landing copy of the part a
+// held or carried toolbox card would put there (`landing`, the kit's `Landing`), out of reach, before it is there.
 import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import { dealCases, feeDeal as copy } from "../../copy";
 import type { LinePart, OpenPart, OpenPending, PartField } from "../../lib/fee-deal/panel";
@@ -13,7 +14,7 @@ import { partAt, samePlace, stillWaits, type Waiting } from "../../lib/fee-deal/
 import type { PartGiven } from "../../lib/fee-deal/edits/cells";
 import type { PendingWords } from "../../lib/fee-deal/part-words";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
-import { FigureField, InlineSelect, PartEdit, Switch, TextField, focusPartEdit, type PartMark, type Settled } from "../kit";
+import { FigureField, InlineSelect, PartEdit, Switch, TextField, focusPartEdit, type Landing, type PartMark, type Settled } from "../kit";
 import { partFieldId, partPlaceId, signText } from "./figures";
 import { bringIntoView } from "./in-view";
 import { IdRef } from "../provenance";
@@ -238,11 +239,15 @@ const BODIES: Readonly<Record<LinePart, { Body: ComponentType<BodyProps>; lead?:
   sale: { Body: QuietBody },
 };
 
-/** One part of the open case's price in edit: its icon and lead, its body, and its bin (`onRemove`; a charge's makes the price free; none for a free price). */
-export function PartLine({ part, at, onRemove, grip }: { part: OpenPart; at: PartPlace; onRemove: (() => void) | undefined; /** Its grip (⋮⋮), where it can be lifted. */ grip?: ReactNode }) {
+/**
+ * One part of the open case's price in edit: its icon and lead, its body, and its bin (`onRemove`; a charge's makes the price free; none
+ * for a free price). With `landing`, the landing copy of the part a toolbox card would put on the price (`at`: the price as the card's tap
+ * leaves it), its bin and grip kept for their room.
+ */
+export function PartLine({ part, at, onRemove, grip, landing }: { part: OpenPart; at: PartPlace; onRemove: (() => void) | undefined; /** Its grip (⋮⋮), where it can be lifted. */ grip?: ReactNode; landing?: Landing }) {
   const { Body, lead } = BODIES[part.id];
   return (
-    <PartEdit id={partFieldId(at.fee.id, partPlaceId(at.side, at.k, part.id))} kind={part.kind} mark={PART_MARK[part.id]} lead={bare(lead ?? part.words.lead)} onRemove={onRemove} removeLabel={at.label(dealCases.removePart)} grip={grip}>
+    <PartEdit {...(landing ? { landing } : { id: partFieldId(at.fee.id, partPlaceId(at.side, at.k, part.id)) })} kind={part.kind} mark={PART_MARK[part.id]} lead={bare(lead ?? part.words.lead)} onRemove={onRemove} removeLabel={at.label(dealCases.removePart)} grip={grip}>
       <Body part={part} at={at} />
     </PartEdit>
   );
@@ -273,9 +278,7 @@ export interface PendingHands {
  */
 export function PendingEdit({ fee, caseId, pending, deal, name, onFee, hands }: { fee: Fee; caseId?: string; pending: OpenPending; deal: FeeDeal; name: string; onFee: (f: Fee) => void; hands: PendingHands }) {
   const onDone = hands.onDone;
-  const { part, ask, place, words, field, sign, figure } = pending;
-  const at = partAt(place, caseId);
-  const label = copy.builder.fieldName(name, field);
+  const { part, figure } = pending;
   const asksFigure = figure !== undefined;
   // the part asks where it stands: drawn for the first time, its box takes the focus, above a phone's pinned sheet
   const [fresh] = useState(hands.fresh);
@@ -299,20 +302,37 @@ export function PendingEdit({ fee, caseId, pending, deal, name, onFee, hands }: 
         el?.setSelectionRange(el.value.length, el.value.length);
       });
   };
+  return <PendingLine fee={fee} {...(caseId ? { caseId } : {})} pending={pending} deal={deal} name={name} onGive={done} onDrop={onDone} />;
+}
+
+/** The landing copy of a part a held or carried toolbox card would leave asking for what it needs here (`PendingEdit`, before it is there). */
+export function PendingLanding({ fee, caseId, pending, deal, name, landing }: { fee: Fee; caseId?: string; pending: OpenPending; deal: FeeDeal; name: string; landing: Landing }) {
+  return <PendingLine fee={fee} {...(caseId ? { caseId } : {})} pending={pending} deal={deal} name={name} onGive={() => undefined} onDrop={() => undefined} landing={landing} />;
+}
+
+/**
+ * A pending part's line, where it asks (`PendingEdit`) or as its landing copy (`landing`, its box with no id of its own): its lead, its
+ * empty box or its choice of fee, and its bin. What is given hands on the fee with the part in it, and the box the focus goes on to
+ * (`onGive`, given by Enter on a price); its bin drops it (`onDrop`).
+ */
+function PendingLine({ fee, caseId, pending, deal, name, onGive, onDrop, landing }: { fee: Fee; caseId?: string; pending: OpenPending; deal: FeeDeal; name: string; onGive: (next: Fee, box?: string) => void; onDrop: () => void; landing?: Landing }) {
+  const { part, ask, place, words, field, sign, figure } = pending;
+  const at = partAt(place, caseId);
+  const label = copy.builder.fieldName(name, field);
   const tail = bare(words.tail);
   let body: ReactNode;
   if (ask === "fee") {
     body = (
       <>
-        <OffsetChoice deal={deal} fee={fee} value={null} label={label} onChange={(kind) => done(setPart(fee, part, true, { ...at, against: kind }))} />
+        <OffsetChoice deal={deal} fee={fee} value={null} label={label} onChange={(kind) => onGive(setPart(fee, part, true, { ...at, against: kind }))} />
         <span className="text-muted-foreground">{tail}</span>
       </>
     );
   } else {
-    body = <AmountBox id={partFieldId(fee.id, `${part}-pending`)} label={label} sign={sign} tail={tail} onCommit={(n, by) => done(setPart(fee, part, true, { ...at, value: n }), by === "enter" && place.on === "price" ? `${partPlaceId(place.side, place.k, part)}-${figure}` : undefined)} />;
+    body = <AmountBox {...(landing ? {} : { id: partFieldId(fee.id, `${part}-pending`) })} label={label} sign={sign} tail={tail} onCommit={(n, by) => onGive(setPart(fee, part, true, { ...at, value: n }), by === "enter" && place.on === "price" ? `${partPlaceId(place.side, place.k, part)}-${figure}` : undefined)} />;
   }
   return (
-    <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.lead)} onRemove={onDone} removeLabel={copy.builder.fieldName(name, dealCases.removePart)} asking={asksFigure}>
+    <PartEdit kind={PARTS[part].kind} mark={PART_MARK[part]} lead={bare(words.lead)} onRemove={onDrop} removeLabel={copy.builder.fieldName(name, dealCases.removePart)} asking={figure !== undefined} {...(landing ? { landing } : {})}>
       {body}
     </PartEdit>
   );
@@ -323,9 +343,9 @@ export function PendingEdit({ fee, caseId, pending, deal, name, onFee, hands }: 
  * after it. The amount is given whole when the box is left or Enter is pressed (`settles`, and `by` says which), as giving it puts the
  * part in its place; Escape, or a box left empty, gives nothing.
  */
-function AmountBox({ id, label, sign, tail, onCommit }: { id: string; label: string; sign: string | undefined; tail: string | undefined; onCommit: (n: number, by: Settled) => void }) {
+function AmountBox({ id, label, sign, tail, onCommit }: { id?: string; label: string; sign: string | undefined; tail: string | undefined; onCommit: (n: number, by: Settled) => void }) {
   const shown = signText(sign ?? "pct");
-  return <FigureField value={null} label={label} unit={shown} sign={shown} tight settles id={id} words={<span className="text-muted-foreground">{tail}</span>} onCommit={(n, by) => onCommit(n, by ?? "left")} />;
+  return <FigureField value={null} label={label} unit={shown} sign={shown} tight settles {...(id ? { id } : {})} words={<span className="text-muted-foreground">{tail}</span>} onCommit={(n, by) => onCommit(n, by ?? "left")} />;
 }
 
 /**
