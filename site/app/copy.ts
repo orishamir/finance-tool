@@ -1989,7 +1989,6 @@ export const feeDeal = {
     pastedWhole: "{where}: המחיר הוחלף.",
     feeCorner: { duplicate: "לשכפל את העמלה", menuDuplicate: "שכפול העמלה", grip: "לשכפל או למחוק את העמלה: " },
     addStep: { ask: "{thing}: איפה הגבול של המדרגה החדשה?", note: "המדרגה שהגבול נופל בה תתפצל לשתיים, ושתיהן יישארו במחיר שלה עד שתשנו אותו.", field: "הגבול החדש", taken: "יש כבר מדרגה שמתחילה כאן." },
-    addValues: "כל ערך שתסמנו יתווסף בלי מחיר, עד שתוסיפו לו מקרה.",
     /** The switch above a grid of a fee that changes by three things, spoken. */
     switchLabel: "המקרים של",
     /** The line an undone case or thing leaves (undo.ts). */
@@ -2199,6 +2198,8 @@ export const feeDeal = {
       israel: "בארץ",
       abroad: "בחו״ל",
       ownCurrency: "המטבע",
+      /** A foreign currency the value does not name (a value saved so). */
+      otherCurrency: "מטבע אחר",
       /** A range's unit, spoken. */
       unit: "היחידה",
     },

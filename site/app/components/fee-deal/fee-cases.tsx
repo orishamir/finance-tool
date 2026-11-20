@@ -7,8 +7,8 @@
 // its first thing, a part one cell holds for every case said once above them. Each add is a bare plus beside the heads (at the end of the column heads,
 // under the row heads), a plus knob on the line between two heads, which adds exactly there (the head's menu adds before or after it), a row of
 // its own after a band's rows: on a list thing's table and a grid's row and column it adds one value at once (`nextValue`: the site's
-// next, else one in the person's words, whose head opens for its name; what is bought or held asks once the site's run out,
-// `AskValuesOf`), and a head in the person's words is renamed by a double-click or its menu; on a split table it copies the open case (else the last); on a ladder it asks only the new boundary (`AskStep`),
+// next, else one in the person's words, whose head opens for its name, one of what is bought or held with a place its head's menu
+// changes), and a head in the person's words is renamed by a double-click or its menu; on a split table it copies the open case (else the last); on a ladder it asks only the new boundary (`AskStep`),
 // between two steps one that splits one of them; a new value starts with no case. A place of a grid no case holds takes a copy of its
 // row's case; a place in a row or a column whose value no case names (a grid's row, a table's column) takes a case whose price is not
 // given yet (`addBlankCase`). Every
@@ -28,7 +28,8 @@ import { dealCases, feeDeal as copy } from "../../copy";
 import type { CaseRow as CaseRowView, FeeBlock as BlockView } from "../../lib/fee-deal/rows";
 import type { SlimPart, WhenWords } from "../../lib/fee-deal/case-words";
 import { onceLead, thingName } from "../../lib/fee-deal/case-words";
-import { addBlankCase, addCase, addCaseAt, addValuesAt, canRename, copyCase, renameValue, setTop } from "../../lib/fee-deal/edits/case";
+import { addBlankCase, addCase, addCaseAt, addValuesAt, canRename, copyCase, setOwnPlace, setTop } from "../../lib/fee-deal/edits/case";
+import { renameValueIn } from "../../lib/fee-deal/edits/deal";
 import { nextValue } from "../../lib/fee-deal/things";
 import { duplicateValue, moveCase, moveValue, swapThings } from "../../lib/fee-deal/edits/arrange";
 import { currencyClash, partAcross, shrink, shrinkAway, shrinkEmpties, stretch, stretchOver } from "../../lib/fee-deal/edits/cells";
@@ -36,14 +37,15 @@ import { bandLayout, inTime, laterChanges, mergedParts, partsByRow, rangeSign, r
 import { valueKey, WHOLE, type FeeLayout, type GridRow, type Head, type Shared } from "../../lib/fee-deal/layout";
 import { clashWords, liftId, liftedOf, type Lifted, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { askAcross, everyCaseRows, withoutRows } from "../../lib/fee-deal/every-case";
-import { isRange, NAME_MAX, type CasesFee, type Fee, type When } from "../../lib/fee-deal/model";
+import { BOUND_CURRENCIES, hasCases, isRange, NAME_MAX, namesPlaces, NEW_PLACE, type CasesFee, type Fee, type When } from "../../lib/fee-deal/model";
+import { LIST_IDS } from "../../lib/fee-deal/offers/conditions";
 import { gridColumnSlots, gridPartSlots, gridRowSlots, knobEdges, reachEdits, reachOf, type Slot } from "../../lib/fee-deal/reach";
 import type { StandingView } from "../../lib/fee-deal/deal-read";
 import { fmt } from "../../lib/format";
 import { ActionMenu, AddSlot, RenameInput, KnobButton, CaseGrid, CaseGroup, CaseRow, CaseSlot, CaseTable, ConditionBand, DropBin, DropZone, EveryCaseParts, FigureField, Grip, OpenCase, PartChip, SegmentedControl, SharedLine, SpanKnob, Tag, KindDot, WhenRule, monthText, useCarried, useWidth, type AddSpec, type CaseWord, type GripAction, type SortOf } from "../kit";
 import { IdRef, Num } from "../provenance";
 import { Fig } from "./words";
-import { AskStep, AskValuesOf } from "./ask-thing";
+import { AskStep } from "./ask-thing";
 import { LawTag } from "./links";
 import { WhenText, numText, whenText } from "./open-case";
 import { AskAmount, PART_MARK } from "./part-edit";
@@ -190,10 +192,10 @@ const BAND_INSET = 26;
 const STEP_COLUMN = 184;
 
 /**
- * The question of an add open: the thing it adds a value of, whether it adds a step, and where (`where`: "end", or the place between two
- * heads it was asked at); a value then stands right before value `before`, a step's boundary falls `within` its two neighbours.
+ * The question of a ladder's add open (`AskStep`): the range it adds a step to, and where (`where`: "end", or the place between two heads
+ * it was asked at), the new boundary falling `within` its two neighbours.
  */
-type Asking = { thing: number; range: boolean; where: string; before?: string; within?: { low: number; high: number | null } } | null;
+type Asking = { thing: number; where: string; within?: { low: number; high: number | null } } | null;
 
 /** Where an add puts what it adds: at the end, or at place `k` among the heads (before head `k`), with what that place asks. */
 type Place = { where: string; before?: string; within?: { low: number; high: number | null } };
@@ -300,9 +302,9 @@ export function FeeCases({
     const fresh = next.cases?.find((x) => !fee.cases.some((o) => o.id === x.id));
     if (fresh) onOpen(fee.id, fresh.id, "pointer");
   };
-  const ask = (thing: number, range: boolean, place: Place = { where: "end" }) => (at: HTMLElement | null) => {
+  const ask = (thing: number, place: Place = { where: "end" }) => (at: HTMLElement | null) => {
     slot.current = at;
-    setAsking((a) => (a && a.thing === thing && a.where === place.where ? null : { thing, range, ...place }));
+    setAsking((a) => (a && a.thing === thing && a.where === place.where ? null : { thing, where: place.where, ...(place.within ? { within: place.within } : {}) }));
   };
   /** A head's value where it names one alone, by its key (`valueKey`); null for several values, any value or a range's step. */
   const soleValue = (key: string): string | null => {
@@ -327,22 +329,29 @@ export function FeeCases({
         label={c.renameLabel.replace("{name}", words)}
         onDone={(name) => {
           setRenaming(null);
-          if (name && name !== words) onFee(renameValue(fee, t, v, name));
+          if (name && name !== words)
+            lift.onResult((d) => {
+              const next = renameValueIn(d, fee.id, t, v, name);
+              return next === d ? null : { deal: next };
+            });
         }}
       />
     );
   };
   /**
    * The "+" beside a list thing's heads (and between two, and a head's menu): a value added at once (`nextValue`), its head then renamed
-   * where it is the person's words; where only a value with its place would do, it asks (`AskValuesOf`).
+   * where it is the person's words; one of what is bought or held in the person's words bought where a new one is (`NEW_PLACE`), which its
+   * head's menu changes.
    */
-  const addNow = (t: number, place: Place) => (at: HTMLElement | null) => {
+  const addNow = (t: number, place: Place) => () => {
     const v = nextValue(fee, t);
-    if (v === null) return ask(t, false, place)(at);
-    const next = addValuesAt(fee, t, [v], [], place.before);
-    if (next === fee) return;
+    if (v === null) return;
+    const b = fee.by[t]!;
+    const own = namesPlaces(b) && !LIST_IDS[b.kind].includes(v) ? [{ name: v, ...NEW_PLACE }] : [];
+    const next = addValuesAt(fee, t, [v], own, place.before);
+    if (next === fee || !hasCases(next)) return;
     onFee(next);
-    if (canRename(fee.by[t]!, v)) setRenaming({ t, key: valueKey([v]) });
+    if (canRename(next.by[t]!, v)) setRenaming({ t, key: valueKey([v]) });
   };
   const askedHere = (t: number, where: string) => asking?.thing === t && asking.where === where;
   const asked = (added: boolean) => {
@@ -352,9 +361,9 @@ export function FeeCases({
   // where a case has no new value to ask (a split table's), "+ מקרה" copies the open case, else the last, and opens the copy
   const addOne: AddSpec = { label: c.addKnob.case, onAdd: () => addAndOpen(addCase(fee, openCase ?? undefined)) };
   /** The add that asks a ladder's new boundary (`AskStep`), at the end or at `place`. */
-  const stepSlot = (t: number, place: Place = { where: "end" }): AddSpec => ({ label: c.addKnob.step, onAdd: ask(t, true, place), expanded: askedHere(t, place.where) });
-  /** The add that asks new values of list thing `t` (`AskValuesOf`, the values the cases name not yet), at the end or at `place`. */
-  const valuesSlot = (t: number, place: Place = { where: "end" }, words = c.addKnob.value[fee.by[t]!.kind] ?? c.addKnob.value.own!): AddSpec => ({ label: words, onAdd: addNow(t, place), expanded: askedHere(t, place.where) });
+  const stepSlot = (t: number, place: Place = { where: "end" }): AddSpec => ({ label: c.addKnob.step, onAdd: ask(t, place), expanded: askedHere(t, place.where) });
+  /** The add that adds a value of list thing `t` at once (`addNow`), at the end or at `place`. */
+  const valuesSlot = (t: number, place: Place = { where: "end" }, words = c.addKnob.value[fee.by[t]!.kind] ?? c.addKnob.value.own!): AddSpec => ({ label: words, onAdd: addNow(t, place) });
   const slotOf = (t: number, range: boolean) => (range ? stepSlot(t) : valuesSlot(t));
   /** An add read as rows, where it stands as a row of its own: its words after the plus ("+ מקרה", "+ מדרגה", "+ הערוץ"). */
   const asRow = (add: AddSpec, words: string): AddSpec => ({ ...add, label: words });
@@ -384,7 +393,7 @@ export function FeeCases({
     [k, k + 1].flatMap((p, i) => {
       const place = placeAt(t, p, heads);
       if (!place) return [];
-      return [{ label: i === 0 ? c.insertMenu.before : c.insertMenu.after, onPick: () => (isRange(fee.by[t]!) ? ask(t, true, place) : addNow(t, place))(null) }];
+      return [{ label: i === 0 ? c.insertMenu.before : c.insertMenu.after, onPick: () => (isRange(fee.by[t]!) ? ask(t, place) : addNow(t, place))(null) }];
     });
 
   // ---------------------------------------------------------------- grips: what each lifts, its menu, and what its bin takes
@@ -412,7 +421,23 @@ export function FeeCases({
     if (k >= 0 && k < keys.length - 1) out.push({ label: down ? lw.menu.down : lw.menu.after, onPick: () => onFee(moveValue(fee, t, key, keys[k + 1]!)) });
     out.push({ label: down ? lw.menu.duplicateRow : lw.menu.duplicateColumn, onPick: () => addAndOpen(duplicateValue(fee, t, key, copyName(words))) });
     if (renamable(t, key)) out.push({ label: c.renameValue, onPick: () => setRenaming({ t, key }) });
-    return out;
+    return [...out, ...placeActions(t, key)];
+  };
+  /**
+   * Where a value of what is bought or held in the person's words is bought, and its currency, each a choice in its head's menu that says
+   * the one it has now; none for any other value.
+   */
+  const placeActions = (t: number, key: string): GripAction[] => {
+    const b = fee.by[t]!;
+    const v = soleValue(key);
+    const own = v !== null && namesPlaces(b) ? b.own?.find((o) => o.name === v) : undefined;
+    if (!own) return [];
+    const s = c.slot;
+    const currency = (x: string | null) => (x === null ? s.otherCurrency : (copy.panel.currencies[x] ?? x));
+    return [
+      { label: `${s.ownPlace}: ${s[own.place]}`, onPick: () => undefined, then: (["israel", "abroad"] as const).map((p) => ({ label: s[p]!, onPick: () => onFee(setOwnPlace(fee, t, own.name, { place: p })) })) },
+      { label: `${s.ownCurrency}: ${currency(own.currency)}`, onPick: () => undefined, then: BOUND_CURRENCIES.map((x) => ({ label: currency(x), onPick: () => onFee(setOwnPlace(fee, t, own.name, { currency: x })) })) },
+    ];
   };
   /** A copy's name, "<value> (עותק)", its value cut first so the whole is no longer than a name may be. */
   const copyName = (words: string) => lw.copyName.replace("{name}", words.slice(0, NAME_MAX - (lw.copyName.length - "{name}".length)).trim());
@@ -735,7 +760,7 @@ export function FeeCases({
           o.sort,
         );
 
-  const question = asking ? (asking.range ? <AskStep key={`step:${asking.thing}:${asking.where}`} fee={fee} t={asking.thing} {...(asking.within ? { within: asking.within } : {})} onFee={addAndOpen} onDone={asked} /> : <AskValuesOf key={`values:${asking.thing}:${asking.where}`} fee={fee} t={asking.thing} {...(asking.before !== undefined ? { before: asking.before } : {})} onFee={addAndOpen} onDone={asked} />) : null;
+  const question = asking ? <AskStep key={`step:${asking.thing}:${asking.where}`} fee={fee} t={asking.thing} {...(asking.within ? { within: asking.within } : {})} onFee={addAndOpen} onDone={asked} /> : null;
   // the bin, while something of this fee is lifted: under its table, grid or band, laid over what follows (its wrapper places it); on a
   // phone at the foot of the screen
   const bin = <DropBin phone={lift.phone} accepts={(it) => lift.binTakesItem(fee.id, it)} onDrop={(it) => lift.onBinItem(it)} />;
@@ -1087,7 +1112,7 @@ export function FeeCases({
             </>
           ) : null;
           return (
-            <CaseGroup key={row.key} head={headOfValue(row, 0)} {...(shared ? { shared } : {})} {...(hg ? { grip: hg } : {})} zone={(h) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }, headCases(row.cases, 1)], `row:${row.key}`, h, downList)}>
+            <CaseGroup key={row.key} head={named(0, row.key, words, headOfValue(row, 0))} {...(shared ? { shared } : {})} {...(hg ? { grip: hg } : {})} zone={(h) => zone([{ k: "value", fee: fee.id, t: 0, key: row.key }, headCases(row.cases, 1)], `row:${row.key}`, h, downList)}>
               {row.cells.flatMap((cell) => {
                 if (cell.case)
                   return cell.cases.filter((id) => row.cases.includes(id)).map((id) => {
@@ -1188,7 +1213,7 @@ export function FeeCases({
     if (k > 0) out.push({ label: lw.menu.before, onPick: () => onFee(move(columns[k - 1]!)) });
     if (k < columns.length - 1) out.push({ label: lw.menu.after, onPick: () => onFee(move(columns[k + 1]!)) });
     out.push({ label: lw.menu.duplicateColumn, onPick: () => addAndOpen(duplicateValue(fee, t, key, copyName(words))) });
-    return out;
+    return [...out, ...placeActions(t, key)];
   }
 }
 

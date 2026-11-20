@@ -19,9 +19,9 @@ const USUAL: Partial<Record<ByKind, readonly string[]>> = {
 };
 
 /**
- * The value the "+" beside a thing's heads adds at once (founder, 2026-11-19: no question): the first the site names that the cases name
- * not yet, else a name of the person's to rename in its head ("מסלול 3", "ערך 3"); null where only a value with its place would do (what
- * is bought or held, every one the site names already there), which asks.
+ * The value the "+" beside a thing's heads adds at once, with no question: the first the site names that the cases name not yet, else a
+ * name of the person's to rename in its head ("מסלול 3", "ערך 3", "סוג 6", the last, of what is bought or held, added with a place of its
+ * own, `NEW_PLACE`); null for a range, whose new step asks its boundary.
  */
 export function nextValue(fee: CasesFee, t: number): string | null {
   const b = fee.by[t];
@@ -30,7 +30,6 @@ export function nextValue(fee: CasesFee, t: number): string | null {
   const how = CONDITIONS[b.kind].values;
   const site = how.kind === "list" ? how.ids.find((id) => !had.includes(id)) : undefined;
   if (site) return site;
-  if (isPlaceKind(b.kind)) return null;
   const noun = copy.cases.copyNoun[b.kind] ?? copy.cases.copyNoun.own!;
   for (let n = had.length + 1; ; n++) {
     const name = copy.cases.newValue.replace("{noun}", noun).replace("{n}", String(n));

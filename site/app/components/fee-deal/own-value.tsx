@@ -3,7 +3,7 @@
 // the value also says where it is bought and its currency, which the reading takes it by.
 import { useEffect, useRef } from "react";
 import { feeDeal as copy } from "../../copy";
-import { BOUND_CURRENCIES, NAME_MAX, type BoundCurrency, type OwnPlace } from "../../lib/fee-deal/model";
+import { BOUND_CURRENCIES, NAME_MAX, NEW_PLACE, type BoundCurrency, type OwnPlace } from "../../lib/fee-deal/model";
 import { Button, InlineSelect, TextField } from "../kit";
 
 /** A value of the person's own being typed: its name, and for what is bought or held, where it is bought and its currency. */
@@ -13,8 +13,8 @@ export interface OwnTyped {
   currency: BoundCurrency;
 }
 
-/** A value of the person's own as its form opens: no name yet, bought abroad, in dollars. */
-export const NEW_OWN: OwnTyped = { name: "", place: "abroad", currency: "USD" };
+/** A value of the person's own as its form opens: no name yet, bought where a new one is (`NEW_PLACE`). */
+export const NEW_OWN: OwnTyped = { name: "", place: NEW_PLACE.place, currency: NEW_PLACE.currency as BoundCurrency };
 
 /**
  * The form: the name (`nameLabel`) with the button that adds it (`add`, its words; it waits for a name), and where `place` is set, where it

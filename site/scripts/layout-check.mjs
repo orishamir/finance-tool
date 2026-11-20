@@ -33,7 +33,9 @@
 //            page's height, its scroll, whether it has a scrollbar, or a fee's table having a scrollbar down changing while a case's cell
 //            or a part line is carried with the pointer still or moving a pixel and back (2026-11-15: the bin's room and each preview's
 //            height moved the page, and a cell sliding past a grid's foot gave the grid a scrollbar for the slide), a fee's table with a
-//            scrollbar down at rest, and the page scrolling by the screen's foot or top other than steadily toward that edge.
+//            scrollbar down at rest, and the page scrolling by the screen's foot or top other than steadily toward that edge; a part
+//            line carried over the parts its fee's cases hold alike whose preview squeezes a tile of the grid or draws one into another
+//            row.
 //   lines    on the kit page and the fee page's deal at 1440, a fee grid's line between two rows (`data-hairline`, kit/case-table.tsx)
 //            over a tile, a part line or a head's words, or one that takes a press (2026-11-20: the line between two rows' heads only).
 //   ask      on the fee page's deal, a part that asks its amount typed key by key and given by Enter not holding every digit typed, or given
@@ -501,6 +503,39 @@ async function dragCheck() {
       await page.keyboard.press("Escape");
       await page.mouse.up();
     }
+    await ctx.close();
+  }
+  // each part line carried over the parts its fee's cases hold alike, whose preview puts it in every case, adding lines under rows: no tile
+  // of the grid squeezed or reaching into another row while the preview shows (its rows held by what stands on them, case-table.tsx)
+  {
+    const { ctx, page, grid } = await open();
+    const lines = await grid.locator("[data-part-cell]").count();
+    let shown = 0;
+    for (let k = 0; k < lines; k++) {
+      await lift(page, grid.locator("[data-part-cell]").nth(k));
+      const every = page.locator("li[data-fee]").filter({ has: grid }).locator("[data-every-case]").first();
+      const b = (await every.count()) ? await every.boundingBox() : null;
+      if (b) {
+        await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 6 });
+        await page.waitForTimeout(150);
+        const bad = await grid.evaluate((g) => {
+          if (!g.closest("li")?.querySelector("[data-every-case] [data-drop-over], [data-every-case][data-drop-over]") && !document.querySelector("[data-drop-over] [data-every-case]")) return null;
+          const tiles = [...g.querySelectorAll("[role=gridcell], [role=rowheader]")].filter((el) => !el.closest("[data-lift-ghost]")).map((el) => ({ el, r: el.getBoundingClientRect(), row: el.closest("[data-grid-row]") }));
+          const words = (el) => el.innerText.trim().replace(/\s+/g, " ").slice(0, 24);
+          const out = tiles.filter((t) => t.r.width > 0 && t.r.height < 20).map((t) => `"${words(t.el)}" ${Math.round(t.r.height)} px tall`);
+          for (const a of tiles)
+            for (const o of tiles)
+              if (a.row !== o.row && a.el !== o.el && Math.min(a.r.right, o.r.right) - Math.max(a.r.left, o.r.left) > 2 && Math.min(a.r.bottom, o.r.bottom) - Math.max(a.r.top, o.r.top) > 2) out.push(`"${words(a.el)}" over "${words(o.el)}"`);
+          return out;
+        });
+        if (bad) shown++;
+        if (bad?.length) found.push(`a part line carried over the parts every case holds alike: the grid's preview ${bad.slice(0, 3).join(", ")}`);
+      }
+      await page.keyboard.press("Escape");
+      await page.mouse.up();
+      await page.waitForTimeout(300);
+    }
+    if (!shown) found.push("no part line of the deal's first grid previews over the parts its fee's cases hold alike");
     await ctx.close();
   }
   for (const f of await previewCheck(open)) found.push(f);

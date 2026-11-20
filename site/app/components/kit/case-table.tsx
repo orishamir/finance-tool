@@ -13,10 +13,11 @@
 // wider than its block scrolls inside itself, never widening the page. A table's and a grid's cases are tiles raised on the band. The
 // case open stands under the table or the grid, its tile outlined in the action colour. A cell with a
 // `copyKey` is one the page copies and pastes on.
-import { useId, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
+import { useId, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type ReactNode, type RefObject } from "react";
 import { ChartNoAxesColumnIncreasing, Plus } from "lucide-react";
 import { LIFT_INNER, onSurface } from "./choice";
 import { useCarried } from "./drag-drop";
+import { useIsoLayoutEffect } from "../../lib/hooks";
 import { cx } from "./cx";
 import { KnobButton } from "./knob-button";
 import { RemoveButton } from "./remove-button";
@@ -573,6 +574,32 @@ export interface GridCellView extends CellExtras {
 }
 
 /**
+ * A case grid's row tracks held while something is carried (kit/lift.tsx: what a place shows never moves the page): each at the size it
+ * had when the thing was lifted, found by what stands on it (`keys`, one per track in order), so a line a preview adds or takes away under
+ * a row moves no other row's size onto its neighbour. A track the preview adds takes its own height; one it takes away is gone. A cell a
+ * preview draws taller than its held row reads over the rows under it (app.css, `data-carry-tracks`).
+ */
+function useHeldTracks(root: RefObject<HTMLDivElement | null>, carrying: boolean, keys: readonly string[]) {
+  const held = useRef<Map<string, string> | null>(null);
+  useIsoLayoutEffect(() => {
+    const el = root.current;
+    if (!el) return;
+    if (!carrying) {
+      held.current = null;
+      el.style.gridTemplateRows = "";
+      return;
+    }
+    if (!held.current) {
+      // read once, as the grid stood when the thing was lifted, to the fraction of a pixel (a rounded size would move the page by it)
+      const sizes = getComputedStyle(el).gridTemplateRows.split(/\s+/).filter(Boolean);
+      held.current = sizes.length === keys.length ? new Map(keys.map((k, i) => [k, sizes[i]!])) : new Map();
+    }
+    const sizes = held.current;
+    el.style.gridTemplateRows = sizes.size ? keys.map((k) => sizes.get(k) ?? "auto").join(" ") : "";
+  });
+}
+
+/**
  * A grid's head, its grip and its words, filling its place so the whole head is what is lifted and dropped on, its words at its start: a
  * row's as tall as its row and its lines, its words from the top on its tiles' first line; a column's as wide as its column, its words at
  * the foot of its row over a 1 px line in the border's colour, so the heads stand on one line (founder, 2026-11-20). Its grip stands at its
@@ -620,6 +647,9 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
   /** The track of the line under row `j`, between it and the next. */
   const between = (j: number) => track(start[j]! + height[j]!, j);
   const gapOf = (j: number, from: number, span: number) => j === gapRow || (gapCol >= 0 && from === gapCol && span === 1);
+  // each row track by what stands on it, in order: the heads, a row's tiles and each of its lines, the hairline after a row, the add
+  const trackKeys = ["head", ...rows.flatMap((r, j) => [`row:${r.id}`, ...(r.lines ?? []).map((l) => `line:${r.id}:${l.id}`), ...(j < rows.length - 1 ? [`hair:${r.id}`] : [])]), ...(addRow ? ["add"] : [])];
+  useHeldTracks(keys.root, carried !== null, trackKeys);
   return (
     <div className="relative flex flex-col gap-2">
       {above}
