@@ -853,13 +853,13 @@ function ChangeRow({ row, before, covers, saved }: { row: PeriodRow; before: Per
         {before && (
           <span className="text-muted-foreground">
             <s>
-              <PriceWords price={before.price} kind={before.kind} saved={saved} />
+              <PriceWords price={before.price} kind={before.kind} saved={saved} discount />
             </s>
             {t.arrow}
           </span>
         )}
         <span className="font-semibold underline decoration-1 underline-offset-[6px]">
-          <PriceWords price={row.price} kind={row.kind} saved={saved} />
+          <PriceWords price={row.price} kind={row.kind} saved={saved} discount />
         </span>
       </p>
       {covers

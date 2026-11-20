@@ -150,7 +150,7 @@ const Bound = ({ lead, value, per }: { lead: string; value: SiteValue; per?: str
  * inside a fund says so in place of what it is a share of. `ofSaid`: the words around the price say already what a share of what is held
  * is of (a lane under "אחוזים ממה שמוחזק"), so the price leaves it out ("0.1% בשנה").
  */
-export function PriceWords({ price, kind, saved, insideFund, ofSaid }: { price: PriceView; kind: FeeKindId; saved?: boolean; insideFund?: boolean; ofSaid?: boolean }) {
+export function PriceWords({ price, kind, saved, insideFund, ofSaid, discount }: { price: PriceView; kind: FeeKindId; saved?: boolean; insideFund?: boolean; ofSaid?: boolean; discount?: boolean }) {
   const p = copy.price;
   const f = price.figures;
   const of = p.of[kind] ?? p.of.default;
@@ -240,7 +240,21 @@ export function PriceWords({ price, kind, saved, insideFund, ofSaid }: { price: 
       );
       break;
   }
-  return <span>{body}</span>;
+  // where the price is said whole, apart from its parts (a change between two periods), its discount goes with it: the price it changed
+  // from or to is the price after the discount (F-116), so "0.1% ← 0.1%" never stands for a discounted price that rose
+  const off = discount && f.discount && price.parts?.discount;
+  return (
+    <span>
+      {body}
+      {off && (
+        <>
+          , <Fig value={f.discount!} prefix={copy.cases.parts.discount.lead} />
+          {copy.cases.parts.discount.tail}
+          {price.parts!.discount!.alsoMin ? copy.cases.parts.discount.alsoMin : ""}
+        </>
+      )}
+    </span>
+  );
 }
 
 /** The tag of a price's standing against its cap; none where nothing is judged. Never colour alone: the tag is its words. */
