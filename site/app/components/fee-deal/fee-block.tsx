@@ -53,9 +53,9 @@ export interface OpenHere {
 export interface BlockActions {
   /** A fee or a case opened in place, and how: by the pointer, or the keyboard (its first box then takes the focus). */
   onOpen: (feeId: string, caseId: string | null, by: "pointer" | "keyboard") => void;
-  /** A slot of the open case tapped, at the pill it opens from; again, its menu closes. */
+  /** A slot of the open case tapped, at the chip it opens from; again, its menu closes. */
   onSlot: (t: number, at: HTMLElement) => void;
-  /** A thing of a fee's band head tapped, at its pill, the fee open or not; again, its menu closes. */
+  /** A thing of a fee's band head tapped, at its chip, the fee open or not; again, its menu closes. */
   onThing: (feeId: string, t: number, at: HTMLElement) => void;
   onRemoveCase: (feeId: string, caseId: string) => void;
   /** The open fee's bin: the fee taken away, kept for the undo. */

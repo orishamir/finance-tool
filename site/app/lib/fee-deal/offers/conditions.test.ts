@@ -1,5 +1,5 @@
 // Every thing a price can change by has its words in each copy map the page reads it from, so a new thing in the conditions registry
-// fails here until its words are written, rather than showing an empty pill or "undefined" on the page.
+// fails here until its words are written, rather than showing an empty chip or "undefined" on the page.
 import { describe, expect, it } from "vitest";
 import { feeDeal as copy } from "../../../copy";
 import { BY_KINDS, LIST_IDS, RANGE_UNITS, isListKind, isRangeKind, pickKind } from "./conditions";

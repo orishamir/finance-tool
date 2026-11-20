@@ -333,7 +333,7 @@ describe("the fees' column", () => {
     // folded away for not being theirs
     expect(count(shown, "מסלול 1")).toBe(1);
     expect(count(shown, "מסלול 2")).toBe(1);
-    // open or closed, each thing of its band's head is a pill that opens its menu, where it is taken away; the open fee adds its case's slots
+    // open or closed, each thing of its band's head is a chip that opens its menu, where it is taken away; the open fee adds its case's slots
     const pills = (html: string) => count(html, 'aria-haspopup="dialog" aria-expanded="false"');
     const open = drawBuilder(d, "fee-trade");
     const closed = drawBuilder(d, null);

@@ -6,6 +6,7 @@
 // while a fine pointer is over the card (app.css, `data-fee-corner`).
 import type { ReactNode } from "react";
 import { dealCases as copy } from "../../copy";
+import { IconCheck } from "../icons";
 import { PickCard } from "./choice";
 import { cx } from "./cx";
 import { RemoveButton } from "./remove-button";
@@ -94,7 +95,7 @@ export function SlimFee({ dot, mark, name, label, onOpen, open, remove, actions,
             {grip}
             <FeeName dot={dot} mark={mark} name={name} />
             {remove && <RemoveButton {...remove} />}
-            <Tag tone="primary" className="ms-auto">
+            <Tag tone="primary" icon={<IconCheck size={14} className="shrink-0" />} className="ms-auto">
               {copy.chosen}
             </Tag>
           </span>

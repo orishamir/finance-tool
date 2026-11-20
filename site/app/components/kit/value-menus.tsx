@@ -6,6 +6,7 @@
 import { useEffect, useId, useLayoutEffect, useRef, type ReactNode, type RefObject } from "react";
 import { Plus } from "lucide-react";
 import { dealCases as copy } from "../../copy";
+import { IconCheck } from "../icons";
 import { Sheet } from "../Sheet";
 import { Button } from "./button";
 import { cx } from "./cx";
@@ -37,7 +38,7 @@ export function TickMenu({ title, options, ticked, onToggle, other }: { title: R
           <label key={o.id} className={cx("flex min-h-target cursor-pointer items-center gap-2.5 rounded-md px-2.5", on ? "outline-2 -outline-offset-2 outline-primary" : "hover:bg-accent")}>
             <input type="checkbox" checked={on} onChange={() => onToggle(o.id)} className="size-5 shrink-0 accent-[var(--primary)]" />
             <span className="min-w-0 flex-1">{o.label}</span>
-            {on && <Tag tone="primary">{copy.chosen}</Tag>}
+            {on && <Tag tone="primary" icon={<IconCheck size={14} className="shrink-0" />}>{copy.chosen}</Tag>}
           </label>
         );
       })}

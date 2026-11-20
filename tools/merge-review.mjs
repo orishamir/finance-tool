@@ -76,7 +76,7 @@ const componentKind = (file, code, kit, imported) => {
   return { name, kind: "one-off" };
 };
 const checks = [
-  { group: "Hand-styled pill (kit: ChoiceChips, or the pill list)", test: (t) => /\b(sec-chip|a-chip)\b/.test(t) || (/rounded-full/.test(t) && /\bborder\b/.test(t) && /\bpx-[34]/.test(t)) },
+  { group: "Hand-styled chip (kit: ChoiceChips, or ChipList)", test: (t) => /\b(sec-chip|a-chip)\b/.test(t) || (/rounded-\[10px\]/.test(t) && /\bbg-secondary\b/.test(t)) },
   { group: "Hand-styled card (kit: Card)", test: (t) => /\bbg-card\b/.test(t) && /\bborder\b/.test(t) && /\brounded-(lg|xl)\b/.test(t) },
   { group: "Raw number or text input (kit: NumberField, RangeField, PercentField)", test: (t) => /<input\b/.test(t) && !/type="(checkbox|radio|range|hidden)"/.test(t) },
   { group: "Raw select (no kit piece yet: a second one means promote)", test: (t) => /<select\b/.test(t) },
@@ -132,6 +132,7 @@ if (SELF_CHECK) {
     ["A ! override", '<Button variant="quiet" className="!px-0" onClick={go}>', '<Button variant="quiet" flush className={cx(!open && "hidden")}>'],
     ["Media query", 'const m = window.matchMedia("(min-width: 64rem)");', 'const still = matchMedia("(prefers-reduced-motion: reduce)").matches;'],
     ["Fold label", '<Disclosure label={<span className="text-link">{x}</span>}>', '<Disclosure look="link" label={x}>'],
+    ["Hand-styled chip", '<button className="inline-flex min-h-target rounded-[10px] bg-secondary px-3.5 text-sm">', '<ChoiceChips wrap ids={ids} labels={labels} value={v} onChange={set} ariaLabel={l} />'],
   ];
   const lineBad = lineCases.flatMap(([prefix, copy, shared]) => {
     const c = checks.find((x) => x.group.startsWith(prefix));

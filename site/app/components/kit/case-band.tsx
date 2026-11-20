@@ -8,6 +8,7 @@
 import type { ReactNode } from "react";
 import { ChartNoAxesColumnIncreasing, ChevronDown, Copy, Split } from "lucide-react";
 import { dealCases as copy } from "../../copy";
+import { IconCheck } from "../icons";
 import { Button } from "./button";
 import { LIFT_INNER, onSurface } from "./choice";
 import { RemoveButton } from "./remove-button";
@@ -28,41 +29,41 @@ export interface CaseWord {
 
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
 /**
- * A pill's edge: the cases' own at rest; while its menu is open, one frame in the action colour, its edge turned `primary` with a 1 px
- * outline flush on it (design-system 2.6), never a ring standing off a grey edge.
+ * A menu chip of the band (a thing of its head, a value of the open case): a soft `secondary` fill, no outline, 8 px corners, one step
+ * lighter under a computer's pointer; while its menu is open, one 2 px frame in the action colour inside its edge (design-system 2.6).
  */
-const pillEdge = (open: boolean) => (open ? "border-primary outline-1 outline-offset-0 outline-primary" : "border-when-pill");
+const menuChip = (open: boolean) => cx("rounded-md bg-secondary ps-3 pe-2.5 text-sm text-foreground transition-colors duration-[var(--duration-fast)] hover:bg-secondary-hover", open && "outline-2 -outline-offset-2 outline-primary");
 
 /** A thing of the band's head: its id and its name. */
 export interface HeadThing {
   id: string;
   name: string;
-  /** A grip that lifts the pill (two of a grid's things swap by a drop of one on the other), and the drop zone it stands in. */
+  /** A grip that lifts the chip (two of a grid's things swap by a drop of one on the other), and the drop zone it stands in. */
   grip?: ReactNode;
   zone?: (pill: ReactNode) => ReactNode;
 }
 
 /**
- * The condition's head alone, in the cases' colour: the cases' icon, `label` ("המחיר משתנה לפי") and one pill per thing, nothing else.
- * Each pill is a button with its chevron whose menu the page opens (`onThing`; `ThingMenu`: the thing's values, and the action that
+ * The condition's head alone, in the cases' colour: the cases' icon, `label` ("המחיר משתנה לפי") and one chip per thing, nothing else.
+ * Each chip is a button with its chevron whose menu the page opens (`onThing`; `ThingMenu`: the thing's values, and the action that
  * drops it), the fee open or not, so a thing is taken away from its own menu and no bin stands beside it (founder, 2026-11-20);
- * `openThing` the one whose menu is open, ringed. Each pill stands in one element marked `data-thing-place` with the thing's id, where
+ * `openThing` the one whose menu is open, framed in the action colour. Each chip stands in one element marked `data-thing-place` with the thing's id, where
  * the page gives the focus back to its button after an undo. It heads its band (`ConditionBand`), over the cases' table, grid or rows.
- * `zone` wraps the whole head, the place a thing for the whole condition drops on (a part applied to every case); a pill's own zone
- * inside it takes what the pill takes.
+ * `zone` wraps the whole head, the place a thing for the whole condition drops on (a part applied to every case); a chip's own zone
+ * inside it takes what the chip takes.
  */
 export function ConditionHead({ things, onThing, openThing, label = copy.changesBy, zone }: { things: HeadThing[]; onThing: (id: string, at: HTMLElement) => void; openThing?: string | null; label?: ReactNode; zone?: (head: ReactNode) => ReactNode }) {
   const head = (
-    // 8 px above and below the pills, so a pill's 44 px tap area stays inside the band, which clips what passes its edge; 12 px between
-    // wrapped lines, so two pills' tap areas never meet
+    // 8 px above and below the chips, so a chip's 44 px tap area stays inside the band, which clips what passes its edge; 12 px between
+    // wrapped lines, so two chips' tap areas never meet
     <div className="flex min-h-target flex-wrap items-center gap-x-2 gap-y-3 px-3 py-2 text-sm text-when-ink">
       <Split {...icon} />
       <span className="font-medium">{label}</span>
       {things.map((t) => {
         const pill = (
-        <span key={t.id} data-thing-place={t.id} data-liftable="" className="inline-flex items-center gap-0.5 rounded-full">
+        <span key={t.id} data-thing-place={t.id} data-liftable="" className="inline-flex items-center gap-0.5 rounded-md">
           {t.grip}
-          <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-1.5 rounded-full border bg-card ps-3 pe-2.5 text-sm text-foreground hover:bg-accent", pillEdge(openThing === t.id))}>
+          <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-2", menuChip(openThing === t.id))}>
             {t.name}
             <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="text-muted-foreground" />
           </button>
@@ -161,12 +162,12 @@ export function CaseRow({ when, label, onOpen, grip, open, missing, children }: 
 }
 
 /**
- * A value of the open case, which a tap opens to change (a `ValueMenuSheet` the page holds): a pill with a chevron, ringed in the action
+ * A value of the open case, which a tap opens to change (a `ValueMenuSheet` the page holds): a menu chip with a chevron, framed in the action
  * colour while its menu is open. `range` puts the range's icon before it.
  */
 export function CaseSlot({ children, range, open, onOpen }: { children: ReactNode; range?: boolean; /** Its menu is open. */ open?: boolean; onOpen: (at: HTMLElement) => void }) {
   return (
-    <button type="button" aria-haspopup="dialog" aria-expanded={open ?? false} onClick={(e) => onOpen(e.currentTarget)} className={cx("inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border bg-card ps-3.5 pe-3 text-sm text-foreground hover:bg-accent", pillEdge(!!open))}>
+    <button type="button" aria-haspopup="dialog" aria-expanded={open ?? false} onClick={(e) => onOpen(e.currentTarget)} className={cx("inline-flex min-h-target max-w-full items-center gap-2", menuChip(!!open))}>
       {range && <ChartNoAxesColumnIncreasing {...icon} className="shrink-0 text-when-ink" />}
       <span className="min-w-0">{children}</span>
       <ChevronDown size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-muted-foreground" />
@@ -186,7 +187,7 @@ export function OpenCase({ slots, mine, onCopy, onRemove, children }: { slots: R
         {slots}
         {mine && <Tag tone="primary">{copy.mine}</Tag>}
         <span className="ms-auto inline-flex items-center gap-2">
-          <Tag tone="primary">{copy.chosen}</Tag>
+          <Tag tone="primary" icon={<IconCheck size={14} className="shrink-0" />}>{copy.chosen}</Tag>
           {onCopy && (
             <Button variant="icon" size="sm" aria-label={copy.copyCase} title={copy.copyCase} onClick={onCopy} className="max-md:size-target">
               <Copy {...icon} />

@@ -118,7 +118,7 @@ export function AskThing({ fee, kind, split, onFee, onDone }: { fee: Fee; kind: 
 /**
  * The page's question of a thing to change by (`asking`, its fee and thing, and the case it splits alone where a card was dropped on one):
  * asked in the open fee's block (`onAsk`), the phone's sheet
- * folding to its tabs while it is open (`fold`). Closed (`onAskDone`), the focus goes to the new thing's pill where it was added, else back
+ * folding to its tabs while it is open (`fold`). Closed (`onAskDone`), the focus goes to the new thing's chip where it was added, else back
  * to the toolbox's part it was asked from. `drop` closes it without a word, as another fee or the toolbox closing does.
  */
 export function useAskThing(chosen: string | null, phone: boolean, fold: (folded: boolean) => void) {

@@ -44,7 +44,13 @@ export function SectionIndex({ sections, current }: { sections: readonly Section
           {sections.map((s) => (
             <li key={s.id}>
               <a href={`#${s.id}`} aria-current={current === s.id ? "location" : undefined} className={cx("sec-chip", current === s.id && "sec-chip-on")}>
-                {s.title}
+                {/* the title laid out twice, once at the chosen weight and unseen: the strip keeps its widths while the chosen chip moves on a scroll */}
+                <span className="inline-grid *:[grid-area:1/1]">
+                  <span aria-hidden="true" className="invisible font-semibold">
+                    {s.title}
+                  </span>
+                  <span>{s.title}</span>
+                </span>
               </a>
             </li>
           ))}

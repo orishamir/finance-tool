@@ -539,8 +539,8 @@ export function idKind(id: string): IdKind | null {
  * An empty id renders nothing; an id that is no kind renders as plain text; a parameter or an `A-nn` no card has, nothing.
  */
 /**
- * The punctuation that closes a sentence on a chip (".", ",", ";", ":"): held to the chip on one line and drawn close to its frame, so
- * it never reads as a stray mark with a gap before it ("פרטים ."). A chip is its own frame and takes no
+ * The punctuation that closes a sentence on a chip (".", ",", ";", ":"): held to the chip on one line, right after its edge, so it
+ * never reads as a stray mark with a gap before it ("פרטים ."). A chip is its own frame and takes no
  * brackets (`IdText` drops them too). Kit guard 20.
  */
 function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
@@ -548,7 +548,7 @@ function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
   return (
     <span className="whitespace-nowrap">
       {chip}
-      <span className="chip-end">{end}</span>
+      {end}
     </span>
   );
 }

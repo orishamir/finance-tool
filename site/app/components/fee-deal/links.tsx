@@ -98,7 +98,7 @@ export function LawTag({ fee, standing }: { fee: string; standing: StandingView 
         e.stopPropagation();
         links.toLaw(fee);
       }}
-      className="tap-area inline-flex rounded-full focus-visible:outline-2 focus-visible:outline-ring"
+      className="tap-area inline-flex rounded-[6px] focus-visible:outline-2 focus-visible:outline-ring"
     >
       {tag}
       <span className="sr-only">{copy.standing.toLaw}</span>

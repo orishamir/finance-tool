@@ -29,7 +29,7 @@ describe("a fee's band", () => {
   it("heads with what the price changes by and its things alone: adding stands where the new case will", () => {
     const out = band(null);
     expect(out).toContain(words.changesBy);
-    // a pill and nothing else: no bin beside it, its menu takes it away
+    // a chip and nothing else: no bin beside it, its menu takes it away
     expect(bare(h(ConditionHead, { things: [{ id: "a", name: "א" }], onThing: () => undefined })).match(/<button/g)).toHaveLength(1);
   });
   it("says the person's own track in words beside its value", () => {
@@ -40,7 +40,7 @@ describe("a fee's band", () => {
     const out = band(h(OpenCase, { slots: null, children: null }));
     expect(out).toContain(words.chosen);
   });
-  it("its things are always pills that open their menu, each saying whether it is open", () => {
+  it("its things are always chips that open their menu, each saying whether it is open", () => {
     const out = html(h(ConditionBand, { things: [{ id: "a", name: "א" }, { id: "b", name: "ב" }], onThing: () => undefined, openThing: "b", children: null }));
     expect(out).toMatch(/aria-haspopup="dialog" aria-expanded="false"[^>]*>א/);
     expect(out).toMatch(/aria-haspopup="dialog" aria-expanded="true"[^>]*>ב/);

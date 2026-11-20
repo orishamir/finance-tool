@@ -73,7 +73,7 @@ export interface CaseRow {
   standing: StandingView;
 }
 
-/** A thing a fee changes by, as the band's head names it (a pill): its place among the fee's things, its kind, and its words. */
+/** A thing a fee changes by, as the band's head names it (a chip): its place among the fee's things, its kind, and its words. */
 export interface ThingPill {
   thing: number;
   kind: ByKind;
@@ -147,7 +147,7 @@ function unnamedOf(r: DealRead, fee: CasesFee, t: number): Record<string, WhenWo
   return Object.fromEntries(thingValues(fee, t).filter((v) => !named.has(v)).map((v) => [valueKey([v]), whenWords(fee, [v], t, r.today)]));
 }
 
-/** A fee's things as the band's pills. */
+/** A fee's things as the band's chips. */
 const pillsOf = (fee: CasesFee): ThingPill[] => fee.by.map((b, t) => ({ thing: t, kind: b.kind, words: thingName(fee.kind, b), picked: picked(fee, b) }));
 
 /** A case as its band row (`open`: the case open in place). */

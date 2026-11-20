@@ -227,7 +227,7 @@ describe("a price's parts", () => {
 });
 
 describe("the reading's first line", () => {
-  it("has a pill per thing the reading picks, none for the size of the action, its values in order, the pick chosen", () => {
+  it("has a chip per thing the reading picks, none for the size of the action, its values in order, the pick chosen", () => {
     const line = readingOf(read(deal([{ by: "what", is: "us" }])), data.fx).picks!;
     expect(line.title).toBe(copy.cases.readFor);
     expect(line.things.map((t) => [t.by, t.chosen])).toEqual([

@@ -249,7 +249,7 @@ export function StandingTag({ standing }: { standing: StandingView }) {
   if (!s.judged) return null;
   const tone = s.standing === "above" ? "blocked" : s.standing === "at" ? "neutral" : "outline";
   return (
-    <Tag tone={tone} shape="pill">
+    <Tag tone={tone} shape="roomy">
       {copy.standing.tag[s.standing]}
     </Tag>
   );

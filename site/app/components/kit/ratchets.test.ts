@@ -16,9 +16,11 @@ const files = walk(root).filter((f) => f.endsWith(".tsx") && !rel(f).startsWith(
 /** Source without block comments and whole-line `//` comments. */
 const code = (s: string) => s.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
 const classStrings = (s: string) => [...s.matchAll(/className=(?:\{cx\()?["'`]([^"'`]*)["'`]/g)].map((m) => m[1]!);
+/** A hand-made copy of the kit's chip (app.css `sec-chip`): its 10 px corners on the `secondary` fill. */
+const handChip = (c: string) => { const t = c.split(/\s+/); return t.includes("rounded-[10px]") && t.includes("bg-secondary"); };
 
 // Today's leftovers, per file.
-const PILL: Record<string, number> = {
+const CHIP: Record<string, number> = {
     "components/guide/sections.tsx": 4,
     "components/timeline/Timeline.tsx": 2,
   };
@@ -43,10 +45,10 @@ const OLDUI: Record<string, number> = {
   };
 
 const patterns: Record<string, { kit: string; count: (s: string) => number; allowed: Record<string, number> }> = {
-  pill: {
-    kit: "ChipList or ChoiceChips (the pill classes sec-chip and a-chip belong to them)",
-    count: (s) => (s.match(/\b(sec-chip|a-chip)\b/g) ?? []).length,
-    allowed: PILL,
+  chip: {
+    kit: "ChipList or ChoiceChips (the chip classes sec-chip and a-chip belong to them, and a soft-filled chip drawn by hand copies them)",
+    count: (s) => (s.match(/\b(sec-chip|a-chip)\b/g) ?? []).length + classStrings(s).filter(handChip).length,
+    allowed: CHIP,
   },
   card: {
     kit: "Card (a hand-written bg-card border rounded-lg surface)",
@@ -260,6 +262,7 @@ describe("the duplicated text pieces' scans", () => {
     expect(n("a button styled by hand as a link", '<button type="button" onClick={() => go(x)} className="text-link underline">a</button> <button className="hover:text-link hover:underline">b</button> <Button variant="quiet">c</Button> <button className="text-primary border">d</button>')).toBe(2);
     expect(n("a label and value row drawn by hand", '<div className="flex md:grid md:grid-cols-[14rem_1fr]"><dt>a</dt><dd>b</dd></div> <dl className="flex flex-col"><dt>c</dt></dl> <KeyValueList plain items={x} />')).toBe(1);
     expect(n("a muted quotes box drawn by hand", '<p className="text-sm bg-muted rounded-md p-3">a</p> <span className="bg-muted/50 rounded-md p-3">b</span> <PrintedQuotes quotes={q} />')).toBe(1);
+    expect(n("chip", '<button className="inline-flex min-h-target rounded-[10px] bg-secondary px-3.5 text-sm">a</button> <Link className="a-chip" to="/">b</Link> <span className="rounded-[10px] border border-input">c</span> <ChoiceChips ids={x} />')).toBe(2);
     expect(n("a bar drawn by hand in the computed ink", '<span className={cx("h-1.5 rounded-full", "bg-computed")} /> <MeterBar share={0.4} tone="stocks" />')).toBe(1);
     expect(n("a media query asked by hand", 'window.matchMedia("(min-width: 64rem)"); matchMedia("(prefers-reduced-motion: reduce)"); useMedia(MQ.lg)')).toBe(1);
   });
@@ -286,7 +289,7 @@ for (const { name, p, read } of runs) {
 
 // The bin (design-system 11, "Cases and parts"): taking something away is always the kit's RemoveButton, so a bin is drawn by
 // remove-button.tsx alone, which holds the icon (lucide's Trash2) and hands its face out as BinIcon. BinIcon is drawn elsewhere only
-// where the bin is pictured, not pressed: the pill ChipList draws under the pointer while a chip is dragged (chip-list.tsx), and the
+// where the bin is pictured, not pressed: the chip ChipList draws under the pointer while a chip is dragged (chip-list.tsx), and the
 // gallery's sample of the ghost face the bin wears (gallery.tsx). Any other bin is a RemoveButton.
 describe("a bin is drawn only by RemoveButton", () => {
   // the drag picture, the gallery's ghost sample, and the bin a lifted thing is dropped in (a place, not a control)

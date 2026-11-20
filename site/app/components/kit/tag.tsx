@@ -7,11 +7,12 @@ type TagTone = "neutral" | "computed" | "entered" | "caution" | "blocked" | "pos
 /**
  * A short label with a tone: a state, a kind, a flag. One to three words; the tone never carries the meaning alone, so give it an icon or a word.
  * `wrap` lets a label that holds a name (a company's) break onto a second line instead of running past the edge of a phone.
- * `shape`: `tag`, a small rounded box, or `pill`, fully round with more room at the sides (the default for `primary`, `outline` and `info`).
+ * `shape`: `tag`, a small box with 4 px corners, or `roomy`, 6 px corners with more room at the sides and above (the default for
+ * `primary`, `outline` and `info`). `icon` stands before the words (the check on "נבחר").
  * `size`: `xs`, 12 px words of medium weight, or `sm`, 14 px words of normal weight, for labels that stand among a row's own words (what a
  * deposit lets you do before its end).
  */
-export function Tag({ tone = "neutral", shape, size = "xs", icon, children, className, wrap }: { tone?: TagTone; shape?: "tag" | "pill"; size?: "xs" | "sm"; icon?: ReactNode; children: ReactNode; className?: string; wrap?: boolean }) {
+export function Tag({ tone = "neutral", shape, size = "xs", icon, children, className, wrap }: { tone?: TagTone; shape?: "tag" | "roomy"; size?: "xs" | "sm"; icon?: ReactNode; children: ReactNode; className?: string; wrap?: boolean }) {
   const styles = {
     neutral: "bg-muted text-foreground",
     parameter: "bg-secondary text-foreground",
@@ -27,11 +28,12 @@ export function Tag({ tone = "neutral", shape, size = "xs", icon, children, clas
     /** A thin frame and words in the info colour, no fill: what kind of note a box in the info frame is ("במדינות אחרות"). */
     info: "border border-info-border text-info-foreground",
   }[tone];
-  const pill = (shape ?? (tone === "primary" || tone === "outline" || tone === "info" ? "pill" : "tag")) === "pill";
-  // a framed tag's words (outline, info) are of normal weight at every size: its frame already sets it apart
-  const words = size === "sm" ? "text-sm font-normal" : tone === "outline" || tone === "info" ? "text-xs font-normal" : "text-xs font-medium";
+  const roomy = (shape ?? (tone === "primary" || tone === "outline" || tone === "info" ? "roomy" : "tag")) === "roomy";
+  // a framed tag's words (outline, info) are of normal weight at every size: its frame already sets it apart; the teal wash's are
+  // semibold, as the chosen chips' are
+  const words = size === "sm" ? "text-sm font-normal" : tone === "outline" || tone === "info" ? "text-xs font-normal" : tone === "primary" ? "text-xs font-semibold" : "text-xs font-medium";
   return (
-    <span className={cx("inline-flex w-fit items-center gap-1 align-middle", words, pill ? "rounded-full px-2.5 py-0.5" : "rounded-sm px-1.5 py-px", wrap ? "max-w-full" : "whitespace-nowrap", styles, className)}>
+    <span className={cx("inline-flex w-fit items-center gap-1 align-middle", words, roomy ? "rounded-[6px] px-2 py-[3px]" : "rounded-sm px-1.5 py-px", wrap ? "max-w-full" : "whitespace-nowrap", styles, className)}>
       {icon}
       {children}
     </span>
@@ -46,7 +48,7 @@ export function Tag({ tone = "neutral", shape, size = "xs", icon, children, clas
 export function StepTag({ step, icon, children }: { step: 1 | 2 | 3 | 4; icon: ReactNode; children: ReactNode }) {
   const tone = { 1: "text-access-1", 2: "text-access-2", 3: "text-access-3", 4: "text-access-4" }[step];
   return (
-    <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-muted text-foreground px-2.5 py-1 text-sm font-semibold whitespace-nowrap">
+    <span className="inline-flex w-fit items-center gap-1.5 rounded-[6px] bg-muted text-foreground px-2.5 py-1 text-sm font-semibold whitespace-nowrap">
       <span className={cx("inline-flex [&_svg]:size-4 [&_svg]:shrink-0", tone)}>{icon}</span>
       {children}
     </span>

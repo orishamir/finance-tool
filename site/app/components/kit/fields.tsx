@@ -506,10 +506,10 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
  * A choice that sits in a line of other controls (a tab line's filters): "מוצר: הכול", the label and the chosen name, no field box, the
  * kit's own list under it (`useListSelect`: a select-only combobox, by the keys as by the pointer). `all` is the first option, chosen when
  * `value` is null; without it one of the options is always chosen. `labelHidden` keeps the label for a screen reader only, where the words
- * around the choice already say what it chooses (a price's period beside its rate: "0.6% לשנה"). `chip`: a bordered pill with a chevron
- * and its label for a screen reader only, a choice made in place beside a figure (a price's currency "$ ▾", its period "לרבעון ▾"), 44 px
- * tall; a chosen value in the entered blue with its edge, or plain where a template filled it (`plain`), while nothing is chosen `all` in
- * the muted ink, and `all` is then no option of the list. Either way the button is as wide as its longest name (`NameStack`), so it keeps
+ * around the choice already say what it chooses (a price's period beside its rate: "0.6% לשנה"). `chip`: a soft-filled chip with a muted
+ * chevron, no outline and 8 px corners, its label for a screen reader only, a choice made in place beside a figure (a price's currency
+ * "$ ▾", its period "לרבעון ▾"), 44 px tall; a chosen value in the entered blue, or plain where a template filled it (`plain`), while
+ * nothing is chosen `all` in the muted ink, and `all` is then no option of the list. Either way the button is as wide as its longest name (`NameStack`), so it keeps
  * one width whichever is chosen.
  */
 export function InlineSelect({ label, all, options, value, onChange, labelHidden, chip, plain }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean; chip?: boolean; /** A chip whose value a template filled, drawn plain until the person changes it. */ plain?: boolean }) {
@@ -530,8 +530,8 @@ export function InlineSelect({ label, all, options, value, onChange, labelHidden
         <button
           {...s.button}
           className={cx(
-            "inline-flex min-h-target max-w-full items-center gap-1.5 rounded-full border bg-card ps-3.5 pe-3 text-sm hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring",
-            value === null ? "border-input text-muted-foreground" : plain ? "border-input" : "border-entered/70",
+            "inline-flex min-h-target max-w-full items-center gap-2 rounded-md bg-secondary ps-3 pe-2.5 text-sm transition-colors duration-[var(--duration-fast)] hover:bg-secondary-hover focus-visible:outline-2 focus-visible:outline-ring",
+            value === null && "text-muted-foreground",
           )}
         >
           <NameStack names={stack.names} at={stack.at} className={cx(value !== null && (plain ? "font-medium text-foreground" : "font-medium text-entered"))} />

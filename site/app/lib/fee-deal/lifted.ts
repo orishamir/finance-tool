@@ -25,7 +25,7 @@ export type Lifted =
   | { k: "row"; fee: string; row: PartRow }
   /** A part of the open case's first price: its row's content, or one note alone (`note`), which leaves the case's other notes. */
   | { k: "part"; fee: string; case: string | null; row: PartRow; note?: Note }
-  /** A thing of the band's head, by its place, with its words (so the pill a swap moves is not taken for the one now in its place). */
+  /** A thing of the band's head, by its place, with its words (so the chip a swap moves is not taken for the one now in its place). */
   | { k: "thing"; fee: string; t: number; name?: string }
   | { k: "fee"; fee: string; group: string };
 

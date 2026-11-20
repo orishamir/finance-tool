@@ -12,7 +12,7 @@ export function FilterChip({ on, onClick, count, children }: { on: boolean; onCl
       onClick={onClick}
       className={cx(
         "min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap transition-[background-color,color,opacity] duration-[var(--duration-base)] ease-standard",
-        on ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-accent",
+        on ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-secondary-hover",
         count === 0 && !on && "opacity-45",
       )}
     >

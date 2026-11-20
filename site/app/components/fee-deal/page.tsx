@@ -255,7 +255,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   };
   // the price stops changing by a thing: the cases that then differ in nothing merge, kept for the undo, whose line says what merged. The
   // menu it is chosen in closes first: while it is open the page behind it takes no focus, and on closing it gives the focus back to its
-  // pill, so the change is made once it has closed, and the undo line then takes the focus from the pill it takes away
+  // chip, so the change is made once it has closed, and the undo line then takes the focus from the chip it takes away
   const onRemoveBy = (feeId: string, t: number) => {
     const r = removeByKept(deal, feeId, t, chosen);
     const menuOpen = document.querySelector("dialog[open]");
@@ -272,7 +272,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
     if (r) kept(r);
     else oc.ask.onAsk(kind);
   };
-  // a thing the fee changes by, tapped again in the toolbox: as its pill's menu stops it
+  // a thing the fee changes by, tapped again in the toolbox: as its chip's menu stops it
   const onStopBy = (feeId: string, kind: ByKind) => {
     const fee = deal.fees.find((f) => f.id === feeId);
     const t = fee && hasCases(fee) ? fee.by.findIndex((x) => pickKind(x.kind) === pickKind(kind)) : -1;
@@ -567,7 +567,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         }
         toolbox={panelColumn ? (panelView ?? paletteColumn) : null}
       />
-      {/* the open slot's menu: beside its pill on a computer, a sheet on a phone */}
+      {/* the open slot's menu: beside its chip on a computer, a sheet on a phone */}
       <ValueMenuSheet open={!!slot} onClose={oc.menus.closeSlot} anchor={slot ? menu!.at : null} label={slot?.title ?? ""}>
         {slot && menu && chosenFee && <SlotMenu key={`${menu.fee}:${menu.case}:${menu.t}`} edit={slot} fee={chosenFee} caseId={menu.case} t={menu.t} top={panel?.open.slots[menu.t]?.words.figure ?? null} onFee={onFee} />}
       </ValueMenuSheet>

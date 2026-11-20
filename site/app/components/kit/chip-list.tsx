@@ -1,17 +1,19 @@
 // A list of things the person can choose among, add to, rename, delete or put in order (design-system 11): the goals board's
-// pills, moved here whole. The chosen pill is light on dark; it carries a pencil (rename in place) and a bin
-// (delete, after a "are you sure" popover) when the item is editable; a pill is dragged sideways to reorder; the last pill
-// adds one (dashed). A pill with `href` is a link (a page per item), otherwise a button calling `onSelect`.
+// chips, moved here whole. The chips have a soft fill and no outline; the chosen one a teal fill, a thin teal ring and a check before
+// its words, and a pencil (rename in place) and a bin (delete, after a "are you sure" popover) beside it when the item is editable; a
+// chip is dragged sideways to reorder; the last chip adds one (the kit's OtherChip). A chip with `href` is a link (a page per item),
+// otherwise a button calling `onSelect`.
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router";
 import { GripVertical, Pencil } from "lucide-react";
+import { IconCheck } from "../icons";
 import { Button } from "./button";
 import { OtherChip } from "./choice";
 import { BinIcon, RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 
-/** Pixels the pointer travels before a press on a pill becomes a drag; a shorter press is a click. */
+/** Pixels the pointer travels before a press on a chip becomes a drag; a shorter press is a click. */
 const DRAG_START = 6;
 /** The delete question's width: one line for the question and its two buttons. */
 const CONFIRM_WIDTH = 264;
@@ -19,9 +21,9 @@ const CONFIRM_WIDTH = 264;
 export interface ChipItem {
   id: string;
   label: string;
-  /** A link pill (a page per item). Without it the pill is a button calling `onSelect`. */
+  /** A link chip (a page per item). Without it the chip is a button calling `onSelect`. */
   href?: string;
-  /** The chosen pill shows the pencil and the bin (needs `onRename` / `onDelete`). */
+  /** The chosen chip shows the pencil and the bin (needs `onRename` / `onDelete`). */
   editable?: boolean;
   /** Counts toward drag to reorder (needs `onMove`). */
   movable?: boolean;
@@ -45,12 +47,12 @@ export interface ChipListProps {
   items: ChipItem[];
   /** The heading names the list for a screen reader only, when the card around the list already shows its title (the first page's guide door). */
   headingHidden?: boolean;
-  /** The chosen pill's id. */
+  /** The chosen chip's id. */
   value: string | null;
-  /** Needed only when a pill can be renamed or deleted. */
+  /** Needed only when a chip can be renamed or deleted. */
   words?: ChipListWords;
   onSelect?: (id: string) => void;
-  /** A pill link the page follows itself, to answer the tap before the next page is laid out (useSwapGlide, D62); a plain link without it. */
+  /** A chip link the page follows itself, to answer the tap before the next page is laid out (useSwapGlide, D62); a plain link without it. */
   onFollow?: (href: string) => void;
   /** `name` is trimmed and may be empty; the page decides what an empty name means. */
   onRename?: (id: string, name: string) => void;
@@ -63,7 +65,7 @@ export interface ChipListProps {
   renameInitial?: (id: string) => string;
   /** What the rename field shows when empty (default: the label). */
   renamePlaceholder?: (id: string) => string;
-  /** The last pill: dashed, with a plus. */
+  /** The last chip: the kit's OtherChip, a teal plus before its words. */
   add?: { label: string; onClick: () => void; expanded?: boolean };
   /** Under the list, inside the section (a line about the order). */
   footer?: ReactNode;
@@ -72,11 +74,11 @@ export interface ChipListProps {
 
 interface Drag {
   id: string;
-  /** The order shown while dragging; the dragged pill's own place in it is the drop slot. */
+  /** The order shown while dragging; the dragged chip's own place in it is the drop slot. */
   order: string[];
   startX: number;
   startY: number;
-  /** Where the pill was grabbed, so the floating copy stays under the pointer at that spot. */
+  /** Where the chip was grabbed, so the floating copy stays under the pointer at that spot. */
   grabX: number;
   grabY: number;
   width: number;
@@ -86,8 +88,8 @@ interface Drag {
 }
 
 /**
- * Where a dragged pill lands: beside the pill nearest the pointer, on the side of that pill's middle the pointer is on.
- * Distance across rows counts double, so a wrapped row's pills win over the row above or below.
+ * Where a dragged chip lands: beside the chip nearest the pointer, on the side of that chip's middle the pointer is on.
+ * Distance across rows counts double, so a wrapped row's chips win over the row above or below.
  */
 export function dropOrder(order: string[], id: string, x: number, y: number, rects: Map<string, { left: number; right: number; top: number; bottom: number }>, rtl: boolean): string[] {
   const rest = order.filter((o) => o !== id);
@@ -121,10 +123,10 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
     setDragState(d);
   };
   const [renaming, setRenaming] = useState<string | null>(null);
-  /** The pill asking "delete?", and which of its edges the question hangs from so it stays on the screen. */
+  /** The chip asking "delete?", and which of its edges the question hangs from so it stays on the screen. */
   const [confirm, setConfirm] = useState<{ id: string; edge: "start" | "end" } | null>(null);
   const pills = useRef(new Map<string, HTMLLIElement>());
-  /** A drag just ended on this pill: the click the browser sends after it is not a select. */
+  /** A drag just ended on this chip: the click the browser sends after it is not a select. */
   const dragged = useRef(false);
 
   useEffect(() => {
@@ -147,7 +149,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
 
   const movable = onMove ? items.filter((i) => i.movable).length > 1 : false;
   const byId = new Map(items.map((i) => [i.id, i]));
-  // The drop preview reorders the pills with CSS `order` only: moving the dragged pill's node in the page would make the
+  // The drop preview reorders the chips with CSS `order` only: moving the dragged chip's node in the page would make the
   // browser drop its pointer capture, and the drop would never arrive.
   const slot = drag?.active ? new Map(drag.order.map((id, i) => [id, i])) : null;
   const canEdit = (i: ChipItem) => i.id === value && i.editable;
@@ -183,7 +185,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
     const el = pills.current.get(i.id);
     const r = el?.getBoundingClientRect();
     const rtl = el && getComputedStyle(el).direction === "rtl";
-    // Hung from the pill's start edge it opens toward the end; when that would cross the screen's edge, from the other one.
+    // Hung from the chip's start edge it opens toward the end; when that would cross the screen's edge, from the other one.
     const room = r ? (rtl ? r.right : window.innerWidth - r.left) : Infinity;
     setConfirm({ id: i.id, edge: room >= CONFIRM_WIDTH + 16 ? "start" : "end" });
   };
@@ -193,10 +195,11 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
     requestAnimationFrame(() => pills.current.get(i.id)?.querySelector<HTMLElement>("[data-chip-face]")?.focus());
   };
 
-  const faceClass = (i: ChipItem, lifted: boolean) => cx("sec-chip gap-1.5 min-w-0 max-w-full", movable && i.movable && "ps-2.5 touch-pan-y", movable && i.movable && (lifted ? "cursor-grabbing" : "cursor-grab"), i.id === value && "sec-chip-on");
+  const faceClass = (i: ChipItem, lifted: boolean) => cx("sec-chip gap-1.5 min-w-0 max-w-full", ((movable && i.movable) || i.id === value) && "ps-2.5", movable && i.movable && "touch-pan-y", movable && i.movable && (lifted ? "cursor-grabbing" : "cursor-grab"), i.id === value && "sec-chip-on");
   const inside = (i: ChipItem) => (
     <>
       {movable && i.movable && <GripVertical size={14} className="opacity-60 shrink-0" {...ic} />}
+      {i.id === value && <IconCheck size={16} className="shrink-0" />}
       <bdi className="block truncate">{i.label}</bdi>
     </>
   );
@@ -228,7 +231,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
               }}
               data-chip-id={i.id}
               style={slot ? { order: slot.get(i.id) } : undefined}
-              className={cx("relative inline-flex max-w-full items-center rounded-full border border-border bg-card select-none", lifted && "opacity-40 border-dashed")}
+              className={cx("relative inline-flex max-w-full items-center rounded-[10px] bg-secondary select-none", lifted && "opacity-40 chip-dashed")}
             >
               {renaming === i.id ? (
                 <RenameInput initial={renameInitial ? renameInitial(i.id) : i.label} placeholder={renamePlaceholder ? renamePlaceholder(i.id) : i.label} label={words?.renameField ?? ""} onDone={(name) => finishRename(i, name)} />
@@ -239,7 +242,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
                   aria-current={on ? "page" : undefined}
                   className={faceClass(i, false)}
                   onClick={(e) => {
-                    // a plain tap on another pill: the page follows it itself; a new tab, or the pill already shown, stays the browser's
+                    // a plain tap on another chip: the page follows it itself; a new tab, or the chip already shown, stays the browser's
                     if (!onFollow || on || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
                     e.preventDefault();
                     onFollow(i.href!);
@@ -309,9 +312,10 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
       {drag?.active &&
         byId.get(drag.id) &&
         createPortal(
-          <div aria-hidden="true" className="fixed z-[var(--z-popover)] pointer-events-none inline-flex items-center rounded-full border border-border bg-card shadow-lg cursor-grabbing" style={{ left: drag.x - drag.grabX, top: drag.y - drag.grabY, width: drag.width }}>
+          <div aria-hidden="true" className="fixed z-[var(--z-popover)] pointer-events-none inline-flex items-center rounded-[10px] bg-secondary shadow-lg cursor-grabbing" style={{ left: drag.x - drag.grabX, top: drag.y - drag.grabY, width: drag.width }}>
             <span className={cx("sec-chip gap-1.5 ps-2.5", drag.id === value && "sec-chip-on")}>
               <GripVertical size={14} className="opacity-60 shrink-0" {...ic} />
+              {drag.id === value && <IconCheck size={16} className="shrink-0" />}
               <bdi>{byId.get(drag.id)!.label}</bdi>
             </span>
             {drag.id === value && (
@@ -335,7 +339,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
   );
 }
 
-/** The pill's name as a field: Enter or leaving the field keeps it, Escape goes back. */
+/** The chip's name as a field: Enter or leaving the field keeps it, Escape goes back. */
 export function RenameInput({ initial, placeholder, label, onDone }: { initial: string; placeholder: string; label: string; onDone: (name: string | null) => void }) {
   const [value, setValue] = useState(initial);
   const ref = useRef<HTMLInputElement>(null);
@@ -368,7 +372,7 @@ export function RenameInput({ initial, placeholder, label, onDone }: { initial: 
         }
       }}
       onBlur={() => onDone(cancelled.current ? null : value.trim())}
-      className="min-h-target rounded-full border border-ring bg-background px-3.5 text-sm text-foreground outline-none text-mixed"
+      className="min-h-target rounded-[10px] border border-ring bg-background px-3.5 text-sm text-foreground outline-none text-mixed"
     />
   );
 }

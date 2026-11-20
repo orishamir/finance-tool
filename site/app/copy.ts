@@ -1559,7 +1559,7 @@ export const depositBrowser = {
     sort: "מיון",
   },
   terms: { day: "יום", week: "שבוע", m1: "חודש", m3: "3 חודשים", m6: "6 חודשים", y1: "שנה", y2: "שנתיים", y3: "3 שנים" },
-  /** The chart's pills on a phone, where eight stand across the width; `termsTiny` under 360 px. */
+  /** The chart's chips on a phone, where eight stand across the width; `termsTiny` under 360 px. */
   termsShort: { day: "יום", week: "שבוע", m1: "חודש", m3: "3 ח׳", m6: "6 ח׳", y1: "שנה", y2: "שנתיים", y3: "3 שנים" },
   termsTiny: { day: "יום", week: "שבוע", m1: "חודש", m3: "3 ח׳", m6: "6 ח׳", y1: "שנה", y2: "2 ש׳", y3: "3 ש׳" },
   /** "23 הצעות לשנה", "אין פיקדון ליום". */
@@ -1956,7 +1956,7 @@ export const feeDeal = {
   cases: {
     /** The head of a fee's cases, before the things it changes by. */
     changesBy: "המחיר משתנה לפי",
-    /** Each thing a price may change by, as a pill and as a part in the toolbox (shapes.ts, `ByKind`). */
+    /** Each thing a price may change by, as a chip and as a part in the toolbox (shapes.ts, `ByKind`). */
     things: { what: "מה קונים", held: "מה מחזיקים", channel: "הערוץ", track: "המסלול שבחרתם", currency: "המטבע", actionSize: "גודל הפעולה", portfolioSize: "גודל התיק", volume: "היקף המסחר בחודש", count: "מספר הפעולות בחודש", own: "תנאי משלכם" } as Record<string, string>,
     /** The size of the action, by the fee: its own action's size ("גודל ההמרה"); `default` for a fee on a purchase or a sale. */
     actionSize: { default: "גודל הפעולה", fx: "גודל ההמרה", fx_spread: "גודל ההמרה", deposit: "גודל ההפקדה", insurance_premium: "גודל ההפקדה", exit: "גודל המשיכה", transfer_out: "גודל ההעברה", distribution_handling: "גודל התשלום" } as Record<string, string>,

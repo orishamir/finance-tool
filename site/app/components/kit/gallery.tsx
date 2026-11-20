@@ -6,7 +6,7 @@ import { brands, companyFocus, dealCases as caseWords, feeDeal as dealWords, gui
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Copy, Lock, Plus, X, Zap } from "lucide-react";
-import { IconAlert, IconClose, IconCoins, IconCopy, IconExternal, IconLock, IconPencil } from "../icons";
+import { IconAlert, IconCheck, IconClose, IconCoins, IconCopy, IconExternal, IconLock, IconPencil } from "../icons";
 import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleList, RuleTitleRow, Ruled, StaleSaid, StrengthLabel, Term } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
@@ -323,15 +323,15 @@ function Basics() {
             <Tag wrap>{g.sample.longTag}</Tag>
           </div>
         </State>
-        <State label='shape="pill" (primary and outline are pills by default) / size="sm"'>
+        <State label='shape="roomy" (primary and outline are roomy by default; primary with the check, as on a chosen fee) / size="sm"'>
           <div className="flex flex-wrap items-center gap-2">
-            <Tag shape="pill">neutral</Tag>
-            <Tag tone="primary">primary</Tag>
+            <Tag shape="roomy">neutral</Tag>
+            <Tag tone="primary" icon={<IconCheck size={14} className="shrink-0" />}>primary</Tag>
             <Tag tone="outline">outline</Tag>
             <Tag tone="primary" size="sm">
               {g.sample.chip[0]}
             </Tag>
-            <Tag shape="pill" size="sm">
+            <Tag shape="roomy" size="sm">
               {g.sample.chip[1]}
             </Tag>
           </div>
@@ -621,7 +621,7 @@ function Choices() {
         <State label={`counts, line, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} line counts={{ "0": 32, "1": 15, "2": 12, "3": 1 }} bleed="" />
         </State>
-        <State label="missing: a choice that found nothing, dashed and muted, still chosen like any other">
+        <State label="missing: a choice that found nothing, a dashed outline and muted words, still chosen like any other">
           <ChoiceChips ids={["0", "1", "2"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} wrap missing={{ "2": true }} />
         </State>
         <State label="counts, one that would show nothing: dimmed in place">
@@ -676,7 +676,7 @@ function Chips() {
             <ChipList heading={w.heading} headingHidden items={sites} value={null} footer={<p className="text-sm text-muted-foreground">{w.foot}</p>} />
           </Card>
         </State>
-        <State label="add pill alone, expanded">
+        <State label="add chip alone, expanded">
           <ChipList heading={w.heading} items={[]} value={null} words={words} add={{ label: w.add, onClick: () => setAdded((v) => !v), expanded: added }} />
         </State>
       </Demo>
@@ -2029,7 +2029,7 @@ function Lists({ today }: { today: string }) {
         <State label="labelHidden, no all: beside a figure whose words already say what it chooses (a rate's period); the label is for a screen reader" wide>
           <InlineSelectHiddenDemo />
         </State>
-        <State label="chip: one of a row of facts each chosen in place, a bordered pill with a chevron, as wide as its longest option whichever is chosen; nothing chosen yet shows `all` in the muted ink" wide>
+        <State label="chip: one of a row of facts each chosen in place, a soft-filled chip with a muted chevron, as wide as its longest option whichever is chosen; nothing chosen yet shows `all` in the muted ink" wide>
           <InlineSelectChipDemo />
         </State>
       </Demo>
@@ -3647,7 +3647,7 @@ function CaseDemos({ today }: { today: string }) {
             <TradeFee today={today} />
           </PhoneFrame>
         </State>
-        <State label="a range's cases, each with the range's icon; each thing in the head a pill with its chevron that opens its menu" wide>
+        <State label="a range's cases, each with the range's icon; each thing in the head a menu chip with its chevron that opens its menu" wide>
           <div className="max-w-xl">
             <Conversion today={today} />
           </div>
