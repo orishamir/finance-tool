@@ -1163,7 +1163,7 @@ export const guideBlocks = {
     upTo: "עד",
     businessDays: "ימי עסקים",
     // a payout time that only one company was read for (D30): the company is named, the others were not checked
-    onlyAt: { before: "כך אצל", after: "; אצל האחרים לא נבדק" },
+    onlyAt: { before: "כך אצל", after: ". אצל האחרים לא נבדק" },
     labelSwitch: "מעבר בין מסלולים וקופות", // was "מעבר בין מסלולים"; the lines under it also cover moving to another fund, a pension fund or another company
     labelCeiling: "תקרת הפקדה",
     // one line per `lawful_exit.kind` (data-schema 3.3); each number is a Num on the page; copy.md 3.5a
@@ -1194,7 +1194,7 @@ export const guideBlocks = {
     corporate_event: { name: "עלות לכל אירוע חברה", base: "על כל אירוע חברה, כמו דיבידנד, בנייר ערך שמוחזק בחו״ל" },
     load: { name: "הוספה", base: "נוסף על מחיר היחידה בקנייה, והולך למנהל הקרן ולא לקרן" },
     redemption_deduction: { name: "ניכוי בפדיון", base: "ממחיר הפדיון, רק אם הסכם הקרן קובע ניכוי כזה" },
-    variable_management: { name: "דמי ניהול משתנים", base: "לפי הפער בין הקרן למדד, נוסף על דמי הניהול הקבועים; כשהקרן מפגרת אחרי המדד, המנהל משלם לה" },
+    variable_management: { name: "דמי ניהול משתנים", base: "לפי הפער בין הקרן למדד, נוסף על דמי הניהול הקבועים. כשהקרן מפגרת אחרי המדד, המנהל משלם לה" },
     trustee: { name: "שכר נאמן", base: "כל שנה, מנכסי הקרן, בתוך מחיר היחידה" },
     insurance_premium: { name: "דמי ביטוח", base: "כל חודש, מהחיסכון, על כיסוי למקרה מוות או נכות" },
     upTo: "עד",
@@ -1205,12 +1205,12 @@ export const guideBlocks = {
     bindsLead: { banks: "בבנק:", banks_and_fund_distributors: "בבנק:" } as Record<string, string>,
     bindsOthers: {
       banks: "בבית השקעות לא נמצאה תקרה בחוק.",
-      banks_and_fund_distributors: "גם מפיץ של הקרן שאינו משווק השקעות, ויש לו הסכם הפצה איתה, לא רשאי לגבות. בבית השקעות שהוא משווק השקעות, כמו רוב בתי ההשקעות, לא נמצאה תקרה בחוק.",
+      banks_and_fund_distributors: "גם מפיץ של הקרן שהוא לא משווק השקעות, ויש לו הסכם הפצה איתה, לא רשאי לגבות. בבית השקעות שהוא משווק השקעות, כמו רוב בתי ההשקעות, לא נמצאה תקרה בחוק.",
     } as Record<string, string>,
     // the case a cap holds in alone (the record's `caveat`)
     caveat: {
       closing_account: "כשסוגרים את החשבון ומעבירים את ניירות הערך לחשבון שלכם בגוף אחר, ועוד הוצאות צד שלישי.",
-      distribution_agreement: "בנק, או מפיץ אחר של הקרן שאינו משווק השקעות, לא רשאי לגבות מכם על קנייה, החזקה או פדיון של היחידות כשיש לו הסכם הפצה עם הקרן.",
+      distribution_agreement: "בנק, או מפיץ אחר של הקרן שהוא לא משווק השקעות, לא רשאי לגבות מכם על קנייה, החזקה או פדיון של היחידות כשיש לו הסכם הפצה עם הקרן.",
     } as Record<string, string>,
     // SW-33: while the account stays open, the supervised price
     openTransfer: { before: "כשהחשבון נשאר פתוח: עד", after: "ועוד מה שהבנק שילם לצד שלישי." },
@@ -1258,7 +1258,7 @@ export const guideBlocks = {
     nominalBasis: { before: "", after: "מהרווח הנומינלי" },
     unlinkedInterest: { before: "ריבית לא צמודה:", after: "מהריבית, מנוכה בבנק" },
     // TXI-02: the tax is "not exceeding" the rate, and the bank withholds all of it (TXI-08); lower brackets can apply (TXI-19)
-    linkedInterestCeiling: { before: "ריבית צמודה למדד: עד", after: "מהריבית הריאלית. הבנק מנכה את מלוא השיעור, ולמי שזכאי למדרגות מס נמוכות יותר המס יכול להיות נמוך יותר" },
+    linkedInterestCeiling: { before: "ריבית צמודה למדד: עד", after: "מהריבית הריאלית. הבנק מנכה את מלוא השיעור. למי שזכאי למדרגות מס נמוכות יותר, המס יכול להיות נמוך יותר" },
     linkedInterest: { before: "ריבית צמודה למדד:", after: "מהריבית הריאלית, מנוכה בבנק" },
     hishtalmutExcess: { before: "על הרווח הזה: עד", after: "מהחלק שמעל האינפלציה" },
     childProvident: { before: "במסלול קופת גמל: עד", after: "מהרווח הריאלי" },
@@ -1288,7 +1288,7 @@ export const guideBlocks = {
     whoseManager: "דמי הניהול בדוגמה הם של",
     // a money-market fund's example: the fund's own fees are its manager's, and the trade and custody lines are the bank route's (MF-26, BANK-18)
     whoseFund: "דמי הניהול של הקרן בדוגמה הם של",
-    bankRoute: "הדוגמה מניחה שהקרן נקנית דרך בנק שיש לו הסכם הפצה איתה, ובנק כזה לא גובה עליה עמלת קנייה ומכירה ודמי ניהול פיקדון.",
+    bankRoute: "הדוגמה מניחה שהקרן נקנית דרך בנק שיש לו הסכם הפצה איתה. בנק כזה לא גובה עליה עמלת קנייה ומכירה ודמי ניהול פיקדון.",
     // a fee of the fund the record could not collect: the run counts it as 0
     notCollected: "לא נאסף, ולכן לא נכלל בחישוב",
     // a deposit's own term, in place of the label "תקופה", which on the same card names the years the chart runs
@@ -1441,7 +1441,7 @@ export const trackBrowser = {
   /** The page's line: its year and date stand on a phone only, whose rows have no heads; from md the heads say them. */
   lead: {
     intro: "דמי הניהול הם הממוצע שנגבה ב־",
-    figures: "; החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
+    figures: ". החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
     end: ". ",
     source: "מנתוני רשות שוק ההון.",
     noYear: "החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
@@ -1478,7 +1478,7 @@ export const trackBrowser = {
     assets: { label: "כסף מנוהל", what: "הכסף המנוהל", up: "מהמעט להרבה", down: "מההרבה למעט" },
   },
   order: {
-    company: "החברות מסודרות מהגדולה לקטנה לפי הכסף המנוהל; בתוך כל חברה לפי ",
+    company: "החברות מסודרות מהגדולה לקטנה לפי הכסף המנוהל. בתוך כל חברה המסלולים מסודרים לפי ",
     kind: "המסלולים מסודרים לפי ",
   },
   /** The heading of a group: "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪ · דמי ניהול מהחיסכון: מ־0.54% עד 0.61%". */
@@ -1512,7 +1512,7 @@ export const trackBrowser = {
   },
   /** Over a company page's table: what its dates are, and a deposit fee every track shares. The fees' year and the figures' date are said
    * on a phone, whose rows have no heads; from md the fee heads and the caption over the columns say them. */
-  feeAverage: (year: string, wholeFund = false) => `דמי הניהול הם הממוצע שנגבה ב־${year}${wholeFund ? " בקרן כולה" : ""}; `,
+  feeAverage: (year: string, wholeFund = false) => `דמי הניהול הם הממוצע שנגבה ב־${year}${wholeFund ? " בקרן כולה" : ""}. `,
   /** On a phone, whose rows have no heads, over a pension product's list: whose the fees are (CAT-39). */
   wholeFund: "בקרן פנסיה דמי הניהול הם של הקרן כולה, לא של המסלול: כל המסלולים של קרן אחת מראים אותם דמי ניהול.",
   /** Over a child-savings list or track: what its fee figure is, as the rule base reads it (CS OQ9); the question's chip follows. */
@@ -1624,7 +1624,7 @@ export const depositBrowser = {
     line: "בשנה, לפני המס על הריבית. הקישו על משבצת כדי לראות את ההצעות של הבנק ברשימה.",
     helpAbout: "מה יש בכל משבצת",
     helpText:
-      "בכל משבצת: הריבית הגבוהה מבין ההצעות של הבנק לתקופה הזו שאפשר לפתוח בסכום שבחרתם, מסוג הריבית שבחרתם, לא צמודות למדד, ושהבנק לא כותב שהן רק לחלק מהלקוחות. ״ועוד״ סופר את שאר ההצעות של הבנק לאותה תקופה, מכל סוג.",
+      "בכל משבצת: הריבית הגבוהה מבין ההצעות של הבנק לתקופה הזו. נספרות רק הצעות שאפשר לפתוח בסכום שבחרתם, מסוג הריבית שבחרתם, לא צמודות למדד, ושהבנק לא כותב שהן רק לחלק מהלקוחות. ״ועוד״ סופר את שאר ההצעות של הבנק לאותה תקופה, מכל סוג.",
     about: "הריבית הגבוהה מבין ההצעות של הבנק לתקופה הזו שאפשר לפתוח בסכום שבחרתם",
     bank: "בנק",
     more: "ועוד",
@@ -2227,7 +2227,7 @@ export const feeDeal = {
     /** A fee the picks give no case (F-114), as its line in the glance and its slim line say it. */
     unmatched: "בתעריפון שהוזן אין מחיר למה שבחרתם, ולכן העמלה לא נקראת.",
     /** A fee whose sums are in the action's currency, read for something bought in a currency the deal does not know. */
-    noCurrency: "הסכומים שלה במטבע של העסקה, ובמה שבחרתם המטבע לא ידוע, ולכן העמלה לא נקראת.",
+    noCurrency: "הסכומים שלה במטבע של העסקה, ובמה שבחרתם המטבע לא ידוע. לכן העמלה לא נקראת.",
     /** A fee whose sums in the trade's currency the list prints for other currencies only (F-114, data-schema §3.6a item 1). */
     notPrinted: "התעריפון לא מדפיס את הסכומים שלה למטבע של מה שבחרתם, רק למטבעות אחרים, ולכן העמלה לא נקראת.",
     /** A fee the law bans here (the rule table's ban), as its card, its line in the glance and the law card say it, before its rules. */
@@ -2524,7 +2524,7 @@ export const feeDeal = {
       "other-base": "עמלה שהתבנית לא ממלאת.",
       "spread-unpriced": "המרה בלי עמלה, אבל עם מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
       /** BRK-16 part 4(א)(1) and footnote 4: the line prices tracking funds and listed funds, and no other mutual fund. */
-      "bank-funds": "בבנק השורה הזו לא מתמחרת קרן נאמנות אקטיבית, לפי כללי העמלות של בנק ישראל, ולכן לקרן כזו אין כאן מחיר קנייה ומכירה. קרן מחקה פתוחה מתומחרת כמו ניירות ערך בתל אביב, ואפשר לבחור בזה בקריאה.",
+      "bank-funds": "לפי כללי העמלות של בנק ישראל, בבנק השורה הזו לא מתמחרת קרן נאמנות אקטיבית. לכן לקרן כזו אין כאן מחיר קנייה ומכירה. קרן מחקה פתוחה מתומחרת כמו ניירות ערך בתל אביב, ואפשר לבחור בזה בקריאה.",
       "spread-on-top": "על ההמרה נוסף מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
       redemption: "מחיר לפדיון במועד הפירעון: חל רק על פדיון כזה, לא על קנייה ומכירה.",
       /** A yearly share of what is held, charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71). */
@@ -2586,7 +2586,7 @@ export const r3transfer = {
   paste: "או הדביקו כאן",
   previewCreated: { before: "נוצר ב־", mid: "גרסת אתר" },
   previewCounts: { goals: "מטרות", holdings: "החזקות", names: "שמות שלא קוטלגו" },
-  previewOld: "קובץ מגרסה ישנה; יומר בטעינה.",
+  previewOld: "קובץ מגרסה ישנה. הוא יומר בטעינה.",
   mode: { add: "להוסיף למה שיש במכשיר", replace: "להחליף את מה שיש במכשיר" },
   modeLabel: "מה לעשות עם מה שיש במכשיר", // copy.md 7.4
   replaceConfirm: { text: "להחליף? מה שיש במכשיר הזה יימחק.", yes: "להחליף", no: "ביטול" },
