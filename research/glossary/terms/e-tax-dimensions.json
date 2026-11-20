@@ -51,7 +51,7 @@
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=14"
     },
     "variants_he": [],
-    "explain_he": "מעמד במס שנקבע לפי מרכז החיים; כשהוא בישראל, חלים כללי המס הישראליים",
+    "explain_he": "מעמד במס שנקבע לפי מרכז החיים, וכשמרכז החיים בישראל, חלים כללי המס הישראליים",
     "rule_ids": [
       "TXG-01"
     ],
@@ -135,7 +135,7 @@
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
     },
     "variants_he": [],
-    "explain_he": "הכנסה מעבודה או מעסק, כולל פנסיה ממעסיק לשעבר; מדרגות המס שלה מתחילות בשיעור הנמוך ביותר",
+    "explain_he": "הכנסה מעבודה או מעסק, כולל פנסיה ממעסיק לשעבר, ומדרגות המס שלה מתחילות בשיעור הנמוך ביותר",
     "rule_ids": [
       "TXG-02",
       "TXG-03",
@@ -180,7 +180,7 @@
       "הכנסות שאינן מיגיעה אישית",
       "הכנסה פסיבית"
     ],
-    "explain_he": "הכנסה שלא מעבודה או מעסק, כמו ריבית או דיבידנד; מדרגות המס שלה מתחילות בשיעור גבוה",
+    "explain_he": "הכנסה שלא מעבודה או מעסק, כמו ריבית או דיבידנד, ומדרגות המס שלה מתחילות בשיעור גבוה",
     "rule_ids": [
       "TXG-03",
       "TXG-04",
@@ -266,7 +266,7 @@
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=60"
     },
     "variants_he": [],
-    "explain_he": "שיעור המס של המדרגה הגבוהה ביותר שההכנסה מגיעה אליה; בו ממוסה כל שקל נוסף",
+    "explain_he": "שיעור המס של המדרגה הגבוהה ביותר שההכנסה מגיעה אליה, ובו ממוסה כל שקל נוסף",
     "rule_ids": [
       "TXG-02",
       "TXH-13",
@@ -573,7 +573,7 @@
     "variants_he": [
       "הכנסה חייבת ממקורות הוניים"
     ],
-    "explain_he": "לעניין המס הנוסף: כל הכנסה חייבת שאינה משכר, מעסק או מעבודה אישית, כמו ריבית, דיבידנד ורווח הון",
+    "explain_he": "לעניין המס הנוסף: כל הכנסה חייבת שלא משכר, מעסק או מעבודה אישית, כמו ריבית, דיבידנד ורווח הון",
     "rule_ids": [
       "TXG-10"
     ],
@@ -661,7 +661,7 @@
       "רווח ההון הריאלי",
       "הרווח הריאלי"
     ],
-    "explain_he": "הרווח פחות החלק שרק מפצה על עליית המחירים מאז הקנייה (בנייר צמוד למטבע חוץ: על שינוי השער); עליו משלמים מס רווחי הון",
+    "explain_he": "הרווח פחות החלק שרק מפצה על עליית המחירים מאז הקנייה (בנייר צמוד למטבע חוץ: על שינוי השער), ועליו משלמים מס רווחי הון",
     "rule_ids": [
       "TXG-12",
       "TXG-13",
@@ -746,7 +746,7 @@
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=149"
     },
     "variants_he": [],
-    "explain_he": "החלק מהרווח שרק משלים את האינפלציה מיום הקנייה; על נכס שנקנה היום הוא פטור ממס",
+    "explain_he": "החלק מהרווח שרק משלים את האינפלציה מיום הקנייה, ועל נכס שנקנה היום הוא פטור ממס",
     "rule_ids": [
       "TXG-12",
       "TXG-13"
@@ -827,7 +827,7 @@
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=12"
     },
     "variants_he": [],
-    "explain_he": "מדד רשמי שמפרסמת הלשכה המרכזית לסטטיסטיקה; לפיו מחשבים הצמדה ואת החלק האינפלציוני ברווח",
+    "explain_he": "מדד רשמי שמפרסמת הלשכה המרכזית לסטטיסטיקה, ולפיו מחשבים הצמדה ואת החלק האינפלציוני ברווח",
     "rule_ids": [
       "BANK-26",
       "TXG-12",
@@ -1005,7 +1005,7 @@
     "variants_he": [
       "דמי נכיון"
     ],
-    "explain_he": "ההפרש בין מחיר הקנייה לבין הסכום שמקבלים בפדיון, כמו במק\"מ; לעניין מס נחשב ריבית",
+    "explain_he": "ההפרש בין מחיר הקנייה לבין הסכום שמקבלים בפדיון, כמו במק\"מ, ולעניין מס הוא נחשב ריבית",
     "rule_ids": [
       "TXG-14",
       "TXI-01"
@@ -1134,7 +1134,7 @@
       "דו\"ח",
       "טופס 1301"
     ],
-    "explain_he": "טופס שבו מדווחים למס הכנסה על כל הכנסות השנה; חלק מהאנשים פטורים מהגשתו",
+    "explain_he": "טופס שבו מדווחים למס הכנסה על כל הכנסות השנה, וחלק מהאנשים פטורים מהגשתו",
     "rule_ids": [
       "TXG-16",
       "TXG-17",
@@ -1384,7 +1384,7 @@
     "variants_he": [
       "חשבונות בתאגידי חוץ בנקאיים"
     ],
-    "explain_he": "נכסים וחשבונות בנק מחוץ לישראל; מעל שווי מסוים הם מחייבים הגשת דוח שנתי",
+    "explain_he": "נכסים וחשבונות בנק מחוץ לישראל, ומעל שווי מסוים הם מחייבים הגשת דוח שנתי",
     "rule_ids": [
       "TXG-18"
     ],
@@ -1478,7 +1478,7 @@
     "variants_he": [
       "ביטוח לאומי"
     ],
-    "explain_he": "תשלום חובה למוסד לביטוח לאומי לפי ההכנסה; על ריבית, דיבידנד ורווח הון מחיסכון בדרך כלל לא משלמים",
+    "explain_he": "תשלום חובה למוסד לביטוח לאומי לפי ההכנסה, ועל ריבית, דיבידנד ורווח הון מחיסכון בדרך כלל לא משלמים אותו",
     "rule_ids": [
       "TXG-26",
       "TXG-27",
@@ -1553,7 +1553,7 @@
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf"
     },
     "variants_he": [],
-    "explain_he": "השכר הממוצע במשק לאותה שנה; לפיו מתעדכנים ספים בביטוח לאומי וחלק מהתקרות בחיסכון הפנסיוני",
+    "explain_he": "השכר הממוצע במשק לאותה שנה, ולפיו מתעדכנים ספים בביטוח לאומי וחלק מהתקרות בחיסכון הפנסיוני",
     "rule_ids": [
       "TXG-06",
       "TXG-29"
@@ -1594,7 +1594,7 @@
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=146"
     },
     "variants_he": [],
-    "explain_he": "מי שמחזיק חלק גדול מאמצעי השליטה בחברה; חלים עליו שיעורי מס אחרים",
+    "explain_he": "מי שמחזיק חלק גדול מאמצעי השליטה בחברה, וחלים עליו שיעורי מס אחרים",
     "rule_ids": [
       "TXG-07",
       "TXG-15"
@@ -1861,7 +1861,7 @@
     "term_he": "דמי משמרת",
     "term_source": "docs/product.md 3.3",
     "variants_he": [],
-    "explain_he": "עמלה קבועה על החזקת ניירות הערך בחשבון, גם כשלא מבצעים בו פעולות",
+    "explain_he": "עמלה קבועה על החזקת ניירות הערך בחשבון, גם כשאין בו פעולות",
     "rule_ids": [],
     "source": {
       "title": "docs/product.md 3.3 (Dimension checklist) and il-finance references/README.md (Dimension vocabulary)",
@@ -2469,7 +2469,7 @@
     "term_he": "המנפיק הוא גם הממליץ",
     "term_source": "docs/product.md 3.3; proposed in references/fx-and-structured-deposits.md",
     "variants_he": [],
-    "explain_he": "האם המוצר הונפק על ידי אותו בנק שממליץ לכם עליו",
+    "explain_he": "האם הבנק שממליץ לכם על המוצר הוא גם זה שהנפיק אותו",
     "rule_ids": [],
     "source": {
       "title": "docs/product.md 3.3 (form); proposed in il-finance references/fx-and-structured-deposits.md, Proposed dimensions",
@@ -3001,7 +3001,7 @@
     "term_he": "מה בעצם מחזיקים",
     "term_source": "docs/product.md 3.3; proposed in references/reits-and-gold-funds.md",
     "variants_he": [],
-    "explain_he": "מה מחזיקים בפועל: יחידה בקרן, מניה, אגרת חוב או נאמנות; זה משנה הגנה, פיקוח ומס",
+    "explain_he": "מה מחזיקים בפועל, וזה משנה הגנה, פיקוח ומס: יחידה בקרן, מניה, אגרת חוב או נאמנות",
     "rule_ids": [],
     "source": {
       "title": "docs/product.md 3.3 (form); proposed in il-finance references/reits-and-gold-funds.md, Proposed dimensions",
@@ -3020,7 +3020,7 @@
     "term_he": "מועד הנפקת הפוליסה",
     "term_source": "docs/product.md 3.3; proposed in references/savings-policies-and-executive-insurance.md",
     "variants_he": [],
-    "explain_he": "זכויות ודמי ניהול שתלויים במועד שבו הפוליסה הונפקה; עזיבת פוליסה ישנה עלולה לאבד אותם",
+    "explain_he": "זכויות ודמי ניהול שתלויים במועד שבו הפוליסה הונפקה, ועזיבת פוליסה ישנה עלולה לאבד אותם",
     "rule_ids": [],
     "source": {
       "title": "docs/product.md 3.3 (form); proposed in il-finance references/savings-policies-and-executive-insurance.md, Proposed dimensions",
@@ -3248,7 +3248,7 @@
     "term_he": "חלק מוטב ולא מוטב",
     "term_source": "docs/product.md 3.3; proposed in references/tax-hishtalmut.md",
     "variants_he": [],
-    "explain_he": "האם חלק מהיתרה הופקד מעל התקרה ולכן אינו מוטב, מה שמשנה את המס במשיכה",
+    "explain_he": "האם חלק מהיתרה הופקד מעל התקרה ולכן לא מוטב, מה שמשנה את המס במשיכה",
     "rule_ids": [],
     "source": {
       "title": "docs/product.md 3.3 (form); proposed in il-finance references/tax-hishtalmut.md, Proposed dimensions",
