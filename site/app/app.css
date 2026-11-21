@@ -649,6 +649,11 @@
       width: min(46rem, calc(100vw - 2rem));
       max-height: min(92vh, 62rem);
     }
+    /* a deal edited on the index page (F-128): the fee page's editor, its toolbox in a column of its own where the window gives the room */
+    .sheet.sheet-deal {
+      width: min(90rem, calc(100vw - 2rem));
+      max-height: 94vh;
+    }
     /* a card beside what opened it: wider where the window allows, so a list of rules reads in fewer lines */
     .sheet[data-pc="popover"] {
       transform: none;

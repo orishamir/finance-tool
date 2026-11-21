@@ -27,8 +27,10 @@ import { scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch"
 import { differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { Num, Ruled } from "../provenance";
-import { AlsoChanged, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
+import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
+import { AddDealButton, DealTerms, DeletedLine, useDealAccounts } from "./deal-account";
+import { dealIdOf, isDealProviderId } from "../../lib/deal-account/bundle";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
@@ -125,6 +127,7 @@ const underRow = (node: ReactNode) => <span className="col-span-full pt-0.5 pb-1
 
 export function PairLists(props: ListsProps) {
   const { view, bundle, plan, livePlan, today, pick, chosen, onPick, moved, group, ownBank, ruler = false, above } = props;
+  const dealApi = useDealAccounts();
   const sp = c.shownPair(chosen);
   const funds = allFunds(view);
   const [abroadOpen, setAbroadOpen] = useState(false);
@@ -238,7 +241,7 @@ export function PairLists(props: ListsProps) {
             {nameWithMark(p, selected)}
             {selected ? chosenWord(chosen, "text-chart-by-account") : figureCell(c.lists.accounts.upTo, priced(best) && <Num animate value={best.value} />, s.best)}
             <StretchBar scale={scale} best={s.best} worst={s.worst} className="h-6 max-xl:h-8" />
-            {p.custom && underRow(<BrokerTerms id={p.id} />)}
+            {p.custom && underRow(<><BrokerTerms id={p.id} /><DealTerms id={p.id} /></>)}
             {selected && movedHere("fund")}
           </>
         ),
@@ -261,7 +264,7 @@ export function PairLists(props: ListsProps) {
             </span>
             {selected ? chosenWord(chosen, "text-chart-by-account") : <span className="inline-flex items-center gap-1 text-xs text-blocked-foreground whitespace-nowrap"><IconLock size={14} />{c.lists.accounts.unranked}</span>}
             <StretchBar scale={scale} best={null} worst={null} className="h-6 max-xl:h-8" />
-            {p.custom && underRow(<BrokerTerms id={p.id} />)}
+            {p.custom && underRow(<><BrokerTerms id={p.id} /><DealTerms id={p.id} /></>)}
             {selected && movedHere("fund")}
           </>
         ),
@@ -296,12 +299,20 @@ export function PairLists(props: ListsProps) {
               </NoFundWords>
             </span>
             <span aria-hidden="true" className="w-[9px]" />
-            {p.custom && underRow(<BrokerTerms id={p.id} />)}
+            {p.custom && underRow(<><BrokerTerms id={p.id} /><DealTerms id={p.id} complete /></>)}
           </>
         ),
       };
     }),
   ];
+  // a deal just deleted from the popup is said where its row stood (G): over the row now at its place, or after the ranked rows
+  const deleted = dealApi?.deleted;
+  if (deleted) {
+    const at = Math.min(deleted.at ?? pricedHouses.length, accountRows.length);
+    const line = <DeletedLine name={deleted.name} />;
+    if (at < accountRows.length) accountRows[at] = { ...accountRows[at]!, heading: line };
+    else accountRows.push({ key: "deleted-deal", selected: false, disabled: true, onSelect: () => undefined, cells: <span className="col-span-full">{line}</span> });
+  }
 
   // ---------------------------------------------------------------- the funds
   // before any pick, the page's own fund inside a tie of the cheapest pairs (F-80, P-01) is one of the tied, and every tied fund says so
@@ -347,7 +358,11 @@ export function PairLists(props: ListsProps) {
   // F-118 (D84): a fund whose tax rests on an open rule, priced before tax at the chosen account, stands in its own list under the funds
   const beforeTaxAt = (f: FundWay) => (priced(f.byHouse[pick.house]) ? undefined : f.beforeTax?.byHouse[pick.house]);
   const beforeTaxFunds = funds.filter((f) => beforeTaxAt(f));
-  const unpricedFunds = funds.filter((f) => !priced(f.byHouse[pick.house]) && !beforeTaxAt(f)).sort((a, b) => kindRank(a) - kindRank(b));
+  // the chosen account is the person's deal with no price for buying abroad (E): its funds bought abroad, read before tax at every other
+  // account, fold into one line that says so and opens the deal on its buy-and-sell block
+  const abroadLacks = isDealProviderId(pick.house) ? (dealApi?.abroadLacks(pick.house) ?? null) : null;
+  const abroadFolded = abroadLacks ? funds.filter((f) => f.option === "abroad" && !beforeTaxAt(f) && !priced(f.byHouse[pick.house])) : [];
+  const unpricedFunds = funds.filter((f) => !priced(f.byHouse[pick.house]) && !beforeTaxAt(f) && !abroadFolded.includes(f)).sort((a, b) => kindRank(a) - kindRank(b));
   const cur = view.index.exposure?.currency ?? "USD";
   const names = view.index.exposure?.other_currencies === true ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
   const hedgedHeading = (
@@ -510,6 +525,25 @@ export function PairLists(props: ListsProps) {
     };
   });
   const beforeTaxRules = [...new Set(beforeTaxFunds.map((f) => f.beforeTax!.ruleId))];
+  const dealId = isDealProviderId(pick.house) ? dealIdOf(pick.house) : null;
+  const abroadLine =
+    abroadLacks && abroadFolded.length > 0 && dealId ? (
+      <div className="flex flex-col gap-1">
+        <p className="flex flex-wrap items-baseline gap-x-2 text-sm text-muted-foreground">
+          {c.dealAccount.abroad.fold}
+          <Button variant="inline" onClick={() => dealApi!.open({ dealId, fee: abroadLacks.fee })}>
+            {c.dealAccount.abroad.foldAdd}
+          </Button>
+        </p>
+        <Disclosure label={c.dealAccount.abroad.foldCount(abroadFolded.length)} look="link" summaryClassName="text-sm">
+          <ul className="flex flex-col gap-1 text-sm">
+            {abroadFolded.map((f) => (
+              <li key={f.rec.id}>{fundName(f, false)}</li>
+            ))}
+          </ul>
+        </Disclosure>
+      </div>
+    ) : null;
   const beforeTaxList =
     beforeTaxRows.length > 0 ? (
       <section className="flex flex-col gap-1.5">
@@ -636,7 +670,7 @@ export function PairLists(props: ListsProps) {
   const accountsFoot = (
     <div className="flex flex-col gap-3">
       {marked && <p className="text-xs text-muted-foreground">{leftOutCopy.markKey}</p>}
-      <AddEntryButton kind="broker" />
+      <AddDealButton />
       {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />
     </div>
@@ -659,6 +693,7 @@ export function PairLists(props: ListsProps) {
   );
   const fundsFoot = (
     <div className="flex flex-col gap-3">
+      {abroadLine}
       {beforeTaxList}
       {greyRows.length > 0 && (
         <Disclosure label={c.lists.funds.unpriced(new Set(unpricedFunds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size)} open={unpricedOpen} onOpenChange={setUnpricedOpen} look="link" summaryClassName="text-sm">

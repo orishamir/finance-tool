@@ -1,0 +1,168 @@
+// F-129 A typed account moved into a deal leaves what it left before on every fund of every index, to the shekel, for every shape of
+// account: typed from scratch (each field left empty in turn), selling only some kinds, built on a house, built on a group. Where F-129
+// states a difference, the test checks that difference: a group typed today is equal, and an account at a house with a standing order or a
+// recurring plan may leave less. On an account built on a house, a fund where the deal filled from that house's list already leaves
+// another amount than the account with nothing typed (F-128's reading of the house, not the move) is listed apart and not compared.
+import { describe, expect, it } from "vitest";
+import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND } from "@finance-tool/engine";
+import { feesData } from "../fees.server";
+import { fxRunInput } from "../fx";
+import { buildIndicesBundle } from "../providers.server";
+import { entered } from "../value";
+import { buildInvest, indexById } from "../invest";
+import type { WorkbenchInputs } from "../providers";
+import { withCustomEntries, type CustomBroker } from "../custom-entries";
+import { baseOf, startingPointsOf } from "../own-account";
+import { readDeal } from "../fee-deal/model";
+import { dealProviderId, withDeals } from "./bundle";
+import { dealOfTypedAccount, movedDealId, withMoved, type MoveContext } from "./move";
+
+const data = feesData();
+const bundle = buildIndicesBundle();
+const t = bundle.today;
+const plan: WorkbenchInputs = {
+  amountNow: 10_000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
+  values: { amount: entered(10_000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(10, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
+  returnFromParameter: false, currentAccounts: { own: null },
+};
+const ctx: MoveContext = { houses: data.houses, kinds: data.kinds, snapshots: bundle.snapshots, fx: bundle.fx ? fxRunInput(bundle.fx) : {}, today: t };
+
+const fig = (v: number, unit: Parameters<typeof entered>[1]) => entered(v, unit, t);
+const full = { tradePct: 0.1, tradeMin: 5, custodyPct: 0.1, custodyMin: 2, fxPct: 0.3, monthlyFee: 10 };
+type Typed = Partial<Record<keyof typeof full, number | null>>;
+let n = 0;
+function account(typed: Typed, more: Partial<CustomBroker> = {}): CustomBroker {
+  const v = (k: keyof typeof full) => (typed[k] === undefined || typed[k] === null ? null : typed[k]!);
+  const at = (k: keyof typeof full, unit: Parameters<typeof entered>[1]) => (v(k) === null ? null : fig(v(k)!, unit));
+  return {
+    id: `custom-broker-test-${n++}`,
+    name: `חשבון ${n}`,
+    added: t,
+    tradePct: at("tradePct", "pct_of_trade"),
+    tradeMin: at("tradeMin", "nis_per_trade"),
+    custodyPct: at("custodyPct", "pct_per_year"),
+    custodyMin: at("custodyMin", "nis_per_month"),
+    fxPct: at("fxPct", "pct_of_trade"),
+    monthlyFee: at("monthlyFee", "nis_per_month"),
+    sells: { israeli: true, abroad: true },
+    ...more,
+  };
+}
+
+/** What each account leaves on each fund of each index, before the move (the typed account) and after it (its deal), rounded to the shekel. */
+function compare(accounts: CustomBroker[]): Map<string, { ix: string; fund: string; before: number | null; after: number | null }[]> {
+  const deals = accounts.map((a) => dealOfTypedAccount(a, ctx));
+  const both = withDeals(withCustomEntries(bundle, accounts, []), deals, data.kinds);
+  const out = new Map(accounts.map((a) => [a.id, [] as { ix: string; fund: string; before: number | null; after: number | null }[]]));
+  for (const e of bundle.exposures) {
+    const index = indexById(both, e.id);
+    if (!index) continue;
+    const v = buildInvest({ bundle: both, index, plan });
+    for (const a of accounts) {
+      const old = v.houses.find((r) => r.provider.id === a.id);
+      const now = v.houses.find((r) => r.provider.id === dealProviderId(movedDealId(a.id)));
+      const funds = new Set([...(old?.entries ?? []), ...(now?.entries ?? [])].map((x) => x.fund.rec.id));
+      for (const fund of funds) {
+        const b = old?.entries.find((x) => x.fund.rec.id === fund)?.price;
+        const d = now?.entries.find((x) => x.fund.rec.id === fund)?.price;
+        out.get(a.id)!.push({ ix: e.id, fund, before: b ? Math.round(b.valueN) : null, after: d ? Math.round(d.valueN) : null });
+      }
+    }
+  }
+  return out;
+}
+
+const differing = <R extends { before: number | null; after: number | null }>(rows: R[]): R[] => rows.filter((r) => r.before !== r.after);
+
+describe("F-129 the move", () => {
+  it("makes one deal per account, with an id from the account's, that reads back as a deal; a second move adds nothing", () => {
+    const a = account(full);
+    const d = dealOfTypedAccount(a, ctx);
+    expect(d.id).toBe(movedDealId(a.id));
+    expect(readDeal(JSON.parse(JSON.stringify(d)))).not.toBeNull();
+    const once = withMoved([], [d]);
+    expect(withMoved(once, [dealOfTypedAccount(a, ctx)])).toEqual(once);
+  });
+});
+
+describe("F-129 an account typed from scratch leaves what it left", () => {
+  const shapes: [string, CustomBroker][] = [
+    ["every field typed", account(full)],
+    ...(Object.keys(full) as (keyof typeof full)[]).map((k): [string, CustomBroker] => [`${k} left empty`, account({ ...full, [k]: null })]),
+    ["sells only in Israel", account(full, { sells: { israeli: true, abroad: false } })],
+    ["sells only abroad", account(full, { sells: { israeli: false, abroad: true } })],
+    ["sells only in Israel, the conversion left empty", account({ ...full, fxPct: null }, { sells: { israeli: true, abroad: false } })],
+  ];
+  const got = compare(shapes.map((s) => s[1]));
+  it.each(shapes)("%s: the same on every fund", (_, a) => {
+    const rows = got.get(a.id)!;
+    expect(rows.length).toBeGreaterThan(0);
+    expect(differing(rows)).toEqual([]);
+  });
+});
+
+/** A house with a standing order the person can place, for a trade or a conversion (F-12, F-13): its row paid the cheaper of it and the typed price. */
+const standing = (id: string) => bundle.snapshots.find((s) => s.id === id)!.lines.some((l) => l.level === "list" && l.not_ranked === undefined && (l.band === STANDING_ORDER_BAND || l.band === STANDING_CONVERSION_BAND));
+
+/**
+ * The funds at each house where the deal filled from the house's list and the account built on it with nothing typed already leave
+ * different amounts: F-128's reading of the house, which the move inherits and does not make.
+ */
+const apart = (() => {
+  const houses = data.houses.map((h) => h.id).filter((id) => bundle.snapshots.some((s) => s.id === id));
+  const bare = houses.map((id) => account({}, { base: baseOf(bundle.snapshots.find((x) => x.id === id)!, { group: null }) }));
+  const got = compare(bare);
+  return new Map(houses.map((id, i) => [id, new Set(differing(got.get(bare[i]!.id)!).map((r) => `${r.ix}|${r.fund}`))]));
+})();
+
+/** The rows of an account at a house that differ beyond what F-129 states: a house with a standing order may leave less, never more (F-129), and a fund set apart above is not compared. */
+const onHouse = (id: string, rows: { ix: string; fund: string; before: number | null; after: number | null }[]) =>
+  differing(rows).filter((r) => !apart.get(id)?.has(`${r.ix}|${r.fund}`) && !(standing(id) && r.before !== null && r.after !== null && r.after <= r.before));
+
+describe("F-129 an account built on a house leaves what it left", () => {
+  const houses = data.houses.map((h) => h.id).filter((id) => bundle.snapshots.some((s) => s.id === id));
+  const on = (id: string, typed: Typed) => {
+    const s = bundle.snapshots.find((x) => x.id === id)!;
+    return account(typed, { base: baseOf(s, { group: null }) });
+  };
+  const shapes = houses.flatMap((id): [string, string, CustomBroker][] => [
+    [id, "nothing typed", on(id, {})],
+    [id, "every field typed", on(id, { tradePct: 0.05, tradeMin: 3, custodyPct: 0.08, custodyMin: 1, fxPct: 0.2, monthlyFee: 5 })],
+    [id, "the trade's percent alone", on(id, { tradePct: 0.07 })],
+    [id, "the custody's minimum alone", on(id, { custodyMin: 4 })],
+    [id, "the custody's percent alone", on(id, { custodyPct: 0.08 })],
+    [id, "the conversion alone", on(id, { fxPct: 0.2 })],
+    [id, "the monthly fee alone", on(id, { monthlyFee: 5 })],
+  ]);
+  const got = compare(shapes.map((s) => s[2]));
+  it.each(shapes)("%s, %s: the same on every fund", (id, _, a) => {
+    expect(onHouse(id, got.get(a.id)!)).toEqual([]);
+  });
+});
+
+describe("F-128's own reading of a house, set apart from the move", () => {
+  it("is on funds bought abroad only, and on few houses", () => {
+    const all = [...apart.entries()].flatMap(([id, set]) => [...set].map((k) => `${id}|${k}`));
+    expect(all.every((k) => bundle.funds.find((f) => f.id === k.split("|")[2])?.domicile !== "IL")).toBe(true);
+  });
+});
+
+describe("F-129 an account built on a group, typed today, leaves what it left", () => {
+  const shapes = bundle.snapshots.flatMap((s) =>
+    data.houses.some((h) => h.id === s.id)
+      ? startingPointsOf(s).flatMap((p): [string, string, CustomBroker][] =>
+          p.group
+            ? [
+                [s.id, p.nameHe, account({}, { base: baseOf(s, p) })],
+                [s.id, `${p.nameHe}, every price used`, account({}, { base: { ...baseOf(s, p), group: { ...p.group, adopted: p.group.prices.map((x) => x.fee) } } })],
+                [s.id, `${p.nameHe}, for two years, the trade typed`, account({ tradePct: 0.06 }, { base: baseOf(s, p), untilYears: 2 })],
+              ]
+            : [],
+        )
+      : [],
+  );
+  const got = compare(shapes.map((s) => s[2]));
+  it.each(shapes)("%s, %s: the same on every fund", (id, _, a) => {
+    expect(onHouse(id, got.get(a.id)!)).toEqual([]);
+  });
+});

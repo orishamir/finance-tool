@@ -2,6 +2,8 @@
 // the index page and the funds page read, and how one fund runs through the engine. The index page ranks the houses. No fee, rate or rule figure
 // is written here: tariffs come from the snapshots in the bundle, and every number leaves as a value object with its
 // state. Pure: no storage; the bundle is fetched once.
+import type { DealsInBundle } from "./deal-account/bundle";
+import type { Missing } from "./deal-account/plan";
 import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContext } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { formulaNames } from "../copy";
@@ -141,6 +143,8 @@ export interface IndicesBundle {
   dollarRange?: { lo: number; hi: number; p02: ParameterRecord };
   /** The broker and fund the person typed (D44): only the index page's copy of the bundle has them (`withCustomEntries`). */
   entered?: EnteredInBundle;
+  /** The person's securities-account deals (F-128): only a copy of the bundle with them has them (`withDeals`). */
+  deals?: DealsInBundle;
 }
 
 export const BROKERAGE = "brokerage-account";
@@ -347,7 +351,9 @@ export type NotComparable =
    *  indices page shows such a fund's figures before tax beside it (F-118). `question`: the open question that stopped the run, its
    *  readings giving it different results (method §13), whose card the reason opens; `gap`: the method gap that stopped it where no reading of
    *  the case exists (G-38). */
-  | { code: "rule-open"; ruleId: string; question?: string; gap?: string };
+  | { code: "rule-open"; ruleId: string; question?: string; gap?: string }
+  /** F-128: an account priced by a deal with no price for this fund; `detail` is why, as the deal's reading names it (lib/deal-account). */
+  | { code: "deal-unpriced"; detail: string; missing: Missing | null };
 
 /** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined so the brokers page, the funds page and "השקעה במדד" list the same providers). */
 export function providersOf(bundle: Pick<IndicesBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {

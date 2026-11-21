@@ -818,6 +818,7 @@ export const formulaNames: Record<string, string> = {
   "F-125": "שנה ממש מתחת למדרגה וממש מעליה",
   "F-126": "חודש בלי פעולה ובלי החזקה",
   "F-127": "הפעולה שמכסה עמלה שמתקזזת",
+  "F-128": "חשבון שהמחיר שלו לפי העסקה שלכם",
   "F-08": "חשבון הכסף חודש אחרי חודש",
   "F-09": "השווי במשיכה",
   "F-10": "העלות בתוך הקרן",
@@ -2500,6 +2501,8 @@ export const feeDeal = {
     copied: "הקישור הועתק",
     /** The line a saved deal just deleted leaves under the bar, before its name. */
     deleted: "נמחקה מהמכשיר: ",
+    /** A saved securities-account deal's strip ends with this link: the deal against every house, on the indices page. */
+    onIndices: "לראות את העסקה מול כל הבתים, בהשקעה במדד",
     /** Under a saved deal's name in the list: its product, and the day it was last saved (`savedOn` before the date). */
     savedOn: "נשמרה ב־",
     /** Closes the line that says a template opened a new deal. */
@@ -4232,6 +4235,129 @@ export const invest = {
   },
 
   /** A broker and a fund the person types (D44). */
+  /** A securities-account deal the person saved, as an account of the lists, and the popup that edits it on the plan (F-128). */
+  dealAccount: {
+    /** The tag beside the deal's name in the lists, the pair's card and the receipt. */
+    tag: "שלכם",
+    add: "להזין תנאים שקיבלתם",
+    edit: "לערוך את העסקה",
+    /** Where a deleted deal's row stood, before its name. */
+    deleted: "נמחקה מהמכשיר: ",
+    /** The house a new deal starts from, its name. */
+    nameOf: (house: string) => `${house}, בתנאים שלי`,
+    /** A deal the plan cannot price: what it lacks, said by its fee (lib/deal-account/plan.ts, `MissingWhy`), and the tap that opens it there. */
+    missing: {
+      price: (fee: string) => `עוד בלי מחיר: ${fee}, ולכן לא מדורג.`,
+      order: (fee: string) => `המחירים של ${fee} לא לפי הסדר, ולכן לא מדורג.`,
+      case: (fee: string) => `ב${fee} אין מקרה לקרן כזאת, ולכן לא מדורג.`,
+    } as Record<string, (fee: string) => string>,
+    complete: "להשלים",
+    /** The popup's head. */
+    head: {
+      nameField: "שם העסקה",
+      rename: "שינוי השם",
+      saved: "נשמרת במכשיר הזה, גם ב״העסקאות שלי״",
+      unsaved: "תישמר במכשיר הזה כשתשנו בה משהו",
+      openDeal: "לפתוח בעמוד העמלות",
+      close: "סגירה",
+      more: "עוד פעולות לעסקה",
+      remove: "מחיקת העסקה",
+      confirm: "למחוק את העסקה מהמכשיר הזה?",
+      confirmBody: "היא תצא מרשימת החשבונות ומ״העסקאות שלי״ בעמוד העמלות.",
+      confirmYes: "מחיקה",
+      confirmNo: "ביטול",
+    },
+    /** A new deal: from a house's latest price list, or empty. */
+    start: {
+      title: "עסקה חדשה",
+      lede: "מתחילים מהתעריפון האחרון של בית ומשנים את מה שקיבלתם, או מעסקה ריקה. העסקה נשמרת במכשיר הזה ומופיעה ברשימת החשבונות.",
+      search: "חיפוש בית",
+      clear: "ניקוי החיפוש",
+      group: "בתי השקעות ובנקים",
+      none: "אין בית בשם הזה",
+      empty: "עסקה ריקה",
+    },
+    tiles: {
+      left: (years: number) => `נשאר אחרי ${countPhrase(years, { one: "שנה אחת", two: "שנתיים", many: "שנים" })}`,
+      leftNote: "בכסף של היום, אחרי דמי ניהול, עמלות ומס",
+      leftAbout: "מה שנשאר בעסקה שלכם בסוף התוכנית",
+      place: "המקום בהשוואה",
+      placeValue: (rank: number, of: number) => `${rank} מתוך ${of}`,
+      placeNote: "לפי מה שנשאר בסוף",
+      diff: (house: string) => `מול התעריפון של ${house}`,
+      diffNote: "באותה קרן, לפי התוכנית שלכם",
+      diffAbout: "מה שנשאר בעסקה שלכם פחות מה שנשאר לפי התעריפון של אותו בית, באותה קרן",
+      /** The house's own row on the same fund, as an input of the difference. */
+      houseAbout: (house: string) => `מה שנשאר לפי התעריפון של ${house}, באותה קרן`,
+      /** The place: among how many accounts, each at its cheapest fund. */
+      placeAbout: (of: number) => `המקום של העסקה שלכם מבין ${of} החשבונות, לפי מה שכל אחד משאיר בסוף בקרן הזולה אצלו`,
+      noSum: "עוד אין סכום",
+      waits: (fee: string) => `${fee} מחכה למחיר`,
+      unranked: "לא מדורג",
+      unrankedNote: "עד שיהיה מחיר לכל עמלה",
+      /** The phone's strip: the difference, then the plan's line opened by a tap. */
+      planTap: "התוכנית",
+    },
+    /** The plan the deal is read on, under the tiles. */
+    plan: (amount: string, monthly: string, years: number, rate: string, fund: string, where: string) =>
+      `על התוכנית שבעמוד: ${amount} היום, ${monthly} בחודש, ${countPhrase(years, { one: "שנה אחת", two: "שנתיים", many: "שנים" })}, ${rate} בשנה · ${fund}, נקנית ${where}`,
+    where: { tase: "בתל אביב", us: "בארצות הברית", europe: "באירופה", world: "בחו״ל", manager: "ממנהל הקרן" } as Record<string, string>,
+    /** Under a fee's block: what the plan charges, or why it charges nothing (lib/deal-account/plan.ts, `OffPlan`). */
+    onPlan: "בתוכנית",
+    /** On the case of a fee the plan reads (B), and on a step of the account's size with the years the plan spends in it (F). */
+    planCase: (years: readonly { from: number; to: number }[] | null) =>
+      years === null
+        ? "בתוכנית"
+        : years.length === 1 && years[0]!.from === years[0]!.to
+          ? `בתוכנית: שנה ${years[0]!.from}`
+          : `בתוכנית: שנים ${years.map((y) => (y.from === y.to ? `${y.from}` : `${y.from} עד ${y.to}`)).join(", ")}`,
+    offPlan: "לא בתוכנית",
+    off: {
+      "shekel-fund": "הקרן נקנית בשקלים, ולכן בתוכנית אין המרה.",
+      "transfer-out": "בתוכנית לא מעבירים את הקרן לחשבון אחר.",
+      "fund-record": "דמי הניהול של הקרן באים מהנתונים של הקרן, לא מהעסקה.",
+      cover: "בתוכנית אין ביטוח.",
+      "no-dividend": "הקרן לא מחלקת דיבידנד, ולכן בתוכנית אין אירוע חברה.",
+      "not-yet": "החישוב עוד לא גובה עמלה כזאת.",
+      "own-words": "עמלה במילים שלכם: החישוב לא גובה אותה.",
+      "no-current-account": "בעמוד הזה לא סופרים חשבון עובר ושב.",
+      banned: "לפי הכללים, עמלה כזאת לא נגבית כאן.",
+    } as Record<string, string>,
+    ownBank: (bank: string) => `סימנתם בעמוד שיש לכם כבר חשבון עו״ש ב${bank}.`,
+    /**
+     * A deal filled from a bank that names no current account of its own pays the bank's (F-102), from the bank's record: one quiet line
+     * after the fee blocks, its price a month by the price list and its cost on the plan. The toolbox's "חשבון עובר ושב בבנק" gives it its own.
+     */
+    bankAccount: (bank: string, withCost: boolean) =>
+      `בתוכנית נספר גם חשבון העו״ש של ${bank}: {monthly} בחודש לפי התעריפון${withCost ? ", {cost} בתוכנית" : ""}. אפשר לתת לו מחיר משלכם בכרטיס ״חשבון עובר ושב בבנק״.`,
+    /** What a fee, or the bank's current account, took on the plan, as its figure's sheet says (F-128). */
+    feeCostAbout: (fee: string) => `העלות של ${fee} בתוכנית, בכסף של היום`,
+    bankCostAbout: (bank: string) => `העלות של חשבון העו״ש של ${bank} בתוכנית, בכסף של היום`,
+    /** The pick bar: what only the person knows (a track, a condition of their own), then what the plan sets itself. */
+    readFor: "קוראים את העסקה בשביל",
+    /** The pick bar on a phone, one line under the strip. */
+    readForShort: "בשביל",
+    /** Under a deal fee's line on the ticket: a later price after the month the first ends, and the pick that chose its case (A, F). */
+    ticket: { until: (month: string) => `עד ${month}`, after: ", אחר כך ", by: "לפי: " },
+    /** The pair card's account half where the account is the deal (H). */
+    card: {
+      basis: "על בסיס",
+      /** The list's name, then its date (the kit's `When`) after "מ־" where it has one. */
+      basisValue: (house: string, dated: boolean) => `התעריפון של ${house}${dated ? " מ־" : ""}`,
+      changed: "שיניתם",
+      saved: "נשמרה",
+    },
+    /** A fund bought abroad the deal has no case for (E): in the popup under the buy-and-sell cases, and folding the page's rows. */
+    abroad: {
+      lacks: (what: string) => `לקרנות שנקנות בחו״ל בעמוד הזה חסר מקרה: ${what}.`,
+      add: "להוסיף את המקרה",
+      /** On the page, the rows of funds bought abroad folded into one line where the chosen account is the deal. */
+      fold: "לקרנות שנקנות בחו״ל אין מחיר בעסקה שלכם: אין בה מחיר לקנייה בחו״ל.",
+      foldAdd: "להוסיף לעסקה",
+      foldCount: (n: number) => `${countPhrase(n, { one: "קרן אחת", two: "שתי קרנות", many: "קרנות" })} בלי מחיר בחשבון הזה`,
+    },
+    planKnows: (where: string) => `את השאר התוכנית יודעת: הקרן נקנית ${where}, באינטרנט, פעם בחודש.`,
+  },
   customEntries: {
     /** Buttons: an action with an object is an infinitive, up to three words (wording.md). */
     addBroker: "להזין תנאים שקיבלתם",
@@ -5271,6 +5397,7 @@ export const kit = {
       FoldGroup: "כותרת קבוצה עם הספירה שלה. list (ברירת המחדל): קבוצה בתוך רשימת כיסוי, כותרת ברמה 3 או 4. section: נושא של כרטיסים בעמוד (קבוצות החוקים והכללים, מה כתוב במסמכים של חברה), כותרת גדולה ושורה של 48 פיקסלים; open ו־onOpenChange כשהעמוד פותח קבוצה לפי הכתובת.",
       PhoneFold: "הבחירות של עמוד לפני רשימה, מקופלות בטלפון: שורה אחת אומרת מה נבחר ופותחת אותן, כדי שהרשימה תתחיל במסך הראשון. במחשב הן פתוחות תמיד, בלי השורה.",
       SegmentedControl: "שתיים עד ארבע תשובות קצרות, אחת תמיד נבחרת: לבחירה שמשנה איך אותו תוכן מוצג (כסף של היום או נומינלי, קיבוץ, סדר, גרף או טבלה), או לשאלה שהחישוב צריך (שכיר או עצמאי). התשובות קצרות מספיק כדי לעמוד זו ליד זו גם בטלפון. הבחירה נעשית לפי מה שהבחירה עושה, לא לפי מספר האפשרויות.",
+      ConfirmAsk: "שאלה לפני שמשהו נמחק לתמיד. במחשב היא כרטיס במקום שבו שואלים: השאלה, שורה על מה שיקרה ושני כפתורים, והמוחק בצבע הסכנה. בטלפון היא גיליון מתחתית המסך, והכפתורים ברוחב המסך.",
       MenuPicker: "בחירה של פריט אחד מרשימה, בתוך שורת טקסט: כפתור שמראה את הנבחר וחץ, ומתחתיו הרשימה. הנבחר מסומן בווי ובכתב מודגש. פריט שהוספתם מקבל עיפרון ופח, והשורה האחרונה מוסיפה. החצים עוברים בין השורות, ו־Escape או הקשה מחוץ לרשימה סוגרים אותה.",
       ShareBar: "שלם מפורק לכמה חלקים, בפס אחד של אחוזים: החלקים זה ליד זה, 2 פיקסלים ביניהם, וכל אחד באורך החלק שלו. מעל הפס מקרא אחד, בסדר של הפס: לכל חלק הצבע, השם והאחוז שלו, תמיד באותו מקום. הסכומים עצמם כתובים ליד הפס. בלי מקרא (`bare`), כשהשורות לידו כבר נותנות שם לכל חלק: פס של 24 פיקסלים, והסכום של החלק הגדול כתוב בתוכו.",
       Receipt: "קבלה: דף עם קצה תחתון קרוע, שורות של שם וסכום עם קו נקודות ביניהם, והחלקים של שורה מוזחים מתחתיה מאחורי קו בצבע שלה: עמלות של חשבון עם הסכום שלהן, עמלות של קרן עם השיעור שלהן. קו כפול לפני הסכום הסופי, וקו מקווקו לפני מה שנובע ממנו. כרטיס (ReceiptTicket): אותן שורות לרוחב עמודה רחבה, בשלושה חלקים: החשבון בצד אחד, הסכום שנשאר באמצע, הקרן בצד השני, ושורה מתחתיהם; חריצים עגולים במקום שבו קווי האמצע פוגשים את הקצוות. בטלפון, כשהקבלה למעלה מחוץ למסך, תלוש שלה עם קצה עליון קרוע נצמד לתחתית המסך: כמה נשאר, והקשה עליו מחזירה לקבלה.",
