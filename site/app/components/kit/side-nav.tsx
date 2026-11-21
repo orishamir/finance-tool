@@ -5,7 +5,7 @@
 // lays the list beside the content from lg at every width, whatever the content needs, the list staying in view while the content scrolls;
 // a table wider than the room beside it scrolls sideways inside its own card. Under lg the list folds into one line that says what is shown
 // and opens it (`PhoneFold`), closing again once an item is chosen.
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import { cx } from "./cx";
 import { PhoneFold } from "./phone-fold";
@@ -48,7 +48,7 @@ export function SideNav({ groups, current, ariaLabel, heading, onPick }: { group
                     onClick={onPick}
                     className={cx("relative min-h-target px-3 py-2.5 rounded-md flex items-baseline gap-3", navLook(on))}
                   >
-                    {on && <span aria-hidden="true" className="absolute inset-y-0 start-0 w-[3px] rounded-s-md bg-primary" />}
+                    {on && <span aria-hidden="true" className="absolute inset-y-0 inset-s-0 w-[3px] rounded-s-md bg-primary" />}
                     <span className="flex-1 min-w-0 leading-snug">{it.label}</span>
                     {it.count != null && (
                       <bdi dir="ltr" className="shrink-0 text-[13px] tabular-nums text-muted-foreground">
@@ -81,10 +81,8 @@ export function SideNav({ groups, current, ariaLabel, heading, onPick }: { group
 const navLook = (on: boolean) => cx("transition-colors duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2", on ? "bg-primary-subtle text-primary font-medium" : "hover:bg-accent/60");
 
 export function SidePage({ nav, summary, more, less, chosen, children }: { /** The `SideNav`; given a function, it receives what closes the fold. */ nav: (close: () => void) => ReactNode; /** What is shown, in a few words, for the folded line under lg. */ summary: ReactNode; more: string; less: string; /** The chosen part: when it changes, the fold closes. */ chosen: string; children: ReactNode }) {
-  // the fold is open for the part chosen when it was opened: choosing another (a press on an item, or the Back button) closes it
-  const [openFor, setOpenFor] = useState<string | null>(null);
-  const open = openFor === chosen;
-  const setOpen = (o: boolean) => setOpenFor(o ? chosen : null);
+  const [open, setOpen] = useState(false);
+  useEffect(() => setOpen(false), [chosen]);
   return (
     <div data-side-page="" className="flex flex-col gap-6 lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[16.5rem_minmax(0,1fr)] lg:gap-8 lg:items-start">
       <div data-side-nav="" className="lg:sticky lg:top-[88px] lg:max-h-[calc(100dvh-104px)] lg:overflow-y-auto">

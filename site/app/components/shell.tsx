@@ -242,7 +242,7 @@ function ToTop() {
       type="button"
       aria-label={site.toTop}
       onClick={() => window.scrollTo({ top: 0 })}
-      className={cx("fixed bottom-20 md:bottom-6 end-4 z-[var(--z-sticky)] size-target rounded-full border border-border bg-popover text-foreground shadow-md inline-flex items-center justify-center hover:bg-accent", clearOfReceiptStub)}
+      className={cx("fixed bottom-20 md:bottom-6 inset-e-4 z-[var(--z-sticky)] size-target rounded-full border border-border bg-popover text-foreground shadow-md inline-flex items-center justify-center hover:bg-accent", clearOfReceiptStub)}
     >
       <span aria-hidden="true" className="-rotate-90 inline-flex">
         <IconBack size={20} />

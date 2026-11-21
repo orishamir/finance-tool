@@ -852,7 +852,7 @@ export function SpanKnob({ edge, from, to, min, max, label, valueText, onReach, 
       data-knob-strip={axis}
       className={cx(
         "absolute z-10",
-        axis === "x" ? cx("inset-y-0 w-2.5", edge === "after" ? "end-0 -translate-x-1/2" : "start-0 translate-x-1/2") : cx("inset-x-0 h-2.5", edge === "after" ? "bottom-0 translate-y-1/2" : "top-0 -translate-y-1/2"),
+        axis === "x" ? cx("inset-y-0 w-2.5", edge === "after" ? "inset-e-0 -translate-x-1/2" : "inset-s-0 translate-x-1/2") : cx("inset-x-0 h-2.5", edge === "after" ? "bottom-0 translate-y-1/2" : "top-0 -translate-y-1/2"),
       )}
     >
       <button

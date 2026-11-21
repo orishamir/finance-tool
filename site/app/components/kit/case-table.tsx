@@ -213,7 +213,7 @@ function TileAdd({ add, style, className = "items-center justify-center" }: { ad
 function BetweenAdd({ add, axis, style }: { add: AddSpec; axis: "x" | "y"; style: CSSProperties }) {
   return (
     <div style={style} className={cx("pointer-events-none relative", axis === "x" ? "w-0 justify-self-end" : "h-0 self-center")}>
-      <div data-between-add={axis} className={cx("absolute flex items-center justify-center", axis === "x" ? "inset-y-0 -end-3 w-4" : "inset-x-0 -top-2 h-4")}>
+      <div data-between-add={axis} className={cx("absolute flex items-center justify-center", axis === "x" ? "inset-y-0 -inset-e-3 w-4" : "inset-x-0 -top-2 h-4")}>
         <KnobButton icon={Plus} label={add.spoken ?? add.label} tabIndex={-1} expanded={add.expanded} onClick={(e) => add.onAdd(e.currentTarget)} />
       </div>
     </div>
@@ -293,7 +293,7 @@ export interface CellExtras {
  */
 function CellBin({ label, onRemove }: { label: string; onRemove: () => void }) {
   return (
-    <span data-cell-bin-box="" className="absolute top-1.5 end-1.5 h-5 w-5">
+    <span data-cell-bin-box="" className="absolute top-1.5 inset-e-1.5 h-5 w-5">
       <RemoveButton knob cell label={label} onRemove={onRemove} />
     </span>
   );
@@ -325,7 +325,7 @@ const missingLine = (cell: CellExtras) => (cell.missing != null ? <span classNam
  */
 export function CaseMark({ edge, children }: { edge?: boolean; children: ReactNode }) {
   const tag = <Tag tone="primary">{children}</Tag>;
-  return edge ? <span className="absolute top-0 start-2 z-[2] -translate-y-1/2">{tag}</span> : tag;
+  return edge ? <span className="absolute top-0 inset-s-2 z-[2] -translate-y-1/2">{tag}</span> : tag;
 }
 
 /** What a cell shows: its own content, or, while a knob's stretch reaches it, the price it would take, faint until it is let go. */

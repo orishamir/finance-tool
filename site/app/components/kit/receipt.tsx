@@ -95,10 +95,10 @@ export function ReceiptTicket({ label, top, start, middle, end, foot, ref }: { l
         <div className="min-w-0 px-6 pt-3.5 pb-4">{foot[2]}</div>
       </div>
       <div aria-hidden="true" className="pointer-events-none relative col-start-2 row-start-1 row-end-[-1]">
-        <span className={cx(notch, "-top-[11px] -start-[11px]")} />
-        <span className={cx(notch, "-top-[11px] -end-[11px]")} />
-        <span className={cx(notch, "-bottom-[11px] -start-[11px]")} />
-        <span className={cx(notch, "-bottom-[11px] -end-[11px]")} />
+        <span className={cx(notch, "-top-[11px] -inset-s-[11px]")} />
+        <span className={cx(notch, "-top-[11px] -inset-e-[11px]")} />
+        <span className={cx(notch, "-bottom-[11px] -inset-s-[11px]")} />
+        <span className={cx(notch, "-bottom-[11px] -inset-e-[11px]")} />
       </div>
     </section>
   );

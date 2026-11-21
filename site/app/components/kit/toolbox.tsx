@@ -271,7 +271,7 @@ export function Toolbox({ addTo, held, groups, onAdd, onRemove, foot, sheet, doc
             </button>
           )}
           {onClose && (
-            <button type="button" data-sheet-close="" aria-label={copy.toolbox.close} title={copy.toolbox.close} onClick={onClose} className="absolute -end-2 top-1/2 flex size-target -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring">
+            <button type="button" data-sheet-close="" aria-label={copy.toolbox.close} title={copy.toolbox.close} onClick={onClose} className="absolute -inset-e-2 top-1/2 flex size-target -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring">
               <X size={18} strokeWidth={1.75} aria-hidden />
             </button>
           )}
@@ -304,7 +304,7 @@ export function Toolbox({ addTo, held, groups, onAdd, onRemove, foot, sheet, doc
                   setFolded(false);
                 }}
               />
-              {cut && <span aria-hidden data-names-fade="" className="pointer-events-none absolute inset-y-0 -end-4 w-10 bg-gradient-to-r from-popover to-transparent" />}
+              {cut && <span aria-hidden data-names-fade="" className="pointer-events-none absolute inset-y-0 -inset-e-4 w-10 bg-gradient-to-r from-popover to-transparent" />}
             </div>
             <div id={`${id}-parts`} hidden={folded} className={cx("flex flex-col gap-3", docked && "-mx-4 min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4")}>
               {group && (

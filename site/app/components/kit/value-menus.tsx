@@ -61,7 +61,7 @@ export function Switch({ label, checked, onChange }: { label: ReactNode; checked
   return (
     <div className="flex min-h-target w-fit items-center gap-3">
       <button type="button" role="switch" id={id} aria-checked={checked} onClick={() => onChange(!checked)} className={cx("tap-wide relative h-6 w-10 shrink-0 rounded-full transition-colors duration-[var(--duration-fast)]", checked ? "bg-primary" : "bg-muted-foreground/40")}>
-        <span aria-hidden className={cx("absolute top-0.5 size-5 rounded-full transition-[inset-inline-start] duration-[var(--duration-fast)]", checked ? "start-[1.125rem] bg-primary-foreground" : "start-0.5 bg-foreground")} />
+        <span aria-hidden className={cx("absolute top-0.5 size-5 rounded-full transition-[inset-inline-start] duration-[var(--duration-fast)]", checked ? "inset-s-[1.125rem] bg-primary-foreground" : "inset-s-0.5 bg-foreground")} />
       </button>
       <label htmlFor={id} className="cursor-pointer font-medium">
         {label}

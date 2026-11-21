@@ -281,7 +281,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
                 </>
               )}
               {confirm?.id === i.id && (
-                <div style={{ width: CONFIRM_WIDTH }} className={cx("absolute top-full mt-1 z-[var(--z-popover)] rounded-lg border border-border bg-popover p-3 shadow-md flex flex-col gap-2", confirm.edge === "start" ? "start-0" : "end-0")} onKeyDown={(e) => e.key === "Escape" && setConfirm(null)}>
+                <div style={{ width: CONFIRM_WIDTH }} className={cx("absolute top-full mt-1 z-[var(--z-popover)] rounded-lg border border-border bg-popover p-3 shadow-md flex flex-col gap-2", confirm.edge === "start" ? "inset-s-0" : "inset-e-0")} onKeyDown={(e) => e.key === "Escape" && setConfirm(null)}>
                   <span className="text-sm">{words?.confirm}</span>
                   <span className="flex items-center gap-2">
                     <Button

@@ -228,7 +228,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
         </div>
       )}
       {activeAt >= 0 && <Box rows={boxRows.map(({ p, i }) => ({ part: p, amount: wholes[i]! }))} active={list[activeAt]!.id} share={list[activeAt]!.value / total} total={shownSum} toStart={starts[activeAt]! + widths[activeAt]! / 2 > 0.5} />}
-      {broken && <span aria-hidden="true" className={cx("absolute top-0 start-[82%] w-1.5 -skew-x-[20deg] bg-card", size === "sm" ? "h-3" : "h-7")} />}
+      {broken && <span aria-hidden="true" className={cx("absolute top-0 inset-s-[82%] w-1.5 -skew-x-[20deg] bg-card", size === "sm" ? "h-3" : "h-7")} />}
     </div>
   );
 }
@@ -251,7 +251,7 @@ function Box({ rows, active, share, total, toStart }: { rows: { part: CostPart; 
     if (dx) el.style.transform = `translateX(${dx}px)`;
   });
   return (
-    <span ref={box} className={cx("absolute bottom-full mb-1 z-20 pointer-events-none flex w-max max-w-64 flex-col gap-0.5 rounded-md border border-border bg-popover px-2 py-1 text-xs font-normal text-foreground leading-snug whitespace-normal text-start shadow-sm", toStart ? "end-0" : "start-0")}>
+    <span ref={box} className={cx("absolute bottom-full mb-1 z-20 pointer-events-none flex w-max max-w-64 flex-col gap-0.5 rounded-md border border-border bg-popover px-2 py-1 text-xs font-normal text-foreground leading-snug whitespace-normal text-start shadow-sm", toStart ? "inset-e-0" : "inset-s-0")}>
       {rows.map(({ part, amount }) => (
         <span key={part.id} className="flex flex-col">
           <span className={cx("flex items-baseline gap-1.5", part.id === active ? "font-semibold" : "text-muted-foreground")}>

@@ -34,7 +34,7 @@ export const rowLook = (selected: boolean | undefined): string => cx("transition
 
 /** The bar at the chosen row's start edge. */
 export function RowMark() {
-  return <span aria-hidden="true" className="absolute inset-y-0 start-0 w-[3px] bg-primary" />;
+  return <span aria-hidden="true" className="absolute inset-y-0 inset-s-0 w-[3px] bg-primary" />;
 }
 
 export function RowList({ children, className, label, plain }: { children: ReactNode; className?: string; label?: string; /** No box: the rows stand between hairlines, one over the first and one under the last (a company page's lists). */ plain?: boolean }) {

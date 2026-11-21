@@ -171,7 +171,7 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
       className={cx(
         "come-in absolute z-[var(--z-popover)]",
         DROP_PANEL,
-        !listHost && cx("start-0 min-w-full", up ? "bottom-full mb-1" : "top-full mt-1", room !== null && "overflow-y-auto"),
+        !listHost && cx("inset-s-0 min-w-full", up ? "bottom-full mb-1" : "top-full mt-1", room !== null && "overflow-y-auto"),
       )}
     >
       {items.map((item) => {

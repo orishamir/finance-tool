@@ -36,7 +36,7 @@ export function OptionBars({ bars, label, className }: { bars: OptionBar[]; /** 
             </span>
             {/* the zero line runs down the rows at the bars' start; the first row's carries the mark the chart check reads */}
             <span className="relative flex min-h-8 items-center border-s border-chart-axis">
-              {i === 0 && <span aria-hidden="true" data-zero className="absolute inset-y-0 start-0 w-px" />}
+              {i === 0 && <span aria-hidden="true" data-zero className="absolute inset-y-0 inset-s-0 w-px" />}
               {share > 0 && <span aria-hidden="true" data-mark="bar" className={cx("block h-4 rounded-e-[4px] transition-[width] duration-[var(--duration-chart)] ease-standard motion-reduce:transition-none", b.className)} style={{ width: `calc((100% - ${AMOUNT_ROOM}) * ${share})` }} />}
               <span className="ms-2 whitespace-nowrap text-sm font-semibold tabular-nums">{b.amount}</span>
             </span>

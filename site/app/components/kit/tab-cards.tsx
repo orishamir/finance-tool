@@ -62,7 +62,7 @@ export function TabCards({ tabs, current, onChange, ariaLabel, idBase, openWord,
                 </span>
               )}
               {/* the pointer toward the panel, where the cards stand in one row: a square turned to stand on the corner its clip keeps */}
-              {on && <span aria-hidden="true" className="absolute -bottom-[7px] start-1/2 translate-x-1/2 hidden size-3 rotate-45 border border-primary bg-popover [clip-path:polygon(100%_0,100%_100%,0_100%)] lg:block" />}
+              {on && <span aria-hidden="true" className="absolute -bottom-[7px] inset-s-1/2 translate-x-1/2 hidden size-3 rotate-45 border border-primary bg-popover [clip-path:polygon(100%_0,100%_100%,0_100%)] lg:block" />}
             </button>
           );
         })}
