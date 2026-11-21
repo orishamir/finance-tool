@@ -58,7 +58,7 @@ export const labelWeight: Record<Label["code"], number> = {
  * after the period): a page holds room for the reading mark on a row that cites one, so the mark never moves the screen when it
  * appears. A test holds this list to the engine's `label("reading", …)` calls.
  */
-export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11", "TXH-17", "TXH-19", "TXI-25", "TXK-04", "TXK-07", "TXK-29", "TXP-32"];
+export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11", "TXK-07"];
 
 /**
  * Every flag code a ledger run can raise (`RunResult.flags`): the method gaps, assumptions, rules and open questions a page must say beside
@@ -66,8 +66,8 @@ export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11",
  * and open questions, the reliefs' (`reliefFlags`) and the open readings' (`readingFlag`).
  */
 export const RUN_FLAG_CODES: readonly string[] = [
-  "A-30", "BANK-35", "CS-18", "CS-23", "G-03", "G-07", "G-09", "G-10", "G-12", "G-13", "G-14", "G-16", "G-20", "G-21", "G-23", "G-27", "G-32",
-  "G-34", "G-36", "G-39", "KGL-OQ15", "PEN-08", "PEN-OQ7", "PF-13", "PF-36", "PF-OQ18", "TXF-21", "TXF-22", "TXF-27", "TXF-OQ7", "TXG-OQ17", "TXK-06", "TXK-26",
+  "A-30", "BANK-35", "G-03", "G-07", "G-09", "G-10", "G-12", "G-13", "G-14", "G-16", "G-20", "G-21", "G-23", "G-27", "G-32",
+  "G-34", "G-36", "G-39", "KGL-OQ15", "PEN-08", "PEN-OQ7", "PF-13", "PF-OQ18", "TXF-21", "TXF-22", "TXF-27", "TXF-OQ7", "TXG-OQ17", "TXK-06", "TXK-26",
   "TXP-03", "TXP-11", "TXP-OQ20", "TXS-18",
 ];
 

@@ -21,20 +21,17 @@ import {
   depositInterest,
   distributionTax,
   makamPrice,
-  socialContributions,
 } from "./formulas/holding-tax.ts";
 import { bestOpenOffer, breakCount, listFeeRange, mostCommonRate, rateRange } from "./formulas/account-interest.ts";
 import { currencyExposureShare, stockExposureShare } from "./formulas/track-exposure.ts";
 import { companyAssets, groupFeeRange } from "./formulas/track-groups.ts";
-import { changeEffect, sweep } from "./formulas/step-effect.ts";
-import { annualToMonthly, contributions, cpiPath, crossRate, fxPath, monthlyInflation, paidInAsEntered, realValue, taxYearOf } from "./formulas/time.ts";
+import { changedByShare, sweep } from "./formulas/step-effect.ts";
+import { annualToMonthly, contributions, cpiPath, crossRate, fxPath, monthlyInflation, paidInAsEntered, taxYearOf } from "./formulas/time.ts";
 import { runBond } from "./ledgers/bond.ts";
-import { runChildSavings } from "./ledgers/child-savings.ts";
 import { runDeposit } from "./ledgers/deposit.ts";
 import { runMakam } from "./ledgers/makam.ts";
 import { runProvident } from "./ledgers/provident.ts";
-import { runPension } from "./ledgers/pension.ts";
-import { employerLine } from "./ledgers/employer-line.ts";
+import { employerLinePension, runPension } from "./ledgers/pension.ts";
 import { beneficiaryRelief, employeeCredit, equalNetOutlay } from "./formulas/deposit-side.ts";
 import { studyFundEarlyWithdrawal } from "./formulas/early-withdrawal.ts";
 import { blockedWrapperExit } from "./formulas/blocked-exit.ts";
@@ -42,21 +39,8 @@ import { insuranceCost } from "./formulas/insurance.ts";
 import { runSecurities, runSecuritiesBeforeTax } from "./ledgers/securities.ts";
 import { cpiLinkedAmount, indexedAmount } from "./formulas/indexation.ts";
 import { buildCandidateSet } from "./compare/candidates.ts";
-import { idleCash } from "./compare/idle-cash.ts";
-import { lossFilter } from "./compare/loss-filter.ts";
 import { rankCandidates } from "./compare/ranking.ts";
-import { revisit } from "./compare/revisit.ts";
-import { sensitivity } from "./compare/sensitivity.ts";
-import { timeline } from "./timeline.ts";
-import { feeMateriality } from "./fees/materiality.ts";
-import { regulatorReference } from "./fees/reference.ts";
-import { feeVerdict } from "./fees/verdict.ts";
-import { consolidation } from "./holdings/consolidation.ts";
-import { classificationFit } from "./holdings/fit.ts";
-import { trackWorkbench } from "./holdings/workbench.ts";
 import { costByWho, providerWorkbench } from "./providers/workbench.ts";
-import { fundVariants } from "./variants/fund-variants.ts";
-import { switchingCost } from "./variants/switching.ts";
 
 export const formulas = {
   "F-01": taxYearOf,
@@ -64,7 +48,6 @@ export const formulas = {
   "F-03": cpiPath,
   "F-04": fxPath,
   "F-05": contributions,
-  "F-06": realValue,
   "F-106": paidInAsEntered,
   "F-107": irishFundUsWithholding,
   "F-07": annualToMonthly,
@@ -86,7 +69,6 @@ export const formulas = {
   "F-25": bondCoupon,
   "F-26": currentAccountInterest,
   "F-27": runProvident,
-  "F-28": socialContributions,
   "F-30": equalNetOutlay,
   "F-31": employeeCredit,
   "F-32": beneficiaryRelief,
@@ -103,24 +85,10 @@ export const formulas = {
   "F-49": blockedWrapperExit,
   "F-50": childSavingsExitTax,
   "F-51": runSecurities,
-  "F-52": employerLine,
+  "F-52": employerLinePension,
   "F-53": insuranceCost,
-  "F-54": runChildSavings,
-  "F-60": idleCash,
-  "F-61": feeMateriality,
-  "F-62": feeVerdict,
   "F-63": providerWorkbench,
-  "F-64": trackWorkbench,
-  "F-65": fundVariants,
-  "F-66": switchingCost,
-  "F-67": timeline,
-  "F-68": regulatorReference,
-  "F-70": classificationFit,
-  "F-71": lossFilter,
-  "F-72": consolidation,
   "F-80": rankCandidates,
-  "F-81": sensitivity,
-  "F-82": revisit,
   "F-83": buildCandidateSet,
   "F-84": crossRate,
   "F-85": mostCommonRate,
@@ -128,12 +96,11 @@ export const formulas = {
   "F-104": breakCount,
   "F-87": stockExposureShare,
   "F-88": currencyExposureShare,
-  "F-89": changeEffect,
+  "F-89": changedByShare,
   "F-90": sweep,
   "F-91": costByWho,
   "F-92": trackingBeyondFees,
   "F-93": stretchRange,
-  "F-94": fundVariants,
   "F-95": kindRecord,
   "F-96": moneyStory,
   "F-97": limitStanding,
@@ -167,11 +134,31 @@ export const formulas = {
 } as const;
 
 /** Ledger runs, by the instrument family they model. */
-export const runs = { runBond, runChildSavings, runDeposit, runMakam, runPension, runProvident, runSecurities } as const;
+export const runs = { runBond, runDeposit, runMakam, runPension, runProvident, runSecurities } as const;
 
-/** Formulas in docs/method.md not implemented yet, with the release that brings them (architecture §7). */
+/**
+ * Formulas in docs/method.md the engine does not compute, each with why: one not built yet (with the release that brings it,
+ * architecture §7), one no page uses and whose code is removed (marked not built in the method), or one computed elsewhere.
+ */
 export const pending: Record<string, string> = {
   "F-18": "R4: interest and dividend handling fee, with full tariff detail",
+  "F-06": "computed where it is read: a run's real value is V_T / I_T (RunResult.real), and site/app/lib/engine.ts divides each month of a run by its index",
+  "F-28": "computed by the ledgers, which charge no National Insurance or health on what it covers and cite its rules (TXK-27 in provident.ts)",
+  "F-54": "not built: no page uses this formula; its code is removed",
+  "F-60": "not built: no page uses this formula; its code is removed, but for the cash rate in the form a formula reads it (`cashRateIn`)",
+  "F-61": "not built: no page uses this formula; its code is removed, but for the plan without one fee line (fees/materiality.ts), which F-63 prices each provider line by",
+  "F-62": "not built: no page uses this formula; its code is removed",
+  "F-64": "not built: no page uses this formula; its code is removed, but for the guides' range of the fees reported on the tracks (site/app/lib/guide.server.ts)",
+  "F-65": "computed on the site for the funds with a record: site/app/lib/invest.ts, each fund built by `fundOf`; the candidates from the fund lists are not built",
+  "F-66": "not built: no page uses this formula; its code is removed",
+  "F-67": "computed on the site from each run's series: site/app/lib/engine.ts `runTimeline`, and the guide signatures' own year-by-year models",
+  "F-68": "not built: no page uses this formula; its code is removed",
+  "F-70": "computed on the site: site/app/lib/fit.ts `fitOf`",
+  "F-71": "computed on the site for a track's classification: site/app/lib/fit.ts `fitOf`; exposure mode is not built",
+  "F-72": "not built: no page uses this formula; its code is removed",
+  "F-81": "not built: no page uses this formula; its code is removed",
+  "F-82": "not built: no page uses this formula; its code is removed",
+  "F-94": "computed on the site: site/app/lib/invest.ts (hedged or not, across the dollar) and site/app/components/invest/lists.tsx",
 };
 
 export type FormulaId = keyof typeof formulas;

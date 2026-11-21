@@ -45,7 +45,7 @@ export function isPrinted(text: string, value: number): boolean {
   return forms.some((f) => new RegExp(`(^|[^\\d.,])${f.replace(/[.,]/g, "\\$&")}(?![\\d]|[.,]\\d)`).test(text));
 }
 
-// Release 2 comparison scenarios (S39, S40, S41, S50), copied from the "Independent check" lines in
+// Release 2 comparison scenarios (S39, S40, S50), copied from the "Independent check" lines in
 // scenarios.md and the tables in workings.md. r2-compare.test.ts checks each against its scenario text.
 export const r2Expected = {
   s39: {
@@ -81,45 +81,10 @@ export const r2Expected = {
     kglValueOnWhatItTakes: 258_650.91,
     coverage: { considered: 26, ranked: 6, listed: 7, notEligible: 2, excluded: 0, notEvaluated: 11 },
   },
-  s41: {
-    amount: 60_000,
-    costs: { average: 112.84, ownOffer: 131.79, makam: 142.07, fund: 129.13 },
-    coverage: { considered: 26, baseline: 1, compared: 3, notEligible: 2, notEvaluated: 20 },
-  },
   s50: { bankA2: 132_426.4, bankA: 132_353.91, gapPct: 0.05 },
 };
 
-// Release 3 scenarios (S42, S43, S46), copied from the "Independent check" lines in scenarios.md.
-// r3.test.ts checks each against its scenario text.
-export const r3Expected = {
-  s42: {
-    realWithFees: 300_266.26,
-    totalDrag: 20_664.79,
-    balanceFee: 17_901.59,
-    directExpenses: 2_587.05,
-    interaction: 176.15,
-    /** Cutting the balance fee from 0.74% to 0.34% for PF-13's five years, then back to 0.74% (D86, 2026-11-07; was 9,530.01 for all ten years). */
-    reduction: 3_991.56,
-  },
-  s43: {
-    custody: 5_032.56,
-    trade: 3_068.41,
-    fx: 1_213.4,
-    fund: 207.68,
-    spread: 75.28,
-    interaction: 106.09,
-    totalDrag: 9_703.42,
-    realWithFees: 236_360.08,
-  },
-  s46: {
-    /** Fee cost over 15 years, real: 0.9% on 80,000; 0.6% on 40,000; moving the 80,000 into the 0.6% fund. */
-    cost80: 16_723.25,
-    cost40: 5_698.23,
-    moveValue: 5_326.8,
-  },
-};
-
-// Release 4 scenarios: S38 (switching cost, F-66) and S44, S45 (provider workbench, F-63), copied from the
+// Release 4 scenarios: S44, S45 (provider workbench, F-63), copied from the
 // "Independent check" lines in scenarios.md and the tables in workings.md. r4.test.ts checks each against its scenario text.
 /** One provider row of S44: horizon cost (real), year-1 cost (nominal, liquidation value at 12), year-1 fees paid, and the cost by type (real, horizon). */
 interface S44Row {
@@ -131,14 +96,6 @@ interface S44Row {
   fixed: number;
 }
 export const r4Expected = {
-  s38: {
-    realNoSwitch: 106_368.36,
-    realWithSwitch: 105_721.95,
-    cost: 646.4,
-    taxAtSwitch: 1_649.27,
-    /** (b): a track switch costs nothing (TXK-04). */
-    providentCost: 0,
-  },
   s44: {
     oneOrder: {
       cAverage: { cost: 1_023.22, year1: 187.19, fees1: 228.65, trade: 191.6, custody: 0, fixed: 830.99 },
@@ -166,32 +123,5 @@ export const r4Expected = {
       tenOrdersList: { costGap: 11_365.43, trade: 10_095.7, custody: 1_878.62, fixed: -830.9, tiePct: 8.7 },
       tenOrdersAverage: { costGap: 1_176.19, trade: 322.8, custody: 1_678.27, fixed: -830.99, tiePct: 0.87 },
     },
-  },
-};
-
-// Release 5 scenarios (S48, S49), copied from the "Independent check" lines in scenarios.md.
-// r5.test.ts checks each against its scenario text.
-export const r5Expected = {
-  s48: {
-    /** TXS-09 rate, percent: saved and test copy. */
-    rateBefore: 25,
-    rateAfter: 30,
-    brokerageRealBefore: 572_640.51,
-    brokerageRealAfter: 566_430.72,
-    brokerageNominalBefore: 938_338.16,
-    brokerageNominalAfter: 928_162.69,
-    /** Kupat gemel lehashkaa, unchanged: its exit tax comes from TXK-07. */
-    kglReal: 630_640.9,
-    /** Gap between the top two after the change, in percent, printed "10.18%". */
-    gapPct: 10.18,
-  },
-  s49: {
-    cashReal: 534_012.31,
-    bondsReal: 495_867.6,
-    /** Relative gap between cash and bonds, in percent, printed "7.14%". */
-    gapPct: 7.14,
-    /** Worst falls and the largest fall accepted, percent. */
-    worstFall: { bonds: 10, equity: 40 },
-    accepted: 30,
   },
 };

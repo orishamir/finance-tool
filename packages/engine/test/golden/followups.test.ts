@@ -3,7 +3,7 @@
 // cap (CS-18) or an entered rate, and money-market custody at a non-bank member (F-14). Expected values are the independent
 // check's (tests/golden/expected_calc.py), never the engine's; golden() confirms each one is printed in its scenario.
 import { describe, expect, it } from "vitest";
-import { BlockedError, memberKindOf, runChildSavings, runProvident, runSecurities, type RunResult, type SecuritiesInput } from "../../src/index.ts";
+import { BlockedError, memberKindOf, runProvident, runSecurities, type RunResult, type SecuritiesInput } from "../../src/index.ts";
 import { context, golden, loadRules, withTxf04AsTheLetterCopy } from "./harness.ts";
 
 const ctx = context();
@@ -140,46 +140,6 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     expect(labelOf(r, "TXK-07")).toBe("reading");
   });
 
-  for (const [label, feeAfter21, expected] of [
-    ["(a) at the legal cap", undefined, { balance: 76_717.55, fees: 2_941.45, tax: 8_534.69, realGain: 34_138.78, net: 68_182.86, real: 41_559.56 }],
-    ["(b) at an entered 0.23%", 0.0023, { balance: 79_277, fees: 655.12, tax: 9_174.56, net: 70_102.44, real: 42_729.6 }],
-  ] as const) {
-    it(`S54 child savings withdrawn at 25, the fee after 21 ${label}`, () => {
-      const r = runChildSavings(
-        {
-          route: "provident",
-          doubling: true,
-          sex: "boy",
-          months: 300,
-          market: { grossReturn: 0.06, inflation: 0.02 },
-          ...(feeAfter21 === undefined ? {} : { feeAfter21 }),
-        },
-        ctx,
-      );
-      const g = golden("S54");
-      g.value("balance at 25", r.detail.grossBalance, expected.balance);
-      g.value("fees after 21", r.fees.balance, expected.fees);
-      g.value("tax if withdrawn", r.taxAtExit, expected.tax);
-      if ("realGain" in expected) g.value("real gain", r.detail.realGain, expected.realGain);
-      g.value("net", r.nominal, expected.net);
-      g.value("real", r.real, expected.real);
-      g.done();
-      expect(r.feeAfter21).toEqual(feeAfter21 === undefined ? { rate: 0.0105, basis: "cap" } : { rate: 0.0023, basis: "entered" });
-      if (feeAfter21 === undefined) expect(flagCodes(r)).toContain("CS-18");
-      else expect(flagCodes(r)).not.toContain("CS-18");
-      // CS-30 is two companies' own rate: a named example on the guide, never the run's figure.
-      expect(ruleIds(r)).not.toContain("CS-30");
-    });
-  }
-
-  it("S54 an entered rate above the legal cap is bounded by it (CS-18, as F-15 caps every provident fee)", () => {
-    const r = runChildSavings({ route: "provident", doubling: true, sex: "boy", months: 300, market: { grossReturn: 0.06, inflation: 0.02 }, feeAfter21: 0.02 }, ctx);
-    expect(r.feeAfter21).toEqual({ rate: 0.0105, basis: "entered" });
-    const g = golden("S54");
-    g.value("fees after 21 at the cap", r.fees.balance, 2_941.45);
-    g.done();
-  });
-
   it("S55 daily money-market fund at a non-bank member: its custody line applies (F-14)", () => {
     const r = runSecurities(
       {
@@ -222,16 +182,5 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     expect(memberKindOf("bank")).toBe("bank");
     expect(memberKindOf("broker")).toBe("non-bank");
     expect(memberKindOf("foreign_broker")).toBe("non-bank");
-  });
-
-  it("a CPI-linked child-savings bank deposit with a falling CPI keeps the plain indexation, labelled a reading of TXI-25 (F-50)", () => {
-    // a year: from the second, CS-03's amount at a falling CPI has no reading and the run stops on G-38 (F-54, F-120)
-    const run = (inflation: number, months = 12) => runChildSavings({ route: "bank", bankLinkage: "cpi", doubling: false, sex: "girl", months, market: { rate: 0.01, inflation } }, ctx);
-    const falling = run(-0.01);
-    expect(() => run(-0.01, 216)).toThrow(/G-38/);
-    // The Supreme Court held it for a deposit linked to a foreign currency; for a CPI-linked deposit it is an inference (TXI-25).
-    expect(labelOf(falling, "TXI-25")).toBe("reading");
-    expect(falling.detail.realGain!).toBeGreaterThan(falling.detail.gain!);
-    expect(labelOf(run(0.02), "TXI-25")).toBeUndefined();
   });
 });

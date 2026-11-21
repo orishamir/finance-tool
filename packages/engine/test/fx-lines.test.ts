@@ -2,7 +2,7 @@
 // Expected figures: tests/golden/expected_fx_lines.py, from the formulas alone, with no return, fund cost or inflation.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { crossRate, feeLines, fxFee, providerWorkbench, runSecurities, withFeeRate, withoutFeeLine, type NotComparableProvider, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
+import { crossRate, feeLines, fxFee, providerWorkbench, runSecurities, withoutFeeLine, type NotComparableProvider, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
 import { buildTariff } from "../src/providers/workbench.ts";
 import { context } from "./golden/harness.ts";
 
@@ -88,14 +88,10 @@ describe("a recurring plan's conversion on a monthly purchase (F-13, D41)", () =
     expect(buildTariff({ ...workbench({ providers: [] }), channel: "direct" }, { snapshot: hapoalim, level: "list" }, hapoalim).tariff.fxStanding).toBeUndefined();
   });
 
-  it("a person's own rate moves it in proportion, and removing the line removes both (F-61)", () => {
+  it("removing the conversion line removes the recurring plan's conversion too", () => {
     const plan = { run: "runSecurities", input: plain({ fx: { rate: 0.001, min: 10 }, fxStanding: 0.0005 }) } as const;
-    const moved = withFeeRate(plan, "fx", 0.002);
-    expect(moved.run === "runSecurities" && moved.input.tariff.fxStanding).toBeCloseTo(0.001, 12);
     const gone = withoutFeeLine(plan, "fx");
     expect(gone.run === "runSecurities" && gone.input.tariff.fxStanding).toBeUndefined();
-    const free = withFeeRate({ run: "runSecurities", input: plain({ fx: line, fxStanding: 0 }) }, "fx", 0.002);
-    expect(free.run === "runSecurities" && free.input.tariff.fxStanding).toBe(0);
   });
 });
 
@@ -127,14 +123,12 @@ describe("a conversion priced per dollar, on the line for the fund's currency (F
     expect(r.nominal).toBeCloseTo(4075.942692, 4);
   });
 
-  it("is a fee line of its own, and removing it takes the whole price away (F-61)", () => {
+  it("is a fee line of its own, and removing it takes the whole price away", () => {
     const { tariff } = tariffFor("USD");
     const plan = { run: "runSecurities", input: plain({ buy: tariff.buy!, sell: tariff.sell!, fx: tariff.fx! }) } as const;
     expect(feeLines(plan)).toContain("fx");
     const without = withoutFeeLine(plan, "fx");
     expect(without.run === "runSecurities" && without.input.tariff.fx).toBeUndefined();
-    const own = withFeeRate(plan, "fx", 0.001);
-    expect(own.run === "runSecurities" && own.input.tariff.fx).toEqual({ rate: 0.001 });
   });
 
   it("a per-dollar price on a fund in another currency is the record's error, not a silent figure", () => {
@@ -175,7 +169,7 @@ describe("a spread the price list limits (F-13, D56, D65)", () => {
     const planNoSpread = at({ fx: 0.0013, fxStanding: 0 });
     expect(plan.fees.fx - planNoSpread.fees.fx).toBeGreaterThan(0.008 * 12 * 400 * 0.99);
   });
-  it("stays beside a conversion price set over the house's list, and goes with the line when the line is removed or replaced (F-61)", () => {
+  it("stays beside a conversion price set over the house's list, and goes with the line when the line is removed", () => {
     const meitav = fxOnly("meitav-trade@2026-11-04");
     const typed = buildTariff(workbench({ providers: [], channel: "direct" }), { snapshot: meitav, level: "entered", entered: { fx: 0.001, fxSpread: 0.008 } }, meitav).tariff;
     expect(typed).toMatchObject({ fx: 0.001, fxSpread: 0.008 });
@@ -183,8 +177,6 @@ describe("a spread the price list limits (F-13, D56, D65)", () => {
     expect(feeLines({ run: "runSecurities", input: plain({ fx: 0, fxSpread: 0.007 }) })).toContain("fx");
     const removed = withoutFeeLine({ run: "runSecurities", input }, "fx");
     expect(removed.run === "runSecurities" && removed.input.tariff.fxSpread).toBeFalsy();
-    const replaced = withFeeRate({ run: "runSecurities", input }, "fx", 0.002);
-    expect(replaced.run === "runSecurities" ? [replaced.input.tariff.fx, replaced.input.tariff.fxSpread] : null).toEqual([0.002, undefined]);
   });
   it("is listed among the values the row rests on", () => {
     const build = buildOf("meitav-trade@2026-11-04");
