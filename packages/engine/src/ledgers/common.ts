@@ -1,6 +1,7 @@
 // Pieces every ledger shares: the taxpayer profile, the exit-year tax on "maximum rate" income (F-40 with
-// F-42 and F-43), and assembling the result.
+// F-42 and F-43), the cash between orders of a run that buys by amount (F-12), and assembling the result.
 import { bracketTaxOnTopSlice, surtax } from "../formulas/exit-tax.ts";
+import { buyWithCash, type Commission, type TradeTerms } from "../formulas/fees.ts";
 import { lastMonthOfTaxYear, taxYearOf } from "../formulas/time.ts";
 import { BlockedError, type RuleBook } from "../resolver.ts";
 import { emptyFees, type FeeType, type Flag, type MonthPoint, type Outcome, type RunResult } from "../result.ts";
@@ -108,6 +109,34 @@ export function unlessBlocked<T>(step: () => T): { value: T; blocked?: undefined
   } catch (e) {
     if (e instanceof BlockedError) return { blocked: e.ruleId, outcome: { code: "listed-not-ranked", reason: e.ruleId, ...(e.question ? { question: e.question } : {}), ...(e.gap ? { gap: e.gap } : {}) } };
     throw e;
+  }
+}
+
+/**
+ * F-12 with F-24 and F-25: the account's cash between the orders of a run that buys by amount (makam, a government bond). An order's cash
+ * is what it brings and what waits from earlier orders. An order its cash cannot pay is not placed (`buyWithCash`): its cash stays in the
+ * account, earning nothing, joins the next order placed, and at the horizon is part of what is left (`waiting`).
+ */
+export class OrderCash {
+  private held = 0;
+
+  constructor(
+    private readonly line: Commission | undefined,
+    private readonly terms: TradeTerms,
+  ) {}
+
+  /** One order with `cash` and what waits; a call with no cash places no order and leaves the waiting cash as it is. */
+  buy(cash: number): { trade: number; commission: number } {
+    if (!(cash > 0)) return { trade: 0, commission: 0 };
+    const total = cash + this.held;
+    const order = buyWithCash(total, this.line, this.terms);
+    this.held = order.trade > 0 ? 0 : total;
+    return order;
+  }
+
+  /** The cash of the orders not placed, waiting for the next one. */
+  get waiting(): number {
+    return this.held;
   }
 }
 

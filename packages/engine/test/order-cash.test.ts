@@ -1,0 +1,110 @@
+// F-12 with F-24 and F-25: in the makam and bond runs, an order its cash cannot pay is not placed, and its cash stays in the account as
+// cash, earning nothing, joins the next order placed, and at the horizon is part of what is left. F-09: a sale's commission takes at most
+// the proceeds, so a sale never leaves less than nothing. Expected figures worked by hand (comments), with no yield, return or inflation
+// unless a test says otherwise, so a unit of face value costs one shekel.
+import { describe, expect, it } from "vitest";
+import { saleCommission } from "../src/formulas/fees.ts";
+import { runBond, type BondInput } from "../src/ledgers/bond.ts";
+import { runMakam, type MakamInput } from "../src/ledgers/makam.ts";
+import { runSecurities } from "../src/ledgers/securities.ts";
+import { context } from "./golden/harness.ts";
+
+const ctx = context();
+const line = { rate: 0.001, min: 10 };
+
+const makam = (over: Partial<MakamInput> = {}): MakamInput => ({
+  goal: { amountNow: 0, monthly: 8, months: 3 },
+  market: { inflation: 0 },
+  makam: { yield: 0 },
+  tariff: { buy: line },
+  ...over,
+});
+
+const bond = (over: Partial<BondInput> = {}): BondInput => ({
+  goal: { amountNow: 0, monthly: 8, months: 3 },
+  market: { inflation: 0 },
+  bond: { coupon: 0, linkage: "unlinked", couponEveryMonths: 12 },
+  tariff: { buy: line },
+  profile: {},
+  ...over,
+});
+
+describe("a sale's commission takes at most the proceeds (F-09)", () => {
+  it("at 0.1% with a minimum of 10 NIS a sale of 6 pays 6, one of 10 pays 10, and one of 20,000 pays 20", () => {
+    expect(saleCommission(line, 6, { fxRate: 1 })).toBe(6);
+    expect(saleCommission(line, 10, { fxRate: 1 })).toBe(10);
+    expect(saleCommission(line, 20_000, { fxRate: 1 })).toBeCloseTo(20, 9);
+    expect(saleCommission(line, 0, { fxRate: 1 })).toBe(0);
+    // a flat price above the proceeds takes them all
+    expect(saleCommission({ rate: 0.001, min: 10, flatUpTo: { amount: 4, upTo: 1_000 } }, 3, { fxRate: 1 })).toBe(3);
+  });
+
+  it("the securities run's sale leaves nothing, not less: 15 NIS buys 5 with a 10 NIS minimum, and the sale of 5 pays 5", () => {
+    const r = runSecurities(
+      {
+        goal: { amountNow: 15, monthly: 0, months: 2 },
+        market: { grossReturn: 0, inflation: 0 },
+        fund: { kind: "israeli-fund", drag: {} },
+        tariff: { buy: { rate: 0, min: 10 }, sell: { rate: 0, min: 10 } },
+        profile: {},
+      },
+      ctx,
+    );
+    expect(r.fees.trade).toBeCloseTo(15, 9);
+    expect(r.nominal).toBeCloseTo(0, 9);
+  });
+});
+
+describe("the makam run keeps the cash of an order not placed (F-24)", () => {
+  it("8 NIS a month at a 10 NIS minimum: month 1 waits, month 2 buys 6 with 16, month 3 waits, and 14 is left", () => {
+    // month 1: 8 cannot pay 10, waits; month 2: 16 buys 6 of paper and pays 10; month 3: 8 waits; at the horizon the series of 6 is sold
+    // at par (no sell line) and the 8 waiting joins it: 14 of the 24 paid in, 10 in commission
+    const r = runMakam(makam(), ctx);
+    expect(r.paidIn).toBeCloseTo(24, 9);
+    expect(r.fees.trade).toBeCloseTo(10, 9);
+    expect(r.nominal).toBeCloseTo(14, 9);
+    expect(r.taxAtExit).toBe(0);
+    // the waiting cash is in the month's balance: 8 after month 1, 6 of paper after month 2
+    expect(r.series[1]!.balance).toBeCloseTo(8, 9);
+    expect(r.series[2]!.balance).toBeCloseTo(6, 9);
+  });
+
+  it("a run none of whose orders is placed leaves all it was paid, untaxed", () => {
+    const r = runMakam(makam({ goal: { amountNow: 0, monthly: 5, months: 2 } }), ctx);
+    expect(r.fees.trade).toBe(0);
+    expect(r.nominal).toBeCloseTo(10, 9);
+    expect(r.taxAtExit).toBe(0);
+  });
+
+  it("the sale of a series at the horizon pays at most its proceeds: the series of 6 pays 6 at a 10 NIS minimum, and the 8 waiting is left", () => {
+    const r = runMakam(makam({ tariff: { buy: line, sell: line } }), ctx);
+    expect(r.fees.trade).toBeCloseTo(16, 9);
+    expect(r.nominal).toBeCloseTo(8, 9);
+  });
+});
+
+describe("the bond run keeps the cash of an order not placed (F-25)", () => {
+  it("8 NIS a month at a 10 NIS minimum: month 1 waits, month 2 buys 6 with 16, month 3 waits, and 14 is left", () => {
+    const r = runBond(bond(), ctx);
+    expect(r.paidIn).toBeCloseTo(24, 9);
+    expect(r.fees.trade).toBeCloseTo(10, 9);
+    expect(r.nominal).toBeCloseTo(14, 9);
+    expect(r.taxAtExit).toBe(0);
+    expect(r.series[1]!.balance).toBeCloseTo(8, 9);
+  });
+
+  it("a net coupon too small to buy waits and is part of what is left", () => {
+    // 1,000 now buys 990 of face and pays 10; the 0.6% coupon at month 12 is 5.94, 5.049 after 15%, which cannot pay 10 and waits;
+    // at month 13 the 990 are sold at par and the 5.049 joins them
+    const r = runBond(bond({ goal: { amountNow: 1_000, monthly: 0, months: 13 }, bond: { coupon: 0.006, linkage: "unlinked", couponEveryMonths: 12 } }), ctx);
+    expect(r.fees.trade).toBeCloseTo(10, 9);
+    expect(r.taxDuring).toBeCloseTo(0.15 * 5.94, 9);
+    expect(r.nominal).toBeCloseTo(990 + 5.049, 9);
+  });
+
+  it("the sale at the horizon pays at most its proceeds: the 6 of face pays 6 at a 10 NIS minimum, and the 8 waiting is left", () => {
+    const r = runBond(bond({ tariff: { buy: line, sell: line } }), ctx);
+    expect(r.fees.trade).toBeCloseTo(16, 9);
+    expect(r.nominal).toBeCloseTo(8, 9);
+  });
+});

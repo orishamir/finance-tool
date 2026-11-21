@@ -1,7 +1,7 @@
 // Funds and ETFs held as securities: the F-08 month step and the F-09 exit, with F-10 drag, F-12 to F-14
 // and F-17 costs, F-20 distributions, F-23 money-market funds and F-40 to F-43 exit tax. Also the
 // brokerage account inside an IRA hishtalmut (F-51).
-import { buyWithCash, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
+import { buyWithCash, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, fxFee, navBought, saleCommission, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
@@ -680,13 +680,13 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
   if (accountCharged) formulas.push("F-102");
   if (eventCharged) formulas.push("F-103");
 
-  // F-09 exit: sold at the bid; commission and FX fee paid out of the proceeds; consideration is the gross
+  // F-09 exit: sold at the bid; commission (at most the proceeds) and FX fee paid out of them; consideration is the gross
   // sale value (G-20); the exit year's custody and account fees are deducted from the gain once (TXS-06).
   const value = lots.totalUnits() * nav;
   const gross = value * (1 - spread);
   tally.fee("spread", value - gross);
   const atExit = tariffAt(T);
-  const commission = tradeCommission(atExit.sell, gross, { fxRate: fxRate(T), sharePrice: sharePrice(T) });
+  const commission = saleCommission(atExit.sell, gross, { fxRate: fxRate(T), sharePrice: sharePrice(T) });
   tally.fee("trade", commission);
   // F-109: the cash still waiting is part of what is left, and no gain: the fund's currency is converted with the sale's proceeds
   const heldAtExit = waitingHeld * fxRate(T);
