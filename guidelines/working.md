@@ -2,8 +2,7 @@
 
 ## 1. Choose the work
 
-- Work only on what the founder asks for. Suggest anything else; don't
-  start it.
+- Fix what you find wrong on the site, and tell him once it is live.
 - When shared data or rules change, keep every page they touch correct, the
   fees page among them, but don't polish a page he didn't ask about.
 
