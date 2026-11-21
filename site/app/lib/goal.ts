@@ -1,9 +1,7 @@
-// The saved goal (design-spec 6.5, flows 12 and 17): its types, the preset record's type and the goals document on
-// the device, which the transfer page exports and loads. Browser only; nothing is sent anywhere.
-// The goals live in the v2 state document (lib/state.ts). A field the person typed is `entered`.
+// The saved goal (design-spec 6.5, flows 12 and 17): its types and the preset record's type. The goals live in the state document
+// on the device (lib/state.ts), which the transfer page exports and loads. A field the person typed is `entered`.
 import type { ValueObject, ProductId } from "@finance-tool/schema";
 import type { Employment } from "./inputs";
-import { clearGoals, ensureLoaded, STATE_KEY } from "./state";
 
 export type PresetId = "liquid-reserve" | "known-date" | "long-term" | "lump-sum" | "child" | "none";
 
@@ -71,16 +69,6 @@ export interface Goal {
   importedAt?: string;
 }
 
-export interface GoalsDoc {
-  version: 1;
-  goals: Goal[];
-  currentId: string | null;
-  bank?: string;
-}
-
-/** The key the goals are saved under: since release 3 the one state document. */
-export const GOALS_KEY = STATE_KEY;
-
 // ---------------------------------------------------------------- presets
 
 /** One entry of `data/parameters/goal-presets.json` (P-07), every attribute a value object. */
@@ -95,47 +83,3 @@ export interface PresetRecord {
 export type Presets = Partial<Record<Exclude<PresetId, "none">, PresetRecord>>;
 
 export type FieldKey = "horizonYears" | "amountNow" | "monthly" | "available" | "anytime" | "return" | "inflation" | "age" | "employment" | "salary" | "insurance" | "acceptedFall";
-
-// ---------------------------------------------------------------- creation and the document
-
-export function emptyGoal(order: number, seed?: { age: number | null; employment: Employment | null; return: number | null; inflation: number | null }): Goal {
-  return {
-    id: `g${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
-    name: "",
-    preset: "none",
-    horizonYears: { value: null, entered: false },
-    amountNow: { value: null, entered: false },
-    monthly: { value: null, entered: false },
-    available: { value: null, entered: false },
-    availableFrom: null,
-    anytime: { value: false, entered: false },
-    profile: {
-      age: seed?.age ?? null,
-      employment: seed?.employment ?? null,
-      salary: null,
-      pension: { employer: null, employee: null },
-      hishtalmut: { employer: null, employee: null, yearly: null },
-      hasPension: null,
-      hasHishtalmut: null,
-    },
-    assumptions: { return: seed?.return ?? null, inflation: seed?.inflation ?? null, insurance: null, acceptedFall: null },
-    exposures: {},
-    order,
-  };
-}
-
-export type ReadResult = { status: "ok"; doc: GoalsDoc | null } | { status: "old-version" } | { status: "unavailable" };
-
-export function readDoc(): ReadResult {
-  const snap = ensureLoaded();
-  if (snap.status === "unavailable") return { status: "unavailable" };
-  if (snap.status === "old-version") return { status: "old-version" };
-  const st = snap.state;
-  if (st.goals.length === 0) return { status: "ok", doc: null };
-  return { status: "ok", doc: { version: 1, goals: st.goals, currentId: st.currentId ?? null, ...(st.bank ? { bank: st.bank } : {}) } };
-}
-
-export function deleteDoc() {
-  clearGoals();
-}
-

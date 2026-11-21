@@ -4,12 +4,10 @@ import { describe, expect, it } from "vitest";
 import {
   BlockedError,
   runBond,
-  runChildSavings,
   runDeposit,
   runMakam,
   runProvident,
   runSecurities,
-  timeline,
   type RunResult,
   type SecuritiesInput,
 } from "../../src/index.ts";
@@ -583,59 +581,6 @@ describe("Part B: provident-family wrappers", () => {
     expect(labelOf(r, "TXH-11")).toBeUndefined();
   });
 
-  for (const sex of ["boy", "girl"] as const) {
-    it(`S31 child savings, provident route, doubled (${sex})`, () => {
-      const r = runChildSavings(
-        { route: "provident", doubling: true, sex, months: 252, market: { grossReturn: 0.06, inflation: 0.02 } },
-        ctx,
-      );
-      const at18 = r.checkpoints.find((c) => c.month === 216)!;
-      const g = golden("S31");
-      const [b18, real18, tax18, paid18, gain18, b21, real21, tax21, gain21] =
-        sex === "boy"
-          ? [52_470.43, 36_737.67, 4_058.57, 30_491.19, 16_234.29, 63_375.24, 41_813.45, 6_009.76, 24_039.04]
-          : [52_490.19, 36_751.5, 4_063.51, 30_483.81, 16_254.04, 63_398.77, 41_828.98, 6_015.64, 24_062.57];
-      g.value("balance at 18", at18.balance, b18);
-      g.value("real at 18", at18.real, real18);
-      g.value("tax at 18", at18.taxIfWithdrawn, tax18);
-      g.value("paid in by 18", at18.paidIn, paid18);
-      g.value("real gain at 18", at18.realGain, gain18);
-      g.value("balance at 21", r.detail.grossBalance, b21);
-      g.value("real at 21", r.detail.grossBalance! / r.series[252]!.index, real21);
-      g.value("tax at 21", r.taxAtExit, tax21);
-      g.value("real gain at 21", r.detail.realGain, gain21);
-      g.value("grant at 3", r.grants[0]!.amount, 308.81);
-      g.value("grant at 12 or 13", r.grants[1]!.amount, sex === "boy" ? 376.44 : 369.06);
-      g.value("grant at 21", r.grants[2]!.amount, 882.12);
-      g.done();
-      expect(r.grants.map((x) => x.month)).toEqual([36, sex === "boy" ? 156 : 144, 252]);
-      // workings S31: 25% of the real gain, no label (TXK-23 reads the Ordinance since 2026-11-07)
-      expect(labelOf(r, "TXK-23")).toBeUndefined();
-    });
-  }
-
-  it("S32 child savings, bank route", () => {
-    const r = runChildSavings(
-      { route: "bank", doubling: true, sex: "boy", months: 252, market: { rate: 0.03, inflation: 0.02 } },
-      ctx,
-    );
-    const at18 = r.checkpoints.find((c) => c.month === 216)!;
-    const g = golden("S32");
-    g.value("nominal at 18", at18.balance, 39_701.73);
-    g.value("real at 18", at18.real, 27_797.54);
-    g.value("interest at 18", at18.gain, 9_210.54);
-    g.value("tax at 18", at18.taxIfWithdrawn, 1_381.58);
-    g.value("nominal at 21", r.detail.grossBalance, 44_265.27);
-    g.value("real at 21", r.detail.grossBalance! / r.series[252]!.index, 29_205.15);
-    g.value("interest at 21", r.detail.gain, 12_891.96);
-    g.value("tax at 21", r.taxAtExit, 1_933.79);
-    g.value("net at 21", r.nominal, 42_331.47);
-    g.done();
-    expect(flagCodes(r)).toContain("CS-23");
-    // workings S32: 15% of the nominal gain, label "reading", TXK-29 (the Ordinance's rate; applying it to child savings is the site's reading)
-    expect(labelOf(r, "TXK-29")).toBe("reading");
-  });
-
   it("S33 IRA hishtalmut with brokerage inside", () => {
     const r = runSecurities(
       {
@@ -763,16 +708,19 @@ describe("Part C: exit-year tax features", () => {
 describe("Part D: capability outputs (release 1 part)", () => {
   it("S47 illustrative timeline for guide pages", () => {
     const goal = { amountNow: 10_000, monthly: 500, months: 120 };
-    const runs = timeline({
-      deposit: () =>
+    // each run's real value at a year end, before exit (F-06), and after exit at the horizon
+    const years = (r: RunResult) => r.series.filter((p) => p.month > 0 && p.month % 12 === 0).map((p) => ({ real: p.balance / p.index }));
+    const series = (r: RunResult) => ({ exitReal: r.real, years: years(r) });
+    const runs = {
+      deposit: series(
         runDeposit(
           { goal, market: { inflation: 0.02 }, deposit: { rate: 0.035, termMonths: 1, linkage: "unlinked" }, profile: {} },
           ctx,
         ),
-      mmf: () => runSecurities({ ...s11, goal, market: { grossReturn: 0.0325, inflation: 0.02 } }, ctx),
-      etf: () =>
-        runSecurities({ goal, market: { grossReturn: 0.05, inflation: 0.02 }, fund: s14Fund, tariff: s14Tariff, profile: {} }, ctx),
-      kgl: () =>
+      ),
+      mmf: series(runSecurities({ ...s11, goal, market: { grossReturn: 0.0325, inflation: 0.02 } }, ctx)),
+      etf: series(runSecurities({ goal, market: { grossReturn: 0.05, inflation: 0.02 }, fund: s14Fund, tariff: s14Tariff, profile: {} }, ctx)),
+      kgl: series(
         runProvident(
           {
             wrapper: "kupat-gemel-lehashkaa",
@@ -783,7 +731,8 @@ describe("Part D: capability outputs (release 1 part)", () => {
           },
           ctx,
         ),
-    });
+      ),
+    };
     const g = golden("S47");
     g.value("deposit exit", runs.deposit.exitReal, 74_245.96);
     g.value("MMF exit", runs.mmf.exitReal, 73_339.31);

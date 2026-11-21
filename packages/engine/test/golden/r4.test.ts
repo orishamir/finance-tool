@@ -1,5 +1,4 @@
-// Release 4 golden scenarios: S44 and S45 (provider workbench, F-63), S38 (switching cost, F-66), plus F-65
-// (fund variants) on a small fund-list fixture, since the coverage matrix says F-65 waits for a list.
+// Release 4 golden scenarios: S44 and S45 (provider workbench, F-63).
 //
 // Inputs filled in where the scenarios leave them open, following the workings' notes (Q16):
 // - S44's providers are written as fee snapshots (the shape of data/fees/): bank A, bank B, broker C and broker D
@@ -7,26 +6,20 @@
 //   line (the snapshot's `averages` row); custody and the monthly fee stay at the list price.
 // - The fund is S14's Israeli accumulating ETF (r_g 6%, pi 2.5%), 10,000 now and 2,000 a month for 5 years.
 // - S45 is bank A with the person's own buy and sell fee of 0.1% min 10; the rest of A's tariff is its list.
-// - S38 (a) is S14's fees on 100,000 now with no monthly deposit for 6 years, switched at month 36; (b) is a track
-//   switch inside a kupat gemel lehashkaa, which costs nothing.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { feesSnapshot, fundListFile, type FundListFile, type ValueObject } from "@finance-tool/schema";
+import { feesSnapshot, type ValueObject } from "@finance-tool/schema";
 import {
   buildTariff,
   formulas,
-  fundVariants,
   pending,
   providerWorkbench,
   runSecurities,
-  switchingCost,
   tieThreshold,
   type Fund,
   type ProviderInput,
   type ProviderWorkbench,
   type ComparedProvider,
-  type SecuritiesInput,
-  type VariantExposure,
   type WorkbenchInput,
 } from "../../src/index.ts";
 import { context, golden, loadRules } from "./harness.ts";
@@ -429,287 +422,9 @@ describe("F-63 on real and fixture snapshot shapes", () => {
   });
 });
 
-// ---------------------------------------------------------------- S38
-
-describe("S38 switching cost, F-66", () => {
-  const s14Tariff = {
-    buy: { rate: 0.003, min: 25 },
-    sell: { rate: 0.003, min: 25 },
-    custody: { rate: 0.0015, min: 15, everyMonths: 3 },
-  };
-  const a: SecuritiesInput = {
-    goal: { amountNow: 100_000, monthly: 0, months: 72 },
-    market: { grossReturn: 0.06, inflation: 0.025 },
-    fund: s14Fund,
-    tariff: s14Tariff,
-    profile: {},
-  };
-
-  it("(a) brokerage: sale at month 36 with tax on A's lots, net proceeds buy B (same fees)", () => {
-    const r = switchingCost({ kind: "brokerage", input: a }, { kind: "brokerage", fund: s14Fund }, 36, ctx);
-    if (r.kind !== "brokerage") throw new Error(r.kind);
-    const g = golden("S38");
-    g.value("real without switch", r.realNoSwitch, x.s38.realNoSwitch);
-    g.value("real with switch", r.realWithSwitch, x.s38.realWithSwitch);
-    g.value("cost of switching", r.cost.value as number, x.s38.cost);
-    g.value("tax paid at the switch", r.taxAtSwitch, x.s38.taxAtSwitch);
-    g.done();
-    expect(r.cost.state).toBe("computed");
-    expect(r.cost.computed_from?.formula).toBe("F-66");
-    expect(r.cost.rule_ids).toContain("TXS-21");
-    expect(r.outcome).toEqual({ code: "eligible" });
-  });
-
-  it("a switch to a fund on the same terms costs something at any month: the sale pays commissions and spread twice over", () => {
-    const early = switchingCost({ kind: "brokerage", input: a }, { kind: "brokerage", fund: s14Fund }, 12, ctx);
-    const late = switchingCost({ kind: "brokerage", input: a }, { kind: "brokerage", fund: s14Fund }, 60, ctx);
-    if (early.kind !== "brokerage" || late.kind !== "brokerage") throw new Error("not brokerage");
-    expect(early.cost.value as number).toBeGreaterThan(0);
-    expect(late.cost.value as number).toBeGreaterThan(0);
-  });
-
-  it("a switch to a cheaper fund gains when its lower drag outweighs the cost of the sale", () => {
-    const cheap: Fund = { kind: "israeli-fund", drag: { management: 0 }, halfSpread: 0.0005 };
-    const r = switchingCost({ kind: "brokerage", input: a }, { kind: "brokerage", fund: cheap }, 12, ctx);
-    if (r.kind !== "brokerage") throw new Error(r.kind);
-    expect(r.cost.value as number).toBeLessThan(0);
-  });
-
-  it("later contributions follow to B, and a switch month must lie inside the horizon", () => {
-    const withMonthly: SecuritiesInput = { ...a, goal: { ...a.goal, monthly: 1_000 } };
-    const r = switchingCost({ kind: "brokerage", input: withMonthly }, { kind: "brokerage", fund: s14Fund }, 36, ctx);
-    if (r.kind !== "brokerage") throw new Error(r.kind);
-    expect(r.runs.legB.paidIn).toBeGreaterThan(r.netProceeds);
-    expect(() => switchingCost({ kind: "brokerage", input: a }, { kind: "brokerage", fund: s14Fund }, 72, ctx)).toThrow(RangeError);
-    expect(() => switchingCost({ kind: "brokerage", input: a }, { kind: "brokerage", fund: s14Fund }, 0, ctx)).toThrow(RangeError);
-  });
-
-  it("(b) kupat gemel lehashkaa: a track switch costs nothing (TXK-04, PF-23)", () => {
-    const side = { kind: "provident", wrapper: "kupat-gemel-lehashkaa", ruleIds: ["TXK-04", "PF-23"] } as const;
-    const r = switchingCost(side, side, 36, ctx);
-    if (r.kind !== "provident") throw new Error(r.kind);
-    const g = golden("S38");
-    g.value("cost of switching", r.cost.value as number, x.s38.providentCost);
-    g.done();
-    expect(r.ruleIds).toEqual(["TXK-04", "PF-23"]);
-    expect(r.cost.rule_ids).toEqual(expect.arrayContaining(["TXK-04", "PF-23"]));
-  });
-
-  it("a hishtalmut moves to another fund whole: a part is not allowed (PF-18, KH-17); the whole costs nothing (TXH-19)", () => {
-    // a track switch inside the fund may move part (KH-18, PF-23; finance review, 2026-11-07): review-r34.test.ts
-    const whole = { kind: "provident", wrapper: "keren-hishtalmut", move: "fund-transfer", ruleIds: ["TXH-17", "TXH-19"], wholeOnlyRuleIds: ["PF-18", "KH-17"] } as const;
-    const part = { ...whole, share: 0.5 };
-    const no = switchingCost(part, part, 36, ctx);
-    expect(no).toEqual({ formula: "F-66", kind: "not-allowed", code: "hishtalmut-whole-only", ruleIds: ["PF-18", "KH-17"] });
-    const yes = switchingCost(whole, whole, 36, ctx);
-    expect(yes.kind).toBe("provident");
-    if (yes.kind === "provident") expect(yes.cost.value).toBe(0);
-  });
-
-  it("a transfer between kinds is not evaluated, and a rule the bundle lacks stops the cost with that rule", () => {
-    const kgl = { kind: "provident", wrapper: "kupat-gemel-lehashkaa", ruleIds: ["TXK-04"] } as const;
-    const kh = { kind: "provident", wrapper: "keren-hishtalmut", ruleIds: ["TXH-17"], wholeOnlyRuleIds: ["PF-18"] } as const;
-    expect(switchingCost(kgl, kh, 36, ctx)).toMatchObject({ kind: "not-evaluated", code: "different-kind" });
-    const missing = { kind: "provident", wrapper: "kupat-gemel-lehashkaa", ruleIds: ["ZZZ-99"] } as const;
-    expect(switchingCost(missing, missing, 36, ctx)).toEqual({ formula: "F-66", kind: "not-evaluated", code: "rule-missing", ruleIds: ["ZZZ-99"] });
-  });
-});
-
-// ---------------------------------------------------------------- F-65
-
-describe("F-65 fund variants on a five-row fixture list", () => {
-  const sp500Record = readJson("funds/1148162@2026-10-23.json");
-  const sp500 = readJson("instruments/exposures/index-sp500.json");
-  const record = (over: Record<string, unknown>) => ({ ...sp500Record, ...over });
-  const fee = (value: number | null, unit: ValueObject["unit"]) => vo(value, unit, value === null ? "not collected" : undefined);
-
-  // Two Israeli funds with records (the real S&P 500 ETF record and a second, cheaper tracker), one matching row
-  // without a record, one row of another exposure, and one TASE foreign fund with a record.
-  const second = record({
-    id: "9000001",
-    names: { en: [], he: ["קרן שנייה על S&P 500"], tase: ["9000001"] },
-    identifiers: { isin: null, tase_number: "9000001", cusip: null, ticker: {} },
-    fees: { ...(sp500Record.fees as object), fixed_management: fee(0.1, "pct_per_year"), variable_management: fee(null, "pct_per_year"), trustee: fee(0.01, "pct_per_year") },
-  });
-  const foreign = record({
-    id: "9000004",
-    names: { en: ["Fixture Ireland S&P 500 UCITS"], he: ["קרן אירית על S&P 500"], tase: ["9000004"] },
-    identifiers: { isin: "IE0000000004", tase_number: "9000004", cusip: null, ticker: {} },
-    domicile: "IE",
-    legal_form: "UCITS ETF",
-    currency: "USD",
-    trading_currency_on_tase: "NIS",
-    distribution_policy: "accumulating",
-    exposure_code: null,
-    fees: { ...(sp500Record.fees as object), fixed_management: fee(0.07, "pct_per_year"), variable_management: fee(null, "pct_per_year"), trustee: fee(null, "pct_per_year") },
-  });
-  const usAbroad = record({
-    id: "us0000000005",
-    names: { en: ["Fixture US S&P 500 ETF"], he: [], tase: [] },
-    identifiers: { isin: "US0000000005", tase_number: null, cusip: null, ticker: { NYSE: "FIX" } },
-    domicile: "US",
-    legal_form: "ETF",
-    currency: "USD",
-    trading_currency_on_tase: null,
-    distribution_policy: "distributing",
-    exposure_code: null,
-    fees: { ...(sp500Record.fees as object), fixed_management: fee(0.03, "pct_per_year"), variable_management: fee(null, "pct_per_year"), trustee: fee(null, "pct_per_year") },
-  });
-
-  const row = (n: string, code: string | null, name: string, over: Record<string, unknown> = {}) => ({
-    fund_number: n,
-    isin: null,
-    names: { he: [name] },
-    manager: "fixture manager",
-    classification: ["מניות", "חו\"ל"],
-    exposure_code: code,
-    tax_status: "פטור",
-    data_date: "2026-10-22",
-    ...over,
-  });
-  const base = {
-    snapshot: "2026-10-23",
-    source: { url: "https://example.test/list", title: "fixture list", publisher: "fixture", strength: "primary" as const },
-    checked: "2026-10-23",
-    terms_of_use: { terms_url: "https://example.test/terms", read_on: "2026-10-23", attribution: "fixture" },
-    raw: { archive_key: "fixture", sha256: "0".repeat(64) },
-  };
-  const israeliList: FundListFile = fundListFile.parse({
-    ...base,
-    list: "maya-mutual-funds",
-    funds: [
-      row("1148162", "4D", "אי.בי.אי. סל (4D) S&P 500"),
-      row("9000001", "4D", "קרן שנייה על S&P 500"),
-      row("9000002", "4D", "קרן ללא רשומה"),
-      row("9000003", "3A", "קרן של נכס אחר"),
-    ],
-  });
-  const taseList: FundListFile = fundListFile.parse({
-    ...base,
-    list: "tase-foreign-funds",
-    funds: [row("9000004", null, "קרן אירית על S&P 500", { isin: "IE0000000004", classification: ["קרנות זרות"] })],
-  });
-  // An older Israeli list that must be ignored: it holds a row the latest one dropped.
-  const oldList: FundListFile = fundListFile.parse({ ...base, snapshot: "2026-01-01", list: "maya-mutual-funds", funds: [row("9000099", "4D", "ישנה")] });
-
-  const exposure = (over: Partial<VariantExposure["run"]> = {}): VariantExposure => ({
-    record: sp500 as never,
-    theta,
-    run: {
-      goal: { amountNow: 50_000, monthly: 0, months: 120 },
-      grossReturn: 0.06,
-      inflation: 0.025,
-      fxChange: 0,
-      tariff: { buy: { rate: 0.003, min: 25 }, sell: { rate: 0.003, min: 25 }, custody: { rate: 0.0015, min: 15, everyMonths: 3 }, fx: 0.0025 },
-      profile: {},
-      fxStartRates: { USD: 3.7 },
-      distributions: { us0000000005: { yield: 0.013, perYear: 4 } },
-      ...over,
-    },
-  });
-  const funds = [sp500Record, second, foreign, usAbroad];
-  const result = fundVariants(exposure(), [oldList, israeliList, taseList], funds, ctx);
-  const get = (id: string) => result.rows.find((r) => r.id === id)!;
-
-  it("candidates: matching rows of the latest lists and the foreign records, not the other exposure's row or the old list", () => {
-    expect(result.rows.map((r) => r.id)).toEqual(["maya:1148162", "maya:9000001", "maya:9000002", "tase:9000004", "fund:us0000000005"]);
-    expect(result.lists).toEqual({ israeli: "2026-10-23", tase: "2026-10-23" });
-  });
-
-  it("a candidate with a record runs F-08 with its own drag: same result as the run by hand", () => {
-    const r = get("maya:1148162");
-    expect(r.kind).toBe("ranked");
-    const hand = runSecurities(
-      {
-        goal: { amountNow: 50_000, monthly: 0, months: 120 },
-        market: { grossReturn: 0.06, inflation: 0.025 },
-        fund: { kind: "israeli-fund", drag: { management: 0.008, variable: 0.003, trustee: 0.00015 } },
-        tariff: { buy: { rate: 0.003, min: 25 }, sell: { rate: 0.003, min: 25 }, custody: { rate: 0.0015, min: 15, everyMonths: 3 } },
-        profile: {},
-      },
-      ctx,
-    );
-    expect(r.run!.real).toBeCloseTo(hand.real, 6);
-    // Fee fields the record leaves empty are named, not silently dropped.
-    expect(r.notCollected).toEqual(["tracking_difference_12m", "median_spread", "fund_level_withholding_drag"]);
-    expect(get("maya:9000001").run!.real).toBeGreaterThan(r.run!.real);
-  });
-
-  it("a matching row without a record is 'not evaluated: details not collected'", () => {
-    const r = get("maya:9000002");
-    expect(r.kind).toBe("not-evaluated");
-    expect(r.reasons).toEqual([{ code: "missing-record", ruleIds: [], gapIds: [], detail: "details not collected" }]);
-    expect(r.run).toBeUndefined();
-  });
-
-  it("a foreign fund traded on TASE is not evaluated, its reason the open rule its tax index rests on (F-04, TXF-04, G-35)", () => {
-    const r = get("tase:9000004");
-    expect(r.kind).toBe("not-evaluated");
-    expect(r.reasons).toEqual([{ code: "rule-open", ruleIds: ["TXF-04"], gapIds: [] }]);
-    expect(r.run).toBeUndefined();
-    expect(r.rank).toBeUndefined();
-  });
-
-  it("a foreign fund traded abroad runs in its currency with the FX start rate, its distributions and W-8BEN-based withholding", () => {
-    const r = get("fund:us0000000005");
-    expect(r.kind).toBe("ranked");
-    const input = (r.plan as { input: SecuritiesInput }).input;
-    expect(input.market.returnIn).toBe("instrument");
-    expect(input.tariff.currency).toEqual({ code: "USD", startRate: 3.7 });
-    expect(input.fund).toMatchObject({ kind: "foreign-fund", domicile: "us", distribution: { yield: 0.013, perYear: 4 } });
-    expect(r.run!.fees.fx).toBeGreaterThan(0);
-    expect(r.run!.flags.map((f) => f.code)).toContain("G-20");
-  });
-
-  it("ranks by real value with ties by F-80; the listed and not-evaluated variants are not in the ranking", () => {
-    const ids = result.ranking.entries.map((e) => e.id);
-    expect(ids).toHaveLength(3);
-    expect(ids).not.toContain("tase:9000004");
-    expect(ids).not.toContain("maya:9000002");
-    const reals = result.ranking.entries.map((e) => e.real);
-    expect([...reals].sort((p, q) => q - p)).toEqual(reals);
-    expect(result.ranking.tieSet[0]).toBe(result.ranking.top);
-    expect(result.rows.filter((r) => r.rank !== undefined)).toHaveLength(3);
-  });
-
-  it("coverage line (F-83): every candidate once, the not-held-abroad group as one line (G-29)", () => {
-    const c = result.coverage;
-    expect(c.considered).toBe(6);
-    expect(c.counts).toEqual({ "not-eligible": 0, excluded: 0, "not-evaluated": 3, "listed-not-ranked": 0, ranked: 3 });
-    expect(c.invariant.ok).toBe(true);
-    const group = c.notRanked.find((n) => n.id === "group:foreign-traded-abroad")!;
-    expect(group.reasons[0]).toMatchObject({ code: "gap", gapIds: ["G-29"] });
-    expect(result.group).toEqual({ id: "group:foreign-traded-abroad", gapId: "G-29", held: 1 }); // the US fund traded abroad only; the Irish fund traded on TASE is a row of its own
-  });
-
-  it("a record with no management fee collected is not evaluated, and a distributing fund with no yield asks for it", () => {
-    const blank = { ...second, fees: { ...(second.fees as object), fixed_management: fee(null, "pct_per_year") } };
-    const r1 = fundVariants(exposure(), [israeliList], [sp500Record, blank], ctx);
-    expect(r1.rows.find((r) => r.id === "maya:9000001")!.reasons[0]).toMatchObject({ code: "missing-record", detail: "details not collected: fees.fixed_management" });
-    const r2 = fundVariants(exposure({ distributions: {} }), [israeliList, taseList], funds, ctx);
-    expect(r2.rows.find((r) => r.id === "fund:us0000000005")!.reasons[0]).toMatchObject({ code: "missing-input" });
-    // A-10 on the record: the same fund with no yield entered runs on the record's, and the record's wins over an entered one
-    const yieldOf = (value: number) => ({ ...fee(value, "pct_per_year"), source: { url: "https://example.org/factsheet", title: "factsheet", publisher: "manager", strength: "institution" } });
-    const withYield = funds.map((f) => ((f as { id?: string }).id === "us0000000005" ? { ...(f as object), distribution: { yield: yieldOf(1.3), per_year: 4 } } : f));
-    const held = fundVariants(exposure({ distributions: {} }), [israeliList, taseList], withYield, ctx).rows.find((r) => r.id === "fund:us0000000005")!;
-    const typed = fundVariants(exposure(), [israeliList, taseList], funds, ctx).rows.find((r) => r.id === "fund:us0000000005")!;
-    expect(held.reasons).toEqual([]);
-    expect(held.run!.real).toBeCloseTo(typed.run!.real, 6);
-    const r3 = fundVariants(exposure({ fxStartRates: {} }), [israeliList, taseList], funds, ctx);
-    expect(r3.rows.find((r) => r.id === "fund:us0000000005")!.reasons[0]).toMatchObject({ code: "missing-input", detail: "fxStartRates.USD" });
-  });
-
-  it("matches a row without a record by the caller's reference asset, and a record's exposure overrides a matching code", () => {
-    const rows = fundListFile.parse({ ...base, list: "maya-mutual-funds", funds: [row("9100001", null, "קרן עם נכס ייחוס", { reference_asset: "  S&P   500 " }), row("9100002", "4D", "קרן שרשומה לנכס אחר")] });
-    const other = record({ id: "9100002", identifiers: { isin: null, tase_number: "9100002", cusip: null, ticker: {} }, exposure_id: "index-ta125", exposure_code: "4D" });
-    const r = fundVariants(exposure(), [rows], [other], ctx);
-    expect(r.rows.map((v) => v.id)).toEqual(["maya:9100001"]);
-  });
-
-  it("is registered in the formula registry with F-63 and F-66, and no longer pending", () => {
-    for (const id of ["F-63", "F-65", "F-66"]) {
-      expect(id in formulas, id).toBe(true);
-      expect(id in pending, id).toBe(false);
-    }
+describe("registry", () => {
+  it("F-63 is registered, and no longer pending", () => {
+    expect("F-63" in formulas).toBe(true);
+    expect("F-63" in pending).toBe(false);
   });
 });

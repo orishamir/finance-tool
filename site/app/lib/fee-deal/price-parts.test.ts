@@ -10,7 +10,6 @@ import { withCurrency, withFigure, withFlat, figureOf, setFigure } from "./edits
 import { setPart, withForm } from "./offers/parts";
 import { leftOut } from "./left-out";
 import { inCapUnit, standingOf } from "./kinds";
-import { decodeDeal, encodeDeal } from "./link";
 import { feePriced, newDeal, readDeal, typed, untouched, type Fee, type FeeDeal, type Num, type Price } from "./model";
 import { engineDeal, enginePrice } from "./to-engine";
 import { readDealFor } from "./deal-read";
@@ -23,6 +22,7 @@ import { chargesUnfilled, fillDeal, houseName, houseTemplate, houseTemplateRead,
 import { onlyWhatCanBeDone } from "../providers";
 import { latestOf, latestSnapshots } from "../providers.server";
 import { feeDeal as copy } from "../../copy";
+import { throughLink } from "./link-fixtures";
 
 const data = feesData();
 const TODAY = "2026-11-12";
@@ -61,10 +61,10 @@ describe("the price parts as the device keeps them", () => {
     expect(CAPACITY.fx.fields.action).not.toContain("cap");
     expect(CAPACITY.corporate_event.fields.perAction).toContain("currency");
   });
-  it("reads them back as written, through the device and a link, and refuses a part the fee has no field for", () => {
+  it("reads them back as written, through the device and a link, and refuses a part the fee has no field for", async () => {
     const d = account([trade(ibFixed), fx(mizrahiFx), { id: "fee-event", kind: "corporate_event", stages: [{ price: { form: "perAction", amount: { v: 50, src }, currency: "USD" } }] }]);
     expect(readDeal(JSON.parse(JSON.stringify(d)))).toEqual(d);
-    const linked = decodeDeal(encodeDeal(d))!;
+    const linked = (await throughLink(d))!;
     expect(linked.fees.map(({ id: _id, ...f }) => f)).toEqual(d.fees.map(({ id: _id, ...f }) => f));
     // a cap on a conversion, and a sum per event in dollars on a transfer out, are no fields of theirs
     expect(readDeal({ ...d, fees: [fx({ ...mizrahiFx, cap: typed(25) } as Price)] })).toBeNull();
@@ -142,10 +142,10 @@ describe("sums in the trade's currency", () => {
     expect(leftOut(r).unmatched[0]).toMatchObject({ fee: "fee-trade", noCurrency: true });
     expect(builder(r, null, null).rows.find((x) => x.fee === "fee-trade")).toMatchObject({ priced: false, noCurrency: true });
   });
-  it("keeps it through the device and a link, and only on a trade price whose form keeps a currency", () => {
+  it("keeps it through the device and a link, and only on a trade price whose form keeps a currency", async () => {
     const deal = account([trade(inTrade)]);
     expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
-    expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(inTrade);
+    expect((await throughLink(deal))!.fees[0]!.stages![0]!.price).toEqual(inTrade);
     expect(setPart(fx({ form: "action", rate: typed(0.1) }), "inTrade", true).stages![0]!.price).not.toHaveProperty("inTrade");
     expect(setPart(trade({ form: "action", rate: typed(0.1) }), "inTrade", true).stages![0]!.price).toMatchObject({ inTrade: true });
   });
@@ -167,13 +167,13 @@ describe("sums in the trade's currency printed for some currencies only (trade_c
     expect(leftOut(r).unmatched[0]).toMatchObject({ fee: "fee-trade", notPrinted: true });
     expect(builder(r, null, null).rows.find((x) => x.fee === "fee-trade")).toMatchObject({ priced: false, notPrinted: true });
   });
-  it("is filled from each house whose line names the currencies, and keeps them through a link", () => {
+  it("is filled from each house whose line names the currencies, and keeps them through a link", async () => {
     const tradeOf = (id: string) => JSON.stringify(data.houses.find((h) => h.id === id)!.fees.find((f) => f.kind === "trade"));
     expect(tradeOf("excellence")).toContain('"inTrade":["ILS","USD","EUR"]');
     // Interactive Israel's European minimum is 2.5 in any trade's currency: no list of currencies
     expect(tradeOf("interactive-israel")).toContain('"inTrade":true');
     const deal = account([trade(printed)]);
-    expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(printed);
+    expect((await throughLink(deal))!.fees[0]!.stages![0]!.price).toEqual(printed);
     expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
   });
 });
@@ -192,10 +192,10 @@ describe("a line's open questions on the price a template fills (data-schema §3
     const row = builder(r).rows.find((x) => x.kind === "trade")!;
     expect(JSON.stringify(row.block)).toContain('"questions":["BRK-OQ25"]');
   });
-  it("keeps the questions through the device and a link", () => {
+  it("keeps the questions through the device and a link", async () => {
     const p: Price = { form: "action", rate: typed(0.15), min: typed(2.5), inTrade: true, questions: ["BRK-OQ25"] };
     const deal = account([trade(p)]);
-    expect(decodeDeal(encodeDeal(deal))!.fees[0]!.stages![0]!.price).toEqual(p);
+    expect((await throughLink(deal))!.fees[0]!.stages![0]!.price).toEqual(p);
     expect(readDeal(JSON.parse(JSON.stringify(deal)))!.fees[0]).toEqual(deal.fees[0]);
   });
 });
@@ -347,7 +347,7 @@ describe("the templates", () => {
     const d = { ...fillDeal(newDeal("brokerage-account"), "house:excellence", data, TODAY)!, readFor: [{ by: "what", is: "us" }] };
     expect(readingOf(read(d), data.fx).stated.find((x) => x.part === "capRead")?.words.lead).toBe(copy.cases.stated.capRead);
   });
-  it("say a spread the list does not limit on top of a priced conversion, makam's redemption as a redemption, and a custody of nothing as free", () => {
+  it("say a spread the list does not limit on top of a priced conversion, makam's redemption as a redemption, and a custody of nothing as free", async () => {
     expect(house("excellence").left).toContainEqual(expect.objectContaining({ lineId: "excellence-fx-conversion", why: "spread-on-top" }));
     expect(house("excellence").left).toContainEqual(expect.objectContaining({ lineId: "excellence-redemption-makam", why: "redemption" }));
     expect(house("excellence").left.some((l) => l.why === "plan")).toBe(false);
@@ -359,7 +359,7 @@ describe("the templates", () => {
     const custody = ibi.fees.find((f) => f.kind === "custody")!;
     expect(untouched(custody)).toBe(true);
     expect(readDeal(JSON.parse(JSON.stringify(ibi)))).toEqual(ibi);
-    expect(decodeDeal(encodeDeal(ibi))!.fees.find((f) => f.kind === "custody")!.stages?.[0]?.price ?? decodeDeal(encodeDeal(ibi))!.fees.find((f) => f.kind === "custody")!.cases![0]!.stages[0]!.price).toMatchObject({ form: "free", src: { strength: "institution" } });
+    expect((await throughLink(ibi))!.fees.find((f) => f.kind === "custody")!.stages?.[0]?.price ?? (await throughLink(ibi))!.fees.find((f) => f.kind === "custody")!.cases![0]!.stages[0]!.price).toMatchObject({ form: "free", src: { strength: "institution" } });
   });
   it("show IBI's free custody with its record's source wherever the page shows a sourced price's source, and a free price of the person's own as the word alone", () => {
     const ibi = { ...fillDeal(newDeal("brokerage-account"), "house:ibi", data, TODAY)!, readFor: [{ by: "held", is: "tase" }] };
@@ -451,7 +451,7 @@ describe("the templates", () => {
     expect(ex.form === "perAction" && ex.amount.src && ex.cap?.src).toBeTruthy();
     expect(tracks("excellence").some((p) => p.form === "action" && p.rate.v === 0)).toBe(false);
   });
-  it("hold a dollar sum per action to its percent maximum, as a share's minimum is held (F-12, F-112), and keep it through a link", () => {
+  it("hold a dollar sum per action to its percent maximum, as a share's minimum is held (F-12, F-112), and keep it through a link", async () => {
     const capped: Price = { form: "perAction", amount: { v: 11, src }, cap: { v: 2, src }, currency: "USD" };
     const deal = account([trade(capped)]);
     const engine = engineDeal(deal);
@@ -460,7 +460,7 @@ describe("the templates", () => {
     // at 3.20 ₪ a dollar: a 100 $ trade (320 ₪) costs 2% of it, 2 $ = 6.40 ₪; a 1,000 $ trade (3,200 ₪) costs the 11 $ = 35.20 ₪
     expect(actionCost(engine, period, "trade", 320, "buy", { USD: 3.2 }).total).toBeCloseTo(6.4, 9);
     expect(actionCost(engine, period, "trade", 3_200, "buy", { USD: 3.2 }).total).toBeCloseTo(35.2, 9);
-    const back = decodeDeal(encodeDeal(deal))!;
+    const back = (await throughLink(deal))!;
     expect(back.fees[0]!.stages![0]!.price).toEqual(capped);
     // the cap decides up to where it meets the sum, 11 $ / 2% = 550 $, a mark in the sum's own currency; the price changes there
     expect(dealMarks(engine, period)).toEqual([expect.objectContaining({ kind: "cap", on: "action", amount: 550, currency: "USD" })]);
@@ -481,7 +481,7 @@ describe("the templates", () => {
     const parts = row.block.kind === "slim" ? row.block.parts.map((x) => x.id) : [];
     expect(parts).toEqual(expect.arrayContaining(["perAction", "cap"]));
   });
-  it("charge a trade's sum per action in dollars at the rate it is given, as a sum per unit's is (F-112, F-84), and keep it through a link", () => {
+  it("charge a trade's sum per action in dollars at the rate it is given, as a sum per unit's is (F-112, F-84), and keep it through a link", async () => {
     const deal = account([trade({ form: "perAction", amount: { v: 11, src }, currency: "USD" })]);
     const engine = engineDeal(deal);
     expect(engine.fees[0]!.stages[0]!.price).toEqual({ kind: "perAction", amount: 11, currency: "USD" });
@@ -490,10 +490,10 @@ describe("the templates", () => {
     expect(actionCost(engine, period, "trade", 1_000, "buy", { USD: 3.2 }).total).toBeCloseTo(35.2, 9);
     expect(actionCost(engine, period, "trade", 100_000, "buy", { USD: 3.2 }).total).toBeCloseTo(35.2, 9);
     expect(() => actionCost(engine, period, "trade", 1_000, "buy", {})).toThrow(RangeError);
-    const back = decodeDeal(encodeDeal(deal))!;
+    const back = (await throughLink(deal))!;
     expect(back.fees[0]!.stages![0]!.price).toEqual({ form: "perAction", amount: { v: 11, src }, currency: "USD" });
   });
-  it("fill a custody minimum in the period the list prints it, which the engine reads per charge (F-14)", () => {
+  it("fill a custody minimum in the period the list prints it, which the engine reads per charge (F-14)", async () => {
     const custody = data.houses.find((h) => h.id === "excellence")!.fees.find((f) => f.kind === "custody")!;
     const price = custody.stages![0]!.price;
     // "0.6% לרבעון עם מינימום 40 ₪ לחודש": 40 a month, charged each quarter, so 120 a charge
@@ -507,7 +507,7 @@ describe("the templates", () => {
     expect(min?.words.tail?.trim()).toBe(copy.price.per[1]);
     // the engine's minimum is a charge's: the deal's engine form says 120, and a link carries the period back
     expect(engineDeal(deal).fees.find((f) => f.stages[0]!.price.kind === "held")!.stages[0]!.price).toMatchObject({ min: 120 });
-    const back = decodeDeal(encodeDeal(deal))!;
+    const back = (await throughLink(deal))!;
     expect(back.fees.find((f) => f.kind === "custody")!.stages![0]!.price).toMatchObject({ min: { v: 40 }, boundsEvery: 1 });
     // F-14 names a bound printed per month alone: a deal saying another period is refused, as a link the site did not write
     const held = (boundsEvery: unknown) => ({ ...newDeal("brokerage-account"), fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.6), per: 3, every: 3, min: typed(40), boundsEvery } }] }] });
@@ -716,14 +716,14 @@ describe("the reading", () => {
 });
 
 describe("a filled figure's source", () => {
-  it("carries the page of the price list it stands on, through the device and a link", () => {
+  it("carries the page of the price list it stands on, through the device and a link", async () => {
     const fee = data.houses.find((h) => h.id === "mizrahi-tefahot")!.fees.find((f) => f.kind === "fx")!;
     const fx = fee.cases!.find((c) => c.stages[0]!.price.form === "action")!.stages[0]!.price;
     const page = fx.form === "action" ? fx.rate.src?.page : undefined;
     expect(page).toBeGreaterThan(0);
     const d = account([{ id: "fee-fx", kind: "fx", stages: [{ price: fx }] }]);
     expect(readDeal(JSON.parse(JSON.stringify(d)))!.fees[0]!.stages![0]!.price).toEqual(fx);
-    expect(decodeDeal(encodeDeal(d))!.fees[0]!.stages![0]!.price).toEqual(fx);
+    expect((await throughLink(d))!.fees[0]!.stages![0]!.price).toEqual(fx);
     const shown = readingOf(read(d), data.fx).periods[0]!.rows[0]!.price.figures.rate!;
     expect((shown.source as { page?: number }).page).toBe(page);
   });

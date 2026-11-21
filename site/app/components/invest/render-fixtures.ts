@@ -1,5 +1,5 @@
-// What the index page's render tests share (render.test.ts and the three files split from it): the collected data, one plan, and
-// readers of the rendered markup.
+// What the index page's render tests share (render.test.ts, the files split from it and render-pair-bars.pages.deep.test.ts): the collected
+// data, one plan, and readers of the rendered markup.
 import { createElement, Fragment } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
@@ -10,13 +10,13 @@ import type { WorkbenchInputs } from "../../lib/providers";
 import { LabelSheetHost } from "../kit";
 import { ProvenanceProvider } from "../provenance";
 import { PairLists, type ListsProps } from "./lists";
-import { type OnPick, type Pick } from "./pair";
+import { allFunds, pickOfHeadline, type OnPick, type Pick } from "./pair";
 import { FeesPanel } from "./before";
 import { DollarSection, useDollarCase } from "./dollar";
 import { StairsSection, useStairs } from "./stairs";
 import { PairReceipt } from "./receipt";
 import type { IndicesBundle } from "../../lib/providers";
-import type { InvestView } from "../../lib/invest";
+import { buildInvest, type IndexRef, type InvestView } from "../../lib/invest";
 
 export const bundle = buildIndicesBundle();
 export const t = bundle.today;
@@ -69,4 +69,34 @@ export function StairsFor({ view, bundle: b, plan: p, startHouse, startFund, exa
 /** The two linked lists as the page shows them, with the heading block above them: the page's own pair unless `chosen`. */
 export function lists(view: InvestView, b: IndicesBundle, p: WorkbenchInputs, pick: Pick, more: Partial<ListsProps> = {}) {
   return html(createElement(PairLists, { view, bundle: b, plan: p, livePlan: p, today: t, pick, chosen: false, onPick: () => undefined, moved: null, group: null, ...more }));
+}
+
+const planAt = (a: number, m: number, y: number, r: number): WorkbenchInputs => ({ ...plan, amountNow: a, monthly: m, years: y, grossReturn: r, values: { ...plan.values, amount: entered(a, "nis", t), monthly: entered(m, "nis_per_month", t), years: entered(y, "years", t), returnV: entered(r * 100, "pct_per_year", t) } });
+/**
+ * The sliders' ends and between. The movement script leaves each slider a quarter of the way along (125,000 ₪, 2,500 ₪ a month, 11 years,
+ * 3%), and a hedged fund picked there made the bar's total 1.46 ₪ off its one written part: the rounding guard threw and the page showed its
+ * error screen.
+ */
+const SLIDER_PLANS = [planAt(125000, 2500, 11, 0.03), planAt(500000, 10000, 40, 0.12), planAt(0, 100, 1, 0), planAt(1000, 0, 1, 0.07), planAt(250000, 5000, 21, 0.06)];
+
+/**
+ * Each fund of `index` picked beside the headline's house, at each plan of `SLIDER_PLANS`, whose receipt and fees panel fail to render: the
+ * fund, the plan (amount now, monthly, years, return) and the error.
+ */
+export function unrenderedAtSliders(index: IndexRef): string[] {
+  const out: string[] = [];
+  for (const p of SLIDER_PLANS) {
+    const view = buildInvest({ bundle, index, plan: p });
+    const head = pickOfHeadline(view);
+    if (!head) continue;
+    for (const f of allFunds(view)) {
+      const pick = { house: head.house, fund: f.rec.id };
+      try {
+        html(createElement(ReceiptAndFees, { view, bundle, plan: p, pick, chosen: true, onPick: () => undefined }));
+      } catch (e) {
+        out.push(`${index.id} ${f.rec.id} ${p.amountNow}/${p.monthly}/${p.years}/${p.grossReturn}: ${(e as Error).message}`);
+      }
+    }
+  }
+  return out;
 }

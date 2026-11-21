@@ -1,7 +1,7 @@
 // F-107: the US tax on the dividends of the US shares an Irish fund holds (A-11), from TXF-16's treaty rate and the index provider's yield.
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { fundOf, fundVariants, gapListOf, irishFundUsWithholding, usDividendsOf } from "../src/index.ts";
+import { fundOf, gapListOf, irishFundUsWithholding, recordDistribution, runSecurities, usDividendsOf } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -42,19 +42,18 @@ describe("F-107 the US tax inside an Irish fund that holds US shares", () => {
     expect(fundOf(american, "foreign-fund", undefined, undefined, undefined, u).fund.drag!.usDividends).toBeUndefined();
   });
   it("costs the run what the same figure written in the record costs, and the run names F-107 and TXF-16", () => {
-    const exposure = {
-      record: sp500,
-      theta: 0.005,
-      run: {
-        goal: { amountNow: 20_000, monthly: 500, months: 120 },
-        grossReturn: 0.07,
-        inflation: 0.025,
-        tariff: { buy: { rate: 0.001, min: 5 }, sell: { rate: 0.001, min: 5 } },
-        profile: {},
-        fxStartRates: { USD: 3.7 },
-      },
-    };
-    const runOf = (rec: typeof ishares) => fundVariants(exposure as never, [], [rec], ctx).rows.find((r) => r.recordId === rec.id)!.run!;
+    // the run the indices page gives a dollar fund of a dollar index: A-01 in dollars, bought abroad in dollars (F-04, F-13)
+    const runOf = (rec: typeof ishares) =>
+      runSecurities(
+        {
+          goal: { amountNow: 20_000, monthly: 500, months: 120 },
+          market: { grossReturn: 0.07, inflation: 0.025, returnIn: "instrument", fxChange: 0 },
+          fund: fundOf(rec, "foreign-fund", rec.distribution_policy === "distributing" ? recordDistribution(rec) : undefined, undefined, gapListOf(rec, sp500, [rec]), usDividendsOf(sp500)).fund,
+          tariff: { buy: { rate: 0.001, min: 5 }, sell: { rate: 0.001, min: 5 }, currency: { code: "USD", startRate: 3.7 } },
+          profile: {},
+        },
+        ctx,
+      );
     const computed = runOf(ishares);
     const written = runOf({ ...ishares, fees: { ...ishares.fees, fund_level_withholding_drag: { ...ishares.fees.fixed_management, value: 15 * sp500.us_dividends.yield.value / 100 } } });
     const none = runOf({ ...ishares, fees: { ...ishares.fees, fund_level_withholding_drag: { ...ishares.fees.fixed_management, value: 0 } } });

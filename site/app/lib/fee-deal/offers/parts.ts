@@ -239,10 +239,6 @@ export const PART_IDS = Object.keys(PARTS) as PartId[];
 
 /** Whether a part asks for something before it stands. */
 export const isPending = (id: PartId): id is PendingPart => PARTS[id].ask !== null;
-/** A part that asks an amount before it stands, a percent or a sum: a minimum, a maximum, a percent maximum, a maximum on each security. */
-export type AmountPart = IdsWhere<{ ask: "pct" | "sum" }>;
-/** Whether a part asks an amount before it stands (`AmountPart`). */
-export const asksAmount = (id: PartId): id is AmountPart => PARTS[id].ask === "pct" || PARTS[id].ask === "sum";
 /**
  * Whether a part is one a price keeps beside its main figure, in a key of the price (`field`): its bounds, a discount, a third party's fee,
  * an offset, a refund, its notes. Not the price's form, nor a part of the fee's prices (a later price, a sale priced apart).

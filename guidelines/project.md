@@ -46,6 +46,8 @@ and family make saving and investing decisions in Israel.
   now. No history: not who asked for it or said it, not when, not which
   review or reader found it, not what it was before. Git history holds
   that.
+- Code no page reaches is removed. Its method text stays, marked not
+  built, so it can come back from a written formula.
 
 ## Repository layout
 

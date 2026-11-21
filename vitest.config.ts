@@ -1,8 +1,24 @@
-import { defineConfig } from "vitest/config";
+import { defaultExclude, defineConfig } from "vitest/config";
+
+const FILES = ["packages/*/test/**/*.test.ts", "site/app/**/*.test.ts"];
+
+/**
+ * The topics of the deep run: a test file named `<name>.<topic>.deep.test.ts` belongs to the topic's project, `deep:<topic>`, and to no
+ * other. `npm test` runs the project `fast`, every other test file; `npm run test:deep -- <topic>` one topic (tools/test-deep.mjs), and
+ * `npm run test:deep` all of them, as `npm run check` and GitHub do before the site updates. A deep file holds a sweep too slow for
+ * every change (every fund of every index at many plans, every index rendered at the sliders' ends); its fast neighbour keeps a slice of
+ * the same checks.
+ */
+export const DEEP_TOPICS = ["deals", "fees", "tax", "data", "pages"] as const;
 
 export default defineConfig({
   test: {
-    include: ["packages/*/test/**/*.test.ts", "site/app/**/*.test.ts"],
+    // The fast run and one per deep topic, each with the settings below (`extends: true`); `vitest run` with no `--project` runs them all.
+    projects: [
+      // a deep file of a topic not listed stays in the fast run, so no test is left out of every run
+      { extends: true, test: { name: "fast", include: FILES, exclude: [...defaultExclude, ...DEEP_TOPICS.map((topic) => `**/*.${topic}.deep.test.ts`)] } },
+      ...DEEP_TOPICS.map((topic) => ({ extends: true as const, test: { name: `deep:${topic}`, include: FILES.map((f) => f.replace(/\*\.test\.ts$/, `*.${topic}.deep.test.ts`)) } })),
+    ],
     // The test files of one worker share their modules (2026-10-26): each file importing the schemas, the data loaders and the engine
     // afresh was about a third of the run, and the data read once (lib/read-cache.server.ts) serves every file after the first. Safe
     // while no test patches a module or a global: the one store a test swaps (lib/state.ts) is reset before each of its tests, and

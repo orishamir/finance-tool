@@ -1,6 +1,6 @@
 // Exchange rates from the ECB's reference rates (D26): the cross rate, the label, the stale clock, the series file.
 import { describe, expect, it } from "vitest";
-import { fxLabel, hasRate, nisPer, nisPerNumber, nisPerQuoted, type FxSnapshot } from "./fx";
+import { fxLabel, nisPer, nisPerNumber, type FxSnapshot } from "./fx";
 import { loadFx } from "./fx.server";
 
 const fx: FxSnapshot = {
@@ -26,16 +26,7 @@ describe("nisPer", () => {
   it("is null for a currency the ECB does not publish", () => {
     expect(nisPerNumber(fx, "XYZ")).toBeNull();
     expect(nisPer(fx, "XYZ", "2026-10-25")).toBeNull();
-    expect(hasRate(fx, "USD")).toBe(true);
-    expect(hasRate(fx, "XYZ")).toBe(false);
     expect(nisPerNumber({ ...fx, perEur: { USD: 1.1 } }, "USD")).toBeNull();
-  });
-  it("quotes yen per 100", () => {
-    const q = nisPerQuoted(fx, "JPY")!;
-    expect(q.per).toBe(100);
-    expect(q.value).toBeCloseTo((3.4939 / 175.51) * 100, 10);
-    expect(q.value).toBeCloseTo(1.9906, 3);
-    expect(nisPerQuoted(fx, "USD")).toMatchObject({ per: 1 });
   });
   it("returns a computed value with the Hebrew label, the ECB source and both inputs", () => {
     const v = nisPer(fx, "USD", "2026-10-25")!;

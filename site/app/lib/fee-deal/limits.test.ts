@@ -1,7 +1,7 @@
 // What one deal may hold (limits.ts): every edit that would pass a limit refuses, leaves its fee as it was and says which limit it met;
 // a deal at every limit still opens (`readDeal`), and its link is refused where it would be too long to open.
 import { describe, expect, it } from "vitest";
-import { addBy, addCase, addCaseAt, addOwnPlace, addStep, addValues, copyCase, removeCase, setStep, setWhen, splitCase } from "./edits/case";
+import { addBy, addCase, addCaseAt, addOwnPlace, addStep, addValuesAt, copyCase, removeCase, setStep, setWhen, splitCase } from "./edits/case";
 import { removeValue } from "./edits/arrange";
 import { valueKey } from "./layout";
 import { splitAt } from "./edits/stage";
@@ -88,12 +88,12 @@ describe("an edit at a limit refuses", () => {
     expect(many.by[0]).toMatchObject({ values: { length: VALUES_MAX + 2 } });
     expect(feeBreach(many)).toBeNull();
     expect(roundTrip(dealOf(many))).not.toBeNull();
-    refused(many, addValues(many, 0, ["עוד אחד"]), "values");
+    refused(many, addValuesAt(many, 0, ["עוד אחד"]), "values");
     // under VALUES_MAX values, a value with no case is kept up to it
     const few = withNamed(cases(VALUES_MAX - 1));
-    const at = addValues(few, 0, ["עוד אחד"]) as CasesFee;
+    const at = addValuesAt(few, 0, ["עוד אחד"]) as CasesFee;
     expect(at.by[0]).toMatchObject({ values: { length: VALUES_MAX } });
-    refused(at, addValues(at, 0, ["ועוד"]), "values");
+    refused(at, addValuesAt(at, 0, ["ועוד"]), "values");
   });
   it("lets a deal whose cases name more than VALUES_MAX values take a case away or move one among its values, never keep one more", () => {
     const many = withNamed(cases(VALUES_MAX + 2));

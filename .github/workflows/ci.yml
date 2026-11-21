@@ -14,7 +14,7 @@ on:
 # Both check out the tree without research/user-lab: screenshots and reports, 111 of the tree's 147 MB, that no check reads.
 # A check that comes to read a file there fails for want of it: take the folder out of the two lists below.
 jobs:
-  # The typecheck, the tests and the data check.
+  # The typecheck, the tests (the fast ones, then every deep suite: vitest.config.ts) and the data check.
   test:
     runs-on: ubuntu-latest
     steps:
@@ -31,6 +31,7 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+      - run: npm run test:deep
       - run: npm run validate
 
   # The site build and the checks that open it in a browser; on main, the site for the deploy. (The copy to run offline is offline.yml, run by hand.)

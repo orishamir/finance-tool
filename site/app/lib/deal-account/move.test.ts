@@ -6,82 +6,18 @@
 // also the cheaper of the plan's conversion and the regular price, which the move does not carry), Interactive Brokers' track. Each is proven
 // by its cause: on the house's record with the cause taken out (exceptions-fixtures.ts), the account and its deal leave the same.
 // A group's months counted from the day the account was typed differ nothing here: every account is typed today.
+// The comparisons here run on a few indices and a slice of the accounts; move.deals.deep.test.ts runs every account on every index.
 import { describe, expect, it } from "vitest";
-import { feesData } from "../fees.server";
-import { fxRunInput } from "../fx";
-import { buildIndicesBundle } from "../providers.server";
-import { entered } from "../value";
 import { buildInvest, indexById } from "../invest";
-import type { WorkbenchInputs } from "../providers";
 import type { CustomBroker } from "../custom-entries";
-import { withGroupAccount } from "../group-pick";
-import type { BundleSnapshot } from "../providers";
 import { baseOf, startingPointsOf } from "../own-account";
 import { hasCases, readDeal } from "../fee-deal/model";
 import { dealProviderId, withDeals } from "./bundle";
-import { dealOfTypedAccount, movedDealId, withMoved, type MoveContext } from "./move";
-import { onDealsTerms } from "./exceptions-fixtures";
+import { dealOfTypedAccount, movedDealId, withMoved } from "./move";
+import { account, bundle, compare, ctx, data, differing, fig, full, houses, on, plan, unstated } from "./move-fixtures";
 
-const data = feesData();
-const bundle = buildIndicesBundle();
-const t = bundle.today;
-const plan: WorkbenchInputs = {
-  amountNow: 10_000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
-  values: { amount: entered(10_000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(10, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
-  returnFromParameter: false, currentAccounts: { own: null },
-};
-const ctx: MoveContext = { houses: data.houses, kinds: data.kinds, snapshots: bundle.snapshots, fx: bundle.fx ? fxRunInput(bundle.fx) : {}, today: t };
-
-const fig = (v: number, unit: Parameters<typeof entered>[1]) => entered(v, unit, t);
-const full = { tradePct: 0.1, tradeMin: 5, custodyPct: 0.1, custodyMin: 2, fxPct: 0.3, monthlyFee: 10 };
-type Typed = Partial<Record<keyof typeof full, number | null>>;
-let n = 0;
-function account(typed: Typed, more: Partial<CustomBroker> = {}): CustomBroker {
-  const v = (k: keyof typeof full) => (typed[k] === undefined || typed[k] === null ? null : typed[k]!);
-  const at = (k: keyof typeof full, unit: Parameters<typeof entered>[1]) => (v(k) === null ? null : fig(v(k)!, unit));
-  return {
-    id: `custom-broker-test-${n++}`,
-    name: `חשבון ${n}`,
-    added: t,
-    tradePct: at("tradePct", "pct_of_trade"),
-    tradeMin: at("tradeMin", "nis_per_trade"),
-    custodyPct: at("custodyPct", "pct_per_year"),
-    custodyMin: at("custodyMin", "nis_per_month"),
-    fxPct: at("fxPct", "pct_of_trade"),
-    monthlyFee: at("monthlyFee", "nis_per_month"),
-    sells: { israeli: true, abroad: true },
-    ...more,
-  };
-}
-
-type Row = { ix: string; fund: string; abroad: boolean; before: number | null; after: number | null };
-
-/**
- * What each account leaves on each fund of each index, before the move (the typed account) and after it (its deal), rounded to the shekel:
- * after tax, or before it on a fund an open rule leaves untaxed (F-118); null where it has no price. `terms`: on the houses' records read on
- * their deals' terms, F-128's stated exceptions taken out (exceptions-fixtures.ts); `p` and `fxChange`: the plan and A-03.
- */
-function compare(accounts: CustomBroker[], terms = false, p: WorkbenchInputs = plan, fxChange = 0): Map<string, Row[]> {
-  const deals = accounts.map((a) => dealOfTypedAccount(a, ctx));
-  const base = terms ? onDealsTerms(bundle, accounts.map((a, i) => ({ house: a.base!.houseId, deal: deals[i]! })), data.kinds).bundle : bundle;
-  const before = accounts.reduce((b, a) => withGroupAccount(b, base.snapshots.find((s) => s.id === a.base!.houseId) as BundleSnapshot, a), base);
-  const both = withDeals(before, deals, data.kinds);
-  const out = new Map(accounts.map((a) => [a.id, [] as Row[]]));
-  for (const e of bundle.exposures) {
-    const index = indexById(both, e.id);
-    if (!index) continue;
-    const funds = buildInvest({ bundle: both, index, plan: p, assumptions: { fxChange } }).options.flatMap((o) => o.funds);
-    const left = (f: (typeof funds)[number], id: string): number | null => {
-      const at = f.byHouse[id];
-      const n = at && "valueN" in at ? at.valueN : f.beforeTax?.byHouse[id]?.leftN;
-      return n === undefined ? null : Math.round(n);
-    };
-    for (const a of accounts) for (const f of funds) out.get(a.id)!.push({ ix: e.id, fund: f.rec.id, abroad: f.option === "abroad", before: left(f, a.id), after: left(f, dealProviderId(movedDealId(a.id))) });
-  }
-  return out;
-}
-
-const differing = <R extends { before: number | null; after: number | null }>(rows: R[]): R[] => rows.filter((r) => r.before !== r.after);
+/** The indices the fast comparisons run on: the Tel Aviv 125 (bought in shekels) and the MSCI World (bought abroad, and the dollar's rate). */
+const FEW = ["index-ta125", "index-msci-world"];
 
 describe("the move", () => {
   it("makes one deal per account, with an id from the account's, that reads back as a deal; a second move adds nothing", () => {
@@ -146,27 +82,13 @@ describe("the move: an account typed from scratch", () => {
   });
 });
 
-/** A differing row F-128's stated exceptions cannot be: one only one of the two prices, or where the deal leaves more. */
-const unstated = (r: Row) => r.before === null || r.after === null || r.after > r.before;
-
-describe("the move: an account built on a house leaves what it left", () => {
-  const houses = data.houses.map((h) => h.id).filter((id) => bundle.snapshots.some((s) => s.id === id));
-  const on = (id: string, typed: Typed) => {
-    const s = bundle.snapshots.find((x) => x.id === id)!;
-    return account(typed, { base: baseOf(s, { group: null }) });
-  };
+describe("the move: an account built on a house leaves what it left, on a few indices", () => {
   const shapes = houses.flatMap((id): [string, string, CustomBroker][] => [
     [id, "nothing typed", on(id, {})],
     [id, "every field typed", on(id, { tradePct: 0.05, tradeMin: 3, custodyPct: 0.08, custodyMin: 1, fxPct: 0.2, monthlyFee: 5 })],
-    [id, "the trade's percent alone", on(id, { tradePct: 0.07 })],
-    [id, "the custody's minimum alone", on(id, { custodyMin: 4 })],
-    [id, "the custody's percent alone", on(id, { custodyPct: 0.08 })],
-    [id, "the conversion alone", on(id, { fxPct: 0.2 })],
-    [id, "the monthly fee alone", on(id, { monthlyFee: 5 })],
-    [id, "the trade's minimum alone", on(id, { tradeMin: 3 })],
   ]);
-  const got = compare(shapes.map((s) => s[2]));
-  const onTerms = compare(shapes.map((s) => s[2]), true);
+  const got = compare(shapes.map((s) => s[2]), false, plan, 0, FEW);
+  const onTerms = compare(shapes.map((s) => s[2]), true, plan, 0, FEW);
   it.each(shapes)("%s, %s: the same on every fund on the deal's terms; as it is, no more anywhere", (_id, _, a) => {
     expect(differing(onTerms.get(a.id)!)).toEqual([]);
     expect(differing(got.get(a.id)!).filter(unstated)).toEqual([]);
@@ -182,10 +104,10 @@ describe("the move: an account built on a house leaves what it left", () => {
 });
 
 describe("the move: a typed conversion keeps the list's steps by size (F-13)", () => {
-  const on = (id: string) => account({ fxPct: 0.2 }, { base: baseOf(bundle.snapshots.find((x) => x.id === id)!, { group: null }) });
+  const onFx = (id: string) => on(id, { fxPct: 0.2 });
   /** The prices of each case of the deal's conversion fee, by the step of the action's size it is (the open top last). */
   const steps = (id: string) => {
-    const fx = dealOfTypedAccount(on(id), ctx).fees.find((f) => f.kind === "fx")!;
+    const fx = dealOfTypedAccount(onFx(id), ctx).fees.find((f) => f.kind === "fx")!;
     if (!hasCases(fx)) throw new Error("the conversion changes by its size");
     const t = fx.by.findIndex((b) => b.kind === "actionSize");
     return fx.cases.map((c) => ({ step: c.when[t], price: c.stages[0]!.price }));
@@ -200,23 +122,15 @@ describe("the move: a typed conversion keeps the list's steps by size (F-13)", (
 
   it("a small conversion leaves what the account built on the house left", () => {
     const small = { ...plan, amountNow: 0, monthly: 30, years: 3, values: { ...plan.values, amount: fig(0, "nis"), monthly: fig(30, "nis_per_month"), years: fig(3, "years") } };
-    const a = on("mizrahi-tefahot");
+    const a = onFx("mizrahi-tefahot");
     expect(differing(compare([a], true, small).get(a.id)!)).toEqual([]);
   });
 });
 
-describe("the move with the dollar moving: A-03 = +3% a year over 20 years", () => {
-  const houses = data.houses.map((h) => h.id).filter((id) => bundle.snapshots.some((s) => s.id === id));
-  const on = (id: string, typed: Typed) => account(typed, { base: baseOf(bundle.snapshots.find((x) => x.id === id)!, { group: null }) });
+describe("the move with the dollar moving: A-03 = +3% a year over 20 years, on a few indices", () => {
   const at = (amount: number) => ({ ...plan, amountNow: amount, years: 20, values: { ...plan.values, amount: fig(amount, "nis"), years: fig(20, "years") } });
-  const shapes = houses.flatMap((id): [string, string, CustomBroker][] => [
-    [id, "nothing typed", on(id, {})],
-    [id, "the trade's percent alone", on(id, { tradePct: 0.07 })],
-    [id, "the custody's percent and minimum", on(id, { custodyPct: 0.08, custodyMin: 1 })],
-    [id, "the conversion alone", on(id, { fxPct: 0.2 })],
-    [id, "the trade's minimum alone", on(id, { tradeMin: 3 })],
-  ]);
-  const got = compare(shapes.map((s) => s[2]), true, at(10_000), 3);
+  const shapes = houses.map((id): [string, string, CustomBroker] => [id, "the trade's minimum alone", on(id, { tradeMin: 3 })]);
+  const got = compare(shapes.map((s) => s[2]), true, at(10_000), 3, FEW);
   it.each(shapes)("%s, %s: the same on every fund on the deal's terms", (_id, _, a) => {
     expect(differing(got.get(a.id)!)).toEqual([]);
   });
@@ -224,8 +138,8 @@ describe("the move with the dollar moving: A-03 = +3% a year over 20 years", () 
   // the third stated difference: beside a typed minimum, a maximum in dollars stands at F-84's rate, so where it binds (a large first sum)
   // and the dollar rises, the deal pays less than the account priced it at each month's rate; with the dollar still, the two agree
   const banks = ["hapoalim", "yahav", "massad"].map((id): [string, CustomBroker] => [id, on(id, { tradeMin: 3 })]);
-  const big = compare(banks.map((b) => b[1]), true, at(1_000_000), 3);
-  const still = compare(banks.map((b) => b[1]), true, at(1_000_000), 0);
+  const big = compare(banks.map((b) => b[1]), true, at(1_000_000), 3, FEW);
+  const still = compare(banks.map((b) => b[1]), true, at(1_000_000), 0, FEW);
   it.each(banks)("%s: a typed minimum over a maximum in dollars leaves no less with the dollar rising, and the same with it still", (_id, a) => {
     const rows = differing(big.get(a.id)!).filter((r) => r.abroad);
     expect(rows.length).toBeGreaterThan(0);
@@ -234,54 +148,21 @@ describe("the move with the dollar moving: A-03 = +3% a year over 20 years", () 
   });
 });
 
-describe("the move at 1,000,000 now over 20 years, where every custody maximum binds (F-14)", () => {
-  const houses = data.houses.map((h) => h.id).filter((id) => bundle.snapshots.some((s) => s.id === id));
-  const on = (id: string, typed: Typed) => account(typed, { base: baseOf(bundle.snapshots.find((x) => x.id === id)!, { group: null }) });
+describe("the move at 1,000,000 now over 20 years, where every custody maximum binds (F-14), on a few indices", () => {
   const big = { ...plan, amountNow: 1_000_000, years: 20, values: { ...plan.values, amount: fig(1_000_000, "nis"), years: fig(20, "years") } };
-  const shapes = houses.flatMap((id): [string, string, CustomBroker][] => [
-    [id, "nothing typed", on(id, {})],
-    [id, "the custody's percent alone, 2% a year", on(id, { custodyPct: 2 })],
-  ]);
-  const got = compare(shapes.map((s) => s[2]), true, big);
+  const shapes = houses.map((id): [string, string, CustomBroker] => [id, "the custody's percent alone, 2% a year", on(id, { custodyPct: 2 })]);
+  const got = compare(shapes.map((s) => s[2]), true, big, 0, FEW);
   it.each(shapes)("%s, %s: the same on every fund on the deal's terms", (_id, _, a) => {
     expect(differing(got.get(a.id)!)).toEqual([]);
   });
 });
 
-describe("the move: an account built on a house with nothing typed", () => {
-  const houses = data.houses.map((h) => h.id).filter((id) => bundle.snapshots.some((s) => s.id === id));
-  const bare = houses.map((id) => account({}, { base: baseOf(bundle.snapshots.find((x) => x.id === id)!, { group: null }) }));
-  const got = compare(bare);
-  const rows = houses.flatMap((id, i) => differing(got.get(bare[i]!.id)!).map((r) => ({ id, r })));
-  const onTerms = compare(bare, true);
-
-  it("differs only on funds bought abroad, where the deal leaves less, and nowhere on the deal's terms", () => {
-    expect(rows.every(({ r }) => r.abroad)).toBe(true);
-    expect(rows.filter(({ r }) => unstated(r))).toEqual([]);
-    expect(houses.flatMap((id, i) => differing(onTerms.get(bare[i]!.id)!).map((r) => ({ id, r })))).toEqual([]);
-  });
-
-  it("is priced on every fund exactly where it was before", () => {
-    expect(rows.filter(({ r }) => (r.before === null) !== (r.after === null))).toEqual([]);
-  });
-});
-
-describe("the move: an account built on a group, typed today, leaves what it left", () => {
+describe("the move: an account built on a group, typed today, leaves what it left, on a few indices", () => {
   const shapes = bundle.snapshots.flatMap((s) =>
-    data.houses.some((h) => h.id === s.id)
-      ? startingPointsOf(s).flatMap((p): [string, string, CustomBroker][] =>
-          p.group
-            ? [
-                [s.id, p.nameHe, account({}, { base: baseOf(s, p) })],
-                [s.id, `${p.nameHe}, every price used`, account({}, { base: { ...baseOf(s, p), group: { ...p.group, adopted: p.group.prices.map((x) => x.fee) } } })],
-                [s.id, `${p.nameHe}, for two years, the trade typed`, account({ tradePct: 0.06 }, { base: baseOf(s, p), untilYears: 2 })],
-              ]
-            : [],
-        )
-      : [],
+    data.houses.some((h) => h.id === s.id) ? startingPointsOf(s).flatMap((p): [string, string, CustomBroker][] => (p.group ? [[s.id, p.nameHe, account({}, { base: baseOf(s, p) })]] : [])) : [],
   );
-  const got = compare(shapes.map((s) => s[2]));
-  const onTerms = compare(shapes.map((s) => s[2]), true);
+  const got = compare(shapes.map((s) => s[2]), false, plan, 0, FEW);
+  const onTerms = compare(shapes.map((s) => s[2]), true, plan, 0, FEW);
   it.each(shapes)("%s, %s: the same on every fund on the deal's terms; as it is, no more anywhere", (_id, _, a) => {
     expect(differing(onTerms.get(a.id)!)).toEqual([]);
     expect(differing(got.get(a.id)!).filter(unstated)).toEqual([]);

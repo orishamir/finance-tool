@@ -367,9 +367,6 @@ export function setOwnPlace(fee: Fee, t: number, name: string, to: { place: OwnP
   return { ...fee, by: fee.by.map((x, j) => (j === t ? { ...b, own: b.own!.map((o) => (o.name === name ? set(o) : o)) } : x)) };
 }
 
-/** New values of list thing `t` at the end of its values (`addValuesAt`). */
-export const addValues = (fee: Fee, t: number, values: readonly string[], own: readonly OwnPlace[] = []): Fee => addValuesAt(fee, t, values, own);
-
 /** A range's top `k` typed again (its unit kept): refused where it would not stay above the top before it and below the one after. */
 export function setTop(fee: Fee, t: number, k: number, v: number): Fee {
   const b = fee.by?.[t];

@@ -6,7 +6,6 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { ParameterRecord } from "@finance-tool/schema";
-import { parameterVersions } from "@finance-tool/engine";
 import { ProvenanceProvider } from "../components/provenance";
 import { ValueSheet } from "../components/provenance-sheets";
 import { loadParameters } from "./data.server";
@@ -126,16 +125,5 @@ describe("the sheet of the yearly inflation", () => {
       lines.add(v.rationale_he!);
     }
     expect(lines.size).toBe(7);
-  });
-});
-
-describe("a saved comparison does not see the per-number lines", () => {
-  it("adding or rewording them is not a changed parameter", () => {
-    const records = loadParameters().filter((p) => ["P-01", "P-02", "P-05"].includes(p.method_id));
-    const strip = (n: unknown): unknown => (Array.isArray(n) ? n.map(strip) : n && typeof n === "object" ? Object.fromEntries(Object.entries(n).filter(([k]) => k !== "rationale_he").map(([k, v]) => [k, strip(v)])) : n);
-    const before = parameterVersions(records.map((r) => strip(r)));
-    const after = parameterVersions(records);
-    expect(after).toEqual(before);
-    expect(JSON.stringify(after)).not.toContain("rationale_he");
   });
 });

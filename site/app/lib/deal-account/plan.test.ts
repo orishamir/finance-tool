@@ -1,16 +1,11 @@
 // F-128 on the indices page: a securities-account deal read for the page's plan, and priced beside the houses. A deal filled from a house's
 // whole price list leaves what the house's own row leaves on the same fund, so the popup's difference starts at nothing, except where
 // F-128 states it does not, each exception proven by its cause: with the cause taken out of the house's record, the two leave the same
-// (exceptions-fixtures.ts).
+// (exceptions-fixtures.ts). Here on a few indices and two of the plans; plan.deals.deep.test.ts runs every index at every plan.
 import { describe, expect, it } from "vitest";
-import { feesData } from "../fees.server";
-import { buildIndicesBundle } from "../providers.server";
-import { entered } from "../value";
-import { accountSum, buildInvest, dealOnFunds, dealRunOf, indexById, pairCosts, type FundWay } from "../invest";
+import { accountSum, buildInvest, dealOnFunds, dealRunOf, indexById, pairCosts } from "../invest";
 import { receiptAmounts } from "../receipt";
 import { invest as words } from "../../copy";
-import type { WorkbenchInputs } from "../providers";
-import { fillDeal, templateOptions } from "../fee-deal/templates";
 import { hasCases, newDeal, type FeeDeal } from "../fee-deal/model";
 import { feeOf } from "../fee-deal/cases";
 import { addBy } from "../fee-deal/edits/case";
@@ -19,17 +14,15 @@ import { dealTiles, listPlace } from "./tiles";
 import { stretchOf } from "../stretch";
 import { feesOnPlan, missingKey, missingOf, planAccount, planDeal, planFees, planRead, planWhat, whatOfRun } from "./plan";
 import { planCases, yearSpans } from "./plan-cases";
-import { leftOn, onDealsTerms } from "./exceptions-fixtures";
+import { bundle, data, flagsOf, fromHouse, housesBeside, onHouse, onPlan, plan, PLANS, t } from "./plan-fixtures";
 
-const data = feesData();
-const bundle = buildIndicesBundle();
-const t = bundle.today;
-const plan: WorkbenchInputs = {
-  amountNow: 10_000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
-  values: { amount: entered(10_000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(10, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
-  returnFromParameter: false, currentAccounts: { own: null },
-};
-const fromHouse = (id: string): FeeDeal => fillDeal({ ...newDeal("brokerage-account", id), id: `deal-${id}` }, `house:${id}`, data, t)!;
+/**
+ * The indices the fast run compares on: the Tel Aviv 125 (a fund on the Tel Aviv exchange and an open mutual fund, bought in shekels) and
+ * the MSCI World (funds bought abroad, in the United States and in Europe, and the dollar's rate).
+ */
+const FEW = ["index-ta125", "index-msci-world"];
+/** The plans of `PLANS` the fast run compares at: every custody maximum binding from the start, and as monthly deposits build it, at both of A-03's bounds. */
+const FEW_PLANS = ["1,000,000 now, 20 years at 5%, the dollar up 3% a year", "40,000 a month, 10 years at 7%, the dollar down 3% a year"];
 const run = { instrumentClass: "etf_units", listing: "tase" as const, currency: null, distributes: false, fx: {} };
 const ctx = { kinds: data.kinds, today: t, currentAccounts: { own: null } };
 
@@ -88,30 +81,10 @@ describe("F-128 the plan sets what is bought and the channel", () => {
   });
 });
 
-describe("F-128 a deal filled from a house prices as the house does", () => {
-  const houses = templateOptions("brokerage-account", data, t).filter((o) => o.source === "house").map((o) => o.id.slice("house:".length));
-  const deals = houses.map(fromHouse);
-  const b = withDeals(bundle, deals, data.kinds);
-  // the same houses read on their deals' terms: F-128's stated exceptions taken out of their records (exceptions-fixtures.ts)
-  const terms = onDealsTerms(bundle, houses.map((house, i) => ({ house, deal: deals[i]! })), data.kinds);
-  const bTerms = withDeals(terms.bundle, deals, data.kinds);
-  const indices = bundle.exposures.flatMap((e) => (indexById(b, e.id) ? [e.id] : []));
-  const views = new Map(indices.map((ix) => [ix, buildInvest({ bundle: b, index: indexById(b, ix)!, plan })]));
+describe("F-128 a deal filled from a house prices as the house does, on a few indices", () => {
+  const s = housesBeside(FEW);
+  const { houses, b, terms, views } = s;
   const view = views.get("index-ta125")!;
-
-  /**
-   * Every fund of `funds` on which the deal from house `id` leaves another amount than the house's row, after tax or before it (F-118),
-   * compared to `unit` shekels. A fund neither prices is not compared.
-   */
-  const differing = (id: string, ix: string, funds: FundWay[], unit: number) =>
-    funds.flatMap((f) => {
-      const r = { row: leftOn(f, id), deal: leftOn(f, dealProviderId(`deal-${id}`)) };
-      if (r.row === null && r.deal === null) return [];
-      const same = r.row !== null && r.deal !== null && Math.round(r.row / unit) === Math.round(r.deal / unit);
-      return same ? [] : [{ id, ix, fund: f.rec.id, ...r }];
-    });
-  /** A difference the stated exceptions cannot be: at a house whose record they leave as it is, or a deal that leaves more than the row, or a price only one of them has. */
-  const unstated = (d: ReturnType<typeof differing>[number]) => !terms.changed.has(d.id) || d.row === null || d.deal === null || d.deal > d.row + 0.5;
 
   it("fills a deal from every house's template", () => expect(houses.length).toBeGreaterThanOrEqual(17));
 
@@ -119,75 +92,25 @@ describe("F-128 a deal filled from a house prices as the house does", () => {
     expect([...terms.changed]).toEqual(expect.arrayContaining(["interactive-brokers", "interactive-israel"]));
   });
 
-  it.each(houses)("%s: the same value left on every fund of every index, to the shekel, on the deal's terms; as it is, less only where a stated exception's cause is", (id) => {
-    let compared = 0;
-    const unexplained = indices.flatMap((ix) => {
-      const v = views.get(ix)!;
-      const funds = v.options.flatMap((o) => o.funds);
-      if (v.houses.some((r) => r.provider.id === id)) expect(v.houses.find((r) => r.provider.id === dealProviderId(`deal-${id}`))!.provider.custom).toBe(true);
-      compared += funds.filter((f) => leftOn(f, id) !== null).length;
-      return differing(id, ix, funds, 1).filter(unstated);
-    });
-    expect(compared).toBeGreaterThan(0);
-    expect(unexplained).toEqual([]);
-    const onTerms = indices.flatMap((ix) => differing(id, ix, buildInvest({ bundle: bTerms, index: indexById(bTerms, ix)!, plan }).options.flatMap((o) => o.funds), 1));
-    expect(onTerms).toEqual([]);
+  it.each(houses)("%s: the same value left on every fund of these indices, to the shekel, on the deal's terms; as it is, less only where a stated exception's cause is", (id) => {
+    const r = onHouse(s, id);
+    expect(r.notCustom).toEqual([]);
+    expect(r.compared).toBeGreaterThan(0);
+    expect(r.unexplained).toEqual([]);
+    expect(r.onTerms).toEqual([]);
   });
 
-  const planAt = (amount: number, monthly: number, years: number, ret: number): WorkbenchInputs => ({
-    ...plan, amountNow: amount, monthly, years, grossReturn: ret / 100,
-    values: { amount: entered(amount, "nis", t), monthly: entered(monthly, "nis_per_month", t), years: entered(years, "years", t), returnV: entered(ret, "pct_per_year", t), inflation: plan.values.inflation },
-  });
-  /**
-   * Plans beside the page's own, and A-03 at both of P-02's bounds (±3% a year), so the order of the first sum and the track can't hide. The
-   * large ones hold enough that every custody maximum binds (F-14: Leumi's 3,700 on each security beside 11,500 on the deposit, First
-   * International's 4,000 beside 10,000, Discount's 7,500 on each security alone), from the start and as monthly deposits build it.
-   */
-  const plans: [string, WorkbenchInputs, number][] = [
-    ["1,000,000 now, 20 years at 5%", planAt(1_000_000, 0, 20, 5), 0],
-    ["1,000,000 now, 20 years at 5%, the dollar up 3% a year", planAt(1_000_000, 0, 20, 5), 3],
-    ["1,000,000 now, 20 years at 5%, the dollar down 3% a year", planAt(1_000_000, 0, 20, 5), -3],
-    ["40,000 a month, 10 years at 7%", planAt(0, 40_000, 10, 7), 0],
-    ["40,000 a month, 10 years at 7%, the dollar up 3% a year", planAt(0, 40_000, 10, 7), 3],
-    ["40,000 a month, 10 years at 7%, the dollar down 3% a year", planAt(0, 40_000, 10, 7), -3],
-    ["50,000 now, 20 years at 5%", planAt(50_000, 0, 20, 5), 0],
-    ["2,000 a month, 5 years at 3%", planAt(0, 2_000, 5, 3), 0],
-    ["100,000 now and 1,000 a month, 30 years at −2%", planAt(100_000, 1_000, 30, -2), 0],
-    ["the page's plan, the dollar up 3% a year", plan, 3],
-    ["1,000 now and 300 a month, 10 years at 7%, the dollar up 3% a year", planAt(1_000, 300, 10, 7), 3],
-    ["the page's plan, the dollar down 3% a year", plan, -3],
-  ];
-
-  it.each(plans)("an untouched deal leaves what its house's row leaves on every fund of every index at %s on the deal's terms, as it is less only where a stated exception's cause is, and has a price exactly where its house's row has one", (_, p, fxChange) => {
-    let compared = 0;
-    const unexplained: ReturnType<typeof differing> = [];
-    const onTerms: ReturnType<typeof differing> = [];
-    for (const ix of indices) {
-      const v = buildInvest({ bundle: b, index: indexById(b, ix)!, plan: p, assumptions: { fxChange } });
-      const vt = buildInvest({ bundle: bTerms, index: indexById(bTerms, ix)!, plan: p, assumptions: { fxChange } });
-      const funds = v.options.flatMap((o) => o.funds);
-      const fundsT = vt.options.flatMap((o) => o.funds);
-      for (const id of houses) {
-        // the deal is an account at its house: on every fund of the index, after tax or before it (F-118), it has a price where the row has one
-        const dealId = dealProviderId(`deal-${id}`);
-        const priced = (f: FundWay, at: string) => [!!f.byHouse[at] && "valueN" in f.byHouse[at]!, !!f.beforeTax?.byHouse[at]];
-        for (const f of funds) expect([id, ix, f.rec.id, priced(f, dealId)]).toEqual([id, ix, f.rec.id, priced(f, id)]);
-        compared += funds.filter((f) => leftOn(f, id) !== null).length;
-        // to the agora, so a difference of a fraction of a shekel (the rate the amount now is converted at) shows
-        unexplained.push(...differing(id, ix, funds, 0.01).filter(unstated));
-        onTerms.push(...differing(id, ix, fundsT, 0.01));
-      }
-    }
-    expect(compared).toBeGreaterThan(0);
-    expect(unexplained).toEqual([]);
-    expect(onTerms).toEqual([]);
+  it.each(PLANS.filter(([name]) => FEW_PLANS.includes(name)))("an untouched deal leaves what its house's row leaves on every fund of these indices at %s on the deal's terms, as it is less only where a stated exception's cause is, and has a price exactly where its house's row has one", (_, p, fxChange) => {
+    const r = onPlan(s, p, fxChange);
+    expect(r.pricedApart).toEqual([]);
+    expect(r.compared).toBeGreaterThan(0);
+    expect(r.unexplained).toEqual([]);
+    expect(r.onTerms).toEqual([]);
   });
 
   it("carries the open questions of the prices it reads on its value figure, as its house's row does (F-12: Interactive Israel's minimum in Europe, BRK OQ25)", () => {
-    const flagsOf = (f: FundWay, at: string) => { const x = f.byHouse[at]; return x && "value" in x ? (x.value.flags ?? []).filter((q) => q.includes("-OQ")) : null; };
-    const funds = indices.flatMap((ix) => views.get(ix)!.options.flatMap((o) => o.funds));
-    const flagged = funds.filter((f) => flagsOf(f, "interactive-israel")?.includes("BRK-OQ25"));
-    expect(flagged.length).toBeGreaterThan(0);
+    const funds = s.indices.flatMap((ix) => views.get(ix)!.options.flatMap((o) => o.funds));
+    expect(funds.filter((f) => flagsOf(f, "interactive-israel")?.includes("BRK-OQ25")).length).toBeGreaterThan(0);
     for (const f of funds) expect([f.rec.id, flagsOf(f, dealProviderId("deal-interactive-israel"))]).toEqual([f.rec.id, flagsOf(f, "interactive-israel")]);
     // a fund bought in the United States reads no price of the European line
     const read = (listing: "us" | "europe") => planAccount(fromHouse("interactive-israel"), { instrumentClass: "foreign_securities", listing, currency: "USD", distributes: false, fx: {} }, ctx);

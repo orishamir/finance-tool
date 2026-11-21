@@ -105,8 +105,8 @@ const runOf: Partial<Record<ProductId, Family>> = {
 };
 
 const notRun: Partial<Record<ProductId, string>> = {
-  "child-savings-provident": "runs on the NII amounts (F-54), not on P-05",
-  "child-savings-bank": "runs on the NII amounts (F-54), not on P-05",
+  "child-savings-provident": "its run, on the NII amounts (F-54), is not built",
+  "child-savings-bank": "its run, on the NII amounts (F-54), is not built",
   "ira-provident": "exit F-49 is blocked (G-03) and F-48 is not built yet",
 };
 
@@ -122,14 +122,14 @@ const termKeys: Record<Family, { required: (keyof InstrumentTerms)[]; optional: 
 /** Fields of each nested term; any other field (a rate, a yield) would override P-05, so it is an error. */
 const nestedKeys: Partial<Record<keyof InstrumentTerms, string[]>> = {
   fees: ["deposit", "balance", "direct", "discount", "depositDiscount"],
-  hishtalmut: ["employment", "monthlySalary", "clockStartMonth", "earlyWithdrawal", "employerRate", "employerMonthly", "money", "salaryFollowsPrices"],
+  hishtalmut: ["employment", "monthlySalary", "clockStartMonth", "earlyWithdrawal", "employerMonthly", "money", "salaryFollowsPrices"],
   pension: ["employment", "monthlySalary", "annualIncome", "existingEmployeeRate", "employer"],
   insurance: ["rate"],
   deposit: ["termMonths", "linkage", "balanceCeiling", "exitFirstMonth", "exitEveryMonths", "termDays", "interestCalc", "interestPaidOut"],
   currency: ["returnIn", "fxChange"],
   ira: ["managerFee", "clockStartMonth"],
   makam: ["termMonths"],
-  bond: ["linkage", "couponEveryMonths", "exitPriceChange"],
+  bond: ["linkage", "couponEveryMonths"],
 };
 
 /** Tariff lines each run reads; a line the run would ignore is an error, not a silent drop. */

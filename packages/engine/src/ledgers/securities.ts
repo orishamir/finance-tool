@@ -728,7 +728,8 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
       foreignTax += t.foreign;
       israeliDistTax += t.israeli;
       tally.taxDuring += t.foreign + t.israeli;
-      distThisYear += dist;
+      // the year's taxable distributions, for the surtax (TXG-09); a taxable fund's are exempt to the holder (TXS-11), so they are none
+      if (fund.kind !== "money-market-taxable") distThisYear += dist;
       buy(t.net, m, m, false);
       units = lots.totalUnits();
       // F-103: the custodian's charge for the dividend, paid by removing units oldest first; it is not a fee the sale gain is reduced by

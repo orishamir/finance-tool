@@ -19,10 +19,9 @@ describe("READING_RULE_IDS", () => {
         if (m[2]) labelled.add(m[2]);
         else dynamic++;
       }
-      // a rule labelled through a variable is listed where the variable is set: switching.ts's readingRule
-      for (const m of text.matchAll(/function readingRule[\s\S]*?\n}/g)) for (const id of m[0].matchAll(/return "([A-Z0-9-]+)"/g)) labelled.add(id[1]!);
     }
-    expect(dynamic).toBe(1);
+    // every rule is labelled by name: one labelled through a variable would have to be listed where the variable is set
+    expect(dynamic).toBe(0);
     expect([...labelled].sort()).toEqual([...READING_RULE_IDS].sort());
   });
 });

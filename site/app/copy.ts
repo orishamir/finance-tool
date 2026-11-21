@@ -2300,8 +2300,8 @@ export const feeDeal = {
       thirdOf: { lead: "נוספת עמלת ", tail: " בלי סכום בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג." },
       offset: { lead: "מתקזזת מול ", tail: " של אותו חודש, עד הסכום שלה. האתר מראה אותה בסכום המלא." },
       refund: { lead: "יש החזר של ", tail: ". האתר לא מנכה אותו." },
-      /** A maximum on each security held: it bounds each security's charge, and the page cannot apply it without them. */
-      maxPerSecurity: { lead: "המקסימום של ", tail: " הוא לכל נייר ערך, ולכן האתר לא מחשב אותו: הוא תלוי בכמה ניירות ערך מחזיקים ובשווי של כל אחד." },
+      /** A maximum on each security held: the site applies it as if one security were held (F-14), so with several the fee can be higher. */
+      maxPerSecurity: { lead: "המקסימום של ", tail: " הוא לכל נייר ערך. האתר מחשב כאילו מחזיקים נייר ערך אחד: אם מחזיקים כמה ניירות ערך, העמלה יכולה להיות גבוהה יותר ממה שמוצג." },
       unfilled: "נגבית גם על הוראה שלא בוצעה.",
       /** At a bank, in the terms of the Bank of Israel's fee rules (BRK-16, notes to part 4(א)(1)); `stated` is the words that state BRK-16 (D116). */
       unfilledClerk: { lead: "בניירות ערך בבורסה בתל אביב, חוץ מקרנות נאמנות, ", stated: "הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום", tail: "." },
