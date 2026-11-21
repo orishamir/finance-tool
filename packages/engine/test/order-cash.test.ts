@@ -104,6 +104,14 @@ describe("the makam run keeps the cash of an order not placed (F-24)", () => {
     expect(r.taxAtExit).toBe(0);
   });
 
+  it("a redemption's commission takes at most its proceeds: 5 of paper redeemed at a 10 NIS minimum leaves nothing, never less", () => {
+    // 5 now buys 5 of paper with no buy line; at month 12 the series is redeemed at par, no discount to tax, and the redemption line's
+    // minimum of 10 takes the 5
+    const r = runMakam(makam({ goal: { amountNow: 5, monthly: 0, months: 13 }, tariff: { redeem: line } }), ctx);
+    expect(r.fees.trade).toBeCloseTo(5, 9);
+    expect(r.nominal).toBeCloseTo(0, 9);
+  });
+
   it("the sale of a series at the horizon pays at most its proceeds: the series of 6 pays 6 at a 10 NIS minimum, and the 8 waiting is left", () => {
     const r = runMakam(makam({ tariff: { buy: line, sell: line } }), ctx);
     expect(r.fees.trade).toBeCloseTo(16, 9);
