@@ -14,7 +14,7 @@ import { LIFT_INNER, onSurface } from "./choice";
 import { RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 import { Tag } from "./tag";
-import { MISSING } from "./case-table";
+import { CaseMark, MISSING } from "./case-table";
 
 /** One thing a case says, for one of the things the price changes by: a value ("ניירות ערך בחו״ל, בארה״ב"), or any value ("בכל מסלול"). */
 export interface CaseWord {
@@ -123,7 +123,7 @@ export function CaseGroup({ head, shared, grip, zone, children }: { head: ReactN
 }
 
 /** A case's condition in words, in the band: one under the other in the wide band's column, on one line above the parts in a narrow one. */
-function CaseWords({ when }: { when: CaseWord[] }) {
+function CaseWords({ when, mark }: { when: CaseWord[]; mark?: ReactNode }) {
   return (
     <div className={"flex flex-wrap items-center gap-x-2 gap-y-0.5 px-3 pt-2 pb-1 text-sm font-medium text-when-words @min-[25rem]:flex-col @min-[25rem]:flex-nowrap @min-[25rem]:items-start @min-[25rem]:justify-center @min-[25rem]:gap-0.5 @min-[25rem]:py-2"}>
       {when.map((w, k) => (
@@ -133,6 +133,7 @@ function CaseWords({ when }: { when: CaseWord[] }) {
           {w.mine && <Tag tone="primary">{copy.mine}</Tag>}
         </span>
       ))}
+      {mark != null && <CaseMark>{mark}</CaseMark>}
     </div>
   );
 }
@@ -144,12 +145,12 @@ function CaseWords({ when }: { when: CaseWord[] }) {
  * kinds of what is bought) then takes fewer lines; in a band under 25rem they stand on a line above the cell. `open`: the case is among
  * several the toolbox adds to at once, its cell outlined in the action colour as an open case's is.
  */
-export function CaseRow({ when, label, onOpen, grip, open, missing, children }: { when: CaseWord[]; label: string; onOpen?: () => void; /** A grip that lifts the case, at the start of its cell. */ grip?: ReactNode; open?: boolean; /** Its price misses a figure: what is missing, on a line under its parts, the parts' cell dashed (`CellExtras.missing`). */ missing?: ReactNode; children: ReactNode }) {
+export function CaseRow({ when, label, onOpen, grip, open, missing, mark, children }: { when: CaseWord[]; label: string; onOpen?: () => void; /** A grip that lifts the case, at the start of its cell. */ grip?: ReactNode; open?: boolean; /** Its price misses a figure: what is missing, on a line under its parts, the parts' cell dashed (`CellExtras.missing`). */ missing?: ReactNode; /** A host's mark on the case (`CaseMark`), after its words. */ mark?: ReactNode; children: ReactNode }) {
   return (
     // a press on the parts' cell, which stands over the row's button where it holds a grip, opens the case too
     <div data-liftable="" data-lift-body="" onClick={onOpen ? (e) => onSurface(e) && onOpen() : undefined} className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
       {onOpen && <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />}
-      <CaseWords when={when} />
+      <CaseWords when={when} mark={mark} />
       {/* the same room to the band's edge on both sides: under the words, as far in as they are; beside them, a hairline from the edge. Its
           parts' lines stand 44 px apart (a 30 px part and 14 px between), so a figure on one line and a figure on the next each keep a
           44 px press, the parts no bigger for it */}

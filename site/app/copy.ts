@@ -818,6 +818,7 @@ export const formulaNames: Record<string, string> = {
   "F-125": "שנה ממש מתחת למדרגה וממש מעליה",
   "F-126": "חודש בלי פעולה ובלי החזקה",
   "F-127": "הפעולה שמכסה עמלה שמתקזזת",
+  "F-128": "חשבון שהמחיר שלו לפי העסקה שלכם",
   "F-08": "חשבון הכסף חודש אחרי חודש",
   "F-09": "השווי במשיכה",
   "F-10": "העלות בתוך הקרן",
@@ -2500,6 +2501,8 @@ export const feeDeal = {
     copied: "הקישור הועתק",
     /** The line a saved deal just deleted leaves under the bar, before its name. */
     deleted: "נמחקה מהמכשיר: ",
+    /** A saved securities-account deal's strip ends with this link: the deal against every house, on the indices page. */
+    onIndices: "לראות את העסקה מול כל הבתים, בהשקעה במדד",
     /** Under a saved deal's name in the list: its product, and the day it was last saved (`savedOn` before the date). */
     savedOn: "נשמרה ב־",
     /** Closes the line that says a template opened a new deal. */
@@ -4142,142 +4145,152 @@ export const invest = {
     mayaLead: "את דמי הניהול של קרן אפשר למצוא במאיה, מערכת ההודעות של הבורסה.",
   },
 
-  /** An account on your own terms, started from a house (F-101): what the sheets of its computed figures call them. The panel's own words come with the panel. */
-  ownAccount: {
-    placeAbout: (of: number) => `המקום בין ${of} חשבונות, לפי מה שנשאר בסוף`,
-    differenceAbout: "מה שנשאר בחשבון שלכם פחות מה שנשאר בחשבון לפי התעריפון של אותו בנק או בית השקעות, באותה קרן",
-    decidingAbout: (line: string) => `ההפרש בין התעריפון לחשבון שלכם: ${line}`,
-    /** The link on a house's page; in the comparison the chosen account's card opens it (`pair.ownPrice`). */
-    open: (house: string) => `חשבון בתנאים שלכם, על בסיס ${house}`,
-    panel: {
-      title: (house: string) => `${house}, בתנאים שלכם`,
-      nameDefault: (house: string) => `${house}, בתנאים שלכם`,
-      sub: "מתחילים מהתעריפון ומשנים רק את המחירים שקיבלתם בפועל. מה שלא שיניתם נשאר כמו בתעריפון. החשבון נשמר רק במכשיר הזה, ומושווה כמו כל חשבון אחר בעמוד.",
-      nameField: "השם של השורה בהשוואה",
-      startField: "על בסיס",
-      startList: (house: string) => `התעריפון של ${house}`,
-      noWay: (house: string) => `ל${house} אין מחיר לקרן במדד הזה, ולכן אי אפשר לחשב חשבון על בסיסו כאן.`,
-      computing: "מחשב…",
-      tileLeft: (years: number) => `נשאר אחרי ${countPhrase(years, { one: "שנה אחת", two: "שנתיים", many: "שנים" })}`,
-      tileLeftNote: "בכסף של היום, אחרי דמי ניהול, עמלות ומס",
-      tilePlace: "המקום בהשוואה",
-      tilePlaceValue: (rank: number, of: number) => `${rank} מתוך ${of}`,
-      tilePlaceNote: "לפי מה שנשאר בסוף",
-      tileDiff: (house: string) => `לעומת התעריפון של ${house}`,
-      tileDiffNote: "באותה קרן, לפי התוכנית שלכם",
-      gridLabel: "העמלות של החשבון: התעריפון, מה שהלקוחות שילמו בממוצע, והתנאים שלכם",
-      head: { fee: "עמלה", list: "בתעריפון", avg: "מה שהלקוחות שילמו בממוצע", yours: "שלכם" },
-      listLabel: "בתעריפון",
-      yoursLabel: "שלכם",
-      listNone: "בתעריפון אין שורה לסוג הזה של קרן",
-      listWord: "התעריפון",
-      avgBody: (house: string) => `הבורסה מפרסמת כמה שילמו לקוחות ${house} בממוצע, לפי גודל התיק.`,
-      avgLink: "למחשבון העמלות של הבורסה",
-      sameAsList: "כמו בתעריפון",
-      fromGroup: (name: string) => `לפי ${name}`,
-      groupDoc: "המסמך",
-      groupEnds: (months: number) => (months % 12 === 0 ? countPhrase(months / 12, { one: "שנה אחת", two: "שנתיים", many: "שנים" }) : countPhrase(months, { one: "חודש אחד", two: "חודשיים", many: "חודשים" })),
-      groupFor: (period: string) => `תקף ${period} מההצטרפות`,
-      groupSide: { buy: "בקנייה בלבד", sell: "במכירה בלבד" },
-      groupNoFund: "המסמך של הקבוצה לא מזכיר קרנות, ולכן האתר לא מחשב את הקרן לפי המחיר הזה.",
-      kinds: { rate: "", exempt: "", discount: "הנחה של", floor: "לא פחות מ", flat: "מחיר קבוע", flat_up_to: "עד", per_share: "לכל מניה", min: "מינימום", max: "מקסימום" } as Record<string, string>,
-      cannot: "אי אפשר לחשב חשבון בתנאים האלה.",
-      groupWords: (words: string) => `בקבוצה: ${words}`,
-      adoptButton: "להשתמש במחיר הזה",
-      adoptUndo: "לחזור לתעריפון",
-      adopted: "בחרתם להשתמש במחיר של הקבוצה",
-      adoptedAbout: (name: string, words: string) => `${name}: ${words}, לפי בחירתכם`,
-      exempt: "פטור",
-      field: {
-        tradePct: "קנייה ומכירה, אחוז",
-        tradeMin: "קנייה ומכירה, מינימום לפעולה",
-        custodyPct: "דמי ניהול פיקדון ניירות ערך, אחוז לשנה",
-        custodyMin: "דמי ניהול פיקדון ניירות ערך, מינימום לחודש",
-        monthlyFee: "דמי ניהול חשבון ניירות ערך, ₪ לחודש",
-        fxPct: "המרת מטבע, אחוז",
-        placeholder: "בלי שינוי",
-      },
-      until: {
-        label: "כמה שנים נשארים בקבוצה",
-        hint: (house: string) => `שדה ריק: נשארים בקבוצה לאורך כל התוכנית. כשיוצאים ממנה, החשבון חוזר לתעריפון של ${house}.`,
-        error: "הזינו מספר שלם של שנים.",
-        strip: "שנות התוכנית: איזה מחיר חל בכל תקופה",
-        today: "היום",
-        year: (y: number) => `שנה ${y}`,
-        allGroup: "מחירי הקבוצה",
-        someGroup: (what: string) => `${what}, במחיר הקבוצה`,
-        afterGroup: "התעריפון",
-      },
-      costs: {
-        title: "כמה כל עמלה עולה לאורך התוכנית שלכם",
-        list: "לפי התעריפון",
-        yours: "בתנאים שלכם",
-        fromList: (house: string) => `מהתעריפון של ${house}`,
-        fromGroup: (name: string) => `מהמסמך של ${name}`,
-        fromYours: "מה שהזנתם",
-        computed: "חישוב של האתר",
-        total: (who: string) => `${who}: סך העמלות של החשבון`,
-      },
-      decidesLead: (line: string) => `העמלה שההפרש בה הכי גדול היא ${line}: לאורך כל התוכנית היא עולה`,
-      decidesLess: "פחות בחשבון שלכם מאשר לפי התעריפון.",
-      decidesMore: "יותר בחשבון שלכם מאשר לפי התעריפון.",
-      decidesNone: "החשבון שלכם בדיוק בתנאי התעריפון, ולכן אין הפרש בעמלות.",
-      add: "הוספה להשוואה",
-      basedOn: (house: string, group: string | null) => (group ? `על בסיס ${house}, ${group}` : `על בסיס ${house}`),
-      rowDiff: (more: boolean) => (more ? "יותר מהתעריפון" : "פחות מהתעריפון"),
-      rowSame: "כמו בתעריפון",
-      rowMainly: (line: string) => `בעיקר מ${line}`,
-      houseGone: (house: string) => `${house} כבר לא באתר: השורה שומרת רק את מה שהזנתם.`,
+  /** A securities-account deal the person saved, as an account of the lists, and the popup that edits it on the plan (F-128). */
+  dealAccount: {
+    /** The tag beside the deal's name in the lists, the pair's card and the receipt. */
+    tag: "שלכם",
+    add: "להזין תנאים שקיבלתם",
+    /** The link on a house's own page: the indices page opens with a new deal filled from that house's price list. */
+    fromHouse: (house: string) => `להזין תנאים שקיבלתם, על בסיס ${house}`,
+    edit: "לערוך את העסקה",
+    /** Where a deleted deal's row stood, before its name. */
+    deleted: "נמחקה מהמכשיר: ",
+    /** The house a new deal starts from, its name. */
+    nameOf: (house: string) => `${house}, בתנאים שלי`,
+    /** A deal the plan cannot price: what it lacks, said by its fee (lib/deal-account/plan.ts, `MissingWhy`), and the tap that opens it there. */
+    missing: {
+      price: (fee: string) => `עוד בלי מחיר: ${fee}, ולכן לא מדורג.`,
+      order: (fee: string) => `המחירים של ${fee} לא לפי הסדר, ולכן לא מדורג.`,
+      case: (fee: string) => `ב${fee} אין מקרה לקרן כזאת, ולכן לא מדורג.`,
+    } as Record<string, (fee: string) => string>,
+    complete: "להשלים",
+    /** The popup's head. */
+    head: {
+      nameField: "שם העסקה",
+      rename: "שינוי השם",
+      saved: "נשמרת במכשיר הזה, גם ב״העסקאות שלי״",
+      unsaved: "תישמר במכשיר הזה כשתשנו בה משהו",
+      openDeal: "לפתוח בעמוד העמלות",
+      close: "סגירה",
+      more: "עוד פעולות לעסקה",
+      remove: "מחיקת העסקה",
+      confirm: "למחוק את העסקה מהמכשיר הזה?",
+      confirmBody: "היא תצא מרשימת החשבונות ומ״העסקאות שלי״ בעמוד העמלות.",
+      confirmYes: "מחיקה",
+      confirmNo: "ביטול",
     },
+    /** A new deal: from a house's latest price list, or empty. */
+    start: {
+      title: "עסקה חדשה",
+      lede: "מתחילים מהתעריפון האחרון של בית ומשנים את מה שקיבלתם, או מעסקה ריקה. העסקה נשמרת במכשיר הזה ומופיעה ברשימת החשבונות.",
+      search: "חיפוש בית",
+      clear: "ניקוי החיפוש",
+      group: "בתי השקעות ובנקים",
+      none: "אין בית בשם הזה",
+      empty: "עסקה ריקה",
+    },
+    tiles: {
+      left: (years: number) => `נשאר אחרי ${countPhrase(years, { one: "שנה אחת", two: "שנתיים", many: "שנים" })}`,
+      leftNote: "בכסף של היום, אחרי דמי ניהול, עמלות ומס",
+      leftAbout: "מה שנשאר בעסקה שלכם בסוף התוכנית",
+      place: "המקום בהשוואה",
+      placeValue: (rank: number, of: number) => `${rank} מתוך ${of}`,
+      placeNote: "לפי מה שנשאר בסוף",
+      diff: (house: string) => `מול התעריפון של ${house}`,
+      diffNote: "באותה קרן, לפי התוכנית שלכם",
+      diffAbout: "מה שנשאר בעסקה שלכם פחות מה שנשאר לפי התעריפון של אותו בית, באותה קרן",
+      /** The house's own row on the same fund, as an input of the difference. */
+      houseAbout: (house: string) => `מה שנשאר לפי התעריפון של ${house}, באותה קרן`,
+      /** The place: among how many accounts, each at its cheapest fund. */
+      placeAbout: (of: number) => `המקום של העסקה שלכם מבין ${of} החשבונות, לפי מה שכל אחד משאיר בסוף בקרן הזולה אצלו`,
+      noSum: "עוד אין סכום",
+      waits: (fee: string) => `${fee} מחכה למחיר`,
+      unranked: "לא מדורג",
+      unrankedNote: "עד שיהיה מחיר לכל עמלה",
+      /** The phone's strip: the difference, then the plan's line opened by a tap. */
+      planTap: "התוכנית",
+    },
+    /** The plan the deal is read on, under the tiles. */
+    plan: (amount: string, monthly: string, years: number, rate: string, fund: string, where: string) =>
+      `על התוכנית שבעמוד: ${amount} היום, ${monthly} בחודש, ${countPhrase(years, { one: "שנה אחת", two: "שנתיים", many: "שנים" })}, ${rate} בשנה · ${fund}, נקנית ${where}`,
+    where: { tase: "בתל אביב", us: "בארצות הברית", europe: "באירופה", world: "בחו״ל", manager: "ממנהל הקרן" } as Record<string, string>,
+    /** Under a fee's block: what the plan charges, or why it charges nothing (lib/deal-account/plan.ts, `OffPlan`). */
+    onPlan: "בתוכנית",
+    /**
+     * On the case of a fee the plan reads (B), on a step of an order's own size, a month's orders or its trading that the plan reaches, and
+     * on a step of the account's size with the years the plan spends in it (F).
+     */
+    planCase: (years: readonly { from: number; to: number }[] | null) =>
+      years === null
+        ? "בתוכנית"
+        : years.length === 1 && years[0]!.from === years[0]!.to
+          ? `בתוכנית: שנה ${years[0]!.from}`
+          : `בתוכנית: שנים ${years.map((y) => (y.from === y.to ? `${y.from}` : `${y.from} עד ${y.to}`)).join(", ")}`,
+    offPlan: "לא בתוכנית",
+    off: {
+      "shekel-fund": "הקרן נקנית בשקלים, ולכן בתוכנית אין המרה.",
+      "transfer-out": "בתוכנית לא מעבירים את הקרן לחשבון אחר.",
+      "fund-record": "דמי הניהול של הקרן באים מהנתונים של הקרן, לא מהעסקה.",
+      cover: "בתוכנית אין ביטוח.",
+      "no-dividend": "הקרן לא מחלקת דיבידנד, ולכן בתוכנית אין אירוע חברה.",
+      "not-yet": "החישוב עוד לא גובה עמלה כזאת.",
+      "own-words": "עמלה במילים שלכם על פעולה: החישוב לא יודע על איזו פעולה בתוכנית לגבות אותה.",
+      "no-current-account": "בעמוד הזה לא סופרים חשבון עובר ושב.",
+      banned: "לפי הכללים, עמלה כזאת לא נגבית כאן.",
+    } as Record<string, string>,
+    ownBank: (bank: string) => `סימנתם בעמוד שיש לכם כבר חשבון עו״ש ב${bank}.`,
+    /**
+     * A deal filled from a bank that names no current account of its own pays the bank's (F-102), from the bank's record: one quiet line
+     * after the fee blocks, its price a month by the price list and its cost on the plan. The toolbox's "חשבון עובר ושב בבנק" gives it its own.
+     */
+    bankAccount: (bank: string, withCost: boolean) =>
+      `בתוכנית נספר גם חשבון העו״ש של ${bank}: {monthly} בחודש לפי התעריפון${withCost ? ", {cost} בתוכנית" : ""}. אפשר לתת לו מחיר משלכם בכרטיס ״חשבון עובר ושב בבנק״.`,
+    /** What a fee, or the bank's current account, took on the plan, as its figure's sheet says (F-128). */
+    feeCostAbout: (fee: string) => `העלות של ${fee} בתוכנית, בכסף של היום`,
+    bankCostAbout: (bank: string) => `העלות של חשבון העו״ש של ${bank} בתוכנית, בכסף של היום`,
+    /** The pick bar: what only the person knows (a track, a condition of their own), then what the plan sets itself. */
+    readFor: "קוראים את העסקה בשביל",
+    /** The pick bar on a phone, one line under the strip. */
+    readForShort: "בשביל",
+    /** Under a deal fee's line on the ticket: a later price after the month the first ends, and the pick that chose its case (A, F). */
+    ticket: { until: (month: string) => `עד ${month}`, after: ", אחר כך ", by: "לפי: " },
+    /** The pair card's account half where the account is the deal (H). */
+    card: {
+      basis: "על בסיס",
+      /** The list's name, then its date (the kit's `When`) after "מ־" where it has one. */
+      basisValue: (house: string, dated: boolean) => `התעריפון של ${house}${dated ? " מ־" : ""}`,
+      changed: "שיניתם",
+      saved: "נשמרה",
+    },
+    /** A fund bought abroad the deal has no case for (E): in the popup under the buy-and-sell cases, and folding the page's rows. */
+    abroad: {
+      lacks: (what: string) => `לקרנות שנקנות בחו״ל בעמוד הזה חסר מקרה: ${what}.`,
+      add: "להוסיף את המקרה",
+      /** On the page, the rows of funds bought abroad folded into one line where the chosen account is the deal. */
+      fold: "לקרנות שנקנות בחו״ל אין מחיר בעסקה שלכם: אין בה מחיר לקנייה בחו״ל.",
+      foldAdd: "להוסיף לעסקה",
+      foldCount: (n: number) => `${countPhrase(n, { one: "קרן אחת", two: "שתי קרנות", many: "קרנות" })} בלי מחיר בחשבון הזה`,
+    },
+    planKnows: (where: string) => `את השאר התוכנית יודעת: הקרן נקנית ${where}, באינטרנט, פעם בחודש.`,
   },
-
-  /** A broker and a fund the person types (D44). */
+  /** A fund the person types (D44). */
   customEntries: {
-    /** Buttons: an action with an object is an infinitive, up to three words (wording.md). */
-    addBroker: "להזין תנאים שקיבלתם",
     addFund: "להוסיף קרן אחרת",
     edit: "עריכה",
-    brokerTitle: "חשבון בתנאים שקיבלתם",
-    brokerEdit: (name: string) => `התנאים של ״${name}״`,
-    brokerSub: "החשבון נשמר רק במכשיר הזה ומושווה כמו כל חשבון אחר בעמוד הזה. שדה ריק הוא מחיר לא ידוע, והחשבון לא ידורג עד שתמלאו אותו. עמלה או מינימום שלא גובים מכם: כתבו 0.",
-    /** A new account starts from a house's price list, as the account card's does. */
-    brokerStart: "בחרו את הבנק או בית ההשקעות. מתחילים מהתעריפון שלו ומשנים רק את המחירים שקיבלתם.",
-    basis: "על בסיס",
-    basisNone: "בחרו",
-    basisNotListed: "בנק או בית השקעות שלא ברשימה",
-    /** The row of an account typed with a line left empty: not ranked (the founder's rule that silence is not zero). */
-    incomplete: "חסרים מחירים, ולכן החשבון לא מדורג. השלימו אותם בעריכה.",
     unknownLine: (list: string) => `לא הזנתם, ולכן לא ידוע: ${list}.`,
-    /** An account typed with the conversion left empty: only a fund bought abroad converts, so only it has no price there. */
-    fxUnknown: "לא הזנתם את המחיר של המרת מטבע, ולכן לקרן שנקנית בחו״ל אין מחיר בחשבון הזה. השלימו אותו בעריכה.",
     /** A fee of a typed fund left empty, where its figure would stand. */
     notTyped: "לא הוזן",
     fundTitle: (index: string) => `קרן על ${index}`,
     fundEdit: (name: string) => `הפרטים של ״${name}״`,
     fundSub: "הקרן נשמרת רק במכשיר הזה, ברשימה של המדד הזה, ומתומחרת כמו כל קרן מהסוג שלה. שדה ריק הוא דמי ניהול לא ידועים, והקרן לא תתומחר עד שתמלאו אותו. דמי ניהול שהקרן לא גובה: כתבו 0.",
     fields: {
-      brokerName: "שם הבנק או בית ההשקעות",
       fundName: "שם הקרן",
       number: "מספר נייר (לא חובה)",
       kind: "סוג הקרן",
-      trade: "עמלת קנייה ומכירה",
-      tradeMin: "מינימום לפעולה",
-      /** A minimum left empty, named with its line in the row's list of what is not known. */
-      minOf: (min: string, line: string) => `${min} ב${line}`,
-      custody: "דמי ניהול פיקדון ניירות ערך",
-      custodyMin: "מינימום לחודש",
-      percent: "אחוז",
-      percentYear: "אחוז לשנה",
-      fx: "המרת מטבע",
-      monthly: "דמי חשבון קבועים",
-      nisMonth: "₪ לחודש",
       fixed: "דמי ניהול קבועים",
       variable: "דמי ניהול משתנים",
       trustee: "שכר נאמן",
       yearly: "דמי ניהול שנתיים",
-      sells: "מה אפשר לקנות בחשבון",
-      sellsIsraeli: "קרנות בישראל, כולל קרנות חוץ בבורסה בתל אביב",
-      sellsAbroad: "קרנות בחו״ל",
       hedged: "נטרול מט״ח",
       hedgedNo: "בלי נטרול",
       hedgedYes: "עם נטרול",
@@ -4308,18 +4321,11 @@ export const invest = {
     kinds: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "קרן שנקנית בחו״ל" } as Record<string, string>,
     enteredWord: "הזנתם",
     yearlyWord: "שנתיים",
-    minWord: "מינימום",
-    minWordAlone: "מינימום בלבד:",
     listWords: (xs: string[]) => (xs.length < 2 ? (xs[0] ?? "") : `${xs.slice(0, -1).join(", ")} ו${xs[xs.length - 1]}`),
-    notSold: "לפי מה שהזנתם, אין בחשבון הזה קרנות מהסוג הזה.",
-    notSoldSource: "מה שהזנתם",
-    tariffTitle: "התנאים שהזנתם",
     errors: {
       "name-empty": "הזינו שם.",
       "name-taken": "השם הזה כבר תפוס.",
-      "sells-none": "סמנו לפחות סוג אחד.",
       "hedged-none": "בחרו מה קורה לקרן כששער המטבע זז.",
-      negative: "הסכום לא יכול להיות שלילי.",
     } as Record<string, string>,
     save: "שמירה במכשיר",
     cancel: "ביטול",
@@ -4577,7 +4583,7 @@ export const invest = {
     collectedOn: (date: string) => `נאסף ב־${date}`,
     /** Over the account list: the days the price lists were saved, oldest and newest. */
     collectedSpan: (from: string, to: string) => (from === to ? `התעריפונים נאספו ב־${from}.` : `התעריפונים נאספו בין ${from} ל־${to}.`),
-    /** On the chosen account's card, beside its price list: opens the house's account on your own terms (one link, not a line on every row). */
+    /** On the chosen account's card, beside its price list: opens a new deal filled from the house's list (one link, not a line on every row). */
     ownPrice: "להזין מחיר שקיבלתם",
     colLeft: "נשאר",
     /** The lists' head over what is left: its "?" says after what and in what money (design.md: a head says what it holds). */
@@ -5271,6 +5277,7 @@ export const kit = {
       FoldGroup: "כותרת קבוצה עם הספירה שלה. list (ברירת המחדל): קבוצה בתוך רשימת כיסוי, כותרת ברמה 3 או 4. section: נושא של כרטיסים בעמוד (קבוצות החוקים והכללים, מה כתוב במסמכים של חברה), כותרת גדולה ושורה של 48 פיקסלים; open ו־onOpenChange כשהעמוד פותח קבוצה לפי הכתובת.",
       PhoneFold: "הבחירות של עמוד לפני רשימה, מקופלות בטלפון: שורה אחת אומרת מה נבחר ופותחת אותן, כדי שהרשימה תתחיל במסך הראשון. במחשב הן פתוחות תמיד, בלי השורה.",
       SegmentedControl: "שתיים עד ארבע תשובות קצרות, אחת תמיד נבחרת: לבחירה שמשנה איך אותו תוכן מוצג (כסף של היום או נומינלי, קיבוץ, סדר, גרף או טבלה), או לשאלה שהחישוב צריך (שכיר או עצמאי). התשובות קצרות מספיק כדי לעמוד זו ליד זו גם בטלפון. הבחירה נעשית לפי מה שהבחירה עושה, לא לפי מספר האפשרויות.",
+      ConfirmAsk: "שאלה לפני שמשהו נמחק לתמיד. במחשב היא כרטיס במקום שבו שואלים: השאלה, שורה על מה שיקרה ושני כפתורים, והמוחק בצבע הסכנה. בטלפון היא גיליון מתחתית המסך, והכפתורים ברוחב המסך.",
       MenuPicker: "בחירה של פריט אחד מרשימה, בתוך שורת טקסט: כפתור שמראה את הנבחר וחץ, ומתחתיו הרשימה. הנבחר מסומן בווי ובכתב מודגש. פריט שהוספתם מקבל עיפרון ופח, והשורה האחרונה מוסיפה. החצים עוברים בין השורות, ו־Escape או הקשה מחוץ לרשימה סוגרים אותה.",
       ShareBar: "שלם מפורק לכמה חלקים, בפס אחד של אחוזים: החלקים זה ליד זה, 2 פיקסלים ביניהם, וכל אחד באורך החלק שלו. מעל הפס מקרא אחד, בסדר של הפס: לכל חלק הצבע, השם והאחוז שלו, תמיד באותו מקום. הסכומים עצמם כתובים ליד הפס. בלי מקרא (`bare`), כשהשורות לידו כבר נותנות שם לכל חלק: פס של 24 פיקסלים, והסכום של החלק הגדול כתוב בתוכו.",
       Receipt: "קבלה: דף עם קצה תחתון קרוע, שורות של שם וסכום עם קו נקודות ביניהם, והחלקים של שורה מוזחים מתחתיה מאחורי קו בצבע שלה: עמלות של חשבון עם הסכום שלהן, עמלות של קרן עם השיעור שלהן. קו כפול לפני הסכום הסופי, וקו מקווקו לפני מה שנובע ממנו. כרטיס (ReceiptTicket): אותן שורות לרוחב עמודה רחבה, בשלושה חלקים: החשבון בצד אחד, הסכום שנשאר באמצע, הקרן בצד השני, ושורה מתחתיהם; חריצים עגולים במקום שבו קווי האמצע פוגשים את הקצוות. בטלפון, כשהקבלה למעלה מחוץ למסך, תלוש שלה עם קצה עליון קרוע נצמד לתחתית המסך: כמה נשאר, והקשה עליו מחזירה לקבלה.",

@@ -57,39 +57,23 @@ export function tradeCommission(line: Commission | undefined, amount: number, te
 /**
  * F-12 on a buy: the cash pays for the trade and its commission, `cash = V + fee_trade(V)`. Solved by
  * fixed-point iteration, which converges because the commission grows far more slowly than the trade.
- * A cash at or below the commission on the smallest trade (the line's minimum, where no cap lowers it; a flat
- * price, where the line has one) has no `V > 0`: the order is not placed, `{ trade: 0, commission: 0 }`, and
- * the caller keeps the cash for the next order (F-12, F-109). The iteration finds that on its first step: from
- * `V = cash` it reaches `cash − fee_trade(cash) ≤ 0`, as the commission on any trade is at least that minimum.
  */
-export function buyWithCash(cash: number, line: Commission | undefined, terms: TradeTerms): { trade: number; commission: number } {
-  const none = { trade: 0, commission: 0 };
-  if (!(cash > 0)) return none;
+export function buyWithCash(cash: number, line: Commission | undefined, terms: TradeTerms) {
   // A flat price jumps at its sum, which the iteration below cannot cross: an order that fits under it is settled here, and a larger one leaves the flat price out.
   if (line?.flatUpTo) {
     const k = line.in === "instrument" ? terms.fxRate : 1;
     const flat = line.flatUpTo.amount * k;
-    if (cash - flat <= 0) return none;
-    if (cash - flat <= line.flatUpTo.upTo * k) return { trade: cash - flat, commission: flat };
+    if (cash > 0 && cash - flat <= line.flatUpTo.upTo * k) return { trade: cash - flat, commission: flat };
     const { flatUpTo: _, ...rest } = line;
     line = rest;
   }
   let trade = cash;
   for (let i = 0; i < 100; i++) {
     const next = cash - tradeCommission(line, trade, terms);
-    if (!(next > 0)) return none;
     if (Math.abs(next - trade) < 1e-10) break;
     trade = next;
   }
   return { trade, commission: cash - trade };
-}
-
-/**
- * F-09 The commission on a sale of `gross`, paid out of the proceeds: `min(G, fee_trade(G))`. It takes at most the proceeds, so a sale at or
- * below the line's minimum (or its flat price) leaves nothing, never less, before the exit tax, which sale costs do not lower (G-20).
- */
-export function saleCommission(line: Commission | undefined, gross: number, terms: TradeTerms): number {
-  return Math.min(Math.max(0, gross), tradeCommission(line, gross, terms));
 }
 
 /**
@@ -110,16 +94,6 @@ export function fxFee(line: number | Commission | undefined, amount: number, ter
   if (line === undefined) return 0;
   if (typeof line === "number") return line * amount;
   return tradeCommission(line, amount, terms);
-}
-
-/**
- * F-09 with F-13 The conversion of a sale's proceeds, `amount` NIS, paid out of them: `min(amount, fee_fx(amount) + s × amount)`, with `s` the
- * spread. It takes at most what it converts, as the commission takes at most the proceeds (`saleCommission`), so a sale never leaves less
- * than nothing before the exit tax.
- */
-export function saleConversion(line: number | Commission | undefined, amount: number, terms: TradeTerms, spread = 0): number {
-  if (!(amount > 0)) return 0;
-  return Math.min(amount, fxFee(line, amount, terms) + spread * amount);
 }
 
 /**

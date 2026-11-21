@@ -145,7 +145,7 @@ describe("a customer group picked in the account tile (D43, F-101)", () => {
     expect(shown(out)).toContain(groupPrices.pickedLine(g.name));
     expect(shown(out)).toContain(found.short);
     // never the held account's id, in a word or a link
-    expect(out).not.toContain("custom-broker-group");
+    expect(out).not.toContain("house-account-group");
   });
   it("the house's row keeps its own name and place (D43), and the funds' differences are from the group's pair", () => {
     const out = html(createElement(PairLists, { view: g.view, bundle: g.bundle, plan, livePlan: plan, today: t, pick, chosen: true, onPick: () => undefined, moved: null, group }));
