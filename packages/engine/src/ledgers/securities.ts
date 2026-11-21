@@ -433,15 +433,24 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
    */
   const order = (at: SecuritiesTariff, terms: { fxRate: number }, tradeTerms: { fxRate: number; sharePrice: number | undefined }, fresh: number, held: number, whole: boolean, line: Commission | undefined, conversion: SecuritiesTariff["fx"]) => {
     const fx = tariff.currency && fresh > 0 ? fxFee(conversion, fresh, terms) + (at.fxSpread ?? 0) * fresh : 0;
-    const sized = buyWithCash(fresh - fx + held, line, tradeTerms);
-    if (!whole) return { fx, trade: sized.trade, commission: sized.commission, cost: fx + sized.commission, leftNis: 0, leftHeld: 0 };
+    if (!whole) {
+      // F-08, F-12: by amount the order converts all its shekels and spends all its cash; a cash that cannot pay the conversion and the
+      // commission on some trade is not placed, and waits for the next order as F-109's does
+      const sized = buyWithCash(fresh - fx + held, line, tradeTerms);
+      if (sized.trade <= 0) return { fx: 0, trade: 0, commission: 0, cost: 0, leftNis: fresh, leftHeld: held };
+      return { fx, trade: sized.trade, commission: sized.commission, cost: fx + sized.commission, leftNis: 0, leftHeld: 0 };
+    }
     // F-109: the most whole units the cash pays for at the ask, with their commission and the conversion of the shekels they need; the
     // conversion is charged on the shekels converted, the cash that pays for it (as F-08 charges it on a contribution)
     const ask = unitBuy!.price * nav * (1 + spread);
-    // the count starts from the most the cash could buy: a flat price for a small trade or conversion (F-12, F-13) can make a smaller order
-    // cheaper than the whole cash's, so the start takes the lower of the two prices on each side, and the loop below checks each count exactly
+    // the count starts from the most the cash could buy with the charges the order makes at the least. The shekels count only where
+    // converting them leaves more than nothing: an order the held cash covers converts none, so a conversion's minimum takes nothing from it.
+    // A flat price for a small trade or conversion (F-12, F-13) can make a smaller order cheaper than the whole cash's, so the start takes the
+    // lower of the two prices on each side, and the loop below checks each count exactly
     const fxLow = tariff.currency && fresh > 0 ? Math.min(fx, flatOf(conversion, terms.fxRate) + (at.fxSpread ?? 0) * fresh) : fx;
-    const most = Math.max(sized.trade, fresh - fxLow + held - Math.min(sized.commission, flatOf(line, terms.fxRate)));
+    const room = held + Math.max(0, fresh - fxLow);
+    const sized = buyWithCash(room, line, tradeTerms);
+    const most = Math.max(sized.trade, room - Math.min(sized.commission, flatOf(line, terms.fxRate)));
     for (let n = Math.floor(most / ask + 1e-9); n > 0; n--) {
       const trade = n * ask;
       const commission = tradeCommission(line, trade, tradeTerms);
