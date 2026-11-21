@@ -7,10 +7,11 @@ import { fxRunInput } from "../fx";
 import { buildIndicesBundle } from "../providers.server";
 import { entered } from "../value";
 import type { CustomBroker } from "../custom-entries";
-import { DEALS_KEY, dealStore, parseDeals } from "../fee-deal/store";
+import { DEALS_KEY, dealStore, parseDeals, unreadDeals } from "../fee-deal/store";
 import { applyImport, ensureLoaded, flush, getSnapshot, replaceState, resetStore } from "../state";
 import { movedDealId, type MoveContext } from "./move";
 import { moveTypedAccounts } from "./move-run";
+import { full, on } from "./move-fixtures";
 
 const data = feesData();
 const bundle = buildIndicesBundle();
@@ -79,6 +80,66 @@ describe("the move on the device", () => {
       flush(true);
       expect(storedDeals(kept).map((d) => d.id)).toEqual([movedDealId(typed.id), movedDealId("custom-broker-other")]);
       expect(accounts()).toEqual([]);
+    });
+  });
+
+  describe("an account the move cannot make a deal of, or one it once could not", () => {
+    /** A load of the page: the stores read afresh from the device, then the move. */
+    const load = () => {
+      dealStore.reset();
+      ensureLoaded();
+      dealStore.update((d) => d);
+      const left = moveTypedAccounts(accounts(), ctx);
+      flush(true);
+      return left;
+    };
+    const entries = (kept: Map<string, string>) => (JSON.parse(kept.get(DEALS_KEY) ?? "null")?.deals ?? []).length;
+
+    it("loaded four times, an account on a house that sells only the side it does not leaves one stored entry", () => {
+      const kept = device();
+      replaceState({ ...getSnapshot().state, customBrokers: [{ ...on("psagot", full), sells: { israeli: false, abroad: true } }] });
+      flush(true);
+      for (let n = 0; n < 4; n++) load();
+      expect(entries(kept)).toBe(1);
+      expect(unreadDeals()).toBe(0);
+      expect(accounts()).toEqual([]);
+    });
+
+    it("writes no deal the device would not open again: loaded four times, nothing is stored, and the account stays with why", () => {
+      const kept = device();
+      const big = on("leumi", { custodyMin: 1e9 });
+      replaceState({ ...getSnapshot().state, customBrokers: [big] });
+      flush(true);
+      const said = [1, 2, 3, 4].map(() => load());
+      expect(entries(kept)).toBe(0);
+      expect(accounts().map((a) => a.id)).toEqual([big.id]);
+      expect(said.at(-1)).toEqual([{ id: big.id, name: big.name, why: "deal" }]);
+    });
+
+    it("says a missing rate and any other failure, each for its own account, keeps those accounts and moves the rest", () => {
+      device();
+      const rateless = on("interactive-israel", { tradeMin: 3 });
+      const broken = on("leumi", {});
+      replaceState({ ...getSnapshot().state, customBrokers: [rateless, broken, typed] });
+      flush(true);
+      // the price list of one account's house throws once read past its id, as a fault in the move would
+      const houses = ctx.houses.map((h) =>
+        h.id === "leumi"
+          ? new Proxy(h, {
+              get: (t, k) => {
+                if (k !== "id") throw new Error("broken");
+                return t.id;
+              },
+            })
+          : h,
+      );
+      const left = moveTypedAccounts(accounts(), { ...ctx, houses, fx: {} });
+      flush(true);
+      expect(left).toEqual([
+        { id: rateless.id, name: rateless.name, why: "rate" },
+        { id: broken.id, name: broken.name, why: "error" },
+      ]);
+      expect(accounts().map((a) => a.id)).toEqual([rateless.id, broken.id]);
     });
   });
 

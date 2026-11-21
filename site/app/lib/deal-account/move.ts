@@ -12,7 +12,7 @@ import type { BundleSnapshot } from "../providers";
 import { addBy } from "../fee-deal/edits/case";
 import { feeOf } from "../fee-deal/cases";
 import type { DealKind } from "../fee-deal/kinds";
-import { blankFigure, hasCases, isList, monthKey, monthOf, namesPlaces, newDeal, newFeeId, thingValues, typed, type BoundCurrency, type Case, type CasesFee, type Fee, type FeeDeal, type MonthKey, type Num, type Price, type Priced, type Sourced, type Stage } from "../fee-deal/model";
+import { blankFigure, hasCases, isList, monthKey, monthOf, NAME_MAX, namesPlaces, newDeal, newFeeId, thingValues, typed, type BoundCurrency, type Case, type CasesFee, type Fee, type FeeDeal, type MonthKey, type Num, type Price, type Priced, type Sourced, type Stage } from "../fee-deal/model";
 import { fillDeal, type HouseTemplate } from "../fee-deal/templates";
 import { sourcedOf } from "../fee-deal/values";
 import { WHAT_VALUES, type FeeKindId, type Place } from "../fee-deal/shapes";
@@ -30,8 +30,23 @@ export interface MoveContext {
   today: string;
 }
 
-/** Why an account could not be moved: a group's price whose shape the deal cannot hold over the list's price there. */
-export class MoveGap extends Error {}
+/**
+ * Why an account could not be moved, as the indices page says it: `group`, a group's price whose shape the deal cannot hold over the list's
+ * price there; `trade-currency`, a typed minimum beside other sums the list prints in the trade's currency; `rate`, a sum in a currency the
+ * run has no rate for; `deal`, a deal the device would not open again (`readDeal`: a figure or a count past what a deal holds); `error`,
+ * anything else that stopped the move.
+ */
+export type MoveGapWhy = "group" | "trade-currency" | "rate" | "deal" | "error";
+
+/** An account the move leaves where it is, and why (`MoveGapWhy`); the message says which shape, for a developer. */
+export class MoveGap extends Error {
+  constructor(
+    readonly why: MoveGapWhy,
+    message: string,
+  ) {
+    super(message);
+  }
+}
 
 // ---------------------------------------------------------------- the deal's id
 
@@ -170,14 +185,14 @@ function groupTrade(p: Price, v: GroupPriceValue, n: (v: number) => Num): Price 
   if (v.exempt) return { form: "free", src: n(0).src! };
   if (!isAction(p)) {
     if (p.form === "free" && v.rate_pct !== undefined) return { form: "action", rate: n(v.rate_pct), ...(v.min !== undefined ? { min: n(v.min) } : {}), ...(v.max !== undefined ? { max: n(v.max) } : {}), ...curField(v.currency ?? "ILS") };
-    throw new MoveGap(`a group's trade price over a ${p.form} price`);
+    throw new MoveGap("group", `a group's trade price over a ${p.form} price`);
   }
   const listCur = currencyOf(p);
   if (v.rate_pct !== undefined || v.per_share_cents !== undefined) {
     const cur = v.currency ?? listCur;
     const keptMin = v.min === undefined && "min" in p ? p.min : undefined;
     const keptMax = v.max === undefined && "max" in p ? p.max : undefined;
-    if ((keptMin || keptMax) && (v.min !== undefined || v.max !== undefined) && cur !== listCur) throw new MoveGap("a group's bound in another currency than the list's other bound");
+    if ((keptMin || keptMax) && (v.min !== undefined || v.max !== undefined) && cur !== listCur) throw new MoveGap("group", "a group's bound in another currency than the list's other bound");
     const bounds = { ...(v.min !== undefined ? { min: n(v.min) } : keptMin ? { min: keptMin } : {}), ...(v.max !== undefined ? { max: n(v.max) } : keptMax ? { max: keptMax } : {}) };
     const curOut = v.min !== undefined || v.max !== undefined ? (v.currency ?? listCur) : listCur;
     const { currency: _c, inTrade: _i, ...base } = asRate(p, n(v.rate_pct ?? 0));
@@ -188,20 +203,20 @@ function groupTrade(p: Price, v: GroupPriceValue, n: (v: number) => Num): Price 
     return { ...base, ...bounds, ...curField(curOut), ...(curOut === listCur && "inTrade" in p && p.inTrade ? { inTrade: p.inTrade } : {}) };
   }
   if (v.discount_pct !== undefined) {
-    if ("discount" in p && p.discount) throw new MoveGap("a group's discount over a price with a discount of its own");
+    if ("discount" in p && p.discount) throw new MoveGap("group", "a group's discount over a price with a discount of its own");
     if (v.not_below_pct !== undefined) {
-      if (p.form !== "action" || p.flat) throw new MoveGap("a group's floored discount over a price that is not a plain rate");
+      if (p.form !== "action" || p.flat) throw new MoveGap("group", "a group's floored discount over a price that is not a plain rate");
       return { ...p, rate: n(Math.max(p.rate.v * (1 - v.discount_pct / 100), v.not_below_pct)) };
     }
     return { ...p, discount: { pct: n(v.discount_pct) } };
   }
   if (v.flat !== undefined) {
-    if (p.form !== "action" && p.form !== "perUnit") throw new MoveGap("a group's flat price over a sum per action");
-    if ((v.currency ?? "ILS") !== listCur) throw new MoveGap("a group's flat price in another currency than the list's price");
-    if (v.flat_up_to === undefined) throw new MoveGap("a group's flat price with no size it is limited to");
+    if (p.form !== "action" && p.form !== "perUnit") throw new MoveGap("group", "a group's flat price over a sum per action");
+    if ((v.currency ?? "ILS") !== listCur) throw new MoveGap("group", "a group's flat price in another currency than the list's price");
+    if (v.flat_up_to === undefined) throw new MoveGap("group", "a group's flat price with no size it is limited to");
     return { ...p, min: p.min ?? n(v.flat), flat: { amount: n(v.flat), upTo: n(v.flat_up_to) } };
   }
-  throw new MoveGap("a group's trade price of no shape the move knows");
+  throw new MoveGap("group", "a group's trade price of no shape the move knows");
 }
 
 /** A bound of a share of what is held, per month (F-14): as printed where it is printed per month, else a charge's over its months. */
@@ -212,11 +227,11 @@ function groupCustody(p: Price, v: GroupPriceValue, n: (v: number) => Num): Pric
   if (v.exempt) return { form: "free", src: n(0).src! };
   if (v.discount_pct !== undefined) {
     if (p.form === "free") return p;
-    if (p.form !== "held") throw new MoveGap(`a group's custody discount over a ${p.form} price`);
+    if (p.form !== "held") throw new MoveGap("group", `a group's custody discount over a ${p.form} price`);
     return { ...p, rate: n(p.rate.v * (1 - v.discount_pct / 100)) };
   }
-  if (v.rate_pct === undefined) throw new MoveGap("a group's custody price of no shape the move knows");
-  if (p.form !== "held" && p.form !== "free") throw new MoveGap(`a group's custody rate over a ${p.form} price`);
+  if (v.rate_pct === undefined) throw new MoveGap("group", "a group's custody price of no shape the move knows");
+  if (p.form !== "held" && p.form !== "free") throw new MoveGap("group", `a group's custody rate over a ${p.form} price`);
   const held = p.form === "held" ? p : null;
   const every = v.per && v.per !== "trade" ? PER_MONTHS[v.per] : (held?.every ?? 3);
   // the list's bound is printed for the list's period; per month it is the same in every period (F-14)
@@ -269,7 +284,7 @@ function withGroup(deal: FeeDeal, b: CustomBroker, ctx: ReadContext, house: stri
       const op = (p: Price) => (base === "trade" ? groupTrade(p, at.value, n) : groupCustody(p, at.value, n));
       const over = (stages: readonly Stage[]): Stage[] => {
         if (!Number.isFinite(end)) return stages.map((s) => ({ ...s, price: op(s.price) }));
-        if (stages.length !== 1) throw new MoveGap("a group's price for a time over a list price that already changes over time");
+        if (stages.length !== 1) throw new MoveGap("group", "a group's price for a time over a list price that already changes over time");
         return [{ price: op(stages[0]!.price), until: addMonths(start, end) }, stages[0]!];
       };
       out = {
@@ -310,13 +325,13 @@ function inShekels(p: Price, fx: Readonly<Record<string, number>>): Price {
     // sums in the trade's currency, which only a run knows: the typed minimum replaces the minimum, so it stands in shekels where that was
     // the price's only sum, and the price's sums are no longer in the trade's currency
     const { inTrade: _t, currency: _c, min: _m, ...rest } = p as Extract<Price, { form: "action" | "perUnit" | "perAction" }> & { min?: Num };
-    if (["max", "amount", "flat"].some((k) => (rest as Record<string, unknown>)[k])) throw new MoveGap("a typed minimum beside bounds printed in the trade's currency");
+    if (["max", "amount", "flat"].some((k) => (rest as Record<string, unknown>)[k])) throw new MoveGap("trade-currency", "a typed minimum beside bounds printed in the trade's currency");
     return rest as Price;
   }
   const cur = currencyOf(p);
   if (cur === "ILS") return p;
   const rate = fx[cur];
-  if (!(typeof rate === "number" && rate > 0)) throw new MoveGap(`no rate for ${cur}`);
+  if (!(typeof rate === "number" && rate > 0)) throw new MoveGap("rate", `no rate for ${cur}`);
   const at = (n: Num | undefined): Num | undefined => (n ? { ...n, v: n.v * rate } : undefined);
   const { currency: _c, ...rest } = p as Extract<Price, { form: "action" | "perUnit" | "perAction" }>;
   const out: Record<string, unknown> = { ...rest };
@@ -445,13 +460,17 @@ const placesSold = (b: CustomBroker): Place[] => [...(b.sells.israeli ? (["israe
 /**
  * The trade fee priced only for what the account sells (decision 2 of the move): where it sells every kind, as it is; else each case of
  * what is bought keeps only the values sold, and a fee whose price changes by nothing gets a case for each value sold, at its price. What
- * it does not sell has no case, and F-128 reads it as having no price.
+ * it does not sell has no case, and F-128 reads it as having no price. Where the fee prices nothing the account sells (a house that sells
+ * only the other side), it gets a case for each of the site's values on the side sold, its price not given (D56): F-128 then gives the
+ * account no price on the side it does not sell (no case) and the house's own failure on the side the house does not sell, as the account
+ * had no price on either.
  */
 function onlySold(fee: Fee, places: readonly Place[]): Fee {
   if (places.length === 2 || fee.kind !== "trade") return fee;
+  const sideValues = LIST_IDS.what.filter((v) => places.includes(WHAT_VALUES[v]!.place));
   const sold = (v: string, f: CasesFee, t: number) => places.includes(placeOf(f, t, v) ?? "abroad");
   const t = hasCases(fee) ? fee.by.findIndex((b) => b.kind === "what") : -1;
-  if (t < 0) return addBy(fee, { kind: "what", values: LIST_IDS.what.filter((v) => places.includes(WHAT_VALUES[v]!.place)) });
+  if (t < 0) return addBy(fee, { kind: "what", values: sideValues });
   const f = fee as CasesFee;
   const values = thingValues(f, t).filter((v) => sold(v, f, t));
   const cases = f.cases.flatMap((c): Case[] => {
@@ -459,6 +478,7 @@ function onlySold(fee: Fee, places: readonly Place[]): Fee {
     const keep = (w === "any" ? thingValues(f, t) : (w as string[])).filter((v) => sold(v, f, t));
     return keep.length ? [{ ...c, when: c.when.map((x, k) => (k === t ? keep : x)) }] : [];
   });
+  if (cases.length === 0) return addBy({ id: f.id, kind: f.kind, ...(f.house ? { house: f.house } : {}), stages: [{ price: { form: "action", rate: blankFigure() } }] }, { kind: "what", values: sideValues });
   const by = f.by.map((b, k) => (k === t && isList(b) ? { ...b, values: b.values.filter((v) => values.includes(v)) } : b)) as CasesFee["by"];
   return { ...f, by, cases };
 }
@@ -486,6 +506,9 @@ function scratchFees(b: CustomBroker): Fee[] {
 
 // ---------------------------------------------------------------- the move
 
+/** The account's name as a deal's: no longer than a deal's name may be (`NAME_MAX`), cut as the editor's name field cuts it. */
+const dealName = (b: CustomBroker): string => b.name.slice(0, NAME_MAX);
+
 /** The deal a typed account moves into (the move, method §10.4). */
 export function dealOfTypedAccount(b: CustomBroker, ctx: MoveContext): FeeDeal {
   const id = movedDealId(b.id);
@@ -495,13 +518,13 @@ export function dealOfTypedAccount(b: CustomBroker, ctx: MoveContext): FeeDeal {
   const snap = base ? ctx.snapshots.find((s) => s.id === base.houseId) : undefined;
   if (!base || !tpl || !snap) {
     // from scratch, or built on a house no longer on the site: only what was typed, an empty field not known
-    return { id, name: b.name, kind: ACCOUNT_KIND, fees: scratchFees(b).map((f) => onlySold(f, places)), saved: ctx.today };
+    return { id, name: dealName(b), kind: ACCOUNT_KIND, fees: scratchFees(b).map((f) => onlySold(f, places)), saved: ctx.today };
   }
-  const filled = fillDeal({ ...newDeal(ACCOUNT_KIND, b.name), id }, `house:${tpl.id}`, { houses: ctx.houses as HouseTemplate[], tracks: [], templates: {} }, ctx.today)!;
+  const filled = fillDeal({ ...newDeal(ACCOUNT_KIND, dealName(b)), id }, `house:${tpl.id}`, { houses: ctx.houses as HouseTemplate[], tracks: [], templates: {} }, ctx.today)!;
   const read: ReadContext = { kinds: ctx.kinds, today: ctx.today, lineValue: lineValueOf(snap as BundleSnapshot) };
   const grouped = base.group ? withGroup(filled, b, read, base.houseName, snap) : filled;
   const owned = withOwn(grouped, b, read, filled, ctx.fx);
-  return { ...owned, name: b.name, fees: owned.fees.map((f) => onlySold(f, places)), saved: ctx.today };
+  return { ...owned, name: dealName(b), fees: owned.fees.map((f) => onlySold(f, places)), saved: ctx.today };
 }
 
 /** The deals with each account's deal added after them where the deals do not hold its id yet: a second move adds nothing. */

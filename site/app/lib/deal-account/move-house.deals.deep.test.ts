@@ -3,7 +3,7 @@
 // (exceptions-fixtures.ts). move.test.ts says what the move is, and runs a slice of this on a few indices.
 import { describe, expect, it } from "vitest";
 import type { CustomBroker } from "../custom-entries";
-import { compare, differing, houses, on, unstated } from "./move-fixtures";
+import { compare, differing, houses, on, readBack, unstated } from "./move-fixtures";
 
 describe("the move: an account built on a house leaves what it left, on every index", () => {
   const shapes = houses.flatMap((id): [string, string, CustomBroker][] => [
@@ -21,5 +21,25 @@ describe("the move: an account built on a house leaves what it left, on every in
   it.each(shapes)("%s, %s: the same on every fund on the deal's terms; as it is, no more anywhere", (_id, _, a) => {
     expect(differing(onTerms.get(a.id)!)).toEqual([]);
     expect(differing(got.get(a.id)!).filter(unstated)).toEqual([]);
+  });
+
+  it.each(shapes)("%s, %s: the deal reads back as it was written", (_id, _, a) => {
+    const { wrote, read } = readBack(a);
+    expect(read).toEqual(wrote);
+  });
+});
+
+describe("the move: an account built on a house selling one side only, on every house", () => {
+  const sides = [
+    ["in Israel only", { israeli: true, abroad: false }],
+    ["abroad only", { israeli: false, abroad: true }],
+  ] as const;
+  const shapes = houses.flatMap((id) => sides.flatMap(([where, sells]): [string, string, CustomBroker][] => [
+    [id, `${where}, nothing typed`, { ...on(id, {}), sells }],
+    [id, `${where}, every field typed`, { ...on(id, { tradePct: 0.05, tradeMin: 3, custodyPct: 0.08, custodyMin: 1, fxPct: 0.2, monthlyFee: 5 }), sells }],
+  ]));
+  it.each(shapes)("%s, %s: the deal reads back as it was written", (_id, _, a) => {
+    const { wrote, read } = readBack(a);
+    expect(read).toEqual(wrote);
   });
 });

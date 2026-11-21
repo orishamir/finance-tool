@@ -19,6 +19,7 @@ import { fxRunInput } from "./fx";
 import { dealProviderId, withDeals } from "./deal-account/bundle";
 import { dealOfTypedAccount, movedDealId, type MoveContext } from "./deal-account/move";
 import { fundLabels } from "./labels";
+import { baseOf, startingPointsOf } from "./own-account";
 import { buildInvest, indexById, indexSeenBy, optionOfFund, refOfCustom, type WayPrice } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
@@ -405,6 +406,46 @@ describe("kept on the device and carried in the export file (D44)", () => {
     expect(getSnapshot().state.customFunds!.map((x) => x.id)).toEqual([fund.id]);
     expect(validCustomBrokers([json(dear)]).length).toBe(1);
     expect(validCustomFunds([json(abroad)]).length).toBe(1);
+  });
+
+  it("a bad base or years leave the entry out, not the file", () => {
+    // an account built on a group of Mercantile's, kept three years, with its own minimum (F-101), as the indices page saved one
+    const mercantile = bundle.snapshots.find((s) => s.id === "mercantile")!;
+    const point = startingPointsOf(mercantile).find((p) => p.group)!;
+    const top: CustomBroker = { ...typedAccount("custom-broker-top", "החשבון שלי", { tradeMin: 12 }), base: baseOf(mercantile, point), untilYears: 3 };
+    expect(validCustomBrokers([json(top)])).toEqual([json(top)]);
+    const bad = [
+      { ...json(top), id: "custom-broker-a", base: { ...json(top.base), houseId: "Bad Id" } },
+      { ...json(top), id: "custom-broker-b", base: { ...json(top.base), group: { ...json(top.base!.group), prices: [] } } },
+      { ...json(top), id: "custom-broker-c", untilYears: -1 },
+      { ...json(top), id: "custom-broker-d", untilYears: "3" },
+      { ...json(top), id: "custom-broker-e", base: { ...json(top.base), group: { ...json(top.base!.group), prices: [{ fee: "trade_israel", price_he: "x", holdings_he: "y", names_fund: false, source: { url: "u", title: "t", quote: "q" }, value: { rate_pct: 1 } }] } } },
+    ];
+    expect(validCustomBrokers([json(top), ...bad]).map((x) => x.id)).toEqual([top.id]);
+  });
+
+  it("an entry saved before accounts were built on a house loads unchanged, with no base; moved, a line left empty is a fee with no price yet (D56)", () => {
+    // the six fees as the saved state of 2026-10-31 held them, each figure with the words of its field
+    const old = {
+      id: "custom-broker-cheap",
+      name: "הצעה זולה",
+      added: t,
+      tradePct: entered(0.05, "pct_of_trade", t, "עמלת קנייה ומכירה, באחוזים"),
+      tradeMin: entered(1, "nis_per_trade", t, "עמלה מזערית"),
+      custodyPct: entered(0.02, "pct_per_year", t, "דמי משמרת, באחוזים בשנה"),
+      custodyMin: null,
+      fxPct: entered(0.2, "pct_of_trade", t, "המרת מטבע"),
+      monthlyFee: null,
+      sells: { israeli: true, abroad: true },
+    };
+    const loaded = validCustomBrokers([json(old)]);
+    expect(loaded).toEqual([old]);
+    expect("base" in loaded[0]!).toBe(false);
+    const deal = dealOfTypedAccount(loaded[0]!, moveCtx);
+    const blank = (kind: string) => deal.fees.filter((f) => f.kind === kind).flatMap((f) => (f.stages ?? []).map((st) => Object.values(st.price).some((x) => typeof x === "object" && x !== null && "blank" in x)));
+    expect(blank("custody")).toEqual([true]);
+    expect(blank("fixed_period")).toEqual([true]);
+    expect(blank("trade")).toEqual([false]);
   });
 
   it("import add keeps the device's and adds the file's others; replace takes the file's", () => {

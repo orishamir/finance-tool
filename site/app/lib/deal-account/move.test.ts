@@ -11,7 +11,7 @@ import { describe, expect, it } from "vitest";
 import { buildInvest, indexById } from "../invest";
 import type { CustomBroker } from "../custom-entries";
 import { baseOf, startingPointsOf } from "../own-account";
-import { hasCases, readDeal } from "../fee-deal/model";
+import { hasCases, NAME_MAX, readDeal } from "../fee-deal/model";
 import { dealProviderId, withDeals } from "./bundle";
 import { dealOfTypedAccount, movedDealId, withMoved } from "./move";
 import { account, bundle, compare, ctx, data, differing, fig, full, houses, on, plan, unstated } from "./move-fixtures";
@@ -80,6 +80,40 @@ describe("the move: an account typed from scratch", () => {
     expect(priced(a, abroad).every(Boolean)).toBe(true);
     expect(priced(a, !abroad).some(Boolean)).toBe(false);
   });
+});
+
+describe("the move: an account selling only the side its house does not sell", () => {
+  // the account had no price anywhere: the side it does not sell was closed to it, and the house sells nothing on the other
+  const shapes: [string, CustomBroker][] = [
+    ["psagot, abroad only", { ...on("psagot", full), sells: { israeli: false, abroad: true } }],
+    ["interactive-brokers, in Israel only", { ...on("interactive-brokers", full), sells: { israeli: true, abroad: false } }],
+    ["interactive-israel, in Israel only", { ...on("interactive-israel", full), sells: { israeli: true, abroad: false } }],
+  ];
+  const deals = shapes.map(([, a]) => dealOfTypedAccount(a, ctx));
+  const b = withDeals(bundle, deals, data.kinds);
+  const has = (at: unknown) => !!at && typeof at === "object" && "valueN" in at;
+
+  it.each(shapes)("%s: its trade fee has a case for each value on the side sold, its price not given, and the deal reads back as written", (_n, a) => {
+    const d = dealOfTypedAccount(a, ctx);
+    const trade = d.fees.find((f) => f.kind === "trade")!;
+    expect(hasCases(trade) && trade.cases.length).toBeGreaterThan(0);
+    expect(readDeal(JSON.parse(JSON.stringify(d)))).toEqual(d);
+  });
+
+  it.each(FEW)("on %s, the deal has no price on any fund, as the account had none", (ix) => {
+    const view = buildInvest({ bundle: b, index: indexById(b, ix)!, plan });
+    const funds = view.options.flatMap((o) => o.funds);
+    for (const [, a] of shapes) expect(funds.filter((f) => has(f.byHouse[dealProviderId(movedDealId(a.id))]))).toEqual([]);
+  });
+});
+
+it("the move cuts a name longer than a deal's to a deal's, as the editor's name field does", () => {
+  const long = "n".repeat(NAME_MAX + 5);
+  for (const a of [account(full, { name: long }), on("leumi", {})].map((x) => ({ ...x, name: long }))) {
+    const d = dealOfTypedAccount(a, ctx);
+    expect(d.name).toBe(long.slice(0, NAME_MAX));
+    expect(readDeal(JSON.parse(JSON.stringify(d)))).toEqual(d);
+  }
 });
 
 describe("the move: an account built on a house leaves what it left, on a few indices", () => {

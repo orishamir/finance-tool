@@ -11,6 +11,7 @@ import { withGroupAccount } from "../group-pick";
 import { baseOf } from "../own-account";
 import { dealProviderId, withDeals } from "./bundle";
 import { dealOfTypedAccount, movedDealId, type MoveContext } from "./move";
+import { readDeal, type FeeDeal } from "../fee-deal/model";
 import { onDealsTerms } from "./exceptions-fixtures";
 
 export const data = feesData();
@@ -51,6 +52,12 @@ export function account(typed: Typed, more: Partial<CustomBroker> = {}): CustomB
 export const houses = data.houses.map((h) => h.id).filter((id) => bundle.snapshots.some((s) => s.id === id));
 /** An account built on house `id`, no group, with the fields of `typed`. */
 export const on = (id: string, typed: Typed) => account(typed, { base: baseOf(bundle.snapshots.find((x) => x.id === id)!, { group: null }) });
+
+/** An account's deal as the move makes it, and as the device reads it back once stored (`readDeal` over its stored form). */
+export function readBack(a: CustomBroker): { wrote: FeeDeal; read: FeeDeal | null } {
+  const wrote = dealOfTypedAccount(a, ctx);
+  return { wrote, read: readDeal(JSON.parse(JSON.stringify(wrote))) };
+}
 
 export type Row = { ix: string; fund: string; abroad: boolean; before: number | null; after: number | null };
 

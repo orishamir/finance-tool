@@ -3,7 +3,7 @@
 // a slice of this on a few indices.
 import { describe, expect, it } from "vitest";
 import type { CustomBroker } from "../custom-entries";
-import { compare, differing, fig, houses, on, plan } from "./move-fixtures";
+import { compare, differing, fig, houses, on, plan, readBack } from "./move-fixtures";
 
 describe("the move with the dollar moving: A-03 = +3% a year over 20 years, on every index", () => {
   const at = (amount: number) => ({ ...plan, amountNow: amount, years: 20, values: { ...plan.values, amount: fig(amount, "nis"), years: fig(20, "years") } });
@@ -17,6 +17,11 @@ describe("the move with the dollar moving: A-03 = +3% a year over 20 years, on e
   const got = compare(shapes.map((s) => s[2]), true, at(10_000), 3);
   it.each(shapes)("%s, %s: the same on every fund on the deal's terms", (_id, _, a) => {
     expect(differing(got.get(a.id)!)).toEqual([]);
+  });
+
+  it.each(shapes)("%s, %s: the deal reads back as it was written", (_id, _, a) => {
+    const { wrote, read } = readBack(a);
+    expect(read).toEqual(wrote);
   });
 
   // the third stated difference: beside a typed minimum, a maximum in dollars stands at F-84's rate, so where it binds (a large first sum)

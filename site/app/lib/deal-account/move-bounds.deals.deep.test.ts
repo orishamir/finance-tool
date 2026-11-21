@@ -3,7 +3,7 @@
 // one of F-128's stated exceptions is (exceptions-fixtures.ts). move.test.ts runs a slice of this on a few indices.
 import { describe, expect, it } from "vitest";
 import type { CustomBroker } from "../custom-entries";
-import { compare, differing, fig, houses, on, plan, unstated } from "./move-fixtures";
+import { compare, differing, fig, houses, on, plan, readBack, unstated } from "./move-fixtures";
 
 describe("the move at 1,000,000 now over 20 years, where every custody maximum binds (F-14), on every index", () => {
   const big = { ...plan, amountNow: 1_000_000, years: 20, values: { ...plan.values, amount: fig(1_000_000, "nis"), years: fig(20, "years") } };
@@ -14,6 +14,11 @@ describe("the move at 1,000,000 now over 20 years, where every custody maximum b
   const got = compare(shapes.map((s) => s[2]), true, big);
   it.each(shapes)("%s, %s: the same on every fund on the deal's terms", (_id, _, a) => {
     expect(differing(got.get(a.id)!)).toEqual([]);
+  });
+
+  it.each(shapes)("%s, %s: the deal reads back as it was written", (_id, _, a) => {
+    const { wrote, read } = readBack(a);
+    expect(read).toEqual(wrote);
   });
 });
 
