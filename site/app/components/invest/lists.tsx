@@ -155,7 +155,7 @@ export function PairLists(props: ListsProps) {
       if (lo && hi) out.set(f.rec.id, { atLo: (lo.value as number) - (pLo.value as number), atHi: (hi.value as number) - (pHi.value as number), lo: gap(lo, f.name, pLo), hi: gap(hi, f.name, pHi) });
     }
     return out;
-  }, [kinds, range, bundle, view, plan, pick.fund, pick.house, mine, pickName, pickKey, today, sp.diffAbout]); // `funds` and `fund` are left out: they are the view's
+  }, [kinds, range, bundle, view, plan, pick.fund, pick.house, mine, pickName, pickKey, today, sp.diffAbout]); // eslint-disable-line react-hooks/exhaustive-deps -- `funds` and `fund` are the view's
   const baseHouse = group?.house ?? pick.house;
   const house = providerName(view, baseHouse);
   const selAt = fund?.byHouse[pick.house];

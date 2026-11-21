@@ -13,7 +13,6 @@ import { amountWords, computedSum, fmt, formatValue, typedSum, wholeSum } from "
 import { ruleFigure, type SiteValue } from "../../lib/value";
 import { Button, GapNote, Swatch, Tag, When, cx } from "../kit";
 import { Num, Ruled, useProvenanceData } from "../provenance";
-import { assertNever } from "@finance-tool/schema";
 
 /**
  * A fee's name: the person's own for a fee of their own, the guide's for a base the records list, else the page's; and after it the house
@@ -240,8 +239,6 @@ export function PriceWords({ price, kind, saved, insideFund, ofSaid, discount }:
         </>
       );
       break;
-    default:
-      assertNever(price.form);
   }
   // where the price is said whole, apart from its parts (a change between two periods), its discount goes with it: the price it changed
   // from or to is the price after the discount (F-116), so "0.1% ← 0.1%" never stands for a discounted price that rose

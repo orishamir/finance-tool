@@ -550,6 +550,7 @@ export function MonthField({ value, label, lead, tight, earliest, latest, taken,
   useEffect(() => {
     if (commits === 0 || focused.current) return;
     if (parseMonth(text) !== value) setText(shown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [commits]);
   useEffect(() => {
     if (autoFocus) setOpen(true);
@@ -639,6 +640,7 @@ export function MonthField({ value, label, lead, tight, earliest, latest, taken,
           ref={input}
           id={id}
           data-figure=""
+          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus}
           type="text"
           inputMode={touch ? "none" : "numeric"}

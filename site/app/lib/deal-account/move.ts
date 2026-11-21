@@ -40,10 +40,11 @@ export type MoveGapWhy = "group" | "trade-currency" | "rate" | "deal" | "error";
 
 /** An account the move leaves where it is, and why (`MoveGapWhy`); the message says which shape, for a developer. */
 export class MoveGap extends Error {
-  readonly why: MoveGapWhy;
-  constructor(why: MoveGapWhy, message: string) {
+  constructor(
+    readonly why: MoveGapWhy,
+    message: string,
+  ) {
     super(message);
-    this.why = why;
   }
 }
 

@@ -31,7 +31,6 @@ import { entered } from "../../lib/value";
 import { IconAlert, IconCopy, IconDownload, IconFileUp, IconShare } from "../icons";
 import { Num } from "../provenance";
 import { Button, Callout, Card, cx, PageHead, Section, SegmentedControl, Sentence, Tpl, When } from "../kit";
-import { assertNever } from "@finance-tool/schema";
 
 type Site = { version: string; data: string };
 
@@ -245,8 +244,6 @@ function refusalText(r: Refusal): { text: string; tone: "blocked" | "caution" } 
       return { text: e.unreadable, tone: "blocked" };
     case "invalid":
       return { text: `${e.invalidBefore} ${refusalField(r.field)}${e.invalidAfter}`, tone: "blocked" };
-    default:
-      return assertNever(r);
   }
 }
 
@@ -265,10 +262,13 @@ function ImportHalf() {
 
   const source = fileText?.text ?? pasted;
   const read = useMemo(() => (source.trim() === "" ? null : readImport(source)), [source]);
-  useEffect(() => {
+  // new text asks again before it replaces anything, and puts away the line about the last import
+  const [readSource, setReadSource] = useState(source);
+  if (source !== readSource) {
+    setReadSource(source);
     setConfirm(false);
     if (source.trim() !== "") setDone(null);
-  }, [source]);
+  }
 
   const takeFile = async (f: File | undefined | null) => {
     if (!f) return;

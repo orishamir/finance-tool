@@ -367,7 +367,7 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
   );
 
   // what the deal's popup prices on: the page's bundle without the person's deals, the pair, and how the account list ranks
-  const dealWorld = useMemo(() => (index && view ? { bundle: typedBundle, index, plan, view, pick: pick ? { house: pick.house, fund: pick.fund } : null, kinds: hasKinds(view) && !!bundle.dollarRange } : null), [typedBundle, index, plan, view, pick?.house, pick?.fund, bundle.dollarRange]);
+  const dealWorld = useMemo(() => (index && view ? { bundle: typedBundle, index, plan, view, pick: pick ? { house: pick.house, fund: pick.fund } : null, kinds: hasKinds(view) && !!bundle.dollarRange } : null), [typedBundle, index, plan, view, pick?.house, pick?.fund, bundle.dollarRange]); // eslint-disable-line react-hooks/exhaustive-deps
   const [deviceDay] = useState(isoToday);
 
   return (

@@ -10,7 +10,6 @@ import { conversionWithRate, withSumsIn, type Commission, type CommissionSum, ty
 import type { FeesSnapshot, GroupEntry, GroupPrice, GroupPriceValue, ValueObject } from "@finance-tool/schema";
 import type { CustomBroker } from "./custom-entries";
 import { numberOf, type SiteValue } from "./value";
-import { assertNever } from "@finance-tool/schema";
 
 // ---------------------------------------------------------------- what the entry keeps of a group
 
@@ -120,8 +119,6 @@ export function groupFigure(g: GroupCopy, houseName: string, price: GroupPrice, 
     case "max": value = v.max; unit = trade ? (usd ? "usd_per_trade" : "nis_per_trade") : "nis"; break;
     case "exempt": value = v.exempt ? 0 : undefined; unit = trade ? "pct_of_trade" : "pct_of_balance_per_period"; break;
     case "for_months": value = v.for_months; unit = "months"; break;
-    default:
-      assertNever(part);
   }
   if (value === undefined) return null;
   return {
@@ -163,10 +160,7 @@ const without = <T extends object, K extends keyof T>(o: T, ...keys: K[]): Omit<
 
 /** Thrown inside a layer that needs what the run lacks; `layeredTariff` hands it to the workbench as the provider's reason. */
 class Unusable {
-  readonly out: LayeredUnusable;
-  constructor(out: LayeredUnusable) {
-    this.out = out;
-  }
+  constructor(readonly out: LayeredUnusable) {}
 }
 
 /** An amount of a group price in shekels: shekels as they are, dollars at the run's rate (a run without one cannot price it). */

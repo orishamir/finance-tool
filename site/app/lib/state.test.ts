@@ -12,6 +12,7 @@ import {
   flush,
   getSnapshot,
   importedCount,
+  nextExportName,
   readImport,
   resetStore,
   saveHolding,
@@ -151,6 +152,16 @@ describe("the export file", () => {
     expect(JSON.parse(stateFileText(f)).state.holdings[0].balance.value).toBe(80_000);
   });
 
+  it("counts the exports of the day on the device, from 1 where what it kept is unreadable", () => {
+    expect(nextExportName("2026-10-24")).toBe("mekor-state-2026-10-24.json");
+    expect(nextExportName("2026-10-24")).toBe("mekor-state-2026-10-24-2.json");
+    expect(nextExportName("2026-10-25")).toBe("mekor-state-2026-10-25.json");
+    storage.setItem("mekor.v2.exports", JSON.stringify({ date: "2026-10-26", n: "2" }));
+    expect(nextExportName("2026-10-26")).toBe("mekor-state-2026-10-26.json");
+    storage.setItem("mekor.v2.exports", "not json");
+    expect(nextExportName("2026-10-26")).toBe("mekor-state-2026-10-26.json");
+  });
+
   it("names the file by date, with -2 and -3 for repeats the same day", () => {
     expect(exportFileName("2026-10-24")).toBe("mekor-state-2026-10-24.json");
     expect(exportFileName("2026-10-24", 2)).toBe("mekor-state-2026-10-24-2.json");
@@ -172,6 +183,15 @@ describe("import", () => {
   it("refuses text that is not the site's format", () => {
     expect(readImport("דוח שנתי לעמית 2025")).toEqual({ ok: false, refusal: { kind: "format" } });
     expect(readImport(JSON.stringify({ hello: 1 }))).toEqual({ ok: false, refusal: { kind: "format" } });
+  });
+
+  it("names the header field that is out of order, and shows the header of a file it reads", () => {
+    const head = { format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00Z", site, state: base() };
+    expect(readImport(JSON.stringify({ ...head, version: "3" }))).toEqual({ ok: false, refusal: { kind: "invalid", field: "version" } });
+    expect(readImport(JSON.stringify({ ...head, exported: 5 }))).toEqual({ ok: false, refusal: { kind: "invalid", field: "exported" } });
+    expect(readImport(JSON.stringify({ ...head, site: { version: "r3-test" } }))).toEqual({ ok: false, refusal: { kind: "invalid", field: "site" } });
+    const r = readImport(JSON.stringify(head));
+    expect(r.ok && r.preview.file).toEqual({ format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00Z", site });
   });
 
   it("refuses a newer version", () => {

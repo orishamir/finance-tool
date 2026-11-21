@@ -217,7 +217,7 @@ export function useListSelect({ options, value, onChange }: { options: readonly 
   // the lit option in view, in a list that scrolls
   useEffect(() => {
     if (open) document.getElementById(optionId(light))?.scrollIntoView({ block: "nearest" });
-  }, [open, light]);
+  }, [open, light]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const listbox = open ? (
     <ul

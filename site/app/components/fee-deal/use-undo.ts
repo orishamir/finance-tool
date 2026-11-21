@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import type { DealUndo, KindUndo, Undo } from "../../lib/fee-deal/undo";
 import type { CaseUndoLine, FeeUndoLine, KindUndoLine } from "./builder";
 import type { FillUndoLine } from "./toolbox";
-import { assertNever } from "@finance-tool/schema";
 
 /** How long the undo line stays while neither the focus nor the pointer is on it, in milliseconds. */
 export const UNDO_MS = 10_000;
@@ -80,7 +79,5 @@ export function undoLines(shown: AnyUndo | null, words: string | null, chosen: s
     case "form":
     case "said":
       return { ...none, case: { ...base, feeId: what.feeId, ...(what.kind === "form" ? { inCase: { caseId: what.caseId ?? null } } : {}), ...(what.kind === "by" ? { thing: what.t } : {}) } };
-    default:
-      return assertNever(what);
   }
 }

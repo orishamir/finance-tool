@@ -14,7 +14,7 @@ import { Card, cx, Disclosure, DocLink, FoldGroup, gershayim, MixedName, PageHea
 import { fmt } from "../lib/format";
 import type { DocumentCard, DocumentSection } from "../lib/documents.server";
 import { isPdfUrl } from "../lib/sources";
-import { hashId } from "../lib/address-hash";
+import { useHash } from "../lib/address";
 
 export async function loader() {
   const { today, loadChecklistRows, loadRules, pointedRecords } = await import("../lib/data.server");
@@ -218,16 +218,21 @@ export default function Documents() {
     });
   const docs = useDocs(sections.some((s) => open.has(s.id)));
   // the id the address names (a rule's card, the search, another page): its group opens, then the page scrolls to it once it is drawn
-  const { hash } = useLocation();
+  // a router navigation fires no event: reading the location renders the page again on one, and `useHash` reads the new address then
+  useLocation();
+  const hash = useHash();
+  const named = groupOf(hash, sections) ? hash : null;
+  const [hashBefore, setHashBefore] = useState("");
+  if (hash !== hashBefore) {
+    setHashBefore(hash);
+    const at = groupOf(hash, sections);
+    if (at && !open.has(at.group)) setOpen(new Set(open).add(at.group));
+    if (at?.more && !more.has(at.group)) setMore(new Set(more).add(at.group));
+  }
   const target = useRef<string | null>(null);
   useEffect(() => {
-    const id = hashId(hash);
-    const at = groupOf(id, sections);
-    if (!at) return;
-    target.current = id;
-    setOpen((o) => (o.has(at.group) ? o : new Set(o).add(at.group)));
-    if (at.more) setMore((o) => (o.has(at.group) ? o : new Set(o).add(at.group)));
-  }, [hash, sections]);
+    target.current = named;
+  }, [named]);
   useEffect(() => {
     const id = target.current;
     const el = id && document.getElementById(id);

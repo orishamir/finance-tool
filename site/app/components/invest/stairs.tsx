@@ -103,7 +103,7 @@ export function useStairs({ view, bundle, plan, startHouse, startFund, example }
       out.push(level);
     });
     return out;
-  }, [chainKey, bundle, view?.index, plan, ways, today]);
+  }, [chainKey, bundle, view?.index, plan, ways, today]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // one object while nothing it holds changes (a slider's move before the plan rests), so the panel (`memo`) is not drawn again
   return useMemo(() => {

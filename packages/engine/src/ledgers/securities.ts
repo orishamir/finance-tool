@@ -203,10 +203,8 @@ export interface SecuritiesInput {
 
 /** The run cannot be done for this input; the comparison shows "not evaluated" with the gap. */
 export class NotEvaluatedError extends Error {
-  readonly gap: string;
-  constructor(gap: string) {
+  constructor(readonly gap: string) {
     super(`not evaluated (${gap})`);
-    this.gap = gap;
   }
 }
 

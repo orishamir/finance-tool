@@ -66,10 +66,13 @@ export function PageShell({ current, data: pageData, children }: { current: Curr
   const ready = useHydrated();
   const closedAt = useRef(0);
   const location = useLocation();
-  useEffect(() => {
+  // a move to another page closes the menu and the search
+  const [pathOpened, setPathOpened] = useState(location.pathname);
+  if (location.pathname !== pathOpened) {
+    setPathOpened(location.pathname);
     setMenuOpen(false);
     setSearchOpen(false);
-  }, [location.pathname]);
+  }
   const openSearch: OpenSearch = (el, text = "", via = "tap") => {
     // Closing a sheet returns focus to the field it opened from; that must not open it again.
     if (via === "focus" && Date.now() - closedAt.current < 600) return;

@@ -844,6 +844,7 @@ describe("a date in a page's text is the kit's When", () => {
     expect(joinLead("ב־", "שנה")).toBe("ב");
     expect(joinLead("ב־", "10 שנים")).toBe("ב־");
     expect(joinLead("ממוצע ", "נובמבר 2025")).toBe("ממוצע ");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const html = (n: (props: any) => ReturnType<typeof When>, p: Record<string, unknown>) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(n as never, p as never))).replace(/<[^>]+>/g, "");
     expect(html(When, { iso: "2025-11", lead: "תעריפון מ־" })).toBe("תעריפון מנובמבר 2025");
     expect(html(When, { iso: "2025-11-02", lead: "תעריפון מ־" })).toBe("תעריפון מ־02.11.2025");

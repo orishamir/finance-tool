@@ -14,8 +14,6 @@ import { MixedName, Callout, ChartLegend, DocLink, PanelHead, FixedTable, Longes
 import { allFunds, kindPairs, LONGEST_AMOUNT, LONGEST_YEARS, type Pick } from "./pair";
 import { providerName } from "./sections";
 
-/** One decimal, for the hedged tile's shortfall in points a year. */
-const one = new Intl.NumberFormat("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 /** A percent isolated for a Hebrew sentence whose words already say up or down: "18.5%", without its sign. */
 const bare = (x: number) => fmt.unsignedPct(x, 1);
 /** A bar's figure and the axis's ticks: a chart's text, already its own left-to-right element. */
@@ -37,7 +35,7 @@ export function useDollarCase(view: InvestView | null, bundle: IndicesBundle, pl
   const pairs = view && pick ? kindPairs(view, pick) : null;
   const money = useMemo(
     () => (view && pairs ? kindMoney({ bundle, index: view.index, plan, unhedged: { fundId: pairs.unhedged.fund, providerId: pairs.unhedged.house }, hedged: { fundId: pairs.hedged.fund, providerId: pairs.hedged.house } }) : null),
-    [bundle, view?.index, plan, pairs?.unhedged.fund, pairs?.unhedged.house, pairs?.hedged.fund, pairs?.hedged.house],
+    [bundle, view?.index, plan, pairs?.unhedged.fund, pairs?.unhedged.house, pairs?.hedged.fund, pairs?.hedged.house], // eslint-disable-line react-hooks/exhaustive-deps
   );
   if (!view || !rec || !pairs || !history || !rec.gaps.unhedged || !rec.gaps.hedged) return null;
   const houseOf = (id: string) => {
@@ -282,8 +280,8 @@ export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bun
           }
         >
           {/* the shortfall, how far below its index: the gap with its sign turned, as the label words it */}
-          <Num value={fig(-gaps.hedged.high, c.dollar.shortfallAbout, "F-95", gapInputs("hedged"))} display={`⁦${one.format(-gaps.hedged.high)}⁩`} /> <span className="text-base font-medium">{c.dollar.to}</span>{" "}
-          <Num value={fig(-gaps.hedged.low, c.dollar.shortfallAbout, "F-95", gapInputs("hedged"))} display={`⁦${one.format(-gaps.hedged.low)}⁩`} /> {c.dollar.pointsAYear}
+          <Num value={fig(-gaps.hedged.high, c.dollar.shortfallAbout, "F-95", gapInputs("hedged"))} display={fmt.decimals(-gaps.hedged.high, 1)} /> <span className="text-base font-medium">{c.dollar.to}</span>{" "}
+          <Num value={fig(-gaps.hedged.low, c.dollar.shortfallAbout, "F-95", gapInputs("hedged"))} display={fmt.decimals(-gaps.hedged.low, 1)} /> {c.dollar.pointsAYear}
         </StatTile>
         <StatTile
           label={c.dollar.notCancelsLabel}

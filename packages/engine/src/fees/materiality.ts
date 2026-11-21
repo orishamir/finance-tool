@@ -3,7 +3,6 @@
 import { RecordInputError, type RunPlan } from "../inputs.ts";
 import { conversionCharges, feeCharged, withFee, type Commission, type Custody } from "../formulas/fees.ts";
 import type { FeeType } from "../result.ts";
-import { assertNever } from "@finance-tool/schema";
 
 /** The fee lines of a run, as the result reports them (`FeeType`). */
 export type FeeLine = FeeType;
@@ -57,8 +56,6 @@ export function feeLines(plan: RunPlan): FeeLine[] {
     }
     case "runDeposit":
       break;
-    default:
-      assertNever(plan);
   }
   return feeLineOrder.filter((l) => has.has(l));
 }
@@ -151,12 +148,8 @@ export function withoutFeeLine(plan: RunPlan, line: FeeLine): RunPlan {
         case "manager":
           if (!input.wrapper) return noLine(plan, line);
           return { run: "runSecurities", input: { ...input, wrapper: { ...input.wrapper, managerFee: 0 } } };
-        case "balance":
-        case "deposit":
-        case "direct":
-          return noLine(plan, line);
         default:
-          return assertNever(line);
+          return noLine(plan, line);
       }
     }
     case "runMakam":
@@ -178,7 +171,5 @@ export function withoutFeeLine(plan: RunPlan, line: FeeLine): RunPlan {
     }
     case "runDeposit":
       return noLine(plan, line);
-    default:
-      return assertNever(plan);
   }
 }

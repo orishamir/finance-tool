@@ -35,5 +35,5 @@ export function usePressAway(open: boolean, inside: readonly RefObject<HTMLEleme
     };
     document.addEventListener("pointerdown", away);
     return () => document.removeEventListener("pointerdown", away);
-  }, [open]);
+  }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
 }
