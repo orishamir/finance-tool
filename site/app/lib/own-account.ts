@@ -3,7 +3,7 @@
 // (which the provider workbench reads with its `buildTariff` at level list, so no second reading of a price list exists), then the group's
 // values on the lines they name, then the person's own. A group's price ends at its own `for_months` and the stay in the group ends them all
 // (F-101: a sequence of tariffs). The indices page prices a house's group picked on it so (lib/group-pick.ts); a typed account kept from
-// before the deal took its place keeps its group in this shape until it moves into a deal (F-129).
+// before the deal took its place keeps its group in this shape until it moves into a deal (the move, method §10.4).
 //
 // No runtime import of the engine, invest.ts or the copy files: state.ts reads custom-entries.ts, which reads this, on every page.
 import type { Commission, Custody, EnteredTariff, LayeredRun, LayeredUnusable, SecuritiesTariff } from "@finance-tool/engine";
@@ -333,17 +333,6 @@ export function applyOwn(base: SecuritiesTariff, own: Own, list: SecuritiesTarif
   const monthly = numberOf(own.monthlyFee);
   if (monthly !== null) out.monthlyFee = monthly;
   return out;
-}
-
-// ---------------------------------------------------------------- adopting a price the group's words do not give for a fund
-
-/** The group with the price of one fee used (or not) although its words do not name fund units: the person's choice, kept on the account. */
-export function withAdopted(g: GroupCopy, fee: GroupFee, on: boolean): GroupCopy {
-  const rest = (g.adopted ?? []).filter((f) => f !== fee);
-  const adopted = on ? [...rest, fee] : rest;
-  const { adopted: _drop, ...bare } = g;
-  void _drop;
-  return adopted.length ? { ...bare, adopted } : bare;
 }
 
 // ---------------------------------------------------------------- the sequence of tariffs

@@ -1,7 +1,7 @@
 // A fund the person types on the index page (D44), and the securities accounts typed there before a deal took their place. Kept in the
 // saved state, every figure an entered value object. In memory a fund becomes what the page already prices, a `FundRecord` of its kind
 // (F-65), so no second calculation exists; `withCustomEntries` adds the funds to one copy of the bundle, which only the index page uses. A
-// typed account is read back only to move it into a deal (F-129, lib/deal-account/move.ts).
+// typed account is read back only to move it into a deal (the move, method §10.4; lib/deal-account/move.ts).
 //
 // No runtime import of invest.ts or the engine: state.ts reads this file on every page.
 import { groupPrice, valueObject, type ExposureRecord, type FundRecord, type ValueObject } from "@finance-tool/schema";
@@ -19,7 +19,7 @@ const c = copy.customEntries;
 // ---------------------------------------------------------------- what the state holds
 
 /**
- * A securities account typed on the index page, as the saved state and an older export file hold it until it moves into a deal (F-129).
+ * A securities account typed on the index page, as the saved state and an older export file hold it until it moves into a deal (the move, method §10.4).
  * Null: left empty, a price not known (D56, silence is not zero) in an account typed from scratch; in an account built on a house (`base`,
  * F-101) it means "as the base": the house's price list, with the group's prices over it where the account started from a group.
  */

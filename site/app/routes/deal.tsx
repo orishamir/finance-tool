@@ -35,7 +35,7 @@ export default function FeesPage() {
       .then(setData)
       .catch(() => setFailed(true));
   }, []);
-  // the accounts typed on the indices page move into deals here too, once the price lists are loaded (F-129)
+  // the accounts typed on the indices page move into deals here too, once the price lists are loaded (the move, method §10.4)
   useTypedAccountsMove(data);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries((data?.rules ?? []).map((r) => [r.id, r]));

@@ -24,7 +24,6 @@ import { partName } from "./cost-lines";
 import { providerName } from "./sections";
 import { fundFeeItems } from "./funds";
 import { useDealAccounts } from "./deal-account";
-import { feeNameOf } from "../../lib/fee-deal/part-words";
 
 /** The names `data-anchor` gives the two lists, by which the ruler between them finds their rows. */
 export const ANCHOR = { accounts: "accounts", funds: "funds" } as const;
@@ -86,19 +85,6 @@ export function verdictOf(v: ReturnType<typeof pairVerdict>, chosen: boolean): {
     c.pair.openTop
   );
   return { top, words };
-}
-
-/** Whole numbers, each its figure rounded, the largest remainders taking the difference, so they add up to `total` (a receipt's lines). */
-function roundedTo(xs: readonly number[], total: number): number[] {
-  const floor = xs.map((x) => Math.floor(x));
-  let left = Math.round(total) - floor.reduce((a, b) => a + b, 0);
-  const order = xs.map((x, i) => ({ i, rem: x - Math.floor(x) })).sort((a, b) => b.rem - a.rem);
-  for (const o of order) {
-    if (left <= 0) break;
-    floor[o.i]! += 1;
-    left--;
-  }
-  return floor;
 }
 
 /**
@@ -172,18 +158,13 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const paidIn = <ReceiptLine size="sm" label={c.pair.paidIn} value={<Num value={pc.paidIn} display={fmt.nisWhole(r.paidIn)} />} />;
   const addedLine = <ReceiptLine size="sm" label={c.receipt.added} value={<Num value={added} display={fmt.signedNisWhole(r.added)} />} />;
   const taxLine = <ReceiptLine size="sm" swatch="bg-chart-tax" label={v.taxName} value={<Num value={pc.tax} display={minus(r.tax)} />} />;
-  // F-128: an account priced by a deal writes the deal's own fees, each as the deal has it, in whole shekels that add up to the lines' sum
-  const dealRounded = pc.dealLines ? roundedTo(pc.dealLines.map((l) => l.cost.value as number), r.accountLines.reduce((a, b) => a + b, 0)) : null;
-  const dealName = (fee: string) => {
-    const f = dealApi?.dealOf(pick.house)?.fees.find((x) => x.id === fee);
-    return f ? feeNameOf(f.kind, f.name) : partName("account");
-  };
+  // F-128: an account priced by a deal writes the deal's own fees, each under its name, in whole shekels that add up with the remainder
   const accountParts = (
     <>
-      {pc.dealLines && dealRounded
+      {pc.dealLines
         ? pc.dealLines.map((l, i) => {
             const words = dealApi?.feeWords(pick.house, pick.fund, l.fee) ?? null;
-            return <ReceiptLine key={l.fee} size="sm" label={dealName(l.fee)} value={<Num value={l.cost} display={minus(dealRounded[i]!)} />} sub={words ? <span className="text-xs text-muted-foreground">{words}</span> : undefined} />;
+            return <ReceiptLine key={l.fee} size="sm" label={l.name} value={<Num value={l.cost} display={minus(r.accountLines[i]!)} />} sub={words ? <span className="text-xs text-muted-foreground">{words}</span> : undefined} />;
           })
         : pc.account.map((l, i) => {
             const words = rateWords(l.line, pc.priced, plan.monthly);

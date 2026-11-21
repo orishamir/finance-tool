@@ -1,4 +1,4 @@
-// A typed account moved into a deal (F-129): each securities account the person typed on the indices page (D44, kept in the saved state
+// A typed account moved into a deal (the move, method §10.4): each securities account the person typed on the indices page (D44, kept in the saved state
 // as a `CustomBroker`) becomes one securities-account deal with an id derived from the account's, so the move adds nothing a second time.
 // An account typed from scratch becomes a deal of its own fees, a field left empty a fee with no price yet (D56). An account built on a
 // house (F-101) becomes a deal filled from that house's price list, the group's prices over it as prices over time and the typed figures on
@@ -228,7 +228,7 @@ function groupCustody(p: Price, v: GroupPriceValue, n: (v: number) => Num): Pric
 }
 
 /**
- * The group's prices over the list's (F-101, F-129): each price the run reads (its words name fund units, or the person adopted it) on the
+ * The group's prices over the list's (F-101; the move, method §10.4): each price the run reads (its words name fund units, or the person adopted it) on the
  * cases the plan reads on its side, as prices over time: the group's price until its end, counted from the day the account was typed, then
  * the list's; a price that names a purchase or a sale alone leaves the other side the list's.
  */
@@ -363,7 +363,7 @@ function ownFx(p: Price, fx: number): Price {
 
 const num = (v: CustomBroker["tradePct"]): number | null => (v && typeof v.value === "number" ? v.value : null);
 
-/** The person's own figures over a deal filled from a house (F-101, F-129): on the cases the plan reads, for the whole plan. */
+/** The person's own figures over a deal filled from a house (F-101; the move, method §10.4): on the cases the plan reads, for the whole plan. */
 function withOwn(deal: FeeDeal, b: CustomBroker, ctx: ReadContext, list: FeeDeal, rates: Readonly<Record<string, number>>): FeeDeal {
   const tradePct = num(b.tradePct), tradeMin = num(b.tradeMin), custodyPct = num(b.custodyPct), custodyMin = num(b.custodyMin), fx = num(b.fxPct), monthly = num(b.monthlyFee);
   const runs = readRuns(deal, ctx);
@@ -439,7 +439,7 @@ function onlySold(fee: Fee, places: readonly Place[]): Fee {
 const known = (...xs: (number | null)[]): boolean => xs.every((x) => x !== null);
 
 /**
- * An account typed from scratch as a deal's fees (F-129): the trade a share of each action with its minimum, custody a percent a year
+ * An account typed from scratch as a deal's fees (the move, method §10.4): the trade a share of each action with its minimum, custody a percent a year
  * charged each month with its minimum a month, the conversion a share of each conversion (where the account sells abroad or it was
  * typed), the monthly fee a sum each month. A fee with a field left empty has no price yet.
  */
@@ -456,7 +456,7 @@ function scratchFees(b: CustomBroker): Fee[] {
 
 // ---------------------------------------------------------------- the move
 
-/** F-129 The deal a typed account moves into. */
+/** The deal a typed account moves into (the move, method §10.4). */
 export function dealOfTypedAccount(b: CustomBroker, ctx: MoveContext): FeeDeal {
   const id = movedDealId(b.id);
   const places = placesSold(b);

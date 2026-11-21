@@ -18,7 +18,7 @@ import { Num, StateTag } from "../provenance";
 import { useState } from "react";
 import { Card, DocLink, FactTile, GroupPriceFold, HelpMark, KeyValue, LabelChip, LabelRow, MixedName, ProductIdLink, SourcedTag, Tag, TileJoin, When, gershayim, type GroupChoice } from "../kit";
 import { brands } from "../../copy";
-import { DealCard, DealFromHouseButton, DealTerms } from "./deal-account";
+import { DealCard, DealFromHouseButton } from "./deal-account";
 import { isDealProviderId } from "../../lib/deal-account/bundle";
 import { OptionTag } from "./parts";
 import { allFunds, asideWords, crownedHouse, GapCell, gapNoteOf, gapStateOf, inTieSet, labelsOf, mayaHrefOf, pairVerdict, phoneOf, pickHalf, priced, unitsLine, type OnPick, type Pick } from "./pair";
@@ -91,7 +91,7 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
                   <SourcedTag value={phone}>{c.pair.phoneTag}</SourcedTag> {c.pair.phoneLine(house.short)}
                 </p>
               )}
-              {house.custom && (isDealProviderId(house.id) ? <DealCard id={house.id} house={(id) => providerName(view, id)?.short ?? null} /> : <DealTerms id={house.id} />)}
+              {house.custom && isDealProviderId(house.id) && <DealCard id={house.id} house={(id) => providerName(view, id)?.short ?? null} />}
               {!house.custom && snap && (
                 <DealFromHouseButton houseId={house.id} className="self-start -ms-2">
                   {c.pair.ownPrice}

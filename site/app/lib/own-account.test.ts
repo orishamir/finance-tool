@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { validCustomBrokers, type CustomBroker } from "./custom-entries";
 import { listReading } from "./invest";
-import { applyOwn, baseOf, groupValues, layeredOf, layeredTariff, priceEndsOf, startingPointsOf, withAdopted, type GroupCopy } from "./own-account";
+import { applyOwn, baseOf, groupValues, layeredOf, layeredTariff, priceEndsOf, startingPointsOf, type GroupCopy } from "./own-account";
 import { buildIndicesBundle } from "./providers.server";
 import { ruleContext, type WorkbenchInputs } from "./providers";
 import { entered } from "./value";
@@ -363,7 +363,7 @@ describe("the tariff built in layers (F-101)", () => {
     expect(trade(TOP.group!).value!.side).toBeUndefined();
   });
   it("adopting a price whose words do not name funds is the person's choice, kept on the account: it reads like a price that names funds, with its own end and the person's stay", () => {
-    const all = (g: GroupCopy) => groupValues(g) && (Object.keys(groupValues(g)) as GroupCopy["prices"][number]["fee"][]).reduce((acc, fee) => withAdopted(acc, fee, true), g);
+    const all = (g: GroupCopy): GroupCopy => ({ ...g, adopted: Object.keys(groupValues(g)) as GroupCopy["prices"][number]["fee"][] });
     // Leumi's opening offer adopted, five years in the group: custody exempt to month 12 and 7 shekels a trade to month 60 (F-101's example)
     const offer = all(OFFER.group!);
     expect([...offer.adopted!].sort()).toEqual(["custody_abroad", "custody_israel", "trade_abroad", "trade_israel"]);
@@ -378,11 +378,10 @@ describe("the tariff built in layers (F-101)", () => {
     // Total Digital's two prices, adopted: the price list's trade price at 0.4%, and custody at 0.5% a year, as typed
     expectFigures(rowAt(leumi, accountAtLeumi({ group: all(TOTAL.group!) })), EXPECTED.adopted_total_digital);
     // one price adopted, the other not: only that line is the group's
-    const custodyOnly = withAdopted(TOTAL.group!, "custody_israel", true);
+    const custodyOnly: GroupCopy = { ...TOTAL.group!, adopted: ["custody_israel"] };
     expect(unwrap(layeredTariff(accountAtLeumi({ group: custodyOnly }), leumiList, leumiReading.run)).buy).toEqual(leumiList.buy);
     expect(unwrap(layeredTariff(accountAtLeumi({ group: custodyOnly }), leumiList, leumiReading.run)).custody).toEqual({ rate: EXPECTED.layers.adopted_custody_rate_a_quarter, everyMonths: 3, max: 3700 });
     // undone: the group as it was
-    expect(withAdopted(custodyOnly, "custody_israel", false)).toEqual(TOTAL.group);
     // saved with the entry, carried through export and import; an entry without it loads as before
     const saved = accountAtLeumi({ group: offer });
     const back = validCustomBrokers(JSON.parse(JSON.stringify([saved])))[0]!;

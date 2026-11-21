@@ -1,5 +1,5 @@
 // A fund the person types (D44): it runs through the engine's path, ranks with the collected funds, and goes through the saved state and the
-// export file; and an account typed before a deal took its place leaves, once moved into a deal (F-129), what it left. The expected figures
+// export file; and an account typed before a deal took its place leaves, once moved into a deal (the move, method §10.4), what it left. The expected figures
 // are printed by tests/golden/expected_custom_entries.py, none written by hand.
 import { ReceiptAndFees } from "../components/invest/render-fixtures";
 import { createElement } from "react";
@@ -85,7 +85,7 @@ const ta125 = indexById(bundle, "index-ta125")!;
 const sp = indexById(bundle, "index-sp500")!;
 const priced = (x: unknown): x is WayPrice => !!x && typeof x === "object" && "valueN" in x;
 
-describe("an account typed from scratch, moved into a deal, leaves what the script says (F-129)", () => {
+describe("an account typed from scratch, moved into a deal, leaves what the script says (the move, method §10.4)", () => {
   const deals = [cheap, dear, zeros, partial].map((a) => dealOfTypedAccount(a, moveCtx));
   const b = withDeals(withCustomEntries(bundle, [fund, abroad]), deals, data.kinds);
   const view = buildInvest({ bundle: b, index: ta125, plan });

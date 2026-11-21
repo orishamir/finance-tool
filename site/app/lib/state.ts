@@ -128,7 +128,7 @@ export interface StateV3 extends Omit<StateV2, "version"> {
   savedComparisons: SavedComparisonRecord[];
   /** "השקעה במדד" (D28): the indices the person added, kept on the device and in the export file; an older document has none. */
   customIndices?: CustomIndex[];
-  /** The securities accounts typed on the index page before a deal took their place, kept until each moves into a deal (F-129). */
+  /** The securities accounts typed on the index page before a deal took their place, kept until each moves into a deal (the move, method §10.4). */
   customBrokers?: CustomBroker[];
   /** The index page's own: a fund the person typed (D44), on the device and in the export file; an older document has none. */
   customFunds?: CustomFund[];
@@ -686,7 +686,7 @@ function withList<K extends "customBrokers" | "customFunds">(s: StateV3, key: K,
   return (list.length ? { ...rest, [key]: list } : rest) as StateV3;
 }
 
-/** Takes the typed accounts moved into deals out of the saved state (F-129, lib/deal-account/move-run.ts). */
+/** Takes the typed accounts moved into deals out of the saved state (the move, method §10.4; lib/deal-account/move-run.ts). */
 export function dropTypedAccounts(ids: readonly string[]): void {
   updateState((s) => withList(s, "customBrokers", (s.customBrokers ?? []).filter((x) => !ids.includes(x.id))));
 }

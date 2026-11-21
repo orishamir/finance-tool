@@ -182,7 +182,7 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
   const accountDeals = useMemo(() => deals.value.filter(isAccountDeal), [deals.value]);
   const [feesData, setFeesData] = useState<FeesData | null>(null);
   const wantFees = useCallback(() => void loadFeesData().then(setFeesData, () => undefined), []);
-  // a typed account still in the saved state waits for the price lists too, and moves into a deal once they are here (F-129)
+  // a typed account still in the saved state waits for the price lists too, and moves into a deal once they are here (the move, method §10.4)
   const anyDeal = accountDeals.length > 0 || invest.customBrokers.length > 0;
   useEffect(() => {
     if (anyDeal) wantFees();

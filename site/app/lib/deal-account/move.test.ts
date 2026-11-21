@@ -1,7 +1,7 @@
-// F-129 A typed account moved into a deal. An account built on a house or on a group leaves what it left before on every fund of every
+// A typed account moved into a deal (method §10.4). An account built on a house or on a group leaves what it left before on every fund of every
 // index, to the shekel, priced before as the page still prices an account built on a house (F-101, lib/group-pick.ts). An account typed
 // from scratch has a fee for each field, a fee with no price where a field was left empty, and cases only for what it sold; what it leaves
-// is checked against the figures the golden script printed for it (custom-entries.test.ts). Where F-129
+// is checked against the figures the golden script printed for it (custom-entries.test.ts). Where the move
 // states a difference, the test checks that difference: a group typed today is equal, and an account at a house with a standing order or a
 // recurring plan may leave less. On an account built on a house, a fund where the deal filled from that house's list already leaves
 // another amount than the account with nothing typed (F-128's reading of the house, not the move) is listed apart and not compared.
@@ -79,7 +79,7 @@ function compare(accounts: CustomBroker[]): Map<string, { ix: string; fund: stri
 
 const differing = <R extends { before: number | null; after: number | null }>(rows: R[]): R[] => rows.filter((r) => r.before !== r.after);
 
-describe("F-129 the move", () => {
+describe("the move", () => {
   it("makes one deal per account, with an id from the account's, that reads back as a deal; a second move adds nothing", () => {
     const a = account(full);
     const d = dealOfTypedAccount(a, ctx);
@@ -90,7 +90,7 @@ describe("F-129 the move", () => {
   });
 });
 
-describe("F-129 an account typed from scratch", () => {
+describe("the move: an account typed from scratch", () => {
   const priceOf = (d: ReturnType<typeof dealOfTypedAccount>, kind: string) => {
     const f = d.fees.find((x) => x.kind === kind)!;
     return hasCases(f) ? f.cases.map((c) => c.stages[0]!.price) : [f.stages[0]!.price];
@@ -156,11 +156,11 @@ const apart = (() => {
   return new Map(houses.map((id, i) => [id, new Set(differing(got.get(bare[i]!.id)!).map((r) => `${r.ix}|${r.fund}`))]));
 })();
 
-/** The rows of an account at a house that differ beyond what F-129 states: a house with a standing order may leave less, never more (F-129), and a fund set apart above is not compared. */
+/** The rows of an account at a house that differ beyond what the move states: a house with a standing order may leave less, never more (the move, method §10.4), and a fund set apart above is not compared. */
 const onHouse = (id: string, rows: { ix: string; fund: string; before: number | null; after: number | null }[]) =>
   differing(rows).filter((r) => !apart.get(id)?.has(`${r.ix}|${r.fund}`) && !(standing(id) && r.before !== null && r.after !== null && r.after <= r.before));
 
-describe("F-129 an account built on a house leaves what it left", () => {
+describe("the move: an account built on a house leaves what it left", () => {
   const houses = data.houses.map((h) => h.id).filter((id) => bundle.snapshots.some((s) => s.id === id));
   const on = (id: string, typed: Typed) => {
     const s = bundle.snapshots.find((x) => x.id === id)!;
@@ -188,7 +188,7 @@ describe("F-128's own reading of a house, set apart from the move", () => {
   });
 });
 
-describe("F-129 an account built on a group, typed today, leaves what it left", () => {
+describe("the move: an account built on a group, typed today, leaves what it left", () => {
   const shapes = bundle.snapshots.flatMap((s) =>
     data.houses.some((h) => h.id === s.id)
       ? startingPointsOf(s).flatMap((p): [string, string, CustomBroker][] =>

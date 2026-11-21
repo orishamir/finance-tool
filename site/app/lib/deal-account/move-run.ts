@@ -1,4 +1,4 @@
-// The move of the typed accounts into deals (F-129), run on the pages that load the price lists: the indices page and the fee page. It
+// The move of the typed accounts into deals (the move, method §10.4), run on the pages that load the price lists: the indices page and the fee page. It
 // runs once and again adds nothing: each account's deal has an id from the account's, and a deal the store already holds is left as it
 // is. An account leaves the saved state only once the device holds its deal, so a page closed midway loses nothing; an older export file
 // imported with typed accounts in it puts them back in the saved state, and the next of these pages moves them the same way.

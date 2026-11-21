@@ -4216,7 +4216,10 @@ export const invest = {
     where: { tase: "בתל אביב", us: "בארצות הברית", europe: "באירופה", world: "בחו״ל", manager: "ממנהל הקרן" } as Record<string, string>,
     /** Under a fee's block: what the plan charges, or why it charges nothing (lib/deal-account/plan.ts, `OffPlan`). */
     onPlan: "בתוכנית",
-    /** On the case of a fee the plan reads (B), and on a step of the account's size with the years the plan spends in it (F). */
+    /**
+     * On the case of a fee the plan reads (B), on a step of an order's own size, a month's orders or its trading that the plan reaches, and
+     * on a step of the account's size with the years the plan spends in it (F).
+     */
     planCase: (years: readonly { from: number; to: number }[] | null) =>
       years === null
         ? "בתוכנית"
@@ -4231,7 +4234,7 @@ export const invest = {
       cover: "בתוכנית אין ביטוח.",
       "no-dividend": "הקרן לא מחלקת דיבידנד, ולכן בתוכנית אין אירוע חברה.",
       "not-yet": "החישוב עוד לא גובה עמלה כזאת.",
-      "own-words": "עמלה במילים שלכם: החישוב לא גובה אותה.",
+      "own-words": "עמלה במילים שלכם על פעולה: החישוב לא יודע על איזו פעולה בתוכנית לגבות אותה.",
       "no-current-account": "בעמוד הזה לא סופרים חשבון עובר ושב.",
       banned: "לפי הכללים, עמלה כזאת לא נגבית כאן.",
     } as Record<string, string>,
@@ -4580,7 +4583,7 @@ export const invest = {
     collectedOn: (date: string) => `נאסף ב־${date}`,
     /** Over the account list: the days the price lists were saved, oldest and newest. */
     collectedSpan: (from: string, to: string) => (from === to ? `התעריפונים נאספו ב־${from}.` : `התעריפונים נאספו בין ${from} ל־${to}.`),
-    /** On the chosen account's card, beside its price list: opens the house's account on your own terms (one link, not a line on every row). */
+    /** On the chosen account's card, beside its price list: opens a new deal filled from the house's list (one link, not a line on every row). */
     ownPrice: "להזין מחיר שקיבלתם",
     colLeft: "נשאר",
     /** The lists' head over what is left: its "?" says after what and in what money (design.md: a head says what it holds). */

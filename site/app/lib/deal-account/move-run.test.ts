@@ -1,4 +1,4 @@
-// F-129 The move run on the device: a typed account's deal is written first and the account leaves the saved state only once the device
+// The move run on the device (method §10.4): a typed account's deal is written first and the account leaves the saved state only once the device
 // holds it; a second run adds nothing; an older export file's typed accounts move the same way once imported; a device that cannot keep
 // the deal keeps the account.
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -44,7 +44,7 @@ function device(refuseDeals = false) {
 const storedDeals = (kept: Map<string, string>) => parseDeals(JSON.parse(kept.get(DEALS_KEY) ?? "null"));
 const accounts = () => getSnapshot().state.customBrokers ?? [];
 
-describe("F-129 the move on the device", () => {
+describe("the move on the device", () => {
   afterEach(() => {
     delete (globalThis as { window?: unknown }).window;
     delete (globalThis as { document?: unknown }).document;

@@ -1448,9 +1448,10 @@ export interface PairCosts {
   account: { line: FeeLine; cost: SiteValue }[];
   /**
    * F-128: an account priced by a deal, its lines as the deal's own fees, by the deal's fee id (`BANK_ACCOUNT` for the bank's current
-   * account the plan counts from the record), each what was paid on it carried as its line is; together they are `account`'s lines.
+   * account the plan counts from the record) with the fee's name, each what was paid on it carried as its line is (F-91). They stand in
+   * place of `account`, which is then empty, and `interaction` is what they leave of the account's fees.
    */
-  dealLines?: { fee: string; cost: SiteValue }[];
+  dealLines?: { fee: string; name: string; cost: SiteValue }[];
   interaction: number;
   /** `interaction` as a figure (F-91), so the account's fees add up figures that each open (`accountSum`). */
   remainder: SiteValue;
@@ -1540,9 +1541,6 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   // the whole run (the account and the fund); the fund's part is measured with no account, so it reads none of the account's prices
   const inputs = inputsOfRun(ctx, { house: s.id, fund: rec.id, spec: fs.spec, row });
   const at = (n: number, formula: string, about: string, from = inputs) => computed(n, "nis", formula, from, { today: ctx.bundle.today, rules: rulesOf(row), about });
-  const lines = row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!)) }));
-  // what no single line explains, without the waiting cash
-  const interaction = parts.fees - row.byType.reduce((t, x) => t + x.costBeforeTax, 0);
   const paidInReal = paidInAsEntered(ctx.plan.amountNow, ctx.plan.monthly, ctx.plan.years);
   // F-128: an account priced by a deal writes its lines as the deal's own fees, each what was paid on it carried as its line is (F-91)
   const deal = ctx.bundle.deals?.byId[s.id];
@@ -1556,7 +1554,10 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     const f = deal?.fees.find((x) => x.id === id);
     return f ? feeNameOf(f.kind, f.name) : (copy.pair.lines.account ?? id);
   };
-  const dealLines = deal && ids ? [...byDealFee].map(([fee, n]) => ({ fee, cost: at(n, "F-91", copy.pair.lineAbout(feeWords(fee))) })) : undefined;
+  const dealLines = deal && ids ? [...byDealFee].map(([fee, n]) => ({ fee, name: feeWords(fee), cost: at(n, "F-91", copy.pair.lineAbout(feeWords(fee))) })) : undefined;
+  const lines = dealLines ? [] : row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!)) }));
+  // what no single line explains, without the waiting cash: the account's fees less its lines, the deal's own where it is priced by a deal
+  const interaction = parts.fees - (dealLines ? [...byDealFee.values()].reduce((t, n) => t + n, 0) : row.byType.reduce((t, x) => t + x.costBeforeTax, 0));
   return {
     providerId: s.id,
     fundId: rec.id,
@@ -1595,7 +1596,7 @@ export function dealRunOf(a: InvestArgs & { fundId: string }): DealRun | null {
 
 /**
  * A deal account on one fund of the plan (F-128): what it leaves, what each of its fees took before the tax it saves (F-91), by the deal's
- * fee id, and the account's nominal balance at the end of each month of the run (`balances[m - 1]` for run month `m`, the run's own series).
+ * fee id, and, for each of the run's fees with a step, the run months a charge fell in all its steps (`dealReach`, by the run's fee index).
  */
 export type DealOnPlan =
   | {
@@ -1603,7 +1604,7 @@ export type DealOnPlan =
       valueN: number;
       byFee: Record<string, number>;
       accountCost: number;
-      balances: number[];
+      reach: number[][];
       /** A figure of this run as the popup shows it (F-128): `n` shekels, computed from the run's inputs and rules, `about` saying which. */
       figure: (n: number, about: string) => SiteValue;
     }
@@ -1645,10 +1646,9 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
       if (id !== undefined) byFee[id] = (byFee[id] ?? 0) + x.costBeforeTax;
     }
     const row = got.row;
-    const balances = row.run.series.filter((p) => p.month >= 1 && p.month <= row.run.exitMonth).sort((a, b) => a.month - b.month).map((p) => p.balance);
     const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row };
     const figure = (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
-    out.set(fundId, { kind: "ok", valueN: row.real, byFee, accountCost: row.horizonCostBeforeTax, balances, figure });
+    out.set(fundId, { kind: "ok", valueN: row.real, byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure });
   }
   return out;
 }
@@ -1660,6 +1660,8 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
 export function accountSum(pc: PairCosts, about: string, today: string, round?: (n: number) => number): SiteValue {
   const parts: Record<string, SiteValue> = {};
   for (const l of pc.account) parts[copy.pair.lines[l.line] ?? copy.pair.lines.other!] = l.cost;
+  // F-128: a deal's own fees, each under its name (two fees of one name told apart by their order)
+  for (const [i, l] of (pc.dealLines ?? []).entries()) parts[l.name in parts ? `${l.name} (${i + 1})` : l.name] = l.cost;
   parts[copy.pair.remainder] = pc.remainder;
   return sumOf(parts, "F-91", { today, about, ...(round ? { round } : {}) });
 }

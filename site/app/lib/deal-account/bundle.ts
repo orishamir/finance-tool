@@ -29,14 +29,15 @@ export const houseSnap = (bundle: Pick<IndicesBundle, "snapshots">, deal: Pick<F
 
 /**
  * A deal as an account's record with no lines: the deal is its whole price. Filled from a house's whole price list, it is an account at that
- * house, as an account built on a house is (F-101): the house's kind, what the house does not sell and what it sells fund by fund are its own. Filled from none, it is a
- * broker's and sells every kind of fund, and what it has no price for its own cases say (F-128).
+ * house, as an account built on a house is (F-101): the house's kind, what the house does not sell and what it sells fund by fund are its own. Filled from none, it is
+ * the kind of provider the deal names (a bank's account where it names a bank, F-14's member kind), else a broker's, and sells every kind of
+ * fund, and what it has no price for its own cases say (F-128).
  */
 export function snapshotOfDeal(deal: FeeDeal, house: BundleSnapshot | undefined, today: string): BundleSnapshot {
   const saved = deal.saved ?? today;
   return {
     id: dealProviderId(deal.id),
-    provider: { name_he: deal.name, class: house?.provider.class ?? "broker", regulator: house?.provider.regulator ?? "ISA", tase_member: false, protection_rule_ids: house?.provider.protection_rule_ids ?? [] },
+    provider: { name_he: deal.name, class: house?.provider.class ?? (deal.provider === "bank" ? "bank" : "broker"), regulator: house?.provider.regulator ?? "ISA", tase_member: false, protection_rule_ids: house?.provider.protection_rule_ids ?? [] },
     tariff: { url: "local", title: deal.name, published: null, format: "html" },
     snapshot: saved,
     missing: false,
