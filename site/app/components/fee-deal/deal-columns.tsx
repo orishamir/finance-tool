@@ -7,8 +7,11 @@
 import type { ReactNode, RefObject } from "react";
 import { Card } from "../kit";
 
-/** The toolbox's column sticks under the header as the fees scroll by, where it has a column (the editor's width, `TOOLBOX_COLUMN_PX`). */
-export const TOOLBOX_STICKY = "@min-[75rem]/deal:sticky @min-[75rem]/deal:top-20";
+/**
+ * The toolbox's column sticks under the header as the fees scroll by, where it has a column (the editor's width, `TOOLBOX_COLUMN_PX`): 5rem
+ * under the top, or under what a host keeps at its top (`--toolbox-top`, the indices page's popup's tiles).
+ */
+export const TOOLBOX_STICKY = "@min-[75rem]/deal:sticky @min-[75rem]/deal:top-[var(--toolbox-top,5rem)]";
 
 /** The columns: `setup` (what the deal is about; none where the host shows none), `fees` (none while the deal has no kind), and `toolbox` in its own column (none where it has no room). */
 export function DealColumns({ hostRef, setup, fees, toolbox }: { hostRef?: RefObject<HTMLDivElement | null>; setup: ReactNode | null; fees: ReactNode | null; toolbox: ReactNode | null }) {

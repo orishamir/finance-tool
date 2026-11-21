@@ -101,7 +101,8 @@ export function buildFeesData(): FeesData {
       const rec = loadHouseAverages().get(s.id);
       const columns = s.lines.filter((l) => read.includes(l.id)).map(columnOf).filter((c): c is AverageColumn => c !== null);
       const averages = rec ? houseAverages(rec, columns) : null;
-      return averages && averages.columns.length ? { ...t, averages } : t;
+      const every = rec ? houseAverages(rec) : null;
+      return { ...t, ...(averages && averages.columns.length ? { averages } : {}), ...(every && every.columns.length ? { everyColumn: every } : {}) };
     });
   const fx = loadFx();
   // each fee name's card, and where a product has a sense of the name that differs from it, that sense under the product's key

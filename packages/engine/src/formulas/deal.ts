@@ -41,8 +41,12 @@ export type DealPrice =
    * absent). The units of an action of `a` shekels are `a` over the unit's price, so its cost needs that price (F-112).
    */
   | { kind: "perUnit"; amount: number; min?: number; max?: number; cap?: number; flat?: DealFlat; currency?: string; third?: DealThird }
-  /** A share of what is held, charged every `everyMonths` months, with a minimum and a maximum per charge in shekels (F-14, F-15). */
-  | { kind: "held"; rate: number; everyMonths: number; min?: number; max?: number }
+  /**
+   * A share of what is held, charged every `everyMonths` months, with a minimum and a maximum per charge in shekels (F-14, F-15), and a
+   * maximum per charge on each security held (`perSecurity`, Leumi's "3700 ש״ח לני״ע" beside "11500 לפקדון"). A deal holds one security
+   * (F-128's plan buys one fund; F-112 reads a value held as one), so a charge is held to the lower of the two maximums (`heldBounds`).
+   */
+  | { kind: "held"; rate: number; everyMonths: number; min?: number; max?: number; perSecurity?: number }
   /** A sum in shekels every `everyMonths` months, whatever the account holds (F-17). */
   | { kind: "sum"; amount: number; everyMonths: number }
   /**
@@ -516,7 +520,7 @@ function priceMarks(price: DealPrice, fee: number, side: DealSide): DealMark[] {
   if (price.kind === "action" || price.kind === "held") {
     const on = price.kind === "action" ? "action" : "held";
     const currency = price.kind === "action" ? (price.currency ?? "ILS") : "ILS";
-    return stretchesOf(price).flatMap((s): DealMark[] => {
+    return stretchesOf(price.kind === "held" ? { rate: price.rate, ...heldBounds(price) } : price).flatMap((s): DealMark[] => {
       const from = s.from > 0 ? { from: s.from } : {};
       if ((s.part === "flat" || s.part === "cap" || s.part === "min") && s.to !== null) return [{ kind: s.part, on, fee, side, amount: s.to, ...from, currency }];
       if (s.part === "max" && s.from > 0 && s.to === null) return [{ kind: "max", on, fee, side, amount: s.from, currency }];
@@ -804,8 +808,17 @@ export function heldCharge(deal: Deal, period: DealPeriod, i: number, value: num
   const f = deal.fees[i]!;
   const p = period.prices[i]!.price;
   if (p.kind !== "held" || isCover(f.base) || !inHeldStep(f, value, rates)) return 0;
-  const c = { rate: p.rate, everyMonths: p.everyMonths, ...(p.min !== undefined ? { min: p.min } : {}), ...(p.max !== undefined ? { max: p.max } : {}) };
-  return custodyFee(c, p.everyMonths, value);
+  return custodyFee({ rate: p.rate, everyMonths: p.everyMonths, ...heldBounds(p) }, p.everyMonths, value);
+}
+
+/**
+ * F-14 The bounds of one charge of a share of what is held on the one security a deal holds: its minimum, and the lower of its maximum and
+ * its maximum on each security, the one that binds first (BRK-69's note 5 at Leumi: "הנמוכה מביניהן"; a maximum on each security alone,
+ * Discount's, binds alone). Every reading of a held price takes its bounds from here.
+ */
+export function heldBounds(p: Extract<DealPrice, { kind: "held" }>): { min?: number; max?: number } {
+  const max = p.max === undefined ? p.perSecurity : p.perSecurity === undefined ? p.max : Math.min(p.max, p.perSecurity);
+  return { ...(p.min !== undefined ? { min: p.min } : {}), ...(max !== undefined ? { max } : {}) };
 }
 
 /** Shekels per unit of a currency at `rates`; a currency they do not give is refused (F-112). */
@@ -856,8 +869,9 @@ export function priceParts(price: DealPrice, unitPrice?: number): PartStretch[] 
       if (!(unitPrice !== undefined && unitPrice > 0)) return null;
       return stretchesOf({ rate: price.amount / unitPrice, ...bounds(price) });
     case "action":
-    case "held":
       return stretchesOf({ rate: price.rate, ...bounds(price) });
+    case "held":
+      return stretchesOf({ rate: price.rate, ...heldBounds(price) });
   }
 }
 
@@ -893,7 +907,8 @@ export function heldLayers(deal: Deal, period: DealPeriod, value: number, rates:
     const p = period.prices[fee]!.price;
     if (p.kind !== "held") return { fee, cost: c, layer: "fixed" };
     const charge = p.rate * value;
-    const bound = (p.min !== undefined && charge < p.min && !near(charge, p.min)) || (p.max !== undefined && charge > p.max && !near(charge, p.max));
+    const { min, max } = heldBounds(p);
+    const bound = (min !== undefined && charge < min && !near(charge, min)) || (max !== undefined && charge > max && !near(charge, max));
     return { fee, cost: c, layer: bound ? "fixed" : "share" };
   });
 }
@@ -1002,7 +1017,7 @@ function heldCuts(deal: Deal, period: DealPeriod, rates: Readonly<Record<string,
       if (f.within.to !== null) cuts.add(f.within.to * r);
     }
     const p = period.prices[i]!.price;
-    if (p.kind === "held" && p.rate > 0) for (const b of [p.min, p.max]) if (b !== undefined && b > 0) cuts.add(b / p.rate);
+    if (p.kind === "held" && p.rate > 0) for (const b of Object.values(heldBounds(p))) if (b > 0) cuts.add(b / p.rate);
   });
   return [...cuts].sort((a, b) => a - b);
 }
@@ -1013,9 +1028,10 @@ function maxHolds(deal: Deal, period: DealPeriod, value: number, rates: Readonly
     if (isCover(f.base)) return false;
     if (f.within?.on === "held" && !inStep(f.within, value / shekelsPer(f.within.currency, rates))) return false;
     const p = period.prices[i]!.price;
-    if (p.kind !== "held" || p.max === undefined) return false;
+    const max = p.kind === "held" ? heldBounds(p).max : undefined;
+    if (p.kind !== "held" || max === undefined) return false;
     const charge = p.rate * value;
-    return charge > p.max && !near(charge, p.max);
+    return charge > max && !near(charge, max);
   });
 }
 

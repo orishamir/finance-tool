@@ -1,8 +1,9 @@
 // The popup's three tiles for a deal on the plan: what the deal leaves at the end on the fund the plan line names (F-128), its place in
 // the account list, and, for a deal filled from a house's list, what it leaves less what that house's own row leaves on the same fund. The
-// place is the list's own order: every account at its cheapest way among the funds of the pair's kind, the deal at its own cheapest, ties as F-80
-// reads them, so the tile always says where the deal's row stands. Pure: the page's view and the deal's runs.
-import { kindOf, placesOf, type DealOnPlan, type FundWay, type InvestView, type WayPrice } from "../invest";
+// place is the list's own: every account at its cheapest ranked way among the funds of the pair's kind (`stretchOf`, a run on an open rule
+// left out as the list leaves it out), in the list's order, most first and equal figures by name, so the tile always says where the deal's
+// row stands. Pure: the page's view and the deal's runs.
+import { kindOf, type DealOnPlan, type FundWay, type InvestView, type WayPrice } from "../invest";
 import { isGroupProvider } from "../group-pick";
 import { stretchOf } from "../stretch";
 import type { Missing } from "./plan";
@@ -12,10 +13,7 @@ export interface DealTiles {
   left: number | null;
   /** What it lacks, where it has no price for what it lacks (`DealOnPlan`'s reason). */
   missing: Missing | null;
-  /**
-   * Its place in the account list, by what each account leaves at its cheapest, and of how many with it, ties as F-80 reads them (every
-   * account within the tie threshold of the first shares the first place, `placesOf`); null where it ranks no fund.
-   */
+  /** Its row's place in the account list, of how many ranked rows with it (`listPlace`); null where it ranks no fund. */
   place: { k: number; of: number } | null;
   /** What it leaves less what the house it was filled from leaves on the same fund; null where it was filled from none or either has no price. */
   diff: number | null;
@@ -34,25 +32,33 @@ export function listFunds(funds: readonly FundWay[], pickFund: string, kinds: bo
 }
 
 /**
- * The tiles of deal account `providerId` from its runs on the list's funds (`got`), read on fund `fundId`: every other account of the list
- * at its cheapest way (`stretchOf`), the deal's own row on the page left out, since the popup's runs are the deal as it is now; `theta` is
- * the tie threshold (P-01).
+ * A row's place in the account list (`PairLists`' ranked rows): the list sorts by what each account leaves at its cheapest, most first, and
+ * equal figures by name; the place is one more than the rows that stand above it.
  */
-export function dealTiles(view: InvestView, got: ReadonlyMap<string, DealOnPlan>, providerId: string, houseId: string | null, fundId: string, funds: readonly FundWay[], theta: number): DealTiles {
+export function listPlace(rows: readonly { best: number; name: string }[], mine: { best: number; name: string }): number {
+  return 1 + rows.filter((r) => r.best > mine.best || (r.best === mine.best && r.name.localeCompare(mine.name, "he") < 0)).length;
+}
+
+/**
+ * The tiles of deal account `providerId`, named `name` in the list, from its runs on the list's funds (`got`), read on fund `fundId`: every
+ * other account of the list at its cheapest ranked way (`stretchOf`), the deal's own row on the page left out, since the popup's runs are
+ * the deal as it is now.
+ */
+export function dealTiles(view: InvestView, got: ReadonlyMap<string, DealOnPlan>, providerId: string, name: string, houseId: string | null, fundId: string, funds: readonly FundWay[]): DealTiles {
   const at = got.get(fundId) ?? null;
   const ok = at?.kind === "ok" ? at : null;
   const missing = at?.kind === "fail" && "missing" in at.reason ? at.reason.missing : null;
+  // a run on an open rule is shown before the tax and ranks nowhere, as the list's stretches leave it out (`rankedAt`)
   const own = funds.flatMap((f) => {
     const g = got.get(f.rec.id);
-    return g?.kind === "ok" ? [g.valueN] : [];
+    return g?.kind === "ok" && !g.open ? [g.valueN] : [];
   });
   const others = view.providers.filter((p) => p.id !== providerId && !isGroupProvider(p)).flatMap((p) => {
     const s = stretchOf(funds, p.id);
-    return s ? [s.best] : [];
+    return s ? [{ best: s.best, name: p.short }] : [];
   });
   const best = own.length ? Math.max(...own) : null;
-  const ranked = best === null ? [] : [...others, best].sort((a, b) => b - a);
-  const place = best === null ? null : { k: placesOf(ranked, theta)[ranked.indexOf(best)]!, of: ranked.length };
+  const place = best === null ? null : { k: listPlace(others, { best, name: view.providers.find((p) => p.id === providerId)?.short ?? name }), of: others.length + 1 };
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.entries.find((e) => e.fund.rec.id === fundId)?.price : null;
   const priced = ok && house && !house.open ? house : null;
   return { left: ok ? ok.valueN : null, missing, place, diff: ok && priced ? ok.valueN - priced.valueN : null, house: priced };

@@ -132,9 +132,9 @@ export const heldRateUnit = (per: number): Unit => (per === 12 ? "pct_per_year" 
  * fees of it, and the field after a dot where it is not the rate or the sum (`deal:trade.min`, `deal:custody 2.yearly`; `cap` the percent
  * maximum, `flat` a flat price and `upTo` the sum it holds up to). The prefix keeps the keys apart from other readings' (`balance` is a
  * run's balance there); the copy names every such key. A discount's share is `discount`, a third party's figure and bounds `third`,
- * `thirdMin` and `thirdMax` (F-116, F-117).
+ * `thirdMin` and `thirdMax` (F-116, F-117), a held share's maximum on each security `perSecurity` (F-14).
  */
-export type InputField = "min" | "max" | "yearly" | "cap" | "flat" | "upTo" | "discount" | "third" | "thirdMin" | "thirdMax";
+export type InputField = "min" | "max" | "yearly" | "cap" | "flat" | "upTo" | "discount" | "third" | "thirdMin" | "thirdMax" | "perSecurity";
 
 export function inputKey(fees: readonly Pick<Fee, "kind">[], i: number, field?: InputField): string {
   const fee = fees[i]!;
@@ -164,7 +164,7 @@ export interface PriceFigures {
   thirdMax?: SiteValue;
   /** A refund, in the price's currency (§10.6's stated parts). */
   refund?: SiteValue;
-  /** A held share's maximum on each security, in shekels (§10.6's stated parts). */
+  /** A held share's maximum on each security, in shekels: stated (§10.6's stated parts), and charged on the deal's one security (F-14). */
   perSecurity?: SiteValue;
 }
 

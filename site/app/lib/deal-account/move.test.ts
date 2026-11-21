@@ -234,6 +234,20 @@ describe("the move with the dollar moving: A-03 = +3% a year over 20 years", () 
   });
 });
 
+describe("the move at 1,000,000 now over 20 years, where every custody maximum binds (F-14)", () => {
+  const houses = data.houses.map((h) => h.id).filter((id) => bundle.snapshots.some((s) => s.id === id));
+  const on = (id: string, typed: Typed) => account(typed, { base: baseOf(bundle.snapshots.find((x) => x.id === id)!, { group: null }) });
+  const big = { ...plan, amountNow: 1_000_000, years: 20, values: { ...plan.values, amount: fig(1_000_000, "nis"), years: fig(20, "years") } };
+  const shapes = houses.flatMap((id): [string, string, CustomBroker][] => [
+    [id, "nothing typed", on(id, {})],
+    [id, "the custody's percent alone, 2% a year", on(id, { custodyPct: 2 })],
+  ]);
+  const got = compare(shapes.map((s) => s[2]), true, big);
+  it.each(shapes)("%s, %s: the same on every fund on the deal's terms", (_id, _, a) => {
+    expect(differing(got.get(a.id)!)).toEqual([]);
+  });
+});
+
 describe("the move: an account built on a house with nothing typed", () => {
   const houses = data.houses.map((h) => h.id).filter((id) => bundle.snapshots.some((s) => s.id === id));
   const bare = houses.map((id) => account({}, { base: baseOf(bundle.snapshots.find((x) => x.id === id)!, { group: null }) }));

@@ -79,12 +79,14 @@ export interface EditorInput {
   withReading?: boolean;
   /** What the host adds to each fee, its head and its cases' marks (`FeeSlot`, `FeesColumn.headOf`). */
   feeHead?: (fee: Fee) => FeeSlot | undefined;
+  /** The fees stand with no heading of their own, where the host's head says what they are (`FeesColumn.untitled`). */
+  untitled?: boolean;
 }
 
 /** The editor's pieces and hands, for its host to lay out (`useDealEditor`). */
 export type DealEditor = ReturnType<typeof useDealEditor>;
 
-export function useDealEditor({ data, today, saved, writable, first, onShown, withReading = true, feeHead }: EditorInput) {
+export function useDealEditor({ data, today, saved, writable, first, onShown, withReading = true, feeHead, untitled = false }: EditorInput) {
   // another deal on screen (a saved one, a new one, one a template filled, or one an undo brought back): what belonged to the deal before
   // goes, and a new deal is saved once it is worth saving
   const doc = useDealDocument({ first, saved, today, data, onShown: () => afterShow() });
@@ -477,6 +479,7 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
       adding={adding}
       onDuplicate={onDuplicate}
       headOf={feeHead}
+      untitled={untitled}
     />
   );
   return {

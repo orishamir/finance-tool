@@ -290,6 +290,7 @@ export function FeesColumn({
   adding,
   onDuplicate,
   headOf,
+  untitled = false,
 }: {
   deal: FeeDeal;
   view: Builder;
@@ -320,6 +321,8 @@ export function FeesColumn({
   onDuplicate?: (fee: Fee) => (() => void) | null;
   /** What the host adds to a fee's head (the indices page: what the plan charges for it, or why nothing); /deal adds nothing. */
   headOf?: (fee: Fee) => FeeSlot | undefined;
+  /** No heading over the fees, where the host's own head says what they are (the indices page's popup); its name stays for the ear. */
+  untitled?: boolean;
 }) {
   // each block's height as last drawn, the room the line a removed fee leaves holds for a moment
   const root = useRef<HTMLDivElement>(null);
@@ -452,8 +455,7 @@ export function FeesColumn({
     ) : null;
   };
 
-  return (
-    <Section title={b.fees} heading="h2">
+  const body = (
       <DropZone accepts={(it) => draggedFee(it) !== null} onDrop={(it) => onAdd(draggedFee(it)!)}>
       <div ref={root} className="flex flex-col gap-6">
         {groups.map(([key, items]) => {
@@ -493,6 +495,12 @@ export function FeesColumn({
         </div>
       </div>
       </DropZone>
+  );
+  return untitled ? (
+    <section aria-label={b.fees}>{body}</section>
+  ) : (
+    <Section title={b.fees} heading="h2">
+      {body}
     </Section>
   );
 }

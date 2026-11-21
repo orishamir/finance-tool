@@ -1,6 +1,7 @@
 // A deal as the engine reads it (method §10.6): typed percents become the engine's fractions here and nowhere else, a discount lowers the
 // price it is off (F-116), a third party's fee with a figure goes with its price (F-117), and a fee read on one step of sizes carries its
-// stretch (F-115). The parts the page states without computing (§10.6's stated parts) do not go to the engine.
+// stretch (F-115). The parts the page states without computing (§10.6's stated parts) do not go to the engine; a maximum on each security
+// is stated and goes too, since the deal reads its holding as one security (F-14, `heldBounds`).
 import { discounted, type Deal, type DealFee, type DealPrice, type DealStage, type DealThird } from "@finance-tool/engine";
 import { isForeign, readFees, type ReadFee } from "./cases";
 import { fraction, monthOf, type FeeDeal, type Price, type ReadPick, type Stage, type ThirdPrice } from "./model";
@@ -54,7 +55,14 @@ function basePrice(p: Price): DealPrice {
     case "held": {
       // F-14: a bound printed per `boundsEvery` months is multiplied by the months in the charging period
       const charge = (n: number) => (p.boundsEvery ? (n * p.every) / p.boundsEvery : n);
-      return { kind: "held", rate: (fraction(p.rate.v) * p.every) / p.per, everyMonths: p.every, ...(p.min ? { min: charge(p.min.v) } : {}), ...(p.max ? { max: charge(p.max.v) } : {}) };
+      return {
+        kind: "held",
+        rate: (fraction(p.rate.v) * p.every) / p.per,
+        everyMonths: p.every,
+        ...(p.min ? { min: charge(p.min.v) } : {}),
+        ...(p.max ? { max: charge(p.max.v) } : {}),
+        ...(p.perSecurity ? { perSecurity: charge(p.perSecurity.v) } : {}),
+      };
     }
     case "sum":
       return { kind: "sum", amount: p.amount.v, everyMonths: p.every };

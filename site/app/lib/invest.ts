@@ -1627,6 +1627,8 @@ export type DealOnPlan =
   | {
       kind: "ok";
       valueN: number;
+      /** The run rests on an open rule (F-118, G-18), as a house's `WayPrice.open`: shown before the tax, not ranked. */
+      open: boolean;
       byFee: Record<string, number>;
       accountCost: number;
       reach: number[][];
@@ -1673,7 +1675,7 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
     const row = got.row;
     const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row };
     const figure = (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
-    out.set(fundId, { kind: "ok", valueN: row.real, byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure });
+    out.set(fundId, { kind: "ok", valueN: row.real, open: row.run.outcome.code === "listed-not-ranked", byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure });
   }
   return out;
 }

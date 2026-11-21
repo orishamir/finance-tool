@@ -15,7 +15,7 @@ import { hasCases, newDeal, type FeeDeal } from "../fee-deal/model";
 import { feeOf } from "../fee-deal/cases";
 import { addBy } from "../fee-deal/edits/case";
 import { dealProviderId, lineValueOf, snapshotOfDeal, withDeals } from "./bundle";
-import { dealTiles } from "./tiles";
+import { dealTiles, listPlace } from "./tiles";
 import { stretchOf } from "../stretch";
 import { feesOnPlan, missingKey, missingOf, planAccount, planDeal, planFees, planRead, planWhat, whatOfRun } from "./plan";
 import { planCases, yearSpans } from "./plan-cases";
@@ -138,8 +138,18 @@ describe("F-128 a deal filled from a house prices as the house does", () => {
     ...plan, amountNow: amount, monthly, years, grossReturn: ret / 100,
     values: { amount: entered(amount, "nis", t), monthly: entered(monthly, "nis_per_month", t), years: entered(years, "years", t), returnV: entered(ret, "pct_per_year", t), inflation: plan.values.inflation },
   });
-  /** Plans beside the page's own, and A-03 at both of P-02's bounds (±3% a year), so the order of the first sum and the track can't hide. */
+  /**
+   * Plans beside the page's own, and A-03 at both of P-02's bounds (±3% a year), so the order of the first sum and the track can't hide. The
+   * large ones hold enough that every custody maximum binds (F-14: Leumi's 3,700 on each security beside 11,500 on the deposit, First
+   * International's 4,000 beside 10,000, Discount's 7,500 on each security alone), from the start and as monthly deposits build it.
+   */
   const plans: [string, WorkbenchInputs, number][] = [
+    ["1,000,000 now, 20 years at 5%", planAt(1_000_000, 0, 20, 5), 0],
+    ["1,000,000 now, 20 years at 5%, the dollar up 3% a year", planAt(1_000_000, 0, 20, 5), 3],
+    ["1,000,000 now, 20 years at 5%, the dollar down 3% a year", planAt(1_000_000, 0, 20, 5), -3],
+    ["40,000 a month, 10 years at 7%", planAt(0, 40_000, 10, 7), 0],
+    ["40,000 a month, 10 years at 7%, the dollar up 3% a year", planAt(0, 40_000, 10, 7), 3],
+    ["40,000 a month, 10 years at 7%, the dollar down 3% a year", planAt(0, 40_000, 10, 7), -3],
     ["50,000 now, 20 years at 5%", planAt(50_000, 0, 20, 5), 0],
     ["2,000 a month, 5 years at 3%", planAt(0, 2_000, 5, 3), 0],
     ["100,000 now and 1,000 a month, 30 years at −2%", planAt(100_000, 1_000, 30, -2), 0],
@@ -208,16 +218,20 @@ describe("F-128 a deal filled from a house prices as the house does", () => {
     expect(snapshotOfDeal(newDeal("brokerage-account", "own"), undefined, t).provider.class).toBe("broker");
   });
 
-  it("the popup's place shares the first place with every account within the tie threshold of the first (F-80)", () => {
+  it("the popup's place is the deal row's place in the account list: after every account that leaves more, ranked runs alone", () => {
     const funds = view.options.filter((o) => o.exists).flatMap((o) => o.funds);
     const tops = view.providers.flatMap((p) => { const st = stretchOf(funds, p.id); return st ? [st.best] : []; }).sort((a, z) => z - a);
     const fundId = funds[0]!.rec.id;
-    const at = (valueN: number) => new Map([[fundId, { kind: "ok" as const, valueN, byFee: {}, accountCost: 0, reach: [], figure: () => { throw new Error("unused"); } }]]);
+    const at = (valueN: number, open = false) => new Map([[fundId, { kind: "ok" as const, valueN, open, byFee: {}, accountCost: 0, reach: [], figure: () => { throw new Error("unused"); } }]]);
     const pid = "deal:none";
-    // just under the first, inside a threshold of 1%: first, as the list counts it
-    expect(dealTiles(view, at(tops[0]! * 0.999), pid, null, fundId, funds.filter((f) => f.rec.id === fundId).concat(funds), 0.01).place?.k).toBe(1);
-    // the same value with no threshold: after every account above it
-    expect(dealTiles(view, at(tops[0]! * 0.999), pid, null, fundId, funds, 0).place?.k).toBe(1 + tops.filter((v) => Math.round(v) > Math.round(tops[0]! * 0.999)).length);
+    // just under the first: second, as the list puts its row, however close to the first
+    expect(dealTiles(view, at(tops[0]! * 0.999), pid, "x", null, fundId, funds).place).toEqual({ k: 1 + tops.filter((v) => v > tops[0]! * 0.999).length, of: tops.length + 1 });
+    expect(dealTiles(view, at(tops[0]! + 1), pid, "x", null, fundId, funds).place?.k).toBe(1);
+    // a run on an open rule ranks nowhere, as the list's stretches leave it out
+    expect(dealTiles(view, at(tops[0]! + 1, true), pid, "x", null, fundId, funds).place).toBeNull();
+    // equal figures stand by name, as the list sorts them
+    expect(listPlace([{ best: 10, name: "ב" }, { best: 12, name: "ג" }], { best: 10, name: "א" })).toBe(2);
+    expect(listPlace([{ best: 10, name: "א" }, { best: 12, name: "ג" }], { best: 10, name: "ב" })).toBe(3);
   });
 
   it("a bank's open mutual fund is bought on its line for securities on the Tel Aviv exchange, as its row buys it (BRK-16)", () => {
@@ -275,6 +289,11 @@ describe("F-128 the cases the plan reads, marked in the popup", () => {
     const reach = reachOf(read, on, custody.id, () => (n++ === 0 ? quarters(3, 60) : quarters(63, 120)));
     const cases = planCases(read, custody.id, on, reach);
     expect(steps.cases.map((c) => cases.get(c.id)?.years)).toEqual([[{ from: 1, to: 5 }], [{ from: 6, to: 10 }]]);
+    // a year with charges in both steps (year 5: months 51 and 54 in the first, 57 and 60 in the second) is said once, in the step its
+    // first charge fell in, so the two never overlap
+    n = 0;
+    const crossing = planCases(read, custody.id, on, reachOf(read, on, custody.id, () => (n++ === 0 ? quarters(3, 54) : quarters(57, 120))));
+    expect(steps.cases.map((c) => crossing.get(c.id)?.years)).toEqual([[{ from: 1, to: 5 }], [{ from: 6, to: 10 }]]);
     // a step no charge reached is not read on the plan
     n = 0;
     expect(planCases(read, custody.id, on, reachOf(read, on, custody.id, () => (n++ === 0 ? quarters(3, 120) : []))).get(steps.cases[1]!.id)).toBeUndefined();

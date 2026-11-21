@@ -12,6 +12,7 @@ import {
   curveEnd,
   dealConversionStretches,
   groupAction,
+  heldBounds,
   heldCrossover,
   isConversionFee,
   heldLayers,
@@ -151,7 +152,7 @@ type Rates = Readonly<Record<string, number>>;
  * A figure as charged: the typed one where the engine charges it as typed; after a discount where one is taken off it (F-116); else a held
  * share's bound printed for another period than its charge's, as one charge's (F-14).
  */
-function charged(r: DealRead, i: number, figures: PriceFigures, key: "rate" | "amount" | "min" | "max" | "flat", engineValue: number | undefined, pct: boolean): SiteValue | undefined {
+function charged(r: DealRead, i: number, figures: PriceFigures, key: "rate" | "amount" | "min" | "max" | "flat" | "perSecurity", engineValue: number | undefined, pct: boolean): SiteValue | undefined {
   const typed = figures[key];
   if (!typed || engineValue === undefined) return typed;
   const shown = pct ? engineValue * 100 : engineValue;
@@ -179,8 +180,13 @@ function partFigure(r: DealRead, i: number, part: PricePart, e: DealPrice, s: Pr
       if (e.kind === "held") return { ...opt("figure", charged(r, i, f, "rate", e.rate, true)), per: (s as Extract<Price, { form: "held" }>).per };
       return opt("figure", e.kind === "perUnit" ? charged(r, i, f, "amount", e.amount, false) : charged(r, i, f, "rate", get("rate"), true));
     case "min":
-    case "max":
       return { ...opt("figure", charged(r, i, f, part, get(part), false)), ...(e.kind === "held" ? { per: (s as Extract<Price, { form: "held" }>).every } : {}) };
+    case "max": {
+      if (e.kind !== "held") return opt("figure", charged(r, i, f, part, get(part), false));
+      // a held share's maximum is the one that binds on the deal's one security (F-14): the maximum on each security where it is the lower
+      const key = e.perSecurity !== undefined && heldBounds(e).max === e.perSecurity && e.perSecurity !== e.max ? "perSecurity" : "max";
+      return { ...opt("figure", charged(r, i, f, key, e[key], false)), per: (s as Extract<Price, { form: "held" }>).every };
+    }
     case "cap":
       return opt("figure", f.cap);
     case "flat":

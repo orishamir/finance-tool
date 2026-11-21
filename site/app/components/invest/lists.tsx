@@ -31,6 +31,7 @@ import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, LongestCase, Mi
 import { AddEntryButton, FundTerms } from "./custom-entries";
 import { AddDealButton, DealTerms, DeletedLine, useDealAccounts } from "./deal-account";
 import { dealIdOf, isDealProviderId } from "../../lib/deal-account/bundle";
+import { feeNameOf } from "../../lib/fee-deal/part-words";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
@@ -279,23 +280,34 @@ export function PairLists(props: ListsProps) {
       // the words that say it are what opens why: the rule the record names for it, or the record's own reasons, each with its document
       // ("instead of the ? just have the label be clickable for information and source", 2026-11-12)
       const told = whole ?? whyNoFundAt(bundle, p.id, [fund]);
+      // the person's deal waiting for a price (D1): its row names the fee it waits for, in a dashed card, in place of a reason to tap, and a
+      // tap on it, as on its "להשלים", opens the deal on that fee
+      const at = fund.byHouse[p.id];
+      const reason = at && "reason" in at ? at.reason : undefined;
+      const waits = isDealProviderId(p.id) && reason?.code === "deal-unpriced" ? reason.missing : null;
+      const waitingId = waits ? dealIdOf(p.id) : null;
       return {
         key: p.id,
         selected: false,
         muted: true,
-        ...(none ? { disabled: true } : {}),
-        onSelect: none ? () => undefined : () => pickHalf(view, pick, { house: p.id }, onPick),
+        ...(waits ? { dashed: true } : {}),
+        ...(none && !waitingId ? { disabled: true } : {}),
+        onSelect: waitingId && waits ? () => dealApi?.open({ dealId: waitingId, fee: waits.fee }) : none ? () => undefined : () => pickHalf(view, pick, { house: p.id }, onPick),
         cells: (
           <>
             {nameOf(p, false)}
-            <span className="text-xs text-muted-foreground whitespace-nowrap">
-              <NoFundWords told={told} name={c.pair.noPriceAt.other(p.short)}>
-                {/* the words follow the reason's own order (a doubt in the record first), so they never differ from the card they open */}
-                {c.pair.noFund[told.state]}
-              </NoFundWords>
-            </span>
+            {waits ? (
+              <span aria-hidden="true" />
+            ) : (
+              <span className="text-xs text-muted-foreground whitespace-nowrap">
+                <NoFundWords told={told} name={c.pair.noPriceAt.other(p.short)}>
+                  {/* the words follow the reason's own order (a doubt in the record first), so they never differ from the card they open */}
+                  {c.pair.noFund[told.state]}
+                </NoFundWords>
+              </span>
+            )}
             <span aria-hidden="true" className="w-[9px]" />
-            {p.custom && underRow(<DealTerms id={p.id} complete />)}
+            {p.custom && underRow(<DealTerms id={p.id} complete missing={waits} />)}
           </>
         ),
       };
@@ -524,8 +536,8 @@ export function PairLists(props: ListsProps) {
     abroadLacks && abroadFolded.length > 0 && dealId ? (
       <div className="flex flex-col gap-1">
         <p className="flex flex-wrap items-baseline gap-x-2 text-sm text-muted-foreground">
-          {c.dealAccount.abroad.fold}
-          <Button variant="inline" onClick={() => dealApi!.open({ dealId, fee: abroadLacks.fee })}>
+          {abroadLacks.kind === "trade" ? c.dealAccount.abroad.fold : c.dealAccount.abroad.foldCase(feeNameOf(abroadLacks.kind, abroadLacks.name))}
+          <Button variant="inline" bold onClick={() => dealApi!.open({ dealId, fee: abroadLacks.fee })}>
             {c.dealAccount.abroad.foldAdd}
           </Button>
         </p>

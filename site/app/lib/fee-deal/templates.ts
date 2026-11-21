@@ -111,6 +111,11 @@ export interface HouseTemplate {
   leftOut: LeftOutView | null;
   /** What the house charged on average for the kinds of the lines the template filled a fee from (F-122), for reference only. */
   averages?: HouseAverages;
+  /**
+   * Every column of the house's averages that prints a figure (F-122), for reference only: the indices page's popup reads the column of
+   * what its plan buys under each fee, whichever line of the list the fee came from.
+   */
+  everyColumn?: HouseAverages;
 }
 
 /**
@@ -278,8 +283,9 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       const monthly = bounds.filter((b) => b.unit === "nis_per_month").length;
       const asPrinted = monthly > 0 && monthly === bounds.length && every !== 1;
       const bound = (b: ValueObject & { value: number }): Num => ({ v: asPrinted ? b.value : b.value * (b.unit === "nis_per_month" ? every : 1), src: sourcedOf(b, own) });
-      // a maximum on each security is said as one, never as the holding's; a maximum on the whole deposit, alone or printed beside it, is the
-      // holding's (data-schema §3.6a item 2: the deal holds one deposit); a maximum the list prints with no scope is left out, the cautious reading
+      // a maximum on each security is filled as one and a maximum on the whole deposit, alone or printed beside it, as the holding's
+      // (data-schema §3.6a item 2: the deal holds one deposit, of one security, so a charge takes the lower of the two, F-14's `heldBounds`);
+      // a maximum the list prints with no scope is left out, the cautious reading
       const maxOf = { security: "perSecurity", deposit: "max", unstated: null } as const;
       const maxAs = l.max_per ? maxOf[l.max_per] : "max";
       const figures = { rate: num(l.rate), ...(has(l.min) ? { min: bound(l.min) } : {}), ...(has(l.max) && maxAs ? { [maxAs]: bound(l.max) } : {}), ...(has(l.max_deposit) ? { max: bound(l.max_deposit) } : {}) };

@@ -15,6 +15,8 @@ import {
   dealPeriods,
   discounted,
   groupRate,
+  heldBounds,
+  heldCharge,
   holdingCost,
   inStep,
   perYear,
@@ -316,6 +318,26 @@ describe("F-112 the sums a deal's prices mark", () => {
     expect(holdingCost(deal, p!, 5000).total).toBeCloseTo(40, 10);
     expect(holdingCost(deal, p!, 50000).total).toBeCloseTo(200, 10);
     expect(holdingCost(deal, p!, 500000).total).toBeCloseTo(400, 10);
+  });
+
+  it("holds a charge of a held share to the lower of its maximum and its maximum on each security, on the deal's one security (F-14)", () => {
+    // Leumi's custody in Tel Aviv: 0.15% a quarter, at most 3,700 ₪ on each security and 11,500 ₪ on the deposit (BRK-69, note 5)
+    const leumi: DealPrice = { kind: "held", rate: 0.0015, everyMonths: 3, max: 11500, perSecurity: 3700 };
+    // Discount's: 0.2% a quarter, at most 7,500 ₪ on each security, and no maximum on the deposit
+    const discount: DealPrice = { kind: "held", rate: 0.002, everyMonths: 3, perSecurity: 7500 };
+    expect(heldBounds(leumi)).toEqual({ max: 3700 });
+    expect(heldBounds(discount)).toEqual({ max: 7500 });
+    expect(heldBounds({ kind: "held", rate: 0.001, everyMonths: 3, min: 10, max: 100, perSecurity: 400 })).toEqual({ min: 10, max: 100 });
+    const deal: Deal = { foreign: false, fees: [{ base: { key: "custody" }, stages: [{ price: leumi }] }, { base: { key: "custody" }, stages: [{ price: discount }] }] };
+    const [p] = dealPeriods(deal, today).periods;
+    // on 10,000,000 ₪: 0.15% is 15,000 a quarter, held to 3,700; 0.2% is 20,000, held to 7,500
+    expect(heldCharge(deal, p!, 0, 10_000_000)).toBe(3700);
+    expect(heldCharge(deal, p!, 1, 10_000_000)).toBe(7500);
+    expect(holdingCost(deal, p!, 10_000_000).total).toBeCloseTo(4 * (3700 + 7500), 9);
+    // below the maximum, the rate: 0.15% of 1,000,000 is 1,500
+    expect(heldCharge(deal, p!, 0, 1_000_000)).toBeCloseTo(1500, 9);
+    // the curve's maximum starts where the lower maximum binds: 3,700 / 0.15% and 7,500 / 0.2%
+    expect(dealMarks(deal, p!).map((m) => [m.kind, m.fee, Math.round(m.amount)])).toEqual([["max", 0, 2_466_667], ["max", 1, 3_750_000]]);
   });
 
   it("does not limit a charge to the value held: below a custody minimum, and on nothing held, the cost is the minimum", () => {

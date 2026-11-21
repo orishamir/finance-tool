@@ -141,7 +141,8 @@ export type Price =
    * A share of what is held, `rate` percent for each `per` months, charged every `every` months, with shekel bounds per charge, or per
    * month where the price list prints them so (`boundsEvery: 1`, "מינימום 40 ₪ לחודש"), which F-14 turns into a charge's bounds; F-14
    * names no other period a bound is printed in. `perSecurity` is a maximum in shekels on each security held, in the bounds' period
-   * ("₪ 7,500 לני״ע לרבעון"): §10.6 states it and never computes it, since the charge it bounds depends on how many securities are held.
+   * ("₪ 7,500 לני״ע לרבעון"): the deal holds one security, so a charge takes the lower of it and `max` (F-14), and §10.6 states it, since
+   * on several securities the charge it bounds depends on how many are held.
    */
   | ({ form: "held"; rate: Num; per: Months; every: Months; min?: Num; max?: Num; perSecurity?: Num; boundsEvery?: 1 } & Linked)
   /** A sum in shekels every `every` months, whatever the account holds. */

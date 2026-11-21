@@ -18,7 +18,7 @@ import { Num, StateTag } from "../provenance";
 import { useState } from "react";
 import { Card, DocLink, FactTile, GroupPriceFold, HelpMark, KeyValue, LabelChip, LabelRow, MixedName, ProductIdLink, SourcedTag, Tag, TileJoin, When, gershayim, type GroupChoice } from "../kit";
 import { brands } from "../../copy";
-import { DealCard, DealFromHouseButton } from "./deal-account";
+import { DealCardActions, DealFromHouseButton, DealRows } from "./deal-account";
 import { isDealProviderId } from "../../lib/deal-account/bundle";
 import { OptionTag } from "./parts";
 import { allFunds, asideWords, crownedHouse, GapCell, gapNoteOf, gapStateOf, inTieSet, labelsOf, mayaHrefOf, pairVerdict, phoneOf, pickHalf, priced, unitsLine, type OnPick, type Pick } from "./pair";
@@ -91,9 +91,9 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
                   <SourcedTag value={phone}>{c.pair.phoneTag}</SourcedTag> {c.pair.phoneLine(house.short)}
                 </p>
               )}
-              {house.custom && isDealProviderId(house.id) && <DealCard id={house.id} house={(id) => providerName(view, id)?.short ?? null} />}
+              {house.custom && isDealProviderId(house.id) && <DealCardActions id={house.id} />}
               {!house.custom && snap && (
-                <DealFromHouseButton houseId={house.id} className="self-start -ms-2">
+                <DealFromHouseButton houseId={house.id} framed>
                   {c.pair.ownPrice}
                 </DealFromHouseButton>
               )}
@@ -101,7 +101,8 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
           }
           name={
             <span className="flex items-baseline justify-between gap-2">
-              <span className={house.custom ? "text-entered" : undefined}>
+              {/* a deal's name is the person's words, in the text's own ink as the receipt writes it (H); an account they typed, in the entered ink */}
+              <span className={house.custom && !isDealProviderId(house.id) ? "text-entered" : undefined}>
                 <ProviderLink p={house} />
               </span>
               {house.id === view.yourBroker && <span className="shrink-0 text-sm font-normal text-entered">{c.pair.yoursTag}</span>}
@@ -114,6 +115,7 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
               <When iso={snap.snapshot} />
             </KeyValue>
           )}
+          {isDealProviderId(house.id) && <DealRows id={house.id} house={(id) => providerName(view, id)?.short ?? null} />}
           {/* a deal is the person's whole price: no other price of a house's list stands beside it (H) */}
           {!isDealProviderId(house.id) && (
             <KeyValue size="xs" label={c.chosen.aside}>

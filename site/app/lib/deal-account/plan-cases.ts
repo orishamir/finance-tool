@@ -32,12 +32,15 @@ export function yearSpans(years: Iterable<number>): YearSpan[] {
  * F-128 The cases of fee `feeId` the plan reads (`planRead`, the fees it charges `on` the plan), by case id: a case read within no step,
  * plainly; a case read within steps, where the run reached them (`reach[i]`, the run months a charge of the run's `i`th fee fell in all its
  * steps, `planFees`' order): with the years of those months where every step is of the account's size, plainly where any is of an order's own
- * size, a month's orders or its trading. A case no charge of the run reached, or with no run, is not marked; a case marked plainly by one of
- * its read fees is marked plainly.
+ * size, a month's orders or its trading. A year whose charges fell in two steps of the account's size is said once, in the step its first
+ * charge fell in, so the steps' years never overlap ("שנים 1–5", "שנים 6–10"). A case no charge of the run reached, or with no run, is not
+ * marked; a case marked plainly by one of its read fees is marked plainly.
  */
 export function planCases(read: PlanRead, feeId: string, on: readonly FeeOnPlan[], reach: readonly (readonly number[])[] | null): Map<string, PlanCase> {
   const plain = new Set<string>();
   const years = new Map<string, Set<number>>();
+  // each year of a step of the account's size: the month of its first charge, and the case it fell in
+  const firsts = new Map<number, { month: number; id: string }>();
   planFees(read, on).forEach((x, i) => {
     const id = x.read?.case;
     if (feeOf(x) !== feeId || !id) return;
@@ -55,10 +58,13 @@ export function planCases(read: PlanRead, feeId: string, on: readonly FeeOnPlan[
       plain.add(id);
       return;
     }
-    const got = years.get(id) ?? new Set<number>();
-    for (const m of months) got.add(Math.ceil(m / 12));
-    years.set(id, got);
+    for (const m of months) {
+      const y = Math.ceil(m / 12);
+      const first = firsts.get(y);
+      if (!first || m < first.month) firsts.set(y, { month: m, id });
+    }
   });
+  for (const [y, { id }] of firsts) years.set(id, (years.get(id) ?? new Set<number>()).add(y));
   const out = new Map<string, PlanCase>();
   for (const id of plain) out.set(id, { years: null });
   for (const [id, ys] of years) if (!plain.has(id)) out.set(id, { years: yearSpans(ys) });

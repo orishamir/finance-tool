@@ -199,7 +199,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         isAccountDeal(deal) && saved.some((d) => d.id === deal.id) ? (
           <>
             {ed.setupStrip}
-            <LinkButton to={dealOnIndexPath(deal.id, lastIndex.value)} className="mt-2 self-start">
+            <LinkButton variant="framed" to={dealOnIndexPath(deal.id, lastIndex.value)} className="mt-2 self-start">
               {copy.end.onIndices} ↗
             </LinkButton>
           </>

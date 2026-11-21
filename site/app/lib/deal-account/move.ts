@@ -223,8 +223,10 @@ function groupCustody(p: Price, v: GroupPriceValue, n: (v: number) => Num): Pric
   const kept = (b: Num | undefined): Num | undefined => (b === undefined || !held ? undefined : held.boundsEvery === 1 || held.every === every ? b : { ...b, v: perMonth(held, b) * every });
   const sameBasis = !held || held.boundsEvery !== 1;
   const min = v.min !== undefined ? n(sameBasis ? v.min : v.min / every) : kept(held?.min);
+  // the group's maximum replaces the list's on each security and on the deposit, as F-101 reads the list's one maximum (`groupCustody`)
   const max = v.max !== undefined ? n(sameBasis ? v.max : v.max / every) : kept(held?.max);
-  return { form: "held", rate: n(v.rate_pct), per: every, every, ...(min ? { min } : {}), ...(max ? { max } : {}), ...(held?.boundsEvery === 1 ? { boundsEvery: 1 as const } : {}) };
+  const perSecurity = v.max !== undefined ? undefined : kept(held?.perSecurity);
+  return { form: "held", rate: n(v.rate_pct), per: every, every, ...(min ? { min } : {}), ...(max ? { max } : {}), ...(perSecurity ? { perSecurity } : {}), ...(held?.boundsEvery === 1 ? { boundsEvery: 1 as const } : {}) };
 }
 
 /**
@@ -354,9 +356,19 @@ function ownCustody(p: Price, list: Price, pct: number | null, min: number | nul
   const keep = (b: Num | undefined, from: typeof held): Num | undefined => (b === undefined || !from ? undefined : monthly ? { ...b, v: perMonth(from, b) } : from.every === every ? b : { ...b, v: perMonth(from, b) * every });
   const keptMin = held?.min ? keep(held.min, held) : keep(listHeld?.min, listHeld);
   const keptMax = held?.max ? keep(held.max, held) : keep(listHeld?.max, listHeld);
+  const keptPerSecurity = held?.perSecurity ? keep(held.perSecurity, held) : keep(listHeld?.perSecurity, listHeld);
   const rate: Num = pct !== null ? typed(pct) : held ? { ...held.rate, v: (held.rate.v * 12) / held.per } : typed(0);
   const minOut = min !== null ? typed(monthly ? min : min * every) : keptMin;
-  return { form: "held", rate, per: 12, every, ...(minOut && minOut.v > 0 ? { min: minOut } : {}), ...(keptMax ? { max: keptMax } : {}), ...(monthly ? { boundsEvery: 1 as const } : {}) };
+  return {
+    form: "held",
+    rate,
+    per: 12,
+    every,
+    ...(minOut && minOut.v > 0 ? { min: minOut } : {}),
+    ...(keptMax ? { max: keptMax } : {}),
+    ...(keptPerSecurity ? { perSecurity: keptPerSecurity } : {}),
+    ...(monthly ? { boundsEvery: 1 as const } : {}),
+  };
 }
 
 /**
