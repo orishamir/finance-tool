@@ -22,13 +22,13 @@ import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { Copy } from "lucide-react";
-import { AddLine, Button, ChoiceChips, DropZone, FeePalette, Grip, GroupHead, KnobButton, RemoveButton, Section, Step, StepStrip, focusPartEdit, useCanDrag, type AddItem, type FeeHeadSlot, type GripAction, type PaletteItem } from "../kit";
+import { AddLine, Button, ChoiceChips, DropZone, FeePalette, Grip, GroupHead, KnobButton, RemoveButton, Section, Step, StepStrip, focusPartEdit, useCanDrag, type AddItem, type GripAction, type PaletteItem } from "../kit";
 import { liftDrop, liftId, liftedOf, liftTakes, type Lifted } from "../../lib/fee-deal/lifted";
 import { keepPicks } from "../../lib/fee-deal/cases";
 import { partFieldId } from "./figures";
 import { bringIntoView } from "./in-view";
 import { useFeeMark } from "./links";
-import { FeeBlockView, type AskOf, type BlockActions, type OpenHere } from "./fee-block";
+import { FeeBlockView, type AskOf, type BlockActions, type FeeSlot, type OpenHere } from "./fee-block";
 import { TemplateNote } from "./picker";
 import { CopyFee } from "./copy-fee";
 import { UndoLine } from "./undo-line";
@@ -319,7 +319,7 @@ export function FeesColumn({
   /** A fee duplicated beside itself; null for a fee the page does not duplicate (a kind that stands alone). */
   onDuplicate?: (fee: Fee) => (() => void) | null;
   /** What the host adds to a fee's head (the indices page: what the plan charges for it, or why nothing); /deal adds nothing. */
-  headOf?: (fee: Fee) => FeeHeadSlot | undefined;
+  headOf?: (fee: Fee) => FeeSlot | undefined;
 }) {
   // each block's height as last drawn, the room the line a removed fee leaves holds for a moment
   const root = useRef<HTMLDivElement>(null);

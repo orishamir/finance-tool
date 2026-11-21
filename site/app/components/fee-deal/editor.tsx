@@ -42,7 +42,7 @@ import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { MQ, useMedia, useWiderThan } from "../../lib/hooks";
 import { feeDeal as copy } from "../../copy";
-import { Card, ThingMenu, ValueMenuSheet, type FeeHeadSlot } from "../kit";
+import { Card, ThingMenu, ValueMenuSheet } from "../kit";
 import { FeesColumn, Palette, SetupStrip, feeGroup, paletteItems, shownFeeOrder } from "./builder";
 import { DealColumns, TOOLBOX_STICKY } from "./deal-columns";
 import { useSaid } from "./deal-notices";
@@ -52,7 +52,7 @@ import { SlotMenu, WhenText } from "./open-case";
 import { TemplatePicker } from "./picker";
 import { ToolboxCard, ToolboxColumn, applyTool, landingOf, partLabel, type ToolHands } from "./toolbox";
 import { useLetGo } from "./use-let-go";
-import type { LiftHands, ToolDrop } from "./fee-block";
+import type { FeeSlot, LiftHands, ToolDrop } from "./fee-block";
 import type { Landed, PlaceHands } from "./open-case";
 import { useUnitPrice } from "./use-unit-price";
 import { refusalWords, useDealDocument } from "./use-deal-document";
@@ -77,8 +77,8 @@ export interface EditorInput {
   onShown?: () => void;
   /** Whether the host draws /deal's reading, which the editor then reads (`readingOf`); a host that reads the deal otherwise leaves it out. */
   withReading?: boolean;
-  /** What the host adds to each fee's head (`FeesColumn.headOf`). */
-  feeHead?: (fee: Fee) => FeeHeadSlot | undefined;
+  /** What the host adds to each fee, its head and its cases' marks (`FeeSlot`, `FeesColumn.headOf`). */
+  feeHead?: (fee: Fee) => FeeSlot | undefined;
 }
 
 /** The editor's pieces and hands, for its host to lay out (`useDealEditor`). */

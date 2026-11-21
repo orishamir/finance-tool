@@ -1611,8 +1611,21 @@ export function dealRunOf(a: InvestArgs & { fundId: string }): DealRun | null {
   return { instrumentClass: spec.cls, listing: spec.listing, currency: spec.currency?.code ?? null, distributes: !!(spec.fund as { distribution?: unknown }).distribution, fx: ctx.fx };
 }
 
-/** A deal account on one fund of the plan (F-128): what it leaves, and what each of its fees took before the tax it saves (F-91), by the deal's fee id. */
-export type DealOnPlan = { kind: "ok"; valueN: number; byFee: Record<string, number>; accountCost: number } | { kind: "fail"; reason: NotComparable | Reason };
+/**
+ * A deal account on one fund of the plan (F-128): what it leaves, what each of its fees took before the tax it saves (F-91), by the deal's
+ * fee id, and the account's nominal balance at the end of each month of the run (`balances[m - 1]` for run month `m`, the run's own series).
+ */
+export type DealOnPlan =
+  | {
+      kind: "ok";
+      valueN: number;
+      byFee: Record<string, number>;
+      accountCost: number;
+      balances: number[];
+      /** A figure of this run as the popup shows it (F-128): `n` shekels, computed from the run's inputs and rules, `about` saying which. */
+      figure: (n: number, about: string) => SiteValue;
+    }
+  | { kind: "fail"; reason: NotComparable | Reason };
 
 /**
  * One deal account priced on one fund of the plan, alone (F-128): the popup that edits the deal reads it as the person types, where the
@@ -1649,7 +1662,11 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
       const id = ids?.[x.fee];
       if (id !== undefined) byFee[id] = (byFee[id] ?? 0) + x.costBeforeTax;
     }
-    out.set(fundId, { kind: "ok", valueN: got.row.real, byFee, accountCost: got.row.horizonCostBeforeTax });
+    const row = got.row;
+    const balances = row.run.series.filter((p) => p.month >= 1 && p.month <= row.run.exitMonth).sort((a, b) => a.month - b.month).map((p) => p.balance);
+    const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row };
+    const figure = (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+    out.set(fundId, { kind: "ok", valueN: row.real, byFee, accountCost: row.horizonCostBeforeTax, balances, figure });
   }
   return out;
 }

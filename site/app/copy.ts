@@ -818,6 +818,7 @@ export const formulaNames: Record<string, string> = {
   "F-125": "שנה ממש מתחת למדרגה וממש מעליה",
   "F-126": "חודש בלי פעולה ובלי החזקה",
   "F-127": "הפעולה שמכסה עמלה שמתקזזת",
+  "F-128": "חשבון שהמחיר שלו לפי העסקה שלכם",
   "F-08": "חשבון הכסף חודש אחרי חודש",
   "F-09": "השווי במשיכה",
   "F-10": "העלות בתוך הקרן",
@@ -4286,6 +4287,10 @@ export const invest = {
       diff: (house: string) => `מול התעריפון של ${house}`,
       diffNote: "באותה קרן, לפי התוכנית שלכם",
       diffAbout: "מה שנשאר בעסקה שלכם פחות מה שנשאר לפי התעריפון של אותו בית, באותה קרן",
+      /** The house's own row on the same fund, as an input of the difference. */
+      houseAbout: (house: string) => `מה שנשאר לפי התעריפון של ${house}, באותה קרן`,
+      /** The place: among how many accounts, each at its cheapest fund. */
+      placeAbout: (of: number) => `המקום של העסקה שלכם מבין ${of} החשבונות, לפי מה שכל אחד משאיר בסוף בקרן הזולה אצלו`,
       noSum: "עוד אין סכום",
       waits: (fee: string) => `${fee} מחכה למחיר`,
       unranked: "לא מדורג",
@@ -4299,6 +4304,13 @@ export const invest = {
     where: { tase: "בתל אביב", us: "בארצות הברית", europe: "באירופה", world: "בחו״ל", manager: "ממנהל הקרן" } as Record<string, string>,
     /** Under a fee's block: what the plan charges, or why it charges nothing (lib/deal-account/plan.ts, `OffPlan`). */
     onPlan: "בתוכנית",
+    /** On the case of a fee the plan reads (B), and on a step of the account's size with the years the plan spends in it (F). */
+    planCase: (years: readonly { from: number; to: number }[] | null) =>
+      years === null
+        ? "בתוכנית"
+        : years.length === 1 && years[0]!.from === years[0]!.to
+          ? `בתוכנית: שנה ${years[0]!.from}`
+          : `בתוכנית: שנים ${years.map((y) => (y.from === y.to ? `${y.from}` : `${y.from} עד ${y.to}`)).join(", ")}`,
     offPlan: "לא בתוכנית",
     off: {
       "shekel-fund": "הקרן נקנית בשקלים, ולכן בתוכנית אין המרה.",
@@ -4316,8 +4328,11 @@ export const invest = {
      * A deal filled from a bank that names no current account of its own pays the bank's (F-102), from the bank's record: one quiet line
      * after the fee blocks, its price a month by the price list and its cost on the plan. The toolbox's "חשבון עובר ושב בבנק" gives it its own.
      */
-    bankAccount: (bank: string, monthly: string, cost: string | null) =>
-      `בתוכנית נספר גם חשבון העו״ש של ${bank}: ${monthly} בחודש לפי התעריפון${cost !== null ? `, ${cost} בתוכנית` : ""}. אפשר לתת לו מחיר משלכם בכרטיס ״חשבון עובר ושב בבנק״.`,
+    bankAccount: (bank: string, withCost: boolean) =>
+      `בתוכנית נספר גם חשבון העו״ש של ${bank}: {monthly} בחודש לפי התעריפון${withCost ? ", {cost} בתוכנית" : ""}. אפשר לתת לו מחיר משלכם בכרטיס ״חשבון עובר ושב בבנק״.`,
+    /** What a fee, or the bank's current account, took on the plan, as its figure's sheet says (F-128). */
+    feeCostAbout: (fee: string) => `העלות של ${fee} בתוכנית, בכסף של היום`,
+    bankCostAbout: (bank: string) => `העלות של חשבון העו״ש של ${bank} בתוכנית, בכסף של היום`,
     /** The pick bar: what only the person knows (a track, a condition of their own), then what the plan sets itself. */
     readFor: "קוראים את העסקה בשביל",
     /** The pick bar on a phone, one line under the strip. */

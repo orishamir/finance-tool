@@ -4,13 +4,15 @@ import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import { buildIndicesBundle } from "../providers.server";
 import { entered } from "../value";
-import { buildInvest, indexById } from "../invest";
+import { buildInvest, dealOnFunds, dealRunOf, indexById } from "../invest";
 import type { WorkbenchInputs } from "../providers";
 import { fillDeal, templateOptions } from "../fee-deal/templates";
-import { newDeal, type FeeDeal } from "../fee-deal/model";
+import { hasCases, newDeal, type FeeDeal } from "../fee-deal/model";
+import { feeOf } from "../fee-deal/cases";
 import { addBy } from "../fee-deal/edits/case";
 import { dealProviderId, lineValueOf, withDeals } from "./bundle";
-import { feesOnPlan, missingKey, missingOf, planDeal, planWhat, whatOfRun } from "./plan";
+import { feesOnPlan, missingKey, missingOf, planDeal, planRead, planWhat, whatOfRun } from "./plan";
+import { planCases, yearSpans } from "./plan-cases";
 
 const data = feesData();
 const bundle = buildIndicesBundle();
@@ -112,5 +114,42 @@ describe("F-128 a deal filled from a house prices as the house does", () => {
     const at = (v: typeof view, pid: string) => v.houses.find((r) => r.provider.id === pid)!.entries.find((e) => e.fund.option === "il-etf")!.price!.valueN;
     expect(at(own, dealProviderId("deal-leumi"))).toBeGreaterThan(at(view, dealProviderId("deal-leumi")));
     expect(Math.round(at(own, dealProviderId("deal-leumi")))).toBe(Math.round(at(own, "leumi")));
+  });
+});
+
+describe("F-128 the cases the plan reads, marked in the popup", () => {
+  const deal = fromHouse("psagot");
+  const custody = deal.fees.find((f) => f.kind === "custody")!;
+  const trade = deal.fees.find((f) => f.kind === "trade")!;
+  const sized = { ...deal, id: "deal-sized", fees: deal.fees.map((f) => (f === custody ? addBy(f, { kind: "portfolioSize", unit: "ILS", top: 50_000 }) : f)) };
+  const read = planRead(sized, run, ctx);
+
+  it("marks the case a fee is read in, in every year, where no step of the size splits it", () => {
+    const cases = planCases(read, trade.id, null);
+    const readCase = read.fees.find((x) => feeOf(x) === trade.id)!.read?.case;
+    expect(readCase && cases.get(readCase)).toEqual({ years: null });
+    expect(cases.size).toBe(1);
+  });
+
+  it("gives each step of the size the years whose balance falls in it", () => {
+    const steps = sized.fees.find((f) => f.id === custody.id)!;
+    if (!hasCases(steps)) throw new Error("custody has its steps");
+    // a balance rising by 1,000 a month: up to 50,000 in months 1 to 50 (years 1 to 5), above it from month 51 (years 5 to 10)
+    const balances = Array.from({ length: 120 }, (_, i) => (i + 1) * 1_000);
+    const cases = planCases(read, custody.id, balances);
+    expect(steps.cases.map((c) => cases.get(c.id)?.years)).toEqual([[{ from: 1, to: 5 }], [{ from: 5, to: 10 }]]);
+    // a step no month reaches is not read on the plan
+    expect(planCases(read, custody.id, balances.map(() => 10_000)).get(steps.cases[1]!.id)).toBeUndefined();
+    expect(yearSpans([1, 2, 3, 7, 8])).toEqual([{ from: 1, to: 3 }, { from: 7, to: 8 }]);
+  });
+
+  it("reads the balances from the deal's own run, one a month of the plan", () => {
+    const bs = withDeals(bundle, [sized], data.kinds);
+    const fundId = bundle.funds.find((f) => dealRunOf({ bundle: bs, index: indexById(bs, "index-ta125")!, plan, fundId: f.id })?.instrumentClass === "etf_units")?.id;
+    const got = fundId ? dealOnFunds({ bundle: bs, index: indexById(bs, "index-ta125")!, plan, fundIds: [fundId], providerId: dealProviderId(sized.id) }).get(fundId) : undefined;
+    expect(got?.kind).toBe("ok");
+    if (got?.kind !== "ok") return;
+    expect(got.balances).toHaveLength(plan.years * 12);
+    expect(got.balances.at(-1)!).toBeGreaterThan(got.balances[0]!);
   });
 });

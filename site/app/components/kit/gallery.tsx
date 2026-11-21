@@ -3387,7 +3387,7 @@ function CustodyTable({ today }: { today: string }) {
  * Custody by the size of the portfolio, as a ladder: three steps meeting at their tops, the figures plain at rest and each top typed in
  * place while a case is open; "+ מדרגה" at the end.
  */
-function LadderTable({ today }: { today: string }) {
+function LadderTable({ today, marks }: { today: string; /** A host's mark on each step, by its place. */ marks?: readonly string[] }) {
   const [tops, setTops] = useState([100_000, 500_000]);
   const [open, setOpen] = useState<number | null>(null);
   const rates = [0.2, 0.15, 0.1];
@@ -3430,7 +3430,7 @@ function LadderTable({ today }: { today: string }) {
       <div className="px-3">
       <CaseTable
         ladder
-        columns={heads.map((h, k) => ({ id: String(k), head: h, label: sc.open(String(k + 1)), onOpen: () => setOpen((o) => (o === k ? null : k)), open: open === k }))}
+        columns={heads.map((h, k) => ({ id: String(k), head: h, label: sc.open(String(k + 1)), onOpen: () => setOpen((o) => (o === k ? null : k)), open: open === k, ...(marks?.[k] ? { mark: marks[k] } : {}) }))}
         rows={[{ id: "price", cells: rates.map((r, k) => ({ from: k, span: 1, onOpen: () => setOpen((o) => (o === k ? null : k)), content: <span>{fig(r, "pct_of_balance_per_period", today)} {dealWords.price.per[12]}</span> })) }]}
         add={{ label: dealWords.cases.addKnob.step, onAdd: () => undefined }}
       />
@@ -3737,6 +3737,14 @@ function CaseDemos({ today }: { today: string }) {
             <LadderTable today={today} />
           </div>
         </State>
+        <State label="a host's marks on cases (CaseMark; the indices page's popup, /deal passes none): across a tile's top edge, each step of the size with the years the plan spends in it, and on a case read as a row after its words" wide>
+          <div className="flex max-w-2xl flex-col gap-3">
+            <LadderTable today={today} marks={[investWords.dealAccount.planCase([{ from: 1, to: 5 }]), investWords.dealAccount.planCase([{ from: 5, to: 10 }])]} />
+            <CaseRow when={[{ text: g.sample.cases.channels.web }]} label={g.sample.cases.open(g.sample.cases.channels.web)} onOpen={() => undefined} mark={investWords.dealAccount.planCase(null)}>
+              <span className="text-sm">0.05%</span>
+            </CaseRow>
+          </div>
+        </State>
         <State label={`two things: a grid, each case a tile (founder, 2026-11-20), the column heads plain words over a line, a soft line between the row heads only; a row's common minimum and maximum as tiles under its tiles, abroad on any channel one tile over its row, a place no case holds as a slot; a bare "+" at the end of the column heads adds a column, one under the row heads a row; ${g.states.interactive}: a tile opens its case, outlined`} wide>
           <div className="max-w-2xl">
             <TradeGrid today={today} />
@@ -3781,6 +3789,16 @@ function CaseDemos({ today }: { today: string }) {
         <State label={`fees with one price, one line each; ${g.states.interactive}: a tap opens one in place`} wide>
           <div className="max-w-xl">
             <SlimFees today={today} />
+          </div>
+        </State>
+        <State label="a host's slot on the head (the indices page's popup; /deal passes none): what the plan charges at the head's end, or the chip and why under the head, and a line after the cases" wide>
+          <div className="flex max-w-xl flex-col gap-3">
+            <FeeBlock dot="bg-fee-trade" name={sc.trade} head={{ end: <span className="inline-flex items-baseline gap-1.5 text-sm text-muted-foreground">{investWords.dealAccount.onPlan}<strong className="text-base font-bold text-foreground tabular-nums">{fmt.nisWhole(-60)}</strong></span>, foot: <p className="text-sm text-muted-foreground">{investWords.dealAccount.abroad.lacks(dealWords.cases.values.what.us!)}</p> }}>
+              <span aria-hidden className="h-10 rounded-md border border-dashed border-border" />
+            </FeeBlock>
+            <SlimFee dot="bg-fee-fx" name={sc.fx} label={sc.fx} onOpen={() => undefined} head={{ end: <Tag>{investWords.dealAccount.offPlan}</Tag>, under: <p>{investWords.dealAccount.off["shekel-fund"]}</p> }}>
+              <span className="text-sm">0.5%</span>
+            </SlimFee>
           </div>
         </State>
       </Demo>

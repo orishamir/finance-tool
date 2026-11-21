@@ -2,7 +2,7 @@
 // the account list, and, for a deal filled from a house's list, what it leaves less what that house's own row leaves on the same fund. The
 // place is the list's own order: every account at its cheapest way among the funds of the pair's kind, the deal at its own cheapest, so the
 // tile always says where the deal's row stands. Pure: the page's view and the deal's runs.
-import { kindOf, type DealOnPlan, type FundWay, type InvestView } from "../invest";
+import { kindOf, type DealOnPlan, type FundWay, type InvestView, type WayPrice } from "../invest";
 import { isGroupProvider } from "../group-pick";
 import { stretchOf } from "../stretch";
 import type { Missing } from "./plan";
@@ -16,6 +16,8 @@ export interface DealTiles {
   place: { k: number; of: number } | null;
   /** What it leaves less what the house it was filled from leaves on the same fund; null where it was filled from none or either has no price. */
   diff: number | null;
+  /** What that house's own row leaves on the fund, where `diff` has a value. */
+  house: WayPrice | null;
 }
 
 /**
@@ -47,5 +49,6 @@ export function dealTiles(view: InvestView, got: ReadonlyMap<string, DealOnPlan>
   const best = own.length ? Math.max(...own) : null;
   const place = best === null ? null : { k: 1 + others.filter((v) => v > best).length, of: others.length + 1 };
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.entries.find((e) => e.fund.rec.id === fundId)?.price : null;
-  return { left: ok ? ok.valueN : null, missing, place, diff: ok && house && !house.open ? ok.valueN - house.valueN : null };
+  const priced = ok && house && !house.open ? house : null;
+  return { left: ok ? ok.valueN : null, missing, place, diff: ok && priced ? ok.valueN - priced.valueN : null, house: priced };
 }

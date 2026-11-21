@@ -7,8 +7,10 @@
 // and a pick bar what only the person knows (a track, a condition of their own). Each fee says under its block what the plan charges for it
 // or why it charges nothing. The popup prices the deal alone as it changes; the page takes the deal once the popup closes, since pricing
 // every account and fund again on each change would make typing wait. A new deal is saved only once it changes (use-deal-document.ts).
-import { createContext, useContext, useDeferredValue, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useDeferredValue, useEffect, useId, useMemo, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import { MoreHorizontal, Pencil } from "lucide-react";
+import { useNavigate } from "react-router";
+import { IconPencil } from "../icons";
 import { feeDeal, invest as root } from "../../copy";
 import { fmt } from "../../lib/format";
 import { dealOnFunds, dealRunOf, type DealOnPlan, type IndexRef, type InvestView } from "../../lib/invest";
@@ -21,7 +23,7 @@ import { slimParts } from "../../lib/fee-deal/case-words";
 import type { PartWords } from "../../lib/fee-deal/part-words";
 import type { DealRead } from "../../lib/fee-deal/deal-read";
 import { amountWords, formatValue } from "../../lib/format";
-import type { SiteValue } from "../../lib/value";
+import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { Num, ProvenanceProvider, useProvenanceData, type ProvenanceData } from "../provenance";
 import { recordsById } from "../../lib/scope";
 import { dealStore, rememberOpen, without } from "../../lib/fee-deal/store";
@@ -31,9 +33,10 @@ import { updateFee } from "../../lib/fee-deal/edits/deal";
 import { addBlankCase } from "../../lib/fee-deal/edits/case";
 import { pickLine } from "../../lib/fee-deal/reading";
 import { feeNameOf } from "../../lib/fee-deal/part-words";
-import { dealProviderId, planContextOf, withDeals } from "../../lib/deal-account/bundle";
+import { dealProviderId, houseSnap, planContextOf, withDeals } from "../../lib/deal-account/bundle";
 import { ACCOUNT_KIND, BANK_ACCOUNT, dealHouseId, feesOnPlan, PLAN_KEYS, planRead, whatOfRun, type FeeOnPlan, type Missing, type PlanContext } from "../../lib/deal-account/plan";
 import { dealTiles, listFunds } from "../../lib/deal-account/tiles";
+import { planCases } from "../../lib/deal-account/plan-cases";
 import { dealBasis, type DealBasis } from "../../lib/deal-account/basis";
 import { Sheet } from "../Sheet";
 import { allFunds, repick, type Pick } from "./pair";
@@ -41,7 +44,7 @@ import { MQ, useMedia } from "../../lib/hooks";
 import { useDealEditor, type DealEditor } from "../fee-deal/editor";
 import { whenText } from "../fee-deal/open-case";
 import { leavesText } from "../fee-deal/picker";
-import { Button, Card, GroupHead, HouseAverageLine, KeyValueList, ListRow, ReadForBand, RowList, SearchField, StatRow, StatTile, Tag, TextField, TextLink, cx, When, type FeeHeadSlot, type KeyValueItem } from "../kit";
+import { ActionMenu, Button, Card, GroupHead, HouseAverageLine, KeyValueList, ListRow, ReadForBand, RowList, SearchField, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, When, type FeeHeadSlot, type GripAction, type KeyValueItem } from "../kit";
 
 const w = root.dealAccount;
 
@@ -272,23 +275,31 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const abroad = useMemo(() => abroadGap(deal, world, ctx), [deal, world, ctx]);
   const averages = houseId ? data.houses.find((h) => h.id === houseId)?.averages : undefined;
   const abroadFund = run?.instrumentClass === "foreign_securities";
+  // the deal read for the plan: the cases it reads, and the picks it cannot set, what only the person knows, saved with the deal
+  const read = useMemo(() => (run ? planRead(deal, run, ctx) : null), [deal, run, ctx]);
+  const picks = useMemo(() => (read ? pickLine(read) : null), [read]);
   headRef.current = (fee) => {
     const x = onPlan?.get(fee.id);
     const avg = averages && house ? averageOf(averages, fee.kind, abroadFund) : null;
     const average = avg && averages && house ? <HouseAverageLine averages={[avg]} house={house.short} from={averages.from} to={averages.to} page={averages.page} /> : null;
     const foot = abroad && abroad.fee === fee.id ? <AbroadCaseLine words={abroad.words} onAdd={() => addAbroadCase(ed, fee, abroad.values)} /> : null;
-    const slot = x ? feeHeadOf(x, at?.kind === "ok" ? (at.byFee[fee.id] ?? 0) : null, house?.short ?? null) : {};
-    return { ...slot, ...(average || slot.under ? { under: <>{slot.under}{average}</> } : {}), ...(foot ? { foot } : {}) };
+    const slot = x ? feeHeadOf(x, at?.kind === "ok" ? at.figure(shownCost(at.byFee[fee.id] ?? 0), w.feeCostAbout(feeNameOf(fee.kind, fee.name))) : null, house?.short ?? null) : {};
+    // the cases the plan reads, a step of the size with the years the plan spends in it (B, F), where the plan charges the fee
+    const marks = read && x?.on === "charged" && hasCases(fee) ? planCases(read, fee.id, at?.kind === "ok" ? at.balances : null) : null;
+    const caseMark = marks && marks.size ? (id: string) => (marks.has(id) ? w.planCase(marks.get(id)!.years) : undefined) : undefined;
+    return { ...slot, ...(average || slot.under ? { under: <>{slot.under}{average}</> } : {}), ...(foot ? { foot } : {}), ...(caseMark ? { caseMark } : {}) };
   };
-  // the picks the plan cannot set: what only the person knows, saved with the deal
-  const picks = useMemo(() => (run ? pickLine(planRead(deal, run, ctx)) : null), [deal, run, ctx]);
   const own = picks?.things.filter((t) => !PLAN_KEYS.includes(t.by)) ?? [];
   const where = run ? (run.instrumentClass === "mutual_fund_units" ? w.where.manager! : w.where[whatOfRun(run) === "tase" ? "tase" : (run.listing ?? "world")]!) : "";
   const fund = fundId ? allFunds(view).find((f) => f.rec.id === fundId) : undefined;
   const isSaved = saved.some((d) => d.id === deal.id);
   const p = world.plan;
   // the bank's current account the plan counts from the house's record, where the deal names none (F-102): one quiet line after the fees
-  const bankLine = ctx.bankAccount !== undefined && house && !deal.fees.some((f) => f.kind === "current_account") ? { monthly: ctx.bankAccount, cost: at?.kind === "ok" ? (at.byFee[BANK_ACCOUNT] ?? 0) : null } : null;
+  const bankMonthly = houseSnap(world.bundle, deal)?.current_account?.monthly_minimum;
+  const bankLine =
+    ctx.bankAccount !== undefined && house && bankMonthly && !deal.fees.some((f) => f.kind === "current_account")
+      ? { monthly: bankMonthly as SiteValue, cost: at?.kind === "ok" ? at.figure(shownCost(at.byFee[BANK_ACCOUNT] ?? 0), w.bankCostAbout(house.short)) : null }
+      : null;
   // a deal opens on the fee its opener names (the abroad line's "להוסיף לעסקה"), else, where the plan cannot price it, on the fee that lacks
   // something, as its row's "להשלים" says
   useEffect(() => {
@@ -301,6 +312,14 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   }, []);
   const wide = useMedia(MQ.md);
   const [planShown, setPlanShown] = useState(false);
+  // the tiles' figures, each computed from the run with its formula (F-128): what is left, the place, the difference from the house's row
+  const okAt = at?.kind === "ok" ? at : null;
+  const leftFig = tiles?.left !== null && tiles?.left !== undefined && okAt ? okAt.figure(tiles.left, w.tiles.leftAbout) : null;
+  const placeFig = tiles?.place ? computed(tiles.place.k, "count", "F-128", leftFig ? { [w.tiles.leftAbout]: leftFig } : {}, { today: world.bundle.today, about: w.tiles.placeAbout(tiles.place.of) }) : null;
+  const diffFig = leftFig && tiles?.house && house ? differenceOf([w.tiles.leftAbout, leftFig], [w.tiles.houseAbout(house.short), tiles.house.value], "F-128", { today: world.bundle.today, about: w.tiles.diffAbout, round: Math.round, signed: true }) : null;
+  const leftNum = leftFig && <Num value={leftFig} display={(n) => fmt.nisWhole(n)} />;
+  const placeNum = placeFig && tiles?.place && <Num value={placeFig} display={() => w.tiles.placeValue(tiles.place!.k, tiles.place!.of)} />;
+  const diffNum = diffFig && <Num value={diffFig} display={(n) => fmt.signedNisWhole(n)} />;
   const planLine = fund ? w.plan(fmt.nisWhole(p.amountNow), fmt.nisWhole(p.monthly), p.years, fmt.pct(p.grossReturn * 100), fund.name, where) : null;
 
   return (
@@ -315,13 +334,17 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
         <div className="sticky top-0 z-10 -mx-1 flex flex-col gap-1 border-b border-border bg-popover px-1 py-2 text-sm">
           <p className="flex flex-wrap items-baseline justify-between gap-x-3">
             <span>
-              {w.tiles.left(p.years)} <strong className={tiles.left !== null ? "text-entered" : undefined}>{tiles.left !== null ? fmt.nisWhole(tiles.left) : w.tiles.noSum}</strong>
+              {w.tiles.left(p.years)} <strong className="text-lg">{leftNum ?? w.tiles.noSum}</strong>
             </span>
-            <strong>{tiles.place ? w.tiles.placeValue(tiles.place.k, tiles.place.of) : w.tiles.unranked}</strong>
+            <strong>{placeNum ?? w.tiles.unranked}</strong>
           </p>
           <p className="flex flex-wrap items-center gap-x-2 text-muted-foreground">
-            {house && tiles.diff !== null && <span>{`${fmt.signedNisWhole(Math.round(tiles.diff))} ${w.tiles.diff(house.short)}`}</span>}
-            {house && tiles.diff !== null && fund && <span aria-hidden="true">·</span>}
+            {house && diffNum && (
+              <span>
+                {diffNum} {w.tiles.diff(house.short)}
+              </span>
+            )}
+            {house && diffNum && fund && <span aria-hidden="true">·</span>}
             {fund && (
               <Button variant="inline" aria-expanded={planShown} onClick={() => setPlanShown((x) => !x)}>
                 {w.tiles.planTap}
@@ -336,14 +359,14 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
         <div className="sticky top-0 z-10 -mx-1 flex flex-col gap-2 bg-popover px-1 pb-2">
           <StatRow cols={3}>
             <StatTile label={w.tiles.left(p.years)} note={tiles.missing ? w.tiles.waits(feeNameOf(tiles.missing.kind, tiles.missing.name)) : w.tiles.leftNote}>
-              {tiles.left !== null ? <span className="text-entered">{fmt.nisWhole(tiles.left)}</span> : <span className="text-base">{w.tiles.noSum}</span>}
+              {leftNum ?? <span className="text-base">{w.tiles.noSum}</span>}
             </StatTile>
             <StatTile label={w.tiles.place} note={tiles.place ? w.tiles.placeNote : w.tiles.unrankedNote}>
-              {tiles.place ? w.tiles.placeValue(tiles.place.k, tiles.place.of) : <span className="text-base">{w.tiles.unranked}</span>}
+              {placeNum ?? <span className="text-base">{w.tiles.unranked}</span>}
             </StatTile>
             {house && (
               <StatTile label={w.tiles.diff(house.short)} note={w.tiles.diffNote}>
-                {tiles.diff !== null ? fmt.signedNisWhole(Math.round(tiles.diff)) : <span aria-hidden="true">—</span>}
+                {diffNum ?? <span aria-hidden="true">—</span>}
               </StatTile>
             )}
           </StatRow>
@@ -353,7 +376,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
       {run && wide && own.length > 0 && <ReadForBand lead={w.readFor} note={w.planKnows(where)} picks={pickItems(own, ed)} />}
       {ed.picker}
       {ed.columns(null)}
-      {bankLine && house && <p className="text-sm text-muted-foreground">{w.bankAccount(house.short, fmt.nis(bankLine.monthly), bankLine.cost !== null ? fmt.nisWhole(-Math.round(bankLine.cost)) : null)}</p>}
+      {bankLine && house && <Sentence size="sm" tone="muted" t={w.bankAccount(house.short, bankLine.cost !== null)} vars={{ monthly: <Num value={bankLine.monthly} />, cost: bankLine.cost && <Num value={bankLine.cost} display={costText} /> }} />}
       {ed.menus}
       {ed.footSheet}
     </div>
@@ -368,18 +391,26 @@ const pickItems = (own: NonNullable<ReturnType<typeof pickLine>>["things"], ed: 
  * What a fee's head says on the plan (B): at its end what the plan charges for it ("בתוכנית −60 ₪"), or the chip saying the plan never
  * charges it with why under the head, or, under the head, what it lacks for a price.
  */
-function feeHeadOf(x: FeeOnPlan, cost: number | null, bank: string | null): FeeHeadSlot {
+function feeHeadOf(x: FeeOnPlan, cost: SiteValue | null, bank: string | null): FeeHeadSlot {
   if (x.on === "missing") return { under: <p>{w.missing[x.missing.why]!(feeNameOf(x.missing.kind, x.missing.name))}</p> };
   if (x.on === "off") return { end: <Tag>{w.offPlan}</Tag>, under: <p>{x.why === "own-bank" && bank ? w.ownBank(bank) : w.off[x.why]}</p> };
   return {
     end: (
       <span className="inline-flex items-baseline gap-1.5 text-sm text-muted-foreground">
         {w.onPlan}
-        {cost !== null && <strong className="text-base font-bold text-foreground tabular-nums">{fmt.nisWhole(Math.round(cost) === 0 ? 0 : -Math.round(cost))}</strong>}
+        {cost !== null && (
+          <strong className="text-base font-bold text-foreground tabular-nums">
+            <Num value={cost} display={costText} />
+          </strong>
+        )}
       </span>
     ),
   };
 }
+
+/** What a fee took on the plan, as the popup shows it, less than nothing: whole shekels, agorot under 10 ₪ (wording.md). */
+const shownCost = (c: number): number => (Math.abs(c) < 10 ? -Math.round(c * 100) / 100 : -Math.round(c)) || 0;
+const costText = (n: number): string => (Math.abs(n) < 10 ? fmt.nis(n) : fmt.nisWhole(n));
 
 /** The column of a house's averages (F-122) a fee's head shows: the trade or custody column for the fund's place, else none. */
 function averageOf(a: HouseAverages, kind: string, abroad: boolean): ColumnAverage | null {
@@ -427,64 +458,97 @@ function AbroadCaseLine({ words, onAdd }: { words: string; onAdd: () => void }) 
   );
 }
 
-/** The popup's head: the deal's name with its rename, where it is kept and the fee page's link, and its menu with the delete and its question. */
+/**
+ * The popup's head (B, G): on a computer the deal's name typed in place, its pencil in its box (the fee page's bar's field), where it is
+ * kept, the fee page's link, and its menu (rename, delete); the sheet's own close stands at its end. On a phone (C, J) one top bar: the
+ * name, and the menu, which also holds the fee page's link. Delete asks first, under the head on a computer, as a sheet from the
+ * foot on a phone.
+ */
 function DealHead({ deal, headId, isSaved, writable, onName, onDelete }: { deal: FeeDeal; headId: string; isSaved: boolean; writable: boolean; onName: (name: string) => void; onDelete: () => void }) {
   const [renaming, setRenaming] = useState(false);
   const [menu, setMenu] = useState(false);
   const [asking, setAsking] = useState(false);
   const wide = useMedia(MQ.md);
   const askId = useId();
+  // the menu's control, which it stands under and gives the focus back to
+  const more = useRef<HTMLElement | null>(null);
+  const openMenu = (e: MouseEvent<HTMLButtonElement>) => {
+    more.current = e.currentTarget;
+    setMenu((x) => !x);
+  };
+  const field = useRef<HTMLSpanElement>(null);
+  const navigate = useNavigate();
+  const toDeal = () => {
+    // /deal opens on the deal last on screen: this one
+    rememberOpen(deal.id);
+    navigate(DEAL_PATH);
+  };
+  const rename = () => {
+    setRenaming(true);
+    requestAnimationFrame(() => field.current?.querySelector("input")?.focus());
+  };
+  const actions: GripAction[] = [
+    { label: w.head.rename, onPick: rename },
+    ...(isSaved && writable ? [{ label: w.head.remove, danger: true, onPick: () => setAsking(true) }] : []),
+    ...(!wide && isSaved ? [{ label: `${w.head.openDeal} ↗`, onPick: toDeal }] : []),
+  ];
+  const nameField = (
+    <span ref={field} className="flex min-w-0 flex-[1_1_22rem] items-center" onBlur={() => !wide && setRenaming(false)}>
+      <TextField inline grow labelHidden label={w.head.nameField} value={deal.name} maxLength={NAME_MAX} placeholder={w.start.title} icon={<IconPencil size={16} />} onChange={onName} />
+    </span>
+  );
+  const close = () => {
+    setAsking(false);
+    setMenu(false);
+  };
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-wrap items-center gap-2">
-        {renaming ? (
-          <TextField label={w.head.nameField} labelHidden value={deal.name} onChange={onName} maxLength={NAME_MAX} />
-        ) : (
-          <h2 id={headId} className="text-lg font-semibold text-entered [overflow-wrap:anywhere]">
+    <div className="flex flex-col gap-3">
+      {wide ? (
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pe-2">
+          <h2 id={headId} className="sr-only">
             {deal.name || w.start.title}
           </h2>
-        )}
-        <Button variant="icon" size="sm" aria-label={w.head.rename} aria-pressed={renaming} onClick={() => setRenaming((x) => !x)}>
-          <Pencil size={16} aria-hidden />
-        </Button>
-        {isSaved && writable && (
-          <Button variant="icon" size="sm" aria-label={w.head.more} aria-expanded={menu} onClick={() => setMenu((x) => !x)}>
+          {nameField}
+          <span className="text-sm text-muted-foreground">{isSaved ? w.head.saved : w.head.unsaved}</span>
+          {isSaved && (
+            <TextLink to={DEAL_PATH} look="line" onClick={() => rememberOpen(deal.id)}>
+              {w.head.openDeal} ↗
+            </TextLink>
+          )}
+          <Button variant="icon" aria-label={w.head.more} aria-expanded={menu} onClick={openMenu} className="ms-auto">
             <MoreHorizontal size={18} aria-hidden />
           </Button>
-        )}
-      </div>
-      <p className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground">
-        <span>{isSaved ? w.head.saved : w.head.unsaved}</span>
-        {isSaved && (
-          <TextLink to="/deal" look="line">
-            {w.head.openDeal} ↗
-          </TextLink>
-        )}
-      </p>
-      {menu && !asking && (
-        <Card pad="tight" className="flex flex-col items-start self-start">
-          <Button variant="quiet" onClick={() => { setRenaming(true); setMenu(false); }}>
-            {w.head.rename}
+        </div>
+      ) : (
+        // a phone's top bar: the name, the menu, and the sheet's close at the end
+        <div className="flex min-h-target items-center gap-2 pe-2">
+          {renaming ? (
+            nameField
+          ) : (
+            <h2 id={headId} className="min-w-0 flex-1 text-lg font-semibold [overflow-wrap:anywhere]">
+              {deal.name || w.start.title}
+            </h2>
+          )}
+          <Button variant="icon" aria-label={w.head.more} aria-expanded={menu} onClick={openMenu}>
+            <MoreHorizontal size={18} aria-hidden />
           </Button>
-          <Button variant="quiet" className="text-destructive" onClick={() => setAsking(true)}>
-            {w.head.remove}
-          </Button>
-        </Card>
+        </div>
       )}
+      {menu && <ActionMenu actions={actions} onClose={() => setMenu(false)} back={more} />}
       {asking && wide && (
-        <Card pad="tight" role="alertdialog" aria-label={w.head.confirm} className="flex flex-col gap-2 self-start">
+        <Card pad="tight" role="alertdialog" aria-label={w.head.confirm} className="flex flex-col gap-2 self-end">
           <p className="font-medium">{w.head.confirm}</p>
           <p className="text-sm text-muted-foreground">{w.head.confirmBody}</p>
           <div className="flex gap-2">
             <Button variant="destructive" onClick={onDelete}>
               {w.head.confirmYes}
             </Button>
-            <Button onClick={() => { setAsking(false); setMenu(false); }}>{w.head.confirmNo}</Button>
+            <Button onClick={close}>{w.head.confirmNo}</Button>
           </div>
         </Card>
       )}
       {/* a phone: the question comes as a sheet from the foot, its buttons the screen's width (J) */}
-      <Sheet open={asking && !wide} onClose={() => { setAsking(false); setMenu(false); }} labelledBy={askId}>
+      <Sheet open={asking && !wide} onClose={close} labelledBy={askId}>
         <div className="flex flex-col gap-3">
           <h3 id={askId} className="text-lg font-semibold">
             {w.head.confirm}
@@ -493,7 +557,7 @@ function DealHead({ deal, headId, isSaved, writable, onName, onDelete }: { deal:
           <Button variant="destructive" className="w-full" onClick={onDelete}>
             {w.head.confirmYes}
           </Button>
-          <Button className="w-full" onClick={() => { setAsking(false); setMenu(false); }}>
+          <Button className="w-full" onClick={close}>
             {w.head.confirmNo}
           </Button>
         </div>
