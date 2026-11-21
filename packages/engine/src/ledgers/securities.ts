@@ -434,10 +434,13 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
   const order = (at: SecuritiesTariff, terms: { fxRate: number }, tradeTerms: { fxRate: number; sharePrice: number | undefined }, fresh: number, held: number, whole: boolean, line: Commission | undefined, conversion: SecuritiesTariff["fx"]) => {
     const fx = tariff.currency && fresh > 0 ? fxFee(conversion, fresh, terms) + (at.fxSpread ?? 0) * fresh : 0;
     if (!whole) {
-      // F-08, F-12: by amount the order converts all its shekels and spends all its cash; a cash that cannot pay the conversion and the
+      // F-08, F-12: by amount the order spends all its cash. Its shekels are converted only where converting them leaves more than nothing,
+      // as F-109 counts them; otherwise they wait unconverted, and the fund's currency the order holds buys alone. A cash that cannot pay the
       // commission on some trade is not placed, and waits for the next order as F-109's does
-      const sized = buyWithCash(fresh - fx + held, line, tradeTerms);
+      const converts = fresh - fx > 0;
+      const sized = buyWithCash((converts ? fresh - fx : 0) + held, line, tradeTerms);
       if (sized.trade <= 0) return { fx: 0, trade: 0, commission: 0, cost: 0, leftNis: fresh, leftHeld: held };
+      if (!converts) return { fx: 0, trade: sized.trade, commission: sized.commission, cost: sized.commission, leftNis: fresh, leftHeld: 0 };
       return { fx, trade: sized.trade, commission: sized.commission, cost: fx + sized.commission, leftNis: 0, leftHeld: 0 };
     }
     // F-109: the most whole units the cash pays for at the ask, with their commission and the conversion of the shekels they need; the
