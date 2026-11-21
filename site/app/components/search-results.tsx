@@ -1,5 +1,5 @@
 // The search's matching and its results (flows 6.3, architecture 3.5): a script of its own, fetched while the page hydrates or when a
-// search opens (search.tsx `preloadSearch`), so it stays out of what a page needs to show itself.
+// search opens (search.tsx `loadSearchCode`), so it stays out of what a page needs to show itself.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import { buttons, search as searchCopy, searchMore, site } from "../copy";

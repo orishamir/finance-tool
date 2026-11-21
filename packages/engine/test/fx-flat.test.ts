@@ -2,8 +2,9 @@
 // currency. Expected figures worked by hand from the formulas (comments), with no return, fund cost or inflation; the dollar at 3.70 ₪.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { conversionWithRate, convertFor, fxFee } from "../src/formulas/fees.ts";
+import { convertFor, fxFee } from "../src/formulas/fees.ts";
 import { runSecurities, type SecuritiesInput } from "../src/ledgers/securities.ts";
+import { withFeeRate } from "../src/fees/materiality.ts";
 import { buildTariff, type WorkbenchInput } from "../src/providers/workbench.ts";
 import { context } from "./golden/harness.ts";
 
@@ -81,19 +82,21 @@ describe("a run with a flat price for a small conversion (F-13)", () => {
     expect(over.fees.fx).toBeCloseTo(12 * 21.09 + 21.09, 6);
   });
 
-  it("a rate of one's own over the line keeps its flat price: a typed 0.1% never makes a small conversion dearer (F-13)", () => {
-    const plan = input({ goal: { amountNow: 0, monthly: 300, months: 12 } });
-    const fx = conversionWithRate(line, 0.001);
+  it("a rate of one's own over the line keeps its flat price: a typed 0.1% never makes a small conversion dearer (F-13, F-61)", () => {
+    const plan = { run: "runSecurities" as const, input: input({ goal: { amountNow: 0, monthly: 300, months: 12 } }) };
+    const changed = withFeeRate(plan, "fx", 0.001);
+    const fx = changed.run === "runSecurities" ? changed.input.tariff.fx : undefined;
     expect(fx).toEqual({ rate: 0.001, min: 5.7, max: 2_300, in: "instrument", flatUpTo: { amount: 3.3, upTo: 99 } });
     // the same over the line as the price list reads it, a price by size with the flat price as its step: the step stays
     const sized = { line: { rate: 0.0017, min: 5.7, max: 2_300, in: "instrument" as const }, steps: [{ upTo: 99, price: { kind: "flat" as const, amount: 3.3 } }], in: "instrument" as const };
-    expect(conversionWithRate(sized, 0.001)).toEqual({ ...sized, line: { ...sized.line, rate: 0.001 } });
+    const changedSized = withFeeRate({ run: "runSecurities", input: input({ goal: { amountNow: 0, monthly: 300, months: 12 }, tariff: { buy: { rate: 0 }, fx: sized, currency: { code: "USD", startRate: usd } } }) }, "fx", 0.001);
+    expect(changedSized.run === "runSecurities" ? changedSized.input.tariff.fx : undefined).toEqual({ ...sized, line: { ...sized.line, rate: 0.001 } });
     // 300 ₪ at 3.70: 12.21 ₪ at the list and 12.21 ₪ with the typed rate; without the flat price the 5.7 $ minimum would be 21.09 ₪
     expect(fxFee(fx, 300, terms)).toBeCloseTo(12.21, 9);
     expect(fxFee(line, 300, terms)).toBeCloseTo(12.21, 9);
     // above the sum the typed rate prices it: 1,000 ₪ (270 $) pays max(0.1% = 1 ₪, 21.09 ₪)
     expect(fxFee(fx, 1_000, terms)).toBeCloseTo(21.09, 9);
-    expect(runSecurities({ ...plan, tariff: { ...plan.tariff, fx } }, ctx).fees.fx).toBeCloseTo(runSecurities(plan, ctx).fees.fx, 9);
+    if (changed.run === "runSecurities") expect(runSecurities(changed.input, ctx).fees.fx).toBeCloseTo(runSecurities(plan.input, ctx).fees.fx, 9);
   });
 });
 

@@ -3,7 +3,7 @@
 // the value under test set here, so the test does not move when a record is refreshed.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { corporateEventFee, countsCurrentAccount, currentAccountFee, providerWorkbench, runSecurities, withoutFeeLine, type ComparedProvider, type ProviderInput, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
+import { corporateEventFee, countsCurrentAccount, currentAccountFee, providerWorkbench, runSecurities, withFeeRate, withoutFeeLine, type ComparedProvider, type ProviderInput, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -324,14 +324,16 @@ describe("flags and records of F-102 and F-103 (finance review 2)", () => {
     expect(sourcesOf({ currentAccount: 5.5 })).toEqual([["list", listUrl]]);
   });
 
-  it("removing the current account takes it out of every stretch, and removing custody takes the charge per dividend with it", () => {
+  it("the sensitivity run: the current account changes in every stretch that charges, and the charge per dividend moves with custody", () => {
     const tariff: SecuritiesInput["tariff"] = { currentAccount: 0, until: { months: 48, then: { currentAccount: 5.5 } } };
     const plan = { run: "runSecurities" as const, input: { goal: { amountNow: 10_000, monthly: 500, months: 120 }, market: { grossReturn: 0.05, inflation: 0.02 }, fund: { kind: "israeli-fund" as const, drag: {} }, tariff, profile: {} } };
+    const at3 = withFeeRate(plan, "account", 3);
+    expect(at3.run === "runSecurities" ? [at3.input.tariff.currentAccount, at3.input.tariff.until?.then.currentAccount] : null).toEqual([0, 3]);
     const none = withoutFeeLine(plan, "account");
     expect(none.run === "runSecurities" ? [none.input.tariff.currentAccount, none.input.tariff.until?.then.currentAccount] : null).toEqual([undefined, undefined]);
     const abroad = { run: "runSecurities" as const, input: { ...plan.input, tariff: { custody: { rate: 0.001, everyMonths: 3 }, perDividend: { amount: 50, in: "instrument" as const }, currency: { code: "USD", startRate: 3.7 } } } };
-    const gone = withoutFeeLine(abroad, "custody");
-    expect(gone.run === "runSecurities" ? [gone.input.tariff.custody, gone.input.tariff.perDividend] : null).toEqual([undefined, undefined]);
+    const half = withFeeRate(abroad, "custody", 0.0005);
+    expect(half.run === "runSecurities" ? half.input.tariff.perDividend?.amount : null).toBeCloseTo(25, 9);
   });
 });
 

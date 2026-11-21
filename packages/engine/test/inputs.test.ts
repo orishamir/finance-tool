@@ -11,8 +11,8 @@ import {
   runPlanned,
   runProvident,
   runSecurities,
+  timeline,
   type InstrumentTerms,
-  type RunResult,
 } from "../src/index.ts";
 import { context, golden } from "./golden/harness.ts";
 
@@ -296,16 +296,17 @@ describe("a missing or unexpected field fails loudly", () => {
 describe("a golden scenario rebuilt from equivalent records gives the golden result", () => {
   it("S47 illustrative timeline, from the P-05 file", () => {
     const goal = { amountNow: 10_000, monthly: 500, months: 120 };
-    const run = (r: RunResult) => ({ run: r, exitReal: r.real, years: r.series.filter((p) => p.month > 0 && p.month % 12 === 0).map((p) => ({ real: p.balance / p.index })) });
-    const built = {
+    const built = timeline({
       // S47 runs the deposit at its own 3.5% (golden literal); P-05's cash rate is the Bank of Israel's since 2026-10-26: entered here to match.
-      deposit: run(runPlanned(runInputs(records.deposit, parameters, terms.deposit, { entered: { cash_rate: vo(3.5, "pct_per_year", "entered") } }), ctx)),
+      deposit: () =>
+        runPlanned(runInputs(records.deposit, parameters, terms.deposit, { entered: { cash_rate: vo(3.5, "pct_per_year", "entered") } }), ctx),
       // S47 runs the daily fund at S11's 3.25%, not P-05's 3.5% cash rate: entered here to match.
-      mmf: run(runPlanned(runInputs(records.mmf, parameters, terms.mmf, { entered: { cash_rate: vo(3.25, "pct_per_year", "entered") } }), ctx)),
+      mmf: () =>
+        runPlanned(runInputs(records.mmf, parameters, terms.mmf, { entered: { cash_rate: vo(3.25, "pct_per_year", "entered") } }), ctx),
       // S47 runs market products at 5%; P-05's A-01 is 7% since 2026-10-28: entered here to match.
-      etf: run(runPlanned(runInputs(records.brokerage, parameters, terms.etf, { entered: { "A-01": vo(5, "pct_per_year", "entered") } }), ctx)),
-      kgl: run(runPlanned(runInputs(records.kgl, parameters, terms.kgl, { entered: { "A-01": vo(5, "pct_per_year", "entered") } }), ctx)),
-    };
+      etf: () => runPlanned(runInputs(records.brokerage, parameters, terms.etf, { entered: { "A-01": vo(5, "pct_per_year", "entered") } }), ctx),
+      kgl: () => runPlanned(runInputs(records.kgl, parameters, terms.kgl, { entered: { "A-01": vo(5, "pct_per_year", "entered") } }), ctx),
+    });
 
     // The same runs as golden.test.ts S47, with its literal inputs.
     expect(built.deposit.run).toEqual(

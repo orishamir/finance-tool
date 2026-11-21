@@ -1,8 +1,8 @@
-// Index page engine changes (method F-12, F-63, 2026-10-25): per-share lines, dollar and pound bounds, the cap, and a provider's
-// bad record as its own row; and the fund a record runs as (`fundOf`).
+// Index page engine changes E1 to E5 (method F-12, F-63, F-65, 2026-10-25): per-share lines, dollar and pound
+// bounds, the cap, a fund in another currency than its exposure, and a provider's bad record as its own row.
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { buildTariff, fundOf, gapListOf, providerWorkbench, tradeCommission, type NotComparableProvider, type ProviderRow, type WorkbenchInput } from "../src/index.ts";
+import { buildTariff, fundOf, fundVariants, gapListOf, providerWorkbench, tradeCommission, type NotComparableProvider, type ProviderRow, type WorkbenchInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -145,6 +145,39 @@ describe("F-12 a minimum in the trade's own currency, and a line's open question
   });
 });
 
+describe("F-65 a fund in another currency than its exposure (E4)", () => {
+  const exposureRecord = { ...read("instruments/exposures/index-sp500.json"), currency: "EUR" };
+  const record = read("funds/ie00b5bmr087@2026-10-24.json"); // USD fund of the S&P 500
+  const exposure = {
+    record: exposureRecord,
+    theta: 0.005,
+    run: {
+      goal: { amountNow: 20_000, monthly: 0, months: 120 },
+      grossReturn: 0.06,
+      inflation: 0.025,
+      tariff: { buy: { rate: 0.003, min: 25 }, sell: { rate: 0.003, min: 25 }, fx: 0.0025 },
+      profile: {},
+      fxStartRates: { USD: 3.7 },
+    },
+  };
+
+  it("runs: the return stays the exposure's, the FX line and the tax index are the fund's currency", () => {
+    const r = fundVariants(exposure as never, [], [record], ctx).rows[0]!;
+    expect(r.kind === "ranked" || r.kind === "listed-not-ranked").toBe(true);
+    expect(r.currencyMismatch).toEqual({ fund: "USD", exposure: "EUR" });
+    expect(r.run!.fees.fx).toBeGreaterThan(0);
+    expect(r.run!.rules.map((x) => x.id)).toContain("TXF-03");
+    const same = fundVariants({ ...exposure, record: { ...exposureRecord, currency: "USD" } } as never, [], [record], ctx).rows[0]!;
+    expect(same.currencyMismatch).toBeUndefined();
+    expect(same.run!.real).toBeCloseTo(r.run!.real, 6);
+  });
+
+  it("with a USD rate missing it is still not evaluated, naming the input", () => {
+    const r = fundVariants({ ...exposure, run: { ...exposure.run, fxStartRates: {} } } as never, [], [record], ctx).rows[0]!;
+    expect(r.reasons[0]).toMatchObject({ code: "missing-input", detail: "fxStartRates.USD" });
+  });
+});
+
 describe("F-14: a custody bound printed per month", () => {
   it("is multiplied by the months in the charging period", () => {
     const excellence = read("fees/excellence@2026-10-31.json");
@@ -153,9 +186,36 @@ describe("F-14: a custody bound printed per month", () => {
   });
 });
 
-describe("fundOf with F-92 (b): the variable fee a fund was charged, counted forward", () => {
+describe("F-65 with F-92 (c) and (d): a hedged fund with no compared year (finance review)", () => {
+  const world = read("instruments/exposures/index-msci-world.json");
+  const exposure = {
+    record: world,
+    theta: 0.005,
+    run: {
+      goal: { amountNow: 20_000, monthly: 400, months: 120 },
+      grossReturn: 0.06,
+      inflation: 0.025,
+      tariff: { buy: { rate: 0.001, min: 5 }, sell: { rate: 0.001, min: 5 } },
+      profile: {},
+      fxStartRates: { USD: 3.7 },
+    },
+  };
+  const noYears = read("funds/5140165@2026-10-25.json"); // hedged, its report has no full year
   const withYears = read("funds/5139696@2026-10-25.json"); // hedged, a full year against MSCI World's net index
+  const rowOf = (records: unknown[], id: string) => fundVariants(exposure as never, [], records, ctx).rows.find((r) => r.recordId === id)!;
 
+  it("is listed with its reason, never ranked at A-07 = 0", () => {
+    const r = rowOf([noYears, withYears], "5140165");
+    expect(r.kind).toBe("not-evaluated");
+    expect(r.reasons[0]).toMatchObject({ code: "missing-record" });
+    expect(r.reasons[0]!.detail).toMatch(/F-92 \(c\)/);
+    expect(r.run).toBeUndefined();
+  });
+  it("a hedged fund whose years are compared runs, and falls back to the same reason when they are not (an unstated index)", () => {
+    expect(rowOf([noYears, withYears], "5139696").run).toBeDefined();
+    const unstated = { ...withYears, tracking_record: { ...withYears.tracking_record, benchmark: { ...withYears.tracking_record.benchmark, dividends: "unstated" } } };
+    expect(rowOf([noYears, unstated], "5139696").kind).toBe("not-evaluated");
+  });
   it("counts forward the variable fee it was charged, not its listed rate (F-92 (b), pass 6): 0.215% paid back in 2025 at today's 0.3%", () => {
     expect(withYears.fees.variable_management.value).toBe(0.3);
     expect(fundOf(withYears, "israeli-fund", undefined, undefined).fund.drag!.variable).toBeCloseTo(-0.00215, 12);

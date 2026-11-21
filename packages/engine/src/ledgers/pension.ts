@@ -41,6 +41,13 @@ export interface PensionInput {
   /** A-17: the insurance cost as a share of each deposit, entered by the person (G-12). Zero for a provident fund for annuity (PEN-35). */
   insurance: { rate: number };
   pension: PensionProfile;
+  /** The person opts into early withdrawal (F-48). Its rule is known (TXP-18), but the formula is not built yet, so it stays blocked. */
+  earlyWithdrawal?: boolean;
+  /**
+   * A balance already in the fund (a holding under review, F-61): it starts the ledger as it is, with no deposit
+   * fee, no deposit-side relief (F-30 to F-32) and nothing added to `paidIn`. `goal` then holds only new money.
+   */
+  existingBalance?: number;
   profile: Profile;
 }
 
@@ -130,7 +137,7 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
   const depositCap = book.rate(caps, "deposit_cap");
   const minDiscountMonths = 12 * book.amount("PF-13", "min_discount_years");
   const g = annualToMonthly(input.market.grossReturn);
-  let balance = 0;
+  let balance = input.existingBalance ?? 0;
   let insurance = 0;
   const series: number[] = [];
   let discountExtended = false;
@@ -192,7 +199,8 @@ function commonFlags(book: RuleBook, tally: Tally, input: PensionInput) {
  * deposit year by year, with the relief of F-31 (employee credit) or F-32 (beneficiary member, self-employed);
  * the credit is worth at most the year's tax (TXP-01, TXP OQ20), a tax without credit points (G-23), so a year with a credit
  * flags both; the ledger of F-27 with F-11, F-15, F-16 and F-53 gives the balance. The exit is an annuity whose value
- * needs conversion factors, so it is blocked (F-49, G-03): the run returns the gross balance at the horizon, the flag and the rule IDs,
+ * needs conversion factors, so it is blocked (F-49, G-03), or, if the person opts into early withdrawal,
+ * blocked as well (F-48, G-06): the run returns the gross balance at the horizon, the flag and the rule IDs,
  * and the wrapper is listed, not ranked (B3). `paidIn` is the person's net outlay; the gross deposits and the
  * relief are in `detail`. The monthly deposit ceiling of a comprehensive fund (PEN-08) is flagged when
  * crossed; routing the excess to the general fund (PEN-10) is not modelled.
@@ -250,7 +258,7 @@ function runPensionUnder(input: PensionInput, ctx: RunContext): PensionResult {
     for (let m = 1; m <= T; m++) if ((gross[m] ?? 0) + employerMonth > ceiling) { tally.flag("PEN-08", m); break; }
   }
 
-  const exit = blockedWrapperExit("F-49", out.balance);
+  const exit = blockedWrapperExit(input.earlyWithdrawal ? "F-48" : "F-49", out.balance);
   formulas.push(exit.formula);
   if (exit.gap) tally.flag(exit.gap);
   for (const q of exit.openQuestions) tally.flag(q);

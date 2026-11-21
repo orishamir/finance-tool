@@ -284,3 +284,6 @@ export function priceAt(fee: Pick<SlimFee, "stages" | "sale">, at: CalendarMonth
 
 /** Whole months from `a` to `b` as a reading of F-110 (how far a change point is, how long a period lasts). */
 export const monthsValue = (a: CalendarMonth, b: CalendarMonth, today: string): SiteValue => reading(monthsBetween(a, b), "months", "F-110", {}, today);
+
+/** The month before `m`. */
+export const monthBefore = (m: CalendarMonth): CalendarMonth => (m.m === 1 ? { y: m.y - 1, m: 12 } : { y: m.y, m: m.m - 1 });

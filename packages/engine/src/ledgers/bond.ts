@@ -18,6 +18,8 @@ export interface BondInput {
     linkage: "unlinked" | "cpi";
     /** Months between coupons, from the series data (GOV-11 yearly for CPI-linked; GOV-13 for fixed-rate). */
     couponEveryMonths: number;
+    /** A-27 price change at exit, as a fraction of par; default 0. */
+    exitPriceChange?: number;
   };
   /** The account's lines for bonds: F-12 commissions, F-14 custody, and its F-17 monthly fee in NIS (an account fee, on whatever it holds). */
   tariff: { buy?: Commission; sell?: Commission; custody?: Custody; monthlyFee?: number };
@@ -28,7 +30,7 @@ export interface BondInput {
  * F-25 Government bond. The coupon is taxed when paid: 15% of an unlinked coupon (TXI-15); 25% of the whole
  * indexed coupon of a CPI-linked series, even when the index fell (TXI-14, TXI-25). Net coupons are
  * reinvested in the same bond as a new lot; the coupon on the exit day is paid out. At the horizon the
- * bond is sold at par (indexed for a linked series): A-27 is 0. A purchase its cash cannot pay opens no lot: the cash waits in the account,
+ * bond is sold at par (indexed for a linked series) plus A-27. A purchase its cash cannot pay opens no lot: the cash waits in the account,
  * earning nothing, for the next purchase, pays the account's monthly fee the units cannot (F-17), and at the horizon is part of what is
  * left (F-12, F-25).
  */
@@ -129,13 +131,13 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
 
   // F-09 exit: consideration is the gross sale value; the exit-year custody fees are deducted once (TXS-06).
   const units = lots.reduce((s, l) => s + l.units, 0);
-  const gross = units * price(T);
+  const gross = units * price(T) * (1 + (bond.exitPriceChange ?? 0));
   const commission = saleCommission(tariff.sell, gross, { fxRate: 1 });
   tally.fee("trade", commission);
   // A CPI-linked bond is a real-basis security: each lot indexed by I_T / I_lot, and when the CPI fell its
   // inflationary amount is zero and the part of a nominal loss equal to the fall is not allowable (TXS-02; F-09). The exit
   // year's fees come off after that cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
-  const adjusted = linked ? indexedCost(lots, I[T]!, price(T)) : undefined;
+  const adjusted = linked ? indexedCost(lots, I[T]!, price(T) * (1 + (bond.exitPriceChange ?? 0))) : undefined;
   const gain = adjusted
     ? gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed
     : gross - lots.reduce((s, l) => s + l.basis, 0) - exitYearFees;

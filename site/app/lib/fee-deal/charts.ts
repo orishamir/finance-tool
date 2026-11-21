@@ -6,21 +6,26 @@
 import {
   acrossDrop,
   actionCost,
+  buyConversion,
   costShare,
   coverFrom,
   curveEnd,
+  dealConversionStretches,
   groupAction,
   heldCrossover,
+  isConversionFee,
   heldLayers,
   holdingCost,
   idleMonth,
   priceParts,
   rateAt,
   sideOf,
+  stretchCuts,
   type DealAction,
   type DealPeriod,
   type DealPrice,
   type DealSide,
+  type DealStretch,
   type PricePart,
 } from "@finance-tool/engine";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
@@ -254,6 +259,36 @@ function endInputs(r: DealRead, i: number, _e: DealPrice, s: Price): Record<stri
 
 /** The part of a lane at an amount: the one whose stretch holds it (an amount at a part's top is that part's, "עד" taking its top in). */
 export const partAt = (parts: readonly LanePart[], a: number): LanePart | undefined => parts.find((x) => a > x.from - 1e-9 * Math.max(1, x.from) && (x.to === null || a <= x.to * (1 + 1e-12))) ?? parts[0];
+
+/**
+ * A purchase's conversion lane on the chart's axis, the shekels the purchase converts at most (F-13, `buyConversion`). Its steps' tops and
+ * its flat prices' sums are measured on what is bought, so each sits at the cash from which the purchase buys past it: the cut
+ * (`stretchCuts`) after which what the most a cash buys (`bought`) passes the top. Between two cuts the stretch chosen holds. A bound of a
+ * part inside a step (a minimum's end, a maximum's start) is measured on the shekels converted and stays where it is, held between its
+ * step's two tops; a part the stretches never reach is left out. Read at the cash, the lane names the part of the stretch whose cost the
+ * purchase pays, as reading the lane in what is bought at `bought` does.
+ */
+function boughtOnCash(parts: readonly LanePart[], stretches: readonly DealStretch[]): LanePart[] {
+  const tops = stretches.flatMap((s) => (Number.isFinite(s.hi) && s.hi > 0 ? [s.hi] : []));
+  const cuts = stretchCuts(stretches);
+  // between two cuts the stretch chosen holds, so each is probed inside the stretch of cash that follows it
+  const passes = cuts.map((c, k) => buyConversion(stretches, k + 1 < cuts.length ? Math.sqrt(c * cuts[k + 1]!) : 2 * c).bought);
+  const same = (a: number, b: number) => Math.abs(a - b) < 1e-9 * Math.max(1, b);
+  const onCash = (top: number) => cuts.find((_, k) => passes[k]! > top * (1 + 1e-12)) ?? top;
+  const at = (v: number): number => {
+    if (tops.some((t) => same(v, t))) return onCash(v);
+    const below = tops.filter((t) => t < v);
+    const above = tops.filter((t) => t > v);
+    const lo = below.length ? onCash(Math.max(...below)) : 0;
+    const hi = above.length ? onCash(Math.min(...above)) : Infinity;
+    return Math.min(Math.max(v, lo), hi);
+  };
+  return parts.flatMap((x) => {
+    const from = at(x.from);
+    const to = x.to === null ? null : at(x.to);
+    return to !== null && !(to > from) ? [] : [{ ...x, from, to }];
+  });
+}
 
 // ---------------------------------------------------------------- the curves
 
@@ -533,9 +568,17 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
   if ("missing" in got) return { undrawn: { periods: [at], why: "rate", currency: got.missing } };
   const { rates, values } = got;
   const unitNis = perUnit ? unit.price! * (unit.currency === "ILS" ? 1 : rates[unit.currency!]!) : undefined;
+  // a chart of side "all" has no separate sale price: it is drawn with the purchase's reading, as `actionCost` prices it on "buy"
   const eside = side === "sell" ? "sell" : "buy";
+  // on a purchase the conversion's steps are read on what it buys (F-13): its lane sits on the cash axis where the cost changes step
+  const fxIdx = eside === "buy" ? idx.filter((i) => isConversionFee(r.engine.fees[i]!)) : [];
+  const stretches = fxIdx.length ? dealConversionStretches(r.engine, p, fxIdx, "buy", rates, unitNis) : null;
+  const partsOf = (fee: ChartFee): LanePart[] | null => {
+    const read = laneParts(r, p, fee, side, rates, unitNis);
+    return read && stretches && fee.idx.some((i) => fxIdx.includes(i)) ? boughtOnCash(read, stretches) : read;
+  };
   const lanes: Lane[] = fees.map((fee) => {
-    const parts = laneParts(r, p, fee, side, rates, unitNis);
+    const parts = partsOf(fee);
     return { fee, parts: parts && parts.length > 1 ? parts : null, price: viewOf(r, p, fee.idx[0]!, side) };
   });
   const all = boundaries(lanes);
@@ -547,7 +590,8 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
   // a sum per unit rests on the unit's price the person gave as well
   const inputs = { ...chartInputs(r, p, idx, side, values), ...(perUnit ? { "deal:unit-price": entered(unit.price!, sumUnit(unit.currency!), r.today) } : {}) };
   const cost = (a: number) => actionCost(r.engine, p, action, a, eside, rates, unitNis);
-  const cuts = all.map((b) => b.at);
+  // the curve is read on both sides of each mark and of each cash where a purchase's conversion may change stretch (`stretchCuts`), each once
+  const cuts = [...new Set([...all.map((b) => b.at), ...(stretches ? stretchCuts(stretches) : [])])];
   const sample = (rg: AmountRange, n = 480): CurvePoint[] => samples(rg, cuts, n).map((a) => ({ at: a, share: costShare(cost(a).total, a) }));
   const marks = dedupe(all.filter((b) => b.at >= range.lo && b.at <= range.hi).map((b) => ({ at: b.at, label: b.part.end!, kind: "part" as const })));
   const zones = zonesOf(lanes, range);
@@ -565,9 +609,11 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
       parts: fees.flatMap((fee) => {
         const v = c.parts.filter((x) => fee.idx.includes(x.fee)).reduce((s, x) => s + x.cost, 0);
         const lane = lanes.find((l) => l.fee === fee)!;
-        const part = lane.parts ? partAt(lane.parts, a) : (laneParts(r, p, fee, side, rates, unitNis) ?? [])[0];
+        const part = lane.parts ? partAt(lane.parts, a) : (partsOf(fee) ?? [])[0];
         const ePrice = part ? pricesOf(r, p, part.i, side).e : null;
-        const alone = part && (part.part === "min" || part.part === "max") && ePrice?.kind === "action" ? reading(ePrice.rate * a, "nis", "F-123", { ...amountIn, ...endInputs(r, part.i, ePrice, priceAt(r.fees[part.i]!, p.from, side === "sell")) }, r.today) : undefined;
+        // F-123: the rate alone on what the fee is charged on, the action, or on a purchase's conversion the shekels it converts (`buyConversion`)
+        const base = part && stretches && fxIdx.includes(part.i) ? buyConversion(stretches, a).converted : a;
+        const alone = part && (part.part === "min" || part.part === "max") && ePrice?.kind === "action" ? reading(ePrice.rate * base, "nis", "F-123", { ...amountIn, ...endInputs(r, part.i, ePrice, priceAt(r.fees[part.i]!, p.from, side === "sell")) }, r.today) : undefined;
         if (!(v > 0) && part?.part !== "free") return [];
         const feeCost = reading(v, "nis", "F-112", { ...inputs, ...amountIn }, r.today);
         const apart = alone ? reading(Math.abs(v - (alone.value as number)), "nis", "F-123", { "deal:cost": feeCost, "deal:rate-alone": alone }, r.today) : undefined;

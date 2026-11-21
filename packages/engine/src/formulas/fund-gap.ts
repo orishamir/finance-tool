@@ -135,6 +135,13 @@ export function variableForwardYears(years: readonly GapYear[], since: string | 
   return at.length === 0 ? null : at;
 }
 
+/** F-92 (c) A-07 in the fund's cheapest and dearest year, each as (b) on that one year: the band a figure resting on F-92 (b) is shown with. */
+export function trackingBeyondFeesRange(years: readonly GapYear[], fees: number): { low: number; high: number } | null {
+  if (years.length === 0) return null;
+  const each = years.map((y) => Math.max(0, beyondInYear(y, fees)));
+  return { low: Math.min(...each), high: Math.max(...each) };
+}
+
 export interface RatePoint {
   /** The month end, YYYY-MM-DD, as the series dates it. */
   date: string;

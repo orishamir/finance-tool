@@ -9,13 +9,13 @@ import { readDealFor } from "./deal-read";
 import { leftOut } from "./left-out";
 import { pickLine, readingOf } from "./reading";
 import { liftDrop, liftRemove } from "./lifted";
-import { addBlankCase, addBy, addValuesAt, removeBy, removeCase, setWhen, splitCase } from "./edits/case";
+import { decodeDeal, encodeDeal } from "./link";
+import { addBlankCase, addBy, addValues, removeBy, removeCase, setWhen, splitCase } from "./edits/case";
 import { duplicateValue, inOrderOf, moveValue, removeColumn, removeValue, swapThings } from "./edits/arrange";
 import { duplicateFee } from "./edits/deal";
 import { thingMenu, slotEdit } from "./things";
 import { valueKey, WHOLE } from "./layout";
 import { readDeal, thingValues, typed, type CasesFee, type Fee, type FeeDeal } from "./model";
-import { linkText, openQueryLink, throughLink } from "./link-fixtures";
 
 const data = feesData();
 const TODAY = "2026-11-12";
@@ -93,7 +93,7 @@ describe("a value taken away by its head", () => {
 describe("every edit keeps the values", () => {
   const empty = () => removeCase(trade(), "m-d") as CasesFee;
   it("adds values with no case, at the end or before a value", () => {
-    expect(thingValues(addValuesAt(empty(), 0, ["mutualFunds"]) as CasesFee, 0)).toEqual(["tase", "makam", "us", "mutualFunds"]);
+    expect(thingValues(addValues(empty(), 0, ["mutualFunds"]) as CasesFee, 0)).toEqual(["tase", "makam", "us", "mutualFunds"]);
   });
   it("moves a value with no case, the page's order following the values", () => {
     const moved = moveValue(empty(), 0, valueKey(["makam"]), valueKey(["tase"])) as CasesFee;
@@ -213,19 +213,19 @@ describe("the values on the device and in a link", () => {
     expect(thingValues(feeIn(read), 0)).toEqual(["us", "tase", "makam"]);
     expect(thingValues(feeIn(read), 1)).toEqual(["direct", "branch"]);
   });
-  it("carry a row with no case through a link and back", async () => {
+  it("carry a row with no case through a link and back", () => {
     const d = dealOf(removeCase(trade(), "m-d"));
-    const back = (await throughLink(d))!;
+    const back = decodeDeal(encodeDeal(d))!;
     expect(thingValues(feeIn(back), 0)).toEqual(["tase", "makam", "us"]);
     expect(grid(feeIn(back)).rows[1]!.cases).toEqual([]);
     expect(readDeal(JSON.parse(JSON.stringify(d)))).toEqual(d);
   });
-  it("open a link written before things kept them as the same deal on the page", async () => {
+  it("open a link written before things kept them as the same deal on the page", () => {
     const d = dealOf(trade());
-    const text = JSON.parse(await linkText(d));
+    const text = JSON.parse(Buffer.from(encodeDeal(d), "base64url").toString("utf8"));
     for (const b of text[1].f[0].B) delete b.Vs;
     const old = Buffer.from(JSON.stringify(text), "utf8").toString("base64url");
-    const back = (await openQueryLink(old))!;
+    const back = decodeDeal(old)!;
     expect(feeIn(back).by).toEqual(trade().by);
     expect(grid(feeIn(back)).rows.map((x) => x.key)).toEqual(grid(trade()).rows.map((x) => x.key));
   });

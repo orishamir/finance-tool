@@ -8,6 +8,8 @@ import {
   changeKind,
   chargedOn,
   chargesNothing,
+  conversionStretches,
+  convertedAtMost,
   curveEnd,
   dealMarks,
   dealPeriods,
@@ -19,6 +21,7 @@ import {
   samePrice,
   stepOf,
   stepStretch,
+  stretchCuts,
   type Deal,
   type DealCap,
   type DealPrice,
@@ -531,9 +534,14 @@ describe("F-112 a percent maximum, a flat price for a small action, a sum per un
     expect(marks[0]).toMatchObject({ kind: "flat", amount: 50 });
     expect(marks[1]).toMatchObject({ kind: "min", from: 50 });
     expect(marks[1]!.amount).toBeCloseTo(5.4 / 0.00133, 8);
-    // 100 ₪ is 27.03 $: the flat 2.85 $ = 10.545 ₪; 200 ₪ is 54.05 $: the minimum 5.4 $ = 19.98 ₪
+    // 100 ₪ buys 24.18 $: the flat 2.85 $ = 10.545 ₪. A purchase reads the flat price's sum on what it buys (F-13): 200 ₪ converted whole
+    // at the minimum, 5.4 $ = 19.98 ₪, would buy 180.02 ₪, under the 50 $ top (185 ₪), while 195.545 ₪ buy the top at the flat price, so
+    // 200 ₪ pays 10.545 ₪ and 4.455 ₪ are not converted; from 204.98 ₪ the minimum buys more than the top. A sale of 200 ₪ sells 54.05 $
+    // and pays the minimum
     expect(actionCost(d, first(d), "conversion", 100, "buy", { USD: 3.7 }).total).toBeCloseTo(10.545, 10);
-    expect(actionCost(d, first(d), "conversion", 200, "buy", { USD: 3.7 }).total).toBeCloseTo(19.98, 10);
+    expect(actionCost(d, first(d), "conversion", 200, "buy", { USD: 3.7 }).total).toBeCloseTo(10.545, 10);
+    expect(actionCost(d, first(d), "conversion", 210, "buy", { USD: 3.7 }).total).toBeCloseTo(19.98, 10);
+    expect(actionCost(d, first(d), "conversion", 200, "sell", { USD: 3.7 }).total).toBeCloseTo(19.98, 10);
   });
 
   it("leaves no stretch to a minimum and a cap that a flat price covers (PEPPER: 4 ₪ up to 30,000 ₪)", () => {
@@ -661,6 +669,33 @@ describe("F-115 a fee charged on one step of sizes", () => {
     expect(actionCost(steps, p, "conversion", 3500, "buy", rates).total).toBeCloseTo(6.8 * 3.5, 9);
     expect(inStep({ from: 0, to: 10 }, 0)).toBe(true);
     expect(inStep({ from: 10, to: 100 }, 10)).toBe(false);
+  });
+
+  it("reads a purchase's conversion on what it buys, as a house's row reads its line's steps (F-13), and a sale's on what it sells", () => {
+    // Discount's direct line as F-13 prints it: 0.17%, at least 6 $, at most 1,055 $; free up to 10 $, half the price and its minimum up to 100 $
+    const line: DealPrice = { kind: "action", rate: 0.0017, min: 6, max: 1055, currency: "USD" };
+    const direct: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "fx" }, stages: [{ price: { kind: "free" } }], within: { on: "action", from: 0, to: 10, currency: "USD" } },
+        { base: { key: "fx" }, stages: [{ price: discounted(line, 0.5, true) }], within: { on: "action", from: 10, to: 100, currency: "USD" } },
+        { base: { key: "fx" }, stages: [{ price: line }], within: { on: "action", from: 100, to: null, currency: "USD" } },
+      ],
+    };
+    const house = { line: { rate: 0.0017, min: 6, max: 1055, in: "instrument" as const }, steps: [{ upTo: 10, price: { kind: "exempt" as const } }, { upTo: 100, price: { kind: "discount" as const, off: 0.5, onMin: true } }], in: "instrument" as const };
+    const usd = { USD: 3.7 };
+    const p = first(direct);
+    const buy = (a: number) => actionCost(direct, p, "conversion", a, "buy", usd).total;
+    // 380 ₪ buys 368.90 ₪ at half the minimum, 3 $ = 11.10 ₪, under the 100 $ top (370 ₪); 385 ₪ converts 381.10 ₪, which buy the top, and 3.90 ₪
+    // wait; from 392.20 ₪ the minimum, 6 $ = 22.20 ₪, buys more than the top; 40 ₪ converts 37 ₪, which buy 10 $ free
+    for (const [a, fee] of [[40, 0], [50, 11.1], [380, 11.1], [385, 11.1], [392.8, 22.2], [400, 22.2]] as const) {
+      expect(buy(a)).toBeCloseTo(fee, 9);
+      expect(buy(a)).toBeCloseTo(convertedAtMost(a, house, { fxRate: 3.7 }).cost, 9);
+    }
+    // a sale's step is read on the dollars it sells: 380 ₪ is 102.70 $, over the top
+    expect(actionCost(direct, p, "conversion", 380, "sell", usd).total).toBeCloseTo(22.2, 9);
+    // the cash where a purchase moves from one stretch to another: each top bought in the stretch below it and in the one above
+    expect(stretchCuts(conversionStretches(house, 0, { fxRate: 3.7 }))).toEqual([expect.closeTo(37, 9), expect.closeTo(48.1, 9), expect.closeTo(381.1, 9), expect.closeTo(392.2, 9)]);
   });
 
   it("marks what falls in each step, and each step's top", () => {

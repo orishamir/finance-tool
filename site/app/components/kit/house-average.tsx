@@ -28,8 +28,12 @@ function AverageFigures({ average, house }: { average: ColumnAverage; house: str
   );
 }
 
-/** The line: what the house charged on average (one column, or several each by its short name), by portfolio size, the period, the link. */
-export function HouseAverageLine({ averages, house, from, to, page, className }: { averages: readonly ColumnAverage[]; house: string; from: string; to: string; page: { url: string }; className?: string }) {
+/**
+ * The line: what the house charged on average (one column, or several each by its short name), by portfolio size, the period, the link.
+ * `customers`: it starts with the house's customers ("לקוחות פסגות שילמו בממוצע"), where the line stands under a fee of a deal, away from
+ * the house's own name.
+ */
+export function HouseAverageLine({ averages, house, from, to, page, customers, className }: { averages: readonly ColumnAverage[]; house: string; from: string; to: string; page: { url: string }; customers?: boolean; className?: string }) {
   if (averages.length === 0) return null;
   const one = averages.length === 1;
   return (
@@ -37,7 +41,7 @@ export function HouseAverageLine({ averages, house, from, to, page, className }:
       className={className}
       items={[
         <span key="figures">
-          {copy.lead}{" "}
+          {customers ? copy.paidBy(house) : copy.lead}{" "}
           {averages.map((a, i) => (
             <span key={`${a.column.fee}-${a.column.securities}`}>
               {i > 0 && ", "}

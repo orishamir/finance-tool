@@ -8,7 +8,7 @@ import { cardOf, toolbox } from "./toolbox";
 import { panel } from "./panel";
 import { leftOut } from "./left-out";
 import { capLine, kindById, standingOf } from "./kinds";
-import { packDeal, unpackDeal } from "./link";
+import { decodeDeal, encodeDeal, packDeal, unpackDeal } from "./link";
 import { NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num, type SlimFee, type Stage } from "./model";
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./deal-read";
@@ -23,7 +23,6 @@ import { BAN_RULES } from "./offers/rules";
 import { latestSnapshots } from "../providers.server";
 import { loadTerms } from "../data.server";
 import { termKey, trackFees } from "../fee-page-data";
-import { throughLink } from "./link-fixtures";
 
 const data = feesData();
 const kinds = data.kinds;
@@ -391,10 +390,10 @@ describe("a fee its product is not offered (the rule table)", () => {
     expect(fee.stages?.[0]?.price.form).toBe("action");
     expect(addFee(pension, "insurance_premium")!.fee.stages?.[0]?.price.form).toBe("sum");
   });
-  it("still opens and reads in a saved deal that holds one, through the device and a link", async () => {
+  it("still opens and reads in a saved deal that holds one, through the device and a link", () => {
     const deal = of("keren-hishtalmut", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]);
     expect(readDeal(JSON.parse(JSON.stringify(deal)))).toEqual(deal);
-    expect((await throughLink(deal))?.fees[0]?.kind).toBe("deposit");
+    expect(decodeDeal(encodeDeal(deal))?.fees[0]?.kind).toBe("deposit");
     const b = builder(read(deal));
     expect(b.rows.map((r) => r.fee)).toEqual(["fee-dep"]);
     expect(b.rows[0]!.priced).toBe(true);
@@ -474,7 +473,7 @@ describe("a track picked in the builder, on the deal on screen", () => {
   const [a, b] = [both[0]!, both.find((x) => x.b.value !== both[0]!.b.value)!];
   const kept = (d: FeeDeal) => ({ id: d.id, saved: d.saved });
 
-  it("keeps a typed name and typed fees, and records the track", async () => {
+  it("keeps a typed name and typed fees, and records the track", () => {
     const deal: FeeDeal = { ...provident(), name: "ההצעה של הסוכן", saved: "2026-11-10" };
     const next = pickTrack(deal, `track:${a.id}`, data, TODAY)!;
     expect(kept(next)).toEqual(kept(deal));
@@ -482,7 +481,7 @@ describe("a track picked in the builder, on the deal on screen", () => {
     expect(next.fees).toEqual(deal.fees);
     expect(next.template).toMatchObject({ id: `track:${a.id}`, feesKept: true });
     expect(readDeal(JSON.parse(JSON.stringify(next)))).toEqual(next);
-    expect((await throughLink(next))?.template).toEqual(next.template);
+    expect(decodeDeal(encodeDeal(next))?.template).toEqual(next.template);
   });
   it("fills and names an empty deal, keeping its id", () => {
     const deal = newDeal("kupat-gemel-lehashkaa");

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { changedByShare, sweep } from "../src/formulas/step-effect.ts";
+import { changedByShare, changeEffect, sweep } from "../src/formulas/step-effect.ts";
 
 const left = (p: { years: number; r: number }) => 1000 * p.years * (1 + p.r);
 
@@ -9,6 +9,11 @@ describe("F-89 a plan number changed by a share", () => {
     expect(changedByShare(10, -0.25, true)).toBe(8);
     expect(changedByShare(1, -0.5, true)).toBe(1);
     expect(changedByShare(100, -2)).toBe(0);
+  });
+  it("its effect is the value left after the change less the value left now, read in the slider's unit", () => {
+    expect(changeEffect(left, { years: 10, r: 0.07 }, "years", 12)).toBeCloseTo(2140);
+    expect(changeEffect(left, { years: 10, r: 0.07 }, "r", 8, 100)).toBeCloseTo(100);
+    expect(changeEffect(() => null, { years: 10, r: 0 }, "years", 11)).toBeNull();
   });
 });
 

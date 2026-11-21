@@ -1,5 +1,5 @@
-// Release 2 comparison golden scenarios: S39 (ranking, deciding formula), S40 (full coverage line), S50 (tie), plus the F-83
-// priority order on its own.
+// Release 2 comparison golden scenarios: S39 (ranking, deciding formula, sensitivity), S40 (full coverage line),
+// S41 (idle-cash preset), S50 (tie), plus the F-83 priority order and the F-81 bisection on their own.
 // Wrapper records here are minimal, schema-valid test records; no file under data/instruments/ is read.
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
@@ -9,9 +9,12 @@ import {
   executeCandidate,
   enteredGoal,
   formulas,
+  idleCash,
   isTie,
   pending,
   rankCandidates,
+  sensitivity,
+  sensitivityAxes,
   tieThreshold,
   withoutFees,
   type Candidate,
@@ -163,23 +166,29 @@ const tier2: Tier2Instrument[] = [
 const byId = (set: CandidateSet, id: string) => set.candidates.find((c) => c.id === id)!;
 const codes = (c: Candidate) => c.reasons.map((r) => r.code);
 
-describe("S39 wrapper mode: the founder's ETF-vs-provident case (F-80)", () => {
+describe("S39 wrapper mode: the founder's ETF-vs-provident case (F-80, F-81)", () => {
   const goal = { amountNow: 30_000, monthly: 2_000, horizonYears: 20, grossReturnPct: 6, inflationPct: 2.5, profile: { ageAtStart: 22, annualIncome: 144_000 } };
-  const wrappers: CandidateInput[] = [
-    input("brokerage-account", {
-      fund: s14Fund,
-      tariff: {
-        buy: { rate: 0.003, min: 25 },
-        sell: { rate: 0.003, min: 25 },
-        custody: { rate: 0.0015, min: 15, everyMonths: 3 },
-      },
-    }),
-    input("kupat-gemel-lehashkaa", { fees: { deposit: 0, balance: 0.008, direct: 0.001 } }),
-    input("keren-hishtalmut", terms.hishtalmut),
-    input("pension-comprehensive", terms.pension),
-  ];
-  const set = buildCandidateSet({ wrappers, tier2: [], parameters, goal, restricted: true }, ctx);
-  const ranking = rankCandidates(set.candidates, { theta: tieThreshold(parameters), ctx });
+  const wrappers = (scale: Record<string, number> = {}): CandidateInput[] => {
+    const k = (n: string) => scale[n] ?? 1;
+    return [
+      input("brokerage-account", {
+        fund: { ...s14Fund, drag: Object.fromEntries(Object.entries(s14Fund.drag).map(([f, v]) => [f, v * k("etf fund fee")])) },
+        tariff: {
+          buy: { rate: 0.003 * k("trade commission"), min: 25 },
+          sell: { rate: 0.003 * k("trade commission"), min: 25 },
+          custody: { rate: 0.0015 * k("custody"), min: 15, everyMonths: 3 },
+        },
+      }),
+      input("kupat-gemel-lehashkaa", { fees: { deposit: 0, balance: 0.008 * k("kgl balance fee"), direct: 0.001 * k("kgl direct expenses") } }),
+      input("keren-hishtalmut", terms.hishtalmut),
+      input("pension-comprehensive", terms.pension),
+    ];
+  };
+  const compare = (g: Partial<typeof goal> = {}, scale: Record<string, number> = {}) => {
+    const set = buildCandidateSet({ wrappers: wrappers(scale), tier2: [], parameters, goal: { ...goal, ...g }, restricted: true }, ctx);
+    return { set, ranking: rankCandidates(set.candidates, { theta: tieThreshold(parameters), ctx }) };
+  };
+  const { set, ranking } = compare();
 
   it("ranks the kupat gemel lehashkaa above the brokerage, and is not a tie", () => {
     const g = golden("S39");
@@ -222,6 +231,73 @@ describe("S39 wrapper mode: the founder's ETF-vs-provident case (F-80)", () => {
     // TODO(pension formulas): once formulas/deposit-side.ts exists, assert the "no credit on new money" reason (S39 step 4).
     expect(set.coverage).toMatchObject({ considered: 4, counts: { ranked: 2, "listed-not-ranked": 2, "not-eligible": 0, excluded: 0, "not-evaluated": 0 } });
     expect(set.coverage.invariant.ok).toBe(true);
+  });
+
+  it("finds no flip within the P-02 bounds for the guesses and each fee", () => {
+    const fees = [
+      { key: "etf fund fee", label: "etf fund fee" },
+      { key: "custody", label: "custody" },
+      { key: "trade commission", label: "trade commission" },
+      { key: "kgl balance fee", label: "kgl balance fee" },
+      { key: "kgl direct expenses", label: "kgl direct expenses" },
+    ];
+    const axes = sensitivityAxes(parameters, { current: { "A-01": 0.06, "A-02": 0.025 }, horizonYears: 20, fees });
+    expect(axes.map((a) => [a.key, a.lo, a.hi])).toEqual([
+      ["A-01", 0, 0.1],
+      ["A-02", 0, 0.05],
+      ["horizon", 18, 22],
+      ...fees.map((f) => [`fee:${f.key}`, 0.5, 2]),
+    ]);
+    const topOf = (key: string, value: number) => {
+      if (key === "A-01") return compare({ grossReturnPct: value * 100 }).ranking.top;
+      if (key === "A-02") return compare({ inflationPct: value * 100 }).ranking.top;
+      if (key === "horizon") return compare({ horizonYears: value }).ranking.top;
+      return compare({}, { [key.slice(4)]: value }).ranking.top;
+    };
+    const s = sensitivity(axes, topOf);
+    expect(s.baseTop).toBe("kupat-gemel-lehashkaa");
+    expect(s.noFlip).toBe(true);
+    expect(s.flips).toEqual([]);
+    expect(s.rows.every((r) => !r.lo.flips && !r.hi.flips)).toBe(true);
+    // Deterministic: the same inputs give the same panel.
+    expect(sensitivity(axes, topOf)).toEqual(s);
+  });
+});
+
+describe("F-81 holding-period axis", () => {
+  it("never tests fewer years than the shortest the pages offer, nor moves a shorter horizon lower (fee page, 2026-11-07: \"ל־0 שנים\")", () => {
+    const lo = (horizonYears: number, horizonMinYears?: number) => sensitivityAxes(parameters, { current: {}, horizonYears, ...(horizonMinYears !== undefined ? { horizonMinYears } : {}) }).find((a) => a.key === "horizon")!;
+    expect([lo(2).lo, lo(2).hi]).toEqual([1, 4]);
+    expect(lo(1).lo).toBe(1);
+    expect(lo(10).lo).toBe(8);
+    expect(lo(3, 2).lo).toBe(2);
+    // a horizon already shorter than the floor is not moved lower
+    expect(lo(0.5).lo).toBe(0.5);
+  });
+});
+
+describe("F-81 bisection, on its own", () => {
+  it("narrows to the value where the top changes, within the iteration bound", () => {
+    const axes = [{ key: "A-01", label: "A-01", unit: "fraction" as const, current: 0.06, lo: 0, hi: 0.1 }];
+    const topOf = (_k: string, v: number) => (v < 0.0275 ? "b" : "a");
+    const s = sensitivity(axes, (k, v) => (topOf(k, v) === "a" ? "a" : "b"));
+    expect(s.baseTop).toBe("a");
+    expect(s.noFlip).toBe(false);
+    expect(s.rows[0]!.hi.flips).toBe(false);
+    expect(s.rows[0]!.lo).toMatchObject({ flips: true, topAfter: "b" });
+    expect(s.flips).toHaveLength(1);
+    expect(s.flips[0]).toMatchObject({ key: "A-01", side: "lo", from: 0.06 });
+    expect(s.flips[0]!.to).toBeCloseTo(0.0275, 9);
+    expect(s.evaluations).toBeLessThanOrEqual(1 + 2 + 40);
+  });
+
+  it("moves the horizon in whole months", () => {
+    const axes = [{ key: "horizon", label: "horizon", unit: "years" as const, current: 20, lo: 18, hi: 22, step: 1 / 12 }];
+    const s = sensitivity(axes, (_k, v) => (v >= 21.3 ? "b" : "a"));
+    const to = s.flips[0]!.to;
+    expect(Number.isInteger(to * 12)).toBe(true);
+    expect(to).toBeGreaterThanOrEqual(21.3);
+    expect(to - 21.3).toBeLessThan(1 / 12);
   });
 });
 
@@ -406,6 +482,93 @@ describe("S40 wrapper mode: the founder's apartment case (F-83, F-80)", () => {
   });
 });
 
+describe("S41 idle-cash preset (F-60, F-83)", () => {
+  const result = idleCash(
+    {
+      balance: 80_000,
+      mustStayAvailable: 20_000,
+      inflationPct: 3,
+      parameters,
+      wrappers: [
+        input("current-account", terms.deposit, 0.5),
+        input("bank-deposit", terms.deposit),
+        input("money-market-fund-daily", terms.mmf, 3.25),
+        input("makam", { tariff: {} }, 3.9),
+        input("savings-plan"),
+        input("money-market-fund-renewable", terms.renewable),
+        input("government-bond", terms.bond),
+        input("brokerage-account", terms.etf),
+        input("kupat-gemel-lehashkaa", terms.kgl),
+        input("keren-hishtalmut", terms.hishtalmut),
+        input("pension-comprehensive"),
+        input("pension-general"),
+        input("provident-for-annuity"),
+        input("child-savings-provident"),
+        input("child-savings-bank"),
+        input("ira-hishtalmut"),
+        input("ira-provident"),
+      ],
+      tier2,
+      // the Bank of Israel's average, a weighted average of effective annual rates (reporting directive 877 s.9)
+      bankAverage: vo(3.2, "pct_per_year_effective", "sourced"),
+      ownOffer: rate(3.6, "entered"),
+      profile: { ageAtStart: 22 },
+    },
+    ctx,
+  );
+  const row = (id: string) => result.rows.find((r) => r.id === id)!;
+
+  it("gives the monthly cost of leaving 60,000 in the current account, with the three labels", () => {
+    const g = golden("S41");
+    g.value("amount considered", result.amount, x.s41.amount);
+    g.value("bank average", row("bank-deposit:average").monthlyCost, x.s41.costs.average);
+    g.value("own offer", row("bank-deposit:own-offer").monthlyCost, x.s41.costs.ownOffer);
+    g.value("makam", row("makam").monthlyCost, x.s41.costs.makam);
+    g.value("daily fund", row("money-market-fund-daily").monthlyCost, x.s41.costs.fund);
+    g.done();
+    expect(result.rows.map((r) => r.id)).toEqual(["bank-deposit:average", "bank-deposit:own-offer", "makam", "money-market-fund-daily"]);
+    expect(row("bank-deposit:average").label).toBe("average-paid-last-month");
+    expect(row("bank-deposit:own-offer").label).toBe("entered-by-you");
+    expect(row("makam").notes).toEqual(["no-commission-given"]);
+    expect(row("money-market-fund-daily").notes).toEqual(["one-year-hold"]);
+    expect(row("money-market-fund-daily").run.labels).toContainEqual({ code: "proxy", ruleId: "MF-34" });
+    expect(result.baseline.wrapper).toBe("current-account");
+  });
+
+  it("accounts for the 26 candidates: baseline, compared, not eligible, not evaluated (G-28, G-24)", () => {
+    const cov = result.coverage;
+    expect(cov.invariant).toEqual({ ok: true, sum: 26, duplicates: [] });
+    expect(cov.considered).toBe(x.s41.coverage.considered);
+    expect(cov.counts).toEqual({
+      baseline: x.s41.coverage.baseline,
+      compared: x.s41.coverage.compared,
+      "not-eligible": x.s41.coverage.notEligible,
+      "not-evaluated": x.s41.coverage.notEvaluated,
+    });
+    expect(sectionText("S41")).toContain("Considered 26: baseline 1, compared 3, not eligible 2, not evaluated 20");
+    const kind = (id: string) => result.candidates.find((c) => c.id === id)!;
+    expect(kind("current-account").kind).toBe("baseline");
+    for (const id of ["bank-deposit", "makam", "money-market-fund-daily"]) expect(kind(id).kind).toBe("compared");
+    for (const id of ["child-savings-provident", "child-savings-bank"]) {
+      expect(kind(id)).toMatchObject({ kind: "not-eligible", reasons: [{ code: "not-own-money", gapIds: [] }] });
+    }
+    const g28 = ["savings-plan", "money-market-fund-renewable", "government-bond", "brokerage-account", "kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity", "ira-hishtalmut", "ira-provident"];
+    for (const id of g28) expect(kind(id)).toMatchObject({ kind: "not-evaluated", reasons: [{ code: "idle-cash-not-run", gapIds: ["G-28"] }] });
+    for (const t of tier2) expect(kind(t.id)).toMatchObject({ kind: "not-evaluated", reasons: [{ code: "tier-2", gapIds: ["G-24"] }] });
+    expect(cov.notRanked).toHaveLength(22);
+  });
+
+  it("runs the bank average as its unit quotes it: an effective average at F-07's month, a bank's nominal rate at r/12", () => {
+    const base = { balance: 80_000, mustStayAvailable: 20_000, inflationPct: 3, parameters, wrappers: [input("current-account", terms.deposit, 0.5), input("bank-deposit", terms.deposit)], tier2: [], restricted: true };
+    const row = (bankAverage: ValueObject) => idleCash({ ...base, bankAverage }, ctx).rows[0]!;
+    const effective = row(vo(3.2, "pct_per_year_effective", "sourced"));
+    // the month at 3.2% effective is 1.032^(1/12) − 1, below the 3.2%/12 the same figure pays read as nominal
+    expect(effective.monthlyCost).toBeCloseTo(x.s41.costs.average, 2);
+    expect(effective.rate.unit).toBe("pct_per_year_effective");
+    expect(row(rate(3.2)).monthlyCost).toBeCloseTo(114.8, 1);
+  });
+});
+
 describe("S50 tie (F-80, P-01)", () => {
   const entered = enteredGoal({ amountNow: 10_000, monthly: 2_000, horizonYears: 5, grossReturnPct: 6, inflationPct: 2.5 }, 10_000, 2_000, ctx.runDate);
   const bank = (commission: number): Candidate => {
@@ -439,8 +602,8 @@ describe("S50 tie (F-80, P-01)", () => {
 });
 
 describe("registry", () => {
-  it("computes F-80 and F-83", () => {
-    for (const id of ["F-80", "F-83"]) {
+  it("computes F-60, F-80, F-81 and F-83", () => {
+    for (const id of ["F-60", "F-80", "F-81", "F-83"]) {
       expect(id in formulas, id).toBe(true);
       expect(id in pending, id).toBe(false);
     }

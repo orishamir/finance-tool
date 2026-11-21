@@ -1,7 +1,7 @@
-// A discount that ends (A-19, F-16, D83) outside the run itself: the fee lines a plan charges, a line set by hand, held or removed, and a
-// line scaled. Harel's provident fund for investing: 0.7% a year and 0% on deposits for 60 months, then up to 1.05% and 4%.
+// A discount that ends (A-19, F-16, D83) outside the run itself: the fee lines F-61 reads, a line replaced or removed, and a line
+// scaled for F-81. Harel's provident fund for investing: 0.7% a year and 0% on deposits for 60 months, then up to 1.05% and 4%.
 import { describe, expect, it } from "vitest";
-import { annualToMonthly, feeCharged, feeLines, runPension, runProvident, withFee, withHeldRate, withFeeScaled, withoutFeeLine, type RunPlan } from "../src/index.ts";
+import { annualToMonthly, feeCap, feeCharged, feeLines, heldRevertRate, feeMateriality, rateAfterDiscount, runPension, runProvident, withFee, withHeldRate, valueOfReduction, withFeeRate, withFeeScaled, withoutFeeLine, type RunPlan } from "../src/index.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context();
@@ -43,7 +43,7 @@ describe("a discount that ends, outside the run (A-19, F-16)", () => {
     expect(at61.fees.balance - at60.fees.balance).toBeGreaterThan(flat.fees.balance - at60.fees.balance);
   });
 
-  it("a line at 0% whose discount reverts to a positive rate is a fee line", () => {
+  it("a line at 0% whose discount reverts to a positive rate is a fee line (F-61)", () => {
     expect(feeCharged(fees, "deposit")).toBe(true);
     expect(feeCharged({ ...fees, depositDiscount: undefined }, "deposit")).toBe(false);
     expect(feeLines(plan())).toEqual(["deposit", "balance"]);
@@ -54,10 +54,23 @@ describe("a discount that ends, outside the run (A-19, F-16)", () => {
     const f = without.run === "runProvident" ? without.input.fees : null;
     expect(f).toEqual({ deposit: 0, balance: 0.007, direct: 0, discount: fees.discount });
     expect(run(without).fees.deposit).toBe(0);
-    const cost = run(without).real - run(plan()).real;
+    const m = feeMateriality(plan(), ctx);
+    const cost = m.lines.find((l) => l.line === "deposit")!.cost.value as number;
     // 12 deposits of 1,000 at 4%, less the growth they would have made: a little under 480 nominal, in today's money
     expect(cost).toBeGreaterThan(400);
     expect(cost).toBeLessThan(480);
+    // the deposit fee is its own line, not left in the interaction remainder
+    expect(Math.abs(m.interaction.value as number)).toBeLessThan(cost / 10);
+  });
+
+  it("a stated reduction replaces only the discounted rate; the line still reverts after the period (F-61, D83)", () => {
+    const b = withFeeRate(plan(), "balance", 0.005, ctx);
+    expect(b.run === "runProvident" && b.input.fees).toEqual({ ...fees, balance: 0.005 });
+    // worth only the five years at 0.5% instead of 0.7%: months 61 to 72 are the same 1.05% on both sides
+    const worth = valueOfReduction(plan(), "balance", 0.005, ctx).value.value as number;
+    const flat = run(plan(withFee(fees, "balance", 0.005))).real - run(plan()).real;
+    expect(worth).toBeGreaterThan(0);
+    expect(worth).toBeLessThan(flat);
   });
 
   it("set by hand with withFee, a line is one rate for the whole run; the other line keeps its discount", () => {
@@ -66,7 +79,7 @@ describe("a discount that ends, outside the run (A-19, F-16)", () => {
     expect(withFee(fees, "direct", 0.001)).toEqual({ ...fees, direct: 0.001 });
   });
 
-  it("a line scaled by a factor is scaled in both periods of its discount", () => {
+  it("F-81 scales a discounted line in both periods", () => {
     expect(withFeeScaled(fees, "balance", 2)).toEqual({ ...fees, balance: 0.014, discount: { months: 60, listRate: 0.021 } });
     expect(withFeeScaled(fees, "deposit", 0.5)).toEqual({ ...fees, depositDiscount: { months: 60, listRate: 0.02 } });
     // halved, month 61's deposit pays 2%; doubled, 8% is held at the 4% cap (PF-02)
@@ -74,12 +87,28 @@ describe("a discount that ends, outside the run (A-19, F-16)", () => {
     expect(run(plan(withFeeScaled(fees, "deposit", 2), 61)).fees.deposit).toBeCloseTo(0.04 * 1_000, 9);
   });
 
-  it("a lower rate held on a line with no discount holds for PF-13's 60 months, then returns to the line's own rate (D86)", () => {
+  it("a stated reduction on a line with no discount holds for PF-13's 60 months, then returns to the line's own rate (D86)", () => {
     const flat = { deposit: 0.01, balance: 0.008, direct: 0 };
-    expect(withHeldRate(flat, "balance", 0.005, 60, 0.008)).toEqual({ ...flat, balance: 0.005, discount: { months: 60, listRate: 0.008 } });
+    const b = withFeeRate(plan(flat), "balance", 0.005, ctx);
+    expect(b.run === "runProvident" && b.input.fees).toEqual({ ...flat, balance: 0.005, discount: { months: 60, listRate: 0.008 } });
+    // without the context (PF-13 unknown), or for a move to another fund, the rate is the whole run's
+    expect(withFeeRate(plan(flat), "balance", 0.005)).toEqual(plan({ ...flat, balance: 0.005 }));
+    const held = valueOfReduction(plan(flat), "balance", 0.005, ctx).value.value as number;
+    const moved = valueOfReduction(plan(flat), "balance", 0.005, ctx, { held: false }).value.value as number;
+    expect(held).toBeGreaterThan(0);
+    expect(held).toBeLessThan(moved);
     // a rate at or above the line's own is one rate; direct expenses never hold
     expect(withHeldRate(flat, "balance", 0.009, 60, 0.008)).toEqual({ ...flat, balance: 0.009 });
     expect(withHeldRate(flat, "direct", 0.001, 60, 0.002)).toEqual({ ...flat, direct: 0.001 });
+  });
+
+  it("a move to another fund at its own rate (no context) is one rate for the whole run: the old fund's discount does not follow it (D86)", () => {
+    const moved = withFeeRate(plan(), "balance", 0.005);
+    expect(moved.run === "runProvident" && moved.input.fees).toEqual({ deposit: 0, balance: 0.005, direct: 0, depositDiscount: fees.depositDiscount });
+    // months 61 to 72 at 0.5% too, so the move is worth more than the same rate agreed with the old fund
+    const asMove = valueOfReduction(plan(), "balance", 0.005, ctx, { held: false }).value.value as number;
+    const asOffer = valueOfReduction(plan(), "balance", 0.005, ctx).value.value as number;
+    expect(asMove).toBeGreaterThan(asOffer);
   });
 
   it("entering the record's own fee keeps a discount printed longer than PF-13's period; a lower rate holds for PF-13's period alone (A-19, D86)", () => {
@@ -95,7 +124,7 @@ describe("a discount that ends, outside the run (A-19, F-16)", () => {
     expect(withHeldRate(plain, "balance", 0.005, 60, 0.008).discount).toEqual({ months: 60, listRate: 0.008 });
   });
 
-  it("a pension fund's deposit discount holds for its period, then the line's rate is charged, as on a provident fund (F-16)", () => {
+  it("a stated cut on a pension fund's deposit fee holds for PF-13's period, then returns to the line's rate, like every other line (D86)", () => {
     const pension: RunPlan = {
       run: "runPension",
       input: {
@@ -108,8 +137,13 @@ describe("a discount that ends, outside the run (A-19, F-16)", () => {
         profile: {},
       },
     };
+    const cut = withFeeRate(pension, "deposit", 0.01, ctx);
     // 1% for 60 months, then the line's own 2%
-    const cut: RunPlan = pension.run === "runPension" ? { run: "runPension", input: { ...pension.input, fees: { deposit: 0.01, balance: 0.003, direct: 0, depositDiscount: { months: 60, listRate: 0.02 } } } } : pension;
+    expect(cut.run === "runPension" && cut.input.fees).toEqual({ deposit: 0.01, balance: 0.003, direct: 0, depositDiscount: { months: 60, listRate: 0.02 } });
+    const held = valueOfReduction(pension, "deposit", 0.01, ctx).value.value as number;
+    const whole = valueOfReduction(pension, "deposit", 0.01, ctx, { held: false }).value.value as number;
+    expect(held).toBeGreaterThan(0);
+    expect(held).toBeLessThan(whole);
     // the pension ledger reads the deposit discount: deposits in months 0 to 60 pay 1%, months 61 to 120 pay 2%
     const depositFees = (p: RunPlan) => (p.run === "runPension" ? runPension(p.input, ctx).fees.deposit : 0);
     const gross = (p: RunPlan) => (p.run === "runPension" ? runPension(p.input, ctx).deposits : []);
@@ -118,11 +152,48 @@ describe("a discount that ends, outside the run (A-19, F-16)", () => {
     expect(depositFees(cut)).toBeCloseTo(expected, 6);
     expect(depositFees(cut)).toBeGreaterThan(depositFees(pension) / 2);
     expect(depositFees(cut)).toBeLessThan(depositFees(pension));
+    expect(heldRevertRate(pension, "deposit")).toBe(0.02);
     // a printed deposit discount shorter than PF-13's period is extended to it, and the run says so, as on a provident fund
     const short = { ...pension.input, fees: { ...pension.input.fees, deposit: 0.01, depositDiscount: { months: 24, listRate: 0.02 } } } as Parameters<typeof runPension>[0];
     const sr = runPension(short, ctx);
     expect(sr.fees.deposit).toBeCloseTo(expected, 6);
     expect(sr.flags.some((f) => f.code === "PF-13")).toBe(true);
+    // the verdict judges the line by the rate after the cut once it ends within the run (D88)
+    expect(rateAfterDiscount(cut, "deposit", 120, ctx)).toBe(0.02);
+    // the balance fee of the same fund is held the same way
+    const bal = withFeeRate(pension, "balance", 0.002, ctx);
+    expect(bal.run === "runPension" && bal.input.fees.discount).toEqual({ months: 60, listRate: 0.003 });
+  });
+
+  it("the verdict judges a discount that ends within the horizon by the rate after it (D88)", () => {
+    expect(rateAfterDiscount(plan(), "deposit", 72, ctx)).toBe(0.04);
+    expect(rateAfterDiscount(plan(), "balance", 72, ctx)).toBe(0.0105);
+    // a discount that lasts the whole run, and a line with none, are judged by the rate charged now
+    expect(rateAfterDiscount(plan(fees, 60), "deposit", 60, ctx)).toBeNull();
+    expect(rateAfterDiscount(plan({ deposit: 0, balance: 0.007, direct: 0 }), "balance", 72, ctx)).toBeNull();
+    // a rate after the discount scaled past the regulated cap (F-81's sensitivity) is judged at the cap, the most the run charges
+    const doubled = plan({ ...fees, discount: { months: 60, listRate: 0.021 }, depositDiscount: { months: 60, listRate: 0.08 } });
+    expect(rateAfterDiscount(doubled, "balance", 72, ctx)).toBe(feeCap(doubled, "balance", ctx)!.rate);
+    expect(rateAfterDiscount(doubled, "deposit", 72, ctx)).toBe(feeCap(doubled, "deposit", ctx)!.rate);
+    expect(feeCap(doubled, "balance", ctx)!.rate).toBeLessThan(0.021);
+    // a study fund charges no deposit fee (PF-06), so a deposit discount there is judged at nothing; a comprehensive pension fund at its own caps
+    const kh = doubled.run === "runProvident" ? ({ ...doubled, input: { ...doubled.input, wrapper: "keren-hishtalmut" } } as RunPlan) : doubled;
+    expect(rateAfterDiscount(kh, "deposit", 72, ctx)).toBe(0);
+    const comp: RunPlan = {
+      run: "runPension",
+      input: {
+        wrapper: "pension-comprehensive",
+        goal: { amountNow: 0, monthly: 1_000, months: 72 },
+        market: { grossReturn: 0.06, inflation: 0.025 },
+        fees: { deposit: 0.01, balance: 0.002, direct: 0, discount: { months: 60, listRate: 0.02 }, depositDiscount: { months: 60, listRate: 0.1 } },
+        insurance: { rate: 0 },
+        pension: { employment: "employee", monthlySalary: 10_000 },
+        profile: {},
+      },
+    };
+    expect(rateAfterDiscount(comp, "balance", 72, ctx)).toBe(feeCap(comp, "balance", ctx)!.rate);
+    expect(rateAfterDiscount(comp, "deposit", 72, ctx)).toBe(feeCap(comp, "deposit", ctx)!.rate);
+    expect(feeCap(comp, "deposit", ctx)!.rate).toBeLessThan(0.1);
   });
 
   it("a discounted plan with no deposit after month 0 carries the open question PF OQ18 (D87)", () => {
@@ -169,22 +240,25 @@ describe("a discount that ends, outside the run (A-19, F-16)", () => {
     const monthly = run(plan(fees, 12));
     const flat = run(plan({ deposit: 0, balance: 0.007, direct: 0 }, 12));
     expect(monthly.fees.balance).toBeCloseTo(flat.fees.balance, 9);
+    // the verdict judges the one-deposit line by the rate after month 6 (D88)
+    expect(rateAfterDiscount(once(fees, 12), "balance", 12, ctx)).toBe(0.0105);
+    expect(rateAfterDiscount(once(fees, 6), "balance", 6, ctx)).toBeNull();
+    expect(rateAfterDiscount(plan(fees, 12), "balance", 12, ctx)).toBeNull();
   });
 
   it("a one-deposit discounted pension run pays the fee without the discount from month 7 too (PF OQ18, cautious)", () => {
     const g = annualToMonthly(0.06);
     const pensionOnce = (months: number): Parameters<typeof runPension>[0] => ({
       wrapper: "pension-comprehensive",
-      goal: { amountNow: 100_000, monthly: 0, months },
+      goal: { amountNow: 0, monthly: 0, months },
       market: { grossReturn: 0.06, inflation: 0.025 },
       fees: { deposit: 0, balance: 0.002, direct: 0, discount: { months: 60, listRate: 0.005 } },
       insurance: { rate: 0 },
+      existingBalance: 100_000,
       pension: { employment: "employee", monthlySalary: 10_000 },
       profile: {},
     });
-    const r = runPension(pensionOnce(12), ctx);
-    // the amount now goes in at month 0, gross of its relief (F-30), with no deposit fee and no insurance
-    let b = r.deposits[0]!;
+    let b = 100_000;
     let fee = 0;
     for (let m = 1; m <= 12; m++) {
       b *= 1 + g;
@@ -192,6 +266,7 @@ describe("a discount that ends, outside the run (A-19, F-16)", () => {
       fee += f;
       b -= f;
     }
+    const r = runPension(pensionOnce(12), ctx);
     expect(r.fees.balance).toBeCloseTo(fee, 6);
     expect(r.flags.map((f) => f.code)).toContain("PF-OQ18");
     // six months or fewer: the discount holds throughout and the question does not arise

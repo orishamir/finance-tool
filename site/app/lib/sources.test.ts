@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { citationText, isPdfUrl, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, withoutCodes, type RuleSource } from "./sources";
+import { citationText, isPdfUrl, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, strongestStrength, withoutCodes, type RuleSource } from "./sources";
 
 const src = (o: Partial<RuleSource> = {}): RuleSource => ({ url: "https://example.gov.il/a", title: "T", publisher: "Pub", strength: "primary", checked: "2026-10-01", ...o });
 const fig = (url: string, strength: string) => ({
@@ -71,7 +71,11 @@ describe("mayHaveChanged", () => {
   });
 });
 
-describe("moreSourcesLabel", () => {
+describe("strongestStrength and moreSourcesLabel", () => {
+  it("picks the strongest", () => {
+    expect(strongestStrength([{ strength: "secondary" }, { strength: "institution" }])).toBe("institution");
+    expect(strongestStrength([])).toBeNull();
+  });
   it("uses the one, two, many words", () => {
     expect(moreSourcesLabel(1)).toBe("עוד מקור אחד");
     expect(moreSourcesLabel(2)).toBe("עוד שני מקורות");

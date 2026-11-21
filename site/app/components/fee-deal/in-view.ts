@@ -12,6 +12,13 @@ function room(): { top: number; bottom: number } {
   return { top: Math.max(0, header?.getBoundingClientRect().bottom ?? 0), bottom: sheet ? sheet.getBoundingClientRect().top : window.innerHeight };
 }
 
+/** Whether an element stands wholly in the room the page shows. */
+export function inView(el: Element): boolean {
+  const r = el.getBoundingClientRect();
+  const { top, bottom } = room();
+  return r.top >= top && r.bottom <= bottom;
+}
+
 /**
  * Brings an element into the room the page shows where it is not wholly in it, gliding unless the device asks for less motion: one above
  * the room comes down to just under the header; one below it comes up to just above the room's foot, or, where it is taller than the room,

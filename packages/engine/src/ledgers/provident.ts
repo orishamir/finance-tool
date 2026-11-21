@@ -23,7 +23,8 @@ export interface ProvidentInput {
   /**
    * A-12 for a study fund: employment, salary, and the month the 6-year clock started (KH-11).
    * `earlyWithdrawal` is the person's opt-in to withdraw at the horizon when the fund is still locked (B3,
-   * F-47). `money: "employer"` runs the employer's deposits (F-52): their
+   * F-47). `employerRate` is the employer's rate on the payslip, a share of salary, for the employer line
+   * (F-52); the run itself ignores it. `money: "employer"` runs the employer's deposits (F-52): their
    * benefited part is `TXH-01`'s share of the determining salary, and the part above it is taxed as salary
    * when paid, so the run returns the value net of that tax.
    */
@@ -32,6 +33,7 @@ export interface ProvidentInput {
     monthlySalary?: number;
     clockStartMonth: number;
     earlyWithdrawal?: boolean;
+    employerRate?: number;
     money?: "own" | "employer";
     /**
      * Of `goal.monthly`, the part the employer pays (an employee's own money and the employer's together, as a
@@ -51,6 +53,22 @@ export interface ProvidentInput {
      */
     salaryFollowsPrices?: boolean;
   };
+  /**
+   * A balance already in the fund (a holding under review, F-61), as `runPension` has it: it starts the ledger as
+   * it is, with no deposit fee, no deposit-side relief and nothing added to `paidIn`; `goal` then holds only new
+   * money. In a study fund it is benefited money once TXH-09's lock has passed at the start; inside the lock it
+   * needs the split into tax layers from the detailed statement (PF-36) and the run stops with a missing input.
+   * A kupat gemel lehashkaa balance runs with the balance as its opening cost basis for fees and growth; its exit
+   * tax needs `embeddedGain`.
+   */
+  existingBalance?: number;
+  /**
+   * Kupat gemel lehashkaa with `existingBalance`: the gain already inside the balance at the start, from the detailed
+   * annual statement (PF-36), in nominal NIS. The rest of the balance is the cost basis, at the index of month 0. Absent:
+   * the exit tax is not computed (`taxAtExit` 0, flag `PF-36`) and F-61's fee costs are still produced. Ignored in a
+   * study fund, where the balance is benefited and exempt.
+   */
+  embeddedGain?: number;
   /**
    * Deposits every `months` months from `firstMonth` instead of every month: `goal.monthly` is then the
    * amount of each deposit (a self-employed person's yearly December deposit, S26).
@@ -109,6 +127,12 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   let benefitedMonthly = Infinity;
   let benefitedYearly = Infinity;
   let employerLimit = Infinity;
+  const existing = input.existingBalance ?? 0;
+  if (!Number.isFinite(existing) || existing < 0) throw new RangeError(`existingBalance ${existing} must be a number of zero or more`);
+  const embedded = input.embeddedGain;
+  if (embedded !== undefined && (!Number.isFinite(embedded) || embedded < 0 || embedded > existing)) {
+    throw new RangeError(`embeddedGain ${embedded} must be between 0 and existingBalance ${existing}`);
+  }
   if (!kgl) {
     const h = input.hishtalmut!;
     let lockMonth = h.clockStartMonth + 12 * book.amount("TXH-09", "lock_years");
@@ -124,6 +148,11 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
         book.cite("TXH-10");
         book.label("reading", "KH-12");
       }
+    }
+    if (existing > 0 && lockMonth > 0) {
+      throw new RecordInputError(
+        "existingBalance in a study fund still inside its lock needs the split into tax layers from the detailed annual statement (PF-36): not given, so the run cannot price its exit tax",
+      );
     }
     if (lockMonth > goal.months) {
       // B3: still locked at the horizon. Unless the person opts into early withdrawal (F-47), the value is
@@ -167,13 +196,15 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   const I = cpiPath(input.market.inflation, T);
   const C = contributions(goal, I);
   const g = annualToMonthly(input.market.grossReturn);
-  const benefited: Pot = { balance: 0, deposits: [] };
+  // Gemel lehashkaa: the part of the balance that is not embedded gain is cost basis, at the index of month 0.
+  const benefited: Pot = { balance: existing, deposits: kgl && existing > 0 && embedded !== undefined && existing > embedded ? [{ amount: existing - embedded, index: 1 }] : [] };
+  const exitTaxUnknown = kgl && existing > 0 && embedded === undefined;
   const excess: Pot = { balance: 0, deposits: [] };
   const routed: { month: number; amount: number }[] = [];
   let yearTotal = 0;
   let benefitedLeft = benefitedYearly;
   let discountExtended = false;
-  tally.point(0, 1, 0);
+  tally.point(0, 1, existing);
 
   const hish = input.hishtalmut;
   const employerMoney = !kgl && hish?.money === "employer";
@@ -352,6 +383,7 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   if (kgl) {
     // F-44: 25% of the real gain (TXK-07, primary); TXK-06 is the up-to-25% rate on the deemed interest.
     book.cite("TXK-05");
+    if (exitTaxUnknown) tally.flag("PF-36");
     const realRate = book.rate("TXK-07", "rate");
     book.cite("TXK-06");
     const real = realGain(benefited);
@@ -373,17 +405,20 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       if (profile.refundClaimed === false) tally.flag("TXK-06");
       else {
         incomeTax = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, real), book.inYear(taxYearOf(T, first)).brackets("TXG-04", "brackets"), realRate);
-        book.cite("TXK-26");
-        tally.flag("TXK-26");
+        if (!exitTaxUnknown) {
+          book.cite("TXK-26");
+          tally.flag("TXK-26");
+        }
       }
       detail.fullRateTax = flatTax;
     }
     const s = surtaxOn(book, profile, real, 0, taxYearOf(T, first));
-    taxAtExit = incomeTax + s.general + s.onCapital;
+    taxAtExit = exitTaxUnknown ? 0 : incomeTax + s.general + s.onCapital;
     detail.realGain = real;
     // No National Insurance or health contributions on the gains: they are income taxed under s.125C(b)-(c) (TXK-27, G-11 answered for the lump sum).
     book.cite("TXK-27");
     // G-02 (the exit base) is answered by law, so no flag: the base is TXK-07's, cited above.
+    if (exitTaxUnknown) for (const k of ["realGain", "fullRateTax"]) delete detail[k];
   } else {
     // F-46: benefited money is exempt (TXH-09); gains on the excess are taxed at 25% of their real gain
     // (TXH-11; the real base is the Ministry of Finance Chief Economist paper's, primary).

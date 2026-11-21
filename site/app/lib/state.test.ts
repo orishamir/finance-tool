@@ -1,7 +1,7 @@
 // The v2 state document: migration from the release 2 keys, the export file, import (add, replace, refusals) and
 // "delete what was imported". The device storage is a fake, so nothing here touches a browser.
 import { beforeEach, describe, expect, it } from "vitest";
-import type { Goal } from "./goal";
+import { emptyGoal } from "./goal";
 import {
   STATE_KEY,
   applyImport,
@@ -55,23 +55,6 @@ function holding(id: string, over: Partial<Holding> = {}): Holding {
     ...over,
   };
 }
-
-/** A goal with nothing filled in, as the goal form starts one. */
-const emptyGoal = (order: number): Goal => ({
-  id: `g-test-${order}`,
-  name: "",
-  preset: "none",
-  horizonYears: { value: null, entered: false },
-  amountNow: { value: null, entered: false },
-  monthly: { value: null, entered: false },
-  available: { value: null, entered: false },
-  availableFrom: null,
-  anytime: { value: false, entered: false },
-  profile: { age: null, employment: null, salary: null, pension: { employer: null, employee: null }, hishtalmut: { employer: null, employee: null, yearly: null }, hasPension: null, hasHishtalmut: null },
-  assumptions: { return: null, inflation: null, insurance: null, acceptedFall: null },
-  exposures: {},
-  order,
-});
 
 const site = { version: "r3-test", data: "cma-test" };
 

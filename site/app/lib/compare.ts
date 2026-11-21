@@ -2,7 +2,7 @@
 // candidate set (F-83) and ranking (F-80) over them. No rate, fee or rule figure is
 // written here: everything comes from the bundle or from the person, and every number leaves as a value object so the provenance
 // sheet can open it.
-import { buildCandidateSet, calendarMonthOf, coverageLine, withHeldRate, outcomeOrder, rankCandidates, tieThreshold, type Candidate, type CandidateSet, type CandidateSetInput, type ComparisonGoal, type CoverageLine, type InstrumentTerms, type OutcomeKind, type Ranking, type Reason, type RunContext, type RunResult } from "@finance-tool/engine";
+import { buildCandidateSet, calendarMonthOf, coverageLine, withHeldRate, withFeeScaled, outcomeOrder, rankCandidates, tieThreshold, type Candidate, type CandidateSet, type CandidateSetInput, type ComparisonGoal, type CoverageLine, type InstrumentTerms, type OutcomeKind, type Ranking, type Reason, type RunContext, type RunResult } from "@finance-tool/engine";
 import type { ExposureRecord, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import { formulaNames, guideBlocks, ownTermsCopy, r2 } from "../copy";
 import type { Employment } from "./inputs";
@@ -11,11 +11,12 @@ import { fitOf, type FitTableData } from "./fit";
 import { entered as enteredValue, sumOf as sumValues, type SiteValue } from "./value";
 
 
-// Formula names this screen's numbers use that the release 1 table does not hold yet (method.md F-30, F-61, F-80).
+// Formula names this screen's numbers use that the release 1 table does not hold yet (method.md F-30, F-61, F-80, F-81).
 Object.assign(formulaNames, {
   "F-30": "הטבת מס בהפקדה",
   "F-61": "עלות דמי הניהול",
   "F-80": "דירוג ותיקו",
+  "F-81": "מה היה משנה את התשובה",
   "P-07": "נקודת התחלה",
 });
 
@@ -47,6 +48,11 @@ export interface WrapperEntry {
     providerId?: string;
     /** The channel of the trade line the site's own tariff reads (P-05's provider); the first list line of the snapshot with the direct channel (or none) first, as the guide pages read it. Absent when the snapshot's lines carry none. */
     channel?: string;
+    /** True when the provider is the person's choice and not the one P-05 names (`applyOwnProviders`). */
+    chosen?: boolean;
+    /** The site picked this provider for the goal (F-80, Doron's case): of the collected list tariffs, the one that leaves this goal the most; `compared` is how many were run (`applyProviders`). */
+    pickedBy?: "site";
+    compared?: number;
     /** The run rests on a way over the indices: `range`, the lowest of the ways over the known indices (nothing chosen, D27), or `chosen`, the cheapest way for the index the person chose. */
     viaIndex?: "range" | "chosen";
     /** The in-fund cost (brokerage and the like) or the track's balance fee the run takes, as a value object (sourced, or computed when it is a sum of the fund's lines), % a year. */
@@ -156,7 +162,7 @@ export interface RunGoal {
   employmentInferred?: boolean;
   /** The person's own rate for a deposit-family wrapper whose published rate does not apply to the amount (A8), % a year, by wrapper id. Entered. */
   ownRates?: Record<string, number>;
-  /** The fee level the person enters for a wrapper's representative instrument (D4), % a year, by wrapper id. Entered. It replaces the instrument's fee in F-80. */
+  /** The fee level the person enters for a wrapper's representative instrument (D4), % a year, by wrapper id. Entered. It replaces the instrument's fee in F-80 and F-81. */
   ownFees?: Record<string, number>;
   /** The provider the person chose for a wrapper (the brokerage account), by wrapper id: its id in `WrapperEntry.providers`. A choice, not a figure; the tariff lines it brings are sourced. */
   ownProviders?: Record<string, string>;
@@ -224,7 +230,7 @@ export function fundCostOf(feeValues: Record<string, SiteValue>, keys: readonly 
 
 /**
  * The fee the run takes for the representative instrument, % a year, as a value object: the track's balance fee, or the fund's
- * management, variable and trustee lines added ("the cost inside the fund"). Undefined when it has none.
+ * management, variable and trustee lines added (the lines F-81 moves together as "the cost inside the fund"). Undefined when it has none.
  */
 export function representativeFeeValue(w: Pick<WrapperEntry, "family" | "terms" | "feeValues">, today: string): SiteValue | undefined {
   const target = feeTargetOf(w);
@@ -256,6 +262,92 @@ function withOwnFee(w: WrapperEntry, terms: InstrumentTerms, g: Pick<RunGoal, "o
   return t;
 }
 
+const tariffValueKeys = ["tradeRate", "tradeMin", "tradeMax", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"] as const;
+
+/**
+ * The bundle with the person's chosen providers in place (D4 and D21: the representative provider is a parameter the
+ * person may override): for a wrapper in `g.ownProviders` whose entry carries that provider, the wrapper's tariff and the sourced
+ * tariff lines behind it are the provider's, and its representative names the provider and says it was chosen. The fund, its costs
+ * and every other term stay. An id the wrapper does not carry is ignored. Returns `bundle` itself when nothing changes.
+ */
+export function applyOwnProviders(bundle: CompareBundle, g: Pick<RunGoal, "ownProviders">): CompareBundle {
+  const own = g.ownProviders;
+  if (!own || Object.keys(own).length === 0) return bundle;
+  let changed = false;
+  const wrappers = bundle.wrappers.map((w) => {
+    const id = own[w.id];
+    const p = id !== undefined ? w.providers?.[id] : undefined;
+    if (!p || !w.terms) return w;
+    changed = true;
+    const feeValues = { ...w.feeValues };
+    for (const k of tariffValueKeys) delete feeValues[k];
+    Object.assign(feeValues, p.feeValues);
+    // the member's kind decides custody on makam (F-14, BRK-17); a bond run takes no such input
+    const memberKind = p.memberKind && (w.family === "makam" || w.family === "securities") ? { memberKind: p.memberKind } : {};
+    return { ...w, terms: { ...w.terms, tariff: clone(p.tariff), ...memberKind }, feeValues, representative: { ...(w.representative ?? { name: w.name }), provider: p.name, providerId: id!, chosen: true } };
+  });
+  return changed ? { ...bundle, wrappers } : bundle;
+}
+
+/**
+ * The bundle with each provider-carrying wrapper (the brokerage account) priced on the collected list tariff that leaves this goal the
+ * most (F-80, Doron's case): the person's chosen provider first (`applyOwnProviders`); then, for a wrapper with no choice,
+ * every tariff in `providers` is run once and the best becomes the representative, marked `pickedBy: "site"` with the number compared.
+ * The pick is made once per goal, so F-81's moves, the picker and a saved comparison's re-run all rest on it. A wrapper whose run cannot
+ * be made yet (no return entered) keeps P-05's tariff. Returns `bundle` itself when nothing changes.
+ */
+export function applyProviders(bundle: CompareBundle, g: RunGoal): CompareBundle {
+  const withOwn = applyOwnProviders(bundle, g);
+  let out = withOwn;
+  for (const w of withOwn.wrappers) {
+    if (!w.providers || !w.terms || g.ownProviders?.[w.id] !== undefined || w.representative?.viaIndex) continue;
+    const ids = Object.keys(w.providers);
+    if (ids.length === 0) continue;
+    let best: { id: string; real: number } | null = null;
+    for (const id of ids) {
+      const run = evaluate(applyOwnProviders(withOwn, { ownProviders: { [w.id]: id } }), g, { only: new Set([w.id]) }).candidates.find((c) => c.id === w.id)?.run;
+      if (!run) {
+        best = null;
+        break;
+      }
+      if (!best || run.real > best.real) best = { id, real: run.real };
+    }
+    if (!best) continue;
+    const picked = applyOwnProviders(out, { ownProviders: { [w.id]: best.id } });
+    out = {
+      ...picked,
+      wrappers: picked.wrappers.map((x) => {
+        if (x.id !== w.id || !x.representative) return x;
+        const { chosen: _chosen, ...rep } = x.representative;
+        return { ...x, representative: { ...rep, pickedBy: "site" as const, compared: ids.length } };
+      }),
+    };
+  }
+  return out;
+}
+
+type FeeKind = "balance" | "deposit" | "direct" | "fund" | "trade" | "custody";
+
+function scaleTerms(terms: InstrumentTerms, id: string, scale: Record<string, number>): InstrumentTerms {
+  const k = (kind: FeeKind) => scale[`${id}:${kind}`] ?? 1;
+  if (Object.keys(scale).every((key) => !key.startsWith(`${id}:`))) return terms;
+  const t = clone(terms);
+  // a discounted line moves in both of its periods (F-81 with A-19): the discounted rate and the rate it reverts to
+  if (t.fees) t.fees = withFeeScaled(withFeeScaled(withFeeScaled(t.fees, "balance", k("balance")), "deposit", k("deposit")), "direct", k("direct"));
+  if (t.fund?.drag) {
+    const d = t.fund.drag;
+    for (const f of ["management", "variable", "trustee"] as const) if (d[f] !== undefined) d[f] = d[f]! * k("fund");
+  }
+  if (t.tariff) {
+    if (t.tariff.buy) t.tariff.buy.rate *= k("trade");
+    if (t.tariff.buyStanding) t.tariff.buyStanding.rate *= k("trade");
+    if (t.tariff.sell) t.tariff.sell.rate *= k("trade");
+    if (t.tariff.redeem) t.tariff.redeem.rate *= k("trade");
+    if (t.tariff.custody) t.tariff.custody.rate *= k("custody");
+  }
+  return t;
+}
+
 /** The pension run's profile (A-12) and insurance (A-17) come from the person; a provident fund for annuity has no insurance (PEN-35). */
 function pensionTerms(w: WrapperEntry, t: InstrumentTerms, g: RunGoal, needs: Partial<Record<string, FieldKey>>): InstrumentTerms {
   const next = clone(t);
@@ -278,9 +370,9 @@ function pensionTerms(w: WrapperEntry, t: InstrumentTerms, g: RunGoal, needs: Pa
 }
 
 /** The study fund's terms come from the person: employment, and an employee's salary (A-12). */
-export function termsFor(w: WrapperEntry, g: RunGoal, needs: Partial<Record<string, FieldKey>>): InstrumentTerms | undefined {
+export function termsFor(w: WrapperEntry, g: RunGoal, scale: Record<string, number>, needs: Partial<Record<string, FieldKey>>): InstrumentTerms | undefined {
   if (!w.terms) return undefined;
-  let t = withOwnFee(w, w.terms, g);
+  let t = scaleTerms(withOwnFee(w, w.terms, g), w.id, scale);
   // F-26: the published balance ceiling belongs to the published rate; a rate the person entered applies to the whole balance
   if (t.deposit?.balanceCeiling !== undefined && g.ownRates?.[w.id] !== undefined) {
     const { balanceCeiling: _ceiling, ...rest } = t.deposit;
@@ -312,8 +404,10 @@ export interface Evaluated {
 }
 
 interface EvalOptions {
-  /** Only these wrappers, no tier 2. */
+  /** Only these wrappers, no tier 2 (the sensitivity re-runs). */
   only?: Set<string>;
+  scale?: Record<string, number>;
+  full?: boolean;
 }
 
 export function comparisonGoal(g: RunGoal): ComparisonGoal {
@@ -379,12 +473,13 @@ export function fitDropReason(bundle: Pick<CompareBundle, "fit">, w: WrapperEntr
 export function evaluate(bundle: CompareBundle, g: RunGoal, options: EvalOptions = {}): Evaluated {
   const ctx: RunContext = { rules: bundle.rules, runDate: bundle.runDate };
   const needs: Partial<Record<string, FieldKey>> = {};
+  const scale = options.scale ?? {};
   const entries = bundle.wrappers.filter((w) => !options.only || options.only.has(w.id));
   // each run's month 1 is the run date's month, so its tax years follow the calendar (F-01)
   const goal = { ...comparisonGoal(g), firstMonth: calendarMonthOf(bundle.runDate) };
   const inputs: CandidateSetInput = {
     wrappers: entries.map((w) => {
-      const terms = termsFor(w, g, needs);
+      const terms = termsFor(w, g, scale, needs);
       const rate = cashRateFor(w, g, bundle.runDate);
       return { record: w.record, ...(terms ? { terms } : {}), ...(rate ? { cashRate: rate } : {}) };
     }),

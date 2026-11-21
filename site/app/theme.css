@@ -179,6 +179,7 @@
   --link: var(--palette-teal-300);
   --primary-subtle: var(--palette-teal-950); /* the chosen item's fill in a side list (designer's mocks, 2026-11-10) */
   --destructive: var(--palette-red-300);
+  --destructive-foreground: var(--palette-neutral-975); /* words on a filled danger button */
 
   /* The three number states (D7) */
   --sourced: var(--palette-neutral-500); /* solid hairline under a sourced number */
@@ -481,6 +482,7 @@
   --color-primary-subtle: var(--primary-subtle);
   --color-link: var(--link);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
 
   --color-sourced: var(--sourced);
   --color-computed: var(--computed);

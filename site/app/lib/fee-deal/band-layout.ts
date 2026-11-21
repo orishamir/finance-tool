@@ -8,7 +8,7 @@ import { byRank, isRange, thingValues, type CasesFee, type When } from "./model"
 import { layoutOf, type FeeLayout } from "./layout";
 import { PART_ROWS, rowOf, type PartRow } from "./part-rows";
 import { figure, sumUnit } from "./values";
-import type { SlimPart } from "./case-words";
+import { whenWords, type SlimPart, type WhenWords } from "./case-words";
 import type { CaseRow } from "./rows";
 
 export { PART_ROWS, rowOf, type PartRow };
@@ -139,3 +139,6 @@ export function stepBounds(fee: CasesFee, w: When, t: number, today: string): St
 
 /** A range's unit as its boxes show it: a currency's sign, or the words for units or actions. */
 export const rangeSign = (unit: string): string => (unit === "units" || unit === "actions" ? copy.cases.units[unit]! : (copy.panel.signs[unit] ?? unit));
+
+/** A value of thing `t` as a grid's row, column or switch names it. */
+export const headWords = (fee: CasesFee, w: When, t: number, today: string): WhenWords => whenWords(fee, w, t, today);

@@ -151,6 +151,15 @@ export function label(id: LabelId, arg?: string): Label {
   return { id, text: say(words.text), explain: say(words.explain), icon: def.icon === "sign" ? signOf(arg ?? "USD") : def.icon, tone: def.tone, rules: def.rules, family: familyOf[id] };
 }
 
+/**
+ * D60: the labels every row of a group carries (by id and words, in the first row's order). They show once, in the group's head, or in one
+ * line over a list with no groups, and leave each row; a group of one row keeps its labels on the row.
+ */
+export function sharedLabels(rows: readonly (readonly Label[])[]): Label[] {
+  if (rows.length < 2) return [];
+  return rows[0]!.filter((l) => rows.every((r) => r.some((x) => x.id === l.id && x.text === l.text)));
+}
+
 /** What holds for every fund in the option (shown once on its card): where it is held and how it trades. */
 export function optionLabels(option: OptionId): Label[] {
   switch (option) {

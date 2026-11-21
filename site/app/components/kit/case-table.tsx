@@ -22,10 +22,13 @@ import { useIsoLayoutEffect } from "../../lib/hooks";
 import { cx } from "./cx";
 import { KnobButton } from "./knob-button";
 import { RemoveButton } from "./remove-button";
+import { Tag } from "./tag";
 
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
 /** The open case's tile or cell: the action colour's outline, as the open case's own. */
 const OPEN = "outline-2 -outline-offset-2 outline-primary";
+/** A case a host marks (`CaseMark`, the indices page's "בתוכנית"): a hairline in the action colour around it, where it is not open. */
+export const MARKED = "outline-1 -outline-offset-1 outline-primary";
 // a grid's case is a tile raised on the cases' band (`popover`, 8 px corners, no edge), 12 px in on every side, 6 px between two lines; its
 // lines stand together from its top, however tall its row makes it, so its first line stands level with its row's head and the tiles
 // beside it (`ROW_HEAD`)
@@ -314,6 +317,17 @@ const missingEdge = (cell: CellExtras & { open?: boolean }) => (cell.missing != 
 /** The line under a cell's content that says what its price misses. */
 const missingLine = (cell: CellExtras) => (cell.missing != null ? <span className="basis-full text-foreground">{cell.missing}</span> : null);
 
+/**
+ * A host's mark on a case (the indices page's "בתוכנית": the case its plan reads, with the years it spends there): a teal chip, on a table
+ * across its tile's top edge at its start (`edge`), over nothing of the head, on a grid's cell and a case read as a row among its words;
+ * the case it marks is outlined in a hairline of the same colour (`MARKED`) while it is not open. The host gives its words; /deal marks
+ * no case.
+ */
+export function CaseMark({ edge, children }: { edge?: boolean; children: ReactNode }) {
+  const tag = <Tag tone="primary">{children}</Tag>;
+  return edge ? <span className="absolute top-0 start-2 z-[2] -translate-y-1/2">{tag}</span> : tag;
+}
+
 /** What a cell shows: its own content, or, while a knob's stretch reaches it, the price it would take, faint until it is let go. */
 function CellBody({ content, fill, lit }: { content: ReactNode; fill?: ReactNode; lit?: boolean }) {
   return lit && fill !== undefined ? <span className="contents [&>*]:opacity-80" data-reach-fill="">{fill}</span> : <>{content}</>;
@@ -337,6 +351,8 @@ export interface CaseColumn {
   zone?: (head: ReactNode) => ReactNode;
   /** A double-click on the head: its value renamed in place (the page puts the field in `head`). */
   onRename?: () => void;
+  /** A host's mark on the case (`CaseMark`): across the top edge of its tile, at its start. */
+  mark?: ReactNode;
 }
 
 /**
@@ -396,9 +412,11 @@ export function CaseTable({ columns, rows, add, insert, ladder, foot, label }: {
   /** A tile's place: its column, from the heads' line down over every row. */
   const tile = (k: number) => ({ gridColumn: k + 1, gridRow: `1 / span ${rows.length + 1}` });
   const at = (from: number, span: number, row: number) => ({ gridColumn: `${from + 1} / span ${span}`, gridRow: row });
+  // a mark across a tile's top edge takes the room over the tiles, inside the table, which clips what passes its edge
+  const marked = columns.some((c) => c.mark != null && !c.empty);
   return (
     <div className="relative flex flex-col gap-2">
-      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-table="" data-span-table="" className="group/table -mt-0.5 grid items-stretch gap-x-2 overflow-x-auto overflow-y-hidden pt-0.5 pb-2" style={{ gridTemplateColumns: template }}>
+      <div ref={keys.root} role="grid" aria-label={label} onKeyDown={keys.onKeyDown} data-case-table="" data-span-table="" className={cx("group/table grid items-stretch gap-x-2 overflow-x-auto overflow-y-hidden pb-2", marked ? "pt-3" : "-mt-0.5 pt-0.5")} style={{ gridTemplateColumns: template }}>
         {/* first, so every head and cell stands on its tile */}
         {columns.map((c, k) => (
           <span key={`tile:${c.id}`} aria-hidden data-flip="" data-case-tile="" className="rounded-md bg-popover" style={tile(k)} />
@@ -476,7 +494,14 @@ export function CaseTable({ columns, rows, add, insert, ladder, foot, label }: {
           ) : null,
         )}
         {/* last, so the open tile's outline is drawn over its head and cells, which take no press of it */}
-        {columns.map((c, k) => (c.open && !c.empty ? <span key={`open:${c.id}`} aria-hidden data-flip="" className={cx("pointer-events-none relative rounded-md", OPEN)} style={tile(k)} /> : null))}
+        {columns.map((c, k) => ((c.open || c.mark != null) && !c.empty ? <span key={`open:${c.id}`} aria-hidden data-flip="" className={cx("pointer-events-none relative rounded-md", c.open ? OPEN : MARKED)} style={tile(k)} /> : null))}
+        {columns.map((c, k) =>
+          c.mark != null && !c.empty ? (
+            <span key={`mark:${c.id}`} data-flip="" className="pointer-events-none relative self-start" style={{ gridColumn: k + 1, gridRow: 1 }}>
+              <CaseMark edge>{c.mark}</CaseMark>
+            </span>
+          ) : null,
+        )}
       </div>
       {foot}
     </div>
@@ -582,6 +607,8 @@ export interface GridCellView extends CellExtras {
   open?: boolean;
   across?: ReactNode;
   empty?: AddSpec;
+  /** A host's mark on the case (`CaseMark`): on its own line at the top of its cell. */
+  mark?: ReactNode;
 }
 
 /**
@@ -720,7 +747,12 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                 }
                 const el = (
                   <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lift-body="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
-                    <div data-cell-face="" className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open && OPEN, cell.lit && LIT, missingEdge(cell))}>
+                    <div data-cell-face="" className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open ? OPEN : cell.mark != null && !cell.lit && cell.missing == null && MARKED, cell.lit && LIT, missingEdge(cell))}>
+                      {cell.mark != null && (
+                        <span className="basis-full">
+                          <CaseMark>{cell.mark}</CaseMark>
+                        </span>
+                      )}
                       {cell.grip}
                       <span id={keys.wordsId(line, cell.from)} className="contents">
                         <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />

@@ -19,6 +19,7 @@ import { withFigure } from "./edits/price";
 import { setPart } from "./offers/parts";
 import { providentFamily } from "./offers/rules";
 import { leftOut } from "./left-out";
+import { decodeDeal, encodeDeal } from "./link";
 import { NEW_PLACE, newDeal, newFee, readDeal, thingValues, typed, type CasesFee, type Fee, type FeeDeal, type Price, type SlimFee, type When } from "./model";
 import { onceLead, whenWords } from "./case-words";
 import { readDealFor } from "./deal-read";
@@ -26,7 +27,6 @@ import { readingOf } from "./reading";
 import { fillDeal } from "./templates";
 import { addByKept, changeFormKept, removeByKept, removeCaseKept, undo, undoWords } from "./undo";
 import { feeDeal as copy } from "../../copy";
-import { linkText, openQueryLink, throughLink } from "./link-fixtures";
 
 const data = feesData();
 const TODAY = "2026-11-12";
@@ -76,13 +76,13 @@ const deal = (readFor?: FeeDeal["readFor"]): FeeDeal => ({
 });
 
 describe("cases as the device and a link keep them", () => {
-  it("reads a deal with cases, parts and picks back as written, and a link carries it", async () => {
+  it("reads a deal with cases, parts and picks back as written, and a link carries it", () => {
     const d = deal([{ by: "what", is: "us" }, { by: "channel", is: "direct" }]);
     expect(readDeal(JSON.parse(JSON.stringify(d)))).toEqual(d);
-    const back = (await throughLink(d))!;
+    const back = decodeDeal(encodeDeal(d))!;
     const strip = (x: FeeDeal) => ({ ...x, id: "", fees: x.fees.map((f) => ({ ...f, id: "" })) });
     expect(strip(back)).toEqual(strip(d));
-    expect(JSON.parse(await linkText(d))[0]).toBe(2);
+    expect(JSON.parse(Buffer.from(encodeDeal(d), "base64url").toString("utf8"))[0]).toBe(2);
   });
   it.each([
     ["a thing the fee cannot change by", (d: any) => (d.fees[2] = { id: "fee-custody", kind: "custody", by: [{ kind: "actionSize", unit: "ILS", tops: [{ v: 5 }] }], cases: [{ id: "a", when: [0], stages: [{ price: { form: "free" } }] }] })],
@@ -116,14 +116,14 @@ describe("cases as the device and a link keep them", () => {
     d.fees[2].stages[0].price.notes = ["unfilled"];
     expect(readDeal(d)!.fees[2]!.stages![0]!.price).not.toHaveProperty("notes");
   });
-  it("opens a deal saved before cases with every price as it was and what it held as the pick of what is bought", async () => {
+  it("opens a deal saved before cases with every price as it was and what it held as the pick of what is bought", () => {
     const old = { id: "deal-o", name: "", kind: "brokerage-account", held: { place: "abroad", currency: "EUR", payout: "distributing" }, fees: [{ id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: { v: 0.1 } } }] }] };
     const d = readDeal(old)!;
     expect(d).toEqual({ id: "deal-o", name: "", kind: "brokerage-account", readFor: [{ by: "what", is: "europe", place: "abroad", currency: "EUR" }], fees: old.fees });
     expect(read(d).engine.foreign).toBe(true);
     // a link of the first version, which carried what was held, opens the same way
     const v1 = Buffer.from(JSON.stringify([1, { n: "", k: "brokerage-account", h: { l: "israel", c: "ILS", o: "accumulating" }, f: [{ k: "trade", s: [{ P: { F: "action", r: 0.25 } }] }] }, []])).toString("base64url");
-    const opened = (await openQueryLink(v1))!;
+    const opened = decodeDeal(v1)!;
     expect(opened.readFor).toEqual([{ by: "what", is: "tase", place: "israel", currency: "ILS" }]);
     expect(read(opened).engine.foreign).toBe(false);
   });
@@ -497,9 +497,9 @@ describe("a deal saved before cases", () => {
     expect(read(old("abroad", "USD")).engine.foreign).toBe(true);
     expect(read(old("israel", "ILS")).engine.foreign).toBe(false);
   });
-  it("carries them in a link, and refuses them on a pick of anything but what is bought", async () => {
+  it("carries them in a link, and refuses them on a pick of anything but what is bought", () => {
     const d = old("israel", "USD");
-    expect((await throughLink(d))!.readFor).toEqual([{ by: "what", is: "tase", place: "israel", currency: "USD" }]);
+    expect(decodeDeal(encodeDeal(d))!.readFor).toEqual([{ by: "what", is: "tase", place: "israel", currency: "USD" }]);
     expect(readDeal({ ...JSON.parse(JSON.stringify(d)), readFor: [{ by: "channel", is: "direct", place: "israel", currency: "USD" }] })).toBeNull();
     expect(readDeal({ ...JSON.parse(JSON.stringify(d)), readFor: [{ by: "what", is: "tase", place: "israel" }] })).toBeNull();
   });

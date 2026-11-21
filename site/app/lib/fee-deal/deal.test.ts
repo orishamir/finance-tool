@@ -2,7 +2,7 @@
 // deals' side store and the export file that carries them.
 import { describe, expect, it } from "vitest";
 import { emptySide, mergeSide, readSideFile, readSideStores, writeSideStores } from "../side-stores";
-import { dealOfAddress, packDeal, parseSubject, unpackDeal } from "./link";
+import { decodeDeal, dealOfAddress, encodeDeal, packDeal, parseSubject, unpackDeal } from "./link";
 import { blankPrice, feeInOrder, feePriced, newDeal, newDealId, newFee, newFeeId, readDeal, typed, type FeeDeal, type Price, type Sourced } from "./model";
 import { engineDeal } from "./to-engine";
 import { stageFault, untilRange } from "./model";
@@ -11,7 +11,6 @@ import { engineBase, FEE_KIND_IDS } from "./shapes";
 import { feesOffered } from "./offers/offer";
 import type { ProductFacts } from "./offers/rules";
 import { CAPACITY } from "./offers/capacity";
-import { linkText, openQueryLink, queryD, queryLink, throughLink } from "./link-fixtures";
 
 const src: Sourced = { url: "https://www.example.org/tariff.pdf", title: "Tariff", publisher: "Bank", strength: "institution", checked: "2026-10-01", effectiveFrom: "2026-01-01" };
 
@@ -147,16 +146,16 @@ describe("a price not given yet", () => {
     d.fees[0].stages[0].price.min = { v: 0, blank: true };
     expect(readDeal(d)).toBeNull();
   });
-  it("is carried blank by a link, and a link written before opens as it did: its zeros prices of zero, a fee it left out not there", async () => {
+  it("is carried blank by a link, and a link written before opens as it did: its zeros prices of zero, a fee it left out not there", () => {
     const d = { ...account(), fees: [...account().fees, newFee("transfer_out")] };
-    const back = (await throughLink(d))!;
+    const back = decodeDeal(encodeDeal(d))!;
     expect(back.fees.map((f) => f.kind)).toEqual(d.fees.map((f) => f.kind));
     expect(back.fees.at(-1)!.stages![0]!.price).toEqual(newFee("transfer_out").stages[0]!.price);
-    const old = (await throughLink(older as FeeDeal))!;
+    const old = decodeDeal(encodeDeal(older as FeeDeal))!;
     expect(old.fees[0]!.stages![0]!.price).toEqual({ form: "action", rate: { v: 0 } });
     // a link written while a blank fee was left out of links: the deal without it, as it opened then
     const before = Buffer.from(JSON.stringify([1, { n: "", k: "brokerage-account", f: [{ k: "trade", s: [{ P: { F: "action", r: 0.25 } }] }] }, []])).toString("base64url");
-    expect((await openQueryLink(before))!.fees.map((f) => f.stages![0]!.price)).toEqual([{ form: "action", rate: { v: 0.25 } }]);
+    expect(decodeDeal(before)!.fees.map((f) => f.stages![0]!.price)).toEqual([{ form: "action", rate: { v: 0.25 } }]);
   });
 });
 
@@ -171,9 +170,9 @@ describe("new ids", () => {
 });
 
 describe("the link", () => {
-  it("carries a deal both ways, with new ids and each figure's source", async () => {
+  it("carries a deal both ways, with new ids and each figure's source", () => {
     const d = { ...account(), name: "חשבון", provider: "bank" as const, saved: "2026-11-01", template: { id: "house:leumi", name: "לאומי" } };
-    const back = (await throughLink(d))!;
+    const back = decodeDeal(encodeDeal(d))!;
     expect(back.id).not.toBe(d.id);
     expect(back.saved).toBeUndefined();
     const strip = (x: FeeDeal) => ({ ...x, id: "", saved: undefined, fees: x.fees.map((f) => ({ ...f, id: "" })) });
@@ -184,10 +183,10 @@ describe("the link", () => {
     const d = account();
     expect(readDeal({ ...JSON.parse(JSON.stringify(d)), start: "2026-03" })).toEqual(d);
   });
-  it("writes a source once however many figures carry it", async () => {
+  it("writes a source once however many figures carry it", () => {
     const d = account();
     d.fees[3]!.stages![0]!.price = { form: "action", rate: { v: 0.2, src } };
-    const raw = JSON.parse(await linkText(d));
+    const raw = JSON.parse(Buffer.from(encodeDeal(d), "base64url").toString("utf8"));
     expect(raw[2]).toHaveLength(1);
   });
   it.each([
@@ -198,14 +197,14 @@ describe("the link", () => {
     ["a source index out of the table", Buffer.from(JSON.stringify([1, { n: "", k: null, f: [{ k: "trade", s: [{ P: { F: "action", r: [1, 5] } }] }] }, []])).toString("base64url")],
     ["too long", "a".repeat(13_000)],
   ])("opens nothing from a link that is %s", async (_, d) => {
-    expect(await openQueryLink(d)).toBeNull();
+    expect(decodeDeal(d)).toBeNull();
     // an empty deal opens, and the address gave none: the page keeps nothing of it
     expect(await dealOfAddress(`?d=${d}`, "", { kinds: [], houses: [], tracks: [], templates: {} }, "2026-11-12")).toMatchObject({ deal: { kind: null, fees: [] }, given: false });
   });
   it.each([
     ["empty", ""],
     ["not base64url", "a+b/c="],
-    ["not compressed", queryD(JSON.stringify([2, { n: "", k: null, f: [] }, []]))],
+    ["not compressed", encodeDeal({ id: "deal-a", name: "", kind: null, fees: [] })],
     ["too long", "a".repeat(13_000)],
   ])("opens nothing from a fragment that is %s", async (_, d) => {
     expect(await unpackDeal(d)).toBeNull();
@@ -215,15 +214,15 @@ describe("the link", () => {
     const d = { ...account(), name: "חשבון", template: { id: "house:leumi", name: "לאומי" } };
     const packed = (await packDeal(d))!;
     expect(packed).toMatch(/^[A-Za-z0-9_-]+$/);
-    expect(packed.length).toBeLessThan((await queryLink(d)).length);
+    expect(packed.length).toBeLessThan(encodeDeal(d).length);
     const strip = (x: FeeDeal) => ({ ...x, id: "", saved: undefined, fees: x.fees.map((f) => ({ ...f, id: "" })) });
     expect(strip((await unpackDeal(packed))!)).toEqual(strip(d));
     const data = { kinds: [], houses: [], tracks: [], templates: {} };
-    expect(await dealOfAddress(`?d=${await queryLink(newDeal(null))}`, `#d=${packed}`, data, "2026-11-12")).toMatchObject({ deal: { name: "חשבון" }, given: true });
+    expect(await dealOfAddress(`?d=${encodeDeal(newDeal(null))}`, `#d=${packed}`, data, "2026-11-12")).toMatchObject({ deal: { name: "חשבון" }, given: true });
   });
-  it("sets no stray key from a hostile link", async () => {
+  it("sets no stray key from a hostile link", () => {
     const hostile = Buffer.from('[1,{"n":"","k":null,"f":[],"__proto__":{"polluted":1},"constructor":{"x":1}},[]]').toString("base64url");
-    const d = (await openQueryLink(hostile))!;
+    const d = decodeDeal(hostile)!;
     expect(d).toMatchObject({ name: "", kind: null, fees: [] });
     expect(({} as { polluted?: number }).polluted).toBeUndefined();
     expect(Object.keys(d).sort()).toEqual(["fees", "id", "kind", "name"]);
@@ -233,7 +232,7 @@ describe("the link", () => {
     expect(await dealOfAddress("?wrapper=brokerage-account", "", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account", fees: [] }, given: true });
     expect(await dealOfAddress("?wrapper=nothing", "", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
     expect(await dealOfAddress("?track=999", "", data, "2026-11-12")).toMatchObject({ deal: { kind: null }, given: false });
-    expect(await dealOfAddress(`?d=${await queryLink(account())}`, "", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account" }, given: true });
+    expect(await dealOfAddress(`?d=${encodeDeal(account())}`, "", data, "2026-11-12")).toMatchObject({ deal: { kind: "brokerage-account" }, given: true });
     expect(await dealOfAddress("", "", data, "2026-11-12")).toBeNull();
     expect(parseSubject("?track=12")).toEqual({ kind: "track", trackId: 12 });
   });
@@ -268,18 +267,18 @@ describe("the saved deals", () => {
     const kindAlone = (await dealOfAddress("?wrapper=brokerage-account", "", data, "2026-11-12"))!;
     expect(kindAlone.given).toBe(true);
     expect(savedIfWorth([], kindAlone.deal, "2026-11-12")).toBeNull();
-    const linked = (await dealOfAddress(`?d=${await queryLink(account())}`, "", data, "2026-11-12"))!;
+    const linked = (await dealOfAddress(`?d=${encodeDeal(account())}`, "", data, "2026-11-12"))!;
     expect(savedIfWorth([], linked.deal, "2026-11-12")).toHaveLength(1);
   });
-  it("finds the saved deal a link's deal is the same as, whatever its ids and saved day", async () => {
+  it("finds the saved deal a link's deal is the same as, whatever its ids and saved day", () => {
     const d = { ...account(), saved: "2026-11-01" };
-    const back = (await throughLink(d))!;
+    const back = decodeDeal(encodeDeal(d))!;
     expect(savedTwin(back, [d])).toBe(d);
     expect(savedTwin({ ...back, name: "אחר" }, [d])).toBeUndefined();
     // a fee with no price yet is carried as it is, so it tells the two apart, and a deal with one opens its saved twin too
     expect(savedTwin(back, [{ ...d, fees: [...d.fees, newFee("transfer_out")] }])).toBeUndefined();
     const blank = { ...d, fees: [...d.fees, newFee("transfer_out")] };
-    expect(savedTwin((await throughLink(blank))!, [blank])).toBe(blank);
+    expect(savedTwin(decodeDeal(encodeDeal(blank))!, [blank])).toBe(blank);
   });
   it("travels in the export file: read with each deal checked, added by id, written and read back from the device", () => {
     const a = account();

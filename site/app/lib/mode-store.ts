@@ -13,3 +13,5 @@ export function useValueMode(): [ValueMode, (m: ValueMode) => void] {
   const { value } = store.use();
   return [value, store.set];
 }
+
+export const valueModeStore = store;

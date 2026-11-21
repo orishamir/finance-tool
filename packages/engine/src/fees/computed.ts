@@ -1,5 +1,5 @@
 // A computed value object (data-schema §1, D7): the formula and the inputs it came from, labelled with the
-// weakest source among the rules the run read. The provider workbench's costs (F-63) are built with it.
+// weakest source among the rules the run read. Shared by the R3 outputs (F-61, F-68, F-64).
 import type { ValueObject } from "@finance-tool/schema";
 
 type Strength = ValueObject["source"]["strength"];

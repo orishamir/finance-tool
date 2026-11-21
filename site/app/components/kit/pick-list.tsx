@@ -20,6 +20,8 @@ export interface PickRow {
   heading?: ReactNode;
   /** Never folded on a phone (the person's own row, D44). */
   keep?: boolean;
+  /** A row of the person's own that waits for something before it can rank (a deal with a fee not priced yet): drawn in a dashed card. */
+  dashed?: boolean;
   /** What the fold's button counts the row as, when two rows are one thing (the same fund in Tel Aviv and abroad): rows with one value count once. */
   countAs?: string;
 }
@@ -211,6 +213,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
             folded(i) && "max-md:absolute max-md:inset-x-0 max-md:top-0 max-md:invisible",
             r.selected && (line ? chosenLine : "bg-primary/10 shadow-[inset_-3px_0_0_var(--primary)] hover:bg-primary/10"),
             r.muted && !r.selected && "text-muted-foreground",
+            r.dashed && "my-1 rounded-md border border-dashed border-input",
           )}
           style={grid}
         >

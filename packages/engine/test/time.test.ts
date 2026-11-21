@@ -1,6 +1,6 @@
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
-import { annualToMonthly, contributions, cpiPath, monthlyInflation, paidInAsEntered } from "../src/index.ts";
+import { annualToMonthly, contributions, cpiPath, monthlyInflation, paidInAsEntered, realValue } from "../src/index.ts";
 
 describe("F-02, F-07", () => {
   it("compounds back to the annual rate over twelve months", () => {
@@ -24,7 +24,7 @@ describe("F-106", () => {
         const months = 12 * years;
         const index = cpiPath(inflation, months);
         const deposits = contributions({ amountNow, monthly, months, contributions: "real" } as Parameters<typeof contributions>[0], index);
-        const today = deposits.reduce((a, c, m) => a + c / index[m]!, 0);
+        const today = deposits.reduce((a, c, m) => a + realValue(c, index, m), 0);
         expect(paidInAsEntered(amountNow, monthly, years)).toBeCloseTo(today, 4);
       }),
     );

@@ -2,7 +2,7 @@
 // the site's header, never under it, and where it is taller than the window under the header it scrolls inside itself, so every part of it
 // is within reach wherever the page is scrolled to. It draws no scrollbar; while more of it is below, its foot fades out (`data-more-below`,
 // app.css), and the fade goes once its last line is in view.
-import { useEffect, type RefObject } from "react";
+import { useEffect, useState, type RefObject } from "react";
 
 /** The room kept under the header and over the window's foot, in pixels. */
 const ROOM = 16;
@@ -39,4 +39,27 @@ export function useStickyColumn(column: RefObject<HTMLElement | null>, on: boole
       for (const k of ["top", "maxHeight", "overflowY", "overscrollBehavior"] as const) el.style[k] = "";
     };
   }, [column, on]);
+}
+
+/**
+ * The room a `sticky` block at the top of a scrolling box takes past the box's own top padding, plus 8px, in pixels, while `on`, and null
+ * before it is measured: where a second sticky column inside the same box starts, so it sticks below the block, not behind it (the
+ * indices page's deal popup sets it as `--toolbox-top`). `el` is the block; `key` changes when another element takes its place.
+ */
+export function useStuckRoom(el: RefObject<HTMLElement | null>, on: boolean, key: unknown): number | null {
+  const [room, setRoom] = useState<number | null>(null);
+  useEffect(() => {
+    const top = el.current;
+    const box = top?.parentElement?.closest<HTMLElement>(".sheet-body") ?? null;
+    if (!on || !top || !box) {
+      setRoom(null);
+      return;
+    }
+    const read = () => setRoom(top.offsetHeight - parseFloat(getComputedStyle(box).paddingTop) + 8);
+    read();
+    const grows = new ResizeObserver(read);
+    grows.observe(top);
+    return () => grows.disconnect();
+  }, [el, on, key]);
+  return room;
 }

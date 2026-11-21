@@ -237,7 +237,7 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
       if (!isNum(every) || every.unit !== "months") missing.push(`${wrapperId}: rule ${spec.series_rule} has no figure "coupon_every_months" in months`);
       if (linkage && isNum(every) && (linkage.value === "cpi" || linkage.value === "unlinked")) {
         // A-27: sold at par, so the price change at exit is 0 (a convention of the method, not a source figure).
-        terms.bond = { linkage: linkage.value, couponEveryMonths: every.value as number };
+        terms.bond = { linkage: linkage.value, couponEveryMonths: every.value as number, exitPriceChange: 0 };
         feeValues.linkage = linkage;
         feeValues.couponEvery = every;
       }

@@ -20,6 +20,14 @@ import { LabelSheetHost } from "../components/kit";
 import { returnHelpOf } from "../components/invest/foot";
 import { BeforeDeciding } from "../components/invest/before";
 import { CustomEntriesHost } from "../components/invest/custom-entries";
+import { DealAccountsHost } from "../components/invest/deal-account";
+import { dealStore } from "../lib/fee-deal/store";
+import type { FeeDeal } from "../lib/fee-deal/model";
+import { isAccountDeal } from "../lib/deal-account/plan";
+import { withDeals } from "../lib/deal-account/bundle";
+import { useTypedAccountsMove } from "../lib/deal-account/move-run";
+import { lastIndexStore } from "../lib/deal-account/last-index";
+import { loadFeesData, type FeesData } from "../lib/fee-page-data";
 import { Callout, EmptyState, useSwapGlide } from "../components/kit";
 import { IconCoins } from "../components/icons";
 import { Sheet } from "../components/Sheet";
@@ -34,7 +42,7 @@ import { withCustomEntries } from "../lib/custom-entries";
 import { buildInvest, chargesCurrentAccount, hasKinds, indexById, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { exposureIdOfSlug, INDICES_PATH } from "../lib/site-paths";
 import { loadIndicesBundle, type IndicesBundle, type WorkbenchInputs } from "../lib/providers";
-import { useInvestState } from "../lib/state";
+import { isoToday, useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
 import { groupNameOf, pickableGroups, withGroupPick } from "../lib/group-pick";
 import { useHydrated, useMedia } from "../lib/hooks";
@@ -166,26 +174,44 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
   const ownBankControl = useMemo(() => ({ value: ownBankOf(wb, invest.bank), onChange: invest.setBank }), [wb, invest.bank, invest.setBank]);
 
   const customs: CustomIndex[] = invest.customIndices;
-  // the broker and fund the person typed join the data here and nowhere else: this page alone compares them (D44)
-  const bundle = useMemo(() => withCustomEntries(wb, invest.customBrokers, invest.customFunds, customs), [wb, invest.customBrokers, invest.customFunds, customs]);
+  // the funds the person typed join the data here and nowhere else: this page alone compares them (D44)
+  const typedBundle = useMemo(() => withCustomEntries(wb, invest.customFunds, customs), [wb, invest.customFunds, customs]);
+  // the person's securities-account deals are accounts too (F-128): read with the fee page's data (the kinds), loaded once one is saved
+  // or the popup opens; while the popup is open the page keeps the deals as they were, and takes them once it closes
+  const deals = dealStore.use();
+  const accountDeals = useMemo(() => deals.value.filter(isAccountDeal), [deals.value]);
+  const [feesData, setFeesData] = useState<FeesData | null>(null);
+  const wantFees = useCallback(() => void loadFeesData().then(setFeesData, () => undefined), []);
+  // a typed account still in the saved state waits for the price lists too, and moves into a deal once they are here (the move, method §10.4)
+  const anyDeal = accountDeals.length > 0 || invest.customBrokers.length > 0;
+  useEffect(() => {
+    if (anyDeal) wantFees();
+  }, [anyDeal, wantFees]);
+  useTypedAccountsMove(feesData, wb);
+  const [dealOpen, setDealOpen] = useState(false);
+  const heldDeals = useRef<FeeDeal[]>(accountDeals);
+  if (!dealOpen) heldDeals.current = accountDeals;
+  const pageDeals = heldDeals.current;
+  const bundle = useMemo(() => (feesData ? withDeals(typedBundle, pageDeals, feesData.kinds) : typedBundle), [typedBundle, pageDeals, feesData]);
   const customId = new URLSearchParams(search).get("custom");
   const index: IndexRef | null = useMemo(() => (exposureId ? indexById(wb, exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, exposureId, customId, customs]);
   const known = knownOf(data);
+  // the index shown is the one the fee page's link from a deal opens next (lib/deal-account/last-index.ts)
+  useEffect(() => {
+    if (exposureId && index) lastIndexStore.set(exposureId);
+  }, [exposureId, index]);
 
   // the person compares their own account by picking it in the account list (the separate "החשבון שלכם" field was redundant)
   const yourBroker: string | null = null;
   const view = useMemo(() => (index ? buildInvest({ bundle, index, plan, yourBroker }) : null), [bundle, index, plan, yourBroker]);
 
   const [panelOpen, setPanelOpen] = useState(false);
-  // a house's page opens the account panel through the address (`own` and `from`): once, and the address is cleaned
-  const ownParam = new URLSearchParams(search).get("own");
-  const fromParam = new URLSearchParams(search).get("from");
-  const opening = useMemo(() => (ownParam ? { houseId: ownParam, from: fromParam ?? "list" } : null), [ownParam, fromParam]);
+  // a house's page opens a new deal filled from its price list through the address (`own`): once, and the address is cleaned
+  const opening = new URLSearchParams(search).get("own");
   const { pathname } = useLocation();
   const onOpened = useCallback(() => {
     const q = new URLSearchParams(search);
     q.delete("own");
-    q.delete("from");
     const rest = q.toString();
     navigate(`${pathname}${rest ? `?${rest}` : ""}`, { replace: true });
   }, [search, pathname, navigate]);
@@ -335,9 +361,14 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
     </span>
   );
 
+  // what the deal's popup prices on: the page's bundle without the person's deals, the pair, and how the account list ranks
+  const dealWorld = useMemo(() => (index && view ? { bundle: typedBundle, index, plan, view, pick: pick ? { house: pick.house, fund: pick.fund } : null, kinds: hasKinds(view) && !!bundle.dollarRange } : null), [typedBundle, index, plan, view, pick?.house, pick?.fund, bundle.dollarRange]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [deviceDay] = useState(isoToday);
+
   return (
     <LabelSheetHost>
-      <CustomEntriesHost index={index} brokers={invest.customBrokers} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveBroker={invest.saveBroker} onRemoveBroker={invest.removeBroker} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world} opening={opening} onOpened={onOpened}>
+      <DealAccountsHost data={feesData} onWant={wantFees} saved={deals.value} writable={deals.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen}>
+      <CustomEntriesHost index={index} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
       <Frame title={title}>
         <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">
           {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
@@ -421,6 +452,7 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
         {panelOpen && <OtherAssumptions inflation={entered.plan.values.inflation} inflationStart={entered.starts.inflation} pct={data.form.pct} />}
       </Sheet>
       </CustomEntriesHost>
+      </DealAccountsHost>
     </LabelSheetHost>
   );
 }

@@ -3,7 +3,7 @@
 // Expected figures: tests/golden/expected_tariff_period.py, from the fee formulas alone, with no return, fund cost, inflation or tax.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { feeLines, providerWorkbench, runSecurities, withoutFeeLine, type ComparedProvider, type EnteredTariff, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
+import { feeLines, providerWorkbench, runSecurities, withFeeRate, withoutFeeLine, type ComparedProvider, type EnteredTariff, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context();
@@ -201,6 +201,12 @@ describe("the fee split of a price for a time (F-61, F-101)", () => {
     if (f.run !== "runSecurities") throw new Error("unreachable");
     expect(f.input.tariff.until?.then.monthlyFee).toBeUndefined();
     expect(runSecurities(f.input, ctx).fees.fixed).toBe(0);
+  });
+  it("changing a rate changes it in both tariffs and keeps the period", () => {
+    const w = withFeeRate(plan(until(12)), "custody", 0.002);
+    if (w.run !== "runSecurities") throw new Error("unreachable");
+    expect(w.input.tariff.custody?.rate).toBe(0.002);
+    expect(w.input.tariff.until?.then.custody?.rate).toBe(0.002);
   });
 });
 

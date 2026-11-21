@@ -1,7 +1,7 @@
 // F-92 to F-94 (2026-10-29): a fund's gap to its index from its reports, the dollar against the shekel from month-end rates, and where
 // two results meet. Expected figures are the reports' own numbers worked through each formula's definition.
 import { describe, expect, it } from "vitest";
-import { comparedYears, firstFullYear, gapListOf, gapToIndex, incomeUntaxed, kindRecord, stretchRange, trackingBeyondFees, variableForward, yearlyChanges } from "../src/index.ts";
+import { comparedYears, firstFullYear, gapListOf, gapToIndex, incomeUntaxed, kindRecord, stretchRange, trackingBeyondFees, trackingBeyondFeesRange, variableForward, yearlyChanges } from "../src/index.ts";
 
 // Harel's hedged S&P 500 fund 5127527, annual report 31.12.2025: fund against the index in dollars
 const hedged = [
@@ -27,6 +27,11 @@ describe("F-92 the gap to the index", () => {
     expect(trackingBeyondFees(ahead, 0.00125)).toBe(0);
     expect(trackingBeyondFees([], 0.01)).toBeNull();
   });
+  it("bands A-07 by the cheapest and dearest year", () => {
+    const r = trackingBeyondFeesRange(hedged, 0.0032)!;
+    expect(r.low).toBeCloseTo(0.021 - 0.0032, 10);
+    expect(r.high).toBeCloseTo(0.0326 - 0.0032, 10);
+  });
   // MTF TA-90 1150259, annual report 30.06.2026: returns p. 6, fees charged p. 8 ("הוצאות שנפרעו מנכסי הקרן"); listed fees today 0.705%
   const mtf90 = [
     { year: 2025, fund_pct: 45.67, tracking_pct: 46.56, fees_charged: { fixed: 0.6, variable: 0.07, trustee: 0.005 } },
@@ -47,7 +52,10 @@ describe("F-92 the gap to the index", () => {
     // 2.12 points behind, against fees of −0.185%: 2.305% beyond them
     expect(trackingBeyondFees(kesem, 0.0033)).toBeCloseTo(0.02305, 12);
   });
-  it("uses today's fees for a year without its own", () => {
+  it("bands A-07 by the year's own fees, and uses today's for a year without them", () => {
+    const r = trackingBeyondFeesRange(mtf90, 0.00705)!;
+    expect(r.low).toBe(0);
+    expect(r.high).toBeCloseTo((0.89 - 0.675) / 100, 12);
     const mixed = [mtf90[0]!, { year: 2024, fund_pct: 30.26, tracking_pct: 30.86 }];
     expect(trackingBeyondFees(mixed, 0.00705)).toBeCloseTo((0.215 + (0.6 - 0.705)) / 2 / 100, 12);
   });

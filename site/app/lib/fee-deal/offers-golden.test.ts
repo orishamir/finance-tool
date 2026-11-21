@@ -7,6 +7,7 @@ import { isDeepStrictEqual } from "node:util";
 import { describe, expect, it } from "vitest";
 import { feesData } from "../fees.server";
 import { toolbox } from "./toolbox";
+import { decodeDeal, encodeDeal } from "./link";
 import { blankPrice, newDeal, readDeal, typed, type Fee, type FeeDeal, type Price } from "./model";
 import { readDealFor } from "./deal-read";
 import { FEE_KIND_IDS, type FeeKindId, type FormId } from "./shapes";
@@ -14,7 +15,6 @@ import { kindHas } from "./offers/offer";
 import { CAPACITY, keeps } from "./offers/capacity";
 import { FIGURES, type Figure } from "./offers/figures";
 import { isFormPart, PART_IDS, PARTS, putPart, type PartDef } from "./offers/parts";
-import { openQueryLink, throughLink } from "./link-fixtures";
 
 const data = feesData();
 const TODAY = "2026-11-12";
@@ -71,7 +71,7 @@ describe("what each fee offers today (golden)", () => {
       for (const form of CAPACITY[fee].forms) {
         const deal = dealOf("brokerage-account", { id: "fee-g", kind: fee, stages: [{ price: fullPrice(fee, form) }] });
         const stored = readDeal(JSON.parse(JSON.stringify(deal)));
-        const linked = await throughLink(deal);
+        const linked = decodeDeal(encodeDeal(deal));
         out[`${fee} · ${form}`] = stored === null ? "refused" : !isDeepStrictEqual(stored, deal) ? "device differs" : !isDeepStrictEqual(content(linked), content(deal)) ? `link differs: ${JSON.stringify(linked?.fees[0]?.stages?.[0]?.price)}` : "kept";
       }
     }
@@ -80,8 +80,7 @@ describe("what each fee offers today (golden)", () => {
 
   it("links written today read back as they read today", async () => {
     const links = JSON.parse(readFileSync(`${GOLDEN}links.json`, "utf8")) as Record<string, string>;
-    const read: Record<string, unknown> = {};
-    for (const [k, d] of Object.entries(links)) read[k] = content(await openQueryLink(d));
+    const read = Object.fromEntries(Object.entries(links).map(([k, d]) => [k, content(decodeDeal(d))]));
     await expect(JSON.stringify(read, null, 1)).toMatchFileSnapshot(`${GOLDEN}links-read.json`);
   });
 });

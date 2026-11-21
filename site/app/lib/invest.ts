@@ -3,10 +3,14 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the indices bundle. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { gershayim } from "./format";
-import { BlockedError, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, relativeGap, isTie, beforeTaxPathOf, securitiesBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, relativeGap, isTie, beforeTaxPathOf, securitiesBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
-import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
+import { customFundGap, isCustomFund } from "./custom-entries";
+import { isHouseAccountId } from "./own-account";
+import { dealProviderOf, houseSnap, isDealProviderId } from "./deal-account/bundle";
+import { feeIdsOf, missingOf } from "./deal-account/plan";
+import { feeNameOf } from "./fee-deal/part-words";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput, isShekel, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
@@ -421,7 +425,8 @@ export function providersOfInvest(bundle: Pick<IndicesBundle, "snapshots">): rea
 }
 
 export const providerInfo = (s: FeesSnapshot): ProviderInfo => {
-  const custom = isCustomBrokerId(s.id);
+  // an account the person saved as a deal, or a house's group picked on the page: no company page of its own
+  const custom = isHouseAccountId(s.id) || isDealProviderId(s.id);
   return { id: s.id, name: gershayim(s.provider.name_he), short: custom ? s.provider.name_he : shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", taxService: s.provider.israeli_tax_service === true, // every bank and broker on this page has a company page, a foreign one too
     hasPage: !custom && (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker"), custom };
 };
@@ -547,9 +552,9 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[],
     ...(spec.listing ? { listing: spec.listing } : {}),
     fx: ctx.fx,
     theta: ctx.theta,
-    providers: list.map((x) => {
-      // the person's own broker has no lines of its own: its whole price is what was typed (F-63, D44)
-      const entered = ctx.bundle.entered?.tariffs[x.s.id];
+    // a deal the person saved is priced by the deal itself (F-128), beside the price lists
+    deals: list.flatMap((x) => { const d = dealProviderOf(ctx.bundle, x.s as BundleSnapshot, { currentAccounts: ctx.plan.currentAccounts ?? null }); return d ? [d] : []; }),
+    providers: list.filter((x) => !isDealProviderId(x.s.id)).map((x) => {
       // an account built on a house (F-101): the house's own list tariff for this fund and reading, with the group's and the person's prices over it
       const layered = ctx.bundle.entered?.layered?.[x.s.id];
       const current = currentAccountOf(ctx, x.s);
@@ -559,11 +564,13 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[],
         const snap = scoped(x.s);
         return { snapshot: current ? { ...snap, current_account: current } : snap, level: "entered" as const, layered, ...account, ...(x.cand.band ? { band: x.cand.band } : {}) };
       }
-      return entered ? { snapshot: scoped(x.s), level: "entered" as const, entered } : { snapshot: scoped(x.s), level: "list" as const, ...account, ...(x.cand.band ? { band: x.cand.band } : {}) };
+      return { snapshot: scoped(x.s), level: "list" as const, ...account, ...(x.cand.band ? { band: x.cand.band } : {}) };
     }),
   });
   // F-118: a fund whose exit tax rests on an open rule is read before that tax, and its rows are never compared rows
-  const run = (list: typeof items): SlotRow[] => (untilExitTax ? providerWorkbenchBeforeTax(input(list), ruleContext(ctx.bundle)).rows : providerWorkbench(input(list), ruleContext(ctx.bundle)).rows);
+  // the rows in the items' order, a deal's among the houses' (the workbench lists the price lists first)
+  const inOrder = (list: typeof items, rows: SlotRow[]): SlotRow[] => list.map((x) => rows.find((r) => r.id === x.s.id)!);
+  const run = (list: typeof items): SlotRow[] => inOrder(list, untilExitTax ? providerWorkbenchBeforeTax(input(list), ruleContext(ctx.bundle)).rows : providerWorkbench(input(list), ruleContext(ctx.bundle)).rows);
   try {
     return run(items);
   } catch {
@@ -632,6 +639,8 @@ function reasonOf(row: NotComparableProvider, s: FeesSnapshot): NotComparable {
   if (r.code === "not-printed-for-currency") return { code: "not-printed-for-currency", detail: r.detail, lineName: s.lines.find((l) => l.id === r.line)?.names.tariff[0] ?? null, currency: r.currency, printed: r.printed };
   if (r.code === "record-error") return ambiguity(r.detail, s) ?? { code: "record-error", detail: r.detail };
   if (r.code === "rule-open") return { code: "rule-open", ruleId: r.ruleId, ...(r.question ? { question: r.question } : {}), ...(r.gap ? { gap: r.gap } : {}) };
+  // a deal with no price on the plan: what it lacks, read back from its reading (lib/deal-account)
+  if (r.code === "deal-unpriced") return { code: r.code, detail: r.detail, missing: missingOf(r.detail) };
   return { code: r.code, detail: r.detail };
 }
 
@@ -672,16 +681,18 @@ function priceBeforeTax(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnaps
 
 function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null, untilExitTax: boolean): Map<string, Priced<ComparedProvider | BeforeTaxProvider>> {
   type Got = Priced<ComparedProvider | BeforeTaxProvider>;
-  // an account the person typed with a price left empty for this kind of fund (its conversion, for a fund bought abroad) has no price for
-  // it: never run, so the empty field is never charged as zero (D56)
-  // (an account built on a house reads an empty field as the house's price: it follows the house, below)
   const baseOf = (s: FeesSnapshot) => (houseOfSnap(ctx, s) === s.id ? null : houseOfSnap(ctx, s));
-  const typedOpen = (s: FeesSnapshot) => isCustomBrokerId(s.id) && !baseOf(s) && doubtOf(s, option) !== null;
+  // a deal filled from a house's whole price list is an account at that house (F-128): it takes the house's availability as the house's own
+  // row reads it (`houseSells`), so it is priced only where the house sells the fund
+  const dealHouseOf = (s: FeesSnapshot): string | null => {
+    const deal = ctx.bundle.deals?.byId[s.id];
+    return deal ? (houseSnap(ctx.bundle, deal)?.id ?? null) : null;
+  };
   // an account built on a house is priced where the house is, on the house's own reading of its price list, and nowhere else (F-101,
   // #190: the layered run has no line of its own to say which exchange it trades on, and was priced where the house's list has no line)
-  const bases = [...new Set(snaps.flatMap((s) => { const b = baseOf(s); return b && !snaps.some((x) => x.id === b) ? [b] : []; }))].flatMap((b) => ctx.bundle.snapshots.filter((x) => x.id === b));
+  const bases = [...new Set(snaps.flatMap((s) => { const b = baseOf(s) ?? dealHouseOf(s); return b && !snaps.some((x) => x.id === b) ? [b] : []; }))].flatMap((b) => ctx.bundle.snapshots.filter((x) => x.id === b));
   const all = [...snaps, ...bases];
-  const per = all.map((s) => ({ s, cands: typedOpen(s) ? [] : candidates(scoped(s), option).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
+  const per = all.map((s) => ({ s, cands: candidates(scoped(s), option).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
   const results = new Map<string, { row: SlotRow; cand: Cand }[]>();
   const slots = Math.max(0, ...per.map((p) => p.cands.length));
   for (let k = 0; k < slots; k++) {
@@ -690,9 +701,16 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
     items.forEach((x, i) => results.set(x.s.id, [...(results.get(x.s.id) ?? []), { row: rows[i]!, cand: x.cand }]));
   }
   const out = new Map<string, Got>();
-  // the houses first, so an account built on one can follow it
-  const order = [...per].sort((a, b) => Number(!!baseOf(a.s)) - Number(!!baseOf(b.s)));
+  // the houses first, so an account built on one, or a deal filled from one, can follow it
+  const follows = (s: FeesSnapshot) => !!baseOf(s) || !!dealHouseOf(s);
+  const order = [...per].sort((a, b) => Number(follows(a.s)) - Number(follows(b.s)));
   for (const { s } of order) {
+    const dealHouse = dealHouseOf(s);
+    const notSold = dealHouse ? houseSells(out.get(dealHouse)) : null;
+    if (notSold) {
+      out.set(s.id, notSold);
+      continue;
+    }
     const base = baseOf(s);
     if (base) {
       const at = out.get(base);
@@ -701,10 +719,6 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
       if (!at || at.kind === "fail") out.set(s.id, at ?? { kind: "fail", reason: { code: "data-missing", recorded: null } });
       else if (mine && mine.row.kind !== "not-comparable") out.set(s.id, { kind: "ok", row: mine.row, venue: at.venue, standing: at.standing, aside: [], cand: at.cand });
       else out.set(s.id, { kind: "fail", reason: mine?.row.kind === "not-comparable" ? reasonOf(mine.row, scoped(s)) : { code: "data-missing", recorded: null } });
-      continue;
-    }
-    if (typedOpen(s)) {
-      out.set(s.id, { kind: "fail", reason: { code: "data-missing", recorded: "entered-incomplete" } });
       continue;
     }
     const got = results.get(s.id) ?? [];
@@ -736,6 +750,18 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
   return out;
 }
 
+/**
+ * F-128 on a deal filled from a house: whether the house sells the fund, as its own row reads its list (F-63), null where it does; else the
+ * row's failure, which the deal takes. A house does not sell a fund where its row reads no trade line for the fund's class (the classes its
+ * record does not show a person can hold have no line, `onlyWhatCanBeDone`) or sets its lines aside for another exchange abroad (One Zero's
+ * lines abroad name the United States alone, BRK-38). A row that fails for any other reason (a price not collected, a rate missing) says
+ * nothing of what the house sells, and the deal is read on its own prices. What a record says a house does not sell, and what it sells
+ * fund by fund, the deal's record carries itself (`snapshotOfDeal`).
+ */
+function houseSells(house: Priced<ComparedProvider | BeforeTaxProvider> | undefined): Extract<Priced, { kind: "fail" }> | null {
+  return house?.kind === "fail" && (house.reason.code === "no-applicable-line" || house.reason.code === "other-venue") ? house : null;
+}
+
 type AvailabilityEntry = NonNullable<FeesSnapshot["availability"]>[number];
 const AVAILABLE_NOTE = (a: AvailabilityEntry): Availability => ({ source: a.source, note: a.note ?? null, reason_he: a.reason_he ?? null, ...(a.rule_ids?.length ? { rule_ids: a.rule_ids } : {}) });
 
@@ -763,15 +789,6 @@ function agreementAt(s: BundleSnapshot, option: OptionId, rec: FundRecord): { at
 
 /** Whether a house sells this fund: it sells the kind, and where it sells the kind fund by fund, a report names the fund (`agreementAt`). */
 const sellsFund = (s: BundleSnapshot, option: OptionId, rec: FundRecord): boolean => !unavailable(s, option) && (agreementAt(s, option, rec)?.at ?? "sells") === "sells";
-
-/**
- * A price the person left empty in an account they typed (its conversion): carried as an open entry, so that kind of fund has no price
- * there, but it is a price not known, never a doubt about whether the account sells it (fourth pass: the stairs listed it under
- * "יש ספק אם נמכרת שם" while its own row said the conversion was not typed). Such an entry is the person's, with no document behind it.
- */
-export function leftEmpty(s: FeesSnapshot | undefined, option: OptionId): boolean {
-  return (s?.availability ?? []).some((a) => a.available === "unknown" && a.source.url === "local" && a.applies_to.some((c) => classesAt(s, option).includes(c)));
-}
 
 /**
  * The house's words that this kind of fund is bought there only by phone (an availability entry's `phone_only`), for the exchange
@@ -815,9 +832,9 @@ export function asideLines(s: FeesSnapshot | undefined, ids: readonly string[]):
   return (s?.lines ?? []).filter((l): l is AsideLine => ids.includes(l.id) && l.not_ranked !== undefined);
 }
 
-/** The record's entry that leaves this kind of holding open at the house (`doubtOf`'s words), with its source and rules; null where the person typed the entry. */
+/** The record's entry that leaves this kind of holding open at the house (`doubtOf`'s words), with its source and rules. */
 export function doubtAt(s: FeesSnapshot | undefined, option: OptionId): Availability | null {
-  for (const a of s?.availability ?? []) if (a.available === "unknown" && a.applies_to.some((c) => classesAt(s, option).includes(c))) return a.source.url === "local" ? null : AVAILABLE_NOTE(a);
+  for (const a of s?.availability ?? []) if (a.available === "unknown" && a.applies_to.some((c) => classesAt(s, option).includes(c))) return AVAILABLE_NOTE(a);
   return null;
 }
 
@@ -1454,6 +1471,12 @@ export interface PairCosts {
   left: SiteValue;
   /** The account's own lines over the horizon before the tax they save (F-91), real shekels; `interaction` is what no single line explains. */
   account: { line: FeeLine; cost: SiteValue }[];
+  /**
+   * F-128: an account priced by a deal, its lines as the deal's own fees, by the deal's fee id (`BANK_ACCOUNT` for the bank's current
+   * account the plan counts from the record) with the fee's name, each what was paid on it carried as its line is (F-91). They stand in
+   * place of `account`, which is then empty, and `interaction` is what they leave of the account's fees.
+   */
+  dealLines?: { fee: string; name: string; cost: SiteValue }[];
   interaction: number;
   /** `interaction` as a figure (F-91), so the account's fees add up figures that each open (`accountSum`). */
   remainder: SiteValue;
@@ -1543,13 +1566,27 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   // the whole run (the account and the fund); the fund's part is measured with no account, so it reads none of the account's prices
   const inputs = inputsOfRun(ctx, { house: s.id, fund: rec.id, spec: fs.spec, row });
   const at = (n: number, formula: string, about: string, from = inputs) => computed(n, "nis", formula, from, { today: ctx.bundle.today, rules: rulesOf(row), about });
-  const lines = row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!)) }));
-  // what no single line explains, without the waiting cash
-  const interaction = parts.fees - row.byType.reduce((t, x) => t + x.costBeforeTax, 0);
   const paidInReal = paidInAsEntered(ctx.plan.amountNow, ctx.plan.monthly, ctx.plan.years);
+  // F-128: an account priced by a deal writes its lines as the deal's own fees, each what was paid on it carried as its line is (F-91)
+  const deal = ctx.bundle.deals?.byId[s.id];
+  const ids = row.account ? feeIdsOf(row.account.deal) : undefined;
+  const byDealFee = new Map<string, number>();
+  for (const x of row.byFee ?? []) {
+    const id = ids?.[x.fee];
+    if (id !== undefined) byDealFee.set(id, (byDealFee.get(id) ?? 0) + x.costBeforeTax);
+  }
+  const feeWords = (id: string) => {
+    const f = deal?.fees.find((x) => x.id === id);
+    return f ? feeNameOf(f.kind, f.name) : (copy.pair.lines.account ?? id);
+  };
+  const dealLines = deal && ids ? [...byDealFee].map(([fee, n]) => ({ fee, name: feeWords(fee), cost: at(n, "F-91", copy.pair.lineAbout(feeWords(fee))) })) : undefined;
+  const lines = dealLines ? [] : row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!)) }));
+  // what no single line explains, without the waiting cash: the account's fees less its lines, the deal's own where it is priced by a deal
+  const interaction = parts.fees - (dealLines ? [...byDealFee.values()].reduce((t, n) => t + n, 0) : row.byType.reduce((t, x) => t + x.costBeforeTax, 0));
   return {
     providerId: s.id,
     fundId: rec.id,
+    ...(dealLines ? { dealLines } : {}),
     // what was paid in, in today's money (F-106): the amount, the deposit and the years, and nothing else
     paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
     left: computed(row.real, "nis", "F-65", inputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
@@ -1571,6 +1608,76 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   };
 }
 
+/** The run a deal account is read for on one fund of the plan (F-128, `DealRun`): what is bought and where, its currency and its payouts; null where the fund does not run. */
+export function dealRunOf(a: InvestArgs & { fundId: string }): DealRun | null {
+  const ctx = makeCtx(a.bundle, a.plan, a.assumptions);
+  const rec = ctx.bundle.funds.find((f) => f.id === a.fundId);
+  if (!rec) return null;
+  const fs = fundSpec(ctx, rec);
+  if ("reason" in fs) return null;
+  const { spec } = fs;
+  return { instrumentClass: spec.cls, listing: spec.listing, currency: spec.currency?.code ?? null, distributes: !!(spec.fund as { distribution?: unknown }).distribution, fx: ctx.fx };
+}
+
+/**
+ * A deal account on one fund of the plan (F-128): what it leaves, what each of its fees took before the tax it saves (F-91), by the deal's
+ * fee id, and, for each of the run's fees with a step, the run months a charge fell in all its steps (`dealReach`, by the run's fee index).
+ */
+export type DealOnPlan =
+  | {
+      kind: "ok";
+      valueN: number;
+      byFee: Record<string, number>;
+      accountCost: number;
+      reach: number[][];
+      /** A figure of this run as the popup shows it (F-128): `n` shekels, computed from the run's inputs and rules, `about` saying which. */
+      figure: (n: number, about: string) => SiteValue;
+    }
+  | { kind: "fail"; reason: NotComparable | Reason };
+
+/**
+ * One deal account priced on one fund of the plan, alone (F-128): the popup that edits the deal reads it as the person types, where the
+ * whole page waits until the deal is saved and the popup closes. Null where the account is not on the bundle or the fund not on the index.
+ */
+export function dealOnPlan(a: InvestArgs & { fundId: string; providerId: string }): DealOnPlan | null {
+  return dealOnFunds({ ...a, fundIds: [a.fundId] }).get(a.fundId) ?? null;
+}
+
+/** `dealOnPlan` on each of several funds, read with one context: the deal's own cheapest way among them is the popup's place (F-63). */
+export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; providerId: string }): Map<string, DealOnPlan> {
+  const ctx = makeCtx(a.bundle, a.plan, a.assumptions);
+  const out = new Map<string, DealOnPlan>();
+  const s = ctx.snaps.find((x) => x.id === a.providerId);
+  if (!s) return out;
+  for (const fundId of a.fundIds) {
+    const rec = ctx.bundle.funds.find((f) => f.id === fundId);
+    if (!rec) continue;
+    const option = optionOfFund(rec, a.index.exposure ?? undefined);
+    const fs = fundSpec(ctx, rec);
+    if ("reason" in fs) {
+      out.set(fundId, { kind: "fail", reason: fs.reason });
+      continue;
+    }
+    const got = priceMany(ctx, fs.spec, option, [s], option === "abroad" ? venueOfFund(rec) : null).get(s.id);
+    if (!got) continue;
+    if (got.kind === "fail") {
+      out.set(fundId, { kind: "fail", reason: got.reason });
+      continue;
+    }
+    const ids = got.row.account ? feeIdsOf(got.row.account.deal) : undefined;
+    const byFee: Record<string, number> = {};
+    for (const x of got.row.byFee ?? []) {
+      const id = ids?.[x.fee];
+      if (id !== undefined) byFee[id] = (byFee[id] ?? 0) + x.costBeforeTax;
+    }
+    const row = got.row;
+    const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row };
+    const figure = (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+    out.set(fundId, { kind: "ok", valueN: row.real, byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure });
+  }
+  return out;
+}
+
 /**
  * The account's fees before the tax they save, as a figure (F-91): its lines and the remainder no single line explains, added up, each
  * part opening its own sheet; the cash waiting for a whole unit is not among them (F-109, `waiting`). `round` shapes it (a whole shekel).
@@ -1578,6 +1685,8 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
 export function accountSum(pc: PairCosts, about: string, today: string, round?: (n: number) => number): SiteValue {
   const parts: Record<string, SiteValue> = {};
   for (const l of pc.account) parts[copy.pair.lines[l.line] ?? copy.pair.lines.other!] = l.cost;
+  // F-128: a deal's own fees, each under its name (two fees of one name told apart by their order)
+  for (const [i, l] of (pc.dealLines ?? []).entries()) parts[l.name in parts ? `${l.name} (${i + 1})` : l.name] = l.cost;
   parts[copy.pair.remainder] = pc.remainder;
   return sumOf(parts, "F-91", { today, about, ...(round ? { round } : {}) });
 }

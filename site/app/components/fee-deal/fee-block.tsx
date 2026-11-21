@@ -18,7 +18,7 @@ import { type Side } from "../../lib/fee-deal/model";
 import { hasCases, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { keeps } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
-import { DropZone, FeeBlock, Grip, SlimFee, type DropHow, type SortOf } from "../kit";
+import { DropZone, FeeBlock, Grip, SlimFee, type DropHow, type FeeHeadSlot, type SortOf } from "../kit";
 import { liftId, liftedOf, type Lifted, type LiftResult, type LiftTarget } from "../../lib/fee-deal/lifted";
 import { AskThing } from "./ask-thing";
 import { FeeCases, RestPart, RowStanding } from "./fee-cases";
@@ -157,6 +157,11 @@ function RowNotes({ row, fee, onOpen }: { row: BuilderRow; fee: Fee; onOpen: () 
   );
 }
 
+/** What a host adds to a fee: its head (`FeeHeadSlot`), and a mark on each case it names (`caseMark`, `CaseMark`; undefined for none). */
+export interface FeeSlot extends FeeHeadSlot {
+  caseMark?: (caseId: string) => ReactNode;
+}
+
 /**
  * One fee's block (`row`, its view; none for a fee whose prices are out of order): its slim line or its band, the case open in place with
  * its parts and `formLine` (the undo line of its price made free by its charge's bin) under them, and the question `ask` of a thing being added.
@@ -173,6 +178,7 @@ export function FeeBlockView({
   onSplit,
   grip,
   corner,
+  head,
 }: {
   fee: Fee;
   row: BuilderRow | undefined;
@@ -188,6 +194,8 @@ export function FeeBlockView({
   grip?: ReactNode;
   /** Closed, the knobs in its card's corner (its bin, its duplicate). */
   corner?: ReactNode;
+  /** What the host adds to the fee (`FeeSlot`); /deal adds nothing. */
+  head?: FeeSlot | undefined;
 }) {
   const { onOpen, onRemoveFee, onRemoveChange, onRemoveCharge, pendingHands, onAskDone, drop } = actions;
   const name = feeName(fee.kind, fee.name, row?.house);
@@ -288,7 +296,7 @@ export function FeeBlockView({
             return l ? lift.why(l, slimTarget) : null;
           }}
         >
-          <SlimFee dot={dot} mark={FEE_MARK[fee.kind]} name={<>{name}</>} label={b.open(name)} open={isOpen} remove={remove} grip={grip} corner={corner} onOpen={() => onOpen(fee.id, null, "pointer")}>
+          <SlimFee dot={dot} mark={FEE_MARK[fee.kind]} name={<>{name}</>} label={b.open(name)} open={isOpen} remove={remove} grip={grip} corner={corner} head={head} onOpen={() => onOpen(fee.id, null, "pointer")}>
             {question}
             {isOpen ? (
               openParts(name)
@@ -311,9 +319,9 @@ export function FeeBlockView({
   if (!hasCases(fee)) return null;
   return (
     <DropZone accepts={(it) => isThing(it) && drop.accepts(fee.id, open.case, it)} onDrop={(it) => drop.onDrop(fee.id, open.case, it)}>
-      <FeeCases fee={fee} band={band} open={open} name={name} deal={deal} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)}>
+      <FeeCases fee={fee} band={band} open={open} name={name} deal={deal} onFee={onFee} actions={actions} zone={zone} openParts={(spoken, heads) => openParts(spoken, heads)} caseMark={head?.caseMark}>
         {(cases) => (
-          <FeeBlock dot={dot} mark={FEE_MARK[fee.kind]} name={name} remove={remove} open={isOpen} grip={grip} corner={corner}>
+          <FeeBlock dot={dot} mark={FEE_MARK[fee.kind]} name={name} remove={remove} open={isOpen} grip={grip} corner={corner} head={head}>
             {/* a price not given: under the name's line, naming the cases missing it, its link opening the first */}
             {unpriced && <UnpricedNote fee={fee} unpriced={unpriced} onOpen={() => onOpen(fee.id, unpriced.cases[0] ?? null, "pointer")} />}
             {question}

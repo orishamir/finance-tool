@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
+import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -238,6 +238,19 @@ function Basics() {
             <Button variant="destructive" flush>
               {g.sample.hello}
             </Button>
+          </div>
+        </State>
+        <State label="framed: the bordered face in the action colour, a card's one action (the pair card's own price, /deal's link to the index page); danger: filled in the danger colour, the delete of ConfirmAsk beside an outline cancel; inline bold: a sentence's one action, underlined only under the pointer">
+          <div className="flex flex-wrap items-center gap-3">
+            <Button variant="framed">{g.sample.hello}</Button>
+            <LinkButton variant="framed" to="/kit">{g.sample.sentenceLink}</LinkButton>
+            <Button variant="danger">{g.sample.hello}</Button>
+            <p className="text-sm text-muted-foreground">
+              {g.sample.lead}{" "}
+              <Button variant="inline" bold>
+                {g.sample.hello}
+              </Button>
+            </p>
           </div>
         </State>
         <State label="outline: a bordered button on the card's surface, the face MenuPicker has, beside one in a bar">
@@ -1058,16 +1071,6 @@ function Fields() {
             </p>
           </State>
         </div>
-      </Demo>
-      <Demo name="FieldState" use={g.uses.FieldState}>
-        <Grid>
-          <State label={g.states.changed}>
-            <FieldState entered onReset={() => undefined} />
-          </State>
-          <State label={g.states.disabled}>
-            <FieldState entered={false} onReset={() => undefined} disabled />
-          </State>
-        </Grid>
       </Demo>
       <Demo name="RangeField" use={g.uses.RangeField}>
         <Grid>
@@ -1922,6 +1925,9 @@ function Lists({ today }: { today: string }) {
           <State label="two columns, each by its short name; a small average keeps the digits that make it more than 0% (IBI's custody, 0.0012% to 0.0673% a year)">
             <HouseAverageLine averages={[averageSample(today, 0.0451, 0.0955, "trade"), averageSample(today, 0.0012, 0.0673, "custody")]} house="IBI" from="2026-01-01" to="2026-06-30" page={{ url: "#" }} />
           </State>
+          <State label="customers: under a fee of a deal (the indices page's popup), led by the house's customers">
+            <HouseAverageLine customers averages={[averageSample(today, 0.0451, 0.0955, "trade")]} house="IBI" from="2026-01-01" to="2026-06-30" page={{ url: "#" }} />
+          </State>
         </Grid>
       </Demo>
       <Demo name="HouseAverageTerm" use={g.uses.HouseAverageTerm}>
@@ -2304,14 +2310,6 @@ function Lists({ today }: { today: string }) {
       </Demo>
       <DealDemos today={today} />
       <CaseDemos today={today} />
-      <Demo name="PeriodStrip" use={g.uses.PeriodStrip}>
-        <State label="three stretches: all of a group's prices, one of them, then the price list" wide>
-          <PeriodStrip years={10} label={g.sample.strip.label} today={g.sample.strip.today} word={g.sample.strip.year} segments={[{ from: 0, to: 1, label: g.sample.strip.first, tone: "first" }, { from: 1, to: 4, label: g.sample.strip.middle, tone: "middle" }, { from: 4, to: 10, label: g.sample.strip.after, tone: "after" }]} />
-        </State>
-        <State label="one stretch: the group's prices for the whole plan" wide>
-          <PeriodStrip years={10} label={g.sample.strip.label} today={g.sample.strip.today} word={g.sample.strip.year} segments={[{ from: 0, to: 10, label: g.sample.strip.first, tone: "first" }]} />
-        </State>
-      </Demo>
       <Demo name="PickList" use={g.uses.PickList}>
         <State label="three rows, the second chosen, the third muted" wide>
           <PickList
@@ -2327,6 +2325,16 @@ function Lists({ today }: { today: string }) {
               { key: "a", selected: false, onSelect: () => {}, cells: <><span>{p.a}</span><span className="tabular-nums">78,943</span></> },
               { key: "b", selected: true, onSelect: () => {}, cells: <><span>{p.b}</span><span className="tabular-nums">76,322</span></> },
               { key: "c", selected: false, muted: true, onSelect: () => {}, cells: <><span>{p.c}</span><span className="text-sm">—</span></> },
+            ]}
+          />
+        </State>
+        <State label="dashed: a row of the person's own waiting for something before it can rank (the indices page's deal with a fee not priced yet), in a dashed card" wide>
+          <PickList
+            label={p.name}
+            columns="minmax(0,1fr) auto"
+            rows={[
+              { key: "a", selected: true, onSelect: () => {}, cells: <><span>{p.a}</span><span className="tabular-nums">78,943</span></> },
+              { key: "d", selected: false, muted: true, dashed: true, onSelect: () => {}, cells: <><span>{p.c}</span><span /></> },
             ]}
           />
         </State>
@@ -3383,11 +3391,25 @@ function CustodyTable({ today }: { today: string }) {
   );
 }
 
+/** The question before a delete, opened by its button. */
+function ConfirmAskDemo() {
+  const [open, setOpen] = useState(false);
+  const d = investWords.dealAccount.head;
+  return (
+    <div className="flex max-w-md flex-col items-start gap-2">
+      <Button variant="outline" aria-expanded={open} onClick={() => setOpen(true)}>
+        {d.remove}
+      </Button>
+      <ConfirmAsk open={open} question={d.confirm} body={d.confirmBody} yes={d.confirmYes} no={d.confirmNo} onYes={() => setOpen(false)} onNo={() => setOpen(false)} />
+    </div>
+  );
+}
+
 /**
  * Custody by the size of the portfolio, as a ladder: three steps meeting at their tops, the figures plain at rest and each top typed in
  * place while a case is open; "+ מדרגה" at the end.
  */
-function LadderTable({ today }: { today: string }) {
+function LadderTable({ today, marks }: { today: string; /** A host's mark on each step, by its place. */ marks?: readonly string[] }) {
   const [tops, setTops] = useState([100_000, 500_000]);
   const [open, setOpen] = useState<number | null>(null);
   const rates = [0.2, 0.15, 0.1];
@@ -3430,7 +3452,7 @@ function LadderTable({ today }: { today: string }) {
       <div className="px-3">
       <CaseTable
         ladder
-        columns={heads.map((h, k) => ({ id: String(k), head: h, label: sc.open(String(k + 1)), onOpen: () => setOpen((o) => (o === k ? null : k)), open: open === k }))}
+        columns={heads.map((h, k) => ({ id: String(k), head: h, label: sc.open(String(k + 1)), onOpen: () => setOpen((o) => (o === k ? null : k)), open: open === k, ...(marks?.[k] ? { mark: marks[k] } : {}) }))}
         rows={[{ id: "price", cells: rates.map((r, k) => ({ from: k, span: 1, onOpen: () => setOpen((o) => (o === k ? null : k)), content: <span>{fig(r, "pct_of_balance_per_period", today)} {dealWords.price.per[12]}</span> })) }]}
         add={{ label: dealWords.cases.addKnob.step, onAdd: () => undefined }}
       />
@@ -3737,6 +3759,14 @@ function CaseDemos({ today }: { today: string }) {
             <LadderTable today={today} />
           </div>
         </State>
+        <State label="a host's marks on cases (CaseMark; the indices page's popup, /deal passes none): across a tile's top edge, each step of the size with the years the plan spends in it, the years never overlapping, and on a case read as a row after its words; each case it marks outlined in a hairline of the action colour (MARKED) while it is not open" wide>
+          <div className="flex max-w-2xl flex-col gap-3">
+            <LadderTable today={today} marks={[investWords.dealAccount.planCase([{ from: 1, to: 5 }]), investWords.dealAccount.planCase([{ from: 6, to: 10 }])]} />
+            <CaseRow when={[{ text: g.sample.cases.channels.web }]} label={g.sample.cases.open(g.sample.cases.channels.web)} onOpen={() => undefined} mark={investWords.dealAccount.planCase(null)}>
+              <span className="text-sm">0.05%</span>
+            </CaseRow>
+          </div>
+        </State>
         <State label={`two things: a grid, each case a tile, the column heads plain words over a line, a soft line between the row heads only; a row's common minimum and maximum as tiles under its tiles, abroad on any channel one tile over its row, a place no case holds as a slot; a bare "+" at the end of the column heads adds a column, one under the row heads a row; ${g.states.interactive}: a tile opens its case, outlined`} wide>
           <div className="max-w-2xl">
             <TradeGrid today={today} />
@@ -3777,10 +3807,25 @@ function CaseDemos({ today }: { today: string }) {
           </div>
         </State>
       </Demo>
+      <Demo name="ConfirmAsk" use={g.uses.ConfirmAsk}>
+        <State label={`${g.states.interactive}: the delete asks; on a computer a card where it stands, on a phone a sheet from the foot`} wide>
+          <ConfirmAskDemo />
+        </State>
+      </Demo>
       <Demo name="SlimFee, FeeBlock" use={g.uses.SlimFee}>
         <State label={`fees with one price, one line each; ${g.states.interactive}: a tap opens one in place`} wide>
           <div className="max-w-xl">
             <SlimFees today={today} />
+          </div>
+        </State>
+        <State label="a host's slot on the head (the indices page's popup; /deal passes none): what the plan charges at the head's end, or the chip and why under the head, and a line after the cases" wide>
+          <div className="flex max-w-xl flex-col gap-3">
+            <FeeBlock dot="bg-fee-trade" name={sc.trade} head={{ end: <span className="inline-flex items-baseline gap-1.5 text-sm text-muted-foreground">{investWords.dealAccount.onPlan}<strong className="text-base font-bold text-foreground tabular-nums">{fmt.nisWhole(-60)}</strong></span>, foot: <p className="text-sm text-muted-foreground">{investWords.dealAccount.abroad.lacks(dealWords.cases.values.what.us!)}</p> }}>
+              <span aria-hidden className="h-10 rounded-md border border-dashed border-border" />
+            </FeeBlock>
+            <SlimFee dot="bg-fee-fx" name={sc.fx} label={sc.fx} onOpen={() => undefined} head={{ end: <Tag>{investWords.dealAccount.offPlan}</Tag>, under: <p>{investWords.dealAccount.off["shekel-fund"]}</p> }}>
+              <span className="text-sm">0.5%</span>
+            </SlimFee>
           </div>
         </State>
       </Demo>

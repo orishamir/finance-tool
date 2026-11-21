@@ -119,14 +119,57 @@ export function buyWithCash(cash: number, line: Commission | undefined, terms: T
     const { flatUpTo: _, ...rest } = line;
     line = rest;
   }
+  const flatless = line;
+  const trade = tradeOfCash(cash, (v) => tradeCommission(flatless, v, terms));
+  return trade > 0 ? { trade, commission: cash - trade } : none;
+}
+
+/**
+ * F-12 on a buy, the iteration `buyWithCash` and a deal's purchase (F-128, `tradeForCash`) share: from `V = cash`, `V ← cash − cost(V)`
+ * until it settles. A cash at or below the cost of the smallest trade has no `V > 0`, and the answer is 0: no order is placed. The first
+ * step finds it, `cash − cost(cash) ≤ 0`, where the cost of any trade is at least that of the smallest.
+ */
+export function tradeOfCash(cash: number, cost: (trade: number) => number): number {
+  if (!(cash > 0)) return 0;
   let trade = cash;
   for (let i = 0; i < 100; i++) {
-    const next = cash - tradeCommission(line, trade, terms);
-    if (!(next > 0)) return none;
+    const next = cash - cost(trade);
+    if (!(next > 0)) return 0;
     if (Math.abs(next - trade) < 1e-10) break;
     trade = next;
   }
-  return { trade, commission: cash - trade };
+  return trade;
+}
+
+/** F-13 A conversion of shekels: the shekels `converted`, its fee and spread `cost`, and what it buys, `left`, in shekels at its rate. */
+export interface Conversion {
+  converted: number;
+  cost: number;
+  left: number;
+}
+
+/**
+ * F-08 with F-12 and F-13 One order by amount: `fresh` shekels and `held`, money already in the fund's currency (a distribution's net, or
+ * what an earlier order left), in shekels at the order's rate; `conv` is the conversion of the shekels that buys the most (`convertedAtMost`,
+ * or a deal's, F-128). The shekels are converted only where that leaves more than nothing, `left > 0`; otherwise they wait unconverted and the
+ * held money buys alone, and the shekels it does not convert wait unconverted. `buy` sizes the trade a cash pays for with its charges
+ * (`buyWithCash`, which spends all of it, or a deal's trade fees, F-128). A trade of nothing places no order (null): nothing is converted or
+ * charged, and the cash waits for the next order in the pocket it was in. What the cash does not spend (`left`, a deal's charge that jumps past
+ * it) waits in the fund's currency, converted already, as F-109's two pockets keep it.
+ */
+export function orderByAmount<B extends { trade: number; commission: number; left?: number }>(fresh: number, held: number, conv: Conversion, buy: (cash: number) => B): { converts: boolean; fx: number; bought: B; leftNis: number; leftHeld: number } | null {
+  const converts = conv.left > 0;
+  const bought = buy((converts ? conv.left : 0) + held);
+  if (!(bought.trade > 0)) return null;
+  return { converts, fx: converts ? conv.cost : 0, bought, leftNis: converts ? Math.max(0, fresh - conv.converted) : fresh, leftHeld: bought.left ?? 0 };
+}
+
+/**
+ * F-09 A charge paid out of `amount`: `min(amount, charge)`, never more than all of it and nothing out of nothing. A sale's commission
+ * (`saleCommission`) and its conversion (`saleConversion`) are paid so, and a deal's (F-128), each fee's part in proportion.
+ */
+export function paidOutOf(amount: number, charge: number): number {
+  return Math.min(Math.max(0, amount), charge);
 }
 
 /**
@@ -134,7 +177,7 @@ export function buyWithCash(cash: number, line: Commission | undefined, terms: T
  * below the line's minimum (or its flat price) leaves nothing, never less, before the exit tax, which the method's conservative choice does not lower by sale costs (G-20).
  */
 export function saleCommission(line: Commission | undefined, gross: number, terms: TradeTerms): number {
-  return Math.min(Math.max(0, gross), tradeCommission(line, gross, terms));
+  return paidOutOf(gross, tradeCommission(line, gross, terms));
 }
 
 /**
@@ -277,7 +320,7 @@ export function conversionCost(fee: ConversionPrice | undefined, amount: number,
  */
 export function saleConversion(fee: ConversionPrice | undefined, amount: number, terms: TradeTerms, spread: ConversionPrice = 0): number {
   if (!(amount > 0)) return 0;
-  return Math.min(amount, conversionCost(fee, amount, terms, spread));
+  return paidOutOf(amount, conversionCost(fee, amount, terms, spread));
 }
 
 /** F-13: the tops, in shekels at the rate of the conversion, where the fee's or the spread's price changes, ascending; Infinity is none. */
@@ -293,35 +336,46 @@ function stepTops(prices: (ConversionPrice | undefined)[], terms: TradeTerms): n
 }
 
 /**
- * F-13 on a purchase: the deals between two tops of the fee's and the spread's steps, each worth more than `lo` and at most `hi` shekels of the
- * currency bought, with what converting `c` shekels costs there (the fee and the spread of the steps those deals fall in, charged on `c`).
+ * F-13 on a purchase: the deals between two tops of a conversion's steps, each worth more than `lo` and at most `hi` shekels of the currency
+ * bought, with what converting `c` shekels costs there (every price of the steps those deals fall in, charged on `c`). A house's row builds
+ * them from its line's fee and spread (`conversionStretches`), an account priced by a deal from the deal's conversion fees (F-115, F-128).
  */
-interface Stretch {
+export interface ConversionStretch {
   lo: number;
   hi: number;
   cost: (c: number) => number;
 }
 
-function stretches(fee: ConversionPrice | undefined, spread: ConversionPrice, terms: TradeTerms): Stretch[] {
-  const parts = [fee, spread].filter((p): p is ConversionPrice => p !== undefined && typeof p !== "number").map(sizedOf);
-  const bare = [fee, spread].filter((p): p is number => typeof p === "number").reduce((a, b) => a + b, 0);
-  const out: Stretch[] = [];
+/**
+ * F-13 The stretches between `tops` (shekels of the currency bought, ascending, each finite): each with what `at` gives for a deal inside it
+ * (its cost, and whatever else the caller keeps of it), read at its top where it has one (a top belongs to the step below it), else just
+ * above its bottom.
+ */
+export function stretchesAt<T extends Pick<ConversionStretch, "cost">>(tops: readonly number[], at: (inside: number) => T): (T & ConversionStretch)[] {
+  const out: (T & ConversionStretch)[] = [];
   let lo = 0;
-  for (const hi of [...stepTops([fee, spread], terms), Infinity]) {
-    // each part's step for a deal inside the stretch: its top where it has one (a top belongs to the step below it), else above `lo`
-    const inside = Number.isFinite(hi) ? hi : lo + 1;
-    const fees = parts.map((s) => stepFee(s, stepAt(s, inside, terms), terms));
-    out.push({ lo, hi, cost: (c) => bare * c + fees.reduce((sum, f) => sum + f(c), 0) });
+  for (const hi of [...tops, Infinity]) {
+    out.push({ ...at(Number.isFinite(hi) ? hi : lo + 1), lo, hi });
     lo = hi;
   }
   return out;
+}
+
+/** F-13 A house's conversion on a purchase as stretches: its line's fee and spread, each priced by its own steps (`SizedConversion`). */
+export function conversionStretches(fee: ConversionPrice | undefined, spread: ConversionPrice, terms: TradeTerms): ConversionStretch[] {
+  const parts = [fee, spread].filter((p): p is ConversionPrice => p !== undefined && typeof p !== "number").map(sizedOf);
+  const bare = [fee, spread].filter((p): p is number => typeof p === "number").reduce((a, b) => a + b, 0);
+  return stretchesAt(stepTops([fee, spread], terms), (inside) => {
+    const fees = parts.map((s) => stepFee(s, stepAt(s, inside, terms), terms));
+    return { cost: (c: number) => bare * c + fees.reduce((sum, f) => sum + f(c), 0) };
+  });
 }
 
 /**
  * F-13 The shekels whose conversion buys a deal worth `value` within one stretch, `c = value + cost(c)`: the cost rises by less than `c` does,
  * so the fixed-point iteration converges to the one solution.
  */
-function shekelsFor(value: number, st: Stretch): number {
+function shekelsFor(value: number, st: ConversionStretch): number {
   let c = value;
   for (let i = 0; i < 100; i++) {
     const next = value + st.cost(c);
@@ -331,50 +385,101 @@ function shekelsFor(value: number, st: Stretch): number {
   return c;
 }
 
-/** F-13: the smallest deal over a top, one cent of the currency bought above it. */
-const overTop = (top: number, terms: TradeTerms) => top + 0.01 * terms.fxRate;
-
 /**
  * F-13 on a purchase in whole units (F-109): the fewest shekels `c` whose conversion buys at least `owed`, `c = v + fee_fx(c) + spread(c)` with
  * `v ≥ owed` the deal, the currency bought, which each step's top is measured on; the fee is charged on `c`, the amount converted, as F-08
  * charges it on a contribution. Within a stretch between two tops the price is one step's and `c` rises with `v`, so each stretch's fewest
- * shekels are at its smallest deal of at least `owed`: `owed` itself in the stretch that holds it, and just over its top (`overTop`) in each
- * stretch above. Where the step above a top is cheaper (a spread that falls with the size), buying just over the top can take fewer shekels
- * than buying `owed` in the dearer step; the fewest is taken, and what it buys beyond `owed` is `extra`, kept in the fund's currency.
+ * shekels are at its smallest deal of at least `owed`: `owed` itself in the stretch that holds it, and just over its top in each stretch
+ * above, `cent` shekels over it (one cent of the currency bought). Where the step above a top is cheaper (a spread that falls with the size),
+ * buying just over the top can take fewer shekels than buying `owed` in the dearer step; the fewest is taken, and what it buys beyond `owed`
+ * is `extra`, kept in the fund's currency, and `at` is the stretch it falls in (-1 where nothing is owed).
  */
-export function convertFor(owed: number, fee: ConversionPrice | undefined, terms: TradeTerms, spread: ConversionPrice = 0): { converted: number; cost: number; extra: number } {
-  if (!(owed > 0)) return { converted: 0, cost: 0, extra: 0 };
-  let best: { converted: number; cost: number; extra: number } | undefined;
-  for (const st of stretches(fee, spread, terms)) {
-    if (st.hi < owed) continue;
-    const v = owed > st.lo ? owed : overTop(st.lo, terms);
-    if (v > st.hi) continue;
+export function boughtFor(owed: number, stretches: readonly ConversionStretch[], cent: number): { converted: number; cost: number; extra: number; at: number } {
+  if (!(owed > 0)) return { converted: 0, cost: 0, extra: 0, at: -1 };
+  let best: { converted: number; cost: number; extra: number; at: number } | undefined;
+  stretches.forEach((st, k) => {
+    if (st.hi < owed) return;
+    const v = owed > st.lo ? owed : st.lo + cent;
+    if (v > st.hi) return;
     const c = shekelsFor(v, st);
-    if (!best || c < best.converted - 1e-9) best = { converted: c, cost: c - v, extra: v - owed };
-  }
+    if (!best || c < best.converted - 1e-9) best = { converted: c, cost: c - v, extra: v - owed, at: k };
+  });
   // the last stretch has no top, so some stretch always buys `owed`
   if (!best) throw new RangeError("F-13: no conversion buys the amount owed");
   return best;
 }
 
+/** F-13 `boughtFor` on a house's line: a cent of the fund's currency at the rate of the conversion. */
+export function convertFor(owed: number, fee: ConversionPrice | undefined, terms: TradeTerms, spread: ConversionPrice = 0): { converted: number; cost: number; extra: number } {
+  const { at: _, ...conv } = boughtFor(owed, conversionStretches(fee, spread, terms), 0.01 * terms.fxRate);
+  return conv;
+}
+
 /**
- * F-08, F-109 with F-13 The most a conversion of at most `cash` shekels buys, `left`, the deal measured as `convertFor` measures it, with the
- * shekels it converts and its fee and spread. Within a stretch what a conversion buys rises with it, so a stretch's most is what the whole cash
- * buys there where that falls inside it, its top where the whole cash would buy more (converting less than the cash), and nothing where the
- * whole cash buys no deal inside it. Of two that buy the same, the fewer shekels. A step that charges less (nothing, a flat price, a share off)
- * can make a conversion below the whole cash buy the most: the rest of the cash waits unconverted.
+ * F-08, F-109 with F-13 The most a conversion of at most `cash` shekels buys, `left`, the deal measured as `boughtFor` measures it, with the
+ * shekels it converts, its fee and spread, and the stretch it falls in (`at`, -1 where nothing is bought). Within a stretch what a conversion
+ * buys rises with it, so a stretch's most is what the whole cash buys there where that falls inside it, its top where the whole cash would buy
+ * more (converting less than the cash), and nothing where the whole cash buys no deal inside it. Of two that buy the same, the fewer shekels.
+ * A step that charges less (nothing, a flat price, a share off) can make a conversion below the whole cash buy the most: the rest of the cash
+ * waits unconverted.
  */
-export function convertedAtMost(cash: number, fee: ConversionPrice | undefined, terms: TradeTerms, spread: ConversionPrice = 0): { converted: number; cost: number; left: number } {
-  const none = { converted: 0, cost: 0, left: 0 };
-  if (!(cash > 0)) return none;
-  let best = none;
-  for (const st of stretches(fee, spread, terms)) {
+export function mostBought(cash: number, stretches: readonly ConversionStretch[]): Conversion & { at: number } {
+  let best = { converted: 0, cost: 0, left: 0, at: -1 };
+  if (!(cash > 0)) return best;
+  stretches.forEach((st, k) => {
     const whole = cash - st.cost(cash);
-    if (!(whole > st.lo)) continue;
+    if (!(whole > st.lo)) return;
     const at = whole <= st.hi ? { converted: cash, left: whole } : { converted: shekelsFor(st.hi, st), left: st.hi };
-    if (at.left > best.left + 1e-9 || (Math.abs(at.left - best.left) <= 1e-9 && at.converted < best.converted)) best = { ...at, cost: at.converted - at.left };
-  }
+    if (at.left > best.left + 1e-9 || (Math.abs(at.left - best.left) <= 1e-9 && at.converted < best.converted)) best = { ...at, cost: at.converted - at.left, at: k };
+  });
   return best;
+}
+
+/** F-13 `mostBought` on a house's line. */
+export function convertedAtMost(cash: number, fee: ConversionPrice | undefined, terms: TradeTerms, spread: ConversionPrice = 0): Conversion {
+  const { at: _, ...conv } = mostBought(cash, conversionStretches(fee, spread, terms));
+  return conv;
+}
+
+/**
+ * F-13 The cash, in shekels, at which `mostBought` may move from one stretch to another: at each top, the shekels that buy it in the stretch
+ * below (from there the stretch below buys its top and the rest waits) and in the stretch above (from just over there the stretch above buys
+ * more). Between two of them the stretch chosen holds, so what the cash costs never falls inside.
+ */
+export function stretchCuts(stretches: readonly ConversionStretch[]): number[] {
+  const cuts = new Set<number>();
+  stretches.forEach((st, k) => {
+    if (!Number.isFinite(st.hi)) return;
+    cuts.add(shekelsFor(st.hi, st));
+    const above = stretches[k + 1];
+    if (above) cuts.add(shekelsFor(st.hi, above));
+  });
+  return [...cuts].sort((a, b) => a - b);
+}
+
+/**
+ * F-109 with F-12 and F-13 One order in whole units at `ask` a unit: the most units, from `most` shekels of trade down, whose trade and its
+ * charges (`price`) the cash pays, the held money (`held`, in shekels at the order's rate) first and then the shekels `fresh` converted for the
+ * rest (`convert`, the fewest shekels that buy what is owed, `boughtFor`). What the conversion buys beyond what is owed waits in the fund's
+ * currency. A house's row and an account priced by a deal (F-128) place their unit orders through it. Null where no unit is paid for.
+ */
+export function orderInUnits<B extends { commission: number }, C extends { converted: number; cost: number; extra: number }>(
+  fresh: number,
+  held: number,
+  ask: number,
+  most: number,
+  price: (trade: number) => B,
+  convert: (owed: number) => C,
+): { trade: number; bought: B; conv: C; leftNis: number; leftHeld: number } | null {
+  for (let n = Math.floor(most / ask + 1e-9); n > 0; n--) {
+    const trade = n * ask;
+    const bought = price(trade);
+    const fromHeld = Math.min(held, trade + bought.commission);
+    const owed = trade + bought.commission - fromHeld;
+    const conv = convert(owed);
+    if (conv.converted <= fresh + 1e-9) return { trade, bought, conv, leftNis: Math.max(0, fresh - conv.converted), leftHeld: held - fromHeld + conv.extra };
+  }
+  return null;
 }
 
 /** A custody fee per period (F-14), on the holdings it applies to. */

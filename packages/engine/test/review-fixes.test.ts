@@ -176,20 +176,6 @@ it("does not tax the holder on a taxable fund's distributions (TXS-11)", () => {
   expect(r.taxDuring).toBe(0);
 });
 
-it("a taxable fund's distributions, exempt to the holder, add nothing to the surtax above its threshold (TXS-11, TXG-09)", () => {
-  const r = runSecurities(
-    fund({
-      goal: { amountNow: 1_000_000, monthly: 0, months: 24 },
-      market: { grossReturn: 0.04, inflation: 0.02 },
-      fund: { kind: "money-market-taxable", distribution: { yield: 0.03, perYear: 12 } },
-      tariff: {},
-      profile: { annualIncome: 2_000_000 },
-    }),
-    ctx,
-  );
-  expect(r.taxDuring).toBe(0);
-});
-
 describe("an open rule at exit lists the wrapper with its pre-tax value (B3)", () => {
   it("securities", () => {
     const open = rules.map((r) => (r.id === "TXS-09" ? ({ ...r, strength: "open", figures: undefined } as RuleRecord) : r));

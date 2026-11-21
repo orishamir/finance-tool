@@ -10,6 +10,7 @@ import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
 import { openingRange, roundAmount, settleRange, type ActionView, type HeldView } from "./charts";
 import { nisPerNumber } from "../fx";
+import { typed, type FeeDeal, type Price } from "./model";
 
 const data = feesData();
 const link = readFileSync(new URL("../../../scripts/layout-check-deal.txt", import.meta.url), "utf8").trim();
@@ -71,6 +72,69 @@ describe("what a purchase or sale costs", () => {
     expect(r.share.value).toBeCloseTo(0.77, 3);
     expect(r.parts.map((p) => p.part?.part)).toEqual(["min", "min"]);
     expect(r.parts[0]!.rateAlone!.value).toBeCloseTo(c.start * 0.0025, 9);
+  });
+});
+
+describe("a purchase's conversion, read on what it buys (F-13)", () => {
+  // Discount's direct line: 0.17%, at least 6 $, at most 1,055 $; free up to 10 $, half the price and its minimum up to 100 $; at 3.70 ₪ a dollar
+  const usd = (p: Omit<Extract<Price, { form: "action" }>, "form" | "currency">): Price => ({ form: "action", ...p, currency: "USD" });
+  const line = { rate: typed(0.17), min: typed(6), max: typed(1055) };
+  const deal: FeeDeal = {
+    id: "deal-x",
+    name: "",
+    kind: "brokerage-account",
+    fees: [
+      {
+        id: "fee-fx",
+        kind: "fx",
+        by: [{ kind: "actionSize", unit: "USD", tops: [typed(10), typed(100)] }],
+        cases: [
+          { id: "x1", when: [0], stages: [{ price: { form: "free" } }] },
+          { id: "x2", when: [1], stages: [{ price: { ...usd(line), discount: { pct: typed(50), alsoMin: true } } as Price }] },
+          { id: "x3", when: [2], stages: [{ price: usd(line) }] },
+        ],
+      },
+    ],
+  };
+  const chart = () => {
+    const fx = { ...data.fx!, perEur: { ILS: 3.7, USD: 1 } };
+    const tab = readingOf(readDealFor(deal, data.kinds, "2026-11-20"), fx).panels.actions.find((t) => t.action === "conversion")!;
+    expect(tab.side).toBe("all");
+    return chartOf(tab.views[0]!);
+  };
+  it("names the part whose price the purchase pays: free at 40 ₪, half the minimum at 380 ₪ and 385 ₪, the full minimum at 400 ₪", () => {
+    const c = chart();
+    // 40 ₪ converts 37 ₪, which buy 10 $ free; 380 ₪ buys 368.90 ₪ at half the minimum, 3 $ = 11.10 ₪; 385 ₪ converts 381.10 ₪, which buy
+    // the 100 $ top at half the minimum; from 392.20 ₪ the full minimum, 6 $ = 22.20 ₪, buys more than the top
+    for (const [a, part, figure, cost] of [[40, "free", null, 0], [380, "min", 3, 11.1], [385, "min", 3, 11.1], [400, "min", 6, 22.2]] as const) {
+      const r = c.readAt(a);
+      expect(r.total.value).toBeCloseTo(cost, 9);
+      expect(r.parts).toHaveLength(1);
+      expect(r.parts[0]!.part?.part).toBe(part);
+      expect(r.parts[0]!.part?.figure?.value ?? null).toBe(figure);
+    }
+  });
+  it("says what the rate alone would charge on the shekels the purchase converts, not on its cash: at 385 ₪, on 381.10 ₪ (F-123)", () => {
+    const r = chart().readAt(385);
+    // the step's rate is half the line's 0.17%; the rest of the cash, 3.90 ₪, waits unconverted
+    expect(r.parts[0]!.rateAlone!.value).toBeCloseTo(0.0017 * 0.5 * 381.1, 9);
+    expect(r.parts[0]!.apart!.value).toBeCloseTo(11.1 - 0.0017 * 0.5 * 381.1, 9);
+  });
+  it("marks each step's top at the cash from which the purchase buys past it, and the lane changes part there", () => {
+    const c = chart();
+    // the 100 $ top at 392.20 ₪, not at the 370 ₪ that 100 $ are worth; the 10 $ top, at 48.10 ₪, lies under the opening range from 100 ₪
+    expect(c.range.lo).toBe(100);
+    expect(c.marks.map((m) => [m.at, m.label.value])).toEqual([
+      [expect.closeTo(392.2, 9), 100],
+      [expect.closeTo(6 / 0.0017 * 3.7, 6), expect.closeTo(6 / 0.0017, 6)],
+      [expect.closeTo(1055 / 0.0017 * 3.7, 6), expect.closeTo(1055 / 0.0017, 6)],
+    ]);
+    const lane = c.lanes[0]!.parts!;
+    expect(lane.slice(0, 3).map((x) => [x.part, x.figure?.value ?? null, x.from, x.to])).toEqual([
+      ["free", null, 0, expect.closeTo(48.1, 9)],
+      ["min", 3, expect.closeTo(48.1, 9), expect.closeTo(392.2, 9)],
+      ["min", 6, expect.closeTo(392.2, 9), expect.closeTo(6 / 0.0017 * 3.7, 6)],
+    ]);
   });
 });
 

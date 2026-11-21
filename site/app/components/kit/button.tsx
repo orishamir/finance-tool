@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { cx } from "./cx";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary" | "outline" | "ghost" | "quiet" | "destructive" | "icon" | "inline";
+  variant?: "primary" | "secondary" | "outline" | "framed" | "ghost" | "quiet" | "destructive" | "danger" | "icon" | "inline";
   /** `quiet` and `destructive` only: no side padding, so the words line up with the text above and below them (a text action at a line's start). */
   flush?: boolean;
   /**
@@ -21,23 +21,28 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
    * (`tap-wide`). Never beside a field or another control, where the two areas would overlap.
    */
   wide?: boolean;
+  /** `inline` only: the sentence's one action, bold in the link colour and underlined only under the pointer ("להוסיף לעסקה" after what is missing). */
+  bold?: boolean;
   children: ReactNode;
 };
 
 /**
  * An action. `primary` once per screen, `secondary` for the rest, `quiet` for a text-style action, `destructive` for a quiet one that
  * deletes, `icon` for a 44 px icon-only button. `outline`: a bordered button on the card's own surface, the face `MenuPicker` has, for an
- * action that stands beside such a picker in a bar (the fee page's "קישור לעסקה"); `ghost`: the face of the kit's bin (`RemoveButton`, the
+ * action that stands beside such a picker in a bar (the fee page's "קישור לעסקה"); `framed`: the same bordered face with its edge and words
+ * in the action colour, for the one action a card offers where a filled button would outweigh the card's figures (the pair card's
+ * "להזין מחיר שקיבלתם"); `danger`: a filled button in the danger colour, for the "מחיקה" of a question that takes something away for good
+ * (`ConfirmAsk`), beside an `outline` "ביטול"; `ghost`: the face of the kit's bin (`RemoveButton`, the
  * one control that takes something away), an icon alone in a 36 px round face with a 44 px tap area, 44 px square on a phone, in the muted ink with no edge, the
  * danger colour only under the pointer or the focus. `inline`: an action inside a sentence, around words that may wrap with it (a name that
  * picks a pair, the way back from a choice that changed something else): underlined in the link colour, on the sentence's lines, its
  * 44 px target a layer reaching 12 px above and below the words, so it takes no more height than they do (a layer, not a margin pulled
  * in: a way back wrapped onto two lines in a narrow cell was drawn over the note, 390 px). A disabled text action reads in the muted ink.
  */
-export function Button({ variant = "secondary", flush, size, gap, wide, className, children, type = "button", ...rest }: ButtonProps) {
+export function Button({ variant = "secondary", flush, size, gap, wide, bold, className, children, type = "button", ...rest }: ButtonProps) {
   if (variant === "inline")
     return (
-      <button type={type} className={cx("relative rounded-md text-start text-link underline underline-offset-[3px] hover:no-underline transition-colors duration-[var(--duration-fast)] before:absolute before:inset-x-0 before:-inset-y-3", className)} {...rest}>
+      <button type={type} className={cx("relative rounded-md text-start text-link underline-offset-[3px] transition-colors duration-[var(--duration-fast)] before:absolute before:inset-x-0 before:-inset-y-3", bold ? "font-semibold hover:underline" : "underline hover:no-underline", className)} {...rest}>
         {children}
       </button>
     );
@@ -52,6 +57,8 @@ export function Button({ variant = "secondary", flush, size, gap, wide, classNam
     primary: "bg-primary text-primary-foreground font-medium h-field px-5 rounded-md hover:brightness-110",
     secondary: "bg-secondary text-secondary-foreground font-medium h-field lg:h-10 lg:tap-area px-5 rounded-md hover:bg-accent",
     outline: "min-h-target px-4 rounded-md border border-input bg-card text-foreground hover:bg-accent",
+    framed: "min-h-target px-4 rounded-md border border-primary bg-card text-link font-medium hover:bg-accent",
+    danger: "min-h-target px-4 rounded-md bg-destructive text-destructive-foreground font-medium hover:brightness-110",
     ghost: "size-9 max-md:size-target tap-area rounded-full text-muted-foreground hover:bg-accent hover:text-destructive focus-visible:text-destructive",
     quiet: cx("text-link rounded-md", textAction, textHeight, side),
     // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet.
@@ -72,8 +79,8 @@ export function Button({ variant = "secondary", flush, size, gap, wide, classNam
  * so they may wrap on a phone: the height is a minimum, one line keeps the field's height and two lines grow the button rather than
  * spill out of it, balanced so no word stands alone on the second (a house's page at 390 px).
  */
-export function LinkButton({ to, children, className, variant = "secondary", onClick }: { to: string; children: ReactNode; className?: string; variant?: "primary" | "secondary"; onClick?: () => void }) {
-  const styles = variant === "primary" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-accent";
+export function LinkButton({ to, children, className, variant = "secondary", onClick }: { to: string; children: ReactNode; className?: string; /** `framed`: a bordered face in the action colour, as `Button`'s `framed`. */ variant?: "primary" | "secondary" | "framed"; onClick?: () => void }) {
+  const styles = { primary: "bg-primary text-primary-foreground", secondary: "bg-secondary text-secondary-foreground hover:bg-accent", framed: "border border-primary bg-card text-link hover:bg-accent" }[variant];
   return (
     <Link to={to} onClick={onClick} className={cx("inline-flex items-center justify-center gap-2 font-medium min-h-field lg:min-h-10 lg:tap-area py-1.5 px-5 rounded-md text-center text-balance", styles, className)}>
       {children}

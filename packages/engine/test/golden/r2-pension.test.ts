@@ -1,5 +1,4 @@
-// Golden scenarios S23 to S30 for the release 2 formulas: the employer line (F-52: a study fund run on the employer's money,
-// `hishtalmut.money: "employer"`, and the pension's `employerLinePension`), early withdrawal from a
+// Golden scenarios S23 to S30 for the release 2 formulas: the employer line (F-52), early withdrawal from a
 // study fund (F-47), the deposit-side relief (F-30 to F-32), the insurance cost (F-53) and the blocked exits
 // (F-45, F-48, F-49). Inputs are the scenario's own; expected values are the approved independent check
 // (tests/golden/scenarios.md, workings.md), tolerance P-06. Where the independent check made a modelling
@@ -10,7 +9,7 @@ import {
   beneficiaryRelief,
   blockedWrapperExit,
   employeeCredit,
-  employerLinePension,
+  employerLine,
   equalNetOutlay,
   insuranceCost,
   RecordInputError,
@@ -37,37 +36,31 @@ const s23: ProvidentInput = {
   goal: { amountNow: 0, monthly: 300, months: 84, contributions: "nominal" },
   market: { grossReturn: 0.06, inflation: 0.025 },
   fees: { deposit: 0, balance: 0.006, direct: 0.0011 },
-  hishtalmut: { employment: "employee", monthlySalary: 12_000, clockStartMonth: 0 },
+  hishtalmut: { employment: "employee", monthlySalary: 12_000, clockStartMonth: 0, employerRate: 0.075 },
   profile: {},
 };
-const employerRate = 0.075;
-
-/** F-52 for a study fund: the employer deposits `rate × salary` a month as on the payslip, constant in nominal terms, run on its own. */
-const employerMoney = (input: ProvidentInput) =>
-  runProvident(
-    {
-      ...input,
-      goal: { ...input.goal, amountNow: 0, monthly: employerRate * input.hishtalmut!.monthlySalary!, contributions: "nominal" },
-      hishtalmut: { ...input.hishtalmut!, money: "employer" },
-    },
-    ctx,
-  );
 
 describe("F-52 employer line, keren hishtalmut (S23, S25)", () => {
-  it("S23 employer line: 900 a month, exempt at exit", () => {
-    const line = employerMoney(s23);
+  it("S23 employer line: 900 a month, exempt at exit, never ranked", () => {
+    const line = employerLine({ kind: "hishtalmut", input: s23 }, ctx);
     const g = golden("S23");
     g.value("employer line real", line.real, 76_643.32);
     g.value("employer line nominal", line.nominal, 91_104.83);
     g.value("tax at exit", line.taxAtExit, 0);
     g.done();
+    expect(line.ranked).toBe(false);
+    expect(line.line).toBe("only-available-here");
+    expect(line.outcome).toMatchObject({ code: "listed-not-ranked", reason: "B2" });
     expect(line.formulas).toContain("F-52");
   });
 
   it("S25 employer line: the part above the limit is taxed as salary when paid", () => {
     // Method F-52 gives the deposit as 7.5% x min(salary, 15,712); the independent check deposits 7.5% of the
-    // whole salary (1,500) and taxes what is above the benefited 1,178.40, as the run does.
-    const line = employerMoney({ ...s23, hishtalmut: { ...s23.hishtalmut!, monthlySalary: 20_000 } });
+    // whole salary (1,500) and taxes what is above the benefited 1,178.40, as this function does.
+    const line = employerLine(
+      { kind: "hishtalmut", input: { ...s23, hishtalmut: { ...s23.hishtalmut!, monthlySalary: 20_000 } } },
+      ctx,
+    );
     const g = golden("S25");
     g.value("gross balance", line.detail.grossBalance, 151_841.38);
     g.value("income tax on the excess at deposit", line.detail.employerDepositTax, 7_100.93);
@@ -79,6 +72,12 @@ describe("F-52 employer line, keren hishtalmut (S23, S25)", () => {
     expect(labelOf(line, "TXG-35")).toBeUndefined();
     // 2026-10-25 scope pass: TXH-11's real base now rests on the Chief Economist paper (primary), so no institution label.
     expect(labelOf(line, "TXH-11")).toBeUndefined();
+    expect(line.ranked).toBe(false);
+  });
+
+  it("refuses a self-employed person: no employer deposits", () => {
+    const input = { ...s23, hishtalmut: { ...s23.hishtalmut!, employment: "self-employed" as const } };
+    expect(() => employerLine({ kind: "hishtalmut", input }, ctx)).toThrow(/employee/);
   });
 });
 
@@ -102,12 +101,13 @@ describe("F-47 early withdrawal from a study fund, opt-in (S24b)", () => {
   });
 
   it("S24(b) employer line: benefited deposits are work income, gains at 31%", () => {
-    const line = employerMoney(early);
+    const line = employerLine({ kind: "hishtalmut", input: early }, ctx);
     const g = golden("S24");
     g.value("balance", line.detail.grossBalance, 48_040.77);
     g.value("tax on deposits", line.detail.earlyTaxOnEmployerDeposits, 8_640);
     g.value("tax on gains", line.detail.earlyTaxOnGains, 1_500.64);
     g.done();
+    expect(line.ranked).toBe(false);
   });
 
   it("without the opt-in the run is still listed with its value at the first lawful exit (S24a)", () => {
@@ -236,7 +236,7 @@ describe("F-31, F-32, F-53, F-49 pension (S27, S28, S29)", () => {
   });
 
   it("S27 employer line: 1,250 a month, the same fees and insurance (Q18), never ranked", () => {
-    const line = employerLinePension(s27, ctx);
+    const line = employerLine({ kind: "pension", input: s27 }, ctx);
     const g = golden("S27");
     g.value("employer line nominal", line.nominal, 957_985.61);
     g.value("employer line real", line.real, 528_875.97);
@@ -265,7 +265,7 @@ describe("F-31, F-32, F-53, F-49 pension (S27, S28, S29)", () => {
     expect(r.deposits[5]).toBeCloseTo(r.paidIn / 120 / 1, -3); // gross is net: 1,000 x I_m
     // Listed, locked until 60 (month 360), blocked.
     expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "G-03", untilMonth: 360 });
-    const line = employerLinePension(s28, ctx);
+    const line = employerLine({ kind: "pension", input: s28 }, ctx);
     const gl = golden("S28");
     gl.value("employer line nominal", line.nominal, 279_975.19);
     gl.value("employer line real", line.real, 229_677.17);
@@ -369,7 +369,7 @@ describe("S30 provident fund for annuity, same money as S27", () => {
     // 2028's credit and from 2029's, as S27's: 35% × (7% × 116,400 × 1.02 − 7,200) = 388.84, and 35% × (7% × 120,000 − 7,200) = 420
     expect(r.years[2]!.credit).toBeCloseTo(388.836, 6);
     expect(r.years[3]!.relief).toBeCloseTo(420, 6);
-    const line = employerLinePension(s30, ctx);
+    const line = employerLine({ kind: "pension", input: s30 }, ctx);
     const gl = golden("S30");
     gl.value("employer line nominal", line.nominal, 933_375.45);
     gl.value("employer line real", line.real, 515_289.41);
@@ -385,8 +385,8 @@ describe("F-52 pension employer line: TXP-10 on the salary the employer deposits
   });
 
   it("deposits the rates on `employer.salary`, so 6.5% on 13,769 is under the 7.5% limit at any gross salary (TXP-10's \"salary\")", () => {
-    const capped = employerLinePension(withEmployer({ pensionRate: 0.065, severanceRate: 0.06, salary: 13_769 }), ctx);
-    const plain = employerLinePension(withEmployer({ pensionRate: 0.065, severanceRate: 0.06 }, 13_769), ctx);
+    const capped = employerLine({ kind: "pension", input: withEmployer({ pensionRate: 0.065, severanceRate: 0.06, salary: 13_769 }) }, ctx);
+    const plain = employerLine({ kind: "pension", input: withEmployer({ pensionRate: 0.065, severanceRate: 0.06 }, 13_769) }, ctx);
     expect(capped.detail.employerDeposits).toBeCloseTo(0.125 * 13_769 * 120, 6);
     expect(capped.detail.depositTax).toBe(0);
     expect(capped.nominal).toBeCloseTo(capped.detail.grossBalance!, 6);
@@ -396,7 +396,7 @@ describe("F-52 pension employer line: TXP-10 on the salary the employer deposits
 
   it("taxes the part above `min(7.5%, rate) × min(salary, 34,423)` as salary, paid from the salary: the fund keeps the whole deposit", () => {
     // 8% on 50,000 is 4,000 a month; the limit is 7.5% × 34,423 = 2,581.725, so 1,418.275 a month is salary when paid
-    const line = employerLinePension(withEmployer({ pensionRate: 0.08, severanceRate: 0 }), ctx);
+    const line = employerLine({ kind: "pension", input: withEmployer({ pensionRate: 0.08, severanceRate: 0 }) }, ctx);
     const book = ruleBook(ctx);
     const excess = 0.08 * 50_000 - book.rate("TXP-10", "employer_exempt_pct") * book.amount("TXP-10", "employer_ceiling");
     expect(excess).toBeCloseTo(1_418.275, 6);
@@ -414,6 +414,13 @@ describe("F-45, F-48, F-49 blocked exits (G-03; F-48 not built)", () => {
     expect(blockedWrapperExit("F-48", 1_000)).toMatchObject({ blocked: true, reason: "F-48", gap: null, openQuestions: [] });
     expect(blockedWrapperExit("F-48", 1_000).ruleIds).toContain("TXP-18");
     expect(blockedWrapperExit("F-49", 1_000).ruleIds).toContain("TXP-14");
+  });
+
+  it("an opt-in to early withdrawal from a pension stays blocked, because F-48 is not built", () => {
+    const r = runPension({ ...s27, goal: { ...s27.goal, months: 120 }, earlyWithdrawal: true }, ctx);
+    expect(r.exit).toMatchObject({ formula: "F-48", reason: "F-48", gap: null });
+    expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "F-48" });
+    expect(flagCodes(r)).not.toContain("G-06");
   });
 });
 

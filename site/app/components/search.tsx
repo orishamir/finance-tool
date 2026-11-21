@@ -44,6 +44,11 @@ const matching = lazyModule(() => import("../lib/search"));
 /** The matching and the results list. */
 const results = lazyModule(() => import("./search-results"));
 
+/** Fetches the results code ahead of need (entry.client.tsx, while the page hydrates). */
+export function loadSearchCode(): Promise<unknown> {
+  return results.get();
+}
+
 /** Starts fetching the results code and the index: on a pointer down or a focus on a search, before its tap opens it. */
 export function preloadSearch(): void {
   results.get().catch(() => undefined);

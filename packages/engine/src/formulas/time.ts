@@ -131,6 +131,13 @@ export function paidInAsEntered(amountNow: number, monthly: number, years: numbe
 }
 
 /**
+ * F-06 Real value. A nominal amount `V` at month `m` is shown as `V / I_m`.
+ */
+export function realValue(nominal: number, index: readonly number[], month: number): number {
+  return nominal / index[month]!;
+}
+
+/**
  * F-07 Annual to monthly rates. `g = (1 + r)^(1/12) − 1` for returns and yields quoted as
  * effective annual rates, `r` as a fraction.
  */

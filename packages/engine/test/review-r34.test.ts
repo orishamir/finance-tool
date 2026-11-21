@@ -1,9 +1,9 @@
 // Cases from the independent finance review of the release 3 and 4 engine (2026-10-24): each pins a rule the
 // golden scenarios do not reach. Figures are worked from the rule's own figures in a comment.
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { ValueObject } from "@finance-tool/schema";
-import { fxFee, providerWorkbench, runProvident, runSecurities, type ProvidentInput, type ComparedProvider, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
+import { classificationFit, regulatorReference, RecordInputError, feeCap, fxFee, providerWorkbench, runProvident, runSecurities, switchingCost, type ProvidentSide, type ProvidentInput, type RunPlan, type ComparedProvider, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const dataDir = new URL("../../../data/", import.meta.url);
@@ -154,9 +154,9 @@ describe("F-63 average levels carry no bounds and the average's own source", () 
   });
 });
 
-// ---------------------------------------------------------------- F-52 the employer part
+// ---------------------------------------------------------------- F-61 existing balance in a study fund
 
-describe("F-52 a study fund's employer part against TXH-01's limit", () => {
+describe("F-61 existing balance in a study fund (review S42)", () => {
   const base: ProvidentInput = {
     wrapper: "keren-hishtalmut",
     goal: { amountNow: 0, monthly: 1200, months: 120, contributions: "nominal" },
@@ -164,47 +164,305 @@ describe("F-52 a study fund's employer part against TXH-01's limit", () => {
     fees: { deposit: 0, balance: 0, direct: 0 },
     // Past the lock: first payment 72 months before the start (TXH-09, 6 years).
     hishtalmut: { employment: "employee", monthlySalary: 20_000, clockStartMonth: -72, employerMonthly: 900 },
+    existingBalance: 120_000,
     profile: {},
   };
-  // 7.5% × 15,712 = 1,178.40 a month; the own part 300 is under TXH-08's 2.5% × 15,712 = 392.80.
-  const limit = 0.075 * 15_712;
-  const withEmployer = (employerMonthly: number) => ({
-    ...base,
-    goal: { ...base.goal, monthly: 300 + employerMonthly },
-    hishtalmut: { ...base.hishtalmut!, employerMonthly },
-  });
-  const g = 1.06 ** (1 / 12) - 1;
-  const growth = Array.from({ length: 120 }, (_, k) => (1 + g) ** (k + 1)).reduce((a, b) => a + b, 0);
 
-  it("exactly at the limit: all benefited, no salary tax, nothing taxed at exit", () => {
-    const r = runProvident(withEmployer(limit), ctx);
-    expect(r.detail.employerDepositTax).toBeUndefined();
+  it("enters as benefited money, exempt at exit, not counted as paid in", () => {
+    const r = runProvident(base, ctx);
+    // No fees, 6% a year: 120,000 grows by 1.06^10 = 214,901.7 (monthly compounding of (1.06)^(1/12)); the deposits add to it.
     expect(r.taxAtExit).toBe(0);
+    expect(r.outcome).toEqual({ code: "eligible" });
+    // Paid in: 1,200 × 120 = 144,000, not 264,000.
+    expect(r.paidIn).toBeCloseTo(144_000, 6);
+    expect(r.nominal).toBeGreaterThan(120_000 * 1.06 ** 10);
   });
-  it("above the limit it no longer stops: the part above is salary when paid and runs separately", () => {
-    const at = runProvident(withEmployer(limit), ctx);
-    const r = runProvident(withEmployer(1500), ctx);
-    const over = 1500 - limit;
-    // The extra money (321.60 a month) lands in the excess pot and grows like any deposit.
-    expect(r.detail.grossBalance! - at.detail.grossBalance!).toBeCloseTo(over * growth, 4);
-    // Salary 20,000: the 321.60 above is 3,859.20 a year on top of 240,000, in the 31% band (TXG-02) while that band starts at 228,000:
-    // 1,196.352 a year in years 1 to 4. From 2028 the bands grow by π = 2.5% a year (F-119), and in year 5 (2030) the 20% band reaches
-    // 228,000 × 1.025³ = 245,527, above 243,859.20: 771.84 a year in years 5 to 10. 4 × 1,196.352 + 6 × 771.84 = 9,416.448.
-    expect(r.detail.employerDepositTax!).toBeCloseTo(9_416.448, 2);
-    // National Insurance and health at the full rate 12.17% (TXG-35, sourced to National Insurance's circular 1473, TXH-26): 0.1217 × 321.60 × 120 = 4,696.6464.
-    expect(r.detail.employerSocial!).toBeCloseTo(4_696.6464, 3);
-    // The split of the monthly money: own 300 and employer 1,178.40 benefited, 321.60 above.
-    expect(r.detail.benefitedMonthly).toBeCloseTo(1_478.4, 9);
-    expect(r.detail.excessMonthly).toBeCloseTo(321.6, 9);
-    expect(r.labels.some((l) => l.ruleId === "TXG-35")).toBe(false);
-    // Its gains are taxed at exit (TXH-11); the benefited part is not.
-    expect(r.taxAtExit).toBeGreaterThan(0);
-    expect(r.formulas).toContain("F-52");
-    expect(r.nominal).toBeLessThan(r.detail.grossBalance! - r.taxAtExit);
+
+  it("inside the lock it stops with a missing input naming PF-36", () => {
+    const locked = { ...base, hishtalmut: { ...base.hishtalmut!, clockStartMonth: -12 } };
+    expect(() => runProvident(locked, ctx)).toThrow(/PF-36/);
+    expect(() => runProvident(locked, ctx)).toThrow(RecordInputError);
   });
-  it("the self-employed path has no employer limit and is unchanged", () => {
-    const se: ProvidentInput = { ...base, hishtalmut: { employment: "self-employed", clockStartMonth: -72 }, profile: { annualIncome: 200_000 } };
-    const r = runProvident(se, ctx);
-    expect(r.detail.employerDepositTax).toBeUndefined();
+
+  describe("kupat gemel lehashkaa balance", () => {
+    const kgl: ProvidentInput = {
+      wrapper: "kupat-gemel-lehashkaa",
+      goal: { amountNow: 0, monthly: 0, months: 120 },
+      market: { grossReturn: 0.06, inflation: 0.02 },
+      fees: { deposit: 0, balance: 0.008, direct: 0 },
+      existingBalance: 100_000,
+      profile: {},
+    };
+    it("without embeddedGain the fees and growth run, the exit tax is not computed and PF-36 is flagged", () => {
+      const r = runProvident(kgl, ctx);
+      expect(r.taxAtExit).toBe(0);
+      expect(r.flags.map((f) => f.code)).toContain("PF-36");
+      expect(r.fees.balance).toBeGreaterThan(0);
+      expect(r.detail.realGain).toBeUndefined();
+      expect(r.paidIn).toBe(0);
+      // Same fee costs as with a known gain: F-61 is before exit tax.
+      const known = runProvident({ ...kgl, embeddedGain: 20_000 }, ctx);
+      expect(known.fees.balance).toBeCloseTo(r.fees.balance, 9);
+    });
+    it("with embeddedGain the exit tax uses it: basis 80,000 at index 1, 25% of the real gain (TXK-07)", () => {
+      const r = runProvident({ ...kgl, embeddedGain: 20_000 }, ctx);
+      expect(r.flags.map((f) => f.code)).not.toContain("PF-36");
+      const realGain = r.detail.grossBalance! - 80_000 * 1.02 ** 10;
+      expect(r.detail.realGain).toBeCloseTo(realGain, 6);
+      expect(r.taxAtExit).toBeCloseTo(0.25 * realGain, 6);
+    });
+    it("embeddedGain above the balance is refused", () => {
+      expect(() => runProvident({ ...kgl, embeddedGain: 200_000 }, ctx)).toThrow(RangeError);
+    });
+  });
+  describe("employer part against TXH-01's limit (F-52, 2026-10-24)", () => {
+    // 7.5% × 15,712 = 1,178.40 a month; the own part 300 is under TXH-08's 2.5% × 15,712 = 392.80.
+    const limit = 0.075 * 15_712;
+    const withEmployer = (employerMonthly: number) => ({
+      ...base,
+      goal: { ...base.goal, monthly: 300 + employerMonthly },
+      hishtalmut: { ...base.hishtalmut!, employerMonthly },
+    });
+    const g = 1.06 ** (1 / 12) - 1;
+    const growth = Array.from({ length: 120 }, (_, k) => (1 + g) ** (k + 1)).reduce((a, b) => a + b, 0);
+
+    it("exactly at the limit: all benefited, no salary tax, nothing taxed at exit", () => {
+      const r = runProvident(withEmployer(limit), ctx);
+      expect(r.detail.employerDepositTax).toBeUndefined();
+      expect(r.taxAtExit).toBe(0);
+    });
+    it("above the limit it no longer stops: the part above is salary when paid and runs separately", () => {
+      const at = runProvident(withEmployer(limit), ctx);
+      const r = runProvident(withEmployer(1500), ctx);
+      const over = 1500 - limit;
+      // The extra money (321.60 a month) lands in the excess pot and grows like any deposit.
+      expect(r.detail.grossBalance! - at.detail.grossBalance!).toBeCloseTo(over * growth, 4);
+      // Salary 20,000: the 321.60 above is 3,859.20 a year on top of 240,000, in the 31% band (TXG-02) while that band starts at 228,000:
+      // 1,196.352 a year in years 1 to 4. From 2028 the bands grow by π = 2.5% a year (F-119), and in year 5 (2030) the 20% band reaches
+      // 228,000 × 1.025³ = 245,527, above 243,859.20: 771.84 a year in years 5 to 10. 4 × 1,196.352 + 6 × 771.84 = 9,416.448.
+      expect(r.detail.employerDepositTax!).toBeCloseTo(9_416.448, 2);
+      // National Insurance and health at the full rate 12.17% (TXG-35, sourced to National Insurance's circular 1473, TXH-26): 0.1217 × 321.60 × 120 = 4,696.6464.
+      expect(r.detail.employerSocial!).toBeCloseTo(4_696.6464, 3);
+      // The split of the monthly money: own 300 and employer 1,178.40 benefited, 321.60 above.
+      expect(r.detail.benefitedMonthly).toBeCloseTo(1_478.4, 9);
+      expect(r.detail.excessMonthly).toBeCloseTo(321.6, 9);
+      expect(r.labels.some((l) => l.ruleId === "TXG-35")).toBe(false);
+      // Its gains are taxed at exit (TXH-11); the benefited part is not.
+      expect(r.taxAtExit).toBeGreaterThan(0);
+      expect(r.formulas).toContain("F-52");
+      expect(r.nominal).toBeLessThan(r.detail.grossBalance! - r.taxAtExit);
+    });
+    it("the self-employed path has no employer limit and is unchanged", () => {
+      const se: ProvidentInput = { ...base, hishtalmut: { employment: "self-employed", clockStartMonth: -72 }, profile: { annualIncome: 200_000 } };
+      const r = runProvident(se, ctx);
+      expect(r.detail.employerDepositTax).toBeUndefined();
+    });
+  });
+});
+
+// ---------------------------------------------------------------- F-66 loss at the switch
+
+describe("F-66 a loss realised at the switch carries into leg B (TXS-17, TXS-18)", () => {
+  // A: an Israeli fund that falls 10% a year, 100,000 now, no deposits, no fees; π 2%. B: the same kind at +8%.
+  const a = (months: number): SecuritiesInput => ({
+    goal: { amountNow: 100_000, monthly: 0, months },
+    market: { grossReturn: -0.1, inflation: 0.02 },
+    fund: { kind: "israeli-fund" },
+    tariff: {},
+    profile: {},
+  });
+  const toB = { kind: "brokerage" as const, fund: { kind: "israeli-fund" as const }, market: { grossReturn: 0.08, inflation: 0.02 } };
+
+  it("a loss at month 12 offsets B's real gain at month 36, carried forward (TXS-18)", () => {
+    const r = switchingCost({ kind: "brokerage", input: a(36) }, toB, 12, ctx);
+    if (r.kind !== "brokerage") throw new Error("expected a brokerage switch");
+    // A at 12: 100,000 × 0.9 = 90,000; indexed cost 100,000 × 1.02 = 102,000; real loss 12,000.
+    expect(r.runs.legA.detail.realGain).toBeCloseTo(-12_000, 6);
+    // B 24 months: 90,000 × 1.08² = 104,976; indexed basis 90,000 × 1.02² = 93,636; real gain 11,340.
+    expect(r.runs.legB.detail.realGain).toBeCloseTo(11_340, 6);
+    // Offset: the whole gain 11,340 of the 12,000 loss; 660 stays unused. Tax at exit 0 instead of 25% × 11,340 = 2,835.
+    expect(r.loss).toMatchObject({ amount: expect.closeTo(12_000, 6), applied: true, offset: expect.closeTo(11_340, 6), unused: expect.closeTo(660, 6), ruleIds: ["TXS-17", "TXS-18"] });
+    expect(r.runs.legB.taxAtExit).toBe(0);
+    expect(r.runs.legB.flags.map((f) => f.code)).toContain("TXS-18");
+    expect(r.runs.legB.rules.map((u) => u.id)).toEqual(expect.arrayContaining(["TXS-17", "TXS-18"]));
+    // Without the carry B would pay 2,835 on the same gain: the switch is cheaper by 2,835 nominal (real: / 1.02^3).
+    const noLoss = runSecurities({ ...a(24), market: toB.market, goal: { amountNow: 90_000, monthly: 0, months: 24 }, gridOffset: 12 }, ctx);
+    expect(noLoss.taxAtExit).toBeCloseTo(2_835, 6);
+    expect(r.runs.legB.nominal - noLoss.nominal).toBeCloseTo(2_835, 6);
+  });
+
+  it("in the same tax year the offset rests on TXS-17 and TXS-19, with no carry-forward flag", () => {
+    const r = switchingCost({ kind: "brokerage", input: a(12) }, toB, 6, ctx);
+    if (r.kind !== "brokerage") throw new Error("expected a brokerage switch");
+    expect(r.loss?.ruleIds).toEqual(["TXS-17", "TXS-19"]);
+    expect(r.loss?.applied).toBe(true);
+    expect(r.runs.legB.flags.map((f) => f.code)).not.toContain("TXS-18");
+    expect(r.runs.legB.taxAtExit).toBe(0);
+  });
+
+  it("a gain at the switch carries no loss", () => {
+    const up = { ...a(36), market: { grossReturn: 0.05, inflation: 0.02 } };
+    const r = switchingCost({ kind: "brokerage", input: up }, toB, 12, ctx);
+    if (r.kind !== "brokerage") throw new Error("expected a brokerage switch");
+    expect(r.loss).toBeUndefined();
+  });
+
+  it("a loss between a shekel fund and a foreign fund is not carried: a loss abroad is offset first against foreign gains (TXS-17)", () => {
+    const foreignB = { kind: "brokerage" as const, fund: { kind: "foreign-fund" as const, domicile: "us" as const, w8ben: true }, market: { grossReturn: 0.08, inflation: 0.02 } };
+    const r = switchingCost({ kind: "brokerage", input: { ...a(36), broker: "israeli" } }, foreignB, 12, ctx);
+    if (r.kind !== "brokerage") throw new Error("expected a brokerage switch");
+    expect(r.loss).toMatchObject({ applied: false, reason: "different-domain", offset: 0 });
+  });
+});
+
+// ---------------------------------------------------------------- F-61 caps cite the rules the method names
+
+describe("F-61 caps cite the method's rules per wrapper; the figures are unchanged", () => {
+  const plan = (run: string, wrapper: string, extra: object = {}) => ({ run, input: { wrapper, ...extra } }) as unknown as RunPlan;
+  const cap = (p: RunPlan, line: "balance" | "deposit" | "manager") => feeCap(p, line, ctx);
+
+  it("study fund: KH-22 with PF-06, 2% of the balance", () => {
+    expect(cap(plan("runProvident", "keren-hishtalmut"), "balance")).toEqual({ ruleId: "PF-06", figure: "balance_cap", rate: 0.02, ruleIds: ["KH-22", "PF-06"] });
+    expect(cap(plan("runProvident", "keren-hishtalmut"), "deposit")).toBeUndefined();
+  });
+  it("kupat gemel lehashkaa: PF-03 and PF-02, 1.05% and 4%", () => {
+    expect(cap(plan("runProvident", "kupat-gemel-lehashkaa"), "balance")).toMatchObject({ rate: 0.0105, ruleIds: ["PF-03", "PF-02"] });
+    expect(cap(plan("runProvident", "kupat-gemel-lehashkaa"), "deposit")).toMatchObject({ rate: 0.04, ruleIds: ["PF-03", "PF-02"] });
+  });
+  it("pensions: PEN-21 with PF-04 (0.5%, 6%) or PF-05 (1.05%, 4%); provident for annuity PEN-22", () => {
+    expect(cap(plan("runPension", "pension-comprehensive"), "balance")).toMatchObject({ rate: 0.005, ruleIds: ["PEN-21", "PF-04"] });
+    expect(cap(plan("runPension", "pension-comprehensive"), "deposit")).toMatchObject({ rate: 0.06 });
+    expect(cap(plan("runPension", "pension-general"), "balance")).toMatchObject({ rate: 0.0105, ruleIds: ["PEN-21", "PF-05"] });
+    expect(cap(plan("runPension", "provident-for-annuity"), "balance")).toMatchObject({ ruleId: "PEN-22", ruleIds: ["PEN-22"] });
+  });
+  it("the manager line of an IRA hishtalmut shows PF-06's 2%", () => {
+    expect(cap({ run: "runSecurities", input: {} } as unknown as RunPlan, "manager")).toBeUndefined();
+    const ira = { run: "runSecurities", input: { wrapper: { kind: "ira-hishtalmut", managerFee: 0.01, clockStartMonth: 0 } } } as unknown as RunPlan;
+    expect(cap(ira, "manager")).toEqual({ ruleId: "PF-06", figure: "balance_cap", rate: 0.02, ruleIds: ["PF-06"] });
+  });
+});
+
+// ---------------------------------------------------------------- F-68 notes, F-70 order
+
+describe("F-68 and F-70 wording (review)", () => {
+  it("F-68 says the mean is simple, one track one vote, not asset-weighted (CAT OQ2)", () => {
+    const fee = (value: number) => ({ ...vo(value, "pct_per_year", "CMA", "primary") });
+    const track = (n: number, mgmt: number) =>
+      ({ report_period: "2026-09", checked: "2026-10-23", fund_classification: "x", specialization: "y", fees: { avg_annual_management_fee: fee(mgmt), avg_deposit_fee: fee(0) }, n }) as never;
+    const ref = regulatorReference([track(1, 0.2), track(2, 0.6)], { fund_classification: "x", specialization: "y" });
+    // Mean (0.2 + 0.6) / 2 = 0.4; a 1,000-vs-1 asset weighting would not give that.
+    expect(ref.management.mean.value).toBeCloseTo(0.4, 12);
+    expect(ref.management.mean.notes).toContain("a simple mean of the per-track averages, one track one vote, not asset-weighted (CAT OQ2)");
+    expect(ref.deposit.median.notes).toContain("one track one vote");
+  });
+
+  it("F-70 names the classification words in the lookup's own order: sub-specialization first", () => {
+    const r = classificationFit({ specialization: "unknown spec", sub_specialization: "unknown sub" }, 10, { table: [] });
+    expect(r).toMatchObject({ mark: "no-rule", classification: "unknown sub", lossFilter: "not-applied-release-5" });
+    expect(classificationFit({ specialization: "unknown spec", sub_specialization: "" }, 10, { table: [] }).classification).toBe("unknown spec");
+  });
+});
+
+// ---------------------------------------------------------------- F-66 provident transfers
+
+describe("F-66 a transfer between two funds of the same kind cites the rules of its pair and labels the neutrality a reading on TXK-04, TXP-32 or TXH-19", () => {
+  const wrappers = readdirSync(new URL("instruments/wrappers/", dataDir))
+    .filter((f) => f.endsWith(".json"))
+    .map((f) => readJson(`instruments/wrappers/${f}`) as { id: string; transfer_routes: { to: string; rule_ids: string[] }[] });
+  /** The rule ids the site passes: the wrapper record's route to its own kind. */
+  const routeIdsTo = (id: string, to: string) => wrappers.find((w) => w.id === id)!.transfer_routes.find((t) => t.to === to)!.rule_ids;
+  const routeIds = (id: string) => routeIdsTo(id, id);
+  const transfer = (wrapper: ProvidentSide["wrapper"]) => {
+    const side: ProvidentSide = { kind: "provident", wrapper, move: "fund-transfer", ruleIds: routeIds(wrapper), ...(wrapper === "keren-hishtalmut" ? { wholeOnlyRuleIds: ["PF-18", "KH-17"] } : {}) };
+    const r = switchingCost(side, side, 0, ctx);
+    if (r.kind !== "provident") throw new Error(`expected a provident switch, got ${r.kind}`);
+    expect(r.move).toBe("fund-transfer");
+    expect(r.cost.value).toBe(0);
+    expect(r.cost.rule_ids).toEqual(expect.arrayContaining(["PF-14", "SW-15"]));
+    return r;
+  };
+
+  for (const wrapper of ["pension-comprehensive", "pension-general", "provident-for-annuity"] as const) {
+    it(`${wrapper}: SW-40, PF-17 and TXP-32, TXP-32 labelled a reading; SW-23 for a provident fund for annuity and never SW-39 (an annuity fund is no source under reg. 3); the severance exception only where the new account can be; the reg. 2(ד)(1) cap only into a comprehensive fund`, () => {
+      const r = transfer(wrapper);
+      expect(r.ruleIds).toEqual(expect.arrayContaining([...routeIds(wrapper), "SW-40", "PF-17", "TXP-32"]));
+      if (wrapper === "provident-for-annuity") expect(r.ruleIds).toContain("SW-23");
+      expect(r.ruleIds).not.toContain("SW-39");
+      expect(r.outcome).toEqual({ code: "eligible" });
+      expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXP-32" });
+      expect(r.labels.some((l) => l.ruleId === "SW-40")).toBe(false);
+      expect(r.flags).toEqual(wrapper === "pension-comprehensive" ? [{ code: "PF-14" }, { code: "SW-40" }] : wrapper === "provident-for-annuity" ? [{ code: "PF-14" }, { code: "TXP-32" }] : [{ code: "PF-14" }]);
+      if (wrapper === "pension-comprehensive") expect(r.cost.notes).toContain("reg. 2(ד)(1), SW-40");
+      else expect(r.cost.notes).not.toContain("2(ד)(1)");
+      // TXP-32: the new account of s.23(א)(2א) is never in a pension fund or a central fund; withheld only on the part not exempt
+      if (wrapper === "provident-for-annuity") expect(r.cost.notes).toContain("not modelled: severance money moved to a new account has income tax withheld under s.164 before it moves on its part not exempt under s.9(7א)");
+      else expect(r.cost.notes).not.toContain("severance");
+    });
+  }
+
+  it("kupat-gemel-lehashkaa: TXK-04, SW-39 and SW-40, TXK-04 labelled a reading; the payment dates are open (SW OQ17, flagged)", () => {
+    const r = transfer("kupat-gemel-lehashkaa");
+    expect(r.ruleIds).toEqual(expect.arrayContaining([...routeIds("kupat-gemel-lehashkaa"), "TXK-04", "SW-39", "SW-40"]));
+    expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXK-04" });
+    expect(r.labels.some((l) => l.ruleId === "SW-40")).toBe(false);
+    expect(r.cost.notes).toContain("open (SW open question 17");
+    expect(r.cost.notes).toContain("the 0 is the tax at the move only: flagged SW-OQ17, listed, not ranked");
+    expect(r.flags).toEqual([{ code: "PF-14" }, { code: "SW-OQ17" }]);
+    // F-66's cost is after exit tax, which the open payment dates bear on (TXK-07): shown, not ranked
+    expect(r.outcome).toEqual({ code: "listed-not-ranked", reason: "SW-OQ17" });
+  });
+
+  it("keren-hishtalmut: SW-39 and TXH-19 from the pair itself, no SW-40; TXH-19 labelled a reading (reg. 3(ב)(1) keeps the dates, TXH open question 11 is not closed)", () => {
+    const own = switchingCost({ kind: "provident", wrapper: "keren-hishtalmut", move: "fund-transfer", ruleIds: ["PF-19"], wholeOnlyRuleIds: ["PF-18", "KH-17"] }, { kind: "provident", wrapper: "keren-hishtalmut", move: "fund-transfer", ruleIds: ["PF-19"] }, 0, ctx);
+    if (own.kind !== "provident") throw new Error("expected a provident switch");
+    expect(own.ruleIds).toEqual(expect.arrayContaining(["SW-39", "TXH-19"]));
+    const r = transfer("keren-hishtalmut");
+    expect(r.ruleIds).toEqual(expect.arrayContaining([...routeIds("keren-hishtalmut"), "SW-39", "TXH-19"]));
+    expect(r.ruleIds).not.toContain("SW-40");
+    expect(r.labels).toEqual([{ code: "reading", ruleId: "TXH-19" }]);
+    expect(r.cost.notes).toContain("TXH open question 11");
+  });
+
+  const trackSwitch = (side: ProvidentSide) => {
+    const r = switchingCost(side, side, 0, ctx);
+    if (r.kind !== "provident") throw new Error(`expected a provident switch, got ${r.kind}`);
+    expect(r.move).toBe("track-switch");
+    expect(r.cost.value).toBe(0);
+    return r;
+  };
+  it("a track switch rests on the same reading as a transfer (TXK-04, TXP-32), a study fund's on TXH-17; every move flags the fee discount that may end (PF-14)", () => {
+    const kgl = trackSwitch({ kind: "provident", wrapper: "kupat-gemel-lehashkaa", ruleIds: ["TXK-04", "PF-23"] });
+    expect(kgl.ruleIds).toEqual(["TXK-04", "PF-23"]);
+    expect(kgl.labels).toContainEqual({ code: "reading", ruleId: "TXK-04" });
+    expect(kgl.cost.source.strength).not.toBe("secondary");
+    const annuity = trackSwitch({ kind: "provident", wrapper: "provident-for-annuity", ruleIds: ["PF-23", "PEN-17", "TXP-13", "TXP-32"] });
+    expect(annuity.labels).toContainEqual({ code: "reading", ruleId: "TXP-32" });
+    const study = trackSwitch({ kind: "provident", wrapper: "keren-hishtalmut", ruleIds: ["TXH-17", "PF-23"], wholeOnlyRuleIds: ["PF-18", "KH-17"] });
+    expect(study.labels).toEqual([{ code: "reading", ruleId: "TXH-17" }]);
+    for (const r of [kgl, annuity, study]) {
+      expect(r.flags).toEqual([{ code: "PF-14" }]);
+      expect(r.cost.notes).toContain("end a fee discount early (PF-14 case 2, SW-15, PF-23");
+      expect(r.outcome).toEqual({ code: "eligible" });
+    }
+  });
+  it("a reading rule the caller cites is labelled whichever the move: TXH-17 passed on a study fund's transfer is a reading too", () => {
+    const side = { kind: "provident", wrapper: "keren-hishtalmut", move: "fund-transfer", ruleIds: ["TXH-17", "TXH-19"], wholeOnlyRuleIds: ["PF-18", "KH-17"] } as const;
+    const r = switchingCost(side, side, 0, ctx);
+    if (r.kind !== "provident") throw new Error(r.kind);
+    expect(r.labels).toEqual(expect.arrayContaining([{ code: "reading", ruleId: "TXH-17" }, { code: "reading", ruleId: "TXH-19" }]));
+  });
+  it("between two annuity kinds the refusal cites the rules its reasons rest on (TXP-32, SW-40, and SW-22 into a comprehensive fund)", () => {
+    const general = { kind: "provident", wrapper: "pension-general", move: "fund-transfer", ruleIds: routeIdsTo("pension-general", "pension-comprehensive") } as const;
+    const comprehensive = { kind: "provident", wrapper: "pension-comprehensive", move: "fund-transfer", ruleIds: [] } as const;
+    const r = switchingCost(general, comprehensive, 0, ctx);
+    expect(r).toMatchObject({ kind: "not-evaluated", code: "different-kind" });
+    if (r.kind !== "not-evaluated") throw new Error(r.kind);
+    expect(r.ruleIds).toEqual(expect.arrayContaining(["TXP-32", "SW-40", "SW-22"]));
+  });
+  it("a study fund's track switch may move part (KH-18, PF-23); only a transfer to another fund moves whole (PF-18, KH-17)", () => {
+    const part = { kind: "provident", wrapper: "keren-hishtalmut", ruleIds: ["TXH-17", "PF-23"], wholeOnlyRuleIds: ["PF-18", "KH-17"], share: 0.5 } as const;
+    expect(switchingCost(part, part, 0, ctx).kind).toBe("provident");
+    const away = { ...part, move: "fund-transfer" } as const;
+    expect(switchingCost(away, away, 0, ctx)).toMatchObject({ kind: "not-allowed", code: "hishtalmut-whole-only" });
   });
 });

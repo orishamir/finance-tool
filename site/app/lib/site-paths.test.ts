@@ -114,8 +114,7 @@ describe("the index page's addresses", () => {
     expect(housePath("psagot")).toBe("/indices/sp500?house=psagot");
     expect(housePath("psagot", "index-nasdaq-100")).toBe("/indices/nasdaq-100?house=psagot");
     expect(groupPath("psagot", "group:2")).toBe("/indices/sp500?house=psagot&group=2");
-    expect(ownAccountPath("psagot")).toBe("/indices/sp500?house=psagot&own=psagot&from=list");
-    expect(ownAccountPath("psagot", "group:2")).toBe("/indices/sp500?house=psagot&own=psagot&from=group%3A2");
+    expect(ownAccountPath("psagot")).toBe("/indices/sp500?house=psagot&own=psagot");
   });
   it("writes a house's page at its securities account", () => {
     expect(brokeragePagePath("psagot")).toBe("/companies/psagot?product=brokerage");

@@ -27,6 +27,12 @@ export interface FxSnapshot {
 export const isShekel = (code: string): boolean => code === "ILS" || code === "NIS";
 const norm = (code: string) => (isShekel(code) ? "ILS" : code.toUpperCase());
 
+/** The ECB prints no rate for this code (or no shekel rate): the site cannot price a fund in it. */
+export function hasRate(fx: FxSnapshot, code: string): boolean {
+  const c = norm(code);
+  return c === "EUR" ? "ILS" in fx.perEur : c in fx.perEur && "ILS" in fx.perEur;
+}
+
 /** Plain number, NIS per one unit of `code`; null when the ECB has no rate for it. */
 export function nisPerNumber(fx: FxSnapshot, code: string): number | null {
   return crossRate(fx.perEur, norm(code));
@@ -71,6 +77,16 @@ export function nisPer(fx: FxSnapshot, code: string, today: string): SiteValue |
   const v = computed(n, "nis", "F-84", inputs, { today, about: fxLabel(fx), notes: fx.attribution });
   const stale = daysBetween(fx.date, today) > fx.staleAfterDays ? { since: fx.date, cadence: "daily" as const } : null;
   return { ...v, stale };
+}
+
+/**
+ * The quotation unit the page prints: shekels per 100 for a currency that is worth a fraction of a shekel (JPY),
+ * per 1 otherwise. `value` is NIS for `per` units.
+ */
+export function nisPerQuoted(fx: FxSnapshot, code: string): { per: 1 | 100; value: number } | null {
+  const n = nisPerNumber(fx, code);
+  if (n === null) return null;
+  return n < 0.1 ? { per: 100, value: n * 100 } : { per: 1, value: n };
 }
 
 /** The ECB's month-end rates as shekels per dollar, oldest first (F-93; data/series/ecb-fx-month-end.json). */

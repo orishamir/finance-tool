@@ -652,32 +652,35 @@ export const GripRoom = () => <span aria-hidden data-grip-box="inside" />;
 /**
  * A grip's menu, or any small menu of actions opened from a control (`back`): its actions in a small list under the control, or over it
  * where the screen has no room under it, fixed to the screen so a table that scrolls inside itself never cuts it, and following the
- * control as the page scrolls. It opens with the focus on its first action. Esc, a press outside, the control leaving the screen or an
- * action closes it, the focus back on the control; an action that moves things moves them as a drag does (`flip`); an action with `then`
- * shows its choices in its place.
+ * control as the page scrolls. Its start edge stands under the control's start edge, or, where that runs off the screen, its end edge
+ * under the control's end edge (`menuSpot`). A control inside an open dialog (a popup, a sheet) has its menu drawn in that dialog, on the
+ * dialog's own layer, since a dialog shown modally covers everything drawn on the page's body. It opens with the focus on its first action.
+ * Esc, a press outside, the control leaving the screen or an action closes it, the focus back on the control; an action that moves things
+ * moves them as a drag does (`flip`); an action with `then` shows its choices in its place.
  */
 export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; onClose: () => void; back: RefObject<HTMLElement | null> }) {
   const box = useRef<HTMLDivElement>(null);
   const [items, setItems] = useState(actions);
-  // under the control at first; placed again once its height is known (over the control where the screen has no room under it)
-  const [at, setAt] = useState<{ top: number; right: number } | null>(() => {
-    const g = back.current?.getBoundingClientRect();
-    return g ? { top: g.bottom + 4, right: Math.max(8, window.innerWidth - g.right) } : null;
-  });
+  // the dialog the control stands in, which the menu is drawn in; none: the page's body
+  const [host] = useState<HTMLDialogElement | null>(() => back.current?.closest<HTMLDialogElement>("dialog[open]") ?? null);
+  // where it stands, `top` and `left` in its containing box (the screen, or the dialog it is drawn in); hidden until its size is known
+  const [at, setAt] = useState<{ top: number; left: number } | null>(null);
   const close = (focus = true) => {
     onClose();
     if (focus) back.current?.focus({ preventScroll: true });
   };
   const closeRef = useRef(close);
   closeRef.current = close;
-  // placed under the grip, or over it where the screen has no room for it under the grip; the menu's right edge under the grip's
   const place = () => {
-    const g = back.current?.getBoundingClientRect();
-    const h = box.current?.offsetHeight ?? 0;
-    if (!g) return;
+    const control = back.current;
+    const g = control?.getBoundingClientRect();
+    if (!control || !g || !box.current) return;
     if (g.bottom < 0 || g.top > window.innerHeight) return closeRef.current(false);
-    const below = g.bottom + 4;
-    setAt({ top: below + h > window.innerHeight - 8 && g.top - 4 - h >= 8 ? g.top - 4 - h : below, right: Math.max(8, window.innerWidth - g.right) });
+    const spot = menuSpot(g, { width: box.current.offsetWidth, height: box.current.offsetHeight }, { width: window.innerWidth, height: window.innerHeight }, getComputedStyle(control).direction === "rtl");
+    // drawn in a dialog, whose padding box holds it: a dialog moved by a transform carries what is fixed inside it, so the menu is placed
+    // in the dialog's own terms
+    const d = host?.getBoundingClientRect();
+    setAt(host && d ? { top: spot.top - d.top - host.clientTop, left: spot.left - d.left - host.clientLeft } : spot);
   };
   useLayoutEffect(() => {
     place();
@@ -711,8 +714,8 @@ export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; 
           items[(k + (e.key === "ArrowDown" ? 1 : items.length - 1)) % items.length]?.focus();
         } else if (e.key === "Tab") close();
       }}
-      style={at ? { top: at.top, right: at.right } : { visibility: "hidden", top: 0, right: 0 }}
-      className="come-in fixed z-[var(--z-popover)] flex min-w-44 flex-col rounded-md border border-border bg-popover p-1 shadow-lg"
+      style={at ? { top: at.top, left: at.left } : { visibility: "hidden", top: 0, left: 0 }}
+      className={cx("come-in z-[var(--z-popover)] flex min-w-44 flex-col rounded-md border border-border bg-popover p-1 shadow-lg", host ? "absolute" : "fixed")}
     >
       {items.map((a) => (
         <button
@@ -737,8 +740,23 @@ export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; 
         </button>
       ))}
     </div>,
-    document.body,
+    host ?? document.body,
   );
+}
+
+/**
+ * Where a menu of `size` opened from a control at `g` stands on a screen of `screen` (`ActionMenu`): under the control, or over it where the
+ * screen has no room under it; its start edge under the control's start edge (the right one on a page read right to left), or, where that
+ * runs off the screen, its end edge under the control's end edge; never closer than 8 px to a side of the screen.
+ */
+export function menuSpot(g: { top: number; bottom: number; left: number; right: number }, size: { width: number; height: number }, screen: { width: number; height: number }, rtl: boolean): { top: number; left: number } {
+  const below = g.bottom + 4;
+  const top = below + size.height > screen.height - 8 && g.top - 4 - size.height >= 8 ? g.top - 4 - size.height : below;
+  const atStart = rtl ? g.right - size.width : g.left;
+  const atEnd = rtl ? g.left : g.right - size.width;
+  const fits = (x: number) => x >= 8 && x + size.width <= screen.width - 8;
+  const left = fits(atStart) ? atStart : fits(atEnd) ? atEnd : Math.max(8, Math.min(atStart, screen.width - size.width - 8));
+  return { top, left };
 }
 
 /**
