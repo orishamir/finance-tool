@@ -10,6 +10,7 @@ import { conversionWithRate, withSumsIn, type Commission, type CommissionSum, ty
 import type { FeesSnapshot, GroupEntry, GroupPrice, GroupPriceValue, ValueObject } from "@finance-tool/schema";
 import type { CustomBroker } from "./custom-entries";
 import { numberOf, type SiteValue } from "./value";
+import { assertNever } from "@finance-tool/schema";
 
 // ---------------------------------------------------------------- what the entry keeps of a group
 
@@ -119,6 +120,8 @@ export function groupFigure(g: GroupCopy, houseName: string, price: GroupPrice, 
     case "max": value = v.max; unit = trade ? (usd ? "usd_per_trade" : "nis_per_trade") : "nis"; break;
     case "exempt": value = v.exempt ? 0 : undefined; unit = trade ? "pct_of_trade" : "pct_of_balance_per_period"; break;
     case "for_months": value = v.for_months; unit = "months"; break;
+    default:
+      assertNever(part);
   }
   if (value === undefined) return null;
   return {

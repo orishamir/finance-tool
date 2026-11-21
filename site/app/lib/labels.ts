@@ -7,6 +7,7 @@ import { invest as c } from "../copy";
 import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
 import { isShekel } from "./fx";
+import { assertNever } from "@finance-tool/schema";
 
 export type LabelTone = "neutral" | "caution" | "open";
 /** What each icon draws: each says what its label is about, and labels about different things never share one.
@@ -162,6 +163,8 @@ export function optionLabels(option: OptionId): Label[] {
       return [label("held-tase-foreign"), label("trade-etf")];
     case "abroad":
       return [label("held-abroad")];
+    default:
+      return assertNever(option);
   }
 }
 
