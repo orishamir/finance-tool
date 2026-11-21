@@ -1,24 +1,21 @@
-// The person's own broker and fund on the index page (D44): the two quiet buttons under the lists, the panel they open, and what a row of
-// an entry says. Typing stays in the panel: nothing on the page changes until the person saves (guidelines/design.md, "little movement").
+// The person's own fund on the index page (D44): the quiet button under the lists, the panel it opens, and what a fund's row says. Typing stays in the panel: nothing on the page changes until the person saves (guidelines/design.md, "little movement").
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { invest as root } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
-import { brokerDraftOf, brokerErrors, brokerFromDraft, brokerTerms, customFundGap, unknownLines, DOMICILES, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newBrokerId, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type BrokerDraft, type CustomBroker, type CustomFund, type EntryError, type EntryTerm, type FundDomicile, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
+import { customFundGap, DOMICILES, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type CustomFund, type EntryError, type EntryTerm, type FundDomicile, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { optionOpenRule, optionsOf, type IndexRef, type OptionId } from "../../lib/invest";
 import { isoToday } from "../../lib/state";
 import { Num, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Actions, EditButton, nisCheck, useDraft, isInvalid, EditorsContext, useEditors, type Editing, type Editors, type PanelWorld } from "./editors";
-import { OwnAccountPanel, OwnTerms } from "./own-account";
-import { Button, CheckField, ChoiceChips, FieldGroup, flushPendingFields, LabelRow, LongestCase, NumberField, percentCheck, SelectField, TextField, TileChoice, type Tile } from "../kit";
+import { Actions, EditButton, useDraft, isInvalid, EditorsContext, useEditors, type Editing, type Editors, type PanelWorld } from "./editors";
+import { Button, ChoiceChips, FieldGroup, flushPendingFields, LabelRow, LongestCase, NumberField, percentCheck, SelectField, TextField, TileChoice, type Tile } from "../kit";
 import { optionClass, reasonText } from "./parts";
-import { isGroupProvider } from "../../lib/group-pick";
 
 const c = root.customEntries;
 
 /** Holds what is being edited and the one panel; the rows and buttons below it reach it through the context. */
-export function CustomEntriesHost({ index, brokers, funds, writable, onSaveBroker, onRemoveBroker, onSaveFund, onRemoveFund, world, opening, onOpened, children }: { /** What the account panel prices on; null while the page has no comparison. */ world: PanelWorld | null; /** A house and starting point the address asks the panel to open on (a house's page links here); `onOpened` clears it. */ opening?: { houseId: string; from: string } | null; onOpened?: () => void; index: IndexRef | null; brokers: readonly CustomBroker[]; funds: readonly CustomFund[]; writable: boolean; onSaveBroker: (b: CustomBroker) => void; onRemoveBroker: (id: string) => void; onSaveFund: (f: CustomFund) => void; onRemoveFund: (id: string) => void; children: ReactNode }) {
+export function CustomEntriesHost({ index, funds, writable, onSaveFund, onRemoveFund, world, children }: { /** What a fund's preview prices on; null while the page has no comparison. */ world: PanelWorld | null; index: IndexRef | null; funds: readonly CustomFund[]; writable: boolean; onSaveFund: (f: CustomFund) => void; onRemoveFund: (id: string) => void; children: ReactNode }) {
   const [editing, setEditing] = useState<Editing | null>(null);
   const headId = useId();
   // the row just saved may stand far above the button: it is brought into view, once
@@ -32,66 +29,12 @@ export function CustomEntriesHost({ index, brokers, funds, writable, onSaveBroke
     return () => cancelAnimationFrame(frame);
   }, [saved]);
   const close = () => setEditing(null);
-  const api = useMemo<Editors>(() => ({ addBroker: () => setEditing({ kind: "broker", id: null }), addFund: () => setEditing({ kind: "fund", id: null }), openOwn: (houseId, from = "list") => setEditing({ kind: "own", houseId, from }), edit: setEditing, brokers, funds, world }), [brokers, funds, world]);
-  // a house's page asks for the panel through the address: opened once the page has its comparison
-  useEffect(() => {
-    if (!opening || !world) return;
-    setEditing({ kind: "own", houseId: opening.houseId, from: opening.from });
-    onOpened?.();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [opening, !!world]);
-  const ownOf = (b: CustomBroker | undefined) => (b?.base && world?.wb.snapshots.some((s) => s.id === b.base!.houseId && !s.id.startsWith("custom-broker-")) ? b : undefined);
-  const editedBroker = editing?.kind === "broker" ? brokers.find((b) => b.id === editing.id) : undefined;
-  const own: { houseId: string; from: string; broker: CustomBroker | null } | null = editing?.kind === "own" && world?.wb.snapshots.some((s) => s.id === editing.houseId) ? { houseId: editing.houseId, from: editing.from, broker: null } : ownOf(editedBroker) ? { houseId: editedBroker!.base!.houseId, from: "list", broker: editedBroker! } : null;
+  const api = useMemo<Editors>(() => ({ addFund: () => setEditing({ kind: "fund", id: null }), edit: setEditing, funds, world }), [funds, world]);
   return (
     <EditorsContext.Provider value={api}>
       {children}
-      <Sheet open={!!editing} onClose={close} pc="center" height={100} labelledBy={headId} className={own || editing?.kind === "fund" ? "sheet-wide" : undefined}>
-        {own && world && (
-          <OwnAccountPanel
-            key={own.broker?.id ?? `${own.houseId}:${own.from}`}
-            headId={headId}
-            world={world}
-            houseId={own.houseId}
-            from={own.from}
-            broker={own.broker}
-            others={brokers}
-            funds={funds}
-            writable={writable}
-            onCancel={close}
-            onSave={(b) => {
-              onSaveBroker(b);
-              setSaved(b.id);
-              close();
-            }}
-            onRemove={(id) => {
-              onRemoveBroker(id);
-              close();
-            }}
-          />
-        )}
-        {editing?.kind === "broker" && !own && (
-          <BrokerPanel
-            key={editing.id ?? "new"}
-            headId={headId}
-            houses={world ? world.view.houses.filter((h) => !h.provider.custom && !isGroupProvider(h.provider)).map((h) => ({ id: h.provider.id, name: h.provider.short })) : []}
-            onHouse={(houseId) => setEditing({ kind: "own", houseId, from: "list" })}
-            broker={brokers.find((b) => b.id === editing.id) ?? null}
-            others={brokers}
-            writable={writable}
-            onCancel={close}
-            onSave={(b) => {
-              onSaveBroker(b);
-              setSaved(b.id);
-              close();
-            }}
-            onRemove={(id) => {
-              onRemoveBroker(id);
-              close();
-            }}
-          />
-        )}
-        {editing?.kind === "fund" && index && (
+      <Sheet open={!!editing} onClose={close} pc="center" height={100} labelledBy={headId} className={editing ? "sheet-wide" : undefined}>
+        {editing && index && (
           <FundPanel
             key={editing.id ?? "new"}
             headId={headId}
@@ -120,18 +63,17 @@ export function CustomEntriesHost({ index, brokers, funds, writable, onSaveBroke
 
 /** The quiet button under a list. Outside the host (a test of a list alone) it is not drawn. */
 /** `primary`: the one thing a page with no fund asks for (a custom index); quiet under a list otherwise. */
-export function AddEntryButton({ kind, primary = false }: { kind: "broker" | "fund"; primary?: boolean }) {
+export function AddEntryButton({ primary = false }: { primary?: boolean }) {
   const e = useEditors();
   if (!e) return null;
   return (
-    <Button variant={primary ? "primary" : "quiet"} className={primary ? "self-start" : "self-start -ms-2"} onClick={kind === "broker" ? e.addBroker : e.addFund}>
-      + {kind === "broker" ? c.addBroker : c.addFund}
+    <Button variant={primary ? "primary" : "quiet"} className={primary ? "self-start" : "self-start -ms-2"} onClick={e.addFund}>
+      + {c.addFund}
     </Button>
   );
 }
 
-/** What is left empty is not known, never zero (D56): an account's fields and a fund's fees alike. The entered tag stands before
- *  what was typed, and only when something was: alone, it stood before its own "not entered". */
+/** What is left empty is not known, never zero (D56). The entered tag stands before what was typed, and only when something was. */
 export function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: string[] }; editing: Editing }) {
   return (
     <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs leading-snug text-muted-foreground">
@@ -154,15 +96,7 @@ export function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: 
   );
 }
 
-/** A broker row's line: that it was entered, every figure typed in the entered state, what was left empty, and the way to change it. */
-export function BrokerTerms({ id }: { id: string }) {
-  const e = useEditors();
-  const b = e?.brokers.find((x) => x.id === id);
-  if (b?.base) return <OwnTerms b={b} />;
-  return b ? <Terms terms={{ shown: brokerTerms(b).shown, empty: unknownLines(b) }} editing={{ kind: "broker", id }} /> : null;
-}
-
-/** The same line on a fund's row. */
+/** A fund's row's line: that it was entered, every figure typed in the entered state, what was left empty, and the way to change it. */
 export function FundTerms({ id }: { id: string }) {
   const e = useEditors();
   const f = e?.funds.find((x) => x.id === id);
@@ -172,78 +106,6 @@ export function FundTerms({ id }: { id: string }) {
 // ---------------------------------------------------------------- the panels
 
 const pctCheck = percentCheck();
-
-/** The choice a new account starts from: a collected house's price list, or a house the site has not collected. */
-const NOT_LISTED = "not-listed";
-
-function BrokerPanel({ headId, broker, houses, onHouse, others, writable, onSave, onCancel, onRemove }: { headId: string; broker: CustomBroker | null; /** The collected houses a new account can start from. */ houses: { id: string; name: string }[]; onHouse: (houseId: string) => void; others: readonly CustomBroker[]; writable: boolean; onSave: (b: CustomBroker) => void; onCancel: () => void; onRemove: (id: string) => void }) {
-  const { draft, now, set } = useDraft<BrokerDraft>(() => brokerDraftOf(broker));
-  // a new account starts from a house's price list, as the account card's does; only a house not in the list is typed from scratch
-  const [basis, setBasis] = useState<string | null>(broker || houses.length === 0 ? NOT_LISTED : null);
-  const [errors, setErrors] = useState<EntryError[]>([]);
-  const form = useRef<HTMLDivElement>(null);
-  const w = c.fields;
-  // no "0" in an empty field: an empty field is a price not known, not a price of zero
-  const field = (k: "tradeMin" | "custodyMin" | "monthlyFee", label: string, unit: string) => <NumberField agorot label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={nisCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
-  const percent = (k: "tradePct" | "custodyPct" | "fxPct", label: string, unit: string) => <NumberField label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
-  const save = () => {
-    flushPendingFields();
-    const d = now.current;
-    const e = brokerErrors(d, others, broker?.id ?? null);
-    setErrors(e);
-    if (e.length > 0 || isInvalid(form.current)) return;
-    onSave(brokerFromDraft(d, broker?.id ?? newBrokerId(), isoToday()));
-  };
-  return (
-    <div ref={form} className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1 pe-10">
-        <h2 id={headId} className="text-lg font-semibold">
-          {broker ? c.brokerEdit(broker.name) : c.brokerTitle}
-        </h2>
-        <p className="text-sm text-muted-foreground">{basis === NOT_LISTED ? c.brokerSub : c.brokerStart}</p>
-      </div>
-      {!broker && houses.length > 0 && (
-        <SelectField
-          label={c.basis}
-          none={c.basisNone}
-          options={[...houses, { id: NOT_LISTED, name: c.basisNotListed }]}
-          value={basis}
-          onChange={(id) => (id && id !== NOT_LISTED ? onHouse(id) : setBasis(id))}
-        />
-      )}
-      {basis === NOT_LISTED && (
-        <>
-      <TextField label={w.brokerName} value={draft.name} onChange={(v) => set("name", v)} maxLength={NAME_MAX} error={errors.includes("name-empty") ? c.errors["name-empty"] : errors.includes("name-taken") ? c.errors["name-taken"] : null} />
-      <FieldGroup title={w.trade}>
-        <div className="field-row grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-2">
-          {percent("tradePct", w.percent, "pct_of_trade")}
-          {field("tradeMin", w.tradeMin, "nis_per_trade")}
-        </div>
-      </FieldGroup>
-      <FieldGroup title={w.custody}>
-        <div className="field-row grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-2">
-          {percent("custodyPct", w.percentYear, "pct_per_year")}
-          {field("custodyMin", w.custodyMin, "nis_per_month")}
-        </div>
-      </FieldGroup>
-      <FieldGroup title={w.fx}>
-        <div className="field-row grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-2">{percent("fxPct", w.percent, "pct_of_trade")}</div>
-      </FieldGroup>
-      <FieldGroup title={w.monthly}>
-        <div className="field-row grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-2">{field("monthlyFee", w.nisMonth, "nis_per_month")}</div>
-      </FieldGroup>
-      <FieldGroup title={w.sells} note={errors.includes("sells-none") ? <p className="text-xs text-destructive">{c.errors["sells-none"]}</p> : undefined}>
-        <div className="flex flex-col">
-          <CheckField label={w.sellsIsraeli} checked={draft.sellsIsraeli} onChange={(v) => set("sellsIsraeli", v)} />
-          <CheckField label={w.sellsAbroad} checked={draft.sellsAbroad} onChange={(v) => set("sellsAbroad", v)} />
-        </div>
-      </FieldGroup>
-        </>
-      )}
-      {basis === NOT_LISTED ? <Actions entry={!!broker} name={broker?.name ?? ""} writable={writable} onSave={save} onCancel={onCancel} onRemove={() => broker && onRemove(broker.id)} /> : <Button variant="quiet" className="self-start -ms-2" onClick={onCancel}>{c.cancel}</Button>}
-    </div>
-  );
-}
 
 function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, onRemove }: { headId: string; index: IndexRef; fund: CustomFund | null; others: readonly CustomFund[]; writable: boolean; onSave: (f: CustomFund) => void; onCancel: () => void; onRemove: (id: string) => void }) {
   const kinds = optionsOf(index.israeli);

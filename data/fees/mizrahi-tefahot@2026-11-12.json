@@ -1531,7 +1531,7 @@
               "BRK-68"
             ],
             "state": "sourced",
-            "notes": "The step's top, in dollars, as the list prints it: part 5, note (6) (p.14), which names no channel; annex E (p.48) prints none of its own."
+            "notes": "The step's top, in dollars, as the list prints it: part 5, note (6) (p.14), which names no channel; annex E (p.48) prints none of its own. Annex E's internet price is the clerk's with its discount column (3.00 $ there, 2.85 $ here), so the free step is free in the internet service too."
           },
           "on": "fee",
           "exempt": true,

@@ -11,7 +11,8 @@ import { feeLines, withoutFeeLine, type FeeLine } from "../fees/materiality.ts";
 import type { Commission, ConversionPrice, Custody, SizeStep } from "../formulas/fees.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { beforeTaxPathOf, checkTariffPeriods, memberKindOf, runSecurities, runSecuritiesBeforeTax, type BeforeTaxRun, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
+import { beforeTaxPathOf, checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, runSecuritiesBeforeTax, type BeforeTaxRun, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
+import type { DealAccount } from "../ledgers/deal-account.ts";
 import { stoppedOnGap, stoppedOnQuestion } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
@@ -90,6 +91,37 @@ export interface ProviderInput {
   currentAccount?: boolean;
 }
 
+/** What a run holds that the account priced by a deal is read for (F-128): the fund's class, where it is bought, its currency and its payout. */
+export interface DealRun {
+  instrumentClass: string;
+  listing: WorkbenchInput["listing"];
+  /** The fund's currency (ISO), null for shekels. */
+  currency: string | null;
+  distributes: boolean;
+  fx: Record<string, number> | undefined;
+}
+
+/** A deal account with no price for this run, and why, in the caller's words for it (a fee not priced yet, no case for what the plan buys). */
+export interface DealUnpriced {
+  unpriced: string;
+}
+
+/**
+ * F-128: an account priced by a deal the person keeps, at level "entered" (F-63, D7), ranked with the houses as an entered account (D117).
+ * The deal is read for each run, since what the plan buys (the fund's class, where it is bought, its currency) picks its cases (F-114).
+ */
+export interface DealProvider {
+  id: string;
+  name: string;
+  providerClass: FeesSnapshot["provider"]["class"];
+  /** The day the deal was saved, YYYY-MM-DD: the row's date, as a snapshot's is. */
+  saved: string;
+  /** The account for this run, or why it has no price here. */
+  account: (run: DealRun) => DealAccount | DealUnpriced;
+  /** F-109: a house's record of the listings it sells by amount, where the deal is that house's account; with none every order is whole units. */
+  byAmount?: FeesSnapshot["by_amount"];
+}
+
 /** The id a current account's source takes among a tariff's `lineSources` (F-102): it is the snapshot's, not one of its lines. */
 export const CURRENT_ACCOUNT_LINE = "current-account";
 
@@ -135,6 +167,8 @@ export interface WorkbenchInput {
   listing?: "tase" | "us" | "europe";
   /** The provider list for the wrapper (F-83); the workbench accounts for each exactly once. */
   providers: readonly ProviderInput[];
+  /** F-128: the accounts priced by a deal, each a row after the providers'. */
+  deals?: readonly DealProvider[];
 }
 
 /** A snapshot line the tariff does not model, listed so the page can say so (never dropped silently). */
@@ -178,6 +212,8 @@ export type NotComparableReason =
   | { code: "needs-fx-rate"; detail: string }
   /** the snapshot is ambiguous or a unit is not one the tariff reads; `detail` is the engine's message. */
   | { code: "record-error"; detail: string }
+  /** F-128: an account priced by a deal that has no price for this run; `detail` is the caller's reason (`DealUnpriced`). */
+  | { code: "deal-unpriced"; detail: string }
   /**
    * a run of the row stopped on its rule: on an open question whose readings gave it different results (`question`, `acrossReadings`), or on
    * a method gap where no reading of the case exists (`gap`, G-38). Nothing is ranked on one: its value after tax is not known.
@@ -215,6 +251,10 @@ export interface ComparedProvider extends ProviderBase {
   yearOneCost: ValueObject;
   /** Nominal fees paid in a 12-month run, exit commission included (trade, custody, fx, fixed). */
   yearOneFeesPaid: number;
+  /** F-128: the deal the row is priced by, read for this run. */
+  account?: DealAccount;
+  /** F-128, F-91: each fee of the deal by what was paid on it, carried to the horizon before tax, real NIS, by the fee's index in the deal. */
+  byFee?: { fee: number; costBeforeTax: number }[];
   /** F-61 by fee type: `V(F \ {f}) − V(F)`, real NIS, for each provider line the tariff charges, largest first; `costBeforeTax` is the same difference before tax (F-91).
    *  In whole units (F-109) a line is what was paid on it, carried to the horizon before tax: `costBeforeTax` only, and `cost` is null, since no after-tax figure is worked for it. */
   byType: { line: FeeLine; cost: number | null; costBeforeTax: number }[];
@@ -881,7 +921,9 @@ export function costByWho(a: CostByWhoInput): { account: number; fees: number; w
 interface ReadyProvider {
   kind: "ready";
   base: ProviderBase;
-  p: ProviderInput;
+  level: FeeLevel;
+  /** F-128: the deal the account is priced by. */
+  deal?: DealAccount;
   built: TariffBuild;
   memberKind: NonNullable<SecuritiesInput["memberKind"]>;
   ways: SecuritiesInput["wholeUnits"][];
@@ -935,17 +977,71 @@ function prepareProvider(input: WorkbenchInput, given: ProviderInput): ReadyProv
   const memberKind = memberKindOf(s.provider.class);
   // F-109: whole units; a house that sells the fund's listing by amount is priced on the way that leaves more
   try {
-    return { kind: "ready", base, p, built, memberKind, ways: unitWaysAt(input, s, built.tariff) };
+    return { kind: "ready", base, level: p.level, built, memberKind, ways: unitWaysAt(input, s, built.tariff) };
   } catch (e) {
     if (e instanceof Unusable) return notComparable(unusableRow(e));
     throw e;
   }
 }
 
-/** F-63's input for one run of the fund: the goal over `months`, at a tariff, a member kind and a way of buying (F-109). */
+/**
+ * F-128: a deal account read for the run (`DealProvider.account`), or its row "not comparable": no price here (the caller's reason), a sum in
+ * a currency the run has no rate for, a sum per unit with no unit price.
+ */
+function prepareDeal(input: WorkbenchInput, runFund: Fund, d: DealProvider): ReadyProvider | NotComparableProvider {
+  const base: ProviderBase = {
+    id: d.id,
+    name: d.name,
+    providerClass: d.providerClass,
+    level: "entered",
+    snapshot: d.saved,
+    tariffSource: { url: "local", title: d.name, published: null, format: "html" },
+    protectionRuleIds: [],
+    minimums: { account_opening: null },
+  };
+  const notComparable = (reason: NotComparableReason): NotComparableProvider => ({ ...base, kind: "not-comparable", reason });
+  const account = d.account({ instrumentClass: input.instrumentClass, listing: input.listing, currency: input.currency?.code ?? null, distributes: !!runFund.distribution, fx: input.fx });
+  if ("unpriced" in account) return notComparable({ code: "deal-unpriced", detail: account.unpriced });
+  const own = input.currency?.code;
+  const missing = dealCurrencies(account).find((c) => c !== "ILS" && c !== own && !(input.fx?.[c] !== undefined && input.fx[c]! > 0));
+  if (missing) return notComparable({ code: "needs-fx-rate", detail: `the deal ${d.id} has a sum in ${missing}, and the run has no rate for it` });
+  if (dealPerUnit(account) && !hasUnitPrice(runFund, own ?? null)) return notComparable({ code: "needs-share-price", detail: `the deal ${d.id} prices a trade per unit or counts a month's trading in units, and the fund's price per unit is missing` });
+  const tariff: SecuritiesInput["tariff"] = input.currency ? { currency: input.currency } : {};
+  const built: TariffBuild = { tariff, linesUsed: [], lineSources: [], noLine: [], notModelled: [], averagesApplied: 0, strengths: [], flags: [], standingAside: [] };
+  const rates = Object.fromEntries(Object.entries(input.fx ?? {}).filter(([c]) => c !== own));
+  return { kind: "ready", base, level: "entered", deal: { ...account, rates: { ...rates, ...account.rates } }, built, memberKind: memberKindOf(d.providerClass), ways: unitWaysAt(input, { by_amount: d.byAmount ?? [] }, tariff) };
+}
+
+/** The currencies a deal's sums are in (F-112): its bounds, flat prices, sums per action or per unit, third parties' sums and steps, and the steps of what the plan sets (F-128). */
+function dealCurrencies(a: DealAccount): string[] {
+  const out = new Set<string>();
+  for (const ws of a.planWithin ?? []) for (const w of ws ?? []) if (w.on !== "count" && w.unit !== "units") out.add(w.unit);
+  for (const f of a.deal.fees) {
+    if (f.within) out.add(f.within.currency);
+    for (const st of [...f.stages, ...(f.sale ?? [])]) {
+      const p = st.price;
+      if ((p.kind === "action" || p.kind === "perUnit" || p.kind === "perAction") && p.currency) out.add(p.currency);
+      if ((p.kind === "action" || p.kind === "perUnit" || p.kind === "perAction") && p.third?.currency) out.add(p.third.currency);
+    }
+  }
+  return [...out];
+}
+
+/** Whether a deal prices a trade per unit (F-12's price per share), or counts a month's trading in units (F-128), which needs the fund's unit price. */
+const dealPerUnit = (a: DealAccount): boolean =>
+  (a.planWithin ?? []).some((ws) => ws?.some((w) => w.unit === "units")) ||
+  a.deal.fees.some((f) => [...f.stages, ...(f.sale ?? [])].some((st) => st.price.kind === "perUnit" || ((st.price.kind === "action" || st.price.kind === "perAction") && st.price.third?.kind === "perUnit")));
+
+/** Every provider of the run, then every deal account (F-128), each read for the run. */
+function preparedAll(input: WorkbenchInput, runFund: Fund): (ReadyProvider | NotComparableProvider)[] {
+  return [...input.providers.map((p) => prepareProvider(input, p)), ...(input.deals ?? []).map((d) => prepareDeal(input, runFund, d))];
+}
+
+/** F-63's input for one run of the fund: the goal over `months`, at a tariff, a member kind and a way of buying (F-109); a deal account's deal (F-128). */
 function planOf(input: WorkbenchInput, runFund: Fund) {
-  return (tariff: SecuritiesInput["tariff"], months: number, memberKind?: SecuritiesInput["memberKind"], wholeUnits?: SecuritiesInput["wholeUnits"]): SecuritiesInput => {
+  return (tariff: SecuritiesInput["tariff"], months: number, memberKind?: SecuritiesInput["memberKind"], wholeUnits?: SecuritiesInput["wholeUnits"], deal?: DealAccount): SecuritiesInput => {
     const p: SecuritiesInput = { goal: { ...input.goal, months }, market: input.market, fund: runFund, tariff, profile: input.profile };
+    if (deal) p.deal = deal;
     if (input.broker) p.broker = input.broker;
     if (memberKind) p.memberKind = memberKind;
     if (input.behaviour?.ordersPerMonth !== undefined) p.ordersPerMonth = input.behaviour.ordersPerMonth;
@@ -959,6 +1055,8 @@ export interface BeforeTaxProvider extends ProviderBase {
   kind: "before-tax";
   /** D7: list and average are sourced; entered is the person's. */
   feeState: "sourced" | "entered";
+  /** F-128: the deal the row is priced by, read for this run. */
+  account?: DealAccount;
   tariff: SecuritiesInput["tariff"];
   linesUsed: string[];
   lineSources: TariffBuild["lineSources"];
@@ -997,22 +1095,22 @@ export function providerWorkbenchBeforeTax(input: WorkbenchInput, ctx: RunContex
   const horizon = input.goal.months;
   const noneT = runSecuritiesBeforeTax(plan(bare, horizon), ctx);
   const rows: BeforeTaxWorkbench["rows"] = [];
-  for (const given of input.providers) {
-    const ready = prepareProvider(input, given);
+  for (const ready of preparedAll(input, runFund)) {
     if (ready.kind === "not-comparable") {
       rows.push(ready);
       continue;
     }
-    const { base, p, built, memberKind, ways } = ready;
-    let run = runSecuritiesBeforeTax(plan(built.tariff, horizon, memberKind, ways[0]), ctx);
+    const { base, level, built, memberKind, ways, deal } = ready;
+    let run = runSecuritiesBeforeTax(plan(built.tariff, horizon, memberKind, ways[0], deal), ctx);
     for (const w of ways.slice(1)) {
-      const other = runSecuritiesBeforeTax(plan(built.tariff, horizon, memberKind, w), ctx);
+      const other = runSecuritiesBeforeTax(plan(built.tariff, horizon, memberKind, w, deal), ctx);
       if (other.beforeTaxReal > run.beforeTaxReal) run = other;
     }
     rows.push({
       ...base,
       kind: "before-tax",
-      feeState: p.level === "entered" ? "entered" : "sourced",
+      feeState: level === "entered" ? "entered" : "sourced",
+      ...(deal ? { account: deal } : {}),
       tariff: built.tariff,
       linesUsed: built.linesUsed,
       lineSources: built.lineSources,
@@ -1047,17 +1145,16 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
   const none12 = runSecurities(plan(bare, 12), ctx);
 
   const rows: ProviderRow[] = [];
-  for (const given of input.providers) {
-    const ready = prepareProvider(input, given);
+  for (const ready of preparedAll(input, runFund)) {
     if (ready.kind === "not-comparable") {
       rows.push(ready);
       continue;
     }
-    const { base, p, built, memberKind, ways } = ready;
+    const { base, level, built, memberKind, ways, deal } = ready;
     let units = ways[0];
-    let run = runSecurities(plan(built.tariff, horizon, memberKind, units), ctx);
+    let run = runSecurities(plan(built.tariff, horizon, memberKind, units, deal), ctx);
     for (const w of ways.slice(1)) {
-      const other = runSecurities(plan(built.tariff, horizon, memberKind, w), ctx);
+      const other = runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx);
       if (other.real > run.real) [units, run] = [w, other];
     }
     // a run the readings of an open question split (TXG OQ17 at a falling CPI), or one its ledger listed on a method gap (G-38), has no value
@@ -1067,8 +1164,8 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });
       continue;
     }
-    const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind, units) } as const;
-    const run12 = runSecurities(plan(built.tariff, 12, memberKind, units), ctx);
+    const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind, units, deal) } as const;
+    const run12 = runSecurities(plan(built.tariff, 12, memberKind, units, deal), ctx);
     const total = noneT.real - run.real;
     // F-61's split takes a whole run per fee line, and a page that ranks every fund at every house reads it for few: run when first read.
     const split = once(() => {
@@ -1077,8 +1174,11 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       // sooner, and each order pays its own minimum), so removing a line can leave less and the line would read below zero. A line is instead
       // what was paid on it, each payment carried to the horizon at the fund's total return from the month it was paid, in today's shekels;
       // the same figure before and after tax, the tax and what whole units do left to the remainder, so the whole is unchanged.
-      const carried = units ? run.feesCarried : undefined;
+      // F-128: a deal account's lines are what each was paid, carried the same way: a run without a deal's line has no meaning apart from its
+      // fees. Its lines are the ones its fees were charged on (`byFee` splits the same carry by the deal's own fees)
+      const carried = units || deal ? run.feesCarried : undefined;
       if (carried) {
+        if (deal) lines.push(...providerLines.filter((l) => carried[l] !== 0 && !lines.includes(l)));
         const index = run.series.find((pt) => pt.month === run.exitMonth)?.index ?? 1;
         // before tax only: an after-tax line taken from a pre-tax carry would mix the two
         const byType = lines.map((line) => ({ line, cost: null, costBeforeTax: carried[line] / index })).sort((a, b) => b.costBeforeTax - a.costBeforeTax);
@@ -1095,14 +1195,16 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       return { byType, interaction: total - byType.reduce((acc, t) => acc + t.cost, 0) };
     });
 
-    const strength = weakestStrength([...run.rules.map((r) => r.strength), ...(p.level === "entered" ? (["entered"] as const) : built.strengths)]);
+    const strength = weakestStrength([...run.rules.map((r) => r.strength), ...(level === "entered" ? (["entered"] as const) : built.strengths)]);
     const ruleIds = run.rules.map((r) => r.id);
-    const common = { checked: ctx.runDate, strength, ruleIds, notes: `provider ${base.id}, fee level ${p.level}, snapshot ${base.snapshot}` };
+    const common = { checked: ctx.runDate, strength, ruleIds, notes: `provider ${base.id}, fee level ${level}, snapshot ${base.snapshot}` };
+    const exitIndex = run.series.find((pt) => pt.month === run.exitMonth)?.index ?? 1;
     const yearOneNominal = none12.nominal - run12.nominal;
     rows.push({
       ...base,
       kind: "compared",
-      feeState: p.level === "entered" ? "entered" : "sourced",
+      feeState: level === "entered" ? "entered" : "sourced",
+      ...(deal ? { account: deal, byFee: (run.feesCarriedBy ?? []).map((c, fee) => ({ fee, costBeforeTax: c / exitIndex })).filter((x) => x.costBeforeTax !== 0) } : {}),
       tariff: built.tariff,
       linesUsed: built.linesUsed,
       lineSources: built.lineSources,
@@ -1114,14 +1216,14 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
         total,
         "nis",
         "F-63",
-        { real_value_without_provider_fees: noneT.real, real_value_with_provider_fees: run.real, horizon_months: horizon, level: p.level, lines: built.linesUsed },
+        { real_value_without_provider_fees: noneT.real, real_value_with_provider_fees: run.real, horizon_months: horizon, level, lines: built.linesUsed },
         common,
       ),
       yearOneCost: computedValue(
         yearOneNominal,
         "nis",
         "F-63",
-        { nominal_value_without_provider_fees: none12.nominal, nominal_value_with_provider_fees: run12.nominal, month: 12, level: p.level, lines: built.linesUsed },
+        { nominal_value_without_provider_fees: none12.nominal, nominal_value_with_provider_fees: run12.nominal, month: 12, level, lines: built.linesUsed },
         common,
       ),
       yearOneFeesPaid: run12.fees.trade + run12.fees.custody + run12.fees.fixed + run12.fees.fx + run12.fees.account,

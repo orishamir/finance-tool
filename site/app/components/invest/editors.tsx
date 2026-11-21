@@ -1,15 +1,15 @@
-// What the index page's entry panels share (D44): the one panel's state and the world it prices in, reached by the buttons and the rows
-// under it through a context. Kept apart from the panels so the rows can read it without importing them.
+// What the index page's fund panel shares (D44): the panel's state and the world its preview prices in, reached by the button and the rows
+// under it through a context. Kept apart from the panel so the rows can read it without importing it.
 import { createContext, useContext, useRef, useState } from "react";
 import { invest as root } from "../../copy";
 import { Button } from "../kit";
-import type { CustomBroker, CustomFund } from "../../lib/custom-entries";
+import type { CustomFund } from "../../lib/custom-entries";
 import type { CustomIndex, IndexRef, InvestView } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 
-export type Editing = { kind: "broker"; id: string | null } | { kind: "fund"; id: string | null } | { kind: "own"; houseId: string; from: string };
+export type Editing = { kind: "fund"; id: string | null };
 
-/** What the account panel prices on: the page's own data, plan and view. */
+/** What a fund's preview prices on: the page's own data, plan and view. */
 export interface PanelWorld {
   /** The bundle without the person's entries, and the one with them. */
   wb: IndicesBundle;
@@ -22,12 +22,8 @@ export interface PanelWorld {
 }
 
 export interface Editors {
-  addBroker: () => void;
   addFund: () => void;
-  /** The account panel, started from a house's price list or one of its groups (`list`, `group:<n>`). */
-  openOwn: (houseId: string, from?: string) => void;
   edit: (e: Editing) => void;
-  brokers: readonly CustomBroker[];
   funds: readonly CustomFund[];
   world: PanelWorld | null;
 }
@@ -54,8 +50,6 @@ export function useDraft<T>(start: () => T) {
 export const isInvalid = (form: HTMLElement | null) => !!form?.querySelector('[aria-invalid="true"]');
 
 const c = root.customEntries;
-/** A typed amount cannot be negative. */
-export const nisCheck = (n: number) => (n < 0 ? c.errors.negative : null);
 
 export function Actions({ entry, name, writable, onSave, onCancel, onRemove, saveLabel }: { entry: boolean; name: string; writable: boolean; onSave: () => void; onCancel: () => void; onRemove: () => void; saveLabel?: string; }) {
   const [asking, setAsking] = useState(false);

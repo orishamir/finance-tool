@@ -40,6 +40,48 @@
   ],
   "sources": [
     {
+      "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+      "title": "הבנק הבינלאומי: נספח ה' - הטבות בערוצי בנקאות בתקשורת",
+      "title_he": "הבנק הבינלאומי: נספח ה' - הטבות בערוצי בנקאות בתקשורת",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "quote": "1.5$ פטור 1.5$ עמלת חליפין",
+      "checked": "2026-11-21"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/media/bdihy3hk/נספח-ה-הטבות-בערוצים-ישירים-46.pdf",
+      "title": "בנק מסד: נספח ה' - הטבות בערוצים ישירים",
+      "title_he": "בנק מסד: נספח ה' - הטבות בערוצים ישירים",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "quote": "1.0$ פטור 1.0$ עמלת חליפין",
+      "checked": "2026-11-21"
+    },
+    {
+      "url": "https://www.discountbank.co.il/media/xq0bggwd/תעריפון-יחיד-עסק-קטן-מאוגד-12102026.pdf",
+      "title": "בנק דיסקונט: תעריפון יחיד/עסק קטן, התעריפון המאוחד (12/11/2026)",
+      "title_he": "בנק דיסקונט: תעריפון יחיד/עסק קטן, התעריפון המאוחד (12/11/2026)",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.18, part 5",
+      "locator_he": "עמוד 18, חלק 5",
+      "page": 18,
+      "quote": "לרבות על המינימום",
+      "checked": "2026-11-21"
+    },
+    {
       "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
       "title": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
       "title_he": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
@@ -81,20 +123,6 @@
       "checked": "2026-11-12"
     },
     {
-      "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
-      "title": "הבנק הבינלאומי: נספח ה' - הטבות בערוצי בנקאות בתקשורת",
-      "title_he": "הבנק הבינלאומי: נספח ה' - הטבות בערוצי בנקאות בתקשורת",
-      "publisher": "First International Bank",
-      "publisher_he": "הבנק הבינלאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.4",
-      "locator_he": "עמוד 4",
-      "page": 4,
-      "quote": "1.5$ פטור 1.5$ עמלת חליפין",
-      "checked": "2026-11-12"
-    },
-    {
       "url": "https://www.bankmassad.co.il/media/u3le0ioe/חלק-5-מטבע-חוץ-46.pdf",
       "title": "בנק מסד: תעריפון, חלק 5 מטבע חוץ",
       "title_he": "בנק מסד: תעריפון, חלק 5 מטבע חוץ",
@@ -106,34 +134,6 @@
       "locator_he": "עמוד 1",
       "page": 1,
       "quote": "המרות בחשבון - עד 3.0$ - 100$",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://www.bankmassad.co.il/media/bdihy3hk/נספח-ה-הטבות-בערוצים-ישירים-46.pdf",
-      "title": "בנק מסד: נספח ה' - הטבות בערוצים ישירים",
-      "title_he": "בנק מסד: נספח ה' - הטבות בערוצים ישירים",
-      "publisher": "Bank Massad",
-      "publisher_he": "בנק מסד",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.4",
-      "locator_he": "עמוד 4",
-      "page": 4,
-      "quote": "1.0$ פטור 1.0$ עמלת חליפין",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
-      "title": "בנק דיסקונט: תעריפון יחיד/עסק קטן, התעריפון המאוחד (01/10/2026)",
-      "title_he": "בנק דיסקונט: תעריפון יחיד/עסק קטן, התעריפון המאוחד (01/10/2026)",
-      "publisher": "Discount Bank",
-      "publisher_he": "בנק דיסקונט",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.18, part 5",
-      "locator_he": "עמוד 18, חלק 5",
-      "page": 18,
-      "quote": "לרבות על המינימום",
       "checked": "2026-11-12"
     },
     {

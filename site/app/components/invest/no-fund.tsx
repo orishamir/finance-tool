@@ -15,7 +15,8 @@ import { AsideLine, barScale, GroupLine, HouseLine, LONGEST_AMOUNT, LONGEST_YEAR
 import { byLegend, hasCurrent, legendLines, legendName, lineClass, lineOf, partName } from "./cost-lines";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
-import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
+import { AddEntryButton, FundTerms } from "./custom-entries";
+import { AddDealButton, DealTerms } from "./deal-account";
 
 const n = c.noFund;
 
@@ -26,7 +27,7 @@ export function NoFundCall({ view }: { view: InvestView }) {
       <h3 className="font-semibold">{n.callTitle}</h3>
       <p className="text-sm text-muted-foreground max-w-measure">{n.callBody(view.index.name)}</p>
       <div className="pt-1">
-        <AddEntryButton kind="fund" primary />
+        <AddEntryButton primary />
       </div>
     </Card>
   );
@@ -117,22 +118,18 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           {/* the kind the cost is for, else the house's: a row keeps its line whichever kind the plan makes cheapest */}
           <AsideLine lines={asideLines(snapOf(h.provider.id), (g.aside ?? []).length > 0 ? g.aside! : h.aside)} company={snapOf(h.provider.id)?.provider.name_he ?? h.provider.short} open={openAsides.includes(h.provider.id)} onOpen={(o) => onAside(h.provider.id, o)} />
           <GroupLine id={h.provider.id} house={h.provider.short} snapshots={bundle.snapshots} open={openGroups.includes(h.provider.id)} onOpen={onGroup} />
-          {h.provider.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={h.provider.id} /></span>}
+          {h.provider.custom && <span className="col-start-2 col-end-[-1]"><DealTerms id={h.provider.id} /></span>}
         </>
       ),
     };
   });
   const greyRows: PickRow[] = missing.map((h) => {
-    // why, over every kind of fund the house's row stands for (its group's, all of them for a typed account), in the words of the pair
-    // page's account rows: the words open the rule the record names, or each kind's reason with its document (D104, D105); what the
-    // person typed says it in their own words, with no document
+    // why, over every kind of fund the house's row stands for (its group's, all of them for the person's own account), in the words of
+    // the pair page's account rows: the words open the rule the record names, or each kind's reason with its document (D104, D105)
     // (a house abroad on an Israeli index has no kind of its group: every kind the index has says why, Interactive Brokers' "no" on Tel Aviv)
-    const typedNo = h.provider.custom && h.unavailable?.source.url === "local";
     const exist = view.options.filter((o) => o.exists);
     const mine = exist.filter((o) => h.provider.custom || (GROUP_OPTIONS[h.group] as readonly OptionId[]).includes(o.id));
-    const told: WhyNone = typedNo
-      ? { state: "notSold", why: c.customEntries.notSold, parts: [{ text: c.customEntries.notSold }], rules: [] }
-      : whyNoKindAt(bundle, h.provider.id, (mine.length > 0 ? mine : exist).map((o) => ({ option: o.id, at: o.cells.find((x) => x.providerId === h.provider.id) })));
+    const told: WhyNone = whyNoKindAt(bundle, h.provider.id, (mine.length > 0 ? mine : exist).map((o) => ({ option: o.id, at: o.cells.find((x) => x.providerId === h.provider.id) })));
     return {
       key: h.provider.id,
       selected: h.provider.id === houseId,
@@ -152,7 +149,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             </NoFundWords>
           </span>
           <span className="col-end-[-1] text-end font-semibold">—</span>
-          {h.provider.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={h.provider.id} /></span>}
+          {h.provider.custom && <span className="col-start-2 col-end-[-1]"><DealTerms id={h.provider.id} /></span>}
         </>
       ),
     };
@@ -211,7 +208,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
         />
       </div>
       <div className="px-5 py-3 flex flex-col gap-3">
-        <AddEntryButton kind="broker" />
+        <AddDealButton />
         <ChartLegend
           pick={legendPick}
           items={[
@@ -261,7 +258,7 @@ export function NoFundColumn({ view, mayaHref }: { view: InvestView; mayaHref: s
             ))}
           </div>
         )}
-        <AddEntryButton kind="fund" />
+        <AddEntryButton />
         <p className="text-sm text-muted-foreground">{n.mayaLead}</p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
           {mayaHref && (
