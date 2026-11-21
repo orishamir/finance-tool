@@ -128,8 +128,9 @@ export interface StateV3 extends Omit<StateV2, "version"> {
   savedComparisons: SavedComparisonRecord[];
   /** "השקעה במדד" (D28): the indices the person added, kept on the device and in the export file; an older document has none. */
   customIndices?: CustomIndex[];
-  /** The index page's own: a broker and a fund the person typed (D44), on the device and in the export file; an older document has none. */
+  /** The securities accounts typed on the index page before a deal took their place, kept until each moves into a deal (the move, method §10.4). */
   customBrokers?: CustomBroker[];
+  /** The index page's own: a fund the person typed (D44), on the device and in the export file; an older document has none. */
   customFunds?: CustomFund[];
   /** The person's current broker (a fee snapshot id), optional; "החשבון שלכם" on the same page. */
   broker?: string;
@@ -685,16 +686,9 @@ function withList<K extends "customBrokers" | "customFunds">(s: StateV3, key: K,
   return (list.length ? { ...rest, [key]: list } : rest) as StateV3;
 }
 
-/** Adds a broker the person typed, or replaces the one with its id (D44). */
-export function saveCustomBroker(b: CustomBroker): void {
-  updateState((s) => {
-    const have = s.customBrokers ?? [];
-    return withList(s, "customBrokers", have.some((x) => x.id === b.id) ? have.map((x) => (x.id === b.id ? b : x)) : [...have, b]);
-  });
-}
-
-export function removeCustomBroker(id: string): void {
-  updateState((s) => withList(s, "customBrokers", (s.customBrokers ?? []).filter((x) => x.id !== id)));
+/** Takes the typed accounts moved into deals out of the saved state (the move, method §10.4; lib/deal-account/move-run.ts). */
+export function dropTypedAccounts(ids: readonly string[]): void {
+  updateState((s) => withList(s, "customBrokers", (s.customBrokers ?? []).filter((x) => !ids.includes(x.id))));
 }
 
 /** Adds a fund the person typed, or replaces the one with its id (D44). */
@@ -734,7 +728,7 @@ const NO_FUNDS: CustomFund[] = [];
 
 export function useInvestState() {
   const snapshot = useStateStore();
-  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? NO_CUSTOM, customBrokers: snapshot.state.customBrokers ?? NO_BROKERS, customFunds: snapshot.state.customFunds ?? NO_FUNDS, broker: snapshot.state.broker ?? null, bank: snapshot.state.bank ?? null, setBank: setOwnBank, saved: snapshot.saved, add: saveCustomIndex, rename: renameCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker, saveBroker: saveCustomBroker, removeBroker: removeCustomBroker, saveFund: saveCustomFund, removeFund: removeCustomFund };
+  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? NO_CUSTOM, customBrokers: snapshot.state.customBrokers ?? NO_BROKERS, customFunds: snapshot.state.customFunds ?? NO_FUNDS, broker: snapshot.state.broker ?? null, bank: snapshot.state.bank ?? null, setBank: setOwnBank, saved: snapshot.saved, add: saveCustomIndex, rename: renameCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker, saveFund: saveCustomFund, removeFund: removeCustomFund };
 }
 
 // ---------------------------------------------------------------- saved comparisons

@@ -500,8 +500,8 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
       {docs}
       <div className="flex flex-wrap items-center gap-x-6">
         <GoLink to={compareHref}>{copy.card.compare}</GoLink>
-        {/* the index page opens with the panel on this house's price list */}
-        <GoLink to={ownAccountPath(id)}>{investCopy.ownAccount.open(gershayim(tariff.providerName))}</GoLink>
+        {/* the index page opens with a new deal filled from this house's price list, in the popup that edits a deal on the page */}
+        <GoLink to={ownAccountPath(id)}>{investCopy.dealAccount.fromHouse(gershayim(tariff.providerName))}</GoLink>
       </div>
     </div>
   );

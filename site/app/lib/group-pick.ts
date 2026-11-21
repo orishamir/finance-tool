@@ -5,10 +5,10 @@
 // (no price from analogy, D42) on the side the fund trades, and every such price ends after a printed number of months from joining. A
 // price that ends at an age, or whose end is not printed, would need the person's age or stay, which the page never asks.
 import type { FeesSnapshot } from "@finance-tool/schema";
-import { brokerFromDraft, withCustomEntries, type CustomBroker } from "./custom-entries";
+import type { CustomBroker } from "./custom-entries";
 import { buildInvest, type FundWay, type InvestArgs, type InvestView, type OptionId, type ProviderInfo, type WayPrice } from "./invest";
-import { startingPointsOf, type StartingPoint } from "./own-account";
-import { startDraft } from "./own-account-panel";
+import { baseOf, groupInputs, HOUSE_ACCOUNT_PREFIX, layeredOf, startingPointsOf, type StartingPoint } from "./own-account";
+import type { BundleSnapshot, IndicesBundle } from "./providers";
 import { groupPrices as copy } from "../copy";
 
 /** The group's key in the address and the record: `group:<n>`, its place in the house's record. */
@@ -39,14 +39,35 @@ export function pickableOnEitherSide(snapshot: FeesSnapshot | undefined): Set<st
   return new Set([...pickableGroups(snapshot, "il-etf"), ...pickableGroups(snapshot, "abroad")]);
 }
 
-/** The id of the held account for a house's group: a custom broker's prefix, so the pricing treats it as an account built on the house. */
-export const groupBrokerId = (house: string, key: string) => `custom-broker-group-${house}-${key.replace(":", "-")}`;
+/** The id of the held account for a house's group: the prefix of an account built on a house, so the pricing treats it as one (F-101). */
+export const groupBrokerId = (house: string, key: string) => `${HOUSE_ACCOUNT_PREFIX}group-${house}-${key.replace(":", "-")}`;
 
-/** The account the run prices for a house's group: the house's price list with that group's prices, for as long as each holds (F-101). */
+/** The account the run prices for a house's group: the house's price list with that group's prices, for as long as each holds (F-101), nothing typed. */
 export function groupBroker(snapshot: FeesSnapshot, key: string, short: string, today: string): CustomBroker | null {
   const point = startingPointsOf(snapshot).find((p) => p.key === key);
   if (!point?.group) return null;
-  return brokerFromDraft(startDraft(snapshot, point, copy.pickedName(short, point.nameHe)), groupBrokerId(snapshot.id, key), today);
+  return { id: groupBrokerId(snapshot.id, key), name: copy.pickedName(short, point.nameHe), added: today, tradePct: null, tradeMin: null, custodyPct: null, custodyMin: null, fxPct: null, monthlyFee: null, sells: { israeli: true, abroad: true }, base: baseOf(snapshot, point) };
+}
+
+/**
+ * The bundle with a group's account in it: the house's own record under the account's name, so its lines, what it sells and its kind are
+ * the house's, priced in layers on the house's own list tariff (F-101, `layeredOf`) where the house is, its group prices' figures its inputs.
+ */
+export function withGroupAccount(bundle: IndicesBundle, house: BundleSnapshot, b: CustomBroker): IndicesBundle {
+  const { provider, tariff, snapshot, missing, missing_reason, missing_reason_he, lines, averages, minimums, notice_rule_ids } = house;
+  const own: BundleSnapshot = { id: b.id, provider: { ...provider, name_he: b.name, part_of: undefined }, tariff, snapshot, missing, missing_reason, ...(missing_reason_he ? { missing_reason_he } : {}), lines, averages, minimums, notice_rule_ids, availability: house.availability ?? [], ...(house.fundByFund ? { fundByFund: house.fundByFund } : {}) };
+  const held = bundle.entered;
+  return {
+    ...bundle,
+    snapshots: [...bundle.snapshots, own],
+    entered: {
+      layered: { ...(held?.layered ?? {}), [b.id]: layeredOf(b) },
+      bases: { ...(held?.bases ?? {}), [b.id]: house.id },
+      inputs: { ...(held?.inputs ?? {}), [b.id]: groupInputs(b) },
+      exposures: held?.exposures ?? {},
+      shekelFunds: held?.shekelFunds ?? [],
+    },
+  };
 }
 
 /** A held group account's figure at a house: marked so no ranking reads it (D43). */
@@ -63,7 +84,7 @@ export function withGroupPick(args: InvestArgs, view: InvestView, house: string,
   if (!snapshot) return null;
   const broker = groupBroker(snapshot, key, short, args.bundle.today);
   if (!broker) return null;
-  const withGroup = withCustomEntries(args.bundle, [broker], []);
+  const withGroup = withGroupAccount(args.bundle, snapshot as BundleSnapshot, broker);
   const own = withGroup.snapshots.find((s) => s.id === broker.id)!;
   const small = buildInvest({ ...args, bundle: { ...withGroup, snapshots: [snapshot, own] } });
   const priceOf = (f: FundWay): GroupWayPrice | null => {

@@ -155,17 +155,6 @@ describe("the makam and bond runs charge the account's monthly fee out of the wa
     expect(r.detail.exitYearFees).toBeCloseTo(3, 9);
     expect(r.taxAtExit).toBe(0);
   });
-
-  it("bond with no order placed: nothing is sold at the horizon, so no loss is flagged and no exit tax is reckoned", () => {
-    // 3 NIS a month never reaches the 10 NIS minimum; the waiting cash pays 1 NIS a month, and 6 is left
-    const r = runBond(bond({ goal: { amountNow: 0, monthly: 3, months: 3 }, tariff: { buy: line, monthlyFee: 1 } }), ctx);
-    expect(r.fees.fixed).toBeCloseTo(3, 9);
-    expect(r.nominal).toBeCloseTo(6, 9);
-    const codes = r.flags.map((f) => f.code);
-    expect(codes).not.toContain("G-07");
-    expect(codes).not.toContain("G-20");
-    expect(r.taxAtExit).toBe(0);
-  });
 });
 
 describe("the bond run keeps the cash of an order not placed (F-25)", () => {

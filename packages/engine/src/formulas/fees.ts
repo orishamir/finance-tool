@@ -85,11 +85,34 @@ export function buyWithCash(cash: number, line: Commission | undefined, terms: T
 }
 
 /**
+ * F-08 with F-12 and F-13 One order by amount: `fresh` shekels and `held`, money already in the fund's currency (a distribution's net, or
+ * what an earlier order left), in shekels at the order's rate; converting the shekels costs `fx`. The shekels are converted only where
+ * converting them leaves more than nothing, `fresh − fx > 0`; otherwise they wait unconverted and the held money buys alone. `buy` sizes the
+ * trade a cash pays for with its charges (`buyWithCash`, which spends all of it, or a deal's trade fees, F-128). A trade of nothing places
+ * no order (null): nothing is converted or charged, and the cash waits for the next order in the pocket it was in. What the cash does not
+ * spend (`left`, a deal's charge that jumps past it) waits in the fund's currency, converted already, as F-109's two pockets keep it.
+ */
+export function orderByAmount<B extends { trade: number; commission: number; left?: number }>(fresh: number, held: number, fx: number, buy: (cash: number) => B): { converts: boolean; fx: number; bought: B; leftNis: number; leftHeld: number } | null {
+  const converts = fresh - fx > 0;
+  const bought = buy((converts ? fresh - fx : 0) + held);
+  if (!(bought.trade > 0)) return null;
+  return { converts, fx: converts ? fx : 0, bought, leftNis: converts ? 0 : fresh, leftHeld: bought.left ?? 0 };
+}
+
+/**
+ * F-09 A charge paid out of `amount`: `min(amount, charge)`, never more than all of it and nothing out of nothing. A sale's commission
+ * (`saleCommission`) and its conversion (`saleConversion`) are paid so, and a deal's (F-128), each fee's part in proportion.
+ */
+export function paidOutOf(amount: number, charge: number): number {
+  return Math.min(Math.max(0, amount), charge);
+}
+
+/**
  * F-09 The commission on a sale of `gross`, paid out of the proceeds: `min(G, fee_trade(G))`. It takes at most the proceeds, so a sale at or
- * below the line's minimum (or its flat price) leaves nothing, never less, before the exit tax, which the method's conservative choice does not lower by sale costs (G-20).
+ * below the line's minimum (or its flat price) leaves nothing, never less, before the exit tax, which sale costs do not lower (G-20).
  */
 export function saleCommission(line: Commission | undefined, gross: number, terms: TradeTerms): number {
-  return Math.min(Math.max(0, gross), tradeCommission(line, gross, terms));
+  return paidOutOf(gross, tradeCommission(line, gross, terms));
 }
 
 /**
@@ -119,7 +142,7 @@ export function fxFee(line: number | Commission | undefined, amount: number, ter
  */
 export function saleConversion(line: number | Commission | undefined, amount: number, terms: TradeTerms, spread = 0): number {
   if (!(amount > 0)) return 0;
-  return Math.min(amount, fxFee(line, amount, terms) + spread * amount);
+  return paidOutOf(amount, fxFee(line, amount, terms) + spread * amount);
 }
 
 /**
