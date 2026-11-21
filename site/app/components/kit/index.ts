@@ -86,6 +86,7 @@ export { RangeFields, type RangeWords } from "./range-fields";
 export { amountTick, logAt, logTicks, shareTicks, type LogRange } from "./log-axis";
 export { KindDot, PartChip, PartEdit, focusPartEdit, type PartKind, type PartMark } from "./part-chip";
 export { CaseGroup, CaseRow, CaseSlot, ConditionBand, ConditionHead, OpenCase, type CaseWord, type HeadThing } from "./case-band";
+export { ConfirmAsk } from "./confirm-ask";
 export { AddSlot, CaseGrid, CaseMark, CaseTable, EveryCaseParts, SharedLine, type AddSpec, type CaseColumn, type CaseTableRow, type CellExtras, type EveryCaseCell, type GridCellView, type GridHead } from "./case-table";
 export { ActionMenu, DropBin, Grip, GripRoom, SpanKnob, lift, useCanDrag, useDragSource, type DragSourceProps, type GripAction, type LiftAbout } from "./lift";
 export { flip } from "./flip";

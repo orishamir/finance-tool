@@ -19,7 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
-import { ActionMenu, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
+import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodStrip, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -3383,6 +3383,20 @@ function CustodyTable({ today }: { today: string }) {
   );
 }
 
+/** The question before a delete, opened by its button. */
+function ConfirmAskDemo() {
+  const [open, setOpen] = useState(false);
+  const d = investWords.dealAccount.head;
+  return (
+    <div className="flex max-w-md flex-col items-start gap-2">
+      <Button variant="outline" aria-expanded={open} onClick={() => setOpen(true)}>
+        {d.remove}
+      </Button>
+      <ConfirmAsk open={open} question={d.confirm} body={d.confirmBody} yes={d.confirmYes} no={d.confirmNo} onYes={() => setOpen(false)} onNo={() => setOpen(false)} />
+    </div>
+  );
+}
+
 /**
  * Custody by the size of the portfolio, as a ladder: three steps meeting at their tops, the figures plain at rest and each top typed in
  * place while a case is open; "+ מדרגה" at the end.
@@ -3783,6 +3797,11 @@ function CaseDemos({ today }: { today: string }) {
           <div className="max-w-sm">
             <PaletteDemo />
           </div>
+        </State>
+      </Demo>
+      <Demo name="ConfirmAsk" use={g.uses.ConfirmAsk}>
+        <State label={`${g.states.interactive}: the delete asks; on a computer a card where it stands, on a phone a sheet from the foot`} wide>
+          <ConfirmAskDemo />
         </State>
       </Demo>
       <Demo name="SlimFee, FeeBlock" use={g.uses.SlimFee}>

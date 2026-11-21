@@ -44,7 +44,7 @@ import { MQ, useMedia } from "../../lib/hooks";
 import { useDealEditor, type DealEditor } from "../fee-deal/editor";
 import { whenText } from "../fee-deal/open-case";
 import { leavesText } from "../fee-deal/picker";
-import { ActionMenu, Button, Card, GroupHead, HouseAverageLine, KeyValueList, ListRow, ReadForBand, RowList, SearchField, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, When, type FeeHeadSlot, type GripAction, type KeyValueItem } from "../kit";
+import { ActionMenu, Button, ConfirmAsk, GroupHead, HouseAverageLine, KeyValueList, ListRow, ReadForBand, RowList, SearchField, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, When, type FeeHeadSlot, type GripAction, type KeyValueItem } from "../kit";
 
 const w = root.dealAccount;
 
@@ -214,7 +214,10 @@ function houseDeal(id: string, data: FeesData, today: string): FeeDeal {
   return d ? { ...d, name: house ? w.nameOf(house).slice(0, NAME_MAX) : d.name } : newDeal(ACCOUNT_KIND);
 }
 
-/** The new deal's start: every house's latest price list, with what it leaves out of the deal, and an empty deal. */
+/**
+ * The new deal's start: every house's latest price list, with what it leaves out of the deal, and an empty deal. Not a kit piece: it is
+ * kit pieces (`SearchField`, `RowList`, `ListRow`) arranged for this one choice.
+ */
 function DealStart({ data, today, headId, onStart }: { data: FeesData; today: string; headId: string; onStart: (id: string | null) => void }) {
   const [query, setQuery] = useState("");
   const options = useMemo(() => templateOptions(ACCOUNT_KIND, data, today).filter((o) => o.source === "house"), [data, today]);
@@ -330,7 +333,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
       }} />
       {tiles && !wide && (
         // a phone: one strip stays at the top, what is left and the place on its first line, the difference and the plan's tap under them,
-        // and the choice of what only the person knows under it, one line
+        // and the choice of what only the person knows under it, one line; not a kit piece: the three tiles' figures as a phone has room for them
         <div className="sticky top-0 z-10 -mx-1 flex flex-col gap-1 border-b border-border bg-popover px-1 py-2 text-sm">
           <p className="flex flex-wrap items-baseline justify-between gap-x-3">
             <span>
@@ -446,7 +449,7 @@ function addAbroadCase(ed: DealEditor, fee: Fee, values: readonly string[]) {
   ed.oc.onOpenCase(fee.id, next.cases.at(-1)!.id, "pointer");
 }
 
-/** Under the buy-and-sell block's cases, where the deal has no case for a fund bought abroad: what is missing and its add (E). */
+/** Under the buy-and-sell block's cases, where the deal has no case for a fund bought abroad: what is missing and its add (E). Not a kit piece: one sentence and the kit's inline button, said only here. */
 function AbroadCaseLine({ words, onAdd }: { words: string; onAdd: () => void }) {
   return (
     <p className="flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
@@ -461,15 +464,13 @@ function AbroadCaseLine({ words, onAdd }: { words: string; onAdd: () => void }) 
 /**
  * The popup's head (B, G): on a computer the deal's name typed in place, its pencil in its box (the fee page's bar's field), where it is
  * kept, the fee page's link, and its menu (rename, delete); the sheet's own close stands at its end. On a phone (C, J) one top bar: the
- * name, and the menu, which also holds the fee page's link. Delete asks first, under the head on a computer, as a sheet from the
- * foot on a phone.
+ * name, and the menu, which also holds the fee page's link. Delete asks first (`ConfirmAsk`).
  */
 function DealHead({ deal, headId, isSaved, writable, onName, onDelete }: { deal: FeeDeal; headId: string; isSaved: boolean; writable: boolean; onName: (name: string) => void; onDelete: () => void }) {
   const [renaming, setRenaming] = useState(false);
   const [menu, setMenu] = useState(false);
   const [asking, setAsking] = useState(false);
   const wide = useMedia(MQ.md);
-  const askId = useId();
   // the menu's control, which it stands under and gives the focus back to
   const more = useRef<HTMLElement | null>(null);
   const openMenu = (e: MouseEvent<HTMLButtonElement>) => {
@@ -535,38 +536,17 @@ function DealHead({ deal, headId, isSaved, writable, onName, onDelete }: { deal:
         </div>
       )}
       {menu && <ActionMenu actions={actions} onClose={() => setMenu(false)} back={more} />}
-      {asking && wide && (
-        <Card pad="tight" role="alertdialog" aria-label={w.head.confirm} className="flex flex-col gap-2 self-end">
-          <p className="font-medium">{w.head.confirm}</p>
-          <p className="text-sm text-muted-foreground">{w.head.confirmBody}</p>
-          <div className="flex gap-2">
-            <Button variant="destructive" onClick={onDelete}>
-              {w.head.confirmYes}
-            </Button>
-            <Button onClick={close}>{w.head.confirmNo}</Button>
-          </div>
-        </Card>
-      )}
-      {/* a phone: the question comes as a sheet from the foot, its buttons the screen's width (J) */}
-      <Sheet open={asking && !wide} onClose={close} labelledBy={askId}>
-        <div className="flex flex-col gap-3">
-          <h3 id={askId} className="text-lg font-semibold">
-            {w.head.confirm}
-          </h3>
-          <p className="text-muted-foreground">{w.head.confirmBody}</p>
-          <Button variant="destructive" className="w-full" onClick={onDelete}>
-            {w.head.confirmYes}
-          </Button>
-          <Button className="w-full" onClick={close}>
-            {w.head.confirmNo}
-          </Button>
-        </div>
-      </Sheet>
+      <div className="self-end">
+        <ConfirmAsk open={asking} question={w.head.confirm} body={w.head.confirmBody} yes={w.head.confirmYes} no={w.head.confirmNo} onYes={onDelete} onNo={close} />
+      </div>
     </div>
   );
 }
 
-/** Under a deal's row in the lists: that it is the person's, and its edit, which on a row the plan cannot price (`complete`) completes it. */
+/**
+ * Under a deal's row in the lists: that it is the person's, and its edit, which on a row the plan cannot price (`complete`) completes it.
+ * Not a kit piece: the kit's `Tag` and `Button`, wired to this page's popup.
+ */
 export function DealTerms({ id, complete = false }: { id: string; complete?: boolean }) {
   const api = useDealAccounts();
   const deal = api?.dealOf(id);
@@ -582,7 +562,7 @@ export function DealTerms({ id, complete = false }: { id: string; complete?: boo
   );
 }
 
-/** Under the account list: a new deal, started from a house's list or empty. */
+/** Under the account list: a new deal, started from a house's list or empty. Not a kit piece: the kit's `Button`, wired to this page's popup. */
 export function AddDealButton() {
   const api = useDealAccounts();
   if (!api) return null;
@@ -597,7 +577,8 @@ export function AddDealButton() {
 
 /**
  * The pair card's account half where the account is the person's deal (H): the price list it was filled from and that list's date, the fees
- * changed from it, the day it was saved, and its two ways on: edit it here (the popup) and open it on /deal.
+ * changed from it, the day it was saved, and its two ways on: edit it here (the popup) and open it on /deal. Not a kit piece: the kit's
+ * `KeyValueList`, `Button` and `TextLink` holding what only a deal says.
  */
 export function DealCard({ id, house }: { id: string; house: (houseId: string) => string | null }) {
   const api = useDealAccounts();
@@ -626,7 +607,7 @@ export function DealCard({ id, house }: { id: string; house: (houseId: string) =
   );
 }
 
-/** A part's words, its figures in their number states (a figure typed in the entered ink, a figure from a price list sourced). */
+/** A part's words, its figures in their number states (a figure typed in the entered ink, a figure from a price list sourced). Not a kit piece: it reads the deal's part words (`PartWords`), which only a deal has. */
 function PartSaid({ words: p }: { words: PartWords }) {
   const fig = (v: SiteValue) => <Num value={v} display={amountWords(formatValue(v.value as number, v.unit))} />;
   return (
@@ -643,6 +624,7 @@ function PartSaid({ words: p }: { words: PartWords }) {
 /**
  * A deal fee as the ticket writes it (A, F): each price it holds in the case the plan reads, its parts joined, a later price after the month
  * it starts ("0% עד 11.2027, אחר כך 0.03% לרבעון"), and the pick of what only the person knows that chose its case ("· לפי: עם משכורת בבנק").
+ * Not a kit piece: words built from the deal's reading, which the ticket's kit line (`ReceiptLine`) holds.
  */
 function DealFeeWords({ read, feeId }: { read: DealRead; feeId: string }) {
   const fee = read.fees.find((f) => feeOf(f) === feeId);
@@ -680,7 +662,7 @@ const monthDots = (until: string): string => {
   return `\u2066${String(last.m).padStart(2, "0")}.${last.y}\u2069`;
 };
 
-/** Where a deal just deleted from the popup stood in the account list (G): its name, in /deal's words. */
+/** Where a deal just deleted from the popup stood in the account list (G): its name, in /deal's words. Not a kit piece: one line said only here. */
 export function DeletedLine({ name }: { name: string }) {
   return (
     <p className="rounded-md bg-card px-3 py-2 text-sm text-muted-foreground">
@@ -690,7 +672,7 @@ export function DeletedLine({ name }: { name: string }) {
   );
 }
 
-/** On a house's pair card: a new deal from the house's latest list, on the person's terms. */
+/** On a house's pair card: a new deal from the house's latest list, on the person's terms. Not a kit piece: the kit's `Button`, wired to this page's popup. */
 export function DealFromHouseButton({ houseId, children, className = "self-start -ms-2" }: { houseId: string; children: ReactNode; className?: string }) {
   const api = useDealAccounts();
   if (!api) return null;

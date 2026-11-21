@@ -16,7 +16,7 @@ export function DealColumns({ hostRef, setup, fees, toolbox }: { hostRef?: RefOb
     <div ref={hostRef} className="@container/deal">
       <div className="grid grid-cols-1 items-start gap-4 @min-[75rem]/deal:grid-cols-[minmax(0,1fr)_28rem]">
         <div className="flex flex-col gap-6 @min-[75rem]/deal:col-start-1 @min-[75rem]/deal:row-start-1">
-          {/* once the deal has a kind (it has fees), what it is about is a strip of two lines, in a low card (founder, 2026-11-20) */}
+          {/* once the deal has a kind (it has fees), what it is about is a strip of two lines, in a low card */}
           {setup && <Card pad={fees ? "strip" : "default"}>{setup}</Card>}
           {/* the fees' cards stand on the page, not in a card of the same surface; while something is carried they keep their height
               (`data-carry-hold`, kit/lift.tsx): what a drop would leave draws inside */}

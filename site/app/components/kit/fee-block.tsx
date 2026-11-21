@@ -1,5 +1,5 @@
 // A fee in the builder (design-system 11, "Cases and parts"): its mark (an emoji on a faint tile of its colour) and name, under a thin
-// stripe of its colour along the card's top (founder, 2026-11-19), then its price. A fee whose price does not change is
+// stripe of its colour along the card's top, then its price. A fee whose price does not change is
 // one slim line, its parts after its name (`SlimFee`), which opens in place as a case does; a fee whose price changes holds its cases
 // under its name's line (`FeeBlock`): the parts every case holds alike, then the cases' band. Each fee keeps its own dot colour; no block takes it. An open fee's bin stands beside its name; a closed one may carry
 // small actions in its top end corner (`corner`: its bin and its duplicate), straddling its top edge so they cover nothing, drawn only
@@ -36,8 +36,8 @@ export interface FeeRemove {
 }
 
 /**
- * The thin stripe of the fee's colour along its card's top edge, bending down its rounded corners as a top border does (founder,
- * 2026-11-20: a straight bar stood over the curve): the card's shape in the fee's colour, masked to its 3 px top border.
+ * The thin stripe of the fee's colour along its card's top edge, bending down its rounded corners as a top border does: the card's shape
+ * in the fee's colour, masked to its 3 px top border.
  */
 const Stripe = ({ dot }: { dot: string }) => (
   <span
@@ -101,7 +101,7 @@ export interface FeeHeadSlot {
 export function SlimFee({ dot, mark, name, label, onOpen, open, remove, actions, grip, corner, head, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; label: string; onOpen: () => void; open?: boolean; remove?: FeeRemove | undefined; actions?: ReactNode; /** A grip before its name that lifts the fee (lift.tsx). */ grip?: ReactNode; /** Closed: the knobs in its corner (its bin, its duplicate). */ corner?: ReactNode; head?: FeeHeadSlot | undefined; children: ReactNode }) {
   return (
     <PickCard label={label} onPick={onOpen} chosen={open} className={cx("bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 py-1")}>
-      {/* open, the outline in the action colour frames it; a stripe of the fee's colour over it would cut its corners (founder, 2026-11-19) */}
+      {/* open, the outline in the action colour frames it; a stripe of the fee's colour over it would cut its corners */}
       {!open && <Stripe dot={dot} />}
       {open ? (
         <div data-open-fee="" className="contents">

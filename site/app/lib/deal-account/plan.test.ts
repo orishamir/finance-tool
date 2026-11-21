@@ -43,11 +43,20 @@ describe("F-128 the plan sets what is bought and the channel", () => {
     expect(on.filter((x) => x.on === "charged").map((x) => kindOf(x.fee)).sort()).toEqual(["custody", "trade"]);
   });
 
-  it("says what a fee lacks where the deal has no case for what the plan buys", () => {
+  it("says what a fee lacks where the deal has no case for what the plan buys, by the line the house it was filled from reads", () => {
     const deal = fromHouse("leumi");
-    const on = feesOnPlan(deal, { ...run, instrumentClass: "mutual_fund_units", listing: undefined as never }, ctx);
-    const miss = on.find((x) => x.on === "missing");
-    expect(miss && miss.on === "missing" && miss.missing).toMatchObject({ why: "case", kind: "trade" });
+    const mutual = { ...run, instrumentClass: "mutual_fund_units", listing: undefined as never };
+    const line = { ...ctx, lineValue: lineValueOf(bundle.snapshots.find((s) => s.id === "leumi")!) };
+    // the bank files an open mutual fund under its line for securities in Tel Aviv (BRK-16): the deal reads that line's case
+    const trade = deal.fees.find((f) => f.kind === "trade")!;
+    expect(feesOnPlan(deal, mutual, line).find((x) => x.fee === trade.id)?.on).toBe("charged");
+    // the same deal with no case for that line lacks one
+    const value = line.lineValue("trade", mutual, whatOfRun(mutual));
+    if (!hasCases(trade)) throw new Error("the bank's trade fee has cases");
+    const t = trade.by.findIndex((b) => b.kind === "what");
+    const without = { ...deal, fees: deal.fees.map((f) => (f === trade ? { ...trade, cases: trade.cases.filter((c) => { const v = c.when[t]; return !(v === "any" || (Array.isArray(v) && v.includes(value))); }) } : f)) };
+    const miss = feesOnPlan(without, mutual, line).find((x) => x.on === "missing");
+    expect(miss && miss.on === "missing" && miss.missing).toMatchObject({ why: "case", kind: "trade", fee: trade.id });
     expect(missingOf(missingKey({ why: "case", fee: deal.fees[0]!.id, kind: "trade" }))).toEqual({ why: "case", fee: deal.fees[0]!.id, kind: "trade" });
   });
 });
