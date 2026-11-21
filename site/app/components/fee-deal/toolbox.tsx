@@ -269,8 +269,8 @@ export function ToolboxColumn({
 
 /**
  * The toolbox's card on a computer wide enough for a column of its own (`cardRef`, which the page brings into view and focuses in):
- * beside the fees, sticking under the header as they scroll by, scrolling inside itself where it is taller than the window under the
- * header (`useStickyColumn`), and kept clear by the site's "back to the top" button (`data-keep-clear`). Narrower, the toolbox is the
+ * beside the fees, sticking under the header as they scroll by (in the indices page's popup, under the popup's head and tiles), scrolling
+ * inside itself where it is taller than the room under them (`useStickyColumn`), and kept clear by the site's "back to the top" button (`data-keep-clear`). Narrower, the toolbox is the
  * sheet at the foot of the screen. Escape closes it (`onClose`).
  */
 export function ToolboxCard({ cardRef, onClose, children }: { cardRef: RefObject<HTMLDivElement | null>; onClose: () => void; children: ReactNode }) {

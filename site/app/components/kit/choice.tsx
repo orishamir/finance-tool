@@ -265,11 +265,15 @@ const OWN_TAP = "a, button, input, select, textarea, label, summary, [role=butto
  * Whether a click fell on the surface of the card or cell that handles it (`e.currentTarget`), and not on something inside with a tap of
  * its own: what opens the card on a press anywhere else on it. A part of the card that stands in a layer over its button (a block that
  * holds a grip is positioned for it) still opens the card this way. A sheet rendered elsewhere by React, whose clicks bubble to the card
- * through React's tree, is not on the card.
+ * through React's tree, is not on the card. Only what lies between the press and the card counts: a card inside a sheet (the indices
+ * page's deal popup, a `<dialog>`) still opens on a press on its surface.
  */
 export function onSurface(e: { target: EventTarget; currentTarget: EventTarget }): boolean {
   const t = e.target as Element;
-  return (e.currentTarget as Node).contains(t) && !t.closest(OWN_TAP);
+  const root = e.currentTarget as Element;
+  if (!root.contains(t)) return false;
+  for (let x: Element | null = t; x && x !== root; x = x.parentElement) if (x.matches(OWN_TAP)) return false;
+  return true;
 }
 
 /**

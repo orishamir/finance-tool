@@ -42,9 +42,9 @@ import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { MQ, useMedia, useWiderThan } from "../../lib/hooks";
 import { feeDeal as copy } from "../../copy";
-import { Card, ThingMenu, ValueMenuSheet, type ReadPick } from "../kit";
+import { ThingMenu, ValueMenuSheet, type ReadPick } from "../kit";
 import { FeesColumn, Palette, SetupStrip, feeGroup, paletteItems, shownFeeOrder } from "./builder";
-import { DealColumns, TOOLBOX_STICKY } from "./deal-columns";
+import { DealColumns, PaletteColumn } from "./deal-columns";
 import { useSaid } from "./deal-notices";
 import { UNDO_MS } from "./use-undo";
 import { partPlaceId } from "./figures";
@@ -448,9 +448,9 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
     : null;
   const adding = panelColumn ? (panelView ? ("line" as const) : null) : { palette, copy: copyFee };
   const paletteColumn = panelColumn && !panelView && kind && palette.length > 0 ? (
-    <Card className={TOOLBOX_STICKY}>
+    <PaletteColumn>
       <Palette items={palette} onAdd={onAdd} copy={copyFee} />
-    </Card>
+    </PaletteColumn>
   ) : null;
   const setupStrip = <SetupStrip deal={deal} kinds={data.kinds} offered={offeredKinds} onPickTrack={picker.onPickTrack} onTemplates={picker.onTemplates} filled={picker.filled} kindLine={lines.kind} onKind={onKind} />;
   const feesColumn = kind && (

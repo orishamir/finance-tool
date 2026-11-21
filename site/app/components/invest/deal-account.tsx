@@ -268,8 +268,8 @@ function DealStart({ data, today, headId, onStart }: { data: FeesData; today: st
 const START_WORDS: TemplateListWords = { search: w.start.search, clear: w.start.clear, none: w.start.none, houses: w.start.group };
 
 /**
- * The popup on one deal: its head, the tiles and the plan line (sticky as the fees scroll; on a phone the head, the strip and the pick bar
- * stay together), the pick bar, and the editor. Not a kit piece: the page's own popup, built of kit pieces and /deal's editor.
+ * The popup on one deal: its head, the tiles and the plan line, staying together at the top as the fees scroll (on a phone the head, the
+ * strip and the pick bar), the pick bar, and the editor. Not a kit piece: the page's own popup, built of kit pieces and /deal's editor.
  */
 function DealPopup({ data, today, saved, writable, first, openFee, world, headId, onDeleted }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; /** The fee it opens on, where its opener names one. */ openFee?: string | undefined; world: DealWorld; headId: string; onDeleted: (name: string, at: number | null) => void }) {
   // what each fee's head says is read with the deal as it is now, which the editor holds: the editor draws it after this render
@@ -340,9 +340,9 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   }, []);
   const wide = useMedia(MQ.md);
   const [planShown, setPlanShown] = useState(false);
-  // the toolbox's column sticks under what stays at the top, not behind it (`TOOLBOX_STICKY`)
+  // the toolbox's column sticks under what stays at the top, not behind it (`TOOLBOX_STICKY`, `useStickyColumn`)
   const stuck = useRef<HTMLDivElement>(null);
-  const toolTop = useStuckRoom(stuck, wide ? !!tiles : true, wide);
+  const toolTop = useStuckRoom(stuck, true, wide);
   // the tiles' figures, each computed from the run with its formula (F-128): what is left, the place, the difference from the house's row
   const okAt = at?.kind === "ok" ? at : null;
   const leftFig = tiles?.left !== null && tiles?.left !== undefined && okAt ? okAt.figure(tiles.left, w.tiles.leftAbout) : null;
@@ -361,7 +361,31 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
 
   return (
     <div ref={root} className="flex flex-col gap-4" style={toolTop !== null ? ({ "--toolbox-top": `${toolTop}px` } as CSSProperties) : undefined}>
-      {wide && head}
+      {wide && (
+        // a computer: the head, then the three tiles and the plan line, all staying at the top as the fees scroll (B), so the head is never
+        // cut by the popup's top edge
+        <div ref={stuck} data-deal-top="" className={cx(STICKY_TOP, "flex flex-col gap-4")}>
+          {head}
+          {tiles && (
+            <div className="flex flex-col gap-2">
+              <StatRow cols={3}>
+                <StatTile label={w.tiles.left(p.years)} note={tiles.missing ? w.tiles.waits(feeNameOf(tiles.missing.kind, tiles.missing.name)) : w.tiles.leftNote}>
+                  {leftNum ?? <span className="text-base">{w.tiles.noSum}</span>}
+                </StatTile>
+                <StatTile label={w.tiles.place} note={tiles.place ? w.tiles.placeNote : w.tiles.unrankedNote}>
+                  {placeNum ?? <span className="text-base">{w.tiles.unranked}</span>}
+                </StatTile>
+                {house && (
+                  <StatTile label={w.tiles.diff(house.short)} note={w.tiles.diffNote}>
+                    {diffNum ?? <span aria-hidden="true">—</span>}
+                  </StatTile>
+                )}
+              </StatRow>
+              {planLine && <p className="text-sm text-muted-foreground">{planLine}</p>}
+            </div>
+          )}
+        </div>
+      )}
       {!wide && (
         // a phone: the head, then one strip, what is left and the place on its first line, the difference and the plan's tap under them, and
         // the choice of what only the person knows under it, one line, all staying at the top as the fees scroll (C, J); not a kit piece: the
@@ -401,24 +425,6 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
           <NoticeRow line={{ key: "deleted", text: feeDeal.end.deletedElsewhere, action: { label: feeDeal.end.keepAnyway, onClick: ed.doc.keepAnyway } }} />
         </div>
       )}
-      {tiles && wide && (
-        <div ref={stuck} data-deal-top="" className={cx(STICKY_TOP, "flex flex-col gap-2")}>
-          <StatRow cols={3}>
-            <StatTile label={w.tiles.left(p.years)} note={tiles.missing ? w.tiles.waits(feeNameOf(tiles.missing.kind, tiles.missing.name)) : w.tiles.leftNote}>
-              {leftNum ?? <span className="text-base">{w.tiles.noSum}</span>}
-            </StatTile>
-            <StatTile label={w.tiles.place} note={tiles.place ? w.tiles.placeNote : w.tiles.unrankedNote}>
-              {placeNum ?? <span className="text-base">{w.tiles.unranked}</span>}
-            </StatTile>
-            {house && (
-              <StatTile label={w.tiles.diff(house.short)} note={w.tiles.diffNote}>
-                {diffNum ?? <span aria-hidden="true">—</span>}
-              </StatTile>
-            )}
-          </StatRow>
-          {planLine && <p className="text-sm text-muted-foreground">{planLine}</p>}
-        </div>
-      )}
       {run && wide && own.length > 0 && <ReadForBand lead={w.readFor} note={w.planKnows(where)} picks={pickItems(own, ed.onPick)} />}
       {ed.picker}
       {ed.columns(null)}
@@ -431,9 +437,11 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
 
 /**
  * What stays at the top of the popup as the fees scroll: drawn from the very top of the sheet's scrolling body, over its padding (4 px on a
- * phone, 12 px from `lg`, app.css `.sheet-body`), so nothing that scrolls under it shows above it.
+ * phone, 12 px from `lg`, app.css `.sheet-body`), so nothing that scrolls under it shows above it. It stands in the sticky layer, as the
+ * site's header does over a page (`--z-sticky`): what the editor raises inside the fees (a grip, a figure's tap area) stays under it, so
+ * nothing under it takes a click or is drawn over it, and the menus, in the layer above it, open over it.
  */
-const STICKY_TOP = "sticky z-10 -mx-1 bg-popover px-1 pb-2 -top-1 -mt-1 pt-1 lg:-top-3 lg:-mt-3 lg:pt-3";
+const STICKY_TOP = "sticky z-[var(--z-sticky)] -mx-1 bg-popover px-1 pb-2 -top-1 -mt-1 pt-1 lg:-top-3 lg:-mt-3 lg:pt-3";
 
 /** Brings fee `feeId`'s block of the popup in `root` to just under what stays at its top (`data-deal-top`). */
 function bringUnderTop(root: HTMLElement | null, feeId: string) {
