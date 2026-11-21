@@ -100,6 +100,9 @@ them, and change the shared piece when a rule here asks for it.
 
 - When one number answers the question, show it large, with a line under it
   saying what it is and what it depends on. No chart around it.
+- A bar under one number that only repeats it goes. A share from 0 to 100
+  may have a plain bar, not a ring. A drawing that shows several numbers, or
+  a place on a scale, stays.
 
 ## Shared parts
 

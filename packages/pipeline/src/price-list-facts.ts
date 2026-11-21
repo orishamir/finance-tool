@@ -50,10 +50,56 @@ export function checkLineFacts(line: Line, latest: boolean): string[] {
       const step = line.size_tiers.find((t) => t.on === "fee" && t.flat);
       if (!step || step.flat!.value !== flat.amount.value || step.up_to?.value !== flat.up_to.value) out.push(`${at}: flat_up_to and the flat size step differ`);
     }
+    out.push(...stepsNeverDearer(line, at));
   }
   // 4. a fixed fee the month's trading offsets; 6. when a fee is collected
   if (line.offset && line.base !== "fixed_period") out.push(`${at}: offset belongs to a fixed_period line`);
   if (line.collection && line.base !== "custody" && line.base !== "fixed_period") out.push(`${at}: collection belongs to a custody or fixed_period line`);
+  return out;
+}
+
+const num = (v: { value?: unknown } | null | undefined): number | null => (typeof v?.value === "number" ? v.value : null);
+const sameCurrency = (a: string | undefined, b: string | undefined) => !!a && !!b && a.slice(0, 3) === b.slice(0, 3);
+
+/**
+ * data-schema §3.6a item 3: a step by size never makes a conversion dearer than the line's own price at the same size, since a list prints a step
+ * to lower the price of a small or a large conversion. A spread step is at or under the line's spread; a share off is between 0 and 100; a flat
+ * step is at or under the line's minimum where it has one, and at or under the line's price at the smallest size in the step,
+ * `max(min, min(rate × size, max))` at the step's bottom, where the line's price grows with the size from there. Each sum compared in its
+ * currency; a sum in another currency than the line's bounds is not compared.
+ */
+function stepsNeverDearer(line: Line, at: string): string[] {
+  const out: string[] = [];
+  const min = num(line.min);
+  const max = num(line.max);
+  const rate = line.rate.unit === "pct_of_trade" ? num(line.rate) : null;
+  const spread = num(line.spread);
+  let bottom = 0;
+  for (const [i, t] of line.size_tiers!.entries()) {
+    const step = `${at}: size step ${i + 1}`;
+    if (t.rate) {
+      const r = num(t.rate);
+      if (r === null || spread === null) out.push(`${step} sets a spread, and the line prints no spread to hold it to`);
+      else if (r > spread) out.push(`${step} sets a spread of ${r}%, above the line's ${spread}%`);
+    }
+    if (t.discount_pct) {
+      const d = num(t.discount_pct);
+      if (d === null || d < 0 || d > 100) out.push(`${step} takes off ${d}%, outside 0 to 100`);
+    }
+    if (t.flat) {
+      const f = num(t.flat);
+      const comparable = (b: Line["min"]) => sameCurrency(b?.unit, t.flat!.unit);
+      if (f !== null && min !== null && comparable(line.min) && f > min) out.push(`${step}'s flat price ${f} is above the line's minimum ${min}`);
+      if (f !== null && rate !== null && (min === null || comparable(line.min)) && (max === null || comparable(line.max))) {
+        // the line's price at the step's bottom, the size its top is in (dollars, as the flat price is)
+        let lowest = (rate / 100) * bottom;
+        if (max !== null) lowest = Math.min(lowest, max);
+        if (min !== null) lowest = Math.max(lowest, min);
+        if (f > lowest + 1e-9) out.push(`${step}'s flat price ${f} is above the line's own price at the step's bottom, ${lowest}`);
+      }
+    }
+    bottom = num(t.up_to) ?? Infinity;
+  }
   return out;
 }
 

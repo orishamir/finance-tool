@@ -103,9 +103,13 @@ describe("F-102 with BANK-35: the payment-account cap from 1.7.2027 is flagged, 
 
 describe("F-103 a charge for each corporate event abroad (D67)", () => {
   it("is the amount at the month's rate, never more than is held", () => {
-    expect(corporateEventFee(50, 3.7, 10_000)).toBeCloseTo(185, 9);
-    expect(corporateEventFee(50, 3.7, 100)).toBe(100);
+    expect(corporateEventFee({ amount: 50, in: "instrument" }, 3.7, 10_000)).toBeCloseTo(185, 9);
+    expect(corporateEventFee({ amount: 50, in: "instrument" }, 3.7, 100)).toBe(100);
     expect(corporateEventFee(undefined, 3.7, 10_000)).toBe(0);
+  });
+
+  it("a sum in shekels is charged as it is, whatever the month's rate", () => {
+    expect(corporateEventFee({ amount: 185, in: "nis" }, 4.4, 10_000)).toBeCloseTo(185, 9);
   });
 
   const abroad = (distribution: { yield: number; perYear: number } | undefined): WorkbenchInput => ({
@@ -209,7 +213,7 @@ describe("golden figures of F-102 and F-103 (finance review 2, should-fix 10)", 
         goal: { amountNow, monthly: 0, months },
         market: { grossReturn: 0, inflation: 0, returnIn: "instrument", fxChange: 0 },
         fund: { kind: "foreign-fund", drag: {}, domicile: "ireland", distribution: { yield: 0.04, perYear: 4 } },
-        tariff: { currency: { code: "USD", startRate: 3.7 }, fx, perDividend: 50 },
+        tariff: { currency: { code: "USD", startRate: 3.7 }, fx, perDividend: { amount: 50, in: "instrument" } },
         profile: {},
       },
       ctx,
@@ -243,7 +247,7 @@ describe("golden figures of F-102 and F-103 (finance review 2, should-fix 10)", 
           goal: { amountNow: 50_000, monthly: 0, months: 60 },
           market: { grossReturn: 0.06, inflation: 0.02, returnIn: "instrument", fxChange: 0 },
           fund: { kind: "foreign-fund", drag: { management: 0.0003 }, domicile: "ireland", distribution: { yield: 0.015, perYear: 4 } },
-          tariff: { currency: { code: "USD", startRate: 3.7 }, fx: 0.002, custody: CUSTODY, ...(perDividend ? { perDividend } : {}) },
+          tariff: { currency: { code: "USD", startRate: 3.7 }, fx: 0.002, custody: CUSTODY, ...(perDividend ? { perDividend: { amount: perDividend, in: "instrument" as const } } : {}) },
           profile: {},
         },
         ctx,
@@ -290,7 +294,7 @@ describe("flags and records of F-102 and F-103 (finance review 2)", () => {
           goal: { amountNow: 50_000, monthly: 0, months, firstMonth: 1 },
           market: { grossReturn: 0.06, inflation: 0.02, returnIn: "instrument", fxChange: 0 },
           fund: { kind: "foreign-fund", drag: {}, domicile: "ireland", distribution: { yield: 0.02, perYear: 4 } },
-          tariff: { currency: { code: "USD", startRate: 3.7 }, fx: 0, perDividend: 50 },
+          tariff: { currency: { code: "USD", startRate: 3.7 }, fx: 0, perDividend: { amount: 50, in: "instrument" as const } },
           profile: {},
         },
         ctx,
@@ -327,9 +331,9 @@ describe("flags and records of F-102 and F-103 (finance review 2)", () => {
     expect(at3.run === "runSecurities" ? [at3.input.tariff.currentAccount, at3.input.tariff.until?.then.currentAccount] : null).toEqual([0, 3]);
     const none = withoutFeeLine(plan, "account");
     expect(none.run === "runSecurities" ? [none.input.tariff.currentAccount, none.input.tariff.until?.then.currentAccount] : null).toEqual([undefined, undefined]);
-    const abroad = { run: "runSecurities" as const, input: { ...plan.input, tariff: { custody: { rate: 0.001, everyMonths: 3 }, perDividend: 50, currency: { code: "USD", startRate: 3.7 } } } };
+    const abroad = { run: "runSecurities" as const, input: { ...plan.input, tariff: { custody: { rate: 0.001, everyMonths: 3 }, perDividend: { amount: 50, in: "instrument" as const }, currency: { code: "USD", startRate: 3.7 } } } };
     const half = withFeeRate(abroad, "custody", 0.0005);
-    expect(half.run === "runSecurities" ? half.input.tariff.perDividend : null).toBeCloseTo(25, 9);
+    expect(half.run === "runSecurities" ? half.input.tariff.perDividend?.amount : null).toBeCloseTo(25, 9);
   });
 });
 

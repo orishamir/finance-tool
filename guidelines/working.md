@@ -2,8 +2,7 @@
 
 ## 1. Choose the work
 
-- Work only on what the founder asks for. Suggest anything else; don't
-  start it.
+- Fix what you find wrong on the site, and tell him once it is live.
 - When shared data or rules change, keep every page they touch correct, the
   fees page among them, but don't polish a page he didn't ask about.
 
@@ -16,6 +15,9 @@
   owns.
 - Name the guideline file to follow for the work (charts, wording, design,
   research), and say to build from the kit.
+- For a page built from pictures he approved: point the builder at them and
+  say "build exactly this; report each departure with why". Accept or send
+  back each departure; nothing unlisted ships.
 - Say what to leave alone, and what to report: each item done, left or
   already gone, with why; the checks. No screenshots.
 - **A new kind of thing gets its own abstraction, not a special case.**
@@ -48,7 +50,9 @@
    literal colours, Hebrew outside the copy files). Keep each item as a
    one-off with a reason, send it back if the kit has it, or move it into
    the kit.
-5. Fresh readers (sessions with no project context, judging screenshots,
+5. A page built from approved pictures is compared with them, before it
+   lands, by an agent that hasn't seen the build's reasoning.
+6. Fresh readers (sessions with no project context, judging screenshots,
    `node tools/fresh-reader.mjs`) run only when the founder
    asks.
 

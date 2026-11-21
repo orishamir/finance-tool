@@ -67,6 +67,30 @@ describe("a conversion priced by its size (§3.6a item 3)", () => {
     l.size_tiers = [...l.size_tiers!].reverse();
     expect(checkLineFacts(l, true).join()).toMatch(/smallest up/);
   });
+  it("every recorded step passes the check that a step never raises the price", () => {
+    const sized = [snap("ibi@2026-11-12"), snap("discount@2026-11-14"), fibi, snap("mizrahi-tefahot@2026-11-12"), snap("hapoalim@2026-11-12")].flatMap((s) => s.lines.filter((l) => l.size_tiers));
+    expect(sized.length).toBeGreaterThan(4);
+    for (const l of sized) expect(checkLineFacts(structuredClone(l), true), l.id).toEqual([]);
+  });
+  it("a spread step above the line's spread fails", () => {
+    const l = line(snap("ibi@2026-11-12"), "ibi-fx-spread");
+    l.size_tiers![1]!.rate!.value = 0.8;
+    expect(checkLineFacts(l, true).join()).toMatch(/spread of 0.8%, above the line's 0.7%/);
+  });
+  it("a share off outside 0 to 100 fails", () => {
+    const l = line(snap("discount@2026-11-14"), "discount-fx-conversion-direct");
+    l.size_tiers![1]!.discount_pct!.value = 120;
+    expect(checkLineFacts(l, true).join()).toMatch(/outside 0 to 100/);
+  });
+  it("a flat step above the line's minimum, or above the line's price at the step's bottom, fails", () => {
+    const l = line(fibi, "fibi-fx-conversion-branch");
+    l.size_tiers![1]!.flat!.value = 7;
+    l.flat_up_to!.amount.value = 7;
+    expect(checkLineFacts(l, true).join()).toMatch(/flat price 7 is above the line's minimum 6.25/);
+    // a line with no minimum: a flat 3 $ from 10 $ is above 0.175% of 10 $
+    const { flat_up_to: _f, ...bare } = { ...line(fibi, "fibi-fx-conversion-branch"), min: null };
+    expect(checkLineFacts(bare, true).join()).toMatch(/above the line's own price at the step's bottom/);
+  });
 });
 
 describe("an offset and when a fee is collected (§3.6a items 4 and 6)", () => {

@@ -410,6 +410,40 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     for (const q of l.open_questions ?? []) if (!out.flags.includes(q)) out.flags.push(q);
   };
 
+  /**
+   * F-12, F-13: how a line's sums printed in a currency are kept. Each sum keeps its currency and is charged at that currency's rate at each
+   * trade: where the line's sums are in the fund's own currency they stay in it (`in: "instrument"`) and are read at that currency's rate of the
+   * month (F-04's path, A-03); a sum in shekels stays in shekels; one in any other currency, for which the run holds no path of its own, is
+   * converted at the run's rate for it (F-84) and so fixed for the run. A sum in the fund's currency beside one in another is refused, since a
+   * line with bounds holds one currency.
+   */
+  const lineSums = (line: SnapLine, figures: (ValueObject | null | undefined)[]): { in: "nis" | "instrument"; value: (vo: ValueObject, what: string) => number } => {
+    const fund = input.currency?.code ?? "ILS";
+    const codeOf = (vo: ValueObject): string => {
+      if (NIS_UNITS.has(vo.unit)) return "ILS";
+      // F-12: a sum printed in the trade's currency is in the currency the run trades the fund in; where the line names the currencies it is
+      // printed for and that one is not among them, the list gives no price for the trade
+      if (vo.unit === "trade_ccy_per_trade") {
+        if (line.trade_currencies && !line.trade_currencies.includes(fund)) throw new NotPrintedForCurrency(line.id, fund, line.trade_currencies);
+        return fund;
+      }
+      const code = vo.unit === "usd_per_share" ? "USD" : CURRENCY_OF_UNIT[vo.unit];
+      if (!code) throw new RecordInputError(`${line.id}: unit is ${vo.unit}, expected shekels, dollars, euros or pounds`);
+      return code;
+    };
+    const codes = new Set(figures.filter(hasBound).map(codeOf));
+    const own = fund !== "ILS" && codes.has(fund);
+    if (own && codes.size > 1) throw new RecordInputError(`${line.id}: the line's sums are in different units (${[...codes].join(", ")}), one of them the fund's currency`);
+    return {
+      in: own ? "instrument" : "nis",
+      value: (vo, what) => {
+        if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
+        const code = codeOf(vo);
+        return own || code === "ILS" ? vo.value : vo.value * rateOf(input.fx, code, what);
+      },
+    };
+  };
+
   const level = p.level;
   const averageLevel = level === "regulator_average" || level === "tase_average" ? level : undefined;
   if (level === "entered" && !p.entered) throw new RecordInputError(`provider ${snapshot.id}: level "entered" needs the person's entered tariff`);
@@ -458,35 +492,24 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       // E1: a dollar rate per share is charged on the share count, which needs the fund's price.
       const commission = (l: { line: SnapLine; rate: ValueObject; min: ValueObject | null | undefined; max: ValueObject | null | undefined; cap: ValueObject | null | undefined }): Commission => {
         const c: Commission = { rate: 0 };
-        if (l.rate.unit === "usd_per_share") {
+        const flat = l.line.flat_up_to;
+        const perShare = l.rate.unit === "usd_per_share";
+        // E2: each sum in its currency, read at the trade's rate where it is the fund's (`lineSums`)
+        const sums = lineSums(l.line, [perShare ? l.rate : null, l.min, l.max, flat?.amount, flat?.up_to]);
+        if (sums.in === "instrument") c.in = "instrument";
+        if (perShare) {
           if (typeof l.rate.value !== "number") throw new Unusable("line-without-value", `${l.line.id} rate has no value`);
           if (!input.fund?.sharePrice) throw new Unusable("needs-share-price", `${l.line.id} is a fee per share and the fund record has no share_price`);
           const priced = input.fund.sharePriceCurrency;
           if (priced && priced !== "ILS" && priced !== (input.currency?.code ?? "ILS")) rateOf(input.fx, priced, `${l.line.id}: the fund's unit price`);
-          c.perShare = l.rate.value * rateOf(input.fx, "USD", `${l.line.id} rate`);
+          c.perShare = sums.value(l.rate, `${l.line.id} rate`);
         } else c.rate = pct(l.rate, "pct_of_trade", `${l.line.id} rate`);
-        // E2: minimums and maximums in a foreign currency are converted at the run's rate.
-        const bound = (vo: ValueObject, what: string): number => {
-          if (NIS_UNITS.has(vo.unit)) return nis(vo, what);
-          // F-12: a bound printed in the trade's currency is in the currency the run trades the fund in; where the line names the
-          // currencies it is printed for and that one is not among them, the list gives no bound for the trade
-          if (vo.unit === "trade_ccy_per_trade") {
-            const trade = input.currency?.code ?? "ILS";
-            if (l.line.trade_currencies && !l.line.trade_currencies.includes(trade)) throw new NotPrintedForCurrency(l.line.id, trade, l.line.trade_currencies);
-            if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
-            return trade === "ILS" ? vo.value : vo.value * rateOf(input.fx, trade, what);
-          }
-          const code = CURRENCY_OF_UNIT[vo.unit];
-          if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars, euros or pounds`);
-          if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
-          return vo.value * rateOf(input.fx, code, what);
-        };
-        if (hasBound(l.min)) c.min = bound(l.min, `${l.line.id} min`);
-        if (hasBound(l.max)) c.max = bound(l.max, `${l.line.id} max`);
+        if (hasBound(l.min)) c.min = sums.value(l.min, `${l.line.id} min`);
+        if (hasBound(l.max)) c.max = sums.value(l.max, `${l.line.id} max`);
         // E3: the cap is a share of the trade value and wins over the minimum.
         if (hasBound(l.cap)) c.cap = pct(l.cap, "pct_of_trade", `${l.line.id} cap`);
         // F-12: a flat price for an order up to a sum (BRK-54).
-        if (l.line.flat_up_to) c.flatUpTo = { amount: bound(l.line.flat_up_to.amount, `${l.line.id} flat amount`), upTo: bound(l.line.flat_up_to.up_to, `${l.line.id} flat up to`) };
+        if (flat) c.flatUpTo = { amount: sums.value(flat.amount, `${l.line.id} flat amount`), upTo: sums.value(flat.up_to, `${l.line.id} flat up to`) };
         return c;
       };
       const c = commission(r);
@@ -552,18 +575,12 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   }
 
   /**
-   * F-13: what a dollar the price list prints is in the fund's currency, for a conversion into it: one for a dollar fund; for a fund in another
-   * currency the dollar at the run's rates, `S_USD / S_ccy`, fixed for the run. The sum is then in the fund's currency (`in: "instrument"`) and
-   * moves with that currency's rate at each conversion, as a dollar fund's sums move with the dollar.
-   */
-  const dollarInFund = (what: string): number => (input.currency!.code === "USD" ? 1 : rateOf(input.fx, "USD", what) / input.currency!.startRate);
-
-  /**
    * F-13: the steps by size a conversion line prints for its fee (`on: "fee"`) or its spread (`on: "spread"`), from the smallest, each sum as
-   * printed: its `size_tiers` (sums in dollars), and for the fee, where it has none, its flat price for a small conversion (`flat_up_to`) as one
-   * step. `sums` are the figures in a currency, for the line's one-currency check; `read` every figure read, for the line's sources.
+   * printed, or through `value` (`lineSums`): its `size_tiers` (sums in dollars), and for the fee, where it has none, its flat price for a small
+   * conversion (`flat_up_to`) as one step. `sums` are the figures in a currency, for the line's one-currency reading; `read` every figure read,
+   * for the line's sources.
    */
-  const stepsOf = (line: SnapLine, on: "fee" | "spread"): { steps: SizeStep[]; sums: ValueObject[]; read: ValueObject[] } => {
+  const stepsOf = (line: SnapLine, on: "fee" | "spread", value: (vo: ValueObject, what: string) => number = (vo) => vo.value as number): { steps: SizeStep[]; sums: ValueObject[]; read: ValueObject[] } => {
     const sums: ValueObject[] = [];
     const read: ValueObject[] = [];
     const sum = (vo: ValueObject, what: string): number => {
@@ -571,7 +588,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       if (!USD_UNITS.has(vo.unit) && !NIS_UNITS.has(vo.unit)) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels or dollars`);
       sums.push(vo);
       read.push(vo);
-      return vo.value;
+      return value(vo, what);
     };
     const tiers = (line.size_tiers ?? []).filter((t) => t.on === on);
     if (!tiers.length && on === "fee" && line.flat_up_to) {
@@ -596,14 +613,11 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     return { steps, sums, read };
   };
 
-  /** F-13: steps whose sums are multiplied by `k` (a dollar in the fund's currency, `dollarInFund`). */
-  const stepsIn = (steps: SizeStep[], k: number): SizeStep[] => steps.map((st) => ({ upTo: st.upTo * k, price: st.price.kind === "flat" ? { kind: "flat", amount: st.price.amount * k } : st.price }));
-
   /**
    * F-13: a conversion line as the run charges it. A bare percentage stays a number; a price per dollar, a minimum or a maximum makes a
    * `Commission`; steps by size (`sized`: the line's `size_tiers` for its fee, or its flat price for a small conversion) make a `SizedConversion`
-   * over it. Sums set in dollars stay in the fund's currency (`in: "instrument"`, `dollarInFund`), converted at the rate of each conversion; all of
-   * a line's sums, its bounds and its steps', are in one currency, since a `Commission` holds one.
+   * over it. Each sum keeps its currency (`lineSums`): dollars on a dollar fund stay in dollars (`in: "instrument"`), read at the rate of each
+   * conversion; all of a line's sums, its bounds and its steps', are in one currency.
    */
   const conversionOf = (l: { line: SnapLine; rate: ValueObject; min?: ValueObject | null; max?: ValueObject | null; sized: boolean }): { price: ConversionPrice; read: ValueObject[] } => {
     const c: Commission = { rate: 0 };
@@ -613,25 +627,21 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       if (typeof l.rate.value !== "number") throw new Unusable("line-without-value", `${l.line.id} rate has no value`);
       c.perCurrencyUnit = l.rate.value;
     } else c.rate = pct(l.rate, "pct_of_trade", `${l.line.id} rate`);
-    const sized = l.sized ? stepsOf(l.line, "fee") : { steps: [], sums: [], read: [] };
-    const bounds = [l.min, l.max].filter(hasBound);
-    const sums = [...bounds, ...sized.sums];
-    const line = (): number | Commission => (bounds.length || c.perCurrencyUnit !== undefined ? c : c.rate);
-    if (!sums.length) return { price: line(), read: [] };
-    // The FX bounds are in USD where the bank sets them so: they stay in the fund's currency (F-13).
-    const units = new Set(sums.map((b) => (USD_UNITS.has(b.unit) ? "usd" : NIS_UNITS.has(b.unit) ? "nis" : b.unit)));
-    if (units.size > 1) throw new RecordInputError(`${l.line.id}: the conversion's sums are in different units (${[...new Set(sums.map((b) => b.unit))].join(", ")})`);
-    const k = units.has("usd") ? dollarInFund(`${l.line.id} sums in dollars`) : 1;
-    if (units.has("usd")) c.in = "instrument";
-    const bound = (vo: ValueObject, what: string) => {
-      if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
-      if (!USD_UNITS.has(vo.unit) && !NIS_UNITS.has(vo.unit)) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels or dollars`);
-      return vo.value * k;
-    };
-    if (hasBound(l.min)) c.min = bound(l.min, `${l.line.id} min`);
-    if (hasBound(l.max)) c.max = bound(l.max, `${l.line.id} max`);
+    const figures = [l.min, l.max, ...(l.sized ? stepsOf(l.line, "fee").sums : [])].filter(hasBound);
+    const line = (): number | Commission => (hasBound(l.min) || hasBound(l.max) || c.perCurrencyUnit !== undefined ? c : c.rate);
+    if (!figures.length) return { price: line(), read: [] };
+    for (const vo of figures) if (!USD_UNITS.has(vo.unit) && !NIS_UNITS.has(vo.unit)) throw new RecordInputError(`${l.line.id}: unit is ${vo.unit}, expected shekels or dollars`);
+    // one currency for all of the line's sums: refused where they are in two, even when neither is the fund's
+    const units = new Set(figures.map((b) => (USD_UNITS.has(b.unit) ? "usd" : "nis")));
+    if (units.size > 1) throw new RecordInputError(`${l.line.id}: the conversion's sums are in different units (${[...new Set(figures.map((b) => b.unit))].join(", ")})`);
+    const sums = lineSums(l.line, figures);
+    if (sums.in === "instrument") c.in = "instrument";
+    if (hasBound(l.min)) c.min = sums.value(l.min, `${l.line.id} min`);
+    if (hasBound(l.max)) c.max = sums.value(l.max, `${l.line.id} max`);
+    if (!l.sized) return { price: line(), read: [] };
+    const sized = stepsOf(l.line, "fee", sums.value);
     if (!sized.steps.length) return { price: line(), read: [] };
-    return { price: { line: line(), steps: stepsIn(sized.steps, k), in: units.has("usd") ? "instrument" : "nis" }, read: sized.read };
+    return { price: { line: line(), steps: sized.steps, in: sums.in }, read: sized.read };
   };
 
   // FX: only a fund quoted in a foreign currency is converted (F-13).
@@ -646,9 +656,9 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     } else {
       const r = resolve("fx");
       if (r) {
-        // F-13: the steps by size, a flat price for a small conversion among them, are read at the list price only: an average is a percentage
-        // with no bounds (F-63)
-        const atList = r.rate === r.line.rate;
+        // F-13: the steps by size, a flat price for a small conversion among them, the spread and a recurring plan's price are read at the list
+        // price only: on the list's own line at its own rate. An average is a percentage with no bounds (F-63)
+        const atList = r.rate === r.line.rate && r.line.level === "list";
         const c = conversionOf({ ...r, sized: atList });
         // F-13 (D56, D65): a spread the price list limits ("עד 0.7%") is priced at its ceiling, beside the conversion fee and in a field of its
         // own (`fxSpread`), charged on every conversion, by its steps where the list prints the spread by the conversion's size; a spread with no
@@ -658,17 +668,17 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
         if (spread && typeof spread.value === "number") {
           if (typeof c.price !== "number") throw new RecordInputError(`${r.line.id}: a priced spread beside a fee with bounds, steps by size or a price per dollar is not modelled`);
           const s = pct(spread, "pct_of_trade", `${r.line.id} spread`);
-          const steps = stepsOf(r.line, "spread");
+          // the spread's tops, each in its currency as the fee's are (`lineSums`)
+          const sums = lineSums(r.line, stepsOf(r.line, "spread").sums);
+          const steps = stepsOf(r.line, "spread", sums.value);
           spreadRead.push(spread, ...steps.read);
-          // the spread's tops are in dollars (data-schema §3.6a item 3), measured in the fund's currency as the fee's are
-          if (steps.sums.some((vo) => !USD_UNITS.has(vo.unit))) throw new RecordInputError(`${r.line.id}: a spread's step tops are in dollars`);
-          if (steps.steps.length) out.tariff.fxSpread = { line: s, steps: stepsIn(steps.steps, dollarInFund(`${r.line.id} spread steps`)), in: "instrument" };
+          if (steps.steps.length) out.tariff.fxSpread = { line: s, steps: steps.steps, in: sums.in };
           else if (s > 0) out.tariff.fxSpread = s;
         }
         out.tariff.fx = c.price;
         used(r.line, r.rate, r.min, r.max, ...spreadRead, ...c.read);
         // F-13: the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
-        if (r.rate === r.line.rate && r.line.level === "list") {
+        if (atList) {
           const every = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
           out.standingAside.push(...every.filter((l) => !ranked(l)).map((l) => l.id));
           const plan = every.filter(ranked);
@@ -693,10 +703,11 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     if (l) {
       if (l.rate.unit !== "usd_per_event") throw new RecordInputError(`${l.id}: unit is ${l.rate.unit}, expected usd_per_event`);
       if (typeof l.rate.value !== "number") throw new Unusable("line-without-value", `${l.id} has no value`);
-      // in the instrument's currency, as the run charges it: dollars as they are, another currency through the shekel
+      // F-12's rule for a sum: in dollars on a fund in dollars, read at the month's rate; on a fund in another currency, for which the run holds no
+      // dollar path, in shekels at the run's dollar rate, held for the run
       const usd = input.fx?.USD;
       if (input.currency.code !== "USD" && !usd) throw new Unusable("needs-fx-rate", `${l.id}: the charge is in USD and the run holds no USD rate`);
-      out.tariff.perDividend = input.currency.code === "USD" ? l.rate.value : (l.rate.value * usd!) / input.currency.startRate;
+      out.tariff.perDividend = input.currency.code === "USD" ? { amount: l.rate.value, in: "instrument" } : { amount: l.rate.value * usd!, in: "nis" };
       used(l, l.rate);
     }
   }

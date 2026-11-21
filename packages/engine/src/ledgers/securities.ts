@@ -1,7 +1,7 @@
 // Funds and ETFs held as securities: the F-08 month step and the F-09 exit, with F-10 drag, F-12 to F-14
 // and F-17 costs, F-20 distributions, F-23 money-market funds and F-40 to F-43 exit tax. Also the
 // brokerage account inside an IRA hishtalmut (F-51).
-import { buyWithCash, conversionCost, convertedAtMost, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, navBought, saleCommission, saleConversion, tradeCommission, type Commission, type ConversionPrice, type Custody } from "../formulas/fees.ts";
+import { buyWithCash, convertedAtMost, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, navBought, saleCommission, saleConversion, sumRate, tradeCommission, type Commission, type ConversionPrice, type Custody, type Sum } from "../formulas/fees.ts";
 import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
@@ -84,10 +84,11 @@ export type SecuritiesTariff = {
   /** F-102 (D64): the monthly minimum of the current account at a bank, NIS a month. Each month reads its own stretch's (F-101: a group exempt for a time). */
   currentAccount?: number;
   /**
-   * F-103 (D67): a charge for each dividend of a fund bought abroad, in the instrument's currency (`currency` must be set). Read from the run's
+   * F-103 (D67): a charge for each dividend of a fund bought abroad (`currency` must be set): a sum in the instrument's currency, read at the
+   * month's rate, or in shekels, held as it is (a dollar charge on a fund in another currency, at the run's dollar rate). Read from the run's
    * first tariff, whatever its periods.
    */
-  perDividend?: number;
+  perDividend?: Sum;
   /**
    * F-13 FX conversion on each order and at exit: a bare number is the percentage with no bounds (kept for
    * callers that pass one); the `Commission` shape adds the tariff's minimum and maximum, in the instrument's
@@ -427,22 +428,23 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
   const wait = { monthly: 0, placed: 0, skipped: 0 };
 
   // a flat price for a small trade (F-12), in shekels, or Infinity where the line has none
-  const flatOf = (l: Commission | undefined, fxRateNow: number) => (l?.flatUpTo ? l.flatUpTo.amount * (l.in === "instrument" ? fxRateNow : 1) : Infinity);
+  const flatOf = (l: Commission | undefined, fxRateNow: number) => (l?.flatUpTo ? l.flatUpTo.amount * sumRate(l, "flatUpTo", fxRateNow) : Infinity);
   /**
    * One way to place an order (`buy` tries one or two): the conversion of the shekels `fresh`, then the trade the cash pays for with its
    * commission. Made once for the run, not for each order: `buy` passes what the order is placed with.
    */
   const order = (at: SecuritiesTariff, terms: { fxRate: number }, tradeTerms: { fxRate: number; sharePrice: number | undefined }, fresh: number, held: number, whole: boolean, line: Commission | undefined, conversion: SecuritiesTariff["fx"]) => {
-    const fx = tariff.currency && fresh > 0 ? conversionCost(conversion, fresh, terms, at.fxSpread) : 0;
     if (!whole) {
-      // F-08, F-12: by amount the order spends all its cash. Its shekels are converted only where converting them leaves more than nothing,
-      // as F-109 counts them; otherwise they wait unconverted, and the fund's currency the order holds buys alone. A cash that cannot pay the
-      // commission on some trade is not placed, and waits for the next order as F-109's does
-      const converts = fresh - fx > 0;
-      const sized = buyWithCash((converts ? fresh - fx : 0) + held, line, tradeTerms);
+      // F-08, F-12: by amount the order spends its cash. Its shekels are converted as far as converting them buys the most (F-13: a step by
+      // size whose top a smaller conversion stays under can buy more than the whole cash; the rest waits unconverted), and only where that is
+      // more than nothing, as F-109 counts them; otherwise they wait unconverted, and the fund's currency the order holds buys alone. A cash
+      // that cannot pay the commission on some trade is not placed, and waits for the next order as F-109's does
+      const conv = tariff.currency ? convertedAtMost(fresh, conversion, terms, at.fxSpread) : { converted: fresh, cost: 0, left: fresh };
+      const converts = conv.left > 0;
+      const sized = buyWithCash((converts ? conv.left : 0) + held, line, tradeTerms);
       if (sized.trade <= 0) return { fx: 0, trade: 0, commission: 0, cost: 0, leftNis: fresh, leftHeld: held };
       if (!converts) return { fx: 0, trade: sized.trade, commission: sized.commission, cost: sized.commission, leftNis: fresh, leftHeld: 0 };
-      return { fx, trade: sized.trade, commission: sized.commission, cost: fx + sized.commission, leftNis: 0, leftHeld: 0 };
+      return { fx: conv.cost, trade: sized.trade, commission: sized.commission, cost: conv.cost + sized.commission, leftNis: fresh - conv.converted, leftHeld: 0 };
     }
     // F-109: the most whole units the cash pays for at the ask, with their commission and the conversion of the shekels they need; the
     // conversion is charged on the shekels converted, the cash that pays for it (as F-08 charges it on a contribution)
@@ -452,7 +454,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     // A step of a conversion priced by its size (nothing, a flat price, a share off, F-13) or a flat price for a small trade (F-12) can make a
     // smaller order cheaper than the whole cash's, so the start takes the most any conversion of the shekels leaves and the lower of the two
     // trade prices, and the loop below checks each count exactly
-    const room = held + Math.max(0, tariff.currency ? convertedAtMost(fresh, conversion, terms, at.fxSpread) : fresh);
+    const room = held + (tariff.currency ? convertedAtMost(fresh, conversion, terms, at.fxSpread).left : fresh);
     const sized = buyWithCash(room, line, tradeTerms);
     const most = Math.max(sized.trade, room - Math.min(sized.commission, flatOf(line, terms.fxRate)));
     for (let n = Math.floor(most / ask + 1e-9); n > 0; n--) {

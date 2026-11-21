@@ -8,12 +8,13 @@ researchers, and suggests what to work on.
 ## Before asking him something
 
 Ask yourself, in order:
-1. Can a law, a regulator's text or a company's document answer it? Then it
+1. Is something on the site wrong? Then fix it; that is not a question.
+2. Can a law, a regulator's text or a company's document answer it? Then it
    is research, not a question for him.
-2. Is it about the code or a finance method (a threshold, a bound, a tool,
+3. Is it about the code or a finance method (a threshold, a bound, a tool,
    a calculation)? Then decide it yourself, and don't report it unless he
    asks.
-3. Does it change less than about 0.5% of the final amount? Then take the
+4. Does it change less than about 0.5% of the final amount? Then take the
    simpler option and don't ask.
 
 Ask him only what is left: what to work on, anything about the site's pages
@@ -40,6 +41,13 @@ yes or no on a recommendation.
   "it's fine". Silence, going along, or picking one of several options isn't
   approval; he may be waiting to see it live.
 - What he reports first-hand is treated as true, then checked.
+- "More like it" or "very good" means the direction is right, not that the
+  design is finished. Keep drawing until he says it is; ask about building
+  only then.
+- When he likes one small part, keep it as drawn; don't grow it into more.
+- "Isn't clear" about a part asks for it to say plainly what it is, not for
+  the idea to go. Ask which he means.
+- "Find similar things" means things of the same kind only.
 
 ## How to disagree
 

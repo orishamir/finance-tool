@@ -5,7 +5,7 @@
 // the person's stay in the group ends them all (F-101: a sequence of tariffs).
 //
 // No runtime import of the engine, invest.ts or the copy files: state.ts reads custom-entries.ts, which reads this, on every page.
-import { conversionWithRate, type Commission, type Custody, type EnteredTariff, type LayeredRun, type LayeredUnusable, type SecuritiesTariff } from "@finance-tool/engine";
+import { conversionWithRate, withSumsIn, type Commission, type CommissionSum, type Custody, type EnteredTariff, type LayeredRun, type LayeredUnusable, type SecuritiesTariff } from "@finance-tool/engine";
 import type { FeesSnapshot, GroupEntry, GroupPrice, GroupPriceValue, ValueObject } from "@finance-tool/schema";
 import type { CustomBroker } from "./custom-entries";
 import { numberOf, type SiteValue } from "./value";
@@ -166,6 +166,16 @@ function inShekels(amount: number, currency: GroupPriceValue["currency"], run: L
   return amount * rate;
 }
 
+/**
+ * The currency a group's sums set in `currency` (shekels where none) are kept in, and each sum in it (F-12): a sum in the fund's own currency
+ * stays in it and is charged at its rate at each trade; a sum in shekels stays in shekels; a sum in another currency is shekels at the run's rate
+ * for it. The line's own sums keep theirs (`Commission.sumIn`), so a line may hold sums in two currencies, each read at its own rate.
+ */
+function taking(currency: GroupPriceValue["currency"], run: LayeredRun): { in: "nis" | "instrument"; sum: (amount: number) => number } {
+  if (run.currency && (currency ?? "ILS") === run.currency.code) return { in: "instrument", sum: (a) => a };
+  return { in: "nis", sum: (a) => inShekels(a, currency, run) };
+}
+
 /** What a commission's own rate shape is made of: a stated rate (a percent, a price per share) replaces all of it and keeps the bounds. */
 const RATE_SHAPE = ["flatUpTo", "perShare", "perShareAbove", "perCurrencyUnit"] as const;
 
@@ -174,23 +184,30 @@ const RATE_SHAPE = ["flatUpTo", "perShare", "perShareAbove", "perCurrencyUnit"] 
  * the commission's whole rate shape (a flat price, a price per share), keeping its minimum and maximum unless the price states its own
  * .
  */
-export function groupTrade(c: Commission | undefined, v: GroupPriceValue, run: LayeredRun): Commission {
+export function groupTrade(list: Commission | undefined, v: GroupPriceValue, run: LayeredRun): Commission {
   if (v.exempt) return { rate: 0 };
-  const bounds = (): Pick<Commission, "min" | "max"> => ({ ...(v.min !== undefined ? { min: inShekels(v.min, v.currency, run) } : {}), ...(v.max !== undefined ? { max: inShekels(v.max, v.currency, run) } : {}) });
+  // a price that states a sum sets it in its own currency beside the line's sums (`taking`)
+  const states = v.flat !== undefined || v.per_share_cents !== undefined || v.min !== undefined || v.max !== undefined;
+  const c = list;
+  const { in: cur, sum } = states ? taking(v.currency, run) : { in: "nis" as const, sum: (a: number) => a };
+  const stated: CommissionSum[] = [...(v.min !== undefined ? (["min"] as const) : []), ...(v.max !== undefined ? (["max"] as const) : [])];
+  const bounds = (): Pick<Commission, "min" | "max"> => ({ ...(v.min !== undefined ? { min: sum(v.min) } : {}), ...(v.max !== undefined ? { max: sum(v.max) } : {}) });
   if (v.flat !== undefined) {
-    const amount = inShekels(v.flat, v.currency, run);
-    const upTo = v.flat_up_to === undefined ? Infinity : inShekels(v.flat_up_to, v.currency, run);
-    return { ...(c ?? { rate: 0 }), min: c?.min ?? amount, flatUpTo: { amount, upTo } };
+    const amount = sum(v.flat);
+    const upTo = v.flat_up_to === undefined ? Infinity : sum(v.flat_up_to);
+    const flat = { ...(c ?? { rate: 0 }), flatUpTo: { amount, upTo } };
+    // the line's own minimum stays in its currency; where it has none the flat price is the minimum, in the price's currency
+    return c?.min !== undefined ? withSumsIn(flat, cur, "flatUpTo") : withSumsIn({ ...flat, min: amount }, cur, "flatUpTo", "min");
   }
   if (v.per_share_cents !== undefined) {
     if (!run.sharePrice) throw new Unusable({ unusable: "needs-share-price", detail: "a group price per share: the fund record has no share_price" });
-    return { ...without(c ?? { rate: 0 }, ...RATE_SHAPE), rate: 0, perShare: inShekels(v.per_share_cents / 100, v.currency, run), ...bounds() };
+    return withSumsIn({ ...without(c ?? { rate: 0 }, ...RATE_SHAPE), rate: 0, perShare: sum(v.per_share_cents / 100), ...bounds() }, cur, "perShare", ...stated);
   }
   const base = without(c ?? { rate: 0 }, ...RATE_SHAPE);
   if (v.discount_pct !== undefined) {
     const keep = 1 - v.discount_pct / 100;
     const rate = (c?.rate ?? 0) * keep;
-    // a discount is off the whole price of the house for the fee, whatever shape it has
+    // a discount is off the whole price of the house for the fee, whatever shape it has; each sum keeps its currency
     return {
       ...base,
       rate: v.not_below_pct !== undefined ? Math.max(rate, v.not_below_pct / 100) : rate,
@@ -200,7 +217,7 @@ export function groupTrade(c: Commission | undefined, v: GroupPriceValue, run: L
       ...(c?.perCurrencyUnit ? { perCurrencyUnit: c.perCurrencyUnit * keep } : {}),
     };
   }
-  return { ...base, rate: (v.rate_pct ?? 0) / 100, ...bounds() };
+  return withSumsIn({ ...base, rate: (v.rate_pct ?? 0) / 100, ...bounds() }, cur, ...stated);
 }
 
 /** A group's price over a custody line. A bound printed for a charging period of the list is carried per month into the group's period (F-14). */
@@ -297,7 +314,8 @@ export function applyOwn(base: SecuritiesTariff, own: Own, list: SecuritiesTarif
         next = { ...without(next, ...RATE_SHAPE), rate: pct / 100 };
         if (flat && min === null) delete next.min;
       }
-      if (min !== null) next.min = min;
+      // a minimum typed in shekels stays in shekels beside the line's other sums, each in its own currency (`Commission.sumIn`)
+      if (min !== null) next = withSumsIn({ ...next, min }, "nis", "min");
       return next;
     };
     out.buy = line(base.buy);

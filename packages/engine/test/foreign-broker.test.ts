@@ -57,12 +57,12 @@ describe("F-12 per-share line and cap (E1, E3)", () => {
 });
 
 describe("F-63 on the foreign brokers' tariffs (E1, E2, E3)", () => {
-  it("Interactive Israel: the US line is read per share, the dollar minimum in shekels, the cap beside it", () => {
+  it("Interactive Israel: the US line is read per share, its dollar sums kept in dollars, the cap beside it", () => {
     const wb = providerWorkbench(input({ providers: [{ snapshot: interactiveIsrael, level: "list", band: usIsrael }] }), ctx);
     const r = row(wb.rows, "interactive-israel");
     expect(r.kind).toBe("compared");
     if (r.kind !== "compared") return;
-    expect(r.tariff.buy).toEqual({ rate: 0, perShare: 0.01 * 3.7, min: 2.5 * 3.7, cap: 0.02 });
+    expect(r.tariff.buy).toEqual({ rate: 0, perShare: 0.01, min: 2.5, cap: 0.02, in: "instrument" });
     // 400 NIS an order: the 2% cap (8 NIS) is below the 9.25 NIS minimum, so every order pays 8.
     expect(r.run.fees.trade).toBeGreaterThan(0);
   });
@@ -74,34 +74,38 @@ describe("F-63 on the foreign brokers' tariffs (E1, E2, E3)", () => {
     expect(row(wb.rows, "altshuler-trade").kind).toBe("compared");
   });
 
-  it("without a dollar rate the provider is not comparable with needs-fx-rate", () => {
-    const wb = providerWorkbench(input({ fx: {}, providers: [{ snapshot: interactiveIsrael, level: "list", band: usIsrael }, { snapshot: altshuler, level: "list" }] }), ctx);
+  it("without a dollar rate a fund in another currency is not comparable with needs-fx-rate where a line's sums are in dollars", () => {
+    const euro = { code: "EUR", startRate: 4.1 };
+    const wb = providerWorkbench(input({ currency: euro, fx: {}, providers: [{ snapshot: interactiveIsrael, level: "list", band: usIsrael }, { snapshot: altshuler, level: "list" }] }), ctx);
     expect(notComparable(row(wb.rows, "interactive-israel")).reason.code).toBe("needs-fx-rate");
     // Altshuler's minimum is 9 USD: it needs the rate too, and no longer fails the whole run with "expected shekels".
     expect(notComparable(row(wb.rows, "altshuler-trade")).reason.code).toBe("needs-fx-rate");
-    const none = providerWorkbench(input({ fx: undefined as never, providers: [{ snapshot: altshuler, level: "list" }] }), ctx);
+    const none = providerWorkbench(input({ currency: euro, fx: undefined as never, providers: [{ snapshot: altshuler, level: "list" }] }), ctx);
     expect(notComparable(none.rows[0]!).reason.code).toBe("needs-fx-rate");
   });
 
-  it("Altshuler's dollar minimum is converted at the run's rate", () => {
-    const wb = providerWorkbench(input({ providers: [{ snapshot: altshuler, level: "list" }] }), ctx);
-    const r = row(wb.rows, "altshuler-trade");
+  it("Altshuler's dollar minimum stays in dollars on a dollar fund, and on a fund in another currency is converted at the run's dollar rate", () => {
+    const r = row(providerWorkbench(input({ providers: [{ snapshot: altshuler, level: "list" }] }), ctx).rows, "altshuler-trade");
     if (r.kind !== "compared") throw new Error("not compared");
-    expect(r.tariff.buy?.min).toBeCloseTo(9 * 3.7, 12);
+    expect(r.tariff.buy).toMatchObject({ min: 9, in: "instrument" });
+    const e = row(providerWorkbench(input({ currency: { code: "EUR", startRate: 4.1 }, fx: { ...fx, EUR: 4.1 }, providers: [{ snapshot: altshuler, level: "list" }] }), ctx).rows, "altshuler-trade");
+    if (e.kind !== "compared") throw new Error("not compared");
+    expect(e.tariff.buy?.min).toBeCloseTo(9 * 3.7, 12);
+    expect(e.tariff.buy?.in).toBeUndefined();
   });
 
-  it("Interactive Brokers: the plan band picks the line; the dollar maximum and the pound-free minimum are shekels", () => {
+  it("Interactive Brokers: the plan band picks the line; its dollar sums stay in dollars", () => {
     const lse = providerWorkbench(
       input({ fund: { kind: "foreign-fund", drag: { management: 0.0007 }, domicile: "ireland" }, providers: [{ snapshot: interactiveBrokers, level: "list", band: ["IBKR Pro - Tiered: בורסת לונדון", autoFx] }] }),
       ctx,
     );
     const r = row(lse.rows, "interactive-brokers");
     if (r.kind !== "compared") throw new Error(`not compared: ${JSON.stringify((r as NotComparableProvider).reason)}`);
-    expect(r.tariff.buy).toMatchObject({ rate: 0.0005, min: 1.7 * 3.7, max: 39 * 3.7 });
+    expect(r.tariff.buy).toMatchObject({ rate: 0.0005, min: 1.7, max: 39, in: "instrument" });
     const us = providerWorkbench(input({ providers: [{ snapshot: interactiveBrokers, level: "list", band: ["IBKR Pro - Fixed: מניות ותעודות סל בארה", autoFx] }] }), ctx);
     const u = row(us.rows, "interactive-brokers");
     if (u.kind !== "compared") throw new Error("not compared");
-    expect(u.tariff.buy).toEqual({ rate: 0, perShare: 0.005 * 3.7, min: 1 * 3.7, cap: 0.01 });
+    expect(u.tariff.buy).toEqual({ rate: 0, perShare: 0.005, min: 1, cap: 0.01, in: "instrument" });
   });
 
   it("E5: a snapshot the engine cannot read for one fund is that provider's row, not a throw for the whole run", () => {
@@ -126,7 +130,7 @@ describe("F-12 a minimum in the trade's own currency, and a line's open question
   it("Interactive Israel's European minimum is 2.5 in the trade's own currency, and the run carries BRK OQ25", () => {
     for (const currency of [{ code: "USD", startRate: 3.7 }, { code: "EUR", startRate: 4.1 }, { code: "GBP", startRate: 4.6 }]) {
       const r = compared(row(providerWorkbench(input({ currency, fx: { ...fx, EUR: 4.1 }, providers: [{ snapshot: current, level: "list", band: europe }] }), ctx).rows, "interactive-israel"));
-      expect(r.tariff.buy?.min).toBeCloseTo(2.5 * currency.startRate, 12);
+      expect(r.tariff.buy).toMatchObject({ min: 2.5, in: "instrument" });
       expect(r.flags).toContain("BRK-OQ25");
     }
   });

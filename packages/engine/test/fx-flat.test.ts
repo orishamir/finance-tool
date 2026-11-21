@@ -34,12 +34,14 @@ describe("the conversion's fee (F-13)", () => {
 });
 
 describe("the shekels a purchase in whole units converts (convertFor)", () => {
-  it("solves the flat price's step first, and crosses the sum to the line where the flat price no longer fits", () => {
-    // owed 350 ₪: c = 350 + 12.21 = 362.21 ≤ 366.30, the flat price
+  it("prices the step by the dollars bought: the flat price while they are under the sum, the line once they pass it", () => {
+    // owed 350 ₪ (94.59 $): c = 350 + 12.21 = 362.21, the flat price
     expect(convertFor(350, line, terms).converted).toBeCloseTo(362.21, 9);
-    // owed 360 ₪: 360 + 12.21 = 372.21 > 366.30, so the line: c = 360 + 21.09 = 381.09 (the minimum, 0.17% of 381 is 0.65 ₪)
-    expect(convertFor(360, line, terms).converted).toBeCloseTo(381.09, 9);
-    expect(convertFor(360, line, terms).cost).toBeCloseTo(21.09, 9);
+    // owed 360 ₪ (97.30 $), still under the 99 $ sum, though the shekels converted, 372.21 ₪ (100.60 $), are over it: the flat price
+    expect(convertFor(360, line, terms).converted).toBeCloseTo(372.21, 9);
+    expect(convertFor(360, line, terms).cost).toBeCloseTo(12.21, 9);
+    // owed 370 ₪ (100 $), over the sum: the line, c = 370 + 21.09 = 391.09 (the minimum, 0.17% of 391 is 0.66 ₪)
+    expect(convertFor(370, line, terms).converted).toBeCloseTo(391.09, 9);
     // a spread beside it: c = (350 + 12.21) / (1 − 0.001) = 362.5726
     expect(convertFor(350, line, terms, 0.001).converted).toBeCloseTo(362.21 / 0.999, 9);
     // nothing owed converts nothing; a bare percentage is the plain iteration, c = owed / (1 − r)
@@ -69,10 +71,15 @@ describe("a run with a flat price for a small conversion (F-13)", () => {
     expect(flat.fees.fx).toBeCloseTo(12 * 12.21 + 21.09, 6);
     expect(flat.detail.cashLeft).toBeCloseTo(12 * 7.79, 6);
     expect(flat.nominal).toBeCloseTo(12 * 370 - 12 * 362.21 + sale - 21.09, 6);
-    // a unit of 360 ₪ no longer fits: each order converts 381.09 ₪ at the minimum; 400 a month buys one every month, 18.91 waits each
-    const line2 = runSecurities(input({ goal: { amountNow: 0, monthly: 400, months: 12 }, wholeUnits: { price: 360 } }), ctx);
-    expect(line2.detail.monthlyOrders).toBe(12);
-    expect(line2.fees.fx).toBeCloseTo(12 * 21.09 + 21.09, 6);
+    // a unit of 360 ₪ (97.30 $) is still under the sum: each order converts 372.21 ₪ at the flat price and 27.79 ₪ wait, too little in the
+    // year for a second unit; sold at the line's minimum
+    const under = runSecurities(input({ goal: { amountNow: 0, monthly: 400, months: 12 }, wholeUnits: { price: 360 } }), ctx);
+    expect(under.detail.monthlyOrders).toBe(12);
+    expect(under.fees.fx).toBeCloseTo(12 * 12.21 + 21.09, 6);
+    // a unit of 370 ₪ (100 $) is over it: each order converts 391.09 ₪ at the minimum, 8.91 ₪ wait each month
+    const over = runSecurities(input({ goal: { amountNow: 0, monthly: 400, months: 12 }, wholeUnits: { price: 370 } }), ctx);
+    expect(over.detail.monthlyOrders).toBe(12);
+    expect(over.fees.fx).toBeCloseTo(12 * 21.09 + 21.09, 6);
   });
 
   it("a rate of one's own over the line keeps its flat price: a typed 0.1% never makes a small conversion dearer (F-13, F-61)", () => {

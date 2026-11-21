@@ -85,35 +85,48 @@ describe("each kind of step (F-13)", () => {
   });
 });
 
-describe("the shekels a purchase in whole units converts, across a step's edge (convertFor)", () => {
-  it("takes the first step whose solution falls inside it, the fewest shekels", () => {
-    // owed 30 ₪: free, c = 30 ≤ 37 ₪ (10 $)
+describe("the shekels a purchase converts, the step read on the dollars bought (convertFor, convertedAtMost)", () => {
+  it("prices the step the dollars bought fall in, the top included in the step below it", () => {
+    // owed 30 ₪ (8.11 $): free; owed 37 ₪, exactly 10 $: still free ("עד 10$")
     expect(convertFor(30, discount, terms)).toEqual({ converted: 30, cost: 0, extra: 0 });
-    // owed 37.50 ₪: 37.50 > 37 leaves the free step; half price, c = 37.50 + 11.10 = 48.60
+    expect(convertFor(37, discount, terms)).toEqual({ converted: 37, cost: 0, extra: 0 });
+    // owed 37.50 ₪ (10.14 $): half price, c = 37.50 + 11.10 = 48.60
     expect(convertFor(37.5, discount, terms).converted).toBeCloseTo(48.6, 9);
-    // owed 355 ₪: half price, c = 366.10 ≤ 370 ₪ (100 $); the full line would also leave 355 at 377.20, more shekels
-    expect(convertFor(355, discount, terms).converted).toBeCloseTo(366.1, 9);
-    // owed 360 ₪: half price would need 371.10 > 370, so the line, c = 360 + 22.20 = 382.20
-    const past = convertFor(360, discount, terms);
-    expect(past.converted).toBeCloseTo(382.2, 9);
+    // owed 360 ₪ (97.30 $), under the 100 $ top, though the shekels converted, 371.10 ₪ (100.30 $), are over it: half price
+    const under = convertFor(360, discount, terms);
+    expect(under.converted).toBeCloseTo(371.1, 9);
+    expect(under.cost).toBeCloseTo(11.1, 9);
+    // owed 380 ₪ (102.70 $): the line, c = 380 + 22.20 = 402.20
+    const past = convertFor(380, discount, terms);
+    expect(past.converted).toBeCloseTo(402.2, 9);
     expect(past.cost).toBeCloseTo(22.2, 9);
   });
 
-  it("where the step above is cheaper and no conversion leaves exactly what is owed, converts just over the top and keeps the rest", () => {
-    // 55,500 ₪ (15,000 $) at 0.7% leaves 55,111.50; just above at 0.5% it leaves 55,222.50. Owed 55,150 falls between: convert 55,500 at 0.5%,
-    // pay 277.50, keep 72.50 in dollars
-    const gap = convertFor(55_150, 0, terms, ibiSpread);
-    expect(gap.converted).toBeCloseTo(55_500, 9);
-    expect(gap.cost).toBeCloseTo(277.5, 9);
-    expect(gap.extra).toBeCloseTo(72.5, 9);
+  it("where the step above is cheaper, buys just over the top where that takes fewer shekels, and keeps the rest", () => {
+    // the top is 55,500 ₪ (15,000 $), in the 0.7% step; just over it is one cent more, 55,500.037 ₪, at 0.5%: 55,500.037 / 0.995 = 55,779.94 ₪
+    const over = 55_500 + 0.01 * usd;
+    // owed 55,150 ₪: at 0.7%, 55,150 / 0.993 = 55,538.77 ₪, fewer than just over the top
+    expect(convertFor(55_150, 0, terms, ibiSpread)).toEqual({ converted: expect.closeTo(55_150 / 0.993, 6), cost: expect.closeTo(55_150 / 0.993 - 55_150, 6), extra: 0 });
+    // owed 55,400 ₪: at 0.7% it would take 55,790.53 ₪; just over the top takes 55,779.94 ₪ and buys 100.04 ₪ more, kept in dollars
+    const gap = convertFor(55_400, 0, terms, ibiSpread);
+    expect(gap.converted).toBeCloseTo(over / 0.995, 6);
+    expect(gap.cost).toBeCloseTo(over / 0.995 - over, 6);
+    expect(gap.extra).toBeCloseTo(over - 55_400, 6);
+    // owed exactly the top, 15,000 $: priced at 0.7% it takes 55,891.24 ₪, so the order buys just over it
+    expect(convertFor(55_500, 0, terms, ibiSpread).converted).toBeCloseTo(over / 0.995, 6);
     // owed 56,000: 0.5%, c = 56,000 / 0.995
     expect(convertFor(56_000, 0, terms, ibiSpread).converted).toBeCloseTo(56_000 / 0.995, 6);
   });
 
-  it("the most a cash's conversion can leave counts a cheaper step below the whole cash", () => {
-    // 380 ₪: all of it pays the line, leaving 357.80; 370 ₪ (the half-price top) leaves 358.90, the most
-    expect(convertedAtMost(380, discount, terms)).toBeCloseTo(358.9, 9);
-    expect(convertedAtMost(30, discount, terms)).toBe(30);
+  it("the most a cash's conversion buys counts a cheaper step below the whole cash, converting less than the cash", () => {
+    // 380 ₪: all of it at half price buys 368.90 ₪ (99.70 $), under the top
+    expect(convertedAtMost(380, discount, terms)).toEqual({ converted: 380, cost: expect.closeTo(11.1, 9), left: expect.closeTo(368.9, 9) });
+    // 385 ₪: all of it would buy 373.90 ₪ at half price, over the top, or 362.80 ₪ at the line; 381.10 ₪ buy the top, 370 ₪ (100 $), the most
+    expect(convertedAtMost(385, discount, terms)).toEqual({ converted: expect.closeTo(381.1, 9), cost: expect.closeTo(11.1, 9), left: expect.closeTo(370, 9) });
+    expect(convertedAtMost(30, discount, terms)).toEqual({ converted: 30, cost: 0, left: 30 });
+    // IBI's spread: 55,700 ₪ buy 55,310.10 ₪ at 0.7% (at 0.5%, 55,421.50 ₪ would be under the top); 56,000 ₪ buy 55,720 ₪ at 0.5%
+    expect(convertedAtMost(55_700, 0, terms, ibiSpread).left).toBeCloseTo(55_700 * 0.993, 6);
+    expect(convertedAtMost(56_000, 0, terms, ibiSpread).left).toBeCloseTo(56_000 * 0.995, 6);
   });
 });
 
@@ -151,18 +164,20 @@ describe("reading the steps from a price record (F-13, F-63)", () => {
     expect(buildTariff(wb(), { snapshot: avg, level: "regulator_average" }, avg).tariff.fx).toBeCloseTo(0.0015, 12);
   });
 
-  it("a europe fund in euros measures each dollar top and bound in euros at the run's rates", () => {
-    // the euro at 4.00 ₪ and the dollar at 3.70 ₪: a dollar is 0.925 €; 10 $ is 9.25 €, 100 $ is 92.5 €, the 6 $ minimum 5.55 €
+  it("a europe fund in euros reads each dollar top and bound in shekels at the run's dollar rate, the one rate the run holds for the dollar", () => {
+    // the euro at 4.00 ₪ and the dollar at 3.70 ₪: the 10 $ top is 37 ₪, the 100 $ top 370 ₪, the 6 $ minimum 22.20 ₪, whatever the euro does
     const built = buildTariff(wb({ currency: { code: "EUR", startRate: 4 }, fx: { USD: usd, EUR: 4 } }), { snapshot: disc, level: "list" }, disc);
     const fx = built.tariff.fx as SizedConversion;
-    expect(fx.in).toBe("instrument");
-    expect(fx.steps.map((s) => s.upTo)).toEqual([expect.closeTo(9.25, 12), expect.closeTo(92.5, 12)]);
-    expect(fx.line).toMatchObject({ min: expect.closeTo(5.55, 12), max: expect.closeTo(975.875, 9), in: "instrument" });
-    // at 4.00 ₪ a euro: 36 ₪ is 9 € (free); 38 ₪ is 9.5 € (half price: 2.775 € = 11.10 ₪); 400 ₪ is 100 € (the line: 5.55 € = 22.20 ₪)
-    const eur = { fxRate: 4 };
-    expect(fxFee(fx, 36, eur)).toBe(0);
-    expect(fxFee(fx, 38, eur)).toBeCloseTo(11.1, 9);
-    expect(fxFee(fx, 400, eur)).toBeCloseTo(22.2, 9);
+    expect(fx.in).toBe("nis");
+    expect(fx.steps.map((s) => s.upTo)).toEqual([expect.closeTo(37, 12), expect.closeTo(370, 12)]);
+    expect(fx.line).toMatchObject({ min: expect.closeTo(22.2, 12), max: expect.closeTo(3_903.5, 9) });
+    expect((fx.line as { in?: string }).in).toBeUndefined();
+    // 36 ₪ is free; 38 ₪ half the minimum, 11.10 ₪; 400 ₪ the minimum, 22.20 ₪; the same with the euro at 5.00 ₪
+    for (const eur of [{ fxRate: 4 }, { fxRate: 5 }]) {
+      expect(fxFee(fx, 36, eur)).toBe(0);
+      expect(fxFee(fx, 38, eur)).toBeCloseTo(11.1, 9);
+      expect(fxFee(fx, 400, eur)).toBeCloseTo(22.2, 9);
+    }
   });
 
   it("a monthly purchase in Discount's half-price step pays half the minimum, and the sale the full line", () => {
@@ -197,19 +212,28 @@ describe("reading the steps from a price record (F-13, F-63)", () => {
     expect(r.fees.fx).toBeCloseTo(19.98, 6);
   });
 
-  it("in whole units the search starts from the most any conversion of the cash leaves, a cheaper step below the whole cash included", () => {
-    // a unit of 358 ₪ and 380 ₪ now at Discount: converting all 380 ₪ pays the line (22.20 ₪) and leaves 357.80, less than the unit, but
-    // converting 369.10 ₪ (99.76 $) pays half the minimum (11.10 ₪) and leaves the unit's 358: the order buys it and 10.90 ₪ wait
-    const r = runSecurities(run({ goal: { amountNow: 380, monthly: 0, months: 1 }, wholeUnits: { price: 358 }, tariff: { buy: { rate: 0 }, fx: discount, currency: { code: "USD", startRate: usd } } }), ctx);
-    expect(r.detail.cashLeft).toBeCloseTo(380 - 369.1, 6);
+  it("in whole units the search starts from the most any conversion of the cash buys, a cheaper step below the whole cash included", () => {
+    // a unit of 369 ₪ and 385 ₪ now at Discount: converting all 385 ₪ pays the line (22.20 ₪) and buys 362.80 ₪, less than the unit, but
+    // converting 380.10 ₪ buys the unit's 369 ₪ (99.73 $) at half the minimum (11.10 ₪): the order buys it and 4.90 ₪ wait. Sold: 369 ₪, half
+    // the minimum again
+    const r = runSecurities(run({ goal: { amountNow: 385, monthly: 0, months: 1 }, wholeUnits: { price: 369 }, tariff: { buy: { rate: 0 }, fx: discount, currency: { code: "USD", startRate: usd } } }), ctx);
+    expect(r.detail.cashLeft).toBeCloseTo(385 - 380.1, 6);
     expect(r.fees.fx).toBeCloseTo(11.1 + 11.1, 6);
   });
 
-  it("in whole units a conversion just over a top that leaves more than the order keeps the rest in dollars", () => {
-    // a unit of 55,150 ₪ and 56,000 ₪ now, IBI's spread alone: 55,500 ₪ converted at 0.5% (277.50 ₪) leaves 55,222.50 ₪, the unit and 72.50 ₪
-    // in dollars; 500 ₪ wait unconverted. Sold with the dollars: 55,222.50 ₪ (14,925 $), under the top, at 0.7%
-    const r = runSecurities(run({ goal: { amountNow: 56_000, monthly: 0, months: 1 }, wholeUnits: { price: 55_150 }, tariff: { buy: { rate: 0 }, fx: 0, fxSpread: ibiSpread, currency: { code: "USD", startRate: usd } } }), ctx);
-    expect(r.detail.cashLeft).toBeCloseTo(500 + 72.5, 6);
-    expect(r.fees.fx).toBeCloseTo(277.5 + 0.007 * 55_222.5, 6);
+  it("by amount the order converts as far as that buys the most, and the rest of the cash waits", () => {
+    // 385 ₪ now at Discount: 381.10 ₪ buy 370 ₪ (100 $) at half the minimum, 3.90 ₪ wait; sold: 370 ₪ (100 $, the top), half the minimum
+    const r = runSecurities(run({ goal: { amountNow: 385, monthly: 0, months: 1 }, tariff: { buy: { rate: 0 }, fx: discount, currency: { code: "USD", startRate: usd } } }), ctx);
+    expect(r.fees.fx).toBeCloseTo(11.1 + 11.1, 6);
+    expect(r.nominal).toBeCloseTo(370 - 11.1 + 3.9, 6);
+  });
+
+  it("in whole units a conversion just over a top that buys more than the order keeps the rest in dollars", () => {
+    // a unit of 55,400 ₪ and 56,000 ₪ now, IBI's spread alone: just over the top, 55,500.037 ₪ (15,000.01 $) bought at 0.5% for 55,779.94 ₪, the
+    // unit and 100.04 ₪ in dollars; 220.06 ₪ wait unconverted. Sold with the dollars: 55,500.037 ₪, just over the top, at 0.5%
+    const over = 55_500 + 0.01 * usd;
+    const r = runSecurities(run({ goal: { amountNow: 56_000, monthly: 0, months: 1 }, wholeUnits: { price: 55_400 }, tariff: { buy: { rate: 0 }, fx: 0, fxSpread: ibiSpread, currency: { code: "USD", startRate: usd } } }), ctx);
+    expect(r.detail.cashLeft).toBeCloseTo(56_000 - over / 0.995 + (over - 55_400), 6);
+    expect(r.fees.fx).toBeCloseTo(over / 0.995 - over + 0.005 * over, 6);
   });
 });

@@ -670,8 +670,9 @@ function priceCost(
   const terms: TradeTerms = { fxRate };
   if (price.kind === "perUnit") {
     if (!(unitPrice !== undefined && unitPrice > 0)) throw new RangeError("a sum per unit needs the unit's price (F-112)");
-    // F-12's per-share fee in shekels on `a / unitPrice` units: the units are the shekels over the unit's price in shekels
-    line.perShare = price.amount * fxRate;
+    // F-12's per-share fee, in the price's currency like the line's other sums, on `a / unitPrice` units: the units are the shekels over the
+    // unit's price in shekels
+    line.perShare = price.amount;
     terms.sharePrice = unitPrice / fxRate;
   }
   return isFx ? fxFee(line, a, terms) : tradeCommission(line, a, terms);

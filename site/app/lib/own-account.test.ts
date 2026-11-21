@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { beforeEach, describe, expect, it } from "vitest";
 import { brokerDraftOf, brokerFromDraft, tariffOfBroker, validCustomBrokers, withCustomEntries, type CustomBroker } from "./custom-entries";
 import { buildInvest, listReading, indexById } from "./invest";
-import { applyOwn, baseOf, groupValues, layeredOf, layeredTariff, priceEndsOf, startingPointsOf, withAdopted, type GroupCopy } from "./own-account";
+import { applyOwn, baseOf, groupTrade, groupValues, layeredOf, layeredTariff, priceEndsOf, startingPointsOf, withAdopted, type GroupCopy } from "./own-account";
 import { FEE_TYPES, layersOf, ownAccountResult, withoutGroupLine } from "./own-account-view";
 import { buildIndicesBundle } from "./providers.server";
 import { ruleContext, type WorkbenchInputs } from "./providers";
@@ -282,6 +282,19 @@ describe("the tariff built in layers (F-101)", () => {
     const fx = { rate: 0.0017, min: 5.7, max: 2_300, in: "instrument" as const, flatUpTo: { amount: 3.3, upTo: 99 } };
     const got = applyOwn({ fx }, { fxPct: { value: 0.1 } } as never);
     expect(got.fx).toEqual({ ...fx, rate: 0.001 });
+  });
+  it("a minimum typed in shekels over a dollar line stays in shekels, and the line's dollar sums stay in dollars (F-12, F-101)", () => {
+    const line = { rate: 0.003, min: 24, max: 100, in: "instrument" as const };
+    const got = applyOwn({ buy: line, sell: line }, { tradeMin: { value: 30 } } as never);
+    expect(got.buy).toEqual({ ...line, min: 30, sumIn: { min: "nis" } });
+    expect(got.sell).toEqual({ ...line, min: 30, sumIn: { min: "nis" } });
+  });
+  it("a group's sum keeps its own currency beside the line's: dollars on a dollar fund, shekels as they are (F-12, F-101)", () => {
+    const line = { rate: 0.003, min: 24, in: "instrument" as const };
+    const usdRun = { fx: { USD: 3.7 }, instrumentClass: "foreign_securities", currency: { code: "USD", startRate: 3.7 }, sharePrice: undefined };
+    expect(groupTrade(line, { flat: 7, currency: "USD" } as never, usdRun)).toEqual({ ...line, flatUpTo: { amount: 7, upTo: Infinity } });
+    expect(groupTrade(line, { flat: 20 } as never, usdRun)).toEqual({ ...line, flatUpTo: { amount: 20, upTo: Infinity }, sumIn: { flatUpTo: "nis" } });
+    expect(groupTrade(line, { rate_pct: 0.1, max: 50 } as never, usdRun)).toEqual({ ...line, rate: 0.001, max: 50, sumIn: { max: "nis" } });
   });
   it("lays the person's values over the group's, a yearly custody percent as a quarter of it a quarter, and holds them for the whole plan", () => {
     const b = accountOn(STUDENT, { tradeMin: 12, custodyPct: 0.4 });

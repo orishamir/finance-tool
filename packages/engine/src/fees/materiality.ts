@@ -44,7 +44,7 @@ export function feeLines(plan: RunPlan): FeeLine[] {
       // F-102 is read from each stretch (F-101: a group exempt for a time); F-103 from the first tariff only, and the custodian's charge per
       // dividend counts with custody where a dividend is paid
       if (chain.some((t) => positive(t.currentAccount))) has.add("account");
-      if (positive(tariff.perDividend) && fund.distribution) has.add("custody");
+      if (positive(tariff.perDividend?.amount) && fund.distribution) has.add("custody");
       if (positive(fund.halfSpread)) has.add("spread");
       const d = fund.drag;
       if (positive(d?.management) || positive(d?.variable) || positive(d?.trustee)) has.add("fund");
@@ -221,7 +221,7 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number, keepDiscount: bo
             delete tariff.custody;
             delete tariff.perDividend;
           } else if (tariff.custody) {
-            if (tariff.perDividend && tariff.custody.rate > 0) tariff.perDividend = (tariff.perDividend * rate) / tariff.custody.rate;
+            if (tariff.perDividend && tariff.custody.rate > 0) tariff.perDividend = { ...tariff.perDividend, amount: (tariff.perDividend.amount * rate) / tariff.custody.rate };
             tariff.custody = { ...tariff.custody, rate };
           }
           return { run: "runSecurities", input: { ...input, tariff } };
