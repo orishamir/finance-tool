@@ -70,8 +70,10 @@ export type ReadingChoice = Readonly<Record<string, ReadingId | null>>;
 
 /** The resolver met an open reading the run has not chosen: `acrossReadings` runs it again under each. */
 export class OpenReadingError extends Error {
-  constructor(readonly open: OpenReading) {
+  readonly open: OpenReading;
+  constructor(open: OpenReading) {
     super(`${open.question} (${open.ruleId}) holds this case open between readings; the run is evaluated under each (acrossReadings)`);
+    this.open = open;
   }
 }
 

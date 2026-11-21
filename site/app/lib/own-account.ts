@@ -160,7 +160,10 @@ const without = <T extends object, K extends keyof T>(o: T, ...keys: K[]): Omit<
 
 /** Thrown inside a layer that needs what the run lacks; `layeredTariff` hands it to the workbench as the provider's reason. */
 class Unusable {
-  constructor(readonly out: LayeredUnusable) {}
+  readonly out: LayeredUnusable;
+  constructor(out: LayeredUnusable) {
+    this.out = out;
+  }
 }
 
 /** An amount of a group price in shekels: shekels as they are, dollars at the run's rate (a run without one cannot price it). */
