@@ -58,7 +58,10 @@ export interface BrokerageSwitch {
   realWithSwitch: number;
   /** F-40 tax on A's lots at month s (the run's exit tax, surtax included), nominal NIS. */
   taxAtSwitch: number;
-  /** What opens B's lot: A's value at s after the sale's commission, spread and tax, nominal NIS. */
+  /**
+   * What B opens with: leg A's value at s after the sale's commission, conversion, spread and tax, with the cash waiting in A's account (an
+   * order not placed, F-12; what an order in whole units left, F-109), no gain and untaxed; nominal NIS (F-66).
+   */
   netProceeds: number;
   runs: { noSwitch: RunResult; legA: RunResult; legB: RunResult };
   /** A real loss realised by the sale at `s` (G-07) and what became of it in leg B; absent when A's sale had a gain. */
