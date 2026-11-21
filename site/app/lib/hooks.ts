@@ -1,5 +1,5 @@
 // Small React hooks shared across pages and the kit.
-import { useCallback, useEffect, useLayoutEffect, useState, useSyncExternalStore, type RefObject } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState, useSyncExternalStore } from "react";
 import { useSearchParams } from "react-router";
 
 /** useLayoutEffect in the browser, useEffect while pre-rendering (where a layout effect only warns). */
@@ -54,23 +54,4 @@ export function useAddressParams(): { params: URLSearchParams; update: (changes:
     setSearch(next, { replace: true, preventScrollReset: true });
   };
   return { params: hydrated ? search : EMPTY, update, hydrated };
-}
-
-/**
- * Whether the element `ref` holds is at least `minPx` wide, following it as it resizes: a piece that sits in hosts of different widths (a
- * page, a popup) lays itself out by the room its host gives it, not by the window. The first render takes `guess` (the window's answer,
- * say), and the element's own width replaces it before the first paint.
- */
-export function useWiderThan(ref: RefObject<HTMLElement | null>, minPx: number, guess: () => boolean): boolean {
-  const [wide, setWide] = useState(() => (typeof window === "undefined" ? false : guess()));
-  useIsoLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const read = () => setWide(el.getBoundingClientRect().width >= minPx);
-    read();
-    const ro = new ResizeObserver(read);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [ref, minPx]);
-  return wide;
 }

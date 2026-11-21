@@ -90,7 +90,7 @@ describe("whole units on the indices page (F-109, D94)", () => {
   it("a fund the person typed has no unit price: an ETF or a fund abroad says so on its row; a tracking fund is bought by amount anyway", () => {
     const typed = (kind: Parameters<typeof fundDraftOf>[1]) =>
       fundFromDraft({ ...fundDraftOf(null, kind), payout: "accumulating" as const, hedged: false, name: kind, fixed: 0.1, variable: 0, trustee: 0 }, `custom-fund-${kind}`, "index-sp500", bundle.today);
-    const b = withCustomEntries(bundle, [typed("abroad"), typed("il-etf"), typed("il-tracking")]);
+    const b = withCustomEntries(bundle, [], [typed("abroad"), typed("il-etf"), typed("il-tracking")]);
     const all = buildInvest({ bundle: b, index: indexById(b, "index-sp500")!, plan }).options.flatMap((o) => o.funds);
     const of = (kind: string) => all.find((f) => f.rec.id === `custom-fund-${kind}`)!;
     expect(of("abroad").noUnitPrice).toBe(true);

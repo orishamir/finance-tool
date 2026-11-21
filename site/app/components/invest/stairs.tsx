@@ -302,7 +302,10 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const whyOfRows = (these: readonly Row[]): { parts: SheetPart[]; rules: string[] } => {
     const each = these.map((r) => {
       const w = ways.get(r.to.f);
-      return { name: titleOf(r), told: whyNoFundAt(bundle, r.to.a, w ? [w] : []) };
+      const at = w?.byHouse[r.to.a];
+      // an account the person typed that sells no such fund: their own words, no document
+      const typed = !!at && "availability" in at && at.availability?.source.url === "local";
+      return { name: titleOf(r), told: typed ? { parts: [{ text: c.customEntries.notSold } as SheetPart], rules: [] as string[] } : whyNoFundAt(bundle, r.to.a, w ? [w] : []) };
     });
     const parts: SheetPart[] = [];
     for (const { name, told } of each) {

@@ -1,12 +1,12 @@
 // Government bonds held directly in a securities account (a security, not a wrapper: D6): F-25 with F-12 commissions, F-14
 // custody, the account's F-17 monthly fee and the F-40 exit.
-import { buyWithCash, custodyFee, fixedFee, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
+import { custodyFee, fixedFee, saleCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { bondCoupon } from "../formulas/holding-tax.ts";
 import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
 import { RUN_RESULT_FIELDS, type RunContext, type RunResult } from "../result.ts";
-import { exitTax, maxRateTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
+import { exitTax, maxRateTax, OrderCash, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, removeFifo, type Lot } from "./lots.ts";
 
 export interface BondInput {
@@ -30,7 +30,9 @@ export interface BondInput {
  * F-25 Government bond. The coupon is taxed when paid: 15% of an unlinked coupon (TXI-15); 25% of the whole
  * indexed coupon of a CPI-linked series, even when the index fell (TXI-14, TXI-25). Net coupons are
  * reinvested in the same bond as a new lot; the coupon on the exit day is paid out. At the horizon the
- * bond is sold at par (indexed for a linked series) plus A-27.
+ * bond is sold at par (indexed for a linked series) plus A-27. A purchase its cash cannot pay opens no lot: the cash waits in the account,
+ * earning nothing, for the next purchase, pays the account's monthly fee the units cannot (F-17), and at the horizon is part of what is
+ * left (F-12, F-25).
  */
 export function runBond(input: BondInput, ctx: RunContext): RunResult {
   return acrossReadings(ctx, (c) => runBondUnder(input, c), RUN_RESULT_FIELDS);
@@ -58,8 +60,11 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
   // Units are 100-NIS face amounts at the issue index; price per unit is 100 × I_m for a linked series.
   const price = (m: number) => (linked ? I[m]! : 1);
   let lots: Lot[] = [];
+  const orders = new OrderCash(tariff.buy, { fxRate: 1 });
   const buy = (cash: number, m: number, eventIndex: number) => {
-    const { trade, commission } = buyWithCash(cash, tariff.buy, { fxRate: 1 });
+    const { trade, commission } = orders.buy(cash);
+    // an order its cash cannot pay is not placed: the cash waits for the next one (F-12, F-25)
+    if (!(trade > 0)) return;
     tally.fee("trade", commission);
     lots.push({ units: trade / price(m), basis: trade, index: eventIndex });
   };
@@ -90,11 +95,16 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
       else couponCashAtExit = coupon - tax;
     }
 
+    // F-14 and F-17: custody on the bond held and the account's monthly fee, paid by removing units oldest first. The account's fee is owed
+    // whether or not a unit is held: where the units cannot pay it, the cash waiting for the next order pays the rest, and what neither can
+    // pay is not charged (F-17, as the securities run does).
     const value = lots.reduce((s, l) => s + l.units, 0) * price(m);
     const fee = custodyFee(tariff.custody, m, value);
-    const fixed = fixedFee(tariff.monthlyFee, value - fee);
+    const fixed = fixedFee(tariff.monthlyFee, value - fee + orders.waiting);
+    // the units pay first; the waiting cash pays only what they cannot
+    const fromLots = fee + fixed - orders.pay(fixed - Math.max(0, value - fee));
     if (fee + fixed > 0) {
-      lots = removeFifo(lots, (fee + fixed) / price(m));
+      if (fromLots > 0) lots = removeFifo(lots, fromLots / price(m));
       tally.fee("custody", fee);
       tally.fee("fixed", fixed);
       if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += fee + fixed;
@@ -116,13 +126,13 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
       if (m === T) exitYearCoupons = couponsThisYear;
       couponsThisYear = withheldThisYear = 0;
     }
-    tally.point(m, I[m]!, lots.reduce((s, l) => s + l.units, 0) * price(m));
+    tally.point(m, I[m]!, lots.reduce((s, l) => s + l.units, 0) * price(m) + orders.waiting);
   }
 
   // F-09 exit: consideration is the gross sale value; the exit-year custody fees are deducted once (TXS-06).
   const units = lots.reduce((s, l) => s + l.units, 0);
   const gross = units * price(T) * (1 + (bond.exitPriceChange ?? 0));
-  const commission = tradeCommission(tariff.sell, gross, { fxRate: 1 });
+  const commission = saleCommission(tariff.sell, gross, { fxRate: 1 });
   tally.fee("trade", commission);
   // A CPI-linked bond is a real-basis security: each lot indexed by I_T / I_lot, and when the CPI fell its
   // inflationary amount is zero and the part of a nominal loss equal to the fall is not allowable (TXS-02; F-09). The exit
@@ -145,7 +155,8 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
 
   return tally.result(book, {
     exitMonth: T,
-    nominal: gross - commission - taxAtExit + couponCashAtExit,
+    // the cash of orders not placed is part of what is left, and no gain (F-25)
+    nominal: gross - commission - taxAtExit + couponCashAtExit + orders.waiting,
     index: I,
     taxAtExit,
     outcome: exit.outcome,
