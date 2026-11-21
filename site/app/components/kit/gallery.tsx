@@ -1783,7 +1783,7 @@ function Lists({ today }: { today: string }) {
         <State label={'on the house\'s own page: the same rows, each group\'s name under its short words, a line of where the words stand, a link under a group the index page offers as a radio (to that page with it picked), and with headHelp what "names no fund" means as the "?" beside "מה זול יותר" instead of a note under the rows'} wide>
           <GroupPriceRows entries={sampleGroups()} sources headHelp own={{ can: (k) => k === "group:0", link: () => <a href="/kit" className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWordsDemo.ownAccount}</a> }} />
         </State>
-        <State label="on the index page (2026-11-04): a radio before each group the person can pick (its price names funds and ends after a printed number of months), the picked one checked, and a line on why the others have none" wide>
+        <State label="on the index page: a radio before each group the person can pick (its price names funds and ends after a printed number of months), the picked one checked, and a line on why the others have none" wide>
           <GroupChoiceDemo />
         </State>
       </Demo>
@@ -3710,7 +3710,7 @@ function CaseDemos({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase" use={g.uses.ConditionBand}>
-        <State label={`a fee that changes by what is bought and the track: the condition as words in a column, the person's track open in place, its copy and bin as icons in its head; the fee's bin beside its name; each thing a pill with its chevron, whose menu takes it away, no bin beside it (founder, 2026-11-20); ${g.states.interactive}: a row opens its case, a slot its menu, a part's bin removes it, the fold opens the other tracks`} wide>
+        <State label={`a fee that changes by what is bought and the track: the condition as words in a column, the person's track open in place, its copy and bin as icons in its head; the fee's bin beside its name; each thing a pill with its chevron, whose menu takes it away, no bin beside it; ${g.states.interactive}: a row opens its case, a slot its menu, a part's bin removes it, the fold opens the other tracks`} wide>
           <div className="max-w-xl">
             <TradeFee today={today} />
           </div>
@@ -3727,17 +3727,17 @@ function CaseDemos({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="CaseTable, CaseGrid, EveryCaseParts, SharedLine, AddSlot" use={g.uses.CaseTable}>
-        <State label={`one thing: each case a column tile, its head over a line and its whole price under it, a part a line; the maximum both cases hold alike once over the band, in a cell of its own, then the quiet "+ חלק לכל המקרים" (founder, 2026-11-20), which opens the toolbox on every case; what the price changes by heading the band; a value no case names, a tile whose slot adds its case; a bare "+" after the tiles; ${g.states.interactive}: a tile's head or cell opens its case, its whole tile outlined`} wide>
+        <State label={`one thing: each case a column tile, its head over a line and its whole price under it, a part a line; the maximum both cases hold alike once over the band, in a cell of its own, then the quiet "+ חלק לכל המקרים", which opens the toolbox on every case; what the price changes by heading the band; a value no case names, a tile whose slot adds its case; a bare "+" after the tiles; ${g.states.interactive}: a tile's head or cell opens its case, its whole tile outlined`} wide>
           <div className="max-w-2xl">
             <CustodyTable today={today} />
           </div>
         </State>
-        <State label={`a range as a ladder: the steps ascending, the next step starting at each top; the heads' figures plain at rest, each top a box typed in place while a case is open (founder, 2026-11-20); "+ מדרגה" at the end of the heads asks only for a boundary; ${g.states.interactive}: a tile opens its case`} wide>
+        <State label={`a range as a ladder: the steps ascending, the next step starting at each top; the heads' figures plain at rest, each top a box typed in place while a case is open; "+ מדרגה" at the end of the heads asks only for a boundary; ${g.states.interactive}: a tile opens its case`} wide>
           <div className="max-w-2xl">
             <LadderTable today={today} />
           </div>
         </State>
-        <State label={`two things: a grid, each case a tile (founder, 2026-11-20), the column heads plain words over a line, a soft line between the row heads only; a row's common minimum and maximum as tiles under its tiles, abroad on any channel one tile over its row, a place no case holds as a slot; a bare "+" at the end of the column heads adds a column, one under the row heads a row; ${g.states.interactive}: a tile opens its case, outlined`} wide>
+        <State label={`two things: a grid, each case a tile, the column heads plain words over a line, a soft line between the row heads only; a row's common minimum and maximum as tiles under its tiles, abroad on any channel one tile over its row, a place no case holds as a slot; a bare "+" at the end of the column heads adds a column, one under the row heads a row; ${g.states.interactive}: a tile opens its case, outlined`} wide>
           <div className="max-w-2xl">
             <TradeGrid today={today} />
           </div>
