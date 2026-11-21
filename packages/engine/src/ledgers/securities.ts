@@ -12,7 +12,7 @@ import { memoRun } from "../run-memo.ts";
 import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, LotQueue } from "./lots.ts";
-import { dealCharges, scaled, type Charged, type DealAccount } from "./deal-account.ts";
+import { dealCharges, scaled, type ActionAt, type Charged, type DealAccount } from "./deal-account.ts";
 
 export interface Fund {
   /**
@@ -326,8 +326,38 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
 /**
  * The ledger behind `runSecurities` and `runSecuritiesBeforeTax`. `beforeTaxOf` is null for the run to the exit tax; for F-118 it is the
  * open rule that blocks the exit tax, and the run then reads no tax index and stops after the sale's costs.
+ *
+ * F-128: a deal account with a fee charged within a month's trading is run until each month's trading falls in the steps the run priced it
+ * at. The first run reads each month's trading as the cash the plan puts in that month; each run after reads the trading the one before
+ * placed, the month's trades and the sale. The trading only falls from one run to the next where it moves at all (a dearer step buys
+ * less), so it settles within a few runs; where it has not after `TRADING_RUNS`, the last run stands.
  */
 function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: string | null): RunResult {
+  if (!input.deal?.planWithin?.some((ws) => ws?.some((w) => w.on === "trading"))) return securitiesLedgerAt(input, ctx, beforeTaxOf, null);
+  let trace: TradingTrace = { read: null, placed: [], settled: false };
+  let result!: RunResult;
+  for (let k = 0; k < TRADING_RUNS; k++) {
+    result = securitiesLedgerAt(input, ctx, beforeTaxOf, trace);
+    if (trace.settled) break;
+    trace = { read: trace.placed, placed: [], settled: false };
+  }
+  return result;
+}
+
+/** F-128: the most runs a deal account charged within a month's trading takes to settle its months' trading. */
+const TRADING_RUNS = 6;
+
+/**
+ * F-128: a run of a deal account charged within a month's trading: each month's trading it reads (null: the cash the plan puts in that
+ * month), the trading it placed, and whether every month's placed trading falls in the steps of the trading it read.
+ */
+interface TradingTrace {
+  read: number[] | null;
+  placed: number[];
+  settled: boolean;
+}
+
+function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: string | null, trace: TradingTrace | null): RunResult {
   // F-119: a later leg's grid starts that many tax years after the run date's
   const book = ruleBook(ctx, { inflation: input.market.inflation, startsAfter: Math.floor(((input.goal.firstMonth ?? 1) - 1 + (input.gridOffset ?? 0)) / 12) });
   const { goal, market, fund, tariff, profile } = input;
@@ -442,6 +472,16 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
   const byFee = (c: Charged) => {
     for (const p of c.parts) tally.feeBy(p.fee, p.amount);
   };
+  // F-128: what each action of a deal account is placed within. The orders of a month are those the plan places in it: the amount now and
+  // the month's deposits, a distribution reinvested, and the sale; its trading, the trading the run reads for it (`TradingTrace`), else the
+  // cash the plan puts in it; the balance, the value of what is held when the order is placed
+  const ordersIn = (m: number) =>
+    (m === 1 && C[0]! > 0 ? 1 : 0) + (m <= goal.months && C[m]! > 0 ? orders : 0) + (fund.distribution && m % (12 / fund.distribution.perYear) === 0 ? 1 : 0) + (m === T ? 1 : 0);
+  const tradingIn = (m: number) => trace?.read?.[m] ?? (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
+  const atOf = (m: number, balance: number): ActionAt => ({ count: ordersIn(m), trading: dc?.readsTrading ? tradingIn(m) : 0, balance });
+  const placedIn = (m: number, amount: number) => {
+    if (trace) trace.placed[m] = (trace.placed[m] ?? 0) + amount;
+  };
   // room for every lot the run can buy (the amount now, each month's orders and a distribution's), so the lists never grow
   const lots = new LotQueue(2 + T * ((input.ordersPerMonth ?? 1) + 1));
   // F-109: whole units. The unit's price in shekels moves with the fund's value per unit (`nav`, 1 at the start). Cash an order leaves waits in
@@ -505,7 +545,8 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
     const whole = unitBuy !== undefined && !(standing && unitBuy.monthlyByAmount);
     if (dc) {
       // F-128: the deal has no standing-order price; every order is priced alike
-      const placed = dc.order(month, fresh, held, whole ? unitBuy!.price * nav * (1 + spread) : null);
+      const placed = dc.order(month, fresh, held, whole ? unitBuy!.price * nav * (1 + spread) : null, atOf(month, lots.totalUnits() * nav));
+      placedIn(month, placed.trade);
       waitingNis = placed.leftNis;
       waitingHeld = placed.leftHeld / fxRate(eventMonth);
       if (standing) {
@@ -654,7 +695,7 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
       buy(t.net, m, m, false);
       units = lots.totalUnits();
       // F-103: the custodian's charge for the dividend, paid by removing units oldest first; it is not a fee the sale gain is reduced by
-      const asked = dc ? scaled(dc.event(m, units * nav), units * nav) : null;
+      const asked = dc ? scaled(dc.event(m, units * nav, atOf(m, units * nav)), units * nav) : null;
       const event = asked ? asked.total : corporateEventFee(tariff.perDividend, fxRate(m), units * nav);
       if (asked) byFee(asked);
       if (event > 0) {
@@ -737,14 +778,18 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
   const gross = value * (1 - spread);
   tally.fee("spread", value - gross);
   const atExit = tariffAt(T);
-  const dealSale = dc ? dc.sale(T, gross) : null;
+  const saleAt = atOf(T, value);
+  const dealSale = dc ? dc.sale(T, gross, saleAt) : null;
+  placedIn(T, gross);
   const commission = dealSale ? dealSale.total : tradeCommission(atExit.sell, gross, { fxRate: fxRate(T), sharePrice: sharePrice(T) });
   tally.fee("trade", commission);
   if (dealSale) byFee(dealSale);
   // F-109: the cash still waiting is part of what is left, and no gain: the fund's currency is converted with the sale's proceeds
   const heldAtExit = waitingHeld * fxRate(T);
   const converted = gross - commission + heldAtExit;
-  const dealOut = dc && tariff.currency && converted > 0 ? dc.convertOut(T, converted) : null;
+  const dealOut = dc && tariff.currency && converted > 0 ? dc.convertOut(T, converted, saleAt) : null;
+  // F-128: the run settled where every month's trading placed falls in the steps of the trading it read
+  if (trace && dc) trace.settled = trace.read !== null && trace.placed.every((x, m) => dc.tradingSteps(m, x ?? 0) === dc.tradingSteps(m, trace.read![m] ?? 0)) && trace.read.every((x, m) => trace.placed[m] !== undefined || dc.tradingSteps(m, x ?? 0) === dc.tradingSteps(m, 0));
   const fx = dealOut ? dealOut.total : tariff.currency && converted > 0 ? fxFee(atExit.fx, converted, { fxRate: fxRate(T) }) + (atExit.fxSpread ?? 0) * converted : 0;
   tally.fee("fx", fx);
   if (dealOut) byFee(dealOut);

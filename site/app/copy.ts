@@ -4249,7 +4249,6 @@ export const invest = {
       price: (fee: string) => `עוד בלי מחיר: ${fee}, ולכן לא מדורג.`,
       order: (fee: string) => `המחירים של ${fee} לא לפי הסדר, ולכן לא מדורג.`,
       case: (fee: string) => `ב${fee} אין מקרה לקרן כזאת, ולכן לא מדורג.`,
-      "not-read": (fee: string) => `${fee} משתנה לפי המסחר בחודש או מספר הפעולות, שהחישוב עוד לא קורא, ולכן לא מדורג.`,
     } as Record<string, (fee: string) => string>,
     complete: "להשלים",
     /** The popup's head. */
@@ -4313,10 +4312,25 @@ export const invest = {
       banned: "לפי הכללים, עמלה כזאת לא נגבית כאן.",
     } as Record<string, string>,
     ownBank: (bank: string) => `סימנתם בעמוד שיש לכם כבר חשבון עו״ש ב${bank}.`,
-    /** A deal filled from a bank pays the bank's current account (F-102): said once under the fees. */
-    bankAccount: (bank: string, sum: string) => `בתוכנית נספר גם חשבון העו״ש של ${bank}: ${sum}.`,
+    /**
+     * A deal filled from a bank that names no current account of its own pays the bank's (F-102), from the bank's record: one quiet line
+     * after the fee blocks, its price a month by the price list and its cost on the plan. The toolbox's "חשבון עובר ושב בבנק" gives it its own.
+     */
+    bankAccount: (bank: string, monthly: string, cost: string | null) =>
+      `בתוכנית נספר גם חשבון העו״ש של ${bank}: ${monthly} בחודש לפי התעריפון${cost !== null ? `, ${cost} בתוכנית` : ""}. אפשר לתת לו מחיר משלכם בכרטיס ״חשבון עובר ושב בבנק״.`,
     /** The pick bar: what only the person knows (a track, a condition of their own), then what the plan sets itself. */
     readFor: "קוראים את העסקה בשביל",
+    /** The pick bar on a phone, one line under the strip. */
+    readForShort: "בשביל",
+    /** A fund bought abroad the deal has no case for (E): in the popup under the buy-and-sell cases, and folding the page's rows. */
+    abroad: {
+      lacks: (what: string) => `לקרנות שבחו״ל בעמוד הזה חסר מקרה: ${what}.`,
+      add: "להוסיף את המקרה",
+      /** On the page, the rows of funds bought abroad folded into one line where the chosen account is the deal. */
+      fold: "לקרנות שנקנות בחו״ל אין מחיר בעסקה שלכם: אין בה מחיר לקנייה בחו״ל.",
+      foldAdd: "להוסיף לעסקה",
+      foldCount: (n: number) => `${countPhrase(n, { one: "קרן אחת", two: "שתי קרנות", many: "קרנות" })} בלי מחיר בחשבון הזה`,
+    },
     planKnows: (where: string) => `את השאר התוכנית יודעת: הקרן נקנית ${where}, באינטרנט, פעם בחודש.`,
   },
   customEntries: {

@@ -943,9 +943,10 @@ function prepareDeal(input: WorkbenchInput, runFund: Fund, d: DealProvider): Rea
   return { kind: "ready", base, level: "entered", deal: { ...account, rates: { ...rates, ...account.rates } }, built, memberKind: memberKindOf(d.providerClass), ways: unitWaysAt(input, { by_amount: d.byAmount ?? [] }, tariff) };
 }
 
-/** The currencies a deal's sums are in (F-112): its bounds, flat prices, sums per action or per unit, third parties' sums and steps. */
+/** The currencies a deal's sums are in (F-112): its bounds, flat prices, sums per action or per unit, third parties' sums and steps, and the steps of what the plan sets (F-128). */
 function dealCurrencies(a: DealAccount): string[] {
   const out = new Set<string>();
+  for (const ws of a.planWithin ?? []) for (const w of ws ?? []) if (w.on !== "count" && w.unit !== "units") out.add(w.unit);
   for (const f of a.deal.fees) {
     if (f.within) out.add(f.within.currency);
     for (const st of [...f.stages, ...(f.sale ?? [])]) {
@@ -957,8 +958,9 @@ function dealCurrencies(a: DealAccount): string[] {
   return [...out];
 }
 
-/** Whether a deal prices a trade per unit (F-12's price per share), which needs the fund's unit price. */
+/** Whether a deal prices a trade per unit (F-12's price per share), or counts a month's trading in units (F-128), which needs the fund's unit price. */
 const dealPerUnit = (a: DealAccount): boolean =>
+  (a.planWithin ?? []).some((ws) => ws?.some((w) => w.unit === "units")) ||
   a.deal.fees.some((f) => [...f.stages, ...(f.sale ?? [])].some((st) => st.price.kind === "perUnit" || ((st.price.kind === "action" || st.price.kind === "perAction") && st.price.third?.kind === "perUnit")));
 
 /** Every provider of the run, then every deal account (F-128), each read for the run. */

@@ -63,7 +63,7 @@ function Corner({ children }: { children: ReactNode }) {
  * case holds alike (`EveryCaseParts`) and its cases in their band (`ConditionBand`, its head saying what the price changes by over a
  * `CaseTable`, a `CaseGrid` or the cases read as rows); carried by its name.
  */
-export function FeeBlock({ dot, mark, name, remove, open, grip, corner, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; remove?: FeeRemove | undefined; /** The fee is open: on touch its grips are drawn. */ open?: boolean; /** A grip before its name that lifts the fee (lift.tsx); its head is what is carried. */ grip?: ReactNode; /** Closed: the knobs in its corner (its bin, its duplicate). */ corner?: ReactNode; children: ReactNode }) {
+export function FeeBlock({ dot, mark, name, remove, open, grip, corner, head, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; remove?: FeeRemove | undefined; /** The fee is open: on touch its grips are drawn. */ open?: boolean; /** A grip before its name that lifts the fee (lift.tsx); its head is what is carried. */ grip?: ReactNode; /** Closed: the knobs in its corner (its bin, its duplicate). */ corner?: ReactNode; head?: FeeHeadSlot | undefined; children: ReactNode }) {
   return (
     <div data-open-fee={open ? "" : undefined} className="relative flex flex-col gap-2 rounded-lg border border-border bg-card px-4 pt-1 pb-4">
       <Stripe dot={dot} />
@@ -72,10 +72,24 @@ export function FeeBlock({ dot, mark, name, remove, open, grip, corner, children
         {grip}
         <FeeName dot={dot} mark={mark} name={name} />
         {remove && <RemoveButton {...remove} />}
+        {head?.end && <span className="ms-auto">{head.end}</span>}
       </span>
+      {head?.under && <div className="-mt-1 text-sm text-muted-foreground">{head.under}</div>}
       {children}
+      {head?.foot}
     </div>
   );
+}
+
+/**
+ * What a host adds to a fee's card (the indices page's popup; /deal adds nothing): `end`, at the end of the name's line (what the fee costs
+ * on a plan, or a chip saying the plan never charges it); `under`, quiet lines under it (why, or what the house's customers paid); and
+ * `foot`, a line after its cases (a case the page needs that the fee lacks).
+ */
+export interface FeeHeadSlot {
+  end?: ReactNode;
+  under?: ReactNode;
+  foot?: ReactNode;
 }
 
 /**
@@ -84,7 +98,7 @@ export function FeeBlock({ dot, mark, name, remove, open, grip, corner, children
  * place, as an open case is: the outline in the action colour, "נבחר" at the end of the name's line, and its parts in edit (`PartEdit`s,
  * the `children` then) stacked under it, with `actions` after them, and the bin `remove` beside its name.
  */
-export function SlimFee({ dot, mark, name, label, onOpen, open, remove, actions, grip, corner, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; label: string; onOpen: () => void; open?: boolean; remove?: FeeRemove | undefined; actions?: ReactNode; /** A grip before its name that lifts the fee (lift.tsx). */ grip?: ReactNode; /** Closed: the knobs in its corner (its bin, its duplicate). */ corner?: ReactNode; children: ReactNode }) {
+export function SlimFee({ dot, mark, name, label, onOpen, open, remove, actions, grip, corner, head, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; label: string; onOpen: () => void; open?: boolean; remove?: FeeRemove | undefined; actions?: ReactNode; /** A grip before its name that lifts the fee (lift.tsx). */ grip?: ReactNode; /** Closed: the knobs in its corner (its bin, its duplicate). */ corner?: ReactNode; head?: FeeHeadSlot | undefined; children: ReactNode }) {
   return (
     <PickCard label={label} onPick={onOpen} chosen={open} className={cx("bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 py-1")}>
       {/* open, the outline in the action colour frames it; a stripe of the fee's colour over it would cut its corners (founder, 2026-11-19) */}
@@ -95,21 +109,27 @@ export function SlimFee({ dot, mark, name, label, onOpen, open, remove, actions,
             {grip}
             <FeeName dot={dot} mark={mark} name={name} />
             {remove && <RemoveButton {...remove} />}
-            <Tag tone="primary" icon={<IconCheck size={14} className="shrink-0" />} className="ms-auto">
+            {head?.end && <span className="ms-auto">{head.end}</span>}
+            <Tag tone="primary" icon={<IconCheck size={14} className="shrink-0" />} className={head?.end ? undefined : "ms-auto"}>
               {copy.chosen}
             </Tag>
           </span>
+          {head?.under && <div className="-mt-1 text-sm text-muted-foreground">{head.under}</div>}
           <div className="flex flex-col gap-2" data-figures data-case-parts="">
             {children}
           </div>
           {actions && <div className="flex flex-wrap items-center gap-x-5">{actions}</div>}
+          {head?.foot}
         </div>
       ) : (
         <>
           {corner && <Corner>{corner}</Corner>}
           {grip}
           <FeeName dot={dot} mark={mark} name={name} />
+          {head?.end && <span className="ms-auto order-1">{head.end}</span>}
+          {head?.under && <div className="order-1 basis-full -mt-1 text-sm text-muted-foreground">{head.under}</div>}
           {children}
+          {head?.foot && <div className="order-2 basis-full">{head.foot}</div>}
         </>
       )}
     </PickCard>

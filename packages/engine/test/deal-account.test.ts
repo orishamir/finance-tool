@@ -154,3 +154,43 @@ describe("F-128 in the workbench", () => {
     expect(wb.rows[0]).toMatchObject({ kind: "not-comparable", reason: { code: "needs-fx-rate" } });
   });
 });
+
+describe("F-128 what the plan's months set", () => {
+  /** The trade fee of `deal` as two fees, one charged within each step (`PlanWithin`): `low` up to `top`, `high` above it. */
+  const stepped = (on: "count" | "trading" | "balance", top: number, low: number, high: number, unit = on === "count" ? "actions" : "ILS"): DealAccount => ({
+    ...account({ ...deal, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: low } }] }, { base: { key: "trade" }, stages: [{ price: { kind: "action", rate: high } }] }, ...deal.fees.slice(1)] }),
+    planWithin: [[{ on, from: 0, to: top, unit }], [{ on, from: top, to: null, unit }]],
+  });
+  const flat = (rate: number) => account({ ...deal, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate } }] }, ...deal.fees.slice(1)] });
+
+  it("counts the orders the plan places in a month: two in the first month (the amount now and the deposit), one in each after, two in the last (the deposit and the sale)", () => {
+    // one order a month at 0.1%, more at 0.3%: the first and last months' actions pay 0.3%, every other month's 0.1%
+    const d = runSecurities({ ...base, deal: stepped("count", 1, 0.001, 0.003) }, ctx);
+    const low = runSecurities({ ...base, deal: flat(0.001) }, ctx);
+    const high = runSecurities({ ...base, deal: flat(0.003) }, ctx);
+    expect(d.fees.trade).toBeGreaterThan(low.fees.trade);
+    expect(d.fees.trade).toBeLessThan(high.fees.trade);
+    // the first month's two orders and the last month's deposit and sale at 0.3%, the 118 deposits between at 0.1%
+    const sale = d.fees.trade - (10_000 + 500) * 0.003 / 1.003 - 118 * 500 * 0.001 / 1.001 - 500 * 0.003 / 1.003;
+    expect(sale).toBeGreaterThan(0);
+    expect(sale / 0.003).toBeGreaterThan(20_000);
+  });
+
+  it("reads a month's trading: the month of the amount now pays its step, the months of the deposits theirs", () => {
+    // up to 1,000 ₪ of trading in a month at 0.1%, above it 0.3%: only the first month (10,500 ₪) and the sale's month pay 0.3%
+    const d = runSecurities({ ...base, deal: stepped("trading", 1_000, 0.001, 0.003) }, ctx);
+    const count = runSecurities({ ...base, deal: stepped("count", 1, 0.001, 0.003) }, ctx);
+    expect(d.fees.trade).toBeCloseTo(count.fees.trade, 6);
+    // a step above every month's trading charges the low price throughout
+    const all = runSecurities({ ...base, deal: stepped("trading", 1e9, 0.001, 0.003) }, ctx);
+    expect(all.fees.trade).toBeCloseTo(runSecurities({ ...base, deal: flat(0.001) }, ctx).fees.trade, 6);
+  });
+
+  it("reads the balance when the order is placed: an order into an empty account pays its step, the later ones theirs", () => {
+    // up to 1 ₪ held at 0.3%, more at 0.1%: only the amount now, placed into an empty account, pays 0.3%
+    const d = runSecurities({ ...base, deal: stepped("balance", 1, 0.003, 0.001) }, ctx);
+    const low = runSecurities({ ...base, deal: flat(0.001) }, ctx);
+    // the dearer first order buys a little less, so the sale is a little smaller too
+    expect(d.fees.trade - low.fees.trade).toBeCloseTo(10_000 * (0.003 / 1.003 - 0.001 / 1.001), 1);
+  });
+});

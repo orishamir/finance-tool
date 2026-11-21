@@ -6,10 +6,11 @@ import { buildIndicesBundle } from "../providers.server";
 import { entered } from "../value";
 import { buildInvest, indexById } from "../invest";
 import type { WorkbenchInputs } from "../providers";
-import { fillDeal } from "../fee-deal/templates";
+import { fillDeal, templateOptions } from "../fee-deal/templates";
 import { newDeal, type FeeDeal } from "../fee-deal/model";
-import { dealProviderId, withDeals } from "./bundle";
-import { feesOnPlan, missingKey, missingOf, planDeal, whatOfRun } from "./plan";
+import { addBy } from "../fee-deal/edits/case";
+import { dealProviderId, lineValueOf, withDeals } from "./bundle";
+import { feesOnPlan, missingKey, missingOf, planDeal, planWhat, whatOfRun } from "./plan";
 
 const data = feesData();
 const bundle = buildIndicesBundle();
@@ -50,24 +51,60 @@ describe("F-128 the plan sets what is bought and the channel", () => {
 });
 
 describe("F-128 a deal filled from a house prices as the house does", () => {
-  const houses = ["psagot", "ibi", "meitav-trade", "leumi", "discount"];
+  const houses = templateOptions("brokerage-account", data, t).filter((o) => o.source === "house").map((o) => o.id.slice("house:".length));
   const b = withDeals(bundle, houses.map(fromHouse), data.kinds);
-  const view = buildInvest({ bundle: b, index: indexById(b, "index-ta125")!, plan });
+  const indices = bundle.exposures.flatMap((e) => (indexById(b, e.id) ? [e.id] : []));
+  const views = new Map(indices.map((ix) => [ix, buildInvest({ bundle: b, index: indexById(b, ix)!, plan })]));
+  const view = views.get("index-ta125")!;
+  /**
+   * The known exception: a house whose row buys each month's purchase of a fund bought abroad on its recurring plan (F-12, F-13's standing
+   * lines), which a deal cannot say a purchase is placed by, so the deal prices that purchase at the regular price.
+   */
+  const RECURRING_ABROAD = new Set(["interactive-israel", "interactive-brokers"]);
 
-  it.each(houses)("%s: the same value left on every fund both price, to the shekel", (id) => {
-    const house = view.houses.find((r) => r.provider.id === id)!;
-    const deal = view.houses.find((r) => r.provider.id === dealProviderId(`deal-${id}`))!;
-    expect(deal.provider.custom).toBe(true);
-    const both = house.entries.flatMap((e) => { const d = deal.entries.find((x) => x.fund.rec.id === e.fund.rec.id); return e.price && d?.price ? [[e.price.valueN, d.price.valueN]] : []; });
-    expect(both.length).toBeGreaterThan(0);
-    for (const [h, d] of both) expect(Math.round(d!)).toBe(Math.round(h!));
+  it("fills a deal from every house's template", () => expect(houses.length).toBeGreaterThanOrEqual(17));
+
+  it.each(houses)("%s: the same value left on every fund the house's row prices, to the shekel, on every index", (id) => {
+    let compared = 0;
+    for (const ix of indices) {
+      const v = views.get(ix)!;
+      const house = v.houses.find((r) => r.provider.id === id);
+      const deal = v.houses.find((r) => r.provider.id === dealProviderId(`deal-${id}`))!;
+      if (!house) continue;
+      expect(deal.provider.custom).toBe(true);
+      for (const e of house.entries) {
+        const d = deal.entries.find((x) => x.fund.rec.id === e.fund.rec.id);
+        compared++;
+        if (RECURRING_ABROAD.has(id) && e.fund.option === "abroad" && (e.price || d?.price)) {
+          // the known exception: both price the fund, and the deal's regular price leaves no more than the row's recurring plan
+          expect(e.price && d?.price && d.price.valueN <= e.price.valueN + 0.5).toBeTruthy();
+          continue;
+        }
+        expect([ix, e.fund.rec.id, d?.price ? Math.round(d.price.valueN) : null]).toEqual([ix, e.fund.rec.id, e.price ? Math.round(e.price.valueN) : null]);
+      }
+    }
+    expect(compared).toBeGreaterThan(0);
   });
 
-  it("leaves a bank's mutual funds without a price where its deal has no case for them, with what is missing", () => {
+  it("a bank's open mutual fund is bought on its line for securities on the Tel Aviv exchange, as its row buys it (BRK-16)", () => {
     const deal = view.houses.find((r) => r.provider.id === dealProviderId("deal-leumi"))!;
     const mutual = deal.entries.find((e) => e.fund.option === "il-tracking");
-    expect(mutual?.price).toBeNull();
-    expect(JSON.stringify(mutual?.reason)).toContain("deal-unpriced");
+    expect(mutual?.price).not.toBeNull();
+    expect(planWhat({ instrumentClass: "mutual_fund_units", listing: undefined }, lineValueOf(bundle.snapshots.find((s) => s.id === "leumi")!)).what).toBe("tase");
+  });
+
+  it("prices a fee that changes by what the plan's months set, read across their steps (a month's orders, its trading, the balance)", () => {
+    const deal = fromHouse("psagot");
+    const trade = deal.fees.find((f) => f.kind === "trade")!;
+    for (const n of [{ kind: "count", unit: "actions", top: 1 }, { kind: "volume", unit: "ILS", top: 1_000 }, { kind: "portfolioSize", unit: "ILS", top: 50_000 }] as const) {
+      const d = { ...deal, id: `deal-steps-${n.kind}`, fees: deal.fees.map((f) => (f === trade ? addBy(f, n) : f)) };
+      expect(feesOnPlan(d, run, ctx).find((x) => x.fee === trade.id)?.on).toBe("charged");
+      const bs = withDeals(bundle, [d], data.kinds);
+      const v = buildInvest({ bundle: bs, index: indexById(bs, "index-ta125")!, plan });
+      const at = (pid: string) => v.houses.find((r) => r.provider.id === pid)!.entries.find((e) => e.fund.option === "il-etf")!.price!.valueN;
+      // each step copies the same prices, so the deal leaves what the house's row leaves
+      expect(Math.round(at(dealProviderId(d.id)))).toBe(Math.round(at("psagot")));
+    }
   });
 
   it("the bank's current account is not counted on the bank the person marks as theirs", () => {

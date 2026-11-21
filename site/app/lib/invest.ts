@@ -1599,23 +1599,39 @@ export type DealOnPlan = { kind: "ok"; valueN: number; byFee: Record<string, num
  * whole page waits until the deal is saved and the popup closes. Null where the account is not on the bundle or the fund not on the index.
  */
 export function dealOnPlan(a: InvestArgs & { fundId: string; providerId: string }): DealOnPlan | null {
+  return dealOnFunds({ ...a, fundIds: [a.fundId] }).get(a.fundId) ?? null;
+}
+
+/** `dealOnPlan` on each of several funds, read with one context: the deal's own cheapest way among them is the popup's place (F-63). */
+export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; providerId: string }): Map<string, DealOnPlan> {
   const ctx = makeCtx(a.bundle, a.plan, a.assumptions);
-  const rec = ctx.bundle.funds.find((f) => f.id === a.fundId);
+  const out = new Map<string, DealOnPlan>();
   const s = ctx.snaps.find((x) => x.id === a.providerId);
-  if (!rec || !s) return null;
-  const option = optionOfFund(rec, a.index.exposure ?? undefined);
-  const fs = fundSpec(ctx, rec);
-  if ("reason" in fs) return { kind: "fail", reason: fs.reason };
-  const got = priceMany(ctx, fs.spec, option, [s], option === "abroad" ? venueOfFund(rec) : null).get(s.id);
-  if (!got) return null;
-  if (got.kind === "fail") return { kind: "fail", reason: got.reason };
-  const ids = got.row.account ? feeIdsOf(got.row.account.deal) : undefined;
-  const byFee: Record<string, number> = {};
-  for (const x of got.row.byFee ?? []) {
-    const id = ids?.[x.fee];
-    if (id !== undefined) byFee[id] = (byFee[id] ?? 0) + x.costBeforeTax;
+  if (!s) return out;
+  for (const fundId of a.fundIds) {
+    const rec = ctx.bundle.funds.find((f) => f.id === fundId);
+    if (!rec) continue;
+    const option = optionOfFund(rec, a.index.exposure ?? undefined);
+    const fs = fundSpec(ctx, rec);
+    if ("reason" in fs) {
+      out.set(fundId, { kind: "fail", reason: fs.reason });
+      continue;
+    }
+    const got = priceMany(ctx, fs.spec, option, [s], option === "abroad" ? venueOfFund(rec) : null).get(s.id);
+    if (!got) continue;
+    if (got.kind === "fail") {
+      out.set(fundId, { kind: "fail", reason: got.reason });
+      continue;
+    }
+    const ids = got.row.account ? feeIdsOf(got.row.account.deal) : undefined;
+    const byFee: Record<string, number> = {};
+    for (const x of got.row.byFee ?? []) {
+      const id = ids?.[x.fee];
+      if (id !== undefined) byFee[id] = (byFee[id] ?? 0) + x.costBeforeTax;
+    }
+    out.set(fundId, { kind: "ok", valueN: got.row.real, byFee, accountCost: got.row.horizonCostBeforeTax });
   }
-  return { kind: "ok", valueN: got.row.real, byFee, accountCost: got.row.horizonCostBeforeTax };
+  return out;
 }
 
 /**

@@ -42,7 +42,7 @@ import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { MQ, useMedia, useWiderThan } from "../../lib/hooks";
 import { feeDeal as copy } from "../../copy";
-import { Card, ThingMenu, ValueMenuSheet } from "../kit";
+import { Card, ThingMenu, ValueMenuSheet, type FeeHeadSlot } from "../kit";
 import { FeesColumn, Palette, SetupStrip, feeGroup, paletteItems, shownFeeOrder } from "./builder";
 import { DealColumns, TOOLBOX_STICKY } from "./deal-columns";
 import { useSaid } from "./deal-notices";
@@ -77,14 +77,14 @@ export interface EditorInput {
   onShown?: () => void;
   /** Whether the host draws /deal's reading, which the editor then reads (`readingOf`); a host that reads the deal otherwise leaves it out. */
   withReading?: boolean;
-  /** What the host says under each fee's block (`FeesColumn.noteOf`). */
-  feeNote?: (fee: Fee) => ReactNode;
+  /** What the host adds to each fee's head (`FeesColumn.headOf`). */
+  feeHead?: (fee: Fee) => FeeHeadSlot | undefined;
 }
 
 /** The editor's pieces and hands, for its host to lay out (`useDealEditor`). */
 export type DealEditor = ReturnType<typeof useDealEditor>;
 
-export function useDealEditor({ data, today, saved, writable, first, onShown, withReading = true, feeNote }: EditorInput) {
+export function useDealEditor({ data, today, saved, writable, first, onShown, withReading = true, feeHead }: EditorInput) {
   // another deal on screen (a saved one, a new one, one a template filled, or one an undo brought back): what belonged to the deal before
   // goes, and a new deal is saved once it is worth saving
   const doc = useDealDocument({ first, saved, today, data, onShown: () => afterShow() });
@@ -476,7 +476,7 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
       ask={oc.ask.asking && oc.ask.asking.fee === chosen ? { kind: oc.ask.asking.kind, ...(oc.ask.asking.split ? { split: oc.ask.asking.split } : {}) } : null}
       adding={adding}
       onDuplicate={onDuplicate}
-      noteOf={feeNote}
+      headOf={feeHead}
     />
   );
   return {

@@ -2,7 +2,7 @@
 // the deal's own formulas (F-110 to F-117, `actionCost`, `heldCharge`), so the indices page and the fee page never disagree about what a
 // fee costs at an amount. Which fee the plan charges, and how, is `planChargeOf`; `dealCharges` is what the run asks of the account each
 // month. Rates are fractions and sums shekels, as in formulas/deal.ts.
-import { actionCost, dealPeriods, heldCharge, type CalendarMonth, type Deal, type DealAction, type DealBase, type DealPeriod, type DealPrice } from "../formulas/deal.ts";
+import { actionCost, dealPeriods, heldCharge, inStep, type CalendarMonth, type Deal, type DealAction, type DealBase, type DealPeriod, type DealPrice } from "../formulas/deal.ts";
 
 /**
  * F-128's input: the deal read for the plan (F-114, its picks set by the plan where the plan knows them and by the deal's own pick where
@@ -15,6 +15,31 @@ export interface DealAccount {
   start: CalendarMonth;
   rates: Readonly<Record<string, number>>;
   currentAccount?: readonly number[];
+  /**
+   * F-128: the steps of what the plan's months set that each fee is charged within, by its index in the deal (none: every action), read
+   * across their steps as F-115 reads a size: a price that changes by the number of orders in a month, by a month's trading, or, on an
+   * action, by the size of the portfolio is one fee per step, charged only on an action of a month (or at a balance) in its step.
+   */
+  planWithin?: readonly (readonly PlanWithin[] | undefined)[];
+}
+
+/**
+ * F-128 One step of what the plan sets that a fee of a deal account is charged within, above `from` (the first step, `from` 0, holds
+ * nothing too) and at most `to` (no top where null): the orders the plan places in the action's month (`count`, in `actions`); that month's
+ * trading (`trading`, in a currency or in `units`); or the value of what is held when the order is placed (`balance`, in a currency).
+ */
+export interface PlanWithin {
+  on: "count" | "trading" | "balance";
+  from: number;
+  to: number | null;
+  unit: string;
+}
+
+/** F-128 What an action of a deal account is placed within: the orders of its month, the month's trading in shekels, the value held then. */
+export interface ActionAt {
+  count: number;
+  trading: number;
+  balance: number;
 }
 
 /**
@@ -112,17 +137,24 @@ export interface DealOrder {
 export interface DealCharges {
   /** The line each fee is reported on, by its index; null for a fee the plan never charges. */
   lines: readonly (DealLine | null)[];
-  /** F-08 one order of month `m`: the conversion of `fresh` shekels and the trade the cash pays for, by amount or in whole units at `ask`. */
-  order(m: number, fresh: number, held: number, ask: number | null): DealOrder;
+  /**
+   * F-08 one order of month `m`: the conversion of `fresh` shekels and the trade the cash pays for, by amount or in whole units at `ask`,
+   * placed within `at` (F-128's steps of what the plan sets).
+   */
+  order(m: number, fresh: number, held: number, ask: number | null, at?: ActionAt): DealOrder;
   /** F-14 the shares of what is held due in month `m` on `value`, and the share of a shekel more that they take (F-91). */
   held(m: number, value: number): Charged & { atRate: number };
   /** F-17, F-102 the sums due in month `m`, the account's own and a current account's, before what the account holds limits them. */
   sums(m: number): { fixed: Charged; account: Charged };
   /** F-103 the charges on a dividend paid in month `m` on a holding of `value`, before what is held limits them. */
-  event(m: number, value: number): Charged;
-  /** F-09 the sale's charges in month `m` on `gross`, and the conversion of the proceeds `converted`. */
-  sale(m: number, gross: number): Charged;
-  convertOut(m: number, converted: number): Charged;
+  event(m: number, value: number, at?: ActionAt): Charged;
+  /** F-09 the sale's charges in month `m` on `gross`, and the conversion of the proceeds `converted`, placed within `at`. */
+  sale(m: number, gross: number, at?: ActionAt): Charged;
+  convertOut(m: number, converted: number, at?: ActionAt): Charged;
+  /** F-128: whether a fee is charged within a month's trading, which the run then settles (`tradingSteps`). */
+  readsTrading: boolean;
+  /** F-128: the step of every fee charged within a month's trading that `trading` shekels in month `m` fall in, as one key. */
+  tradingSteps(m: number, trading: number): string;
   /** F-102 with BANK-35: what a current account costs a month in month `m`, for the cap's flag. */
   accountMonthly(m: number): number;
 }
@@ -182,13 +214,32 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
     }
     return r;
   };
-  const onAction = (role: PlanCharge, action: DealAction, m: number, amount: number, side: "buy" | "sell"): Charged => {
+  // F-128: a fee charged within a step of what the plan sets is charged only on an action placed within it
+  const planWithin = account.planWithin ?? [];
+  const measure = (w: PlanWithin, m: number, at: ActionAt): number | null => {
+    if (w.on === "count") return at.count;
+    const shekels = w.on === "trading" ? at.trading : at.balance;
+    if (w.unit === "units") {
+      const p = run.unitPrice(m);
+      return p !== undefined && p > 0 ? shekels / p : null;
+    }
+    const r = w.unit === "ILS" ? 1 : ratesAt(m)[w.unit];
+    return r !== undefined && r > 0 ? shekels / r : null;
+  };
+  const within = (i: number, m: number, at: ActionAt | undefined): boolean =>
+    (planWithin[i] ?? []).every((w) => {
+      const x = at ? measure(w, m, at) : null;
+      if (x === null) throw new RangeError(`F-128: fee ${i} is charged within ${w.on} in ${w.unit}, which the run cannot measure here`);
+      return inStep(w, x);
+    });
+  const onAction = (role: PlanCharge, action: DealAction, m: number, amount: number, side: "buy" | "sell", at?: ActionAt): Charged => {
     if (!(amount > 0)) return { total: 0, parts: [] };
     const cost = actionCost(deal, periodAt(m), action, amount, side, ratesAt(m), run.unitPrice(m));
-    return sum(cost.parts.filter((p) => roles[p.fee] === role).map((p) => ({ fee: p.fee, amount: p.cost })));
+    return sum(cost.parts.filter((p) => roles[p.fee] === role && within(p.fee, m, at)).map((p) => ({ fee: p.fee, amount: p.cost })));
   };
-  const trade = (m: number, t: number, side: "buy" | "sell") => onAction("trade", "trade", m, t, side);
-  const conversion = (m: number, c: number, side: "buy" | "sell") => onAction("conversion", "conversion", m, c, side);
+  const trade = (m: number, t: number, side: "buy" | "sell", at?: ActionAt) => onAction("trade", "trade", m, t, side, at);
+  const conversion = (m: number, c: number, side: "buy" | "sell", at?: ActionAt) => onAction("conversion", "conversion", m, c, side, at);
+  const tradingWithin = planWithin.flatMap((ws, i) => (ws ?? []).filter((w) => w.on === "trading").map((w) => ({ i, w })));
   // the amounts where a charge on an action may jump (a step's ends, a flat price's sum): a trade the cash pays for is found between them
   const cutsAt = (m: number, role: PlanCharge): number[] => {
     const rates = ratesAt(m);
@@ -207,14 +258,18 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
   };
   return {
     lines,
-    order(m, fresh, held, ask) {
-      const fxOf = (c: number) => conversion(m, c, "buy");
+    readsTrading: tradingWithin.length > 0,
+    tradingSteps(m, trading) {
+      return tradingWithin.map(({ w }) => (inStep(w, measure(w, m, { count: 0, trading, balance: 0 }) ?? Number.NaN) ? 1 : 0)).join("");
+    },
+    order(m, fresh, held, ask, at) {
+      const fxOf = (c: number) => conversion(m, c, "buy", at);
       if (ask === null) {
         const fx = run.currency && fresh > 0 ? fxOf(fresh) : { total: 0, parts: [] };
         const cash = fresh - fx.total + held;
-        const t = tradeForCash(cash, (x) => trade(m, x, "buy").total, cutsAt(m, "trade"));
+        const t = tradeForCash(cash, (x) => trade(m, x, "buy", at).total, cutsAt(m, "trade"));
         if (!(t > 0)) return { fx: fx.total, trade: t, commission: 0, cost: fx.total, leftNis: 0, leftHeld: 0, parts: fx.parts };
-        const c = trade(m, t, "buy");
+        const c = trade(m, t, "buy", at);
         // a charge that jumps past the cash leaves the largest trade it pays for, and the rest waits for the next order (F-128)
         const left = Math.max(0, cash - t - c.total);
         return { fx: fx.total, trade: t, commission: c.total, cost: fx.total + c.total, leftNis: left, leftHeld: 0, parts: [...fx.parts, ...c.parts] };
@@ -222,7 +277,7 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
       // F-109: the most whole units the cash pays for at the ask, with their charges and the conversion of the shekels they need
       for (let n = Math.floor((fresh + held) / ask + 1e-9); n > 0; n--) {
         const t = n * ask;
-        const c = trade(m, t, "buy");
+        const c = trade(m, t, "buy", at);
         const fromHeld = Math.min(held, t + c.total);
         const owed = t + c.total - fromHeld;
         const spent = run.currency && owed > 0 ? convertedFor(owed, (x) => fxOf(x).total) : owed;
@@ -260,14 +315,14 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
       });
       return { fixed: sum(fixed), account: sum(acc) };
     },
-    event(m, value) {
-      return onAction("event", "distribution", m, value, "buy");
+    event(m, value, at) {
+      return onAction("event", "distribution", m, value, "buy", at);
     },
-    sale(m, gross) {
-      return trade(m, gross, "sell");
+    sale(m, gross, at) {
+      return trade(m, gross, "sell", at);
     },
-    convertOut(m, converted) {
-      return run.currency ? conversion(m, converted, "sell") : { total: 0, parts: [] };
+    convertOut(m, converted, at) {
+      return run.currency ? conversion(m, converted, "sell", at) : { total: 0, parts: [] };
     },
     accountMonthly(m) {
       const p = periodAt(m);
