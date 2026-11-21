@@ -1,9 +1,9 @@
 // F-12 with F-24 and F-25: in the makam and bond runs, an order its cash cannot pay is not placed, and its cash stays in the account as
 // cash, earning nothing, joins the next order placed, and at the horizon is part of what is left. F-09: a sale's commission takes at most
-// the proceeds, so a sale never leaves less than nothing. Expected figures worked by hand (comments), with no yield, return or inflation
-// unless a test says otherwise, so a unit of face value costs one shekel.
+// the proceeds, and its conversion at most what it converts (F-13), so a sale never leaves less than nothing. Expected figures worked
+// by hand (comments), with no yield, return or inflation unless a test says otherwise, so a unit of face value costs one shekel.
 import { describe, expect, it } from "vitest";
-import { saleCommission } from "../src/formulas/fees.ts";
+import { saleCommission, saleConversion } from "../src/formulas/fees.ts";
 import { runBond, type BondInput } from "../src/ledgers/bond.ts";
 import { runMakam, type MakamInput } from "../src/ledgers/makam.ts";
 import { runSecurities } from "../src/ledgers/securities.ts";
@@ -51,6 +51,33 @@ describe("a sale's commission takes at most the proceeds (F-09)", () => {
       ctx,
     );
     expect(r.fees.trade).toBeCloseTo(15, 9);
+    expect(r.nominal).toBeCloseTo(0, 9);
+  });
+});
+
+describe("a sale's conversion takes at most what it converts (F-09, F-13)", () => {
+  it("a 10 NIS minimum takes 5 of 5 converted and 10 of 1,000; a 0.5% spread is charged beside the fee within the cap", () => {
+    const fx = { rate: 0, min: 10 };
+    expect(saleConversion(fx, 5, { fxRate: 4 })).toBe(5);
+    expect(saleConversion(fx, 1_000, { fxRate: 4 })).toBe(10);
+    expect(saleConversion(fx, 1_000, { fxRate: 4 }, 0.005)).toBeCloseTo(15, 9);
+    expect(saleConversion(fx, 8, { fxRate: 4 }, 0.005)).toBe(8);
+    expect(saleConversion(fx, 0, { fxRate: 4 })).toBe(0);
+    expect(saleConversion(undefined, 100, { fxRate: 4 })).toBe(0);
+  });
+
+  it("the securities run's sale abroad leaves nothing, not less: 15 NIS converts for 10 and buys 5, and the sale's conversion of 5 takes 5", () => {
+    const r = runSecurities(
+      {
+        goal: { amountNow: 15, monthly: 0, months: 2 },
+        market: { grossReturn: 0, inflation: 0 },
+        fund: { kind: "foreign-fund", drag: {} },
+        tariff: { buy: { rate: 0 }, fx: { rate: 0, min: 10 }, currency: { code: "USD", startRate: 4 } },
+        profile: {},
+      },
+      ctx,
+    );
+    expect(r.fees.fx).toBeCloseTo(15, 9);
     expect(r.nominal).toBeCloseTo(0, 9);
   });
 });
