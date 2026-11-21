@@ -32,18 +32,13 @@ import { READING_ID } from "./left-out";
 import { ReadingCards } from "./reading";
 import { useOpenedDeal } from "./use-deal-document";
 import { feeName } from "./words";
+import { todayLocal } from "../../lib/today";
 
 /**
  * Where the focus goes from a saved deal's undo line, after "ביטול" or when it goes: the saved deals' menu, else (no deal saved, so no
  * menu) the deal's name in the bar.
  */
 const dealsMenuOrName = () => document.querySelector<HTMLElement>("[data-deals-menu] button") ?? document.querySelector<HTMLElement>("[data-deal-bar] input");
-
-/** The device's day, YYYY-MM-DD, on its own calendar. */
-function deviceToday(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
 
 function Head() {
   return <PageHead title={copy.title} lede={copy.lede} crumb={<Breadcrumb parent={{ href: "/", label: "" }} current={copy.crumb} />} />;
@@ -53,7 +48,7 @@ function Head() {
 export function FeeDealPage({ data, failed }: { data: FeesData | null; failed: boolean }) {
   const store = dealStore.use();
   const [today, setToday] = useState<string | null>(null);
-  useEffect(() => setToday(deviceToday()), []);
+  useEffect(() => setToday(todayLocal()), []);
   // the deal the address names, read once the page has what it needs (a deal in the fragment is opened by the browser's own decompression,
   // which takes a moment): `undefined` while it is read
   const { search, hash } = useLocation();
