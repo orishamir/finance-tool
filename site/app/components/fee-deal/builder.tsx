@@ -97,7 +97,6 @@ export function SetupStrip({ deal, kinds, offered, onPickTrack, onTemplates, fil
     kindChosen.current = false;
     // the undo line of a kind that took fees away has the focus already
     if (!kindLine) (root.current?.querySelector<HTMLElement>("[data-next-step]") ?? document.querySelector<HTMLElement>("[data-fees-add] button"))?.focus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deal.kind]);
   const track = deal.template && templateSource(deal.template.id) === "track" ? deal.template : null;
   const house = deal.template && templateSource(deal.template.id) === "house" ? deal.template : null;
@@ -359,7 +358,6 @@ export function FeesColumn({
       bringIntoView(box?.closest("[data-case-parts]") ?? box?.closest("[data-lift]") ?? li);
     } else feeFocus(li)?.focus({ preventScroll: true });
     onFocused();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deal.fees, open.fee, focus]);
   const onFee = (f: Fee) => onDeal({ ...deal, fees: deal.fees.map((x) => (x.id === f.id ? f : x)) });
   const rows = new Map(view.rows.map((r) => [r.fee, r]));

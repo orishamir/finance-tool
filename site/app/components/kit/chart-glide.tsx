@@ -94,7 +94,6 @@ export function useFadingTicks(values: readonly number[]): GlideTick[] {
     setList((prev) => mergeTicks(prev, values));
     const t = setTimeout(() => setList((prev) => prev.filter((p) => p.phase !== "out")), durationChart());
     return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
   return list;
 }
@@ -204,7 +203,6 @@ export function useFlip<E extends HTMLElement = HTMLOListElement>(order: string 
         slide.onfinish = slide.oncancel = done;
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
   return ref;
 }

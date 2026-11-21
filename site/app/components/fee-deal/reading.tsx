@@ -21,6 +21,7 @@ import { FeeOpen, useFeeLinks } from "./links";
 import { LeftOutList, LeftOutNotes } from "./left-out";
 import { CapRules, Fig, LawBlock, PriceWords, feeColour, feeName, formOf, refName, sumDisplay } from "./words";
 import { sumUnit } from "../../lib/fee-deal/values";
+import { assertNever } from "@finance-tool/schema";
 
 const w = copy.read;
 
@@ -817,6 +818,8 @@ function PeriodsHeadline({ head }: { head: PeriodsHead }) {
         </>
       );
     }
+    default:
+      return assertNever(head);
   }
 }
 
@@ -990,6 +993,8 @@ function LawHeadline({ rows }: { rows: readonly LawRow[] }) {
       return <>{head.n === 1 ? l.noCap.one : l.noCap.several}</>;
     case "not-judged":
       return <>{l.notJudged}</>;
+    default:
+      return assertNever(head);
   }
 }
 

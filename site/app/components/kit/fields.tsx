@@ -146,7 +146,6 @@ export function NumberField(props: FieldProps) {
     adopted.current = true;
     const typed = inputRef.current?.value ?? "";
     if (typed !== "" && text === "" && value === null) change(typed);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const lastValue = useRef(value);
   useEffect(() => {
@@ -158,7 +157,6 @@ export function NumberField(props: FieldProps) {
       setText(value === null ? "" : formatTyped(value));
       setError(null);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, focused]);
   const shownError = error ?? externalError;
   const errorOutRef = useRef(errorOut);
