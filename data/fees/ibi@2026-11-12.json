@@ -581,7 +581,7 @@
           "BRK-25"
         ],
         "state": "sourced",
-        "notes": "No conversion fee: the price list prints 'מרווח המרה בלבד ממחיר הביצוע בשוק וללא עמלה' (part 5, item 1, p.6); the annex sets no conversion fee, so this stays on the price list. The cost is the spread, recorded under spread from the annex (p.75, item ד) and priced at 0.7% (D56, F-13). Conversions run once a day, 12:30-13:30 (the new-customers page)."
+        "notes": "No conversion fee: the price list prints 'מרווח המרה בלבד ממחיר הביצוע בשוק וללא עמלה' (part 5, item 1, p.6); the annex sets no conversion fee, so this stays on the price list. The cost is the spread, recorded under spread from the annex (p.75, item ד) and priced by the deal's size, 0.7% up to 15,000 dollars and 0.5% above (D56, F-13). Conversions run once a day, 12:30-13:30 (the new-customers page)."
       },
       "min": null,
       "max": null,

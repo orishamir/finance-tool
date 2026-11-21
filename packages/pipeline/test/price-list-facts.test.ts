@@ -68,7 +68,7 @@ describe("a conversion priced by its size (§3.6a item 3)", () => {
     expect(checkLineFacts(l, true).join()).toMatch(/smallest up/);
   });
   it("every recorded step passes the check that a step never raises the price", () => {
-    const sized = [snap("ibi@2026-11-12"), snap("discount@2026-11-14"), fibi, snap("mizrahi-tefahot@2026-11-12"), snap("hapoalim@2026-11-12")].flatMap((s) => s.lines.filter((l) => l.size_tiers));
+    const sized = [snap("ibi@2026-11-12"), snap("discount@2026-11-14"), snap("fibi@2026-11-21"), snap("massad@2026-11-21"), snap("mizrahi-tefahot@2026-11-12"), snap("hapoalim@2026-11-12")].flatMap((s) => s.lines.filter((l) => l.size_tiers));
     expect(sized.length).toBeGreaterThan(4);
     for (const l of sized) expect(checkLineFacts(structuredClone(l), true), l.id).toEqual([]);
   });
@@ -178,7 +178,7 @@ describe("the averages a house charged (§3.9)", () => {
 
 describe("the citations of the price-list facts (2026-11-14)", () => {
   it("each step of the six banks' small conversions cites BRK-68", () => {
-    for (const name of ["discount@2026-11-14", "mercantile@2026-11-12", "fibi@2026-11-12", "massad@2026-11-12", "mizrahi-tefahot@2026-11-12", "hapoalim@2026-11-12"])
+    for (const name of ["discount@2026-11-14", "mercantile@2026-11-12", "fibi@2026-11-21", "massad@2026-11-21", "mizrahi-tefahot@2026-11-12", "hapoalim@2026-11-12"])
       for (const l of snap(name).lines)
         for (const t of l.size_tiers ?? []) for (const v of [t.up_to, t.discount_pct, t.flat, t.rate]) if (v) expect(v.rule_ids, `${name} ${l.id}`).toContain("BRK-68");
   });

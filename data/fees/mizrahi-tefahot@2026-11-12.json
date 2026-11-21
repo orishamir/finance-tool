@@ -14,7 +14,7 @@
   "tariff": {
     "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
     "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות",
-    "notes": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, הקובץ המאוגד (48 עמ'; אין תאריך כולל, כל חלק נושא 'מעודכן לתאריך' משלו, המאוחר שבהם 14/10/2026): חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'; זהה לקובץ חלק 4 הנפרד smallbusiness4.pdf), חלק 5 - מטבע חוץ ('11.7.2025'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'). מקושר מעמוד https://www.mizrahi-tefahot.co.il/interest-list-small-buisness/ Re-read 2026-11-04. The price-list page (https://www.mizrahi-tefahot.co.il/interest-list-small-buisness/) still links smallbusinessMeugad.pdf; it is byte for byte the 31 October copy (md5 5facf477…, library 8dedbb45235cd662; HTTP Last-Modified 2026-10-20, PDF ModDate 2026-10-20), and it is the newest binding document. The parts carry their own dates: part 1 '01/10/2026', part 4 '02/04/2024' (the separate smallbusiness4.pdf was created 2024-04-01 and modified 2025-02-24), part 5 '11.7.2025', part 11 '18/08/2026' (smallbusiness11.pdf created 2026-09-24), annex A '13.01.2026', annex E '12/08/2025'. The exchange's sheet (market.tase.co.il trading_fees, list 'עדכון אחרון: 30/06/26') prints the same direct rates and custody. No account agreement with a securities fee annex is published: the agreements page links only the general securities terms of 7.2025 (library 97e568f32eb2e075), which print no price. No promotion terms with a securities price were found. Re-read 2026-11-12: the price-list page links the same file, byte for byte the copy read before (md5 5facf477447b516082284aef2ec173f1, library 8dedbb45235cd662). New today: part 4's ceilings on the minimum, 4.1 note (6) 'העמלה המזערית לא תעלה בכל מקרה על 25% מהשווי' (p.10) and 4.4 note (5) 'במניות, קרנות ואג\"ח: העמלה המזערית לא תעלה בכל מקרה על 25% מהשווי' (p.11), are recorded as `cap` on the trade lines, the internet ones too: annex E prints a reduced price for the same service, and the notes say 'בכל מקרה'. The small conversions of part 5 note (6) and annex E ('רכישה/מכירה בסכום עד 50 $') are listed as left out.",
+    "notes": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, הקובץ המאוגד (48 עמ'; אין תאריך כולל, כל חלק נושא 'מעודכן לתאריך' משלו, המאוחר שבהם 14/10/2026): חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'; זהה לקובץ חלק 4 הנפרד smallbusiness4.pdf), חלק 5 - מטבע חוץ ('11.7.2025'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'). מקושר מעמוד https://www.mizrahi-tefahot.co.il/interest-list-small-buisness/ Re-read 2026-11-04. The price-list page (https://www.mizrahi-tefahot.co.il/interest-list-small-buisness/) still links smallbusinessMeugad.pdf; it is byte for byte the 31 October copy (md5 5facf477…, library 8dedbb45235cd662; HTTP Last-Modified 2026-10-20, PDF ModDate 2026-10-20), and it is the newest binding document. The parts carry their own dates: part 1 '01/10/2026', part 4 '02/04/2024' (the separate smallbusiness4.pdf was created 2024-04-01 and modified 2025-02-24), part 5 '11.7.2025', part 11 '18/08/2026' (smallbusiness11.pdf created 2026-09-24), annex A '13.01.2026', annex E '12/08/2025'. The exchange's sheet (market.tase.co.il trading_fees, list 'עדכון אחרון: 30/06/26') prints the same direct rates and custody. No account agreement with a securities fee annex is published: the agreements page links only the general securities terms of 7.2025 (library 97e568f32eb2e075), which print no price. No promotion terms with a securities price were found. Re-read 2026-11-12: the price-list page links the same file, byte for byte the copy read before (md5 5facf477447b516082284aef2ec173f1, library 8dedbb45235cd662). New today: part 4's ceilings on the minimum, 4.1 note (6) 'העמלה המזערית לא תעלה בכל מקרה על 25% מהשווי' (p.10) and 4.4 note (5) 'במניות, קרנות ואג\"ח: העמלה המזערית לא תעלה בכל מקרה על 25% מהשווי' (p.11), are recorded as `cap` on the trade lines, the internet ones too: annex E prints a reduced price for the same service, and the notes say 'בכל מקרה'. The small conversions of part 5 note (6) and annex E ('רכישה/מכירה בסכום עד 50 $') are the conversion lines' size steps (`size_tiers`, F-13), priced in both channels.",
     "published": null,
     "printed": {
       "kind": "part",
@@ -1514,14 +1514,14 @@
             "unit": "usd",
             "source": {
               "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
-              "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין - ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע), מחיר לפי ערוצים ישירים - שירות האינטרנט",
+              "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), סעיף 5.1 עמלת חליפין, הערה (6) רכישה/מכירה בסכומים קטנים",
               "publisher": "Mizrahi Tefahot Bank Ltd.",
               "strength": "institution",
               "page": 14,
               "quote": "רכישה/מכירה בסכומים קטנים: עד $10.00- פטור עד $50.00- $3.00"
             },
-            "checked": "2026-11-14",
-            "effective_from": "2025-08-12",
+            "checked": "2026-11-21",
+            "effective_from": "2025-07-11",
             "effective_to": null,
             "tax_year": null,
             "update_rule": "provider-set",
@@ -1531,14 +1531,14 @@
               "BRK-68"
             ],
             "state": "sourced",
-            "notes": "The step's top, in dollars, as the list prints it."
+            "notes": "The step's top, in dollars, as the list prints it: part 5, note (6) (p.14), which names no channel; annex E (p.48) prints none of its own."
           },
           "on": "fee",
           "exempt": true,
           "source": {
             "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
-            "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), נספח ה' - הטבות בערוצי בנקאות בתקשורת ('נכון לתאריך: 12/08/2025'), חליפין - ממטבע לש\"ח/מש\"ח למטבע (בשער ציטוט/אחיד/ידוע), מחיר לפי ערוצים ישירים - שירות האינטרנט",
-            "checked": "2026-11-14",
+            "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 5 - מטבע חוץ ('מעודכן לתאריך: 11.7.2025'), סעיף 5.1 עמלת חליפין, הערה (6) רכישה/מכירה בסכומים קטנים",
+            "checked": "2026-11-21",
             "page": 14,
             "quote": "רכישה/מכירה בסכומים קטנים: עד $10.00- פטור עד $50.00- $3.00"
           }
