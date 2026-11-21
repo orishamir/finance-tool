@@ -634,8 +634,8 @@ function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: 
 
     // 5. Holding costs, paid by removing units oldest first (F-14, F-17, F-15 for the IRA manager). A share of the holdings (custody, the
     // IRA manager's fee) is charged on the units alone. A fee a month for the account (F-17's fixed fee, F-102's current account) is owed
-    // whether or not a unit is held: where the units cannot pay it, the cash waiting for a whole unit (F-109) pays the rest, shekels first;
-    // what neither can pay is not charged (method F-17, a decision of 2026-11-12 for the reviewer).
+    // whether or not a unit is held: where the units cannot pay it, the cash waiting for the next order (F-12 by amount, F-109 in whole
+    // units) pays the rest, shekels first; what neither can pay is not charged (method F-17).
     const manager = (wrapperFee / 12) * units * nav;
     const custody = custodyFee(custodyLineAt(m), m + offset, units * nav - manager);
     const heldLeft = units * nav - manager - custody;
