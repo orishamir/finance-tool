@@ -56,7 +56,7 @@ const Stripe = ({ dot }: { dot: string }) => (
 /** A closed card's corner actions: knobs on its top edge at its end, over nothing of it. */
 function Corner({ children }: { children: ReactNode }) {
   return (
-    <span data-fee-corner="" className="absolute -top-2.5 inset-e-3 z-20 flex items-center gap-2">
+    <span data-fee-corner="" className="absolute -top-2.5 inset-e-3 z-(--z-sticky) flex items-center gap-2">
       {children}
     </span>
   );

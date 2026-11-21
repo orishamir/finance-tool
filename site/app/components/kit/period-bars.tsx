@@ -39,7 +39,7 @@ export function PeriodBars({ bars, value, onChange, empty, label, chosenWord, cl
             aria-label={on ? `${b.spoken}, ${chosenWord}` : b.spoken}
             onClick={() => onChange(b.id)}
             className={cx(
-              "group/bar min-w-0 flex flex-col items-center gap-2 rounded-lg border pt-3 pb-2 md:pb-3 px-0.5 md:px-2 cursor-pointer transition-colors duration-[var(--duration-base)]",
+              "group/bar min-w-0 flex flex-col items-center gap-2 rounded-lg border pt-3 pb-2 md:pb-3 px-0.5 md:px-2 cursor-pointer transition-colors duration-(--duration-base)",
               on ? "border-primary bg-primary-subtle" : "border-transparent bg-muted/40 hover:bg-muted hover:border-border",
             )}
           >
@@ -59,7 +59,7 @@ export function PeriodBars({ bars, value, onChange, empty, label, chosenWord, cl
                 <span
                   aria-hidden="true"
                   data-mark="bar"
-                  className={cx("block w-[62%] md:w-[56%] max-w-24 rounded-t-[4px] transition-[height] duration-[var(--duration-chart)] ease-standard motion-reduce:transition-none", on ? "bg-primary" : "bg-chart-value/55 group-hover/bar:bg-chart-value/70")}
+                  className={cx("block w-[62%] md:w-[56%] max-w-24 rounded-t-[4px] transition-[height] duration-(--duration-chart) ease-standard motion-reduce:transition-none", on ? "bg-primary" : "bg-chart-value/55 group-hover/bar:bg-chart-value/70")}
                   // the figure's line takes about 1.5rem of the plot; the bar takes up to the rest
                   style={{ height: `calc((100% - 1.5rem) * ${share})`, minHeight: 2 }}
                 />

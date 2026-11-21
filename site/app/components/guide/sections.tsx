@@ -39,7 +39,7 @@ export function useCurrentSection(ids: readonly string[]): string {
 export function SectionIndex({ sections, current }: { sections: readonly SectionDef[]; current: string }) {
   return (
     <>
-      <nav aria-label={copy.indexTitle} className="lg:hidden sticky top-14 z-[var(--z-sticky)] bg-background/95 backdrop-blur -mx-gutter px-gutter py-2 overflow-x-auto scrollbar-none">
+      <nav aria-label={copy.indexTitle} className="lg:hidden sticky top-14 z-(--z-sticky) bg-background/95 backdrop-blur -mx-gutter px-gutter py-2 overflow-x-auto scrollbar-none">
         <ul className="flex gap-2 w-max">
           {sections.map((s) => (
             <li key={s.id}>

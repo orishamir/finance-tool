@@ -1206,7 +1206,7 @@ function CitationBox({ text }: { text: string }) {
       type="button"
       onClick={() => void copy()}
       title={ruleCardMore.copyCitation}
-      className="group flex items-center gap-2 w-full min-h-10 tap-area px-3 rounded-md border border-border bg-background text-xs text-start hover:border-input transition-colors duration-[var(--duration-fast)]"
+      className="group flex items-center gap-2 w-full min-h-10 tap-area px-3 rounded-md border border-border bg-background text-xs text-start hover:border-input transition-colors duration-(--duration-fast)"
     >
       <span className={cx("shrink-0 font-medium", copied ? "text-positive" : "text-foreground")}>
         {copied ? sourceCopy.citation.copied : ruleCardMore.citationLabel}

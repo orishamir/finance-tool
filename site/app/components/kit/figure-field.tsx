@@ -154,7 +154,8 @@ export type Settled = "enter" | "left";
  * narrower than a `ch` and a point much narrower.
  */
 const widthOf = (text: string, placeholder: string | undefined, tight?: boolean, least = 0) => `${Math.max(tight && text ? text.length : Math.max(text.length, placeholder?.length ?? 0), tight ? 1 : 2, least) + (tight ? 0.15 : 0.5)}ch`;
-const FIT = "min-w-[1ch] supports-[field-sizing:content]:[field-sizing:content] supports-[field-sizing:content]:!w-auto";
+// w-auto! wins over the width the style attribute sets (widthOf), which only browsers without field-sizing need
+const FIT = "min-w-[1ch] supports-[field-sizing:content]:[field-sizing:content] supports-[field-sizing:content]:w-auto!";
 
 /**
  * The box a sourced figure's note is measured against, the row's cell the figure stands in: the nearest one marked `data-note-cell`, else

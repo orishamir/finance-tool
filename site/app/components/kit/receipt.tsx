@@ -166,7 +166,7 @@ export function ReceiptStub({ names, label, figure, go, target, area, inline = f
       inert={!shown}
       className={cx(
         "drop-shadow-up",
-        inline ? "relative" : "fixed inset-x-0 bottom-0 z-[var(--z-sticky)] transition-[translate,opacity] duration-[var(--duration-base)] ease-[var(--ease-standard)]",
+        inline ? "relative" : "fixed inset-x-0 bottom-0 z-(--z-sticky) transition-[translate,opacity] duration-(--duration-base) ease-standard",
         !inline && !shown && "pointer-events-none translate-y-full opacity-0",
       )}
     >

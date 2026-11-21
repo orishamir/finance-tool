@@ -149,13 +149,13 @@ function Header({ width, current, ready, onMenu, onSearch }: { width: string; cu
   const navRef = useRef<HTMLElement>(null);
   const navFits = useNavFits(row, name, navRef);
   return (
-    <header data-site-header="" className="group/header sticky top-0 z-[var(--z-sticky)] bg-background/90 backdrop-blur border-b border-border">
+    <header data-site-header="" className="group/header sticky top-0 z-(--z-sticky) bg-background/90 backdrop-blur border-b border-border">
       <div ref={row} className={cx("mx-auto h-14 lg:h-16 px-gutter flex items-center justify-between gap-4", width)}>
         <div className="flex items-center gap-6 xl:gap-8 min-w-0">
           <Link ref={name} to="/" className="text-lg font-semibold text-foreground py-2 whitespace-nowrap">
             {site.name}
           </Link>
-          <nav ref={navRef} aria-label="ראשי" className={cx("hidden items-center gap-5 transition-opacity duration-[var(--duration-fast)] group-has-[[data-search-active]]/header:opacity-0 group-has-[[data-search-active]]/header:pointer-events-none", navFits && "xl:flex")}>
+          <nav ref={navRef} aria-label="ראשי" className={cx("hidden items-center gap-5 transition-opacity duration-(--duration-fast) group-has-[[data-search-active]]/header:opacity-0 group-has-[[data-search-active]]/header:pointer-events-none", navFits && "xl:flex")}>
             {doorItems.map((item) => {
               const on = isCurrentItem(item, current, pathname);
               return (
@@ -242,7 +242,7 @@ function ToTop() {
       type="button"
       aria-label={site.toTop}
       onClick={() => window.scrollTo({ top: 0 })}
-      className={cx("fixed bottom-20 md:bottom-6 inset-e-4 z-[var(--z-sticky)] size-target rounded-full border border-border bg-popover text-foreground shadow-md inline-flex items-center justify-center hover:bg-accent", clearOfReceiptStub)}
+      className={cx("fixed bottom-20 md:bottom-6 inset-e-4 z-(--z-sticky) size-target rounded-full border border-border bg-popover text-foreground shadow-md inline-flex items-center justify-center hover:bg-accent", clearOfReceiptStub)}
     >
       <span aria-hidden="true" className="-rotate-90 inline-flex">
         <IconBack size={20} />

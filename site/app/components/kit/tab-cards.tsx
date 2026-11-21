@@ -43,7 +43,7 @@ export function TabCards({ tabs, current, onChange, ariaLabel, idBase, openWord,
               onClick={() => onChange(t.key)}
               onKeyDown={keys}
               className={cx(
-                "relative flex min-w-0 flex-col gap-1 rounded-lg border px-4 py-3.5 text-start transition-colors duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-ring",
+                "relative flex min-w-0 flex-col gap-1 rounded-lg border px-4 py-3.5 text-start transition-colors duration-(--duration-fast) focus-visible:outline-2 focus-visible:outline-ring",
                 on ? "border-primary bg-popover" : "cursor-pointer border-border bg-card hover:bg-accent/60",
               )}
             >

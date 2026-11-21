@@ -172,7 +172,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
   const panelOpen = open && desktop;
   const resting = variant === "header" && !focused && !open && !text;
   return (
-    <div ref={wrap} data-search-active={(variant === "header" && !resting) || undefined} className={cx("relative", variant === "header" && "w-72 xl:absolute xl:inset-e-0 xl:top-1/2 xl:-translate-y-1/2 xl:transition-[width] xl:duration-[var(--duration-fast)]", variant === "header" && (resting ? "xl:w-10" : "xl:w-72"))}>
+    <div ref={wrap} data-search-active={(variant === "header" && !resting) || undefined} className={cx("relative", variant === "header" && "w-72 xl:absolute xl:inset-e-0 xl:top-1/2 xl:-translate-y-1/2 xl:transition-[width] xl:duration-(--duration-fast)", variant === "header" && (resting ? "xl:w-10" : "xl:w-72"))}>
       <form
         role="search"
         onSubmit={(e) => {
@@ -248,7 +248,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
         </div>
       </form>
       {panelOpen && (
-        <div id={panelId} className="absolute inset-e-0 top-full mt-2 z-[var(--z-popover)] w-[min(30rem,calc(100vw-2rem))] max-h-[70vh] overflow-y-auto rounded-lg border border-border bg-popover text-popover-foreground shadow-lg p-4 flex flex-col gap-3">
+        <div id={panelId} className="absolute inset-e-0 top-full mt-2 z-(--z-popover) w-[min(30rem,calc(100vw-2rem))] max-h-[70vh] overflow-y-auto rounded-lg border border-border bg-popover text-popover-foreground shadow-lg p-4 flex flex-col gap-3">
           {r && found ? <r.SearchBody text={text} setText={setText} found={found} /> : <Waiting text={text} />}
         </div>
       )}

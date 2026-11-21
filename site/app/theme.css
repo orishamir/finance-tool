@@ -382,6 +382,10 @@
   /* Stacking (popovers and sheets use the top layer and need none) */
   --z-sticky: 20;
   --z-popover: 30; /* the search results under the page field (audit 2026-10-24, A5) */
+  /* while something is carried (kit/lift.tsx), over everything else on the page: */
+  --z-reach: 59; /* a knob's frame following the pointer */
+  --z-carry: 60; /* the carried thing's picture */
+  --z-carry-over: 61; /* over the picture: the bin it is dropped on, and the line under the pointer saying why a place does not take it */
 }
 
 /* A part's kind on an element (`data-kind`) sets its hue (`--kind`) and the fills mixed from it: the toolbox's hover on its line and on a

@@ -78,7 +78,7 @@ export function SideNav({ groups, current, ariaLabel, heading, onPick }: { group
 }
 
 /** The chosen item: a teal wash, teal text and a teal bar at its start edge; the others light on hover. */
-const navLook = (on: boolean) => cx("transition-colors duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2", on ? "bg-primary-subtle text-primary font-medium" : "hover:bg-accent/60");
+const navLook = (on: boolean) => cx("transition-colors duration-(--duration-fast) focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2", on ? "bg-primary-subtle text-primary font-medium" : "hover:bg-accent/60");
 
 export function SidePage({ nav, summary, more, less, chosen, children }: { /** The `SideNav`; given a function, it receives what closes the fold. */ nav: (close: () => void) => ReactNode; /** What is shown, in a few words, for the folded line under lg. */ summary: ReactNode; more: string; less: string; /** The chosen part: when it changes, the fold closes. */ chosen: string; children: ReactNode }) {
   const [open, setOpen] = useState(false);

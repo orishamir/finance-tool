@@ -88,7 +88,7 @@ function PartCard({ kind, part: p, held, onAdd, onRemove }: { kind: ToolKind; pa
       {...drag}
       data-kind={kind}
       className={cx(
-        "min-h-target max-w-full flex-wrap items-center gap-x-2 gap-y-1 px-3 py-1.5 text-start text-sm transition-colors duration-[var(--duration-fast)]",
+        "min-h-target max-w-full flex-wrap items-center gap-x-2 gap-y-1 px-3 py-1.5 text-start text-sm transition-colors duration-(--duration-fast)",
         CARD,
         held ? HELD : p.used ? cx("bg-kind-tile-on outline outline-1 -outline-offset-1 outline-kind", removes ? "enabled:hover:bg-kind-tile" : "cursor-default") : "bg-popover enabled:hover:bg-accent",
         p.off && "opacity-45",
@@ -111,7 +111,7 @@ function LineCard({ kind, line, held, onAdd }: { kind: ToolKind; line: ToolLine;
       disabled={line.off}
       aria-pressed={held || undefined}
       onClick={onAdd}
-      className={cx("flex min-h-target w-full items-center gap-2 rounded-lg px-3 text-sm transition-colors duration-[var(--duration-fast)]", held ? HELD : "enabled:hover:bg-kind-tile", line.off && "opacity-45")}
+      className={cx("flex min-h-target w-full items-center gap-2 rounded-lg px-3 text-sm transition-colors duration-(--duration-fast)", held ? HELD : "enabled:hover:bg-kind-tile", line.off && "opacity-45")}
     >
       <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-primary" />
       <WhenRule className="text-foreground">
@@ -250,7 +250,7 @@ export function Toolbox({ addTo, held, groups, onAdd, onRemove, foot, sheet, doc
         data-tool-sheet=""
         // a pinned sheet is a block the site's "back to the top" button steps aside from (shell.tsx)
         {...(docked ? { "data-docked": "", "data-keep-clear": "" } : {})}
-        className={cx("flex flex-col gap-3 rounded-t-xl border-t border-border bg-popover px-4 pt-1 shadow-lg", docked ? cx("fixed inset-x-0 bottom-0 z-[var(--z-sticky)] max-h-[13.5rem]", (folded || held) && "pb-4") : "pb-4")}
+        className={cx("flex flex-col gap-3 rounded-t-xl border-t border-border bg-popover px-4 pt-1 shadow-lg", docked ? cx("fixed inset-x-0 bottom-0 z-(--z-sticky) max-h-[13.5rem]", (folded || held) && "pb-4") : "pb-4")}
       >
         <div className="relative flex shrink-0 justify-center">
           {held ? (

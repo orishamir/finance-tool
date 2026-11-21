@@ -192,7 +192,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
                 i === lastLive && "rounded-e-sm",
                 named && "cursor-pointer",
                 size === "md" && named && "before:absolute before:inset-x-0 before:-inset-y-2",
-                "transition-opacity duration-[var(--duration-fast)]",
+                "transition-opacity duration-(--duration-fast)",
                 p.className,
                 (highlight ? highlight !== (p.legendId ?? p.id) : pick.active && pick.active !== p.id) && "opacity-20",
               )}
@@ -216,7 +216,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
                 <span className={cx("absolute top-0 h-1 w-px bg-muted-foreground", dim && "opacity-20")} style={{ insetInlineStart: (starts[i]! + widths[i]! / 2) * px }} />
                 <span
                   {...(p.name ? pick.bind(p.id, true) : {})}
-                  className={cx("absolute top-1 flex items-center gap-1 text-xs leading-4 text-muted-foreground tabular-nums whitespace-nowrap transition-opacity duration-[var(--duration-fast)]", p.name && "cursor-pointer", dim && "opacity-20")}
+                  className={cx("absolute top-1 flex items-center gap-1 text-xs leading-4 text-muted-foreground tabular-nums whitespace-nowrap transition-opacity duration-(--duration-fast)", p.name && "cursor-pointer", dim && "opacity-20")}
                   style={{ insetInlineStart: underAt[k] }}
                 >
                   <span className={cx("inline-block size-2 rounded-[2px]", p.className)} />
@@ -251,7 +251,7 @@ function Box({ rows, active, share, total, toStart }: { rows: { part: CostPart; 
     if (dx) el.style.transform = `translateX(${dx}px)`;
   });
   return (
-    <span ref={box} className={cx("absolute bottom-full mb-1 z-20 pointer-events-none flex w-max max-w-64 flex-col gap-0.5 rounded-md border border-border bg-popover px-2 py-1 text-xs font-normal text-foreground leading-snug whitespace-normal text-start shadow-sm", toStart ? "inset-e-0" : "inset-s-0")}>
+    <span ref={box} className={cx("absolute bottom-full mb-1 z-(--z-sticky) pointer-events-none flex w-max max-w-64 flex-col gap-0.5 rounded-md border border-border bg-popover px-2 py-1 text-xs font-normal text-foreground leading-snug whitespace-normal text-start shadow-sm", toStart ? "inset-e-0" : "inset-s-0")}>
       {rows.map(({ part, amount }) => (
         <span key={part.id} className="flex flex-col">
           <span className={cx("flex items-baseline gap-1.5", part.id === active ? "font-semibold" : "text-muted-foreground")}>

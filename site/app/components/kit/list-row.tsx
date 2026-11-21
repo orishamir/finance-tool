@@ -30,7 +30,7 @@ export function GroupHead({ children, count, as: Tag = "h3", id, className, plai
 }
 
 /** The chosen row's look, shared by every list of rows that marks one (`ListRow`, `ChooseRow`, `SideNav`): a filled background; the others light on hover. */
-export const rowLook = (selected: boolean | undefined): string => cx("transition-colors duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2", selected ? "bg-accent" : "hover:bg-accent/50");
+export const rowLook = (selected: boolean | undefined): string => cx("transition-colors duration-(--duration-fast) focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2", selected ? "bg-accent" : "hover:bg-accent/50");
 
 /** The bar at the chosen row's start edge. */
 export function RowMark() {
@@ -47,7 +47,7 @@ export function RowList({ children, className, label, plain }: { children: React
 
 export function ListRow({ title, lead, line, chips, meta, end, selected, dim, sub, onSelect, rowId, controls }: { title: ReactNode; /** One muted line, cut to the row's width; left out on a phone. */ lead?: ReactNode; /** One muted line that wraps and stays on a phone (a plan's price). */ line?: ReactNode; chips?: ReactNode; meta?: ReactNode; /** The identifier, small and muted at the end of the title's line. */ end?: ReactNode; selected?: boolean; /** Dimmed in place: it does not match what is chosen, and stays where it is. */ dim?: boolean; /** A row under its group's name (`RowGroup`): set in from the start edge, its title at the body's weight. */ sub?: boolean; onSelect: () => void; /** The row's element id (a link lands on it, and focus comes back to it). */ rowId?: string; /** The id of what the row opens. */ controls?: string }) {
   return (
-    <li className={cx("transition-opacity duration-[var(--duration-base)]", dim && "opacity-45")}>
+    <li className={cx("transition-opacity duration-(--duration-base)", dim && "opacity-45")}>
       <button
         type="button"
         id={rowId}
@@ -100,7 +100,7 @@ const LIFT = "[&_:is(a,button,[role=button]):not([data-choose-row])]:relative [&
  */
 export function ChooseRow({ title, end, line, chosen, dim, onChoose, label, link }: { title: ReactNode; /** Short and muted at the end of the title's line (a count). */ end?: ReactNode; /** A quieter second line; it may hold figures that open their source. */ line?: ReactNode; chosen: boolean; dim?: boolean; onChoose: () => void; /** The button's spoken name. */ label: string; /** The arrow at the end: where it goes and its spoken name. */ link?: { to: string; label: string } }) {
   return (
-    <li className={cx("relative flex items-stretch transition-[background-color,opacity] duration-[var(--duration-base)]", LIFT, chosen ? "bg-accent" : "hover:bg-accent/50", dim && "opacity-45")}>
+    <li className={cx("relative flex items-stretch transition-[background-color,opacity] duration-(--duration-base)", LIFT, chosen ? "bg-accent" : "hover:bg-accent/50", dim && "opacity-45")}>
       {chosen && <RowMark />}
       <span className="flex-1 min-w-0 ps-3 pe-2 py-2 lg:ps-4 flex flex-col gap-0.5">
         <span className="flex items-baseline gap-3 min-w-0">

@@ -281,7 +281,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
                 </>
               )}
               {confirm?.id === i.id && (
-                <div style={{ width: CONFIRM_WIDTH }} className={cx("absolute top-full mt-1 z-[var(--z-popover)] rounded-lg border border-border bg-popover p-3 shadow-md flex flex-col gap-2", confirm.edge === "start" ? "inset-s-0" : "inset-e-0")} onKeyDown={(e) => e.key === "Escape" && setConfirm(null)}>
+                <div style={{ width: CONFIRM_WIDTH }} className={cx("absolute top-full mt-1 z-(--z-popover) rounded-lg border border-border bg-popover p-3 shadow-md flex flex-col gap-2", confirm.edge === "start" ? "inset-s-0" : "inset-e-0")} onKeyDown={(e) => e.key === "Escape" && setConfirm(null)}>
                   <span className="text-sm">{words?.confirm}</span>
                   <span className="flex items-center gap-2">
                     <Button
@@ -312,7 +312,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
       {drag?.active &&
         byId.get(drag.id) &&
         createPortal(
-          <div aria-hidden="true" className="fixed z-[var(--z-popover)] pointer-events-none inline-flex items-center rounded-[10px] bg-secondary shadow-lg cursor-grabbing" style={{ left: drag.x - drag.grabX, top: drag.y - drag.grabY, width: drag.width }}>
+          <div aria-hidden="true" className="fixed z-(--z-popover) pointer-events-none inline-flex items-center rounded-[10px] bg-secondary shadow-lg cursor-grabbing" style={{ left: drag.x - drag.grabX, top: drag.y - drag.grabY, width: drag.width }}>
             <span className={cx("sec-chip gap-1.5 ps-2.5", drag.id === value && "sec-chip-on")}>
               <GripVertical size={14} className="opacity-60 shrink-0" {...ic} />
               {drag.id === value && <IconCheck size={16} className="shrink-0" />}

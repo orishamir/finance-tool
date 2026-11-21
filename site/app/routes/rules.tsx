@@ -256,7 +256,7 @@ function ProductList({ names, counts, total, current, onPick }: { names: Map<str
       type="button"
       aria-pressed={current === id}
       onClick={() => onPick(id)}
-      className={cx("relative w-full min-h-target xl:tap-area flex", all ? "xl:min-h-11" : "xl:min-h-9", "items-center justify-between gap-3 px-3 rounded-md text-start text-sm transition-colors duration-[var(--duration-fast)]", current === id ? "bg-accent font-semibold" : "hover:bg-accent/50")}
+      className={cx("relative w-full min-h-target xl:tap-area flex", all ? "xl:min-h-11" : "xl:min-h-9", "items-center justify-between gap-3 px-3 rounded-md text-start text-sm transition-colors duration-(--duration-fast)", current === id ? "bg-accent font-semibold" : "hover:bg-accent/50")}
     >
       {current === id && <span aria-hidden="true" className="absolute inset-y-1.5 inset-s-0 w-[3px] rounded-full bg-primary" />}
       <span className={cx("min-w-0", all && "flex items-center gap-2.5 font-medium")}>

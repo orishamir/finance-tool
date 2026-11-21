@@ -936,7 +936,7 @@
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 61;
+    z-index: var(--z-carry-over);
     pointer-events: none;
     max-width: 18rem;
     padding: 0.25rem 0.5rem;
@@ -950,7 +950,7 @@
   /* The carried thing's picture: a clean copy of it, upright, on the card's surface and raised off the page. Over the bin it dims behind
      a red edge; with the modifier key held (a copy) a plus stands at its corner. */
   [data-lift-ghost] {
-    z-index: 60;
+    z-index: var(--z-carry);
     border-radius: var(--radius-md);
     background: var(--card);
     box-shadow: var(--shadow-lg);
@@ -979,7 +979,7 @@
   /* A knob's pull (kit/lift.tsx `SpanKnob`): the cell's edge follows the pointer as a frame in the action colour */
   [data-reach-frame] {
     position: fixed;
-    z-index: 59;
+    z-index: var(--z-reach);
     pointer-events: none;
     border-radius: var(--radius-md);
     outline: 2px solid var(--primary);

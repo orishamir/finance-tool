@@ -126,7 +126,7 @@ export function DropZone({ accepts, onDrop, onPreview, sort: sortOf, why, rounde
       data-sort-list={sort?.list}
       title={refused ?? undefined}
       data-drop-why={refused ?? undefined}
-      className={cx(rounded, framed && cx("*:outline-2 *:-outline-offset-2 *:transition-[background-color] *:duration-[var(--duration-fast)]", ink, over ? "*:bg-accent *:outline-solid" : "*:outline-dashed"), className)}
+      className={cx(rounded, framed && cx("*:outline-2 *:-outline-offset-2 *:transition-[background-color] *:duration-(--duration-fast)", ink, over ? "*:bg-accent *:outline-solid" : "*:outline-dashed"), className)}
     >
       {signs ? children({ takes, over }) : children}
     </div>

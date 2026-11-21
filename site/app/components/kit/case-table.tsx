@@ -168,7 +168,7 @@ export function AddSlot({ add, className }: { add: AddSpec; className?: string }
       aria-label={add.spoken}
       onClick={(e) => add.onAdd(e.currentTarget)}
       className={cx(
-        "inline-flex min-h-target w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-primary px-3 text-sm text-primary transition-colors duration-[var(--duration-fast)] hover:bg-accent",
+        "inline-flex min-h-target w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-primary px-3 text-sm text-primary transition-colors duration-(--duration-fast) hover:bg-accent",
         add.expanded && "bg-accent",
         className,
       )}
@@ -560,7 +560,7 @@ export function EveryCaseParts({ label, cells, asking, add, zone }: { label: str
           aria-label={add.spoken}
           aria-expanded={add.expanded}
           onClick={(e) => add.onAdd(e.currentTarget)}
-          className={cx("inline-flex min-h-target items-center gap-1.5 rounded-md px-3 text-sm text-muted-foreground transition-colors duration-[var(--duration-fast)] hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring", add.expanded && "bg-accent")}
+          className={cx("inline-flex min-h-target items-center gap-1.5 rounded-md px-3 text-sm text-muted-foreground transition-colors duration-(--duration-fast) hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring", add.expanded && "bg-accent")}
         >
           <Plus {...icon} />
           {add.label}
