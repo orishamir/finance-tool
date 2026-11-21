@@ -51,6 +51,7 @@ import { TemplateList, type TemplateListWords } from "../fee-deal/picker";
 import { NoticeRow } from "../fee-deal/deal-notices";
 import type { MoveLeft } from "../../lib/deal-account/move-run";
 import { ActionMenu, Button, Card, ConfirmAsk, HouseAverageLine, KeyValue, MixedName, ReadForBand, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, useStuckRoom, When, type FeeHeadSlot, type GripAction } from "../kit";
+import { ToolBoundary } from "../tool-boundary";
 
 const w = root.dealAccount;
 
@@ -204,6 +205,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
         {target && data && world ? (
           first ? (
             <ProvenanceProvider data={provenance ?? EMPTY_PROVENANCE}>
+            <ToolBoundary resetKey={first.id}>
             <DealPopup
               key={first.id}
               data={data}
@@ -219,6 +221,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
                 close();
               }}
             />
+            </ToolBoundary>
             </ProvenanceProvider>
           ) : (
             <DealStart data={data} today={today} headId={headId} onStart={(id) => setStarted(id ? houseDeal(id, data, today) : newDeal(ACCOUNT_KIND))} />

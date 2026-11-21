@@ -15,6 +15,7 @@ import { IconReset } from "../icons";
 import { IdRef, Num, RuleRef, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Button, Callout, Card, ChartLegend, FoldGroup, HelpMark, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, yearsCheck } from "../kit";
+import { ToolBoundary } from "../tool-boundary";
 
 export interface TimelineProps {
   bundle: Bundle;
@@ -41,7 +42,16 @@ export interface TimelineProps {
   note?: ReactNode;
 }
 
-export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, lock, employment = false, cash = null, lumpSum = null, note = null }: TimelineProps) {
+/** The timeline, inside its own error boundary: a run that throws on what was typed leaves the rest of the guide page standing. */
+export function Timeline(props: TimelineProps) {
+  return (
+    <ToolBoundary>
+      <TimelineTool {...props} />
+    </ToolBoundary>
+  );
+}
+
+function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, lock, employment = false, cash = null, lumpSum = null, note = null }: TimelineProps) {
   const { state, ready, resetAll: resetInputs } = useInputs();
   const [ownRates, setOwnRate] = useOwnRates("guide");
   const ownRate = cash ? ownRates[cash.id] : undefined;

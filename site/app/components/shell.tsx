@@ -8,6 +8,7 @@ import { preloadSearch, SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
 import { Button, CountingFigures, clearOfReceiptStub, cx, gershayim, TextLink, When } from "./kit";
 import { useHydrated } from "../lib/hooks";
+import { FailureNotice } from "./failure-notice";
 
 export type Current = "guide" | "decoder" | "rules" | "documents" | "parameters" | "home" | "other";
 
@@ -92,6 +93,7 @@ export function PageShell({ current, data: pageData, children }: { current: Curr
           <Footer width={width} />
         </div>
         <ToTop />
+        <FailureNotice />
         <MenuSheet open={menuOpen} onClose={() => setMenuOpen(false)} current={current} />
         <SearchSheet
           open={searchOpen}
