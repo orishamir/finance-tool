@@ -86,7 +86,7 @@ export function buyWithCash(cash: number, line: Commission | undefined, terms: T
 
 /**
  * F-09 The commission on a sale of `gross`, paid out of the proceeds: `min(G, fee_trade(G))`. It takes at most the proceeds, so a sale at or
- * below the line's minimum (or its flat price) leaves nothing, never less.
+ * below the line's minimum (or its flat price) leaves nothing, never less, before the exit tax, which sale costs do not lower (G-20).
  */
 export function saleCommission(line: Commission | undefined, gross: number, terms: TradeTerms): number {
   return Math.min(Math.max(0, gross), tradeCommission(line, gross, terms));
