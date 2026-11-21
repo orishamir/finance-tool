@@ -770,10 +770,6 @@ export const runFailure = {
 export const system = {
   calcFailed: "האתר לא הצליח לחשב את הגרף. רעננו את העמוד ונסו שוב.",
   wentWrong: { title: "משהו השתבש", line: "האתר לא הצליח להציג את העמוד הזה. אפשר לרענן, או לחזור לעמוד הראשי.", home: "לעמוד הראשי", reload: "לרענן את העמוד" },
-  /** A script on the page failed after it was drawn (components/failure-notice.tsx): figures may not follow what was changed since. */
-  pageFailed: { title: "משהו בעמוד השתבש", line: "ייתכן שחלק מהמספרים כאן לא התעדכנו.", reload: "לרענן את העמוד", close: "סגירה" },
-  /** A tool on the page failed on what it was given (components/tool-boundary.tsx): the rest of the page stands. */
-  toolFailed: { title: "האתר לא הצליח לחשב את החלק הזה", line: "שאר העמוד לא נפגע.", reload: "לרענן את העמוד" },
   notFound: { title: "העמוד הזה לא קיים. אולי הקישור ישן.", home: "לעמוד הראשי", search: "לחיפוש" },
   loading: "טוען…",
 } as const;

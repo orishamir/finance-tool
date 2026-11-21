@@ -7,7 +7,6 @@ import { customIndexPath, indexPath } from "../../lib/site-paths";
 import type { IndicesBundle } from "../../lib/providers";
 import { Button, Card, MenuPicker, PageHead, Tag, type MenuItem } from "../kit";
 import { Ruled } from "../provenance";
-import { todayLocal } from "../../lib/today";
 
 /** The index name in the picker: it follows the title's "במדד", so a leading "מדד" is dropped. */
 export const pillName = (name: string): string => name.replace(new RegExp(`^${c.title.indexWord}\\s+`), "");
@@ -120,7 +119,7 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
     }
     if (customs.some((x) => x.id === customIdOf(typed))) return setNote(c.custom.nameTaken);
     // only the name: whether the index is in shekels is asked of each fund added on it
-    onSave({ id: customIdOf(typed), name: typed, added: todayLocal() });
+    onSave({ id: customIdOf(typed), name: typed, added: new Date().toISOString().slice(0, 10) });
   };
   return (
     <Card pad="tight" className="flex flex-col gap-3 max-w-measure" role="group" aria-label={c.custom.heading}>

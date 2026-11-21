@@ -10,7 +10,7 @@
 // A deal deleted in another tab while it is open stays on screen, saved no more, with /deal's line and its keep; the editor's data that
 // did not load is said with a retry. Under the account list, each account typed by hand before deals that could not become one says why
 // it is not in the list.
-import { createContext, useCallback, useContext, useDeferredValue, useEffect, useEffectEvent, useId, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
+import { createContext, useContext, useDeferredValue, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
 import { MoreHorizontal, Pencil } from "lucide-react";
 import { useNavigate } from "react-router";
 import { IconPencil } from "../icons";
@@ -51,7 +51,6 @@ import { TemplateList, type TemplateListWords } from "../fee-deal/picker";
 import { NoticeRow } from "../fee-deal/deal-notices";
 import type { MoveLeft } from "../../lib/deal-account/move-run";
 import { ActionMenu, Button, Card, ConfirmAsk, HouseAverageLine, KeyValue, MixedName, ReadForBand, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, useStuckRoom, When, type FeeHeadSlot, type GripAction } from "../kit";
-import { ToolBoundary } from "../tool-boundary";
 
 const w = root.dealAccount;
 
@@ -126,29 +125,18 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
   const [deleted, setDeleted] = useState<DeletedDeal | null>(null);
   const [started, setStarted] = useState<FeeDeal | null>(null);
   const headId = useId();
-  const isOpen = target !== null;
-  // the popup opens: the page holds its deals, and the fee page's data is asked for where it is not in yet
-  const openOn = useCallback(
-    (t: DealTarget) => {
-      onOpenChange(true);
-      if (!data) onWant();
-      setTarget(t);
-    },
-    [data, onOpenChange, onWant],
-  );
-  const close = () => {
-    setTarget(null);
-    onOpenChange(false);
-  };
-  // the page arrived with a house in its address: the popup opens on it once the page can price, and the address is cleaned
-  const openFromAddress = useEffectEvent((house: string) => {
-    openOn({ house });
-    onOpened();
-  });
-  const canPrice = world !== null;
   useEffect(() => {
-    if (opening && canPrice) openFromAddress(opening);
-  }, [opening, canPrice]);
+    if (target && !data) onWant();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target, data]);
+  const isOpen = target !== null;
+  useEffect(() => onOpenChange(isOpen), [isOpen, onOpenChange]);
+  useEffect(() => {
+    if (!opening || !world) return;
+    setTarget({ house: opening });
+    onOpened();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [opening, !!world]);
   const api = useMemo<DealAccountsApi>(
     () => ({
       open: (t) => {
@@ -157,7 +145,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
         setDeleted(null);
         setStarted(null);
         setOpened(deal ?? null);
-        openOn(t);
+        setTarget(t);
       },
       dealOf: (id) => saved.find((d) => dealProviderId(d.id) === id),
       deleted,
@@ -179,8 +167,9 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
       },
       left,
     }),
-    [saved, deleted, data, world, left, openOn],
+    [saved, deleted, data, world, left],
   );
+  const close = () => setTarget(null);
   // the editor's rule and term sheets read the fee page's data (its rules, the records they point at, its terms) over the page's own
   const page = useProvenanceData();
   const provenance = useMemo<ProvenanceData | null>(
@@ -205,7 +194,6 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
         {target && data && world ? (
           first ? (
             <ProvenanceProvider data={provenance ?? EMPTY_PROVENANCE}>
-            <ToolBoundary resetKey={first.id}>
             <DealPopup
               key={first.id}
               data={data}
@@ -221,7 +209,6 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
                 close();
               }}
             />
-            </ToolBoundary>
             </ProvenanceProvider>
           ) : (
             <DealStart data={data} today={today} headId={headId} onStart={(id) => setStarted(id ? houseDeal(id, data, today) : newDeal(ACCOUNT_KIND))} />

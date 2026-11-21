@@ -115,12 +115,7 @@ export function SearchSheet({ open, onClose, anchor, seed }: { open: boolean; on
   const navigate = useNavigate();
   const { index, texts } = useSearchIndex(open, text);
   const { r, found, hits } = useFound(open, index, texts, text);
-  // each opening, and each new seed, starts the field from the seed
-  const [seeded, setSeeded] = useState({ seed, open });
-  if (seeded.seed !== seed || seeded.open !== open) {
-    setSeeded({ seed, open });
-    setText(seed);
-  }
+  useEffect(() => setText(seed), [seed, open]);
   useEffect(() => {
     if (!open) return;
     const t = window.setTimeout(() => inputRef.current?.focus(), 50);
@@ -165,13 +160,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
   const location = useLocation();
   const { index, texts } = useSearchIndex(open && desktop, text);
   const { r, found, hits } = useFound(open && desktop, index, texts, text);
-  // a move to another page or place closes the results
-  const place = `${location.pathname}${location.hash}`;
-  const [placeOpened, setPlaceOpened] = useState(place);
-  if (place !== placeOpened) {
-    setPlaceOpened(place);
-    setOpen(false);
-  }
+  useEffect(() => setOpen(false), [location.pathname, location.hash]);
   useEffect(() => {
     if (!open) return;
     const down = (e: PointerEvent) => {

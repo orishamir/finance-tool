@@ -13,6 +13,8 @@ import { IconCalendar } from "../icons";
 import { useOpen, valueItem } from "../provenance";
 import { Button } from "./button";
 import { cx } from "./cx";
+import { usePressAway } from "./drop-list";
+import { useErrorRest } from "./error-rest";
 import { MonthPicker, pickCommit } from "./month-picker";
 
 /**
@@ -260,9 +262,13 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
   const id = givenId ?? ownId;
   const open = useOpen();
   const shown = typeof value?.value === "number" ? formatTyped(value.value) : "";
-  const [text, setText] = useState(shown);
-  const [error, setError] = useState<ReactNode | null>(null);
-  const focused = useRef(false);
+  // what the person typed, and the figure as the page showed it when the box was left (`base`): while the box has the focus its text is
+  // theirs, and a text that is no number stays after it is left, with its message, until the page's figure changes
+  const [draft, setDraft] = useState<{ text: string; base?: string } | null>(null);
+  const [editing, setEditing] = useState(false);
+  const own = draft !== null && (editing || draft.base === shown);
+  const text = own ? draft.text : shown;
+  const errorRest = useErrorRest();
   // what the box held when it took the focus, which Escape and a text that is no number put back, and whether it has committed since
   const atFocus = useRef(shown);
   const atFocusN = useRef<number | null>(typeof value?.value === "number" ? value.value : null);
@@ -290,14 +296,13 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
       window.removeEventListener("resize", place);
     };
   }, [noteOpen]);
-  // a value from outside (a template, a reset, another field) replaces the text, but never under the person's fingers
-  useEffect(() => {
-    if (!focused.current) {
-      setText(shown);
-      setError(null);
-    }
-  }, [shown]);
   const read = (t: string, left: boolean) => readTyped(t, { sign, ...(kind ? { kind } : {}), validate, clearable: !!onClear, left });
+  // what is wrong with the typed text, shown once the hand rests (`useErrorRest`)
+  const typed = own ? read(text, !editing) : null;
+  const error = typed?.kind === "error" ? typed.message : null;
+  const shownError = errorRest.shows ? error : null;
+  // the note of where a sourced figure is from closes on a press outside the box and its note
+  usePressAway(noteOpen, [root], () => setNoting(false));
   const commit = (n: number) => {
     changed.current = true;
     onCommit(n);
@@ -312,10 +317,10 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
   };
   const change = (t: string) => {
     setNoting(false);
-    setText(t);
+    setDraft({ text: t });
     given.current = null;
     const r = read(t, false);
-    setError(r.kind === "error" ? r.message : null);
+    errorRest.typed(r.kind !== "error");
     const does = onTyping(r, { asks: !!asks, changed: changed.current, settles: !!settles });
     if (does === "commit" && r.kind === "commit") commit(r.n);
     else if (does === "clear") onClear?.();
@@ -326,23 +331,25 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
   const settle = (by: Settled): boolean => {
     const r = read(text, true);
     if (r.kind === "error") {
-      setError(r.message);
+      // the text stays as typed, with its message, until the page's figure changes
+      if (by === "left") setDraft({ text, base: shown });
+      errorRest.rest();
       return false;
     }
     if (settles) {
       if (r.kind === "commit" && given.current !== r.n) {
         given.current = r.n;
-        setText(formatTyped(r.n));
+        setDraft({ text: formatTyped(r.n), base: shown });
         onCommit(r.n, by);
-      } else if (r.kind !== "commit") setText(atFocus.current);
+      } else if (r.kind !== "commit") setDraft(null);
       return true;
     }
     if (r.kind === "clear") {
       if (value !== null) onClear?.();
     } else if (r.kind === "back") {
       if (changed.current) revert();
-      setText(atFocus.current);
-    } else setText(shown);
+    }
+    setDraft(null);
     return true;
   };
   const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -355,8 +362,8 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
       // what the box held when it took the focus comes back; the Escape stops here, so a panel around the box stays open
       e.preventDefault();
       e.stopPropagation();
-      setText(atFocus.current);
-      setError(null);
+      setDraft({ text: atFocus.current });
+      errorRest.typed(true);
       revert();
     } else if (e.key === "Enter") {
       e.preventDefault();
@@ -385,7 +392,7 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
     >
       <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1">
         <span
-          className={boxLook(state, !!error, tight)}
+          className={boxLook(state, !!shownError, tight)}
           data-box=""
           data-lift=""
           onMouseDown={(e) => {
@@ -401,16 +408,21 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
               data-figure=""
               type="text"
               inputMode="decimal"
+              autoComplete="off"
+              spellCheck={false}
+              enterKeyHint="done"
               dir="ltr"
               value={text}
               placeholder={placeholder}
               aria-label={label}
-              aria-invalid={error ? true : undefined}
-              aria-describedby={error ? `${id}-err` : undefined}
+              aria-invalid={shownError ? true : undefined}
+              aria-describedby={shownError ? `${id}-err` : undefined}
               onChange={(e) => change(e.target.value)}
               onKeyDown={onKey}
               onFocus={() => {
-                focused.current = true;
+                setEditing(true);
+                // the text as it stands is the person's from here: a figure from outside does not change it under their fingers
+                setDraft({ text });
                 atFocus.current = error ? shown : text.trim();
                 atFocusN.current = typeof value?.value === "number" ? value.value : null;
                 changed.current = false;
@@ -419,7 +431,7 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
                 onFocus?.();
               }}
               onBlur={() => {
-                focused.current = false;
+                setEditing(false);
                 settle("left");
               }}
               style={{ width: widthOf(text, placeholder, tight, wide ? 6 : 0) }}
@@ -444,6 +456,14 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
           // the top layer's own place and look are set aside: the note stands by its box (`placeNote`), on the popover surface
           className="come-in fixed inset-auto m-0 w-max text-pretty rounded-md border border-border bg-popover px-3 py-2 text-sm leading-relaxed text-foreground shadow-lg"
           onMouseDown={(e) => e.preventDefault()}
+          // Escape on the note's link closes the note and gives the focus back to the box
+          onKeyDown={(e) => {
+            if (e.key !== "Escape") return;
+            e.preventDefault();
+            e.stopPropagation();
+            setNoting(false);
+            document.getElementById(id)?.focus();
+          }}
         >
           {from && <>{from} </>}
           <Button variant="inline" className="whitespace-nowrap" onClick={(e) => open(valueItem(sourced, undefined, true), e.currentTarget)}>
@@ -451,9 +471,9 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
           </Button>
         </span>
       )}
-      {error && (
+      {shownError && (
         <span id={`${id}-err`} className="text-xs text-destructive">
-          {error}
+          {shownError}
         </span>
       )}
     </span>
@@ -523,38 +543,27 @@ export function MonthField({ value, label, lead, tight, earliest, latest, taken,
 }) {
   const id = useId();
   const shown = value ? monthText(value) : "";
-  const [text, setText] = useState(shown);
-  const [error, setError] = useState(false);
+  // what the person typed, against the month the box showed then (`base`), and whether it was found to hold no month (`wrong`): a month
+  // from outside (a template, a reset, the page's own month after a commit it refused) replaces it
+  const [draft, setDraft] = useState<{ text: string; base: string; wrong?: boolean } | null>(null);
+  const own = draft !== null && draft.base === shown;
+  const text = own ? draft.text : shown;
+  const error = own && !!draft.wrong;
   // a month typed outside the months the page takes, refused: why, said under the box, which shows its month again
   const [refused, setRefused] = useState<string | null>(null);
-  const [open, setOpen] = useState(false);
-  // a commit made: once the page has drawn it, a box whose month did not become the one typed (the page refused it) shows its month again
-  const [commits, setCommits] = useState(0);
+  const [open, setOpen] = useState(!!autoFocus);
   // on a touch screen the month is chosen in the picker, which every press on the box opens: the on-screen keyboard stays down, so it
   // never covers the picker (a keyboard that is plugged in still types)
   const touch = useMedia("(pointer: coarse)");
   const root = useRef<HTMLSpanElement>(null);
   const box = useRef<HTMLSpanElement>(null);
   const input = useRef<HTMLInputElement>(null);
-  const focused = useRef(false);
-  const committed = useRef<string | null>(null);
+  // the month last committed, and the month the box showed then: Enter commits and moves the focus, whose blur would commit again before
+  // the page has drawn the month
+  const committed = useRef<{ month: string; base: string } | null>(null);
+  const isCommitted = (m: string) => committed.current?.month === m && committed.current.base === shown;
   // the picker just opened from the keyboard puts the focus on its month
   const intoGrid = useRef(false);
-  useEffect(() => {
-    committed.current = null;
-    if (!focused.current) {
-      setText(shown);
-      setError(false);
-    }
-  }, [shown]);
-  useEffect(() => {
-    if (commits === 0 || focused.current) return;
-    if (parseMonth(text) !== value) setText(shown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [commits]);
-  useEffect(() => {
-    if (autoFocus) setOpen(true);
-  }, [autoFocus]);
   useLayoutEffect(() => {
     if (!open || !intoGrid.current) return;
     intoGrid.current = false;
@@ -572,38 +581,37 @@ export function MonthField({ value, label, lead, tight, earliest, latest, taken,
     input.current?.focus();
   };
   const pick = (m: string) => {
-    setText(monthText(m));
-    setError(false);
+    setDraft({ text: monthText(m), base: shown });
     setRefused(null);
     toBox();
     // the box's own commit on leaving it, or Enter, sees the month already committed
     const c = pickCommit(m, value, { ...(taken ? { taken: taken.months } : {}) });
-    if (c !== null && c !== committed.current) onCommit(c);
-    committed.current = m;
+    if (c !== null && !isCommitted(c)) onCommit(c);
+    committed.current = { month: m, base: shown };
   };
   /** The box's text to the page: whether it holds a month the page may take (or an empty box that may be empty). */
   const commit = (): boolean => {
     if (text.trim() === "") {
-      setError(!onClear && !waits);
+      setDraft({ text: "", base: shown, wrong: !onClear && !waits });
       if (onClear && value !== null) onClear();
       return !!onClear || !!waits;
     }
     const m = parseMonth(text);
-    setError(m === null);
-    if (m === null) return false;
+    if (m === null) {
+      setDraft({ text, base: shown, wrong: true });
+      return false;
+    }
     const fault = monthFault(m, { earliest, latest }) ?? (taken?.months.includes(m) ? taken.why(monthText(m)) : null);
     if (fault) {
       setRefused(fault);
-      setText(shown);
+      setDraft(null);
       return false;
     }
-    setText(monthText(m));
-    // Enter commits and moves the focus, whose blur commits again before the page has drawn the month: one commit per month typed
-    if (m !== value && m !== committed.current) {
-      onCommit(m);
-      setCommits((n) => n + 1);
-    }
-    committed.current = m;
+    // the box shows the month the page holds once it has drawn the commit: the one typed, in the box's form, or its own where it refused it
+    setDraft(null);
+    // one commit per month typed
+    if (m !== value && !isCommitted(m)) onCommit(m);
+    committed.current = { month: m, base: shown };
     return true;
   };
   const placeholder = kitCopy.figure.monthPlaceholder;
@@ -644,6 +652,9 @@ export function MonthField({ value, label, lead, tight, earliest, latest, taken,
           autoFocus={autoFocus}
           type="text"
           inputMode={touch ? "none" : "numeric"}
+          autoComplete="off"
+          spellCheck={false}
+          enterKeyHint="done"
           dir="ltr"
           role="combobox"
           aria-haspopup="grid"
@@ -656,14 +667,12 @@ export function MonthField({ value, label, lead, tight, earliest, latest, taken,
           aria-invalid={error ? true : undefined}
           aria-describedby={error || refused ? `${id}-err` : undefined}
           onChange={(e) => {
-            setText(e.target.value);
+            const t = e.target.value;
+            // an error clears on the keystroke that makes the box hold a month again
+            setDraft({ text: t, base: shown, wrong: error && parseMonth(t) === null && !(t.trim() === "" && (onClear || waits)) });
             setRefused(null);
           }}
-          onFocus={() => (focused.current = true)}
-          onBlur={() => {
-            focused.current = false;
-            commit();
-          }}
+          onBlur={() => commit()}
           onKeyDown={(e) => {
             if (e.key === "ArrowDown") {
               e.preventDefault();
@@ -686,8 +695,7 @@ export function MonthField({ value, label, lead, tight, earliest, latest, taken,
             } else if (e.key === "Escape" && (error || refused || text !== shown)) {
               e.preventDefault();
               e.stopPropagation();
-              setText(shown);
-              setError(false);
+              setDraft(null);
               setRefused(null);
             }
           }}

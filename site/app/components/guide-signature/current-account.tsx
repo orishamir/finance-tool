@@ -7,7 +7,6 @@ import { scaleLinear } from "d3-scale";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { guideSignature as copy, kit as kitCopy } from "../../copy";
 import { fmt } from "../../lib/format";
-import { useHash } from "../../lib/address";
 import { p05Value } from "../../lib/engine";
 import { accountAxis, accountFact, bankYearlyMax, brokenCondition, currentAccountModel, fact, payingBanks, silentBanks, type AccountCondition, type SignatureData } from "../../lib/guide-signature";
 import { differenceOf, type SiteValue } from "../../lib/value";
@@ -67,10 +66,14 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
   const foldRef = useRef<HTMLDetailsElement>(null);
 
   // a link to the table from elsewhere (#current-account-banks) opens it, also when the page loads on that hash
-  const hash = useHash();
   useEffect(() => {
-    if (hash === FOLD_ID && foldRef.current) foldRef.current.open = true;
-  }, [hash]);
+    const open = () => {
+      if (window.location.hash === `#${FOLD_ID}` && foldRef.current) foldRef.current.open = true;
+    };
+    open();
+    window.addEventListener("hashchange", open);
+    return () => window.removeEventListener("hashchange", open);
+  }, []);
 
   const base = (key: "amount_now" | "horizon_years", n: number, src: "amount" | "years") => inputSite(account, key, n, inputs.source[src], today, key === "amount_now" ? copy.common.inputNames.balance : copy.common.inputNames.years);
   const balanceValue = base("amount_now", inputs.amount, "amount");

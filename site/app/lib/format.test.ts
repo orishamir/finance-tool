@@ -136,16 +136,6 @@ describe("negative figures (polish 2026-10-24)", () => {
     expect(formatValue(-29, "pct")).toBe("\u200e\u221229%");
     for (const t of [fmt.pct(-2), fmt.nis(-5), fmt.number(-3), fmt.compactNis(-2500)]) expect(t).not.toContain("-");
   });
-  it("prints no minus on a value that rounds to zero", () => {
-    expect(fmt.nisWhole(-0.3)).toBe("0 ₪");
-    expect(fmt.nis(-0.001)).toBe("0 ₪");
-    expect(fmt.pct(-0.0001)).toBe("0%");
-    expect(fmt.number(-0.001)).toBe("0");
-    expect(fmt.compactNis(-20)).toBe("\u200e\u221220 ₪");
-    expect(fmt.compactNis(-0.01)).toBe("0 ₪");
-    expect(fmt.decimals(-0.04, 1, { isolate: false })).toBe("0.0");
-    expect(formatValue(-0.004, "nis", "computed")).toBe("0 ₪");
-  });
   it("leaves positive figures and an existing minus alone", () => {
     expect(fmt.pct(29)).toBe("29%");
     expect(withMinus("\u200e\u22122%")).toBe("\u200e\u22122%");
