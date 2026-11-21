@@ -119,6 +119,8 @@ export interface RunResult {
    * the exit; what the money a line took would have been worth in the fund. The split of a whole-units run by fee line reads it (F-63).
    */
   feesCarried?: Record<FeeType, number>;
+  /** F-128, F-91 (a run of an account priced by a deal): each fee of the deal's payments carried the same way, by the fee's index in the deal. */
+  feesCarriedBy?: number[];
   /**
    * F-109, F-91 (a securities run in whole units): what the cash waiting for a whole unit did against the fund, carried to the exit the same
    * way, nominal at the exit. Each month, the waiting cash times the month's total return of a shekel in the account (`R_m / R_{m−1} − 1`),
@@ -153,6 +155,7 @@ export const RUN_RESULT_FIELDS: ResultFields<RunResult> = {
   detail: "output",
   outcome: "output",
   feesCarried: "output",
+  feesCarriedBy: "output",
   waitingCarried: "output",
   flags: "trail",
   labels: "trail",

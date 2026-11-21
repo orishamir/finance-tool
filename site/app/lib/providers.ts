@@ -347,7 +347,9 @@ export type NotComparable =
    *  indices page shows such a fund's figures before tax beside it (F-118). `question`: the open question that stopped the run, its
    *  readings giving it different results (method §13), whose card the reason opens; `gap`: the method gap that stopped it where no reading of
    *  the case exists (G-38). */
-  | { code: "rule-open"; ruleId: string; question?: string; gap?: string };
+  | { code: "rule-open"; ruleId: string; question?: string; gap?: string }
+  /** F-128: an account priced by a deal with no price for this fund; `detail` is why, as the deal's reading names it (lib/deal-account). */
+  | { code: "deal-unpriced"; detail: string };
 
 /** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined so the brokers page, the funds page and "השקעה במדד" list the same providers). */
 export function providersOf(bundle: Pick<IndicesBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {

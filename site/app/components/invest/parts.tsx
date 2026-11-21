@@ -107,5 +107,8 @@ export function reasonSentence(r: NotComparable, instrumentClass: string, channe
       return n.otherVenue(r.venue);
     case "rule-open":
       return c.reasons.ruleOpen[r.ruleId] ?? c.reasons.ruleOpenOther;
+    case "deal-unpriced":
+      // the deal's own reading says what it lacks, in its words (lib/deal-account)
+      return r.detail;
   }
 }
