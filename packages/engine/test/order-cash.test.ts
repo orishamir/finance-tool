@@ -1,7 +1,8 @@
 // F-12 with F-24 and F-25: in the makam and bond runs, an order its cash cannot pay is not placed, and its cash stays in the account as
-// cash, earning nothing, joins the next order placed, and at the horizon is part of what is left. F-09: a sale's commission takes at most
-// the proceeds, and its conversion at most what it converts (F-13), so a sale never leaves less than nothing. Expected figures worked
-// by hand (comments), with no yield, return or inflation unless a test says otherwise, so a unit of face value costs one shekel.
+// cash, earning nothing, joins the next order placed, pays the account's monthly fee the holdings cannot (F-17), and at the horizon is
+// part of what is left. F-09: a sale's commission takes at most the proceeds, and its conversion at most what it converts (F-13), so a
+// sale never leaves less than nothing. Expected figures worked by hand (comments), with no yield, return or inflation unless a test says
+// otherwise, so a unit of face value costs one shekel.
 import { describe, expect, it } from "vitest";
 import { saleCommission, saleConversion } from "../src/formulas/fees.ts";
 import { runBond, type BondInput } from "../src/ledgers/bond.ts";
@@ -107,6 +108,44 @@ describe("the makam run keeps the cash of an order not placed (F-24)", () => {
     const r = runMakam(makam({ tariff: { buy: line, sell: line } }), ctx);
     expect(r.fees.trade).toBeCloseTo(16, 9);
     expect(r.nominal).toBeCloseTo(8, 9);
+  });
+});
+
+describe("the makam and bond runs charge the account's monthly fee out of the waiting cash the holdings cannot pay it from (F-17)", () => {
+  it("makam, 8 NIS a month, a 10 NIS minimum and 1 NIS a month: month 1's fee comes out of the 8 waiting, and 11 is left", () => {
+    // month 1: 8 waits and pays the fee, 7 waits; month 2: 15 buys 5 for 10, and a slice of 1 pays the fee; month 3: 8 waits, and a slice
+    // of 1 pays the fee. At the horizon the 3 of paper and the 8 waiting: 24 paid in, 10 in commission, 3 in fees
+    const r = runMakam(makam({ tariff: { buy: line, monthlyFee: 1 } }), ctx);
+    expect(r.fees.fixed).toBeCloseTo(3, 9);
+    expect(r.fees.trade).toBeCloseTo(10, 9);
+    expect(r.nominal).toBeCloseTo(11, 9);
+    expect(r.series[1]!.balance).toBeCloseTo(7, 9);
+    // the fee the cash paid is among the exit year's fees, as the securities run counts it (TXS-06)
+    expect(r.detail.exitYearFees).toBeCloseTo(3, 9);
+  });
+
+  it("makam with no order placed: the waiting cash pays every month's fee", () => {
+    // month 1: 5 pays 1, 4 waits; month 2: 9 waits and pays 1: 8 left of 10
+    const r = runMakam(makam({ goal: { amountNow: 0, monthly: 5, months: 2 }, tariff: { buy: line, monthlyFee: 1 } }), ctx);
+    expect(r.fees.fixed).toBeCloseTo(2, 9);
+    expect(r.nominal).toBeCloseTo(8, 9);
+    expect(r.taxAtExit).toBe(0);
+  });
+
+  it("makam: a fee above what the account holds takes all of it and no more", () => {
+    const r = runMakam(makam({ goal: { amountNow: 0, monthly: 5, months: 2 }, tariff: { buy: line, monthlyFee: 6 } }), ctx);
+    expect(r.fees.fixed).toBeCloseTo(10, 9);
+    expect(r.nominal).toBeCloseTo(0, 9);
+  });
+
+  it("bond, 8 NIS a month, a 10 NIS minimum and 1 NIS a month: month 1's fee comes out of the 8 waiting, and 11 is left", () => {
+    // as the makam: 3 of face and 8 waiting at the horizon; the bond's gain, 3 less a cost of 3 less the year's 3 in fees, is a loss
+    const r = runBond(bond({ tariff: { buy: line, monthlyFee: 1 } }), ctx);
+    expect(r.fees.fixed).toBeCloseTo(3, 9);
+    expect(r.nominal).toBeCloseTo(11, 9);
+    expect(r.series[1]!.balance).toBeCloseTo(7, 9);
+    expect(r.detail.exitYearFees).toBeCloseTo(3, 9);
+    expect(r.taxAtExit).toBe(0);
   });
 });
 

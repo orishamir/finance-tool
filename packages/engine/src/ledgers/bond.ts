@@ -31,7 +31,8 @@ export interface BondInput {
  * indexed coupon of a CPI-linked series, even when the index fell (TXI-14, TXI-25). Net coupons are
  * reinvested in the same bond as a new lot; the coupon on the exit day is paid out. At the horizon the
  * bond is sold at par (indexed for a linked series) plus A-27. A purchase its cash cannot pay opens no lot: the cash waits in the account,
- * earning nothing, for the next purchase, and at the horizon is part of what is left (F-12, F-25).
+ * earning nothing, for the next purchase, pays the account's monthly fee the units cannot (F-17), and at the horizon is part of what is
+ * left (F-12, F-25).
  */
 export function runBond(input: BondInput, ctx: RunContext): RunResult {
   return acrossReadings(ctx, (c) => runBondUnder(input, c), RUN_RESULT_FIELDS);
@@ -94,11 +95,16 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
       else couponCashAtExit = coupon - tax;
     }
 
+    // F-14 and F-17: custody on the bond held and the account's monthly fee, paid by removing units oldest first. The account's fee is owed
+    // whether or not a unit is held: where the units cannot pay it, the cash waiting for the next order pays the rest, and what neither can
+    // pay is not charged (F-17, as the securities run does).
     const value = lots.reduce((s, l) => s + l.units, 0) * price(m);
     const fee = custodyFee(tariff.custody, m, value);
-    const fixed = fixedFee(tariff.monthlyFee, value - fee);
+    const fixed = fixedFee(tariff.monthlyFee, value - fee + orders.waiting);
+    // the units pay first; the waiting cash pays only what they cannot
+    const fromLots = fee + fixed - orders.pay(fixed - Math.max(0, value - fee));
     if (fee + fixed > 0) {
-      lots = removeFifo(lots, (fee + fixed) / price(m));
+      if (fromLots > 0) lots = removeFifo(lots, fromLots / price(m));
       tally.fee("custody", fee);
       tally.fee("fixed", fixed);
       if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += fee + fixed;
