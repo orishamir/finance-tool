@@ -2,8 +2,6 @@
 // the index page and the funds page read, and how one fund runs through the engine. The index page ranks the houses. No fee, rate or rule figure
 // is written here: tariffs come from the snapshots in the bundle, and every number leaves as a value object with its
 // state. Pure: no storage; the bundle is fetched once.
-import type { DealsInBundle } from "./deal-account/bundle";
-import type { Missing } from "./deal-account/plan";
 import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContext } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { formulaNames } from "../copy";
@@ -158,7 +156,7 @@ export interface IndicesBundle {
   /** P-01 (tie threshold) and P-05 (the representative instruments). */
   p01: ParameterRecord;
   p05: ParameterRecord;
-  links: { maya: RefLink | null };
+  links: { tase: RefLink | null; maya: RefLink | null };
   /** A provider's snapshot id to the regulator's company id (the legal id the company page is addressed by); absent when the data names no such company. */
   providerCompany: Record<string, string>;
   /** Per provident wrapper: how many managing companies the regulator's data holds (the "one of N" line). */
@@ -169,10 +167,8 @@ export interface IndicesBundle {
   fxHistory?: FxHistory;
   /** P-02's bounds for the dollar's yearly change against the shekel (A-03), percent a year, with the record (F-94). */
   dollarRange?: { lo: number; hi: number; p02: ParameterRecord };
-  /** The funds the person typed (D44, `withCustomEntries`) and a house's group picked on the page (lib/group-pick.ts): only the index page's copies of the bundle have them. */
+  /** The broker and fund the person typed (D44): only the index page's copy of the bundle has them (`withCustomEntries`). */
   entered?: EnteredInBundle;
-  /** The person's securities-account deals (F-128): only a copy of the bundle with them has them (`withDeals`). */
-  deals?: DealsInBundle;
 }
 
 export const BROKERAGE = "brokerage-account";
@@ -379,9 +375,7 @@ export type NotComparable =
    *  indices page shows such a fund's figures before tax beside it (F-118). `question`: the open question that stopped the run, its
    *  readings giving it different results (method §13), whose card the reason opens; `gap`: the method gap that stopped it where no reading of
    *  the case exists (G-38). */
-  | { code: "rule-open"; ruleId: string; question?: string; gap?: string }
-  /** F-128: an account priced by a deal with no price for this fund; `detail` is why, as the deal's reading names it (lib/deal-account). */
-  | { code: "deal-unpriced"; detail: string; missing: Missing | null };
+  | { code: "rule-open"; ruleId: string; question?: string; gap?: string };
 
 /** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined so the brokers page, the funds page and "השקעה במדד" list the same providers). */
 export function providersOf(bundle: Pick<IndicesBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {

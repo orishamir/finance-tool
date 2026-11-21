@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-"""Expected figures of site/app/lib/custom-entries.test.ts (D44, D117), computed from the formulas alone (F-05 to F-14, F-40, F-63).
+"""Expected figures of site/app/lib/custom-entries.test.ts (D44), computed from the formulas alone (F-05 to F-14, F-40, F-63).
 
-A fund the person types, and a securities account typed by hand before a deal took its place, which moves into a deal of its own (the
-move of a typed account, method §10.4): the figures check that deal, priced as F-128 prices a deal, against what the typed account left.
-On a plain plan: one order a month, no spread, no tracking gap, no surtax. The tax rates and the
+A broker and a fund the person types, on a plain plan: one order a month, no spread, no tracking gap, no surtax. The tax rates and the
 collected tariff come from the data files, the terms from the test. A run on the site starts month 1 in its run date's month, so the
 exit's tax year, whose fees are deducted from the gain (F-09), holds the months since the last January: the figures are printed for each
 calendar month of month 1, and the test reads the one of its run date. Run it and copy nothing by hand:
@@ -39,8 +37,7 @@ def commission(amount, rate, minimum, maximum=None):
 
 
 def run(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly_fee, fund_fee_pct, tax_rate, foreign, trade_max=None, first_month=1):
-    """F-08 month by month, F-09 at exit. Custody was typed as a percent a year: a twelfth a month, with the monthly minimum (F-14), as the
-    moved deal's custody charges it each month."""
+    """F-08 month by month, F-09 at exit. Custody is typed as a percent a year: a twelfth a month, with the monthly minimum (F-14, D44)."""
     I = [(1 + INFLATION) ** (m / 12) for m in range(T + 1)]
     # F-03 and F-04: a foreign security is indexed on the exchange rate, flat here (A-03 = 0); an Israeli fund on the CPI
     J = [1.0] * (T + 1) if foreign else I
@@ -94,8 +91,7 @@ def run(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly_fee, 
 
 
 def ibi_on_tracking_fund():
-    """IBI's list lines for a tracking fund, from its latest record: the trade line, no custody, and the account fee a month (the typed fund at
-    IBI's own row)."""
+    """IBI's list lines for a tracking fund, from its latest record: the trade line, no custody, and the account fee a month."""
     path = sorted(glob.glob(os.path.join(ROOT, "data", "fees", "ibi@*.json")))[-1]
     with open(path, encoding="utf8") as f:
         snap = json.load(f)

@@ -5,6 +5,7 @@ import { useIsoLayoutEffect } from "../../lib/hooks";
 import { buttons, values as copy } from "../../copy";
 import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
 import { IconChevronDown, IconClose, IconReset, IconSearch } from "../icons";
+import { Button } from "./button";
 import { cx } from "./cx";
 import { NameStack, useListSelect, type ListOption } from "./list-select";
 
@@ -262,6 +263,26 @@ export function NumberField(props: FieldProps) {
         {note}
       </div>
     </div>
+  );
+}
+
+/**
+ * A reset for a group of typed values on a line of its own, under them (a table cell of several small boxes with no label line, such as an
+ * own account's prices): a quiet "חזרה לערך ההתחלתי" while something is typed, "loading" while the fields wait. No "you entered" tag
+ * . The line keeps its height either way, so nothing under it moves. A field with a label line
+ * carries its own reset there instead (`NumberField`, `RangeField`).
+ */
+export function FieldState({ entered, onReset, disabled, canReset = true }: { entered: boolean; onReset: () => void; disabled?: boolean; canReset?: boolean }) {
+  return (
+    <span className="flex items-center gap-2 min-h-target">
+      {disabled ? (
+        <span className="text-xs text-muted-foreground">{copy.loading}</span>
+      ) : entered && canReset ? (
+        <Button variant="quiet" className="text-sm leading-tight -ms-2 min-h-target" onClick={onReset}>
+          <IconReset size={16} /> {buttons.resetOne}
+        </Button>
+      ) : null}
+    </span>
   );
 }
 

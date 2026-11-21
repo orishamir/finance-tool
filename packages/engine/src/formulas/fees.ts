@@ -129,43 +129,12 @@ export function buyWithCash(cash: number, line: Commission | undefined, terms: T
   return { trade, commission: cash - trade };
 }
 
-/** F-13 A conversion of shekels: the shekels `converted`, its fee and spread `cost`, and what it buys, `left`, in shekels at its rate. */
-export interface Conversion {
-  converted: number;
-  cost: number;
-  left: number;
-}
-
-/**
- * F-08 with F-12 and F-13 One order by amount: `fresh` shekels and `held`, money already in the fund's currency (a distribution's net, or
- * what an earlier order left), in shekels at the order's rate; `conv` is the conversion of the shekels that buys the most (`convertedAtMost`,
- * or a deal's, F-128). The shekels are converted only where that leaves more than nothing, `left > 0`; otherwise they wait unconverted and the
- * held money buys alone, and the shekels it does not convert wait unconverted. `buy` sizes the trade a cash pays for with its charges
- * (`buyWithCash`, which spends all of it, or a deal's trade fees, F-128). A trade of nothing places no order (null): nothing is converted or
- * charged, and the cash waits for the next order in the pocket it was in. What the cash does not spend (`left`, a deal's charge that jumps past
- * it) waits in the fund's currency, converted already, as F-109's two pockets keep it.
- */
-export function orderByAmount<B extends { trade: number; commission: number; left?: number }>(fresh: number, held: number, conv: Conversion, buy: (cash: number) => B): { converts: boolean; fx: number; bought: B; leftNis: number; leftHeld: number } | null {
-  const converts = conv.left > 0;
-  const bought = buy((converts ? conv.left : 0) + held);
-  if (!(bought.trade > 0)) return null;
-  return { converts, fx: converts ? conv.cost : 0, bought, leftNis: converts ? Math.max(0, fresh - conv.converted) : fresh, leftHeld: bought.left ?? 0 };
-}
-
-/**
- * F-09 A charge paid out of `amount`: `min(amount, charge)`, never more than all of it and nothing out of nothing. A sale's commission
- * (`saleCommission`) and its conversion (`saleConversion`) are paid so, and a deal's (F-128), each fee's part in proportion.
- */
-export function paidOutOf(amount: number, charge: number): number {
-  return Math.min(Math.max(0, amount), charge);
-}
-
 /**
  * F-09 The commission on a sale of `gross`, paid out of the proceeds: `min(G, fee_trade(G))`. It takes at most the proceeds, so a sale at or
  * below the line's minimum (or its flat price) leaves nothing, never less, before the exit tax, which the method's conservative choice does not lower by sale costs (G-20).
  */
 export function saleCommission(line: Commission | undefined, gross: number, terms: TradeTerms): number {
-  return paidOutOf(gross, tradeCommission(line, gross, terms));
+  return Math.min(Math.max(0, gross), tradeCommission(line, gross, terms));
 }
 
 /**
@@ -308,7 +277,7 @@ export function conversionCost(fee: ConversionPrice | undefined, amount: number,
  */
 export function saleConversion(fee: ConversionPrice | undefined, amount: number, terms: TradeTerms, spread: ConversionPrice = 0): number {
   if (!(amount > 0)) return 0;
-  return paidOutOf(amount, conversionCost(fee, amount, terms, spread));
+  return Math.min(amount, conversionCost(fee, amount, terms, spread));
 }
 
 /** F-13: the tops, in shekels at the rate of the conversion, where the fee's or the spread's price changes, ascending; Infinity is none. */
@@ -395,7 +364,7 @@ export function convertFor(owed: number, fee: ConversionPrice | undefined, terms
  * whole cash buys no deal inside it. Of two that buy the same, the fewer shekels. A step that charges less (nothing, a flat price, a share off)
  * can make a conversion below the whole cash buy the most: the rest of the cash waits unconverted.
  */
-export function convertedAtMost(cash: number, fee: ConversionPrice | undefined, terms: TradeTerms, spread: ConversionPrice = 0): Conversion {
+export function convertedAtMost(cash: number, fee: ConversionPrice | undefined, terms: TradeTerms, spread: ConversionPrice = 0): { converted: number; cost: number; left: number } {
   const none = { converted: 0, cost: 0, left: 0 };
   if (!(cash > 0)) return none;
   let best = none;

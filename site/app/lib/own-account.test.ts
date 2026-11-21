@@ -1,13 +1,16 @@
-// An account built on a house (F-101): the starting points a house offers, the tariff built in layers (the house's list tariff, the group's
-// values, the person's own), and a price for a time through the page's own run. The expected figures are printed by tests/golden/expected_own_account.py from the data files and the fee formulas alone.
-import { providerWorkbench, type ComparedProvider, type SecuritiesInput } from "@finance-tool/engine";
+// An account on your own terms, started from a house (F-101): the starting points a house offers, the tariff built in layers
+// (the house's list tariff, the group's values, the person's), a price for a time through the page's own run, the saved entry and the numbers
+// the panel shows. The expected figures are printed by tests/golden/expected_own_account.py from the data files and the fee formulas alone.
+import { buildTariff, providerWorkbench, type ComparedProvider, type SecuritiesInput } from "@finance-tool/engine";
 import { readFileSync } from "node:fs";
-import { describe, expect, it } from "vitest";
-import { validCustomBrokers, type CustomBroker } from "./custom-entries";
-import { listReading } from "./invest";
-import { applyOwn, baseOf, groupTrade, groupValues, layeredOf, layeredTariff, priceEndsOf, startingPointsOf, type GroupCopy } from "./own-account";
+import { beforeEach, describe, expect, it } from "vitest";
+import { brokerDraftOf, brokerFromDraft, tariffOfBroker, validCustomBrokers, withCustomEntries, type CustomBroker } from "./custom-entries";
+import { buildInvest, listReading, indexById } from "./invest";
+import { applyOwn, baseOf, groupTrade, groupValues, layeredOf, layeredTariff, priceEndsOf, startingPointsOf, withAdopted, type GroupCopy } from "./own-account";
+import { FEE_TYPES, layersOf, ownAccountResult, withoutGroupLine } from "./own-account-view";
 import { buildIndicesBundle } from "./providers.server";
 import { ruleContext, type WorkbenchInputs } from "./providers";
+import { buildStateFile, ensureLoaded, flush, getSnapshot, readImport, removeCustomBroker, resetStore, saveCustomBroker, stateFileText } from "./state";
 import { entered } from "./value";
 
 // How a house's standing-order line is layered (F-101) is read on Leumi's list with its line ranked, as the golden script reads it: the
@@ -35,25 +38,10 @@ const TOTAL = point("לאומי טוטאל דיגיטל", leumiPoints);
 const named = (g: GroupCopy, over: (p: GroupCopy["prices"][number]) => GroupCopy["prices"][number] = (p) => p): { group: GroupCopy } => ({ group: { ...g, prices: g.prices.map((p) => over({ ...p, names_fund: true })) } });
 const trade = (g: GroupCopy) => g.prices.find((p) => p.fee === "trade_israel")!;
 
-/** What an account built on a house may set over it: its own figures (null: as the house), and its stay in the group. */
-type Over = Partial<Record<"tradePct" | "tradeMin" | "custodyPct" | "custodyMin" | "fxPct" | "monthlyFee", number | null>> & { untilYears?: number | null };
-const fig = (v: number | null | undefined, unit: Parameters<typeof entered>[1]) => (v === null || v === undefined ? null : entered(v, unit, t));
-const accountAt = (snap: typeof mercantile, start: { group: GroupCopy | null }, over: Over = {}, id = "custom-broker-top"): CustomBroker => ({
-  id,
-  name: "החשבון שלי",
-  added: t,
-  tradePct: fig(over.tradePct, "pct_of_trade"),
-  tradeMin: fig(over.tradeMin, "nis_per_trade"),
-  custodyPct: fig(over.custodyPct, "pct_per_year"),
-  custodyMin: fig(over.custodyMin, "nis_per_month"),
-  fxPct: fig(over.fxPct, "pct_of_trade"),
-  monthlyFee: fig(over.monthlyFee, "nis_per_month"),
-  sells: { israeli: true, abroad: true },
-  base: baseOf(snap, start),
-  ...(over.untilYears != null && over.untilYears > 0 && start.group ? { untilYears: over.untilYears } : {}),
-});
-const accountOn = (start: { group: GroupCopy | null }, over: Over = {}, id = "custom-broker-top") => accountAt(mercantile, start, over, id);
-const accountAtLeumi = (start: { group: GroupCopy | null }, over: Over = {}, id = "custom-broker-leumi") => accountAt(leumi, start, over, id);
+const accountAt = (snap: typeof mercantile, start: { group: GroupCopy | null }, over: Partial<ReturnType<typeof brokerDraftOf>> = {}, id = "custom-broker-top"): CustomBroker =>
+  brokerFromDraft({ ...brokerDraftOf(null), name: "החשבון שלי", base: baseOf(snap, start), untilYears: null, ...over }, id, t);
+const accountOn = (start: { group: GroupCopy | null }, over: Partial<ReturnType<typeof brokerDraftOf>> = {}, id = "custom-broker-top") => accountAt(mercantile, start, over, id);
+const accountAtLeumi = (start: { group: GroupCopy | null }, over: Partial<ReturnType<typeof brokerDraftOf>> = {}, id = "custom-broker-leumi") => accountAt(leumi, start, over, id);
 
 /** The golden script names a custody line's period `every`; the engine's is `everyMonths`. */
 const engine = ({ every, ...rest }: { every: number; rate: number; max?: number; min?: number }) => ({ ...rest, everyMonths: every });
@@ -254,7 +242,7 @@ describe("the tariff built in layers (F-101)", () => {
     const dStudent = point("סטודנטים לתואר ראשון", startingPointsOf(discount));
     const dReading = listReading(bundle, discount, "il-etf", plan)!;
     const dList = dReading.built.tariff as SecuritiesInput["tariff"];
-    const dAccount = (over: Over = {}) => accountAt(discount, dStudent, over, "custom-broker-discount");
+    const dAccount = (over: Partial<ReturnType<typeof brokerDraftOf>> = {}) => accountAt(discount, dStudent, over, "custom-broker-discount");
     expect(dStudent.group!.currentAccount?.exemptMonths).toBe(48);
     const counted = { ...dList, currentAccount: 5.9 };
     const got = unwrap(layeredTariff(dAccount(), counted, dReading.run));
@@ -376,7 +364,7 @@ describe("the tariff built in layers (F-101)", () => {
     expect(trade(TOP.group!).value!.side).toBeUndefined();
   });
   it("adopting a price whose words do not name funds is the person's choice, kept on the account: it reads like a price that names funds, with its own end and the person's stay", () => {
-    const all = (g: GroupCopy): GroupCopy => ({ ...g, adopted: Object.keys(groupValues(g)) as GroupCopy["prices"][number]["fee"][] });
+    const all = (g: GroupCopy) => groupValues(g) && (Object.keys(groupValues(g)) as GroupCopy["prices"][number]["fee"][]).reduce((acc, fee) => withAdopted(acc, fee, true), g);
     // Leumi's opening offer adopted, five years in the group: custody exempt to month 12 and 7 shekels a trade to month 60 (F-101's example)
     const offer = all(OFFER.group!);
     expect([...offer.adopted!].sort()).toEqual(["custody_abroad", "custody_israel", "trade_abroad", "trade_israel"]);
@@ -391,10 +379,11 @@ describe("the tariff built in layers (F-101)", () => {
     // Total Digital's two prices, adopted: the price list's trade price at 0.4%, and custody at 0.5% a year, as typed
     expectFigures(rowAt(leumi, accountAtLeumi({ group: all(TOTAL.group!) })), EXPECTED.adopted_total_digital);
     // one price adopted, the other not: only that line is the group's
-    const custodyOnly: GroupCopy = { ...TOTAL.group!, adopted: ["custody_israel"] };
+    const custodyOnly = withAdopted(TOTAL.group!, "custody_israel", true);
     expect(unwrap(layeredTariff(accountAtLeumi({ group: custodyOnly }), leumiList, leumiReading.run)).buy).toEqual(leumiList.buy);
     expect(unwrap(layeredTariff(accountAtLeumi({ group: custodyOnly }), leumiList, leumiReading.run)).custody).toEqual({ rate: EXPECTED.layers.adopted_custody_rate_a_quarter, everyMonths: 3, max: 3700 });
     // undone: the group as it was
+    expect(withAdopted(custodyOnly, "custody_israel", false)).toEqual(TOTAL.group);
     // saved with the entry, carried through export and import; an entry without it loads as before
     const saved = accountAtLeumi({ group: offer });
     const back = validCustomBrokers(JSON.parse(JSON.stringify([saved])))[0]!;
@@ -505,5 +494,230 @@ describe("a price for a time through the page's own run (F-101)", () => {
     expect(row.run.formulas).toContain("F-101");
     expect(row.byType.map((x) => x.line).sort()).toEqual(["custody", "trade"]);
     expect(row.byType.reduce((a, x) => a + x.cost!, 0) + row.interaction!).toBeCloseTo(row.horizonCost.value as number, 6);
+  });
+});
+
+describe("the entry (saved, followed, kept)", () => {
+  const top = accountOn(TOP, { untilYears: 3, tradeMin: 12 });
+  const json = (x: unknown) => JSON.parse(JSON.stringify(x));
+
+  it("keeps the house by id, the group copied with its words and sources, the years, and the person's values", () => {
+    expect(top.base!.houseId).toBe("mercantile");
+    expect(top.base!.group!.prices[0]!.source.quote).toBeTruthy();
+    expect(top.untilYears).toBe(3);
+    expect(top.tradeMin!.state).toBe("entered");
+    expect(top.tradePct).toBeNull();
+    expect(validCustomBrokers([json(top)])).toEqual([json(top)]);
+  });
+  it("an entry from scratch is still the six fees, with no base and no years", () => {
+    const scratch = brokerFromDraft({ ...brokerDraftOf(null), name: "מאפס", tradePct: 0.05, tradeMin: 1 }, "custom-broker-scratch", t);
+    expect("base" in scratch).toBe(false);
+    expect("untilYears" in scratch).toBe(false);
+    expect(tariffOfBroker(scratch).buy).toEqual({ rate: 0.0005, min: 1 });
+  });
+  it("a group's copy does not move when the record changes: the row runs on what was copied", () => {
+    const changed = structuredClone(mercantile);
+    for (const e of changed.groups!.entries) for (const p of e.prices) if (p.value?.rate_pct) p.value.rate_pct *= 10;
+    const b = withCustomEntries({ ...bundle, snapshots: bundle.snapshots.map((s) => (s.id === "mercantile" ? changed : s)) }, [top], []);
+    const copy = b.snapshots.find((s) => s.id === top.id)!;
+    expect(copy.lines).toEqual(changed.lines);
+    expect(top.base!.group!.prices.find((p) => p.fee === "trade_israel")!.value!.rate_pct).toBe(0.12);
+  });
+  it("is the house's record under the person's name, without the house's group prices", () => {
+    const b = withCustomEntries(bundle, [top], []);
+    const copy = b.snapshots.find((s) => s.id === top.id)!;
+    expect(copy.provider.name_he).toBe(top.name);
+    expect(copy.provider.class).toBe(mercantile.provider.class);
+    expect(copy.lines).toBe(mercantile.lines);
+    expect(copy.groups).toBeUndefined();
+    expect(b.entered!.layered[top.id]).toBeTypeOf("function");
+    expect(b.entered!.tariffs[top.id]).toBeUndefined();
+    expect(Object.values(b.entered!.inputs[top.id]!).some((v) => v.state === "entered")).toBe(true);
+    // Top's prices are not applied to a fund, so no sourced group figure rests under the row; a group that names funds lists its figures
+    expect(Object.values(b.entered!.inputs[top.id]!).some((v) => v.state === "sourced")).toBe(false);
+    const student = accountOn(STUDENT, { tradeMin: 12 }, "custom-broker-student");
+    const inputs = Object.values(withCustomEntries(bundle, [student], []).entered!.inputs[student.id]!);
+    expect(inputs.some((v) => v.state === "sourced")).toBe(true);
+  });
+  it("a house that is no longer on the site leaves the row with what the person typed; an empty fee there is not known, so it is not ranked (D56)", () => {
+    const gone = { ...top, base: { ...top.base!, houseId: "nobody" } };
+    const b = withCustomEntries(bundle, [gone], []);
+    expect(b.snapshots.find((s) => s.id === gone.id)!.lines).toEqual([]);
+    expect(b.entered!.layered[gone.id]).toBeUndefined();
+    expect(b.entered!.tariffs[gone.id]).toBeUndefined();
+    expect(b.snapshots.find((s) => s.id === gone.id)!.missing).toBe(true);
+    const whole = { ...gone, tradePct: entered(0.05, "pct_of_trade", t), tradeMin: entered(12, "nis_per_trade", t), custodyPct: entered(0, "pct_per_year", t), custodyMin: entered(0, "nis_per_month", t), fxPct: entered(0.2, "pct_of_trade", t), monthlyFee: entered(0, "nis_per_month", t) };
+    expect(withCustomEntries(bundle, [whole], []).entered!.tariffs[gone.id]).toEqual(tariffOfBroker(whole));
+  });
+  it("a bad base or years leave the entry out, not the file", () => {
+    const bad = [
+      { ...json(top), id: "custom-broker-a", base: { ...json(top.base), houseId: "Bad Id" } },
+      { ...json(top), id: "custom-broker-b", base: { ...json(top.base), group: { ...json(top.base!.group), prices: [] } } },
+      { ...json(top), id: "custom-broker-c", untilYears: -1 },
+      { ...json(top), id: "custom-broker-d", untilYears: "3" },
+      { ...json(top), id: "custom-broker-e", base: { ...json(top.base), group: { ...json(top.base!.group), prices: [{ fee: "trade_israel", price_he: "x", holdings_he: "y", names_fund: false, source: { url: "u", title: "t", quote: "q" }, value: { rate_pct: 1 } }] } } },
+    ];
+    expect(validCustomBrokers([json(top), ...bad]).map((x) => x.id)).toEqual([top.id]);
+  });
+});
+
+describe("kept on the device and carried in the export file", () => {
+  const top = accountOn(TOP, { untilYears: 3, tradeMin: 12 });
+  const json = (x: unknown) => JSON.parse(JSON.stringify(x));
+  const memory = () => {
+    const data = new Map<string, string>();
+    return { data, getItem: (k: string) => data.get(k) ?? null, setItem: (k: string, v: string) => void data.set(k, v), removeItem: (k: string) => void data.delete(k), clear: () => data.clear(), key: () => null, get length() { return data.size; } } as unknown as Storage & { data: Map<string, string> };
+  };
+  let storage: ReturnType<typeof memory>;
+  beforeEach(() => {
+    storage = memory();
+    resetStore(storage);
+  });
+  it("round trip: saved, read back, exported, imported, equal", () => {
+    ensureLoaded();
+    saveCustomBroker(top);
+    flush(true);
+    resetStore(storage);
+    ensureLoaded();
+    expect(json(getSnapshot().state.customBrokers)).toEqual(json([top]));
+    const file = stateFileText(buildStateFile(getSnapshot().state, { version: "t", data: t }, new Date("2026-11-04T10:00:00Z")));
+    const read = readImport(file);
+    if (!read.ok) throw new Error("refused");
+    expect(json(read.preview.state.customBrokers)).toEqual(json([top]));
+    removeCustomBroker(top.id);
+    flush(true);
+    resetStore(storage);
+    ensureLoaded();
+    expect(getSnapshot().state.customBrokers).toBeUndefined();
+  });
+});
+
+describe("an entry saved before this change", () => {
+  // the six fees as the saved state of 2026-10-31 held them, written out; the figure is the one tests/golden/expected_custom_entries.py prints
+  const old = {
+    id: "custom-broker-cheap",
+    name: "הצעה זולה",
+    added: t,
+    tradePct: entered(0.05, "pct_of_trade", t, "עמלת קנייה ומכירה, באחוזים"),
+    tradeMin: entered(1, "nis_per_trade", t, "עמלה מזערית"),
+    custodyPct: entered(0.02, "pct_per_year", t, "דמי משמרת, באחוזים בשנה"),
+    custodyMin: null,
+    fxPct: entered(0.2, "pct_of_trade", t, "המרת מטבע"),
+    monthlyFee: null,
+    sells: { israeli: true, abroad: true },
+  };
+  it("loads unchanged, with no base; a line left empty is a price not known (2026-11-05), so it has no tariff until it is filled", () => {
+    const loaded = validCustomBrokers([JSON.parse(JSON.stringify(old))]);
+    expect(loaded).toEqual([old]);
+    expect("base" in loaded[0]!).toBe(false);
+    const b = withCustomEntries(bundle, loaded, []);
+    expect(b.entered!.tariffs[old.id]).toBeUndefined();
+    expect(b.snapshots.find((s) => s.id === old.id)!.missing).toBe(true);
+    const filled = { ...old, custodyMin: entered(0, "nis_per_month", t, "מינימום לחודש"), monthlyFee: entered(0, "nis_per_month", t, "דמי ניהול חשבון") };
+    const b2 = withCustomEntries(bundle, validCustomBrokers([JSON.parse(JSON.stringify(filled))]), []);
+    expect(b2.entered!.tariffs[old.id]).toEqual({ buy: { rate: 0.0005, min: 1 }, sell: { rate: 0.0005, min: 1 }, custody: { rate: 0.0002 / 12, everyMonths: 1 }, fx: 0.002, monthlyFee: 0 });
+    expect(b.entered!.layered).toEqual({});
+    expect(b.snapshots.find((s) => s.id === old.id)!.lines).toEqual([]);
+  });
+});
+
+describe("what the panel shows", () => {
+  const plan: WorkbenchInputs = {
+    amountNow: 6000,
+    monthly: 400,
+    years: 20,
+    grossReturn: 0.07,
+    inflation: 0.02,
+    age: null,
+    income: null,
+    values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
+    returnFromParameter: false,
+  };
+  const index = indexById(bundle, "index-ta125")!;
+  const top = accountOn(STUDENT);
+  const withIt = withCustomEntries(bundle, [top], []);
+  const result = ownAccountResult({ bundle: withIt, index, plan, broker: top })!;
+
+  it("an account built on a bank keeps the bank's current account, and leaves it out when the person marks that bank (D64)", () => {
+    const view = (own: string | null | undefined) => buildInvest({ bundle: withIt, index, plan: own === undefined ? plan : { ...plan, currentAccounts: { own } } });
+    const at = (v: ReturnType<typeof view>) => v.houses.find((h) => h.provider.id === top.id)!.best!.price!;
+    // Mercantile's price list: 6.40 shekels a month for the current account
+    expect(at(view(null)).lines.map((l) => l.line)).toContain("account");
+    expect(at(view(undefined)).valueN - at(view(null)).valueN).toBeGreaterThan(900);
+    expect(at(view("mercantile")).valueN).toBe(at(view(undefined)).valueN);
+  });
+
+  it("gives the three numbers, each a value with its provenance", () => {
+    expect(result).toBeTruthy();
+    expect(result.left.state).toBe("computed");
+    expect(result.place.state).toBe("computed");
+    expect(result.place.computed_from!.formula).toBe("F-63");
+    expect(result.difference!.computed_from!.formula).toBe("F-65");
+    // the sheet of the figure lists what it rests on: the plan, the group's sourced prices that the run reads
+    const inputs = Object.values(result.left.computed_from!.inputs as Record<string, { state: string }>);
+    expect(inputs.some((v) => v.state === "sourced")).toBe(true);
+    expect(result.rank).toBeGreaterThanOrEqual(1);
+    expect(result.rank).toBeLessThanOrEqual(result.of);
+  });
+  it("the group's prices leave more than the house's price list, by the difference shown, in the same fund", () => {
+    expect(result.difference!.value as number).toBeGreaterThan(0);
+    expect(result.difference!.value as number).toBeCloseTo((result.yours.left.value as number) - (result.list!.left.value as number), 6);
+    expect(result.yours.fundId).toBe(result.list!.fundId);
+    const view = buildInvest({ bundle: withIt, index, plan });
+    const at = view.houses.find((h) => h.provider.id === "mercantile")!.entries.find((e) => e.fund.rec.id === result.fundId)!.price!;
+    expect(result.list!.left.value as number).toBeCloseTo(at.valueN, 6);
+  });
+  it("the place is among the collected houses of the group, by what is left", () => {
+    const view = buildInvest({ bundle: withIt, index, plan });
+    const mine = view.houses.find((h) => h.provider.id === top.id)!;
+    const rivals = view.houses.filter((h) => h.group === mine.group && !h.provider.custom && h.best?.price);
+    expect(result.of).toBe(rivals.length + 1);
+    expect(result.rank).toBe(1 + rivals.filter((h) => h.best!.price!.valueN > mine.best!.price!.valueN).length);
+  });
+  it("names the fee that decides, with its gap, as a computed figure", () => {
+    expect(result.deciding).not.toBeNull();
+    expect(result.deciding!.gap.state).toBe("computed");
+    expect(result.deciding!.gap.computed_from!.formula).toBe("F-91");
+    const cost = (pc: typeof result.yours, line: string) => (pc.account.find((x) => x.line === line)?.cost.value as number | undefined) ?? 0;
+    const gaps = ["trade", "custody", "fx", "fixed"].map((l) => cost(result.list!, l) - cost(result.yours, l));
+    expect(Math.abs(result.deciding!.gap.value as number)).toBeCloseTo(Math.max(...gaps.map(Math.abs)), 6);
+  });
+  it("layers each fee type: the list's, the group's and the person's figures, sourced or entered, and which one decides", () => {
+    const own = accountOn(STUDENT, { tradeMin: 12 });
+    const layers = layersOf(bundle, plan, own, mercantile, "il-etf")!;
+    expect(layers.map((l) => l.fee)).toEqual([...FEE_TYPES]);
+    const trade = layers.find((l) => l.fee === "trade")!;
+    expect(trade.list.map((f) => [f.kind, f.value.state, f.value.value])).toEqual([["rate", "sourced", 0.4], ["min", "sourced", 25], ["max", "sourced", 7150]]);
+    // the student's trade price is for shares and bonds: its words and sources are shown, the run does not read it, and adopting it is one tap
+    expect(trade.group!.figures.map((f) => [f.kind, f.value.state, f.value.value])).toEqual([["rate", "sourced", 0.25]]);
+    expect(trade.group!.figures[0]!.value.source.url).toBe(STUDENT.group!.prices[0]!.source.url);
+    expect(trade.group!.namesFund).toBe(false);
+    expect(trade.group!.applied).toBe(false);
+    expect(trade.group!.adoptable).toBe(true);
+    expect(trade.group!.adopted).toBe(false);
+    expect(trade.group!.side).toBeNull();
+    expect(trade.yours.map((f) => [f.kind, f.value.state, f.value.value])).toEqual([["min", "entered", 12]]);
+    expect(trade.setBy).toBe("yours");
+    const custody = layers.find((l) => l.fee === "custody")!;
+    expect(custody.group!.figures.map((f) => [f.kind, f.per])).toEqual([["rate", "quarter"]]);
+    expect(custody.group!.forMonths).toBe(48);
+    expect(custody.group!.applied).toBe(true);
+    expect(custody.group!.adoptable).toBe(false);
+    expect(custody.setBy).toBe("group");
+    expect(layers.find((l) => l.fee === "fixed")!.setBy).toBe("list");
+    // a price of a group that names no fund does not decide the line: the list does
+    const top = layersOf(bundle, plan, accountOn(TOP), mercantile, "il-etf")!;
+    expect(top.find((l) => l.fee === "trade")!.setBy).toBe("list");
+    expect(top.find((l) => l.fee === "custody")!.setBy).toBe("list");
+  });
+  it("sends a line back to the price list: the figures go, the words stay", () => {
+    const back = withoutGroupLine(STUDENT.group!, "custody_israel");
+    expect(back.prices.find((p) => p.fee === "custody_israel")!.value).toBeUndefined();
+    expect(back.prices.find((p) => p.fee === "custody_israel")!.price_he).toBeTruthy();
+    expect(STUDENT.group!.prices.find((p) => p.fee === "custody_israel")!.value).toBeTruthy();
+    const got = layeredTariff(accountOn({ group: back }), buildTariff({ instrumentClass: "etf_units", channel: "direct", wrapper: "brokerage-account" } as never, { snapshot: mercantile, level: "list" }, mercantile).tariff, { fx: {}, instrumentClass: "etf_units", currency: undefined, sharePrice: undefined });
+    if ("unusable" in got) throw new Error("unusable");
+    expect(got.buy).toEqual({ rate: 0.004, min: 25, max: 7150 });
+    expect(got.custody).toMatchObject({ rate: 0.002, everyMonths: 3, max: 7500 });
   });
 });

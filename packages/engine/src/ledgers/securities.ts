@@ -1,7 +1,7 @@
 // Funds and ETFs held as securities: the F-08 month step and the F-09 exit, with F-10 drag, F-12 to F-14
 // and F-17 costs, F-20 distributions, F-23 money-market funds and F-40 to F-43 exit tax. Also the
 // brokerage account inside an IRA hishtalmut (F-51).
-import { buyWithCash, convertedAtMost, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, navBought, orderByAmount, saleCommission, saleConversion, sumRate, tradeCommission, type Commission, type ConversionPrice, type Custody, type Sum } from "../formulas/fees.ts";
+import { buyWithCash, convertedAtMost, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, navBought, saleCommission, saleConversion, sumRate, tradeCommission, type Commission, type ConversionPrice, type Custody, type Sum } from "../formulas/fees.ts";
 import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
@@ -12,7 +12,6 @@ import { memoRun } from "../run-memo.ts";
 import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, LotQueue } from "./lots.ts";
-import { dealCharges, scaled, type Charged, type DealAccount, type MonthActivity } from "./deal-account.ts";
 
 export interface Fund {
   /**
@@ -156,11 +155,6 @@ export interface SecuritiesInput {
   fund: Fund;
   /** F-101: the tariff, or a sequence of tariffs, each with the months it holds (see `TariffSequence`). `currency` is read from this first one only. */
   tariff: TariffSequence;
-  /**
-   * F-128: an account priced by a deal, in place of a price list's lines. Its run reads every charge from the deal, and `tariff` carries the
-   * fund's currency alone.
-   */
-  deal?: DealAccount;
   /** Where the account is: an Israeli bank or member withholds; a foreign broker does not (TXF-21, TXF-22). */
   broker?: "israeli" | "foreign";
   /**
@@ -302,8 +296,6 @@ function securitiesBeforeTax(input: SecuritiesInput, ctx: RunContext): BeforeTax
     formulas: r.formulas,
     rules: r.rules,
     ...(r.feesCarried ? { feesCarried: r.feesCarried } : {}),
-    ...(r.feesCarriedBy ? { feesCarriedBy: r.feesCarriedBy } : {}),
-    ...(r.dealReach ? { dealReach: r.dealReach } : {}),
     ...(r.waitingCarried !== undefined ? { waitingCarried: r.waitingCarried } : {}),
     beforeTaxNominal: r.nominal,
     beforeTaxReal: r.real,
@@ -329,52 +321,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
 /**
  * The ledger behind `runSecurities` and `runSecuritiesBeforeTax`. `beforeTaxOf` is null for the run to the exit tax; for F-118 it is the
  * open rule that blocks the exit tax, and the run then reads no tax index and stops after the sale's costs.
- *
- * F-128: a deal account with a fee charged within a month's orders or trading is run until each charge's months fall in the steps the run
- * priced it at. The first run reads each month's orders as those the plan places in it and its trading as the cash the plan puts in it;
- * each run after reads what the one before placed: the orders that bought something, the month's trades and the sale. What is placed only
- * falls from one run to the next where it moves at all (a dearer step buys less), so it settles within a few runs; where it has not after
- * `ACTIVITY_RUNS`, the last run stands.
  */
 function securitiesLedger(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: string | null): RunResult {
-  if (!input.deal?.planWithin?.some((ws) => ws?.some((w) => w.on === "trading" || w.on === "count"))) return securitiesLedgerAt(input, ctx, beforeTaxOf, null);
-  let trace: ActivityTrace = { read: null, placed: [], settled: false };
-  let result!: RunResult;
-  for (let k = 0; k < ACTIVITY_RUNS; k++) {
-    result = securitiesLedgerAt(input, ctx, beforeTaxOf, trace);
-    if (trace.settled) break;
-    trace = { read: trace.placed, placed: [], settled: false };
-  }
-  return result;
-}
-
-/** F-128: the most runs a deal account charged within a month's orders or trading takes to settle them. */
-const ACTIVITY_RUNS = 6;
-
-/**
- * F-128: a run of a deal account charged within a month's orders or trading: what it reads of each month (null: the orders the plan places
- * and the cash it puts in), what it placed, and whether every charge prices what it placed in the steps of what it read.
- */
-interface ActivityTrace {
-  read: MonthActivity[] | null;
-  placed: MonthActivity[];
-  settled: boolean;
-}
-
-const NO_ACTIVITY: MonthActivity = { count: 0, trading: 0 };
-
-/**
- * F-12, F-109: the instrument's currency per unit of the currency a fund's unit price is printed in (1 where it is printed in the
- * instrument's own, the fund's `sharePriceRate` where it is printed in another); undefined where the record gives no rate for it, so the
- * run has no unit price.
- */
-export const unitPriceRate = (fund: Pick<Fund, "sharePriceCurrency" | "sharePriceRate">, currency: string | null): number | undefined =>
-  fund.sharePriceCurrency && fund.sharePriceCurrency !== (currency ?? "ILS") ? fund.sharePriceRate : 1;
-
-/** Whether a run of the fund in `currency` has a unit price (F-12's `P`): a price on the record, and its rate where it is printed in another currency. */
-export const hasUnitPrice = (fund: Pick<Fund, "sharePrice" | "sharePriceCurrency" | "sharePriceRate">, currency: string | null): boolean => !!fund.sharePrice && !!unitPriceRate(fund, currency);
-
-function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf: string | null, trace: ActivityTrace | null): RunResult {
   // F-119: a later leg's grid starts that many tax years after the run date's
   const book = ruleBook(ctx, { inflation: input.market.inflation, startsAfter: Math.floor(((input.goal.firstMonth ?? 1) - 1 + (input.gridOffset ?? 0)) / 12) });
   const { goal, market, fund, tariff, profile } = input;
@@ -385,11 +333,6 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   if (tariff.until) {
     formulas.push("F-101");
     checkTariffPeriods(tariff, input.gridOffset ?? 0);
-  }
-  if (input.deal) {
-    // F-128: the deal prices the account; a price list's line beside it would charge twice
-    if (Object.keys(tariff).some((k) => k !== "currency")) throw new RecordInputError("F-128: an account priced by a deal carries no tariff lines, only the fund's currency");
-    formulas.push("F-128");
   }
 
   const isMmf = fund.kind.startsWith("money-market");
@@ -470,38 +413,8 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   };
   let nav = 1;
   // the share price in the instrument's currency: a price printed in another currency (a Tel Aviv line at its issuer's dollar NAV) at the run's rate
-  const priceRate = unitPriceRate(fund, tariff.currency?.code ?? null);
+  const priceRate = fund.sharePriceCurrency && fund.sharePriceCurrency !== (tariff.currency?.code ?? "ILS") ? fund.sharePriceRate : 1;
   const sharePrice = (m: number) => (fund.sharePrice && priceRate ? (fund.sharePrice * priceRate * nav) / X[m]! : undefined);
-  // F-128: the deal's charges, priced at the month each falls in
-  const dc = input.deal
-    ? dealCharges(input.deal, {
-        currency: tariff.currency?.code ?? null,
-        fxRate,
-        unitPrice: (m, rateMonth = m) => {
-          const p = sharePrice(m);
-          return p === undefined ? undefined : p * fxRate(rateMonth);
-        },
-        gridOffset: input.gridOffset ?? 0,
-        distributes: !!fund.distribution,
-        activity: (m) => ({ count: countIn(m), trading: tradingIn(m) }),
-      })
-    : null;
-  /** F-128: each deal fee's part of a charge, beside its line's total (`Tally.fee`). */
-  const byFee = (c: Charged) => {
-    for (const p of c.parts) tally.feeBy(p.fee, p.amount);
-  };
-  // F-128: what a charge of a deal account reads of a month: the orders the run reads for it (`ActivityTrace`), else those the plan places
-  // in it (the amount now and the month's deposits, a distribution reinvested, and the sale), and its trading, the trading the run reads for
-  // it, else the cash the plan puts in it. An order is counted where it buys something; one that buys no unit is not placed (F-109)
-  const ordersIn = (m: number) =>
-    (m === 1 && C[0]! > 0 ? 1 : 0) + (m <= goal.months && C[m]! > 0 ? orders : 0) + (fund.distribution && m % (12 / fund.distribution.perYear) === 0 ? 1 : 0) + (m === T ? 1 : 0);
-  const countIn = (m: number) => trace?.read?.[m]?.count ?? (trace?.read ? 0 : ordersIn(m));
-  const tradingIn = (m: number) => trace?.read?.[m]?.trading ?? (trace?.read ? 0 : (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0));
-  const placedIn = (m: number, amount: number) => {
-    if (!trace || !(amount > 0)) return;
-    const at = trace.placed[m] ?? { count: 0, trading: 0 };
-    trace.placed[m] = { count: at.count + 1, trading: at.trading + amount };
-  };
   // room for every lot the run can buy (the amount now, each month's orders and a distribution's), so the lists never grow
   const lots = new LotQueue(2 + T * ((input.ordersPerMonth ?? 1) + 1));
   // F-109: whole units. The unit's price in shekels moves with the fund's value per unit (`nav`, 1 at the start). Cash an order leaves waits in
@@ -527,10 +440,11 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
       // more than nothing, as F-109 counts them; otherwise they wait unconverted, and the fund's currency the order holds buys alone. A cash
       // that cannot pay the commission on some trade is not placed, and waits for the next order as F-109's does
       const conv = tariff.currency ? convertedAtMost(fresh, conversion, terms, at.fxSpread) : { converted: fresh, cost: 0, left: fresh };
-      const placed = orderByAmount(fresh, held, conv, (cash) => buyWithCash(cash, line, tradeTerms));
-      if (!placed) return { fx: 0, trade: 0, commission: 0, cost: 0, leftNis: fresh, leftHeld: held };
-      const { trade, commission } = placed.bought;
-      return { fx: placed.fx, trade, commission, cost: placed.fx + commission, leftNis: placed.leftNis, leftHeld: placed.leftHeld };
+      const converts = conv.left > 0;
+      const sized = buyWithCash((converts ? conv.left : 0) + held, line, tradeTerms);
+      if (sized.trade <= 0) return { fx: 0, trade: 0, commission: 0, cost: 0, leftNis: fresh, leftHeld: held };
+      if (!converts) return { fx: 0, trade: sized.trade, commission: sized.commission, cost: sized.commission, leftNis: fresh, leftHeld: 0 };
+      return { fx: conv.cost, trade: sized.trade, commission: sized.commission, cost: conv.cost + sized.commission, leftNis: Math.max(0, fresh - conv.converted), leftHeld: 0 };
     }
     // F-109: the most whole units the cash pays for at the ask, with their commission and the conversion of the shekels they need; the
     // conversion is charged on the shekels converted, the cash that pays for it (as F-08 charges it on a contribution)
@@ -574,27 +488,6 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
     const fresh = (convert ? cash : 0) + waitingNis;
     const held = (convert ? 0 : cash) + waitingHeld * fxRate(eventMonth);
     const whole = unitBuy !== undefined && !(standing && unitBuy.monthlyByAmount);
-    if (dc) {
-      // F-128: the deal has no standing-order price; every order is priced alike
-      // the amount now is priced at month 0's rate and unit price, as the house's row prices it
-      const placed = dc.order(month, fresh, held, whole ? unitBuy!.price * nav * (1 + spread) : null, lots.totalUnits() * nav, eventMonth);
-      placedIn(month, placed.trade);
-      waitingNis = placed.leftNis;
-      waitingHeld = placed.leftHeld / fxRate(eventMonth);
-      if (standing) {
-        wait.monthly++;
-        if (placed.trade > 0) wait.placed++;
-        else wait.skipped++;
-      }
-      if (placed.trade <= 0) return;
-      tally.fee("fx", placed.fx);
-      tally.fee("trade", placed.commission);
-      byFee({ total: placed.cost, parts: placed.parts });
-      const value = navBought(placed.trade, spread);
-      tally.fee("spread", placed.trade - value);
-      lots.push(value / nav, placed.trade, J ? J[eventMonth]! : Number.NaN);
-      return;
-    }
     const standingLine = standing ? (at.buyStanding ?? at.buy) : at.buy;
     let chosen = order(at, terms, tradeTerms, fresh, held, whole, standingLine, standing ? (at.fxStanding ?? at.fx) : at.fx);
     if (standing && (at.cheaperOfStandingTrade || at.cheaperOfStandingFx)) {
@@ -669,13 +562,13 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   // minimum above the lower cap (an exempt stretch charges nothing): the account's cost may be too high from then on (method F-102).
   // The cap is looked at without citing it, and cited only where it flags: a row it changes nothing on does not list it among its rules.
   // A record without the figure is cited at once, so the run fails as any missing rule does.
-  if (tariff.currentAccount !== undefined || (dc && input.deal!.currentAccount?.length)) {
+  if (tariff.currentAccount !== undefined) {
     const cap = ctx.rules.find((r) => r.id === "BANK-35")?.figures?.account_fee_up_to_2_actions as { value?: unknown; effective_from?: string | null } | undefined;
     if (typeof cap?.value !== "number") book.amount("BANK-35", "account_fee_up_to_2_actions");
     else {
       const capMonth = cap.effective_from ? monthOfDate(ctx.runDate, cap.effective_from) : 1;
       for (let m = Math.max(1, capMonth); m <= T; m++) {
-        if ((dc ? dc.accountMonthly(m) : (tariffAt(m).currentAccount ?? 0)) > cap.value) {
+        if ((tariffAt(m).currentAccount ?? 0) > cap.value) {
           book.amount("BANK-35", "account_fee_up_to_2_actions");
           tally.flag("BANK-35", m);
           break;
@@ -723,13 +616,12 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
       foreignTax += t.foreign;
       israeliDistTax += t.israeli;
       tally.taxDuring += t.foreign + t.israeli;
-      distThisYear += dist;
+      // the year's taxable distributions, for the surtax (TXG-09); a taxable fund's are exempt to the holder (TXS-11), so they are none
+      if (fund.kind !== "money-market-taxable") distThisYear += dist;
       buy(t.net, m, m, false);
       units = lots.totalUnits();
       // F-103: the custodian's charge for the dividend, paid by removing units oldest first; it is not a fee the sale gain is reduced by
-      const asked = dc ? scaled(dc.event(m, units * nav), units * nav) : null;
-      const event = asked ? asked.total : corporateEventFee(tariff.perDividend, fxRate(m), units * nav);
-      if (asked) byFee(asked);
+      const event = corporateEventFee(tariff.perDividend, fxRate(m), units * nav);
       if (event > 0) {
         lots.removeFifo(event / nav);
         units = lots.totalUnits();
@@ -748,21 +640,15 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
     // whether or not a unit is held: where the units cannot pay it, the cash waiting for the next order (F-12 by amount, F-109 in whole
     // units) pays the rest, shekels first; what neither can pay is not charged (method F-17).
     const manager = (wrapperFee / 12) * units * nav;
-    // F-128: a deal's shares of what is held and its sums, each fee's part kept beside its line
-    const dealHeld = dc ? (mmfFree ? { total: 0, parts: [], atRate: 0 } : dc.held(m, units * nav - manager)) : null;
-    const dealSums = dc ? dc.sums(m, units * nav - manager) : null;
-    const custody = dealHeld ? dealHeld.total : custodyFee(custodyLineAt(m), m + offset, units * nav - manager);
+    const custody = custodyFee(custodyLineAt(m), m + offset, units * nav - manager);
     const heldLeft = units * nav - manager - custody;
     const cashLeft = waiting(m);
-    // F-128: a deal's custody priced as a sum is charged as the account's own sums are (F-17), and reported on custody's line
-    const sums = fixedFee(dealSums ? dealSums.custody.total + dealSums.fixed.total : tariffAt(m).monthlyFee, heldLeft + cashLeft);
-    const custodySum = dealSums && dealSums.custody.total > 0 ? (sums * dealSums.custody.total) / (dealSums.custody.total + dealSums.fixed.total) : 0;
-    const fixed = sums - custodySum;
+    const fixed = fixedFee(tariffAt(m).monthlyFee, heldLeft + cashLeft);
     // F-102: the current account at a bank, after the account's own fees, at the price of the month's stretch (F-101: a group exempt for a
     // time); it stays out of the exit year's fees (TXS-06)
-    const account = currentAccountFee(dealSums ? dealSums.account.total : tariffAt(m).currentAccount, heldLeft + cashLeft - sums);
+    const account = currentAccountFee(tariffAt(m).currentAccount, heldLeft + cashLeft - fixed);
     // the units pay first, as they always did; the waiting cash pays only what they cannot
-    const fromCash = Math.min(cashLeft, Math.max(0, sums + account - Math.max(0, heldLeft)));
+    const fromCash = Math.min(cashLeft, Math.max(0, fixed + account - Math.max(0, heldLeft)));
     if (fromCash > 0) {
       const nis = Math.min(waitingNis, fromCash);
       waitingNis -= nis;
@@ -774,27 +660,19 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
     const custodyLine = custodyLineAt(m);
     const held = units * nav;
     const custodyAtRate = custodyLine !== undefined && custody > 0 && Math.abs(custody - custodyLine.rate * (held - manager)) <= 1e-9 * Math.max(1, custody);
-    const marginal = dealHeld ? dealHeld.atRate : custodyAtRate ? custodyLine.rate : 0;
-    tally.grow(1 - marginal * (1 - wrapperFee / 12) - wrapperFee / 12);
+    tally.grow(1 - (custodyAtRate ? custodyLine.rate * (1 - wrapperFee / 12) : 0) - wrapperFee / 12);
     if (unitBuy) tally.waitTo(waitingNow);
-    const fromUnits = custody + custodySum + manager + fixed + account - fromCash;
+    const fromUnits = custody + manager + fixed + account - fromCash;
     if (fromUnits > 0) {
       lots.removeFifo(fromUnits / nav);
       units = lots.totalUnits();
     }
-    tally.fee("custody", custody + custodySum);
+    tally.fee("custody", custody);
     tally.fee("fixed", fixed);
     tally.fee("account", account);
-    // F-128: each deal fee's part, carried as its line is, after the month's growth and its share of the holdings
-    if (dealHeld && dealSums) {
-      byFee(dealHeld);
-      byFee(scaled(dealSums.custody, custodySum));
-      byFee(scaled(dealSums.fixed, fixed));
-      byFee(scaled(dealSums.account, account));
-    }
     if (account > 0) accountCharged = true;
     tally.fee("manager", manager);
-    if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += custody + custodySum + fixed;
+    if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += custody + fixed;
 
     if (closesTaxYear(m, T, first)) {
       if (distThisYear > 0) tally.taxDuring += yearlySurtax(book, profile, distThisYear, taxYearOf(m, first));
@@ -814,30 +692,18 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   const gross = value * (1 - spread);
   tally.fee("spread", value - gross);
   const atExit = tariffAt(T);
-  const dealSale = dc ? dc.sale(T, gross, value) : null;
-  placedIn(T, gross);
-  const commission = dealSale ? dealSale.total : saleCommission(atExit.sell, gross, { fxRate: fxRate(T), sharePrice: sharePrice(T) });
+  const commission = saleCommission(atExit.sell, gross, { fxRate: fxRate(T), sharePrice: sharePrice(T) });
   tally.fee("trade", commission);
-  if (dealSale) byFee(dealSale);
   // F-109: the cash still waiting is part of what is left, and no gain: the fund's currency is converted with the sale's proceeds
   const heldAtExit = waitingHeld * fxRate(T);
   const converted = gross - commission + heldAtExit;
-  const dealOut = dc && tariff.currency && converted > 0 ? dc.convertOut(T, converted, value) : null;
-  // F-128: the run settled where every charge prices what the run placed in the steps of what it read
-  if (trace && dc) {
-    const read = trace.read;
-    trace.settled = read !== null && dc.activityKey((m) => read[m] ?? NO_ACTIVITY, T) === dc.activityKey((m) => trace.placed[m] ?? NO_ACTIVITY, T);
-  }
-  const fx = dealOut ? dealOut.total : tariff.currency ? saleConversion(atExit.fx, converted, { fxRate: fxRate(T) }, atExit.fxSpread) : 0;
+  const fx = tariff.currency ? saleConversion(atExit.fx, converted, { fxRate: fxRate(T) }, atExit.fxSpread) : 0;
   tally.fee("fx", fx);
-  if (dealOut) byFee(dealOut);
   const proceeds = converted - fx + waitingNis;
   // F-109: what whole units did to the monthly purchases, for the page's line on the row
   const unitDetail: Record<string, number> = unitBuy ? { wholeUnits: 1, unitPrice: unitBuy.price, monthlyBuys: wait.monthly, monthlyOrders: wait.placed, monthlySkipped: wait.skipped, cashLeft: waitingNis + heldAtExit } : {};
   // F-118: stopped before the exit tax; listed with the open rule, never ranked (B3, D84)
-  // F-128: the months each of a deal's fees was charged within its steps, out of the run as data for the page's marks
-  const reached = (r: RunResult): RunResult => (dc ? { ...r, dealReach: dc.reach() } : r);
-  if (beforeTaxOf !== null) return reached(tally.result(book, { exitMonth: T, nominal: proceeds, index: I, taxAtExit: 0, outcome: { code: "listed-not-ranked", reason: beforeTaxOf }, detail: unitDetail, formulas }));
+  if (beforeTaxOf !== null) return tally.result(book, { exitMonth: T, nominal: proceeds, index: I, taxAtExit: 0, outcome: { code: "listed-not-ranked", reason: beforeTaxOf }, detail: unitDetail, formulas });
 
   const lotsLeft = lots.lots();
   const cost = lotsLeft.reduce((s, l) => s + l.basis, 0);
@@ -890,7 +756,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
     if (atForeignBroker) tally.flag("TXF-22");
   }
 
-  return reached(tally.result(book, {
+  return tally.result(book, {
     exitMonth: T,
     nominal: proceeds - exit.tax,
     index: I,
@@ -914,5 +780,5 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
       ...unitDetail,
     },
     formulas,
-  }));
+  });
 }

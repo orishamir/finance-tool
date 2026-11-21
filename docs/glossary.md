@@ -634,7 +634,7 @@ A term a rule defines but that has no row in section 1 is named on its page with
 
 ### Not collected
 
-These figures and lists exist and are not collected, so the site says no average was collected for the line; the only link is Maya.
+These figures and lists exist and are not collected, so the site says no average was collected for the line; the only links are TASE's calculator (own-account panel) and Maya.
 
 | Term | What is missing |
 |---|---|
