@@ -113,6 +113,16 @@ export function fxFee(line: number | Commission | undefined, amount: number, ter
 }
 
 /**
+ * F-09 with F-13 The conversion of a sale's proceeds, `amount` NIS, paid out of them: `min(amount, fee_fx(amount) + s × amount)`, with `s` the
+ * spread. It takes at most what it converts, as the commission takes at most the proceeds (`saleCommission`), so a sale never leaves less
+ * than nothing before the exit tax.
+ */
+export function saleConversion(line: number | Commission | undefined, amount: number, terms: TradeTerms, spread = 0): number {
+  if (!(amount > 0)) return 0;
+  return Math.min(amount, fxFee(line, amount, terms) + spread * amount);
+}
+
+/**
  * F-13 on a purchase in whole units (F-109): the shekels `c` whose conversion leaves `owed` once its fee and the spread `s` are paid,
  * `c = owed + fee_fx(c) + s × c`; the fee is on `c`, the amount converted, as F-08 charges it on a contribution. Solved by fixed-point
  * iteration, as `buyWithCash` solves F-12. A flat price for a conversion up to a sum (`flatUpTo`) jumps at the sum, which the iteration

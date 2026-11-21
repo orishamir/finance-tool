@@ -115,7 +115,8 @@ export function unlessBlocked<T>(step: () => T): { value: T; blocked?: undefined
 /**
  * F-12 with F-24 and F-25: the account's cash between the orders of a run that buys by amount (makam, a government bond). An order's cash
  * is what it brings and what waits from earlier orders. An order its cash cannot pay is not placed (`buyWithCash`): its cash stays in the
- * account, earning nothing, joins the next order placed, and at the horizon is part of what is left (`waiting`).
+ * account, earning nothing, joins the next order placed, pays the part of the account's monthly fee the holdings cannot (F-17, `pay`), and
+ * at the horizon is part of what is left (`waiting`).
  */
 export class OrderCash {
   private held = 0;
@@ -132,6 +133,13 @@ export class OrderCash {
     const order = buyWithCash(total, this.line, this.terms);
     this.held = order.trade > 0 ? 0 : total;
     return order;
+  }
+
+  /** Pays up to `amount` out of the waiting cash and returns what it paid: never more than waits. */
+  pay(amount: number): number {
+    const paid = Math.min(this.held, Math.max(0, amount));
+    this.held -= paid;
+    return paid;
   }
 
   /** The cash of the orders not placed, waiting for the next one. */

@@ -129,6 +129,24 @@ describe("an order its cash cannot pay is not placed, and its cash waits for the
     expect(r.fees.fx).toBeCloseTo(10, 9);
     expect(r.nominal).toBeCloseTo(14, 9);
   });
+  it("by amount, shekels whose conversion leaves nothing wait unconverted while a dividend held in dollars buys alone", () => {
+    // 1,000 ₪ now and 5 ₪ a month, a 10 ₪ minimum on every conversion, no commission. Month 1: 1,000 converts for 10 and buys 990; the 5
+    // waits. Month 2: 10 ₪ wait, since converting them for 10 leaves nothing; the dividend of 1% (9.90) pays its tax, and its net, in
+    // dollars, buys alone at 0.99, the 10 ₪ still waiting. At the horizon 990 × 0.99 and the net are converted for 10, and the 10 ₪ join them.
+    const r = runSecurities(
+      input({
+        goal: { amountNow: 1_000, monthly: 5, months: 2 },
+        fund: { kind: "foreign-fund", drag: {}, domicile: "ireland", distribution: { yield: 0.06, perYear: 6 } },
+        tariff: { buy: { rate: 0 }, fx: { rate: 0, min: 10 }, currency: { code: "USD", startRate: 4 } },
+      }),
+      ctx,
+    );
+    const net = 9.9 - r.taxDuring;
+    expect(net).toBeGreaterThan(0);
+    // two conversions, the amount now's and the sale's: the 10 ₪ of month 2 were not converted at a loss
+    expect(r.fees.fx).toBeCloseTo(20, 9);
+    expect(r.nominal).toBeCloseTo(990 * 0.99 + net - 10 + 10, 9);
+  });
   it("in whole units the count leaves out a conversion the order need not make: a dividend held in dollars buys the unit it covers with its commission", () => {
     // The case of ie0031442068 at Interactive Israel, 50,000 ₪ now for 20 years at 5%: in month 63 a few shekels wait unconverted and the
     // dividend held in dollars covers a unit with its 2.5 USD minimum; the 10 ₪ minimum on converting the shekels is no charge of that order.

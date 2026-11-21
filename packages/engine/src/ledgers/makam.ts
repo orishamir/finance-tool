@@ -47,6 +47,7 @@ const DAYS = 365;
  * (G-20, as F-09).
  * Custody and the account's monthly fee are paid by selling a slice of each series held: each slice is a sale before redemption, so its
  * own gain is a capital gain of its tax year (TXI-12), and that year's custody and account fees come off that year's capital gains (TXS-06).
+ * The account's fee the series cannot pay comes out of the cash waiting for the next order (F-17).
  * A purchase its cash cannot pay buys no series: the cash waits in the account, earning nothing, for the next purchase, and at the horizon
  * is part of what is left (F-12, F-24).
  */
@@ -129,20 +130,29 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
     }
     // F-14 and F-17: a custody fee and the account's monthly fee on the series held at the month's price, paid by selling a slice of each.
     // A slice is a sale before redemption: its own gain is a capital gain of the month's tax year (TXI-12), and the year's custody and
-    // account fees come off that year's capital gains (TXS-06), the exit year's off the sale gain with it, once.
+    // account fees come off that year's capital gains (TXS-06), the exit year's off the sale gain with it, once. The account's fee is owed
+    // whether or not a series is held: where the series cannot pay it, the cash waiting for the next order pays the rest, and what neither
+    // can pay is not charged (F-17, as the securities run does).
     const heldValue = held.reduce((v, s) => v + (s.face * price(Math.max(0, s.maturity - m))) / 100, 0);
     const fee = custodyFee(custodyLine, m, heldValue);
-    const fixed = fixedFee(tariff.monthlyFee, heldValue - fee);
-    if (fee + fixed > 0 && heldValue > 0) {
-      const sold = (fee + fixed) / heldValue;
-      const heldCost = held.reduce((c, s) => c + s.cost, 0);
-      // a slice is a sale: a purchase commission left out of its cost does not reduce its gain (G-20)
-      if (held.some((s) => s.commissioned)) tally.flag("G-20");
-      held = held.map((s) => ({ ...s, face: s.face * (1 - sold), cost: s.cost * (1 - sold) }));
+    const fixed = fixedFee(tariff.monthlyFee, heldValue - fee + orders.waiting);
+    // the series pay first; the waiting cash pays only what they cannot
+    const fromSeries = fee + fixed - orders.pay(fixed - Math.max(0, heldValue - fee));
+    if (fee + fixed > 0) {
+      const year = taxYearOf(m, first);
+      let sliceGain = 0;
+      if (fromSeries > 0 && heldValue > 0) {
+        const sold = fromSeries / heldValue;
+        const heldCost = held.reduce((c, s) => c + s.cost, 0);
+        // a slice is a sale: a purchase commission left out of its cost does not reduce its gain (G-20)
+        if (held.some((s) => s.commissioned)) tally.flag("G-20");
+        held = held.map((s) => ({ ...s, face: s.face * (1 - sold), cost: s.cost * (1 - sold) }));
+        sliceGain = sold * (heldValue - heldCost);
+      }
       tally.fee("custody", fee);
       tally.fee("fixed", fixed);
-      const year = taxYearOf(m, first);
-      add(sliceGainByYear, year, sold * (heldValue - heldCost));
+      // a year whose fees the waiting cash paid alone has no slice, and its fees still come off its capital gains (TXS-06)
+      add(sliceGainByYear, year, sliceGain);
       add(feesByYear, year, fee + fixed);
       if (year === taxYearOf(T, first)) exitYearFees += fee + fixed;
     }
