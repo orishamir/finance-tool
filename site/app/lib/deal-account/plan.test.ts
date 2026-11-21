@@ -100,7 +100,12 @@ describe("F-128 a deal filled from a house prices as the house does, on a few in
     expect(r.onTerms).toEqual([]);
   });
 
-  it.each(PLANS.filter(([name]) => FEW_PLANS.includes(name)))("an untouched deal leaves what its house's row leaves on every fund of these indices at %s on the deal's terms, as it is less only where a stated exception's cause is, and has a price exactly where its house's row has one", (_, p, fxChange) => {
+  const fewPlans = FEW_PLANS.map((name) => {
+    const p = PLANS.find(([n]) => n === name);
+    if (!p) throw new Error(`no plan named ${name}`);
+    return p;
+  });
+  it.each(fewPlans)("an untouched deal leaves what its house's row leaves on every fund of these indices at %s on the deal's terms, as it is less only where a stated exception's cause is, and has a price exactly where its house's row has one", (_, p, fxChange) => {
     const r = onPlan(s, p, fxChange);
     expect(r.pricedApart).toEqual([]);
     expect(r.compared).toBeGreaterThan(0);

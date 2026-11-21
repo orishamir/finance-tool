@@ -34,7 +34,7 @@ export function account(typed: Typed, more: Partial<CustomBroker> = {}): CustomB
   const at = (k: keyof typeof full, unit: Parameters<typeof entered>[1]) => (v(k) === null ? null : fig(v(k)!, unit));
   return {
     id: `custom-broker-test-${n++}`,
-    name: `חשבון ${n}`,
+    name: `account ${n}`,
     added: t,
     tradePct: at("tradePct", "pct_of_trade"),
     tradeMin: at("tradeMin", "nis_per_trade"),
