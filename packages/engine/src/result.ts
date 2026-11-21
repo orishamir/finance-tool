@@ -122,11 +122,6 @@ export interface RunResult {
   /** F-128, F-91 (a run of an account priced by a deal): each fee of the deal's payments carried the same way, by the fee's index in the deal. */
   feesCarriedBy?: number[];
   /**
-   * F-128 (a run of an account priced by a deal): for each fee of the deal with a step, the run months in which a charge of the run fell in
-   * all its steps (`DealCharges.reach`), by the fee's index in the deal; what the page marks as the steps the plan reaches.
-   */
-  dealReach?: number[][];
-  /**
    * F-109, F-91 (a securities run in whole units): what the cash waiting for a whole unit did against the fund, carried to the exit the same
    * way, nominal at the exit. Each month, the waiting cash times the month's total return of a shekel in the account (`R_m / R_{m−1} − 1`),
    * carried from the month's end to the exit (`R_T / R_m`): above zero where the waiting cash missed a rise, below zero where it missed a fall.
@@ -161,7 +156,6 @@ export const RUN_RESULT_FIELDS: ResultFields<RunResult> = {
   outcome: "output",
   feesCarried: "output",
   feesCarriedBy: "output",
-  dealReach: "output",
   waitingCarried: "output",
   flags: "trail",
   labels: "trail",

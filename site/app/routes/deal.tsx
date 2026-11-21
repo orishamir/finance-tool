@@ -1,6 +1,6 @@
 // The fee page (method §10.6): one deal's fees as the person enters them, and what the deal charges, on what and when. The deal is kept on
 // this device; the page's data (the kinds a deal can be with their caps, the price lists and tracks that fill a deal, the rules the caps
-// cite, the glossary cards of its fees) is fetched once after the page starts. Pre-rendered as its head alone: everything under it waits
+// cite, the glossary cards of its fees) is fetched once after the page starts, and the accounts typed on the indices page move into deals with it. Pre-rendered as its head alone: everything under it waits
 // for the device's day and deals.
 import { useEffect, useMemo, useState } from "react";
 import { useLoaderData } from "react-router";
@@ -10,6 +10,7 @@ import { FeeDealPage } from "../components/fee-deal/page";
 import { PageShell } from "../components/shell";
 import { bundleLinks } from "../lib/bundle";
 import { loadFeesData, type FeesData } from "../lib/fee-page-data";
+import { useTypedAccountsMove } from "../lib/deal-account/move-run";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { recordsById } from "../lib/scope";
 
@@ -34,6 +35,8 @@ export default function FeesPage() {
       .then(setData)
       .catch(() => setFailed(true));
   }, []);
+  // the accounts typed on the indices page move into deals here too, once the price lists are loaded (F-129)
+  useTypedAccountsMove(data);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries((data?.rules ?? []).map((r) => [r.id, r]));
     return { rules, pointed: recordsById(data?.pointed), terms: data?.terms ?? {}, dimensions: {}, today };

@@ -28,7 +28,7 @@ import { differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { Num, Ruled } from "../provenance";
 import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
-import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
+import { AddEntryButton, FundTerms } from "./custom-entries";
 import { AddDealButton, DealTerms, DeletedLine, useDealAccounts } from "./deal-account";
 import { dealIdOf, isDealProviderId } from "../../lib/deal-account/bundle";
 import { optionClass, reasonText } from "./parts";
@@ -241,7 +241,7 @@ export function PairLists(props: ListsProps) {
             {nameWithMark(p, selected)}
             {selected ? chosenWord(chosen, "text-chart-by-account") : figureCell(c.lists.accounts.upTo, priced(best) && <Num animate value={best.value} />, s.best)}
             <StretchBar scale={scale} best={s.best} worst={s.worst} className="h-6 max-xl:h-8" />
-            {p.custom && underRow(<><BrokerTerms id={p.id} /><DealTerms id={p.id} /></>)}
+            {p.custom && underRow(<DealTerms id={p.id} />)}
             {selected && movedHere("fund")}
           </>
         ),
@@ -264,25 +264,21 @@ export function PairLists(props: ListsProps) {
             </span>
             {selected ? chosenWord(chosen, "text-chart-by-account") : <span className="inline-flex items-center gap-1 text-xs text-blocked-foreground whitespace-nowrap"><IconLock size={14} />{c.lists.accounts.unranked}</span>}
             <StretchBar scale={scale} best={null} worst={null} className="h-6 max-xl:h-8" />
-            {p.custom && underRow(<><BrokerTerms id={p.id} /><DealTerms id={p.id} /></>)}
+            {p.custom && underRow(<DealTerms id={p.id} />)}
             {selected && movedHere("fund")}
           </>
         ),
       };
     }),
     ...unpricedHouses.map((p): PickRow => {
-      const na = noWay(p);
       // a house with no price for any fund on the index has nothing to show as a pair: its row stays, with the reason, and is never chosen;
       // one that prices only the other kind is picked with a fund it prices
       const none = !pricesAny(p.id);
       // its row says why over every kind of fund on the index, not only the chosen fund's kind
       const whole = none && !p.custom ? whyNoFundAt(bundle, p.id, funds) : null;
-      // what the person typed says it ("the account sells no such fund"): their own words, no document. An account typed over a house carries
-      // the house's record too, and a "no" that is the house's (Interactive Brokers on Tel Aviv) keeps the house's reason and rule
-      const typedNo = p.custom && na?.source.url === "local";
       // the words that say it are what opens why: the rule the record names for it, or the record's own reasons, each with its document
       // ("instead of the ? just have the label be clickable for information and source", 2026-11-12)
-      const told = whole ?? (typedNo ? { state: "notSold" as const, parts: [{ text: c.customEntries.notSold }], rules: [] } : whyNoFundAt(bundle, p.id, [fund]));
+      const told = whole ?? whyNoFundAt(bundle, p.id, [fund]);
       return {
         key: p.id,
         selected: false,
@@ -299,7 +295,7 @@ export function PairLists(props: ListsProps) {
               </NoFundWords>
             </span>
             <span aria-hidden="true" className="w-[9px]" />
-            {p.custom && underRow(<><BrokerTerms id={p.id} /><DealTerms id={p.id} complete /></>)}
+            {p.custom && underRow(<DealTerms id={p.id} complete />)}
           </>
         ),
       };
@@ -460,9 +456,7 @@ export function PairLists(props: ListsProps) {
     if (!k.includes("|")) return k;
     const [line, to] = k.split("|") as [string, string];
     const under = unpricedFunds.filter((f) => greyKey(f) === k);
-    // an account the person typed that sells no such fund says it in their words, with no document
-    const typedNo = under.every((f) => { const at = f.byHouse[pick.house]; return !!at && "availability" in at && at.availability?.source.url === "local"; });
-    const told = typedNo ? { parts: [{ text: c.customEntries.notSold }], rules: [] } : whyNoFundAt(bundle, pick.house, under);
+    const told = whyNoFundAt(bundle, pick.house, under);
     const said = (
       <NoFundWords told={told} name={line}>
         {line}
@@ -704,7 +698,7 @@ export function PairLists(props: ListsProps) {
       )}
       {/* the order of the funds is the list's own: one weak line at it */}
       {kinds && <p className="text-xs text-muted-foreground">{c.funds.kindsNote}</p>}
-      <AddEntryButton kind="fund" />
+      <AddEntryButton />
     </div>
   );
   // what moves the rows: the picks, the plan the lists are sorted on, the index, the lists' sizes and the fold under the funds

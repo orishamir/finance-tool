@@ -130,7 +130,7 @@ export interface IndicesBundle {
   /** P-01 (tie threshold) and P-05 (the representative instruments). */
   p01: ParameterRecord;
   p05: ParameterRecord;
-  links: { tase: RefLink | null; maya: RefLink | null };
+  links: { maya: RefLink | null };
   /** A provider's snapshot id to the regulator's company id (the legal id the company page is addressed by); absent when the data names no such company. */
   providerCompany: Record<string, string>;
   /** Per provident wrapper: how many managing companies the regulator's data holds (the "one of N" line). */
@@ -141,7 +141,7 @@ export interface IndicesBundle {
   fxHistory?: FxHistory;
   /** P-02's bounds for the dollar's yearly change against the shekel (A-03), percent a year, with the record (F-94). */
   dollarRange?: { lo: number; hi: number; p02: ParameterRecord };
-  /** The broker and fund the person typed (D44): only the index page's copy of the bundle has them (`withCustomEntries`). */
+  /** The funds the person typed (D44, `withCustomEntries`) and a house's group picked on the page (lib/group-pick.ts): only the index page's copies of the bundle have them. */
   entered?: EnteredInBundle;
   /** The person's securities-account deals (F-128): only a copy of the bundle with them has them (`withDeals`). */
   deals?: DealsInBundle;

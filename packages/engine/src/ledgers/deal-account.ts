@@ -1,8 +1,8 @@
 // F-128 An account priced by a deal (docs/method.md §10.4): the securities run (F-08, F-09) with every charge of the account priced by
-// the deal's own formulas (F-110 to F-117, `actionCost`, `heldCharge`, `sumCharge`), so the indices page and the fee page never disagree
-// about what a fee costs at an amount. Which fee the plan charges, and how, is `planChargeOf`; `dealCharges` is what the run asks of the
-// account each month. Rates are fractions and sums shekels, as in formulas/deal.ts.
-import { actionCost, chargedOn, dealPeriods, heldCharge, inHeldStep, inStep, sumCharge, type CalendarMonth, type Deal, type DealAction, type DealBase, type DealPeriod, type DealPrice } from "../formulas/deal.ts";
+// the deal's own formulas (F-110 to F-117, `actionCost`, `heldCharge`), so the indices page and the fee page never disagree about what a
+// fee costs at an amount. Which fee the plan charges, and how, is `planChargeOf`; `dealCharges` is what the run asks of the account each
+// month. Rates are fractions and sums shekels, as in formulas/deal.ts.
+import { actionCost, dealPeriods, heldCharge, inStep, type CalendarMonth, type Deal, type DealAction, type DealBase, type DealPeriod, type DealPrice } from "../formulas/deal.ts";
 
 /**
  * F-128's input: the deal read for the plan (F-114, its picks set by the plan where the plan knows them and by the deal's own pick where
@@ -16,18 +16,17 @@ export interface DealAccount {
   rates: Readonly<Record<string, number>>;
   currentAccount?: readonly number[];
   /**
-   * F-128: the steps of what the plan's months set that each fee is charged within, by its index in the deal (none: every charge), read
+   * F-128: the steps of what the plan's months set that each fee is charged within, by its index in the deal (none: every action), read
    * across their steps as F-115 reads a size: a price that changes by the number of orders in a month, by a month's trading, or, on an
-   * action, by the size of the portfolio is one fee per step, charged only on a charge of a month (or at a balance) in its step.
+   * action, by the size of the portfolio is one fee per step, charged only on an action of a month (or at a balance) in its step.
    */
   planWithin?: readonly (readonly PlanWithin[] | undefined)[];
 }
 
 /**
  * F-128 One step of what the plan sets that a fee of a deal account is charged within, above `from` (the first step, `from` 0, holds
- * nothing too) and at most `to` (no top where null): the orders the plan places in the months the charge reads (`count`, in `actions`);
- * those months' trading (`trading`, in a currency or in `units`); or the value of what is held when the order is placed (`balance`, in a
- * currency).
+ * nothing too) and at most `to` (no top where null): the orders the plan places in the action's month (`count`, in `actions`); that month's
+ * trading (`trading`, in a currency or in `units`); or the value of what is held when the order is placed (`balance`, in a currency).
  */
 export interface PlanWithin {
   on: "count" | "trading" | "balance";
@@ -36,10 +35,11 @@ export interface PlanWithin {
   unit: string;
 }
 
-/** F-128 What the plan does in one month that a charge reads: the orders it places in it, and its trading in shekels at the month's rate. */
-export interface MonthActivity {
+/** F-128 What an action of a deal account is placed within: the orders of its month, the month's trading in shekels, the value held then. */
+export interface ActionAt {
   count: number;
   trading: number;
+  balance: number;
 }
 
 /**
@@ -51,8 +51,8 @@ export type PlanCharge = "trade" | "conversion" | "holding" | "event";
 /**
  * Why the plan never charges a fee (F-128): the fund is bought in shekels, so nothing is converted (`shekel-fund`); the plan never moves
  * the account (`transfer-out`); the fund's own fee comes from its record (`fund-record`); cover is no fee (`cover`); the fund pays no
- * dividend (`no-dividend`); a fee the person named on an action, which the method cannot place on an action of the plan (`named`); or a
- * base the method does not yet say how a plan charges (`not-yet`, a stand-in until it does).
+ * dividend (`no-dividend`); a fee the person named, which the engine does not place (`named`); or a base the method does not yet say how a
+ * plan charges (`not-yet`, a stand-in until it does).
  */
 export type NotOnPlan = "shekel-fund" | "transfer-out" | "fund-record" | "cover" | "no-dividend" | "named" | "not-yet";
 
@@ -65,20 +65,13 @@ export interface PlanFacts {
 /**
  * F-128 How the plan charges a fee of a deal, or why it never does. By base: the trade fee on each order and the sale; the conversion on
  * each conversion where the fund is not in shekels; custody and the account's fixed fee in the months their prices fall due; a charge for a
- * corporate event on each dividend of a fund that pays one (F-103's reading). A fee the person named is placed by its prices' form, as F-111
- * places it (`chargedOn`): where every price it charges is a share of what is held or a sum per period, in the months they fall due; where one
- * is on an action, never (`named`). A transfer out, the fund's own fees and cover are never charged, each with its reason; the bases the
- * method does not place on a plan yet (a deposit, a withdrawal, the handling of a distribution, which F-63 does not model at a house either,
- * and the fund-side bases) are `not-yet`. A bank's current account (F-102) is a named fee the caller marks (`DealAccount.currentAccount`).
+ * corporate event on each dividend of a fund that pays one (F-103's reading). A transfer out, the fund's own fees, cover and a fee the
+ * person named are never charged, each with its reason; the bases the method does not place on a plan yet (a deposit, a withdrawal, the
+ * handling of a distribution, which F-63 does not model at a house either, and the fund-side bases) are `not-yet`. A bank's current account
+ * (F-102) is a named fee the caller marks (`DealAccount.currentAccount`).
  */
-export function planChargeOf(base: DealBase, facts: PlanFacts, prices: readonly DealPrice[] = []): { charge: PlanCharge } | { not: NotOnPlan } {
-  if (!("key" in base)) {
-    const placed = prices.flatMap((p) => {
-      const on = chargedOn(base, p);
-      return on ? [on.on] : [];
-    });
-    return placed.length > 0 && placed.every((on) => on === "held" || on === "account") ? { charge: "holding" } : { not: "named" };
-  }
+export function planChargeOf(base: DealBase, facts: PlanFacts): { charge: PlanCharge } | { not: NotOnPlan } {
+  if (!("key" in base)) return { not: "named" };
   switch (base.key) {
     case "trade":
       return { charge: "trade" };
@@ -101,6 +94,9 @@ export function planChargeOf(base: DealBase, facts: PlanFacts, prices: readonly 
   }
 }
 
+/** The run's fee line a charged fee is reported on (F-63's lines): a current account on its own, an event with custody (F-103). */
+export type DealLine = "trade" | "fx" | "custody" | "fixed" | "account";
+
 /** One fee's part of a charge, by its index in the deal. */
 export interface FeePart {
   fee: number;
@@ -119,16 +115,11 @@ export interface DealRunFacts {
   currency: string | null;
   /** Shekels per unit of the fund's currency in run month `m` (1 for shekels). */
   fxRate: (m: number) => number;
-  /**
-   * A unit's price in shekels in run month `m`, where the fund has one (F-12's `P × S`): its price in the fund's currency in month `m` at the
-   * rate of month `rateMonth` (the month an order is priced in, `m` where it is not given).
-   */
-  unitPrice: (m: number, rateMonth?: number) => number | undefined;
+  /** A unit's price in shekels in run month `m`, where the fund has one (F-12's `P × S`). */
+  unitPrice: (m: number) => number | undefined;
   /** F-14: months of the charging grid before the run's month 0. */
   gridOffset: number;
   distributes: boolean;
-  /** F-128: the orders and the trading the run reads for month `m` (`MonthActivity`). */
-  activity: (m: number) => MonthActivity;
 }
 
 /** One order as F-08 places it: the conversion of the fresh shekels, the trade and its charges, and what the cash leaves waiting. */
@@ -142,86 +133,63 @@ export interface DealOrder {
   parts: FeePart[];
 }
 
-/** What the sums due in a month are reported on (F-63's lines): custody priced as a sum, the account's own sums, a current account. */
-export interface DealSums {
-  custody: Charged;
-  fixed: Charged;
-  account: Charged;
-}
-
 /** What a run asks of a deal account (F-128): each charge, with each fee's part of it. */
 export interface DealCharges {
+  /** The line each fee is reported on, by its index; null for a fee the plan never charges. */
+  lines: readonly (DealLine | null)[];
   /**
    * F-08 one order of month `m`: the conversion of `fresh` shekels and the trade the cash pays for, by amount or in whole units at `ask`,
-   * placed when what is held is worth `balance`, at the rate and unit price of month `rateMonth` (the amount now's, month 0, as the
-   * house's row reads it; `m` where not given).
+   * placed within `at` (F-128's steps of what the plan sets).
    */
-  order(m: number, fresh: number, held: number, ask: number | null, balance: number, rateMonth?: number): DealOrder;
+  order(m: number, fresh: number, held: number, ask: number | null, at?: ActionAt): DealOrder;
   /** F-14 the shares of what is held due in month `m` on `value`, and the share of a shekel more that they take (F-91). */
   held(m: number, value: number): Charged & { atRate: number };
-  /** F-17, F-102 the sums due in month `m` on an account holding `value`, before what the account holds limits them. */
-  sums(m: number, value: number): DealSums;
+  /** F-17, F-102 the sums due in month `m`, the account's own and a current account's, before what the account holds limits them. */
+  sums(m: number): { fixed: Charged; account: Charged };
   /** F-103 the charges on a dividend paid in month `m` on a holding of `value`, before what is held limits them. */
-  event(m: number, value: number): Charged;
-  /** F-09 the sale's charges in month `m` on `gross`, and the conversion of the proceeds `converted`, sold when what is held is worth `balance`. */
-  sale(m: number, gross: number, balance: number): Charged;
-  convertOut(m: number, converted: number, balance: number): Charged;
-  /** F-128: whether a fee is charged within a month's orders or trading, which the run then settles (`activityKey`). */
-  readsActivity: boolean;
-  /**
-   * F-128: the step of every fee charged within a month's orders or trading that `activity` puts each charge of months 1 to `T` in, as one
-   * key: two runs whose keys agree price every such charge in the same steps.
-   */
-  activityKey(activity: (m: number) => MonthActivity, T: number): string;
+  event(m: number, value: number, at?: ActionAt): Charged;
+  /** F-09 the sale's charges in month `m` on `gross`, and the conversion of the proceeds `converted`, placed within `at`. */
+  sale(m: number, gross: number, at?: ActionAt): Charged;
+  convertOut(m: number, converted: number, at?: ActionAt): Charged;
+  /** F-128: whether a fee is charged within a month's trading, which the run then settles (`tradingSteps`). */
+  readsTrading: boolean;
+  /** F-128: the step of every fee charged within a month's trading that `trading` shekels in month `m` fall in, as one key. */
+  tradingSteps(m: number, trading: number): string;
   /** F-102 with BANK-35: what a current account costs a month in month `m`, for the cap's flag. */
   accountMonthly(m: number): number;
-  /**
-   * F-128: for each fee with a step (of an action's size, of the value held, of a month's orders or trading, or of the balance), the run
-   * months in which a charge of the run fell in all its steps, in order; empty for a fee with none.
-   */
-  reach(): number[][];
 }
 
 const monthIndex = (c: CalendarMonth): number => c.y * 12 + c.m - 1;
 
+/** The fees on an action whose plan charge is `role`, priced by `actionCost` and kept to those fees. */
 const sum = (parts: FeePart[]): Charged => ({ total: parts.reduce((a, p) => a + p.amount, 0), parts });
-
-/**
- * F-12 on a purchase by amount: the period with each trade fee's flat price for a small order (`flat`) either paid whatever the order's size,
- * for the fees in `flatPaid`, or left out, for every other: an order whose trade after the flat price fits under the flat sum pays only that,
- * and a larger order pays the line as usual.
- */
-function flatsAs(period: DealPeriod, withFlat: readonly number[], flatPaid: ReadonlySet<number>): DealPeriod {
-  if (withFlat.length === 0) return period;
-  return {
-    ...period,
-    prices: period.prices.map((p, i) => {
-      const price = p.price;
-      if (!withFlat.includes(i) || (price.kind !== "action" && price.kind !== "perUnit") || !price.flat) return p;
-      const { flat, ...line } = price;
-      return { ...p, price: flatPaid.has(i) ? { ...price, flat: { amount: flat.amount, upTo: Number.POSITIVE_INFINITY } } : line };
-    }),
-  };
-}
 
 /**
  * F-128 The charges of a deal account for one run. The deal's periods (F-110) are read from `start`, and run month `m` is calendar month
  * `start + m − 1`: a charge is priced at the period in force in the month it falls, so a charge of what is held whose period straddles a
  * change takes the later price, as F-101 reads a quarter. Each order and the sale price the trade fees at their own amount (`actionCost`,
- * F-115's steps read at it) and the conversion at the shekels converted (F-13); each share of what is held and each sum per period is
- * charged in the months it falls due at the value it falls on (`heldCharge`, `sumCharge`, F-115's steps of the value read at it); a charge
- * for a corporate event on each dividend (F-103). A charge is made within its steps of what the plan's months set: an action in its month's,
- * a charge of what is held or of the account in those of the months it covers. A price's sums in the fund's currency are converted at the
- * month's rate, in any other at `rates` (F-84).
+ * F-115's steps read at it) and the conversion at the shekels converted (F-13); each share of what is held is charged on F-14's grid at the
+ * value it falls on (`heldCharge`, F-115's steps of the value read at it); each sum in the months it falls due (F-17, F-102); a charge for a
+ * corporate event on each dividend (F-103). A price's sums in the fund's currency are converted at the month's rate, in any other at
+ * `rates` (F-84).
  */
 export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharges {
   const { deal } = account;
   const facts: PlanFacts = { converts: run.currency !== null, distributes: run.distributes };
-  const isAccount = (i: number) => !!account.currentAccount?.includes(i);
   const roles = deal.fees.map((f, i) => {
-    if (isAccount(i)) return "holding" as const;
-    const c = planChargeOf(f.base, facts, [...f.stages, ...(f.sale ?? [])].map((s) => s.price));
+    if (account.currentAccount?.includes(i)) return "holding" as const;
+    const c = planChargeOf(f.base, facts);
     return "charge" in c ? c.charge : null;
+  });
+  const isAccount = (i: number) => !!account.currentAccount?.includes(i);
+  const lines = deal.fees.map((f, i): DealLine | null => {
+    const r = roles[i];
+    if (r === null) return null;
+    if (r === "trade") return "trade";
+    if (r === "conversion") return "fx";
+    if (r === "event") return "custody";
+    if (isAccount(i)) return "account";
+    return "key" in f.base && f.base.key === "fixed_period" ? "fixed" : "custody";
   });
   const reading = dealPeriods(deal, account.start);
   const first = monthIndex(account.start);
@@ -246,132 +214,75 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
     }
     return r;
   };
-  /** Shekels per unit of `unit` in month `m`; a unit the run has no rate for is a caller's error (the workbench checks the deal's currencies). */
-  const shekelsPer = (unit: string, m: number): number => {
-    const r = unit === "ILS" ? 1 : ratesAt(m)[unit];
-    if (!(r !== undefined && r > 0)) throw new RangeError(`F-128: a step in ${unit} needs the run's rate of ${unit}`);
-    return r;
-  };
-  /** A month's trading in a step's unit: shekels at the month's rate, or units at the month's unit price (the workbench checks it has one). */
-  const tradingIn = (unit: string, m: number, shekels: number): number => {
-    if (unit !== "units") return shekels / shekelsPer(unit, m);
-    const p = run.unitPrice(m);
-    if (!(p !== undefined && p > 0)) throw new RangeError("F-128: a step in units needs the fund's price per unit");
-    return shekels / p;
-  };
-  // F-128: what the plan's months set, read for one charge: the months it covers (an action its own month), and the balance an order is placed at
+  // F-128: a fee charged within a step of what the plan sets is charged only on an action placed within it
   const planWithin = account.planWithin ?? [];
-  const measure = (w: PlanWithin, from: number, to: number, activity: (m: number) => MonthActivity, balance: number): number => {
-    if (w.on === "balance") return balance / shekelsPer(w.unit, to);
-    let x = 0;
-    for (let m = Math.max(1, from); m <= to; m++) x += w.on === "count" ? activity(m).count : tradingIn(w.unit, m, activity(m).trading);
-    return x;
+  const measure = (w: PlanWithin, m: number, at: ActionAt): number | null => {
+    if (w.on === "count") return at.count;
+    const shekels = w.on === "trading" ? at.trading : at.balance;
+    if (w.unit === "units") {
+      const p = run.unitPrice(m);
+      return p !== undefined && p > 0 ? shekels / p : null;
+    }
+    const r = w.unit === "ILS" ? 1 : ratesAt(m)[w.unit];
+    return r !== undefined && r > 0 ? shekels / r : null;
   };
-  const within = (i: number, from: number, to: number, balance: number, activity = run.activity): boolean => (planWithin[i] ?? []).every((w) => inStep(w, measure(w, from, to, activity, balance)));
-  // F-128: the months a charge of each fee fell in all its steps, for the page's marks
-  const stepped = deal.fees.map((f, i) => !!f.within || (planWithin[i]?.length ?? 0) > 0);
-  const reached: Set<number>[] = deal.fees.map(() => new Set<number>());
-  const reachedAt = (i: number, m: number) => {
-    if (stepped[i]) reached[i]!.add(m);
-  };
-  const onAction = (role: PlanCharge, action: DealAction, m: number, amount: number, side: "buy" | "sell", balance: number, rateMonth = m, period = periodAt(m)): Charged => {
-    if (!(amount > 0)) return { total: 0, parts: [] };
-    const cost = actionCost(deal, period, action, amount, side, ratesAt(rateMonth), run.unitPrice(m, rateMonth));
-    return sum(cost.parts.filter((p) => roles[p.fee] === role && within(p.fee, m, m, balance)).map((p) => ({ fee: p.fee, amount: p.cost })));
-  };
-  /** Each fee of `role` whose steps an action of `amount` placed in month `m` falls in: a step of its own size (F-115), and the plan's. */
-  const markAction = (role: PlanCharge, m: number, amount: number, balance: number, rateMonth = m) => {
-    if (!(amount > 0)) return;
-    deal.fees.forEach((f, i) => {
-      if (roles[i] !== role || !stepped[i]) return;
-      if (f.within?.on === "action" && !inStep(f.within, amount / shekelsPer(f.within.currency, rateMonth))) return;
-      if (within(i, m, m, balance)) reachedAt(i, m);
+  const within = (i: number, m: number, at: ActionAt | undefined): boolean =>
+    (planWithin[i] ?? []).every((w) => {
+      const x = at ? measure(w, m, at) : null;
+      if (x === null) throw new RangeError(`F-128: fee ${i} is charged within ${w.on} in ${w.unit}, which the run cannot measure here`);
+      return inStep(w, x);
     });
+  const onAction = (role: PlanCharge, action: DealAction, m: number, amount: number, side: "buy" | "sell", at?: ActionAt): Charged => {
+    if (!(amount > 0)) return { total: 0, parts: [] };
+    const cost = actionCost(deal, periodAt(m), action, amount, side, ratesAt(m), run.unitPrice(m));
+    return sum(cost.parts.filter((p) => roles[p.fee] === role && within(p.fee, m, at)).map((p) => ({ fee: p.fee, amount: p.cost })));
   };
-  const trade = (m: number, t: number, side: "buy" | "sell", balance: number, rateMonth = m, period?: DealPeriod) => onAction("trade", "trade", m, t, side, balance, rateMonth, period);
-  const conversion = (m: number, c: number, side: "buy" | "sell", balance: number, rateMonth = m) => onAction("conversion", "conversion", m, c, side, balance, rateMonth);
-  /** The months a charge of what is held or of the account in month `m` covers: its charging period, ending at the charge. */
-  const covers = (m: number, everyMonths: number) => m - everyMonths + 1;
-  const dueIn = (m: number, price: DealPrice) => (price.kind === "held" || price.kind === "sum") && (m + run.gridOffset) % price.everyMonths === 0;
-  const readsActivity = planWithin.some((ws) => ws?.some((w) => w.on === "count" || w.on === "trading"));
-  // the amounts where a trade fee may jump (a step's ends): a trade the cash pays for is found between them
-  const cutsAt = (rateMonth: number): number[] => {
+  const trade = (m: number, t: number, side: "buy" | "sell", at?: ActionAt) => onAction("trade", "trade", m, t, side, at);
+  const conversion = (m: number, c: number, side: "buy" | "sell", at?: ActionAt) => onAction("conversion", "conversion", m, c, side, at);
+  const tradingWithin = planWithin.flatMap((ws, i) => (ws ?? []).filter((w) => w.on === "trading").map((w) => ({ i, w })));
+  // the amounts where a charge on an action may jump (a step's ends, a flat price's sum): a trade the cash pays for is found between them
+  const cutsAt = (m: number, role: PlanCharge): number[] => {
+    const rates = ratesAt(m);
+    const p = periodAt(m);
     const out = new Set<number>();
     deal.fees.forEach((f, i) => {
-      if (roles[i] !== "trade" || f.within?.on !== "action") return;
-      const r = shekelsPer(f.within.currency, rateMonth);
-      if (f.within.from > 0) out.add(f.within.from * r);
-      if (f.within.to !== null) out.add(f.within.to * r);
+      if (roles[i] !== role) return;
+      const r = (c: string) => (c === "ILS" ? 1 : (rates[c] ?? 1));
+      if (f.within?.on === "action") {
+        if (f.within.from > 0) out.add(f.within.from * r(f.within.currency));
+        if (f.within.to !== null) out.add(f.within.to * r(f.within.currency));
+      }
+      for (const x of [p.prices[i]!.price, p.prices[i]!.sale]) if (x && (x.kind === "action" || x.kind === "perUnit") && x.flat) out.add(x.flat.upTo * r(x.currency ?? "ILS"));
     });
     return [...out].filter((x) => x > 0).sort((a, b) => a - b);
   };
-  /**
-   * F-12 on a purchase by amount: the largest trade the cash pays for with its charges. Each trade fee with a flat price for a small order
-   * pays the flat price where the trade after it fits under its sum, and its line where it does not, at whatever size the line then buys.
-   */
-  const buyByAmount = (m: number, cash: number, balance: number, rateMonth: number): { t: number; c: Charged } => {
-    const base = periodAt(m);
-    const rates = ratesAt(rateMonth);
-    const withFlat = deal.fees.flatMap((_, i) => {
-      const p = base.prices[i]!.price;
-      return roles[i] === "trade" && (p.kind === "action" || p.kind === "perUnit") && p.flat ? [i] : [];
-    });
-    const flatPaid = new Set(withFlat);
-    const cuts = cutsAt(rateMonth);
-    for (;;) {
-      const period = flatsAs(base, withFlat, flatPaid);
-      const t = tradeForCash(cash, (x) => trade(m, x, "buy", balance, rateMonth, period).total, cuts);
-      const over = [...flatPaid].filter((i) => {
-        const p = base.prices[i]!.price as Extract<DealPrice, { kind: "action" | "perUnit" }>;
-        return t > p.flat!.upTo * (p.currency && p.currency !== "ILS" ? rates[p.currency]! : 1);
-      });
-      if (over.length === 0) return { t, c: t > 0 ? trade(m, t, "buy", balance, rateMonth, period) : { total: 0, parts: [] } };
-      for (const i of over) flatPaid.delete(i);
-    }
-  };
   return {
-    readsActivity,
-    activityKey(activity, T) {
-      const keys: string[] = [];
-      deal.fees.forEach((f, i) => {
-        const ws = (planWithin[i] ?? []).filter((w) => w.on !== "balance");
-        if (ws.length === 0) return;
-        for (let m = 1; m <= T; m++) {
-          let from = m;
-          if (roles[i] === "holding") {
-            const price = periodAt(m).prices[i]!.price;
-            if (!dueIn(m, price)) continue;
-            from = covers(m, (price as { everyMonths: number }).everyMonths);
-          }
-          keys.push(ws.map((w) => (inStep(w, measure(w, from, m, activity, 0)) ? 1 : 0)).join(""));
-        }
-      });
-      return keys.join(",");
+    lines,
+    readsTrading: tradingWithin.length > 0,
+    tradingSteps(m, trading) {
+      return tradingWithin.map(({ w }) => (inStep(w, measure(w, m, { count: 0, trading, balance: 0 }) ?? Number.NaN) ? 1 : 0)).join("");
     },
-    order(m, fresh, held, ask, balance, rateMonth = m) {
-      const fxOf = (c: number) => conversion(m, c, "buy", balance, rateMonth);
+    order(m, fresh, held, ask, at) {
+      const fxOf = (c: number) => conversion(m, c, "buy", at);
       if (ask === null) {
         const fx = run.currency && fresh > 0 ? fxOf(fresh) : { total: 0, parts: [] };
         const cash = fresh - fx.total + held;
-        const { t, c } = buyByAmount(m, cash, balance, rateMonth);
+        const t = tradeForCash(cash, (x) => trade(m, x, "buy", at).total, cutsAt(m, "trade"));
         if (!(t > 0)) return { fx: fx.total, trade: t, commission: 0, cost: fx.total, leftNis: 0, leftHeld: 0, parts: fx.parts };
-        if (run.currency && fresh > 0) markAction("conversion", m, fresh, balance, rateMonth);
-        markAction("trade", m, t, balance, rateMonth);
-        // a charge that jumps past the cash leaves the largest trade it pays for, and the rest, converted already, waits for the next order (F-128, F-109)
+        const c = trade(m, t, "buy", at);
+        // a charge that jumps past the cash leaves the largest trade it pays for, and the rest waits for the next order (F-128)
         const left = Math.max(0, cash - t - c.total);
-        return { fx: fx.total, trade: t, commission: c.total, cost: fx.total + c.total, leftNis: 0, leftHeld: left, parts: [...fx.parts, ...c.parts] };
+        return { fx: fx.total, trade: t, commission: c.total, cost: fx.total + c.total, leftNis: left, leftHeld: 0, parts: [...fx.parts, ...c.parts] };
       }
       // F-109: the most whole units the cash pays for at the ask, with their charges and the conversion of the shekels they need
       for (let n = Math.floor((fresh + held) / ask + 1e-9); n > 0; n--) {
         const t = n * ask;
-        const c = trade(m, t, "buy", balance, rateMonth);
+        const c = trade(m, t, "buy", at);
         const fromHeld = Math.min(held, t + c.total);
         const owed = t + c.total - fromHeld;
         const spent = run.currency && owed > 0 ? convertedFor(owed, (x) => fxOf(x).total) : owed;
         if (spent <= fresh + 1e-9) {
           const fx = owed > 0 && run.currency ? fxOf(spent) : { total: 0, parts: [] };
-          if (owed > 0 && run.currency) markAction("conversion", m, spent, balance, rateMonth);
-          markAction("trade", m, t, balance, rateMonth);
           return { fx: fx.total, trade: t, commission: c.total, cost: fx.total + c.total, leftNis: Math.max(0, fresh - spent), leftHeld: held - fromHeld, parts: [...fx.parts, ...c.parts] };
         }
       }
@@ -379,14 +290,12 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
     },
     held(m, value) {
       const p = periodAt(m);
-      const rates = ratesAt(m);
       const parts: FeePart[] = [];
       let atRate = 0;
-      deal.fees.forEach((f, i) => {
+      deal.fees.forEach((_, i) => {
         const price = p.prices[i]!.price;
-        if (roles[i] !== "holding" || price.kind !== "held" || !dueIn(m, price) || !within(i, covers(m, price.everyMonths), m, value)) return;
-        if (inHeldStep(f, value, rates)) reachedAt(i, m);
-        const fee = heldCharge(deal, p, i, value, rates);
+        if (roles[i] !== "holding" || price.kind !== "held" || (m + run.gridOffset) % price.everyMonths !== 0) return;
+        const fee = heldCharge(deal, p, i, value, ratesAt(m));
         if (fee <= 0) return;
         parts.push({ fee: i, amount: fee });
         if (Math.abs(fee - price.rate * value) <= 1e-9 * Math.max(1, fee)) atRate += price.rate;
@@ -395,33 +304,25 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
       // never more than is held, as F-14 holds one line
       return c.total > value ? { ...scaled(c, value), atRate: 0 } : { ...c, atRate };
     },
-    sums(m, value) {
+    sums(m) {
       const p = periodAt(m);
-      const rates = ratesAt(m);
-      const out = { custody: [] as FeePart[], fixed: [] as FeePart[], account: [] as FeePart[] };
-      deal.fees.forEach((f, i) => {
+      const fixed: FeePart[] = [];
+      const acc: FeePart[] = [];
+      deal.fees.forEach((_, i) => {
         const price = p.prices[i]!.price;
-        if (roles[i] !== "holding" || price.kind !== "sum" || !dueIn(m, price) || !within(i, covers(m, price.everyMonths), m, value)) return;
-        if (inHeldStep(f, value, rates)) reachedAt(i, m);
-        const amount = sumCharge(deal, p, i, value, rates);
-        if (!(amount > 0)) return;
-        // F-63's lines: a current account on its own, custody priced as a sum on custody's, any other sum on the account's own (F-17)
-        (isAccount(i) ? out.account : "key" in f.base && f.base.key === "custody" ? out.custody : out.fixed).push({ fee: i, amount });
+        if (roles[i] !== "holding" || price.kind !== "sum" || !(price.amount > 0) || (m + run.gridOffset) % price.everyMonths !== 0) return;
+        (isAccount(i) ? acc : fixed).push({ fee: i, amount: price.amount });
       });
-      return { custody: sum(out.custody), fixed: sum(out.fixed), account: sum(out.account) };
+      return { fixed: sum(fixed), account: sum(acc) };
     },
-    event(m, value) {
-      markAction("event", m, value, value);
-      return onAction("event", "distribution", m, value, "buy", value);
+    event(m, value, at) {
+      return onAction("event", "distribution", m, value, "buy", at);
     },
-    sale(m, gross, balance) {
-      markAction("trade", m, gross, balance);
-      return trade(m, gross, "sell", balance);
+    sale(m, gross, at) {
+      return trade(m, gross, "sell", at);
     },
-    convertOut(m, converted, balance) {
-      if (!run.currency) return { total: 0, parts: [] };
-      markAction("conversion", m, converted, balance);
-      return conversion(m, converted, "sell", balance);
+    convertOut(m, converted, at) {
+      return run.currency ? conversion(m, converted, "sell", at) : { total: 0, parts: [] };
     },
     accountMonthly(m) {
       const p = periodAt(m);
@@ -429,9 +330,6 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
         const price: DealPrice | undefined = p.prices[i]?.price;
         return a + (price?.kind === "sum" ? price.amount / price.everyMonths : 0);
       }, 0);
-    },
-    reach() {
-      return reached.map((s) => [...s].sort((a, b) => a - b));
     },
   };
 }

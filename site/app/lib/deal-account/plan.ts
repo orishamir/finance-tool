@@ -1,12 +1,11 @@
 // A securities-account deal read for the indices page's plan (method F-128): what the plan knows it sets itself (what is bought, from the
-// fund; the channel, the internet, as the page always buys; the currency of a conversion and of a sum in the trade's currency, the one the
-// fund trades in), and the deal keeps its own pick of what
+// fund; the channel, the internet, as the page always buys; a conversion's currency, the fund's), and the deal keeps its own pick of what
 // only the person knows (a track, a condition of their own). Each fee is then charged by the plan, never charged with its reason, or
 // stops the deal from a price on the plan with what it lacks. Pure; no Hebrew (the words are in copy.ts, read by the page).
 import { planChargeOf, type Deal, type DealAccount, type DealFee, type DealRun, type DealUnpriced, type NotOnPlan, type PlanWithin } from "@finance-tool/engine";
 import { readDealFor, type DealRead } from "../fee-deal/deal-read";
 import { chargedOnHolding, feeOf, stepPick, type ReadFee } from "../fee-deal/cases";
-import { hasCases, isRange, monthOfDate, pickKey, placeOf, type Fee, type FeeDeal, type RangeBy, type ReadPick } from "../fee-deal/model";
+import { hasCases, isRange, monthOfDate, pickKey, type Fee, type FeeDeal, type RangeBy, type ReadPick } from "../fee-deal/model";
 import { engineFee } from "../fee-deal/to-engine";
 import { monthOf as monthThing } from "../fee-deal/offers/conditions";
 import { engineBase, type FeeKindId } from "../fee-deal/shapes";
@@ -57,16 +56,10 @@ export function planWhat(run: Pick<DealRun, "instrumentClass" | "listing">, line
   return line ? { what: line("trade", run, value), held: line("custody", run, value) } : { what: value, held: value };
 }
 
-/**
- * The deal as the plan reads it: its own picks of what only the person knows, and the plan's of what it buys (`what`) and how. What is
- * bought names its currency as the one the fund trades in (`DealRun.currency`, the shekel where null), whatever the value names (F-114's
- * currency of a conversion, F-12's sum in the trade's currency); a value the deal does not know keeps its own.
- */
-export function planDeal(deal: FeeDeal, run: Pick<DealRun, "instrumentClass" | "listing" | "currency">, what: string = whatOfRun(run)): FeeDeal {
+/** The deal as the plan reads it: its own picks of what only the person knows, and the plan's of what it buys (`what`) and how. */
+export function planDeal(deal: FeeDeal, run: Pick<DealRun, "instrumentClass" | "listing">, what: string = whatOfRun(run)): FeeDeal {
   const own = (deal.readFor ?? []).filter((p) => !PLAN_KEYS.includes(p.by));
-  const place = placeOf(deal.fees, what)?.place;
-  const bought: ReadPick = place ? { by: "what", is: what, place, currency: run.currency ?? "ILS" } : { by: "what", is: what };
-  const picks: ReadPick[] = [...own, bought, { by: "channel", is: PLAN_CHANNEL }];
+  const picks: ReadPick[] = [...own, { by: "what", is: what }, { by: "channel", is: PLAN_CHANNEL }];
   return { ...deal, readFor: picks };
 }
 
@@ -82,7 +75,7 @@ export type PlanRead = DealRead & { within: ReadonlyMap<ReadFee, readonly PlanWi
  * changes by what the plan's months set (`planThings`) is read across their steps, as F-115 reads a size: once for every step of each of
  * them, each read fee charged within its steps (`within`); it lacks a price, an order or a case where any of those readings does.
  */
-export function planRead(deal: FeeDeal, run: Pick<DealRun, "instrumentClass" | "listing" | "currency">, ctx: Pick<PlanContext, "kinds" | "today" | "lineValue">): PlanRead {
+export function planRead(deal: FeeDeal, run: Pick<DealRun, "instrumentClass" | "listing">, ctx: Pick<PlanContext, "kinds" | "today" | "lineValue">): PlanRead {
   const w = planWhat(run, ctx.lineValue);
   const readAt = (what: string, steps: readonly ReadPick[] = []) => {
     const d = planDeal(deal, run, what);
@@ -199,9 +192,8 @@ export function dealHouseId(deal: Pick<FeeDeal, "template">): string | null {
 
 /**
  * F-128 Each fee of the deal on one run of the plan. A current account is charged unless the deal was filled from the bank the person marks
- * (D64); the fund's own fee comes from the fund's record; a fee in the person's own words is charged where F-111 places it on what is held
- * or on the account (every price it charges a share of what is held or a sum per period, `chargedOnHolding`), and never on an action; every
- * other fee as `planChargeOf` says. A fee the plan charges must be priced (§10.6), in order (F-110), and have a case for what the plan buys (F-114),
+ * (D64); the fund's own fee comes from the fund's record; a fee in the person's own words is never charged; every other fee as
+ * `planChargeOf` says. A fee the plan charges must be priced (§10.6), in order (F-110), and have a case for what the plan buys (F-114),
  * at every step of what the plan's months set (`planRead`).
  */
 export function feesOnPlan(deal: FeeDeal, run: DealRun, ctx: PlanContext): FeeOnPlan[] {
@@ -219,13 +211,10 @@ export function feesOnPlan(deal: FeeDeal, run: DealRun, ctx: PlanContext): FeeOn
   });
 }
 
-/** F-111 on a fee in the person's own words: whether it charges something, and every price it charges is on what is held or on the account. */
-const ownOnHolding = (f: Fee): boolean => (hasCases(f) ? f.cases : [f]).some((x) => [...x.stages, ...(x.sale ?? [])].some((st) => st.price.form !== "free")) && chargedOnHolding(f);
-
 function offOf(deal: FeeDeal, f: Fee, facts: { converts: boolean; distributes: boolean }, ctx: PlanContext): OffPlan | null {
   if (f.kind === "current_account") return !ctx.currentAccounts ? "no-current-account" : dealHouseId(deal) !== null && dealHouseId(deal) === ctx.currentAccounts.own ? "own-bank" : null;
   if (f.kind === "fund_management") return "fund-record";
-  if (f.kind === "own") return ownOnHolding(f) ? null : "own-words";
+  if (f.kind === "own") return "own-words";
   const c = planChargeOf(engineBase(f.kind), facts);
   return "charge" in c ? null : c.not === "named" ? "own-words" : c.not;
 }

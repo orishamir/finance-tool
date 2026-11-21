@@ -11,7 +11,7 @@ export interface ReceiptAmounts {
   /** F-91's X less what was paid in: what the index added before any cost. */
   added: number;
   tax: number;
-  /** The account's fees, and its lines in `pc.dealLines` order, else `pc.account`'s, with the remainder last. */
+  /** The account's fees, and its lines in `pc.account` order with the remainder last. */
   account: number;
   accountLines: number[];
   remainder: number;
@@ -31,9 +31,7 @@ export function receiptAmounts(pc: PairCosts): ReceiptAmounts {
   const left = Math.round(pc.left.value as number);
   const account = Math.round(pc.accountFees);
   const waiting = Math.round(pc.waitingN);
-  // the account's own lines: a deal's own fees where it is priced by a deal (F-128), else the tariff's lines
-  const own = pc.dealLines ?? pc.account;
-  const lines = wholeParts([...own.map((l) => (typeof l.cost.value === "number" ? l.cost.value : 0)), pc.interaction], account);
+  const lines = wholeParts([...pc.account.map((l) => (typeof l.cost.value === "number" ? l.cost.value : 0)), pc.interaction], account);
   const lost = base - left - waiting;
   const [fund, tax] = wholeParts([typeof pc.fund.value === "number" ? pc.fund.value : 0, typeof pc.tax.value === "number" ? pc.tax.value : 0], lost - account);
   return { paidIn, added: base - paidIn, tax: tax!, account, accountLines: lines.slice(0, -1), remainder: lines.at(-1)!, fund: fund!, waiting, left, gain: left - paidIn, lost };

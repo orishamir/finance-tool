@@ -219,7 +219,7 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     expect(PENSION_RESULT_FIELDS).toMatchObject({ detail: "output", years: "output", deposits: "output", exit: "output" });
     expect(EMPLOYER_LINE_FIELDS).toMatchObject({ line: "output", ranked: "output", exit: "output" });
     expect(Object.keys(RUN_RESULT_FIELDS).sort()).toEqual(
-      ["dealReach", "detail", "exitMonth", "fees", "feesCarried", "feesCarriedBy", "flags", "formulas", "labels", "nominal", "outcome", "paidIn", "real", "rules", "series", "taxAtExit", "taxDuring", "waitingCarried"],
+      ["detail", "exitMonth", "fees", "feesCarried", "feesCarriedBy", "flags", "formulas", "labels", "nominal", "outcome", "paidIn", "real", "rules", "series", "taxAtExit", "taxDuring", "waitingCarried"],
     );
   });
 });
