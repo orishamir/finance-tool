@@ -3,12 +3,16 @@
 How every chart on the site should look, by kind of chart, then the parts
 they share. The kit already holds chart pieces (`site/app/components/kit/`:
 `chart-parts`, `pair-bars`, `stairs-chart`, `year-bars`, `change-chart`): use
-them, and change the shared piece when a rule here asks for it.
+them, and change the shared piece when a rule here asks for it. A chart is
+an interface piece, so [design.md](design.md) applies to it too (its type,
+colour, touch and speed rules); this file adds what is particular to charts.
 
 ## Before drawing
 
 - When the founder says what chart to make, make that chart. Its kind, its
-  title and its place are his call; don't second-guess them.
+  title and its place are his call: build them as he says. A doubt goes to
+  him with its evidence ([working-with-the-founder.md](working-with-the-founder.md));
+  the chart stays as he said until he decides.
 - When he asks you to suggest charts for a page, start from the choice the
   reader makes after seeing it. If there is none, a sentence or one large
   number is better than a chart. Would a reader who knows nothing about the
@@ -28,11 +32,9 @@ them, and change the shared piece when a rule here asks for it.
   instead.
 - Write the total at the end of the bar, outside it, in bold.
 - Order the parts the same way in every bar of the chart, largest or most
-  important first, and keep the order of the legend the same.
+  important first.
 - A 2 px gap in the background colour between parts, never an outline.
 - Text inside a part is white or near-black, whichever reads on that colour.
-- In a list of stacked bars, one legend for the whole list, above it, not
-  one per bar.
 
 ### Bars (comparing options)
 
@@ -112,8 +114,8 @@ them, and change the shared piece when a rule here asks for it.
   decodes the chart means labels are missing.
 - Label text uses the text colours (white, grey), never the series colour;
   a coloured dot or swatch beside it carries the colour.
-- Round amounts to what matters: whole shekels, or thousands on an axis
-  ("10 אלף").
+- Amounts are rounded as [wording.md](wording.md) says; on an axis, to
+  thousands ("10 אלף").
 - **A field's starting value is a default, not a site parameter.** A chart's
   field (an amount, years, a return) starts at a default the reader can
   change. Show it as a plain number, with no site-parameter tag and nothing
@@ -126,7 +128,8 @@ them, and change the shared piece when a rule here asks for it.
 ### Legend
 
 - Needed for two or more series when not every mark is labelled. One legend
-  per chart or list, placed above the chart, in the same order as the parts.
+  per chart or list (never one per bar), placed above it, in the same order
+  as the parts.
 - A single series needs no legend; the title says what it is.
 
 ### Axes and grid
@@ -145,9 +148,7 @@ them, and change the shared piece when a rule here asks for it.
 - Unless he gave the title, one that says what the numbers show, not only
   the topic: "הקרן המחקה הרוויחה יותר ב־3 מתוך 4 השנים", not "התשואה בכל
   שנה". A finding, never advice.
-- One or two lines under it about the reader's own figures. Don't repeat the
-  text above or the fields.
-- Say what the chart assumes and where it is unsure.
+- The lines under it follow [wording.md](wording.md), "Lines under a chart".
 
 ### Colour
 
@@ -164,23 +165,21 @@ them, and change the shared piece when a rule here asks for it.
   small ones under "אחרות" or split into small charts side by side.
 - A colour means one thing within a chart. The same meaning across the page
   is nice, not required.
-- Colour never works alone: a label, a pattern or a word says it too.
 
 ### Size and space
 
 - The chart is as large as its importance on the page, not larger: a big
   chart beside small controls reads as the main thing.
 - Leave air around marks; don't fill every pixel.
-- Chart text is at least 13 px at the size shown, on a phone too: the site's
-  smallest text.
+- The site's smallest text size holds at the size a chart is shown, on a
+  phone too, not only at the size it is drawn.
 
 ### Interaction
 
-- A tap or hover on a mark shows its name and exact amount. Nothing depends
-  on hover alone, because phones have none. Tap targets are at least 44 px
-  even when the mark is thinner.
-- When a slider or field changes, the chart answers in under 100 ms. The
-  chart stays in place; only the marks move, smoothly.
+- A tap or hover on a mark shows its name and exact amount. A mark's tap
+  target keeps the site's touch size even when the mark is thinner.
+- When a slider or field changes, the chart stays in place; only the marks
+  move, smoothly.
 
 ## Check it
 
@@ -193,4 +192,4 @@ colours a colour-blind reader can't tell apart, and lines too faint for
 their background. It reads charts drawn in SVG, and charts drawn in HTML
 when they carry `data-chart`. To run it alone after a build:
 `npm run chart-check`. Fix whatever it fails. It checks that the chart is
-built right, not whether it is the right chart; don't review by screenshot.
+built right, not whether it is the right chart.

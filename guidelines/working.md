@@ -13,8 +13,9 @@
 - Give each builder its own worktree
   (`tools/mkwt.sh <name> <branch> main`) and the files it
   owns.
-- Name the guideline file to follow for the work (charts, wording, design,
-  research), and say to build from the kit.
+- Name the guideline file to follow for the work (code, charts, wording,
+  design, research), and say to build from the kit. For code, say: never
+  change an expected value or loosen an assertion to make a test pass.
 - For a page built from pictures he approved: point the builder at them and
   say "build exactly this; report each departure with why". Accept or send
   back each departure; nothing unlisted ships.
@@ -47,7 +48,8 @@
    before telling the founder it is live.
 2. The scripts check that nothing is broken; don't review by screenshot.
    How it looks is the founder's to judge.
-3. An engine or schema change gets the finance-reviewer.
+3. An engine or schema change gets the finance-reviewer. Builder work gets
+   the code review in [code.md](code.md).
 4. Run `node tools/merge-review.mjs main`. It lists what the
    change adds outside the kit (components, hand-styled pills and cards,
    literal colours, Hebrew outside the copy files). Keep each item as a
@@ -71,15 +73,14 @@
 
 ## 6. Show the founder
 
-- Keep the report short: what changed, what is broken, what needs his
-  decision. Details only when he asks.
-- Send a screenshot of the live change (`tools/shot.mjs`),
-  with one line on what changed.
+- Report as [working-with-the-founder.md](working-with-the-founder.md) says,
+  under "How to report".
 
 ## 7. When the founder reports a flaw
 
-- Fix it. Then ask him whether he wants a check for similar things across the
-  site.
+- Fix it. Then ask him whether he wants the rest of the site searched for
+  the same kind of flaw. A layout mistake the layout check missed gets a
+  check of its own either way ([design.md](design.md), step 4).
 
 ## Issues
 

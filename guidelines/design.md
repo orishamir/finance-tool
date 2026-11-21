@@ -9,7 +9,8 @@ one and specifies every component.
    at `/kit`. If a piece fits, use it. `docs/design-system.md` section 11 says
    which piece fits which case.
 2. **If nothing fits, add the piece to the kit,** with its gallery entry, not
-   to a feature folder, so every page can use it.
+   to a feature folder, so every page can use it. A piece stays outside the
+   kit only as a one-off with its reason ([working.md](working.md), 4).
 3. **Colour by role, never by value.** Use the semantic roles as Tailwind
    utilities (`bg-card`, `text-entered`, `text-muted-foreground`), never a
    palette step or a literal colour.
@@ -22,7 +23,8 @@ one and specifies every component.
    scrolling. When a layout mistake turns up that it misses, add a check for
    it there, with a planted failure on `/kit` that the check must catch.
    What it found when it came in is listed, each with why, in
-   `site/scripts/layout-check-leftovers.json`.
+   `site/scripts/layout-check-leftovers.json`. Code follows
+   [code.md](code.md).
 
 ## When the founder asks for a page change
 
@@ -46,13 +48,11 @@ What goes on a page is his call. When he asks for a change, build it this way:
 - **Choose by tapping the option itself.** When the reader picks one of
   several options shown as cards or chips, the whole card is the button:
   a tap anywhere on it chooses it. No "choose this" link or button inside
-  it. The chosen one is marked by an outline and a word that says so,
-  never by colour alone. On a computer, the others show they can be
+  it. The chosen one is marked by an outline and a word that says so.
+  On a computer, the others show they can be
   clicked: the pointer changes and they light up on hover. A link inside
   the card, such as a fund number to its page, still opens that page.
 - **Comparisons show everything at once,** not two things at a time.
-- **Say what the site can't answer,** plainly, where the reader is (for
-  example, it never guesses returns), and what it can answer instead.
 - **Clean up.** When something is replaced, remove what the old version left
   behind: words, tiles, notes, tokens, tests.
 
@@ -82,17 +82,133 @@ What goes on a page is his call. When he asks for a change, build it this way:
   - Both turn teal only under a computer's pointer, on keyboard focus and
     while their sheet is open.
 
-  Each state also has a pattern, an icon or a word, never colour alone. In a
-  list of products, a column whose figures all share one state carries the
-  mark in its head, and its cells stay plain.
+  In a list of products, a column whose figures all share one state carries
+  the mark in its head, and its cells stay plain.
+- **Colour never works alone.** A pattern, an icon or a word says it too:
+  for a number's state, a chosen option, a part of a chart.
 - **Type.** Inter for Latin and digits, then Heebo for Hebrew. No text under
   13 px; body 16 px at line height 1.7. No letter-spacing on Hebrew. Tabular
   figures for numbers; a slashed zero in identifiers.
 - **Spacing.** A 4 px base. `px-gutter` 16 to 32 px, `gap-section` 40 to
-  64 px, 44 px touch targets, 48 px fields, prose no wider than
-  `max-w-measure` (38rem).
-- **Right to left.** Logical CSS properties only (`ms-`, `pe-`, `start`,
-  `end`).
+  64 px, 48 px fields, prose no wider than `max-w-measure` (38rem).
+- **Right to left.** Logical CSS properties only (`ms-`, `pe-`, `inset-s-`,
+  `inset-e-`, `text-start`), except inside a chart's drawing, whose axes
+  read left to right ([charts.md](charts.md)).
+- **A piece doesn't know where it is used.** It lays itself out within the
+  box it is given, and whatever holds it decides where it goes. It reads
+  nothing about the page around it, such as the site header's height.
+- **A piece fits its box, not the screen.** It changes its layout by the
+  width it is given (`@container`), not the screen's (`useMedia`); the
+  screen decides only what the page itself does.
+
+## HTML
+
+- **What acts is a `<button>`; what goes somewhere is an `<a href>`.**
+  Never a `div` or `li` with `onClick`: it gets no Enter or Space and no
+  focus. A card chosen by a tap is a button, or holds one button stretched
+  over it, so a link inside it still opens.
+- **The native element before a role:** `<details>`, `<dialog>`,
+  `popover`, `<select>`, a radio. A role and hand-written keys only where
+  no element exists, such as tabs.
+- **A menu or a tip opens in the top layer** (`popover`, `<dialog>`), so no
+  layer and no box around it can hide it. A `popover="manual"` wires its
+  own Escape and outside tap.
+- **A newer feature only with a fallback that works on an iPhone.** Today
+  that means:
+  - `closedby`: keep the tap on the backdrop.
+  - `popover="hint"`: the tip still opens on a tap.
+  - `hidden="until-found"`: use `<details>` instead.
+  - Customizable `<select>`.
+  - `overscroll-behavior` on iOS.
+
+  Check web-features before using anything newer.
+- **A sheet:**
+  - only one is open at a time;
+  - a term or rule tapped inside it replaces its content, with a way back;
+  - its X and the phone's Back both close it;
+  - focus returns to what opened it, so the opener stays mounted;
+  - `autofocus` marks the first thing to act on.
+
+## Fields
+
+- **A number field is `type="text"`,** with:
+  - `inputmode="numeric"` for whole shekels and `"decimal"` for a rate;
+  - `autocomplete="off"`, `spellcheck="false"` and `enterkeyhint="done"`.
+
+  Never `type="number"`: the mouse wheel changes it by accident, and it
+  reads as empty after a bad entry.
+- **A field that may be negative has a way to type a minus.** A phone's
+  number pad has none.
+- **While someone types:**
+  - every keystroke computes;
+  - a valid value takes effect at once;
+  - the last valid result stays on screen;
+  - an error shows when the hand rests (on leaving the field, or after a
+    pause) and clears on the keystroke that fixes it;
+  - what was typed is never cleared.
+- **No placeholder,** not even an example amount: it reads as a value.
+- **Thousands separators added while typing keep the caret after the same
+  digit.** Only in whole numbers; decimals are formatted on leaving the
+  field.
+- **A focused field stays above the phone's keyboard,** with the result it
+  changes in view where possible.
+- **A slider shows the value at each of its ends,** so it is clear which
+  way it grows. It grows from the right, while a chart's time axis runs
+  left to right ([charts.md](charts.md)).
+
+## Touch, direction and waiting
+
+- **Every surface people drag declares `touch-action`:** `pan-y` for a
+  sideways drag, `none` only on a small handle. A mouse wheel never zooms
+  a chart during a plain page scroll.
+- **Text whose direction isn't known gets `dir="auto"`:** what is typed in
+  search, a name the reader entered. Never a figure.
+- **`scrollLeft` is negative in right to left.** Read it with `Math.abs`.
+- **SVG and `transform` are physical:** logical properties don't reach
+  them. A chart sets its direction on purpose. Physical classes appear
+  only in chart drawings, where a guard allows them.
+- **Nothing shows for a wait under a second:** no spinner or skeleton that
+  flashes.
+
+## CSS
+
+- **Every rule sits in a layer.** What must beat the utilities goes in one
+  declared last layer, selected by a data attribute, never by an escaped
+  Tailwind class name.
+- **Class names are written whole in the source;** a prop maps to a full
+  string. Tailwind reads files as text and never builds a class from
+  pieces.
+- **An arbitrary value is a one-off;** its second use becomes a token. A
+  variable is written `x-(--name)`. Text size comes from the type scale,
+  never `text-[13px]`.
+- **Two classes for one property never meet on an element** (`cx.ts`); a
+  prop picks one. `!` is a last resort, written as v4's suffix, with a
+  comment.
+- **Layers between pieces come from the shared scale** (`--z-sticky`,
+  `--z-popover`). What a piece raises inside itself stays inside it
+  (`isolation: isolate`), with values 0 to 2 only. These start a stacking
+  context: `container-type`, `transform`, `opacity` under 1, `filter`,
+  sticky and fixed.
+- **Long text inside flex and grid:**
+  - a flex or grid child that holds text gets `min-w-0`;
+  - a long string with no spaces (an ISIN, a link) gets `wrap-anywhere`;
+  - no `hyphens` on Hebrew.
+- **`overflow-clip`, not `overflow-hidden`, around anything sticky.**
+  `hidden` makes a scroll box, and the sticky part stops sticking.
+- **`@container` collapses in a box that shrinks to fit its content**
+  (`w-fit`, absolute, a flex item with no basis). Give that box a width.
+- **No `100vh`:** `svh` for a layout minimum, `dvh` only for an overlay
+  that must fit what is visible.
+- **Animate `transform` and `opacity` only;** height only for a fold. A
+  chart follows a slider in 200 to 250 ms and takes 400 ms for a one-off
+  change; under reduced motion a short fade replaces movement.
+- **Headings may balance (`text-balance`).** Text that holds a live figure
+  never does: a changing figure would move its lines.
+- **Each web font has a fallback face matched to its size,** Hebrew
+  included. Safari ignores the ascent and descent overrides, so check it
+  there.
+- **`<meta name="color-scheme" content="dark">` goes in the page head,** so
+  the first paint is already dark.
 
 ## Tables
 
@@ -103,6 +219,9 @@ What goes on a page is his call. When he asks for a change, build it this way:
 - **When a head, name or cell needs more than it can say, add a "?" beside
   it** (`HelpMark`) that opens the longer explanation on a tap: a glossary
   term's card, or a short text of its own.
+- **A "?" explains; it never holds a fact the choice needs.** A fee, a
+  condition or the reason for a result is never only behind a "?" or a
+  fold.
 - **A sentence above a table may say what the table is about, never what
   one column, row or cell means.** That goes in the head or its "?". Where
   the table's title already says what it is about, keep just the title.
@@ -119,3 +238,6 @@ What goes on a page is his call. When he asks for a change, build it this way:
    head.
 5. Leave out a figure that repeats a label, and a column that is the same on
    every row.
+6. The list says what it is sorted by, in words, and sorts only by a figure
+   it shows. No row stands out by size, brightness or colour beyond a word
+   that states the fact.

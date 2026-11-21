@@ -32,8 +32,9 @@ professional. Not a bank, not a blog, not a TV financial adviser.
 5. **Be as sure as the evidence.** Say what a figure depends on: "בהנחה
    שהתשואה 5% בשנה". Say where the site doesn't know: "החברה לא מפרסמת את
    העמלה הזו". Never present a complicated answer as certain.
-6. **Say what can't be answered**, plainly and where the reader is: "האתר לא
-   מנחש תשואה, ולכן אין כאן תחזית. מה שאפשר להשוות: העמלות והמס."
+6. **Say what can't be answered, and what can instead**, plainly and where
+   the reader is: "האתר לא מנחש תשואה, ולכן אין כאן תחזית. מה שאפשר
+   להשוות: העמלות והמס."
 7. **State only what the rule base holds.** A sentence about a law, a tax,
    a duty, a term or how a product works says what a rule in the rule base
    says, no more and no less, and the words that state it open that rule
@@ -85,15 +86,18 @@ professional. Not a bank, not a blog, not a TV financial adviser.
   with an object is an infinitive ("להזין ריבית אחרת"). Up to 3 words. Not
   an imperative ("שמרו").
 - **Links** start with ל־ and the destination ("לעמוד המדריך", "לכל
-  הפרמטרים"), and lead only to what they promise.
+  הפרמטרים"), and lead only to what they promise. An identifier that is
+  itself the link out (`1148808 ↗`, [design.md](design.md)) needs no ל־.
 - **Labels, column heads, chips:** each says what it is or does, so it is
   understood without an explanation beside it. A chip doesn't repeat the
   unit in its value ("תקופה 10 שנים", not "שנים 10 שנים"). Up to 4 words for
   a chip, 7 for a field label.
+- **Column heads, labels and headings put the word that matters first.**
 - **Field labels** name what to enter, in plain words: "סכום היום",
   "הפקדה חודשית".
 - **Lines under a chart** speak about the reader's own figures (how much of
-  their money is above the exemption), one or two lines.
+  their money is above the exemption), one or two lines, and say what the
+  chart assumes and where it is unsure.
 - **Notes and caveats** are one sentence each, beside the figure they
   qualify, not collected at the bottom of the page.
 - **Status words** say what happened, in the passive: "נשמר", "לא הוזן",
@@ -110,8 +114,13 @@ professional. Not a bank, not a blog, not a TV financial adviser.
   (`10 ₪`, not `10.00 ₪`). Agorot depend on the kind of value: a figure set
   by law or a price from a price list keeps the agorot it prints
   (`5,645.29 ₪`, `9.90 ₪`); what the site calculates shows whole shekels
-  (`952 ₪`), in tables too, except a cost under 10 ₪ (`3.20 ₪`). Percent
-  attached: `0.8%`.
+  (`952 ₪`), in tables too, except a cost under 10 ₪ (`3.20 ₪`). A figure
+  that rests on a return the reader assumed shows hundreds of shekels
+  (`48,300 ₪`): it isn't known to the shekel, and a round figure is
+  remembered better. Percent attached: `0.8%`.
+- A figure inside an attribute or a title (`<title>`, `aria-label`,
+  `title`, an `<option>`, an SVG `<title>`) can't hold `<bdi>`: wrap it in
+  the Unicode isolates FSI and PDI (U+2068, U+2069).
 - Dates as `22.10.2026`; a month in words when the figure is monthly
   ("ספטמבר 2026").
 - A maqaf with no spaces between a prefix and a number, code or Latin word:
@@ -136,7 +145,4 @@ professional. Not a bank, not a blog, not a TV financial adviser.
 
 ## Writing to the founder
 
-- Plain English, short, no internal codes or ids.
-- Every figure carries its assumption. Keep what was read apart from what was
-  inferred.
 - See [working-with-the-founder.md](working-with-the-founder.md).

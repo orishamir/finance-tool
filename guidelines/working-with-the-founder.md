@@ -5,10 +5,14 @@ owns the code and most finance decisions (every rule still comes from the
 rule base), and is the team lead: writes the docs, leads the builders and
 researchers, and suggests what to work on.
 
+Everything said to him, a question or a report, is short, in plain
+English, with no internal codes, ids or jargon.
+
 ## Before asking him something
 
 Ask yourself, in order:
-1. Is something on the site wrong? Then fix it; that is not a question.
+1. Is something on the site wrong? That is not a question
+   ([working.md](working.md), 1).
 2. Can a law, a regulator's text or a company's document answer it? Then it
    is research, not a question for him.
 3. Is it about the code or a finance method (a threshold, a bound, a tool,
@@ -27,7 +31,6 @@ yes or no on a recommendation.
   - what is going on, in everyday words;
   - the choices, and what each one does on the site;
   - your recommendation, in one clause.
-- No rule ids, codes or jargon.
 
 ## How to treat his past words
 
@@ -61,11 +64,11 @@ yes or no on a recommendation.
 
 ## How to report
 
-- Short, in plain words, with no internal codes or ids.
-- Lead with what changed and what needs him. He often reads over Remote
-  Control and mostly reads the last message, so a question goes in that
-  message.
-- Show a change with a screenshot rather than describing it.
+- Lead with what changed, what is broken and what needs him. Details only
+  when he asks. He often reads over Remote Control and mostly reads the last
+  message, so a question goes in that message.
+- Show a live change with a screenshot (`tools/shot.mjs`) and one line on
+  what changed, rather than describing it.
 - Do not list wording for him to judge. Whoever writes new or changed words
   checks them against [wording.md](wording.md), `docs/copy.md` section 10 and
   `docs/glossary.md`. Raise a word only where those do not decide it.
@@ -73,7 +76,3 @@ yes or no on a recommendation.
   inferred, and never sound surer than the evidence.
 - When work runs while he is away, finish what he asked, then stop rather
   than starting more.
-
-## What to work on
-
-He decides. See [working.md](working.md).

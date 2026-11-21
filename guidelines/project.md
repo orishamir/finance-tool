@@ -1,7 +1,5 @@
 # The project and where things are
 
-Status: reference (facts, not instructions).
-
 A personal, non-commercial website that helps the founder and a few friends
 and family make saving and investing decisions in Israel.
 
@@ -12,7 +10,10 @@ and family make saving and investing decisions in Israel.
 - The audience is the founder plus a small known group of friends and family,
   each on their own device. No accounts, no personal data on a server.
 - Non-commercial: no accessibility, legal or commercial work. No referral,
-  affiliate or agent links.
+  affiliate or agent links. Ordinary engineering that helps everyone is not
+  accessibility work and is done: real buttons and links, use by keyboard on
+  a computer, focus that returns where it was. Markup that serves only
+  screen readers is left out.
 - The repository and the site are public: nothing private (the founder's
   mail, his own finances, anything about the people who use the site).
 - No religious-law products: no Halacha tracks (מסלולי הלכה, "כשר"), no
@@ -60,8 +61,9 @@ and family make saving and investing decisions in Israel.
   style guide in section 10, and a sourced one-line explanation of every
   financial term).
 - `site/scripts/`: checks that run by themselves before anything goes live
-  (`npm run check` and GitHub): the chart check and the Hebrew quote check,
-  and the server that opens a built site.
+  (`npm run check` and GitHub): the layout check, the chart check, the
+  Hebrew quote check and the other checks the build runs, and the server
+  that opens a built site.
 - `tools/`: scripts run by hand while working: worktrees, the busy count,
   screenshots, the merge review, the page checks (movement, touch targets,
   jumps, marks alone on a line), fresh readers, the document library
@@ -82,13 +84,11 @@ and family make saving and investing decisions in Israel.
   `git show 8dd1f013:<path>`.
 - `.claude/skills/il-finance/references/`: the rule base, the latest research
   on every rule, sourced and kept current. It is the only copy. Everyone
-  reads it; only each file's owner (the tax-specialist for the tax files, the
-  domain-specialist for the rest) or the lead edits it, and other agents put
-  rule findings in their reports.
+  reads it; [research.md](research.md) says who edits it.
 - `research/library/`: every document already read, searchable by page
-  (`node tools/library.mjs find <words>`). Look there before downloading,
-  and file each new document with `tools/library.mjs add`. The index is in
-  git; the files and their text are not, because the repository is public.
+  (`node tools/library.mjs find <words>`); [research.md](research.md) says
+  when to use it. The index is in git; the files and their text are not,
+  because the repository is public.
   `tools/library.mjs recheck` says which linked documents changed since they
   were read.
 - `data/`: source data, each entry with its source and date.
@@ -106,6 +106,7 @@ and family make saving and investing decisions in Israel.
 
 ## Commands
 
-- `npm run check`: typecheck, tests, data validation and the site build (what
-  CI runs).
+- `npm run check`: the typecheck, the fast and deep tests, data validation
+  and the site build, then the chart and layout checks on the built site
+  (what CI runs).
 - `npm test`, `npm run validate`, `npm run dev`.

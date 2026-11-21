@@ -47,11 +47,8 @@ site makes, a number or a sentence, rests on the source for its kind:
 3. **Use leads to find where to look.** Finance blogs, forums, the press and
    search results often name the section, circular or ruling. Note each lead
    as a lead, with what it pointed to. Never cite it.
-4. **Read the source that owns the claim** (the table above). For a law,
-   regulation or regulator, its official publication: Reshumot, the Knesset,
-   gov.il, or the regulator's or exchange's own site. Never a copy such as
-   Nevo, Wikisource or a mirror; a copy only helps you find the official
-   text. Note the page and the exact words you rely on.
+4. **Read the source that owns the claim** (the table above), never a copy.
+   Note the page and the exact words you rely on.
 5. **Record it.** Add or update the rule in the matching
    `references/*.md` file, with its link, page, quote, checked date and
    strength. Only the file's owner (the tax-specialist for the tax files, the
@@ -83,8 +80,7 @@ site makes, a number or a sentence, rests on the source for its kind:
    run `npm run validate`.
 7. **Before a new company or a new top pick goes live,** give a fresh
    reviewer only the documents and ask them to disprove it. If a real
-   customer of that company is at hand, ask them too. What the founder
-   reports first-hand is treated as true, then checked.
+   customer of that company is at hand, ask them too.
 8. **A ranking change is its own commit,** with its evidence.
 
 ## Which institutions
@@ -96,9 +92,7 @@ site makes, a number or a sentence, rests on the source for its kind:
 
 ## Privacy
 
-- The repository and the site are public. Nothing private goes into them:
-  nothing about the founder's own money or his mail beyond what the next
-  line allows, nothing about the people who use the site.
 - A company's written answer or document sent to the founder may be cited as
   the company's own, with its name and date, never with the founder's name,
-  address or anything about his own money.
+  address or anything about his own money. The rest of what stays private
+  is in [project.md](project.md), "Fixed constraints".
