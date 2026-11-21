@@ -182,7 +182,7 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     const funds = out.indexOf('data-anchor="funds"');
     const headPart = out.slice(out.lastIndexOf(invest.lists.funds.title, funds), funds);
     const held = [...headPart.matchAll(/<div aria-hidden="true" class="invisible">([\s\S]*?)<\/div>/g)].map((m) => shown(m[1]!)).join(" ");
-    const priced = sp.providers.filter((p) => allFunds(sp).some((f) => "valueN" in (f.byHouse[p.id] ?? {})) && !p.id.startsWith("house-account-group"));
+    const priced = sp.providers.filter((p) => allFunds(sp).some((f) => "valueN" in (f.byHouse[p.id] ?? {})) && !p.id.startsWith("custom-broker-group"));
     expect(priced.length).toBeGreaterThan(2);
     for (const p of priced) expect(held.replace(/\u00a0/g, " "), p.id).toContain(p.short.replace(/\u00a0/g, " "));
   });
@@ -190,9 +190,9 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
 
 describe("a typed entry's line", () => {
   it("with nothing typed, the line says what is not known, with no entered tag before its own negation", () => {
-    const out = shown(html(createElement(Terms, { terms: { shown: [], empty: [invest.customEntries.fields.trustee] }, editing: { kind: "fund", id: "x" } })));
-    expect(out).toContain(invest.customEntries.unknownLine(invest.customEntries.fields.trustee));
-    expect(out.replace(invest.customEntries.unknownLine(invest.customEntries.fields.trustee), "")).not.toContain("הזנתם");
+    const out = shown(html(createElement(Terms, { terms: { shown: [], empty: [invest.customEntries.fields.fx] }, editing: { kind: "fund", id: "x" } })));
+    expect(out).toContain(invest.customEntries.unknownLine(invest.customEntries.fields.fx));
+    expect(out.replace(invest.customEntries.unknownLine(invest.customEntries.fields.fx), "")).not.toContain("הזנתם");
   });
 });
 

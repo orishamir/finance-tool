@@ -44,7 +44,7 @@ export function checkLineFacts(line: Line, latest: boolean): string[] {
       const prev = tops[i - 1];
       if (i > 0 && top !== null && typeof prev === "number" && !(typeof top === "number" && top > prev)) out.push(`${at}: size steps run from the smallest up`);
     });
-    // the line's flat price is the step the run prices (F-13): the two say the same
+    // the line's flat price and its flat size step say the same: the run reads the steps, and the pages that show the line its flat price (F-13)
     const flat = line.flat_up_to;
     if (flat) {
       const step = line.size_tiers.find((t) => t.on === "fee" && t.flat);

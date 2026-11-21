@@ -606,7 +606,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "Annex p.75, item ד: 0.7% for a conversion under USD 15,000 and 0.5% above. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). The schema has one spread, so every conversion is priced at 0.7%, the most either document allows (the price list: 'עד 0.7%', p.6); a conversion over USD 15,000 is overstated by 0.2% of it (left_out)."
+        "notes": "Annex p.75, item ד: 0.7% for a conversion under USD 15,000 and 0.5% above. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). The spread is priced by the conversion's size, its `size_tiers` (F-13); this figure is the higher step, the most either document allows (the price list: 'עד 0.7%', p.6)."
       },
       "period": null,
       "channel": null,
@@ -931,12 +931,6 @@
       "what": "קיזוז דמי השימוש (₪ 15 לחודש) כנגד עמלות הפעולות של אותו חודש (נספח העמלות, עמ' 72)",
       "why": "The schema and the engine have no fee that the month's trading fees reduce, so the NIS 15 is charged in full every month (2026-11-08). A month whose trading fees reach NIS 15 pays nothing more in fact; the site overstates IBI by up to NIS 15 a month.",
       "why_he": "דמי השימוש של 15 ₪ בחודש מתקזזים מול עמלות הפעולות של אותו חודש: בכל חודש שיש בו קנייה, העמלה שלה יורדת מדמי השימוש, עד 15 ₪. האתר גובה את מלוא 15 ₪ כל חודש, ולכן המחיר בפועל זול יותר.",
-      "could_change_price": true
-    },
-    {
-      "what": "מרווח המרה 0.5% לעסקאות ששוויין עולה על 15,000 דולר ארה\"ב (נספח העמלות, עמ' 75, סעיף ד)",
-      "why": "The schema has one spread, so every conversion is priced at 0.7% (2026-11-08); a conversion over USD 15,000 is overstated by 0.2% of it.",
-      "why_he": "מרווח ההמרה הוא 0.7% בהמרה של פחות מ־15,000 דולר ו־0.5% מעל זה. האתר מחשב 0.7% בכל המרה, ולכן המרה גדולה זולה בפועל יותר.",
       "could_change_price": true
     },
     {

@@ -22,8 +22,8 @@ const quotedSource = z.strictObject({ url: z.string().min(1), title: z.string().
  * data-schema §3.6a item 3: one step of a conversion priced by its size, as the list prints it. `up_to` is the step's top in dollars (`usd`;
  * the last step `null`, everything above the one before). `on` says what the step prices: the conversion fee (`fee`) or the spread the line
  * records (`spread`). Exactly one price: `exempt` (nothing), `discount_pct` off the line's own price (unit `pct`; `minimum_included` where the
- * words take the minimum down too), `flat` (a sum in `usd`) or `rate` (the spread in that step, `pct_of_trade`). The line's `flat_up_to`, where it
- * has one, is the step the run prices (F-13), and the data check holds the two together.
+ * words take the minimum down too), `flat` (a sum in `usd`) or `rate` (the spread in that step, `pct_of_trade`). The run prices every step at the list
+ * level (F-13); the line's `flat_up_to`, where it has one, is its flat step, and the data check holds the two together.
  */
 export const sizeTier = z
   .strictObject({
@@ -117,7 +117,7 @@ export const feeLine = z.strictObject({
   max_per_source: source.extend({ ...place, quote: z.string().min(1).max(240), checked: isoDate }).optional(),
   /** data-schema §3.6a item 2: a second maximum on the whole deposit, printed beside a `max` on each security (unit `nis`, with its quote). */
   max_deposit: feeValue.optional(),
-  /** data-schema §3.6a item 3: a conversion priced by its size, step by step from the smallest (`fx` lines); no page reads the steps yet. */
+  /** data-schema §3.6a item 3: a conversion priced by its size, step by step from the smallest (`fx` lines); the run prices each step at the list level (F-13). */
   size_tiers: z.array(sizeTier).min(1).optional(),
   /**
    * data-schema §3.6a item 4: a fixed fee that the trade fees charged in the same month reduce, never below zero (`fixed_period` lines), with the

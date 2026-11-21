@@ -1,5 +1,5 @@
 // The account's cost lines on the index page: their colours, their order and their names, one for every bar and legend that draws them
-// (the lists, the receipt, the custom index's list). A fee type the page has no name or colour of its own for is drawn as
+// (the lists, the custom index's list, the own-account panel). A fee type the page has no name or colour of its own for is drawn as
 // "other", one part and one legend item, so no legend names the same thing twice and none is left without a name.
 import type { FeeLine } from "@finance-tool/engine";
 import { invest as c } from "../../copy";

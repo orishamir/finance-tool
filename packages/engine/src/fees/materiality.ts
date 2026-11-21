@@ -2,7 +2,7 @@
 // fee line removed, all other assumptions (A-01 to A-29) held fixed. Built on ranking's `withoutFees`.
 import type { ValueObject } from "@finance-tool/schema";
 import { RecordInputError, runPlanned, type RunPlan } from "../inputs.ts";
-import { discountEnd, feeCharged, revertRate, withFee, withHeldRate, type Commission, type Custody, type Discount } from "../formulas/fees.ts";
+import { conversionCharges, conversionRate, conversionWithRate, discountEnd, feeCharged, revertRate, withFee, withHeldRate, type Commission, type Custody, type Discount } from "../formulas/fees.ts";
 import { withoutFees } from "../compare/ranking.ts";
 import { MissingRuleError, ruleBook } from "../resolver.ts";
 import type { FeeType, RunContext, RunResult } from "../result.ts";
@@ -38,7 +38,7 @@ export function feeLines(plan: RunPlan): FeeLine[] {
       for (const t of chain) {
         if (configured(t.buy) || configured(t.sell)) has.add("trade");
         if (configured(t.custody)) has.add("custody");
-        if ((typeof t.fx === "number" ? positive(t.fx) : configured(t.fx)) || positive(t.fxSpread)) has.add("fx");
+        if (conversionCharges(t.fx) || conversionCharges(t.fxSpread)) has.add("fx");
         if (positive(t.monthlyFee)) has.add("fixed");
       }
       // F-102 is read from each stretch (F-101: a group exempt for a time); F-103 from the first tariff only, and the custodian's charge per
@@ -230,19 +230,20 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number, keepDiscount: bo
           // F-13 (D65): the spread is part of the conversion line; a rate set here is the whole conversion's, so the spread goes with the old price
           delete tariff.fxSpread;
           if (rate === 0) delete tariff.fx;
-          else if (typeof tariff.fx === "number") tariff.fx = rate;
-          else {
-            // a person's own rate replaces the line's rate and a price per unit of currency; a flat price for a small conversion stays, the rate
-            // pricing the conversions above its sum, so a lower rate never makes a small conversion dearer (F-13)
-            const { perCurrencyUnit: _, ...rest } = tariff.fx;
-            tariff.fx = { ...rest, rate };
-          }
+          // a person's own rate replaces the line's rate and a price per unit of currency; its bounds and its steps by size stay, the rate pricing
+          // what the steps leave to the line, so a lower rate never makes a small conversion dearer (F-13)
+          else tariff.fx = conversionWithRate(tariff.fx, rate);
           // F-13: a recurring plan's conversion moves with the regular rate, in proportion, as a standing-order price does; a plan that charges nothing stays at nothing
           if (input.tariff.fxStanding !== undefined) {
-            const old = typeof input.tariff.fx === "number" ? input.tariff.fx : input.tariff.fx!.rate;
+            const old = conversionRate(input.tariff.fx!);
             if (rate === 0 || !old) delete tariff.fxStanding;
-            else if (typeof input.tariff.fxStanding === "number") tariff.fxStanding = (input.tariff.fxStanding * rate) / old;
-            else tariff.fxStanding = { ...input.tariff.fxStanding, rate: (input.tariff.fxStanding.rate * rate) / old };
+            else {
+              // only the rate moves: the plan's own price per unit of currency, bounds and steps stay
+              const standing = input.tariff.fxStanding;
+              const next = (conversionRate(standing) * rate) / old;
+              const withRate = (c: number | Commission) => (typeof c === "number" ? next : { ...c, rate: next });
+              tariff.fxStanding = typeof standing === "object" && "steps" in standing ? { ...standing, line: withRate(standing.line) } : withRate(standing);
+            }
           }
           return { run: "runSecurities", input: { ...input, tariff } };
         case "fixed":

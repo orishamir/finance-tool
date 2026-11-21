@@ -22,8 +22,8 @@ describe("copy.ts's counting words", () => {
   });
 
   it("say a span of years with its own forms in each sentence", () => {
-    const p = invest.dealAccount.tiles;
-    expect([p.left(1), p.left(2), p.left(20)]).toEqual(["נשאר אחרי שנה אחת", "נשאר אחרי שנתיים", "נשאר אחרי 20 שנים"]);
+    const p = invest.ownAccount.panel;
+    expect([p.tileLeft(1), p.tileLeft(2), p.tileLeft(20)]).toEqual(["נשאר אחרי שנה אחת", "נשאר אחרי שנתיים", "נשאר אחרי 20 שנים"]);
     expect([invest.pair.colCharges(1), invest.pair.colCharges(2), invest.pair.colCharges(40)]).toEqual(["מה החשבון גובה בשנה אחת", "מה החשבון גובה בשנתיים", "מה החשבון גובה ב־40 שנים"]);
     expect(invest.dollar.stretchAbout(2)).toBe("השינוי הממוצע לשנה של הדולר מול השקל, על פני שנתיים רצופות");
     expect(invest.dollar.stretchAbout(5)).toBe("השינוי הממוצע לשנה של הדולר מול השקל, על פני 5 שנים רצופות");
@@ -31,4 +31,9 @@ describe("copy.ts's counting words", () => {
     expect([end(1), end(2), end(10)]).toEqual(["השנה", "השנתיים", "10 השנים"]);
   });
 
+  it("say how long a group's price holds in years where the months make whole years, else in months", () => {
+    const g = invest.ownAccount.panel.groupEnds;
+    expect([g(12), g(24), g(36), g(1), g(2), g(18)]).toEqual(["שנה אחת", "שנתיים", "3 שנים", "חודש אחד", "חודשיים", "18 חודשים"]);
+    expect(g(1001)).toBe("1,001 חודשים");
+  });
 });

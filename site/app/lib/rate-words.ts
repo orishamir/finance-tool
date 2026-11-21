@@ -87,9 +87,14 @@ function custodyParts(l: SnapLine): RatePart[] | null {
   return parts;
 }
 
-/** A conversion line: a share of the amount converted or agorot a dollar, its bounds, its flat price for a small conversion, and the spread the list limits. */
+/**
+ * A conversion line: a share of the amount converted or agorot a dollar, its bounds, its flat price for a small conversion, and the spread the list
+ * limits. A line priced by size in steps these words do not say (a free step, a share off, a spread by size; F-13) is not said: its flat step is
+ * its flat price, which they say.
+ */
 function fxParts(l: SnapLine): RatePart[] | null {
   if (!num(l.rate)) return null;
+  if ((l.size_tiers ?? []).some((t) => !t.flat)) return null;
   const per: RatePer | null | undefined = l.rate.unit === "pct_of_trade" ? "conversion" : l.rate.unit === "nis_per_usd" ? null : undefined;
   if (per === undefined) return null;
   const parts: RatePart[] = [{ kind: "rate", value: l.rate, per }];

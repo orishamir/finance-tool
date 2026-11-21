@@ -76,7 +76,11 @@ describe("what the browser gets of the price-list facts (data-schema §3.6, §3.
   const bundle = buildIndicesBundle();
   it("the indices bundle ships no line field the page does not read, and of the agreements only the site's named fund numbers", () => {
     const shipped = JSON.stringify(bundle.snapshots);
-    for (const key of ["size_tiers", "max_per", "max_per_source", "max_deposit", "offset", "collection", "distribution_agreements"]) expect(shipped, key).not.toContain(`"${key}"`);
+    for (const key of ["max_per", "max_per_source", "max_deposit", "offset", "collection", "distribution_agreements"]) expect(shipped, key).not.toContain(`"${key}"`);
+    // a conversion's steps by size are priced (F-13): shipped with their figures, without the figures' notes and quotes
+    const discount = bundle.snapshots.find((s) => s.id === "discount")!.lines.find((l) => l.id === "discount-fx-conversion-direct")!;
+    expect(discount.size_tiers!.map((t) => [t.up_to?.value, t.exempt ?? t.discount_pct?.value])).toEqual([[10, true], [100, 50]]);
+    expect(JSON.stringify(discount.size_tiers)).not.toContain('"notes"');
     const ff = bundle.snapshots.find((s) => s.id === "one-zero")!.fundByFund!;
     const site = new Set(bundle.funds.map((f) => f.identifiers.tase_number ?? f.id));
     expect(ff.named.length).toBeGreaterThan(0);

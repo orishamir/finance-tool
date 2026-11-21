@@ -21,9 +21,10 @@ export function loadFundLists(): FundListFile[] {
   return [...latest.values()];
 }
 
-/** The link the indices page gives: Maya's fund list (CAT-34) beside the funds without a record. */
+/** The links the indices page gives: TASE's fee calculator (BRK-37) on the own-account panel and Maya's fund list (CAT-34) beside the funds without a record. */
 export function workbenchLinks() {
   return {
+    tase: refLink("brokerage-account.md", "BRK-37", /market\.tase\.co\.il|trading_fees/),
     maya: refLink("tracks-catalogue-and-decoder.md", "CAT-34", /maya\.tase\.co\.il/),
   };
 }

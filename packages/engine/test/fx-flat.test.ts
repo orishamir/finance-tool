@@ -1,4 +1,4 @@
-// F-13: a flat price for a small conversion (`flat_up_to` on a conversion line), read as a trade line reads it (F-12), in the line's own
+// F-13: a flat price for a small conversion (`flat_up_to` on a conversion line), one step of a conversion priced by its size, in the line's own
 // currency. Expected figures worked by hand from the formulas (comments), with no return, fund cost or inflation; the dollar at 3.70 ₪.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
@@ -34,16 +34,17 @@ describe("the conversion's fee (F-13)", () => {
 });
 
 describe("the shekels a purchase in whole units converts (convertFor)", () => {
-  it("settles a flat price before the iteration, and crosses the sum to the line where the flat price no longer fits", () => {
+  it("solves the flat price's step first, and crosses the sum to the line where the flat price no longer fits", () => {
     // owed 350 ₪: c = 350 + 12.21 = 362.21 ≤ 366.30, the flat price
-    expect(convertFor(350, line, terms)).toBeCloseTo(362.21, 9);
+    expect(convertFor(350, line, terms).converted).toBeCloseTo(362.21, 9);
     // owed 360 ₪: 360 + 12.21 = 372.21 > 366.30, so the line: c = 360 + 21.09 = 381.09 (the minimum, 0.17% of 381 is 0.65 ₪)
-    expect(convertFor(360, line, terms)).toBeCloseTo(381.09, 9);
+    expect(convertFor(360, line, terms).converted).toBeCloseTo(381.09, 9);
+    expect(convertFor(360, line, terms).cost).toBeCloseTo(21.09, 9);
     // a spread beside it: c = (350 + 12.21) / (1 − 0.001) = 362.5726
-    expect(convertFor(350, line, terms, 0.001)).toBeCloseTo(362.21 / 0.999, 9);
-    // nothing owed converts nothing; a bare percentage is the old iteration, c = owed / (1 − r)
-    expect(convertFor(0, line, terms)).toBe(0);
-    expect(convertFor(995, 0.005, terms)).toBeCloseTo(1_000, 9);
+    expect(convertFor(350, line, terms, 0.001).converted).toBeCloseTo(362.21 / 0.999, 9);
+    // nothing owed converts nothing; a bare percentage is the plain iteration, c = owed / (1 − r)
+    expect(convertFor(0, line, terms).converted).toBe(0);
+    expect(convertFor(995, 0.005, terms).converted).toBeCloseTo(1_000, 9);
   });
 });
 
@@ -79,6 +80,10 @@ describe("a run with a flat price for a small conversion (F-13)", () => {
     const changed = withFeeRate(plan, "fx", 0.001);
     const fx = changed.run === "runSecurities" ? changed.input.tariff.fx : undefined;
     expect(fx).toEqual({ rate: 0.001, min: 5.7, max: 2_300, in: "instrument", flatUpTo: { amount: 3.3, upTo: 99 } });
+    // the same over the line as the price list reads it, a price by size with the flat price as its step: the step stays
+    const sized = { line: { rate: 0.0017, min: 5.7, max: 2_300, in: "instrument" as const }, steps: [{ upTo: 99, price: { kind: "flat" as const, amount: 3.3 } }], in: "instrument" as const };
+    const changedSized = withFeeRate({ run: "runSecurities", input: input({ goal: { amountNow: 0, monthly: 300, months: 12 }, tariff: { buy: { rate: 0 }, fx: sized, currency: { code: "USD", startRate: usd } } }) }, "fx", 0.001);
+    expect(changedSized.run === "runSecurities" ? changedSized.input.tariff.fx : undefined).toEqual({ ...sized, line: { ...sized.line, rate: 0.001 } });
     // 300 ₪ at 3.70: 12.21 ₪ at the list and 12.21 ₪ with the typed rate; without the flat price the 5.7 $ minimum would be 21.09 ₪
     expect(fxFee(fx, 300, terms)).toBeCloseTo(12.21, 9);
     expect(fxFee(line, 300, terms)).toBeCloseTo(12.21, 9);
@@ -112,7 +117,7 @@ describe("reading the line from a price record (F-13, F-63)", () => {
   it("keeps the flat price in dollars beside the line's dollar bounds, and names its sources", () => {
     const snap = withFlat(vo(3.3, "usd"), vo(99, "usd"));
     const built = buildTariff(wb(), { snapshot: snap, level: "list" }, snap);
-    expect(built.tariff.fx).toEqual({ rate: expect.closeTo(0.0017, 12), min: 5.7, max: 2_300, in: "instrument", flatUpTo: { amount: 3.3, upTo: 99 } });
+    expect(built.tariff.fx).toEqual({ line: { rate: expect.closeTo(0.0017, 12), min: 5.7, max: 2_300, in: "instrument" }, steps: [{ upTo: 99, price: { kind: "flat", amount: 3.3 } }], in: "instrument" });
     expect(built.linesUsed).toContain("hapoalim-fx-conversion-direct");
     // at an average level the line is a percentage with no bounds and no flat price (F-63)
     const avg = { ...snap, averages: [{ line_id: "hapoalim-fx-conversion-direct", level: "regulator_average", band: null, rate: vo(0.15, "pct_of_trade") }] };

@@ -1782,7 +1782,7 @@
               "BRK-16"
             ],
             "state": "sourced",
-            "notes": "Part 5, printed page 20, note 2.3: 'המרות בחשבון - עד 100$ - 3.0$' (2.1 and 2.2 price a conversion of cash); annex E prints the same 3.0$ in its clerk column. Note 8 exempts a conversion up to 10 dollars, which is not priced (left_out). Read in the library's copy (0d2d6203cebe2ca5), identical to the file fetched 2026-11-12."
+            "notes": "Part 5, printed page 20, note 2.3: 'המרות בחשבון - עד 100$ - 3.0$' (2.1 and 2.2 price a conversion of cash); annex E prints the same 3.0$ in its clerk column. Note 8 exempts a conversion up to 10 dollars, the line's first size step. Read in the library's copy (0d2d6203cebe2ca5), identical to the file fetched 2026-11-12."
           },
           "source": {
             "url": "https://www.bankmassad.co.il/media/u3le0ioe/חלק-5-מטבע-חוץ-46.pdf",
@@ -1815,7 +1815,7 @@
             "BRK-16"
           ],
           "state": "sourced",
-          "notes": "Part 5, printed page 20, note 2.3: 'המרות בחשבון - עד 100$ - 3.0$' (2.1 and 2.2 price a conversion of cash); annex E prints the same 3.0$ in its clerk column. Note 8 exempts a conversion up to 10 dollars, which is not priced (left_out). Read in the library's copy (0d2d6203cebe2ca5), identical to the file fetched 2026-11-12."
+          "notes": "Part 5, printed page 20, note 2.3: 'המרות בחשבון - עד 100$ - 3.0$' (2.1 and 2.2 price a conversion of cash); annex E prints the same 3.0$ in its clerk column. Note 8 exempts a conversion up to 10 dollars, the line's first size step. Read in the library's copy (0d2d6203cebe2ca5), identical to the file fetched 2026-11-12."
         },
         "up_to": {
           "value": 100,
@@ -2150,8 +2150,8 @@
     },
     {
       "what": "עמלת חליפין: 'עסקות המרה/רכישת מט\"ח עד לגובה (שווה ערך) 10$ - פטורות מעמלה' (חלק 5, הערה 8)",
-      "why": "Part 5 (library 0d2d6203cebe2ca5, file p.1, printed p.20) note 8: a conversion up to $10 is exempt. The flat price up to $100 (1.0$ in the internet and the app, annex E printed p.53; 3.0$ at a clerk, part 5 note 2.3) is priced (`flat_up_to`, F-13); the free band below it is not a flat price, and the engine charges such a conversion the flat price. Only a monthly purchase of 10 dollars or less (about 32 NIS at the rate of 2026-11-11) is that small. Not priced.",
-      "why_he": "האתר לא מחשב את הפטור מעמלה על המרה של עד 10 דולר. למי שמפקיד כל חודש עד 10 דולר, ההמרה בפועל זולה מהמחיר שמוצג.",
+      "why": "Part 5 (library 0d2d6203cebe2ca5, file p.1, printed p.20) note 8: a conversion up to $10 is exempt. The record reads the note on the clerk's line, as its first size step (`size_tiers`, F-13), priced. The direct line holds annex E's price for the internet and the app, 1.0$ up to $100, with no free step, so there a conversion of $10 or less is priced at 1.0$. Only a monthly purchase of 10 dollars or less (about 32 NIS at the rate of 2026-11-11) is that small. Not priced in the direct channel.",
+      "why_he": "האתר מחשב את הפטור מעמלה על המרה של עד 10 דולר בסניף. באינטרנט ובאפליקציה האתר מחשב גם על המרה כזו 1.0 דולר, המחיר שהתעריפון כותב שם להמרה של עד 100 דולר. אם הפטור חל גם שם, למי שמפקיד כל חודש עד 10 דולר ההמרה בפועל זולה מהמחיר שמוצג.",
       "could_change_price": true
     },
     {

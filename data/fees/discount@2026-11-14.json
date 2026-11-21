@@ -1509,13 +1509,6 @@
       "why": "Israeli custody 0.06%-0.37% a year by portfolio size, foreign 0.08%-0.28% (library 875d6fab311736f2). A fact, not a price (D56); kept in the custody line's notes, not in `averages`.",
       "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.06% עד 0.37% בשנה בארץ, לפי גודל התיק, פחות מ־0.80% שבמחירון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
       "could_change_price": true
-    },
-    {
-      "what": "עמלת חליפין בעסקאות קטנות: 'בעסקאות מט\"ח שסכומן עד 10$ - פטור. עד 100$ - 50% הנחה, לרבות על המינימום' (חלק 5, הערה (*))",
-      "page": 18,
-      "why": "Part 5 footnote (*), p.18, attached to 5.1.1 (p.17). A discount by the size of the conversion (50% off the line, the minimum included, up to $100) and a free band (up to $10) are not a flat price (`flat_up_to`, F-13), which is all the engine holds for a small conversion; approximating them would be pricing by analogy. So a conversion of $100 or less is priced at the full direct minimum of $6, about $3 above what the footnote charges, and one of $10 or less is not free. Not priced.",
-      "why_he": "האתר לא מחשב את ההנחה של 50% על המרה של עד 100 דולר, גם על המינימום, ולא את הפטור על המרה של עד 10 דולר. למי שמפקיד כל חודש עד 100 דולר, ההמרה בפועל זולה בכ־3 דולר מהמחיר שמוצג, ועד 10 דולר היא בלי עמלה.",
-      "could_change_price": true
     }
   ],
   "groups": {

@@ -8,7 +8,10 @@ export interface Commission {
   max?: number;
   /** Whether min, max and the per-share fee are in NIS (default) or in the instrument's currency. */
   in?: "nis" | "instrument";
-  /** A flat price for an order up to a sum (BRK-54); a larger order pays the rest of the line. Both in NIS, or the instrument's currency under `in`. */
+  /**
+   * A flat price for an order up to a sum (BRK-54); a larger order pays the rest of the line. Both in NIS, or the instrument's currency under `in`.
+   * On a conversion it is the one-step form of a price by size (`SizedConversion`, `sizedOf`).
+   */
   flatUpTo?: { amount: number; upTo: number };
   /** A fee per share above a number of shares in one order (BRK-36). */
   perShareAbove?: { shares: number; perShare: number };
@@ -85,34 +88,11 @@ export function buyWithCash(cash: number, line: Commission | undefined, terms: T
 }
 
 /**
- * F-08 with F-12 and F-13 One order by amount: `fresh` shekels and `held`, money already in the fund's currency (a distribution's net, or
- * what an earlier order left), in shekels at the order's rate; converting the shekels costs `fx`. The shekels are converted only where
- * converting them leaves more than nothing, `fresh − fx > 0`; otherwise they wait unconverted and the held money buys alone. `buy` sizes the
- * trade a cash pays for with its charges (`buyWithCash`, which spends all of it, or a deal's trade fees, F-128). A trade of nothing places
- * no order (null): nothing is converted or charged, and the cash waits for the next order in the pocket it was in. What the cash does not
- * spend (`left`, a deal's charge that jumps past it) waits in the fund's currency, converted already, as F-109's two pockets keep it.
- */
-export function orderByAmount<B extends { trade: number; commission: number; left?: number }>(fresh: number, held: number, fx: number, buy: (cash: number) => B): { converts: boolean; fx: number; bought: B; leftNis: number; leftHeld: number } | null {
-  const converts = fresh - fx > 0;
-  const bought = buy((converts ? fresh - fx : 0) + held);
-  if (!(bought.trade > 0)) return null;
-  return { converts, fx: converts ? fx : 0, bought, leftNis: converts ? 0 : fresh, leftHeld: bought.left ?? 0 };
-}
-
-/**
- * F-09 A charge paid out of `amount`: `min(amount, charge)`, never more than all of it and nothing out of nothing. A sale's commission
- * (`saleCommission`) and its conversion (`saleConversion`) are paid so, and a deal's (F-128), each fee's part in proportion.
- */
-export function paidOutOf(amount: number, charge: number): number {
-  return Math.min(Math.max(0, amount), charge);
-}
-
-/**
  * F-09 The commission on a sale of `gross`, paid out of the proceeds: `min(G, fee_trade(G))`. It takes at most the proceeds, so a sale at or
  * below the line's minimum (or its flat price) leaves nothing, never less, before the exit tax, which sale costs do not lower (G-20).
  */
 export function saleCommission(line: Commission | undefined, gross: number, terms: TradeTerms): number {
-  return paidOutOf(gross, tradeCommission(line, gross, terms));
+  return Math.min(Math.max(0, gross), tradeCommission(line, gross, terms));
 }
 
 /**
@@ -125,50 +105,194 @@ export function navBought(trade: number, halfSpread: number): number {
 }
 
 /**
- * F-13 FX conversion fee on one conversion of `amount` NIS. A bare number is the percentage with no bounds;
- * a `Commission` carries the tariff's minimum and maximum too, set in the instrument's currency (`in: "instrument"`),
- * so they are converted at the rate of the trade: `max(min × X, min(pct × amount, max × X))`.
+ * F-13 One step of a conversion priced by its size: what a conversion of more than the step before's top and at most `upTo` pays (the first
+ * step from nothing). `upTo` is in the steps' currency (`SizedConversion.in`); a step with no top is `Infinity`.
  */
-export function fxFee(line: number | Commission | undefined, amount: number, terms: TradeTerms = { fxRate: 1 }): number {
-  if (line === undefined) return 0;
-  if (typeof line === "number") return line * amount;
-  return tradeCommission(line, amount, terms);
+export interface SizeStep {
+  upTo: number;
+  price:
+    /** nothing */
+    | { kind: "exempt" }
+    /** a sum on each conversion, in the steps' currency: a flat price for a small conversion */
+    | { kind: "flat"; amount: number }
+    /** the line's price with the share `off` taken off its rate and its price per unit of currency, and off its minimum where `onMin` (F-116's reading) */
+    | { kind: "discount"; off: number; onMin: boolean }
+    /** the line with `rate` in place of its own rate: a spread that changes with the conversion's size */
+    | { kind: "rate"; rate: number };
 }
 
 /**
- * F-09 with F-13 The conversion of a sale's proceeds, `amount` NIS, paid out of them: `min(amount, fee_fx(amount) + s × amount)`, with `s` the
- * spread. It takes at most what it converts, as the commission takes at most the proceeds (`saleCommission`), so a sale never leaves less
- * than nothing before the exit tax.
+ * F-13 A conversion priced by its size, a fee or a spread alike: a conversion of `amount` shekels pays the price of the first step whose top is at
+ * or above it, the top in the instrument's currency at the rate of the conversion (`in: "instrument"`) or in shekels (`in: "nis"`); above every
+ * top it pays `line`, a bare percentage or a line with bounds. Measured on the same `amount` the line's rate is charged on.
  */
-export function saleConversion(line: number | Commission | undefined, amount: number, terms: TradeTerms, spread = 0): number {
+export interface SizedConversion {
+  line: number | Commission;
+  steps: SizeStep[];
+  in: "nis" | "instrument";
+}
+
+/** F-13 A conversion's price: a bare percentage, a line with bounds (`Commission`), or a price by the conversion's size. */
+export type ConversionPrice = number | Commission | SizedConversion;
+
+const isSized = (p: ConversionPrice): p is SizedConversion => typeof p === "object" && "steps" in p;
+
+/**
+ * F-13 A conversion's price as steps by its size. A line's flat price for a small conversion (`flatUpTo`, F-12's shape) is its one step, in the
+ * line's own currency; a price with neither has no step.
+ */
+export function sizedOf(p: ConversionPrice): SizedConversion {
+  if (isSized(p)) return p;
+  if (typeof p === "object" && p.flatUpTo) {
+    const { flatUpTo, ...line } = p;
+    return { line, steps: [{ upTo: flatUpTo.upTo, price: { kind: "flat", amount: flatUpTo.amount } }], in: p.in ?? "nis" };
+  }
+  return { line: p, steps: [], in: "nis" };
+}
+
+/**
+ * F-13 with F-116 A conversion line with a share `off` taken off its price: its rate and its price per unit of currency, and its minimum where the
+ * list says the discount is on the minimum too (`onMin`). The maximum stays, as F-116 reads the list's words.
+ */
+export function lineDiscounted(line: number | Commission, off: number, onMin: boolean): number | Commission {
+  const keep = 1 - off;
+  if (typeof line === "number") return line * keep;
+  return { ...line, rate: line.rate * keep, ...(line.perCurrencyUnit !== undefined ? { perCurrencyUnit: line.perCurrencyUnit * keep } : {}), ...(onMin && line.min !== undefined ? { min: line.min * keep } : {}) };
+}
+
+/** F-13: the step a conversion of `amount` shekels falls in, or undefined above every top (the line). */
+function stepAt(s: SizedConversion, amount: number, terms: TradeTerms): SizeStep | undefined {
+  const k = s.in === "instrument" ? terms.fxRate : 1;
+  return s.steps.find((step) => amount <= step.upTo * k);
+}
+
+/** F-13: the fee a step charges on an amount of shekels (the line's own price where `step` is undefined). */
+function stepFee(s: SizedConversion, step: SizeStep | undefined, terms: TradeTerms): (amount: number) => number {
+  const line = (l: number | Commission) => (a: number) => (typeof l === "number" ? l * a : tradeCommission(l, a, terms));
+  if (!step) return line(s.line);
+  const p = step.price;
+  switch (p.kind) {
+    case "exempt":
+      return () => 0;
+    case "flat": {
+      const sum = p.amount * (s.in === "instrument" ? terms.fxRate : 1);
+      return () => sum;
+    }
+    case "discount":
+      return line(lineDiscounted(s.line, p.off, p.onMin));
+    case "rate":
+      return line(typeof s.line === "number" ? p.rate : { ...s.line, rate: p.rate });
+  }
+}
+
+/** F-13 A conversion's price with its line's rate set to `rate` (a rate the person sets, F-101; F-61's rate): a price per unit of currency goes, the bounds and the steps by size stay. */
+export function conversionWithRate(p: ConversionPrice, rate: number): ConversionPrice {
+  if (typeof p === "number") return rate;
+  if (isSized(p)) return { ...p, line: typeof p.line === "number" ? rate : withoutPerUnit(p.line, rate) };
+  return withoutPerUnit(p, rate);
+}
+const withoutPerUnit = (c: Commission, rate: number): Commission => {
+  const { perCurrencyUnit: _, ...rest } = c;
+  return { ...rest, rate };
+};
+
+/** F-13 The rate of a conversion's line, above every step. */
+export function conversionRate(p: ConversionPrice): number {
+  return typeof p === "number" ? p : isSized(p) ? conversionRate(p.line) : p.rate;
+}
+
+/** F-61 Whether a conversion's price charges anything on some conversion: its line, or a step that charges a sum or a rate. */
+export function conversionCharges(p: ConversionPrice | undefined): boolean {
+  if (p === undefined) return false;
+  if (typeof p === "number") return p > 0;
+  if (isSized(p)) return conversionCharges(p.line) || p.steps.some((s) => (s.price.kind === "flat" && s.price.amount > 0) || (s.price.kind === "rate" && s.price.rate > 0));
+  return p.rate > 0 || (p.min ?? 0) > 0 || (p.perCurrencyUnit ?? 0) > 0 || (p.flatUpTo?.amount ?? 0) > 0;
+}
+
+/**
+ * F-13 FX conversion fee on one conversion of `amount` NIS. A bare number is the percentage with no bounds; a `Commission` carries the tariff's
+ * minimum and maximum too, set in the instrument's currency (`in: "instrument"`), so they are converted at the rate of the trade:
+ * `max(min × X, min(pct × amount, max × X))`; a price by size charges the step the amount falls in (`SizedConversion`).
+ */
+export function fxFee(price: ConversionPrice | undefined, amount: number, terms: TradeTerms = { fxRate: 1 }): number {
+  if (price === undefined || !(amount > 0)) return 0;
+  if (typeof price === "number") return price * amount;
+  const s = sizedOf(price);
+  return stepFee(s, stepAt(s, amount, terms), terms)(amount);
+}
+
+/** F-13: what one conversion of `amount` NIS costs, its fee and its spread, each priced by its own steps. */
+export function conversionCost(fee: ConversionPrice | undefined, amount: number, terms: TradeTerms, spread: ConversionPrice = 0): number {
+  return fxFee(fee, amount, terms) + fxFee(spread, amount, terms);
+}
+
+/**
+ * F-09 with F-13 The conversion of a sale's proceeds, `amount` NIS, paid out of them: `min(amount, fee_fx(amount) + spread(amount))`. It takes at
+ * most what it converts, as the commission takes at most the proceeds (`saleCommission`), so a sale never leaves less than nothing before the
+ * exit tax.
+ */
+export function saleConversion(fee: ConversionPrice | undefined, amount: number, terms: TradeTerms, spread: ConversionPrice = 0): number {
   if (!(amount > 0)) return 0;
-  return paidOutOf(amount, fxFee(line, amount, terms) + spread * amount);
+  return Math.min(amount, conversionCost(fee, amount, terms, spread));
+}
+
+/** F-13: the tops, in shekels at the rate of the conversion, where the fee's or the spread's price changes, ascending; Infinity is none. */
+function stepTops(prices: (ConversionPrice | undefined)[], terms: TradeTerms): number[] {
+  const tops = new Set<number>();
+  for (const p of prices) {
+    if (p === undefined || typeof p === "number") continue;
+    const s = sizedOf(p);
+    const k = s.in === "instrument" ? terms.fxRate : 1;
+    for (const step of s.steps) if (Number.isFinite(step.upTo)) tops.add(step.upTo * k);
+  }
+  return [...tops].sort((a, b) => a - b);
 }
 
 /**
- * F-13 on a purchase in whole units (F-109): the shekels `c` whose conversion leaves `owed` once its fee and the spread `s` are paid,
- * `c = owed + fee_fx(c) + s × c`; the fee is on `c`, the amount converted, as F-08 charges it on a contribution. Solved by fixed-point
- * iteration, as `buyWithCash` solves F-12. A flat price for a conversion up to a sum (`flatUpTo`) jumps at the sum, which the iteration
- * cannot cross: where `(owed + flat) / (1 − s)` is at or under the sum the conversion pays the flat price, and a larger one leaves the flat
- * price out and pays the line (the data check holds every recorded flat price below its line's minimum, so the line is dearer past the sum).
+ * F-13 on a purchase in whole units (F-109): the shekels `c` whose conversion leaves `owed` once its fee and spread are paid,
+ * `c = owed + fee_fx(c) + spread(c)`; the fee is on `c`, the amount converted, as F-08 charges it on a contribution. A price by size jumps at each
+ * step's top, which a fixed-point iteration cannot cross, so the equation is solved step by step from the smallest: between two tops the price
+ * is one step's (continuous, rising by less than the amount does), so the iteration finds its one solution, taken where it falls inside those tops.
+ * The first such solution is the fewest shekels. Where a step's top leaves less than `owed` and the next step, cheaper, leaves more just above it
+ * (a spread that falls with the size), no conversion leaves exactly `owed`: the shekels are those just over the top, priced in the cheaper step,
+ * and what they leave beyond `owed` is `extra`, kept in the fund's currency.
  */
-export function convertFor(owed: number, line: number | Commission | undefined, terms: TradeTerms, spread = 0): number {
-  if (!(owed > 0)) return 0;
-  let l = line;
-  if (typeof l === "object" && l.flatUpTo) {
-    const k = l.in === "instrument" ? terms.fxRate : 1;
-    const c = (owed + l.flatUpTo.amount * k) / (1 - spread);
-    if (c <= l.flatUpTo.upTo * k) return c;
-    const { flatUpTo: _, ...rest } = l;
-    l = rest;
+export function convertFor(owed: number, fee: ConversionPrice | undefined, terms: TradeTerms, spread: ConversionPrice = 0): { converted: number; cost: number; extra: number } {
+  if (!(owed > 0)) return { converted: 0, cost: 0, extra: 0 };
+  const parts = [fee, spread].filter((p): p is ConversionPrice => p !== undefined).map((p) => (typeof p === "number" ? null : sizedOf(p)));
+  const bare = [fee, spread].filter((p): p is number => typeof p === "number").reduce((a, b) => a + b, 0);
+  let lo = 0;
+  for (const hi of [...stepTops([fee, spread], terms), Infinity]) {
+    // the price between `lo` and `hi`: each part's step at an amount inside that stretch
+    const inside = Number.isFinite(hi) ? hi : lo + 1;
+    const fees = parts.flatMap((s) => (s ? [stepFee(s, stepAt(s, inside, terms), terms)] : []));
+    const cost = (c: number) => bare * c + fees.reduce((sum, f) => sum + f(c), 0);
+    let c = owed;
+    for (let i = 0; i < 100; i++) {
+      const next = owed + cost(c);
+      if (Math.abs(next - c) < 1e-10) break;
+      c = next;
+    }
+    if (c <= hi) {
+      if (c > lo) return { converted: c, cost: c - owed, extra: 0 };
+      const paid = cost(lo);
+      return { converted: lo, cost: paid, extra: Math.max(0, lo - paid - owed) };
+    }
+    lo = hi;
   }
-  let c = owed;
-  for (let i = 0; i < 100; i++) {
-    const next = owed + fxFee(l, c, terms) + spread * c;
-    if (Math.abs(next - c) < 1e-10) break;
-    c = next;
-  }
-  return c;
+  // the last stretch has no top, so the loop always returns
+  throw new RangeError("F-13: no conversion leaves the amount owed");
+}
+
+/**
+ * F-109 with F-13 The most a conversion of at most `cash` shekels leaves once its fee and spread are paid, `max over c ≤ cash of c − cost(c)`.
+ * Between two tops what a conversion leaves rises with it, so the most is at a top below `cash` or at `cash` itself. It is the true highest the
+ * start of F-109's search for whole units counts on, a step that charges less (nothing, a flat price, a share off) included.
+ */
+export function convertedAtMost(cash: number, fee: ConversionPrice | undefined, terms: TradeTerms, spread: ConversionPrice = 0): number {
+  if (!(cash > 0)) return 0;
+  const at = [...stepTops([fee, spread], terms).filter((t) => t < cash), cash];
+  return Math.max(...at.map((c) => c - conversionCost(fee, c, terms, spread)));
 }
 
 /** A custody fee per period (F-14), on the holdings it applies to. */

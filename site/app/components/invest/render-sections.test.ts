@@ -92,7 +92,7 @@ describe("the index page's sections render", () => {
     const planted = { ...bundle, snapshots: bundle.snapshots.map((s) => (s === ii ? { ...s, availability: [...s.availability!, { ...no, applies_to: ["foreign_securities"] }] } : s)) } as typeof bundle;
     const v = buildInvest({ bundle: planted, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
     const out = html(createElement(NoFundAccountColumn, { view: v, bundle: planted, years: 20, chosen: null, onPick: () => undefined }));
-    const missing = v.houses.filter((h) => !h.generic && !h.provider.id.startsWith("house-account-group"));
+    const missing = v.houses.filter((h) => !h.generic && !h.provider.id.startsWith("custom-broker-group"));
     expect(missing.map((h) => h.provider.id)).toEqual(["one-zero", "interactive-israel"]);
     const from = out.indexOf('data-pick-key="interactive-israel"');
     const next = out.indexOf("data-pick-key=", from + 1);
@@ -187,8 +187,8 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
       const pk = pickOfHeadline(v);
       if (!pk) continue;
       const o = lists(v, bundle, plan, pk);
-      const none = v.providers.filter((p) => !p.id.startsWith("house-account-group") && !allFunds(v).some((f) => "valueN" in (f.byHouse[p.id] ?? {})));
-      const some = v.providers.filter((p) => !p.id.startsWith("house-account-group") && !none.includes(p));
+      const none = v.providers.filter((p) => !p.id.startsWith("custom-broker-group") && !allFunds(v).some((f) => "valueN" in (f.byHouse[p.id] ?? {})));
+      const some = v.providers.filter((p) => !p.id.startsWith("custom-broker-group") && !none.includes(p));
       for (const p of none) {
         expect(fundRow(o, p.id), `${idx.id} ${p.id}`).toMatch(/לא ברור אם אפשר שם|התעריפון עוד לא נאסף|לא אפשרי שם|אין מחיר/);
         expect(fundRow(o, p.id), `${idx.id} ${p.id}`).not.toContain("אין נתון");

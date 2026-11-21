@@ -484,9 +484,10 @@ interface FlatLineLike {
 const currencyOfUnit = (unit: string | undefined) => (unit && /^usd/.test(unit) ? "usd" : unit && /^nis/.test(unit) ? "nis" : unit);
 
 /**
- * F-12, F-13: a flat price for an order or a conversion up to a sum is below the line's minimum, in the same currency. The engine settles the
- * flat price before it iterates (`buyWithCash`, `convertFor`) and counts on the line being dearer just past the sum; a flat price at or above
- * the minimum would make an order just past the sum cheaper than one under it, which no recorded price list prints.
+ * F-12, F-13: a flat price for an order or a conversion up to a sum is below the line's minimum, in the same currency. On a trade the engine
+ * settles the flat price before it iterates (`buyWithCash`) and counts on the line being dearer just past the sum; on a conversion it solves each
+ * step by size on its own (`convertFor`). A flat price at or above the minimum would make an order or a conversion just past the sum cheaper than
+ * one under it, which no recorded price list prints.
  */
 export function checkFlatPrices(snap: { lines: FlatLineLike[] }): string[] {
   const out: string[] = [];
@@ -499,7 +500,7 @@ export function checkFlatPrices(snap: { lines: FlatLineLike[] }): string[] {
       continue;
     }
     if (currencyOfUnit(f.amount.unit) !== currencyOfUnit(f.up_to.unit)) out.push(`${name}: flat_up_to's amount and up_to are in different currencies`);
-    // a conversion line's flat price is settled before the iteration, which counts on a numeric minimum above it (`convertFor`)
+    // a conversion line's flat price is held against its numeric minimum, which every recorded one prints
     const min = l.min;
     if (!min || typeof min.value !== "number") {
       if (l.base === "fx") out.push(`${name}: a flat price on a conversion line needs the line's numeric minimum`);

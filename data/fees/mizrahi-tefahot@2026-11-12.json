@@ -1341,7 +1341,7 @@
               "BRK-16"
             ],
             "state": "sourced",
-            "notes": "Part 5 note (6), p.14: 'רכישה/מכירה בסכומים קטנים: עד $10.00 - פטור, עד $50.00 - $3.00'; annex E, p.48, prints the same 3.00 $ in its clerk column. The free band up to 10 dollars is not priced (left_out). Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
+            "notes": "Part 5 note (6), p.14: 'רכישה/מכירה בסכומים קטנים: עד $10.00 - פטור, עד $50.00 - $3.00'; annex E, p.48, prints the same 3.00 $ in its clerk column. The free band up to 10 dollars is the line's first size step. Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
           },
           "source": {
             "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
@@ -1374,7 +1374,7 @@
             "BRK-16"
           ],
           "state": "sourced",
-          "notes": "Part 5 note (6), p.14: 'רכישה/מכירה בסכומים קטנים: עד $10.00 - פטור, עד $50.00 - $3.00'; annex E, p.48, prints the same 3.00 $ in its clerk column. The free band up to 10 dollars is not priced (left_out). Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
+          "notes": "Part 5 note (6), p.14: 'רכישה/מכירה בסכומים קטנים: עד $10.00 - פטור, עד $50.00 - $3.00'; annex E, p.48, prints the same 3.00 $ in its clerk column. The free band up to 10 dollars is the line's first size step. Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
         },
         "up_to": {
           "value": 50,
@@ -1591,7 +1591,7 @@
               "BRK-19"
             ],
             "state": "sourced",
-            "notes": "Annex E, p.48, the internet service: 'רכישה/מכירה בסכום עד 50 $: 2.85 $' (clerk 3.00 $); above 50 dollars the line's 0.133%, minimum 5.40 $. Part 5 note (6), p.14, also exempts a conversion up to 10 dollars, which is not priced (left_out). Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
+            "notes": "Annex E, p.48, the internet service: 'רכישה/מכירה בסכום עד 50 $: 2.85 $' (clerk 3.00 $); above 50 dollars the line's 0.133%, minimum 5.40 $. Part 5 note (6), p.14, also exempts a conversion up to 10 dollars, the line's first size step. Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
           },
           "source": {
             "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
@@ -1625,7 +1625,7 @@
             "BRK-19"
           ],
           "state": "sourced",
-          "notes": "Annex E, p.48, the internet service: 'רכישה/מכירה בסכום עד 50 $: 2.85 $' (clerk 3.00 $); above 50 dollars the line's 0.133%, minimum 5.40 $. Part 5 note (6), p.14, also exempts a conversion up to 10 dollars, which is not priced (left_out). Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
+          "notes": "Annex E, p.48, the internet service: 'רכישה/מכירה בסכום עד 50 $: 2.85 $' (clerk 3.00 $); above 50 dollars the line's 0.133%, minimum 5.40 $. Part 5 note (6), p.14, also exempts a conversion up to 10 dollars, the line's first size step. Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
         },
         "up_to": {
           "value": 50,
@@ -1796,13 +1796,6 @@
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.08%-0.44% לשנה, זרים 0.11%-0.43%; קנייה ומכירה של מניות ואג\"ח 0.13%-0.32%, ני\"ע זרים 0.12%-0.34%",
       "why": "What customers paid on average by portfolio size (the exchange's sheet, '01/01/26 - 30/06/26'; the bank's own page brokerage/amalot): a sourced fact, not a price. The list price is 0.70% a year in Israel.",
       "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.08% עד 0.44% בשנה בארץ, לפי גודל התיק, פחות מ־0.70% שבמחירון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
-      "could_change_price": true
-    },
-    {
-      "what": "חליפין - ממטבע לש\"ח/מש\"ח למטבע: 'רכישה/מכירה בסכומים קטנים: עד $10.00 - פטור' (חלק 5, הערה (6))",
-      "page": 14,
-      "why": "Part 5 note (6), p.14: a conversion up to $10 is exempt. The flat price up to $50 (2.85 $ in the internet service, annex E p.48; 3.00 $ at a clerk) is priced (`flat_up_to`, F-13); the free band below it is not a flat price, and the engine charges such a conversion the flat price. Only a monthly purchase of 10 dollars or less (about 32 NIS at the rate of 2026-11-11) is that small. Not priced.",
-      "why_he": "האתר לא מחשב את הפטור מעמלה על המרה של עד 10 דולר. למי שמפקיד כל חודש עד 10 דולר, ההמרה בפועל זולה מהמחיר שמוצג.",
       "could_change_price": true
     }
   ],
