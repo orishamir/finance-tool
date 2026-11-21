@@ -15,8 +15,17 @@ import { dealOnFunds, dealRunOf, type DealOnPlan, type IndexRef, type InvestView
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import type { FeesData } from "../../lib/fee-page-data";
 import type { ColumnAverage, HouseAverages } from "../../lib/house-averages";
-import { hasCases, newDeal, NAME_MAX, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import { dealStore, without } from "../../lib/fee-deal/store";
+import { hasCases, newDeal, NAME_MAX, pickKey, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
+import { feeOf } from "../../lib/fee-deal/cases";
+import { slimParts } from "../../lib/fee-deal/case-words";
+import type { PartWords } from "../../lib/fee-deal/part-words";
+import type { DealRead } from "../../lib/fee-deal/deal-read";
+import { amountWords, formatValue } from "../../lib/format";
+import type { SiteValue } from "../../lib/value";
+import { Num, ProvenanceProvider, useProvenanceData, type ProvenanceData } from "../provenance";
+import { recordsById } from "../../lib/scope";
+import { dealStore, rememberOpen, without } from "../../lib/fee-deal/store";
+import { DEAL_PATH } from "../../lib/site-paths";
 import { dealFromTemplate, houseName, matching, rowTitle, templateOf, templateOptions } from "../../lib/fee-deal/templates";
 import { updateFee } from "../../lib/fee-deal/edits/deal";
 import { addBlankCase } from "../../lib/fee-deal/edits/case";
@@ -25,13 +34,14 @@ import { feeNameOf } from "../../lib/fee-deal/part-words";
 import { dealProviderId, planContextOf, withDeals } from "../../lib/deal-account/bundle";
 import { ACCOUNT_KIND, BANK_ACCOUNT, dealHouseId, feesOnPlan, PLAN_KEYS, planRead, whatOfRun, type FeeOnPlan, type Missing, type PlanContext } from "../../lib/deal-account/plan";
 import { dealTiles, listFunds } from "../../lib/deal-account/tiles";
+import { dealBasis, type DealBasis } from "../../lib/deal-account/basis";
 import { Sheet } from "../Sheet";
 import { allFunds, repick, type Pick } from "./pair";
 import { MQ, useMedia } from "../../lib/hooks";
 import { useDealEditor, type DealEditor } from "../fee-deal/editor";
 import { whenText } from "../fee-deal/open-case";
 import { leavesText } from "../fee-deal/picker";
-import { Button, Card, GroupHead, HouseAverageLine, ListRow, ReadForBand, RowList, SearchField, StatRow, StatTile, Tag, TextField, TextLink, cx, type FeeHeadSlot } from "../kit";
+import { Button, Card, GroupHead, HouseAverageLine, KeyValueList, ListRow, ReadForBand, RowList, SearchField, StatRow, StatTile, Tag, TextField, TextLink, cx, When, type FeeHeadSlot, type KeyValueItem } from "../kit";
 
 const w = root.dealAccount;
 
@@ -55,6 +65,10 @@ interface DealAccountsApi {
   deleted: DeletedDeal | null;
   /** The deal's fee that has no case for buying abroad on this page (E), where the deal account `providerId` lacks one; null otherwise. */
   abroadLacks: (providerId: string) => Missing | null;
+  /** Where a saved deal came from and what was changed from it (`dealBasis`), for the pair card; null for a deal filled from none. */
+  basisOf: (providerId: string) => DealBasis | null;
+  /** A deal fee as the ticket writes it under its line, read for the plan on fund `fundId` (A, F): its price as the deal has it, and its pick. */
+  feeWords: (providerId: string, fundId: string, feeId: string) => ReactNode;
 }
 const DealAccountsCtx = createContext<DealAccountsApi | null>(null);
 export const useDealAccounts = () => useContext(DealAccountsCtx);
@@ -119,10 +133,35 @@ export function DealAccountsHost({ data, onWant, saved, writable, today, world, 
         const gap = abroadGap(deal, world, planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? null));
         return gap ? { why: "case", fee: gap.fee, kind: "trade" } : null;
       },
+      basisOf: (id) => {
+        const deal = saved.find((d) => dealProviderId(d.id) === id);
+        return deal && data ? dealBasis(deal, data.houses) : null;
+      },
+      feeWords: (id, fundId, feeId) => {
+        const deal = saved.find((d) => dealProviderId(d.id) === id);
+        if (!deal || !data || !world) return null;
+        const run = dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId });
+        if (!run) return null;
+        return <DealFeeWords read={planRead(deal, run, planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? null))} feeId={feeId} />;
+      },
     }),
     [saved, deleted, data, world],
   );
   const close = () => setTarget(null);
+  // the editor's rule and term sheets read the fee page's data (its rules, the records they point at, its terms) over the page's own
+  const page = useProvenanceData();
+  const provenance = useMemo<ProvenanceData | null>(
+    () =>
+      page && data
+        ? {
+            ...page,
+            rules: { ...page.rules, ...Object.fromEntries(data.rules.map((r) => [r.id, r])) },
+            ...(page.pointed || data.pointed ? { pointed: { ...page.pointed, ...recordsById(data.pointed) } } : {}),
+            terms: { ...page.terms, ...data.terms },
+          }
+        : null,
+    [page, data],
+  );
   // a new deal from a house's list, made once per opening
   const fromHouse = useMemo(() => (target && "house" in target && target.house && data ? houseDeal(`house:${target.house}`, data, today) : null), [target, data, today]);
   const first = !target || !data ? null : "dealId" in target ? (saved.find((d) => d.id === target.dealId) ?? null) : (fromHouse ?? started);
@@ -132,6 +171,7 @@ export function DealAccountsHost({ data, onWant, saved, writable, today, world, 
       <Sheet open={isOpen} onClose={close} pc="center" height={100} labelledBy={headId} className="sheet-deal">
         {target && data && world ? (
           first ? (
+            <ProvenanceProvider data={provenance ?? EMPTY_PROVENANCE}>
             <DealPopup
               key={first.id}
               data={data}
@@ -147,6 +187,7 @@ export function DealAccountsHost({ data, onWant, saved, writable, today, world, 
                 close();
               }}
             />
+            </ProvenanceProvider>
           ) : (
             <DealStart data={data} today={today} headId={headId} onStart={(id) => setStarted(id ? houseDeal(id, data, today) : newDeal(ACCOUNT_KIND))} />
           )
@@ -159,6 +200,9 @@ export function DealAccountsHost({ data, onWant, saved, writable, today, world, 
     </DealAccountsCtx.Provider>
   );
 }
+
+/** What the popup reads before both the page's data and the fee page's are in (never on a page: its shell gives the one, the popup waits for the other). */
+const EMPTY_PROVENANCE: ProvenanceData = { rules: {}, terms: {}, dimensions: {}, today: "" };
 
 /** A new deal filled from a house's latest price list (`house:<id>`, or one of its ways to buy), named "<house>, בתנאים שלי"; a fresh deal where none fills. */
 function houseDeal(id: string, data: FeesData, today: string): FeeDeal {
@@ -249,7 +293,8 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   // something, as its row's "להשלים" says
   useEffect(() => {
     const lacks = openFee ?? (at?.kind === "fail" && "missing" in at.reason ? at.reason.missing?.fee : undefined);
-    if (!lacks) return;
+    // else it opens with no fee open, its toolbox's column the fees it can still take and "מתעריפון אחר" (B)
+    if (!lacks) return ed.doc.setChosen(null);
     ed.doc.setChosen(lacks);
     ed.doc.setFocus({ fee: lacks, on: "card" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -330,7 +375,7 @@ function feeHeadOf(x: FeeOnPlan, cost: number | null, bank: string | null): FeeH
     end: (
       <span className="inline-flex items-baseline gap-1.5 text-sm text-muted-foreground">
         {w.onPlan}
-        {cost !== null && <strong className="text-base font-bold text-foreground tabular-nums">{fmt.nisWhole(-Math.round(cost))}</strong>}
+        {cost !== null && <strong className="text-base font-bold text-foreground tabular-nums">{fmt.nisWhole(Math.round(cost) === 0 ? 0 : -Math.round(cost))}</strong>}
       </span>
     ),
   };
@@ -485,6 +530,91 @@ export function AddDealButton() {
     </>
   );
 }
+
+/**
+ * The pair card's account half where the account is the person's deal (H): the price list it was filled from and that list's date, the fees
+ * changed from it, the day it was saved, and its two ways on: edit it here (the popup) and open it on /deal.
+ */
+export function DealCard({ id, house }: { id: string; house: (houseId: string) => string | null }) {
+  const api = useDealAccounts();
+  const deal = api?.dealOf(id);
+  if (!api || !deal) return null;
+  const basis = api.basisOf(id);
+  const items: KeyValueItem[] = [
+    ...(basis ? [{ id: "basis", label: w.card.basis, value: <>{w.card.basisValue(house(basis.house) ?? basis.name, basis.date !== null)}{basis.date && <When iso={basis.date} />}</> }] : []),
+    ...(basis && basis.changed.length ? [{ id: "changed", label: w.card.changed, value: basis.changed.map((x) => feeNameOf(x.kind, x.name)).join(", ") }] : []),
+    ...(deal.saved ? [{ id: "saved", label: w.card.saved, value: <When iso={deal.saved} /> }] : []),
+  ];
+  return (
+    <div className="flex flex-col gap-2">
+      {items.length > 0 && <KeyValueList items={items} />}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <Button variant="outline" onClick={() => api.open({ dealId: deal.id })}>
+          <Pencil size={16} aria-hidden />
+          {w.edit}
+        </Button>
+        {/* /deal opens on the deal last on screen: this one */}
+        <TextLink to={DEAL_PATH} look="line" onClick={() => rememberOpen(deal.id)}>
+          {w.head.openDeal} ↗
+        </TextLink>
+      </div>
+    </div>
+  );
+}
+
+/** A part's words, its figures in their number states (a figure typed in the entered ink, a figure from a price list sourced). */
+function PartSaid({ words: p }: { words: PartWords }) {
+  const fig = (v: SiteValue) => <Num value={v} display={amountWords(formatValue(v.value as number, v.unit))} />;
+  return (
+    <>
+      {p.lead}
+      {p.figure && fig(p.figure)}
+      {p.mid}
+      {p.second && fig(p.second)}
+      {p.tail}
+    </>
+  );
+}
+
+/**
+ * A deal fee as the ticket writes it (A, F): each price it holds in the case the plan reads, its parts joined, a later price after the month
+ * it starts ("0% עד 11.2027, אחר כך 0.03% לרבעון"), and the pick of what only the person knows that chose its case ("· לפי: עם משכורת בבנק").
+ */
+function DealFeeWords({ read, feeId }: { read: DealRead; feeId: string }) {
+  const fee = read.fees.find((f) => feeOf(f) === feeId);
+  if (!fee) return null;
+  const stages = fee.stages.map((stage) => slimParts(fee, { stages: [{ price: stage.price }] }, read).filter((x) => x.id !== "until" && x.words));
+  const deal = read.deal.fees.find((f) => f.id === feeId);
+  const own = deal && hasCases(deal) ? pickLine(read)?.things.filter((t) => !PLAN_KEYS.includes(t.by) && deal.by.some((b) => pickKey(b) === t.by)) : [];
+  const picked = (own ?? []).flatMap((t) => {
+    const o = t.options.find((x) => x.is === t.chosen);
+    return o ? [whenText(o.words)] : [];
+  });
+  return (
+    <>
+      {stages.map((parts, k) => (
+        <span key={k}>
+          {k > 0 && w.ticket.after}
+          {parts.map((x, j) => (
+            <span key={`${x.id}-${j}`}>
+              {j > 0 && ", "}
+              <PartSaid words={x.words} />
+            </span>
+          ))}
+          {fee.stages[k]!.until && k < stages.length - 1 && ` ${w.ticket.until(monthDots(fee.stages[k]!.until!))}`}
+        </span>
+      ))}
+      {picked.length > 0 && ` · ${w.ticket.by}${picked.join(", ")}`}
+    </>
+  );
+}
+
+/** The last month of a price that ends at the start of month `until` (`YYYY-MM`), as the ticket writes it, `MM.YYYY`, isolated so it never flips. */
+const monthDots = (until: string): string => {
+  const [y, m] = until.split("-").map(Number) as [number, number];
+  const last = m === 1 ? { y: y - 1, m: 12 } : { y, m: m - 1 };
+  return `\u2066${String(last.m).padStart(2, "0")}.${last.y}\u2069`;
+};
 
 /** Where a deal just deleted from the popup stood in the account list (G): its name, in /deal's words. */
 export function DeletedLine({ name }: { name: string }) {

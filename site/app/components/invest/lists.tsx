@@ -361,7 +361,7 @@ export function PairLists(props: ListsProps) {
   // the chosen account is the person's deal with no price for buying abroad (E): its funds bought abroad, read before tax at every other
   // account, fold into one line that says so and opens the deal on its buy-and-sell block
   const abroadLacks = isDealProviderId(pick.house) ? (dealApi?.abroadLacks(pick.house) ?? null) : null;
-  const abroadFolded = abroadLacks ? funds.filter((f) => f.option === "abroad" && f.beforeTax && !beforeTaxAt(f) && !priced(f.byHouse[pick.house])) : [];
+  const abroadFolded = abroadLacks ? funds.filter((f) => f.option === "abroad" && !beforeTaxAt(f) && !priced(f.byHouse[pick.house])) : [];
   const unpricedFunds = funds.filter((f) => !priced(f.byHouse[pick.house]) && !beforeTaxAt(f) && !abroadFolded.includes(f)).sort((a, b) => kindRank(a) - kindRank(b));
   const cur = view.index.exposure?.currency ?? "USD";
   const names = view.index.exposure?.other_currencies === true ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
@@ -524,7 +524,7 @@ export function PairLists(props: ListsProps) {
       ),
     };
   });
-  const beforeTaxRules = [...new Set([...beforeTaxFunds, ...abroadFolded].map((f) => f.beforeTax!.ruleId))];
+  const beforeTaxRules = [...new Set(beforeTaxFunds.map((f) => f.beforeTax!.ruleId))];
   const dealId = isDealProviderId(pick.house) ? dealIdOf(pick.house) : null;
   const abroadLine =
     abroadLacks && abroadFolded.length > 0 && dealId ? (
@@ -545,7 +545,7 @@ export function PairLists(props: ListsProps) {
       </div>
     ) : null;
   const beforeTaxList =
-    beforeTaxRows.length > 0 || abroadLine ? (
+    beforeTaxRows.length > 0 ? (
       <section className="flex flex-col gap-1.5">
         <h4 className="flex items-center gap-1.5 text-sm font-medium text-blocked-foreground">
           <IconLock size={14} />
@@ -565,8 +565,6 @@ export function PairLists(props: ListsProps) {
           ))}{" "}
           {c.beforeTax.noteTail}
         </p>
-        {abroadLine}
-        {beforeTaxRows.length > 0 && (
         <div className="nums-plain">
           <PickList
             look="line"
@@ -583,7 +581,6 @@ export function PairLists(props: ListsProps) {
             rows={beforeTaxRows}
           />
         </div>
-        )}
       </section>
     ) : null;
 
@@ -696,6 +693,7 @@ export function PairLists(props: ListsProps) {
   );
   const fundsFoot = (
     <div className="flex flex-col gap-3">
+      {abroadLine}
       {beforeTaxList}
       {greyRows.length > 0 && (
         <Disclosure label={c.lists.funds.unpriced(new Set(unpricedFunds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size)} open={unpricedOpen} onOpenChange={setUnpricedOpen} look="link" summaryClassName="text-sm">

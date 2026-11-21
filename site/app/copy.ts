@@ -4322,6 +4322,16 @@ export const invest = {
     readFor: "קוראים את העסקה בשביל",
     /** The pick bar on a phone, one line under the strip. */
     readForShort: "בשביל",
+    /** Under a deal fee's line on the ticket: a later price after the month the first ends, and the pick that chose its case (A, F). */
+    ticket: { until: (month: string) => `עד ${month}`, after: ", אחר כך ", by: "לפי: " },
+    /** The pair card's account half where the account is the deal (H). */
+    card: {
+      basis: "על בסיס",
+      /** The list's name, then its date (the kit's `When`) after "מ־" where it has one. */
+      basisValue: (house: string, dated: boolean) => `התעריפון של ${house}${dated ? " מ־" : ""}`,
+      changed: "שיניתם",
+      saved: "נשמרה",
+    },
     /** A fund bought abroad the deal has no case for (E): in the popup under the buy-and-sell cases, and folding the page's rows. */
     abroad: {
       lacks: (what: string) => `לקרנות שבחו״ל בעמוד הזה חסר מקרה: ${what}.`,

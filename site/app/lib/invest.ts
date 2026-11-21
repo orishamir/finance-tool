@@ -9,6 +9,7 @@ import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
 import { dealProviderOf, isDealProviderId } from "./deal-account/bundle";
 import { feeIdsOf, missingOf } from "./deal-account/plan";
+import { feeNameOf } from "./fee-deal/part-words";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput, isShekel, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
@@ -1463,6 +1464,11 @@ export interface PairCosts {
   left: SiteValue;
   /** The account's own lines over the horizon before the tax they save (F-91), real shekels; `interaction` is what no single line explains. */
   account: { line: FeeLine; cost: SiteValue }[];
+  /**
+   * F-128: an account priced by a deal, its lines as the deal's own fees, by the deal's fee id (`BANK_ACCOUNT` for the bank's current
+   * account the plan counts from the record), each what was paid on it carried as its line is; together they are `account`'s lines.
+   */
+  dealLines?: { fee: string; cost: SiteValue }[];
   interaction: number;
   /** `interaction` as a figure (F-91), so the account's fees add up figures that each open (`accountSum`). */
   remainder: SiteValue;
@@ -1556,9 +1562,23 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   // what no single line explains, without the waiting cash
   const interaction = parts.fees - row.byType.reduce((t, x) => t + x.costBeforeTax, 0);
   const paidInReal = paidInAsEntered(ctx.plan.amountNow, ctx.plan.monthly, ctx.plan.years);
+  // F-128: an account priced by a deal writes its lines as the deal's own fees, each what was paid on it carried as its line is (F-91)
+  const deal = ctx.bundle.deals?.byId[s.id];
+  const ids = row.account ? feeIdsOf(row.account.deal) : undefined;
+  const byDealFee = new Map<string, number>();
+  for (const x of row.byFee ?? []) {
+    const id = ids?.[x.fee];
+    if (id !== undefined) byDealFee.set(id, (byDealFee.get(id) ?? 0) + x.costBeforeTax);
+  }
+  const feeWords = (id: string) => {
+    const f = deal?.fees.find((x) => x.id === id);
+    return f ? feeNameOf(f.kind, f.name) : (copy.pair.lines.account ?? id);
+  };
+  const dealLines = deal && ids ? [...byDealFee].map(([fee, n]) => ({ fee, cost: at(n, "F-91", copy.pair.lineAbout(feeWords(fee))) })) : undefined;
   return {
     providerId: s.id,
     fundId: rec.id,
+    ...(dealLines ? { dealLines } : {}),
     // what was paid in, in today's money (F-106): the amount, the deposit and the years, and nothing else
     paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
     left: computed(row.real, "nis", "F-65", inputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
