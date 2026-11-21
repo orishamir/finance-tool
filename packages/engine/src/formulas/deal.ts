@@ -3,7 +3,6 @@
 // fractions (0.0025 is 0.25%), as in formulas/fees.ts; sums are in shekels unless a price names its bounds' currency.
 import type { FeeBase, FeeCap } from "@finance-tool/schema";
 import { custodyFee, fxFee, mostBought, stretchCuts, stretchesAt, tradeCommission, type Commission, type ConversionStretch, type TradeTerms } from "./fees.ts";
-import { assertNever } from "@finance-tool/schema";
 
 /** A calendar month; `m` is 1 to 12. */
 export interface CalendarMonth {
@@ -190,8 +189,6 @@ function mainFigure(p: DealPrice): { of: string; value: number } | null {
       return { of: `sum-per-action:${p.currency ?? "ILS"}`, value: p.amount };
     case "perUnit":
       return { of: `sum-per-unit:${p.currency ?? "ILS"}`, value: p.amount };
-    default:
-      return assertNever(p);
   }
 }
 
@@ -217,8 +214,6 @@ export function chargesNothing(p: DealPrice): boolean {
       return p.amount === 0;
     case "perAction":
       return (p.amount === 0 || p.cap === 0) && !thirdCharges(p.third);
-    default:
-      return assertNever(p);
   }
 }
 
@@ -877,8 +872,6 @@ export function priceParts(price: DealPrice, unitPrice?: number): PartStretch[] 
       return stretchesOf({ rate: price.rate, ...bounds(price) });
     case "held":
       return stretchesOf({ rate: price.rate, ...heldBounds(price) });
-    default:
-      return assertNever(price);
   }
 }
 
@@ -1248,11 +1241,7 @@ export function discounted(price: DealPrice, d: number, alsoMin: boolean): DealP
       return { ...price, amount: off(price.amount), ...(alsoMin && price.min !== undefined ? { min: off(price.min) } : {}) };
     case "perAction":
       return { ...price, amount: off(price.amount) };
-    case "free":
-    case "held":
-    case "sum":
-      return price;
     default:
-      return assertNever(price);
+      return price;
   }
 }

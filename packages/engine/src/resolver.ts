@@ -35,36 +35,22 @@ export class RecordInputError extends Error {}
  * a falling CPI: G-38).
  */
 export class BlockedError extends Error {
-  readonly ruleId: string;
-  readonly question?: string;
-  readonly gap?: string;
-  constructor(ruleId: string, question?: string, gap?: string) {
+  constructor(readonly ruleId: string, readonly question?: string, readonly gap?: string) {
     super(gap ? `${ruleId} has no reading for this case (method ${gap}); it does not compute (D10)` : `${ruleId}${question ? ` (${question})` : ""} is open in il-finance; it does not compute (D10)`);
-    this.ruleId = ruleId;
-    this.question = question;
-    this.gap = gap;
   }
 }
 
 /** method §13: a figure past its effective_to, or for another tax year, is "figure not updated". */
 export class FigureNotUpdatedError extends Error {
-  readonly ruleId: string;
-  readonly figure: string;
-  constructor(ruleId: string, figure: string) {
+  constructor(readonly ruleId: string, readonly figure: string) {
     super(`${ruleId} ${figure}: figure not updated for this run date`);
-    this.ruleId = ruleId;
-    this.figure = figure;
   }
 }
 
 /** The bundle has no such rule or figure: the rule is missing, and the engine stops rather than guess. */
 export class MissingRuleError extends Error {
-  readonly ruleId: string;
-  readonly figure?: string;
-  constructor(ruleId: string, figure?: string) {
+  constructor(readonly ruleId: string, readonly figure?: string) {
     super(`${ruleId}${figure ? ` ${figure}` : ""} is not in the rule bundle`);
-    this.ruleId = ruleId;
-    this.figure = figure;
   }
 }
 

@@ -7,7 +7,6 @@ import type { OptionId } from "../../lib/invest";
 import type { Reason } from "../../lib/invest";
 import type { NotComparable } from "../../lib/providers";
 import { Disclosure, LabelChip } from "../kit";
-import { assertNever } from "@finance-tool/schema";
 
 // ---------------------------------------------------------------- labels
 
@@ -112,7 +111,5 @@ export function reasonSentence(r: NotComparable, instrumentClass: string, channe
     case "deal-unpriced":
       // the deal's own reading says what it lacks, by its fee's name (lib/deal-account)
       return r.missing ? (c.dealAccount.missing[r.missing.why] ?? c.dealAccount.missing.price!)(feeNameOf(r.missing.kind, r.missing.name)) : c.dealAccount.missing.price!("");
-    default:
-      return assertNever(r);
   }
 }

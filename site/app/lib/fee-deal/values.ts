@@ -6,7 +6,6 @@ import { computed, entered, type SiteValue } from "../value";
 import type { Fee, Num, Price, Sourced, ThirdPrice } from "./model";
 import type { OnActionPrice } from "./offers/capabilities";
 import { capacity } from "./offers/capacity";
-import { assertNever } from "@finance-tool/schema";
 
 export type Unit = ValueObject["unit"];
 
@@ -205,8 +204,6 @@ export function priceFigures(fee: Pick<Fee, "kind">, p: Price, today: string): P
       return { ...of("amount", p.amount, periodSumUnit(p.every)), ...of("refund", p.refund, "nis") };
     case "perAction":
       return { ...of("amount", p.amount, perActionUnit(fee, p.currency)), ...opt("cap", p.cap, "pct_of_trade"), ...parts(p) };
-    default:
-      return assertNever(p);
   }
 }
 
