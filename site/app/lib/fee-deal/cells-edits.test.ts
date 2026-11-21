@@ -13,11 +13,11 @@ import { keepPicks, picksOf } from "./cases";
 import { feesData } from "../fees.server";
 import { layoutOf, valueKey, WHOLE, type FeeLayout } from "./layout";
 import { byRank, feePriced, NAME_MAX, readDeal, typed, untouched, type Case, type CasesFee, type Fee, type FeeDeal, type Price } from "./model";
+import { throughLink } from "./link-fixtures";
 
 const data = feesData();
 /** A fee whose case `c`'s minimum is typed again as `v` (what the box in a cell does to its first case). */
 const withFigureIn = (f: CasesFee, c: string, v: number) => editPrice(f, "buy", 0, (p) => withFigure(p, "min", v), c);
-import { decodeDeal, encodeDeal } from "./link";
 
 const action = (rate: number, min?: number): Price => ({ form: "action", rate: typed(rate), ...(min !== undefined ? { min: typed(min) } : {}) });
 const held = (rate: number): Price => ({ form: "held", rate: typed(rate), per: 12, every: 12 });
@@ -274,7 +274,7 @@ describe("how a fee's cases stand", () => {
     expect(l.shape === "grid" && l.rows.length).toBe(3);
   });
 
-  it("splits one case by a thing, every other case holding for any value of it", () => {
+  it("splits one case by a thing, every other case holding for any value of it", async () => {
     const f: CasesFee = { id: "f", kind: "trade", by: [{ kind: "what", values: [] }], cases: [
       { id: "ta", when: [["tase"]], stages: [{ price: action(0.1) }] },
       { id: "ab", when: [["us", "europe"]], stages: [{ price: action(0.2) }] },
@@ -287,19 +287,19 @@ describe("how a fee's cases stand", () => {
     expect(l.shape === "table" && l.columns.map((c) => c.sub ?? null)).toEqual([null, ["direct"], ["branch"]]);
     // read back from a link, the same
     const deal: FeeDeal = { id: "deal-x", name: "", kind: "brokerage-account", fees: [split] };
-    const back = decodeDeal(encodeDeal(deal))!;
+    const back = (await throughLink(deal))!;
     expect((back.fees[0] as CasesFee).cases.map((c) => c.when)).toEqual(split.cases.map((c) => c.when));
   });
 });
 
 describe("what a deal keeps of these", () => {
-  it("keeps a case's spans and the fees' ranks through a link and a read, the deal's own order kept", () => {
+  it("keeps a case's spans and the fees' ranks through a link and a read, the deal's own order kept", async () => {
     const f = shrink(fx(), ["d2"], WHOLE, 1) as CasesFee;
     const deal: FeeDeal = { id: "deal-x", name: "", kind: "brokerage-account", fees: [f, { id: "fee-c", kind: "custody", stages: [{ price: held(0.1) }] }] };
     const ordered = orderFees(deal, ["fee-c", "fee-fx"]);
     expect(ordered.fees.map((x) => x.kind)).toEqual(["fx", "custody"]);
     expect(byRank(ordered.fees).map((x) => x.kind)).toEqual(["custody", "fx"]);
-    const back = decodeDeal(encodeDeal(ordered))!;
+    const back = (await throughLink(ordered))!;
     expect(back.fees.map((x) => [x.kind, x.rank])).toEqual([["fx", 1], ["custody", 0]]);
     expect((back.fees[0] as CasesFee).cases.find((c) => c.when[1] === 2 && (c.when[0] as string[])[0] === "direct")!.spans).toEqual([{ row: WHOLE, along: 1, span: expect.any(String) }]);
     expect(orderFees(deal, ["fee-c"])).toBe(deal);
@@ -311,13 +311,13 @@ describe("what a deal keeps of these", () => {
     expect((read.fees[0] as CasesFee).cases[0]!.spans).toEqual([{ row: "*", along: 0, span: "s3" }]);
   });
 
-  it("keeps a deal whose grid was shrunk once a thing is taken away: the spans along it go, the later move down", () => {
+  it("keeps a deal whose grid was shrunk once a thing is taken away: the spans along it go, the later move down", async () => {
     const shrunk = shrink(shrink(fx(), ["d2"], WHOLE, 1), ["b1"], WHOLE, 0) as CasesFee;
     const gone = removeBy(shrunk, 0) as CasesFee;
     expect(gone.cases.flatMap((c) => c.spans ?? []).every((x) => x.along === 0)).toBe(true);
     const deal: FeeDeal = { id: "deal-x", name: "", kind: "brokerage-account", fees: [gone] };
     expect(readDeal(JSON.parse(JSON.stringify(deal)))).toEqual(deal);
-    expect((decodeDeal(encodeDeal(deal))!.fees[0] as CasesFee).cases.map((c) => c.spans)).toEqual(gone.cases.map((c) => c.spans));
+    expect(((await throughLink(deal))!.fees[0] as CasesFee).cases.map((c) => c.spans)).toEqual(gone.cases.map((c) => c.spans));
     expect(removeStep(shrunk, 1, 1)).toBeTruthy();
   });
 

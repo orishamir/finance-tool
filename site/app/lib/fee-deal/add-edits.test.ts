@@ -1,7 +1,7 @@
 // The edits the workbench's add slots make (method §10.6, F-114): a ladder's step added by its boundary alone, a boundary moved, a case put
 // in a grid's empty place, and a grid's new row or column of values.
 import { describe, expect, it } from "vitest";
-import { addCaseAt, addStep, addValues, addValuesAt, nameTaken, setTop } from "./edits/case";
+import { addCaseAt, addStep, addValuesAt, nameTaken, setTop } from "./edits/case";
 import { thingValues } from "./model";
 import { bandLayout } from "./band-layout";
 import type { CaseRow } from "./rows";
@@ -112,10 +112,10 @@ describe("a case put in a grid's empty place", () => {
 
 describe("a grid's new row or column", () => {
   it("keeps each new value with no case, after the thing's values, so every place of it is one no case holds", () => {
-    const f = addValues(grid(), 0, ["us", "europe"]) as CasesFee;
+    const f = addValuesAt(grid(), 0, ["us", "europe"]) as CasesFee;
     expect(f.cases).toEqual(grid().cases);
     expect(f.by[0]).toEqual({ kind: "what", values: ["tase", "makam", "us", "europe"] });
-    const col = addValues(grid(), 1, ["phone"]) as CasesFee;
+    const col = addValuesAt(grid(), 1, ["phone"]) as CasesFee;
     expect(col.cases).toEqual(grid().cases);
     expect(col.by[1]).toEqual({ kind: "channel", values: ["direct", "branch", "phone"] });
     // the grid draws the new row with a place no case holds under each column
@@ -127,11 +127,11 @@ describe("a grid's new row or column", () => {
   });
 
   it("leaves out a value the cases name already, and one the thing does not know", () => {
-    expect(addValues(grid(), 0, ["tase", "nowhere"])).toEqual(grid());
+    expect(addValuesAt(grid(), 0, ["tase", "nowhere"])).toEqual(grid());
   });
 
   it("names a value of the person's own with where it is bought and its currency", () => {
-    const f = addValues(grid(), 0, ["אג״ח בלונדון"], [{ name: "אג״ח בלונדון", place: "abroad", currency: "GBP" }]) as CasesFee;
+    const f = addValuesAt(grid(), 0, ["אג״ח בלונדון"], [{ name: "אג״ח בלונדון", place: "abroad", currency: "GBP" }]) as CasesFee;
     expect(f.by[0]).toEqual({ kind: "what", values: ["tase", "makam", "אג״ח בלונדון"], own: [{ name: "אג״ח בלונדון", place: "abroad", currency: "GBP" }] });
     expect(f.cases).toHaveLength(3);
   });
@@ -142,12 +142,11 @@ describe("a row or a column added between two", () => {
     const f = addValuesAt(grid(), 0, ["us", "europe"], [], valueKey(["makam"])) as CasesFee;
     expect(thingValues(f, 0)).toEqual(["tase", "us", "europe", "makam"]);
     expect(thingValues(f, 1)).toEqual(thingValues(grid(), 1));
-    // what is added is what addValues adds: values, no case
+    // values are added, no case
     expect(f.cases).toEqual(grid().cases);
   });
-  it("is addValues without a place, or where nothing was added", () => {
-    const whens = (f: unknown) => (f as CasesFee).cases.map((c) => c.when);
-    expect(whens(addValuesAt(grid(), 1, ["phone"]))).toEqual(whens(addValues(grid(), 1, ["phone"])));
+  it("stands them at the end without a place, and adds nothing where nothing is new", () => {
+    expect(thingValues(addValuesAt(grid(), 1, ["phone"]) as CasesFee, 1)).toEqual([...thingValues(grid(), 1), "phone"]);
     expect(addValuesAt(grid(), 0, ["tase"], [], valueKey(["tase"]))).toEqual(grid());
   });
 });
@@ -165,8 +164,8 @@ describe("a value the list has already is not added twice", () => {
   });
   it("adds none of the values the cases name, its spaces trimmed", () => {
     const f = channels();
-    expect(addValues(f, 0, ["branch", " internet "])).toBe(f);
-    expect(thingValues(addValues(f, 0, ["branch", "phone"]) as CasesFee, 0)).toEqual(["internet", "branch", "phone"]);
+    expect(addValuesAt(f, 0, ["branch", " internet "])).toBe(f);
+    expect(thingValues(addValuesAt(f, 0, ["branch", "phone"]) as CasesFee, 0)).toEqual(["internet", "branch", "phone"]);
   });
   it("refuses a name of the person's own that the list has by its id or its words, its spaces trimmed", () => {
     const known = ["branch", "בסניף", "internet", "באינטרנט"];

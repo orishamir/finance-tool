@@ -53,13 +53,6 @@ export const SOURCE_AGE_WARNING_MONTHS = 6;
 const rank: Record<string, number> = { primary: 0, institution: 1, secondary: 2 };
 const rankOf = (s: string) => rank[s] ?? 9;
 
-/** The strongest strength among the sources, or null for none. */
-export function strongestStrength(sources: readonly { strength: string }[]): SourceStrength | null {
-  let best: SourceStrength | null = null;
-  for (const s of sources) if (s.strength in rank && (best === null || rankOf(s.strength) < rankOf(best))) best = s.strength as SourceStrength;
-  return best;
-}
-
 type FigureValue = { source: { url: string; title: string; publisher: string; strength: string }; checked: string };
 
 function figureValues(figures: RuleRecord["figures"] | undefined): FigureValue[] {

@@ -1,6 +1,6 @@
 // The representative instrument: an entered fee replaces its fee in F-80; an open minimum-amount rule keeps an option from being ranked.
 import { describe, expect, it } from "vitest";
-import { applyProviders, evaluate, openConstraintOf, type RunGoal } from "./compare";
+import { evaluate, openConstraintOf, type RunGoal } from "./compare";
 import type { Reason } from "@finance-tool/engine";
 
 /** The open question a reason names ("GOV-OQ7"), or null. */
@@ -31,11 +31,6 @@ describe("entered fee for the representative instrument", () => {
     expect(free).toBeGreaterThan(rec);
     expect((free - kgl) / kgl).toBeGreaterThan(0.045);
     expect((free - kgl) / kgl).toBeLessThan(0.05);
-    // the entered fee reaches the ranking: on the site's pick of tariff the account leads at the fund's own fee and at IBI's old 1.115 %, and a 1.3 % fee puts the gemel first
-    const picked = (g: RunGoal) => evaluate(applyProviders(bundle, g), g).ranking.entries[0]!.id;
-    expect(picked(goal)).toBe("brokerage-account");
-    expect(picked({ ...goal, ownFees: { "brokerage-account": 1.115 } })).toBe("brokerage-account");
-    expect(picked({ ...goal, ownFees: { "brokerage-account": 1.3 } })).toBe("kupat-gemel-lehashkaa");
   });
 });
 

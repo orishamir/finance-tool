@@ -1,6 +1,6 @@
 // The broker the person chooses for the brokerage account: its tariff replaces the representative's in the run.
 import { describe, expect, it } from "vitest";
-import { applyOwnProviders, applyProviders, evaluate, type RunGoal } from "./compare";
+import { evaluate, type CompareBundle, type RunGoal } from "./compare";
 import { compareBundle } from "./compare.server";
 import { parseOwnRates, splitOwnTerms, termsOfGoal } from "./own-rate";
 import { readSideFile } from "./side-stores";
@@ -11,6 +11,16 @@ const BRK = "brokerage-account";
 const goal: RunGoal = { horizonYears: 20, amountNow: 40_000, monthly: 3_000, available: 0, anytime: false, returnPct: 7, inflationPct: 2.5, age: 29, employment: "employee", salary: 22_000, pensionEmployee: 6, pensionEmployer: 6.5, insurancePct: 0.3, preset: "none", fromPreset: { horizon: false, monthly: false, available: false } };
 const real = (b: typeof bundle, id: string, g: RunGoal = goal) => evaluate(b, g).candidates.find((c) => c.id === id)?.run?.real ?? NaN;
 const wrapper = bundle.wrappers.find((w) => w.id === BRK)!;
+/** The bundle with one wrapper priced on one of the providers it carries: its tariff, and the member's kind where the run reads it (F-14). */
+const onProvider = (b: CompareBundle, id: string, pid: string): CompareBundle => ({
+  ...b,
+  wrappers: b.wrappers.map((w) => {
+    const p = w.id === id ? w.providers?.[pid] : undefined;
+    if (!p || !w.terms) return w;
+    const memberKind = p.memberKind && (w.family === "makam" || w.family === "securities") ? { memberKind: p.memberKind } : {};
+    return { ...w, terms: { ...w.terms, tariff: structuredClone(p.tariff), ...memberKind } };
+  }),
+});
 
 describe("the providers the brokerage wrapper carries", () => {
   it("are the banks and brokers whose tariff has a line for the class of the fund the account holds, with their tariff lines and Hebrew names", () => {
@@ -33,25 +43,6 @@ describe("the providers the brokerage wrapper carries", () => {
   });
 });
 
-describe("applyOwnProviders", () => {
-  it("returns the same bundle when nothing is chosen or the id is unknown", () => {
-    expect(applyOwnProviders(bundle, {})).toBe(bundle);
-    expect(applyOwnProviders(bundle, { ownProviders: { [BRK]: "no-such-broker" } })).toBe(bundle);
-    expect(applyOwnProviders(bundle, { ownProviders: { "bank-deposit": "psagot" } })).toBe(bundle);
-  });
-  it("puts the provider's sourced tariff lines in place and says it was chosen", () => {
-    const b = applyOwnProviders(bundle, { ownProviders: { [BRK]: "psagot" } });
-    const w = b.wrappers.find((x) => x.id === BRK)!;
-    expect(w.terms!.tariff!.buy!.rate).toBeCloseTo(0.0007, 8);
-    expect(w.terms!.fund).toEqual(wrapper.terms!.fund); // the fund and its costs stay
-    expect(w.feeValues.tradeRate).toMatchObject({ value: 0.07, state: "sourced" });
-    expect(w.feeValues.tradeRate!.source.url).toContain("psagot");
-    expect(w.representative).toMatchObject({ providerId: "psagot", chosen: true });
-    expect(w.representative!.provider).toContain("פסגות");
-    expect(wrapper.terms!.tariff!.buy!.rate).not.toBeCloseTo(0.0007, 8); // the original bundle is untouched
-  });
-});
-
 describe("the 20-year case on the cheapest collected broker", () => {
   // IBI on its account agreement's fee annex (D56, now): no custody fee, 0.08% a trade, at least 5 NIS for a tracking fund, and
   // 15 NIS a month charged in full (the offset against the month's trading fees is not modelled)
@@ -59,7 +50,7 @@ describe("the 20-year case on the cheapest collected broker", () => {
   it("lands above the kupat gemel on the best broker, and so does the unpicked default (Leumi, its monthly purchases on the regular line: its standing-order line is set aside, D41) once Harel's discount ends, and the figures are these", () => {
     const kgl = real(bundle, "kupat-gemel-lehashkaa");
     const dflt = real(bundle, BRK);
-    const chosen = applyOwnProviders(bundle, { ownProviders: { [BRK]: best } });
+    const chosen = onProvider(bundle, BRK, best);
     const cheapest = real(chosen, BRK, { ...goal, ownProviders: { [BRK]: best } });
     expect(wrapper.terms!.tariff!.buy!.rate).toBeCloseTo(0.004, 8); // Leumi's direct channel, not the branch line's 0.65 %
     expect(wrapper.representative?.channel).toBe("direct");
@@ -94,52 +85,5 @@ describe("the choice in the own-terms store", () => {
     expect(problems).toEqual([]);
     expect(side!.ownRates.g1![BRK]).toEqual({ provider: "psagot" });
     expect(readSideFile({ offers: [], variantAssumptions: {}, playbookTicks: {} }).side!.ownRates).toEqual({});
-  });
-});
-
-describe("the site's pick of the brokerage tariff (F-80, 2026-10-24, Doron's case)", () => {
-  // 67,000 for eight years at 7 %, nothing monthly, no profile: the reader's goal on which the comparison crowned the gemel over an account priced at Leumi's list tariff
-  const doron: RunGoal = { horizonYears: 8, amountNow: 67_000, monthly: 0, available: 0, anytime: false, returnPct: 7, inflationPct: null, age: null, employment: null, salary: null, pensionEmployee: null, pensionEmployer: null, insurancePct: null, preset: "none", fromPreset: { horizon: false, monthly: false, available: false } };
-  it("prices the account on the collected tariff that leaves the goal the most, named as the site's pick", () => {
-    const b = applyProviders(bundle, doron);
-    const w = b.wrappers.find((x) => x.id === BRK)!;
-    expect(w.representative).toMatchObject({ providerId: "psagot", pickedBy: "site", compared: Object.keys(wrapper.providers!).length });
-    expect(w.representative!.chosen).toBeUndefined();
-    expect(w.feeValues.custodyRate).toMatchObject({ state: "sourced" });
-    expect(real(b, BRK, doron)).toBeGreaterThan(real(bundle, BRK, doron) + 3_000);
-    expect(Math.round(real(b, BRK, doron))).toBe(89_357);
-  });
-  it("never picks a provider whose tariff has no line for the fund's class: Interactive Brokers has no tracking-fund line and is not a candidate", () => {
-    expect(Object.keys(wrapper.providers!)).not.toContain("interactive-brokers");
-    for (const g of [doron, { ...doron, monthly: 1_200 }, goal, { ...goal, horizonYears: 3 }]) {
-      const id = applyProviders(bundle, g).wrappers.find((x) => x.id === BRK)!.representative!.providerId!;
-      expect(Object.keys(wrapper.providers!)).toContain(id);
-    }
-  });
-  it("puts the securities account further ahead of the gemel for that goal than Leumi's list tariff did", () => {
-    const before = evaluate(bundle, doron).ranking;
-    const after = evaluate(applyProviders(bundle, doron), doron).ranking;
-    // one deposit and none after it: Harel's 0.7% holds for six months and 1.05% is charged from month 7, the cautious reading of
-    // PF OQ18 (D87, guidelines/research.md step 6), so the gemel ends at 84,619 and Leumi's account (85,507) is already
-    // ahead by more than the tie threshold.
-    expect(before.tieSet).toEqual([BRK]);
-    expect(before.entries[0]!.id).toBe(BRK);
-    expect(before.entries[1]!.id).toBe("kupat-gemel-lehashkaa");
-    expect(Math.round(real(bundle, "kupat-gemel-lehashkaa", doron))).toBe(84_619);
-    expect(Math.round(real(bundle, BRK, doron))).toBe(85_507);
-    expect(after.tieSet).toEqual([BRK]);
-    expect(after.entries[0]!.id).toBe(BRK);
-    expect(after.entries[1]!.id).toBe("kupat-gemel-lehashkaa");
-    const b = applyProviders(bundle, doron);
-    expect(real(b, BRK, doron) - real(b, "kupat-gemel-lehashkaa", doron)).toBeGreaterThan(3_000);
-  });
-  it("keeps the person's own choice, and P-05's tariff when the run cannot be made", () => {
-    const own = applyProviders(bundle, { ...doron, ownProviders: { [BRK]: "ibi" } });
-    const w = own.wrappers.find((x) => x.id === BRK)!;
-    expect(w.representative).toMatchObject({ providerId: "ibi", chosen: true });
-    expect(w.representative!.pickedBy).toBeUndefined();
-    // the account's entry is P-05's (makam and the bond, securities held in the account since D6, need no return and are picked)
-    const noReturn = applyProviders(bundle, { ...doron, returnPct: null });
-    expect(noReturn.wrappers.find((x) => x.id === BRK)).toBe(bundle.wrappers.find((x) => x.id === BRK));
   });
 });

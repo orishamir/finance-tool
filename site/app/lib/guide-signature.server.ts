@@ -22,10 +22,6 @@ type Builder = (c: SignatureCtx) => SignatureData;
 /** The wrapper ids that have a visual built here. A page with an id not in this map keeps its timeline open (guide.tsx). */
 export const builders: Record<string, Builder> = {};
 
-export function hasSignature(id: string): boolean {
-  return id in builders;
-}
-
 /** The signature data of a page, or null when the wrapper has no visual. Throws never for missing data: a gap is recorded instead. */
 export function buildSignatureData(id: string, own: Bundle | null): SignatureData | null {
   const build = builders[id];

@@ -5,7 +5,7 @@ import { buildGuidePage, depositSheetNames } from "./guide.server";
 import type { DepositTerms } from "@finance-tool/schema";
 import { runTimeline } from "./engine";
 import { guideSignature } from "../copy";
-import { accountAxis, accountFact, bankYearlyMax, bondModel, brokenCondition, breakKindOf, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer, type SignatureData } from "./guide-signature";
+import { accountAxis, accountFact, bankYearlyMax, bondModel, brokenCondition, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer, type SignatureData } from "./guide-signature";
 
 const page = (id: string) => buildGuidePage(id)!;
 const cashRate = (id: string) => ((page(id).bundle!.p05 as unknown as { inputs: { cash_rate: { value: number } } }).inputs.cash_rate.value);
@@ -233,8 +233,9 @@ describe("bank deposit", () => {
       "mizrahi-tefahot-pomelit-kvua-shana-131",
       "yahav-pikadon-leshana-kavua-from-1000",
     ]);
-    expect(breakKindOf(d.depositBanks!.find((b) => b.bank === "hapoalim")!.exit)).toBe("not-allowed");
-    expect(breakKindOf(d.depositBanks!.find((b) => b.bank === "discount")!.exit)).toBe("other");
+    // the fact `break` holds `not_allowed`, `none` or the bank's penalty kind
+    expect(d.depositBanks!.find((b) => b.bank === "hapoalim")!.exit?.value).toBe("not_allowed");
+    expect(d.depositBanks!.find((b) => b.bank === "discount")!.exit?.value).not.toMatch(/^(not_allowed|none)$/);
   });
   it("counts breaking over the banks, and its sheet has one line for each deposit counted (F-104)", () => {
     const b = page("bank-deposit").breakTerms!;

@@ -155,15 +155,7 @@ function dealOfText(text: string): Unpacked {
   return r && !(r.left.length > 0 && r.deal.fees.length === 0) ? r : failed("broken");
 }
 
-/** A deal as the `d` of a link in the query, as the site wrote links before they moved to the fragment: its text, base64url. */
-export const encodeDeal = (deal: FeeDeal): string => bytesToBase64Url(new TextEncoder().encode(dealText(deal)));
-
-/** A deal from the `d` of a link in the query (`encodeDeal`); null where `d` is not a deal the site wrote. */
-export function decodeDeal(d: string): FeeDeal | null {
-  const r = decodedDeal(d);
-  return "deal" in r ? r.deal : null;
-}
-
+/** A deal from the `d` of a link in the query: its text, base64url, uncompressed; or why it is not a deal the site wrote. */
 function decodedDeal(d: string): Unpacked {
   if (d.length === 0) return failed("empty");
   if (d.length > QUERY_MAX || !/^[A-Za-z0-9_-]+$/.test(d)) return failed("broken");

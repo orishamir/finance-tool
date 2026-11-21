@@ -1,7 +1,7 @@
 // D6: makam and a government bond are securities held in the securities account, so the account's choice of
 // provider (F-80) prices them too, on the lines for their own class, with the member's kind deciding custody on makam (F-14).
 import { describe, expect, it } from "vitest";
-import { applyOwnProviders, applyProviders, evaluate, type RunGoal } from "./compare";
+import { evaluate, type CompareBundle, type RunGoal } from "./compare";
 import { isTie } from "@finance-tool/engine";
 import { compareBundle } from "./compare.server";
 import { loadParameters, loadProducts, loadRules, today } from "./data.server";
@@ -12,10 +12,20 @@ const bundle = compareBundle();
 // a year of idle cash: 100,000 now, nothing monthly, the makam yield entered as the cash rate the guides use
 const goal: RunGoal = { horizonYears: 2, amountNow: 100_000, monthly: 0, available: 0, anytime: true, returnPct: null, inflationPct: 2.5, age: 35, employment: "employee", salary: 15_000, pensionEmployee: 6, pensionEmployer: 6.5, insurancePct: 0.3, preset: "none", fromPreset: { horizon: false, monthly: false, available: false } };
 const entry = (id: string) => bundle.wrappers.find((w) => w.id === id)!;
+/** The bundle with one wrapper priced on one of the providers it carries: its tariff, and the member's kind where the run reads it (F-14). */
+const onProvider = (b: CompareBundle, id: string, pid: string): CompareBundle => ({
+  ...b,
+  wrappers: b.wrappers.map((w) => {
+    const p = w.id === id ? w.providers?.[pid] : undefined;
+    if (!p || !w.terms) return w;
+    const memberKind = p.memberKind && (w.family === "makam" || w.family === "securities") ? { memberKind: p.memberKind } : {};
+    return { ...w, terms: { ...w.terms, tariff: structuredClone(p.tariff), ...memberKind } };
+  }),
+});
 /** The wrapper run once on each provider it carries, best first by the real value. */
 const providerRuns = (g: RunGoal, id: string) =>
   Object.keys(entry(id).providers ?? {})
-    .map((pid) => ({ id: pid, real: evaluate(applyOwnProviders(bundle, { ownProviders: { [id]: pid } }), g, { only: new Set([id]) }).candidates.find((c) => c.id === id)!.run!.real }))
+    .map((pid) => ({ id: pid, real: evaluate(onProvider(bundle, id, pid), g, { only: new Set([id]) }).candidates.find((c) => c.id === id)!.run!.real }))
     .sort((x, y) => y.real - x.real);
 
 describe("makam is priced like the account that holds it", () => {
@@ -31,20 +41,13 @@ describe("makam is priced like the account that holds it", () => {
     }
   });
   it("a bank's run charges no custody (BRK-17); a broker's charges its custody and monthly lines", () => {
-    const run = (provider: string) => evaluate(applyOwnProviders(bundle, { ownProviders: { makam: provider } }), goal).candidates.find((c) => c.id === "makam")?.run;
+    const run = (provider: string) => evaluate(onProvider(bundle, "makam", provider), goal).candidates.find((c) => c.id === "makam")?.run;
     const leumi = run("leumi")!;
     const altshuler = run("altshuler-trade")!;
     expect(leumi.fees.custody).toBe(0);
     expect(altshuler.fees.custody).toBeGreaterThan(0);
     expect(altshuler.fees.fixed).toBeGreaterThan(0); // its 80 NIS a month account fee is the account's, on whatever it holds
     expect(altshuler.real).toBeLessThan(leumi.real);
-  });
-  it("the site picks the provider that leaves the goal the most, and says so", () => {
-    const picked = applyProviders(bundle, goal).wrappers.find((w) => w.id === "makam")!;
-    expect(picked.representative).toMatchObject({ pickedBy: "site", compared: Object.keys(makam.providers!).length });
-    const rows = providerRuns(goal, "makam");
-    expect(picked.representative!.providerId).toBe(rows[0]!.id);
-    for (let i = 1; i < rows.length; i++) expect(rows[i - 1]!.real).toBeGreaterThanOrEqual(rows[i]!.real);
   });
 });
 

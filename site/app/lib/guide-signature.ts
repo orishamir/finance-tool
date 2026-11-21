@@ -208,20 +208,6 @@ export function accountAxis(values: number[]): { lo: number; hi: number } {
   return { lo: Math.max(0, min - pad), hi: max + pad };
 }
 
-// ---------------------------------------------------------------- bank deposit
-
-export type BreakKind = "not-allowed" | "free" | "other";
-
-/**
- * What the deposit record says about breaking it, as the fact `break` holds it (value `not_allowed`, `none` or the penalty kind):
- * `not-allowed` and `free` are computable; anything else is the bank's words and "עוד לא חושב" (the engine does not model a break, G-16).
- */
-export function breakKindOf(v: SiteValue | undefined): BreakKind {
-  if (!v) return "other";
-  if (v.value === "not_allowed") return "not-allowed";
-  return v.value === "none" ? "free" : "other";
-}
-
 // ---------------------------------------------------------------- savings plan
 
 export interface PlanRow {

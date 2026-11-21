@@ -124,5 +124,3 @@ export function useOwnRates(goalId: string): [Record<string, number>, (wrapperId
   const [terms, set] = useOwnTerms(goalId);
   return [splitOwnTerms(terms).ownRates, (w, pct) => set(w, "rate", pct)];
 }
-
-export const ownRatesStore = store;
