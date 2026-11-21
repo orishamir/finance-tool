@@ -11,7 +11,7 @@ import { feeLines, withoutFeeLine, type FeeLine } from "../fees/materiality.ts";
 import type { Commission, Custody } from "../formulas/fees.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { beforeTaxPathOf, checkTariffPeriods, memberKindOf, runSecurities, runSecuritiesBeforeTax, type BeforeTaxRun, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
+import { beforeTaxPathOf, checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, runSecuritiesBeforeTax, type BeforeTaxRun, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
 import type { DealAccount } from "../ledgers/deal-account.ts";
 import { stoppedOnGap, stoppedOnQuestion } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
@@ -936,7 +936,7 @@ function prepareDeal(input: WorkbenchInput, runFund: Fund, d: DealProvider): Rea
   const own = input.currency?.code;
   const missing = dealCurrencies(account).find((c) => c !== "ILS" && c !== own && !(input.fx?.[c] !== undefined && input.fx[c]! > 0));
   if (missing) return notComparable({ code: "needs-fx-rate", detail: `the deal ${d.id} has a sum in ${missing}, and the run has no rate for it` });
-  if (dealPerUnit(account) && !runFund.sharePrice) return notComparable({ code: "needs-share-price", detail: `the deal ${d.id} prices a trade per unit, and the fund has no unit price` });
+  if (dealPerUnit(account) && !hasUnitPrice(runFund, own ?? null)) return notComparable({ code: "needs-share-price", detail: `the deal ${d.id} prices a trade per unit or counts a month's trading in units, and the fund's price per unit is missing` });
   const tariff: SecuritiesInput["tariff"] = input.currency ? { currency: input.currency } : {};
   const built: TariffBuild = { tariff, linesUsed: [], lineSources: [], noLine: [], notModelled: [], averagesApplied: 0, strengths: [], flags: [], standingAside: [] };
   const rates = Object.fromEntries(Object.entries(input.fx ?? {}).filter(([c]) => c !== own));
@@ -1105,9 +1105,11 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       // sooner, and each order pays its own minimum), so removing a line can leave less and the line would read below zero. A line is instead
       // what was paid on it, each payment carried to the horizon at the fund's total return from the month it was paid, in today's shekels;
       // the same figure before and after tax, the tax and what whole units do left to the remainder, so the whole is unchanged.
-      // F-128: a deal account's lines are what each was paid, carried the same way: a run without a deal's line has no meaning apart from its fees
+      // F-128: a deal account's lines are what each was paid, carried the same way: a run without a deal's line has no meaning apart from its
+      // fees. Its lines are the ones its fees were charged on (`byFee` splits the same carry by the deal's own fees)
       const carried = units || deal ? run.feesCarried : undefined;
       if (carried) {
+        if (deal) lines.push(...providerLines.filter((l) => carried[l] !== 0 && !lines.includes(l)));
         const index = run.series.find((pt) => pt.month === run.exitMonth)?.index ?? 1;
         // before tax only: an after-tax line taken from a pre-tax carry would mix the two
         const byType = lines.map((line) => ({ line, cost: null, costBeforeTax: carried[line] / index })).sort((a, b) => b.costBeforeTax - a.costBeforeTax);

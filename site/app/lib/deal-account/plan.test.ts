@@ -29,7 +29,7 @@ const ctx = { kinds: data.kinds, today: t, currentAccounts: { own: null } };
 describe("F-128 the plan sets what is bought and the channel", () => {
   it("reads what is bought from the fund, and the internet as the channel, over the deal's own picks", () => {
     const d = planDeal({ ...fromHouse("psagot"), readFor: [{ by: "what", is: "us" }, { by: "channel", is: "branch" }] }, run);
-    expect(d.readFor).toEqual([{ by: "what", is: "tase" }, { by: "channel", is: "direct" }]);
+    expect(d.readFor).toEqual([{ by: "what", is: "tase", place: "israel", currency: "ILS" }, { by: "channel", is: "direct" }]);
     expect(whatOfRun({ instrumentClass: "mutual_fund_units", listing: undefined })).toBe("mutualFunds");
     expect(whatOfRun({ instrumentClass: "foreign_securities", listing: "europe" })).toBe("europe");
   });
@@ -92,6 +92,52 @@ describe("F-128 a deal filled from a house prices as the house does", () => {
           continue;
         }
         expect([ix, e.fund.rec.id, d?.price ? Math.round(d.price.valueN) : null]).toEqual([ix, e.fund.rec.id, e.price ? Math.round(e.price.valueN) : null]);
+      }
+    }
+    expect(compared).toBeGreaterThan(0);
+  });
+
+  /**
+   * The second known exception: a house whose list prints more than one track for an exchange, whose row takes the one that leaves the most
+   * on each plan (F-63: Interactive Brokers' Fixed and Tiered), where the deal keeps the person's pick of the track.
+   */
+  const TRACKS = new Set(["interactive-brokers"]);
+  const planAt = (amount: number, monthly: number, years: number, ret: number): WorkbenchInputs => ({
+    ...plan, amountNow: amount, monthly, years, grossReturn: ret / 100,
+    values: { amount: entered(amount, "nis", t), monthly: entered(monthly, "nis_per_month", t), years: entered(years, "years", t), returnV: entered(ret, "pct_per_year", t), inflation: plan.values.inflation },
+  });
+  /** Plans beside the page's own, and A-03 at both of P-02's bounds (±3% a year), so the order of the first sum and the track can't hide. */
+  const plans: [string, WorkbenchInputs, number][] = [
+    ["50,000 now, 20 years at 5%", planAt(50_000, 0, 20, 5), 0],
+    ["2,000 a month, 5 years at 3%", planAt(0, 2_000, 5, 3), 0],
+    ["100,000 now and 1,000 a month, 30 years at −2%", planAt(100_000, 1_000, 30, -2), 0],
+    ["the page's plan, the dollar up 3% a year", plan, 3],
+    ["1,000 now and 300 a month, 10 years at 7%, the dollar up 3% a year", planAt(1_000, 300, 10, 7), 3],
+    ["the page's plan, the dollar down 3% a year", plan, -3],
+  ];
+
+  it.each(plans)("an untouched deal leaves what its house's row leaves at %s, the two exceptions marked", (_, p, fxChange) => {
+    let compared = 0;
+    for (const ix of indices) {
+      const v = buildInvest({ bundle: b, index: indexById(b, ix)!, plan: p, assumptions: { fxChange } });
+      for (const id of houses) {
+        const house = v.houses.find((r) => r.provider.id === id);
+        const deal = v.houses.find((r) => r.provider.id === dealProviderId(`deal-${id}`))!;
+        if (!house) continue;
+        for (const e of house.entries) {
+          const d = deal.entries.find((x) => x.fund.rec.id === e.fund.rec.id);
+          compared++;
+          const excepted = (RECURRING_ABROAD.has(id) && e.fund.option === "abroad") || (TRACKS.has(id) && e.fund.option !== "abroad");
+          if (excepted && (e.price || d?.price)) {
+            // both price the fund, and the deal leaves no more than the row; or a few shekels more, where the row's count of whole units starts
+            // below what its cash buys (a conversion's minimum counted on waiting shekels the order needs not convert) and the deal buys the unit
+            const fits = !!(e.price && d?.price && (d.price.valueN <= e.price.valueN + 0.5 || Math.abs(d.price.valueN - e.price.valueN) < 0.001 * e.price.valueN));
+            expect([id, ix, e.fund.rec.id, fits]).toEqual([id, ix, e.fund.rec.id, true]);
+            continue;
+          }
+          // to the agora, so a difference of a fraction of a shekel (the rate the amount now is converted at) shows
+          expect([id, ix, e.fund.rec.id, d?.price ? Math.round(d.price.valueN * 100) : null]).toEqual([id, ix, e.fund.rec.id, e.price ? Math.round(e.price.valueN * 100) : null]);
+        }
       }
     }
     expect(compared).toBeGreaterThan(0);

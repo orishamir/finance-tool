@@ -13,7 +13,7 @@ import { useNavigate } from "react-router";
 import { IconPencil } from "../icons";
 import { feeDeal, invest as root } from "../../copy";
 import { fmt } from "../../lib/format";
-import { dealOnFunds, dealRunOf, type DealOnPlan, type IndexRef, type InvestView } from "../../lib/invest";
+import { dealOnFunds, dealRunOf, tieShareOf, type DealOnPlan, type IndexRef, type InvestView } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import type { FeesData } from "../../lib/fee-page-data";
 import type { ColumnAverage, HouseAverages } from "../../lib/house-averages";
@@ -269,7 +269,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const at = fundId ? (got.get(fundId) ?? null) : null;
   const run = useMemo(() => (fundId ? dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId }) : null), [world.bundle, world.index, world.plan, fundId]);
   const houseId = dealHouseId(deal);
-  const tiles = fundId ? dealTiles(view, got, providerId, houseId, fundId, funds) : null;
+  const tiles = fundId ? dealTiles(view, got, providerId, houseId, fundId, funds, tieShareOf(world.bundle)) : null;
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.provider : undefined;
   // the deal is read on the page's plan as its run reads it: the page's run month, the house's line choice and its current account (F-128)
   const ctx = useMemo(() => planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? null), [world.bundle, deal, data.kinds, world.plan.currentAccounts]);

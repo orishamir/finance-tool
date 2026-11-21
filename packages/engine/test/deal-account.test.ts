@@ -194,3 +194,145 @@ describe("F-128 what the plan's months set", () => {
     expect(d.fees.trade - low.fees.trade).toBeCloseTo(10_000 * (0.003 / 1.003 - 0.001 / 1.001), 1);
   });
 });
+
+describe("F-128 charges on what is held and on the account", () => {
+  const short = { ...base, goal: { amountNow: 10_000, monthly: 0, months: 12 }, market: { grossReturn: 0, inflation: 0 }, fund: { kind: "israeli-fund" as const } };
+  const sumIn = (to: number | null, from = 0): Deal => ({ ...deal, fees: [deal.fees[0]!, { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 10, everyMonths: 1 } }], within: { on: "held", from, to, currency: "ILS" } }] });
+
+  it("charges a sum per period only within its step of the value held, as the deal's own formula does", () => {
+    expect(runSecurities({ ...short, deal: account(sumIn(50_000)) }, ctx).fees.fixed).toBeCloseTo(120, 6);
+    expect(runSecurities({ ...short, deal: account(sumIn(null, 50_000)) }, ctx).fees.fixed).toBe(0);
+  });
+
+  it("reports custody priced as a sum on custody's line, charged as the account's own sums are", () => {
+    const custodySum: Deal = { ...deal, fees: [deal.fees[0]!, { base: { key: "custody" }, stages: [{ price: { kind: "sum", amount: 10, everyMonths: 1 } }] }] };
+    const r = runSecurities({ ...short, deal: account(custodySum) }, ctx);
+    expect(r.fees.custody).toBeCloseTo(120, 6);
+    expect(r.fees.fixed).toBe(0);
+    expect(r.feesCarriedBy![1]).toBeCloseTo(r.feesCarried!.custody, 6);
+  });
+
+  it("charges a fee in the person's own words where F-111 places it: a sum on the account, a share on what is held; never one on an action", () => {
+    const facts = { converts: false, distributes: false };
+    expect(planChargeOf({ name: "own" }, facts, [{ kind: "sum", amount: 10, everyMonths: 1 }])).toEqual({ charge: "holding" });
+    expect(planChargeOf({ name: "own" }, facts, [{ kind: "free" }, { kind: "held", rate: 0.001, everyMonths: 3 }])).toEqual({ charge: "holding" });
+    expect(planChargeOf({ name: "own" }, facts, [{ kind: "sum", amount: 10, everyMonths: 1 }, { kind: "perAction", amount: 5 }])).toEqual({ not: "named" });
+    const named: Deal = { ...deal, fees: [deal.fees[0]!, deal.fees[1]!, { base: { name: "own" }, stages: [{ price: { kind: "sum", amount: 10, everyMonths: 1 } }] }] };
+    expect(runSecurities({ ...base, deal: account(named) }, ctx).nominal).toBeCloseTo(runSecurities({ ...base, deal: account() }, ctx).nominal, 6);
+  });
+});
+
+describe("F-128 a charge on what is held or on the account reads the months it covers", () => {
+  /** The account's sum as two fees, 10 ₪ within up to `top` orders and 20 ₪ above, charged every `every` months. */
+  const byCount = (top: number, every: number): DealAccount => ({
+    ...account({ ...deal, fees: [deal.fees[0]!, { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 10 * every, everyMonths: every } }] }, { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 20 * every, everyMonths: every } }] }] }),
+    planWithin: [undefined, [{ on: "count", from: 0, to: top, unit: "actions" }], [{ on: "count", from: top, to: null, unit: "actions" }]],
+  });
+
+  it("a monthly charge reads its month: the first and the last months, with two orders each, pay the dearer step", () => {
+    const r = runSecurities({ ...base, deal: byCount(1, 1) }, ctx);
+    expect(r.fees.fixed).toBeCloseTo(118 * 10 + 2 * 20, 6);
+  });
+
+  it("a quarterly charge reads the orders of its quarter", () => {
+    // three orders a quarter, four in the first and the last: up to three the cheaper step, so only those two quarters pay the dearer
+    const r = runSecurities({ ...base, deal: byCount(3, 3) }, ctx);
+    expect(r.fees.fixed).toBeCloseTo(38 * 30 + 2 * 60, 6);
+  });
+});
+
+describe("F-128 orders as the house's row places them", () => {
+  const currency = { code: "USD", startRate: 3.7 };
+  const abroad: SecuritiesInput = { ...base, fund: { kind: "foreign-fund", drag: { management: 0.0007 } }, market: { ...base.market, returnIn: "instrument", fxChange: 0.03 } };
+
+  it("prices the amount now at month 0's rate, as the row does: a minimum in dollars at A-03 above zero", () => {
+    const t = runSecurities({ ...abroad, tariff: { buy: { rate: 0.001, min: 5, in: "instrument" }, sell: { rate: 0.001, min: 5, in: "instrument" }, fx: 0.002, currency } }, ctx);
+    const usd: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001, min: 5, currency: "USD" } }] }, { base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.002 } }] }] };
+    const d = runSecurities({ ...abroad, tariff: { currency }, deal: account(usd) }, ctx);
+    expect(d.fees.trade).toBeCloseTo(t.fees.trade, 6);
+    expect(d.nominal).toBeCloseTo(t.nominal, 6);
+  });
+
+  it("a flat price for a small order: an order whose trade after it fits under its sum pays only that, a larger one the line (F-12)", () => {
+    // 1,005 ₪ a month: 1,003 after the flat 2 ₪ is above 1,000, so the order pays the line's minimum of 10 ₪ on a trade of 995
+    const plan = { ...base, goal: { amountNow: 0, monthly: 1_005, months: 24 } };
+    const t = runSecurities({ ...plan, tariff: { buy: { rate: 0.001, min: 10, flatUpTo: { amount: 2, upTo: 1_000 } }, sell: { rate: 0.001, min: 10 } } }, ctx);
+    const flat: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001, min: 10, flat: { amount: 2, upTo: 1_000 } } }], sale: [{ price: { kind: "action", rate: 0.001, min: 10 } }] }] };
+    const d = runSecurities({ ...plan, deal: account(flat) }, ctx);
+    expect(d.fees.trade).toBeCloseTo(t.fees.trade, 6);
+    expect(d.nominal).toBeCloseTo(t.nominal, 6);
+    // 1,001 ₪ a month: 999 after the flat price fits under it
+    const small = { ...plan, goal: { amountNow: 0, monthly: 1_001, months: 24 } };
+    expect(runSecurities({ ...small, deal: account(flat) }, ctx).nominal).toBeCloseTo(runSecurities({ ...small, tariff: { buy: { rate: 0.001, min: 10, flatUpTo: { amount: 2, upTo: 1_000 } }, sell: { rate: 0.001, min: 10 } } }, ctx).nominal, 6);
+  });
+
+  it("cash a step leaves waiting, converted already, is not converted again", () => {
+    // free trades up to 400 ₪, 50 ₪ above: each month's 450 ₪, 445.5 after the conversion, buys 400 and leaves 45.5 in dollars
+    const stepped: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "trade" }, stages: [{ price: { kind: "free" } }], within: { on: "action", from: 0, to: 400, currency: "ILS" } },
+        { base: { key: "trade" }, stages: [{ price: { kind: "perAction", amount: 50 } }], within: { on: "action", from: 400, to: null, currency: "ILS" } },
+        { base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.01 } }] },
+      ],
+    };
+    const plan: SecuritiesInput = { ...abroad, goal: { amountNow: 0, monthly: 450, months: 12 }, market: { grossReturn: 0, inflation: 0, returnIn: "instrument", fxChange: 0 }, fund: { kind: "foreign-fund" }, tariff: { currency } };
+    const r = runSecurities({ ...plan, deal: account(stepped) }, ctx);
+    // the purchases convert only what was paid in; the sale converts what is left of it after the trades' charges
+    expect(r.fees.trade).toBeGreaterThan(0);
+    expect(r.fees.fx).toBeCloseTo(0.01 * 5_400 + 0.01 * (0.99 * 5_400 - r.fees.trade), 6);
+  });
+
+  it("an order that buys no unit is not counted among a month's orders", () => {
+    // two months at 1,850 ₪ a unit: the amount now buys five units, and neither deposit buys one, so each month places one order
+    const plan: SecuritiesInput = { ...base, goal: { amountNow: 10_000, monthly: 500, months: 2 }, wholeUnits: { price: 1_850 } };
+    const steps: DealAccount = {
+      ...account({ foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001 } }] }, { base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.003 } }] }] }),
+      planWithin: [[{ on: "count", from: 0, to: 1, unit: "actions" }], [{ on: "count", from: 1, to: null, unit: "actions" }]],
+    };
+    const low = account({ foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001 } }] }] });
+    expect(runSecurities({ ...plan, deal: steps }, ctx).fees.trade).toBeCloseTo(runSecurities({ ...plan, deal: low }, ctx).fees.trade, 9);
+  });
+});
+
+describe("F-128 what the run reaches", () => {
+  it("names the months each fee with a step was charged within it", () => {
+    const steps: DealAccount = {
+      ...account({ ...deal, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001 } }] }, { base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.003 } }] }, ...deal.fees.slice(1)] }),
+      planWithin: [[{ on: "count", from: 0, to: 1, unit: "actions" }], [{ on: "count", from: 1, to: null, unit: "actions" }]],
+    };
+    const r = runSecurities({ ...base, deal: steps }, ctx);
+    expect(r.dealReach![1]).toEqual([1, 120]);
+    expect(r.dealReach![0]).toHaveLength(118);
+    // a fee with no step reaches nothing to mark
+    expect(r.dealReach![2]).toEqual([]);
+  });
+});
+
+describe("F-128 a deal row in the workbench", () => {
+  const input = (deals: DealProvider[], fund: WorkbenchInput["fund"] = { kind: "israeli-fund", drag: { management: 0.001 } }): WorkbenchInput => ({
+    goal: { amountNow: 10_000, monthly: 500, months: 120 },
+    market: { grossReturn: 0.07, inflation: 0.02 },
+    fund,
+    profile: {},
+    instrumentClass: "etf_units",
+    theta: 0.005,
+    providers: [],
+    deals,
+  });
+  const provider = (a: DealAccount): DealProvider => ({ id: "deal-a", name: "עסקה", providerClass: "broker", saved: "2026-11-21", account: () => a });
+
+  it("has the lines its fees were charged on, adding up to its fees, and none names a deciding fee type", () => {
+    const row = providerWorkbench(input([provider(account())]), ctx).rows[0]!;
+    if (row.kind !== "compared") throw new Error("compared");
+    expect(row.byType.map((x) => x.line).sort()).toEqual(["custody", "fixed", "trade"]);
+    expect(row.byType.every((x) => x.cost === null)).toBe(true);
+    expect(row.byType.reduce((a, x) => a + x.costBeforeTax, 0)).toBeCloseTo(row.byFee!.reduce((a, x) => a + x.costBeforeTax, 0), 6);
+  });
+
+  it("says the fund's price per unit is missing where a sum per unit cannot be measured", () => {
+    const perUnit: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "perUnit", amount: 0.01 } }] }] };
+    const wb = providerWorkbench(input([provider(account(perUnit))], { kind: "israeli-fund", sharePrice: 100, sharePriceCurrency: "EUR" }), ctx);
+    expect(wb.rows[0]).toMatchObject({ kind: "not-comparable", reason: { code: "needs-share-price" } });
+  });
+});
