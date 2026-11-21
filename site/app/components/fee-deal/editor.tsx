@@ -29,7 +29,7 @@ import type { PartId } from "../../lib/fee-deal/offers/parts";
 import { dropTakes, holdWords, letGoStep, samePlace, tapStep, waitAt, type HoldStep, type Place } from "../../lib/fee-deal/places";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { leftOut } from "../../lib/fee-deal/left-out";
-import { readingOf } from "../../lib/fee-deal/reading";
+import { readingOf, type PickThing } from "../../lib/fee-deal/reading";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { productOffered } from "../../lib/fee-deal/offers/offer";
 import { feeRoom } from "../../lib/fee-deal/limits";
@@ -42,13 +42,13 @@ import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { MQ, useMedia, useWiderThan } from "../../lib/hooks";
 import { feeDeal as copy } from "../../copy";
-import { Card, ThingMenu, ValueMenuSheet } from "../kit";
+import { Card, ThingMenu, ValueMenuSheet, type ReadPick } from "../kit";
 import { FeesColumn, Palette, SetupStrip, feeGroup, paletteItems, shownFeeOrder } from "./builder";
 import { DealColumns, TOOLBOX_STICKY } from "./deal-columns";
 import { useSaid } from "./deal-notices";
 import { UNDO_MS } from "./use-undo";
 import { partPlaceId } from "./figures";
-import { SlotMenu, WhenText } from "./open-case";
+import { SlotMenu, WhenText, whenText } from "./open-case";
 import { TemplatePicker } from "./picker";
 import { ToolboxCard, ToolboxColumn, applyTool, landingOf, partLabel, type ToolHands } from "./toolbox";
 import { useLetGo } from "./use-let-go";
@@ -66,6 +66,10 @@ import { useTemplatePicker } from "./use-template-picker";
 export const TOOLBOX_COLUMN_PX = 75 * 16;
 const PHONE = "(max-width: 47.99rem)";
 
+/** The reading's picks as the band's choices (`ReadForBand`): each thing, its values in words, its pick, and `onPick` (the editor's) to set it. */
+export const pickItems = (things: readonly PickThing[], onPick: (by: string, is: string) => void): ReadPick[] =>
+  things.map((t) => ({ name: t.words, items: t.options.map((o) => ({ id: o.is, label: whenText(o.words) })), value: t.chosen, onSelect: (is: string) => onPick(t.by, is) }));
+
 /** What the editor opens on and keeps: the page's data, the device's day and saved deals, whether it can save, and the deal first shown. */
 export interface EditorInput {
   data: FeesData;
@@ -81,15 +85,17 @@ export interface EditorInput {
   feeHead?: (fee: Fee) => FeeSlot | undefined;
   /** The fees stand with no heading of their own, where the host's head says what they are (`FeesColumn.untitled`). */
   untitled?: boolean;
+  /** Whether the deal on screen is the one /deal reopens (`useDealDocument`'s `remember`); a host outside /deal sets it off. */
+  remember?: boolean;
 }
 
 /** The editor's pieces and hands, for its host to lay out (`useDealEditor`). */
 export type DealEditor = ReturnType<typeof useDealEditor>;
 
-export function useDealEditor({ data, today, saved, writable, first, onShown, withReading = true, feeHead, untitled = false }: EditorInput) {
+export function useDealEditor({ data, today, saved, writable, first, onShown, withReading = true, feeHead, untitled = false, remember = true }: EditorInput) {
   // another deal on screen (a saved one, a new one, one a template filled, or one an undo brought back): what belonged to the deal before
   // goes, and a new deal is saved once it is worth saving
-  const doc = useDealDocument({ first, saved, today, data, onShown: () => afterShow() });
+  const doc = useDealDocument({ first, saved, today, data, onShown: () => afterShow(), remember });
   const { deal, chosen, change, kept } = doc;
   // the toolbox has a column of its own where its host gives the editor the room (`TOOLBOX_COLUMN`), whatever the window
   const columnsRef = useRef<HTMLDivElement>(null);

@@ -29,7 +29,7 @@ import { IconLock } from "../icons";
 import { Num, Ruled } from "../provenance";
 import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, FundTerms } from "./custom-entries";
-import { AddDealButton, DealTerms, DeletedLine, useDealAccounts } from "./deal-account";
+import { AddDealButton, DealTerms, DeletedLine, NotMovedLines, useDealAccounts } from "./deal-account";
 import { dealIdOf, isDealProviderId } from "../../lib/deal-account/bundle";
 import { feeNameOf } from "../../lib/fee-deal/part-words";
 import { optionClass, reasonText } from "./parts";
@@ -676,6 +676,7 @@ export function PairLists(props: ListsProps) {
   const accountsFoot = (
     <div className="flex flex-col gap-3">
       {marked && <p className="text-xs text-muted-foreground">{leftOutCopy.markKey}</p>}
+      <NotMovedLines />
       <AddDealButton />
       {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />

@@ -27,6 +27,25 @@ export interface NoticeLine {
   onClose?: () => void;
 }
 
+/** One standing line: its words, then its action and its close where it has them. The indices page's popup says its own lines with it. */
+export function NoticeRow({ line: l }: { line: NoticeLine }) {
+  return (
+    <p data-notice={l.key} className="flex flex-wrap items-center gap-x-3">
+      <span>{l.text}</span>
+      {l.action && (
+        <Button variant="quiet" size="sm" flush wide onClick={l.action.onClick}>
+          {l.action.label}
+        </Button>
+      )}
+      {l.onClose && (
+        <Button variant="quiet" size="sm" flush wide onClick={l.onClose}>
+          {copy.end.dismiss}
+        </Button>
+      )}
+    </p>
+  );
+}
+
 /**
  * The notices: `status` the live region's words (the undo line's, else `said`, else that the link was copied), `undoLine` a saved deal's
  * undo line, `said` with its close (`onDismiss`), the standing `lines`, and `blocked` the link the browser would not copy.
@@ -41,19 +60,7 @@ export function DealNotices({ status, undoLine, said, lines = [], blocked, onDis
       {(said || blocked || lines.length > 0) && (
         <div className="come-in flex flex-col gap-1.5 text-sm">
           {lines.map((l) => (
-            <p key={l.key} data-notice={l.key} className="flex flex-wrap items-center gap-x-3">
-              <span>{l.text}</span>
-              {l.action && (
-                <Button variant="quiet" size="sm" flush wide onClick={l.action.onClick}>
-                  {l.action.label}
-                </Button>
-              )}
-              {l.onClose && (
-                <Button variant="quiet" size="sm" flush wide onClick={l.onClose}>
-                  {copy.end.dismiss}
-                </Button>
-              )}
-            </p>
+            <NoticeRow key={l.key} line={l} />
           ))}
           {said && (
             <p className="flex flex-wrap items-center gap-x-3">

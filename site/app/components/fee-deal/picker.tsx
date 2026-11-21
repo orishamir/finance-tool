@@ -5,7 +5,7 @@
 // many of its lines it leaves out of the deal; a house whose price list prints several ways to buy what the deal holds lists them under its
 // name, each a row with its trade price, which fills the deal with that plan; a track says at its end the yearly fee on the savings its
 // pick fills. On opening, the focus is
-// in the box, and the arrow keys go from it down the rows and back. A pick is the page's: opened from the bar it opens a new deal from the template and never
+// in the box, and the arrow keys go from it down the rows and back (`TemplateList`, which the indices page's popup holds too). A pick is the page's: opened from the bar it opens a new deal from the template and never
 // changes the one on screen; opened from the builder's track step it sets the track on the deal on screen (`pickTrack`).
 // Under the builder's strip, which names the template, the deal a template filled says what its price leaves out (`TemplateNote`): what the
 // house's record says (D106), and each line the template left out, by its name, under why, in a sheet.
@@ -34,6 +34,81 @@ export function leavesText(left: readonly LeftOut[] | undefined): string | undef
 /** What a track's row says at its end: the yearly fee on the savings its pick fills ("0.52% בשנה מהחיסכון"), as its source prints it. */
 const savingText = (v: SiteValue | undefined): string | undefined => (v && typeof v.value === "number" ? `${formatValue(v.value, v.unit)} ${w.saving}` : undefined);
 
+/** The words of a template list: its box's label and clear, what it says where no template matches, and the head of the houses' price lists. */
+export interface TemplateListWords {
+  search: string;
+  clear: string;
+  none: string;
+  houses: string;
+}
+
+/**
+ * The templates to pick from: a box that filters them by name, then their rows in groups (the houses' price lists under one head, the
+ * tracks by company), each row saying what its pick leaves out of the deal or, for a track, the yearly fee it fills. Once `focus` is true
+ * the focus is in the box, and the arrow keys go from it down the rows and back. The picker's sheet holds it, and so does the indices
+ * page's popup to start a new deal.
+ */
+export function TemplateList({ options, left, focus, words, onPick }: {
+  options: readonly TemplateOption[];
+  /** What each price list leaves out of the deal, by its id (none for a track: the new deal says it). */
+  left: ReadonlyMap<string, readonly LeftOut[]>;
+  /** Whether the list is on screen: the focus goes to its box then. */
+  focus: boolean;
+  words: TemplateListWords;
+  onPick: (id: string) => void;
+}) {
+  const [query, setQuery] = useState("");
+  const search = useRef<HTMLInputElement>(null);
+  const rows = useRef<HTMLDivElement>(null);
+  // the focus starts in the box, once the list is on screen (a sheet that holds it has opened)
+  useEffect(() => {
+    if (!focus) return;
+    const t = requestAnimationFrame(() => search.current?.focus());
+    return () => cancelAnimationFrame(t);
+  }, [focus]);
+  // the arrow keys: down from the box to the first row, then row to row; up from the first row back to the box
+  const step = (e: KeyboardEvent<HTMLElement>) => {
+    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+    const all = [...(rows.current?.querySelectorAll<HTMLElement>("li > button") ?? [])];
+    const at = all.indexOf(document.activeElement as HTMLElement);
+    const next = e.key === "ArrowDown" ? all[at + 1] : at > 0 ? all[at - 1] : at === 0 ? search.current : null;
+    if (!next) return;
+    e.preventDefault();
+    next.focus();
+  };
+  const tracks = options.some((o) => o.source === "track");
+  const groups = useMemo(() => {
+    const shown = matching(options, query);
+    const by = new Map<string, TemplateOption[]>();
+    for (const o of shown) {
+      const g = o.source === "track" ? o.company : words.houses;
+      by.set(g, [...(by.get(g) ?? []), o]);
+    }
+    return [...by.entries()];
+  }, [options, query, words.houses]);
+  return (
+    <>
+      <SearchField label={words.search} labelHidden value={query} onChange={setQuery} clearLabel={words.clear} inputRef={search} onKeyDown={step} />
+      {groups.length === 0 ? (
+        <p className="text-muted-foreground">{words.none}</p>
+      ) : (
+        <div ref={rows} onKeyDown={step} className="flex flex-col gap-4">
+          {groups.map(([group, items]) => (
+            <div key={group} className="flex flex-col gap-2">
+              <GroupHead count={tracks ? items.length : undefined}>{group}</GroupHead>
+              <RowList label={group}>
+                {items.map((o) => (
+                  <ListRow key={o.id} title={rowTitle(o)} meta={o.source === "track" ? savingText(o.saving) : leavesText(left.get(o.id))} onSelect={() => onPick(o.id)} />
+                ))}
+              </RowList>
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
 export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, product, onPick }: {
   open: boolean;
   onClose: () => void;
@@ -49,37 +124,8 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
   onPick: (id: string) => void;
 }) {
   const headId = useId();
-  const [query, setQuery] = useState("");
-  const search = useRef<HTMLInputElement>(null);
-  const rows = useRef<HTMLDivElement>(null);
-  // the focus starts in the box, once the sheet has opened
-  useEffect(() => {
-    if (!open) return;
-    const t = requestAnimationFrame(() => search.current?.focus());
-    return () => cancelAnimationFrame(t);
-  }, [open]);
-  // the arrow keys: down from the box to the first row, then row to row; up from the first row back to the box
-  const step = (e: KeyboardEvent<HTMLElement>) => {
-    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
-    const all = [...(rows.current?.querySelectorAll<HTMLElement>("li > button") ?? [])];
-    const at = all.indexOf(document.activeElement as HTMLElement);
-    const next = e.key === "ArrowDown" ? all[at + 1] : at > 0 ? all[at - 1] : at === 0 ? search.current : null;
-    if (!next) return;
-    e.preventDefault();
-    next.focus();
-  };
   const tracks = options.some((o) => o.source === "track");
   const head = tracks ? w.track : w.house;
-  const groups = useMemo(() => {
-    const shown = matching(options, query);
-    const by = new Map<string, TemplateOption[]>();
-    for (const o of shown) {
-      const g = o.source === "track" ? o.company : w.house.group;
-      by.set(g, [...(by.get(g) ?? []), o]);
-    }
-    return [...by.entries()];
-  }, [options, query]);
-
   return (
     <Sheet open={open} onClose={onClose} anchor={anchor} pc="center" height={80} labelledBy={headId}>
       <div className="flex flex-col gap-4">
@@ -92,27 +138,13 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
           </div>
           <p className="text-sm text-muted-foreground">{newDeal ? `${head.lede} ${w.newDeal}` : head.lede}</p>
         </div>
-        <SearchField label={w.search} labelHidden value={query} onChange={setQuery} clearLabel={w.clear} inputRef={search} onKeyDown={step} />
-        {groups.length === 0 ? (
-          <p className="text-muted-foreground">{w.none}</p>
-        ) : (
-          <div ref={rows} onKeyDown={step} className="flex flex-col gap-4">
-            {groups.map(([group, items]) => (
-              <div key={group} className="flex flex-col gap-2">
-                <GroupHead count={tracks ? items.length : undefined}>{group}</GroupHead>
-                <RowList label={group}>
-                  {items.map((o) => (
-                    <ListRow key={o.id} title={rowTitle(o)} meta={o.source === "track" ? savingText(o.saving) : leavesText(left.get(o.id))} onSelect={() => onPick(o.id)} />
-                  ))}
-                </RowList>
-              </div>
-            ))}
-          </div>
-        )}
+        <TemplateList options={options} left={left} focus={open} words={PICKER_WORDS} onPick={onPick} />
       </div>
     </Sheet>
   );
 }
+
+const PICKER_WORDS: TemplateListWords = { search: w.search, clear: w.clear, none: w.none, houses: w.house.group };
 
 /**
  * A left line as the reader reads it: its name as the price list prints it, its channel where the list prices channels apart, and the

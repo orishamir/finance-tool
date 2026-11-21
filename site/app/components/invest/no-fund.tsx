@@ -16,7 +16,7 @@ import { byLegend, hasCurrent, legendLines, legendName, lineClass, lineOf, partN
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, FundTerms } from "./custom-entries";
-import { AddDealButton, DealTerms } from "./deal-account";
+import { AddDealButton, DealTerms, NotMovedLines } from "./deal-account";
 
 const n = c.noFund;
 
@@ -208,6 +208,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
         />
       </div>
       <div className="px-5 py-3 flex flex-col gap-3">
+        <NotMovedLines />
         <AddDealButton />
         <ChartLegend
           pick={legendPick}

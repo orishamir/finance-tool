@@ -31,7 +31,17 @@ function jsonOr(raw: string): unknown {
   }
 }
 
-export function deviceStore<T>(key: string, empty: T, parse: (raw: unknown) => T, serialize: (v: T) => unknown): DeviceStore<T> {
+/**
+ * `parsesMissing`: a missing key is read through `parse(null)` rather than taken as `empty`, for a store whose parse keeps state of its
+ * own that a removed key must clear (the deal store's entries it could not open).
+ */
+export function deviceStore<T>(
+  key: string,
+  empty: T,
+  parse: (raw: unknown) => T,
+  serialize: (v: T) => unknown,
+  parsesMissing = false,
+): DeviceStore<T> {
   const none: DeviceSnapshot<T> = { value: empty, ready: false, writable: true };
   let current = none;
   let loaded = false;
@@ -43,7 +53,7 @@ export function deviceStore<T>(key: string, empty: T, parse: (raw: unknown) => T
   const read = (): DeviceSnapshot<T> => {
     try {
       const raw = window.localStorage.getItem(key);
-      return { value: raw ? parse(jsonOr(raw)) : empty, ready: true, writable: true };
+      return { value: raw ? parse(jsonOr(raw)) : parsesMissing ? parse(null) : empty, ready: true, writable: true };
     } catch {
       return { value: empty, ready: true, writable: false };
     }

@@ -7,6 +7,9 @@
 // and a pick bar what only the person knows (a track, a condition of their own). Each fee says under its block what the plan charges for it
 // or why it charges nothing. The popup prices the deal alone as it changes; the page takes the deal once the popup closes, since pricing
 // every account and fund again on each change would make typing wait. A new deal is saved only once it changes (use-deal-document.ts).
+// A deal deleted in another tab while it is open stays on screen, saved no more, with /deal's line and its keep; the editor's data that
+// did not load is said with a retry. Under the account list, each account typed by hand before deals that could not become one says why
+// it is not in the list.
 import { createContext, useContext, useDeferredValue, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
 import { MoreHorizontal, Pencil } from "lucide-react";
 import { useNavigate } from "react-router";
@@ -29,7 +32,7 @@ import { Num, ProvenanceProvider, useProvenanceData, type ProvenanceData } from 
 import { recordsById } from "../../lib/scope";
 import { dealStore, rememberOpen, without } from "../../lib/fee-deal/store";
 import { DEAL_PATH } from "../../lib/site-paths";
-import { dealFromTemplate, houseName, matching, rowTitle, templateOf, templateOptions } from "../../lib/fee-deal/templates";
+import { dealFromTemplate, houseName, templateOf, templateOptions } from "../../lib/fee-deal/templates";
 import { updateFee } from "../../lib/fee-deal/edits/deal";
 import { addBlankCase } from "../../lib/fee-deal/edits/case";
 import { pickLine } from "../../lib/fee-deal/reading";
@@ -42,10 +45,12 @@ import { dealBasis, type DealBasis } from "../../lib/deal-account/basis";
 import { Sheet } from "../Sheet";
 import { allFunds, repick, type Pick } from "./pair";
 import { MQ, useMedia } from "../../lib/hooks";
-import { useDealEditor, type DealEditor } from "../fee-deal/editor";
+import { pickItems, useDealEditor, type DealEditor } from "../fee-deal/editor";
 import { whenText } from "../fee-deal/open-case";
-import { leavesText } from "../fee-deal/picker";
-import { ActionMenu, Button, ConfirmAsk, GroupHead, HouseAverageLine, KeyValue, ListRow, ReadForBand, RowList, SearchField, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, useStuckRoom, When, type FeeHeadSlot, type GripAction } from "../kit";
+import { TemplateList, type TemplateListWords } from "../fee-deal/picker";
+import { NoticeRow } from "../fee-deal/deal-notices";
+import type { MoveLeft } from "../../lib/deal-account/move-run";
+import { ActionMenu, Button, Card, ConfirmAsk, HouseAverageLine, KeyValue, MixedName, ReadForBand, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, useStuckRoom, When, type FeeHeadSlot, type GripAction } from "../kit";
 
 const w = root.dealAccount;
 
@@ -76,6 +81,8 @@ interface DealAccountsApi {
   basisOf: (providerId: string) => DealBasis | null;
   /** A deal fee as the ticket writes it under its line, read for the plan on fund `fundId` (A, F): its price as the deal has it, and its pick. */
   feeWords: (providerId: string, fundId: string, feeId: string) => ReactNode;
+  /** The typed accounts the move left in the saved state, with why (lib/deal-account/move-run.ts): the account list says each. */
+  left: readonly MoveLeft[];
 }
 const DealAccountsCtx = createContext<DealAccountsApi | null>(null);
 export const useDealAccounts = () => useContext(DealAccountsCtx);
@@ -93,10 +100,12 @@ export interface DealWorld {
   kinds: boolean;
 }
 
-export function DealAccountsHost({ data, onWant, saved, writable, today, world, opening, onOpened, onOpenChange, children }: {
-  /** The fee page's data, which the editor reads; null until loaded (`onWant` asks for it). */
+export function DealAccountsHost({ data, onWant, failed, saved, writable, today, world, opening, onOpened, onOpenChange, left, children }: {
+  /** The fee page's data, which the editor reads; null until loaded (`onWant` asks for it, and asks again after a failure). */
   data: FeesData | null;
   onWant: () => void;
+  /** The fee page's data did not load: the popup says so, with its retry. */
+  failed: boolean;
   /** The device's saved deals, all of them. */
   saved: readonly FeeDeal[];
   writable: boolean;
@@ -107,9 +116,12 @@ export function DealAccountsHost({ data, onWant, saved, writable, today, world, 
   onOpened: () => void;
   /** The popup opened or closed: the page holds its deals as they were while it is open. */
   onOpenChange: (open: boolean) => void;
+  left: readonly MoveLeft[];
   children: ReactNode;
 }) {
   const [target, setTarget] = useState<DealTarget | null>(null);
+  // the saved deal the popup opened on, held while it is open: one deleted in another tab stays on screen, and the popup says so
+  const [opened, setOpened] = useState<FeeDeal | null>(null);
   const [deleted, setDeleted] = useState<DeletedDeal | null>(null);
   const [started, setStarted] = useState<FeeDeal | null>(null);
   const headId = useId();
@@ -128,8 +140,11 @@ export function DealAccountsHost({ data, onWant, saved, writable, today, world, 
   const api = useMemo<DealAccountsApi>(
     () => ({
       open: (t) => {
+        const deal = "dealId" in t ? saved.find((d) => d.id === t.dealId) : undefined;
+        if ("dealId" in t && !deal) return;
         setDeleted(null);
         setStarted(null);
+        setOpened(deal ?? null);
         setTarget(t);
       },
       dealOf: (id) => saved.find((d) => dealProviderId(d.id) === id),
@@ -150,8 +165,9 @@ export function DealAccountsHost({ data, onWant, saved, writable, today, world, 
         if (!run) return null;
         return <DealFeeWords read={planRead(deal, run, planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? null))} feeId={feeId} />;
       },
+      left,
     }),
-    [saved, deleted, data, world],
+    [saved, deleted, data, world, left],
   );
   const close = () => setTarget(null);
   // the editor's rule and term sheets read the fee page's data (its rules, the records they point at, its terms) over the page's own
@@ -170,7 +186,7 @@ export function DealAccountsHost({ data, onWant, saved, writable, today, world, 
   );
   // a new deal from a house's list, made once per opening
   const fromHouse = useMemo(() => (target && "house" in target && target.house && data ? houseDeal(`house:${target.house}`, data, today) : null), [target, data, today]);
-  const first = !target || !data ? null : "dealId" in target ? (saved.find((d) => d.id === target.dealId) ?? null) : (fromHouse ?? started);
+  const first = !target || !data ? null : "dealId" in target ? opened : (fromHouse ?? started);
   return (
     <DealAccountsCtx.Provider value={api}>
       {children}
@@ -197,6 +213,11 @@ export function DealAccountsHost({ data, onWant, saved, writable, today, world, 
           ) : (
             <DealStart data={data} today={today} headId={headId} onStart={(id) => setStarted(id ? houseDeal(id, data, today) : newDeal(ACCOUNT_KIND))} />
           )
+        ) : target && failed ? (
+          // the editor's data did not load: the line and its retry, as /deal's standing lines are said
+          <div id={headId} className="text-sm">
+            <NoticeRow line={{ key: "failed", text: w.feesFailed, action: { label: w.retry, onClick: onWant } }} />
+          </div>
         ) : target ? (
           <p id={headId} className="text-muted-foreground">
             {root.dealAccount.start.title}
@@ -222,14 +243,12 @@ function houseDeal(id: string, data: FeesData, today: string): FeeDeal {
 }
 
 /**
- * The new deal's start: every house's latest price list, with what it leaves out of the deal, and an empty deal. Not a kit piece: it is
- * kit pieces (`SearchField`, `RowList`, `ListRow`) arranged for this one choice.
+ * The new deal's start: every house's latest price list, with what it leaves out of the deal (the template picker's list, `TemplateList`),
+ * and an empty deal. Not a kit piece: the picker's list and the kit's `Button` arranged for this one choice.
  */
 function DealStart({ data, today, headId, onStart }: { data: FeesData; today: string; headId: string; onStart: (id: string | null) => void }) {
-  const [query, setQuery] = useState("");
   const options = useMemo(() => templateOptions(ACCOUNT_KIND, data, today).filter((o) => o.source === "house"), [data, today]);
   const left = useMemo(() => new Map(options.map((o) => [o.id, templateOf(newDeal(ACCOUNT_KIND), o.id, data, today)?.left ?? []])), [options, data, today]);
-  const shown = matching(options, query);
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
@@ -238,25 +257,15 @@ function DealStart({ data, today, headId, onStart }: { data: FeesData; today: st
         </h2>
         <p className="text-sm text-muted-foreground">{w.start.lede}</p>
       </div>
-      <SearchField label={w.start.search} labelHidden value={query} onChange={setQuery} clearLabel={w.start.clear} />
-      <div className="flex flex-col gap-2">
-        <GroupHead>{w.start.group}</GroupHead>
-        {shown.length === 0 ? (
-          <p className="text-muted-foreground">{w.start.none}</p>
-        ) : (
-          <RowList label={w.start.group}>
-            {shown.map((o) => (
-              <ListRow key={o.id} title={rowTitle(o)} meta={leavesText(left.get(o.id))} onSelect={() => onStart(o.id)} />
-            ))}
-          </RowList>
-        )}
-      </div>
-      <Button variant="quiet" className="self-start -ms-2" onClick={() => onStart(null)}>
-        + {w.start.empty}
+      <TemplateList options={options} left={left} focus words={START_WORDS} onPick={onStart} />
+      <Button variant="add" onClick={() => onStart(null)}>
+        {w.start.empty}
       </Button>
     </div>
   );
 }
+
+const START_WORDS: TemplateListWords = { search: w.start.search, clear: w.start.clear, none: w.start.none, houses: w.start.group };
 
 /**
  * The popup on one deal: its head, the tiles and the plan line (sticky as the fees scroll; on a phone the head, the strip and the pick bar
@@ -265,7 +274,8 @@ function DealStart({ data, today, headId, onStart }: { data: FeesData; today: st
 function DealPopup({ data, today, saved, writable, first, openFee, world, headId, onDeleted }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; /** The fee it opens on, where its opener names one. */ openFee?: string | undefined; world: DealWorld; headId: string; onDeleted: (name: string, at: number | null) => void }) {
   // what each fee's head says is read with the deal as it is now, which the editor holds: the editor draws it after this render
   const headRef = useRef<(fee: Fee) => FeeHeadSlot | undefined>(() => undefined);
-  const ed = useDealEditor({ data, today, saved, writable, first, withReading: false, untitled: true, feeHead: (fee) => headRef.current(fee) });
+  // /deal reopens the deal last on screen there: only the popup's own links to it name this one (`rememberOpen`)
+  const ed = useDealEditor({ data, today, saved, writable, first, withReading: false, untitled: true, remember: false, feeHead: (fee) => headRef.current(fee) });
   const deal = ed.deal;
   const providerId = dealProviderId(deal.id);
   const { view, pick } = world;
@@ -382,7 +392,13 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
               {planShown && planLine && <p className="text-muted-foreground">{planLine}</p>}
             </>
           )}
-          {run && own.length > 0 && <ReadForBand lead={w.readForShort} picks={pickItems(own, ed)} />}
+          {run && own.length > 0 && <ReadForBand lead={w.readForShort} picks={pickItems(own, ed.onPick)} />}
+        </div>
+      )}
+      {/* the deal deleted in another tab: said as /deal says it, with its keep */}
+      {ed.doc.deletedElsewhere && (
+        <div className="text-sm">
+          <NoticeRow line={{ key: "deleted", text: feeDeal.end.deletedElsewhere, action: { label: feeDeal.end.keepAnyway, onClick: ed.doc.keepAnyway } }} />
         </div>
       )}
       {tiles && wide && (
@@ -403,7 +419,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
           {planLine && <p className="text-sm text-muted-foreground">{planLine}</p>}
         </div>
       )}
-      {run && wide && own.length > 0 && <ReadForBand lead={w.readFor} note={w.planKnows(where)} picks={pickItems(own, ed)} />}
+      {run && wide && own.length > 0 && <ReadForBand lead={w.readFor} note={w.planKnows(where)} picks={pickItems(own, ed.onPick)} />}
       {ed.picker}
       {ed.columns(null)}
       {bankLine && house && <Sentence size="sm" tone="muted" t={w.bankAccount(house.short, bankLine.cost !== null)} vars={{ monthly: <Num value={bankLine.monthly} />, cost: bankLine.cost && <Num value={bankLine.cost} display={costText} /> }} />}
@@ -427,10 +443,6 @@ function bringUnderTop(root: HTMLElement | null, feeId: string) {
   const top = root!.querySelector("[data-deal-top]")?.getBoundingClientRect().bottom ?? body.getBoundingClientRect().top;
   body.scrollTop += block.getBoundingClientRect().top - top - 8;
 }
-
-/** The pick bar's choices: each thing only the person knows, its values, and the deal's pick of it (`onPick`). */
-const pickItems = (own: NonNullable<ReturnType<typeof pickLine>>["things"], ed: DealEditor) =>
-  own.map((t) => ({ name: t.words, items: t.options.map((o) => ({ id: o.is, label: whenText(o.words) })), value: t.chosen, onSelect: (is: string) => ed.onPick(t.by, is) }));
 
 /**
  * What a fee's head says on the plan (B): at its end what the plan charges for it ("בתוכנית −60 ₪", on a phone the sum alone, C), or the chip
@@ -654,15 +666,29 @@ export function DealTerms({ id, complete = false, missing = null }: { id: string
   );
 }
 
-/** Under the account list: a new deal, started from a house's list or empty. Not a kit piece: the kit's `Button`, wired to this page's popup. */
+/** Under the account list: a new deal, started from a house's list or empty. Not a kit piece: the kit's `add` button, wired to this page's popup. */
 export function AddDealButton() {
   const api = useDealAccounts();
   if (!api) return null;
   return (
+    <Button variant="add" onClick={() => api.open({ house: null })}>
+      {w.add}
+    </Button>
+  );
+}
+
+/**
+ * Under the account list: each account typed by hand before deals took its place that the move could not make a deal of, so it is not in
+ * the list, and why (lib/deal-account/move.ts, `MoveGapWhy`). Not a kit piece: the kit's `Sentence`, one line for each such account.
+ */
+export function NotMovedLines() {
+  const api = useDealAccounts();
+  if (!api || api.left.length === 0) return null;
+  return (
     <>
-      <Button variant="quiet" className="self-start -ms-2" onClick={() => api.open({ house: null })}>
-        + {w.add}
-      </Button>
+      {api.left.map((a) => (
+        <Sentence key={a.id} size="xs" tone="muted" t={w.notMoved} vars={{ name: <MixedName>{a.name}</MixedName>, why: w.notMovedWhy[a.why] }} />
+      ))}
     </>
   );
 }
@@ -778,13 +804,13 @@ const monthDots = (until: string): string => {
   return `\u2066${String(last.m).padStart(2, "0")}.${last.y}\u2069`;
 };
 
-/** Where a deal just deleted from the popup stood in the account list (G): its name, in /deal's words. Not a kit piece: one line said only here. */
+/** Where a deal just deleted from the popup stood in the account list (G): its name, in /deal's words, on the kit's card. Not a kit piece: one line said only here. */
 export function DeletedLine({ name }: { name: string }) {
   return (
-    <p className="rounded-md bg-card px-3 py-2 text-sm text-muted-foreground">
+    <Card pad="strip" className="text-sm text-muted-foreground">
       {w.deleted}
       <strong className="font-semibold text-foreground">{name}</strong>
-    </p>
+    </Card>
   );
 }
 
@@ -795,8 +821,8 @@ export function DeletedLine({ name }: { name: string }) {
 export function DealFromHouseButton({ houseId, framed = false, children, className }: { houseId: string; framed?: boolean; children: ReactNode; className?: string }) {
   const api = useDealAccounts();
   if (!api) return null;
-  // a text action lines its words up with the text above it; a framed one keeps its border on the card's edge
-  const place = className ?? (framed ? "self-start" : "self-start -ms-2");
+  // a framed one keeps its border on the card's edge; a text action stands where its line puts it (`className`)
+  const place = className ?? (framed ? "self-start" : undefined);
   return (
     <Button variant={framed ? "framed" : "quiet"} className={cx("text-sm", place)} onClick={() => api.open({ house: houseId })}>
       {children}

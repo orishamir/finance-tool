@@ -4157,6 +4157,21 @@ export const invest = {
     edit: "לערוך את העסקה",
     /** Where a deleted deal's row stood, before its name. */
     deleted: "נמחקה מהמכשיר: ",
+    /**
+     * Under the account list: an account typed by hand on the page before deals took its place, which could not become a deal and so is
+     * not in the list, and why (lib/deal-account/move.ts, `MoveGapWhy`).
+     */
+    notMoved: "החשבון ״{name}״, שהזנתם כאן בעבר, לא נכנס לרשימה: {why}.",
+    notMovedWhy: {
+      group: "את המחיר לקבוצה שבו אי אפשר לשמור בעסקה",
+      "trade-currency": "את המינימום שהזנתם בשקלים אי אפשר לשמור בעסקה לצד סכום שהתעריפון קובע במטבע של הקנייה",
+      rate: "אין לאתר שער חליפין להמרת סכום מהתעריפון לשקלים",
+      deal: "יש בו נתון גדול ממה שאפשר לשמור בעסקה",
+      error: "תקלה באתר",
+    } as Record<string, string>,
+    /** In the popup, where the price lists the editor reads did not load, and its retry. */
+    feesFailed: "התעריפונים לא נטענו.",
+    retry: "לנסות שוב",
     /** The house a new deal starts from, its name. */
     nameOf: (house: string) => `${house}, בתנאים שלי`,
     /** A deal the plan cannot price: what it lacks, said by its fee (lib/deal-account/plan.ts, `MissingWhy`), and the tap that opens it there. */

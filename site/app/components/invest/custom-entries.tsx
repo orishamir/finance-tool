@@ -61,14 +61,20 @@ export function CustomEntriesHost({ index, funds, writable, onSaveFund, onRemove
 
 // ---------------------------------------------------------------- the buttons and the rows
 
-/** The quiet button under a list. Outside the host (a test of a list alone) it is not drawn. */
-/** `primary`: the one thing a page with no fund asks for (a custom index); quiet under a list otherwise. */
+/**
+ * The button that adds a fund: the kit's `add` under a list, or with `primary` the one thing a page with no fund asks for (a custom index).
+ * Outside the host (a test of a list alone) it is not drawn.
+ */
 export function AddEntryButton({ primary = false }: { primary?: boolean }) {
   const e = useEditors();
   if (!e) return null;
-  return (
-    <Button variant={primary ? "primary" : "quiet"} className={primary ? "self-start" : "self-start -ms-2"} onClick={e.addFund}>
+  return primary ? (
+    <Button variant="primary" className="self-start" onClick={e.addFund}>
       + {c.addFund}
+    </Button>
+  ) : (
+    <Button variant="add" onClick={e.addFund}>
+      {c.addFund}
     </Button>
   );
 }

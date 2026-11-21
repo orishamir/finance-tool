@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { cx } from "./cx";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary" | "outline" | "framed" | "ghost" | "quiet" | "destructive" | "danger" | "icon" | "inline";
+  variant?: "primary" | "secondary" | "outline" | "framed" | "ghost" | "quiet" | "add" | "destructive" | "danger" | "icon" | "inline";
   /** `quiet` and `destructive` only: no side padding, so the words line up with the text above and below them (a text action at a line's start). */
   flush?: boolean;
   /**
@@ -37,7 +37,10 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
  * danger colour only under the pointer or the focus. `inline`: an action inside a sentence, around words that may wrap with it (a name that
  * picks a pair, the way back from a choice that changed something else): underlined in the link colour, on the sentence's lines, its
  * 44 px target a layer reaching 12 px above and below the words, so it takes no more height than they do (a layer, not a margin pulled
- * in: a way back wrapped onto two lines in a narrow cell was drawn over the note, 390 px). A disabled text action reads in the muted ink.
+ * in: a way back wrapped onto two lines in a narrow cell was drawn over the note, 390 px). `add`: the quiet face under a list or a choice,
+ * for the action that adds to it or starts a new one ("+ להזין תנאים שקיבלתם" under the account list): a plus before the words, standing
+ * at the start of its column (`self-start`) with its words lined up with the text above it, its side padding pulled out past the edge. A
+ * disabled text action reads in the muted ink.
  */
 export function Button({ variant = "secondary", flush, size, gap, wide, bold, className, children, type = "button", ...rest }: ButtonProps) {
   if (variant === "inline")
@@ -61,6 +64,7 @@ export function Button({ variant = "secondary", flush, size, gap, wide, bold, cl
     danger: "min-h-target px-4 rounded-md bg-destructive text-destructive-foreground font-medium hover:brightness-110",
     ghost: "size-9 max-md:size-target tap-area rounded-full text-muted-foreground hover:bg-accent hover:text-destructive focus-visible:text-destructive",
     quiet: cx("text-link rounded-md", textAction, textHeight, side),
+    add: cx("self-start -ms-2 px-2 text-link rounded-md", textAction, textHeight),
     // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet.
     destructive: cx("text-destructive rounded-md", textAction, textHeight, side),
     icon: size === "sm"
@@ -69,7 +73,7 @@ export function Button({ variant = "secondary", flush, size, gap, wide, bold, cl
   }[variant];
   return (
     <button type={type} className={cx("inline-flex items-center justify-center transition-colors duration-[var(--duration-fast)]", gap === "sm" ? "gap-1.5" : "gap-2", styles, className)} {...rest}>
-      {children}
+      {variant === "add" ? <span>+ {children}</span> : children}
     </button>
   );
 }

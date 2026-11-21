@@ -64,6 +64,13 @@ let dataPromise: Promise<FeesData> | null = null;
 
 /** The fee page's data (fees.server.ts), fetched once per visit. */
 export function loadFeesData(): Promise<FeesData> {
-  if (!dataPromise) dataPromise = fetch(`${import.meta.env.BASE_URL}deal-data.json`).then((r) => r.json() as Promise<FeesData>);
+  // a load that failed is not kept, so asking again fetches again
+  if (!dataPromise)
+    dataPromise = fetch(`${import.meta.env.BASE_URL}deal-data.json`)
+      .then((r) => r.json() as Promise<FeesData>)
+      .catch((e: unknown) => {
+        dataPromise = null;
+        throw e;
+      });
   return dataPromise;
 }

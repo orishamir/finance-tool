@@ -79,9 +79,11 @@ export function useOpenedDeal(address: AddressDeal | null, saved: readonly FeeDe
  * nothing the person gave is a plain change); `show` another deal on screen, its first fee chosen and the undo line gone; `openGiven` a
  * deal an address gave, opened as a fresh load opens it. `onUndo` puts back what the undo line took, `remove` deletes a saved deal
  * (asking nothing, and undoable). A change past a limit is refused (`refusal` says why, until the next change or another deal). Whenever
- * another deal comes on screen, by any of them, `onShown` is told, so the page can drop what belonged to the deal before.
+ * another deal comes on screen, by any of them, `onShown` is told, so the page can drop what belonged to the deal before. `remember`: the
+ * deal on screen is the one /deal reopens (`rememberOpen`); a host that shows a deal outside /deal (the indices page's popup) sets it off,
+ * and only its own links to /deal say which deal opens there.
  */
-export function useDealDocument({ first, saved, today, data, onShown }: { first: FeeDeal; saved: readonly FeeDeal[]; today: string; data: FeesData; onShown: () => void }) {
+export function useDealDocument({ first, saved, today, data, onShown, remember = true }: { first: FeeDeal; saved: readonly FeeDeal[]; today: string; data: FeesData; onShown: () => void; remember?: boolean }) {
   const [deal, setDeal] = useState<FeeDeal>(first);
   const [chosen, setChosen] = useState<string | null>(first.fees[0]?.id ?? null);
   const [focus, setFocus] = useState<FeeFocus | null>(null);
@@ -111,7 +113,9 @@ export function useDealDocument({ first, saved, today, data, onShown }: { first:
   };
 
   // the deal on screen is the one a reload opens
-  useEffect(() => rememberOpen(deal.id), [deal.id]);
+  useEffect(() => {
+    if (remember) rememberOpen(deal.id);
+  }, [deal.id, remember]);
   // another tab saved the deal on screen: it follows; another tab deleted it: the page says so and saves it no more
   useEffect(() => {
     const stored = saved.find((d) => d.id === deal.id);

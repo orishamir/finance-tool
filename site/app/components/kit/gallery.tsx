@@ -240,6 +240,12 @@ function Basics() {
             </Button>
           </div>
         </State>
+        <State label="add: the quiet action under a list that adds to it, a plus before its words, at the column's start with its words on the line above's edge">
+          <div className="flex flex-col">
+            <p className="text-sm text-muted-foreground">{g.sample.lead}</p>
+            <Button variant="add">{g.sample.hello}</Button>
+          </div>
+        </State>
         <State label="framed: the bordered face in the action colour, a card's one action (the pair card's own price, /deal's link to the index page); danger: filled in the danger colour, the delete of ConfirmAsk beside an outline cancel; inline bold: a sentence's one action, underlined only under the pointer">
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="framed">{g.sample.hello}</Button>

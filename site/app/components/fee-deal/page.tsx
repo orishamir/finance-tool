@@ -25,11 +25,10 @@ import { dealOnIndexPath, lastIndexStore } from "../../lib/deal-account/last-ind
 import { DealBar } from "./bar";
 import { BarEnd, useCopyLink } from "./bar-end";
 import { DealNotices, type NoticeLine } from "./deal-notices";
-import { useDealEditor } from "./editor";
+import { pickItems, useDealEditor } from "./editor";
 import { FeeLinksProvider } from "./links";
 import { UndoLine } from "./undo-line";
 import { READING_ID } from "./left-out";
-import { whenText } from "./open-case";
 import { ReadingCards } from "./reading";
 import { useOpenedDeal } from "./use-deal-document";
 import { feeName } from "./words";
@@ -215,7 +214,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
               <ReadForBand
                 lead={picks.title}
                 note={picks.line}
-                picks={picks.things.map((t) => ({ name: t.words, items: t.options.map((o) => ({ id: o.is, label: whenText(o.words) })), value: t.chosen, onSelect: (is: string) => ed.onPick(t.by, is) }))}
+                picks={pickItems(picks.things, ed.onPick)}
               />
             </div>
           )}

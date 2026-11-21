@@ -181,13 +181,18 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
   const deals = dealStore.use();
   const accountDeals = useMemo(() => deals.value.filter(isAccountDeal), [deals.value]);
   const [feesData, setFeesData] = useState<FeesData | null>(null);
-  const wantFees = useCallback(() => void loadFeesData().then(setFeesData, () => undefined), []);
+  // the fee page's data that did not load: the popup says so, and its retry asks again
+  const [feesFailed, setFeesFailed] = useState(false);
+  const wantFees = useCallback(() => {
+    setFeesFailed(false);
+    void loadFeesData().then(setFeesData, () => setFeesFailed(true));
+  }, []);
   // a typed account still in the saved state waits for the price lists too, and moves into a deal once they are here (the move, method §10.4)
   const anyDeal = accountDeals.length > 0 || invest.customBrokers.length > 0;
   useEffect(() => {
     if (anyDeal) wantFees();
   }, [anyDeal, wantFees]);
-  useTypedAccountsMove(feesData, wb);
+  const notMoved = useTypedAccountsMove(feesData, wb);
   const [dealOpen, setDealOpen] = useState(false);
   const heldDeals = useRef<FeeDeal[]>(accountDeals);
   if (!dealOpen) heldDeals.current = accountDeals;
@@ -367,7 +372,7 @@ function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: Compa
 
   return (
     <LabelSheetHost>
-      <DealAccountsHost data={feesData} onWant={wantFees} saved={deals.value} writable={deals.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen}>
+      <DealAccountsHost data={feesData} onWant={wantFees} failed={feesFailed} left={notMoved} saved={deals.value} writable={deals.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen}>
       <CustomEntriesHost index={index} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
       <Frame title={title}>
         <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">

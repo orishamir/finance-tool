@@ -36,8 +36,7 @@ export const dealsDoc = (deals: readonly FeeDeal[], unread: readonly unknown[] =
 /** The stored entries the deal store last read and could not open, written back with every save. */
 let unreadNow: unknown[] = [];
 
-/** The saved deals, read after hydration and followed across tabs (browser only); entries that do not open are kept as stored. */
-export const dealStore = deviceStore<FeeDeal[]>(
+const kept = deviceStore<FeeDeal[]>(
   DEALS_KEY,
   [],
   (raw) => {
@@ -46,7 +45,20 @@ export const dealStore = deviceStore<FeeDeal[]>(
     return r.deals;
   },
   (deals) => dealsDoc(deals, unreadNow),
+  true,
 );
+
+/**
+ * The saved deals, read after hydration and followed across tabs (browser only); entries that do not open are kept as stored. `reset`
+ * forgets what was read, the entries it could not open with it, so the next read starts from the device alone.
+ */
+export const dealStore: typeof kept = {
+  ...kept,
+  reset: () => {
+    unreadNow = [];
+    kept.reset();
+  },
+};
 
 /** How many stored entries the deal store could not open, as last read. */
 export const unreadDeals = (): number => unreadNow.length;
