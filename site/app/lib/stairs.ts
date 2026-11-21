@@ -5,7 +5,7 @@
 // left between two ways on one plan is the gap in their costs). No I/O, no React.
 import { isGroupProvider } from "./group-pick";
 import type { FeesSnapshot } from "@finance-tool/schema";
-import { doubtOf, type InvestView, type OptionId } from "./invest";
+import { doubtOf, leftEmpty, type InvestView, type OptionId } from "./invest";
 
 export type Lane = "account" | "kind" | "fund";
 export const LANES: readonly Lane[] = ["account", "kind", "fund"];
@@ -60,8 +60,9 @@ export function gridOf(view: InvestView, snapshots: readonly FeesSnapshot[]): Gr
       if (at && "availability" in at && at.availability) return "u";
       // open for this fund (a house that sells the kind fund by fund, and no report names it): a doubt, never "not sold"
       if (at && "doubt" in at && at.doubt) return "d";
+      // a conversion the person left empty is a price not known, not a doubt of the documents
       const s = snap.get(a), o = optionOf.get(f)!;
-      return w && doubtOf(s, o) ? "d" : "n";
+      return w && doubtOf(s, o) && !leftEmpty(s, o) ? "d" : "n";
     },
   };
 }

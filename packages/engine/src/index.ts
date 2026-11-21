@@ -21,7 +21,6 @@ export * from "./ledgers/deposit.ts";
 export * from "./ledgers/makam.ts";
 export * from "./ledgers/bond.ts";
 export * from "./ledgers/securities.ts";
-export * from "./ledgers/deal-account.ts";
 export * from "./ledgers/provident.ts";
 export * from "./ledgers/pension.ts";
 export * from "./ledgers/employer-line.ts";

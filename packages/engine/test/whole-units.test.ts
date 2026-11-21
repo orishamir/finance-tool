@@ -4,6 +4,7 @@
 // return, fund cost or inflation unless a test says otherwise.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { buyWithCash } from "../src/formulas/fees.ts";
 import { runSecurities, type SecuritiesInput } from "../src/ledgers/securities.ts";
 import { beforeTax, providerWorkbench, unitWaysAt, waitingReal, wholeUnitsAt, type WorkbenchInput } from "../src/providers/workbench.ts";
 import { context } from "./golden/harness.ts";
@@ -87,6 +88,64 @@ describe("whole units (F-109)", () => {
     const r = runSecurities(input({ goal: { amountNow: 920, monthly: 0, months: 1 }, tariff: { buy: { rate: 0.001, min: 25 } }, wholeUnits: { price: 300 } }), ctx);
     expect(r.fees.trade).toBeCloseTo(25, 6);
     expect(r.detail.cashLeft).toBeCloseTo(295, 6);
+  });
+});
+
+describe("an order its cash cannot pay is not placed, and its cash waits for the next order (F-12, F-109)", () => {
+  const line = { rate: 0.001, min: 10 };
+  const nis = { fxRate: 1 };
+  it("F-12's order by amount: at 0.1% with a 10 ₪ minimum, 5, 9.99 and 10 ₪ place no order; 10.50 ₪ buys 0.50 and pays 10", () => {
+    for (const cash of [5, 9.99, 10]) expect(buyWithCash(cash, line, nis)).toEqual({ trade: 0, commission: 0 });
+    const over = buyWithCash(10.5, line, nis);
+    expect(over.trade).toBeCloseTo(0.5, 9);
+    expect(over.commission).toBeCloseTo(10, 9);
+  });
+  it("a flat price the cash cannot pay places no order either: 3 ₪ against a flat 5 ₪ waits, 7 ₪ buys 2", () => {
+    const flat = { ...line, flatUpTo: { amount: 5, upTo: 100 } };
+    expect(buyWithCash(3, flat, nis)).toEqual({ trade: 0, commission: 0 });
+    expect(buyWithCash(5, flat, nis)).toEqual({ trade: 0, commission: 0 });
+    expect(buyWithCash(7, flat, nis)).toEqual({ trade: 2, commission: 5 });
+  });
+  it("a run by amount carries the cash to the next order: 5 ₪ a month at a 10 ₪ minimum buys once in four months", () => {
+    // month 1: 5 waits; month 2: 10, at the minimum, waits; month 3: 15 buys 5 for 10; month 4: 5 waits. 5 held and 5 waiting of 20 paid in.
+    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 5, months: 4 }, tariff: { buy: line } }), ctx);
+    expect(r.fees.trade).toBeCloseTo(10, 9);
+    expect(r.nominal).toBeCloseTo(10, 9);
+    expect(r.series.at(-1)!.balance).toBeCloseTo(10, 9);
+    // a run by amount keeps the difference, with no W (F-91)
+    expect(r.waitingCarried).toBeUndefined();
+  });
+  it("a conversion's minimum the shekels cannot pay: the order waits for the next one", () => {
+    // 8 ₪ a month and a 10 ₪ minimum on converting a monthly purchase: month 1's 8 waits unconverted; month 2's 16 converts for 10 and buys
+    // 6; month 3's 8 waits. 6 held and 8 waiting of 24 paid in.
+    const r = runSecurities(
+      input({
+        goal: { amountNow: 0, monthly: 8, months: 3 },
+        fund: { kind: "foreign-fund", drag: {} },
+        tariff: { buy: { rate: 0 }, fx: 0, fxStanding: { rate: 0, min: 10 }, currency: { code: "USD", startRate: 4 } },
+      }),
+      ctx,
+    );
+    expect(r.fees.fx).toBeCloseTo(10, 9);
+    expect(r.nominal).toBeCloseTo(14, 9);
+  });
+  it("in whole units the count leaves out a conversion the order need not make: a dividend held in dollars buys the unit it covers with its commission", () => {
+    // The case of ie0031442068 at Interactive Israel, 50,000 ₪ now for 20 years at 5%: in month 63 a few shekels wait unconverted and the
+    // dividend held in dollars covers a unit with its 2.5 USD minimum; the 10 ₪ minimum on converting the shekels is no charge of that order.
+    // Here, on the same lines at 3.34 ₪ a dollar: 2,720 ₪ now at 300 ₪ a unit buys 9 (2,700, 8.35 commission, 10 ₪ conversion) and 1.65 ₪
+    // waits; month 12 pays 13.4%, and its net, about 271 ₪ in dollars, buys one unit at 259.80 with 8.35.
+    const tariff = { buy: { rate: 0.0015, min: 2.5, in: "instrument" as const }, fx: { rate: 0.00002, min: 10 }, currency: { code: "USD", startRate: 3.34 } };
+    const fund = { kind: "foreign-fund" as const, drag: {}, domicile: "ireland" as const, distribution: { yield: 0.134, perYear: 1 } };
+    const r = runSecurities(input({ goal: { amountNow: 2_720, monthly: 0, months: 12 }, fund, tariff, wholeUnits: { price: 300 } }), ctx);
+    const net = 2_700 * 0.134 - r.taxDuring;
+    const ask = 300 * (1 - 0.134);
+    const commission = 2.5 * 3.34;
+    // the dividend covers the unit with its commission, and would not if the shekels' conversion were charged on it
+    expect(net).toBeGreaterThanOrEqual(ask + commission);
+    expect(net + 1.65 - 10).toBeLessThan(ask + commission);
+    expect(r.fees.trade).toBeCloseTo(2 * commission, 6);
+    expect(r.fees.fx).toBeGreaterThan(0);
+    expect(r.detail.cashLeft).toBeCloseTo(1.65 + net - ask - commission, 6);
   });
 });
 

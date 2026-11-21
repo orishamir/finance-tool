@@ -5,7 +5,7 @@
 // line prices the value. Where two standard lines price a value, the one that names fewer classes wins, where F-63 finds the snapshot
 // ambiguous unless one names a sub-class. A filled figure keeps its record's source and date (sourced) until the person changes it
 // (entered, `retyped`).
-import { memberKindOf, REDEMPTION_BAND, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, tariffLine, type LineChoice } from "@finance-tool/engine";
+import { memberKindOf, REDEMPTION_BAND, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND } from "@finance-tool/engine";
 import type { FeesSnapshot, ValueObject } from "@finance-tool/schema";
 import { HOUSE_CHANNELS, isFxToFx } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
@@ -568,46 +568,6 @@ function sizeStepsOf(kind: FeeKindId, l: Line, price: Price | undefined, own: st
 /** The bases a house's price list fills a securities account's deal with, in the order the deal lists them. */
 const HOUSE_BASES = ["trade", "custody", "fixed_period", "fx", "transfer_out", "corporate_event"] as const;
 
-/** The values of its own a house's lines price (`OwnValues`), and each one met so far, in the order met (`OwnPlace`). */
-function ownValuesOf(snap: FeesSnapshot): { own: OwnValues; places: OwnPlace[] } {
-  const places: OwnPlace[] = [];
-  const ownPlace = (l: Line, place: Place, currency: string | null): OwnPlace => {
-    const name = (l.band ?? l.names.tariff[0] ?? l.id).slice(0, NAME_MAX);
-    const o: OwnPlace = { name, place, currency };
-    if (!places.some((x) => x.name === name)) places.push(o);
-    return o;
-  };
-  const another = (l: Line, test: (x: Line) => boolean) => snap.lines.some((x) => x !== l && x.base === l.base && regular(x) && test(x));
-  const own: OwnValues = {
-    // only where another line prices the exchange above the sub-class: else the sub-class is just what the exchange's value prices
-    sub: (l) => (another(l, (x) => x.applies_to.some((a) => a === "tase_shares_bonds" || a === "etf_units")) ? ownPlace(l, "israel", "ILS") : null),
-    // only where a standard line prices every mutual fund, which F-63 reads for a mutual fund: else the banded line is the funds' own price
-    funds: (l) => (another(l, (x) => x.band === null && x.applies_to.includes("mutual_fund_units") && (x.channel === null || l.channel === null || x.channel === l.channel)) ? ownPlace(l, "israel", "ILS") : null),
-    abroad: (l) => ownPlace(l, "abroad", null),
-  };
-  return { own, places };
-}
-
-/**
- * F-63's line choice in the deal's words (F-128): the value of what is bought, or of what is held, that a house's template files the line
- * under which the house's own row reads for a fund (`tariffLine`, at the list price, bought online as the indices page buys), so a deal
- * filled from the house reads the case that line filled. `value` is the value the fund's class names (F-114); it stays where the line
- * prices it. At a bank an open mutual fund is bought on the line for securities on the Tel Aviv exchange (BRK-16, part 4(א)(1), footnote
- * 4), which the template files under that exchange's value (`bankTradeLeavesFunds`), so the deal reads it there. `value` again where the
- * house has no such line, or its lines leave the choice open (the row then reads another way, F-63's candidates).
- */
-export function houseLineValue(snap: FeesSnapshot, base: "trade" | "custody", choice: Pick<LineChoice, "instrumentClass">, value: string): string {
-  let line: Line | undefined;
-  try {
-    line = tariffLine(snap, { ...choice, channel: "direct" }, base, "list");
-  } catch {
-    return value;
-  }
-  if (!line) return value;
-  const values = valuesOf(line, ownValuesOf(snap).own, memberKindOf(snap.provider.class) === "bank");
-  return values.includes(value) || values.length === 0 ? value : values[0]!;
-}
-
 /**
  * A house's whole price list as a template for a securities account (built at build time from the house's latest snapshot, its lines
  * limited to what the house's documents show a person can hold, `onlyWhatCanBeDone`): each base's fee, with its cases where the list prints
@@ -632,7 +592,21 @@ export function houseTemplateRead(snap: FeesSnapshot, unavailable: readonly Line
   const leave = (l: Line, why: LeftWhy) => left.push({ lineId: l.id, base: l.base, why, name: lineName(l), ...(l.channel ? { channel: l.channel } : {}) });
   const fees: TemplateFee[] = [];
   const read = new Set<string>();
-  const { own: ownOf, places: ownPlaces } = ownValuesOf(snap);
+  const ownPlaces: OwnPlace[] = [];
+  const ownPlace = (l: Line, place: Place, currency: string | null): OwnPlace => {
+    const name = (l.band ?? l.names.tariff[0] ?? l.id).slice(0, NAME_MAX);
+    const o: OwnPlace = { name, place, currency };
+    if (!ownPlaces.some((x) => x.name === name)) ownPlaces.push(o);
+    return o;
+  };
+  const another = (l: Line, test: (x: Line) => boolean) => snap.lines.some((x) => x !== l && x.base === l.base && regular(x) && test(x));
+  const ownOf: OwnValues = {
+    // only where another line prices the exchange above the sub-class: else the sub-class is just what the exchange's value prices
+    sub: (l) => (another(l, (x) => x.applies_to.some((a) => a === "tase_shares_bonds" || a === "etf_units")) ? ownPlace(l, "israel", "ILS") : null),
+    // only where a standard line prices every mutual fund, which F-63 reads for a mutual fund: else the banded line is the funds' own price
+    funds: (l) => (another(l, (x) => x.band === null && x.applies_to.includes("mutual_fund_units") && (x.channel === null || l.channel === null || x.channel === l.channel)) ? ownPlace(l, "israel", "ILS") : null),
+    abroad: (l) => ownPlace(l, "abroad", null),
+  };
   for (const l of unavailable) leave(l, "unavailable");
   // each base's lines and raw prices first, so the values the house's list prices anywhere (`sold`) are known before any fee is built
   const bases = HOUSE_BASES.flatMap((base) => {

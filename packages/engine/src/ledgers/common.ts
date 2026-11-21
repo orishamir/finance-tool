@@ -1,6 +1,7 @@
 // Pieces every ledger shares: the taxpayer profile, the exit-year tax on "maximum rate" income (F-40 with
-// F-42 and F-43), and assembling the result.
+// F-42 and F-43), the cash between orders of a run that buys by amount (F-12), and assembling the result.
 import { bracketTaxOnTopSlice, surtax } from "../formulas/exit-tax.ts";
+import { buyWithCash, type Commission, type TradeTerms } from "../formulas/fees.ts";
 import { lastMonthOfTaxYear, taxYearOf } from "../formulas/time.ts";
 import { BlockedError, type RuleBook } from "../resolver.ts";
 import { emptyFees, type FeeType, type Flag, type MonthPoint, type Outcome, type RunResult } from "../result.ts";
@@ -111,6 +112,34 @@ export function unlessBlocked<T>(step: () => T): { value: T; blocked?: undefined
   }
 }
 
+/**
+ * F-12 with F-24 and F-25: the account's cash between the orders of a run that buys by amount (makam, a government bond). An order's cash
+ * is what it brings and what waits from earlier orders. An order its cash cannot pay is not placed (`buyWithCash`): its cash stays in the
+ * account, earning nothing, joins the next order placed, and at the horizon is part of what is left (`waiting`).
+ */
+export class OrderCash {
+  private held = 0;
+
+  constructor(
+    private readonly line: Commission | undefined,
+    private readonly terms: TradeTerms,
+  ) {}
+
+  /** One order with `cash` and what waits; a call with no cash places no order and leaves the waiting cash as it is. */
+  buy(cash: number): { trade: number; commission: number } {
+    if (!(cash > 0)) return { trade: 0, commission: 0 };
+    const total = cash + this.held;
+    const order = buyWithCash(total, this.line, this.terms);
+    this.held = order.trade > 0 ? 0 : total;
+    return order;
+  }
+
+  /** The cash of the orders not placed, waiting for the next one. */
+  get waiting(): number {
+    return this.held;
+  }
+}
+
 /** Running totals a ledger keeps while it steps through the months. */
 export class Tally {
   fees = emptyFees();
@@ -126,8 +155,6 @@ export class Tally {
   /** F-109 on a run in whole units: the waiting cash in units of the same index, entered at a month's start and left at its end (`waitFrom`, `waitTo`). */
   private waited = 0;
   private waits = false;
-  /** F-128 on a run of a deal account: each of the deal's fees in units of the same index (`feeBy`), by its index in the deal. */
-  private carriedBy: number[] = [];
 
   fee(type: FeeType, amount: number) {
     // nothing to add: a total that starts at 0 never becomes -0, so adding 0 leaves it as it is, and 0 over a growth that is a number other
@@ -135,12 +162,6 @@ export class Tally {
     if (amount === 0 && this.growth !== 0 && this.growth === this.growth) return;
     this.fees[type] += amount;
     this.carried[type] += amount / this.growth;
-  }
-
-  /** F-128: a deal fee's part of a charge already added by its line (`fee`), carried as `fee` carries the line. */
-  feeBy(i: number, amount: number) {
-    if (amount === 0) return;
-    this.carriedBy[i] = (this.carriedBy[i] ?? 0) + amount / this.growth;
   }
 
   /** The fund's total return in a month (its growth less its own costs, a distribution kept in): a ledger that calls it reports `feesCarried`. */
@@ -207,7 +228,6 @@ export class Tally {
       rules: book.used(),
       ...(this.grows ? { feesCarried: Object.fromEntries(Object.entries(this.carried).map(([k, v]) => [k, v * this.growth])) as Record<FeeType, number> } : {}),
       ...(this.grows && this.waits ? { waitingCarried: this.waited * this.growth } : {}),
-      ...(this.carriedBy.length ? { feesCarriedBy: Array.from(this.carriedBy, (v) => (v ?? 0) * this.growth) } : {}),
     };
   }
 }

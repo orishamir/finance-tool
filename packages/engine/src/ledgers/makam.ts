@@ -1,12 +1,12 @@
 // Makam held directly in a securities account (a security, not a wrapper: D6), bought at issue and rolled: F-24, with F-12
 // commissions, F-14 custody where the account's member may charge it, and the F-40 exit for a sale before redemption.
-import { buyWithCash, custodyFee, fixedFee, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
+import { custodyFee, fixedFee, saleCommission, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { makamPrice } from "../formulas/holding-tax.ts";
 import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { ruleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
 import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult } from "../result.ts";
-import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
+import { exitTax, OrderCash, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 
 export interface MakamInput {
   goal: Goal;
@@ -47,6 +47,8 @@ const DAYS = 365;
  * (G-20, as F-09).
  * Custody and the account's monthly fee are paid by selling a slice of each series held: each slice is a sale before redemption, so its
  * own gain is a capital gain of its tax year (TXI-12), and that year's custody and account fees come off that year's capital gains (TXS-06).
+ * A purchase its cash cannot pay buys no series: the cash waits in the account, earning nothing, for the next purchase, and at the horizon
+ * is part of what is left (F-12, F-24).
  */
 export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
   return acrossReadings(ctx, (c) => runMakamUnder(input, c), RUN_RESULT_FIELDS);
@@ -71,15 +73,18 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
   tally.flag("G-09");
 
   const price = (monthsLeft: number) => makamPrice(makam.yield, (DAYS * monthsLeft) / 12);
-  const buy = (cash: number, maturity: number): Series => {
-    const { trade, commission } = buyWithCash(cash, tariff.buy, { fxRate: 1 });
+  let held: Series[] = [];
+  const orders = new OrderCash(tariff.buy, { fxRate: 1 });
+  const buy = (cash: number, maturity: number) => {
+    const { trade, commission } = orders.buy(cash);
+    // an order its cash cannot pay is not placed: the cash waits for the next one (F-12, F-24)
+    if (!(trade > 0)) return;
     tally.fee("trade", commission);
     // The purchase commission is not in the cost, so it reduces neither the taxed discount (G-39) nor a gain (G-20): flagged where the
     // series is redeemed or sold.
-    return { face: (trade / price(term)) * 100, cost: trade, maturity, commissioned: commission > 0 };
+    held.push({ face: (trade / price(term)) * 100, cost: trade, maturity, commissioned: commission > 0 });
   };
 
-  let held: Series[] = [];
   let cashAtExit = 0;
   let taxAtExit = 0;
   let saleGain = 0;
@@ -98,7 +103,7 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
   for (let m = 1; m <= T; m++) {
     const cash = (m === 1 ? C[0]! : 0) + C[m]!;
     tally.paidIn += cash;
-    if (cash > 0) held.push(buy(cash, m + term - 1));
+    if (cash > 0) buy(cash, m + term - 1);
 
     const redeemed = held.filter((s) => s.maturity === m);
     held = held.filter((s) => s.maturity !== m);
@@ -119,7 +124,7 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
     }
     // before the horizon the net proceeds buy the next series at once, so a redemption month holds paper when custody is counted
     if (m < T && proceeds > 0) {
-      held.push(buy(proceeds, m + term));
+      buy(proceeds, m + term);
       proceeds = 0;
     }
     // F-14 and F-17: a custody fee and the account's monthly fee on the series held at the month's price, paid by selling a slice of each.
@@ -147,10 +152,11 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
       interestThisYear = 0;
     }
     if (m === T) {
-      cashAtExit += proceeds;
+      // the cash of orders not placed is part of what is left, and no gain (F-24)
+      cashAtExit += proceeds + orders.waiting;
       for (const s of held) {
         const gross = (s.face * price(s.maturity - T)) / 100;
-        const commission = tradeCommission(tariff.sell, gross, { fxRate: 1 });
+        const commission = saleCommission(tariff.sell, gross, { fxRate: 1 });
         tally.fee("trade", commission);
         if (commission > 0 || s.commissioned) tally.flag("G-20");
         saleGain += gross - s.cost;
@@ -165,7 +171,7 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
       }
     }
     const value = held.reduce((v, s) => v + (s.face * price(Math.max(0, s.maturity - m))) / 100, 0);
-    tally.point(m, I[m]!, m < T ? value : cashAtExit);
+    tally.point(m, I[m]!, m < T ? value + orders.waiting : cashAtExit);
   }
 
   // A year with no sale owes nothing on its slices: a slice's gain is less than its value, which is the fee it pays, so the year's fees
