@@ -289,6 +289,7 @@ export function FeesColumn({
   refusal,
   adding,
   onDuplicate,
+  noteOf,
 }: {
   deal: FeeDeal;
   view: Builder;
@@ -317,6 +318,8 @@ export function FeesColumn({
   adding: { palette: PaletteItem[]; copy?: CopyHands | null } | "line" | null;
   /** A fee duplicated beside itself; null for a fee the page does not duplicate (a kind that stands alone). */
   onDuplicate?: (fee: Fee) => (() => void) | null;
+  /** What the host says under a fee's block (the indices page: what the plan charges for it, or why nothing); none where it says nothing. */
+  noteOf?: (fee: Fee) => ReactNode;
 }) {
   // each block's height as last drawn, the room the line a removed fee leaves holds for a moment
   const root = useRef<HTMLDivElement>(null);
@@ -469,6 +472,7 @@ export function FeesColumn({
                 const li = (
                   <FeeItem key={it.fee.id} id={it.fee.id}>
                     {feeZone(it.fee, key, <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} formLine={formLine(it.fee)} actions={blockActions} onFee={onFee} onSplit={(f) => onDeal(keepPicks(deal, { ...deal, fees: deal.fees.map((x) => (x.id === f.id ? f : x)) }))} grip={feeLift(it.fee, key, k, fees.length)} corner={corner(it.fee)} />)}
+                    {noteOf?.(it.fee)}
                     {refusal?.feeId === it.fee.id && <RefusalLine refusal={refusal} />}
                     {cl && (
                       <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => backTo(cl)}>

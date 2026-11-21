@@ -19,7 +19,9 @@ import { dealStore, unreadDeals } from "../../lib/fee-deal/store";
 import type { DealUndo } from "../../lib/fee-deal/undo";
 import type { FeesData } from "../../lib/fee-page-data";
 import { Breadcrumb } from "../shell";
-import { Callout, PageHead, ReadForBand, Section } from "../kit";
+import { Callout, LinkButton, PageHead, ReadForBand, Section } from "../kit";
+import { isAccountDeal } from "../../lib/deal-account/plan";
+import { dealOnIndexPath, lastIndexStore } from "../../lib/deal-account/last-index";
 import { DealBar } from "./bar";
 import { BarEnd, useCopyLink } from "./bar-end";
 import { DealNotices, type NoticeLine } from "./deal-notices";
@@ -119,6 +121,7 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
   const { shown, words, lines } = ed.undo;
   const change = doc.change;
   const link = useCopyLink(deal);
+  const lastIndex = lastIndexStore.use();
   // a link pasted into the address while the page is open (a change of the fragment alone loads nothing): its deal opens as on a fresh
   // load, saved as a deal, the one on screen kept among the saved ones; the address is cleared again
   const navigate = useNavigate();
@@ -191,7 +194,19 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
         onDismiss={() => setSaid(null)}
       />
       {ed.picker}
-      {ed.columns(ed.setupStrip)}
+      {ed.columns(
+        // a saved securities account's strip ends with one link: the deal against every house, on the index last shown (F-128)
+        isAccountDeal(deal) && saved.some((d) => d.id === deal.id) ? (
+          <>
+            {ed.setupStrip}
+            <LinkButton to={dealOnIndexPath(deal.id, lastIndex.value)} className="mt-2 self-start">
+              {copy.end.onIndices} ↗
+            </LinkButton>
+          </>
+        ) : (
+          ed.setupStrip
+        ),
+      )}
       {ed.menus}
       {views?.reading && (
         <Section id={READING_ID} title={copy.reading}>

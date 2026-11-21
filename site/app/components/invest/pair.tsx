@@ -18,7 +18,7 @@ import { HelpMark, ClampedText, gershayim, Disclosure, DocLink, LabelRow, NoteLi
 import { isGroupPrice } from "../../lib/group-pick";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
-import { OwnAccountButton } from "./own-account";
+import { DealFromHouseButton } from "./deal-account";
 import { StateTag } from "../provenance";
 import { sourceHref, withoutCodes } from "../../lib/sources";
 
@@ -444,9 +444,9 @@ export function HouseLine({ house, snapshot, charge }: { house: NonNullable<Retu
               </DocLink>
               <span className="text-muted-foreground"> · {c.pair.collectedOn(`\u2066${fmt.date(snapshot.snapshot)}\u2069`)}</span>
             </span>
-            <OwnAccountButton houseId={house.id} house={house.short} className="-mx-2 -my-2.5">
+            <DealFromHouseButton houseId={house.id} className="-mx-2 -my-2.5">
               {c.pair.ownPrice}
-            </OwnAccountButton>
+            </DealFromHouseButton>
           </>
         )
       )}

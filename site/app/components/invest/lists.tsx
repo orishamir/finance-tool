@@ -29,6 +29,7 @@ import { IconLock } from "../icons";
 import { Num, Ruled } from "../provenance";
 import { AlsoChanged, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
+import { AddDealButton, DealTerms } from "./deal-account";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
@@ -238,7 +239,7 @@ export function PairLists(props: ListsProps) {
             {nameWithMark(p, selected)}
             {selected ? chosenWord(chosen, "text-chart-by-account") : figureCell(c.lists.accounts.upTo, priced(best) && <Num animate value={best.value} />, s.best)}
             <StretchBar scale={scale} best={s.best} worst={s.worst} className="h-6 max-xl:h-8" />
-            {p.custom && underRow(<BrokerTerms id={p.id} />)}
+            {p.custom && underRow(<><BrokerTerms id={p.id} /><DealTerms id={p.id} /></>)}
             {selected && movedHere("fund")}
           </>
         ),
@@ -261,7 +262,7 @@ export function PairLists(props: ListsProps) {
             </span>
             {selected ? chosenWord(chosen, "text-chart-by-account") : <span className="inline-flex items-center gap-1 text-xs text-blocked-foreground whitespace-nowrap"><IconLock size={14} />{c.lists.accounts.unranked}</span>}
             <StretchBar scale={scale} best={null} worst={null} className="h-6 max-xl:h-8" />
-            {p.custom && underRow(<BrokerTerms id={p.id} />)}
+            {p.custom && underRow(<><BrokerTerms id={p.id} /><DealTerms id={p.id} /></>)}
             {selected && movedHere("fund")}
           </>
         ),
@@ -296,7 +297,7 @@ export function PairLists(props: ListsProps) {
               </NoFundWords>
             </span>
             <span aria-hidden="true" className="w-[9px]" />
-            {p.custom && underRow(<BrokerTerms id={p.id} />)}
+            {p.custom && underRow(<><BrokerTerms id={p.id} /><DealTerms id={p.id} complete /></>)}
           </>
         ),
       };
@@ -636,7 +637,7 @@ export function PairLists(props: ListsProps) {
   const accountsFoot = (
     <div className="flex flex-col gap-3">
       {marked && <p className="text-xs text-muted-foreground">{leftOutCopy.markKey}</p>}
-      <AddEntryButton kind="broker" />
+      <AddDealButton />
       {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />
     </div>

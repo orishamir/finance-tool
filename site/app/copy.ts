@@ -2500,6 +2500,8 @@ export const feeDeal = {
     copied: "הקישור הועתק",
     /** The line a saved deal just deleted leaves under the bar, before its name. */
     deleted: "נמחקה מהמכשיר: ",
+    /** A saved securities-account deal's strip ends with this link: the deal against every house, on the indices page. */
+    onIndices: "לראות את העסקה מול כל הבתים, בהשקעה במדד",
     /** Under a saved deal's name in the list: its product, and the day it was last saved (`savedOn` before the date). */
     savedOn: "נשמרה ב־",
     /** Closes the line that says a template opened a new deal. */
@@ -4232,6 +4234,91 @@ export const invest = {
   },
 
   /** A broker and a fund the person types (D44). */
+  /** A securities-account deal the person saved, as an account of the lists, and the popup that edits it on the plan (F-128). */
+  dealAccount: {
+    /** The tag beside the deal's name in the lists, the pair's card and the receipt. */
+    tag: "שלכם",
+    add: "להזין תנאים שקיבלתם",
+    edit: "לערוך את העסקה",
+    /** Where a deleted deal's row stood, before its name. */
+    deleted: "נמחקה מהמכשיר: ",
+    /** The house a new deal starts from, its name. */
+    nameOf: (house: string) => `${house}, בתנאים שלי`,
+    /** A deal the plan cannot price: what it lacks, said by its fee (lib/deal-account/plan.ts, `MissingWhy`), and the tap that opens it there. */
+    missing: {
+      price: (fee: string) => `עוד בלי מחיר: ${fee}, ולכן לא מדורג.`,
+      order: (fee: string) => `המחירים של ${fee} לא לפי הסדר, ולכן לא מדורג.`,
+      case: (fee: string) => `ב${fee} אין מקרה לקרן כזאת, ולכן לא מדורג.`,
+      "not-read": (fee: string) => `${fee} משתנה לפי המסחר בחודש או מספר הפעולות, שהחישוב עוד לא קורא, ולכן לא מדורג.`,
+    } as Record<string, (fee: string) => string>,
+    complete: "להשלים",
+    /** The popup's head. */
+    head: {
+      nameField: "שם העסקה",
+      rename: "שינוי השם",
+      saved: "נשמרת במכשיר הזה, גם ב״העסקאות שלי״",
+      unsaved: "תישמר במכשיר הזה כשתשנו בה משהו",
+      openDeal: "לפתוח בעמוד העמלות",
+      close: "סגירה",
+      more: "עוד פעולות לעסקה",
+      remove: "מחיקת העסקה",
+      confirm: "למחוק את העסקה מהמכשיר הזה?",
+      confirmBody: "היא תצא מרשימת החשבונות ומ״העסקאות שלי״ בעמוד העמלות.",
+      confirmYes: "מחיקה",
+      confirmNo: "ביטול",
+    },
+    /** A new deal: from a house's latest price list, or empty. */
+    start: {
+      title: "עסקה חדשה",
+      lede: "מתחילים מהתעריפון האחרון של בית ומשנים את מה שקיבלתם, או מעסקה ריקה. העסקה נשמרת במכשיר הזה ומופיעה ברשימת החשבונות.",
+      search: "חיפוש בית",
+      clear: "ניקוי החיפוש",
+      group: "בתי השקעות ובנקים",
+      none: "אין בית בשם הזה",
+      empty: "עסקה ריקה",
+    },
+    tiles: {
+      left: (years: number) => `נשאר אחרי ${countPhrase(years, { one: "שנה אחת", two: "שנתיים", many: "שנים" })}`,
+      leftNote: "בכסף של היום, אחרי דמי ניהול, עמלות ומס",
+      leftAbout: "מה שנשאר בעסקה שלכם בסוף התוכנית",
+      place: "המקום בהשוואה",
+      placeValue: (rank: number, of: number) => `${rank} מתוך ${of}`,
+      placeNote: "לפי מה שנשאר בסוף",
+      diff: (house: string) => `מול התעריפון של ${house}`,
+      diffNote: "באותה קרן, לפי התוכנית שלכם",
+      diffAbout: "מה שנשאר בעסקה שלכם פחות מה שנשאר לפי התעריפון של אותו בית, באותה קרן",
+      noSum: "עוד אין סכום",
+      waits: (fee: string) => `${fee} מחכה למחיר`,
+      unranked: "לא מדורג",
+      unrankedNote: "עד שיהיה מחיר לכל עמלה",
+      /** The phone's strip: the difference, then the plan's line opened by a tap. */
+      planTap: "התוכנית",
+    },
+    /** The plan the deal is read on, under the tiles. */
+    plan: (amount: string, monthly: string, years: number, rate: string, fund: string, where: string) =>
+      `על התוכנית שבעמוד: ${amount} היום, ${monthly} בחודש, ${countPhrase(years, { one: "שנה אחת", two: "שנתיים", many: "שנים" })}, ${rate} בשנה · ${fund}, נקנית ${where}`,
+    where: { tase: "בתל אביב", us: "בארצות הברית", europe: "באירופה", world: "בחו״ל", manager: "ממנהל הקרן" } as Record<string, string>,
+    /** Under a fee's block: what the plan charges, or why it charges nothing (lib/deal-account/plan.ts, `OffPlan`). */
+    onPlan: "בתוכנית",
+    offPlan: "לא בתוכנית",
+    off: {
+      "shekel-fund": "הקרן נקנית בשקלים, ולכן בתוכנית אין המרה.",
+      "transfer-out": "בתוכנית לא מעבירים את הקרן לחשבון אחר.",
+      "fund-record": "דמי הניהול של הקרן באים מהנתונים של הקרן, לא מהעסקה.",
+      cover: "בתוכנית אין ביטוח.",
+      "no-dividend": "הקרן לא מחלקת דיבידנד, ולכן בתוכנית אין אירוע חברה.",
+      "not-yet": "החישוב עוד לא גובה עמלה כזאת.",
+      "own-words": "עמלה במילים שלכם: החישוב לא גובה אותה.",
+      "no-current-account": "בעמוד הזה לא סופרים חשבון עובר ושב.",
+      banned: "לפי הכללים, עמלה כזאת לא נגבית כאן.",
+    } as Record<string, string>,
+    ownBank: (bank: string) => `סימנתם בעמוד שיש לכם כבר חשבון עו״ש ב${bank}.`,
+    /** A deal filled from a bank pays the bank's current account (F-102): said once under the fees. */
+    bankAccount: (bank: string, sum: string) => `בתוכנית נספר גם חשבון העו״ש של ${bank}: ${sum}.`,
+    /** The pick bar: what only the person knows (a track, a condition of their own), then what the plan sets itself. */
+    readFor: "קוראים את העסקה בשביל",
+    planKnows: (where: string) => `את השאר התוכנית יודעת: הקרן נקנית ${where}, באינטרנט, פעם בחודש.`,
+  },
   customEntries: {
     /** Buttons: an action with an object is an infinitive, up to three words (wording.md). */
     addBroker: "להזין תנאים שקיבלתם",

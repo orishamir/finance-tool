@@ -1,5 +1,6 @@
 // Shared pieces of the index page: the type tag, the "what do the labels mean" list, and the sentence for a cell the engine
 // could not price. The label chip, its row and its sheet are in the kit.
+import { feeNameOf } from "../../lib/fee-deal/part-words";
 import { invest as c, r4workbench } from "../../copy";
 import { allLabels, optionLabels, type Label } from "../../lib/labels";
 import type { OptionId } from "../../lib/invest";
@@ -108,7 +109,7 @@ export function reasonSentence(r: NotComparable, instrumentClass: string, channe
     case "rule-open":
       return c.reasons.ruleOpen[r.ruleId] ?? c.reasons.ruleOpenOther;
     case "deal-unpriced":
-      // the deal's own reading says what it lacks, in its words (lib/deal-account)
-      return r.detail;
+      // the deal's own reading says what it lacks, by its fee's name (lib/deal-account)
+      return r.missing ? (c.dealAccount.missing[r.missing.why] ?? c.dealAccount.missing.price!)(feeNameOf(r.missing.kind, r.missing.name)) : c.dealAccount.missing.price!("");
   }
 }
