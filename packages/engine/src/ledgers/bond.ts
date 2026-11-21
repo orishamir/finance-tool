@@ -142,16 +142,18 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
     ? gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed
     : gross - lots.reduce((s, l) => s + l.basis, 0) - exitYearFees;
   if (adjusted) book.cite("TXS-02");
-  if (gain < 0) tally.flag("G-07");
-  tally.flag("G-20");
-  const exit = unlessBlocked(() =>
+  // a run in which every order waited holds no bond at T: nothing is sold, so no gain, no loss and no exit tax
+  const sells = lots.length > 0;
+  if (sells && gain < 0) tally.flag("G-07");
+  if (sells) tally.flag("G-20");
+  const exit = !sells ? undefined : unlessBlocked(() =>
     linked
       ? exitTax(book, profile, T, gain, book.rate("TXI-14", "rate"), false, exitYearCoupons, first)
       : exitTax(book, profile, T, gain, book.rate("TXI-12", "rate"), true, exitYearCoupons, first),
   );
   if (!linked) book.cite("TXS-03");
-  if (exit.value?.settledByReturn) tally.flag("G-21");
-  const taxAtExit = exit.value?.tax ?? 0;
+  if (exit?.value?.settledByReturn) tally.flag("G-21");
+  const taxAtExit = exit?.value?.tax ?? 0;
 
   return tally.result(book, {
     exitMonth: T,
@@ -159,7 +161,7 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
     nominal: gross - commission - taxAtExit + couponCashAtExit + orders.waiting,
     index: I,
     taxAtExit,
-    outcome: exit.outcome,
+    outcome: exit?.outcome,
     detail: { ...detail, gain, exitYearFees },
     formulas: ["F-25", "F-12", "F-14", ...(tariff.monthlyFee ? ["F-17"] : []), "F-09", "F-40"],
   });
