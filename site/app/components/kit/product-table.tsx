@@ -165,9 +165,16 @@ function useFitsWidth(place: "phone" | "table" | null) {
 }
 
 /** A heading's strip, folding its group when `fold` is given: a press anywhere on it but a link toggles; the chevron is its button. */
+/** A folding strip's words let a press through to the strip's stretched button; a link or a button in them keeps its own. */
+const STRIP_THROUGH = "[&>span]:pointer-events-none [&>span_:is(a,button,[role=button])]:pointer-events-auto";
+
 function HeadingParts({ heading, fold }: { heading: NonNullable<ProductGroup["heading"]>; fold?: { open: boolean; toggle: () => void } }) {
   return (
     <>
+      {/* a press anywhere on the strip folds it, as its chevron does: a button stretched over the strip, whose words let a press through to it
+          while what has a press of its own in them keeps it (`STRIP_THROUGH`: a term that opens its card); the chevron is the keyboard's, so
+          this one takes no Tab stop */}
+      {fold && <button type="button" tabIndex={-1} aria-hidden="true" onClick={fold.toggle} className="absolute inset-0" />}
       <span className="grp-title">{heading.title}</span>
       {heading.line && <span className="grp-line">{heading.line}</span>}
       {fold && (
@@ -187,11 +194,6 @@ function HeadingParts({ heading, fold }: { heading: NonNullable<ProductGroup["he
     </>
   );
 }
-
-/** The strip's own press: a link or a button inside it (a term that opens its card) keeps its own. */
-const stripPress = (toggle: () => void) => (e: React.MouseEvent) => {
-  if (!(e.target as HTMLElement).closest("a, button, [role=button]")) toggle();
-};
 
 export function ProductTable({ columns, groups, foot, stickyHead, foldable, dense }: { columns: ProductColumn[]; groups: ProductGroup[]; foot?: (place: "phone" | "table") => ReactNode; /** The head row stays under the site's header while the page scrolls (a long list). It sticks while the table fits its card; a table that scrolls sideways scrolls its head with it. */ stickyHead?: boolean; /** A heading's strip folds its group's rows; every group starts open. */ foldable?: boolean; /** A dense table of many narrow columns (a company page's tracks, beside its side list): 8 px at each side of a cell between columns instead of 12; the table's two outer edges keep 12, so a figure or a "?" there keeps its 44 px inside the card. A column's `width` counts its cells' padding: 1 rem between columns, 1.25 at an edge. */ dense?: boolean }) {
   const bannerId = useId();
@@ -229,7 +231,7 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable, dens
           const fold = g.heading ? foldOf(g) : undefined;
           const rows = fold?.open === false ? [] : g.rows.map((r) => <Fragment key={r.key}>{r.phone}</Fragment>);
           const heading = g.heading && (
-            <div className={cx("grp-phone", fold && "grp-foldable")} onClick={fold && stripPress(fold.toggle)}>
+            <div className={cx("grp-phone", fold && cx("grp-foldable", STRIP_THROUGH))}>
               <HeadingParts heading={g.heading} fold={fold} />
             </div>
           );
@@ -317,8 +319,8 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable, dens
               return [
               ...(g.heading
                 ? [
-                    <tr key={`${g.key}-heading`} className={cx("grp-row", fold && "grp-foldable")} onClick={fold && stripPress(fold.toggle)}>
-                      <th colSpan={columns.length} scope="rowgroup" className="tbl-start tbl-end">
+                    <tr key={`${g.key}-heading`} className={cx("grp-row", fold && "grp-foldable")}>
+                      <th colSpan={columns.length} scope="rowgroup" className={cx("tbl-start tbl-end", fold && STRIP_THROUGH)}>
                         <HeadingParts heading={g.heading} fold={fold} />
                       </th>
                     </tr>,
