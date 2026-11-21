@@ -262,11 +262,11 @@ describe("the field checks say one message each", () => {
 describe("the third kit job's options", () => {
   // the piece alone, before the provenance sheet the test frame draws after it
   const own = (el: React.ReactElement) => html(el).split("<dialog")[0]!;
-  it("an inline button wraps with its sentence: no flex box, underlined, a tap layer", () => {
+  it("an inline button wraps with its sentence: no flex box, underlined, a tap layer 12 px past its words and never under 44 px", () => {
     const out = own(createElement(Button, { variant: "inline", children: "x" }));
     expect(out).not.toContain("inline-flex");
     expect(out).toContain("underline");
-    expect(out).toContain("before:-inset-y-3");
+    expect(out).toContain("before:h-[max(calc(100%+1.5rem),var(--target))]");
   });
   it("a compact text action is 44 px on a phone and low with a tap area from lg; gap sm is one gap", () => {
     const out = html(createElement(Button, { variant: "quiet", size: "compact", children: "x" }));

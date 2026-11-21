@@ -36,7 +36,8 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
  * one control that takes something away), an icon alone in a 36 px round face with a 44 px tap area, 44 px square on a phone, in the muted ink with no edge, the
  * danger colour only under the pointer or the focus. `inline`: an action inside a sentence, around words that may wrap with it (a name that
  * picks a pair, the way back from a choice that changed something else): underlined in the link colour, on the sentence's lines, its
- * 44 px target a layer reaching 12 px above and below the words, so it takes no more height than they do (a layer, not a margin pulled
+ * target a layer reaching 12 px above and below the words and never under 44 px tall (on a line of small text it reaches a little
+ * further), so it takes no more height than they do (a layer, not a margin pulled
  * in: a way back wrapped onto two lines in a narrow cell was drawn over the note, 390 px). `add`: the quiet face under a list or a choice,
  * for the action that adds to it or starts a new one ("+ להזין תנאים שקיבלתם" under the account list): a plus before the words, standing
  * at the start of its column (`self-start`) with its words lined up with the text above it, its side padding pulled out past the edge. A
@@ -45,7 +46,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 export function Button({ variant = "secondary", flush, size, gap, wide, bold, className, children, type = "button", ...rest }: ButtonProps) {
   if (variant === "inline")
     return (
-      <button type={type} className={cx("relative rounded-md text-start text-link underline-offset-[3px] transition-colors duration-[var(--duration-fast)] before:absolute before:inset-x-0 before:-inset-y-3", bold ? "font-semibold hover:underline" : "underline hover:no-underline", className)} {...rest}>
+      <button type={type} className={cx("relative rounded-md text-start text-link underline-offset-[3px] transition-colors duration-[var(--duration-fast)] before:absolute before:inset-x-0 before:top-1/2 before:h-[max(calc(100%+1.5rem),var(--target))] before:-translate-y-1/2", bold ? "font-semibold hover:underline" : "underline hover:no-underline", className)} {...rest}>
         {children}
       </button>
     );

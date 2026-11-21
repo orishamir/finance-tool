@@ -12,10 +12,14 @@ import { cx } from "./cx";
 import { RemoveButton } from "./remove-button";
 import { Tag } from "./tag";
 
-/** The fee's mark and name: its emoji on a faint tile of its colour, or its dot where it has none. `dot` is its colour role as a class (`bg-fee-trade`). */
-function FeeName({ dot, mark, name }: { dot: string; mark?: string | undefined; name: ReactNode }) {
+/**
+ * The fee's mark and name: its emoji on a faint tile of its colour, or its dot where it has none. `dot` is its colour role as a class
+ * (`bg-fee-trade`). `end`: a host's words stand at the end of the name's line (`FeeHeadSlot.end`): the name's first line is the box's
+ * baseline, which the words beside it take (`self-baseline`), so they stand at the end of its first line where the name wraps.
+ */
+function FeeName({ dot, mark, name, end }: { dot: string; mark?: string | undefined; name: ReactNode; end?: boolean }) {
   return (
-    <span className="inline-flex min-h-target min-w-0 items-center gap-2">
+    <span className={cx("min-h-target min-w-0 gap-2", end ? "inline-grid grid-cols-[auto_minmax(0,1fr)] content-center items-center self-baseline" : "inline-flex items-center")}>
       {mark ? (
         <span aria-hidden className="relative grid size-7.5 shrink-0 place-items-center rounded-lg text-base leading-none">
           <span className={cx("absolute inset-0 rounded-lg opacity-25", dot)} />
@@ -24,7 +28,7 @@ function FeeName({ dot, mark, name }: { dot: string; mark?: string | undefined; 
       ) : (
         <span aria-hidden className={cx("size-2.5 shrink-0 rounded-full", dot)} />
       )}
-      <span className="text-lg font-semibold">{name}</span>
+      <span className={cx("text-lg font-semibold", end && "self-baseline")}>{name}</span>
     </span>
   );
 }
@@ -70,9 +74,9 @@ export function FeeBlock({ dot, mark, name, remove, open, grip, corner, head, ch
       {!open && corner && <Corner>{corner}</Corner>}
       <span data-fee-head="" data-lift-head="" className={cx("flex items-center gap-2", head?.end ? "flex-nowrap" : "flex-wrap")}>
         {grip}
-        <FeeName dot={dot} mark={mark} name={name} />
+        <FeeName dot={dot} mark={mark} name={name} end={!!head?.end} />
         {remove && <RemoveButton {...remove} />}
-        {head?.end && <span className="ms-auto shrink-0">{head.end}</span>}
+        {head?.end && <span className="ms-auto shrink-0 self-baseline">{head.end}</span>}
       </span>
       {head?.under && <div className="-mt-1 text-sm text-muted-foreground">{head.under}</div>}
       {children}
@@ -82,8 +86,8 @@ export function FeeBlock({ dot, mark, name, remove, open, grip, corner, head, ch
 }
 
 /**
- * What a host adds to a fee's card (the indices page's popup; /deal adds nothing): `end`, at the end of the name's line at every width,
- * the name wrapping beside it (what the fee costs on a plan, or a chip saying the plan never charges it); `under`, quiet lines under it
+ * What a host adds to a fee's card (the indices page's popup; /deal adds nothing): `end`, at the end of the name's first line at every
+ * width, the name wrapping beside it (what the fee costs on a plan, or a chip saying the plan never charges it); `under`, quiet lines under it
  * (why, or what the house's customers paid); and `foot`, a line after its cases (a case the page needs that the fee lacks). A fee with one
  * price and a head has its parts on a line of their own under these.
  */
@@ -108,9 +112,9 @@ export function SlimFee({ dot, mark, name, label, onOpen, open, remove, actions,
         <div data-open-fee="" className="contents">
           <span data-fee-head="" data-lift-head="" className="flex flex-wrap items-center gap-2">
             {grip}
-            <FeeName dot={dot} mark={mark} name={name} />
+            <FeeName dot={dot} mark={mark} name={name} end={!!head?.end} />
             {remove && <RemoveButton {...remove} />}
-            {head?.end && <span className="ms-auto">{head.end}</span>}
+            {head?.end && <span className="ms-auto self-baseline">{head.end}</span>}
             <Tag tone="primary" icon={<IconCheck size={14} className="shrink-0" />} className={head?.end ? undefined : "ms-auto"}>
               {copy.chosen}
             </Tag>
@@ -128,8 +132,8 @@ export function SlimFee({ dot, mark, name, label, onOpen, open, remove, actions,
           {grip}
           {head?.end ? (
             <span className="flex min-w-0 flex-1 items-center gap-x-3">
-              <FeeName dot={dot} mark={mark} name={name} />
-              <span className="ms-auto shrink-0">{head.end}</span>
+              <FeeName dot={dot} mark={mark} name={name} end />
+              <span className="ms-auto shrink-0 self-baseline">{head.end}</span>
             </span>
           ) : (
             <FeeName dot={dot} mark={mark} name={name} />
