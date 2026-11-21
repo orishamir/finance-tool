@@ -234,10 +234,22 @@ describe("F-128 a charge on what is held or on the account reads the months it c
     expect(r.fees.fixed).toBeCloseTo(118 * 10 + 2 * 20, 6);
   });
 
-  it("a quarterly charge reads the orders of its quarter", () => {
-    // three orders a quarter, four in the first and the last: up to three the cheaper step, so only those two quarters pay the dearer
-    const r = runSecurities({ ...base, deal: byCount(3, 3) }, ctx);
+  it("a quarterly charge reads its quarter's orders a month, their total ÷ 3, against steps written per month", () => {
+    // one order a month, four in the first quarter and the last (4 ÷ 3 a month): up to one a month the cheaper step, so only those two pay the dearer
+    const r = runSecurities({ ...base, deal: byCount(1, 3) }, ctx);
     expect(r.fees.fixed).toBeCloseTo(38 * 30 + 2 * 60, 6);
+    // up to three a month: every quarter, whose total is three or four orders, is in the cheaper step
+    expect(runSecurities({ ...base, deal: byCount(3, 3) }, ctx).fees.fixed).toBeCloseTo(40 * 30, 6);
+  });
+
+  it("a quarterly charge reads its quarter's trading a month against steps of a month's trading", () => {
+    // up to 1,000 ₪ of trading a month at 10 ₪ a month, above it 20: a quarter of three deposits (500 ₪ a month, grown with inflation)
+    // trades under 1,000 a month, though its total is above it; the first quarter (10,000 ₪ now) and the last (the sale) trade more
+    const byTrading: DealAccount = {
+      ...account({ ...deal, fees: [deal.fees[0]!, { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 30, everyMonths: 3 } }] }, { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 60, everyMonths: 3 } }] }] }),
+      planWithin: [undefined, [{ on: "trading", from: 0, to: 1_000, unit: "ILS" }], [{ on: "trading", from: 1_000, to: null, unit: "ILS" }]],
+    };
+    expect(runSecurities({ ...base, deal: byTrading }, ctx).fees.fixed).toBeCloseTo(38 * 30 + 2 * 60, 6);
   });
 });
 
@@ -281,6 +293,32 @@ describe("F-128 orders as the house's row places them", () => {
     // the purchases convert only what was paid in; the sale converts what is left of it after the trades' charges
     expect(r.fees.trade).toBeGreaterThan(0);
     expect(r.fees.fx).toBeCloseTo(0.01 * 5_400 + 0.01 * (0.99 * 5_400 - r.fees.trade), 6);
+  });
+
+  it("an order by amount whose cash cannot pay the trade's minimum is not placed, and its cash waits for the next order", () => {
+    // 8 ₪ a month against a minimum of 10 ₪: month 1's order is not placed; month 2's 16 ₪ buy 6 ₪ and pay the minimum; the sale is free
+    const min: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001, min: 10 } }], sale: [{ price: { kind: "free" } }] }] };
+    const plan: SecuritiesInput = { ...base, goal: { amountNow: 0, monthly: 8, months: 2 }, market: { grossReturn: 0, inflation: 0 }, fund: { kind: "israeli-fund" } };
+    const r = runSecurities({ ...plan, deal: account(min) }, ctx);
+    expect(r.fees.trade).toBeCloseTo(10, 9);
+    expect(r.nominal).toBeCloseTo(6, 9);
+  });
+
+  it("the shekels of an order not placed wait unconverted, and the next order converts them once", () => {
+    // 1% a conversion: month 1's 8 ₪, 7.92 after it, cannot pay the 10 ₪ minimum, so nothing is converted; month 2 converts the 16 ₪ at once
+    const min: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001, min: 10 } }], sale: [{ price: { kind: "free" } }] },
+        { base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.01 } }] },
+      ],
+    };
+    const plan: SecuritiesInput = { ...base, goal: { amountNow: 0, monthly: 8, months: 2 }, market: { grossReturn: 0, inflation: 0, returnIn: "instrument", fxChange: 0 }, fund: { kind: "foreign-fund" }, tariff: { currency: { code: "USD", startRate: 3.7 } } };
+    const r = runSecurities({ ...plan, deal: account(min) }, ctx);
+    const bought = 16 * 0.99 - 10;
+    expect(r.fees.trade).toBeCloseTo(10, 9);
+    // the purchase's conversion on the 16 ₪, and the sale's on what was bought
+    expect(r.fees.fx).toBeCloseTo(0.16 + 0.01 * bought, 9);
   });
 
   it("an order that buys no unit is not counted among a month's orders", () => {

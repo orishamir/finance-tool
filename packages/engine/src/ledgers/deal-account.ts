@@ -259,13 +259,15 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
     if (!(p !== undefined && p > 0)) throw new RangeError("F-128: a step in units needs the fund's price per unit");
     return shekels / p;
   };
-  // F-128: what the plan's months set, read for one charge: the months it covers (an action its own month), and the balance an order is placed at
+  // F-128: what the plan's months set, read for one charge: the months `from` to `to` it covers (an action its own month), and the balance an
+  // order is placed at. A step of a month's orders or trading is written per month, so a charge covering `k` months reads their average,
+  // their total ÷ k (a month before the run's first holds nothing)
   const planWithin = account.planWithin ?? [];
   const measure = (w: PlanWithin, from: number, to: number, activity: (m: number) => MonthActivity, balance: number): number => {
     if (w.on === "balance") return balance / shekelsPer(w.unit, to);
     let x = 0;
     for (let m = Math.max(1, from); m <= to; m++) x += w.on === "count" ? activity(m).count : tradingIn(w.unit, m, activity(m).trading);
-    return x;
+    return x / (to - from + 1);
   };
   const within = (i: number, from: number, to: number, balance: number, activity = run.activity): boolean => (planWithin[i] ?? []).every((w) => inStep(w, measure(w, from, to, activity, balance)));
   // F-128: the months a charge of each fee fell in all its steps, for the page's marks
@@ -354,7 +356,9 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
         const fx = run.currency && fresh > 0 ? fxOf(fresh) : { total: 0, parts: [] };
         const cash = fresh - fx.total + held;
         const { t, c } = buyByAmount(m, cash, balance, rateMonth);
-        if (!(t > 0)) return { fx: fx.total, trade: t, commission: 0, cost: fx.total, leftNis: 0, leftHeld: 0, parts: fx.parts };
+        // a cash that pays for no trade (a minimum it cannot pay) places no order: nothing is converted or charged, and the cash waits for
+        // the next order in the pocket it was in, shekels not converted and the fund's currency already converted (F-128, F-109)
+        if (!(t > 0)) return { fx: 0, trade: 0, commission: 0, cost: 0, leftNis: fresh, leftHeld: held, parts: [] };
         if (run.currency && fresh > 0) markAction("conversion", m, fresh, balance, rateMonth);
         markAction("trade", m, t, balance, rateMonth);
         // a charge that jumps past the cash leaves the largest trade it pays for, and the rest, converted already, waits for the next order (F-128, F-109)
