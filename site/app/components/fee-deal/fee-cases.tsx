@@ -230,7 +230,6 @@ export function FeeCases({
   actions,
   zone,
   openParts,
-  caseMark,
   children,
 }: {
   fee: CasesFee;
@@ -245,8 +244,6 @@ export function FeeCases({
   zone: ZoneOf;
   /** The open case's parts in edit, with the spoken name of its boxes and the heads over it its parts' menus apply them to. */
   openParts: (spoken: string, heads?: readonly HeadApply[]) => ReactNode;
-  /** A host's mark on a case (`FeeSlot.caseMark`, the indices page's "בתוכנית"), in every layout; /deal marks none. */
-  caseMark?: ((caseId: string) => ReactNode) | undefined;
   /** The fee's card around its cases (`cases`: the parts every case holds alike, then the cases' band, under the fee's name's line). */
   children: (cases: ReactNode) => ReactNode;
 }) {
@@ -763,7 +760,7 @@ export function FeeCases({
       : zone(
           [...(o.also ?? []), caseTarget(r.case)],
           r.case,
-          <CaseRow when={when} label={label(r)} onOpen={openIt(r.case)} open={shownOpen([r.case], null)} mark={caseMark?.(r.case)} {...missingSaid(shownParts(r.case))} grip={grip(l, spoken, o.more ?? [], { ...(o.name ? { name: o.name } : {}), ...(o.still ? { still: true } : {}) })}>
+          <CaseRow when={when} label={label(r)} onOpen={openIt(r.case)} open={shownOpen([r.case], null)} {...missingSaid(shownParts(r.case))} grip={grip(l, spoken, o.more ?? [], { ...(o.name ? { name: o.name } : {}), ...(o.still ? { still: true } : {}) })}>
             {here(
               [r.case],
               shownParts(r.case).map((p) => <RestPart key={`${p.stage ?? 0}:${p.id}`} part={p} />),
@@ -894,7 +891,6 @@ export function FeeCases({
             label: label(r),
             onOpen: openIt(caseCol),
             open: shownOpen([caseCol], null),
-            mark: caseMark?.(caseCol),
             ...(cg ? { grip: cg } : {}),
             ...(l ? { liftItem: liftId(l) } : {}),
             zone: (h: ReactNode) => zone([target, ...(listThing && l?.k !== "value" ? [valueTarget] : []), caseTarget(caseCol)], caseCol, h, listThing ? list("cols", "x") : undefined),
@@ -1071,7 +1067,6 @@ export function FeeCases({
                 ...(down > 1 ? { down } : {}),
                 onOpen: openIt(cell.case),
                 open: shownOpen(cell.cases, null),
-                mark: caseMark?.(cell.case),
                 content,
                 ...missingSaid(mergedParts(cell.cases, cellParts)),
                 ...(cell.whole ? { across: <WhenText words={r.when[1]!} /> } : {}),

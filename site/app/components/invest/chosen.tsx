@@ -18,8 +18,7 @@ import { Num, StateTag } from "../provenance";
 import { useState } from "react";
 import { Card, DocLink, FactTile, GroupPriceFold, HelpMark, KeyValue, LabelChip, LabelRow, MixedName, ProductIdLink, SourcedTag, Tag, TileJoin, When, gershayim, type GroupChoice } from "../kit";
 import { brands } from "../../copy";
-import { DealCard, DealFromHouseButton, DealTerms } from "./deal-account";
-import { isDealProviderId } from "../../lib/deal-account/bundle";
+import { OwnAccountButton } from "./own-account";
 import { OptionTag } from "./parts";
 import { allFunds, asideWords, crownedHouse, GapCell, gapNoteOf, gapStateOf, inTieSet, labelsOf, mayaHrefOf, pairVerdict, phoneOf, pickHalf, priced, unitsLine, type OnPick, type Pick } from "./pair";
 import { ProviderLink, providerName } from "./sections";
@@ -77,7 +76,7 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
         <FactTile
           edge="border-chart-by-account"
           head={c.pair.accountSlot}
-          link={house.custom ? (isDealProviderId(house.id) ? <Tag tone="entered">{c.dealAccount.tag}</Tag> : <StateTag state="entered" />) : snap && <DocLink source={snap.tariff} className="text-xs">{gershayim(c.pair.tariff)}</DocLink>}
+          link={house.custom ? <StateTag state="entered" /> : snap && <DocLink source={snap.tariff} className="text-xs">{gershayim(c.pair.tariff)}</DocLink>}
           foot={
             <>
               {/* what the house's price is for this purchase: a standing order's, where the monthly deposit is bought on one */}
@@ -91,11 +90,10 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
                   <SourcedTag value={phone}>{c.pair.phoneTag}</SourcedTag> {c.pair.phoneLine(house.short)}
                 </p>
               )}
-              {house.custom && (isDealProviderId(house.id) ? <DealCard id={house.id} house={(id) => providerName(view, id)?.short ?? null} /> : <DealTerms id={house.id} />)}
               {!house.custom && snap && (
-                <DealFromHouseButton houseId={house.id} className="self-start -ms-2">
+                <OwnAccountButton houseId={house.id} house={house.short} className="self-start -ms-2">
                   {c.pair.ownPrice}
-                </DealFromHouseButton>
+                </OwnAccountButton>
               )}
             </>
           }
@@ -114,12 +112,9 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
               <When iso={snap.snapshot} />
             </KeyValue>
           )}
-          {/* a deal is the person's whole price: no other price of a house's list stands beside it (H) */}
-          {!isDealProviderId(house.id) && (
-            <KeyValue size="xs" label={c.chosen.aside}>
-              {aside ? <span className="block text-start">{aside}</span> : c.chosen.none}
-            </KeyValue>
-          )}
+          <KeyValue size="xs" label={c.chosen.aside}>
+            {aside ? <span className="block text-start">{aside}</span> : c.chosen.none}
+          </KeyValue>
         </FactTile>
         <TileJoin />
         <FactTile

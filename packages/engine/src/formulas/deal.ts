@@ -687,30 +687,20 @@ function priceCost(
  */
 export function holdingCost(deal: Deal, period: DealPeriod, value: number, rates: Readonly<Record<string, number>> = {}): DealCost {
   const parts = deal.fees.flatMap((f, i) => {
-    if (isCover(f.base) || !heldIn(f, value, rates)) return [];
+    if (isCover(f.base)) return [];
+    // F-115: a step of the value held is charged only while the value is in it (the value in shekels; a step in another currency at `rates`)
+    if (f.within?.on === "held" && !inStep(f.within, value / shekelsPer(f.within.currency, rates))) return [];
     const p = period.prices[i]!.price;
-    // a run holds a charge to the value held (and to nothing on nothing held, `heldCharge`): the curve's minimum lifts it back
-    if (p.kind === "held") return [{ fee: i, cost: (12 / p.everyMonths) * Math.max(heldCharge(deal, period, i, value, rates), p.min ?? 0) }];
+    if (p.kind === "held") {
+      const c = { rate: p.rate, everyMonths: p.everyMonths, ...(p.min !== undefined ? { min: p.min } : {}), ...(p.max !== undefined ? { max: p.max } : {}) };
+      // custodyFee holds a charge to the value held (and to nothing on nothing held), a run's guard: the minimum lifts it back
+      const charge = Math.max(custodyFee(c, p.everyMonths, value), p.min ?? 0);
+      return [{ fee: i, cost: (12 / p.everyMonths) * charge }];
+    }
     if (p.kind === "sum") return [{ fee: i, cost: perYear(p)! }];
     return [];
   });
   return { total: parts.reduce((a, p) => a + p.cost, 0), parts };
-}
-
-/** F-115: whether a fee charged on one step of the value held is charged at `value` shekels (a step in another currency at `rates`); any other fee is. */
-const heldIn = (f: DealFee, value: number, rates: Readonly<Record<string, number>>): boolean => f.within?.on !== "held" || inStep(f.within, value / shekelsPer(f.within.currency, rates));
-
-/**
- * F-14, F-112 One charge of fee `i`'s share of what is held on a value of `value` shekels, as a run charges it: `max(min, min(ρ × B, max))`
- * per charging period, held to the value (nothing on nothing held), and nothing outside its step (F-115). 0 for a price of any other form
- * and for cover. `holdingCost` (the curve) and an account priced by a deal (F-128) both read it.
- */
-export function heldCharge(deal: Deal, period: DealPeriod, i: number, value: number, rates: Readonly<Record<string, number>> = {}): number {
-  const f = deal.fees[i]!;
-  const p = period.prices[i]!.price;
-  if (p.kind !== "held" || isCover(f.base) || !heldIn(f, value, rates)) return 0;
-  const c = { rate: p.rate, everyMonths: p.everyMonths, ...(p.min !== undefined ? { min: p.min } : {}), ...(p.max !== undefined ? { max: p.max } : {}) };
-  return custodyFee(c, p.everyMonths, value);
 }
 
 /** Shekels per unit of a currency at `rates`; a currency they do not give is refused (F-112). */

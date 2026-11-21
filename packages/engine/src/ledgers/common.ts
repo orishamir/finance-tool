@@ -126,8 +126,6 @@ export class Tally {
   /** F-109 on a run in whole units: the waiting cash in units of the same index, entered at a month's start and left at its end (`waitFrom`, `waitTo`). */
   private waited = 0;
   private waits = false;
-  /** F-128 on a run of a deal account: each of the deal's fees in units of the same index (`feeBy`), by its index in the deal. */
-  private carriedBy: number[] = [];
 
   fee(type: FeeType, amount: number) {
     // nothing to add: a total that starts at 0 never becomes -0, so adding 0 leaves it as it is, and 0 over a growth that is a number other
@@ -135,12 +133,6 @@ export class Tally {
     if (amount === 0 && this.growth !== 0 && this.growth === this.growth) return;
     this.fees[type] += amount;
     this.carried[type] += amount / this.growth;
-  }
-
-  /** F-128: a deal fee's part of a charge already added by its line (`fee`), carried as `fee` carries the line. */
-  feeBy(i: number, amount: number) {
-    if (amount === 0) return;
-    this.carriedBy[i] = (this.carriedBy[i] ?? 0) + amount / this.growth;
   }
 
   /** The fund's total return in a month (its growth less its own costs, a distribution kept in): a ledger that calls it reports `feesCarried`. */
@@ -207,7 +199,6 @@ export class Tally {
       rules: book.used(),
       ...(this.grows ? { feesCarried: Object.fromEntries(Object.entries(this.carried).map(([k, v]) => [k, v * this.growth])) as Record<FeeType, number> } : {}),
       ...(this.grows && this.waits ? { waitingCarried: this.waited * this.growth } : {}),
-      ...(this.carriedBy.length ? { feesCarriedBy: Array.from(this.carriedBy, (v) => (v ?? 0) * this.growth) } : {}),
     };
   }
 }
