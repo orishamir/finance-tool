@@ -2118,7 +2118,11 @@
     },
     {
       "what": "הוצאות צד ג' בחו\"ל: ברוקר, קורספונדנט, קסטודיאן",
-      "page": 43,
+      "page": 3,
+      "source": {
+        "url": "https://www.bankmassad.co.il/media/cxpdzwtq/חלק-11-הוצאות-צד-שלישי-46.pdf",
+        "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד, חלק 11 הוצאות צד שלישי"
+      },
       "why": "Part 11 prints them 'עפ\"י החיוב בפועל' with no maximum, and part 4 adds custodian costs with no part 11 row: not limited by the documents.",
       "why_he": "על ניירות ערך בחו״ל הבנק מוסיף לעמלה שלו הוצאות של ברוקר, בנק קורספונדנט ומשמורן בחו״ל ״עפ״י החיוב בפועל״, בלי סכום ובלי תקרה. האתר לא מחשב אותן, ולכן המחיר בחו״ל יכול לצאת יקר יותר.",
       "could_change_price": true

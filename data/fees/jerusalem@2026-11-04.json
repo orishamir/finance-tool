@@ -1194,6 +1194,11 @@
   "left_out": [
     {
       "what": "הוצאות צד ג' בחו\"ל (חלק 11, 16/09/2026): ברוקר בארה\"ב 'אג\"ח ומניות - לפי חיוב בפועל ועד למקסימום 3% מהעסקה'; ביתר השווקים עד 50$ ליחידה, 'פעילות בקרנות –לפי חיוב בפועל ועד מקסימום 3% מהעסקה'; בנק קורספונדנט 'לפי חיוב בפועל אך לא יותר מ 100 $'; נתוני זמן אמת של בורסות חו\"ל לפי מחירון Interactive Brokers",
+      "page": 2,
+      "source": {
+        "url": "https://www.bankjerusalem.co.il/media/6990/%D7%97%D7%9C%D7%A7_11_%D7%94%D7%95%D7%A6%D7%90%D7%95%D7%AA_%D7%A6%D7%93_%D7%A9%D7%9C%D7%A9%D7%99_%D7%99%D7%97%D7%99%D7%93_%D7%95%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F_%D7%A0%D7%92%D7%99%D7%A9.pdf",
+        "title": "תעריפון יחיד ועסק קטן, חלק 11 - הוצאות צד שלישי - בנק ירושלים"
+      },
       "why": "Printed for every customer abroad (part 11, library 593f6863c419627e; change notice of 16/09/2026, library 12ce26124d18f424, which replaced a broker cost of 0.015$ a share, 10$ minimum, 0.25% maximum). The amounts are what the broker charges, with a ceiling of 3% of the trade for US shares and for funds elsewhere. General terms s.145.11 (p.48) add the agents' fees for corporate events such as dividends, with no amount. Not priced: no record prices third-party costs (a decision for the lead, as for FIBI, Hapoalim and Mizrahi-Tefahot).",
       "why_he": "על ניירות ערך בחו״ל הבנק מוסיף לעמלה שלו את מה שהברוקר בחו״ל גובה בפועל: על מניות ואג״ח בארה״ב ועל קרנות בשאר השווקים עד 3% מהעסקה, ובנק קורספונדנט עד 100 דולר. גם עמלות של סוכנים על אירועים כמו חלוקת דיבידנד מועברות ללקוח בלי סכום. האתר לא מחשב אותן, ולכן המחיר בחו״ל יכול לצאת יקר יותר.",
       "could_change_price": true
@@ -1230,6 +1235,11 @@
     },
     {
       "what": "נספח ה' (בתוקף מתאריך 08/06/2026): 'קניה מכירה - ני\"ע הנסחרים בחו\"ל - מניות, אג\"ח' באינטרנט – 0.55%, מינימום 45$ מקסימום 9,500$ לעסקה",
+      "page": 1,
+      "source": {
+        "url": "https://www.bankjerusalem.co.il/media/7021/%D7%A0%D7%A1%D7%A4%D7%97_%D7%94_%D7%94%D7%98%D7%91%D7%95%D7%AA_%D7%91%D7%A2%D7%A8%D7%95%D7%A6%D7%99_%D7%91%D7%A0%D7%A7%D7%90%D7%95%D7%AA_%D7%91%D7%AA%D7%A7%D7%A9%D7%95%D7%A8%D7%AA.pdf",
+        "title": "נספח ה' - הטבות בערוצי בנקאות בתקשורת - בנק ירושלים"
+      },
       "why": "Annex E as its own file (library e0fbba6023213674, file page 1, read 2026-11-12) prints the internet price abroad on a row that names shares and bonds only, where part 4(א)(4) names 'מניות, אגרות חוב וקרנות נאמנות'; words that name no fund are silence for a fund (D56), so a fund bought abroad is priced at 4(א)(4)'s 0.6% with a 50 USD minimum, the most the documents allow. The exchange's sheet prints 0.55% and 45 USD under its own label 'מניות, אג\"ח, קרנות נאמנות - כללי', which suggests the bank may apply it to funds; a written answer from the bank would settle it.",
       "why_he": "באינטרנט הבנק גובה על מניות ואג״ח בחו״ל 0.55% במינימום 45 דולר, אבל הנספח לא מזכיר קרנות, ולכן האתר מחשב קרן שנקנית בחו״ל לפי 0.6% במינימום 50 דולר. אם הבנק נותן את המחיר המופחת גם על קרנות, המחיר זול יותר מזה שמוצג.",
       "could_change_price": true

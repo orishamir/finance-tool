@@ -1126,6 +1126,11 @@
     },
     {
       "what": "מגבלות החשבון: פעולה עד 250,000 ש\"ח, יתרת נכסים עד 1,500,000 ש\"ח",
+      "page": 2,
+      "source": {
+        "url": "https://www.pepper.co.il/pepper/s3fs-public/home-v11/key_features_pepper.pdf",
+        "title": "מאפיינים עיקריים של חשבון PEPPER"
+      },
       "why": "From 'מאפיינים עיקריים של חשבון PEPPER' (library 51b28f75669ccec1). Not a fee; a larger account may be moved to a regular Leumi branch and lose the PEPPER prices.",
       "why_he": "בחשבון פפר פעולה מוגבלת ל־250,000 ₪ ויתרת הנכסים ל־1,500,000 ₪. זו לא עמלה, אבל חשבון גדול יותר עשוי לעבור לסניף רגיל של לאומי ולשלם את המחירון הרגיל, שיקר יותר.",
       "could_change_price": true

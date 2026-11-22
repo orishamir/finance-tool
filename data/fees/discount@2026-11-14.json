@@ -1458,7 +1458,7 @@
     },
     {
       "what": "דיגיטל פרימיום: פטור מדמי ניהול פיקדון ני\"ע בארץ ובחו\"ל ומעמלת חליפין, 0.20% מינימום 25 ₪ בת\"א, 0.25% מינימום 25$ בחו\"ל",
-      "page": 31,
+      "page": 41,
       "why": "Binding (annex A, 22/06/2026) but conditional: the digital branch (טאצ'ר, 535), a monthly salary above 8,000 NIS (14,000 for a couple) or a portfolio above 500,000 NIS, kept 'בכפוף להתמדה'; no end date printed; the toucher page reserves 'לשנותם... ואף לבטלם, בכפוף למתן הודעה'. An offer, listed under groups and not ranked (D56). The trade rows name only 'מניות ואגרות חוב'; the custody rows name fund units.",
       "why_he": "בסניף הדיגיטלי, לקוח עם משכורת של יותר מ־8,000 ₪ (14,000 ₪ לזוג) או תיק של יותר מ־500,000 ₪ פטור מדמי ניהול פיקדון ומעמלת המרה, ומשלם 0.20% על קנייה ומכירה של מניות ואג״ח בתל אביב (שורת העמלה הזו לא מזכירה קרנות). ההטבה מותנית והבנק רשאי לבטל אותה, ולכן האתר מחשב את המחירון הרגיל, ולמי שעומד בתנאים המחיר זול יותר.",
       "could_change_price": true
@@ -1506,6 +1506,10 @@
     },
     {
       "what": "ממוצעי העמלות שנגבו בפועל, 1-6/2026",
+      "source": {
+        "url": "https://www.discountbank.co.il/media/fsqnorrh/fees_collection_first_half_2026.pdf",
+        "title": "התפלגות נתונים על גביית עמלות ניירות ערך בפועל, 1.1-30.6.2026 - בנק דיסקונט"
+      },
       "why": "Israeli custody 0.06%-0.37% a year by portfolio size, foreign 0.08%-0.28% (library 875d6fab311736f2). A fact, not a price (D56); kept in the custody line's notes, not in `averages`.",
       "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.06% עד 0.37% בשנה בארץ, לפי גודל התיק, פחות מ־0.80% שבמחירון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
       "could_change_price": true

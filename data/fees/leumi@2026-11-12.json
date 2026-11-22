@@ -1643,6 +1643,10 @@
     },
     {
       "what": "עמלות ממוצעות בפועל, 1.1-30.6.2026",
+      "source": {
+        "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/amlot/Hitpalgotnetonim_acc1.pdf",
+        "title": "התפלגות נתונים על גביית עמלות ניירות ערך בפועל, 1.1.2026-30.6.2026 - בנק לאומי"
+      },
       "why": "Leumi's distribution sheet (library 3028da0eb5998d11) and the exchange's sheet: Israeli custody 0.06% to 0.27% a year, foreign 0.09% to 0.41%, Israeli trading 0.10% to 0.30%. What customers paid, not a price (D56).",
       "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.06% עד 0.27% בשנה בארץ, לפי גודל התיק, הרבה פחות מ־0.60% שבמחירון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
       "could_change_price": true

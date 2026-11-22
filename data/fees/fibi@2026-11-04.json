@@ -1924,7 +1924,11 @@
     },
     {
       "what": "הוצאות צד ג' בחו\"ל (חלק 11, מ-6.9.26): ברוקר עד 6 סנט למניה בארה\"ב, קסטודיאן עד 5$ לפעולה, משמורת עד 0.72% לשנה, הוצאות קרן עד 9% משווי העסקה",
-      "page": 52,
+      "page": 2,
+      "source": {
+        "url": "https://www.fibi.co.il/media/1eylfxjt/חלק-11-הוצאות-צד-שלישי-31.pdf",
+        "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי, חלק 11 הוצאות צד שלישי"
+      },
       "why": "Binding maxima, 'על פי החיוב בפועל', for every customer abroad. Not priced: no other record prices third-party costs, and most banks print none or no ceiling; adding them for one bank alone would rank it below banks whose documents are silent (decision for the lead)."
     },
     {

@@ -1037,16 +1037,26 @@ export function checkCitedPages(record: unknown, filePages?: Map<string, number>
     if (Array.isArray(node)) return node.forEach((x, i) => walk(x, `${at}[${i}]`));
     if (!node || typeof node !== "object") return;
     const o = node as Record<string, unknown>;
-    if (typeof o.url === "string" && typeof o.page === "number" && Number.isInteger(o.page)) {
-      const inUrl = /#page=(\d+)/.exec(o.url);
-      const opens = inUrl ? Number(inUrl[1]) : o.page;
-      if (inUrl && opens !== o.page) out.push(`${at}: the link opens page ${opens} but the page cited is ${o.page}; a page is the file's page, and the address's #page= carries the same one`);
-      const last = filePages?.get(o.url.replace(/#.*$/, ""));
-      if (last !== undefined && opens > last) out.push(`${at}: the link opens page ${opens}, past the file's last page (${last}); write the file's page, and a printed number in the locator ("file p.3 (gazette p.375)")`);
-    }
+    if (typeof o.url === "string" && typeof o.page === "number" && Number.isInteger(o.page)) cite(o.url, o.page, at);
     for (const [k, v] of Object.entries(o)) walk(v, at ? `${at}.${k}` : k);
   };
+  const cite = (url: string, page: number, at: string): void => {
+    const inUrl = /#page=(\d+)/.exec(url);
+    const opens = inUrl ? Number(inUrl[1]) : page;
+    if (inUrl && opens !== page) out.push(`${at}: the link opens page ${opens} but the page cited is ${page}; a page is the file's page, and the address's #page= carries the same one`);
+    const last = filePages?.get(url.replace(/#.*$/, ""));
+    if (last !== undefined && opens > last) out.push(`${at}: the link opens page ${opens}, past the file's last page (${last}); write the file's page, and a printed number in the locator ("file p.3 (gazette p.375)")`);
+  };
   walk(record, "");
+  // a fee record's left-out entry carries its page apart from its address: the site links its own `source`, else the tariff
+  const fee = record as { tariff?: { url?: unknown }; left_out?: unknown };
+  if (typeof fee.tariff?.url === "string" && Array.isArray(fee.left_out)) {
+    const tariffUrl = fee.tariff.url;
+    fee.left_out.forEach((e: { page?: unknown; source?: { url?: unknown } } | null, i) => {
+      const url = typeof e?.source?.url === "string" ? e.source.url : tariffUrl;
+      if (typeof e?.page === "number" && Number.isInteger(e.page)) cite(url, e.page, `left_out[${i}]`);
+    });
+  }
   return out;
 }
 

@@ -2206,13 +2206,21 @@
   "left_out": [
     {
       "what": "מורים ובני זוג: '50% הנחה בדמי ניהול פיקדון ני\"ע (דנ\"פ) לשלוש שנים'",
+      "source": {
+        "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/teachers/",
+        "title": "חשבון למורים ועובדי הוראה - בנק מסד"
+      },
       "why": "Advertising pages for teachers and their spouses (library e482d4ca74c58147, af05f414e55a7416): new customers only, salary from 5,000 NIS (10,000 for a couple), 'בפיקדון ניירות ערך החל מ- 150,000 ₪', three years, 'הבנק רשאי להפסיק את מתן ההטבות בכל עת'. No annex A row prints it. An offer for a profession, not the ordinary customer.",
       "why_he": "הבנק מפרסם למורים ולבני זוגם 50% הנחה בדמי הניהול של ניירות ערך לשלוש שנים, ללקוחות חדשים עם משכורת מ־5,000 ₪ ותיק מ־150,000 ₪. ההטבה לא מופיעה בתעריפון והבנק רשאי להפסיק אותה בכל עת, ולכן האתר לא מחשב אותה; למורה שזכאי לה המחיר יוצא זול יותר.",
       "could_change_price": true
     },
     {
       "what": "הוצאות צד ג' בחו\"ל: ברוקר, קורספונדנט, קסטודיאן",
-      "page": 43,
+      "page": 3,
+      "source": {
+        "url": "https://www.bankmassad.co.il/media/cxpdzwtq/חלק-11-הוצאות-צד-שלישי-46.pdf",
+        "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד, חלק 11 הוצאות צד שלישי"
+      },
       "why": "Part 11 prints them 'עפ\"י החיוב בפועל' with no maximum, and part 4 adds custodian costs with no part 11 row: not limited by the documents.",
       "why_he": "על ניירות ערך בחו״ל הבנק מוסיף לעמלה שלו הוצאות של ברוקר, בנק קורספונדנט ומשמורן בחו״ל ״עפ״י החיוב בפועל״, בלי סכום ובלי תקרה. האתר לא מחשב אותן, ולכן המחיר בחו״ל יכול לצאת יקר יותר.",
       "could_change_price": true
@@ -2220,6 +2228,10 @@
     {
       "what": "חשבון עובר ושב: עמלת מינימום חודשית עד 6.30 ₪ (מחיר פעולה על ידי פקיד), פעולה בערוץ ישיר 2.00 ₪, מסלול בסיסי 10 ₪ ומורחב 30 ₪ לחודש; מורים במסלול 10: 10 ₪",
       "page": 1,
+      "source": {
+        "url": "https://www.bankmassad.co.il/media/e11agh3s/חלק-1-חשבון-עובר-ושב-46.pdf",
+        "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד, חלק 1 חשבון עובר ושב"
+      },
       "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Part 1 p.1 (printed p.3) s.1.2.1 note 4: the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3).",
       "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 6.30 ₪ לחודש, אלא אם סימנתם שזה הבנק שלכם. האתר סופר רק את עמלת המינימום שבתעריפון, בלי עמלות על פעולות בחשבון ובלי מסלולי עו״ש בתשלום חודשי.",
       "could_change_price": false
@@ -2227,24 +2239,40 @@
     {
       "what": "חשבון עובר ושב, חלק 1 של התעריפון, 'חשבונות פטורים': 'חשבון צל/תמורה - חשבון עו\"ש שנפתח ע\"י הלקוח אך ורק לצורך פירעון הלוואה או העברה לתוכנית חסכון, לפיקדונות, קופות גמל וכד''",
       "page": 1,
+      "source": {
+        "url": "https://www.bankmassad.co.il/media/e11agh3s/חלק-1-חשבון-עובר-ושב-46.pdf",
+        "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד, חלק 1 חשבון עובר ושב"
+      },
       "why": "Massad's current-account price list (p.1 note 9 and p.2 note 3) exempts such an account; it names no securities deposit (BRK-66), and whether an account kept only for a securities deposit is one is the open question of directive 415 (BRK-61, F-102). The minimum is counted, the most the documents allow (D56); where the bank treats the person's account as exempt, it charges less.",
       "why_he": "בתעריפון של הבנק ״חשבון צל/תמורה״ פטור: חשבון עו״ש שנפתח רק כדי לפרוע הלוואה או להעביר כסף לתוכנית חיסכון, לפיקדונות, לקופות גמל וכדומה. התעריפון לא מזכיר פיקדון ניירות ערך, ולכן האתר סופר את עמלת המינימום. אם הבנק יכיר בחשבון שלכם כחשבון כזה, המחיר יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.33%-0.59% לשנה, זרים 0.28%-0.67%; קנייה ומכירה של מניות ואג\"ח 0.14%-0.40%",
+      "source": {
+        "url": "https://www.bankmassad.co.il/media/gekaf1j3/מחצית-ראשונה-2026-טבלת-מידע-השוואתי-לאתר-האינטרנט-מסד.pdf",
+        "title": "מידע השוואתי, גילוי עלות שירותים בניירות ערך, מחצית ראשונה 2026 - בנק מסד"
+      },
       "why": "What customers paid on average by portfolio size (the bank's sheet, library 820753ecaf4802d4, and the exchange's sheet, '01/01/26 - 30/06/26'): a sourced fact, not a price. The list price is 0.78% a year in Israel.",
       "why_he": "לפי הממוצעים שהבנק והבורסה מפרסמים, לקוחות שילמו בחצי הראשון של 2026 דמי ניהול של 0.33% עד 0.59% בשנה על ניירות ערך בארץ, לפי גודל התיק, ובתעריפון כתוב 0.195% לרבעון. כלומר רבים משלמים פחות ממחיר התעריפון, ולכן המחיר בפועל יכול לצאת זול מזה שמוצג.",
       "could_change_price": true
     },
     {
       "what": "מורים ועובדי הוראה: מורים עם משכורת ותיק מ־150,000 ₪",
+      "source": {
+        "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/teachers/",
+        "title": "חשבון למורים ועובדי הוראה - בנק מסד"
+      },
       "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.bankmassad.co.il/private/accountmngment/accounttypes/teachers/",
       "why_he": "לבנק יש מסלול למורים ועובדי הוראה שמעבירים משכורת ומחזיקים תיק של 150,000 ₪ לפחות. האתר לא מציג הטבות של מקצוע אחד, ולכן למורה המחיר יכול לצאת זול יותר מזה שמוצג.",
       "could_change_price": true
     },
     {
       "what": "בני זוג של מורים: בני זוג של מורים עם תיק מ־150,000 ₪",
+      "source": {
+        "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/couple/",
+        "title": "חשבון עם הטבות לבני זוג - בנק מסד"
+      },
       "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.bankmassad.co.il/private/accountmngment/accounttypes/couple/",
       "why_he": "לבנק יש מסלול לבני זוג של מורים שמחזיקים תיק של 150,000 ₪ לפחות. האתר לא מציג הטבות של מקצוע אחד, ולכן לבן או בת זוג של מורה המחיר יכול לצאת זול יותר מזה שמוצג.",
       "could_change_price": true
@@ -2258,6 +2286,10 @@
     },
     {
       "what": "חבילת אקסטרה CLASS: 'הנחות והטבות בתוכניות חסכון, פיקדונות בשקלים, ניירות ערך ומטבע חוץ'",
+      "source": {
+        "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/extra/",
+        "title": "חבילת אקסטרה CLASS - בנק מסד"
+      },
       "why": "The account-type page (library 06f1e0b7231c02b9, read 2026-11-04) offers unspecified securities discounts to joiners with a salary account of 4,000 NIS and up, for 36 months, 'הבנק רשאי להפסיק את תנאי המבצע ו/או להפסיקו בכל עת'. No rate is printed and no tariff row prints it: an offer with no price (D56), not a group price.",
       "why_he": "הבנק מפרסם חבילה בשם אקסטרה CLASS עם ״הנחות והטבות״ בניירות ערך ובמטבע חוץ למי שמעביר משכורת מ־4,000 ₪, ל־36 חודשים, בלי לומר כמה. בלי שיעור אי אפשר לחשב אותה, ולמי שמצטרף המחיר יכול לצאת זול יותר.",
       "could_change_price": true

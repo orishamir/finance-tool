@@ -1434,6 +1434,11 @@
   "left_out": [
     {
       "what": "מחיר מופחת בערוץ ישיר למניות בחוץ לארץ: 0.30% בארצות הברית ו-0.50% מחוצה לה, מינימום 20 דולר, מקסימום 7,000 דולר",
+      "page": 1,
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/attache-5.pdf",
+        "title": "נספח ה' - הטבות בערוצי בנקאות בתקשורת - בנק הפועלים"
+      },
       "why": "Annex E (sheet rows 101-102; 145.pdf) prints 0.30% (US) and 0.50% (elsewhere), min $20, max $7,000, for 'מניות הנסחרות בארה\"ב*' and 'מניות הנסחרות למעט ארה\"ב*', the asterisk only making the annex subject to the full tariff's notes. The rows name shares, not funds, so a fund abroad is priced on the row that names funds, 0.90%, min $25 (founder, 2026-10-31: no price from analogy). The gap: a small order pays the minimum on either row ($25 against $20); from about $2,800 the rates part, $10,000 paying $90 against $30. Re-read 2026-11-20: the fee-list page now links annex E of 02/11/2026 (attache-5.pdf, library 8e6f6f05081d338e, p.1) and the short tariff of 02/11/2026 (united_161126.pdf, library 52a53eefee9f57e0, p.5); both print the same two rows, 'מניות הנסחרות בארה\"ב *' and 'מניות הנסחרות למעט ארה\"ב *', whose clerk column is the general row's 0.90%, min 5. The price list names a fund where it prices one as a share (note (05) to the Tel Aviv row: 'אך לרבות \"קרן מחקה\"') and prints foreign funds apart ('ניירות ערך נסחרים בחו\"ל ,קרנות זרות', custody); it says no such thing of these rows.",
       "why_he": "בערוץ הישיר הבנק גובה על מניות בחו״ל 0.30% בארה״ב ו־0.50% מחוצה לה, מינימום 20 דולר, אבל השורה מזכירה רק מניות. האתר מחשב קרן שנקנית בחו״ל לפי השורה שמזכירה קרנות, 0.90% ומינימום 25 דולר, ואם הבנק גובה על קרן סל את מחיר המניות המחיר יוצא זול יותר, ובעסקה גדולה זול בהרבה.",
       "could_change_price": true
@@ -1446,6 +1451,10 @@
     },
     {
       "what": "פועלים פלוס: 'הטבות בעמלות ניירות ערך'",
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/he/open-account/poalim-plus",
+        "title": "פועלים פלוס - בנק הפועלים"
+      },
       "why": "The joining page (library 7e6de8c6c17a9800) names no figure; the benefits need a new account opened 1.10.2026-31.12.2026, a net salary of 10,000 NIS (joint 15,000), and last 3 years. Annex A prints no Poalim Plus club. The linked promotion terms (library 074b3666da413df1) are the April-June 2026 grant offer and say nothing on securities.",
       "why_he": "מסלול פועלים פלוס מבטיח ״הטבות בעמלות ניירות ערך״ למי שפותח חשבון חדש עד 31.12.2026 עם משכורת נטו של 10,000 ₪ לפחות (15,000 ₪ לחשבון משותף), בלי לומר מה ההטבות. האתר לא מחשב אותן, ולמי שמצטרף למסלול המחיר יכול לצאת זול יותר.",
       "could_change_price": true
@@ -1470,6 +1479,10 @@
     },
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.08%-0.40% לשנה, זרים 0.07%-0.39%; קנייה ומכירה של מניות ואג\"ח 0.15%-0.30%",
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/hitpalgut-amalot.pdf",
+        "title": "התפלגות עמלות ני\"ע, 1.1.26-30.6.26 - בנק הפועלים"
+      },
       "why": "What customers paid on average by portfolio size (the bank's sheet, library ef2681f813a11810, and the exchange's sheet, '01/01/26 - 30/06/26'): a sourced fact, not a price. The list price is 0.60% a year in Israel.",
       "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.08% עד 0.40% בשנה בארץ, לפי גודל התיק, פחות מ־0.60% שבמחירון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
       "could_change_price": true

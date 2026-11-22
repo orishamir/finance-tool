@@ -1547,12 +1547,21 @@
     },
     {
       "what": "עובדי מדינה: 'פטור מדמי ניהול פיקדון ני\"ע (עמלת דמי משמרת)', 'הטבות בעמלת קניה / מכירה', 'פטור מעמלת אי ביצוע' (עלון 'שיווק 11.24'); בעמוד הטבות לעובדי מדינה היום: 'שירותי ני\"ע - עמלות מופחתות'",
+      "page": 2,
+      "source": {
+        "url": "https://bank-yahav.co.il/media/h01eqxjk/%D7%A2%D7%95%D7%91%D7%93%D7%99-%D7%9E%D7%93%D7%99%D7%A0%D7%94-11-2024.pdf",
+        "title": "עלון עובדי מדינה - בנק יהב"
+      },
       "why": "The leaflet (library 941f7bd0ff7f160a, p.2, created 2024-11-10) is still at its address but no longer linked; the live page links a flyer that reads 'מסמך זה לא פורסם עדיין' and gives no figure. The leaflet's fine print: 'הזכאות להטבות הינה לפי התעריפון הרלבנטי למועדון הלקוחות', 'הבנק רשאי לשנות את התנאים בכל עת', and the benefits need a current account fed by the employer's salary. No club tariff is published and annex A has no state-employee row, so no binding document prints the exemption; kept out of groups.entries because its only figure is a two-year-old unlinked leaflet.",
       "why_he": "עלון ישן של הבנק מבטיח לעובדי מדינה פטור מדמי ניהול ניירות ערך והנחות בעמלות הקנייה והמכירה, והעמוד היום מזכיר ״עמלות מופחתות״ בלי סכום. אין תעריפון מפורסם למועדון הזה, ולכן האתר לא מחשב אותו; לעובד מדינה המחיר יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
       "what": "עמלות ממוצעות בפועל, 01/01/2026-30/06/2026: דמי ניהול ני\"ע ישראליים 0.03%-0.28% לשנה וזרים 0.03%-0.37%; קנייה ומכירה של מניות ואג\"ח 0.15%-0.36%, מק\"מ 0.05%-0.07%, ני\"ע זרים 0.17%-0.42%",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/drhhivrw/securities-commissions-split.pdf",
+        "title": "התפלגות עמלות ניירות ערך, 01/01/2026-30/06/2026 - בנק יהב"
+      },
       "why": "What customers paid on average by portfolio size (the exchange's sheet, '01/01/26 - 30/06/26', and the bank's own page 'התפלגות עמלות ניירות ערך', library 64b0a8432e8844d8, checked on the page image): a sourced fact, not a price. Up to 25 thousand NIS: Israeli custody 0.23% a year against the list's 0.60%.",
       "why_he": "לפי הממוצעים שהבנק והבורסה מפרסמים, לקוחות שילמו בחצי הראשון של 2026 דמי ניהול של 0.03% עד 0.28% בשנה על ניירות ערך בארץ, לפי גודל התיק, ובתעריפון כתוב 0.15% לרבעון. כלומר רבים משלמים הרבה פחות ממחיר התעריפון, ולכן המחיר בפועל יכול לצאת זול מזה שמוצג.",
       "could_change_price": true

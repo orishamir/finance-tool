@@ -1365,6 +1365,10 @@
   "left_out": [
     {
       "what": "מרכנתיל טופ ודלקס: 'דמי ניהול חשבון ני\"ע - פטור', קניה/מכירה בישראל 0.12% מינימום 10 ₪, בחו\"ל 0.15%",
+      "source": {
+        "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+        "title": "מרכנתיל פרו, טופ ודלקס - בנק מרכנתיל"
+      },
       "why": "A promotion on the new-account-groups page (library e83a067b2644e092; on the Wayback Machine since 2025-02-09), not in the tariff: new joiners 'במהלך תקופת המבצע', from age 19, a salary of 12,000 NIS (18,000 joint; Deluxe 20,000/25,000) plus 3,000 NIS a month on a Mercantile credit card; 'תוקף ההטבות - 3 שנים ממועד ההצטרפות'; 'הבנק רשאי לשנות את תנאי המבצע בכל עת'. An offer, not ranked (D56). The rows name no fund.",
       "why_he": "מי שמצטרף לחשבון טופ או דלקס בזמן המבצע, מעביר משכורת מ־12,000 ₪ (בדלקס מ־20,000 ₪) ומשלם 3,000 ₪ בחודש בכרטיס האשראי של הבנק, פטור מדמי ניהול ניירות ערך ומשלם 0.12% על קנייה ומכירה בארץ, למשך 3 שנים. שורות ההטבה לא מזכירות קרנות. זה מבצע שמופיע רק באתר הבנק והבנק רשאי לשנות אותו בכל עת, ולכן האתר לא מחשב אותו; למי שזכאי המחיר יוצא זול יותר.",
       "could_change_price": true

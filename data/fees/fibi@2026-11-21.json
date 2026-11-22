@@ -2256,7 +2256,11 @@
     },
     {
       "what": "הוצאות צד ג' בחו\"ל (חלק 11, מ-6.9.26): ברוקר עד 6 סנט למניה בארה\"ב, קסטודיאן עד 5$ לפעולה, משמורת עד 0.72% לשנה, הוצאות קרן עד 9% משווי העסקה",
-      "page": 52,
+      "page": 2,
+      "source": {
+        "url": "https://www.fibi.co.il/media/1eylfxjt/חלק-11-הוצאות-צד-שלישי-31.pdf",
+        "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי, חלק 11 הוצאות צד שלישי"
+      },
       "why": "Binding maxima, 'על פי החיוב בפועל', for every customer abroad. Not priced: no other record prices third-party costs, and most banks print none or no ceiling; adding them for one bank alone would rank it below banks whose documents are silent (decision for the lead).",
       "why_he": "על ניירות ערך בחו״ל הבנק רשאי להוסיף הוצאות של צד שלישי לפי העלות בפועל, עד תקרות שבתעריפון: ברוקר עד 6 סנט למניה בארה״ב, משמורן עד 5 דולר לפעולה, משמורת עד 0.72% בשנה והוצאות קרן עד 9% משווי העסקה. האתר לא מחשב אותן, ולכן קרן שנקנתה בחו״ל יכולה לעלות יותר מהמחיר שמוצג.",
       "could_change_price": true
@@ -2264,6 +2268,10 @@
     {
       "what": "חשבון עובר ושב: עמלת מינימום חודשית עד 6.30 ₪ (מחיר פעולה על ידי פקיד), פעולה בערוץ ישיר 1.80 ₪, מסלול בסיסי 9 ₪ ומורחב 26 ₪ לחודש",
       "page": 1,
+      "source": {
+        "url": "https://www.fibi.co.il/media/5m4p1uyr/חלק-1-חשבון-עובר-ושב-31.pdf",
+        "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי, חלק 1 חשבון עובר ושב"
+      },
       "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Part 1 p.1 (printed p.3) s.1.2.1 note 4: the bank may charge the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3).",
       "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 6.30 ₪ לחודש, אלא אם סימנתם שזה הבנק שלכם. האתר סופר רק את עמלת המינימום שבתעריפון, בלי עמלות על פעולות בחשבון ובלי מסלולי עו״ש בתשלום חודשי.",
       "could_change_price": false
@@ -2271,12 +2279,20 @@
     {
       "what": "חשבון עובר ושב, חלק 1 של התעריפון, 'חשבונות פטורים': 'חשבון צל/תמורה - חשבון עו\"ש שנפתח ע\"י הלקוח אך ורק לצורך פירעון הלוואה או העברה לתוכנית חסכון, לפיקדונות, קופות גמל וכד''",
       "page": 1,
+      "source": {
+        "url": "https://www.fibi.co.il/media/5m4p1uyr/חלק-1-חשבון-עובר-ושב-31.pdf",
+        "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי, חלק 1 חשבון עובר ושב"
+      },
       "why": "First International's current-account price list (p.1 note 9 and p.2 note 2) exempts such an account; it names no securities deposit (BRK-66), and whether an account kept only for a securities deposit is one is the open question of directive 415 (BRK-61, F-102). The minimum is counted, the most the documents allow (D56); where the bank treats the person's account as exempt, it charges less.",
       "why_he": "בתעריפון של הבנק ״חשבון צל/תמורה״ פטור: חשבון עו״ש שנפתח רק כדי לפרוע הלוואה או להעביר כסף לתוכנית חיסכון, לפיקדונות, לקופות גמל וכדומה. התעריפון לא מזכיר פיקדון ניירות ערך, ולכן האתר סופר את עמלת המינימום. אם הבנק יכיר בחשבון שלכם כחשבון כזה, המחיר יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.25%-0.43% לשנה, זרים 0.28%-0.37%; קנייה ומכירה של מניות ואג\"ח 0.02%-0.19%",
+      "source": {
+        "url": "https://www.fibi.co.il/media/ds1hsij5/מחצית-ראשונה-2026-טבלת-מידע-השוואתי-לאתר-האינטרנט-הבינלאומי.pdf",
+        "title": "מידע השוואתי, גילוי עלות שירותים בניירות ערך, מחצית ראשונה 2026 - הבנק הבינלאומי"
+      },
       "why": "What customers paid on average by portfolio size (the bank's sheet, library e61fc4bbf05ba137, and the exchange's sheet, '01/01/26 - 30/06/26'): a sourced fact, not a price. The list price is 0.78% a year in Israel.",
       "why_he": "לפי הבנק, הלקוחות שילמו בפועל בחציון הראשון של 2026 דמי ניהול פיקדון של 0.25% עד 0.43% בשנה בארץ, לפי גודל התיק, פחות מ־0.78% שבמחירון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
       "could_change_price": true
@@ -2289,12 +2305,20 @@
     },
     {
       "what": "SMART לעורכי דין ורואי חשבון: עורכי דין ורואי חשבון",
+      "source": {
+        "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/smart/",
+        "title": "חשבון SMART לעורכי דין ורואי חשבון - הבנק הבינלאומי"
+      },
       "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.fibi.co.il/private/fibiaccount/accounttypes/smart/",
       "why_he": "מסלול SMART כולל הטבות משלו. הוא פתוח רק לעורכי דין ולרואי חשבון, ולכן האתר לא מחשב אותו, ולמי ששייך אליו המחיר יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
       "what": "Medic 10, מסלול לפעילים עצמאית: עובדי רפואה שמעבירים תיק",
+      "source": {
+        "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/medic10/",
+        "title": "חשבון Medic 10 לעובדי הרפואה - הבנק הבינלאומי"
+      },
       "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.fibi.co.il/private/fibiaccount/accounttypes/medic10/",
       "why_he": "מסלול Medic 10 לעובדי רפואה שמעבירים תיק לבנק כולל הטבות משלו. הוא פתוח למקצוע אחד, ולכן האתר לא מחשב אותו, ולמי ששייך אליו המחיר יכול לצאת זול יותר.",
       "could_change_price": true

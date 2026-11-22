@@ -702,6 +702,15 @@ describe("a link opens the page it cites (2026-11-12)", () => {
     // a file the library does not hold is not judged on its length
     expect(checkCitedPages({ sources: [{ url: "https://example.org/other.pdf", page: 900 }] }, filePages)).toEqual([]);
   });
+  it("judges a fee record's left-out page against the entry's own document, else the tariff's", () => {
+    const part11 = "https://www.bank.example/part-11.pdf";
+    const filePages = new Map([[pdf, 5], [part11, 60]]);
+    const rec = (entry: object) => ({ tariff: { url: pdf, title: "חלק 4" }, left_out: [{ what: "x", why: "y", ...entry }] });
+    expect(checkCitedPages(rec({ page: 43 }), filePages)).toEqual([expect.stringContaining("left_out[0]: the link opens page 43, past the file's last page (5)")]);
+    expect(checkCitedPages(rec({ page: 43, source: { url: part11, title: "חלק 11" } }), filePages)).toEqual([]);
+    expect(checkCitedPages(rec({ page: 61, source: { url: part11, title: "חלק 11" } }), filePages)).toEqual([expect.stringContaining("left_out[0]: the link opens page 61, past the file's last page (60)")]);
+    expect(checkCitedPages(rec({ page: 5 }), filePages)).toEqual([]);
+  });
 });
 
 describe("a deposit's first exit point (2026-11-12)", () => {

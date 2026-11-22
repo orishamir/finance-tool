@@ -745,6 +745,10 @@
     },
     {
       "what": "דף חשבון השקעות לילדים: \"פטור מלא מדמי ניהול\" בשנתיים הראשונות, \"ולאחר מכן תשלמו 15 ₪ בלבד בכל חודש - שיתקזזו עם עמלות פעולות המסחר\"",
+      "source": {
+        "url": "https://www.xnes.co.il/trading/kids-investments/",
+        "title": "חשבון השקעות לילדים - אקסלנס"
+      },
       "why": "Advertising (library 74fd4b45fcb70feb). No binding document read prints 15 NIS or an offset against trade fees; the tariff allows the handling fee up to 99 NIS a month, priced at 99. Customers' forum reports (hasolidit, not documents): 15 NIS raised to 40 NIS by letter for a passive account (2018); 19 NIS a month offset against trade fees (2022). The 15 NIS may sit in the unpublished fee annex.",
       "why_he": "התעריפון כותב דמי טיפול ״עד 99 ₪״ בחודש, והאתר מחשב 99 ₪. בדף אחר של החברה כתוב 15 ₪ בחודש שמתקזזים מול עמלות, אבל לא במסמך מחייב; אם זה המחיר שלכם, החשבון זול בפועל יותר.",
       "could_change_price": true
@@ -770,6 +774,10 @@
     },
     {
       "what": "מתווה פטור מעמלת קנייה בקרנות קסם (קרנות מסורתיות, מחקות פתוחות וקרנות סל), עד 40 קניות, 1.1.2026-31.12.2026",
+      "source": {
+        "url": "https://www.xnes.co.il/trading/ksm-mutual-funds/",
+        "title": "מתווה לפטור מעמלות ברכישת קרנות קסם ומפיצים נוספים - אקסלנס"
+      },
       "why": "An offer, stated under groups (library 43f34e04f32015ce). Kesem manages S&P 500 tracking funds held in the site's fund records (for example 5124482). Sale fees, custody and the handling fee are unchanged ('יתר התשלומים ... יוותרו על כנם').",
       "why_he": "עד 40 קניות בלי עמלה בקרנות של קסם, במבצע עד 31.12.2026. זו הטבה מוגבלת, והאתר מתמחר את העמלה הרגילה; למי שקונה קרנות של קסם המחיר יכול לצאת זול יותר.",
       "could_change_price": true
