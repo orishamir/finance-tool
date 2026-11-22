@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
-import type { FromWorker } from "./invest-work";
-import { channelOf, type Client, type Held, type Job } from "./invest-run";
+import { bundle as data, plan } from "../components/invest/render-fixtures";
+import { pickOfHeadline } from "../components/invest/pair";
+import { indexById } from "./invest";
+import { work, type FromWorker } from "./invest-work";
+import { channelOf, relink, type Client, type Held, type Job } from "./invest-run";
 import type { IndicesBundle } from "./providers";
 
 /** A worker that answers when the test says: what was posted, in order, and the replies still owed. */
@@ -59,19 +62,6 @@ describe("a channel of the index page's worker (lib/invest-run.ts)", () => {
     expect(amounts(w.posted)).toEqual([1]);
   });
 
-  it("sends a request again when its data was let go before it ran, unless a newer one waits", () => {
-    const w = fakeWorker();
-    const ch = channelOf("changes");
-    const got: Held<"changes">[] = [];
-    ch.ask(job(1, got), w.client);
-    w.answer({ stale: true });
-    expect(amounts(w.posted)).toEqual([1, 1]);
-    ch.ask(job(2, got), w.client);
-    w.answer({ stale: true });
-    expect(amounts(w.posted)).toEqual([1, 1, 2]);
-    expect(got).toEqual([]);
-  });
-
   it("hands the page the error the work threw, and the answer with the request it was worked out on", () => {
     const w = fakeWorker();
     const ch = channelOf("changes");
@@ -83,5 +73,32 @@ describe("a channel of the index page's worker (lib/invest-run.ts)", () => {
     w.answer({ answer: null });
     expect(got[0]).toEqual({ failed: "RangeError: no" });
     expect(got[1]).toMatchObject({ bundle, ask: asked.ask, answer: null });
+  });
+});
+
+describe("an answer from the worker, as the page reads it (lib/invest-run.ts)", () => {
+  const index = indexById(data, "index-sp500");
+  if (!index) throw new Error("the collected data has the S&P 500");
+  it("the view's fund records and its index are the page's own objects again", () => {
+    const ask = { index, plan, yourBroker: null };
+    const cloned = structuredClone(work.view(data, ask));
+    const got = relink.view({ bundle: data, ask, answer: cloned });
+    const recs = got.answer.options.flatMap((o) => o.funds.map((f) => f.rec));
+    expect(recs.length).toBeGreaterThan(0);
+    expect(recs.filter((r) => r !== data.funds.find((f) => f.id === r.id))).toEqual([]);
+    expect(got.answer.index).toBe(index);
+  });
+
+  it("the sweep's plan and shares are the request's own", () => {
+    const view = work.view(data, { index, plan, yourBroker: null });
+    const pick = pickOfHeadline(view);
+    if (!pick) throw new Error("the S&P 500 has a pair to price");
+    const ask = { index, plan, house: pick.house, fund: pick.fund, shares: [-20, 0, 20] };
+    const cloned = structuredClone(work.changes(data, ask));
+    if (!cloned) throw new Error("the pair has a value left on the plan");
+    const got = relink.changes({ bundle: data, ask, answer: cloned });
+    expect(got.answer?.plan).toBe(plan);
+    expect(got.answer?.shares).toBe(ask.shares);
+    expect(got.answer?.lines).toEqual(cloned.lines);
   });
 });

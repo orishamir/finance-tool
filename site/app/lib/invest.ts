@@ -203,9 +203,9 @@ export interface BrokerCell {
   availability?: Availability;
 }
 
-/** A house's cheapest priced cell over its group's options (`HouseRow.generic`), with what the account list of an index with no fund to price shows of it. */
-interface GenericCell extends BrokerCell {
-  /** `cost` in whole shekels; the place that shows it adds its `about` (an account's header). */
+/** What the account list of an index with no fund to price shows of a house's cheapest priced cell (`HouseRow.split`). */
+export interface CostSplit {
+  /** The cell's `cost` in whole shekels; the place that shows it adds its `about` (an account's header). */
   whole: SiteValue;
   /** The cost split by fee line, before tax (F-91 on F-61), and the remainder no single line explains: a run per line. */
   lines: { line: FeeLine; cost: number }[];
@@ -335,7 +335,12 @@ export interface HouseRow {
   unavailable: Availability | null;
   reason: Reason | null;
   /** An index with no fund record: the house's cheapest broker cost over the group's options. */
-  generic: GenericCell | null;
+  generic: BrokerCell | null;
+  /**
+   * What the account list shows of `generic`: worked out only on a view with no pair to show (`pairless`), the one view whose account list
+   * shows it, since its split takes a run per fee line; null on every other view.
+   */
+  split: CostSplit | null;
   /** The house prints a standing-order line for a kind of fund here: by house, so the row keeps its label when the best fund changes. */
   standing: boolean;
   /** The standing-order lines the ranked price leaves out at this house for any kind of fund here (`not_ranked`, D41): by house, as `standing`. */
@@ -1314,18 +1319,22 @@ const entryOrder = (a: HouseEntry, b: HouseEntry) => {
   return rank(a) - rank(b) || (b.price?.valueN ?? 0) - (a.price?.valueN ?? 0);
 };
 
-/** The run behind each priced cell, for the house rows that show its split (`genericOf`): a cell holds only what it shows. */
+/** The run behind each priced cell, for the house rows that show its split (`splitOf`): a cell holds only what it shows. */
 const cellRuns = new WeakMap<BrokerCell, { row: ComparedProvider; spec: Spec }>();
 
-/** A house's cheapest cell with its cost in whole shekels and its split by fee line, which takes a run per line. */
-function genericOf(ctx: Ctx, cell: BrokerCell): GenericCell {
+/** A house's cheapest cell's cost in whole shekels and its split by fee line, which takes a run per line. */
+function splitOf(ctx: Ctx, cell: BrokerCell): CostSplit {
   const run = cellRuns.get(cell);
-  if (!run) throw new Error(`genericOf: the priced cell of ${cell.providerId} has no run`);
+  if (!run) throw new Error(`splitOf: the priced cell of ${cell.providerId} has no run`);
   const lines = run.row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
-  return { ...cell, whole: costValue(ctx, run.row, run.spec, undefined, true), lines, interaction: run.row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0) };
+  return { whole: costValue(ctx, run.row, run.spec, undefined, true), lines, interaction: run.row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0) };
 }
 
+/** A view with no pair to show: no option has a way that leaves something (`bestWay`), so the page shows the account list of an index with no fund to price. */
+const pairlessOf = (options: OptionView[]): boolean => !options.some((o) => o.bestWay);
+
 function housesOf(ctx: Ctx, options: OptionView[], headline: Way | null, providers: ProviderInfo[]): HouseRow[] {
+  const pairless = pairlessOf(options);
   const rows = providers.map((provider): HouseRow => {
     // a broker the person typed is in the group of what it sells; selling both, all of it counts (D44)
     const entered = ctx.snaps.find((s) => s.id === provider.id);
@@ -1338,14 +1347,14 @@ function housesOf(ctx: Ctx, options: OptionView[], headline: Way | null, provide
     const best = entries.find((e) => e.price && !e.price.open) ?? null;
     // no fund record at all: the broker cost of the group's options, the cheapest
     const cells = opts.flatMap((o) => o.cells.filter((c) => c.providerId === provider.id));
-    const cheapest = cells.filter((c) => c.kind === "cost").sort((a, b) => a.costN! - b.costN!)[0];
-    const generic = cheapest ? genericOf(ctx, cheapest) : null;
+    const generic = cells.filter((c) => c.kind === "cost").sort((a, b) => a.costN! - b.costN!)[0] ?? null;
+    const split = generic && pairless ? splitOf(ctx, generic) : null;
     const na = cells.find((c) => c.kind === "unavailable");
     const gap = best && headline && headline.providerId !== provider.id && headline.valueN - best.price!.valueN > 0 ? gapOf2(ctx, headlineEnd(headline), leftEnd(provider.short, best.price!.valueN, best.price!.value), "F-65", copy.houses.gapAbout(provider.name)) : null;
     const reason = best || generic ? null : (entries.find((e) => e.reason)?.reason ?? cells.find((c) => c.reason)?.reason ?? null);
     const standing = cells.some((c) => c.standing) || entries.some((e) => e.price?.standing);
     const aside = [...new Set([...cells.flatMap((c) => c.aside ?? []), ...entries.flatMap((e) => e.price?.aside ?? [])])];
-    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, standing, aside };
+    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, split, standing, aside };
   });
   const priced = (r: HouseRow) => r.best ?? r.generic;
   const cost = (r: HouseRow) => (r.best ? -r.best.price!.valueN : r.generic ? r.generic.costN! : Infinity);

@@ -3,7 +3,7 @@
 // the cheapest kind of fund at it; the fund column says there is no fund yet. Once a fund is added the page is the pair page.
 import { useMemo, useState } from "react";
 import { invest as c } from "../../copy";
-import { asideLines, firstCount, GROUP_OPTIONS, phoneOnlyValue, placesOf, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
+import { asideLines, firstCount, GROUP_OPTIONS, phoneOnlyValue, placesOf, type CostSplit, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
 import type { SiteValue } from "../../lib/value";
 import type { IndicesBundle } from "../../lib/providers";
 import { isGroupProvider } from "../../lib/group-pick";
@@ -33,10 +33,19 @@ export function NoFundCall({ view }: { view: InvestView }) {
   );
 }
 
+/** A priced house's split by fee line, which a view with no pair to show holds for every priced house (`HouseRow.split`). */
+function splitOf(h: HouseRow): CostSplit {
+  if (!h.split) throw new Error(`the account list of an index with no fund reads the split of ${h.provider.id}, which only a view with no pair to show holds`);
+  return h.split;
+}
+
 /** The houses the list ranks: priced ones by what the account charges, then the ones it cannot price, those not sold there last. */
 function ordered(view: InvestView) {
   const rows = view.houses.filter((h) => !isGroupProvider(h.provider));
-  const ok = rows.filter((h): h is HouseRow & { generic: NonNullable<HouseRow["generic"]> } => !!h.generic).sort((a, b) => a.generic.costN! - b.generic.costN! || a.provider.short.localeCompare(b.provider.short, "he"));
+  const ok = rows
+    .filter((h): h is HouseRow & { generic: NonNullable<HouseRow["generic"]> } => !!h.generic)
+    .map((h) => ({ ...h, split: splitOf(h) }))
+    .sort((a, b) => a.generic.costN! - b.generic.costN! || a.provider.short.localeCompare(b.provider.short, "he"));
   const missing = rows.filter((h) => !h.generic).sort((a, b) => Number(!!a.unavailable) - Number(!!b.unavailable) || a.provider.short.localeCompare(b.provider.short, "he"));
   return { rows, ok, missing };
 }
@@ -88,7 +97,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const row = rows.find((h) => h.provider.id === houseId);
   if (!house || !row) return null;
   const scale = barScale(ok.map((h) => h.generic.costN!));
-  const lines = legendLines(!!view.index.israeli, ok.flatMap((h) => h.generic.lines.map((l) => lineOf(l.line))));
+  const lines = legendLines(!!view.index.israeli, ok.flatMap((h) => h.split.lines.map((l) => lineOf(l.line))));
   const local = rows.filter((h) => !h.provider.foreign && !h.provider.custom);
   const saved = bundle.snapshots.filter((s) => rows.some((h) => h.provider.id === s.id && !h.provider.custom)).map((s) => s.snapshot).sort();
   const standingCount = local.filter((h) => h.standing).length;
@@ -102,11 +111,12 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const phoneAny = (id: string, short: string, k: OptionId) => phoneOnlyValue(snapOf(id), k, "europe", short) ?? phoneOnlyValue(snapOf(id), k, "us", short);
   const pickRows: PickRow[] = ok.map((h, i) => {
     const g = h.generic;
+    const sp = h.split;
     const from = h.provider.custom ? c.pair.sourceEntered : c.pair.sourceList(h.provider.short);
     // the account's fees on each other first, as on every bar of the page
     const parts: CostPart[] = [
-      { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
-      ...byLegend(g.lines).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass(lineOf(l.line)), source: from })),
+      { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: sp.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
+      ...byLegend(sp.lines).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass(lineOf(l.line)), source: from })),
     ];
     return {
       key: h.provider.id,
@@ -177,9 +187,9 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             house={house}
             snapshot={bundle.snapshots.find((s) => s.id === house.id)}
             charge={
-              row.generic && (
+              row.split && (
                 <>
-                  {c.pair.colCharges(years)}: <Num animate value={{ ...row.generic.whole, about: c.pair.colCharges(years) }} />
+                  {c.pair.colCharges(years)}: <Num animate value={{ ...row.split.whole, about: c.pair.colCharges(years) }} />
                 </>
               )
             }
@@ -223,7 +233,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           pick={legendPick}
           items={[
             { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
-            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass(l)} />, label: legendName(l, ok.some((h) => hasCurrent(h.generic.lines))) })),
+            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass(l)} />, label: legendName(l, ok.some((h) => hasCurrent(h.split.lines))) })),
             ...(ok.some((h) => h.generic.costN! > scale) ? [{ id: "broken", label: c.pair.broken }] : []),
           ]}
         />

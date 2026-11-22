@@ -17,7 +17,7 @@ type Got<K extends WorkKind> = Asked<K> & { answer: Works[K]["answer"] };
 export type Held<K extends WorkKind> = Got<K> | { failed: string };
 
 /** The answer as the page reads it: the fund records and the index are the page's own objects, as an answer worked out in place has them. */
-const relink: { [K in WorkKind]: (got: Got<K>) => Got<K> } = {
+export const relink: { [K in WorkKind]: (got: Got<K>) => Got<K> } = {
   view: (got) => {
     const recs = new Map(got.bundle.funds.map((f) => [f.id, f]));
     for (const o of got.answer.options) for (const f of o.funds) f.rec = recs.get(f.rec.id) ?? f.rec;
@@ -90,10 +90,8 @@ export function channelOf<K extends WorkKind>(kind: K) {
     busy = true;
     c.post(kind, job, (m) => {
       busy = false;
-      // the data was let go before the request ran: it goes again, unless a newer one waits
-      if ("stale" in m) next ??= job.live ? job : null;
       // the worker's answer is this channel's kind: it answered the request this channel sent
-      else if (job.live) job.done("failed" in m ? { failed: m.failed } : relink[kind]({ bundle: job.bundle, ask: job.ask, answer: m.answer as Works[K]["answer"] }));
+      if (job.live) job.done("failed" in m ? { failed: m.failed } : relink[kind]({ bundle: job.bundle, ask: job.ask, answer: m.answer as Works[K]["answer"] }));
       const after = next;
       next = null;
       if (after) send(after, c);

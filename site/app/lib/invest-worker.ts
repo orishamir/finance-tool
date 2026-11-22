@@ -16,10 +16,9 @@ self.addEventListener("message", (e: MessageEvent<ToWorker>) => {
     data.set(m.data, m.bundle);
     for (const n of data.keys()) if (data.size > KEPT_DATA) data.delete(n);
   }
-  const bundle = data.get(m.data);
-  // data let go before the request ran: the page asks again
-  if (!bundle) return answer({ id: m.id, stale: true });
   try {
+    const bundle = data.get(m.data);
+    if (!bundle) throw new Error(`the worker holds no data numbered ${m.data}: the page keeps the same ${KEPT_DATA} latest it sent`);
     answer({ id: m.id, answer: m.kind === "view" ? work.view(bundle, m.ask) : work.changes(bundle, m.ask) });
   } catch (error) {
     answer({ id: m.id, failed: error instanceof Error ? `${error.name}: ${error.message}` : String(error) });

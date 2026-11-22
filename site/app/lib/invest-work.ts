@@ -65,11 +65,15 @@ export const work: { [K in WorkKind]: (bundle: IndicesBundle, ask: Works[K]["ask
   changes: planChanges,
 };
 
-/** How many sets of data the worker keeps, the latest sent: the page's own and the one its last answer was worked out on. */
+/**
+ * How many sets of data the worker keeps, the latest sent: the page's own and the one its last answer was worked out on. The page keeps the
+ * same list of what it sent, letting go of the oldest the same way, and its one worker reads messages in the order they were sent, so a
+ * request that names its data by number always finds it there.
+ */
 export const KEPT_DATA = 2;
 
 /** What the page sends the worker: a request on the data of its number, with the data the first time; every message is answered once. */
 export type ToWorker = { id: number; data: number; bundle?: IndicesBundle } & { [K in WorkKind]: { kind: K; ask: Works[K]["ask"] } }[WorkKind];
 
-/** What the worker answers a request: its result, the error it threw, or that the data it names was replaced before it ran. */
-export type FromWorker = { id: number; answer: Works[WorkKind]["answer"] } | { id: number; failed: string } | { id: number; stale: true };
+/** What the worker answers a request: its result, or the error it threw. */
+export type FromWorker = { id: number; answer: Works[WorkKind]["answer"] } | { id: number; failed: string };
