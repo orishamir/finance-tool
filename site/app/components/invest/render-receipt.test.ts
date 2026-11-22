@@ -4,11 +4,11 @@ import { describe, expect, it } from "vitest";
 import { flags, groupPrices, help, invest } from "../../copy";
 import { pickableGroups, withGroupPick } from "../../lib/group-pick";
 import { PairLists } from "./lists";
-import { buildInvest, indexById, kindOf, pairCostsKept } from "../../lib/invest";
+import { asideLines, buildInvest, indexById, kindOf, pairCostsKept } from "../../lib/invest";
 import { receiptAmounts } from "../../lib/receipt";
 import { ANCHOR, PairReceipt, PairStub } from "./receipt";
 import { ChosenPair } from "./chosen";
-import { allFunds, pickOfHeadline, pairVerdict } from "./pair";
+import { allFunds, pickOfHeadline, pairVerdict, priced } from "./pair";
 import { stretchesOf } from "../../lib/stretch";
 import { bundle, plan, shown, html, nisIn, fundRow, t } from "./render-fixtures";
 import { planOf } from "../../lib/receipt-fixtures";
@@ -85,17 +85,35 @@ describe("the receipt", () => {
 describe("the chosen pair's card", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const pick = pickOfHeadline(view)!;
-  it("says when the account's price list was collected and what it leaves out, and the fund's number, kind, labels and gap", () => {
+  it("says when the account's price list was collected, and the fund's number, kind, labels and gap", () => {
     const out = shown(html(createElement(ChosenPair, { view, bundle, plan, pick, chosen: false })));
     expect(out).toContain(w.shownPair(false).cardTitle);
     expect(out).not.toContain(w.shownPair(true).name);
     expect(out).toContain(w.chosen.collected);
-    expect(out).toContain(w.chosen.aside);
     expect(out).toContain(w.chosen.groups.follow!);
     expect(out).toContain(w.kinds.gapHead.net);
     expect(out).toContain(w.chosen.number);
     expect(out).toContain(w.chosen.kind);
     expect(out).toContain(w.chosen.together.after);
+  });
+  // the price list's other price, which the figure leaves out: a line where the house prints one for the pair, and none where it prints none
+  const asideOf = (p: { house: string; fund: string }) => {
+    const at = allFunds(view).find((f) => f.rec.id === p.fund)?.byHouse[p.house];
+    return priced(at) ? asideLines(bundle.snapshots.find((s) => s.id === p.house), at.aside) : [];
+  };
+  const pairs = allFunds(view).flatMap((f) => Object.keys(f.byHouse).map((house) => ({ house, fund: f.rec.id })));
+  it("writes a price left out of the figure where the house prints one with its rate", () => {
+    const withAside = pairs.find((p) => asideOf(p).some((l) => typeof l.rate.value === "number"));
+    if (!withAside) throw new Error("the data has no such pair at the S&P 500");
+    const out = shown(html(createElement(ChosenPair, { view, bundle, plan, pick: withAside, chosen: true })));
+    expect(out).toContain(w.chosen.aside);
+  });
+  it("has no line for another price where the house prints none", () => {
+    const without = pairs.find((p) => priced(allFunds(view).find((f) => f.rec.id === p.fund)?.byHouse[p.house]) && asideOf(p).length === 0);
+    if (!without) throw new Error("the data has no such pair at the S&P 500");
+    const out = shown(html(createElement(ChosenPair, { view, bundle, plan, pick: without, chosen: true })));
+    expect(out).toContain(w.chosen.collected);
+    expect(out).not.toContain(w.chosen.aside);
   });
 });
 

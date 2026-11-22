@@ -7,7 +7,9 @@
 //   that a move waited for, from the move to the frame's end;
 //   layout-shift entries name what moved on the page.
 // A step fails on a tap, a key or a move answered over 100 ms after it (design.md), and a drag fails on any layout shift between the
-// finger going down and coming up, and on a drag that moves its slider through fewer than three values (it measured nothing).
+// finger going down and coming up, and on a drag that moves its slider through fewer than three values (it measured nothing). A flow that
+// names a figure (`follows`) also fails a step whose control ended on another value while the figure, read at rest before and after,
+// stayed the same: a page that answers fast because its result never follows the input passes nothing.
 //
 // Usage: node site/scripts/response-check.mjs [page path...]   e.g. /indices/sp500
 // Without paths: every flow below. Needs a build (npm run build). Exits 1 when a step fails.
@@ -40,11 +42,13 @@ const dealPath = existsSync(dealFile) ? readFileSync(dealFile, "utf8").trim() : 
 
 /**
  * The flows. `slider` and `field` count the visible sliders (role=slider: the kit's range fields and a chart's marker) and the visible
- * number fields (inputmode numeric or decimal) in the page's main part, from 0; `text` is what is typed into the field.
+ * number fields (inputmode numeric or decimal) in the page's main part, from 0; `text` is what is typed into the field. `follows` is the
+ * words that label a figure the steps must change: the figure is the element right after the first visible element with those words alone.
  */
 const FLOWS = [
-  // an index page, opened on its default index: the plan's slider and its amount
-  { name: "the index page", path: "/indices/sp500", slider: 0, field: 0, text: "250000" },
+  // an index page, opened on its default index: the plan's slider and its amount, typed as a number the drag (which ends on the slider's
+  // middle, 250,000) does not leave, so the figure must change at both steps
+  { name: "the index page", path: "/indices/sp500", slider: 0, field: 0, text: "180000", follows: "נשאר לכם" },
   // the fee page's filled deal (layout-check-deal.txt): the chart's size of a trade, and a fee's figure
   ...(dealPath ? [{ name: "the fee page's deal", path: dealPath, slider: 0, field: 0, text: "0.25" }] : []),
   // a guide page whose chart answers a slider and a field
@@ -146,12 +150,38 @@ async function runFlow(flow, plant) {
   const fields = page.locator('main input:is([inputmode="numeric"], [inputmode="decimal"])').locator("visible=true");
   const slider = sliders.nth(flow.slider);
   if (!(await slider.count())) steps.push({ step: "drag a slider", summary: "no slider", findings: [{ step: "drag a slider", check: "missing", detail: `no visible slider number ${flow.slider + 1} on the page` }] });
-  else steps.push(await drag(page, cdp, slider));
+  else steps.push(await followed(page, flow, () => drag(page, cdp, slider)));
   const field = fields.nth(flow.field);
   if (!(await field.count())) steps.push({ step: "type in a field", summary: "no field", findings: [{ step: "type in a field", check: "missing", detail: `no visible number field number ${flow.field + 1} on the page` }] });
-  else steps.push(await typeIn(page, field, flow.text));
+  else steps.push(await followed(page, flow, () => typeIn(page, field, flow.text)));
   await ctx.close();
   return steps;
+}
+
+/**
+ * A step run with the flow's figure (`follows`) read before it and after it, the page at rest both times: a finding when the step's control
+ * ended on another value and the figure did not change, or when the figure is not on the page. A flow with no figure runs the step alone.
+ */
+async function followed(page, flow, run) {
+  if (!flow.follows) return run();
+  const before = await figureOf(page, flow.follows);
+  const result = await run();
+  const after = await figureOf(page, flow.follows);
+  const { step, control } = result;
+  // a field shows its number with thousands separators while it is not being typed in, and as typed after Enter
+  const number = (v) => String(v).replace(/[^\d.-]/g, "");
+  if (before === null || after === null) result.findings.push({ step, check: "missing", detail: `no figure labelled "${flow.follows}" on the page` });
+  else if (number(control.from) !== number(control.to) && before === after) result.findings.push({ step, check: "stale", detail: `"${flow.follows}" stayed ${after} while the control went from ${control.from} to ${control.to}` });
+  else result.summary += `; "${flow.follows}" ${before === after ? `stayed ${after}, the control back on ${control.to}` : `went from ${before} to ${after}`}`;
+  return result;
+}
+
+/** The text of the element right after the first visible element in the page's main part whose own text is `label`; null with none. */
+function figureOf(page, label) {
+  return page.evaluate((label) => {
+    const el = [...document.querySelectorAll("main *")].find((e) => e.children.length === 0 && e.textContent.trim() === label && e.checkVisibility());
+    return el?.nextElementSibling?.textContent.trim() ?? null;
+  }, label);
 }
 
 /** A finger on the slider, moved across the screen and back in small steps, then lifted. */
@@ -186,7 +216,7 @@ async function drag(page, cdp, slider) {
   if (seen.size < 3) findings.push({ step, check: "missing", detail: `the finger's drag did not move "${name}" (its values: ${[...seen].join(", ")})` });
   if (during.length) findings.push({ step, check: "shift", value: sum(during), detail: `${many(during.length, "layout shift")} while the finger dragged "${name}", ${sum(during).toFixed(3)} in all, ${moved(during)}` });
   const slowest = frames.filter((f) => f.event <= end).reduce((n, f) => Math.max(n, f.latency), 0);
-  return { step, summary: `"${name}", ${way.length} moves through ${seen.size} values, ${slowest ? `the slowest frame answering a move after ${slowest} ms` : "every move answered in a frame under 50 ms"}; ${worst(events)}; ${many(during.length, "layout shift")} while dragging`, findings };
+  return { step, control: { from: before, to: await value() }, summary: `"${name}", ${way.length} moves through ${seen.size} values, ${slowest ? `the slowest frame answering a move after ${slowest} ms` : "every move answered in a frame under 50 ms"}; ${worst(events)}; ${many(during.length, "layout shift")} while dragging`, findings };
 }
 
 /** The field tapped, its text selected, the number typed key by key with the page at rest between keys (each key timed on its own), then Enter. */
@@ -195,6 +225,7 @@ async function typeIn(page, field, text) {
   const name = await accessibleName(field);
   await field.scrollIntoViewIfNeeded();
   await rest(page);
+  const from = await field.inputValue();
   const start = await now(page);
   await field.tap();
   await rest(page);
@@ -204,7 +235,7 @@ async function typeIn(page, field, text) {
     await rest(page);
   }
   const { events } = await taken(page, start);
-  return { step, summary: `"${name}", "${text}" and Enter; ${worst(events)}`, findings: slowInputs(step, events) };
+  return { step, control: { from, to: await field.inputValue() }, summary: `"${name}", "${text}" and Enter; ${worst(events)}`, findings: slowInputs(step, events) };
 }
 
 /**

@@ -29,9 +29,6 @@ export function watchSheets(onChange: () => void): () => void {
   return () => watchers.delete(onChange);
 }
 
-/** Whether a sheet is open, shown or covered. */
-export const anySheet = (): boolean => layers.length > 0;
-
 const at = (s: StackedSheet | null): number => (s === null ? -1 : layers.indexOf(s));
 
 /** Whether `s` is open under another sheet, hidden until that one closes. */

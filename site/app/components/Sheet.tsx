@@ -11,7 +11,6 @@ import { IconArrowBack, IconChevronDown, IconClose } from "./icons";
 import { Button, cx } from "./ui";
 import { cssMs } from "./kit/chart-glide-math";
 import { MQ, useIsoLayoutEffect, useMedia } from "../lib/hooks";
-import { FailureNotice } from "./failure-notice";
 import { closeUnder, coversOther, dropSheet, isCovered, pushSheet, watchSheets, type StackedSheet } from "./sheet-stack";
 
 export interface SheetProps {
@@ -294,7 +293,6 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
         </div>
         {open || !ref.current?.open ? children : kept.current}
       </div>
-      {open && !covered && <FailureNotice where="sheet" />}
       {/* a strip of its own under the scrolling body, always there at one height: never covers a line, never moves one, empty at the end */}
       <div className="sheet-more" data-more={more ? "" : undefined} aria-hidden="true">
         {/* words with the arrow: a fade alone read as the sheet cut off in a still shot */}

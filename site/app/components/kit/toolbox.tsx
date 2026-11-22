@@ -17,7 +17,6 @@ import { WhenRule } from "./change-divider";
 import { ChoiceChips } from "./choice";
 import { cx } from "./cx";
 import { useCanDrag, useDragSource } from "./lift";
-import { setDockRoom } from "../../lib/dock-room";
 
 /** A group's kind, by what its cards do to the price: what is charged, what comes off it, its floor and ceiling, what it changes by (the band's colour), a rule of the charge. */
 export type ToolKind = "charge" | "off" | "bound" | "when" | "rule";
@@ -225,11 +224,16 @@ export function Toolbox({ addTo, held, groups, onAdd, onRemove, foot, sheet, doc
   useEffect(() => {
     const el = pinned.current;
     if (!sheet || !docked || !el) return;
-    const ro = new ResizeObserver(() => setDockRoom(el.getBoundingClientRect().height));
+    const ro = new ResizeObserver(() => {
+      const h = `${el.getBoundingClientRect().height}px`;
+      document.body.style.paddingBottom = h;
+      document.documentElement.style.scrollPaddingBottom = h;
+    });
     ro.observe(el);
     return () => {
       ro.disconnect();
-      setDockRoom(null);
+      document.body.style.paddingBottom = "";
+      document.documentElement.style.scrollPaddingBottom = "";
     };
   }, [sheet, docked]);
   const lead = addTo ? (
