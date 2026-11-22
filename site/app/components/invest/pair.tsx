@@ -425,8 +425,7 @@ export function asideWords(lines: readonly AsideLineRecord[], company: string): 
 
 /** What the account card says of its house, under its name: what it charges, its labels and its price list. */
 export function HouseLine({ house, snapshot, charge }: { house: NonNullable<ReturnType<typeof providerName>>; snapshot: IndicesBundle["snapshots"][number] | undefined; charge: ReactNode }) {
-  // the house's account on your own terms opens from here, the chosen account's card, not from a line on every row;
-  // a 44 px target that takes no more height than the words beside it
+  // the house's account on your own terms opens from here, a 44 px target that takes no more height than the words beside it
   return (
     <span className="flex flex-wrap items-center content-start gap-x-4 gap-y-1 text-sm">
       {/* on a phone the charge has its own line, so a longer figure does not push the words beside it to another line */}

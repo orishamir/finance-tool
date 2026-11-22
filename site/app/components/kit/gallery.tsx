@@ -22,6 +22,7 @@ import { BinIcon } from "./remove-button";
 import { Sheet } from "../Sheet";
 import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
+import { linearScale, steppedScale } from "./slider-scale";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
 const custodyName = (guideBlocks.fees.custody as { name: string }).name;
@@ -175,6 +176,15 @@ function StackDemo() {
   );
 }
 
+/** The sliders' sample scales: whole years, a percent in halves, and a money scale whose steps grow along the track. */
+const YEARS_SCALE = linearScale({ min: 1, max: 40, step: 1 });
+const PCT_SCALE = linearScale({ min: 0, max: 12, step: 0.5 });
+const MONEY_SCALE = steppedScale(0, [
+  { to: 20_000, step: 1_000 },
+  { to: 100_000, step: 5_000 },
+  { to: 500_000, step: 25_000 },
+]);
+
 function RangeDemo() {
   const [range, setRange] = useState({ lo: 10_000, hi: 3_000_000 });
   const moved = range.lo !== 10_000 || range.hi !== 3_000_000;
@@ -251,7 +261,7 @@ function Basics() {
             <Button variant="add">{g.sample.hello}</Button>
           </div>
         </State>
-        <State label="framed: the bordered face in the action colour, a card's one action (the pair card's own price, /deal's link to the index page); danger: filled in the danger colour, the delete of ConfirmAsk beside an outline cancel; inline bold: a sentence's one action, underlined only under the pointer">
+        <State label="framed: the bordered face in the action colour, a card's one action (/deal's link to the index page); danger: filled in the danger colour, the delete of ConfirmAsk beside an outline cancel; inline bold: a sentence's one action, underlined only under the pointer">
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="framed">{g.sample.hello}</Button>
             <LinkButton variant="framed" to="/kit">{g.sample.sentenceLink}</LinkButton>
@@ -1047,6 +1057,8 @@ function Fields() {
   const [years, setYears] = useState<number | null>(10);
   const [years2, setYears2] = useState<number | null>(25);
   const [pct, setPct] = useState<number | null>(5);
+  const [money, setMoney] = useState<number | null>(10_000);
+  const [money2, setMoney2] = useState<number | null>(750);
   const [share, setShare] = useState(20);
   const [pick, setPick] = useState<string | null>(null);
   const [typed, setTyped] = useState("");
@@ -1087,13 +1099,19 @@ function Fields() {
       <Demo name="RangeField" use={g.uses.RangeField}>
         <Grid>
           <State label={`${g.states.filled}, ${g.states.interactive}, ${g.states.draggable}`}>
-            <RangeField label={g.sample.range} unit="years" value={years} start={10} min={1} max={40} step={1} isEntered={years !== 10} validate={yearsCheck({ min: 1, max: 40 })} onCommit={(n) => setYears(n)} onReset={() => setYears(10)} inputMode="numeric" />
+            <RangeField label={g.sample.range} unit="years" unitInLabel value={years} start={10} scale={YEARS_SCALE} isEntered={years !== 10} validate={yearsCheck({ min: 1, max: 40 })} onCommit={(n) => setYears(n)} onReset={() => setYears(10)} inputMode="numeric" />
           </State>
           <State label={`${g.states.changed}, ${g.states.interactive}`}>
-            <RangeField label={g.sample.range} unit="years" value={years2} start={10} min={1} max={40} step={1} isEntered={years2 !== 10} validate={yearsCheck({ min: 1, max: 40 })} onCommit={(n) => setYears2(n)} onReset={() => setYears2(10)} inputMode="numeric" />
+            <RangeField label={g.sample.range} unit="years" unitInLabel value={years2} start={10} scale={YEARS_SCALE} isEntered={years2 !== 10} validate={yearsCheck({ min: 1, max: 40 })} onCommit={(n) => setYears2(n)} onReset={() => setYears2(10)} inputMode="numeric" />
+          </State>
+          <State label={`${g.sample.moneySteps}, ${g.states.interactive}, ${g.states.draggable}`}>
+            <RangeField label={g.sample.money} unit="nis" value={money} start={10_000} scale={MONEY_SCALE} isEntered={money !== 10_000} validate={nonNegativeCheck} onCommit={(n) => setMoney(n)} onReset={() => setMoney(10_000)} />
+          </State>
+          <State label={`${g.states.changed}: ${g.sample.offStep}`}>
+            <RangeField label={g.sample.money} unit="nis" value={money2} start={10_000} scale={MONEY_SCALE} isEntered={money2 !== 10_000} validate={nonNegativeCheck} onCommit={(n) => setMoney2(n)} onReset={() => setMoney2(10_000)} />
           </State>
           <State label={g.states.disabled}>
-            <RangeField label={g.sample.range} unit="years" value={null} min={1} max={40} step={1} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} disabled />
+            <RangeField label={g.sample.range} unit="years" unitInLabel value={null} scale={YEARS_SCALE} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} disabled />
           </State>
         </Grid>
       </Demo>
@@ -1101,8 +1119,8 @@ function Fields() {
         <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
           <KnobStrip
             knobs={[
-              { id: "years", label: g.sample.range, unit: "years", value: years, start: 10, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
-              { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, start: 5, min: 0, max: 12, step: 0.5, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
+              { id: "years", label: g.sample.range, unit: "years", unitInLabel: true, value: years, start: 10, scale: YEARS_SCALE, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
+              { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, start: 5, scale: PCT_SCALE, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
             ]}
           />
         </State>
@@ -1111,8 +1129,8 @@ function Fields() {
             <KnobStrip
               stacked
               knobs={[
-                { id: "years", label: g.sample.range, unit: "years", value: years, start: 10, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
-                { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, start: 5, min: 0, max: 12, step: 0.5, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
+                { id: "years", label: g.sample.range, unit: "years", unitInLabel: true, value: years, start: 10, scale: YEARS_SCALE, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
+                { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, start: 5, scale: PCT_SCALE, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
               ]}
             />
           </div>
