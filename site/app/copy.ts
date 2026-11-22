@@ -700,8 +700,8 @@ export const track = {
   feeBalanceLabel: "ממוצע דמי הניהול מחיסכון שנגבו בפועל בשנת {year}",
   feeDepositLabel: "ממוצע דמי הניהול מהפקדה שנגבו בפועל בשנת {year}",
   feeWhole: "לקרן כולה",
-  /** A child-savings fee is what members past National Insurance's age paid, spread over the whole track (CS OQ9); the note over the
-   * list says the age, from CS-18's figure. */
+  /** A child-savings fee is what members past National Insurance's age paid, spread over the whole track (CS OQ9); the label's caution
+   * "?" says the rest (`trackBrowser.childFee`). */
   feeOver21: "על כל המסלול",
   feeNotReported: "עוד לא דווח",
   /** An empty deposit-fee average that PF-06 explains: the product has no deposit fee. */
@@ -1480,13 +1480,11 @@ export const help = {
 export const trackBrowser = {
   title: "כל המסלולים בכל החברות",
   tabs: { aria: "איך לראות את החברות והמסלולים", byCompany: "לפי חברה", byProduct: "לפי מוצר", deposits: "פיקדונות בבנקים" },
-  /** The page's line: its year and date stand on a phone only, whose rows have no heads; from md the heads say them. */
-  lead: {
-    intro: "דמי הניהול הם הממוצע שנגבה ב־",
-    figures: ". החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
-    end: ". ",
-    source: "מנתוני רשות שוק ההון.",
-    noYear: "החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
+  /** The "?" by the page's title: how to read the list (the fees' year, the figures' date, the source, the companies' order); the cards of
+   *  the fee, the exposure and the money managed follow it. */
+  pageHelp: {
+    about: "איך לקרוא את הרשימה",
+    text: (year: string | null, period: string) => `${year ? `דמי הניהול הם הממוצע שנגבה ב־${year}. ` : ""}החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}. מנתוני רשות שוק ההון. החברות מסודרות מהגדולה לקטנה לפי הכסף המנוהל.`,
   },
   controls: {
     product: "מוצר",
@@ -1511,17 +1509,13 @@ export const trackBrowser = {
     outOf: "מתוך",
     whatIs: "מה זה",
   },
-  /** What each sort says in the line above the list: the column, then the direction. */
+  /** Each sort's name, in the phone's sort control and its folded line. */
   sorts: {
-    name: { label: "שם", what: "שם המסלול", whatKind: "שם החברה", up: "בסדר הא״ב", down: "בסדר הא״ב ההפוך" },
-    fee: { label: "דמי ניהול מהחיסכון", what: "דמי הניהול מהחיסכון", up: "מהזול ליקר", down: "מהיקר לזול" },
-    dep: { label: "דמי ניהול מהפקדה", what: "דמי הניהול מהפקדה", up: "מהזול ליקר", down: "מהיקר לזול" },
-    stock: { label: "חשיפה למניות", what: "החשיפה למניות", up: "מהנמוכה לגבוהה", down: "מהגבוהה לנמוכה" },
-    assets: { label: "כסף מנוהל", what: "הכסף המנוהל", up: "מהמעט להרבה", down: "מההרבה למעט" },
-  },
-  order: {
-    company: "החברות מסודרות מהגדולה לקטנה לפי הכסף המנוהל. בתוך כל חברה המסלולים מסודרים לפי ",
-    kind: "המסלולים מסודרים לפי ",
+    name: { label: "שם" },
+    fee: { label: "דמי ניהול מהחיסכון" },
+    dep: { label: "דמי ניהול מהפקדה" },
+    stock: { label: "חשיפה למניות" },
+    assets: { label: "כסף מנוהל" },
   },
   /** The heading of a group: "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪ · דמי ניהול מהחיסכון: מ־0.54% עד 0.61%". */
   group: {
@@ -1557,8 +1551,13 @@ export const trackBrowser = {
   feeAverage: (year: string, wholeFund = false) => `דמי הניהול הם הממוצע שנגבה ב־${year}${wholeFund ? " בקרן כולה" : ""}. `,
   /** On a phone, whose rows have no heads, over a pension product's list: whose the fees are (CAT-39). */
   wholeFund: "בקרן פנסיה דמי הניהול הם של הקרן כולה, לא של המסלול: כל המסלולים של קרן אחת מראים אותם דמי ניהול.",
-  /** Over a child-savings list or track: what its fee figure is, as the rule base reads it (CS OQ9); the question's chip follows. */
-  childFee: { before: "בחיסכון לכל ילד דמי הניהול כאן הם, לפי קריאה של האתר, מה שעמיתים מעל גיל", after: "שילמו, בממוצע על כל הנכסים של המסלול. עד הגיל הזה הביטוח הלאומי משלם את דמי הניהול. זה לא המחיר שהקופה גובה. שאלה פתוחה" },
+  /** Behind a child-savings fee's caution "?" (its head, its label, a phone's "?" over the list): what the figure is, as the rule base reads
+   *  it, with CS-18's age; the open question's code becomes its chip in the sheet (CS OQ9). `about`: the "?"'s spoken name and the sheet's
+   *  title where the "?" is the child fee's alone. */
+  childFee: {
+    about: "דמי ניהול בחיסכון לכל ילד",
+    help: (age: string) => `בחיסכון לכל ילד דמי הניהול כאן הם, לפי קריאה של האתר, מה שעמיתים מעל גיל ${age} שילמו, בממוצע על כל הנכסים של המסלול. עד הגיל הזה הביטוח הלאומי משלם את דמי הניהול. זה לא המחיר שהקופה גובה. שאלה פתוחה CS OQ9.`,
+  },
   dates: (period: string) => `החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}.`,
   depositOnce: "דמי ניהול מהפקדה, בכל המסלולים:",
   /** A company page's link to the product's tracks at every company: "קרן השתלמות בכל החברות". */

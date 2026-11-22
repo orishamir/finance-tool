@@ -923,7 +923,7 @@ const inputsOfRun = (ctx: Ctx, r: RunReads): Record<string, SiteValue> => {
   const fund = fundId ? ctx.bundle.funds.find((f) => f.id === fundId) : undefined;
   const typed = [r.house, fundId].flatMap((id) => (id ? [ctx.bundle.entered?.inputs[id] ?? {}] : []));
   // a typed fund's costs are what was typed (below); F-107 comes from what was said of it (Ireland, holds the shares) and the index
-  const own = fund ? { ...(isCustomFund(fund) ? {} : fundInputsOf(ctx.bundle, fund)), ...usWithholdingInput(ctx, r, fund) } : {};
+  const own = fund ? { ...(isCustomFund(fund) ? {} : fundInputs(fund, gapListFor(ctx.bundle, fund), ctx.bundle.today)), ...usWithholdingInput(ctx, r, fund) } : {};
   // the income and the age the run's tax reads (`profile.annualIncome` and `ageAtStart` in `runSlot`), on the figures that read that tax
   // (`RunReads.tax`)
   const distributes = !r.costsOff && !!(r.spec?.fund as { distribution?: unknown } | undefined)?.distribution;
@@ -931,19 +931,6 @@ const inputsOfRun = (ctx: Ctx, r: RunReads): Record<string, SiteValue> => {
   const age = r.tax === "after" && ctx.plan.age !== null && ctx.plan.values.age ? { [copy.pair.ageInput]: ctx.plan.values.age } : {};
   return Object.assign({}, planInputs(ctx.plan, WHOLE_PLAN), income, age, ratesOfRun(ctx, r), minimum, own, ...typed);
 };
-
-const keptFundInputs = new WeakMap<FundRecord, { funds: readonly FundRecord[]; exposures: readonly ExposureRecord[]; today: string; inputs: Record<string, SiteValue> }>();
-/**
- * `fundInputs` of a fund in the data, worked out once per fund and data: every run of the fund, at every house, reads the same figures, so
- * their sheets share one set of objects, and a copy of the S&P 500 page's view is about a fifth of what it is with a set per run.
- */
-function fundInputsOf(bundle: IndicesBundle, rec: FundRecord): Record<string, SiteValue> {
-  const kept = keptFundInputs.get(rec);
-  if (kept && kept.funds === bundle.funds && kept.exposures === bundle.exposures && kept.today === bundle.today) return kept.inputs;
-  const inputs = fundInputs(rec, gapListFor(bundle, rec), bundle.today);
-  keptFundInputs.set(rec, { funds: bundle.funds, exposures: bundle.exposures, today: bundle.today, inputs });
-  return inputs;
-}
 
 /**
  * A-11 by F-107 where the fund's run takes it (`fundOf` puts the inputs in the drag: an Irish fund that holds the index's US shares): TXF-16's

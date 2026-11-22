@@ -4,24 +4,25 @@
 // With no kind and no search the list opens folded: each company one row with its count and its money, the first open, and on a phone each
 // track one line that opens in place; on a computer the companies fold the same way and the table keeps its rows.
 // The product, the kind and the sort stand first; on a phone they fold into one line that says what is chosen (`PhoneFold`), and the
-// search stays open under them. The count and the order are said right over the list.
+// search stays open under them. The count is said right over the list; the order is the sorted head's arrow and the phone's sort control.
+// How to read the list (the fees' year, the figures' date, the source, the order of the companies, the columns' cards) is one "?" by the
+// page's title (`TracksHelp`), caution where the product's fee figure has a catch (child savings, CS OQ9).
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { guidePath, trackBrowserPath } from "../../lib/site-paths";
 import { useNavigate, useParams } from "react-router";
 import { inBackground } from "../../lib/background";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
-import { HELP_TERMS, SORT_IDS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData } from "../../lib/track-browser";
+import { HELP_TERMS, SORT_IDS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, sortTracks, tracksPhrase, type GroupBy, type ProductView, type SortId, type TbData, type TbProduct } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
 import { useAddressSort } from "../../lib/list-sort";
 import { useAddressParams } from "../../lib/hooks";
 import { normName } from "../../lib/track-names";
-import { ChoicePair, LongestCase, PhoneFold, SelectField, TextField, TextLink, gershayim, useFlip } from "../kit";
+import { ChoicePair, HelpMark, LongestCase, PhoneFold, SelectField, TextField, TextLink, gershayim, useFlip } from "../kit";
 
 /** The kind chip that stands for every kind (the regulator never names a kind so). */
 const ALL_KINDS = "*";
-import { Term } from "../provenance";
-import { CHILD_SAVINGS, ChildFeeNote, TrackList } from "./list";
+import { CHILD_SAVINGS, childFeeHelp, TrackList } from "./list";
 
 /** The rows drawn at once when the list is new (a product, a kind): the first screens. The rest are drawn the moment after, in a transition, so a click is answered at once. */
 const FIRST_ROWS = 12;
@@ -32,6 +33,27 @@ function keepFor(search: URLSearchParams): string {
   next.delete("kind");
   const s = next.toString();
   return s ? `?${s}` : "";
+}
+
+/** The product the address names, or the default one. */
+function productOf(data: TbData, param: string | undefined): TbProduct {
+  return data.products.find((p) => p.id === param) ?? data.products.find((p) => p.id === defaultProduct) ?? data.products[0]!;
+}
+
+/**
+ * The "?" by the page's title: how to read the list of the product the address names. Its text says the fees' year, the figures' date and
+ * the source, that the companies stand from the largest to the smallest by money managed, and what the past yield is (as the yield
+ * head's "?" says it on a computer, a phone's rows saying only "before fees and tax"); on a pension product, that the fees are the
+ * whole fund's (CAT-39); on child savings, first, what the fee figure is not, in the caution role, with CS-18 under it (CS OQ9). The cards
+ * of the fee, the exposure and the money managed follow, as the heads' own "?" open them on a computer. A tap on any figure opens its source.
+ */
+export function TracksHelp({ data, childAge = null }: { data: TbData; childAge?: SiteValue | null }) {
+  const params = useParams();
+  const product = productOf(data, params.product);
+  const feeYear = data.feeYear && typeof data.feeYear.value === "string" ? data.feeYear.value : null;
+  const child = product.id === CHILD_SAVINGS ? childFeeHelp(childAge) : null;
+  const lead = [child?.text, product.dataset === "pensia-net" ? t.wholeFund : null, t.pageHelp.text(feeYear, fmt.period(product.period)), t.pastNote].filter(Boolean).join(" ");
+  return <HelpMark term={[HELP_TERMS.fee, HELP_TERMS.exposure, HELP_TERMS.assets]} about={t.pageHelp.about} lead={lead} rules={child?.rules} tone={child ? "caution" : undefined} />;
 }
 
 /** "133 מסלולים של 12 חברות (מתוך 133)." No fee range: the table's cells show the fees. */
@@ -48,11 +70,12 @@ function CountLine({ view, shown, companies }: { view: ProductView; shown: numbe
   );
 }
 
-/** `childAge`: CS-18's age until which National Insurance pays a child-savings fund's fee, for the note over that product's list. */
+/** `childAge`: CS-18's age until which National Insurance pays a child-savings fund's fee, for that product's fee head's caution "?". */
 export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge?: SiteValue | null }) {
   const params = useParams();
   const navigate = useNavigate();
-  const productId = data.products.some((p) => p.id === params.product) ? params.product! : (data.products.find((p) => p.id === defaultProduct) ?? data.products[0]!).id;
+  const product = productOf(data, params.product);
+  const productId = product.id;
   // every product's view is built once: a switch of product then only redraws
   const views = useMemo(() => data.products.map((p) => buildProductView(data, p.id)!), [data]);
   const view = views.find((v) => v.id === productId)!;
@@ -82,7 +105,6 @@ export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge
     if (grown !== listKey) startTransition(() => setGrown(listKey));
   }, [grown, listKey]);
   const feeYear = data.feeYear && typeof data.feeYear.value === "string" ? data.feeYear.value : null;
-  const product = data.products.find((p) => p.id === productId)!;
   // With no kind and no search, each company is one folded row with its count and its money, the first open so the reader sees what a row
   // holds; on a phone each of its tracks is one line that opens in place. A search or a kind shows its matches open.
   const browsing = !kind && !dq.trim();
@@ -95,7 +117,6 @@ export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge
   /** A head pressed while the list is scrolled under it: the list starts again from its first row, under the same head. */
   const pressHead = (id: SortId) => press(id, sort, list.current);
 
-  const longestOrder = SORT_IDS.flatMap((id) => ([1, -1] as const).flatMap((dir) => (["company", "kind"] as const).map((mode) => orderLine({ id, dir }, mode))));
   // the phone's folded controls: "קרן השתלמות · מניות · מיון לפי דמי ניהול"
   const summary = (
     <>
@@ -142,21 +163,11 @@ export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge
         <TextField label={t.controls.search} value={q} onChange={setQ} placeholder={t.controls.searchPlaceholder} />
       </div>
 
-      <div className="flex flex-col gap-1 pt-1">
+      <div className="pt-1">
         <LongestCase cases={[<CountLine key="a" view={view} shown={view.tracks.length} companies={view.companies.length} />, <CountLine key="b" view={view} shown={view.tracks.length - 1} companies={view.companies.length} />]}>
           <CountLine view={view} shown={shown.length} companies={companiesIn(shown)} />
         </LongestCase>
-        <LongestCase cases={longestOrder.map((line, i) => <p key={i} className="text-sm">{line}</p>)}>
-          <p className="text-sm text-muted-foreground">{orderLine(sort, by)}</p>
-        </LongestCase>
       </div>
-
-      {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
-      {view.dataset === "pensia-net" && <p className="md:hidden text-sm text-muted-foreground">{t.wholeFund}</p>}
-      {view.id === CHILD_SAVINGS && <ChildFeeNote age={childAge} />}
-      <p className="md:hidden text-sm text-muted-foreground">
-        {t.help.phoneLead} <Term id={HELP_TERMS.fee}>{t.help.fee}</Term> · <Term id={HELP_TERMS.exposure}>{t.help.exposure}</Term> · <Term id={HELP_TERMS.assets}>{t.help.assets}</Term>
-      </p>
       <div ref={list} className="scroll-mt-14 lg:scroll-mt-16">
         {groups.length === 0 ? (
           <p className="py-6 text-muted-foreground">
@@ -165,11 +176,9 @@ export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge
             {t.noResult.after}
           </p>
         ) : (
-          <TrackList view={view} groups={groups} by={by} sort={sort} sortable={sortable} onSort={pressHead} feeYear={feeYear} period={product.period} limit={limit} fold={fold} foldRows={browsing} />
+          <TrackList view={view} groups={groups} by={by} sort={sort} sortable={sortable} onSort={pressHead} feeYear={feeYear} period={product.period} limit={limit} fold={fold} foldRows={browsing} childAge={childAge} />
         )}
       </div>
-      {/* a phone's rows have no heads: the yield's caution stands under the list; from md it is the "?" beside the yield's head */}
-      <p className="md:hidden text-sm text-muted-foreground max-w-measure">{t.pastNote}</p>
     </div>
   );
 }
@@ -179,8 +188,4 @@ function flipKey(set: ReadonlySet<string>, key: string): ReadonlySet<string> {
   const next = new Set(set);
   if (!next.delete(key)) next.add(key);
   return next;
-}
-
-function orderLine(sort: SortState, by: GroupBy): string {
-  return `${by === "company" ? t.order.company : t.order.kind}${sortWords(sort, by)}.`;
 }
