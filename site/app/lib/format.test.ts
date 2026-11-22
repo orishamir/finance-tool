@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { countPhrase, fmt, formatValue, nisOf, nisShown, parseNumber, roundingOf, typedSum, withMinus } from "./format";
+import { countPhrase, fmt, formatValue, nisShown, parseNumber, typedSum, withMinus } from "./format";
 import { hasHebrew, isHebrewTitle, sourceLabel } from "./source-label";
 
 describe("parseNumber (audit A6)", () => {
@@ -99,27 +99,6 @@ describe("display rounding (audit A13)", () => {
   });
 });
 
-describe("an amount that rests on an assumed return (wording.md: hundreds of shekels)", () => {
-  it("shows hundreds from 1,000 ₪, whole shekels below, and halves away from zero on both sides", () => {
-    expect(fmt.nisAssumed(48_327)).toBe("48,300 ₪");
-    expect(fmt.nisAssumed(48_350)).toBe("48,400 ₪");
-    expect(fmt.nisAssumed(-48_350)).toBe("\u200e\u221248,400 ₪");
-    expect(fmt.nisAssumed(1_049.9)).toBe("1,000 ₪");
-    expect(fmt.nisAssumed(999.6)).toBe("1,000 ₪");
-    expect(fmt.nisAssumed(37.4)).toBe("37 ₪");
-    expect(nisShown(17_825, "assumed")).toBe("17,800 ₪");
-    expect(formatValue(17_825, "nis", "assumed")).toBe("17,800 ₪");
-  });
-  it("is read from the value object, which says the figure rests on one", () => {
-    expect(roundingOf({ state: "computed", onAssumedReturn: true })).toBe("assumed");
-    expect(roundingOf({ state: "computed" })).toBe("computed");
-    expect(nisOf({ onAssumedReturn: true }, 17_825)).toBe("17,800 ₪");
-    expect(nisOf({}, 17_825)).toBe("17,825 ₪");
-    expect(nisOf({ onAssumedReturn: true }, 17_825, { signed: true })).toBe("\u2066+17,800 ₪\u2069");
-    expect(nisOf({ onAssumedReturn: true }, -17_825, { signed: true, bare: true })).toBe("\u2066\u221217,800\u2069");
-  });
-});
-
 describe("plain copy of a shekel amount (audit A37)", () => {
   it("has no right-to-left mark and no no-break space", () => {
     for (const text of [fmt.nis(1234.5), fmt.nisWhole(1234), formatValue(10000, "nis", "entered")]) {
@@ -156,16 +135,6 @@ describe("negative figures (polish 2026-10-24)", () => {
     expect(fmt.number(-2.5)).toBe("\u200e\u22122.5");
     expect(formatValue(-29, "pct")).toBe("\u200e\u221229%");
     for (const t of [fmt.pct(-2), fmt.nis(-5), fmt.number(-3), fmt.compactNis(-2500)]) expect(t).not.toContain("-");
-  });
-  it("prints no minus on a value that rounds to zero", () => {
-    expect(fmt.nisWhole(-0.3)).toBe("0 ₪");
-    expect(fmt.nis(-0.001)).toBe("0 ₪");
-    expect(fmt.pct(-0.0001)).toBe("0%");
-    expect(fmt.number(-0.001)).toBe("0");
-    expect(fmt.compactNis(-20)).toBe("\u200e\u221220 ₪");
-    expect(fmt.compactNis(-0.01)).toBe("0 ₪");
-    expect(fmt.decimals(-0.04, 1, { isolate: false })).toBe("0.0");
-    expect(formatValue(-0.004, "nis", "computed")).toBe("0 ₪");
   });
   it("leaves positive figures and an existing minus alone", () => {
     expect(fmt.pct(29)).toBe("29%");

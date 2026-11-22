@@ -2,8 +2,7 @@
 // account's fees and the fund took, what the cash waiting for a whole unit did, and what is left, written so that the lines add up as a reader
 // adds them: paid in + added − tax − account − fund − waiting = left. Each figure is its own rounding where it can be; the rounding that makes
 // them agree goes to the cost lines only, the account's to its own lines (its total is the account's fees, `accountFees`).
-import { nisOf } from "./format";
-import type { SiteValue } from "./value";
+import { fmt } from "./format";
 import { wholeParts } from "./whole-parts";
 import type { PairCosts } from "./invest";
 
@@ -53,4 +52,4 @@ export function sharesOf(values: readonly number[]): number[] {
  * (the remainder of the account's fees together, the cash waiting for a unit while the fund fell, or a part the whole-shekel rounding took
  * under zero) with a plus, as the money it gave back ("+3 ₪"), so it never reads as one more cost.
  */
-export const takenWords = (n: number, of: Pick<SiteValue, "onAssumedReturn"> = {}): string => nisOf(of, -n, { signed: true });
+export const takenWords = (n: number): string => fmt.signedNisWhole(-n);

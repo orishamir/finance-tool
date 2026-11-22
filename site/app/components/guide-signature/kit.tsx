@@ -7,7 +7,7 @@ import { computedInputs as ci, guideBlocks, guideSignature as copy } from "../..
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
-import { p05Units, asField, asP05Input, computed, entered as enteredValue, feeLabel, feeYear, type SiteValue, type Strength } from "../../lib/value";
+import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, type SiteValue, type Strength } from "../../lib/value";
 import { GapNote, NumberField, RangeField, nonNegativeCheck, yearsCheck } from "../kit";
 import { IdText, Num } from "../provenance";
 
@@ -119,7 +119,7 @@ export const rulesOfRuns = (runs: readonly RunResult[]): { id: string; strength:
  * a plain number in the sentence and in a calculation sheet, with no site-parameter tag and no "you entered" mark.
  */
 export function inputSite(bundle: Bundle, key: P05Input, n: number, source: InputSource, today: string, about: string): SiteValue {
-  return asField(source === "p05" ? { ...p05Value(bundle.p05, key), about } : asP05Input(key, enteredValue(n, p05Units[key], today, about)));
+  return asField(source === "p05" ? { ...p05Value(bundle.p05, key), about } : enteredValue(n, p05Units[key], today, about));
 }
 
 /** A value the reader set in a visual's own control (a field, a point picked on the chart), as a field's value: plain wherever it shows. */

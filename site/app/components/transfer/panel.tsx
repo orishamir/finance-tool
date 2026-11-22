@@ -262,13 +262,10 @@ function ImportHalf() {
 
   const source = fileText?.text ?? pasted;
   const read = useMemo(() => (source.trim() === "" ? null : readImport(source)), [source]);
-  // new text asks again before it replaces anything, and puts away the line about the last import
-  const [readSource, setReadSource] = useState(source);
-  if (source !== readSource) {
-    setReadSource(source);
+  useEffect(() => {
     setConfirm(false);
     if (source.trim() !== "") setDone(null);
-  }
+  }, [source]);
 
   const takeFile = async (f: File | undefined | null) => {
     if (!f) return;

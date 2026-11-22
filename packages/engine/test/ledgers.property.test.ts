@@ -42,7 +42,6 @@ describe("properties of the ledgers", () => {
         );
         expect(run.nominal).toBeCloseTo(10_000 * Math.pow(1 + r, months / 12), 6);
       }),
-      { numRuns: 50 },
     );
   });
 
@@ -65,7 +64,6 @@ describe("properties of the ledgers", () => {
           ).real;
         expect(kgl(Math.min(fee + extra, 0.0105))).toBeLessThanOrEqual(kgl(Math.min(fee, 0.0105)) + 1e-6);
       }),
-      { numRuns: 30 },
     );
   });
 

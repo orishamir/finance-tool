@@ -62,38 +62,12 @@ export interface SiteValue extends ValueObject {
    * entered" mark, nothing that opens. The field beside it is where it changes. Its record still traces to data/parameters.
    */
   field?: boolean;
-  /**
-   * The figure is a return assumed for the years ahead (the return field, its default included, or the site's cash rate standing in for
-   * it on a cash-like exposure, method A-01), or is worked out from one: a shekel amount then shows to hundreds of shekels, since it is
-   * not known to the shekel (wording.md, "Numbers and punctuation"). Set on the return by `assumedReturn`; `computed` carries it to every
-   * figure that rests on it.
-   */
-  onAssumedReturn?: true;
 }
 
 /** A value as a field's own (`SiteValue.field`): the default a chart's field starts at, or what the reader typed in it. */
 export function asField<T extends SiteValue>(v: T): T {
   return { ...v, field: true };
 }
-
-/** Each P-05 input that is a return assumed for the years ahead (`SiteValue.onAssumedReturn`): the gross return, and the cash rate that stands in for it on a cash-like exposure. */
-export const p05AssumedReturn: Record<P05Input, boolean> = {
-  amount_now: false,
-  monthly_deposit: false,
-  horizon_years: false,
-  "A-01": true,
-  "A-02": false,
-  cash_rate: true,
-  annual_income: false,
-};
-
-/** A value as a return assumed for the years ahead (`SiteValue.onAssumedReturn`). */
-export function assumedReturn<T extends SiteValue>(v: T): T {
-  return { ...v, onAssumedReturn: true };
-}
-
-/** A value of P-05 input `key` as the input it is: a return assumed for the years ahead where the input is one (`p05AssumedReturn`). */
-export const asP05Input = <T extends SiteValue>(key: P05Input, v: T): T => (p05AssumedReturn[key] ? assumedReturn(v) : v);
 
 /** The unit of each P-05 input a reader can enter. */
 export const p05Units: Record<P05Input, ValueObject["unit"]> = {
@@ -189,8 +163,6 @@ export function computed(
   options: { today: string; rules?: { id: string; strength: Strength }[]; flags?: string[]; labels?: { code: string; ruleId: string }[]; about?: string; notes?: string; lead?: string; signed?: boolean; unitText?: string } ,
 ): SiteValue {
   let weakest: Strength | undefined;
-  // a figure worked out from a return assumed for the years ahead rests on it too
-  const onAssumedReturn = Object.values(inputs).some((input) => input.onAssumedReturn);
   for (const input of Object.values(inputs)) {
     // D31: a company's figure about its own product does not weaken what is computed from it
     const st = strengthOf(input);
@@ -217,7 +189,6 @@ export function computed(
     ...(options.lead ? { lead: options.lead } : {}),
     ...(options.signed ? { signed: true } : {}),
     ...(options.unitText ? { unitText: options.unitText } : {}),
-    ...(onAssumedReturn ? { onAssumedReturn: true as const } : {}),
   };
 }
 
