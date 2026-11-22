@@ -11,7 +11,7 @@ import { CompanyTabs } from "../components/decoder/company-tabs";
 import { CompanyList, FocusPane } from "../components/companies/focus";
 import { Sheet } from "../components/Sheet";
 import { Card, ChoicePair, HoldTallest, PageHead, PhoneFold, SearchField, TextLink } from "../components/kit";
-import { chooseProduct, chooseType, companyGroups, productTypes, searchFocus, searchToState, stateToSearch, statusLine, toggleFromPane, typeCounts, type FocusFigures, type FocusState, type TypeChoice } from "../lib/company-focus";
+import { chooseProduct, chooseType, companyGroups, productTypes, searchFocus, searchToState, stateToSearch, toggleFromPane, typeCounts, type FocusFigures, type FocusState, type TypeChoice } from "../lib/company-focus";
 import { deviceStore } from "../lib/device-store";
 import { MQ, useMedia } from "../lib/hooks";
 
@@ -121,7 +121,6 @@ export default function Companies() {
   const typeIds: TypeChoice[] = ["all", ...productTypes.filter((t) => counts[t] > 0)];
   const typeKinds = s.type === "all" ? [] : data.kinds.filter((k) => k.type === s.type);
   const focused = data.companies.find((c) => c.id === s.focus) ?? data.companies[0]!;
-  const status = statusLine(data.kinds, data.companies, s);
   const choose = (id: string) => setS((x) => ({ ...x, ...toggleFromPane(data.kinds, x, id) }));
   const pane = (id?: string) => <FocusPane company={focused} data={data} state={s} figures={figures} onChoose={choose} headId={id} />;
   // what the phone's folded filters say is chosen
@@ -147,10 +146,6 @@ export default function Companies() {
               }}
             />
           </PhoneFold>
-          {/* one line, one height: the numbers change, nothing else */}
-          <p role="status" className="h-6 truncate text-sm text-muted-foreground">
-            {status}
-          </p>
         </div>
         <div className="flex flex-col lg:flex-row lg:items-start gap-6">
           <div className="lg:w-[31.875rem] shrink-0 min-w-0">

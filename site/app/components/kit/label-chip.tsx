@@ -97,7 +97,7 @@ const toneClass: Record<Exclude<Label["tone"], "neutral">, string> = {
 };
 
 /** A neutral label takes its family's colour: the icon and words in it, a faint fill of it. */
-const familyClass: Partial<Record<Label["family"], string>> = {
+export const familyClass: Partial<Record<Label["family"], string>> = {
   held: "text-label-held bg-label-held/10",
   trade: "text-label-trade bg-label-trade/12",
   follow: "text-label-follow bg-label-follow/14",
@@ -108,7 +108,7 @@ const familyClass: Partial<Record<Label["family"], string>> = {
 
 const chipClass = (label: Label) => (label.tone === "neutral" ? (familyClass[label.family] ?? "bg-secondary text-foreground") : toneClass[label.tone]);
 /** A tinted fill and no outline, 6 px corners, 26 px high: 13 px words on an 18 px line, 4 px above and below, 8 px at the sides. */
-const chipShape = "inline-flex items-center gap-[5px] text-xs leading-[18px] font-medium rounded-[6px] px-2 py-1 min-h-[26px] whitespace-nowrap";
+export const chipShape = "inline-flex items-center gap-[5px] text-xs leading-[18px] font-medium rounded-[6px] px-2 py-1 min-h-[26px] whitespace-nowrap";
 
 /** A label: an icon and two or three words; colour never alone (the icon and the words carry it; the open tone also has the lock). Its tap area
  *  reaches 44 px high, beyond the drawn chip, so a row of chips keeps its height. */

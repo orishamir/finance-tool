@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { chooseProduct, chooseType, countMark, countWords, matches, searchFocus, searchToState, stateToSearch, statusLine, toggleFromPane, typeCounts, type FocusCompany, type FocusData, type FocusProductKind } from "./company-focus";
+import { chooseProduct, chooseType, countMark, countWords, matches, searchFocus, searchToState, stateToSearch, toggleFromPane, typeCounts, type FocusCompany, type FocusData, type FocusProductKind } from "./company-focus";
 
 const kinds: FocusProductKind[] = [
   { id: "keren-hishtalmut", name: "קרן השתלמות", type: "savings", unit: "tracks" },
@@ -46,13 +46,6 @@ describe("the words", () => {
     expect(countWords("deposits", 12)).toBe("12 פיקדונות");
     expect(countWords("has", null)).toBe("יש");
     expect(countMark({ id: "brokerage", count: null, href: "" })).toBe("✓");
-  });
-  it("the status line follows what is chosen", () => {
-    expect(statusLine(kinds, companies, all)).toBe("3 חברות. לחיצה על שם מציגה מה יש לחברה.");
-    expect(statusLine(kinds, companies, { ...all, type: "savings" })).toBe("שתי חברות מציעות גמל, השתלמות ופנסיה.");
-    expect(statusLine(kinds, companies, { ...all, type: "savings", product: "keren-hishtalmut" })).toBe("שתי חברות מציעות קרן השתלמות. ליד כל שם: מספר המסלולים.");
-    expect(statusLine(kinds, companies, { ...all, type: "trade", product: "brokerage" })).toBe("חברה אחת מציעה חשבון ניירות ערך.");
-    expect(statusLine(kinds, companies, { ...all, q: "בט" })).toBe("חברה אחת מתאימה לחיפוש.");
   });
 });
 

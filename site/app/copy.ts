@@ -611,16 +611,6 @@ export const companyFocus = {
   /** A group head's count while a filter or a search is on: "9 מ־13". */
   of: (shown: string, total: string) => `${shown} מ־${total}`,
   companies: { one: "חברה אחת", two: "שתי חברות", many: "חברות" },
-  status: {
-    tap: "לחיצה על שם מציגה מה יש לחברה.",
-    offersOne: "מציעה",
-    offersMany: "מציעות",
-    beside: "ליד כל שם:",
-    unit: { tracks: "מספר המסלולים", funds: "מספר הקרנות", deposits: "מספר הפיקדונות", plans: "מספר התוכניות" },
-    searchOne: "מתאימה לחיפוש.",
-    searchMany: "מתאימות לחיפוש.",
-    searchNone: "אין חברה שמתאימה לחיפוש.",
-  },
   units: {
     tracks: { one: "מסלול אחד", two: "שני מסלולים", many: "מסלולים" },
     funds: { one: "קרן אחת", two: "שתי קרנות", many: "קרנות" },
@@ -640,8 +630,6 @@ export const companyFocus = {
   asOf: "לפי פרסום הבנק, נכון ל־",
   more: "עוד בעמוד המלא",
   terms: "מה כתוב במסמכים",
-  /** The products the site has none of at this company: the site may not have collected one the company offers. */
-  notHere: "אין באתר:",
   /** The arrow's spoken name. */
   open: (product: string, company: string) => `${product} בעמוד של ${company}`,
   /** The pane's name on a phone, where it opens over the list. */
@@ -1467,9 +1455,11 @@ export const r2 = {
 // ---------------------------------------------------------------- the track browser (D54)
 
 /** "כל המסלולים בכל החברות" at /tracks: every company's tracks of one product, from the approved prototype (8dd1f013:research/specs/2026-11-03-track-browser). */
-/** The "?" beside a label that opens its glossary card (kit/help-mark.tsx). */
+/** The "?" beside a label that opens its glossary card, and its "!" variant (kit/help-mark.tsx). */
 export const help = {
   markLabel: "מה זה {about}",
+  /** The "!" variant: a fact added to a figure, not what its label means. */
+  noteLabel: "עוד על {about}",
 };
 
 export const trackBrowser = {
@@ -4651,7 +4641,6 @@ export const invest = {
     heading: (house: string) => `הקרנות על המדד, בחשבון ${/^[A-Za-z]/.test(house) ? "ב־" : "ב"}${house}`,
     pick: "הקרנות על המדד",
     house: "חשבון ניירות ערך",
-    manager: "מנהל הקרן",
     rank: "מקום",
     name: "קרן",
     fees: "דמי הניהול שלה",

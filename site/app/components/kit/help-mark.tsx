@@ -9,22 +9,23 @@
 // (`.help-mark`).
 // `tone="caution"` draws the mark in the caution role: what it opens holds a catch about the figures under it (what a child-savings fee
 // figure is not), where the label stays as it is; the colour is said again by the sheet's own words.
+// `note` draws "!" instead of "?": what it opens is not what the label means but a fact added to the figure (what a total rests on).
 import type { ReactNode } from "react";
 import { help as copy } from "../../copy";
 import { useOpen } from "../provenance";
 import { cx } from "./cx";
 
-export function HelpMark({ term, about, lead, text, rules, words, tone, className }: { /** The glossary term's Hebrew name, as the page's provenance data keys it; several terms open one sheet of them all, titled `about` (a column of three fees). Leave it out for a text of its own (`text`). */ term?: string | readonly string[]; /** With no term: the explanation the sheet shows under `about`. */ text?: string; /** The rules behind the text (or the line under the terms): one chip at its end. */ rules?: readonly string[]; /** What the mark explains, in the reader's words ("כסף מנוהל"): the button's spoken name. */ about: string; /** With several terms, the line under the sheet's title. */ lead?: string; /** Words shown before the mark, in the link colour; the spoken name starts with them. */ words?: string; /** `caution`: the mark in the caution role, for a "?" that holds a catch about the figures it explains. */ tone?: "caution"; className?: string }) {
+export function HelpMark({ term, about, lead, text, rules, words, tone, note, className }: { /** The glossary term's Hebrew name, as the page's provenance data keys it; several terms open one sheet of them all, titled `about` (a column of three fees). Leave it out for a text of its own (`text`). */ term?: string | readonly string[]; /** With no term: the explanation the sheet shows under `about`. */ text?: string; /** The rules behind the text (or the line under the terms): one chip at its end. */ rules?: readonly string[]; /** What the mark explains, in the reader's words ("כסף מנוהל"): the button's spoken name. */ about: string; /** With several terms, the line under the sheet's title. */ lead?: string; /** Words shown before the mark, in the link colour; the spoken name starts with them. */ words?: string; /** `caution`: the mark in the caution role, for a "?" that holds a catch about the figures it explains. */ tone?: "caution"; /** "!" in place of "?": the sheet adds a fact about the figure rather than explaining the label. */ note?: boolean; className?: string }) {
   const open = useOpen();
   const mark = (
     <span aria-hidden="true" className="inline-flex items-center justify-center size-[1.125rem] rounded-full border border-current text-xs font-semibold leading-none">
-      ?
+      {note ? "!" : "?"}
     </span>
   );
   return (
     <button
       type="button"
-      aria-label={copy.markLabel.replace("{about}", about)}
+      aria-label={(note ? copy.noteLabel : copy.markLabel).replace("{about}", about)}
       onClick={(e) => open(typeof term === "string" ? { kind: "term", id: term } : { kind: "terms", ids: term ?? [], name: about, lead: term ? lead : text, ...(rules?.length ? { rules } : {}) }, e.currentTarget)}
       className={cx(
         words

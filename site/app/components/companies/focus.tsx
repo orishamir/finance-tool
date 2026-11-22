@@ -115,8 +115,6 @@ function ProductLine({ p, figures }: { p: FocusProduct; figures: FocusFigures[st
 export function FocusPane({ company: c, data, state, figures, onChoose, headId }: { company: FocusCompany; data: FocusData; state: FocusState; figures: FocusFigures | null; onChoose: (productId: string) => void; headId?: string }) {
   const kindOf = (id: string) => data.kinds.find((k) => k.id === id)!;
   const types = productTypes.filter((t) => c.products.some((p) => kindOf(p.id).type === t));
-  const mine = new Set(c.products.map((p) => p.id));
-  const missing = data.kinds.filter((k) => !mine.has(k.id));
   const own = figures?.[c.id];
   const page = companyPath(c.id);
   return (
@@ -206,11 +204,6 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
             )}
           </ul>
         </section>
-      )}
-      {missing.length > 0 && (
-        <p className="text-sm text-muted-foreground">
-          {w.notHere} {missing.map((k) => k.name).join(", ")}
-        </p>
       )}
     </Section>
   );

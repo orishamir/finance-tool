@@ -76,17 +76,14 @@ describe("the receipt", () => {
     expect([...at].sort((a, b) => a - b)).toEqual(at);
     expect(raw).toContain("border-chart-by-fund");
   });
-  it("the total has a caution \"?\" saying the dollar is assumed to hold still only where the figure rests on the dollar, and no \"?\" elsewhere", () => {
-    const cautionMark = /class="[^"]*help-mark[^"]*text-caution/;
-    const leftMark = `aria-label="${help.markLabel.replace("{about}", w.receipt.left)}"`;
+  it("the total has a \"!\" saying the dollar is assumed to hold still only where the figure rests on the dollar, and no mark elsewhere", () => {
+    const leftMark = `aria-label="${help.noteLabel.replace("{about}", w.receipt.left)}"`;
     const sp = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }));
-    expect(sp).toMatch(cautionMark);
     expect(sp).toContain(leftMark);
     expect(steadyOf(view, bundle, pick.fund)).toBe(w.pair.steadyDollar);
     const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan });
     const p = pickOfHeadline(ta)!;
     const out = html(createElement(PairReceipt, { view: ta, bundle, plan, pick: p, chosen: false }));
-    expect(out).not.toMatch(cautionMark);
     expect(out).not.toContain(leftMark);
   });
   it("the run's index at the horizon and its deposits as paid are F-03's and F-05's, which take the chain to the horizon's shekels", () => {

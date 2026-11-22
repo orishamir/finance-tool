@@ -189,14 +189,13 @@ const FUND_FAMILIES = ["follow", "payout", "currency", "tax"] as const;
 
 /**
  * The account's facts: a standing order's price where the monthly deposit is bought on one, the house's labels, a phone-only purchase
- * (its source behind the tag); then the price list, with the day it was collected, opening it. The person's own deal is named in the
+ * (its source behind the tag); then, in a sheet, the price list, with the day it was collected, opening it (on the ticket, beside the caption). The person's own deal is named in the
  * entered ink in the part's head, not here. Not a kit piece: what it lists is the index page's reading of an account (its labels, its
  * price list, a deal), and only the receipt's account part shows it.
  */
-function AccountFacts({ view, bundle, plan, pick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick }) {
+function AccountFacts({ view, bundle, plan, pick, refs }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; /** Its price list among the details (a sheet), or left to the part's caption (the ticket). */ refs: boolean }) {
   const house = providerName(view, pick.house);
   if (!house) return null;
-  const snap = bundle.snapshots.find((s) => s.id === pick.house);
   const at = allFunds(view).find((f) => f.rec.id === pick.fund)?.byHouse[pick.house];
   const phone = phoneOf(view, bundle, pick);
   const labels = [
@@ -204,21 +203,26 @@ function AccountFacts({ view, bundle, plan, pick }: { view: InvestView; bundle: 
     ...brokerLabels(house, false).map((l) => <LabelChip key={l.id} label={l} />),
     phone ? <SourcedTag key="phone" value={phone}>{c.pair.phoneTag}</SourcedTag> : null,
   ];
-  const details = [
-    snap && !house.custom ? (
-      <DocLink key="tariff" look="inline" source={snap.tariff}>
-        <When iso={snap.snapshot} lead={c.chosen.collected} />
-      </DocLink>
-    ) : null,
-  ];
-  return <PartFacts labels={labels} details={details} />;
+  return <PartFacts labels={labels} details={[refs ? <AccountRefs key="refs" view={view} bundle={bundle} pick={pick} /> : null]} />;
+}
+
+/** The account's price list, with the day it was collected, opening it: on the ticket beside the part's caption, in a sheet among its details. */
+function AccountRefs({ view, bundle, pick }: { view: InvestView; bundle: IndicesBundle; pick: Pick }) {
+  const house = providerName(view, pick.house);
+  const snap = bundle.snapshots.find((s) => s.id === pick.house);
+  if (!house || !snap || house.custom) return null;
+  return (
+    <DocLink look="inline" source={snap.tariff}>
+      <When iso={snap.snapshot} lead={c.chosen.collected} />
+    </DocLink>
+  );
 }
 
 /**
  * The fund's facts: its kind and its labels (how it tracks, what it does with dividends, the currency hedge, how it is taxed, each opening
  * what it means and its rules), and a fund the person typed marked as theirs; then its number (opening its page at the exchange), its
  * document, its yield where it pays out, its gap from the index with its years (a figure that opens its source, a "?" that says what it is
- * measured against) and its manager. Not a kit piece: what it lists is the index page's reading of a fund record (its labels, its gap
+ * measured against). Not a kit piece: what it lists is the index page's reading of a fund record (its labels, its gap
  * list, its document), and only the receipt's fund part shows it.
  */
 /** The fund's number, opening its page, and its own document: on the ticket beside the part's caption, in a sheet among its details. */
@@ -265,11 +269,6 @@ function FundFacts({ view, bundle, fund, refs }: { view: InvestView; bundle: Ind
       <GapCell rec={fund.rec} today={today} list={list} />
       <HelpMark about={c.kinds.colGap} text={gapNoteOf([fund.rec], [state])} className="self-center" />
     </span>,
-    fund.rec.manager ? (
-      <span key="manager">
-        {c.funds.manager}: <MixedName>{fund.rec.manager}</MixedName>
-      </span>
-    ) : null,
   ];
   return <PartFacts labels={labels} details={details} />;
 }
@@ -338,7 +337,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   // the account's and the fund's own facts and lines, written once: the ticket's side parts, and on paper the sheet each one's name opens
   const accountOwn = (
     <>
-      <AccountFacts view={view} bundle={bundle} plan={plan} pick={pick} />
+      <AccountFacts view={view} bundle={bundle} plan={plan} pick={pick} refs={!ticket} />
       <ReceiptLine size="sm" edge="border-chart-by-account" label={c.receipt.accountCharges} value={accountValue} parts={accountParts} />
       {waits && <ReceiptLine size="sm" label={c.pair.waiting} value={waitingValue} sub={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />}
     </>
@@ -368,11 +367,11 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       <ReceiptLine size="sm" label={v.taxName} value={<Num value={taxOf(pc)} display={minus(ch.tax)} />} />
     </div>
   );
-  // the total's name, with a caution "?" only where the figure rests on the dollar holding still (D118)
+  // the total's name, with a "!" only where the figure rests on the dollar holding still (D118)
   const leftName = (
     <span className="text-base font-semibold whitespace-nowrap">
       <span>{c.receipt.left}</span>
-      {steady && <HelpMark about={c.receipt.left} text={steady} tone="caution" className="ms-1" />}
+      {steady && <HelpMark about={c.receipt.left} text={steady} note className="ms-1" />}
     </span>
   );
   const total = <Num value={leftOf(pc, today)} display={fmt.nisWhole(ch.left)} />;
@@ -383,7 +382,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
         label={c.receipt.title}
         top={top}
         start={
-          <TicketPart label={c.receipt.parts.account} swatch="bg-chart-by-account" name={<MixedName className={mine ? "text-entered" : undefined}>{short}</MixedName>}>
+          <TicketPart label={c.receipt.parts.account} swatch="bg-chart-by-account" name={<MixedName className={mine ? "text-entered" : undefined}>{short}</MixedName>} aside={<AccountRefs view={view} bundle={bundle} pick={pick} />}>
             {accountOwn}
           </TicketPart>
         }

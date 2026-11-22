@@ -129,7 +129,7 @@ export function matches(kinds: readonly FocusProductKind[], c: FocusCompany, s: 
   return offers(kinds, c, s) && nameMatches(c, s.q);
 }
 
-/** The number of companies each type chip would show (the search left aside: the chips count companies, as the status line does). */
+/** The number of companies each type chip would show (the search left aside: the chips count companies). */
 export function typeCounts(kinds: readonly FocusProductKind[], companies: readonly FocusCompany[]): Record<TypeChoice, number> {
   const out = { all: companies.length } as Record<TypeChoice, number>;
   for (const t of productTypes) out[t] = companies.filter((c) => hasType(kinds, c, t)).length;
@@ -145,11 +145,6 @@ export function searchFocus(kinds: readonly FocusProductKind[], companies: reado
 
 // ---------------------------------------------------------------- the words
 
-/** "חברה אחת", "שתי חברות", "15 חברות". */
-export function companiesWord(n: number): string {
-  return countPhrase(n, w.companies);
-}
-
 /** A product's count with its unit: "16 מסלולים", "קרן אחת", "שני פיקדונות", "יש". */
 export function countWords(unit: CountUnit, n: number | null): string {
   if (unit === "has" || n === null) return w.has;
@@ -160,22 +155,6 @@ export function countWords(unit: CountUnit, n: number | null): string {
 export function countMark(p: FocusProduct | undefined): string {
   if (!p) return "";
   return p.count === null ? "✓" : fmt.number(p.count);
-}
-
-/** The status line: what the list shows, with live numbers. A search speaks of the search; a product, of the product and of the counts
- *  beside the names; a type, of the type; else how many companies there are and what a tap does. */
-export function statusLine(kinds: readonly FocusProductKind[], companies: readonly FocusCompany[], s: Omit<FocusState, "focus">): string {
-  const n = companies.filter((c) => matches(kinds, c, s)).length;
-  const verb = n === 1 ? w.status.offersOne : w.status.offersMany;
-  if (s.q.trim()) return n === 0 ? w.status.searchNone : `${companiesWord(n)} ${n === 1 ? w.status.searchOne : w.status.searchMany}`;
-  if (s.product) {
-    const k = kinds.find((x) => x.id === s.product);
-    if (!k) return "";
-    const first = `${companiesWord(n)} ${verb} ${k.name}.`;
-    return k.unit === "has" ? first : `${first} ${w.status.beside} ${w.status.unit[k.unit]}.`;
-  }
-  if (s.type !== "all") return `${companiesWord(n)} ${verb} ${w.types[s.type]}.`;
-  return `${companiesWord(n)}. ${w.status.tap}`;
 }
 
 /** "10 מוצרים באתר". */
