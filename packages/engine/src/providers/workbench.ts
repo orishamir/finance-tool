@@ -1085,6 +1085,8 @@ export interface BeforeTaxWorkbench {
   formula: "F-118";
   /** The open rule the exit tax rests on: every row is listed with it, never ranked (B3, D84). */
   blockedBy: string;
+  /** The open question whose readings split the fund's after-tax runs (TXS OQ26), where that is why. */
+  question?: string;
   /** The same run with no provider fees, before the exit tax: the base of every account's cost. */
   beforeTaxWithoutProviderFees: number;
   rows: (BeforeTaxProvider | NotComparableProvider)[];
@@ -1097,11 +1099,11 @@ export interface BeforeTaxWorkbench {
  */
 export function providerWorkbenchBeforeTax(input: WorkbenchInput, ctx: RunContext): BeforeTaxWorkbench {
   const runFund = fundForRun(input);
-  const blockedBy = beforeTaxPathOf(runFund, ctx);
-  if (blockedBy === null) throw new Error("F-118: the fund's exit tax is not blocked by an open rule; its workbench is providerWorkbench's");
   const plan = planOf(input, runFund);
   const bare: SecuritiesInput["tariff"] = input.currency ? { currency: input.currency } : {};
   const horizon = input.goal.months;
+  const stop = beforeTaxPathOf(plan(bare, horizon), ctx);
+  if (stop === null) throw new Error("F-118: the fund's exit tax is not blocked by an open rule; its workbench is providerWorkbench's");
   const noneT = runSecuritiesBeforeTax(plan(bare, horizon), ctx);
   const rows: BeforeTaxWorkbench["rows"] = [];
   for (const ready of preparedAll(input, runFund)) {
@@ -1132,7 +1134,7 @@ export function providerWorkbenchBeforeTax(input: WorkbenchInput, ctx: RunContex
       run,
     });
   }
-  return { formula: "F-118", blockedBy, beforeTaxWithoutProviderFees: noneT.beforeTaxReal, rows };
+  return { formula: "F-118", blockedBy: stop.ruleId, ...(stop.question ? { question: stop.question } : {}), beforeTaxWithoutProviderFees: noneT.beforeTaxReal, rows };
 }
 
 /**

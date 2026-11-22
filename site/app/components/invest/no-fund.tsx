@@ -9,7 +9,8 @@ import type { IndicesBundle } from "../../lib/providers";
 import { fmt } from "../../lib/format";
 import { IconCopy } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, DocLink, LongestCase, PickList, SourcedTag, Swatch, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
+import { Button, Card, ChartLegend, CostStack, DocLink, LabelChip, LongestCase, PickList, SourcedTag, Swatch, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
+import { label } from "../../lib/labels";
 import { AsideLine, barScale, GroupLine, HouseLine, LONGEST_AMOUNT, LONGEST_YEARS, AbroadNotes, OwnBankField, NoFundWords, whyNoKindAt, type WhyNone } from "./pair";
 import { byLegend, hasCurrent, legendLines, legendName, lineClass, lineOf, partName } from "./cost-lines";
 import { optionClass, reasonText } from "./parts";
@@ -50,10 +51,11 @@ function ordered(view: InvestView) {
 }
 
 /** Under a house's name: the kind of fund its cost is for, the cheapest mark, the standing-order price, and "by phone only". */
-function SubLine({ kind, cheapest, standing, phone = null }: { kind: OptionId | null; cheapest: boolean; standing: boolean; /** The house sells that kind of fund only by phone: its words, which the tag opens. */ phone?: SiteValue | null }) {
+function SubLine({ kind, cheapest, standing, phone = null, statusOpen = false }: { kind: OptionId | null; cheapest: boolean; standing: boolean; /** The house sells that kind of fund only by phone: its words, which the tag opens. */ phone?: SiteValue | null; /** The kind's tax rests on a status not known (`BrokerCell.statusStandIn`, G-40): its open chip. */ statusOpen?: boolean }) {
   return (
-    <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
+    <span className="flex flex-wrap items-center gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
       {kind && <span>{c.typeTags[kind]}</span>}
+      {statusOpen && <LabelChip label={label("tax-currency-unknown")} />}
       {cheapest && <span className="font-medium text-primary">{c.pair.cheapestTag}</span>}
       {standing && <span>{c.pair.standingTag}</span>}
       {phone && <SourcedTag value={phone}>{c.pair.phoneTag}</SourcedTag>}
@@ -108,6 +110,8 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const snapOf = (id: string) => bundle.snapshots.find((s) => s.id === id);
   // the tag's room on a house that sells a kind of fund only by phone on some exchange, whichever the plan makes cheapest
   const phoneAny = (id: string, short: string, k: OptionId) => phoneOnlyValue(snapOf(id), k, "europe", short) ?? phoneOnlyValue(snapOf(id), k, "us", short);
+  // the kinds whose figures rest on a status not known (G-40): their open chip is part of each case the line holds
+  const standIn = new Set(view.options.filter((o) => o.cells.some((x) => x.statusStandIn)).map((o) => o.id));
   const pickRows: PickRow[] = ok.map((h, i) => {
     const g = h.generic;
     const sp = h.split;
@@ -127,8 +131,8 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", h.provider.custom && "text-entered")}>
             <AccountName id={h.provider.id} name={h.provider.short} custom={h.provider.custom} />
             {/* the kind of fund and the cheapest mark change with the plan: the line holds its longest case, so a row keeps its height */}
-            <LongestCase cases={kinds.map((k) => <SubLine key={k} kind={k} cheapest standing={h.standing} phone={phoneAny(h.provider.id, h.provider.short, k)} />)}>
-              <SubLine kind={g.option ?? null} cheapest={crown && i === 0} standing={h.standing && monthly > 0} phone={g.option ? phoneOnlyValue(snapOf(h.provider.id), g.option, g.venue, h.provider.short) : null} />
+            <LongestCase cases={kinds.map((k) => <SubLine key={k} kind={k} cheapest standing={h.standing} phone={phoneAny(h.provider.id, h.provider.short, k)} statusOpen={standIn.has(k)} />)}>
+              <SubLine kind={g.option ?? null} cheapest={crown && i === 0} standing={h.standing && monthly > 0} phone={g.option ? phoneOnlyValue(snapOf(h.provider.id), g.option, g.venue, h.provider.short) : null} statusOpen={g.statusStandIn === true} />
             </LongestCase>
           </span>
           <span className="flex items-center min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">

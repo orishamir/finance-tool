@@ -64,13 +64,12 @@ export interface ListsProps {
   above?: RefObject<HTMLElement | null>;
 }
 
-/** A list's column names: the item at the start and, where the column has a name, the figure at the end with its computed mark (every
- *  figure in the column is computed, so the mark stands in the head and the cells stay plain, design.md). */
-function Head({ item, figure }: { item: string; figure?: string }) {
+/** A list's figure column named at its end with its computed mark (every figure in the column is computed, so the mark stands in the head
+ *  and the cells stay plain, design.md); the items' column has no name, since the side's title above already says what they are. */
+function Head({ figure }: { figure: string }) {
   return (
-    <span className="col-span-full flex items-end justify-between gap-3">
-      <span>{item}</span>
-      {figure && <span className="num num-computed num-sample text-end whitespace-nowrap">{figure}</span>}
+    <span className="col-span-full flex items-end justify-end gap-3">
+      <span className="num num-computed num-sample text-end whitespace-nowrap">{figure}</span>
     </span>
   );
 }
@@ -535,7 +534,7 @@ export function PairLists(props: ListsProps) {
             tone="fund"
             label={c.beforeTax.label(short)}
             columns="minmax(0,1fr) auto"
-            head={<Head item={c.pair.colFund} figure={c.beforeTax.colLeft} />}
+            head={<Head figure={c.beforeTax.colLeft} />}
             rows={beforeTaxRows}
           />
         </div>
@@ -595,7 +594,7 @@ export function PairLists(props: ListsProps) {
         label={c.pair.listLabelAccounts}
         anchor={ANCHOR.accounts}
         columns={columnsAcc}
-        head={<Head item={c.pair.colAccount} figure={c.lists.colLeft} />}
+        head={<Head figure={c.lists.colLeft} />}
         rows={accountRows}
       />
     </div>
@@ -619,7 +618,6 @@ export function PairLists(props: ListsProps) {
         phoneLimit={ruler ? undefined : 6}
         orders={orders}
         more={c.pair.moreFunds}
-        head={<Head item={c.pair.colFund} />}
         rows={fundRows}
       />
     </div>
