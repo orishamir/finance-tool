@@ -798,6 +798,12 @@
     [data-liftable] :is(input, textarea) {
       user-select: text;
     }
+    /* while a thing is carried (kit/lift.tsx), the pointer's way selects no words anywhere */
+    [data-carrying],
+    [data-carrying] * {
+      -webkit-user-select: none;
+      user-select: none;
+    }
   }
   /* A cell's own bin (kit/case-table.tsx, `CellBin`): drawn, and taking a press, only on a fine pointer while its cell is under it or has
      the keyboard's focus, so an unseen corner never takes a cell away (hidden, it takes no press); under the pointer once it has rested

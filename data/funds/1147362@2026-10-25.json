@@ -27,27 +27,7 @@
   "distribution_policy": "accumulating",
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null,
-    "foreign_investment_fund": {
-      "value": null,
-      "unit": "text",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727505-00.pdf#page=1",
-        "title": "דוח שנתי 'קסם MSCI AC World (4A) ETF מנוטרלת דולר' (מספר בורסה 1147362), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ, עמ' 1, 'מאפיינים עיקריים של הקרן': 'מסלול המס: פטורה'",
-        "publisher": "קסם קרנות נאמנות בע\"מ",
-        "strength": "institution"
-      },
-      "checked": "2026-11-22",
-      "effective_from": "2025-12-31",
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TXS-14"
-      ],
-      "state": "sourced",
-      "notes": "Not known. The annual report names the tax track only ('מסלול המס: פטורה'). Kesem's main prospectus of 9.8.2026 (https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf#page=21, column 'קרן חייבת / פטורה ומאפייני מס') states 'פטורה' for this fund, but names no principal currency for any fund (TX2-24): it states 'פטורה' alone for 1146471 (p.21), whose own annual report names it a foreign-investment fund with the US dollar as its principal currency. So the column does not say whether this fund is one."
-    }
+    "tase_foreign_fund_90pct_test": null
   },
   "fees": {
     "fixed_management": {

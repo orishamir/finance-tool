@@ -250,6 +250,7 @@ function endLift(drop: boolean) {
   if (!l) return;
   lifting = null;
   cancelAnimationFrame(l.frame);
+  document.documentElement.removeAttribute("data-carrying");
   window.removeEventListener("pointermove", onMove);
   window.removeEventListener("pointerup", onUp);
   window.removeEventListener("pointercancel", onCancel);
@@ -286,6 +287,8 @@ function endLift(drop: boolean) {
 const onMove = (e: PointerEvent) => {
   if (!lifting) return;
   e.preventDefault();
+  const sel = getSelection();
+  if (sel && !sel.isCollapsed) sel.removeAllRanges();
   const dy = e.clientY - lifting.lastY;
   lifting.lastY = e.clientY;
   // what scrolls under the carry scrolls only once the pointer moves toward the edge of it it is near
@@ -455,6 +458,10 @@ export function lift(item: string, from: HTMLElement, x: number, y: number, abou
   flushSync(() => listMembers(lists.flatMap((s) => (s.slide ? s.keys.filter((k): k is string => k !== null) : []))));
   lifting = { item, name: about.name ?? null, from, ghost, note, origin, dx: x - box.left, dy: Math.max(0, Math.min(y - box.top, box.height)), x, y, lastY: y, frame: 0, zones, lists, target: null, copy: false, armed: null, collapsed, gaps: about.keep ? [] : [from], release, scroller };
   moveGhost(x, y);
+  // while a thing is carried no words are selected, wherever the pointer passes: the press that began the carry had begun a selection
+  // (a chip's own words), which the browser would stretch over the pointer's way through the popup and the page under it
+  getSelection()?.removeAllRanges();
+  document.documentElement.setAttribute("data-carrying", "");
   window.addEventListener("pointermove", onMove, { passive: false });
   window.addEventListener("pointerup", onUp);
   window.addEventListener("pointercancel", onCancel);
@@ -488,7 +495,6 @@ function bodyPress(e: PointerEvent, item: string, from: HTMLElement, name: strin
   const move = (m: PointerEvent) => {
     if (lifted || m.pointerId !== id || Math.hypot(m.clientX - x0, m.clientY - y0) <= MOUSE_SLOP) return;
     lifted = true;
-    getSelection()?.removeAllRanges();
     lift(item, from, m.clientX, m.clientY, { ...(name ? { name } : {}) });
   };
   const stop = () => {

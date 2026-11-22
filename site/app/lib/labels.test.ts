@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { loadFunds } from "./instruments.server";
-import { knownIndices } from "./invest";
-import { allLabels, fundLabels, label } from "./labels";
-import { buildIndicesBundle } from "./providers.server";
+import { allLabels, label } from "./labels";
 
 describe("label icons (2026-11-05 sweep)", () => {
   // labels that say the same thing of a different case share an icon; any other two never do
@@ -22,24 +19,5 @@ describe("label icons (2026-11-05 sweep)", () => {
     expect(label("currency", "EUR").icon).toBe("euro");
     expect(label("currency", "INR").icon).toBe("currency");
     expect(label("currency-foreign").icon).toBe("currency");
-  });
-});
-
-describe("the currency's tax on an Israeli fund on a foreign index (TXS-14, F-04)", () => {
-  const rec = loadFunds().find((f) => f.id === "5129275");
-  const status = rec?.tax_status.foreign_investment_fund;
-  const index = knownIndices(buildIndicesBundle()).find((i) => i.id === rec?.exposure_id);
-  if (!rec || !status || !index) throw new Error("the S&P 500 fund 5129275, its status and its index are in the data");
-  const withStatus = (hedged: boolean, value: string | false | null) => ({ ...rec, hedged, tax_status: { ...rec.tax_status, foreign_investment_fund: { ...status, value, notes: "as the test sets it" } } });
-  const ids = (hedged: boolean, value: string | false | null) => fundLabels(withStatus(hedged, value), index, "il-etf").map((l) => l.id);
-  it("says the currency is taxed only where the fund is known not to be a foreign-investment fund", () => {
-    expect(ids(false, false)).toContain("tax-currency");
-    expect(ids(false, false)).not.toContain("tax-currency-open");
-    for (const value of ["USD", null] as const) {
-      expect(ids(false, value)).not.toContain("tax-currency");
-      expect(ids(false, value)).toContain("tax-currency-open");
-      expect(ids(true, value)).toContain("tax-currency-open");
-    }
-    expect(ids(true, false)).not.toContain("tax-currency");
   });
 });

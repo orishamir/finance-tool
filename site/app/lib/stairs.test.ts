@@ -2,7 +2,6 @@
 import { describe, expect, it } from "vitest";
 import { buildInvest, indexById } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
-import { asIfNoForeignInvestmentFund } from "./receipt-fixtures";
 import { chainOf, ceilingOf, climbFrom, gridOf, laneCases, LANES, middleStart, rowsAt, unitOf, type Grid } from "./stairs";
 import { entered } from "./value";
 
@@ -59,8 +58,7 @@ describe("unitOf", () => {
 describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 7%, 2%)", () => {
   // The rates of 23.10.2026: the refresh changes the real file every working day, and these sums must not move with it.
   const fx = { date: "2026-10-23", checked: "2026-10-25", perEur: { USD: 1.1193, ILS: 3.4939, JPY: 175.51, GBP: 0.83728 }, attribution: "", staleAfterDays: 5, sourceUrl: "" };
-  // the stairs pin figures and picks, not the tax index (`asIfNoForeignInvestmentFund`)
-  const bundle = { ...asIfNoForeignInvestmentFund(buildIndicesBundle()), fx };
+  const bundle = { ...buildIndicesBundle(), fx };
   const t = bundle.today;
   const plan = { amountNow: 10000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null, values: { amount: entered(10000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(10, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) } };
   const grid = gridOf(buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan }), bundle.snapshots);

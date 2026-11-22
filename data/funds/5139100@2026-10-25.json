@@ -26,27 +26,7 @@
   "distribution_policy": "accumulating",
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null,
-    "foreign_investment_fund": {
-      "value": false,
-      "unit": "text",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1760001-1761000/P1760213-00.pdf#page=15",
-        "title": "תשקיף עיקרי אלטשולר שחם ניהול קרנות נאמנות, 31 ביולי 2026, עמ' 15, שורת 'אלטשולר שחם מחקה (4D) S&P 500' (מספר בורסה 5139100), עמודת 'מיסוי ומאפיינים ייחודיים אחרים': 'פטורה; -'",
-        "publisher": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ",
-        "strength": "institution"
-      },
-      "checked": "2026-11-22",
-      "effective_from": "2026-07-31",
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TXS-14"
-      ],
-      "state": "sourced",
-      "notes": "The manager's prospectus tax column states this fund's status without naming it a foreign-investment fund, and names that status for the manager's funds that have it (5136742 ('הקרן הינה קרן להשקעות חוץ (מטבע עיקרי: דולר ארה\"ב)', p.14, in the column 'מאפיינים ייחודיים אחרים')); the annual report names the tax track only. Its tax index is the CPI (TXS-14)."
-    }
+    "tase_foreign_fund_90pct_test": null
   },
   "fees": {
     "fixed_management": {

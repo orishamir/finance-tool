@@ -848,6 +848,30 @@ async function liftSheetCheck(browser, base) {
       await page.mouse.up();
       await page.evaluate(settled);
     }
+    // a fee to add, carried with a mouse across the sheet's words and let go with Escape, selects no words on its way: in a modal dialog a
+    // press on a button's words begins a selection, which the carry would stretch over the pointer's way
+    const fee = page.locator("dialog[open] [data-drag-source]").first();
+    if (!(await fee.count())) found.push("lift in a sheet: the sheet offers no fee to carry");
+    else {
+      await fee.scrollIntoViewIfNeeded();
+      // pressed on its own words, where a press in a dialog places the caret
+      const f = await fee.evaluate((el) => {
+        const words = [...el.querySelectorAll("*")].find((n) => [...n.childNodes].some((c) => c.nodeType === 3 && c.textContent.trim()));
+        const r = document.createRange();
+        r.selectNodeContents(words ?? el);
+        const q = r.getBoundingClientRect();
+        return { x: q.left + q.width / 2, y: q.top + q.height / 2 };
+      });
+      await page.mouse.move(f.x, f.y);
+      await page.mouse.down();
+      await page.mouse.move(f.x - 12, f.y - 4, { steps: 3 });
+      await page.mouse.move(f.x - 200, f.y + 160, { steps: 10 });
+      const picked = await page.evaluate(() => String(getSelection()).trim());
+      if (picked) found.push(`lift in a sheet: carrying a fee selected words on the way: "${picked.replace(/\s+/g, " ").slice(0, 40)}"`);
+      await page.keyboard.press("Escape");
+      await page.mouse.up();
+      await page.evaluate(settled);
+    }
     // the menu of actions the row strip's plus opens (ActionMenu, as a grip's menu)
     const strip = page.locator('dialog[open] button[data-add-slot="row"]', { hasText: "חלק לכל השורה" }).last();
     await strip.scrollIntoViewIfNeeded();

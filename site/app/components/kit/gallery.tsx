@@ -3742,7 +3742,8 @@ function LiftDemo({ today, channels = [sc.channels.web, sc.channels.branch] }: {
 
 /**
  * The lift demo in a sheet: what a carry draws (the picture, a knob's frame, a grip's menu) shows on the sheet's layer, over the page. Its
- * four rows stand in a sheet too short for them, so a row carried near the sheet's foot scrolls the sheet's body to the rows out of view.
+ * four rows stand in a sheet too short for them, so a row carried near the sheet's foot scrolls the sheet's body to the rows out of view;
+ * over them, the fees a deal can still take, which a mouse can carry.
  */
 function LiftSheetDemo({ today }: { today: string }) {
   const [open, setOpen] = useState(false);
@@ -3750,21 +3751,23 @@ function LiftSheetDemo({ today }: { today: string }) {
     <>
       <Button onClick={() => setOpen(true)}>{sc.liftInSheet}</Button>
       <Sheet open={open} onClose={() => setOpen(false)} pc="center" className="sheet-kit-lift">
+        {/* fees a mouse can carry, inside the sheet: words in a modal dialog take a selection where the page's do not */}
+        {open && <PaletteDemo carried />}
         {open && <LiftDemo today={today} channels={[sc.channels.web, sc.channels.branch, sc.channels.phone, sc.channels.other]} />}
       </Sheet>
     </>
   );
 }
 
-/** The fees a deal can still take, while none is open. */
-function PaletteDemo() {
+/** The fees a deal can still take, while none is open; `carried`, each can also be carried with a mouse (to nowhere on the kit page). */
+function PaletteDemo({ carried = false }: { carried?: boolean }) {
   const [added, setAdded] = useState<string[]>([]);
   const items = [
     { id: "fx", dot: "bg-fee-fx", name: sc.fx, line: dealWords.on["action:conversion"]! },
     { id: "custody", dot: "bg-fee-custody", name: sc.custody, line: dealWords.on.held! },
     { id: "fixed", dot: "bg-fee-fixed", name: sc.fixed, line: dealWords.on.account!, rare: true },
   ].filter((it) => !added.includes(it.id));
-  return <FeePalette title={dealWords.builder.palette} hint={dealWords.builder.paletteHint} items={items.map((it) => ({ ...it, drag: null }))} onAdd={(id) => setAdded((a) => [...a, id])} />;
+  return <FeePalette title={dealWords.builder.palette} hint={dealWords.builder.paletteHint} items={items.map((it) => ({ ...it, drag: carried ? `kit:fee:${it.id}` : null }))} onAdd={(id) => setAdded((a) => [...a, id])} />;
 }
 
 function CaseDemos({ today }: { today: string }) {
