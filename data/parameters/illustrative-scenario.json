@@ -487,6 +487,59 @@
         "rationale_he": "גודל הצעד של מחוון התשואה."
       }
     },
+    "A-02": {
+      "min": {
+        "value": 0,
+        "unit": "pct_per_year",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "The site's choice: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-11-22",
+        "effective_from": "2026-11-22",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "",
+        "rationale_he": "הנקודה שבה מחוון האינפלציה מתחיל."
+      },
+      "max": {
+        "value": 5,
+        "unit": "pct_per_year",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "The site's choice: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-11-22",
+        "effective_from": "2026-11-22",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "",
+        "rationale_he": "הנקודה שבה מחוון האינפלציה נגמר, כמו הקצה העליון של בדיקת הרגישות לאינפלציה. אינפלציה אחרת אפשר להקליד."
+      },
+      "step": {
+        "value": 0.5,
+        "unit": "pct_per_year",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "The site's choice: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-11-22",
+        "effective_from": "2026-11-22",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "",
+        "rationale_he": "גודל הצעד של מחוון האינפלציה."
+      }
+    },
     "change_share": {
       "min": {
         "value": -50,

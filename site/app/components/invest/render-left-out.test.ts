@@ -28,10 +28,10 @@ describe("the indices page", () => {
   const index = indexById(bundle, "index-sp500")!;
   const view0 = buildInvest({ bundle, index, plan });
   const fund = pickOfHeadline(view0)!.fund;
-  it("the receipt says under the chosen account's lines what its price leaves out, its words opening the sheet", () => {
+  it("the receipt says under the chosen account's lines what its price leaves out, its words opening the sheet (the ticket's account part; on paper, behind a tap on the account's name)", () => {
     const b = marked("leumi");
     const view = buildInvest({ bundle: b, index, plan });
-    const out = html(createElement(PairReceipt, { view, bundle: b, plan, pick: { house: "leumi", fund }, chosen: true }));
+    const out = html(createElement(PairReceipt, { view, bundle: b, plan, pick: { house: "leumi", fund }, chosen: true, layout: "ticket" }));
     // the record's own marked things count too, now that the records carry them
     const warn = leftOutOf(b.snapshots.find((s) => s.id === "leumi"))!.warn;
     expect(warn).toBeGreaterThan(0);
@@ -41,7 +41,7 @@ describe("the indices page", () => {
   });
   it("before the records say what can change a price, the line counts what the documents hold, and no account carries the mark", () => {
     const n = leftOutOf(bundle.snapshots.find((s) => s.id === "leumi"))!;
-    const out = html(createElement(PairReceipt, { view: view0, bundle, plan, pick: { house: "leumi", fund }, chosen: true }));
+    const out = html(createElement(PairReceipt, { view: view0, bundle, plan, pick: { house: "leumi", fund }, chosen: true, layout: "ticket" }));
     if (n.warn === 0) expect(shown(out)).toContain(`${c.lead} ${c.some(n.other)}`);
     const listsOut = lists(view0, bundle, plan, { house: "leumi", fund }, { chosen: true });
     if (bundle.snapshots.every((s) => !leftOutOf(s)?.warn)) {

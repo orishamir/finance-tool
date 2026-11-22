@@ -358,7 +358,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const toolTop = useStuckRoom(stuck, wide ? !!tiles : true, wide);
   // the tiles' figures, each computed from the run with its formula (F-128): what is left, the place, the difference from the house's row
   const okAt = at?.kind === "ok" ? at : null;
-  const leftFig = tiles?.left !== null && tiles?.left !== undefined && okAt ? okAt.figure(tiles.left, w.tiles.leftAbout) : null;
+  const leftFig = tiles?.left !== null && tiles?.left !== undefined && okAt ? okAt.left(tiles.left, w.tiles.leftAbout) : null;
   const placeFig = tiles?.place ? computed(tiles.place.k, "count", "F-128", leftFig ? { [w.tiles.leftAbout]: leftFig } : {}, { today: world.bundle.today, about: w.tiles.placeAbout(tiles.place.of) }) : null;
   const diffFig = leftFig && tiles?.house && house ? differenceOf([w.tiles.leftAbout, leftFig], [w.tiles.houseAbout(house.short), tiles.house.value], "F-128", { today: world.bundle.today, about: w.tiles.diffAbout, round: Math.round, signed: true }) : null;
   const leftNum = leftFig && <Num value={leftFig} display={(n) => fmt.nisWhole(n)} />;
@@ -648,35 +648,34 @@ function DealHead({ deal, headId, isSaved, writable, onName, onDelete }: { deal:
 }
 
 /**
- * Beside a deal's name in the lists, where a house's row has its quiet mark, and in the pair card: the pencil that opens the deal in the popup, on the fee the row
- * waits for where it waits for one (`missing`, D1). With the name's entered ink it says the row is the person's own. `complete`: on a row
- * the plan cannot price, the button's words say it completes the deal. Not a kit piece: the kit's `Button`, wired to this page's popup.
+ * Under a deal's row in the lists: that it is the person's, and its edit, which on a row the plan cannot price (`complete`) completes it,
+ * after what the row waits for (`missing`, the fee that has no price yet, D1), said without a tap. Not a kit piece: the kit's `Tag` and
+ * `Button`, wired to this page's popup.
  */
-export function DealEditMark({ id, complete = false, missing = null }: { id: string; complete?: boolean; missing?: Missing | null }) {
+export function DealTerms({ id, complete = false, missing = null }: { id: string; complete?: boolean; missing?: Missing | null }) {
   const api = useDealAccounts();
   const deal = api?.dealOf(id);
   if (!api || !deal) return null;
+  const open = () => api.open({ dealId: deal.id, ...(missing ? { fee: missing.fee } : {}) });
+  if (missing)
+    return (
+      <span className="flex flex-col items-start gap-1.5 pb-1 text-sm leading-snug text-muted-foreground">
+        <Tag>{w.tag}</Tag>
+        <span>
+          {w.missing[missing.why]!(feeNameOf(missing.kind, missing.name))}{" "}
+          <Button variant="inline" bold onClick={open}>
+            <Pencil size={14} aria-hidden className="me-1 inline align-[-2px]" />
+            {w.complete}
+          </Button>
+        </span>
+      </span>
+    );
   return (
-    <Button variant="icon" size="mark" aria-label={complete ? w.complete : w.edit} onClick={() => api.open({ dealId: deal.id, ...(missing ? { fee: missing.fee } : {}) })}>
-      <Pencil size={14} aria-hidden />
-    </Button>
-  );
-}
-
-/**
- * Under the row of a deal the plan cannot price yet (D1): the fee it waits for, said without a tap, and the way to complete it. Not a kit
- * piece: the kit's `Button`, wired to this page's popup.
- */
-export function DealMissing({ id, missing }: { id: string; missing: Missing }) {
-  const api = useDealAccounts();
-  const deal = api?.dealOf(id);
-  if (!api || !deal) return null;
-  return (
-    <span className="block pb-1 text-sm leading-snug text-muted-foreground">
-      {w.missing[missing.why]!(feeNameOf(missing.kind, missing.name))}{" "}
-      <Button variant="inline" bold onClick={() => api.open({ dealId: deal.id, fee: missing.fee })}>
-        <Pencil size={14} aria-hidden className="me-1 inline align-[-2px]" />
-        {w.complete}
+    <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs leading-snug text-muted-foreground">
+      <Tag>{w.tag}</Tag>
+      <Button variant="quiet" className="min-h-target text-sm" onClick={open}>
+        <Pencil size={14} aria-hidden />
+        {complete ? w.complete : w.edit}
       </Button>
     </span>
   );
@@ -740,6 +739,28 @@ export function DealRows({ id, house }: { id: string; house: (houseId: string) =
         </KeyValue>
       )}
     </>
+  );
+}
+
+/**
+ * The pair card's two ways on from the person's deal (H), side by side where the card has the room: edit it here (the popup) and open it on
+ * /deal. Not a kit piece: the kit's `Button` and `TextLink`, wired to this page's popup.
+ */
+export function DealCardActions({ id }: { id: string }) {
+  const api = useDealAccounts();
+  const deal = api?.dealOf(id);
+  if (!api || !deal) return null;
+  return (
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+      <Button variant="outline" gap="sm" className="px-3" onClick={() => api.open({ dealId: deal.id })}>
+        <Pencil size={16} aria-hidden />
+        {w.edit}
+      </Button>
+      {/* /deal opens on the deal last on screen: this one */}
+      <TextLink to={DEAL_PATH} look="line" onClick={() => rememberOpen(deal.id)}>
+        {w.head.openDeal} ↗
+      </TextLink>
+    </div>
   );
 }
 

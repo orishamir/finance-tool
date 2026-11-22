@@ -366,12 +366,11 @@ export interface Bar {
   between?: [OptionId, OptionId];
 }
 
-export type Flip = { kind: "options" } | { kind: "brokers"; option: OptionId } | { kind: "funds"; option: OptionId };
 export interface OrderCheck {
   /** The order of options, of brokers in each option and of funds in each option is the same at both ends of P-02's yearly return range. */
   holds: boolean;
   /** `at`: the end where it differs, percent a year. */
-  flips: { at: number; what: Flip }[];
+  flips: { at: number }[];
 }
 
 export interface InvestView {
@@ -392,7 +391,6 @@ export interface InvestView {
   /** Only when the return is the site's illustration. */
   order: OrderCheck | null;
   returnPct: number;
-  returnIllustrative: boolean;
   fundCount: number;
 }
 
@@ -540,6 +538,7 @@ type SlotRow = ProviderRow | BeforeTaxProvider;
 function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[], untilExitTax = false): SlotRow[] {
   const profile: { ageAtStart?: number; annualIncome?: number } = {};
   if (ctx.plan.age !== null) profile.ageAtStart = ctx.plan.age;
+  // the tax reads both: the surtax on the income with the gain (F-43), and from 60 the brackets the gain falls into (F-42)
   if (ctx.plan.income !== null && ctx.plan.income > 0) profile.annualIncome = ctx.plan.income;
   const input = (list: typeof items) => ({
     goal: { amountNow: ctx.plan.amountNow, monthly: ctx.plan.monthly, months: 12 * ctx.plan.years, firstMonth: calendarMonthOf(ctx.bundle.today) },
@@ -874,6 +873,14 @@ interface RunReads {
   row?: Pick<ComparedProvider, "linesUsed">;
   /** F-91's X: the fund with none of its own costs and no distribution, measured with no account: the fund's figures are not read. */
   costsOff?: boolean;
+  /**
+   * What of the run's tax the figure reads: `tax`, a figure after it (what is left, the tax itself), reads the income the tax tests the
+   * surtax on (F-43) and, with an age, the brackets from 60 (F-42); `before`, a difference of two `B = V_T^real + tax_real` (F-91: the
+   * account's whole part, its lines bought by amount, the remainder, the fund's part), reads the income only on a fund that pays out, whose
+   * yearly surtax on each payout counts in `tax_real` (`taxDuring`) though it never leaves the holdings. None: a figure that reads no tax (a
+   * line carried in whole units or of a deal, the waiting cash, a value before the exit tax, F-118).
+   */
+  tax?: "after" | "before";
 }
 
 /** A price-list line's unit in a foreign currency (a minimum in dollars, a charge per share or per event in dollars): the run converts it at F-84. */
@@ -926,7 +933,12 @@ const inputsOfRun = (ctx: Ctx, r: RunReads): Record<string, SiteValue> => {
   const typed = [r.house, fundId].flatMap((id) => (id ? [ctx.bundle.entered?.inputs[id] ?? {}] : []));
   // a typed fund's costs are what was typed (below); F-107 comes from what was said of it (Ireland, holds the shares) and the index
   const own = fund ? { ...(isCustomFund(fund) ? {} : fundInputs(fund, gapListFor(ctx.bundle, fund), ctx.bundle.today)), ...usWithholdingInput(ctx, r, fund) } : {};
-  return Object.assign({}, planInputs(ctx.plan, WHOLE_PLAN), ratesOfRun(ctx, r), minimum, own, ...typed);
+  // the income and the age the run's tax reads (`profile.annualIncome` and `ageAtStart` in `runSlot`), on the figures that read that tax
+  // (`RunReads.tax`)
+  const distributes = !r.costsOff && !!(r.spec?.fund as { distribution?: unknown } | undefined)?.distribution;
+  const income = (r.tax === "after" || (r.tax === "before" && distributes)) && ctx.plan.income !== null && ctx.plan.income > 0 && ctx.plan.values.income ? { [copy.pair.incomeInput]: ctx.plan.values.income } : {};
+  const age = r.tax === "after" && ctx.plan.age !== null && ctx.plan.values.age ? { [copy.pair.ageInput]: ctx.plan.values.age } : {};
+  return Object.assign({}, planInputs(ctx.plan, WHOLE_PLAN), income, age, ratesOfRun(ctx, r), minimum, own, ...typed);
 };
 
 /**
@@ -1012,12 +1024,12 @@ const tariffQuestions = (row: ComparedProvider): string[] => row.flags.filter((f
 /** An option's generic fund at a house (F-91 on F-63): the account's cost before tax, `whole` in whole shekels. */
 function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string, whole = false): SiteValue {
   const flags = [...row.flags, ...row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c) && !row.flags.includes(c))];
-  return computed(whole ? Math.round(row.horizonCostBeforeTax) : row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, { house: row.id, spec, row }), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
+  return computed(whole ? Math.round(row.horizonCostBeforeTax) : row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, { house: row.id, spec, row, tax: "before" }), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
 }
 
 /** What is left with one account and one fund (F-65's real value), as every list and the stairs show it, with what its run reads. */
 function valueFigure(ctx: Ctx, row: ComparedProvider, reads: RunReads, about: string, extra: Record<string, SiteValue> = {}): SiteValue {
-  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, reads), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, { ...reads, tax: "after" }), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
 }
 
 function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string, spec: Spec): WayPrice {
@@ -1043,7 +1055,7 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     accountCost: fees,
     // the cost before tax carries the run's labels on its sources; every reading the engine gives is a tax rule's (READING_RULE_IDS), which a cost before tax does not rest on
     cost: (about: string, whole = true) =>
-      computed(whole ? accountWhole({ accountCost: fees }) : fees, "nis", "F-91", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })), about }),
+      computed(whole ? accountWhole({ accountCost: fees }) : fees, "nis", "F-91", inputsOfRun(ctx, { ...reads, tax: "before" }), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })), about }),
     get lines() {
       return splitOf().lines;
     },
@@ -1300,9 +1312,7 @@ function orderCheck(ctx: Ctx, index: IndexRef, yourBroker: string | null, atPlan
     const other = makeCtx(ctx.bundle, { ...ctx.plan, grossReturn: at / 100 }, ctx.assumptions);
     const sig = signatures(core(other, index, yourBroker), ctx.theta);
     for (const k of Object.keys(base)) {
-      if (sig[k] === base[k]) continue;
-      const [kind, option] = k.split(":") as [string, OptionId | undefined];
-      flips.push({ at, what: kind === "options" ? { kind: "options" } : { kind: kind as "brokers" | "funds", option: option! } });
+      if (sig[k] !== base[k]) flips.push({ at });
     }
   }
   return { holds: flips.length === 0, flips };
@@ -1453,7 +1463,6 @@ function build(a: InvestArgs): InvestView {
     worth: worthOf(ctx, options, headline, providers),
     order: illustrative && range && a.plan.grossReturn !== range.lo / 100 && a.plan.grossReturn !== range.hi / 100 ? orderCheck(ctx, a.index, yourBroker, options, range) : null,
     returnPct: a.plan.grossReturn * 100,
-    returnIllustrative: illustrative,
     fundCount: a.bundle.funds.filter((f) => f.exposure_id === (a.index.exposure?.id ?? a.index.id)).length,
   };
 }
@@ -1465,6 +1474,13 @@ export interface PairCosts {
   fundId: string;
   /** What the person puts in: the amount now and every monthly deposit (F-05), in today's shekels (F-06). */
   paidIn: SiteValue;
+  /** The same deposits in the shekels each is paid in, the monthly deposit rising with prices (F-05, A-04): the run's own sum. */
+  paidInNominal: SiteValue;
+  /**
+   * `I_T`, the run's price index at the horizon (F-03, the plan's inflation over its years): every F-91 figure is a value at the horizon
+   * divided by it, so times it, it is the same figure in the shekels of the horizon (F-06 read back, the receipt's chain in nominal shekels).
+   */
+  index: SiteValue;
   /** The same deposits grown at the plan's return with no fee and no tax (F-91): `left` plus every cost. */
   base: number;
   /** `base` as a figure (F-91's X), with what its run reads: the plan and the exchange rate, none of the fund's or the account's prices. */
@@ -1566,9 +1582,17 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   const waitingN = unitsOf(row.run) ? (waitingReal(row.run) ?? 0) : 0;
   const parts = costByWho({ base, left: row.real, account: row.horizonCostBeforeTax, fund: noAccount(r0) - noAccount(row), waiting: waitingN });
   // the whole run (the account and the fund); the fund's part is measured with no account, so it reads none of the account's prices
-  const inputs = inputsOfRun(ctx, { house: s.id, fund: rec.id, spec: fs.spec, row });
+  const run = { house: s.id, fund: rec.id, spec: fs.spec, row };
+  // what each figure reads of the run's tax (`RunReads.tax`): what is left and the tax read it all, a difference of `B` reads it on a fund
+  // that pays out, and a line carried in whole units or of a deal, and the waiting cash, read none
+  const inputs = inputsOfRun(ctx, run);
+  const taxedInputs = inputsOfRun(ctx, { ...run, tax: "after" });
+  const bInputs = inputsOfRun(ctx, { ...run, tax: "before" });
   const at = (n: number, formula: string, about: string, from = inputs) => computed(n, "nis", formula, from, { today: ctx.bundle.today, rules: rulesOf(row), about });
   const paidInReal = paidInAsEntered(ctx.plan.amountNow, ctx.plan.monthly, ctx.plan.years);
+  // the run's own price index at the horizon (F-03): the last month of its path, which is the horizon's
+  const end = row.run.series.at(-1);
+  if (!end || end.month !== row.run.exitMonth) throw new Error(`pairCosts: the run's index path ends at month ${String(end?.month)}, not at its exit, ${row.run.exitMonth}`);
   // F-128: an account priced by a deal writes its lines as the deal's own fees, each what was paid on it carried as its line is (F-91)
   const deal = ctx.bundle.deals?.byId[s.id];
   const ids = row.account ? feeIdsOf(row.account.deal) : undefined;
@@ -1582,7 +1606,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     return f ? feeNameOf(f.kind, f.name) : (copy.pair.lines.account ?? id);
   };
   const dealLines = deal && ids ? [...byDealFee].map(([fee, n]) => ({ fee, name: feeWords(fee), cost: at(n, "F-91", copy.pair.lineAbout(feeWords(fee))) })) : undefined;
-  const lines = dealLines ? [] : row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!)) }));
+  const lines = dealLines ? [] : row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!), unitsOf(row.run) ? inputs : bInputs) }));
   // what no single line explains, without the waiting cash: the account's fees less its lines, the deal's own where it is priced by a deal
   const interaction = parts.fees - (dealLines ? [...byDealFee.values()].reduce((t, n) => t + n, 0) : row.byType.reduce((t, x) => t + x.costBeforeTax, 0));
   return {
@@ -1590,18 +1614,22 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     fundId: rec.id,
     ...(dealLines ? { dealLines } : {}),
     // what was paid in, in today's money (F-106): the amount, the deposit and the years, and nothing else
-    paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
-    left: computed(row.real, "nis", "F-65", inputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
+    // the monthly deposit rises with prices each month (A-04 "constant real", F-05), so in today's money it is the same each month: said in
+    // its sheet, since A-04 is the method's setting and no value to list
+    paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout, lead: copy.pair.paidInLead }),
+    paidInNominal: computed(row.run.paidIn, "nis", "F-05", planInputs(ctx.plan, ["amount", "monthly", "years", "inflation"]), { today: ctx.bundle.today, about: copy.pair.paidInNominalAbout, lead: copy.pair.paidInLead }),
+    index: computed(end.index, "index_points", "F-03", planInputs(ctx.plan, ["inflation", "years"]), { today: ctx.bundle.today, about: copy.pair.indexAbout }),
+    left: computed(row.real, "nis", "F-65", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
     account: lines,
     interaction,
-    remainder: at(interaction, "F-91", copy.pair.lineAbout(copy.pair.remainder)),
+    remainder: at(interaction, "F-91", copy.pair.lineAbout(copy.pair.remainder), bInputs),
     accountCost: row.horizonCostBeforeTax,
     accountFees: parts.fees,
     waitingN,
     waiting: unitsOf(row.run) ? at(waitingN, "F-109", copy.pair.waitingAbout) : null,
     distributes: !!distribution,
-    fund: at(parts.fund, "F-91", copy.pair.fundAbout, inputsOfRun(ctx, { fund: rec.id, spec: fs.spec })),
-    tax: at(parts.state, "F-91", distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout),
+    fund: at(parts.fund, "F-91", copy.pair.fundAbout, inputsOfRun(ctx, { fund: rec.id, spec: fs.spec, tax: "before" })),
+    tax: at(parts.state, "F-91", distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout, taxedInputs),
     base,
     // X reads the plan and the rate alone: no fund cost, no distribution, no account (its run's rules are a tax's, which X is before)
     baseValue: computed(base, "nis", "F-91", inputsOfRun(ctx, { spec: fs.spec, costsOff: true }), { today: ctx.bundle.today, about: copy.pair.baseAbout }),
@@ -1636,6 +1664,8 @@ export type DealOnPlan =
       reach: number[][];
       /** A figure of this run as the popup shows it (F-128): `n` shekels, computed from the run's inputs and rules, `about` saying which. */
       figure: (n: number, about: string) => SiteValue;
+      /** What is left after the run's tax as a figure, which reads the income and age the tax does (`RunReads.tax`). */
+      left: (n: number, about: string) => SiteValue;
     }
   | { kind: "fail"; reason: NotComparable | Reason };
 
@@ -1676,8 +1706,8 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
     }
     const row = got.row;
     const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row };
-    const figure = (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
-    out.set(fundId, { kind: "ok", valueN: row.real, open: row.run.outcome.code === "listed-not-ranked", byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure });
+    const of = (tax: RunReads["tax"]) => (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, tax }), { today: ctx.bundle.today, rules: rulesOf(row), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+    out.set(fundId, { kind: "ok", valueN: row.real, open: row.run.outcome.code === "listed-not-ranked", byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure: of(undefined), left: of("after") });
   }
   return out;
 }

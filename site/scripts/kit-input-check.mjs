@@ -51,9 +51,6 @@
 //   notice in a sheet   with a sheet open on the kit page and a script's failure planted (at 390 a sheet at the foot, at 1440 a short sheet
 //            centred by a transform), the notice's title or its reload button not the top thing at its middle (drawn under the sheet, or cut
 //            by its card), the notice not at the window's foot, or the button not reloading the page.
-//   deal pencil   on the indices page, a deal made in the popup at 1440 as a person makes one, then seen at 390 as a touch phone: its row
-//            in the account list taller than a house's, no pencil beside its name, or a tap on the pencil that does not open the popup on
-//            that deal.
 
 import { existsSync, readFileSync } from "node:fs";
 
@@ -96,7 +93,7 @@ const center = (r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2 });
 
 export async function kitInputCheck(browser, base) {
   const found = [];
-  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, noticeSheetCheck, dealPencilCheck]) {
+  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, noticeSheetCheck]) {
     try {
       found.push(...(await run(browser, base)));
     } catch (e) {
@@ -1083,60 +1080,5 @@ async function noticeSheetCheck(browser, base) {
     if (!(await loaded)) found.push(`notice in a sheet: ${where}, a press on the failure notice's reload button does not reload the page`);
     await ctx.close();
   }
-  return found;
-}
-
-/**
- * On the indices page (`deal pencil` above): a deal made there at 1440 as a person makes one (a house's list picked in the popup, a name
- * typed in the popup's head, the popup closed), then the page opened at 390 as a touch phone on the same device's store. Its row taller
- * than the house row beside it; no pencil beside its name; a tap on the pencil that does not open the popup on that deal (its head holding
- * the typed name).
- */
-async function dealPencilCheck(browser, base) {
-  const found = [];
-  const name = "עסקה לבדיקה";
-  const made = await open(browser, base, DESK, "/indices/sp500/");
-  await made.page.getByRole("button", { name: /להזין תנאים שקיבלתם/ }).first().click();
-  const madeDialog = made.page.locator("dialog[open]");
-  await madeDialog.waitFor({ timeout: 3000 });
-  await madeDialog.getByRole("button", { name: /לאומי/ }).first().click();
-  const field = madeDialog.getByRole("textbox", { name: "שם העסקה" });
-  await field.waitFor({ timeout: 5000 });
-  await field.fill(name);
-  await field.press("Enter");
-  await made.page.evaluate(settled);
-  const store = await made.page.evaluate(() => localStorage.getItem("mekor.v2.fee-deals"));
-  await made.ctx.close();
-  if (!store) return ["deal pencil: a deal made in the popup is not saved on the device"];
-  const ctx = await browser.newContext(PHONE);
-  await ctx.addInitScript((doc) => localStorage.setItem("mekor.v2.fee-deals", doc), store);
-  const page = await ctx.newPage();
-  await page.goto(`${base}/indices/sp500/`, { waitUntil: "networkidle" });
-  await page.evaluate(settled);
-  const row = page.locator('[role="radio"][data-pick-key^="deal"]').first();
-  if (!(await row.count())) {
-    await ctx.close();
-    return ["deal pencil: a deal made in the popup has no row in the account list"];
-  }
-  await row.scrollIntoViewIfNeeded();
-  const heights = await row.evaluate((r) => {
-    const next = r.nextElementSibling?.getAttribute("role") === "radio" ? r.nextElementSibling : r.previousElementSibling;
-    return { deal: r.getBoundingClientRect().height, house: next ? next.getBoundingClientRect().height : 0 };
-  });
-  if (heights.deal > heights.house + 0.5) found.push(`deal pencil: the deal's row is ${Math.round(heights.deal)} px tall, the house row beside it ${Math.round(heights.house)} px`);
-  const pencil = row.getByRole("button", { name: "לערוך את העסקה" });
-  if (!(await pencil.count())) {
-    found.push("deal pencil: no pencil beside the deal's name");
-    await ctx.close();
-    return found;
-  }
-  const b = center(await pencil.boundingBox());
-  await page.touchscreen.tap(b.x, b.y);
-  const dialog = page.locator("dialog[open]");
-  await dialog.waitFor({ timeout: 3000 }).catch(() => undefined);
-  await page.evaluate(settled);
-  const opened = (await dialog.count()) ? await dialog.locator("h2").first().innerText().catch(() => "") : "";
-  if (!opened.includes(name)) found.push(`deal pencil: a tap on the pencil does not open the popup on the deal (${opened ? `it opened on "${opened}"` : "no popup opened"})`);
-  await ctx.close();
   return found;
 }

@@ -1,10 +1,13 @@
-// The index page's receipt in whole shekels (F-91, F-106, F-109): what was paid in, what the index added before any cost, what the tax, the
-// account's fees and the fund took, what the cash waiting for a whole unit did, and what is left, written so that the lines add up as a reader
-// adds them: paid in + added − tax − account − fund − waiting = left. Each figure is its own rounding where it can be; the rounding that makes
-// them agree goes to the cost lines only, the account's to its own lines (its total is the account's fees, `accountFees`).
+// The index page's receipt in whole shekels (F-91, F-106, F-109, F-129, F-130): what was paid in, what the index added before any cost,
+// what the account's fees and the fund took, what the cash waiting for a whole unit did, all in the shekels of the horizon down to the value
+// before tax there; then what the inflation takes from that value on the way to today's money, the tax in today's money, and what is left,
+// written so that the lines add up as a reader adds them: paid in + added − account − fund − waiting − inflation − tax = left. Each figure is
+// its own rounding where it can be; the rounding that makes them agree goes to the cost lines only, the account's to its own lines (its total
+// is the account's fees, `accountFees`).
 import { fmt } from "./format";
 import { wholeParts } from "./whole-parts";
 import type { PairCosts } from "./invest";
+import type { SiteValue } from "./value";
 
 export interface ReceiptAmounts {
   paidIn: number;
@@ -21,30 +24,50 @@ export interface ReceiptAmounts {
   left: number;
   /** What is left less what was paid in. */
   gain: number;
-  /** What the tax, the account and the fund took together: X less what is left, less the waiting cash. */
-  lost: number;
 }
 
+/** Every line in today's money (F-91's receipt): paid in at today's prices (F-106) + added − tax − account − fund − waiting = left. */
 export function receiptAmounts(pc: PairCosts): ReceiptAmounts {
-  const paidIn = Math.round(pc.paidIn.value as number);
-  const base = Math.round(pc.base);
-  const left = Math.round(pc.left.value as number);
-  const account = Math.round(pc.accountFees);
-  const waiting = Math.round(pc.waitingN);
+  return amountsAt(pc, 1, pc.paidIn.value as number);
+}
+
+/** The receipt as it is written (F-129, F-130), top to bottom. */
+export interface ReceiptChain {
+  /** The lines in the shekels of the horizon: each F-91 figure times `I_T` (`pc.index`), what was paid in as the run paid it (F-05). */
+  nominal: ReceiptAmounts;
+  /** paid in + added − account − fund − waiting, in the shekels of the horizon: the value before tax there. */
+  beforeTax: number;
+  /** The same value before tax in today's money: what is left and the tax, both in today's money. */
+  beforeTaxToday: number;
+  /** What bringing the value before tax to today's money takes: `beforeTax − beforeTaxToday`. */
+  inflation: number;
+  /** The tax (F-91's state) in today's money, as `receiptAmounts` writes it. */
+  tax: number;
+  /** What is left in today's money: `beforeTaxToday − tax`. */
+  left: number;
+}
+
+export function receiptChain(pc: PairCosts): ReceiptChain {
+  const nominal = amountsAt(pc, pc.index.value as number, pc.paidInNominal.value as number);
+  const real = receiptAmounts(pc);
+  const beforeTax = nominal.paidIn + nominal.added - nominal.account - nominal.fund - nominal.waiting;
+  const beforeTaxToday = real.left + real.tax;
+  return { nominal, beforeTax, beforeTaxToday, inflation: beforeTax - beforeTaxToday, tax: real.tax, left: real.left };
+}
+
+/** The receipt's whole shekels with every figure at the horizon times `scale` (1: today's money) and what was paid in as given. */
+function amountsAt(pc: PairCosts, scale: number, paidInGiven: number): ReceiptAmounts {
+  const of = (v: SiteValue) => (typeof v.value === "number" ? v.value * scale : 0);
+  const paidIn = Math.round(paidInGiven);
+  const base = Math.round(pc.base * scale);
+  const left = Math.round((pc.left.value as number) * scale);
+  const account = Math.round(pc.accountFees * scale);
+  const waiting = Math.round(pc.waitingN * scale);
   // the account's own lines: a deal's own fees where it is priced by a deal (F-128), else the tariff's lines
   const own = pc.dealLines ?? pc.account;
-  const lines = wholeParts([...own.map((l) => (typeof l.cost.value === "number" ? l.cost.value : 0)), pc.interaction], account);
-  const lost = base - left - waiting;
-  const [fund, tax] = wholeParts([typeof pc.fund.value === "number" ? pc.fund.value : 0, typeof pc.tax.value === "number" ? pc.tax.value : 0], lost - account);
-  return { paidIn, added: base - paidIn, tax: tax!, account, accountLines: lines.slice(0, -1), remainder: lines.at(-1)!, fund: fund!, waiting, left, gain: left - paidIn, lost };
-}
-
-/** Each part's whole share of `total` in percent, adding up to 100 (largest remainder); parts at or under zero take none. */
-export function sharesOf(values: readonly number[]): number[] {
-  const pos = values.map((v) => Math.max(0, v));
-  const sum = pos.reduce((a, v) => a + v, 0);
-  if (sum <= 0) return values.map(() => 0);
-  return wholeParts(pos.map((v) => (100 * v) / sum), 100);
+  const lines = wholeParts([...own.map((l) => of(l.cost)), pc.interaction * scale], account);
+  const [fund, tax] = wholeParts([of(pc.fund), of(pc.tax)], base - left - waiting - account);
+  return { paidIn, added: base - paidIn, tax: tax!, account, accountLines: lines.slice(0, -1), remainder: lines.at(-1)!, fund: fund!, waiting, left, gain: left - paidIn };
 }
 
 /**

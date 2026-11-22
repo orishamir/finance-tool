@@ -29,7 +29,7 @@ import { IconLock } from "../icons";
 import { Num, Ruled } from "../provenance";
 import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, FundTerms } from "./custom-entries";
-import { AddDealButton, DealEditMark, DealMissing, DeletedLine, NotMovedLines, useDealAccounts } from "./deal-account";
+import { AddDealButton, DealTerms, DeletedLine, NotMovedLines, useDealAccounts } from "./deal-account";
 import { dealIdOf, isDealProviderId } from "../../lib/deal-account/bundle";
 import { feeNameOf } from "../../lib/fee-deal/part-words";
 import { optionClass, reasonText } from "./parts";
@@ -212,15 +212,13 @@ export function PairLists(props: ListsProps) {
     <span className={cx("min-w-0 text-sm", selected ? "font-semibold" : "font-medium", (p.id === view.yourBroker || p.custom) && "text-entered")}>{p.short}</span>
   );
   // what an account's documents hold and its price leaves out, where it can change what some reader pays: a quiet mark beside the name
-  // that opens it, so it is seen before the account is chosen (D106); the receipt says it under the chosen account's lines. A deal's record
-  // lists nothing left out (lib/deal-account/bundle, `snapshotOfDeal`): its place beside the name holds the pencil that edits it
+  // that opens it, so it is seen before the account is chosen (D106); the receipt says it under the chosen account's lines
   const leftOutAt = new Map(providers.map((p) => [p.id, leftOutOf(snapOf(p.id))]));
   const marked = providers.some((p) => (leftOutAt.get(p.id)?.warn ?? 0) > 0);
   const nameWithMark = (p: (typeof providers)[number], selected: boolean) => (
     <span className="flex min-w-0 items-center gap-1">
       {nameOf(p, selected)}
       <LeftOutMark view={leftOutAt.get(p.id) ?? null} house={p.short} />
-      {p.custom && <DealEditMark id={p.id} />}
     </span>
   );
   const movedHere = (half: "fund" | "house") =>
@@ -245,6 +243,7 @@ export function PairLists(props: ListsProps) {
             {nameWithMark(p, selected)}
             {selected ? chosenWord(chosen, "text-chart-by-account") : figureCell(c.lists.accounts.upTo, priced(best) && <Num animate value={best.value} />, s.best)}
             <StretchBar scale={scale} best={s.best} worst={s.worst} className="h-6 max-xl:h-8" />
+            {p.custom && underRow(<DealTerms id={p.id} />)}
             {selected && movedHere("fund")}
           </>
         ),
@@ -264,10 +263,10 @@ export function PairLists(props: ListsProps) {
               {/* why its funds are shown and not ranked, in the rule's own words */}
               <HelpMark about={c.lists.accounts.unranked} text={flags["G-18"] ?? ""} />
               <LeftOutMark view={leftOutAt.get(p.id) ?? null} house={p.short} />
-              {p.custom && <DealEditMark id={p.id} />}
             </span>
             {selected ? chosenWord(chosen, "text-chart-by-account") : <span className="inline-flex items-center gap-1 text-xs text-blocked-foreground whitespace-nowrap"><IconLock size={14} />{c.lists.accounts.unranked}</span>}
             <StretchBar scale={scale} best={null} worst={null} className="h-6 max-xl:h-8" />
+            {p.custom && underRow(<DealTerms id={p.id} />)}
             {selected && movedHere("fund")}
           </>
         ),
@@ -297,10 +296,7 @@ export function PairLists(props: ListsProps) {
         onSelect: waitingId && waits ? () => dealApi?.open({ dealId: waitingId, fee: waits.fee }) : none ? () => undefined : () => pickHalf(view, pick, { house: p.id }, onPick),
         cells: (
           <>
-            <span className="flex min-w-0 items-center gap-1">
-              {nameOf(p, false)}
-              {p.custom && <DealEditMark id={p.id} complete missing={waits} />}
-            </span>
+            {nameOf(p, false)}
             {waits ? (
               <span aria-hidden="true" />
             ) : (
@@ -312,7 +308,7 @@ export function PairLists(props: ListsProps) {
               </span>
             )}
             <span aria-hidden="true" className="w-[9px]" />
-            {waitingId && waits && underRow(<DealMissing id={p.id} missing={waits} />)}
+            {p.custom && underRow(<DealTerms id={p.id} complete missing={waits} />)}
           </>
         ),
       };

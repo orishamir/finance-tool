@@ -33,7 +33,7 @@ describe("the index page's sections render", () => {
       createElement(ReceiptAndFees, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true, onPick: () => undefined }),
       createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null, group: null }),
       createElement(ChosenPair, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true }),
-      createElement(PlanCard, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true, dollar: true, inflation: plan.values.inflation })));
+      createElement(PlanCard, { knobs: null })));
     expect(out).toContain("הפקדתם");
     // a dollar index with funds of both kinds: the hedged ones stand under their own heading, each with its range across the dollar (F-94)
     expect(out).toContain(invest.kinds.name.hedged);
@@ -46,9 +46,9 @@ describe("the index page's sections render", () => {
     expect(out).toContain(invest.shownPair(false).row);
     expect(out).toContain(invest.before.fees.total);
     expect(out).toContain("פסגות");
-    expect(out).toContain("שער הדולר");
-    expect(out).toContain("אינפלציה");
-    expect(out).toContain("לדוגמה של האתר");
+    expect(out).toContain(invest.plan.heading);
+    // the receipt's inflation line, in what the reader sees: its label, then what it takes
+    expect(shown(out).replace(/[\u2066-\u2069]/g, "")).toMatch(new RegExp(`${invest.receipt.inflation}−[\\d,]+ ₪`));
   });
   it("an Israeli index keeps the pair beside the cheapest one (no kinds)", () => {
     const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan: { ...plan, returnFromParameter: true } });
@@ -445,8 +445,9 @@ describe("the receipt's fund line names the variable fee the site prices beside 
     expect(priced.years).toEqual([2025, 2024]);
     expect(priced.value.value).toBeCloseTo((0.249 + 0.201) / 2, 9);
     const card = (fund: string) => {
-      const out = shown(html(createElement(PairReceipt, { view, bundle, plan, pick: { house: head.house, fund }, chosen: true })).replace(/<!-- -->/g, ""));
-      return out.slice(out.indexOf(invest.pair.who.fund), out.indexOf(invest.pair.who.fund) + 300);
+      // the fund's own lines: the ticket's fund part (on paper, behind a tap on the fund's name)
+      const out = shown(html(createElement(PairReceipt, { view, bundle, plan, pick: { house: head.house, fund }, chosen: true, layout: "ticket" })).replace(/<!-- -->/g, ""));
+      return out.slice(out.indexOf(invest.receipt.fundCharges), out.indexOf(invest.receipt.fundCharges) + 300);
     };
     expect(card("1147362")).toContain(invest.kinds.variableChargedWord([2025, 2024]));
     expect(card("1147362")).toContain("0.225%");

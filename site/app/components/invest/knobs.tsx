@@ -1,5 +1,4 @@
-// The plan controls of the indices page: the four plan numbers as plain sliders, inflation behind a
-// button; they write the values the person entered on this device (lib/inputs.tsx, the guide pages' own), never the saved goal
+// The plan controls of the indices page: the four plan numbers and inflation as plain sliders; they write the values the person entered on this device (lib/inputs.tsx, the guide pages' own), never the saved goal
 // (only the goal page speaks of a goal). In a tab of the indices page, what each number changed by the same share does to the result
 // (F-89, F-90).
 import { useMemo } from "react";
@@ -15,11 +14,11 @@ import { pairCosts, pairLeft, type InvestView, type PlanInput } from "../../lib/
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, shortRow } from "../provenance";
-import { ChangeChart, KnobStrip, NumberField, PanelHead, percentCheck, rangeScale, type Knob } from "../kit";
+import { ChangeChart, KnobStrip, PanelHead, percentCheck, rangeScale, type Knob } from "../kit";
 
 /** A slider's range as P-05 writes it: linear in `step`, or in `segments` for money (`rangeScale`). */
 type Range = { min: number; max: number; step?: number; segments?: { to: number; step: number }[] };
-type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", Range>;
+type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01" | "A-02", Range>;
 type Id = "amount" | "monthly" | "years" | "ret";
 type Pair = { house: string; fund: string } | null;
 /** Each knob: its plan field, its range, and how its slider reads the plan (a return is a fraction in the plan, percent on the slider). */
@@ -33,6 +32,8 @@ const k = c.plan.knobs;
 /** The amount knob's box, which the page's empty state focuses when the plan puts in nothing. */
 export const PLAN_AMOUNT_FIELD = "plan-amount";
 const labelOf: Record<Id, string> = { amount: k.amount, monthly: k.monthly, years: k.years, ret: k.ret };
+/** Each number as the change chart's lines and rows name it: the return's knob says it is before inflation, which a chart line has no room for. */
+const lineOf: Record<Id, string> = { ...labelOf, ret: k.retLine };
 
 /** The pair the page prices, with the value left as a function of the plan (F-63's `L`): the figure with its provenance for the plan itself, the number alone for each run of a sweep. Null when the page prices no pair. */
 function usePairLeft(bundle: IndicesBundle, view: InvestView | null, pick: Pair) {
@@ -73,6 +74,7 @@ const valueOf = (entered: EnteredPlan, id: Id) => {
 export function PlanKnobs({ compare, ranges, pct, stacked }: { compare: CompareBundle; ranges: KnobRanges; pct: { min: number; max: number }; /** One under the other (the index page's side card). */ stacked?: boolean }) {
   const entered = useEnteredNow(compare);
   const setKnob = useSetKnob();
+  const { setEntered } = useInputs();
   const field = (id: Id) => {
     const v = valueOf(entered, id);
     return { id, label: labelOf[id], value: v.value, start: entered.starts[id === "amount" ? "amount" : id === "monthly" ? "monthly" : id === "years" ? "years" : "returnV"], isEntered: v.entered, onCommit: (n: number) => setKnob(id, n), onReset: () => setKnob(id, null) };
@@ -83,6 +85,9 @@ export function PlanKnobs({ compare, ranges, pct, stacked }: { compare: CompareB
     { ...field("monthly"), unit: "nis_per_month", scale: rangeScale(ranges.monthly_deposit), validate: negative },
     { ...field("years"), unit: "years", unitInLabel: true, scale: rangeScale(ranges.horizon_years), inputMode: "numeric", validate: (n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null) },
     { ...field("ret"), unit: "pct_per_year", scale: rangeScale(ranges["A-01"]), validate: percentCheck(pct) },
+    // inflation moves the plan's figures in today's money (A-02, F-06), every line of the change chart among them, but is not one of the
+    // four numbers that chart changes (F-89)
+    { id: "inflation", label: k.inflation, value: entered.plan.values.inflation.value as number, start: entered.starts.inflation, isEntered: entered.plan.values.inflation.state === "entered", unit: "pct_per_year", scale: rangeScale(ranges["A-02"]), validate: percentCheck(pct), onCommit: (n: number) => setEntered("A-02", n), onReset: () => setEntered("A-02", null) },
   ];
   return <KnobStrip knobs={knobs} stacked={stacked} />;
 }
@@ -121,7 +126,7 @@ export function changesAt(run: PlanChangesRun, at: number, share: Share, today: 
   return run.lines
     .map((l, n) => {
       const after = l.ys[idx] ?? null;
-      const to = computed(l.tos[idx]!, unitOf[l.id], "F-89", { [labelOf[l.id]]: planValue[l.id] }, { today, about: ch.aboutTo });
+      const to = computed(l.tos[idx]!, unitOf[l.id], "F-89", { [lineOf[l.id]]: planValue[l.id] }, { today, about: ch.aboutTo });
       const planName = c.planInputs[PLAN_INPUT[l.id]];
       const afterInputs = Object.fromEntries(Object.entries(baseInputs).map(([name, v]) => [name, name === planName ? to : v]));
       const afterValue = after === null ? null : computed(Math.round(after), "nis", "F-90", afterInputs, { today, about: ch.aboutLeft });
@@ -168,7 +173,7 @@ export function PlanChanges({ run, at, onAt, share, today }: { run: PlanChangesR
       <PanelHead kicker={ch.title}>{headline}</PanelHead>
       <p className="text-sm text-muted-foreground max-w-measure">{ch.lead}</p>
       <ChangeChart
-        lines={run.lines.map((l, n) => ({ id: l.id, label: labelOf[l.id], stroke: LINE[n]!.stroke, fill: LINE[n]!.fill, ys: l.ys }))}
+        lines={run.lines.map((l, n) => ({ id: l.id, label: lineOf[l.id], stroke: LINE[n]!.stroke, fill: LINE[n]!.fill, ys: l.ys }))}
         shares={run.shares}
         at={at}
         onAt={onAt}
@@ -187,7 +192,7 @@ export function PlanChanges({ run, at, onAt, share, today }: { run: PlanChangesR
           return {
             id: l.id,
             swatch: LINE[n]!.bg,
-            name: labelOf[l.id],
+            name: lineOf[l.id],
             from: <ShortRow when={short}><Num value={planValue[l.id]} display={show(l.id, planValue[l.id].value as number)} /></ShortRow>,
             to: <ShortRow when={short}><Num value={to} display={show(l.id, to.value as number)} /></ShortRow>,
             diff: diff ? <ShortRow when={short}>{diffText(diff)}</ShortRow> : null,
@@ -210,16 +215,3 @@ const LINE = [
 ];
 /** The shares a tap sets, in percent: inputs the person picks, not figures. */
 const CHOICES = [-20, -10, 10, 20, 50];
-
-/** What the button beside the sliders opens: inflation, written to the same entered values. */
-export function OtherAssumptions({ compare, pct }: { compare: CompareBundle; pct: { min: number; max: number } }) {
-  const { state, ready, setEntered } = useInputs();
-  const entered = useEnteredNow(compare);
-  const inflation = entered.plan.values.inflation;
-  return (
-    <div className="flex flex-col gap-4 lg:gap-[18px]">
-      {/* the hint is the field's own, under its box */}
-      <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={inflation.value as number} start={entered.starts.inflation} isEntered={state.entered["A-02"] !== undefined} validate={percentCheck(pct)} onCommit={(n) => setEntered("A-02", n)} onReset={() => setEntered("A-02", null)} hint={valuesCopy.hints.inflation} disabled={!ready} />
-    </div>
-  );
-}
