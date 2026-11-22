@@ -166,7 +166,8 @@ What goes on a page is his call. When he asks for a change, build it this way:
   changes in view where possible.
 - **A slider runs left to right, like a chart's time axis
   ([charts.md](charts.md)), and shows its value once, in its box:** no
-  values at its ends, no figure in its reset ("↺ איפוס"). Hebrew readers
+  values at its ends, no figure in its reset (the icon ↺, spoken
+  "איפוס"). Hebrew readers
   expect a slider to grow rightward (research/2026-11-22-kit-ux.md).
 - **A money slider moves in steps that grow with the amount,** so a common
   amount isn't jammed against one end; a typed value between steps keeps

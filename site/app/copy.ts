@@ -4077,29 +4077,46 @@ export const invest = {
     colLeft: "נשאר בסוף",
     /** A fund row's note where the pair's price rests on a rule that is an open question (`pair.openRow` in the chosen fund's tile). */
     openRow: "לא מדורגת: שאלה פתוחה",
+    /** In "נשאר בסוף"'s "?": which price a row counts; a price for some customers is in the chosen account's card. */
+    whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר אחר, לחלק מהלקוחות, לא נכנס לחישוב. הוא כתוב בפירוט של החשבון שנבחר.",
     /** Above several funds with no price at the chosen account, after why: a pick moves the account (`pair.pickMoves` for one fund). */
     pickMovesMany: (house: string) => `בחירה באחת מהן מעבירה את החשבון ${toName(house)}`,
     /** The accounts' side beside the ruler: an account is a stretch of it. */
     accounts: {
       title: "איפה: החשבון",
+      /** The line under the title, its last words bold. */
+      sets: { lead: "החשבון קובע את", what: "הקטע" },
+      each: "כל נקודה בקטע: קרן אחת שנקנית בו",
       /** An account's figure: what is left with its cheapest fund. */
       upTo: "עד",
+      /** In the "?" beside "הקטע": the small bar beside each row, on the ruler's scale (from 1280 px) or on one scale (below, with no ruler). */
+      barRuler: "הפס הקטן ליד כל חשבון: הקטע שלו על הסרגל, מהקרן הזולה בו עד היקרה.",
+      barAlone: "הפס הקטן ליד כל חשבון: הקטע שלו, מהקרן הזולה בו עד היקרה. לכל החשבונות אותו סולם.",
       /** An account whose every priced fund of the kind rests on an open rule (G-18): shown, not ranked, no stretch; why is G-18's text. */
       unranked: "לא מדורג",
     },
     /** The funds' side: a fund is a spot inside the chosen account's stretch. */
     funds: {
       title: "איך: הקרן",
+      sets: { lead: "הקרן קובעת את", what: "המקום בקטע" },
+      /** "בפסגות: עד 4,492 ₪ בין קרן לקרן": the stretch's length at the chosen account. */
+      span: "{house}: עד {span} בין קרן לקרן",
+      spanAbout: (house: string) => `הפער בין הקרן שמשאירה הכי הרבה לזו שמשאירה הכי מעט, ${inName(house)}`,
+      inHouse: (house: string) => inName(house),
       /** A fund's figure against the pair in the receipt: less, more or the same as it leaves. */
       less: "פחות",
       more: "עוד",
       same: "אותו סכום",
+      /** In the "?" beside "המקום בקטע", below 1280 px, where no ruler stands: the small bar beside each fund. */
+      barAlone: (house: string) => `הפס הקטן ליד כל קרן: הקטע של ${house}, והנקודה בו היא הקרן.`,
       /** The fold under the list: the funds the chosen account gives no price, with their reasons. */
       unpriced: (n: number) => (n === 1 ? "ועוד קרן אחת בלי מחיר בחשבון הזה" : `ועוד ${n} קרנות בלי מחיר בחשבון הזה`),
       unpricedLabel: (house: string) => `קרנות בלי מחיר ${inName(house)}`,
       /** The heading over the funds on an open rule (G-18), after the ranked ones of their kind: shown, not ranked. */
       unranked: "לא מדורגות",
     },
+    /** Under both lists, how a tap moves them. `ruler`: from 1280 px, where the ruler stands between them. */
+    note: (ruler: boolean) => (ruler ? "לחיצה על חשבון מחליפה את הקטע שעל הסרגל. לחיצה על קרן מזיזה את הנקודה בתוכו." : "לחיצה על חשבון מחליפה את הקטע. לחיצה על קרן מזיזה את הנקודה בתוכו."),
     /** The ruler's title, over it: what it measures. */
     rulerTitle: "כמה נשאר לכם בסוף, לפי התוכנית שלכם",
     /** Under both lists, for the chosen account: a price for some of its customers that the figure leaves out (a group's, or a standing
@@ -4400,11 +4417,9 @@ export const invest = {
       amount: "סכום היום",
       monthly: "הפקדה חודשית",
       years: "שנים",
-      ret: "תשואה בשנה, לפני אינפלציה",
-      /** The return as the change chart's line and row name it. */
-      retLine: "תשואה בשנה",
-      /** The fifth slider, the yearly inflation the plan's figures are in today's money by (A-02). */
-      inflation: "אינפלציה בשנה",
+      ret: "תשואה בשנה",
+      /** The fifth tile, the yearly inflation the plan's figures are in today's money by (A-02). */
+      inflation: "אינפלציה",
       changes: {
         title: "מה הכי משנה את מה שיישאר לכם",
         lead: "בכל קו משתנה מספר אחד, והשאר נשארים כמו בתוכנית שלכם. גררו את הקו האנכי בגרף, או בחרו שינוי:",
@@ -4625,6 +4640,8 @@ export const invest = {
     /** On a house's line on an index with no fund, beside its price list: opens a new deal filled from the house's list. */
     ownPrice: "להזין מחיר שקיבלתם",
     colLeft: "נשאר",
+    /** The lists' head over what is left: its "?" says after what and in what money (design.md: a head says what it holds). */
+    colLeftHelp: "מה שנשאר לכם בסוף, אחרי דמי הניהול, העמלות והמס, בכסף של היום.",
     colFund: "קרן",
     colNumber: "מספר נייר",
     colFees: "דמי ניהול",
@@ -4719,6 +4736,18 @@ export const invest = {
     listLabelAccounts: "חשבונות ניירות ערך",
     listLabelFunds: "קרנות על המדד",
     moreFunds: (n: number) => (n === 1 ? "עוד קרן אחת" : `עוד ${n} קרנות`),
+    /**
+     * In the "?" beside the fund list's name head, where a fund's name carries an exposure profile such as (4D) (ETF-12; "(4D) and (4A)
+     * are never explained"): each code on the list in plain words, over the term's glossary card. The keys are the profile's two grades.
+     */
+    profile: {
+      about: "הקוד בסוגריים בשם של קרן",
+      lead: "הקוד בסוגריים בשם של קרן ישראלית הוא",
+      term: "פרופיל החשיפה שלה",
+      equity: { "4": "יכולה להיות כולה במניות" } as Record<string, string>,
+      currency: { D: "וגם כולה במטבע חוץ", A: "וכמעט בלי מטבע חוץ, כמו קרן מנוטרלת מט״ח", "0": "ובלי מטבע חוץ" } as Record<string, string>,
+      code: (code: string, words: string) => `\u2066(${code})\u2069: הקרן ${words}`,
+    },
   },
 
   typeTags: { "il-etf": "קרן סל", "il-tracking": "קרן מחקה", "tase-foreign": "קרן חוץ בת״א", abroad: "בחו״ל" } as Record<string, string>,
@@ -4773,6 +4802,16 @@ export const invest = {
         .filter(Boolean)
         .join(" "),
     kindsNote: "בכל סוג הקרנות מסודרות לפי מה שנשאר, והסדר לא תלוי בדולר.",
+    /** The shekel column's "?" (design.md: a column's longer explanation goes in its head's "?"): a fund 0.28% behind can leave less than
+     *  funds 0.29% behind, since the shekels follow the fees, and a lead inside them earns nothing. */
+    diffHelp: (steadyRate: boolean, gap: boolean) =>
+      [
+        "ההפרש במה שנשאר בסוף, אחרי דמי הניהול, עמלות החשבון והמס.",
+        gap ? "זה לא הפער מהמדד: בחישוב הזה, פיגור מעבר לדמי הניהול נוסף לעלות, והקדמה על המדד לא נספרת כרווח." : null,
+        steadyRate ? "הסכומים הם אם שער המטבע לא משתנה מול השקל." : null,
+      ]
+        .filter(Boolean)
+        .join(" "),
     notCollected: "לא נאסף",
     noSuchFee: "אין",
     /** What "אין" and "לא נאסף" say: `lines` states ETF-14 and MF-20 and `foreign` ETF-71, after the prefix ו (D116); a "?" sheet joins them all. */
@@ -4798,8 +4837,10 @@ export const invest = {
     israelTitle: "קרנות ישראליות",
   },
 
-  /** Beside what the price of a fund abroad leaves out (`AbroadNotes`): funds abroad waiting for a unit price. */
+  /** Under the lists, once, whether their order holds at the ends of P-02's return range ({lo}, {hi}, {at}: its bounds). */
   foot: {
+    holds: "הסדר ברשימות לא משתנה בתשואה של {lo} ושל {hi}.",
+    changes: { one: "הסדר ברשימות משתנה בתשואה של {at}.", both: "הסדר ברשימות משתנה בתשואה של {lo} ושל {hi}." },
     sharePrice: "קרנות בחו״ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף.",
   },
 
@@ -5290,7 +5331,7 @@ export const kit = {
       Receipt: "קבלה: דף עם קצה תחתון קרוע, שורות של שם וסכום עם קו נקודות ביניהם, והחלקים של שורה מוזחים מתחתיה מאחורי קו בצבע שלה: עמלות של חשבון עם הסכום שלהן, עמלות של קרן עם השיעור שלהן. קו כפול לפני הסכום הסופי, וקו מקווקו לפני מה שנובע ממנו. כרטיס (ReceiptTicket): אותן שורות לרוחב עמודה רחבה, בשלושה חלקים: החשבון בצד אחד, הסכום שנשאר באמצע, הקרן בצד השני, ושורה מתחתיהם; חריצים עגולים במקום שבו קווי האמצע פוגשים את הקצוות. בטלפון, כשהקבלה למעלה מחוץ למסך, תלוש שלה עם קצה עליון קרוע נצמד לתחתית המסך: כמה נשאר, והקשה עליו מחזירה לקבלה.",
       FactTile: "אריח קטן של עובדות על דבר אחד: שורת כותרת עם קישור בסופה, שם, ושורות של שם וערך ב־13 פיקסלים. הקצה שלו בצבע של מה שהדבר גובה, כמו השורה שלו בקבלה. שני אריחים מחוברים ב־+ עגול על התפר.",
       ChipList: "רשימה שאפשר לבחור בה, להוסיף לה, לשנות שם ולמחוק: מטרות. הפריט הנבחר מקבל עיפרון ופח; גרירה רק כשיש onMove; הפריט האחרון (add) מוסיף.",
-      KnobStrip: "מספרי התוכנית כמחוונים שנשארים על המסך, לעמוד שנועד לשחק בו: שני טורים במחשב, אחד בטלפון. מספר שלא עובר בדיקה מקבל את ההודעה שלו בקצה שורת השם, במקום כפתור האיפוס, כך שהשורה לא גדלה.",
+      KnobStrip: "מספרי התוכנית שנשארים על המסך, לעמוד שנועד לשחק בו. כמחוונים: שני טורים במחשב, אחד בטלפון, ומספר שלא עובר בדיקה מקבל את ההודעה שלו בקצה שורת השם, במקום כפתור האיפוס. כאריחים: כל מספר באריח, ולחיצה על אריח פותחת מעליו חלון עם התיבה, האיפוס (↺) והמחוון, בלי להזיז שום דבר בעמוד.",
       ChangeChart: "כל מספר בתוכנית משתנה באותו אחוז, קו לכל מספר על גרף אחד, משמאל (פחות) לימין (יותר). סמן שגוררים או בוחרים קורא את כל הקווים, והטבלה אומרת לכל מספר: לפני, אחרי, מה נשאר וההפרש.",
       PileBar: "הסיפור של הכסף לפי שנת המשיכה: עמודה לכל שנה עם מה שנשאר בידיים מעליה, השנה שנבחרה והשנה שמשווים אליה בצבע מלא, וחץ עם מה שמשתנה אם מחכים. מתחת, השנה שנבחרה כפס אחד משמאל: מה שהופקד והתשואה, ובקצה מה שדמי הניהול והמס לקחו, וסוגר מתחת למה שנשאר.",
       StairsChart: "מדרגות: מה שנשאר בסוף על הציר האנכי, סדר הצעדים משמאל לימין. הראשונה אפורה עם סימן שבר כי הציר לא מתחיל באפס; כל מדרגה צפה בגוון של מה ששונה, ואדומה כשהיא מפסידה. שנלקחה: מלאה; מוצעת: בהירה ומוקפת; על כלל פתוח: חלולה. מתחתיה טבלה באותן עמודות (מחשב) או רשימת צעדים (טלפון).",

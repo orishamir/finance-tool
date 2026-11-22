@@ -1,7 +1,7 @@
 // The receipt and the chosen pair's card in the side rail, rendered on the collected data (part of render.test.ts, which says why it is split).
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { flags, groupPrices, invest } from "../../copy";
+import { flags, groupPrices, help, invest } from "../../copy";
 import { pickableGroups, withGroupPick } from "../../lib/group-pick";
 import { PairLists } from "./lists";
 import { asideLines, buildInvest, indexById, kindOf, pairCostsKept } from "../../lib/invest";
@@ -305,8 +305,11 @@ describe("the lists beside the receipt", () => {
     expect(at(ANCHOR.accounts)).toBeLessThan(at(ANCHOR.funds));
     const priced = allFunds(view).filter((f) => { const a = f.byHouse[pick.house]; return !!a && "valueN" in a && !a.open; }).length;
     expect((out.match(/data-spot-dot=""/g) ?? []).length).toBe(priced);
-    // what the ruler measures is its title
+    expect(shown(out)).toContain(w.lists.note(true));
+    // what the ruler measures is its title, and the small bars are said in the "?" beside "הקטע", not in a line under the list
     expect(shown(out)).toContain(w.lists.rulerTitle);
+    expect(shown(out)).not.toContain(w.lists.accounts.barRuler);
+    expect(out).toContain(`aria-label="${help.markLabel.replace("{about}", w.lists.accounts.sets.what)}"`);
   });
   it("a fund on an open rule is shown, not ranked: after the ranked funds of its kind, under one heading, with no spot and no tag on its row (G-18)", () => {
     // an account that prices a fund on an open rule (an accumulating Irish fund bought abroad): the headline's house sells none abroad
@@ -340,13 +343,12 @@ describe("the lists beside the receipt", () => {
     expect(otherValues.length).toBeGreaterThan(0);
     // the other kind would lengthen the stretch: the data holds the case the rule is for
     expect(Math.min(...otherValues)).toBeLessThan(Math.min(...kindValues));
-    // below 1280 px each fund row carries the chosen account's stretch with the fund's spot: the kind's last fund sits at the band's foot
-    const out = html(createElement(PairLists, props));
-    const worst = funds.find((f) => kindOf(f.rec) === mine && ranked(f) === Math.min(...kindValues));
-    const raw = out.slice(out.indexOf(`data-pick-key="${worst?.rec.id}"`));
-    const [, top, height] = /top:min\(([\d.]+)%[^;]*;height:([\d.]+)%/.exec(raw) ?? [];
-    const [, spot] = /top:([\d.]+)%;height:calc/.exec(raw) ?? [];
-    expect(Number(spot)).toBeCloseTo(Number(top) + Number(height), 2);
+    const out = shown(html(createElement(PairLists, props))).replace(/[\u2066-\u2069\u200e\u200f]/g, "").replace(/\u00a0/g, " ");
+    const span = Math.round(Math.max(...kindValues) - Math.min(...kindValues));
+    const short = view.providers.find((p) => p.id === pick.house)!.short;
+    expect(out).toContain(`${w.lists.funds.inHouse(short)}: עד ${span.toLocaleString("en-US")} ₪`);
+    const withOther = Math.round(Math.max(...kindValues, ...otherValues) - Math.min(...kindValues, ...otherValues));
+    expect(out).not.toContain(`${w.lists.funds.inHouse(short)}: עד ${withOther.toLocaleString("en-US")} ₪`);
   });
   it("an account whose every priced fund is on an open rule has no stretch: after the ranked accounts, before the ones with no price, with G-18's words (MSCI World)", () => {
     const v = buildInvest({ bundle, index: indexById(bundle, "index-msci-world")!, plan });

@@ -272,7 +272,7 @@ async function sliderKeyCheck(browser, base) {
 }
 
 /**
- * One slider built from P-05's data, on an index page: a finger dragged across the plan's amount slider from its left end to the place a
+ * One slider built from P-05's data, on an index page: the amount tile tapped open, a finger dragged across the plan's amount slider from its left end to the place a
  * third along carries its box to the end of the first segment P-05 writes, then to the right end its max, then back to the left end its min.
  */
 async function sliderDataCheck(browser, base) {
@@ -282,7 +282,8 @@ async function sliderDataCheck(browser, base) {
   const third = range.segments.length === 3 ? range.segments[0].to.value : null;
   const words = (n) => n.toLocaleString("en-US");
   const { ctx, page } = await open(browser, base, PHONE, "/indices/sp500");
-  // the plan's amount box (invest/knobs.tsx, `PLAN_AMOUNT_FIELD`) and the slider in its field
+  // the plan's amount tile tapped open, then its box (invest/knobs.tsx, `PLAN_AMOUNT_FIELD`) and the slider in its popup
+  await page.locator("main").getByRole("button", { name: "סכום היום" }).first().tap();
   const field = page.locator(".range-field", { has: page.locator("#plan-amount") });
   const slider = field.locator('input[type="range"]');
   const box = field.locator("#plan-amount");
@@ -313,11 +314,28 @@ async function sliderDataCheck(browser, base) {
 /**
  * The slider rules on each visible slider (`input[type=range]`) inside `within`, at a computer's width with a mouse: it runs left to right,
  * nothing with a figure stands under it in its field (`.field`, else its parent), and a drag from its left end to its right carries it to
- * its most, one back to its least (a disabled one is not dragged). The layout check runs it on every page at 1440. Returns what failed: the slider's name and the words.
+ * its most, one back to its least (a disabled one is not dragged). A slider that shows only in a knob tile's popup (`KnobStrip
+ * layout="tiles"`) is checked as a person reaches it: its tile clicked open, the rules run, Escape. The layout check runs it on every page at
+ * 1440. Returns what failed: the slider's name and the words.
  */
 export async function sliderRules(page, within) {
+  const found = await rulesOn(page, page.locator(`${within} input[type="range"]`).locator("visible=true"));
+  const tiles = page.locator(`${within} [data-knob-tile]`).locator("visible=true");
+  const n = await tiles.count();
+  for (let i = 0; i < n; i++) {
+    const tile = tiles.nth(i);
+    if ((await tile.getAttribute("aria-expanded")) !== "false" || (await tile.isDisabled())) continue;
+    await tile.scrollIntoViewIfNeeded();
+    await tile.click();
+    found.push(...(await rulesOn(page, page.locator(`${within} [popover] input[type="range"]`).locator("visible=true"))));
+    await page.keyboard.press("Escape");
+  }
+  return found;
+}
+
+/** The slider rules on each slider `sliders` finds. */
+async function rulesOn(page, sliders) {
   const found = [];
-  const sliders = page.locator(`${within} input[type="range"]`).locator("visible=true");
   const n = await sliders.count();
   for (let i = 0; i < n; i++) {
     const s = sliders.nth(i);

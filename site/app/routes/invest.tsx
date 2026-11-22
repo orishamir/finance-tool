@@ -8,7 +8,7 @@ import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
 import { brands, invest as c } from "../copy";
 import { pageMeta } from "../lib/page-meta";
-import { PLAN_AMOUNT_FIELD, PlanKnobs } from "../components/invest/knobs";
+import { PLAN_AMOUNT_TILE, PlanKnobs } from "../components/invest/knobs";
 import { TitleRow } from "../components/invest/title";
 import { PlanCard } from "../components/invest/plan-card";
 import { PairReceipt, PairStub } from "../components/invest/receipt";
@@ -249,8 +249,9 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
     const rest = q.toString();
     navigate(`${pathname}${rest ? `?${rest}` : ""}`, { replace: true });
   }, [search, pathname, navigate]);
-  // From 1280 px the plan and the pair's card stand in a rail, and beside it the receipt's ticket stands over the two lists and their
-  // ruler; below 1280 px everything stands in one column, the receipt above the lists with its stub at the screen's foot. The body renders
+  // From 1280 px the pair's card stands in a rail, and beside it the plan's tiles stand in one row over the receipt's ticket, which stands
+  // over the two lists and their ruler; below 1280 px everything stands in one column, the plan first and the receipt above the lists with
+  // its stub at the screen's foot. The body renders
   // only in the browser, so its first render already knows the width.
   const railed = useMedia("(min-width: 80rem)");
   const receiptRef = useRef<HTMLDivElement>(null);
@@ -361,7 +362,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
     />
   );
 
-  const planCard = <PlanCard knobs={<PlanKnobs compare={compare} ranges={data.form.knobs} pct={data.form.pct} stacked />} />;
+  const planCard = <PlanCard knobs={<PlanKnobs compare={compare} ranges={data.form.knobs} pct={data.form.pct} />} />;
   // the receipt: below 1280 px paper above the lists, the stub's way back leading to it (focusable for that, never tabbed to); from 1280 px
   // a ticket over the lists, whose total the ruler's point joins
   const receipt = pick && shown && shownView && (
@@ -397,24 +398,27 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
             <p className="text-muted-foreground">{c.chips.none}</p>
           ) : (
             <>
-              {/* the plan and the pair's card in a rail at the start side from 1280 px, the receipt's ticket and the choice of account and
-                  fund beside it; one column under it, the receipt above the lists */}
+              {/* the pair's card in a rail at the start side from 1280 px, the plan, the receipt's ticket and the choice of account and
+                  fund beside it; one column under it, the plan first and the receipt above the lists */}
               <div ref={pairArea} className="flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-6">
-                <div className="flex flex-col gap-5 xl:w-80 xl:shrink-0">
-                  {planCard}
-                  {pick && shown && shownView && (
-                    <>
-                      {!railed && receipt}
-                      <ChosenPair view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} onPick={onPick} group={ownGroup} />
-                    </>
-                  )}
-                </div>
+                {(!railed || (pick && shown && shownView)) && (
+                  <div className="flex flex-col gap-5 xl:w-80 xl:shrink-0">
+                    {!railed && planCard}
+                    {pick && shown && shownView && (
+                      <>
+                        {!railed && receipt}
+                        <ChosenPair view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} onPick={onPick} group={ownGroup} />
+                      </>
+                    )}
+                  </div>
+                )}
                 <div className="@container flex min-w-0 flex-1 flex-col gap-5 lg:gap-6">
+                  {railed && planCard}
                   {nothing ? (
                     <EmptyState
                       icon={<IconCoins />}
                       title={c.empty.title}
-                      action={{ label: `${c.empty.action} ${c.plan.knobs.amount}`, onClick: () => document.getElementById(PLAN_AMOUNT_FIELD)?.focus() }}
+                      action={{ label: `${c.empty.action} ${c.plan.knobs.amount}`, onClick: () => document.getElementById(PLAN_AMOUNT_TILE)?.click() }}
                     >
                       {c.empty.body}
                     </EmptyState>

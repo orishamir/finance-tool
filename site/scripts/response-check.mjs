@@ -44,11 +44,12 @@ const dealPath = existsSync(dealFile) ? readFileSync(dealFile, "utf8").trim() : 
  * The flows. `slider` and `field` count the visible sliders (role=slider: the kit's range fields and a chart's marker) and the visible
  * number fields (inputmode numeric or decimal) in the page's main part, from 0; `text` is what is typed into the field. `follows` is the
  * words that label a figure the steps must change: the figure is the element right after the first visible element with those words alone.
+ * `open` names a button a person taps first to bring the slider and the field into sight (a knob tile, whose popup holds them).
  */
 const FLOWS = [
-  // an index page, opened on its default index: the plan's slider and its amount, typed as a number the drag (which ends on the slider's
-  // middle, 250,000) does not leave, so the figure must change at both steps
-  { name: "the index page", path: "/indices/sp500", slider: 0, field: 0, text: "180000", follows: "נשאר לכם" },
+  // an index page, opened on its default index: the plan's amount tile tapped open, then the slider and the box in its popup, typed as a
+  // number the drag (which ends on the slider's middle, 250,000) does not leave, so the figure must change at both steps
+  { name: "the index page", path: "/indices/sp500", open: "סכום היום", slider: 0, field: 0, text: "180000", follows: "נשאר לכם" },
   // the fee page's filled deal (layout-check-deal.txt): the chart's size of a trade, and a fee's figure
   ...(dealPath ? [{ name: "the fee page's deal", path: dealPath, slider: 0, field: 0, text: "0.25" }] : []),
   // a guide page whose chart answers a slider and a field
@@ -146,6 +147,14 @@ async function runFlow(flow, plant) {
   if (plant) await page.evaluate(plant);
   const cdp = await slowDown(page, { cpu: CPU_SLOWDOWN });
   const steps = [];
+  if (flow.open) {
+    const opener = page.locator("main").getByRole("button", { name: flow.open }).first();
+    if (!(await opener.count())) steps.push({ step: "open", summary: "no button", findings: [{ step: "open", check: "missing", detail: `no button "${flow.open}" on the page` }] });
+    else {
+      await opener.tap();
+      await rest(page);
+    }
+  }
   const sliders = page.locator("main").getByRole("slider").locator("visible=true");
   const fields = page.locator('main input:is([inputmode="numeric"], [inputmode="decimal"])').locator("visible=true");
   const slider = sliders.nth(flow.slider);

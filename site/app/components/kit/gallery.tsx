@@ -1065,6 +1065,7 @@ function Fields() {
   const [years, setYears] = useState<number | null>(10);
   const [years2, setYears2] = useState<number | null>(25);
   const [pct, setPct] = useState<number | null>(5);
+  const [pct2, setPct2] = useState<number | null>(2);
   const [money, setMoney] = useState<number | null>(10_000);
   const [money2, setMoney2] = useState<number | null>(750);
   const [share, setShare] = useState(20);
@@ -1132,13 +1133,16 @@ function Fields() {
             ]}
           />
         </State>
-        <State label="stacked: one under the other at every width (a narrow side card)">
-          <div className="max-w-xs">
+        <State label={'layout="tiles": a tap on a tile opens its slider over the page; two then three in a narrow box'}>
+          <div className="max-w-sm">
             <KnobStrip
-              stacked
+              layout="tiles"
               knobs={[
+                { id: "money", label: g.sample.money, unit: "nis", value: money, start: 10_000, scale: MONEY_SCALE, isEntered: money !== 10_000, validate: nonNegativeCheck, onCommit: (n) => setMoney(n), onReset: () => setMoney(10_000) },
+                { id: "money2", label: g.sample.money, unit: "nis", value: money2, start: 10_000, scale: MONEY_SCALE, isEntered: money2 !== 10_000, validate: nonNegativeCheck, onCommit: (n) => setMoney2(n), onReset: () => setMoney2(10_000) },
                 { id: "years", label: g.sample.range, unit: "years", unitInLabel: true, value: years, start: 10, scale: YEARS_SCALE, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
                 { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, start: 5, scale: PCT_SCALE, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
+                { id: "pct2", label: g.sample.percent, unit: "pct_per_year", value: pct2, start: 2, scale: PCT_SCALE, isEntered: pct2 !== 2, validate: () => null, onCommit: (n) => setPct2(n), onReset: () => setPct2(2) },
               ]}
             />
           </div>
@@ -1993,12 +1997,6 @@ function Lists({ today }: { today: string }) {
           <span className="inline-flex items-center gap-1 text-sm font-medium">
             {g.sample.helpText.head}
             <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} rules={["TXS-05", "TXS-06"]} />
-          </span>
-        </State>
-        <State label="tone caution: the mark in the caution role, where what it opens holds a catch about the figures under it (a child-savings fee head)">
-          <span className="inline-flex items-center gap-1 text-sm font-medium">
-            {g.sample.helpText.head}
-            <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} tone="caution" />
           </span>
         </State>
         <State label="words: a quiet text action of its words before the mark, at the end of a panel's heading; its spoken name starts with them">

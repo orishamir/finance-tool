@@ -27,7 +27,7 @@ import { scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch"
 import { differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { Num, Ruled } from "../provenance";
-import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
+import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, FundTerms } from "./custom-entries";
 import { AddDealButton, DealEditMark, DealMissing, DeletedLine, NotMovedLines, useDealAccounts } from "./deal-account";
 import { dealIdOf, isDealProviderId } from "../../lib/deal-account/bundle";
@@ -35,6 +35,7 @@ import { feeNameOf } from "../../lib/fee-deal/part-words";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
+import { OrderLine } from "./foot";
 import { ANCHOR, verdictOf } from "./receipt";
 import { AbroadNotes, OwnBankField, allFunds, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
 
@@ -64,13 +65,18 @@ export interface ListsProps {
   above?: RefObject<HTMLElement | null>;
 }
 
-/** A list's column names: the item at the start and, where the column has a name, the figure at the end with its computed mark (every
- *  figure in the column is computed, so the mark stands in the head and the cells stay plain, design.md). */
-function Head({ item, figure }: { item: string; figure?: string }) {
+/** A list's column names: the item at the start, the figure at the end with its computed mark (every figure in the column is computed, so
+ *  the mark stands in the head and the cells stay plain, design.md), and its "?". */
+function Head({ item, figure, help, itemHelp }: { item: string; figure: string; help: string; /** A "?" beside the name column's head (the codes in the funds' names). */ itemHelp?: ReactNode }) {
   return (
     <span className="col-span-full flex items-end justify-between gap-3">
-      <span>{item}</span>
-      {figure && <span className="num num-computed num-sample text-end whitespace-nowrap">{figure}</span>}
+      <span>
+        {item}
+        {itemHelp}
+      </span>
+      <span className="text-end whitespace-nowrap">
+        <span className="num num-computed num-sample">{figure}</span> <HelpMark about={figure} text={help} />
+      </span>
     </span>
   );
 }
@@ -89,14 +95,22 @@ function HeadFigure({ figure, help }: { figure: string; help: string }) {
   );
 }
 
-/** A side's heading: its title with its colour and count. */
-function SideHead({ swatch, title, count }: { swatch: string; title: string; count: number }) {
+/** A side's heading: its title with its colour and count, what the side sets with a "?" beside it where the rows carry a small bar, and one quiet line. */
+function SideHead({ swatch, title, count, lead, what, help, line }: { swatch: string; title: string; count: number; lead: string; what: string; help?: ReactNode; line: ReactNode }) {
   return (
-    <h3 className="flex items-center gap-2 text-lg font-semibold">
-      <span aria-hidden="true" className={cx("inline-block size-[0.6875rem] shrink-0 rounded-[3px]", swatch)} />
-      {title}
-      <Tag className="tabular-nums">{count}</Tag>
-    </h3>
+    <header className="flex flex-col gap-0.5">
+      <h3 className="flex items-center gap-2 text-lg font-semibold">
+        <span aria-hidden="true" className={cx("inline-block size-[0.6875rem] shrink-0 rounded-[3px]", swatch)} />
+        {title}
+        <Tag className="tabular-nums">{count}</Tag>
+      </h3>
+      {/* 8 px under the line with a "?", so the quiet line under it leaves the mark its whole 44 px */}
+      <p className={cx("text-base", !!help && "mb-2")}>
+        {lead} <span className="font-semibold">{what}</span>
+        {help && <> {help}</>}
+      </p>
+      {line}
+    </header>
   );
 }
 
@@ -180,6 +194,20 @@ export function PairLists(props: ListsProps) {
   const unpricedHouses = providers
     .filter((p) => !stretches.get(p.id) && !pricesKind(p.id))
     .sort((a, b) => Number(!pricesAny(a.id)) - Number(!pricesAny(b.id)) || Number(!!noWay(a)) - Number(!!noWay(b)) || a.short.localeCompare(b.short, "he"));
+  // what the figures count and when the price lists were collected, after what the column is (its "?")
+  const local = providers.filter((p) => !p.foreign && !p.custom);
+  const saved = bundle.snapshots.filter((s) => providers.some((p) => p.id === s.id && !p.custom)).map((s) => s.snapshot).sort();
+  const standingCount = local.filter((p) => funds.some((f) => { const a = f.byHouse[p.id]; return priced(a) && a.standing; })).length;
+  const asideCount = local.filter((p) => funds.some((f) => { const a = f.byHouse[p.id]; return priced(a) && a.aside.length > 0; })).length;
+  const leftHelp = [
+    c.pair.colLeftHelp,
+    plan.monthly === 0 ? c.pair.noMonthly : standingCount > 0 ? c.pair.standingNote(standingCount, local.length) : "",
+    plan.monthly > 0 && asideCount > 0 ? c.pair.asideNote(asideCount, local.length) : "",
+    c.lists.whichPrice,
+    saved.length > 0 ? c.pair.collectedSpan(`⁦${fmt.date(saved[0]!)}⁩`, `⁦${fmt.date(saved.at(-1)!)}⁩`) : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
   const nameOf = (p: (typeof providers)[number], selected: boolean) => (
     <span className={cx("min-w-0 text-sm", selected ? "font-semibold" : "font-medium", (p.id === view.yourBroker || p.custom) && "text-entered")}>{p.short}</span>
   );
@@ -581,15 +609,21 @@ export function PairLists(props: ListsProps) {
     fund.noUnitPrice ? <span key="unit">{c.pair.unitPriceMissing}</span> : null,
     otherPrice ? <span key="other">{c.lists.otherPrice(short, sp.cardTitle)}</span> : null,
   ].filter(Boolean);
-  // what the ruler measures is its title, over it (`rulerHead`); under the lists, what holds for the chosen pair
-  const note =
-    chosenNotes.length > 0 ? (
-      <div className="flex flex-col gap-1.5 text-xs text-muted-foreground">
-        {chosenNotes.map((n, i) => (
-          <p key={i}>{n}</p>
-        ))}
-      </div>
-    ) : null;
+  // what the ruler measures is its title, over it (`rulerHead`); under the lists, what holds for the chosen pair and how a tap moves them
+  const note = (
+    <div className="flex flex-col gap-1.5 text-xs text-muted-foreground">
+      {chosenNotes.map((n, i) => (
+        <p key={i}>{n}</p>
+      ))}
+      <p>{c.lists.note(ruler)}</p>
+      {/* whether the order holds at another return: once, under both lists, where the order is shown */}
+      {view.order && (
+        <p>
+          <OrderLine view={view} bundle={bundle} />
+        </p>
+      )}
+    </div>
+  );
 
   // ---------------------------------------------------------------- the two sides
   const columnsAcc = "minmax(0,1fr) auto auto";
@@ -599,13 +633,42 @@ export function PairLists(props: ListsProps) {
       swatch="bg-chart-by-account"
       title={c.lists.accounts.title}
       count={providers.length}
+      lead={c.lists.accounts.sets.lead}
+      what={c.lists.accounts.sets.what}
+      // the small bar beside each account is its stretch: said in the "?" of the stretch it draws
+      help={<HelpMark about={c.lists.accounts.sets.what} text={ruler ? c.lists.accounts.barRuler : c.lists.accounts.barAlone} />}
+      line={<p className="text-xs text-muted-foreground">{c.lists.accounts.each}</p>}
     />
   );
+  const spanOf = (id: string) => {
+    const s = id === pick.house ? pickStretch : stretches.get(id);
+    if (!s) return null;
+    const worst = s.spots.at(-1)!.fund;
+    const v = (fid: string) => (funds.find((f) => f.rec.id === fid)!.byHouse[id] as WayPrice).value;
+    const nameF = (fid: string) => funds.find((f) => f.rec.id === fid)!.name;
+    return nis(s.best - s.worst, "F-65", c.lists.funds.spanAbout(shortOf(id === pick.house ? baseHouse : id)), today, { [c.pair.input(nameF(s.bestFund), c.pair.colLeft)]: v(s.bestFund), [c.pair.input(nameF(worst), c.pair.colLeft)]: v(worst) });
+  };
+  const spanLine = (id: string, name: string, key?: string) => {
+    const v = spanOf(id);
+    return v ? (
+      <p key={key} className="text-xs text-muted-foreground">
+        <Tpl t={c.lists.funds.span} vars={{ house: <span className="font-semibold text-chart-by-account"><MixedName>{c.lists.funds.inHouse(name)}</MixedName></span>, span: <Num value={v} /> }} />
+      </p>
+    ) : null;
+  };
   const fundsHead = (
     <SideHead
       swatch="bg-chart-by-fund"
       title={c.lists.funds.title}
       count={funds.length}
+      lead={c.lists.funds.sets.lead}
+      what={c.lists.funds.sets.what}
+      // below 1280 px each fund carries a small bar of the chosen account's stretch with its own spot; the ruler says it above
+      help={ruler ? undefined : <HelpMark about={c.lists.funds.sets.what} text={c.lists.funds.barAlone(short)} />}
+      line={
+        // held at its longest case, every account's, so a pick moves nothing under it
+        <LongestCase cases={pricedHouses.map((p) => spanLine(p.id, p.short, p.id))}>{spanLine(pick.house, short)}</LongestCase>
+      }
     />
   );
   const accountsList = (
@@ -616,7 +679,7 @@ export function PairLists(props: ListsProps) {
         label={c.pair.listLabelAccounts}
         anchor={ANCHOR.accounts}
         columns={columnsAcc}
-        head={<Head item={c.pair.colAccount} figure={c.lists.colLeft} />}
+        head={<Head item={c.pair.colAccount} figure={c.lists.colLeft} help={leftHelp} />}
         rows={accountRows}
       />
     </div>
@@ -641,7 +704,7 @@ export function PairLists(props: ListsProps) {
         phoneLimit={ruler ? undefined : 6}
         orders={orders}
         more={c.pair.moreFunds}
-        head={<Head item={c.pair.colFund} />}
+        head={<Head item={c.pair.colFund} itemHelp={profileHelp(funds.map((f) => listName(view, f.name)))} figure={sp.vs} help={`${c.funds.diffHelp(kinds, false)} ${c.lists.whichPrice}`} />}
         rows={fundRows}
       />
     </div>
@@ -722,4 +785,15 @@ function ListsHead({ view, bundle, livePlan, pick, chosen }: { view: InvestView;
       </h2>
     </div>
   );
+}
+
+/**
+ * The exposure profiles in the list's fund names, (4D) and the like (ETF-12): a "?" beside the fund column's head, whose sheet says each
+ * code on the list in plain words over the term's glossary card. Nothing where no name carries one.
+ */
+function profileHelp(names: string[]): ReactNode {
+  const w = c.pair.profile;
+  const codes = [...new Set(names.flatMap((n) => [...n.matchAll(/\((\d[0A-F])\)/g)].map((m) => m[1]!)))].filter((x) => w.equity[x[0]!] && w.currency[x[1]!]).sort();
+  if (codes.length === 0) return null;
+  return <HelpMark term={["פרופיל חשיפה"]} about={w.about} lead={`${w.lead} ${w.term}. ${codes.map((x) => w.code(x, `${w.equity[x[0]!]} ${w.currency[x[1]!]}`)).join(". ")}.`} className="ms-1" />;
 }

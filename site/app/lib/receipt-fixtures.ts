@@ -10,7 +10,7 @@ export function planOf(t: string, p: { years: number; monthly: number; amountNow
   return {
     amountNow, monthly: p.monthly, years: p.years, grossReturn: ret / 100, inflation: 0.02, age: null, income: null,
     values: { amount: entered(amountNow, "nis", t), monthly: entered(p.monthly, "nis_per_month", t), years: entered(p.years, "years", t), returnV: entered(ret, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
-    currentAccounts: { own: null },
+    returnFromParameter: false, currentAccounts: { own: null },
   };
 }
 

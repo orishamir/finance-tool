@@ -23,22 +23,22 @@ import { useDollarCase } from "./dollar";
 import { bundle, t, plan, data, shown, html, lists, fundRow, ReceiptAndFees, StairsFor } from "./render-fixtures";
 
 describe("the index page's sections render", () => {
-  const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: plan, yourBroker: "leumi" });
+  const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: { ...plan, returnFromParameter: true }, yourBroker: "leumi" });
   it("all sections of a known index: the title, the plan, the receipt, the chosen pair, the two linked lists and the fees panel", () => {
     const pick = pickOfHeadline(view)!;
     const leumi = { house: "leumi", fund: pick.fund };
     const out = html(createElement("div", null,
       createElement(TitleRow, { known: knownIndices(bundle), customs: [], index: view.index, others: knownIndices(bundle), bundle, onRemove: () => undefined, onRename: () => undefined, onSave: () => undefined, onGo: () => undefined }),
-      createElement(ReceiptAndFees, { view, bundle, plan: plan, pick, chosen: false, onPick: () => undefined }),
-      createElement(ReceiptAndFees, { view, bundle, plan: plan, pick: leumi, chosen: true, onPick: () => undefined }),
+      createElement(ReceiptAndFees, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, chosen: false, onPick: () => undefined }),
+      createElement(ReceiptAndFees, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true, onPick: () => undefined }),
       createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null, group: null }),
-      createElement(ChosenPair, { view, bundle, plan: plan, pick: leumi, chosen: true }),
+      createElement(ChosenPair, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true }),
       createElement(PlanCard, { knobs: null })));
     expect(out).toContain("הפקדתם");
     // a dollar index with funds of both kinds: the hedged ones stand under their own heading, each with its range across the dollar (F-94)
     expect(out).toContain(invest.kinds.name.hedged);
     expect(shown(out)).toMatch(new RegExp(`${invest.kinds.between} [^<]*${invest.kinds.and}`));
-    // the line under the list says what orders each kind
+    // the shekel column's "?" says the amounts hold the rate still; the line under the list says what orders each kind
     expect(out).toContain("והסדר לא תלוי בדולר");
     expect(out).toContain("מול המדד");
     expect(out).toContain(invest.lists.kicker);
@@ -51,15 +51,15 @@ describe("the index page's sections render", () => {
     expect(shown(out).replace(/[\u2066-\u2069]/g, "")).toMatch(new RegExp(`${invest.receipt.inflation}−[\\d,]+ ₪`));
   });
   it("an Israeli index keeps the pair beside the cheapest one (no kinds)", () => {
-    const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan: plan });
+    const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan: { ...plan, returnFromParameter: true } });
     const pick = pickOfHeadline(ta)!;
-    const out = html(createElement(ReceiptAndFees, { view: ta, bundle, plan: plan, pick: { ...pick, house: "leumi" }, chosen: true, onPick: () => undefined }));
+    const out = html(createElement(ReceiptAndFees, { view: ta, bundle, plan: { ...plan, returnFromParameter: true }, pick: { ...pick, house: "leumi" }, chosen: true, onPick: () => undefined }));
     expect(out).toContain("★ הזוג הזול ביותר לתוכנית שלכם");
     expect(out).not.toContain("עם נטרול");
   });
   it("before any pick, the page's own pair is never called the person's, and each tile names its account and fund (2026-11-05)", () => {
     const pick = pickOfHeadline(view)!;
-    const out = shown(html(createElement(ReceiptAndFees, { view, bundle, plan: plan, pick, chosen: false, onPick: () => undefined })));
+    const out = shown(html(createElement(ReceiptAndFees, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, chosen: false, onPick: () => undefined })));
     expect(out).not.toContain("הבחירה שלכם");
     const fund = view.options.flatMap((o) => o.funds).find((f) => f.rec.id === pick.fund)!;
     // an index's name keeps its number on the line ("S&P\u00a0500")
@@ -373,6 +373,9 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     // S&P 500: net gaps and three funds whose index is of no stated kind
     expect(noteOf(sp)).toContain("מדד נטו");
     expect(noteOf(sp)).toContain("״לא מושווה״");
+    // why the shekels are not the gap is the shekel column's "?", said only where the list has a gap column
+    expect(invest.funds.diffHelp(true, true)).toContain("לא נספרת כרווח");
+    expect(invest.funds.diffHelp(true, false)).not.toContain("לא נספרת כרווח");
     // TA-125: every gap against the gross index, nothing "not compared", so no sentence for it
     expect(noteOf(ta)).toContain("מדד ברוטו");
     expect(noteOf(ta)).not.toContain("״לא מושווה״");
