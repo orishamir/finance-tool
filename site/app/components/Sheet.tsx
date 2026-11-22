@@ -112,6 +112,18 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
   const { pathname } = useLocation();
   const openedOn = useRef<string | null>(null);
 
+  // the sheet's closing is over (played out, or cut short by the browser closing its dialog): it leaves the stack, and the sheet it covered
+  // comes back
+  function left() {
+    if (closing.current) window.clearTimeout(closing.current);
+    closing.current = null;
+    ref.current?.removeAttribute("data-closing");
+    const s = stacked.current;
+    stacked.current = null;
+    if (s) dropSheet(s);
+    leftSheet((n) => n + 1);
+  }
+
   useIsoLayoutEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
@@ -154,15 +166,11 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
         dialog.setAttribute("data-closing", "");
         const ms = cssMs(getComputedStyle(document.documentElement).getPropertyValue("--duration-base"));
         closing.current = window.setTimeout(() => {
-          dialog.removeAttribute("data-closing");
           if (dialog.open) {
             ownClose.current = true;
             dialog.close();
           }
-          closing.current = null;
-          stacked.current = null;
-          dropSheet(s);
-          leftSheet((n) => n + 1);
+          left();
         }, ms);
       }
     }
@@ -240,6 +248,13 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
         else if (stacked.current) closeUnder(stacked.current);
       }}
       onClose={() => {
+        if (closeFollows.current && closing.current) {
+          // the browser closed the leaving sheet itself, after a close request the page could not refuse: nothing of it shows, so it
+          // leaves at once and the sheet under it comes back now, not when its closing would have played out
+          closeFollows.current = false;
+          left();
+          return;
+        }
         if (ownClose.current || closeFollows.current) {
           ownClose.current = false;
           closeFollows.current = false;

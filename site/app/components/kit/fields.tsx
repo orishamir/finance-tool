@@ -9,14 +9,6 @@ import { cx } from "./cx";
 import { useErrorRest } from "./error-rest";
 import { NameStack, useListSelect, type ListOption } from "./list-select";
 
-/**
- * A field commits each keystroke that leaves a right value, so nothing waits to be committed: a caller that reads every field's value
- * before saving finds it already there.
- */
-export function flushPendingFields(): void {
-  // nothing waits: every right keystroke is committed as it is typed
-}
-
 export interface FieldProps {
   label: ReactNode;
   unit: string;

@@ -16,7 +16,9 @@
 //            to what opened it; a sheet opened from inside another that shows over it rather than in its place, leaves the one under it
 //            modal (the close request would reach it), has no way back to it, or brings it back scrolled elsewhere; Escape on the top of
 //            two sheets that does not bring back the other with the focus on what opened the top one, a second Escape that does not close
-//            that one, or two quick Escapes that leave one open; sheets that add history entries.
+//            that one, or two quick Escapes that leave one open; a close request the page may not refuse on the top of two sheets (its
+//            cancel not cancelable, the browser closing the dialog itself) that closes the other too, or brings it back only after the top
+//            one's closing would have played; sheets that add history entries.
 //   sheet link / search sheet   a page the router opens from inside a sheet (a link in a rule's sheet on the kit page; the phone's search
 //            sheet on a guide page, a word typed and Enter opening another guide page, so the frame and its sheets stay mounted) that keeps
 //            a sheet open, adds more than one history entry, or that one Back does not leave for the page under the sheet, with no sheet
@@ -288,6 +290,30 @@ async function sheetCheck(browser, base) {
     await page.evaluate(settled);
     if (await shown()) found.push("sheet: two quick Escapes on two sheets leave the first one open");
     if (!(await label.evaluate((el) => el === document.activeElement))) found.push("sheet: after two quick Escapes, the focus is not on what opened the first sheet");
+    // a close request the page may not refuse (the browser's own, with no press since the last): its cancel cannot be refused, and the
+    // browser closes the top sheet itself; that close is the same request, so only the top one closes, and the one under it comes back at
+    // once rather than after the top one's closing would have played
+    await label.tap();
+    await page.locator("dialog[open] .rule-chip").first().tap();
+    await page.waitForFunction((i) => !document.querySelectorAll("dialog")[i].open && [...document.querySelectorAll("dialog")].some((d) => d.open), firstId, { timeout: 3000 });
+    await page.evaluate(settled);
+    const atClose = await page.evaluate(
+      (i) =>
+        new Promise((done) => {
+          const top = [...document.querySelectorAll("dialog")].find((d) => d.open);
+          top.addEventListener("close", () => done(document.querySelectorAll("dialog")[i].open), { once: true });
+          top.dispatchEvent(new Event("cancel", { cancelable: false }));
+          // the browser closes the dialog after its cancel listeners have run and the microtasks they queued (the page's render) with them
+          setTimeout(() => top.close(), 0);
+        }),
+      firstId,
+    );
+    if (!atClose) found.push("sheet: the browser closing the top of two sheets itself does not bring the other back at once");
+    await page.waitForFunction(() => !document.querySelector("dialog[data-closing]"), null, { timeout: 3000 });
+    await page.evaluate(settled);
+    if (!(await page.evaluate(firstOpen, firstId)) || (await shown()) !== 1) found.push(`sheet: a close request the page may not refuse on the top of two sheets leaves ${await shown()} open, not the one under it`);
+    await page.keyboard.press("Escape");
+    await noneOpen().catch(() => found.push("sheet: after the browser closed the top sheet itself, Escape does not close the other"));
   }
   if ((await entries()) !== before || !(await page.evaluate(() => location.pathname.endsWith("/kit")))) found.push("sheet: opening and closing sheets adds history entries or leaves the page");
   await ctx.close();
