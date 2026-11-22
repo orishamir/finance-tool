@@ -1,10 +1,8 @@
 // D29, second wave: the study fund, the provident fund for investing and the pensions. Every figure equals an engine run; the holding
 // on each side is the same index; a gap is a gap, never a number.
-import { createElement } from "react";
-import { renderToString } from "react-dom/server";
-import { MemoryRouter } from "react-router";
+import { createElement, Fragment } from "react";
 import { describe, expect, it } from "vitest";
-import { ProvenanceProvider } from "../components/provenance";
+import { html } from "../components/invest/render-fixtures";
 import { guideContent } from "../content/guide";
 import { calendarMonthOf, ruleBook, runInputs, runPlanned, taxYearOf } from "@finance-tool/engine";
 import { buildGuidePage } from "./guide.server";
@@ -386,7 +384,7 @@ describe("the securities account's guide names the example's fund from its recor
     expect(data.exampleFund).toBe(name);
     const use = guideContent["brokerage-account"]?.use;
     if (!use) throw new Error("the securities account's guide has a use section");
-    const out = renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: {}, terms: {}, dimensions: {}, today: data.today }, children: use({ figure: () => null, exampleFund: data.exampleFund }) })));
+    const out = html(createElement(Fragment, null, use({ figure: () => null, exampleFund: data.exampleFund })));
     expect(out).toContain(`<bdi>${name.replace(/&/g, "&amp;")}</bdi>`);
   });
 });

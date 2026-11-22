@@ -158,7 +158,7 @@ describe("both readings of TXS OQ26 (method §13)", () => {
       goal: { amountNow: 10_000, monthly: 500, months: 120 },
       tariff: { buy: { rate: 0.004, min: 26 }, sell: { rate: 0.004, min: 26 }, custody: { rate: 0.0015, everyMonths: 3, min: 15 } },
     };
-    const B = (r: ReturnType<typeof runSecurities>) => r.real + (r.taxDuring + r.taxAtExit) / r.series.at(-1)!.index;
+    const B = (r: ReturnType<typeof runSecurities>) => r.real + (r.taxDuring + r.taxAtExit) / (r.series.at(-1)?.index ?? Number.NaN);
     const principal = runSecurities(account, under("principal"));
     const cpi = runSecurities(account, under("cpi"));
     expect(principal.taxAtExit).not.toBeCloseTo(cpi.taxAtExit, 0);

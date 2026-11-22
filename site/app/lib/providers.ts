@@ -96,7 +96,7 @@ export function fundByFundOf(s: Pick<FeesSnapshot, "distribution_agreements">, s
 }
 
 /** The fund numbers a house's distribution agreements in force name (BRK-38): the funds of its reports that have not ended. */
-export function agreedFunds(s: Pick<FeesSnapshot, "distribution_agreements">): Set<string> {
+function agreedFunds(s: Pick<FeesSnapshot, "distribution_agreements">): Set<string> {
   return new Set((s.distribution_agreements?.reports ?? []).filter((r) => !r.ends).flatMap((r) => r.funds));
 }
 

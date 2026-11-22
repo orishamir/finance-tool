@@ -80,8 +80,9 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   it("Interactive Brokers with the distributing iShares: no single change improves, and the top is the page's own pair", () => {
     const c = chainOf(grid, { start: { a: "interactive-brokers", f: "ie0031442068" }, taken: [] })!;
     expect(c.chain).toHaveLength(1);
-    expect(Math.round(c.chain[0]!.v)).toBe(83587);
-    expect(Math.round(c.ceiling.v) - Math.round(c.chain[0]!.v)).toBe(top - 83587);
+    const [only] = c.chain;
+    expect(Math.round(only?.v ?? Number.NaN)).toBe(83587);
+    expect(Math.round(c.ceiling.v) - Math.round(only?.v ?? Number.NaN)).toBe(top - 83587);
   });
   // the lanes' held heights are measured from these cases: every lane any start shows has a case with each of its rows, in the
   // same state, so no start draws a lane taller than its hold
