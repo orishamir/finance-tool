@@ -7,8 +7,9 @@
 //            left from before a value came from outside shown at once on the next wrong keystroke; the slider field's error spoken as an
 //            alert; a number box without autocomplete off, spellcheck off and enterkeyhint done, or a shekel box without a whole-number
 //            pad.
-//   early    a number field typed in before the page's script arrived that loses what was typed, or the keystrokes after it (on the
-//            deposits page: the kit page's script draws it again rather than taking it over).
+//   early    a number field typed in before the page's script arrived that loses what was typed, or the keystrokes after it; one typed
+//            in and left before the script arrived that loses what was typed (on the deposits page: the kit page's script draws it again
+//            rather than taking it over).
 //   slider   a slider without its value at each end, or one a finger drags across that does not follow it.
 //   sheet    with the sheets' motion played: a sheet that does not open with the focus on its first thing to act on, that Escape (the
 //            browser's close request, which the phone's Back sends on Android) or its X does not close, that does not give the focus back
@@ -130,33 +131,50 @@ async function fieldCheck(browser, base) {
 }
 
 /**
- * A number field typed in before the page's script arrived: what was typed stays, and the keystrokes after the script are not lost. On the
- * deposits page's amount, a page whose script takes over its pre-rendered fields in place.
+ * A number field typed in before the page's script arrived: what was typed stays, and the keystrokes after the script are not lost; a box
+ * typed in and left before the script arrived keeps what was typed too, and the field takes it. On the deposits page's amount, a page whose
+ * script takes over its pre-rendered fields in place.
  */
 async function earlyCheck(browser, base) {
   const found = [];
-  const ctx = await browser.newContext(DESK);
-  const page = await ctx.newPage();
-  let release;
-  const gate = new Promise((done) => (release = done));
-  await page.route(/\.js(\?|$)/, async (route) => {
-    await gate;
-    await route.continue();
-  });
-  await page.goto(`${base}/deposits`, { waitUntil: "domcontentloaded" });
-  const box = page.locator("main input.field-input").first();
-  await box.scrollIntoViewIfNeeded();
-  await box.click();
-  await box.press("ControlOrMeta+a");
-  await page.keyboard.type("5");
-  release();
-  await page.waitForFunction(() => !!window.__reactRouterDataRouter, null, { timeout: 15000 });
-  await page.evaluate(settled);
-  if ((await box.inputValue()) !== "5") found.push(`early: a field typed in before the script arrived holds "${await box.inputValue()}", not the 5 typed`);
-  // a wrong keystroke after it: the box keeps what was typed rather than the field's own value
-  await page.keyboard.type("x");
-  if ((await box.inputValue()) !== "5x") found.push(`early: a keystroke after the script arrived in a field typed in before is lost (the box holds "${await box.inputValue()}", not 5x)`);
-  await ctx.close();
+  for (const left of [false, true]) {
+    const ctx = await browser.newContext(DESK);
+    const page = await ctx.newPage();
+    let release;
+    const gate = new Promise((done) => (release = done));
+    await page.route(/\.js(\?|$)/, async (route) => {
+      await gate;
+      await route.continue();
+    });
+    await page.goto(`${base}/deposits`, { waitUntil: "domcontentloaded" });
+    const box = page.locator("main input.field-input").first();
+    await box.scrollIntoViewIfNeeded();
+    await box.click();
+    await box.press("ControlOrMeta+a");
+    const typed = left ? "5000" : "5";
+    await page.keyboard.type(typed);
+    // the box left before the script arrives: a click on the page's heading takes the focus away
+    if (left) await page.locator("main h1").first().click();
+    release();
+    await page.waitForFunction(() => !!window.__reactRouterDataRouter, null, { timeout: 15000 });
+    await page.evaluate(settled);
+    const which = left ? "typed in and left" : "typed in";
+    // the digits only: the field may write the amount with its thousands separator
+    const digits = async () => (await box.inputValue()).replace(left ? /\D/g : /$^/, "");
+    if ((await digits()) !== typed) found.push(`early: a field ${which} before the script arrived holds "${await box.inputValue()}", not the ${typed} typed`);
+    if (left) {
+      // the field took it: back in the box, its text is the field's own writing of the value
+      await box.click();
+      await page.keyboard.press("End");
+      await page.keyboard.type("0");
+      if ((await digits()) !== "50000") found.push(`early: a field typed in and left before the script arrived does not take what was typed (one more 0 gives "${await box.inputValue()}", not 50000)`);
+    } else {
+      // a wrong keystroke after it: the box keeps what was typed rather than the field's own value
+      await page.keyboard.type("x");
+      if ((await box.inputValue()) !== "5x") found.push(`early: a keystroke after the script arrived in a field typed in before is lost (the box holds "${await box.inputValue()}", not 5x)`);
+    }
+    await ctx.close();
+  }
   return found;
 }
 

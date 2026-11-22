@@ -133,19 +133,27 @@ function useNumberEntry(props: FieldProps) {
   const shownError = (errorRest.shows ? wrong : null) ?? externalError;
   // text typed before the script arrived sits in the pre-rendered input; take it in at the first commit instead of
   // letting the first render with the field's own text wipe it. A box that has the focus then is being typed in: its text is the
-  // person's from here, as after a focus (its focus came before the script, so no focus event says so)
+  // person's from here, as after a focus (its focus came before the script, so no focus event says so). A box typed in and left before
+  // then is taken in as typed and left: a right text is committed, a wrong one stays with its error
   const inputRef = useRef<HTMLInputElement>(null);
   const adopted = useRef(false);
   useEffect(() => {
     if (adopted.current) return;
     adopted.current = true;
     const el = inputRef.current;
-    const typed = el?.value ?? "";
-    if (el && el === document.activeElement) {
+    if (!el) return;
+    const typed = el.value;
+    if (el === document.activeElement) {
       setFocused(true);
       if (typed !== written) change(typed);
       else setDraft({ text: typed });
-    } else if (typed !== "" && value === null) change(typed);
+    } else if (typed !== written) {
+      const t = change(typed);
+      if (check(t)) {
+        setDraft({ text: t, base: value });
+        errorRest.rest();
+      } else setDraft(null);
+    }
   }, []);
   // with `groupAsTyped`, the caret stays after the same digit once the separators move
   const caret = useRef<number | null>(null);
@@ -159,7 +167,8 @@ function useNumberEntry(props: FieldProps) {
     while (at < text.length && seen < want) if (/\d/.test(text[at++]!)) seen++;
     el.setSelectionRange(at, at);
   }, [text]);
-  function change(raw: string, at?: number | null) {
+  /** Takes in a text as typed, committing it where it is right; returns the text as the box holds it. */
+  function change(raw: string, at?: number | null): string {
     let t = raw;
     if (groupAsTyped && whole && /^[\d,\s]*$/.test(raw)) {
       const digits = raw.replace(/\D/g, "");
@@ -169,9 +178,10 @@ function useNumberEntry(props: FieldProps) {
     setDraft({ text: t });
     const err = check(t);
     errorRest.typed(!err);
-    if (err) return;
+    if (err) return t;
     if (t.trim() === "") onReset();
     else onCommit(parseNumber(t));
+    return t;
   }
   const box = (
     <div className={cx("field-box", SIGN.test(unitWord(unit)) && "field-box-sign", compact && "field-box-compact", compact && fit && "field-box-fit", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
