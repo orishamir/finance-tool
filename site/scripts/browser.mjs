@@ -17,7 +17,7 @@ export async function newContext(browser, options = {}) {
  * sheet that closes once it has slid away) and a fetch still on its way. A longer timer (a "copied" that goes after two seconds, an undo
  * offered for a while) is not waited for.
  */
-export function countWaiting() {
+function countWaiting() {
   const timers = new Set();
   let fetching = 0;
   const { setTimeout: set, clearTimeout: clear, fetch: get } = window;
