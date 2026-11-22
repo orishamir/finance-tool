@@ -30,25 +30,11 @@ P-02, `data/parameters/sensitivity-bounds.json`.
 
 ## Fee verdict thresholds
 
-P-03, `data/parameters/fee-verdict-thresholds.json`. No page reads it.
-
-**Values:** "worth negotiating" (`negotiate_nis`) from 1,000 NIS, real over the horizon, of what bringing the fee to the cheaper reference is worth (F-61's value of that reduction), when such a reference exists; "worth avoiding" (`avoid_nis`) from 2,500 NIS of the fee's real cost over the horizon, when an option without the fee, or with a lower one, ranks above the product on the same comparison (D90 revised the same day); share threshold (`negotiate_share`) 10% of total fee drag, which method F-62 reports beside the verdict and compares with the share; it does not change the verdict.
-
-**Why:** below about 1,000 NIS over several years, a phone call is not worth the time. A call is worth what it can win, so the negotiate threshold is read on the worth of the cut a call asks for, not on the fee's cost (D90 revised, 2026-11-07; chosen by Claude at the lead's request, reusing the same 1,000 NIS since the reason above is about what the call wins): fresh readers read "worth negotiating" beside a 3,911 NIS cost as advice to call while the cut to the average was worth 187 NIS. Removing a fee is worth its whole cost, so the avoid threshold stays on the cost.
+P-03. Removed: no page reads it, and `data/parameters/fee-verdict-thresholds.json` is gone; the fee verdict it set (method F-62) is not built.
 
 ## Classification fit
 
-P-04, `data/parameters/classification-fit.json`. No page reads it: the goal comparison, which read it, is not built (method F-83).
-
-**Values:**
-- an equity track ("מניות") fits a horizon of 10 years or more, if the person accepts a fall of at least 30%;
-- a general track ("כללי") fits 5 years or more and a fall of at least 20%;
-- no upper bound on the horizon for either;
-- every other classification shows "no rule".
-
-**Why:** the other regulator classifications put very different mixes under one name (for example index trackers of shares and of bonds), so a mark at that level would mislead. A finer table would need the sub-classification.
-
-**Use in the comparison (not built):** each row's `max_fall_pct` also decides whether an option is ranked: when the fall the person accepts is below the fall of the option's own row, the option is listed, not ranked, and the row says so (F-83). The row is the representative track's classification for a provident or pension wrapper (a general track, 20%), and the equity row (30%) for a fund-based wrapper on an equity-index exposure; an option with no classification is not demoted; an unset accepted fall changes nothing. The equity row's 30% was chosen for the fit mark and is also used as this demotion line; it is a site judgement, not a rule or a forecast, and the comparison shows it as a site parameter beside its reason.
+P-04. Removed: no page reads it, and `data/parameters/classification-fit.json` is gone; the formulas that name it (method F-70, F-71, F-83) are not built.
 
 ## Illustrative scenario
 
@@ -110,35 +96,11 @@ P-06, `data/parameters/golden-tolerance.json`.
 
 ## Goal presets
 
-P-07, `data/parameters/goal-presets.json`. Chosen by Claude at the founder's request; revisable. No page reads it: the goal form is not built.
-
-**Values:** a preset fills starting values into the goal form (product D13), and never an amount:
-- liquid reserve: one year, no monthly deposit, the whole amount kept available at once and withdrawable at any time (the idle-cash entry point);
-- purchase at a known date: four years (golden scenario S40);
-- long-term wealth: twenty years (golden scenario S39);
-- lump sum: ten years with no monthly deposit (the illustrative scenario's horizon);
-- a child: eighteen years (the child-savings withdrawal age, CS-14), to be shortened by the child's age.
-
-The horizon slider runs from one to forty years in whole years.
-
-**Why:** the horizons are examples for each kind of goal, not a recommendation; every value can be edited and is then the person's own. The monthly deposit is preset only as "none" for goals with no deposits.
+P-07. Removed: no page reads it, and `data/parameters/goal-presets.json` is gone; the goal form it filled (product D13, D21) is not built.
 
 ## Exposure holding wrapper
 
-P-08, `data/parameters/exposure-holding-wrapper.json`. Chosen by Claude at the founder's request; revisable. Exposure mode runs each exposure through one wrapper (method F-71: the caller names it; the engine never picks one), so the site needs a default per exposure record.
-
-**Values:**
-- shekel cash: a bank deposit, at the published rate of the P-05 deposit-terms record (D20);
-- makam: the makam product; no sourced yield exists, so the person enters one;
-- the CPI-linked government bond: the government-bond product, series GOV-11 (the series P-05's government-bond entry names);
-- the unlinked government bond: the same product, but **not evaluated**: the engine does not run a fixed-rate unlinked series (its yearly coupon is GOV-13);
-- the S&P 500: a brokerage account, through the fund P-05's brokerage entry names (5139100; the file's `fund` field still says 1148162, which the page does not read);
-- the TA-125: a brokerage account, through collected fund 1143718 (Tachlit Sal TA 125), on Leumi's tariff;
-- the general track: a kupat gemel lehashkaa at the manager's list fees (Meitav), with the return entered (D9).
-
-For a fund-held exposure the page takes the terms of a fund collected for that exposure (`exposure_id` in `data/funds/`): the one P-05's entry for the wrapper names when it is collected for the exposure, otherwise the first collected; with none collected the row is not evaluated.
-
-**Why:** each default is the plain way to hold the exposure that the site already has collected terms for, taken from the wrapper the exposure record lists first among those it can run. The alternative, ranking every wrapper for every exposure, is wrapper mode's job and is offered by the link "באיזה מוצר להחזיק את זה". A row that cannot run says why instead of borrowing another instrument's terms. The person can change the wrapper on any row, among the wrappers the exposure record allows; the choice is then theirs, entered.
+P-08. Removed: no page reads it, and `data/parameters/exposure-holding-wrapper.json` is gone; exposure mode (method F-71) is not built.
 
 ## Pinned rules
 

@@ -53,8 +53,8 @@ function valueObjects(node: unknown, path: string, out: { path: string; v: Recor
 }
 
 describe("the reader text of every parameter file", () => {
-  it("covers the eight parameter files (and any added since)", () => {
-    expect(files.length).toBeGreaterThanOrEqual(8);
+  it("covers the seven parameter files (and any added since)", () => {
+    expect(files.length).toBeGreaterThanOrEqual(7);
   });
 
   for (const f of files) {

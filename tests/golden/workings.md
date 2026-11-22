@@ -1031,10 +1031,9 @@ Status: computed.
 | 3 | Real values with all fees, none, and each fee removed | method F-61 (output definition) | V(F) 300,266.26, V(∅) 320,931.05 |
 | 4 | Regulator reference: Gemel-Net study-fund track averages 0.34–0.74 (units not confirmed) | [KH-23](<https://data.gov.il/he/datasets/cma/gemelnet>) | reference |
 | 4a | Value of a reduction to 0.34%: held for PF-13's 60 months, then back to 0.74% (D86); for the whole horizon it would be 9,530.01 | [PF-13](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf>); method F-61 | 3,991.56 |
-| 5 | Verdicts with the P-03 thresholds: negotiate if the cut to a lower reference is worth at least 1,000.00 (balance fee: Gemel-Net averages go down to 0.34%, worth 3,991.56, step 4a); direct expenses have no collected reference (G-14) | method F-62; data/parameters/fee-verdict-thresholds.json | balance fee: worth negotiating; direct expenses: not worth the effort |
 
 
-**Expected (as written to scenarios.md):** Real V_T/I_T with fees 300,266.26; total fee drag 20,664.79; cost of balance fee 0.74% = 17,901.59; cost of direct expenses 0.11% = 2,587.05; interaction remainder 176.15; value of cutting the balance fee to 0.34% for the five years of PF-13, then back to 0.74% (D86) = 3,991.56 (all real NIS over 10 years; for all ten years it would be 9,530.01). Verdicts (P-03): balance fee "worth negotiating" (reference 0.34%, KH-23); direct expenses "not worth the effort" (no reference collected). Subject to Q20.
+**Expected (as written to scenarios.md):** Real V_T/I_T with fees 300,266.26; total fee drag 20,664.79; cost of balance fee 0.74% = 17,901.59; cost of direct expenses 0.11% = 2,587.05; interaction remainder 176.15; value of cutting the balance fee to 0.34% for the five years of PF-13, then back to 0.74% (D86) = 3,991.56 (all real NIS over 10 years; for all ten years it would be 9,530.01). Subject to Q20.
 
 ### S43 Fee materiality on a brokerage plan
 
@@ -1105,14 +1104,13 @@ Status: computed.
 
 | Step | What | Rule | Value |
 |---|---|---|---|
-| 0 | Filled-in inputs | — | **filled in:** r_g 6%, π 2.5% (as the long-term example); fit table P-04 |
+| 0 | Filled-in inputs | — | **filled in:** r_g 6%, π 2.5% |
 | 1 | Consolidation: annuity fund to annuity fund is a permitted transfer route; barred only in the reg. 4 cases | [PF-17](<https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf>) | allowed |
 | 2 | Fee cost over 15 years, real: V(no fee) − V(fee), gross (exit blocked for annuity funds) | method F-61; [PF-02](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4>) | see result |
-| 3 | Fit marks from the P-04 table | method F-70; data/parameters/classification-fit.json | {'מניות': 'fits', 'כללי': 'fits'} |
-| 4 | Child-savings default check | (CS OQ10) | blocked |
+| 3 | Child-savings default check | (CS OQ10) | blocked |
 
 
-**Expected (as written to scenarios.md):** Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = 16,723.25; 0.6% on 40,000 = 5,698.23; moving the 80,000 into the 0.6% fund is worth 5,326.80. Fit marks (P-04 table): "כללי" fits, "מניות" fits. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.
+**Expected (as written to scenarios.md):** Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = 16,723.25; 0.6% on 40,000 = 5,698.23; moving the 80,000 into the 0.6% fund is worth 5,326.80. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.
 
 ### S47 Illustrative timeline for guide pages
 

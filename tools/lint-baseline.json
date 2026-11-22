@@ -86,7 +86,7 @@
    "site/app/lib/guide-signature-g2.ts": 2,
    "site/app/lib/guide-signature.server.ts": 1,
    "site/app/lib/guide.server.ts": 2,
-   "site/app/lib/import-check.ts": 3,
+   "site/app/lib/import-check.ts": 2,
    "site/app/lib/invest.ts": 9,
    "site/app/lib/labels.ts": 1,
    "site/app/lib/list-sort.ts": 2,
@@ -100,7 +100,7 @@
    "site/app/lib/side-stores.ts": 1,
    "site/app/lib/sources.ts": 3,
    "site/app/lib/stairs.ts": 1,
-   "site/app/lib/state.ts": 15,
+   "site/app/lib/state.ts": 13,
    "site/app/lib/stretch.ts": 1,
    "site/app/lib/track-browser.ts": 1
   },
@@ -134,7 +134,6 @@
    "site/app/lib/fee-deal/templates.ts": 4,
    "site/app/lib/fee-deal/toolbox.ts": 3,
    "site/app/lib/format.ts": 1,
-   "site/app/lib/goal.ts": 2,
    "site/app/lib/graduation.server.ts": 2,
    "site/app/lib/guide-signature-g2.ts": 4,
    "site/app/lib/guide-signature.ts": 1,
@@ -150,7 +149,7 @@
    "site/app/lib/scope.ts": 1,
    "site/app/lib/sources.ts": 1,
    "site/app/lib/stairs.ts": 2,
-   "site/app/lib/state.ts": 8,
+   "site/app/lib/state.ts": 7,
    "site/app/lib/stretch.ts": 1,
    "site/app/lib/track-browser.ts": 3
   },
@@ -336,7 +335,6 @@
    "site/app/components/kit/list-select.tsx": 1
   },
   "typescript(no-non-null-assertion)": {
-   "packages/engine/src/compare/ranking.ts": 14,
    "packages/engine/src/formulas/account-interest.ts": 4,
    "packages/engine/src/formulas/deal.ts": 63,
    "packages/engine/src/formulas/deposit-side.ts": 3,
@@ -376,7 +374,6 @@
    "packages/engine/test/fx-lines.test.ts": 13,
    "packages/engine/test/golden/followups.test.ts": 3,
    "packages/engine/test/golden/golden.test.ts": 8,
-   "packages/engine/test/golden/r2-compare.test.ts": 32,
    "packages/engine/test/golden/r2-pension.test.ts": 22,
    "packages/engine/test/golden/r4.test.ts": 15,
    "packages/engine/test/indexation.test.ts": 10,
@@ -384,7 +381,7 @@
    "packages/engine/test/order-cash.test.ts": 5,
    "packages/engine/test/pricing-d64-d67.test.ts": 1,
    "packages/engine/test/registry.test.ts": 1,
-   "packages/engine/test/review-fixes.test.ts": 17,
+   "packages/engine/test/review-fixes.test.ts": 8,
    "packages/engine/test/review-r34.test.ts": 7,
    "packages/engine/test/run-flags.test.ts": 3,
    "packages/engine/test/securities-d6.test.ts": 19,
@@ -402,7 +399,7 @@
    "packages/pipeline/src/price-list-facts.ts": 4,
    "packages/pipeline/src/references.ts": 13,
    "packages/pipeline/src/scope.ts": 5,
-   "packages/pipeline/src/validate.ts": 41,
+   "packages/pipeline/src/validate.ts": 40,
    "packages/pipeline/test/abroad-superseded.test.ts": 1,
    "packages/pipeline/test/cbs-cpi-adapter.test.ts": 12,
    "packages/pipeline/test/cma-adapter.test.ts": 57,
@@ -717,7 +714,7 @@
    "site/app/lib/side-stores.ts": 1,
    "site/app/lib/stairs.test.ts": 12,
    "site/app/lib/stairs.ts": 18,
-   "site/app/lib/state.test.ts": 17,
+   "site/app/lib/state.test.ts": 11,
    "site/app/lib/state.ts": 1,
    "site/app/lib/stretch.test.ts": 8,
    "site/app/lib/stretch.ts": 3,
@@ -777,7 +774,6 @@
    "site/scripts/layout-check.mjs": 1
   },
   "unicorn(no-useless-fallback-in-spread)": {
-   "packages/engine/src/compare/candidates.ts": 1,
    "packages/engine/src/inputs.ts": 1,
    "site/app/lib/custom-entries.ts": 2,
    "site/app/lib/own-rate.ts": 2

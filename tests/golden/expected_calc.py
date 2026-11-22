@@ -1390,21 +1390,8 @@ def s42():
         f'| 4 | Regulator reference: Gemel-Net study-fund track averages 0.34–0.74 (units not confirmed) | {L("KH-23")} | reference |\n'
         f'| 4a | Value of a reduction to 0.34%: held for PF-13\'s 60 months, then back to 0.74% (D86); for the whole horizon it would be {f2(red_all)} | {L("PF-13")}; method F-61 | {f2(red)} |\n'
     )
-    p03 = load_parameter_file('fee-verdict-thresholds')
-    neg = p03['negotiate_nis']['value'] if p03 else None
-
-    # D90 revised (2026-11-07): the negotiate test reads the worth of bringing the fee to the reference (step 4a), not its cost
-    def verdict(worth, reference_below):
-        if neg is None:
-            return 'not set'
-        if worth is not None and worth >= neg and reference_below:
-            return 'worth negotiating'
-        return 'not worth the effort'
-    v_bal = verdict(red, True)
-    v_dir = verdict(None, False)
-    body += (f'| 5 | Verdicts with the P-03 thresholds: negotiate if the cut to a lower reference is worth at least {f2(neg)} (balance fee: Gemel-Net averages go down to 0.34%, worth {f2(red)}, step 4a); direct expenses have no collected reference (G-14) | method F-62; {param_src("fee-verdict-thresholds")} | balance fee: {v_bal}; direct expenses: {v_dir} |\n')
     section('S42', "Fee materiality on the founder's hishtalmut", 'computed', body,
-            f'Real V_T/I_T with fees {f2(vF)}; total fee drag {f2(total)}; cost of balance fee 0.74% = {f2(c_bal)}; cost of direct expenses 0.11% = {f2(c_dir)}; interaction remainder {f2(rem)}; value of cutting the balance fee to 0.34% for the five years of PF-13, then back to 0.74% (D86) = {f2(red)} (all real NIS over 10 years; for all ten years it would be {f2(red_all)}). Verdicts (P-03): balance fee "{v_bal}" (reference 0.34%, KH-23); direct expenses "{v_dir}" (no reference collected). Subject to Q20.')
+            f'Real V_T/I_T with fees {f2(vF)}; total fee drag {f2(total)}; cost of balance fee 0.74% = {f2(c_bal)}; cost of direct expenses 0.11% = {f2(c_dir)}; interaction remainder {f2(rem)}; value of cutting the balance fee to 0.34% for the five years of PF-13, then back to 0.74% (D86) = {f2(red)} (all real NIS over 10 years; for all ten years it would be {f2(red_all)}). Subject to Q20.')
 
 
 def s43():

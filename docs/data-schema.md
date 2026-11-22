@@ -8,7 +8,7 @@ Every number the engine reads comes from a file in one of the collections below,
 
 **Format.** One JSON file per record, UTF-8, under the collection's folder. JSON was chosen because the site is static and the engine runs in the browser (D1); the files are also readable by hand and diffable. YAML would be friendlier to write but needs a parser in the browser; CSV cannot carry the nested `source` and `fees` blocks.
 
-**File name.** `<collection>/<id>.json`, where `id` is the record's `id` field: lowercase ASCII, digits and hyphens. Dated snapshots (tariffs, series, funds) add the snapshot date: `<id>@<YYYY-MM-DD>.json`. The latest snapshot is the one the engine reads; older ones stay for a saved comparison's revisit (F-82) and as history.
+**File name.** `<collection>/<id>.json`, where `id` is the record's `id` field: lowercase ASCII, digits and hyphens. Dated snapshots (tariffs, series, funds) add the snapshot date: `<id>@<YYYY-MM-DD>.json`. The latest snapshot is the one the engine reads; older ones stay as history.
 
 **Every value is wrapped.** A number never appears bare. It appears as a *value object* (`valueObject` in `packages/schema/src/value.ts`):
 
@@ -85,7 +85,7 @@ Wrapper IDs (`data/instruments/wrappers/`): `current-account`, `bank-deposit`, `
 
 Security IDs (`data/instruments/securities/`, D6): `makam`, `government-bond`, `money-market-fund-daily`, `money-market-fund-renewable`. A tier-2 instrument bought inside a securities account (corporate bonds, REITs) graduates as a security, not a wrapper.
 
-Product IDs: a wrapper ID or a security ID, what a person chooses between. A guide page (`/guide/<id>`), a term's and an exposure's `wrapper_ids`, P-05's `instruments` and P-08's `holding` rows are named by product ID (`productId` in `packages/schema`).
+Product IDs: a wrapper ID or a security ID, what a person chooses between. A guide page (`/guide/<id>`), a term's and an exposure's `wrapper_ids` and P-05's `instruments` are named by product ID (`productId` in `packages/schema`).
 
 Exposure IDs (`data/instruments/exposures/`): `shekel-cash`, `makam`, `government-bond-unlinked`, `government-bond-cpi`, `index-<index-code>` (for example `index-sp500`, `index-ta125`), `general-track`.
 
@@ -169,17 +169,15 @@ The rules themselves stay in `il-finance` (markdown). This collection holds only
 
 The schema is `parameterRecord`: `id`, `method_id` (`P-nn`), `rationale` and `shown_as` (`site parameter`) are required, `value` is optional, and the object is loose, so each parameter's own fields (below) pass unchecked except P-05's `instruments` and `sliders`. An optional `rationale_he` (string) holds the Hebrew version of `rationale` for the page: the file's general line, what the whole parameter is and why the site sets it.
 
-**A line for each number.** Every value object inside a parameter file (an input, a slider bound, a table cell, a preset field, a bound of the sensitivity test) may carry its own optional `rationale_he` (string, plain Hebrew, one or two sentences, `valueObject` in `packages/schema/src/value.ts`). The number's sheet shows that line first, and the file's general `rationale_he` only behind "עוד על הפרמטר"; a number with no line of its own shows the file's line directly. **What the reader text may say:** what the number is, what it is used for, and, when the site chose it, that it is a round starting value or a judgement, not a measured average, a forecast or a rule. **What it may not say:** who chose it ("Claude"), test scenarios, audit ids, a history of earlier values or a repair; all of that stays in `docs/parameters-rationale.md`. A digit that repeats the number is avoided too, because the sheet shows the number above the line and a copy drifts when the value changes. A saved comparison does not see these lines: `parameterVersions` (`packages/engine/src/compare/revisit.ts`) leaves them out, so editing a line is never a "parameter changed" on a revisit.
+**A line for each number.** Every value object inside a parameter file (an input, a slider bound, a table cell, a preset field, a bound of the sensitivity test) may carry its own optional `rationale_he` (string, plain Hebrew, one or two sentences, `valueObject` in `packages/schema/src/value.ts`). The number's sheet shows that line first, and the file's general `rationale_he` only behind "עוד על הפרמטר"; a number with no line of its own shows the file's line directly. **What the reader text may say:** what the number is, what it is used for, and, when the site chose it, that it is a round starting value or a judgement, not a measured average, a forecast or a rule. **What it may not say:** who chose it ("Claude"), test scenarios, audit ids, a history of earlier values or a repair; all of that stays in `docs/parameters-rationale.md`. A digit that repeats the number is avoided too, because the sheet shows the number above the line and a copy drifts when the value changes.
 
 The parameters and their fields:
 
 - `tie-threshold` (P-01): `value`.
 - `sensitivity-bounds` (P-02): one entry per assumption ID (`A-01` ...) with `lo` and `hi` value objects.
-- `fee-verdict-thresholds` (P-03): `negotiate_nis`, `avoid_nis`, `negotiate_share`.
-- `classification-fit` (P-04): an array of `{ "classification": "<CMA value, exact spelling>", "horizon_min_years", "horizon_max_years", "max_fall_pct" }`.
 - `illustrative-scenario` (P-05): `inputs` (`amount_now`, `monthly_deposit`, `horizon_years`, `A-01`, `A-02`, `cash_rate`, and the optional `annual_income`, `nis`, read only by runs that need an income) and `sliders` (`sliderRange`: `min` and `max` for the monthly deposit, the years, the amount today, A-01 and A-02, and `change_share` with its `start` for the indices page's change chart, F-90), and `instruments`, below. A linear slider (the years, A-01, A-02, `change_share`) has a `step`; a money slider (the amount today, the monthly deposit) has `segments` instead, an array of `{ to, step }` value objects, each taking an equal part of the track, so its steps grow with the amount (`guidelines/design.md`, "Fields"). The segments grow from `min`, each a whole number of its steps; every segment but the last has its `to`, and the last has none and runs to `max`. A linear slider's `max` is above its `min` by a whole number of its `step`. Every step is above zero. The schema refuses a slider with both a `step` and `segments`, or neither, and a range that breaks any of these.
 - `golden-tolerance` (P-06): `abs_nis` and `rel_pct`.
-- The other files: `goal-presets` (P-07), `exposure-holding-wrapper` (P-08), `pinned-rules` (P-09, checked by §4 item 12) and `home-guide-door` (P-10).
+- The other files: `pinned-rules` (P-09, checked by §4 item 12) and `home-guide-door` (P-10).
 
 **P-05 `instruments`** (`instrumentSpec`, strict): a map from product id to the data records of the representative instrument the guide page's illustrative run takes its terms from, each key naming a record by id:
 

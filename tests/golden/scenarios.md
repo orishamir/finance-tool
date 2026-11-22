@@ -315,11 +315,11 @@ Exercises F-60 with the three labels (A-21 "average paid at this bank", A-26 "en
   - Note, 2026-11-14 (method): the bank average is run as an effective annual rate (A-21, F-21, BANK-53), so its month is 1.032^(1/12) − 1 and the row costs 112.84, where 3.2%/12 a month gave 114.79. The other rows are unchanged. The revised row, like the whole of S41, waits for the founder's acceptance.
 
 ### S42 Fee materiality on the founder's hishtalmut
-Exercises F-61, F-62 (P-03), regulator reference (KH-23 averages), caps (KH-22).
+Exercises F-61, regulator reference (KH-23 averages), caps (KH-22).
 - Holding: balance 120,000; own 300/month; employer 900/month; balance fee 0.74%; direct expenses 0.11%; horizon 10 years; r_g 6%; π 2.5%.
 - Reduction tested: fee to 0.34%.
-- Expected: _(founder)_: cost of each fee line, interaction remainder, value of the reduction, verdict under the founder's thresholds.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S42): Real V_T/I_T with fees 300,266.26; total fee drag 20,664.79; cost of balance fee 0.74% = 17,901.59; cost of direct expenses 0.11% = 2,587.05; interaction remainder 176.15; value of cutting the balance fee to 0.34% for the five years of PF-13, then back to 0.74% (D86) = 3,991.56 (all real NIS over 10 years; for all ten years it would be 9,530.01). Verdicts (P-03): balance fee "worth negotiating" (reference 0.34%, KH-23); direct expenses "not worth the effort" (no reference collected). Subject to Q20.
+- Expected: _(founder)_: cost of each fee line, interaction remainder, value of the reduction.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S42): Real V_T/I_T with fees 300,266.26; total fee drag 20,664.79; cost of balance fee 0.74% = 17,901.59; cost of direct expenses 0.11% = 2,587.05; interaction remainder 176.15; value of cutting the balance fee to 0.34% for the five years of PF-13, then back to 0.74% (D86) = 3,991.56 (all real NIS over 10 years; for all ten years it would be 9,530.01). Subject to Q20.
   - Note, 2026-10-24 (engine): the test in `packages/engine/test/golden/r3.test.ts` runs the scenario's balance and deposits through the run inputs (`existingBalance: 120_000`; `goal.monthly: 1_200`, of which `hishtalmut.employerMonthly: 900` is the employer's line, leaving the 300 own), so the deposits are inputs of the case and no rule figure is lifted for them; the ceilings and the reference come from the rule records and the thresholds from the P-03 record passed in.
 
 ### S43 Fee materiality on a brokerage plan
@@ -347,7 +347,7 @@ Exercises D4 entered level in F-63.
 Exercises F-72 (PF-17, PF-18), hand-off to F-61.
 - Holdings: two provident funds for annuity at different managers, balances 80,000 and 40,000, fees 0.9%/0% and 0.6%/0%; a child-savings plan; horizon 15 years.
 - Expected: _(founder)_: consolidation answer with rule IDs, the fee figures, the child-savings default check flagged (CS OQ10).
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S46): Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = 16,723.25; 0.6% on 40,000 = 5,698.23; moving the 80,000 into the 0.6% fund is worth 5,326.80. Fit marks (P-04 table): "כללי" fits, "מניות" fits. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S46): Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = 16,723.25; 0.6% on 40,000 = 5,698.23; moving the 80,000 into the 0.6% fund is worth 5,326.80. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.
 
 ### S47 Illustrative timeline for guide pages
 Exercises F-67 with P-05.
@@ -440,7 +440,8 @@ Exercises F-14 at a non-bank member (BRK-17, MF-26), F-23, F-09.
 | F-53 | S27, S30 |
 | F-54 | S31, S54 |
 | F-60 | S41 |
-| F-61, F-62 | S42, S43; F-61 on a discount that ends, S56 |
+| F-61 | S42, S43; on a discount that ends, S56 |
+| F-62 | none: not built |
 | F-63 | S44, S45 |
 | F-64 | needs CMA field confirmation first (product.md dependency 4) |
 | F-65 | S16, S17, S19 |

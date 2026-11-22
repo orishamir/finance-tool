@@ -2,7 +2,7 @@
 
 Every file under `data/` and every other file the site, the calculation engine and the data check read: what reads it, where its content comes from, and what it holds today. The format of each collection is `docs/data-schema.md`; this document says what is there.
 
-Nothing in `data/` holds a person's own figures. The holdings, goals, offers, ticks, entered rates and saved comparisons are on the device (`guidelines/project.md`, "Saved state").
+Nothing in `data/` holds a person's own figures. The holdings, offers, ticks, entered rates and the index page's own entries are on the device (`guidelines/project.md`, "Saved state").
 
 **Origins:**
 
@@ -76,7 +76,7 @@ All eleven parameters, P-01 to P-11, exist. The parameters page (`/parameters`) 
 |---|---|---|---|
 | 9 | `data/parameters/tie-threshold.json` (P-01) | The ranking (F-80) | Founder's choice |
 | 10 | `data/parameters/illustrative-scenario.json` (P-05), with the slider ranges | Guide page timeline start values; values sheet and panel; the graph drawn at build time; engine F-67. Its `instruments` names the representative record per wrapper the illustrative run takes its terms from (method 2.4, D21); `annual_income` serves the runs that need an income | Founder's choice (chosen by Claude at his request) |
-| 11 | `data/parameters/sensitivity-bounds.json` (P-02), `fee-verdict-thresholds.json` (P-03), `classification-fit.json` (P-04), `golden-tolerance.json` (P-06) | P-02: the indices page's range of the dollar against the shekel (A-03); P-03: read by no page; P-04: the fit mark (F-70); P-06: the engine golden tests (row 17) | Founder's choice (chosen by Claude at his request) |
+| 11 | `data/parameters/sensitivity-bounds.json` (P-02), `golden-tolerance.json` (P-06) | P-02: the indices page's range of the dollar against the shekel (A-03); P-06: the engine golden tests (row 17) | Founder's choice (chosen by Claude at his request) |
 | 26 | `data/parameters/goal-presets.json` (P-07) | The parameters page (the five presets of D13, D21; no page runs on them now) | Founder's choice (chosen by Claude at his request) |
 | 27 | `data/parameters/exposure-holding-wrapper.json` (P-08) | The parameters page (the wrapper each exposure runs through by default, F-71; no page runs on it now) | Founder's choice (chosen by Claude at his request) |
 | 30 | `data/parameters/pinned-rules.json` (P-09) | Rules front (the twelve pinned questions); the "שווה לדעת" block on wrapper guide pages; data check (every id exists; the first id of a row has a primary source) | Founder's choice (chosen by Claude at his request) |
