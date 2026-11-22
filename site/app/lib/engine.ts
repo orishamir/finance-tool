@@ -188,11 +188,20 @@ export function p05Number(p05: ParameterRecord, key: P05Input): number {
   return (p05 as unknown as { inputs: Record<P05Input, ValueObject> }).inputs[key].value as number;
 }
 
-/** P-05's page controls: slider ranges (design-system Q6) and the input ranges. */
-export function p05Range(p05: ParameterRecord, group: "sliders" | "ranges", key: string): { min: number; max: number; step?: number; values: Record<string, SiteValue> } | null {
-  const g = (p05 as unknown as Record<string, Record<string, Record<string, ValueObject>>>)[group]?.[key];
+/**
+ * P-05's page controls: slider ranges (design-system Q6) and the input ranges. A money slider has `segments` instead of a `step` (its last
+ * runs to `max`; here every segment carries its `to`), for the kit's `rangeScale`. `values` holds the range's own value objects (its ends,
+ * its step, its start), each with the parameter's rationale.
+ */
+export function p05Range(p05: ParameterRecord, group: "sliders" | "ranges", key: string): { min: number; max: number; step?: number; segments?: { to: number; step: number }[]; values: Record<string, SiteValue> } | null {
+  const g = (p05 as unknown as Record<string, Record<string, Record<string, unknown>>>)[group]?.[key];
   if (!g) return null;
+  // the schema parsed the record (a slider's is `sliderRange`, data-schema §3.2): every field but a slider's `segments` is a value object
+  const ends = g as Record<string, ValueObject>;
   const values: Record<string, SiteValue> = {};
-  for (const [k, v] of Object.entries(g)) values[k] = { ...v, parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null } };
-  return { min: g.min!.value as number, max: g.max!.value as number, step: g.step ? (g.step.value as number) : undefined, values };
+  for (const [k, v] of Object.entries(ends)) if (k !== "segments") values[k] = { ...v, parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null } };
+  const min = ends.min!.value as number;
+  const max = ends.max!.value as number;
+  const segs = (g.segments as { to?: ValueObject; step: ValueObject }[] | undefined)?.map((s) => ({ to: s.to ? (s.to.value as number) : max, step: s.step.value as number }));
+  return { min, max, ...(ends.step ? { step: ends.step.value as number } : {}), ...(segs ? { segments: segs } : {}), values };
 }

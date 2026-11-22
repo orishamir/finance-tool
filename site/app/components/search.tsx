@@ -149,8 +149,8 @@ export function SearchSheet({ open, onClose, anchor, seed }: { open: boolean; on
 /**
  * The search field that is on the page (the header, the first page). On a PC it is the field itself and the results
  * open under it; Escape, the X and a click elsewhere close them. On a phone it only opens the bottom sheet.
- * In the header, shown from 64rem where the five sections share its line, it rests as an icon and widens into the space
- * left of them while in use.
+ * In the header from 80rem, where the menu shares the line, it rests as an icon and widens while in use, and the menu
+ * fades out meanwhile (the full field ran over the last menu item).
  */
 export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: string; variant: "header" | "home"; ready: boolean; onSheet: (el: HTMLElement | null, text: string, via: "focus" | "tap") => void }) {
   // on a PC the field is the search itself; the pre-rendered page is the phone form
@@ -183,7 +183,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
   const panelOpen = open && desktop;
   const resting = variant === "header" && !focused && !open && !text;
   return (
-    <div ref={wrap} className={cx(variant === "header" ? "absolute inset-e-0 top-1/2 -translate-y-1/2 transition-[width] duration-(--duration-fast)" : "relative", variant === "header" && (resting ? "w-10" : "w-72"))}>
+    <div ref={wrap} data-search-active={(variant === "header" && !resting) || undefined} className={cx("relative", variant === "header" && "w-72 xl:absolute xl:inset-e-0 xl:top-1/2 xl:-translate-y-1/2 xl:transition-[width] xl:duration-(--duration-fast)", variant === "header" && (resting ? "xl:w-10" : "xl:w-72"))}>
       <form
         role="search"
         onSubmit={(e) => {
@@ -196,9 +196,9 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
       >
         <div
           className={cx(
-            "flex items-center rounded-md border border-input bg-card text-muted-foreground focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-1",
+            "flex items-center gap-2 px-3 rounded-md border border-input bg-card text-muted-foreground focus-within:outline-2 focus-within:outline-ring focus-within:outline-offset-1",
             variant === "header" ? "h-10" : "h-field",
-            resting ? "px-0 gap-0 justify-center cursor-pointer" : "gap-2 px-3",
+            resting && "xl:px-0 xl:gap-0 xl:justify-center xl:cursor-pointer",
             !ready && "opacity-60",
           )}
           onClick={() => input.current?.focus()}
@@ -223,7 +223,7 @@ export function SearchCombo({ inputId, variant, ready, onSheet }: { inputId: str
             aria-autocomplete="list"
             autoComplete="off"
             placeholder={site.searchPlaceholder}
-            className={cx("min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-wait text-mixed", variant === "header" ? "text-sm text-foreground" : "field-input", resting ? "w-0 flex-none" : "flex-1")}
+            className={cx("flex-1 min-w-0 bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-wait text-mixed", variant === "header" ? "text-sm text-foreground" : "field-input", resting && "xl:w-0 xl:flex-none")}
             onFocus={(e) => {
               preloadSearch();
               setFocused(true);
