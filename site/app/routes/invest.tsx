@@ -36,12 +36,13 @@ import { enteredPlan } from "../lib/entered-plan";
 import { useSettled } from "../lib/settled";
 import { useInputs, type InputsState } from "../lib/inputs";
 import { withCustomEntries } from "../lib/custom-entries";
-import { buildInvest, chargesCurrentAccount, hasKinds, indexById, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
+import { useInvestView } from "../lib/invest-run";
+import { chargesCurrentAccount, hasKinds, indexById, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { exposureIdOfSlug, INDICES_PATH } from "../lib/site-paths";
 import { loadIndicesBundle, type IndicesBundle, type WorkbenchInputs } from "../lib/providers";
 import { isoToday, useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
-import { groupNameOf, pickableGroups, withGroupPick } from "../lib/group-pick";
+import { groupNameOf, pickableGroups, withGroupPick, type GroupAsk } from "../lib/group-pick";
 import { useHydrated, useMedia } from "../lib/hooks";
 import { ToolBoundary } from "../components/tool-boundary";
 
@@ -200,12 +201,12 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   // a bank's row counts its current account, except at the bank the person marked as theirs (D64)
   const livePlan: WorkbenchInputs = useMemo(() => ({ ...entered.plan, currentAccounts }), [entered, currentAccounts]);
   // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider in the render deferred behind it (`Body`); the two lists price every
-  // account and fund (about 200 ms) and wait until the slider rests. A bank
+  // account and fund (in the page's worker, below) and wait until the slider rests. A bank
   // marked as the person's own is one pick, not a slide: the lists take it at once, with the plan as it last settled, so their rows
   // re-sort right after the pick rather than a moment later, when the hand may be on the list (0.6 to 1 s).
   const settledPlan = useSettled(livePlan, 250);
   const merged = useRef<WorkbenchInputs | null>(null);
-  const plan = useMemo(() => {
+  const restingPlan = useMemo(() => {
     const next = settledPlan.currentAccounts === currentAccounts ? settledPlan : { ...settledPlan, currentAccounts };
     // the plan that settles after the pick is the one the lists already took: kept, so they are not priced twice
     const prev = merged.current;
@@ -227,18 +228,28 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   const heldDeals = useRef<FeeDeal[]>(accountDeals);
   if (!dealOpen) heldDeals.current = accountDeals;
   const pageDeals = heldDeals.current;
-  const bundle = useMemo(() => (feesData ? withDeals(typedBundle, pageDeals, feesData.kinds) : typedBundle), [typedBundle, pageDeals, feesData]);
+  const pageBundle = useMemo(() => (feesData ? withDeals(typedBundle, pageDeals, feesData.kinds) : typedBundle), [typedBundle, pageDeals, feesData]);
   const customId = new URLSearchParams(search).get("custom");
-  const index: IndexRef | null = useMemo(() => (exposureId ? indexById(wb, exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, exposureId, customId, customs]);
+  const pageIndex: IndexRef | null = useMemo(() => (exposureId ? indexById(wb, exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, exposureId, customId, customs]);
   const known = knownOf(data);
   // the index shown is the one the fee page's link from a deal opens next (lib/deal-account/last-index.ts)
   useEffect(() => {
-    if (exposureId && index) lastIndexStore.set(exposureId);
-  }, [exposureId, index]);
+    if (exposureId && pageIndex) lastIndexStore.set(exposureId);
+  }, [exposureId, pageIndex]);
 
   // the person compares their own account by picking it in the account list (the separate "החשבון שלכם" field was redundant)
   const yourBroker: string | null = null;
-  const view = useMemo(() => (index ? buildInvest({ bundle, index, plan, yourBroker }) : null), [bundle, index, plan, yourBroker]);
+  // the view is worked out in the page's worker (lib/invest-run.ts): until it answers, the page shows the view before it, with the data
+  // (and the same data without the deals), the index and the plan that view was worked out on, so what stands beside it reads the same plan
+  const asked = useMemo(() => (pageIndex ? { bundle: pageBundle, typed: typedBundle, ask: { index: pageIndex, plan: restingPlan, yourBroker } } : null), [pageBundle, typedBundle, pageIndex, restingPlan, yourBroker]);
+  const run = useInvestView(asked);
+  const view = run?.view ?? null;
+  const bundle = run?.asked.bundle ?? pageBundle;
+  const index = run?.asked.ask.index ?? pageIndex;
+  const plan = run?.asked.ask.plan ?? restingPlan;
+  // the view shown is another index's than the page's (the worker has not yet answered for the one the address names): it stays dimmed
+  // under the new title (`useSwapGlide`), and nothing that opens over it prices the two together
+  const held = !!index && !!pageIndex && index.id !== pageIndex.id;
 
   // a house's page opens a new deal filled from its price list through the address (`own`): once, and the address is cleaned
   const opening = new URLSearchParams(search).get("own");
@@ -259,7 +270,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   const pairArea = useRef<HTMLDivElement>(null);
 
   // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way
-  const world = useMemo(() => (index && view ? { wb, bundle, index, plan, view, customs } : null), [wb, bundle, index, plan, view, customs]);
+  const world = useMemo(() => (index && view && !held ? { wb, bundle, index, plan, view, customs } : null), [wb, bundle, index, plan, view, customs, held]);
   // a fund priced nowhere (a distributing fund whose yield is not known, or a US fund, TXF-37) keeps its row with the reason, and is not a pair to show; nor is
   // a pair the account no longer prices (a broker the person typed and changed, D44)
   const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x) && "valueN" in (f.byHouse[p.house] ?? {})) && view.providers.some((x) => x.id === p.house);
@@ -298,18 +309,23 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   // it past 100 ms; a navigation is a transition, so a deferred value did not defer it)
   const groupHouse = own?.group ? own.house : null;
   const groupKey = own?.group ?? null;
-  const [priced, setPriced] = useState<(ReturnType<typeof withGroupPick> & { house: string; key: string }) | null>(null);
+  const groupShort = groupHouse && view ? (view.providers.find((p) => p.id === groupHouse)?.short ?? groupHouse) : null;
+  const [priced, setPriced] = useState<(ReturnType<typeof withGroupPick> & { ask: GroupAsk }) | null>(null);
   useEffect(() => {
-    if (!view || !index || !groupHouse || !groupKey) return setPriced(null);
-    const g = withGroupPick({ bundle, index, plan }, view, groupHouse, groupKey, view.providers.find((p) => p.id === groupHouse)?.short ?? groupHouse);
-    setPriced(g ? { ...g, house: groupHouse, key: groupKey } : null);
-  }, [view, index, bundle, plan, groupHouse, groupKey]);
+    if (!view || !index || !groupHouse || !groupKey || !groupShort) return setPriced(null);
+    const g = withGroupPick({ bundle, index, plan }, view, groupHouse, groupKey, groupShort);
+    setPriced(g ? { ...g, ask: { house: groupHouse, key: groupKey, short: groupShort } } : null);
+  }, [view, index, bundle, plan, groupHouse, groupKey, groupShort]);
   // the group's account stands in for its house only while it is the group picked; any other pick shows its own figures at once
-  const picked = priced && priced.house === groupHouse && priced.key === groupKey ? priced : null;
+  const picked = priced && priced.ask.house === groupHouse && priced.ask.key === groupKey ? priced : null;
   // what the pair and the sections under it show: the group's account in place of its house when one is picked
   const shownView = picked?.view ?? view;
   const shownBundle = picked?.bundle ?? bundle;
   const shown: Pick | null = pick && picked ? { house: picked.id, fund: pick.fund } : pick;
+  // the F-89 sweep is worked out in the page's worker on the data it already holds, the page's own, with the group's account added there by
+  // the group's name: a new group bundle on every plan would be sent to the worker again each time
+  const groupAsk = picked?.ask ?? null;
+  const sweepOn = useMemo(() => ({ bundle, group: groupAsk }), [bundle, groupAsk]);
   // a tap that changed the other half too: the row tapped says so, with the way back, until the next pick
   const [moved, setMoved] = useState<Moved | null>(null);
   const onPick = (p: Pick, m?: Moved) => {
@@ -343,18 +359,18 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
 
   // another index replaces what lies below the title, and on a phone it may move it (D62): it dims on the tap and fades in where it lands
-  const swap = useSwapGlide<HTMLDivElement>(index?.id ?? customId ?? "");
+  const swap = useSwapGlide<HTMLDivElement>(index?.id ?? customId ?? "", pageIndex?.id ?? customId ?? "");
   const go = (p: string) => swap.begin(() => navigate(p));
   const title = (
     <TitleRow
       known={known}
       customs={customs}
-      index={index}
+      index={pageIndex}
       others={knownIndices(wb)}
       bundle={wb}
       onRemove={(id) => {
         invest.remove(id);
-        if (index?.id === id) go(INDICES_PATH);
+        if (pageIndex?.id === id) go(INDICES_PATH);
       }}
       onRename={invest.rename}
       onSave={(x) => invest.add(x)}
@@ -384,18 +400,19 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   );
 
   // what the deal's popup prices on: the page's bundle without the person's deals, the pair, and how the account list ranks
-  const dealWorld = useMemo(() => (index && view ? { bundle: typedBundle, index, plan, view, pick: pick ? { house: pick.house, fund: pick.fund } : null, kinds: hasKinds(view) && !!bundle.dollarRange } : null), [typedBundle, index, plan, view, pick?.house, pick?.fund, bundle.dollarRange]);
+  const dealTyped = run?.asked.typed ?? null;
+  const dealWorld = useMemo(() => (index && view && dealTyped && !held ? { bundle: dealTyped, index, plan, view, pick: pick ? { house: pick.house, fund: pick.fund } : null, kinds: hasKinds(view) && !!bundle.dollarRange } : null), [dealTyped, index, plan, view, pick?.house, pick?.fund, bundle.dollarRange, held]);
   const [deviceDay] = useState(isoToday);
 
   return (
     <LabelSheetHost>
       <DealAccountsHost data={feesData} onWant={wantFees} failed={feesFailed} left={notMoved} saved={deals.value} writable={deals.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen}>
-      <CustomEntriesHost index={index} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
+      <CustomEntriesHost index={pageIndex} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
       <Frame title={title}>
         <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">
-          {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
+          {customId && !exposureId && !pageIndex && <Callout tone="caution">{c.custom.missing}</Callout>}
           {!index || !view ? (
-            <p className="text-muted-foreground">{c.chips.none}</p>
+            <p className="text-muted-foreground">{index ? c.loading : c.chips.none}</p>
           ) : (
             <>
               {/* the pair's card in a rail at the start side from 1280 px, the plan, the receipt's ticket and the choice of account and
@@ -446,6 +463,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
                 <BeforeDeciding
                   view={shownView}
                   bundle={shownBundle}
+                  sweepOn={sweepOn}
                   plan={plan}
                   livePlan={livePlan}
                   share={data.form.share}

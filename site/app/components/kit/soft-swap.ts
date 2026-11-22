@@ -25,21 +25,33 @@ const tokenMs = (name: string) => (typeof window === "undefined" ? 0 : cssMs(get
  * the block dims at once, the first answer inside 100 ms (the next index is laid out after the dim is painted, and that can take longer
  * on a phone); when the new content is in place it fades back in where it landed. Opacity only, on the motion tokens: a reader who asks
  * for less motion gets the dim and the return without the fades.
- * `ref` goes on the block below the switch, `key` says what it shows; `begin(go)` is called on the tap, with the switch itself.
+ * `ref` goes on the block below the switch, `key` says what it shows and `wanted` what the page asks it to show: while they differ (the
+ * new content is still being worked out, after a tap or the browser's Back alike) the block stays dimmed, however long that takes.
+ * `begin(go)` is called on the tap, with the switch itself.
  */
-export function useSwapGlide<T extends HTMLElement>(key: string) {
+export function useSwapGlide<T extends HTMLElement>(key: string, wanted: string) {
   const ref = useRef<T>(null);
   const shown = useRef(key);
+  const held = useRef(false);
   useLayoutEffect(() => {
     const el = ref.current;
-    if (shown.current === key || !el) return;
+    held.current = key !== wanted;
+    if (!el) return;
+    if (held.current) {
+      el.style.transition = "";
+      el.style.opacity = String(DIM);
+      return;
+    }
+    // back to what it showed (asked for another, then for this again before it came): it only comes back
+    const replaced = shown.current !== key;
     shown.current = key;
     const from = getComputedStyle(el).opacity;
     el.style.transition = "";
     el.style.opacity = "";
+    if (!replaced && Number(from) === 1) return;
     const ms = tokenMs("--duration-fold");
     if (ms > 0 && el.animate) el.animate([{ opacity: Math.min(Number(from) || DIM, DIM) }, { opacity: 1 }], { duration: ms, easing: "cubic-bezier(0.2, 0, 0, 1)" });
-  }, [key]);
+  }, [key, wanted]);
   const begin = (go: () => void) => {
     const el = ref.current;
     if (!el) return go();
@@ -48,10 +60,10 @@ export function useSwapGlide<T extends HTMLElement>(key: string) {
     el.style.opacity = String(DIM);
     // two frames: the dim is on the screen before the switch's own render starts
     requestAnimationFrame(() => requestAnimationFrame(go));
-    // a switch to what is already shown changes no key: the block comes back by itself
+    // a switch to what is already shown changes no key: the block comes back by itself, unless the page still waits for what it asked
     const at = shown.current;
     setTimeout(() => {
-      if (shown.current === at && ref.current) {
+      if (shown.current === at && !held.current && ref.current) {
         ref.current.style.transition = "";
         ref.current.style.opacity = "";
       }

@@ -10,6 +10,7 @@ export const SIDE_EFFECT_MODULES = [
   "site/app/entry.client.tsx", // starts the app
   "site/app/copy.ts", // adds a name to its own parameters page list
   "site/app/lib/page-failure.ts", // listens for a script that fails on the page
+  "site/app/lib/invest-worker.ts", // the index page's Web Worker: answers the page's messages
 ] as const;
 
 /** Our own source modules: the site's app and the engine and schema packages, TypeScript only (a style sheet keeps its effect). */

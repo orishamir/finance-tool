@@ -2559,7 +2559,7 @@ function LegendPickDemo() {
 
 function SwapGlideDemo() {
   const [n, setN] = useState(2);
-  const swap = useSwapGlide<HTMLDivElement>(String(n));
+  const swap = useSwapGlide<HTMLDivElement>(String(n), String(n));
   return (
     <div className="flex flex-col gap-2 items-start">
       <Button variant="quiet" onClick={() => swap.begin(() => setN((x) => (x === 2 ? 5 : 2)))}>

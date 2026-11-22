@@ -328,10 +328,9 @@ describe("one account and one fund, broken down (2026-10-27)", () => {
   const pc = pairCosts({ bundle, index: sp, plan: plan(), fundId: w.fund.rec.id, providerId: w.providerId })!;
   const num = (v: { value: unknown }) => v.value as number;
 
-  it("each way keeps what the account charges, by its tariff lines", () => {
-    const at = w.fund.byHouse[w.providerId] as { accountCost: number; lines: { cost: number }[]; interaction: number };
-    expect(at.lines.length).toBeGreaterThan(0);
-    expect(at.lines.reduce((a, l) => a + l.cost, 0) + at.interaction).toBeCloseTo(at.accountCost, 6);
+  it("the pair keeps what the account charges, by its tariff lines", () => {
+    expect(pc.account.length).toBeGreaterThan(0);
+    expect(pc.account.reduce((a, l) => a + num(l.cost), 0) + pc.interaction).toBeCloseTo(pc.accountFees, 6);
   });
 
   it("the pair: the same value left as the list, the account's lines, the fund's fee and the tax", () => {
@@ -421,13 +420,18 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
   const counted = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
   const ownLeumi = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: "leumi" } }) });
   const best = (v: typeof before, id: string) => v.houses.find((h) => h.provider.id === id)!.best!.price!;
+  /** The account's tariff lines of the house's best way, as the pair's breakdown writes them. */
+  const linesAt = (v: typeof before, p: ReturnType<typeof plan>, id: string) => {
+    const fundId = v.houses.find((h) => h.provider.id === id)?.best?.fund.rec.id;
+    return fundId ? (pairCosts({ bundle, index: sp, plan: p, fundId, providerId: id })?.account.map((l) => l.line) ?? null) : null;
+  };
   const banks = bundle.snapshots.filter((s) => s.current_account && (s.current_account.monthly_minimum.value as number) > 0).map((s) => s.id);
 
   it("with no bank marked, every bank whose price list charges for a current account has it as a line of its own, and leaves less", () => {
     expect(banks.sort()).toEqual(["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "yahav"]);
     for (const id of banks) {
       const at = best(counted, id);
-      expect(at.lines.map((l) => l.line)).toContain("account");
+      expect(linesAt(counted, plan({ currentAccounts: { own: null } }), id)).toContain("account");
       // 240 monthly minimums of 4 to 9.50 shekels: more than a thousand shekels of today's money left behind, and less than three thousand
       expect(best(before, id).valueN - at.valueN).toBeGreaterThan(900);
       expect(best(before, id).valueN - at.valueN).toBeLessThan(3_000);
@@ -435,7 +439,7 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
   });
 
   it("lists the bank's monthly minimum among the figure's inputs, with its price list as the source, wherever the row counts it (lens review S5)", () => {
-    const minimumOf = (v: typeof before, id: string) => (best(v, id).cost("x").computed_from!.inputs as Record<string, { value: unknown; source: { url: string }; state: string }>)["דמי ניהול חשבון עו״ש בחודש"];
+    const minimumOf = (v: typeof before, id: string) => (best(v, id).cost.computed_from!.inputs as Record<string, { value: unknown; source: { url: string }; state: string }>)["דמי ניהול חשבון עו״ש בחודש"];
     for (const id of banks) {
       const rec = bundle.snapshots.find((s) => s.id === id)!.current_account!.monthly_minimum;
       const m = minimumOf(counted, id)!;
@@ -467,7 +471,7 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
 
   it("the bank the person marks leaves it out, and only that bank", () => {
     expect(best(ownLeumi, "leumi").valueN).toBe(best(before, "leumi").valueN);
-    expect(best(ownLeumi, "leumi").lines.map((l) => l.line)).not.toContain("account");
+    expect(linesAt(ownLeumi, plan({ currentAccounts: { own: "leumi" } }), "leumi")).not.toContain("account");
     expect(best(ownLeumi, "hapoalim").valueN).toBe(best(counted, "hapoalim").valueN);
   });
 
@@ -487,13 +491,13 @@ describe("BANK-35 sits on the account's cost, not on what is left (independent c
     const ways = view.options.flatMap((o) => o.funds).map((f) => f.byHouse.leumi).filter((x): x is Extract<typeof x, { valueN: number }> => !!x && "valueN" in x);
     expect(ways.length).toBeGreaterThan(0);
     for (const w of ways) {
-      expect(w.cost("עלות").flags).toContain("BANK-35");
+      expect(w.cost.flags).toContain("BANK-35");
       expect(w.value.flags ?? []).not.toContain("BANK-35");
     }
     // the bank the person marks as their own counts no current account, and its cost has no such note
     const own = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: "leumi" } }) });
     const mine = own.options.flatMap((o) => o.funds).map((f) => f.byHouse.leumi).filter((x): x is Extract<typeof x, { valueN: number }> => !!x && "valueN" in x);
-    for (const w of mine) expect(w.cost("עלות").flags ?? []).not.toContain("BANK-35");
+    for (const w of mine) expect(w.cost.flags ?? []).not.toContain("BANK-35");
   });
 });
 
@@ -508,7 +512,7 @@ describe("what each figure's sheet lists", () => {
   it("a run priced in dollars lists the dollar rate (F-84), and a fund that pays out its payout yield (A-10)", () => {
     expect(inputs(irish.best!.value)[dollar]!.computed_from!.formula).toBe("F-84");
     expect(inputs(irish.best!.value)[words.pair.fundInputs.payout]!.value).toBe(irish.rec.distribution!.yield.value);
-    expect(inputs(irish.best!.cost("x"))[dollar]).toBeDefined();
+    expect(inputs(irish.best!.cost)[dollar]).toBeDefined();
     // the abroad option's generic fund is bought in dollars too; an Israeli fund reads no rate and pays nothing out
     expect(inputs(abroad.bestCell!.cost!)[dollar]).toBeDefined();
     expect(inputs(israeli.best!.value)[dollar]).toBeUndefined();
@@ -544,7 +548,7 @@ describe("what each figure's sheet lists", () => {
   });
 
   it("an account's cost is F-91, and a gap between two ways is the one figure less the other", () => {
-    expect(irish.best!.cost("x").computed_from!.formula).toBe("F-91");
+    expect(irish.best!.cost.computed_from!.formula).toBe("F-91");
     const broker = view.bars.find((b) => b.id === "broker")!;
     expect(broker.spread!.computed_from!.formula).toBe("F-91");
     expect(broker.spread!.value).toBeCloseTo(broker.high! - broker.low!, 9);

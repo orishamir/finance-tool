@@ -67,6 +67,23 @@ export function withGroupAccount(bundle: IndicesBundle, house: BundleSnapshot, b
   };
 }
 
+/** A house's group picked, by name: all it takes to add the group's account to data that is already held (`withGroup`). */
+export interface GroupAsk {
+  house: string;
+  key: string;
+  /** The house's short name, which the account's name starts with. */
+  short: string;
+}
+
+/** The data with a house's group's account in it (`withGroupAccount`), the house's record and the account; null where the data has no such house or group. */
+export function withGroup(bundle: IndicesBundle, g: GroupAsk): { bundle: IndicesBundle; snapshot: BundleSnapshot; broker: CustomBroker } | null {
+  const snapshot = bundle.snapshots.find((s) => s.id === g.house);
+  if (!snapshot) return null;
+  const broker = groupBroker(snapshot, g.key, g.short, bundle.today);
+  if (!broker) return null;
+  return { bundle: withGroupAccount(bundle, snapshot, broker), snapshot, broker };
+}
+
 /** A held group account's figure at a house: marked so no ranking reads it (D43). */
 export type GroupWayPrice = WayPrice & { group: true };
 export const isGroupPrice = (x: unknown): boolean => !!x && typeof x === "object" && (x as { group?: boolean }).group === true;
@@ -77,13 +94,11 @@ export const isGroupPrice = (x: unknown): boolean => !!x && typeof x === "object
  * Only the picked house and the group's account are priced (a few milliseconds), not every house again.
  */
 export function withGroupPick(args: InvestArgs, view: InvestView, house: string, key: string, short: string): { view: InvestView; bundle: InvestArgs["bundle"]; id: string; name: string } | null {
-  const snapshot = args.bundle.snapshots.find((s) => s.id === house);
-  if (!snapshot) return null;
-  const broker = groupBroker(snapshot, key, short, args.bundle.today);
-  if (!broker) return null;
-  const withGroup = withGroupAccount(args.bundle, snapshot as BundleSnapshot, broker);
-  const own = withGroup.snapshots.find((s) => s.id === broker.id)!;
-  const small = buildInvest({ ...args, bundle: { ...withGroup, snapshots: [snapshot, own] } });
+  const g = withGroup(args.bundle, { house, key, short });
+  if (!g) return null;
+  const { snapshot, broker, bundle: withAccount } = g;
+  const own = withAccount.snapshots.find((s) => s.id === broker.id)!;
+  const small = buildInvest({ ...args, bundle: { ...withAccount, snapshots: [snapshot, own] } });
   const priceOf = (f: FundWay): GroupWayPrice | null => {
     const at = small.options.find((o) => o.id === f.option)?.funds.find((x) => x.rec.id === f.rec.id)?.byHouse[broker.id];
     return at && "valueN" in at ? { ...at, group: true } : null;
@@ -93,7 +108,7 @@ export function withGroupPick(args: InvestArgs, view: InvestView, house: string,
   const provider: ProviderInfo & { group: { house: string; key: string } } = { ...info, custom: false, group: { house, key } };
   return {
     id: broker.id,
-    bundle: withGroup,
+    bundle: withAccount,
     name: groupNameOf(snapshot, key),
     view: {
       ...view,

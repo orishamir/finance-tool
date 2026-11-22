@@ -90,7 +90,7 @@
    "site/app/lib/guide-signature.server.ts": 1,
    "site/app/lib/guide.server.ts": 2,
    "site/app/lib/import-check.ts": 3,
-   "site/app/lib/invest.ts": 11,
+   "site/app/lib/invest.ts": 10,
    "site/app/lib/labels.ts": 1,
    "site/app/lib/list-sort.ts": 2,
    "site/app/lib/own-account.ts": 5,
@@ -275,7 +275,7 @@
    "site/app/components/kit/year-bars.tsx": 3,
    "site/app/components/timeline/Timeline.tsx": 3,
    "site/app/routes/companies.tsx": 1,
-   "site/app/routes/invest.tsx": 11
+   "site/app/routes/invest.tsx": 7
   },
   "react(set-state-in-effect)": {
    "site/app/components/fee-deal/page.tsx": 1,
