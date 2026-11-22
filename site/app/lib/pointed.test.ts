@@ -143,7 +143,8 @@ describe("every rule a figure on the indices page names is a record the page hol
   };
 
   it("finds a figure's cited rules: rulesUsed, labels, flag slots and rule_ids", () => {
-    const flagged = Object.entries(flags).find(([, t]) => slotIds(t).length > 0)!;
+    const flagged = Object.entries(flags).find(([, t]) => slotIds(t).length > 0);
+    if (!flagged) throw new Error("no flag's words carry a {ID:figure} slot");
     const cited = citedIn({ inputs: [{ rulesUsed: [{ id: "A" }], labels: [{ code: "reading", ruleId: "B" }], flags: [flagged[0]], source: { rule_ids: ["C"] } }] });
     expect(cited).toEqual(expect.arrayContaining(["A", "B", "C", ...slotIds(flagged[1])]));
   });
