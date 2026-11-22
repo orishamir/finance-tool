@@ -444,8 +444,9 @@ describe("the receipt's fund line names the variable fee the site prices beside 
     expect(priced.years).toEqual([2025, 2024]);
     expect(priced.value.value).toBeCloseTo((0.249 + 0.201) / 2, 9);
     const card = (fund: string) => {
-      const out = shown(html(createElement(PairReceipt, { view, bundle, plan, pick: { house: head.house, fund }, chosen: true })).replace(/<!-- -->/g, ""));
-      return out.slice(out.indexOf(invest.pair.who.fund), out.indexOf(invest.pair.who.fund) + 300);
+      // the fund's own lines: the ticket's fund part (on paper, behind a tap on the fund's name)
+      const out = shown(html(createElement(PairReceipt, { view, bundle, plan, pick: { house: head.house, fund }, chosen: true, layout: "ticket" })).replace(/<!-- -->/g, ""));
+      return out.slice(out.indexOf(invest.receipt.fundCharges), out.indexOf(invest.receipt.fundCharges) + 300);
     };
     expect(card("1147362")).toContain(invest.kinds.variableChargedWord([2025, 2024]));
     expect(card("1147362")).toContain("0.225%");

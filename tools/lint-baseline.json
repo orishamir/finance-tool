@@ -482,7 +482,7 @@
    "site/app/components/invest/pair.test.ts": 5,
    "site/app/components/invest/pair.tsx": 16,
    "site/app/components/invest/parts.tsx": 4,
-   "site/app/components/invest/receipt.tsx": 8,
+   "site/app/components/invest/receipt.tsx": 2,
    "site/app/components/invest/render-fixtures.ts": 4,
    "site/app/components/invest/render-left-out.test.ts": 7,
    "site/app/components/invest/render-pair-bars.test.ts": 1,

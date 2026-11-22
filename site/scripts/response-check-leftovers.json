@@ -2,13 +2,6 @@
   "about": "Findings of site/scripts/response-check.mjs that were on the site when the check came in. `flow` is the flow's name, `step` its step, `check` the kind of finding (input: a tap or a key answered over 100 ms after it; move: a frame answering the finger's moves over 100 ms after them; shift: a layout shift while the finger drags; stale: a figure the flow names that did not change while its control did), `worst` the worst value measured for it (ms for an input or a move, the shifts' sum for a shift). A listed finding is reported, not failed, until a run measures it over twice its worst, so its step still catches a large regression; a new finding fails. Remove an entry when its fix lands (a full run says GONE).",
   "leftovers": [
     {
-      "flow": "the index page",
-      "step": "drag a slider",
-      "check": "shift",
-      "worst": 0.01,
-      "why": "A layout shift of 0.002 while the amount's slider moves, on boxes the browser does not name (removed by the time it reports); seen in every run with the quiet slider, in none of nine without it; not found yet. Its worst is set at 0.01, five times the one value seen, so a run's chance variation doesn't fail the check while a real shift (0.1 is where a reader notices) still does."
-    },
-    {
       "flow": "the fee page's deal",
       "step": "drag a slider",
       "check": "shift",

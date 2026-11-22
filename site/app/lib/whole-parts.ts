@@ -20,7 +20,8 @@ export function wholeParts(xs: number[], target = Math.round(xs.reduce((a, x) =>
     if (import.meta.env.DEV) throw new Error(msg);
     console.error(msg);
   }
-  const out = xs.map((x, i) => (ok(i) ? Math.floor(x) : Math.round(x)));
+  // a part held as it is rounds alone, and a hair under zero rounds to 0, not to −0
+  const out = xs.map((x, i) => (ok(i) ? Math.floor(x) : Math.round(x) + 0));
   const order = xs.map((x, i) => ({ i, r: x - Math.floor(x) })).filter((x) => ok(x.i)).sort((a, b) => b.r - a.r);
   if (order.length === 0) return out;
   let left = target - out.reduce((a, x) => a + x, 0);

@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { buildIndicesBundle } from "./providers.server";
 import { allPricedPairs } from "./receipt-fixtures";
-import { receiptAmounts, sharesOf, takenWords } from "./receipt";
+import { receiptAmounts, receiptChain, takenWords } from "./receipt";
+import type { PairCosts } from "./invest";
+import type { SiteValue } from "./value";
 
 const bundle = buildIndicesBundle();
 
@@ -22,7 +24,6 @@ describe("the receipt's lines add up as a reader adds them", () => {
         expect(Math.abs(r.tax - (pc.tax.value as number)), where).toBeLessThan(2);
         expect(Math.abs(r.fund - (pc.fund.value as number)), where).toBeLessThan(2);
         expect(r.gain, where).toBe(r.left - r.paidIn);
-        expect(r.lost, where).toBe(r.tax + r.account + r.fund);
       }
     });
   }
@@ -45,8 +46,6 @@ describe("in whole units the receipt writes the fees charged as fees and the wai
         expect(pc.accountFees + pc.waitingN, where).toBeCloseTo(pc.accountCost, 9);
         // the waiting cash missed the fund's move: a rise is a cost, a fall a gain
         if (Math.abs(pc.waitingN) >= 1) expect(Math.sign(pc.waitingN), where).toBe(Math.sign(returnPct));
-        // what went on the way is what the tax, the fees and the fund took
-        expect(r.lost, where).toBe(r.tax + r.account + r.fund);
       }
     });
   }
@@ -65,12 +64,48 @@ describe("in whole units the receipt writes the fees charged as fees and the wai
   });
 });
 
-describe("shares of a bar add up to 100", () => {
-  it("largest remainder, nothing for a part at or under zero", () => {
-    expect(sharesOf([5703, 1057, 116])).toEqual([83, 15, 2]);
-    expect(sharesOf([1, 1, 1]).reduce((a, x) => a + x, 0)).toBe(100);
-    expect(sharesOf([10, -3, 0])).toEqual([100, 0, 0]);
-    expect(sharesOf([0, 0])).toEqual([0, 0]);
+describe("the receipt as written: the shekels of the horizon down to the value before tax, then the inflation, then the tax in today's money (F-129, F-130)", () => {
+  for (const [index, years, monthly, returnPct] of [["index-sp500", 10, 500, 7], ["index-sp500", 10, 500, -5], ["index-ta125", 25, 0, 7], ["index-msci-world", 1, 2000, 7]] as const) {
+    it(`${index}, ${years} years, ${monthly} a month, at ${returnPct}%: paid in + added − account − fund − waiting − inflation − tax = left, at every account`, () => {
+      const pcs = allPricedPairs(bundle, index, { years, monthly, returnPct });
+      expect(pcs.length).toBeGreaterThan(5);
+      for (const pc of pcs) {
+        const where = `${pc.providerId} ${pc.fundId}`;
+        const ch = receiptChain(pc);
+        const n = ch.nominal;
+        const real = receiptAmounts(pc);
+        const I = pc.index.value as number;
+        // the chain adds up in whole shekels to the same figure the receipt in today's money ends on
+        expect(n.paidIn + n.added - n.account - n.fund - n.waiting, where).toBe(ch.beforeTax);
+        expect(ch.beforeTax - ch.inflation - ch.tax, where).toBe(ch.left);
+        expect(ch.left, where).toBe(real.left);
+        expect(ch.left, where).toBe(Math.round(pc.left.value as number));
+        // the deposits are as paid (F-05), every cost line before the inflation is F-91's figure times I_T, each within a shekel
+        expect(n.paidIn, where).toBe(Math.round(pc.paidInNominal.value as number));
+        expect(n.account, where).toBe(Math.round(pc.accountFees * I));
+        expect(Math.abs(n.fund - (pc.fund.value as number) * I), where).toBeLessThan(2);
+        // the tax is in today's money, after the inflation: F-91's state, not the state times I_T
+        expect(ch.tax, where).toBe(real.tax);
+        expect(Math.abs(ch.tax - (pc.tax.value as number)), where).toBeLessThan(2);
+        // on the collected data, the inflation stays within a few shekels of B^real × (I_T − 1): each whole figure is its own rounding
+        const beforeTaxToday = (pc.left.value as number) + (pc.tax.value as number);
+        expect(Math.abs(ch.inflation - beforeTaxToday * (I - 1)), where).toBeLessThan(3);
+      }
+    });
+  }
+});
+
+describe("a zero tax takes no rounding", () => {
+  it("the shekel the whole figures leave goes to the fund, never a +1 ₪ or −1 ₪ on a tax of zero", () => {
+    const n = (value: number) => ({ value }) as SiteValue;
+    // the whole figures leave 102 ₪ for the fund and the tax, the fund being 100.4 ₪ and the tax 0, and on the other side 99 ₪
+    // the engine's tax on a gain of zero is float dust around 0, never exactly 0
+    for (const [left, fund, dust] of [[898.4, 100.4, 0], [901.4, 100.4, 0], [898.4, 100.4, 1e-11], [901.4, 100.4, -1e-11]] as const) {
+      const pc = { paidIn: n(500), base: 1000.4, left: n(left), accountFees: 0, waitingN: 0, account: [], dealLines: undefined, interaction: 0, fund: n(fund), tax: n(dust) } as unknown as PairCosts;
+      const r = receiptAmounts(pc);
+      expect(r.tax).toBe(0);
+      expect(r.fund).toBe(Math.round(1000.4) - Math.round(left));
+    }
   });
 });
 
