@@ -153,7 +153,7 @@ export interface StateFile {
 
 /** The export file's header, checked on import before its state is read. */
 const stateFileHeader = z.object({ format: z.literal("mekor-state"), version: z.number(), exported: z.string(), site: z.object({ version: z.string(), data: z.string() }) });
-export type StateFileHeader = z.infer<typeof stateFileHeader>;
+type StateFileHeader = z.infer<typeof stateFileHeader>;
 const headerFields = ["version", "exported", "site"] as const;
 
 export function emptyState(): StateV3 {

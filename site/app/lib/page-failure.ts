@@ -51,7 +51,7 @@ function subscribe(on: () => void): () => void {
 }
 
 /** True once a script of the site has failed on the page and the person has not closed the notice. */
-export const failureShown = (): boolean => state.failed && !state.closed;
+const failureShown = (): boolean => state.failed && !state.closed;
 
 /** `failureShown` as a component reads it; false on the pre-rendered page. */
 export function useFailureShown(): boolean {

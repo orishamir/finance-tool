@@ -8,7 +8,7 @@ const LAST_INDEX_KEY = "mekor.v2.last-index";
 const EXPOSURE = /^index-[a-z0-9-]{1,60}$/;
 
 /** The exposure id of the index last shown (`index-<x>`), or null. */
-export const lastIndexStore = deviceStore<string | null>(LAST_INDEX_KEY, null, (raw) => (typeof raw === "string" && EXPOSURE.test(raw) ? raw : null), (v) => v);
+export const lastIndexStore = deviceStore<string | null>(LAST_INDEX_KEY, null, (raw) => (typeof raw === "string" && EXPOSURE.test(raw) ? raw : null), (v) => v, { holds: "kept" });
 
 /** The default index where the device has shown none. */
 export const FIRST_INDEX = "index-sp500";
