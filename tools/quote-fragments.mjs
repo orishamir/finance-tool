@@ -29,7 +29,6 @@ import { createHash } from "node:crypto";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { israelToday } from "./israel-date.mjs";
-import { CONTEXT, frames, settled } from "../site/scripts/browser.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "..");
@@ -342,16 +341,13 @@ async function readPage(browser, url) {
     return hit;
   }
   const tryLoad = async (cookies, ua) => {
-    // another site: CONTEXT alone, without newContext's counting of the page's timers and fetches, which changes what the site's own
-    // scripts see of the browser
-    const ctx = await browser.newContext({ ...CONTEXT, userAgent: ua ?? UA, ignoreHTTPSErrors: true, viewport: { width: 1440, height: 900 } });
+    const ctx = await browser.newContext({ userAgent: ua ?? UA, locale: "he-IL", ignoreHTTPSErrors: true, viewport: { width: 1440, height: 900 } });
     if (cookies?.length) await ctx.addCookies(cookies.map((c) => ({ name: c.name, value: c.value, domain: c.domain, path: c.path ?? "/", secure: !!c.secure, httpOnly: !!c.httpOnly })));
     const page = await ctx.newPage();
     try {
       const res = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
       await page.waitForLoadState("networkidle", { timeout: 10000 }).catch(() => {});
-      // a page that draws itself after loading (a list fetched by its script) comes to rest; one that never does is read after 5 s
-      await page.evaluate(settled).catch(() => {});
+      await page.waitForTimeout(1500);
       const type = res?.headers()["content-type"] ?? "";
       if (/pdf/i.test(type)) return { status: res.status(), pdf: true, text: "", title: "" };
       const title = await page.title();
@@ -406,27 +402,26 @@ async function landsInBrowser(rows, shots) {
   const landed = new Set();
   const launch = () => chromium.launch({ executablePath: process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
   let browser = await launch();
-  let counter = await (await browser.newContext(CONTEXT)).newPage();
+  let counter = await (await browser.newContext()).newPage();
   const tally = { lands: 0, missed: 0, error: 0 };
   for (const [k, row] of rows.entries()) {
     // a page can take the browser down with it (fibi.co.il did, 2026-11-12): the row counts as an error and the next one gets a new browser
     if (!browser.isConnected()) {
       browser = await launch();
-      counter = await (await browser.newContext(CONTEXT)).newPage();
+      counter = await (await browser.newContext()).newPage();
     }
     const [base, hash] = row.url.split("#");
     const href = `${base}#${hash ?? ""}:~:${encodeDirective(row.text)}`;
     // a site that refuses a plain browser gets FlareSolverr's clearance first, as when the page was read
     const solved = refusedHosts.has(new URL(base).host) ? await flare(base) : null;
-    const ctx = await browser.newContext({ ...CONTEXT, userAgent: solved?.userAgent ?? UA, viewport: { width: 1280, height: 800 } });
+    const ctx = await browser.newContext({ userAgent: solved?.userAgent ?? UA, locale: "he-IL", viewport: { width: 1280, height: 800 } });
     if (solved?.cookies?.length) await ctx.addCookies(solved.cookies.map((c) => ({ name: c.name, value: c.value, domain: c.domain, path: c.path ?? "/", secure: !!c.secure, httpOnly: !!c.httpOnly })));
     const page = await ctx.newPage();
     try {
       await page.goto(href, { waitUntil: "load", timeout: 45000 });
-      // the browser scrolls to the quoted words once the page has drawn them: the page at rest, scroll included
-      await page.evaluate(settled, 10_000).catch(() => {});
+      await page.waitForTimeout(2500);
       await page.addStyleTag({ content: "::target-text { background-color: rgb(255, 0, 255) !important; color: rgb(255, 0, 255) !important; }" });
-      await frames(page, 2);
+      await page.waitForTimeout(300);
       const count = async (png) => {
       await counter.setContent(`<img id="i" src="data:image/png;base64,${png.toString("base64")}">`);
       return counter.evaluate(async () => {
@@ -447,7 +442,7 @@ async function landsInBrowser(rows, shots) {
       if (pink <= 50) {
         // a cookie banner or a fixed bar can cover the words: hide what is fixed or sticky and look again
         await page.evaluate(() => { for (const el of document.querySelectorAll("body *")) { const p = getComputedStyle(el).position; if (p === "fixed" || p === "sticky") el.style.setProperty("display", "none", "important"); } });
-        await frames(page, 2);
+        await page.waitForTimeout(200);
         png = await page.screenshot();
         pink = await count(png);
       }

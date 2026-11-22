@@ -11,6 +11,7 @@ export const SIDE_EFFECT_MODULES = [
   "site/app/copy.ts", // adds a name to its own parameters page list
   "site/app/lib/providers.ts", // adds formula names and flags to copy.ts
   "site/app/lib/compare.ts", // adds formula names to copy.ts
+  "site/app/components/sheet-stack.ts", // listens for the Back button, before the router does
 ] as const;
 
 /** Our own source modules: the site's app and the engine and schema packages, TypeScript only (a style sheet keeps its effect). */

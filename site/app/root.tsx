@@ -132,7 +132,6 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="color-scheme" content="dark" />
         <meta name="robots" content="noindex" />
         {/* Zod tests whether it may compile code with Function(""), which the Content Security Policy refuses and reports
             on every page; this turns that test off before any schema is built (route modules build theirs as they load). */}

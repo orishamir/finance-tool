@@ -1,12 +1,12 @@
 // The bar's end and the template picker: how a saved deal is listed, what a price list says it leaves out, and the note of a deal a template
-// filled, on the site's data.
+// filled, on the site's data read on 11.2026.
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { feeDeal, houseAverage, leftOut as leftOutWords } from "../../copy";
 import { feesData } from "../../lib/fees.server";
 import { newDeal } from "../../lib/fee-deal/model";
-import { dealFromTemplate, templateOf, templateSource, type LeftOut } from "../../lib/fee-deal/templates";
+import { dealFromTemplate, templateOf, templateSource } from "../../lib/fee-deal/templates";
 import { dealLabel, dealMeta } from "./bar-end";
 import { leavesText, leftParts, TemplateNote } from "./picker";
 
@@ -32,9 +32,9 @@ describe("a saved deal in the list", () => {
 describe("what a template leaves out", () => {
   const probe = newDeal("brokerage-account");
   it("counts a price list's lines in the picker", () => {
-    // five lines left out, as a list whose conversion is priced per dollar leaves them: an exact count over fixed lines, not the site's data
-    const five: LeftOut[] = Array.from({ length: 5 }, (_, i) => ({ line: `line-${i}`, why: "per-dollar" }));
-    expect(leavesText(five)).toBe("5 שורות לא נכנסות");
+    // Psagot's whole list fills the deal but its two lines abroad, which its documents do not show a customer can buy, its conversion
+    // priced per dollar, the spread on its other conversion, and makam's redemption
+    expect(leavesText(templateOf(probe, "house:psagot", data, TODAY)!.left)).toBe("5 שורות לא נכנסות");
     expect(leavesText([])).toBeUndefined();
   });
   it("says on one line what its record says the price leaves out and how many lines it left out, each line in the sheet by name under why", () => {

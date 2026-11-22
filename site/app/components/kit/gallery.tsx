@@ -690,8 +690,7 @@ function Chips() {
           />
         </State>
         <State label="headingHidden, links in a card that shows its own title (the first page's guide door)">
-          {/* p-5! wins over the card's own default padding (p-4 md:p-6) */}
-          <Card className="p-5! flex flex-col gap-3">
+          <Card className="!p-5 flex flex-col gap-3">
             <span className="text-lg font-semibold">{w.heading}</span>
             <ChipList heading={w.heading} headingHidden items={sites} value={null} footer={<p className="text-sm text-muted-foreground">{w.foot}</p>} />
           </Card>

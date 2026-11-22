@@ -145,7 +145,7 @@ export function LaneLabel({ from, to, top, markerX, prefer = "start", children }
   // before the label is measured (the pre-rendered page) it stands at its preferred place
   const left = w === 0 ? order[0] : candidates.find((l) => l >= start - 0.5 && l <= end + 0.5 && clear(l));
   return (
-    <span ref={ref} className={cx("absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap transition-opacity duration-(--duration-fast)", left === undefined && "opacity-0")} dir="rtl" style={{ left: left ?? order[0], top }}>
+    <span ref={ref} className={cx("absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap transition-opacity duration-[var(--duration-fast)]", left === undefined && "opacity-0")} dir="rtl" style={{ left: left ?? order[0], top }}>
       {children}
     </span>
   );
@@ -176,7 +176,7 @@ export function GainBars({ bars, diff, diffLabel }: { bars: GainBar[]; diff: Sit
           <span className="text-sm text-muted-foreground">{b.label}</span>
           <div className="flex items-center gap-2">
             <div className="flex-1 min-w-0 h-5 relative">
-              <div className={cx("h-full rounded-sm transition-[width] duration-(--duration-chart)", b.tone === "alt" ? "bg-chart-alt" : "bg-chart-value")} style={{ width: `${Math.max(0.5, (nums[i]! / max) * 100)}%` }} />
+              <div className={cx("h-full rounded-sm transition-[width] duration-[var(--duration-chart)]", b.tone === "alt" ? "bg-chart-alt" : "bg-chart-value")} style={{ width: `${Math.max(0.5, (nums[i]! / max) * 100)}%` }} />
             </div>
             <span className="shrink-0 font-semibold w-28 text-end">
               <Num value={b.value} />
@@ -188,7 +188,7 @@ export function GainBars({ bars, diff, diffLabel }: { bars: GainBar[]; diff: Sit
         <div className="flex items-start gap-2">
           <div className="flex-1 min-w-0">
             <div className="relative h-3">
-              <div className="absolute top-0 h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm transition-[inset-inline-start,width] duration-(--duration-chart)" style={{ insetInlineStart: `${(lo / max) * 100}%`, width: `${((hi - lo) / max) * 100}%` }} />
+              <div className="absolute top-0 h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm transition-[inset-inline-start,width] duration-[var(--duration-chart)]" style={{ insetInlineStart: `${(lo / max) * 100}%`, width: `${((hi - lo) / max) * 100}%` }} />
             </div>
             {/* the label sits under the bracket's end of the row at full width: padding it to the bracket squeezed it into one word a line */}
             <p className="text-sm mt-0.5 text-end">

@@ -12,7 +12,6 @@
 import { createRequire } from "node:module";
 import { readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
-import { newContext, settled } from "../site/scripts/browser.mjs";
 
 const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
 const { chromium } = require("playwright");
@@ -127,7 +126,7 @@ const findPunct = () => {
 
 if (SELF_TEST) {
   const browser = await chromium.launch({ executablePath: CHROME });
-  const page = await (await newContext(browser, { viewport: { width: 600, height: 400 } })).newPage();
+  const page = await browser.newPage({ viewport: { width: 600, height: 400 } });
   const chip = (s) => `<button style="display:inline-block;border:1px solid;padding:0 4px">${s}</button>`;
   const cases = [
     ["a full stop alone after a figure", `<p style="width:120px">הסכום הוא <b>66,280&nbsp;₪</b><br>.</p>`, 1],
@@ -153,12 +152,12 @@ const browser = await chromium.launch({ executablePath: CHROME });
 const widths = widthList.split(",").map(Number);
 const seen = new Map();
 for (const w of widths) {
-  const ctx = await newContext(browser, { viewport: { width: w, height: 900 }, isMobile: w < 500, hasTouch: w < 500 });
+  const ctx = await browser.newContext({ viewport: { width: w, height: 900 }, locale: "he-IL", isMobile: w < 500, hasTouch: w < 500 });
   const page = await ctx.newPage();
   for (const p of paths) {
     try {
       await page.goto(BASE + p, { waitUntil: "networkidle", timeout: 30000 });
-      await page.evaluate(settled);
+      await page.waitForTimeout(400);
       for (const h of [...(await page.evaluate(find)), ...(await page.evaluate(findPunct))]) {
         const key = `${h.what}|${h.words}`;
         if (!seen.has(key)) seen.set(key, { ...h, at: [] });

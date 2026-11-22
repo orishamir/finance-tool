@@ -435,7 +435,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
  * site's header does over a page (`--z-sticky`): what the editor raises inside the fees (a grip, a figure's tap area) stays under it, so
  * nothing under it takes a click or is drawn over it, and the menus, in the layer above it, open over it.
  */
-const STICKY_TOP = "sticky z-(--z-sticky) -mx-1 bg-popover px-1 pb-2 -top-1 -mt-1 pt-1 lg:-top-3 lg:-mt-3 lg:pt-3";
+const STICKY_TOP = "sticky z-[var(--z-sticky)] -mx-1 bg-popover px-1 pb-2 -top-1 -mt-1 pt-1 lg:-top-3 lg:-mt-3 lg:pt-3";
 
 /** Brings fee `feeId`'s block of the popup in `root` to just under what stays at its top (`data-deal-top`). */
 function bringUnderTop(root: HTMLElement | null, feeId: string) {

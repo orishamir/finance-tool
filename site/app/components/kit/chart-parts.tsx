@@ -112,7 +112,7 @@ export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: Chart
         <li key={it.id} className={it.swatch ? "flex items-center gap-1.5" : undefined}>
           {head && <span className="me-2.5">{head.label}</span>}
           {pick && it.swatch ? (
-            <button type="button" aria-pressed={pick.pinned === it.id} {...pick.bind(it.id)} className={cx("inline-flex items-center gap-1.5 max-md:min-h-target md:tap-area cursor-pointer transition-opacity duration-(--duration-fast) hover:text-foreground", pick.active === it.id && "text-foreground", pick.active && pick.active !== it.id && "opacity-50")}>
+            <button type="button" aria-pressed={pick.pinned === it.id} {...pick.bind(it.id)} className={cx("inline-flex items-center gap-1.5 max-md:min-h-target md:tap-area cursor-pointer transition-opacity duration-[var(--duration-fast)] hover:text-foreground", pick.active === it.id && "text-foreground", pick.active && pick.active !== it.id && "opacity-50")}>
               {it.swatch}
               {it.label}
             </button>
@@ -179,7 +179,7 @@ export interface TableRowData {
  */
 export function FixedTable({ rowHead, columns, rows, measure }: { rowHead: ReactNode; columns: { id: string; head: ReactNode; hideOnPhone?: boolean }[]; rows: { key: string; head: ReactNode; cells: ReactNode[]; strong?: boolean }[]; measure?: boolean }) {
   return (
-    <table data-wide={measure ? undefined : ""} className={cx("tbl text-sm max-md:text-xs-flow [&_thead_th]:align-bottom [&_td]:align-top [&_th]:align-top max-md:[&_td]:px-1 max-md:[&_th]:px-1", measure && "max-w-measure")}>
+    <table data-wide={measure ? undefined : ""} className={cx("tbl text-sm max-md:text-[13px] [&_thead_th]:align-bottom [&_td]:align-top [&_th]:align-top max-md:[&_td]:px-1 max-md:[&_th]:px-1", measure && "max-w-measure")}>
       <TableCols widths={["auto", ...columns.map((c) => ({ pc: "auto", phone: c.hideOnPhone ? "0" : "auto" }))]} />
       <thead>
         <tr>

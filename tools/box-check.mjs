@@ -34,7 +34,6 @@
 // that place; the lines print once both sweeps are done. `--one-pass` keeps only the first sweep. `--whole` and `--rows` run once.
 import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
-import { newContext, settled as atRest } from "../site/scripts/browser.mjs";
 
 const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
 const { chromium } = require("playwright");
@@ -198,7 +197,7 @@ let total = 0;
 let drawn = 0; // figures cut, spilling past their cell or drawn over each other, after a typed plan
 for (const path of paths.split(",")) {
   for (const w of widths.split(",")) {
-    const ctx = await newContext(browser, { viewport: { width: VIEW[w].width, height: VIEW[w].height }, hasTouch: !!VIEW[w].hasTouch });
+    const ctx = await browser.newContext({ viewport: { width: VIEW[w].width, height: VIEW[w].height }, hasTouch: !!VIEW[w].hasTouch, locale: "he-IL" });
     // SEED_STORAGE=<file.json>, {key: value}: what the device holds before the page loads (entered numbers, or the fee page's saved
     // deals)
     if (process.env.SEED_STORAGE) {
@@ -211,22 +210,22 @@ for (const path of paths.split(",")) {
     }
     const page = await ctx.newPage();
     await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
-    await page.evaluate(atRest);
+    await page.waitForTimeout(700);
     if (pick) {
       await page.locator(":visible", { hasText: pick }).last().dispatchEvent("click");
-      await page.evaluate(atRest);
+      await page.waitForTimeout(500);
     }
     if (openSheet && (await page.locator("input[type=range]:visible").count()) === 0) {
       // the guide's example line ends with a chip that opens every value (Timeline's "all"); a phone holds the sliders only in that sheet
       const chip = page.locator("button.a-chip:visible").last();
       if (await chip.count()) {
         await chip.click();
-        await page.evaluate(atRest);
+        await page.waitForTimeout(600);
       }
     }
     if (openFolds) {
       await page.evaluate(() => document.querySelectorAll("details:not([open]) > summary").forEach((s) => s.click()));
-      await page.evaluate(atRest);
+      await page.waitForTimeout(300);
     }
     const sliders = await page.locator("input[type=range]:visible").count();
     const selects = await page.locator("select:visible").count();
@@ -238,14 +237,21 @@ for (const path of paths.split(",")) {
       if (WHOLE) return;
       if (place === "at top") await loc.evaluate((e) => e.scrollIntoView({ block: "start", inline: "nearest", behavior: "instant" })).catch(() => {});
       else await loc.scrollIntoViewIfNeeded().catch(() => {});
-      await page.evaluate(atRest);
+      await page.waitForTimeout(100);
       prev = await page.evaluate(snapshot);
     };
-    // the screen once the page is at rest (site/scripts/browser.mjs): its figures done gliding, and a list that sorts again once the plan
-    // has settled (lib/settled.ts) and its own pricing has run sorted
+    // the screen once two readings 400 ms apart agree, up to 4 s
     const settled = async () => {
-      await page.evaluate(atRest);
-      return page.evaluate(snapshot);
+      await page.waitForTimeout(650);
+      let cur = await page.evaluate(snapshot);
+      for (let waited = 650; waited < 4000; waited += 400) {
+        await page.waitForTimeout(400);
+        const next = await page.evaluate(snapshot);
+        const d = compare(cur, next);
+        cur = next;
+        if (!d.hits.length && !d.moved) break;
+      }
+      return cur;
     };
     // each control is listed first (`run(out)` makes its changes and pushes each change's result, { count, lines, drawn }, to `out`;
     // `reset` sets it back to where the page started), then the sweep runs every control in turn once per place: the first sweep is the
@@ -274,7 +280,9 @@ for (const path of paths.split(",")) {
       }
     };
     const after = async (label) => {
-      // the screen once the page is at rest after the change, compared with the one before it
+      // the figures glide for 400 ms, and a list may sort again later: it waits for the settled plan (250 ms) and then its own pricing, so
+      // a re-sort came at 600 to 1,000 ms (2026-11-06, the indices page's own-bank list, missed at a fixed 650 ms). The screen is read
+      // until two readings 400 ms apart agree, up to 4 s after the change, and the settled one is compared with the one before the change.
       const cur = await settled();
       const r = compare(prev, cur);
       prev = cur;
@@ -420,11 +428,11 @@ for (const path of paths.split(",")) {
           // before its click, which reads as the row moving (2026-11-07, S&P 500 at 390). At once: the site scrolls smoothly
           // (app.css), and a smooth scroll still running when y0 is read made rows read as moved by 2 to 22 px, and some by hundreds
           await row.evaluate((e) => e.scrollIntoView({ block: "center", behavior: "instant" }));
-          await page.evaluate(atRest);
+          await page.waitForTimeout(150);
           const p0 = await picks();
           const y0 = (await row.boundingBox()).y;
           await row.click({ position: { x: 8, y: 8 } });
-          await page.evaluate(atRest);
+          await page.waitForTimeout(2000);
           const p1 = await picks();
           const dy = Math.round((await row.boundingBox()).y - y0);
           const other = p0.some((x, j) => j !== li && x !== p1[j]);

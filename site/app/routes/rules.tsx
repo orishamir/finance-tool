@@ -10,6 +10,7 @@ import { useLoaderData, useLocation, useNavigate } from "react-router";
 import { rulesFront as copy, scopeWords, sourceBlock, system, topicName } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { NumberLegend, StrengthLabel, type RuleUses } from "../components/provenance";
+import { replaceAddress } from "../components/sheet-stack";
 import { RuleCard, RuleDetail, SlottedText, TopMatch } from "../components/provenance-sheets";
 import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
@@ -256,9 +257,9 @@ function ProductList({ names, counts, total, current, onPick }: { names: Map<str
       type="button"
       aria-pressed={current === id}
       onClick={() => onPick(id)}
-      className={cx("relative w-full min-h-target xl:tap-area flex", all ? "xl:min-h-11" : "xl:min-h-9", "items-center justify-between gap-3 px-3 rounded-md text-start text-sm transition-colors duration-(--duration-fast)", current === id ? "bg-accent font-semibold" : "hover:bg-accent/50")}
+      className={cx("relative w-full min-h-target xl:tap-area flex", all ? "xl:min-h-11" : "xl:min-h-9", "items-center justify-between gap-3 px-3 rounded-md text-start text-sm transition-colors duration-[var(--duration-fast)]", current === id ? "bg-accent font-semibold" : "hover:bg-accent/50")}
     >
-      {current === id && <span aria-hidden="true" className="absolute inset-y-1.5 inset-s-0 w-[3px] rounded-full bg-primary" />}
+      {current === id && <span aria-hidden="true" className="absolute inset-y-1.5 start-0 w-[3px] rounded-full bg-primary" />}
       <span className={cx("min-w-0", all && "flex items-center gap-2.5 font-medium")}>
         {all && (
           <span className={cx("grid place-items-center size-7 rounded-md text-primary shrink-0", current === null ? "bg-background" : "bg-accent")}>
@@ -267,7 +268,7 @@ function ProductList({ names, counts, total, current, onPick }: { names: Map<str
         )}
         {gershayim(name)}
       </span>
-      <bdi dir="ltr" className="shrink-0 text-xs-flow font-normal tabular-nums text-muted-foreground">
+      <bdi dir="ltr" className="shrink-0 text-[13px] font-normal tabular-nums text-muted-foreground">
         {fmt.number(n)}
       </bdi>
     </button>
@@ -356,7 +357,7 @@ export default function Rules() {
     setFiltersState((cur) => {
       const next = { ...cur, ...patch };
       // not a navigation: a router navigation here would reload the page's data on every keystroke
-      window.history.replaceState(window.history.state, "", `${window.location.pathname}${filtersToSearch(next)}${window.location.hash}`);
+      replaceAddress(`${window.location.pathname}${filtersToSearch(next)}${window.location.hash}`);
       return next;
     });
   }, []);
@@ -383,7 +384,7 @@ export default function Rules() {
             browsing.current = { product: cur.product, shelf: cur.shelf, changing: cur.changing };
             next = { ...next, product: null, shelf: null };
           } else if (was.trim() && !value.trim()) next = { ...next, ...browsing.current };
-          window.history.replaceState(window.history.state, "", `${window.location.pathname}${filtersToSearch(next)}${window.location.hash}`);
+          replaceAddress(`${window.location.pathname}${filtersToSearch(next)}${window.location.hash}`);
           return next;
         });
       };
@@ -751,7 +752,7 @@ export default function Rules() {
           </div>
         )}
 
-        <footer className={cx("flex flex-col gap-2 border-t border-border pt-3 text-xs-flow text-muted-foreground max-w-measure", hideWhenOpen)}>
+        <footer className={cx("flex flex-col gap-2 border-t border-border pt-3 text-[13px] text-muted-foreground max-w-measure", hideWhenOpen)}>
           <NumberLegend />
           <p>{sourceBlock.legendLine}</p>
           <p>
@@ -817,7 +818,7 @@ function CompanyResults({ company, names, docs, pd, failed }: { company: string[
             <tr key={d.id}>
               <th scope="row" className="font-medium align-top">
                 <bdi>{d.company}</bdi>
-                <span className="md:hidden block font-normal text-xs-flow text-muted-foreground">{d.title}</span>
+                <span className="md:hidden block font-normal text-[13px] text-muted-foreground">{d.title}</span>
               </th>
               <td className={cx(PHONE_GONE, "align-top")}>{d.title}</td>
               <td className={cx(PHONE_GONE, "align-top tabular-nums")}>{editionText(d.version) ?? words.noEdition}</td>
