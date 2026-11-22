@@ -7,7 +7,7 @@ import { changedByShare, sweep } from "@finance-tool/engine";
 import type { P05Input } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
 import type { EnteredPlan } from "../../lib/entered-plan";
-import { fmt, nisOf } from "../../lib/format";
+import { fmt } from "../../lib/format";
 import { useInputs } from "../../lib/inputs";
 import { useSettled } from "../../lib/settled";
 import { pairCosts, pairLeft, type InvestView, type PlanInput } from "../../lib/invest";
@@ -139,7 +139,7 @@ export function PlanChanges({ run, at, onAt, share, today }: { run: PlanChangesR
   const rows = changesAt(run, at, share, today);
   const diffText = (d: SiteValue) => (
     <>
-      <Num value={d} display={nisOf(d, Math.abs(d.value as number))} /> {(d.value as number) >= 0 ? ch.more : ch.less}
+      <Num value={d} display={fmt.nisWhole(Math.abs(d.value as number))} /> {(d.value as number) >= 0 ? ch.more : ch.less}
     </>
   );
   const first = rows[0]!;

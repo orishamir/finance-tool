@@ -37,7 +37,8 @@ export function ConfirmAsk({ open, question, body, yes, no, onYes, onNo }: { ope
           <Button variant="danger" className="w-full" onClick={onYes}>
             {yes}
           </Button>
-          <Button variant="outline" className="w-full" onClick={onNo}>
+          {/* the focus opens on the cancel: Enter on a question about taking something away for good never takes it away */}
+          <Button variant="outline" className="w-full" onClick={onNo} data-autofocus="">
             {no}
           </Button>
         </div>

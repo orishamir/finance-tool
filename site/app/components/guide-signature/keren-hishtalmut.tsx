@@ -5,16 +5,15 @@
 import { useMemo, useState } from "react";
 import { trackPath } from "../../lib/site-paths";
 import { guideSignature as copy } from "../../copy";
-import { fmt, nisOf } from "../../lib/format";
+import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
 import { earlySettlement, type EarlySettlement } from "@finance-tool/engine";
 import { studyRange, studyStanding, studyYears, taxedAfterLock, waitFigures, type Employment, type StudyStanding, type StudyStoryCase } from "../../lib/guide-signature-g2";
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
-import { asField, assumedReturn, computed, reconciled, type SiteValue } from "../../lib/value";
-import { onGrid, sumGrid } from "../../lib/whole-parts";
+import { asField, computed, type SiteValue } from "../../lib/value";
 import { aboveZeroCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
-import { NisNum, Num, ReadingTag, Ruled, Term } from "../provenance";
+import { Num, ReadingTag, Ruled, Term } from "../provenance";
 import { text } from "./g2-parts";
 import { figure, Gap, inputSite, notFeeFlag, rulesOfBundle, rulesOfRuns, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
 
@@ -31,9 +30,10 @@ export function KerenHishtalmutVisual(props: VisualProps) {
  * A part's amount with the sign its part carries, whatever the sign of the number: what is added "+54,000 ₪", what is taken "−13,970 ₪",
  * the person's own deposits none (`sign` 1, -1 or 0). On a phone-wide chart the shekel sign has no room.
  */
-const partText = (sign: 1 | -1 | 0, compact: boolean, fig: SiteValue) => (v: number) => {
+const partText = (sign: 1 | -1 | 0, compact: boolean) => (v: number) => {
   const n = Math.abs(v);
-  return nisOf(fig, sign === 0 ? n : sign * n, { signed: sign !== 0, bare: compact });
+  if (sign === 0) return compact ? fmt.number(Math.round(n)) : fmt.nisWhole(n);
+  return compact ? fmt.signedNumber(sign * n, 0) : fmt.signedNisWhole(sign * n);
 };
 
 function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
@@ -83,7 +83,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
 
   // ---- value objects
   // a field's default, like what the reader types in it, is a plain number
-  const returnIn: SiteValue = returnPick !== null ? assumedReturn(typed(returnPick, "pct_per_year", today, story.fields.ret)) : asField(p05Value(base.p05, "A-01"));
+  const returnIn: SiteValue = returnPick !== null ? typed(returnPick, "pct_per_year", today, story.fields.ret) : asField(p05Value(base.p05, "A-01"));
   const incomeIn: SiteValue = incomePick !== null ? typed(income, "nis", today, copy.hishtalmut.incomeAbout) : asField(figure(income, "nis", "F-67", { [copy.hishtalmut.incomeAnnual]: p05Value(base.p05, "annual_income") }, today, copy.hishtalmut.incomeAbout));
   const pctIn = (pick: number | null, shared: SiteValue | undefined, value: number, about: string): SiteValue => (pick === null && shared ? shared : typed(value, "pct", today, about));
   const monthlyIn = inputSite(base, "monthly_deposit", inputs.monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
@@ -103,21 +103,13 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   };
   const common: Record<string, SiteValue> = { ...runIn, ...yearEntry };
   // the same runs stopped at the end of the lock (TXH-09), or a year before it: the year is the rule's, not the one picked
-  const lockYearEntry: Record<string, SiteValue> = lockYears ? { [copy.hishtalmut.inputNames.lockYears]: lockYears } : {};
-  const lockIn: Record<string, SiteValue> = { ...runIn, ...lockYearEntry };
+  const lockIn: Record<string, SiteValue> = { ...runIn, ...(lockYears ? { [copy.hishtalmut.inputNames.lockYears]: lockYears } : {}) };
   // what was paid in, each deposit in today's money (F-106, A-04): the monthly deposit, twelve times a year, with no return and no fee in
   // it; a self-employed person's tax back is the deduction on that deposit, at the income (reliefToday, F-96)
-  const ownDeposits: Record<string, SiteValue> = isEmployee ? { ...incomeEntry, ...ownShareEntry } : monthlyEntry;
-  const extraDeposits: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : monthlyEntry) };
-  const ownIn: Record<string, SiteValue> = { ...ownDeposits, ...yearEntry };
-  const extraIn: Record<string, SiteValue> = { ...extraDeposits, ...yearEntry };
+  const ownIn: Record<string, SiteValue> = { ...(isEmployee ? { ...incomeEntry, ...ownShareEntry } : monthlyEntry), ...yearEntry };
+  const extraIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : monthlyEntry), ...yearEntry };
   // the tax paid from the salary on the employer's money above the limit: the limit stays while the salary follows prices (F-96)
-  const salaryTax: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : {}), ...inflationEntry };
-  const salaryTaxIn: Record<string, SiteValue> = { ...salaryTax, ...yearEntry };
-  // what was paid in and the tax from the salary at the year picked and at the lock's end: neither rests on the return
-  const paidAtIn: Record<string, SiteValue> = { ...ownDeposits, ...extraDeposits, ...yearEntry };
-  const lockPaidIn: Record<string, SiteValue> = { ...ownDeposits, ...extraDeposits, ...lockYearEntry };
-  const lockSalaryTaxIn: Record<string, SiteValue> = { ...salaryTax, ...lockYearEntry };
+  const salaryTaxIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : {}), ...inflationEntry, ...yearEntry };
   // each figure carries the rules of the runs it comes from: the year picked, the lock's end, the year before it, the strip's last year
   const runsAt = (y: number) => (y >= 1 && y <= YEARS ? (years[y - 1]?.runs ?? []) : []);
   const rules = rulesOfRuns(picked.runs);
@@ -131,43 +123,31 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     const flags = [...new Set(picked.runs.flatMap((r) => r.flags.map((f) => f.code)))].filter(isTax ? notFeeFlag : () => true);
     return computed(value, "nis", formula, inputs, { today, about, rules, flags, labels: picked.runs.flatMap((r) => r.labels.map((l) => ({ code: l.code, ruleId: l.ruleId }))) });
   };
-  const leftRun = slice ? ranValue(slice.net, story.about.left, false) : null;
-  // the bar's lines add up to what is left (method.md F-96), each rounded once: what rests on the return (what is left, the fees, the tax at
-  // the withdrawal) on the bar's grid, hundreds of shekels where what is left rests on an assumed return (`sumGrid`); the deposits, the
-  // employer's money or the tax back, and the tax from the salary rest on no return and stay whole; the return before fees takes up the rest
-  const bar = slice && leftRun ? (() => {
-    const g = sumGrid(leftRun);
-    const own = Math.round(slice.own);
-    const extra = Math.round(slice.extra);
-    const salary = Math.round(slice.taxFromSalary);
-    const net = onGrid(slice.net, g);
-    const fees = onGrid(slice.fees, g);
-    const tax = onGrid(slice.tax - slice.taxFromSalary, g);
-    const before = net + fees + salary + tax - own - extra;
-    return { own, extra, gain: before, loss: -before, fees, salary, tax, net };
-  })() : null;
-  // the year picked as one bar: what went in, the return before fees, and what a loss, the fees and the tax took (F-96); each figure carries
-  // the number its part shows
+  // the year picked as one bar: what went in, the return before fees, and what a loss, the fees and the tax took (F-96)
   const partValue = (part: PileBarPart): SiteValue | null => {
-    if (!slice || !bar) return null;
+    if (!slice) return null;
+    // whole shekels that add up: the return before fees takes up the rounding, so what is shown in the bar sums to what is left (method.md F-96)
+    const r = Math.round;
+    const fees = r(slice.fees);
+    const salary = r(slice.taxFromSalary);
+    const taxAtExit = r(slice.tax) - salary;
+    const before = r(slice.net) + fees + salary + taxAtExit - r(slice.own) - r(slice.extra);
+    const value = { own: r(slice.own), extra: r(slice.extra), gain: before, loss: -before, fees, salary, tax: taxAtExit }[part];
     const about = { own: story.about.own, extra: isEmployee ? story.about.extra : story.about.extraSelf, gain: story.about.gain, loss: story.about.gain, fees: story.about.fee, salary: story.about.taxSalary, tax: slice.taxFromSalary > 1 ? story.about.taxWithdrawal : story.about.tax }[part];
-    const value = bar[part];
-    const fig =
-      part === "own" || (part === "extra" && isEmployee) ? paidValue(value, about, part === "own" ? ownIn : extraIn)
-      : part === "extra" ? nis(value, about, extraIn)
-      : part === "salary" ? ranValue(value, about, true, "F-96", salaryTaxIn)
-      : ranValue(value, about, part === "tax");
-    return reconciled(fig, value);
+    if (part === "own" || (part === "extra" && isEmployee)) return paidValue(value, about, part === "own" ? ownIn : extraIn);
+    if (part === "extra") return nis(value, about, extraIn);
+    if (part === "salary") return ranValue(value, about, true, "F-96", salaryTaxIn);
+    return ranValue(value, about, part === "tax");
   };
   const SIGN: Record<PileBarPart, 1 | -1 | 0> = { own: 0, extra: 1, gain: 1, loss: -1, fees: -1, salary: -1, tax: -1 };
   const partNumber = (part: PileBarPart, compact: boolean) => {
     const v = partValue(part);
-    return v && <Num value={v} display={partText(SIGN[part], compact, v)} />;
+    return v && <Num value={v} display={partText(SIGN[part], compact)} />;
   };
-  const leftValue = leftRun && bar ? reconciled(leftRun, bar.net) : null;
+  const leftValue = slice ? ranValue(slice.net, story.about.left, false) : null;
   const ownValue = slice ? paidValue(slice.own, story.about.own, ownIn) : null;
   // what the multiple is of: the person's deposits, and an employee's employer's too, so the employer's money is not counted as growth
-  const paidShown = slice && ownValue ? (isEmployee ? { n: slice.own + slice.extra, name: story.inputs.paid, value: paidValue(slice.own + slice.extra, story.about.paid, paidAtIn) } : { n: slice.own, name: story.bar.own, value: ownValue }) : null;
+  const paidShown = slice && ownValue ? (isEmployee ? { n: slice.own + slice.extra, name: story.inputs.paid, value: paidValue(slice.own + slice.extra, story.about.paid, { ...ownIn, ...extraIn }) } : { n: slice.own, name: story.bar.own, value: ownValue }) : null;
 
   // the choice the drawing is for: the year picked against the lock year (or, from the lock on, against the year before it)
   const yearAt = (y: number) => (y >= 1 && y <= YEARS ? (years[y - 1]?.slice ?? null) : null);
@@ -187,11 +167,11 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       ? {
           more: nis(wait.more, story.about.waitMore, {
             [story.inputs.lockNet]: lockNet,
-            [story.inputs.lockPaid]: paidValue(paidIn(lockSlice), story.about.lockPaid, lockPaidIn),
-            [story.inputs.lockSalaryTax]: nis(lockSlice.taxFromSalary, story.about.lockSalaryTax, lockSalaryTaxIn, lockRules),
+            [story.inputs.lockPaid]: paidValue(paidIn(lockSlice), story.about.lockPaid, lockIn),
+            [story.inputs.lockSalaryTax]: nis(lockSlice.taxFromSalary, story.about.lockSalaryTax, lockIn, lockRules),
             [story.inputs.left]: leftValue,
-            [story.inputs.paid]: paidValue(paidIn(slice), story.about.paid, paidAtIn),
-            [story.inputs.salaryTax]: nis(slice.taxFromSalary, story.about.taxSalary, salaryTaxIn),
+            [story.inputs.paid]: paidValue(paidIn(slice), story.about.paid, common),
+            [story.inputs.salaryTax]: nis(slice.taxFromSalary, story.about.taxSalary),
           }, bothRules),
           saved: nis(wait.saved, story.about.taxSaved, { [story.inputs.tax]: nis(atWithdrawal(slice), story.about.taxAtWithdrawal), [story.inputs.lockTax]: nis(atWithdrawal(lockSlice), story.about.lockTax, lockIn, lockRules) }, bothRules),
           at: lockNet,
@@ -205,28 +185,28 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     ? null
     : year < lock
       ? waitWords && (
-          <StatTile label={<>{head.wait} {lockYearsWords}</>} size="figure" note={<span className={waitGains ? "text-gain" : undefined}>{waitGains ? head.more.before : head.more.less} <NisNum abs value={waitWords.more} />{head.more.middle} <NisNum value={waitWords.saved} />{head.more.after}</span>}>
-            <NisNum value={waitWords.at} />
+          <StatTile label={<>{head.wait} {lockYearsWords}</>} size="figure" note={<span className={waitGains ? "text-gain" : undefined}>{waitGains ? head.more.before : head.more.less} <Num value={waitWords.more} display={(v) => fmt.nisWhole(Math.abs(Number(v)))} />{head.more.middle} <Num value={waitWords.saved} display={fmt.nisWhole} />{head.more.after}</span>}>
+            <Num value={waitWords.at} display={fmt.nisWhole} />
           </StatTile>
         )
       : slice.tax < 1
         ? (
-            <StatTile label={<>{head.taxAt} <bdi>{shownYear}</bdi></>} size="figure" note={beforeLock && beforeLock.tax >= 1 && <span>{head.wasBefore.before} <bdi>{fmt.years(lock - 1)}</bdi> {head.wasBefore.after} <NisNum value={nis(beforeLock.tax, story.about.taxBefore, lockIn, rulesOfRuns(runsAt(lock - 1)))} />.</span>}>
-              <NisNum value={ranValue(slice.tax, story.about.tax, true)} />
+            <StatTile label={<>{head.taxAt} <bdi>{shownYear}</bdi></>} size="figure" note={beforeLock && beforeLock.tax >= 1 && <span>{head.wasBefore.before} <bdi>{fmt.years(lock - 1)}</bdi> {head.wasBefore.after} <Num value={nis(beforeLock.tax, story.about.taxBefore, lockIn, rulesOfRuns(runsAt(lock - 1)))} display={fmt.nisWhole} />.</span>}>
+              <Num value={ranValue(slice.tax, story.about.tax, true)} display={fmt.nisWhole} />
             </StatTile>
           )
         : (
             <StatTile label={<>{head.taxAt} <bdi>{shownYear}</bdi></>} size="figure" note={<span>{head.taxStays.before} {lockYearsWords}{head.taxStays.after}</span>}>
-              <NisNum value={ranValue(slice.tax, story.about.tax, true)} />
+              <Num value={ranValue(slice.tax, story.about.tax, true)} display={fmt.nisWhole} />
             </StatTile>
           );
   const stripNote = waitWords && (
     <>
       <div>
-        {story.note.wait} <bdi>{fmt.years(lock - year)}</bdi>: <span className={cx("font-semibold", waitGains && "text-gain")}><NisNum abs value={waitWords.more} /></span> {waitGains ? story.note.more : story.note.less}
+        {story.note.wait} <bdi>{fmt.years(lock - year)}</bdi>: <span className={cx("font-semibold", waitGains && "text-gain")}><Num value={waitWords.more} display={(v) => fmt.nisWhole(Math.abs(Number(v)))} /></span> {waitGains ? story.note.more : story.note.less}
       </div>
       <div>
-        <NisNum value={waitWords.saved} /> {story.note.saved}
+        <Num value={waitWords.saved} display={fmt.nisWhole} /> {story.note.saved}
       </div>
     </>
   );
@@ -256,16 +236,13 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   // F-97 reads the strip's last year, whose runs hold every deposit (studyStanding)
   const standingRules = rulesOfRuns(runsAt(YEARS));
   const standingNum = (value: number, about: string, unit: SiteValue["unit"] = "nis", inputs = standingIn, flags: string[] = []) => figure(value, unit, "F-97", inputs, today, about, standingRules, flags);
-  const capWords = cap && <NisNum value={cap} />;
+  const capWords = cap && <Num value={cap} display={fmt.nisWhole} />;
   const inflationWords = inflationPct && <Num value={inflationPct} />;
   const standingLine = (st: StudyStanding, taxed: boolean, employee: boolean) => {
     const words = copy.hishtalmut.story.standing;
     // the room and what is above the limit carry what they rest on: a self-employed person's year grossed up for the tax back at the
     // brackets (G-23, `limitStanding`)
-    const whole = (value: number, about: string) => {
-      const fig = standingNum(value, about, "nis", standingIn, st.flags);
-      return <Num value={fig} display={nisOf(fig, value)} />;
-    };
+    const whole = (value: number, about: string) => <Num value={standingNum(value, about, "nis", standingIn, st.flags)} display={fmt.nisWhole(value)} />;
     const [own = 0, employer = 0] = st.over.map(Math.round);
     const over = own + employer;
     const per = st.per === "year" ? "year" : "month";
@@ -314,7 +291,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           ) : (
             <>
               {words.crossing.self}
-              {selfBenefited && <NisNum value={selfBenefited} />} {words.crossing.selfRise} {inflationWords} {words.crossing.selfThen}
+              {selfBenefited && <Num value={selfBenefited} display={fmt.nisWhole} />} {words.crossing.selfRise} {inflationWords} {words.crossing.selfThen}
               {yearWords}
             </>
           )}{" "}
@@ -350,7 +327,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   };
   const settlementInputs = { ...common, ...(withheld ? { [story.early.rate]: withheld } : {}) };
   const earlyLine = (e: EarlySettlement) => {
-    const money = (value: number, about: string, prefix?: string) => <NisNum value={ranValue(value, about, true, "F-98", settlementInputs)} {...(prefix ? { prefix } : {})} />;
+    const money = (value: number, about: string, prefix?: string) => <Num value={ranValue(value, about, true, "F-98", settlementInputs)} display={fmt.nisWhole} {...(prefix ? { prefix } : {})} />;
     // the usual case, conclusion first: the columns count the refund, so say what is left without it (guidelines/wording.md, sentences 1 and 3)
     if (e.back >= 1)
       return (
@@ -467,8 +444,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       <div className="flex flex-col gap-3">
         {slice && leftValue && ownValue && paidShown && (
           <StatRow cols={2}>
-            <StatTile label={<>{head.at} <InputSlot><bdi>{shownYear}</bdi></InputSlot></>} size="figure" note={<span>{head.times.before} <Num value={figure(slice.net / paidShown.n, "count", "F-96", { [story.bar.left]: leftValue, [paidShown.name]: paidShown.value }, today, story.about.times)} display={(v) => fmt.number(Math.round(Number(v) * 10) / 10)} /> {isEmployee ? head.times.afterBoth : head.times.after} (<NisNum value={paidShown.value} />)</span>}>
-              <NisNum value={leftValue} />
+            <StatTile label={<>{head.at} <InputSlot><bdi>{shownYear}</bdi></InputSlot></>} size="figure" note={<span>{head.times.before} <Num value={figure(slice.net / paidShown.n, "count", "F-96", { [story.bar.left]: leftValue, [paidShown.name]: paidShown.value }, today, story.about.times)} display={(v) => fmt.number(Math.round(Number(v) * 10) / 10)} /> {isEmployee ? head.times.afterBoth : head.times.after} (<Num value={paidShown.value} display={fmt.nisWhole} />)</span>}>
+              <Num value={leftValue} display={fmt.nisWhole} />
             </StatTile>
             {secondCard}
           </StatRow>
@@ -501,8 +478,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           slice={slice && { ...slice, fees: Math.round(slice.fees), tax: Math.round(slice.tax), taxFromSalary: Math.round(slice.taxFromSalary) }}
           names={{ own: story.bar.own, extra: isEmployee ? story.bar.employer : story.bar.refund, gain: story.bar.gain, loss: story.bar.loss, fees: story.bar.fees, salary: story.bar.salary, tax: slice && slice.taxFromSalary > 1 ? story.bar.taxWithdrawal : story.bar.tax }}
           number={partNumber}
-          left={{ words: story.bar.left, number: leftValue && <NisNum value={leftValue} /> }}
-          {...(!isEmployee ? { other: { net: account?.net ?? null, words: <>{story.bar.account.before} <Term prefix={story.bar.account.prefix} id="חשבון ניירות ערך">{story.bar.account.term}</Term>{story.bar.account.after}</>, number: account && <NisNum value={nis(account.net, story.about.account, accountIn, accountBundle ? rulesOfBundle(accountBundle) : [])} /> } } : {})}
+          left={{ words: story.bar.left, number: leftValue && <Num value={leftValue} display={fmt.nisWhole} /> }}
+          {...(!isEmployee ? { other: { net: account?.net ?? null, words: <>{story.bar.account.before} <Term prefix={story.bar.account.prefix} id="חשבון ניירות ערך">{story.bar.account.term}</Term>{story.bar.account.after}</>, number: account && <Num value={nis(account.net, story.about.account, accountIn, accountBundle ? rulesOfBundle(accountBundle) : [])} display={fmt.nisWhole} /> } } : {})}
           gap={gapWords}
           label={story.aria}
         />

@@ -17,9 +17,6 @@ startTransition(() => {
     <StrictMode>
       <HydratedRouter />
     </StrictMode>,
-    // an error React recovers from by drawing the part again in the browser goes to the console, not to the page's failure notice
-    // (lib/page-failure.ts): nothing on the screen is left wrong by it
-    { onRecoverableError: (e) => console.error(e) },
   );
 });
 

@@ -3,7 +3,6 @@
 // on every change, tells the page when the device refuses a write, and follows other tabs. Browser only.
 // TODO(state v3): the keys of this store belong inside `mekor.v3.state` (design-spec 16.5); merge when lib/state.ts is free.
 import { useSyncExternalStore } from "react";
-import { askToKeepStorage } from "./keep-storage";
 
 export interface DeviceSnapshot<T> {
   value: T;
@@ -66,11 +65,6 @@ export function deviceStore<T>(
     window.addEventListener("storage", (e) => {
       if (e.key === key) emit(read());
     });
-    // the Back button brought the page back from the browser's page cache: another tab may have changed the value meanwhile; not while
-    // the last write failed, since the page then holds a value the device does not
-    window.addEventListener("pageshow", (e) => {
-      if (e.persisted && current.writable) emit(read());
-    });
   };
   const subscribe = (l: () => void) => {
     ensure();
@@ -87,7 +81,6 @@ export function deviceStore<T>(
       writable = false;
     }
     emit({ value: next, ready: true, writable });
-    if (writable) askToKeepStorage();
   };
   return {
     use: () => useSyncExternalStore(subscribe, () => current, () => none),

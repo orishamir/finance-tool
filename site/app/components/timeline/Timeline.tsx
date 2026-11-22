@@ -8,14 +8,13 @@ import { fmt, nisShown } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
 import { useOwnRates } from "../../lib/own-rate";
 import { useValueMode, type ValueMode as Mode } from "../../lib/mode-store";
-import { p05Units, asField, asP05Input, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
+import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
 import { lumpSumEntered } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconReset } from "../icons";
 import { IdRef, Num, RuleRef, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Button, Callout, Card, ChartLegend, FoldGroup, HelpMark, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, yearsCheck } from "../kit";
-import { ToolBoundary } from "../tool-boundary";
 
 export interface TimelineProps {
   bundle: Bundle;
@@ -42,27 +41,7 @@ export interface TimelineProps {
   note?: ReactNode;
 }
 
-/**
- * The timeline, inside its own error boundary: a run that throws on what was typed leaves the rest of the guide page standing. What was
- * typed is kept on the device, so other fields try the run again, and the notice offers to put them back to the site's example, which a
- * reload alone would not.
- */
-export function Timeline(props: TimelineProps) {
-  const { state, resetAll } = useInputs();
-  const [ownRates, setOwnRate] = useOwnRates("guide");
-  const cashId = props.cash?.id;
-  const reset = () => {
-    resetAll();
-    if (cashId) setOwnRate(cashId, undefined);
-  };
-  return (
-    <ToolBoundary resetKey={JSON.stringify([state, cashId ? (ownRates[cashId] ?? null) : null])} onReset={reset}>
-      <TimelineTool {...props} />
-    </ToolBoundary>
-  );
-}
-
-function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, lock, employment = false, cash = null, lumpSum = null, note = null }: TimelineProps) {
+export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, lock, employment = false, cash = null, lumpSum = null, note = null }: TimelineProps) {
   const { state, ready, resetAll: resetInputs } = useInputs();
   const [ownRates, setOwnRate] = useOwnRates("guide");
   const ownRate = cash ? ownRates[cash.id] : undefined;
@@ -102,7 +81,7 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
     // a field's value, its default or what the reader typed: a plain number wherever it shows; its reset is the field's
     const own = enteredOf(key);
     if (own === undefined) return asField({ ...p05Value(bundle.p05, key), about: labelOf(key) });
-    return asField(asP05Input(key, enteredValue(own, p05Units[key], today, labelOf(key))));
+    return asField(enteredValue(own, p05Units[key], today, labelOf(key)));
   };
   const horizonYears = state.entered.horizon_years ?? p05Number(bundle.p05, "horizon_years");
   const returnEntered = cash ? ownRate !== undefined : timeline.kind === "ok" && timeline.enteredReturn;
