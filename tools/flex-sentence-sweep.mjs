@@ -1,13 +1,11 @@
 // Finds sentences broken by flex layout: an element laid out as a flex/grid column whose direct children mix text nodes and elements
 // (each piece becomes its own line), and row flex whose direct text child is only punctuation (a stray gap before "." or ",").
-import { createRequire } from "node:module";
+import { chromium } from "playwright";
 import { readFileSync, writeFileSync } from "node:fs";
-import { newContext, settled } from "../site/scripts/browser.mjs";
-const require = createRequire(import.meta.url);
-const { chromium } = require("/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/playwright");
+import { newContext, waitSettled } from "../site/scripts/browser.mjs";
 const [listFile, outFile] = process.argv.slice(2);
 const paths = readFileSync(listFile, "utf8").split("\n").filter(Boolean);
-const browser = await chromium.launch({ executablePath: "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
+const browser = await chromium.launch();
 const ctx = await newContext(browser, { viewport: { width: 1280, height: 900 } });
 const found = [];
 async function worker(queue) {
@@ -16,7 +14,7 @@ async function worker(queue) {
     const p = queue.shift();
     try {
       await page.goto("http://127.0.0.1:4173/finance-tool" + p, { waitUntil: "load", timeout: 30000 });
-      await page.evaluate(settled);
+      await waitSettled(page);
       // open every disclosure so folded content is checked too
       await page.evaluate(() => document.querySelectorAll("details").forEach((d) => (d.open = true)));
       const hits = await page.evaluate(() => {

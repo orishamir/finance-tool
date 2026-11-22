@@ -179,7 +179,7 @@ function addBrokerRange(d: SignatureData, c: SignatureCtx) {
  * The brokerage side is priced at the collected tariff that leaves the example plan the most, the pick of F-80, named as
  * such; P-05's bank tariff (Leumi) made the account look far dearer than a reader who shops for a broker would pay.
  */
-function useBestBroker(d: SignatureData) {
+function priceAtBestBroker(d: SignatureData) {
   const best = d.bundles["brokerage-best"];
   if (!best) return;
   d.bundles["brokerage-account"] = best;
@@ -195,7 +195,7 @@ export function buildStudyFund(c: SignatureCtx): SignatureData {
   if (broker) d.bundles["brokerage-account"] = broker;
   else d.gaps.push("bundle:brokerage-account");
   addBrokerRange(d, c);
-  useBestBroker(d);
+  priceAtBestBroker(d);
   const spec = c.p05.instruments?.[c.id];
   const pick = holding && spec?.track !== undefined ? sameIndexTrack(c.id, holding.exposure, { kupa: spec.track }) : null;
   const track = holding && pick ? (indexTracks(c, c.id, holding.exposure).find((t) => t.id === pick.trackId) ?? null) : null;

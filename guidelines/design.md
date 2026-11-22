@@ -125,7 +125,9 @@ What goes on a page is his call. When he asks for a change, build it this way:
 - **A sheet:**
   - only one is open at a time;
   - a term or rule tapped inside it replaces its content, with a way back;
-  - its X and the phone's Back both close it;
+  - its X and the phone's Back both close it: Back as the browser's close
+    request for a modal `<dialog>` (as Escape is), never through a history
+    entry;
   - focus returns to what opened it, so the opener stays mounted;
   - `autofocus` marks the first thing to act on.
 

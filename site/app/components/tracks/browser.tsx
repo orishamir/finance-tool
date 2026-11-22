@@ -8,6 +8,7 @@
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { guidePath, trackBrowserPath } from "../../lib/site-paths";
 import { useNavigate, useParams } from "react-router";
+import { inBackground } from "../../lib/background";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
 import { HELP_TERMS, SORT_IDS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData } from "../../lib/track-browser";
@@ -108,7 +109,9 @@ export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge
       <PhoneFold summary={summary} more={t.fold.more} less={t.fold.less}>
         {/* the product, then the kind of track: one two-level choice, as the companies page's (kit ChoicePair) */}
         <ChoicePair
-          parent={{ label: t.controls.product, ids: data.products.map((p) => p.id), labels: Object.fromEntries(data.products.map((p) => [p.id, p.name])), value: productId, counts: Object.fromEntries(data.products.map((p) => [p.id, p.rows.length])), onChange: (id) => id !== productId && navigate(trackBrowserPath(id, { search: keepFor(sp) }), { preventScrollReset: true }) }}
+          parent={{ label: t.controls.product, ids: data.products.map((p) => p.id), labels: Object.fromEntries(data.products.map((p) => [p.id, p.name])), value: productId, counts: Object.fromEntries(data.products.map((p) => [p.id, p.rows.length])), onChange: (id) => {
+            if (id !== productId) inBackground(navigate(trackBrowserPath(id, { search: keepFor(sp) }), { preventScrollReset: true }));
+          } }}
           under={
             <TextLink look="line" to={guidePath(view.id)} className="self-start text-sm">
               {t.count.whatIs} {view.name}

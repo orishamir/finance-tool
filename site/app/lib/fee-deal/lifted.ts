@@ -6,6 +6,7 @@
 // part cell takes no other cell. Dropped in the bin, it is taken away. Each drop is one of the pure edits
 // (edits/arrange.ts, edits/cells.ts, edits/case.ts) and says, where it took something the person gave, what it did, for the undo line.
 // Pure.
+import { assertNever } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
 import { hasCases, sameContent, type Fee, type FeeDeal, type When } from "./model";
 import { valueKey, WHOLE } from "./layout";
@@ -137,8 +138,12 @@ export function liftDrop(deal: FeeDeal, l: Lifted, on: LiftTarget, opts: { copy?
       const next = orderFees(deal, reordered(opts.shown, l.fee, on.fee));
       return next === deal ? null : { deal: next };
     }
-    default:
+    // a ladder's step and a part row in every case are only taken away, never dropped anywhere
+    case "step":
+    case "row":
       return null;
+    default:
+      return assertNever(l);
   }
 }
 
@@ -351,7 +356,11 @@ export function liftRemove(deal: FeeDeal, l: Lifted): LiftResult | null {
       const { stages: _s, sale: _sale, ...head } = fee;
       return oneFee(deal, fee, { ...head, stages: x.stages, ...(x.sale ? { sale: x.sale } : {}) } as Fee, w.part[l.row]);
     }
-    default:
+    // a thing of a head and a fee's card are moved, never taken away
+    case "thing":
+    case "fee":
       return null;
+    default:
+      return assertNever(l);
   }
 }

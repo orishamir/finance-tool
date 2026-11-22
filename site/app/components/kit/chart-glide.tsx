@@ -2,7 +2,7 @@
 // wherever it stands now, so a slider that keeps moving never makes a chart restart or snap back; the rounded ends of an axis move, not
 // the numbers under them, and its labels fade in and out. Only marks move: nothing here touches the layout. No motion for someone who asked
 // for none (--duration-chart is 0 there).
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useLayoutEffect, useRef, useState } from "react";
 import { alignLine, cssMs, follow, mergeTicks, sameSeries, type GlideSeries, type GlideTick } from "./chart-glide-math";
 import { cx } from "./cx";
 
@@ -92,12 +92,14 @@ export function useFadingTicks(values: readonly number[]): GlideTick[] {
   const key = values.join();
   const [list, setList] = useState<GlideTick[]>(() => values.map((value) => ({ value, phase: "still" })));
   const first = useRef(true);
+  // the effect runs when the ticks' values change (`key`), and reads the values of that render
+  const merge = useEffectEvent(() => setList((prev) => mergeTicks(prev, values)));
   useEffect(() => {
     if (first.current) {
       first.current = false;
       return;
     }
-    setList((prev) => mergeTicks(prev, values));
+    merge();
     const t = setTimeout(() => setList((prev) => prev.filter((p) => p.phase !== "out")), durationChartFade());
     return () => clearTimeout(t);
   }, [key]);
@@ -166,6 +168,8 @@ export function useFlip<E extends HTMLElement = HTMLOListElement>(order: string 
   const ref = useRef<E>(null);
   const shown = useRef(order);
   const reading = useRef<{ order: string | null; places: Map<FlipKey, number> } | null>(null);
+  // the row held is asked when the order changes, not followed: a new `held` alone moves nothing
+  const heldNow = useEffectEvent(() => held?.());
   // read once per new order: a render that is thrown away and done again keeps the first reading
   if (order !== shown.current && shown.current !== null && reading.current?.order !== order && ref.current) reading.current = { order, places: flipPlaces(ref.current) };
   useLayoutEffect(() => {
@@ -183,7 +187,7 @@ export function useFlip<E extends HTMLElement = HTMLOListElement>(order: string 
     }
     const top = list.getBoundingClientRect().top;
     const next = new Map(rows.map((r) => [r.key, r.el.getBoundingClientRect().top - top]));
-    const anchor = held?.();
+    const anchor = heldNow();
     const shift = anchor ? (before.get(anchor) ?? next.get(anchor) ?? 0) - (next.get(anchor) ?? 0) : 0;
     const screen = window.innerHeight;
     const timing = { duration: ms, easing: "cubic-bezier(0.2, 0, 0, 1)" };

@@ -321,7 +321,6 @@
    "site/app/components/invest/lists.tsx": 1,
    "site/app/components/invest/no-fund.tsx": 2,
    "site/app/components/invest/stairs.tsx": 3,
-   "site/app/components/kit/chart-glide.tsx": 2,
    "site/app/components/kit/drop-list.ts": 1,
    "site/app/components/kit/fields.tsx": 1,
    "site/app/components/kit/lift.tsx": 1,
@@ -332,14 +331,9 @@
    "site/app/root.tsx": 2,
    "site/app/routes/invest.tsx": 1
   },
-  "react-hooks(rules-of-hooks)": {
-   "site/app/lib/guide-signature-g2.server.ts": 1
-  },
   "typescript(no-base-to-string)": {
-   "packages/pipeline/src/validate.ts": 2,
    "site/app/components/invest/render-sections.test.ts": 2,
-   "site/app/components/kit/gallery.tsx": 1,
-   "site/app/lib/compare.server.ts": 1
+   "site/app/components/kit/gallery.tsx": 1
   },
   "typescript(no-explicit-any)": {
    "packages/pipeline/src/adapters/cbs-cpi.ts": 2,
@@ -348,9 +342,7 @@
    "tools/rank-scan.ts": 6
   },
   "typescript(no-floating-promises)": {
-   "site/app/components/company/template.tsx": 2,
    "site/app/components/fee-deal/page.tsx": 1,
-   "site/app/components/fee-deal/use-deal-document.ts": 1,
    "site/app/components/invest/deal-account.tsx": 1,
    "site/app/components/search.tsx": 2,
    "site/app/components/shell.tsx": 1,
@@ -358,11 +350,8 @@
   },
   "typescript(no-misused-promises)": {
    "site/app/components/invest/no-fund.tsx": 1,
-   "site/app/components/search-results.tsx": 2,
-   "site/app/components/tracks/browser.tsx": 1,
    "site/app/components/transfer/panel.tsx": 2,
-   "site/app/routes/invest.tsx": 2,
-   "tools/first-tap.mjs": 1
+   "site/app/routes/invest.tsx": 2
   },
   "typescript(no-misused-spread)": {
    "site/app/components/kit/chip-list.tsx": 1,
@@ -803,14 +792,10 @@
    "site/app/lib/fee-deal/templates.ts": 1,
    "tools/rank-flags.mjs": 1
   },
-  "typescript(restrict-template-expressions)": {
-   "site/app/lib/compare.server.ts": 1
-  },
   "typescript(switch-exhaustiveness-check)": {
    "packages/engine/src/ledgers/deal-account.ts": 1,
    "site/app/components/invest/parts.tsx": 1,
    "site/app/lib/fee-deal/kinds.ts": 1,
-   "site/app/lib/fee-deal/lifted.ts": 2,
    "site/app/lib/fee-deal/templates.ts": 1
   },
   "typescript(unbound-method)": {
