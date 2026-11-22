@@ -466,7 +466,7 @@ describe("F-128 a deal row in the workbench", () => {
 describe("F-102 with BANK-35 on a deal's current account: the cap is compared with what a month is charged", () => {
   /** The deal with `fees` as its current account (F-102), after its trade fee, each charged within its steps (`planWithin`). */
   const withAccount = (fees: Deal["fees"], planWithin?: DealAccount["planWithin"]): DealAccount => ({
-    ...account({ ...deal, fees: [deal.fees[0]!, ...fees] }),
+    ...account({ ...deal, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001, min: 5 } }] }, ...fees] }),
     currentAccount: fees.map((_, i) => i + 1),
     ...(planWithin ? { planWithin: [undefined, ...planWithin] } : {}),
   });

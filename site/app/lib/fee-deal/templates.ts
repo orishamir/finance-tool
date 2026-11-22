@@ -943,7 +943,7 @@ export function withLaterFills(deal: FeeDeal, data: Pick<FeesData, "houses">): F
 }
 
 /** The id of a fee `withLaterFills` adds: the kind's own, with a count after it where `fees` hold that id already. */
-export function laterFeeId(kind: FeeKindId, fees: readonly Pick<Fee, "id">[]): string {
+function laterFeeId(kind: FeeKindId, fees: readonly Pick<Fee, "id">[]): string {
   const base = `fee-${kind.replace(/_/g, "-")}`;
   let id = base;
   for (let n = 2; fees.some((f) => f.id === id); n++) id = `${base}-${n}`;

@@ -125,7 +125,7 @@
    "site/app/lib/documents.server.ts": 3,
    "site/app/lib/engine.ts": 1,
    "site/app/lib/fee-deal/cases.ts": 1,
-   "site/app/lib/fee-deal/charts.ts": 12,
+   "site/app/lib/fee-deal/charts.ts": 11,
    "site/app/lib/fee-deal/core.ts": 1,
    "site/app/lib/fee-deal/deal-read.ts": 2,
    "site/app/lib/fee-deal/link.ts": 1,

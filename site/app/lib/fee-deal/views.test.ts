@@ -783,7 +783,7 @@ describe("a bank's current account, filled from its whole list (F-102, D64)", ()
     // the saved deals: the old one with the card, every other as it is, the same list where none changes or before the data comes
     const scratch = account();
     const shown = withLaterFillsAll([old, scratch], data);
-    expect(card(shown[0]!)).toEqual(want);
+    expect(card(must(shown[0], "the old deal shown"))).toEqual(want);
     expect(shown[1]).toBe(scratch);
     const none = [scratch];
     expect(withLaterFillsAll(none, data)).toBe(none);

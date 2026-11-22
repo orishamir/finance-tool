@@ -31,6 +31,11 @@ function oldLeumi(): unknown {
   const old: FeeDeal = { ...d, fees: d.fees.filter((f) => f.kind !== "current_account"), template };
   return JSON.parse(JSON.stringify(old));
 }
+/** The deletion's undo, else the test fails saying the deal was not deleted. */
+const kept = (u: ReturnType<typeof deleteStored>) => {
+  if (!u) throw new Error("the deal was not deleted");
+  return u;
+};
 const plain = (id: string, name: string): unknown => JSON.parse(JSON.stringify({ ...newDeal("brokerage-account", name), id }));
 
 describe("a saved deal deleted, put back or renamed writes the others as stored", () => {
@@ -51,10 +56,10 @@ describe("a saved deal deleted, put back or renamed writes the others as stored"
     expect(u?.deal).toEqual(readDeal(b));
     expect(u?.shown).toBe(false);
     expect(stored()).toEqual([a, c]);
-    expect(undoDeleteStored(u!)).toBe(true);
+    expect(undoDeleteStored(kept(u))).toBe(true);
     expect(stored()).toEqual([a, b, c]);
     // put back already: nothing changes
-    expect(undoDeleteStored(u!)).toBe(false);
+    expect(undoDeleteStored(kept(u))).toBe(false);
     expect(deleteStored("deal-x", "deal-a")).toBeNull();
     expect(stored()).toEqual([a, b, c]);
   });
@@ -66,7 +71,7 @@ describe("a saved deal deleted, put back or renamed writes the others as stored"
     const u = deleteStored("deal-a", "deal-a");
     expect(u?.shown).toBe(true);
     expect(stored()).toEqual([b]);
-    undoDeleteStored(u!);
+    undoDeleteStored(kept(u));
     expect(stored()).toEqual([a, b]);
   });
 
