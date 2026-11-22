@@ -2,7 +2,9 @@ import type { ReactNode } from "react";
 import { RangeField, type RangeFieldProps } from "./fields";
 import { cx } from "./cx";
 
-export type Knob = RangeFieldProps & { id: string };
+export interface Knob extends RangeFieldProps {
+  id: string;
+}
 
 /**
  * The plan's numbers as sliders that stay on screen, for a page meant to be played with (the indices page):

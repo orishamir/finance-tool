@@ -1222,11 +1222,6 @@
     cursor: pointer;
     direction: rtl;
   }
-  /* the quiet range field's slider runs left to right, as a chart's time axis does: its least at the left, filled rightwards */
-  .slider[dir="ltr"] {
-    --slider-bar: linear-gradient(to right, var(--slider-ink) var(--fill, 0%), var(--slider-track) var(--fill, 0%));
-    direction: ltr;
-  }
   .slider:active {
     --slider-ink: var(--slider-active);
   }

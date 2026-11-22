@@ -10,9 +10,7 @@
 //   early    a number field typed in before the page's script arrived that loses what was typed, or the keystrokes after it; one typed
 //            in and left before the script arrived that loses what was typed (on the deposits page: the kit page's script draws it again
 //            rather than taking it over).
-//   slider   a slider without its value at each end, or one a finger drags across that does not follow it; the proposed quiet slider
-//            (RangeField's "quiet" variant, left to right with no ends) that a finger dragged from its left end to its right does not carry
-//            up, or whose box does not follow.
+//   slider   a slider without its value at each end, or one a finger drags across that does not follow it.
 //   sheet    with the sheets' motion played: a sheet that does not open with the focus on its first thing to act on, that Escape (the
 //            browser's close request, which the phone's Back sends on Android) or its X does not close, that does not give the focus back
 //            to what opened it; a sheet opened from inside another that shows over it rather than in its place, leaves the one under it
@@ -188,8 +186,7 @@ async function sliderCheck(browser, base) {
   const field = page.locator('article[aria-label="RangeField"] .range-field').first();
   const ends = await field.locator("[data-slider-ends] > *").allTextContents();
   if (ends.join("|") !== "1|40") found.push(`slider: the years slider (1 to 40) shows "${ends.join("|")}" at its ends`);
-  // the quiet variant runs left to right and shows no ends on purpose
-  const all = await page.locator('main input[type="range"]:not([dir="ltr"])').count();
+  const all = await page.locator('main input[type="range"]').count();
   const withEnds = await page.locator("main .range-field [data-slider-ends]").count();
   if (withEnds < all) found.push(`slider: ${all - withEnds} of the ${all} sliders on the kit page show no value at their ends`);
   const slider = field.locator('input[type="range"]');
@@ -202,17 +199,6 @@ async function sliderCheck(browser, base) {
   const after = Number(await slider.inputValue());
   if (!(after > before && after >= 35)) found.push(`slider: a finger dragged from its right end to its left does not carry it up (${before} to ${after})`);
   if ((await field.locator("input.field-input").inputValue()) !== String(after)) found.push("slider: the box does not follow the slider a finger drags");
-  // the quiet variant: its least at the left, so the finger moves right to grow it; the amount's stepped scale ends at 500,000
-  const quiet = page.locator('article[aria-label="RangeField variant=\\"quiet\\""] .range-field:has(input[type="range"][dir="ltr"])').first();
-  const qSlider = quiet.locator('input[type="range"]');
-  const qBox = quiet.locator("input.field-input");
-  await qSlider.scrollIntoViewIfNeeded();
-  const q = await qSlider.boundingBox();
-  const qBefore = await qBox.inputValue();
-  await touchDrag(page, { x: q.x + 6, y: q.y + q.height / 2 }, { x: q.x + q.width - 6, y: q.y + q.height / 2 });
-  await page.evaluate(settled);
-  const qAfter = await qBox.inputValue();
-  if (qAfter !== "500,000") found.push(`slider: a finger dragged across the quiet slider from its left end to its right does not carry its box to the top of the scale (${qBefore} to ${qAfter}, not 500,000)`);
   await ctx.close();
   return found;
 }
