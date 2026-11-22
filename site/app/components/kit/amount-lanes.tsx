@@ -9,7 +9,7 @@
 // drawn. On a phone a lane's name takes its period (`per`) and its parts only their figures (`short`). A lane's "?" (`help`) stands after
 // its name, outside the parts, which are buttons themselves. Inside a `ShareStack` the stack draws the reader's line through the chart and
 // the lanes at once.
-import type { PointerEvent, ReactNode } from "react";
+import type { CSSProperties, PointerEvent, ReactNode } from "react";
 import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
 import { logAt, type LogRange } from "./log-axis";
 import { SHARE_PLOT, useInStack } from "./share-chart";
@@ -98,6 +98,7 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
                 const fits = (e - s) * plotW >= chartTextWidth(words, CHART_TEXT_PX) + 2 * PART_PAD;
                 return { p, s, e, words, fits };
               });
+            const under = underLabels(parts.filter((x) => !x.fits), plotW);
             return (
               <div key={l.id} {...events} className="flex flex-col gap-1">
                 {/* a "?" reaches 12 px under its line and a part's press 8 px over the bar: the room between keeps the two apart */}
@@ -133,24 +134,16 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
                     </button>
                   ))}
                 </div>
-                {parts.some((x) => !x.fits) && (
-                  <div dir="ltr" className="relative h-5" style={inset}>
-                    {parts
-                      .filter((x) => !x.fits)
-                      .map(({ p, s, e, words }) => {
-                        const mid = (s + e) / 2;
-                        // centred under its part, or held to the lane's end where centred it would run past it
-                        const half = (chartTextWidth(words, CHART_TEXT_PX) / 2) / plotW;
-                        const place = mid + half > 1 ? { right: "0%", alignItems: "flex-end" } : mid - half < 0 ? { left: "0%", alignItems: "flex-start" } : { left: `${mid * 100}%`, transform: "translateX(-50%)", alignItems: "center" };
-                        return [
+                {under.length > 0 && (
+                  <div dir="ltr" className="relative" style={{ ...inset, height: 20 + UNDER_ROW * Math.max(...under.map((x) => x.row)) }}>
+                    {under.map(({ p, mid, place, row, words }) => [
                           <span key={`${p.id}:tick`} aria-hidden="true" className={cx("absolute -top-1 h-1.5 w-[1.5px]", l.swatch)} style={{ left: `${mid * 100}%` }} />,
-                          <span key={p.id} className={cx("absolute top-1 flex flex-col text-xs", lit(p) ? "font-semibold text-foreground" : "text-muted-foreground")} style={place}>
+                          <span key={p.id} className={cx("absolute flex flex-col text-xs", lit(p) ? "font-semibold text-foreground" : "text-muted-foreground")} style={{ ...place, top: 4 + row * UNDER_ROW }}>
                             <span dir="rtl" className="whitespace-nowrap leading-4">
                               {words}
                             </span>
                           </span>,
-                        ];
-                      })}
+                        ])}
                   </div>
                 )}
               </div>
@@ -165,4 +158,37 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
       )}
     </div>
   );
+}
+
+/** How far each further row of words under a lane stands below the one before, in px (`leading-4` and the room between two rows); the
+ *  first row's box is 20 px. */
+const UNDER_ROW = 18;
+/** The room kept between two parts' words on one row under a lane, in px. */
+const UNDER_GAP = 8;
+
+/**
+ * Where each part too narrow for its words writes them under the lane: centred under the part, or held to the lane's end where centred they
+ * would run past it; words that would meet the words before them drop to the next row down, so two parts' words are never drawn over each
+ * other (a rate and a maximum on each security, side by side on a phone).
+ */
+function underLabels(xs: { p: AmountLanePart; s: number; e: number; words: string }[], plotW: number): { p: AmountLanePart; words: string; mid: number; row: number; place: CSSProperties }[] {
+  const ends: number[] = [];
+  return xs
+    .map(({ p, s, e, words }) => {
+      const mid = (s + e) / 2;
+      const width = chartTextWidth(words, CHART_TEXT_PX);
+      const half = width / 2 / plotW;
+      const at = mid + half > 1 ? "end" : mid - half < 0 ? "start" : "mid";
+      const left = at === "end" ? plotW - width : at === "start" ? 0 : mid * plotW - width / 2;
+      const place: CSSProperties = at === "end" ? { right: "0%", alignItems: "flex-end" } : at === "start" ? { left: "0%", alignItems: "flex-start" } : { left: `${mid * 100}%`, transform: "translateX(-50%)", alignItems: "center" };
+      return { p, words, mid, place, left, right: left + width };
+    })
+    .sort((a, b) => a.left - b.left)
+    .map(({ left, right, ...x }) => {
+      // the first row whose last words end far enough before these
+      let row = ends.findIndex((end) => left >= end + UNDER_GAP);
+      if (row === -1) row = ends.length;
+      ends[row] = right;
+      return { ...x, row };
+    });
 }

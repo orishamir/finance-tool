@@ -1274,7 +1274,8 @@ function TermsSheet({ ids, name, lead, rules, parts, data, headId }: { ids: read
         <h2 id={headId} className="text-lg font-semibold">
           {name}
         </h2>
-        {lead && <p className="text-muted-foreground">{lead}</p>}
+        {/* an open question named in the text ("… שאלה פתוחה CS OQ9") is its chip, as in a value's note */}
+        {lead && <p className="text-muted-foreground"><IdText text={lead} /></p>}
       </div>
       {/* the rules the text rests on, under it: a list whose rows are the rules, each by its title (D116) */}
       {rules && <RuleTitleList ids={rules} />}

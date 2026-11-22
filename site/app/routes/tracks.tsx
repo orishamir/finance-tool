@@ -6,11 +6,11 @@ import type { Route } from "./+types/tracks";
 import type { SiteValue } from "../lib/value";
 import { pagePreview, trackBrowser as copy } from "../copy";
 import { pageMeta } from "../lib/page-meta";
-import { TrackBrowser } from "../components/tracks/browser";
+import { TrackBrowser, TracksHelp } from "../components/tracks/browser";
 import { CompanyTabs } from "../components/decoder/company-tabs";
-import { NumAfter, NumberLegend, StaleSaid } from "../components/provenance";
+import { StaleSaid } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Callout, PageHead, When } from "../components/kit";
+import { Callout, HeldMark, PageHead, When } from "../components/kit";
 
 /** The data covers the six products, so moving between them keeps it (the address is read from the params). */
 export function shouldRevalidate() {
@@ -49,26 +49,10 @@ export default function Tracks() {
       <div className="flex flex-col gap-5 lg:gap-6">
         <PageHead
           tabs={<CompanyTabs current="product" />}
-          title={copy.title}
-          lede={
-            <>
-              {/* the year and the date on a phone, whose rows have no heads; from md the heads say them */}
-              <span className="md:hidden">
-                {data.feeYear ? (
-                  <>
-                    <NumAfter lead={copy.lead.intro} value={data.feeYear} />
-                    <NumAfter lead={copy.lead.figures} value={data.period} />
-                  </>
-                ) : (
-                  <NumAfter lead={copy.lead.noYear} value={data.period} />
-                )}
-                {copy.lead.end}
-              </span>
-              {copy.lead.source}
-            </>
-          }
+          // how to read the list (the fees' year, the figures' date, the source, the companies' order, the columns' cards) is one "?" held to
+          // the title's last word; the figures' underlines say they open, and each figure's sheet says whether it is sourced or computed
+          title={<HeldMark words={copy.title} mark={<TracksHelp data={data} childAge={childAge} />} />}
         >
-          <NumberLegend />
           {data.period.stale && (
             <Callout tone="caution">
               <When iso={String(data.period.value)} lead={`${copy.oldData} `} />.

@@ -201,7 +201,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   // a bank's row counts its current account, except at the bank the person marked as theirs (D64)
   const livePlan: WorkbenchInputs = useMemo(() => ({ ...entered.plan, currentAccounts }), [entered, currentAccounts]);
   // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider in the render deferred behind it (`Body`); the two lists price every
-  // account and fund (about 200 ms) and wait until the slider rests. A bank
+  // account and fund (in the page's worker, below) and wait until the slider rests. A bank
   // marked as the person's own is one pick, not a slide: the lists take it at once, with the plan as it last settled, so their rows
   // re-sort right after the pick rather than a moment later, when the hand may be on the list (0.6 to 1 s).
   const settledPlan = useSettled(livePlan, 250);

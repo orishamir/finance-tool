@@ -1,10 +1,11 @@
 // A receipt (the index page's): a sheet of paper with a torn bottom edge, lines of a name and an amount joined by a dotted leader, a line's
-// parts indented under it behind a thin edge in its colour, and rules between the blocks: a double one before the total, a dashed one
-// before what follows from it. The amounts and their marks are the caller's; the receipt lays them out so they read down one edge. Its
+// parts indented under it behind a thin edge in its colour or behind a tap on its name, in a sheet of its own, and rules between the blocks:
+// a double one before the total, a dashed one between blocks. The amounts and their marks are the caller's; the receipt lays them out so they read down one edge. Its
 // ticket is the same lines laid across a wide column in three parts, and its stub the same paper torn at the top, pinned to the screen's
 // foot while the receipt is out of sight above.
-import { useEffect, useState, type ReactNode, type Ref, type RefObject } from "react";
-import { IconChevronUp } from "../icons";
+import { useEffect, useId, useState, type ReactNode, type Ref, type RefObject } from "react";
+import { IconChevronUp, IconDrillIn } from "../icons";
+import { Sheet } from "../Sheet";
 import { cx } from "./cx";
 
 export function ReceiptPaper({ children, className, label }: { children: ReactNode; className?: string; /** The paper's spoken name, for a region. */ label?: string }) {
@@ -27,11 +28,13 @@ export function Leader() {
 }
 
 /**
- * One line: a colour mark (`swatch`, a `bg-` class) when the line is a part of a bar under it, the name, a dotted leader, the amount.
- * `sub`: under the line, quieter (a rate in words). `parts`: the line's own lines, indented behind an edge in `edge`'s colour (an account's
- * fees with their amounts, a fund's with their rates).
+ * One line: a colour mark (`swatch`, a `bg-` class) when the line stands for a part drawn beside or under it in that colour, the name, a
+ * dotted leader, the amount. `sub`: under the line, quieter (a rate in words). `parts`: the line's own lines, indented behind an edge in
+ * `edge`'s colour (an account's fees with their amounts, a fund's with their rates). `opens`: the line's own lines kept out of sight
+ * instead, in a sheet titled `opens.title` that a tap on the name opens (the name then a button, with a drill-in chevron after it), as a
+ * figure opens its own sheet; the amount keeps its own tap.
  */
-export function ReceiptLine({ label, value, swatch, sub, parts, edge, size = "base", strong = false }: {
+export function ReceiptLine({ label, value, swatch, sub, parts, edge, opens, size = "base", strong = false }: {
   label: ReactNode;
   value: ReactNode;
   swatch?: string;
@@ -39,6 +42,7 @@ export function ReceiptLine({ label, value, swatch, sub, parts, edge, size = "ba
   parts?: ReactNode;
   /** The indented parts' edge colour, a `border-` class. */
   edge?: string;
+  opens?: { title: ReactNode; body: ReactNode };
   /** `base` (16 px) for a line of the receipt, `sm` (14 px) for a part of one. */
   size?: "base" | "sm";
   strong?: boolean;
@@ -47,13 +51,38 @@ export function ReceiptLine({ label, value, swatch, sub, parts, edge, size = "ba
     <div className="flex flex-col gap-1">
       <div className={cx("flex items-baseline gap-2", size === "sm" ? "text-sm" : "text-base", strong && "font-semibold")}>
         {swatch && <span aria-hidden="true" className={cx("inline-block size-2.5 shrink-0 self-center rounded-[2px]", swatch)} />}
-        <span className="min-w-0">{label}</span>
+        {opens ? <LineOpens title={opens.title} body={opens.body}>{label}</LineOpens> : <span className="min-w-0">{label}</span>}
         <Leader />
         <span className="shrink-0 tabular-nums whitespace-nowrap">{value}</span>
       </div>
       {sub && <div className={cx("text-xs text-muted-foreground", swatch && "ps-[1.125rem]")}>{sub}</div>}
       {parts && <div className={cx("ms-1 mt-1 flex flex-col gap-2 border-s-2 ps-3", edge ?? "border-border")}>{parts}</div>}
     </div>
+  );
+}
+
+/** A line's name as the button that opens its own lines in a sheet (`ReceiptLine` `opens`). */
+function LineOpens({ title, body, children }: { title: ReactNode; body: ReactNode; children: ReactNode }) {
+  const [anchor, setAnchor] = useState<HTMLElement | null>(null);
+  const id = useId();
+  return (
+    <>
+      {/* the chevron beside the name's box, so it never wraps onto a line of its own */}
+      <button type="button" aria-haspopup="dialog" onClick={(e) => setAnchor(e.currentTarget)} className="tap-area flex min-w-0 cursor-pointer items-baseline gap-1 text-start hover:text-link focus-visible:outline-2 focus-visible:outline-ring">
+        <span className="min-w-0">{children}</span>
+        <IconDrillIn size={14} className="shrink-0 self-center text-link" />
+      </button>
+      <Sheet open={anchor !== null} onClose={() => setAnchor(null)} anchor={anchor} pc="popover" height={70} labelledBy={id}>
+        {anchor && (
+          <div className="flex flex-col gap-3">
+            <h2 id={id} className="text-lg font-semibold">
+              {title}
+            </h2>
+            <div className="flex flex-col gap-2.5 text-sm">{body}</div>
+          </div>
+        )}
+      </Sheet>
+    </>
   );
 }
 
@@ -78,22 +107,24 @@ export function TicketPart({ label, swatch, name, children }: { label: ReactNode
 /**
  * The receipt as a ticket across a wide column (the index page from 1280 px, above the two lists): a line on top (`top`, its two ends),
  * three parts side by side, the middle one (`middle`, 40% of the width) between two dashed edges and the two sides (`start`, `end`) as wide
- * as what is left, then a row of three cells under a dashed rule (`foot`, in the same columns). Round notches bite the ticket's top and
+ * as what is left, then, where given, a row of three cells under a dashed rule (`foot`, in the same columns). Round notches bite the ticket's top and
  * bottom edges where the middle part's edges meet them. The popover surface, flat; the lines, amounts and marks are the caller's.
  */
-export function ReceiptTicket({ label, top, start, middle, end, foot, ref }: { label?: string; top: ReactNode; start: ReactNode; middle: ReactNode; end: ReactNode; foot: [ReactNode, ReactNode, ReactNode]; ref?: Ref<HTMLElement> }) {
+export function ReceiptTicket({ label, top, start, middle, end, foot, ref }: { label?: string; top: ReactNode; start: ReactNode; middle: ReactNode; end: ReactNode; foot?: [ReactNode, ReactNode, ReactNode]; ref?: Ref<HTMLElement> }) {
   const notch = "absolute size-[22px] rounded-full bg-background";
   return (
-    <section ref={ref} aria-label={label} className="relative grid grid-cols-[minmax(0,1fr)_40%_minmax(0,1fr)] grid-rows-[auto_auto_auto] rounded-2xl bg-popover text-popover-foreground">
+    <section ref={ref} aria-label={label} className={cx("relative grid grid-cols-[minmax(0,1fr)_40%_minmax(0,1fr)] rounded-2xl bg-popover text-popover-foreground", foot ? "grid-rows-[auto_auto_auto]" : "grid-rows-[auto_auto]")}>
       <div className="col-span-3 flex items-baseline justify-between gap-3 px-6 pt-4 pb-2 text-xs text-muted-foreground">{top}</div>
       <div className="min-w-0 px-6 pt-2.5 pb-6">{start}</div>
       <div className="flex min-w-0 flex-col gap-3 border-x-[1.5px] border-dashed border-muted-foreground/35 px-7 pt-2.5 pb-6">{middle}</div>
       <div className="min-w-0 px-6 pt-2.5 pb-6">{end}</div>
-      <div className="col-span-3 grid grid-cols-subgrid border-t-[1.5px] border-dashed border-muted-foreground/35">
-        <div className="min-w-0 px-6 pt-3.5 pb-4">{foot[0]}</div>
-        <div className="min-w-0 px-7 pt-3.5 pb-4">{foot[1]}</div>
-        <div className="min-w-0 px-6 pt-3.5 pb-4">{foot[2]}</div>
-      </div>
+      {foot && (
+        <div className="col-span-3 grid grid-cols-subgrid border-t-[1.5px] border-dashed border-muted-foreground/35">
+          <div className="min-w-0 px-6 pt-3.5 pb-4">{foot[0]}</div>
+          <div className="min-w-0 px-7 pt-3.5 pb-4">{foot[1]}</div>
+          <div className="min-w-0 px-6 pt-3.5 pb-4">{foot[2]}</div>
+        </div>
+      )}
       <div aria-hidden="true" className="pointer-events-none relative col-start-2 row-start-1 row-end-[-1]">
         <span className={cx(notch, "-top-[11px] -inset-s-[11px]")} />
         <span className={cx(notch, "-top-[11px] -inset-e-[11px]")} />

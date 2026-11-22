@@ -13,7 +13,7 @@ import { fmt } from "../lib/format";
 import { InstitutionPage } from "../components/decoder/institutions/page";
 import { BrandFundList } from "../components/decoder/brand-funds";
 import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage-card";
-import { Num, NumAfter, OwnCompanyPage, Ruled, StaleSaid } from "../components/provenance";
+import { Num, NumAfter, OwnCompanyPage, StaleSaid } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { CompanyTracks } from "../components/tracks/company-browser";
 import { CapLead, type ProductCaps } from "../components/tracks/list";
@@ -362,9 +362,9 @@ function Unassigned({ rows }: { rows: CompanyData["unassigned"] }) {
   );
 }
 
-/** Under each track table on a phone, whose rows have no heads (D36): the product's legal caps, then that the direct expenses come on top
- *  (PF-10). From md the caps are the captions over the fee heads and the direct expenses the savings fee's "?"; a deposit fee's cap with
- *  no column under it is the line over the list's, at every width, and not repeated here. */
+/** Under each track table on a phone, whose rows have no heads (D36): the product's legal caps. From md they are the captions over the fee
+ *  heads; that the direct expenses come on top (PF-10) is the phone's "?" over the list and the savings fee's "?" from md; a deposit fee's
+ *  cap with no column under it is the line over the list's, at every width, and not repeated here. */
 function FeeFoot({ caps: all, depositCapAbove }: { caps: ProductCaps | null; /** The line over the list says the deposit fee's cap: the foot leaves it out. */ depositCapAbove: boolean }) {
   const caps = all && depositCapAbove ? { ...all, deposit: null } : all;
   return (
@@ -384,9 +384,6 @@ function FeeFoot({ caps: all, depositCapAbove }: { caps: ProductCaps | null; /**
           )}
         </span>
       )}
-      <span>
-        <Ruled id="PF-10">{copy.fees.direct.stated}</Ruled> {copy.fees.direct.after}
-      </span>
     </div>
   );
 }

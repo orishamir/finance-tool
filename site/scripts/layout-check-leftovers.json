@@ -1,4 +1,138 @@
 {
   "about": "Findings of site/scripts/layout-check.mjs that were on the site when the check came in (2026-11-08). Each is reported, not failed; a new finding fails. `pages` is a path prefix, `id` the box or text the finding names. Remove an entry when its fix lands (a full run says GONE).",
-  "leftovers": []
+  "leftovers": [
+    {
+      "pages": "/deposits",
+      "width": 1440,
+      "check": "overlap",
+      "id": "(לא כולל) | נעול עד סוף התקופה",
+      "why": "Found when the overlap check came in (2026-11-22): a deposit's exit words run over the next cell's words in the deposits table; not fixed on the branch that added the check."
+    },
+    {
+      "pages": "/companies/mizrahi-tefahot?product=bank-deposit",
+      "width": 1440,
+      "check": "overlap",
+      "id": "(לא כולל) | 1.72%",
+      "why": "Found when the overlap check came in (2026-11-22): the same deposits-table words over a rate in the bank's table."
+    },
+    {
+      "pages": "/companies/mizrahi-tefahot?product=bank-deposit",
+      "width": 1440,
+      "check": "overlap",
+      "id": "(לא כולל) | 1.15%",
+      "why": "As the line above."
+    },
+    {
+      "pages": "/companies/yahav?product=bank-deposit",
+      "width": 1440,
+      "check": "overlap",
+      "id": "(לא כולל) | 0.05%",
+      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
+    },
+    {
+      "pages": "/companies/yahav?product=bank-deposit",
+      "width": 1440,
+      "check": "overlap",
+      "id": "(לא כולל) | 0.1%",
+      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
+    },
+    {
+      "pages": "/companies/yahav?product=bank-deposit",
+      "width": 1440,
+      "check": "overlap",
+      "id": "(לא כולל) | 0.55%",
+      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
+    },
+    {
+      "pages": "/companies/yahav?product=bank-deposit",
+      "width": 1440,
+      "check": "overlap",
+      "id": "(לא כולל) | 1.8%",
+      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
+    },
+    {
+      "pages": "/companies/yahav?product=bank-deposit",
+      "width": 1440,
+      "check": "overlap",
+      "id": "(לא כולל) | 2%",
+      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
+    },
+    {
+      "pages": "/companies/yahav?product=bank-deposit",
+      "width": 1440,
+      "check": "overlap",
+      "id": "(לא כולל) | 1.95%",
+      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
+    },
+    {
+      "pages": "/companies/interactive-israel",
+      "width": 1440,
+      "check": "overlap",
+      "id": "ללא מקסימום | לפעולה",
+      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא מקסימום\" runs over the next words of its fee line."
+    },
+    {
+      "pages": "/companies/512065202?product=brokerage",
+      "width": 1440,
+      "check": "overlap",
+      "id": "ללא מקסימום | לפעולה",
+      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא מקסימום\" runs over the next words of its fee line."
+    },
+    {
+      "pages": "/companies/513026484?product=brokerage",
+      "width": 1440,
+      "check": "overlap",
+      "id": "ללא מקסימום | לפעולה",
+      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא מקסימום\" runs over the next words of its fee line."
+    },
+    {
+      "pages": "/companies/ibi?product=brokerage",
+      "width": 1440,
+      "check": "overlap",
+      "id": "ללא מקסימום | לפעולה",
+      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא מקסימום\" runs over the next words of its fee line."
+    },
+    {
+      "pages": "/companies/513173393?product=pension-comprehensive",
+      "width": 1440,
+      "check": "overlap",
+      "id": "? | מניות",
+      "why": "Found when the overlap check came in (2026-11-22): the pension fee head's note \"ממוצע 2025, לקרן כולה\" is wider than the fee column, so its \"?\" stands over the stocks head."
+    },
+    {
+      "pages": "/companies/513173393?product=pension-general",
+      "width": 1440,
+      "check": "overlap",
+      "id": "? | מניות",
+      "why": "Found when the overlap check came in (2026-11-22): the pension fee head's note \"ממוצע 2025, לקרן כולה\" is wider than the fee column, so its \"?\" stands over the stocks head."
+    },
+    {
+      "pages": "/kit",
+      "width": 1440,
+      "check": "overlap",
+      "id": "0.4% | שיעור",
+      "why": "Found when the overlap check came in (2026-11-22): a gallery sample's figure over its neighbour's words."
+    },
+    {
+      "pages": "/kit",
+      "width": 1440,
+      "check": "overlap",
+      "id": "▲ | 0.4%",
+      "why": "As the line above."
+    },
+    {
+      "pages": "/kit",
+      "width": 320,
+      "check": "overlap",
+      "id": "129,500 ₪ | נשאר לכם",
+      "why": "Found when the overlap check came in (2026-11-22): the receipt's large figure's text box reaches into its label at 320; drawn touching."
+    },
+    {
+      "pages": "/kit",
+      "width": 320,
+      "check": "overlap",
+      "id": "מינימום 20 ₪ | מקסימום 500 ₪",
+      "why": "Found when the overlap check came in (2026-11-22): a price's minimum and maximum captions drawn over each other at 320."
+    }
+  ]
 }
