@@ -259,7 +259,6 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkUnofficialSources(files, ctx.dataDir, report);
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
   checkHoldingParameter(files, ctx.dataDir, report);
-  checkForeignInvestmentFunds(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
   checkHomeGuideDoor(files, ctx.dataDir, report);
   checkDepositAmounts(files, ctx.dataDir, report);
@@ -1489,42 +1488,6 @@ function checkHoldingParameter(files: string[], dataDir: string, report: (file: 
       if (!exposures.has(id)) report(file, `holding.${id}: no exposure record "${id}" under data/instruments/exposures/`);
       else if (typeof wrapper !== "string" || !exposures.get(id)!.includes(wrapper)) report(file, `holding.${id}.wrapper_id: "${String(wrapper)}" is not one of the exposure record's wrapper_ids`);
     }
-  }
-}
-
-/**
- * data-schema §4 item 21 (TXS-14, method F-04): the latest record of every Israeli fund says whether its report names it a foreign-investment
- * fund, so no run reads a missing field as either answer; a foreign fund's record does not carry it; and a principal currency is the
- * exposure's currency, the one exchange-rate path a run has.
- */
-function checkForeignInvestmentFunds(files: string[], dataDir: string, report: (file: string, message: string) => void) {
-  const currencies = new Map<string, string>();
-  const latest = new Map<string, string>();
-  for (const file of files) {
-    const rel = relative(dataDir, file).split(/[\\/]/).join("/");
-    if (!file.endsWith(".json")) continue;
-    if (rel.startsWith("instruments/exposures/")) {
-      const v = parseJson(readFileSync(file, "utf8")).value as { id?: unknown; currency?: unknown } | undefined;
-      if (typeof v?.id === "string" && typeof v.currency === "string") currencies.set(v.id, v.currency);
-    }
-    const id = /^funds\/([^/@]+)@[^/]+\.json$/.exec(rel)?.[1];
-    if (id !== undefined && rel > (latest.get(id) ?? "")) latest.set(id, rel);
-  }
-  for (const file of files) {
-    const rel = relative(dataDir, file).split(/[\\/]/).join("/");
-    const id = /^funds\/([^/@]+)@[^/]+\.json$/.exec(rel)?.[1];
-    if (id === undefined) continue;
-    const rec = parseJson(readFileSync(file, "utf8")).value as Partial<Pick<FundRecord, "domicile" | "exposure_id" | "tax_status">> | undefined;
-    const fif = rec?.tax_status?.foreign_investment_fund;
-    if (rec?.domicile !== "IL") {
-      if (fif !== undefined) report(file, "tax_status.foreign_investment_fund: only an Israeli fund can be one (TXS-14); a foreign fund's record leaves it out");
-      continue;
-    }
-    if (fif === undefined && latest.get(id) === rel)
-      report(file, "tax_status.foreign_investment_fund: the latest record of an Israeli fund says whether its report names it a foreign-investment fund (TXS-14, data-schema §3.5)");
-    const exposureCurrency = rec.exposure_id ? currencies.get(rec.exposure_id) : undefined;
-    if (typeof fif?.value === "string" && exposureCurrency !== undefined && fif.value !== exposureCurrency)
-      report(file, `tax_status.foreign_investment_fund: principal currency ${fif.value} is not the exposure's currency ${exposureCurrency}, the one exchange-rate path a run has (F-04)`);
   }
 }
 

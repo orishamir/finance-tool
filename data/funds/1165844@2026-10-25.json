@@ -27,27 +27,7 @@
   "distribution_policy": "accumulating",
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null,
-    "foreign_investment_fund": {
-      "value": null,
-      "unit": "text",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732058-00.pdf#page=1",
-        "title": "דוח שנתי 'מור סל (4A) NASDAQ 100 מנוטרלת מט\"ח' (מספר בורסה 1165844), תאריך הדוח 31 בדצמבר 2025, מור ניהול קרנות נאמנות (2013) בע\"מ, עמ' 1, 'מאפיינים עיקריים של הקרן': 'מסלול המס: פטורה'",
-        "publisher": "מור ניהול קרנות נאמנות (2013) בע\"מ",
-        "strength": "institution"
-      },
-      "checked": "2026-11-22",
-      "effective_from": "2025-12-31",
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TXS-14"
-      ],
-      "state": "sourced",
-      "notes": "Not known. The annual report names the tax track only ('מסלול המס: פטורה'). Mor's main prospectus of 5.10.2025 (reference 2025-03-073790), which the report names, was not found on the Maya file server and was not read."
-    }
+    "tase_foreign_fund_90pct_test": null
   },
   "fees": {
     "fixed_management": {

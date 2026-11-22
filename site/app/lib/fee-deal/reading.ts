@@ -5,7 +5,7 @@ import { changeKind, type ChangeKind, type DealPeriod, type DealSide } from "@fi
 import { feeDeal as copy } from "../../copy";
 import type { FxSnapshot } from "../fx";
 import { entered, type SiteValue } from "../value";
-import { panelsOf, timelineOf, type Panels, type TimelinePeriod } from "./charts";
+import { panelsOf, timelineOf, type AccountCap, type Panels, type TimelinePeriod } from "./charts";
 import { thingName, whenWords, type WhenWords } from "./case-words";
 import { STATED, type PartWords } from "./part-words";
 import { isPicked, pickKind } from "./offers/conditions";
@@ -292,9 +292,9 @@ export interface Reading {
 /**
  * The reading of a deal, from the deal read once (`readDealFor`), with the site's exchange rates (F-84) for a sum in another currency, and
  * the unit's price the person gave beside the chart (`unitPrice`, a number in `Reading.unitPrice.currency`; absent, or not above nothing,
- * where none is given).
+ * where none is given), and BANK-35's cap (`cap`, `accountCapOf`), which flags a current account's year of holding where it is above it.
  */
-export function readingOf(r: DealRead, fx: FxSnapshot | null, unitPrice?: number | null): Reading {
+export function readingOf(r: DealRead, fx: FxSnapshot | null, unitPrice?: number | null, cap: AccountCap | null = null): Reading {
   const currency = unitCurrency(r);
   const price = unitPrice !== undefined && unitPrice !== null && Number.isFinite(unitPrice) && unitPrice > 0 ? unitPrice : null;
   const periods = r.reading.periods.map((_, k) => cardOf(r, k));
@@ -308,7 +308,7 @@ export function readingOf(r: DealRead, fx: FxSnapshot | null, unitPrice?: number
     }),
     from: monthKey(r.reading.from),
     periods,
-    panels: panelsOf(r, fx, { price, currency }, periods, stated),
+    panels: panelsOf(r, fx, { price, currency }, periods, stated, cap),
     timeline: timelineOf(r, periods, fx, { price, currency }),
     law: lawOf(r),
     unitPrice: currency === null ? null : { currency, value: price === null ? null : entered(price, sumUnit(currency), r.today) },

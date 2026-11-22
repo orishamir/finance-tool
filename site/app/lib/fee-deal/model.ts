@@ -199,9 +199,12 @@ export interface FeeDeal {
   readFor?: ReadPick[];
   /**
    * The template the deal names: the one its fees were filled from, or, where `feesKept` is set, the track picked for it while it held a
-   * fee the person typed or changed, which filled none of its fees.
+   * fee the person typed or changed, which filled none of its fees. `laterFills`, on a deal filled from a house's whole list, holds the
+   * kinds of fee a house's list fills that a deal filled before may lack (templates.ts, `LATER_FILLS`) which the site has settled for this
+   * deal: filled from the list, or found already held. A kind is kept there once settled, whether or not the person keeps the fee, so a
+   * fee taken away is not put back, and a kind not there is filled when the house's list next fills it (`withLaterFills`).
    */
-  template?: { id: string; name: string; feesKept?: true };
+  template?: { id: string; name: string; feesKept?: true; laterFills?: FeeKindId[] };
   /** When the deal was last saved on the device, YYYY-MM-DD. */
   saved?: string;
 }
@@ -926,7 +929,10 @@ function readDealParts(raw: unknown, leaveFees: boolean): { deal: FeeDeal; left:
   if (raw.template !== undefined) {
     if (!isRec(raw.template) || !str(raw.template.id, 120) || !str(raw.template.name, 200)) return null;
     if (raw.template.feesKept !== undefined && raw.template.feesKept !== true) return null;
-    deal.template = { id: raw.template.id, name: raw.template.name, ...(raw.template.feesKept ? { feesKept: true as const } : {}) };
+    const later: unknown = raw.template.laterFills;
+    const laterFills = later === undefined ? undefined : Array.isArray(later) && later.length > 0 && later.every(isFeeKindId) && new Set(later).size === later.length ? [...later] : null;
+    if (laterFills === null) return null;
+    deal.template = { id: raw.template.id, name: raw.template.name, ...(raw.template.feesKept ? { feesKept: true as const } : {}), ...(laterFills ? { laterFills } : {}) };
   }
   if (raw.saved !== undefined) {
     if (typeof raw.saved !== "string" || !DATE.test(raw.saved)) return null;

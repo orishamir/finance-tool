@@ -1,9 +1,6 @@
 // D29, second wave: the study fund, the provident fund for investing and the pensions. Every figure equals an engine run; the holding
 // on each side is the same index; a gap is a gap, never a number.
-import { createElement, Fragment } from "react";
 import { describe, expect, it } from "vitest";
-import { html } from "../components/invest/render-fixtures";
-import { guideContent } from "../content/guide";
 import { calendarMonthOf, ruleBook, runInputs, runPlanned, taxYearOf } from "@finance-tool/engine";
 import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
@@ -14,12 +11,8 @@ import { signatureRegistry } from "../components/guide-signature";
 import { flags, guideSignature as copy } from "../copy";
 import { buildInvest, indexById } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
-import { loadParameters } from "./data.server";
-import { loadFunds } from "./instruments.server";
 
 const page = (id: string) => buildGuidePage(id)!;
-/** The fund P-05 names for the securities account's example (data/parameters). */
-const p05Fund = String(loadParameters().find((p) => p.method_id === "P-05")?.instruments?.["brokerage-account"]?.fund);
 const entered = (amount_now: number, monthly_deposit: number) => ({ amount_now, monthly_deposit });
 
 describe("the pages have their visuals", () => {
@@ -38,7 +31,7 @@ describe("study fund", () => {
     expect(fact(d, "indexName")!.value).toBe("מדד S&P 500");
     expect(fact(d, "trackNumber")!.value).toBe("13245");
     expect(String(fact(d, "trackName")!.value)).toContain("S&P");
-    expect(fact(d, "fundNumber")!.value).toBe(p05Fund);
+    expect(fact(d, "fundNumber")!.value).toBe("5139282");
     expect(fact(d, "trackFee")!.value).toBe(0.54);
     // the page's own run (P-05 track 880, a general track) is not the holding: the bundle carries the index track's fee
     expect(d.bundles["keren-hishtalmut"]!.terms.fees!.balance).toBeCloseTo(0.0054, 10);
@@ -179,10 +172,7 @@ describe("the guides' securities-account range and the indices page", () => {
   const money = (n: number) => enteredValue(n, "nis", t);
   const plan = { amountNow: 10000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null, values: { amount: money(10000), monthly: enteredValue(500, "nis_per_month", t), years: enteredValue(10, "years", t), returnV: enteredValue(7, "pct_per_year", t), inflation: enteredValue(2, "pct_per_year", t) } };
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
-  // the fund the guides' brokerage account holds (P-05's), as the study fund's page names it
-  const study = page("keren-hishtalmut").signature;
-  const held = String(study ? fact(study, "fundNumber")?.value : "");
-  const onFund = view.houses.flatMap((h) => h.entries.filter((e) => e.fund.number === held && e.price && !e.price.open).map((e) => ({ id: h.provider.id, value: e.price!.valueN }))).sort((a, b) => b.value - a.value);
+  const onFund = view.houses.flatMap((h) => h.entries.filter((e) => e.fund.number === "5139282" && e.price && !e.price.open).map((e) => ({ id: h.provider.id, value: e.price!.valueN }))).sort((a, b) => b.value - a.value);
   it("keren-hishtalmut: counts the same houses and names the same pick", () => {
     const d = page("keren-hishtalmut").signature!;
     expect(fact(d, "brokerCount")!.value).toBe(onFund.length);
@@ -373,18 +363,5 @@ describe("the study fund's wait figures (F-96)", () => {
     // the whole tax's difference would understate it by the salary-paid tax of the year waited
     expect(w.saved).toBeGreaterThan(at.tax - end.tax);
     expect(w.more).toBeCloseTo(end.net + end.taxFromSalary - end.own - end.extra - (at.net + at.taxFromSalary - at.own - at.extra), 6);
-  });
-});
-
-describe("the securities account's guide names the example's fund from its record", () => {
-  it("the cost inside the fund is said of P-05's fund, by the name its record gives", () => {
-    const name = loadFunds().find((f) => f.id === p05Fund)?.names.he[0];
-    if (!name) throw new Error(`P-05's fund ${p05Fund} has a record with a Hebrew name`);
-    const data = page("brokerage-account");
-    expect(data.exampleFund).toBe(name);
-    const use = guideContent["brokerage-account"]?.use;
-    if (!use) throw new Error("the securities account's guide has a use section");
-    const out = html(createElement(Fragment, null, use({ figure: () => null, exampleFund: data.exampleFund })));
-    expect(out).toContain(`<bdi>${name.replace(/&/g, "&amp;")}</bdi>`);
   });
 });

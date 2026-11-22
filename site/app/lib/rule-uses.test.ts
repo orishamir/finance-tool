@@ -3,7 +3,7 @@ import { loadRuleUses, ruleProducts, ruleScores, ruleUseOf, scoreOf } from "./ru
 import { feeDeal } from "../copy";
 import { loadProducts } from "./data.server";
 import { RULES } from "./fee-deal/offers/rules";
-import { IDLE_AT_BANK } from "./fee-deal/charts";
+import { ACCOUNT_CAP_RULES, IDLE_AT_BANK } from "./fee-deal/charts";
 
 describe("rule uses", () => {
   it("TXI-03 is read by the engine and shown on at least one page", () => {
@@ -12,11 +12,11 @@ describe("rule uses", () => {
     expect(u.pages.length).toBeGreaterThan(0);
     expect(u.pages.every((p) => p.href.startsWith("/") && p.label.length > 0)).toBe(true);
   });
-  it("the fee page is a use of the rules its products' caps cite, its rule table cites and its reading states: a cap of one product opens a new deal of it, any other the page as it is", () => {
+  it("the fee page is a use of the rules its products' caps cite, its rule table cites, its reading states and its cap flags: a cap of one product opens a new deal of it, any other the page as it is", () => {
     const fees = Object.entries(loadRuleUses()).flatMap(([id, u]) => u.pages.filter((p) => p.label === feeDeal.title).map((p) => ({ id, href: p.href })));
     const capRules = new Set(loadProducts().flatMap((w) => (w.fee_bases_allowed.length > 0 ? Object.values(w.fee_caps ?? {}).flatMap((c) => c?.rule_ids ?? []) : [])));
     expect(fees.length).toBeGreaterThan(0);
-    const tableRules = new Set([...RULES.flatMap((r) => r.cite), ...IDLE_AT_BANK]);
+    const tableRules = new Set([...RULES.flatMap((r) => r.cite), ...IDLE_AT_BANK, ...ACCOUNT_CAP_RULES]);
     expect(fees.filter((f) => !capRules.has(f.id) && !tableRules.has(f.id))).toEqual([]);
     expect(fees.some((f) => /^\/deal\?wrapper=[a-z-]+$/.test(f.href))).toBe(true);
     for (const f of fees) if (f.href !== "/deal") expect(ruleProducts()[f.id]).toContain(f.href.split("=")[1]);

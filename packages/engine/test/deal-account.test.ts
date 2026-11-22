@@ -462,3 +462,29 @@ describe("F-128 a deal row in the workbench", () => {
     expect(wb.rows[0]).toMatchObject({ kind: "not-comparable", reason: { code: "needs-share-price" } });
   });
 });
+
+describe("F-102 with BANK-35 on a deal's current account: the cap is compared with what a month is charged", () => {
+  /** The deal with `fees` as its current account (F-102), after its trade fee, each charged within its steps (`planWithin`). */
+  const withAccount = (fees: Deal["fees"], planWithin?: DealAccount["planWithin"]): DealAccount => ({
+    ...account({ ...deal, fees: [deal.fees[0]!, ...fees] }),
+    currentAccount: fees.map((_, i) => i + 1),
+    ...(planWithin ? { planWithin: [undefined, ...planWithin] } : {}),
+  });
+  const monthly = (amount: number): Deal["fees"][number] => ({ base: { name: "current_account" }, stages: [{ price: { kind: "sum", amount, everyMonths: 1 } }] });
+  const flagged = (a: DealAccount) => runSecurities({ ...base, deal: a }, ctx).flags.filter((f) => f.code === "BANK-35");
+  // up to one order a month, and above it
+  const byCount: DealAccount["planWithin"] = [[{ on: "count", from: 0, to: 1, unit: "actions" }], [{ on: "count", from: 1, to: null, unit: "actions" }]];
+
+  it("a card above the cap for 0 to 2 actions is flagged on the cap's first month", () => {
+    expect(flagged(withAccount([monthly(5.5)]))).toEqual([{ code: "BANK-35", month: 9 }]);
+    expect(flagged(withAccount([monthly(5)]))).toEqual([]);
+  });
+
+  it("a card split by a month's orders is read at the step each month charges, never at the sum of its steps", () => {
+    // 4 ₪ in each step: every month is charged 4, under the cap, though the steps add to 8
+    expect(flagged(withAccount([monthly(4), monthly(4)], byCount))).toEqual([]);
+    // 4 ₪ up to one order and 6 above: the months of one order are under the cap; the first month from the cap's start charged 6 is the
+    // last, whose deposit and sale are two orders
+    expect(flagged(withAccount([monthly(4), monthly(6)], byCount))).toEqual([{ code: "BANK-35", month: 120 }]);
+  });
+});

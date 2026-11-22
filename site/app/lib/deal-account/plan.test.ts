@@ -3,11 +3,12 @@
 // F-128 states it does not, each exception proven by its cause: with the cause taken out of the house's record, the two leave the same
 // (exceptions-fixtures.ts). Here on a few indices and two of the plans; plan.deals.deep.test.ts runs every index at every plan.
 import { describe, expect, it } from "vitest";
-import { accountSum, buildInvest, dealOnFunds, dealRunOf, indexById, pairCosts } from "../invest";
+import { accountSum, buildInvest, dealOnFunds, dealRunOf, indexById, pairCosts, type InvestView } from "../invest";
 import { receiptAmounts } from "../receipt";
 import { invest as words } from "../../copy";
 import { entered, type SiteValue } from "../value";
 import { hasCases, newDeal, type FeeDeal } from "../fee-deal/model";
+import { withLaterFillsAll } from "../fee-deal/templates";
 import { feeOf } from "../fee-deal/cases";
 import { addBy } from "../fee-deal/edits/case";
 import { dealProviderId, lineValueOf, snapshotOfDeal, withDeals } from "./bundle";
@@ -61,7 +62,8 @@ describe("F-128 the plan sets what is bought and the channel", () => {
     const kindOf = (id: string) => deal.fees.find((f) => f.id === id)!.kind;
     const off = Object.fromEntries(on.flatMap((x) => (x.on === "off" ? [[kindOf(x.fee), x.why]] : [])));
     expect(off).toMatchObject({ fx: "shekel-fund", transfer_out: "transfer-out" });
-    expect(on.filter((x) => x.on === "charged").map((x) => kindOf(x.fee)).sort()).toEqual(["custody", "trade"]);
+    // the bank's current account its whole list fills is charged as the deal's own fee (F-102)
+    expect(on.filter((x) => x.on === "charged").map((x) => kindOf(x.fee)).sort()).toEqual(["current_account", "custody", "trade"]);
   });
 
   it("says what a fee lacks where the deal has no case for what the plan buys, by the line the house it was filled from reads", () => {
@@ -189,6 +191,51 @@ describe("F-128 a deal filled from a house prices as the house does, on a few in
     const at = (v: typeof view, pid: string) => v.houses.find((r) => r.provider.id === pid)!.entries.find((e) => e.fund.option === "il-etf")!.price!.valueN;
     expect(at(own, dealProviderId("deal-leumi"))).toBeGreaterThan(at(view, dealProviderId("deal-leumi")));
     expect(Math.round(at(own, dealProviderId("deal-leumi")))).toBe(Math.round(at(own, "leumi")));
+  });
+
+  it("the deal's own current account is the one the plan counts: at its own price, not at all once taken away, never the bank's beside it", () => {
+    const leumi = fromHouse("leumi");
+    const card = leumi.fees.find((f) => f.kind === "current_account");
+    if (!card || !leumi.template) throw new Error("Leumi's list fills a current account");
+    const mine: FeeDeal = { ...leumi, id: "deal-mine", fees: leumi.fees.map((f) => (f === card ? { ...card, stages: [{ price: { form: "sum", amount: { v: 20 }, every: 1 } }] } : f)) as FeeDeal["fees"] };
+    const none: FeeDeal = { ...leumi, id: "deal-none", fees: leumi.fees.filter((f) => f !== card) };
+    // a deal saved before templates filled a current account, as the page opens its saved deals (`withLaterFillsAll`), and as stored
+    const { laterFills: _l, ...template } = leumi.template;
+    const stored: FeeDeal = { ...none, id: "deal-stored", template };
+    const [opened] = withLaterFillsAll([stored], data);
+    if (!opened) throw new Error("the page shows the saved deal");
+    const bs = withDeals(bundle, [leumi, mine, none, stored, { ...opened, id: "deal-opened" }], data.kinds);
+    const ix = indexById(bs, "index-ta125");
+    if (!ix) throw new Error("the Tel Aviv 125 is priced");
+    const etfOn = (v: InvestView, id: string) => {
+      const e = v.houses.find((r) => r.provider.id === id)?.entries.find((x) => x.fund.option === "il-etf");
+      if (!e?.price) throw new Error(`${id} prices an Israeli ETF`);
+      return e;
+    };
+    const atOn = (own: string | null) => {
+      const v = buildInvest({ bundle: bs, index: ix, plan: { ...plan, currentAccounts: { own } } });
+      return (id: string) => Math.round(etfOn(v, id).price?.valueN ?? NaN);
+    };
+    const at = atOn(null);
+    const own = atOn("leumi");
+    expect(at(dealProviderId("deal-leumi"))).toBe(at("leumi"));
+    expect(at(dealProviderId("deal-mine"))).toBeLessThan(at(dealProviderId("deal-leumi")));
+    // taken away, the plan counts none: the deal leaves what the bank's row leaves where the person marks the bank as theirs
+    expect(at(dealProviderId("deal-none"))).toBeGreaterThan(at(dealProviderId("deal-leumi")));
+    expect(at(dealProviderId("deal-none"))).toBe(own("leumi"));
+    // the page opens a deal saved before with the card, so its account is counted, once
+    expect(at(dealProviderId("deal-opened"))).toBe(at(dealProviderId("deal-leumi")));
+    expect(at(dealProviderId("deal-stored"))).toBe(at(dealProviderId("deal-none")));
+    // at the bank the person marks as theirs the card stays, not on the plan, whatever its price
+    for (const d of [leumi, mine]) {
+      expect(feesOnPlan(d, run, { ...ctx, currentAccounts: { own: "leumi" } }).find((x) => x.fee === card.id)).toEqual({ fee: card.id, on: "off", why: "own-bank" });
+      expect(own(dealProviderId(d.id))).toBe(own("leumi"));
+    }
+    // the receipt writes the card as one of the deal's own lines, and no other current account
+    const fund = etfOn(buildInvest({ bundle: bs, index: ix, plan }), dealProviderId("deal-leumi")).fund.rec.id;
+    const lines = pairCosts({ bundle: bs, index: ix, plan, fundId: fund, providerId: dealProviderId("deal-leumi") })?.dealLines ?? [];
+    expect(lines.map((l) => l.fee)).toContain(card.id);
+    expect(lines.every((l) => leumi.fees.some((f) => f.id === l.fee))).toBe(true);
   });
 });
 

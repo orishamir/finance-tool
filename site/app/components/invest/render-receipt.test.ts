@@ -9,7 +9,7 @@ import { PairLists } from "./lists";
 import { asideLines, buildInvest, indexById, kindOf, pairCostsKept, type InvestView } from "../../lib/invest";
 import { receiptAmounts, receiptChain } from "../../lib/receipt";
 import { ANCHOR, PairReceipt, PairStub, addedOf, inflationOf, leftOf, nominalOf, taxOf } from "./receipt";
-import { allFunds, asideParts, labelsOf, pickOfHeadline, pairVerdict, steadyOf } from "./pair";
+import { allFunds, asideParts, labelsOf, pickOfHeadline, pairVerdict } from "./pair";
 import { stretchesOf } from "../../lib/stretch";
 import { bundle, plan, shown, html, nisIn, fundRow, t } from "./render-fixtures";
 import { entered, type SiteValue } from "../../lib/value";
@@ -76,18 +76,16 @@ describe("the receipt", () => {
     expect([...at].sort((a, b) => a - b)).toEqual(at);
     expect(raw).toContain("border-chart-by-fund");
   });
-  it("the total has a caution \"?\" saying the dollar is assumed to hold still only where the figure rests on the dollar, and no \"?\" elsewhere", () => {
+  it("the total's \"?\" says it is in today's money, and is a caution \"?\" with the dollar's clause only where the figure rests on the dollar", () => {
     const cautionMark = /class="[^"]*help-mark[^"]*text-caution/;
-    const leftMark = `aria-label="${help.markLabel.replace("{about}", w.receipt.left)}"`;
-    const sp = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }));
-    expect(sp).toMatch(cautionMark);
-    expect(sp).toContain(leftMark);
-    expect(steadyOf(view, bundle, pick.fund)).toBe(w.pair.steadyDollar);
+    expect(html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }))).toMatch(cautionMark);
     const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan });
     const p = pickOfHeadline(ta)!;
     const out = html(createElement(PairReceipt, { view: ta, bundle, plan, pick: p, chosen: false }));
     expect(out).not.toMatch(cautionMark);
-    expect(out).not.toContain(leftMark);
+    expect(out).toContain(`aria-label="${help.markLabel.replace("{about}", w.receipt.left)}"`);
+    expect(w.receipt.leftIn(null)).not.toContain(w.pair.steadyDollar);
+    expect(w.receipt.leftIn(w.pair.steadyDollar)).toContain(w.pair.steadyDollar);
   });
   it("the run's index at the horizon and its deposits as paid are F-03's and F-05's, which take the chain to the horizon's shekels", () => {
     const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });
@@ -251,13 +249,10 @@ describe("the receipt's fund part marks a fund the person typed (D44, D7)", () =
   const name = "קרן משלי";
   const typed = fundFromDraft({ ...fundDraftOf(null, "il-tracking"), payout: "accumulating" as const, hedged: false, name, fixed: 0.1, variable: 0, trustee: 0 }, "custom-fund-mine", "index-sp500", t);
   const b = withCustomEntries(bundle, [typed]);
-  // a typed Israeli fund on an index in dollars has a status not known and runs under both readings of TXS OQ26 (method §13): the
-  // test's plan has the CPI change as the dollar does by default (A-02 = A-03 = 0), so the two readings agree and the fund is ranked
-  const flat = { ...plan, inflation: 0, values: { ...plan.values, inflation: entered(0, "pct_per_year", t) } };
-  const view = buildInvest({ bundle: b, index, plan: flat });
+  const view = buildInvest({ bundle: b, index, plan });
   /** The ticket's fund part: what follows its label, the ticket's last part. */
   const fundPart = (fund: string) => {
-    const out = html(createElement(PairReceipt, { view, bundle: b, plan: flat, pick: { house, fund }, chosen: true, layout: "ticket" }));
+    const out = html(createElement(PairReceipt, { view, bundle: b, plan, pick: { house, fund }, chosen: true, layout: "ticket" }));
     return out.slice(out.lastIndexOf(`>${w.receipt.parts.fund}</span>`));
   };
   it("its name in the entered ink and the entered tag, where a collected fund's part has neither", () => {

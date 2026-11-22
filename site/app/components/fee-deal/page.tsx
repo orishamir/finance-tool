@@ -9,12 +9,13 @@
 // opens a new deal beside this one; its track's button opens the tracks, and the track picked is set on the deal on screen (`pickTrack`). A
 // deal with no kind shows its kinds to choose from alone, a deal with a kind the line over its fees, in the card's one place, so the first
 // fee moves nothing; the toolbox comes with a fee open, and the reading with the first fee.
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
 import { newDeal, type FeeDeal } from "../../lib/fee-deal/model";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { dealOfAddress, type AddressDeal } from "../../lib/fee-deal/link";
+import { withLaterFillsAll } from "../../lib/fee-deal/templates";
 import { dealStore, unreadDeals } from "../../lib/fee-deal/store";
 import type { DealUndo } from "../../lib/fee-deal/undo";
 import type { FeesData } from "../../lib/fee-page-data";
@@ -47,6 +48,8 @@ function Head() {
 /** The page: the head at once; the bar and the columns once the data and the device's deals are read. */
 export function FeeDealPage({ data, failed }: { data: FeesData | null; failed: boolean }) {
   const store = dealStore.use();
+  // each saved deal with what its house's list fills that it has not had (`withLaterFills`)
+  const saved = useMemo(() => withLaterFillsAll(store.value, data), [store.value, data]);
   const [today, setToday] = useState<string | null>(null);
   useEffect(() => setToday(todayLocal()), []);
   // the deal the address names, read once the page has what it needs (a deal in the fragment is opened by the browser's own decompression,
@@ -74,7 +77,7 @@ export function FeeDealPage({ data, failed }: { data: FeesData | null; failed: b
       {failed ? (
         <Callout tone="caution">{copy.failed}</Callout>
       ) : data && today && store.ready && address !== undefined ? (
-        <Deal data={data} today={today} saved={store.value} writable={store.writable} address={address} />
+        <Deal data={data} today={today} saved={saved} writable={store.writable} address={address} />
       ) : (
         <p className="text-muted-foreground">{copy.loading}</p>
       )}

@@ -11,8 +11,9 @@
 // A deal deleted in another tab while it is open stays on screen, saved no more, with /deal's line and its keep; the editor's data that
 // did not load is said with a retry. Under the account list, each account typed by hand before deals that could not become one says why
 // it is not in the list.
-import { createContext, useCallback, useContext, useDeferredValue, useEffect, useEffectEvent, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { Pencil } from "lucide-react";
+import { createContext, useCallback, useContext, useDeferredValue, useEffect, useEffectEvent, useId, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
+import { MoreHorizontal, Pencil } from "lucide-react";
+import { useNavigate } from "react-router";
 import { IconPencil } from "../icons";
 import { feeDeal, invest as root } from "../../copy";
 import { fmt } from "../../lib/format";
@@ -37,8 +38,9 @@ import { updateFee } from "../../lib/fee-deal/edits/deal";
 import { addBlankCase } from "../../lib/fee-deal/edits/case";
 import { pickLine } from "../../lib/fee-deal/reading";
 import { feeNameOf } from "../../lib/fee-deal/part-words";
-import { dealProviderId, houseSnap, planContextOf, withDeals } from "../../lib/deal-account/bundle";
-import { ACCOUNT_KIND, BANK_ACCOUNT, dealHouseId, feesOnPlan, PLAN_KEYS, planRead, whatOfRun, type FeeOnPlan, type Missing } from "../../lib/deal-account/plan";
+import { dealProviderId, planContextOf, withDeals } from "../../lib/deal-account/bundle";
+import { dealHouseId, feesOnPlan, PLAN_KEYS, planRead, whatOfRun, type FeeOnPlan, type Missing } from "../../lib/deal-account/plan";
+import { ACCOUNT_KIND } from "../../lib/fee-deal/kinds";
 import { dealTiles, listFunds } from "../../lib/deal-account/tiles";
 import { planCases } from "../../lib/deal-account/plan-cases";
 import { Sheet } from "../Sheet";
@@ -49,7 +51,7 @@ import { whenText } from "../fee-deal/open-case";
 import { TemplateList, type TemplateListWords } from "../fee-deal/picker";
 import { NoticeRow } from "../fee-deal/deal-notices";
 import type { MoveLeft } from "../../lib/deal-account/move-run";
-import { Button, Card, HouseAverageLine, MixedName, ReadForBand, RemoveButton, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, useStuckRoom, type FeeHeadSlot } from "../kit";
+import { ActionMenu, Button, Card, ConfirmAsk, HouseAverageLine, MixedName, ReadForBand, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, useStuckRoom, type FeeHeadSlot, type GripAction } from "../kit";
 import { ToolBoundary } from "../tool-boundary";
 
 const w = root.dealAccount;
@@ -299,7 +301,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const houseId = dealHouseId(deal);
   const tiles = fundId ? dealTiles(view, got, providerId, deal.name, houseId, fundId, funds) : null;
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.provider : undefined;
-  // the deal is read on the page's plan as its run reads it: the page's run month, the house's line choice and its current account (F-128)
+  // the deal is read on the page's plan as its run reads it: the page's run month, the page's current accounts and the house's line choice (F-128)
   const ctx = useMemo(() => planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? null), [world.bundle, deal, data.kinds, world.plan.currentAccounts]);
   const onPlan = useMemo(() => (run ? new Map(feesOnPlan(deal, run, ctx).map((x) => [x.fee, x])) : null), [deal, run, ctx]);
   // a fund bought abroad whose price waits on a case the deal lacks (E): each such fee, with the values the funds are bought as
@@ -325,12 +327,6 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const fund = fundId ? allFunds(view).find((f) => f.rec.id === fundId) : undefined;
   const isSaved = saved.some((d) => d.id === deal.id);
   const p = world.plan;
-  // the bank's current account the plan counts from the house's record, where the deal names none (F-102): one quiet line after the fees
-  const bankMonthly = houseSnap(world.bundle, deal)?.current_account?.monthly_minimum;
-  const bankLine =
-    ctx.bankAccount !== undefined && house && bankMonthly && !deal.fees.some((f) => f.kind === "current_account")
-      ? { monthly: bankMonthly as SiteValue, cost: at?.kind === "ok" ? at.figure(shownCost(at.byFee[BANK_ACCOUNT] ?? 0), w.bankCostAbout(house.short)) : null }
-      : null;
   const root = useRef<HTMLDivElement>(null);
   // a deal opens on the fee its opener names (the abroad line's "להוסיף לעסקה"), else, where the plan cannot price it, on the fee that lacks
   // something, as its row's "להשלים" says; that fee's block is brought up under the sticky tiles
@@ -427,7 +423,6 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
       {run && wide && own.length > 0 && <ReadForBand lead={w.readFor} note={w.planKnows(where)} picks={pickItems(own, ed.onPick)} />}
       {ed.picker}
       {ed.columns(null)}
-      {bankLine && house && <Sentence size="sm" tone="muted" t={w.bankAccount(house.short, bankLine.cost !== null)} vars={{ monthly: <Num value={bankLine.monthly} />, cost: bankLine.cost && <Num value={bankLine.cost} display={costText} /> }} />}
       {ed.menus}
       {ed.footSheet}
     </div>
@@ -554,45 +549,87 @@ function AbroadCaseLine({ words, onAdd }: { words: string; onAdd: () => void }) 
 }
 
 /**
- * The popup's head (B, G): the deal's name typed in place, its pencil in its box (the fee page's bar's field), where it is kept, the fee
- * page's link, and a bin that deletes a saved deal at once, without asking (D117); the sheet's own close stands at its end. On a phone (C,
- * J) the name and the bin share the top bar and the link stands under them. Not a kit piece: the kit's `TextField` and `RemoveButton`
- * arranged for this popup alone.
+ * The popup's head (B, G): on a computer the deal's name typed in place, its pencil in its box (the fee page's bar's field), where it is
+ * kept, the fee page's link, and its menu (rename, delete); the sheet's own close stands at its end. On a phone (C, J) one top bar: the
+ * name, and the menu, which also holds the fee page's link. Delete asks first (`ConfirmAsk`): on a computer under the head, the popup's body
+ * brought back to its top so the head and the question show together (G). Not a kit piece: the kit's `TextField`, `ActionMenu` and
+ * `ConfirmAsk` arranged for this popup alone.
  */
 function DealHead({ deal, headId, isSaved, writable, onName, onDelete }: { deal: FeeDeal; headId: string; isSaved: boolean; writable: boolean; onName: (name: string) => void; onDelete: () => void }) {
+  const [renaming, setRenaming] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const [asking, setAsking] = useState(false);
   const wide = useMedia(MQ.md);
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (asking && wide) box.current?.closest(".sheet-body")?.scrollTo({ top: 0 });
+  }, [asking, wide]);
+  // the menu's control, which it stands under and gives the focus back to
+  const more = useRef<HTMLElement | null>(null);
+  const openMenu = (e: MouseEvent<HTMLButtonElement>) => {
+    more.current = e.currentTarget;
+    setMenu((x) => !x);
+  };
+  const field = useRef<HTMLSpanElement>(null);
+  const navigate = useNavigate();
+  const toDeal = () => {
+    // /deal opens on the deal last on screen: this one
+    rememberOpen(deal.id);
+    navigate(DEAL_PATH);
+  };
+  const rename = () => {
+    setRenaming(true);
+    requestAnimationFrame(() => field.current?.querySelector("input")?.focus());
+  };
+  const actions: GripAction[] = [
+    { label: w.head.rename, onPick: rename },
+    ...(isSaved && writable ? [{ label: w.head.remove, danger: true, onPick: () => setAsking(true) }] : []),
+    ...(!wide && isSaved ? [{ label: `${w.head.openDeal} ↗`, onPick: toDeal }] : []),
+  ];
   const nameField = (
-    <span className="flex min-w-0 flex-[1_1_22rem] items-center">
+    <span ref={field} className="flex min-w-0 flex-[1_1_22rem] items-center" onBlur={() => !wide && setRenaming(false)}>
       <TextField inline grow labelHidden label={w.head.nameField} value={deal.name} maxLength={NAME_MAX} placeholder={w.start.title} icon={<IconPencil size={16} />} onChange={onName} />
     </span>
   );
-  const link = isSaved && (
-    <TextLink to={DEAL_PATH} look="line" onClick={() => rememberOpen(deal.id)}>
-      {w.head.openDeal} ↗
-    </TextLink>
-  );
-  const bin = isSaved && writable && <RemoveButton label={w.head.remove} onRemove={onDelete} className="ms-auto" />;
+  const close = () => {
+    setAsking(false);
+    setMenu(false);
+  };
   return (
-    <div className="flex flex-col gap-3">
-      <h2 id={headId} className="sr-only">
-        {deal.name || w.start.title}
-      </h2>
+    <div ref={box} className="flex flex-col gap-3">
       {wide ? (
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pe-2">
+          <h2 id={headId} className="sr-only">
+            {deal.name || w.start.title}
+          </h2>
           {nameField}
           <span className="text-sm text-muted-foreground">{isSaved ? w.head.saved : w.head.unsaved}</span>
-          {link}
-          {bin}
+          {isSaved && (
+            <TextLink to={DEAL_PATH} look="line" onClick={() => rememberOpen(deal.id)}>
+              {w.head.openDeal} ↗
+            </TextLink>
+          )}
+          <Button variant="icon" aria-label={w.head.more} aria-expanded={menu} onClick={openMenu} className="ms-auto">
+            <MoreHorizontal size={18} aria-hidden />
+          </Button>
         </div>
       ) : (
-        <div className="flex flex-col gap-1 pe-2">
-          <div className="flex min-h-target items-center gap-2">
-            {nameField}
-            {bin}
-          </div>
-          {link}
+        // a phone's top bar: the name, the menu, and the sheet's close at the end
+        <div className="flex min-h-target items-center gap-2 pe-2">
+          {renaming ? (
+            nameField
+          ) : (
+            <h2 id={headId} className="min-w-0 flex-1 text-lg font-semibold [overflow-wrap:anywhere]">
+              {deal.name || w.start.title}
+            </h2>
+          )}
+          <Button variant="icon" aria-label={w.head.more} aria-expanded={menu} onClick={openMenu}>
+            <MoreHorizontal size={18} aria-hidden />
+          </Button>
         </div>
       )}
+      {menu && <ActionMenu actions={actions} onClose={() => setMenu(false)} back={more} />}
+      <ConfirmAsk open={asking} question={w.head.confirm} body={w.head.confirmBody} yes={w.head.confirmYes} no={w.head.confirmNo} onYes={onDelete} onNo={close} />
     </div>
   );
 }

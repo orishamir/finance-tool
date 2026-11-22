@@ -25,27 +25,7 @@
   "distribution_policy": "accumulating",
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null,
-    "foreign_investment_fund": {
-      "value": false,
-      "unit": "text",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1757001-1758000/P1757882-00.pdf#page=23",
-        "title": "תשקיף עיקרי אי.בי.אי קרנות נאמנות, 25 ביולי 2026 (סרוק, נקרא כתמונת עמוד), עמ' 23, שורת 'אי.בי.אי. מחקה (4A) ת\"א 125' (מספר בורסה 5112628), עמודת 'מיסוי': 'פטורה'",
-        "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
-        "strength": "institution"
-      },
-      "checked": "2026-11-22",
-      "effective_from": "2026-07-25",
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TXS-14"
-      ],
-      "state": "sourced",
-      "notes": "The manager's prospectus tax column states this fund's status without naming it a foreign-investment fund, and names that status for the manager's funds that have it (1149772 and 1147875 ('פטורה*, קרן להשקעות חוץ (מטבע עיקרי דולר ארה\"ב)', p.38, read as a page image)); the annual report names the tax track only. Its tax index is the CPI (TXS-14)."
-    }
+    "tase_foreign_fund_90pct_test": null
   },
   "fees": {
     "fixed_management": {

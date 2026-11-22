@@ -368,11 +368,11 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       <ReceiptLine size="sm" label={v.taxName} value={<Num value={taxOf(pc)} display={minus(ch.tax)} />} />
     </div>
   );
-  // the total's name, with a caution "?" only where the figure rests on the dollar holding still (D118)
+  // the total's name with its "?": in what money it is, and, where the figure rests on it, that the dollar holds still (a catch: caution)
   const leftName = (
     <span className="text-base font-semibold whitespace-nowrap">
       <span>{c.receipt.left}</span>
-      {steady && <HelpMark about={c.receipt.left} text={steady} tone="caution" className="ms-1" />}
+      <HelpMark about={c.receipt.left} text={c.receipt.leftIn(steady)} {...(steady ? { tone: "caution" as const } : {})} className="ms-1" />
     </span>
   );
   const total = <Num value={leftOf(pc, today)} display={fmt.nisWhole(ch.left)} />;

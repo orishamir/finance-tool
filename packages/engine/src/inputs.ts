@@ -57,8 +57,8 @@ export interface InstrumentTerms {
   broker?: SecuritiesInput["broker"];
   /** F-14: whether the account's member is a bank, where the custody ban on makam and money-market units binds (BRK-17). */
   memberKind?: SecuritiesInput["memberKind"];
-  /** A-03 and the currency the return is quoted in; A-03 for a foreign-investment fund's principal currency (F-04). */
-  currency?: Pick<SecuritiesInput["market"], "returnIn" | "fxChange" | "principalFxChange">;
+  /** A-03 and the currency the return is quoted in. */
+  currency?: Pick<SecuritiesInput["market"], "returnIn" | "fxChange">;
   /** IRA hishtalmut (F-51): the manager's balance fee and the start of the 6-year clock. */
   ira?: Omit<NonNullable<SecuritiesInput["wrapper"]>, "kind">;
   makam?: Omit<MakamInput["makam"], "yield">;
@@ -126,7 +126,7 @@ const nestedKeys: Partial<Record<keyof InstrumentTerms, string[]>> = {
   pension: ["employment", "monthlySalary", "annualIncome", "existingEmployeeRate", "employer"],
   insurance: ["rate"],
   deposit: ["termMonths", "linkage", "balanceCeiling", "exitFirstMonth", "exitEveryMonths", "termDays", "interestCalc", "interestPaidOut"],
-  currency: ["returnIn", "fxChange", "principalFxChange"],
+  currency: ["returnIn", "fxChange"],
   ira: ["managerFee", "clockStartMonth"],
   makam: ["termMonths"],
   bond: ["linkage", "couponEveryMonths"],

@@ -6,7 +6,6 @@ import { invest as investCopy } from "../copy";
 import { exposurePath, guidePath } from "./site-paths";
 import { fundOf, gapListOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { feeAbsent, instrumentClassOf } from "./providers";
-import { isShekel } from "./fx";
 import {
   catalogEntry,
   depositTerms,
@@ -194,8 +193,6 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
   } else if (family === "securities") {
     const fund = buildFund(wrapperId, spec, src, missing, feeValues);
     if (fund) terms.fund = fund;
-    // F-04: the path of a principal currency is A-03's, at its default of 0 (method §2), since the guides take no A-03 of the person
-    if (fund?.principalCurrency !== undefined) terms.currency = { principalFxChange: 0 };
     const isMmf = wrapperId === "money-market-fund-daily" || wrapperId === "money-market-fund-renewable";
     const tariff = isMmf ? buildMoneyMarketTariff(wrapperId, src, missing, feeValues) : buildTariff(wrapperId, "securities", spec, src, missing, feeValues);
     if (tariff) terms.tariff = tariff;
@@ -360,17 +357,6 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
       feeValues.ninetyPercentTest = { ...t };
     } else missing.push(`${wrapperId}: fund "${rec.id}" has no 90% test value (TXF-04)`);
   }
-  // TXS-14, F-04: the fund's status as a foreign-investment fund, read as the indices page reads it (`fundOf`): the principal currency its
-  // documents name, or, where its record says the status is not known, its index's foreign currency as the candidate; such a fund is run
-  // under both readings of TXS OQ26 (method §13), with A-03 for that currency at its default, 0 (`principalFxChange`, below)
-  if (kind === "israeli-fund") {
-    const exposure = loadExposures().find((e) => e.id === rec.exposure_id);
-    const principal = fundOf(rec, kind, { foreignCurrency: exposure && !isShekel(exposure.currency) ? exposure.currency : undefined }).fund.principalCurrency;
-    if (principal !== undefined) {
-      if (principal !== exposure?.currency) missing.push(`${wrapperId}: fund "${rec.id}" names principal currency ${principal}, not its exposure's ${exposure?.currency ?? "(no exposure)"} (F-04)`);
-      fund.principalCurrency = principal;
-    }
-  }
   // TXF-11: an accumulating foreign fund whose own annex reports the ruling is taxed at sale on it, and ranked
   if ((kind === "foreign-fund" || kind === "tase-foreign-fund") && rec.tax_ruling && rec.distribution_policy === "accumulating") fund.saleOnlyRuling = true;
   if (kind === "foreign-fund") {
@@ -411,7 +397,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     // today's rate where the reports give A-07, so the comparison prices a fund's way at the value the invest page gives it
     const exposure = (rec as { exposure_id?: string }).exposure_id;
     if (kind === "israeli-fund" && exposure && rec.tracking_record) {
-      const forward = fundOf(rec, kind, { list: gapListOf(rec, { id: exposure }, src.funds.filter((f) => (f as { exposure_id?: string }).exposure_id === exposure)) }).fund.drag?.variable;
+      const forward = fundOf(rec, kind, undefined, undefined, gapListOf(rec, { id: exposure }, src.funds.filter((f) => (f as { exposure_id?: string }).exposure_id === exposure))).fund.drag?.variable;
       const listed = rec.fees.variable_management;
       if (forward !== undefined && forward !== drag.variable && listed) {
         drag.variable = forward;
@@ -426,7 +412,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
       }
     }
     // F-121: a fee the record lowers for a stated period, read as the indices page reads it (fundOf)
-    const promotions = fundOf(rec, kind).fund.drag?.promotions;
+    const promotions = fundOf(rec, kind, undefined, undefined).fund.drag?.promotions;
     if (promotions) drag.promotions = promotions;
     // each in force on the page's day shown among the run's figures beside the fee it lowers, with its last day
     for (const p of fundPromotions(rec, src.today)) feeValues[`${PROMOTION_LABEL[p.fee]}Promotion`] = p.value;

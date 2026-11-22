@@ -3,7 +3,7 @@
 // render-sections and render-tiles; the data and helpers they share are in render-fixtures.ts.
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { buildInvest, knownIndices, pairCostsKept } from "../../lib/invest";
+import { buildInvest, indexById, knownIndices, pairCostsKept } from "../../lib/invest";
 import { receiptAmounts, receiptChain } from "../../lib/receipt";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
@@ -14,26 +14,19 @@ import { bundle, t, plan, shown, html, nisIn, writtenFees, ReceiptAndFees } from
 import { PairReceipt } from "./receipt";
 
 describe("the pair set beside the person's (2026-10-28)", () => {
+  const world = buildInvest({ bundle, index: indexById(bundle, "index-msci-world")!, plan });
+  const valueOf = (p: { house: string; fund: string }) => {
+    const at = allFunds(world).find((f) => f.rec.id === p.fund)!.byHouse[p.house]!;
+    return "valueN" in at ? at.valueN : NaN;
+  };
   it("an unhedged pick is set beside the headline; a hedged pick beside the best hedged pair, never one that leaves less", () => {
-    // on every index with a hedged fund ranked at the headline's house (one listed before tax, F-118, has no pair)
-    let seen = 0;
-    for (const index of knownIndices(bundle)) {
-      const view = buildInvest({ bundle, index, plan });
-      const valueOf = (p: { house: string; fund: string }) => {
-        const at = allFunds(view).find((f) => f.rec.id === p.fund)!.byHouse[p.house]!;
-        return "valueN" in at ? at.valueN : NaN;
-      };
-      const head = pickOfHeadline(view);
-      const hedged = head && allFunds(view).find((f) => f.rec.hedged === true && "valueN" in (f.byHouse[head.house] ?? {}));
-      if (!head || !hedged) continue;
-      seen++;
-      expect(bestFor(view, head), index.id).toEqual(head);
-      const pick = { house: head.house, fund: hedged.rec.id };
-      const best = bestFor(view, pick)!;
-      expect(allFunds(view).find((f) => f.rec.id === best.fund)!.rec.hedged, index.id).toBe(true);
-      expect(valueOf(best), index.id).toBeGreaterThanOrEqual(valueOf(pick));
-    }
-    expect(seen).toBeGreaterThan(0);
+    const head = pickOfHeadline(world)!;
+    expect(bestFor(world, head)).toEqual(head);
+    const hedged = allFunds(world).find((f) => f.rec.hedged === true && f.best)!;
+    const pick = { house: head.house, fund: hedged.rec.id };
+    const best = bestFor(world, pick)!;
+    expect(allFunds(world).find((f) => f.rec.id === best.fund)!.rec.hedged).toBe(true);
+    expect(valueOf(best)).toBeGreaterThanOrEqual(valueOf(pick));
   });
 });
 

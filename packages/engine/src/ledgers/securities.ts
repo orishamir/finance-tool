@@ -7,7 +7,7 @@ import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
 import { promotedDrag } from "../formulas/fund-promotion.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
-import { acrossReadings, foreignInvestmentFundIndex, OpenReadingError } from "../open-readings.ts";
+import { acrossReadings } from "../open-readings.ts";
 import { memoRun } from "../run-memo.ts";
 import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
@@ -62,12 +62,6 @@ export interface Fund {
   sharePriceRate?: number;
   /** TASE foreign fund: the prospectus commits to the 90% main-currency test (TXF-04); while TXF-04 is open the run stops whatever its value (F-04). */
   ninetyPercentTest?: boolean;
-  /**
-   * Israeli fund that may be measured by a principal currency (TXS-14, F-04): the currency (ISO code) its own documents name where they name
-   * it a foreign-investment fund, or, where its record says the status is not known, its exposure's currency as the candidate. The run is
-   * made with that currency's exchange rate (`market.principalFxChange`) and with the CPI as its tax index (TXS OQ26, `acrossReadings`).
-   */
-  principalCurrency?: string;
   /** Renewable money-market fund: months between fixed dates (MF-35). */
   fixedDatesEveryMonths?: number;
   /**
@@ -158,11 +152,6 @@ export interface SecuritiesInput {
     inflation: number;
     /** A-03 exchange-rate change of the instrument currency against the shekel. */
     fxChange?: number;
-    /**
-     * A-03 for the fund's principal currency (`Fund.principalCurrency`), whose path is the tax index of a foreign-investment fund (F-04,
-     * TXS-14). A shekel fund's value takes A-03 in `grossReturn`, so this path serves its tax index alone. Required with `principalCurrency`.
-     */
-    principalFxChange?: number;
   };
   fund: Fund;
   /** F-101: the tariff, or a sequence of tariffs, each with the months it holds (see `TariffSequence`). `currency` is read from this first one only. */
@@ -229,26 +218,16 @@ export class NotEvaluatedError extends Error {
 export const memberKindOf = (providerClass: string): NonNullable<SecuritiesInput["memberKind"]> => (providerClass === "bank" ? "bank" : "non-bank");
 
 /**
- * F-04 The tax index of a fund held in a securities account: the exchange rate for a foreign-currency fund held directly (TXF-03), the CPI
- * for an Israeli fund's shekel units (TXS-14's first bullet). An Israeli fund that may be measured by a principal currency
- * (`principalCurrency`) is read under each reading of TXS OQ26 (`foreignInvestmentFundIndex`): the principal currency's exchange rate, or
- * the CPI; a book with no reading chosen stops so that `acrossReadings` makes the run under each. A TASE foreign fund takes the index TXF-04
- * states, and TXF-04 is open, so neither is known for it, with or without its 90% test: the book stops on it (BlockedError) and the run
- * computes nothing after tax (D10); F-118 reads its value before the exit tax. Were TXF-04 settled as the letter's copy states it (the
- * golden harness), a fund on the 90% test would take the exchange rate and any other the CPI.
+ * F-04 The tax index of a fund held in a securities account: the exchange rate for a foreign-currency fund held directly (TXF-03),
+ * the CPI for the rest. A TASE foreign fund takes the index TXF-04 states, and TXF-04 is open, so neither is known for it, with or
+ * without its 90% test: the book stops on it (BlockedError) and the run computes nothing after tax (D10); F-118 reads its value before
+ * the exit tax. Were TXF-04 settled as the letter's copy states it (the golden harness), a fund on the 90% test would take the exchange
+ * rate and any other the CPI.
  */
-export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency">, book: RuleBook): "fx" | "principal" | "cpi" {
+export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest">, book: RuleBook): "fx" | "cpi" {
   if (fund.kind === "foreign-fund") {
     book.cite("TXF-03");
     return "fx";
-  }
-  if (fund.kind === "israeli-fund" && fund.principalCurrency !== undefined) {
-    book.cite("TXS-14");
-    return book.reading(foreignInvestmentFundIndex).id;
-  }
-  if (fund.kind === "israeli-fund") {
-    book.cite("TXS-14");
-    return "cpi";
   }
   if (fund.kind !== "tase-foreign-fund") return "cpi";
   book.cite("TXF-04");
@@ -258,78 +237,28 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "prin
 }
 
 /**
- * The open rule every securities run of this fund stops on (F-04), or null: what a page reads to list the fund with its reason before
- * running it, so nothing is ranked on a guessed index. A fund whose tax index is an open reading (TXS OQ26) is not stopped by it before a
- * run: whether its readings split is the run's to say (`securitiesStopOf`).
+ * The open rule a securities run of this fund stops on (F-04), or null: what a page reads to list the fund with its reason before
+ * running it, so nothing is ranked on a guessed index.
  */
-export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency">, ctx: RunContext): string | null {
+export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest">, ctx: RunContext): string | null {
   try {
     taxIndexOf(fund, ruleBook(ctx));
     return null;
   } catch (e) {
     if (e instanceof BlockedError) return e.ruleId;
-    if (e instanceof OpenReadingError) return null;
-    throw e;
-  }
-}
-
-/** The rule a fund's runs stop on before the exit tax, with the open question whose readings split them where that is why. */
-export interface SecuritiesStop {
-  ruleId: string;
-  question?: string;
-}
-
-/**
- * The fund's own run of an input (F-91's `∅`): the same plan, market, fund and profile, with no account's prices and bought by amount. Whether
- * the readings of the fund's tax index split is read on it, so a fund whose own run splits is listed before tax at every account, even one
- * whose own readings agree. An account whose own readings split while the fund's agree is not made to agree: its run stops on TXS-14 with
- * the question, and its row is not compared (method F-04).
- */
-const ownRunOf = (input: SecuritiesInput): SecuritiesInput => ({
-  goal: input.goal,
-  market: input.market,
-  fund: input.fund,
-  tariff: input.tariff.currency ? { currency: input.tariff.currency } : {},
-  profile: input.profile,
-  ...(input.broker ? { broker: input.broker } : {}),
-  ...(input.gridOffset !== undefined ? { gridOffset: input.gridOffset } : {}),
-});
-
-/**
- * Method §13, F-04: what the after-tax runs of an input's fund stop on, or null where they compute. A TASE foreign fund stops on TXF-04
- * before any run (`securitiesBlockedBy`). A fund whose tax index is an open reading (a foreign-investment fund, TXS OQ26) is run on its own
- * (`ownRunOf`) under each reading: where they give different results, its runs stop on TXS-14 with the question; where they agree, they
- * compute and carry the question as a flag.
- */
-export function securitiesStopOf(input: SecuritiesInput, ctx: RunContext): SecuritiesStop | null {
-  try {
-    taxIndexOf(input.fund, ruleBook(ctx));
-    return null;
-  } catch (e) {
-    // a book whose readings already hold the question stops on it with the question (`RunContext.readings`)
-    if (e instanceof BlockedError) return { ruleId: e.ruleId, ...(e.question ? { question: e.question } : {}) };
-    if (!(e instanceof OpenReadingError)) throw e;
-  }
-  try {
-    runSecurities(ownRunOf(input), ctx);
-    return null;
-  } catch (e) {
-    if (e instanceof BlockedError && e.question) return { ruleId: e.ruleId, question: e.question };
     throw e;
   }
 }
 
 /**
- * F-118: what a fund's after-tax runs stop on (`securitiesStopOf`), where the value before the exit tax can be read instead, or null. Only a
- * fund that pays nothing out: a distribution's tax would be paid inside the run. For a TASE foreign fund its 25% is settled for a fund
- * organised as a company (TXF-05, TXF-30) but open for one organised as an arrangement (TXF open question 19); no record says which form a
- * fund has, so a distributing one stops on that question (`runSecuritiesBeforeTax` throws "TXF-OQ19"). A distributing fund whose readings
- * split (TXS OQ26) is not read before tax (method F-118). `stop`: what `securitiesStopOf` already gave for the input, so a caller that asked
- * it first does not run the fund's own run again.
+ * F-118: the open rule a fund's after-tax run stops on (F-04), where the value before the exit tax can be read instead, or null. Only a
+ * fund that pays nothing out: a distribution's tax would be paid inside the run, and its 25% is settled for a fund organised as a company
+ * (TXF-05, TXF-30) but open for one organised as an arrangement (TXF open question 19). No record says which form a fund has, so a
+ * distributing one stops on that question (`runSecuritiesBeforeTax` throws "TXF-OQ19").
  */
-export function beforeTaxPathOf(input: SecuritiesInput, ctx: RunContext, stop?: SecuritiesStop | null): SecuritiesStop | null {
-  if (input.fund.distribution) return null;
-  return stop === undefined ? securitiesStopOf(input, ctx) : stop;
+export function beforeTaxPathOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "distribution">, ctx: RunContext): string | null {
+  if (fund.distribution) return null;
+  return securitiesBlockedBy(fund, ctx);
 }
 
 /**
@@ -341,15 +270,14 @@ export interface BeforeTaxRun extends Omit<RunResult, "nominal" | "real" | "taxA
   beforeTaxNominal: number;
   /** `V_T^pre / I_T` (F-06), in today's shekels: the CPI as the deflator, not as a tax index. */
   beforeTaxReal: number;
-  /** `question`: the open question whose readings split the fund's after-tax runs (TXS OQ26), where that is why. */
-  outcome: { code: "listed-not-ranked"; reason: string; question?: string };
+  outcome: { code: "listed-not-ranked"; reason: string };
 }
 
 /**
  * F-118 The value before the exit tax of a run an open rule blocks (D84, B3). The same ledger as `runSecurities`, month by month with every
  * fee, cost and the exchange-rate path, and the sale's costs at the exit; the tax index is never read (a lot's index serves the exit tax
- * alone), so the open rule enters no figure (method section 13). That nothing is taxed before the sale is, for a foreign fund, TXF-11's,
- * cited or labelled a reading as the after-tax run does, and for an Israeli fund TXS-08's and TXS-09's. Only for a fund the open rule blocks (`beforeTaxPathOf`); any other run is
+ * alone), so the open rule enters no figure (method section 13). That nothing is taxed before the sale is TXF-11's, cited or labelled a
+ * reading as the after-tax run does. Only for a fund the open rule blocks (`beforeTaxPathOf`); any other run is
  * `runSecurities`'s, unchanged.
  */
 export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext): BeforeTaxRun {
@@ -357,13 +285,12 @@ export function runSecuritiesBeforeTax(input: SecuritiesInput, ctx: RunContext):
 }
 
 function securitiesBeforeTax(input: SecuritiesInput, ctx: RunContext): BeforeTaxRun {
-  const stop = beforeTaxPathOf(input, ctx);
-  if (stop === null) {
+  const rule = beforeTaxPathOf(input.fund, ctx);
+  if (rule === null) {
     if (input.fund.distribution && securitiesBlockedBy(input.fund, ctx) !== null) throw new NotEvaluatedError("TXF-OQ19");
     throw new Error("F-118: the run's exit tax is not blocked by an open rule; its value is runSecurities's");
   }
   if (input.wrapper || input.carriedLoss) throw new Error("F-118 reads a securities account alone, with no wrapper and no carried loss");
-  const rule = stop.ruleId;
   const r = acrossReadings(ctx, (c) => securitiesLedger(input, c, rule), RUN_RESULT_FIELDS);
   return {
     exitMonth: r.exitMonth,
@@ -382,7 +309,7 @@ function securitiesBeforeTax(input: SecuritiesInput, ctx: RunContext): BeforeTax
     ...(r.waitingCarried !== undefined ? { waitingCarried: r.waitingCarried } : {}),
     beforeTaxNominal: r.nominal,
     beforeTaxReal: r.real,
-    outcome: { code: "listed-not-ranked", reason: rule, ...(stop.question ? { question: stop.question } : {}) },
+    outcome: { code: "listed-not-ranked", reason: rule },
   };
 }
 
@@ -502,15 +429,9 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   const I = cpiPath(market.inflation, T);
   const X = fxPath(market.fxChange ?? 0, T);
   const C = contributions(goal, I);
-  const fxIndexed = taxIndex === "fx" || taxIndex === "principal";
-  // F-04, TXS-14: under the principal-currency reading of TXS OQ26, a foreign-investment fund's index is that currency's path
-  let principal: number[] | null = null;
-  if (taxIndex === "principal") {
-    if (market.principalFxChange === undefined) throw new Error(`F-04: fund with principal currency ${fund.principalCurrency} run without market.principalFxChange`);
-    principal = fxPath(market.principalFxChange, T);
-  }
+  const fxIndexed = taxIndex === "fx";
   // F-118: no tax index; a lot's index is read only by the exit tax, which that run does not compute
-  const J = taxIndex === null ? null : principal ?? (fxIndexed ? X : I);
+  const J = taxIndex === null ? null : fxIndexed ? X : I;
 
   const annual = market.returnIn === "instrument" ? (1 + market.grossReturn) * (1 + (market.fxChange ?? 0)) - 1 : market.grossReturn;
   const g = annualToMonthly(annual);
@@ -738,11 +659,6 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
     // unless its own annex reports a ruling that says so. No secondary source is cited.
     if (fund.saleOnlyRuling) book.cite("TXF-11");
     else book.label("reading", "TXF-11");
-  } else if (beforeTaxOf !== null && fund.kind === "israeli-fund") {
-    // F-118: an exempt fund's income and gains are not taxed while they stay in it (TXS-08, s.129ג(א)(1)); the holder is taxed on selling
-    // or redeeming a unit (TXS-09, s.91(ב)(1)), so a run that pays nothing out owes nothing before the sale
-    book.cite("TXS-08");
-    book.cite("TXS-09");
   }
   // The dollar value is known only when the tariff gives the currency's rate.
   const estateThreshold = fund.domicile === "us" && tariff.currency ? book.amount("TXF-27", "estate_threshold", "USD") : undefined;
@@ -759,16 +675,23 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   // minimum above the lower cap (an exempt stretch charges nothing): the account's cost may be too high from then on (method F-102).
   // The cap is looked at without citing it, and cited only where it flags: a row it changes nothing on does not list it among its rules.
   // A record without the figure is cited at once, so the run fails as any missing rule does.
+  // A deal's current account is read in the month's loop, once the month's orders are placed: a card split by a month's orders, its
+  // trading or the value held charges one step's price, which only then is known. The cap compared is always the one for 0 to 2 actions:
+  // the run never reads its orders as the cap's actions (F-102).
+  let accountCap: { value: number; from: number } | null = null;
   if (tariff.currentAccount !== undefined || (dc && input.deal!.currentAccount?.length)) {
     const cap = ctx.rules.find((r) => r.id === "BANK-35")?.figures?.account_fee_up_to_2_actions as { value?: unknown; effective_from?: string | null } | undefined;
     if (typeof cap?.value !== "number") book.amount("BANK-35", "account_fee_up_to_2_actions");
     else {
-      const capMonth = cap.effective_from ? monthOfDate(ctx.runDate, cap.effective_from) : 1;
-      for (let m = Math.max(1, capMonth); m <= T; m++) {
-        if ((dc ? dc.accountMonthly(m) : (tariffAt(m).currentAccount ?? 0)) > cap.value) {
-          book.amount("BANK-35", "account_fee_up_to_2_actions");
-          tally.flag("BANK-35", m);
-          break;
+      const capMonth = Math.max(1, cap.effective_from ? monthOfDate(ctx.runDate, cap.effective_from) : 1);
+      if (dc) accountCap = { value: cap.value, from: capMonth };
+      else {
+        for (let m = capMonth; m <= T; m++) {
+          if ((tariffAt(m).currentAccount ?? 0) > cap.value) {
+            book.amount("BANK-35", "account_fee_up_to_2_actions");
+            tally.flag("BANK-35", m);
+            break;
+          }
         }
       }
     }
@@ -844,6 +767,12 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
     // (F-14), whether the deal prices it as a share of what is held or as a sum
     const dealHeld = dc ? (mmfFree ? { total: 0, parts: [], atRate: 0 } : dc.held(m, units * nav - manager)) : null;
     const sumsAsked = dc ? dc.sums(m, units * nav - manager) : null;
+    // F-102 with BANK-35 on a deal: the first month from the cap's start whose current account is charged above the cap for 0 to 2 actions
+    if (dc && accountCap && m >= accountCap.from && dc.accountMonthly(m, units * nav - manager) > accountCap.value) {
+      book.amount("BANK-35", "account_fee_up_to_2_actions");
+      tally.flag("BANK-35", m);
+      accountCap = null;
+    }
     const dealSums = sumsAsked && mmfFree ? { ...sumsAsked, custody: { total: 0, parts: [] } } : sumsAsked;
     const custody = dealHeld ? dealHeld.total : custodyFee(custodyLineAt(m), m + offset, units * nav - manager);
     const heldLeft = units * nav - manager - custody;
@@ -938,15 +867,14 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   // Each lot indexed by J_T / J_lot; when the index (CPI or exchange rate) fell, its inflationary amount is zero and
   // the part of a nominal loss equal to the fall is not allowable (TXS-02; method F-09). With the exchange
   // rate as the index, the rule that makes it the index is cited beside it: TXF-03 for a foreign-currency security held
-  // directly, TXS-14 for an Israeli foreign-investment fund's principal currency, TXF-04 for a TASE foreign fund (TXF-03 says its own test
-  // does not answer for such a fund; TXF-04 is open). The exit
+  // directly, TXF-04 for a TASE foreign fund (TXF-03 says its own test does not answer for such a fund; TXF-04 is open). The exit
   // year's fees are deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
   const adjusted = indexedCost(lotsLeft, J![T]!, nav * (1 - spread));
   const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;
   const nominalGain = gross - cost;
   book.cite("TXS-06");
   book.cite("TXS-02");
-  if (adjusted.fell && fxIndexed) book.cite(fund.kind === "foreign-fund" ? "TXF-03" : fund.kind === "israeli-fund" ? "TXS-14" : "TXF-04");
+  if (adjusted.fell && fxIndexed) book.cite(fund.kind === "foreign-fund" ? "TXF-03" : "TXF-04");
 
   let outcome: Outcome = { code: "eligible" };
   let lossOffset = 0;

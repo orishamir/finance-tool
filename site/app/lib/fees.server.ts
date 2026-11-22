@@ -12,6 +12,7 @@ import { dealKindsOf } from "./fee-deal/kinds";
 import { FEE_KIND_IDS } from "./fee-deal/shapes";
 import { STATED_RULES } from "./fee-deal/reading";
 import { BAN_RULES } from "./fee-deal/offers/rules";
+import { ACCOUNT_CAP_RULES } from "./fee-deal/charts";
 import { houseTemplateRead } from "./fee-deal/templates";
 import { termKey, type FeesData, type TrackLite } from "./fee-page-data";
 import { loadFx } from "./fx.server";
@@ -110,9 +111,10 @@ export function buildFeesData(): FeesData {
   const terms = termsFor(names, "");
   for (const k of kinds) for (const [name, t] of Object.entries(termsFor(names, k.id))) if (t.explanation !== terms[name]?.explanation) terms[termKey(name, k.id)] = t;
   const allRules = loadRules();
-  // with the rules the reading's stated sentences state (a bank's order through a clerk, BRK-16), and those of the rule table's bans, which a
-  // ban's words open and whose figure they show (MF-71's distribution fee)
-  const stated = [...Object.values(STATED_RULES).flatMap((ids) => ids ?? []), ...BAN_RULES];
+  // with the rules the reading's stated sentences state (a bank's order through a clerk, BRK-16), those of the rule table's bans, which a
+  // ban's words open and whose figure they show (MF-71's distribution fee),
+  // and BANK-35, whose cap flags a current account's year of holding (F-102, `accountCapOf`)
+  const stated = [...Object.values(STATED_RULES).flatMap((ids) => ids ?? []), ...BAN_RULES, ...ACCOUNT_CAP_RULES];
   const rules: RuleRecord[] = [...ruleIdsIn({ kinds, templates, houses, fx, terms }, new Set(stated))].sort().flatMap((id) => (allRules[id] ? [allRules[id]] : []));
   return { rules, pointed: Object.values(pointedRecords(rules, allRules)), templates, tracks, kinds, houses, fx, terms };
 }

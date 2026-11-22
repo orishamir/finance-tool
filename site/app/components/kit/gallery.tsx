@@ -3443,13 +3443,13 @@ function CustodyTable({ today }: { today: string }) {
 /** The question before a delete, opened by its button. */
 function ConfirmAskDemo() {
   const [open, setOpen] = useState(false);
-  const d = g.sample.list;
+  const d = investWords.dealAccount.head;
   return (
     <div className="flex max-w-md flex-col items-start gap-2">
       <Button variant="outline" aria-expanded={open} onClick={() => setOpen(true)}>
         {d.remove}
       </Button>
-      <ConfirmAsk open={open} question={d.confirm} body={d.confirmBody} yes={d.yes} no={d.no} onYes={() => setOpen(false)} onNo={() => setOpen(false)} />
+      <ConfirmAsk open={open} question={d.confirm} body={d.confirmBody} yes={d.confirmYes} no={d.confirmNo} onYes={() => setOpen(false)} onNo={() => setOpen(false)} />
     </div>
   );
 }
