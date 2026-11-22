@@ -115,8 +115,9 @@ describe("caps that hold only in a case the deal does not state, and converted p
       expect(standingOf(mm, "trade", { form: "action", rate: typed(0.1) }, provider)).toEqual({ judged: false, why: "caveat" });
     }
     const row = readingOf(read({ ...newDeal("brokerage-account"), provider: "bank", fees: [{ id: "fee-out", kind: "transfer_out", stages: [{ price: { form: "perAction", amount: typed(25) } }] }] }), data.fx).law[0]!;
-    expect(row.prices[0]!.standing).toEqual({ standing: { judged: false, why: "caveat" }, share: null });
-    expect(row.now).toBeUndefined();
+    // no price is judged; each carries the caveat and the cap's rules, and the row's tag says the caveat
+    expect(row.prices[0]!.standing).toEqual({ standing: { judged: false, why: "caveat" }, share: null, caveat: { id: "closing_account", rules: expect.arrayContaining(["BRK-18"]) } });
+    expect(row.now).toEqual(row.prices[0]?.standing);
   });
   it("calls a monthly rate from half a percent below a yearly cap to a tenth of a percent above it at it, and one further above it", () => {
     const study = kinds.find((k) => k.id === "keren-hishtalmut")!;

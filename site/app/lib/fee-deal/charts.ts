@@ -129,6 +129,8 @@ export interface LanePart {
   /** A flat price's top: the sum it holds up to. */
   upTo?: SiteValue;
   per?: Months;
+  /** The figure is a maximum on each security held, which the chart charges on the deal's one security (F-14). */
+  perSecurity?: true;
   end?: SiteValue;
   /** The engine's index of the read fee whose price this is (a step's own), and its side. */
   i: number;
@@ -171,7 +173,7 @@ function pricesOf(r: DealRead, p: DealPeriod, i: number, side: DealSide): { e: D
 }
 
 /** The figure that decides a part of a price (F-112), as charged. */
-function partFigure(r: DealRead, i: number, part: PricePart, e: DealPrice, s: Price): Pick<LanePart, "figure" | "upTo" | "per"> {
+function partFigure(r: DealRead, i: number, part: PricePart, e: DealPrice, s: Price): Pick<LanePart, "figure" | "upTo" | "per" | "perSecurity"> {
   const f = priceFigures(r.fees[i]!, s, r.today);
   const get = <K extends string>(k: K) => (e as unknown as Record<K, number | undefined>)[k];
   switch (part) {
@@ -186,7 +188,7 @@ function partFigure(r: DealRead, i: number, part: PricePart, e: DealPrice, s: Pr
       if (e.kind !== "held") return opt("figure", charged(r, i, f, part, get(part), false));
       // a held share's maximum is the one that binds on the deal's one security (F-14): the maximum on each security where it is the lower
       const key = e.perSecurity !== undefined && heldBounds(e).max === e.perSecurity && e.perSecurity !== e.max ? "perSecurity" : "max";
-      return { ...opt("figure", charged(r, i, f, key, e[key], false)), per: (s as Extract<Price, { form: "held" }>).every };
+      return { ...opt("figure", charged(r, i, f, key, e[key], false)), per: (s as Extract<Price, { form: "held" }>).every, ...(key === "perSecurity" ? { perSecurity: true as const } : {}) };
     }
     case "cap":
       return opt("figure", f.cap);
@@ -245,7 +247,7 @@ function laneParts(r: DealRead, p: DealPeriod, fee: ChartFee, side: DealSide, ra
   const joined: LanePart[] = [];
   for (const x of out) {
     const last = joined.at(-1);
-    if (last && last.part === x.part && sameFigure(last.figure, x.figure) && last.to !== null && Math.abs(last.to - x.from) < 1e-9 * x.from) {
+    if (last && last.part === x.part && sameFigure(last.figure, x.figure) && last.perSecurity === x.perSecurity && last.to !== null && Math.abs(last.to - x.from) < 1e-9 * x.from) {
       last.to = x.to;
       if (x.end) last.end = x.end;
       else delete last.end;

@@ -23,7 +23,6 @@ const plan = (over: Partial<WorkbenchInputs> = {}, ret = 7): WorkbenchInputs => 
   age: null,
   income: null,
   values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(ret, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
-  returnFromParameter: false,
   ...over,
 });
 const sp = indexById(bundle, "index-sp500")!;
@@ -251,27 +250,6 @@ describe("invest page computation", () => {
   it("an Israeli index has two options only", () => {
     const v = buildInvest({ bundle, index: indexById(bundle, "index-ta35")!, plan: plan() });
     expect(v.options.filter((o) => o.exists).map((o) => o.id)).toEqual(["il-tracking", "il-etf"]);
-  });
-
-  it("without an entered return it says whether the order holds between 0% and 10%", () => {
-    const v = buildInvest({ bundle, index: sp, plan: plan({ returnFromParameter: true }, 5) });
-    expect(v.order).not.toBeNull();
-    expect(typeof v.order!.holds).toBe("boolean");
-    expect(buildInvest({ bundle, index: sp, plan: plan() }).order).toBeNull();
-  });
-
-  it("checks the order at the ends P-02 sets for the return, not at fixed ones", () => {
-    const moved = structuredClone(bundle);
-    const bounds = (moved.p02 as unknown as { bounds: { "A-01": { hi: { value: number } } } }).bounds;
-    bounds["A-01"].hi.value = 12;
-    const flips = buildInvest({ bundle: moved, index: sp, plan: plan({ returnFromParameter: true }, 5) }).order?.flips ?? [];
-    expect(flips.length).toBeGreaterThan(0);
-    for (const f of flips) expect([0, 12]).toContain(f.at);
-  });
-
-  it("a bundle without P-02 shows no order sentence and doesn't break the page", () => {
-    const old = { ...bundle, p02: undefined } as unknown as typeof bundle;
-    expect(buildInvest({ bundle: old, index: sp, plan: plan({ returnFromParameter: true }, 5) }).order).toBeNull();
   });
 
   it("a typed name that matches a known index selects it", () => {

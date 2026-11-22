@@ -70,17 +70,10 @@ function resetShown({ value, isEntered, start, optional, disabled }: Pick<FieldP
 
 /**
  * The reset at the far end of a field's label line: small and muted. A number field's says the value it returns to, "↺ חזרה ל־10"
- * (`figure`); a slider's says "↺ איפוס" alone, its value shown once in the box (`word`); a knob tile's slider has the icon alone, spoken
- * "איפוס" (`icon`). It holds its place while it is hidden (`invisible` also takes it out of the tab order and what a screen reader reads), so nothing
+ * (`figure`); a slider's says "↺ איפוס" alone, its value shown once in the box (`word`). It holds its place while it is hidden (`invisible` also takes it out of the tab order and what a screen reader reads), so nothing
  * moves when it comes or goes; its tap area reaches 44 px past its small text.
  */
-function ResetToStart({ shown, start, unit, onReset, describedBy, words = "figure", className }: { shown: boolean; start?: number | null; unit: string; onReset: () => void; /** The label's id: the reset is spoken with the field's name. */ describedBy?: string; words?: "figure" | "word" | "icon"; className?: string }) {
-  if (words === "icon")
-    return (
-      <button type="button" onClick={onReset} aria-label={buttons.resetWord} aria-describedby={describedBy} className={cx("min-w-target min-h-target shrink-0 inline-flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground", !shown && "invisible", className)}>
-        <IconReset size={18} aria-hidden="true" />
-      </button>
-    );
+function ResetToStart({ shown, start, unit, onReset, describedBy, words = "figure", className }: { shown: boolean; start?: number | null; unit: string; onReset: () => void; /** The label's id: the reset is spoken with the field's name. */ describedBy?: string; words?: "figure" | "word"; className?: string }) {
   const word = words === "word";
   return (
     <button
@@ -114,7 +107,7 @@ const SIGN = /^[₪$€£%]$/;
  * value as the field writes it. The error shows once the hand rests (`useErrorRest`) and clears on the keystroke that puts it right.
  * `unitShown: false` leaves the unit out of the box, where the label beside it already names it ("שנים").
  */
-function useNumberEntry(props: FieldProps, { unitShown = true, labelledBy }: { unitShown?: boolean; /** The id of the words that name the box, where no `<label>` stands for it. */ labelledBy?: string } = {}) {
+function useNumberEntry(props: FieldProps, { unitShown = true }: { unitShown?: boolean } = {}) {
   const { unit, value, validate, onCommit, onReset, placeholder, disabled, compact, fit, optional, inputMode: mode = "decimal", autoFocus, inputId, externalError = null, agorot, groupAsTyped, hint } = props;
   // an amount of money is typed in whole shekels; a rate (interest, inflation, a return) and a price-list fee keep decimals
   const whole = /^nis/.test(unit) && !agorot;
@@ -193,7 +186,6 @@ function useNumberEntry(props: FieldProps, { unitShown = true, labelledBy }: { u
       <input
         ref={inputRef}
         id={ids}
-        aria-labelledby={labelledBy}
         type="text"
         inputMode={inputMode}
         autoComplete="off"
@@ -320,31 +312,6 @@ export function RangeField(props: RangeFieldProps) {
         </div>
       </div>
       <ScaleSlider scale={scale} value={value} labelledBy={`${id}-l`} disabled={disabled} onCommit={onCommit} />
-    </div>
-  );
-}
-
-/**
- * A range field's controls without its label, for a knob tile's popup (`KnobStrip layout="tiles"`), whose tile names the number: the box
- * and, beside it, the reset as its icon alone, shown while the value differs from the start; the slider under them. The box's error takes
- * the reset's place while it lasts. Box and slider are named by `labelledBy`, the tile's label.
- */
-export function RangeControls(props: RangeFieldProps & { labelledBy: string }) {
-  const { unit, value, onCommit, disabled, onReset, start, scale, unitInLabel = false, labelledBy } = props;
-  const { box, shownError, ids } = useNumberEntry({ ...props, compact: true }, { unitShown: !unitInLabel, labelledBy });
-  return (
-    <div className="field range-field">
-      <div className="flex items-center gap-2 min-h-target">
-        {box}
-        {shownError ? (
-          <span id={`${ids}-err`} className="min-w-0 text-xs leading-5 text-destructive">
-            {shownError}
-          </span>
-        ) : (
-          resetKept(props) && <ResetToStart shown={resetShown(props)} start={start} unit={unit} onReset={onReset} describedBy={labelledBy} words="icon" />
-        )}
-      </div>
-      <ScaleSlider scale={scale} value={value} labelledBy={labelledBy} disabled={disabled} onCommit={onCommit} />
     </div>
   );
 }

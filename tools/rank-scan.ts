@@ -17,7 +17,7 @@ const t = bundle.today;
 const plan = (a: number, m: number, y: number) => ({
   amountNow: a, monthly: m, years: y, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
   values: { amount: entered(a, "nis", t), monthly: entered(m, "nis_per_month", t), years: entered(y, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
-  fromGoal: false, returnFromParameter: false, currentAccounts: { own: null },
+  fromGoal: false, currentAccounts: { own: null },
 });
 const AMOUNTS = [0, 1000, 6000, 50000, 300000, 2000000];
 const MONTHLY = [0, 200, 1000, 5000];

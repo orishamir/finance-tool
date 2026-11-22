@@ -51,7 +51,9 @@
    company pages (`QUICK=1 npm run build`; list any company page worked on
    instead of 1). The full check, every deep suite included, runs on GitHub
    after the push, and the site updates only if it passes; look at that run
-   before telling the founder it is live.
+   before telling the founder it is live. GitHub leaves out the speed check,
+   whose timings depend on the machine: run `npm run response-check` locally
+   when a change touches how a page answers typing or dragging.
 2. The scripts check that nothing is broken; don't review by screenshot.
    How it looks is the founder's to judge.
 3. An engine or schema change gets the finance-reviewer. Builder work gets

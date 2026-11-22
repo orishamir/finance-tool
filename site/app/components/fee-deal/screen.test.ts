@@ -5,7 +5,7 @@ import { createElement, type ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { dealCases, feeDeal } from "../../copy";
+import { dealCases, feeDeal, help } from "../../copy";
 import { fmt, formatValue } from "../../lib/format";
 import { feesData } from "../../lib/fees.server";
 import { builder } from "../../lib/fee-deal/rows";
@@ -123,7 +123,24 @@ const drawReading = (deal: FeeDeal) => text(createElement(ReadingCards, { readin
 
 const count = (hay: string, needle: string) => hay.split(needle).length - 1;
 
+describe("a maximum on each security held", () => {
+  it("is said on the holding lane, in the fee card's order, with the one-security assumption behind a \"?\" after the lane's name (F-14)", () => {
+    const deal: FeeDeal = { ...account(), fees: [{ id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 3, every: 3, perSecurity: typed(3700), max: typed(11500) } }] }] };
+    const el = createElement(ReadingCards, { reading: readingOf(readDealFor(deal, data.kinds, TODAY), data.fx), saved: false, fx: data.fx });
+    expect(text(el)).toContain(`${feeDeal.cases.parts.perSecurity.each} ${feeDeal.price.per[3]}`);
+    expect(markup(el)).toContain(`aria-label="${help.markLabel.replace("{about}", feeDeal.panel.parts.perSecurity)}"`);
+    expect(text(el)).not.toContain(feeDeal.read.held.perSecurity);
+  });
+});
+
 describe("a fee against its cap", () => {
+  it("says a cap that holds only on closing the account by its tag, with the caveat's words behind a \"?\" (F-113)", () => {
+    const deal: FeeDeal = { ...account(), fees: [{ id: "fee-out", kind: "transfer_out", stages: [{ price: { form: "perAction", amount: typed(5) } }] }] };
+    const el = createElement(ReadingCards, { reading: readingOf(readDealFor(deal, data.kinds, TODAY), data.fx), saved: false, fx: data.fx });
+    expect(text(el)).toContain(feeDeal.standing.caveatTag.closing_account);
+    expect(markup(el)).toContain(`aria-label="${help.markLabel.replace("{about}", feeDeal.standing.caveatAbout)}"`);
+    expect(text(el)).not.toContain(feeDeal.standing.caveat.closing_account);
+  });
   it("is tagged in the reading's law card by the price of today, not by a price that has passed", () => {
     const shown = drawReading(passedAbove());
     expect(shown).toContain(feeDeal.standing.tag.below);

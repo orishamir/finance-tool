@@ -37,7 +37,6 @@ const plan: WorkbenchInputs = {
   age: null,
   income: null,
   values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
-  returnFromParameter: false,
 };
 
 // the terms of tests/golden/expected_custom_entries.py, as a typed account kept them: every line typed, a fee not charged as 0; a minimum

@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the indices bundle. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { gershayim } from "./format";
-import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, relativeGap, isTie, beforeTaxPathOf, securitiesBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, isTie, beforeTaxPathOf, securitiesBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomFund } from "./custom-entries";
@@ -366,13 +366,6 @@ export interface Bar {
   between?: [OptionId, OptionId];
 }
 
-export interface OrderCheck {
-  /** The order of options, of brokers in each option and of funds in each option is the same at both ends of P-02's yearly return range. */
-  holds: boolean;
-  /** `at`: the end where it differs, percent a year. */
-  flips: { at: number }[];
-}
-
 export interface InvestView {
   index: IndexRef;
   options: OptionView[];
@@ -388,8 +381,6 @@ export interface InvestView {
   houses: HouseRow[];
   /** The two slices through the headline's cell (F-63, "The worth lines"). */
   worth: WorthLines | null;
-  /** Only when the return is the site's illustration. */
-  order: OrderCheck | null;
   returnPct: number;
   fundCount: number;
 }
@@ -1283,41 +1274,6 @@ function headlineOf(options: OptionView[]): Way | null {
   return from.sort((a, b) => b.valueN - a.valueN)[0] ?? null;
 }
 
-/** Items in value order with the ones within θ of the group's first merged into one place: the order that matters (F-80). */
-function signature(items: { id: string; v: number }[], higherBetter: boolean, theta: number): string {
-  const sorted = [...items].sort((a, b) => (higherBetter ? b.v - a.v : a.v - b.v));
-  const groups: { id: string; v: number }[][] = [];
-  for (const x of sorted) {
-    const g = groups[groups.length - 1];
-    if (g && relativeGap(g[0]!.v, x.v) < theta) g.push(x);
-    else groups.push([x]);
-  }
-  return groups.map((g) => g.map((x) => x.id).sort().join("+")).join(">");
-}
-
-function signatures(options: OptionView[], theta: number): Record<string, string> {
-  const out: Record<string, string> = {};
-  out.options = signature(options.flatMap((o) => (o.bestWay ? [{ id: o.id, v: o.bestWay.valueN }] : [])), true, theta);
-  for (const o of options) {
-    out[`brokers:${o.id}`] = signature(o.cells.flatMap((c) => (c.kind === "cost" ? [{ id: c.providerId, v: c.costN! }] : [])), false, theta);
-    out[`funds:${o.id}`] = signature(o.funds.flatMap((f) => (f.best ? [{ id: f.rec.id, v: f.best.valueN }] : [])), true, theta);
-  }
-  return out;
-}
-
-function orderCheck(ctx: Ctx, index: IndexRef, yourBroker: string | null, atPlan: OptionView[], range: { lo: number; hi: number }): OrderCheck {
-  const base = signatures(atPlan, ctx.theta);
-  const flips: OrderCheck["flips"] = [];
-  for (const at of [range.lo, range.hi]) {
-    const other = makeCtx(ctx.bundle, { ...ctx.plan, grossReturn: at / 100 }, ctx.assumptions);
-    const sig = signatures(core(other, index, yourBroker), ctx.theta);
-    for (const k of Object.keys(base)) {
-      if (sig[k] !== base[k]) flips.push({ at });
-    }
-  }
-  return { holds: flips.length === 0, flips };
-}
-
 /** One end of a gap between two ways: its number, its figure (what is left, or what an account costs) and the name its sheet gives it. */
 interface GapEnd {
   n: number;
@@ -1447,8 +1403,6 @@ function build(a: InvestArgs): InvestView {
     const price = y && "value" in y ? y : null;
     atYours = { providerId: yourBroker, price, reason: y && "reason" in y ? y.reason : null, less: price ? gapOf2(ctx, headlineEnd(headline), leftEnd(shortOf(ctx, yourBroker), price.valueN, price.value), "F-65", "less") : null };
   }
-  const illustrative = a.plan.returnFromParameter;
-  const range = returnRange(a.bundle);
   const providers = ctx.snaps.map(providerInfo);
   return {
     index: a.index,
@@ -1461,7 +1415,6 @@ function build(a: InvestArgs): InvestView {
     bars: barsOf(ctx, options, headline),
     houses: housesOf(ctx, options, headline, providers),
     worth: worthOf(ctx, options, headline, providers),
-    order: illustrative && range && a.plan.grossReturn !== range.lo / 100 && a.plan.grossReturn !== range.hi / 100 ? orderCheck(ctx, a.index, yourBroker, options, range) : null,
     returnPct: a.plan.grossReturn * 100,
     fundCount: a.bundle.funds.filter((f) => f.exposure_id === (a.index.exposure?.id ?? a.index.id)).length,
   };
@@ -1813,24 +1766,14 @@ export function pairValueFigure(a: PairValueArgs & { about: string; dollarChange
   return valueFigure(r.ctx, r.row, { house: a.providerId, fund: a.fundId, spec: r.spec, row: r.row }, a.about, extra);
 }
 
-/** A P-02 bound as a figure, with its card: A-01, the yearly return the order is checked at; A-03, the dollar's yearly change against the shekel. Null where the record holds no such bound. */
-export function sensitivityBound(bundle: Pick<IndicesBundle, "p02">, assumption: "A-01" | "A-03", end: "lo" | "hi"): SiteValue | null {
-  // a bundle from before P-02 joined it (a page still holding an older file) has none: no bound, so no order sentence, rather than a broken page
-  const p = bundle.p02 as unknown as { bounds?: Record<string, { lo: SiteValue; hi: SiteValue }>; rationale: string; rationale_he?: string | null } | undefined;
-  if (!p) return null;
-  const v = p.bounds?.[assumption]?.[end];
-  return v ? { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } } : null;
-}
-
-/** P-02's bound of the dollar's yearly change against the shekel (A-03) as a figure, with its card; null where the page runs no dollar range. */
+/** P-02's bound of the dollar's yearly change against the shekel (A-03) as a figure, with its card; null where the page runs no dollar range,
+ *  or where the bundle holds no such bound. */
 export function dollarBound(bundle: Pick<IndicesBundle, "dollarRange" | "p02">, end: "lo" | "hi"): SiteValue | null {
-  return bundle.dollarRange ? sensitivityBound(bundle, "A-03", end) : null;
-}
-
-/** P-02's yearly return range (A-01), percent a year: the returns the order of the lists is checked at; null where the record holds none. */
-function returnRange(bundle: Pick<IndicesBundle, "p02">): { lo: number; hi: number } | null {
-  const lo = sensitivityBound(bundle, "A-01", "lo"), hi = sensitivityBound(bundle, "A-01", "hi");
-  return lo && hi ? { lo: lo.value as number, hi: hi.value as number } : null;
+  if (!bundle.dollarRange) return null;
+  // a bundle from before P-02 joined it (a page still holding an older file) has none: no bound, rather than a broken page
+  const p = bundle.p02 as unknown as { bounds?: Record<string, { lo: SiteValue; hi: SiteValue }>; rationale: string; rationale_he?: string | null } | undefined;
+  const v = p?.bounds?.["A-03"]?.[end];
+  return p && v ? { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } } : null;
 }
 
 /** One pair's real value left (F-65) on the plan: the figure `pairCosts` gives as `left`, without the runs that split the cost by who takes it. */

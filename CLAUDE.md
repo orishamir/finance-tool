@@ -21,5 +21,6 @@ win and the other text is corrected. My newer words win over both.
   terms, a proof for what math shows, the strongest research for how the
   world behaves (`guidelines/research.md`). Anything else is a lead only.
 - The repository and the site are public: nothing private goes into them.
-- `npm run check` passes before anything goes live. Push to `main`; never open
-  a pull request.
+- The fast checks pass locally, then push to `main`: GitHub runs the full
+  check and the site updates only if it passes (`guidelines/working.md` 4).
+  Never open a pull request.

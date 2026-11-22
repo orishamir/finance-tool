@@ -9,7 +9,10 @@ interface pieces follow [design.md](design.md).
 
 - **A rule a script can check is checked by a script,** in `npm run check`,
   not by a reviewer's eye. When a mistake gets past the checks, add a check
-  for it, with a planted failure it must catch.
+  only if it is a kind of mistake that can come back elsewhere, and add it
+  to a run that already exists (the layout check, the speed check, the unit
+  tests), with a planted failure it must catch. No browser flow for one
+  feature. `npm run check` stays under about 7 minutes, its time today.
 - **A count that can't reach zero at once is a ratchet:** new code adds
   none, and the allowed count only goes down.
 - `npm run check` runs Oxlint with its type-aware and React rules, and

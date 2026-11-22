@@ -145,7 +145,7 @@ function SampleLanes({ at, onAt }: { at: number; onAt: (a: number) => void }) {
             { id: "max", from: 900_000, to: null, label: s.parts.max },
           ],
         },
-        { id: "b", name: s.b, swatch: "bg-fee-custody", group: "share", parts: [{ id: "held", from: 0, to: null, label: s.parts.held, short: s.parts.short }], per: s.parts.per },
+        { id: "b", name: s.b, swatch: "bg-fee-custody", group: "share", parts: [{ id: "held", from: 0, to: null, label: s.parts.held, short: s.parts.short }], per: s.parts.per, help: <HelpMark about={s.help.about} text={s.help.text} /> },
         { id: "c", name: s.b, swatch: "bg-fee-account", group: "fixed", parts: null, price: s.price },
       ]}
       at={at}
@@ -303,6 +303,14 @@ function Basics() {
               <IconClose size={20} />
             </Button>
           </div>
+        </State>
+        <State label={'icon size="mark": 20 px, muted ink, a 44 px tap area both ways (an action beside a name in a list\'s row, the row keeping its height)'}>
+          <span className="flex items-center gap-1 text-sm font-medium text-entered">
+            {g.sample.hello}
+            <Button variant="icon" size="mark" aria-label={g.sample.hello}>
+              <IconPencil size={14} />
+            </Button>
+          </span>
         </State>
         <State label={'inline: an action inside a sentence, around a name that wraps with it; a 44 px tap layer that takes no height'}>
           <p className="max-w-64 text-sm">
@@ -1057,7 +1065,6 @@ function Fields() {
   const [years, setYears] = useState<number | null>(10);
   const [years2, setYears2] = useState<number | null>(25);
   const [pct, setPct] = useState<number | null>(5);
-  const [pct2, setPct2] = useState<number | null>(2);
   const [money, setMoney] = useState<number | null>(10_000);
   const [money2, setMoney2] = useState<number | null>(750);
   const [share, setShare] = useState(20);
@@ -1125,16 +1132,13 @@ function Fields() {
             ]}
           />
         </State>
-        <State label={'layout="tiles": a tap on a tile opens its slider over the page; two then three in a narrow box'}>
-          <div className="max-w-sm">
+        <State label="stacked: one under the other at every width (a narrow side card)">
+          <div className="max-w-xs">
             <KnobStrip
-              layout="tiles"
+              stacked
               knobs={[
-                { id: "money", label: g.sample.money, unit: "nis", value: money, start: 10_000, scale: MONEY_SCALE, isEntered: money !== 10_000, validate: nonNegativeCheck, onCommit: (n) => setMoney(n), onReset: () => setMoney(10_000) },
-                { id: "money2", label: g.sample.money, unit: "nis", value: money2, start: 10_000, scale: MONEY_SCALE, isEntered: money2 !== 10_000, validate: nonNegativeCheck, onCommit: (n) => setMoney2(n), onReset: () => setMoney2(10_000) },
                 { id: "years", label: g.sample.range, unit: "years", unitInLabel: true, value: years, start: 10, scale: YEARS_SCALE, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
                 { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, start: 5, scale: PCT_SCALE, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
-                { id: "pct2", label: g.sample.percent, unit: "pct_per_year", value: pct2, start: 2, scale: PCT_SCALE, isEntered: pct2 !== 2, validate: () => null, onCommit: (n) => setPct2(n), onReset: () => setPct2(2) },
               ]}
             />
           </div>
@@ -1989,6 +1993,12 @@ function Lists({ today }: { today: string }) {
           <span className="inline-flex items-center gap-1 text-sm font-medium">
             {g.sample.helpText.head}
             <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} rules={["TXS-05", "TXS-06"]} />
+          </span>
+        </State>
+        <State label="tone caution: the mark in the caution role, where what it opens holds a catch about the figures under it (a child-savings fee head)">
+          <span className="inline-flex items-center gap-1 text-sm font-medium">
+            {g.sample.helpText.head}
+            <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} tone="caution" />
           </span>
         </State>
         <State label="words: a quiet text action of its words before the mark, at the end of a panel's heading; its spoken name starts with them">

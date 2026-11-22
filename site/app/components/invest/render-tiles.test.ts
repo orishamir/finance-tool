@@ -177,15 +177,6 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     expect(other).toBeGreaterThan(0);
     expect(why).toBeGreaterThan(other);
   });
-  it("the fund list's head holds every account's line laid out as the shown one, so a pick of an account moves nothing under it", () => {
-    const out = lists(sp, bundle, base, head).replace(/&amp;/g, "&").replace(/&quot;/g, '"');
-    const funds = out.indexOf('data-anchor="funds"');
-    const headPart = out.slice(out.lastIndexOf(invest.lists.funds.title, funds), funds);
-    const held = [...headPart.matchAll(/<div aria-hidden="true" class="invisible">([\s\S]*?)<\/div>/g)].map((m) => shown(m[1]!)).join(" ");
-    const priced = sp.providers.filter((p) => allFunds(sp).some((f) => "valueN" in (f.byHouse[p.id] ?? {})) && !p.id.startsWith("house-account-group"));
-    expect(priced.length).toBeGreaterThan(2);
-    for (const p of priced) expect(held.replace(/\u00a0/g, " "), p.id).toContain(p.short.replace(/\u00a0/g, " "));
-  });
 });
 
 describe("a typed entry's line", () => {

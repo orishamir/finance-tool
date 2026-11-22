@@ -20,8 +20,9 @@ one and specifies every component.
    page at 1440, 390 and 320 px and fails on a page wider than the screen,
    words that don't wrap running out of their card or cell, a "?" on a line
    of its own, and a warning that a small phone's sheet shows only after
-   scrolling. When a layout mistake turns up that it misses, add a check for
-   it there, with a planted failure on `/kit` that the check must catch.
+   scrolling. When a kind of layout mistake turns up that it misses, add it
+   there, with a planted failure on `/kit` that the check must catch
+   ([code.md](code.md): only a kind of mistake, inside an existing run).
    What it found when it came in is listed, each with why, in
    `site/scripts/layout-check-leftovers.json`. Code follows
    [code.md](code.md).
@@ -165,8 +166,7 @@ What goes on a page is his call. When he asks for a change, build it this way:
   changes in view where possible.
 - **A slider runs left to right, like a chart's time axis
   ([charts.md](charts.md)), and shows its value once, in its box:** no
-  values at its ends, no figure in its reset (the icon ↺, spoken
-  "איפוס"). Hebrew readers
+  values at its ends, no figure in its reset ("↺ איפוס"). Hebrew readers
   expect a slider to grow rightward (research/2026-11-22-kit-ux.md).
 - **A money slider moves in steps that grow with the amount,** so a common
   amount isn't jammed against one end; a typed value between steps keeps
