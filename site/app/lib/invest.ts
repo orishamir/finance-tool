@@ -1099,7 +1099,7 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   const own = { goal: goalOf(ctx), market: { ...spec.market, inflation: ctx.plan.inflation }, fund: spec.fund, tariff: spec.currency ? { currency: spec.currency } : {}, profile: profileOf(ctx) };
   const stop = securitiesStopOf(own, ruleContext(ctx.bundle));
   if (stop) {
-    const path = beforeTaxPathOf(own, ruleContext(ctx.bundle));
+    const path = beforeTaxPathOf(own, ruleContext(ctx.bundle), stop);
     return { reason: { code: "rule-open", ruleId: stop.ruleId, ...(stop.question ? { question: stop.question } : {}) }, ...(path ? { beforeTax: { spec, ruleId: path.ruleId } } : {}) };
   }
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch

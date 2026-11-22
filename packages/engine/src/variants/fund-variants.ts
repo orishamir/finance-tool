@@ -41,22 +41,25 @@ export function usDividendsOf(exposure: Pick<ExposureRecord, "id" | "us_dividend
   return w === undefined ? undefined : { yield: y, weight: w };
 }
 
-/**
- * The fund the engine runs for a record, and the fee fields the record leaves empty. `list`: the list the fund is ranked on, for F-92 (d);
- * without it a gross benchmark gives no A-07 from its years.
- * `usDividends`: the exposure's F-107 inputs (`usDividendsOf`), read for an Irish fund that holds the shares.
- * `foreignCurrency`: the exposure's currency where it is not the shekel, the candidate principal currency of an Israeli fund whose record
- * says its status as a foreign-investment fund is not known (F-04).
- */
-export function fundOf(
-  rec: FundRecord,
-  kind: Fund["kind"],
-  dist: { yield: number; perYear: number } | undefined,
-  w8ben: boolean | undefined,
-  list?: GapList,
-  usDividends?: { yield: number; weight: number },
-  foreignCurrency?: string,
-) {
+/** What `fundOf` reads beside the record and its kind; each left out where the caller has none. */
+export interface FundOfOptions {
+  /** A-10: the distribution the run pays out (yield and payments a year), for a fund that distributes. */
+  distribution?: { yield: number; perYear: number };
+  /** W-8BEN on file with the US payer (TXF-12, TXF-13). */
+  w8ben?: boolean;
+  /** The list the fund is ranked on, for F-92 (d); without it a gross benchmark gives no A-07 from its years. */
+  list?: GapList;
+  /** The exposure's F-107 inputs (`usDividendsOf`), read for an Irish fund that holds the shares. */
+  usDividends?: { yield: number; weight: number };
+  /**
+   * The exposure's currency where it is not the shekel, the candidate principal currency of an Israeli fund whose record says its status as
+   * a foreign-investment fund is not known (F-04).
+   */
+  foreignCurrency?: string;
+}
+
+/** The fund the engine runs for a record, and the fee fields the record leaves empty. */
+export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist, w8ben, list, usDividends, foreignCurrency }: FundOfOptions = {}) {
   const notCollected: string[] = [];
   const f = rec.fees;
   const get = (key: keyof FundRecord["fees"], unit: ValueObject["unit"]) => {

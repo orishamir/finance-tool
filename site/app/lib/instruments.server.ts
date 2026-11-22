@@ -365,7 +365,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
   // under both readings of TXS OQ26 (method §13), with A-03 for that currency at its default, 0 (`principalFxChange`, below)
   if (kind === "israeli-fund") {
     const exposure = loadExposures().find((e) => e.id === rec.exposure_id);
-    const principal = fundOf(rec, kind, undefined, undefined, undefined, undefined, exposure && !isShekel(exposure.currency) ? exposure.currency : undefined).fund.principalCurrency;
+    const principal = fundOf(rec, kind, { foreignCurrency: exposure && !isShekel(exposure.currency) ? exposure.currency : undefined }).fund.principalCurrency;
     if (principal !== undefined) {
       if (principal !== exposure?.currency) missing.push(`${wrapperId}: fund "${rec.id}" names principal currency ${principal}, not its exposure's ${exposure?.currency ?? "(no exposure)"} (F-04)`);
       fund.principalCurrency = principal;
@@ -411,7 +411,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     // today's rate where the reports give A-07, so the comparison prices a fund's way at the value the invest page gives it
     const exposure = (rec as { exposure_id?: string }).exposure_id;
     if (kind === "israeli-fund" && exposure && rec.tracking_record) {
-      const forward = fundOf(rec, kind, undefined, undefined, gapListOf(rec, { id: exposure }, src.funds.filter((f) => (f as { exposure_id?: string }).exposure_id === exposure))).fund.drag?.variable;
+      const forward = fundOf(rec, kind, { list: gapListOf(rec, { id: exposure }, src.funds.filter((f) => (f as { exposure_id?: string }).exposure_id === exposure)) }).fund.drag?.variable;
       const listed = rec.fees.variable_management;
       if (forward !== undefined && forward !== drag.variable && listed) {
         drag.variable = forward;
@@ -426,7 +426,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
       }
     }
     // F-121: a fee the record lowers for a stated period, read as the indices page reads it (fundOf)
-    const promotions = fundOf(rec, kind, undefined, undefined).fund.drag?.promotions;
+    const promotions = fundOf(rec, kind).fund.drag?.promotions;
     if (promotions) drag.promotions = promotions;
     // each in force on the page's day shown among the run's figures beside the fee it lowers, with its last day
     for (const p of fundPromotions(rec, src.today)) feeValues[`${PROMOTION_LABEL[p.fee]}Promotion`] = p.value;

@@ -173,11 +173,11 @@ describe("the fund a record gives (fundOf)", () => {
     return { ...rec, tax_status: { ...rec.tax_status, foreign_investment_fund: { ...rec.tax_status.foreign_investment_fund, value, notes: "as the test sets it" } } };
   };
   it("carries the principal currency the fund's documents name, and none where they say it is not one", () => {
-    expect(fundOf(withStatus("USD"), "israeli-fund", undefined, undefined, undefined, undefined, "USD").fund.principalCurrency).toBe("USD");
-    expect(fundOf(withStatus(false), "israeli-fund", undefined, undefined, undefined, undefined, "USD").fund.principalCurrency).toBeUndefined();
+    expect(fundOf(withStatus("USD"), "israeli-fund", { foreignCurrency: "USD" }).fund.principalCurrency).toBe("USD");
+    expect(fundOf(withStatus(false), "israeli-fund", { foreignCurrency: "USD" }).fund.principalCurrency).toBeUndefined();
   });
   it("takes the index's foreign currency as the candidate where the status is not known, so the run meets both readings, and none on a shekel index", () => {
-    expect(fundOf(withStatus(null), "israeli-fund", undefined, undefined, undefined, undefined, "USD").fund.principalCurrency).toBe("USD");
-    expect(fundOf(withStatus(null), "israeli-fund", undefined, undefined, undefined, undefined, undefined).fund.principalCurrency).toBeUndefined();
+    expect(fundOf(withStatus(null), "israeli-fund", { foreignCurrency: "USD" }).fund.principalCurrency).toBe("USD");
+    expect(fundOf(withStatus(null), "israeli-fund").fund.principalCurrency).toBeUndefined();
   });
 });

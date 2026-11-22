@@ -310,15 +310,13 @@ export function fundRun(
   const dist = recordDistribution(rec) ?? (entered ? { yield: entered.yield / 100, perYear: entered.perYear } : undefined);
   if (rec.distribution_policy === "distributing" && !dist) return { kind: "need-yield" };
   if (rec.distribution_policy === "distributing" && !israeli && rec.domicile !== "US" && rec.domicile !== "IE") return { kind: "fund-type" };
-  const built = fundOf(
-    rec,
-    kind,
-    rec.distribution_policy === "distributing" ? dist : undefined,
-    assumptions.w8ben,
+  const built = fundOf(rec, kind, {
+    distribution: rec.distribution_policy === "distributing" ? dist : undefined,
+    w8ben: assumptions.w8ben,
     list,
-    exposure.id ? usDividendsOf({ id: exposure.id, us_dividends: exposure.us_dividends }) : undefined,
-    isShekel(exposure.currency) ? undefined : exposure.currency,
-  );
+    usDividends: exposure.id ? usDividendsOf({ id: exposure.id, us_dividends: exposure.us_dividends }) : undefined,
+    foreignCurrency: isShekel(exposure.currency) ? undefined : exposure.currency,
+  });
   if (!built.hasManagement) return { kind: "fund-type" };
   const f = (assumptions.fxChange ?? 0) / 100;
   const market: FundMarket = { grossReturn };

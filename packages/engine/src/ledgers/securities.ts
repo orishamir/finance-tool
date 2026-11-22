@@ -324,11 +324,12 @@ export function securitiesStopOf(input: SecuritiesInput, ctx: RunContext): Secur
  * fund that pays nothing out: a distribution's tax would be paid inside the run. For a TASE foreign fund its 25% is settled for a fund
  * organised as a company (TXF-05, TXF-30) but open for one organised as an arrangement (TXF open question 19); no record says which form a
  * fund has, so a distributing one stops on that question (`runSecuritiesBeforeTax` throws "TXF-OQ19"). A distributing fund whose readings
- * split (TXS OQ26) is not read before tax (method F-118).
+ * split (TXS OQ26) is not read before tax (method F-118). `stop`: what `securitiesStopOf` already gave for the input, so a caller that asked
+ * it first does not run the fund's own run again.
  */
-export function beforeTaxPathOf(input: SecuritiesInput, ctx: RunContext): SecuritiesStop | null {
+export function beforeTaxPathOf(input: SecuritiesInput, ctx: RunContext, stop?: SecuritiesStop | null): SecuritiesStop | null {
   if (input.fund.distribution) return null;
-  return securitiesStopOf(input, ctx);
+  return stop === undefined ? securitiesStopOf(input, ctx) : stop;
 }
 
 /**
