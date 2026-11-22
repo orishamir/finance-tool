@@ -815,6 +815,8 @@ export const pagePreview = {
 export const formulaNames: Record<string, string> = {
   "A-06": "העלות בתוך הקרן: סכום כל מרכיביה",
   "F-03": "מדד המחירים לאורך התוכנית",
+  "F-129": "שורות הקבלה בשקלים של סוף התוכנית",
+  "F-130": "מה שהאינפלציה מורידה, עד הכסף של היום",
   "F-05": "ההפקדות לאורך הזמן",
   "F-06": "ערך בכסף של היום",
   "F-106": "סך ההפקדות בכסף של היום",
@@ -916,6 +918,23 @@ export const formulaKeys: Record<string, { lines?: string[]; symbols: [tex: stri
       ["C_m", "ההפקדה בכל חודש, בשקלים של אותו חודש"],
       ["C", "ההפקדה החודשית בתוכנית, בכסף של היום"],
       ["I_m", "מדד המחירים באותו חודש, ביחס להיום (היום הוא 1)"],
+    ],
+  },
+  "F-129": {
+    lines: ["כל שורה בשקלים של סוף התוכנית", "ההפקדות, כל אחת בשקלים של החודש שלה", "השורות מצטרפות לסכום שבסוף, בשקלים של אז"],
+    symbols: [
+      ["Y^{nom}", "השורה בשקלים של סוף התוכנית"],
+      ["Y", "אותה שורה בכסף של היום"],
+      ["I_T", "פי כמה המחירים עולים עד סוף התוכנית"],
+      ["D^{nom}", "סך ההפקדות, כל אחת בשקלים של החודש שבו היא מופקדת"],
+      ["C_m", "ההפקדה בחודש m, בשקלים של אותו חודש"],
+      ["V_T", "מה שנשאר בסוף, בשקלים של אז"],
+    ],
+  },
+  "F-130": {
+    symbols: [
+      ["V_T", "מה שנשאר בסוף, בשקלים של אז"],
+      ["V_T^{real}", "אותו סכום בכסף של היום"],
     ],
   },
   "F-106": {
@@ -1128,6 +1147,8 @@ export const computedInputs = {
   grossReturn: "תשואה בשנה",
   cashRate: "ריבית בשנה",
   inflation: "אינפלציה בשנה",
+  /** The age the person entered on the device. */
+  age: "הגיל שהזנתם",
   balanceFee: "דמי ניהול מחיסכון",
   depositFee: "דמי ניהול מהפקדה",
   directExpenses: "הוצאות ישירות",
@@ -3987,6 +4008,10 @@ export const invest = {
     inflation: "אינפלציה",
     inflationLead: "כמה הסכום שבסוף שווה פחות בכסף של היום, לפי האינפלציה של התוכנית.",
     perYear: "בשנה",
+    /** The gain's input: what was paid in at today's prices (F-106), which the deposits' line, in the shekels each is paid in, is not. */
+    paidInToday: "הפקדתם, בכסף של היום",
+    /** The tax line's sheet: what the figure holds, the surtax with it where it applies (F-43), its label staying short. */
+    taxSheet: { sale: "מס רווחי הון במכירה, כולל מס נוסף אם חל", payouts: "מס רווחי הון במכירה ומס על הדיבידנד בכל חלוקה, כולל מס נוסף אם חל" },
     /** A line's figure in the shekels of the horizon: its sheet's title, and the same figure in today's money among its inputs. */
     nominal: { today: "אותו סכום בכסף של היום", about: (label: string) => `${label}, בשקלים של סוף התוכנית` },
     left: "נשאר לכם",
@@ -4386,7 +4411,9 @@ export const invest = {
       amount: "סכום היום",
       monthly: "הפקדה חודשית",
       years: "שנים",
-      ret: "תשואה בשנה",
+      ret: "תשואה בשנה, לפני אינפלציה",
+      /** The return as the change chart's line and row name it. */
+      retLine: "תשואה בשנה",
       /** The fifth slider, the yearly inflation the plan's figures are in today's money by (A-02). */
       inflation: "אינפלציה בשנה",
       changes: {
@@ -4477,13 +4504,15 @@ export const invest = {
     paidIn: "הפקדתם",
     paidInAbout: "סך ההפקדות",
     /** At the head of the deposits' sheet: A-04 "constant real" (F-05), which the deposits' sum in today's money rests on. */
-    paidInLead: "ההפקדה החודשית עולה כל חודש עם המחירים, לפי האינפלציה של התוכנית, כך שבכסף של היום היא אותו סכום בכל חודש.",
+    paidInLead: "ההפקדה החודשית צמודה למדד, כך שבכסף של היום היא אותו סכום בכל חודש.",
     /** What was paid in, in the shekels each deposit is paid in (F-05): the receipt's first line, in the shekels of the horizon's chain. */
     paidInNominalAbout: "סך ההפקדות, כל אחת בשקלים של החודש שבו היא מופקדת",
     /** I_T (F-03), among the inputs of the receipt's figures in the shekels of the horizon. */
     indexAbout: "פי כמה המחירים יעלו עד סוף התוכנית, לפי האינפלציה של התוכנית",
     /** I_T (F-03) as an input of a receipt figure in the shekels of the horizon. */
     indexInput: "פי כמה המחירים עולים עד סוף התוכנית",
+    /** The age the person entered on the device, which decides the brackets a gain falls into from 60 (F-42), among the same inputs. */
+    ageInput: "גיל",
     /** The income a run's tax tests the surtax on (F-43), among the inputs of the figures that come out of the run. */
     incomeInput: "הכנסה שנתית, מלבד הרווח",
     /** The bank's monthly current-account minimum among a row's inputs, with its price list as the source (F-102). */
@@ -4577,8 +4606,8 @@ export const invest = {
     taxLine: "מס רווחי הון",
     /** ... and, where a bar's fund pays out, the tax on what it pays (TXS-10, TXF-10) */
     taxLinePayouts: "מס רווחי הון ומס על דיבידנד",
-    taxAbout: "מס רווחי הון במכירה, בכסף של היום",
-    taxAboutPayouts: "מס רווחי הון במכירה ומס על הדיבידנד בכל חלוקה, בכסף של היום",
+    taxAbout: "מס רווחי הון במכירה, כולל מס נוסף אם חל, בכסף של היום",
+    taxAboutPayouts: "מס רווחי הון במכירה ומס על הדיבידנד בכל חלוקה, כולל מס נוסף אם חל, בכסף של היום",
     /** The part of the account's cost no single fee line explains (F-91), named by what it adds and where it comes from. */
     remainder: "תוספת משילוב עמלות החשבון",
     remainderAbout: "החלק הזה לא שייך לעמלה אחת: גם בלי אחת מעמלות החשבון הוא עדיין היה נגבה. שאר עמלות החשבון היו גובות אותו מהכסף שאותה עמלה כבר לא הייתה לוקחת, ומהצמיחה של הכסף הזה.",

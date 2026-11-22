@@ -33,6 +33,10 @@ What goes on a page is his call. When he asks for a change, build it this way:
 - **Every field and control changes something the reader can see.** A field
   that changes nothing on the page is left out, however correct it is;
   `site/app/lib/fees-dead-ends.test.ts` guards it.
+- **A new fact goes into what the page already has before it becomes a
+  sentence:** a line in the receipt, a column, a label, a figure's
+  details. Only a fact with no such place gets words, and then a few
+  beside the figure it concerns.
 - **Fast.** A slider or field answers in under 100 ms; work that takes longer
   waits until the hand rests. Measure it.
 - **Little movement.** When a number changes, the page shifts as little as it

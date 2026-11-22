@@ -6,12 +6,12 @@ import { pickableGroups, withGroupPick } from "../../lib/group-pick";
 import { PairLists } from "./lists";
 import { asideLines, buildInvest, indexById, kindOf, pairCostsKept } from "../../lib/invest";
 import { receiptAmounts, receiptNominal } from "../../lib/receipt";
-import { ANCHOR, PairReceipt, PairStub, addedOf, inflationOf, nominalOf } from "./receipt";
+import { ANCHOR, PairReceipt, PairStub, addedOf, gainOf, inflationOf, nominalOf, taxOf } from "./receipt";
 import { ChosenPair } from "./chosen";
 import { allFunds, pickOfHeadline, pairVerdict, priced } from "./pair";
 import { stretchesOf } from "../../lib/stretch";
 import { bundle, plan, shown, html, nisIn, fundRow, t } from "./render-fixtures";
-import { entered } from "../../lib/value";
+import { entered, type SiteValue } from "../../lib/value";
 import { planOf } from "../../lib/receipt-fixtures";
 
 const w = invest;
@@ -102,6 +102,16 @@ describe("the receipt", () => {
     expect(tax.value as number).toBeCloseTo((pc.tax.value as number) * 1.02 ** plan.years, 6);
     expect(Object.keys(tax.computed_from?.inputs ?? {})).toEqual([w.receipt.nominal.today, w.pair.indexInput]);
   });
+  it("the gain lists the deposits in today's money (F-106), and the tax's sheet says it holds the surtax where it applies", () => {
+    const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });
+    if (!pc) throw new Error("the page's own pair is priced");
+    const paid = (gainOf(pc, t).computed_from?.inputs as Record<string, SiteValue> | undefined)?.[w.receipt.paidInToday];
+    expect(paid?.computed_from?.formula).toBe("F-106");
+    // 6,000 now and 400 a month for 20 years, in today's money: the deposits as entered (F-106)
+    expect(paid?.value).toBe(6_000 + 400 * 12 * 20);
+    expect(taxOf(pc, t).about).toContain("מס נוסף");
+    expect(taxOf(pc, t).computed_from?.formula).toBe("F-129");
+  });
   it("what the index added keeps its label as its title and says in its sheet it is in the horizon's shekels (F-91)", () => {
     const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });
     if (!pc) throw new Error("the page's own pair is priced");
@@ -123,7 +133,7 @@ describe("the receipt", () => {
     const after = (x: string) => x.slice(x.indexOf(w.receipt.inflation) + w.receipt.inflation.length);
     expect(after(two.text)).toMatch(/^[^\n]*?2% בשנה/);
     expect(after(three.text)).toMatch(/^[^\n]*?3\.5% בשנה/);
-    expect(two.inflation.computed_from?.formula).toBe("F-06");
+    expect(two.inflation.computed_from?.formula).toBe("F-130");
     expect(two.inflation.value).toBe(Math.round((two.pc.left.value as number) * (two.pc.index.value as number)) - Math.round(two.pc.left.value as number));
     // a higher inflation takes more on the way to today's money
     expect(three.inflation.value as number).toBeGreaterThan(two.inflation.value as number);

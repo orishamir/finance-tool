@@ -538,6 +538,7 @@ type SlotRow = ProviderRow | BeforeTaxProvider;
 function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[], untilExitTax = false): SlotRow[] {
   const profile: { ageAtStart?: number; annualIncome?: number } = {};
   if (ctx.plan.age !== null) profile.ageAtStart = ctx.plan.age;
+  // the tax reads both: the surtax on the income with the gain (F-43), and from 60 the brackets the gain falls into (F-42)
   if (ctx.plan.income !== null && ctx.plan.income > 0) profile.annualIncome = ctx.plan.income;
   const input = (list: typeof items) => ({
     goal: { amountNow: ctx.plan.amountNow, monthly: ctx.plan.monthly, months: 12 * ctx.plan.years, firstMonth: calendarMonthOf(ctx.bundle.today) },
@@ -872,8 +873,9 @@ interface RunReads {
   row?: Pick<ComparedProvider, "linesUsed">;
   /** F-91's X: the fund with none of its own costs and no distribution, measured with no account: the fund's figures are not read. */
   costsOff?: boolean;
-  /** The figure is after the run's tax (what is left, the tax itself): it reads the income the tax tests the surtax on (F-43). A cost before
-   *  the tax it saves (F-91's `B` differences) and a value before the exit tax (F-118) read none. */
+  /** The figure is after the run's tax (what is left, the tax itself): it reads the income the tax tests the surtax on (F-43) and, with an
+   *  age, the brackets from 60 (F-42). A cost before the tax it saves (F-91's `B` differences) and a value before the exit tax (F-118) read
+   *  neither. */
   taxed?: boolean;
 }
 
@@ -927,9 +929,11 @@ const inputsOfRun = (ctx: Ctx, r: RunReads): Record<string, SiteValue> => {
   const typed = [r.house, fundId].flatMap((id) => (id ? [ctx.bundle.entered?.inputs[id] ?? {}] : []));
   // a typed fund's costs are what was typed (below); F-107 comes from what was said of it (Ireland, holds the shares) and the index
   const own = fund ? { ...(isCustomFund(fund) ? {} : fundInputs(fund, gapListFor(ctx.bundle, fund), ctx.bundle.today)), ...usWithholdingInput(ctx, r, fund) } : {};
-  // the income the run's tax tests the surtax on (F-43, `profile.annualIncome` in `runSlot`), on a figure after that tax only
+  // on a figure after the run's tax only: the income the tax tests the surtax on (F-43) and, from 60, the brackets the gain falls into
+  // (F-42), and the age that decides those (`profile.annualIncome` and `ageAtStart` in `runSlot`)
   const income = r.taxed && ctx.plan.income !== null && ctx.plan.income > 0 && ctx.plan.values.income ? { [copy.pair.incomeInput]: ctx.plan.values.income } : {};
-  return Object.assign({}, planInputs(ctx.plan, WHOLE_PLAN), income, ratesOfRun(ctx, r), minimum, own, ...typed);
+  const age = r.taxed && ctx.plan.age !== null && ctx.plan.values.age ? { [copy.pair.ageInput]: ctx.plan.values.age } : {};
+  return Object.assign({}, planInputs(ctx.plan, WHOLE_PLAN), income, age, ratesOfRun(ctx, r), minimum, own, ...typed);
 };
 
 /**
@@ -1652,6 +1656,8 @@ export type DealOnPlan =
       reach: number[][];
       /** A figure of this run as the popup shows it (F-128): `n` shekels, computed from the run's inputs and rules, `about` saying which. */
       figure: (n: number, about: string) => SiteValue;
+      /** What is left after the run's tax as a figure, which reads the income and age the tax does (`RunReads.taxed`). */
+      left: (n: number, about: string) => SiteValue;
     }
   | { kind: "fail"; reason: NotComparable | Reason };
 
@@ -1692,8 +1698,8 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
     }
     const row = got.row;
     const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row };
-    const figure = (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
-    out.set(fundId, { kind: "ok", valueN: row.real, open: row.run.outcome.code === "listed-not-ranked", byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure });
+    const of = (taxed: boolean) => (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, taxed }), { today: ctx.bundle.today, rules: rulesOf(row), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+    out.set(fundId, { kind: "ok", valueN: row.real, open: row.run.outcome.code === "listed-not-ranked", byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure: of(false), left: of(true) });
   }
   return out;
 }

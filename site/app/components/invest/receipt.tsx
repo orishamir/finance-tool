@@ -126,18 +126,28 @@ type Costs = NonNullable<ReturnType<typeof pairCostsKept>>;
  */
 export function nominalOf(pc: Costs, v: SiteValue, label: string, today: string): SiteValue {
   const n = typeof v.value === "number" && typeof pc.index.value === "number" ? v.value * pc.index.value : null;
-  return computed(n, "nis", "F-06", { [c.receipt.nominal.today]: v, [c.pair.indexInput]: pc.index }, { today, about: c.receipt.nominal.about(label) });
+  return computed(n, "nis", "F-129", { [c.receipt.nominal.today]: v, [c.pair.indexInput]: pc.index }, { today, about: c.receipt.nominal.about(label) });
 }
 
 /** What the index added before any cost, in the shekels of the horizon: F-91's X there less the deposits as they are paid (F-05). */
 export function addedOf(pc: Costs, today: string): SiteValue {
-  return differenceOf([c.pair.baseInput, whole(nominalOf(pc, pc.baseValue, c.pair.baseInput, today))], [c.pair.paidIn, whole(pc.paidInNominal)], "F-91", { today, about: c.receipt.added, lead: c.receipt.addedLead });
+  return differenceOf([c.pair.baseInput, whole(nominalOf(pc, pc.baseValue, c.pair.baseInput, today))], [c.pair.paidIn, whole(pc.paidInNominal)], "F-129", { today, about: c.receipt.added, lead: c.receipt.addedLead });
+}
+
+/** The gain, in today's money: what is left less what was paid in at today's prices (F-106), which the deposits' line is not. */
+export function gainOf(pc: Costs, today: string): SiteValue {
+  return differenceOf([c.receipt.left, whole(pc.left)], [c.receipt.paidInToday, whole(pc.paidIn)], "F-91", { today, about: c.receipt.gain });
+}
+
+/** The tax line in the shekels of the horizon; its sheet says it holds the surtax where the income with the gain passes its threshold (F-43). */
+export function taxOf(pc: Costs, today: string): SiteValue {
+  return nominalOf(pc, pc.tax, pc.distributes ? c.receipt.taxSheet.payouts : c.receipt.taxSheet.sale, today);
 }
 
 /** What bringing the end to today's money takes (F-06): the end in the shekels of the horizon less the same end in today's money. */
 export function inflationOf(pc: Costs, years: number, today: string): SiteValue {
   const end = c.receipt.nominalLeft(years);
-  return differenceOf([end, whole(nominalOf(pc, pc.left, end, today))], [c.receipt.left, whole(pc.left)], "F-06", { today, about: c.receipt.inflation, lead: c.receipt.inflationLead });
+  return differenceOf([end, whole(nominalOf(pc, pc.left, end, today))], [c.receipt.left, whole(pc.left)], "F-130", { today, about: c.receipt.inflation, lead: c.receipt.inflationLead });
 }
 
 /**
@@ -164,9 +174,8 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const baseShort = providerName(view, baseHouse)?.short ?? short;
   // the figures each line shows are whole shekels that add up; each opens the figure it stands for, with that figure's sources
   const added = addedOf(pc, today);
-  // the gain is in today's money: what is left less what was paid in, both at today's prices (F-06, F-106)
-  const gain = differenceOf([c.receipt.left, whole(pc.left)], [c.pair.paidIn, whole(pc.paidIn)], "F-91", { today, about: c.receipt.gain });
-  const tax = nom(pc.tax, v.taxName);
+  const gain = gainOf(pc, today);
+  const tax = taxOf(pc, today);
   const fundCost = nom(pc.fund, c.receipt.parts.fund);
   const account = nom(accountSum(pc, c.pair.who.account, today), c.receipt.parts.account);
   const company = pc.priced.house;
@@ -233,7 +242,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const total = <Num value={pc.left} display={fmt.nisWhole(real.left)} />;
   const gainLine = <ReceiptLine strong label={c.receipt.gain} value={<Num value={gain} display={fmt.signedNisWhole(real.gain)} />} sub={c.receipt.gainNote} />;
   // what the tax, the account's fees and the fund took: X less what is left, and in whole units less what the waiting cash did (F-91)
-  const lostValue = sumOf({ [v.taxName]: tax, [c.receipt.parts.account]: account, [c.receipt.parts.fund]: fundCost }, "F-91", { today, about: c.receipt.lost, round: Math.round });
+  const lostValue = sumOf({ [v.taxName]: tax, [c.receipt.parts.account]: account, [c.receipt.parts.fund]: fundCost }, "F-129", { today, about: c.receipt.lost, round: Math.round });
   const lostLine = <ReceiptLine strong label={c.receipt.lost} value={<Num value={lostValue} display={fmt.nisWhole(r.lost)} />} />;
   const bar = (
     <ShareBar

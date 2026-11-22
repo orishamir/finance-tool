@@ -614,6 +614,11 @@ describe("what each figure's sheet lists", () => {
     expect(inputs(tlv?.accountCost ?? high.tax)[words.pair.incomeInput]).toBeUndefined();
     // what a list shows as left after the tax reads it
     const leumiFund = v.houses.find((h) => h.provider.id === "leumi")?.best;
+    // an age on the device is listed beside it, since from 60 the brackets the gain falls into read both (F-42); never before the tax
+    const aged = leumiPair(plan({ age: 64, income: 100_000, values: { ...plan().values, income: entered(100_000, "nis", t), age: entered(64, "years", t) }, currentAccounts: { own: null } }));
+    expect(inputs(aged.tax)[words.pair.ageInput]?.value).toBe(64);
+    expect(inputs(aged.fund)[words.pair.ageInput]).toBeUndefined();
+    expect(inputs(high.tax)[words.pair.ageInput]).toBeUndefined();
     expect(leumiFund?.price && inputs(leumiFund.price.value)[words.pair.incomeInput]?.value).toBe(5_000_000);
   });
 

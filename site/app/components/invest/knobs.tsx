@@ -32,6 +32,8 @@ const k = c.plan.knobs;
 /** The amount knob's box, which the page's empty state focuses when the plan puts in nothing. */
 export const PLAN_AMOUNT_FIELD = "plan-amount";
 const labelOf: Record<Id, string> = { amount: k.amount, monthly: k.monthly, years: k.years, ret: k.ret };
+/** Each number as the change chart's lines and rows name it: the return's knob says it is before inflation, which a chart line has no room for. */
+const lineOf: Record<Id, string> = { ...labelOf, ret: k.retLine };
 
 /** The pair the page prices, with the value left as a function of the plan (F-63's `L`): the figure with its provenance for the plan itself, the number alone for each run of a sweep. Null when the page prices no pair. */
 function usePairLeft(bundle: IndicesBundle, view: InvestView | null, pick: Pair) {
@@ -83,7 +85,8 @@ export function PlanKnobs({ compare, ranges, pct, stacked }: { compare: CompareB
     { ...field("monthly"), unit: "nis_per_month", scale: rangeScale(ranges.monthly_deposit), validate: negative },
     { ...field("years"), unit: "years", unitInLabel: true, scale: rangeScale(ranges.horizon_years), inputMode: "numeric", validate: (n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null) },
     { ...field("ret"), unit: "pct_per_year", scale: rangeScale(ranges["A-01"]), validate: percentCheck(pct) },
-    // inflation moves the plan's figures in today's money (A-02, F-06), and none of the change chart's lines (F-89's four numbers)
+    // inflation moves the plan's figures in today's money (A-02, F-06), every line of the change chart among them, but is not one of the
+    // four numbers that chart changes (F-89)
     { id: "inflation", label: k.inflation, value: entered.plan.values.inflation.value as number, start: entered.starts.inflation, isEntered: entered.plan.values.inflation.state === "entered", unit: "pct_per_year", scale: rangeScale(ranges["A-02"]), validate: percentCheck(pct), onCommit: (n: number) => setEntered("A-02", n), onReset: () => setEntered("A-02", null) },
   ];
   return <KnobStrip knobs={knobs} stacked={stacked} />;
@@ -123,7 +126,7 @@ export function changesAt(run: PlanChangesRun, at: number, share: Share, today: 
   return run.lines
     .map((l, n) => {
       const after = l.ys[idx] ?? null;
-      const to = computed(l.tos[idx]!, unitOf[l.id], "F-89", { [labelOf[l.id]]: planValue[l.id] }, { today, about: ch.aboutTo });
+      const to = computed(l.tos[idx]!, unitOf[l.id], "F-89", { [lineOf[l.id]]: planValue[l.id] }, { today, about: ch.aboutTo });
       const planName = c.planInputs[PLAN_INPUT[l.id]];
       const afterInputs = Object.fromEntries(Object.entries(baseInputs).map(([name, v]) => [name, name === planName ? to : v]));
       const afterValue = after === null ? null : computed(Math.round(after), "nis", "F-90", afterInputs, { today, about: ch.aboutLeft });
@@ -170,7 +173,7 @@ export function PlanChanges({ run, at, onAt, share, today }: { run: PlanChangesR
       <PanelHead kicker={ch.title}>{headline}</PanelHead>
       <p className="text-sm text-muted-foreground max-w-measure">{ch.lead}</p>
       <ChangeChart
-        lines={run.lines.map((l, n) => ({ id: l.id, label: labelOf[l.id], stroke: LINE[n]!.stroke, fill: LINE[n]!.fill, ys: l.ys }))}
+        lines={run.lines.map((l, n) => ({ id: l.id, label: lineOf[l.id], stroke: LINE[n]!.stroke, fill: LINE[n]!.fill, ys: l.ys }))}
         shares={run.shares}
         at={at}
         onAt={onAt}
@@ -189,7 +192,7 @@ export function PlanChanges({ run, at, onAt, share, today }: { run: PlanChangesR
           return {
             id: l.id,
             swatch: LINE[n]!.bg,
-            name: labelOf[l.id],
+            name: lineOf[l.id],
             from: <ShortRow when={short}><Num value={planValue[l.id]} display={show(l.id, planValue[l.id].value as number)} /></ShortRow>,
             to: <ShortRow when={short}><Num value={to} display={show(l.id, to.value as number)} /></ShortRow>,
             diff: diff ? <ShortRow when={short}>{diffText(diff)}</ShortRow> : null,

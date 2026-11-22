@@ -42,7 +42,7 @@ export function enteredPlan(bundle: CompareBundle, released: InputsState): Enter
       inflation: (inflation.value as number) / 100,
       age: released.age,
       income: income > 0 ? income : null,
-      values: { amount, monthly, years, returnV, inflation, ...(income > 0 && incomeV ? { income: incomeV } : {}) },
+      values: { amount, monthly, years, returnV, inflation, ...(income > 0 && incomeV ? { income: incomeV } : {}), ...(released.age !== null ? { age: enteredValue(released.age, "years", bundle.runDate, ci.age) } : {}) },
       returnFromParameter: e["A-01"] === undefined,
     },
     starts: { amount: num("amount_now"), monthly: num("monthly_deposit"), years: num("horizon_years"), inflation: num("A-02"), returnV: num("A-01") },

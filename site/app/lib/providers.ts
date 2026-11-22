@@ -325,11 +325,13 @@ export interface WorkbenchInputs {
   grossReturn: number;
   inflation: number;
   age: number | null;
-  /** Gross yearly income, when known. */
+  /** Gross yearly income, when known: a run's tax reads it for the surtax (F-43) and, with an age of 60 or more, for the brackets a gain
+   *  falls into (F-42). */
   income: number | null;
-  /** The value objects the chips and the sheet show (the goal's, or the scenario's as site parameters); `income`, where the page runs on
-   *  one (`income` above), the figure its runs' sheets list, since the surtax is tested on it with the gain (F-43). */
-  values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; returnV: SiteValue; inflation: SiteValue; income?: SiteValue };
+  /** The value objects the chips and the sheet show (the goal's, or the scenario's as site parameters); `income` and `age`, where the
+   *  page runs on them (`income`, `age` above), the figures listed on what comes after a run's tax: the income sets the surtax with the gain
+   *  (F-43) and, from 60, the brackets the gain falls into (F-42), which the age decides. */
+  values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; returnV: SiteValue; inflation: SiteValue; income?: SiteValue; age?: SiteValue };
   returnFromParameter: boolean;
   /**
    * The indices page alone (D64): a bank's row counts its current account's monthly minimum (F-102), except at `own`, the bank the
