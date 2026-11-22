@@ -56,7 +56,14 @@ export function FeeDealPage({ data, failed }: { data: FeesData | null; failed: b
   useEffect(() => {
     if (!data || !today || address !== undefined) return;
     let on = true;
-    void dealOfAddress(search, hash, data, today).then((a) => on && setAddress(a));
+    // a link that cannot be read at all (the browser's decompression refused it) is a broken link, said as any other is
+    dealOfAddress(search, hash, data, today).then(
+      (a) => on && setAddress(a),
+      (e: unknown) => {
+        console.error(e);
+        if (on) setAddress({ deal: newDeal(null), given: false, left: [], failed: "broken" });
+      },
+    );
     return () => {
       on = false;
     };

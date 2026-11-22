@@ -30,6 +30,7 @@ import type { Rejected } from "../../lib/import-check";
 import { entered } from "../../lib/value";
 import { IconAlert, IconCopy, IconDownload, IconFileUp, IconShare } from "../icons";
 import { Num } from "../provenance";
+import { askToKeepStorage } from "../../lib/keep-storage";
 import { Button, Callout, Card, cx, PageHead, Section, SegmentedControl, Sentence, Tpl, When } from "../kit";
 
 type Site = { version: string; data: string };
@@ -143,6 +144,8 @@ function ExportHalf({ site }: { site: Site }) {
     const fileName = nextExportName(isoToday(), makesFile);
     const text = stateFileText(buildStateFile(state, site, new Date(), currentSideStores()));
     if (makesFile) setName(peekExportName());
+    // an export is something of the person's worth keeping: the browser is asked once to keep the storage (lib/keep-storage.ts)
+    askToKeepStorage();
     return { fileName, text };
   };
   const share = async () => {

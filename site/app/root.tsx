@@ -154,17 +154,7 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 }
 
-/** Asks the browser once per load to keep the site's storage (where it has the call); its answer changes nothing on the page. */
-let askedToPersist = false;
-function askToPersist(): void {
-  if (askedToPersist || typeof navigator === "undefined" || typeof navigator.storage?.persist !== "function") return;
-  askedToPersist = true;
-  // refused, or the browser would not say: nothing changes, and the export file stays the backup
-  navigator.storage.persisted().then((kept) => kept || navigator.storage.persist()).catch(() => false);
-}
-
 export default function App() {
-  useEffect(askToPersist, []);
   return (
     <InputsProvider>
       <Outlet />

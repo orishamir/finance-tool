@@ -15,6 +15,7 @@ import {
   nextExportName,
   readImport,
   resetStore,
+  rereadState,
   saveHolding,
   stateFileText,
   updateState,
@@ -87,6 +88,38 @@ let storage: FakeStorage;
 beforeEach(() => {
   storage = new FakeStorage();
   resetStore(storage);
+});
+
+describe("reading the document again (another tab, a page brought back by Back)", () => {
+  const other = (name: string) => JSON.stringify({ ...emptyStateLike(), goals: [{ ...goalWithContent(), name }] });
+  const emptyStateLike = () => ({ version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] });
+  it("takes what another tab wrote when the page holds nothing unwritten", () => {
+    ensureLoaded();
+    flush();
+    storage.setItem(STATE_KEY, other("מהלשונית האחרת"));
+    rereadState();
+    expect(getSnapshot().state.goals[0]?.name).toBe("מהלשונית האחרת");
+  });
+  it("keeps an edit not yet written: the page's edit is newer than the device", () => {
+    ensureLoaded();
+    updateState((s) => ({ ...s, goals: [{ ...goalWithContent(), name: "שלי" }] }));
+    storage.setItem(STATE_KEY, other("ישן"));
+    rereadState();
+    expect(getSnapshot().state.goals[0]?.name).toBe("שלי");
+  });
+  it("keeps an edit the device refused to write", () => {
+    ensureLoaded();
+    const setItem = storage.setItem.bind(storage);
+    storage.setItem = () => {
+      throw new Error("full");
+    };
+    updateState((s) => ({ ...s, goals: [{ ...goalWithContent(), name: "שלי" }] }));
+    expect(flush()).toBe(false);
+    storage.setItem = setItem;
+    storage.setItem(STATE_KEY, other("ישן"));
+    rereadState();
+    expect(getSnapshot().state.goals[0]?.name).toBe("שלי");
+  });
 });
 
 describe("migration from the release 2 keys", () => {

@@ -16,6 +16,7 @@ import type { Goal } from "./goal";
 import type { CustomIndex } from "./invest";
 import { validCustomBrokers, validCustomFunds, type CustomBroker, type CustomFund } from "./custom-entries";
 import { todayLocal } from "./today";
+import { askToKeepStorage } from "./keep-storage";
 import { entered as enteredValue, p05Units } from "./value";
 import { sanitizeRawState, type Rejected } from "./import-check";
 import { IMPORTED_SIDE_KEY, mergeSide, noSideCounts, readImportedSide, readSideFile, readSideStores, removeImportedSide, sideCounts, sideTotal, sideIsEmpty, writeSideStores, type DealProblem, type SideCounts, type SideMerge, type SideProblem, type SideStores } from "./side-stores";
@@ -416,6 +417,8 @@ let keepV1Goals = false;
 /** An edit is waiting to be written: pagehide and the timer write only then (a document someone cleared is not put back). */
 let dirty = false;
 let timer: ReturnType<typeof setTimeout> | null = null;
+/** The person has changed the document on this page (an edit, an import): its first write asks the browser to keep the storage. */
+let edited = false;
 let listening = false;
 const listeners = new Set<() => void>();
 
@@ -437,6 +440,7 @@ export function resetStore(s?: Storage | null) {
   readOnly = false;
   keepV1Goals = false;
   dirty = false;
+  edited = false;
   if (timer) clearTimeout(timer);
   timer = null;
   listeners.forEach((l) => l());
@@ -484,16 +488,21 @@ function listen() {
   document.addEventListener("visibilitychange", () => document.visibilityState === "hidden" && flush());
   // another tab changed the document: re-read it, and let the providers re-read theirs
   window.addEventListener("storage", (e) => {
-    if (e.key === STATE_KEY) reread();
+    if (e.key === STATE_KEY) rereadState();
   });
   // the Back button brought the page back from the browser's page cache: another tab may have changed the document meanwhile
   window.addEventListener("pageshow", (e) => {
-    if (e.persisted) reread();
+    if (e.persisted) rereadState();
   });
 }
 
-/** Reads the document again after something outside this page may have changed it, and lets the providers re-read theirs: one removed reads as empty, one that does not check out leaves the page as it is. */
-function reread(): void {
+/**
+ * Reads the document again after something outside this page may have changed it, and lets the providers re-read theirs: one removed
+ * reads as empty, one that does not check out leaves the page as it is. Not while the page holds an edit the device does not.
+ */
+export function rereadState(): void {
+  // an edit not yet written, or one the device refused, is newer than what the device holds: reading it would put the page back
+  if (dirty || !snap.saved || snap.status === "unavailable") return;
   const s = theStorage();
   if (!s) return;
   const r = readJson(s, STATE_KEY);
@@ -577,6 +586,7 @@ export function flush(force = false): boolean {
     s.setItem(STATE_KEY, JSON.stringify(snap.state));
     for (const k of keepV1Goals ? [V1_INPUTS, V1_UNCAT] : [V1_INPUTS, V1_GOALS, V1_UNCAT]) s.removeItem(k);
     if (!snap.saved) set({ saved: true });
+    if (edited) askToKeepStorage();
     return true;
   } catch {
     memory = snap.state;
@@ -606,6 +616,7 @@ export function updateState(fn: (s: StateV3) => StateV3): void {
   if (takeOver) keepV1Goals = false;
   set({ state: next, ...(takeOver ? { status: "ok" as const } : {}) });
   if (snap.status === "unavailable") memory = next;
+  edited = true;
   schedule();
 }
 
@@ -617,6 +628,7 @@ export function replaceState(next: StateV3): boolean {
   if (snap.status === "old-version") set({ status: "ok" });
   set({ state: next, external: snap.external + 1 });
   if (snap.status === "unavailable") memory = next;
+  edited = true;
   return flush(true);
 }
 
