@@ -216,7 +216,7 @@ function Basics() {
   return (
     <>
       <Demo name="Button, LinkButton" use={g.uses.Button}>
-        <State label="primary / secondary / quiet / destructive / icon">
+        <State label="primary / secondary / quiet / destructive / icon / labelled">
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="primary">{g.sample.hello}</Button>
             <Button>{g.sample.hello}</Button>
@@ -224,6 +224,10 @@ function Basics() {
             <Button variant="destructive">{g.sample.hello}</Button>
             <Button variant="icon" aria-label={g.sample.hello}>
               <IconLock />
+            </Button>
+            <Button variant="labelled" gap="sm">
+              <IconLock />
+              {g.sample.hello}
             </Button>
             <Button disabled>{g.states.disabled}</Button>
             <LinkButton to="/kit">{g.sample.sentenceLink}</LinkButton>

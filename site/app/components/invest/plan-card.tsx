@@ -22,7 +22,7 @@ export function PlanCard({ knobs, onOpen, fx, today, example, dollar, inflation,
   dollar: boolean;
   /** The inflation the page runs on, a figure with its own sheet (its source, or entered). */
   inflation: SiteValue;
-  /** What the return is, and where the lists' order changes, which order changes at which end (`returnHelpOf`): the "?" beside the return. */
+  /** What the return is and whether the lists' order holds at another (`returnHelpOf`): the "?" beside the return. */
   returnHelp?: string;
 }) {
   const usd = fx ? nisPer(fx, "USD", today) : null;

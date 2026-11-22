@@ -152,9 +152,8 @@ export interface IndicesBundle {
   rules: RuleRecord[];
   /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them. */
   pointed?: RuleRecord[];
-  /** P-01 (tie threshold), P-02 (the sensitivity bounds: the yearly return's range the order is checked over, the dollar's) and P-05 (the representative instruments). */
+  /** P-01 (tie threshold) and P-05 (the representative instruments). */
   p01: ParameterRecord;
-  p02: ParameterRecord;
   p05: ParameterRecord;
   links: { maya: RefLink | null };
   /** A provider's snapshot id to the regulator's company id (the legal id the company page is addressed by); absent when the data names no such company. */
@@ -165,8 +164,8 @@ export interface IndicesBundle {
   fx?: FxSnapshot;
   /** The ECB's month-end rates as shekels per dollar since 2000 (F-93, the index page's dollar section). */
   fxHistory?: FxHistory;
-  /** P-02's bounds for the dollar's yearly change against the shekel (A-03), percent a year (F-94); their figures are `p02`'s. */
-  dollarRange?: { lo: number; hi: number };
+  /** P-02's bounds for the dollar's yearly change against the shekel (A-03), percent a year, with the record (F-94). */
+  dollarRange?: { lo: number; hi: number; p02: ParameterRecord };
   /** The funds the person typed (D44, `withCustomEntries`) and a house's group picked on the page (lib/group-pick.ts): only the index page's copies of the bundle have them. */
   entered?: EnteredInBundle;
   /** The person's securities-account deals (F-128): only a copy of the bundle with them has them (`withDeals`). */

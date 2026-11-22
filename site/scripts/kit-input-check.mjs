@@ -364,7 +364,7 @@ async function sheetLeaveCheck(browser, base) {
     const from = "/guide/current-account";
     const { ctx, page } = await open(browser, base, MOVING_PHONE, from);
     const before = await page.evaluate(() => history.length);
-    await page.locator('[data-site-header] button[class~="lg:hidden"]').tap();
+    await page.locator("[data-site-header]").getByRole("button", { name: "חיפוש", exact: true }).tap();
     const box = page.locator("dialog[open] form[role=search] input");
     await box.waitFor({ timeout: 3000 });
     // a word whose first hit is a page; a term's hit opens the term's own sheet on its page

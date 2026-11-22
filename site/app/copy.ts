@@ -4805,16 +4805,15 @@ export const invest = {
     israelTitle: "קרנות ישראליות",
   },
 
-  /** Under the lists, once, whether their order holds at the ends of P-02's return range ({lo}, {hi}, {at}: its bounds); the "?" beside the
-   *  return under the sliders says what the return is and, where the order changes, which order and where. */
+  /** The "?" beside the return under the sliders: what the return is, and whether the lists' order holds at another (wording.md: a note
+   *  beside what it qualifies). */
   foot: {
     returnAbout: "התשואה שבחישוב",
     example: "תשואה לדוגמה, לא תחזית: הסדר של הדרכים לפי עלויות, לא לפי מה שהמדד יעשה.",
     enteredHelp: "התשואה שבחישוב היא זו שהזנתם.",
-    holds: "הסדר ברשימות לא משתנה בתשואה של {lo} ושל {hi}.",
-    changes: { one: "הסדר ברשימות משתנה בתשואה של {at}.", both: "הסדר ברשימות משתנה בתשואה של {lo} ושל {hi}." },
+    holds: "הסדר נשמר בכל תשואה בין 0% ל־10%.",
     flips: "הסדר משתנה בתשואה שונה:",
-    flipsAt: (at: number) => `ב־\u2068${at}%\u2069`,
+    flipsAt: (at: number) => `ב־${at}%`,
     flipWhat: { options: "הסדר בין האפשרויות", brokers: (o: string) => `הסדר בין החשבונות ב${o}`, funds: (o: string) => `הסדר בין הקרנות ב${o}` },
     sharePrice: "קרנות בחו״ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף.",
   },

@@ -147,7 +147,7 @@
    "site/app/lib/guide-signature.ts": 1,
    "site/app/lib/guide.server.ts": 2,
    "site/app/lib/import-check.ts": 2,
-   "site/app/lib/invest.ts": 11,
+   "site/app/lib/invest.ts": 12,
    "site/app/lib/labels.ts": 1,
    "site/app/lib/left-out.ts": 1,
    "site/app/lib/own-account.ts": 1,
@@ -334,7 +334,6 @@
    "site/app/components/fee-deal/page.tsx": 1,
    "site/app/components/invest/deal-account.tsx": 1,
    "site/app/components/search.tsx": 2,
-   "site/app/components/shell.tsx": 1,
    "site/app/routes/invest.tsx": 3
   },
   "typescript(no-misused-promises)": {
