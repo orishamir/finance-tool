@@ -85,7 +85,7 @@ Wrapper IDs (`data/instruments/wrappers/`): `current-account`, `bank-deposit`, `
 
 Security IDs (`data/instruments/securities/`, D6): `makam`, `government-bond`, `money-market-fund-daily`, `money-market-fund-renewable`. A tier-2 instrument bought inside a securities account (corporate bonds, REITs) graduates as a security, not a wrapper.
 
-Product IDs: a wrapper ID or a security ID, what a person chooses between. A guide page (`/guide/<id>`), a comparison option, a term's and an exposure's `wrapper_ids`, P-05's `instruments` and P-08's `holding` rows are named by product ID (`productId` in `packages/schema`).
+Product IDs: a wrapper ID or a security ID, what a person chooses between. A guide page (`/guide/<id>`), a term's and an exposure's `wrapper_ids`, P-05's `instruments` and P-08's `holding` rows are named by product ID (`productId` in `packages/schema`).
 
 Exposure IDs (`data/instruments/exposures/`): `shekel-cash`, `makam`, `government-bond-unlinked`, `government-bond-cpi`, `index-<index-code>` (for example `index-sp500`, `index-ta125`), `general-track`.
 
@@ -249,7 +249,7 @@ A security, in the site's model, is what a person buys inside a wrapper and that
 ```
 
 - `held_as` is `direct` (held directly) or `fund_units` (units of a fund).
-- `held_in.wrapper_ids` names the wrappers that can hold it; the first is the one its guide page and its comparison option run in (the securities account for all four). `rule_ids` are the rules that say it is held there; they may cover a dimension the security's own rules do not (validator §4 item 9), but a dimension only they carry need not be marked.
+- `held_in.wrapper_ids` names the wrappers that can hold it; the first is the one its guide page runs in (the securities account for all four). `rule_ids` are the rules that say it is held there; they may cover a dimension the security's own rules do not (validator §4 item 9), but a dimension only they carry need not be marked.
 - The other fields hold what belongs to the security: its tax in a taxable account, its own liquidity, the issuer or fund law behind it (`regulator`, `protection`), its own route and minimum (`eligibility`), and a fee rule set by its security type (`fee_caps`: a bank may not charge custody on makam or money-market units, BRK-17). What the wrapper decides (who may open the account, who supervises it, how client assets are kept, what happens if the member fails) is read from the wrapper's record and is not copied into the security's.
 - Inside a wrapper that sets its own tax (an IRA), the wrapper's tax applies instead of the security's.
 - The schema is `securityRecord` in `packages/schema`; `productRecord` is either, `productSchemaOf` picks the schema by the presence of `held_in`.

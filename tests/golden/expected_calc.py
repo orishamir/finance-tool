@@ -475,7 +475,6 @@ def year_table(snaps, extra_cols=None):
 
 # A note the lead added after the independent check, printed after the section's expected line (kept here so a rerun keeps it).
 AFTER = {
-    'S40': "Note, 2026-10-23: the independent check above priced accrued interest on the bond (291,761.83) while the method does not model it (G-10, TXI OQ5), so the engine lists the bond as not ranked (B3, reason G-10) and the ETF ranks fourth; the engine's counts are ranked 5, listed, not ranked 8, not eligible 2, excluded 0, not evaluated 11. The numbers above are kept as the independent check produced them.",
 }
 
 
@@ -1359,99 +1358,6 @@ def s34_s35_s36_s38():
 # Part D
 # --------------------------------------------------------------------------
 
-def s39_s48():
-    T = 240
-    sec, snaps, out, path = run_etf(T, 30000.0, 2000.0, 0.06, 0.025)
-    sched = kgl_schedule(T, 30000.0, 2000.0, path)
-    rk = run_provident(T, sched, 0.06, path, direct=0.0010, balfee=lambda m: 0.008)
-    ek = kgl_exit(rk, path, T)
-    ceil = ceiling_check(sched, T)
-    max_year = max(v for v, _ in ceil.values())
-    sec30, _, out30, _ = run_etf(T, 30000.0, 2000.0, 0.06, 0.025, rate=0.30)
-    # F-80 deciding formula: fee drag and tax at exit of each, real
-    _, _, out0, _ = run_etf(T, 30000.0, 2000.0, 0.06, 0.025, delta=0.0, spread=0.0, comm=None, custody=None)
-    rk0 = run_provident(T, sched, 0.06, path)
-    ek0 = kgl_exit(rk0, path, T)
-    IT = path.I(T)
-    drag_b = out0['real_V'] - out['real_V']
-    drag_k = ek0['realV25'] - ek['realV25']
-    tax_b = out['tax'] / IT
-    tax_k = ek['tax25real'] / IT
-    factors = {'fee drag': drag_b - drag_k, 'tax at exit': tax_b - tax_k}
-    decider = max(factors, key=lambda k: abs(factors[k]))
-
-    # F-81 sensitivity within P-02 bounds
-    sens_rows, sens_text = [], 'P-02 not set'
-    bounds = load_parameter_file('sensitivity-bounds')
-    if bounds:
-        b = bounds['bounds']
-
-        def values(r=0.06, pi=0.025, years=20, m=None):
-            m = m or {}
-            TT = int(12 * years)
-            _, _, ob, pp = run_etf(TT, 30000.0, 2000.0, r, pi, delta=0.011085 * m.get('etf fund fee', 1),
-                                   comm={'pct': 0.003 * m.get('trade commission', 1), 'min': 25.0},
-                                   custody={'pct': 0.0015 * m.get('custody', 1), 'min': 15.0})
-            sk = kgl_schedule(TT, 30000.0, 2000.0, pp)
-            rkk = run_provident(TT, sk, r, pp, direct=0.0010 * m.get('kgl direct expenses', 1),
-                                balfee=lambda mm: 0.008 * m.get('kgl balance fee', 1))
-            return kgl_exit(rkk, pp, TT)['realV25'], ob['real_V']
-
-        def top(v):
-            return 'kupat gemel lehashkaa' if v[0] >= v[1] else 'brokerage'
-        base_top = top((ek['realV25'], out['real_V']))
-        tests = [('yearly return', 'r', 0.06, b['A-01']['lo']['value'] / 100, b['A-01']['hi']['value'] / 100),
-                 ('inflation', 'pi', 0.025, b['A-02']['lo']['value'] / 100, b['A-02']['hi']['value'] / 100),
-                 ('horizon (years)', 'years', 20, 20 + b['horizon']['lo']['value'], 20 + b['horizon']['hi']['value'])]
-        for fee in ('etf fund fee', 'custody', 'trade commission', 'kgl balance fee', 'kgl direct expenses'):
-            tests.append((fee + ' (× rate)', fee, 1.0, b['fee_rates']['lo']['value'], b['fee_rates']['hi']['value']))
-
-        def run_at(key, x):
-            if key in ('r', 'pi', 'years'):
-                return values(**{key: x})
-            return values(m={key: x})
-        for label, key, base, lo, hi in tests:
-            res = []
-            for bound in (lo, hi):
-                v = run_at(key, bound)
-                if top(v) == base_top:
-                    res.append(f'no flip at {bound:g}')
-                else:
-                    a_, z_ = base, bound
-                    for _ in range(14):
-                        mid = (a_ + z_) / 2
-                        if top(run_at(key, mid)) == base_top:
-                            a_ = mid
-                        else:
-                            z_ = mid
-                    res.append(f'flips at about {z_:.4g}')
-            sens_rows.append([label, f'{base:g}', '; '.join(res)])
-        flips = [r_ for r_ in sens_rows if 'flips' in r_[2]]
-        sens_text = ('no change flips the result within the bounds' if not flips else
-                     'flips: ' + '; '.join(f'{r_[0]} {r_[2]}' for r_ in flips))
-    body = (
-        '| Step | What | Rule | Value |\n|---|---|---|---|\n'
-        f'| 1 | Brokerage with the S14 ETF, 30,000 now + 2,000 × I_m, 240 months | as S14 | real V_T {f2(out["real_V"])} |\n'
-        f'| 2 | Kupat gemel lehashkaa with S20 fees; ceiling check (largest calendar year {f2(max_year)} ≤ 83,641) | as S20; {L("KGL-02")} | real V_T {f2(ek["realV25"])} (25% real) |\n'
-        f'| 3 | Hishtalmut: the person is an employee, so under product D15 it is listed, not ranked: "only funded through your employer; you already deposit the tax-free maximum" | {L("TXH-08", "KH-02")}; product D15 | listed |\n'
-        f'| 4 | Pension extra deposit: existing 6% × 144,000 = 8,640 > cap 8,148 → no credit on new money; exit blocked (G-03) and locked to 60: listed, not ranked | {L("TXP-02", "TXP-14")} | listed |\n'
-        f'| 5 | Tie test between the two ranked rows with θ = {THETA}% (P-01) | method F-80 | {tie_text(ek["realV25"], out["real_V"])} |\n'
-        f'| 6 | Deciding formula: the larger of the gaps in fee drag (V without fees − V) and in tax at exit, brokerage minus kupat gemel lehashkaa, real | method F-80 | fee drag gap {f2(factors["fee drag"])}; tax gap {f2(factors["tax at exit"])} → {decider} |\n'
-        f'| 7 | Sensitivity: move each guess to the P-02 bounds (bisection if the winner changes) | method F-81; {param_src("sensitivity-bounds")} | {sens_text} |\n\n'
-        + table(['Guess', 'Base', 'At the bounds'], sens_rows) + '\n'
-    )
-    section('S39', "Wrapper mode: the founder's ETF-vs-provident case", 'computed', body,
-            f'Computed: brokerage (S14 ETF) real V_T/I_T = {f2(out["real_V"])}, nominal {f2(out["V"])}; kupat gemel lehashkaa (S20 fees) real {f2(ek["realV25"])} with 25% real. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; {tie_text(ek["realV25"], out["real_V"])}. Deciding formula: {decider} (the brokerage pays {f2(drag_b)} in fees against {f2(drag_k)}, real; tax at exit {f2(tax_b)} against {f2(tax_k)}). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (P-02 bounds): {sens_text}.')
-    body = (
-        '| Step | What | Rule | Value |\n|---|---|---|---|\n'
-        f'| 1 | Re-run S39 brokerage with the TXS-09 rate set to 30% (test only) | {L("TXS-09")} | real V_T {f2(out30["real_V"])} |\n'
-        '| 2 | The changed entry is TXS-09; the brokerage value falls by the extra 5% of the real gain | method F-82 | — |\n'
-        f'| 3 | Ranking status: the kupat gemel lehashkaa still ranks first; its exit tax comes from TXK-07, not TXS-09, so only the brokerage moves | method F-82 | {tie_text(ek["realV25"], out30["real_V"])} |\n'
-    )
-    section('S48', 'Revisit after a rule change', 'computed', body,
-            f'Changed entry: TXS-09 rate 25% → 30%. Brokerage real V_T/I_T falls from {f2(out["real_V"])} to {f2(out30["real_V"])} (nominal {f2(out["V"])} → {f2(out30["V"])}). Ranking unchanged: the kupat gemel lehashkaa stays first ({tie_text(ek["realV25"], out30["real_V"])}).')
-
-
 def s42():
     path = Path(0.025)
     T = 120
@@ -1877,21 +1783,15 @@ def s46_fill():
     a_fee, a0 = run(0.009, 80000.0), run(0.0, 80000.0)
     b_fee, b0 = run(0.006, 40000.0), run(0.0, 40000.0)
     a_moved = run(0.006, 80000.0)
-    p04 = load_parameter_file('classification-fit')
-    marks = {}
-    if p04:
-        for row in p04['table']:
-            marks[row['classification']] = ('fits' if 15 >= row['horizon_min_years']['value'] and 30 >= row['max_fall_pct']['value'] else 'does not fit')
     body = (
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
-        f'| 0 | Filled-in inputs | — | {filled("r_g 6%, π 2.5% (as the long-term example); fit table P-04")} |\n'
+        f'| 0 | Filled-in inputs | — | {filled("r_g 6%, π 2.5%")} |\n'
         f'| 1 | Consolidation: annuity fund to annuity fund is a permitted transfer route; barred only in the reg. 4 cases | {L("PF-17")} | allowed |\n'
         f'| 2 | Fee cost over 15 years, real: V(no fee) − V(fee), gross (exit blocked for annuity funds) | method F-61; {L("PF-02")} | see result |\n'
-        f'| 3 | Fit marks from the P-04 table | method F-70; {param_src("classification-fit")} | {marks or "not set"} |\n'
-        '| 4 | Child-savings default check | (CS OQ10) | blocked |\n'
+        '| 3 | Child-savings default check | (CS OQ10) | blocked |\n'
     )
     section('S46', 'Holdings review: parental kupot gemel', 'computed', body,
-            f'Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = {f2(a0 - a_fee)}; 0.6% on 40,000 = {f2(b0 - b_fee)}; moving the 80,000 into the 0.6% fund is worth {f2(a_moved - a_fee)}. Fit marks (P-04 table): "כללי" {marks.get("כללי", "no rule")}, "מניות" {marks.get("מניות", "no rule")}. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.')
+            f'Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = {f2(a0 - a_fee)}; 0.6% on 40,000 = {f2(b0 - b_fee)}; moving the 80,000 into the 0.6% fund is worth {f2(a_moved - a_fee)}. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.')
 
 
 def s47_fill():
@@ -1921,22 +1821,6 @@ def s47_fill():
             f'Real value at year 10 after exit tax: deposit {f2(dep["real_V"])}, daily MMF {f2(o11["real_V"])}, ETF {f2(o14["real_V"])}, kupat gemel lehashkaa {f2(e20["realV25"])}; pension gross {f2(rp["B"] / path.I(T))} (exit blocked); yearly series in workings.md. Study fund not shown (product D15). Filled in: pension terms from the 300 NIS pension example.')
 
 
-def s49_fill():
-    T = 240
-    path = Path(0.025)
-    sec_c, _, oc = mmf_daily(T, 30000.0, 2000.0, path, 0.0325, 0.0018)
-    sec_b, _, ob, _ = run_etf(T, 30000.0, 2000.0, 0.03, 0.025, delta=0.0002, spread=0.0, comm={'pct': 0.001, 'min': 10.0})
-    first, second = (('cash', oc), ('bonds', ob)) if oc['real_V'] >= ob['real_V'] else (('bonds', ob), ('cash', oc))
-    body = (
-        '| Step | What | Rule | Value |\n|---|---|---|---|\n'
-        f'| 0 | Filled-in inputs | — | {filled("cash held as the daily money-market fund example (BoI 3.25%, δ 0.18%); bonds held as the low-fee open tracking fund example (δ 0.02%, 0.1% min 10, custody 0.15%/q min 15) at the entered 3%; goal and π as the long-term example")} |\n'
-        '| 1 | Loss filter: equity worst fall 40% > accepted 30% → excluded; bonds 10% ≤ 30% kept; cash has no entered worst fall → kept | method F-71 | — |\n'
-        f'| 2 | Rank cash and bonds by real value at 20 years after fees and exit tax | method F-80; {L("TXS-12", "TXS-13")} | see result |\n'
-    )
-    section('S49', 'Exposure mode with entered returns and the loss filter', 'computed', body,
-            f'Equity excluded by the filter (40% > 30%). Ranked: 1. {first[0]} {f2(first[1]["real_V"])}, 2. {second[0]} {f2(second[1]["real_V"])} (real); {tie_text(first[1]["real_V"], second[1]["real_V"])}. Bonds\' 3% labelled "entered by you"; cash labelled with the BoI rate (sourced). Filled in: holding wrappers and fees from the money-market and open tracking fund examples.')
-
-
 def s50_fill():
     path = Path(0.025)
 
@@ -1953,169 +1837,6 @@ def s50_fill():
     )
     section('S50', 'Tie', 'computed', body,
             f'Bank A2 {f2(vb)} vs bank A {f2(va)} (real, after fees and tax): {tie_text(va, vb)} → declared tie. Filled in: both providers constructed from the broker-comparison example.')
-
-
-def makam_ladder(T, sched, y):
-    """Each contribution buys the newest 12-month makam; redemptions roll into a new series."""
-    spec = {'pct': 0.001, 'min': 20.0}
-    p0 = 100.0 / (1.0 + y)
-    lots = []  # [face, cost, buy_month]
-    fees = taxes = final = 0.0
-    carry = defaultdict(float)
-    for m in range(1, T + 1):
-        orders = [c for c, _ in sched.get(m, [])] + ([carry.pop(m)] if m in carry else [])
-        for c in orders:
-            v, cm = solve_buy(c, spec)
-            fees += cm
-            lots.append([v / p0 * 100.0, v, m])
-        for lot in [l for l in lots if l[2] + 11 == m]:
-            t = 0.15 * (lot[0] - lot[1])
-            taxes += t
-            lots.remove(lot)
-            if m < T:
-                carry[m + 1] += lot[0] - t
-            else:
-                final += lot[0] - t
-    for lot in lots:
-        remaining = lot[2] + 11 - T
-        gross = lot[0] * (1.0 / (1.0 + y) ** (remaining / 12.0))
-        cs = comm_of(gross, spec)
-        t = 0.15 * max(0.0, gross - lot[1])
-        fees += cs
-        taxes += t
-        final += gross - cs - t
-    return final, fees, taxes
-
-
-def bond_monthly(T, sched, coupon):
-    """Each contribution buys the fixed-rate bond at par plus accrued interest; coupons once a year."""
-    spec = {'pct': 0.002, 'min': 30.0}
-    lots = []  # [face, basis at clean price]
-    fees = defaultdict(float)
-    deductible = defaultdict(float)
-    taxes = final_coupon = 0.0
-    carry = 0.0
-    for m in range(1, T + 1):
-        orders = [c for c, _ in sched.get(m, [])] + ([carry] if carry else [])
-        carry = 0.0
-        accrued = coupon * ((m - 1) % 12) / 12.0
-        for c in orders:
-            v, cm = solve_buy(c, spec)
-            fees['trade'] += cm
-            face = v / (1.0 + accrued)
-            lots.append([face, face])
-        if m % 12 == 0:
-            cp = coupon * sum(l[0] for l in lots)
-            t = 0.15 * cp
-            taxes += t
-            if m < T:
-                carry = cp - t
-            else:
-                final_coupon = cp - t
-        if m % 3 == 0:
-            fee = max(10.0, 0.001 * sum(l[0] for l in lots))
-            fees['custody'] += fee
-            deductible[(m - 1) // 12 + 1] += fee
-            need = fee
-            for lot in lots:
-                if need <= 0:
-                    break
-                u = min(lot[0], need)
-                lot[1] -= lot[1] * u / lot[0]
-                lot[0] -= u
-                need -= u
-    gross = sum(l[0] for l in lots)
-    c = comm_of(gross, spec)
-    fees['trade'] += c
-    gain = gross - sum(l[1] for l in lots) - deductible[(T - 1) // 12 + 1]
-    t = 0.15 * max(0.0, gain)
-    taxes += t
-    return gross - c - t + final_coupon, dict(fees), taxes
-
-
-def s40_fill():
-    T = 48
-    path = Path(0.025)
-    sched = contrib_schedule(T, 100000.0, 4000.0, path, True)
-    paid = sum(c for lst in sched.values() for c, _ in lst)
-    rows = []
-    dep = deposit_ladder(T, 100000.0, 4000.0, path, True, term_rate(0.035, 1))
-    rows.append(('bank deposits, one-month ladder at 3.5%', dep['V'], f'tax {f2(dep["tax"])}'))
-    _, _, o11 = mmf_daily(T, 100000.0, 4000.0, path, 0.0325, 0.0018)
-    rows.append(('daily money-market fund (BoI 3.25%, δ 0.18%)', o11['V'], f'exit tax {f2(o11["tax"])}'))
-    mk, mk_fees, mk_tax = makam_ladder(T, sched, 0.039)
-    rows.append(('makam ladder at 3.9%', mk, f'commissions {f2(mk_fees)}, tax {f2(mk_tax)}'))
-    bd, bd_fees, bd_tax = bond_monthly(T, sched, 0.0375)
-    rows.append(('fixed-rate government bond, 3.75% coupon', bd, f'trade {f2(bd_fees["trade"])}, custody {f2(bd_fees["custody"])}, tax {f2(bd_tax)}'))
-    s14, _, o14, _ = run_etf(T, 100000.0, 4000.0, 0.05, 0.025)
-    rows.append(('ETF in a bank brokerage account (r_g 5%)', o14['V'], f'fees {f2(sum(s14.fees.values()) + o14["exit_commission"] + o14["exit_spread"])}, exit tax {f2(o14["tax"])}'))
-    # current account for the compared money: eligible (any time), so it is ranked too (F-83)
-    ca = ca_tax = 0.0
-    for m in range(1, T + 1):
-        ca += sum(c for c, _ in sched.get(m, []))
-        it = ca * mrate(0.005)
-        ca_tax += 0.15 * it
-        ca += 0.85 * it
-    rows.append(('current account at 0.5%', ca, f'tax during {f2(ca_tax)}'))
-    ranked = sorted(rows, key=lambda r: -r[1])
-    IT = path.I(T)
-    # kupat gemel lehashkaa: the 83,641 ceiling binds in year 1
-    sk = defaultdict(list)
-    sk[1].append((83641.0, 0))
-    routed = 100000.0 - 83641.0 + sum(4000.0 * path.I(m) for m in range(1, 13))
-    for m in range(13, T + 1):
-        sk[m].append((4000.0 * path.I(m), m))
-    rk = run_provident(T, sk, 0.05, path, direct=0.0010, balfee=lambda m: 0.008)
-    ek = kgl_exit(rk, path, T)
-    # coverage line (F-83): one outcome per tier-1 wrapper and tier-2 instrument
-    cov = [(r[0], 'ranked', f'rank {i + 1}') for i, r in enumerate(ranked)]
-    # the other tier-1 wrapper records (data-schema §2 wrapper IDs)
-    cs = 'takes the NII amounts and the parent\'s matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16)'
-    cov += [
-        ('savings plan', 'not evaluated', 'no savings-plan terms among the inputs (production: data/terms/deposits/, R4)'),
-        ('renewable money-market fund', 'not evaluated', 'monthly deposits into fixed-date series are not set (G-30)'),
-        ('kupat gemel lehashkaa', 'listed, not ranked', 'the yearly ceiling takes only part of the money (KGL-02, KGL-04; F-05)'),
-        ('keren hishtalmut', 'listed, not ranked', 'employee (product D15); locked 6 years (TXH-09)'),
-        ('comprehensive pension fund', 'listed, not ranked', 'locked to 60 (PEN-26)'),
-        ('general pension fund', 'listed, not ranked', 'locked to 60 (PEN-26)'),
-        ('provident fund for annuity', 'listed, not ranked', 'exit as pension, locked to 60 (PEN-34, PEN-26)'),
-        ('IRA in a study fund', 'listed, not ranked', 'as the study fund it is held in (IRA-25)'),
-        ('IRA in a provident fund', 'listed, not ranked', 'as the provident fund it is held in (IRA-25)'),
-        ('child savings, provident route', 'not eligible', cs),
-        ('child savings, bank route', 'not eligible', cs),
-    ]
-    L('KGL-02', 'KGL-04', 'TXH-09', 'PEN-26', 'PEN-34', 'IRA-25', 'CS-02', 'CS-04', 'CS-16')  # register the rules cited in the coverage reasons
-    cov += [(t, 'not evaluated', 'tier 2, open questions (G-24)') for t in (
-        'savings policies', 'executive insurance', 'structured deposits', 'corporate bonds', 'managed and robo portfolios',
-        'foreign-currency deposits', 'REITs', 'gold via funds', 'Amendment 190 deposits')]
-    order = ['ranked', 'listed, not ranked', 'not eligible', 'excluded by the person\'s constraint', 'not evaluated']
-    counts = [(o, sum(1 for c in cov if c[1] == o)) for o in order]
-    assert len({c[0] for c in cov}) == len(cov) == sum(n for _, n in counts)
-    # the 50,000 kept available in the current account
-    cab = 50000.0
-    for m in range(1, T + 1):
-        cab += 0.85 * cab * mrate(0.005)
-    body = (
-        '| Step | What | Rule | Value |\n|---|---|---|---|\n'
-        f'| 0 | Filled-in inputs | — | {filled("terms from the earlier examples: deposit ladder 3.5%; daily fund BoI 3.25%, δ 0.18%; makam 3.9%, 0.1% min 20; bond 3.75% yearly, 0.2% min 30, custody 0.1%/q min 10; ETF at r_g 5% with the bank-brokerage ETF fees; kupat gemel lehashkaa fees 0.8% + 0.1%; current account 0.5%")} |\n'
-        f'| 1 | 50,000 must stay available at once: kept in the current account (0.5%, 15% at crediting) | product D13; {L("TXI-08")} | {f2(cab)} at 4 years |\n'
-        f'| 2 | Compared money: 100,000 now + 4,000 × I_m a month for 48 months, the same in every row | method B1 | paid {f2(paid)} |\n'
-        f'| 3 | Makam: each contribution buys a new 12-month series, redemptions roll; open series sold at the horizon at the unchanged yield, 15% on the gain | {L("GOV-06", "TXI-11", "TXI-12", "GOV-23")} | — |\n'
-        f'| 4 | Bond: bought at par plus accrued interest; the full coupon taxed 15% (whether the accrued interest paid offsets it is open, so the conservative reading is used; under 0.5%) | {L("TXI-15", "TXI-16", "TXI-12")} | — |\n'
-        f'| 5 | Kupat gemel lehashkaa: 100,000 now exceeds the 83,641 yearly ceiling; it takes 83,641 and nothing more in year 1, so {f2(routed)} goes to the next goal. It cannot take the same money, so it is listed, not ranked | {L("KGL-02", "KGL-03", "KGL-04")}; method F-05 | value {f2(ek["V25"])} on what it takes |\n'
-        f'| 6 | Study fund: employee, and locked for 6 years → listed, not ranked. Pension: locked to 60 → listed | product D15; {L("TXH-09", "PEN-26")} | listed |\n'
-        f'| 7 | Rank by real value at 4 years after fees and tax; tie test between the top two with θ = {THETA}%. The current account also takes the compared money (exit any time), so it is ranked | method F-80, F-83; {L("TXI-08")} | see table |\n'
-        f'| 8 | Coverage line: every tier-1 wrapper and tier-2 instrument accounted for once | method F-83; product D17 | see second table |\n\n'
-        + table(['Rank', 'Option', 'Nominal V', 'Real V', 'Fees and tax'],
-                [[i + 1, r[0], f2(r[1]), f2(r[1] / IT), r[2]] for i, r in enumerate(ranked)])
-        + '\n\n' + table(['Candidate', 'Outcome', 'Reason'], [[c, o, r] for c, o, r in cov])
-        + f'\n\nConsidered {len(cov)}: ' + ', '.join(f'{o} {n}' for o, n in counts)
-    )
-    section('S40', "Wrapper mode: the founder's apartment case", 'computed', body,
-            f'Ranked (real at 4 years, same money in each): ' + '; '.join(f'{i + 1}. {r[0]} {f2(r[1] / IT)}' for i, r in enumerate(ranked)) +
-            f'. Top two: {tie_text(ranked[0][1], ranked[1][1])}. The 50,000 kept available in the current account grows to {f2(cab)} ({f2(cab / IT)} real). Kupat gemel lehashkaa: listed, not ranked (the 83,641 ceiling takes only part of year 1; {f2(routed)} routed to the next goal). Study fund and pension: listed, not ranked (locked). Coverage line (F-83): considered {len(cov)}; ' + '; '.join(f'{o} {n}' for o, n in counts) +
-            '; not ranked, with reasons: ' + '; '.join(f'{c} ({o}: {r})' for c, o, r in cov if o != 'ranked') +
-            '. Fund variants, tracks and providers inside each wrapper: compared in the workbench (3.4). Filled in: every wrapper\'s terms from the earlier examples.')
 
 
 # --------------------------------------------------------------------------
@@ -2324,7 +2045,6 @@ def main():
     s31_s32()
     s33()
     s34_s35_s36_s38()
-    s39_s48()
     s42()
     s43()
     s44_s45()
@@ -2332,11 +2052,9 @@ def main():
     s26_fill()
     s28_s29_fill()
     s32_fill()
-    s40_fill()
     s41_fill()
     s46_fill()
     s47_fill()
-    s49_fill()
     s50_fill()
     s51()
     s52()

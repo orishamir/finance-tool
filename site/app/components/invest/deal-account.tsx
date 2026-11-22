@@ -37,9 +37,8 @@ import { updateFee } from "../../lib/fee-deal/edits/deal";
 import { addBlankCase } from "../../lib/fee-deal/edits/case";
 import { pickLine } from "../../lib/fee-deal/reading";
 import { feeNameOf } from "../../lib/fee-deal/part-words";
-import { dealProviderId, planContextOf, withDeals } from "../../lib/deal-account/bundle";
-import { dealHouseId, feesOnPlan, PLAN_KEYS, planRead, whatOfRun, type FeeOnPlan, type Missing } from "../../lib/deal-account/plan";
-import { ACCOUNT_KIND } from "../../lib/fee-deal/kinds";
+import { dealProviderId, houseSnap, planContextOf, withDeals } from "../../lib/deal-account/bundle";
+import { ACCOUNT_KIND, BANK_ACCOUNT, dealHouseId, feesOnPlan, PLAN_KEYS, planRead, whatOfRun, type FeeOnPlan, type Missing } from "../../lib/deal-account/plan";
 import { dealTiles, listFunds } from "../../lib/deal-account/tiles";
 import { planCases } from "../../lib/deal-account/plan-cases";
 import { Sheet } from "../Sheet";
@@ -300,7 +299,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const houseId = dealHouseId(deal);
   const tiles = fundId ? dealTiles(view, got, providerId, deal.name, houseId, fundId, funds) : null;
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.provider : undefined;
-  // the deal is read on the page's plan as its run reads it: the page's run month, the page's current accounts and the house's line choice (F-128)
+  // the deal is read on the page's plan as its run reads it: the page's run month, the house's line choice and its current account (F-128)
   const ctx = useMemo(() => planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? null), [world.bundle, deal, data.kinds, world.plan.currentAccounts]);
   const onPlan = useMemo(() => (run ? new Map(feesOnPlan(deal, run, ctx).map((x) => [x.fee, x])) : null), [deal, run, ctx]);
   // a fund bought abroad whose price waits on a case the deal lacks (E): each such fee, with the values the funds are bought as
@@ -326,6 +325,12 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const fund = fundId ? allFunds(view).find((f) => f.rec.id === fundId) : undefined;
   const isSaved = saved.some((d) => d.id === deal.id);
   const p = world.plan;
+  // the bank's current account the plan counts from the house's record, where the deal names none (F-102): one quiet line after the fees
+  const bankMonthly = houseSnap(world.bundle, deal)?.current_account?.monthly_minimum;
+  const bankLine =
+    ctx.bankAccount !== undefined && house && bankMonthly && !deal.fees.some((f) => f.kind === "current_account")
+      ? { monthly: bankMonthly as SiteValue, cost: at?.kind === "ok" ? at.figure(shownCost(at.byFee[BANK_ACCOUNT] ?? 0), w.bankCostAbout(house.short)) : null }
+      : null;
   const root = useRef<HTMLDivElement>(null);
   // a deal opens on the fee its opener names (the abroad line's "להוסיף לעסקה"), else, where the plan cannot price it, on the fee that lacks
   // something, as its row's "להשלים" says; that fee's block is brought up under the sticky tiles
@@ -422,6 +427,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
       {run && wide && own.length > 0 && <ReadForBand lead={w.readFor} note={w.planKnows(where)} picks={pickItems(own, ed.onPick)} />}
       {ed.picker}
       {ed.columns(null)}
+      {bankLine && house && <Sentence size="sm" tone="muted" t={w.bankAccount(house.short, bankLine.cost !== null)} vars={{ monthly: <Num value={bankLine.monthly} />, cost: bankLine.cost && <Num value={bankLine.cost} display={costText} /> }} />}
       {ed.menus}
       {ed.footSheet}
     </div>

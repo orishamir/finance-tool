@@ -8,7 +8,7 @@
 //
 // File shape (`StateFile.sideStores`, optional: a file from before this carries none):
 //   { offers: EnteredOffer[], variantAssumptions: { [exposureId]: FundAssumptions }, playbookTicks: { [key]: string[] },
-//     ownRates: { [goalId]: { [wrapperId]: pctPerYear | { rate?, fee?, provider? } } }, deals: FeeDeal[] } (an object form holds an entered fee, and the provider id chosen for the brokerage wrapper; an unknown provider id is read and ignored) (ownRates (sweep), deals; a file without one reads as none;
+//     ownRates: { [goalId]: { [wrapperId]: pctPerYear | { rate?, fee?, provider?, index? } } }, deals: FeeDeal[] } (the object form as lib/own-rate.ts reads it) (ownRates (sweep), deals; a file without one reads as none;
 //   a tick key of the old `wrapper|from|to` shape is folded into the wrapper's key on import)
 // Keys of the stores are kept verbatim (a tick key is a product id, or an old `wrapper|from|to` key, folded on import).
 import { valueObject } from "@finance-tool/schema";

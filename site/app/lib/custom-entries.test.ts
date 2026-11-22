@@ -23,7 +23,7 @@ import { baseOf, startingPointsOf } from "./own-account";
 import { buildInvest, indexById, indexSeenBy, optionOfFund, refOfCustom, type WayPrice } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
-import { applyImport, buildStateFile, dropTypedAccounts, replaceState, ensureLoaded, exportCounts, flush, getSnapshot, isEmptyState, readImport, removeCustomFund, removeCustomIndex, resetStore, saveCustomFund, saveCustomIndex, STATE_KEY, stateFileText, type StateV3 } from "./state";
+import { applyImport, buildStateFile, dropTypedAccounts, replaceState, ensureLoaded, exportCounts, flush, getSnapshot, isEmptyState, readImport, removeCustomFund, removeCustomIndex, resetStore, saveCustomFund, saveCustomIndex, STATE_KEY, stateFileText, type StateV4 } from "./state";
 import { entered, type SiteValue } from "./value";
 
 const bundle = buildIndicesBundle();
@@ -470,7 +470,7 @@ describe("kept on the device and carried in the export file (D44)", () => {
   });
 
   it("import add keeps the device's and adds the file's others; replace takes the file's", () => {
-    const base: StateV3 = { version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] };
+    const base: StateV4 = { version: 4, inputs: {}, holdings: [], uncatalogued: [], imports: [] };
     const brokers = (x: CustomBroker[]) => ({ ...base, customBrokers: x });
     const merged = applyImport(brokers([cheap]), brokers([{ ...cheap, name: "מהקובץ" }, dear]), "add", t);
     expect(merged.state.customBrokers!.map((x) => x.name)).toEqual([cheap.name, dear.name]);

@@ -3,10 +3,9 @@
 // each comes from P-05 or from the person.
 import type { ValueObject } from "@finance-tool/schema";
 import { computedInputs as ci } from "../copy";
-import { asParameter, parameterOf, type CompareBundle } from "./compare";
 import type { InputsState } from "./inputs";
-import type { WorkbenchInputs } from "./providers";
-import { asField, entered as enteredValue } from "./value";
+import type { IndicesBundle, WorkbenchInputs } from "./providers";
+import { asField, asParameter, entered as enteredValue } from "./value";
 
 export interface EnteredPlan {
   /** The plan as the page's runs take it, without the current accounts it counts (the page's own choice). */
@@ -16,14 +15,14 @@ export interface EnteredPlan {
 }
 
 /** The plan from what the person entered, each number not entered taking P-05's; every value is a field's own (`asField`). */
-export function enteredPlan(bundle: CompareBundle, released: InputsState): EnteredPlan {
-  const p05 = parameterOf(bundle, "P-05");
+export function enteredPlan(bundle: Pick<IndicesBundle, "p05" | "today">, released: InputsState): EnteredPlan {
+  const { p05 } = bundle;
   const inp = (p05 as unknown as { inputs: Record<string, ValueObject> }).inputs;
   const num = (key: string) => inp[key]!.value as number;
   const e = released.entered;
   // each is a field's value on the page, its default or what the reader typed: a plain number wherever it shows
   const val = (key: "amount_now" | "monthly_deposit" | "horizon_years" | "A-01" | "A-02", unit: ValueObject["unit"], about: string) =>
-    asField(e[key] !== undefined ? enteredValue(e[key]!, unit, bundle.runDate, about) : asParameter(p05, inp[key]!));
+    asField(e[key] !== undefined ? enteredValue(e[key]!, unit, bundle.today, about) : asParameter(p05, inp[key]!));
   const amount = val("amount_now", "nis", ci.amountNow);
   const monthly = val("monthly_deposit", "nis_per_month", ci.monthly);
   const years = val("horizon_years", "years", ci.years);
@@ -32,7 +31,7 @@ export function enteredPlan(bundle: CompareBundle, released: InputsState): Enter
   const income = e.annual_income ?? num("annual_income");
   // the income the runs assume, entered or P-05's, with its source: not a field on the page, so not a field's value
   const p05Income = inp.annual_income;
-  const incomeV = e.annual_income !== undefined ? enteredValue(e.annual_income, "nis", bundle.runDate) : p05Income ? asParameter(p05, p05Income) : null;
+  const incomeV = e.annual_income !== undefined ? enteredValue(e.annual_income, "nis", bundle.today) : p05Income ? asParameter(p05, p05Income) : null;
   return {
     plan: {
       amountNow: amount.value as number,
@@ -42,7 +41,7 @@ export function enteredPlan(bundle: CompareBundle, released: InputsState): Enter
       inflation: (inflation.value as number) / 100,
       age: released.age,
       income: income > 0 ? income : null,
-      values: { amount, monthly, years, returnV, inflation, ...(income > 0 && incomeV ? { income: incomeV } : {}), ...(released.age !== null ? { age: enteredValue(released.age, "years", bundle.runDate, ci.age) } : {}) },
+      values: { amount, monthly, years, returnV, inflation, ...(income > 0 && incomeV ? { income: incomeV } : {}), ...(released.age !== null ? { age: enteredValue(released.age, "years", bundle.today, ci.age) } : {}) },
     },
     starts: { amount: num("amount_now"), monthly: num("monthly_deposit"), years: num("horizon_years"), inflation: num("A-02"), returnV: num("A-01") },
   };

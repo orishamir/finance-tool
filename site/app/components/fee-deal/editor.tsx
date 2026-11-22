@@ -30,7 +30,6 @@ import { dropTakes, holdWords, letGoStep, samePlace, tapStep, waitAt, type HoldS
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { leftOut } from "../../lib/fee-deal/left-out";
 import { readingOf, type PickThing } from "../../lib/fee-deal/reading";
-import { accountCapOf } from "../../lib/fee-deal/charts";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { productOffered } from "../../lib/fee-deal/offers/offer";
 import { feeRoom } from "../../lib/fee-deal/limits";
@@ -227,9 +226,7 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
   const offeredKinds = useMemo(() => data.kinds.filter((k) => productOffered(k, dataBar(k.id, data, today))), [data, today]);
   const { unitPrice, onUnitPrice } = useUnitPrice(read, deal.id);
   // the reading and the panel for a deal with a fee, with the fees the reading leaves out: one with none shows neither
-  // BANK-35's cap on a current account, which the reading flags a year of holding above (F-102)
-  const cap = useMemo(() => accountCapOf(data.rules), [data.rules]);
-  const views = useMemo(() => (read.deal.fees.length > 0 ? { left: leftOut(read), reading: withReading ? readingOf(read, data.fx, unitPrice, cap) : null } : null), [read, data.fx, unitPrice, withReading, cap]);
+  const views = useMemo(() => (read.deal.fees.length > 0 ? { left: leftOut(read), reading: withReading ? readingOf(read, data.fx, unitPrice) : null } : null), [read, data.fx, unitPrice, withReading]);
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
   const pending = oc.pending.here;
   const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending) : null), [read, chosen, caseId, pending]);

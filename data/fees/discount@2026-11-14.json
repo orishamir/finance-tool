@@ -1494,8 +1494,8 @@
     {
       "what": "חשבון עו\"ש: פעולה ע\"י פקיד 5.90 ₪, בערוץ ישיר 1.85 ₪, עמלת מינימום חודשית עד מחיר פעולה אחת ע\"י פקיד; מסלול בסיסי 9 ₪, מורחב 25 ₪",
       "page": 1,
-      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Abridged tariff 01/10/2026, library 7a22f08024c4cf3d.",
-      "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 5.90 ₪ לחודש, אלא אם סימנתם שזה הבנק שלכם. האתר סופר רק את עמלת המינימום שבתעריפון, בלי עמלות על פעולות בחשבון ובלי מסלולי עו״ש בתשלום חודשי.",
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Abridged tariff 01/10/2026, library 7a22f08024c4cf3d.",
+      "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 5.90 ₪ לחודש, אלא אם סימנתם שזה הבנק שלכם. עמלות הפעולות ומסלולי העו״ש בתשלום חודשי לא נכללים, כי עמלת המינימום מכסה חשבון שמשמש רק להשקעה.",
       "could_change_price": false
     },
     {

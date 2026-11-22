@@ -3,7 +3,7 @@
 import { describe, expect, it } from "vitest";
 import type { FeesSnapshot } from "@finance-tool/schema";
 import { loadFees, loadRules } from "./data.server";
-import { pricedLine, providentLists, providentPick, providentTerms } from "./compare.server";
+import { pricedLine, providentLists, providentPick, providentTerms } from "./provident-lists.server";
 import { buildGuidePage } from "./guide.server";
 
 const KGL = "kupat-gemel-lehashkaa";

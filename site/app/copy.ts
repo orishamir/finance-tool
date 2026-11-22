@@ -880,9 +880,6 @@ export const formulaNames: Record<string, string> = {
   "F-68": "הממוצע שהרשות מפרסמת לסיווג",
   "F-72": "איחוד חשבונות",
   "F-80": "דירוג האפשרויות והשוואה ביניהן",
-  "F-81": "בדיקת רגישות להנחות",
-  "F-82": "חישוב מחדש של השוואה שנשמרה",
-  "F-83": "ספירת המסלולים שנכללו",
   "F-84": "שער חליפין מחושב משערי הבנק המרכזי האירופי",
   "F-85": "הריבית שהכי הרבה בנקים משלמים בעו״ש",
   "F-104": "ספירת תנאי השבירה בפיקדונות שנאספו",
@@ -902,7 +899,6 @@ export const formulaNames: Record<string, string> = {
   "F-95": "מה עשו הקרנות מכל סוג באותן שנים",
   "F-96": "הכסף בקרן השתלמות, שלב אחרי שלב",
   B3: "אפשרות שהכסף בה נעול עד סוף התקופה",
-  "P-07": "נקודת התחלה", // the comparison's goal presets
   /** Shown when a formula has no name above: no code in place of words. */
   _other: "חישוב של האתר",
 };
@@ -1055,7 +1051,7 @@ export const flags: Record<string, string> = {
   "CS-18": "דמי הניהול אחרי גיל עשרים ואחת חושבו לפי התקרה שבתקנות, ולכן הם ״עד״: בקופה שלכם השיעור יכול להיות נמוך יותר.", // the child-savings fee after 21 runs on CS-18's cap unless the person enters a rate (F-54)
   "TXK-06": "בחישוב הזה לא מגישים דוח שנתי או בקשת החזר מס, ולכן המס הוא מה שהחברה המנהלת מנכה במקור: {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם על הרווח. מי שמגיש דוח או בקשת החזר יכול לקבל חלק מהמס בחזרה.", // F-44 applies the brackets (F-42); the flag marks only a run with the refund not claimed (A-14 off). The manager withholds 25% of the gains (TXK-26, Tax Authority file 856), so the flat rate is what is withheld, not an upper bound
   "TXK-26": "בחישוב הזה מגישים דוח שנתי או בקשת החזר מס. החברה המנהלת מנכה במקור {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם. על חלק הרווח שהמדרגה שלו נמוכה מזה, מקבלים את ההפרש בחזרה אחרי הדוח. המספר כאן הוא המס אחרי ההחזר.", // the kupat gemel lehashkaa exit from 60 settles against the manager's withholding (TXK-26), not G-21 (a bank's or TASE member's withholding). That withholding is 25% of the gains (Tax Authority file 856), the maximum rate of TXK-06, so no part is above it
-  "BANK-35": "מ{BANK-35:account_fee_up_to_2_actions.from} הסכום כאן יכול להיות גבוה מדי. צו של נגיד בנק ישראל קובע אז תקרה לדמי הניהול של חשבון עו״ש לפי מספר הפעולות בחודש. בחשבון עם עד שתי פעולות בחודש, התקרה נמוכה מהמחיר של ״חשבון עובר ושב בבנק״ שנספר כאן. תיקון לכללי העמלות מפרט אילו שירותים נספרים כפעולה. האתר לא מצא בכללים שקרא אם קנייה חודשית של ניירות ערך, או ההעברה שמשלמת עליה, היא אחת מהן. לכן האתר לא מחיל את התקרה, ומשאיר את המחיר כפי שהוא.", // D64: F-102 keeps the price for the whole plan; the indices page flags the first month from the cap's start charged above the cap for 0 to 2 actions, the fee page a year of holding in a period that reaches it
+  "BANK-35": "מ{BANK-35:account_fee_up_to_2_actions.from} הסכום כאן יכול להיות גבוה מדי. צו של נגיד בנק ישראל קובע אז תקרה לדמי הניהול של חשבון עו״ש לפי מספר הפעולות בחודש. בחשבון עם עד שתי פעולות בחודש, התקרה נמוכה מדמי הניהול שנספרו כאן. תיקון לכללי העמלות מפרט אילו שירותים נספרים כפעולה. האתר לא מצא בכללים שקרא אם קנייה חודשית של ניירות ערך, או ההעברה שמשלמת עליה, היא אחת מהן. לכן החישוב משאיר את דמי הניהול של היום לכל התקופה.", // D64: F-102 keeps the price list's minimum; the engine flags the month the cap starts where a counted minimum is above the cap for 0 to 2 actions
   "G-32": "על כל דיבידנד נגבה סכום בשביל הגוף ששומר את ניירות הערך בחו״ל. החישוב לא הפחית את הסכום הזה מהרווח במכירה. החוק מפחית מהרווח את דמי המשמרת של שנת המכירה. עוד לא ברור אם גם הסכום הזה נחשב דמי משמרת. אם כן, המס כאן מעט גבוה מדי.", // D67: F-103 stays out of the sale gain; the engine flags a charge in the exit tax year (method G-32)
   // F-49 (method G-03): the pension's exit is an annuity, whose part above the minimum annuity may be commuted (PEN-28, TXA-20); its value needs each fund's conversion factors (PEN OQ7) and its exemption needs them (TXP-14 to TXP-17)
   "G-03": "זה הסכום בקופה לפני הקצבה. בפועל מקבלים קצבה חודשית. את החלק שלה שמעל סכום הקצבה המזערי אפשר גם להוון לסכום חד־פעמי. האתר עוד לא מחשב את הקצבה: היא תלויה במקדמי ההמרה של כל קרן, והם עוד לא נאספו. גם הפטור ממס על הקצבה תלוי בהם.",
@@ -1106,10 +1102,6 @@ export const flags: Record<string, string> = {
 
 /** Labels of the values a computation reads, shown in the number sheet (copy.md 3.8 "ערכים שנכנסו לחישוב"). */
 export const computedInputs = {
-  /** What the lowest in-fund cost of the goal comparison is (`classMinFee`): the cheapest of the funds P-05's fund is chosen from, by number. */
-  lowestSettled: (id: string) => `הנמוכה ביותר שנאספה באותה חשיפה, מבין הקרנות שלפי המסמכים שלהן אינן קרן נאמנות להשקעות חוץ (${id})`,
-  /** A printed fee's period, as the value of `names.period` on the sheet of F-17's monthly sum. */
-  periods: { month: "חודש", quarter: "רבעון", year: "שנה" },
   /** Hebrew names for the input keys the engine and the site's lifts write in English; a key not here (already Hebrew) is shown as written */
   names: {
     amount: "הסכום שנבדק",
@@ -1456,9 +1448,9 @@ export const catalogue = {
   search: "שם מהקטלוג",
 } as const;
 
-// ---------------------------------------------------------------- release 2: the comparison's words (docs/copy.md section 6)
+// ---------------------------------------------------------------- release 2: words from docs/copy.md section 6
 /**
- * Words of the comparison (docs/copy.md 6.0 to 6.4) that the indices page and the visuals show.
+ * Words the indices page shows (docs/copy.md 6.0 to 6.4).
  * Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
  */
 export const r2 = {
@@ -1466,17 +1458,7 @@ export const r2 = {
     errYears: "הזינו לפחות שנה אחת.",
     errYearsWhole: "הזינו מספר שלם של שנים.",
   },
-
-  result: {
-    // A8: a deposit whose published rate was read for another amount
-    ownRate: { about: "ריבית שהזנתם" },
-  },
 } as const;
-
-// sc-represent, folded in by sc-compare: the entered fee level of the representative instrument (D4)
-export const ownTermsCopy = {
-  fundCostLabel: "העלות בתוך הקרן",
-};
 
 // Release 3: the track workbench and the entry points (docs/copy.md 7.0, 7.3, 7.5; flows 12.3, 12.5). The strings the
 // build added are in copy.md 7.3's "Added 2026-10-24" table, keyed by path.
@@ -2725,10 +2707,8 @@ export const r3transfer = {
   unavailable: "אי אפשר לשמור במכשיר הזה. מה שנטען יישאר רק בזמן הביקור.", // copy.md 7.4, the release 2 note for import
   // each count in its Hebrew form; the digit shows (inside a Num) only in `many`
   forms: {
-    goals: { one: "מטרה אחת", two: "שתי מטרות", many: "מטרות" },
     holdings: { one: "החזקה אחת", two: "שתי החזקות", many: "החזקות" },
     names: { one: "שם אחד שלא קוטלג", two: "שני שמות שלא קוטלגו", many: "שמות שלא קוטלגו" },
-    comparisons: { one: "השוואה שמורה אחת", two: "שתי השוואות שמורות", many: "השוואות שמורות" },
     offers: { one: "הצעה שהזנתם", two: "שתי הצעות שהזנתם", many: "הצעות שהזנתם" },
     variants: { one: "חשיפה עם הנחות שהזנתם", two: "שתי חשיפות עם הנחות שהזנתם", many: "חשיפות עם הנחות שהזנתם" },
     ticks: { one: "סימון אחד ב״איך עוברים״", two: "שני סימונים ב״איך עוברים״", many: "סימונים ב״איך עוברים״" },
@@ -2745,23 +2725,18 @@ export const r3transfer = {
   sideFailed: "ההצעות, ההנחות והסימונים לא נשמרו במכשיר הזה.",
   rejectedHeading: "לא ייטענו, כי שדה בהם לא תקין:",
   rejectedItem: "{kind} {at}, {field}: {problem}.",
-  rejectedKinds: { goal: "מטרה", holding: "החזקה", comparison: "השוואה שמורה", input: "ערך במדריך", offers: "הצעה", variants: "הנחות לחשיפה", ticks: "סימונים", ownRates: "ריבית שהוזנה", deals: "עסקה שמורה" }, // ownRates:
+  rejectedKinds: { holding: "החזקה", input: "ערך במדריך", offers: "הצעה", variants: "הנחות לחשיפה", ticks: "סימונים", ownRates: "ריבית שהוזנה", deals: "עסקה שמורה" }, // ownRates:
   rejectedProblems: {
     structure: "המבנה לא תקין",
     "not-number": "לא מספר",
     negative: "מתחת לאפס",
     "over-100": "מעל 100",
-    years: "לא מספר שלם בין 1 ל־40",
-    age: "לא בין 15 ל־100",
     date: "לא תאריך",
     wrapper: "סוג חיסכון לא מוכר",
     "gain-over-balance": "גדול מהיתרה",
   },
   rejectedFields: {
-    goal: "המטרה", id: "המזהה", name: "שם המטרה", profile: "הפרופיל", assumptions: "ההנחות", exposures: "נתוני החשיפות",
-    horizonYears: "השנים עד המטרה", amountNow: "סכום היום", monthly: "ההפקדה החודשית", available: "הסכום הזמין",
-    age: "הגיל", salary: "השכר", pension: "הפקדות לפנסיה", hishtalmut: "הפקדות להשתלמות", hishtalmutYearly: "ההפקדה השנתית להשתלמות",
-    return: "התשואה", inflation: "האינפלציה", insurance: "דמי הביטוח בקרן הפנסיה", acceptedFall: "הירידה שמסכימים לספוג",
+    id: "המזהה", age: "הגיל", insurance: "דמי הביטוח בקרן הפנסיה",
     holding: "ההחזקה", wrapperId: "סוג החיסכון", company: "החברה", order: "הסדר", track: "המסלול", balance: "היתרה",
     feeBalance: "דמי הניהול מחיסכון", feeDeposit: "דמי הניהול מהפקדה", directExpenses: "הוצאות ישירות", monthlyOwn: "ההפקדה החודשית שלכם",
     monthlyEmployer: "ההפקדה החודשית של המעסיק", embeddedGain: "הרווח שבתוך היתרה", statementDate: "תאריך הדוח", firstDeposit: "ההפקדה הראשונה",
@@ -2769,7 +2744,7 @@ export const r3transfer = {
   // the file's top-level fields, for "הקובץ לא תקין: {field}" (was the field's name in English)
   refusalFields: {
     state: "תוכן הקובץ", exported: "תאריך הייצוא", version: "גרסת הקובץ", site: "פרטי האתר", goals: "המטרות", inputs: "הערכים במדריך",
-    holdings: "ההחזקות", uncatalogued: "השמות שלא קוטלגו", imports: "רשימת הטעינות", savedComparisons: "ההשוואות השמורות",
+    holdings: "ההחזקות", uncatalogued: "השמות שלא קוטלגו", imports: "רשימת הטעינות",
   },
 } as const;
 
@@ -4284,8 +4259,15 @@ export const invest = {
       banned: "לפי הכללים, עמלה כזאת לא נגבית כאן.",
     } as Record<string, string>,
     ownBank: (bank: string) => `סימנתם בעמוד שיש לכם כבר חשבון עו״ש ב${bank}.`,
-    /** What a fee took on the plan, as its figure's sheet says (F-128). */
+    /**
+     * A deal filled from a bank that names no current account of its own pays the bank's (F-102), from the bank's record: one quiet line
+     * after the fee blocks, its price a month by the price list and its cost on the plan. The toolbox's "חשבון עובר ושב בבנק" gives it its own.
+     */
+    bankAccount: (bank: string, withCost: boolean) =>
+      `בתוכנית נספר גם חשבון העו״ש של ${bank}: {monthly} בחודש לפי התעריפון${withCost ? ", {cost} בתוכנית" : ""}. אפשר לתת לו מחיר משלכם בכרטיס ״חשבון עובר ושב בבנק״.`,
+    /** What a fee, or the bank's current account, took on the plan, as its figure's sheet says (F-128). */
     feeCostAbout: (fee: string) => `העלות של ${fee} בתוכנית, בכסף של היום`,
+    bankCostAbout: (bank: string) => `העלות של חשבון העו״ש של ${bank} בתוכנית, בכסף של היום`,
     /** The pick bar: what only the person knows (a track, a condition of their own), then what the plan sets itself. */
     readFor: "קוראים את העסקה בשביל",
     /** The pick bar on a phone, one line under the strip. */
@@ -4456,8 +4438,8 @@ export const invest = {
     ageInput: "גיל",
     /** The income a run's tax tests the surtax on (F-43), among the inputs of the figures that come out of the run. */
     incomeInput: "הכנסה שנתית, מלבד הרווח",
-    /** The bank's monthly current-account minimum among a row's inputs, with its price list as the source (F-102): the price list's minimum, not a management fee. */
-    accountMinimum: "עמלת המינימום של חשבון עובר ושב, בחודש",
+    /** The bank's monthly current-account minimum among a row's inputs, with its price list as the source (F-102). */
+    accountMinimum: "דמי ניהול חשבון עו״ש בחודש",
     /** An exchange rate a run is priced at (F-84), among a figure's inputs: the currency the fund is bought in, or a price-list line set in it. */
     rateInput: (code: string): string => {
       const word = invest.currencies[code];
@@ -4501,9 +4483,9 @@ export const invest = {
     moreIfCheapest: "יותר אם עוברים לזוג הזול",
     pickCheapest: "לבחור בזוג הזה",
     who: { account: "החשבון:", fund: "הקרן:", state: "המדינה:" },
-    lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות", account: "חשבון עובר ושב בבנק" } as Record<string, string>,
+    lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות", account: "דמי ניהול חשבון עו״ש" } as Record<string, string>,
     /** The legend's item for the account's own fee and a bank's current account (D64), which share its colour ("דמי ניהול חשבון" alone read as either). */
-    legendAccount: "דמי ניהול חשבון ניירות ערך וחשבון עובר ושב בבנק",
+    legendAccount: "דמי ניהול חשבון ניירות ערך ועו״ש",
     /** The same item where no bar shown counts a current account (an investment house, a bank marked as the person's own): a legend names only what is drawn. */
     legendSecurities: "דמי ניהול חשבון ניירות ערך",
     lineAbout: (line: string) => `מה החשבון גובה: ${line}`,
@@ -4589,7 +4571,7 @@ export const invest = {
       /** `free`: the banks whose price list charges nothing for a current account, which the box leaves out (One Zero, D64), so its row
        * reads as a bank's that counts no fee. */
       counted: (free: string[]) =>
-        `בשורה של כל בנק החישוב סופר גם חשבון עובר ושב בבנק: עמלת המינימום החודשית מהתעריפון שלו, בהנחה שחשבון ניירות הערך מתנהל לצד חשבון עו״ש באותו בנק. כבר יש לכם חשבון עו״ש באחד מהבנקים? בחרו אותו בתיבה, והשורה שלו לא תספור אותו.${free.length > 0 ? ` ${andList(free)} ${free.length > 1 ? "לא גובים" : "לא גובה"} עמלת מינימום על חשבון עו״ש.` : ""} בשורה של בית השקעות החישוב לא סופר חשבון עו״ש.`,
+        `השורה של כל בנק שגובה דמי ניהול חשבון עו״ש סופרת אותם, כי השקעה דרכו דורשת חשבון עו״ש אצלו. כבר יש לכם חשבון עו״ש באחד מהבנקים? בחרו אותו בתיבה, והשורה שלו לא תספור אותם.${free.length > 0 ? ` ${andList(free)} ${free.length > 1 ? "לא גובים" : "לא גובה"} דמי ניהול חשבון עו״ש,` : ""} ${free.length > 0 ? "ובית" : "בית"} השקעות לא דורש עו״ש אצלו.`,
     },
     /** D65 and D66: said once, for an index with funds bought abroad; `capped`: the houses whose price lists print a limit on the spread, which their figures count at the limit (F-13). */
     abroadTitle: "מה לא נכנס למחיר של קרן שנקנית בחו״ל",

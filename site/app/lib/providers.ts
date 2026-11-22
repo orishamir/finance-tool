@@ -54,7 +54,7 @@ export function onlyWhatCanBeDoneFundByFund<S extends FeesSnapshot>(s: S): S {
 /**
  * A house's lines for ranking a run of one fund (`fund`, the site's fund number; none for a run that holds no fund): where an agreement in
  * force names the fund (BRK-38, `agreedFunds`), the classes the agreements decide fund by fund keep their lines
- * (`onlyWhatCanBeDoneFundByFund`), else `onlyWhatCanBeDone`. The guides and the goal comparison read a house so for P-05's fund, as the indices
+ * (`onlyWhatCanBeDoneFundByFund`), else `onlyWhatCanBeDone`. The guides read a house so for P-05's fund, as the indices
  * page asks each fund of the reports (`fundByFundOf`).
  */
 export function onlyWhatCanBeDoneFor<S extends FeesSnapshot>(s: S, fund: string | undefined): S {

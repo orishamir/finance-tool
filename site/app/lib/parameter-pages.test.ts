@@ -3,8 +3,8 @@
 // page shows a parameter the map does not name. "Reads" is looked for in the route's own code, every site module it imports, and
 // the pre-rendered .json routes the route itself fetches (a page's `bundleLinks`), comments left out: a lookup of the
 // parameter's record by its id (`method_id === "P-05"`, `find("P-01")`, `parameterOf(bundle, "P-02")`), or a call of the
-// loader of its file. It is a check on the code's shape: a route that loads a reader it never calls still passes (the comparison
-// bundle carries P-04 and P-07 to pages that use neither), and a page that stops loading the reader fails.
+// loader of its file. It is a check on the code's shape: a route that loads a reader it never calls still passes, and a page that
+// stops loading the reader fails.
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -52,7 +52,7 @@ const readdirSafe = (f: string) => {
   }
 };
 
-/** The .json routes without a parameter (`compare-bundle.json`), by name, to their module: a page that fetches one reads what it serves. */
+/** The .json routes without a parameter (`indices-bundle.json`), by name, to their module: a page that fetches one reads what it serves. */
 const jsonRoutes = new Map(routes.filter((r) => /^[\w-]+\.json$/.test(r.pattern)).map((r) => [r.pattern, join(app, r.file)]));
 
 /**

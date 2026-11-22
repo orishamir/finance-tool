@@ -15,14 +15,13 @@ import { printedLine } from "./deposit-kind";
 import type { Bundle } from "./engine";
 import { p05Number, p05Range, runTimeline } from "./engine";
 import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
-import { asParameter } from "./compare";
 import type { AccountBank } from "./guide-signature";
 import { runWith, sideOf } from "./guide-signature-g2";
 import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
 import { loadFees, loadParameters } from "./data.server";
 import { latestOf, latestSnapshots } from "./providers.server";
 import { onlyWhatCanBeDoneFor, shortName } from "./providers";
-import { computed, ownBy, type SiteValue, type Strength } from "./value";
+import { asParameter, computed, ownBy, type SiteValue, type Strength } from "./value";
 import { publisherHe } from "./publisher-he.server";
 
 /** The rules a run may read, found by running the engine over the profiles that change its path. */
@@ -277,7 +276,7 @@ export function accountRuns(record: ProductRecord, family: InstrumentFamily, p05
     if (latest.missing || latest.provider.part_of) continue;
     if (record.id !== "brokerage-account" && latest.provider.class === "foreign_broker") continue;
     // a house that sells the class fund by fund under its distribution agreements (BRK-38) sells the example's fund where an agreement in
-    // force names it, as the indices page and the goal comparison read the house
+    // force names it, as the indices page reads the house
     const fund = p05.instruments?.[record.id]?.fund;
     const sells = onlyWhatCanBeDoneFor(latest, fund === undefined ? undefined : String(fund));
     if (!sells.lines.some((l) => l.base === "trade" && l.applies_to.some((a) => classes.includes(a)))) continue;

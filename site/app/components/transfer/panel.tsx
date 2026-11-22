@@ -36,7 +36,7 @@ import { assertNever } from "@finance-tool/schema";
 
 type Site = { version: string; data: string };
 
-// a count of what the person saved (goals, holdings, names, duplicates in a file): their own entries, not a calculation of the site
+// a count of what the person saved (holdings, names, duplicates in a file): their own entries, not a calculation of the site
 const count = (n: number, about: string) => entered(n, "count", isoToday(), about);
 
 type Forms = { readonly one: string; readonly two: string; readonly many: string };
@@ -77,11 +77,9 @@ function ErrorNote({ children }: { children: ReactNode }) {
   );
 }
 
-const countItems = (c: { goals: number; holdings: number; names: number; comparisons: number; offers: number; variants: number; ticks: number; ownRates: number; deals?: number }) => [
-  { n: c.goals, forms: copy.forms.goals },
+const countItems = (c: { holdings: number; names: number; offers: number; variants: number; ticks: number; ownRates: number; deals?: number }) => [
   { n: c.holdings, forms: copy.forms.holdings },
   { n: c.names, forms: copy.forms.names },
-  { n: c.comparisons, forms: copy.forms.comparisons },
   { n: c.offers, forms: copy.forms.offers },
   { n: c.variants, forms: copy.forms.variants },
   { n: c.ticks, forms: copy.forms.ticks },
@@ -260,7 +258,7 @@ function ImportHalf() {
   const [unreadable, setUnreadable] = useState(false);
   const [mode, setMode] = useState<"add" | "replace">("add");
   const [confirm, setConfirm] = useState(false);
-  const [done, setDone] = useState<{ mode: "add" | "replace"; added: { goals: number; holdings: number; names: number; comparisons: number; offers: number; variants: number; ticks: number; ownRates: number }; skipped: number; date: string; sideFailed: boolean } | null>(null);
+  const [done, setDone] = useState<{ mode: "add" | "replace"; added: { holdings: number; names: number; offers: number; variants: number; ticks: number; ownRates: number }; skipped: number; date: string; sideFailed: boolean } | null>(null);
   const [drag, setDrag] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleted, setDeleted] = useState(false);
@@ -363,7 +361,7 @@ function ImportHalf() {
               <p className="flex flex-wrap items-center gap-x-1.5">
                 <span>{copy.afterImport.before}</span>
                 <CountList items={countItems(done.added)} sep="," />.
-                {done.mode === "add" && done.added.goals + done.added.holdings + done.added.names > 0 && (
+                {done.mode === "add" && done.added.holdings + done.added.names > 0 && (
                   <>
                     {" "}
                     <When iso={done.date} lead={copy.afterImport.tag} />

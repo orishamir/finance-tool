@@ -1,6 +1,5 @@
-// F-83 output: the coverage line and its invariant (every candidate appears exactly once and the counts sum
-// to N). Generic over the outcome vocabulary, because the idle-cash preset reads "baseline" and "compared"
-// where a goal comparison reads "ranked" (F-83 outcome 5).
+// The providers workbench's coverage line (F-63, with F-83's line and invariant): every row appears exactly once and the counts sum
+// to N. Generic over the outcome vocabulary.
 import type { CoverageEntry, CoverageLine, Reason } from "./types.ts";
 
 export interface Accounted<K extends string> {
@@ -32,13 +31,4 @@ export function coverageLine<K extends string>(entries: readonly Accounted<K>[],
     notRanked,
     invariant: { ok: duplicates.length === 0 && sum === entries.length, sum, duplicates },
   };
-}
-
-/** Throws if the invariant fails: a comparison must never drop or double a candidate (method §13). */
-export function assertInvariant(line: CoverageLine<string>): void {
-  if (!line.invariant.ok) {
-    throw new Error(
-      `coverage invariant broken: ${line.considered} candidates, counts sum to ${line.invariant.sum}, duplicated ${line.invariant.duplicates.join(", ") || "none"}`,
-    );
-  }
 }

@@ -10,9 +10,6 @@ import { type FeeKindId } from "./shapes";
 import { capacity } from "./offers/capacity";
 import { recordValue } from "./values";
 
-/** A securities account's kind: the deal the indices page reads (F-128) and a house's whole price list fills. */
-export const ACCOUNT_KIND = "brokerage-account";
-
 /**
  * One kind of deal: a product record's id, its first Hebrew name, the fee bases it allows and their caps, and the regulator its record names
  * (data-schema §3.3, `regulator`), which the rule table reads (offers/rules.ts).

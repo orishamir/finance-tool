@@ -759,23 +759,16 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   // minimum above the lower cap (an exempt stretch charges nothing): the account's cost may be too high from then on (method F-102).
   // The cap is looked at without citing it, and cited only where it flags: a row it changes nothing on does not list it among its rules.
   // A record without the figure is cited at once, so the run fails as any missing rule does.
-  // A deal's current account is read in the month's loop, once the month's orders are placed: a card split by a month's orders, its
-  // trading or the value held charges one step's price, which only then is known. The cap compared is always the one for 0 to 2 actions:
-  // the run never reads its orders as the cap's actions (F-102).
-  let accountCap: { value: number; from: number } | null = null;
   if (tariff.currentAccount !== undefined || (dc && input.deal!.currentAccount?.length)) {
     const cap = ctx.rules.find((r) => r.id === "BANK-35")?.figures?.account_fee_up_to_2_actions as { value?: unknown; effective_from?: string | null } | undefined;
     if (typeof cap?.value !== "number") book.amount("BANK-35", "account_fee_up_to_2_actions");
     else {
-      const capMonth = Math.max(1, cap.effective_from ? monthOfDate(ctx.runDate, cap.effective_from) : 1);
-      if (dc) accountCap = { value: cap.value, from: capMonth };
-      else {
-        for (let m = capMonth; m <= T; m++) {
-          if ((tariffAt(m).currentAccount ?? 0) > cap.value) {
-            book.amount("BANK-35", "account_fee_up_to_2_actions");
-            tally.flag("BANK-35", m);
-            break;
-          }
+      const capMonth = cap.effective_from ? monthOfDate(ctx.runDate, cap.effective_from) : 1;
+      for (let m = Math.max(1, capMonth); m <= T; m++) {
+        if ((dc ? dc.accountMonthly(m) : (tariffAt(m).currentAccount ?? 0)) > cap.value) {
+          book.amount("BANK-35", "account_fee_up_to_2_actions");
+          tally.flag("BANK-35", m);
+          break;
         }
       }
     }
@@ -851,12 +844,6 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
     // (F-14), whether the deal prices it as a share of what is held or as a sum
     const dealHeld = dc ? (mmfFree ? { total: 0, parts: [], atRate: 0 } : dc.held(m, units * nav - manager)) : null;
     const sumsAsked = dc ? dc.sums(m, units * nav - manager) : null;
-    // F-102 with BANK-35 on a deal: the first month from the cap's start whose current account is charged above the cap for 0 to 2 actions
-    if (dc && accountCap && m >= accountCap.from && dc.accountMonthly(m, units * nav - manager) > accountCap.value) {
-      book.amount("BANK-35", "account_fee_up_to_2_actions");
-      tally.flag("BANK-35", m);
-      accountCap = null;
-    }
     const dealSums = sumsAsked && mmfFree ? { ...sumsAsked, custody: { total: 0, parts: [] } } : sumsAsked;
     const custody = dealHeld ? dealHeld.total : custodyFee(custodyLineAt(m), m + offset, units * nav - manager);
     const heldLeft = units * nav - manager - custody;

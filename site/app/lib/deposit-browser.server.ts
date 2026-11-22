@@ -4,13 +4,12 @@ import type { DepositTerms, ValueObject } from "@finance-tool/schema";
 import { depositLabels, depositName, exitPointsOf, shownRate } from "./deposit-kind";
 import { termOf, type DbBank, type DbData, type DbOffer } from "./deposit-browser";
 import { loadParameters, loadRules, today } from "./data.server";
-import { asParameter } from "./compare";
 import { p05Number } from "./engine";
 import { site } from "./institutions.server";
 import { loadDepositTerms } from "./instruments.server";
 import { shortName } from "./providers";
 import { mostlyHebrew } from "./source-label";
-import type { SiteValue } from "./value";
+import { asParameter, type SiteValue } from "./value";
 
 /** A record's figure as the page shows it: the bank's own, with the record's English working note left in the data (the sheet shows only a Hebrew one). */
 function shown(v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {

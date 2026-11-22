@@ -5,14 +5,12 @@
 import { describe, expect, it, vi } from "vitest";
 
 describe("formula names", () => {
-  it("loading the comparison's and the providers' modules leaves copy.ts's table as it is", async () => {
+  it("loading the providers' module leaves copy.ts's table as it is", async () => {
     vi.resetModules();
     const { formulaNames } = await import("../copy");
     const own = { ...formulaNames };
-    // each module loaded for what it does at load; one export named, so the test marks no other export of it as used
-    const { evaluate } = await import("./compare");
+    // the module loaded for what it does at load; one export named, so the test marks no other export of it as used
     const { isFxToFx } = await import("./providers");
-    expect(evaluate).toBeTypeOf("function");
     expect(isFxToFx).toBeTypeOf("function");
     expect(formulaNames).toEqual(own);
     vi.resetModules();

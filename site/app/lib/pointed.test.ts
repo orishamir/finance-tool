@@ -10,13 +10,13 @@ import { loadCma, loadRules } from "./data.server";
 import { buildExposurePage, buildGuidePage } from "./guide.server";
 import { buildInstitution, institutionIds } from "./institutions.server";
 import { loadExposures } from "./instruments.server";
-import { compareBundle, goalFormData } from "./compare.server";
 import { indicesBundle } from "./providers.server";
 import { buildFeesData } from "./fees.server";
 import { loader as guideLoader } from "../routes/guide";
 import { loader as companiesLoader } from "../routes/companies";
 import { loader as companyLoader } from "../routes/company";
 import { loader as notCoveredLoader } from "../routes/not-covered";
+import { loader as indicesLoader } from "../routes/invest";
 import { shelfBundle } from "./rule-uses.server";
 import { shelfIds } from "./rule-shelves";
 
@@ -84,17 +84,18 @@ describe("every chip on a page's rule cards opens its record", () => {
     expect(bad).toEqual([]);
   }, 300000);
 
-  it("the rules shelves, the not-covered page and the goal form the indices page reads", async () => {
+  it("the rules shelves and the not-covered page", async () => {
     const n = (await notCoveredLoader()) as { rules: Map_; pointed: Map_ };
-    const g = goalFormData();
     const shelves = shelfIds.flatMap((s) => unopened(shelfBundle(s).rules, {}).map((x) => `${s}: ${x}`));
-    expect([...unopened(n.rules, n.pointed), ...unopened(g.rules as Map_, g.pointed as Map_), ...shelves]).toEqual([]);
+    expect([...unopened(n.rules, n.pointed), ...shelves]).toEqual([]);
   }, 120000);
 
-  it("the bundles the comparison, the workbenches and fees read", () => {
-    const c = compareBundle();
+  it("the bundles the indices page and fees read, and the indices page's own rules beside its bundle's", async () => {
     const w = indicesBundle();
     const f = buildFeesData();
-    expect([...unopened(c.rules, c.pointed), ...unopened(w.rules, w.pointed), ...unopened(f.rules, f.pointed)]).toEqual([]);
+    // the indices page's rules are its loader's (the glossary cards' rules) and its bundle's, the records they point at its bundle's
+    const page = await indicesLoader({ params: {} } as never);
+    const own = Object.fromEntries([...page.feeRules, ...w.rules].map((r) => [r.id, r as RuleRecord]));
+    expect([...unopened(w.rules, w.pointed), ...unopened(f.rules, f.pointed), ...unopened(own, w.pointed)]).toEqual([]);
   }, 300000);
 });

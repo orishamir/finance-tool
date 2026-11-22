@@ -5,8 +5,8 @@ import { PRERENDER_TIMEOUT_MS, prerenderTime, slowPrerender } from "../../script
 describe("site/scripts/prerender-time.mjs", () => {
   it("warns from half of the 10 s a prerender request may take, and not below", () => {
     expect(PRERENDER_TIMEOUT_MS).toBe(10_000);
-    expect(slowPrerender("/finance-tool/compare-bundle.json", 4_999)).toBeNull();
-    expect(slowPrerender("/finance-tool/compare-bundle.json", 8_233)).toMatch(/compare-bundle\.json took 8\.2 s, 82% of the 10 s/);
+    expect(slowPrerender("/finance-tool/indices-bundle.json", 4_999)).toBeNull();
+    expect(slowPrerender("/finance-tool/indices-bundle.json", 8_233)).toMatch(/indices-bundle\.json took 8\.2 s, 82% of the 10 s/);
   });
   it("is a Vite plugin that times the preview server's requests", () => {
     expect(prerenderTime().name).toBe("prerender-time");

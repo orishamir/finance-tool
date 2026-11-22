@@ -39,8 +39,7 @@ import { blockedWrapperExit } from "./formulas/blocked-exit.ts";
 import { insuranceCost } from "./formulas/insurance.ts";
 import { runSecurities, runSecuritiesBeforeTax } from "./ledgers/securities.ts";
 import { cpiLinkedAmount, indexedAmount } from "./formulas/indexation.ts";
-import { buildCandidateSet } from "./compare/candidates.ts";
-import { rankCandidates } from "./compare/ranking.ts";
+import { isTie } from "./compare/ranking.ts";
 import { costByWho, providerWorkbench } from "./providers/workbench.ts";
 
 export const formulas = {
@@ -89,8 +88,7 @@ export const formulas = {
   "F-52": employerLinePension,
   "F-53": insuranceCost,
   "F-63": providerWorkbench,
-  "F-80": rankCandidates,
-  "F-83": buildCandidateSet,
+  "F-80": isTie,
   "F-84": crossRate,
   "F-85": mostCommonRate,
   "F-86": rateRange,
@@ -157,11 +155,12 @@ export const pending: Record<string, string> = {
   "F-66": "not built: no page uses this formula; its code is removed",
   "F-67": "computed on the site from each run's series: site/app/lib/engine.ts `runTimeline`, and the guide signatures' own year-by-year models",
   "F-68": "not built: no page uses this formula; its code is removed",
-  "F-70": "computed on the site: site/app/lib/fit.ts `fitOf`",
-  "F-71": "computed on the site for a track's classification: site/app/lib/fit.ts `fitOf`; exposure mode is not built",
+  "F-70": "not built: no page uses this formula; its code is removed",
+  "F-71": "not built: no page uses this formula; its code is removed",
   "F-72": "not built: no page uses this formula; its code is removed",
   "F-81": "not built: no page uses this formula; its code is removed",
   "F-82": "not built: no page uses this formula; its code is removed",
+  "F-83": "not built: no page uses this formula; its code is removed",
   "F-94": "computed on the site: site/app/lib/invest.ts (hedged or not, across the dollar) and site/app/components/invest/lists.tsx",
 };
 

@@ -23,15 +23,13 @@ import { dealStore } from "../lib/fee-deal/store";
 import type { FeeDeal } from "../lib/fee-deal/model";
 import { isAccountDeal } from "../lib/deal-account/plan";
 import { withDeals } from "../lib/deal-account/bundle";
-import { withLaterFillsAll } from "../lib/fee-deal/templates";
 import { useTypedAccountsMove } from "../lib/deal-account/move-run";
 import { lastIndexStore } from "../lib/deal-account/last-index";
 import { loadFeesData, type FeesData } from "../lib/fee-page-data";
 import { Callout, EmptyState, useSwapGlide } from "../components/kit";
 import { IconCoins } from "../components/icons";
 import { PageShell } from "../components/shell";
-import { loadBundle, bundleLinks } from "../lib/bundle";
-import { type CompareBundle } from "../lib/compare";
+import { bundleLinks } from "../lib/bundle";
 import { enteredPlan } from "../lib/entered-plan";
 import { useSettled } from "../lib/settled";
 import { useInputs, type InputsState } from "../lib/inputs";
@@ -46,7 +44,7 @@ import { useHydrated, useMedia } from "../lib/hooks";
 import { ToolBoundary } from "../components/tool-boundary";
 
 /** The data files this page fetches after it starts, requested with the HTML. */
-export const links = () => bundleLinks("indices-bundle.json", "compare-bundle.json");
+export const links = () => bundleLinks("indices-bundle.json");
 
 /** Every index is one route (`indices/:slug?`) whose data is the same for each: moving between indices, or to a custom one,
  * keeps the loaded data and fetches nothing, so a click on a phone does not wait for the network. The index comes from the address. */
@@ -57,19 +55,21 @@ export function shouldRevalidate() {
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { loadExposures } = await import("../lib/instruments.server");
-  const { goalFormData } = await import("../lib/compare.server");
+  const { planFormData } = await import("../lib/entered-plan.server");
   const indices = loadExposures()
     .filter((e) => e.kind === "equity_index")
     .map((e) => ({ id: e.id, name: gershayim(e.names.he[0] ?? e.id), israeli: e.constituents_israeli === true }));
   const id = params.slug ? exposureIdOfSlug(params.slug) : null;
   if (id && !indices.some((i) => i.id === id)) throw new Response("Not found", { status: 404 });
   // the glossary cards behind the fund list's fees "?", with the rules they cite
-  const { loadRules, loadTerms } = await import("../lib/data.server");
+  const { loadChecklistRows, loadRules, loadTerms } = await import("../lib/data.server");
   const names = new Set<string>(brands.funds.feeTerms);
   const feeTerms = Object.fromEntries(loadTerms().filter((t) => names.has(t.he)).map((t) => [t.he, t]));
   const all = loadRules();
   const feeRules = [...new Set(Object.values(feeTerms).flatMap((t) => t.ruleIds))].flatMap((id) => (all[id] ? [all[id]] : []));
-  return { ...goalFormData(), indices, feeTerms, feeRules };
+  // the names of the dimensions a rule card lists
+  const dimensions = Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name]));
+  return { ...planFormData(), indices, feeTerms, feeRules, dimensions };
 }
 
 /** The known index the address names (`/indices/<x>` is `index-<x>`), or null. */
@@ -91,24 +91,18 @@ export default function Invest() {
   // another index tries the page's tool again after a failure
   const { pathname } = useLocation();
   const [wb, setWb] = useState<IndicesBundle | null>(null);
-  const [compare, setCompare] = useState<CompareBundle | null>(null);
   const [failed, setFailed] = useState(false);
   useEffect(() => {
-    Promise.all([loadBundle(), loadIndicesBundle()])
-      .then(([b, w]) => {
-        setCompare(b);
-        setWb(w);
-      })
-      .catch(() => setFailed(true));
+    loadIndicesBundle().then(setWb, () => setFailed(true));
   }, []);
   const provenance = useMemo(() => {
-    const rules: Record<string, RuleRecord> = Object.fromEntries([...data.feeRules, ...(compare?.rules ?? []), ...(wb?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
-    return { rules, pointed: recordsById(compare?.pointed, wb?.pointed), terms: data.feeTerms, dimensions: Object.fromEntries((compare?.checklist ?? []).map((x) => [x.id, x.name])), today: data.today };
-  }, [compare, wb, data.today, data.feeRules, data.feeTerms]);
+    const rules: Record<string, RuleRecord> = Object.fromEntries([...data.feeRules, ...(wb?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
+    return { rules, pointed: recordsById(wb?.pointed), terms: data.feeTerms, dimensions: data.dimensions, today: data.today };
+  }, [wb, data.today, data.feeRules, data.feeTerms, data.dimensions]);
   return (
     <PageShell current="other" data={provenance}>
       <ToolBoundary resetKey={pathname}>
-        <Page wb={wb} compare={compare} failed={failed} data={data} />
+        <Page wb={wb} failed={failed} data={data} />
       </ToolBoundary>
     </PageShell>
   );
@@ -126,7 +120,7 @@ const Frame = ({ title, children }: { title: React.ReactNode; children: React.Re
   </div>
 );
 
-function Page({ wb, compare, failed, data }: { wb: IndicesBundle | null; compare: CompareBundle | null; failed: boolean; data: Data }) {
+function Page({ wb, failed, data }: { wb: IndicesBundle | null; failed: boolean; data: Data }) {
   const { ready } = useInputs();
   const { search } = useLocation();
   const navigate = useNavigate();
@@ -139,15 +133,15 @@ function Page({ wb, compare, failed, data }: { wb: IndicesBundle | null; compare
   const frame = (body: React.ReactNode) => (
     <Frame title={<TitleRow known={known} customs={[]} index={known.find((i) => i.id === id) ?? null} others={[]} bundle={null} onRemove={() => undefined} onRename={() => undefined} onSave={() => undefined} onGo={(p) => navigate(p)} />}>{body}</Frame>
   );
-  if (!mounted || (!failed && (!wb || !compare || !ready))) return frame(<p className="text-muted-foreground">{c.loading}</p>);
-  if (failed || !wb || !compare) return frame(<Callout tone="caution">{c.failed}</Callout>);
-  return <Body wb={wb} compare={compare} data={data} search={search} />;
+  if (!mounted || (!failed && (!wb || !ready))) return frame(<p className="text-muted-foreground">{c.loading}</p>);
+  if (failed || !wb) return frame(<Callout tone="caution">{c.failed}</Callout>);
+  return <Body wb={wb} data={data} search={search} />;
 }
 
 /** The bank the person marked as theirs (D64), while a bank whose current account costs something has that id; else none. */
 const ownBankOf = (wb: IndicesBundle, id: string | null): string | null => (id && wb.snapshots.some((s) => s.id === id && chargesCurrentAccount(s)) ? id : null);
 
-type BodyProps = { wb: IndicesBundle; compare: CompareBundle; data: Data; search: string };
+type BodyProps = { wb: IndicesBundle; data: Data; search: string };
 
 /** The body on the values the person entered, deferred (code.md, "Slow work never delays the field"): a key or a slider's move answers in
  *  its own field at once, as the knobs read the entered values themselves, and the plan, the pair, the lists and the receipt follow in a
@@ -190,11 +184,11 @@ function useFeesData(wb: IndicesBundle) {
   return useMemo(() => ({ data, failed, want, left }), [data, failed, want, left]);
 }
 
-const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, invest, fees }: BodyProps & { inputs: InputsState; invest: ReturnType<typeof useInvestParts>; fees: ReturnType<typeof useFeesData> }) {
+const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees }: BodyProps & { inputs: InputsState; invest: ReturnType<typeof useInvestParts>; fees: ReturnType<typeof useFeesData> }) {
   const navigate = useNavigate();
   const exposureId = exposureIdOf(useParams().slug, data.indices);
   // The numbers the person entered on this device, each one not entered taking the site's example (P-05)
-  const entered = useMemo(() => enteredPlan(compare, inputs), [compare, inputs]);
+  const entered = useMemo(() => enteredPlan(wb, inputs), [wb, inputs]);
   const ownBank = ownBankOf(wb, invest.bank);
   const currentAccounts = useMemo(() => ({ own: ownBank }), [ownBank]);
   // a bank's row counts its current account, except at the bank the person marked as theirs (D64)
@@ -218,13 +212,11 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   const customs: CustomIndex[] = invest.customIndices;
   // the funds the person typed join the data here and nowhere else: this page alone compares them (D44)
   const typedBundle = useMemo(() => withCustomEntries(wb, invest.customFunds, customs), [wb, invest.customFunds, customs]);
-  // the person's securities-account deals are accounts too (F-128): read with the fee page's data (the kinds, `useFeesData`), each with
-  // what its house's list fills that it has not had (`withLaterFills`); while the popup is open the page keeps the deals as they
-  // were, and takes them once it closes
+  // the person's securities-account deals are accounts too (F-128): read with the fee page's data (the kinds, `useFeesData`); while the
+  // popup is open the page keeps the deals as they were, and takes them once it closes
+  const deals = dealStore.use();
+  const accountDeals = useMemo(() => deals.value.filter(isAccountDeal), [deals.value]);
   const { data: feesData, failed: feesFailed, want: wantFees, left: notMoved } = fees;
-  const stored = dealStore.use();
-  const savedDeals = useMemo(() => withLaterFillsAll(stored.value, feesData), [stored.value, feesData]);
-  const accountDeals = useMemo(() => savedDeals.filter(isAccountDeal), [savedDeals]);
   const [dealOpen, setDealOpen] = useState(false);
   const heldDeals = useRef<FeeDeal[]>(accountDeals);
   if (!dealOpen) heldDeals.current = accountDeals;
@@ -342,7 +334,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
     />
   );
 
-  const planCard = <PlanCard knobs={<PlanKnobs compare={compare} ranges={data.form.knobs} pct={data.form.pct} />} />;
+  const planCard = <PlanCard knobs={<PlanKnobs bundle={wb} ranges={data.form.knobs} pct={data.form.pct} />} />;
   // the receipt: below 1280 px paper above the lists, the stub's way back leading to it (focusable for that, never tabbed to); from 1280 px
   // a ticket over the lists, whose total the ruler's point joins
   const receipt = pick && view && (
@@ -370,7 +362,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
 
   return (
     <LabelSheetHost>
-      <DealAccountsHost data={feesData} onWant={wantFees} failed={feesFailed} left={notMoved} saved={savedDeals} writable={stored.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen}>
+      <DealAccountsHost data={feesData} onWant={wantFees} failed={feesFailed} left={notMoved} saved={deals.value} writable={deals.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen}>
       <CustomEntriesHost index={pageIndex} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
       <Frame title={title}>
         <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">

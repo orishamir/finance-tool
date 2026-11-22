@@ -242,25 +242,6 @@ describe("new collections", () => {
   });
 });
 
-describe("P-08 exposure holding wrapper", () => {
-  const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
-  const p08 = (wrapper: string, id = "index-sp500") => ({
-    id: "exposure-holding-wrapper",
-    method_id: "P-08",
-    rationale: "r",
-    shown_as: "site parameter",
-    holding: { [id]: { wrapper_id: { ...vo, value: wrapper, unit: "text", update_rule: "founder" } } },
-  });
-  const files = (extra: Record<string, unknown>) => ({ "instruments/exposures/index-sp500.json": { ...exposure, wrapper_ids: ["brokerage-account"] }, ...extra });
-  it("accepts a holding wrapper the exposure record lists", () => {
-    expect(run(files({ "parameters/p08.json": p08("brokerage-account") }))).toEqual([]);
-  });
-  it("refuses one the record leaves out, and an exposure with no record", () => {
-    expect(run(files({ "parameters/p08.json": p08("makam") }))[0]?.message).toMatch(/not one of the exposure record's wrapper_ids/);
-    expect(run(files({ "parameters/p08.json": p08("brokerage-account", "nothing") }))[0]?.message).toMatch(/no exposure record/);
-  });
-});
-
 describe("foreign-investment funds (data-schema §4 item 21)", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
   const fif = (value: string | false | null) => ({ ...vo, value, unit: "text", tax_year: null, update_rule: "provider-set", rule_ids: ["TXS-14"], ...(value === null ? { notes: "Neither the report nor the prospectus names the status." } : {}) });
@@ -503,9 +484,8 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // pass one more, whether s.9(13)'s linkage exemption and the exchange-rate index reach a taxable bond fund (TXS OQ27), and from the
     // bond-domain pass four more and one answered: the TASE bond-index methodology files (ETF OQ38), when a Tel-Gov index drops a bond
     // near its redemption (ETF OQ39), whether Israeli bond ETFs pay out (ETF OQ40) and a bond's removal within the month on default
-    // (CORP OQ21); CORP OQ8 deleted, the Tel-Bond and Tel-Gov rules now read on TASE's own pages and board decisions (ETF-84 to ETF-88);
-    // 2026-11-22 one more, whether a securities order at the same bank, or the movement it makes, is an action on a current account (BANK OQ23)
-    expect(items.length).toBe(449);
+    // (CORP OQ21); CORP OQ8 deleted, the Tel-Bond and Tel-Gov rules now read on TASE's own pages and board decisions (ETF-84 to ETF-88)
+    expect(items.length).toBe(448);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);

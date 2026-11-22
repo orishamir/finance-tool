@@ -4,7 +4,7 @@ import { breakCount, listFeeRange, oneYearDeposits, pending as pendingFormulaRel
 import { exposurePath, guidePath } from "./site-paths";
 import { companyTermRule, isSecurity, type DepositTerms, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, exposureFolds, loadExposures, loadFunds } from "./instruments.server";
-import { minDiscountMonths, pricedLine, providentLists, providentTerms } from "./compare.server";
+import { minDiscountMonths, pricedLine, providentLists, providentTerms } from "./provident-lists.server";
 import { shortName } from "./providers";
 import { guideBlocks, guideSignature, r4catalogue, signatureFacts } from "../copy";
 import { collectRuleIds, loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, today, type TermRow } from "./data.server";

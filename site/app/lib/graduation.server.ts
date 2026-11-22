@@ -1,15 +1,37 @@
 // How far each tier-2 instrument is from full coverage (release 5, flow 37, design-spec 25). Read at build from the
 // "Graduation status" sections of the rule base's tier-2 files (.claude/skills/il-finance/references/) and from method
-// G-24's open questions (the table in compare.server.ts); never typed by hand. The `data/instruments/tier2/` files the
+// G-24's open questions (`tier2Table` below); never typed by hand. The `data/instruments/tier2/` files the
 // design spec proposes do not exist, so a closure is a struck-through item with "closed <date>" in a status section, and
 // an instrument with none says so. A closure names the rules that answered it, never a question: an answered question is
 // deleted from the rule base. Server-only.
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { loadNotCovered, loadRules, root, type NotCoveredRow } from "./data.server";
-import { tier2Table } from "./compare.server";
 import { parseMdLink } from "./md-link";
 import { readTextCached } from "./read-cache.server";
+
+/** The nine tier-2 instruments (product D2) with the glossary row that names each; the open questions are method G-24's (`checkTier2Table`). */
+export const tier2Table: { id: string; he: string; questions: string[] }[] = [
+  { id: "savings-policies", he: "פוליסת חיסכון", questions: ["TXA OQ1"] },
+  { id: "executive-insurance", he: "ביטוח מנהלים", questions: ["TXA OQ6"] },
+  { id: "structured-deposits", he: "פיקדון מובנה", questions: ["TX2 OQ5"] },
+  { id: "corporate-bonds", he: 'אג"ח קונצרניות', questions: ["TX2 OQ6"] },
+  { id: "managed-portfolios", he: "ניהול תיקי השקעות", questions: ["MGD OQ2"] },
+  { id: "foreign-currency-deposits", he: "פיקדון במטבע חוץ", questions: ["TX2 OQ2"] },
+  { id: "reits", he: "קרן להשקעות במקרקעין", questions: ["TX2 OQ8"] },
+  { id: "gold-via-funds", he: "השקעה בזהב דרך קרנות סל", questions: ["TX2 OQ10"] },
+  { id: "amendment-190-deposits", he: "תיקון 190", questions: ["TXA OQ14"] },
+];
+
+/** Fails the build when an instrument of `tier2Table` has no row in docs/glossary.md section 3, or names a question method G-24 does not. */
+function checkTier2Table(): void {
+  const rows = new Set(loadNotCovered().map((r) => r.he));
+  const g24 = readTextCached(join(root, "docs/method.md")).split("\n").find((l) => l.startsWith("| G-24 |")) ?? "";
+  for (const t of tier2Table) {
+    if (!rows.has(t.he)) throw new Error(`tier-2 table: docs/glossary.md section 3 has no row "${t.he}" for tier-2 instrument ${t.id}`);
+    for (const q of t.questions) if (!g24.includes(q)) throw new Error(`tier-2 table: method G-24 does not name ${q} (tier-2 instrument ${t.id})`);
+  }
+}
 
 export interface GraduationOpen {
   code: string;
@@ -110,6 +132,7 @@ let cache: GraduationStatusView[] | null = null;
 
 export function graduationStatuses(): GraduationStatusView[] {
   if (cache) return cache;
+  checkTier2Table();
   const rules = loadRules();
   const out = tier2Table.map((t): GraduationStatusView => {
     const src = sources[t.id];

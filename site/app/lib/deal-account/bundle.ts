@@ -1,7 +1,7 @@
 // The person's securities-account deals in the indices bundle (decisions 1 and 2 of the deal-on-indices design, F-128): each saved deal is
 // an account the page lists by itself, as a fee record with no lines (what every list, card and receipt already reads of an account) and
 // the deal itself, which the run prices as a deal account (`DealProvider`), never a copy of it.
-import type { DealProvider, DealRun } from "@finance-tool/engine";
+import { countsCurrentAccount, type DealProvider, type DealRun } from "@finance-tool/engine";
 import type { FeesSnapshot } from "@finance-tool/schema";
 import type { FeeDeal } from "../fee-deal/model";
 import type { DealKind } from "../fee-deal/kinds";
@@ -65,12 +65,13 @@ export function withDeals(bundle: IndicesBundle, deals: readonly FeeDeal[], kind
 
 /**
  * What a deal is read with on the page's plan (F-128, `PlanContext`): the kinds, the page's run month (the bundle's day), the page's current
- * accounts, and, for a deal filled from a house's whole list, that house's line choice. A bank's current account is the deal's own fee
- * (F-102), which the bank's whole list fills.
+ * accounts, and, for a deal filled from a house's whole list, that house's line choice and, at a bank whose record prices a current account
+ * the page counts, that account's monthly minimum (F-102).
  */
 export function planContextOf(bundle: Pick<IndicesBundle, "snapshots" | "today">, deal: FeeDeal, kinds: readonly DealKind[], currentAccounts: PlanContext["currentAccounts"]): PlanContext {
   const house = houseSnap(bundle, deal);
-  return { kinds, today: bundle.today, currentAccounts, ...(house ? { lineValue: lineValueOf(house) } : {}) };
+  const bank = house && currentAccounts && countsCurrentAccount(house, currentAccounts.own) ? house.current_account!.monthly_minimum.value : undefined;
+  return { kinds, today: bundle.today, currentAccounts, ...(typeof bank === "number" ? { bankAccount: bank } : {}), ...(house ? { lineValue: lineValueOf(house) } : {}) };
 }
 
 /** F-63's line choice of a house, in its template's words (`houseLineValue`), on the record its own row reads, kept per class. */
@@ -89,7 +90,8 @@ export function lineValueOf(house: BundleSnapshot): LineValue {
 
 /**
  * The deal of an account the run prices, as the workbench reads it (F-128): its reading for each run (`planAccount`), and how its house
- * buys a fund, whole units or by amount (F-109), from the house it was filled from; a deal filled from none buys in whole units (D56).
+ * buys a fund, whole units or by amount (F-109), from the house it was filled from; a deal filled from none buys in whole units (D56). A deal filled
+ * from a bank pays the bank's current account where the page counts it (F-102, `PlanContext.bankAccount`).
  */
 export function dealProviderOf(bundle: IndicesBundle, s: BundleSnapshot, ctx: Pick<PlanContext, "currentAccounts">): DealProvider | null {
   const deal = bundle.deals?.byId[s.id];

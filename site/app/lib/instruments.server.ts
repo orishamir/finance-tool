@@ -472,7 +472,7 @@ function buildMoneyMarketTariff(wrapperId: string, src: InstrumentSources, missi
 }
 
 /** The figures of a tariff's redemption line, for the terms block (F-24). */
-export function redemptionValues(l: FeeLine): Record<string, SiteValue> {
+function redemptionValues(l: FeeLine): Record<string, SiteValue> {
   const out: Record<string, SiteValue> = { redeemRate: { ...l.rate } as SiteValue };
   if (l.min && isNum(l.min)) out.redeemMin = { ...l.min } as SiteValue;
   if (l.max && isNum(l.max)) out.redeemMax = { ...l.max } as SiteValue;
@@ -512,7 +512,7 @@ function buildTariff(
         if (min !== undefined) c.min = min;
         if (max !== undefined) c.max = max;
         if (l.cap && isNum(l.cap)) c.cap = pct(l.cap);
-        // F-12: the same reading as the comparison's tariff step: a flat price up to an amount, where the tariff prints one
+        // F-12: the same reading as the engine's tariff step (F-63's `buildTariff`): a flat price up to an amount, where the tariff prints one
         if (l.flat_up_to) {
           const amount = nis(l.flat_up_to.amount);
           const upTo = nis(l.flat_up_to.up_to);

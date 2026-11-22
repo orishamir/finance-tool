@@ -258,7 +258,6 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkStaleUnknowns(files, ctx.dataDir, ruleRecords, warn);
   checkUnofficialSources(files, ctx.dataDir, report);
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
-  checkHoldingParameter(files, ctx.dataDir, report);
   checkForeignInvestmentFunds(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
   checkHomeGuideDoor(files, ctx.dataDir, report);
@@ -1464,30 +1463,6 @@ function checkInstrumentsMap(files: string[], dataDir: string, ruleIds: Map<stri
       check("series_rule", ruleIds.has(spec?.series_rule as string), "has no rule record under data/rules/");
       const track = spec?.track;
       if (track !== undefined && !(typeof track === "number" && cmaFundIds?.has(track))) report(file, `${at}.track: ${JSON.stringify(track)} is not a fund_id in the latest data/cma/ period`);
-    }
-  }
-}
-
-/**
- * P-08 (exposure holding wrapper, release 5): each `holding.<exposure id>` must name an exposure record under
- * data/instruments/exposures/, and its `wrapper_id` must be one of that record's `wrapper_ids` (the engine refuses
- * any other, "wrapper-cannot-hold", so the default may never be one).
- */
-function checkHoldingParameter(files: string[], dataDir: string, report: (file: string, message: string) => void) {
-  const exposures = new Map<string, string[]>();
-  for (const file of files) {
-    if (!relative(dataDir, file).split(/[\\/]/).join("/").startsWith("instruments/exposures/") || !file.endsWith(".json")) continue;
-    const v = parseJson(readFileSync(file, "utf8")).value as { id?: unknown; wrapper_ids?: unknown } | undefined;
-    if (typeof v?.id === "string") exposures.set(v.id, Array.isArray(v.wrapper_ids) ? v.wrapper_ids.filter((w): w is string => typeof w === "string") : []);
-  }
-  for (const file of files) {
-    if (!/^parameters[\\/]/.test(relative(dataDir, file)) || !file.endsWith(".json")) continue;
-    const rec = parseJson(readFileSync(file, "utf8")).value as { method_id?: unknown; holding?: unknown } | undefined;
-    if (rec?.method_id !== "P-08" || typeof rec.holding !== "object" || rec.holding === null) continue;
-    for (const [id, row] of Object.entries(rec.holding as Record<string, { wrapper_id?: { value?: unknown } }>)) {
-      const wrapper = row?.wrapper_id?.value;
-      if (!exposures.has(id)) report(file, `holding.${id}: no exposure record "${id}" under data/instruments/exposures/`);
-      else if (typeof wrapper !== "string" || !exposures.get(id)!.includes(wrapper)) report(file, `holding.${id}.wrapper_id: "${String(wrapper)}" is not one of the exposure record's wrapper_ids`);
     }
   }
 }

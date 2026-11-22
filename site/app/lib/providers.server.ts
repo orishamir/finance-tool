@@ -1,4 +1,4 @@
-// The data the indices page needs besides the comparison bundle (flows 28 to 30, 33),
+// The data the indices page runs on (flows 28 to 30, 33),
 // built at build time and served as /indices-bundle.json: the latest snapshot of every provider, the fund records, the
 // exposure records, the saved fund lists (none yet), the rule records a securities run may read, P-01 and P-05, and the
 // link-outs. Server-only.

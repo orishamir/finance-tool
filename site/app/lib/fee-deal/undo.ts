@@ -24,7 +24,6 @@ import type { DealKind } from "./kinds";
 import { blankPrice, hasCases, newFee, pricedOf, pricesOn, sameContent, type Fee, type FeeDeal, type Price, type ProviderKind } from "./model";
 import type { DataBar } from "./offers/offer";
 import { fillFee, houseName } from "./templates";
-import { dealStore } from "./store";
 import type { FeesData } from "../fee-page-data";
 import type { LiftResult } from "./lifted";
 import { assertNever } from "@finance-tool/schema";
@@ -388,34 +387,4 @@ export function undoDelete(deals: readonly FeeDeal[], u: DealUndo): FeeDeal[] | 
   if (deals.some((d) => d.id === u.deal.id)) return null;
   const at = Math.min(u.at, deals.length);
   return [...deals.slice(0, at), u.deal, ...deals.slice(at)];
-}
-
-// The saved deals changed on the device from the deals as stored, never as a page shows them: a page adds to an old deal what its house's
-// list fills later (`withLaterFills`), which nobody saved, so a change to one deal writes every other back exactly as it was stored.
-
-/** Deletes saved deal `id` on the device (`deleteDealKept`), its undo keeping the deal as stored; null where the device holds none. */
-export function deleteStored(id: string, shownId: string): DealUndo | null {
-  const out: { undo: DealUndo | null } = { undo: null };
-  dealStore.update((ds) => {
-    const r = deleteDealKept(ds, id, shownId);
-    out.undo = r?.undo ?? null;
-    return r?.deals ?? ds;
-  });
-  return out.undo;
-}
-
-/** Puts a deleted deal back on the device as it was stored, at its place (`undoDelete`); false where it is back already. */
-export function undoDeleteStored(u: DealUndo): boolean {
-  const out = { back: false };
-  dealStore.update((ds) => {
-    const back = undoDelete(ds, u);
-    out.back = back !== null;
-    return back ?? ds;
-  });
-  return out.back;
-}
-
-/** Renames saved deal `id` on the device, the rest of it as stored. */
-export function renameStored(id: string, name: string): void {
-  dealStore.update((ds) => ds.map((x) => (x.id === id ? { ...x, name } : x)));
 }

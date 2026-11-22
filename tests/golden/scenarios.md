@@ -307,24 +307,6 @@ Exercises F-66 (TXS-21 vs TXK-04).
 
 ## Part D: capability outputs
 
-### S39 Wrapper mode: the founder's ETF-vs-provident case
-Exercises F-80 ranking and ties (P-01), F-81 sensitivity (P-02), B1 to B3, dimension marks.
-- Profile: age 22; salary 12,000; pension and hishtalmut through work exist.
-- Goal: long-term wealth preset: 30,000 now; 2,000/month; horizon 20 years; nothing must stay available.
-- Market: r_g 6% entered; π 2.5% entered.
-- Wrappers: brokerage with S14's ETF; kupat gemel lehashkaa as S20; hishtalmut own-money as S23 (clock from month 0; exit after 6 years is lawful); pension extra deposit as S27 (listed, not ranked: locked and G-03).
-- Expected: _(founder)_: ranking, the deciding formula per F-80, tie status, the sensitivity flips for r_g, π and the balance fee within the bounds the founder sets in P-02.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S39): Computed: brokerage (S14 ETF) real V_T/I_T = 572,640.51, nominal 938,338.16; kupat gemel lehashkaa (S20 fees) real 630,640.90 with 25% real. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; gap 9.20% → not a tie (θ = 0.5%). Deciding formula: fee drag (the brokerage pays 113,833.04 in fees against 55,832.65, real; tax at exit 31,048.97 against 40,213.63). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (P-02 bounds): no change flips the result within the bounds.
-
-### S40 Wrapper mode: the founder's apartment case
-Exercises eligibility filters (section 8, D13 constraints), B3, and the coverage line (F-83, product D17).
-- Goal: purchase at a known date: 150,000 now; 4,000/month; horizon 4 years; 50,000 must stay available at once.
-- Wrappers: all tier-1, and the tier-2 list for the coverage line (D17); expected eligible: current account (for the 50,000, and ranked for the rest), deposits, money-market funds, makam, bonds, brokerage, kupat gemel lehashkaa; hishtalmut listed not ranked (clock 4 years); pension listed not ranked. Every tier-1 wrapper and tier-2 instrument is accounted for once (F-83).
-- Market: cash-like sourced in production (test values: deposit 3.5%, BoI 3.25%, makam 3.9%); r_g for the ETF 5% entered; π 2.5%.
-- Expected: _(founder)_
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S40): Ranked (real at 4 years, same money in each): 1. bank deposits, one-month ladder at 3.5% 296,409.54; 2. makam ladder at 3.9% 296,362.17; 3. daily money-market fund (BoI 3.25%, δ 0.18%) 295,594.33; 4. ETF in a bank brokerage account (r_g 5%) 293,119.64; 5. fixed-rate government bond, 3.75% coupon 291,761.83; 6. current account at 0.5% 276,722.74. Top two: gap 0.02% → tie (θ = 0.5%). The 50,000 kept available in the current account grows to 50,855.14 (46,072.25 real). Kupat gemel lehashkaa: listed, not ranked (the 83,641 ceiling takes only part of year 1; 65,006.55 routed to the next goal). Study fund and pension: listed, not ranked (locked). Coverage line (F-83): considered 26; ranked 6; listed, not ranked 7; not eligible 2; excluded by the person's constraint 0; not evaluated 11; not ranked, with reasons: savings plan (not evaluated: no savings-plan terms among the inputs (production: data/terms/deposits/, R4)); renewable money-market fund (not evaluated: monthly deposits into fixed-date series are not set (G-30)); kupat gemel lehashkaa (listed, not ranked: the yearly ceiling takes only part of the money (KGL-02, KGL-04; F-05)); keren hishtalmut (listed, not ranked: employee (product D15); locked 6 years (TXH-09)); comprehensive pension fund (listed, not ranked: locked to 60 (PEN-26)); general pension fund (listed, not ranked: locked to 60 (PEN-26)); provident fund for annuity (listed, not ranked: exit as pension, locked to 60 (PEN-34, PEN-26)); IRA in a study fund (listed, not ranked: as the study fund it is held in (IRA-25)); IRA in a provident fund (listed, not ranked: as the provident fund it is held in (IRA-25)); child savings, provident route (not eligible: takes the NII amounts and the parent's matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16)); child savings, bank route (not eligible: takes the NII amounts and the parent's matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16)); savings policies (not evaluated: tier 2, open questions (G-24)); executive insurance (not evaluated: tier 2, open questions (G-24)); structured deposits (not evaluated: tier 2, open questions (G-24)); corporate bonds (not evaluated: tier 2, open questions (G-24)); managed and robo portfolios (not evaluated: tier 2, open questions (G-24)); foreign-currency deposits (not evaluated: tier 2, open questions (G-24)); REITs (not evaluated: tier 2, open questions (G-24)); gold via funds (not evaluated: tier 2, open questions (G-24)); Amendment 190 deposits (not evaluated: tier 2, open questions (G-24)). Fund variants, tracks and providers inside each wrapper: compared in the workbench (3.4). Filled in: every wrapper's terms from the earlier examples.
-  - Note, 2026-10-23 (engine and method): the independent check priced accrued interest on the bond (291,761.83) while the method does not model it (G-10, TXI OQ5), and that moves the bond's value by about 1.1%. The method therefore treats the bond as a B3 case: listed, not ranked, with reason G-10 and the run's value shown (295,024.12 real), and the ETF ranks fourth. The engine's coverage line reads: considered 26; ranked 5; listed, not ranked 8; not eligible 2; excluded 0; not evaluated 11. The independent-check numbers above are unchanged. The engine's test fills the pension wrappers' terms (the fees and A-17 of S27, salary 12,000): without terms a pension run is "not evaluated: missing input" (F-83 order 3 before 4), so it would not be listed as locked.
-
 ### S41 Idle-cash preset
 Exercises F-60 with the three labels (A-21 "average paid at this bank", A-26 "entered by you", A-20). Also the coverage line (F-83, G-28).
 - Inputs: balance 80,000; must stay available 20,000; bank average one-month deposit 3.2%; own offer 3.6%; BoI 3.25%; daily fund δ 0.18%; makam 3.9%; current-account interest 0.5%.
@@ -362,9 +344,9 @@ Exercises D4 entered level in F-63.
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S45): Bank A with entered 0.1% min 10: horizon real cost 2,828.84 (1 order/month), 8,056.19 (10 orders/month); year-1 liquidation-value cost 284.65 / 1,383.75; label "entered by you". Subject to Q16.
 
 ### S46 Holdings review: parental kupot gemel
-Exercises F-70 (P-04), F-72 (PF-17, PF-18), hand-off to F-61.
-- Holdings: two provident funds for annuity at different managers, balances 80,000 and 40,000, fees 0.9%/0% and 0.6%/0%, classifications "כללי" and "מניות"; a child-savings plan; horizon 15 years; loss filter 30%.
-- Expected: _(founder)_: fit marks, consolidation answer with rule IDs, the fee figures, the child-savings default check flagged (CS OQ10).
+Exercises F-72 (PF-17, PF-18), hand-off to F-61.
+- Holdings: two provident funds for annuity at different managers, balances 80,000 and 40,000, fees 0.9%/0% and 0.6%/0%; a child-savings plan; horizon 15 years.
+- Expected: _(founder)_: consolidation answer with rule IDs, the fee figures, the child-savings default check flagged (CS OQ10).
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S46): Consolidation: allowed (annuity fund to annuity fund, PF-17); barred only if a loan, attachment or started annuity applies. Fee cost over 15 years (real): 0.9% on 80,000 = 16,723.25; 0.6% on 40,000 = 5,698.23; moving the 80,000 into the 0.6% fund is worth 5,326.80. Fit marks (P-04 table): "כללי" fits, "מניות" fits. Child-savings default check blocked (CS OQ10). Filled in: r_g 6%, π 2.5%.
 
 ### S47 Illustrative timeline for guide pages
@@ -372,19 +354,6 @@ Exercises F-67 with P-05.
 - P-05 test values: 10,000 now; 500/month; 10 years; r_g 5%; π 2%; each tier-1 wrapper with its list fees from S01, S11, S14, S20, S23, S27.
 - Expected: _(founder)_: the series per wrapper.
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S47): Real value at year 10 after exit tax: deposit 74,245.96, daily MMF 73,339.31, ETF 70,220.43, kupat gemel lehashkaa 76,594.44; pension gross 83,402.21 (exit blocked); yearly series in workings.md. Study fund not shown (product D15). Filled in: pension terms from the 300 NIS pension example.
-
-### S48 Revisit after a rule change
-Exercises F-82 and the change log.
-- Save S39, then change `data/rules/TXS-09` rate to 30 (test only) and re-run.
-- Expected: _(founder)_: the changed entry is reported, the brokerage value changes, ranking status reported.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S48): Changed entry: TXS-09 rate 25% → 30%. Brokerage real V_T/I_T falls from 572,640.51 to 566,430.72 (nominal 938,338.16 → 928,162.69). Ranking unchanged: the kupat gemel lehashkaa stays first (gap 10.18% → not a tie (θ = 0.5%)).
-
-### S49 Exposure mode with entered returns and the loss filter
-Exercises F-71, D9 labels.
-- Goal: as S39. Exposures: cash (sourced 3.25%), bonds entered 3%, equity entered 6%; worst fall entered 10% / 40%; largest fall accepted 30%.
-- Expected: _(founder)_: equity excluded by the filter, cash and bonds ranked, every entered return labelled.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S49): Equity excluded by the filter (40% > 30%). Ranked: 1. cash 534,012.31, 2. bonds 495,867.60 (real); gap 7.14% → not a tie (θ = 0.5%). Bonds' 3% labelled "entered by you"; cash labelled with the BoI rate (sourced). Filled in: holding wrappers and fees from the money-market and open tracking fund examples.
-  - Note, 2026-10-24 (engine and site): the engine's test (`r5.test.ts`) reproduces the counts, ranked 2 and excluded 1. On the site's data the bond exposure is the CPI-linked government bond run through the government-bond product (P-08, series GOV-11), and that run is listed, not ranked, for the same reason as in S39's note above (G-10, accrued interest not modelled); so on the site "cash and bonds ranked" holds for cash only, and the bond row shows its value with the reason. The cash rate on the site is Leumi's published deposit rate (institution strength), not a Bank of Israel figure (D20).
 
 ### S50 Tie
 Exercises F-80 tie with P-01.
@@ -477,13 +446,14 @@ Exercises F-14 at a non-bank member (BRK-17, MF-26), F-23, F-09.
 | F-65 | S16, S17, S19 |
 | F-66 | S38 |
 | F-67 | S47 |
-| F-70, F-72 | S46 |
-| F-71 | S49 |
-| F-80 | S39, S40, S44, S50 |
-| F-81 | S39 |
-| F-82 | S48 |
-| F-83 | S40 (wrapper mode), S41 (idle-cash preset); the fund-variant candidate set (F-65, G-29) needs a fund-list fixture and is added with R4 |
-| Eligibility and ceilings (section 8) | S21, S24, S40 |
-| Gaps G-01 to G-30 | flags appear in S06, S10, S16, S19, S20, S24, S25, S27, S31, S32, S37, S46; G-24 and G-30 in S40's coverage line; G-24 and G-28 in S41's |
+| F-70 | none: not built |
+| F-72 | S46 |
+| F-71 | none: not built |
+| F-80 | S44, S50 (ties) |
+| F-81 | none: not built |
+| F-82 | none: not built |
+| F-83 | S41 (idle-cash preset); not built |
+| Eligibility and ceilings (section 8) | S21, S24 |
+| Gaps G-01 to G-30 | flags appear in S06, S10, S16, S19, S20, S24, S25, S27, S31, S32, S37, S46; G-24 and G-28 in S41's coverage line |
 
-Formulas with no scenario: none, except F-83's fund-variant candidate set, which waits for a fund-list fixture (R4). Formulas that cannot produce a number (F-45, F-48, F-49, F-50) are covered by scenarios that check the blocked output.
+Formulas with no scenario: F-71, F-81, F-82 and F-83's wrapper and fund-variant candidate sets, none of which is built. Formulas that cannot produce a number (F-45, F-48, F-49, F-50) are covered by scenarios that check the blocked output.

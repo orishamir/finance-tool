@@ -7,15 +7,10 @@ import {
   beneficiaryRelief,
   deductionValue,
   exitTax,
-  rankCandidates,
   runPension,
-  runPlanned,
   taxAtBrackets,
-  withoutFees,
-  type Candidate,
   type PensionInput,
   type PensionRelief,
-  type ProvidentInput,
   ruleBook,
   runBond,
   runDeposit,
@@ -398,53 +393,6 @@ describe("M1: a self-employed person below the beneficiary threshold gets TXP-05
     expect(r.years[0]!.beneficiary).toBe(false);
     expect(r.years[0]!.deduction).toBeCloseTo(7_000, 4);
     expect(r.detail.reliefTotal).toBeCloseTo(reliefOf10k, 4);
-  });
-});
-
-describe("M2, R1: the deciding formula reads the run's relief; fee drag keeps the pension insurance", () => {
-  const studyFund = (annualIncome: number): ProvidentInput => ({
-    wrapper: "keren-hishtalmut",
-    goal: { amountNow: 0, monthly: 1_000, months: 60 },
-    market: { grossReturn: 0.05, inflation: 0.025 },
-    fees: { deposit: 0, balance: 0.006, direct: 0.0011 },
-    hishtalmut: { employment: "self-employed", clockStartMonth: -72 },
-    profile: { annualIncome },
-  });
-  const candidate = (id: string, input: ProvidentInput): Candidate => {
-    const plan = { run: "runProvident" as const, input };
-    return { id, tier: 1, kind: "ranked", reasons: [], plan, run: runPlanned(plan, ctx) };
-  };
-
-  it("names deposit-side relief when a self-employed study fund's deduction decides", () => {
-    // Same fund, same fees, same net outlay; one person has income 200,000 (TXH-05 deduction, F-30), the other
-    // income 0 (no deduction). The relief is the first candidate's reliefTotal, which is several thousand NIS;
-    // the fee drag differs by a few hundred, and tax at exit is 0 for both (benefited money, TXH-09).
-    const withRelief = candidate("with deduction", studyFund(200_000));
-    const without = candidate("no deduction", studyFund(0));
-    expect(withRelief.run!.detail.reliefTotal).toBeGreaterThan(5_000);
-    expect(without.run!.detail.reliefTotal ?? 0).toBe(0);
-    const ranking = rankCandidates([without, withRelief], { theta: 0.005, ctx });
-    expect(ranking.top).toBe("with deduction");
-    const d = ranking.topTwo!.deciding;
-    const index = withRelief.run!.nominal / withRelief.run!.real;
-    expect(d.top.depositSideRelief).toBeCloseTo(-withRelief.run!.detail.reliefTotal! / index, 6);
-    expect(d.gaps["deposit-side-relief"]).toBeCloseTo(withRelief.run!.detail.reliefTotal! / index, 6);
-    expect(d.formula).toBe("deposit-side-relief");
-  });
-
-  it("does not zero the pension insurance rate (A-17 is not a fee, F-61) when computing fee drag", () => {
-    const input: PensionInput = {
-      wrapper: "pension-comprehensive",
-      goal: { amountNow: 0, monthly: 500, months: 120 },
-      market: { grossReturn: 0.05, inflation: 0.02 },
-      fees: { deposit: 0.01, balance: 0.0022, direct: 0.001 },
-      insurance: { rate: 0.015 },
-      pension: { employment: "employee", monthlySalary: 10_000 },
-      profile: { ageAtStart: 30 },
-    };
-    const bare = withoutFees({ run: "runPension", input });
-    expect(bare.run === "runPension" && bare.input.insurance).toEqual({ rate: 0.015 });
-    expect(bare.run === "runPension" && bare.input.fees).toEqual({ deposit: 0, balance: 0, direct: 0 });
   });
 });
 

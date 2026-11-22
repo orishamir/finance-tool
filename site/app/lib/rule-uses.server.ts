@@ -65,13 +65,11 @@ function pageTable(): Record<string, RuleUsePage> {
 
 /**
  * routes/<name>.tsx → a key of `pageTable`; a route not listed (home, rules, documents, search, parameters …) is not a use. `shared`
- * (here and below) is code several pages share, such as the comparison code of the indices and exposure pages: it counts towards a
- * rule's score but names no page.
+ * (below) is code several pages share: it counts towards a rule's score but names no page.
  */
 const routeKey: Record<string, string> = {
   deal: "deal",
   "deal-data": "deal",
-  "compare-bundle": "shared",
   invest: "indices",
   tracks: "tracks",
   "indices-bundle": "indices",
@@ -83,7 +81,6 @@ const routeKey: Record<string, string> = {
 
 /** components/<dir>/ → the page that renders it. */
 const componentKey: Record<string, string> = {
-  compare: "shared",
   "fee-deal": "deal",
   tracks: "tracks",
   invest: "indices",
@@ -93,7 +90,6 @@ const componentKey: Record<string, string> = {
 
 /** lib/<file> → page, by file-name prefix (the pages' own logic lives there: the track tables …). */
 const libPrefixes: [string, string][] = [
-  ["compare", "shared"],
   ["goal", "shared"],
   ["holdings", "shared"],
   ["track-browser", "tracks"],

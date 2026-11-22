@@ -1,8 +1,13 @@
 // Value objects on the site: the schema's object plus what a page needs to show it (D7, D3, D10).
 import type { P05Input } from "@finance-tool/engine";
-import type { RuleRecord, ValueObject } from "@finance-tool/schema";
+import type { ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 
 export type Strength = ValueObject["source"]["strength"];
+
+/** A parameter's value object with the parameter marker the provenance sheet reads ("פרמטר של האתר"). */
+export function asParameter(p: ParameterRecord, v: ValueObject): SiteValue {
+  return { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } };
+}
 
 /** Why a value is stale, when it is: the date it was last known good, and its usual cadence. */
 export interface Staleness {

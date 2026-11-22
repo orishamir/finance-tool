@@ -2264,16 +2264,9 @@
     {
       "what": "חשבון עובר ושב: עמלת מינימום חודשית עד 6.30 ₪ (מחיר פעולה על ידי פקיד), פעולה בערוץ ישיר 1.80 ₪, מסלול בסיסי 9 ₪ ומורחב 26 ₪ לחודש",
       "page": 3,
-      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Part 1 s.1.2.1 note 4: the bank may charge the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3).",
-      "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 6.30 ₪ לחודש, אלא אם סימנתם שזה הבנק שלכם. האתר סופר רק את עמלת המינימום שבתעריפון, בלי עמלות על פעולות בחשבון ובלי מסלולי עו״ש בתשלום חודשי.",
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 s.1.2.1 note 4: the bank may charge the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3).",
+      "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 6.30 ₪ לחודש, אלא אם סימנתם שזה הבנק שלכם. עמלות הפעולות ומסלולי העו״ש בתשלום חודשי לא נכללים, כי עמלת המינימום מכסה חשבון שמשמש רק להשקעה.",
       "could_change_price": false
-    },
-    {
-      "what": "חשבון עובר ושב, חלק 1 של התעריפון, 'חשבונות פטורים': 'חשבון צל/תמורה - חשבון עו\"ש שנפתח ע\"י הלקוח אך ורק לצורך פירעון הלוואה או העברה לתוכנית חסכון, לפיקדונות, קופות גמל וכד''",
-      "page": 1,
-      "why": "First International's current-account price list (p.1 note 9 and p.2 note 2) exempts such an account; it names no securities deposit (BRK-66), and whether an account kept only for a securities deposit is one is the open question of directive 415 (BRK-61, F-102). The minimum is counted, the most the documents allow (D56); where the bank treats the person's account as exempt, it charges less.",
-      "why_he": "בתעריפון של הבנק ״חשבון צל/תמורה״ פטור: חשבון עו״ש שנפתח רק כדי לפרוע הלוואה או להעביר כסף לתוכנית חיסכון, לפיקדונות, לקופות גמל וכדומה. התעריפון לא מזכיר פיקדון ניירות ערך, ולכן האתר סופר את עמלת המינימום. אם הבנק יכיר בחשבון שלכם כחשבון כזה, המחיר יכול לצאת זול יותר.",
-      "could_change_price": true
     },
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.25%-0.43% לשנה, זרים 0.28%-0.37%; קנייה ומכירה של מניות ואג\"ח 0.02%-0.19%",

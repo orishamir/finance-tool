@@ -5,9 +5,8 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { tier2Table } from "./compare.server";
 import { loadNotCovered, root } from "./data.server";
-import { graduationStatuses, notCoveredCards } from "./graduation.server";
+import { graduationStatuses, notCoveredCards, tier2Table } from "./graduation.server";
 import { notCovered } from "../copy";
 import { loader } from "../routes/not-covered";
 

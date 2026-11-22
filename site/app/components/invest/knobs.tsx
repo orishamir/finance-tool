@@ -4,7 +4,6 @@
 import { useMemo } from "react";
 import type { P05Input } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
-import type { CompareBundle } from "../../lib/compare";
 import { enteredPlan, type EnteredPlan } from "../../lib/entered-plan";
 import { fmt } from "../../lib/format";
 import { useInputs } from "../../lib/inputs";
@@ -40,9 +39,9 @@ function useSetKnob() {
 
 /** The plan from the values entered as they are now: the knobs read it themselves, so a key or a slider's move shows in its own field in the
  * render that answers it, while the page's plan work follows in a deferred render (routes/invest.tsx). */
-function useEnteredNow(compare: CompareBundle): EnteredPlan {
+function useEnteredNow(bundle: Pick<IndicesBundle, "p05" | "today">): EnteredPlan {
   const { state } = useInputs();
-  return useMemo(() => enteredPlan(compare, state), [compare, state]);
+  return useMemo(() => enteredPlan(bundle, state), [bundle, state]);
 }
 
 const valueOf = (entered: EnteredPlan, id: Id) => {
@@ -50,8 +49,8 @@ const valueOf = (entered: EnteredPlan, id: Id) => {
   return { value: v.value as number, entered: v.state === "entered" };
 };
 
-export function PlanKnobs({ compare, ranges, pct }: { compare: CompareBundle; ranges: KnobRanges; pct: { min: number; max: number } }) {
-  const entered = useEnteredNow(compare);
+export function PlanKnobs({ bundle, ranges, pct }: { bundle: Pick<IndicesBundle, "p05" | "today">; ranges: KnobRanges; pct: { min: number; max: number } }) {
+  const entered = useEnteredNow(bundle);
   const setKnob = useSetKnob();
   const { setEntered } = useInputs();
   const field = (id: Id) => {

@@ -208,7 +208,7 @@ For each difference: what the method says, what the rule base says (with its sou
 
 | Status | Scenarios |
 |---|---|
-| computed — one expected result (subject to the conventions) | S01, S02, S03, S04, S05, S06, S07, S08, S09, S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27, S28, S29, S30, S31, S32, S33, S34, S35, S36, S37, S38, S39, S40, S41, S42, S43, S44, S45, S46, S47, S48, S49, S50, S51, S52, S53, S54, S55, S56 |
+| computed — one expected result (subject to the conventions) | S01, S02, S03, S04, S05, S06, S07, S08, S09, S10, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27, S28, S29, S30, S31, S32, S33, S34, S35, S36, S37, S38, S41, S42, S43, S44, S45, S46, S47, S50, S51, S52, S53, S54, S55, S56 |
 | pending — two results, one per side of a difference you decide |  |
 | partial — some outputs computed, the rest blocked |  |
 | blocked — missing inputs or an unclear rule |  |
@@ -389,8 +389,8 @@ Status: computed.
 
 | Step | What | Rule | Value |
 |---|---|---|---|
-| 1 | Principal and coupon linked to CPI up or down; coupon once a year | [GOV-11](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=>), [GOV-12](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5>) | — |
-| 2 | Price = 100 × I_m (base index at purchase I_0; A-27 = 0) | [GOV-11](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=>); F-03 grid | — |
+| 1 | Principal and coupon linked to CPI up or down; coupon once a year | [GOV-11](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4>), [GOV-12](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5>) | — |
+| 2 | Price = 100 × I_m (base index at purchase I_0; A-27 = 0) | [GOV-11](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4>); F-03 grid | — |
 | 3 | Coupon = 1.9% × face × I_m; taxed at 25% as real interest on a fully linked asset (linkage of principal exempt) | [TXI-14](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5>), [TXI-05](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [TXI-02](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [TXI-09](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=5>) | see table |
 | 4 | Net coupons at months 12, 24 reinvested at 100 × I_m | [BRK-16](<https://www.boi.org.il/media/mi2driua/159a.pdf>) | — |
 | 5 | Custody as S08 on market value | [BRK-16](<https://www.boi.org.il/media/mi2driua/159a.pdf>) | Σ 1,270.69 |
@@ -413,7 +413,7 @@ Status: computed.
 
 | Step | What | Rule | Value |
 |---|---|---|---|
-| 1 | π = −1%: principal and coupon are reduced with the index, no floor | [GOV-12](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5>), [GOV-11](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=>) | I_36 = 0.970299 |
+| 1 | π = −1%: principal and coupon are reduced with the index, no floor | [GOV-12](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5>), [GOV-11](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4>) | I_36 = 0.970299 |
 | 2 | The reduced coupon is still taxed in full at 25%; interest and linkage are separate incomes (Supreme Court, applied here by analogy from an FX-linked deposit) | [TXI-25](<https://supremedecisions.court.gov.il/Home/Download?path=HebrewVerdicts/14/860/074/l09&fileName=14074860_l09.txt&type=2>), [TXI-14](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5>) | tax during 1,403.43 |
 | 3 | The negative linkage on the principal is not offset: a positive linkage would have been exempt | [TXI-25](<https://supremedecisions.court.gov.il/Home/Download?path=HebrewVerdicts/14/860/074/l09&fileName=14074860_l09.txt&type=2>), [TXI-05](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | no loss carried |
 | 4 | Exit at indexed par: the CPI fell, so each lot's inflationary amount is 0 and its nominal loss counts only beyond the fall, which here takes it all; the exit-year custody is the only loss left → no exit tax | [TXS-02](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [TXI-12](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [TXS-17](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | gain -395.95, tax at exit 0.00 |
@@ -967,94 +967,6 @@ Status: computed.
 
 **Expected (as written to scenarios.md):** (a) Brokerage: real V_T without switch 106,368.36, with switch 105,721.95; cost of switching 646.40 real (tax paid at the switch 1,649.27). (b) Kupat gemel lehashkaa: cost of switching 0 (TXK-04); note the ceiling accepts only 83,641 of the 100,000 now (Q23); with 83,641 the real value (25% real) is 93,606.46 either way.
 
-### S39 Wrapper mode: the founder's ETF-vs-provident case
-
-Status: computed.
-
-| Step | What | Rule | Value |
-|---|---|---|---|
-| 1 | Brokerage with the S14 ETF, 30,000 now + 2,000 × I_m, 240 months | as S14 | real V_T 572,640.51 |
-| 2 | Kupat gemel lehashkaa with S20 fees; ceiling check (largest calendar year 54,323.77 ≤ 83,641) | as S20; [KGL-02](<https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf>) | real V_T 630,640.90 (25% real) |
-| 3 | Hishtalmut: the person is an employee, so under product D15 it is listed, not ranked: "only funded through your employer; you already deposit the tax-free maximum" | [TXH-08](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [KH-02](<https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf>); product D15 | listed |
-| 4 | Pension extra deposit: existing 6% × 144,000 = 8,640 > cap 8,148 → no credit on new money; exit blocked (G-03) and locked to 60: listed, not ranked | [TXP-02](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [TXP-14](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | listed |
-| 5 | Tie test between the two ranked rows with θ = 0.5% (P-01) | method F-80 | gap 9.20% → not a tie (θ = 0.5%) |
-| 6 | Deciding formula: the larger of the gaps in fee drag (V without fees − V) and in tax at exit, brokerage minus kupat gemel lehashkaa, real | method F-80 | fee drag gap 58,000.39; tax gap -9,164.67 → fee drag |
-| 7 | Sensitivity: move each guess to the P-02 bounds (bisection if the winner changes) | method F-81; data/parameters/sensitivity-bounds.json | no change flips the result within the bounds |
-
-| Guess | Base | At the bounds |
-|---|---|---|
-| yearly return | 0.06 | no flip at 0; no flip at 0.1 |
-| inflation | 0.025 | no flip at 0; no flip at 0.05 |
-| horizon (years) | 20 | no flip at 18; no flip at 22 |
-| etf fund fee (× rate) | 1 | no flip at 0.5; no flip at 2 |
-| custody (× rate) | 1 | no flip at 0.5; no flip at 2 |
-| trade commission (× rate) | 1 | no flip at 0.5; no flip at 2 |
-| kgl balance fee (× rate) | 1 | no flip at 0.5; no flip at 2 |
-| kgl direct expenses (× rate) | 1 | no flip at 0.5; no flip at 2 |
-
-
-**Expected (as written to scenarios.md):** Computed: brokerage (S14 ETF) real V_T/I_T = 572,640.51, nominal 938,338.16; kupat gemel lehashkaa (S20 fees) real 630,640.90 with 25% real. Pension: listed, not ranked (locked, G-03; no credit on new money since 6% × 144,000 > 8,148). Ranking: 1. kupat gemel lehashkaa, 2. brokerage; gap 9.20% → not a tie (θ = 0.5%). Deciding formula: fee drag (the brokerage pays 113,833.04 in fees against 55,832.65, real; tax at exit 31,048.97 against 40,213.63). Hishtalmut: listed, not ranked (employee, product D15). Sensitivity (P-02 bounds): no change flips the result within the bounds.
-
-### S40 Wrapper mode: the founder's apartment case
-
-Status: computed.
-
-| Step | What | Rule | Value |
-|---|---|---|---|
-| 0 | Filled-in inputs | — | **filled in:** terms from the earlier examples: deposit ladder 3.5%; daily fund BoI 3.25%, δ 0.18%; makam 3.9%, 0.1% min 20; bond 3.75% yearly, 0.2% min 30, custody 0.1%/q min 10; ETF at r_g 5% with the bank-brokerage ETF fees; kupat gemel lehashkaa fees 0.8% + 0.1%; current account 0.5% |
-| 1 | 50,000 must stay available at once: kept in the current account (0.5%, 15% at crediting) | product D13; [TXI-08](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7>) | 50,855.14 at 4 years |
-| 2 | Compared money: 100,000 now + 4,000 × I_m a month for 48 months, the same in every row | method B1 | paid 302,009.70 |
-| 3 | Makam: each contribution buys a new 12-month series, redemptions roll; open series sold at the horizon at the unchanged yield, 15% on the gain | [GOV-06](<https://www.boi.org.il/media/ytal5ozx/makam.pdf>), [TXI-11](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [TXI-12](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [GOV-23](<https://www.boi.org.il/boi_files/hanpaka.pdf>) | — |
-| 4 | Bond: bought at par plus accrued interest; the full coupon taxed 15% (whether the accrued interest paid offsets it is open, so the conservative reading is used; under 0.5%) | [TXI-15](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [TXI-16](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [TXI-12](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | — |
-| 5 | Kupat gemel lehashkaa: 100,000 now exceeds the 83,641 yearly ceiling; it takes 83,641 and nothing more in year 1, so 65,006.55 goes to the next goal. It cannot take the same money, so it is listed, not ranked | [KGL-02](<https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf>), [KGL-03](<https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf>), [KGL-04](<https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf>); method F-05 | value 258,650.91 on what it takes |
-| 6 | Study fund: employee, and locked for 6 years → listed, not ranked. Pension: locked to 60 → listed | product D15; [TXH-09](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [PEN-26](<https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf>) | listed |
-| 7 | Rank by real value at 4 years after fees and tax; tie test between the top two with θ = 0.5%. The current account also takes the compared money (exit any time), so it is ranked | method F-80, F-83; [TXI-08](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7>) | see table |
-| 8 | Coverage line: every tier-1 wrapper and tier-2 instrument accounted for once | method F-83; product D17 | see second table |
-
-| Rank | Option | Nominal V | Real V | Fees and tax |
-|---|---|---|---|---|
-| 1 | bank deposits, one-month ladder at 3.5% | 327,180.67 | 296,409.54 | tax 4,441.94 |
-| 2 | makam ladder at 3.9% | 327,128.38 | 296,362.17 | commissions 2,504.92, tax 4,874.75 |
-| 3 | daily money-market fund (BoI 3.25%, δ 0.18%) | 326,280.83 | 295,594.33 | exit tax 1,322.49 |
-| 4 | ETF in a bank brokerage account (r_g 5%) | 323,549.24 | 293,119.64 | fees 17,361.64, exit tax 2,406.13 |
-| 5 | fixed-rate government bond, 3.75% coupon | 322,050.47 | 291,761.83 | trade 2,355.00, custody 3,367.37, tax 5,143.23 |
-| 6 | current account at 0.5% | 305,450.13 | 276,722.74 | tax during 607.13 |
-
-| Candidate | Outcome | Reason |
-|---|---|---|
-| bank deposits, one-month ladder at 3.5% | ranked | rank 1 |
-| makam ladder at 3.9% | ranked | rank 2 |
-| daily money-market fund (BoI 3.25%, δ 0.18%) | ranked | rank 3 |
-| ETF in a bank brokerage account (r_g 5%) | ranked | rank 4 |
-| fixed-rate government bond, 3.75% coupon | ranked | rank 5 |
-| current account at 0.5% | ranked | rank 6 |
-| savings plan | not evaluated | no savings-plan terms among the inputs (production: data/terms/deposits/, R4) |
-| renewable money-market fund | not evaluated | monthly deposits into fixed-date series are not set (G-30) |
-| kupat gemel lehashkaa | listed, not ranked | the yearly ceiling takes only part of the money (KGL-02, KGL-04; F-05) |
-| keren hishtalmut | listed, not ranked | employee (product D15); locked 6 years (TXH-09) |
-| comprehensive pension fund | listed, not ranked | locked to 60 (PEN-26) |
-| general pension fund | listed, not ranked | locked to 60 (PEN-26) |
-| provident fund for annuity | listed, not ranked | exit as pension, locked to 60 (PEN-34, PEN-26) |
-| IRA in a study fund | listed, not ranked | as the study fund it is held in (IRA-25) |
-| IRA in a provident fund | listed, not ranked | as the provident fund it is held in (IRA-25) |
-| child savings, provident route | not eligible | takes the NII amounts and the parent's matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16) |
-| child savings, bank route | not eligible | takes the NII amounts and the parent's matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16) |
-| savings policies | not evaluated | tier 2, open questions (G-24) |
-| executive insurance | not evaluated | tier 2, open questions (G-24) |
-| structured deposits | not evaluated | tier 2, open questions (G-24) |
-| corporate bonds | not evaluated | tier 2, open questions (G-24) |
-| managed and robo portfolios | not evaluated | tier 2, open questions (G-24) |
-| foreign-currency deposits | not evaluated | tier 2, open questions (G-24) |
-| REITs | not evaluated | tier 2, open questions (G-24) |
-| gold via funds | not evaluated | tier 2, open questions (G-24) |
-| Amendment 190 deposits | not evaluated | tier 2, open questions (G-24) |
-
-Considered 26: ranked 6, listed, not ranked 7, not eligible 2, excluded by the person's constraint 0, not evaluated 11
-
-**Expected (as written to scenarios.md):** Ranked (real at 4 years, same money in each): 1. bank deposits, one-month ladder at 3.5% 296,409.54; 2. makam ladder at 3.9% 296,362.17; 3. daily money-market fund (BoI 3.25%, δ 0.18%) 295,594.33; 4. ETF in a bank brokerage account (r_g 5%) 293,119.64; 5. fixed-rate government bond, 3.75% coupon 291,761.83; 6. current account at 0.5% 276,722.74. Top two: gap 0.02% → tie (θ = 0.5%). The 50,000 kept available in the current account grows to 50,855.14 (46,072.25 real). Kupat gemel lehashkaa: listed, not ranked (the 83,641 ceiling takes only part of year 1; 65,006.55 routed to the next goal). Study fund and pension: listed, not ranked (locked). Coverage line (F-83): considered 26; ranked 6; listed, not ranked 7; not eligible 2; excluded by the person's constraint 0; not evaluated 11; not ranked, with reasons: savings plan (not evaluated: no savings-plan terms among the inputs (production: data/terms/deposits/, R4)); renewable money-market fund (not evaluated: monthly deposits into fixed-date series are not set (G-30)); kupat gemel lehashkaa (listed, not ranked: the yearly ceiling takes only part of the money (KGL-02, KGL-04; F-05)); keren hishtalmut (listed, not ranked: employee (product D15); locked 6 years (TXH-09)); comprehensive pension fund (listed, not ranked: locked to 60 (PEN-26)); general pension fund (listed, not ranked: locked to 60 (PEN-26)); provident fund for annuity (listed, not ranked: exit as pension, locked to 60 (PEN-34, PEN-26)); IRA in a study fund (listed, not ranked: as the study fund it is held in (IRA-25)); IRA in a provident fund (listed, not ranked: as the provident fund it is held in (IRA-25)); child savings, provident route (not eligible: takes the NII amounts and the parent's matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16)); child savings, bank route (not eligible: takes the NII amounts and the parent's matching deposit only, not this money (method section 8; CS-02, CS-04, CS-16)); savings policies (not evaluated: tier 2, open questions (G-24)); executive insurance (not evaluated: tier 2, open questions (G-24)); structured deposits (not evaluated: tier 2, open questions (G-24)); corporate bonds (not evaluated: tier 2, open questions (G-24)); managed and robo portfolios (not evaluated: tier 2, open questions (G-24)); foreign-currency deposits (not evaluated: tier 2, open questions (G-24)); REITs (not evaluated: tier 2, open questions (G-24)); gold via funds (not evaluated: tier 2, open questions (G-24)); Amendment 190 deposits (not evaluated: tier 2, open questions (G-24)). Fund variants, tracks and providers inside each wrapper: compared in the workbench (3.4). Filled in: every wrapper's terms from the earlier examples.
-
-Note, 2026-10-23: the independent check above priced accrued interest on the bond (291,761.83) while the method does not model it (G-10, TXI OQ5), so the engine lists the bond as not ranked (B3, reason G-10) and the ETF ranks fourth; the engine's counts are ranked 5, listed, not ranked 8, not eligible 2, excluded 0, not evaluated 11. The numbers above are kept as the independent check produced them.
-
 ### S41 Idle-cash preset
 
 Status: computed.
@@ -1229,32 +1141,6 @@ Rules as in the deposit, money-market, ETF, kupat gemel lehashkaa and pension ex
 
 **Expected (as written to scenarios.md):** Real value at year 10 after exit tax: deposit 74,245.96, daily MMF 73,339.31, ETF 70,220.43, kupat gemel lehashkaa 76,594.44; pension gross 83,402.21 (exit blocked); yearly series in workings.md. Study fund not shown (product D15). Filled in: pension terms from the 300 NIS pension example.
 
-### S48 Revisit after a rule change
-
-Status: computed.
-
-| Step | What | Rule | Value |
-|---|---|---|---|
-| 1 | Re-run S39 brokerage with the TXS-09 rate set to 30% (test only) | [TXS-09](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | real V_T 566,430.72 |
-| 2 | The changed entry is TXS-09; the brokerage value falls by the extra 5% of the real gain | method F-82 | — |
-| 3 | Ranking status: the kupat gemel lehashkaa still ranks first; its exit tax comes from TXK-07, not TXS-09, so only the brokerage moves | method F-82 | gap 10.18% → not a tie (θ = 0.5%) |
-
-
-**Expected (as written to scenarios.md):** Changed entry: TXS-09 rate 25% → 30%. Brokerage real V_T/I_T falls from 572,640.51 to 566,430.72 (nominal 938,338.16 → 928,162.69). Ranking unchanged: the kupat gemel lehashkaa stays first (gap 10.18% → not a tie (θ = 0.5%)).
-
-### S49 Exposure mode with entered returns and the loss filter
-
-Status: computed.
-
-| Step | What | Rule | Value |
-|---|---|---|---|
-| 0 | Filled-in inputs | — | **filled in:** cash held as the daily money-market fund example (BoI 3.25%, δ 0.18%); bonds held as the low-fee open tracking fund example (δ 0.02%, 0.1% min 10, custody 0.15%/q min 15) at the entered 3%; goal and π as the long-term example |
-| 1 | Loss filter: equity worst fall 40% > accepted 30% → excluded; bonds 10% ≤ 30% kept; cash has no entered worst fall → kept | method F-71 | — |
-| 2 | Rank cash and bonds by real value at 20 years after fees and exit tax | method F-80; [TXS-12](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>), [TXS-13](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | see result |
-
-
-**Expected (as written to scenarios.md):** Equity excluded by the filter (40% > 30%). Ranked: 1. cash 534,012.31, 2. bonds 495,867.60 (real); gap 7.14% → not a tie (θ = 0.5%). Bonds' 3% labelled "entered by you"; cash labelled with the BoI rate (sourced). Filled in: holding wrappers and fees from the money-market and open tracking fund examples.
-
 ### S50 Tie
 
 Status: computed.
@@ -1413,14 +1299,13 @@ Strength is the one recorded on the rule's first source.
 | [ETF-14](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=2>) | Variable management fee: definition, cap, timing | 2026-10-25 |  |
 | [ETF-30](<https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf>) | iShares: its US-domiciled S&P 500 ETF (IVV), distributing, with a CUSIP | 2026-10-25 |  |
 | [GOV-06](<https://www.boi.org.il/media/ytal5ozx/makam.pdf>) | Makam yield and price convention | 2026-10-25 | primary |
-| [GOV-11](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=>) | CPI-linked bond (אג"ח ממשלתית צמודה): coupon, linkage, redemption | 2026-10-26 | primary |
+| [GOV-11](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4>) | CPI-linked bond (אג"ח ממשלתית צמודה): coupon, linkage, redemption | 2026-11-15 | primary (read on the page images; the 2007 amendment, ק"ת 6597 file p.3, changes regs. 6 and 7 only) |
 | [GOV-12](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5>) | CPI-linked bond in deflation: no floor in the regulation text | 2026-10-25 | primary |
 | [GOV-13](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf>) | Fixed-rate shekel bond (אג"ח ממשלתית; the type "שחר", first issued 1995, is separate) | 2026-10-25 | primary |
 | [GOV-22](<https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/>) | Bank of Israel's consumer page on makam | 2026-10-25 | primary |
 | [GOV-23](<https://www.boi.org.il/boi_files/hanpaka.pdf>) | Makam issue schedule | 2026-10-25 | primary |
 | [IRA-17](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6>) | Management fee level and cap | 2026-10-25 | primary; |
 | [IRA-21](<https://www.meitav.co.il/media/r2djwzpw/26061426l-תוצאות-מכרז-לניהול-אישי-2026-לאומי.pdf>) | Meitav: brokerage tariffs inside the IRA, effective 01.05.2026 | 2026-10-25 | institution; |
-| [IRA-25](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4>) | Liquidity and withdrawal follow the underlying product | 2026-10-25 | primary; |
 | [KGL-02](<https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf>) | Annual deposit ceiling: one ceiling per person across all managers, CPI-linked | 2026-10-25 | primary |
 | [KGL-03](<https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf>) | The 2026 ceiling figure: the law's NIS 70,000 indexed to the CPI | 2026-10-25 | primary; |
 | [KGL-04](<https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf>) | One ceiling per person, checked when the money is deposited | 2026-10-25 | primary; |
@@ -1428,7 +1313,6 @@ Strength is the one recorded on the rule's first source.
 | [KGL-15](<https://www.meitav.co.il/media/iejme0rs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-172024.pdf>) | Meitav: its binding documents print no fee rate, so they allow up to the legal maximum; the 0.8% on its product page is advertising | 2026-11-07 | institution; |
 | [KGL-16](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf>) | Fee discounts: minimum duration and when they can end early | 2026-10-25 | primary. The same circular: PF-13, PF-14, PF-16 |
 | [KGL-30](<https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf>) | Altshuler Shaham, Infinity, Harel, Meitav, Migdal, Clal, Analyst, Mor and Yalin Lapidot: a two-year discount and a raise without notice (bylaws out of date) | 2026-11-12 | institution; |
-| [KH-02](<https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf>) | Who can be a member: salaried member and self-employed member | 2026-10-25 | primary |
 | [KH-04](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | Contribution rates: set by agreement, within the tax-benefited limits of 7.5% employer and 2.5% employee | 2026-10-25 | primary |
 | [KH-10](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | Withdrawal grounds; early withdrawal is allowed and taxed | 2026-10-25 | primary |
 | [KH-11](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | First payment date starts the clock | 2026-10-25 | primary. TXH-09 |
@@ -1447,8 +1331,6 @@ Strength is the one recorded on the rule's first source.
 | [PEN-15](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf>) | Cost of insurance | 2026-10-25 | primary; |
 | [PEN-22](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4>) | Fee caps for a provident fund for annuity | 2026-10-25 | primary; |
 | [PEN-23](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf>) | Selected (default) pension funds and their fees | 2026-10-25 | primary; |
-| [PEN-26](<https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf>) | Retirement ages | 2026-10-25 | primary; |
-| [PEN-34](<https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf>) | What a provident fund for annuity is since 2008 | 2026-10-25 | primary; |
 | [PEN-35](<https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf>) | Provident fund for annuity versus pension fund | 2026-10-25 | primary; |
 | [PF-02](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4>) | Cap for provident funds (regulation 2): 1.05% a year of balance and 4% of deposits | 2026-10-26 | primary; |
 | [PF-04](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5>) | Cap for a new comprehensive pension fund: 0.5% a year of balance and 6% of deposits | 2026-10-25 | primary; |
@@ -1511,7 +1393,6 @@ Strength is the one recorded on the rule's first source.
 | [TXI-12](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | Selling an unlinked government bond or makam before maturity: capital gain up to 15%, all treated as real | 2026-10-25 | primary |
 | [TXI-14](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5>) | CPI-linked government bond (Galil type): real interest and real gain, up to 25% | 2026-10-25 | primary |
 | [TXI-15](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | Unlinked government bonds (Shahar type, fixed; Gilon type, variable): the rate follows linkage, not the product name | 2026-10-25 | primary |
-| [TXI-16](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | Accrued interest bought with a bond (s.3(h)) | 2026-10-25 | primary |
 | [TXI-19](<https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf>) | Maximum rate vs fixed rate: people aged 60 or over can pay less than 25% on linked interest (tax open question Q16) | 2026-10-26 | primary |
 | [TXI-20](<https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf>) | Low-income deduction from deposit and savings-plan interest (s.125D(b)), any age | 2026-10-25 | primary |
 | [TXI-25](<https://supremedecisions.court.gov.il/Home/Download?path=HebrewVerdicts/14/860/074/l09&fileName=14074860_l09.txt&type=2>) | Negative linkage does not reduce the tax on interest; the linkage loss was not offset, and the Supreme Court left the offset question open | 2026-10-25 | primary (court ruling, read in Chrome 2026-10-25; paragraphs 22-24 and the concurrence read in a copy, to confirm here) |
