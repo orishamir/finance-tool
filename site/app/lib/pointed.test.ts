@@ -126,7 +126,7 @@ describe("every rule a figure on the indices page names is a record the page hol
   // the page holds its loader's rules (the glossary cards') and its bundle's, and the records they point at (routes/invest.tsx)
   const held = async (w: IndicesBundle) => {
     const page = await indicesLoader({ params: {} } as never);
-    return new Set([...page.feeRules, ...w.rules, ...w.pointed].map((r) => r.id));
+    return new Set([...page.feeRules, ...w.rules, ...(w.pointed ?? [])].map((r) => r.id));
   };
   /** The page's figures for one index: the view of the plan, and the costs of each house's cheapest way (the receipt's and the stairs'). */
   const figures = (w: IndicesBundle, id: string): unknown[] => {
