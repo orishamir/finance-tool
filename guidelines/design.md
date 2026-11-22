@@ -230,9 +230,10 @@ What goes on a page is his call. When he asks for a change, build it this way:
 - **When a head, name or cell needs more than it can say, add a "?" beside
   it** (`HelpMark`) that opens the longer explanation on a tap: a glossary
   term's card, or a short text of its own.
-- **A "?" explains; it never holds a fact the choice needs.** A fee, a
-  condition or the reason for a result is never only behind a "?" or a
-  fold.
+- **A "?" explains. The fact the choice needs stays in sight in a few
+  words:** a heading, a label, a short line. A fee, a condition or the
+  reason for a result is never only behind a "?" or a fold; the why behind
+  it is.
 - **A sentence above a table may say what the table is about, never what
   one column, row or cell means.** That goes in the head or its "?". Where
   the table's title already says what it is about, keep just the title.

@@ -14,7 +14,7 @@ import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineCh
 import { IconReset } from "../icons";
 import { IdRef, Num, RuleRef, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Button, Callout, Card, ChartLegend, FoldGroup, HelpMark, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, yearsCheck } from "../kit";
+import { Button, Callout, Card, ChartLegend, FoldGroup, HelpMark, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, rangeScale, yearsCheck } from "../kit";
 import { ToolBoundary } from "../tool-boundary";
 
 export interface TimelineProps {
@@ -546,6 +546,9 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
   const p05 = bundle.p05;
   const monthly = p05Range(p05, "sliders", "monthly_deposit");
   const years = p05Range(p05, "sliders", "horizon_years");
+  // the sliders' scales from P-05's ranges (a money slider's in its segments); a bundle without them gets a plain linear range
+  const monthlyScale = rangeScale(monthly ?? { min: 0, max: 10000, step: 100 });
+  const yearsScale = rangeScale(years ?? { min: 1, max: 40, step: 1 });
   const ageRange = p05Range(p05, "ranges", "age");
   const pctRange = p05Range(p05, "ranges", "pct");
   const current = (key: P05Input) => (key === "cash_rate" ? ownRate : state.entered[key]) ?? p05Number(p05, key);
@@ -593,11 +596,11 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
       </div>
       {!lumpSum && (
       <div data-field="monthly_deposit" className="contents">
-        <RangeField label={valuesCopy.fields.monthly_deposit} unit="nis_per_month" value={current("monthly_deposit")} start={p05Number(p05, "monthly_deposit")} isEntered={isEntered("monthly_deposit")} validate={nonNegativeCheck} onCommit={commit("monthly_deposit")} onReset={() => setEntered("monthly_deposit", null)} min={monthly?.min ?? 0} max={monthly?.max ?? 10000} step={monthly?.step ?? 100} disabled={!ready} autoFocus={focusField === "monthly_deposit"} />
+        <RangeField label={valuesCopy.fields.monthly_deposit} unit="nis_per_month" value={current("monthly_deposit")} start={p05Number(p05, "monthly_deposit")} isEntered={isEntered("monthly_deposit")} validate={nonNegativeCheck} onCommit={commit("monthly_deposit")} onReset={() => setEntered("monthly_deposit", null)} scale={monthlyScale} disabled={!ready} autoFocus={focusField === "monthly_deposit"} />
       </div>
       )}
       <div data-field="horizon_years" className="contents">
-        <RangeField label={valuesCopy.fields.horizon_years} unit="years" value={current("horizon_years")} start={p05Number(p05, "horizon_years")} isEntered={isEntered("horizon_years")} validate={yearsCheck(years ?? { min: 1, max: 40 })} onCommit={commit("horizon_years")} onReset={() => setEntered("horizon_years", null)} min={years?.min ?? 1} max={years?.max ?? 40} step={years?.step ?? 1} inputMode="numeric" disabled={!ready} autoFocus={focusField === "horizon_years"} />
+        <RangeField label={valuesCopy.fields.horizon_years} unit="years" unitInLabel value={current("horizon_years")} start={p05Number(p05, "horizon_years")} isEntered={isEntered("horizon_years")} validate={yearsCheck(years ?? { min: 1, max: 40 })} onCommit={commit("horizon_years")} onReset={() => setEntered("horizon_years", null)} scale={yearsScale} inputMode="numeric" disabled={!ready} autoFocus={focusField === "horizon_years"} />
       </div>
       <div className="field-row grid grid-cols-2 gap-3">
         {cash ? (

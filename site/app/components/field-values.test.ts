@@ -1,6 +1,6 @@
 // A chart field's value is a plain number (guidelines/charts.md): its default and what the reader types look alike,
 // with no site-parameter tag, no "you entered" mark and nothing that opens; a calculation sheet lists it plainly; the site's real
-// parameters keep their tag; each field carries "↺ חזרה ל־{start}" on its label line, kept in place while hidden.
+// parameters keep their tag; each field carries its reset on its label line ("↺ חזרה ל־{start}", a slider's "↺ איפוס"), kept in place while hidden.
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
@@ -9,7 +9,7 @@ import { numbers, strength } from "../copy";
 import { asField, computed, entered, type SiteValue } from "../lib/value";
 import { Num, ProvenanceProvider } from "./provenance";
 import { ValueSheet } from "./provenance-sheets";
-import { InputSlot, NumberField, RangeField } from "./kit";
+import { InputSlot, NumberField, RangeField, linearScale } from "./kit";
 
 const today = "2026-11-08";
 /** A site parameter as the data holds it (update rule "founder", sourced): P-05's amount, or P-01's tie threshold. */
@@ -72,9 +72,11 @@ describe("a field's reset on its label line", () => {
       expect(out).not.toContain("text-entered");
     }
   });
-  it("a slider's reset says the default as the box shows it", () => {
-    const out = renderToStaticMarkup(createElement(RangeField, { label: "כמה שנים", unit: "years", value: 25, start: 10, isEntered: true, min: 1, max: 40, step: 1, validate: () => null, onCommit: () => undefined, onReset: () => undefined }));
-    expect(out).toMatch(/חזרה ל־<bdi dir="ltr">10<\/bdi>/);
+  it("a slider's reset says איפוס alone, its default shown only in the box", () => {
+    const out = renderToStaticMarkup(createElement(RangeField, { label: "כמה שנים", unit: "years", value: 25, start: 10, isEntered: true, scale: linearScale({ min: 1, max: 40, step: 1 }), validate: () => null, onCommit: () => undefined, onReset: () => undefined }));
+    const reset = out.match(/<button[^>]*>(?:(?!<\/button>).)*<\/button>/)?.[0] ?? "";
+    expect(reset).toContain(">איפוס<");
+    expect(reset.replace(/<[^>]*>/g, "")).not.toContain("10");
     expect(out).not.toContain(strength.entered.label);
   });
 });

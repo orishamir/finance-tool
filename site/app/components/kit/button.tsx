@@ -31,7 +31,8 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
  * deletes, `icon` for a 44 px icon-only button, `labelled` for the same face with a word beside the icon, where the icon alone would not
  * say what the button does (the site header's "תפריט"). `outline`: a bordered button on the card's own surface, the face `MenuPicker` has, for an
  * action that stands beside such a picker in a bar (the fee page's "קישור לעסקה"); `framed`: the same bordered face with its edge and words
- * in the action colour, for the one action a card offers where a filled button would outweigh the card's figures; `danger`: a filled button in the danger colour, for the "מחיקה" of a question that takes something away for good
+ * in the action colour, for the one action a card offers where a filled button would outweigh the card's figures (the pair card's
+ * "להזין מחיר שקיבלתם"); `danger`: a filled button in the danger colour, for the "מחיקה" of a question that takes something away for good
  * (`ConfirmAsk`), beside an `outline` "ביטול"; `ghost`: the face of the kit's bin (`RemoveButton`, the
  * one control that takes something away), an icon alone in a 36 px round face with a 44 px tap area, 44 px square on a phone, in the muted ink with no edge, the
  * danger colour only under the pointer or the focus. `inline`: an action inside a sentence, around words that may wrap with it (a name that

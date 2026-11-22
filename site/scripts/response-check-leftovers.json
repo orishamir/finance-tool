@@ -31,13 +31,6 @@
     },
     {
       "flow": "the fee page's deal",
-      "step": "drag a slider",
-      "check": "input",
-      "worst": 104,
-      "why": "The finger's touch or lift redraws the deal: 24 to 104 ms in nine runs, over the limit in one. Listed so the check does not fail by chance while the deal's drawing is not kept off the finger's frame."
-    },
-    {
-      "flow": "the fee page's deal",
       "step": "type in a field",
       "check": "input",
       "worst": 380,

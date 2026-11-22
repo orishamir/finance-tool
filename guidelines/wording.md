@@ -21,6 +21,14 @@ professional. Not a bank, not a blog, not a TV financial adviser.
 
 ## Sentences
 
+- **On a tool or data page, little text in sight; the reader chooses what
+  to read.** A block shows its figures and at most one short line. Any
+  explanation longer than that sits behind a "?" or a label the reader
+  taps. Write for someone glancing, not reading.
+- **A guide is for reading.** Its prose explains in full, but every
+  section has one point, says it first, and leaves out what doesn't serve
+  it.
+
 1. **Conclusion first, then the reason.** "שווה להתמקח: הורדת העמלה לממוצע
    שווה כ־1,200 ₪ ב־10 שנים." Not the reason first and the verdict at the
    end.
@@ -98,8 +106,9 @@ professional. Not a bank, not a blog, not a TV financial adviser.
 - **Lines under a chart** speak about the reader's own figures (how much of
   their money is above the exemption), one or two lines, and say what the
   chart assumes and where it is unsure.
-- **Notes and caveats** are one sentence each, beside the figure they
-  qualify, not collected at the bottom of the page.
+- **Notes and caveats** are a few words each, beside the figure they
+  qualify, never collected at the bottom of the page; the full sentence
+  goes behind a "?". In guide prose, a caveat is part of the text.
 - **Status words** say what happened, in the passive: "נשמר", "לא הוזן",
   "ההעתקה לא הצליחה". Ongoing work: "טוען…".
 - **Missing data:** say what is missing and why: "אין נתון: הבנק לא מפרסם

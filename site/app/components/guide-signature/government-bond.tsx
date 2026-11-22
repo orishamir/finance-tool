@@ -7,7 +7,7 @@ import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { bondModel, fact } from "../../lib/guide-signature";
 
-import { GainBars, RangeField, Sentence, Stat, StatRow, yearsCheck } from "../kit";
+import { GainBars, RangeField, Sentence, Stat, StatRow, linearScale, yearsCheck } from "../kit";
 import { Num, Ruled, Term } from "../provenance";
 import { figure, inputSite, SigAmountField, termOf, useSigInputs, typed, type VisualProps } from "./kit";
 import { differenceOf } from "../../lib/value";
@@ -17,10 +17,12 @@ const SHIFT_MAX = 3;
 const YEARS_MIN = 1;
 const YEARS_MAX = 30;
 const YEARS = { min: YEARS_MIN, max: YEARS_MAX };
+const YEARS_SCALE = linearScale({ ...YEARS, step: 1 });
 
 /**
  * The rate shift's slider, with the shift written beside its label ("+1 נקודת אחוז", the unit opening its term): the kit's `RangeField`
- * writes no sign in its box, has no unit word for percentage points, and its checks have none for a range of percentage points.
+ * writes no sign in its box, has no unit word for percentage points, and its checks have none for a range of percentage points. Like the
+ * kit's slider it runs left to right, its least at the left, with no values at its ends.
  */
 function Range({ id, label, valueText, min, max, step, value, onChange }: { id: string; label: string; valueText: React.ReactNode; min: number; max: number; step: number; value: number; onChange: (v: number) => void }) {
   const fill = ((value - min) / (max - min)) * 100;
@@ -32,7 +34,7 @@ function Range({ id, label, valueText, min, max, step, value, onChange }: { id: 
         </span>
         <span className="font-semibold">{valueText}</span>
       </div>
-      <input type="range" className="slider" aria-labelledby={`${id}-l`} min={min} max={max} step={step} value={value} style={{ "--fill": `${fill}%` } as React.CSSProperties} onChange={(e) => onChange(Number(e.target.value))} />
+      <input type="range" dir="ltr" className="slider" aria-labelledby={`${id}-l`} min={min} max={max} step={step} value={value} style={{ "--fill": `${fill}%` } as React.CSSProperties} onChange={(e) => onChange(Number(e.target.value))} />
     </div>
   );
 }
@@ -77,7 +79,7 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
     <div className="flex flex-col gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
         <SigAmountField inputs={inputs} field="amount" label={copy.bond.amount} />
-        <RangeField label={copy.bond.years} unit="years" value={years} start={yearsStart} isEntered={yearsOverride !== null} validate={yearsCheck(YEARS)} onCommit={setYears} onReset={() => setYears(null)} min={YEARS_MIN} max={YEARS_MAX} step={1} inputMode="numeric" disabled={!inputs.ready} />
+        <RangeField label={copy.bond.years} unit="years" value={years} start={yearsStart} isEntered={yearsOverride !== null} validate={yearsCheck(YEARS)} onCommit={setYears} onReset={() => setYears(null)} scale={YEARS_SCALE} inputMode="numeric" disabled={!inputs.ready} />
       </div>
       <Range
         id={`${id}-s`}

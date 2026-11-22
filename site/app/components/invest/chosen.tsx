@@ -1,8 +1,7 @@
 // The card of the receipt's pair, third in the side rail: what the page knows of its account and fund, one fact a line, read from the same
 // records the lists read; the lists' rows keep to one short shape, and this card says the rest for these two. The account: its house's
-// price list and when it was collected, a price it prints that the figure leaves out (a line only where there is one), its customer
-// groups with the choice of one (and, with one picked, how long the group's price holds), and a standing-order or phone-only purchase. A
-// price the person got is entered from the account list, not here.
+// price list and when it was collected, the price it prints and the figure leaves out, its customer groups with the choice of one (and,
+// with one picked, how long the group's price holds), a standing-order or phone-only purchase, and the way to enter a price the person got.
 // The fund: its document, number and kind, its labels by group, its gap from the index, its manager, and any note about its price. The
 // terms the person typed stand on the typed row of the list, with the way to change them.
 import { groupPrices, invest as c } from "../../copy";
@@ -19,7 +18,7 @@ import { Num, StateTag } from "../provenance";
 import { useState } from "react";
 import { Card, DocLink, FactTile, GroupPriceFold, HelpMark, KeyValue, LabelChip, LabelRow, MixedName, ProductIdLink, SourcedTag, Tag, TileJoin, When, gershayim, type GroupChoice } from "../kit";
 import { brands } from "../../copy";
-import { DealCardActions, DealRows } from "./deal-account";
+import { DealCardActions, DealFromHouseButton, DealRows } from "./deal-account";
 import { isDealProviderId } from "../../lib/deal-account/bundle";
 import { OptionTag } from "./parts";
 import { allFunds, asideWords, crownedHouse, GapCell, gapNoteOf, gapStateOf, inTieSet, labelsOf, mayaHrefOf, pairVerdict, phoneOf, pickHalf, priced, unitsLine, type OnPick, type Pick } from "./pair";
@@ -93,6 +92,11 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
                 </p>
               )}
               {house.custom && isDealProviderId(house.id) && <DealCardActions id={house.id} />}
+              {!house.custom && snap && (
+                <DealFromHouseButton houseId={house.id} framed>
+                  {c.pair.ownPrice}
+                </DealFromHouseButton>
+              )}
             </>
           }
           name={
@@ -112,10 +116,10 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
             </KeyValue>
           )}
           {isDealProviderId(house.id) && <DealRows id={house.id} house={(id) => providerName(view, id)?.short ?? null} />}
-          {/* a price of the house's list the figure leaves out, where it prints one; a deal is the person's whole price, so none stands beside it (H) */}
-          {aside && !isDealProviderId(house.id) && (
+          {/* a deal is the person's whole price: no other price of a house's list stands beside it (H) */}
+          {!isDealProviderId(house.id) && (
             <KeyValue size="xs" label={c.chosen.aside}>
-              <span className="block text-start">{aside}</span>
+              {aside ? <span className="block text-start">{aside}</span> : c.chosen.none}
             </KeyValue>
           )}
         </FactTile>

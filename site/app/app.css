@@ -1208,11 +1208,12 @@
     align-self: start;
   }
 
-  /* ---- slider: a native range input, 44px hit area, a 12px rounded track filled from the start (right) in the slider blue,
-     a solid thumb of the same blue; both a step deeper while the slider is held */
+  /* ---- slider: a native range input, 44px hit area, a 12px rounded track filled in the slider blue, a solid thumb of the same blue;
+     both a step deeper while the slider is held. It runs left to right, as a chart's time axis does: its least at the left, filled
+     rightwards (the input also carries dir="ltr", so its keys go the same way) */
   .slider {
     --slider-ink: var(--slider);
-    --slider-bar: linear-gradient(to left, var(--slider-ink) var(--fill, 0%), var(--slider-track) var(--fill, 0%));
+    --slider-bar: linear-gradient(to right, var(--slider-ink) var(--fill, 0%), var(--slider-track) var(--fill, 0%));
     appearance: none;
     -webkit-appearance: none;
     width: 100%;
@@ -1220,7 +1221,7 @@
     margin: 0;
     background: transparent;
     cursor: pointer;
-    direction: rtl;
+    direction: ltr;
   }
   .slider:active {
     --slider-ink: var(--slider-active);
