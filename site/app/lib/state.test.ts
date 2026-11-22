@@ -1,4 +1,4 @@
-// The version 4 state document: migration from the release 2 keys and from versions 2 and 3, the export file, import (add,
+// The version 3 state document: migration from the release 2 keys and from version 2, the goals and saved comparisons it keeps empty, the export file, import (add,
 // replace, refusals) and "delete what was imported". The device storage is a fake, so nothing here touches a browser.
 import { beforeEach, describe, expect, it } from "vitest";
 import {
@@ -20,7 +20,7 @@ import {
   updateState,
   withoutImported,
   type Holding,
-  type StateV4,
+  type StateV3,
 } from "./state";
 import { entered } from "./value";
 import { readSideStores, sideCounts, type SideStores } from "./side-stores";
@@ -63,7 +63,7 @@ const site = { version: "r3-test", data: "cma-test" };
 // the moment an export file says it was made, fixed so no test reads the clock
 const exported = new Date("2026-10-24T08:00:00Z");
 
-const emptyOf = (): StateV4 => ({ version: 4, inputs: {}, holdings: [], uncatalogued: [], imports: [] });
+const emptyOf = (): StateV3 => ({ version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] });
 
 let storage: FakeStorage;
 beforeEach(() => {
@@ -73,7 +73,7 @@ beforeEach(() => {
 
 describe("reading the document again (another tab, a page brought back by Back)", () => {
   const other = (name: string) => JSON.stringify({ ...emptyOf(), holdings: [holding("a", { company: { name } })] });
-  const mine = (s: StateV4): StateV4 => ({ ...s, holdings: [holding("a", { company: { name: "שלי" } })] });
+  const mine = (s: StateV3): StateV3 => ({ ...s, holdings: [holding("a", { company: { name: "שלי" } })] });
   it("takes what another tab wrote when the page holds nothing unwritten", () => {
     ensureLoaded();
     flush();
@@ -103,7 +103,7 @@ describe("reading the document again (another tab, a page brought back by Back)"
   });
 });
 
-describe("migration from the release 2 keys and from versions 2 and 3", () => {
+describe("migration from the release 2 keys and from version 2", () => {
   it("reads the three v1 keys into one document, of the goals only the bank, then removes them after the write", () => {
     const g = oldGoal("g1");
     storage.setItem("mekor.v1.inputs", JSON.stringify({ entered: { "A-01": 6, amount_now: 30000 }, age: 22, employment: "employee" }));
@@ -111,9 +111,9 @@ describe("migration from the release 2 keys and from versions 2 and 3", () => {
     storage.setItem("mekor.v1.uncatalogued", JSON.stringify([{ name: "קרן X", date: "2026-10-01" }]));
     const snap = ensureLoaded();
     expect(snap.status).toBe("ok");
-    expect(snap.state.version).toBe(4);
+    expect(snap.state.version).toBe(3);
     expect(snap.state.bank).toBe("leumi");
-    expect("goals" in snap.state).toBe(false);
+    expect(snap.state.goals).toEqual([]);
     expect(snap.state.inputs["A-01"]).toMatchObject({ value: 6, unit: "pct_per_year", state: "entered" });
     expect(snap.state.inputs.age?.value).toBe(22);
     expect(snap.state.inputs.employment?.value).toBe("employee");
@@ -138,7 +138,7 @@ describe("migration from the release 2 keys and from versions 2 and 3", () => {
     expect(storage.getItem("mekor.v1.inputs")).toBeNull();
   });
 
-  it("writes a version 3 document with goals and saved comparisons back as version 4 without them", () => {
+  it("writes a version 3 document that holds goals and saved comparisons back with both lists empty and no current goal", () => {
     const v3 = { version: 3, goals: [oldGoal("g1")], currentId: "g1", inputs: {}, holdings: [holding("a")], uncatalogued: [], imports: [{ at: day, mode: "add", goals: 1, holdings: 1, names: 0, skipped: 0 }], savedComparisons: [{ id: "c1", goalId: "g1", mode: "wrapper", savedOn: day }] };
     storage.setItem(STATE_KEY, JSON.stringify(v3));
     const snap = ensureLoaded();
@@ -146,12 +146,14 @@ describe("migration from the release 2 keys and from versions 2 and 3", () => {
     expect(snap.state.holdings.map((h) => h.id)).toEqual(["a"]);
     flush();
     const back = JSON.parse(storage.getItem(STATE_KEY)!);
-    expect(back.version).toBe(4);
-    expect(Object.keys(back).sort()).toEqual(["holdings", "imports", "inputs", "uncatalogued", "version"]);
+    expect(back.version).toBe(3);
+    expect(back.goals).toEqual([]);
+    expect(back.savedComparisons).toEqual([]);
+    expect("currentId" in back).toBe(false);
   });
 
   it("leaves a document of a newer version exactly as it is", () => {
-    const raw = JSON.stringify({ version: 5, whatever: true });
+    const raw = JSON.stringify({ version: 4, whatever: true });
     storage.setItem(STATE_KEY, raw);
     expect(ensureLoaded().status).toBe("old-version");
     updateState((s) => ({ ...s, bank: "x" }));
@@ -173,9 +175,9 @@ describe("migration from the release 2 keys and from versions 2 and 3", () => {
 
 describe("the export file", () => {
   it("carries format, version, time, site ids and the state", () => {
-    const state: StateV4 = { ...emptyOf(), holdings: [holding("a")] };
+    const state: StateV3 = { ...emptyOf(), holdings: [holding("a")] };
     const f = buildStateFile(state, site, new Date("2026-10-24T08:00:00Z"));
-    expect(f).toMatchObject({ format: "mekor-state", version: 4, exported: "2026-10-24T08:00:00.000Z", site, state });
+    expect(f).toMatchObject({ format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00.000Z", site, state });
     expect(JSON.parse(stateFileText(f)).state.holdings[0].balance.value).toBe(80_000);
   });
 
@@ -197,8 +199,8 @@ describe("the export file", () => {
 });
 
 describe("import", () => {
-  const file = (state: unknown, version = 4) => JSON.stringify({ format: "mekor-state", version, exported: "2026-10-24T08:00:00Z", site, state });
-  const base = (): StateV4 => ({ ...emptyOf(), holdings: [holding("a")], uncatalogued: [{ name: "קרן Y", seen: day }] });
+  const file = (state: unknown, version = 3) => JSON.stringify({ format: "mekor-state", version, exported: "2026-10-24T08:00:00Z", site, state });
+  const base = (): StateV3 => ({ ...emptyOf(), holdings: [holding("a")], uncatalogued: [{ name: "קרן Y", seen: day }] });
 
   it("reads a file it wrote, with the counts, and changes nothing on the device", () => {
     const r = readImport(file(base()));
@@ -213,16 +215,16 @@ describe("import", () => {
   });
 
   it("names the header field that is out of order, and shows the header of a file it reads", () => {
-    const head = { format: "mekor-state", version: 4, exported: "2026-10-24T08:00:00Z", site, state: base() };
-    expect(readImport(JSON.stringify({ ...head, version: "4" }))).toEqual({ ok: false, refusal: { kind: "invalid", field: "version" } });
+    const head = { format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00Z", site, state: base() };
+    expect(readImport(JSON.stringify({ ...head, version: "3" }))).toEqual({ ok: false, refusal: { kind: "invalid", field: "version" } });
     expect(readImport(JSON.stringify({ ...head, exported: 5 }))).toEqual({ ok: false, refusal: { kind: "invalid", field: "exported" } });
     expect(readImport(JSON.stringify({ ...head, site: { version: "r3-test" } }))).toEqual({ ok: false, refusal: { kind: "invalid", field: "site" } });
     const r = readImport(JSON.stringify(head));
-    expect(r.ok && r.preview.file).toEqual({ format: "mekor-state", version: 4, exported: "2026-10-24T08:00:00Z", site });
+    expect(r.ok && r.preview.file).toEqual({ format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00Z", site });
   });
 
   it("refuses a newer version", () => {
-    expect(readImport(file(base(), 5))).toEqual({ ok: false, refusal: { kind: "newer" } });
+    expect(readImport(file(base(), 4))).toEqual({ ok: false, refusal: { kind: "newer" } });
   });
 
   it("imports a version 3 file with goals and saved comparisons, even unreadable ones, and leaves them out without a word", () => {
@@ -230,11 +232,12 @@ describe("import", () => {
     const r = readImport(file(v3, 3));
     expect(r.ok).toBe(true);
     if (!r.ok) return;
-    expect(r.preview.migrated).toBe(true);
     expect(r.preview.rejected).toEqual([]);
     expect(r.preview.counts).toMatchObject({ holdings: 1, names: 1 });
-    expect(Object.keys(r.preview.state).sort()).toEqual(["holdings", "imports", "inputs", "uncatalogued", "version"]);
-    expect(r.preview.state.version).toBe(4);
+    expect(r.preview.migrated).toBe(false);
+    expect(r.preview.state.goals).toEqual([]);
+    expect(r.preview.state.savedComparisons).toEqual([]);
+    expect("currentId" in r.preview.state).toBe(false);
     const out = applyImport(emptyOf(), r.preview.state, "add", day);
     expect(out.added).toEqual({ holdings: 1, names: 1 });
   });
@@ -242,8 +245,9 @@ describe("import", () => {
   it("migrates a version 2 file: its goals and a leftover visits field are left out", () => {
     const r = readImport(file({ ...base(), version: 2, goals: [oldGoal("g1")], visits: { last: "2026-10-23" } }, 2));
     expect(r.ok && r.preview.migrated).toBe(true);
-    expect(r.ok && r.preview.state.version).toBe(4);
-    expect(r.ok && "goals" in r.preview.state).toBe(false);
+    expect(r.ok && r.preview.state.version).toBe(3);
+    expect(r.ok && r.preview.state.goals).toEqual([]);
+    expect(r.ok && r.preview.state.savedComparisons).toEqual([]);
     expect(r.ok && "visits" in r.preview.state).toBe(false);
     expect(r.ok && r.preview.state.holdings).toHaveLength(1);
   });
@@ -252,7 +256,7 @@ describe("import", () => {
     const r = readImport(file({ version: 1, goals: [oldGoal("g1")], currentId: "g1", bank: "hapoalim" }, 1));
     expect(r.ok && r.preview.migrated).toBe(true);
     expect(r.ok && r.preview.state.bank).toBe("hapoalim");
-    expect(r.ok && "goals" in r.preview.state).toBe(false);
+    expect(r.ok && r.preview.state.goals).toEqual([]);
   });
 
   it("leaves out a holding whose balance is a bare number, naming the field", () => {
@@ -271,7 +275,7 @@ describe("import", () => {
   });
 
   it("add: appends with the imported tag and an order after the existing ones, skipping identical items", () => {
-    const mine: StateV4 = { ...emptyOf(), holdings: [holding("a"), holding("m", { order: 1, company: { name: "חברה ב" } })] };
+    const mine: StateV3 = { ...emptyOf(), holdings: [holding("a"), holding("m", { order: 1, company: { name: "חברה ב" } })] };
     const r = applyImport(mine, base(), "add", day);
     // holding "a" is identical to mine: skipped; the name is new
     expect(r.skipped).toBe(1);
@@ -282,7 +286,7 @@ describe("import", () => {
   });
 
   it("add: a holding with the same id and other content is kept as a new item", () => {
-    const mine: StateV4 = { ...emptyOf(), holdings: [holding("a")] };
+    const mine: StateV3 = { ...emptyOf(), holdings: [holding("a")] };
     const theirs = { ...base(), holdings: [holding("a", { balance: entered(1, "nis", day) })] };
     const r = applyImport(mine, theirs, "add", day);
     expect(r.state.holdings).toHaveLength(2);
@@ -292,14 +296,14 @@ describe("import", () => {
   });
 
   it("replace: the file's state as it is", () => {
-    const mine: StateV4 = { ...emptyOf(), holdings: [holding("z")] };
+    const mine: StateV3 = { ...emptyOf(), holdings: [holding("z")] };
     const r = applyImport(mine, base(), "replace", day);
     expect(r.state.holdings.map((h) => h.id)).toEqual(["a"]);
     expect(r.state.holdings[0]!.importedAt).toBeUndefined();
   });
 
   it("delete what was imported removes only the tagged items", () => {
-    const mine: StateV4 = { ...emptyOf(), holdings: [holding("z")] };
+    const mine: StateV3 = { ...emptyOf(), holdings: [holding("z")] };
     const r = applyImport(mine, base(), "add", day);
     const cleaned = withoutImported(r.state);
     expect(cleaned.holdings.map((h) => h.id)).toEqual(["z"]);
@@ -325,9 +329,9 @@ describe("import", () => {
 // ---------------------------------------------------------------- the same file twice, hand-edited files
 
 describe("import twice in add mode (A33, A69)", () => {
-  const file = (state: unknown, extra: Record<string, unknown> = {}) => JSON.stringify({ format: "mekor-state", version: 4, exported: "2026-10-24T08:00:00Z", site, state, ...extra });
-  const theirs = (): StateV4 => ({ ...emptyOf(), holdings: [holding("a")], uncatalogued: [{ name: "קרן Y", seen: day }] });
-  const mine = (): StateV4 => ({ ...emptyOf(), holdings: [holding("m", { company: { name: "חברה ב" } })] });
+  const file = (state: unknown, extra: Record<string, unknown> = {}) => JSON.stringify({ format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00Z", site, state, ...extra });
+  const theirs = (): StateV3 => ({ ...emptyOf(), holdings: [holding("a")], uncatalogued: [{ name: "קרן Y", seen: day }] });
+  const mine = (): StateV3 => ({ ...emptyOf(), holdings: [holding("m", { company: { name: "חברה ב" } })] });
 
   it("adds nothing the second time, and the count says so", () => {
     const incoming = theirs();
@@ -344,7 +348,7 @@ describe("import twice in add mode (A33, A69)", () => {
   });
 
   it("a holding added under a new id (same id, other content) is not added again either", () => {
-    const clash: StateV4 = { ...emptyOf(), holdings: [holding("m", { balance: entered(1, "nis", day) })] };
+    const clash: StateV3 = { ...emptyOf(), holdings: [holding("m", { balance: entered(1, "nis", day) })] };
     const first = applyImport(mine(), clash, "add", day);
     expect(first.added.holdings).toBe(1);
     const second = applyImport(first.state, clash, "add", day);
@@ -399,7 +403,7 @@ describe("side stores in the export file (A32)", () => {
     ensureLoaded();
     saveHolding(holding("a"));
     const text = stateFileText(buildStateFile(getSnapshot().state, site, exported, side));
-    expect(JSON.parse(text).version).toBe(4);
+    expect(JSON.parse(text).version).toBe(3);
 
     const other = new FakeStorage();
     resetStore(other);

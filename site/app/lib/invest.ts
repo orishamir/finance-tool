@@ -1418,8 +1418,8 @@ export interface PairCosts {
   /** The account's own lines over the horizon before the tax they save (F-91), real shekels; `interaction` is what no single line explains. */
   account: { line: FeeLine; cost: SiteValue }[];
   /**
-   * F-128: an account priced by a deal, its lines as the deal's own fees, by the deal's fee id (`BANK_ACCOUNT` for the bank's current
-   * account the plan counts from the record) with the fee's name, each what was paid on it carried as its line is (F-91). They stand in
+   * F-128: an account priced by a deal, its lines as the deal's own fees, by the deal's fee id (a bank's current account among them, the
+   * deal's own fee of that kind) with the fee's name, each what was paid on it carried as its line is (F-91). They stand in
    * place of `account`, which is then empty, and `interaction` is what they leave of the account's fees.
    */
   dealLines?: { fee: string; name: string; cost: SiteValue }[];
@@ -1529,9 +1529,11 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     const id = ids?.[x.fee];
     if (id !== undefined) byDealFee.set(id, (byDealFee.get(id) ?? 0) + x.costBeforeTax);
   }
+  // every fee the run charges is one of the deal's own (`feeIdsOf`): one that is not is a broken invariant
   const feeWords = (id: string) => {
     const f = deal?.fees.find((x) => x.id === id);
-    return f ? feeNameOf(f.kind, f.name) : (copy.pair.lines.account ?? id);
+    if (!f) throw new Error(`pairCosts: the run charged fee ${id}, which deal ${s.id} does not hold`);
+    return feeNameOf(f.kind, f.name);
   };
   const dealLines = deal && ids ? [...byDealFee].map(([fee, n]) => ({ fee, name: feeWords(fee), cost: at(n, "F-91", copy.pair.lineAbout(feeWords(fee))) })) : undefined;
   const lines = dealLines ? [] : row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!), unitsOf(row.run) ? inputs : bInputs) }));

@@ -1051,7 +1051,7 @@ export const flags: Record<string, string> = {
   "CS-18": "דמי הניהול אחרי גיל עשרים ואחת חושבו לפי התקרה שבתקנות, ולכן הם ״עד״: בקופה שלכם השיעור יכול להיות נמוך יותר.", // the child-savings fee after 21 runs on CS-18's cap unless the person enters a rate (F-54)
   "TXK-06": "בחישוב הזה לא מגישים דוח שנתי או בקשת החזר מס, ולכן המס הוא מה שהחברה המנהלת מנכה במקור: {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם על הרווח. מי שמגיש דוח או בקשת החזר יכול לקבל חלק מהמס בחזרה.", // F-44 applies the brackets (F-42); the flag marks only a run with the refund not claimed (A-14 off). The manager withholds 25% of the gains (TXK-26, Tax Authority file 856), so the flat rate is what is withheld, not an upper bound
   "TXK-26": "בחישוב הזה מגישים דוח שנתי או בקשת החזר מס. החברה המנהלת מנכה במקור {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם. על חלק הרווח שהמדרגה שלו נמוכה מזה, מקבלים את ההפרש בחזרה אחרי הדוח. המספר כאן הוא המס אחרי ההחזר.", // the kupat gemel lehashkaa exit from 60 settles against the manager's withholding (TXK-26), not G-21 (a bank's or TASE member's withholding). That withholding is 25% of the gains (Tax Authority file 856), the maximum rate of TXK-06, so no part is above it
-  "BANK-35": "מ{BANK-35:account_fee_up_to_2_actions.from} הסכום כאן יכול להיות גבוה מדי. צו של נגיד בנק ישראל קובע אז תקרה לדמי הניהול של חשבון עו״ש לפי מספר הפעולות בחודש. בחשבון עם עד שתי פעולות בחודש, התקרה נמוכה מדמי הניהול שנספרו כאן. תיקון לכללי העמלות מפרט אילו שירותים נספרים כפעולה. האתר לא מצא בכללים שקרא אם קנייה חודשית של ניירות ערך, או ההעברה שמשלמת עליה, היא אחת מהן. לכן החישוב משאיר את דמי הניהול של היום לכל התקופה.", // D64: F-102 keeps the price list's minimum; the engine flags the month the cap starts where a counted minimum is above the cap for 0 to 2 actions
+  "BANK-35": "מ{BANK-35:account_fee_up_to_2_actions.from} הסכום כאן יכול להיות גבוה מדי. צו של נגיד בנק ישראל קובע אז תקרה לדמי הניהול של חשבון עו״ש לפי מספר הפעולות בחודש. בחשבון עם עד שתי פעולות בחודש, התקרה נמוכה מהמחיר של ״חשבון עובר ושב בבנק״ שנספר כאן. תיקון לכללי העמלות מפרט אילו שירותים נספרים כפעולה. האתר לא מצא בכללים שקרא אם קנייה חודשית של ניירות ערך, או ההעברה שמשלמת עליה, היא אחת מהן. לכן האתר לא מחיל את התקרה, ומשאיר את המחיר כפי שהוא.", // D64: F-102 keeps the price for the whole plan; the indices page flags the first month from the cap's start charged above the cap for 0 to 2 actions, the fee page a year of holding in a period that reaches it
   "G-32": "על כל דיבידנד נגבה סכום בשביל הגוף ששומר את ניירות הערך בחו״ל. החישוב לא הפחית את הסכום הזה מהרווח במכירה. החוק מפחית מהרווח את דמי המשמרת של שנת המכירה. עוד לא ברור אם גם הסכום הזה נחשב דמי משמרת. אם כן, המס כאן מעט גבוה מדי.", // D67: F-103 stays out of the sale gain; the engine flags a charge in the exit tax year (method G-32)
   // F-49 (method G-03): the pension's exit is an annuity, whose part above the minimum annuity may be commuted (PEN-28, TXA-20); its value needs each fund's conversion factors (PEN OQ7) and its exemption needs them (TXP-14 to TXP-17)
   "G-03": "זה הסכום בקופה לפני הקצבה. בפועל מקבלים קצבה חודשית. את החלק שלה שמעל סכום הקצבה המזערי אפשר גם להוון לסכום חד־פעמי. האתר עוד לא מחשב את הקצבה: היא תלויה במקדמי ההמרה של כל קרן, והם עוד לא נאספו. גם הפטור ממס על הקצבה תלוי בהם.",
@@ -4259,15 +4259,8 @@ export const invest = {
       banned: "לפי הכללים, עמלה כזאת לא נגבית כאן.",
     } as Record<string, string>,
     ownBank: (bank: string) => `סימנתם בעמוד שיש לכם כבר חשבון עו״ש ב${bank}.`,
-    /**
-     * A deal filled from a bank that names no current account of its own pays the bank's (F-102), from the bank's record: one quiet line
-     * after the fee blocks, its price a month by the price list and its cost on the plan. The toolbox's "חשבון עובר ושב בבנק" gives it its own.
-     */
-    bankAccount: (bank: string, withCost: boolean) =>
-      `בתוכנית נספר גם חשבון העו״ש של ${bank}: {monthly} בחודש לפי התעריפון${withCost ? ", {cost} בתוכנית" : ""}. אפשר לתת לו מחיר משלכם בכרטיס ״חשבון עובר ושב בבנק״.`,
-    /** What a fee, or the bank's current account, took on the plan, as its figure's sheet says (F-128). */
+    /** What a fee took on the plan, as its figure's sheet says (F-128). */
     feeCostAbout: (fee: string) => `העלות של ${fee} בתוכנית, בכסף של היום`,
-    bankCostAbout: (bank: string) => `העלות של חשבון העו״ש של ${bank} בתוכנית, בכסף של היום`,
     /** The pick bar: what only the person knows (a track, a condition of their own), then what the plan sets itself. */
     readFor: "קוראים את העסקה בשביל",
     /** The pick bar on a phone, one line under the strip. */
@@ -4438,8 +4431,8 @@ export const invest = {
     ageInput: "גיל",
     /** The income a run's tax tests the surtax on (F-43), among the inputs of the figures that come out of the run. */
     incomeInput: "הכנסה שנתית, מלבד הרווח",
-    /** The bank's monthly current-account minimum among a row's inputs, with its price list as the source (F-102). */
-    accountMinimum: "דמי ניהול חשבון עו״ש בחודש",
+    /** The bank's monthly current-account minimum among a row's inputs, with its price list as the source (F-102): the price list's minimum, not a management fee. */
+    accountMinimum: "עמלת המינימום של חשבון עובר ושב, בחודש",
     /** An exchange rate a run is priced at (F-84), among a figure's inputs: the currency the fund is bought in, or a price-list line set in it. */
     rateInput: (code: string): string => {
       const word = invest.currencies[code];
@@ -4483,9 +4476,9 @@ export const invest = {
     moreIfCheapest: "יותר אם עוברים לזוג הזול",
     pickCheapest: "לבחור בזוג הזה",
     who: { account: "החשבון:", fund: "הקרן:", state: "המדינה:" },
-    lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות", account: "דמי ניהול חשבון עו״ש" } as Record<string, string>,
+    lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות", account: "חשבון עובר ושב בבנק" } as Record<string, string>,
     /** The legend's item for the account's own fee and a bank's current account (D64), which share its colour ("דמי ניהול חשבון" alone read as either). */
-    legendAccount: "דמי ניהול חשבון ניירות ערך ועו״ש",
+    legendAccount: "דמי ניהול חשבון ניירות ערך וחשבון עובר ושב בבנק",
     /** The same item where no bar shown counts a current account (an investment house, a bank marked as the person's own): a legend names only what is drawn. */
     legendSecurities: "דמי ניהול חשבון ניירות ערך",
     lineAbout: (line: string) => `מה החשבון גובה: ${line}`,
@@ -4571,7 +4564,7 @@ export const invest = {
       /** `free`: the banks whose price list charges nothing for a current account, which the box leaves out (One Zero, D64), so its row
        * reads as a bank's that counts no fee. */
       counted: (free: string[]) =>
-        `השורה של כל בנק שגובה דמי ניהול חשבון עו״ש סופרת אותם, כי השקעה דרכו דורשת חשבון עו״ש אצלו. כבר יש לכם חשבון עו״ש באחד מהבנקים? בחרו אותו בתיבה, והשורה שלו לא תספור אותם.${free.length > 0 ? ` ${andList(free)} ${free.length > 1 ? "לא גובים" : "לא גובה"} דמי ניהול חשבון עו״ש,` : ""} ${free.length > 0 ? "ובית" : "בית"} השקעות לא דורש עו״ש אצלו.`,
+        `בשורה של כל בנק החישוב סופר גם חשבון עובר ושב בבנק: עמלת המינימום החודשית מהתעריפון שלו, בהנחה שחשבון ניירות הערך מתנהל לצד חשבון עו״ש באותו בנק. כבר יש לכם חשבון עו״ש באחד מהבנקים? בחרו אותו בתיבה, והשורה שלו לא תספור אותו.${free.length > 0 ? ` ${andList(free)} ${free.length > 1 ? "לא גובים" : "לא גובה"} עמלת מינימום על חשבון עו״ש.` : ""} בשורה של בית השקעות החישוב לא סופר חשבון עו״ש.`,
     },
     /** D65 and D66: said once, for an index with funds bought abroad; `capped`: the houses whose price lists print a limit on the spread, which their figures count at the limit (F-13). */
     abroadTitle: "מה לא נכנס למחיר של קרן שנקנית בחו״ל",

@@ -5,6 +5,7 @@
 // reader's point, the holding reading and the zoom range are what the person enters (D112); this file gives every figure they read.
 import {
   acrossDrop,
+  type CalendarMonth,
   actionCost,
   buyConversion,
   costShare,
@@ -30,7 +31,8 @@ import {
   type PricePart,
 } from "@finance-tool/engine";
 import { nisPer, nisPerNumber, type FxSnapshot } from "../fx";
-import { entered, type SiteValue } from "../value";
+import { computed, entered, ruleFigure, type SiteValue } from "../value";
+import type { RuleRecord } from "@finance-tool/schema";
 import { feeOf, type ReadFee } from "./cases";
 import { priceAt, priceView, readForMonth, refOf, type DealRead, type FeeRef, type PriceView } from "./deal-read";
 import { monthKey, type MonthKey, type Months, type Price } from "./model";
@@ -744,7 +746,51 @@ function oneAction(r: DealRead, p: DealPeriod, action: DealAction, side: DealSid
 
 // ---------------------------------------------------------------- the holding chart
 
-function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSnapshot | null, period: PeriodCard | undefined): HeldPanelView {
+/**
+ * F-102 with BANK-35: the cap on managing a payment account in a month with 0 to 2 actions, a month's shekels, and the month it takes
+ * effect, read from the rule's figure; the fee page compares a current account with it as the indices page does, always this cap, since
+ * no count of actions is the cap's (F-102).
+ */
+export interface AccountCap {
+  value: number;
+  /** The month it takes effect; null where the figure gives none, so it holds throughout, as the run reads it from its first month. */
+  from: CalendarMonth | null;
+  /** The rule's strength, which a flagged figure cites it with. */
+  strength: RuleRecord["strength"];
+}
+
+/** The rule whose cap flags a current account's year of holding (`AccountCap`), which the fee page's data ships. */
+export const ACCOUNT_CAP_RULES = ["BANK-35"] as const;
+
+/** BANK-35's cap for 0 to 2 actions among `rules` (`AccountCap`); null where the rules lack it or its figure. */
+export function accountCapOf(rules: readonly RuleRecord[]): AccountCap | null {
+  const rule = rules.find((x) => x.id === ACCOUNT_CAP_RULES[0]);
+  if (!rule) return null;
+  const f = ruleFigure(rule, "account_fee_up_to_2_actions", "");
+  if (typeof f?.value !== "number") return null;
+  const from = f.effective_from ? /^(\d{4})-(\d{2})/.exec(f.effective_from) : null;
+  return { value: f.value, from: from ? { y: Number(from[1]), m: Number(from[2]) } : null, strength: rule.strength };
+}
+
+const monthNo = (c: CalendarMonth): number => c.y * 12 + c.m;
+
+/** Whether period `p` holds the cap's month or runs past it (it ends after that month, or runs on), or the cap holds throughout. */
+const reachesCap = (p: Pick<DealPeriod, "to">, cap: AccountCap): boolean => cap.from === null || p.to === null || monthNo(p.to) > monthNo(cap.from);
+
+/** Whether a chart's fee is a bank's current account (F-102). */
+const isAccount = (fee: ChartFee): boolean => fee.ref.kind === "current_account";
+
+/**
+ * The cap that flags a year of holding in period `p` (F-102), null where none does: the period reaches the cap's month, and the deal's
+ * current accounts together, `accountYear` a year, are charged above the cap a month, as the run sums them in a month.
+ */
+const capFlag = (p: DealPeriod, accountYear: number, cap: AccountCap | null): AccountCap | null => (cap !== null && reachesCap(p, cap) && accountYear / 12 > cap.value ? cap : null);
+
+/** A year of holding's cost (F-112), with BANK-35's flag where `flagged` gives its cap: the cost may be too high from the cap's start (F-102). */
+const yearCostOf = (value: number, formula: string, inputs: Record<string, SiteValue>, today: string, flagged: AccountCap | null): SiteValue =>
+  flagged ? computed(value, "nis", formula, inputs, { today, rules: [{ id: "BANK-35", strength: flagged.strength }], flags: ["BANK-35"] }) : reading(value, "nis", formula, inputs, today);
+
+function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSnapshot | null, period: PeriodCard | undefined, cap: AccountCap | null): HeldPanelView {
   const at = monthKey(p.from);
   // a fee free in the period costs nothing on the chart and has no lane
   const idx = onHolding(r, p).filter((i) => p.prices[i]!.price.kind !== "free");
@@ -766,7 +812,7 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
   const inputs = chartInputs(r, p, idx, "all", values);
   const crossValue = cross !== null ? reading(cross, "nis", "F-124", inputs, r.today) : null;
   const markAts = [...all.map((b) => b.at), ...(cross !== null ? [cross] : [])];
-  if (!markAts.length) return { one: oneHeld(r, p, fees, lanes, inputs) };
+  if (!markAts.length) return { one: oneHeld(r, p, fees, lanes, inputs, cap) };
   const range = openingRange(markAts);
   const cost = (v: number) => holdingCost(r.engine, p, v, rates);
   const layerOf = (v: number) => {
@@ -827,14 +873,16 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
     const amount = entered(v, "nis", r.today);
     const amountIn = { "deal:amount": amount };
     const layers = heldLayers(r.engine, p, v, rates);
-    const total = reading(layers.reduce((a, l) => a + l.cost, 0), "nis", "F-112", { ...inputs, ...amountIn }, r.today);
+    const costOf = (fee: ChartFee) => layers.filter((l) => fee.idx.includes(l.fee)).reduce((a, l) => a + l.cost, 0);
+    const flag = capFlag(p, ordered.filter(isAccount).reduce((a, fee) => a + costOf(fee), 0), cap);
+    const total = yearCostOf(layers.reduce((a, l) => a + l.cost, 0), "F-112", { ...inputs, ...amountIn }, r.today, flag);
     const groups = (["share", "fixed"] as const).map((layer) => {
       const rows: HeldRow[] = ordered.flatMap((fee) => {
         const mine = layers.filter((l) => fee.idx.includes(l.fee));
         if (!mine.length || mine[0]!.layer !== layer) return [];
         const lane = lanes.find((l) => l.fee === fee)!;
         const part = lane.parts ? partAt(lane.parts, v) : undefined;
-        return [{ fee, cost: reading(mine.reduce((a, l) => a + l.cost, 0), "nis", "F-112", { ...inputs, ...amountIn }, r.today), ...(part ? { part } : {}) }];
+        return [{ fee, cost: yearCostOf(costOf(fee), "F-112", { ...inputs, ...amountIn }, r.today, isAccount(fee) ? flag : null), ...(part ? { part } : {}) }];
       });
       const sum = layers.filter((l) => l.layer === layer).reduce((a, l) => a + l.cost, 0);
       return { layer, total: reading(sum, "nis", "F-123", { ...inputs, ...amountIn }, r.today), rows };
@@ -869,7 +917,7 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
 }
 
 /** Holding with nothing that varies by the value: the yearly rate its shares add to, or the yearly sums, else neither. */
-function oneHeld(r: DealRead, p: DealPeriod, fees: ChartFee[], lanes: readonly Lane[], inputs: Record<string, SiteValue>): OneView {
+function oneHeld(r: DealRead, p: DealPeriod, fees: ChartFee[], lanes: readonly Lane[], inputs: Record<string, SiteValue>, cap: AccountCap | null): OneView {
   const prices = lanes.map((l) => ({ fee: l.fee, price: l.price! }));
   const shares = lanes.filter((l) => l.group === "share");
   const sums = lanes.filter((l) => l.group === "fixed");
@@ -882,8 +930,10 @@ function oneHeld(r: DealRead, p: DealPeriod, fees: ChartFee[], lanes: readonly L
     }
   }
   if (sums.length && !shares.length) {
-    const year = holdingCost(r.engine, p, 1).total;
-    const one = sums.length === 1 && sums[0]!.price?.yearly ? sums[0]!.price.yearly : reading(year, "nis", "F-111", inputs, r.today);
+    const c = holdingCost(r.engine, p, 1);
+    const flag = capFlag(p, sums.filter((l) => isAccount(l.fee)).reduce((a, l) => a + c.parts.filter((x) => l.fee.idx.includes(x.fee)).reduce((s, x) => s + x.cost, 0), 0), cap);
+    // a flagged year is the computed one, which carries the flag, not the price's own yearly figure
+    const one = sums.length === 1 && sums[0]!.price?.yearly && !flag ? sums[0]!.price.yearly : yearCostOf(c.total, "F-111", inputs, r.today, flag);
     return { periods: [at], fees, one: { value: one, of: "sum" }, prices };
   }
   return { periods: [at], fees, one: null, prices };
@@ -933,7 +983,7 @@ function withUnpriced(r: DealRead, tabs: readonly ActionTab[]): ActionTab[] {
  * chart's view per such run; and the deal's stated parts by the panel their fee stands on. `unit`: the unit's price the person gave and
  * the currency it is asked in.
  */
-export function panelsOf(r: DealRead, fx: FxSnapshot | null, unit: { price: number | null; currency: string | null }, cards: readonly PeriodCard[], stated: readonly StatedPart[]): Panels {
+export function panelsOf(r: DealRead, fx: FxSnapshot | null, unit: { price: number | null; currency: string | null }, cards: readonly PeriodCard[], stated: readonly StatedPart[], cap: AccountCap | null): Panels {
   const tabs = new Map<string, { action: DealAction; side: DealSide; items: { sig: string; at: MonthKey; make: () => ActionPanelView }[] }>();
   r.reading.periods.forEach((p) => {
     for (const action of ACTIONS)
@@ -948,9 +998,10 @@ export function panelsOf(r: DealRead, fx: FxSnapshot | null, unit: { price: numb
   const actions = withUnpriced(r, [...tabs.entries()].map(([key, t]) => ({ key, action: t.action, side: t.side, views: merged(t.items, periodsOf) })));
   const held = merged(
     r.reading.periods.map((p, k) => ({
-      sig: signature(r, p, onHolding(r, p)),
+      // a period with a current account that reaches BANK-35's cap is not merged with one that does not, whose figures carry no flag
+      sig: `${signature(r, p, onHolding(r, p))}${cap && reachesCap(p, cap) && onHolding(r, p).some((i) => r.fees[i]?.kind === "current_account") ? ":cap" : ""}`,
       at: monthKey(p.from),
-      make: () => heldView(r, p, k > 0 ? r.reading.periods[k - 1]! : null, fx, cards.find((c) => c.from === monthKey(p.from))),
+      make: () => heldView(r, p, k > 0 ? r.reading.periods[k - 1]! : null, fx, cards.find((c) => c.from === monthKey(p.from)), cap),
     })),
     periodsOf,
   );

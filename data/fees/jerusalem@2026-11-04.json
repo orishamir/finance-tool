@@ -1218,7 +1218,7 @@
     },
     {
       "what": "חשבון עובר ושב: עמלה חודשית קבועה בגובה פעולה אחת על ידי פקיד, 9.5 ₪ (בפיקוח); פעולה בערוץ ישיר ללא עמלה",
-      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 ('16/09/2026', library 77f184a3692d1322), items (2), (3) and track (ג): 'הבנק יגבה אך ורק עמלת מינימום בסכום קבוע בגובה עמלת פעולה אחת ע\"י פקיד, זאת ללא תלות בכמות הפעולות ובכלל זה גם אם לא בוצעו כלל', that is 9.5 NIS a month (114 NIS a year).",
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Part 1 ('16/09/2026', library 77f184a3692d1322), items (2), (3) and track (ג): 'הבנק יגבה אך ורק עמלת מינימום בסכום קבוע בגובה עמלת פעולה אחת ע\"י פקיד, זאת ללא תלות בכמות הפעולות ובכלל זה גם אם לא בוצעו כלל', that is 9.5 NIS a month (114 NIS a year).",
       "why_he": "מחשבון העו״ש האתר סופר את העמלה החודשית הקבועה, 9.5 ₪, שהבנק גובה בלי קשר למספר הפעולות. זה מה שהחשבון עולה, ופעולות בערוץ ישיר לא עולות יותר. אם סימנתם שזה הבנק שלכם, האתר לא סופר את העמלה הזו.",
       "could_change_price": false
     },

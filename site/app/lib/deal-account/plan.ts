@@ -3,17 +3,14 @@
 // fund trades in), and the deal keeps its own pick of what
 // only the person knows (a track, a condition of their own). Each fee is then charged by the plan, never charged with its reason, or
 // stops the deal from a price on the plan with what it lacks. Pure; no Hebrew (the words are in copy.ts, read by the page).
-import { planChargeOf, type Deal, type DealAccount, type DealFee, type DealRun, type DealUnpriced, type NotOnPlan, type PlanWithin } from "@finance-tool/engine";
+import { planChargeOf, type Deal, type DealAccount, type DealRun, type DealUnpriced, type NotOnPlan, type PlanWithin } from "@finance-tool/engine";
 import { readDealFor, type DealRead } from "../fee-deal/deal-read";
 import { chargedOnHolding, feeOf, stepPick, type ReadFee } from "../fee-deal/cases";
 import { hasCases, isRange, monthOfDate, pickKey, placeOf, type Fee, type FeeDeal, type RangeBy, type ReadPick } from "../fee-deal/model";
 import { engineFee } from "../fee-deal/to-engine";
 import { monthOf as monthThing } from "../fee-deal/offers/conditions";
 import { engineBase, type FeeKindId } from "../fee-deal/shapes";
-import type { DealKind } from "../fee-deal/kinds";
-
-/** The deal's kind the indices page reads: a securities account (decision of the deal-on-indices design). */
-export const ACCOUNT_KIND = "brokerage-account";
+import { ACCOUNT_KIND, type DealKind } from "../fee-deal/kinds";
 
 /** Whether a saved deal is a securities account, which the indices page lists as an account. */
 export const isAccountDeal = (d: Pick<FeeDeal, "kind">): boolean => d.kind === ACCOUNT_KIND;
@@ -92,11 +89,18 @@ export function planRead(deal: FeeDeal, run: Pick<DealRun, "instrumentClass" | "
   const held = w.held === w.what || !deal.fees.some(byHeld) ? bought : readAt(w.held);
   const whatOf = (f: Fee) => (byHeld(f) ? w.held : w.what);
   const within = new Map<ReadFee, readonly PlanWithin[]>();
-  /** Each fee's reading: its own one, or, for a fee read across what the plan sets, one per combination of steps. */
+  /**
+   * Each fee's reading: its own one, or, for a fee read across what the plan sets, one per combination of steps; a current account whose
+   * price changes by a month's actions is read at the deal's own pick of them, else at its dearest step (`accountActionsPick`).
+   */
+  const accountPicks: ReadPick[] = [];
   const readsOf = (f: Fee): { read: DealRead; within: PlanWithin[] }[] => {
     const things = planThings(f);
-    const base = byHeld(f) ? held : bought;
-    return things.length ? stepCombos(things).map((c) => ({ read: readAt(whatOf(f), c.picks), within: c.within })) : [{ read: base, within: [] }];
+    const own = accountActionsPick(deal, f, (pick) => readAt(whatOf(f), [pick]));
+    if (own && !accountPicks.some((p) => p.by === own.by)) accountPicks.push(own);
+    if (!things.length && !own) return [{ read: byHeld(f) ? held : bought, within: [] }];
+    const combos = things.length ? stepCombos(things) : [{ picks: [], within: [] }];
+    return combos.map((c) => ({ read: readAt(whatOf(f), [...c.picks, ...(own ? [own] : [])]), within: c.within }));
   };
   const reads = new Map(deal.fees.map((f) => [f.id, readsOf(f)]));
   const some = (key: "unread" | "unpriced" | "unmatched" | "noCurrency" | "notPrinted") => deal.fees.flatMap((f) => (reads.get(f.id)!.some((r) => r.read[key].includes(f.id)) ? [f.id] : []));
@@ -111,6 +115,8 @@ export function planRead(deal: FeeDeal, run: Pick<DealRun, "instrumentClass" | "
   const first = (f: Fee) => reads.get(f.id)![0]!.read;
   return {
     ...bought,
+    // the step a current account is read in stands among the picks, so the pick bar shows the step the plan charges
+    picks: [...bought.picks.filter((p) => !accountPicks.some((x) => x.by === p.by)), ...accountPicks],
     fees,
     unread: some("unread"),
     unpriced: some("unpriced").filter((id) => !some("unread").includes(id)),
@@ -134,9 +140,34 @@ export function planThings(fee: Fee): { by: RangeBy; on: PlanWithin["on"] }[] {
     if (!isRange(b)) return [];
     const month = monthThing(b.kind);
     if (month === "trading") return [{ by: b, on: "trading" }];
-    if (month === "actions") return [{ by: b, on: "count" }];
+    // a current account's actions are not the plan's orders (F-102): `accountActionsPick` reads them
+    if (month === "actions") return fee.kind === "current_account" ? [] : [{ by: b, on: "count" }];
     return b.kind === "portfolioSize" && !chargedOnHolding(fee) ? [{ by: b, on: "balance" }] : [];
   });
+}
+
+/**
+ * F-102, F-128: the step of a month's actions a current account is read in on the plan, where its price changes by them: no rule says a
+ * securities order, or the account movement it makes, is one of the account's actions (an open question, F-102), so the plan never counts its orders for
+ * it. The deal's own pick of the step (its `readFor`, as the fee page reads it, F-114), else the dearest step, the most the deal lets the
+ * bank charge (D56): the step whose read price charges the most in a month, at any of its prices over time (a later step on a tie).
+ * Undefined for any other fee, and where the price does not change by a month's actions.
+ */
+function accountActionsPick(deal: FeeDeal, fee: Fee, readAt: (pick: ReadPick) => DealRead): ReadPick | undefined {
+  if (fee.kind !== "current_account" || !hasCases(fee)) return undefined;
+  const by = fee.by.find((b): b is RangeBy => isRange(b) && monthThing(b.kind) === "actions");
+  if (!by) return undefined;
+  const mine = deal.readFor?.find((p) => p.by === pickKey(by));
+  if (mine) return mine;
+  let best: { pick: ReadPick; monthly: number } | undefined;
+  for (const c of stepCombos([{ by, on: "count" }])) {
+    const [pick] = c.picks;
+    if (!pick) continue;
+    const r = readAt(pick);
+    const monthly = Math.max(0, ...r.fees.flatMap((x, i) => (feeOf(x) === fee.id ? (r.engine.fees[i]?.stages ?? []).map((s) => (s.price.kind === "sum" ? s.price.amount / s.price.everyMonths : 0)) : [])));
+    if (!best || monthly >= best.monthly) best = { pick, monthly };
+  }
+  return best?.pick;
 }
 
 /** Every combination of a step of each thing (`planThings`): the picks that read the fee in it, and the steps it is charged within. */
@@ -182,11 +213,6 @@ export interface PlanContext {
   kinds: readonly DealKind[];
   today: string;
   currentAccounts: { own: string | null } | null;
-  /**
-   * The current account of the bank a deal was filled from, a month (F-102), where the page counts it: a deal filled from a bank is an
-   * account at that bank, as an account built on a bank is (F-101), and pays the bank's current account where it names none of its own.
-   */
-  bankAccount?: number;
   /** The line choice of the house the deal was filled from, where it was filled from a house's whole list (`LineValue`). */
   lineValue?: LineValue;
 }
@@ -233,7 +259,8 @@ function offOf(deal: FeeDeal, f: Fee, facts: { converts: boolean; distributes: b
 /**
  * F-128 The deal account for one run, or why it has no price there (the first fee the plan charges that lacks something, as
  * `missingKey` writes it): the deal read for the plan, its fees the plan charges, `foreign` false (the run converts on its own), its first
- * month the page's run month (`PlanContext.today`, the bundle's day), and its current account where the plan charges one: its own, else its bank's (`bankAccount`), after its fees.
+ * month the page's run month (`PlanContext.today`, the bundle's day), and its current account where the plan charges one (F-102: the deal's
+ * own fee of that kind, which a bank's whole list fills).
  */
 export function planAccount(deal: FeeDeal, run: DealRun, ctx: PlanContext): DealAccount | DealUnpriced {
   const on = feesOnPlan(deal, run, ctx);
@@ -241,11 +268,9 @@ export function planAccount(deal: FeeDeal, run: DealRun, ctx: PlanContext): Deal
   if (missing) return { unpriced: missingKey(missing.missing) };
   const read = planRead(deal, run, ctx);
   const fees = planFees(read, on);
-  const own = fees.map(engineFee);
-  const bank: DealFee[] = ctx.bankAccount !== undefined && !deal.fees.some((f) => f.kind === "current_account") ? [{ base: { name: "current_account" }, stages: [{ price: { kind: "sum", amount: ctx.bankAccount, everyMonths: 1 } }] }] : [];
-  const currentAccount = [...fees.flatMap((f, i) => (f.kind === "current_account" ? [i] : [])), ...bank.map((_, i) => own.length + i)];
-  const engine: Deal = { fees: [...own, ...bank], foreign: false, ...(deal.provider ? { provider: deal.provider } : {}) };
-  feeIds.set(engine, [...fees.map(feeOf), ...bank.map(() => BANK_ACCOUNT)]);
+  const currentAccount = fees.flatMap((f, i) => (f.kind === "current_account" ? [i] : []));
+  const engine: Deal = { fees: fees.map(engineFee), foreign: false, ...(deal.provider ? { provider: deal.provider } : {}) };
+  feeIds.set(engine, fees.map(feeOf));
   const planWithin = fees.map((f) => read.within.get(f));
   const flags = questionsOf(fees);
   return {
@@ -269,21 +294,18 @@ function questionsOf(fees: readonly ReadFee[]): string[] {
 }
 
 /**
- * The read fees the run charges, in the run's order (`DealAccount.deal`'s fees before the bank's current account): the read fees of the
- * deal's fees the plan charges (`feesOnPlan`). A run's figures by fee index (`dealReach`) are indices into this.
+ * The read fees the run charges, in the run's order (`DealAccount.deal`'s fees): the read fees of the deal's fees the plan charges
+ * (`feesOnPlan`). A run's figures by fee index (`dealReach`) are indices into this.
  */
 export function planFees(read: PlanRead, on: readonly FeeOnPlan[]): ReadFee[] {
   const charged = new Set(on.filter((x) => x.on === "charged").map((x) => x.fee));
   return read.fees.filter((f) => charged.has(feeOf(f)));
 }
 
-/** The bank's current account a deal filled from a bank pays (`PlanContext.bankAccount`), among a run's fees: it is none of the deal's own. */
-export const BANK_ACCOUNT = "bank-account";
-
 const feeIds = new WeakMap<Deal, string[]>();
 /**
  * The deal's fee each of a run's fees is, in the run's order (the engine's `byFee` counts them so), by the deal the run read
- * (`DealAccount.deal`): a fee read as one fee per step of sizes is each of them; the bank's current account is `BANK_ACCOUNT`.
+ * (`DealAccount.deal`): a fee read as one fee per step of sizes is each of them.
  */
 export const feeIdsOf = (d: Deal): readonly string[] | undefined => feeIds.get(d);
 

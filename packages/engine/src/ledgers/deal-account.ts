@@ -187,8 +187,12 @@ export interface DealCharges {
    * key: two runs whose keys agree price every such charge in the same steps.
    */
   activityKey(activity: (m: number) => MonthActivity, T: number): string;
-  /** F-102 with BANK-35: what a current account costs a month in month `m`, for the cap's flag. */
-  accountMonthly(m: number): number;
+  /**
+   * F-102 with BANK-35: what the current account is charged for month `m`, a month's worth, for the cap's flag: each of its fees that
+   * month's steps charge (a card split by a month's orders or trading, or by the value held at `value`, charges one step's price, never
+   * the sum of its steps), at its sum over the months it covers. Read once the month's orders are placed.
+   */
+  accountMonthly(m: number, value: number): number;
   /**
    * F-128: for each fee with a step (of an action's size, of the value held, of a month's orders or trading, or of the balance), the run
    * months in which a charge of the run fell in all its steps, in order; empty for a fee with none.
@@ -278,6 +282,10 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
   // order is placed at. A step of a month's orders or trading is written per month, so a charge covering `k` months reads their average,
   // their total ÷ k (a month before the run's first holds nothing)
   const planWithin = account.planWithin ?? [];
+  // F-102: no rule makes the plan's orders a current account's actions, so its step of a month's actions is the deal's own pick, never read here
+  for (const i of account.currentAccount ?? []) {
+    if (planWithin[i]?.some((w) => w.on === "count")) throw new Error(`F-102: fee ${i}, a current account, is read within the plan's orders; its count of actions is the deal's pick (F-128)`);
+  }
   const measure = (w: PlanWithin, from: number, to: number, activity: (m: number) => MonthActivity, balance: number): number => {
     if (w.on === "balance") return balance / shekelsPer(w.unit, to);
     let x = 0;
@@ -459,11 +467,13 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
       markAction("conversion", m, converted, balance);
       return scaled(conversion(m, converted, "sell", balance), converted);
     },
-    accountMonthly(m) {
+    accountMonthly(m, value) {
       const p = periodAt(m);
+      const rates = ratesAt(m);
       return (account.currentAccount ?? []).reduce((a, i) => {
         const price: DealPrice | undefined = p.prices[i]?.price;
-        return a + (price?.kind === "sum" ? price.amount / price.everyMonths : 0);
+        if (price?.kind !== "sum" || !within(i, covers(m, price.everyMonths), m, value)) return a;
+        return a + sumCharge(deal, p, i, value, rates) / price.everyMonths;
       }, 0);
     },
     reach() {

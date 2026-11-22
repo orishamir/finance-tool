@@ -68,8 +68,8 @@ export function moveTypedAccounts(accounts: readonly CustomBroker[], ctx: MoveCo
 }
 
 /**
- * Runs the move on a page that has the price lists (`data`): the houses' records it reads (each one's line choice, a bank's current
- * account, the run's rates) are `bundle`'s where the page has the indices bundle, else loaded once a typed account is waiting. Returns the
+ * Runs the move on a page that has the price lists (`data`): the houses' records it reads (each one's line choice and the run's
+ * rates) are `bundle`'s where the page has the indices bundle, else loaded once a typed account is waiting. Returns the
  * typed accounts the move left, with why, for the page to say (none until the move has run).
  */
 export function useTypedAccountsMove(data: FeesData | null, bundle?: Pick<IndicesBundle, "snapshots" | "fx"> | null): MoveLeft[] {

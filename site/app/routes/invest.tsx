@@ -23,6 +23,7 @@ import { dealStore } from "../lib/fee-deal/store";
 import type { FeeDeal } from "../lib/fee-deal/model";
 import { isAccountDeal } from "../lib/deal-account/plan";
 import { withDeals } from "../lib/deal-account/bundle";
+import { withLaterFillsAll } from "../lib/fee-deal/templates";
 import { useTypedAccountsMove } from "../lib/deal-account/move-run";
 import { lastIndexStore } from "../lib/deal-account/last-index";
 import { loadFeesData, type FeesData } from "../lib/fee-page-data";
@@ -212,11 +213,13 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
   const customs: CustomIndex[] = invest.customIndices;
   // the funds the person typed join the data here and nowhere else: this page alone compares them (D44)
   const typedBundle = useMemo(() => withCustomEntries(wb, invest.customFunds, customs), [wb, invest.customFunds, customs]);
-  // the person's securities-account deals are accounts too (F-128): read with the fee page's data (the kinds, `useFeesData`); while the
-  // popup is open the page keeps the deals as they were, and takes them once it closes
-  const deals = dealStore.use();
-  const accountDeals = useMemo(() => deals.value.filter(isAccountDeal), [deals.value]);
+  // the person's securities-account deals are accounts too (F-128): read with the fee page's data (the kinds, `useFeesData`), each with
+  // what its house's list fills that it has not had (`withLaterFills`); while the popup is open the page keeps the deals as they
+  // were, and takes them once it closes
   const { data: feesData, failed: feesFailed, want: wantFees, left: notMoved } = fees;
+  const stored = dealStore.use();
+  const savedDeals = useMemo(() => withLaterFillsAll(stored.value, feesData), [stored.value, feesData]);
+  const accountDeals = useMemo(() => savedDeals.filter(isAccountDeal), [savedDeals]);
   const [dealOpen, setDealOpen] = useState(false);
   const heldDeals = useRef<FeeDeal[]>(accountDeals);
   if (!dealOpen) heldDeals.current = accountDeals;
@@ -362,7 +365,7 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
 
   return (
     <LabelSheetHost>
-      <DealAccountsHost data={feesData} onWant={wantFees} failed={feesFailed} left={notMoved} saved={deals.value} writable={deals.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen}>
+      <DealAccountsHost data={feesData} onWant={wantFees} failed={feesFailed} left={notMoved} saved={savedDeals} writable={stored.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen}>
       <CustomEntriesHost index={pageIndex} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
       <Frame title={title}>
         <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">

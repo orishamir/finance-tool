@@ -1,10 +1,12 @@
-// The saved state, version 4 (design-spec 11.5 and 21.5, flows 17 and 26): one document `mekor.v2.state` on the device that
+// The saved state, version 3 (design-spec 11.5 and 21.5, flows 17 and 26): one document `mekor.v2.state` on the device that
 // holds the guide inputs, the holdings and the names not catalogued yet, the index page's own entries, plus the record of imports.
-// The storage key is unchanged (the document's own `version` says what it is; an older site that finds version 4 there refuses it
-// and leaves it alone); versions 2 and 3 migrate on load and on import. The goals and the saved comparisons an older document or
-// file holds are left out without a word: no page reads them. It replaces the release 2 keys `mekor.v1.inputs`, `mekor.v1.goals`
-// and `mekor.v1.uncatalogued`: the first load after the release migrates them once (of the goals document, only the bank) and
-// removes them after a successful write. Browser only; nothing is sent anywhere. `lib/inputs.tsx` reads and writes through this store.
+// The storage key is unchanged (the document's own `version` says what it is); version 2 migrates on load and on import. The goals
+// and the saved comparisons of the version 3 shape stay as empty lists: an older tab still open reads the document as its own
+// version and keeps the holdings and entries, where a newer version would have it offer to start again over them. Any goals,
+// current goal or saved comparisons a document or file holds are left out without a word: no page reads them. It replaces the
+// release 2 keys `mekor.v1.inputs`, `mekor.v1.goals` and `mekor.v1.uncatalogued`: the first load after the release migrates them
+// once (of the goals document, only the bank) and removes them after a successful write. Browser only; nothing is sent anywhere.
+// `lib/inputs.tsx` reads and writes through this store.
 //
 // The export file (`StateFile`) is this document with a header; the import checks it before anything changes.
 import { useSyncExternalStore } from "react";
@@ -19,7 +21,7 @@ import { sanitizeRawState, type Rejected } from "./import-check";
 import { IMPORTED_SIDE_KEY, mergeSide, noSideCounts, readImportedSide, readSideFile, readSideStores, removeImportedSide, sideCounts, sideTotal, sideIsEmpty, writeSideStores, type DealProblem, type SideCounts, type SideMerge, type SideProblem, type SideStores } from "./side-stores";
 
 export const STATE_KEY = "mekor.v2.state";
-export const STATE_VERSION = 4;
+export const STATE_VERSION = 3;
 const V1_INPUTS = "mekor.v1.inputs";
 const V1_GOALS = "mekor.v1.goals";
 const V1_UNCAT = "mekor.v1.uncatalogued";
@@ -73,15 +75,19 @@ export interface Uncatalogued {
 export interface ImportRecord {
   at: string;
   mode: "add" | "replace";
-  /** How many goals an import added: only in a record an import into a version 3 document wrote. */
+  /** How many goals an import added: only in a record an earlier release wrote. */
   goals?: number;
   holdings: number;
   names: number;
   skipped: number;
 }
 
-export interface StateV4 {
-  version: 4;
+export interface StateV3 {
+  version: 3;
+  /** Always empty: kept so an older tab reads the document (no page reads goals). */
+  goals: [];
+  /** Always empty, for the same reason. */
+  savedComparisons: [];
   /** The bank where the person already has a current account (a fee snapshot id): the indices page leaves that bank's current account out of its row (D64). */
   bank?: string;
   /** The guide inputs (A-01, A-02, the P-05 amounts, age, employment), each a value object. */
@@ -104,7 +110,7 @@ export interface StateFile {
   version: number;
   exported: string;
   site: { version: string; data: string };
-  state: StateV4;
+  state: StateV3;
   /**
    * The entered offers, the variant assumptions and the playbook ticks, which live in their own device keys until the
    * founder approves their merge into the document. Absent in a file from before.
@@ -117,8 +123,8 @@ const stateFileHeader = z.object({ format: z.literal("mekor-state"), version: z.
 type StateFileHeader = z.infer<typeof stateFileHeader>;
 const headerFields = ["version", "exported", "site"] as const;
 
-export function emptyState(): StateV4 {
-  return { version: 4, inputs: {}, holdings: [], uncatalogued: [], imports: [] };
+export function emptyState(): StateV3 {
+  return { version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] };
 }
 
 /** The device's calendar date (local, not UTC): see `today.ts`. */
@@ -159,8 +165,8 @@ export function inputsFromRecord(rec: Record<string, ValueObject>): InputsLike {
 
 const isObj = (x: unknown): x is Record<string, unknown> => typeof x === "object" && x !== null && !Array.isArray(x);
 
-/** The document versions the store reads: 2 and 3 migrate, 4 is the current one. */
-const readable = (v: unknown): boolean => v === 2 || v === 3 || v === STATE_VERSION;
+/** The document versions the store reads: 2 migrates, 3 is the current one. */
+const readable = (v: unknown): boolean => v === 2 || v === STATE_VERSION;
 
 export type Refusal =
   | { kind: "unreadable" }
@@ -190,8 +196,8 @@ function voAt(v: unknown, path: string): string | null {
 }
 
 /**
- * The first problem of a version 2, 3 or 4 document, as the field's path, or null. Every figure must stay a value object (data-schema §1).
- * The goals and saved comparisons of an older document are not read, so they are not checked.
+ * The first problem of a version 2 or 3 document, as the field's path, or null. Every figure must stay a value object (data-schema §1).
+ * The goals and saved comparisons a document holds are not read, so they are not checked.
  */
 export function checkState(s: unknown): string | null {
   if (!isObj(s)) return "state";
@@ -242,11 +248,13 @@ export function validCustomIndices(list: unknown[]): CustomIndex[] {
   return out;
 }
 
-/** A version 2, 3 or 4 document as the version 4 shape: the goals, the current goal and the saved comparisons of an older one, and a `visits` field of an earlier file, are left out (the migration chain, design-spec 21.5). */
-function normalizeState(s: Record<string, unknown>): StateV4 {
+/** A version 2 or 3 document as the version 3 shape: its goals and saved comparisons become empty lists, its current goal and a `visits` field of an earlier file are left out (the migration chain, design-spec 21.5). */
+function normalizeState(s: Record<string, unknown>): StateV3 {
   const base = emptyState();
   return {
-    version: 4,
+    version: 3,
+    goals: [],
+    savedComparisons: [],
     ...(typeof s.bank === "string" ? { bank: s.bank } : {}),
     ...(Array.isArray(s.customIndices) && validCustomIndices(s.customIndices).length ? { customIndices: validCustomIndices(s.customIndices) } : {}),
     ...(Array.isArray(s.customBrokers) && validCustomBrokers(s.customBrokers).length ? { customBrokers: validCustomBrokers(s.customBrokers) } : {}),
@@ -266,8 +274,8 @@ export interface V1Docs {
   uncatalogued?: unknown;
 }
 
-/** Migration v1 → v4: the three release 2 documents become one, of the goals document only its bank. Returns null when there was nothing to carry over. */
-export function migrateV1(v1: V1Docs, today = isoToday()): StateV4 | null {
+/** Migration v1 → v3: the three release 2 documents become one, of the goals document only its bank. Returns null when there was nothing to carry over. */
+export function migrateV1(v1: V1Docs, today = isoToday()): StateV3 | null {
   const s = emptyState();
   let found = false;
   if (isObj(v1.inputs)) {
@@ -297,7 +305,7 @@ export function migrateV1(v1: V1Docs, today = isoToday()): StateV4 | null {
  * Reads a state of any version: version 1 (the goals document alone, as a file from before release 3 would carry)
  * is migrated by the same chain the load uses; a newer version is refused; an invalid one names its first field.
  */
-export function readState(raw: unknown, version: number): { ok: true; state: StateV4; migrated: boolean } | { ok: false; refusal: Refusal } {
+export function readState(raw: unknown, version: number): { ok: true; state: StateV3; migrated: boolean } | { ok: false; refusal: Refusal } {
   if (!Number.isInteger(version) || version < 1) return { ok: false, refusal: { kind: "format" } };
   if (version > STATE_VERSION) return { ok: false, refusal: { kind: "newer" } };
   if (version === 1) {
@@ -323,7 +331,7 @@ export interface Snapshot {
   ready: boolean;
   /** False when the last write failed (private mode, full storage): the visit still works. */
   saved: boolean;
-  state: StateV4;
+  state: StateV3;
   /** Bumped by changes that did not come from a provider's own edit: import, delete imported, another tab. */
   external: number;
 }
@@ -333,7 +341,7 @@ type Storage = Pick<globalThis.Storage, "getItem" | "setItem" | "removeItem">;
 let storage: Storage | null | undefined;
 let snap: Snapshot = { status: "loading", ready: false, saved: true, state: emptyState(), external: 0 };
 /** With storage unavailable the state still crosses pages within the visit. */
-let memory: StateV4 | null = null;
+let memory: StateV3 | null = null;
 let readOnly = false;
 /** An edit is waiting to be written: pagehide and the timer write only then (a document someone cleared is not put back). */
 let dirty = false;
@@ -447,10 +455,11 @@ export function ensureLoaded(): Snapshot {
     if (cur.present) {
       const v = cur.value;
       if (isObj(v) && readable(v.version) && checkState(v) === null) {
-        // an older document is migrated here and written as the current version at once; a current one is read as it is
+        // an older document, or one that still holds goals or saved comparisons, is written in the current shape at once
         const norm = normalizeState(v);
         set({ ready: true, status: "ok", state: norm });
-        if (v.version !== STATE_VERSION) schedule();
+        const held = (k: string) => (Array.isArray(v[k]) && (v[k] as unknown[]).length > 0) || (k === "currentId" && k in v);
+        if (v.version !== STATE_VERSION || ["goals", "savedComparisons", "currentId"].some(held)) schedule();
       } else {
         // a newer or unreadable document is left exactly as it is
         readOnly = true;
@@ -514,7 +523,7 @@ function schedule() {
 }
 
 /** A provider's own edit: saved after 300 ms, not announced as an outside change. */
-export function updateState(fn: (s: StateV4) => StateV4): void {
+export function updateState(fn: (s: StateV3) => StateV3): void {
   ensureLoaded();
   if (readOnly) return;
   const next = fn(snap.state);
@@ -526,7 +535,7 @@ export function updateState(fn: (s: StateV4) => StateV4): void {
 }
 
 /** A change the providers must re-read (import, delete imported): saved at once and announced. */
-export function replaceState(next: StateV4): boolean {
+export function replaceState(next: StateV3): boolean {
   ensureLoaded();
   // an unreadable or newer document on the device is replaced only by this explicit act
   readOnly = false;
@@ -594,10 +603,10 @@ export function removeCustomIndex(id: string): void {
 }
 
 /** The state with a list of entries, the key left out when it is empty (as a document that never had any). */
-function withList<K extends "customBrokers" | "customFunds">(s: StateV4, key: K, list: NonNullable<StateV4[K]>): StateV4 {
+function withList<K extends "customBrokers" | "customFunds">(s: StateV3, key: K, list: NonNullable<StateV3[K]>): StateV3 {
   const { [key]: _drop, ...rest } = s;
   void _drop;
-  return (list.length ? { ...rest, [key]: list } : rest) as StateV4;
+  return (list.length ? { ...rest, [key]: list } : rest) as StateV3;
 }
 
 /** Takes the typed accounts moved into deals out of the saved state (the move, method §10.4; lib/deal-account/move-run.ts). */
@@ -647,14 +656,14 @@ export function useInvestState() {
 
 // ---------------------------------------------------------------- imported items
 
-export function importedCount(s: StateV4): { holdings: number; names: number; total: number } {
+export function importedCount(s: StateV3): { holdings: number; names: number; total: number } {
   const holdings = s.holdings.filter((h) => h.importedAt).length;
   const names = s.uncatalogued.filter((u) => u.importedAt).length;
   return { holdings, names, total: holdings + names };
 }
 
 /** "מחיקת מה שיובא": every item with `importedAt` goes, the rest stays. */
-export function withoutImported(s: StateV4): StateV4 {
+export function withoutImported(s: StateV3): StateV3 {
   return { ...s, holdings: s.holdings.filter((h) => !h.importedAt), uncatalogued: s.uncatalogued.filter((u) => !u.importedAt), imports: [] };
 }
 
@@ -674,7 +683,7 @@ export function useImportedCount(): number {
 
 // ---------------------------------------------------------------- export
 
-export function exportCounts(s: StateV4, side?: SideStores) {
+export function exportCounts(s: StateV3, side?: SideStores) {
   const sc = side ? sideCounts(side) : noSideCounts();
   return {
     holdings: s.holdings.length,
@@ -696,12 +705,12 @@ export function currentSideStores(): SideStores {
 }
 
 /** Nothing worth a file: no holding, no name, no guide input, no entry of the index page, no side store. */
-export function isEmptyState(s: StateV4, side?: SideStores): boolean {
+export function isEmptyState(s: StateV3, side?: SideStores): boolean {
   const c = exportCounts(s, side);
   return c.holdings === 0 && c.names === 0 && !c.inputs && c.indices === 0 && c.entries === 0 && c.offers + c.variants + c.ticks + c.ownRates + c.deals === 0;
 }
 
-export function buildStateFile(s: StateV4, site: { version: string; data: string }, now = new Date(), side?: SideStores): StateFile {
+export function buildStateFile(s: StateV3, site: { version: string; data: string }, now = new Date(), side?: SideStores): StateFile {
   return { format: "mekor-state", version: STATE_VERSION, exported: now.toISOString(), site, state: s, ...(side && !sideIsEmpty(side) ? { sideStores: side } : {}) };
 }
 
@@ -743,7 +752,7 @@ export interface ImportPreviewData {
   /** The file's header: when and by which build it was written. */
   file: StateFileHeader;
   /** The file's state as this release reads it (an older version already migrated), without the items that failed their check. */
-  state: StateV4;
+  state: StateV3;
   migrated: boolean;
   counts: { holdings: number; names: number; offers: number; variants: number; ticks: number; ownRates: number; deals: number };
   /** The file's side stores that passed their check, or null when the file has none. */
@@ -797,7 +806,7 @@ const fingerprint = (x: object): string => {
 };
 
 export interface ImportResult {
-  state: StateV4;
+  state: StateV3;
   added: { holdings: number; names: number };
   skipped: number;
 }
@@ -809,7 +818,7 @@ export interface ImportResult {
  * are kept as they are on the device, and a value only the file has is filled in.
  * "Replace": the file's state as it is (its items carry no imported tag: they are what the device now holds).
  */
-export function applyImport(current: StateV4, incoming: StateV4, mode: "add" | "replace", today = isoToday()): ImportResult {
+export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "replace", today = isoToday()): ImportResult {
   if (mode === "replace") {
     return {
       state: { ...incoming, imports: [...incoming.imports, { at: today, mode, holdings: incoming.holdings.length, names: incoming.uncatalogued.length, skipped: 0 }] },
@@ -853,7 +862,7 @@ export function applyImport(current: StateV4, incoming: StateV4, mode: "add" | "
     }
   }
   const inputs = { ...incoming.inputs, ...current.inputs };
-  const state: StateV4 = {
+  const state: StateV3 = {
     ...current,
     inputs,
     holdings,
