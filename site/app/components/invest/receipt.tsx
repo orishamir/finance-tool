@@ -301,7 +301,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       <div className="flex items-baseline justify-between gap-3 text-xs text-muted-foreground">{top}</div>
       {lines}
       <ReceiptRule kind="double" />
-      <div className="flex items-baseline justify-between gap-3 pb-1">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-2 pb-1">
         {leftName}
         <span className="text-figure font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
       </div>
