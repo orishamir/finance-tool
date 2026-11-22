@@ -74,7 +74,7 @@ export default function GuidePage() {
     return s ? <StrengthLabel strength={s} /> : undefined;
   };
 
-  const cp = { figure, breakTerms: data.breakTerms };
+  const cp = { figure, breakTerms: data.breakTerms, exampleFund: data.exampleFund };
 
   // ---- money in and out
   const exit = record.lawful_exit;

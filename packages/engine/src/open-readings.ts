@@ -1,15 +1,18 @@
-// Open readings (method §13, F-119, F-120): a case the rule base leaves open between a few readings it names. The resolver does not pick
-// one. A run that meets the case is run once under each reading (`acrossReadings`); where every reading gives the same result, that result
-// stands and carries the question as a flag; where they differ, the run stops on the question as on any open rule (D10).
+// Open readings (method §13, F-04, F-119, F-120): a case the rule base leaves open between a few readings it names. The resolver does not
+// pick one. A run that meets the case is run once under each reading (`acrossReadings`); where every reading gives the same result, that
+// result stands and carries the question as a flag; where they differ, the run stops on the question as on any open rule (D10).
 import type { UsedRule } from "./resolver.ts";
 import { labelWeight, type FieldRole, type Flag, type Label, type Outcome, type ResultFields, type RunContext } from "./result.ts";
 import type { YearlyMove } from "./formulas/indexation.ts";
 
 /** One way the rule base allows an amount to stand after a year in which the CPI fell. */
-export type ReadingId = "lower" | "hold" | "carry";
+export type FallReadingId = "lower" | "hold" | "carry";
+/** The index a foreign-investment fund's real gain is measured by (F-04): its principal currency's exchange rate, or the CPI. */
+export type TaxIndexReadingId = "principal" | "cpi";
+export type ReadingId = FallReadingId | TaxIndexReadingId;
 
-export interface Reading {
-  id: ReadingId;
+export interface FallReading {
+  id: FallReadingId;
   /** The amount `value` after one yearly move per entry of `rises` (each a year's CPI rise, a fraction, below zero for a fall), in order. */
   amount(value: number, rises: readonly number[]): number;
 }
@@ -21,7 +24,7 @@ export interface Reading {
  * - `carry`: a fall leaves the amount as it was and is carried against the next rises, so the amount moves only once the index passes its
  *   highest level since the amount was read, `value × max(1, the highest of the running products Π(1 + r))`.
  */
-export const fallReadings: readonly Reading[] = [
+export const fallReadings: readonly FallReading[] = [
   { id: "lower", amount: (value, rises) => rises.reduce((a, r) => a * (1 + r), value) },
   { id: "hold", amount: (value, rises) => rises.reduce((a, r) => a * Math.max(1, 1 + r), value) },
   {
@@ -37,32 +40,55 @@ export const fallReadings: readonly Reading[] = [
 
 /**
  * A case the rule base holds open between named readings: the rule a run stops on when they disagree, the question that holds it open,
- * which figures it covers, and the readings.
+ * and the readings. Each kind of case says where a run meets it.
  */
-export interface OpenReading {
+interface OpenReadingBase {
   ruleId: string;
   question: string;
-  /** The figures it covers: those that move by `move` in a later tax year, and, where named, only those of these rules. */
-  covers: { move: YearlyMove["kind"]; rules?: readonly string[] };
-  readings: readonly Reading[];
 }
 
+/** An amount moved by the CPI in a later tax year, at a falling CPI: the figures it covers and the ways the amount may stand. */
+export interface FallOpenReading extends OpenReadingBase {
+  kind: "fall";
+  /** The figures it covers: those that move by `move` in a later tax year, and, where named, only those of these rules. */
+  covers: { move: YearlyMove["kind"]; rules?: readonly string[] };
+  readings: readonly FallReading[];
+}
+
+/** The index a fund's real gain is measured by at the exit (F-04): met by the tax index of a fund the case covers (`taxIndexOf`). */
+export interface TaxIndexOpenReading extends OpenReadingBase {
+  kind: "tax-index";
+  readings: readonly { id: TaxIndexReadingId }[];
+}
+
+export type OpenReading = FallOpenReading | TaxIndexOpenReading;
+
 /**
- * The open readings the resolver knows, each met when a figure it covers is read for a later tax year at a falling CPI (A-02 below zero):
+ * TXS OQ26: whether the 2003 regulations that measure a foreign-investment fund's inflationary amount by its principal currency still operate
+ * (TXS-14). Until it is settled, the principal-currency index is a reading of their texts; if they no longer operate, the fund's shekel units
+ * are measured by the CPI, TXS-14's first bullet. A fund whose record does not say whether it is one, on an index in a foreign currency, meets
+ * the same two readings (method F-04).
+ */
+export const foreignInvestmentFundIndex: TaxIndexOpenReading = { kind: "tax-index", ruleId: "TXS-14", question: "TXS OQ26", readings: [{ id: "principal" }, { id: "cpi" }] };
+
+/**
+ * The open readings the resolver knows:
  * - TXG OQ17: every amount s.120ב moves after its freeze (F-119), since s.120ב(א) adjusts them "לפי שיעור עליית המדד בשנת המס הקודמת"
- *   (TXG-09) and says nothing of a fall.
+ *   (TXG-09) and says nothing of a fall; met when such an amount is read for a later tax year at a falling CPI (A-02 below zero).
  * - KGL OQ15: KGL-03's yearly ceiling (F-120), which the Provident Funds Law s.22(א) updates every 1 January "by the rise in the CPI"
- *   (KGL-02) and says nothing of a fall.
+ *   (KGL-02) and says nothing of a fall; met the same way.
+ * - TXS OQ26: the tax index of a foreign-investment fund (`foreignInvestmentFundIndex`, F-04).
  * A figure linked to the CPI every 1 January of a rule not named here has no reading at a fall: the resolver stops on its rule, naming G-38.
  */
 export const openReadings: readonly OpenReading[] = [
-  { ruleId: "TXG-09", question: "TXG OQ17", covers: { move: "frozen" }, readings: fallReadings },
-  { ruleId: "KGL-03", question: "KGL OQ15", covers: { move: "cpi-linked", rules: ["KGL-03"] }, readings: fallReadings },
+  { kind: "fall", ruleId: "TXG-09", question: "TXG OQ17", covers: { move: "frozen" }, readings: fallReadings },
+  { kind: "fall", ruleId: "KGL-03", question: "KGL OQ15", covers: { move: "cpi-linked", rules: ["KGL-03"] }, readings: fallReadings },
+  foreignInvestmentFundIndex,
 ];
 
-/** The open reading that covers a figure of rule `ruleId` moving by `move`, or null. */
-export function openReadingOf(move: YearlyMove, ruleId: string): OpenReading | null {
-  return openReadings.find((o) => o.covers.move === move.kind && (!o.covers.rules || o.covers.rules.includes(ruleId))) ?? null;
+/** The open reading that covers a figure of rule `ruleId` moving by `move` at a falling CPI, or null. */
+export function openReadingOf(move: YearlyMove, ruleId: string): FallOpenReading | null {
+  return openReadings.find((o): o is FallOpenReading => o.kind === "fall" && o.covers.move === move.kind && (!o.covers.rules || o.covers.rules.includes(ruleId))) ?? null;
 }
 
 /** The reading a run is under for each question it met (`RunContext.readings`); null stops the run on the question. */

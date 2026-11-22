@@ -15,7 +15,7 @@ import { accountBanks, commonAccountRate, currentAccountRecords } from "./guide-
 import { computedInputs as ci, guideBlocks } from "../copy";
 
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "tradeFlat", "tradeFlatUpTo", "redeemRate", "redeemMin", "redeemMax", "redeemFlat", "redeemFlatUpTo", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
-import { BROKERAGE, HOUSE_CHANNELS, instrumentClassOf, onlyWhatCanBeDone, providersOf, shortName } from "./providers";
+import { BROKERAGE, HOUSE_CHANNELS, instrumentClassOf, onlyWhatCanBeDoneFor, providersOf, shortName } from "./providers";
 import { latestOf, latestSnapshots } from "./providers.server";
 import { p05Range } from "./engine";
 import { indexPath } from "./site-paths";
@@ -292,11 +292,14 @@ function representativeOf(
  * `productId` is the security, the lines are the account's for its class, and only the lines its run reads are
  * kept (commissions, custody, the account's monthly fee). The member's kind travels with the tariff (F-14: a bank may not charge
  * custody on makam, BRK-17; a non-bank member's line applies).
+ *
+ * `fund`, the site's number of the fund the account holds (P-05's): a house that sells its class fund by fund under its distribution
+ * agreements (BRK-38) sells it where an agreement in force names it (`onlyWhatCanBeDoneFor`), as the guides and the indices page read it.
  */
-function providerTariffs(productId: string, instrumentClass: string): Record<string, ProviderTariff> {
+function providerTariffs(productId: string, instrumentClass: string, fund?: string): Record<string, ProviderTariff> {
   const out: Record<string, ProviderTariff> = {};
   const direct = productId !== BROKERAGE;
-  for (const snap of providersOf({ snapshots: latestSnapshots().map(onlyWhatCanBeDone) }, BROKERAGE)) {
+  for (const snap of providersOf({ snapshots: latestSnapshots().map((s) => onlyWhatCanBeDoneFor(s, fund)) }, BROKERAGE)) {
     if (snap.missing) continue;
     // a security held directly is bought on TASE through an Israeli member; a foreign broker does not sell makam or Israeli government bonds
     if (direct && snap.provider.class === "foreign_broker") continue;
@@ -357,8 +360,10 @@ function pickLines<T extends Record<string, unknown>>(tariff: T, keys: readonly 
 const securityClass: Partial<Record<ProductId, string>> = { makam: "makam", "government-bond": "tase_bonds" };
 
 /**
- * The lowest in-fund cost (fixed and variable management and trustee, the same measure as the run's fee) among the fund records
- * collected for the exposure the wrapper's fund stands for; undefined when the wrapper holds no fund or no record states a cost.
+ * The lowest in-fund cost (fixed and variable management and trustee, the same measure as the run's fee) among the funds P-05's fund is
+ * chosen from (docs/parameters-rationale.md): the records collected for its exposure whose status as a foreign-investment fund is settled
+ * not one (`tax_status.foreign_investment_fund` `false`, data-schema §3.5), since a fund whose readings of TXS OQ26 split at P-05's plan
+ * gives a run no figure (method F-04). Undefined when the wrapper holds no fund or no such record states a cost.
  */
 function classMinFee(spec: { fund?: string | number } | undefined, funds: ReturnType<typeof loadFunds>, today: string): SiteValue | undefined {
   if (spec?.fund === undefined) return undefined;
@@ -369,7 +374,7 @@ function classMinFee(spec: { fund?: string | number } | undefined, funds: Return
   // `fundTrustee`) added up as the run would take them; the lowest fund's sum is the figure, with that fund's lines as its inputs
   const lineKey = { fixed_management: "fundManagement", variable_management: "fundVariable", trustee: "fundTrustee" } as const;
   let best: { total: number; lines: Record<string, SiteValue>; id: string } | null = null;
-  for (const f of funds.filter((x) => (x as { exposure_id?: string }).exposure_id === exposure)) {
+  for (const f of funds.filter((x) => x.exposure_id === exposure && x.tax_status.foreign_investment_fund?.value === false)) {
     const lines: Record<string, SiteValue> = {};
     for (const k of ["fixed_management", "variable_management", "trustee"] as const) {
       const v = f.fees[k];
@@ -379,7 +384,7 @@ function classMinFee(spec: { fund?: string | number } | undefined, funds: Return
     const total = Object.values(lines).reduce((sum, v) => sum + (v.value as number), 0);
     if (!best || total < best.total) best = { total, lines, id: f.id };
   }
-  return best ? fundCostOf(best.lines, fundCostKeys, `הנמוכה ביותר שנאספה באותה חשיפה (${best.id})`, today) : undefined;
+  return best ? fundCostOf(best.lines, fundCostKeys, ci.lowestSettled(best.id), today) : undefined;
 }
 
 /** Wrappers whose fund (and so whose terms) depend on the exposure they hold: the fund collected for the exposure (`exposure_id`) gives the terms. */
@@ -506,7 +511,7 @@ export function buildCompareBundle(): CompareBundle {
     // the tariff lines are read for the class of the fund the account holds, not a fixed one: a tariff with no line for that class gives no price (F-63)
     const fundRec = sources.funds.find((x) => x.id === String(p05.instruments?.[w.id]?.fund));
     const fundClass = fundRec ? instrumentClassOf(fundRec, loadExposures().find((e) => e.id === fundRec.exposure_id)) : "etf_units";
-    const providers = providerTariffs(w.id, fundClass);
+    const providers = providerTariffs(w.id, fundClass, fundRec?.id);
     if (Object.keys(providers).length > 0) w.providers = providers;
   }
   // D6: makam and a government bond are held in the securities account, so the account's choice of provider

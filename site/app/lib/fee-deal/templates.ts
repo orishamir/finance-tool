@@ -572,7 +572,7 @@ function sizeStepsOf(kind: FeeKindId, l: Line, price: Price | undefined, own: st
 }
 
 /**
- * F-102 (D64): the current account a bank's securities account needs, as a fee the house's whole list fills, after the list's own lines:
+ * F-102: a current account at the bank, on D64's premise that a bank's securities account goes with one, as a fee the house's whole list fills, after the list's own lines:
  * its record's monthly minimum (`current_account.monthly_minimum`), a sum each month, with its source. Null at a house whose record prices
  * none: an investment house, and a bank that is part of another (`part_of`), whose record carries none.
  */
