@@ -19,7 +19,7 @@ import {
 } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject, ProductRecord } from "@finance-tool/schema";
 import { blockedHe, failureHe, figureNotUpdatedHe } from "./failure-he";
-import { entered as enteredValue, p05Units, type SiteValue } from "./value";
+import { asP05Input, entered as enteredValue, p05Units, type SiteValue } from "./value";
 
 export interface Bundle {
   record: ProductRecord;
@@ -126,7 +126,7 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
   try {
     const entered: Partial<Record<P05Input, ValueObject>> = {};
     for (const [key, value] of Object.entries(inputs.entered) as [P05Input, number][]) {
-      if (value !== undefined && Number.isFinite(value)) entered[key] = enteredValue(value, p05Units[key], bundle.runDate);
+      if (value !== undefined && Number.isFinite(value)) entered[key] = asP05Input(key, enteredValue(value, p05Units[key], bundle.runDate));
     }
     const profile = inputs.age === null ? {} : { ageAtStart: inputs.age };
     const plan = runInputs(bundle.record, [bundle.p05], bundle.terms, { entered, profile, scenarioIncome: true, firstMonth: calendarMonthOf(bundle.runDate) });
@@ -178,10 +178,11 @@ export function p05Value(p05: ParameterRecord, key: P05Input): SiteValue {
   const inputs = (p05 as unknown as { inputs: Record<P05Input, ValueObject> }).inputs;
   // an input a guide page replaced with a record's own value (a bank's published rate) is that record's number, not a site parameter
   if (inputs[key].update_rule !== "founder") return { ...inputs[key] };
-  return {
+  // the site's own default of the return for the years ahead is an assumption (a record's published rate, above, is not)
+  return asP05Input(key, {
     ...inputs[key],
     parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null },
-  };
+  });
 }
 
 export function p05Number(p05: ParameterRecord, key: P05Input): number {

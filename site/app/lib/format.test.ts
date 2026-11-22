@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { countPhrase, fmt, formatValue, nisShown, parseNumber, typedSum, withMinus } from "./format";
+import { countPhrase, fmt, formatValue, nisAsShown, nisOf, nisShown, parseNumber, roundingOf, toAgorot, typedSum, withMinus } from "./format";
 import { hasHebrew, isHebrewTitle, sourceLabel } from "./source-label";
 
 describe("parseNumber (audit A6)", () => {
@@ -99,6 +99,77 @@ describe("display rounding (audit A13)", () => {
   });
 });
 
+describe("an amount that rests on an assumed return (wording.md: hundreds of shekels)", () => {
+  it("shows hundreds from 1,000 ₪, whole shekels below, and halves away from zero on both sides", () => {
+    expect(fmt.nisAssumed(48_327)).toBe("48,300 ₪");
+    expect(fmt.nisAssumed(48_350)).toBe("48,400 ₪");
+    expect(fmt.nisAssumed(-48_350)).toBe("\u200e\u221248,400 ₪");
+    expect(fmt.nisAssumed(1_049.9)).toBe("1,000 ₪");
+    expect(fmt.nisAssumed(999.6)).toBe("1,000 ₪");
+    expect(fmt.nisAssumed(37.4)).toBe("37 ₪");
+    expect(nisShown(17_825, "assumed")).toBe("17,800 ₪");
+    expect(formatValue(17_825, "nis", "assumed")).toBe("17,800 ₪");
+  });
+  it("is read from the value object, which says the figure rests on one", () => {
+    expect(roundingOf({ state: "computed", onAssumedReturn: true })).toBe("assumed");
+    expect(roundingOf({ state: "computed" })).toBe("computed");
+    expect(nisOf({ onAssumedReturn: true }, 17_825)).toBe("17,800 ₪");
+    expect(nisOf({}, 17_825)).toBe("17,825 ₪");
+    expect(nisOf({ onAssumedReturn: true }, 17_825, { signed: true })).toBe("\u2066+17,800 ₪\u2069");
+    expect(nisOf({ onAssumedReturn: true }, -17_825, { signed: true, bare: true })).toBe("\u2066\u221217,800\u2069");
+  });
+});
+
+describe("a cost under 10 ₪ that rests on an assumed return keeps its agorot (wording.md)", () => {
+  it("as any figure the site calculates: rounding a few shekels changes the meaning; a whole one shows none", () => {
+    expect(nisShown(3.2, "assumed")).toBe("3.20 ₪");
+    expect(fmt.nisAssumed(9.99)).toBe("9.99 ₪");
+    expect(nisShown(3, "assumed")).toBe("3 ₪");
+    expect(nisShown(10.4, "assumed")).toBe("10 ₪");
+    expect(nisOf({ onAssumedReturn: true }, 3.2)).toBe("3.20 ₪");
+    expect(nisOf({ onAssumedReturn: true }, -3.2, { signed: true })).toBe("\u2066\u22123.20 ₪\u2069");
+  });
+});
+
+describe("a line of a sum already rounded so the lines add up (SiteValue.reconciled)", () => {
+  it("is written as it is, never rounded again, though it rests on an assumed return", () => {
+    expect(roundingOf({ state: "computed", onAssumedReturn: true, reconciled: true })).toBe("reconciled");
+    expect(nisShown(35_955, "reconciled")).toBe("35,955 ₪");
+    expect(formatValue(300, "nis", "reconciled")).toBe("300 ₪");
+    expect(nisOf({ onAssumedReturn: true, reconciled: true }, 35_955)).toBe("35,955 ₪");
+    expect(nisOf({ onAssumedReturn: true, reconciled: true }, -200, { signed: true })).toBe("\u2066\u2212200 ₪\u2069");
+  });
+});
+
+describe("the number a figure shows on its own, which a line of a sum keeps (nisAsShown; method.md F-91, F-96)", () => {
+  it("hundreds from 1,000 ₪ on an assumed return, whole shekels below, agorot under 10 ₪, a half away from zero", () => {
+    const assumed = { onAssumedReturn: true as const };
+    // the fund's 115.54 ₪ and the tax's 3,313.08 ₪ of one receipt: each keeps its own rounding, the fund never 200 ₪ to make a sum work
+    expect(nisAsShown(assumed, 115.54)).toBe(116);
+    expect(nisAsShown(assumed, 3_313.08)).toBe(3_300);
+    expect(nisAsShown(assumed, 66_150)).toBe(66_200);
+    expect(nisAsShown(assumed, -1_250)).toBe(-1_300);
+    expect(nisAsShown(assumed, 999.6)).toBe(1_000);
+    expect(nisAsShown(assumed, 40)).toBe(40);
+    expect(nisAsShown(assumed, 3.204)).toBe(3.2);
+    expect(nisAsShown(assumed, -2.5)).toBe(-2.5);
+    expect(nisAsShown({}, 3_313.08)).toBe(3_313);
+    expect(nisAsShown({}, -12.5)).toBe(-13);
+    expect(Object.is(nisAsShown({}, -0.001), 0)).toBe(true);
+  });
+  it("writes, as a reconciled figure, what the figure's own format writes", () => {
+    for (const x of [0.37, 3.2, -3.2, 9.996, 10.4, 37.4, 999.6, 1_049.9, 48_327, -48_350, 115.54, 3_313.08]) {
+      expect(nisShown(nisAsShown({ onAssumedReturn: true }, x), "reconciled"), `${x}`).toBe(fmt.nisAssumed(x));
+      expect(nisShown(nisAsShown({}, x), "reconciled"), `${x}`).toBe(nisShown(x, "computed"));
+    }
+  });
+  it("a reconciled figure keeps the agorot it has, as the line that takes a sum's rounding may", () => {
+    expect(nisShown(18_203.2, "reconciled")).toBe("18,203.20 ₪");
+    expect(nisShown(toAgorot(48_300 - 3.2 - 0.1), "reconciled")).toBe("48,296.70 ₪");
+    expect(nisOf({ onAssumedReturn: true, reconciled: true }, -3.2, { signed: true })).toBe("\u2066\u22123.20 ₪\u2069");
+  });
+});
+
 describe("plain copy of a shekel amount (audit A37)", () => {
   it("has no right-to-left mark and no no-break space", () => {
     for (const text of [fmt.nis(1234.5), fmt.nisWhole(1234), formatValue(10000, "nis", "entered")]) {
@@ -135,6 +206,16 @@ describe("negative figures (polish 2026-10-24)", () => {
     expect(fmt.number(-2.5)).toBe("\u200e\u22122.5");
     expect(formatValue(-29, "pct")).toBe("\u200e\u221229%");
     for (const t of [fmt.pct(-2), fmt.nis(-5), fmt.number(-3), fmt.compactNis(-2500)]) expect(t).not.toContain("-");
+  });
+  it("prints no minus on a value that rounds to zero", () => {
+    expect(fmt.nisWhole(-0.3)).toBe("0 ₪");
+    expect(fmt.nis(-0.001)).toBe("0 ₪");
+    expect(fmt.pct(-0.0001)).toBe("0%");
+    expect(fmt.number(-0.001)).toBe("0");
+    expect(fmt.compactNis(-20)).toBe("\u200e\u221220 ₪");
+    expect(fmt.compactNis(-0.01)).toBe("0 ₪");
+    expect(fmt.decimals(-0.04, 1, { isolate: false })).toBe("0.0");
+    expect(formatValue(-0.004, "nis", "computed")).toBe("0 ₪");
   });
   it("leaves positive figures and an existing minus alone", () => {
     expect(fmt.pct(29)).toBe("29%");

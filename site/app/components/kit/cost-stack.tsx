@@ -37,6 +37,11 @@ export interface CostPart {
   legendId?: string;
   /** Whose cost the part is ("account"): with the bar's `groups`, the parts of a group write amounts that add up to that group's figure. */
   group?: string;
+  /**
+   * The amount the part writes, as the caller rounds it: a line of a sum that keeps the number it shows on its own, one part taking what
+   * the rounding leaves. Given on every part, the amounts are written as they are; else each part's whole shekels add up to the total.
+   */
+  amount?: number;
 }
 
 export { wholeParts };
@@ -92,9 +97,9 @@ const SLIVER = 0.01;
  * summary; the figures beside it are the caller's. `highlight`: the legend item set apart, on every bar it is compared with.
  * A `sm` bar sits in a row that picks the row on a tap: a mouse's click is left to the row (pointing shows the box), and a finger's tap
  * shows the part's box and still picks the row (on a phone a tap showed nothing of the part). A part of the bar that is not in `parts` any more
- * keeps its place and shrinks to nothing. `total`: the whole-shekel total the caller writes beside the bar; the amounts written in the parts,
- * under the bar and in its box are whole shekels that add up to it (693 + 354 + 719 + 5,555 = 7,321 beside 7,323). Without
- * it, to the parts' own rounded sum. A `md` bar keeps a line under it, at one height, for the amounts too narrow to write inside; the root
+ * keeps its place and shrinks to nothing. `total`: the total the caller writes beside the bar; the amounts written in the parts, under the
+ * bar and in its box add up to it: the caller's own (`CostPart.amount`), else whole shekels (693 + 354 + 719 + 5,555 = 7,321 beside 7,323).
+ * Without it, to the parts' own rounded sum. A `md` bar keeps a line under it, at one height, for the amounts too narrow to write inside; the root
  * carries the total and the amounts written (`data-total`, `data-amounts`), which a render test holds together on the pages. The chart
  * check (site/scripts/chart-check) finds it by `data-chart` and reads the bar's start (`data-zero`) and its parts (`data-mark`).
  */
@@ -116,7 +121,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
   const last = useRef(new Map<string, CostPart>());
   for (const p of parts) last.current.set(p.id, p);
   const given = new Set(parts.map((p) => p.id));
-  const list = [...parts, ...[...last.current.values()].filter((p) => !given.has(p.id)).map((p) => ({ ...p, value: 0 }))];
+  const list = [...parts, ...[...last.current.values()].filter((p) => !given.has(p.id)).map((p) => ({ ...p, value: 0, ...(p.amount !== undefined ? { amount: 0 } : {}) }))];
 
   const target: GlideSeries = {};
   for (const p of list) target[p.id] = [{ year: 0, v: p.value }];
@@ -126,9 +131,11 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
   const total = list.reduce((a, p) => a + p.value, 0);
   // a part's amount is written when it is in the box (it has a name) or written in or under the bar (`inside: true`)
   const written = writesOf(list);
-  // each part's amount in whole shekels, adding up to the total written beside the bar; while a part glides, offset by its rounding
+  // each part's amount: the caller's own where every part has one (`CostPart.amount`), else whole shekels adding up to the total written
+  // beside the bar; while a part glides, offset by its rounding
   const shownSum = writtenTotal ?? Math.round(total);
-  const wholes = wholesOf(list, shownSum, written, groups);
+  const own = list.map((p) => p.amount);
+  const wholes = own.every((a): a is number => a !== undefined) ? own : wholesOf(list, shownSum, written, groups);
   const shows = (i: number) => written[i]! && wholes[i]! > 0;
   const amountOf = (p: CostPart, i: number) => Math.round(shown(p) + (wholes[i]! - p.value));
   const shownTotal = list.reduce((a, p) => a + shown(p), 0);
@@ -238,7 +245,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight, total: 
  * It stands from one end of the bar and is moved along, before paint, so it stays on the screen (a list row's bar on a 320 px
  * phone is narrower than the box, which ran 65 px past the screen's edge once a tap showed it).
  */
-function Box({ rows, active, share, total, toStart }: { rows: { part: CostPart; /** Whole shekels, of the parts that add up to the total. */ amount: number }[]; active: string; share: number; total: number; toStart: boolean }) {
+function Box({ rows, active, share, total, toStart }: { rows: { part: CostPart; /** Of the parts that add up to the total: whole shekels, or the caller's own amount. */ amount: number }[]; active: string; share: number; total: number; toStart: boolean }) {
   const box = useRef<HTMLSpanElement>(null);
   useLayoutEffect(() => {
     const el = box.current;
@@ -257,7 +264,7 @@ function Box({ rows, active, share, total, toStart }: { rows: { part: CostPart; 
           <span className={cx("flex items-baseline gap-1.5", part.id === active ? "font-semibold" : "text-muted-foreground")}>
             <span className={cx("inline-block size-2 shrink-0 rounded-[2px] self-center", part.className)} />
             <span>
-              <bdi>{part.name}</bdi>: <bdi dir="ltr">{fmt.nisWhole(amount)}</bdi>
+              <bdi>{part.name}</bdi>: <bdi dir="ltr">{fmt.nis(amount)}</bdi>
               {part.id === active && <> ({kitCopy.chart.shareOf(Math.round(share * 100))})</>}
             </span>
           </span>

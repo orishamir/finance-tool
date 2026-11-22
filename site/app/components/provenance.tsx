@@ -7,7 +7,7 @@ import { Link } from "react-router";
 import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { formulaNames, numbers, parametersPage, provenance as copy, rule as ruleCopy, scopeWords, strength as strengthCopy } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
-import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
+import { fmt, formatValue, joinLead, nisOf, roundingOf, SHORT_IN_ROW, shortBillions } from "../lib/format";
 import { isOpenValue, isParameter, isWeak, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconClock, IconDrillIn, IconFile, IconLock, IconPencil } from "./icons";
@@ -331,6 +331,14 @@ export function valueItem(value: SiteValue, written: string | undefined, exact: 
   return { kind: "value", value, ...(exact ? { exact: true } : {}), ...(typeof value.value !== "number" && written ? { display: written } : {}) };
 }
 
+/**
+ * A shekel figure written whole, never with agorot, or to hundreds where it rests on an assumed return (`nisOf`): `Num` with that display,
+ * the figure gliding as it changes. `signed` writes its sign; `abs` writes its size without one, for words that already say up or down.
+ */
+export function NisNum({ signed = false, abs = false, ...props }: Omit<NumProps, "display"> & { signed?: boolean; abs?: boolean }) {
+  return <Num {...props} display={(n) => nisOf(props.value, abs ? Math.abs(n) : n, { signed })} />;
+}
+
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
 export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord, name, wrap }: NumProps) {
   const ownPage = useContext(OwnCompanyCtx);
@@ -351,7 +359,7 @@ export function Num({ value: given, size = "inline", display, animate, className
   const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, !unseen && (animate ?? (counting && countsByItself(value.state, value.unit))));
   // display rounding (A13): computed and entered amounts round, in table cells too ("16,000.00 ₪" in a table); `exact` keeps the agorot
   const keepDecimals = !!exact;
-  const roundState = keepDecimals ? undefined : value.state;
+  const roundState = keepDecimals ? undefined : roundingOf(value);
   // a figure that lands on whole shekels glides through whole shekels: the frames showed agorot, then snapped
   const target = typeof value.value === "number" ? value.value : null;
   const landing = landingOf(target, shown, display, (n) => formatValue(n, value.unit, roundState, param));

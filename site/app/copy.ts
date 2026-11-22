@@ -770,6 +770,10 @@ export const runFailure = {
 export const system = {
   calcFailed: "האתר לא הצליח לחשב את הגרף. רעננו את העמוד ונסו שוב.",
   wentWrong: { title: "משהו השתבש", line: "האתר לא הצליח להציג את העמוד הזה. אפשר לרענן, או לחזור לעמוד הראשי.", home: "לעמוד הראשי", reload: "לרענן את העמוד" },
+  /** A script on the page failed after it was drawn (components/failure-notice.tsx): figures may not follow what was changed since. */
+  pageFailed: { title: "משהו בעמוד השתבש", line: "ייתכן שחלק מהמספרים כאן לא התעדכנו.", reload: "לרענן את העמוד", close: "סגירה" },
+  /** A tool on the page failed on what it was given (components/tool-boundary.tsx): the rest of the page stands. */
+  toolFailed: { title: "האתר לא הצליח לחשב את החלק הזה", line: "שאר העמוד לא נפגע.", reload: "לרענן את העמוד", resetFields: "לאפס את השדות" },
   notFound: { title: "העמוד הזה לא קיים. אולי הקישור ישן.", home: "לעמוד הראשי", search: "לחיפוש" },
   loading: "טוען…",
 } as const;
@@ -2681,9 +2685,10 @@ export const r3transfer = {
     ownRates: { one: "ריבית שהזנתם להשוואה", two: "שתי ריביות שהזנתם להשוואה", many: "ריביות שהזנתם להשוואה" },
     deals: { one: "עסקה שמורה אחת בעמוד העמלות", two: "שתי עסקאות שמורות בעמוד העמלות", many: "עסקאות שמורות בעמוד העמלות" },
   },
-  // one person per device; a private window or cleared site data erases the work
+  // one person per device; Safari deletes a site's storage after seven days of use without a tap, click or key on it, and a copy on the
+  // Home Screen, which it spares, keeps storage of its own that starts empty (guidelines/code.md, "In the browser")
   onePerDevice: "האתר שומר מכשיר אחד לאדם אחד: אין בו פרופילים נפרדים.",
-  erasedNote: "בחלון פרטי או אחרי ניקוי נתוני האתר, מה שנשמר כאן נמחק. שמרו קובץ מהעמוד הזה.",
+  erasedNote: "כדאי לשמור קובץ מהעמוד הזה: ספארי מוחק את מה שנשמר כאן אחרי שבוע של גלישה בלי לחיצה או הקלדה באתר, ובאתר שנוסף למסך הבית זה לא קורה, אבל הוא מתחיל ריק.",
   // the load's report is true
   nothingNew: "בקובץ אין שום דבר חדש: הכול כבר במכשיר הזה.",
   duplicatesForms: { one: "פריט אחד זהה כבר היה במכשיר ולא נטען שוב.", two: "שני פריטים זהים כבר היו במכשיר ולא נטענו שוב." }, // A91: the singular and dual of `duplicates`
@@ -4928,7 +4933,9 @@ export const invest = {
     openNote: "עם שאלת מס פתוחה מופיע גם",
     legendNext: "הצעד הכי גדול שנשאר, עוד לא נלקח",
     legendOpen: "נשען על שאלת מס פתוחה: מוצג, לא מדורג",
-    about: { left: "מה שנשאר בסוף", versus: "ההפרש מההחזקה שבה עומדים", cost: "ההפרש בעלות", ceilingGap: "מה שחסר עד הכי הרבה" },
+    // `added`: a step's change in what the index added, which is the same on both holdings of one plan; it holds only what the rounding of
+    // the figures shown leaves, so the step's figures add up as they are written (method.md F-91)
+    about: { left: "מה שנשאר בסוף", versus: "ההפרש מההחזקה שבה עומדים", cost: "ההפרש בעלות", added: "ההפרש במה שנשאר, פחות ההפרשים בעלויות, כפי שהם כתובים", ceilingGap: "מה שחסר עד הכי הרבה" },
   },
 
   /** The section at the bottom of the page (F-95, F-93). */

@@ -181,7 +181,7 @@ type Storage = Pick<globalThis.Storage, "getItem" | "setItem" | "removeItem">;
 function readDoc(s: Storage, key: string): Rec | null {
   try {
     const raw = s.getItem(key);
-    const v = raw ? JSON.parse(raw) : null;
+    const v: unknown = raw ? JSON.parse(raw) : null;
     return isRec(v) && v.version === 1 ? v : null;
   } catch {
     return null;
@@ -214,7 +214,7 @@ export function readImportedSide(s: Storage | null): SideStores {
   try {
     const raw = s.getItem(IMPORTED_SIDE_KEY);
     if (!raw) return emptySide();
-    const j = JSON.parse(raw);
+    const j: unknown = JSON.parse(raw);
     const out = emptySide();
     if (isRec(j) && Array.isArray(j.offers)) out.offers = j.offers.filter((o: unknown) => isRec(o) && typeof o.providerId === "string") as Rec[];
     if (isRec(j) && isRec(j.variantAssumptions)) out.variantAssumptions = j.variantAssumptions as Record<string, Rec>;

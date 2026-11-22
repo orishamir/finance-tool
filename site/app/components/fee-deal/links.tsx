@@ -53,6 +53,19 @@ export function useFeeMark(feeId: string): { marked: boolean; handlers: Pick<HTM
 export const markedLine = (marked: boolean) => cx("-mx-1.5 rounded-md px-1.5 transition-colors duration-(--duration-fast)", marked && "bg-accent/60");
 
 /**
+ * A press on a fee's line chooses the fee, as its name does, except a press on another control in it (a figure's sheet): the line is the
+ * pointer's target, the name the keyboard's.
+ */
+export function useLineOpen(feeId: string): ((e: { target: EventTarget }) => void) | undefined {
+  const links = useContext(FeeLinksCtx);
+  if (!links) return undefined;
+  return (e) => {
+    // the name's own button opens it itself; a figure's opens its sheet
+    if (!(e.target as HTMLElement).closest("button, a, input, select")) links.open(feeId);
+  };
+}
+
+/**
  * A fee's name that chooses the fee (its swatch and name, as `FeeName` draws them), on the page; plain words outside it. `before` and
  * `after` are held to the name as `FeeName` holds them.
  */

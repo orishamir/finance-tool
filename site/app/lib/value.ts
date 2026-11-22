@@ -61,12 +61,52 @@ export interface SiteValue extends ValueObject {
    * entered" mark, nothing that opens. The field beside it is where it changes. Its record still traces to data/parameters.
    */
   field?: boolean;
+  /**
+   * The figure is a return assumed for the years ahead (the gross return, A-01: its field, its default included), or is worked out from
+   * one: a shekel amount then shows to hundreds of shekels, since it is not known to the shekel (wording.md, "Numbers and punctuation").
+   * Set on the return by `assumedReturn` (`asP05Input`); `computed` carries it to every figure that rests on it.
+   */
+  onAssumedReturn?: true;
+  /**
+   * The figure is a line, the total or a difference of a sum whose lines must add up as shown, already rounded: a line as it shows on
+   * its own (`nisAsShown`), and the one line that carries the growth with what the rounding leaves (method.md F-91, F-96). It is written
+   * as it is, in whole shekels or with its agorot where it has them, never rounded again (`Rounding` "reconciled"), so its line and its
+   * sheet show the same number. Set by `reconciled`; `computed` does not carry it to a figure worked out from it.
+   */
+  reconciled?: true;
 }
 
 /** A value as a field's own (`SiteValue.field`): the default a chart's field starts at, or what the reader typed in it. */
 export function asField<T extends SiteValue>(v: T): T {
   return { ...v, field: true };
 }
+
+/**
+ * Each P-05 input that is a return assumed for the years ahead (`SiteValue.onAssumedReturn`): the gross return (A-01). The cash rate is the
+ * Bank of Israel's published rate, or a bank's own on a deposit page, and is not marked.
+ */
+const p05AssumedReturn: Record<P05Input, boolean> = {
+  amount_now: false,
+  monthly_deposit: false,
+  horizon_years: false,
+  "A-01": true,
+  "A-02": false,
+  cash_rate: false,
+  annual_income: false,
+};
+
+/** Figure `v` as the number `n` its line shows in a sum that adds up (`SiteValue.reconciled`); a figure with no number stays as it is. */
+export function reconciled<T extends SiteValue>(v: T, n: number): T {
+  return typeof v.value === "number" ? { ...v, value: n, reconciled: true } : v;
+}
+
+/** A value as a return assumed for the years ahead (`SiteValue.onAssumedReturn`). */
+export function assumedReturn<T extends SiteValue>(v: T): T {
+  return { ...v, onAssumedReturn: true };
+}
+
+/** A value of P-05 input `key` as the input it is: a return assumed for the years ahead where the input is one (`p05AssumedReturn`). */
+export const asP05Input = <T extends SiteValue>(key: P05Input, v: T): T => (p05AssumedReturn[key] ? assumedReturn(v) : v);
 
 /** The unit of each P-05 input a reader can enter. */
 export const p05Units: Record<P05Input, ValueObject["unit"]> = {
@@ -162,6 +202,8 @@ export function computed(
   options: { today: string; rules?: { id: string; strength: Strength }[]; flags?: string[]; labels?: { code: string; ruleId: string }[]; about?: string; notes?: string; lead?: string; signed?: boolean; unitText?: string } ,
 ): SiteValue {
   let weakest: Strength | undefined;
+  // a figure worked out from a return assumed for the years ahead rests on it too
+  const onAssumedReturn = Object.values(inputs).some((input) => input.onAssumedReturn);
   for (const input of Object.values(inputs)) {
     // D31: a company's figure about its own product does not weaken what is computed from it
     const st = strengthOf(input);
@@ -188,6 +230,7 @@ export function computed(
     ...(options.lead ? { lead: options.lead } : {}),
     ...(options.signed ? { signed: true } : {}),
     ...(options.unitText ? { unitText: options.unitText } : {}),
+    ...(onAssumedReturn ? { onAssumedReturn: true as const } : {}),
   };
 }
 

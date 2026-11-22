@@ -1,6 +1,6 @@
 // D31: a company's figure about its own product is not weak; the same figure out of context is.
 import { describe, expect, it } from "vitest";
-import { compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, recheckStale, staleCma, staleCmaFee, type SiteValue } from "./value";
+import { asP05Input, assumedReturn, compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, recheckStale, staleCma, staleCmaFee, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -60,6 +60,26 @@ describe("computed() weakest", () => {
   it("a secondary input stays weak next to an own one", () => {
     const v = computed(2, "nis", "F-1", { fee: fig("institution", { own: "הראל" }), s: fig("secondary") }, { today });
     expect(v.weakest).toBe("secondary");
+  });
+});
+
+describe("a figure that rests on an assumed return (wording.md: hundreds of shekels)", () => {
+  const t = "2026-11-22";
+  const ret = assumedReturn(entered(7, "pct_per_year", t));
+  const amount = entered(10_000, "nis", t);
+  it("is marked from the return through every figure worked out from it, and no other", () => {
+    const left = computed(19_671.5, "nis", "F-67", { amount, ret }, { today: t });
+    const paid = computed(10_000, "nis", "F-106", { amount }, { today: t });
+    expect(left.onAssumedReturn).toBe(true);
+    expect(paid.onAssumedReturn).toBeUndefined();
+    expect(differenceOf(["left", left], ["paid", paid], "F-67", { today: t }).onAssumedReturn).toBe(true);
+    expect(sumOf({ paid, again: paid }, "F-91", { today: t }).onAssumedReturn).toBeUndefined();
+  });
+  it("comes from the P-05 gross return, not the amounts, inflation or the cash rate", () => {
+    expect(asP05Input("A-01", entered(7, "pct_per_year", t)).onAssumedReturn).toBe(true);
+    expect(asP05Input("cash_rate", entered(4, "pct_per_year", t)).onAssumedReturn).toBeUndefined();
+    expect(asP05Input("A-02", entered(2, "pct_per_year", t)).onAssumedReturn).toBeUndefined();
+    expect(asP05Input("amount_now", amount).onAssumedReturn).toBeUndefined();
   });
 });
 

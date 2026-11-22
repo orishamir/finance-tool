@@ -17,16 +17,16 @@
 import { useMemo, useState, type ReactNode, type RefObject } from "react";
 import { flags, invest as c, leftOut as leftOutCopy } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { fmt } from "../../lib/format";
+import { fmt, nisAsShown, nisOf, toAgorot } from "../../lib/format";
 import { shortFundName } from "../../lib/fund-name";
 import { asideLines, dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWay, type InvestView, type WayPrice } from "../../lib/invest";
 import { isGroupProvider } from "../../lib/group-pick";
 import { leftOutOf } from "../../lib/left-out";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
-import { differenceOf, type SiteValue } from "../../lib/value";
+import { differenceOf, reconciled, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
-import { Num, Ruled } from "../provenance";
+import { NisNum, Num, Ruled } from "../provenance";
 import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, FundTerms } from "./custom-entries";
 import { AddDealButton, DealTerms, DeletedLine, NotMovedLines, useDealAccounts } from "./deal-account";
@@ -410,7 +410,8 @@ export function PairLists(props: ListsProps) {
       </span>
     );
   };
-  const diff = (n: number, f: FundWay, at: WayPrice) => nis(n, "F-65", sp.diffAbout, today, { [c.pair.input(f.name, c.pair.colLeft)]: at.value, [pickKey]: selAt.value });
+  // the difference between the two values as their rows show them, written as it is (`reconciled`)
+  const diff = (n: number, f: FundWay, at: WayPrice) => reconciled(nis(n, "F-65", sp.diffAbout, today, { [c.pair.input(f.name, c.pair.colLeft)]: at.value, [pickKey]: selAt.value }), n);
   // each ranked fund's spot in the chosen account's stretch: its pair's value, or, for a fund of the other kind, where its difference from the
   // pair in the receipt runs over the dollar's range (a segment, held inside the scale's ends); a fund on an open rule has none
   const spots: Record<string, StretchSpot> = {};
@@ -423,17 +424,19 @@ export function PairLists(props: ListsProps) {
     const at = f.byHouse[pick.house] as WayPrice;
     const selected = f.rec.id === pick.fund;
     const x = cross.get(f.rec.id);
-    const n = Math.round(at.valueN - selAt.valueN);
+    const n = toAgorot(nisAsShown(at.value, at.valueN) - nisAsShown(selAt.value, selAt.valueN));
+    // the difference from the chosen fund, its size: "the same" where it rounds to nothing
+    const diffNum = (dv: SiteValue) => <Num animate value={dv} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : nisOf(dv, Math.abs(v)))} />;
     const figure = selected ? (
       chosenWord(chosen, "text-chart-by-fund")
     ) : x && range ? (
       // the difference over the dollar's range, in place of one amount; what the range is, in its "?"
       <span className="text-xs text-muted-foreground tabular-nums whitespace-nowrap">
-        {c.kinds.between} <Num animate value={x.lo} display={fmt.signedNisWhole} /> {c.kinds.and}
-        <Num animate value={x.hi} display={fmt.signedNisWhole} /> <HelpMark about={sp.diffAbout} text={`${c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}.`} />
+        {c.kinds.between} <NisNum signed animate value={x.lo} /> {c.kinds.and}
+        <NisNum signed animate value={x.hi} /> <HelpMark about={sp.diffAbout} text={`${c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}.`} />
       </span>
     ) : (
-      figureCell(n < 0 ? c.lists.funds.less : n > 0 ? c.lists.funds.more : null, <Num animate value={diff(n, f, at)} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : fmt.nisWhole(Math.abs(v)))} />, n)
+      figureCell(n < 0 ? c.lists.funds.less : n > 0 ? c.lists.funds.more : null, diffNum(diff(n, f, at)), n)
     );
     const typed = isCustomFund(f.rec);
     return {

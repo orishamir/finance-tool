@@ -2,14 +2,12 @@
 // nothing saying more followed).
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
-import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { moreBelow, Sheet, watchMoreBelow, type MoreEnv } from "./Sheet";
 import { site } from "../copy";
 
-// a sheet stands inside the router: a link in it opens its page through the router
 describe("the sheet's sign that more follows", () => {
   it("is on while the body runs past its bottom edge, and off at the end", () => {
     expect(moreBelow({ scrollHeight: 900, scrollTop: 0, clientHeight: 540 })).toBe(true);
@@ -18,7 +16,7 @@ describe("the sheet's sign that more follows", () => {
     expect(moreBelow({ scrollHeight: 400, scrollTop: 0, clientHeight: 400 })).toBe(false);
   });
   it("every sheet carries it, outside its scrolling body, unseen by a screen reader and off until measured", () => {
-    const out = renderToString(createElement(MemoryRouter, null, createElement(Sheet, { open: true, onClose: () => undefined, children: createElement("p", null, "x") })));
+    const out = renderToString(createElement(Sheet, { open: true, onClose: () => undefined, children: createElement("p", null, "x") }));
     const at = out.indexOf('class="sheet-more"');
     expect(at).toBeGreaterThan(out.indexOf('class="sheet-body"'));
     expect(out.slice(at, at + 80)).toContain('aria-hidden="true"');
@@ -27,7 +25,7 @@ describe("the sheet's sign that more follows", () => {
     expect(out.slice(out.indexOf('class="sheet-body"'), at)).toMatch(/<p>x<\/p><\/div><div $/);
   });
   it("says it in words beside the arrow (pass 7: a fade alone read as the sheet cut off)", () => {
-    const out = renderToString(createElement(MemoryRouter, null, createElement(Sheet, { open: true, onClose: () => undefined, children: createElement("p", null, "x") })));
+    const out = renderToString(createElement(Sheet, { open: true, onClose: () => undefined, children: createElement("p", null, "x") }));
     const at = out.indexOf('class="sheet-more"');
     expect(out.slice(at, at + 400)).toContain(site.moreBelow);
   });

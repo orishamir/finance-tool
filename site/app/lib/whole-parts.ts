@@ -1,5 +1,7 @@
 // Whole numbers that add up to a set total (largest remainder): a sentence of parts never disagrees with its total. The cost bars
-// (kit CostStack) and the index page's receipt (lib/receipt) share it.
+// (kit CostStack) and the shares of the receipt's bar (lib/receipt) share it. The lines of a receipt, the stairs and the study fund's
+// bar are not shared out this way: each keeps the number it shows on its own (`nisAsShown`).
+
 /**
  * Whole shekels that add up to `target` (by default the rounded sum; largest remainder): a sentence of parts never disagrees with its total.
  * `can`: the parts whose amounts are written; the rounding goes only to them, and an amount not written is only rounded.

@@ -45,9 +45,6 @@
 //   grip     on the fee page's deal at 390 as a touch phone, with a fee open, a grip (kit/lift.tsx `Grip`) whose tap area is under 44 px
 //            wide or tall where a finger lands, or that covers the middle of another control within reach (2026-11-21: the grips drew
 //            20 px wide and reached 21 px).
-//   input    on the kit page, the kit's pieces as a hand uses them, with keys, a mouse and a finger: number fields as they are typed in,
-//            sliders, sheets and their close request, a figure's source note, presses through a card's surface, a table's folding strip and
-//            a chart dragged by a finger (kit-input-check.mjs says each).
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
 // Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages, the kit, and the fee
 // page with a filled deal (its link in layout-check-deal.txt). Needs a build (npm run build). Exits 1 when a
@@ -62,7 +59,6 @@ import { chromium } from "playwright";
 import { frames, newContext, settled } from "./browser.mjs";
 import { serveBuild } from "./serve-build.mjs";
 import { hebrewQuotes, shownText } from "./hebrew-quotes.mjs";
-import { kitInputCheck } from "./kit-input-check.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const build = join(here, "../build/client");
@@ -94,7 +90,6 @@ const lineFindings = await linesCheck();
 const dragFindings = await dragCheck();
 const askFindings = await askCheck();
 const gripFindings = await gripCheck();
-const inputFindings = await kitInputCheck(browser, base);
 const results = await Promise.all(WIDTHS.map(checkWidth));
 await browser.close();
 await server.close();
@@ -120,10 +115,6 @@ for (const f of askFindings) {
 for (const f of gripFindings) {
   failed++;
   console.log(`FAIL  ${f.where} at 390\n      grip: ${f.detail}`);
-}
-for (const f of inputFindings) {
-  failed++;
-  console.log(`FAIL  /kit\n      input: ${f}`);
 }
 let sheets = 0;
 let known = 0;

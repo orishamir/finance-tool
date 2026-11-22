@@ -47,8 +47,7 @@ export function useDraft<T>(start: () => T) {
   return { draft, now, set, setMany };
 }
 
-/** Whether a field in the form holds a wrong text, as typed (`data-wrong`, at once, before its error shows) or as shown (`aria-invalid`). */
-export const isInvalid = (form: HTMLElement | null) => !!form?.querySelector('[data-wrong], [aria-invalid="true"]');
+export const isInvalid = (form: HTMLElement | null) => !!form?.querySelector('[aria-invalid="true"]');
 
 const c = root.customEntries;
 
