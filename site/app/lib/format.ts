@@ -1,37 +1,39 @@
 // Number, date and identifier formats: docs/design-system.md 2.7. Always Intl with he-IL; never hand-built.
 import { numbers, values as valuesCopy } from "../copy";
-import { countPhrase, plainNumber, withMinus } from "./count";
+import { countPhrase } from "./count";
+import { numberFormat, plainNumber, withMinus } from "./number-format";
 
-export { countPhrase, withMinus, type CountWords } from "./count";
+export { countPhrase, type CountWords } from "./count";
+export { withMinus } from "./number-format";
 
 const he = "he-IL";
 
 /** Hebrew alphabetical order, for sorting names. */
 export const heCollator = new Intl.Collator("he");
-const currency = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const currencyWhole = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", maximumFractionDigits: 0 });
-const dollars = new Intl.NumberFormat(he, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const dollarsWhole = new Intl.NumberFormat(he, { style: "currency", currency: "USD", maximumFractionDigits: 0 });
-const euros = new Intl.NumberFormat(he, { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const pounds = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const eurosWhole = new Intl.NumberFormat(he, { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
-const poundsWhole = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", maximumFractionDigits: 0 });
+const currency = numberFormat({ style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const currencyWhole = numberFormat({ style: "currency", currency: "ILS", maximumFractionDigits: 0 });
+const dollars = numberFormat({ style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const dollarsWhole = numberFormat({ style: "currency", currency: "USD", maximumFractionDigits: 0 });
+const euros = numberFormat({ style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pounds = numberFormat({ style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const eurosWhole = numberFormat({ style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+const poundsWhole = numberFormat({ style: "currency", currency: "GBP", maximumFractionDigits: 0 });
 /** An amount with no cents to show: a whole amount never shows them ("60,000 $", not "60,000.00 $"). */
 const wholeCents = (v: number) => Math.round(Math.abs(v) * 100) % 100 === 0;
 // a price per share is a fraction of a cent (0.0035 $): up to four decimals
-const dollarsFine = new Intl.NumberFormat(he, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 4 });
-const shekelsFine = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 4 });
-const eurosFine = new Intl.NumberFormat(he, { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 4 });
-const poundsFine = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 4 });
-const percent = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 2 });
-const percent3 = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 3 });
+const dollarsFine = numberFormat({ style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 4 });
+const shekelsFine = numberFormat({ style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 4 });
+const eurosFine = numberFormat({ style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 4 });
+const poundsFine = numberFormat({ style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 4 });
+const percent = numberFormat({ style: "percent", maximumFractionDigits: 2 });
+const percent3 = numberFormat({ style: "percent", maximumFractionDigits: 3 });
 /** A small percent to its first two significant digits (`0.0012%`). */
-const percentSmall = new Intl.NumberFormat(he, { style: "percent", maximumSignificantDigits: 2 });
+const percentSmall = numberFormat({ style: "percent", maximumSignificantDigits: 2 });
 /** A percent with every decimal a price list prints, up to six (`0.0875%`), none added. */
-const percentPrinted = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 6 });
+const percentPrinted = numberFormat({ style: "percent", maximumFractionDigits: 6 });
 /** An ECB reference rate, to the four decimals the ECB publishes it with. */
-const ecbRate = new Intl.NumberFormat(he, { maximumFractionDigits: 4 });
-const compactNumber = new Intl.NumberFormat(he, { maximumFractionDigits: 1 });
+const ecbRate = numberFormat({ maximumFractionDigits: 4 });
+const compactNumber = numberFormat({ maximumFractionDigits: 1 });
 const compactFormat = (v: number) => withMinus(compactNumber.format(v));
 const date = new Intl.DateTimeFormat(he, { day: "2-digit", month: "2-digit", year: "numeric" });
 const period = new Intl.DateTimeFormat(he, { month: "long", year: "numeric" });
@@ -60,7 +62,7 @@ function compactNisParts(v: number): { num: string; word: string | null } {
  * A billion or more in its short form, always with two decimals (`2.30 מיליארד ₪`, `1,250.00 מיליארד ₪`): a figure with one decimal beside
  * one with two read as different precisions.
  */
-const billions = new Intl.NumberFormat(he, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const billions = numberFormat({ minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const nisBillions = (v: number) => `${withMinus(billions.format(v / 1e9))} ${numbers.billion} ₪`;
 
 /**
@@ -178,6 +180,8 @@ export const fmt = {
   unsignedPct: (v: number, digits?: number, options: SignedOptions = {}) => isolated(digits === undefined ? fmt.pct(Math.abs(v)) : fixed(digits, "percent").format(Math.abs(v) / 100), options),
   /** A plain number with its sign (`signed`): `+2`, `−18.5`. `digits`: exactly that many decimals; without it, up to two, as `number`. */
   signedNumber: (v: number, digits?: number, options: SignedOptions = {}) => signed(v, digits === undefined ? plainNumber(Math.abs(v)) : fixed(digits, "decimal").format(Math.abs(v)), options),
+  /** A plain number with exactly `digits` decimals and no plus sign (`1.5`, `−0.3`), isolated left to right as the signed figures are (`isolate`, the default). */
+  decimals: (v: number, digits: number, options: SignedOptions = {}) => isolated(withMinus(fixed(digits, "decimal").format(v)), options),
   /** Hebrew year forms (copy.md §1): שנה, שנתיים, {n} שנים; and the month forms. */
   years: (n: number) => countPhrase(n, numbers.yearWords),
   months: (n: number) => countPhrase(n, numbers.monthWords),
@@ -203,14 +207,8 @@ function signed(v: number, abs: string, options: SignedOptions): string {
   return isolated(`${sign}${abs}`, options);
 }
 
-/** A number or a percent with exactly `digits` decimals, one formatter per kind and count of decimals. */
-const fixedFormats = new Map<string, Intl.NumberFormat>();
-function fixed(digits: number, style: "decimal" | "percent"): Intl.NumberFormat {
-  const key = `${style}:${digits}`;
-  let f = fixedFormats.get(key);
-  if (!f) fixedFormats.set(key, (f = new Intl.NumberFormat(he, { style, minimumFractionDigits: digits, maximumFractionDigits: digits })));
-  return f;
-}
+/** A number or a percent with exactly `digits` decimals. */
+const fixed = (digits: number, style: "decimal" | "percent"): Intl.NumberFormat => numberFormat({ style, minimumFractionDigits: digits, maximumFractionDigits: digits });
 
 /**
  * Display rounding (method §13 unchanged, this is display only). A computed, entered or
@@ -236,7 +234,6 @@ export function nisShown(v: number, state?: "sourced" | "computed" | "entered", 
  */
 export const joinLead = (lead: string, next: string): string => (lead.endsWith("\u05be") && /^[\u05d0-\u05ea]/.test(next.trimStart()) ? lead.slice(0, -1) : lead);
 
-const typedForms = new Map<string, { whole: Intl.NumberFormat; cents: Intl.NumberFormat }>();
 /** The currency of a unit that is a sum of money; none for a price per unit, a fraction of a cent that keeps its own decimals (`formatValue`). */
 export const currencyOfUnit = (unit: string): string | null =>
   unit.endsWith("_per_share") ? null : /^nis/.test(unit) ? "ILS" : /^usd/.test(unit) ? "USD" : /^eur/.test(unit) ? "EUR" : /^gbp/.test(unit) ? "GBP" : null;
@@ -263,12 +260,7 @@ export function computedSum(v: number, unit: string): string | undefined {
 function sumForms(unit: string): { whole: Intl.NumberFormat; cents: Intl.NumberFormat } | null {
   const cur = currencyOfUnit(unit);
   if (!cur) return null;
-  let f = typedForms.get(cur);
-  if (!f) {
-    f = { whole: new Intl.NumberFormat(he, { style: "currency", currency: cur, maximumFractionDigits: 0 }), cents: new Intl.NumberFormat(he, { style: "currency", currency: cur, minimumFractionDigits: 2, maximumFractionDigits: 2 }) };
-    typedForms.set(cur, f);
-  }
-  return f;
+  return { whole: numberFormat({ style: "currency", currency: cur, maximumFractionDigits: 0 }), cents: numberFormat({ style: "currency", currency: cur, minimumFractionDigits: 2, maximumFractionDigits: 2 }) };
 }
 
 /**
@@ -406,5 +398,5 @@ export const amountWords = (text: string): string => `\u2066${text.replace(/ /g,
 
 /** Thousands separators for a typed field, left to right (`1,500`, `5`, `-2.5`). */
 export function formatTyped(n: number): string {
-  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 4 }).format(n);
+  return numberFormat({ maximumFractionDigits: 4 }, "en-US").format(n);
 }

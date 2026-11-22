@@ -17,6 +17,8 @@ import type { VisualProps } from "./kit";
 import { MakamVisual } from "./makam";
 import { MoneyMarketDailyVisual } from "./money-market-daily";
 import { SavingsPlanVisual } from "./savings-plan";
+import { ToolBoundary } from "../tool-boundary";
+import { useInputs } from "../../lib/inputs";
 
 export const signatureRegistry: Record<string, ComponentType<VisualProps>> = {
   "current-account": CurrentAccountVisual,
@@ -41,12 +43,16 @@ export const signatureTitle = (id: string) => `${copy.titleBefore} ${copy.pages[
 export function SignatureFrame({ id, data, today, timeline }: { id: string; data: SignatureData; today: string; timeline: ReactNode }) {
   const Visual = signatureRegistry[id]!;
   const page = copy.pages[id]!;
+  // a visual reads the guide's fields kept on the device: other fields try it again, and its notice offers to put them back
+  const { state, resetAll } = useInputs();
   return (
     <>
       {/* the question is the card's title: outside the card it read as a second heading under the section's on a phone */}
       <Card data-wide className="flex flex-col gap-4">
         <p className="text-lg font-semibold max-w-measure">{page.question}</p>
-        <Visual data={data} today={today} />
+        <ToolBoundary resetKey={JSON.stringify(state)} onReset={resetAll}>
+          <Visual data={data} today={today} />
+        </ToolBoundary>
       </Card>
       {page.altId ? (
         <p className="text-sm max-w-measure">

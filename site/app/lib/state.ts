@@ -8,6 +8,7 @@
 //
 // The export file (`StateFile`) is this document with a header; the import checks it before anything changes.
 import { useSyncExternalStore } from "react";
+import { z } from "zod";
 import { valueObject, type ValueObject, type WrapperId } from "@finance-tool/schema";
 import type { ComparisonResult, Versions } from "@finance-tool/engine";
 import type { RunGoal } from "./compare";
@@ -15,6 +16,7 @@ import type { Goal } from "./goal";
 import type { CustomIndex } from "./invest";
 import { validCustomBrokers, validCustomFunds, type CustomBroker, type CustomFund } from "./custom-entries";
 import { todayLocal } from "./today";
+import { askToKeepStorage } from "./keep-storage";
 import { entered as enteredValue, p05Units } from "./value";
 import { sanitizeRawState, type Rejected } from "./import-check";
 import { IMPORTED_SIDE_KEY, mergeSide, noSideCounts, readImportedSide, readSideFile, readSideStores, removeImportedSide, sideCounts, sideTotal, sideIsEmpty, writeSideStores, type DealProblem, type SideCounts, type SideMerge, type SideProblem, type SideStores } from "./side-stores";
@@ -148,6 +150,11 @@ export interface StateFile {
    */
   sideStores?: SideStores;
 }
+
+/** The export file's header, checked on import before its state is read. */
+const stateFileHeader = z.object({ format: z.literal("mekor-state"), version: z.number(), exported: z.string(), site: z.object({ version: z.string(), data: z.string() }) });
+type StateFileHeader = z.infer<typeof stateFileHeader>;
+const headerFields = ["version", "exported", "site"] as const;
 
 export function emptyState(): StateV3 {
   return { version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] };
@@ -410,6 +417,8 @@ let keepV1Goals = false;
 /** An edit is waiting to be written: pagehide and the timer write only then (a document someone cleared is not put back). */
 let dirty = false;
 let timer: ReturnType<typeof setTimeout> | null = null;
+/** The person has changed the document on this page (an edit, an import): its first write asks the browser to keep the storage. */
+let edited = false;
 let listening = false;
 const listeners = new Set<() => void>();
 
@@ -431,6 +440,7 @@ export function resetStore(s?: Storage | null) {
   readOnly = false;
   keepV1Goals = false;
   dirty = false;
+  edited = false;
   if (timer) clearTimeout(timer);
   timer = null;
   listeners.forEach((l) => l());
@@ -478,13 +488,26 @@ function listen() {
   document.addEventListener("visibilitychange", () => document.visibilityState === "hidden" && flush());
   // another tab changed the document: re-read it, and let the providers re-read theirs
   window.addEventListener("storage", (e) => {
-    if (e.key !== STATE_KEY) return;
-    const s = theStorage();
-    if (!s) return;
-    const r = readJson(s, STATE_KEY);
-    const parsed = r.present && isObj(r.value) && (r.value.version === 2 || r.value.version === 3) && checkState(r.value) === null ? normalizeState(r.value) : e.newValue === null ? emptyState() : null;
-    if (parsed) set({ state: parsed, external: snap.external + 1 });
+    if (e.key === STATE_KEY) rereadState();
   });
+  // the Back button brought the page back from the browser's page cache: another tab may have changed the document meanwhile
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted) rereadState();
+  });
+}
+
+/**
+ * Reads the document again after something outside this page may have changed it, and lets the providers re-read theirs: one removed
+ * reads as empty, one that does not check out leaves the page as it is. Not while the page holds an edit the device does not.
+ */
+export function rereadState(): void {
+  // an edit not yet written, or one the device refused, is newer than what the device holds: reading it would put the page back
+  if (dirty || !snap.saved || snap.status === "unavailable") return;
+  const s = theStorage();
+  if (!s) return;
+  const r = readJson(s, STATE_KEY);
+  const parsed = !r.present ? emptyState() : isObj(r.value) && (r.value.version === 2 || r.value.version === 3) && checkState(r.value) === null ? normalizeState(r.value) : null;
+  if (parsed) set({ state: parsed, external: snap.external + 1 });
 }
 
 /**
@@ -563,6 +586,7 @@ export function flush(force = false): boolean {
     s.setItem(STATE_KEY, JSON.stringify(snap.state));
     for (const k of keepV1Goals ? [V1_INPUTS, V1_UNCAT] : [V1_INPUTS, V1_GOALS, V1_UNCAT]) s.removeItem(k);
     if (!snap.saved) set({ saved: true });
+    if (edited) askToKeepStorage();
     return true;
   } catch {
     memory = snap.state;
@@ -592,6 +616,7 @@ export function updateState(fn: (s: StateV3) => StateV3): void {
   if (takeOver) keepV1Goals = false;
   set({ state: next, ...(takeOver ? { status: "ok" as const } : {}) });
   if (snap.status === "unavailable") memory = next;
+  edited = true;
   schedule();
 }
 
@@ -603,6 +628,7 @@ export function replaceState(next: StateV3): boolean {
   if (snap.status === "old-version") set({ status: "ok" });
   set({ state: next, external: snap.external + 1 });
   if (snap.status === "unavailable") memory = next;
+  edited = true;
   return flush(true);
 }
 
@@ -817,6 +843,9 @@ export function stateFileText(f: StateFile): string {
   return JSON.stringify(f, null, 2);
 }
 
+/** What the device keeps under EXPORTS_KEY: the day of the last export and how many were made that day. Anything else counts from 1. */
+const exportCount = z.object({ date: z.string(), n: z.number() });
+
 /** `mekor-state-YYYY-MM-DD.json`; a second export the same day adds `-2`, a third `-3`. */
 export function exportFileName(date: string, count = 1): string {
   return `mekor-state-${date}${count > 1 ? `-${count}` : ""}.json`;
@@ -828,8 +857,8 @@ export function nextExportName(date = isoToday(), remember = true): string {
   let n = 1;
   try {
     const raw = s?.getItem(EXPORTS_KEY);
-    const rec = raw ? (JSON.parse(raw) as { date?: string; n?: number }) : null;
-    if (rec && rec.date === date && typeof rec.n === "number") n = rec.n + 1;
+    const rec = raw ? exportCount.safeParse(JSON.parse(raw)) : null;
+    if (rec?.success && rec.data.date === date) n = rec.data.n + 1;
     if (remember) s?.setItem(EXPORTS_KEY, JSON.stringify({ date, n }));
   } catch {
     /* the counter is a convenience */
@@ -845,7 +874,8 @@ export function peekExportName(date = isoToday()): string {
 // ---------------------------------------------------------------- import
 
 export interface ImportPreviewData {
-  file: StateFile;
+  /** The file's header: when and by which build it was written. */
+  file: StateFileHeader;
   /** The file's state as this release reads it (an older version already migrated), without the items that failed their check. */
   state: StateV3;
   migrated: boolean;
@@ -871,11 +901,11 @@ export function readImport(text: string): ImportRead {
     return { ok: false, refusal: { kind: text.trim() === "" ? "unreadable" : "format" } };
   }
   if (!isObj(json) || json.format !== "mekor-state") return { ok: false, refusal: { kind: "format" } };
-  if (typeof json.version !== "number") return { ok: false, refusal: { kind: "invalid", field: "version" } };
-  if (typeof json.exported !== "string") return { ok: false, refusal: { kind: "invalid", field: "exported" } };
-  if (!isObj(json.site) || typeof json.site.version !== "string" || typeof json.site.data !== "string") return { ok: false, refusal: { kind: "invalid", field: "site" } };
+  const head = stateFileHeader.safeParse(json);
+  // the first field out of order is named, in the header's order
+  if (!head.success) return { ok: false, refusal: { kind: "invalid", field: headerFields.find((f) => head.error.issues.some((i) => i.path[0] === f)) ?? "format" } };
   const { state: cleaned, rejected } = sanitizeRawState(json.state);
-  const r = readState(cleaned, json.version);
+  const r = readState(cleaned, head.data.version);
   if (!r.ok) return r;
   const { side, problems, dealProblems } = readSideFile(json.sideStores);
   const goals = r.state.goals.filter((g) => !isBlankGoal(g)).length;
@@ -883,7 +913,7 @@ export function readImport(text: string): ImportRead {
   return {
     ok: true,
     preview: {
-      file: json as unknown as StateFile,
+      file: head.data,
       state: r.state,
       migrated: r.migrated,
       counts: { goals, holdings: r.state.holdings.length, names: r.state.uncatalogued.length, comparisons: r.state.savedComparisons.length, ...sc },

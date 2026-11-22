@@ -83,12 +83,14 @@ const navLook = (on: boolean) => cx("transition-colors duration-(--duration-fast
 export function SidePage({ nav, summary, more, less, chosen, children }: { /** The `SideNav`; given a function, it receives what closes the fold. */ nav: (close: () => void) => ReactNode; /** What is shown, in a few words, for the folded line under lg. */ summary: ReactNode; more: string; less: string; /** The chosen part: when it changes, the fold closes. */ chosen: string; children: ReactNode }) {
   // the fold is open for the part chosen when it was opened: choosing another (a press on an item, or the Back button) closes it, and
   // coming back to that part does not open it again
-  const [open, setOpen] = useState(false);
+  const [openFor, setOpenFor] = useState<string | null>(null);
   const [seen, setSeen] = useState(chosen);
   if (seen !== chosen) {
     setSeen(chosen);
-    setOpen(false);
+    setOpenFor(null);
   }
+  const open = openFor === chosen;
+  const setOpen = (o: boolean) => setOpenFor(o ? chosen : null);
   return (
     <div data-side-page="" className="flex flex-col gap-6 lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[16.5rem_minmax(0,1fr)] lg:gap-8 lg:items-start">
       <div data-side-nav="" className="lg:sticky lg:top-[88px] lg:max-h-[calc(100dvh-104px)] lg:overflow-y-auto">

@@ -1,8 +1,7 @@
 // Whether a change kept the built site the same: compares two builds' pages, data files and bundles, file by file.
 // Usage (from the repo root): copy the build before the change, rebuild, then
 //   cp -r site/build <scratch>/before && <change> && npm run build && node tools/build-diff.mjs <scratch>/before [site/build]
-// Asset file hashes, module-preload links and the Content Security Policy's script hashes are masked (they change with any code change:
-// an inline script names the assets it loads). A React Router `.data` file
+// Asset file hashes and module-preload links are masked (they change with any code change). A React Router `.data` file
 // that differs as text is decoded and compared as data, key order ignored. Exits 1 when anything else differs.
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
@@ -19,8 +18,7 @@ const mask = (s) =>
   s
     .replace(/<link rel="modulepreload" href="[^"]*"\/>/g, "")
     .replace(/"\/[\w-]+\/assets\/[^"]*\.js",?/g, "")
-    .replace(/([\w.-]+)-[A-Za-z0-9_-]{8}\.(js|css|woff2|map)/g, "$1-HASH.$2")
-    .replace(/'sha256-[A-Za-z0-9+/]+={0,2}'/g, "'sha256-HASH'");
+    .replace(/([\w.-]+)-[A-Za-z0-9_-]{8}\.(js|css|woff2|map)/g, "$1-HASH.$2");
 
 const turbo = await import(resolve("node_modules/react-router/dist/production/vendor/turbo-stream-v2/turbo-stream.js"));
 const decode = async (text) => {

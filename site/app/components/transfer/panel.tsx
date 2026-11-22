@@ -30,6 +30,7 @@ import type { Rejected } from "../../lib/import-check";
 import { entered } from "../../lib/value";
 import { IconAlert, IconCopy, IconDownload, IconFileUp, IconShare } from "../icons";
 import { Num } from "../provenance";
+import { askToKeepStorage } from "../../lib/keep-storage";
 import { Button, Callout, Card, cx, PageHead, Section, SegmentedControl, Sentence, Tpl, When } from "../kit";
 import { assertNever } from "@finance-tool/schema";
 
@@ -144,6 +145,8 @@ function ExportHalf({ site }: { site: Site }) {
     const fileName = nextExportName(isoToday(), makesFile);
     const text = stateFileText(buildStateFile(state, site, new Date(), currentSideStores()));
     if (makesFile) setName(peekExportName());
+    // an export is something of the person's worth keeping: the browser is asked once to keep the storage (lib/keep-storage.ts)
+    askToKeepStorage();
     return { fileName, text };
   };
   const share = async () => {
@@ -265,10 +268,13 @@ function ImportHalf() {
 
   const source = fileText?.text ?? pasted;
   const read = useMemo(() => (source.trim() === "" ? null : readImport(source)), [source]);
-  useEffect(() => {
+  // new text asks again before it replaces anything, and puts away the line about the last import
+  const [readSource, setReadSource] = useState(source);
+  if (source !== readSource) {
+    setReadSource(source);
     setConfirm(false);
     if (source.trim() !== "") setDone(null);
-  }, [source]);
+  }
 
   const takeFile = async (f: File | undefined | null) => {
     if (!f) return;
