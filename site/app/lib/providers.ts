@@ -327,8 +327,9 @@ export interface WorkbenchInputs {
   age: number | null;
   /** Gross yearly income, when known. */
   income: number | null;
-  /** The value objects the chips and the sheet show (the goal's, or the scenario's as site parameters). */
-  values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; returnV: SiteValue; inflation: SiteValue };
+  /** The value objects the chips and the sheet show (the goal's, or the scenario's as site parameters); `income`, where the page runs on
+   *  one (`income` above), the figure its runs' sheets list, since the surtax is tested on it with the gain (F-43). */
+  values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; returnV: SiteValue; inflation: SiteValue; income?: SiteValue };
   returnFromParameter: boolean;
   /**
    * The indices page alone (D64): a bank's row counts its current account's monthly minimum (F-102), except at `own`, the bank the

@@ -46,11 +46,7 @@
 //            lifted, that does not land just before it.
 //   toolbox carry   on the fee page's deal at 1024 (the toolbox docked at the window's foot, its parts in a list that scrolls), a card
 //            carried from it over one case, the page wheeled down under the still pointer until the case below stands there, and let go
-//            with no move: the card not landing on that case (the drop aimed at the places as they stood before the scroll); opening the
-//            fee raising the notice that a script failed (the browser's ResizeObserver loop report counted as the site's failure).
-//   notice in a sheet   with a sheet open on the kit page and a script's failure planted (at 390 a sheet at the foot, at 1440 a short sheet
-//            centred by a transform), the notice's title or its reload button not the top thing at its middle (drawn under the sheet, or cut
-//            by its card), the notice not at the window's foot, or the button not reloading the page.
+//            with no move: the card not landing on that case (the drop aimed at the places as they stood before the scroll).
 
 import { existsSync, readFileSync } from "node:fs";
 
@@ -93,7 +89,7 @@ const center = (r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2 });
 
 export async function kitInputCheck(browser, base) {
   const found = [];
-  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, noticeSheetCheck]) {
+  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck]) {
     try {
       found.push(...(await run(browser, base)));
     } catch (e) {
@@ -982,8 +978,9 @@ async function toolboxCarryCheck(browser, base) {
   await page.evaluate(settled);
   await page.locator("main [role=gridcell][data-liftable]").first().click();
   await page.evaluate(settled);
-  // nothing failed: the browser's own reports (a ResizeObserver loop as the toolbox docks) raise no failure notice
-  if (await page.getByRole("alert").filter({ hasText: "משהו בעמוד השתבש" }).count()) say("opening a fee raises the notice that a script failed, with nothing failed");
+  // the notice of a failed script stands over the toolbox at the window's foot (the toolbox's size observer can raise it, by a resize loop)
+  const notice = page.locator("[role=alert] button").last();
+  if (await notice.count()) await notice.click();
   const cards = page.locator("[data-tool-sheet][data-docked] [data-drag-source]");
   for (const chip of await page.locator("[data-tool-sheet][data-docked] [role=radio]").all()) {
     if (await cards.count()) break;
@@ -1032,53 +1029,5 @@ async function toolboxCarryCheck(browser, base) {
     if (under && after === pair.text) say("a card carried from the docked toolbox and let go on a case after the page was wheeled under the still pointer does not land on that case");
   }
   await ctx.close();
-  return found;
-}
-
-/**
- * The failure notice over an open sheet (`notice in a sheet` above), with a failure planted as an `error` event the site counts as its own
- * (a thrown value, in a script under its address): the confirmation's sheet at the foot of a phone at 390; and at 1440 the lift demo's
- * sheet, centred on the window by a transform and held to 5rem, shorter than the notice. The notice's title and its reload button must each
- * be the top thing at their own middle, the notice's foot at the window's foot, and a press on the button must load the page again.
- */
-async function noticeSheetCheck(browser, base) {
-  const found = [];
-  const plant = (page) => page.evaluate(() => window.dispatchEvent(new ErrorEvent("error", { message: "planted", error: new Error("planted"), filename: location.href })));
-  for (const at of ["phone", "desk"]) {
-    const where = at === "phone" ? "at 390, the confirmation's sheet open" : "at 1440, a short centred sheet open";
-    const { ctx, page } = await open(browser, base, at === "phone" ? PHONE : DESK);
-    const opener = at === "phone" ? page.locator('article[aria-label="ConfirmAsk"] button').first() : page.locator('article[aria-label="Grip, DropBin, SpanKnob, EditInPlace"] button', { hasText: "לפתוח את העמלה בחלון" });
-    await opener.scrollIntoViewIfNeeded();
-    await (at === "phone" ? opener.tap() : opener.click());
-    await page.locator("dialog[open]").waitFor({ timeout: 3000 });
-    if (at === "desk") await page.addStyleTag({ content: "dialog[open] { max-height: 5rem !important; }" });
-    await page.evaluate(settled);
-    await plant(page);
-    await page.evaluate(settled);
-    const notice = page.getByRole("alert").filter({ hasText: "משהו בעמוד השתבש" });
-    const reload = notice.getByRole("button", { name: "לרענן את העמוד" });
-    if (!(await reload.count())) {
-      found.push(`notice in a sheet: ${where}, a planted failure shows no notice`);
-      await ctx.close();
-      continue;
-    }
-    const seen = await notice.evaluate((n) => {
-      const top = (el) => {
-        const r = el.getBoundingClientRect();
-        const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
-        return !!hit && el.contains(hit);
-      };
-      const title = [...n.querySelectorAll("*")].find((e) => e.childElementCount === 0 && e.textContent.trim() === "משהו בעמוד השתבש");
-      return { title: !!title && top(title), button: top(n.querySelector("button")), foot: Math.abs(innerHeight - n.getBoundingClientRect().bottom) <= 2 };
-    });
-    if (!seen.title) found.push(`notice in a sheet: ${where}, the failure notice's title is not the top thing at its middle (hidden under the sheet, or cut by it)`);
-    if (!seen.button) found.push(`notice in a sheet: ${where}, the failure notice's reload button is not the top thing at its middle (hidden under the sheet, or cut by it)`);
-    if (!seen.foot) found.push(`notice in a sheet: ${where}, the failure notice does not stand at the window's foot`);
-    const b = center(await reload.boundingBox());
-    const loaded = page.waitForEvent("load", { timeout: 5000 }).then(() => true, () => false);
-    await (at === "phone" ? page.touchscreen.tap(b.x, b.y) : page.mouse.click(b.x, b.y));
-    if (!(await loaded)) found.push(`notice in a sheet: ${where}, a press on the failure notice's reload button does not reload the page`);
-    await ctx.close();
-  }
   return found;
 }

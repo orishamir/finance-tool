@@ -550,6 +550,9 @@ export const parametersPage = {
     "P-05.sliders.A-01.min": "מחוון התשואה: מינימום",
     "P-05.sliders.A-01.max": "מחוון התשואה: מקסימום",
     "P-05.sliders.A-01.step": "מחוון התשואה: גודל צעד",
+    "P-05.sliders.A-02.min": "מחוון האינפלציה: מינימום",
+    "P-05.sliders.A-02.max": "מחוון האינפלציה: מקסימום",
+    "P-05.sliders.A-02.step": "מחוון האינפלציה: גודל צעד",
     "P-05.sliders.change_share.min": "גרף השינויים בעמוד המדדים: הקצה השמאלי",
     "P-05.sliders.change_share.max": "גרף השינויים בעמוד המדדים: הקצה הימני",
     "P-05.sliders.change_share.step": "גרף השינויים בעמוד המדדים: גודל צעד",
@@ -811,6 +814,7 @@ export const pagePreview = {
 /** Hebrew names of the formulas a sheet names (method.md F-IDs); copy.md 3.8. */
 export const formulaNames: Record<string, string> = {
   "A-06": "העלות בתוך הקרן: סכום כל מרכיביה",
+  "F-03": "מדד המחירים לאורך התוכנית",
   "F-05": "ההפקדות לאורך הזמן",
   "F-06": "ערך בכסף של היום",
   "F-106": "סך ההפקדות בכסף של היום",
@@ -3975,16 +3979,26 @@ export const invest = {
   receipt: {
     title: "קבלה",
     added: "המדד הוסיף, לפני כל עלות",
+    /** At the head of that line's sheet: like every line above the inflation it is in the shekels of the horizon, so it holds what prices add. */
+    addedLead: "מה שהמדד הוסיף לפני כל עלות, בשקלים של סוף התוכנית: גם מה שעליית המחירים מוסיפה.",
+    /** The line under the costs: what is left in the shekels of the horizon (F-06 read back), before the inflation takes it to today's money. */
+    nominalLeft: (years: number) => `בעוד ${yearsSpan(years)}, בשקלים של אז`,
+    /** The line after it: what bringing that sum to today's money takes (F-06), with the plan's inflation (A-02) under it. */
+    inflation: "אינפלציה",
+    inflationLead: "כמה הסכום שבסוף שווה פחות בכסף של היום, לפי האינפלציה של התוכנית.",
+    perYear: "בשנה",
+    /** A line's figure in the shekels of the horizon: its sheet's title, and the same figure in today's money among its inputs. */
+    nominal: { today: "אותו סכום בכסף של היום", about: (label: string) => `${label}, בשקלים של סוף התוכנית` },
     left: "נשאר לכם",
     /** The receipt's stub at the screen's foot: the way back up to the receipt. */
     toReceipt: "לקבלה",
-    /** Under what is left: when, in what money, and on what the dollar does (only where the figure rests on it). */
-    caption: (years: number, steady: string | null) => `בעוד ${yearsSpan(years)}, בכסף של היום${steady ? `, ${steady}` : ""}.`,
+    /** Under what is left: in what money, and on what the dollar does (only where the figure rests on it). */
+    caption: (steady: string | null) => `בכסף של היום${steady ? `, ${steady}` : ""}.`,
     /** The ticket's two side parts: what the account and the fund take, under their names. */
     accountCharges: "החשבון גובה",
     fundCharges: "הקרן גובה",
     gain: "הרווח שלכם",
-    gainNote: "מה שנשאר, פחות מה שהפקדתם",
+    gainNote: "מה שנשאר, פחות מה שהפקדתם, שניהם בכסף של היום",
     lost: "מה ירד בדרך",
     lostBar: "מה ירד בדרך, לפי מי שלקח",
     /** The bar's parts besides the tax, by who took them. */
@@ -4368,44 +4382,13 @@ export const invest = {
 
   plan: {
     heading: "התוכנית שלכם",
-    now: "היום",
-    monthly: "בחודש",
-    years: "שנים",
-    inflation: "אינפלציה",
-    ret: "תשואה",
-    retExample: "תשואה לדוגמה",
-    retEntered: "התשואה שהזנתם",
-    siteExample: "לדוגמה של האתר",
-    all: "כל ההנחות",
-    panelTitle: "ההנחות של החישוב",
     knobs: {
       amount: "סכום היום",
       monthly: "הפקדה חודשית",
       years: "שנים",
       ret: "תשואה בשנה",
-      more: "עוד",
-      today: "היום",
-      perMonth: "בחודש",
-      oneYear: "עוד שנה",
-      retStep: "תשואה",
-      most: "הכי משפיע",
-      others: "אינפלציה",
-      /** After the inflation's figure on the plan card's line. */
-      perYear: "בשנה",
-      /** What the yearly return is (A-01, a gross return: docs/method.md), on the plan card's line under the sliders, and at the head of the assumptions. */
-      retBefore: "התשואה בשנה היא לפני אינפלציה, דמי ניהול, עמלות ומס",
-      /** At the head of the assumptions: what the return is (A-01), what the results are, and A-04 "constant real" (F-05), since the
-       *  results hold only with the deposit rising with prices. */
-      assumptions: "התשואה בשנה היא לפני אינפלציה, דמי ניהול, עמלות ומס. מה שנשאר מחושב אחרי כל אלה, בכסף של היום. ההפקדה החודשית עולה עם האינפלציה, כך שבכסף של היום היא נשארת קבועה.",
-      /** Under them: the yearly income the runs assume (P-05 `annual_income`, or the one entered), and that the receipt's capital gains tax
-       *  line holds the surtax too when that income with the real gain passes its threshold in the year of the sale (F-43, TXG-09, TXG-10) */
-      income: {
-        before: "החישוב מניח הכנסה של",
-        after: "בשנה, מלבד הרווח.",
-        surtax: "השורה ״מס רווחי הון״ כוללת גם",
-        term: "מס נוסף",
-        end: ", אם בשנת המכירה ההכנסה יחד עם הרווח עוברת את הסף שלו.",
-      },
+      /** The fifth slider, the yearly inflation the plan's figures are in today's money by (A-02). */
+      inflation: "אינפלציה בשנה",
       changes: {
         title: "מה הכי משנה את מה שיישאר לכם",
         lead: "בכל קו משתנה מספר אחד, והשאר נשארים כמו בתוכנית שלכם. גררו את הקו האנכי בגרף, או בחרו שינוי:",
@@ -4428,9 +4411,6 @@ export const invest = {
         aboutDiff: "ההפרש ממה שיישאר לפי התוכנית שלכם",
       },
     },
-    dollar: "שער הדולר",
-    dollarSource: "מחושב משערי הייחוס של הבנק המרכזי האירופי",
-    dollarMissing: "הדרך בחו״ל לא מחושבת: אין שער דולר בשערי הייחוס.",
   },
 
   header: {
@@ -4496,6 +4476,16 @@ export const invest = {
   pair: {
     paidIn: "הפקדתם",
     paidInAbout: "סך ההפקדות",
+    /** At the head of the deposits' sheet: A-04 "constant real" (F-05), which the deposits' sum in today's money rests on. */
+    paidInLead: "ההפקדה החודשית עולה כל חודש עם המחירים, לפי האינפלציה של התוכנית, כך שבכסף של היום היא אותו סכום בכל חודש.",
+    /** What was paid in, in the shekels each deposit is paid in (F-05): the receipt's first line, in the shekels of the horizon's chain. */
+    paidInNominalAbout: "סך ההפקדות, כל אחת בשקלים של החודש שבו היא מופקדת",
+    /** I_T (F-03), among the inputs of the receipt's figures in the shekels of the horizon. */
+    indexAbout: "פי כמה המחירים יעלו עד סוף התוכנית, לפי האינפלציה של התוכנית",
+    /** I_T (F-03) as an input of a receipt figure in the shekels of the horizon. */
+    indexInput: "פי כמה המחירים עולים עד סוף התוכנית",
+    /** The income a run's tax tests the surtax on (F-43), among the inputs of the figures that come out of the run. */
+    incomeInput: "הכנסה שנתית, מלבד הרווח",
     /** The bank's monthly current-account minimum among a row's inputs, with its price list as the source (F-102). */
     accountMinimum: "דמי ניהול חשבון עו״ש בחודש",
     /** An exchange rate a run is priced at (F-84), among a figure's inputs: the currency the fund is bought in, or a price-list line set in it. */
@@ -4814,17 +4804,10 @@ export const invest = {
     israelTitle: "קרנות ישראליות",
   },
 
-  /** Under the lists, once, whether their order holds at the ends of P-02's return range ({lo}, {hi}, {at}: its bounds); the "?" beside the
-   *  return under the sliders says what the return is and, where the order changes, which order and where. */
+  /** Under the lists, once, whether their order holds at the ends of P-02's return range ({lo}, {hi}, {at}: its bounds). */
   foot: {
-    returnAbout: "התשואה שבחישוב",
-    example: "תשואה לדוגמה, לא תחזית: הסדר של הדרכים לפי עלויות, לא לפי מה שהמדד יעשה.",
-    enteredHelp: "התשואה שבחישוב היא זו שהזנתם.",
     holds: "הסדר ברשימות לא משתנה בתשואה של {lo} ושל {hi}.",
     changes: { one: "הסדר ברשימות משתנה בתשואה של {at}.", both: "הסדר ברשימות משתנה בתשואה של {lo} ושל {hi}." },
-    flips: "הסדר משתנה בתשואה שונה:",
-    flipsAt: (at: number) => `ב־\u2068${at}%\u2069`,
-    flipWhat: { options: "הסדר בין האפשרויות", brokers: (o: string) => `הסדר בין החשבונות ב${o}`, funds: (o: string) => `הסדר בין הקרנות ב${o}` },
     sharePrice: "קרנות בחו״ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף.",
   },
 
