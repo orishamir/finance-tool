@@ -282,6 +282,10 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
   // order is placed at. A step of a month's orders or trading is written per month, so a charge covering `k` months reads their average,
   // their total ÷ k (a month before the run's first holds nothing)
   const planWithin = account.planWithin ?? [];
+  // F-102: no rule makes the plan's orders a current account's actions, so its step of a month's actions is the deal's own pick, never read here
+  for (const i of account.currentAccount ?? []) {
+    if (planWithin[i]?.some((w) => w.on === "count")) throw new Error(`F-102: fee ${i}, a current account, is read within the plan's orders; its count of actions is the deal's pick (F-128)`);
+  }
   const measure = (w: PlanWithin, from: number, to: number, activity: (m: number) => MonthActivity, balance: number): number => {
     if (w.on === "balance") return balance / shekelsPer(w.unit, to);
     let x = 0;

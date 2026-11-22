@@ -7,9 +7,9 @@ import { accountSum, buildInvest, dealOnFunds, dealRunOf, indexById, pairCosts, 
 import { receiptAmounts } from "../receipt";
 import { invest as words } from "../../copy";
 import { entered, type SiteValue } from "../value";
-import { hasCases, newDeal, type FeeDeal } from "../fee-deal/model";
+import { hasCases, newDeal, pickKey, typed, type Case, type Fee, type FeeDeal } from "../fee-deal/model";
 import { withLaterFillsAll } from "../fee-deal/templates";
-import { feeOf } from "../fee-deal/cases";
+import { feeOf, stepPick } from "../fee-deal/cases";
 import { addBy } from "../fee-deal/edits/case";
 import { dealProviderId, lineValueOf, snapshotOfDeal, withDeals } from "./bundle";
 import { dealTiles, listPlace } from "./tiles";
@@ -184,6 +184,33 @@ describe("F-128 a deal filled from a house prices as the house does, on a few in
       // each step copies the same prices, so the deal leaves what the house's row leaves
       expect(Math.round(at(dealProviderId(d.id)))).toBe(Math.round(at("psagot")));
     }
+  });
+
+  it("a current account whose price changes by a month's actions is read at the deal's pick, else its dearest step, never the plan's orders (F-102)", () => {
+    const leumi = fromHouse("leumi");
+    const card = leumi.fees.find((f) => f.kind === "current_account");
+    if (!card) throw new Error("Leumi's list fills a current account");
+    // up to two actions a month at the list's minimum, above two at 20 ₪: the plan places one order a month, which would read the first step
+    const cased = addBy(card, { kind: "count", unit: "actions", top: 2 });
+    if (!hasCases(cased)) throw new Error("the card takes a step of a month's actions");
+    const [low, high] = cased.cases;
+    if (!low || !high) throw new Error("two steps");
+    const dearStep: Case = { ...high, stages: [{ price: { form: "sum", amount: typed(20), every: 1 } }] };
+    const dear: Fee = { ...cased, cases: [low, dearStep] };
+    const priced = (id: string, f: FeeDeal["fees"][number], readFor = leumi.readFor): FeeDeal => ({ ...leumi, id, fees: leumi.fees.map((x) => (x === card ? f : x)), ...(readFor ? { readFor } : {}) });
+    const flat20 = priced("deal-flat-20", { ...card, stages: [{ price: { form: "sum", amount: { v: 20 }, every: 1 } }] } as FeeDeal["fees"][number]);
+    const stepped = priced("deal-stepped", dear);
+    const [by] = cased.by;
+    if (!by) throw new Error("the step's thing");
+    const picked = priced("deal-picked", dear, [...(leumi.readFor ?? []), { by: pickKey(by), is: stepPick(2) }]);
+    const bs = withDeals(bundle, [leumi, flat20, stepped, picked], data.kinds);
+    const ix = indexById(bs, "index-ta125");
+    if (!ix) throw new Error("the Tel Aviv 125 is priced");
+    const v = buildInvest({ bundle: bs, index: ix, plan });
+    const at = (id: string) => Math.round(v.houses.find((r) => r.provider.id === dealProviderId(id))?.entries.find((e) => e.fund.option === "il-etf")?.price?.valueN ?? NaN);
+    expect(at("deal-stepped")).toBe(at("deal-flat-20"));
+    expect(at("deal-picked")).toBe(at(leumi.id));
+    expect(at("deal-picked")).toBeGreaterThan(at("deal-stepped"));
   });
 
   it("the bank's current account is not counted on the bank the person marks as theirs", () => {
