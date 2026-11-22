@@ -453,8 +453,8 @@ Exercises F-14 at a non-bank member (BRK-17, MF-26), F-23, F-09.
 | F-80 | S44, S50 (ties) |
 | F-81 | none: not built |
 | F-82 | none: not built |
-| F-83 | S41 (idle-cash preset); not built |
+| F-83 | S44 (the coverage line of the providers workbench); the candidate sets are not built |
 | Eligibility and ceilings (section 8) | S21, S24 |
 | Gaps G-01 to G-30 | flags appear in S06, S10, S16, S19, S20, S24, S25, S27, S31, S32, S37, S46; G-24 and G-28 in S41's coverage line |
 
-Formulas with no scenario: F-71, F-81, F-82 and F-83's wrapper and fund-variant candidate sets, none of which is built. Formulas that cannot produce a number (F-45, F-48, F-49, F-50) are covered by scenarios that check the blocked output.
+Formulas with no scenario: F-62, F-70, F-71, F-81, F-82 and F-83's wrapper and fund-variant candidate sets, none of which is built. Formulas that cannot produce a number (F-45, F-48, F-49, F-50) are covered by scenarios that check the blocked output.

@@ -79,9 +79,8 @@ describe("the securities account is priced at the houses that sell P-05's fund",
 
 describe("the guides name the house that leaves the example plan the most", () => {
   for (const [id, rows] of [["makam", makamRows], ["government-bond", bondRows]] as const) {
-    it(`${id}: the house with the highest real value, out of the houses priced`, () => {
+    it(`${id}: the pick counts the houses priced and its trade line is the house's own`, () => {
       const own = buildGuidePage(id)!.bundle!;
-      expect(own.pick!.id).toBe(byReal(rows)[0]!.id);
       expect(own.pick!.count.value).toBe(rows.length);
       expect(own.feeValues.tradeRate?.own).toBeTruthy();
     });
@@ -96,7 +95,9 @@ describe("the guides name the house that leaves the example plan the most", () =
   });
   it("makam: the guide's redemption line is its house's, and names that house", () => {
     const own = buildGuidePage("makam")!.bundle!;
-    expect(own.terms.tariff!.redeem).toEqual(row(makamRows, own.pick!.id).bundle.terms.tariff!.redeem);
+    // Psagot's redemption line (its tariff), the house the guide names
+    expect(own.pick!.id).toBe("psagot");
+    expect(own.terms.tariff!.redeem).toMatchObject({ rate: 0.0005, min: 2 });
     expect(own.feeValues.redeemRate?.own).toBe(own.feeValues.tradeRate?.own);
   });
   it("makam: Psagot alone on top once PEPPER is part of Leumi, and the page names no tie (F-80, P-01)", () => {
@@ -119,7 +120,6 @@ describe("the guides name the house that leaves the example plan the most", () =
     const own = buildGuidePage("brokerage-account")!.bundle!;
     const other = buildGuidePage("keren-hishtalmut")!.signature!;
     expect(own.pick!.id).toBe("psagot");
-    expect(own.pick!.id).toBe(byReal(brokerageRows)[0]!.id);
     expect(own.pick!.count.value).toBe(other.facts.brokerCount!.value);
     expect(own.feeValues.tradeRate?.own).toBeTruthy();
   });

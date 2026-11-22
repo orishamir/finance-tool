@@ -422,8 +422,21 @@ export const feesSnapshot = z.strictObject({
    * What the documents hold that this record does not use, and why; empty means nothing was found. `why` is the working note. `why_he` is
    * the same reason in plain Hebrew for the reader, and `could_change_price` says whether leaving it out can make what some reader pays
    * differ from the price shown (another plan, a tier, a minimum by activity): a page tells the reader of those beside the house's price.
+   * `source` is the document the entry quotes where that is not the tariff (another part of the price list, an account-type page), and
+   * `page` is then its page; with no `source`, the entry quotes the tariff, and a page links it there.
    */
-  left_out: z.array(z.strictObject({ what: z.string().min(1), page: z.number().int().positive().optional(), why: z.string().min(1), why_he: z.string().min(1).optional(), could_change_price: z.boolean().optional() })).optional(),
+  left_out: z
+    .array(
+      z.strictObject({
+        what: z.string().min(1),
+        page: z.number().int().positive().optional(),
+        source: z.strictObject({ url: z.string().min(1), title: z.string().min(1) }).optional(),
+        why: z.string().min(1),
+        why_he: z.string().min(1).optional(),
+        could_change_price: z.boolean().optional(),
+      }),
+    )
+    .optional(),
   groups: feeGroups.optional(),
   /** What the house's advertising says against its binding documents (D57); absent or empty when nothing was found. */
   advertising: z.array(advertisingEntry).optional(),

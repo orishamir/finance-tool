@@ -42,6 +42,17 @@ describe("what a record leaves out", () => {
     expect(v.lead).toBe(c.sheetLeadOther);
     expect(v.parts.every((p) => p.group === "" && !p.head && !p.doc)).toBe(true);
   });
+  it("an entry that names its own document links that document at its page; one that names none links the price list", () => {
+    const part1 = { url: "https://example.org/part-1.pdf", title: "תעריפון, חלק 1 (BRK-66)" };
+    const exempt = { what: "חשבון צל", page: 1, why: "ENGLISH-WORKING-NOTE-5", why_he: "חשבון כזה פטור.", could_change_price: true, source: part1 };
+    const docs = (left_out: (typeof exempt | typeof tiered)[]) => (leftOutOf({ tariff: pdf, left_out })?.parts ?? []).map((p) => p.doc);
+    expect(docs([exempt, tiered])).toEqual([
+      { href: "https://example.org/part-1.pdf#page=1", title: c.page("תעריפון, חלק 1", 1) },
+      { href: "https://example.org/tariff.pdf#page=7", title: c.page("תעריפון לדוגמה", 7) },
+    ]);
+    // a web page of its own, beside a PDF price list: its address, no page in its name
+    expect(docs([{ ...exempt, page: 2, source: web }])).toEqual([{ href: "https://example.org/pricing", title: "Pricing page" }]);
+  });
   it("a web page's price list opens at its address, with no page in its name", () => {
     const v = leftOutOf({ tariff: web, left_out: [tiered] })!;
     expect(v.parts[0]!.doc).toEqual({ href: "https://example.org/pricing", title: "Pricing page" });

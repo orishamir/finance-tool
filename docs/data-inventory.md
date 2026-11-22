@@ -70,15 +70,13 @@ Nothing in `data/` holds a person's own figures. The holdings, offers, ticks, en
 
 ### Site parameters
 
-All eleven parameters, P-01 to P-11, exist. The parameters page (`/parameters`) lists every one and shows "עוד לא נקבע" for a parameter without a value. Their reasons are in `docs/parameters-rationale.md`.
+Seven parameters exist: P-01, P-02, P-05, P-06 and P-09 to P-11. P-03, P-04, P-07 and P-08 are removed, since nothing read them. The parameters page (`/parameters`) shows each parameter a page reads (`site/app/lib/parameter-pages.ts`), so not P-06, which only the golden tests read. Their reasons are in `docs/parameters-rationale.md`.
 
 | # | Path | Read by | Origin |
 |---|---|---|---|
 | 9 | `data/parameters/tie-threshold.json` (P-01) | The ranking (F-80) | Founder's choice |
 | 10 | `data/parameters/illustrative-scenario.json` (P-05), with the slider ranges | Guide page timeline start values; values sheet and panel; the graph drawn at build time; engine F-67. Its `instruments` names the representative record per wrapper the illustrative run takes its terms from (method 2.4, D21); `annual_income` serves the runs that need an income | Founder's choice (chosen by Claude at his request) |
 | 11 | `data/parameters/sensitivity-bounds.json` (P-02), `golden-tolerance.json` (P-06) | P-02: the indices page's range of the dollar against the shekel (A-03); P-06: the engine golden tests (row 17) | Founder's choice (chosen by Claude at his request) |
-| 26 | `data/parameters/goal-presets.json` (P-07) | The parameters page (the five presets of D13, D21; no page runs on them now) | Founder's choice (chosen by Claude at his request) |
-| 27 | `data/parameters/exposure-holding-wrapper.json` (P-08) | The parameters page (the wrapper each exposure runs through by default, F-71; no page runs on it now) | Founder's choice (chosen by Claude at his request) |
 | 30 | `data/parameters/pinned-rules.json` (P-09) | Rules front (the twelve pinned questions); the "שווה לדעת" block on wrapper guide pages; data check (every id exists; the first id of a row has a primary source) | Founder's choice (chosen by Claude at his request) |
 | 31 | `data/parameters/home-guide-door.json` (P-10) | The home page's guide door: the six kinds of saving it names, each opening its guide page | Founder's choice |
 
