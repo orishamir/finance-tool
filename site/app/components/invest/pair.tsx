@@ -7,11 +7,11 @@ import { Fragment, type ReactNode } from "react";
 import { isTie, type GapList } from "@finance-tool/engine";
 import { groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { chargesCurrentAccount, doubtAt, doubtOf, entryRules, tieShareOf, paybackMayLower, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type Availability, type FundWay, type OptionId, type InvestView, type Kind, type Reason, type WayPrice } from "../../lib/invest";
+import { chargesCurrentAccount, doubtAt, doubtOf, entryRules, tieShareOf, paybackMayLower, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type Availability, type FundWay, type OptionId, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import { brokeragePagePath } from "../../lib/site-paths";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
-import { computed, ownBy, type SiteValue } from "../../lib/value";
+import { computed, differenceOf, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { Num, Ruled, Term, type SheetPart } from "../provenance";
 import { HelpMark, ClampedText, gershayim, Disclosure, DocLink, LabelRow, NoteList, SelectField, Tag, Tpl, GroupPriceFold, type GroupChoice } from "../kit";
@@ -247,6 +247,10 @@ export function kindPairs(view: InvestView, pick: Pick): Record<Kind, Pick> | nu
 
 /** F-109 (D94): a way's line on whole units, where some monthly deposit bought no unit; null where none did. */
 export const unitsLine = (units: WayPrice["units"]): string | null => (!units || units.skipped === 0 ? null : units.skipped * 2 > units.monthly ? c.pair.unitsEvery : c.pair.unitsSome);
+/** What went on the way as a figure (F-91: `X − V`), the rounded base less the rounded value left, the two whole-shekel figures it is taken
+ * between as its inputs. */
+export const barTotalValue = (pc: PairCosts, who: string, today: string): SiteValue =>
+  differenceOf([c.pair.baseInput, whole(pc.baseValue)], [c.pair.input(who, c.pair.colLeft), whole(pc.left)], "F-91", { today, about: who });
 
 /** Every ranked pair of the same kind (hedged or not) as `best`, at every house, what it leaves, most first. */
 function pairsOfKind(view: InvestView, best: Pick): { house: string; fund: string; v: number }[] {

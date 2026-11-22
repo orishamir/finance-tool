@@ -8,6 +8,8 @@
 //            term runs out of its column, past the screen on a phone;
 //   head     a head of a fee's table or grid (`data-case-head`) whose words run past its column into the next (2026-11-14: a ladder step's
 //            "₪" ran into the next step's head at 1440), at every width;
+//   overlap  two pieces of text drawn over each other inside one card (`.bg-card`) or one table head (`thead`), at every width (2026-11-22:
+//            a company page's fee cap caption, "התקרה בתקנות אחרי גיל 21: 1.05%", ran over the dates caption beside it at 1440);
 //   warning  a caution or blocked callout in a figure's sheet that the smallest phone (320 × 568) shows only after scrolling (2026-11-08:
 //            Mercantile's doubt sat last in its sheet, under the source details). Checked on the first figures of each page that carry a
 //            doubt or a lock.
@@ -1019,6 +1021,16 @@ async function selfTest() {
   if (!(await page.evaluate(wideHeads)).some((h) => h.where === "planted-head")) missed.push("head");
   await page.evaluate(() => document.getElementById("planted-head").remove());
   await page.evaluate(() => {
+    // a card whose second caption is drawn over its first, as a caption too wide for its column runs over the next one
+    const card = Object.assign(document.createElement("div"), { id: "planted-overlap", className: "bg-card" });
+    card.style.cssText = "position:relative;width:240px;height:40px";
+    card.append(Object.assign(document.createElement("span"), { textContent: "התקרה בתקנות: 1.05%", style: "position:absolute;inset-inline-start:0;top:8px;white-space:nowrap" }));
+    card.append(Object.assign(document.createElement("span"), { textContent: "נכון לסוף אוקטובר 2026", style: "position:absolute;inset-inline-start:40px;top:8px;white-space:nowrap" }));
+    document.querySelector("main").append(card);
+  });
+  if (!(await page.evaluate(overlaps)).some((o) => o.where.includes("planted-overlap"))) missed.push("overlap");
+  await page.evaluate(() => document.getElementById("planted-overlap").remove());
+  await page.evaluate(() => {
     const box = Object.assign(document.createElement("div"), { id: "planted-poke", className: "overflow-x-auto" });
     box.style.cssText = "width:200px";
     const knob = Object.assign(document.createElement("div"), { id: "planted-poke-knob" });
@@ -1129,6 +1141,7 @@ async function checkPage(page, path, width) {
     for (const m of await page.evaluate(lonelyMarks)) add({ check: "mark", id: m.text, detail: `a "?" on its own line, below "${m.text}" (${m.where})` });
     for (const t of await page.evaluate(wideTerms)) add({ check: "term", id: t.text, detail: `the term "${t.text}" is ${t.width} px wide in a ${t.column} px column (${t.where})` });
     for (const h of await page.evaluate(wideHeads)) add({ check: "head", id: h.text, detail: `the head "${h.text}" runs ${h.by} px past its column` });
+    for (const o of (await page.evaluate(overlaps)).slice(0, 6)) add({ check: "overlap", id: o.id, detail: `"${o.a}" and "${o.b}" are drawn over each other (${o.where})` });
     for (const x of await page.evaluate(pokes)) add({ check: "poke", id: x.id, detail: `${x.where} scrolls sideways ${x.by} px past what is in it: a press area or a frame pokes out of it` });
   };
   await look();
@@ -1314,6 +1327,67 @@ function wideHeads() {
     if (by > 1) out.push({ text: (head.textContent ?? "").trim().replace(/\s+/g, " ").slice(0, 40), by: Math.round(by), where: head.id || "head" });
   }
   return out.slice(0, 6);
+}
+
+// Runs in the page. Inside each card and each table head, every two pieces of visible text (the line boxes of two different text nodes)
+// drawn over each other: overlapping by more than 2 px across and by more than 40% of the shorter one's height, so two lines of a wrapped
+// head, whose boxes touch through their leading, do not count. Text hidden or faded out is not drawn, and text is cut to the boxes around
+// it that clip what overflows them (a cut name, `sr-only`'s one pixel), so only what shows is compared.
+function overlaps() {
+  const out = [];
+  const seen = new Set();
+  const words = (n) => (n.textContent ?? "").trim().replace(/\s+/g, " ").slice(0, 40);
+  // the part of the screen an element's content may show in: the boxes around it, up to `top`, that clip their overflow
+  const clips = new Map();
+  const clipOf = (el, top) => {
+    if (!el || el === top) return { left: -Infinity, right: Infinity, top: -Infinity, bottom: Infinity };
+    if (clips.has(el)) return clips.get(el);
+    const up = clipOf(el.parentElement, top);
+    const cs = getComputedStyle(el);
+    let c = up;
+    if (cs.overflowX !== "visible" || cs.overflowY !== "visible" || cs.clip !== "auto" || cs.clipPath !== "none") {
+      const r = el.getBoundingClientRect();
+      c = { left: Math.max(up.left, r.left), right: Math.min(up.right, r.right), top: Math.max(up.top, r.top), bottom: Math.min(up.bottom, r.bottom) };
+    }
+    clips.set(el, c);
+    return c;
+  };
+  for (const box of document.querySelectorAll("main thead, main .bg-card")) {
+    if (!box.checkVisibility()) continue;
+    clips.clear();
+    const rects = [];
+    const walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+      if (!/\S/.test(n.textContent ?? "")) continue;
+      const el = n.parentElement;
+      if (!el || !el.checkVisibility({ visibilityProperty: true, opacityProperty: true })) continue;
+      const range = document.createRange();
+      range.selectNodeContents(n);
+      const c = clipOf(el, box);
+      for (const g of range.getClientRects()) {
+        const r = { left: Math.max(g.left, c.left), right: Math.min(g.right, c.right), top: Math.max(g.top, c.top), bottom: Math.min(g.bottom, c.bottom) };
+        r.height = r.bottom - r.top;
+        if (r.right - r.left > 1 && r.height > 1) rects.push({ n, r });
+      }
+    }
+    rects.sort((a, b) => a.r.top - b.r.top);
+    for (let i = 0; i < rects.length; i++) {
+      const a = rects[i];
+      for (let j = i + 1; j < rects.length && rects[j].r.top < a.r.bottom; j++) {
+        const b = rects[j];
+        if (a.n === b.n) continue;
+        const across = Math.min(a.r.right, b.r.right) - Math.max(a.r.left, b.r.left);
+        const down = Math.min(a.r.bottom, b.r.bottom) - Math.max(a.r.top, b.r.top);
+        if (across <= 2 || down <= 0.4 * Math.min(a.r.height, b.r.height)) continue;
+        const pair = [words(a.n), words(b.n)].sort((x, y) => x.localeCompare(y));
+        const id = pair.join(" | ");
+        if (seen.has(id)) continue;
+        seen.add(id);
+        out.push({ id, a: pair[0], b: pair[1], where: `${box.id || box.tagName.toLowerCase()} at y=${Math.round(Math.max(a.r.top, b.r.top) + scrollY)}` });
+      }
+    }
+  }
+  return out;
 }
 
 // Runs in the page. Every visible "?" whose dot sits below the last line of the words just before it in the same block: a line of its own.

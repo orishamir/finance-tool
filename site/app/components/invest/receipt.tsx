@@ -1,14 +1,10 @@
-// The index page's answer: the chosen pair's receipt (F-91, F-106, F-129, F-130), one line each, top to bottom, to one total: what was
-// paid in, what the index added before any cost, what the account and the fund took (and, beside the account's fees, what the cash waiting
-// for a whole unit did, F-109, not a fee), all in the shekels of the horizon; then what the inflation takes from the value before tax on
-// the way to today's money, the tax in today's money (it is on the real gain), and what is left, in today's money. Nothing stands under the
-// total: a "?" beside it says in what money it is and, where it rests on it, that the dollar holds still (a caution "?"), and its sheet
-// holds the gain. The figures follow the plan as a slider moves (the pair is priced once per plan for this card and the fees panel under the
-// lists, `pairCostsKept`), and they add up as a reader adds them (lib/receipt).
-// From 1280 px it is a ticket across the main column, above the two lists and the ruler: the account's part at the start side and the
-// fund's at the end side, each with its own lines (each fee and its rate), and the lines that add up to the total in the middle. Below
-// 1280 px it is paper above the lists with the middle's lines only, the account's and the fund's own lines behind a tap on each one's name;
-// its stub at the screen's foot keeps what is left in sight and leads back to it.
+// The index page's answer: the chosen pair's receipt (F-91, F-106, F-65). What was paid in, what the index added
+// before any cost, what the tax, the account (line by line, each with its rate as the price list prints it) and the fund (its fees as rows
+// of the same shape, each with its rate) took, beside the account's fees what the cash waiting for a whole unit did (F-109, not a fee), and
+// what is left; then the gain, what went on the way, and a bar of who took it. The figures follow the plan as a slider moves (the pair is priced
+// once per plan for this card and the fees panel under the lists, `pairCostsKept`), and they add up as a reader adds them (lib/receipt).
+// From 1280 px it is a ticket across the main column, above the two lists and the ruler, whose point joins its total; below 1280 px it is
+// paper above the lists, and its stub at the screen's foot keeps what is left in sight and leads back to it.
 import { Fragment, type ReactNode, type Ref, type RefObject } from "react";
 import { invest as c, site } from "../../copy";
 import { fmt, wholeSum } from "../../lib/format";
@@ -16,15 +12,15 @@ import { gapListFor, pricedVariable, accountSum, pairCostsKept, type InvestView 
 import type { FundRecord } from "@finance-tool/schema";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
-import { receiptAmounts, receiptChain, takenWords, type ReceiptChain } from "../../lib/receipt";
-import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
+import { receiptAmounts, sharesOf, takenWords } from "../../lib/receipt";
+import { differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { FEE_WORDS_HELP, HelpMark, LeftOutLine, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, Tag, TicketPart } from "../kit";
+import { FEE_WORDS_HELP, HelpMark, LeftOutLine, LongestCase, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, ShareBar, Tag, TicketPart, cx } from "../kit";
 import { isDealProviderId } from "../../lib/deal-account/bundle";
 import { isGroupProvider } from "../../lib/group-pick";
 import { leftOutOf } from "../../lib/left-out";
 import { isCustomFund } from "../../lib/custom-entries";
-import { allFunds, pairVerdict, steadyOf, whole, type Pick } from "./pair";
+import { allFunds, barTotalValue, pairVerdict, steadyOf, whole, LONGEST_YEARS, type Pick } from "./pair";
 import { partName } from "./cost-lines";
 import { providerName } from "./sections";
 import { fundFeeItems } from "./funds";
@@ -35,6 +31,8 @@ export const ANCHOR = { accounts: "accounts", funds: "funds" } as const;
 
 /** A cost line's amount: what was taken with a minus, a line under zero with a plus (lib/receipt). */
 const minus = takenWords;
+/** A part that took money but whose whole share is zero says so, not "0%". */
+const under = (amount: number, share: number) => (amount > 0 && share === 0 ? { words: c.receipt.underOne } : {});
 
 /** One part of a rate in words: the figure (it opens the house's price list) and what it is of. */
 function RatePartWords({ part, house }: { part: RatePart; house: string }) {
@@ -120,57 +118,11 @@ function feeRows(rec: FundRecord, bundle: IndicesBundle, today: string) {
   ));
 }
 
-type Costs = NonNullable<ReturnType<typeof pairCostsKept>>;
-
 /**
- * A figure of the receipt's chain in the shekels of the horizon: an F-91 figure, a value at the horizon divided by `I_T`, times `I_T` (F-06
- * read back), its sheet listing the figure in today's money and the index (`pc.index`, F-03, which the plan's inflation sets).
- */
-export function nominalOf(pc: Costs, v: SiteValue, label: string, today: string): SiteValue {
-  const n = typeof v.value === "number" && typeof pc.index.value === "number" ? v.value * pc.index.value : null;
-  return computed(n, "nis", "F-129", { [c.receipt.nominal.today]: v, [c.pair.indexInput]: pc.index }, { today, about: c.receipt.nominal.about(label) });
-}
-
-/** What the index added before any cost, in the shekels of the horizon: F-91's X there less the deposits as they are paid (F-05). */
-export function addedOf(pc: Costs, today: string): SiteValue {
-  return differenceOf([c.pair.baseInput, whole(nominalOf(pc, pc.baseValue, c.pair.baseInput, today))], [c.pair.paidIn, whole(pc.paidInNominal)], "F-129", { today, about: c.receipt.added, lead: c.receipt.addedLead });
-}
-
-/** The gain, in today's money: what is left less what was paid in at today's prices (F-106), which the deposits' line is not. */
-function gainOf(pc: Costs, today: string): SiteValue {
-  return differenceOf([c.receipt.left, whole(pc.left)], [c.receipt.paidInToday, whole(pc.paidIn)], "F-91", { today, about: c.receipt.gain });
-}
-
-/**
- * What is left, in today's money, as its sheet opens it: what was paid in at today's prices (F-106) and the gain, which add up to it, the
- * gain opening the run's own figure. It carries the run's rules, labels and notes, which the figure rests on.
- */
-export function leftOf(pc: Costs, today: string): SiteValue {
-  const run = pc.left;
-  return sumOf({ [c.receipt.paidInToday]: whole(pc.paidIn), [c.receipt.gain]: gainOf(pc, today) }, "F-91", { today, about: c.receipt.leftAbout, rules: run.rulesUsed, flags: run.flags, labels: run.labels });
-}
-
-/** The tax line, in today's money (F-91's state: the tax is on the real gain); its sheet says it holds the surtax where the income with the gain passes its threshold (F-43). */
-export function taxOf(pc: Costs): SiteValue {
-  return { ...pc.tax, about: pc.distributes ? c.receipt.taxSheet.payouts : c.receipt.taxSheet.sale };
-}
-
-/**
- * What bringing the value before tax to today's money takes (F-130): the lines above it added up, in the shekels of the horizon, less the
- * same value in today's money, what is left and the tax. Each input holds the whole shekels the receipt writes.
- */
-export function inflationOf(pc: Costs, ch: ReceiptChain, taxName: string, today: string): SiteValue {
-  const at = (v: SiteValue, n: number): SiteValue => ({ ...v, value: n });
-  const b = c.receipt.beforeTax;
-  const real = sumOf({ [c.receipt.left]: at(pc.left, ch.left), [taxName]: at(taxOf(pc), ch.tax) }, "F-130", { today, about: b.today });
-  return differenceOf([b.nominal, at(nominalOf(pc, real, b.today, today), ch.beforeTax)], [b.today, real], "F-130", { today, about: c.receipt.inflation, lead: c.receipt.inflationLead });
-}
-
-/**
- * The pair's receipt: `paper` (one column, above the lists below 1280 px: the lines that add up to the total, the account's and the fund's
- * own lines behind a tap on each one's name) or `ticket` (across the main column from 1280 px, above the lists: the account's part with its
- * own lines at the start side, the lines that add up to the total in the middle, the fund's part at the end side). Same figures and sources
- * either way. `ref`: the ticket, whose foot the ruler's point is joined to.
+ * The pair's receipt: `paper` (one column: the side rail's width, or above the lists below 1280 px) or `ticket` (across the main column from
+ * 1280 px, above the lists: the account's part at the start side, what was paid in, added and taxed with what is left in the middle, the
+ * fund's part at the end side, and the gain, what went on the way and its bar in a row under them). Same lines, figures and sources either
+ * way. `ref`: the ticket, whose foot the ruler's point is joined to.
  */
 export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper", ref }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; /** The person picked this pair; else it is the page's own, and is never called theirs. */ chosen: boolean; layout?: "paper" | "ticket"; ref?: Ref<HTMLElement> }) {
   const v = pairVerdict(view, bundle, plan, pick, chosen);
@@ -178,23 +130,22 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const dealApi = useDealAccounts();
   if (!pc) return null;
   const today = bundle.today;
-  // the chain in the shekels of the horizon down to the value before tax, then the inflation, then the tax and what is left in today's money
-  const ch = receiptChain(pc);
-  const r = ch.nominal;
-  const nom = (x: SiteValue, label: string) => nominalOf(pc, x, label, today);
+  const r = receiptAmounts(pc);
   const house = providerName(view, pick.house);
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
-  const fundName = <MixedName>{fund?.name ?? pick.fund}</MixedName>;
   const short = house?.short ?? pick.house;
   const held = view.providers.find((p) => p.id === pick.house);
   const baseHouse = held && isGroupProvider(held) ? (held as typeof held & { group: { house: string } }).group.house : pick.house;
   const baseShort = providerName(view, baseHouse)?.short ?? short;
   // the figures each line shows are whole shekels that add up; each opens the figure it stands for, with that figure's sources
+  const added = differenceOf([c.pair.baseInput, whole(pc.baseValue)], [c.pair.paidIn, whole(pc.paidIn)], "F-91", { today, about: c.receipt.added });
+  const gain = differenceOf([c.receipt.left, whole(pc.left)], [c.pair.paidIn, whole(pc.paidIn)], "F-91", { today, about: c.receipt.gain });
+  const account = accountSum(pc, c.pair.who.account, today, Math.round);
   const company = pc.priced.house;
+  const shares = sharesOf([r.tax, r.account, r.fund]);
   const steady = steadyOf(view, bundle, pick.fund);
   const years = plan.years;
   const ticket = layout === "ticket";
-  const dealTag = isDealProviderId(pick.house) && <Tag tone="entered" className="ms-1.5 align-middle">{c.dealAccount.tag}</Tag>;
   const top = (
     <>
       <span>
@@ -205,65 +156,53 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       </span>
     </>
   );
+  const paidIn = <ReceiptLine size="sm" label={c.pair.paidIn} value={<Num value={pc.paidIn} display={fmt.nisWhole(r.paidIn)} />} />;
+  const addedLine = <ReceiptLine size="sm" label={c.receipt.added} value={<Num value={added} display={fmt.signedNisWhole(r.added)} />} />;
+  const taxLine = <ReceiptLine size="sm" swatch="bg-chart-tax" label={v.taxName} value={<Num value={pc.tax} display={minus(r.tax)} />} />;
   // F-128: an account priced by a deal writes the deal's own fees, each under its name, in whole shekels that add up with the remainder
   const accountParts = (
     <>
       {pc.dealLines
         ? pc.dealLines.map((l, i) => {
             const words = dealApi?.feeWords(pick.house, pick.fund, l.fee) ?? null;
-            return <ReceiptLine key={l.fee} size="sm" label={l.name} value={<Num value={nom(l.cost, l.name)} display={minus(r.accountLines[i]!)} />} sub={words ? <span className="text-xs text-muted-foreground">{words}</span> : undefined} />;
+            return <ReceiptLine key={l.fee} size="sm" label={l.name} value={<Num value={l.cost} display={minus(r.accountLines[i]!)} />} sub={words ? <span className="text-xs text-muted-foreground">{words}</span> : undefined} />;
           })
         : pc.account.map((l, i) => {
             const words = rateWords(l.line, pc.priced, plan.monthly);
-            return <ReceiptLine key={l.line} size="sm" label={partName(l.line)} value={<Num value={nom(l.cost, partName(l.line) ?? l.line)} display={minus(r.accountLines[i]!)} />} sub={words ? <RateLine words={words} house={company} /> : undefined} />;
+            return <ReceiptLine key={l.line} size="sm" label={partName(l.line)} value={<Num value={l.cost} display={minus(r.accountLines[i]!)} />} sub={words ? <RateLine words={words} house={company} /> : undefined} />;
           })}
-      {r.remainder !== 0 && <ReceiptLine size="sm" label={c.pair.remainder} value={<Num value={nom(pc.remainder, c.pair.remainder)} display={minus(r.remainder)} />} />}
+      {r.remainder !== 0 && <ReceiptLine size="sm" label={c.pair.remainder} value={<Num value={pc.remainder} display={minus(r.remainder)} />} />}
       {/* what the house's documents hold and its price leaves out, under its lines (D106); a group's account is its house's */}
       <LeftOutLine view={leftOutOf(bundle.snapshots.find((s) => s.id === baseHouse))} house={baseShort} />
     </>
   );
-  const accountValue = <Num value={nom(accountSum(pc, c.pair.who.account, today), c.receipt.parts.account)} display={minus(r.account)} />;
+  const accountValue = <Num value={account} display={minus(r.account)} />;
   // F-109: what the cash waiting for a whole unit did, beside the account's fees and never among them: a minus where the fund rose while it
-  // waited, a plus where it fell; on the account's own lines with why, and among the lines that add up to the total without it
-  const waits = !!pc.waiting && r.waiting !== 0;
-  const waitingValue = pc.waiting && <Num value={nom(pc.waiting, c.pair.waiting)} display={minus(r.waiting)} />;
-  const fundValue = <Num value={nom(pc.fund, c.receipt.parts.fund)} display={minus(r.fund)} />;
-  // the account's and the fund's own lines: the ticket's side parts, and on paper the sheet each one's name opens
-  const accountOwn = (
-    <>
-      <ReceiptLine size="sm" edge="border-chart-by-account" label={c.receipt.accountCharges} value={accountValue} parts={accountParts} />
-      {waits && <ReceiptLine size="sm" label={c.pair.waiting} value={waitingValue} sub={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />}
-    </>
+  // waited, a plus where it fell
+  const waitingLine = pc.waiting && r.waiting !== 0 && <ReceiptLine size="sm" label={c.pair.waiting} value={<Num value={pc.waiting} display={minus(r.waiting)} />} sub={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />;
+  const fundValue = <Num value={pc.fund} display={minus(r.fund)} />;
+  const fundParts = fund && feeRows(fund.rec, bundle, today);
+  // held at its longest case: the dollar's clause comes and goes with the fund and the index, and moves nothing below
+  const caption = (
+    <LongestCase className={cx("text-xs text-muted-foreground", ticket && "text-center")} cases={[1, 2, LONGEST_YEARS].flatMap((y) => [c.pair.steadyDollar, c.pair.steadyIndexCurrency].map((s) => <span key={`${y}${s}`}>{c.receipt.caption(y, s)}</span>))}>
+      <span>{c.receipt.caption(years, steady)}</span>
+    </LongestCase>
   );
-  const fundOwn = <ReceiptLine size="sm" edge="border-chart-by-fund" label={c.receipt.fundCharges} value={fundValue} parts={fund && feeRows(fund.rec, bundle, today)} />;
-  const accountName = (
-    <>
-      {ticket ? null : <>{c.pair.who.account} </>}
-      <MixedName>{short}</MixedName>
-      {dealTag}
-    </>
+  const total = <Num value={pc.left} display={fmt.nisWhole(r.left)} />;
+  const gainLine = <ReceiptLine strong label={c.receipt.gain} value={<Num value={gain} display={fmt.signedNisWhole(r.gain)} />} sub={c.receipt.gainNote} />;
+  // what the tax, the account's fees and the fund took: X less what is left, and in whole units less what the waiting cash did (F-91)
+  const lostValue = pc.waiting ? sumOf({ [v.taxName]: pc.tax, [c.receipt.parts.account]: account, [c.receipt.parts.fund]: pc.fund }, "F-91", { today, about: c.receipt.lost, round: Math.round }) : barTotalValue(pc, short, today);
+  const lostLine = <ReceiptLine strong label={c.receipt.lost} value={<Num value={lostValue} display={fmt.nisWhole(r.lost)} />} />;
+  const bar = (
+    <ShareBar
+      label={`${c.receipt.lostBar}: ${v.taxName} ${shares[0]}%, ${c.receipt.parts.account} ${shares[1]}%, ${c.receipt.parts.fund} ${shares[2]}%`}
+      parts={[
+        { id: "tax", name: v.taxName, share: shares[0]!, className: "bg-chart-tax", ...under(r.tax, shares[0]!) },
+        { id: "account", name: c.receipt.parts.account, share: shares[1]!, className: "bg-chart-by-account", ...under(r.account, shares[1]!) },
+        { id: "fund", name: c.receipt.parts.fund, share: shares[2]!, className: "bg-chart-by-fund", ...under(r.fund, shares[2]!) },
+      ]}
+    />
   );
-  const fundLabel = ticket ? fundName : <>{c.pair.who.fund} {fundName}</>;
-  // the lines that add up to the total, one each; on the ticket the account's and the fund's carry their part's colour
-  const lines = (
-    <div className="flex flex-col gap-2.5 text-sm">
-      <ReceiptLine size="sm" label={c.pair.paidIn} value={<Num value={pc.paidInNominal} display={fmt.nisWhole(r.paidIn)} />} />
-      <ReceiptLine size="sm" label={c.receipt.added} value={<Num value={addedOf(pc, today)} display={fmt.signedNisWhole(r.added)} />} />
-      <ReceiptLine size="sm" swatch={ticket ? "bg-chart-by-account" : undefined} label={accountName} value={accountValue} opens={ticket ? undefined : { title: accountName, body: accountOwn }} />
-      {waits && <ReceiptLine size="sm" label={c.pair.waiting} value={waitingValue} />}
-      <ReceiptLine size="sm" swatch={ticket ? "bg-chart-by-fund" : undefined} label={fundLabel} value={fundValue} opens={ticket ? undefined : { title: <>{c.pair.who.fund} {fundName}</>, body: fundOwn }} />
-      <ReceiptLine size="sm" label={c.receipt.inflation} value={<Num value={inflationOf(pc, ch, v.taxName, today)} display={minus(ch.inflation)} />} />
-      <ReceiptLine size="sm" label={v.taxName} value={<Num value={taxOf(pc)} display={minus(ch.tax)} />} />
-    </div>
-  );
-  // the total's name with its "?": in what money it is, and, where the figure rests on it, that the dollar holds still (a catch: caution)
-  const leftName = (
-    <span className="text-base font-semibold whitespace-nowrap">
-      {c.receipt.left}
-      <HelpMark about={c.receipt.left} text={c.receipt.leftIn(steady)} {...(steady ? { tone: "caution" as const } : {})} className="ms-1" />
-    </span>
-  );
-  const total = <Num value={leftOf(pc, today)} display={fmt.nisWhole(ch.left)} />;
   if (ticket)
     return (
       <ReceiptTicket
@@ -276,34 +215,80 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
             {/* the person's own deal says so beside its name, as in the lists and the pair card (A) */}
             {isDealProviderId(pick.house) && <Tag tone="entered" className="ms-2 align-middle">{c.dealAccount.tag}</Tag>}
           </>}>
-            {accountOwn}
+            <ReceiptLine size="sm" edge="border-chart-by-account" label={c.receipt.accountCharges} value={accountValue} parts={accountParts} />
+            {waitingLine}
           </TicketPart>
         }
         middle={
           <>
-            {lines}
+            <div className="flex flex-col gap-2.5 text-sm">
+              {paidIn}
+              {addedLine}
+              {taxLine}
+            </div>
             <ReceiptRule kind="double" />
             <div className="flex flex-col items-center gap-1 text-center">
-              {leftName}
+              <span className="text-base font-semibold">{c.receipt.left}</span>
               <span className="text-total font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
+              {caption}
             </div>
           </>
         }
         end={
-          <TicketPart label={c.receipt.parts.fund} swatch="bg-chart-by-fund" name={fundName}>
-            {fundOwn}
+          <TicketPart label={c.receipt.parts.fund} swatch="bg-chart-by-fund" name={<MixedName>{fund?.name ?? pick.fund}</MixedName>}>
+            <ReceiptLine size="sm" edge="border-chart-by-fund" label={c.receipt.fundCharges} value={fundValue} parts={fundParts} />
           </TicketPart>
         }
+        foot={[gainLine, lostLine, bar]}
       />
     );
   return (
     <ReceiptPaper label={c.receipt.title}>
       <div className="flex items-baseline justify-between gap-3 text-xs text-muted-foreground">{top}</div>
-      {lines}
+      <div className="flex flex-col gap-2.5 text-sm">
+        {paidIn}
+        {addedLine}
+        {taxLine}
+        <ReceiptLine
+          size="sm"
+          swatch="bg-chart-by-account"
+          edge="border-chart-by-account"
+          label={
+            <>
+              {c.pair.who.account} <MixedName>{short}</MixedName>
+              {isDealProviderId(pick.house) && <Tag tone="entered" className="ms-1.5">{c.dealAccount.tag}</Tag>}
+            </>
+          }
+          value={accountValue}
+          parts={accountParts}
+        />
+        {waitingLine}
+        <ReceiptLine
+          size="sm"
+          swatch="bg-chart-by-fund"
+          edge="border-chart-by-fund"
+          label={
+            <>
+              {c.pair.who.fund} <MixedName>{fund?.name ?? pick.fund}</MixedName>
+            </>
+          }
+          value={fundValue}
+          parts={fundParts}
+        />
+      </div>
       <ReceiptRule kind="double" />
-      <div className="flex flex-wrap items-baseline justify-between gap-x-2 pb-1">
-        {leftName}
-        <span className="text-figure font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
+      <div className="flex flex-col gap-1">
+        <div className="flex items-baseline justify-between gap-3">
+          <span className="text-base font-semibold">{c.receipt.left}</span>
+          <span className="text-figure font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
+        </div>
+        {caption}
+      </div>
+      <ReceiptRule kind="dashed" />
+      <div className="flex flex-col gap-2.5">
+        {gainLine}
+        {lostLine}
+        {bar}
       </div>
     </ReceiptPaper>
   );

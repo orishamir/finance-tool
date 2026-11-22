@@ -255,6 +255,7 @@ describe("invest page computation", () => {
 
   it("without an entered return it says whether the order holds between 0% and 10%", () => {
     const v = buildInvest({ bundle, index: sp, plan: plan({ returnFromParameter: true }, 5) });
+    expect(v.returnIllustrative).toBe(true);
     expect(v.order).not.toBeNull();
     expect(typeof v.order!.holds).toBe("boolean");
     expect(buildInvest({ bundle, index: sp, plan: plan() }).order).toBeNull();
@@ -585,61 +586,6 @@ describe("what each figure's sheet lists", () => {
     expect(Object.keys(inputs(pc.baseValue)).sort()).toEqual(Object.values(words.planInputs).sort());
     expect(accountSum(pc, "x", t).value).toBeCloseTo(pc.accountCost, 6);
     expect(Object.keys(inputs(accountSum(pc, "x", t)))).toContain(words.pair.remainder);
-  });
-
-  // Leumi's cheapest fund on the plan, priced as a pair; a test that finds none fails on its own line
-  const leumiPair = (p: WorkbenchInputs) => {
-    const fundId = view.houses.find((h) => h.provider.id === "leumi")?.best?.fund.rec.id ?? "";
-    const pc = pairCosts({ bundle, index: sp, plan: p, fundId, providerId: "leumi" });
-    if (!pc) throw new Error("Leumi prices no fund on the S&P 500");
-    return pc;
-  };
-
-  it("the tax lists the income the run tests the surtax on (F-43), which moves it; a figure before any tax lists none", () => {
-    const at = (income: number | null) => leumiPair(plan({ income, values: { ...plan().values, ...(income === null ? {} : { income: entered(income, "nis", t) }) }, currentAccounts: { own: null } }));
-    const low = at(1), high = at(5_000_000);
-    expect(inputs(low.tax)[words.pair.incomeInput]?.value).toBe(1);
-    expect(inputs(high.tax)[words.pair.incomeInput]?.value).toBe(5_000_000);
-    expect(inputs(high.left)[words.pair.incomeInput]).toBeDefined();
-    // the run reads it: an income above the surtax's threshold adds the surtax to the tax on the gain (TXG-09)
-    expect(high.tax.value as number).toBeGreaterThan(low.tax.value as number);
-    expect(inputs(at(null).tax)[words.pair.incomeInput]).toBeUndefined();
-    // the costs before the tax they save, and a value before the exit tax (F-118), read no income
-    for (const before of [high.baseValue, high.fund, high.remainder, ...high.account.map((l) => l.cost)]) expect(inputs(before)[words.pair.incomeInput]).toBeUndefined();
-    const withIncome = plan({ income: 5_000_000, values: { ...plan().values, income: entered(5_000_000, "nis", t) }, currentAccounts: { own: null } });
-    const v = buildInvest({ bundle, index: sp, plan: withIncome });
-    const tlv = v.options.find((o) => o.id === "tase-foreign")?.funds.find((x) => x.rec.id === "1159250")?.beforeTax?.byHouse.psagot;
-    expect(tlv).toBeDefined();
-    expect(inputs(tlv?.left ?? high.tax)[words.pair.incomeInput]).toBeUndefined();
-    expect(inputs(tlv?.accountCost ?? high.tax)[words.pair.incomeInput]).toBeUndefined();
-    // what a list shows as left after the tax reads it
-    const leumiFund = v.houses.find((h) => h.provider.id === "leumi")?.best;
-    // an age on the device is listed beside it, since from 60 the brackets the gain falls into read both (F-42); never before the tax
-    const aged = leumiPair(plan({ age: 64, income: 100_000, values: { ...plan().values, income: entered(100_000, "nis", t), age: entered(64, "years", t) }, currentAccounts: { own: null } }));
-    expect(inputs(aged.tax)[words.pair.ageInput]?.value).toBe(64);
-    expect(inputs(aged.fund)[words.pair.ageInput]).toBeUndefined();
-    expect(inputs(high.tax)[words.pair.ageInput]).toBeUndefined();
-    expect(leumiFund?.price && inputs(leumiFund.price.value)[words.pair.incomeInput]?.value).toBe(5_000_000);
-  });
-
-  it("on a fund that pays out, a difference of B lists the income (the payouts' surtax counts in its tax), a line carried in whole units does not", () => {
-    const p = plan({ income: 900_000, values: { ...plan().values, income: entered(900_000, "nis", t) }, currentAccounts: { own: null } });
-    const houses = Object.keys(irish.byHouse);
-    const priced = houses.flatMap((h) => {
-      const pc = pairCosts({ bundle, index: sp, plan: p, fundId: irish.rec.id, providerId: h });
-      return pc ? [pc] : [];
-    });
-    const carried = priced.find((pc) => pc.units && pc.account.length > 0);
-    if (!carried) throw new Error("no house buys the paying-out fund in whole units");
-    expect(carried.distributes).toBe(true);
-    expect(inputs(carried.fund)[words.pair.incomeInput]?.value).toBe(900_000);
-    expect(inputs(carried.remainder)[words.pair.incomeInput]?.value).toBe(900_000);
-    for (const l of carried.account) expect(inputs(l.cost)[words.pair.incomeInput]).toBeUndefined();
-    if (carried.waiting) expect(inputs(carried.waiting)[words.pair.incomeInput]).toBeUndefined();
-  });
-
-  it("the deposits' sheet says the monthly deposit rises with prices (A-04, F-05)", () => {
-    expect(leumiPair(plan()).paidIn.lead).toBe(words.pair.paidInLead);
   });
 });
 

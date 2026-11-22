@@ -18,7 +18,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
-import { brands, guideSignature, kit } from "../copy";
+import { brands, guideSignature, invest, kit } from "../copy";
 import { HELP_TERMS } from "../lib/track-browser";
 import { HELP_TERMS as DEPOSIT_TERMS, KIND_TERMS } from "../lib/deposit-browser";
 import { FEE_KIND_IDS } from "../lib/fee-deal/shapes";
@@ -69,6 +69,8 @@ const BY_EXPRESSION: Record<string, readonly string[]> = {
   "{terms.length === 1 ? terms[0] : terms}": [HELP_TERMS.fee, HELP_TERMS.depositFee, HELP_TERMS.savingsCard, HELP_TERMS.depositCard, HELP_TERMS.direct],
   "{HELP_TERMS.exposure}": [HELP_TERMS.exposure],
   "{HELP_TERMS.assets}": [HELP_TERMS.assets],
+  // a company page's phone "?" over its tracks (components/tracks/company-browser.tsx): the direct expenses beside the fee's card
+  "{HELP_TERMS.direct}": [HELP_TERMS.direct],
   "{HELP_TERMS.rate}": [DEPOSIT_TERMS.rate],
   // a bank's deposits table's rate head (components/company/bank-views.tsx, RateHead)
   "{DEPOSIT_TERMS.rate}": [DEPOSIT_TERMS.rate],
@@ -79,6 +81,8 @@ const BY_EXPRESSION: Record<string, readonly string[]> = {
   // the fee panel's "מה זה" opens a fee's name only where the page's data holds its card (fees.server.ts), and the gallery shows custody's
   "{explained}": FEE_KIND_IDS.map((k) => feeName(k)).filter((n) => names.has(n)),
   "{custodyName}": [feeName("custody")],
+  // the indices page's assumptions: the surtax's card after the income the runs assume (routes/invest.tsx)
+  "{c.plan.knobs.income.term}": [invest.plan.knobs.income.term],
   // the gallery's sample term beside the words a rule states (Ruled's demo)
   "{g.sample.ruled.besideTerm}": [kit.gallery.sample.ruled.besideTerm],
 };

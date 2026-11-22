@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildIndicesBundle } from "./providers.server";
 import { allPricedPairs } from "./receipt-fixtures";
-import { receiptAmounts, receiptChain, takenWords } from "./receipt";
+import { receiptAmounts, sharesOf, takenWords } from "./receipt";
 
 const bundle = buildIndicesBundle();
 
@@ -22,6 +22,7 @@ describe("the receipt's lines add up as a reader adds them", () => {
         expect(Math.abs(r.tax - (pc.tax.value as number)), where).toBeLessThan(2);
         expect(Math.abs(r.fund - (pc.fund.value as number)), where).toBeLessThan(2);
         expect(r.gain, where).toBe(r.left - r.paidIn);
+        expect(r.lost, where).toBe(r.tax + r.account + r.fund);
       }
     });
   }
@@ -44,6 +45,8 @@ describe("in whole units the receipt writes the fees charged as fees and the wai
         expect(pc.accountFees + pc.waitingN, where).toBeCloseTo(pc.accountCost, 9);
         // the waiting cash missed the fund's move: a rise is a cost, a fall a gain
         if (Math.abs(pc.waitingN) >= 1) expect(Math.sign(pc.waitingN), where).toBe(Math.sign(returnPct));
+        // what went on the way is what the tax, the fees and the fund took
+        expect(r.lost, where).toBe(r.tax + r.account + r.fund);
       }
     });
   }
@@ -62,35 +65,13 @@ describe("in whole units the receipt writes the fees charged as fees and the wai
   });
 });
 
-describe("the receipt as written: the shekels of the horizon down to the value before tax, then the inflation, then the tax in today's money (F-129, F-130)", () => {
-  for (const [index, years, monthly, returnPct] of [["index-sp500", 10, 500, 7], ["index-sp500", 10, 500, -5], ["index-ta125", 25, 0, 7], ["index-msci-world", 1, 2000, 7]] as const) {
-    it(`${index}, ${years} years, ${monthly} a month, at ${returnPct}%: paid in + added − account − fund − waiting − inflation − tax = left, at every account`, () => {
-      const pcs = allPricedPairs(bundle, index, { years, monthly, returnPct });
-      expect(pcs.length).toBeGreaterThan(5);
-      for (const pc of pcs) {
-        const where = `${pc.providerId} ${pc.fundId}`;
-        const ch = receiptChain(pc);
-        const n = ch.nominal;
-        const real = receiptAmounts(pc);
-        const I = pc.index.value as number;
-        // the chain adds up in whole shekels to the same figure the receipt in today's money ends on
-        expect(n.paidIn + n.added - n.account - n.fund - n.waiting, where).toBe(ch.beforeTax);
-        expect(ch.beforeTax - ch.inflation - ch.tax, where).toBe(ch.left);
-        expect(ch.left, where).toBe(real.left);
-        expect(ch.left, where).toBe(Math.round(pc.left.value as number));
-        // the deposits are as paid (F-05), every cost line before the inflation is F-91's figure times I_T, each within a shekel
-        expect(n.paidIn, where).toBe(Math.round(pc.paidInNominal.value as number));
-        expect(n.account, where).toBe(Math.round(pc.accountFees * I));
-        expect(Math.abs(n.fund - (pc.fund.value as number) * I), where).toBeLessThan(2);
-        // the tax is in today's money, after the inflation: F-91's state, not the state times I_T
-        expect(ch.tax, where).toBe(real.tax);
-        expect(Math.abs(ch.tax - (pc.tax.value as number)), where).toBeLessThan(2);
-        // the inflation takes the value before tax from the shekels of the horizon to today's money, within a shekel or two of the identity
-        const beforeTaxToday = (pc.left.value as number) + (pc.tax.value as number);
-        expect(Math.abs(ch.inflation - beforeTaxToday * (I - 1)), where).toBeLessThan(3);
-      }
-    });
-  }
+describe("shares of a bar add up to 100", () => {
+  it("largest remainder, nothing for a part at or under zero", () => {
+    expect(sharesOf([5703, 1057, 116])).toEqual([83, 15, 2]);
+    expect(sharesOf([1, 1, 1]).reduce((a, x) => a + x, 0)).toBe(100);
+    expect(sharesOf([10, -3, 0])).toEqual([100, 0, 0]);
+    expect(sharesOf([0, 0])).toEqual([0, 0]);
+  });
 });
 
 describe("a cost line's amount reads as what it did to the money", () => {

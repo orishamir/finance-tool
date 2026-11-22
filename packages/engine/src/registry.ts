@@ -144,8 +144,6 @@ export const runs = { runBond, runDeposit, runMakam, runPension, runProvident, r
  */
 export const pending: Record<string, string> = {
   "F-18": "R4: interest and dividend handling fee, with full tariff detail",
-  "F-129": "computed where it is read: the indices page's receipt multiplies F-91's figures by the run's I_T (site/app/components/invest/receipt.tsx, site/app/lib/receipt.ts)",
-  "F-130": "computed where it is read: the receipt's end in the shekels of the horizon less its end in today's money (site/app/components/invest/receipt.tsx, site/app/lib/receipt.ts)",
   "F-06": "computed where it is read: a run's real value is V_T / I_T (RunResult.real), and site/app/lib/engine.ts divides each month of a run by its index",
   "F-28": "computed by the ledgers, which charge no National Insurance or health on what it covers and cite its rules (TXK-27 in provident.ts)",
   "F-54": "not built: no page uses this formula; its code is removed",

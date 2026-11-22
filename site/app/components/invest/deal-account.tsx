@@ -358,7 +358,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const toolTop = useStuckRoom(stuck, wide ? !!tiles : true, wide);
   // the tiles' figures, each computed from the run with its formula (F-128): what is left, the place, the difference from the house's row
   const okAt = at?.kind === "ok" ? at : null;
-  const leftFig = tiles?.left !== null && tiles?.left !== undefined && okAt ? okAt.left(tiles.left, w.tiles.leftAbout) : null;
+  const leftFig = tiles?.left !== null && tiles?.left !== undefined && okAt ? okAt.figure(tiles.left, w.tiles.leftAbout) : null;
   const placeFig = tiles?.place ? computed(tiles.place.k, "count", "F-128", leftFig ? { [w.tiles.leftAbout]: leftFig } : {}, { today: world.bundle.today, about: w.tiles.placeAbout(tiles.place.of) }) : null;
   const diffFig = leftFig && tiles?.house && house ? differenceOf([w.tiles.leftAbout, leftFig], [w.tiles.houseAbout(house.short), tiles.house.value], "F-128", { today: world.bundle.today, about: w.tiles.diffAbout, round: Math.round, signed: true }) : null;
   const leftNum = leftFig && <Num value={leftFig} display={(n) => fmt.nisWhole(n)} />;

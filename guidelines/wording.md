@@ -106,9 +106,9 @@ professional. Not a bank, not a blog, not a TV financial adviser.
 - **Lines under a chart** speak about the reader's own figures (how much of
   their money is above the exemption), one or two lines, and say what the
   chart assumes and where it is unsure.
-- **Notes and caveats** are a caution "?" or a few words each, beside the
-  figure they qualify, never collected at the bottom of the page; the full
-  sentence goes behind the "?". In guide prose, a caveat is part of the text.
+- **Notes and caveats** are a few words each, beside the figure they
+  qualify, never collected at the bottom of the page; the full sentence
+  goes behind a "?". In guide prose, a caveat is part of the text.
 - **Status words** say what happened, in the passive: "נשמר", "לא הוזן",
   "ההעתקה לא הצליחה". Ongoing work: "טוען…".
 - **Missing data:** say what is missing and why: "אין נתון: הבנק לא מפרסם

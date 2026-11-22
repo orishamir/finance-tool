@@ -1,4 +1,4 @@
-// A whole split into a few parts as one bar of shares (a deal's reading on the fee page): the parts side by
+// A whole split into a few parts as one bar of shares (the index page's receipt: what went on the way, by who took it): the parts side by
 // side from the start, 2 px apart (charts.md), each as long as its share. One key above the bar, in the bar's order, names every part by its
 // colour with its share, so each part is read in the same place whatever its size; nothing is written inside the bar, where only the
 // largest part ever had room. A bare bar has no key (the rows beside it name its parts, in its order) and runs left to right from its
@@ -9,7 +9,7 @@ import { cx } from "./cx";
 export interface SharePart {
   id: string;
   name: string;
-  /** Whole percent; the parts' shares add up to 100. A part at 0 is not drawn, and stays in the key. */
+  /** Whole percent; the parts' shares add up to 100 (lib/receipt.ts `sharesOf`). A part at 0 is not drawn, and stays in the key. */
   share: number;
   /** The part's colour role, a `bg-` class (`bg-chart-by-account`). */
   className: string;
