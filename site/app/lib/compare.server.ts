@@ -17,7 +17,6 @@ import { computedInputs as ci, guideBlocks } from "../copy";
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "tradeFlat", "tradeFlatUpTo", "redeemRate", "redeemMin", "redeemMax", "redeemFlat", "redeemFlatUpTo", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
 import { BROKERAGE, HOUSE_CHANNELS, instrumentClassOf, onlyWhatCanBeDone, providersOf, shortName } from "./providers";
 import { latestOf, latestSnapshots } from "./providers.server";
-import { p05Range } from "./engine";
 import { indexPath } from "./site-paths";
 import { readJsonCached, readTextCached } from "./read-cache.server";
 import { sourceHref } from "./sources";
@@ -559,15 +558,6 @@ export function compareBundle(): CompareBundle {
   return (cached ??= buildCompareBundle());
 }
 
-type KnobRange = { min: number; max: number; step?: number; segments?: { to: number; step: number }[] };
-
-/** One slider of the indices page's knob strip, as P-05 writes it: its ends and its step or segments, without the value objects. */
-function knobRange(p05: ParameterRecord, key: string): KnobRange {
-  const r = p05Range(p05, "sliders", key);
-  if (!r) throw new Error(`P-05 has no slider ${key}`);
-  return { min: r.min, max: r.max, ...(r.step !== undefined ? { step: r.step } : {}), ...(r.segments ? { segments: r.segments } : {}) };
-}
-
 /** What the indices page reads besides the bundle: the presets (P-07), the ranges, P-05's inflation, PEN-36's text. */
 export function goalFormData() {
   const t = today();
@@ -584,7 +574,6 @@ export function goalFormData() {
     sliders: Record<string, { min: ValueObject; max: ValueObject; step?: ValueObject; start?: ValueObject }>;
   };
   if (!p07 || !p05) throw new Error("data/parameters/ holds no P-07 or P-05 record");
-  const p05Record = p05 as unknown as ParameterRecord;
   const range = (r: { min: ValueObject; max: ValueObject; step?: ValueObject }) => ({ min: r.min.value as number, max: r.max.value as number, step: (r.step?.value as number | undefined) ?? 1 });
   const rules = loadRules();
   const pen36 = rules["PEN-36"] ?? null;
@@ -594,8 +583,9 @@ export function goalFormData() {
     meta: { rationale: p07.rationale, rationaleHe: p07.rationale_he ?? null },
     form: {
       horizon: range(p07.ranges.horizon_years!),
-      // the indices page's knob strip: each slider's range, in its step or, for money, its segments (`rangeScale`)
-      knobs: Object.fromEntries((["amount_now", "monthly_deposit", "horizon_years", "A-01"] as const).map((k) => [k, knobRange(p05Record, k)])) as Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", KnobRange>,
+      monthly: range(p05.sliders.monthly_deposit!),
+      // the indices page's knob strip (F-89): each slider's range and the step whose effect it shows
+      knobs: Object.fromEntries((["amount_now", "monthly_deposit", "horizon_years", "A-01"] as const).map((k) => [k, range(p05.sliders[k]!)])) as Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", { min: number; max: number; step: number }>,
       // the spider chart's shares (F-90), in percent
       share: { ...range(p05.sliders.change_share!), start: p05.sliders.change_share!.start!.value as number },
       age: { min: p05.ranges.age!.min.value as number, max: p05.ranges.age!.max.value as number },

@@ -2,7 +2,9 @@ import type { ReactNode } from "react";
 import { RangeField, type RangeFieldProps } from "./fields";
 import { cx } from "./cx";
 
-export type Knob = RangeFieldProps & { id: string };
+export interface Knob extends RangeFieldProps {
+  id: string;
+}
 
 /**
  * The plan's numbers as sliders that stay on screen, for a page meant to be played with (the indices page):
@@ -14,7 +16,8 @@ export function KnobStrip({ knobs, lead, stacked = false }: { knobs: Knob[]; lea
       {lead && <p className="text-sm text-muted-foreground">{lead}</p>}
       <div className={cx("grid gap-x-6 gap-y-1", !stacked && "md:grid-cols-2", !stacked && knobs.length === 4 && "xl:grid-cols-4")}>
         {knobs.map(({ id, ...field }) => (
-          <RangeField key={id} {...field} />
+          // no line under a slider: the reset sits beside its label, so a number becoming the person's own moves nothing
+          <RangeField key={id} {...field} footer={false} />
         ))}
       </div>
     </div>
