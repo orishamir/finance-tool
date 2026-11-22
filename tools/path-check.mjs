@@ -7,13 +7,12 @@
 // its last digit. Any value whose text differs between paths is printed with the paths and the two texts.
 //
 //   BASE=http://127.0.0.1:4173/finance-tool node tools/path-check.mjs /guide/makam [pc|phone] [--motion]
-import { createRequire } from "node:module";
 import { newContext, waitSettled } from "../site/scripts/browser.mjs";
+import { chromium } from "playwright";
 
-const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
-const { chromium } = require("playwright");
 const BASE = process.env.BASE ?? "http://127.0.0.1:4173/finance-tool";
-const CHROME = process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome";
+// CHROME: a Chromium binary of one's own; without it, the browser of the repo's Playwright
+const CHROME = process.env.CHROME;
 const args = process.argv.slice(2);
 const reduce = !args.includes("--motion");
 const [path = "/guide/makam", width = "pc"] = args.filter((a) => !a.startsWith("--"));

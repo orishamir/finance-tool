@@ -13,7 +13,7 @@
 // that matched, with the fragment's terms as the page prints them and the date it was read; site/app/lib/sources.ts `sourceHref` builds
 // the link from it. A page that could not be read this time keeps its earlier rows; a quote no longer cited loses its row.
 //
-// How a page is read: Chromium (the Playwright recipe in the repo's notes) loads it and gives `innerText`, which separates blocks with line
+// How a page is read: Chromium (the repo's Playwright browser, or the binary CHROME names) loads it and gives `innerText`, which separates blocks with line
 // breaks and table cells with tabs. A page that refuses (an error status, a human check, almost no text) is asked of the local FlareSolverr
 // (`docker start flaresolverr`), and its clearance cookies are handed to Chromium for a second load.
 //
@@ -23,12 +23,12 @@
 // boundary. One that occurs more than once is kept only when a hint in quote-fragments-hints.json says which occurrence is cited; the
 // fragment then gets words before it (a prefix) until it lands there first. A long quote, or one that runs over several blocks or cells,
 // becomes `start,end`. A quote whose pieces are joined with " … " is matched as one range from the first piece to the last.
-import { createRequire } from "node:module";
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { israelToday } from "./israel-date.mjs";
+import { chromium } from "playwright";
 import { CONTEXT, frames, waitSettled } from "../site/scripts/browser.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -401,10 +401,9 @@ async function browserCheck(n) {
 
 /** The rows whose fragment the browser lands on and paints, as a Set of the rows themselves. */
 async function landsInBrowser(rows, shots) {
-  const { chromium } = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/")("playwright");
   if (shots) mkdirSync(shots, { recursive: true });
   const landed = new Set();
-  const launch = () => chromium.launch({ executablePath: process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
+  const launch = () => chromium.launch({ executablePath: process.env.CHROME });
   let browser = await launch();
   let counter = await (await browser.newContext(CONTEXT)).newPage();
   const tally = { lands: 0, missed: 0, error: 0 };
@@ -472,7 +471,6 @@ export const hintFor = (hints, c) => hints.find((h) => h.url === c.url && fold(h
 
 async function main() {
   if (opt("browser-check")) return browserCheck(opt("browser-check"));
-  const { chromium } = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/")("playwright");
   const only = opt("only");
   const hints = existsSync(HINTS) ? JSON.parse(readFileSync(HINTS, "utf8")) : [];
   const hintOf = (c) => hintFor(hints, c);
@@ -481,7 +479,7 @@ async function main() {
   const urls = [...new Set(todo.map((c) => pageOf(c.url)))];
   console.log(`${todo.length} quotes on ${urls.length} web pages${only ? ` (only ${only})` : ""}`);
 
-  const browser = await chromium.launch({ executablePath: process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
+  const browser = await chromium.launch({ executablePath: process.env.CHROME });
   const pages = new Map();
   const queue = [...urls];
   await Promise.all(

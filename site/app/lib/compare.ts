@@ -11,11 +11,8 @@ import { fitOf, type FitTableData } from "./fit";
 import { entered as enteredValue, sumOf as sumValues, type SiteValue } from "./value";
 
 
-// Formula names this screen's numbers use that the release 1 table does not hold yet (method.md F-30, F-61, F-80).
+// A name this screen's numbers use that copy.ts's table does not hold (P-07, the goal presets); the formulas' names are copy.ts's own.
 Object.assign(formulaNames, {
-  "F-30": "הטבת מס בהפקדה",
-  "F-61": "עלות דמי הניהול",
-  "F-80": "דירוג ותיקו",
   "P-07": "נקודת התחלה",
 });
 

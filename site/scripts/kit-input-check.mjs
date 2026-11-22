@@ -7,15 +7,18 @@
 //            left from before a value came from outside shown at once on the next wrong keystroke; the slider field's error spoken as an
 //            alert; a number box without autocomplete off, spellcheck off and enterkeyhint done, or a shekel box without a whole-number
 //            pad.
-//   early    a number field typed in before the page's script arrived that loses what was typed, or the keystrokes after it (on the
-//            deposits page: the kit page's script draws it again rather than taking it over).
+//   early    a number field typed in before the page's script arrived that loses what was typed, or the keystrokes after it; one typed
+//            in and left before the script arrived that loses what was typed (on the deposits page: the kit page's script draws it again
+//            rather than taking it over).
 //   slider   a slider without its value at each end, or one a finger drags across that does not follow it.
 //   sheet    with the sheets' motion played: a sheet that does not open with the focus on its first thing to act on, that Escape (the
 //            browser's close request, which the phone's Back sends on Android) or its X does not close, that does not give the focus back
 //            to what opened it; a sheet opened from inside another that shows over it rather than in its place, leaves the one under it
 //            modal (the close request would reach it), has no way back to it, or brings it back scrolled elsewhere; Escape on the top of
 //            two sheets that does not bring back the other with the focus on what opened the top one, a second Escape that does not close
-//            that one, or two quick Escapes that leave one open; sheets that add history entries.
+//            that one, or two quick Escapes that leave one open; a close request the page may not refuse on the top of two sheets (its
+//            cancel not cancelable, the browser closing the dialog itself) that closes the other too, or brings it back only after the top
+//            one's closing would have played; sheets that add history entries.
 //   sheet link / search sheet   a page the router opens from inside a sheet (a link in a rule's sheet on the kit page; the phone's search
 //            sheet on a guide page, a word typed and Enter opening another guide page, so the frame and its sheets stay mounted) that keeps
 //            a sheet open, adds more than one history entry, or that one Back does not leave for the page under the sheet, with no sheet
@@ -130,33 +133,50 @@ async function fieldCheck(browser, base) {
 }
 
 /**
- * A number field typed in before the page's script arrived: what was typed stays, and the keystrokes after the script are not lost. On the
- * deposits page's amount, a page whose script takes over its pre-rendered fields in place.
+ * A number field typed in before the page's script arrived: what was typed stays, and the keystrokes after the script are not lost; a box
+ * typed in and left before the script arrived keeps what was typed too, and the field takes it. On the deposits page's amount, a page whose
+ * script takes over its pre-rendered fields in place.
  */
 async function earlyCheck(browser, base) {
   const found = [];
-  const ctx = await browser.newContext(DESK);
-  const page = await ctx.newPage();
-  let release;
-  const gate = new Promise((done) => (release = done));
-  await page.route(/\.js(\?|$)/, async (route) => {
-    await gate;
-    await route.continue();
-  });
-  await page.goto(`${base}/deposits`, { waitUntil: "domcontentloaded" });
-  const box = page.locator("main input.field-input").first();
-  await box.scrollIntoViewIfNeeded();
-  await box.click();
-  await box.press("ControlOrMeta+a");
-  await page.keyboard.type("5");
-  release();
-  await page.waitForFunction(() => !!window.__reactRouterDataRouter, null, { timeout: 15000 });
-  await page.evaluate(settled);
-  if ((await box.inputValue()) !== "5") found.push(`early: a field typed in before the script arrived holds "${await box.inputValue()}", not the 5 typed`);
-  // a wrong keystroke after it: the box keeps what was typed rather than the field's own value
-  await page.keyboard.type("x");
-  if ((await box.inputValue()) !== "5x") found.push(`early: a keystroke after the script arrived in a field typed in before is lost (the box holds "${await box.inputValue()}", not 5x)`);
-  await ctx.close();
+  for (const left of [false, true]) {
+    const ctx = await browser.newContext(DESK);
+    const page = await ctx.newPage();
+    let release;
+    const gate = new Promise((done) => (release = done));
+    await page.route(/\.js(\?|$)/, async (route) => {
+      await gate;
+      await route.continue();
+    });
+    await page.goto(`${base}/deposits`, { waitUntil: "domcontentloaded" });
+    const box = page.locator("main input.field-input").first();
+    await box.scrollIntoViewIfNeeded();
+    await box.click();
+    await box.press("ControlOrMeta+a");
+    const typed = left ? "5000" : "5";
+    await page.keyboard.type(typed);
+    // the box left before the script arrives: a click on the page's heading takes the focus away
+    if (left) await page.locator("main h1").first().click();
+    release();
+    await page.waitForFunction(() => !!window.__reactRouterDataRouter, null, { timeout: 15000 });
+    await page.evaluate(settled);
+    const which = left ? "typed in and left" : "typed in";
+    // the digits only: the field may write the amount with its thousands separator
+    const digits = async () => (await box.inputValue()).replace(left ? /\D/g : /$^/, "");
+    if ((await digits()) !== typed) found.push(`early: a field ${which} before the script arrived holds "${await box.inputValue()}", not the ${typed} typed`);
+    if (left) {
+      // the field took it: back in the box, its text is the field's own writing of the value
+      await box.click();
+      await page.keyboard.press("End");
+      await page.keyboard.type("0");
+      if ((await digits()) !== "50000") found.push(`early: a field typed in and left before the script arrived does not take what was typed (one more 0 gives "${await box.inputValue()}", not 50000)`);
+    } else {
+      // a wrong keystroke after it: the box keeps what was typed rather than the field's own value
+      await page.keyboard.type("x");
+      if ((await box.inputValue()) !== "5x") found.push(`early: a keystroke after the script arrived in a field typed in before is lost (the box holds "${await box.inputValue()}", not 5x)`);
+    }
+    await ctx.close();
+  }
   return found;
 }
 
@@ -270,6 +290,30 @@ async function sheetCheck(browser, base) {
     await page.evaluate(settled);
     if (await shown()) found.push("sheet: two quick Escapes on two sheets leave the first one open");
     if (!(await label.evaluate((el) => el === document.activeElement))) found.push("sheet: after two quick Escapes, the focus is not on what opened the first sheet");
+    // a close request the page may not refuse (the browser's own, with no press since the last): its cancel cannot be refused, and the
+    // browser closes the top sheet itself; that close is the same request, so only the top one closes, and the one under it comes back at
+    // once rather than after the top one's closing would have played
+    await label.tap();
+    await page.locator("dialog[open] .rule-chip").first().tap();
+    await page.waitForFunction((i) => !document.querySelectorAll("dialog")[i].open && [...document.querySelectorAll("dialog")].some((d) => d.open), firstId, { timeout: 3000 });
+    await page.evaluate(settled);
+    const atClose = await page.evaluate(
+      (i) =>
+        new Promise((done) => {
+          const top = [...document.querySelectorAll("dialog")].find((d) => d.open);
+          top.addEventListener("close", () => done(document.querySelectorAll("dialog")[i].open), { once: true });
+          top.dispatchEvent(new Event("cancel", { cancelable: false }));
+          // the browser closes the dialog after its cancel listeners have run and the microtasks they queued (the page's render) with them
+          setTimeout(() => top.close(), 0);
+        }),
+      firstId,
+    );
+    if (!atClose) found.push("sheet: the browser closing the top of two sheets itself does not bring the other back at once");
+    await page.waitForFunction(() => !document.querySelector("dialog[data-closing]"), null, { timeout: 3000 });
+    await page.evaluate(settled);
+    if (!(await page.evaluate(firstOpen, firstId)) || (await shown()) !== 1) found.push(`sheet: a close request the page may not refuse on the top of two sheets leaves ${await shown()} open, not the one under it`);
+    await page.keyboard.press("Escape");
+    await noneOpen().catch(() => found.push("sheet: after the browser closed the top sheet itself, Escape does not close the other"));
   }
   if ((await entries()) !== before || !(await page.evaluate(() => location.pathname.endsWith("/kit")))) found.push("sheet: opening and closing sheets adds history entries or leaves the page");
   await ctx.close();

@@ -49,7 +49,7 @@ export function meta({ location }: MetaPlace) {
 }
 
 /** The last company the person focused, kept on this device. */
-const lastFocus = deviceStore<string | null>("mekor.companies.focus", null, (raw) => (typeof raw === "string" ? raw : null), (v) => v, { holds: "kept" });
+const lastFocus = deviceStore<string | null>("mekor.companies.focus", null, (raw) => (typeof raw === "string" ? raw : null), (v) => v);
 
 /** The figures' sourced values, fetched once per visit. */
 let figuresPromise: Promise<FocusFigures> | null = null;

@@ -124,6 +124,7 @@
    "site/app/lib/data.server.ts": 3,
    "site/app/lib/deal-account/plan.ts": 2,
    "site/app/lib/deposit-browser.ts": 2,
+   "site/app/lib/device-store.ts": 1,
    "site/app/lib/documents.server.ts": 3,
    "site/app/lib/engine.ts": 1,
    "site/app/lib/fee-deal/cases.ts": 1,
@@ -164,6 +165,8 @@
   },
   "unlisted": {
    "packages/engine/src/inputs.ts": 1,
+   "site/app/lib/data.server.ts": 1,
+   "site/app/lib/read-cache.server.ts": 1,
    "site/react-router.config.ts": 1,
    "site/vite.config.ts": 1
   }
@@ -280,18 +283,26 @@
    "site/app/routes/invest.tsx": 11
   },
   "react(set-state-in-effect)": {
+   "site/app/components/decoder/company-terms.tsx": 1,
    "site/app/components/fee-deal/page.tsx": 1,
    "site/app/components/fee-deal/use-deal-document.ts": 1,
+   "site/app/components/fee-deal/use-open-case.ts": 1,
    "site/app/components/fee-deal/use-unit-price.ts": 1,
    "site/app/components/invest/deal-account.tsx": 1,
    "site/app/components/kit/chart-interact.tsx": 1,
    "site/app/components/kit/formula.tsx": 1,
    "site/app/components/kit/month-picker.tsx": 1,
    "site/app/components/kit/sticky-column.ts": 1,
-   "site/app/components/transfer/panel.tsx": 3,
+   "site/app/components/search.tsx": 2,
+   "site/app/components/shell.tsx": 1,
+   "site/app/components/transfer/panel.tsx": 4,
    "site/app/lib/deal-account/move-run.ts": 1,
+   "site/app/lib/hooks.ts": 1,
    "site/app/lib/inputs.tsx": 1,
-   "site/app/routes/invest.tsx": 2
+   "site/app/routes/company.tsx": 1,
+   "site/app/routes/documents.tsx": 1,
+   "site/app/routes/invest.tsx": 2,
+   "site/app/routes/rules.tsx": 2
   },
   "react-hooks(exhaustive-deps)": {
    "site/app/components/Sheet.tsx": 1,
@@ -305,7 +316,7 @@
    "site/app/components/fee-deal/use-deal-document.ts": 2,
    "site/app/components/fee-deal/use-open-case.ts": 1,
    "site/app/components/invest/custom-entries.tsx": 1,
-   "site/app/components/invest/deal-account.tsx": 1,
+   "site/app/components/invest/deal-account.tsx": 4,
    "site/app/components/invest/dollar.tsx": 1,
    "site/app/components/invest/lists.tsx": 1,
    "site/app/components/invest/no-fund.tsx": 2,

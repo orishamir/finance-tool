@@ -946,7 +946,7 @@ async function steadyCheck(dealPath, cellAt, lift) {
       if (times) found.push(`the page moved while ${where}, ${times} times: ${[...moved].slice(0, 6).map(([d, at]) => `${d} (first ${at})`).join("; ")}`);
       // into the screen's foot, then its top: the page scrolls toward that edge only, and keeps its height
       if (screen === "900" && what === "a case's cell") {
-        for (const [edge, y0, y1, sign] of [["foot", h - 160, h - 12, 1], ["top", 160, 12, -1]]) {
+        for (const { edge, y0, y1, sign } of [{ edge: "foot", y0: h - 160, y1: h - 12, sign: 1 }, { edge: "top", y0: 160, y1: 12, sign: -1 }]) {
           await page.mouse.move(geo.xs[0], y0, { steps: 4 });
           await page.mouse.move(geo.xs[0], y1, { steps: 8 });
           const ys = [];

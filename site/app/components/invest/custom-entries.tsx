@@ -9,7 +9,7 @@ import { isoToday } from "../../lib/state";
 import { Num, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Actions, EditButton, useDraft, isInvalid, EditorsContext, useEditors, type Editing, type Editors, type PanelWorld } from "./editors";
-import { Button, ChoiceChips, FieldGroup, flushPendingFields, LabelRow, LongestCase, NumberField, percentCheck, SelectField, TextField, TileChoice, type Tile } from "../kit";
+import { Button, ChoiceChips, FieldGroup, LabelRow, LongestCase, NumberField, percentCheck, SelectField, TextField, TileChoice, type Tile } from "../kit";
 import { optionClass, reasonText } from "./parts";
 
 const c = root.customEntries;
@@ -123,7 +123,6 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
   // no "0" in an empty field: an empty fee is not known, not a fee of zero
   const percent = (k: "fixed" | "variable" | "trustee", label: string) => <NumberField label={label} unit="pct_per_year" value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
   const save = () => {
-    flushPendingFields();
     const d = now.current;
     const e = fundErrors(d, others, fund?.id ?? null);
     setErrors(e);

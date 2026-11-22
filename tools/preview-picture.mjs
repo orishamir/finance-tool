@@ -5,23 +5,18 @@
 // The site's own headless Chrome draws it, so Hebrew is shaped and laid out right to left as on the site. A picture per page, made in
 // the build, needs a renderer that runs without a browser; the build has none yet.
 // Usage (from the repo or worktree root): node tools/preview-picture.mjs [--out site/public/preview.png]
-import { createRequire } from "node:module";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { homedir } from "node:os";
+import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { tsImport } from "tsx/esm/api";
+import { chromium } from "playwright";
 import { newContext } from "../site/scripts/browser.mjs";
 
 const { values: o } = parseArgs({ options: { out: { type: "string", default: "site/public/preview.png" } } });
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const { site } = await tsImport(join(repo, "site/app/copy.ts"), import.meta.url);
 
-const pw = createRequire(join(repo, "package.json"))("playwright");
-const cache = join(homedir(), ".cache/ms-playwright");
-const chromeDir = existsSync(cache) && readdirSync(cache).find((d) => /^chromium-\d/.test(d));
-const executablePath = chromeDir ? join(cache, chromeDir, "chrome-linux64/chrome") : undefined;
 
 // the fonts as app.css loads them, inlined, and the colour roles from theme.css (the page is drawn from a string, with no files beside it)
 const font = (path) => `url(data:font/woff2;base64,${readFileSync(join(repo, "node_modules/@fontsource-variable", path)).toString("base64")}) format("woff2-variations")`;
@@ -53,7 +48,7 @@ p { margin: 0; max-width: 960px; text-align: center; text-wrap: balance; font-si
 <p>${esc(site.tagline)}</p>
 </body></html>`;
 
-const browser = await pw.chromium.launch({ executablePath });
+const browser = await chromium.launch();
 try {
   const page = await (await newContext(browser, { viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 })).newPage();
   await page.setContent(html, { waitUntil: "load" });

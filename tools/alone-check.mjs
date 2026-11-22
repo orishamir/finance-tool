@@ -9,15 +9,14 @@
 //   BASE=http://127.0.0.1:4173/finance-tool node tools/alone-check.mjs [every-nth-company=30] [widths=1280,1024,768,390]
 //   ONLY=tracks|companies/meitav limits the pages to those whose path matches.
 //   node tools/alone-check.mjs --self-test   runs both finders on planted breaks and on their fixed form, no server needed.
-import { createRequire } from "node:module";
 import { readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { newContext, waitSettled } from "../site/scripts/browser.mjs";
+import { chromium } from "playwright";
 
-const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
-const { chromium } = require("playwright");
 const BASE = process.env.BASE ?? "http://127.0.0.1:4173/finance-tool";
-const CHROME = process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome";
+// CHROME: a Chromium binary of one's own; without it, the browser of the repo's Playwright
+const CHROME = process.env.CHROME;
 const ROOT = new URL("../site/build/client/", import.meta.url).pathname;
 const [nth = "30", widthList = "1280,1024,768,390"] = process.argv.slice(2);
 

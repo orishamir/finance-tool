@@ -39,9 +39,9 @@ export const emptyFilters: Filters = { shelf: null, product: null, changing: fal
 /** An old address's `prefix` and `ids` are no longer filters: the field takes a rule's id, and a rule is opened by its `#id`. */
 export function parseFilters(search: string): Filters {
   const p = new URLSearchParams(search);
-  const shelf = p.get("shelf");
+  const shelf = p.get("shelf") as ShelfId | null;
   return {
-    shelf: shelfIds.find((s) => s === shelf) ?? null,
+    shelf: shelf && shelfIds.includes(shelf) ? shelf : null,
     product: p.get("product") || null,
     changing: p.get("changing") === "1",
     q: p.get("q") ?? "",

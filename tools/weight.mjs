@@ -14,12 +14,11 @@
 //   node tools/weight.mjs [--build site/build/client] [--only /rules,/] [--json out.json] [--chunks] [--detail] [--check]
 // --detail lists every file each page fetched and the largest keys of each route's loader data. The loader columns: the data
 // script inside the HTML, gzipped, then each route's data as JSON gzipped on its own (an upper bound: the stream shares repeats). Numbers are bytes; "gz" is gzip at the default level.
-import { createRequire } from "node:module";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { gzipSync } from "node:zlib";
+import { chromium } from "playwright";
 
 const { values: o } = parseArgs({
   options: { build: { type: "string", default: "site/build/client" }, only: { type: "string" }, json: { type: "string" }, chunks: { type: "boolean" }, detail: { type: "boolean" }, check: { type: "boolean" } },
@@ -77,26 +76,11 @@ async function loaderData(html) {
 }
 
 // ---------------------------------------------------------------- the browser
-const tryRequire = (from) => {
-  try {
-    return createRequire(from)("playwright");
-  } catch {
-    return null;
-  }
-};
-const pw = tryRequire(join(process.cwd(), "package.json"));
-if (!pw) {
-  console.error("Playwright not found; run from the repo root");
-  process.exit(2);
-}
-const cache = join(homedir(), ".cache/ms-playwright");
-const chromeDir = existsSync(cache) && readdirSync(cache).find((d) => /^chromium-\d/.test(d));
-const executablePath = chromeDir ? join(cache, chromeDir, "chrome-linux64/chrome") : undefined;
 const here = new URL(".", import.meta.url).pathname;
 const { serveBuild } = await import(join(here, "../site/scripts/serve-build.mjs"));
 const { newContext, waitSettled } = await import(join(here, "../site/scripts/browser.mjs"));
 const server = await serveBuild(root, { port: 0 });
-const browser = await pw.chromium.launch({ executablePath });
+const browser = await chromium.launch();
 
 const kindOf = (r) => {
   const t = r.request().resourceType();
@@ -116,6 +100,8 @@ try {
     const context = await newContext(browser, { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
     const page = await context.newPage();
     const files = [];
+    // responses whose body the browser could not hand over (the request dropped before it finished): their bytes are not counted
+    const unread = [];
     let loaded = false;
     const pending = [];
     page.on("response", (r) => {
@@ -124,7 +110,7 @@ try {
       pending.push(
         r.body().then(
           (b) => files.push({ url: r.url().replace(server.url, "/"), kind: kindOf(r), when, raw: b.length, gz: /\.(woff2?|png)$/.test(r.url()) ? b.length : gz(b), html: kindOf(r) === "html" ? b.toString("utf8") : null }),
-          () => {},
+          (e) => unread.push(`${r.url().replace(server.url, "/")} (${e.message.split("\n")[0]})`),
         ),
       );
     });
@@ -138,7 +124,7 @@ try {
     const sum = (when) => Object.fromEntries(KINDS.map((k) => [k, files.filter((f) => f.kind === k && (!when || f.when === when)).reduce((n, f) => n + f.gz, 0)]));
     const doc = files.find((f) => f.kind === "html");
     const data = doc ? await loaderData(doc.html) : null;
-    results.push({ kind, path, rested, first: sum("first"), later: sum("later"), htmlRaw: doc?.raw ?? 0, data, files: files.map(({ html, ...f }) => f) });
+    results.push({ kind, path, rested, unread, first: sum("first"), later: sum("later"), htmlRaw: doc?.raw ?? 0, data, files: files.map(({ html, ...f }) => f) });
     await context.close();
   }
 } finally {
@@ -188,6 +174,7 @@ if (o.check) {
     const over = ["script", "data"].filter((k) => w[k] > b[k]);
     console.log(`${over.length ? "OVER" : "ok  "} ${r.kind.padEnd(20)} script ${kb(w.script * 1024)} of ${String(b.script).padStart(5)}   data ${kb(w.data * 1024)} of ${String(b.data).padStart(5)}`);
     for (const k of over) fails.push(`${r.kind} (${r.path}): ${k} ${w[k].toFixed(1)} KB, over its budget of ${b[k]} KB`);
+    for (const u of r.unread) fails.push(`${r.kind} (${r.path}): the body of ${u} could not be read, so its bytes are left out of the weight`);
     if (!r.rested) fails.push(`${r.kind} (${r.path}): the page did not come to rest, so what it fetches once idle may be left out of its weight`);
   }
   if (!o.only) {

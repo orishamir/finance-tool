@@ -4,13 +4,12 @@
 //
 //   BASE=http://127.0.0.1:4173/finance-tool node tools/pick-check.mjs /indices/sp500 phone,pc
 // A folded list is opened first, so every kind of fund is picked.
-import { createRequire } from "node:module";
 import { newContext, waitSettled } from "../site/scripts/browser.mjs";
+import { chromium } from "playwright";
 
-const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
-const { chromium } = require("playwright");
 const BASE = process.env.BASE ?? "http://127.0.0.1:4173/finance-tool";
-const CHROME = process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome";
+// CHROME: a Chromium binary of one's own; without it, the browser of the repo's Playwright
+const CHROME = process.env.CHROME;
 const [paths = "/indices/sp500", widths = "phone,pc"] = process.argv.slice(2);
 const VIEW = { phone: { width: 390, height: 844, hasTouch: true }, pc: { width: 1280, height: 900 } };
 const TOL = 1;

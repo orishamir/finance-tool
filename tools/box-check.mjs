@@ -32,14 +32,13 @@
 // often sits below the control, out of the screen when the control is only just in view, so the first sweep alone under-reported
 // (2026-11-07). A control that moved anything prints both counts, then the lines of the place where more moved, and the total counts
 // that place; the lines print once both sweeps are done. `--one-pass` keeps only the first sweep. `--whole` and `--rows` run once.
-import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 import { newContext, waitSettled } from "../site/scripts/browser.mjs";
+import { chromium } from "playwright";
 
-const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
-const { chromium } = require("playwright");
 const BASE = process.env.BASE ?? "http://127.0.0.1:4173/finance-tool";
-const CHROME = process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome";
+// CHROME: a Chromium binary of one's own; without it, the browser of the repo's Playwright
+const CHROME = process.env.CHROME;
 const args = process.argv.slice(2);
 const flags = args.filter((a) => a.startsWith("--"));
 const [paths = "/indices/sp500", widths = "phone,pc"] = args.filter((a) => !a.startsWith("--"));

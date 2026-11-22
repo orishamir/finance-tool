@@ -17,15 +17,14 @@
 // A link, a figure or a term inside running text (a <p> or <li> line with words of its own around it) is left out, as guard 19 leaves a
 // figure in text: its line is the text's line height, and the 44 px rule is for controls that stand alone (design-system 2.5).
 // A figure's or a month's field is measured by its box, which takes a press anywhere in it for the field (the kit's `focusInBox`).
-import { createRequire } from "node:module";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { newContext, waitSettled } from "../site/scripts/browser.mjs";
+import { chromium } from "playwright";
 
-const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
-const { chromium } = require("playwright");
 const BASE = process.env.BASE ?? "http://127.0.0.1:4173/finance-tool";
-const CHROME = process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome";
+// CHROME: a Chromium binary of one's own; without it, the browser of the repo's Playwright
+const CHROME = process.env.CHROME;
 const args = process.argv.slice(2);
 const all = args.includes("--all");
 const checks = args.includes("--checks");

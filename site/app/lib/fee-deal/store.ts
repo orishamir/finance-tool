@@ -45,7 +45,7 @@ const kept = deviceStore<FeeDeal[]>(
     return r.deals;
   },
   (deals) => dealsDoc(deals, unreadNow),
-  { holds: "made", parsesMissing: true },
+  true,
 );
 
 /**

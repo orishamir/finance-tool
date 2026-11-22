@@ -5,11 +5,10 @@
 // --spot takes any Playwright locator (CSS, "text=…", "#id"); without it the whole page is taken. Sticky and fixed bars are
 // unstuck first so they don't cover the spot. Phone widths (under 800) are taken as a touch phone. Prints each file's path.
 // --name names the files where the page path is too long for one (a fee page's deal in its address).
-import { createRequire } from "node:module";
-import { existsSync, mkdirSync, readdirSync } from "node:fs";
-import { homedir } from "node:os";
+import { mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
+import { chromium } from "playwright";
 import { newContext } from "../site/scripts/browser.mjs";
 
 const { values: o, positionals } = parseArgs({
@@ -19,19 +18,11 @@ const { values: o, positionals } = parseArgs({
 const path = positionals[0];
 if (!path) { console.error("usage: node shot.mjs <page path> [--spot <selector>] [--width 390,1440] [--out <dir>] [--build <dir>] [--name <file name>]"); process.exit(2); }
 
-const tryRequire = (from) => { try { return createRequire(from)("playwright"); } catch { return null; } };
-const npx = join(homedir(), ".npm/_npx");
-const pw = tryRequire(join(process.cwd(), "package.json")) ??
-  (existsSync(npx) ? readdirSync(npx).map((d) => tryRequire(join(npx, d, "node_modules/"))).find(Boolean) : null);
-if (!pw) { console.error("Playwright not found"); process.exit(2); }
-const cache = join(homedir(), ".cache/ms-playwright");
-const chromeDir = existsSync(cache) && readdirSync(cache).find((d) => /^chromium-\d/.test(d));
-const executablePath = chromeDir ? join(cache, chromeDir, "chrome-linux64/chrome") : undefined;
 
 const here = new URL(".", import.meta.url).pathname;
 const { serveBuild } = await import(join(here, "../site/scripts/serve-build.mjs"));
 const server = await serveBuild(resolve(o.build), { port: 0 });
-const browser = await pw.chromium.launch({ executablePath });
+const browser = await chromium.launch();
 mkdirSync(o.out, { recursive: true });
 const name = o.name ?? (path.replace(/^\/|\/$/g, "").replace(/\W+/g, "-") || "home");
 try {

@@ -8,15 +8,12 @@
 //   BASE=http://127.0.0.1:5200/finance-tool OUT_JSON=jumps-pc.json node tools/jump-check.mjs pc [paths]
 //
 // BASE is a running copy of the site (a dev server, or the built site served under /finance-tool/); the second argument
-// is "pc" (1280x900) or "phone" (390x844, touch); the optional third is a comma-separated list of paths. Playwright is
-// not a repo dependency: PLAYWRIGHT_DIR points at a node_modules folder that holds it (the npx cache by default), and
-// CHROME at a Chromium binary.
+// is "pc" (1280x900) or "phone" (390x844, touch); the optional third is a comma-separated list of paths. CHROME points at
+// a Chromium binary of one's own; without it, the browser of the repo's Playwright.
 import { writeFileSync } from "node:fs";
-import { createRequire } from "node:module";
 import { newContext, waitSettled } from "../site/scripts/browser.mjs";
+import { chromium } from "playwright";
 
-const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
-const { chromium } = require("playwright");
 const BASE = process.env.BASE ?? "http://127.0.0.1:5199/finance-tool";
 const vpName = process.argv[2] ?? "pc";
 const phone = vpName === "phone";

@@ -7,32 +7,16 @@
 // Usage (from the repo or worktree root, after `npm run build`):
 //   node tools/first-tap.mjs [--build site/build/client] [--page /guide/keren-hishtalmut] [--runs 3] [--fast]
 // The connection is Lighthouse's slow 4G (150 ms round trip, 1.6 Mbit/s down) with the processor slowed four times; --fast drops both.
-import { createRequire } from "node:module";
-import { existsSync, readdirSync } from "node:fs";
-import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import http from "node:http";
 import { gzipSync } from "node:zlib";
+import { chromium } from "playwright";
 import { newContext, waitSettled, slowDown, SLOW_4G } from "../site/scripts/browser.mjs";
 
 const { values: o } = parseArgs({
   options: { build: { type: "string", default: "site/build/client" }, page: { type: "string", default: "/guide/keren-hishtalmut" }, runs: { type: "string", default: "3" }, fast: { type: "boolean" } },
 });
-const pw = (() => {
-  try {
-    return createRequire(join(process.cwd(), "package.json"))("playwright");
-  } catch {
-    return null;
-  }
-})();
-if (!pw) {
-  console.error("Playwright not found; run from the repo root");
-  process.exit(2);
-}
-const cache = join(homedir(), ".cache/ms-playwright");
-const chromeDir = existsSync(cache) && readdirSync(cache).find((d) => /^chromium-\d/.test(d));
-const executablePath = chromeDir ? join(cache, chromeDir, "chrome-linux64/chrome") : undefined;
 const here = new URL(".", import.meta.url).pathname;
 const { serveBuild } = await import(join(here, "../site/scripts/serve-build.mjs"));
 const inner = await serveBuild(resolve(o.build), { port: 0 });
@@ -58,7 +42,7 @@ const front = http.createServer((req, res) => {
 });
 await new Promise((ok) => front.listen(0, "127.0.0.1", ok));
 const server = { url: `http://127.0.0.1:${front.address().port}/finance-tool/`, close: () => (front.close(), inner.close()) };
-const browser = await pw.chromium.launch({ executablePath });
+const browser = await chromium.launch();
 
 /** In the page: when the finger goes down or the first letter is typed, and when `selector` first shows text after it. */
 const watch = (selector) => {
