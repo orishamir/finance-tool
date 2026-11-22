@@ -449,7 +449,7 @@ function candidates(s: FeesSnapshot, option: OptionId): Cand[] {
 
 interface Spec {
   fund: Parameters<typeof providerWorkbench>[0]["fund"];
-  market: { grossReturn: number; returnIn?: "instrument" | "nis"; fxChange?: number };
+  market: { grossReturn: number; returnIn?: "instrument" | "nis"; fxChange?: number; principalFxChange?: number };
   currency?: { code: string; startRate: number };
   cls: string;
   /** F-109 (D94): where the fund is bought (TASE, or the exchange abroad it trades on), so each house buys it in whole units or by amount. */

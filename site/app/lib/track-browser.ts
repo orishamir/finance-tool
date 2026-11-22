@@ -399,3 +399,9 @@ export function assetsText(millions: number): string {
   return millions >= 1000 ? fmt.nisBillions(millions * 1e6) : `${fmt.number(Math.round(millions))} ${t.assets.million}`;
 }
 
+/** The sort in words, for the line above the list: "דמי הניהול מהחיסכון, מהזול ליקר". The name column is the track's name under a company and the company's under a kind. */
+export function sortWords(s: SortState, by: GroupBy): string {
+  const w = t.sorts[s.id];
+  const what = s.id === "name" ? (by === "company" ? t.sorts.name.what : t.sorts.name.whatKind) : w.what;
+  return `${what}, ${ascending(s) ? w.up : w.down}`;
+}

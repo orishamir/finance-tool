@@ -57,7 +57,7 @@ export { PageTabs, type PageTab } from "./page-tabs";
 export { SortHead, SortNote, type SortState } from "./sort-head";
 export { AmountRange, AnchorSpread } from "./deposit-words";
 export { ExposureCell, FeeNum, GemelNetLink, ShareNum, TrackFeeLines, TrackFundId, TrackLabels, gemelNetUrl } from "./track-cells";
-export { HeldMark, HelpMark } from "./help-mark";
+export { HelpMark } from "./help-mark";
 export { SourcedTag } from "./sourced-tag";
 export { HouseAverageLine, HouseAverageTerm } from "./house-average";
 export { GroupPriceFold, GroupPriceRows, groupBlocks, groupLineWho, type GroupBlock, type GroupChoice, type GroupEntry, type GroupLink } from "./group-prices";

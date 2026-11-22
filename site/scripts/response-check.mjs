@@ -185,16 +185,11 @@ async function followed(page, flow, run) {
   return result;
 }
 
-/** The text of the first element with a digit right after the first visible element in the page's main part whose own text is `label`, or right after one of its two nearest boxes; null with none. */
+/** The text of the element right after the first visible element in the page's main part whose own text is `label`; null with none. */
 function figureOf(page, label) {
   return page.evaluate((label) => {
     const el = [...document.querySelectorAll("main *")].find((e) => e.children.length === 0 && e.textContent.trim() === label && e.checkVisibility());
-    // the figure follows the label, or the label's own box where a mark ("?") stands beside the label inside it
-    for (let n = el, up = 0; n && up < 3; n = n.parentElement, up++) {
-      const next = n.nextElementSibling?.textContent.trim();
-      if (next && /\d/.test(next)) return next;
-    }
-    return null;
+    return el?.nextElementSibling?.textContent.trim() ?? null;
   }, label);
 }
 

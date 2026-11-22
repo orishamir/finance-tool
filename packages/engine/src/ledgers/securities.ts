@@ -62,6 +62,11 @@ export interface Fund {
   sharePriceRate?: number;
   /** TASE foreign fund: the prospectus commits to the 90% main-currency test (TXF-04); while TXF-04 is open the run stops whatever its value (F-04). */
   ninetyPercentTest?: boolean;
+  /**
+   * Israeli fund whose own report names it a foreign-investment fund under the 2003 regulations: its principal currency (ISO code, TXS-14).
+   * That currency's exchange rate is its tax index (F-04), on the site's reading of TXS OQ26; the run reads `market.principalFxChange`.
+   */
+  principalCurrency?: string;
   /** Renewable money-market fund: months between fixed dates (MF-35). */
   fixedDatesEveryMonths?: number;
   /**
@@ -152,6 +157,11 @@ export interface SecuritiesInput {
     inflation: number;
     /** A-03 exchange-rate change of the instrument currency against the shekel. */
     fxChange?: number;
+    /**
+     * A-03 for the fund's principal currency (`Fund.principalCurrency`), whose path is the tax index of a foreign-investment fund (F-04,
+     * TXS-14). A shekel fund's value takes A-03 in `grossReturn`, so this path serves its tax index alone. Required with `principalCurrency`.
+     */
+    principalFxChange?: number;
   };
   fund: Fund;
   /** F-101: the tariff, or a sequence of tariffs, each with the months it holds (see `TariffSequence`). `currency` is read from this first one only. */
@@ -219,15 +229,20 @@ export const memberKindOf = (providerClass: string): NonNullable<SecuritiesInput
 
 /**
  * F-04 The tax index of a fund held in a securities account: the exchange rate for a foreign-currency fund held directly (TXF-03),
- * the CPI for the rest. A TASE foreign fund takes the index TXF-04 states, and TXF-04 is open, so neither is known for it, with or
+ * the principal currency's exchange rate for an Israeli fund its report names a foreign-investment fund (TXS-14, on the site's reading of
+ * TXS OQ26, which the run flags), the CPI for the rest (TXS-14's first bullet). A TASE foreign fund takes the index TXF-04 states, and TXF-04 is open, so neither is known for it, with or
  * without its 90% test: the book stops on it (BlockedError) and the run computes nothing after tax (D10); F-118 reads its value before
  * the exit tax. Were TXF-04 settled as the letter's copy states it (the golden harness), a fund on the 90% test would take the exchange
  * rate and any other the CPI.
  */
-export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest">, book: RuleBook): "fx" | "cpi" {
+export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency">, book: RuleBook): "fx" | "principal" | "cpi" {
   if (fund.kind === "foreign-fund") {
     book.cite("TXF-03");
     return "fx";
+  }
+  if (fund.kind === "israeli-fund" && fund.principalCurrency !== undefined) {
+    book.cite("TXS-14");
+    return "principal";
   }
   if (fund.kind !== "tase-foreign-fund") return "cpi";
   book.cite("TXF-04");
@@ -240,7 +255,7 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest">, book:
  * The open rule a securities run of this fund stops on (F-04), or null: what a page reads to list the fund with its reason before
  * running it, so nothing is ranked on a guessed index.
  */
-export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest">, ctx: RunContext): string | null {
+export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency">, ctx: RunContext): string | null {
   try {
     taxIndexOf(fund, ruleBook(ctx));
     return null;
@@ -256,7 +271,7 @@ export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest
  * (TXF-05, TXF-30) but open for one organised as an arrangement (TXF open question 19). No record says which form a fund has, so a
  * distributing one stops on that question (`runSecuritiesBeforeTax` throws "TXF-OQ19").
  */
-export function beforeTaxPathOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "distribution">, ctx: RunContext): string | null {
+export function beforeTaxPathOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency" | "distribution">, ctx: RunContext): string | null {
   if (fund.distribution) return null;
   return securitiesBlockedBy(fund, ctx);
 }
@@ -429,9 +444,16 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   const I = cpiPath(market.inflation, T);
   const X = fxPath(market.fxChange ?? 0, T);
   const C = contributions(goal, I);
-  const fxIndexed = taxIndex === "fx";
+  const fxIndexed = taxIndex === "fx" || taxIndex === "principal";
+  // F-04, TXS-14: a foreign-investment fund's index is its principal currency's path, a reading of TXS OQ26 the run says beside its figures
+  let principal: number[] | null = null;
+  if (taxIndex === "principal") {
+    if (market.principalFxChange === undefined) throw new Error(`F-04: fund with principal currency ${fund.principalCurrency} run without market.principalFxChange`);
+    principal = fxPath(market.principalFxChange, T);
+    tally.flag("TXS-OQ26");
+  }
   // F-118: no tax index; a lot's index is read only by the exit tax, which that run does not compute
-  const J = taxIndex === null ? null : fxIndexed ? X : I;
+  const J = taxIndex === null ? null : principal ?? (fxIndexed ? X : I);
 
   const annual = market.returnIn === "instrument" ? (1 + market.grossReturn) * (1 + (market.fxChange ?? 0)) - 1 : market.grossReturn;
   const g = annualToMonthly(annual);
@@ -854,14 +876,15 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   // Each lot indexed by J_T / J_lot; when the index (CPI or exchange rate) fell, its inflationary amount is zero and
   // the part of a nominal loss equal to the fall is not allowable (TXS-02; method F-09). With the exchange
   // rate as the index, the rule that makes it the index is cited beside it: TXF-03 for a foreign-currency security held
-  // directly, TXF-04 for a TASE foreign fund (TXF-03 says its own test does not answer for such a fund; TXF-04 is open). The exit
+  // directly, TXS-14 for an Israeli foreign-investment fund's principal currency, TXF-04 for a TASE foreign fund (TXF-03 says its own test
+  // does not answer for such a fund; TXF-04 is open). The exit
   // year's fees are deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
   const adjusted = indexedCost(lotsLeft, J![T]!, nav * (1 - spread));
   const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;
   const nominalGain = gross - cost;
   book.cite("TXS-06");
   book.cite("TXS-02");
-  if (adjusted.fell && fxIndexed) book.cite(fund.kind === "foreign-fund" ? "TXF-03" : "TXF-04");
+  if (adjusted.fell && fxIndexed) book.cite(fund.kind === "foreign-fund" ? "TXF-03" : fund.kind === "israeli-fund" ? "TXS-14" : "TXF-04");
 
   let outcome: Outcome = { code: "eligible" };
   let lossOffset = 0;

@@ -1,5 +1,5 @@
-// The fund the engine runs for a fund record (`fundOf`): its fees, tracking difference, spread, promotions, distribution, domicile and
-// unit price, read from `data/funds/`, with the record's distribution (A-10) and the exposure's F-107 inputs. The provider workbench and
+// The fund the engine runs for a fund record (`fundOf`): its fees, tracking difference, spread, promotions, distribution, domicile,
+// principal currency and unit price, read from `data/funds/`, with the record's distribution (A-10) and the exposure's F-107 inputs. The provider workbench and
 // the site build each fund they run through it. No I/O: the records arrive as data.
 import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/schema";
 import { comparedYears, trackingBeyondFees, variableForward, type GapList } from "../formulas/fund-gap.ts";
@@ -104,6 +104,9 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
     fund.sharePriceCurrency = unitCode;
   }
   if (kind === "tase-foreign-fund" && rec.tax_status.tase_foreign_fund_90pct_test?.value === true) fund.ninetyPercentTest = true;
+  // TXS-14: the principal currency the fund's own report names, where it names the fund a foreign-investment fund (F-04)
+  const principal = rec.tax_status.foreign_investment_fund?.value;
+  if (kind === "israeli-fund" && typeof principal === "string") fund.principalCurrency = principal;
   // TXF-11: the fund's own annex reports a ruling that taxes it at sale and on distributions only.
   if (rec.tax_ruling && rec.distribution_policy === "accumulating") fund.saleOnlyRuling = true;
   return { fund, notCollected, hasManagement: management !== undefined };

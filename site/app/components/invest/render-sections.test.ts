@@ -437,16 +437,16 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
 describe("the receipt's fund line names the variable fee the site prices beside the listed rate (independent check of pass 7: no test held it)", () => {
   it("1147362 on the MSCI ACWI: 0.3% listed, the mean charged over 2024 and 2025 priced; a fund charged its listed rate every year shows one figure", () => {
     const view = buildInvest({ bundle, index: indexById(bundle, "index-msci-acwi")!, plan });
-    const head = pickOfHeadline(view)!;
     const rec = bundle.funds.find((f) => f.id === "1147362")!;
     const priced = pricedVariable(rec, gapListFor(bundle, rec), t)!;
     // recomputed from the record: 0.249 (2025) and 0.201 (2024), the years from 1.1.2024, when the rate changed
     expect(priced.years).toEqual([2025, 2024]);
     expect(priced.value.value).toBeCloseTo((0.249 + 0.201) / 2, 9);
     const card = (fund: string) => {
-      // the fund's own lines: the ticket's fund part (on paper, behind a tap on the fund's name)
-      const out = shown(html(createElement(PairReceipt, { view, bundle, plan, pick: { house: head.house, fund }, chosen: true, layout: "ticket" })).replace(/<!-- -->/g, ""));
-      return out.slice(out.indexOf(invest.receipt.fundCharges), out.indexOf(invest.receipt.fundCharges) + 300);
+      // each fund at its own best house: the page's headline may be a fund abroad, at a house that sells no Israeli fund
+      const house = allFunds(view).find((f) => f.rec.id === fund)?.best?.providerId ?? "";
+      const out = shown(html(createElement(PairReceipt, { view, bundle, plan, pick: { house, fund }, chosen: true })).replace(/<!-- -->/g, ""));
+      return out.slice(out.indexOf(invest.pair.who.fund), out.indexOf(invest.pair.who.fund) + 300);
     };
     expect(card("1147362")).toContain(invest.kinds.variableChargedWord([2025, 2024]));
     expect(card("1147362")).toContain("0.225%");

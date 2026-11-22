@@ -4,7 +4,7 @@
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { buildInvest, indexById, knownIndices, pairCostsKept } from "../../lib/invest";
-import { receiptAmounts, receiptChain } from "../../lib/receipt";
+import { receiptAmounts, receiptNominal } from "../../lib/receipt";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { allFunds, bestFor, pickOfHeadline } from "./pair";
@@ -54,7 +54,7 @@ describe("the fees panel's and the receipt's written amounts add up, on every in
       const pc = pairCostsKept({ bundle, index: view.index, plan: p, fundId: pick.fund, providerId: pick.house });
       if (!pc) throw new Error(`${index.id}: the page's own pair is priced`);
       expect(account, `${index.id}: the panel's account items against the receipt's amounts in today's money`).toBe(receiptAmounts(pc).account);
-      const inHorizon = receiptChain(pc).nominal.account;
+      const inHorizon = receiptNominal(pc).account;
       // the wide screen's ticket: the account's part, its label then the amount taken
       const ticket = shown(html(createElement(PairReceipt, { view, bundle, plan: p, pick, chosen: false, layout: "ticket" }))).replace(/[\u2066-\u2069\u200e\u200f]/g, "").replace(/\u00a0/g, " ");
       const tAt = ticket.indexOf(invest.receipt.accountCharges);

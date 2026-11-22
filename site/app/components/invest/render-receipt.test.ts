@@ -1,12 +1,12 @@
 // The receipt and the chosen pair's card in the side rail, rendered on the collected data (part of render.test.ts, which says why it is split).
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { flags, groupPrices, help, invest } from "../../copy";
+import { flags, groupPrices, invest } from "../../copy";
 import { pickableGroups, withGroupPick } from "../../lib/group-pick";
 import { PairLists } from "./lists";
 import { asideLines, buildInvest, indexById, kindOf, pairCostsKept } from "../../lib/invest";
-import { receiptAmounts, receiptChain } from "../../lib/receipt";
-import { ANCHOR, PairReceipt, PairStub, addedOf, inflationOf, leftOf, nominalOf, taxOf } from "./receipt";
+import { receiptAmounts, receiptNominal } from "../../lib/receipt";
+import { ANCHOR, PairReceipt, PairStub, addedOf, gainOf, inflationOf, lostOf, nominalOf, taxOf } from "./receipt";
 import { ChosenPair } from "./chosen";
 import { allFunds, pickOfHeadline, pairVerdict, priced } from "./pair";
 import { stretchesOf } from "../../lib/stretch";
@@ -19,7 +19,7 @@ const w = invest;
 function lines(out: string): Record<string, number> {
   const got: Record<string, number> = {};
   const text = shown(out).replace(/[⁦-⁩‎‏]/g, "").replace(/ /g, " ");
-  for (const label of [w.pair.paidIn, w.receipt.added, w.receipt.inflation, w.pair.taxLine, w.receipt.left]) {
+  for (const label of [w.pair.paidIn, w.receipt.added, w.receipt.nominalLeft(plan.years), w.receipt.inflation, w.receipt.left, w.receipt.gain, w.receipt.lost]) {
     const at = text.indexOf(label);
     if (at >= 0) got[label] = nisIn(text.slice(at + label.length, at + label.length + 40));
   }
@@ -29,30 +29,28 @@ function lines(out: string): Record<string, number> {
 describe("the receipt", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const pick = pickOfHeadline(view)!;
-  it("its lines add up as a reader adds them, top to bottom to one total: the horizon's shekels down to the value before tax, the inflation, the tax in today's money", () => {
+  it("its lines add up as a reader adds them, and the account's lines to the account's figure", () => {
     const out = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }));
     const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house })!;
-    const ch = receiptChain(pc);
-    const r = ch.nominal;
+    const real = receiptAmounts(pc);
+    const r = receiptNominal(pc);
     const l = lines(out);
+    // in the shekels of the horizon down to what is left there; then the inflation; then what is left in today's money
     expect(l[w.pair.paidIn]).toBe(r.paidIn);
     expect(l[w.receipt.added]).toBe(r.added);
-    expect(l[w.receipt.inflation]).toBe(-ch.inflation);
-    expect(l[w.pair.taxLine]).toBe(-ch.tax);
-    expect(l[w.receipt.left]).toBe(receiptAmounts(pc).left);
-    expect(r.paidIn + r.added - r.account - r.fund - r.waiting - ch.inflation - ch.tax).toBe(ch.left);
-    // the order: the account and the fund before the inflation, the tax after it, the total last
-    const text = shown(out);
-    const order = [w.pair.paidIn, w.receipt.added, w.pair.who.account, w.pair.who.fund, w.receipt.inflation, w.pair.taxLine, w.receipt.left].map((x) => text.indexOf(x));
-    expect(order.every((i) => i >= 0)).toBe(true);
-    expect([...order].sort((a, b) => a - b)).toEqual(order);
-    // nothing under the total: it is the receipt's last figure
-    const after = text.slice(text.lastIndexOf(w.receipt.left) + w.receipt.left.length).replace(/[\u2066-\u2069]/g, "");
-    expect([...after.matchAll(/[\d,]+ ₪/g)]).toHaveLength(1);
-    expect(out).not.toContain('data-chart="share-bar"');
-    // on paper the account's own lines are behind a tap on its name; the ticket shows them with their rate as the price list prints it
-    expect(text).not.toContain(w.rate.per.trade);
-    expect(shown(html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false, layout: "ticket" })))).toContain(w.rate.per.trade);
+    expect(l[w.receipt.nominalLeft(plan.years)]).toBe(r.left);
+    expect(l[w.receipt.inflation]).toBe(-r.inflation);
+    expect(l[w.receipt.left]).toBe(real.left);
+    expect(r.paidIn + r.added - r.tax - r.account - r.fund - r.waiting).toBe(r.left);
+    expect(r.left - r.inflation).toBe(real.left);
+    // the gain is in today's money, as what is left; what went on the way adds the lines above it
+    expect(l[w.receipt.gain]).toBe(real.gain);
+    expect(l[w.receipt.lost]).toBe(r.lost);
+    expect(r.tax + r.account + r.fund).toBe(r.lost);
+    // the closing bar is a chart the chart check finds, its parts from the start
+    expect(out).toContain('data-chart="share-bar"');
+    // the account's lines carry their rate as the price list prints it
+    expect(shown(out)).toContain(w.rate.per.trade);
   });
   it("carries no verdict of its own: the headline above the lists says it, for the page's pair and for a pick that is not the cheapest", () => {
     const own = shown(html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false })));
@@ -64,8 +62,8 @@ describe("the receipt", () => {
     expect(shown(out)).not.toContain(w.pair.moreIfCheapest);
     expect(out).not.toContain("border-primary");
   });
-  it("on the ticket the fund's fees are rows under its line, each by its whole name, as the account's are", () => {
-    const raw = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false, layout: "ticket" }));
+  it("the fund's fees are rows under its line, each by its whole name, as the account's are", () => {
+    const raw = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }));
     const out = shown(raw);
     const names = w.receipt.fundFees;
     const at = [names.fixed, names.variable, names.trustee].map((n) => out.indexOf(n));
@@ -73,16 +71,22 @@ describe("the receipt", () => {
     expect([...at].sort((a, b) => a - b)).toEqual(at);
     expect(raw).toContain("border-chart-by-fund");
   });
-  it("the total's \"?\" says it is in today's money, and is a caution \"?\" with the dollar's clause only where the figure rests on the dollar", () => {
-    const cautionMark = /class="[^"]*help-mark[^"]*text-caution/;
-    expect(html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }))).toMatch(cautionMark);
+  it("the closing bar's key names every part with its share, and the shares add up to 100", () => {
+    const raw = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }));
+    const key = raw.slice(raw.indexOf('data-chart="share-bar"'));
+    const shares = [...key.matchAll(/(\d+)%<\/bdi>/g)].map((m) => Number(m[1]));
+    expect(shares).toHaveLength(3);
+    expect(shares.reduce((a, n) => a + n, 0)).toBe(100);
+    for (const n of [w.receipt.parts.account, w.receipt.parts.fund]) expect(key).toContain(n);
+  });
+  it("an Israeli index's caption says nothing of the dollar", () => {
     const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan });
     const p = pickOfHeadline(ta)!;
     const out = html(createElement(PairReceipt, { view: ta, bundle, plan, pick: p, chosen: false }));
-    expect(out).not.toMatch(cautionMark);
-    expect(out).toContain(`aria-label="${help.markLabel.replace("{about}", w.receipt.left)}"`);
-    expect(w.receipt.leftIn(null)).not.toContain(w.pair.steadyDollar);
-    expect(w.receipt.leftIn(w.pair.steadyDollar)).toContain(w.pair.steadyDollar);
+    // the caption's longest cases are laid out unseen; the shown one has no clause on a currency
+    const said = shown(out).replace(/[\u2066-\u2069]/g, "");
+    expect(said).toContain(w.receipt.caption(null));
+    expect(said).not.toContain(w.pair.steadyDollar);
   });
   it("the run's index at the horizon and its deposits as paid are F-03's and F-05's, which take the chain to the horizon's shekels", () => {
     const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });
@@ -98,44 +102,24 @@ describe("the receipt", () => {
     expect(tax.value as number).toBeCloseTo((pc.tax.value as number) * 1.02 ** plan.years, 6);
     expect(Object.keys(tax.computed_from?.inputs ?? {})).toEqual([w.receipt.nominal.today, w.pair.indexInput]);
   });
-  it("the total's sheet adds the deposits in today's money (F-106) and the gain, and the tax is in today's money with its sheet saying it holds the surtax", () => {
+  it("the gain lists the deposits in today's money (F-106), and the tax's sheet says it holds the surtax where it applies", () => {
     const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });
     if (!pc) throw new Error("the page's own pair is priced");
-    const left = leftOf(pc, t);
-    const inputs = left.computed_from?.inputs as Record<string, SiteValue>;
-    expect(Object.keys(inputs)).toEqual([w.receipt.paidInToday, w.receipt.gain]);
-    expect(inputs[w.receipt.paidInToday]?.computed_from?.formula).toBe("F-106");
+    const paid = (gainOf(pc, t).computed_from?.inputs as Record<string, SiteValue> | undefined)?.[w.receipt.paidInToday];
+    expect(paid?.computed_from?.formula).toBe("F-106");
     // 6,000 now and 400 a month for 20 years, in today's money: the deposits as entered (F-106)
-    expect(inputs[w.receipt.paidInToday]?.value).toBe(6_000 + 400 * 12 * 20);
-    expect(left.value).toBe(Math.round(pc.left.value as number));
-    expect(taxOf(pc).about).toContain("מס נוסף");
-    expect(taxOf(pc).value).toBe(pc.tax.value);
-    // the tax line's sheet says it is in today's money, on a fund that pays out too
-    for (const distributes of [false, true]) {
-      const about = taxOf({ ...pc, distributes }).about;
-      expect(about, `distributes: ${distributes}`).toContain("בכסף של היום");
-      expect(about).toBe(distributes ? w.receipt.taxSheet.payouts : w.receipt.taxSheet.sale);
-    }
+    expect(paid?.value).toBe(6_000 + 400 * 12 * 20);
+    expect(taxOf(pc, t).about).toContain("מס נוסף");
+    expect(taxOf(pc, t).computed_from?.formula).toBe("F-129");
   });
-  it("the inflation's sheet is the line's own, what the account and the fund leave in both moneys as written, on every plan; the future-shekel one is the sum of the lines above it (F-129)", () => {
+  it("what went on the way opens a sheet whose value is the line's own, the three lines it adds as written, on every plan", () => {
     for (const years of [1, 3, 7, 10, 20, 33]) for (const monthly of [0, 250, 1_234]) {
       const p = planOf(t, { years, monthly, returnPct: 7 });
       const v = buildInvest({ bundle, index: view.index, plan: p });
       const pc = pairCostsKept({ bundle, index: v.index, plan: p, fundId: pick.fund, providerId: pick.house });
       if (!pc) continue;
-      const ch = receiptChain(pc);
-      const infl = inflationOf(pc, ch, w.pair.taxLine, t);
-      const inputs = infl.computed_from?.inputs as Record<string, SiteValue>;
-      expect(infl.value, `${years} years, ${monthly} a month`).toBe(ch.inflation);
-      const nominal = inputs[w.receipt.beforeTax.nominal];
-      expect(nominal?.value).toBe(ch.beforeTax);
-      expect(nominal?.computed_from?.formula).toBe("F-129");
-      expect(nominal?.lead).toBe(w.receipt.beforeTax.lead);
-      // its sheet lists the lines above it as written: the deposits and the index's addition less the costs
-      const [paid = 0, added = 0, ...costs] = Object.values(nominal?.computed_from?.inputs ?? {}).map((x) => (x as SiteValue).value as number);
-      expect(paid + added - costs.reduce((a, x) => a + x, 0)).toBe(ch.beforeTax);
-      expect(inputs[w.receipt.beforeTax.today]?.value).toBe(ch.beforeTaxToday);
-      expect(leftOf(pc, t).value).toBe(ch.left);
+      const r = receiptNominal(pc);
+      expect(lostOf(pc, t, w.pair.taxLine).value, `${years} years, ${monthly} a month`).toBe(r.lost);
     }
   });
   it("its words about prices hold when they fall: a negative inflation gives back on its line, and no sheet says prices rise", () => {
@@ -144,7 +128,7 @@ describe("the receipt", () => {
     const v = buildInvest({ bundle, index: view.index, plan: p });
     const pc = pairCostsKept({ bundle, index: v.index, plan: p, fundId: pick.fund, providerId: pick.house });
     if (!pc) throw new Error("the page's own pair is priced");
-    const r = receiptChain(pc);
+    const r = receiptNominal(pc);
     expect(r.inflation).toBeLessThan(0);
     const text = shown(html(createElement(PairReceipt, { view: v, bundle, plan: p, pick, chosen: false }))).replace(/[\u2066-\u2069]/g, "");
     expect(text).toContain(`${w.receipt.inflation}+${Math.abs(r.inflation).toLocaleString("en-US")}`);
@@ -157,24 +141,21 @@ describe("the receipt", () => {
     expect(added.lead).toBe(w.receipt.addedLead);
     expect(added.value).toBe(Math.round(pc.base * (pc.index.value as number)) - Math.round(pc.paidInNominal.value as number));
   });
-  it("its inflation line is the value before tax in the horizon's shekels less the same in today's money, with no rate under it, and follows an entered one", () => {
+  it("its inflation line is the end in the horizon's shekels less the end in today's money, the plan's inflation under it, and follows an entered one", () => {
     const at = (pct: number) => {
       const p = { ...plan, inflation: pct / 100, values: { ...plan.values, inflation: entered(pct, "pct_per_year", t) } };
       const v = buildInvest({ bundle, index: view.index, plan: p });
       const pc = pairCostsKept({ bundle, index: v.index, plan: p, fundId: pick.fund, providerId: pick.house });
       if (!pc) throw new Error("the page's own pair is priced");
       const text = shown(html(createElement(PairReceipt, { view: v, bundle, plan: p, pick, chosen: false }))).replace(/[\u2066-\u2069]/g, "");
-      const ch = receiptChain(pc);
-      return { text, pc, ch, inflation: inflationOf(pc, ch, w.pair.taxLine, t) };
+      return { text, pc, inflation: inflationOf(pc, p.years, t) };
     };
     const two = at(2), three = at(3.5);
-    // the slider shows the rate; the receipt does not repeat it
-    expect(two.text).not.toContain("2% בשנה");
-    expect(three.text).not.toContain("3.5% בשנה");
+    const after = (x: string) => x.slice(x.indexOf(w.receipt.inflation) + w.receipt.inflation.length);
+    expect(after(two.text)).toMatch(/^[^\n]*?2% בשנה/);
+    expect(after(three.text)).toMatch(/^[^\n]*?3\.5% בשנה/);
     expect(two.inflation.computed_from?.formula).toBe("F-130");
-    expect(two.inflation.value).toBe(two.ch.beforeTax - two.ch.beforeTaxToday);
-    // on the collected data, within a few shekels of what the account and the fund leave, in today's money, times (I_T − 1)
-    expect(Math.abs((two.inflation.value as number) - ((two.pc.left.value as number) + (two.pc.tax.value as number)) * ((two.pc.index.value as number) - 1))).toBeLessThan(3);
+    expect(two.inflation.value).toBe(Math.round((two.pc.left.value as number) * (two.pc.index.value as number)) - Math.round(two.pc.left.value as number));
     // a higher inflation takes more on the way to today's money
     expect(three.inflation.value as number).toBeGreaterThan(two.inflation.value as number);
   });
@@ -227,8 +208,7 @@ describe("in whole units, the fees charged and the waiting cash apart (F-91, F-1
       expect(pc?.units, "the pair is no longer bought in whole units: pick another").toBeTruthy();
       // the receipt writes its costs in the shekels of the horizon; the card, in today's money
       if (!pc) return;
-      const ch = receiptChain(pc);
-      const r = ch.nominal;
+      const r = receiptNominal(pc);
       const real = receiptAmounts(pc);
       const bare = (x: string) => x.replace(/[⁦-⁩‎‏]/g, "").replace(/ /g, " ");
       for (const layout of ["paper", "ticket"] as const) {
@@ -241,11 +221,8 @@ describe("in whole units, the fees charged and the waiting cash apart (F-91, F-1
         expect(at).toBeGreaterThan(0);
         const sign = returnPct < 0 ? "+" : "−";
         expect(out.slice(at, at + 60)).toContain(`${sign}${Math.abs(r.waiting).toLocaleString("en-US")} ₪`);
-        // why it waited: on the account's own lines, the ticket's side part, and on paper behind a tap on the account's name
-        if (layout === "ticket") expect(out).toContain(returnPct < 0 ? w.pair.waitingWhy.fell : w.pair.waitingWhy.rose);
-        // the waiting cash is among the lines that add up to the total
-        expect(r.paidIn + r.added - r.account - r.fund - r.waiting - ch.inflation - ch.tax).toBe(ch.left);
-        expect(lines(out)[w.receipt.left]).toBe(ch.left);
+        expect(out).toContain(returnPct < 0 ? w.pair.waitingWhy.fell : w.pair.waitingWhy.rose);
+        expect(lines(out)[w.receipt.lost]).toBe(r.tax + r.account + r.fund);
       }
       const card = bare(shown(html(createElement(ChosenPair, { view, bundle, plan: p, pick, chosen: true }))));
       expect(card).toContain(`${w.chosen.together.before} ${(real.account + real.fund).toLocaleString("en-US")} ₪ ${w.chosen.together.after}`);
@@ -391,7 +368,7 @@ describe("the lists beside the receipt", () => {
       for (const n of none) expect(pos(n), `${n} after ${p.id}`).toBeGreaterThan(pos(p.id));
     }
   });
-  it("on a wide screen the receipt is a ticket: the account with its own lines, the middle with what is left large, the fund with its own lines", () => {
+  it("on a wide screen the receipt is a ticket: the account, the middle with what is left large, the fund, and the footer", () => {
     const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house })!;
     const out = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false, layout: "ticket" }));
     expect(out).toContain("text-total");

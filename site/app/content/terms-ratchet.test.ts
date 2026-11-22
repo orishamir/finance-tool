@@ -69,8 +69,6 @@ const BY_EXPRESSION: Record<string, readonly string[]> = {
   "{terms.length === 1 ? terms[0] : terms}": [HELP_TERMS.fee, HELP_TERMS.depositFee, HELP_TERMS.savingsCard, HELP_TERMS.depositCard, HELP_TERMS.direct],
   "{HELP_TERMS.exposure}": [HELP_TERMS.exposure],
   "{HELP_TERMS.assets}": [HELP_TERMS.assets],
-  // a company page's phone "?" over its tracks (components/tracks/company-browser.tsx): the direct expenses beside the fee's card
-  "{HELP_TERMS.direct}": [HELP_TERMS.direct],
   "{HELP_TERMS.rate}": [DEPOSIT_TERMS.rate],
   // a bank's deposits table's rate head (components/company/bank-views.tsx, RateHead)
   "{DEPOSIT_TERMS.rate}": [DEPOSIT_TERMS.rate],

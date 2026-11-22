@@ -9,7 +9,7 @@ import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
 import { IdRef, RuleTitleList, StrengthLabel } from "../provenance";
 import { Breadcrumb } from "../shell";
-import { Card, cx, Disclosure, gershayim, GoLink, HelpMark, KeyValueList, PageHead, Section, Stat, StatRow, TableCols, TextLink } from "../kit";
+import { Card, cx, Disclosure, gershayim, GoLink, KeyValueList, PageHead, Section, Stat, StatRow, TableCols, TextLink } from "../kit";
 
 export interface SectionDef {
   id: string;
@@ -314,11 +314,8 @@ export function checklistMark(mark: string | undefined): Pick<ChecklistRowView, 
   return { mark: "uncovered" };
 }
 
-/** A dimension's row: its mark, its name and its state in sight; the question it asks and, while it is blocked, that the site does not compute
- *  it are its "?" beside the name; the rules behind it fold under it. */
 function ChecklistRow({ r }: { r: ChecklistRowView }) {
   const endsSentence = /[.!?:]$/.test(r.explanation.trim());
-  const help = `${gershayim(r.explanation)}${r.mark === "blocked" && !endsSentence ? "." : ""}${r.mark === "blocked" ? ` ${copy.checklist.blockedLast}` : ""}`;
   return (
     <li className="flex gap-3 py-3 border-b border-border">
       <span className="shrink-0 mt-0.5" aria-hidden="true">
@@ -326,15 +323,19 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
       </span>
       <div className="flex flex-col gap-0.5 min-w-0 flex-1">
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span className="font-medium">
-            {r.name} <HelpMark about={r.name} text={help} />
-          </span>
+          <span className="font-medium">{r.name}</span>
           <span className={cx("text-xs", r.mark === "covered" ? "text-positive-foreground" : r.mark === "blocked" ? "text-blocked-foreground" : "text-muted-foreground")}>
             {r.mark === "covered" ? copy.checklist.considered : r.mark === "uncovered" ? copy.checklist.uncovered : <>{copy.checklist.blockedMark} {r.code ? <IdRef id={r.code} /> : null}</>}
           </span>
           {r.weak && (r.weak === "institution" || r.weak === "secondary") && <StrengthLabel strength={r.weak} />}
           {r.applies}
         </span>
+        <span className="text-sm text-muted-foreground">
+          {gershayim(r.explanation)}
+          {r.mark === "blocked" && !endsSentence && "."}
+        </span>
+        {/* the status sentence is its own line, not glued to the question */}
+        {r.mark === "blocked" && <span className="block text-sm text-blocked-foreground">{copy.checklist.blockedLast}</span>}
         {r.rules.length > 0 && (
           <Disclosure look="link" label={copy.checklist.expand} summaryClassName="text-xs [&>svg]:size-4">
             {/* a list whose rows are the rules themselves: each by its title (D101) */}
@@ -354,6 +355,7 @@ export function DimensionChecklist({ rows }: { rows: ChecklistRowView[] }) {
   const blocked = rows.filter((r) => r.mark === "blocked");
   return (
     <div className="flex flex-col gap-3">
+      <p className="text-sm text-muted-foreground max-w-measure">{copy.checklist.intro}</p>
       {blocked.length > 0 && (
         <>
           <p className="text-sm text-blocked-foreground flex items-center gap-2">

@@ -2,15 +2,15 @@
 import { useLoaderData } from "react-router";
 import { companyPath, dealPagePath, guidePath, trackBrowserPath, trackPath } from "../lib/site-paths";
 import type { Route } from "./+types/track";
-import { catalogue, companies as companiesCopy, company as companyCopy, feePageLink, guide as guideCopy, pagePreview, trackBrowser, track as copy } from "../copy";
+import { catalogue, companies as companiesCopy, company as companyCopy, feePageLink, pagePreview, trackBrowser, track as copy } from "../copy";
 import { pageMeta } from "../lib/page-meta";
 import { feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, checklistMark, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn } from "../components/icons";
 import { IdRef, Num, NumAfter, OwnCompanyPage } from "../components/provenance";
-import { CHILD_SAVINGS, childFeeHelp } from "../components/tracks/list";
+import { CHILD_SAVINGS, ChildFeeNote } from "../components/tracks/list";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, FeeNum, GemelNetLink, HeldMark, HelpMark, KeyValueList, MixedName, PageHead, Section, Sentence, ShareNum, Tag, TextLink, gershayim } from "../components/kit";
+import { Callout, Card, FeeNum, GemelNetLink, KeyValueList, MixedName, PageHead, Section, Sentence, ShareNum, Tag, TextLink, gershayim } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
 import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
 import { trackLabels } from "../lib/track-labels";
@@ -127,8 +127,6 @@ export default function TrackPage() {
   // pension fees belong to the fund, not to the track (CAT-39)
   // a child-savings fee is what members past National Insurance's age paid, spread over the whole track (CS OQ9)
   const child = data.wrapper?.id === CHILD_SAVINGS;
-  // what that figure is not, behind a caution "?" at the savings fee label's end
-  const childHelp = child ? childFeeHelp(data.childAge) : null;
   const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : child ? `, ${copy.feeOver21}` : "");
   // a page about one company's track: its own figures carry no "לפי החברה"
   return (
@@ -202,7 +200,7 @@ export default function TrackPage() {
               },
               ...(track.specialization ? [{ id: "classification", label: copy.labels.classification, value: <bdi>{gershayim(track.specialization)}</bdi> }] : []),
               ...(track.subSpecialization ? [{ id: "holds", label: copy.labels.holds, value: <bdi>{gershayim(track.subSpecialization)}</bdi> }] : []),
-              { id: "balanceFee", label: childHelp ? <HeldMark words={feeText(copy.feeBalanceLabel, data.values.balanceFee)} mark={<HelpMark about={trackBrowser.childFee.about} text={childHelp.text} rules={childHelp.rules} tone="caution" />} /> : feeText(copy.feeBalanceLabel, data.values.balanceFee), value: <FeeNum value={data.values.balanceFee} /> },
+              { id: "balanceFee", label: feeText(copy.feeBalanceLabel, data.values.balanceFee), value: <FeeNum value={data.values.balanceFee} /> },
               { id: "depositFee", label: feeText(copy.feeDepositLabel, data.values.depositFee), value: <FeeNum value={data.values.depositFee} /> },
               ...(data.values.exposure?.stock ? [{ id: "stock", label: companyCopy.stock.rowStock.replace("{period}", fmt.period(track.reportPeriod)), value: <ShareNum value={data.values.exposure.stock} /> }] : []),
               ...(data.values.exposure?.currency ? [{ id: "currency", label: companyCopy.stock.rowCurrency.replace("{period}", fmt.period(track.reportPeriod)), value: <ShareNum value={data.values.exposure.currency} /> }] : []),
@@ -210,6 +208,7 @@ export default function TrackPage() {
               { id: "period", label: copy.labels.period, value: <Num value={data.values.period} /> },
             ]}
           />
+          {child && <ChildFeeNote age={data.childAge} />}
           {data.feePage && <div className="pt-1 border-t border-border">
             <TextLink look="line" to={dealPagePath({ track: track.fundId })}>
               {feePageLink}
@@ -238,14 +237,7 @@ export default function TrackPage() {
           </Section>
         )}
         {data.checklist.length > 0 && (
-          /* what the list is (every product checked against the same questions, the open ones first) is the heading's "?" */
-          <Section
-            title={
-              <>
-                {copy.checklist} <HelpMark about={copy.checklist} text={guideCopy.checklist.intro} />
-              </>
-            }
-          >
+          <Section title={copy.checklist}>
             <DimensionChecklist rows={data.checklist} />
           </Section>
         )}

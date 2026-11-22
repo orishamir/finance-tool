@@ -27,7 +27,27 @@
   "distribution_policy": "accumulating",
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null
+    "tase_foreign_fund_90pct_test": null,
+    "foreign_investment_fund": {
+      "value": "USD",
+      "unit": "text",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1722001-1723000/P1722988-00.pdf#page=1",
+        "title": "דוח שנתי 'קסם MSCI World (4D) ETF' (מספר בורסה 1145804), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ, עמ' 1, 'מאפיינים עיקריים של הקרן': 'הקרן היא \"קרן נאמנות להשקעות חוץ\" כהגדרתה בתקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס\"ג-2003, ושער המטבע העיקרי שלה הוא דולר ארה\"ב'",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-11-22",
+      "effective_from": "2025-12-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXS-14"
+      ],
+      "state": "sourced",
+      "notes": "The report names the fund a foreign-investment fund under the 2003 regulations, with the US dollar as its principal currency (TXS-14); a run takes the dollar as its tax index on the site's reading of TXS OQ26 (F-04)."
+    }
   },
   "fees": {
     "fixed_management": {

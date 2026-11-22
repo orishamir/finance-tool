@@ -9,7 +9,7 @@ import { company as companyCopy, track as trackCopy, trackBrowser as t } from ".
 import { fmt } from "../../lib/format";
 import { HELP_TERMS, assetsText, feeMarkTerms, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
-import { Num, useProvenanceData } from "../provenance";
+import { IdRef, Num, useProvenanceData } from "../provenance";
 import { ExposureCell, FeeNum, gershayim, GoLink, HelpMark, MixedName, ProductFigures, ProductPhoneFold, ProductPhoneRow, ProductTable, RowArrow, ShareNum, SortHead, SortNote, Tag, TrackFeeLines, TextLink, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
 
 /** A product's legal fee caps on a company's page (its record's `fee_caps`), and the age from which they bind its member where they bind
@@ -33,10 +33,17 @@ export function CapLead({ from }: { from?: SiteValue | null }) {
 /** The product whose fee figure is what members over 21 paid, averaged over the whole track (CS OQ9). */
 export const CHILD_SAVINGS = "child-savings-provident";
 
-/** What a child-savings fee's caution "?" opens: the figure is what members past `age` (CS-18's `nii_pays_until_age`, until which
- *  National Insurance pays the fee) paid, averaged over all the track's assets, not the fund's price; the rule base reads it so and keeps
- *  the question open (CS OQ9, its chip in the sheet). CS-18 is listed under it. Nothing without the age. */
-export const childFeeHelp = (age: SiteValue | null | undefined): { text: string; rules: readonly string[] } | null => (age ? { text: t.childFee.help(String(age.value)), rules: ["CS-18"] } : null);
+/** Over a child-savings list or track: the fee figure is what members past `age` (CS-18's `nii_pays_until_age`, until which National
+ *  Insurance pays the fee) paid, averaged over all the track's assets, not the fund's price; the rule base reads it so and keeps the
+ *  question open (CS OQ9). Nothing without the age. */
+export function ChildFeeNote({ age }: { age: SiteValue | null | undefined }) {
+  if (!age) return null;
+  return (
+    <p className="text-sm text-muted-foreground max-w-measure">
+      {t.childFee.before} <Num value={age} display={String(age.value)} /> {t.childFee.after} <IdRef id="CS OQ9" end="." />
+    </p>
+  );
+}
 
 const mutedWord = "text-sm text-muted-foreground";
 /** An empty figure's sheet says in a sentence what is missing, where the data's note is only the bare word; a note with a reason stays. */
@@ -70,11 +77,10 @@ function AssetsFigure({ value, size = "cell" }: { value: SiteValue | null; size?
 
 /** "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪": the company's size in the product, each part unbroken. `stacked`: one part under the other, in a
  *  table cell too narrow to hold both on every row (so no row has one line where its neighbour has two). */
-export function CompanySize({ count, assets, stacked, mark }: { count: string; assets: SiteValue | null; stacked?: boolean; /** A "?" after the line, held to its last part so it never wraps alone. */ mark?: ReactNode }) {
+export function CompanySize({ count, assets, stacked }: { count: string; assets: SiteValue | null; stacked?: boolean }) {
   const money = assets && (
     <span className="whitespace-nowrap">
       {t.group.assets} <AssetsFigure value={assets} size="inline" />
-      {mark && <> {mark}</>}
     </span>
   );
   if (stacked) {
@@ -87,10 +93,7 @@ export function CompanySize({ count, assets, stacked, mark }: { count: string; a
   }
   return (
     <>
-      <span className="whitespace-nowrap">
-        {count}
-        {!money && mark && <> {mark}</>}
-      </span>
+      <span className="whitespace-nowrap">{count}</span>
       {money && (
         <>
           {" · "}
@@ -182,8 +185,7 @@ function PhoneFigures({ x }: { x: TbTrack }) {
       <span className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
         {x.exposure ? <ExposureCell value={x.exposure} /> : <span className={mutedWord}>{t.assets.missing}</span>}
         <span className="flex flex-col gap-0.5 min-w-0">
-          {/* what the figure is in a few words, as the computer's head says it under its name: past, before fees and tax */}
-          {!x.selfManaged && <span className={mutedWord}>{`${t.yield.phone}, ${t.columns.beforeFees}`}</span>}
+          {!x.selfManaged && <span className={mutedWord}>{t.yield.phone}</span>}
           <Yields x={x} size="inline" />
         </span>
       </span>
@@ -263,7 +265,7 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
  *  row of the group. `fold`: the page holds which groups are open (the track browser's companies, folded but the first); without it every
  *  group starts open. `foldRows`: on a phone a row is one line that opens in place (a long list under the companies).
  *  On a company's page: `fixed`, its one product, with no heading; `defaults`, its tracks a new member joins; `foot`, lines under the key. */
-export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact, caps, childAge, fold, foldRows }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, a "?" only on the fee heads, no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit"; /** A company page's shorter table: the product's legal caps (its record's `fee_caps`), each the caption over the fee head it limits. */ caps?: ProductCaps | null; /** On a child-savings list: CS-18's age until which National Insurance pays the fee, for the fee head's caution "?" (CS OQ9). */ childAge?: SiteValue | null; fold?: { isOpen: (key: string) => boolean; toggle: (key: string) => void }; foldRows?: boolean }) {
+export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, foot, compact, caps, fold, foldRows }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; foot?: ReactNode; /** A company page's shorter table: one figure a cell, no rings, a "?" only on the fee heads, no row arrow, the name the link; a deposit fee column only where the tracks differ in it. */ compact?: "with-deposit" | "no-deposit"; /** A company page's shorter table: the product's legal caps (its record's `fee_caps`), each the caption over the fee head it limits. */ caps?: ProductCaps | null; fold?: { isOpen: (key: string) => boolean; toggle: (key: string) => void }; foldRows?: boolean }) {
   const state = (...ids: SortId[]) => (ids.includes(sort.id) ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
   const head = (id: SortId, label: string, alsoHolds?: string[], note?: string, raised?: boolean) =>
     sortable.has(id) ? (
@@ -279,17 +281,13 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   const provenance = useProvenanceData();
   const wrappers = (term: string) => provenance?.terms[term]?.wrapperIds;
   // a pension track's fees are its fund's, the same on every track of the fund (CAT-39): the note under the fee head says so
-  const average = (feeYear ? t.columns.average.replace("{year}", feeYear) : t.columns.averageNoYear) + (view.dataset === "pensia-net" ? `, ${trackCopy.feeWhole}` : "");
-  // a child-savings fee is not the fund's price (CS OQ9): no words under the head say it; the savings fee's "?" turns caution and says it
-  // first (who paid it, over the whole track, who pays until the age), with CS-18 under it
-  const childHelp = view.id === CHILD_SAVINGS ? childFeeHelp(childAge) : null;
+  const average = (feeYear ? t.columns.average.replace("{year}", feeYear) : t.columns.averageNoYear) + (view.dataset === "pensia-net" ? `, ${trackCopy.feeWhole}` : view.id === CHILD_SAVINGS ? `, ${trackCopy.feeOver21}` : "");
   const feeHead = (id: SortId, label: string, side: "savings" | "deposit") => {
     const terms = side === "savings" ? [...feeMarkTerms(side, view.id, wrappers), HELP_TERMS.direct] : feeMarkTerms(side, view.id, wrappers);
-    const child = side === "savings" ? childHelp : null;
     return (
       <span className="inline-flex items-start gap-1">
         {head(id, label, undefined, average, true)}
-        <HelpMark term={terms.length === 1 ? terms[0] : terms} about={side === "savings" ? t.help.fee : t.help.deposit} lead={side === "savings" ? [child?.text, `${companyCopy.fees.direct.stated} ${companyCopy.fees.direct.after}`].filter(Boolean).join(" ") : undefined} rules={child?.rules} tone={child ? "caution" : undefined} />
+        <HelpMark term={terms.length === 1 ? terms[0] : terms} about={side === "savings" ? t.help.fee : t.help.deposit} lead={side === "savings" ? `${companyCopy.fees.direct.stated} ${companyCopy.fees.direct.after}` : undefined} />
       </span>
     );
   };
@@ -300,10 +298,8 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   const pastHead = (label: string, note: string) => <SortNote label={label} note={note} mark={pastMark} />;
   const short = t.columns.short;
   // a cap over the fee head it limits, its figure opening its source (the regulations)
-  // the caption wraps inside its column: one with the age it binds from ("התקרה בתקנות אחרי גיל 21: 1.05%") is wider than the fee column,
-  // and kept on one line it ran over the date caption of the columns beside it
   const capHead = (cap: SiteValue) => (
-    <span className="block whitespace-normal">
+    <span className="whitespace-nowrap">
       <CapLead from={caps?.from} /> <Num value={cap} />
     </span>
   );
@@ -325,7 +321,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   };
   // A dense table (8 px between columns, 12 at its outer edges), each fixed column as wide as its longest real content over every company's
   // tracks, measured with that padding: the fund's number with its link mark (5.35), the fee head with its arrow and "?" in two lines in every
-  // sort state (10.3; its cap caption wraps under that where it names an age), the deposit fee's cap caption ("התקרה בתקנות: 4%", 7.9), the sorted share head ("מניות
+  // sort state (10.3; its cap caption fits under that), the deposit fee's cap caption ("התקרה בתקנות: 4%", 7.9), the sorted share head ("מניות
   // ▼", 3.85) and "מט״ח" over the figures (3.3), where the words a share takes without a figure ("אין נכסים", "לא דווח") take two lines, a
   // yield's figure ("33.05%", 4.9 each, the head over both with its "?" fitting over that), the money ("110.79 מיליארד ₪", 9.6, at the table's end). The
   // name keeps the least width where the longest name of the companies with the most tracks still takes two lines ("אשראי ואג״ח עם מניות (עד
@@ -363,7 +359,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
             {head("fee", t.columns.feeSavings, undefined, undefined, true)}
             <span className="inline-flex items-start gap-1">
               {head("dep", t.columns.feeDeposits, undefined, undefined, true)}
-              <HelpMark term={fullFeeTerms} about={t.help.fee} lead={childHelp?.text} rules={childHelp?.rules} tone={childHelp ? "caution" : undefined} />
+              <HelpMark term={fullFeeTerms} about={t.help.fee} />
             </span>
           </span>
         </span>

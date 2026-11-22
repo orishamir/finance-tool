@@ -9,7 +9,6 @@
 // (`.help-mark`).
 // `tone="caution"` draws the mark in the caution role: what it opens holds a catch about the figures under it (what a child-savings fee
 // figure is not), where the label stays as it is; the colour is said again by the sheet's own words.
-import type { ReactNode } from "react";
 import { help as copy } from "../../copy";
 import { useOpen } from "../provenance";
 import { cx } from "./cx";
@@ -36,19 +35,5 @@ export function HelpMark({ term, about, lead, text, rules, words, tone, classNam
       {words}
       {mark}
     </button>
-  );
-}
-
-/** Words that end with a "?" (`mark`, a `HelpMark`): the last word and the mark on one line, so the mark never stands on a line of its own
- *  when the words wrap (a title, a label in a narrow column). */
-export function HeldMark({ words, mark }: { words: string; mark: ReactNode }) {
-  const cut = words.lastIndexOf(" ") + 1;
-  return (
-    <>
-      {words.slice(0, cut)}
-      <span className="whitespace-nowrap">
-        {words.slice(cut)} {mark}
-      </span>
-    </>
   );
 }

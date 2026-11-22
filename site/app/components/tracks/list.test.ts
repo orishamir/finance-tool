@@ -11,7 +11,7 @@ import { buildProductView, feeRangeOf, type SortId, type TbGroup } from "../../l
 import { buildTrackBrowser } from "../../lib/track-browser.server";
 import { ProvenanceProvider } from "../provenance";
 import { FeeNum } from "../kit";
-import { childFeeHelp, TrackList } from "./list";
+import { ChildFeeNote, TrackList } from "./list";
 
 const data = buildTrackBrowser();
 const terms = Object.fromEntries(loadTerms().map((x) => [x.he, x]));
@@ -43,20 +43,19 @@ describe("a pension product's fees (CAT-39)", () => {
 });
 
 describe("a child-savings product's fees (CS OQ9)", () => {
-  it("say nothing of what the figure is under the fee head: its caution \"?\" says it", () => {
-    expect(draw("child-savings-provident")).toContain(t.columns.average.replace("{year}", "2025"));
-    expect(draw("child-savings-provident")).not.toContain(trackCopy.feeOver21);
+  it("say under the fee head that they are what members over 21 paid, and another product's do not", () => {
+    expect(draw("child-savings-provident")).toContain(`${t.columns.average.replace("{year}", "2025")}, ${trackCopy.feeOver21}`);
+    expect(draw("kupat-gemel-lehashkaa")).not.toContain(trackCopy.feeOver21);
   });
 });
 
-describe("the child-savings fee's caution \"?\" (CS OQ9)", () => {
-  it("says the age from CS-18's figure and names the open question, lists CS-18 under it, and says nothing without the age", () => {
-    const age = loadRules()["CS-18"]?.figures?.nii_pays_until_age as unknown as SiteValue;
-    const help = childFeeHelp(age);
-    expect(help?.text).toContain(` ${String(age.value)} `);
-    expect(help?.text).toContain("CS OQ9");
-    expect(help?.rules).toEqual(["CS-18"]);
-    expect(childFeeHelp(null)).toBeNull();
+describe("the child-savings fee note (CS OQ9)", () => {
+  it("says the age from CS-18's figure, and says nothing without it", () => {
+    const age = loadRules()["CS-18"]!.figures!.nii_pays_until_age as unknown as SiteValue;
+    const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: {}, terms, dimensions: {}, today: data.today }, children: createElement(ChildFeeNote, { age }) })));
+    expect(html).toContain(`>${String(age.value)}<`);
+    expect(html).toContain(t.childFee.before);
+    expect(renderToStaticMarkup(createElement(ChildFeeNote, { age: null }))).toBe("");
   });
 });
 

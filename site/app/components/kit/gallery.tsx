@@ -1658,7 +1658,7 @@ function StretchDemo() {
   );
 }
 
-/** The receipt as a ticket across a wide column: the account's part, the middle that adds up to the total, the fund's part. */
+/** The receipt as a ticket across a wide column: the account's part, the middle with the total, the fund's part, and a row under them. */
 function TicketDemo() {
   const r = g.sample.receipt;
   return (
@@ -1680,18 +1680,12 @@ function TicketDemo() {
           <div className="flex flex-col gap-2.5 text-sm">
             <ReceiptLine size="sm" label={r.paid} value="100,000 ₪" />
             <ReceiptLine size="sm" label={r.added} value="+40,000 ₪" />
-            <ReceiptLine size="sm" swatch="bg-chart-by-account" label={g.sample.tile.name} value="−1,200 ₪" />
-            <ReceiptLine size="sm" swatch="bg-chart-by-fund" label={r.fund} value="−300 ₪" />
-            <ReceiptLine size="sm" label={r.inflation} value="−20,000 ₪" />
-            <ReceiptLine size="sm" label={r.tax} value="−9,000 ₪" />
+            <ReceiptLine size="sm" swatch="bg-chart-tax" label={r.tax} value="−9,000 ₪" />
           </div>
           <ReceiptRule kind="double" />
           <div className="flex flex-col items-center text-center">
-            <span className="text-base font-semibold whitespace-nowrap">
-              {r.left}
-              <HelpMark tone="caution" about={r.left} text={r.catch} className="ms-1" />
-            </span>
-            <span className="text-total font-semibold text-primary tabular-nums">109,500 ₪</span>
+            <span className="text-base font-semibold">{r.left}</span>
+            <span className="text-total font-semibold text-primary tabular-nums">129,500 ₪</span>
           </div>
         </>
       }
@@ -1700,6 +1694,7 @@ function TicketDemo() {
           <ReceiptLine size="sm" edge="border-chart-by-fund" label={r.fundFee} value="−300 ₪" parts={<ReceiptLine size="sm" label={r.fundFee} value="0.2%" />} />
         </TicketPart>
       }
+      foot={[<ReceiptLine key="g" strong label={r.gain} value="+29,500 ₪" />, <ReceiptLine key="l" strong label={r.bar} value="10,500 ₪" />, <ShareBar key="b" label={r.bar} parts={[{ id: "x", name: g.sample.cost.tax, share: 86, className: "bg-chart-tax" }, { id: "a", name: g.sample.tile.account, share: 11, className: "bg-chart-by-account" }, { id: "u", name: g.sample.tile.fund, share: 3, className: "bg-chart-by-fund" }]} />]}
     />
   );
 }
@@ -2265,37 +2260,25 @@ function Lists({ today }: { today: string }) {
         </State>
         <State label="narrow, and a part that took under half a percent: it stays in the key with its words, and is not drawn">
           <div className="w-60">
-            <ShareBar label={g.sample.receipt.bar} parts={[{ id: "x", name: g.sample.cost.tax, share: 70, className: "bg-chart-tax" }, { id: "a", name: g.sample.tile.account, share: 30, className: "bg-chart-by-account" }, { id: "u", name: g.sample.tile.fund, share: 0, className: "bg-chart-by-fund", words: g.sample.receipt.underOne }]} />
+            <ShareBar label={g.sample.receipt.bar} parts={[{ id: "x", name: g.sample.cost.tax, share: 70, className: "bg-chart-tax" }, { id: "a", name: g.sample.tile.account, share: 30, className: "bg-chart-by-account" }, { id: "u", name: g.sample.tile.fund, share: 0, className: "bg-chart-by-fund", words: investWords.receipt.underOne }]} />
           </div>
         </State>
       </Demo>
       <Demo name="ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptTicket, TicketPart, ReceiptStub" use={g.uses.Receipt}>
-        <State label="the lines top to bottom and one total under the double rule; a line's own lines behind a tap on its name (opens), in a sheet, its amount keeping its own tap; a caution ? beside the total for the catch it rests on">
+        <State label="lines with leaders, a line's parts behind its colour, the double rule before the total, the dashed one after">
           <ReceiptPaper className="max-w-sm" label={g.sample.receipt.title}>
-            <div className="flex flex-col gap-2.5 text-sm">
-              <ReceiptLine size="sm" label={g.sample.receipt.paid} value="100,000 ₪" />
-              <ReceiptLine size="sm" label={g.sample.receipt.added} value="+40,000 ₪" />
-              <ReceiptLine size="sm" label={g.sample.receipt.account} value="−1,200 ₪" opens={{ title: g.sample.receipt.account, body: <ReceiptLine size="sm" label={g.sample.receipt.accountLine} value="−1,200 ₪" sub={g.sample.receipt.rate} /> }} />
-              <ReceiptLine size="sm" label={g.sample.receipt.fund} value="−300 ₪" opens={{ title: g.sample.receipt.fund, body: <ReceiptLine size="sm" label={g.sample.receipt.fundFee} value="0.2%" /> }} />
-              <ReceiptLine size="sm" label={g.sample.receipt.inflation} value="−20,000 ₪" />
-              <ReceiptLine size="sm" label={g.sample.receipt.tax} value="−9,000 ₪" />
-            </div>
+            <ReceiptLine label={g.sample.receipt.paid} value="100,000 ₪" />
+            <ReceiptLine label={g.sample.receipt.added} value="+40,000 ₪" />
+            <ReceiptLine swatch="bg-chart-tax" label={g.sample.receipt.tax} value="−9,000 ₪" />
+            <ReceiptLine swatch="bg-chart-by-account" edge="border-chart-by-account" label={g.sample.receipt.account} value="−1,200 ₪" parts={<ReceiptLine size="sm" label={g.sample.receipt.accountLine} value="−1,200 ₪" sub={g.sample.receipt.rate} />} />
+            <ReceiptLine swatch="bg-chart-by-fund" edge="border-chart-by-fund" label={g.sample.receipt.fund} value="−300 ₪" parts={<ReceiptLine size="sm" label={g.sample.receipt.fundFee} value="0.2%" />} />
             <ReceiptRule kind="double" />
-            <div className="flex items-baseline justify-between gap-3">
-              <span className="text-base font-semibold whitespace-nowrap">
-                {g.sample.receipt.left}
-                <HelpMark tone="caution" about={g.sample.receipt.left} text={g.sample.receipt.catch} className="ms-1" />
-              </span>
-              <span className="text-figure font-semibold text-primary tabular-nums">109,500 ₪</span>
-            </div>
+            <ReceiptLine label={g.sample.receipt.left} value={<span className="text-figure font-semibold text-primary">129,500 ₪</span>} strong />
+            <ReceiptRule kind="dashed" />
+            <ReceiptLine size="sm" label={g.sample.receipt.gain} value="+29,500 ₪" />
           </ReceiptPaper>
         </State>
-        <State label="a line's parts shown under it, behind an edge in its colour (the ticket's side parts)">
-          <ReceiptPaper className="max-w-sm" label={g.sample.receipt.title}>
-            <ReceiptLine size="sm" edge="border-chart-by-account" label={g.sample.receipt.account} value="−1,200 ₪" parts={<ReceiptLine size="sm" label={g.sample.receipt.accountLine} value="−1,200 ₪" sub={g.sample.receipt.rate} />} />
-          </ReceiptPaper>
-        </State>
-        <State label="the ticket (ReceiptTicket): the same lines across a wide column, the account's part and the fund's, each with its own lines, either side of the lines that add up to the total, notches where the middle's dashed edges meet the ticket's; it stands only from 1280 px, and the gallery shows it only there" wide>
+        <State label="the ticket (ReceiptTicket): the same lines across a wide column, the account's part and the fund's either side of the total, notches where the middle's dashed edges meet the ticket's; it stands only from 1280 px, and the gallery shows it only there" wide>
           <div className="max-xl:hidden">
             <TicketDemo />
           </div>

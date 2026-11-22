@@ -261,6 +261,36 @@ describe("P-08 exposure holding wrapper", () => {
   });
 });
 
+describe("foreign-investment funds (data-schema §4 item 21)", () => {
+  const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
+  const fif = (value: string | false) => ({ ...vo, value, unit: "text", tax_year: null, update_rule: "provider-set", rule_ids: ["TXS-14"] });
+  const israeli = (status?: string | false) => ({
+    ...fund,
+    id: "5129275",
+    domicile: "IL",
+    currency: "NIS",
+    tax_status: { il_fund_tax_track: "exempt", tase_foreign_fund_90pct_test: null, ...(status === undefined ? {} : { foreign_investment_fund: fif(status) }) },
+  });
+  const files = (extra: Record<string, unknown>) => ({
+    "instruments/exposures/index-sp500.json": { ...exposure, variants: ["fund:5129275", "fund:ie00b5bmr087"] },
+    "funds/ie00b5bmr087@2026-10-23.json": fund,
+    "funds/5129275@2026-10-25.json": israeli("USD"),
+    ...extra,
+  });
+  const messages = (extra: Record<string, unknown>) => run(files(extra)).map((p) => p.message);
+  it("accepts an Israeli fund's latest record that says either answer, and an older one without it", () => {
+    expect(run(files({}))).toEqual([]);
+    expect(run(files({ "funds/5129275@2026-10-24.json": israeli(), "funds/5129275@2026-10-25.json": israeli(false) }))).toEqual([]);
+  });
+  it("refuses an Israeli fund's latest record without it, a foreign record with it, a principal currency not the exposure's, and a value that is no code", () => {
+    expect(messages({ "funds/5129275@2026-10-25.json": israeli() })).toEqual([expect.stringMatching(/latest record of an Israeli fund says whether/)]);
+    const foreign = { ...fund, tax_status: { ...fund.tax_status, foreign_investment_fund: fif("USD") } };
+    expect(messages({ "funds/ie00b5bmr087@2026-10-23.json": foreign })).toEqual([expect.stringMatching(/only an Israeli fund can be one/)]);
+    expect(messages({ "funds/5129275@2026-10-25.json": israeli("EUR") })).toEqual([expect.stringMatching(/principal currency EUR is not the exposure's currency USD/)]);
+    expect(messages({ "funds/5129275@2026-10-25.json": israeli("dollar") }).some((m) => /ISO 4217 code/.test(m))).toBe(true);
+  });
+});
+
 describe("P-05 instruments map", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
   const p05 = (instruments: unknown) => ({

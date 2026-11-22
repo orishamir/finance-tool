@@ -24,7 +24,27 @@
   "distribution_policy": null,
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null
+    "tase_foreign_fund_90pct_test": null,
+    "foreign_investment_fund": {
+      "value": false,
+      "unit": "text",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1772001-1773000/P1772119-00.pdf#page=1",
+        "title": "דוח שנתי, אלטשולר שחם (00) כספית מתחדשת חודשי לפדיון 16/10/2026 (מספר בורסה 1223866), ליום 30 ביוני 2026, אלטשולר – שחם ניהול קרנות נאמנות בע\"מ, עמ' 1, 'מאפיינים עיקריים של הקרן': 'מסלול המס: פטורה'",
+        "publisher": "אלטשולר – שחם ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-11-22",
+      "effective_from": "2026-06-30",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXS-14"
+      ],
+      "state": "sourced",
+      "notes": "The report's main characteristics name the tax track and do not name the fund a foreign-investment fund, which the 2007 classification regulations make a fund's published classification say (TXS-14); its tax index is the CPI."
+    }
   },
   "fees": {
     "fixed_management": {
