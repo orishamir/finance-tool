@@ -13,6 +13,12 @@ import { RuleCard } from "../provenance-sheets";
 import { hashId } from "../../lib/address-hash";
 import { Card, FoldGroup, Section, gershayim } from "../kit";
 
+export interface TermGroup {
+  key: string;
+  title: string;
+  ids: string[];
+}
+
 /** The id the address names (`#KH-09`, `#terms-msci`), read after the first paint: the pre-rendered page has none. */
 function useHash(): string {
   const [hash, setHash] = useState("");

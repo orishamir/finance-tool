@@ -695,6 +695,7 @@ export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; 
       window.removeEventListener("scroll", moved, true);
       window.removeEventListener("resize", moved);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // drawn on the page's body: what holds its control may be moved (a grip stands translated over its thing), which would carry a fixed menu
   return createPortal(

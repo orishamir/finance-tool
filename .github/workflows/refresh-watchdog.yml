@@ -13,8 +13,9 @@ on:
     - cron: "15 6 * * 1"
   workflow_dispatch:
 
+# Read-only for every job; a job that needs more raises it on its own.
 permissions:
-  actions: read
+  contents: read
 
 jobs:
   watchdog:
@@ -23,6 +24,9 @@ jobs:
       matrix:
         workflow: [refresh.yml, refresh-rates.yml]
     runs-on: ubuntu-latest
+    # the other workflows' runs, read with gh run list
+    permissions:
+      actions: read
     env:
       WORKFLOW: ${{ matrix.workflow }}
       GH_TOKEN: ${{ github.token }}

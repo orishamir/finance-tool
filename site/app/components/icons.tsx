@@ -1,6 +1,7 @@
 // Lucide icons, 1.75px stroke (design-system 2.8). Chevrons and the external-link arrow mirror in RTL;
 // the rest do not. `data-mirror` is set once here, never per use.
 import {
+  ArrowDown,
   ArrowLeft,
   ArrowRight,
   Calculator,
@@ -47,6 +48,8 @@ export const IconChevronUp = base(ChevronUp);
 export const IconArrowBack = base(ArrowRight);
 /** A link's arrow forward, at the end of its words ("השוואה לפיקדונות בבנקים אחרים ←"); points to the end side in RTL. */
 export const IconArrowForward = base(ArrowLeft);
+/** Down the page, to a section under the one it stands in. */
+export const IconArrowDown = base(ArrowDown);
 export const IconExternal = base(ExternalLink, true);
 export const IconSearch = base(Search);
 export const IconMenu = base(Menu);

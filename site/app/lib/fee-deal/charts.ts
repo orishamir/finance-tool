@@ -40,7 +40,6 @@ import type { PeriodCard, PeriodRow, StatedPart } from "./reading";
 import type { FeeKindId } from "./shapes";
 import { unpricedSaid, type UnpricedSaid } from "./case-words";
 import { actionOfLeft, leftRef } from "./left-out";
-import { assertNever } from "@finance-tool/schema";
 
 // ---------------------------------------------------------------- the axis
 
@@ -194,8 +193,6 @@ function partFigure(r: DealRead, i: number, part: PricePart, e: DealPrice, s: Pr
       return { ...opt("figure", f.flat), ...opt("upTo", f.upTo) };
     case "sum":
       return opt("figure", charged(r, i, f, "amount", get("amount"), false));
-    default:
-      return assertNever(part);
   }
 }
 

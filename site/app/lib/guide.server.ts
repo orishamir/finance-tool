@@ -15,7 +15,7 @@ import { loadDepositTerms } from "./instruments.server";
 import { loadInstitutionRegistry } from "./institutions.server";
 import { depositName, exitNameWords, exitPointsOf, exitWords } from "./deposit-kind";
 import { lumpSumEntered, lumpSumIds, type BreakTerms, type SignatureData } from "./guide-signature";
-import { cmaFeeValue, computed, ownBy, ruleFigure, staleCma, type SiteValue } from "./value";
+import { cmaFeeValue, computed, ownBy, ruleFigure, staleCma, weaker, type SiteValue, type Strength } from "./value";
 import { scanRuleIds } from "./scan-rule-ids.server";
 import { heCollator } from "./format";
 
@@ -327,6 +327,26 @@ export function buildGuidePage(id: string, extraTermIds: string[] = [], relatedI
 }
 
 export { familyOf };
+
+/** The weakest strength among the cited rules that carry a dimension, and those rules' IDs. */
+export function dimensionSupport(dim: string, rules: Record<string, RuleRecord>): { weak: Strength | null; rules: string[] } {
+  const carrying = Object.values(rules).filter((r) => r.dimensions.includes(dim));
+  let best: Strength | null = null;
+  for (const r of carrying) {
+    const s: Strength = r.strength;
+    if (best === null) best = s;
+    else best = weaker(best, s) === best ? best : best; // keep the weakest? no: show the tag only when every carrying rule is weak
+  }
+  const allWeak = carrying.length > 0 && carrying.every((r) => r.strength === "institution" || r.strength === "secondary");
+  return { weak: allWeak ? (carrying.some((r) => r.strength === "secondary") ? "secondary" : "institution") : null, rules: carrying.map((r) => r.id) };
+}
+
+export function figureOf(rules: Record<string, RuleRecord>, today: string) {
+  return (ruleId: string, name: string): SiteValue | null => {
+    const r = rules[ruleId];
+    return r ? ruleFigure(r, name, today) : null;
+  };
+}
 
 export type { P05Input };
 

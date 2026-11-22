@@ -37,7 +37,7 @@ export function useDollarCase(view: InvestView | null, bundle: IndicesBundle, pl
   const pairs = view && pick ? kindPairs(view, pick) : null;
   const money = useMemo(
     () => (view && pairs ? kindMoney({ bundle, index: view.index, plan, unhedged: { fundId: pairs.unhedged.fund, providerId: pairs.unhedged.house }, hedged: { fundId: pairs.hedged.fund, providerId: pairs.hedged.house } }) : null),
-    [bundle, view?.index, plan, pairs?.unhedged.fund, pairs?.unhedged.house, pairs?.hedged.fund, pairs?.hedged.house],
+    [bundle, view?.index, plan, pairs?.unhedged.fund, pairs?.unhedged.house, pairs?.hedged.fund, pairs?.hedged.house], // eslint-disable-line react-hooks/exhaustive-deps
   );
   if (!view || !rec || !pairs || !history || !rec.gaps.unhedged || !rec.gaps.hedged) return null;
   const houseOf = (id: string) => {

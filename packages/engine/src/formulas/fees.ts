@@ -1,6 +1,5 @@
 // docs/method.md §4.1: fee types and their bases. Rates are fractions; amounts are NIS unless a tariff
 // line says it is set in the instrument's currency.
-import { assertNever } from "@finance-tool/schema";
 
 /** A tariff line (F-12): `min(cap × amount, max(min, min(rate × amount + perShare × shares, max)))`, plus a per-share part above a threshold where the tariff has one. */
 export interface Commission {
@@ -269,8 +268,6 @@ function stepFee(s: SizedConversion, step: SizeStep | undefined, terms: TradeTer
       return line(lineDiscounted(s.line, p.off, p.onMin));
     case "rate":
       return line(typeof s.line === "number" ? p.rate : { ...s.line, rate: p.rate });
-    default:
-      return assertNever(p);
   }
 }
 

@@ -308,10 +308,8 @@ export interface ProviderWorkbench {
 
 /** A value the snapshot holds as null: the provider's data is incomplete, so its row is "not comparable". */
 export class Unusable extends Error {
-  readonly code: "line-without-value" | "needs-share-price" | "needs-fx-rate" | "not-printed-for-currency";
-  constructor(code: Unusable["code"], message: string) {
+  constructor(readonly code: "line-without-value" | "needs-share-price" | "needs-fx-rate" | "not-printed-for-currency", message: string) {
     super(message);
-    this.code = code;
   }
 }
 
@@ -320,14 +318,8 @@ export class Unusable extends Error {
  * prints no bound for this trade, so the run does not price it. `line` is the line's id, `currency` the trade's, `printed` the line's list.
  */
 export class NotPrintedForCurrency extends Unusable {
-  readonly line: string;
-  readonly currency: string;
-  readonly printed: readonly string[];
-  constructor(line: string, currency: string, printed: readonly string[]) {
+  constructor(readonly line: string, readonly currency: string, readonly printed: readonly string[]) {
     super("not-printed-for-currency", `${line}: a bound is printed in the trade's currency for ${printed.join(", ")}, and the trade is in ${currency}`);
-    this.line = line;
-    this.currency = currency;
-    this.printed = printed;
   }
 }
 

@@ -74,6 +74,11 @@ function allInstitutionRows(): InstitutionRow[] {
   return rows.sort((a, b) => heCollator.compare(a.name, b.name));
 }
 
+/** The company ids of the CMA data, so a slug never shadows one (the page resolves the CMA first). */
+export function isInstitution(id: string): boolean {
+  return institutionIds().includes(id);
+}
+
 // ---------------------------------------------------------------- the bank's 447 page, from the rule base
 
 const rateTableLabel: Record<string, string> = {

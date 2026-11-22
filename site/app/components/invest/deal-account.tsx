@@ -127,6 +127,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
   const headId = useId();
   useEffect(() => {
     if (target && !data) onWant();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [target, data]);
   const isOpen = target !== null;
   useEffect(() => onOpenChange(isOpen), [isOpen, onOpenChange]);
@@ -134,6 +135,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
     if (!opening || !world) return;
     setTarget({ house: opening });
     onOpened();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opening, !!world]);
   const api = useMemo<DealAccountsApi>(
     () => ({
@@ -334,6 +336,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
     ed.doc.setFocus({ fee: lacks, on: "card" });
     let frame = requestAnimationFrame(() => (frame = requestAnimationFrame(() => bringUnderTop(root.current, lacks))));
     return () => cancelAnimationFrame(frame);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const wide = useMedia(MQ.md);
   const [planShown, setPlanShown] = useState(false);

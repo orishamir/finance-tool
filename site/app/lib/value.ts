@@ -3,6 +3,7 @@ import type { P05Input } from "@finance-tool/engine";
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 
 export type Strength = ValueObject["source"]["strength"];
+export type NumberState = ValueObject["state"];
 
 /** Why a value is stale, when it is: the date it was last known good, and its usual cadence. */
 export interface Staleness {

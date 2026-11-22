@@ -166,11 +166,14 @@ export function MonthPicker({ id: givenId, label, chosen, bounds = {}, anchor, o
     const now = thisMonth();
     setToday(now);
     if (!chosen) setCursor(startMonth(null, now, bounds));
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const takeFocus = useRef(false);
-  useEffect(() => {
+  // a month chosen or typed moves the grid to it, in the same render
+  const [follows, setFollows] = useState(chosen);
+  if (follows !== chosen) {
+    setFollows(chosen);
     if (chosen) setCursor(chosen);
-  }, [chosen]);
+  }
   useLayoutEffect(() => {
     if (!takeFocus.current) return;
     takeFocus.current = false;

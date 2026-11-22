@@ -133,6 +133,9 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="robots" content="noindex" />
+        {/* Zod tests whether it may compile code with Function(""), which the Content Security Policy refuses and reports
+            on every page; this turns that test off before any schema is built (route modules build theirs as they load). */}
+        <script dangerouslySetInnerHTML={{ __html: "globalThis.__zod_globalConfig = { jitless: true };" }} />
         <Meta />
         <Links />
       </head>

@@ -288,6 +288,7 @@ export function PendingEdit({ fee, caseId, pending, deal, name, onFee, hands }: 
     const box = document.getElementById(partFieldId(fee.id, `${part}-pending`));
     box?.focus({ preventScroll: true });
     bringIntoView(box?.closest("[data-lift]"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   // the part given by Enter: its box is drawn anew as the part it now is, and the focus goes on to it (given by the focus leaving, the
   // focus stays where it went)
@@ -363,6 +364,7 @@ export function AskOnce({ fee, deal, part, words, name, onGive, onDrop }: { fee:
   useEffect(() => {
     const at = focusPartEdit(id);
     bringIntoView(at?.closest("[data-lift]") ?? at);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const body =
     PARTS[part].ask === "fee" ? (

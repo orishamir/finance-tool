@@ -1848,6 +1848,9 @@ export function paybackMayLower(rec: FundRecord, list: GapList): boolean {
  */
 export const accountWhole = (x: Pick<WayPrice, "accountCost">): number => Math.round(x.accountCost);
 
+/** A fund's listed fees together, percent a year. */
+export const sumFeesPct = (rec: FundRecord) => sumFees(rec) * 100;
+
 export interface KindMoney {
   /** Value left on a steady dollar with the shortfall the reports give. */
   unhedged: number;

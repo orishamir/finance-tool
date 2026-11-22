@@ -32,8 +32,11 @@
 - For a page that refuses scripts, tell researchers that FlareSolverr runs on
   this machine (`docker start flaresolverr`, then `http://localhost:8191`);
   the rest of how they get past a bot check is up to them.
-- Every subagent runs on Opus 5.5 at high effort, unless the founder asks for
-  more. Start a fresh agent with a short brief rather than messaging an idle
+- Builders and code reviewers run on Opus 5.5 at medium effort; the strict
+  guidelines and the checks carry what more effort would add. A finance
+  review (the finance-reviewer, the finance-sweeper) runs at xhigh. Every
+  other subagent runs on Opus 5.5 at high effort, unless the founder asks
+  for more. Start a fresh agent with a short brief rather than messaging an idle
   one.
 
 ## 4. Check before it goes live

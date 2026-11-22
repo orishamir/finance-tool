@@ -6,7 +6,6 @@ import { kit as kitCopy } from "../../copy";
 import type { TariffDated } from "../../lib/tariff-date";
 import { LeadTail } from "../provenance";
 import { When } from "./when";
-import { assertNever } from "@finance-tool/schema";
 
 const w = kitCopy.tariffDate;
 
@@ -62,7 +61,5 @@ export function TariffDate({ dated, checked = true, titled = false, date }: { da
           {tail(dated.checked)}
         </>
       );
-    default:
-      return assertNever(dated);
   }
 }

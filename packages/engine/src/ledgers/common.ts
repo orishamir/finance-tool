@@ -119,14 +119,12 @@ export function unlessBlocked<T>(step: () => T): { value: T; blocked?: undefined
  * at the horizon is part of what is left (`waiting`).
  */
 export class OrderCash {
-  private readonly line: Commission | undefined;
-  private readonly terms: TradeTerms;
   private held = 0;
 
-  constructor(line: Commission | undefined, terms: TradeTerms) {
-    this.line = line;
-    this.terms = terms;
-  }
+  constructor(
+    private readonly line: Commission | undefined,
+    private readonly terms: TradeTerms,
+  ) {}
 
   /** One order with `cash` and what waits; a call with no cash places no order and leaves the waiting cash as it is. */
   buy(cash: number): { trade: number; commission: number } {

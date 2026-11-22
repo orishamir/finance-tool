@@ -343,6 +343,7 @@ function AskChange({ fee, caseId, pending, name, onFee, hands }: { fee: Fee; cas
     if (!fresh) return;
     root.current?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
     bringIntoView(root.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const cancel = () => {
     hands.onDone();

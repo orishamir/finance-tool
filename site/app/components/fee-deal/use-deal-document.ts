@@ -68,6 +68,7 @@ export function useOpenedDeal(address: AddressDeal | null, saved: readonly FeeDe
     const given = opened.current.given ? opened.current.deal : null;
     if (given) dealStore.update((ds) => savedIfWorth(ds, given, today) ?? ds);
     navigate({ search: "", hash: "" }, { replace: true, preventScrollReset: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return opened.current.deal;
 }
@@ -131,6 +132,7 @@ export function useDealDocument({ first, saved, today, data, onShown, remember =
       wasSaved.current = null;
       setDeletedElsewhere(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [saved]);
 
   /**

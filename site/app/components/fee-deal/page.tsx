@@ -65,6 +65,7 @@ export function FeeDealPage({ data, failed }: { data: FeesData | null; failed: b
     return () => {
       on = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, today]);
   return (
     <div className="flex flex-col gap-6">

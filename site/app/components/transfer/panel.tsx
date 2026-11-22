@@ -31,7 +31,6 @@ import { entered } from "../../lib/value";
 import { IconAlert, IconCopy, IconDownload, IconFileUp, IconShare } from "../icons";
 import { Num } from "../provenance";
 import { Button, Callout, Card, cx, PageHead, Section, SegmentedControl, Sentence, Tpl, When } from "../kit";
-import { assertNever } from "@finance-tool/schema";
 
 type Site = { version: string; data: string };
 
@@ -245,8 +244,6 @@ function refusalText(r: Refusal): { text: string; tone: "blocked" | "caution" } 
       return { text: e.unreadable, tone: "blocked" };
     case "invalid":
       return { text: `${e.invalidBefore} ${refusalField(r.field)}${e.invalidAfter}`, tone: "blocked" };
-    default:
-      return assertNever(r);
   }
 }
 
