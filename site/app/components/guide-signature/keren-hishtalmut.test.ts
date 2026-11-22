@@ -3,44 +3,53 @@
 import { createElement, type ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it, vi } from "vitest";
-import { buildGuidePage } from "../../lib/guide.server";
-import { InputsProvider } from "../../lib/inputs";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { nisOf } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { guideSignature } from "../../copy";
 
 /** Each figure the page drew, with the text it showed. */
 const seen: { value: SiteValue; text: string }[] = [];
+let drawn: { value: SiteValue; text: string }[] = [];
 
-vi.mock("../provenance", async (original) => {
-  const m = await original<typeof import("../provenance")>();
-  type NumProps = Parameters<typeof m.Num>[0];
-  type NisProps = Parameters<typeof m.NisNum>[0];
-  const textOf = (v: SiteValue, display: NumProps["display"]) => (typeof display === "function" && typeof v.value === "number" ? String(display(v.value)) : typeof display === "string" ? display : "");
-  return {
-    ...m,
-    Num: (props: NumProps) => {
-      seen.push({ value: props.value, text: textOf(props.value, props.display) });
-      return createElement(m.Num, props);
-    },
-    NisNum: (props: NisProps) => {
-      const n = typeof props.value.value === "number" ? props.value.value : 0;
-      seen.push({ value: props.value, text: nisOf(props.value, props.abs ? Math.abs(n) : n, { signed: !!props.signed }) });
-      return createElement(m.NisNum, props);
-    },
-  };
+// The provenance number is swapped for one that renders the same and records its props, for this file only: the test files of a worker
+// share their modules (vitest.config.ts, `isolate: false`), so the swap is made on fresh copies of the site's modules and taken back with
+// fresh copies again after the file, and no other file sees it.
+beforeAll(async () => {
+  vi.resetModules();
+  vi.doMock("../provenance", async (original) => {
+    const m = await original<typeof import("../provenance")>();
+    type NumProps = Parameters<typeof m.Num>[0];
+    type NisProps = Parameters<typeof m.NisNum>[0];
+    const textOf = (v: SiteValue, display: NumProps["display"]) => (typeof display === "function" && typeof v.value === "number" ? String(display(v.value)) : typeof display === "string" ? display : "");
+    return {
+      ...m,
+      Num: (props: NumProps) => {
+        seen.push({ value: props.value, text: textOf(props.value, props.display) });
+        return createElement(m.Num, props);
+      },
+      NisNum: (props: NisProps) => {
+        const n = typeof props.value.value === "number" ? props.value.value : 0;
+        seen.push({ value: props.value, text: nisOf(props.value, props.abs ? Math.abs(n) : n, { signed: !!props.signed }) });
+        return createElement(m.NisNum, props);
+      },
+    };
+  });
+  const { ProvenanceProvider } = await import("../provenance");
+  const { SignatureFrame } = await import("./index");
+  const { InputsProvider } = await import("../../lib/inputs");
+  const { buildGuidePage } = await import("../../lib/guide.server");
+  const p = buildGuidePage("keren-hishtalmut")!;
+  renderToString(
+    createElement(MemoryRouter, null, createElement(InputsProvider, { children: createElement(ProvenanceProvider, { data: { rules: p.rules, terms: {}, dimensions: {}, today: p.today }, children: createElement(SignatureFrame, { id: "keren-hishtalmut", data: p.signature!, today: p.today, timeline: null }) as ReactNode }) })),
+  );
+  drawn = [...seen];
 });
 
-const { ProvenanceProvider } = await import("../provenance");
-const { SignatureFrame } = await import("./index");
-
-const p = buildGuidePage("keren-hishtalmut")!;
-seen.length = 0;
-renderToString(
-  createElement(MemoryRouter, null, createElement(InputsProvider, { children: createElement(ProvenanceProvider, { data: { rules: p.rules, terms: {}, dimensions: {}, today: p.today }, children: createElement(SignatureFrame, { id: "keren-hishtalmut", data: p.signature!, today: p.today, timeline: null }) as ReactNode }) })),
-);
-const drawn = [...seen];
+afterAll(() => {
+  vi.doUnmock("../provenance");
+  vi.resetModules();
+});
 
 /** A figure and every figure it was worked out from, down to the inputs. */
 function* within(v: SiteValue): Generator<SiteValue> {
