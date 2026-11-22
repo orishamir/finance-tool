@@ -4016,8 +4016,6 @@ export const invest = {
     left: "נשאר לכם",
     /** The receipt's stub at the screen's foot: the way back up to the receipt. */
     toReceipt: "לקבלה",
-    /** The "?" beside what is left: in what money it is, and on what the dollar does (only where the figure rests on it, a caution "?"). */
-    leftIn: (steady: string | null) => `בכסף של היום${steady ? `, ${steady}` : ""}.`,
     /** What is left's sheet: what was paid in at today's prices and the gain, which add up to it. */
     leftAbout: "נשאר לכם, בכסף של היום",
     /** The ticket's two side parts: what the account and the fund take, under their names. */
@@ -4212,17 +4210,11 @@ export const invest = {
     /** The popup's head. */
     head: {
       nameField: "שם העסקה",
-      rename: "שינוי השם",
       saved: "נשמרת במכשיר הזה, גם ב״העסקאות שלי״",
       unsaved: "תישמר במכשיר הזה כשתשנו בה משהו",
       openDeal: "לפתוח בעמוד העמלות",
       close: "סגירה",
-      more: "עוד פעולות לעסקה",
       remove: "מחיקת העסקה",
-      confirm: "למחוק את העסקה מהמכשיר הזה?",
-      confirmBody: "היא תצא מרשימת החשבונות ומ״העסקאות שלי״ בעמוד העמלות.",
-      confirmYes: "מחיקה",
-      confirmNo: "ביטול",
     },
     /** A new deal: from a house's latest price list, or empty. */
     start: {
@@ -4284,8 +4276,15 @@ export const invest = {
       banned: "לפי הכללים, עמלה כזאת לא נגבית כאן.",
     } as Record<string, string>,
     ownBank: (bank: string) => `סימנתם בעמוד שיש לכם כבר חשבון עו״ש ב${bank}.`,
-    /** What a fee took on the plan, as its figure's sheet says (F-128). */
+    /**
+     * A deal filled from a bank that names no current account of its own pays the bank's (F-102), from the bank's record: one quiet line
+     * after the fee blocks, its price a month by the price list and its cost on the plan. The toolbox's "חשבון עובר ושב בבנק" gives it its own.
+     */
+    bankAccount: (bank: string, withCost: boolean) =>
+      `בתוכנית נספר גם חשבון העו״ש של ${bank}: {monthly} בחודש לפי התעריפון${withCost ? ", {cost} בתוכנית" : ""}. אפשר לתת לו מחיר משלכם בכרטיס ״חשבון עובר ושב בבנק״.`,
+    /** What a fee, or the bank's current account, took on the plan, as its figure's sheet says (F-128). */
     feeCostAbout: (fee: string) => `העלות של ${fee} בתוכנית, בכסף של היום`,
+    bankCostAbout: (bank: string) => `העלות של חשבון העו״ש של ${bank} בתוכנית, בכסף של היום`,
     /** The pick bar: what only the person knows (a track, a condition of their own), then what the plan sets itself. */
     readFor: "קוראים את העסקה בשביל",
     /** The pick bar on a phone, one line under the strip. */
@@ -4485,8 +4484,8 @@ export const invest = {
     baseInput: "ההפקדות עם התשואה בלבד",
     baseAbout: "ההפקדות עם התשואה של התוכנית בלבד, בלי מה שהחשבון, הקרן והמדינה לוקחים, בכסף של היום",
     left: (years: number) => `נשאר לכם בעוד ${yearsSpan(years)}`,
-    steadyDollar: "אם הדולר לא זז מול השקל",
-    steadyIndexCurrency: "אם שער המטבע של המדד לא זז מול השקל",
+    steadyDollar: "בהנחה שהדולר לא זז מול השקל",
+    steadyIndexCurrency: "בהנחה ששער המטבע של המדד לא זז מול השקל",
     cheapest: "הזוג הזול ביותר",
     cheapestStar: "★ הזוג הזול ביותר לתוכנית שלכם",
     yours: "הבחירה שלכם",
@@ -5509,7 +5508,7 @@ export const kit = {
       compare: { product: "אפשרות", when: "מתי", rate: "ריבית שנתית", a: "אפשרות ראשונה", b: "אפשרות שנייה", c: "אפשרות שלישית", mine: "בעמוד", range: "טווח לדוגמה" },
       notes: ["הערה ראשונה: מה המספר לא כולל.", "הערה שנייה: מאיפה הריבית מגיעה."],
       dotLine: { site: "הנחות לדוגמה, לא תחזית", ret: "תשואה 5% בשנה, לדוגמה", today: "הסכומים בכסף של היום" },
-      list: { heading: "הרשימה שלכם", note: "הערה קטנה ליד הכותרת, שיורדת שורה כשאין מקום", items: ["ראשון", "שני", "שלישי"], longItem: "פריט עם שם ארוך מאוד כדי לראות איך השורה יורדת", add: "פריט נוסף", confirm: "למחוק את הפריט?", yes: "מחיקה", no: "ביטול", rename: "שינוי השם", remove: "מחיקת הפריט", renameField: "שם הפריט", foot: "שורה מתחת לרשימה." },
+      list: { heading: "הרשימה שלכם", note: "הערה קטנה ליד הכותרת, שיורדת שורה כשאין מקום", items: ["ראשון", "שני", "שלישי"], longItem: "פריט עם שם ארוך מאוד כדי לראות איך השורה יורדת", add: "פריט נוסף", confirm: "למחוק את הפריט?", confirmBody: "הוא ייצא מהרשימה ולא יחזור.", yes: "מחיקה", no: "ביטול", rename: "שינוי השם", remove: "מחיקת הפריט", renameField: "שם הפריט", foot: "שורה מתחת לרשימה." },
       text: { label: "שם לדוגמה", check: "סימון לדוגמה", group: "קבוצת שדות" },
       select: { label: "חשבון לדוגמה", none: "לא נבחר", options: [{ id: "a", name: "ראשון" }, { id: "b", name: "שני" }, { id: "c", name: "שלישי" }], help: "שורת עזר קצרה מתחת לשדה." },
       title: "כותרת לדוגמה",

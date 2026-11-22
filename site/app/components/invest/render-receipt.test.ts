@@ -9,7 +9,7 @@ import { PairLists } from "./lists";
 import { asideLines, buildInvest, indexById, kindOf, pairCostsKept, type InvestView } from "../../lib/invest";
 import { receiptAmounts, receiptChain } from "../../lib/receipt";
 import { ANCHOR, PairReceipt, PairStub, addedOf, inflationOf, leftOf, nominalOf, taxOf } from "./receipt";
-import { allFunds, asideParts, labelsOf, pickOfHeadline, pairVerdict } from "./pair";
+import { allFunds, asideParts, labelsOf, pickOfHeadline, pairVerdict, steadyOf } from "./pair";
 import { stretchesOf } from "../../lib/stretch";
 import { bundle, plan, shown, html, nisIn, fundRow, t } from "./render-fixtures";
 import { entered, type SiteValue } from "../../lib/value";
@@ -76,16 +76,18 @@ describe("the receipt", () => {
     expect([...at].sort((a, b) => a - b)).toEqual(at);
     expect(raw).toContain("border-chart-by-fund");
   });
-  it("the total's \"?\" says it is in today's money, and is a caution \"?\" with the dollar's clause only where the figure rests on the dollar", () => {
+  it("the total has a caution \"?\" saying the dollar is assumed to hold still only where the figure rests on the dollar, and no \"?\" elsewhere", () => {
     const cautionMark = /class="[^"]*help-mark[^"]*text-caution/;
-    expect(html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }))).toMatch(cautionMark);
+    const leftMark = `aria-label="${help.markLabel.replace("{about}", w.receipt.left)}"`;
+    const sp = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }));
+    expect(sp).toMatch(cautionMark);
+    expect(sp).toContain(leftMark);
+    expect(steadyOf(view, bundle, pick.fund)).toBe(w.pair.steadyDollar);
     const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan });
     const p = pickOfHeadline(ta)!;
     const out = html(createElement(PairReceipt, { view: ta, bundle, plan, pick: p, chosen: false }));
     expect(out).not.toMatch(cautionMark);
-    expect(out).toContain(`aria-label="${help.markLabel.replace("{about}", w.receipt.left)}"`);
-    expect(w.receipt.leftIn(null)).not.toContain(w.pair.steadyDollar);
-    expect(w.receipt.leftIn(w.pair.steadyDollar)).toContain(w.pair.steadyDollar);
+    expect(out).not.toContain(leftMark);
   });
   it("the run's index at the horizon and its deposits as paid are F-03's and F-05's, which take the chain to the horizon's shekels", () => {
     const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });

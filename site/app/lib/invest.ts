@@ -1458,8 +1458,8 @@ export interface PairCosts {
   /** The account's own lines over the horizon before the tax they save (F-91), real shekels; `interaction` is what no single line explains. */
   account: { line: FeeLine; cost: SiteValue }[];
   /**
-   * F-128: an account priced by a deal, its lines as the deal's own fees, by the deal's fee id (a bank's current account among them, the
-   * deal's own fee of that kind) with the fee's name, each what was paid on it carried as its line is (F-91). They stand in
+   * F-128: an account priced by a deal, its lines as the deal's own fees, by the deal's fee id (`BANK_ACCOUNT` for the bank's current
+   * account the plan counts from the record) with the fee's name, each what was paid on it carried as its line is (F-91). They stand in
    * place of `account`, which is then empty, and `interaction` is what they leave of the account's fees.
    */
   dealLines?: { fee: string; name: string; cost: SiteValue }[];

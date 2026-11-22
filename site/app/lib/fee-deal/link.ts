@@ -9,7 +9,7 @@ import { dealPagePath } from "../site-paths";
 import { isProductId, newDeal, newDealId, newFeeId, readLinkedDeal, type FeeDeal, type FeeLeftOut, type Sourced } from "./model";
 import type { PartKey } from "./offers/capabilities";
 import { FIGURE_IDS, FIGURES, type FigureKey } from "./offers/figures";
-import { dealFromTrack, withLaterFills } from "./templates";
+import { dealFromTrack } from "./templates";
 
 // ---------------------------------------------------------------- the subject in the address
 
@@ -65,7 +65,7 @@ const FIGURE_SHORT: Readonly<Record<FigureKey, string>> = { rate: "r", amount: "
 const SHORT: Record<string, string> = {
   name: "n", kind: "k", provider: "p", held: "h", fees: "f", template: "T", stages: "s", sale: "S", price: "P", until: "u", form: "F",
   currency: "c", per: "q", every: "e", place: "l", payout: "o", id: "i",
-  url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", feesKept: "Fk", laterFills: "Lf", page: "Pg",
+  url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", feesKept: "Fk", page: "Pg",
   by: "B", cases: "C", when: "W", mine: "Mi", readFor: "R", is: "Is", label: "Lb", unit: "Un", tops: "Tp",
   alsoMin: "Am", who: "Wh", boundsEvery: "Be", src: "Sr", questions: "Qs",
   spans: "Sp", row: "Rw", along: "Al", span: "Sn", rank: "Rk", house: "Ho", values: "Vs",
@@ -255,8 +255,7 @@ export interface AddressDeal {
  * says why (`AddressDeal`). Null where the address names none of them, and the page opens what the device holds.
  */
 export async function dealOfAddress(search: string, hash: string, data: Pick<FeesData, "kinds" | "houses" | "tracks" | "templates">, today: string): Promise<AddressDeal | null> {
-  // a deal a link carried opens with what its house's list fills that it has not had (`withLaterFills`), as a saved one does
-  const opened = (r: Unpacked): AddressDeal => ("deal" in r ? { deal: withLaterFills(r.deal, data), given: true, left: r.left, failed: null } : { deal: newDeal(null), given: false, left: [], failed: r.failed });
+  const opened = (r: Unpacked): AddressDeal => ("deal" in r ? { deal: r.deal, given: true, left: r.left, failed: null } : { deal: newDeal(null), given: false, left: [], failed: r.failed });
   const made = (deal: FeeDeal | null, why: LinkFailure) => opened(deal ? { deal, left: [] } : failed(why));
   const packed = new URLSearchParams(hash.replace(/^#/, "")).get("d");
   if (packed !== null) return opened(await unpackedDeal(packed));

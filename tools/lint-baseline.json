@@ -328,7 +328,6 @@
   },
   "typescript(no-floating-promises)": {
    "site/app/components/fee-deal/page.tsx": 1,
-   "site/app/components/invest/deal-account.tsx": 1,
    "site/app/components/search.tsx": 2,
    "site/app/routes/invest.tsx": 3
   },
@@ -571,7 +570,7 @@
    "site/app/lib/custom-entries.ts": 2,
    "site/app/lib/data-as-of.ts": 2,
    "site/app/lib/data.server.ts": 24,
-   "site/app/lib/deal-account/bundle.ts": 1,
+   "site/app/lib/deal-account/bundle.ts": 2,
    "site/app/lib/deal-account/move-bounds.deals.deep.test.ts": 5,
    "site/app/lib/deal-account/move-dollar.deals.deep.test.ts": 3,
    "site/app/lib/deal-account/move-fixtures.ts": 7,
