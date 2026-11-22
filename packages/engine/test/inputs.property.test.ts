@@ -154,7 +154,6 @@ describe("a record's values reach the engine unchanged", () => {
           bond: { coupon: v.cash_rate / 100, ...bond },
         });
       }),
-      { numRuns: 50 },
     );
   });
 

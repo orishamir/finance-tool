@@ -292,7 +292,7 @@ export function StairsTable({ rows, slots, bare = false }: { rows: { id: string;
     <div role="table" className="grid [direction:ltr] mt-0.5" style={{ gridTemplateColumns: `${g}% ${Array(slots).fill(`${c}%`).join(" ")} ${r}%` }}>
       {rows.map((row) => (
         <div key={row.id} role="row" className="contents">
-          <div role="rowheader" className={cx("[direction:rtl] min-w-0 self-center py-1 pr-2 text-left text-[13px] leading-tight text-muted-foreground", row.headClassName)}>
+          <div role="rowheader" className={cx("[direction:rtl] min-w-0 self-center py-1 pr-2 text-left text-xs leading-tight text-muted-foreground", row.headClassName)}>
             {row.head}
           </div>
           {Array.from({ length: slots }, (_, i) => (

@@ -10,13 +10,25 @@ import { scopeWords } from "../../copy";
 import { companyTermsAnchor, noCompanyAnchor, noPageAnchor } from "../../lib/scope";
 import { useProvenanceData } from "../provenance";
 import { RuleCard } from "../provenance-sheets";
-import { useHash } from "../../lib/address";
+import { hashId } from "../../lib/address-hash";
 import { Card, FoldGroup, Section, gershayim } from "../kit";
 
 export interface TermGroup {
   key: string;
   title: string;
   ids: string[];
+}
+
+/** The id the address names (`#KH-09`, `#terms-msci`), read after the first paint: the pre-rendered page has none. */
+function useHash(): string {
+  const [hash, setHash] = useState("");
+  useEffect(() => {
+    const read = () => setHash(hashId(window.location.hash));
+    read();
+    window.addEventListener("hashchange", read);
+    return () => window.removeEventListener("hashchange", read);
+  }, []);
+  return hash;
 }
 
 /** Scrolls to the element the address names once it exists (its fold opened after the first paint). */
@@ -55,12 +67,9 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
   const hash = useHash();
   const [opened, setOpened] = useState<Set<string>>(() => new Set());
   const named = hash === noCompanyAnchor ? noCompanyAnchor : companies.find((c) => noPageAnchor(c.id) === hash)?.id;
-  // a fold the address comes to name opens, once each time it is named; the person may close it again
-  const [namedBefore, setNamedBefore] = useState<string | undefined>(undefined);
-  if (named !== namedBefore) {
-    setNamedBefore(named);
-    if (named && !opened.has(named)) setOpened(new Set(opened).add(named));
-  }
+  useEffect(() => {
+    if (named) setOpened((o) => (o.has(named) ? o : new Set(o).add(named)));
+  }, [named]);
   useScrollToHash(hash, !!named && (named === noCompanyAnchor || opened.has(named)));
   if (companies.length === 0 && none.length === 0) return null;
   const toggle = (key: string) => (now: boolean) => setOpened((o) => { const n = new Set(o); if (now) n.add(key); else n.delete(key); return n; });

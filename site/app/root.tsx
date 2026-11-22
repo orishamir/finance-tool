@@ -11,7 +11,6 @@ import { site, system } from "./copy";
 import { pageMeta, type MetaPlace } from "./lib/page-meta";
 import { useIsoLayoutEffect } from "./lib/hooks";
 import { hashId } from "./lib/address-hash";
-import { z } from "zod";
 
 /**
  * What every page's provenance sheet needs to know: which parameters each formula uses, which parameter card each id belongs to,
@@ -39,16 +38,11 @@ export function links() {
 }
 
 const SCROLL_KEY = "mekor.scroll";
-/** What the tab keeps under SCROLL_KEY: a position by entry key. Anything else is unreadable, and the positions start empty. */
-const keptPositions = z.record(z.string(), z.number());
 const positions: Record<string, number> = {};
 try {
-  if (typeof window !== "undefined") {
-    const kept = keptPositions.safeParse(JSON.parse(window.sessionStorage.getItem(SCROLL_KEY) ?? "{}"));
-    if (kept.success) Object.assign(positions, kept.data);
-  }
+  if (typeof window !== "undefined") Object.assign(positions, JSON.parse(window.sessionStorage.getItem(SCROLL_KEY) ?? "{}"));
 } catch {
-  /* private mode, or text that is not JSON: positions then live only until reload */
+  /* private mode: positions then live only until reload */
 }
 const persist = () => {
   try {
@@ -138,6 +132,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="color-scheme" content="dark" />
         <meta name="robots" content="noindex" />
         {/* Zod tests whether it may compile code with Function(""), which the Content Security Policy refuses and reports
             on every page; this turns that test off before any schema is built (route modules build theirs as they load). */}

@@ -56,6 +56,7 @@ import { cpus } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
+import { frames, newContext, settled } from "./browser.mjs";
 import { serveBuild } from "./serve-build.mjs";
 import { hebrewQuotes, shownText } from "./hebrew-quotes.mjs";
 
@@ -148,7 +149,7 @@ process.exit(failed ? 1 : 0);
  * it was not caught.
  */
 async function keysCheck() {
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark", locale: "he-IL" });
+  const ctx = await newContext(browser, { viewport: { width: 1440, height: 900 }, colorScheme: "dark" });
   const page = await ctx.newPage();
   await page.goto(base + "/kit", { waitUntil: "networkidle" });
   await page.evaluate(settled);
@@ -217,7 +218,7 @@ async function keysCheck() {
  */
 async function linesCheck() {
   const found = [];
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark", locale: "he-IL" });
+  const ctx = await newContext(browser, { viewport: { width: 1440, height: 900 }, colorScheme: "dark" });
   const page = await ctx.newPage();
   await page.goto(base + "/kit", { waitUntil: "networkidle" });
   await page.evaluate(settled);
@@ -241,7 +242,7 @@ async function linesCheck() {
   await ctx.close();
   const file = join(here, "layout-check-deal.txt");
   if (existsSync(file)) {
-    const deal = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark", locale: "he-IL" });
+    const deal = await newContext(browser, { viewport: { width: 1440, height: 900 }, colorScheme: "dark" });
     const p = await deal.newPage();
     await p.goto(base + readFileSync(file, "utf8").trim(), { waitUntil: "networkidle" });
     await p.evaluate(settled);
@@ -261,7 +262,7 @@ async function linesCheck() {
 async function gripCheck() {
   const found = [];
   const open = async (path) => {
-    const ctx = await browser.newContext({ viewport: { width: 390, height: HEIGHT[390] }, colorScheme: "dark", locale: "he-IL", hasTouch: true, isMobile: true });
+    const ctx = await newContext(browser, { viewport: { width: 390, height: HEIGHT[390] }, colorScheme: "dark", hasTouch: true, isMobile: true });
     const page = await ctx.newPage();
     await page.goto(base + path, { waitUntil: "networkidle" });
     await page.evaluate(settled);
@@ -374,7 +375,7 @@ async function askCheck() {
   const found = [];
   const fail = (width, detail) => found.push({ width, detail });
   const open = async (width) => {
-    const ctx = await browser.newContext({ viewport: { width, height: HEIGHT[width] }, colorScheme: "dark", locale: "he-IL", hasTouch: width < 600 });
+    const ctx = await newContext(browser, { viewport: { width, height: HEIGHT[width] }, colorScheme: "dark", hasTouch: width < 600 });
     const page = await ctx.newPage();
     await page.goto(base + dealPath, { waitUntil: "networkidle" });
     await page.evaluate(settled);
@@ -504,7 +505,7 @@ async function dragCheck() {
   const dealPath = readFileSync(file, "utf8").trim();
   const found = [];
   const open = async () => {
-    const ctx = await browser.newContext({ viewport: { width: 1440, height: 2400 }, colorScheme: "dark", locale: "he-IL" });
+    const ctx = await newContext(browser, { viewport: { width: 1440, height: 2400 }, colorScheme: "dark" });
     const page = await ctx.newPage();
     await page.goto(base + dealPath, { waitUntil: "networkidle" });
     await page.evaluate(settled);
@@ -548,7 +549,6 @@ async function dragCheck() {
     const b = await el.boundingBox();
     await page.mouse.move(b.x + b.width / 2, b.y + Math.min(b.height / 2, 24), { steps: 8 });
     await page.mouse.up();
-    await page.waitForTimeout(500);
     await page.evaluate(settled);
   };
   // the case cells of the grid (not a part line's, not an empty place), by line and column
@@ -613,7 +613,7 @@ async function dragCheck() {
       const b = (await every.count()) ? await every.boundingBox() : null;
       if (b) {
         await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 6 });
-        await page.waitForTimeout(150);
+        await page.evaluate(settled);
         const bad = await grid.evaluate((g) => {
           if (!g.closest("li")?.querySelector("[data-every-case] [data-drop-over], [data-every-case][data-drop-over]") && !document.querySelector("[data-drop-over] [data-every-case]")) return null;
           const tiles = [...g.querySelectorAll("[role=gridcell], [role=rowheader]")].filter((el) => !el.closest("[data-lift-ghost]")).map((el) => ({ el, r: el.getBoundingClientRect(), row: el.closest("[data-grid-row]") }));
@@ -629,7 +629,7 @@ async function dragCheck() {
       }
       await page.keyboard.press("Escape");
       await page.mouse.up();
-      await page.waitForTimeout(300);
+      await page.evaluate(settled);
     }
     if (!shown) found.push("no part line of the deal's first grid previews over the parts its fee's cases hold alike");
     await ctx.close();
@@ -669,7 +669,6 @@ async function dragCheck() {
         if (picked) found.push(`carrying a case's cell from its own surface selected words: "${picked.replace(/\s+/g, " ").slice(0, 40)}"`);
         // let go where it is: the cell there, measured again, would be its preview's
         await page.mouse.up();
-        await page.waitForTimeout(500);
         await page.evaluate(settled);
       } else {
         await lift(page, cellAt(grid, at.row, at.from));
@@ -696,7 +695,7 @@ async function dragCheck() {
     else {
       const a = await words(shut);
       await page.mouse.click(p.x, p.y);
-      await page.waitForTimeout(300);
+      await page.evaluate(settled);
       const opened = await shut.evaluate((c) => [c, ...c.children].some((e) => e.matches(".outline-primary, .border-primary")));
       if (!opened) found.push(`a click on a case's cell's own surface ("${a}") did not open its case`);
     }
@@ -727,7 +726,7 @@ async function dragCheck() {
       if (!(await item.count())) found.push(`a case's grip menu offers no "הזזה שמאלה" where the case beside it can swap with it`);
       else {
         await item.click();
-        await page.waitForTimeout(500);
+        await page.evaluate(settled);
         if ((await words(cellAt(grid, c.row, 0))) !== b || (await words(cellAt(grid, c.row, 1))) !== a) found.push(`"הזזה שמאלה" in a case's grip menu did not swap it with the case to its left`);
       }
     }
@@ -793,7 +792,7 @@ async function previewCheck(open) {
   const gapMoved = [];
   for (const p of places) {
     await page.mouse.move(p.x, p.y, { steps: 6 });
-    await page.waitForTimeout(150);
+    await page.evaluate(settled);
     if ((await gapBox()) !== gap0) gapMoved.push(p.at);
     const r = await page.evaluate(
       ({ w, p }) => {
@@ -879,7 +878,7 @@ async function steadyCheck(dealPath, cellAt, lift) {
     [a.height !== b.height && `its height ${b.height} → ${a.height} px`, a.y !== b.y && `its scroll ${b.y} → ${a.y} px`, a.bar !== b.bar && (a.bar ? "a scrollbar came" : "its scrollbar went"), a.tables !== b.tables && `${a.tables} fee tables with a scrollbar down (${b.tables} at rest)`].filter(Boolean).join(", ");
   for (const screen of ["900", "the page's height"]) {
     for (const what of ["a case's cell", "a part line"]) {
-      const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark", locale: "he-IL" });
+      const ctx = await newContext(browser, { viewport: { width: 1440, height: 900 }, colorScheme: "dark" });
       const page = await ctx.newPage();
       await page.goto(base + dealPath, { waitUntil: "networkidle" });
       await page.evaluate(settled);
@@ -903,7 +902,7 @@ async function steadyCheck(dealPath, cellAt, lift) {
         continue;
       }
       await lift(page, el);
-      await page.waitForTimeout(200);
+      await page.evaluate(settled);
       // each way the page moved, with where it first did, and how many times it was found moved
       const moved = new Map();
       let times = 0;
@@ -927,11 +926,11 @@ async function steadyCheck(dealPath, cellAt, lift) {
             await page.mouse.move(x + dx, y);
             await note(`at ${y - geo.top} px down the grid`);
           }
-      // held still where the pointer stopped, and over the first column's middle
+      // held still where the pointer stopped, and over the first column's middle, looked at every six frames for thirty
       for (const [x, y] of [[geo.xs.at(-1), to], [geo.xs[0], Math.round((from + to) / 2)]]) {
         await page.mouse.move(x, y);
         for (let i = 0; i < 5; i++) {
-          await page.waitForTimeout(100);
+          await frames(page, 6);
           await note(`held still at ${y - geo.top} px down the grid`);
         }
       }
@@ -943,8 +942,9 @@ async function steadyCheck(dealPath, cellAt, lift) {
           await page.mouse.move(geo.xs[0], y1, { steps: 8 });
           const ys = [];
           let height = true;
+          // every third frame, for thirty-six: the page scrolls a step at each frame (kit/lift.tsx)
           for (let i = 0; i < 12; i++) {
-            await page.waitForTimeout(50);
+            await frames(page, 3);
             const s = await state(page);
             ys.push(s.y);
             height &&= s.height === rest.height;
@@ -967,7 +967,7 @@ async function steadyCheck(dealPath, cellAt, lift) {
  * own, a long term in a 160 px column, and the caution callout of a doubted figure's sheet pushed below the sheet's fold. Returns the checks that did not catch theirs.
  */
 async function selfTest() {
-  const ctx = await browser.newContext({ viewport: { width: SHEET_WIDTH, height: HEIGHT[SHEET_WIDTH] }, colorScheme: "dark", locale: "he-IL", hasTouch: true, isMobile: true });
+  const ctx = await newContext(browser, { viewport: { width: SHEET_WIDTH, height: HEIGHT[SHEET_WIDTH] }, colorScheme: "dark", hasTouch: true, isMobile: true });
   const page = await ctx.newPage();
   await page.goto(base + "/kit", { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
@@ -1021,7 +1021,7 @@ async function selfTest() {
   if (await doubted.count()) {
     await doubted.scrollIntoViewIfNeeded();
     await doubted.click();
-    await page.waitForTimeout(450);
+    await page.evaluate(settled);
     await page.evaluate(() => {
       const note = [...document.querySelectorAll("dialog")].find((d) => d.open)?.querySelector('[role="note"]');
       if (note) note.before(Object.assign(document.createElement("div"), { style: "height:2000px" }));
@@ -1030,7 +1030,7 @@ async function selfTest() {
   if (!(await page.evaluate(warningsOutOfSight)).length) missed.push("warning");
   await ctx.close();
   // a table that scrolls sideways beside a side list, and a side list folded over its content, planted on the kit page at 1440
-  const wide = await browser.newContext({ viewport: { width: 1440, height: 800 }, colorScheme: "dark", locale: "he-IL" });
+  const wide = await newContext(browser, { viewport: { width: 1440, height: 800 }, colorScheme: "dark" });
   const desk = await wide.newPage();
   await desk.goto(base + "/kit", { waitUntil: "networkidle" });
   await desk.evaluate(settled);
@@ -1080,7 +1080,7 @@ async function checkWidth(width) {
   const out = new Array(paths.length);
   let next = 0;
   const tab = async () => {
-    const ctx = await browser.newContext({ viewport: { width, height: HEIGHT[width] }, colorScheme: "dark", locale: "he-IL", ...(width < 800 ? { hasTouch: true, isMobile: true } : {}) });
+    const ctx = await newContext(browser, { viewport: { width, height: HEIGHT[width] }, colorScheme: "dark", ...(width < 800 ? { hasTouch: true, isMobile: true } : {}) });
     const page = await ctx.newPage();
     while (next < paths.length) {
       const i = next++;
@@ -1104,7 +1104,6 @@ async function checkPage(page, path, width) {
   await page.evaluate(() => document.querySelectorAll("main details:not([open])").forEach((d) => (d.open = true)));
   // and every row's fold (a deposit's details)
   await page.evaluate(() => document.querySelectorAll('main [data-row-fold][aria-expanded="false"]').forEach((b) => b.click()));
-  await page.waitForTimeout(500);
   await page.evaluate(settled);
   const seen = new Set();
   const add = (f) => { const k = `${f.check}|${f.id}|${f.detail}`; if (!seen.has(k)) { seen.add(k); findings.push(f); } };
@@ -1127,7 +1126,6 @@ async function checkPage(page, path, width) {
   for (let t = 1; t < nTabs; t++) {
     // the card's corner: a figure in its middle opens its own sheet
     await tabs.nth(t).click({ position: { x: 12, y: 12 } });
-    await page.waitForTimeout(500);
     await page.evaluate(settled);
     await look();
   }
@@ -1169,24 +1167,16 @@ async function checkPage(page, path, width) {
         findings.push({ check: "warning", id: "tap", detail: `a figure with a warning could not be tapped: ${await fig.getAttribute("aria-label")}` });
         continue;
       }
-      await page.waitForTimeout(450); // the sheet slides up
+      await page.evaluate(settled); // the sheet slides up
       const hidden = await page.evaluate(warningsOutOfSight);
       opened++;
       const name = (await fig.innerText()).trim();
       for (const h of hidden) findings.push({ check: "warning", id: h.title.slice(0, 12), detail: `the sheet of ${name} shows "${h.title}" only after scrolling (its top ${h.top} px, the sheet shows to ${h.bottom} px)` });
       await page.keyboard.press("Escape");
-      await page.waitForTimeout(350);
+      await page.evaluate(settled);
     }
   }
   return { path, findings, sheets: opened };
-}
-
-// Runs in the page. Resolves once the page has hydrated and stopped drawing itself again: a chart measures its box after hydration and draws
-// again at that width (useWidth: 720 px until then), so a page measured before that shows a wide chart that isn't there (2026-11-08: /kit's
-// PileStory at 390 and 320 on GitHub, with tabs side by side). The main thread idle, then two frames, twice.
-function settled() {
-  const once = () => new Promise((done) => requestIdleCallback(() => requestAnimationFrame(() => requestAnimationFrame(() => done())), { timeout: 10000 }));
-  return once().then(once);
 }
 
 // Runs in the page. The page is wider than the screen: what pokes out of it, innermost first (an element none of whose children poke out:

@@ -46,7 +46,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 export function Button({ variant = "secondary", flush, size, gap, wide, bold, className, children, type = "button", ...rest }: ButtonProps) {
   if (variant === "inline")
     return (
-      <button type={type} className={cx("relative rounded-md text-start text-link underline-offset-[3px] transition-colors duration-[var(--duration-fast)] before:absolute before:inset-x-0 before:top-1/2 before:h-[max(calc(100%+1.5rem),var(--target))] before:-translate-y-1/2", bold ? "font-semibold hover:underline" : "underline hover:no-underline", className)} {...rest}>
+      <button type={type} className={cx("relative rounded-md text-start text-link underline-offset-[3px] transition-colors duration-(--duration-fast) before:absolute before:inset-x-0 before:top-1/2 before:h-[max(calc(100%+1.5rem),var(--target))] before:-translate-y-1/2", bold ? "font-semibold hover:underline" : "underline hover:no-underline", className)} {...rest}>
         {children}
       </button>
     );
@@ -73,7 +73,7 @@ export function Button({ variant = "secondary", flush, size, gap, wide, bold, cl
       : "size-target inline-flex items-center justify-center rounded-md text-foreground hover:bg-accent",
   }[variant];
   return (
-    <button type={type} className={cx("inline-flex items-center justify-center transition-colors duration-[var(--duration-fast)]", gap === "sm" ? "gap-1.5" : "gap-2", styles, className)} {...rest}>
+    <button type={type} className={cx("inline-flex items-center justify-center transition-colors duration-(--duration-fast)", gap === "sm" ? "gap-1.5" : "gap-2", styles, className)} {...rest}>
       {variant === "add" ? <span>+ {children}</span> : children}
     </button>
   );

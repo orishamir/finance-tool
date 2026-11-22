@@ -154,7 +154,7 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
         </div>
       ))}
       {!stacked && at !== null && at >= range.lo && at <= range.hi && (
-        <div aria-hidden="true" dir="ltr" className="pointer-events-none absolute inset-y-0 start-0 end-0 top-6" style={inset}>
+        <div aria-hidden="true" dir="ltr" className="pointer-events-none absolute inset-y-0 inset-s-0 inset-e-0 top-6" style={inset}>
           <span className={cx("absolute inset-y-0 w-px", entered ? "bg-entered" : "bg-chart-crosshair")} style={{ left: `${clip(range, at) * 100}%` }} />
         </div>
       )}

@@ -17,7 +17,7 @@
 import { useMemo, useState, type ReactNode, type RefObject } from "react";
 import { flags, invest as c, leftOut as leftOutCopy } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { fmt, nisOf } from "../../lib/format";
+import { fmt } from "../../lib/format";
 import { shortFundName } from "../../lib/fund-name";
 import { asideLines, dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWay, type InvestView, type WayPrice } from "../../lib/invest";
 import { isGroupProvider } from "../../lib/group-pick";
@@ -26,7 +26,7 @@ import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
-import { NisNum, Num, Ruled } from "../provenance";
+import { Num, Ruled } from "../provenance";
 import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, LongestCase, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, FundTerms } from "./custom-entries";
 import { AddDealButton, DealTerms, DeletedLine, NotMovedLines, useDealAccounts } from "./deal-account";
@@ -424,18 +424,16 @@ export function PairLists(props: ListsProps) {
     const selected = f.rec.id === pick.fund;
     const x = cross.get(f.rec.id);
     const n = Math.round(at.valueN - selAt.valueN);
-    // the difference from the chosen fund, its size: "the same" where it rounds to nothing
-    const diffNum = (dv: SiteValue) => <Num animate value={dv} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : nisOf(dv, Math.abs(v)))} />;
     const figure = selected ? (
       chosenWord(chosen, "text-chart-by-fund")
     ) : x && range ? (
       // the difference over the dollar's range, in place of one amount; what the range is, in its "?"
       <span className="text-xs text-muted-foreground tabular-nums whitespace-nowrap">
-        {c.kinds.between} <NisNum signed animate value={x.lo} /> {c.kinds.and}
-        <NisNum signed animate value={x.hi} /> <HelpMark about={sp.diffAbout} text={`${c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}.`} />
+        {c.kinds.between} <Num animate value={x.lo} display={fmt.signedNisWhole} /> {c.kinds.and}
+        <Num animate value={x.hi} display={fmt.signedNisWhole} /> <HelpMark about={sp.diffAbout} text={`${c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}.`} />
       </span>
     ) : (
-      figureCell(n < 0 ? c.lists.funds.less : n > 0 ? c.lists.funds.more : null, diffNum(diff(n, f, at)), n)
+      figureCell(n < 0 ? c.lists.funds.less : n > 0 ? c.lists.funds.more : null, <Num animate value={diff(n, f, at)} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : fmt.nisWhole(Math.abs(v)))} />, n)
     );
     const typed = isCustomFund(f.rec);
     return {

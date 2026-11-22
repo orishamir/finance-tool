@@ -10,6 +10,7 @@ import { randomBytes } from "node:crypto";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
+import { newContext, settled } from "../browser.mjs";
 import { serveBuild } from "../serve-build.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -103,7 +104,8 @@ async function checkWidth(width) {
   const out = new Array(paths.length);
   let next = 0;
   const tab = async () => {
-    const ctx = await browser.newContext({ viewport: { width, height: 900 }, ...(width < 800 ? { hasTouch: true, isMobile: true } : {}) });
+    // motion off: a chart is measured where its marks come to rest, and with no glide they are drawn there at once
+    const ctx = await newContext(browser, { viewport: { width, height: 900 }, reducedMotion: "reduce", ...(width < 800 ? { hasTouch: true, isMobile: true } : {}) });
     const page = await ctx.newPage();
     // a fresh document for each chart (a document written again keeps its first Content-Security-Policy), served from memory
     const lab = await ctx.newPage();
@@ -122,7 +124,6 @@ async function checkWidth(width) {
 async function checkPage(page, lab, p, width) {
   await page.goto(server.url.replace(/\/$/, "") + p, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
-  await page.waitForTimeout(800); // charts glide into place
   await page.evaluate(settled);
   const found = await page.evaluate(inspect, { MIN_TEXT_PX, MAX_COLOURS, scope: "main" });
   // panels behind tab cards are not in the page until their tab opens (the index page's "לפני שמחליטים"): each closed tab is opened in
@@ -133,7 +134,6 @@ async function checkPage(page, lab, p, width) {
     if ((await tab.getAttribute("aria-selected")) === "true") continue;
     // the card's corner: a figure in its middle opens its own sheet
     await tab.click({ position: { x: 12, y: 12 } });
-    await page.waitForTimeout(800);
     await page.evaluate(settled);
     found.push(...(await page.evaluate(inspect, { MIN_TEXT_PX, MAX_COLOURS, scope: `[role=tabpanel][id="${await tab.getAttribute("aria-controls")}"]` })));
   }
@@ -147,13 +147,6 @@ async function checkPage(page, lab, p, width) {
     c.svg = true;
   }
   return { path: p, charts: found };
-}
-
-// Runs in the page. Resolves once the page has hydrated and stopped drawing itself again (a chart draws again at its measured width after
-// hydration, useWidth): the main thread idle, then two frames, twice. The layout check has the same.
-function settled() {
-  const once = () => new Promise((done) => requestIdleCallback(() => requestAnimationFrame(() => requestAnimationFrame(() => done())), { timeout: 10000 }));
-  return once().then(once);
 }
 
 /** measure_svg.js on a page of its own, as check_svg.py builds it (the svg as data, only the two nonce'd scripts run, nothing is fetched). */

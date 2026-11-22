@@ -14,7 +14,7 @@ import { cx } from "./cx";
  */
 function TickChip({ on, onClick, children }: { on: boolean; onClick: () => void; children: ReactNode }) {
   return (
-    <button type="button" aria-pressed={on} onClick={onClick} className={cx("inline-flex min-h-target items-center gap-1.5 rounded-md border bg-card ps-2.5 pe-3.5 text-sm transition-colors duration-[var(--duration-fast)]", on ? "border-primary outline-1 outline-primary" : "border-input hover:bg-accent")}>
+    <button type="button" aria-pressed={on} onClick={onClick} className={cx("inline-flex min-h-target items-center gap-1.5 rounded-md border bg-card ps-2.5 pe-3.5 text-sm transition-colors duration-(--duration-fast)", on ? "border-primary outline-1 outline-primary" : "border-input hover:bg-accent")}>
       <Check size={16} strokeWidth={1.75} aria-hidden className={cx("shrink-0 text-primary", !on && "invisible")} />
       {children}
     </button>

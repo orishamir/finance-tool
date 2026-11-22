@@ -19,12 +19,12 @@ import { AskField, Button, Card, ChoiceChips, cx, gershayim, DidYouKnow, DocLink
 import { claimTopics, docGroup, docGroups, docsForTopics, editionText, pageHref, type CompanyDoc, type DocGroup } from "../lib/company-docs";
 import { fmt } from "../lib/format";
 import { MQ, useMedia } from "../lib/hooks";
-import { facetCounts, filtersToSearch, groupProducts, idInField, parseFilters, passesFilters, shelfGroups, shownShelf, type Filters, type LightRule } from "../lib/rules-filter";
+import { emptyFilters, facetCounts, filtersToSearch, groupProducts, idInField, parseFilters, passesFilters, shelfGroups, shownShelf, type Filters, type LightRule } from "../lib/rules-filter";
 import { shelfIds, type ShelfId } from "../lib/rule-shelves";
 import { ruleTitle } from "../lib/rule-title";
 import { analyze, isRuleKind, relaxedHits, searchEntries } from "../lib/search";
 import { pickSources, type SourcedRule } from "../lib/sources";
-import { moveAddress, useAddressSearch, useHash } from "../lib/address";
+import { hashId } from "../lib/address-hash";
 import type { RuleRecord } from "@finance-tool/schema";
 
 /** A rule's title for a list: the record's Hebrew title or text; never the English working title (the topic's Hebrew name stands in). */
@@ -169,12 +169,6 @@ const RecordsStatus = ({ broken }: { broken: boolean }) => (
 const claimFirst = 9;
 /** How many of the companies' own terms a search shows. */
 const companyFirst = 6;
-/**
- * Writes the filters into the address, the open rule's fragment kept. Not a router navigation: one here would scroll to the open rule's
- * fragment and reload the page's data on every search.
- */
-const writeFilters = (f: Filters) => moveAddress(`${window.location.pathname}${filtersToSearch(f)}${window.location.hash}`, "replace");
-
 /** The field's text reaches the search when the hand rests this long. */
 const claimRest = 150;
 const DETAIL = "rule-detail";
@@ -262,9 +256,9 @@ function ProductList({ names, counts, total, current, onPick }: { names: Map<str
       type="button"
       aria-pressed={current === id}
       onClick={() => onPick(id)}
-      className={cx("relative w-full min-h-target xl:tap-area flex", all ? "xl:min-h-11" : "xl:min-h-9", "items-center justify-between gap-3 px-3 rounded-md text-start text-sm transition-colors duration-[var(--duration-fast)]", current === id ? "bg-accent font-semibold" : "hover:bg-accent/50")}
+      className={cx("relative w-full min-h-target xl:tap-area flex", all ? "xl:min-h-11" : "xl:min-h-9", "items-center justify-between gap-3 px-3 rounded-md text-start text-sm transition-colors duration-(--duration-fast)", current === id ? "bg-accent font-semibold" : "hover:bg-accent/50")}
     >
-      {current === id && <span aria-hidden="true" className="absolute inset-y-1.5 start-0 w-[3px] rounded-full bg-primary" />}
+      {current === id && <span aria-hidden="true" className="absolute inset-y-1.5 inset-s-0 w-[3px] rounded-full bg-primary" />}
       <span className={cx("min-w-0", all && "flex items-center gap-2.5 font-medium")}>
         {all && (
           <span className={cx("grid place-items-center size-7 rounded-md text-primary shrink-0", current === null ? "bg-background" : "bg-accent")}>
@@ -273,7 +267,7 @@ function ProductList({ names, counts, total, current, onPick }: { names: Map<str
         )}
         {gershayim(name)}
       </span>
-      <bdi dir="ltr" className="shrink-0 text-[13px] font-normal tabular-nums text-muted-foreground">
+      <bdi dir="ltr" className="shrink-0 text-xs-flow font-normal tabular-nums text-muted-foreground">
         {fmt.number(n)}
       </bdi>
     </button>
@@ -297,53 +291,60 @@ function ProductList({ names, counts, total, current, onPick }: { names: Map<str
 
 export default function Rules() {
   const data = useLoaderData<typeof loader>();
-  // a router navigation to this page (a link with a query or a fragment) fires no event: reading the location renders the page again on
-  // one, and the address hooks below read the new address then
-  useLocation();
+  const loc = useLocation();
   const navigate = useNavigate();
   /** From xl the rule opens beside the list; narrower, on a screen of its own. */
   const wide = useMedia(MQ.xl);
-  /** The address is the state (?product=&shelf=&changing=1&q=); the pre-rendered page has none. */
-  const search = useAddressSearch();
-  const filters = useMemo(() => parseFilters(search), [search]);
-  /** What the field holds while the hand types, over the search the address held then; once the address's search moves on, the field shows it. */
-  const [draft, setDraft] = useState<{ value: string; over: string } | null>(null);
-  const text = draft && draft.over === filters.q ? draft.value : filters.q;
+  const [filters, setFiltersState] = useState<Filters>(emptyFilters);
+  const [text, setText] = useState("");
   const [focused, setFocused] = useState(false);
   const [lawAll, setLawAll] = useState(false);
   const [claimTab, setClaimTab] = useState<"law" | "companies">("law");
   const [picker, setPicker] = useState(false);
   const [filterSheet, setFilterSheet] = useState(false);
+  const [target, setTarget] = useState("");
   const [loaded, setLoaded] = useState<Partial<Record<BundleId, ShelfBundle>>>({});
   const [failed, setFailed] = useState<Set<BundleId>>(() => new Set());
   const requested = useRef(new Set<BundleId>());
   const typing = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  /** The search the field last gave the page: a newer one may be in the field already, and must not be overwritten. */
+  const committed = useRef("");
   /** The product, question and "changing only" chip before a search began: clearing the field goes back to them. */
   const browsing = useRef<Pick<Filters, "product" | "shelf" | "changing">>({ product: null, shelf: null, changing: false });
   /** On a narrow screen: where the list was scrolled when a rule opened, which rule, and whether opening it added a history step. */
   const back = useRef<{ y: number; id: string; pushed: boolean } | null>(null);
   /** A rule the address named: its row is brought into view once the list shows it. */
   const landing = useRef("");
-  /** A rule opened by a press, until the address names it: not a landing. */
-  const opening = useRef("");
   /** A rule opened by a press: focus moves into it once it shows. */
   const focusing = useRef("");
 
   const lightById = useMemo(() => new Map(data.light.map((r) => [r.id, r])), [data.light]);
   const names = useMemo(() => new Map(data.productNames.map((p) => [p.id, p.name])), [data.productNames]);
 
-  /** The rule open: the one the address names (#ID). */
-  const target = useHash();
-  // a rule the address comes to name that no press opened (the page loaded on it, a link, Back) is a landing
-  const shownTarget = useRef("");
+  // the address is the state: read it after the first paint (the pre-rendered page has none), and again when a link moves here
   useEffect(() => {
-    const was = shownTarget.current;
-    shownTarget.current = target;
-    if (target === was) return;
-    const pressed = opening.current === target;
-    opening.current = "";
-    if (target && !pressed) landing.current = target;
-  }, [target]);
+    const f = parseFilters(window.location.search);
+    committed.current = f.q;
+    setText(f.q);
+    setFiltersState(f);
+  }, [loc.search]);
+
+  const readHash = useCallback(() => {
+    const id = hashId(window.location.hash);
+    setTarget((cur) => {
+      if (id && id !== cur) landing.current = id;
+      return id;
+    });
+  }, []);
+  useEffect(() => {
+    readHash();
+    window.addEventListener("hashchange", readHash);
+    window.addEventListener("popstate", readHash);
+    return () => {
+      window.removeEventListener("hashchange", readHash);
+      window.removeEventListener("popstate", readHash);
+    };
+  }, [readHash, loc.hash]);
 
   // a hash that names a company's term, which this page no longer lists (D30): on to where it is listed
   useEffect(() => {
@@ -351,26 +352,40 @@ export default function Rules() {
     if (to) void navigate(to, { replace: true });
   }, [target, data.elsewhere, navigate]);
 
-  const setFilters = useCallback((patch: Partial<Filters>) => writeFilters({ ...parseFilters(window.location.search), ...patch }), []);
+  const setFilters = useCallback((patch: Partial<Filters>) => {
+    setFiltersState((cur) => {
+      const next = { ...cur, ...patch };
+      // not a navigation: a router navigation here would reload the page's data on every keystroke
+      window.history.replaceState(window.history.state, "", `${window.location.pathname}${filtersToSearch(next)}${window.location.hash}`);
+      return next;
+    });
+  }, []);
 
   // the field answers at once; the search waits until the hand rests. A search begun from the list starts over every product and
   // question; clearing it goes back to the list as it was.
+  useEffect(() => {
+    if (filters.q === committed.current) return;
+    committed.current = filters.q;
+    setText(filters.q);
+  }, [filters.q]);
   const typed = useCallback(
     (value: string, now = false) => {
-      setDraft({ value, over: parseFilters(window.location.search).q });
+      setText(value);
       setLawAll(false);
       clearTimeout(typing.current);
       const commit = () => {
-        const cur = parseFilters(window.location.search);
-        const was = cur.q;
+        const was = committed.current;
+        committed.current = value;
         setClaimTab("law");
-        let next: Filters = { ...cur, q: value };
-        if (!was.trim() && value.trim()) {
-          browsing.current = { product: cur.product, shelf: cur.shelf, changing: cur.changing };
-          next = { ...next, product: null, shelf: null };
-        } else if (was.trim() && !value.trim()) next = { ...next, ...browsing.current };
-        setDraft(null);
-        writeFilters(next);
+        setFiltersState((cur) => {
+          let next: Filters = { ...cur, q: value };
+          if (!was.trim() && value.trim()) {
+            browsing.current = { product: cur.product, shelf: cur.shelf, changing: cur.changing };
+            next = { ...next, product: null, shelf: null };
+          } else if (was.trim() && !value.trim()) next = { ...next, ...browsing.current };
+          window.history.replaceState(window.history.state, "", `${window.location.pathname}${filtersToSearch(next)}${window.location.hash}`);
+          return next;
+        });
       };
       if (now || !value) commit();
       else typing.current = setTimeout(commit, claimRest);
@@ -454,17 +469,18 @@ export default function Rules() {
   const url = (hash: string) => `${window.location.pathname}${window.location.search}${hash ? `#${encodeURIComponent(hash)}` : ""}`;
   const openRule = useCallback((id: string) => {
     landing.current = "";
-    opening.current = id;
-    focusing.current = id;
     if (wide) {
+      window.history.replaceState(window.history.state, "", url(id));
       back.current = null;
-      moveAddress(url(id), "replace");
     } else {
       // a screen of its own: the phone's back gesture closes it, and the list comes back where it was
       const pushed = !back.current;
+      if (pushed) window.history.pushState(window.history.state, "", url(id));
+      else window.history.replaceState(window.history.state, "", url(id));
       back.current = { y: back.current?.y ?? window.scrollY, id, pushed: back.current?.pushed ?? pushed };
-      moveAddress(url(id), pushed ? "push" : "replace");
     }
+    setTarget(id);
+    focusing.current = id;
     requestAnimationFrame(() => {
       if (!wide) window.scrollTo(0, 0);
     });
@@ -480,7 +496,8 @@ export default function Rules() {
       window.history.back();
       return;
     }
-    moveAddress(url(""), "replace");
+    window.history.replaceState(window.history.state, "", url(""));
+    setTarget("");
   }, []);
   // when the rule closes on a narrow screen: the list where it was, and focus on the rule's row
   const wasTarget = useRef("");
@@ -734,7 +751,7 @@ export default function Rules() {
           </div>
         )}
 
-        <footer className={cx("flex flex-col gap-2 border-t border-border pt-3 text-[13px] text-muted-foreground max-w-measure", hideWhenOpen)}>
+        <footer className={cx("flex flex-col gap-2 border-t border-border pt-3 text-xs-flow text-muted-foreground max-w-measure", hideWhenOpen)}>
           <NumberLegend />
           <p>{sourceBlock.legendLine}</p>
           <p>
@@ -800,7 +817,7 @@ function CompanyResults({ company, names, docs, pd, failed }: { company: string[
             <tr key={d.id}>
               <th scope="row" className="font-medium align-top">
                 <bdi>{d.company}</bdi>
-                <span className="md:hidden block font-normal text-[13px] text-muted-foreground">{d.title}</span>
+                <span className="md:hidden block font-normal text-xs-flow text-muted-foreground">{d.title}</span>
               </th>
               <td className={cx(PHONE_GONE, "align-top")}>{d.title}</td>
               <td className={cx(PHONE_GONE, "align-top tabular-nums")}>{editionText(d.version) ?? words.noEdition}</td>

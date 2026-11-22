@@ -86,7 +86,7 @@ export function EditInPlace({ label, field, onOpen, children, className }: { lab
       data-lift=""
       data-edit-in-place=""
       title={label}
-      className={cx("inline cursor-text rounded-sm hover:bg-accent", className)}
+      className={cx("inline cursor-text rounded-sm resting:hover:bg-accent", className)}
       // the figure's own tap (its source) gives way to the edit
       onClickCapture={(e) => {
         e.preventDefault();

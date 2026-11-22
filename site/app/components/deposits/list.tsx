@@ -253,7 +253,7 @@ export function FoldFoot({ open, more, onToggle }: { open: boolean; more: string
   return (
     <button type="button" aria-expanded={open} onClick={onToggle} className="w-full flex items-center justify-between gap-3 min-h-14 px-4 md:px-6 border-t border-border text-link font-semibold hover:bg-accent cursor-pointer">
       <span>{open ? t.fold.less : more}</span>
-      <IconChevronDown size={18} className={cx("transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
+      <IconChevronDown size={18} className={cx("transition-transform duration-(--duration-fold) ease-standard", open && "rotate-180")} />
     </button>
   );
 }

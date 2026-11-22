@@ -8,7 +8,7 @@ import type { RuleRecord } from "@finance-tool/schema";
 import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { ownFigures, spanWords, wordUnits } from "../lib/rule-row";
-import { fmt, formatValue, roundingOf } from "../lib/format";
+import { fmt, formatValue } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
@@ -455,9 +455,9 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
   const param = isParameter(value);
   const today = useContext(TodayCtx);
   const blocked = isOpenValue(value);
-  const bare = (typeof value.value !== "number" ? display : undefined) ?? value.written ?? (blocked ? strengthCopy.open.label : formatValue(value.value, value.unit, exact ? undefined : roundingOf(value), param));
+  const bare = (typeof value.value !== "number" ? display : undefined) ?? value.written ?? (blocked ? strengthCopy.open.label : formatValue(value.value, value.unit, exact ? undefined : value.state, param));
   // a figure shown with its sign heads its sheet with it: "+0.37%" in the row read "0.37%" in the sheet
-  const text = value.signed && typeof value.value === "number" && value.value !== 0 ? `${value.value > 0 ? "+" : "−"}${formatValue(Math.abs(value.value), value.unit, exact ? undefined : roundingOf(value), param)}` : bare;
+  const text = value.signed && typeof value.value === "number" && value.value !== 0 ? `${value.value > 0 ? "+" : "−"}${formatValue(Math.abs(value.value), value.unit, exact ? undefined : value.state, param)}` : bare;
   // a long word (a deposit's tax: "ריבית לא צמודה. השיעור בעמוד המדריך.") wraps in a smaller size; kept on one line it ran past a phone's edge
   const longHead = text.length > 24;
   // the row's own words where they differ from the unit's (a one-year gap: "ב־2025"), so the head says what the row says (copy 10.4)
@@ -1028,7 +1028,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
   const usesSome = !!uses && (uses.pages.length > 0 || uses.engine);
   return (
     <article data-code-ok className={cx("flex flex-col gap-5 min-w-0 [overflow-wrap:anywhere]", open && "rule-open")}>
-      <p className="text-[13px] text-muted-foreground">
+      <p className="text-xs-flow text-muted-foreground">
         <bdi dir="ltr" className="tabular-nums slashed-zero">{id}</bdi>
       </p>
       <header className="flex flex-col gap-2 -mt-3">
@@ -1119,7 +1119,7 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
   const parts = first ? sourceParts(first) : null;
   return (
     <Card edge="accent" pad="tight" className="flex flex-col gap-3">
-      <span className="text-[13px] font-medium text-primary">{label}</span>
+      <span className="text-xs-flow font-medium text-primary">{label}</span>
       <h3 className="text-lg font-semibold leading-snug -mt-1">
         <button type="button" onClick={onOpen} className="text-start hover:underline">
           <ShownRuleTitle rule={rule} />
@@ -1144,7 +1144,7 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
         lead && <p className="text-base">{lead}</p>
       )}
       {first && parts && (
-        <p className="text-[13px] text-muted-foreground">
+        <p className="text-xs-flow text-muted-foreground">
           <SourceNames parts={parts} hebrewTitle={isHebrewTitle(sourceLabel2(first).title)} /> · {sourceCopy.checked} <Iso ltr>{fmt.date(first.checked)}</Iso>
         </p>
       )}
@@ -1206,7 +1206,7 @@ function CitationBox({ text }: { text: string }) {
       type="button"
       onClick={() => void copy()}
       title={ruleCardMore.copyCitation}
-      className="group flex items-center gap-2 w-full min-h-10 tap-area px-3 rounded-md border border-border bg-background text-xs text-start hover:border-input transition-colors duration-[var(--duration-fast)]"
+      className="group flex items-center gap-2 w-full min-h-10 tap-area px-3 rounded-md border border-border bg-background text-xs text-start hover:border-input transition-colors duration-(--duration-fast)"
     >
       <span className={cx("shrink-0 font-medium", copied ? "text-positive" : "text-foreground")}>
         {copied ? sourceCopy.citation.copied : ruleCardMore.citationLabel}

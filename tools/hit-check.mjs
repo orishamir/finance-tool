@@ -20,6 +20,7 @@
 import { createRequire } from "node:module";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { newContext, settled } from "../site/scripts/browser.mjs";
 
 const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
 const { chromium } = require("playwright");
@@ -50,9 +51,9 @@ let failures = 0;
 for (const path of paths.split(",")) {
   for (const w of widths.split(",")) {
     const v = VIEW[w];
-    const page = await browser.newPage({ viewport: { width: v.width, height: v.height }, hasTouch: !!v.hasTouch });
+    const page = await (await newContext(browser, { viewport: { width: v.width, height: v.height }, hasTouch: !!v.hasTouch })).newPage();
     await page.goto(BASE + path, { waitUntil: "networkidle" });
-    await page.waitForTimeout(800);
+    await page.evaluate(settled);
     const count = await page.evaluate(() => {
       const sel = "button, a[href], summary, input:not([type=hidden]), select, textarea, [role=button]";
       const els = [...document.querySelectorAll(sel)].filter((e) => e.checkVisibility({ visibilityProperty: true, opacityProperty: false }) && !e.closest("[aria-hidden=true], .invisible, .sr-only, svg"));
@@ -117,7 +118,7 @@ for (const path of paths.split(",")) {
     failures += fresh.length;
     console.log(`\n${path} at ${v.width}: ${rows.length} controls, ${short.length} with a hit span under ${MIN} px${checks ? `, ${short.length - fresh.length} of them listed` : ""}`);
     for (const r of all ? rows : short) console.log(`  ${r.span < MIN ? (allowed.includes(r.name) ? "LISTED" : "SHORT") : "ok   "} ${r.tag} "${r.name}": hit ${r.span} px, drawn ${r.drawn} px${r.covered ? `, covered by ${r.covered}` : ""}`);
-    await page.close();
+    await page.context().close();
   }
 }
 await browser.close();

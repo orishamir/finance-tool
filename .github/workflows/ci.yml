@@ -79,6 +79,10 @@ jobs:
       # The layout check (site/scripts/layout-check.mjs): every page at 1440, 390 and 320 px. A page wider than the screen, words that run out
       # of their card or cell, a "?" on a line of its own, or a warning a small phone's sheet hides below its fold fails the run.
       - run: npm run layout-check
+      # The weight check (tools/weight.mjs --check): each kind of page's first-view script and data against its budget in
+      # tools/weight-budgets.json. It counts bytes, so a slower runner can't fail it. The response check runs only in npm run check: its
+      # 100 ms limit is measured on a processor slowed four times, and a shared runner's own speed would make it fail by chance.
+      - run: npm run weight
       - if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
