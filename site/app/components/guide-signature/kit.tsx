@@ -8,7 +8,7 @@ import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
 import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, type SiteValue, type Strength } from "../../lib/value";
-import { GapNote, NumberField, RangeField, nonNegativeCheck, yearsCheck } from "../kit";
+import { GapNote, NumberField, RangeField, nonNegativeCheck, rangeScale, yearsCheck } from "../kit";
 import { IdText, Num } from "../provenance";
 
 // ---------------------------------------------------------------- the guide inputs a visual starts from
@@ -58,7 +58,7 @@ export function SigAmountField({ inputs, field, label }: { inputs: SigInputs; fi
 /** The guide's years as a visual's field with its slider, on P-05's range: `value` is the years the visual runs on, the guide's own held to its range. */
 export function SigYearsField({ inputs, bundle, value }: { inputs: SigInputs; bundle: Bundle; value: number }) {
   const yr = yearsRange(bundle);
-  return <RangeField label={copy.common.years} unit="years" value={value} start={inputs.p05.years} isEntered={inputs.source.years === "guide"} validate={yearsCheck(yr)} onCommit={inputs.setYears} onReset={() => inputs.setYears(null)} min={yr.min} max={yr.max} step={yr.step ?? 1} inputMode="numeric" disabled={!inputs.ready} />;
+  return <RangeField label={copy.common.years} unit="years" unitInLabel value={value} start={inputs.p05.years} isEntered={inputs.source.years === "guide"} validate={yearsCheck(yr)} onCommit={inputs.setYears} onReset={() => inputs.setYears(null)} scale={rangeScale(yr)} inputMode="numeric" disabled={!inputs.ready} />;
 }
 
 /** The tables of reasons a part is not computed yet: the first-wave visuals' and the second wave's (the study fund, the pensions). */
