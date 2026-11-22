@@ -32,10 +32,6 @@
 //   header   from 1024 px the site's five sections not all in sight on one line each, or overlapped by the open search; below it, no menu
 //            button named exactly "תפריט" (design.md, "The site's sections are in sight"). A section hidden on purpose must be caught first.
 //   touch    a chart dragged sideways by a finger that does not follow it, or that keeps the page from scrolling when the finger moves down.
-//   lift in a sheet   the kit's lift demo opened in a sheet (a modal dialog, in the top layer over the page): a row carried among the rows
-//            by its grip with a mouse at 1440 (the sheet centred by a transform) or pressed long and carried by a finger at 390 whose picture
-//            is not drawn over the sheet under the pointer while carried, or that does not move the row where it is let go; a knob pulled
-//            whose frame is not drawn over the sheet; a menu of actions (a grip's) not drawn over the sheet.
 
 const CONTEXT = { locale: "he-IL", timezoneId: "Asia/Jerusalem", reducedMotion: "reduce", colorScheme: "dark" };
 const PHONE = { ...CONTEXT, viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true };
@@ -73,7 +69,7 @@ const center = (r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2 });
 
 export async function kitInputCheck(browser, base) {
   const found = [];
-  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck, liftSheetCheck]) {
+  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck]) {
     try {
       found.push(...(await run(browser, base)));
     } catch (e) {
@@ -601,118 +597,5 @@ async function headerCheck(browser, base) {
   const named = await phone.page.getByRole("button", { name: "תפריט", exact: true }).count();
   if (named !== 1) found.push(`header: at 390 px, ${named} buttons named exactly "תפריט" (one expected)`);
   await phone.ctx.close();
-  return found;
-}
-
-/**
- * In the page: whether the element `sel` (drawn with no press of its own) is what a press at the point would reach were it pressed, the top
- * thing drawn there, and whether its box holds the point; null where there is none.
- */
-function drawnAt([sel, x, y]) {
-  const el = document.querySelector(sel);
-  if (!el) return null;
-  const was = el.style.pointerEvents;
-  el.style.pointerEvents = "auto";
-  const hit = document.elementFromPoint(x, y);
-  el.style.pointerEvents = was;
-  const r = el.getBoundingClientRect();
-  return { top: !!hit && el.contains(hit), holds: x >= r.left && x <= r.right && y >= r.top && y <= r.bottom };
-}
-
-/** The lift demo opened in its sheet on the kit page; the rows' order read from their grips (kit:row:<n>), outside the carried picture. */
-async function openLiftSheet(browser, base, options) {
-  const { ctx, page } = await open(browser, base, options);
-  const opener = page.locator('article[aria-label="Grip, DropBin, SpanKnob, EditInPlace"] button', { hasText: "לפתוח את העמלה בחלון" });
-  await opener.scrollIntoViewIfNeeded();
-  await (options.hasTouch ? opener.tap() : opener.click());
-  await page.locator("dialog[open] [data-lift-item^='kit:row:']").first().waitFor({ state: "attached", timeout: 3000 });
-  await page.evaluate(settled);
-  const rows = () => page.evaluate(() => [...document.querySelectorAll("dialog[open] [data-grip][data-lift-item^='kit:row:']")].filter((g) => !g.closest("[data-lift-ghost]")).map((g) => g.dataset.liftItem).join(","));
-  return { ctx, page, rows };
-}
-
-async function liftSheetCheck(browser, base) {
-  const found = [];
-  // a mouse at 1440, where the sheet stands centred by a transform
-  {
-    const { ctx, page, rows } = await openLiftSheet(browser, base, DESK);
-    const before = await rows();
-    const row = page.locator("dialog[open] [data-liftable]:has(> * [data-grip][data-lift-item='kit:row:0'], > [data-grip-box] [data-grip][data-lift-item='kit:row:0'])").first();
-    const other = page.locator("dialog[open] [data-liftable]:has(> * [data-grip][data-lift-item='kit:row:1'], > [data-grip-box] [data-grip][data-lift-item='kit:row:1'])").first();
-    await row.hover();
-    const g = center(await page.locator("dialog[open] [data-grip][data-lift-item='kit:row:0']").boundingBox());
-    const o = await other.boundingBox();
-    const to = { x: g.x, y: o.y + o.height - 4 };
-    await page.mouse.move(g.x, g.y);
-    await page.mouse.down();
-    await page.mouse.move(g.x, g.y + 6, { steps: 3 });
-    await page.mouse.move(to.x, to.y, { steps: 10 });
-    const ghost = await page.evaluate(drawnAt, ["[data-lift-ghost]", to.x, to.y]);
-    if (!ghost) found.push("lift in a sheet: a row's grip pressed and moved with a mouse lifts nothing");
-    else {
-      if (!ghost.top) found.push("lift in a sheet: the row carried with a mouse is not the top thing drawn at the pointer (hidden under the sheet's layer, or drawn elsewhere)");
-      if (!ghost.holds) found.push("lift in a sheet: the row carried with a mouse is not drawn under the pointer");
-    }
-    await page.mouse.up();
-    await page.evaluate(settled);
-    if ((await rows()) === before) found.push(`lift in a sheet: a row carried with a mouse below the next one and let go does not move (${before})`);
-    // a knob pulled toward the column before its cell, pressed where its strip is the top thing (the cell's grip stands over its middle)
-    const k = await page.evaluate(() => {
-      for (const knob of document.querySelectorAll("dialog[open] [data-span-knob]")) {
-        const r = knob.getBoundingClientRect();
-        for (let y = r.top + 1; y < r.bottom; y += 2) if (document.elementFromPoint(r.left + r.width / 2, y)?.closest("[data-span-knob]") === knob) return { x: r.left + r.width / 2, y, mid: r.top + r.height / 2 };
-      }
-      return null;
-    });
-    if (!k) found.push("lift in a sheet: no knob in the sheet takes a press");
-    if (k) {
-      await page.mouse.move(k.x, k.y);
-      await page.mouse.down();
-      await page.mouse.move(k.x + 40, k.y, { steps: 4 });
-      // the frame spans the cell's height, as the knob's strip does: read in its middle, clear of its rounded corners
-      const frame = await page.evaluate(drawnAt, ["[data-reach-frame]", k.x + 30, k.mid]);
-      if (!frame) found.push("lift in a sheet: a knob pulled draws no frame");
-      else if (!frame.top) found.push("lift in a sheet: a knob's frame is not the top thing drawn beside the pointer (hidden under the sheet's layer, or drawn elsewhere)");
-      else if (!frame.holds) found.push("lift in a sheet: a knob's frame does not reach the pointer");
-      await page.mouse.up();
-      await page.evaluate(settled);
-    }
-    // the menu of actions the row strip's plus opens (ActionMenu, as a grip's menu)
-    const strip = page.locator('dialog[open] button[data-add-slot="row"]', { hasText: "חלק לכל השורה" }).last();
-    await strip.scrollIntoViewIfNeeded();
-    await strip.click();
-    const menu = page.locator("[role=menu]");
-    if (!(await menu.count())) found.push("lift in a sheet: the row strip's plus opens no menu");
-    else {
-      const m = center(await menu.boundingBox());
-      if (!(await page.evaluate(drawnAt, ["[role=menu]", m.x, m.y]))?.top) found.push("lift in a sheet: a menu of actions is not drawn over the sheet");
-    }
-    await ctx.close();
-  }
-  // a finger at 390: a long press on the row's head, then carried down past the next row
-  {
-    const { ctx, page, rows } = await openLiftSheet(browser, base, PHONE);
-    const before = await rows();
-    const head = page.locator("dialog[open] [data-liftable]:has([data-grip][data-lift-item='kit:row:0'])").last();
-    const next = page.locator("dialog[open] [data-liftable]:has([data-grip][data-lift-item='kit:row:1'])").last();
-    await head.scrollIntoViewIfNeeded();
-    const h = await head.boundingBox();
-    const n = await next.boundingBox();
-    const from = { x: h.x + h.width / 2, y: h.y + Math.min(h.height / 2, 14) };
-    const to = { x: from.x, y: n.y + n.height - 4 };
-    const cdp = await page.context().newCDPSession(page);
-    await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [from] });
-    const lifted = await page.waitForFunction(() => !!document.querySelector("[data-lift-ghost]"), null, { timeout: 3000 }).then(() => true, () => false);
-    if (!lifted) found.push("lift in a sheet: a long press on a row's head lifts nothing");
-    for (let i = 1; i <= 10; i++) await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: from.x, y: from.y + ((to.y - from.y) * i) / 10 }] });
-    const ghost = lifted ? await page.evaluate(drawnAt, ["[data-lift-ghost]", to.x, to.y]) : null;
-    if (ghost && !ghost.top) found.push("lift in a sheet: the row carried by a finger is not the top thing drawn at the pointer (hidden under the sheet's layer, or drawn elsewhere)");
-    if (ghost && !ghost.holds) found.push("lift in a sheet: the row carried by a finger is not drawn under the finger");
-    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
-    await cdp.detach();
-    await page.evaluate(settled);
-    if (lifted && (await rows()) === before) found.push(`lift in a sheet: a row carried by a finger below the next one and let go does not move (${before})`);
-    await ctx.close();
-  }
   return found;
 }

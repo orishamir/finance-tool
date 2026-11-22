@@ -246,3 +246,7 @@ interface pieces follow [design.md](design.md).
   - It checks the design, correctness, needless complexity, names, and
     whether the tests would fail if the code broke.
   - Style is a note, never a reason to send work back.
+  - A finding that serves only screen readers is not a finding:
+    accessibility is out of scope ([project.md](project.md)). Keyboard use
+    on a computer, real buttons and links, and focus that returns are
+    ordinary engineering and stay in scope.

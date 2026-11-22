@@ -5431,8 +5431,6 @@ export const kit = {
         liftSteps: { small: "עד 10 $", mid: "10 עד 100 $", big: "מעל 100 $" },
         liftRate: "שיעור ההמרה",
         liftPer: "לכל המרה",
-        /** The button that opens the lift demo in a sheet. */
-        liftInSheet: "לפתוח את העמלה בחלון",
         anySize: "בכל גודל",
         undo: "ביטול",
         channels: { branch: "בסניף", phone: "בטלפון", web: "באינטרנט ובאפליקציה", other: "ערוץ אחר" },
