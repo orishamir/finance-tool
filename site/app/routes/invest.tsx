@@ -36,7 +36,8 @@ import { enteredPlan } from "../lib/entered-plan";
 import { useSettled } from "../lib/settled";
 import { useInputs, type InputsState } from "../lib/inputs";
 import { withCustomEntries } from "../lib/custom-entries";
-import { buildInvest, chargesCurrentAccount, hasKinds, indexById, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
+import { useInvestView } from "../lib/invest-run";
+import { chargesCurrentAccount, hasKinds, indexById, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { exposureIdOfSlug, INDICES_PATH } from "../lib/site-paths";
 import { loadIndicesBundle, type IndicesBundle, type WorkbenchInputs } from "../lib/providers";
 import { isoToday, useInvestState } from "../lib/state";
@@ -205,7 +206,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   // re-sort right after the pick rather than a moment later, when the hand may be on the list (0.6 to 1 s).
   const settledPlan = useSettled(livePlan, 250);
   const merged = useRef<WorkbenchInputs | null>(null);
-  const plan = useMemo(() => {
+  const restingPlan = useMemo(() => {
     const next = settledPlan.currentAccounts === currentAccounts ? settledPlan : { ...settledPlan, currentAccounts };
     // the plan that settles after the pick is the one the lists already took: kept, so they are not priced twice
     const prev = merged.current;
@@ -227,18 +228,25 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   const heldDeals = useRef<FeeDeal[]>(accountDeals);
   if (!dealOpen) heldDeals.current = accountDeals;
   const pageDeals = heldDeals.current;
-  const bundle = useMemo(() => (feesData ? withDeals(typedBundle, pageDeals, feesData.kinds) : typedBundle), [typedBundle, pageDeals, feesData]);
+  const pageBundle = useMemo(() => (feesData ? withDeals(typedBundle, pageDeals, feesData.kinds) : typedBundle), [typedBundle, pageDeals, feesData]);
   const customId = new URLSearchParams(search).get("custom");
-  const index: IndexRef | null = useMemo(() => (exposureId ? indexById(wb, exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, exposureId, customId, customs]);
+  const pageIndex: IndexRef | null = useMemo(() => (exposureId ? indexById(wb, exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, exposureId, customId, customs]);
   const known = knownOf(data);
   // the index shown is the one the fee page's link from a deal opens next (lib/deal-account/last-index.ts)
   useEffect(() => {
-    if (exposureId && index) lastIndexStore.set(exposureId);
-  }, [exposureId, index]);
+    if (exposureId && pageIndex) lastIndexStore.set(exposureId);
+  }, [exposureId, pageIndex]);
 
   // the person compares their own account by picking it in the account list (the separate "החשבון שלכם" field was redundant)
   const yourBroker: string | null = null;
-  const view = useMemo(() => (index ? buildInvest({ bundle, index, plan, yourBroker }) : null), [bundle, index, plan, yourBroker]);
+  // the view is worked out in the page's worker (lib/invest-run.ts): until it answers, the page shows the view before it, with the data, the
+  // index and the plan that view was worked out on, so what stands beside it reads the same plan
+  const asked = useMemo(() => (pageIndex ? { bundle: pageBundle, ask: { index: pageIndex, plan: restingPlan, yourBroker } } : null), [pageBundle, pageIndex, restingPlan, yourBroker]);
+  const run = useInvestView(asked);
+  const view = run?.view ?? null;
+  const bundle = run?.bundle ?? pageBundle;
+  const index = run?.index ?? pageIndex;
+  const plan = run?.plan ?? restingPlan;
 
   // a house's page opens a new deal filled from its price list through the address (`own`): once, and the address is cleaned
   const opening = new URLSearchParams(search).get("own");
@@ -349,12 +357,12 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
     <TitleRow
       known={known}
       customs={customs}
-      index={index}
+      index={pageIndex}
       others={knownIndices(wb)}
       bundle={wb}
       onRemove={(id) => {
         invest.remove(id);
-        if (index?.id === id) go(INDICES_PATH);
+        if (pageIndex?.id === id) go(INDICES_PATH);
       }}
       onRename={invest.rename}
       onSave={(x) => invest.add(x)}
@@ -390,12 +398,12 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   return (
     <LabelSheetHost>
       <DealAccountsHost data={feesData} onWant={wantFees} failed={feesFailed} left={notMoved} saved={deals.value} writable={deals.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen}>
-      <CustomEntriesHost index={index} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
+      <CustomEntriesHost index={pageIndex} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
       <Frame title={title}>
         <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">
-          {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
+          {customId && !exposureId && !pageIndex && <Callout tone="caution">{c.custom.missing}</Callout>}
           {!index || !view ? (
-            <p className="text-muted-foreground">{c.chips.none}</p>
+            <p className="text-muted-foreground">{index ? c.loading : c.chips.none}</p>
           ) : (
             <>
               {/* the pair's card in a rail at the start side from 1280 px, the plan, the receipt's ticket and the choice of account and

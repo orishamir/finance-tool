@@ -1021,8 +1021,6 @@ export const flags: Record<string, string> = {
   // F-12 at Interactive Israel's European minimum, 2.5 in the trade's currency, beside its collection sentence (BRK OQ25)
   "BRK-OQ25": "עמלת המינימום בקנייה ובמכירה כאן חושבה לפי 2.5 במטבע העסקה, כלשון התעריפון. אותו עמוד אומר גם שהעמלה נגבית במטבע הראשי של הבורסה. הוא לא אומר איך זה מתיישב עם מינימום בעסקה בדולרים, ולכן העמלה בפועל יכולה להיות שונה.",
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה. האתר עוד לא בדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
-  // F-04: a foreign-investment fund's tax index is its principal currency, on the site's reading of TXS OQ26 (TXS-14)
-  "TXS-OQ26": "הרווח הריאלי בקרן הזו נמדד מול שער המטבע העיקרי שלה, ולא מול מדד המחירים לצרכן. כך קובעות תקנות מ־2003 לקרן שכמעט כל השקעותיה צמודות למטבע עיקרי שבחרה, והדוח של הקרן אומר שהיא כזו. אם התקנות עדיין בתוקף, זו שאלה פתוחה, ולפי קריאה של האתר הן בתוקף. אם לא, הרווח נמדד מול מדד המחירים לצרכן, והמס יכול לצאת אחר.",
   "G-14": "הוצאות ישירות של המסלול עוד לא נאספו, ולכן לא נכללו בחישוב.",
   // F-119: an s.120ב amount read for a year after its freeze; TXG OQ16 (the rounding, the CPI readings, the unrounded 2024 amount) keeps it from being exact
   // the person's income stays as entered (A-12, A-13), and the figures linked to the average wage stay at 2026's (method G-36); a fall of the CPI is TXG OQ17,

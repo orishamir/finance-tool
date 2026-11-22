@@ -16,12 +16,6 @@ export const fundPromotion = z.strictObject({
   rate: valueObject,
 });
 
-/** data-schema §3.5: `tax_status.foreign_investment_fund`, a value object whose value is an ISO 4217 code or `false`, in unit `text`. */
-const foreignInvestmentFund = valueObject.refine(
-  (v) => v.unit === "text" && (v.value === false || (typeof v.value === "string" && /^[A-Z]{3}$/.test(v.value))),
-  { message: 'foreign_investment_fund: unit "text", value an ISO 4217 code (the principal currency) or false', path: ["value"] },
-);
-
 export const fundRecord = z.strictObject({
   /** Lowercase ASCII, digits and hyphens, e.g. "ie00b5bmr087"; an exposure's variants name it as `fund:<id>`. */
   id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "id is lowercase ASCII, digits and single hyphens"),
@@ -42,13 +36,6 @@ export const fundRecord = z.strictObject({
   tax_status: z.strictObject({
     il_fund_tax_track: z.enum(["exempt", "taxable"]).nullable(),
     tase_foreign_fund_90pct_test: valueObject.nullable(),
-    /**
-     * TXS-14: whether the fund's own report names it a "קרן נאמנות להשקעות חוץ" under the 2003 regulations, read from its main
-     * characteristics (פרק א'), where the 2007 classification regulations make a fund say so and name its principal currency (reg. 3(ב)(7)).
-     * Unit `text`: the principal currency's ISO 4217 code where the report names one ("USD"), `false` where its main characteristics
-     * do not name the fund one. Carried by the latest record of every Israeli fund (data-schema §4 item 21); left out on a foreign one.
-     */
-    foreign_investment_fund: foreignInvestmentFund.optional(),
   }),
   fees: z.strictObject({
     fixed_management: fee,

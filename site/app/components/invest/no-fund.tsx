@@ -88,7 +88,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const row = rows.find((h) => h.provider.id === houseId);
   if (!house || !row) return null;
   const scale = barScale(ok.map((h) => h.generic.costN!));
-  const lines = legendLines(!!view.index.israeli, ok.flatMap((h) => (h.generic.lines ?? []).map((l) => lineOf(l.line))));
+  const lines = legendLines(!!view.index.israeli, ok.flatMap((h) => h.generic.lines.map((l) => lineOf(l.line))));
   const local = rows.filter((h) => !h.provider.foreign && !h.provider.custom);
   const saved = bundle.snapshots.filter((s) => rows.some((h) => h.provider.id === s.id && !h.provider.custom)).map((s) => s.snapshot).sort();
   const standingCount = local.filter((h) => h.standing).length;
@@ -105,8 +105,8 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
     const from = h.provider.custom ? c.pair.sourceEntered : c.pair.sourceList(h.provider.short);
     // the account's fees on each other first, as on every bar of the page
     const parts: CostPart[] = [
-      { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction ?? 0, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
-      ...byLegend(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass(lineOf(l.line)), source: from })),
+      { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
+      ...byLegend(g.lines).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass(lineOf(l.line)), source: from })),
     ];
     return {
       key: h.provider.id,
@@ -177,9 +177,9 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             house={house}
             snapshot={bundle.snapshots.find((s) => s.id === house.id)}
             charge={
-              row.generic?.costAs && (
+              row.generic && (
                 <>
-                  {c.pair.colCharges(years)}: <Num animate value={row.generic.costAs(c.pair.colCharges(years))} />
+                  {c.pair.colCharges(years)}: <Num animate value={{ ...row.generic.whole, about: c.pair.colCharges(years) }} />
                 </>
               )
             }
@@ -223,7 +223,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           pick={legendPick}
           items={[
             { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
-            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass(l)} />, label: legendName(l, ok.some((h) => hasCurrent(h.generic.lines ?? []))) })),
+            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass(l)} />, label: legendName(l, ok.some((h) => hasCurrent(h.generic.lines))) })),
             ...(ok.some((h) => h.generic.costN! > scale) ? [{ id: "broken", label: c.pair.broken }] : []),
           ]}
         />

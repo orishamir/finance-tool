@@ -2,15 +2,15 @@
 // (only the goal page speaks of a goal). In a tab of the indices page, what each number changed by the same share does to the result
 // (F-89, F-90).
 import { useMemo } from "react";
-import { changedByShare, sweep } from "@finance-tool/engine";
 import type { P05Input } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
 import type { CompareBundle } from "../../lib/compare";
 import { enteredPlan, type EnteredPlan } from "../../lib/entered-plan";
 import { fmt } from "../../lib/format";
 import { useInputs } from "../../lib/inputs";
-import { useSettled } from "../../lib/settled";
-import { pairCosts, pairLeft, type InvestView, type PlanInput } from "../../lib/invest";
+import { type InvestView, type PlanInput } from "../../lib/invest";
+import type { PlanChanges as PlanChangesRun } from "../../lib/invest-work";
+import { usePlanChangesRun } from "../../lib/invest-run";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, shortRow } from "../provenance";
@@ -21,33 +21,12 @@ type Range = { min: number; max: number; step?: number; segments?: { to: number;
 type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01" | "A-02", Range>;
 type Id = "amount" | "monthly" | "years" | "ret";
 type Pair = { house: string; fund: string } | null;
-/** Each knob: its plan field, its range, and how its slider reads the plan (a return is a fraction in the plan, percent on the slider). */
-const KNOBS: { id: Id; key: "amountNow" | "monthly" | "years" | "grossReturn"; range: keyof KnobRanges; scale: number }[] = [
-  { id: "amount", key: "amountNow", range: "amount_now", scale: 1 },
-  { id: "monthly", key: "monthly", range: "monthly_deposit", scale: 1 },
-  { id: "years", key: "years", range: "horizon_years", scale: 1 },
-  { id: "ret", key: "grossReturn", range: "A-01", scale: 100 },
-];
 const k = c.plan.knobs;
 /** The amount knob's box, and its tile, which the page's empty state opens when the plan puts in nothing. */
 const PLAN_AMOUNT_FIELD = "plan-amount";
 export const PLAN_AMOUNT_TILE = "plan-amount-tile";
 /** Each number as its tile, and the change chart's lines and rows, name it. */
 const labelOf: Record<Id, string> = { amount: k.amount, monthly: k.monthly, years: k.years, ret: k.ret };
-
-/** The pair the page prices, with the value left as a function of the plan (F-63's `L`): the figure with its provenance for the plan itself, the number alone for each run of a sweep. Null when the page prices no pair. */
-function usePairLeft(bundle: IndicesBundle, view: InvestView | null, pick: Pair) {
-  const house = pick?.house;
-  const fund = pick?.fund;
-  const index = view?.index;
-  return useMemo(() => {
-    if (!index || !house || !fund) return null;
-    return {
-      value: (p: WorkbenchInputs) => pairCosts({ bundle, index, plan: p, fundId: fund, providerId: house })?.left ?? null,
-      number: (p: WorkbenchInputs) => pairLeft({ bundle, index, plan: p, fundId: fund, providerId: house }),
-    };
-  }, [bundle, index, house, fund]);
-}
 
 const KEY: Record<Id, P05Input> = { amount: "amount_now", monthly: "monthly_deposit", years: "horizon_years", ret: "A-01" };
 /** Each knob's plan input, as a run's sheet names it (`planInputs`). */
@@ -94,24 +73,17 @@ export function PlanKnobs({ compare, ranges, pct }: { compare: CompareBundle; ra
 
 type Share = { min: number; max: number; step: number; start: number };
 
-/** F-89 and F-90: every plan number changed by the same share, 4 lines of 21 runs, the page's heaviest work: it waits until the plan has
- * rested. Null where the page prices no pair. Its tab's answer reads it whether or not its panel is open. */
-export function usePlanChanges({ plan: resting, share, bundle, view, pick }: { plan: WorkbenchInputs; share: Share; bundle: IndicesBundle; view: InvestView | null; pick: Pair }) {
-  const plan = useSettled(resting, 400);
-  const left = usePairLeft(bundle, view, pick);
+/** F-89 and F-90 on the pair the page prices, every plan number changed by the same share, 4 lines of 21 runs: worked out in the page's worker
+ * (lib/invest-run.ts) on the plan the page's view was, the last result shown until the next comes. Null where the page prices no pair. Its
+ * tab's answer reads it whether or not its panel is open. */
+export function usePlanChanges({ plan, share, bundle, view, pick }: { plan: WorkbenchInputs; share: Share; bundle: IndicesBundle; view: InvestView | null; pick: Pair }) {
   const shares = useMemo(() => Array.from({ length: Math.round((share.max - share.min) / share.step) + 1 }, (_, i) => share.min + i * share.step), [share]);
-  return useMemo(() => {
-    if (!left) return null;
-    const base = left.value(plan);
-    if (!base) return null;
-    const lines = KNOBS.map(({ id, key, scale }) => {
-      const tos = shares.map((sh) => changedByShare(plan[key] * scale, sh / 100, id === "years"));
-      return { id, key, scale, tos, ys: sweep(left.number, plan, key, tos, scale) };
-    });
-    return { plan, shares, base, lines };
-  }, [left, plan, shares]);
+  const index = view?.index;
+  const house = pick?.house;
+  const fund = pick?.fund;
+  const asked = useMemo(() => (index && house && fund ? { bundle, ask: { index, plan, house, fund, shares } } : null), [bundle, index, plan, house, fund, shares]);
+  return usePlanChangesRun(asked);
 }
-export type PlanChangesRun = NonNullable<ReturnType<typeof usePlanChanges>>;
 
 const unitOf: Record<Id, "nis" | "nis_per_month" | "years" | "pct_per_year"> = { amount: "nis", monthly: "nis_per_month", years: "years", ret: "pct_per_year" };
 const planValueOf = (plan: WorkbenchInputs): Record<Id, SiteValue> => ({ amount: plan.values.amount, monthly: plan.values.monthly, years: plan.values.years, ret: plan.values.returnV });

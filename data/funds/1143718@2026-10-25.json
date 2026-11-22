@@ -31,27 +31,7 @@
   "distribution_policy": "accumulating",
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null,
-    "foreign_investment_fund": {
-      "value": false,
-      "unit": "text",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1770001-1771000/P1770898-00.pdf#page=1",
-        "title": "דוח שנתי 'תכלית סל (40) ת\"א 125' (מספר בורסה 1143718), תאריך הדוח 30 ביוני 2026, מיטב קרנות נאמנות בע\"מ, עמ' 1, 'מאפיינים עיקריים של הקרן': 'מסלול המס: פטורה'",
-        "publisher": "מיטב קרנות נאמנות בע\"מ",
-        "strength": "institution"
-      },
-      "checked": "2026-11-22",
-      "effective_from": "2026-06-30",
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TXS-14"
-      ],
-      "state": "sourced",
-      "notes": "The report's main characteristics name the tax track and do not name the fund a foreign-investment fund, which the 2007 classification regulations make a fund's published classification say (TXS-14); its tax index is the CPI."
-    }
+    "tase_foreign_fund_90pct_test": null
   },
   "fees": {
     "fixed_management": {

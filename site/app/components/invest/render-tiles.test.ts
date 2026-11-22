@@ -88,15 +88,15 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     expect(crowned(sp3, head3, theta)).toBe(false);
   });
   it("the tied pair neither chosen nor set beside it is named in the fees panel, with its number where another fund has its name (fourth pass)", () => {
-    // MSCI ACWI, 10,000 now, 500 a month, five years: three pairs within the threshold, the third iShares abroad, whose name the
+    // MSCI ACWI, 50,000 now, 5,000 a month, three years: three pairs within the threshold, the third iShares abroad, whose name the
     // same fund in Tel Aviv has too (scanned over 5 x 4 x 6 plans on the four foreign indices, with whole units, F-109)
-    const short: WorkbenchInputs = { ...base, amountNow: 10000, monthly: 500, years: 5, values: { ...base.values, amount: entered(10000, "nis", t), monthly: entered(500, "nis_per_month", t), years: entered(5, "years", t) } };
+    const short: WorkbenchInputs = { ...base, amountNow: 50000, monthly: 5000, years: 3, values: { ...base.values, amount: entered(50000, "nis", t), monthly: entered(5000, "nis_per_month", t), years: entered(3, "years", t) } };
     const nq = buildInvest({ bundle, index: indexById(bundle, "index-msci-acwi")!, plan: short });
     const h = pickOfHeadline(nq)!;
     expect(tieCount(nq, h, theta)).toBe(3);
     const out = shown(html(createElement(ReceiptAndFees, { view: nq, bundle, plan: short, pick: h, chosen: false, onPick: () => undefined }))).replace(/\u00a0/g, " ");
     const line = out.slice(out.indexOf(invest.pair.tieWhy(3)));
-    expect(line).toContain(`${invest.pair.tieThird} אינטראקטיב ישראל ${invest.pair.tieWith} iShares MSCI ACWI UCITS ETF USD (Acc)`);
+    expect(line).toContain(`${invest.pair.tieThird} Interactive Brokers ${invest.pair.tieWith} iShares MSCI ACWI UCITS ETF USD (Acc)`);
     expect(line).toContain("IE00B6R52259");
     // what makes a tie is said where the tie is named, with P-01 read from data/parameters
     const rule = line.slice(line.indexOf(invest.pair.tieRule.before.trim()));
@@ -113,13 +113,13 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     for (const f of allFunds(sp3)) expect(fundRow(out, f.rec.id).includes(invest.pair.tiedWord), f.rec.id).toBe(tied.includes(f.rec.id));
   });
   it("the fund list marks tied funds, not pairs: one fund tied at two houses is one row marked (independent check of pass 5)", () => {
-    // MSCI World, 50,000 now, nothing a month, one year: five pairs within the threshold, two funds (One Zero sells some of them, BRK-38)
+    // MSCI World, 50,000 now, nothing a month, one year: six pairs within the threshold, three funds (One Zero sells some of them, BRK-38)
     const one: WorkbenchInputs = { ...base, amountNow: 50000, monthly: 0, years: 1, values: { ...base.values, amount: entered(50000, "nis", t), monthly: entered(0, "nis_per_month", t), years: entered(1, "years", t) } };
     const w = buildInvest({ bundle, index: indexById(bundle, "index-msci-world")!, plan: one });
     const h = pickOfHeadline(w)!;
-    expect(tieCount(w, h, theta)).toBe(5);
+    expect(tieCount(w, h, theta)).toBe(6);
     const tied = tieFunds(w, h, theta);
-    expect(tied).toHaveLength(2);
+    expect(tied).toHaveLength(3);
     const out = lists(w, bundle, one, h);
     for (const f of allFunds(w)) expect(fundRow(out, f.rec.id).includes(invest.pair.tiedWord), f.rec.id).toBe(tied.includes(f.rec.id));
   });
