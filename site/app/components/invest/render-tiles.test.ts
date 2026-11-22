@@ -2,7 +2,7 @@
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { invest } from "../../copy";
-import { buildInvest, indexById, knownIndices, tieShareOf, hasKinds, kindOf } from "../../lib/invest";
+import { buildInvest, indexById, tieShareOf, hasKinds, kindOf } from "../../lib/invest";
 import { entered } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import type { WorkbenchInputs } from "../../lib/providers";
@@ -67,15 +67,14 @@ describe("hedged or not: what happened (F-95, founder 2026-10-31)", () => {
     for (const f of bundle.funds.filter((x) => x.hedged === true)) for (const y of f.tracking_record?.years ?? []) expect(y.fund_pct, `${f.id} ${y.year}`).toBeLessThan(y.tracking_pct);
   });
   it("renders on every index with both kinds", () => {
-    // both kinds ranked at a house: a kind whose funds are all listed before tax (F-118) has no pair to draw
-    let both = 0;
-    for (const index of knownIndices(bundle)) {
-      const v = buildInvest({ bundle, index, plan });
-      if (!hasKinds(v)) continue;
-      both++;
-      expect(html(createElement(DollarFor, { view: v, bundle, plan, pick: pickOfHeadline(v)! })), index.id).toContain(invest.dollar.bottomHead);
+    // on a plan where neither the CPI nor the dollar moves (A-02 = A-03 = 0), the two readings of TXS OQ26 give one result (method §13), so
+    // no fund is listed before tax for its status and each of these indices has a ranked fund of both kinds
+    const steady = { ...plan, inflation: 0, values: { ...plan.values, inflation: entered(0, "pct_per_year", t) } };
+    for (const id of ["index-nasdaq100", "index-msci-world", "index-msci-acwi"]) {
+      const v = buildInvest({ bundle, index: sure(indexById(bundle, id), id), plan: steady });
+      expect(hasKinds(v), id).toBe(true);
+      expect(html(createElement(DollarFor, { view: v, bundle, plan: steady, pick: sure(pickOfHeadline(v), `${id}'s top pair`) })), id).toContain(invest.dollar.bottomHead);
     }
-    expect(both).toBeGreaterThan(0);
     expect(allFunds(sp).some((f) => kindOf(f.rec) === "hedged")).toBe(true);
   });
 });
@@ -89,11 +88,11 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
   // the same over 30 years
   const long: WorkbenchInputs = { ...base, years: 30, values: { ...base.values, years: entered(30, "years", t) } };
   const theta = tieShareOf(bundle);
+  const key = (x: { house: string; fund: string }) => `${x.house} ${x.fund}`;
   // A fixed input built for the ties: the collected data with a twin of the S&P 500 page's top fund, the same record under its own number
   // and the same name, so the two leave the same at every house that sells both. IBI sells the twin's kind fund by fund here, under an
-  // agreement that names the top fund alone (BRK-38), so the twin has no price there. On the collected data the top fund at Psagot is
-  // alone within the threshold over 10 years, and over 30 years IBI's price of it is within it too; so over 10 years two pairs tie, both
-  // at Psagot, and over 30 three, two funds, the top one at two houses.
+  // agreement that names the top fund alone (BRK-38), so the twin has no price there. Whatever the collected data's tie set T is, the
+  // twin's is T with (h, twin) beside every (h, top fund) of T at a house that sells the twin: every expected count below is derived from T.
   const real = (p: WorkbenchInputs) => buildInvest({ bundle, index: sure(indexById(bundle, "index-sp500"), "the S&P 500"), plan: p });
   const top = sure(pickOfHeadline(real(base)), "the S&P 500 page's top pair");
   const rec = sure(bundle.funds.find((f) => f.id === top.fund), "the top fund's record");
@@ -106,31 +105,49 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     funds: [...bundle.funds, twin],
     snapshots: bundle.snapshots.map((s) => (s.id === "ibi" ? { ...ibi, fundByFund: { ...one, applies_to: ["mutual_fund_units"], named: [rec.id] } } : s)),
   };
+  /** A house sells the twin where it sells the top fund, except IBI, whose agreement here names the top fund alone. */
+  const sellsTwin = (house: string) => house !== "ibi";
+  const expected = (t0: { house: string; fund: string }[]) => new Set([...t0.map(key), ...t0.filter((x) => x.fund === rec.id && sellsTwin(x.house)).map((x) => key({ house: x.house, fund: twinId }))]);
+  const e10 = expected(tieSet(real(base), top, theta));
+  const e30 = expected(tieSet(real(long), sure(pickOfHeadline(real(long)), "the 30-year top pair"), theta));
+  const fundsOf = (e: Set<string>) => new Set([...e].map((k) => k.split(" ")[1]));
   const spIndex = sure(indexById(tied, "index-sp500"), "the S&P 500");
   const sp = buildInvest({ bundle: tied, index: spIndex, plan: base });
-  const head = pickOfHeadline(sp)!;
+  const head = sure(pickOfHeadline(sp), "the fixed input's top pair");
   const sp3 = buildInvest({ bundle: tied, index: spIndex, plan: long });
-  const head3 = pickOfHeadline(sp3)!;
+  const head3 = sure(pickOfHeadline(sp3), "the fixed input's 30-year top pair");
+  const n10 = e10.size;
+  const n30 = e30.size;
   it("the fixed input: the collected data's tie sets, with the twin beside the top fund wherever it is sold", () => {
-    expect(tieSet(real(base), top, theta).map((x) => [x.house, x.fund])).toEqual([["psagot", rec.id]]);
-    expect(tieSet(real(long), pickOfHeadline(real(long)), theta).map((x) => [x.house, x.fund])).toEqual([["psagot", rec.id], ["ibi", rec.id]]);
-    expect(new Set(tieSet(sp, head, theta).map((x) => `${x.house} ${x.fund}`))).toEqual(new Set([`psagot ${rec.id}`, `psagot ${twinId}`]));
-    expect(new Set(tieSet(sp3, head3, theta).map((x) => `${x.house} ${x.fund}`))).toEqual(new Set([`psagot ${rec.id}`, `psagot ${twinId}`, `ibi ${rec.id}`]));
+    expect(new Set(tieSet(sp, head, theta).map(key))).toEqual(e10);
+    expect(new Set(tieSet(sp3, head3, theta).map(key))).toEqual(e30);
+    // the twin is there: the top house sells it (else no tie below is built)
+    expect(e10.has(key({ house: top.house, fund: twinId }))).toBe(true);
   });
   it("counts every pair within the threshold of the top, and crowns none", () => {
-    expect(tieCount(sp, head, theta)).toBe(2);
+    expect(tieCount(sp, head, theta)).toBe(n10);
     expect(crowned(sp, head, theta)).toBe(false);
-    expect(tieCount(sp3, head3, theta)).toBe(3);
-    expect(tieFunds(sp3, head3, theta)).toHaveLength(2);
+    expect(tieCount(sp3, head3, theta)).toBe(n30);
+    expect(tieFunds(sp3, head3, theta)).toHaveLength(fundsOf(e30).size);
     expect(crowned(sp3, head3, theta)).toBe(false);
   });
   it("the tied pair neither chosen nor set beside it is named in the fees panel, with its number where another fund has its name (fourth pass)", () => {
-    const out = shown(html(createElement(ReceiptAndFees, { view: sp3, bundle: tied, plan: long, pick: head3, chosen: false, onPick: () => undefined }))).replace(/\u00a0/g, " ");
-    const line = out.slice(out.indexOf(invest.pair.tieWhy(3)));
-    expect(line).toContain(invest.pair.tieThird);
-    const third = line.slice(line.indexOf(invest.pair.tieThird));
-    // the third pair's fund shares its name with the other fund of the set, so its number follows its name
-    expect(third.includes(rec.id) || third.includes(twinId)).toBe(true);
+    const raw = html(createElement(ReceiptAndFees, { view: sp3, bundle: tied, plan: long, pick: head3, chosen: false, onPick: () => undefined }));
+    const line = shown(raw).replace(/\u00a0/g, " ").slice(shown(raw).indexOf(invest.pair.tieWhy(n30)));
+    // the pairs of the tie other than the page's own and the one set beside it, the first of them named
+    const other = sure(pairVerdict(sp3, tied, long, head3, false).other, "the pair set beside the page's");
+    const rest = tieSet(sp3, head3, theta).filter((x) => key(x) !== key(head3) && key(x) !== key(other));
+    expect(rest.length).toBe(n30 - 2);
+    const first = sure(rest[0], "a third pair in the tie");
+    const fw = sure(allFunds(sp3).find((f) => f.rec.id === first.fund), "the third pair's fund");
+    const number = allFunds(sp3).some((f) => f !== fw && f.name === fw.name) ? ` ⁦${fw.number}⁩` : "";
+    const house = sure(sp3.providers.find((x) => x.id === first.house), "the third pair's house").short;
+    const words = rest.length === 1 ? invest.pair.tieThird : invest.pair.tieRest;
+    const more = rest.length > 1 ? ` ${invest.pair.tieMore(rest.length - 1)}` : "";
+    // the sentence, cut where it ends: it closes the paragraph that says why no pair is first
+    const at = raw.indexOf(words, raw.indexOf(invest.pair.tieWhy(n30)));
+    expect(at).toBeGreaterThan(0);
+    expect(shown(raw.slice(at, raw.indexOf("</p>", at))).replace(/\u00a0/g, " ")).toBe(`${words} ${house} ${invest.pair.tieWith} ${fw.name}${number}${more}.`);
     // what makes a tie is said where the tie is named, with P-01 read from data/parameters
     const rule = line.slice(line.indexOf(invest.pair.tieRule.before.trim()));
     expect(rule.replace(/[\u2066-\u2069\u200e\u200f]/g, "")).toContain(`${invest.pair.tieRule.before.trim()}${fmt.pct((bundle.p01.value as { value: number }).value)}${invest.pair.tieRule.after}`);
@@ -142,34 +159,43 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
   });
   it("every tied fund's row in the fund list says it is one of the tied, in the same words, and no other row does (independent check of pass 5)", () => {
     const out = lists(sp3, tied, long, head3);
-    const set = tieFunds(sp3, head3, theta);
-    for (const f of allFunds(sp3)) expect(fundRow(out, f.rec.id).includes(invest.pair.tiedWord), f.rec.id).toBe(set.includes(f.rec.id));
+    const set = fundsOf(e30);
+    for (const f of allFunds(sp3)) expect(fundRow(out, f.rec.id).includes(invest.pair.tiedWord), f.rec.id).toBe(set.has(f.rec.id));
   });
   it("the fund list marks tied funds, not pairs: one fund tied at two houses is one row marked (independent check of pass 5)", () => {
-    // the top fund is tied at Psagot and at IBI: one row marked for it, and one for the twin
-    const set = tieSet(sp3, head3, theta);
-    expect(set.filter((x) => x.fund === rec.id)).toHaveLength(2);
-    const out = lists(sp3, tied, long, head3);
-    for (const f of allFunds(sp3)) expect(fundRow(out, f.rec.id).includes(invest.pair.tiedWord), f.rec.id).toBe(tieFunds(sp3, head3, theta).includes(f.rec.id));
+    // the fixed input with a twin of the top house too, the same price list under its own id and name, so the top fund and its twin tie
+    // at both houses; the tie set has more pairs than it has funds, and each fund is one row
+    const house = sure(tied.snapshots.find((s) => s.id === top.house), "the top house's price list");
+    const twinHouse = { ...house, id: "twin-house", provider: { ...house.provider, name_he: `${house.provider.name_he} תאום` } };
+    const doubled = { ...tied, snapshots: [...tied.snapshots, twinHouse] };
+    const v = buildInvest({ bundle: doubled, index: sure(indexById(doubled, "index-sp500"), "the S&P 500"), plan: base });
+    const h = sure(pickOfHeadline(v), "the doubled input's top pair");
+    const set = tieSet(v, h, theta);
+    const funds = tieFunds(v, h, theta);
+    for (const fund of [rec.id, twinId]) expect(set.filter((x) => x.fund === fund).map((x) => x.house), fund).toEqual(expect.arrayContaining([top.house, "twin-house"]));
+    expect(set.length).toBeGreaterThan(funds.length);
+    const out = lists(v, doubled, base, h);
+    const marked = allFunds(v).filter((f) => fundRow(out, f.rec.id).includes(invest.pair.tiedWord)).map((f) => f.rec.id);
+    expect(marked).toHaveLength(funds.length);
+    expect(new Set(marked)).toEqual(new Set(funds));
   });
   it("before any pick, the pair set beside the page's is the other of the tie, and no pair is called first or next", () => {
     const out = shown(html(createElement(ReceiptAndFees, { view: sp3, bundle: tied, plan: long, pick: head3, chosen: false, onPick: () => undefined })));
     expect(out).toContain(invest.pair.tieOther);
-    expect(out).toContain(invest.pair.tieWhy(3));
+    expect(out).toContain(invest.pair.tieWhy(n30));
     expect(out).not.toContain(invest.pair.next);
     expect(out).not.toContain("★");
   });
   it("with the person's own pick far from the best pair, the best pair is not crowned either, and the tie is counted (the account list's test)", () => {
     const out = shown(html(createElement(ReceiptAndFees, { view: sp3, bundle: tied, plan: long, pick: { house: "leumi", fund: head3.fund }, chosen: true, onPick: () => undefined })));
     expect(out).not.toContain(invest.pair.cheapestStar);
-    expect(out).toContain(invest.pair.tieTop(3, 2));
+    expect(out).toContain(invest.pair.tieTop(n30, fundsOf(e30).size));
   });
   it("a pick inside the tie set: the other pair is not called the cheap one, and the tie is counted as the title counts", () => {
-    const tiedPick = sure(tieSet(sp3, head3, theta).find((x) => !(x.house === head3.house && x.fund === head3.fund)), "a pair of the tie other than the top");
+    const tiedPick = sure(tieSet(sp3, head3, theta).find((x) => key(x) !== key(head3)), "a pair of the tie other than the top");
     const out = shown(html(createElement(ReceiptAndFees, { view: sp3, bundle: tied, plan: long, pick: tiedPick, chosen: true, onPick: () => undefined })));
-    expect(out).toContain(invest.pair.tieTop(3, 2));
-    expect(out).toContain(invest.pair.tieWhy(3));
-    expect(out).not.toContain(invest.pair.tieWhy(2));
+    expect(out).toContain(invest.pair.tieTop(n30, fundsOf(e30).size));
+    expect(out).toContain(invest.pair.tieWhy(n30));
     expect(out).not.toContain(invest.pair.moreIfCheapest);
     expect(out).toContain(invest.pair.vsYours);
   });
@@ -192,7 +218,7 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
   it("why no pair is first follows the pair it is set beside, never before it", () => {
     const out = html(createElement(ReceiptAndFees, { view: sp, bundle: tied, plan: base, pick: head, chosen: false, onPick: () => undefined }));
     const other = out.indexOf(invest.pair.pickCheapest);
-    const why = out.indexOf(invest.pair.tieWhy(2));
+    const why = out.indexOf(invest.pair.tieWhy(n10));
     expect(other).toBeGreaterThan(0);
     expect(why).toBeGreaterThan(other);
   });

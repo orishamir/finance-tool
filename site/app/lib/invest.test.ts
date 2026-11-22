@@ -26,6 +26,11 @@ const plan = (over: Partial<WorkbenchInputs> = {}, ret = 7): WorkbenchInputs => 
   ...over,
 });
 const sp = indexById(bundle, "index-sp500")!;
+/**
+ * A plan where neither the CPI nor the dollar moves (A-02 = A-03 = 0): the two readings of TXS OQ26 give one result (method §13), so every
+ * Israeli fund whose status is open is ranked as the others are, and the dollar is steady.
+ */
+const steady = (over: Partial<WorkbenchInputs> = {}): WorkbenchInputs => plan({ inflation: 0, values: { ...plan().values, inflation: entered(0, "pct_per_year", t) }, ...over });
 
 describe("invest page computation", () => {
   const view = buildInvest({ bundle, index: sp, plan: plan() });
@@ -56,16 +61,18 @@ describe("invest page computation", () => {
     // the same houses with no standing-order line at all: every Israeli fund's figure is the same to the shekel
     const without = { ...bundle, snapshots: bundle.snapshots.map((s) => (banks.includes(s.id) ? { ...s, lines: s.lines.filter((l) => l.not_ranked === undefined) } : s)) };
     // every index's Israeli funds, so the count does not rest on which of one index's funds are ranked (a fund listed before tax, F-118, has none)
-    const israeli = (b: typeof bundle) => knownIndices(b).flatMap((i) => buildInvest({ bundle: b, index: i, plan: plan() }).options.filter((o) => o.id === "il-tracking" || o.id === "il-etf").flatMap((o) => o.funds));
+    const israeli = (b: typeof bundle) => knownIndices(b).flatMap((i) => buildInvest({ bundle: b, index: i, plan: plan() }).options.filter((o) => o.id === "il-tracking" || o.id === "il-etf").flatMap((o) => o.funds.map((f) => ({ key: `${i.id} ${f.rec.id}`, f }))));
     const withLines = israeli(bundle);
-    const bare = israeli(without);
+    const bare = new Map(israeli(without).map((x) => [x.key, x.f]));
     let seen = 0;
     for (const id of banks) {
       const setAside = bundle.snapshots.find((s) => s.id === id)!.lines.filter((l) => l.not_ranked !== undefined).map((l) => l.id);
       expect(setAside.length, id).toBeGreaterThan(0);
-      for (const [n, f] of withLines.entries()) {
+      for (const { key, f } of withLines) {
+        const match = bare.get(key);
+        if (!match) throw new Error(`the bundle without the standing-order lines has ${key}`);
         const at = f.byHouse[id];
-        const other = bare[n]?.byHouse[id];
+        const other = match.byHouse[id];
         if (!at || !("valueN" in at) || !other || !("valueN" in other)) continue;
         seen++;
         expect(at.valueN).toBe(other.valueN);
@@ -290,16 +297,14 @@ describe("invest page computation", () => {
 
   it("opens on an unhedged fund (founder, 2026-10-28); hedged funds stay in the list, priced and pickable", () => {
     const world = indexById(bundle, "index-msci-world")!;
-    const v = buildInvest({ bundle, index: world, plan: plan() });
+    // on a plan where the two readings of TXS OQ26 agree, so a fund whose status is open is ranked too
+    const v = buildInvest({ bundle, index: world, plan: steady() });
     const funds = v.options.flatMap((o) => o.funds);
-    // every hedged fund stays in the list: priced, or listed with its reason (no full year in its report, or a tax open between two
-    // readings, F-118)
-    const hedged = funds.filter((f) => f.rec.hedged === true);
+    const hedged = funds.filter((f) => f.rec.hedged === true && f.best);
     expect(hedged.length).toBeGreaterThan(0);
-    for (const f of hedged) expect(f.best !== undefined || f.reason !== undefined, f.rec.id).toBe(true);
     // F-92: a hedged fund's shortfall beyond its fees is counted, so none leaves more than the headline on a steady dollar;
     // the one with no full year in its report is listed with its reason, not priced
-    for (const f of hedged) if (f.best) expect(f.best.valueN, f.rec.id).toBeLessThan(v.headline?.valueN ?? Number.NaN);
+    expect(Math.max(...hedged.map((f) => f.best!.valueN))).toBeLessThan(v.headline!.valueN);
     expect(funds.find((f) => f.rec.id === "5140165")!.reason).toEqual({ code: "no-hedge-record" });
     expect(v.headline!.fund.rec.hedged).not.toBe(true);
     const unhedged = funds.filter((f) => f.rec.hedged !== true && f.best && !f.best.open);
@@ -309,9 +314,9 @@ describe("invest page computation", () => {
   it("a hedged fund whose years F-92 (d) does not compare falls back to the hedged rule: listed with its reason, never priced at A-07 = 0 (finance review F3)", () => {
     const world = indexById(bundle, "index-msci-world")!;
     const id = "5139696";
-    const reasonOf = (b: typeof bundle) => buildInvest({ bundle: b, index: world, plan: plan() }).options.flatMap((o) => o.funds).find((f) => f.rec.id === id)!;
-    // as collected the fund passes the hedged rule: whatever else lists it, not that
-    expect(reasonOf(bundle).reason?.code).not.toBe("no-hedge-record");
+    // on a plan where the two readings of TXS OQ26 agree, so the fund's status as a foreign-investment fund does not list it
+    const reasonOf = (b: typeof bundle) => buildInvest({ bundle: b, index: world, plan: steady() }).options.flatMap((o) => o.funds).find((f) => f.rec.id === id)!;
+    expect(reasonOf(bundle).best).toBeDefined();
     for (const dividends of ["unstated", "gross"] as const) {
       const funds = bundle.funds.map((f) => (f.id === id ? { ...f, tracking_record: { ...f.tracking_record!, benchmark: { ...f.tracking_record!.benchmark, dividends } } } : f));
       const way = reasonOf({ ...bundle, funds });
@@ -696,30 +701,45 @@ describe("a provider row whose run stopped on its rule", () => {
   });
 });
 
-describe("an Israeli fund that may be measured by a principal currency, on the data as collected (F-04, TXS OQ26, method §13)", () => {
-  const funds = (v: ReturnType<typeof buildInvest>) => v.options.filter((o) => o.exists).flatMap((o) => o.funds).filter((f) => f.rec.domicile === "IL");
-  const status = (f: { rec: { tax_status: { foreign_investment_fund?: { value: unknown } } } }) => f.rec.tax_status.foreign_investment_fund?.value;
-  const priced = (f: { best?: unknown; byHouse: Record<string, object> }) => f.best !== undefined && Object.values(f.byHouse).some((at) => "valueN" in at);
+describe("an Israeli fund that may be measured by a principal currency (F-04, TXS OQ26, method §13)", () => {
+  // the input: the collected data with two twins of a ranked S&P 500 fund whose documents say it is not a foreign-investment fund, the same
+  // record under their own numbers, one whose documents name the dollar as its principal currency and one whose status is not known, as
+  // the test sets them
+  const base = buildInvest({ bundle, index: sp, plan: plan() });
+  const known = base.options.flatMap((o) => o.funds).find((f) => f.rec.domicile === "IL" && f.rec.tax_status.foreign_investment_fund?.value === false && f.best);
+  if (!known) throw new Error("a ranked Israeli S&P 500 fund whose documents say it is not a foreign-investment fund");
+  const status = known.rec.tax_status.foreign_investment_fund!;
+  const twinOf = (id: string, value: string | null) => ({ ...known.rec, id, identifiers: { ...known.rec.identifiers, isin: null, tase_number: id }, tax_status: { ...known.rec.tax_status, foreign_investment_fund: { ...status, value, notes: "as the test sets it" } } });
+  const named = "9999911";
+  const unknown = "9999912";
+  const twins = { ...bundle, funds: [...bundle.funds, twinOf(named, "USD"), twinOf(unknown, null)] };
+  const at = (v: ReturnType<typeof buildInvest>, id: string) => {
+    const f = v.options.flatMap((o) => o.funds).find((x) => x.rec.id === id);
+    if (!f) throw new Error(`${id} is on the S&P 500 page`);
+    return f;
+  };
+  const priced = (f: { best?: unknown; byHouse: Record<string, object> }) => f.best !== undefined && Object.values(f.byHouse).some((x) => "valueN" in x);
   it("where A-03 and A-02 differ, both readings give the plan different taxes: listed before tax on TXS-14 with the question, never ranked", () => {
-    const view = buildInvest({ bundle, index: sp, plan: plan() });
-    const open = funds(view).filter((f) => typeof status(f) === "string" || status(f) === null);
-    expect(open.some((f) => typeof status(f) === "string")).toBe(true);
-    expect(open.some((f) => status(f) === null)).toBe(true);
-    for (const f of open) {
-      expect(f.reason, f.rec.id).toEqual({ code: "rule-open", ruleId: "TXS-14", question: "TXS OQ26" });
-      expect(f.beforeTax?.ruleId, f.rec.id).toBe("TXS-14");
-      expect(priced(f), f.rec.id).toBe(false);
+    const view = buildInvest({ bundle: twins, index: sp, plan: plan() });
+    for (const id of [named, unknown]) {
+      const f = at(view, id);
+      expect(f.reason, id).toEqual({ code: "rule-open", ruleId: "TXS-14", question: "TXS OQ26" });
+      expect(f.beforeTax?.ruleId, id).toBe("TXS-14");
+      expect(priced(f), id).toBe(false);
     }
-    // a fund whose documents say it is not one is measured by the CPI alone, and ranked
-    expect(funds(view).filter((f) => status(f) === false).some(priced)).toBe(true);
+    // the fund whose documents say it is not one is measured by the CPI alone, and ranked
+    expect(priced(at(view, known.rec.id))).toBe(true);
+    // whatever the records say, no collected fund whose status is open is ranked on this plan
+    for (const f of base.options.flatMap((o) => o.funds).filter((x) => x.rec.domicile === "IL" && x.rec.tax_status.foreign_investment_fund?.value !== false && x.rec.tax_status.foreign_investment_fund !== undefined)) expect(priced(f), f.rec.id).toBe(false);
   });
-  it("where the dollar moves as prices do (A-03 = A-02), both readings agree: the same funds are ranked", () => {
-    const view = buildInvest({ bundle, index: sp, plan: plan(), assumptions: { fxChange: 2 } });
-    const open = funds(view).filter((f) => typeof status(f) === "string" || status(f) === null);
-    expect(open.length).toBeGreaterThan(0);
-    for (const f of open) {
-      expect(f.reason, f.rec.id).toBeUndefined();
-      expect(priced(f), f.rec.id).toBe(true);
+  it("where the dollar moves as prices do (A-03 = A-02), both readings agree: the twins are ranked, each at the value of the fund they copy", () => {
+    const view = buildInvest({ bundle: twins, index: sp, plan: plan(), assumptions: { fxChange: 2 } });
+    const was = at(view, known.rec.id).best?.valueN;
+    for (const id of [named, unknown]) {
+      const f = at(view, id);
+      expect(f.reason, id).toBeUndefined();
+      expect(priced(f), id).toBe(true);
+      expect(f.best?.valueN, id).toBeCloseTo(was ?? Number.NaN, 6);
     }
   });
 });
