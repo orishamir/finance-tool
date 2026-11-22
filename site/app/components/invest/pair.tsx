@@ -1,7 +1,6 @@
 // The index page's pair (spec 8dd1f013:research/specs/2026-10-27-invest-improvements 3.8 to 3.10): an account and a fund, and what the
-// page says of them. Here: the pair's verdict and ties (the pair set beside the chosen one, which the receipt and the fees panel read),
-// how a pick moves the other half, and the pieces the lists (lists.tsx), the receipt's parts (receipt.tsx) and the custom index's lists
-// (no-fund.tsx) share: a house's groups,
+// page says of them. Here: the pair's verdict and ties (the pair set beside the chosen one, which the receipt, the fees panel and the
+// chosen pair's card read), how a pick moves the other half, and the pieces the lists (lists.tsx), the chosen pair's card (chosen.tsx) and the custom index's lists (no-fund.tsx) share: a house's groups,
 // standing-order and phone-only prices, the notes on prices abroad, the own-bank field, and a fund's gap from its index.
 import { mayaFundHref } from "../../lib/sources";
 import { Fragment, type ReactNode } from "react";
@@ -246,6 +245,9 @@ export function kindPairs(view: InvestView, pick: Pick): Record<Kind, Pick> | nu
 
 // ---------------------------------------------------------------- the result
 
+/** F-109 (D94): a way's line on whole units, where some monthly deposit bought no unit; null where none did. */
+export const unitsLine = (units: WayPrice["units"]): string | null => (!units || units.skipped === 0 ? null : units.skipped * 2 > units.monthly ? c.pair.unitsEvery : c.pair.unitsSome);
+
 /** Every ranked pair of the same kind (hedged or not) as `best`, at every house, what it leaves, most first. */
 function pairsOfKind(view: InvestView, best: Pick): { house: string; fund: string; v: number }[] {
   const bestRec = allFunds(view).find((f) => f.rec.id === best.fund)?.rec;
@@ -282,10 +284,19 @@ export function tieSet(view: InvestView, best: Pick | null, theta: number): { ho
 }
 /**
  * The best pair is crowned only when it is alone in its tie set (P-01, F-80; a pair 43 ₪ ahead, 0.05%, took the star).
- * Within the threshold the pairs share the top, and no star is drawn.
+ * Within the threshold the pairs share the top, and no star is drawn: in the receipt, the fees panel and the account tile alike.
  */
 export function crowned(view: InvestView, best: Pick | null, theta: number): boolean {
   return tieCount(view, best, theta) === 1;
+}
+/**
+ * The account the chosen pair's account tile stars, from the same tie set: the one house every pair of the set is at, else none (on the
+ * S&P 500 three of Psagot's own funds can be within the threshold and no other house: no pair is crowned, and Psagot is starred). The
+ * verdict speaks of pairs and the account tile of accounts: a set of three pairs at one house crowns no pair and crowns the house.
+ */
+export function crownedHouse(view: InvestView, best: Pick | null, theta: number): string | null {
+  const set = tieSet(view, best, theta);
+  return set.length > 0 && set.every((x) => x.house === set[0]!.house) ? set[0]!.house : null;
 }
 /**
  * The funds of the tie set, each once, the best one's first: the fund list counts funds, not pairs (the same
@@ -304,7 +315,7 @@ export function inTieSet(view: InvestView, best: Pick | null, p: Pick, theta: nu
   return tieSet(view, best, theta).some((x) => x.house === p.house && x.fund === p.fund);
 }
 
-/** The pair a pick is set against, and what the page says of the two (F-80, P-01): one reading for the receipt above the lists and the
+/** The pair a pick is set against, and what the page says of the two (F-80, P-01): one reading for the receipt in the side rail and the
  * fees panel under the lists, so the two never disagree. The pairs are priced once per plan (`pairCostsKept`). */
 export function pairVerdict(view: InvestView, bundle: IndicesBundle, plan: WorkbenchInputs, pick: Pick, chosen: boolean) {
   const best = bestFor(view, pick);
@@ -314,8 +325,8 @@ export function pairVerdict(view: InvestView, bundle: IndicesBundle, plan: Workb
   const other = onBest ? runnerUp(view, pick) : best;
   const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });
   const pcOther = other ? pairCostsKept({ bundle, index: view.index, plan, fundId: other.fund, providerId: other.house }) : null;
-  // the tie set of F-80: every ranked pair within the site's tie threshold of the best one (P-01); crowned when it is alone
-  // (with the person's own pick far from the best, the best pair is still in a tie and is not crowned)
+  // the tie set of F-80: every ranked pair within the site's tie threshold of the best one (P-01); crowned when it is alone, as in the
+  // account tile (with the person's own pick far from the best, the best pair is still in a tie and is not crowned)
   const theta = tieShareOf(bundle);
   const n = tieCount(view, best, theta);
   // the funds the tied pairs hold, each once: the fund list counts these, and the words name both counts where they differ
@@ -391,7 +402,7 @@ export function AsideLine({ lines, company, open, onOpen }: { lines: readonly As
 }
 
 /** The words of a price left out of the figure (D41, D56): the printed price, the record's reason, and its source; null with none to say. */
-function asideWords(lines: readonly AsideLineRecord[], company: string): ReactNode {
+export function asideWords(lines: readonly AsideLineRecord[], company: string): ReactNode {
   const l = lines[0];
   if (!l) return null;
   const amount = (v: NonNullable<AsideLineRecord["min"]>) => (typeof v.value !== "number" ? null : v.unit === "nis_per_trade" || v.unit === "nis" ? fmt.nis(v.value) : v.unit === "usd_per_trade" || v.unit === "usd" ? fmt.usd(v.value) : null);
@@ -589,11 +600,15 @@ export function gapNoteOf(recs: readonly FundWay["rec"][], states: readonly GapS
   });
 }
 
-/** F-92 (a) after its words (the fund's part of the receipt): the gap with its sign, then the years it rests on, on one line where it fits; the document that says what the index is opens from its sheet. */
+/** F-92 (a) beside its label (the chosen fund's tile): the gap with its sign, and the years it rests on; the document that says what the index is opens from its sheet. */
 export function GapCell({ rec, today, list }: { rec: FundWay["rec"]; today: string; /** F-92 (d): the list the fund is compared on (`gapListFor`). */ list: GapList }) {
   const state = gapStateOf(rec, list);
-  // a word in place of a figure stands where the figure would
-  const note = (words: string) => <span className="text-muted-foreground">{words}</span>;
+  // a word in place of a figure stands where the figure would, at the figure's size ("לא מושווה" sat lower and smaller)
+  const note = (words: string) => (
+    <span className="flex flex-col leading-tight">
+      <span className="text-sm text-muted-foreground">{words}</span>
+    </span>
+  );
   // F-92 (d): an index of unstated kind, or a gross one the fund is not fairly measured against on this list: no gap stands beside the others
   if (state === "unstated" || state === "gross-apart") return note(c.kinds.gapUnstated);
   const g = gapOf(rec, list);
@@ -602,8 +617,8 @@ export function GapCell({ rec, today, list }: { rec: FundWay["rec"]; today: stri
   // a fund the person typed has no report the site reads, so nothing is waiting to be collected (D105)
   if (!g || !val) return note(isCustomFund(rec) ? c.kinds.gapTyped : rec.domicile === "IL" ? c.kinds.gapNone : c.kinds.gapNotCollected);
   return (
-    <span className="inline-flex flex-wrap items-baseline gap-x-1.5">
-      <span className="font-semibold text-foreground">
+    <span className="flex flex-col leading-tight">
+      <span className="font-semibold">
         <Num value={val} display={fmt.signedPct(g.pct, 2)} />
       </span>
       <span className="text-xs text-muted-foreground whitespace-nowrap">{c.kinds.gapYears(g.years, rec.tracking_record?.years[0]?.year)}</span>

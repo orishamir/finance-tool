@@ -7,6 +7,7 @@ import { entered } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { allFunds, crowned, ownBankHelp, pairVerdict, pickOfHeadline, tieCount, tieFunds } from "./pair";
+import { ChosenPair } from "./chosen";
 import { Terms } from "./custom-entries";
 import { bundle, t, plan, shown, fundRow, html, lists, DollarFor, ReceiptAndFees } from "./render-fixtures";
 
@@ -145,7 +146,14 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     expect(out).not.toContain(invest.pair.moreIfCheapest);
     expect(out).toContain(invest.pair.vsYours);
   });
-  it("no list row carries the star", () => {
+  it("the account tile stars the one house all the tied pairs are at: its own funds tie with one another, no other house does", () => {
+    const tile = (pick: { house: string; fund: string }) => shown(html(createElement(ChosenPair, { view: sp, bundle, plan: base, pick, chosen: false })));
+    expect(head.house).toBe("psagot");
+    expect(tile(head)).toContain(invest.pair.cheapestTag);
+    // and not with a fund outside the set, nor when another house is in it (the tiles' R1 case keeps no star there)
+    const far = allFunds(sp).find((f) => f.rec.id !== head.fund && "valueN" in (f.byHouse.psagot ?? {}) && !tieFunds(sp, head, theta).includes(f.rec.id))!;
+    expect(tile({ house: "psagot", fund: far.rec.id })).not.toContain(invest.pair.cheapestTag);
+    // no list row carries the star: it is said once, in the tile
     expect(shown(lists(sp, bundle, base, head))).not.toContain(invest.pair.cheapestTag);
   });
   it("a pick of another fund changes nothing in the accounts list but which row is chosen: each account's stretch is over all its funds (D104)", () => {

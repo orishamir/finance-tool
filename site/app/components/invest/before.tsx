@@ -28,7 +28,7 @@ type Share = { min: number; max: number; step: number; start: number };
 const amount = (n: number) => `\u2066${fmt.nisWhole(n)}\u2069`;
 type Key = "fees" | "sens" | "hedge" | "stairs";
 
-/** The account's and the fund's fees together, without the tax, in today's money. */
+/** The account's and the fund's fees together, without the tax, as the chosen pair's card writes them. */
 const togetherOf = (pc: PairCosts, today: string): SiteValue => sumOf({ [c.receipt.parts.account]: accountSum(pc, c.receipt.parts.account, today, Math.round), [c.receipt.parts.fund]: pc.fund }, "F-91", { today, about: c.chosen.togetherAbout, round: Math.round });
 
 /** The chosen pair's fees item by item, as the receipt writes them (whole shekels that add up), the largest first. */

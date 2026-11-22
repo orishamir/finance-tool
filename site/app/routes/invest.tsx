@@ -12,6 +12,7 @@ import { PLAN_AMOUNT_TILE, PlanKnobs } from "../components/invest/knobs";
 import { TitleRow } from "../components/invest/title";
 import { PlanCard } from "../components/invest/plan-card";
 import { PairReceipt, PairStub } from "../components/invest/receipt";
+import { ChosenPair } from "../components/invest/chosen";
 import { pickOfHeadline, pickOfOpen, allFunds, type Moved, type Pick } from "../components/invest/pair";
 import { PairLists, listName } from "../components/invest/lists";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
@@ -248,10 +249,11 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
     const rest = q.toString();
     navigate(`${pathname}${rest ? `?${rest}` : ""}`, { replace: true });
   }, [search, pathname, navigate]);
-  // One column at every width, the plan first, then the receipt, then the two lists: from 1280 px the plan's tiles stand in one row, the
-  // receipt is a ticket and the lists stand either side of their ruler; below 1280 px the receipt is paper with its stub at the screen's
-  // foot. The body renders only in the browser, so its first render already knows the width.
-  const wide = useMedia("(min-width: 80rem)");
+  // From 1280 px the pair's card stands in a rail, and beside it the plan's tiles stand in one row over the receipt's ticket, which stands
+  // over the two lists and their ruler; below 1280 px everything stands in one column, the plan first and the receipt above the lists with
+  // its stub at the screen's foot. The body renders
+  // only in the browser, so its first render already knows the width.
+  const railed = useMedia("(min-width: 80rem)");
   const receiptRef = useRef<HTMLDivElement>(null);
   const ticketRef = useRef<HTMLElement>(null);
   const pairArea = useRef<HTMLDivElement>(null);
@@ -334,7 +336,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
     else q.delete("group");
     navigate(`${pathname}?${q.toString()}`, { replace: true, preventScrollReset: true });
   };
-  // the house's group picked (sent from the house's page), by its name
+  // the house's group picked in the account card, by its name
   const ownGroup = own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null;
   const movedNow = moved && shown && moved.at.house === (own?.house ?? shown.house) && moved.at.fund === shown.fund ? moved : null;
   // an index with no fund to price (a custom one): the account the person picked in the list, else the one that charges least
@@ -364,7 +366,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   // the receipt: below 1280 px paper above the lists, the stub's way back leading to it (focusable for that, never tabbed to); from 1280 px
   // a ticket over the lists, whose total the ruler's point joins
   const receipt = pick && shown && shownView && (
-    wide ? (
+    railed ? (
       <PairReceipt view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} layout="ticket" ref={ticketRef} />
     ) : (
       <div ref={receiptRef} tabIndex={-1} className="anchor-target outline-none">
@@ -373,7 +375,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
     )
   );
   const fund = shown && shownView ? allFunds(shownView).find((f) => f.rec.id === shown.fund) : undefined;
-  // the two lists side by side where the page's column has the room (a container query)
+  // the two lists side by side where the main column has the room (a container query: the rail beside it takes its share from 1280 px)
   const lists = "grid gap-5 items-start @min-[57rem]:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)]";
   const join = (
     <span aria-hidden="true" className="hidden @min-[57rem]:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
@@ -396,33 +398,47 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
             <p className="text-muted-foreground">{c.chips.none}</p>
           ) : (
             <>
-              {/* the plan, the receipt and the choice of account and fund, one under the other, across the page's column */}
-              <div ref={pairArea} className="@container flex min-w-0 flex-col gap-5 lg:gap-6">
-                {planCard}
-                {nothing ? (
-                  <EmptyState
-                    icon={<IconCoins />}
-                    title={c.empty.title}
-                    action={{ label: `${c.empty.action} ${c.plan.knobs.amount}`, onClick: () => document.getElementById(PLAN_AMOUNT_TILE)?.click() }}
-                  >
-                    {c.empty.body}
-                  </EmptyState>
-                ) : pick && shown && shownView ? (
-                  <>
-                    {receipt}
-                    <PairLists view={shownView} bundle={shownBundle} plan={plan} livePlan={livePlan} today={data.today} pick={shown} chosen={picks} onPick={onPick} moved={movedNow} ownBank={ownBankControl} group={ownGroup} ruler={wide} above={ticketRef} />
-                  </>
-                ) : (
-                  // the same two lists as every index, the receipt set aside until a fund is added
-                  <>
-                    <NoFundCall view={view} />
-                    <div className={lists}>
-                      <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} ownBank={ownBankControl} />
-                      {join}
-                      <NoFundColumn view={view} mayaHref={wb.links.maya?.href ?? null} />
-                    </div>
-                  </>
+              {/* the pair's card in a rail at the start side from 1280 px, the plan, the receipt's ticket and the choice of account and
+                  fund beside it; one column under it, the plan first and the receipt above the lists */}
+              <div ref={pairArea} className="flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-6">
+                {(!railed || (pick && shown && shownView)) && (
+                  <div className="flex flex-col gap-5 xl:w-80 xl:shrink-0">
+                    {!railed && planCard}
+                    {pick && shown && shownView && (
+                      <>
+                        {!railed && receipt}
+                        <ChosenPair view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} onPick={onPick} group={ownGroup} />
+                      </>
+                    )}
+                  </div>
                 )}
+                <div className="@container flex min-w-0 flex-1 flex-col gap-5 lg:gap-6">
+                  {railed && planCard}
+                  {nothing ? (
+                    <EmptyState
+                      icon={<IconCoins />}
+                      title={c.empty.title}
+                      action={{ label: `${c.empty.action} ${c.plan.knobs.amount}`, onClick: () => document.getElementById(PLAN_AMOUNT_TILE)?.click() }}
+                    >
+                      {c.empty.body}
+                    </EmptyState>
+                  ) : pick && shown && shownView ? (
+                    <>
+                      {railed && receipt}
+                      <PairLists view={shownView} bundle={shownBundle} plan={plan} livePlan={livePlan} today={data.today} pick={shown} chosen={picks} onPick={onPick} moved={movedNow} ownBank={ownBankControl} group={ownGroup} ruler={railed} above={ticketRef} />
+                    </>
+                  ) : (
+                    // the same two lists as every index, the receipt set aside until a fund is added
+                    <>
+                      <NoFundCall view={view} />
+                      <div className={lists}>
+                        <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} ownBank={ownBankControl} />
+                        {join}
+                        <NoFundColumn view={view} mayaHref={wb.links.maya?.href ?? null} />
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
               {/* before deciding: where the fees go, what moves the result most, hedged or not (only on a foreign index with funds of both
                   kinds, F-94) and the stairs, a tab each */}
@@ -445,7 +461,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
         </div>
       </Frame>
       {/* outside the block that glides on an index's change: a moving ancestor would carry a pinned element with it */}
-      {!wide && pick && shown && shownView && fund && (
+      {!railed && pick && shown && shownView && fund && (
         <PairStub view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} fundName={listName(shownView, fund.name)} target={receiptRef} area={pairArea} />
       )}
       </CustomEntriesHost>

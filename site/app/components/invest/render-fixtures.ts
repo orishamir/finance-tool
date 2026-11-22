@@ -5,6 +5,7 @@ import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { invest } from "../../copy";
 import { buildIndicesBundle } from "../../lib/providers.server";
+import { asIfNoForeignInvestmentFund } from "../../lib/receipt-fixtures";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { LabelSheetHost } from "../kit";
@@ -18,7 +19,8 @@ import { PairReceipt } from "./receipt";
 import type { IndicesBundle } from "../../lib/providers";
 import { buildInvest, type IndexRef, type InvestView } from "../../lib/invest";
 
-export const bundle = buildIndicesBundle();
+/** The collected data, with no fund measured by a principal currency: the render tests pin ties and picks, not the tax index (`asIfNoForeignInvestmentFund`). */
+export const bundle = asIfNoForeignInvestmentFund(buildIndicesBundle());
 export const t = bundle.today;
 export const plan: WorkbenchInputs = {
   amountNow: 6000, monthly: 400, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
@@ -47,7 +49,7 @@ export function writtenFees(out: string) {
   return items;
 }
 
-/** The receipt, then the fees panel under the lists (where the fees go, and the
+/** The receipt in the side rail, then the fees panel under the lists (where the fees go, and the
  * pair set beside it). */
 export function ReceiptAndFees({ view, bundle: b, plan: p, pick, chosen, onPick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; chosen: boolean; onPick: OnPick }) {
   return createElement(Fragment, null, createElement(PairReceipt, { view, bundle: b, plan: p, pick, chosen }), createElement(FeesPanel, { view, bundle: b, plan: p, pick, chosen, onPick }));

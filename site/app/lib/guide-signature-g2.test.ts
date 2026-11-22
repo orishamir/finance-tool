@@ -11,6 +11,7 @@ import { signatureRegistry } from "../components/guide-signature";
 import { flags, guideSignature as copy } from "../copy";
 import { buildInvest, indexById } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
+import { asIfNoForeignInvestmentFund } from "./receipt-fixtures";
 
 const page = (id: string) => buildGuidePage(id)!;
 const entered = (amount_now: number, monthly_deposit: number) => ({ amount_now, monthly_deposit });
@@ -167,7 +168,8 @@ describe("study fund", () => {
 });
 
 describe("the guides' securities-account range and the indices page", () => {
-  const bundle = buildIndicesBundle();
+  // the guide's run of a fund reads no status as a foreign-investment fund, so the page is read with none (`asIfNoForeignInvestmentFund`)
+  const bundle = asIfNoForeignInvestmentFund(buildIndicesBundle());
   const t = bundle.today;
   const money = (n: number) => enteredValue(n, "nis", t);
   const plan = { amountNow: 10000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null, values: { amount: money(10000), monthly: enteredValue(500, "nis_per_month", t), years: enteredValue(10, "years", t), returnV: enteredValue(7, "pct_per_year", t), inflation: enteredValue(2, "pct_per_year", t) } };

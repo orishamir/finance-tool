@@ -20,7 +20,7 @@ import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
 import { Sheet } from "../Sheet";
-import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
+import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 import { linearScale, steppedScale } from "./slider-scale";
 
@@ -965,6 +965,9 @@ function Words({ today }: { today: string }) {
               </KeyValue>
               <KeyValue label={g.sample.kv[2]!}>
                 <Num value={s.sourced} size="cell" display="12" />
+              </KeyValue>
+              <KeyValue label={g.sample.kv[0]!} size="xs">
+                <Num value={s.rate} size="cell" />
               </KeyValue>
             </dl>
           </State>
@@ -1952,13 +1955,12 @@ function Lists({ today }: { today: string }) {
               </span>
             </span>
           </State>
-          <State label="among a receipt part's labels, under the account's name">
-            <span className="flex flex-col gap-1.5">
-              <span className="text-2xl font-semibold">IBI</span>
-              <span className="flex flex-wrap items-center gap-1.5">
-                <Tag>{investWords.pair.standingTag}</Tag>
-                <SourcedTag value={phoneSample(today)}>{investWords.pair.phoneTag}</SourcedTag>
+          <State label="beside a house's name on a card, with the card's line under it">
+            <span className="flex flex-col gap-1 text-sm text-muted-foreground">
+              <span className="flex items-center gap-2">
+                IBI <SourcedTag value={phoneSample(today)}>{investWords.pair.phoneTag}</SourcedTag>
               </span>
+              <span className="text-xs">{investWords.pair.phoneLine("IBI")}</span>
             </span>
           </State>
         </Grid>
@@ -2300,6 +2302,19 @@ function Lists({ today }: { today: string }) {
         </State>
         <State label="the stub (ReceiptStub), drawn in place here: on the page it is pinned to the screen's foot while the receipt is above the screen, and a tap leads back up to it">
           <StubDemo />
+        </State>
+      </Demo>
+      <Demo name="FactTile, TileJoin" use={g.uses.FactTile}>
+        <State label="two tiles, one under the other, joined by the round +">
+          <div className="flex max-w-sm flex-col">
+            <FactTile edge="border-chart-by-account" head={g.sample.tile.account} link={<a className="text-link" href="/kit">{g.sample.tile.link}</a>} name={g.sample.tile.name}>
+              {g.sample.tile.rows.map((r, i) => <KeyValue key={r} size="xs" label={r}>{g.sample.tile.values[i]}</KeyValue>)}
+            </FactTile>
+            <TileJoin />
+            <FactTile edge="border-chart-by-fund" head={g.sample.tile.fund} name={g.sample.receipt.fund}>
+              <KeyValue size="xs" label={g.sample.tile.rows[0]!}>{g.sample.tile.values[0]}</KeyValue>
+            </FactTile>
+          </div>
         </State>
       </Demo>
       <Demo name="CostStack" use={g.uses.CostStack}>

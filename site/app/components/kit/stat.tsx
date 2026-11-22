@@ -40,9 +40,9 @@ export function StatRow({ children, cols = 3 }: { children: ReactNode; cols?: ke
 }
 
 /** One label and its value on a line, the label at the start and the value at the end. Rows of a `<dl>` (a fee line, a term). */
-export function KeyValue({ label, children, size = "sm" }: { label: ReactNode; children: ReactNode; /** The value's size: `sm` (14 px) or `base` (16 px). */ size?: "sm" | "base" }) {
+export function KeyValue({ label, children, size = "sm" }: { label: ReactNode; children: ReactNode; /** The value's size: `xs` (13 px, label and value both, in a small tile), `sm` (14 px) or `base` (16 px). */ size?: "xs" | "sm" | "base" }) {
   return (
-    <div className="flex items-baseline justify-between gap-3 text-sm">
+    <div className={cx("flex items-baseline justify-between gap-3", size === "xs" ? "text-xs" : "text-sm")}>
       <dt className="text-muted-foreground">{label}</dt>
       <dd className={size === "base" ? "text-base" : undefined}>{children}</dd>
     </div>

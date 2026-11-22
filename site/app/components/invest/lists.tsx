@@ -9,8 +9,8 @@
 // fold under the list, with why. Each row is one line: a name and one figure. From 1280 px the two lists stand
 // either side of a ruler (`StretchChart`), the chosen account's stretch a band on it, every fund a spot in the band joined to its row; below
 // that they stand one under the other, and each fund row carries a small copy of the chosen account's stretch with its own spot. What a
-// row said beyond this (its standing-order and phone-only prices, a fund's labels and gap from the index) is in the receipt's account
-// and fund parts; what holds for the chosen row alone (an open question, no unit price, a price for some customers) is said
+// row said beyond this (the house's groups, its standing-order and phone-only prices, a fund's labels and gap from the index) is in the
+// card of the receipt's pair; what holds for the chosen row alone (an open question, no unit price, a price for some customers) is said
 // under the lists. A row the person typed keeps its terms with the way to change them, on a line under it. Before any pick the pair is the
 // page's own and is named by where it is shown, the receipt (`invest.shownPair`); with a group picked, its house's row keeps its price-list
 // stretch and place (D43), and the fund list is priced at the group's prices, as the receipt is.
@@ -38,7 +38,7 @@ import { pillName } from "./title";
 import { ANCHOR, verdictOf } from "./receipt";
 import { AbroadNotes, OwnBankField, allFunds, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
 
-/** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the receipt has it whole. */
+/** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the chosen pair's card has it whole. */
 export const listName = (view: InvestView, name: string) => shortFundName(name, [pillName(view.index.name), ...(view.index.exposure?.names.he ?? []), ...(view.index.exposure?.names.en ?? []), ...(view.index.custom ? [view.index.custom.name] : [])]);
 
 export interface ListsProps {
@@ -55,7 +55,7 @@ export interface ListsProps {
   onPick: OnPick;
   /** The tap before changed the other half too: the chosen row of the list tapped says so, with the way back. */
   moved: Moved | null;
-  /** The house's group picked (sent from the house's page): `pick.house` is then the held account priced at it, and this its house. */
+  /** The house's group picked in the account card: `pick.house` is then the held account priced at it, and this its house. */
   group: { house: string; key: string; name: string } | null;
   /** The bank where the person already has a current account, and its setter (D64). */
   ownBank?: { value: string | null; onChange: (id: string | null) => void };
@@ -555,7 +555,7 @@ export function PairLists(props: ListsProps) {
       </span>
     ) : null,
     fund.noUnitPrice ? <span key="unit">{c.pair.unitPriceMissing}</span> : null,
-    otherPrice ? <span key="other">{c.lists.otherPrice(short)}</span> : null,
+    otherPrice ? <span key="other">{c.lists.otherPrice(short, sp.cardTitle)}</span> : null,
   ].filter(Boolean);
   // what the ruler measures is its title, over it (`rulerHead`); under the lists, what holds for the chosen pair
   const note =

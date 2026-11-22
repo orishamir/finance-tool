@@ -1,6 +1,6 @@
 // The person's securities-account deals on the index page (F-128): each saved deal is an account of the lists, and a popup edits it on the
 // page's plan with the fee page's own editor (components/fee-deal/editor.tsx), so the two pages edit one deal one way. The popup opens on a
-// saved deal (its row's pencil), on a new deal from a house's latest price list (a house's "להזין מחיר שקיבלתם" on an
+// saved deal (its row's pencil, its pair card), on a new deal from a house's latest price list (a house's "להזין מחיר שקיבלתם" on an
 // index with no fund, a house's page through the address), or on a new deal started from a house's list or empty (the button under the
 // account list). Its head
 // names the deal and keeps its rename and delete; under it three tiles say what the deal leaves on the pair's fund, its place among the
@@ -42,6 +42,7 @@ import { dealProviderId, houseSnap, planContextOf, withDeals } from "../../lib/d
 import { ACCOUNT_KIND, BANK_ACCOUNT, dealHouseId, feesOnPlan, PLAN_KEYS, planRead, whatOfRun, type FeeOnPlan, type Missing } from "../../lib/deal-account/plan";
 import { dealTiles, listFunds } from "../../lib/deal-account/tiles";
 import { planCases } from "../../lib/deal-account/plan-cases";
+import { dealBasis, type DealBasis } from "../../lib/deal-account/basis";
 import { Sheet } from "../Sheet";
 import { allFunds, repick, type Pick } from "./pair";
 import { MQ, useMedia } from "../../lib/hooks";
@@ -50,7 +51,7 @@ import { whenText } from "../fee-deal/open-case";
 import { TemplateList, type TemplateListWords } from "../fee-deal/picker";
 import { NoticeRow } from "../fee-deal/deal-notices";
 import type { MoveLeft } from "../../lib/deal-account/move-run";
-import { ActionMenu, Button, Card, ConfirmAsk, HouseAverageLine, MixedName, ReadForBand, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, useStuckRoom, type FeeHeadSlot, type GripAction } from "../kit";
+import { ActionMenu, Button, Card, ConfirmAsk, HouseAverageLine, KeyValue, MixedName, ReadForBand, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, useStuckRoom, When, type FeeHeadSlot, type GripAction } from "../kit";
 import { ToolBoundary } from "../tool-boundary";
 
 const w = root.dealAccount;
@@ -78,6 +79,8 @@ interface DealAccountsApi {
    * from a price there, as the page priced it; null otherwise (a fund the house it was filled from does not sell keeps the house's words).
    */
   abroadLacks: (providerId: string) => Missing | null;
+  /** Where a saved deal came from and what was changed from it (`dealBasis`), for the pair card; null for a deal filled from none. */
+  basisOf: (providerId: string) => DealBasis | null;
   /** A deal fee as the ticket writes it under its line, read for the plan on fund `fundId` (A, F): its price as the deal has it, and its pick. */
   feeWords: (providerId: string, fundId: string, feeId: string) => ReactNode;
   /** The typed accounts the move left in the saved state, with why (lib/deal-account/move-run.ts): the account list says each. */
@@ -163,6 +166,10 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
         if (!world) return null;
         const gaps = abroadGaps(abroadOf(world.view), (f) => f.byHouse[id], (f) => dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId: f.rec.id }));
         return gaps[0]?.missing ?? null;
+      },
+      basisOf: (id) => {
+        const deal = saved.find((d) => dealProviderId(d.id) === id);
+        return deal && data ? dealBasis(deal, data.houses) : null;
       },
       feeWords: (id, fundId, feeId) => {
         const deal = saved.find((d) => dealProviderId(d.id) === id);
@@ -641,7 +648,7 @@ function DealHead({ deal, headId, isSaved, writable, onName, onDelete }: { deal:
 }
 
 /**
- * Beside a deal's name in the lists, where a house's row has its quiet mark: the pencil that opens the deal in the popup, on the fee the row
+ * Beside a deal's name in the lists, where a house's row has its quiet mark, and in the pair card: the pencil that opens the deal in the popup, on the fee the row
  * waits for where it waits for one (`missing`, D1). With the name's entered ink it says the row is the person's own. `complete`: on a row
  * the plan cannot price, the button's words say it completes the deal. Not a kit piece: the kit's `Button`, wired to this page's popup.
  */
@@ -698,6 +705,40 @@ export function NotMovedLines() {
       {api.left.map((a) => (
         <Sentence key={a.id} size="xs" tone="muted" t={w.notMoved} vars={{ name: <MixedName>{a.name}</MixedName>, why: w.notMovedWhy[a.why] }} />
       ))}
+    </>
+  );
+}
+
+/**
+ * The pair card's account rows where the account is the person's deal (H), as a house's rows stand in the card (`KeyValue`): the price list
+ * it was filled from and that list's date, the fees changed from it, and the day it was saved. Not a kit piece: the kit's `KeyValue` holding
+ * what only a deal says.
+ */
+export function DealRows({ id, house }: { id: string; house: (houseId: string) => string | null }) {
+  const api = useDealAccounts();
+  const deal = api?.dealOf(id);
+  if (!api || !deal) return null;
+  const basis = api.basisOf(id);
+  return (
+    <>
+      {basis && (
+        <KeyValue size="xs" label={<span className="whitespace-nowrap">{w.card.basis}</span>}>
+          <span className="block text-start">
+            {w.card.basisValue(house(basis.house) ?? basis.name, basis.date !== null)}
+            {basis.date && <When iso={basis.date} />}
+          </span>
+        </KeyValue>
+      )}
+      {basis && basis.changed.length > 0 && (
+        <KeyValue size="xs" label={<span className="whitespace-nowrap">{w.card.changed}</span>}>
+          <span className="block text-start">{basis.changed.map((x) => feeNameOf(x.kind, x.name)).join(", ")}</span>
+        </KeyValue>
+      )}
+      {deal.saved && (
+        <KeyValue size="xs" label={w.card.saved}>
+          <When iso={deal.saved} />
+        </KeyValue>
+      )}
     </>
   );
 }

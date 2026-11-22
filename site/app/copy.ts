@@ -1028,6 +1028,8 @@ export const flags: Record<string, string> = {
   // F-12 at Interactive Israel's European minimum, 2.5 in the trade's currency, beside its collection sentence (BRK OQ25)
   "BRK-OQ25": "עמלת המינימום בקנייה ובמכירה כאן חושבה לפי 2.5 במטבע העסקה, כלשון התעריפון. אותו עמוד אומר גם שהעמלה נגבית במטבע הראשי של הבורסה. הוא לא אומר איך זה מתיישב עם מינימום בעסקה בדולרים, ולכן העמלה בפועל יכולה להיות שונה.",
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה. האתר עוד לא בדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
+  // F-04, method §13: a fund run under both readings of TXS OQ26 (TXS-14), beside a figure both readings give
+  "TXS-OQ26": "לא ידוע אם הרווח בקרן הזו נמדד מול שער המטבע העיקרי שלה או מול מדד המחירים לצרכן. בתוכנית הזו שתי הדרכים נותנות אותו מס.",
   "G-14": "הוצאות ישירות של המסלול עוד לא נאספו, ולכן לא נכללו בחישוב.",
   // F-119: an s.120ב amount read for a year after its freeze; TXG OQ16 (the rounding, the CPI readings, the unrounded 2024 amount) keeps it from being exact
   // the person's income stays as entered (A-12, A-13), and the figures linked to the average wage stay at 2026's (method G-36); a fall of the CPI is TXG OQ17,
@@ -3093,6 +3095,8 @@ export const groupPrices = {
   pickedName: (house: string, group: string) => `${house}, ל${group}`,
   /** The radio on a sub-row the person can pick: what picking it does, for a screen reader. */
   pickLabel: (group: string) => `חשבון במחיר ל${group}`,
+  /** On the account tile, above the house's groups, when one of them is picked. */
+  pickedLine: (group: string) => `במחיר ל${group} כל עוד הוא נמשך, ואחר כך לפי התעריפון`,
   /** Under the sub-rows, when some can be picked: why the others cannot. */
   pickNote: "אפשר לבחור מחיר של קבוצה כשהמסמך מזכיר בו קרנות וכתוב בו כמה זמן הוא נמשך.",
   toPage: (house: string) => `לעמוד של ${house}, עם המקורות`,
@@ -3909,6 +3913,8 @@ const shownPair = (chosen: boolean) => {
     /** A difference's sheet: what it is. */
     diffAbout: `ההפרש מ${name}`,
     vs: `לעומת ${name}`,
+    /** The rail's card of the pair's facts. */
+    cardTitle: `${name}, בפירוט`,
     /** "לפני שמחליטים": its lead before the pair's names, and the tabs' spoken name. */
     questions: (n: number) => `${questionCount(n)} על ${name}:`,
     tabs: `שאלות על ${name}`,
@@ -4002,7 +4008,7 @@ export const invest = {
     indexWord: "מדד",
   },
 
-  /** The receipt (the page's answer, above the lists): what was paid in, what the index added, what each party took, what is left. */
+  /** The receipt (the page's answer, in the side rail or between the lists): what was paid in, what the index added, what each party took, what is left. */
   receipt: {
     title: "קבלה",
     added: "המדד הוסיף, לפני כל עלות",
@@ -4051,15 +4057,19 @@ export const invest = {
     regular: "בפעולה אחרת:",
   },
 
-  /** The receipt's account and fund parts: what they say of the pair beyond its lines, under each one's name. */
+  /** The chosen pair's card: what the lists' heads and rows say of the chosen account and fund. */
   chosen: {
-    /** The account's and the fund's fees together, without the tax: the fees panel's total. */
+    /** The account's and the fund's fees together, without the tax. */
+    together: { before: "יחד", after: "עמלות" },
     togetherAbout: "מה שהחשבון והקרן לוקחים יחד, בלי המס",
-    /** The price list's link in the account's part: the words before the day it was collected (the kit's `When` lead). */
-    collected: "התעריפון נאסף ב־",
+    collected: "התעריפון נאסף",
+    aside: "מחיר אחר, שלא בחישוב",
     fundDoc: "הדוח של הקרן",
     fundDocOther: "המסמך של הקרן",
     number: "מספר הקרן",
+    kind: "סוג הקרן",
+    /** A line per label family; the tax family's labels speak of different taxes, so its line names the subject, not one tax (copy.md 1). */
+    groups: { follow: "מעקב אחרי המדד", payout: "דיבידנדים", currency: "נטרול מט״ח", tax: "איך הקרן ממוסה" } as Record<string, string>,
     /** Whether a fund document's title names its report ("דוח שנתי", "דו\"ח", "דו״ח"), read with its quotes or gershayim left out. */
     isReport: (title: string) => title.replace(/["״]/g, "").startsWith("דוח"),
   },
@@ -4068,7 +4078,7 @@ export const invest = {
   lists: {
     kicker: "איפה ואיך: החשבון והקרן",
     colLeft: "נשאר בסוף",
-    /** Under the lists, where the chosen pair's price rests on a rule that is an open question. */
+    /** A fund row's note where the pair's price rests on a rule that is an open question (`pair.openRow` in the chosen fund's tile). */
     openRow: "לא מדורגת: שאלה פתוחה",
     /** Above several funds with no price at the chosen account, after why: a pick moves the account (`pair.pickMoves` for one fund). */
     pickMovesMany: (house: string) => `בחירה באחת מהן מעבירה את החשבון ${toName(house)}`,
@@ -4096,8 +4106,8 @@ export const invest = {
     /** The ruler's title, over it: what it measures. */
     rulerTitle: "כמה נשאר לכם בסוף, לפי התוכנית שלכם",
     /** Under both lists, for the chosen account: a price for some of its customers that the figure leaves out (a group's, or a standing
-     *  order's). */
-    otherPrice: (house: string) => `${inName(house)} יש גם מחיר אחר, לחלק מהלקוחות. הוא לא נכנס לחישוב.`,
+     *  order's), and where the card says whose. */
+    otherPrice: (house: string, card: string) => `${inName(house)} יש גם מחיר אחר, לחלק מהלקוחות. הוא לא נכנס לחישוב, ולמי הוא מיועד כתוב ב״${card}״.`,
   },
 
   /**
@@ -4110,6 +4120,7 @@ export const invest = {
     /** The caution "?"'s text, by the rule, ended by the rule's chip (`HelpMark` `rules`). */
     note: {
       "TXF-04": "מס רווחי הון על הקרנות האלה עוד לא ידוע: אין נוסח רשמי שאומר אם הרווח בקרן חוץ שנסחרת בתל אביב נמדד מול שער המטבע או מול מדד המחירים לצרכן.",
+      "TXS-14": "מס רווחי הון על הקרנות האלה עוד לא ידוע: לא ידוע אם הרווח נמדד מול שער המטבע העיקרי של הקרן או מול מדד המחירים לצרכן, ובתוכנית הזו שתי הדרכים נותנות מס שונה.",
     } as Record<string, string>,
     noteOther: "המס על הקרנות האלה עוד לא ידוע: הוא תלוי בכלל שעוד לא נקבע.",
     /** The note's last sentence: what the figures are and what is not done with them. */
@@ -4188,7 +4199,7 @@ export const invest = {
     add: "להזין תנאים שקיבלתם",
     /** The link on a house's own page: the indices page opens with a new deal filled from that house's price list. */
     fromHouse: (house: string) => `להזין תנאים שקיבלתם, על בסיס ${house}`,
-    /** The pencil beside the deal's name in the lists: its name for the browser. */
+    /** The pencil beside the deal's name in the lists and the pair card: its name for the browser. */
     edit: "לערוך את העסקה",
     /** Where a deleted deal's row stood, before its name. */
     deleted: "נמחקה מהמכשיר: ",
@@ -4306,6 +4317,14 @@ export const invest = {
     readForShort: "בשביל",
     /** Under a deal fee's line on the ticket: a later price after the month the first ends, and the pick that chose its case (A, F). */
     ticket: { until: (month: string) => `עד ${month}`, after: ", אחר כך ", by: "לפי: " },
+    /** The pair card's account half where the account is the deal (H). */
+    card: {
+      basis: "על בסיס",
+      /** The list's name, then its date (the kit's `When`) after "מ־" where it has one. */
+      basisValue: (house: string, dated: boolean) => `התעריפון של ${house}${dated ? " מ־" : ""}`,
+      changed: "שיניתם",
+      saved: "נשמרה",
+    },
     /** A fund bought abroad the deal has no case for (E): in the popup under the buy-and-sell cases, and folding the page's rows. */
     abroad: {
       lacks: (what: string) => `לקרנות שנקנות בחו״ל בעמוד הזה חסר מקרה: ${what}.`,
@@ -4323,7 +4342,7 @@ export const invest = {
   customEntries: {
     addFund: "להוסיף קרן אחרת",
     edit: "עריכה",
-    /** The pencil beside a typed fund's name, in the lists: its spoken name. */
+    /** The pencil beside a typed fund's name, in the lists and the pair card: its spoken name. */
     editFund: "לערוך את הקרן",
     unknownLine: (list: string) => `לא הזנתם, ולכן לא ידוע: ${list}.`,
     /** A fee of a typed fund left empty, where its figure would stand. */
@@ -4589,6 +4608,9 @@ export const invest = {
     waiting: "כסף שחיכה ליחידה שלמה",
     waitingAbout: "ההפרש בין הכסף שחיכה ליחידה שלמה לבין מה שהיה נעשה ממנו בקרן, עד המכירה, בכסף של היום",
     waitingWhy: { rose: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא עלה עם הקרן.", fell: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא ירד עם הקרן." },
+    /** F-109 (D94): one line on a row whose house buys the fund in whole units, where a monthly deposit buys no unit in most months, or in some */
+    unitsEvery: "יחידה עולה יותר מההפקדה החודשית: קונים פעם בכמה חודשים, ובינתיים החישוב מניח שהכסף מחכה בחשבון בלי ריבית.",
+    unitsSome: "קונים רק יחידות שלמות: בחודש שההפקדה לא מגיעה ליחידה, החישוב מניח שהכסף מחכה בחשבון בלי ריבית.",
     /** F-109: a fund bought in whole units whose unit price the site did not collect is priced by amount, and its row says so */
     unitPriceMissing: "מחיר יחידה של הקרן לא נאסף, אז החישוב קונה בכל סכום, גם חלק מיחידה.",
     accountSlot: "חשבון ניירות ערך",
@@ -4636,12 +4658,14 @@ export const invest = {
      * keeps its profit. */
     abroadPerDividend:
       "יוצא מן הכלל: בתעריפון של {name} דמי ניהול פיקדון ניירות ערך בחו״ל הם {custody}. בנוסף, העלות של הגוף ששומר את ניירות הערך עוברת ללקוח, עד {amount} על כל דיבידנד. בלי העלות הזאת שמירת ניירות הערך שם הייתה נראית בחינם. לכן בקרן בחו״ל שמחלקת דיבידנד (רווח שהקרן משלמת למחזיקים בה), החישוב סופר את המרב: {amount} על כל דיבידנד. קרן שצוברת את הרווח בתוכה (בשמה כתוב Accumulating) לא משלמת אותה.",
+    yoursTag: "החשבון שלכם",
     standingTag: "מחיר להוראת קבע",
     /**
      * a house that sells this kind of fund only by phone, in its own words (an availability entry's `phone_only`): a tag beside
-     * the house, or among the account's labels in the receipt, which opens the source. The price and the order do not change.
+     * the house, which opens the source, and one line on the chosen pair's card. The price and the order do not change.
      */
     phoneTag: "בטלפון בלבד",
+    phoneLine: (house: string) => `${inName(house)} קונים את הקרן הזאת רק בטלפון, דרך חדר המסחר.`,
     phoneAbout: (house: string) => `איך קונים את הקרן ${inName(house)}`,
     phoneLead: (quote: string) => `לפי החברה, את הקרן הזאת קונים אצלה רק בטלפון, דרך חדר המסחר: ״${quote}״.`,
     /** The houses counted are the Israeli ones: the count leaves out the accounts abroad (Interactive, `foreign`), which the list beside the
@@ -4672,6 +4696,8 @@ export const invest = {
       notSold: (house: string) => `לא נקנית ${inName(house)}`,
       other: (house: string) => `אין מחיר ${inName(house)}`,
     },
+    /** Under a fund listed in Tel Aviv and abroad, on each of its two rows: the other row is the same fund, counted once. */
+    sameFundAs: (number: string, abroad: boolean) => `אותה קרן כמו \u2066${number}\u2069 ${abroad ? "שנסחרת בחו״ל" : "שנסחרת בתל אביב"}, ולכן שתיהן נספרות כקרן אחת`,
     notPossibleSource: "המקור",
     /** A grey row's long reason shows two lines; the rest opens at a tap (on a phone the reasons kept about 450 px of blank under the list). */
     reasonMore: "ההסבר המלא",
@@ -4689,6 +4715,9 @@ export const invest = {
     movedHouse: (house: string) => `החשבון עבר ${toName(house)}`,
     moveBackTo: (house: string) => `חזרה ${toName(house)} ולקרן הקודמת`,
     movedFund: "גם הקרן הוחלפה.",
+    /** On a fund row priced on an open rule: why it stands below the ranked funds, on the row itself (Invesco
+     *  1183441 leaves more than a tied fund and stands under it; a legend elsewhere does not say why). */
+    openRow: "מוצגת, לא מדורגת: שאלה פתוחה",
     fundsNotPriced: (n: number, house: string) => (n === 1 ? `קרן אחת לא מחושבת ב${house}:` : `${n} קרנות לא מחושבות ב${house}:`),
     switched: (what: string) => `${what} לא מחושב עם הבחירה הקודמת, אז נבחר גם החלק השני שנשאר בו הכי הרבה.`,
     listLabelAccounts: "חשבונות ניירות ערך",
@@ -5042,7 +5071,8 @@ export const invest = {
     "hedged-many": { text: (ccy: string) => `מנוטרלת ${ccy}`, explain: (ccy: string) => `הקרן מנטרלת רק את החשיפה לשער ה${ccy} מול השקל, חוץ מחשיפה מזערית לצרכים תפעוליים. המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות, ולכן המטבעות האחרים שבמדד עדיין משנים את ערכה, מול ה${ccy}. הנטרול יכול להוסיף לקרן או לקחת ממנה, לפי פער הריביות בין המטבעות ולפי האופן שבו המדד והמטבע זזים יחד. התוצאה נראית בפער של הקרן מהמדד שלה, והחישוב באתר כולל אותו.` },
     "currency-foreign": { text: "חשיפה למט״ח", explain: "את המדד הזה הוספתם, והאתר לא יודע באיזה מטבע הוא מחושב. ערך הקרן עולה ויורד גם עם שער המטבע הזה מול השקל. בדיקת השער באתר זהה לכל מטבע, ולכן היא לא תלויה בשאלה איזה מטבע זה." },
     "currency-many": { text: (ccy: string) => `חשיפה ל${ccy} ולמטבעות נוספים`, explain: (ccy: string) => `ערך הקרן עולה ויורד עם שער ה${ccy} מול השקל, ועם המטבעות האחרים שבמדד, כי המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות.` },
-    "tax-currency": { text: "מס גם על שינויי המטבע", explain: "ביחידות שקליות של קרן ישראלית, הרווח הריאלי נמדד מול מדד המחירים לצרכן, ולכן גם עליית המטבע שבתוך הרווח ממוסה. בקרן שכמעט כל השקעותיה צמודות למטבע עיקרי שבחרה, הרווח נמדד מול המטבע הזה. זה כך אם תקנות מ־2003 שקובעות זאת עדיין בתוקף, ולפי קריאה של האתר הן בתוקף." },
+    "tax-currency": { text: "מס גם על שינויי המטבע", explain: "ביחידות שקליות של קרן ישראלית שאינה קרן נאמנות להשקעות חוץ, הרווח הריאלי נמדד מול מדד המחירים לצרכן, ולכן גם עליית המטבע שבתוך הרווח ממוסה." },
+    "tax-currency-open": { text: "מס על המטבע: לא ידוע", explain: "לא ידוע אם הרווח הריאלי בקרן הזו נמדד מול שער המטבע העיקרי שלה או מול מדד המחירים לצרכן. מול המדד, גם עליית המטבע שבתוך הרווח ממוסה. זה תלוי אם הקרן היא קרן נאמנות להשקעות חוץ ואם תקנות מ־2003 עדיין בתוקף. האתר מחשב את שתי הדרכים, ומדרג את הקרן רק כשהן נותנות אותו מס." },
     "tax-fund-dividend": { text: "מס דיבידנד בתוך הקרן", explain: "קרן אירית משלמת מס אמריקני על דיבידנדים מחברות אמריקניות. המס הזה הוא עלות של הקרן ולא מזוכה בישראל: כך רשות המסים אומרת על קרן חוץ שרשומה בבורסה בתל אביב, ועל קרן שנקנית בחו״ל זו קריאה של האתר." },
     "tax-distribution": { text: "מס על כל חלוקה", explain: "קרן שמחלקת משלמת לכם דיבידנד, וממנו משלמים מס בכל חלוקה, לפני המכירה." },
     "pays-accumulating": { text: "צוברת", explain: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש." },
@@ -5261,6 +5291,7 @@ export const kit = {
       MenuPicker: "בחירה של פריט אחד מרשימה, בתוך שורת טקסט: כפתור שמראה את הנבחר וחץ, ומתחתיו הרשימה. הנבחר מסומן בווי ובכתב מודגש. פריט שהוספתם מקבל עיפרון ופח, והשורה האחרונה מוסיפה. החצים עוברים בין השורות, ו־Escape או הקשה מחוץ לרשימה סוגרים אותה.",
       ShareBar: "שלם מפורק לכמה חלקים, בפס אחד של אחוזים: החלקים זה ליד זה, 2 פיקסלים ביניהם, וכל אחד באורך החלק שלו. מעל הפס מקרא אחד, בסדר של הפס: לכל חלק הצבע, השם והאחוז שלו, תמיד באותו מקום. הסכומים עצמם כתובים ליד הפס. בלי מקרא (`bare`), כשהשורות לידו כבר נותנות שם לכל חלק: פס של 24 פיקסלים, והסכום של החלק הגדול כתוב בתוכו.",
       Receipt: "קבלה: דף עם קצה תחתון קרוע, שורות של שם וסכום עם קו נקודות ביניהם, והחלקים של שורה מוזחים מתחתיה מאחורי קו בצבע שלה: עמלות של חשבון עם הסכום שלהן, עמלות של קרן עם השיעור שלהן. קו כפול לפני הסכום הסופי, וקו מקווקו לפני מה שנובע ממנו. כרטיס (ReceiptTicket): אותן שורות לרוחב עמודה רחבה, בשלושה חלקים: החשבון בצד אחד, הסכום שנשאר באמצע, הקרן בצד השני, ושורה מתחתיהם; חריצים עגולים במקום שבו קווי האמצע פוגשים את הקצוות. בטלפון, כשהקבלה למעלה מחוץ למסך, תלוש שלה עם קצה עליון קרוע נצמד לתחתית המסך: כמה נשאר, והקשה עליו מחזירה לקבלה.",
+      FactTile: "אריח קטן של עובדות על דבר אחד: שורת כותרת עם קישור בסופה, שם, ושורות של שם וערך ב־13 פיקסלים. הקצה שלו בצבע של מה שהדבר גובה, כמו השורה שלו בקבלה. שני אריחים מחוברים ב־+ עגול על התפר.",
       ChipList: "רשימה שאפשר לבחור בה, להוסיף לה, לשנות שם ולמחוק: מטרות. הפריט הנבחר מקבל עיפרון ופח; גרירה רק כשיש onMove; הפריט האחרון (add) מוסיף.",
       KnobStrip: "מספרי התוכנית שנשארים על המסך, לעמוד שנועד לשחק בו. כמחוונים: שני טורים במחשב, אחד בטלפון, ומספר שלא עובר בדיקה מקבל את ההודעה שלו בקצה שורת השם, במקום כפתור האיפוס. כאריחים: כל מספר באריח, ולחיצה על אריח פותחת מעליו חלון עם התיבה, האיפוס (↺) והמחוון, בלי להזיז שום דבר בעמוד.",
       ChangeChart: "כל מספר בתוכנית משתנה באותו אחוז, קו לכל מספר על גרף אחד, משמאל (פחות) לימין (יותר). סמן שגוררים או בוחרים קורא את כל הקווים, והטבלה אומרת לכל מספר: לפני, אחרי, מה נשאר וההפרש.",
@@ -5493,7 +5524,7 @@ export const kit = {
       docTitle: 'קרן לדוגמה, דוח שנתי "קרן לדוגמה MSCI AC World (4A) ETF ת"א 35" (1234567), 31.12.2025',
       receipt: { title: "קבלה לדוגמה", stubNames: "חשבון לדוגמה + קרן לדוגמה", paid: "הפקדתם", added: "צמיחה לדוגמה", tax: "מס רווחי הון לדוגמה", account: "החשבון: חשבון לדוגמה", accountLine: "עמלה לדוגמה", rate: "0.1% מכל פעולה (דוגמה)", fund: "הקרן: קרן לדוגמה", fundFee: "דמי ניהול לדוגמה", inflation: "אינפלציה לדוגמה", left: "נשאר לכם", catch: "בכסף של היום, אם הדולר לא זז מול השקל.", bar: "מה ירד בדרך, לדוגמה", underOne: "פחות מ־⁦1%⁩" },
       stretch: { accounts: "חשבונות לדוגמה", funds: "קרנות לדוגמה", ruler: "כמה נשאר בסוף, לדוגמה", upTo: "עד", less: "פחות", chosen: "נבחר", years: "10 שנים לדוגמה" },
-      tile: { account: "החשבון", fund: "הקרן", name: "בית השקעות לדוגמה" },
+      tile: { account: "החשבון", fund: "הקרן", link: "התעריפון", name: "בית השקעות לדוגמה", rows: ["שורה ראשונה", "שורה שנייה"], values: ["ערך לדוגמה", "ערך נוסף"] },
       cost: { trade: "קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fund: "דמי ניהול הקרן", tax: "מס רווחי הון", remainder: "תוספת משילוב עמלות החשבון", remainderAbout: "החלק הזה לא שייך לעמלה אחת: גם בלי אחת מעמלות החשבון הוא עדיין היה נגבה. שאר עמלות החשבון היו גובות אותו מהכסף שאותה עמלה כבר לא הייתה לוקחת, ומהצמיחה של הכסף הזה.", fromComputed: "חישוב של האתר", fromList: "מהתעריפון של בית השקעות לדוגמה", fromGroup: "מהמסמך של קבוצה לדוגמה", fromYours: "מה שהזנתם", states: { list: "התעריפון", group: "קבוצה", yours: "שלכם" } as Record<string, string>, stateLabel: "מחירים לדוגמה" },
       periods: ["יום", "שבוע", "חודש", "3 חודשים", "6 חודשים", "שנה", "שנתיים", "3 שנים"],
       periodsShort: ["יום", "שבוע", "חודש", "3 ח׳", "6 ח׳", "שנה", "שנתיים", "3 שנים"],
