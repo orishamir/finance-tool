@@ -204,24 +204,22 @@ describe("equal neighbours share one cell, within one span", () => {
   });
 });
 
-describe("two things, one value of the first split by the second: a table", () => {
+describe("two things, one value of the first split by the second: a grid", () => {
   const cases = [
     c("ta", [["tase"], "any"], p("price", "0.1%")),
     c("us", [["abroad"], ["USD"]], p("price", "0.2%")),
-    c("eu", [["abroad"], ["EUR"]], p("price", "0.2%")),
+    c("eu", [["abroad"], ["EUR"]], p("price", "0.3%")),
     c("mk", [["makam"], "any"], p("price", "0.05%")),
   ];
 
-  it("stands the split value's cases side by side under it, each with its sub-head, and the rest as they were", () => {
-    const l = as(layoutOf({ things: two, rows: ROWS, cases }), "table");
-    expect(l.split).toBe(1);
-    expect(l.columns).toEqual([{ case: "ta", when: ["tase"] }, { case: "us", when: ["abroad"], sub: ["USD"] }, { case: "eu", when: ["abroad"], sub: ["EUR"] }, { case: "mk", when: ["makam"] }]);
-    expect(l.rows[0]!.cells.map((x) => x.cases)).toEqual([["ta"], ["us", "eu"], ["mk"]]);
-  });
-
-  it("is a grid once a second value is split, and rows where a value has a case for any value beside others", () => {
-    expect(layoutOf({ things: two, rows: ROWS, cases: [...cases.slice(0, 3), c("mk1", [["makam"], ["USD"]], p("price", "1")), c("mk2", [["makam"], ["EUR"]], p("price", "2"))] }).shape).toBe("grid");
-    expect(as(layoutOf({ things: one, rows: ROWS, cases: [c("a", [["x"]], p("price", "1"))] }), "table").split).toBeNull();
+  it("stands the split value's cases in their columns, and each other value's case over its whole row", () => {
+    const l = as(layoutOf({ things: two, rows: ROWS, cases }), "grid");
+    expect(l.columns.map((x) => x.key)).toEqual([valueKey(["USD"]), valueKey(["EUR"])]);
+    expect(l.rows.map((r) => r.cells.map((x) => [x.case, x.span, x.whole]))).toEqual([
+      [["ta", 2, true]],
+      [["us", 1, false], ["eu", 1, false]],
+      [["mk", 2, true]],
+    ]);
   });
 });
 
@@ -267,8 +265,7 @@ describe("two things whose first has one value left: a table along the second", 
     const l = as(layoutOf({ things: ranged, rows: ROWS, cases }), "table");
     expect(l.thing).toBe(1);
     expect(l.ladder).toBe(true);
-    expect(l.split).toBeNull();
-    expect(l.columns.map((x) => [x.case, x.when, x.sub])).toEqual([["s0", 0, undefined], ["s1", 1, undefined], ["s2", 2, undefined]]);
+    expect(l.columns.map((x) => [x.case, x.when])).toEqual([["s0", 0], ["s1", 1], ["s2", 2]]);
     expect(l.add).toEqual({ thing: 1, range: true });
   });
   it("merges along the second thing's spans", () => {

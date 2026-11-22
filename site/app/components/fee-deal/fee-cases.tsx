@@ -9,7 +9,7 @@
 // under the row heads), a plus knob on the line between two heads, which adds exactly there (the head's menu adds before or after it), a row of
 // its own after a band's rows: on a list thing's table and a grid's row and column it adds one value at once (`nextValue`: the site's
 // next, else one in the person's words, whose head opens for its name, one of what is bought or held with a place its head's menu
-// changes), and a head in the person's words is renamed by a double-click or its menu; on a split table it copies the open case (else the last); on a ladder it asks only the new boundary (`AskStep`),
+// changes), and a head in the person's words is renamed by a double-click or its menu; read as rows it copies the open case (else the last); on a ladder it asks only the new boundary (`AskStep`),
 // between two steps one that splits one of them; a new value starts with no case. A place of a grid no case holds takes a copy of its
 // row's case; a place in a row or a column whose value no case names (a grid's row, a table's column) takes a case whose price is not
 // given yet (`addBlankCase`). Every
@@ -381,7 +381,7 @@ export function FeeCases({
     setAsking(null);
     if (!added) requestAnimationFrame(() => slot.current?.isConnected && slot.current.focus());
   };
-  // where a case has no new value to ask (a split table's), "+ מקרה" copies the open case, else the last, and opens the copy
+  // where a case has no new value to ask, "+ מקרה" copies the open case, else the last, and opens the copy
   const addOne: AddSpec = { label: c.addKnob.case, onAdd: () => addAndOpen(addCase(fee, openCase ?? undefined)) };
   /** The add that asks a ladder's new boundary (`AskStep`), at the end or at `place`. */
   const stepSlot = (t: number, place: Place = { where: "end" }): AddSpec => ({ label: c.addKnob.step, onAdd: ask(t, place), expanded: askedHere(t, place.where) });
@@ -832,7 +832,7 @@ export function FeeCases({
   if (wide && layout.shape === "table") {
     const t = layout.thing;
     const n = layout.columns.length;
-    const listThing = !layout.ladder && layout.split === null && !isRange(fee.by[t]!);
+    const listThing = !layout.ladder && !isRange(fee.by[t]!);
     /** A column's value in words: its case's (a ladder's step as its bounds), or, with no case, its thing's own. */
     const colWords = (col: (typeof layout.columns)[number]) => {
       if (!col.case) return whenText(band.unnamed[t]![valueKey(col.when)]!);
@@ -889,8 +889,8 @@ export function FeeCases({
           const caseCol = col.case;
           return {
             id: col.case,
-            head: col.sub !== undefined ? <SubHead r={r} sub={layout.split!} head={headOf(r, t)} /> : named(t, valueKey(col.when), words, headOf(r, t)),
-            ...(listThing && col.sub === undefined ? renameOn(t, valueKey(col.when)) : {}),
+            head: named(t, valueKey(col.when), words, headOf(r, t)),
+            ...(listThing ? renameOn(t, valueKey(col.when)) : {}),
             label: label(r),
             onOpen: openIt(caseCol),
             open: shownOpen([caseCol], null),
@@ -1162,7 +1162,7 @@ export function FeeCases({
     const t = layout.shape === "table" ? layout.thing : 0;
     const columns = layout.shape === "table" ? layout.columns : layout.cases.map((id) => ({ case: id as string | null, when: fee.cases.find((x) => x.id === id)!.when[0]! }));
     const ladder = layout.shape === "table" && layout.ladder;
-    const listThing = layout.shape === "table" && !layout.ladder && layout.split === null && t === 0 && !isRange(fee.by[t]!);
+    const listThing = layout.shape === "table" && !layout.ladder && t === 0 && !isRange(fee.by[t]!);
     const add = asRow(ladder ? stepSlot(t) : listThing ? valuesSlot(t) : addOne, ladder ? c.addSlot.step : c.addSlot.case);
     // a column with no case: its values for a new case, the table's other thing as its cases name it (one value along the second) or any
     const otherWhen = t === 1 ? fee.cases[0]!.when[0]! : "any";
@@ -1232,17 +1232,6 @@ export function FeeCases({
     out.push({ label: lw.menu.duplicateColumn, onPick: () => addAndOpen(duplicateValue(fee, t, key, copyName(words))) });
     return [...out, ...placeActions(t, key)];
   }
-}
-
-/** A split column's head: its value of the first thing, then its value of the thing it is split by ("בחו״ל · דולר"). */
-function SubHead({ r, sub, head }: { r: CaseRowView; sub: number; head: ReactNode }) {
-  return (
-    <>
-      {head}
-      <span className="text-muted-foreground">{sep}</span>
-      <WhenText words={r.when[sub]!} />
-    </>
-  );
 }
 
 /** The switch of a fee's third thing, above its grid: its values, the one shown pressed, the person's own track saying "שלכם". */

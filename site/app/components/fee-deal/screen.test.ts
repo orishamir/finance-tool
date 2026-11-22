@@ -396,9 +396,9 @@ describe("the fees' column", () => {
     const shown = text(builderOf(d, "fee-trade"));
     for (const w of [feeDeal.cases.changesBy, feeDeal.cases.things.what!, feeDeal.cases.things.track!, feeDeal.cases.values.what.tase!, feeDeal.cases.any.track!])
       expect(shown).toContain(w);
-    // one value of what is bought split by the track: a table, a case added beside its heads, the fee's head holding no add of its own;
-    // the open case ends with no slot of its own (a change of its price with time is the toolbox's line)
-    expect(count(drawBuilder(d, "fee-trade"), "data-add-slot=")).toBe(1);
+    // one value of what is bought split by the track: a grid read as rows, a value of each thing added under its rows, the fee's head
+    // holding no add of its own; the open case ends with no slot of its own (a change of its price with time is the toolbox's line)
+    expect(count(drawBuilder(d, "fee-trade"), "data-add-slot=")).toBe(2);
     // the open case's actions and the open fee's bin are icons, named by what they do; no bin stands beside a thing
     const html = drawBuilder(d, "fee-trade");
     for (const w of [dealCases.copyCase, dealCases.removeCase, feeDeal.panel.remove]) expect(count(html, `aria-label="${w}"`), w).toBe(1);

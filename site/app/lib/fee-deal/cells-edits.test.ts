@@ -283,8 +283,8 @@ describe("how a fee's cases stand", () => {
     expect(split.cases.map((c) => c.when)).toEqual([[["tase"], "any"], [["us", "europe"], ["direct"]], [["us", "europe"], ["branch"]]]);
     expect(split.cases.map(rateOf)).toEqual([0.1, 0.2, 0.2]);
     const l = laid(split);
-    expect(l.shape).toBe("table");
-    expect(l.shape === "table" && l.columns.map((c) => c.sub ?? null)).toEqual([null, ["direct"], ["branch"]]);
+    expect(l.shape).toBe("grid");
+    expect(l.shape === "grid" && l.rows.map((r) => r.cells.map((c) => c.cases))).toEqual([[["ta"]], [split.cases.slice(1).map((c) => c.id)]]);
     // read back from a link, the same
     const deal: FeeDeal = { id: "deal-x", name: "", kind: "brokerage-account", fees: [split] };
     const back = (await throughLink(deal))!;
