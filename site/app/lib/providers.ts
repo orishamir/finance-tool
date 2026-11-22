@@ -6,15 +6,12 @@ import type { DealsInBundle } from "./deal-account/bundle";
 import type { Missing } from "./deal-account/plan";
 import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContext } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord } from "@finance-tool/schema";
-import { formulaNames } from "../copy";
 import { isShekel, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
 import { withoutLtd } from "./company-name";
 import type { EnteredInBundle } from "./custom-entries";
 import { type SiteValue } from "./value";
 import type { RefLink } from "./sources";
 
-// Names the number sheet shows for the formulas of this release (copy.md 3.8 style: the code stays beside the words).
-Object.assign(formulaNames, { "F-63": "השוואת ספקים לפי עלות", "F-65": "השוואת קרנות לאותה חשיפה", "F-83": "ספירת כל מה שנבדק" });
 
 // ---------------------------------------------------------------- the data (providers.server.ts)
 

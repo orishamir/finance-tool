@@ -1,19 +1,9 @@
-// A count in words (copy.md 7.3), and the plain number text it writes. It imports no copy, so copy.ts's own counting words call it;
-// format.ts re-exports it with the rest of the site's formats.
+// A count in words (copy.md 7.3). It imports no copy, so copy.ts's own counting words call it; format.ts re-exports it with the rest of
+// the site's formats.
+import { plainNumber } from "./number-format";
 
 /** Hebrew's plural categories, for a whole count above zero. */
 const plural = new Intl.PluralRules("he");
-const plain = new Intl.NumberFormat("he-IL", { maximumFractionDigits: 2 });
-
-/**
- * Intl writes a negative with an ASCII hyphen after a left-to-right mark. A hyphen is weak in the bidi algorithm and can
- * land on the wrong side of the digits in Hebrew text ("2%-"); the true minus sign U+2212 keeps the left-to-right mark in
- * front of it and, with the `<bdi dir="ltr">` that `Num` and every call site put around a figure, reads "−2%".
- */
-export const withMinus = (text: string) => text.replace(/‎?-/g, "‎−");
-
-/** A plain number, up to two decimals, with the thousands separator and the true minus sign: `fmt.number`. */
-export const plainNumber = (v: number) => withMinus(plain.format(v));
 
 /** The words of a count by its Hebrew plural form: one and two have their own; any other count is the number and `many`; zero has `zero` where given. */
 export interface CountWords {

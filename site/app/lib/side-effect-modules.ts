@@ -9,8 +9,8 @@ export const SIDE_EFFECT_MODULES = [
   "site/app/root.tsx", // reads the kept scroll positions
   "site/app/entry.client.tsx", // starts the app
   "site/app/copy.ts", // adds a name to its own parameters page list
-  "site/app/lib/providers.ts", // adds formula names and flags to copy.ts
   "site/app/lib/compare.ts", // adds formula names to copy.ts
+  "site/app/lib/page-failure.ts", // listens for a script that fails on the page
 ] as const;
 
 /** Our own source modules: the site's app and the engine and schema packages, TypeScript only (a style sheet keeps its effect). */

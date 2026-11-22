@@ -6,7 +6,7 @@ import { deviceStore } from "./device-store";
 
 export type ValueMode = "real" | "nominal";
 
-const store = deviceStore<ValueMode>("mekor.v2.value-mode", "real", (raw) => (raw === "nominal" ? "nominal" : "real"), (v) => v);
+const store = deviceStore<ValueMode>("mekor.v2.value-mode", "real", (raw) => (raw === "nominal" ? "nominal" : "real"), (v) => v, { holds: "kept" });
 
 /** `[mode, setMode]`: the remembered switch. Call it in place of `useState<Mode>("real")`. */
 export function useValueMode(): [ValueMode, (m: ValueMode) => void] {
