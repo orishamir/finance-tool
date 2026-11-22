@@ -8,6 +8,7 @@ import { preloadSearch, SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
 import { Button, CountingFigures, clearOfReceiptStub, cx, gershayim, TextLink, When } from "./kit";
 import { useHydrated } from "../lib/hooks";
+import { onDockRoom } from "../lib/dock-room";
 import { FailureNotice } from "./failure-notice";
 
 export type Current = "guide" | "decoder" | "rules" | "documents" | "parameters" | "home" | "other";
@@ -93,7 +94,7 @@ export function PageShell({ current, data: pageData, children }: { current: Curr
           <Footer width={width} />
         </div>
         <ToTop />
-        <FailureNotice />
+        <FailureNotice where="page" />
         <MenuSheet open={menuOpen} onClose={() => setMenuOpen(false)} current={current} />
         <SearchSheet
           open={searchOpen}
@@ -182,8 +183,8 @@ function Footer({ width }: { width: string }) {
 /**
  * A small "back to the top" after a screen or so of scrolling, at the left: in right-to-left pages the names a row starts with sit at the right,
  * and the button covered them. It steps aside while it would cover a block marked `data-keep-clear` (the deposits grid's cells on a phone,
- * the fee page's toolbox sheet pinned to the foot of a phone's screen), looked at again as the page scrolls and as the page's size changes
- * (a pinned sheet keeps its room at the page's end), and stands above the receipt's stub while the stub shows (`clearOfReceiptStub`).
+ * the fee page's toolbox sheet pinned to the foot of a phone's screen), looked at again as the page scrolls, as the page's size changes and
+ * as a pinned sheet's room at the page's end changes (lib/dock-room.ts), and stands above the receipt's stub while the stub shows (`clearOfReceiptStub`).
  */
 function ToTop() {
   const [show, setShow] = useState(false);
@@ -202,9 +203,11 @@ function ToTop() {
     window.addEventListener("scroll", on, { passive: true });
     const sized = new ResizeObserver(on);
     sized.observe(document.body, { box: "border-box" });
+    const docked = onDockRoom(on);
     return () => {
       window.removeEventListener("scroll", on);
       sized.disconnect();
+      docked();
     };
   }, []);
   if (!show) return null;

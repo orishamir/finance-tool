@@ -1,8 +1,7 @@
 // The person's securities-account deals on the index page (F-128): each saved deal is an account of the lists, and a popup edits it on the
 // page's plan with the fee page's own editor (components/fee-deal/editor.tsx), so the two pages edit one deal one way. The popup opens on a
-// saved deal (its row's pencil, its pair card), on a new deal from a house's latest price list (a house's "להזין מחיר שקיבלתם" on an
-// index with no fund, a house's page through the address), or on a new deal started from a house's list or empty (the button under the
-// account list). Its head
+// saved deal (its row's pencil, its pair card), on a new deal from a house's latest price list (the pair card's "להזין מחיר שקיבלתם", a
+// house's page through the address), or on a new deal started from a house's list or empty (the button under the account list). Its head
 // names the deal and keeps its rename and delete; under it three tiles say what the deal leaves on the pair's fund, its place among the
 // accounts, and, for a deal filled from a house's list, what it leaves against that house's own row; the plan line says what it is read on,
 // and a pick bar what only the person knows (a track, a condition of their own). Each fee says under its block what the plan charges for it
@@ -830,14 +829,16 @@ export function DeletedLine({ name }: { name: string }) {
 }
 
 /**
- * A new deal from a house's latest list, on the person's terms: a text action in a line, standing where its line puts it (`className`).
- * Not a kit piece: the kit's `Button`, wired to this page's popup.
+ * A new deal from a house's latest list, on the person's terms: a text action in a line, or, on the pair card (`framed`), the card's one
+ * action in the action colour's outline (H). Not a kit piece: the kit's `Button`, wired to this page's popup.
  */
-export function DealFromHouseButton({ houseId, children, className }: { houseId: string; children: ReactNode; className?: string }) {
+export function DealFromHouseButton({ houseId, framed = false, children, className }: { houseId: string; framed?: boolean; children: ReactNode; className?: string }) {
   const api = useDealAccounts();
   if (!api) return null;
+  // a framed one keeps its border on the card's edge; a text action stands where its line puts it (`className`)
+  const place = className ?? (framed ? "self-start" : undefined);
   return (
-    <Button variant="quiet" className={cx("text-sm", className)} onClick={() => api.open({ house: houseId })}>
+    <Button variant={framed ? "framed" : "quiet"} className={cx("text-sm", place)} onClick={() => api.open({ house: houseId })}>
       {children}
     </Button>
   );

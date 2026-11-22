@@ -24,11 +24,14 @@ export function closeFailure(): void {
 }
 
 /**
- * Whether an uncaught exception is the site's: thrown in a script under its own origin and base path (`own`). A browser extension's
- * script file, another site's and the browser's own errors (a resize loop, with no address) are not the page's, and raise no notice. A
- * script an extension writes into the page inline is reported under the page's own address, so its exception counts as the site's.
+ * Whether an `error` event is an exception of the site's: it carries the thrown value (`error`), and was thrown in a script under the site's
+ * own origin and base path (`own`). A browser extension's script file and another site's are not the page's. An event with no thrown value
+ * is no exception of a script: the browser's own report (a ResizeObserver loop, which Chrome files under the page's address), or another
+ * site's script whose details the browser withholds. A value thrown as null or undefined from the site's own script is dropped with them,
+ * knowingly: it is vanishingly rare, and the thrown value is the only sign that tells the browser's own reports apart without reading their
+ * words. A script an extension writes into the page inline is reported under the page's own address, so its exception counts as the site's.
  */
-export const isOwnError = (filename: unknown, own: string): boolean => typeof filename === "string" && filename.startsWith(own);
+export const isOwnError = (e: { filename: unknown; error: unknown }, own: string): boolean => e.error != null && typeof e.filename === "string" && e.filename.startsWith(own);
 
 /**
  * Whether an unhandled rejection is the site's: a rejection carries no address of its own, but its stack names the scripts it ran through.
@@ -43,7 +46,7 @@ export function isOwnRejection(reason: unknown, own: string): boolean {
 if (typeof window !== "undefined") {
   const own = `${window.location.origin}${import.meta.env.BASE_URL}`;
   window.addEventListener("error", (e) => {
-    if (isOwnError(e.filename, own)) fail();
+    if (isOwnError(e, own)) fail();
   });
   window.addEventListener("unhandledrejection", (e) => {
     if (isOwnRejection(e.reason, own)) fail();

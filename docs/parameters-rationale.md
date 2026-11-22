@@ -67,9 +67,9 @@ P-05, `data/parameters/illustrative-scenario.json`: the starting values of the g
 
 ### Sliders
 
-**Values:** monthly deposit 0 to 10,000 NIS, in steps of 50 to 1,000, of 100 to 3,000 and of 500 to 10,000; years 1 to 40 in steps of 1; on the indices page, the amount today 0 to 500,000 NIS, in steps of 1,000 to 20,000, of 5,000 to 100,000 and of 25,000 to 500,000, the return 0% to 12% in steps of 0.5%, and inflation 0% to 5% in steps of 0.5%. The change chart at the bottom of the indices page changes each plan number by the same share, −50% to +50% in steps of 5%, and opens at +20%.
+**Values:** monthly deposit 0 to 10,000 NIS in steps of 100; years 1 to 40 in steps of 1; on the indices page, the amount today 0 to 500,000 NIS in steps of 1,000 and the return 0% to 12% in steps of 0.5%. The change chart at the bottom of the indices page changes each plan number by the same share, −50% to +50% in steps of 5%, and opens at +20%.
 
-**Why:** the sliders cover what most people would try; a larger value or another return can be typed. A money slider moves in steps that grow with the amount (`guidelines/design.md`, "Fields"): each of its three parts takes a third of the track, its steps are round amounts, and the starting value (10,000 NIS, 500 NIS a month) lands in the first third rather than against the slider's end; an amount between the steps can be typed and keeps its own place on the track. Years, the return and inflation move in equal steps; inflation's slider ends where the sensitivity check's inflation range ends (P-02, 0% to 5%), and another inflation, a negative one included, can be typed. Half and one and a half times the plan cover the changes a person would weigh; +20% is a change large enough to tell the numbers apart and small enough to be within reach. Chosen by Claude, revisable.
+**Why:** the sliders cover what most people would try; a larger value or another return can be typed. Half and one and a half times the plan cover the changes a person would weigh; +20% is a change large enough to tell the numbers apart and small enough to be within reach. Chosen by Claude, revisable.
 
 ### Representative instruments
 
