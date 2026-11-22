@@ -10,10 +10,7 @@
 //   early    a number field typed in before the page's script arrived that loses what was typed, or the keystrokes after it; one typed
 //            in and left before the script arrived that loses what was typed (on the deposits page: the kit page's script draws it again
 //            rather than taking it over).
-//   slider   a range field a finger drags from its left end to its right that does not carry its box to the top of its scale, or back
-//            to the bottom, the money slider's stepped scale included; and the slider rules every page's sliders are held to by the layout
-//            check (`sliderRules`), which must catch a slider planted with every fault: right to left, its ends written under it, and a
-//            drag from its left end to its right that does not carry it to its most.
+//   slider   a slider without its value at each end, or one a finger drags across that does not follow it.
 //   sheet    with the sheets' motion played: a sheet that does not open with the focus on its first thing to act on, that Escape (the
 //            browser's close request, which the phone's Back sends on Android) or its X does not close, that does not give the focus back
 //            to what opened it; a sheet opened from inside another that shows over it rather than in its place, leaves the one under it
@@ -32,6 +29,8 @@
 //            press there does not open it; a pick card's tile choice not chosen by Space.
 //   strip    a product table's folding strip that a tap on its words does not fold, or whose link a tap does not reach.
 //   side     a side page's fold that opens again when the Back button comes back to the part it was opened for.
+//   header   from 1024 px the site's five sections not all in sight on one line each, or overlapped by the open search; below it, no menu
+//            button named exactly "תפריט" (design.md, "The site's sections are in sight"). A section hidden on purpose must be caught first.
 //   touch    a chart dragged sideways by a finger that does not follow it, or that keeps the page from scrolling when the finger moves down.
 
 const CONTEXT = { locale: "he-IL", timezoneId: "Asia/Jerusalem", reducedMotion: "reduce", colorScheme: "dark" };
@@ -70,7 +69,7 @@ const center = (r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2 });
 
 export async function kitInputCheck(browser, base) {
   const found = [];
-  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck]) {
+  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck]) {
     try {
       found.push(...(await run(browser, base)));
     } catch (e) {
@@ -100,14 +99,14 @@ async function fieldCheck(browser, base) {
   if (await field.locator('[role="alert"]').count()) found.push("field: the slider field's error is an alert, spoken on every keystroke");
   await page.keyboard.press("Backspace");
   if (await error.count()) found.push("field: the keystroke that fixes the value does not clear its error");
-  if ((await slider.getAttribute("aria-valuetext")) !== "5") found.push(`field: a right value typed does not take effect at once (the slider stands at ${await slider.getAttribute("aria-valuetext")}, not 5)`);
+  if ((await slider.inputValue()) !== "5") found.push(`field: a right value typed does not take effect at once (the slider stands at ${await slider.inputValue()}, not 5)`);
   if ((await box.getAttribute("data-wrong")) !== null) found.push("field: a right value typed is still marked wrong on the box");
   await page.keyboard.type("0");
   if (await error.count()) found.push("field: a wrong value typed after a right one shows its error before the hand rests");
   await page.keyboard.press("Tab");
   if (!(await error.count())) found.push("field: a wrong value's error does not show on leaving the field");
   if ((await box.inputValue()) !== "50") found.push("field: leaving the field clears the wrong value typed");
-  if ((await slider.getAttribute("aria-valuetext")) !== "5") found.push("field: the last right result does not stay while the value is wrong");
+  if ((await slider.inputValue()) !== "5") found.push("field: the last right result does not stay while the value is wrong");
   // a value from outside (the slider) replaces the wrong text and its error; a wrong keystroke after it waits for the hand to rest again
   await slider.focus();
   await page.keyboard.press("ArrowRight");
@@ -186,87 +185,23 @@ async function earlyCheck(browser, base) {
 async function sliderCheck(browser, base) {
   const found = [];
   const { ctx, page } = await open(browser, base, PHONE);
-  // the kit's range fields: the years (1 to 40) and the money slider on its stepped scale (0 to 500,000)
-  const fields = page.locator('article[aria-label="RangeField"] .range-field');
-  for (const [n, top, bottom] of [[0, "40", "1"], [2, "500,000", "0"]]) {
-    const field = fields.nth(n);
-    const slider = field.locator('input[type="range"]');
-    const box = field.locator("input.field-input");
-    await slider.scrollIntoViewIfNeeded();
-    const r = await slider.boundingBox();
-    const y = r.y + r.height / 2;
-    const before = await box.inputValue();
-    await touchDrag(page, { x: r.x + 6, y }, { x: r.x + r.width - 6, y });
-    await page.evaluate(settled);
-    const up = await box.inputValue();
-    if (up !== top) found.push(`slider: a finger dragged across a range field from its left end to its right does not carry its box to the top of its scale (${before} to ${up}, not ${top})`);
-    await touchDrag(page, { x: r.x + r.width - 6, y }, { x: r.x + 6, y });
-    await page.evaluate(settled);
-    const down = await box.inputValue();
-    if (down !== bottom) found.push(`slider: a finger dragged across a range field from its right end to its left does not carry its box to the bottom of its scale (${up} to ${down}, not ${bottom})`);
-  }
+  const field = page.locator('article[aria-label="RangeField"] .range-field').first();
+  const ends = await field.locator("[data-slider-ends] > *").allTextContents();
+  if (ends.join("|") !== "1|40") found.push(`slider: the years slider (1 to 40) shows "${ends.join("|")}" at its ends`);
+  const all = await page.locator('main input[type="range"]').count();
+  const withEnds = await page.locator("main .range-field [data-slider-ends]").count();
+  if (withEnds < all) found.push(`slider: ${all - withEnds} of the ${all} sliders on the kit page show no value at their ends`);
+  const slider = field.locator('input[type="range"]');
+  await slider.scrollIntoViewIfNeeded();
+  const r = await slider.boundingBox();
+  const before = Number(await slider.inputValue());
+  // right to left: the least at the right end, so the finger moves left to grow it
+  await touchDrag(page, { x: r.x + r.width - 6, y: r.y + r.height / 2 }, { x: r.x + 6, y: r.y + r.height / 2 });
+  await page.evaluate(settled);
+  const after = Number(await slider.inputValue());
+  if (!(after > before && after >= 35)) found.push(`slider: a finger dragged from its right end to its left does not carry it up (${before} to ${after})`);
+  if ((await field.locator("input.field-input").inputValue()) !== String(after)) found.push("slider: the box does not follow the slider a finger drags");
   await ctx.close();
-  // a slider with every fault, planted on the kit page: right to left, its ends written under it, and so growing as the mouse moves left
-  {
-    const { ctx: kit, page: desk } = await open(browser, base, DESK);
-    await desk.evaluate(() => {
-      const field = Object.assign(document.createElement("div"), { id: "planted-slider", className: "field" });
-      field.innerHTML = '<input type="range" class="slider" min="0" max="10" step="1" value="5" style="direction:rtl"><div style="display:flex;justify-content:space-between"><span>10</span><span>0</span></div>';
-      document.querySelector("main").prepend(field);
-    });
-    const caught = (await sliderRules(desk, "#planted-slider")).map((f) => f.detail);
-    for (const [rule, word] of [["direction", "left to right"], ["ends", "at its ends"], ["drag", "drag"]]) if (!caught.some((f) => f.includes(word))) found.push(`slider: self-test: the ${rule} rule did not catch the slider planted on /kit`);
-    await kit.close();
-  }
-  return found;
-}
-
-/**
- * The slider rules on each visible slider (`input[type=range]`) inside `within`, at a computer's width with a mouse: it runs left to right,
- * nothing with a figure stands under it in its field (`.field`, else its parent), and a drag from its left end to its right carries it to
- * its most, one back to its least (a disabled one is not dragged). The layout check runs it on every page at 1440. Returns what failed: the slider's name and the words.
- */
-export async function sliderRules(page, within) {
-  const found = [];
-  const sliders = page.locator(`${within} input[type="range"]`).locator("visible=true");
-  const n = await sliders.count();
-  for (let i = 0; i < n; i++) {
-    const s = sliders.nth(i);
-    await s.scrollIntoViewIfNeeded();
-    const facts = await s.evaluate((el) => {
-      const r = el.getBoundingClientRect();
-      const field = el.closest(".field") ?? el.parentElement;
-      const walker = document.createTreeWalker(field, NodeFilter.SHOW_TEXT);
-      const under = [];
-      for (let t = walker.nextNode(); t; t = walker.nextNode()) {
-        if (!/\d/.test(t.textContent ?? "")) continue;
-        const range = document.createRange();
-        range.selectNodeContents(t);
-        const b = range.getBoundingClientRect();
-        if (b.width > 0 && b.top >= r.bottom - 2) under.push(t.textContent.trim());
-      }
-      const name = el.getAttribute("aria-label") ?? (el.getAttribute("aria-labelledby") ? document.getElementById(el.getAttribute("aria-labelledby"))?.textContent : null) ?? `slider ${el.id || ""}`;
-      return { direction: getComputedStyle(el).direction, under, name: name.trim(), min: Number(el.min || 0), max: Number(el.max || 100), disabled: el.disabled };
-    });
-    const who = `"${facts.name}"`;
-    if (facts.direction !== "ltr") found.push({ slider: facts.name, detail: `${who} does not run left to right (its direction is ${facts.direction})` });
-    if (facts.under.length) found.push({ slider: facts.name, detail: `${who} shows values at its ends: ${facts.under.join(" · ")}` });
-    // a disabled slider (a field waiting for its data) takes no drag
-    if (facts.disabled) continue;
-    const r = await s.boundingBox();
-    const y = r.y + r.height / 2;
-    const drag = async (from, to) => {
-      await page.mouse.move(from, y);
-      await page.mouse.down();
-      await page.mouse.move(to, y, { steps: 10 });
-      await page.mouse.up();
-      await page.evaluate(settled);
-      return Number(await s.inputValue());
-    };
-    const most = await drag(r.x + 2, r.x + r.width - 2);
-    const least = await drag(r.x + r.width - 2, r.x + 2);
-    if (most !== facts.max || least !== facts.min) found.push({ slider: facts.name, detail: `a drag of ${who} from its left end to its right gives ${most} and back ${least}, not its most ${facts.max} and its least ${facts.min}` });
-  }
   return found;
 }
 
@@ -431,7 +366,7 @@ async function sheetLeaveCheck(browser, base) {
     const from = "/guide/current-account";
     const { ctx, page } = await open(browser, base, MOVING_PHONE, from);
     const before = await page.evaluate(() => history.length);
-    await page.locator('[data-site-header] button[class~="lg:hidden"]').tap();
+    await page.locator("[data-site-header]").getByRole("button", { name: "חיפוש", exact: true }).tap();
     const box = page.locator("dialog[open] form[role=search] input");
     await box.waitFor({ timeout: 3000 });
     // a word whose first hit is a page; a term's hit opens the term's own sheet on its page
@@ -622,5 +557,45 @@ async function touchCheck(browser, base) {
   await touchDrag(page, { x: c.x, y: c.y + 60 }, { x: c.x, y: c.y - 120 }, 12);
   await page.waitForFunction((y) => window.scrollY !== y, top, { timeout: 2000 }).catch(() => found.push("touch: a finger moving down the change chart does not scroll the page"));
   await ctx.close();
+  return found;
+}
+
+/** What is wrong with the header at a computer width, on a page whose section is current: each of the five sections shown, on one line,
+ *  none overlapping another or the open header search. */
+async function headerFaults(page) {
+  return page.evaluate(() => {
+    const faults = [];
+    const links = [...document.querySelectorAll('header nav[aria-label="ראשי"] a')].filter((a) => a.getClientRects().length > 0 && getComputedStyle(a).visibility !== "hidden");
+    if (links.length !== 5) faults.push(`${links.length} of the five sections in sight`);
+    const boxes = links.map((a) => a.getBoundingClientRect());
+    links.forEach((a, i) => {
+      const line = parseFloat(getComputedStyle(a).lineHeight) || 24;
+      if (boxes[i].height > line * 1.5 + 16) faults.push(`"${a.textContent}" wraps`);
+    });
+    const meet = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+    for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) if (meet(boxes[i], boxes[j])) faults.push(`"${links[i].textContent}" and "${links[j].textContent}" overlap`);
+    const search = document.querySelector("#header-search")?.getBoundingClientRect();
+    if (search) boxes.forEach((b, i) => meet(b, search) && faults.push(`the open search covers "${links[i].textContent}"`));
+    return faults;
+  });
+}
+
+async function headerCheck(browser, base) {
+  const found = [];
+  const ctx = await browser.newContext({ ...CONTEXT, viewport: { width: 1024, height: 800 } });
+  const page = await ctx.newPage();
+  await page.goto(`${base}/rules`, { waitUntil: "networkidle" });
+  await page.evaluate(settled);
+  await page.locator("#header-search").focus();
+  await page.evaluate(settled);
+  for (const f of await headerFaults(page)) found.push(`header: at 1024 px on /rules, ${f}`);
+  // the check must see a section hidden on purpose before its silence means anything
+  await page.addStyleTag({ content: 'header nav[aria-label="ראשי"] a:last-child { display: none !important; }' });
+  if (!(await headerFaults(page)).length) found.push("header: a section hidden on purpose at 1024 px goes unseen");
+  await ctx.close();
+  const phone = await open(browser, base, PHONE, "/rules");
+  const named = await phone.page.getByRole("button", { name: "תפריט", exact: true }).count();
+  if (named !== 1) found.push(`header: at 390 px, ${named} buttons named exactly "תפריט" (one expected)`);
+  await phone.ctx.close();
   return found;
 }

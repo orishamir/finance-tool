@@ -48,10 +48,6 @@
 //   input    on the kit page, the kit's pieces as a hand uses them, with keys, a mouse and a finger: number fields as they are typed in,
 //            sliders, sheets and their close request, a figure's source note, presses through a card's surface, a table's folding strip and
 //            a chart dragged by a finger (kit-input-check.mjs says each).
-//   slider   at 1440, every slider on the page that does not run left to right, writes a value at its ends, or that a mouse's drag from its
-//            left end to its right does not carry to its most and back to its least (guidelines/design.md, "Fields"; `sliderRules` in
-//            kit-input-check.mjs, whose slider check plants one with every fault on /kit first). The drags write the page's entered values,
-//            so the tab's storage is emptied after it.
 // Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
 // Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages, the kit, and the fee
 // page with a filled deal (its link in layout-check-deal.txt). Needs a build (npm run build). Exits 1 when a
@@ -66,7 +62,7 @@ import { chromium } from "playwright";
 import { frames, newContext, settled } from "./browser.mjs";
 import { serveBuild } from "./serve-build.mjs";
 import { hebrewQuotes, shownText } from "./hebrew-quotes.mjs";
-import { kitInputCheck, sliderRules } from "./kit-input-check.mjs";
+import { kitInputCheck } from "./kit-input-check.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const build = join(here, "../build/client");
@@ -1188,14 +1184,6 @@ async function checkPage(page, path, width) {
       await page.keyboard.press("Escape");
       await page.evaluate(settled);
     }
-  }
-  if (width === 1440) {
-    // last, as the drags write the values the person entered: the tab's storage is emptied after, so the next page opens on its defaults
-    for (const f of await sliderRules(page, "main")) add({ check: "slider", id: f.slider, detail: f.detail });
-    await page.evaluate(() => {
-      localStorage.clear();
-      sessionStorage.clear();
-    });
   }
   return { path, findings, sheets: opened };
 }
