@@ -88,7 +88,7 @@ export function useStairs({ view, bundle, plan, startHouse, startFund, example }
         fundName,
         house: house(stair.pos.a),
         left: p.value,
-        account: { ...p.cost, about: `${t.table.accountCost}: ${fundName}, ${house(stair.pos.a).short}` },
+        account: p.cost(`${t.table.accountCost}: ${fundName}, ${house(stair.pos.a).short}`, false),
         waiting: pc?.waiting ?? null,
         fund: pc?.fund ?? null,
         tax: pc?.tax ?? null,

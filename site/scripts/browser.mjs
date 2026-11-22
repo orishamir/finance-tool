@@ -14,8 +14,7 @@ export async function newContext(browser, options = {}) {
 /**
  * Runs in the page before its own scripts. Counts what the page has waiting that will change it soon, which `settled` waits for and a
  * page at rest between two frames does not show: a timer of a second or less (a value that waits for the hand to rest, `useSettled`; a
- * sheet that closes once it has slid away), a fetch still on its way, and a message to a Web Worker not yet answered (the site's workers
- * answer every message once: the index page's, lib/invest-worker.ts). A longer timer (a "copied" that goes after two seconds, an undo
+ * sheet that closes once it has slid away) and a fetch still on its way. A longer timer (a "copied" that goes after two seconds, an undo
  * offered for a while) is not waited for.
  */
 function countWaiting() {
@@ -41,22 +40,7 @@ function countWaiting() {
     fetching++;
     return get(...a).finally(() => fetching--);
   };
-  let owed = 0;
-  const Worker = window.Worker;
-  if (Worker)
-    window.Worker = class extends Worker {
-      constructor(...a) {
-        super(...a);
-        // counted before the page's own listener runs, which then starts what the answer changes
-        this.addEventListener("message", () => owed--);
-        this.addEventListener("error", () => (owed = 0));
-      }
-      postMessage(...a) {
-        owed++;
-        return super.postMessage(...a);
-      }
-    };
-  Object.defineProperty(window, "__waiting", { value: () => timers.size + fetching + Math.max(0, owed) });
+  Object.defineProperty(window, "__waiting", { value: () => timers.size + fetching });
 }
 
 /**

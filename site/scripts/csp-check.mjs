@@ -1,8 +1,7 @@
 // Opens a sample of the built pages in headless Chrome and fails on anything their Content Security Policy (csp.mjs) refused, so an
 // inline script without its hash, a style, font or fetch from elsewhere, or code the policy blocks never reaches the site:
 //   the front page, then a guide page reached from it by a click (the route's script and its .data fetched in the browser);
-//   a guide page, an index page (its figures come from its Web Worker, lib/invest-worker.ts), a company page and the not-found fallback
-//   (404.html), each opened afresh;
+//   a guide page, the indices, a company page and the not-found fallback (404.html), each opened afresh;
 //   the kit, where a formula draws with KaTeX, loaded on first use with its stylesheet and fonts.
 // A page fails on a `securitypolicyviolation` event or a refusal Chrome logs in the console. Any other error in the console, and an
 // uncaught error, is printed and left to the other checks.
@@ -92,15 +91,7 @@ try {
         await page.evaluate(settled);
       },
     },
-    ...[firstUnder("guide"), firstUnder("companies"), "/no-such-page/"].map((path) => ({ name: path, path })),
-    {
-      name: "/indices/sp500/ and its worker's figures",
-      path: "/indices/sp500/",
-      // the result shows once the page's worker has loaded and answered
-      steps: async (page) => {
-        await page.getByText("נשאר לכם", { exact: true }).first().waitFor({ timeout: 20000 });
-      },
-    },
+    ...[firstUnder("guide"), "/indices/", firstUnder("companies"), "/no-such-page/"].map((path) => ({ name: path, path })),
     {
       name: "/kit/ and its formula",
       path: "/kit/",

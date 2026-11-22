@@ -104,7 +104,7 @@ export function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: 
 }
 
 /**
- * Beside a typed fund's name in the lists and the pair card: the pencil that opens its panel, as a deal's (`DealEditMark`). With the name's
+ * Beside a typed fund's name in the lists: the pencil that opens its panel, as a deal's (`DealEditMark`). With the name's
  * entered ink it says the fund is the person's own; what was typed is in the panel and in the sheets of the figures it prices. Outside the
  * host (a test of a list alone) it is not drawn.
  */

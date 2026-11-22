@@ -188,6 +188,8 @@ export interface BrokerCell {
   kind: "cost" | "unavailable" | "no-line" | "not-comparable";
   /** The broker's cost over the horizon before the tax it saves, in today's shekels (F-91 on F-63; generic fund: no fund fees). */
   cost?: SiteValue;
+  /** The same figure in whole shekels, with `about` for the place that shows it (an account's header). */
+  costAs?: (about: string) => SiteValue;
   costN?: number;
   /** What is left with this broker (F-63's real value): the cells are ordered on it, as F-80 ranks. */
   leftN?: number;
@@ -199,17 +201,11 @@ export interface BrokerCell {
   aside?: string[];
   /** The option the cell prices (a custom index's account list names the kind of fund each house's cost is for). */
   option?: OptionId;
+  /** The cost split by fee line, before tax (F-91 on F-61), and the remainder no single line explains: read when shown, a run per line. */
+  lines?: { line: FeeLine; cost: number }[];
+  interaction?: number;
   reason?: Reason;
   availability?: Availability;
-}
-
-/** What the account list of an index with no fund to price shows of a house's cheapest priced cell (`HouseRow.split`). */
-export interface CostSplit {
-  /** The cell's `cost` in whole shekels; the place that shows it adds its `about` (an account's header). */
-  whole: SiteValue;
-  /** The cost split by fee line, before tax (F-91 on F-61), and the remainder no single line explains: a run per line. */
-  lines: { line: FeeLine; cost: number }[];
-  interaction: number;
 }
 
 export interface WayPrice {
@@ -226,8 +222,11 @@ export interface WayPrice {
    * writes it apart.
    */
   accountCost: number;
-  /** `accountCost` as a figure (F-91 on F-63), with its inputs, rules and the run's notes about the cost (BANK-35); the place that shows it adds its `about`. */
-  cost: SiteValue;
+  /** The account's fees as a figure (F-91 on F-63), with its inputs, rules and the run's notes about the cost (BANK-35); `about` says which figure it is, `whole` rounds it to the shekel. */
+  cost: (about: string, whole?: boolean) => SiteValue;
+  /** The same, by the tariff's own lines (trade, custody, FX, fixed), largest first, and the remainder no single line explains. */
+  lines: { line: FeeLine; cost: number }[];
+  interaction: number;
   /** The monthly purchases ran on the house's printed standing-order line (F-12, D41). */
   standing: boolean;
   /** The house's standing-order lines for this purchase that the ranked price leaves out (`not_ranked`, D41, D56): shown beside the row. */
@@ -336,11 +335,6 @@ export interface HouseRow {
   reason: Reason | null;
   /** An index with no fund record: the house's cheapest broker cost over the group's options. */
   generic: BrokerCell | null;
-  /**
-   * What the account list shows of `generic`: worked out only on a view with no pair to show (`pairless`), the one view whose account list
-   * shows it, since its split takes a run per fee line; null on every other view.
-   */
-  split: CostSplit | null;
   /** The house prints a standing-order line for a kind of fund here: by house, so the row keeps its label when the best fund changes. */
   standing: boolean;
   /** The standing-order lines the ranked price leaves out at this house for any kind of fund here (`not_ranked`, D41): by house, as `standing`. */
@@ -929,7 +923,7 @@ const inputsOfRun = (ctx: Ctx, r: RunReads): Record<string, SiteValue> => {
   const fund = fundId ? ctx.bundle.funds.find((f) => f.id === fundId) : undefined;
   const typed = [r.house, fundId].flatMap((id) => (id ? [ctx.bundle.entered?.inputs[id] ?? {}] : []));
   // a typed fund's costs are what was typed (below); F-107 comes from what was said of it (Ireland, holds the shares) and the index
-  const own = fund ? { ...(isCustomFund(fund) ? {} : fundInputsOf(ctx.bundle, fund)), ...usWithholdingInput(ctx, r, fund) } : {};
+  const own = fund ? { ...(isCustomFund(fund) ? {} : fundInputs(fund, gapListFor(ctx.bundle, fund), ctx.bundle.today)), ...usWithholdingInput(ctx, r, fund) } : {};
   // the income and the age the run's tax reads (`profile.annualIncome` and `ageAtStart` in `runSlot`), on the figures that read that tax
   // (`RunReads.tax`)
   const distributes = !r.costsOff && !!(r.spec?.fund as { distribution?: unknown } | undefined)?.distribution;
@@ -937,19 +931,6 @@ const inputsOfRun = (ctx: Ctx, r: RunReads): Record<string, SiteValue> => {
   const age = r.tax === "after" && ctx.plan.age !== null && ctx.plan.values.age ? { [copy.pair.ageInput]: ctx.plan.values.age } : {};
   return Object.assign({}, planInputs(ctx.plan, WHOLE_PLAN), income, age, ratesOfRun(ctx, r), minimum, own, ...typed);
 };
-
-const keptFundInputs = new WeakMap<FundRecord, { funds: readonly FundRecord[]; exposures: readonly ExposureRecord[]; today: string; inputs: Record<string, SiteValue> }>();
-/**
- * `fundInputs` of a fund in the data, worked out once per fund and data: every run of the fund, at every house, reads the same figures, so
- * their sheets share one set of objects, and a copy of the S&P 500 page's view is about a fifth of what it is with a set per run.
- */
-function fundInputsOf(bundle: IndicesBundle, rec: FundRecord): Record<string, SiteValue> {
-  const kept = keptFundInputs.get(rec);
-  if (kept && kept.funds === bundle.funds && kept.exposures === bundle.exposures && kept.today === bundle.today) return kept.inputs;
-  const inputs = fundInputs(rec, gapListFor(bundle, rec), bundle.today);
-  keptFundInputs.set(rec, { funds: bundle.funds, exposures: bundle.exposures, today: bundle.today, inputs });
-  return inputs;
-}
 
 /**
  * A-11 by F-107 where the fund's run takes it (`fundOf` puts the inputs in the drag: an Irish fund that holds the index's US shares): TXF-16's
@@ -1032,7 +1013,7 @@ const COST_FLAGS: readonly string[] = ["BANK-35"];
 const tariffQuestions = (row: ComparedProvider): string[] => row.flags.filter((f) => /^[A-Z0-9]+-OQ\d+$/.test(f));
 
 /** An option's generic fund at a house (F-91 on F-63): the account's cost before tax, `whole` in whole shekels. */
-function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string | undefined, whole = false): SiteValue {
+function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string, whole = false): SiteValue {
   const flags = [...row.flags, ...row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c) && !row.flags.includes(c))];
   return computed(whole ? Math.round(row.horizonCostBeforeTax) : row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, { house: row.id, spec, row, tax: "before" }), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
 }
@@ -1049,6 +1030,13 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
   const value = valueFigure(ctx, row, reads, about);
   // F-91, F-109: the account's part less what the cash waiting for a whole unit did, so the figure is its fees, as on the receipt
   const fees = row.horizonCostBeforeTax - (unitsOf(row.run) ? (waitingReal(row.run) ?? 0) : 0);
+  let split: Pick<WayPrice, "lines" | "interaction"> | undefined;
+  // the lines of a way take a run each and the page shows the picked fund's only: read when shown
+  const splitOf = () => {
+    if (split) return split;
+    const lines = row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
+    return (split = { lines, interaction: row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0) });
+  };
   return {
     providerId,
     value,
@@ -1057,7 +1045,14 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     open,
     accountCost: fees,
     // the cost before tax carries the run's labels on its sources; every reading the engine gives is a tax rule's (READING_RULE_IDS), which a cost before tax does not rest on
-    cost: computed(fees, "nis", "F-91", inputsOfRun(ctx, { ...reads, tax: "before" }), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })) }),
+    cost: (about: string, whole = true) =>
+      computed(whole ? accountWhole({ accountCost: fees }) : fees, "nis", "F-91", inputsOfRun(ctx, { ...reads, tax: "before" }), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })), about }),
+    get lines() {
+      return splitOf().lines;
+    },
+    get interaction() {
+      return splitOf().interaction;
+    },
     standing: p.standing,
     aside: p.aside,
     units: unitsOf(row.run),
@@ -1179,19 +1174,31 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
     const p = priced.get(s.id)!;
     if (p.kind === "ok") {
       const row = p.row;
-      const cell: BrokerCell = {
+      // the split takes a run per fee line: read only for the house rows a custom index's list shows
+      let split: { lines: { line: FeeLine; cost: number }[]; interaction: number } | undefined;
+      const splitOf = () => {
+        if (split) return split;
+        const lines = row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
+        return (split = { lines, interaction: row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0) });
+      };
+      return {
         providerId: s.id,
         kind: "cost",
         option,
         cost: costValue(ctx, row, spec, copy.houses.costAbout(s.provider.name_he)),
+        costAs: (about: string) => costValue(ctx, row, spec, about, true),
         costN: row.horizonCostBeforeTax,
         leftN: row.real,
         venue: p.venue,
         standing: p.standing,
         aside: p.aside,
+        get lines() {
+          return splitOf().lines;
+        },
+        get interaction() {
+          return splitOf().interaction;
+        },
       };
-      cellRuns.set(cell, { row, spec });
-      return cell;
     }
     return { providerId: s.id, kind: p.reason.code === "no-applicable-line" ? "no-line" : "not-comparable", reason: p.reason };
   });
@@ -1319,22 +1326,7 @@ const entryOrder = (a: HouseEntry, b: HouseEntry) => {
   return rank(a) - rank(b) || (b.price?.valueN ?? 0) - (a.price?.valueN ?? 0);
 };
 
-/** The run behind each priced cell, for the house rows that show its split (`splitOf`): a cell holds only what it shows. */
-const cellRuns = new WeakMap<BrokerCell, { row: ComparedProvider; spec: Spec }>();
-
-/** A house's cheapest cell's cost in whole shekels and its split by fee line, which takes a run per line. */
-function splitOf(ctx: Ctx, cell: BrokerCell): CostSplit {
-  const run = cellRuns.get(cell);
-  if (!run) throw new Error(`splitOf: the priced cell of ${cell.providerId} has no run`);
-  const lines = run.row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
-  return { whole: costValue(ctx, run.row, run.spec, undefined, true), lines, interaction: run.row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0) };
-}
-
-/** A view with no pair to show: no option has a way that leaves something (`bestWay`), so the page shows the account list of an index with no fund to price. */
-const pairlessOf = (options: OptionView[]): boolean => !options.some((o) => o.bestWay);
-
 function housesOf(ctx: Ctx, options: OptionView[], headline: Way | null, providers: ProviderInfo[]): HouseRow[] {
-  const pairless = pairlessOf(options);
   const rows = providers.map((provider): HouseRow => {
     // a broker the person typed is in the group of what it sells; selling both, all of it counts (D44)
     const entered = ctx.snaps.find((s) => s.id === provider.id);
@@ -1348,13 +1340,12 @@ function housesOf(ctx: Ctx, options: OptionView[], headline: Way | null, provide
     // no fund record at all: the broker cost of the group's options, the cheapest
     const cells = opts.flatMap((o) => o.cells.filter((c) => c.providerId === provider.id));
     const generic = cells.filter((c) => c.kind === "cost").sort((a, b) => a.costN! - b.costN!)[0] ?? null;
-    const split = generic && pairless ? splitOf(ctx, generic) : null;
     const na = cells.find((c) => c.kind === "unavailable");
     const gap = best && headline && headline.providerId !== provider.id && headline.valueN - best.price!.valueN > 0 ? gapOf2(ctx, headlineEnd(headline), leftEnd(provider.short, best.price!.valueN, best.price!.value), "F-65", copy.houses.gapAbout(provider.name)) : null;
     const reason = best || generic ? null : (entries.find((e) => e.reason)?.reason ?? cells.find((c) => c.reason)?.reason ?? null);
     const standing = cells.some((c) => c.standing) || entries.some((e) => e.price?.standing);
     const aside = [...new Set([...cells.flatMap((c) => c.aside ?? []), ...entries.flatMap((e) => e.price?.aside ?? [])])];
-    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, split, standing, aside };
+    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, standing, aside };
   });
   const priced = (r: HouseRow) => r.best ?? r.generic;
   const cost = (r: HouseRow) => (r.best ? -r.best.price!.valueN : r.generic ? r.generic.costN! : Infinity);
@@ -1841,6 +1832,11 @@ export function paybackMayLower(rec: FundRecord, list: GapList): boolean {
   return priced?.length !== comparedYears(t, list)?.length;
 }
 
+/**
+ * The account's whole part in whole shekels (F-91: its fees and, in whole units, the cash waiting for a unit), as a way's cost writes it
+ * (the stairs' account row). The receipt writes the fees and the waiting cash apart (lib/receipt).
+ */
+export const accountWhole = (x: Pick<WayPrice, "accountCost">): number => Math.round(x.accountCost);
 
 export interface KindMoney {
   /** Value left on a steady dollar with the shortfall the reports give. */

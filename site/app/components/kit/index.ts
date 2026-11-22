@@ -36,7 +36,6 @@ export { LabelChip, LabelIcon, LabelRow, LabelSheetHost } from "./label-chip";
 export { CostStack, wholeParts, type CostPart } from "./cost-stack";
 export { ShareBar, type SharePart } from "./share-bar";
 export { ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, clearOfReceiptStub } from "./receipt";
-export { FactTile, TileJoin } from "./fact-tile";
 export { PERIOD_WIDE, PeriodTrack, periodColumns } from "./period-track";
 export { PickList, figureFit, type PickRow } from "./pick-list";
 export { StretchBar, StretchChart, type StretchSpot } from "./stretch";

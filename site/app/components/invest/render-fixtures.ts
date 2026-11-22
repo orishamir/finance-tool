@@ -47,7 +47,7 @@ export function writtenFees(out: string) {
   return items;
 }
 
-/** The receipt in the side rail, then the fees panel under the lists (where the fees go, and the
+/** The receipt, then the fees panel under the lists (where the fees go, and the
  * pair set beside it). */
 export function ReceiptAndFees({ view, bundle: b, plan: p, pick, chosen, onPick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; chosen: boolean; onPick: OnPick }) {
   return createElement(Fragment, null, createElement(PairReceipt, { view, bundle: b, plan: p, pick, chosen }), createElement(FeesPanel, { view, bundle: b, plan: p, pick, chosen, onPick }));
