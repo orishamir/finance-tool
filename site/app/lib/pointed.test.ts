@@ -19,6 +19,11 @@ import { loader as notCoveredLoader } from "../routes/not-covered";
 import { loader as indicesLoader } from "../routes/invest";
 import { shelfBundle } from "./rule-uses.server";
 import { shelfIds } from "./rule-shelves";
+import { flags } from "../copy";
+import { parseAnswer } from "./answer-slots";
+import { buildInvest, indexById, pairCosts } from "./invest";
+import type { IndicesBundle, WorkbenchInputs } from "./providers";
+import { entered } from "./value";
 
 const all = loadRules();
 type Map_ = Record<string, RuleRecord>;
@@ -97,5 +102,60 @@ describe("every chip on a page's rule cards opens its record", () => {
     const page = await indicesLoader({ params: {} } as never);
     const own = Object.fromEntries([...page.feeRules, ...w.rules].map((r) => [r.id, r as RuleRecord]));
     expect([...unopened(w.rules, w.pointed), ...unopened(f.rules, f.pointed), ...unopened(own, w.pointed)]).toEqual([]);
+  }, 300000);
+});
+
+/**
+ * Every rule a figure's sheet names: its `rule_ids` (the source block, a blocked figure's rules), its `rulesUsed`, its labels' rules and
+ * the {ID:figure} slots of its flags' words, anywhere inside a node (a computed figure's inputs are figures too).
+ */
+function citedIn(node: unknown): string[] {
+  if (Array.isArray(node)) return node.flatMap(citedIn);
+  if (node === null || typeof node !== "object") return [];
+  const o = node as Record<string, unknown>;
+  const own = [
+    ...(Array.isArray(o.rulesUsed) ? (o.rulesUsed as { id?: unknown }[]).map((r) => r.id) : []),
+    ...(Array.isArray(o.labels) ? (o.labels as { ruleId?: unknown }[]).map((l) => l.ruleId) : []),
+    ...(Array.isArray(o.flags) ? o.flags.flatMap((code) => (typeof code === "string" ? slotIds(flags[code as keyof typeof flags] ?? "") : [])) : []),
+  ].filter((x): x is string => typeof x === "string");
+  return [...own, ...Object.entries(o).flatMap(([k, v]) => (k === "rule_ids" && Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : citedIn(v)))];
+}
+const slotIds = (text: string): string[] => parseAnswer(text).flatMap((p) => (p.kind === "slot" ? [p.id] : []));
+
+describe("every rule a figure on the indices page names is a record the page holds", () => {
+  // the page holds its loader's rules (the glossary cards') and its bundle's, and the records they point at (routes/invest.tsx)
+  const held = async (w: IndicesBundle) => {
+    const page = await indicesLoader({ params: {} } as never);
+    return new Set([...page.feeRules, ...w.rules, ...w.pointed].map((r) => r.id));
+  };
+  /** The page's figures for one index: the view of the plan, and the costs of each house's cheapest way (the receipt's and the stairs'). */
+  const figures = (w: IndicesBundle, id: string): unknown[] => {
+    const t = w.today;
+    const plan: WorkbenchInputs = {
+      amountNow: 6000, monthly: 400, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
+      values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
+    };
+    const index = indexById(w, id);
+    if (!index) throw new Error(`the bundle holds no ${id}`);
+    const view = buildInvest({ bundle: w, index, plan, yourBroker: null });
+    const pairs = view.houses.flatMap((h) => (h.best ? [pairCosts({ bundle: w, index, plan, fundId: h.best.fund.rec.id, providerId: h.provider.id })] : []));
+    return [view, ...pairs];
+  };
+
+  it("finds a figure's cited rules: rulesUsed, labels, flag slots and rule_ids", () => {
+    const flagged = Object.entries(flags).find(([, t]) => slotIds(t).length > 0)!;
+    const cited = citedIn({ inputs: [{ rulesUsed: [{ id: "A" }], labels: [{ code: "reading", ruleId: "B" }], flags: [flagged[0]], source: { rule_ids: ["C"] } }] });
+    expect(cited).toEqual(expect.arrayContaining(["A", "B", "C", ...slotIds(flagged[1])]));
+  });
+
+  it("on /indices/sp500 and /indices/ta125", async () => {
+    const w = indicesBundle();
+    const have = await held(w);
+    const bad = ["index-sp500", "index-ta125"].flatMap((id) => {
+      const cited = new Set(citedIn(figures(w, id)));
+      expect(cited.size).toBeGreaterThan(0);
+      return [...cited].filter((r) => !have.has(r)).map((r) => `${id}: ${r}`);
+    });
+    expect(bad).toEqual([]);
   }, 300000);
 });
