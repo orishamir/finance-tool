@@ -421,7 +421,10 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
   const ownLeumi = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: "leumi" } }) });
   const best = (v: typeof before, id: string) => v.houses.find((h) => h.provider.id === id)!.best!.price!;
   /** The account's tariff lines of the house's best way, as the pair's breakdown writes them. */
-  const linesAt = (v: typeof before, p: ReturnType<typeof plan>, id: string) => pairCosts({ bundle, index: sp, plan: p, fundId: v.houses.find((h) => h.provider.id === id)!.best!.fund.rec.id, providerId: id })!.account.map((l) => l.line);
+  const linesAt = (v: typeof before, p: ReturnType<typeof plan>, id: string) => {
+    const fundId = v.houses.find((h) => h.provider.id === id)?.best?.fund.rec.id;
+    return fundId ? (pairCosts({ bundle, index: sp, plan: p, fundId, providerId: id })?.account.map((l) => l.line) ?? null) : null;
+  };
   const banks = bundle.snapshots.filter((s) => s.current_account && (s.current_account.monthly_minimum.value as number) > 0).map((s) => s.id);
 
   it("with no bank marked, every bank whose price list charges for a current account has it as a line of its own, and leaves less", () => {

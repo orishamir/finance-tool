@@ -204,7 +204,7 @@ export interface BrokerCell {
 }
 
 /** A house's cheapest priced cell over its group's options (`HouseRow.generic`), with what the account list of an index with no fund to price shows of it. */
-export interface GenericCell extends BrokerCell {
+interface GenericCell extends BrokerCell {
   /** `cost` in whole shekels; the place that shows it adds its `about` (an account's header). */
   whole: SiteValue;
   /** The cost split by fee line, before tax (F-91 on F-61), and the remainder no single line explains: a run per line. */
