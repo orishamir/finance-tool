@@ -1,7 +1,7 @@
 // A chart's range typed as two amounts: "{lead} מ־ [ ] עד [ ] ₪", each box taking its amount when it is left or on Enter (never while
 // the reader types, so a half-typed figure never redraws the chart), the figures in the entered colour once the range is the reader's own;
 // a reset back to the range the chart opened at while it is moved, and a hint beside them (on a computer: a drag on the chart does the same).
-import { useEffect, useId, useState, type KeyboardEvent } from "react";
+import { useId, useState, type KeyboardEvent } from "react";
 import { fmt } from "../../lib/format";
 import { parseInBox } from "./figure-field";
 import { Button } from "./button";
@@ -21,36 +21,35 @@ export interface RangeWords {
 
 function AmountBox({ value, name, moved, onCommit }: { value: number; name: string; moved: boolean; onCommit: (n: number) => void }) {
   const shown = fmt.number(Math.round(value));
-  const [text, setText] = useState(shown);
-  const [focused, setFocused] = useState(false);
-  useEffect(() => {
-    if (!focused) setText(shown);
-  }, [shown, focused]);
+  // what is typed while the box has the focus; out of it, the amount the page holds
+  const [draft, setDraft] = useState<string | null>(null);
+  const text = draft ?? shown;
   const settle = () => {
     const n = parseInBox(text, undefined, "amount");
+    setDraft(null);
     if (Number.isFinite(n) && n > 0) onCommit(n);
-    else setText(shown);
   };
   const key = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       // the box lets go, so it shows the amount the page settled (a floor, a wider range), not the one typed
       e.currentTarget.blur();
-    } else if (e.key === "Escape") setText(shown);
+    } else if (e.key === "Escape") setDraft(shown);
   };
   return (
     <input
       type="text"
       inputMode="numeric"
+      autoComplete="off"
+      spellCheck={false}
+      enterKeyHint="done"
       dir="ltr"
       aria-label={name}
       value={text}
-      onChange={(e) => setText(e.target.value)}
-      onFocus={() => setFocused(true)}
-      onBlur={() => {
-        setFocused(false);
-        settle();
-      }}
+      onChange={(e) => setDraft(e.target.value)}
+      // the amount as it stands is the person's from here: a range from outside does not change it under their fingers
+      onFocus={() => setDraft(shown)}
+      onBlur={settle}
       onKeyDown={key}
       className={cx("min-h-target w-28 rounded-md border bg-card px-2.5 text-end tabular-nums outline-none focus:border-ring focus:outline-1 focus:outline-ring", moved ? "border-entered/50 text-entered" : "border-input text-foreground")}
     />

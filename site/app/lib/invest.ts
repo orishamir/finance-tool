@@ -222,8 +222,8 @@ export interface WayPrice {
    * writes it apart.
    */
   accountCost: number;
-  /** The account's fees as a figure (F-91 on F-63), with its inputs, rules and the run's notes about the cost (BANK-35); `about` says which figure it is. */
-  cost: (about: string) => SiteValue;
+  /** The account's fees as a figure (F-91 on F-63), with its inputs, rules and the run's notes about the cost (BANK-35); `about` says which figure it is, `whole` rounds it to the shekel. */
+  cost: (about: string, whole?: boolean) => SiteValue;
   /** The same, by the tariff's own lines (trade, custody, FX, fixed), largest first, and the remainder no single line explains. */
   lines: { line: FeeLine; cost: number }[];
   interaction: number;
@@ -1008,10 +1008,10 @@ const COST_FLAGS: readonly string[] = ["BANK-35"];
 /** The open questions the house's price list leaves the run resting on (a line's `open_questions`, data-schema §3.6): said on what is left. */
 const tariffQuestions = (row: ComparedProvider): string[] => row.flags.filter((f) => /^[A-Z0-9]+-OQ\d+$/.test(f));
 
-/** An option's generic fund at a house (F-91 on F-63): the account's cost before tax, rounded once, where it is written (`fmt`). */
-function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string): SiteValue {
+/** An option's generic fund at a house (F-91 on F-63): the account's cost before tax, `whole` in whole shekels. */
+function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string, whole = false): SiteValue {
   const flags = [...row.flags, ...row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c) && !row.flags.includes(c))];
-  return computed(row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, { house: row.id, spec, row }), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
+  return computed(whole ? Math.round(row.horizonCostBeforeTax) : row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, { house: row.id, spec, row }), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
 }
 
 /** What is left with one account and one fund (F-65's real value), as every list and the stairs show it, with what its run reads. */
@@ -1041,8 +1041,8 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     open,
     accountCost: fees,
     // the cost before tax carries the run's labels on its sources; every reading the engine gives is a tax rule's (READING_RULE_IDS), which a cost before tax does not rest on
-    cost: (about: string) =>
-      computed(fees, "nis", "F-91", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })), about }),
+    cost: (about: string, whole = true) =>
+      computed(whole ? accountWhole({ accountCost: fees }) : fees, "nis", "F-91", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })), about }),
     get lines() {
       return splitOf().lines;
     },
@@ -1180,7 +1180,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
         kind: "cost",
         option,
         cost: costValue(ctx, row, spec, copy.houses.costAbout(s.provider.name_he)),
-        costAs: (about: string) => costValue(ctx, row, spec, about),
+        costAs: (about: string) => costValue(ctx, row, spec, about, true),
         costN: row.horizonCostBeforeTax,
         leftN: row.real,
         venue: p.venue,
@@ -1842,6 +1842,11 @@ export function paybackMayLower(rec: FundRecord, list: GapList): boolean {
   return priced?.length !== comparedYears(t, list)?.length;
 }
 
+/**
+ * The account's whole part in whole shekels (F-91: its fees and, in whole units, the cash waiting for a unit), as a way's cost writes it
+ * (the stairs' account row). The receipt writes the fees and the waiting cash apart (lib/receipt).
+ */
+export const accountWhole = (x: Pick<WayPrice, "accountCost">): number => Math.round(x.accountCost);
 
 export interface KindMoney {
   /** Value left on a steady dollar with the shortfall the reports give. */

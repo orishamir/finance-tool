@@ -6,13 +6,13 @@
 // a tab holds no control): the same figure in the open panel opens its sheet. The open card stays open while the plan or the pair changes.
 import { useId, useState, type ReactNode } from "react";
 import { invest as c } from "../../copy";
-import { nisOf } from "../../lib/format";
+import { fmt } from "../../lib/format";
 import { accountSum, gapListFor, pricedVariable, tieThresholdValue, type InvestView, type PairCosts } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { rateWords } from "../../lib/rate-words";
-import { receiptAmounts, type ReceiptAmounts } from "../../lib/receipt";
-import { reconciled, sumOf, type SiteValue } from "../../lib/value";
-import { NisNum, Num } from "../provenance";
+import { receiptAmounts } from "../../lib/receipt";
+import { sumOf, type SiteValue } from "../../lib/value";
+import { Num } from "../provenance";
 import { Button, Card, MixedName, OptionBars, PanelHead, SourcedTag, TabCards, Tpl, type OptionBar, type TabCard } from "../kit";
 import { Fees } from "./funds";
 import { changesAt, PlanChanges, shareWord, usePlanChanges } from "./knobs";
@@ -24,28 +24,28 @@ import { RateLine } from "./receipt";
 
 type Share = { min: number; max: number; step: number; start: number };
 
-/** Figure `v`'s amount `n` (whole shekels, or hundreds where it rests on an assumed return: `nisOf`) in a card's plain words, isolated so it keeps its order inside Hebrew. */
-const amount = (v: SiteValue, n: number) => `\u2066${nisOf(v, n)}\u2069`;
+/** A whole-shekel amount in a card's plain words, isolated so it keeps its order inside Hebrew. */
+const amount = (n: number) => `\u2066${fmt.nisWhole(n)}\u2069`;
 type Key = "fees" | "sens" | "hedge" | "stairs";
 
-/** The account's and the fund's fees together, without the tax, as the chosen pair's card writes them: the receipt's two lines added (`r`). */
-const togetherOf = (pc: PairCosts, r: ReceiptAmounts, today: string): SiteValue => reconciled(sumOf({ [c.receipt.parts.account]: accountSum(pc, c.receipt.parts.account, today, Math.round), [c.receipt.parts.fund]: pc.fund }, "F-91", { today, about: c.chosen.togetherAbout }), r.account + r.fund);
+/** The account's and the fund's fees together, without the tax, as the chosen pair's card writes them. */
+const togetherOf = (pc: PairCosts, today: string): SiteValue => sumOf({ [c.receipt.parts.account]: accountSum(pc, c.receipt.parts.account, today, Math.round), [c.receipt.parts.fund]: pc.fund }, "F-91", { today, about: c.chosen.togetherAbout, round: Math.round });
 
-/** The chosen pair's fees item by item, as the receipt writes them (each as it shows on its own, adding up), the largest first; each figure carries its line's number. */
+/** The chosen pair's fees item by item, as the receipt writes them (whole shekels that add up), the largest first. */
 function feeItems(view: InvestView, bundle: IndicesBundle, plan: WorkbenchInputs, pick: Pick, pc: PairCosts) {
   const r = receiptAmounts(pc);
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
   const items: { id: string; name: string; amount: number; value: SiteValue; who: "account" | "fund"; sub: ReactNode }[] = [
     ...pc.account.map((l, i) => {
       const words = rateWords(l.line, pc.priced, plan.monthly);
-      return { id: l.line, name: partName(l.line) ?? "", amount: r.accountLines[i] ?? 0, value: reconciled(l.cost, r.accountLines[i] ?? 0), who: "account" as const, sub: words ? <RateLine words={words} house={pc.priced.house} /> : null };
+      return { id: l.line, name: partName(l.line) ?? "", amount: r.accountLines[i]!, value: l.cost, who: "account" as const, sub: words ? <RateLine words={words} house={pc.priced.house} /> : null };
     }),
-    ...(r.remainder !== 0 ? [{ id: "remainder", name: c.pair.remainder, amount: r.remainder, value: reconciled(pc.remainder, r.remainder), who: "account" as const, sub: null }] : []),
+    ...(r.remainder !== 0 ? [{ id: "remainder", name: c.pair.remainder, amount: r.remainder, value: pc.remainder, who: "account" as const, sub: null }] : []),
     {
       id: "fund",
       name: c.pair.fundLine,
       amount: r.fund,
-      value: reconciled(pc.fund, r.fund),
+      value: pc.fund,
       who: "fund" as const,
       // the fund's cost is one figure: the calculation has no split by fee, so its line says the fees it rests on
       sub: fund ? (
@@ -61,7 +61,7 @@ function feeItems(view: InvestView, bundle: IndicesBundle, plan: WorkbenchInputs
 /** The hedged-or-not card: what the plan's pair of one kind leaves more than the other's; where the plan has no such figure (no pair of
  *  each kind to price), the section's lead figure, how far the dollar moved in one year, so the card never stands blank. */
 export function hedgeCard(d: DollarCase): TabCard {
-  if (d.more) return { key: "hedge", question: c.before.hedge.question, answer: `${amount(d.more, d.more.value as number)} ${d.uMore >= 0 ? c.before.hedge.moreUnhedged : c.before.hedge.moreHedged}`, note: c.dollar.planSteady };
+  if (d.more) return { key: "hedge", question: c.before.hedge.question, answer: `${amount(d.more.value as number)} ${d.uMore >= 0 ? c.before.hedge.moreUnhedged : c.before.hedge.moreHedged}`, note: c.dollar.planSteady };
   const swing = dollarSwing(d);
   return { key: "hedge", question: c.before.hedge.question, answer: `${swing.lo} ${c.dollar.to} ${swing.hi}`, note: c.dollar.cancelsNote(swing.from, swing.to) };
 }
@@ -96,13 +96,12 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
 
   const fees = feeItems(view, bundle, livePlan, pick, pc);
   const top = fees.items[0]!;
-  const feesTogether = togetherOf(pc, fees.r, today);
   const tabs: (TabCard & { key: Key; panel: () => ReactNode })[] = [
     {
       key: "fees",
       question: c.before.fees.question,
-      answer: `${top.name}: ${amount(top.value, top.amount)}`,
-      note: `${c.before.fees.of} ${amount(feesTogether, fees.r.account + fees.r.fund)} ${c.before.fees.ofTail}`,
+      answer: `${top.name}: ${amount(top.amount)}`,
+      note: `${c.before.fees.of} ${amount(fees.r.account + fees.r.fund)} ${c.before.fees.ofTail}`,
       panel: () => <FeesPanel view={view} bundle={bundle} plan={livePlan} pick={pick} chosen={chosen} onPick={onPick} />,
     },
   ];
@@ -114,7 +113,7 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
       key: "sens",
       question: c.before.sens.question,
       answer: at === 0 || !d ? c.before.sens.none : c.plan.knobs.changes.nouns[first.l.id],
-      note: at === 0 || !d ? `${c.plan.knobs.changes.planHead} ${amount(changes.base, changes.base.value as number)}` : `${shareWord(at)} ${(d.value as number) >= 0 ? c.before.sens.adds : c.before.sens.takes} ${amount(d, Math.abs(d.value as number))} ${c.before.sens.atEnd}`,
+      note: at === 0 || !d ? `${c.plan.knobs.changes.planHead} ${amount(changes.base.value as number)}` : `${shareWord(at)} ${(d.value as number) >= 0 ? c.before.sens.adds : c.before.sens.takes} ${amount(Math.abs(d.value as number))} ${c.before.sens.atEnd}`,
       panel: () => <PlanChanges run={changes} at={at} onAt={setAt} share={share} today={today} />,
     });
   }
@@ -127,7 +126,7 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
     tabs.push({
       key: "stairs",
       question: c.before.stairs.question,
-      answer: steps < 1 ? c.before.stairs.none : climb >= 0 ? `${c.before.stairs.more} ${amount(st.climb, climb)} ${c.before.stairs.inSteps(steps)}` : `${amount(st.climb, Math.abs(climb))} ${c.before.stairs.less} ${c.before.stairs.inSteps(steps)}`,
+      answer: steps < 1 ? c.before.stairs.none : climb >= 0 ? `${c.before.stairs.more} ${amount(climb)} ${c.before.stairs.inSteps(steps)}` : `${amount(Math.abs(climb))} ${c.before.stairs.less} ${c.before.stairs.inSteps(steps)}`,
       note: (
         <>
           {st.atExample ? c.before.stairs.fromExample : c.before.stairs.from} <MixedName>{start.fundName}</MixedName>, {start.house.short}
@@ -168,8 +167,7 @@ export function FeesPanel({ view, bundle, plan, pick, chosen, onPick }: { view: 
   const v = pairVerdict(view, bundle, plan, pick, chosen);
   if (!v.pc) return null;
   const fees = feeItems(view, bundle, plan, pick, v.pc);
-  const togetherValue = togetherOf(v.pc, fees.r, bundle.today);
-  const together = <Num value={togetherValue} display={nisOf(togetherValue, fees.r.account + fees.r.fund)} />;
+  const together = <Num value={togetherOf(v.pc, bundle.today)} display={fmt.nisWhole(fees.r.account + fees.r.fund)} />;
   const top = fees.items[0]!;
   const bars: OptionBar[] = fees.items.map((x) => ({
     id: x.id,
@@ -182,7 +180,7 @@ export function FeesPanel({ view, bundle, plan, pick, chosen, onPick }: { view: 
       </>
     ),
     value: x.amount,
-    amount: <Num value={x.value} display={nisOf(x.value, x.amount)} />,
+    amount: <Num value={x.value} display={fmt.nisWhole(x.amount)} />,
     className: x.who === "account" ? "bg-chart-by-account" : "bg-chart-by-fund",
   }));
   return (
@@ -194,7 +192,7 @@ export function FeesPanel({ view, bundle, plan, pick, chosen, onPick }: { view: 
           </>
         }
       >
-        {f.largest} {top.name}, <Num value={top.value} display={nisOf(top.value, top.amount)} /> {f.of} {together} {f.fees}
+        {f.largest} {top.name}, <Num value={top.value} display={fmt.nisWhole(top.amount)} /> {f.of} {together} {f.fees}
       </PanelHead>
       <OptionBars bars={bars} label={c.shownPair(chosen).feeBars} />
       <div className="flex flex-col gap-2 text-sm">
@@ -220,7 +218,6 @@ function OtherPair({ view, bundle, pick, v, onPick }: { view: InvestView; bundle
   const vsMine = v.mineRole === c.pair.yours ? c.pair.vsYours : tie ? c.shownPair(false).vs : c.pair.vsCheapest;
   const role = onBest ? (tie ? c.pair.tieOther : c.pair.next) : crown ? c.pair.cheapestStar : c.pair.tieTop(n, nFunds);
   const r = receiptAmounts(pcOther);
-  const otherFees = togetherOf(pcOther, r, today);
   const phone = phoneOf(view, bundle, other);
   // a fund named as another of the index is (iShares on the exchange here and abroad) is told apart by its number
   const twin = (id: string) => {
@@ -240,7 +237,7 @@ function OtherPair({ view, bundle, pick, v, onPick }: { view: InvestView; bundle
   ) : (
     // the pick in the tie set: the other pair is not "the cheap one", only the other one
     <>
-      <NisNum signed value={moreIfOther!} /> {tied ? vsMine : c.pair.moreIfCheapest}
+      <Num value={moreIfOther!} display={fmt.signedNisWhole} /> {tied ? vsMine : c.pair.moreIfCheapest}
     </>
   );
   // why there is no order, counted as the badge counts; the pairs of the tie not named here follow, one and a count
@@ -272,7 +269,7 @@ function OtherPair({ view, bundle, pick, v, onPick }: { view: InvestView; bundle
               )}
             </>
           ),
-          fees: <Num value={otherFees} display={nisOf(otherFees, r.account + r.fund)} />,
+          fees: <Num value={togetherOf(pcOther, today)} display={fmt.nisWhole(r.account + r.fund)} />,
           left: <Num value={pcOther.left} />,
           gap: gapWords,
         }}

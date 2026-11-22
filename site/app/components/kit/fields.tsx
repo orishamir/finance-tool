@@ -6,12 +6,15 @@ import { buttons, values as copy } from "../../copy";
 import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
 import { IconChevronDown, IconClose, IconReset, IconSearch } from "../icons";
 import { cx } from "./cx";
+import { useErrorRest } from "./error-rest";
 import { NameStack, useListSelect, type ListOption } from "./list-select";
 
-/** Commits typed values that are still waiting out the 150 ms typing pause (F13). */
-const pendingCommits = new Set<() => void>();
+/**
+ * A field commits each keystroke that leaves a right value, so nothing waits to be committed: a caller that reads every field's value
+ * before saving finds it already there.
+ */
 export function flushPendingFields(): void {
-  for (const run of [...pendingCommits]) run();
+  // nothing waits: every right keystroke is committed as it is typed
 }
 
 export interface FieldProps {
@@ -50,8 +53,6 @@ export interface FieldProps {
   inputId?: string;
   /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
   externalError?: ReactNode | null;
-  /** Compact only: hands the error to the row that holds the box, which shows it in a line it already keeps, instead of a line under the box that would push what follows down (nothing moves). */
-  errorOut?: (error: ReactNode | null) => void;
 }
 
 /** How a field writes its start value in its reset: "10", "12,000 ₪", "4.5%", as the field shows it. */
@@ -102,68 +103,50 @@ function ResetToStart({ shown, start, unit, onReset, describedBy, className }: {
 /** A unit that is a sign (₪, $, €, £, %): it stands on the number's right in the box, as the page writes a figure ("100,000 ₪"); a unit in words follows the number in reading order. */
 const SIGN = /^[₪$€£%]$/;
 
-/** A box for one typed number, with its unit, hint and error, and the reset on its label line. The default for any number the reader may change. */
-export function NumberField(props: FieldProps) {
-  const { label, unit, value, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, fit, optional, inputMode: mode = "decimal", autoFocus, inputId, externalError = null, errorOut, agorot, start, groupAsTyped } = props;
+/**
+ * What a number field holds while the person types in it, and its box. Every keystroke is read: a right value is committed at once, so the
+ * page answers as the person types; a wrong one is not, so the page keeps the last right result. The text is what was typed while the box
+ * has the focus, and stays after it is left while it is wrong, with its error, until the value changes from outside; otherwise it is the
+ * value as the field writes it. The error shows once the hand rests (`useErrorRest`) and clears on the keystroke that puts it right.
+ */
+function useNumberEntry(props: FieldProps) {
+  const { unit, value, validate, onCommit, onReset, placeholder, disabled, compact, fit, optional, inputMode: mode = "decimal", autoFocus, inputId, externalError = null, agorot, groupAsTyped, hint } = props;
   // an amount of money is typed in whole shekels; a rate (interest, inflation, a return) and a price-list fee keep decimals
   const whole = /^nis/.test(unit) && !agorot;
   const inputMode = whole ? "numeric" : mode;
 
   const generated = useId();
   const ids = inputId ?? generated;
-  const [text, setText] = useState(value === null ? "" : formatTyped(value));
-  const [error, setError] = useState<ReactNode | null>(null);
+  // what was typed, and the value it was left at (`base`, set when the box is left): a wrong text left in the box stays until the value moves
+  const [draft, setDraft] = useState<{ text: string; base?: number | null } | null>(null);
   const [focused, setFocused] = useState(false);
-  const timer = useRef<number | null>(null);
-  const pending = useRef<(() => void) | null>(null);
-  const drop = () => {
-    if (timer.current) window.clearTimeout(timer.current);
-    timer.current = null;
-    if (pending.current) pendingCommits.delete(pending.current);
-    pending.current = null;
+  const errorRest = useErrorRest();
+  const written = value === null ? "" : formatTyped(value);
+  const own = draft !== null && (focused || draft.base === value);
+  const text = own ? draft.text : written;
+  const check = (t: string): ReactNode | null => {
+    if (t.trim() === "" && optional) return null;
+    const n = parseNumber(t);
+    return Number.isNaN(n) ? copy.errors.nan : whole && !Number.isInteger(n) ? copy.errors.whole : validate(n);
   };
-  /** Runs `fn` after the typing pause, or at once when something flushes first (blur, a preset, navigation, unmount). */
-  const later = (fn: () => void) => {
-    drop();
-    const run = () => {
-      drop();
-      fn();
-    };
-    pending.current = run;
-    pendingCommits.add(run);
-    timer.current = window.setTimeout(run, 150);
-  };
-  const flush = () => pending.current?.();
-  const flushRef = useRef(flush);
-  flushRef.current = flush;
-  useEffect(() => () => flushRef.current(), []);
+  const wrong = own ? check(text) : null;
+  const shownError = (errorRest.shows ? wrong : null) ?? externalError;
   // text typed before the script arrived sits in the pre-rendered input; take it in at the first commit instead of
-  // letting the first re-render with the field's own (empty) state wipe it
+  // letting the first render with the field's own text wipe it. A box that has the focus then is being typed in: its text is the
+  // person's from here, as after a focus (its focus came before the script, so no focus event says so)
   const inputRef = useRef<HTMLInputElement>(null);
   const adopted = useRef(false);
   useEffect(() => {
     if (adopted.current) return;
     adopted.current = true;
-    const typed = inputRef.current?.value ?? "";
-    if (typed !== "" && text === "" && value === null) change(typed);
+    const el = inputRef.current;
+    const typed = el?.value ?? "";
+    if (el && el === document.activeElement) {
+      setFocused(true);
+      if (typed !== written) change(typed);
+      else setDraft({ text: typed });
+    } else if (typed !== "" && value === null) change(typed);
   }, []);
-  const lastValue = useRef(value);
-  useEffect(() => {
-    const changed = lastValue.current !== value;
-    lastValue.current = value;
-    if (focused) return;
-    // a typed value that failed its check stays on screen with its message after the field loses focus (F7); a new value from outside replaces it
-    if (changed || !error) {
-      setText(value === null ? "" : formatTyped(value));
-      setError(null);
-    }
-  }, [value, focused]);
-  const shownError = error ?? externalError;
-  const errorOutRef = useRef(errorOut);
-  errorOutRef.current = errorOut;
-  useEffect(() => {
-    errorOutRef.current?.(shownError);
-  }, [shownError]);
   // with `groupAsTyped`, the caret stays after the same digit once the separators move
   const caret = useRef<number | null>(null);
   useIsoLayoutEffect(() => {
@@ -176,25 +159,20 @@ export function NumberField(props: FieldProps) {
     while (at < text.length && seen < want) if (/\d/.test(text[at++]!)) seen++;
     el.setSelectionRange(at, at);
   }, [text]);
-  const change = (raw: string, at?: number | null) => {
+  function change(raw: string, at?: number | null) {
     let t = raw;
     if (groupAsTyped && whole && /^[\d,\s]*$/.test(raw)) {
       const digits = raw.replace(/\D/g, "");
       t = digits === "" ? "" : formatTyped(Number(digits));
       if (at !== undefined && at !== null) caret.current = raw.slice(0, at).replace(/\D/g, "").length;
     }
-    setText(t);
-    drop();
-    if (t.trim() === "" && optional) {
-      setError(null);
-      later(() => onReset());
-      return;
-    }
-    const n = parseNumber(t);
-    const err = Number.isNaN(n) ? copy.errors.nan : whole && !Number.isInteger(n) ? copy.errors.whole : validate(n);
-    setError(err);
-    if (!err) later(() => onCommit(n));
-  };
+    setDraft({ text: t });
+    const err = check(t);
+    errorRest.typed(!err);
+    if (err) return;
+    if (t.trim() === "") onReset();
+    else onCommit(parseNumber(t));
+  }
   const box = (
     <div className={cx("field-box", SIGN.test(unitWord(unit)) && "field-box-sign", compact && "field-box-compact", compact && fit && "field-box-fit", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
       <input
@@ -202,18 +180,32 @@ export function NumberField(props: FieldProps) {
         id={ids}
         type="text"
         inputMode={inputMode}
+        autoComplete="off"
+        spellCheck={false}
+        enterKeyHint="done"
         dir="ltr"
         value={text}
         placeholder={disabled ? copy.loading : placeholder}
         disabled={disabled}
         aria-invalid={shownError ? true : undefined}
+        // wrong as typed, before its error shows: a form's Save reads it, so it never takes a field's last right value in silence
+        data-wrong={wrong ? "" : undefined}
         aria-describedby={[hint ? `${ids}-hint` : null, shownError ? `${ids}-err` : null].filter(Boolean).join(" ") || undefined}
         onChange={(e) => change(e.target.value, e.target.selectionStart)}
-        onFocus={() => setFocused(true)}
+        onFocus={() => {
+          setFocused(true);
+          // an error shown for a text a value from outside has since replaced is gone with it: the next wrong keystroke waits for a rest
+          if (!own) errorRest.clear();
+          // the text as it stands is the person's from here: a value from outside does not change it under their fingers
+          setDraft({ text });
+        }}
         onBlur={() => {
-          flush();
           setFocused(false);
-          if (!error && value !== null && text.trim() !== "") setText(formatTyped(value));
+          // a wrong text stays, with its error, until the value changes; a right one is written in the field's form
+          if (wrong) {
+            setDraft({ text, base: value });
+            errorRest.rest();
+          } else setDraft(null);
         }}
         autoFocus={autoFocus}
         className="field-input"
@@ -221,6 +213,13 @@ export function NumberField(props: FieldProps) {
       <span className="field-unit">{unitWord(unit)}</span>
     </div>
   );
+  return { ids, box, shownError };
+}
+
+/** A box for one typed number, with its unit, hint and error, and the reset on its label line. The default for any number the reader may change. */
+export function NumberField(props: FieldProps) {
+  const { label, hint, note, compact, onReset, start, unit } = props;
+  const { ids, box, shownError } = useNumberEntry(props);
   if (compact) {
     return (
       <div className="flex flex-col gap-1 items-end">
@@ -228,7 +227,7 @@ export function NumberField(props: FieldProps) {
           {label}
         </label>
         {box}
-        {shownError && !errorOut && (
+        {shownError && (
           <span id={`${ids}-err`} className="text-xs text-destructive">
             {shownError}
           </span>
@@ -272,15 +271,16 @@ export interface RangeFieldProps extends FieldProps {
 }
 
 /**
- * A number and a slider for it, together: the label, its reset and the box on one row, the slider under them. For a quantity with a
- * natural range (years, a monthly deposit). The reset sits at the far end of the label, beside the box, and keeps its place while hidden;
- * where the row is too narrow for both it takes a second line in the same row, so nothing moves when it comes. The
- * box's error takes the reset's place while it lasts, so no line opens under the box.
+ * A number and a slider for it, together: the label, its reset and the box on one row, the slider under them, and under the slider the
+ * value at each of its ends as the field writes it (its least at the inline start, where the slider grows from), so it is clear which way
+ * it grows. For a quantity with a natural range (years, a monthly deposit). The reset sits at the far end of the label, beside the box, and
+ * keeps its place while hidden; where the row is too narrow for both it takes a second line in the same row, so nothing moves when it
+ * comes. The box's error takes the reset's place while it lasts, so no line opens under the box; it is shown, not spoken on every keystroke.
  */
 export function RangeField(props: RangeFieldProps) {
   const { label, unit, min, max, step, value, onCommit, disabled, onReset, footer, start } = props;
   const id = useId();
-  const [error, setError] = useState<ReactNode | null>(null);
+  const { ids, box, shownError } = useNumberEntry({ ...props, compact: true });
   const current = value ?? min;
   const clamped = Math.max(min, Math.min(max, current));
   const fill = ((clamped - min) / (max - min)) * 100;
@@ -291,15 +291,20 @@ export function RangeField(props: RangeFieldProps) {
           <span className="field-label min-w-0" id={`${id}-l`}>
             {label}
           </span>
-          {error ? (
-            <span role="alert" className="ms-auto text-xs leading-5 text-destructive">
-              {error}
+          {shownError ? (
+            <span id={`${ids}-err`} className="ms-auto text-xs leading-5 text-destructive">
+              {shownError}
             </span>
           ) : (
             resetKept(props) && <ResetToStart shown={resetShown(props)} start={start} unit={unit} onReset={onReset} describedBy={`${id}-l`} className="ms-auto" />
           )}
         </span>
-        <NumberField {...props} compact errorOut={setError} />
+        <div className="flex flex-col gap-1 items-end">
+          <label htmlFor={ids} className="sr-only">
+            {label}
+          </label>
+          {box}
+        </div>
       </div>
       <input
         type="range"
@@ -313,6 +318,10 @@ export function RangeField(props: RangeFieldProps) {
         style={{ "--fill": `${fill}%` } as CSSProperties}
         onChange={(e) => onCommit(Number(e.target.value))}
       />
+      <div data-slider-ends="" className="flex justify-between gap-3 text-xs text-muted-foreground">
+        <bdi dir="ltr">{startText(min, unit)}</bdi>
+        <bdi dir="ltr">{startText(max, unit)}</bdi>
+      </div>
       {footer || null}
     </div>
   );

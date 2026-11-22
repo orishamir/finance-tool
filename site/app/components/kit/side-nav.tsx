@@ -5,7 +5,7 @@
 // lays the list beside the content from lg at every width, whatever the content needs, the list staying in view while the content scrolls;
 // a table wider than the room beside it scrolls sideways inside its own card. Under lg the list folds into one line that says what is shown
 // and opens it (`PhoneFold`), closing again once an item is chosen.
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import { cx } from "./cx";
 import { PhoneFold } from "./phone-fold";
@@ -81,8 +81,16 @@ export function SideNav({ groups, current, ariaLabel, heading, onPick }: { group
 const navLook = (on: boolean) => cx("transition-colors duration-(--duration-fast) focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2", on ? "bg-primary-subtle text-primary font-medium" : "hover:bg-accent/60");
 
 export function SidePage({ nav, summary, more, less, chosen, children }: { /** The `SideNav`; given a function, it receives what closes the fold. */ nav: (close: () => void) => ReactNode; /** What is shown, in a few words, for the folded line under lg. */ summary: ReactNode; more: string; less: string; /** The chosen part: when it changes, the fold closes. */ chosen: string; children: ReactNode }) {
-  const [open, setOpen] = useState(false);
-  useEffect(() => setOpen(false), [chosen]);
+  // the fold is open for the part chosen when it was opened: choosing another (a press on an item, or the Back button) closes it, and
+  // coming back to that part does not open it again
+  const [openFor, setOpenFor] = useState<string | null>(null);
+  const [seen, setSeen] = useState(chosen);
+  if (seen !== chosen) {
+    setSeen(chosen);
+    setOpenFor(null);
+  }
+  const open = openFor === chosen;
+  const setOpen = (o: boolean) => setOpenFor(o ? chosen : null);
   return (
     <div data-side-page="" className="flex flex-col gap-6 lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[16.5rem_minmax(0,1fr)] lg:gap-8 lg:items-start">
       <div data-side-nav="" className="lg:sticky lg:top-[88px] lg:max-h-[calc(100dvh-104px)] lg:overflow-y-auto">

@@ -11,10 +11,7 @@ const g: Grid = {
   accounts: ["A", "B", "C"],
   funds: [{ id: "t1", kind: "tr", hedged: false }, { id: "t2", kind: "tr", hedged: false }, { id: "h1", kind: "tr", hedged: true }, { id: "e1", kind: "etf", hedged: false }, { id: "o1", kind: "ab", hedged: false }],
   kinds: ["tr", "etf", "ab"],
-  cell: (a, f) => {
-    const v = V[`${a}|${f}`];
-    return v == null ? null : { v, shown: v, open: f === "o1" };
-  },
+  cell: (a, f) => (V[`${a}|${f}`] == null ? null : { v: V[`${a}|${f}`]!, open: f === "o1" }),
   why: () => "n",
 };
 

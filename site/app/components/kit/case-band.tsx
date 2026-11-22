@@ -10,7 +10,7 @@ import { ChartNoAxesColumnIncreasing, ChevronDown, Copy, Split } from "lucide-re
 import { dealCases as copy } from "../../copy";
 import { IconCheck } from "../icons";
 import { Button } from "./button";
-import { LIFT_INNER, onSurface } from "./choice";
+import { LIFT_INNER, PRESS_THROUGH } from "./choice";
 import { RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 import { Tag } from "./tag";
@@ -147,8 +147,8 @@ function CaseWords({ when, mark }: { when: CaseWord[]; mark?: ReactNode }) {
  */
 export function CaseRow({ when, label, onOpen, grip, open, missing, mark, children }: { when: CaseWord[]; label: string; onOpen?: () => void; /** A grip that lifts the case, at the start of its cell. */ grip?: ReactNode; open?: boolean; /** Its price misses a figure: what is missing, on a line under its parts, the parts' cell dashed (`CellExtras.missing`). */ missing?: ReactNode; /** A host's mark on the case (`CaseMark`), after its words. */ mark?: ReactNode; children: ReactNode }) {
   return (
-    // a press on the parts' cell, which stands over the row's button where it holds a grip, opens the case too
-    <div data-liftable="" data-lift-body="" onClick={onOpen ? (e) => onSurface(e) && onOpen() : undefined} className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER))}>
+    // a press on the parts' cell, which stands over the row's button where it holds a grip, goes through to the button (`PRESS_THROUGH`)
+    <div data-liftable="" data-lift-body="" className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER, PRESS_THROUGH))}>
       {onOpen && <button type="button" data-pick-card aria-label={label} onClick={onOpen} className="absolute inset-0 w-full rounded-md focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />}
       <CaseWords when={when} mark={mark} />
       {/* the same room to the band's edge on both sides: under the words, as far in as they are; beside them, a hairline from the edge. Its

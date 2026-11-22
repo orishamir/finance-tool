@@ -1,16 +1,22 @@
 // A native <dialog>: a bottom sheet below lg (grab handle, overlay, slides up), and at lg either a card
-// beside its anchor (provenance, rule and term cards) or a centred dialog (design-system 3.9, spec 3).
-import { useEffect, useRef, useState, type ReactNode } from "react";
+// beside its anchor (provenance, rule and term cards) or a centred dialog (design-system 3.9, spec 3). One is shown at a time: a sheet
+// opened from inside another takes its place, with a back arrow to it; the focus goes back to what opened a sheet when it closes
+// (sheet-stack.ts). It is a modal dialog, so Escape on a computer and the phone's Back reach it as the browser's close request, with no
+// history entry of its own; its owner's state follows the dialog's own close. A page the router opens from inside it (a link, a search)
+// leaves it closed. Its first thing to act on, marked `data-autofocus`, takes the focus as it opens.
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useLocation } from "react-router";
 import { site } from "../copy";
 import { IconArrowBack, IconChevronDown, IconClose } from "./icons";
 import { Button, cx } from "./ui";
 import { cssMs } from "./kit/chart-glide-math";
 import { MQ, useIsoLayoutEffect, useMedia } from "../lib/hooks";
+import { closeUnder, coversOther, dropSheet, isCovered, pushSheet, watchSheets, type StackedSheet } from "./sheet-stack";
 
 export interface SheetProps {
   open: boolean;
   onClose: () => void;
-  /** Element the sheet opened from: on PC the card sits beside it; focus returns to it on close. */
+  /** Element the sheet opened from: on PC the card sits beside it; focus returns to it on close where nothing had the focus as it opened (a tap on a phone gives none). */
   anchor?: HTMLElement | null;
   pc?: "popover" | "center";
   /** As a share of the screen height on a phone. */
@@ -86,6 +92,25 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
   const lastView = useRef(view);
   // a card beside its anchor or a centred dialog from `lg`, a bottom sheet below it
   const wide = useMedia(MQ.lg);
+  // this sheet in the stack of open sheets while it is open: hidden while another covers it, and a back arrow while it covers one
+  const stacked = useRef<StackedSheet | null>(null);
+  // the latest `onClose` and `open`, for the stack and the dialog's events, which come after a render has been drawn
+  const onCloseNow = useRef(onClose);
+  const openNow = useRef(open);
+  useIsoLayoutEffect(() => {
+    onCloseNow.current = onClose;
+    openNow.current = open;
+  });
+  // the sheet closes its dialog itself (once it has left, or while another covers it): the close event that follows is its own
+  const ownClose = useRef(false);
+  // a close request the page may not refuse (no press since the last one): its cancel is answered, and the close that follows is the same request
+  const closeFollows = useRef(false);
+  const covered = useSyncExternalStore(watchSheets, () => isCovered(stacked.current), () => false);
+  const covers = useSyncExternalStore(watchSheets, () => coversOther(stacked.current), () => false);
+  // the body's scroll while another sheet covers this one: a hidden dialog may lose it, and the focus coming back may move it
+  const coveredAt = useRef(0);
+  const { pathname } = useLocation();
+  const openedOn = useRef<string | null>(null);
 
   useIsoLayoutEffect(() => {
     const dialog = ref.current;
@@ -98,21 +123,73 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
         closing.current = null;
         dialog.removeAttribute("data-closing");
       }
-      if (!dialog.open) dialog.showModal();
+      if (!stacked.current) {
+        const active = document.activeElement;
+        stacked.current = {
+          dialog,
+          close: () => onCloseNow.current(),
+          opener: active instanceof HTMLElement && active !== document.body ? active : (anchor ?? null),
+          onCover: () => {
+            coveredAt.current = body.current?.scrollTop ?? 0;
+            ownClose.current = true;
+          },
+          onUncover: () => {
+            if (body.current) body.current.scrollTop = coveredAt.current;
+          },
+        };
+        pushSheet(stacked.current);
+      }
+      if (!covered && !dialog.open) {
+        dialog.showModal();
+        dialog.querySelector<HTMLElement>("[data-autofocus]")?.focus();
+      }
       place(dialog, anchor ?? null, pc, wide);
-    } else if (dialog.open && !closing.current) {
-      dialog.setAttribute("data-closing", "");
-      const ms = cssMs(getComputedStyle(document.documentElement).getPropertyValue("--duration-base"));
-      closing.current = window.setTimeout(() => {
-        dialog.removeAttribute("data-closing");
-        dialog.close();
-        closing.current = null;
-        leftSheet((n) => n + 1);
-      }, ms);
+    } else if (stacked.current) {
+      const s = stacked.current;
+      if (!dialog.open) {
+        // hidden under another sheet, or closed by the browser: it leaves at once
+        stacked.current = null;
+        dropSheet(s);
+      } else if (!closing.current) {
+        dialog.setAttribute("data-closing", "");
+        const ms = cssMs(getComputedStyle(document.documentElement).getPropertyValue("--duration-base"));
+        closing.current = window.setTimeout(() => {
+          dialog.removeAttribute("data-closing");
+          if (dialog.open) {
+            ownClose.current = true;
+            dialog.close();
+          }
+          closing.current = null;
+          stacked.current = null;
+          dropSheet(s);
+          leftSheet((n) => n + 1);
+        }, ms);
+      }
     }
     wasOpen.current = open;
     lastView.current = view;
-  }, [open, anchor, pc, view, wide]);
+  }, [open, anchor, pc, view, wide, covered]);
+
+  // a sheet that leaves the page while open leaves the stack too
+  useEffect(
+    () => () => {
+      if (closing.current) window.clearTimeout(closing.current);
+      closing.current = null;
+      if (stacked.current) dropSheet(stacked.current);
+      stacked.current = null;
+    },
+    [],
+  );
+
+  // a page the router opens while the sheet is open (a link in it, a search's Enter) has the sheet closed
+  useEffect(() => {
+    if (!open) {
+      openedOn.current = null;
+      return;
+    }
+    if (openedOn.current === null) openedOn.current = pathname;
+    else if (openedOn.current !== pathname) onCloseNow.current();
+  }, [open, pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -141,6 +218,8 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
 
   // Swipe down on the handle closes the sheet.
   const startY = useRef<number | null>(null);
+  // its own way back (a drill-in's), else, over another sheet, back to that one
+  const back = onBack ?? (covers ? onClose : undefined);
 
   return (
     <dialog
@@ -154,8 +233,21 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
         if (e.target === e.currentTarget) onClose();
       }}
       onCancel={(e) => {
+        // the close request (Escape, the phone's Back) plays the sheet's closing; one that comes while it is leaving is for the sheet under it
         e.preventDefault();
-        onClose();
+        closeFollows.current = !e.cancelable;
+        if (openNow.current) onClose();
+        else if (stacked.current) closeUnder(stacked.current);
+      }}
+      onClose={() => {
+        if (ownClose.current || closeFollows.current) {
+          ownClose.current = false;
+          closeFollows.current = false;
+          return;
+        }
+        // the browser closed it without a cancel it lets the page refuse (a close request with no press since the last): the owner follows
+        if (openNow.current) onClose();
+        else if (stacked.current) closeUnder(stacked.current);
       }}
     >
       <div
@@ -171,9 +263,9 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
       <div className="sheet-body" ref={body}>
         {/* floats in the top corner beside the first line, and stays there while the body scrolls (it had a row
             of its own above the content) */}
-        <div className="sheet-head" data-back={onBack ? "" : undefined}>
-          {onBack ? (
-            <Button variant="icon" size="sm" onClick={onBack} aria-label={site.back} className="bg-popover/90">
+        <div className="sheet-head" data-back={back ? "" : undefined}>
+          {back ? (
+            <Button variant="icon" size="sm" onClick={back} aria-label={site.back} className="bg-popover/90">
               <IconArrowBack size={20} />
             </Button>
           ) : (

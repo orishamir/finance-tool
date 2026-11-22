@@ -1482,7 +1482,8 @@ function SortableTable({ row }: { row: (key: string, name: string, n: string, ra
       ]}
       groups={[
         { key: "g1", heading: { title: p.a, line: p.number }, rows: ordered.slice(0, 2).map(([k, n, id, r]) => row(k, n, id, r, false)) },
-        { key: "g2", heading: { title: p.b, line: p.number }, rows: ordered.slice(2).map(([k, n, id, r]) => row(k, n, id, r, false)) },
+        // a heading that is a link, as a company's is on the track lists: a press on it opens the link, not the fold
+        { key: "g2", heading: { title: <TextLink tone="plain" to="/kit">{p.b}</TextLink>, line: p.number }, rows: ordered.slice(2).map(([k, n, id, r]) => row(k, n, id, r, false)) },
       ]}
     />
     </div>

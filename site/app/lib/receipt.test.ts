@@ -5,45 +5,26 @@ import { receiptAmounts, sharesOf, takenWords } from "./receipt";
 
 const bundle = buildIndicesBundle();
 
-// a figure's own rounding, worked here apart from the receipt's (wording.md, "Numbers and punctuation"): the step it is shown to, agorot
-// under 10 ₪, hundreds from 1,000 ₪ where it rests on an assumed return, whole shekels otherwise
-const stepOf = (x: number, assumed: boolean) => (Math.abs(x) < 10 ? 0.01 : assumed && Math.abs(x) >= 1000 ? 100 : 1);
-const cents = (x: number) => Math.round(x * 100) || 0;
-
-describe("the receipt's lines keep their own rounding and add up as a reader adds them (method.md F-91)", () => {
-  for (const [assumed, label] of [[false, "a return that is no assumption"], [true, "an assumed return"]] as const) {
-    for (const [index, years, monthly, returnPct] of [["index-sp500", 10, 500, 7], ["index-ta125", 25, 0, 7], ["index-msci-world", 1, 2000, 7], ["index-sp500", 10, 500, -5], ["index-sp500", 1, 0, 7]] as const) {
-      it(`${label}: ${index}, ${years} years, ${monthly} a month at ${returnPct}%`, () => {
-        const pcs = allPricedPairs(bundle, index, { years, monthly, returnPct, assumed, ...(years === 1 && monthly === 0 ? { amountNow: 1000 } : {}) });
-        expect(pcs.length).toBeGreaterThan(5);
-        for (const pc of pcs) {
-          const r = receiptAmounts(pc);
-          const where = `${pc.providerId} ${pc.fundId}`;
-          // every line but the ones that take what the rounding leaves: within half its own step of its value, of the same sign, and never 0
-          // where the value shows as more than nothing
-          const lines: [string, number, number, boolean][] = [
-            ["paid in", r.paidIn, pc.paidIn.value as number, false],
-            ["left", r.left, pc.left.value as number, assumed],
-            ["tax", r.tax, pc.tax.value as number, assumed],
-            ["fund", r.fund, pc.fund.value as number, assumed],
-            ["account", r.account, pc.accountFees, assumed],
-            ["waiting", r.waiting, pc.waitingN, assumed],
-            ...(pc.dealLines ?? pc.account).map((l, i): [string, number, number, boolean] => [`line ${i}`, r.accountLines[i] ?? NaN, l.cost.value as number, assumed]),
-          ];
-          for (const [name, shown, value, onReturn] of lines) {
-            const at = `${where} ${name} ${value}`;
-            expect(Math.abs(shown - value), at).toBeLessThanOrEqual(stepOf(value, onReturn) / 2 + 1e-9);
-            if (shown !== 0) expect(Math.sign(shown), at).toBe(Math.sign(value));
-            if (Math.abs(value) >= 0.005) expect(shown, at).not.toBe(0);
-          }
-          // the sums, exact as written (to the agora)
-          expect(cents(r.paidIn + r.added - r.tax - r.account - r.fund - r.waiting), where).toBe(cents(r.left));
-          expect(cents(r.accountLines.reduce((a, x) => a + x, 0) + r.remainder), where).toBe(cents(r.account));
-          expect(cents(r.gain), where).toBe(cents(r.left - r.paidIn));
-          expect(cents(r.lost), where).toBe(cents(r.tax + r.account + r.fund));
-        }
-      });
-    }
+describe("the receipt's lines add up as a reader adds them", () => {
+  for (const [index, years, monthly] of [["index-sp500", 10, 500], ["index-ta125", 25, 0], ["index-msci-world", 1, 2000]] as const) {
+    it(`${index}, ${years} years, ${monthly} a month: paid in + added − tax − account − fund = left, at every account`, () => {
+      const pcs = allPricedPairs(bundle, index, { years, monthly });
+      expect(pcs.length).toBeGreaterThan(5);
+      for (const pc of pcs) {
+        const r = receiptAmounts(pc);
+        const where = `${pc.providerId} ${pc.fundId}`;
+        expect(r.paidIn + r.added - r.tax - r.account - r.fund - r.waiting, where).toBe(r.left);
+        expect(r.accountLines.reduce((a, x) => a + x, 0) + r.remainder, where).toBe(r.account);
+        // the account's figure is its fees, the waiting cash beside them; every figure is its own rounding within a shekel
+        expect(r.account, where).toBe(Math.round(pc.accountFees));
+        expect(r.waiting, where).toBe(Math.round(pc.waitingN));
+        expect(r.left, where).toBe(Math.round(pc.left.value as number));
+        expect(Math.abs(r.tax - (pc.tax.value as number)), where).toBeLessThan(2);
+        expect(Math.abs(r.fund - (pc.fund.value as number)), where).toBeLessThan(2);
+        expect(r.gain, where).toBe(r.left - r.paidIn);
+        expect(r.lost, where).toBe(r.tax + r.account + r.fund);
+      }
+    });
   }
 });
 

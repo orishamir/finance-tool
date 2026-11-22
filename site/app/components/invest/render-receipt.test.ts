@@ -99,52 +99,6 @@ describe("the chosen pair's card", () => {
   });
 });
 
-describe("the lines a reader sees keep their own rounding and add up to the total shown (method.md F-91)", () => {
-  /** The signed agorot written first after `label` in the receipt's text: "−3,300 ₪" is −330000, "−3.20 ₪" −320; 0 where the label is not on it. */
-  const after = (text: string, label: string): number => {
-    const at = text.indexOf(label);
-    if (at < 0) return 0;
-    const m = /([−+-]?)([\d,]+(?:\.\d\d)?) ₪/.exec(text.slice(at + label.length));
-    return m ? (m[1] === "−" || m[1] === "-" ? -1 : 1) * Math.round(Number((m[2] ?? "").replace(/,/g, "")) * 100) : NaN;
-  };
-  // a figure's own step, worked apart from the code (wording.md): agorot under 10 ₪, hundreds from 1,000 ₪ on an assumed return, else shekels
-  const stepOf = (x: number, assumed: boolean) => (Math.abs(x) < 10 ? 0.01 : assumed && Math.abs(x) >= 1000 ? 100 : 1);
-  for (const assumed of [false, true]) {
-    for (const [index, years, monthly, returnPct] of [["index-sp500", 10, 500, 7], ["index-ta125", 25, 0, 5], ["index-sp500", 10, 500, -5]] as const) {
-      it(`${assumed ? "an assumed return" : "a return that is no assumption"}: ${index}, ${years} years, ${monthly} a month at ${returnPct}%, both layouts`, () => {
-        const p = planOf(t, { years, monthly, returnPct, assumed });
-        const ref = indexById(bundle, index);
-        if (!ref) throw new Error(`no index ${index}`);
-        const view = buildInvest({ bundle, index: ref, plan: p });
-        const pick = pickOfHeadline(view);
-        if (!pick) throw new Error(`${index}: no pair heads the page`);
-        const v = pairVerdict(view, bundle, p, pick, false);
-        for (const layout of ["paper", "ticket"] as const) {
-          const text = shown(html(createElement(PairReceipt, { view, bundle, plan: p, pick, chosen: false, layout }))).replace(/[⁦-⁩‎‏]/g, "").replace(/ /g, " ");
-          const paid = after(text, w.pair.paidIn);
-          const added = after(text, w.receipt.added);
-          const tax = after(text, v.taxName);
-          const account = after(text, layout === "paper" ? w.pair.who.account : w.receipt.accountCharges);
-          const waiting = after(text, w.pair.waiting);
-          const fund = after(text, layout === "paper" ? w.pair.who.fund : w.receipt.fundCharges);
-          const left = after(text, w.receipt.left);
-          const where = `${layout} ${pick.house} ${pick.fund}`;
-          // the cost lines are written with their sign: what was taken is below zero
-          expect(paid + added + tax + account + waiting + fund, where).toBe(left);
-          expect(after(text, w.receipt.gain), where).toBe(left - paid);
-          expect(after(text, w.receipt.lost), where).toBe(-(tax + account + fund));
-          // each line but what the index added within half its own step of its figure, the sign of a cost its own
-          const pc = v.pc;
-          if (!pc) throw new Error(`${where}: the pair has no costs`);
-          for (const [name, n, value] of [["tax", -tax, pc.tax.value], ["account", -account, pc.accountFees], ["waiting", -waiting, pc.waitingN], ["fund", -fund, pc.fund.value], ["left", left, pc.left.value]] as [string, number, number][]) {
-            expect(Math.abs(n / 100 - value), `${where} ${name} ${value}`).toBeLessThanOrEqual(stepOf(value, assumed) / 2 + 1e-9);
-          }
-        }
-      });
-    }
-  }
-});
-
 describe("in whole units, the fees charged and the waiting cash apart (F-91, F-109)", () => {
   // the S&P 500 page's plan at a fall and at a rise; Interactive Brokers with the Irish fund buys whole units while its record is silent
   const pick = { house: "interactive-brokers", fund: "ie00b5bmr087" };

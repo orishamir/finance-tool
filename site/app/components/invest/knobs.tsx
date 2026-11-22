@@ -7,7 +7,7 @@ import { changedByShare, sweep } from "@finance-tool/engine";
 import type { P05Input } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
 import type { EnteredPlan } from "../../lib/entered-plan";
-import { fmt, nisOf } from "../../lib/format";
+import { fmt } from "../../lib/format";
 import { useInputs } from "../../lib/inputs";
 import { useSettled } from "../../lib/settled";
 import { pairCosts, pairLeft, type InvestView, type PlanInput } from "../../lib/invest";
@@ -115,14 +115,14 @@ export function changesAt(run: PlanChangesRun, at: number, share: Share, today: 
       const to = computed(l.tos[idx]!, unitOf[l.id], "F-89", { [labelOf[l.id]]: planValue[l.id] }, { today, about: ch.aboutTo });
       const planName = c.planInputs[PLAN_INPUT[l.id]];
       const afterInputs = Object.fromEntries(Object.entries(baseInputs).map(([name, v]) => [name, name === planName ? to : v]));
-      const afterValue = after === null ? null : computed(after, "nis", "F-90", afterInputs, { today, about: ch.aboutLeft });
+      const afterValue = after === null ? null : computed(Math.round(after), "nis", "F-90", afterInputs, { today, about: ch.aboutLeft });
       return {
         l,
         n,
         to,
         after: afterValue,
-        // the value left after the change less the value left on the plan, taken before the rounding and rounded once where it is written
-        diff: after === null || !afterValue ? null : computed(after - (run.base.value as number), "nis", "F-89", { [ch.aboutLeft]: afterValue, [k.changes.planHead]: run.base }, { today, about: ch.aboutDiff }),
+        // the value left after the change less the value left on the plan; taken before the rounding, as the row always was
+        diff: after === null || !afterValue ? null : computed(Math.round(after - (run.base.value as number)), "nis", "F-89", { [ch.aboutLeft]: afterValue, [k.changes.planHead]: run.base }, { today, about: ch.aboutDiff }),
       };
     })
     .sort((a, b) => Math.abs((b.diff?.value as number) ?? 0) - Math.abs((a.diff?.value as number) ?? 0));
@@ -139,7 +139,7 @@ export function PlanChanges({ run, at, onAt, share, today }: { run: PlanChangesR
   const rows = changesAt(run, at, share, today);
   const diffText = (d: SiteValue) => (
     <>
-      <Num value={d} display={nisOf(d, Math.abs(d.value as number))} /> {(d.value as number) >= 0 ? ch.more : ch.less}
+      <Num value={d} display={fmt.nisWhole(Math.abs(d.value as number))} /> {(d.value as number) >= 0 ? ch.more : ch.less}
     </>
   );
   const first = rows[0]!;

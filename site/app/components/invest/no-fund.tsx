@@ -7,7 +7,7 @@ import { asideLines, firstCount, GROUP_OPTIONS, phoneOnlyValue, placesOf, type H
 import type { SiteValue } from "../../lib/value";
 import type { IndicesBundle } from "../../lib/providers";
 import { isGroupProvider } from "../../lib/group-pick";
-import { fmt, nisAsShown, toAgorot } from "../../lib/format";
+import { fmt } from "../../lib/format";
 import { IconCopy } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, DocLink, LongestCase, PickList, SourcedTag, Swatch, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
@@ -92,14 +92,10 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const pickRows: PickRow[] = ok.map((h, i) => {
     const g = h.generic;
     const from = h.provider.custom ? c.pair.sourceEntered : c.pair.sourceList(h.provider.short);
-    // the account's fees on each other first, as on every bar of the page; the bar's total is the cost column's figure as it shows (the
-    // receipt's rounding, `nisAsShown`), each line as it shows on its own, and the fees on each other take what the rounding leaves
-    const of = g.cost ?? {};
-    const total = nisAsShown(of, g.costN!);
-    const lineParts = byLegend(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, amount: nisAsShown(of, l.cost), className: lineClass(lineOf(l.line)), source: from }));
+    // the account's fees on each other first, as on every bar of the page
     const parts: CostPart[] = [
-      { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction ?? 0, amount: toAgorot(total - lineParts.reduce((a, l) => a + l.amount, 0)), className: "bg-chart-cost-other", source: c.pair.sourceComputed },
-      ...lineParts,
+      { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction ?? 0, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
+      ...byLegend(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass(lineOf(l.line)), source: from })),
     ];
     return {
       key: h.provider.id,
@@ -116,7 +112,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             </LongestCase>
           </span>
           <span className="flex items-center min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
-            <CostStack size="sm" parts={parts} total={total} scale={scale} highlight={legendPick.active} label={`${h.provider.short}: ${fmt.nis(total)}`} />
+            <CostStack size="sm" parts={parts} total={Math.round(g.costN!)} scale={scale} highlight={legendPick.active} label={`${h.provider.short}: ${fmt.nisWhole(g.costN!)}`} />
           </span>
           <span className="col-end-[-1] text-end font-semibold">{g.cost && <Num animate value={g.cost} />}</span>
           {/* the kind the cost is for, else the house's: a row keeps its line whichever kind the plan makes cheapest */}

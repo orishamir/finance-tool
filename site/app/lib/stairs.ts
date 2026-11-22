@@ -6,7 +6,6 @@
 import { isGroupProvider } from "./group-pick";
 import type { FeesSnapshot } from "@finance-tool/schema";
 import { doubtOf, type InvestView, type OptionId } from "./invest";
-import { nisAsShown, toAgorot } from "./format";
 
 export type Lane = "account" | "kind" | "fund";
 export const LANES: readonly Lane[] = ["account", "kind", "fund"];
@@ -33,11 +32,8 @@ export interface Grid {
   funds: readonly StairFund[];
   /** The kinds in the order the lane lists them. */
   kinds: readonly string[];
-  /**
-   * Real value left at the horizon (F-65), the number it shows as on its own (`nisAsShown`: hundreds of shekels where it rests on an
-   * assumed return), and whether it rests on an open rule; null when the pair has no price.
-   */
-  cell(a: string, f: string): { v: number; shown: number; open: boolean } | null;
+  /** Real value left at the horizon (F-65) and whether it rests on an open rule; null when the pair has no price. */
+  cell(a: string, f: string): { v: number; open: boolean } | null;
   why(a: string, f: string): Why;
 }
 
@@ -56,7 +52,7 @@ export function gridOf(view: InvestView, snapshots: readonly FeesSnapshot[]): Gr
     kinds: options.filter((o) => o.funds.length > 0).map((o) => o.id),
     cell(a, f) {
       const at = byFund.get(f)?.byHouse[a];
-      return at && "valueN" in at ? { v: at.valueN, shown: nisAsShown(at.value, at.valueN), open: at.open } : null;
+      return at && "valueN" in at ? { v: at.valueN, open: at.open } : null;
     },
     why(a, f) {
       const w = byFund.get(f);
@@ -74,7 +70,6 @@ export function gridOf(view: InvestView, snapshots: readonly FeesSnapshot[]): Gr
 
 const fundOf = (g: Grid, id: string): StairFund => g.funds.find((x) => x.id === id)!;
 const val = (g: Grid, p: Pos): number | null => g.cell(p.a, p.f)?.v ?? null;
-const shownAt = (g: Grid, p: Pos): number | null => g.cell(p.a, p.f)?.shown ?? null;
 const openAt = (g: Grid, p: Pos): boolean => g.cell(p.a, p.f)?.open ?? false;
 const fundsOfKind = (g: Grid, kind: string): StairFund[] => g.funds.filter((x) => x.kind === kind);
 
@@ -86,18 +81,17 @@ export interface Row {
   /** For the kind lane, the kind it changes to. */
   kind: string | null;
   v: number | null;
-  /** The value left at `to` less the value left at the current position, each as it shows (`Grid.cell`), so the figures on the page add up; null when either has no price. */
+  /** The value left at `to` less the value left at the current position, each in whole shekels as shown, so the figures on the page add up; null when either has no price. */
   d: number | null;
   open: boolean;
   hedged: boolean;
   why: Why | null;
 }
 
-/** Every single change from one holding: another account, another kind of fund, another fund of the same kind. `cur`: what is left at the current position, as it shows. */
+/** Every single change from one holding: another account, another kind of fund, another fund of the same kind. */
 const rowOf = (g: Grid, cur: number | null, lane: Lane, to: Pos, key: string, kind: string | null): Row => {
   const v = val(g, to);
-  const shown = shownAt(g, to);
-  return { lane, to, key: `${lane}|${key}`, kind, v, d: shown == null || cur == null ? null : toAgorot(shown - cur), open: openAt(g, to), hedged: fundOf(g, to.f).hedged, why: v == null ? g.why(to.a, to.f) : null };
+  return { lane, to, key: `${lane}|${key}`, kind, v, d: v == null || cur == null ? null : Math.round(v) - Math.round(cur), open: openAt(g, to), hedged: fundOf(g, to.f).hedged, why: v == null ? g.why(to.a, to.f) : null };
 };
 /** The kind lane's row for kind `k` at account `a`: the kind's fund that leaves the most there; a currency-hedged fund is another holding, so it does not stand for the kind. */
 const kindRow = (g: Grid, cur: number | null, a: string, k: string): Row | null => {
@@ -108,7 +102,7 @@ const kindRow = (g: Grid, cur: number | null, a: string, k: string): Row | null 
 };
 
 export function rowsAt(g: Grid, pos: Pos): Row[] {
-  const cur = shownAt(g, pos);
+  const cur = val(g, pos);
   const out: Row[] = [];
   for (const a of g.accounts) if (a !== pos.a) out.push(rowOf(g, cur, "account", { a, f: pos.f }, a, null));
   const here = fundOf(g, pos.f).kind;
@@ -142,11 +136,11 @@ export function laneCases(g: Grid): Record<Lane, Row[][]> {
     return null;
   };
   for (const f of g.funds) {
-    const cur = anyAt((a) => shownAt(g, { a, f: f.id }));
+    const cur = anyAt((a) => val(g, { a, f: f.id }));
     if (cur != null) add("account", g.accounts.map((a) => rowOf(g, cur, "account", { a, f: f.id }, a, null)));
   }
   for (const a of g.accounts) {
-    const cur = g.funds.map((f) => shownAt(g, { a, f: f.id })).find((v) => v != null) ?? null;
+    const cur = g.funds.map((f) => val(g, { a, f: f.id })).find((v) => v != null) ?? null;
     if (cur == null) continue;
     add("kind", g.kinds.map((k) => kindRow(g, cur, a, k)).filter((r): r is Row => r != null));
     for (const k of g.kinds) add("fund", fundsOfKind(g, k).map((x) => rowOf(g, cur, "fund", { a, f: x.id }, x.id, null)));
