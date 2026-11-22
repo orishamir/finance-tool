@@ -68,29 +68,29 @@
       "pages": "/companies/interactive-israel",
       "width": 1440,
       "check": "overlap",
-      "id": "ללא מקסימום | לפעולה",
-      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא מקסימום\" runs over the next words of its fee line."
+      "id": "ללא | לפעולה",
+      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא\" (then \"ללא מקסימום\") runs over the next words of its fee line."
     },
     {
       "pages": "/companies/512065202?product=brokerage",
       "width": 1440,
       "check": "overlap",
-      "id": "ללא מקסימום | לפעולה",
-      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא מקסימום\" runs over the next words of its fee line."
+      "id": "ללא | לפעולה",
+      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא\" (then \"ללא מקסימום\") runs over the next words of its fee line."
     },
     {
       "pages": "/companies/513026484?product=brokerage",
       "width": 1440,
       "check": "overlap",
-      "id": "ללא מקסימום | לפעולה",
-      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא מקסימום\" runs over the next words of its fee line."
+      "id": "ללא | לפעולה",
+      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא\" (then \"ללא מקסימום\") runs over the next words of its fee line."
     },
     {
       "pages": "/companies/ibi?product=brokerage",
       "width": 1440,
       "check": "overlap",
-      "id": "ללא מקסימום | לפעולה",
-      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא מקסימום\" runs over the next words of its fee line."
+      "id": "ללא | לפעולה",
+      "why": "Found when the overlap check came in (2026-11-22): a brokerage price's \"ללא\" (then \"ללא מקסימום\") runs over the next words of its fee line."
     },
     {
       "pages": "/companies/513173393?product=pension-comprehensive",
@@ -126,13 +126,6 @@
       "check": "overlap",
       "id": "129,500 ₪ | נשאר לכם",
       "why": "Found when the overlap check came in (2026-11-22): the receipt's large figure's text box reaches into its label at 320; drawn touching."
-    },
-    {
-      "pages": "/kit",
-      "width": 320,
-      "check": "overlap",
-      "id": "מינימום 20 ₪ | מקסימום 500 ₪",
-      "why": "Found when the overlap check came in (2026-11-22): a price's minimum and maximum captions drawn over each other at 320."
     }
   ]
 }

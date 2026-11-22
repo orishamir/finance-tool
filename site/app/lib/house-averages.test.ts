@@ -59,7 +59,7 @@ describe("an average that is not nothing never reads 0% (F-122, rendered)", asyn
   const { fmt } = await import("./format");
   it("IBI's custody, 0.0012% to 0.0673% a year, shows both figures with their digits", () => {
     const h = houseAverages(loadHouseAverages().get("ibi")!, [{ fee: "custody", securities: "il" }]);
-    const out = renderToString(createElement(HouseAverageLine, { averages: h.columns, house: "IBI", from: h.from, to: h.to, page: h.page })).replace(/<[^>]+>/g, "").replace(/[⁦-⁩]/g, "");
+    const out = renderToString(createElement(HouseAverageLine, { averages: h.columns, house: "IBI" })).replace(/<[^>]+>/g, "").replace(/[⁦-⁩]/g, "");
     expect(out).toContain("0.0012%");
     expect(out).toContain(fmt.pct(0.0673));
     expect(out).not.toMatch(/(^|[^\d.])0%/);

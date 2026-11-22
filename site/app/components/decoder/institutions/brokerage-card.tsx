@@ -488,7 +488,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
       {tariff.lines.length > 0 && (
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
           <FeeBar priceFor={tariff.priceFor} byChannel={byChannel} channel={channel} onChannel={setChannel} />
-          <FeeTable lines={tariff.lines} channel={channel} kind={kind} average={(l) => (l.average && tariff.averages ? <HouseAverageLine averages={[l.average]} house={gershayim(tariff.providerName)} from={tariff.averages.from} to={tariff.averages.to} page={tariff.averages.page} /> : null)} />
+          <FeeTable lines={tariff.lines} channel={channel} kind={kind} average={(l) => (l.average && tariff.averages ? <HouseAverageLine averages={[l.average]} house={gershayim(tariff.providerName)} /> : null)} />
           {/* what the house's documents hold and these prices leave out (D106) */}
           <LeftOutLine view={tariff.leftOut ?? null} house={gershayim(tariff.providerName)} className="text-sm" />
         </Section>

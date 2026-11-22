@@ -312,7 +312,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   headRef.current = (fee) => {
     const x = onPlan?.get(fee.id);
     const avg = averages && house && run ? columnAverage(averages, planColumn(fee.kind, run)) : null;
-    const average = avg && averages && house ? <HouseAverageLine customers averages={[avg]} house={house.short} from={averages.from} to={averages.to} page={averages.page} /> : null;
+    const average = avg && averages && house ? <HouseAverageLine customers averages={[avg]} house={house.short} /> : null;
     const gap = abroad.find((g) => g.missing.fee === fee.id);
     const foot = gap ? <AbroadCaseLine words={gap.words} onAdd={() => addAbroadCase(ed, fee, gap)} /> : null;
     const slot = x ? feeHeadOf(x, at?.kind === "ok" ? at.figure(shownCost(at.byFee[fee.id] ?? 0), w.feeCostAbout(feeNameOf(fee.kind, fee.name))) : null, house?.short ?? null) : {};

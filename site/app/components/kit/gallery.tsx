@@ -1955,13 +1955,13 @@ function Lists({ today }: { today: string }) {
       <Demo name="HouseAverageLine" use={g.uses.HouseAverageLine}>
         <Grid>
           <State label="under a price-list line (the company page): one column, its range over the portfolio bands">
-            <HouseAverageLine averages={[averageSample(today, 0.0451, 0.0955, "trade")]} house="IBI" from="2026-01-01" to="2026-06-30" page={{ url: "#" }} />
+            <HouseAverageLine averages={[averageSample(today, 0.0451, 0.0955, "trade")]} house="IBI" />
           </State>
           <State label="two columns, each by its short name; a small average keeps the digits that make it more than 0% (IBI's custody, 0.0012% to 0.0673% a year)">
-            <HouseAverageLine averages={[averageSample(today, 0.0451, 0.0955, "trade"), averageSample(today, 0.0012, 0.0673, "custody")]} house="IBI" from="2026-01-01" to="2026-06-30" page={{ url: "#" }} />
+            <HouseAverageLine averages={[averageSample(today, 0.0451, 0.0955, "trade"), averageSample(today, 0.0012, 0.0673, "custody")]} house="IBI" />
           </State>
           <State label="customers: under a fee of a deal (the indices page's popup), led by the house's customers">
-            <HouseAverageLine customers averages={[averageSample(today, 0.0451, 0.0955, "trade")]} house="IBI" from="2026-01-01" to="2026-06-30" page={{ url: "#" }} />
+            <HouseAverageLine customers averages={[averageSample(today, 0.0451, 0.0955, "trade")]} house="IBI" />
           </State>
         </Grid>
       </Demo>

@@ -2991,7 +2991,7 @@ export const r4catalogue = {
     /** a bound charged on each trade, after its amount */
     perTrade: "לפעולה",
     /** a percentage fee whose documents print no bound: the site charges none, and says so rather than leave the cell blank */
-    noBound: { min: "ללא מינימום", max: "ללא מקסימום" },
+    noBound: { min: "ללא", max: "ללא" },
     /** a flat price for a small conversion or order (F-12, F-13), after its amount and before the sum it holds up to: "3.30 $ להמרה של עד 99 $" */
     flatUpTo: { fx: "להמרה של עד", trade: "לפעולה של עד" },
     factsTitle: "פתיחת חשבון ופיקוח",

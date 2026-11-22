@@ -7,7 +7,6 @@ import { fmt } from "../../lib/format";
 import { sourceHref } from "../../lib/sources";
 import type { SiteValue } from "../../lib/value";
 import { Num, Term, type SheetPart } from "../provenance";
-import { DocLink } from "./doc-link";
 import { DotLine } from "./notes";
 
 /** A column's figures: the lowest and, where it differs, "עד" the highest, a custody average with "בשנה"; a figure above zero never reads 0%. */
@@ -29,11 +28,11 @@ function AverageFigures({ average, house }: { average: ColumnAverage; house: str
 }
 
 /**
- * The line: what the house charged on average (one column, or several each by its short name), by portfolio size, the period, the link.
+ * The line: what the house charged on average (one column, or several each by its short name), by portfolio size. The period and the calculator's page are in the figures' sheet.
  * `customers`: it starts with the house's customers ("לקוחות פסגות שילמו בממוצע"), where the line stands under a fee of a deal, away from
  * the house's own name.
  */
-export function HouseAverageLine({ averages, house, from, to, page, customers, className }: { averages: readonly ColumnAverage[]; house: string; from: string; to: string; page: { url: string }; customers?: boolean; className?: string }) {
+export function HouseAverageLine({ averages, house, customers, className }: { averages: readonly ColumnAverage[]; house: string; customers?: boolean; className?: string }) {
   if (averages.length === 0) return null;
   const one = averages.length === 1;
   return (
@@ -51,10 +50,6 @@ export function HouseAverageLine({ averages, house, from, to, page, customers, c
           ))}
           {averages.some((a) => a.lo.value !== a.hi.value) && `, ${copy.byPortfolio}`}
         </span>,
-        copy.period(fmt.date(from), fmt.date(to)),
-        <DocLink key="link" look="inline" source={{ url: page.url }}>
-          {copy.link}
-        </DocLink>,
       ]}
     />
   );
