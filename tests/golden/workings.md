@@ -132,16 +132,19 @@ For each difference: what the method says, what the rule base says (with its sou
 - Q8 (S28): as S27.
 - Q9 (S29) inputs: market and fees as S27.
 - Q11 (S32): 3% kept after 18.
+- Q13 (S40): every wrapper's terms from S01, S05, S06, S08, S11, S14 and S20.
 - Q14 (S41): π 3%, as S11.
 - Q17:
-  - S46: r_g 6%, π 2.5%.
+  - S46: r_g 6%, π 2.5%; P-04 from data/parameters.
+  - S49: cash held as S11, bonds as S15.
   - S50: two brokers built from S44's bank A.
 
 **Closed 2026-10-23 as technical choices Claude makes (the founder deferred these):**
+- P-04 (classification fit) in `data/parameters/classification-fit.json`.
 - Q16: S44 and S45 assumptions kept as stated in Q16.
 - Q18 (ii) and (iii): insurance charged on all deposits, as entered; salary constant.
 - Q18 (i): the S27 title "credit cap not binding" is wrong (the cap binds). That is a text fix for the scenario author; the numbers already follow the rule.
-- P-02 and P-06 in `data/parameters/`, with the reasons in `docs/parameters-rationale.md`.
+- P-02, P-03 and P-06 in `data/parameters/`, with the reasons in `docs/parameters-rationale.md`.
 
 **Closed 2026-10-22 as under the founder's 0.5% line (current choice kept):**
 - Q1: paying each month a month later moves S14 by 0.23% and S39 by 0.28%.

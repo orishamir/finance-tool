@@ -655,7 +655,7 @@
    "site/app/lib/fx.test.ts": 11,
    "site/app/lib/graduation.server.ts": 5,
    "site/app/lib/graduation.test.ts": 1,
-   "site/app/lib/guide-account-pick.test.ts": 38,
+   "site/app/lib/guide-account-pick.test.ts": 43,
    "site/app/lib/guide-nav.test.ts": 3,
    "site/app/lib/guide-nav.ts": 2,
    "site/app/lib/guide-signature-bundle.server.ts": 2,

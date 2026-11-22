@@ -882,7 +882,9 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
         if (!mine.length || mine[0]!.layer !== layer) return [];
         const lane = lanes.find((l) => l.fee === fee)!;
         const part = lane.parts ? partAt(lane.parts, v) : undefined;
-        return [{ fee, cost: yearCostOf(costOf(fee), "F-112", { ...inputs, ...amountIn }, r.today, isAccount(fee) ? flag : null), ...(part ? { part } : {}) }];
+        // the flag is on the sum of the current accounts: on the total and each row that charges something, never on a row of 0 ₪
+        const cost = costOf(fee);
+        return [{ fee, cost: yearCostOf(cost, "F-112", { ...inputs, ...amountIn }, r.today, isAccount(fee) && cost > 0 ? flag : null), ...(part ? { part } : {}) }];
       });
       const sum = layers.filter((l) => l.layer === layer).reduce((a, l) => a + l.cost, 0);
       return { layer, total: reading(sum, "nis", "F-123", { ...inputs, ...amountIn }, r.today), rows };

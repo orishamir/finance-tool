@@ -189,8 +189,9 @@ export interface DealCharges {
   activityKey(activity: (m: number) => MonthActivity, T: number): string;
   /**
    * F-102 with BANK-35: what the current account is charged for month `m`, a month's worth, for the cap's flag: each of its fees that
-   * month's steps charge (a card split by a month's orders or trading, or by the value held at `value`, charges one step's price, never
-   * the sum of its steps), at its sum over the months it covers. Read once the month's orders are placed.
+   * month's steps charge (a card split by a month's trading, or by the value held at `value`, charges one step's price, never the sum of
+   * its steps; it is never split by the month's orders, whose step is the deal's pick), at its sum over the months it covers. Read once
+   * the month's orders are placed.
    */
   accountMonthly(m: number, value: number): number;
   /**

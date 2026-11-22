@@ -7,7 +7,7 @@ import { accountSum, buildInvest, dealOnFunds, dealRunOf, indexById, pairCosts, 
 import { receiptAmounts } from "../receipt";
 import { invest as words } from "../../copy";
 import { entered, type SiteValue } from "../value";
-import { hasCases, newDeal, pickKey, typed, type Case, type Fee, type FeeDeal } from "../fee-deal/model";
+import { hasCases, newDeal, pickKey, typed, type Fee, type FeeDeal } from "../fee-deal/model";
 import { withLaterFillsAll } from "../fee-deal/templates";
 import { feeOf, stepPick } from "../fee-deal/cases";
 import { addBy } from "../fee-deal/edits/case";
@@ -187,35 +187,52 @@ describe("F-128 a deal filled from a house prices as the house does, on a few in
     }
   });
 
-  it("a current account whose price changes by a month's actions is read at the deal's pick, else its dearest step, never the plan's orders (F-102)", () => {
+  it("a current account whose price changes by a month's actions waits for the deal's pick of its step, then is read at it, never at the plan's orders (F-102)", () => {
     const leumi = fromHouse("leumi");
     const card = leumi.fees.find((f) => f.kind === "current_account");
     if (!card) throw new Error("Leumi's list fills a current account");
+    // the list fills a flat sum each month, which needs no pick
+    expect(feesOnPlan(leumi, run, ctx).find((x) => x.fee === card.id)?.on).toBe("charged");
     // up to two actions a month at the list's minimum, above two at 20 ₪: the plan places one order a month, which would read the first step
     const cased = addBy(card, { kind: "count", unit: "actions", top: 2 });
     if (!hasCases(cased)) throw new Error("the card takes a step of a month's actions");
     const [low, high] = cased.cases;
     if (!low || !high) throw new Error("two steps");
-    const dearStep: Case = { ...high, stages: [{ price: { form: "sum", amount: typed(20), every: 1 } }] };
-    const dear: Fee = { ...cased, cases: [low, dearStep] };
-    const priced = (id: string, f: FeeDeal["fees"][number], readFor = leumi.readFor): FeeDeal => ({ ...leumi, id, fees: leumi.fees.map((x) => (x === card ? f : x)), ...(readFor ? { readFor } : {}) });
-    const flat20 = priced("deal-flat-20", { ...card, stages: [{ price: { form: "sum", amount: { v: 20 }, every: 1 } }] } as FeeDeal["fees"][number]);
-    const stepped = priced("deal-stepped", dear);
+    const dear: Fee = { ...cased, cases: [low, { ...high, stages: [{ price: { form: "sum" as const, amount: typed(20), every: 1 as const } }] }] };
+    const blank: Fee = { ...cased, cases: [low, { ...high, stages: [{ price: { form: "sum" as const, amount: { v: 0, blank: true as const }, every: 1 as const } }] }] };
     const [by] = cased.by;
     if (!by) throw new Error("the step's thing");
-    const picked = priced("deal-picked", dear, [...(leumi.readFor ?? []), { by: pickKey(by), is: stepPick(2) }]);
-    const bs = withDeals(bundle, [leumi, flat20, stepped, picked], data.kinds);
+    const priced = (id: string, f: Fee, pick?: string): FeeDeal => ({ ...leumi, id, fees: leumi.fees.map((x) => (x === card ? f : x)) as FeeDeal["fees"], readFor: [...(leumi.readFor ?? []), ...(pick ? [{ by: pickKey(by), is: pick }] : [])] });
+    const flat20 = priced("deal-flat-20", { ...card, stages: [{ price: { form: "sum", amount: { v: 20 }, every: 1 } }] } as Fee);
+    const unpicked = priced("deal-unpicked", dear);
+    const low2 = priced("deal-low", dear, stepPick(2));
+    const high2 = priced("deal-high", dear, stepPick(2, true));
+    const blankHigh = priced("deal-blank-high", blank, stepPick(2, true));
+    // no pick: the deal waits for the step, as a deal missing a price does, and the bar shows no step chosen
+    const miss = feesOnPlan(unpicked, run, ctx).find((x) => x.fee === card.id);
+    expect(miss?.on === "missing" && miss.missing.why).toBe("step");
+    const chosen = (d: FeeDeal) => pickLine(planRead(d, run, ctx))?.things.find((x) => x.by === pickKey(by))?.chosen;
+    expect(chosen(unpicked)).toBe("");
+    expect(chosen(low2)).toBe(stepPick(2));
+    expect(chosen(high2)).toBe(stepPick(2, true));
+    // a picked step with no price says the price is missing
+    const gap = feesOnPlan(blankHigh, run, ctx).find((x) => x.fee === card.id);
+    expect(gap?.on === "missing" && gap.missing.why).toBe("price");
+    const bs = withDeals(bundle, [leumi, flat20, unpicked, low2, high2, blankHigh], data.kinds);
     const ix = indexById(bs, "index-ta125");
     if (!ix) throw new Error("the Tel Aviv 125 is priced");
     const v = buildInvest({ bundle: bs, index: ix, plan });
-    const at = (id: string) => Math.round(v.houses.find((r) => r.provider.id === dealProviderId(id))?.entries.find((e) => e.fund.option === "il-etf")?.price?.valueN ?? NaN);
-    expect(at("deal-stepped")).toBe(at("deal-flat-20"));
-    expect(at("deal-picked")).toBe(at(leumi.id));
-    expect(at("deal-picked")).toBeGreaterThan(at("deal-stepped"));
-    // the pick bar shows the step the plan charges: the dearest with no pick, the deal's own where it picks one
-    const chosen = (d: FeeDeal) => pickLine(planRead(d, run, ctx))?.things.find((x) => x.by === pickKey(by))?.chosen;
-    expect(chosen(stepped)).toBe(stepPick(2, true));
-    expect(chosen(picked)).toBe(stepPick(2));
+    const entry = (id: string) => v.houses.find((r) => r.provider.id === dealProviderId(id))?.entries.find((e) => e.fund.option === "il-etf");
+    const at = (id: string) => Math.round(entry(id)?.price?.valueN ?? NaN);
+    // a pick: priced at that step, the list's minimum at up to two, 20 ₪ a month above
+    expect(at("deal-low")).toBe(at(leumi.id));
+    expect(at("deal-high")).toBe(at("deal-flat-20"));
+    // no pick: not ranked, and its reason names the step it lacks
+    for (const [id, why] of [["deal-unpicked", "step"], ["deal-blank-high", "price"]] as const) {
+      const e = entry(id);
+      expect(e?.price).toBeNull();
+      expect(e?.reason?.code === "deal-unpriced" && e.reason.missing?.why).toBe(why);
+    }
   });
 
   it("the bank's current account is not counted on the bank the person marks as theirs", () => {

@@ -75,11 +75,6 @@
   on a branch of its own and goes live in finished slices, also on `main`
   without a pull request. Nothing is held off the links for review: what is
   not finished stays on its branch.
-- Land at about 80%: once the work is right for what a typical reader
-  meets, merge and push it, then finish the rest (more features, niche
-  cases) after it is live. Don't hold a branch for another review round
-  over rare cases. What is critical never waits: a wrong figure a typical
-  reader meets, or lost data.
 - If the working tree holds another session's uncommitted work, commit it
   separately, with its own message, before your own, and say so.
 - Remove the worktree and branch after merging.

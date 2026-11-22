@@ -64,7 +64,8 @@ function pageTable(): Record<string, RuleUsePage> {
 }
 
 /**
- * routes/<name>.tsx → a key of `pageTable`; a route not listed (home, rules, documents, search, parameters …) is not a use.
+ * routes/<name>.tsx → a key of `pageTable`; a route not listed (home, rules, documents, search, parameters …) is not a use. `shared`
+ * (below) is code several pages share: it counts towards a rule's score but names no page.
  */
 const routeKey: Record<string, string> = {
   deal: "deal",
@@ -89,6 +90,8 @@ const componentKey: Record<string, string> = {
 
 /** lib/<file> → page, by file-name prefix (the pages' own logic lives there: the track tables …). */
 const libPrefixes: [string, string][] = [
+  ["goal", "shared"],
+  ["holdings", "shared"],
   ["track-browser", "tracks"],
   ["track-names", "tracks"],
   ["track-labels", "tracks"],

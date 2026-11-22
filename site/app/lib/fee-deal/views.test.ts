@@ -833,6 +833,12 @@ describe("a bank's current account, filled from its whole list (F-102, D64)", ()
     const twoAt = readingOf(read(two), data.fx, null, cap).panels.held.flatMap((v) => ("chart" in v ? [v.chart.readAt(100_000)] : []));
     expect(twoAt.flatMap((at) => at.groups.flatMap((g) => g.rows).filter((x) => x.fee.ref.kind === "current_account").map((x) => x.cost.flags ?? []))).toEqual([["BANK-35"], ["BANK-35"]]);
     expect(twoAt.map((at) => at.total.flags ?? [])).toEqual([["BANK-35"]]);
+    // a current account that charges nothing beside one above the cap: the sum's flag is on the total and the row that charges, not on 0 ₪
+    const free: FeeDeal = { ...deal(above, null, 0), fees: [...deal(above, null, 0).fees, { id: "fee-account-free", kind: "current_account", stages: [{ price: { form: "sum", amount: typed(0), every: 1 } }] }] };
+    const freeAt = readingOf(read(free), data.fx, null, cap).panels.held.flatMap((v) => ("chart" in v ? [v.chart.readAt(100_000)] : []));
+    const accounts = freeAt.flatMap((at) => at.groups.flatMap((g) => g.rows).filter((x) => x.fee.ref.kind === "current_account"));
+    expect(accounts.map((x) => [x.cost.value, x.cost.flags ?? []])).toEqual([[above * 12, ["BANK-35"]], [0, []]]);
+    expect(freeAt.map((at) => at.total.flags ?? [])).toEqual([["BANK-35"]]);
   });
 
   it("a cap with no month it takes effect holds throughout, as the run reads it; a deal with no current account keeps its holding views whole", () => {
