@@ -162,7 +162,7 @@ export function ChangeChart({
           width={w}
           height={height}
           aria-hidden="true"
-          className="block touch-pan-y cursor-ew-resize"
+          className="block touch-none cursor-ew-resize"
           onPointerDown={(e) => {
             setDrag(true);
             e.currentTarget.setPointerCapture(e.pointerId);
@@ -170,8 +170,6 @@ export function ChangeChart({
           }}
           onPointerMove={(e) => drag && set(e)}
           onPointerUp={() => setDrag(false)}
-          // a finger that moves down the chart scrolls the page (`touch-pan-y`), which ends the drag
-          onPointerCancel={() => setDrag(false)}
         >
           {grid.map((t) => (
             <g key={t.value} className={tickFade(t)}>

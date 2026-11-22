@@ -4,14 +4,14 @@
 // only), every difference a computation of F-91. The selection logic is `lib/stairs.ts`; the chart and the rows are the kit's.
 import { memo, useMemo, useState, type ReactNode } from "react";
 import { invest as c } from "../../copy";
-import { fmt } from "../../lib/format";
+import { nisOf } from "../../lib/format";
 import { fundLabels } from "../../lib/labels";
 import { pairCosts, type FundWay, type InvestView, type ProviderInfo, type WayPrice } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
-import { LeadTail, Num, type SheetPart } from "../provenance";
+import { LeadTail, NisNum, Num, type SheetPart } from "../provenance";
 import { Button, wholeParts, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
 import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, NoFundWords, whyNoFundAt } from "./pair";
 import { ProviderLink, providerName } from "./sections";
@@ -169,7 +169,8 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       id: `${fold + i}|${s.pos.a}|${s.pos.f}`,
       level: s.v,
       from: first || !prevLevel ? s.v : prevLevel.stair.v,
-      top: first ? fmt.nisWhole(s.v) : fmt.signedNisWhole(s.d ?? 0),
+      // every level is what the plan leaves, and rests on the plan's return as the climb does
+      top: first ? nisOf(climb, s.v) : nisOf(climb, s.d ?? 0, { signed: true }),
       hue: hueOf(s.lane),
       loses: (s.d ?? 0) < 0,
       taken: s.taken,
@@ -191,7 +192,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       </>
     ) : (
       <>
-        {t.panelTitle.lead(levels.length - 1)} <Num value={climb} display={(v) => fmt.nisWhole(Math.abs(v))} /> {t.panelTitle.less} {t.panelTitle.tail}
+        {t.panelTitle.lead(levels.length - 1)} <NisNum abs value={climb} /> {t.panelTitle.less} {t.panelTitle.tail}
       </>
     );
 
@@ -212,7 +213,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
     if (!l.dParts) return <span className="text-muted-foreground">{t.table.notSplit}</span>;
     return (
       <span className={tone(l, k)}>
-        <Num value={partOf(l, prev, k)} display={fmt.signedNisWhole} />
+        <NisNum signed value={partOf(l, prev, k)} />
       </span>
     );
   };
@@ -270,7 +271,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const steps: StairStep[] = levels.map((l, i) => {
     const s = l.stair;
     const prev = levels[i - 1];
-    const parts = prev && l.dParts ? ([0, 1, 2, 3] as const).filter((k) => l.dParts![k] !== 0).map((k, n) => <span key={k}>{n > 0 && " · "}{partName(k)} <Num value={partOf(l, prev, k)} display={fmt.signedNisWhole} /></span>) : null;
+    const parts = prev && l.dParts ? ([0, 1, 2, 3] as const).filter((k) => l.dParts![k] !== 0).map((k, n) => <span key={k}>{n > 0 && " · "}{partName(k)} <NisNum signed value={partOf(l, prev, k)} /></span>) : null;
     const what = !s.lane ? `${t.stepStart} ${l.fundName}, ${l.house.short}` : `${t.lanes[s.lane].word}: ${s.lane === "account" ? l.house.short : l.fundName}`;
     return {
       id: `${s.pos.a}|${s.pos.f}|${i}`,
@@ -281,7 +282,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
           {s.open ? <LeadTail lead={what}>{lockIcon(t.lockLabel)}</LeadTail> : what}
         </>
       ),
-      delta: s.lane && prev ? <Num value={diffOf(l, prev)} display={fmt.signedNisWhole} /> : <Num value={l.left} />,
+      delta: s.lane && prev ? <NisNum signed value={diffOf(l, prev)} /> : <Num value={l.left} />,
       parts: parts && parts.length ? <>{parts}</> : null,
       next: !s.taken,
       label: what,
@@ -483,8 +484,8 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
           columns={columns}
           fold={fold}
           axis={{ lo: scale.LO, hi: scale.HI }}
-          ceiling={{ level: ceiling.v, lines: atCeiling ? [] : [t.ceiling, fmt.nisWhole(ceiling.v), nameOfFund(ceiling.pos.f), house(ceiling.pos.a).short] }}
-          result={{ level: end.stair.v, total: fmt.nisWhole(end.stair.v), words: [atCeiling ? t.ceiling : t.resultEnd] }}
+          ceiling={{ level: ceiling.v, lines: atCeiling ? [] : [t.ceiling, nisOf(climb, ceiling.v), nameOfFund(ceiling.pos.f), house(ceiling.pos.a).short] }}
+          result={{ level: end.stair.v, total: nisOf(climb, end.stair.v), words: [atCeiling ? t.ceiling : t.resultEnd] }}
           now={atExample ? t.nowExample : t.now}
           label={t.chartLabel}
           onGo={goTo}

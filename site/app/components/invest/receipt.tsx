@@ -7,14 +7,14 @@
 // paper above the lists, and its stub at the screen's foot keeps what is left in sight and leads back to it.
 import { Fragment, type ReactNode, type Ref, type RefObject } from "react";
 import { invest as c, site } from "../../copy";
-import { fmt, wholeSum } from "../../lib/format";
+import { fmt, nisOf, wholeSum } from "../../lib/format";
 import { gapListFor, pricedVariable, accountSum, pairCostsKept, type InvestView } from "../../lib/invest";
 import type { FundRecord } from "@finance-tool/schema";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { receiptAmounts, sharesOf, takenWords } from "../../lib/receipt";
 import { differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
-import { Num } from "../provenance";
+import { NisNum, Num } from "../provenance";
 import { FEE_WORDS_HELP, HelpMark, LeftOutLine, LongestCase, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, ShareBar, Tag, TicketPart, cx } from "../kit";
 import { isDealProviderId } from "../../lib/deal-account/bundle";
 import { isGroupProvider } from "../../lib/group-pick";
@@ -29,8 +29,8 @@ import { useDealAccounts } from "./deal-account";
 /** The names `data-anchor` gives the two lists, by which the ruler between them finds their rows. */
 export const ANCHOR = { accounts: "accounts", funds: "funds" } as const;
 
-/** A cost line's amount: what was taken with a minus, a line under zero with a plus (lib/receipt). */
-const minus = takenWords;
+/** A cost line's amount `n` of figure `v`: what was taken with a minus, a line under zero with a plus (lib/receipt). */
+const minus = (v: SiteValue, n: number) => takenWords(n, v);
 /** A part that took money but whose whole share is zero says so, not "0%". */
 const under = (amount: number, share: number) => (amount > 0 && share === 0 ? { words: c.receipt.underOne } : {});
 
@@ -77,7 +77,7 @@ export function verdictOf(v: ReturnType<typeof pairVerdict>, chosen: boolean): {
       <>{c.pair.yours} · {tie || tied ? c.pair.tiedWith : c.pair.cheapestTag}</>
     ) : (
       <>
-        {c.pair.yours} · {moreIfOther && <Num value={moreIfOther} display={fmt.signedNisWhole} />} {c.pair.moreIfCheapest}
+        {c.pair.yours} · {moreIfOther && <NisNum signed value={moreIfOther} />} {c.pair.moreIfCheapest}
       </>
     )
   ) : onBest ? (
@@ -156,31 +156,31 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       </span>
     </>
   );
-  const paidIn = <ReceiptLine size="sm" label={c.pair.paidIn} value={<Num value={pc.paidIn} display={fmt.nisWhole(r.paidIn)} />} />;
-  const addedLine = <ReceiptLine size="sm" label={c.receipt.added} value={<Num value={added} display={fmt.signedNisWhole(r.added)} />} />;
-  const taxLine = <ReceiptLine size="sm" swatch="bg-chart-tax" label={v.taxName} value={<Num value={pc.tax} display={minus(r.tax)} />} />;
+  const paidIn = <ReceiptLine size="sm" label={c.pair.paidIn} value={<Num value={pc.paidIn} display={nisOf(pc.paidIn, r.paidIn)} />} />;
+  const addedLine = <ReceiptLine size="sm" label={c.receipt.added} value={<Num value={added} display={nisOf(added, r.added, { signed: true })} />} />;
+  const taxLine = <ReceiptLine size="sm" swatch="bg-chart-tax" label={v.taxName} value={<Num value={pc.tax} display={minus(pc.tax, r.tax)} />} />;
   // F-128: an account priced by a deal writes the deal's own fees, each under its name, in whole shekels that add up with the remainder
   const accountParts = (
     <>
       {pc.dealLines
         ? pc.dealLines.map((l, i) => {
             const words = dealApi?.feeWords(pick.house, pick.fund, l.fee) ?? null;
-            return <ReceiptLine key={l.fee} size="sm" label={l.name} value={<Num value={l.cost} display={minus(r.accountLines[i]!)} />} sub={words ? <span className="text-xs text-muted-foreground">{words}</span> : undefined} />;
+            return <ReceiptLine key={l.fee} size="sm" label={l.name} value={<Num value={l.cost} display={minus(l.cost, r.accountLines[i]!)} />} sub={words ? <span className="text-xs text-muted-foreground">{words}</span> : undefined} />;
           })
         : pc.account.map((l, i) => {
             const words = rateWords(l.line, pc.priced, plan.monthly);
-            return <ReceiptLine key={l.line} size="sm" label={partName(l.line)} value={<Num value={l.cost} display={minus(r.accountLines[i]!)} />} sub={words ? <RateLine words={words} house={company} /> : undefined} />;
+            return <ReceiptLine key={l.line} size="sm" label={partName(l.line)} value={<Num value={l.cost} display={minus(l.cost, r.accountLines[i]!)} />} sub={words ? <RateLine words={words} house={company} /> : undefined} />;
           })}
-      {r.remainder !== 0 && <ReceiptLine size="sm" label={c.pair.remainder} value={<Num value={pc.remainder} display={minus(r.remainder)} />} />}
+      {r.remainder !== 0 && <ReceiptLine size="sm" label={c.pair.remainder} value={<Num value={pc.remainder} display={minus(pc.remainder, r.remainder)} />} />}
       {/* what the house's documents hold and its price leaves out, under its lines (D106); a group's account is its house's */}
       <LeftOutLine view={leftOutOf(bundle.snapshots.find((s) => s.id === baseHouse))} house={baseShort} />
     </>
   );
-  const accountValue = <Num value={account} display={minus(r.account)} />;
+  const accountValue = <Num value={account} display={minus(account, r.account)} />;
   // F-109: what the cash waiting for a whole unit did, beside the account's fees and never among them: a minus where the fund rose while it
   // waited, a plus where it fell
-  const waitingLine = pc.waiting && r.waiting !== 0 && <ReceiptLine size="sm" label={c.pair.waiting} value={<Num value={pc.waiting} display={minus(r.waiting)} />} sub={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />;
-  const fundValue = <Num value={pc.fund} display={minus(r.fund)} />;
+  const waitingLine = pc.waiting && r.waiting !== 0 && <ReceiptLine size="sm" label={c.pair.waiting} value={<Num value={pc.waiting} display={minus(pc.waiting, r.waiting)} />} sub={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />;
+  const fundValue = <Num value={pc.fund} display={minus(pc.fund, r.fund)} />;
   const fundParts = fund && feeRows(fund.rec, bundle, today);
   // held at its longest case: the dollar's clause comes and goes with the fund and the index, and moves nothing below
   const caption = (
@@ -188,11 +188,11 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       <span>{c.receipt.caption(years, steady)}</span>
     </LongestCase>
   );
-  const total = <Num value={pc.left} display={fmt.nisWhole(r.left)} />;
-  const gainLine = <ReceiptLine strong label={c.receipt.gain} value={<Num value={gain} display={fmt.signedNisWhole(r.gain)} />} sub={c.receipt.gainNote} />;
+  const total = <Num value={pc.left} display={nisOf(pc.left, r.left)} />;
+  const gainLine = <ReceiptLine strong label={c.receipt.gain} value={<Num value={gain} display={nisOf(gain, r.gain, { signed: true })} />} sub={c.receipt.gainNote} />;
   // what the tax, the account's fees and the fund took: X less what is left, and in whole units less what the waiting cash did (F-91)
   const lostValue = pc.waiting ? sumOf({ [v.taxName]: pc.tax, [c.receipt.parts.account]: account, [c.receipt.parts.fund]: pc.fund }, "F-91", { today, about: c.receipt.lost, round: Math.round }) : barTotalValue(pc, short, today);
-  const lostLine = <ReceiptLine strong label={c.receipt.lost} value={<Num value={lostValue} display={fmt.nisWhole(r.lost)} />} />;
+  const lostLine = <ReceiptLine strong label={c.receipt.lost} value={<Num value={lostValue} display={nisOf(lostValue, r.lost)} />} />;
   const bar = (
     <ShareBar
       label={`${c.receipt.lostBar}: ${v.taxName} ${shares[0]}%, ${c.receipt.parts.account} ${shares[1]}%, ${c.receipt.parts.fund} ${shares[2]}%`}
@@ -311,7 +311,7 @@ export function PairStub({ view, bundle, plan, pick, fundName, target, area }: {
         </>
       }
       label={c.receipt.left}
-      figure={fmt.nisWhole(receiptAmounts(pc).left)}
+      figure={nisOf(pc.left, receiptAmounts(pc).left)}
       go={c.receipt.toReceipt}
       target={target}
       area={area}

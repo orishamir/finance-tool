@@ -17,6 +17,7 @@ import type { VisualProps } from "./kit";
 import { MakamVisual } from "./makam";
 import { MoneyMarketDailyVisual } from "./money-market-daily";
 import { SavingsPlanVisual } from "./savings-plan";
+import { ToolBoundary } from "../tool-boundary";
 
 export const signatureRegistry: Record<string, ComponentType<VisualProps>> = {
   "current-account": CurrentAccountVisual,
@@ -46,7 +47,9 @@ export function SignatureFrame({ id, data, today, timeline }: { id: string; data
       {/* the question is the card's title: outside the card it read as a second heading under the section's on a phone */}
       <Card data-wide className="flex flex-col gap-4">
         <p className="text-lg font-semibold max-w-measure">{page.question}</p>
-        <Visual data={data} today={today} />
+        <ToolBoundary>
+          <Visual data={data} today={today} />
+        </ToolBoundary>
       </Card>
       {page.altId ? (
         <p className="text-sm max-w-measure">

@@ -1,7 +1,7 @@
 // "הידעת?": short facts from the rule base, each with its source and a way to the whole rule (the rules page; meant for the
 // guides too). Three at a time on a computer, a third fewer on a short screen, one on a phone; the next press brings the next ones, and
 // every card keeps one height, sized for the longest fact.
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "./button";
 import { cx } from "./cx";
 import { useSoftSwap } from "./soft-swap";
@@ -19,12 +19,12 @@ const SHOWN = 3;
 export function DidYouKnow({ title, items, more, orderKey, className }: { title: ReactNode; items: FactItem[]; more: string; orderKey: string; className?: string }) {
   const [at, setAt] = useState(0);
   const list = useRef<HTMLUListElement>(null);
-  // a new order starts the block over, in the same render
-  const [startedFor, setStartedFor] = useState(orderKey);
-  if (startedFor !== orderKey) {
-    setStartedFor(orderKey);
+  const started = useRef(orderKey);
+  useEffect(() => {
+    if (started.current === orderKey) return;
+    started.current = orderKey;
     setAt(0);
-  }
+  }, [orderKey]);
   const fade = useSoftSwap<HTMLDivElement>(`${orderKey}:${at}`);
   const next = () => {
     const visible = [...(list.current?.children ?? [])].filter((c) => (c as HTMLElement).offsetHeight > 0).length || 1;

@@ -5,15 +5,15 @@
 import { useMemo, useState } from "react";
 import { trackPath } from "../../lib/site-paths";
 import { guideSignature as copy } from "../../copy";
-import { fmt } from "../../lib/format";
+import { fmt, nisOf } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
 import { earlySettlement, type EarlySettlement } from "@finance-tool/engine";
 import { studyRange, studyStanding, studyYears, taxedAfterLock, waitFigures, type Employment, type StudyStanding, type StudyStoryCase } from "../../lib/guide-signature-g2";
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
-import { asField, computed, type SiteValue } from "../../lib/value";
+import { asField, assumedReturn, computed, type SiteValue } from "../../lib/value";
 import { aboveZeroCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
-import { Num, ReadingTag, Ruled, Term } from "../provenance";
+import { NisNum, Num, ReadingTag, Ruled, Term } from "../provenance";
 import { text } from "./g2-parts";
 import { figure, Gap, inputSite, notFeeFlag, rulesOfBundle, rulesOfRuns, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
 
@@ -30,10 +30,9 @@ export function KerenHishtalmutVisual(props: VisualProps) {
  * A part's amount with the sign its part carries, whatever the sign of the number: what is added "+54,000 ₪", what is taken "−13,970 ₪",
  * the person's own deposits none (`sign` 1, -1 or 0). On a phone-wide chart the shekel sign has no room.
  */
-const partText = (sign: 1 | -1 | 0, compact: boolean) => (v: number) => {
+const partText = (sign: 1 | -1 | 0, compact: boolean, fig: SiteValue) => (v: number) => {
   const n = Math.abs(v);
-  if (sign === 0) return compact ? fmt.number(Math.round(n)) : fmt.nisWhole(n);
-  return compact ? fmt.signedNumber(sign * n, 0) : fmt.signedNisWhole(sign * n);
+  return nisOf(fig, sign === 0 ? n : sign * n, { signed: sign !== 0, bare: compact });
 };
 
 function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
@@ -83,7 +82,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
 
   // ---- value objects
   // a field's default, like what the reader types in it, is a plain number
-  const returnIn: SiteValue = returnPick !== null ? typed(returnPick, "pct_per_year", today, story.fields.ret) : asField(p05Value(base.p05, "A-01"));
+  const returnIn: SiteValue = returnPick !== null ? assumedReturn(typed(returnPick, "pct_per_year", today, story.fields.ret)) : asField(p05Value(base.p05, "A-01"));
   const incomeIn: SiteValue = incomePick !== null ? typed(income, "nis", today, copy.hishtalmut.incomeAbout) : asField(figure(income, "nis", "F-67", { [copy.hishtalmut.incomeAnnual]: p05Value(base.p05, "annual_income") }, today, copy.hishtalmut.incomeAbout));
   const pctIn = (pick: number | null, shared: SiteValue | undefined, value: number, about: string): SiteValue => (pick === null && shared ? shared : typed(value, "pct", today, about));
   const monthlyIn = inputSite(base, "monthly_deposit", inputs.monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
@@ -142,7 +141,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const SIGN: Record<PileBarPart, 1 | -1 | 0> = { own: 0, extra: 1, gain: 1, loss: -1, fees: -1, salary: -1, tax: -1 };
   const partNumber = (part: PileBarPart, compact: boolean) => {
     const v = partValue(part);
-    return v && <Num value={v} display={partText(SIGN[part], compact)} />;
+    return v && <Num value={v} display={partText(SIGN[part], compact, v)} />;
   };
   const leftValue = slice ? ranValue(slice.net, story.about.left, false) : null;
   const ownValue = slice ? paidValue(slice.own, story.about.own, ownIn) : null;
@@ -185,28 +184,28 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     ? null
     : year < lock
       ? waitWords && (
-          <StatTile label={<>{head.wait} {lockYearsWords}</>} size="figure" note={<span className={waitGains ? "text-gain" : undefined}>{waitGains ? head.more.before : head.more.less} <Num value={waitWords.more} display={(v) => fmt.nisWhole(Math.abs(Number(v)))} />{head.more.middle} <Num value={waitWords.saved} display={fmt.nisWhole} />{head.more.after}</span>}>
-            <Num value={waitWords.at} display={fmt.nisWhole} />
+          <StatTile label={<>{head.wait} {lockYearsWords}</>} size="figure" note={<span className={waitGains ? "text-gain" : undefined}>{waitGains ? head.more.before : head.more.less} <NisNum abs value={waitWords.more} />{head.more.middle} <NisNum value={waitWords.saved} />{head.more.after}</span>}>
+            <NisNum value={waitWords.at} />
           </StatTile>
         )
       : slice.tax < 1
         ? (
-            <StatTile label={<>{head.taxAt} <bdi>{shownYear}</bdi></>} size="figure" note={beforeLock && beforeLock.tax >= 1 && <span>{head.wasBefore.before} <bdi>{fmt.years(lock - 1)}</bdi> {head.wasBefore.after} <Num value={nis(beforeLock.tax, story.about.taxBefore, lockIn, rulesOfRuns(runsAt(lock - 1)))} display={fmt.nisWhole} />.</span>}>
-              <Num value={ranValue(slice.tax, story.about.tax, true)} display={fmt.nisWhole} />
+            <StatTile label={<>{head.taxAt} <bdi>{shownYear}</bdi></>} size="figure" note={beforeLock && beforeLock.tax >= 1 && <span>{head.wasBefore.before} <bdi>{fmt.years(lock - 1)}</bdi> {head.wasBefore.after} <NisNum value={nis(beforeLock.tax, story.about.taxBefore, lockIn, rulesOfRuns(runsAt(lock - 1)))} />.</span>}>
+              <NisNum value={ranValue(slice.tax, story.about.tax, true)} />
             </StatTile>
           )
         : (
             <StatTile label={<>{head.taxAt} <bdi>{shownYear}</bdi></>} size="figure" note={<span>{head.taxStays.before} {lockYearsWords}{head.taxStays.after}</span>}>
-              <Num value={ranValue(slice.tax, story.about.tax, true)} display={fmt.nisWhole} />
+              <NisNum value={ranValue(slice.tax, story.about.tax, true)} />
             </StatTile>
           );
   const stripNote = waitWords && (
     <>
       <div>
-        {story.note.wait} <bdi>{fmt.years(lock - year)}</bdi>: <span className={cx("font-semibold", waitGains && "text-gain")}><Num value={waitWords.more} display={(v) => fmt.nisWhole(Math.abs(Number(v)))} /></span> {waitGains ? story.note.more : story.note.less}
+        {story.note.wait} <bdi>{fmt.years(lock - year)}</bdi>: <span className={cx("font-semibold", waitGains && "text-gain")}><NisNum abs value={waitWords.more} /></span> {waitGains ? story.note.more : story.note.less}
       </div>
       <div>
-        <Num value={waitWords.saved} display={fmt.nisWhole} /> {story.note.saved}
+        <NisNum value={waitWords.saved} /> {story.note.saved}
       </div>
     </>
   );
@@ -236,13 +235,16 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   // F-97 reads the strip's last year, whose runs hold every deposit (studyStanding)
   const standingRules = rulesOfRuns(runsAt(YEARS));
   const standingNum = (value: number, about: string, unit: SiteValue["unit"] = "nis", inputs = standingIn, flags: string[] = []) => figure(value, unit, "F-97", inputs, today, about, standingRules, flags);
-  const capWords = cap && <Num value={cap} display={fmt.nisWhole} />;
+  const capWords = cap && <NisNum value={cap} />;
   const inflationWords = inflationPct && <Num value={inflationPct} />;
   const standingLine = (st: StudyStanding, taxed: boolean, employee: boolean) => {
     const words = copy.hishtalmut.story.standing;
     // the room and what is above the limit carry what they rest on: a self-employed person's year grossed up for the tax back at the
     // brackets (G-23, `limitStanding`)
-    const whole = (value: number, about: string) => <Num value={standingNum(value, about, "nis", standingIn, st.flags)} display={fmt.nisWhole(value)} />;
+    const whole = (value: number, about: string) => {
+      const fig = standingNum(value, about, "nis", standingIn, st.flags);
+      return <Num value={fig} display={nisOf(fig, value)} />;
+    };
     const [own = 0, employer = 0] = st.over.map(Math.round);
     const over = own + employer;
     const per = st.per === "year" ? "year" : "month";
@@ -291,7 +293,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           ) : (
             <>
               {words.crossing.self}
-              {selfBenefited && <Num value={selfBenefited} display={fmt.nisWhole} />} {words.crossing.selfRise} {inflationWords} {words.crossing.selfThen}
+              {selfBenefited && <NisNum value={selfBenefited} />} {words.crossing.selfRise} {inflationWords} {words.crossing.selfThen}
               {yearWords}
             </>
           )}{" "}
@@ -327,7 +329,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   };
   const settlementInputs = { ...common, ...(withheld ? { [story.early.rate]: withheld } : {}) };
   const earlyLine = (e: EarlySettlement) => {
-    const money = (value: number, about: string, prefix?: string) => <Num value={ranValue(value, about, true, "F-98", settlementInputs)} display={fmt.nisWhole} {...(prefix ? { prefix } : {})} />;
+    const money = (value: number, about: string, prefix?: string) => <NisNum value={ranValue(value, about, true, "F-98", settlementInputs)} {...(prefix ? { prefix } : {})} />;
     // the usual case, conclusion first: the columns count the refund, so say what is left without it (guidelines/wording.md, sentences 1 and 3)
     if (e.back >= 1)
       return (
@@ -444,8 +446,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       <div className="flex flex-col gap-3">
         {slice && leftValue && ownValue && paidShown && (
           <StatRow cols={2}>
-            <StatTile label={<>{head.at} <InputSlot><bdi>{shownYear}</bdi></InputSlot></>} size="figure" note={<span>{head.times.before} <Num value={figure(slice.net / paidShown.n, "count", "F-96", { [story.bar.left]: leftValue, [paidShown.name]: paidShown.value }, today, story.about.times)} display={(v) => fmt.number(Math.round(Number(v) * 10) / 10)} /> {isEmployee ? head.times.afterBoth : head.times.after} (<Num value={paidShown.value} display={fmt.nisWhole} />)</span>}>
-              <Num value={leftValue} display={fmt.nisWhole} />
+            <StatTile label={<>{head.at} <InputSlot><bdi>{shownYear}</bdi></InputSlot></>} size="figure" note={<span>{head.times.before} <Num value={figure(slice.net / paidShown.n, "count", "F-96", { [story.bar.left]: leftValue, [paidShown.name]: paidShown.value }, today, story.about.times)} display={(v) => fmt.number(Math.round(Number(v) * 10) / 10)} /> {isEmployee ? head.times.afterBoth : head.times.after} (<NisNum value={paidShown.value} />)</span>}>
+              <NisNum value={leftValue} />
             </StatTile>
             {secondCard}
           </StatRow>
@@ -478,8 +480,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           slice={slice && { ...slice, fees: Math.round(slice.fees), tax: Math.round(slice.tax), taxFromSalary: Math.round(slice.taxFromSalary) }}
           names={{ own: story.bar.own, extra: isEmployee ? story.bar.employer : story.bar.refund, gain: story.bar.gain, loss: story.bar.loss, fees: story.bar.fees, salary: story.bar.salary, tax: slice && slice.taxFromSalary > 1 ? story.bar.taxWithdrawal : story.bar.tax }}
           number={partNumber}
-          left={{ words: story.bar.left, number: leftValue && <Num value={leftValue} display={fmt.nisWhole} /> }}
-          {...(!isEmployee ? { other: { net: account?.net ?? null, words: <>{story.bar.account.before} <Term prefix={story.bar.account.prefix} id="חשבון ניירות ערך">{story.bar.account.term}</Term>{story.bar.account.after}</>, number: account && <Num value={nis(account.net, story.about.account, accountIn, accountBundle ? rulesOfBundle(accountBundle) : [])} display={fmt.nisWhole} /> } } : {})}
+          left={{ words: story.bar.left, number: leftValue && <NisNum value={leftValue} /> }}
+          {...(!isEmployee ? { other: { net: account?.net ?? null, words: <>{story.bar.account.before} <Term prefix={story.bar.account.prefix} id="חשבון ניירות ערך">{story.bar.account.term}</Term>{story.bar.account.after}</>, number: account && <NisNum value={nis(account.net, story.about.account, accountIn, accountBundle ? rulesOfBundle(accountBundle) : [])} /> } } : {})}
           gap={gapWords}
           label={story.aria}
         />

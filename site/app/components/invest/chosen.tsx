@@ -5,7 +5,7 @@
 // The fund: its document, number and kind, its labels by group, its gap from the index, its manager, and any note about its price. The
 // terms the person typed stand on the typed row of the list, with the way to change them.
 import { groupPrices, invest as c } from "../../copy";
-import { fmt } from "../../lib/format";
+import { nisOf } from "../../lib/format";
 import { isCustomFund } from "../../lib/custom-entries";
 import { accountSum, asideLines, gapListFor, type InvestView } from "../../lib/invest";
 import { brokeragePagePath } from "../../lib/site-paths";
@@ -70,7 +70,7 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="text-lg font-semibold">{c.shownPair(chosen).cardTitle}</h2>
         <span className="text-sm text-muted-foreground whitespace-nowrap">
-          {c.chosen.together.before} <Num value={together} display={fmt.nisWhole(r.account + r.fund)} /> {c.chosen.together.after}
+          {c.chosen.together.before} <Num value={together} display={nisOf(together, r.account + r.fund)} /> {c.chosen.together.after}
         </span>
       </div>
       <div className="flex flex-col">

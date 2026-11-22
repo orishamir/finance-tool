@@ -65,6 +65,10 @@ export function deviceStore<T>(
     window.addEventListener("storage", (e) => {
       if (e.key === key) emit(read());
     });
+    // the Back button brought the page back from the browser's page cache: another tab may have changed the value meanwhile
+    window.addEventListener("pageshow", (e) => {
+      if (e.persisted) emit(read());
+    });
   };
   const subscribe = (l: () => void) => {
     ensure();
