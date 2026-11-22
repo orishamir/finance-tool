@@ -423,6 +423,9 @@
   /* Type scale for Hebrew: body never below 16px, taller line heights than Latin */
   --text-xs: 0.8125rem; /* 13px: captions, axis ticks, source dates */
   --text-xs--line-height: 1.5;
+  /* 13px in the line height of the text around it, with none of its own: a count, a source or a hint inside a line or a box whose
+     spacing its surroundings set */
+  --text-xs-flow: 0.8125rem;
   --text-sm: 0.875rem; /* 14px: secondary text, labels, table cells on a phone */
   --text-sm--line-height: 1.6;
   --text-base: 1rem; /* 16px: body, inputs (16px stops iOS zooming into a field) */

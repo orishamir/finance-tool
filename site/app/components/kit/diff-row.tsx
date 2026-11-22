@@ -37,7 +37,7 @@ export function DiffBar({ d, unit, open }: { d: number; unit: number; open?: boo
 /** The bar column's heading: "less money" to the left of the middle line, "more money" to the right. "money" drops on a phone. */
 function BarHead({ less, more, money }: { less: string; more: string; money: string }) {
   return (
-    <span className="relative block h-5 [direction:ltr] text-[13px]">
+    <span className="relative block h-5 [direction:ltr] text-xs-flow">
       <i className="absolute inset-y-0 left-1/2 w-[1.5px] -ml-[0.75px] bg-chart-marker" />
       <span className="absolute top-0 right-1/2 pr-1.5 whitespace-nowrap [direction:rtl]">
         {less}
@@ -53,7 +53,7 @@ function BarHead({ less, more, money }: { less: string; more: string; money: str
 
 export function DiffHead({ name, left, versus, less, more, money }: { name: string; left: string; versus: string; less: string; more: string; money: string }) {
   return (
-    <div className={cx("grid items-center gap-x-2.5 min-h-[26px] px-1.5 text-[13px] text-muted-foreground", COLS)}>
+    <div className={cx("grid items-center gap-x-2.5 min-h-[26px] px-1.5 text-xs-flow text-muted-foreground", COLS)}>
       <span>{name}</span>
       <span className="max-md:hidden text-end">{left}</span>
       <BarHead less={less} more={more} money={money} />

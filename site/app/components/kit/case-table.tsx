@@ -168,7 +168,7 @@ export function AddSlot({ add, className }: { add: AddSpec; className?: string }
       aria-label={add.spoken}
       onClick={(e) => add.onAdd(e.currentTarget)}
       className={cx(
-        "inline-flex min-h-target w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-primary px-3 text-sm text-primary transition-colors duration-(--duration-fast) hover:bg-accent",
+        "inline-flex min-h-target w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-primary px-3 text-sm text-primary transition-colors duration-(--duration-fast) resting:hover:bg-accent",
         add.expanded && "bg-accent",
         className,
       )}
@@ -240,7 +240,7 @@ const TILE_HEAD = "relative flex h-full min-h-10 min-w-0 items-end gap-1.5 round
 function OpenHead({ label, onOpen, onRename, range, grip, children }: { label: string; onOpen: () => void; onRename?: (() => void) | undefined; range?: boolean; grip?: ReactNode; children: ReactNode }) {
   return (
     <div data-case-head="" data-liftable="" data-lift-body="" className={cx("group cursor-pointer", TILE_HEAD, grip ? GRIP_ROOM : "ps-3", LIFT_INNER)}>
-      <button type="button" data-pick-card aria-label={label} onClick={onOpen} onDoubleClick={onRename} className="absolute inset-0 w-full rounded-t-md group-hover:bg-accent after:absolute after:inset-x-0 after:-inset-y-0.5 after:z-[1] after:content-[''] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />
+      <button type="button" data-pick-card aria-label={label} onClick={onOpen} onDoubleClick={onRename} className="absolute inset-0 w-full rounded-t-md resting:group-hover:bg-accent after:absolute after:inset-x-0 after:-inset-y-0.5 after:z-[1] after:content-[''] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring" />
       {grip}
       {range && <ChartNoAxesColumnIncreasing {...icon} className="relative mb-0.5 shrink-0 text-when-ink pointer-events-none" />}
       <div data-head-words="" className="[&_input]:w-full [&_input]:min-w-0 relative flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1 pointer-events-none [&_[data-lift]]:pointer-events-auto [&_input]:pointer-events-auto">{children}</div>
@@ -466,7 +466,7 @@ export function CaseTable({ columns, rows, add, insert, ladder, foot, label }: {
                 );
               }
               const el = (
-                <div {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lift-body="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(TILE_CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.lit && LIT, missingEdge(cell))}>
+                <div {...cp} {...copyAttr(cell.copyKey)} ref={(el) => cellEvents(el, hands)} data-liftable="" data-lift-body="" data-lifted={gap ? "" : undefined} onClick={opener(cell.onOpen)} className={cx(TILE_CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer resting:hover:bg-accent", cell.lit && LIT, missingEdge(cell))}>
                   {cell.grip}
                   <span id={keys.wordsId(j, cell.from)} className="contents">
                     <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />
@@ -747,7 +747,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                 }
                 const el = (
                   <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch, onStretchDown: cell.onStretchDown })} data-liftable="" data-lift-body="" data-lifted={gapOf(j, cell.from, cell.span) ? "" : undefined} onClick={opener(cell.onOpen)} className={cx("group group/cell relative h-full rounded-md", CELL_FOCUS, cell.onOpen && "cursor-pointer")}>
-                    <div data-cell-face="" className={cx(CELL, "h-full group-hover:bg-accent", binRoom(cell), cell.open ? OPEN : cell.mark != null && !cell.lit && cell.missing == null && MARKED, cell.lit && LIT, missingEdge(cell))}>
+                    <div data-cell-face="" className={cx(CELL, "h-full resting:group-hover:bg-accent", binRoom(cell), cell.open ? OPEN : cell.mark != null && !cell.lit && cell.missing == null && MARKED, cell.lit && LIT, missingEdge(cell))}>
                       {cell.mark != null && (
                         <span className="basis-full">
                           <CaseMark>{cell.mark}</CaseMark>
@@ -776,7 +776,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                   const at = line + 1 + L;
                   const cp = keys.cellProps(at, cell.from, cell.span, false, 1, j);
                   const el = (
-                    <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lift-body="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer hover:bg-accent", cell.open && OPEN, cell.lit && LIT, missingEdge(cell))}>
+                    <div {...cp} {...copyAttr(cell.copyKey)} ref={(x) => cellEvents(x, { onOpen: cell.onOpen, onRemove: cell.onRemove, onStretch: cell.onStretch })} data-liftable="" data-lift-body="" data-lifted={j === gapRow ? "" : undefined} data-part-cell={pl.id} onClick={opener(cell.onOpen)} className={cx(CELL, CELL_FOCUS, "group/cell relative h-full", binRoom(cell), cell.onOpen && "cursor-pointer resting:hover:bg-accent", cell.open && OPEN, cell.lit && LIT, missingEdge(cell))}>
                       {cell.grip}
                       <span id={keys.wordsId(at, cell.from)} className="contents">
                         <CellBody content={cell.content} fill={cell.fill} lit={cell.lit} />

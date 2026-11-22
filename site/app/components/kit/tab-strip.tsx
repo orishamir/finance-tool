@@ -59,7 +59,7 @@ export function TabStrip({ tabs, current, onChange, ariaLabel, idBase, end, wrap
             >
               {t.label}
               {t.count !== undefined && (
-                <bdi dir="ltr" className="text-[13px] font-normal tabular-nums text-muted-foreground">
+                <bdi dir="ltr" className="text-xs-flow font-normal tabular-nums text-muted-foreground">
                   {fmt.number(t.count)}
                 </bdi>
               )}

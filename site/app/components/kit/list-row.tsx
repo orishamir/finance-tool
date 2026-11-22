@@ -20,7 +20,7 @@ export function GroupHead({ children, count, as: Tag = "h3", id, className, plai
     <Tag id={id} className={cx("flex items-center gap-2 text-sm font-medium", nowrap && "flex-wrap", className)}>
       <span className={nowrap ? "shrink-0 whitespace-nowrap" : "min-w-0"}>{children}</span>
       {count != null && (
-        <bdi dir="ltr" className="shrink-0 text-[13px] font-normal tabular-nums text-muted-foreground">
+        <bdi dir="ltr" className="shrink-0 text-xs-flow font-normal tabular-nums text-muted-foreground">
           {count}
         </bdi>
       )}
@@ -64,11 +64,11 @@ export function ListRow({ title, lead, line, chips, meta, end, selected, dim, su
         {(chips || lead || meta) && (
           <span className="flex flex-wrap md:flex-nowrap items-center gap-x-2 gap-y-1 min-w-0 leading-tight">
             {chips && <span className="shrink-0 flex flex-wrap items-center gap-1.5">{chips}</span>}
-            {lead && <span className="max-md:hidden min-w-0 flex-1 truncate text-[13px] text-muted-foreground">{lead}</span>}
+            {lead && <span className="max-md:hidden min-w-0 flex-1 truncate text-xs-flow text-muted-foreground">{lead}</span>}
             {meta && <span className={cx("text-xs text-muted-foreground md:shrink-0 md:whitespace-nowrap", !lead && "md:ms-auto")}>{meta}</span>}
           </span>
         )}
-        {line && <span className="text-[13px] leading-snug text-muted-foreground">{line}</span>}
+        {line && <span className="text-xs leading-snug text-muted-foreground">{line}</span>}
       </button>
     </li>
   );
@@ -107,7 +107,7 @@ export function ChooseRow({ title, end, line, chosen, dim, onChoose, label, link
           <span className="flex-1 min-w-0 font-medium leading-snug">{title}</span>
           {end && <span className="shrink-0 text-sm text-muted-foreground">{end}</span>}
         </span>
-        {line && <span className="text-[13px] leading-snug text-muted-foreground">{line}</span>}
+        {line && <span className="text-xs leading-snug text-muted-foreground">{line}</span>}
       </span>
       {link && (
         <Link to={link.to} aria-label={link.label} className="shrink-0 w-11 flex items-center justify-center hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2">

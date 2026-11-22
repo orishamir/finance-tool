@@ -267,7 +267,7 @@ function ProductList({ names, counts, total, current, onPick }: { names: Map<str
         )}
         {gershayim(name)}
       </span>
-      <bdi dir="ltr" className="shrink-0 text-[13px] font-normal tabular-nums text-muted-foreground">
+      <bdi dir="ltr" className="shrink-0 text-xs-flow font-normal tabular-nums text-muted-foreground">
         {fmt.number(n)}
       </bdi>
     </button>
@@ -751,7 +751,7 @@ export default function Rules() {
           </div>
         )}
 
-        <footer className={cx("flex flex-col gap-2 border-t border-border pt-3 text-[13px] text-muted-foreground max-w-measure", hideWhenOpen)}>
+        <footer className={cx("flex flex-col gap-2 border-t border-border pt-3 text-xs-flow text-muted-foreground max-w-measure", hideWhenOpen)}>
           <NumberLegend />
           <p>{sourceBlock.legendLine}</p>
           <p>
@@ -817,7 +817,7 @@ function CompanyResults({ company, names, docs, pd, failed }: { company: string[
             <tr key={d.id}>
               <th scope="row" className="font-medium align-top">
                 <bdi>{d.company}</bdi>
-                <span className="md:hidden block font-normal text-[13px] text-muted-foreground">{d.title}</span>
+                <span className="md:hidden block font-normal text-xs-flow text-muted-foreground">{d.title}</span>
               </th>
               <td className={cx(PHONE_GONE, "align-top")}>{d.title}</td>
               <td className={cx(PHONE_GONE, "align-top tabular-nums")}>{editionText(d.version) ?? words.noEdition}</td>

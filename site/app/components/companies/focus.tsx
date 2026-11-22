@@ -158,7 +158,7 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
         </>
       }
     >
-      <p className="text-[13px] text-muted-foreground">{w.paneHint}</p>
+      <p className="text-xs-flow text-muted-foreground">{w.paneHint}</p>
       {types.map((t) => (
         <section key={t} aria-label={w.types[t]} className={cx("flex flex-col gap-2 transition-opacity duration-(--duration-base)", state.type !== "all" && state.type !== t && "opacity-45")}>
           <GroupHead>{w.types[t]}</GroupHead>

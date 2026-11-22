@@ -51,7 +51,7 @@ export function SideNav({ groups, current, ariaLabel, heading, onPick }: { group
                     {on && <span aria-hidden="true" className="absolute inset-y-0 inset-s-0 w-[3px] rounded-s-md bg-primary" />}
                     <span className="flex-1 min-w-0 leading-snug">{it.label}</span>
                     {it.count != null && (
-                      <bdi dir="ltr" className="shrink-0 text-[13px] tabular-nums text-muted-foreground">
+                      <bdi dir="ltr" className="shrink-0 text-xs-flow tabular-nums text-muted-foreground">
                         {it.count}
                       </bdi>
                     )}

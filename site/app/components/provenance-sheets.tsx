@@ -1028,7 +1028,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
   const usesSome = !!uses && (uses.pages.length > 0 || uses.engine);
   return (
     <article data-code-ok className={cx("flex flex-col gap-5 min-w-0 [overflow-wrap:anywhere]", open && "rule-open")}>
-      <p className="text-[13px] text-muted-foreground">
+      <p className="text-xs-flow text-muted-foreground">
         <bdi dir="ltr" className="tabular-nums slashed-zero">{id}</bdi>
       </p>
       <header className="flex flex-col gap-2 -mt-3">
@@ -1119,7 +1119,7 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
   const parts = first ? sourceParts(first) : null;
   return (
     <Card edge="accent" pad="tight" className="flex flex-col gap-3">
-      <span className="text-[13px] font-medium text-primary">{label}</span>
+      <span className="text-xs-flow font-medium text-primary">{label}</span>
       <h3 className="text-lg font-semibold leading-snug -mt-1">
         <button type="button" onClick={onOpen} className="text-start hover:underline">
           <ShownRuleTitle rule={rule} />
@@ -1144,7 +1144,7 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
         lead && <p className="text-base">{lead}</p>
       )}
       {first && parts && (
-        <p className="text-[13px] text-muted-foreground">
+        <p className="text-xs-flow text-muted-foreground">
           <SourceNames parts={parts} hebrewTitle={isHebrewTitle(sourceLabel2(first).title)} /> · {sourceCopy.checked} <Iso ltr>{fmt.date(first.checked)}</Iso>
         </p>
       )}
