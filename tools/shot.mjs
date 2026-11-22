@@ -10,6 +10,7 @@ import { existsSync, mkdirSync, readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
+import { newContext } from "../site/scripts/browser.mjs";
 
 const { values: o, positionals } = parseArgs({
   allowPositionals: true,
@@ -36,7 +37,7 @@ const name = o.name ?? (path.replace(/^\/|\/$/g, "").replace(/\W+/g, "-") || "ho
 try {
   for (const width of o.width.split(",").map(Number)) {
     const phone = width < 800;
-    const page = await browser.newPage({ viewport: { width, height: phone ? 844 : 900 }, ...(phone ? { hasTouch: true, isMobile: true } : {}) });
+    const page = await (await newContext(browser, { viewport: { width, height: phone ? 844 : 900 }, ...(phone ? { hasTouch: true, isMobile: true } : {}) })).newPage();
     await page.goto(server.url.replace(/\/$/, "") + path, { waitUntil: "networkidle" });
     await page.evaluate(() => document.fonts.ready);
     await page.addStyleTag({ content: "*{transition:none!important;animation:none!important}" });
@@ -50,7 +51,7 @@ try {
     if (o.spot) await page.locator(o.spot).first().screenshot({ path: file });
     else await page.screenshot({ path: file, fullPage: true });
     console.log(file);
-    await page.close();
+    await page.context().close();
   }
 } finally {
   await browser.close();

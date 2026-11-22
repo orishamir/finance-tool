@@ -74,6 +74,8 @@ const emptyGoal = (order: number): Goal => ({
 });
 
 const site = { version: "r3-test", data: "cma-test" };
+// the moment an export file says it was made, fixed so no test reads the clock
+const exported = new Date("2026-10-24T08:00:00Z");
 
 function goalWithContent() {
   const g = emptyGoal(0);
@@ -267,7 +269,7 @@ describe("import", () => {
     saveHolding(holding("a"));
     saveHolding(holding("b", { order: 1 }));
     flush();
-    const text = stateFileText(buildStateFile(getSnapshot().state, site));
+    const text = stateFileText(buildStateFile(getSnapshot().state, site, exported));
     resetStore(new FakeStorage());
     ensureLoaded();
     const r = readImport(text);
@@ -417,7 +419,7 @@ describe("side stores in the export file (A32)", () => {
     expect(sideCounts(side)).toEqual({ offers: 1, variants: 1, ticks: 2, ownRates: 1, deals: 0 });
     ensureLoaded();
     saveHolding(holding("a"));
-    const text = stateFileText(buildStateFile(getSnapshot().state, site, new Date(), side));
+    const text = stateFileText(buildStateFile(getSnapshot().state, site, exported, side));
     expect(JSON.parse(text).version).toBe(3);
 
     const other = new FakeStorage();
@@ -448,7 +450,7 @@ describe("side stores in the export file (A32)", () => {
 
   it("an item that fails its check is left out and named; a file with no side stores leaves the device's alone", () => {
     seed(storage, device());
-    const bad = { ...JSON.parse(stateFileText(buildStateFile(emptyOf2(), site, new Date(), device()))) };
+    const bad = { ...JSON.parse(stateFileText(buildStateFile(emptyOf2(), site, exported, device()))) };
     bad.sideStores.offers.push({ providerId: "p2", lines: { trade: { rate: { ...entered(0.1, "pct", day), value: -3 } } }, savedAt: day });
     bad.sideStores.variantAssumptions.x = { fxChange: "הרבה" };
     bad.sideStores.playbookTicks.k = [1];
@@ -471,14 +473,14 @@ describe("side stores in the export file (A32)", () => {
   });
 
   it("an old-shaped tick key in a file folds into its wrapper's key on import", () => {
-    const f = JSON.parse(stateFileText(buildStateFile(emptyOf2(), site, new Date(), device())));
+    const f = JSON.parse(stateFileText(buildStateFile(emptyOf2(), site, exported, device())));
     f.sideStores.playbookTicks = { "keren-hishtalmut|a|b": ["s1"], "keren-hishtalmut|c|d": ["s2"], other: ["x"] };
     const r = readImport(JSON.stringify(f));
     expect(r.ok && r.preview.side?.playbookTicks).toEqual({ "keren-hishtalmut": ["s1", "s2"], other: ["x"] });
   });
 
   it("a file without own rates reads as none; an own rate out of range is named", () => {
-    const f = JSON.parse(stateFileText(buildStateFile(emptyOf2(), site, new Date(), device())));
+    const f = JSON.parse(stateFileText(buildStateFile(emptyOf2(), site, exported, device())));
     delete f.sideStores.ownRates;
     expect(readImport(JSON.stringify(f)).ok && sideCounts((readImport(JSON.stringify(f)) as { preview: { side: SideStores } }).preview.side).ownRates).toBe(0);
     f.sideStores.ownRates = { g1: { "bank-deposit": 3, makam: 400 } };
