@@ -35,6 +35,7 @@ import { feeNameOf } from "../../lib/fee-deal/part-words";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
+import { OrderLine } from "./foot";
 import { ANCHOR, verdictOf } from "./receipt";
 import { AbroadNotes, OwnBankField, allFunds, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
 
@@ -611,6 +612,12 @@ export function PairLists(props: ListsProps) {
         <p key={i}>{n}</p>
       ))}
       <p>{c.lists.note(ruler)}</p>
+      {/* whether the order holds at another return: once, under both lists, where the order is shown */}
+      {view.order && (
+        <p>
+          <OrderLine view={view} bundle={bundle} />
+        </p>
+      )}
     </div>
   );
 

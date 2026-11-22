@@ -261,6 +261,20 @@ describe("invest page computation", () => {
     expect(buildInvest({ bundle, index: sp, plan: plan() }).order).toBeNull();
   });
 
+  it("checks the order at the ends P-02 sets for the return, not at fixed ones", () => {
+    const moved = structuredClone(bundle);
+    const bounds = (moved.p02 as unknown as { bounds: { "A-01": { hi: { value: number } } } }).bounds;
+    bounds["A-01"].hi.value = 12;
+    const flips = buildInvest({ bundle: moved, index: sp, plan: plan({ returnFromParameter: true }, 5) }).order?.flips ?? [];
+    expect(flips.length).toBeGreaterThan(0);
+    for (const f of flips) expect([0, 12]).toContain(f.at);
+  });
+
+  it("a bundle without P-02 shows no order sentence and doesn't break the page", () => {
+    const old = { ...bundle, p02: undefined } as unknown as typeof bundle;
+    expect(buildInvest({ bundle: old, index: sp, plan: plan({ returnFromParameter: true }, 5) }).order).toBeNull();
+  });
+
   it("a typed name that matches a known index selects it", () => {
     expect(matchKnownIndex(bundle, "S&P 500")?.id).toBe("index-sp500");
     expect(matchKnownIndex(bundle, "ניקיי 225")).toBeNull();

@@ -368,9 +368,10 @@ export interface Bar {
 
 export type Flip = { kind: "options" } | { kind: "brokers"; option: OptionId } | { kind: "funds"; option: OptionId };
 export interface OrderCheck {
-  /** The order of options, of brokers in each option and of funds in each option is the same at 0% and at 10%. */
+  /** The order of options, of brokers in each option and of funds in each option is the same at both ends of P-02's yearly return range. */
   holds: boolean;
-  flips: { at: 0 | 10; what: Flip }[];
+  /** `at`: the end where it differs, percent a year. */
+  flips: { at: number; what: Flip }[];
 }
 
 export interface InvestView {
@@ -1292,10 +1293,10 @@ function signatures(options: OptionView[], theta: number): Record<string, string
   return out;
 }
 
-function orderCheck(ctx: Ctx, index: IndexRef, yourBroker: string | null, atPlan: OptionView[]): OrderCheck {
+function orderCheck(ctx: Ctx, index: IndexRef, yourBroker: string | null, atPlan: OptionView[], range: { lo: number; hi: number }): OrderCheck {
   const base = signatures(atPlan, ctx.theta);
   const flips: OrderCheck["flips"] = [];
-  for (const at of [0, 10] as const) {
+  for (const at of [range.lo, range.hi]) {
     const other = makeCtx(ctx.bundle, { ...ctx.plan, grossReturn: at / 100 }, ctx.assumptions);
     const sig = signatures(core(other, index, yourBroker), ctx.theta);
     for (const k of Object.keys(base)) {
@@ -1437,6 +1438,7 @@ function build(a: InvestArgs): InvestView {
     atYours = { providerId: yourBroker, price, reason: y && "reason" in y ? y.reason : null, less: price ? gapOf2(ctx, headlineEnd(headline), leftEnd(shortOf(ctx, yourBroker), price.valueN, price.value), "F-65", "less") : null };
   }
   const illustrative = a.plan.returnFromParameter;
+  const range = returnRange(a.bundle);
   const providers = ctx.snaps.map(providerInfo);
   return {
     index: a.index,
@@ -1449,7 +1451,7 @@ function build(a: InvestArgs): InvestView {
     bars: barsOf(ctx, options, headline),
     houses: housesOf(ctx, options, headline, providers),
     worth: worthOf(ctx, options, headline, providers),
-    order: illustrative && a.plan.grossReturn !== 0 && a.plan.grossReturn !== 0.1 ? orderCheck(ctx, a.index, yourBroker, options) : null,
+    order: illustrative && range && a.plan.grossReturn !== range.lo / 100 && a.plan.grossReturn !== range.hi / 100 ? orderCheck(ctx, a.index, yourBroker, options, range) : null,
     returnPct: a.plan.grossReturn * 100,
     returnIllustrative: illustrative,
     fundCount: a.bundle.funds.filter((f) => f.exposure_id === (a.index.exposure?.id ?? a.index.id)).length,
@@ -1781,11 +1783,24 @@ export function pairValueFigure(a: PairValueArgs & { about: string; dollarChange
   return valueFigure(r.ctx, r.row, { house: a.providerId, fund: a.fundId, spec: r.spec, row: r.row }, a.about, extra);
 }
 
-/** P-02's bound of the dollar's yearly change against the shekel (A-03) as a figure, with its card; null without the record. */
-export function dollarBound(bundle: Pick<IndicesBundle, "dollarRange">, end: "lo" | "hi"): SiteValue | null {
-  const p = bundle.dollarRange?.p02 as unknown as { bounds?: Record<string, { lo: SiteValue; hi: SiteValue }>; rationale: string; rationale_he?: string | null } | undefined;
-  const v = p?.bounds?.["A-03"]?.[end];
-  return p && v ? { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } } : null;
+/** A P-02 bound as a figure, with its card: A-01, the yearly return the order is checked at; A-03, the dollar's yearly change against the shekel. Null where the record holds no such bound. */
+export function sensitivityBound(bundle: Pick<IndicesBundle, "p02">, assumption: "A-01" | "A-03", end: "lo" | "hi"): SiteValue | null {
+  // a bundle from before P-02 joined it (a page still holding an older file) has none: no bound, so no order sentence, rather than a broken page
+  const p = bundle.p02 as unknown as { bounds?: Record<string, { lo: SiteValue; hi: SiteValue }>; rationale: string; rationale_he?: string | null } | undefined;
+  if (!p) return null;
+  const v = p.bounds?.[assumption]?.[end];
+  return v ? { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } } : null;
+}
+
+/** P-02's bound of the dollar's yearly change against the shekel (A-03) as a figure, with its card; null where the page runs no dollar range. */
+export function dollarBound(bundle: Pick<IndicesBundle, "dollarRange" | "p02">, end: "lo" | "hi"): SiteValue | null {
+  return bundle.dollarRange ? sensitivityBound(bundle, "A-03", end) : null;
+}
+
+/** P-02's yearly return range (A-01), percent a year: the returns the order of the lists is checked at; null where the record holds none. */
+function returnRange(bundle: Pick<IndicesBundle, "p02">): { lo: number; hi: number } | null {
+  const lo = sensitivityBound(bundle, "A-01", "lo"), hi = sensitivityBound(bundle, "A-01", "hi");
+  return lo && hi ? { lo: lo.value as number, hi: hi.value as number } : null;
 }
 
 /** One pair's real value left (F-65) on the plan: the figure `pairCosts` gives as `left`, without the runs that split the cost by who takes it. */

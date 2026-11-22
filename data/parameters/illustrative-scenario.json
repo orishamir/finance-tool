@@ -158,23 +158,99 @@
         "notes": "",
         "rationale_he": "הנקודה שבה מחוון ההפקדה החודשית נגמר, בטווח שרוב האנשים ינסו. אפשר להקליד גם סכום גבוה יותר."
       },
-      "step": {
-        "value": 100,
-        "unit": "nis_per_month",
-        "state": "sourced",
-        "source": {
-          "url": "docs/parameters-rationale.md#illustrative-scenario",
-          "title": "The site's choice: illustrative scenario",
-          "publisher": "founder",
-          "strength": "primary"
+      "segments": [
+        {
+          "to": {
+            "value": 1000,
+            "unit": "nis_per_month",
+            "state": "sourced",
+            "source": {
+              "url": "docs/parameters-rationale.md#illustrative-scenario",
+              "title": "The site's choice: illustrative scenario",
+              "publisher": "founder",
+              "strength": "primary"
+            },
+            "checked": "2026-11-22",
+            "effective_from": "2026-11-22",
+            "effective_to": null,
+            "update_rule": "founder",
+            "notes": "",
+            "rationale_he": "הנקודה שבה החלק הראשון של מחוון ההפקדה החודשית נגמר. המחוון מחולק לשלושה חלקים שווים באורכם, והצעדים גדלים מחלק לחלק, כך שגם לסכום קטן יש מקום על המחוון."
+          },
+          "step": {
+            "value": 50,
+            "unit": "nis_per_month",
+            "state": "sourced",
+            "source": {
+              "url": "docs/parameters-rationale.md#illustrative-scenario",
+              "title": "The site's choice: illustrative scenario",
+              "publisher": "founder",
+              "strength": "primary"
+            },
+            "checked": "2026-11-22",
+            "effective_from": "2026-11-22",
+            "effective_to": null,
+            "update_rule": "founder",
+            "notes": "",
+            "rationale_he": "גודל הצעד בחלק הראשון של מחוון ההפקדה החודשית. סכום שבין שני צעדים אפשר להקליד."
+          }
         },
-        "checked": "2026-10-23",
-        "effective_from": "2026-10-23",
-        "effective_to": null,
-        "update_rule": "founder",
-        "notes": "",
-        "rationale_he": "הגודל של כל צעד במחוון ההפקדה החודשית. סכום שבין שני צעדים אפשר להקליד."
-      }
+        {
+          "to": {
+            "value": 3000,
+            "unit": "nis_per_month",
+            "state": "sourced",
+            "source": {
+              "url": "docs/parameters-rationale.md#illustrative-scenario",
+              "title": "The site's choice: illustrative scenario",
+              "publisher": "founder",
+              "strength": "primary"
+            },
+            "checked": "2026-11-22",
+            "effective_from": "2026-11-22",
+            "effective_to": null,
+            "update_rule": "founder",
+            "notes": "",
+            "rationale_he": "הנקודה שבה החלק השני של מחוון ההפקדה החודשית נגמר. המחוון מחולק לשלושה חלקים שווים באורכם, והצעדים גדלים מחלק לחלק, כך שגם לסכום קטן יש מקום על המחוון."
+          },
+          "step": {
+            "value": 100,
+            "unit": "nis_per_month",
+            "state": "sourced",
+            "source": {
+              "url": "docs/parameters-rationale.md#illustrative-scenario",
+              "title": "The site's choice: illustrative scenario",
+              "publisher": "founder",
+              "strength": "primary"
+            },
+            "checked": "2026-11-22",
+            "effective_from": "2026-11-22",
+            "effective_to": null,
+            "update_rule": "founder",
+            "notes": "",
+            "rationale_he": "גודל הצעד בחלק השני של מחוון ההפקדה החודשית. סכום שבין שני צעדים אפשר להקליד."
+          }
+        },
+        {
+          "step": {
+            "value": 500,
+            "unit": "nis_per_month",
+            "state": "sourced",
+            "source": {
+              "url": "docs/parameters-rationale.md#illustrative-scenario",
+              "title": "The site's choice: illustrative scenario",
+              "publisher": "founder",
+              "strength": "primary"
+            },
+            "checked": "2026-11-22",
+            "effective_from": "2026-11-22",
+            "effective_to": null,
+            "update_rule": "founder",
+            "notes": "",
+            "rationale_he": "גודל הצעד בחלק השלישי של מחוון ההפקדה החודשית. סכום שבין שני צעדים אפשר להקליד."
+          }
+        }
+      ]
     },
     "horizon_years": {
       "min": {
@@ -264,23 +340,99 @@
         "notes": "",
         "rationale_he": "הנקודה שבה מחוון הסכום של היום נגמר. סכום גדול יותר אפשר להקליד."
       },
-      "step": {
-        "value": 1000,
-        "unit": "nis",
-        "state": "sourced",
-        "source": {
-          "url": "docs/parameters-rationale.md#illustrative-scenario",
-          "title": "The site's choice: illustrative scenario",
-          "publisher": "founder",
-          "strength": "primary"
+      "segments": [
+        {
+          "to": {
+            "value": 20000,
+            "unit": "nis",
+            "state": "sourced",
+            "source": {
+              "url": "docs/parameters-rationale.md#illustrative-scenario",
+              "title": "The site's choice: illustrative scenario",
+              "publisher": "founder",
+              "strength": "primary"
+            },
+            "checked": "2026-11-22",
+            "effective_from": "2026-11-22",
+            "effective_to": null,
+            "update_rule": "founder",
+            "notes": "",
+            "rationale_he": "הנקודה שבה החלק הראשון של מחוון הסכום של היום נגמר. המחוון מחולק לשלושה חלקים שווים באורכם, והצעדים גדלים מחלק לחלק, כך שגם לסכום קטן יש מקום על המחוון."
+          },
+          "step": {
+            "value": 1000,
+            "unit": "nis",
+            "state": "sourced",
+            "source": {
+              "url": "docs/parameters-rationale.md#illustrative-scenario",
+              "title": "The site's choice: illustrative scenario",
+              "publisher": "founder",
+              "strength": "primary"
+            },
+            "checked": "2026-11-22",
+            "effective_from": "2026-11-22",
+            "effective_to": null,
+            "update_rule": "founder",
+            "notes": "",
+            "rationale_he": "גודל הצעד בחלק הראשון של מחוון הסכום של היום. סכום שבין שני צעדים אפשר להקליד."
+          }
         },
-        "checked": "2026-10-28",
-        "effective_from": "2026-10-28",
-        "effective_to": null,
-        "update_rule": "founder",
-        "notes": "",
-        "rationale_he": "גודל הצעד של מחוון הסכום של היום."
-      }
+        {
+          "to": {
+            "value": 100000,
+            "unit": "nis",
+            "state": "sourced",
+            "source": {
+              "url": "docs/parameters-rationale.md#illustrative-scenario",
+              "title": "The site's choice: illustrative scenario",
+              "publisher": "founder",
+              "strength": "primary"
+            },
+            "checked": "2026-11-22",
+            "effective_from": "2026-11-22",
+            "effective_to": null,
+            "update_rule": "founder",
+            "notes": "",
+            "rationale_he": "הנקודה שבה החלק השני של מחוון הסכום של היום נגמר. המחוון מחולק לשלושה חלקים שווים באורכם, והצעדים גדלים מחלק לחלק, כך שגם לסכום קטן יש מקום על המחוון."
+          },
+          "step": {
+            "value": 5000,
+            "unit": "nis",
+            "state": "sourced",
+            "source": {
+              "url": "docs/parameters-rationale.md#illustrative-scenario",
+              "title": "The site's choice: illustrative scenario",
+              "publisher": "founder",
+              "strength": "primary"
+            },
+            "checked": "2026-11-22",
+            "effective_from": "2026-11-22",
+            "effective_to": null,
+            "update_rule": "founder",
+            "notes": "",
+            "rationale_he": "גודל הצעד בחלק השני של מחוון הסכום של היום. סכום שבין שני צעדים אפשר להקליד."
+          }
+        },
+        {
+          "step": {
+            "value": 25000,
+            "unit": "nis",
+            "state": "sourced",
+            "source": {
+              "url": "docs/parameters-rationale.md#illustrative-scenario",
+              "title": "The site's choice: illustrative scenario",
+              "publisher": "founder",
+              "strength": "primary"
+            },
+            "checked": "2026-11-22",
+            "effective_from": "2026-11-22",
+            "effective_to": null,
+            "update_rule": "founder",
+            "notes": "",
+            "rationale_he": "גודל הצעד בחלק השלישי של מחוון הסכום של היום. סכום שבין שני צעדים אפשר להקליד."
+          }
+        }
+      ]
     },
     "A-01": {
       "min": {

@@ -33,6 +33,37 @@ export const instrumentSpec = z.strictObject({
   employment: z.enum(["self-employed", "employee"]).optional(),
 });
 
+/**
+ * One segment of a stepped slider: it runs from where the one before ended (or the slider's `min`) to `to`, in steps of `step`. The last
+ * segment has no `to`: it runs to the slider's `max`.
+ */
+const sliderSegment = z.strictObject({ to: valueObject.optional(), step: valueObject });
+
+/**
+ * P-05 `sliders` (data-schema §3.2): one slider's range. A linear slider (years, a return) has `step`; a money slider has `segments`
+ * instead, each taking an equal part of the track, so its steps grow with the amount (design guideline "Fields"). The segments grow
+ * from `min` to `max`, each a whole number of its steps. `start` is the change chart's opening share (F-90).
+ */
+export const sliderRange = z
+  .strictObject({ min: valueObject, max: valueObject, step: valueObject.optional(), segments: z.array(sliderSegment).min(1).optional(), start: valueObject.optional() })
+  .superRefine((r, ctx) => {
+    if ((r.step === undefined) === (r.segments === undefined)) ctx.addIssue({ code: "custom", message: "a slider has either a step or segments, not both and not neither" });
+    const segments = r.segments;
+    if (!segments) return;
+    let from = Number(r.min.value);
+    segments.forEach((seg, i) => {
+      const last = i === segments.length - 1;
+      if (last !== (seg.to === undefined)) ctx.addIssue({ code: "custom", path: ["segments", i], message: last ? "the last segment runs to max and has no `to`" : "a segment before the last has its `to`" });
+      const to = last ? Number(r.max.value) : Number(seg.to?.value);
+      const step = Number(seg.step.value);
+      const count = (to - from) / step;
+      if (!(to > from) || !(step > 0) || Math.abs(count - Math.round(count)) > 1e-9) ctx.addIssue({ code: "custom", path: ["segments", i], message: `segment ${from} to ${to} by ${step} does not grow by a whole number of steps` });
+      from = to;
+    });
+  });
+
+export type SliderRange = z.infer<typeof sliderRange>;
+
 export const parameterRecord = z.looseObject({
   id: z.string().regex(/^[a-z0-9-]+$/),
   method_id: z.string().regex(/^P-\d{2}$/),
@@ -42,6 +73,8 @@ export const parameterRecord = z.looseObject({
   shown_as: z.literal("site parameter"),
   /** P-05 only. */
   instruments: z.record(z.string().min(1), instrumentSpec).optional(),
+  /** P-05 only. */
+  sliders: z.record(z.string().min(1), sliderRange).optional(),
 });
 
 export type ParameterRecord = z.infer<typeof parameterRecord>;
