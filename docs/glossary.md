@@ -716,15 +716,7 @@ Words the site itself coins: method formulas, product decisions and engine outco
 
 ### 6.2 Starting points and the saved goal
 
-| מונח | הסבר | נקרא גם | מקור |
-|---|---|---|---|
-| **נקודת התחלה** | אחת מחמש דוגמאות למטרה שממלאות את השדות כדי להתחיל; כל שדה אפשר לשנות | פריסט · סוג מטרה | `docs/product.md` D13, 3.2 · 2026-10-23 · הגדרה של האתר |
-| **עתודה נזילה** | נקודת התחלה: כסף שצריך להיות זמין בכל רגע, למקרה שצריך אותו | קרן חירום · כסף לשעת צורך | `docs/product.md` D13 (liquid reserve), 3.2 idle-cash preset · 2026-10-23 · הגדרה של האתר; the attribute values come from the preset parameter record, not from here |
-| **קנייה במועד ידוע** | נקודת התחלה: סכום שצריך בתאריך שאתם יודעים, למשל לדירה | חיסכון למטרה · חיסכון לדירה | `docs/product.md` D13 (purchase at a known date); S40 · 2026-10-23 · הגדרה של האתר |
-| **הון לטווח ארוך** | נקודת התחלה: כסף שלא צריך בשנים הקרובות, מעבר לפנסיה החובה | חיסכון לטווח ארוך | `docs/product.md` D13 (long-term wealth); S39 · 2026-10-23 · הגדרה של האתר |
-| **סכום חד־פעמי** | נקודת התחלה: סכום שהגיע בבת אחת, בלי הפקדות חודשיות | כסף שהתקבל · ירושה · מענק | `docs/product.md` D13 (a lump sum) · 2026-10-23 · הגדרה של האתר |
-| **חיסכון לילד** | נקודת התחלה: כסף שלכם שנשמר לילד עד גיל שנקבע; שונה מחיסכון לכל ילד של ביטוח לאומי, שמקבל רק את הכספים שלו | חיסכון לילדים | `docs/product.md` D13 (a child); `docs/method.md` §8 (CS-02, CS-04, CS-16: the NII plan takes no own money) · 2026-10-23 · הגדרה של האתר |
-| **המטרה השמורה** | המטרה האחרונה שהגדרתם, שנשמרת בדפדפן של המכשיר הזה בלבד, בלי חשבון ובלי שרת; עמודי המסלולים משתמשים בה לסימון ההתאמה | מטרה שמורה | `docs/product.md` 3.9, D1 · 2026-10-23 · הגדרה של האתר |
+Removed 2026-11-22: the site has no goal comparison, so it has no starting points and keeps no saved goal; the rows that named them are gone.
 
 ### 6.3 Comparing by exposure
 
@@ -737,7 +729,7 @@ Words the site itself coins: method formulas, product decisions and engine outco
 | **הירידה הגדולה ביותר שתסכימו לספוג** | כמה אחוזים מהשווי אתם מוכנים לראות יורדים בדרך למטרה בלי לשנות את ההחלטה; ההחלטה שלכם, מספר משותף לכל החשיפות שאפשר לשנות לחשיפה אחת בנפרד; משמש גם את סימון ההתאמה של מסלולים | ירידה מקובלת · largest fall accepted · סובלנות להפסד | `docs/method.md` A-29 ("largest fall accepted per exposure type"), F-71 (`acceptedFallById` wins over the common one), F-70; `docs/product.md` D11, 3.2 In · 2026-10-24 · הגדרה של האתר |
 | **נפסלה לפי מסנן הירידה** | התוצאה של חשיפה שהירידה שאתם צופים בה גדולה מהירידה שתסכימו לספוג: היא מוצגת בקבוצה משלה עם שני המספרים, בלי ערך, ושינוי של אחד מהם מחזיר אותה | נפסלה לפי האילוץ שלכם | `docs/method.md` F-83 outcome 2 (reason `loss-filter`), F-71; `docs/product.md` D11, D17 · 2026-10-24 · הגדרה של האתר; the general outcome word "נפסלה לפי האילוץ שלכם" is in 6.1 |
 | **מסנן הירידה לא הופעל** | ההערה על חשיפה מדורגת שאחד משני המספרים שלה חסר: היא דורגה בלי סינון, כדי שלא תיקרא כחשיפה שעברה מסנן שלא רץ | | `docs/method.md` F-71 ("a missing entered number leaves the exposure unfiltered … and the exposure is still run and ranked, with that note beside it") · 2026-10-24 · הגדרה של האתר |
-| **לפי תשואה שהזנתם** | התגית ליד הערך של כל חשיפה שהתשואה שלה הוקלדה על ידכם: מניות, אג״ח ומסלול כללי תמיד, כי לאתר אין מקור לתשואה שלהם; מופיעה גם בכותרת ובגרף, כדי שהדירוג לא ייקרא כדעה של האתר | הוזן על ידך · entered by you | `docs/product.md` D9, D7; engine `ReturnLabel` (`entered-by-you`) · 2026-10-24 · הגדרה של האתר |
+| **לפי תשואה שהזנתם** | התגית ליד הערך של כל חשיפה שהתשואה שלה הוקלדה על ידכם: מניות, אג״ח ומסלול כללי תמיד, כי לאתר אין מקור לתשואה שלהם; מופיעה גם בכותרת ובגרף, כדי שהדירוג לא ייקרא כדעה של האתר | הוזן על ידך · entered by you | `docs/product.md` D9, D7 · 2026-10-24 · הגדרה של האתר |
 | **ריבית הבנק שפורסמה** | הריבית שהבנק מפרסם לפי הוראה 447 לסוג הפיקדון, כפי שנשמרה ברשומת הפיקדון של האתר, עם תאריך התוקף; משמשת את החשיפה "מזומן שקלי" כשמוחזקת בפיקדון, כי סדרות בנק ישראל מוצגות רק בקישור; זו הריבית המינימלית שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם | ריבית מפורסמת · published rate | BANK-13, BANK-14, BANK-04 (section 1's row "שיעור הריבית המוצעת"); `docs/data-schema.md` §3.7 (`rate_offered`, `effective_from`); `docs/product.md` D20 · 2026-10-24 · ממקור (פרסום הבנק, מוסדי) |
 | **אין סדרה ממקור** | הסיבה לחשיפה דמוית־מזומן שלא נבדקה: התשואה שלה מגיעה מסדרה שבנק ישראל מפרסם, והאתר לא מציג אותה כמספר; הוא מקשר אליה ומבקש שתזינו | no sourced series · D20 | `docs/product.md` D20; `docs/method.md` F-71 ("none given is 'not evaluated: no sourced series (D20)'"); engine reason `no-sourced-series` · 2026-10-24 · הגדרה של האתר |
 | **המוצר שמחזיק את החשיפה** | המוצר שדרכו חשיפה מחושבת בהשוואה לפי חשיפה: האתר מריץ כל חשיפה דרך מוצר אחד מתוך אלה שהרשומה שלה מתירה, ברירת מחדל שהיא פרמטר של האתר, ואתם יכולים להחליף; איזה מוצר הכי מתאים לחשיפה הזו למטרה שלכם, זו השאלה של ההשוואה לפי מוצר | מוחזקת ב · holding wrapper · P-08 | `docs/method.md` F-71 ("the one wrapper the caller names for it (it must be in the exposure record's `wrapper_ids`)"); `docs/data-schema.md` §3.4 (`wrapper_ids`); P-08 (`data/parameters/exposure-holding-wrapper.json`) · 2026-10-24 · פרמטר של האתר עד שתשנו |
@@ -746,16 +738,7 @@ Words the site itself coins: method formulas, product decisions and engine outco
 
 ### 6.4 Saved comparisons and re-checks
 
-| מונח | הסבר | נקרא גם | מקור |
-|---|---|---|---|
-| **ההשוואה השמורה** | השוואה (לפי מוצר או לפי חשיפה) ששמרתם ברגע מסוים: הקלטים, כל הנחה עם הערך והמצב שלה, כל פרמטר, כל מספר מהמאגר שנקרא, עם תאריך הבדיקה שלו, כל קובץ נתונים עם תאריך הבדיקה, התוצאה והבחירה; נשמרת במכשיר בלבד ועוברת בקובץ הייצוא | saved comparison | `docs/product.md` 3.9 ("a saved comparison records inputs, assumptions, the rule, parameter and data versions used, the result and the choice"), D1; `docs/method.md` F-82; engine `SavedComparison` · 2026-10-24 · הגדרה של האתר |
-| **הבחירה שלכם** | האפשרות שסימנתם "בחרתי בזה" בסוף השוואה; השמירה נעשית באותו רגע, וכל בדיקה מחדש אומרת איפה הבחירה עומדת היום | הבחירה · choice | `docs/product.md` 3.9 In ("the choice they made at the end of a comparison") · 2026-10-24 · הגדרה של האתר |
-| **בדיקה מחדש** | הרצה של ההשוואה השמורה עם החוקים והכללים, הפרמטרים והנתונים של היום, והשוואה של הגרסאות: אילו חוקים, כללים, פרמטרים, קבצים והנחות השתנו מאז השמירה, ואם האפשרות הראשונה וקבוצת השקולות נשארו | לבדיקה מחדש · revisit · F-82 | `docs/method.md` F-82 ("on revisit the engine re-runs with current versions, lists the entries whose values differ, and reports whether F-80's top option and tie set are unchanged"); `docs/product.md` 3.9 · 2026-10-24 · הגדרה של האתר |
-| **לבדיקה מחדש: `{מה}` השתנה ב־`{תאריך}`** | ההודעה על הרצועה ובעמוד התוצאה כשמשהו שההשוואה נשענה עליו השתנה: החוק, הכלל, הפרמטר, הקובץ או ההנחה בשמם כשיש אחד, אחרת מניין לפי סוג; התאריך הוא תאריך הבדיקה החדש של החוק, הכלל או הקובץ | re-check | `docs/product.md` 3.9 "works when" ("re-check: rule X changed on date Y"); engine `VersionDiff` (`newChecked`) · 2026-10-24 · הגדרה של האתר |
-| **ללא שינוי מאז `{תאריך}`** | ההודעה כשאף חוק, כלל, פרמטר, קובץ או הנחה שההשוואה נשענה עליהם לא השתנו; בדיקה חוזרת שהערך נשאר בה זהה אינה שינוי | unchanged | `docs/method.md` F-82 ("a re-check with the same value is not a difference"); `docs/product.md` 3.9 "works when" ("shows as unchanged otherwise") · 2026-10-24 · הגדרה של האתר |
-| **הגרסאות שההשוואה נשענה עליהן** | ארבעה סוגים של דברים שהשוואה שמורה זוכרת ומשווה: מספרים מהחוקים והכללים (ערך ותאריך בדיקה), פרמטרים (ערך), קובצי נתונים (נתיב ותאריך בדיקה) והנחות (ערך ומצב) | versions | `docs/method.md` F-82; engine `Versions` (`rules`, `parameters`, `data`, `assumptions`) · 2026-10-24 · הגדרה של האתר |
-| **הדירוג נשמר / הדירוג השתנה** | פסק הבדיקה מחדש: האפשרות הראשונה היום היא זו שהייתה בשמירה (נשמר), או אחרת (השתנה); "קבוצת השקולות השתנתה" כשרק קבוצת התיקו זזה | ranking holds | `docs/method.md` F-82, F-80; engine `Revisit.topUnchanged`, `tieSetUnchanged` · 2026-10-24 · הגדרה של האתר, לא כלל |
-| **מה זז בהשוואה** | רשימת האפשרויות שהערך שלהן במועד המטרה השתנה בין השמירה להיום, עם שני הערכים; אפשרות שנוספה למועמדות מאז (מוצר שעבר לכיסוי מלא) מסומנת "חדשה בהשוואה" | value changes | engine `Revisit.valueChanges`; `docs/method.md` F-82, F-83 · 2026-10-24 · הגדרה של האתר |
+Removed 2026-11-22: the site has no goal comparison, so it saves no comparison and re-checks none; the rows that named them are gone.
 
 ### 6.5 Idle cash
 

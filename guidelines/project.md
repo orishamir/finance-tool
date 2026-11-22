@@ -36,7 +36,7 @@ and family make saving and investing decisions in Israel.
   `docs/discovery.md` holds the founder interview and the research behind it.
 - **The data.** What is collected, from where and on what terms:
   `docs/data-inventory.md`. There is no fund list.
-- **Saved state.** Version 4, under `mekor.v2.state`. Entered offers, variant
+- **Saved state.** Version 3, under `mekor.v2.state`. Entered offers, variant
   assumptions, playbook ticks and entered rates are four separate stores on
   the device. The export file carries them; they aren't yet merged into the
   state document.
