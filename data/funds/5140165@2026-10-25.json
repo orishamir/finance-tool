@@ -25,27 +25,7 @@
   "distribution_policy": "accumulating",
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null,
-    "foreign_investment_fund": {
-      "value": false,
-      "unit": "text",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=19",
-        "title": "תשקיף עיקרי מגדל קרנות נאמנות, 30 בינואר 2026, עמ' 19, שורת 'MTF מחקה (4D) MSCI World מנוטרלת דולר' (מספר בורסה 5140165), עמודת 'קרן חייבת / פטורה ומאפייני מס מיוחדים': 'פטורה'",
-        "publisher": "מגדל קרנות נאמנות בע\"מ",
-        "strength": "institution"
-      },
-      "checked": "2026-11-22",
-      "effective_from": "2026-01-30",
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "TXS-14"
-      ],
-      "state": "sourced",
-      "notes": "The manager's prospectus tax column states this fund's status without naming it a foreign-investment fund, and names that status for the manager's funds that have it (1201003 ('פטורה, קרן נאמנות להשקעות חוץ (מטבע עיקרי דולר ארה\"ב)', p.23)); the annual report names the tax track only. Its tax index is the CPI (TXS-14)."
-    }
+    "tase_foreign_fund_90pct_test": null
   },
   "fees": {
     "fixed_management": {

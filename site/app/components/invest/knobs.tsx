@@ -6,7 +6,6 @@ import type { P05Input } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
 import type { CompareBundle } from "../../lib/compare";
 import { enteredPlan, type EnteredPlan } from "../../lib/entered-plan";
-import type { GroupAsk } from "../../lib/group-pick";
 import { fmt } from "../../lib/format";
 import { useInputs } from "../../lib/inputs";
 import { type InvestView, type PlanInput } from "../../lib/invest";
@@ -74,19 +73,15 @@ export function PlanKnobs({ compare, ranges, pct }: { compare: CompareBundle; ra
 
 type Share = { min: number; max: number; step: number; start: number };
 
-/** The data the sweep is worked out on: the page's own, as the worker holds it, and the house's group picked, by name, which the worker adds to it. */
-export type SweepOn = { bundle: IndicesBundle; group: GroupAsk | null };
-
 /** F-89 and F-90 on the pair the page prices, every plan number changed by the same share, 4 lines of 21 runs: worked out in the page's worker
  * (lib/invest-run.ts) on the plan the page's view was, the last result shown until the next comes (`usePlanChangesRun`). Null where the
  * page prices no pair. Its tab's answer reads it whether or not its panel is open. */
-export function usePlanChanges({ plan, share, on, view, pick }: { plan: WorkbenchInputs; share: Share; on: SweepOn; view: InvestView | null; pick: Pair }) {
+export function usePlanChanges({ plan, share, bundle, view, pick }: { plan: WorkbenchInputs; share: Share; /** The page's data, as the worker holds it. */ bundle: IndicesBundle; view: InvestView | null; pick: Pair }) {
   const shares = useMemo(() => Array.from({ length: Math.round((share.max - share.min) / share.step) + 1 }, (_, i) => share.min + i * share.step), [share]);
   const index = view?.index;
   const house = pick?.house;
   const fund = pick?.fund;
-  const { bundle, group } = on;
-  const asked = useMemo(() => (index && house && fund ? { bundle, ask: { index, plan, house, fund, group, shares } } : null), [bundle, group, index, plan, house, fund, shares]);
+  const asked = useMemo(() => (index && house && fund ? { bundle, ask: { index, plan, house, fund, shares } } : null), [bundle, index, plan, house, fund, shares]);
   return usePlanChangesRun(asked);
 }
 

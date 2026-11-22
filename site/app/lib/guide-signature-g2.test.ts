@@ -31,7 +31,7 @@ describe("study fund", () => {
     expect(fact(d, "indexName")!.value).toBe("מדד S&P 500");
     expect(fact(d, "trackNumber")!.value).toBe("13245");
     expect(String(fact(d, "trackName")!.value)).toContain("S&P");
-    expect(fact(d, "fundNumber")!.value).toBe("5139100");
+    expect(fact(d, "fundNumber")!.value).toBe("5139282");
     expect(fact(d, "trackFee")!.value).toBe(0.54);
     // the page's own run (P-05 track 880, a general track) is not the holding: the bundle carries the index track's fee
     expect(d.bundles["keren-hishtalmut"]!.terms.fees!.balance).toBeCloseTo(0.0054, 10);
@@ -172,9 +172,7 @@ describe("the guides' securities-account range and the indices page", () => {
   const money = (n: number) => enteredValue(n, "nis", t);
   const plan = { amountNow: 10000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null, values: { amount: money(10000), monthly: enteredValue(500, "nis_per_month", t), years: enteredValue(10, "years", t), returnV: enteredValue(7, "pct_per_year", t), inflation: enteredValue(2, "pct_per_year", t) } };
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
-  // the fund the guides' brokerage account holds (P-05's), as the study fund's page names it
-  const held = String(fact(page("keren-hishtalmut").signature!, "fundNumber")!.value);
-  const onFund = view.houses.flatMap((h) => h.entries.filter((e) => e.fund.number === held && e.price && !e.price.open).map((e) => ({ id: h.provider.id, value: e.price!.valueN }))).sort((a, b) => b.value - a.value);
+  const onFund = view.houses.flatMap((h) => h.entries.filter((e) => e.fund.number === "5139282" && e.price && !e.price.open).map((e) => ({ id: h.provider.id, value: e.price!.valueN }))).sort((a, b) => b.value - a.value);
   it("keren-hishtalmut: counts the same houses and names the same pick", () => {
     const d = page("keren-hishtalmut").signature!;
     expect(fact(d, "brokerCount")!.value).toBe(onFund.length);

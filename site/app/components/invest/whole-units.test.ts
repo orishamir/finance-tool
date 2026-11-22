@@ -1,13 +1,12 @@
 // F-109 (D94) on the indices page: a fund bought in whole units where its record holds a unit price, by amount where the house's record
-// says it sells the listing so, and one line on the row where a monthly deposit waits for a unit. The data's own unit prices and by-amount
+// says it sells the listing so, and the receipt's line for the cash that waits for a unit. The data's own unit prices and by-amount
 // entries are set here, so the test holds whatever the records carry.
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { invest } from "../../copy";
-import { buildInvest, indexById, knownIndices, pairCosts, type WayPrice } from "../../lib/invest";
+import { buildInvest, indexById, pairCosts, type WayPrice } from "../../lib/invest";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "../../lib/custom-entries";
-import { ChosenPair } from "./chosen";
-import { unitsLine } from "./pair";
+import { PairReceipt } from "./receipt";
 import { bundle, plan, html, lists, shown } from "./render-fixtures";
 
 type Funds = typeof bundle.funds;
@@ -41,8 +40,7 @@ describe("whole units on the indices page (F-109, D94)", () => {
   const etfId = fundsOf(bare).find((f) => f.option === "il-etf" && f.best)!.rec.id;
   const priced = withUnits({ ...noPrices(bundle), [etfId]: 2500, ie00b5bmr087: 814.9 }, noEntries, [etfId]);
   it("a fund with no unit price is priced by amount at every house, as before", () => {
-    // on every index, so the count does not rest on which of one index's funds are ranked
-    const w = knownIndices(bare).flatMap((i) => buildInvest({ bundle: bare, index: i, plan }).options.flatMap((o) => o.funds)).flatMap((f) => Object.values(f.byHouse)).filter((x) => "valueN" in x) as WayPrice[];
+    const w = fundsOf(bare).flatMap((f) => Object.values(f.byHouse)).filter((x) => "valueN" in x) as WayPrice[];
     expect(w.length).toBeGreaterThan(100);
     expect(w.every((x) => x.units === null)).toBe(true);
   });
@@ -50,7 +48,6 @@ describe("whole units on the indices page (F-109, D94)", () => {
     const w = at(priced, etfId, "leumi");
     expect(w.units).not.toBeNull();
     expect(w.units!.skipped * 2).toBeGreaterThan(w.units!.monthly);
-    expect(unitsLine(w.units)).toBe(invest.pair.unitsEvery);
     // the figure moves: the waiting cash earns nothing, and an order placed every few months pays the bank's minimum commission once
     // where 400 ₪ orders paid it every month, so here more is left than by amount
     expect(w.valueN).toBeGreaterThan(at(bare, etfId, "leumi").valueN);
@@ -67,21 +64,14 @@ describe("whole units on the indices page (F-109, D94)", () => {
     const w = at(plan, "ie00b5bmr087", "interactive-israel");
     expect(w.units?.monthly).toBe(240);
     expect(w.units?.skipped).toBe(0);
-    expect(unitsLine(w.units)).toBeNull();
   });
-  it("the chosen pair's account tile says so in one line, and a fund with no unit price is marked on its row", () => {
-    // with, built for the test, a second ETF on the index with no unit price (the priced one's twin under its own number), so a ranked
-    // ETF with none is there whatever the records carry
-    const base = priced.funds.find((f) => f.id === etfId)!;
-    const { share_price: _, ...unpriced } = base;
-    const twin = { ...unpriced, id: "9999902", names: { ...base.names, he: ["קרן סל תאומה לבדיקה"] }, identifiers: { ...base.identifiers, tase_number: "9999902" } };
-    const withTwin = { ...priced, funds: [...priced.funds, twin] as Funds };
-    const view = buildInvest({ bundle: withTwin, index: sp, plan });
-    const accounts = shown(html(createElement(ChosenPair, { view, bundle: withTwin, plan, pick: { house: "leumi", fund: etfId }, chosen: true })));
-    expect(accounts).toContain(invest.pair.unitsEvery);
+  it("the receipt's account part says why the cash waited, and a fund with no unit price is marked on its row", () => {
+    const view = buildInvest({ bundle: priced, index: sp, plan });
+    const accounts = shown(html(createElement(PairReceipt, { view, bundle: priced, plan, pick: { house: "leumi", fund: etfId }, chosen: true, layout: "ticket" })));
+    expect(accounts).toContain(invest.pair.waitingWhy.rose);
     const etf = view.options.find((o) => o.id === "il-etf")!.funds.find((f) => !f.reason && f.rec.id !== etfId)!;
     expect(etf.noUnitPrice).toBe(true);
-    const funds = shown(lists(view, withTwin, plan, { house: "leumi", fund: etf.rec.id }, { today: priced.today }));
+    const funds = shown(lists(view, priced, plan, { house: "leumi", fund: etf.rec.id }, { today: priced.today }));
     expect(funds).toContain(invest.pair.unitPriceMissing);
     // the waiting cash is its own figure at a house that buys in whole units, apart from the account's fees and its remainder (F-109, F-91)
     const pc = pairCosts({ bundle: priced, index: sp, plan, fundId: etfId, providerId: "leumi" })!;

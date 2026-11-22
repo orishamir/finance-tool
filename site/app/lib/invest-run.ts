@@ -214,5 +214,5 @@ export function usePlanChangesRun(asked: Asked<"changes"> | null): { run: PlanCh
   }, [got, asked]);
 }
 
-/** Whether an answer was worked out for the pair a request asks about: the same index, house (or group's account) and fund. */
+/** Whether an answer was worked out for the pair a request asks about: the same index, house and fund. */
 export const forPair = (run: PlanChanges, ask: Asked<"changes">["ask"]): boolean => run.index === ask.index.id && run.house === ask.house && run.fund === ask.fund;

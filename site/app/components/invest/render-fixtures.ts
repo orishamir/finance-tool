@@ -47,7 +47,7 @@ export function writtenFees(out: string) {
   return items;
 }
 
-/** The receipt in the side rail, then the fees panel under the lists (where the fees go, and the
+/** The receipt, then the fees panel under the lists (where the fees go, and the
  * pair set beside it). */
 export function ReceiptAndFees({ view, bundle: b, plan: p, pick, chosen, onPick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; chosen: boolean; onPick: OnPick }) {
   return createElement(Fragment, null, createElement(PairReceipt, { view, bundle: b, plan: p, pick, chosen }), createElement(FeesPanel, { view, bundle: b, plan: p, pick, chosen, onPick }));
@@ -67,7 +67,7 @@ export function StairsFor({ view, bundle: b, plan: p, startHouse, startFund, exa
 
 /** The two linked lists as the page shows them, with the heading block above them: the page's own pair unless `chosen`. */
 export function lists(view: InvestView, b: IndicesBundle, p: WorkbenchInputs, pick: Pick, more: Partial<ListsProps> = {}) {
-  return html(createElement(PairLists, { view, bundle: b, plan: p, livePlan: p, today: t, pick, chosen: false, onPick: () => undefined, moved: null, group: null, ...more }));
+  return html(createElement(PairLists, { view, bundle: b, plan: p, livePlan: p, today: t, pick, chosen: false, onPick: () => undefined, moved: null, ...more }));
 }
 
 const planAt = (a: number, m: number, y: number, r: number): WorkbenchInputs => ({ ...plan, amountNow: a, monthly: m, years: y, grossReturn: r, values: { ...plan.values, amount: entered(a, "nis", t), monthly: entered(m, "nis_per_month", t), years: entered(y, "years", t), returnV: entered(r * 100, "pct_per_year", t) } });

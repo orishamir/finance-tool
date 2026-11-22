@@ -4,6 +4,7 @@ import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { help, invest } from "../../copy";
 import { fmt } from "../../lib/format";
+import { fill } from "../kit";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
@@ -14,7 +15,6 @@ import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
 import { TitleRow } from "./title";
 import { allFunds, GapCell, gapKindOf, gapNoteOf, gapStateOf, gapValue, pickOfHeadline, whyNoFundAt, whyNoKindAt } from "./pair";
 import { PlanCard } from "./plan-card";
-import { ChosenPair } from "./chosen";
 import { ValueSheet } from "../provenance-sheets";
 import { PairLists, listName } from "./lists";
 import { PairReceipt } from "./receipt";
@@ -24,15 +24,15 @@ import { bundle, t, plan, data, shown, html, lists, fundRow, ReceiptAndFees, Sta
 
 describe("the index page's sections render", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: plan, yourBroker: "leumi" });
-  it("all sections of a known index: the title, the plan, the receipt, the chosen pair, the two linked lists and the fees panel", () => {
+  it("all sections of a known index: the title, the plan, the receipt with its account and fund parts, the two linked lists and the fees panel", () => {
     const pick = pickOfHeadline(view)!;
     const leumi = { house: "leumi", fund: pick.fund };
     const out = html(createElement("div", null,
       createElement(TitleRow, { known: knownIndices(bundle), customs: [], index: view.index, others: knownIndices(bundle), bundle, onRemove: () => undefined, onRename: () => undefined, onSave: () => undefined, onGo: () => undefined }),
       createElement(ReceiptAndFees, { view, bundle, plan: plan, pick, chosen: false, onPick: () => undefined }),
       createElement(ReceiptAndFees, { view, bundle, plan: plan, pick: leumi, chosen: true, onPick: () => undefined }),
-      createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null, group: null }),
-      createElement(ChosenPair, { view, bundle, plan: plan, pick: leumi, chosen: true }),
+      createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null }),
+      createElement(PairReceipt, { view, bundle, plan: plan, pick: leumi, chosen: true, layout: "ticket" }),
       createElement(PlanCard, { knobs: null })));
     expect(out).toContain("הפקדתם");
     // a dollar index with funds of both kinds: the hedged ones stand under their own heading, each with its range across the dollar (F-94)
@@ -90,7 +90,7 @@ describe("the index page's sections render", () => {
     const planted = { ...bundle, snapshots: bundle.snapshots.map((s) => (s === ii ? { ...s, availability: [...s.availability!, { ...no, applies_to: ["foreign_securities"] }] } : s)) } as typeof bundle;
     const v = buildInvest({ bundle: planted, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
     const out = html(createElement(NoFundAccountColumn, { view: v, bundle: planted, years: 20, chosen: null, onPick: () => undefined }));
-    const missing = v.houses.filter((h) => !h.generic && !h.provider.id.startsWith("house-account-group"));
+    const missing = v.houses.filter((h) => !h.generic);
     expect(missing.map((h) => h.provider.id)).toEqual(["one-zero", "interactive-israel"]);
     const from = out.indexOf('data-pick-key="interactive-israel"');
     const next = out.indexOf("data-pick-key=", from + 1);
@@ -185,8 +185,8 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
       const pk = pickOfHeadline(v);
       if (!pk) continue;
       const o = lists(v, bundle, plan, pk);
-      const none = v.providers.filter((p) => !p.id.startsWith("house-account-group") && !allFunds(v).some((f) => "valueN" in (f.byHouse[p.id] ?? {})));
-      const some = v.providers.filter((p) => !p.id.startsWith("house-account-group") && !none.includes(p));
+      const none = v.providers.filter((p) => !allFunds(v).some((f) => "valueN" in (f.byHouse[p.id] ?? {})));
+      const some = v.providers.filter((p) => !none.includes(p));
       for (const p of none) {
         expect(fundRow(o, p.id), `${idx.id} ${p.id}`).toMatch(/לא ברור אם אפשר שם|התעריפון עוד לא נאסף|לא אפשרי שם|אין מחיר/);
         expect(fundRow(o, p.id), `${idx.id} ${p.id}`).not.toContain("אין נתון");
@@ -196,28 +196,25 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
     }
     expect(last).toBeGreaterThan(0);
   });
-  it("the chosen fund's tile links it to its Maya page at the address that exists", () => {
-    const fund = html(createElement(ChosenPair, { view, bundle, plan, pick, chosen: false }));
+  it("the receipt's fund part links the fund to its Maya page at the address that exists", () => {
+    const fund = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false, layout: "ticket" }));
     expect(fund).not.toContain("funds/etfs");
     expect(fund).toContain("maya.tase.co.il/he/funds/mutual-funds/");
   });
 });
 
-describe("a bank's standing-order price the figure leaves out is said under the lists for the chosen account, and in its tile (D41, D56, D104)", () => {
+describe("a bank's standing-order price the figure leaves out is said under the lists for the chosen account (D41, D56, D104)", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const tracking = view.options.find((o) => o.id === "il-tracking")!.funds[0]!;
-  it("no row carries a star; the chosen bank's note points to its card, and its tile says the printed price and the record's reason", () => {
+  it("no row carries a star, and the chosen bank's note says it has another price", () => {
     for (const id of ["leumi", "massad", "fibi"]) {
       const out = lists(view, bundle, plan, { house: id, fund: tracking.rec.id });
       expect(shown(out), id).not.toContain("*");
       const short = view.providers.find((p) => p.id === id)!.short;
-      expect(shown(out).replace(/\u00a0/g, " "), id).toContain(invest.lists.otherPrice(short, invest.shownPair(false).cardTitle).replace(/\u00a0/g, " "));
-      const line = bundle.snapshots.find((s) => s.id === id)!.lines.find((l) => l.not_ranked && l.applies_to.includes("mutual_fund_units"))!;
-      const tile = html(createElement(ChosenPair, { view, bundle, plan, pick: { house: id, fund: tracking.rec.id }, chosen: true }));
-      expect(tile, id).toContain(line.not_ranked!.reason_he.replace(/"/g, "&quot;"));
+      expect(shown(out).replace(/\u00a0/g, " "), id).toContain(fill(invest.lists.otherPrice(short), { price: invest.lists.otherPriceWords }).replace(/\u00a0/g, " "));
     }
     // an account with no other price says nothing of one
-    expect(shown(lists(view, bundle, plan, { house: "psagot", fund: tracking.rec.id }))).not.toContain(invest.lists.otherPrice("פסגות", invest.shownPair(false).cardTitle).slice(10, 30));
+    expect(shown(lists(view, bundle, plan, { house: "psagot", fund: tracking.rec.id }))).not.toContain(invest.lists.otherPriceWords);
   });
   it("a custom index's account list says the same, and under its head that monthly purchases are priced on the regular line", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
@@ -420,15 +417,13 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     // the plain words of why stand only over a fund the chosen account gives no figure
     expect(text).not.toContain(invest.reasons.ruleOpen["TXF-04"]);
   });
-  it("a fund in Tel Aviv and abroad: the chosen fund's tile names its other listing", () => {
+  it("a fund in Tel Aviv and abroad is counted once", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const funds = allFunds(sp).filter((f) => kindOf(f.rec) === "unhedged");
     const distinct = new Set(funds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size;
     expect(distinct).toBeLessThan(funds.length);
-    const tile = (fund: string) => shown(html(createElement(ChosenPair, { view: sp, bundle, plan, pick: { house: allFunds(sp).find((f) => f.rec.id === fund)!.best!.providerId, fund }, chosen: true })));
-    // the Tel Aviv line has no price while its tax is open (F-04, TXF-04), so it is never chosen; the line abroad names it
+    // the Tel Aviv line has no price while its tax is open (F-04, TXF-04), so it is never chosen
     expect(allFunds(sp).find((f) => f.rec.id === "1159250")!.reason).toEqual({ code: "rule-open", ruleId: "TXF-04" });
-    expect(tile("ie00b5bmr087")).toContain(invest.pair.sameFundAs("1159250", false));
     // the list counts funds, so the head names no count of rows that would differ from it
     expect(shown(lists(sp, bundle, plan, pickOfHeadline(sp)!))).not.toContain("בשתי שורות");
   });
@@ -436,41 +431,24 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
 
 describe("the receipt's fund line names the variable fee the site prices beside the listed rate (independent check of pass 7: no test held it)", () => {
   it("1147362 on the MSCI ACWI: 0.3% listed, the mean charged over 2024 and 2025 priced; a fund charged its listed rate every year shows one figure", () => {
+    const view = buildInvest({ bundle, index: indexById(bundle, "index-msci-acwi")!, plan });
+    const head = pickOfHeadline(view)!;
     const rec = bundle.funds.find((f) => f.id === "1147362")!;
     const priced = pricedVariable(rec, gapListFor(bundle, rec), t)!;
     // recomputed from the record: 0.249 (2025) and 0.201 (2024), the years from 1.1.2024, when the rate changed
     expect(priced.years).toEqual([2025, 2024]);
     expect(priced.value.value).toBeCloseTo((0.249 + 0.201) / 2, 9);
+    const card = (fund: string) => {
+      // the fund's own lines: the ticket's fund part (on paper, behind a tap on the fund's name)
+      const out = shown(html(createElement(PairReceipt, { view, bundle, plan, pick: { house: head.house, fund }, chosen: true, layout: "ticket" })).replace(/<!-- -->/g, ""));
+      return out.slice(out.indexOf(invest.receipt.fundCharges), out.indexOf(invest.receipt.fundCharges) + 300);
+    };
+    expect(card("1147362")).toContain(invest.kinds.variableChargedWord([2025, 2024]));
+    expect(card("1147362")).toContain("0.225%");
     // 1144237 charged 0.3% in each of its years at a 0.3% rate: nothing to name beside it
     const same = bundle.funds.find((f) => f.id === "1144237")!;
     expect(pricedVariable(same, gapListFor(bundle, same), t)).toBeNull();
-    // the receipt draws a ranked pair (a fund listed before tax, F-118, has none): of every index's ranked Israeli funds, each one's ticket
-    // names the mean charged beside the listed rate where the site prices one, and only there
-    let named = 0;
-    let plain = 0;
-    for (const index of knownIndices(bundle)) {
-      const view = buildInvest({ bundle, index, plan });
-      const head = pickOfHeadline(view);
-      if (!head) continue;
-      const card = (fund: string) => {
-        // the fund's own lines: the ticket's fund part (on paper, behind a tap on the fund's name)
-        const out = shown(html(createElement(PairReceipt, { view, bundle, plan, pick: { house: head.house, fund }, chosen: true, layout: "ticket" })).replace(/<!-- -->/g, ""));
-        return out.slice(out.indexOf(invest.receipt.fundCharges), out.indexOf(invest.receipt.fundCharges) + 300);
-      };
-      for (const f of allFunds(view).filter((x) => x.rec.domicile === "IL" && x.rec.tracking_record && "valueN" in (x.byHouse[head.house] ?? {}))) {
-        const p = pricedVariable(f.rec, gapListFor(bundle, f.rec), t);
-        if (p && p.value.value !== f.rec.fees.variable_management?.value) {
-          named++;
-          expect(card(f.rec.id), f.rec.id).toContain(invest.kinds.variableChargedWord(p.years));
-          expect(card(f.rec.id), f.rec.id).toContain(fmt.pct(p.value.value as number));
-        } else if (!p) {
-          plain++;
-          expect(card(f.rec.id), f.rec.id).not.toContain("שנגבו בפועל");
-        }
-      }
-    }
-    expect(named).toBeGreaterThan(0);
-    expect(plain).toBeGreaterThan(0);
+    expect(card("1144237")).not.toContain("שנגבו בפועל");
   });
 });
 
@@ -569,16 +547,12 @@ describe("the page's finish line (2026-10-31)", () => {
 
 describe("no price on what no document says can be done (2026-10-31)", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
-  // a fund's entry at a house, for the funds the page prices house by house (a fund listed before tax, F-118, is priced only where it is
-  // sold, `beforeTax`)
-  const at = (option: string, house: string) => view.options.find((o) => o.id === option)!.funds.filter((f) => !f.reason).map((f) => f.byHouse[house]!);
+  const at = (option: string, house: string) => view.options.find((o) => o.id === option)!.funds.map((f) => f.byHouse[house]!);
   it("PEPPER is no house of its own (its prices stand under Leumi, D43 amended 2026-11-04)", () => {
     expect(view.providers.map((p) => p.id)).not.toContain("pepper");
     expect(view.providers.map((p) => p.id)).toContain("leumi");
   });
   it("Interactive Brokers prices nothing on Tel Aviv: not possible there, by its own FAQ entry (it was no data until the entry was read, 2026-11-12)", () => {
-    expect(at("il-etf", "interactive-brokers").length).toBeGreaterThan(0);
-    for (const f of view.options.find((o) => o.id === "il-etf")!.funds) expect(f.beforeTax?.byHouse["interactive-brokers"], f.rec.id).toBeUndefined();
     for (const x of at("il-etf", "interactive-brokers")) {
       expect("valueN" in x).toBe(false);
       expect("availability" in x && x.availability ? x.availability.source.url : "").toContain("faq/#/content/56713690");
@@ -629,8 +603,7 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
   it("One Zero prices an Israeli fund where a distribution agreement its manager reports names it; any other is open, never \"not sold\" (BRK-38, BRK OQ24); no ETF; and no fund traded outside the US", () => {
     const snap = bundle.snapshots.find((s) => s.id === "one-zero")!;
     const ff = snap.fundByFund!;
-    // every index's tracking funds the page prices house by house
-    const funds = knownIndices(bundle).flatMap((i) => buildInvest({ bundle, index: i, plan }).options.find((o) => o.id === "il-tracking")?.funds.filter((f) => !f.reason) ?? []);
+    const funds = view.options.find((o) => o.id === "il-tracking")!.funds;
     expect(funds.length).toBeGreaterThan(0);
     let priced = 0;
     let open = 0;
@@ -658,23 +631,13 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     expect(words).toEqual([invest.reasons.soldFundByFund, invest.reasons.noAgreementFound, expect.stringContaining("אירו, פאונד ופרנק שוויצרי")]);
     expect(words[2]).toContain("דולר");
   });
-  it("on an index page, One Zero's line for a fund no report names reads open with the search and the open question, and a named fund shows its price (rendered)", () => {
+  it("on the S&P 500 page, One Zero's line for a fund no report names reads open with the search and the open question, and a named fund shows its price (rendered)", () => {
+    const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+    const funds = sp.options.find((o) => o.id === "il-tracking")!.funds;
     const ff = bundle.snapshots.find((s) => s.id === "one-zero")!.fundByFund!;
-    // the first index whose tracking funds priced house by house hold one no report names and one One Zero prices
-    const found = knownIndices(bundle).map((index) => {
-      const funds = buildInvest({ bundle, index, plan }).options.find((o) => o.id === "il-tracking")?.funds.filter((f) => !f.reason) ?? [];
-      return { index, unnamed: funds.find((f) => !ff.named.includes(f.rec.id)), named: funds.find((f) => ff.named.includes(f.rec.id) && "valueN" in f.byHouse["one-zero"]!) };
-    }).find((c) => c.unnamed && c.named);
-    if (!found) throw new Error("no index has a tracking fund no One Zero report names and one it prices");
-    // and, built for the test, a second fund a One Zero report names (the named one's twin under its own number), the pick the named
-    // fund's row is set against,
-    // and a manager's fee of 0.5% a year, so the two rows differ
-    const base = found.named!.rec;
-    const twin = { ...base, id: "9999901", names: { ...base.names, he: ["קרן תאומה לבדיקה"] }, identifiers: { ...base.identifiers, tase_number: "9999901" }, fees: { ...base.fees, fixed_management: { ...base.fees.fixed_management!, value: 0.5 } } };
-    const b = { ...bundle, funds: [...bundle.funds, twin], snapshots: bundle.snapshots.map((s) => (s.id === "one-zero" ? { ...s, fundByFund: { ...ff, named: [...ff.named, twin.id] } } : s)) };
-    const sp = buildInvest({ bundle: b, index: found.index, plan });
-    const unnamed = found.unnamed!;
-    const named = found.named!;
+    const unnamed = funds.find((f) => f.rec.id === "5139282")!;
+    const [named, other] = funds.filter((f) => ff.named.includes(f.rec.id) && "valueN" in f.byHouse["one-zero"]!);
+    expect(ff.named).not.toContain("5139282");
     const house = sp.providers.find((p) => p.id === "one-zero")!.short;
     // what the row says and what its words open: the fund's own reason, the search as its document, BRK-38 and BRK OQ24
     const why = whyNoFundAt(bundle, "one-zero", [unnamed]);
@@ -683,13 +646,13 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     expect(why.parts[0]?.doc?.href).toContain("maya.tase.co.il");
     expect(why.rules).toEqual(["BRK-38", "BRK-OQ24"]);
     // the list with One Zero picked: the unnamed fund under the grey line of a doubt, the named one priced
-    const out = lists(sp, b, plan, { house: "one-zero", fund: twin.id });
+    const out = lists(sp, bundle, plan, { house: "one-zero", fund: named!.rec.id });
     // the grey line the unnamed fund's row stands under is the doubt's, not "not sold" (One Zero's ETFs stand under that one)
-    const before = shown(out.slice(0, out.indexOf(`data-pick-key="${unnamed.rec.id}"`)));
+    const before = shown(out.slice(0, out.indexOf('data-pick-key="5139282"')));
     expect(before.lastIndexOf(invest.pair.noPriceAt.doubt(house))).toBeGreaterThan(before.lastIndexOf(invest.pair.noPriceAt.notSold(house)));
-    expect(fundRow(out, unnamed.rec.id)).toBeTruthy();
-    // the named fund, beside the pick, shows its figure against it
-    expect(fundRow(out, named.rec.id)).toMatch(/₪/);
+    expect(fundRow(out, "5139282")).toBeTruthy();
+    // a named fund other than the picked one shows its figure against the pick
+    expect(fundRow(out, other!.rec.id)).toMatch(/₪/);
   });
 
 });
@@ -700,7 +663,7 @@ describe("before deciding: the tab cards", () => {
   const pick = pickOfHeadline(view)!;
   const share = { min: -50, max: 50, step: 10, start: 20 };
   const stairs = { view, bundle, startHouse: null, startFund: null };
-  const before = (chosen: boolean) => html(createElement(BeforeDeciding, { view, bundle, sweepOn: { bundle, group: null }, plan, livePlan: plan, share, pick, chosen, hedge: true, stairs, onPick: () => undefined }));
+  const before = (chosen: boolean) => html(createElement(BeforeDeciding, { view, bundle, plan, livePlan: plan, share, pick, chosen, hedge: true, stairs, onPick: () => undefined }));
   it("the tab list holds only its tabs: each card is one tab, its answer plain words with no control of its own", () => {
     const out = before(false);
     const list = out.slice(out.indexOf('role="tablist"'), out.indexOf('role="tabpanel"'));

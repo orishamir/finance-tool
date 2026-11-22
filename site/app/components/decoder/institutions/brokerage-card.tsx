@@ -9,10 +9,10 @@ import { useId, useMemo, useState, type ReactNode } from "react";
 import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
 import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, guideBlocks } from "../../../copy";
 
-import { groupPath, housePath, ownAccountPath } from "../../../lib/site-paths";
+import { housePath, ownAccountPath } from "../../../lib/site-paths";
 import { IconAlert } from "../../icons";
 import { IdRef, Num, NumAfter, Ruled, RuleTitleRow } from "../../provenance";
-import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, HouseAverageLine, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, TextLink, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
+import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, HouseAverageLine, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
 import { isPdfUrl, withoutCodes, type CitedPlace } from "../../../lib/sources";
@@ -328,13 +328,13 @@ function Claims({ entries }: { entries: readonly AdvertisingEntry[] }) {
 }
 
 /** Group prices and offers, beside the comparison and never in it (D43): the sub-rows with where each stands, or why there are none. */
-function Groups({ groups, houseId, linked }: { groups: FeesSnapshot["groups"] | null; houseId: string; linked: readonly string[] }) {
+function Groups({ groups }: { groups: FeesSnapshot["groups"] | null }) {
   if (!groups) return null;
   if (groups.state !== "prices") return <Section level="card" heading="h3" id={accountSectionIds.groups} title={copy.card.groupsTitle} lead={groupWords.states[groups.state]}>{null}</Section>;
   return (
     <Section level="card" heading="h3" id={accountSectionIds.groups} title={copy.card.groupsTitle} lead={copy.card.groupsLead}>
       <Card pad="snug">
-        <GroupPriceRows entries={groups.entries} sources headHelp own={{ can: (key) => linked.includes(key), link: (key) => <TextLink look="line" to={groupPath(houseId, key)} className="text-sm">{groupWords.ownAccount}</TextLink> }} />
+        <GroupPriceRows entries={groups.entries} sources headHelp />
       </Card>
     </Section>
   );
@@ -423,7 +423,7 @@ function FeeBar({ priceFor, byChannel, channel, onChannel }: { priceFor: string 
   );
 }
 
-export function BrokerageGroupCard({ id, tariff, kind, className, advertising = [], groups = null, linked = [], docs }: { id: string; tariff: TariffCardData | null; kind: InstitutionKind; className?: string; /** The product's document entries, before the links that end it. */ docs?: ReactNode; /** What its advertising says against its documents (D57). */ advertising?: readonly AdvertisingEntry[]; /** Its group prices and offers (D43). */ groups?: FeesSnapshot["groups"] | null; /** The groups the index page offers as radios (`group:<n>`): each links there with it picked, the others have no link (D43 amended (5)). */ linked?: readonly string[] }) {
+export function BrokerageGroupCard({ id, tariff, kind, className, advertising = [], groups = null, docs }: { id: string; tariff: TariffCardData | null; kind: InstitutionKind; className?: string; /** The product's document entries, before the links that end it. */ docs?: ReactNode; /** What its advertising says against its documents (D57). */ advertising?: readonly AdvertisingEntry[]; /** Its group prices and offers (D43). */ groups?: FeesSnapshot["groups"] | null; }) {
   const h = useId();
   const compareHref = housePath(id);
   const [channel, setChannel] = useState<Channel>("direct");
@@ -495,7 +495,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
       )}
       <CanBuy rows={tariff.availability} />
       <Claims entries={advertising} />
-      <Groups groups={groups} houseId={id} linked={linked} />
+      <Groups groups={groups} />
       <Facts tariff={tariff} />
       {docs}
       <div className="flex flex-wrap items-center gap-x-6">

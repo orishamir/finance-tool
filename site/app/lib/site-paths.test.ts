@@ -11,7 +11,6 @@ import {
   exposureIdOfSlug,
   exposurePath,
   dealPagePath,
-  groupPath,
   guidePath,
   housePath,
   indexPath,
@@ -110,10 +109,9 @@ describe("the index page's addresses", () => {
     expect(customIndexPath("custom-1 a")).toBe("/indices?custom=custom-1%20a");
     expect(exposureIdOfSlug("sp500")).toBe("index-sp500");
   });
-  it("writes a house, its group and its own account on the index page", () => {
+  it("writes a house and its own account on the index page", () => {
     expect(housePath("psagot")).toBe("/indices/sp500?house=psagot");
     expect(housePath("psagot", "index-nasdaq-100")).toBe("/indices/nasdaq-100?house=psagot");
-    expect(groupPath("psagot", "group:2")).toBe("/indices/sp500?house=psagot&group=2");
     expect(ownAccountPath("psagot")).toBe("/indices/sp500?house=psagot&own=psagot");
   });
   it("writes a house's page at its securities account", () => {

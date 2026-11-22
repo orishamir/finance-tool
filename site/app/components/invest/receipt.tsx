@@ -5,26 +5,26 @@
 // total: a "?" beside it says in what money it is and, where it rests on it, that the dollar holds still (a caution "?"), and its sheet
 // holds the gain. The figures follow the plan as a slider moves (the pair is priced once per plan for this card and the fees panel under the
 // lists, `pairCostsKept`), and they add up as a reader adds them (lib/receipt).
-// From 1280 px it is a ticket across the main column, above the two lists and the ruler: the account's part at the start side and the
-// fund's at the end side, each with its own lines (each fee and its rate), and the lines that add up to the total in the middle. Below
-// 1280 px it is paper above the lists with the middle's lines only, the account's and the fund's own lines behind a tap on each one's name;
-// its stub at the screen's foot keeps what is left in sight and leads back to it.
+// From 1280 px it is a ticket across the page's column, above the two lists and the ruler: the account's part at the start side and the
+// fund's at the end side, each with its facts as labels under its name and its own lines (each fee and its rate), and the lines that add
+// up to the total in the middle. Below 1280 px it is paper above the lists with the middle's lines only, each part (the same facts and
+// lines) behind a tap on its name; its stub at the screen's foot keeps what is left in sight and leads back to it.
 import { Fragment, type ReactNode, type Ref, type RefObject } from "react";
-import { invest as c, site } from "../../copy";
+import { brands, invest as c, site } from "../../copy";
 import { fmt, wholeSum } from "../../lib/format";
-import { gapListFor, pricedVariable, accountSum, pairCostsKept, type InvestView } from "../../lib/invest";
+import { gapListFor, pricedVariable, accountSum, pairCostsKept, type FundWay, type InvestView } from "../../lib/invest";
 import type { FundRecord } from "@finance-tool/schema";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { receiptAmounts, receiptChain, takenWords, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
-import { Num } from "../provenance";
-import { FEE_WORDS_HELP, HelpMark, LeftOutLine, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart } from "../kit";
-import { isDealProviderId } from "../../lib/deal-account/bundle";
-import { isGroupProvider } from "../../lib/group-pick";
+import { Num, StateTag } from "../provenance";
+import { DocLink, FEE_WORDS_HELP, HelpMark, LabelChip, LeftOutLine, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
 import { leftOutOf } from "../../lib/left-out";
 import { isCustomFund } from "../../lib/custom-entries";
-import { allFunds, pairVerdict, steadyOf, whole, type Pick } from "./pair";
+import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, priced, steadyOf, whole, type Pick } from "./pair";
+import { OptionTag } from "./parts";
+import { brokerLabels } from "../../lib/labels";
 import { partName } from "./cost-lines";
 import { providerName } from "./sections";
 import { fundFeeItems } from "./funds";
@@ -184,10 +184,90 @@ export function inflationOf(pc: Costs, ch: ReceiptChain, taxName: string, today:
   return differenceOf([b.nominal, beforeTaxOf(pc, ch, today)], [b.today, real], "F-130", { today, about: c.receipt.inflation, lead: c.receipt.inflationLead });
 }
 
+/** The label families a fund's part shows after its kind, in this order; a family the fund has no label in shows nothing. */
+const FUND_FAMILIES = ["follow", "payout", "currency", "tax"] as const;
+
+/**
+ * The account's facts: a standing order's price where the monthly deposit is bought on one, the house's labels, a phone-only purchase
+ * (its source behind the tag); then the price list, with the day it was collected, opening it. The person's own deal is named in the
+ * entered ink in the part's head, not here. Not a kit piece: what it lists is the index page's reading of an account (its labels, its
+ * price list, a deal), and only the receipt's account part shows it.
+ */
+function AccountFacts({ view, bundle, plan, pick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick }) {
+  const house = providerName(view, pick.house);
+  if (!house) return null;
+  const snap = bundle.snapshots.find((s) => s.id === pick.house);
+  const at = allFunds(view).find((f) => f.rec.id === pick.fund)?.byHouse[pick.house];
+  const phone = phoneOf(view, bundle, pick);
+  const labels = [
+    priced(at) && at.standing && plan.monthly > 0 ? <Tag key="standing">{c.pair.standingTag}</Tag> : null,
+    ...brokerLabels(house, false).map((l) => <LabelChip key={l.id} label={l} />),
+    phone ? <SourcedTag key="phone" value={phone}>{c.pair.phoneTag}</SourcedTag> : null,
+  ];
+  const details = [
+    snap && !house.custom ? (
+      <DocLink key="tariff" look="inline" source={snap.tariff}>
+        <When iso={snap.snapshot} lead={c.chosen.collected} />
+      </DocLink>
+    ) : null,
+  ];
+  return <PartFacts labels={labels} details={details} />;
+}
+
+/**
+ * The fund's facts: its kind and its labels (how it tracks, what it does with dividends, the currency hedge, how it is taxed, each opening
+ * what it means and its rules), and a fund the person typed marked as theirs; then its number (opening its page at the exchange), its
+ * document, its yield where it pays out, its gap from the index with its years (a figure that opens its source, a "?" that says what it is
+ * measured against) and its manager. Not a kit piece: what it lists is the index page's reading of a fund record (its labels, its gap
+ * list, its document), and only the receipt's fund part shows it.
+ */
+function FundFacts({ view, bundle, fund }: { view: InvestView; bundle: IndicesBundle; fund: FundWay }) {
+  const today = bundle.today;
+  const own = labelsOf(view, fund, bundle);
+  const doc = isCustomFund(fund.rec) ? null : (fund.rec.fees.fixed_management?.source ?? null);
+  const list = gapListFor(bundle, fund.rec);
+  const state = gapStateOf(fund.rec, list);
+  const labels = [
+    <OptionTag key="kind" option={fund.option} />,
+    ...FUND_FAMILIES.flatMap((g) => own.filter((l) => l.family === g)).map((l) => <LabelChip key={l.id} label={l} />),
+    // a fund the person typed: its name in the entered ink, and in words
+    isCustomFund(fund.rec) ? <StateTag key="entered" state="entered" /> : null,
+  ];
+  const details = [
+    fund.number ? (
+      <span key="number" className="inline-flex items-center gap-1">
+        {c.chosen.number} <ProductIdLink id={fund.number} href={mayaHrefOf(fund)} label={brands.funds.mayaLink(fund.number)} />
+      </span>
+    ) : null,
+    doc ? (
+      <DocLink key="doc" look="inline" source={doc}>
+        {c.chosen.isReport(doc.title) ? c.chosen.fundDoc : c.chosen.fundDocOther}
+      </DocLink>
+    ) : null,
+    // a fund that pays out: its yield as its manager reports it
+    fund.rec.distribution ? (
+      <span key="yield">
+        {c.pair.colYield} <Num value={ownBy(fund.rec.distribution.yield as SiteValue, fund.rec.manager)} />
+      </span>
+    ) : null,
+    <span key="gap" className="inline-flex items-baseline gap-1.5">
+      {state === "net" || state === "gross" ? c.kinds.gapHead[state] : c.kinds.colGap}
+      <GapCell rec={fund.rec} today={today} list={list} />
+      <HelpMark about={c.kinds.colGap} text={gapNoteOf([fund.rec], [state])} className="self-center" />
+    </span>,
+    fund.rec.manager ? (
+      <span key="manager">
+        {c.funds.manager}: <MixedName>{fund.rec.manager}</MixedName>
+      </span>
+    ) : null,
+  ];
+  return <PartFacts labels={labels} details={details} />;
+}
+
 /**
  * The pair's receipt: `paper` (one column, above the lists below 1280 px: the lines that add up to the total, the account's and the fund's
- * own lines behind a tap on each one's name) or `ticket` (across the main column from 1280 px, above the lists: the account's part with its
- * own lines at the start side, the lines that add up to the total in the middle, the fund's part at the end side). Same figures and sources
+ * parts behind a tap on each one's name) or `ticket` (across the page's column from 1280 px, above the lists: the account's part at the
+ * start side, the lines that add up to the total in the middle, the fund's part at the end side). Same figures and sources
  * either way. `ref`: the ticket, whose foot the ruler's point is joined to.
  */
 export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper", ref }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; /** The person picked this pair; else it is the page's own, and is never called theirs. */ chosen: boolean; layout?: "paper" | "ticket"; ref?: Ref<HTMLElement> }) {
@@ -203,11 +283,10 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const nom = (x: SiteValue, label: string) => nominalOf(pc, x, label, today);
   const house = providerName(view, pick.house);
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
-  const fundName = <MixedName>{fund?.name ?? pick.fund}</MixedName>;
+  // the person's own account and fund in the entered ink, as in the lists
+  const mine = !!house?.custom;
+  const fundName = <MixedName className={fund && isCustomFund(fund.rec) ? "text-entered" : undefined}>{fund?.name ?? pick.fund}</MixedName>;
   const short = house?.short ?? pick.house;
-  const held = view.providers.find((p) => p.id === pick.house);
-  const baseHouse = held && isGroupProvider(held) ? (held as typeof held & { group: { house: string } }).group.house : pick.house;
-  const baseShort = providerName(view, baseHouse)?.short ?? short;
   // the figures each line shows are whole shekels that add up; each opens the figure it stands for, with that figure's sources
   const company = pc.priced.house;
   const steady = steadyOf(view, bundle, pick.fund);
@@ -236,8 +315,8 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
             return <ReceiptLine key={l.line} size="sm" label={partName(l.line)} value={<Num value={nom(l.cost, partName(l.line) ?? l.line)} display={minus(r.accountLines[i]!)} />} sub={words ? <RateLine words={words} house={company} /> : undefined} />;
           })}
       {r.remainder !== 0 && <ReceiptLine size="sm" label={c.pair.remainder} value={<Num value={nom(pc.remainder, c.pair.remainder)} display={minus(r.remainder)} />} />}
-      {/* what the house's documents hold and its price leaves out, under its lines (D106); a group's account is its house's */}
-      <LeftOutLine view={leftOutOf(bundle.snapshots.find((s) => s.id === baseHouse))} house={baseShort} />
+      {/* what the house's documents hold and its price leaves out, under its lines (D106) */}
+      <LeftOutLine view={leftOutOf(bundle.snapshots.find((s) => s.id === pick.house))} house={short} />
     </>
   );
   const accountValue = <Num value={nom(accountSum(pc, c.pair.who.account, today), c.receipt.parts.account)} display={minus(r.account)} />;
@@ -246,19 +325,24 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const waits = !!pc.waiting && r.waiting !== 0;
   const waitingValue = pc.waiting && <Num value={nom(pc.waiting, c.pair.waiting)} display={minus(r.waiting)} />;
   const fundValue = <Num value={nom(pc.fund, c.receipt.parts.fund)} display={minus(r.fund)} />;
-  // the account's and the fund's own lines: the ticket's side parts, and on paper the sheet each one's name opens
+  // the account's and the fund's own facts and lines, written once: the ticket's side parts, and on paper the sheet each one's name opens
   const accountOwn = (
     <>
+      <AccountFacts view={view} bundle={bundle} plan={plan} pick={pick} />
       <ReceiptLine size="sm" edge="border-chart-by-account" label={c.receipt.accountCharges} value={accountValue} parts={accountParts} />
       {waits && <ReceiptLine size="sm" label={c.pair.waiting} value={waitingValue} sub={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />}
     </>
   );
-  const fundOwn = <ReceiptLine size="sm" edge="border-chart-by-fund" label={c.receipt.fundCharges} value={fundValue} parts={fund && feeRows(fund.rec, bundle, today)} />;
+  const fundOwn = (
+    <>
+      {fund && <FundFacts view={view} bundle={bundle} fund={fund} />}
+      <ReceiptLine size="sm" edge="border-chart-by-fund" label={c.receipt.fundCharges} value={fundValue} parts={fund && feeRows(fund.rec, bundle, today)} />
+    </>
+  );
   const accountName = (
     <>
       {ticket ? null : <>{c.pair.who.account} </>}
-      {/* the person's own deal in the entered ink, as in the lists and the pair card */}
-      <MixedName className={isDealProviderId(pick.house) ? "text-entered" : undefined}>{short}</MixedName>
+      <MixedName className={mine ? "text-entered" : undefined}>{short}</MixedName>
     </>
   );
   const fundLabel = ticket ? fundName : <>{c.pair.who.fund} {fundName}</>;
@@ -289,10 +373,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
         label={c.receipt.title}
         top={top}
         start={
-          <TicketPart label={c.receipt.parts.account} swatch="bg-chart-by-account" name={<>
-            {/* the person's own deal in the entered ink, as in the lists and the pair card */}
-            <MixedName className={isDealProviderId(pick.house) ? "text-entered" : undefined}>{short}</MixedName>
-          </>}>
+          <TicketPart label={c.receipt.parts.account} swatch="bg-chart-by-account" name={<MixedName className={mine ? "text-entered" : undefined}>{short}</MixedName>}>
             {accountOwn}
           </TicketPart>
         }

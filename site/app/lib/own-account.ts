@@ -2,8 +2,8 @@
 // states numbers), the group's prices as an account keeps them, and the tariff the engine runs, built in layers: the house's own list tariff
 // (which the provider workbench reads with its `buildTariff` at level list, so no second reading of a price list exists), then the group's
 // values on the lines they name, then the person's own. A group's price ends at its own `for_months` and the stay in the group ends them all
-// (F-101: a sequence of tariffs). The indices page prices a house's group picked on it so (lib/group-pick.ts); a typed account kept from
-// before the deal took its place keeps its group in this shape until it moves into a deal (the move, method §10.4).
+// (F-101: a sequence of tariffs). A typed account kept from before the deal took its place keeps its group in this shape until it moves
+// into a deal (the move, method §10.4).
 //
 // No runtime import of the engine, invest.ts or the copy files: state.ts reads custom-entries.ts, which reads this, on every page.
 import { conversionWithRate, withSumsIn, type Commission, type CommissionSum, type Custody, type EnteredTariff, type LayeredRun, type LayeredUnusable, type SecuritiesTariff } from "@finance-tool/engine";
@@ -33,10 +33,6 @@ export interface GroupCopy {
    *  before it existed has none; one saved before its source was kept has no `source`. */
   currentAccount?: { exemptMonths: number; source?: { url: string; title: string; page?: number } };
 }
-
-/** An account built on a house is one of the page's providers under an id of this prefix (lib/group-pick.ts). */
-export const HOUSE_ACCOUNT_PREFIX = "house-account-";
-export const isHouseAccountId = (id: string): boolean => id.startsWith(HOUSE_ACCOUNT_PREFIX);
 
 /** The house an account is built on, by its provider id (so a newer price list is followed), and the group it started from, if any. */
 export interface BrokerBase {
@@ -406,5 +402,5 @@ export function layeredTariff(b: Pick<CustomBroker, "base" | "untilYears" | "tra
   }
 }
 
-/** The builder `ProviderInput.layered` takes, for one account. */
+/** The builder `ProviderInput.layered` takes, for one account: how the move tests price a typed account before its move (deal-account/move-fixtures.ts). */
 export const layeredOf = (b: CustomBroker) => (list: SecuritiesTariff, run: LayeredRun): EnteredTariff | LayeredUnusable => layeredTariff(b, list, run);

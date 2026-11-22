@@ -3,7 +3,6 @@
 // number changed by the same share does to one pair's result (F-89, F-90: 4 lines of 21 runs). A request names its data by number, and
 // carries it only the first time: the worker keeps the latest it was sent.
 import { changedByShare, sweep } from "@finance-tool/engine";
-import { withGroup, type GroupAsk } from "./group-pick";
 import { buildInvest, pairCosts, pairLeft, type IndexRef, type InvestView } from "./invest";
 import type { IndicesBundle, WorkbenchInputs } from "./providers";
 import type { SiteValue } from "./value";
@@ -15,16 +14,12 @@ interface ViewAsk {
   yourBroker: string | null;
 }
 
-/**
- * F-89 and F-90 on the pair the page prices: each share of `shares` is a percent. Where a house's group is picked, `house` is the group's
- * account, which the worker adds to the data it holds by the group's name (`group`), so a pick never sends the data again.
- */
+/** F-89 and F-90 on the pair the page prices: each share of `shares` is a percent. */
 interface ChangesAsk {
   index: IndexRef;
   plan: WorkbenchInputs;
   house: string;
   fund: string;
-  group: GroupAsk | null;
   shares: number[];
 }
 
@@ -38,7 +33,7 @@ const CHANGED = [
 
 /**
  * F-89 and F-90: the value left on the plan (F-65's figure, with what it reads), and for each number the values it is changed to and what is
- * left after each; with the pair it was worked out for (the index, the house or the group's account, and the fund), and its plan and shares.
+ * left after each; with the pair it was worked out for (the index, the house and the fund), and its plan and shares.
  */
 export interface PlanChanges {
   index: string;
@@ -58,9 +53,7 @@ export interface Works {
 export type WorkKind = keyof Works;
 
 /** F-89 and F-90: every plan number changed by the same share; null where the pair has no value left on the plan. */
-function planChanges(held: IndicesBundle, a: ChangesAsk): PlanChanges | null {
-  const bundle = a.group ? withGroup(held, a.group)?.bundle : held;
-  if (!bundle) return null;
+function planChanges(bundle: IndicesBundle, a: ChangesAsk): PlanChanges | null {
   const pair = { bundle, index: a.index, fundId: a.fund, providerId: a.house };
   const base = pairCosts({ ...pair, plan: a.plan })?.left ?? null;
   if (!base) return null;

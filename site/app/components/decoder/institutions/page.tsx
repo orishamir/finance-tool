@@ -23,7 +23,7 @@ import { companyTermsAnchor } from "../../../lib/scope";
 
 const groupTitle: Record<string, string> = { "bank-deposit": copy.groups.deposits, "savings-plan": copy.groups.savings, "current-account": copy.groups.current };
 
-type Notes = { advertising: readonly AdvertisingEntry[]; groups: FeesSnapshot["groups"] | null; linked: readonly string[] };
+type Notes = { advertising: readonly AdvertisingEntry[]; groups: FeesSnapshot["groups"] | null };
 
 export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /** What the page says beside the prices: advertising against the documents, group prices (D57 amended). */ notes?: Notes }) {
   const known = new Set(Object.keys(data.rules));
@@ -72,7 +72,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
             parts: [...sections.map((s) => ({ id: s.id, label: s.title })), ...(brokerageDocs ? [{ id: docsAnchor, label: w.docs.part(brokerageDocs) }] : [])],
             anchors: [...sections.map((s) => s.id), docsAnchor, ...entryIds(docs.byProduct.brokerage)],
             body: (
-              <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} advertising={notes?.advertising} groups={notes?.groups} linked={notes?.linked} docs={<ProductDocs product={copy.groups.brokerage} groups={docs.byProduct.brokerage ?? []} id={docsAnchor} />} />
+              <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} advertising={notes?.advertising} groups={notes?.groups} docs={<ProductDocs product={copy.groups.brokerage} groups={docs.byProduct.brokerage ?? []} id={docsAnchor} />} />
             ),
           },
         ]

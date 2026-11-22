@@ -148,19 +148,6 @@ describe("a fund the person types is priced at the collected houses under its ki
     expect(spView.headline!.fund.rec.id).not.toBe(abroad.id);
   });
 
-  it("an Israeli fund typed on an index in a foreign currency has a status not known: its chip says so, never that the currency is taxed (F-04)", () => {
-    for (const kind of ["il-tracking", "il-etf"] as const) {
-      const f = fundFromDraft({ ...said(kind), name: kind, fixed: 0.1, variable: 0, trustee: 0 }, `custom-fund-${kind}`, "index-sp500", t);
-      const rec = withCustomEntries(bundle, [f]).funds.at(-1)!;
-      expect(rec.tax_status.foreign_investment_fund?.value).toBeNull();
-      const ids = fundLabels(rec, sp, kind).map((l) => l.id);
-      expect(ids).toContain("tax-currency-unknown");
-      expect(ids).not.toContain("tax-currency");
-    }
-    // a fund typed abroad has no such status
-    expect(withCustomEntries(bundle, [abroad]).funds.at(-1)!.tax_status.foreign_investment_fund).toBeUndefined();
-  });
-
   it("a hedged fund has no price, with the reason, as a collected fund with no report", () => {
     const hedged = fundFromDraft({ ...said("il-tracking"), name: "מנוטרלת", fixed: 0.1, variable: 0, trustee: 0, hedged: true }, "custom-fund-hedged", "index-sp500", t);
     const v = buildInvest({ bundle: withCustomEntries(bundle, [hedged]), index: sp, plan });
@@ -175,16 +162,9 @@ describe("a fund the person types is priced at the collected houses under its ki
     const onCustom = fundFromDraft({ ...said("il-tracking"), name: "על ניקיי", fixed: 0.3, variable: 0, trustee: 0 }, "custom-fund-nikkei", custom.id, t);
     const v = buildInvest({ bundle: withCustomEntries(bundle, [onCustom], [custom]), index: refOfCustom(custom), plan });
     const f = allFunds(v).find((x) => x.rec.id === onCustom.id)!;
+    expect(f.best?.valueN).toBeGreaterThan(0);
+    expect(v.headline?.fund.rec.id).toBe(onCustom.id);
     expect(v.fundCount).toBe(1);
-    // an Israeli fund the person typed on an index not in shekels: whether it is a foreign-investment fund is not known, so it is run under
-    // both readings of TXS OQ26 (F-04); at the plan's 2% inflation and a steady currency they differ, and it is listed before tax, not ranked
-    expect(f.reason).toEqual({ code: "rule-open", ruleId: "TXS-14", question: "TXS OQ26" });
-    expect(f.best).toBeUndefined();
-    expect(Object.values(f.beforeTax?.byHouse ?? {}).some((x) => x.leftN > 0)).toBe(true);
-    // where the currency moves as prices do, the readings agree: it is ranked, and is the page's headline
-    const agree = buildInvest({ bundle: withCustomEntries(bundle, [onCustom], [custom]), index: refOfCustom(custom), plan, assumptions: { fxChange: 2 } });
-    expect(allFunds(agree).find((x) => x.rec.id === onCustom.id)!.best?.valueN).toBeGreaterThan(0);
-    expect(agree.headline?.fund.rec.id).toBe(onCustom.id);
   });
 
   it("on an index the person added, the currency is named by no one: חשיפה למט״ח, never the dollar (founder, 2026-11-05)", () => {
@@ -301,7 +281,7 @@ describe("the rows mark what was typed (D7)", () => {
   const data = { rules: {}, terms: {}, dimensions: {}, today: t };
   const html = (el: React.ReactElement) => renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, el) })));
   it("the lists and the result name it in the entered colour, and link to no tariff or company page", () => {
-    const out = html(createElement("div", null, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick, chosen: true, onPick: () => undefined, moved: null, group: null }), createElement(ReceiptAndFees, { view, bundle: b, plan, pick, chosen: true, onPick: () => undefined })));
+    const out = html(createElement("div", null, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick, chosen: true, onPick: () => undefined, moved: null }), createElement(ReceiptAndFees, { view, bundle: b, plan, pick, chosen: true, onPick: () => undefined })));
     expect(out).toContain(fund.name);
     expect(out).toContain("text-entered");
     expect(out).not.toContain('href="local"');
@@ -319,7 +299,7 @@ describe("a typed row that cannot be priced is still where its terms are changed
   const data = { rules: {}, terms: {}, dimensions: {}, today: t };
   const noop = () => undefined;
   const editors: Editors = { addFund: noop, edit: noop, funds: [fund, blank], world: null };
-  const out = renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, createElement(EditorsContext.Provider, { value: editors }, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick, chosen: false, onPick: noop, moved: null, group: null }))) })));
+  const out = renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, createElement(EditorsContext.Provider, { value: editors }, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick, chosen: false, onPick: noop, moved: null }))) })));
   /** A row as drawn, up to the next row. */
   const row = (id: string) => {
     const at = out.indexOf(`data-pick-key="${id}"`);

@@ -1,17 +1,20 @@
-// The receipt and the chosen pair's card in the side rail, rendered on the collected data (part of render.test.ts, which says why it is split).
+// The receipt, with its account and fund parts, rendered on the collected data (part of render.test.ts, which says why it is split).
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { flags, groupPrices, help, invest } from "../../copy";
-import { pickableGroups, withGroupPick } from "../../lib/group-pick";
+import { flags, help, invest, numbers } from "../../copy";
+import { fill } from "../kit";
+import { fmt } from "../../lib/format";
+import { fundDraftOf, fundFromDraft, withCustomEntries } from "../../lib/custom-entries";
 import { PairLists } from "./lists";
-import { asideLines, buildInvest, indexById, kindOf, pairCostsKept } from "../../lib/invest";
+import { asideLines, buildInvest, indexById, kindOf, pairCostsKept, type InvestView } from "../../lib/invest";
 import { receiptAmounts, receiptChain } from "../../lib/receipt";
 import { ANCHOR, PairReceipt, PairStub, addedOf, inflationOf, leftOf, nominalOf, taxOf } from "./receipt";
-import { ChosenPair } from "./chosen";
-import { allFunds, pickOfHeadline, pairVerdict, priced } from "./pair";
+import { allFunds, asideParts, labelsOf, pickOfHeadline, pairVerdict } from "./pair";
 import { stretchesOf } from "../../lib/stretch";
 import { bundle, plan, shown, html, nisIn, fundRow, t } from "./render-fixtures";
 import { entered, type SiteValue } from "../../lib/value";
+import type { IndicesBundle } from "../../lib/providers";
+import type { GroupEntry, GroupPrice } from "@finance-tool/schema";
 import { planOf } from "../../lib/receipt-fixtures";
 
 const w = invest;
@@ -180,38 +183,21 @@ describe("the receipt", () => {
   });
 });
 
-describe("the chosen pair's card", () => {
+describe("the receipt's account and fund parts", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const pick = pickOfHeadline(view)!;
-  it("says when the account's price list was collected, and the fund's number, kind, labels and gap", () => {
-    const out = shown(html(createElement(ChosenPair, { view, bundle, plan, pick, chosen: false })));
-    expect(out).toContain(w.shownPair(false).cardTitle);
+  it("say when the account's price list was collected, and the fund's number, kind, labels and gap", () => {
+    const out = shown(html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false, layout: "ticket" })));
     expect(out).not.toContain(w.shownPair(true).name);
     expect(out).toContain(w.chosen.collected);
-    expect(out).toContain(w.chosen.groups.follow!);
+    const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
+    if (!fund) throw new Error("the page's own pair has its fund");
+    const follow = labelsOf(view, fund, bundle).filter((l) => l.family === "follow");
+    expect(follow.length).toBeGreaterThan(0);
+    for (const l of follow) expect(out).toContain(l.text);
+    expect(out).toContain(w.typeTags[fund.option] ?? "a kind's tag");
     expect(out).toContain(w.kinds.gapHead.net);
     expect(out).toContain(w.chosen.number);
-    expect(out).toContain(w.chosen.kind);
-    expect(out).toContain(w.chosen.together.after);
-  });
-  // the price list's other price, which the figure leaves out: a line where the house prints one for the pair, and none where it prints none
-  const asideOf = (p: { house: string; fund: string }) => {
-    const at = allFunds(view).find((f) => f.rec.id === p.fund)?.byHouse[p.house];
-    return priced(at) ? asideLines(bundle.snapshots.find((s) => s.id === p.house), at.aside) : [];
-  };
-  const pairs = allFunds(view).flatMap((f) => Object.keys(f.byHouse).map((house) => ({ house, fund: f.rec.id })));
-  it("writes a price left out of the figure where the house prints one with its rate", () => {
-    const withAside = pairs.find((p) => asideOf(p).some((l) => typeof l.rate.value === "number"));
-    if (!withAside) throw new Error("the data has no such pair at the S&P 500");
-    const out = shown(html(createElement(ChosenPair, { view, bundle, plan, pick: withAside, chosen: true })));
-    expect(out).toContain(w.chosen.aside);
-  });
-  it("has no line for another price where the house prints none", () => {
-    const without = pairs.find((p) => priced(allFunds(view).find((f) => f.rec.id === p.fund)?.byHouse[p.house]) && asideOf(p).length === 0);
-    if (!without) throw new Error("the data has no such pair at the S&P 500");
-    const out = shown(html(createElement(ChosenPair, { view, bundle, plan, pick: without, chosen: true })));
-    expect(out).toContain(w.chosen.collected);
-    expect(out).not.toContain(w.chosen.aside);
   });
 });
 
@@ -219,7 +205,7 @@ describe("in whole units, the fees charged and the waiting cash apart (F-91, F-1
   // the S&P 500 page's plan at a fall and at a rise; Interactive Brokers with the Irish fund buys whole units while its record is silent
   const pick = { house: "interactive-brokers", fund: "ie00b5bmr087" };
   for (const returnPct of [-5, 7]) {
-    it(`at ${returnPct}%: the receipt writes the account's fees with a minus, the waiting cash on its own line, and the card's fees are the two fees`, () => {
+    it(`at ${returnPct}%: the receipt writes the account's fees with a minus, and the waiting cash on its own line`, () => {
       const p = planOf(t, { years: 10, monthly: 500, returnPct });
       const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: p });
       const pc = pairCostsKept({ bundle, index: view.index, plan: p, fundId: pick.fund, providerId: pick.house });
@@ -229,7 +215,6 @@ describe("in whole units, the fees charged and the waiting cash apart (F-91, F-1
       if (!pc) return;
       const ch = receiptChain(pc);
       const r = ch.nominal;
-      const real = receiptAmounts(pc);
       const bare = (x: string) => x.replace(/[⁦-⁩‎‏]/g, "").replace(/ /g, " ");
       for (const layout of ["paper", "ticket"] as const) {
         const out = bare(shown(html(createElement(PairReceipt, { view, bundle, plan: p, pick, chosen: true, layout }))));
@@ -247,51 +232,154 @@ describe("in whole units, the fees charged and the waiting cash apart (F-91, F-1
         expect(r.paidIn + r.added - r.account - r.fund - r.waiting - ch.inflation - ch.tax).toBe(ch.left);
         expect(lines(out)[w.receipt.left]).toBe(ch.left);
       }
-      const card = bare(shown(html(createElement(ChosenPair, { view, bundle, plan: p, pick, chosen: true }))));
-      expect(card).toContain(`${w.chosen.together.before} ${(real.account + real.fund).toLocaleString("en-US")} ₪ ${w.chosen.together.after}`);
     });
   }
 });
 
-describe("a customer group picked in the account tile (D43, F-101)", () => {
+/** What a test needs to be there, or the reason it is missing. */
+function need<T>(x: T | null | undefined, what: string): T {
+  if (x === null || x === undefined) throw new Error(`missing: ${what}`);
+  return x;
+}
+
+describe("the receipt's fund part marks a fund the person typed (D44, D7)", () => {
+  const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
+  const headline = need(pickOfHeadline(buildInvest({ bundle, index, plan })), "the page's own pair");
+  const house = headline.house;
+  const name = "קרן משלי";
+  const typed = fundFromDraft({ ...fundDraftOf(null, "il-tracking"), payout: "accumulating" as const, hedged: false, name, fixed: 0.1, variable: 0, trustee: 0 }, "custom-fund-mine", "index-sp500", t);
+  const b = withCustomEntries(bundle, [typed]);
+  const view = buildInvest({ bundle: b, index, plan });
+  /** The ticket's fund part: what follows its label, the ticket's last part. */
+  const fundPart = (fund: string) => {
+    const out = html(createElement(PairReceipt, { view, bundle: b, plan, pick: { house, fund }, chosen: true, layout: "ticket" }));
+    return out.slice(out.lastIndexOf(`>${w.receipt.parts.fund}</span>`));
+  };
+  it("its name in the entered ink and the entered tag, where a collected fund's part has neither", () => {
+    expect(allFunds(view).find((f) => f.rec.id === typed.id)?.byHouse[house]).toHaveProperty("valueN");
+    const mine = fundPart(typed.id);
+    expect(mine).toMatch(new RegExp(`<bdi[^>]*class="text-entered"[^>]*>${name}</bdi>`));
+    expect(shown(mine)).toContain(numbers.legend.entered);
+    const collected = fundPart(headline.fund);
+    expect(collected).not.toContain("text-entered");
+    expect(shown(collected)).not.toContain(numbers.legend.entered);
+  });
+});
+
+describe("a house with customer-group prices is priced at its general price (D43)", () => {
+  const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
+  const view = buildInvest({ bundle, index, plan });
+  const pick = need(pickOfHeadline(view), "the page's own pair");
+  const costsOf = (b: IndicesBundle) => need(pairCostsKept({ bundle: b, index, plan, fundId: pick.fund, providerId: pick.house }), "the pair's costs");
+  // a fixed group planted on the headline house: every securities fee free, its words naming fund units, a value the run could read
+  const source = { url: "https://example.org/group-annex.pdf", title: "planted annex", quote: "פטור" };
+  const free = (fee: GroupPrice["fee"]): GroupPrice => ({ fee, price_he: "פטור", value: { exempt: true }, holdings_he: "יחידות קרנות", names_fund: true, source });
+  const planted: GroupEntry = {
+    kind: "young", name_he: "planted group", who_he: "planted who", who_source: source, ends_printed: false, ends_he: "planted end",
+    prices: (["trade_israel", "trade_abroad", "custody_israel", "custody_abroad"] as const).map(free),
+    who_short_he: "planted short", cheaper_he: "planted cheaper",
+  };
+  const withGroup: IndicesBundle = {
+    ...bundle,
+    snapshots: bundle.snapshots.map((s) => (s.id === pick.house ? { ...s, groups: { state: "prices", note: "planted", read: [{ url: source.url, title: source.title }], entries: [planted] } } : s)),
+  };
+  const valueAt = (v: InvestView) => { const at = allFunds(v).find((f) => f.rec.id === pick.fund)?.byHouse[pick.house]; return at && "valueN" in at ? at.valueN : null; };
+  it("the house charges something at its general price, so a free group's price would change its figure", () => {
+    expect(receiptAmounts(costsOf(bundle)).account).toBeGreaterThan(0);
+  });
+  it("the planted group changes neither the house's figure nor the receipt's, and the receipt and the lists name no group", () => {
+    const grouped = buildInvest({ bundle: withGroup, index, plan });
+    expect(valueAt(view)).not.toBeNull();
+    expect(valueAt(grouped)).toBe(valueAt(view));
+    const pc = costsOf(withGroup);
+    expect(receiptAmounts(pc).left).toBe(receiptAmounts(costsOf(bundle)).left);
+    const receipt = html(createElement(PairReceipt, { view: grouped, bundle: withGroup, plan, pick, chosen: true, layout: "ticket" }));
+    expect(lines(receipt)[w.receipt.left]).toBe(receiptAmounts(pc).left);
+    const out = shown(receipt) + shown(html(createElement(PairLists, { view: grouped, bundle: withGroup, plan, livePlan: plan, today: t, pick, chosen: true, onPick: () => undefined, moved: null })));
+    for (const word of [planted.name_he, planted.who_short_he, planted.cheaper_he]) expect(out).not.toContain(need(word, "a planted word"));
+  });
+  // every house whose record prints group prices and that prices a fund on the index, at its cheapest fund
+  const withGroups = view.providers.flatMap((p) => {
+    const snap = bundle.snapshots.find((s) => s.id === p.id);
+    const best = view.houses.find((h) => h.provider.id === p.id)?.best;
+    return snap?.groups?.state === "prices" && best ? [{ house: p.id, fund: best.fund.rec.id, entries: snap.groups.entries, tariff: snap.tariff.url }] : [];
+  });
+  it("the data has such a house", () => expect(withGroups.length).toBeGreaterThan(0));
+  for (const g of withGroups) {
+    it(`${g.house}: its price list in the account part, and no group named in the receipt or the lists`, () => {
+      const at = { house: g.house, fund: g.fund };
+      const receipt = html(createElement(PairReceipt, { view, bundle, plan, pick: at, chosen: true, layout: "ticket" }));
+      expect(receipt).toContain(g.tariff.replace(/&/g, "&amp;"));
+      const out = shown(receipt) + shown(html(createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick: at, chosen: true, onPick: () => undefined, moved: null })));
+      for (const e of g.entries) {
+        expect(out).not.toContain(e.name_he);
+        if (e.who_short_he) expect(out).not.toContain(e.who_short_he);
+      }
+    });
+  }
+});
+
+describe("a standing order's price the figure leaves out, under the lists (D41, D56)", () => {
   const index = indexById(bundle, "index-sp500")!;
   const view = buildInvest({ bundle, index, plan });
-  // the first house and fund the page offers a group for
-  const found = allFunds(view).flatMap((f) => view.providers.flatMap((p) => { const at = f.byHouse[p.id]; const keys = at && "valueN" in at ? [...pickableGroups(bundle.snapshots.find((s) => s.id === p.id), f.option)] : []; return keys.map((key) => ({ house: p.id, short: p.short, fund: f.rec.id, key })); }))[0];
-  it("the data has a group to pick", () => expect(found).toBeTruthy());
-  if (!found) return;
-  const g = withGroupPick({ bundle, index, plan }, view, found.house, found.key, found.short)!;
-  const pick = { house: g.id, fund: found.fund };
-  const group = { house: found.house, key: found.key, name: g.name };
-  it("the tile describes the house, with its own links, and says how long the group's price holds", () => {
-    const out = html(createElement(ChosenPair, { view: g.view, bundle: g.bundle, plan, pick, chosen: true, group, onPick: () => undefined }));
-    expect(shown(out)).toContain(groupPrices.pickedLine(g.name));
-    expect(shown(out)).toContain(found.short);
-    // never the held account's id, in a word or a link
-    expect(out).not.toContain("house-account-group");
+  // every house and fund whose price leaves out a standing order's price its list prints
+  const ways = view.houses.flatMap((h) => {
+    const snap = bundle.snapshots.find((s) => s.id === h.provider.id);
+    return h.entries.flatMap((e) => (e.price && asideLines(snap, e.price.aside).length > 0 ? [{ house: h.provider.id, short: h.provider.short, fund: e.fund.rec.id, lines: asideLines(snap, e.price.aside) }] : []));
   });
-  it("the house's row keeps its own name and place (D43), and the funds' differences are from the group's pair", () => {
-    const out = html(createElement(PairLists, { view: g.view, bundle: g.bundle, plan, livePlan: plan, today: t, pick, chosen: true, onPick: () => undefined, moved: null, group }));
-    const row = fundRow(out, found.house).replace(/[\u2066-\u2069\u200e\u200f]/g, "");
-    expect(row).not.toContain(groupPrices.pickLabel(g.name));
-    expect(row).toContain(found.short);
-    expect(row).toContain(w.shownPair(true).row);
-    // another fund's difference: its value at the group's prices less the pair's
-    const valueAt = (f: ReturnType<typeof allFunds>[number]) => (f.byHouse[g.id] as { valueN: number }).valueN;
-    const all = allFunds(g.view);
-    const mine = valueAt(all.find((f) => f.rec.id === found.fund)!);
-    const other = all.find((f) => f.rec.id !== found.fund && "valueN" in (f.byHouse[g.id] ?? {}) && !fundRow(out, f.rec.id).includes(w.kinds.between))!;
-    const oRow = fundRow(out, other.rec.id).replace(/[\u2066-\u2069\u200e\u200f]/g, "").replace(/\u00a0/g, " ");
-    const d = Math.round(valueAt(other) - mine);
-    expect(oRow).toContain(d === 0 ? w.lists.funds.same : `${Math.abs(d).toLocaleString("en-US")} ₪`);
-    if (d !== 0) expect(oRow).toContain(d < 0 ? w.lists.funds.less : w.lists.funds.more);
+  it("the data has such a price", () => expect(ways.length).toBeGreaterThan(0));
+  const first = ways[0];
+  if (!first) return;
+  it("the note names it, and its words are what the reader taps", () => {
+    const out = html(createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick: { house: first.house, fund: first.fund }, chosen: true, onPick: () => undefined, moved: null }));
+    const words = w.lists.otherPriceWords;
+    expect(shown(out)).toContain(fill(w.lists.otherPrice(first.short), { price: words }));
+    // the words themselves open a sheet, as a row's "why" words do
+    expect(out).toMatch(new RegExp(`role="button"[^>]*aria-haspopup="dialog"[^>]*>${words}<`));
+  });
+  it("its sheet holds the printed price with the price list it is printed in, and the record's reason with its document", () => {
+    const parts = asideParts(first.lines);
+    for (const l of first.lines) {
+      const rate = parts.find((p) => p.doc?.href.startsWith(l.rate.source.url) && p.text.includes(String(l.rate.value)));
+      expect(rate, l.id).toBeTruthy();
+      const why = parts.find((p) => p.text === l.not_ranked.reason_he);
+      expect(why?.doc?.href.startsWith(l.not_ranked.source.url), l.id).toBe(true);
+    }
+  });
+  it("its minimum opens the place it is printed, and a price two lines print alike is said once", () => {
+    const l = need(first.lines[0], "a left-out line");
+    // fixed figures over the record's line: a rate on one page, its minimum on another
+    const rateAt = { ...l.rate.source, url: "https://example.org/list.pdf", page: 3 };
+    const line = { ...l, rate: { ...l.rate, value: 0.2, unit: "pct_of_trade" as const, source: rateAt }, min: { ...l.rate, value: 7, unit: "nis_per_trade" as const, source: { ...rateAt, page: 9 } } };
+    const parts = asideParts([line, { ...line, id: `${line.id}-again` }]);
+    const min = parts.filter((p) => p.text.includes(fmt.nis(7)));
+    expect(min).toHaveLength(1);
+    expect(min[0]?.doc?.href).toBe("https://example.org/list.pdf#page=9");
+    const rate = parts.filter((p) => p.text.includes(fmt.pct(0.2)));
+    expect(rate).toHaveLength(1);
+    expect(rate[0]?.doc?.href).toBe("https://example.org/list.pdf#page=3");
+    // with both on one page, one sentence says both and opens that page
+    const one = asideParts([{ ...line, min: { ...line.min, source: rateAt } }]).filter((p) => p.text.includes(fmt.pct(0.2)));
+    expect(one).toHaveLength(1);
+    expect(one[0]?.text).toContain(fmt.nis(7));
+    expect(one[0]?.doc?.href).toBe("https://example.org/list.pdf#page=3");
+  });
+  it("a house whose only other price is a group's says nothing of it under the lists", () => {
+    const groupOnly = view.houses.find((h) => {
+      const snap = bundle.snapshots.find((s) => s.id === h.provider.id);
+      return snap?.groups?.state === "prices" && h.best && asideLines(snap, h.best.price?.aside ?? []).length === 0;
+    });
+    expect(groupOnly).toBeTruthy();
+    if (!groupOnly?.best) return;
+    const out = html(createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick: { house: groupOnly.provider.id, fund: groupOnly.best.fund.rec.id }, chosen: true, onPick: () => undefined, moved: null }));
+    expect(shown(out)).not.toContain(w.lists.otherPriceWords);
   });
 });
 
 describe("the lists beside the receipt", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const pick = pickOfHeadline(view)!;
-  const props = { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null, group: null };
+  const props = { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null };
   it("a row is one line: the name and one figure, no fee bar and no fees column, and the figures' mark only in the column's head", () => {
     const out = html(createElement(PairLists, props));
     expect(out).not.toContain('data-chart="cost-stack"');

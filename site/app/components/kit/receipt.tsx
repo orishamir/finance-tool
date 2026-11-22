@@ -105,6 +105,24 @@ export function TicketPart({ label, swatch, name, children }: { label: ReactNode
 }
 
 /**
+ * A part's facts under its name (a `TicketPart`'s, or the sheet a `ReceiptLine`'s `opens` shows): a row of labels (`labels`: chips and
+ * tags, each opening what it means or its source), then a quiet row in 13 px muted words (`details`: a link to a document, an identifier
+ * that opens its page, a short fact with its figure). An empty item (null, false) is left out, so a caller lists each fact with its
+ * condition; either row only where it has something, nothing where neither has.
+ */
+export function PartFacts({ labels, details }: { labels: readonly ReactNode[]; details: readonly ReactNode[] }) {
+  const shown = labels.filter(Boolean);
+  const quiet = details.filter(Boolean);
+  if (shown.length === 0 && quiet.length === 0) return null;
+  return (
+    <div className="flex flex-col gap-1.5">
+      {shown.length > 0 && <div className="flex flex-wrap items-center gap-1.5">{shown}</div>}
+      {quiet.length > 0 && <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">{quiet}</div>}
+    </div>
+  );
+}
+
+/**
  * The receipt as a ticket across a wide column (the index page from 1280 px, above the two lists): a line on top (`top`, its two ends),
  * three parts side by side, the middle one (`middle`, 40% of the width) between two dashed edges and the two sides (`start`, `end`) as wide
  * as what is left, then, where given, a row of three cells under a dashed rule (`foot`, in the same columns). Round notches bite the ticket's top and

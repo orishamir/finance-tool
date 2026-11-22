@@ -16,15 +16,6 @@ export const fundPromotion = z.strictObject({
   rate: valueObject,
 });
 
-/**
- * data-schema §3.5: `tax_status.foreign_investment_fund`, a value object in unit `text` whose value is an ISO 4217 code (the principal
- * currency), `false`, or `null` where the documents read do not settle it (its `notes` then say which were read).
- */
-const foreignInvestmentFund = valueObject.refine(
-  (v) => v.unit === "text" && (v.value === false || v.value === null || (typeof v.value === "string" && /^[A-Z]{3}$/.test(v.value))),
-  { message: 'foreign_investment_fund: unit "text", value an ISO 4217 code (the principal currency), false, or null (not known)', path: ["value"] },
-);
-
 export const fundRecord = z.strictObject({
   /** Lowercase ASCII, digits and hyphens, e.g. "ie00b5bmr087"; an exposure's variants name it as `fund:<id>`. */
   id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "id is lowercase ASCII, digits and single hyphens"),
@@ -45,14 +36,6 @@ export const fundRecord = z.strictObject({
   tax_status: z.strictObject({
     il_fund_tax_track: z.enum(["exempt", "taxable"]).nullable(),
     tase_foreign_fund_90pct_test: valueObject.nullable(),
-    /**
-     * TXS-14: whether the fund is a "קרן נאמנות להשקעות חוץ" under the 2003 regulations, as its own documents say. Unit `text`: the
-     * principal currency's ISO 4217 code where its annual report or its manager's prospectus names one ("USD"); `false` where its own
-     * document says it is not one, or its manager's prospectus tax column, which names that status for the manager's funds that have it,
-     * states the fund's status without it; `null` where the documents read do not settle it. Carried by the latest record of every Israeli
-     * fund (data-schema §4 item 21); left out on a foreign one.
-     */
-    foreign_investment_fund: foreignInvestmentFund.optional(),
   }),
   fees: z.strictObject({
     fixed_management: fee,

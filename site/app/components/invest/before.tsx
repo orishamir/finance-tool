@@ -15,7 +15,7 @@ import { sumOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
 import { Button, Card, MixedName, OptionBars, PanelHead, SourcedTag, TabCards, Tpl, type OptionBar, type TabCard } from "../kit";
 import { Fees } from "./funds";
-import { changesAt, PlanChanges, shareWord, usePlanChanges, type SweepOn } from "./knobs";
+import { changesAt, PlanChanges, shareWord, usePlanChanges } from "./knobs";
 import { DollarSection, dollarSwing, useDollarCase, type DollarCase } from "./dollar";
 import { StairsSection, useStairs } from "./stairs";
 import { allFunds, pairVerdict, phoneOf, tieSet, type OnPick, type Pick, type PairVerdict } from "./pair";
@@ -28,7 +28,7 @@ type Share = { min: number; max: number; step: number; start: number };
 const amount = (n: number) => `\u2066${fmt.nisWhole(n)}\u2069`;
 type Key = "fees" | "sens" | "hedge" | "stairs";
 
-/** The account's and the fund's fees together, without the tax, as the chosen pair's card writes them. */
+/** The account's and the fund's fees together, without the tax, in today's money. */
 const togetherOf = (pc: PairCosts, today: string): SiteValue => sumOf({ [c.receipt.parts.account]: accountSum(pc, c.receipt.parts.account, today, Math.round), [c.receipt.parts.fund]: pc.fund }, "F-91", { today, about: c.chosen.togetherAbout, round: Math.round });
 
 /** The chosen pair's fees item by item, as the receipt writes them (whole shekels that add up), the largest first. */
@@ -66,16 +66,15 @@ export function hedgeCard(d: DollarCase): TabCard {
   return { key: "hedge", question: c.before.hedge.question, answer: `${swing.lo} ${c.dollar.to} ${swing.hi}`, note: c.dollar.cancelsNote(swing.from, swing.to) };
 }
 
-export function BeforeDeciding({ view, bundle, sweepOn, plan, livePlan, share, pick, chosen, hedge, stairs, onPick }: {
+export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chosen, hedge, stairs, onPick }: {
   view: InvestView;
-  /** The data the pair is priced on (with the group's account where one is picked), and what the sweep asks the page's worker for (`SweepOn`). */
+  /** The data the pair is priced on, as the page's worker holds it (the sweep asks the worker on it). */
   bundle: IndicesBundle;
-  sweepOn: SweepOn;
   /** The plan as it last rested (the lists'), and as the sliders move (the receipt's). */
   plan: WorkbenchInputs;
   livePlan: WorkbenchInputs;
   share: Share;
-  /** The chosen pair (the group's account in place of its house where one is picked); null where the page prices no pair. */
+  /** The chosen pair; null where the page prices no pair. */
   pick: Pick | null;
   /** The person picked this pair; else it is the page's own, and is never called theirs. */
   chosen: boolean;
@@ -89,7 +88,7 @@ export function BeforeDeciding({ view, bundle, sweepOn, plan, livePlan, share, p
   const [open, setOpen] = useState<Key>("fees");
   const [at, setAt] = useState(share.start);
   const today = bundle.today;
-  const changes = usePlanChanges({ plan, share, on: sweepOn, view, pick });
+  const changes = usePlanChanges({ plan, share, bundle, view, pick });
   const dollar = useDollarCase(hedge ? view : null, bundle, plan, pick);
   const st = useStairs({ view: stairs.view, bundle: stairs.bundle, plan, startHouse: stairs.startHouse, startFund: stairs.startFund, example: stairs.startHouse === null });
   const verdict = pick ? pairVerdict(view, bundle, livePlan, pick, chosen) : null;

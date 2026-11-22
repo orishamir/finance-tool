@@ -59,8 +59,6 @@ export const customIndexPath = (id: string): string => `${INDICES_PATH}?custom=$
 export const exposureIdOfSlug = (slug: string): string => `index-${slug}`;
 /** The index page with one house picked, for a house's own page. */
 export const housePath = (houseId: string, exposureId = "index-sp500"): string => `${indexPath(exposureId)}?house=${encodeURIComponent(houseId)}`;
-/** A house's group on the index page, picked (`?group=<n>`, D43 amended (5)): the link under a group on the house's own page. */
-export const groupPath = (houseId: string, key: string, exposureId = "index-sp500"): string => `${housePath(houseId, exposureId)}&group=${encodeURIComponent(key.replace("group:", ""))}`;
 /** A house's page opens the index page with a new deal filled from its price list, in the popup that edits a deal on the page (`own`). */
 export const ownAccountPath = (houseId: string, exposureId = "index-sp500"): string => `${indexPath(exposureId)}?house=${encodeURIComponent(houseId)}&own=${encodeURIComponent(houseId)}`;
 /** A house's own page, opened at its securities account: who its price is for, its fees and where they stand, its offers (D57 amended). */

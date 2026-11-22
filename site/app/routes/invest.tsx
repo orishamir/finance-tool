@@ -12,7 +12,6 @@ import { PLAN_AMOUNT_TILE, PlanKnobs } from "../components/invest/knobs";
 import { TitleRow } from "../components/invest/title";
 import { PlanCard } from "../components/invest/plan-card";
 import { PairReceipt, PairStub } from "../components/invest/receipt";
-import { ChosenPair } from "../components/invest/chosen";
 import { pickOfHeadline, pickOfOpen, allFunds, type Moved, type Pick } from "../components/invest/pair";
 import { PairLists, listName } from "../components/invest/lists";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
@@ -42,7 +41,6 @@ import { exposureIdOfSlug, INDICES_PATH } from "../lib/site-paths";
 import { loadIndicesBundle, type IndicesBundle, type WorkbenchInputs } from "../lib/providers";
 import { isoToday, useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
-import { groupNameOf, pickableGroups, withGroupPick, type GroupAsk } from "../lib/group-pick";
 import { useHydrated, useMedia } from "../lib/hooks";
 import { ToolBoundary } from "../components/tool-boundary";
 
@@ -260,11 +258,10 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
     const rest = q.toString();
     navigate(`${pathname}${rest ? `?${rest}` : ""}`, { replace: true });
   }, [search, pathname, navigate]);
-  // From 1280 px the pair's card stands in a rail, and beside it the plan's tiles stand in one row over the receipt's ticket, which stands
-  // over the two lists and their ruler; below 1280 px everything stands in one column, the plan first and the receipt above the lists with
-  // its stub at the screen's foot. The body renders
-  // only in the browser, so its first render already knows the width.
-  const railed = useMedia("(min-width: 80rem)");
+  // One column at every width, the plan first, then the receipt, then the two lists: from 1280 px the plan's tiles stand in one row, the
+  // receipt is a ticket and the lists stand either side of their ruler; below 1280 px the receipt is paper with its stub at the screen's
+  // foot. The body renders only in the browser, so its first render already knows the width.
+  const wide = useMedia("(min-width: 80rem)");
   const receiptRef = useRef<HTMLDivElement>(null);
   const ticketRef = useRef<HTMLElement>(null);
   const pairArea = useRef<HTMLDivElement>(null);
@@ -275,62 +272,30 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   // a pair the account no longer prices (a broker the person typed and changed, D44)
   const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x) && "valueN" in (f.byHouse[p.house] ?? {})) && view.providers.some((x) => x.id === p.house);
   // the pick lives in the address (`?house=` and `?fund=`), so a link opens the same pair: a house's page sends `house`
-  // alone, which opens on its cheapest way on the index; a fund alone opens at the house where it leaves the most
+  // alone, which opens on its cheapest way on the index; a fund alone opens at the house where it leaves the most. Every house is priced
+  // at its general price (D43): the address carries no customer group
   const houseParam = new URLSearchParams(search).get("house");
   const fundParam = new URLSearchParams(search).get("fund");
-  // a house's group picked in its fold: kept only where the page offers that group for the fund
-  const groupNumber = new URLSearchParams(search).get("group");
-  const groupParam = groupNumber && /^\d+$/.test(groupNumber) ? `group:${groupNumber}` : null;
-  const fromAddress = ((): Pick | null => {
+  const addressPick = ((): Pick | null => {
     if (!view || (!houseParam && !fundParam)) return null;
     if (houseParam && fundParam) return validPick({ house: houseParam, fund: fundParam }) ? { house: houseParam, fund: fundParam } : null;
     if (houseParam) {
-      // a group sent from the house's page opens on the house's cheapest fund for which that group is offered (the side it trades on)
-      const row = view.houses.find((h) => h.provider.id === houseParam);
-      const snap = groupParam ? wb.snapshots.find((x) => x.id === houseParam) : undefined;
-      const forGroup = snap && row?.entries.find((e) => e.price && pickableGroups(snap, e.fund.option).has(groupParam!) && validPick({ house: houseParam, fund: e.fund.rec.id }));
-      if (forGroup) return { house: houseParam, fund: forGroup.fund.rec.id };
-      const best = row?.best;
+      const best = view.houses.find((h) => h.provider.id === houseParam)?.best;
       return best && validPick({ house: houseParam, fund: best.fund.rec.id }) ? { house: houseParam, fund: best.fund.rec.id } : null;
     }
     const best = allFunds(view).find((f) => f.rec.id === fundParam)?.best;
     return best && validPick({ house: best.providerId, fund: fundParam! }) ? { house: best.providerId, fund: fundParam! } : null;
   })();
-  const groupOk = (p: Pick) => !!groupParam && !!view && pickableGroups(wb.snapshots.find((x) => x.id === p.house), allFunds(view).find((f) => f.rec.id === p.fund)?.option).has(groupParam);
-  const own: Pick | null = fromAddress && groupOk(fromAddress) ? { ...fromAddress, group: groupParam! } : fromAddress;
   // a plan that puts in nothing has no pair to show: the page says so in place of the pair and the lists
   const nothing = livePlan.amountNow <= 0 && livePlan.monthly <= 0;
-  const pick: Pick | null = nothing ? null : (own ?? (view ? (pickOfHeadline(view) ?? pickOfOpen(view)) : null));
+  const pick: Pick | null = nothing ? null : (addressPick ?? (view ? (pickOfHeadline(view) ?? pickOfOpen(view)) : null));
   // the stairs start from the person's own pick; with none they open on the middle account and the middle exchange-traded fund
-  const picks = own !== null;
-  // a pick replaces the address in place: the back button leaves the page rather than stepping through every pick, and the page keeps its scroll
-  // the picked group's account, priced at its prices beside its house (lib/group-pick): only that house and the account are priced again
-  // the radio answers at once and the group's figures follow after the paint (pricing the group in the tap's own render took
-  // it past 100 ms; a navigation is a transition, so a deferred value did not defer it)
-  const groupHouse = own?.group ? own.house : null;
-  const groupKey = own?.group ?? null;
-  const groupShort = groupHouse && view ? (view.providers.find((p) => p.id === groupHouse)?.short ?? groupHouse) : null;
-  const [priced, setPriced] = useState<(ReturnType<typeof withGroupPick> & { ask: GroupAsk }) | null>(null);
-  useEffect(() => {
-    if (!view || !index || !groupHouse || !groupKey || !groupShort) return setPriced(null);
-    const g = withGroupPick({ bundle, index, plan }, view, groupHouse, groupKey, groupShort);
-    setPriced(g ? { ...g, ask: { house: groupHouse, key: groupKey, short: groupShort } } : null);
-  }, [view, index, bundle, plan, groupHouse, groupKey, groupShort]);
-  // the group's account stands in for its house only while it is the group picked; any other pick shows its own figures at once
-  const picked = priced && priced.ask.house === groupHouse && priced.ask.key === groupKey ? priced : null;
-  // what the pair and the sections under it show: the group's account in place of its house when one is picked
-  const shownView = picked?.view ?? view;
-  const shownBundle = picked?.bundle ?? bundle;
-  const shown: Pick | null = pick && picked ? { house: picked.id, fund: pick.fund } : pick;
-  // the F-89 sweep is worked out in the page's worker on the data it already holds, the page's own, with the group's account added there by
-  // the group's name: a new group bundle on every plan would be sent to the worker again each time
-  const groupAsk = picked?.ask ?? null;
-  const sweepOn = useMemo(() => ({ bundle, group: groupAsk }), [bundle, groupAsk]);
+  const picks = addressPick !== null;
   // a tap that changed the other half too: the row tapped says so, with the way back, until the next pick
   const [moved, setMoved] = useState<Moved | null>(null);
+  // a pick replaces the address in place: the back button leaves the page rather than stepping through every pick, and the page keeps its scroll
   const onPick = (p: Pick, m?: Moved) => {
-    // the way back puts back the address as it was before the tap: no pick (the page's own pair, never made the person's), or the pick
-    // with its group (it wrote the pair back as a pick, and a group's held account in place of its house)
+    // the way back puts back the address as it was before the tap: no pick (the page's own pair, never made the person's), or the pick before it
     const before = search;
     setMoved(
       m
@@ -343,18 +308,14 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
           }
         : null,
     );
-    // a pick on the group's account (another fund, from the fund list) stays on that group of that house
-    const next: Pick = picked && own?.group && p.house === picked.id ? { house: own.house, fund: p.fund, group: own.group } : p;
     const q = new URLSearchParams(search);
-    q.set("house", next.house);
-    q.set("fund", next.fund);
-    if (next.group) q.set("group", next.group.replace("group:", ""));
-    else q.delete("group");
+    q.set("house", p.house);
+    q.set("fund", p.fund);
+    // an older link's customer group: the page prices every house at its general price (D43), so the pick drops it
+    q.delete("group");
     navigate(`${pathname}?${q.toString()}`, { replace: true, preventScrollReset: true });
   };
-  // the house's group picked in the account card, by its name
-  const ownGroup = own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null;
-  const movedNow = moved && shown && moved.at.house === (own?.house ?? shown.house) && moved.at.fund === shown.fund ? moved : null;
+  const movedNow = moved && pick && moved.at.house === pick.house && moved.at.fund === pick.fund ? moved : null;
   // an index with no fund to price (a custom one): the account the person picked in the list, else the one that charges least
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
 
@@ -381,17 +342,17 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   const planCard = <PlanCard knobs={<PlanKnobs compare={compare} ranges={data.form.knobs} pct={data.form.pct} />} />;
   // the receipt: below 1280 px paper above the lists, the stub's way back leading to it (focusable for that, never tabbed to); from 1280 px
   // a ticket over the lists, whose total the ruler's point joins
-  const receipt = pick && shown && shownView && (
-    railed ? (
-      <PairReceipt view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} layout="ticket" ref={ticketRef} />
+  const receipt = pick && view && (
+    wide ? (
+      <PairReceipt view={view} bundle={bundle} plan={livePlan} pick={pick} chosen={picks} layout="ticket" ref={ticketRef} />
     ) : (
       <div ref={receiptRef} tabIndex={-1} className="anchor-target outline-none">
-        <PairReceipt view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} />
+        <PairReceipt view={view} bundle={bundle} plan={livePlan} pick={pick} chosen={picks} />
       </div>
     )
   );
-  const fund = shown && shownView ? allFunds(shownView).find((f) => f.rec.id === shown.fund) : undefined;
-  // the two lists side by side where the main column has the room (a container query: the rail beside it takes its share from 1280 px)
+  const fund = pick && view ? allFunds(view).find((f) => f.rec.id === pick.fund) : undefined;
+  // the two lists side by side where the page's column has the room (a container query)
   const lists = "grid gap-5 items-start @min-[57rem]:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)]";
   const join = (
     <span aria-hidden="true" className="hidden @min-[57rem]:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
@@ -415,59 +376,44 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
             <p className="text-muted-foreground">{index ? c.loading : c.chips.none}</p>
           ) : (
             <>
-              {/* the pair's card in a rail at the start side from 1280 px, the plan, the receipt's ticket and the choice of account and
-                  fund beside it; one column under it, the plan first and the receipt above the lists */}
-              <div ref={pairArea} className="flex flex-col gap-5 xl:flex-row xl:items-start xl:gap-6">
-                {(!railed || (pick && shown && shownView)) && (
-                  <div className="flex flex-col gap-5 xl:w-80 xl:shrink-0">
-                    {!railed && planCard}
-                    {pick && shown && shownView && (
-                      <>
-                        {!railed && receipt}
-                        <ChosenPair view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} chosen={picks} onPick={onPick} group={ownGroup} />
-                      </>
-                    )}
-                  </div>
+              {/* the plan, the receipt and the choice of account and fund, one under the other, across the page's column */}
+              <div ref={pairArea} className="@container flex min-w-0 flex-col gap-5 lg:gap-6">
+                {planCard}
+                {nothing ? (
+                  <EmptyState
+                    icon={<IconCoins />}
+                    title={c.empty.title}
+                    action={{ label: `${c.empty.action} ${c.plan.knobs.amount}`, onClick: () => document.getElementById(PLAN_AMOUNT_TILE)?.click() }}
+                  >
+                    {c.empty.body}
+                  </EmptyState>
+                ) : pick && view ? (
+                  <>
+                    {receipt}
+                    <PairLists view={view} bundle={bundle} plan={plan} livePlan={livePlan} today={data.today} pick={pick} chosen={picks} onPick={onPick} moved={movedNow} ownBank={ownBankControl} ruler={wide} above={ticketRef} />
+                  </>
+                ) : (
+                  // the same two lists as every index, the receipt set aside until a fund is added
+                  <>
+                    <NoFundCall view={view} />
+                    <div className={lists}>
+                      <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} ownBank={ownBankControl} />
+                      {join}
+                      <NoFundColumn view={view} mayaHref={wb.links.maya?.href ?? null} />
+                    </div>
+                  </>
                 )}
-                <div className="@container flex min-w-0 flex-1 flex-col gap-5 lg:gap-6">
-                  {railed && planCard}
-                  {nothing ? (
-                    <EmptyState
-                      icon={<IconCoins />}
-                      title={c.empty.title}
-                      action={{ label: `${c.empty.action} ${c.plan.knobs.amount}`, onClick: () => document.getElementById(PLAN_AMOUNT_TILE)?.click() }}
-                    >
-                      {c.empty.body}
-                    </EmptyState>
-                  ) : pick && shown && shownView ? (
-                    <>
-                      {railed && receipt}
-                      <PairLists view={shownView} bundle={shownBundle} plan={plan} livePlan={livePlan} today={data.today} pick={shown} chosen={picks} onPick={onPick} moved={movedNow} ownBank={ownBankControl} group={ownGroup} ruler={railed} above={ticketRef} />
-                    </>
-                  ) : (
-                    // the same two lists as every index, the receipt set aside until a fund is added
-                    <>
-                      <NoFundCall view={view} />
-                      <div className={lists}>
-                        <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} ownBank={ownBankControl} />
-                        {join}
-                        <NoFundColumn view={view} mayaHref={wb.links.maya?.href ?? null} />
-                      </div>
-                    </>
-                  )}
-                </div>
               </div>
               {/* before deciding: where the fees go, what moves the result most, hedged or not (only on a foreign index with funds of both
                   kinds, F-94) and the stairs, a tab each */}
-              {pick && shown && shownView && (
+              {pick && view && (
                 <BeforeDeciding
-                  view={shownView}
-                  bundle={shownBundle}
-                  sweepOn={sweepOn}
+                  view={view}
+                  bundle={bundle}
                   plan={plan}
                   livePlan={livePlan}
                   share={data.form.share}
-                  pick={shown}
+                  pick={pick}
                   chosen={picks}
                   hedge={hasKinds(view) && !!wb.dollarRange}
                   stairs={{ view, bundle, startHouse: picks ? pick.house : null, startFund: picks ? pick.fund : null }}
@@ -479,8 +425,8 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
         </div>
       </Frame>
       {/* outside the block that glides on an index's change: a moving ancestor would carry a pinned element with it */}
-      {!railed && pick && shown && shownView && fund && (
-        <PairStub view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} fundName={listName(shownView, fund.name)} target={receiptRef} area={pairArea} />
+      {!wide && pick && view && fund && (
+        <PairStub view={view} bundle={bundle} plan={livePlan} pick={pick} fundName={listName(view, fund.name)} target={receiptRef} area={pairArea} />
       )}
       </CustomEntriesHost>
       </DealAccountsHost>

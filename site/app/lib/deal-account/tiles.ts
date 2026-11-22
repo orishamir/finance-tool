@@ -4,7 +4,6 @@
 // left out as the list leaves it out), in the list's order, most first and equal figures by name, so the tile always says where the deal's
 // row stands. Pure: the page's view and the deal's runs.
 import { kindOf, type DealOnPlan, type FundWay, type InvestView, type WayPrice } from "../invest";
-import { isGroupProvider } from "../group-pick";
 import { stretchOf } from "../stretch";
 import type { Missing } from "./plan";
 
@@ -53,7 +52,7 @@ export function dealTiles(view: InvestView, got: ReadonlyMap<string, DealOnPlan>
     const g = got.get(f.rec.id);
     return g?.kind === "ok" && !g.open ? [g.valueN] : [];
   });
-  const others = view.providers.filter((p) => p.id !== providerId && !isGroupProvider(p)).flatMap((p) => {
+  const others = view.providers.filter((p) => p.id !== providerId).flatMap((p) => {
     const s = stretchOf(funds, p.id);
     return s ? [{ best: s.best, name: p.short }] : [];
   });

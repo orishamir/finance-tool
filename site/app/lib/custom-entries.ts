@@ -294,20 +294,6 @@ export function fundTerms(f: CustomFund): { shown: EntryTerm[]; empty: string[] 
 
 // ---------------------------------------------------------------- to what the page prices
 
-/** A typed Israeli fund's status as a foreign-investment fund (data-schema §3.5): not known, since the site read none of its documents. */
-const notKnownStatus = (added: string): ValueObject => ({
-  value: null,
-  unit: "text",
-  source: { url: "local", title: "הזנתם", publisher: "אתם", strength: "entered" },
-  checked: added,
-  effective_from: null,
-  effective_to: null,
-  update_rule: "provider-set",
-  rule_ids: ["TXS-14"],
-  state: "entered",
-  notes: "a fund the person typed: the site read none of its documents, so whether it is a foreign-investment fund is not known (F-04)",
-});
-
 /** No domicile is typed: a foreign fund's own country is not known, so no rule that reads one applies to it. */
 const UNKNOWN_DOMICILE = "unknown";
 
@@ -331,9 +317,7 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     currency: foreign ? (currencyOfIndex && !isShekel(currencyOfIndex) ? currencyOfIndex : "USD") : "NIS",
     trading_currency_on_tase: f.kind === "abroad" ? null : "NIS",
     distribution_policy: f.payout,
-    // TXS-14, F-04: whether a typed Israeli fund is a foreign-investment fund is not known (no document of it was read), so its status is
-    // null and, on an index in a foreign currency, it is run under both readings of TXS OQ26, as a collected fund whose status is not known
-    tax_status: { il_fund_tax_track: foreign ? null : "exempt", tase_foreign_fund_90pct_test: null, ...(foreign ? {} : { foreign_investment_fund: notKnownStatus(f.added) }) },
+    tax_status: { il_fund_tax_track: foreign ? null : "exempt", tase_foreign_fund_90pct_test: null },
     fees: { fixed_management: f.fixed, variable_management: foreign ? null : f.variable, trustee: foreign ? null : f.trustee, tracking_difference_12m: null, median_spread: null, fund_level_withholding_drag: null },
     dimensions: {},
     prospectus: { url: "local", date: null },
@@ -368,7 +352,11 @@ function inputsOf(terms: { shown: EntryTerm[] }, owner: string): Record<string, 
 }
 
 export interface EnteredInBundle {
-  /** By account id: a house's group picked on the page, priced as an account built on that house (F-101, lib/group-pick.ts), its tariff built per run. */
+  /**
+   * By account id: an account built on a house, priced on that house's list with its own prices over it (F-101), its tariff built per run.
+   * No page fills it: the move tests price a typed account through it, their oracle for what it left before its move into a deal
+   * (deal-account/move-fixtures.ts). `bases` likewise.
+   */
   layered: Record<string, NonNullable<ProviderInput["layered"]>>;
   /** By account id: the house such an account stands on. It is priced where that house is, on that house's own reading of its price list, and nowhere else. */
   bases?: Record<string, string>;

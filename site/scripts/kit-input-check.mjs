@@ -871,6 +871,20 @@ async function liftSheetCheck(browser, base) {
       await page.keyboard.press("Escape");
       await page.mouse.up();
       await page.evaluate(settled);
+      // carried out over the rows and back, slowly (a carry lasting longer than any short guard), and let go on itself: its press and
+      // release are a click on it, which the carry swallows, so the fee is not added
+      const name = (await fee.innerText()).trim();
+      await page.mouse.move(f.x, f.y);
+      await page.mouse.down();
+      await page.mouse.move(f.x - 12, f.y - 4, { steps: 3 });
+      await page.mouse.move(f.x - 200, f.y + 160, { steps: 40 });
+      // back to where the fee stands now (the carry may have scrolled the sheet's body)
+      const back = center(await fee.boundingBox());
+      await page.mouse.move(back.x, back.y, { steps: 40 });
+      await page.mouse.up();
+      await page.evaluate(settled);
+      const still = await page.evaluate((n) => [...document.querySelectorAll("dialog[open] [data-drag-source]")].some((el) => el.innerText.trim() === n), name);
+      if (!still) found.push(`lift in a sheet: a fee carried away and let go back on itself was added ("${name.replace(/\s+/g, " ").slice(0, 30)}")`);
     }
     // the menu of actions the row strip's plus opens (ActionMenu, as a grip's menu)
     const strip = page.locator('dialog[open] button[data-add-slot="row"]', { hasText: "חלק לכל השורה" }).last();

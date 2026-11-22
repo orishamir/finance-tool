@@ -1,5 +1,5 @@
 // A typed account moved into a deal (method §10.4). An account built on a house or on a group leaves what it left before on every fund of every
-// index, to the shekel, priced before as the page still prices an account built on a house (F-101, lib/group-pick.ts). An account typed
+// index, to the shekel, priced before as an account built on a house (F-101, in layers on the house's list tariff, move-fixtures.ts). An account typed
 // from scratch has a fee for each field, a fee with no price where a field was left empty, and cases only for what it sold; what it leaves
 // is checked against the figures the golden script printed for it (custom-entries.test.ts). A fund that differs is one of F-128's stated
 // exceptions, F-128's reading of the house, which the move carries: a monthly purchase abroad on a recurring plan (at Interactive Israel

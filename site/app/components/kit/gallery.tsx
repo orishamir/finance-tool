@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router";
-import { brands, companyFocus, dealCases as caseWords, feeDeal as dealWords, guideBlocks, formulaKeys, groupPrices as groupWordsDemo, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
+import { brands, companyFocus, dealCases as caseWords, feeDeal as dealWords, guideBlocks, formulaKeys, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Copy, Lock, Plus, X, Zap } from "lucide-react";
@@ -20,7 +20,7 @@ import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
 import { Sheet } from "../Sheet";
-import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
+import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, PartFacts, StretchBar, StretchChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 import { linearScale, steppedScale } from "./slider-scale";
 
@@ -966,9 +966,6 @@ function Words({ today }: { today: string }) {
               <KeyValue label={g.sample.kv[2]!}>
                 <Num value={s.sourced} size="cell" display="12" />
               </KeyValue>
-              <KeyValue label={g.sample.kv[0]!} size="xs">
-                <Num value={s.rate} size="cell" />
-              </KeyValue>
             </dl>
           </State>
           <State label="KeyValueList">
@@ -1559,12 +1556,6 @@ function PageFoldTable({ row }: { row: (key: string, name: string, n: string, ra
 }
 
 /** Three groups of a made-up house: the first two share a price (one sub-row, two ends), the third names funds. */
-/** The fold with the first group pickable, as the index page offers it. */
-function GroupChoiceDemo() {
-  const [selected, setSelected] = useState<string | null>("group:0");
-  return <GroupPriceFold entries={sampleGroups()} house={g.sample.groups.house} href="/kit" open choice={{ can: (k) => k === "group:0", selected, onChoose: setSelected }} />;
-}
-
 function sampleGroups(): GroupEntry[] {
   const w = g.sample.groups;
   const source = { url: "#kit", title: w.doc, page: 2, quote: w.quote };
@@ -1672,6 +1663,7 @@ function TicketDemo() {
       }
       start={
         <TicketPart label={g.sample.tile.account} swatch="bg-chart-by-account" name={g.sample.tile.name}>
+          <PartFacts labels={[<Tag key="t">{r.factTag}</Tag>]} details={[<DocLink key="d" look="inline" href="/kit">{r.factLink}</DocLink>]} />
           <ReceiptLine size="sm" edge="border-chart-by-account" label={r.accountLine} value="−1,200 ₪" parts={<ReceiptLine size="sm" label={r.accountLine} value="−1,200 ₪" sub={r.rate} />} />
         </TicketPart>
       }
@@ -1831,11 +1823,8 @@ function Lists({ today }: { today: string }) {
         <State label="under a house's row: closed by default; a tap opens one sub-row per price, two groups with the same price on one sub-row, and the link to the house's page" wide>
           <GroupPriceFold entries={sampleGroups()} house={g.sample.groups.house} href="/kit" />
         </State>
-        <State label={'on the house\'s own page: the same rows, each group\'s name under its short words, a line of where the words stand, a link under a group the index page offers as a radio (to that page with it picked), and with headHelp what "names no fund" means as the "?" beside "מה זול יותר" instead of a note under the rows'} wide>
-          <GroupPriceRows entries={sampleGroups()} sources headHelp own={{ can: (k) => k === "group:0", link: () => <a href="/kit" className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWordsDemo.ownAccount}</a> }} />
-        </State>
-        <State label="on the index page: a radio before each group the person can pick (its price names funds and ends after a printed number of months), the picked one checked, and a line on why the others have none" wide>
-          <GroupChoiceDemo />
+        <State label={'on the house\'s own page: the same rows, each group\'s name under its short words, a line of where the words stand, and with headHelp what "names no fund" means as the "?" beside "מה זול יותר" instead of a note under the rows'} wide>
+          <GroupPriceRows entries={sampleGroups()} sources headHelp />
         </State>
       </Demo>
       <Demo name="DocLink" use={g.uses.DocLink}>
@@ -1955,12 +1944,10 @@ function Lists({ today }: { today: string }) {
               </span>
             </span>
           </State>
-          <State label="beside a house's name on a card, with the card's line under it">
-            <span className="flex flex-col gap-1 text-sm text-muted-foreground">
-              <span className="flex items-center gap-2">
-                IBI <SourcedTag value={phoneSample(today)}>{investWords.pair.phoneTag}</SourcedTag>
-              </span>
-              <span className="text-xs">{investWords.pair.phoneLine("IBI")}</span>
+          <State label="among a receipt part's labels, under the account's name (PartFacts)">
+            <span className="flex flex-col gap-1.5">
+              <span className="text-2xl font-semibold">IBI</span>
+              <PartFacts labels={[<Tag key="standing">{investWords.pair.standingTag}</Tag>, <SourcedTag key="phone" value={phoneSample(today)}>{investWords.pair.phoneTag}</SourcedTag>]} details={[]} />
             </span>
           </State>
         </Grid>
@@ -2269,7 +2256,7 @@ function Lists({ today }: { today: string }) {
           </div>
         </State>
       </Demo>
-      <Demo name="ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptTicket, TicketPart, ReceiptStub" use={g.uses.Receipt}>
+      <Demo name="ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptTicket, TicketPart, PartFacts, ReceiptStub" use={g.uses.Receipt}>
         <State label="the lines top to bottom and one total under the double rule; a line's own lines behind a tap on its name (opens), in a sheet, its amount keeping its own tap; a caution ? beside the total for the catch it rests on">
           <ReceiptPaper className="max-w-sm" label={g.sample.receipt.title}>
             <div className="flex flex-col gap-2.5 text-sm">
@@ -2295,26 +2282,22 @@ function Lists({ today }: { today: string }) {
             <ReceiptLine size="sm" edge="border-chart-by-account" label={g.sample.receipt.account} value="−1,200 ₪" parts={<ReceiptLine size="sm" label={g.sample.receipt.accountLine} value="−1,200 ₪" sub={g.sample.receipt.rate} />} />
           </ReceiptPaper>
         </State>
-        <State label="the ticket (ReceiptTicket): the same lines across a wide column, the account's part and the fund's, each with its own lines, either side of the lines that add up to the total, notches where the middle's dashed edges meet the ticket's; it stands only from 1280 px, and the gallery shows it only there" wide>
+        <State label="a part's facts under its name, as in the sheet a part's name opens below 1280 px (PartFacts): a row of labels, then a quiet row of a document's link and short facts; an empty item is left out, so a fact that does not hold takes no room">
+          <ReceiptPaper className="max-w-sm" label={g.sample.receipt.title}>
+            <span className="text-lg font-semibold">{g.sample.tile.name}</span>
+            <PartFacts
+              labels={[<Tag key="t">{g.sample.receipt.factTag}</Tag>, null, <SourcedTag key="phone" value={phoneSample(today)}>{investWords.pair.phoneTag}</SourcedTag>]}
+              details={[<DocLink key="d" look="inline" href="/kit">{g.sample.receipt.factLink}</DocLink>, false, <span key="f">{g.sample.receipt.factLine}</span>]}
+            />
+          </ReceiptPaper>
+        </State>
+        <State label="the ticket (ReceiptTicket): the same lines across a wide column, the account's part and the fund's, each with its facts under its name (PartFacts: a row of labels, a quiet row of links) and its own lines, either side of the lines that add up to the total, notches where the middle's dashed edges meet the ticket's; it stands only from 1280 px, and the gallery shows it only there" wide>
           <div className="max-xl:hidden">
             <TicketDemo />
           </div>
         </State>
         <State label="the stub (ReceiptStub), drawn in place here: on the page it is pinned to the screen's foot while the receipt is above the screen, and a tap leads back up to it">
           <StubDemo />
-        </State>
-      </Demo>
-      <Demo name="FactTile, TileJoin" use={g.uses.FactTile}>
-        <State label="two tiles, one under the other, joined by the round +">
-          <div className="flex max-w-sm flex-col">
-            <FactTile edge="border-chart-by-account" head={g.sample.tile.account} link={<a className="text-link" href="/kit">{g.sample.tile.link}</a>} name={g.sample.tile.name}>
-              {g.sample.tile.rows.map((r, i) => <KeyValue key={r} size="xs" label={r}>{g.sample.tile.values[i]}</KeyValue>)}
-            </FactTile>
-            <TileJoin />
-            <FactTile edge="border-chart-by-fund" head={g.sample.tile.fund} name={g.sample.receipt.fund}>
-              <KeyValue size="xs" label={g.sample.tile.rows[0]!}>{g.sample.tile.values[0]}</KeyValue>
-            </FactTile>
-          </div>
         </State>
       </Demo>
       <Demo name="CostStack" use={g.uses.CostStack}>

@@ -5,14 +5,34 @@ import { fxRunInput } from "../fx";
 import { buildIndicesBundle } from "../providers.server";
 import { entered } from "../value";
 import { buildInvest, indexById } from "../invest";
-import type { BundleSnapshot, WorkbenchInputs } from "../providers";
+import type { BundleSnapshot, IndicesBundle, WorkbenchInputs } from "../providers";
 import type { CustomBroker } from "../custom-entries";
-import { withGroupAccount } from "../group-pick";
-import { baseOf } from "../own-account";
+import { baseOf, groupInputs, layeredOf } from "../own-account";
 import { dealProviderId, withDeals } from "./bundle";
 import { dealOfTypedAccount, movedDealId, type MoveContext } from "./move";
 import { readDeal, type FeeDeal } from "../fee-deal/model";
 import { onDealsTerms } from "./exceptions-fixtures";
+
+/**
+ * The bundle with a typed account in it, as it was priced before the move: the house's own record under the account's name, so its lines,
+ * what it sells and its kind are the house's, priced in layers on the house's own list tariff (F-101, `layeredOf`) where the house is.
+ */
+function withTypedAccount(bundle: IndicesBundle, house: BundleSnapshot, b: CustomBroker): IndicesBundle {
+  const { provider, tariff, snapshot, missing, missing_reason, missing_reason_he, lines, averages, minimums, notice_rule_ids } = house;
+  const own: BundleSnapshot = { id: b.id, provider: { ...provider, name_he: b.name, part_of: undefined }, tariff, snapshot, missing, missing_reason, ...(missing_reason_he ? { missing_reason_he } : {}), lines, averages, minimums, notice_rule_ids, availability: house.availability ?? [], ...(house.fundByFund ? { fundByFund: house.fundByFund } : {}) };
+  const held = bundle.entered;
+  return {
+    ...bundle,
+    snapshots: [...bundle.snapshots, own],
+    entered: {
+      layered: { ...held?.layered, [b.id]: layeredOf(b) },
+      bases: { ...held?.bases, [b.id]: house.id },
+      inputs: { ...held?.inputs, [b.id]: groupInputs(b) },
+      exposures: held?.exposures ?? {},
+      shekelFunds: held?.shekelFunds ?? [],
+    },
+  };
+}
 
 export const data = feesData();
 export const bundle = buildIndicesBundle();
@@ -70,7 +90,7 @@ export type Row = { ix: string; fund: string; abroad: boolean; before: number | 
 export function compare(accounts: CustomBroker[], terms = false, p: WorkbenchInputs = plan, fxChange = 0, indices?: readonly string[]): Map<string, Row[]> {
   const deals = accounts.map((a) => dealOfTypedAccount(a, ctx));
   const base = terms ? onDealsTerms(bundle, accounts.map((a, i) => ({ house: a.base!.houseId, deal: deals[i]! })), data.kinds).bundle : bundle;
-  const before = accounts.reduce((b, a) => withGroupAccount(b, base.snapshots.find((s) => s.id === a.base!.houseId) as BundleSnapshot, a), base);
+  const before = accounts.reduce((b, a) => withTypedAccount(b, base.snapshots.find((s) => s.id === a.base!.houseId) as BundleSnapshot, a), base);
   const both = withDeals(before, deals, data.kinds);
   const out = new Map(accounts.map((a) => [a.id, [] as Row[]]));
   for (const e of bundle.exposures) {

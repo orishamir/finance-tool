@@ -9,25 +9,27 @@
 // fold under the list, with why. Each row is one line: a name and one figure. From 1280 px the two lists stand
 // either side of a ruler (`StretchChart`), the chosen account's stretch a band on it, every fund a spot in the band joined to its row; below
 // that they stand one under the other, and each fund row carries a small copy of the chosen account's stretch with its own spot. What a
-// row said beyond this (the house's groups, its standing-order and phone-only prices, a fund's labels and gap from the index) is in the
-// card of the receipt's pair; what holds for the chosen row alone (an open question, no unit price, a price for some customers) is said
-// under the lists. A row the person typed keeps its terms with the way to change them, on a line under it. Before any pick the pair is the
-// page's own and is named by where it is shown, the receipt (`invest.shownPair`); with a group picked, its house's row keeps its price-list
-// stretch and place (D43), and the fund list is priced at the group's prices, as the receipt is.
+// row said beyond this (its standing-order and phone-only prices, a fund's labels and gap from the index) is in the receipt's account
+// and fund parts, as labels and short facts under each name: the price list with the day it was collected, a fund typed by hand marked
+// as the person's, and a fund's kind, number, document, yield and manager. The page shows no star on the cheapest account, no
+// house's full name as a link, no deal's basis, no note that a fund is the same as one bought another way, and no choice of a customer
+// group: every house is priced at its general price (D43, D103). What
+// holds for the chosen row alone (an open question, no unit price, a standing order's price the figure leaves out, whose words open the
+// price, the record's reason and their documents) is said under the lists. A deal the person added that still misses a figure says which, on a
+// line under its row. Before any pick the pair is the page's own and is named by where it is shown, the receipt (`invest.shownPair`).
 import { useMemo, useState, type ReactNode, type RefObject } from "react";
 import { flags, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
 import { fmt } from "../../lib/format";
 import { shortFundName } from "../../lib/fund-name";
 import { asideLines, dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWay, type InvestView, type WayPrice } from "../../lib/invest";
-import { isGroupProvider } from "../../lib/group-pick";
 import { leftOutOf } from "../../lib/left-out";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
-import { Num } from "../provenance";
-import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, MixedName, PickList, StretchBar, StretchChart, Tag, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
+import { Num, Term } from "../provenance";
+import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, FundEditMark } from "./custom-entries";
 import { AddDealButton, DealEditMark, DealMissing, DeletedLine, NotMovedLines, useDealAccounts } from "./deal-account";
 import { dealIdOf, isDealProviderId } from "../../lib/deal-account/bundle";
@@ -36,9 +38,9 @@ import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
 import { ANCHOR, verdictOf } from "./receipt";
-import { AbroadNotes, OwnBankField, allFunds, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
+import { AbroadNotes, OwnBankField, allFunds, asideParts, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
 
-/** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the chosen pair's card has it whole. */
+/** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the receipt has it whole. */
 export const listName = (view: InvestView, name: string) => shortFundName(name, [pillName(view.index.name), ...(view.index.exposure?.names.he ?? []), ...(view.index.exposure?.names.en ?? []), ...(view.index.custom ? [view.index.custom.name] : [])]);
 
 export interface ListsProps {
@@ -55,8 +57,6 @@ export interface ListsProps {
   onPick: OnPick;
   /** The tap before changed the other half too: the chosen row of the list tapped says so, with the way back. */
   moved: Moved | null;
-  /** The house's group picked in the account card: `pick.house` is then the held account priced at it, and this its house. */
-  group: { house: string; key: string; name: string } | null;
   /** The bank where the person already has a current account, and its setter (D64). */
   ownBank?: { value: string | null; onChange: (id: string | null) => void };
   /** From 1280 px: the lists stand either side of the ruler, under the receipt's ticket (`above`), whose total the ruler's point joins. */
@@ -96,11 +96,11 @@ const figureCell = (word: ReactNode, amount: ReactNode, v: number) => (
     <span className={cx("min-w-[4.75rem] text-start text-sm text-foreground", figureFit(v))}>{amount}</span>
   </span>
 );
-/** A line under a row (a typed row's terms, a tap's way back), across the row. */
+/** A line under a row (what a deal still misses, a tap's way back), across the row. */
 const underRow = (node: ReactNode) => <span className="col-span-full pt-0.5 pb-1">{node}</span>;
 
 export function PairLists(props: ListsProps) {
-  const { view, bundle, plan, livePlan, today, pick, chosen, onPick, moved, group, ownBank, ruler = false, above } = props;
+  const { view, bundle, plan, livePlan, today, pick, chosen, onPick, moved, ownBank, ruler = false, above } = props;
   const dealApi = useDealAccounts();
   const sp = c.shownPair(chosen);
   const funds = allFunds(view);
@@ -129,8 +129,7 @@ export function PairLists(props: ListsProps) {
     }
     return out;
   }, [kinds, range, bundle, view, plan, pick.fund, pick.house, mine, pickName, pickKey, today, sp.diffAbout]); // `funds` and `fund` are left out: they are the view's
-  const baseHouse = group?.house ?? pick.house;
-  const house = providerName(view, baseHouse);
+  const house = providerName(view, pick.house);
   const selAt = fund?.byHouse[pick.house];
   if (!fund || !house || !priced(selAt)) return null;
 
@@ -138,9 +137,9 @@ export function PairLists(props: ListsProps) {
   // on an index with both kinds, only the chosen fund's kind sets a stretch: a hedged fund is another holding (D28, `opensOn`); a pair on
   // an open rule is shown, not ranked (G-18), and sets none either (`stretchOf`)
   const kindFunds = kinds ? funds.filter((f) => kindOf(f.rec) === mine) : funds;
-  const providers = view.providers.filter((p) => !isGroupProvider(p));
+  const providers = view.providers;
   const stretches = new Map<string, Stretch | null>(providers.map((p) => [p.id, stretchOf(kindFunds, p.id)]));
-  // the funds' stretch: the account the receipt prices (a picked group's account, at the group's prices)
+  // the funds' stretch: the account the receipt prices
   const pickStretch = stretchOf(kindFunds, pick.house);
   const point = selAt.valueN;
   // the scale over every stretch; with none (no account ranks a fund of the kind), the values shown
@@ -191,7 +190,7 @@ export function PairLists(props: ListsProps) {
   const accountRows: PickRow[] = [
     ...pricedHouses.map((p): PickRow => {
       const s = stretches.get(p.id)!;
-      const selected = p.id === baseHouse;
+      const selected = p.id === pick.house;
       const best = funds.find((f) => f.rec.id === s.bestFund)!.byHouse[p.id];
       return {
         key: p.id,
@@ -208,7 +207,7 @@ export function PairLists(props: ListsProps) {
       };
     }),
     ...unrankedHouses.map((p): PickRow => {
-      const selected = p.id === baseHouse;
+      const selected = p.id === pick.house;
       return {
         key: p.id,
         selected,
@@ -545,8 +544,8 @@ export function PairLists(props: ListsProps) {
 
   // ---------------------------------------------------------------- what the page says of the chosen rows, under both lists
   const at = selAt;
-  const snap = snapOf(baseHouse);
-  const otherPrice = snap?.groups?.state === "prices" || asideLines(snapOf(pick.house), at.aside).length > 0;
+  // a standing order's price the figure leaves out: the words that say so open the price, the record's reason and their documents
+  const aside = asideParts(asideLines(snapOf(pick.house), at.aside));
   const chosenNotes = [
     at.open ? (
       <span key="open" className="inline-flex items-center gap-1 text-blocked-foreground">
@@ -555,7 +554,11 @@ export function PairLists(props: ListsProps) {
       </span>
     ) : null,
     fund.noUnitPrice ? <span key="unit">{c.pair.unitPriceMissing}</span> : null,
-    otherPrice ? <span key="other">{c.lists.otherPrice(short, sp.cardTitle)}</span> : null,
+    aside.length > 0 ? (
+      <span key="other">
+        <Tpl t={c.lists.otherPrice(short)} vars={{ price: <Term id={[]} name={c.lists.otherPriceWords} parts={aside}>{c.lists.otherPriceWords}</Term> }} />
+      </span>
+    ) : null,
   ].filter(Boolean);
   // what the ruler measures is its title, over it (`rulerHead`); under the lists, what holds for the chosen pair
   const note =
@@ -656,7 +659,7 @@ export function PairLists(props: ListsProps) {
         point={point}
         pointOpen={selAt.open}
         spots={spots}
-        chosenStart={baseHouse}
+        chosenStart={pick.house}
         chosenEnd={pick.fund}
         {...(above ? { above } : {})}
         tick={fmt.compactNisAxis}

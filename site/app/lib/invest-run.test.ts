@@ -28,7 +28,7 @@ const bundle = { funds: [] } as unknown as IndicesBundle;
 /** A request on the sweep, told apart by its plan's amount; what it was answered with lands in `got`. */
 function job(amount: number, got: Held<"changes">[]): Job<"changes"> {
   const plan = { amountNow: amount } as Asked<"changes">["ask"]["plan"];
-  return { asked: { bundle, ask: { index: { id: "i" } as Asked<"changes">["ask"]["index"], plan, house: "h", fund: "f", group: null, shares: [0] } }, live: true, done: (h) => got.push(h) };
+  return { asked: { bundle, ask: { index: { id: "i" } as Asked<"changes">["ask"]["index"], plan, house: "h", fund: "f", shares: [0] } }, live: true, done: (h) => got.push(h) };
 }
 const amounts = (posted: Asked<"changes">[]) => posted.map((a) => a.ask.plan.amountNow);
 
@@ -93,7 +93,7 @@ describe("an answer from the worker, as the page reads it (lib/invest-run.ts)", 
     const view = work.view(data, { index, plan, yourBroker: null });
     const pick = pickOfHeadline(view);
     if (!pick) throw new Error("the S&P 500 has a pair to price");
-    const ask = { index, plan, house: pick.house, fund: pick.fund, group: null, shares: [-20, 0, 20] };
+    const ask = { index, plan, house: pick.house, fund: pick.fund, shares: [-20, 0, 20] };
     const cloned = structuredClone(work.changes(data, ask));
     if (!cloned) throw new Error("the pair has a value left on the plan");
     const got = relink.changes({ bundle: data, ask }, cloned);
@@ -106,7 +106,7 @@ describe("an answer from the worker, as the page reads it (lib/invest-run.ts)", 
     const view = work.view(data, { index, plan, yourBroker: null });
     const pick = pickOfHeadline(view);
     if (!pick) throw new Error("the S&P 500 has a pair to price");
-    const ask = { index, plan, house: pick.house, fund: pick.fund, group: null, shares: [0] };
+    const ask = { index, plan, house: pick.house, fund: pick.fund, shares: [0] };
     const run = work.changes(data, ask);
     if (!run) throw new Error("the pair has a value left on the plan");
     expect(forPair(run, ask)).toBe(true);
@@ -139,7 +139,7 @@ describe("a worker that fails (lib/invest-run.ts, makeClient)", () => {
   const view = work.view(data, { index, plan, yourBroker: null });
   const pick = pickOfHeadline(view);
   if (!pick) throw new Error("the S&P 500 has a pair to price");
-  const ask = { index, plan, house: pick.house, fund: pick.fund, group: null, shares: [-20, 0, 20] };
+  const ask = { index, plan, house: pick.house, fund: pick.fund, shares: [-20, 0, 20] };
   const request = (): Asked<"changes"> => ({ bundle: data, ask });
   /** A client on stand-ins, each start the next; what it warned, and what each request was answered. */
   function client() {

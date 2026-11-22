@@ -146,13 +146,8 @@ function SourceLinks({ entries }: { entries: readonly GroupEntry[] }) {
  * (a house's own page). What "names no fund" means, when a sub-row carries it, is a note under the rows, or with `headHelp` a "?" beside
  * "מה זול יותר", whose cells it explains (a house's own page; the indices page's fold keeps the note).
  */
-export function GroupPriceRows({ entries, sources, className, own, choice, headHelp }: { entries: readonly GroupEntry[]; sources?: boolean; className?: string; /** What "names no fund" means as a "?" beside the head of the cells that say it, instead of a note under the rows. */ headHelp?: boolean; /** The caller's link under a sub-row: it gets the key of the sub-row's first group it can link (`group:<n>`, its place in the house's record); a house's page sends it to the index page with that group picked. */ own?: GroupLink; /** A radio before each group the person can pick (`group:<n>`), the picked one checked (opening the fold shows more choices). */ choice?: GroupChoice }) {
+export function GroupPriceRows({ entries, sources, className, headHelp }: { entries: readonly GroupEntry[]; sources?: boolean; className?: string; /** What "names no fund" means as a "?" beside the head of the cells that say it, instead of a note under the rows. */ headHelp?: boolean }) {
   const blocks = groupBlocks(entries);
-  // the sub-row's first entry that states a price in numbers: the one the account panel starts from
-  const startOf = (b: GroupBlock) => {
-    const e = own && b.entries.find((x) => own.can(`group:${entries.indexOf(x)}`));
-    return e ? `group:${entries.indexOf(e)}` : null;
-  };
   const marked = blocks.some((b) => b.funds !== "all");
   return (
     <div className={cx("flex flex-col gap-2", className)}>
@@ -184,11 +179,7 @@ export function GroupPriceRows({ entries, sources, className, own, choice, headH
                 return (
                   <tr key={e.name_he}>
                     <td className={cx("[overflow-wrap:anywhere]", own)}>
-                      {choice?.can(`group:${entries.indexOf(e)}`) ? (
-                        <GroupRadio choice={choice} k={`group:${entries.indexOf(e)}`} who={e.who_short_he ?? e.name_he} />
-                      ) : (
-                        <bdi>{e.who_short_he ?? e.name_he}</bdi>
-                      )}
+                      <bdi>{e.who_short_he ?? e.name_he}</bdi>
                       {sources && e.who_short_he && e.who_short_he !== e.name_he && <span className="block text-xs text-muted-foreground"><bdi>{e.name_he}</bdi></span>}
                     </td>
                     {i === 0 && (
@@ -207,15 +198,8 @@ export function GroupPriceRows({ entries, sources, className, own, choice, headH
               })}
               {sources && (
                 <tr>
-                  <td colSpan={3} className={cx("pt-0", own && startOf(b) && "border-b-0")}>
-                    <SourceLinks entries={b.entries} />
-                  </td>
-                </tr>
-              )}
-              {own && startOf(b) && (
-                <tr>
                   <td colSpan={3} className="pt-0">
-                    {own.link(startOf(b)!)}
+                    <SourceLinks entries={b.entries} />
                   </td>
                 </tr>
               )}
@@ -224,32 +208,7 @@ export function GroupPriceRows({ entries, sources, className, own, choice, headH
         </tbody>
       </table>
       {marked && !headHelp && <p className="text-xs text-muted-foreground max-w-measure">{copy.noFundNote}</p>}
-      {choice && entries.some((_, i) => choice.can(`group:${i}`)) && <p className="text-xs text-muted-foreground max-w-measure">{copy.pickNote}</p>}
     </div>
-  );
-}
-
-/** The groups a person can pick in a fold, the picked one, and what picking does. */
-/** A link under each sub-row with a group the caller can link, to that group (a house's page: the index page with it picked). */
-export interface GroupLink {
-  can: (key: string) => boolean;
-  link: (key: string) => ReactNode;
-}
-
-export interface GroupChoice {
-  can: (key: string) => boolean;
-  selected: string | null;
-  onChoose: (key: string) => void;
-}
-
-/** A group's radio and its words, one 44 px target; a click on it is not a pick of the row around it (a button, `PickList`). */
-function GroupRadio({ choice, k, who }: { choice: GroupChoice; k: string; who: string }) {
-  const on = choice.selected === k;
-  return (
-    <button type="button" role="radio" aria-checked={on} aria-label={copy.pickLabel(who)} onClick={() => choice.onChoose(k)} className="flex items-start gap-2 min-h-target -my-2 py-2 text-start cursor-pointer focus-visible:outline-2 focus-visible:outline-ring rounded-sm">
-      <span aria-hidden="true" className={cx("size-4 shrink-0 rounded-full border-[1.5px] mt-1", on ? "border-[5px] border-primary" : "border-input")} />
-      <bdi>{who}</bdi>
-    </button>
   );
 }
 
@@ -257,7 +216,7 @@ function GroupRadio({ choice, k, who }: { choice: GroupChoice; k: string; who: s
  * The closed line under a house's row on a comparison: a "not in the figure" tag and who gets another price; it opens, at the person's
  * own tap, to the sub-rows and a link to the house's page, where the sources stand. Nothing in it is a figure of the ranking.
  */
-export function GroupPriceFold({ entries, house, href, open, onOpenChange, className, choice }: { entries: readonly GroupEntry[]; /** The house's short name, for the link. */ house: string; /** The house's page, where the sources stand. */ href: string; open?: boolean; onOpenChange?: (open: boolean) => void; className?: string; /** See `GroupPriceRows`. */ choice?: GroupChoice }) {
+export function GroupPriceFold({ entries, house, href, open, onOpenChange, className }: { entries: readonly GroupEntry[]; /** The house's short name, for the link. */ house: string; /** The house's page, where the sources stand. */ href: string; open?: boolean; onOpenChange?: (open: boolean) => void; className?: string }) {
   if (entries.length === 0) return null;
   return (
     <Disclosure
@@ -274,7 +233,7 @@ export function GroupPriceFold({ entries, house, href, open, onOpenChange, class
       }
     >
       <div className="flex flex-col gap-2 pb-2">
-        <GroupPriceRows entries={entries} choice={choice} />
+        <GroupPriceRows entries={entries} />
         <GroupPageLink house={house} href={href} />
       </div>
     </Disclosure>

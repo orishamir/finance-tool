@@ -1,7 +1,8 @@
 // The index page's pair (spec 8dd1f013:research/specs/2026-10-27-invest-improvements 3.8 to 3.10): an account and a fund, and what the
-// page says of them. Here: the pair's verdict and ties (the pair set beside the chosen one, which the receipt, the fees panel and the
-// chosen pair's card read), how a pick moves the other half, and the pieces the lists (lists.tsx), the chosen pair's card (chosen.tsx) and the custom index's lists (no-fund.tsx) share: a house's groups,
-// standing-order and phone-only prices, the notes on prices abroad, the own-bank field, and a fund's gap from its index.
+// page says of them. Here: the pair's verdict and ties (the pair set beside the chosen one, which the receipt and the fees panel read),
+// how a pick moves the other half, and the pieces the lists (lists.tsx), the receipt's parts (receipt.tsx) and the custom index's lists
+// (no-fund.tsx) share: a house's groups (the custom index's lists only), standing-order and phone-only prices, the notes on prices abroad,
+// the own-bank field, and a fund's gap from its index.
 import { mayaFundHref } from "../../lib/sources";
 import { Fragment, type ReactNode } from "react";
 import { isTie, type GapList } from "@finance-tool/engine";
@@ -14,19 +15,16 @@ import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/la
 import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { Num, Ruled, Term, type SheetPart } from "../provenance";
-import { HelpMark, ClampedText, gershayim, Disclosure, DocLink, LabelRow, NoteList, SelectField, Tag, Tpl, GroupPriceFold, type GroupChoice } from "../kit";
-import { isGroupPrice } from "../../lib/group-pick";
+import { HelpMark, ClampedText, gershayim, Disclosure, DocLink, LabelRow, NoteList, SelectField, Tag, Tpl, GroupPriceFold, fill } from "../kit";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { DealFromHouseButton } from "./deal-account";
 import { StateTag } from "../provenance";
-import { sourceHref, withoutCodes } from "../../lib/sources";
+import { sourceHref, withoutCodes, type CitedPlace } from "../../lib/sources";
 
 export interface Pick {
   house: string;
   fund: string;
-  /** A group of the house picked in its fold (`group:<n>`): the pair is priced at that group's prices, beside the ranking (D43). */
-  group?: string;
 }
 
 /** A computed shekel figure of this page, whole shekels (the totals and gaps the bars and lists show). */
@@ -64,14 +62,14 @@ export function bestFor(view: InvestView, pick: Pick): Pick | null {
   if (!rec || opensOn(rec)) return pickOfHeadline(view);
   const top = allFunds(view)
     .filter((f) => !opensOn(f.rec))
-    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !isGroupPrice(at) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
     .sort((a, b) => b.v - a.v)[0];
   return top ? { house: top.house, fund: top.fund } : pickOfHeadline(view);
 }
 
-/** Every way a house prices on the index, a group's price aside. */
+/** Every way a house prices on the index. */
 const waysOf = (view: InvestView, house: string): { fund: FundWay; at: WayPrice }[] =>
-  allFunds(view).flatMap((f) => { const at = f.byHouse[house]; return priced(at) && !isGroupPrice(at) ? [{ fund: f, at }] : []; });
+  allFunds(view).flatMap((f) => { const at = f.byHouse[house]; return priced(at) ? [{ fund: f, at }] : []; });
 
 /** A house's way that leaves the most: a ranked one first, else one on an open rule, which is shown and not ranked. Its row names it when the picked fund has no price there. */
 export function otherWay(view: InvestView, house: string): { fund: FundWay; at: WayPrice } | null {
@@ -212,8 +210,8 @@ export interface Moved {
   at: Pick;
   /** The half that changed without being tapped. */
   half: "house" | "fund";
-  /** Set by the page: puts back what was there before the tap, the page's own pair or a group included (the way back made the page's
-   *  pair the person's pick, and dropped a group). */
+  /** Set by the page: puts back what was there before the tap, the page's own pair included (the way back made the page's pair the
+   *  person's pick). */
   back?: () => void;
 }
 export type OnPick = (p: Pick, moved?: Moved) => void;
@@ -228,7 +226,7 @@ export function pickHalf(view: InvestView, cur: Pick, change: Partial<Pick>, onP
 export function bestOfKind(view: InvestView, kind: Kind): Pick | null {
   const top = allFunds(view)
     .filter((f) => kindOf(f.rec) === kind)
-    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !isGroupPrice(at) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
     .sort((a, b) => b.v - a.v)[0];
   return top ? { house: top.house, fund: top.fund } : null;
 }
@@ -245,15 +243,12 @@ export function kindPairs(view: InvestView, pick: Pick): Record<Kind, Pick> | nu
 
 // ---------------------------------------------------------------- the result
 
-/** F-109 (D94): a way's line on whole units, where some monthly deposit bought no unit; null where none did. */
-export const unitsLine = (units: WayPrice["units"]): string | null => (!units || units.skipped === 0 ? null : units.skipped * 2 > units.monthly ? c.pair.unitsEvery : c.pair.unitsSome);
-
 /** Every ranked pair of the same kind (hedged or not) as `best`, at every house, what it leaves, most first. */
 function pairsOfKind(view: InvestView, best: Pick): { house: string; fund: string; v: number }[] {
   const bestRec = allFunds(view).find((f) => f.rec.id === best.fund)?.rec;
   return allFunds(view)
     .filter((f) => !bestRec || opensOn(f.rec) === opensOn(bestRec))
-    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !isGroupPrice(at) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
     .sort((a, b) => b.v - a.v);
 }
 
@@ -284,19 +279,10 @@ export function tieSet(view: InvestView, best: Pick | null, theta: number): { ho
 }
 /**
  * The best pair is crowned only when it is alone in its tie set (P-01, F-80; a pair 43 ₪ ahead, 0.05%, took the star).
- * Within the threshold the pairs share the top, and no star is drawn: in the receipt, the fees panel and the account tile alike.
+ * Within the threshold the pairs share the top, and no star is drawn.
  */
 export function crowned(view: InvestView, best: Pick | null, theta: number): boolean {
   return tieCount(view, best, theta) === 1;
-}
-/**
- * The account the chosen pair's account tile stars, from the same tie set: the one house every pair of the set is at, else none (on the
- * S&P 500 three of Psagot's own funds can be within the threshold and no other house: no pair is crowned, and Psagot is starred). The
- * verdict speaks of pairs and the account tile of accounts: a set of three pairs at one house crowns no pair and crowns the house.
- */
-export function crownedHouse(view: InvestView, best: Pick | null, theta: number): string | null {
-  const set = tieSet(view, best, theta);
-  return set.length > 0 && set.every((x) => x.house === set[0]!.house) ? set[0]!.house : null;
 }
 /**
  * The funds of the tie set, each once, the best one's first: the fund list counts funds, not pairs (the same
@@ -315,7 +301,7 @@ export function inTieSet(view: InvestView, best: Pick | null, p: Pick, theta: nu
   return tieSet(view, best, theta).some((x) => x.house === p.house && x.fund === p.fund);
 }
 
-/** The pair a pick is set against, and what the page says of the two (F-80, P-01): one reading for the receipt in the side rail and the
+/** The pair a pick is set against, and what the page says of the two (F-80, P-01): one reading for the receipt above the lists and the
  * fees panel under the lists, so the two never disagree. The pairs are priced once per plan (`pairCostsKept`). */
 export function pairVerdict(view: InvestView, bundle: IndicesBundle, plan: WorkbenchInputs, pick: Pick, chosen: boolean) {
   const best = bestFor(view, pick);
@@ -325,8 +311,8 @@ export function pairVerdict(view: InvestView, bundle: IndicesBundle, plan: Workb
   const other = onBest ? runnerUp(view, pick) : best;
   const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });
   const pcOther = other ? pairCostsKept({ bundle, index: view.index, plan, fundId: other.fund, providerId: other.house }) : null;
-  // the tie set of F-80: every ranked pair within the site's tie threshold of the best one (P-01); crowned when it is alone, as in the
-  // account tile (with the person's own pick far from the best, the best pair is still in a tie and is not crowned)
+  // the tie set of F-80: every ranked pair within the site's tie threshold of the best one (P-01); crowned when it is alone
+  // (with the person's own pick far from the best, the best pair is still in a tie and is not crowned)
   const theta = tieShareOf(bundle);
   const n = tieCount(view, best, theta);
   // the funds the tied pairs hold, each once: the fund list counts these, and the words name both counts where they differ
@@ -376,11 +362,10 @@ export function barScale(costs: number[]): number {
  * A house's group prices, on its row and never in its figure (D43): one closed line that opens, at the person's own
  * tap, to a sub-row per price. The line belongs to the house, so a re-sort or a new input never changes the row's height.
  */
-export function GroupLine({ id, house, snapshots, open, onOpen, choice }: { id: string; house: string; snapshots: IndicesBundle["snapshots"]; open: boolean; onOpen: (id: string, open: boolean) => void; choice?: GroupChoice }) {
+export function GroupLine({ id, house, snapshots, open, onOpen }: { id: string; house: string; snapshots: IndicesBundle["snapshots"]; open: boolean; onOpen: (id: string, open: boolean) => void }) {
   const g = snapshots.find((s) => s.id === id)?.groups;
   if (!g || g.state !== "prices") return null;
-  // the groups the person can pick are radios in the fold, in place of a link to the account panel on every sub-row
-  return <GroupPriceFold className="col-start-2 col-end-[-1]" entries={g.entries} house={house} href={brokeragePagePath(id)} open={open} onOpenChange={(o) => onOpen(id, o)} {...(choice ? { choice } : {})} />;
+  return <GroupPriceFold className="col-start-2 col-end-[-1]" entries={g.entries} house={house} href={brokeragePagePath(id)} open={open} onOpenChange={(o) => onOpen(id, o)} />;
 }
 
 /**
@@ -401,12 +386,14 @@ export function AsideLine({ lines, company, open, onOpen }: { lines: readonly As
   );
 }
 
+/** A left-out price's minimum as its price list prints it, in shekels or dollars; null where it prints none in either. */
+const asideAmount = (v: NonNullable<AsideLineRecord["min"]>) => (typeof v.value !== "number" ? null : v.unit === "nis_per_trade" || v.unit === "nis" ? fmt.nis(v.value) : v.unit === "usd_per_trade" || v.unit === "usd" ? fmt.usd(v.value) : null);
+
 /** The words of a price left out of the figure (D41, D56): the printed price, the record's reason, and its source; null with none to say. */
-export function asideWords(lines: readonly AsideLineRecord[], company: string): ReactNode {
+function asideWords(lines: readonly AsideLineRecord[], company: string): ReactNode {
   const l = lines[0];
   if (!l) return null;
-  const amount = (v: NonNullable<AsideLineRecord["min"]>) => (typeof v.value !== "number" ? null : v.unit === "nis_per_trade" || v.unit === "nis" ? fmt.nis(v.value) : v.unit === "usd_per_trade" || v.unit === "usd" ? fmt.usd(v.value) : null);
-  const min = l.min && amount(l.min);
+  const min = l.min && asideAmount(l.min);
   const rate = typeof l.rate.value === "number" ? <Num value={ownBy({ ...l.rate } as SiteValue, company)} display={fmt.pct(l.rate.value)} /> : null;
   if (!rate) return null;
   return (
@@ -417,6 +404,33 @@ export function asideWords(lines: readonly AsideLineRecord[], company: string): 
       </DocLink>
     </>
   );
+}
+
+/**
+ * The same prices left out of the figure as sentences of a sheet (`Term`'s `parts`), for words that open them: for each, the printed price
+ * with the place it is printed (the minimum a sentence of its own where its place is another than the rate's), then the record's reason
+ * with the document it rests on. A sentence several prices share is said once, with the first one's document.
+ */
+export function asideParts(lines: readonly AsideLineRecord[]): SheetPart[] {
+  const out: SheetPart[] = [];
+  const doc = (s: CitedPlace & { title: string }) => ({ href: sourceHref(s), title: withoutCodes(s.title) });
+  const add = (p: SheetPart) => {
+    if (!out.some((q) => q.text === p.text)) out.push(p);
+  };
+  for (const l of lines) {
+    if (typeof l.rate.value !== "number") continue;
+    const min = l.min && asideAmount(l.min);
+    const rate = fmt.pct(l.rate.value);
+    const at = doc(l.rate.source);
+    if (!min || !l.min) add({ text: fill(c.pair.asideLineNoMin, { rate }), doc: at });
+    else if (doc(l.min.source).href === at.href) add({ text: fill(c.pair.asideLine, { rate, min }), doc: at });
+    else {
+      add({ text: fill(c.pair.asideLineNoMin, { rate }), doc: at });
+      add({ text: fill(c.pair.asideMin, { min }), doc: doc(l.min.source) });
+    }
+    add({ text: l.not_ranked.reason_he, doc: doc(l.not_ranked.source) });
+  }
+  return out;
 }
 
 /** What the account card says of its house, under its name: what it charges, its labels and its price list. */
@@ -600,15 +614,11 @@ export function gapNoteOf(recs: readonly FundWay["rec"][], states: readonly GapS
   });
 }
 
-/** F-92 (a) beside its label (the chosen fund's tile): the gap with its sign, and the years it rests on; the document that says what the index is opens from its sheet. */
+/** F-92 (a) after its words (the fund's part of the receipt): the gap with its sign, then the years it rests on, on one line where it fits; the document that says what the index is opens from its sheet. */
 export function GapCell({ rec, today, list }: { rec: FundWay["rec"]; today: string; /** F-92 (d): the list the fund is compared on (`gapListFor`). */ list: GapList }) {
   const state = gapStateOf(rec, list);
-  // a word in place of a figure stands where the figure would, at the figure's size ("לא מושווה" sat lower and smaller)
-  const note = (words: string) => (
-    <span className="flex flex-col leading-tight">
-      <span className="text-sm text-muted-foreground">{words}</span>
-    </span>
-  );
+  // a word in place of a figure stands where the figure would
+  const note = (words: string) => <span className="text-muted-foreground">{words}</span>;
   // F-92 (d): an index of unstated kind, or a gross one the fund is not fairly measured against on this list: no gap stands beside the others
   if (state === "unstated" || state === "gross-apart") return note(c.kinds.gapUnstated);
   const g = gapOf(rec, list);
@@ -617,8 +627,8 @@ export function GapCell({ rec, today, list }: { rec: FundWay["rec"]; today: stri
   // a fund the person typed has no report the site reads, so nothing is waiting to be collected (D105)
   if (!g || !val) return note(isCustomFund(rec) ? c.kinds.gapTyped : rec.domicile === "IL" ? c.kinds.gapNone : c.kinds.gapNotCollected);
   return (
-    <span className="flex flex-col leading-tight">
-      <span className="font-semibold">
+    <span className="inline-flex flex-wrap items-baseline gap-x-1.5">
+      <span className="font-semibold text-foreground">
         <Num value={val} display={fmt.signedPct(g.pct, 2)} />
       </span>
       <span className="text-xs text-muted-foreground whitespace-nowrap">{c.kinds.gapYears(g.years, rec.tracking_record?.years[0]?.year)}</span>

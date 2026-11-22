@@ -37,14 +37,12 @@ const classificationOrder = ["קופת גמל להשקעה", "קרנות השת�
 
 /**
  * What a house's page says beside its prices (D57): its advertising against its binding documents and its group
- * prices. Read here, for the page alone: the site's calculations never read them (site/app/lib stays blind to both). The groups the index
- * page offers as radios are named here too, so each links to that page with it picked (D43 amended (5)).
+ * prices. Read here, for the page alone: the site's calculations never read them (site/app/lib stays blind to both).
  */
 async function houseNotes(id: string) {
   const { latestSnapshots } = await import("../lib/institutions.server");
-  const { pickableOnEitherSide } = await import("../lib/group-pick");
   const snap = latestSnapshots().find((s) => s.id === id);
-  return { advertising: snap?.advertising ?? [], groups: snap?.groups ?? null, linked: [...pickableOnEitherSide(snap)] };
+  return { advertising: snap?.advertising ?? [], groups: snap?.groups ?? null };
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -205,7 +203,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
           parts: [...sections.map((s) => ({ id: s.id, label: s.title })), ...(brokerageDocs ? [{ id: "brokerage-docs", label: w.docs.part(brokerageDocs) }] : [])],
           anchors: [...sections.map((s) => s.id), "brokerage-docs", ...entryIds(docs.byProduct.brokerage)],
           body: (
-            <BrokerageGroupCard id={b.id} tariff={b.tariff} kind={b.kind} advertising={b.advertising} groups={b.groups} linked={b.linked} docs={<ProductDocs product={r4catalogue.groups.brokerage} groups={docs.byProduct.brokerage ?? []} id="brokerage-docs" />} />
+            <BrokerageGroupCard id={b.id} tariff={b.tariff} kind={b.kind} advertising={b.advertising} groups={b.groups} docs={<ProductDocs product={r4catalogue.groups.brokerage} groups={docs.byProduct.brokerage ?? []} id="brokerage-docs" />} />
           ),
         },
       ]

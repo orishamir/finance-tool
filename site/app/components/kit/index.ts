@@ -35,8 +35,7 @@ export { CompareTable, ValueBar, type CompareRow } from "./compare-table";
 export { LabelChip, LabelIcon, LabelRow, LabelSheetHost } from "./label-chip";
 export { CostStack, wholeParts, type CostPart } from "./cost-stack";
 export { ShareBar, type SharePart } from "./share-bar";
-export { ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, clearOfReceiptStub } from "./receipt";
-export { FactTile, TileJoin } from "./fact-tile";
+export { PartFacts, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, clearOfReceiptStub } from "./receipt";
 export { PERIOD_WIDE, PeriodTrack, periodColumns } from "./period-track";
 export { PickList, figureFit, type PickRow } from "./pick-list";
 export { StretchBar, StretchChart, type StretchSpot } from "./stretch";
@@ -60,7 +59,7 @@ export { ExposureCell, FeeNum, GemelNetLink, ShareNum, TrackFeeLines, TrackFundI
 export { HeldMark, HelpMark } from "./help-mark";
 export { SourcedTag } from "./sourced-tag";
 export { HouseAverageLine, HouseAverageTerm } from "./house-average";
-export { GroupPriceFold, GroupPriceRows, groupBlocks, groupLineWho, type GroupBlock, type GroupChoice, type GroupEntry, type GroupLink } from "./group-prices";
+export { GroupPriceFold, GroupPriceRows, groupBlocks, groupLineWho, type GroupBlock, type GroupEntry } from "./group-prices";
 export { ClaimCheck, ClaimList } from "./claim-check";
 export { DocLink } from "./doc-link";
 export { TariffDate } from "./tariff-date";
