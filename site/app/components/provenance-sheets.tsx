@@ -436,6 +436,8 @@ export function SlottedText({ text, rules, today }: { text: string; rules: Recor
         const rule = rules[p.id];
         const from = p.figure.endsWith(".from");
         const v = rule ? (from ? ruleFigureFrom(rule, p.figure.slice(0, -5), today) : ruleFigure(rule, p.figure, today)) : null;
+        // a figure in force with no start date holds from now: "מ{…from}" reads "מהיום"
+        if (!v && from && rule && ruleFigure(rule, p.figure.slice(0, -5), today)) return <span key={k}>{copy.fromNoDate}</span>;
         if (!v) return <span key={k}>—</span>;
         const word = (copy.unit as Record<string, string>)[v.unit];
         return (

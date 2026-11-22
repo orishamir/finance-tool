@@ -759,9 +759,9 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   // minimum above the lower cap (an exempt stretch charges nothing): the account's cost may be too high from then on (method F-102).
   // The cap is looked at without citing it, and cited only where it flags: a row it changes nothing on does not list it among its rules.
   // A record without the figure is cited at once, so the run fails as any missing rule does.
-  // A deal's current account is read in the month's loop, once the month's orders are placed: a card split by a month's orders, its
-  // trading or the value held charges one step's price, which only then is known. The cap compared is always the one for 0 to 2 actions:
-  // the run never reads its orders as the cap's actions (F-102).
+  // A deal's current account is read in the month's loop, once the month's orders are placed: a card split by a month's trading or
+  // the value held charges one step's price, which only then is known; its step of a month's actions is the deal's pick. The cap
+  // compared is always the one for 0 to 2 actions, the lowest of every band: the run never reads its orders as the cap's actions (F-102).
   let accountCap: { value: number; from: number } | null = null;
   if (tariff.currentAccount !== undefined || (dc && input.deal!.currentAccount?.length)) {
     const cap = ctx.rules.find((r) => r.id === "BANK-35")?.figures?.account_fee_up_to_2_actions as { value?: unknown; effective_from?: string | null } | undefined;
