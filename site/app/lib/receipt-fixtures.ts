@@ -1,25 +1,7 @@
-// For the index page's tests: every priced pair of an index on a plan, the collected data's own (lib/receipt.test.ts), and the collected
-// data with no fund measured by a principal currency, for the tests that pin a page's ties and picks.
+// For the receipt's tests: every priced pair of an index on a plan, the collected data's own (lib/receipt.test.ts).
 import { buildInvest, indexById, pairCosts, type PairCosts } from "./invest";
 import type { IndicesBundle, WorkbenchInputs } from "./providers";
 import { entered } from "./value";
-
-/**
- * The collected data with every Israeli fund's status as a foreign-investment fund set to `false`, so each is measured by the CPI (F-04).
- * For the tests that pin the ties, picks and figures of a page on the collected data and are not about the tax index: an Israeli fund on a
- * foreign index whose status is a principal currency or not known is ranked only where both readings of TXS OQ26 agree, which would move
- * what they pin with every status collected. The readings are held by packages/engine/test/foreign-investment-fund.test.ts, lib/labels.test.ts,
- * lib/providers.test.ts and the index page's test in lib/invest.test.ts.
- */
-export function asIfNoForeignInvestmentFund<B extends Pick<IndicesBundle, "funds">>(bundle: B): B {
-  return {
-    ...bundle,
-    funds: bundle.funds.map((f) => {
-      const status = f.tax_status.foreign_investment_fund;
-      return status ? { ...f, tax_status: { ...f.tax_status, foreign_investment_fund: { ...status, value: false } } } : f;
-    }),
-  };
-}
 
 /** A plan at 7% a year unless `returnPct` says otherwise. */
 export function planOf(t: string, p: { years: number; monthly: number; amountNow?: number; returnPct?: number }): WorkbenchInputs {

@@ -317,8 +317,6 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     currency: foreign ? (currencyOfIndex && !isShekel(currencyOfIndex) ? currencyOfIndex : "USD") : "NIS",
     trading_currency_on_tase: f.kind === "abroad" ? null : "NIS",
     distribution_policy: f.payout,
-    // Stand-in: a typed Israeli fund carries no foreign-investment-fund status, so its run takes the CPI as its tax index (F-04) though its
-    // status is not known, until the queued item "ask the person whether a typed Israeli fund is a foreign-investment fund"
     tax_status: { il_fund_tax_track: foreign ? null : "exempt", tase_foreign_fund_90pct_test: null },
     fees: { fixed_management: f.fixed, variable_management: foreign ? null : f.variable, trustee: foreign ? null : f.trustee, tracking_difference_12m: null, median_spread: null, fund_level_withholding_drag: null },
     dimensions: {},

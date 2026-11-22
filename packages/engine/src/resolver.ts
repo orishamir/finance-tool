@@ -4,7 +4,7 @@
 // readings (open-readings.ts) is read under the reading the run's context chooses.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountInYear, movesBy, movingYears, yearlyMoveOf } from "./formulas/indexation.ts";
-import { OpenReadingError, openReadingOf, type OpenReading } from "./open-readings.ts";
+import { OpenReadingError, openReadingOf } from "./open-readings.ts";
 import { labelWeight, type Label, type RunContext } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
@@ -90,12 +90,6 @@ export interface RuleBook {
   cite(ruleId: string): void;
   /** Adds a label the rule's strength does not imply (a reading, a derivation, a proxy). */
   label(code: Label["code"], ruleId: string): void;
-  /**
-   * Method §13: the reading of an open case the run is made under (`RunContext.readings`). A run that has chosen none for the question
-   * stops so that `acrossReadings` can make it under each (`OpenReadingError`); one made with the question stopping it stops on the rule
-   * with the question (`BlockedError`).
-   */
-  reading<O extends OpenReading>(open: O): O["readings"][number];
   used(): UsedRule[];
   labels(): Label[];
   /**
@@ -181,17 +175,12 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     if (years.inflation >= 0) return amountInYear(move, amount, runYear, year, years.inflation);
     const open = openReadingOf(move, id);
     if (!open) throw new BlockedError(id, undefined, "G-38");
-    return readingOf(open).amount(amount, Array.from({ length: movingYears(move, runYear, year) }, () => years.inflation));
-  }
-
-  function readingOf<O extends OpenReading>(open: O): O["readings"][number] {
     const choice = ctx.readings?.[open.question];
     if (choice === undefined) throw new OpenReadingError(open);
     if (choice === null) throw new BlockedError(open.ruleId, open.question);
-    const readings: readonly O["readings"][number][] = open.readings;
-    const reading = readings.find((r) => r.id === choice);
+    const reading = open.readings.find((r) => r.id === choice);
     if (!reading) throw new Error(`${open.question} has no reading "${choice}"`);
-    return reading;
+    return reading.amount(amount, Array.from({ length: movingYears(move, runYear, year) }, () => years.inflation));
   }
 
   function bookFor(taxYear: number): RuleBook {
@@ -224,7 +213,6 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     cite(id) {
       rule(id);
     },
-    reading: readingOf,
     label(code, ruleId) {
       rule(ruleId);
       extraLabels.push({ code, ruleId });
