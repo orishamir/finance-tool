@@ -52,12 +52,10 @@ export function fundFeeItems(rec: FundRecord, { inline, priced, today }: { inlin
     const name = items[at]?.name ?? p.fee;
     items.splice(at + 1, 0, { id: `${p.fee}-promotion`, word: c.funds.promotionWord(until), name: c.funds.promotionName(name, until), figure: <FeeFigure value={p.value} inline={inline} />, missing: false });
   }
-  if (priced && !yearlyOnly) {
-    const word = c.kinds.variableChargedWord(priced.years);
-    // after the variable fee and its promotion, wherever the promotions above put them
-    const after = items.findLastIndex((x) => x.id === "variable_management" || x.id === "variable_management-promotion");
-    items.splice(after + 1, 0, { id: "variable_priced", word, name: names.charged(word), figure: <FeeFigure value={priced.value} inline={inline} />, missing: false });
-  }
+  // the variable fee the run charges is what was charged on average over the years it reads (F-92), not the listed rate: one line, its
+  // figure that average, whose sheet lists the years
+  const variable = priced && !yearlyOnly ? items.find((x) => x.id === "variable_management") : undefined;
+  if (priced && variable) Object.assign(variable, { figure: <FeeFigure value={priced.value} inline={inline} />, missing: false });
   return items;
 }
 

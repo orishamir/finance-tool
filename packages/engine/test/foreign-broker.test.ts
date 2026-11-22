@@ -158,16 +158,16 @@ describe("fundOf with F-92 (b): the variable fee a fund was charged, counted for
 
   it("counts forward the variable fee it was charged, not its listed rate (F-92 (b), pass 6): 0.215% paid back in 2025 at today's 0.3%", () => {
     expect(withYears.fees.variable_management.value).toBe(0.3);
-    expect(fundOf(withYears, "israeli-fund").fund.drag!.variable).toBeCloseTo(-0.00215, 12);
+    expect(fundOf(withYears, "israeli-fund", undefined, undefined).fund.drag!.variable).toBeCloseTo(-0.00215, 12);
     // a record that does not say since when its rate is in force keeps the listed rate
     const unread = { ...withYears, tracking_record: { ...withYears.tracking_record, variable_rate_since: undefined } };
-    expect(fundOf(unread, "israeli-fund").fund.drag!.variable).toBeCloseTo(0.003, 12);
+    expect(fundOf(unread, "israeli-fund", undefined, undefined).fund.drag!.variable).toBeCloseTo(0.003, 12);
   });
   it("no fund's forward cost is negative, now that a variable fee paid back is counted forward (finance review of pass 6, F1)", () => {
     const all = readdirSync(new URL("../../../data/funds/", import.meta.url)).filter((f) => f.endsWith(".json")).map((f) => read(`funds/${f}`));
     const neg = all.flatMap((rec) => {
       const list = gapListOf(rec, { id: rec.exposure_id }, all.filter((x) => x.exposure_id === rec.exposure_id));
-      const d = fundOf(rec, rec.domicile === "IL" ? "israeli-fund" : "foreign-fund", { list }).fund.drag ?? {};
+      const d = fundOf(rec, rec.domicile === "IL" ? "israeli-fund" : "foreign-fund", undefined, undefined, list).fund.drag ?? {};
       const sum = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + (d.tracking ?? 0);
       return sum < 0 ? [`${rec.id} ${sum}`] : [];
     });

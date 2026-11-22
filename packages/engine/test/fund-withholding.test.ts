@@ -24,22 +24,22 @@ describe("F-107 the US tax inside an Irish fund that holds US shares", () => {
     expect(usDividendsOf(nasdaq)).toBeUndefined();
   });
   it("is set for an Irish fund that holds the shares and has no figure of its own, and the field is then not called uncollected", () => {
-    const { fund, notCollected } = fundOf(ishares, "foreign-fund", { usDividends: usDividendsOf(sp500) });
+    const { fund, notCollected } = fundOf(ishares, "foreign-fund", undefined, undefined, undefined, usDividendsOf(sp500));
     expect(fund.drag!.usDividends).toEqual(usDividendsOf(sp500));
     expect(fund.drag!.foreignWithholding).toBeUndefined();
     expect(notCollected).not.toContain("fund_level_withholding_drag");
   });
   it("is not set for a swap fund, a fund with its own figure, a published 12-month gap, or a fund outside Ireland", () => {
     const u = usDividendsOf(sp500);
-    expect(fundOf(swap, "tase-foreign-fund", { usDividends: u }).fund.drag!.usDividends).toBeUndefined();
+    expect(fundOf(swap, "tase-foreign-fund", undefined, undefined, undefined, u).fund.drag!.usDividends).toBeUndefined();
     const own = { ...ishares, fees: { ...ishares.fees, fund_level_withholding_drag: { ...ishares.fees.fixed_management, value: 0.2 } } };
-    const d = fundOf(own, "foreign-fund", { usDividends: u }).fund.drag!;
+    const d = fundOf(own, "foreign-fund", undefined, undefined, undefined, u).fund.drag!;
     expect(d.usDividends).toBeUndefined();
     expect(d.foreignWithholding).toBeCloseTo(0.002, 12);
     const published = { ...ishares, fees: { ...ishares.fees, tracking_difference_12m: { ...ishares.fees.fixed_management, value: 0.05 } } };
-    expect(fundOf(published, "foreign-fund", { usDividends: u }).fund.drag!.usDividends).toBeUndefined();
+    expect(fundOf(published, "foreign-fund", undefined, undefined, undefined, u).fund.drag!.usDividends).toBeUndefined();
     const american = { ...ishares, domicile: "US" };
-    expect(fundOf(american, "foreign-fund", { usDividends: u }).fund.drag!.usDividends).toBeUndefined();
+    expect(fundOf(american, "foreign-fund", undefined, undefined, undefined, u).fund.drag!.usDividends).toBeUndefined();
   });
   it("costs the run what the same figure written in the record costs, and the run names F-107 and TXF-16", () => {
     // the run the indices page gives a dollar fund of a dollar index: A-01 in dollars, bought abroad in dollars (F-04, F-13)
@@ -48,7 +48,7 @@ describe("F-107 the US tax inside an Irish fund that holds US shares", () => {
         {
           goal: { amountNow: 20_000, monthly: 500, months: 120 },
           market: { grossReturn: 0.07, inflation: 0.025, returnIn: "instrument", fxChange: 0 },
-          fund: fundOf(rec, "foreign-fund", { distribution: rec.distribution_policy === "distributing" ? recordDistribution(rec) : undefined, list: gapListOf(rec, sp500, [rec]), usDividends: usDividendsOf(sp500) }).fund,
+          fund: fundOf(rec, "foreign-fund", rec.distribution_policy === "distributing" ? recordDistribution(rec) : undefined, undefined, gapListOf(rec, sp500, [rec]), usDividendsOf(sp500)).fund,
           tariff: { buy: { rate: 0.001, min: 5 }, sell: { rate: 0.001, min: 5 }, currency: { code: "USD", startRate: 3.7 } },
           profile: {},
         },
@@ -78,7 +78,7 @@ describe("F-107 the US tax inside an Irish fund that holds US shares", () => {
       const u = usDividendsOf(exposures.get(rec.exposure_id));
       if (rec.domicile !== "IE" || rec.replication?.method !== "physical" || !u || !rec.tracking_record) continue;
       const list = gapListOf(rec, { id: rec.exposure_id }, all.filter((x) => x.exposure_id === rec.exposure_id));
-      const d = fundOf(rec, "foreign-fund", { list, usDividends: u }).fund.drag!;
+      const d = fundOf(rec, "foreign-fund", undefined, undefined, list, u).fund.drag!;
       if (!d.usDividends || d.tracking === undefined) continue;
       expect(d.tracking, rec.id).toBe(0);
       checked.push(rec.id);

@@ -12,12 +12,12 @@ import { inBackground } from "../../lib/background";
 import { feeDeal as copy } from "../../copy";
 import { copiedHouse } from "../../lib/fee-deal/deal-read";
 import { kindById } from "../../lib/fee-deal/kinds";
-import { houseName } from "../../lib/fee-deal/templates";
+import { houseName, withLaterFills } from "../../lib/fee-deal/templates";
 import { dealBreach, LIMITS, takeRefusal, type Limit } from "../../lib/fee-deal/limits";
 import type { AddressDeal } from "../../lib/fee-deal/link";
 import { NAME_MAX, newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import { dealStore, lastOpenId, rememberOpen, reopened, sameDeal, savedIfWorth, savedTwin, savedWith, worthSaving } from "../../lib/fee-deal/store";
-import { changeFormKept, deleteDealKept, formBack, freedCurrency, standing, undo, undoDelete, undoWords as feeUndoWords, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
+import { dealStore, lastOpenId, rememberOpen, reopened, sameDeal, savedIfWorth, savedTwin, savedWith, without, worthSaving } from "../../lib/fee-deal/store";
+import { changeFormKept, deleteStored, formBack, freedCurrency, renameStored, standing, undo, undoDeleteStored, undoWords as feeUndoWords, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
 import type { Side } from "../../lib/fee-deal/model";
 import type { FeesData } from "../../lib/fee-page-data";
@@ -240,11 +240,9 @@ export function useDealDocument({ first, saved, today, data, onShown, remember =
       return;
     }
     setUndoing(null);
+    // a deleted deal goes back on the device as it was stored, and on screen as the page shows a saved deal (`withLaterFills`)
     if (!("dealId" in u)) {
-      const back = undoDelete(saved, u);
-      if (!back) return;
-      dealStore.update(() => back);
-      if (u.shown) show(u.deal);
+      if (undoDeleteStored(u) && u.shown) show(withLaterFills(u.deal, data));
       return;
     }
     const back = undo(deal, u, chosen);
@@ -290,17 +288,15 @@ export function useDealDocument({ first, saved, today, data, onShown, remember =
   const rename = (id: string, typed: string) => {
     const name = typed.slice(0, NAME_MAX);
     if (id === deal.id) return change({ ...deal, name });
-    const d = saved.find((x) => x.id === id);
-    if (d) dealStore.update((ds) => ds.map((x) => (x.id === id ? { ...d, name } : x)));
+    if (saved.some((x) => x.id === id)) renameStored(id, name);
   };
   // the deal on screen deleted opens the next saved deal, or a new one
   const remove = (id: string) => {
-    const r = deleteDealKept(saved, id, deal.id);
-    if (!r) return;
+    const u = deleteStored(id, deal.id);
+    if (!u) return;
     if (id === deal.id) wasSaved.current = null;
-    dealStore.update(() => r.deals);
-    if (r.undo.shown) show(r.deals[0] ?? newDeal(null));
-    made(r.undo);
+    if (u.shown) show(without(saved, id)[0] ?? newDeal(null));
+    made(u);
   };
   // the undo on screen: a deal's change only while what it took has a place on the deal on screen; its words, which the live region says too
   const shown = undoing && ("dealId" in undoing ? standing(undoing, deal) : true) ? undoing : null;

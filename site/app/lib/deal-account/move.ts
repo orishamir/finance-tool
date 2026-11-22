@@ -11,20 +11,19 @@ import { OPTION_CLASS, OPTION_IDS } from "../invest";
 import type { BundleSnapshot } from "../providers";
 import { addBy } from "../fee-deal/edits/case";
 import { feeOf } from "../fee-deal/cases";
-import type { DealKind } from "../fee-deal/kinds";
+import { ACCOUNT_KIND, type DealKind } from "../fee-deal/kinds";
 import { blankFigure, hasCases, isList, monthKey, monthOf, NAME_MAX, namesPlaces, newDeal, newFeeId, thingValues, typed, type BoundCurrency, type Case, type CasesFee, type Fee, type FeeDeal, type MonthKey, type Num, type Price, type Priced, type Sourced, type Stage } from "../fee-deal/model";
 import { fillDeal, type HouseTemplate } from "../fee-deal/templates";
-import { sourcedOf } from "../fee-deal/values";
 import { WHAT_VALUES, type FeeKindId, type Place } from "../fee-deal/shapes";
 import { conditionsFor, isPlaceKind, LIST_IDS, type PlaceKind } from "../fee-deal/offers/conditions";
 import { lineValueOf } from "./bundle";
-import { ACCOUNT_KIND, planRead } from "./plan";
+import { planRead } from "./plan";
 
-/** What the move reads beside the account: the houses' price lists as templates, the kinds, the houses' records (each one's line choice and a bank's current account), and the day. */
+/** What the move reads beside the account: the houses' price lists as templates, the kinds, the houses' records (each one's line choice), and the day. */
 export interface MoveContext {
   houses: readonly HouseTemplate[];
   kinds: readonly DealKind[];
-  snapshots: readonly Pick<BundleSnapshot, "id" | "lines" | "provider" | "current_account">[];
+  snapshots: readonly Pick<BundleSnapshot, "id" | "lines" | "provider">[];
   /** Shekels per unit of each currency at the ECB's reference rates the indices page runs at (F-84, `fxRunInput`). */
   fx: Readonly<Record<string, number>>;
   today: string;
@@ -248,7 +247,7 @@ function groupCustody(p: Price, v: GroupPriceValue, n: (v: number) => Num): Pric
  * cases the plan reads on its side, as prices over time: the group's price until its end, counted from the day the account was typed, then
  * the list's; a price that names a purchase or a sale alone leaves the other side the list's.
  */
-function withGroup(deal: FeeDeal, b: CustomBroker, ctx: ReadContext, house: string, snap: MoveContext["snapshots"][number] | undefined): FeeDeal {
+function withGroup(deal: FeeDeal, b: CustomBroker, ctx: ReadContext, house: string): FeeDeal {
   const g = b.base!.group!;
   const values = groupValues(g);
   const stay = untilMonthsOf(b);
@@ -301,14 +300,14 @@ function withGroup(deal: FeeDeal, b: CustomBroker, ctx: ReadContext, house: stri
       };
     }
   }
-  // F-102: the group's own current account, exempt for its months from the day typed, where the bank's record prices one
+  // F-102: the group's own current account, exempt for its months from the day typed, before the bank's monthly minimum the list filled
   const ca = g.currentAccount;
-  const bank = snap?.current_account?.monthly_minimum;
-  if (ca && bank && typeof bank.value === "number" && !out.fees.some((f) => f.kind === "current_account")) {
-    const end = Math.min(ca.exemptMonths, stay ?? Infinity);
-    const listed: Stage = { price: { form: "sum", amount: { v: bank.value, src: sourcedOf(bank, house) }, every: 1 } };
+  const end = ca ? Math.min(ca.exemptMonths, stay ?? Infinity) : 0;
+  const account = out.fees.find((f) => f.kind === "current_account");
+  const listed = account && !hasCases(account) && account.stages.length === 1 ? account.stages[0] : undefined;
+  if (ca && end > 0 && account && !hasCases(account) && listed) {
     const free: Price = ca.source ? { form: "free", src: { url: ca.source.url, title: ca.source.title, publisher: house, strength: "institution", checked: g.snapshot, ...(ca.source.page ? { page: ca.source.page } : {}), own: house } } : { form: "free" };
-    out = { ...out, fees: [...out.fees, { id: newFeeId(), kind: "current_account", stages: end > 0 ? [{ price: free, until: addMonths(start, end) }, listed] : [listed] }] };
+    out = { ...out, fees: out.fees.map((f) => (f === account ? { ...account, stages: [{ price: free, until: addMonths(start, end) }, listed] } : f)) };
   }
   return out;
 }
@@ -521,7 +520,7 @@ export function dealOfTypedAccount(b: CustomBroker, ctx: MoveContext): FeeDeal {
   }
   const filled = fillDeal({ ...newDeal(ACCOUNT_KIND, dealName(b)), id }, `house:${tpl.id}`, { houses: ctx.houses as HouseTemplate[], tracks: [], templates: {} }, ctx.today)!;
   const read: ReadContext = { kinds: ctx.kinds, today: ctx.today, lineValue: lineValueOf(snap as BundleSnapshot) };
-  const grouped = base.group ? withGroup(filled, b, read, base.houseName, snap) : filled;
+  const grouped = base.group ? withGroup(filled, b, read, base.houseName) : filled;
   const owned = withOwn(grouped, b, read, filled, ctx.fx);
   return { ...owned, name: dealName(b), fees: owned.fees.map((f) => onlySold(f, places)), saved: ctx.today };
 }

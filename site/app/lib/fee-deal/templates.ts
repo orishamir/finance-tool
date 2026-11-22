@@ -14,7 +14,7 @@ import { trackFees } from "../fee-page-data";
 import { BOUND_CURRENCIES, feeSources, hasCases, withNamed, isProductId, NAME_MAX, newDeal, newFeeId, pickKey, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When, type Price } from "./model";
 import { CURRENCY_IDS, WHAT_IDS, type FeeKindId, type Place } from "./shapes";
 import { sourcedOf } from "./values";
-import { capLine, kindById } from "./kinds";
+import { ACCOUNT_KIND, capLine, kindById } from "./kinds";
 import { leftOutOf, type LeftOutView } from "../left-out";
 import type { DataBar } from "./offers/offer";
 import { buildPrice, type PriceSpec } from "./offers/build";
@@ -571,6 +571,17 @@ function sizeStepsOf(kind: FeeKindId, l: Line, price: Price | undefined, own: st
   return steps.length ? { unit: "USD", steps, above } : null;
 }
 
+/**
+ * F-102 (D64): the current account a bank's securities account needs, as a fee the house's whole list fills, after the list's own lines:
+ * its record's monthly minimum (`current_account.monthly_minimum`), a sum each month, with its source. Null at a house whose record prices
+ * none: an investment house, and a bank that is part of another (`part_of`), whose record carries none.
+ */
+function currentAccountFilled(snap: FeesSnapshot, own: string): SlimTemplateFee | null {
+  const monthly = snap.current_account?.monthly_minimum;
+  if (!has(monthly)) return null;
+  return { kind: "current_account", stages: [{ price: buildPrice("current_account", { form: "sum", figures: { amount: { v: monthly.value, src: sourcedOf(monthly, own) } }, every: 1 }) }] };
+}
+
 /** The bases a house's price list fills a securities account's deal with, in the order the deal lists them. */
 const HOUSE_BASES = ["trade", "custody", "fixed_period", "fx", "transfer_out", "corporate_event"] as const;
 
@@ -691,6 +702,8 @@ export function houseTemplateRead(snap: FeesSnapshot, unavailable: readonly Line
       }));
     }
   }
+  const account = currentAccountFilled(snap, ownName);
+  if (account) fees.push(account);
   // every other line is listed with why it fills nothing, so no line is left out unsaid
   for (const l of snap.lines) {
     if (read.has(l.id) || left.some((x) => x.lineId === l.id)) continue;
@@ -895,7 +908,56 @@ export function fillDeal(deal: FeeDeal, id: string, data: Pick<FeesData, "houses
     if (at >= 0) fees[at] = { ...asFee(f, fees[at]!.id), ...from };
     else fees = [...fees, { ...asFee(f, newFeeId()), ...from }];
   }
-  return { ...deal, fees, template: { id, name: t.name }, ...(t.provider ? { provider: t.provider } : {}) };
+  const later = id.startsWith(HOUSE) ? laterFillsOf(t.fees) : [];
+  return { ...deal, fees, template: { id, name: t.name, ...(later.length ? { laterFills: later } : {}) }, ...(t.provider ? { provider: t.provider } : {}) };
+}
+
+/**
+ * The kinds of fee a house's whole list fills that a deal filled from it before may lack, since the templates did not always fill them: a
+ * bank's current account (F-102, `currentAccountFilled`). A deal keeps the ones settled for it (`FeeDeal.template.laterFills`).
+ */
+const LATER_FILLS: readonly FeeKindId[] = ["current_account"];
+
+/** The kinds of `LATER_FILLS` a house's list fills, as a deal filled from it keeps them settled. */
+const laterFillsOf = (fees: readonly { kind: FeeKindId }[]): FeeKindId[] => LATER_FILLS.filter((k) => fees.some((f) => f.kind === k));
+
+/**
+ * A deal filled from a house's whole list, with each fee of `LATER_FILLS` the house's list fills now that the deal has not had settled:
+ * added after its fees, as `fillDeal` adds it, its id the kind's own (`fee-current-account`), so opening the deal again gives the same fee,
+ * where the deal holds no fee of that kind; where it holds one (the person's own price), that one stays. Either way the kind is settled
+ * for the deal from then on, so a fee the person takes away is not put back. A kind the house's record does not price yet stays open, and
+ * the deal gets it once the record prices it. Nothing the deal holds changes. A deal filled from no house, from a track, with fees the
+ * person typed (`feesKept`), or from a house no longer on the site, and one with nothing to settle, is returned as it is.
+ */
+export function withLaterFills(deal: FeeDeal, data: Pick<FeesData, "houses">): FeeDeal {
+  const t = deal.template;
+  if (!t || t.feesKept || deal.kind !== ACCOUNT_KIND) return deal;
+  const house = houseOf(t.id.split("/", 1)[0] ?? t.id, data);
+  if (!house) return deal;
+  const settled = t.laterFills ?? [];
+  const now = laterFillsOf(house.fees).filter((k) => !settled.includes(k));
+  if (now.length === 0) return deal;
+  const added = house.fees.filter((f) => now.includes(f.kind) && !deal.fees.some((x) => x.kind === f.kind));
+  const fees = added.reduce<Fee[]>((out, f) => [...out, { ...asFee(f, laterFeeId(f.kind, out)), house: houseId(house) }], deal.fees);
+  return { ...deal, fees, template: { ...t, laterFills: [...settled, ...now] } };
+}
+
+/** The id of a fee `withLaterFills` adds: the kind's own, with a count after it where `fees` hold that id already. */
+export function laterFeeId(kind: FeeKindId, fees: readonly Pick<Fee, "id">[]): string {
+  const base = `fee-${kind.replace(/_/g, "-")}`;
+  let id = base;
+  for (let n = 2; fees.some((f) => f.id === id); n++) id = `${base}-${n}`;
+  return id;
+}
+
+/**
+ * The saved deals as a page shows them: each with what the houses' lists fill later (`withLaterFills`); the same list where none changes,
+ * and while the page has no price lists yet (`data` null).
+ */
+export function withLaterFillsAll(deals: FeeDeal[], data: Pick<FeesData, "houses"> | null): FeeDeal[] {
+  if (!data) return deals;
+  const out = deals.map((d) => withLaterFills(d, data));
+  return out.some((d, i) => d !== deals[i]) ? out : deals;
 }
 
 /**

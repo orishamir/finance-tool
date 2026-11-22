@@ -221,10 +221,29 @@ function AccountFacts({ view, bundle, plan, pick }: { view: InvestView; bundle: 
  * measured against) and its manager. Not a kit piece: what it lists is the index page's reading of a fund record (its labels, its gap
  * list, its document), and only the receipt's fund part shows it.
  */
-function FundFacts({ view, bundle, fund }: { view: InvestView; bundle: IndicesBundle; fund: FundWay }) {
+/** The fund's number, opening its page, and its own document: on the ticket beside the part's caption, in a sheet among its details. */
+function FundRefs({ fund }: { fund: FundWay }) {
+  const doc = isCustomFund(fund.rec) ? null : (fund.rec.fees.fixed_management?.source ?? null);
+  if (!fund.number && !doc) return null;
+  return (
+    <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
+      {fund.number && (
+        <span className="inline-flex items-center gap-1">
+          {c.chosen.number} <ProductIdLink id={fund.number} href={mayaHrefOf(fund)} label={brands.funds.mayaLink(fund.number)} />
+        </span>
+      )}
+      {doc && (
+        <DocLink look="inline" source={doc}>
+          {c.chosen.isReport(doc.title) ? c.chosen.fundDoc : c.chosen.fundDocOther}
+        </DocLink>
+      )}
+    </span>
+  );
+}
+
+function FundFacts({ view, bundle, fund, refs }: { view: InvestView; bundle: IndicesBundle; fund: FundWay; /** Its number and document among the details (a sheet), or left to the part's caption (the ticket). */ refs: boolean }) {
   const today = bundle.today;
   const own = labelsOf(view, fund, bundle);
-  const doc = isCustomFund(fund.rec) ? null : (fund.rec.fees.fixed_management?.source ?? null);
   const list = gapListFor(bundle, fund.rec);
   const state = gapStateOf(fund.rec, list);
   const labels = [
@@ -234,16 +253,7 @@ function FundFacts({ view, bundle, fund }: { view: InvestView; bundle: IndicesBu
     isCustomFund(fund.rec) ? <StateTag key="entered" state="entered" /> : null,
   ];
   const details = [
-    fund.number ? (
-      <span key="number" className="inline-flex items-center gap-1">
-        {c.chosen.number} <ProductIdLink id={fund.number} href={mayaHrefOf(fund)} label={brands.funds.mayaLink(fund.number)} />
-      </span>
-    ) : null,
-    doc ? (
-      <DocLink key="doc" look="inline" source={doc}>
-        {c.chosen.isReport(doc.title) ? c.chosen.fundDoc : c.chosen.fundDocOther}
-      </DocLink>
-    ) : null,
+    refs ? <FundRefs key="refs" fund={fund} /> : null,
     // a fund that pays out: its yield as its manager reports it
     fund.rec.distribution ? (
       <span key="yield">
@@ -335,7 +345,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   );
   const fundOwn = (
     <>
-      {fund && <FundFacts view={view} bundle={bundle} fund={fund} />}
+      {fund && <FundFacts view={view} bundle={bundle} fund={fund} refs={!ticket} />}
       <ReceiptLine size="sm" edge="border-chart-by-fund" label={c.receipt.fundCharges} value={fundValue} parts={fund && feeRows(fund.rec, bundle, today)} />
     </>
   );
@@ -388,7 +398,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
           </>
         }
         end={
-          <TicketPart label={c.receipt.parts.fund} swatch="bg-chart-by-fund" name={fundName}>
+          <TicketPart label={c.receipt.parts.fund} swatch="bg-chart-by-fund" name={fundName} aside={fund && <FundRefs fund={fund} />}>
             {fundOwn}
           </TicketPart>
         }

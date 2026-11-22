@@ -632,9 +632,8 @@
       "fund": "1223866"
     },
     "brokerage-account": {
-      "fund": "5139100",
-      "tariff": "leumi",
-      "chosen_by": "Claude, 2026-11-22: the rule of docs/parameters-rationale.md (the lowest all-in cost inside the fund, fixed and variable management and trustee, ETF-13, among the S&P 500 funds collected) among the funds whose status as a foreign-investment fund is settled not one (tax_status.foreign_investment_fund false, TXS-14): 5139100 at 0.03% a year, against 5127527 (hedged) at 0.32% and 1150333 at 0.58%. 5139282, at 0.02%, has a status not known, so its readings of TXS OQ26 give P-05's plan different results (method F-04) and no guide could run it"
+      "fund": "5139282",
+      "tariff": "leumi"
     },
     "makam": {
       "tariff": "leumi"

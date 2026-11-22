@@ -27,12 +27,11 @@ describe("the providers the brokerage wrapper carries", () => {
     const ids = Object.keys(wrapper.providers ?? {});
     for (const id of ["psagot", "ibi"]) expect(ids).toContain(id);
     expect(ids).toContain("meitav-trade"); // priced at its price list since 2026-11-04 (D56): custody 0.15% a quarter, at least 270 NIS, and a handling fee up to 90 NIS a month
-    // the representative fund (5139100) is a tracking fund, `mutual_fund_units`: a tariff with no buy/sell line for that class gives no price, never a free trade (F-63 "No line, no price", MF-26)
+    // the representative fund (5139282) is a tracking fund, `mutual_fund_units`: a tariff with no buy/sell line for that class gives no price, never a free trade (F-63 "No line, no price", MF-26)
     expect(ids).not.toContain("interactive-brokers");
     expect(ids).toContain("leumi"); // its TASE line covers tracking funds by footnote (MF-27; snapshot)
-    // One Zero sells a tracking fund only where its manager reports a distribution agreement with it (BRK-38): its record's reports in force
-    // name P-05's 5139100 (data/fees/one-zero@2026-11-12.json), so it sells the account's fund, as the guides and the indices page read it
-    expect(ids).toContain("one-zero");
+    // One Zero sells only the funds whose managers signed a distribution agreement with it, listed on Maya and not read: no price (BRK-38)
+    expect(ids).not.toContain("one-zero");
     for (const p of Object.values(wrapper.providers!)) {
       expect(p.name.length).toBeGreaterThan(2);
       expect(p.tariff.buy).toBeDefined();
@@ -64,10 +63,10 @@ describe("the 20-year case on the cheapest collected broker", () => {
     // a year from 2028 (F-119) to over 1,125,000 nominal. At 721,560 the gemel paid 2,578.78 at exit (985,597), IBI 10,616.85 with the 2% on capital
     // income (1,104,645), Leumi 6,788.19 (1,030,053)
     expect(Math.round(kgl)).toBe(987_170);
-    expect(cheapest).toBeCloseTo(1_110_011, -2); // at IBI since 2026-11-08, on P-05's fund 5139100
+    expect(cheapest).toBeCloseTo(1_111_124, -2); // at IBI since 2026-11-08
     // 240 purchases of 3,000 on the regular line, each at its minimum of 26: Leumi's standing-order price (0.225%, 6.75) is not ranked,
     // because the bank opens it only to a list of funds it does not publish (D41, D56)
-    expect(Math.abs(dflt - 1_033_178)).toBeLessThan(100);
+    expect(Math.abs(dflt - 1_034_196)).toBeLessThan(100);
     // the ranking moves: the brokerage account leads outright with that broker
     const ev = evaluate(chosen, goal);
     expect(ev.ranking.entries[0]!.id).toBe(BRK);

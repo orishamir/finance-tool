@@ -8,13 +8,14 @@ import { cardOf, toolbox } from "./toolbox";
 import { panel } from "./panel";
 import { leftOut } from "./left-out";
 import { capLine, kindById, standingOf } from "./kinds";
-import { packDeal, unpackDeal } from "./link";
+import { dealOfAddress, packDeal, unpackDeal } from "./link";
 import { NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num, type SlimFee, type Stage } from "./model";
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
 import type { ActionView } from "./charts";
-import { dataBar, dealFromTemplate, dealFromTrack, dealName, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions } from "./templates";
+import { dataBar, dealFromTemplate, dealFromTrack, dealName, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions, withLaterFills, withLaterFillsAll } from "./templates";
+import type { HeldView } from "./charts";
 import { addFee, updateFee } from "./edits/deal";
 import { withFigure } from "./edits/price";
 import { editPrice } from "./edits/stage";
@@ -184,7 +185,9 @@ describe("templates", () => {
   it("fills a securities account from a house, keeping each fee's place and naming the house", () => {
     const h = data.houses.find((x) => x.fees.some((f) => f.kind === "fx"))!;
     const filled = fillDeal(account(), `house:${h.id}`, data, TODAY)!;
-    expect(filled.template).toEqual({ id: `house:${h.id}`, name: h.name });
+    // the deal keeps the kinds of `LATER_FILLS` its list filled, so a fee of them taken away is not put back (`withLaterFills`)
+    const later = h.fees.some((f) => f.kind === "current_account") ? { laterFills: ["current_account"] } : {};
+    expect(filled.template).toEqual({ id: `house:${h.id}`, name: h.name, ...later });
     expect(filled.provider).toBe(h.provider);
     expect(filled.fees[0]!.id).toBe("fee-trade");
     expect(filled.fees.find((f) => f.kind === "fund_management")!.stages![0]!.price).toMatchObject({ rate: { v: 0.07 } });
@@ -681,5 +684,132 @@ describe("the toolbox adds to every price of the open case", () => {
     const t = toolbox(r, "fee-custody")!;
     expect(t.addTo).toBeNull();
     expect(cardOf(t, "until")!.places).toEqual([{ on: "side", side: "buy" }]);
+  });
+});
+
+describe("a bank's current account, filled from its whole list (F-102, D64)", () => {
+  const snaps = latestSnapshots();
+  /** What must be there for the test to mean anything: the value, else the test fails saying what is missing. */
+  const must = <T,>(x: T | null | undefined, what: string): T => {
+    if (x === null || x === undefined) throw new Error(`missing: ${what}`);
+    return x;
+  };
+  const leumi = () => must(fillDeal({ ...newDeal("brokerage-account"), id: "deal-leumi" }, "house:leumi", data, TODAY), "Leumi's template");
+  const card = (d: FeeDeal) => d.fees.find((f) => f.kind === "current_account");
+  const monthly = () => {
+    const v = snaps.find((s) => s.id === "leumi")?.current_account?.monthly_minimum.value;
+    return must(typeof v === "number" ? v : null, "Leumi's monthly minimum");
+  };
+  /** A deal saved before templates filled a current account: the same deal with no such fee and nothing settled. */
+  const before = (d: FeeDeal): FeeDeal => {
+    const { laterFills: _l, ...template } = must(d.template, "the deal's template");
+    return { ...d, fees: d.fees.filter((f) => f.kind !== "current_account"), template };
+  };
+  /** The site's data with Leumi's record pricing no current account, as a house's record may before its price is collected. */
+  const leumiWithout = { ...data, houses: data.houses.map((h) => (h.id === "leumi" ? { ...h, fees: h.fees.filter((f) => f.kind !== "current_account") } : h)) };
+
+  it("fills the record's monthly minimum, a sum each month with its source, at a house whose record prices one, and nothing elsewhere", () => {
+    for (const h of data.houses) {
+      const rec = snaps.find((s) => s.id === h.id)?.current_account?.monthly_minimum;
+      const fee = h.fees.find((f) => f.kind === "current_account");
+      if (typeof rec?.value !== "number") {
+        // an investment house, and a bank that is part of another, whose record carries none
+        expect(fee, h.id).toBeUndefined();
+        continue;
+      }
+      expect(fee?.stages, h.id).toEqual([{ price: { form: "sum", amount: { v: rec.value, src: expect.objectContaining({ url: rec.source.url, checked: rec.checked }) }, every: 1 } }]);
+    }
+    expect(data.houses.find((h) => h.id === "psagot")?.fees.some((f) => f.kind === "current_account")).toBe(false);
+  });
+
+  it("a deal filled from a bank's list holds it as one more fee from that list, which the palette then no longer offers", () => {
+    const d = leumi();
+    expect(card(d)).toMatchObject({ kind: "current_account", house: "house:leumi" });
+    expect(builder(read(d)).suggestions.rarer).not.toContain("current_account");
+    expect(builder(read(before(d))).suggestions.rarer).toContain("current_account");
+  });
+
+  it("on the fee page, its year is twelve monthly minimums on what a year of holding costs, and nothing once the card is taken away", () => {
+    const d = leumi();
+    const yearAt = (deal: FeeDeal) => (must(readingOf(read(deal), data.fx).panels.held[0], "the holding panel") as { chart: HeldView }).chart.readAt(100_000);
+    const withCard = yearAt(d);
+    const without = yearAt({ ...d, fees: d.fees.filter((f) => f.kind !== "current_account") });
+    expect((withCard.total.value as number) - (without.total.value as number)).toBeCloseTo(monthly() * 12, 6);
+    const fixed = withCard.groups.find((g) => g.layer === "fixed")?.rows.find((x) => x.fee.ref.kind === "current_account");
+    expect(fixed?.cost.value).toBeCloseTo(monthly() * 12, 6);
+  });
+
+  it("a deal saved before gets it from the same list when it opens, once, with nothing it holds changed", () => {
+    const old = must(readDeal(JSON.parse(JSON.stringify(before(leumi())))), "the old deal read back");
+    expect(old.template?.laterFills).toBeUndefined();
+    const opened = withLaterFills(old, data);
+    expect(opened.fees.slice(0, old.fees.length)).toEqual(old.fees);
+    expect(opened.fees.slice(old.fees.length)).toEqual([{ ...must(card(leumi()), "the template's card"), id: "fee-current-account" }]);
+    expect(opened.template).toEqual({ ...old.template, laterFills: ["current_account"] });
+    // opened again, and saved and read back, it is the same deal
+    expect(withLaterFills(opened, data)).toBe(opened);
+    expect(withLaterFills(must(readDeal(JSON.parse(JSON.stringify(opened))), "the opened deal read back"), data)).toEqual(opened);
+  });
+
+  it("a card taken away since stays away, a current account of the person's own stays theirs, and a house with none adds none", async () => {
+    const taken = { ...leumi(), fees: leumi().fees.filter((f) => f.kind !== "current_account") };
+    expect(withLaterFills(taken, data)).toBe(taken);
+    // a link carries what is settled, so the deal it opens keeps the card taken away
+    const linked = must(await unpackDeal(must(await packDeal(taken), "the link")), "the linked deal");
+    expect(linked.template?.laterFills).toEqual(["current_account"]);
+    expect(card(withLaterFills(linked, data))).toBeUndefined();
+    const own = before(leumi());
+    const typedAccount: FeeDeal = { ...own, fees: [...own.fees, { id: "fee-mine", kind: "current_account", stages: [{ price: { form: "sum", amount: typed(12), every: 1 } }] }] };
+    const opened = withLaterFills(typedAccount, data);
+    expect(opened.fees).toEqual(typedAccount.fees);
+    expect(opened.template?.laterFills).toEqual(["current_account"]);
+    // the person's own card taken away later is not replaced by the list's
+    const ownTaken = { ...opened, fees: opened.fees.filter((f) => f.id !== "fee-mine") };
+    expect(withLaterFills(ownTaken, data)).toBe(ownTaken);
+    const psagot = before(must(fillDeal({ ...newDeal("brokerage-account"), id: "deal-psagot" }, "house:psagot", data, TODAY), "Psagot's template"));
+    expect(withLaterFills(psagot, data).fees).toEqual(psagot.fees);
+    // a deal filled from no house is as it was
+    const scratch = account();
+    expect(withLaterFills(scratch, data)).toBe(scratch);
+  });
+
+  it("an old deal opens with it from a link the site wrote before, and among the saved deals as the pages show them", async () => {
+    const old = before(leumi());
+    const want = { ...must(card(leumi()), "the template's card"), id: "fee-current-account" };
+    const linked = must(await dealOfAddress("", `#d=${must(await packDeal(old), "the link")}`, data, TODAY), "the deal the address opens");
+    expect(linked.given).toBe(true);
+    expect(card(linked.deal)).toEqual(want);
+    // a link gives each fee a fresh id; its fees are the old deal's, then the card
+    expect(linked.deal.fees.map((f) => f.kind)).toEqual([...old.fees.map((f) => f.kind), "current_account"]);
+    // the saved deals: the old one with the card, every other as it is, the same list where none changes or before the data comes
+    const scratch = account();
+    const shown = withLaterFillsAll([old, scratch], data);
+    expect(card(shown[0]!)).toEqual(want);
+    expect(shown[1]).toBe(scratch);
+    const none = [scratch];
+    expect(withLaterFillsAll(none, data)).toBe(none);
+    const both = [old, scratch];
+    expect(withLaterFillsAll(both, null)).toBe(both);
+  });
+
+  it("a deal filled while its house's record priced no current account gets the card once the record prices one", () => {
+    const early = must(fillDeal({ ...newDeal("brokerage-account"), id: "deal-early" }, "house:leumi", leumiWithout, TODAY), "Leumi's template without the account");
+    expect(card(early)).toBeUndefined();
+    expect(early.template?.laterFills).toBeUndefined();
+    // the record still prices none: nothing is settled, so nothing changes
+    expect(withLaterFills(early, leumiWithout)).toBe(early);
+    const later = withLaterFills(early, data);
+    expect(later.fees.slice(0, early.fees.length)).toEqual(early.fees);
+    expect(card(later)).toEqual({ ...must(card(leumi()), "the template's card"), id: "fee-current-account" });
+    expect(later.template).toEqual({ ...early.template, laterFills: ["current_account"] });
+    // and once taken away it stays away
+    const taken = { ...later, fees: later.fees.filter((f) => f.kind !== "current_account") };
+    expect(withLaterFills(taken, data)).toBe(taken);
+  });
+
+  it("a card added later takes the kind's own id, with a count after it where the deal holds that id for another fee", () => {
+    const old = before(leumi());
+    const clash: FeeDeal = { ...old, fees: old.fees.map((f, i) => (i === 0 ? { ...f, id: "fee-current-account" } : f)) };
+    expect(card(withLaterFills(clash, data))?.id).toBe("fee-current-account-2");
   });
 });

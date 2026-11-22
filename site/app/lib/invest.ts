@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the indices bundle. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { gershayim } from "./format";
-import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, isTie, beforeTaxPathOf, securitiesBlockedBy, securitiesStopOf, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, isTie, beforeTaxPathOf, securitiesBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomFund } from "./custom-entries";
@@ -185,12 +185,11 @@ export interface BrokerCell {
   providerId: string;
   /** `cost`: priced. `unavailable`: a sourced fact says the broker does not sell it. `no-line`: the tariff has no line for the class. `not-comparable`: the engine could not price it (reason). */
   kind: "cost" | "unavailable" | "no-line" | "not-comparable";
-  /**
-   * The broker's cost over the horizon before the tax it saves, in today's shekels (F-91 on F-63; generic fund: no fund fees). It is the
-   * cell's only figure: no tax index enters it (method F-04, G-40), so nothing after tax of the generic fund is kept to rank on.
-   */
+  /** The broker's cost over the horizon before the tax it saves, in today's shekels (F-91 on F-63; generic fund: no fund fees). */
   cost?: SiteValue;
   costN?: number;
+  /** What is left with this broker (F-63's real value): the cells are ordered on it, as F-80 ranks. */
+  leftN?: number;
   /** Abroad: the exchange the price rests on; null when the tariff has one line for all. */
   venue?: Venue | null;
   /** The monthly purchases ran on the house's printed standing-order line (F-12, D41). */
@@ -279,6 +278,8 @@ export interface OptionView {
   /** Why it cannot run at all ("עוד לא חושב"). */
   notRunnable: "no-rate" | null;
   cells: BrokerCell[];
+  /** The cheapest priced cell. */
+  bestCell: BrokerCell | null;
   funds: FundWay[];
   /** The best complete way inside the option (the fund with the highest value at its broker). */
   bestWay: Way | null;
@@ -354,14 +355,33 @@ export interface WorthLines {
   fundCount: number;
 }
 
+export type BarId = "broker" | "fund" | "etf-tracking" | "abroad";
+export interface Bar {
+  id: BarId;
+  /** Not computed: the reason code ("pending" = in progress for this plan, "no-records"). */
+  pending: "no-records" | "not-priced" | null;
+  low: number | null;
+  high: number | null;
+  /** high − low: what the choice is worth. */
+  spread: SiteValue | null;
+  /** The choice lies in an option that rests on an open rule. */
+  open: boolean;
+  /** Which two things are compared (option ids, or the option of the broker/fund bar). */
+  option?: OptionId;
+  between?: [OptionId, OptionId];
+}
+
 export interface InvestView {
   index: IndexRef;
   options: OptionView[];
   providers: ProviderInfo[];
   headline: Way | null;
+  /** No fund records: the cheapest broker for an Israeli fund on this index (custom index). */
+  genericHeadline: { option: OptionId; cell: BrokerCell } | null;
   yourBroker: string | null;
   /** The person's broker priced for the headline's fund. */
   atYours: { providerId: string; price: WayPrice | null; reason: Reason | null; less: SiteValue | null } | null;
+  bars: Bar[];
   /** Every house with the funds of its group priced at it, the cheapest way first (the index page's section 1). */
   houses: HouseRow[];
   /** The two slices through the headline's cell (F-63, "The worth lines"). */
@@ -434,7 +454,7 @@ function candidates(s: FeesSnapshot, option: OptionId): Cand[] {
 
 interface Spec {
   fund: Parameters<typeof providerWorkbench>[0]["fund"];
-  market: { grossReturn: number; returnIn?: "instrument" | "nis"; fxChange?: number; principalFxChange?: number };
+  market: { grossReturn: number; returnIn?: "instrument" | "nis"; fxChange?: number };
   currency?: { code: string; startRate: number };
   cls: string;
   /** F-109 (D94): where the fund is bought (TASE, or the exchange abroad it trades on), so each house buys it in whole units or by amount. */
@@ -465,11 +485,6 @@ function makeCtx(bundle: IndicesBundle, plan: WorkbenchInputs, assumptions: Fund
   return { bundle, plan, fx: bundle.fx ? ratesOf(bundle.fx) : {}, theta, snaps: providersOfInvest(bundle), assumptions };
 }
 
-/**
- * The generic fund of an option, with no fees of its own: what a house's account costs on the kind (F-91 on F-63). An Israeli kind's fund
- * names no principal currency, so its run takes the CPI; only its after-tax value would read that index, and the page reads none of it, only
- * the account's cost before tax, which no tax index enters (method F-04, G-40).
- */
 function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
   const market = { grossReturn: ctx.plan.grossReturn };
   if (option === "il-tracking" || option === "il-etf") return { fund: { kind: "israeli-fund", drag: {} }, market, cls: OPTION_CLASS[option] };
@@ -519,20 +534,13 @@ function currentAccountOf(ctx: Ctx, s: FeesSnapshot): FeesSnapshot["current_acco
 /** A row of either workbench: F-63's, or F-118's for a fund whose exit tax rests on an open rule. */
 type SlotRow = ProviderRow | BeforeTaxProvider;
 
-/** The person's age and income as a run's tax reads them: the surtax on the income with the gain (F-43), and from 60 the brackets the gain falls into (F-42). */
-function profileOf(ctx: Ctx): { ageAtStart?: number; annualIncome?: number } {
+function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[], untilExitTax = false): SlotRow[] {
   const profile: { ageAtStart?: number; annualIncome?: number } = {};
   if (ctx.plan.age !== null) profile.ageAtStart = ctx.plan.age;
+  // the tax reads both: the surtax on the income with the gain (F-43), and from 60 the brackets the gain falls into (F-42)
   if (ctx.plan.income !== null && ctx.plan.income > 0) profile.annualIncome = ctx.plan.income;
-  return profile;
-}
-
-const goalOf = (ctx: Ctx) => ({ amountNow: ctx.plan.amountNow, monthly: ctx.plan.monthly, months: 12 * ctx.plan.years, firstMonth: calendarMonthOf(ctx.bundle.today) });
-
-function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[], untilExitTax = false): SlotRow[] {
-  const profile = profileOf(ctx);
   const input = (list: typeof items) => ({
-    goal: goalOf(ctx),
+    goal: { amountNow: ctx.plan.amountNow, monthly: ctx.plan.monthly, months: 12 * ctx.plan.years, firstMonth: calendarMonthOf(ctx.bundle.today) },
     market: { ...spec.market, inflation: ctx.plan.inflation },
     fund: spec.fund,
     profile,
@@ -1094,13 +1102,11 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   const listing = listingOf(rec, subject.instrumentClass);
   const spec: Spec = { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass, ...(listing ? { listing } : {}) };
   // a fund whose tax rests on an open rule is listed with the reason and no rank (F-04, G-35), with its figures before tax where F-118 reads
-  // them (D84: a fund that pays nothing out): a TASE foreign fund on TXF-04, or a fund whose tax index is an open reading (TXS OQ26) where
-  // its readings give the plan different results (method §13)
-  const own = { goal: goalOf(ctx), market: { ...spec.market, inflation: ctx.plan.inflation }, fund: spec.fund, tariff: spec.currency ? { currency: spec.currency } : {}, profile: profileOf(ctx) };
-  const stop = securitiesStopOf(own, ruleContext(ctx.bundle));
-  if (stop) {
-    const path = beforeTaxPathOf(own, ruleContext(ctx.bundle), stop);
-    return { reason: { code: "rule-open", ruleId: stop.ruleId, ...(stop.question ? { question: stop.question } : {}) }, ...(path ? { beforeTax: { spec, ruleId: path.ruleId } } : {}) };
+  // them (D84: a fund that pays nothing out)
+  const open = securitiesBlockedBy(run.fund, ruleContext(ctx.bundle));
+  if (open) {
+    const path = beforeTaxPathOf(run.fund, ruleContext(ctx.bundle));
+    return { reason: { code: "rule-open", ruleId: open }, ...(path ? { beforeTax: { spec, ruleId: path } } : {}) };
   }
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
   const mismatch = !!exposure && !["NIS", "ILS"].includes(rec.currency) && rec.currency !== exposure.currency;
@@ -1161,7 +1167,7 @@ function beforeTaxPrices(ctx: Ctx, rec: FundRecord, option: OptionId, spec: Spec
 
 function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: string | null): OptionView {
   const exists = optionsOf(index.israeli).includes(option);
-  const empty: OptionView = { id: option, exists, notRunnable: null, cells: [], funds: [], bestWay: null, open: false };
+  const empty: OptionView = { id: option, exists, notRunnable: null, cells: [], bestCell: null, funds: [], bestWay: null, open: false };
   if (!exists) return empty;
   const spec = genericSpec(ctx, option);
   if (!spec) return { ...empty, notRunnable: "no-rate" };
@@ -1183,6 +1189,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
         option,
         cost: costValue(ctx, row, spec, copy.houses.costAbout(s.provider.name_he)),
         costN: row.horizonCostBeforeTax,
+        leftN: row.real,
         venue: p.venue,
         standing: p.standing,
         aside: p.aside,
@@ -1192,6 +1199,9 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
     }
     return { providerId: s.id, kind: p.reason.code === "no-applicable-line" ? "no-line" : "not-comparable", reason: p.reason };
   });
+  // ordered as the ranking orders (F-80 on what is left), not by the cost shown, which is before tax (F-91)
+  const costs = cells.filter((c) => c.kind === "cost").sort((a, b) => b.leftN! - a.leftN!);
+  const bestCell = costs[0] ?? null;
 
   // (a) the funds of the option, each at its cheapest broker
   // a custom index has no exposure record: a fund the person added on it names the index itself (D44)
@@ -1240,7 +1250,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
   funds.sort((a, b) => (b.best?.valueN ?? -Infinity) - (a.best?.valueN ?? -Infinity));
   const top = funds.find((f) => f.best);
   const bestWay: Way | null = top?.best ? { option, fund: top, providerId: top.best.providerId, value: top.best.value, valueN: top.best.valueN, open: top.best.open } : null;
-  return { ...empty, cells, funds, bestWay, open: funds.some((f) => f.best?.open) };
+  return { ...empty, cells, bestCell, funds, bestWay, open: funds.some((f) => f.best?.open) };
 }
 
 // ---------------------------------------------------------------- the view
@@ -1276,10 +1286,36 @@ const leftEnd = (name: string, n: number, v: SiteValue): GapEnd => ({ n, v, name
 /** The cheapest way's figure, the one every gap to it starts from. */
 const headlineEnd = (w: Way): GapEnd => leftEnd(copy.pair.cheapest, w.valueN, w.value);
 const lowest = (xs: GapEnd[]) => xs.reduce<GapEnd | null>((a, x) => (!a || x.n < a.n ? x : a), null);
+const highest = (xs: GapEnd[]) => xs.reduce<GapEnd | null>((a, x) => (!a || x.n > a.n ? x : a), null);
 const shortOf = (ctx: Ctx, id: string) => {
   const s = ctx.snaps.find((x) => x.id === id);
   return s ? providerInfo(s).short : id;
 };
+
+function barsOf(ctx: Ctx, options: OptionView[], headline: Way | null): Bar[] {
+  // the spread is the high end's figure less the low end's: a cost range is the accounts' costs before tax (F-91), a value range what is left (F-65)
+  const bar = (id: BarId, low: GapEnd | null, high: GapEnd | null, formula: string, pending: Bar["pending"], open: boolean, extra: Partial<Bar> = {}): Bar => ({ id, pending: low === null || high === null ? (pending ?? "not-priced") : null, low: low?.n ?? null, high: high?.n ?? null, spread: low && high ? gapOf2(ctx, high, low, formula, id) : null, open, ...extra });
+  const at = headline ? options.find((o) => o.id === headline.option)! : options.find((o) => o.bestCell) ?? null;
+  const out: Bar[] = [];
+  // the broker: the cost range of the option's brokers
+  const costs = at ? at.cells.flatMap((c): GapEnd[] => (c.kind === "cost" ? [{ n: c.costN!, v: c.cost!, name: copy.pair.input(shortOf(ctx, c.providerId), copy.pair.colChargesShort) }] : [])) : [];
+  out.push(bar("broker", lowest(costs), highest(costs), "F-91", null, !!at?.open, at ? { option: at.id } : {}));
+  // the fund: values among the option's funds at its broker
+  const vals = at ? at.funds.flatMap((f) => (f.best ? [leftEnd(f.name, f.best.valueN, f.best.value)] : [])) : [];
+  out.push(bar("fund", lowest(vals), highest(vals), "F-65", vals.length === 0 ? "no-records" : null, !!at?.open, at ? { option: at.id } : {}));
+  // ETF against tracking fund
+  const wayEnd = (w: Way) => leftEnd(w.fund.name, w.valueN, w.value);
+  const t = options.find((o) => o.id === "il-tracking")?.bestWay;
+  const e = options.find((o) => o.id === "il-etf")?.bestWay;
+  const te = t && e ? [wayEnd(t), wayEnd(e)] : [];
+  out.push(bar("etf-tracking", lowest(te), highest(te), "F-65", "no-records", false, { between: ["il-tracking", "il-etf"] }));
+  // in Israel or abroad: the best of the Israeli-rail options against the best abroad option
+  const il = highest(options.filter((o) => o.id !== "abroad" && o.bestWay).map((o) => wayEnd(o.bestWay!)));
+  const ab = options.find((o) => o.id === "abroad")?.bestWay;
+  const both = il && ab ? [il, wayEnd(ab)] : [];
+  out.push(bar("abroad", lowest(both), highest(both), "F-65", "no-records", !!ab?.open, { between: ["il-etf", "abroad"] }));
+  return out;
+}
 
 /** Fund first by value left: ranked ones, then ones on an open rule, then the ones with no price. */
 const entryOrder = (a: HouseEntry, b: HouseEntry) => {
@@ -1374,6 +1410,8 @@ function build(a: InvestArgs): InvestView {
   const yourBroker = a.yourBroker && ctx.snaps.some((s) => s.id === a.yourBroker) ? a.yourBroker : null;
   const options = core(ctx, a.index, yourBroker);
   const headline = headlineOf(options);
+  const costed = options.filter((o) => o.bestCell).sort((a2, b2) => a2.bestCell!.costN! - b2.bestCell!.costN!);
+  const genericHeadline = !headline && costed[0] && a.index.exposure === null ? { option: costed[0].id, cell: costed[0].bestCell! } : null;
   let atYours: InvestView["atYours"] = null;
   if (yourBroker && headline) {
     const y = headline.fund.atYours;
@@ -1386,8 +1424,10 @@ function build(a: InvestArgs): InvestView {
     options,
     providers,
     headline,
+    genericHeadline,
     yourBroker,
     atYours,
+    bars: barsOf(ctx, options, headline),
     houses: housesOf(ctx, options, headline, providers),
     worth: worthOf(ctx, options, headline, providers),
     returnPct: a.plan.grossReturn * 100,
@@ -1418,8 +1458,8 @@ export interface PairCosts {
   /** The account's own lines over the horizon before the tax they save (F-91), real shekels; `interaction` is what no single line explains. */
   account: { line: FeeLine; cost: SiteValue }[];
   /**
-   * F-128: an account priced by a deal, its lines as the deal's own fees, by the deal's fee id (`BANK_ACCOUNT` for the bank's current
-   * account the plan counts from the record) with the fee's name, each what was paid on it carried as its line is (F-91). They stand in
+   * F-128: an account priced by a deal, its lines as the deal's own fees, by the deal's fee id (a bank's current account among them, the
+   * deal's own fee of that kind) with the fee's name, each what was paid on it carried as its line is (F-91). They stand in
    * place of `account`, which is then empty, and `interaction` is what they leave of the account's fees.
    */
   dealLines?: { fee: string; name: string; cost: SiteValue }[];
@@ -1651,6 +1691,16 @@ export function accountSum(pc: PairCosts, about: string, today: string, round?: 
   for (const [i, l] of (pc.dealLines ?? []).entries()) parts[l.name in parts ? `${l.name} (${i + 1})` : l.name] = l.cost;
   parts[copy.pair.remainder] = pc.remainder;
   return sumOf(parts, "F-91", { today, about, ...(round ? { round } : {}) });
+}
+
+// ---------------------------------------------------------------- broker costs by option (B1 API, requests.md)
+
+/** The broker costs for each option (the grid's columns) for an index and the plan; a custom index works too (no funds needed). */
+export function brokerCostsByOption(bundle: IndicesBundle, index: IndexRef, plan: WorkbenchInputs): Record<OptionId, BrokerCell[]> {
+  const ctx = makeCtx(bundle, plan);
+  const out = {} as Record<OptionId, BrokerCell[]>;
+  for (const o of core(ctx, index, null)) out[o.id] = o.cells;
+  return out;
 }
 
 // ---------------------------------------------------------------- hedged or not, across the dollar (F-94)
