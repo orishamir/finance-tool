@@ -10,7 +10,6 @@ import { useLoaderData, useLocation, useNavigate } from "react-router";
 import { rulesFront as copy, scopeWords, sourceBlock, system, topicName } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { NumberLegend, StrengthLabel, type RuleUses } from "../components/provenance";
-import { replaceAddress } from "../components/sheet-stack";
 import { RuleCard, RuleDetail, SlottedText, TopMatch } from "../components/provenance-sheets";
 import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
@@ -20,11 +19,12 @@ import { AskField, Button, Card, ChoiceChips, cx, gershayim, DidYouKnow, DocLink
 import { claimTopics, docGroup, docGroups, docsForTopics, editionText, pageHref, type CompanyDoc, type DocGroup } from "../lib/company-docs";
 import { fmt } from "../lib/format";
 import { MQ, useMedia } from "../lib/hooks";
-import { emptyFilters, facetCounts, filtersToSearch, groupProducts, idInField, parseFilters, passesFilters, shelfGroups, shownShelf, type Filters, type LightRule } from "../lib/rules-filter";
+import { facetCounts, filtersToSearch, groupProducts, idInField, parseFilters, passesFilters, shelfGroups, shownShelf, type Filters, type LightRule } from "../lib/rules-filter";
 import { shelfIds, type ShelfId } from "../lib/rule-shelves";
 import { ruleTitle } from "../lib/rule-title";
 import { analyze, isRuleKind, relaxedHits, searchEntries } from "../lib/search";
 import { pickSources, type SourcedRule } from "../lib/sources";
+import { moveAddress, useAddressSearch, useHash } from "../lib/address";
 import { hashId } from "../lib/address-hash";
 import type { RuleRecord } from "@finance-tool/schema";
 
@@ -170,6 +170,12 @@ const RecordsStatus = ({ broken }: { broken: boolean }) => (
 const claimFirst = 9;
 /** How many of the companies' own terms a search shows. */
 const companyFirst = 6;
+/**
+ * Writes the filters into the address, the open rule's fragment kept. Not a router navigation: one here would scroll to the open rule's
+ * fragment and reload the page's data on every search.
+ */
+const writeFilters = (f: Filters) => moveAddress(`${window.location.pathname}${filtersToSearch(f)}${window.location.hash}`, "replace");
+
 /** The field's text reaches the search when the hand rests this long. */
 const claimRest = 150;
 const DETAIL = "rule-detail";
@@ -292,60 +298,53 @@ function ProductList({ names, counts, total, current, onPick }: { names: Map<str
 
 export default function Rules() {
   const data = useLoaderData<typeof loader>();
-  const loc = useLocation();
+  // a router navigation to this page (a link with a query or a fragment) fires no event: reading the location renders the page again on
+  // one, and the address hooks below read the new address then
+  useLocation();
   const navigate = useNavigate();
   /** From xl the rule opens beside the list; narrower, on a screen of its own. */
   const wide = useMedia(MQ.xl);
-  const [filters, setFiltersState] = useState<Filters>(emptyFilters);
-  const [text, setText] = useState("");
+  /** The address is the state (?product=&shelf=&changing=1&q=); the pre-rendered page has none. */
+  const search = useAddressSearch();
+  const filters = useMemo(() => parseFilters(search), [search]);
+  /** What the field holds while the hand types, over the search the address held then; once the address's search moves on, the field shows it. */
+  const [draft, setDraft] = useState<{ value: string; over: string } | null>(null);
+  const text = draft && draft.over === filters.q ? draft.value : filters.q;
   const [focused, setFocused] = useState(false);
   const [lawAll, setLawAll] = useState(false);
   const [claimTab, setClaimTab] = useState<"law" | "companies">("law");
   const [picker, setPicker] = useState(false);
   const [filterSheet, setFilterSheet] = useState(false);
-  const [target, setTarget] = useState("");
   const [loaded, setLoaded] = useState<Partial<Record<BundleId, ShelfBundle>>>({});
   const [failed, setFailed] = useState<Set<BundleId>>(() => new Set());
   const requested = useRef(new Set<BundleId>());
   const typing = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  /** The search the field last gave the page: a newer one may be in the field already, and must not be overwritten. */
-  const committed = useRef("");
   /** The product, question and "changing only" chip before a search began: clearing the field goes back to them. */
   const browsing = useRef<Pick<Filters, "product" | "shelf" | "changing">>({ product: null, shelf: null, changing: false });
   /** On a narrow screen: where the list was scrolled when a rule opened, which rule, and whether opening it added a history step. */
   const back = useRef<{ y: number; id: string; pushed: boolean } | null>(null);
   /** A rule the address named: its row is brought into view once the list shows it. */
   const landing = useRef("");
+  /** A rule opened by a press, until the address names it: not a landing. */
+  const opening = useRef("");
   /** A rule opened by a press: focus moves into it once it shows. */
   const focusing = useRef("");
 
   const lightById = useMemo(() => new Map(data.light.map((r) => [r.id, r])), [data.light]);
   const names = useMemo(() => new Map(data.productNames.map((p) => [p.id, p.name])), [data.productNames]);
 
-  // the address is the state: read it after the first paint (the pre-rendered page has none), and again when a link moves here
+  /** The rule open: the one the address names (#ID). */
+  const target = useHash();
+  // a rule the address comes to name that no press opened (the page loaded on it, a link, Back) is a landing
+  const shownTarget = useRef("");
   useEffect(() => {
-    const f = parseFilters(window.location.search);
-    committed.current = f.q;
-    setText(f.q);
-    setFiltersState(f);
-  }, [loc.search]);
-
-  const readHash = useCallback(() => {
-    const id = hashId(window.location.hash);
-    setTarget((cur) => {
-      if (id && id !== cur) landing.current = id;
-      return id;
-    });
-  }, []);
-  useEffect(() => {
-    readHash();
-    window.addEventListener("hashchange", readHash);
-    window.addEventListener("popstate", readHash);
-    return () => {
-      window.removeEventListener("hashchange", readHash);
-      window.removeEventListener("popstate", readHash);
-    };
-  }, [readHash, loc.hash]);
+    const was = shownTarget.current;
+    shownTarget.current = target;
+    if (target === was) return;
+    const pressed = opening.current === target;
+    opening.current = "";
+    if (target && !pressed) landing.current = target;
+  }, [target]);
 
   // a hash that names a company's term, which this page no longer lists (D30): on to where it is listed
   useEffect(() => {
@@ -353,40 +352,26 @@ export default function Rules() {
     if (to) void navigate(to, { replace: true });
   }, [target, data.elsewhere, navigate]);
 
-  const setFilters = useCallback((patch: Partial<Filters>) => {
-    setFiltersState((cur) => {
-      const next = { ...cur, ...patch };
-      // not a navigation: a router navigation here would reload the page's data on every keystroke
-      replaceAddress(`${window.location.pathname}${filtersToSearch(next)}${window.location.hash}`);
-      return next;
-    });
-  }, []);
+  const setFilters = useCallback((patch: Partial<Filters>) => writeFilters({ ...parseFilters(window.location.search), ...patch }), []);
 
   // the field answers at once; the search waits until the hand rests. A search begun from the list starts over every product and
   // question; clearing it goes back to the list as it was.
-  useEffect(() => {
-    if (filters.q === committed.current) return;
-    committed.current = filters.q;
-    setText(filters.q);
-  }, [filters.q]);
   const typed = useCallback(
     (value: string, now = false) => {
-      setText(value);
+      setDraft({ value, over: parseFilters(window.location.search).q });
       setLawAll(false);
       clearTimeout(typing.current);
       const commit = () => {
-        const was = committed.current;
-        committed.current = value;
+        const cur = parseFilters(window.location.search);
+        const was = cur.q;
         setClaimTab("law");
-        setFiltersState((cur) => {
-          let next: Filters = { ...cur, q: value };
-          if (!was.trim() && value.trim()) {
-            browsing.current = { product: cur.product, shelf: cur.shelf, changing: cur.changing };
-            next = { ...next, product: null, shelf: null };
-          } else if (was.trim() && !value.trim()) next = { ...next, ...browsing.current };
-          replaceAddress(`${window.location.pathname}${filtersToSearch(next)}${window.location.hash}`);
-          return next;
-        });
+        let next: Filters = { ...cur, q: value };
+        if (!was.trim() && value.trim()) {
+          browsing.current = { product: cur.product, shelf: cur.shelf, changing: cur.changing };
+          next = { ...next, product: null, shelf: null };
+        } else if (was.trim() && !value.trim()) next = { ...next, ...browsing.current };
+        setDraft(null);
+        writeFilters(next);
       };
       if (now || !value) commit();
       else typing.current = setTimeout(commit, claimRest);
@@ -470,18 +455,18 @@ export default function Rules() {
   const url = (hash: string) => `${window.location.pathname}${window.location.search}${hash ? `#${encodeURIComponent(hash)}` : ""}`;
   const openRule = useCallback((id: string) => {
     landing.current = "";
+    // pressing the rule already open leaves the address as it is, so nothing would clear the mark: a later landing on it read as a press
+    opening.current = hashId(window.location.hash) === id ? "" : id;
+    focusing.current = id;
     if (wide) {
-      window.history.replaceState(window.history.state, "", url(id));
       back.current = null;
+      moveAddress(url(id), "replace");
     } else {
       // a screen of its own: the phone's back gesture closes it, and the list comes back where it was
       const pushed = !back.current;
-      if (pushed) window.history.pushState(window.history.state, "", url(id));
-      else window.history.replaceState(window.history.state, "", url(id));
       back.current = { y: back.current?.y ?? window.scrollY, id, pushed: back.current?.pushed ?? pushed };
+      moveAddress(url(id), pushed ? "push" : "replace");
     }
-    setTarget(id);
-    focusing.current = id;
     requestAnimationFrame(() => {
       if (!wide) window.scrollTo(0, 0);
     });
@@ -497,8 +482,7 @@ export default function Rules() {
       window.history.back();
       return;
     }
-    window.history.replaceState(window.history.state, "", url(""));
-    setTarget("");
+    moveAddress(url(""), "replace");
   }, []);
   // when the rule closes on a narrow screen: the list where it was, and focus on the rule's row
   const wasTarget = useRef("");

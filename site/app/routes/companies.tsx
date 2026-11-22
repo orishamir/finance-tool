@@ -7,7 +7,6 @@ import { useLoaderData } from "react-router";
 import { companies as copy, companyFocus as w, pagePreview, search as searchWords } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { PageShell } from "../components/shell";
-import { replaceAddress } from "../components/sheet-stack";
 import { CompanyTabs } from "../components/decoder/company-tabs";
 import { CompanyList, FocusPane } from "../components/companies/focus";
 import { Sheet } from "../components/Sheet";
@@ -92,7 +91,7 @@ export default function Companies() {
   useEffect(() => {
     if (!ready.current) return;
     const next = `${window.location.pathname}${stateToSearch(s, first)}${window.location.hash}`;
-    if (next !== `${window.location.pathname}${window.location.search}${window.location.hash}`) replaceAddress(next);
+    if (next !== `${window.location.pathname}${window.location.search}${window.location.hash}`) window.history.replaceState(window.history.state, "", next);
   }, [s, first]);
 
   useEffect(() => {

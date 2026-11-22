@@ -5,11 +5,14 @@ import { useSearchParams } from "react-router";
 /** useLayoutEffect in the browser, useEffect while pre-rendering (where a layout effect only warns). */
 export const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
-/** False on the pre-rendered page and the hydrating render, true from the first effect on: reading browser-only state before then would not match the HTML. */
+const noSubscription = () => () => {};
+
+/**
+ * False on the pre-rendered page and the render that hydrates it, true after (and at once on a page drawn in the browser): reading
+ * browser-only state before then would not match the HTML.
+ */
 export function useHydrated(): boolean {
-  const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
-  return hydrated;
+  return useSyncExternalStore(noSubscription, () => true, () => false);
 }
 
 /**

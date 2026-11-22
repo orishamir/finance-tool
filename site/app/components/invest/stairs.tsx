@@ -4,15 +4,16 @@
 // only), every difference a computation of F-91. The selection logic is `lib/stairs.ts`; the chart and the rows are the kit's.
 import { memo, useMemo, useState, type ReactNode } from "react";
 import { invest as c } from "../../copy";
-import { fmt } from "../../lib/format";
+import { nisOf } from "../../lib/format";
 import { fundLabels } from "../../lib/labels";
 import { pairCosts, type FundWay, type InvestView, type ProviderInfo, type WayPrice } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
-import { computed, differenceOf, type SiteValue } from "../../lib/value";
+import { computed, differenceOf, reconciled, type SiteValue } from "../../lib/value";
+import { gridParts, onGrid, sumGrid } from "../../lib/whole-parts";
 import { IconLock } from "../icons";
-import { LeadTail, Num, type SheetPart } from "../provenance";
-import { Button, wholeParts, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
+import { LeadTail, NisNum, Num, type SheetPart } from "../provenance";
+import { Button, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
 import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, NoFundWords, whyNoFundAt } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
@@ -30,7 +31,10 @@ interface Level {
   stair: Stair;
   fundName: string;
   house: ProviderInfo;
+  /** What the pair leaves, on the stairs' grid (`sumGrid`), as every figure of the stairs shows it (`reconciled`). */
   left: SiteValue;
+  /** What is left less the stair before's, both as shown: what the step's column and row write; 0 for the start. */
+  d: number;
   /** The account's fees (F-91), as the receipt writes them. */
   account: SiteValue;
   /** In whole units, what the cash waiting for a unit did against the fund (F-109): not a fee, so apart from `account`; null where the house buys by amount, where it is 0. */
@@ -38,7 +42,7 @@ interface Level {
   /** The fund's and the state's parts (F-91); null where the way's cost could not be split by who takes it (`pairCosts` gave none): the cell says so, never a 0. */
   fund: SiteValue | null;
   tax: SiteValue | null;
-  /** The four parts less the stair before's, in whole shekels that add up to minus the difference in what is left (F-91); null for the start, and where this stair or the one before has no split. */
+  /** The four parts less the stair before's, on the stairs' grid, adding up to minus `d` (F-91); null for the start, and where this stair or the one before has no split. */
   dParts: [number, number, number, number] | null;
 }
 
@@ -83,22 +87,27 @@ export function useStairs({ view, bundle, plan, startHouse, startFund, example }
       if (!p || !("valueN" in p)) return;
       const pc = pairCosts({ bundle, index: view.index, plan, fundId: stair.pos.f, providerId: stair.pos.a });
       const fundName = nameOfFund(stair.pos.f);
+      // hundreds of shekels where what is left rests on an assumed return, whole shekels otherwise: the levels, the steps between them and
+      // the parts of each step are rounded once on it, so they add up (method.md F-91)
+      const grid = sumGrid(p.value);
+      const shown = onGrid(stair.v, grid);
+      const prev = out[i - 1];
       const level: Level = {
         stair,
         fundName,
         house: house(stair.pos.a),
-        left: p.value,
+        left: reconciled(p.value, shown),
+        d: prev ? shown - (prev.left.value as number) : 0,
         account: p.cost(`${t.table.accountCost}: ${fundName}, ${house(stair.pos.a).short}`, false),
         waiting: pc?.waiting ?? null,
         fund: pc?.fund ?? null,
         tax: pc?.tax ?? null,
         dParts: null,
       };
-      const prev = out[i - 1];
       if (prev && level.fund && level.tax && prev.fund && prev.tax) {
         const raw = ([0, 1, 2, 3] as const).map((k) => partValue(level, k) - partValue(prev, k));
-        // whole shekels that add up to the difference in what is left, so the figures under a stair never disagree with the stair
-        level.dParts = wholeParts(raw, -(stair.d ?? 0)) as [number, number, number, number];
+        // parts that add up to the difference in what is left, so the figures under a stair never disagree with the stair
+        level.dParts = gridParts(raw, -level.d, grid) as [number, number, number, number];
       }
       out.push(level);
     });
@@ -111,7 +120,8 @@ export function useStairs({ view, bundle, plan, startHouse, startFund, example }
     // what the steps add up to, from the start to the last: the chart's title and the tab's answer (charts.md: a finding, not the topic)
     const first = levels[0]!;
     const end = levels[levels.length - 1]!;
-    const climb = differenceOf([`${t.about.left}: ${end.fundName}, ${end.house.short}`, end.left], [`${t.about.left}: ${first.fundName}, ${first.house.short}`, first.left], "F-91", { today, about: t.panelTitle.about, round: Math.round });
+    // the levels as shown, so the climb is the steps added
+    const climb = reconciled(differenceOf([`${t.about.left}: ${end.fundName}, ${end.house.short}`, end.left], [`${t.about.left}: ${first.fundName}, ${first.house.short}`, first.left], "F-91", { today, about: t.panelTitle.about }), (end.left.value as number) - (first.left.value as number));
     return { g, ways, base, baseKey, current, setDone, atExample, example, chain, levels, climb };
   }, [view, g, chain, levels, ways, base, baseKey, current, atExample, example, today, t]);
 }
@@ -150,14 +160,14 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const jump = (p: Pos) => set({ start: p, taken: [] });
 
   const delta = (n: number, a: SiteValue, an: string, b: SiteValue, bn: string, about: string) => computed(n, "nis", "F-91", { [an]: a, [bn]: b }, { today, about });
-  const diffOf = (l: Level, prev: Level) => delta(l.stair.d ?? 0, l.left, `${t.about.left}: ${l.fundName}, ${l.house.short}`, prev.left, `${t.about.left}: ${prev.fundName}, ${prev.house.short}`, t.about.versus);
+  const diffOf = (l: Level, prev: Level) => reconciled(delta(l.d, l.left, `${t.about.left}: ${l.fundName}, ${l.house.short}`, prev.left, `${t.about.left}: ${prev.fundName}, ${prev.house.short}`, t.about.versus), l.d);
   const partName = (k: Part) => [t.table.accountCost, t.table.waiting, t.table.fundCost, t.table.tax][k]!;
   const partOf = (l: Level, prev: Level, k: Part) => {
     const name = partName(k);
     // read only where both stairs have their split (`dParts`), so every part is a figure; a way by amount has no waiting cash, and its 0 is the only side
     const side = (x: Level) => (PARTS[k] === "waiting" ? x.waiting : x[PARTS[k]]);
     const inputs: [SiteValue, string][] = ([l, prev] as const).flatMap((x) => (side(x) ? [[side(x)!, `${name}: ${x.fundName}, ${x.house.short}`] as [SiteValue, string]] : []));
-    return computed(l.dParts![k], "nis", "F-91", Object.fromEntries(inputs.map(([v, n]) => [n, v])), { today, about: `${t.about.cost}: ${name}` });
+    return reconciled(computed(l.dParts![k], "nis", "F-91", Object.fromEntries(inputs.map(([v, n]) => [n, v])), { today, about: `${t.about.cost}: ${name}` }), l.dParts![k]);
   };
 
   // ---------------------------------------------------------------- the chart and what sits under it
@@ -169,7 +179,8 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       id: `${fold + i}|${s.pos.a}|${s.pos.f}`,
       level: s.v,
       from: first || !prevLevel ? s.v : prevLevel.stair.v,
-      top: first ? fmt.nisWhole(s.v) : fmt.signedNisWhole(s.d ?? 0),
+      // every level is what the plan leaves, and rests on the plan's return as the climb does
+      top: first ? nisOf(l.left, l.left.value as number) : nisOf(l.left, l.d, { signed: true }),
       hue: hueOf(s.lane),
       loses: (s.d ?? 0) < 0,
       taken: s.taken,
@@ -191,7 +202,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       </>
     ) : (
       <>
-        {t.panelTitle.lead(levels.length - 1)} <Num value={climb} display={(v) => fmt.nisWhole(Math.abs(v))} /> {t.panelTitle.less} {t.panelTitle.tail}
+        {t.panelTitle.lead(levels.length - 1)} <NisNum abs value={climb} /> {t.panelTitle.less} {t.panelTitle.tail}
       </>
     );
 
@@ -212,7 +223,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
     if (!l.dParts) return <span className="text-muted-foreground">{t.table.notSplit}</span>;
     return (
       <span className={tone(l, k)}>
-        <Num value={partOf(l, prev, k)} display={fmt.signedNisWhole} />
+        <NisNum signed value={partOf(l, prev, k)} />
       </span>
     );
   };
@@ -270,7 +281,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const steps: StairStep[] = levels.map((l, i) => {
     const s = l.stair;
     const prev = levels[i - 1];
-    const parts = prev && l.dParts ? ([0, 1, 2, 3] as const).filter((k) => l.dParts![k] !== 0).map((k, n) => <span key={k}>{n > 0 && " · "}{partName(k)} <Num value={partOf(l, prev, k)} display={fmt.signedNisWhole} /></span>) : null;
+    const parts = prev && l.dParts ? ([0, 1, 2, 3] as const).filter((k) => l.dParts![k] !== 0).map((k, n) => <span key={k}>{n > 0 && " · "}{partName(k)} <NisNum signed value={partOf(l, prev, k)} /></span>) : null;
     const what = !s.lane ? `${t.stepStart} ${l.fundName}, ${l.house.short}` : `${t.lanes[s.lane].word}: ${s.lane === "account" ? l.house.short : l.fundName}`;
     return {
       id: `${s.pos.a}|${s.pos.f}|${i}`,
@@ -281,7 +292,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
           {s.open ? <LeadTail lead={what}>{lockIcon(t.lockLabel)}</LeadTail> : what}
         </>
       ),
-      delta: s.lane && prev ? <Num value={diffOf(l, prev)} display={fmt.signedNisWhole} /> : <Num value={l.left} />,
+      delta: s.lane && prev ? <NisNum signed value={diffOf(l, prev)} /> : <Num value={l.left} />,
       parts: parts && parts.length ? <>{parts}</> : null,
       next: !s.taken,
       label: what,
@@ -483,8 +494,8 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
           columns={columns}
           fold={fold}
           axis={{ lo: scale.LO, hi: scale.HI }}
-          ceiling={{ level: ceiling.v, lines: atCeiling ? [] : [t.ceiling, fmt.nisWhole(ceiling.v), nameOfFund(ceiling.pos.f), house(ceiling.pos.a).short] }}
-          result={{ level: end.stair.v, total: fmt.nisWhole(end.stair.v), words: [atCeiling ? t.ceiling : t.resultEnd] }}
+          ceiling={{ level: ceiling.v, lines: atCeiling ? [] : [t.ceiling, nisOf(end.left, onGrid(ceiling.v, sumGrid(ceilingPrice.value))), nameOfFund(ceiling.pos.f), house(ceiling.pos.a).short] }}
+          result={{ level: end.stair.v, total: nisOf(end.left, end.left.value as number), words: [atCeiling ? t.ceiling : t.resultEnd] }}
           now={atExample ? t.nowExample : t.now}
           label={t.chartLabel}
           onGo={goTo}

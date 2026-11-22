@@ -39,9 +39,7 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
   const pendingShown = useRef<Pending | null>(null);
   // a change that leaves the part asking no place (its side's prices changed, its side or its price gone, a price that can no longer hold
   // it) drops it, so it never asks on another price, nor comes back with an undo; any other change leaves it asking
-  useEffect(() => {
-    if (pending && !pendingStands(deal, pending)) setPending(null);
-  }, [deal, pending]);
+  if (pending && !pendingStands(deal, pending)) setPending(null);
   // whether a phone's toolbox sheet is folded to its groups' names: folded as the page loads, so nothing covers it, and unfolded when a
   // fee or a case is opened, or at its handle
   const [sheetFolded, setSheetFolded] = useState(true);
