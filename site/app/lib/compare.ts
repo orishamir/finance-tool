@@ -2,7 +2,7 @@
 // candidate set (F-83) and ranking (F-80) over them. No rate, fee or rule figure is
 // written here: everything comes from the bundle or from the person, and every number leaves as a value object so the provenance
 // sheet can open it.
-import { buildCandidateSet, calendarMonthOf, coverageLine, withHeldRate, outcomeOrder, rankCandidates, tieThreshold, type Candidate, type CandidateSet, type CandidateSetInput, type ComparisonGoal, type CoverageLine, type InstrumentTerms, type OutcomeKind, type Ranking, type Reason, type RunContext, type RunResult } from "@finance-tool/engine";
+import { buildCandidateSet, calendarMonthOf, coverageLine, withHeldRate, outcomeOrder, rankCandidates, tieThreshold, type Candidate, type CandidateSet, type CandidateSetInput, type ComparisonGoal, type CoverageLine, type InstrumentTerms, type OutcomeKind, type Ranking, type Reason, type RunContext } from "@finance-tool/engine";
 import type { ExposureRecord, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import { formulaNames, guideBlocks, ownTermsCopy, r2 } from "../copy";
 import type { Employment } from "./inputs";
@@ -424,8 +424,4 @@ export function evaluate(bundle: CompareBundle, g: RunGoal, options: EvalOptions
   return { set, candidates, coverage, ranking, fields, ctx, goal, theta, inputs };
 }
 
-const realOf = (run: RunResult) => run.real;
-const sumOf = (r: Record<string, number>) => Object.values(r).reduce((a, b) => a + b, 0);
-
-export { realOf, sumOf };
 export type { PresetId, Presets };

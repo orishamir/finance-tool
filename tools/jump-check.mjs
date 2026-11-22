@@ -13,7 +13,6 @@
 // CHROME at a Chromium binary.
 import { writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
-import { newContext, settled } from "../site/scripts/browser.mjs";
 
 const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
 const { chromium } = require("playwright");
@@ -27,7 +26,7 @@ let pages = ["/", "/transfer", "/deal", "/rules", "/questions", "/parameters", "
 if (process.argv[3]) pages = process.argv[3].split(",");
 
 const browser = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
-const ctx = await newContext(browser, { viewport: phone ? { width: 390, height: 844 } : { width: 1280, height: 900 }, ...(phone ? { hasTouch: true, isMobile: true } : {}) });
+const ctx = await browser.newContext({ viewport: phone ? { width: 390, height: 844 } : { width: 1280, height: 900 }, locale: "he-IL", ...(phone ? { hasTouch: true, isMobile: true } : {}) });
 // every press starts on a fresh load; the site would put back the scroll position of the previous load of the same page
 await ctx.addInitScript(() => sessionStorage.removeItem("mekor.scroll"));
 // the site scrolls smoothly; a reading taken while the page still glides would count the glide as a jump
@@ -37,18 +36,18 @@ const page = await ctx.newPage();
 const out = [];
 for (const path of pages) {
   await page.goto(`${BASE}${path}`);
-  await page.evaluate(settled);
+  await page.waitForTimeout(1200);
   const n = Math.min(await page.locator(SEL).count(), MAX_PER_PAGE);
   for (let i = 0; i < n; i++) {
     await page.goto(`${BASE}${path}`);
-    await page.evaluate(settled);
+    await page.waitForTimeout(700);
     // a handle, not a locator: a locator's nth(i) is found again at every step, and a press that adds controls above would
     // make the second reading another control's
     const el = await page.locator(SEL).nth(i).elementHandle({ timeout: 1500 }).catch(() => null);
     if (!el || !(await el.isVisible().catch(() => false))) continue;
     const label = ((await el.getAttribute("aria-label")) || (await el.textContent()) || "").trim().replace(/\s+/g, " ").slice(0, 50);
     await el.evaluate((e) => e.scrollIntoView({ block: "center" }));
-    await page.evaluate(settled);
+    await page.waitForTimeout(150);
     const before = await el.boundingBox();
     if (!before) continue;
     const url = page.url();
@@ -58,7 +57,7 @@ for (const path of pages) {
     } catch {
       continue;
     }
-    await page.evaluate(settled);
+    await page.waitForTimeout(350);
     // a press that opens another page is not measured; one that only changes the query (a filter kept in the address) is
     if (new URL(page.url()).pathname !== new URL(url).pathname) continue;
     const after = await el.boundingBox().catch(() => null);

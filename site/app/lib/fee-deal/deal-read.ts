@@ -2,6 +2,7 @@
 // price as the page shows it with its figures in their number states, each price's standing against the cap (F-113) and what a fee is
 // charged on (F-111). The views (rows.ts, panel.ts, reading.ts, charts.ts) only arrange these.
 import { chargedOn, dealPeriods, groupAction, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealReading } from "@finance-tool/engine";
+import { assertNever } from "@finance-tool/schema";
 import type { SiteValue } from "../value";
 import { feeOf, readFees, type MonthHeld, type ReadFee } from "./cases";
 import { capOf, kindById, standingOf, type BanSaid, type DealKind, type Standing } from "./kinds";
@@ -189,8 +190,12 @@ export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: 
     }
     case "free":
       return { form: "free", figures, ...(p.src ? { free: freeValue(p.src) } : {}) };
-    default:
+    case "action":
+    case "perAction":
+    case "perUnit":
       return { form: p.form, figures, ...currency, ...parts };
+    default:
+      return assertNever(p);
   }
 }
 

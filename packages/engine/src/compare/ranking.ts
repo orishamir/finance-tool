@@ -2,7 +2,7 @@
 // Two options are a tie when their relative difference is below the tie threshold P-01. The formula that
 // decides between the top two is found by re-running both with one component removed (an F-61-style
 // decomposition) and naming the largest difference.
-import { parameterRecord } from "@finance-tool/schema";
+import { parameterRecord, assertNever } from "@finance-tool/schema";
 import { RecordInputError, runPlanned, type RunPlan } from "../inputs.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import type { Candidate } from "./types.ts";
@@ -55,6 +55,8 @@ export function withoutFees(plan: RunPlan): RunPlan {
       return { run: "runMakam", input: { ...plan.input, tariff: {} } };
     case "runBond":
       return { run: "runBond", input: { ...plan.input, tariff: {} } };
+    default:
+      return assertNever(plan);
   }
 }
 

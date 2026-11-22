@@ -1,29 +1,28 @@
 // Path check ("no figure changes silently"): the same value of a slider or marker must show the same figures however the hand got there.
 // For every slider on a page (role=slider: the kit's sliders and chart markers) it reaches each value by several paths (Home then steps
 // right, End then steps left, a step past it and back, and from where the last path left it) and reads the text of the slider's section
-// once the page is at rest (site/scripts/browser.mjs). Motion is off: digits glide to a new value over --duration-chart
-// (chart-glide.tsx), and a glide's last frames can leave its rounded digits still for a while before the last one turns, which reads as
-// at rest; with no glide the figures are drawn at their value at once. `--motion` runs with the glides, where such a read can differ by
-// its last digit. Any value whose text differs between paths is printed with the paths and the two texts.
+// once the figures have come to rest: digits glide to a new value over --duration-chart (chart-glide.tsx), so a read inside the glide
+// shows a figure on its way, not a different answer. The 2026-11-07 check of the makam guide read 300 ms after a key, inside the 400 ms
+// glide, and took the gliding digits for a fault; this script waits until two reads 200 ms apart agree. `--reduce` runs with reduced
+// motion (no glide), so it reads at once. Any value whose text differs between paths is printed with the paths and the two texts.
 //
-//   BASE=http://127.0.0.1:4173/finance-tool node tools/path-check.mjs /guide/makam [pc|phone] [--motion]
+//   BASE=http://127.0.0.1:4173/finance-tool node tools/path-check.mjs /guide/makam [pc|phone] [--reduce]
 import { createRequire } from "node:module";
-import { newContext, settled } from "../site/scripts/browser.mjs";
 
 const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
 const { chromium } = require("playwright");
 const BASE = process.env.BASE ?? "http://127.0.0.1:4173/finance-tool";
 const CHROME = process.env.CHROME ?? "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome";
 const args = process.argv.slice(2);
-const reduce = !args.includes("--motion");
+const reduce = args.includes("--reduce");
 const [path = "/guide/makam", width = "pc"] = args.filter((a) => !a.startsWith("--"));
 const viewport = width === "phone" ? { width: 390, height: 844 } : { width: 1440, height: 900 };
 
 const browser = await chromium.launch({ executablePath: CHROME });
-const context = await newContext(browser, { viewport, reducedMotion: reduce ? "reduce" : "no-preference", hasTouch: width === "phone" });
+const context = await browser.newContext({ viewport, reducedMotion: reduce ? "reduce" : "no-preference", hasTouch: width === "phone" });
 const page = await context.newPage();
 await page.goto(`${BASE}${path}/`, { waitUntil: "networkidle" });
-await page.evaluate(settled);
+await page.waitForTimeout(500);
 
 const sliders = page.locator('[role="slider"]');
 const count = await sliders.count();
@@ -47,8 +46,14 @@ for (let i = 0; i < count; i++) {
       return box.innerText.replace(/\s+/g, " ").trim();
     });
   const settle = async () => {
-    await page.evaluate(settled);
-    return read();
+    let last = await read();
+    for (let k = 0; k < 30; k++) {
+      await page.waitForTimeout(200);
+      const t = await read();
+      if (t === last) return t;
+      last = t;
+    }
+    return last;
   };
   const press = async (key, times = 1) => {
     for (let k = 0; k < times; k++) await page.keyboard.press(key);

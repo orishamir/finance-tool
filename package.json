@@ -11,6 +11,7 @@
   },
   "scripts": {
     "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "node tools/lint.mjs",
     "test": "vitest run --project fast",
     "test:deep": "node tools/test-deep.mjs",
     "validate": "npm run validate -w @finance-tool/pipeline",

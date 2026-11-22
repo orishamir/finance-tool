@@ -30,6 +30,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run typecheck
+      # after the typecheck, which generates the route types the lint's type-aware rules read
+      - run: npm run lint
       - run: npm test
       - run: npm run test:deep
       - run: npm run validate

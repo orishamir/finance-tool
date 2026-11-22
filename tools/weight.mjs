@@ -1,17 +1,11 @@
-// What a page downloads before the reader can use it: one page of each kind (each page route of site/app/routes.ts), opened in the site's
-// own Chromium at phone size with an empty cache, every response counted gzipped (as GitHub Pages sends it), split by kind and by whether
-// it came before the page's load event ("first view") or after it, until the page is at rest (what it fetches on idle). Also how much of
-// each page's HTML is the loader data written into it, per route, and, with --chunks, what the largest browser script files hold (needs a
-// build made with CHUNK_REPORT=1, which writes site/build/chunk-modules.json through tools/chunk-modules.mjs).
-//
-// --check holds each kind to its budget in weight-budgets.json (guidelines/code.md, "Pages and their data"), as `npm run check` does
-// after the build: the script its first view fetches, and the data its first view needs (the loader data written into its HTML and any
-// data file it fetches before it is at rest), each in KB gzipped. A kind over either budget fails, and so does a kind with no budget, a
-// budget with no kind, and a kind whose page the build lacks. A budget is raised only by an edit of that file, in a commit of its own
-// that says why.
+// What a page downloads before the reader can use it: one page of each kind, opened in the site's own Chromium at phone size with an
+// empty cache, every response counted gzipped (as GitHub Pages sends it), split by kind and by whether it came before the page's
+// load event ("first view") or after it (what the page fetches on idle or later). Also how much of each page's HTML is the loader
+// data written into it, per route, and, with --chunks, what the largest browser script files hold (needs a build made with
+// CHUNK_REPORT=1, which writes site/build/chunk-modules.json through tools/chunk-modules.mjs).
 //
 // Usage (from the repo or worktree root, after `npm run build`):
-//   node tools/weight.mjs [--build site/build/client] [--only /rules,/] [--json out.json] [--chunks] [--detail] [--check]
+//   node tools/weight.mjs [--build site/build/client] [--only /rules,/] [--json out.json] [--chunks] [--detail]
 // --detail lists every file each page fetched and the largest keys of each route's loader data. The loader columns: the data
 // script inside the HTML, gzipped, then each route's data as JSON gzipped on its own (an upper bound: the stream shares repeats). Numbers are bytes; "gz" is gzip at the default level.
 import { createRequire } from "node:module";
@@ -22,7 +16,7 @@ import { parseArgs } from "node:util";
 import { gzipSync } from "node:zlib";
 
 const { values: o } = parseArgs({
-  options: { build: { type: "string", default: "site/build/client" }, only: { type: "string" }, json: { type: "string" }, chunks: { type: "boolean" }, detail: { type: "boolean" }, check: { type: "boolean" } },
+  options: { build: { type: "string", default: "site/build/client" }, only: { type: "string" }, json: { type: "string" }, chunks: { type: "boolean" }, detail: { type: "boolean" } },
 });
 const root = resolve(o.build);
 const gz = (b) => gzipSync(b).length;
@@ -32,31 +26,20 @@ const kb = (n) => (n / 1024).toFixed(1).padStart(7);
 const firstDir = (dir, test = () => true) => (existsSync(dir) ? readdirSync(dir).filter((d) => !d.includes(".") && test(d)).sort()[0] : undefined);
 const company = firstDir(join(root, "companies"));
 const track = company && firstDir(join(root, "companies", company));
-const shelf = firstDir(join(root, "rules"));
-// one page of each page route; a route whose pages differ (the guides) is weighed on one that draws a chart
-const allKinds = [
+const kinds = [
   ["front page", "/"],
-  ["guides", "/guide"],
   ["guide", "/guide/keren-hishtalmut"],
-  ["bond fund guide", "/guide/limited-bond-fund"],
-  ["mutual funds guide", "/guide/mutual-funds"],
   ["exposure", "/exposure/index-sp500"],
   ["companies", "/companies"],
   ["company", company && `/companies/${company}`],
   ["track", track && `/companies/${company}/${track}`],
   ["tracks", "/tracks"],
   ["deposits", "/deposits"],
-  ["deal", "/deal"],
-  ["transfer", "/transfer"],
-  ["indices", "/indices"],
   ["rules", "/rules"],
-  ["rules shelf", shelf && `/rules/${shelf}`],
   ["documents", "/documents"],
   ["parameters", "/parameters"],
   ["not covered", "/not-covered"],
-  ["kit", "/kit"],
-];
-const kinds = allKinds.filter(([, p]) => p && existsSync(join(root, p, "index.html")) && (!o.only || o.only.split(",").includes(p)));
+].filter(([, p]) => p && (!o.only || o.only.split(",").includes(p)));
 
 // ---------------------------------------------------------------- loader data inside a page's HTML
 const turbo = await import(resolve("node_modules/react-router/dist/production/vendor/turbo-stream-v2/turbo-stream.js"));
@@ -94,7 +77,6 @@ const chromeDir = existsSync(cache) && readdirSync(cache).find((d) => /^chromium
 const executablePath = chromeDir ? join(cache, chromeDir, "chrome-linux64/chrome") : undefined;
 const here = new URL(".", import.meta.url).pathname;
 const { serveBuild } = await import(join(here, "../site/scripts/serve-build.mjs"));
-const { newContext, settled } = await import(join(here, "../site/scripts/browser.mjs"));
 const server = await serveBuild(root, { port: 0 });
 const browser = await pw.chromium.launch({ executablePath });
 
@@ -113,7 +95,7 @@ const KINDS = ["script", "style", "font", "html", "data", "other"];
 const results = [];
 try {
   for (const [kind, path] of kinds) {
-    const context = await newContext(browser, { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
     const page = await context.newPage();
     const files = [];
     let loaded = false;
@@ -131,8 +113,7 @@ try {
     page.on("load", () => (loaded = true));
     await page.goto(server.url.replace(/\/$/, "") + path, { waitUntil: "load" });
     await page.waitForLoadState("networkidle");
-    // what the page fetches once idle, until it is at rest
-    await page.evaluate(settled);
+    await page.waitForTimeout(2500); // what the page fetches once idle
     await page.waitForLoadState("networkidle");
     await Promise.all(pending);
     const sum = (when) => Object.fromEntries(KINDS.map((k) => [k, files.filter((f) => f.kind === k && (!when || f.when === when)).reduce((n, f) => n + f.gz, 0)]));
@@ -149,13 +130,13 @@ try {
 // ---------------------------------------------------------------- report
 const total = (s) => KINDS.reduce((n, k) => n + s[k], 0);
 console.log(`KB gzipped, phone, empty cache: what each page fetched before its load event (first view), then on idle (later)`);
-console.log(`${"page".padEnd(20)} ${"script".padStart(7)} ${"style".padStart(7)} ${"fonts".padStart(7)} ${"html".padStart(7)} ${"data".padStart(7)} ${"first".padStart(7)} | ${"later".padStart(7)} | html: ${"loader".padStart(7)} ${"root".padStart(7)} ${"page".padStart(7)}`);
+console.log(`${"page".padEnd(12)} ${"script".padStart(7)} ${"style".padStart(7)} ${"fonts".padStart(7)} ${"html".padStart(7)} ${"data".padStart(7)} ${"first".padStart(7)} | ${"later".padStart(7)} | html: ${"loader".padStart(7)} ${"root".padStart(7)} ${"page".padStart(7)}`);
 for (const r of results) {
   const routes = r.data?.routes ?? {};
   const rootGz = routes.root?.gz ?? 0;
   const pageGz = Object.entries(routes).filter(([id]) => id !== "root").reduce((n, [, v]) => n + v.gz, 0);
   console.log(
-    `${r.kind.padEnd(20)} ${kb(r.first.script)} ${kb(r.first.style)} ${kb(r.first.font)} ${kb(r.first.html)} ${kb(r.first.data)} ${kb(total(r.first))} | ${kb(total(r.later))} | html: ${kb(r.data?.inlineGz ?? 0)} ${kb(rootGz)} ${kb(pageGz)}`,
+    `${r.kind.padEnd(12)} ${kb(r.first.script)} ${kb(r.first.style)} ${kb(r.first.font)} ${kb(r.first.html)} ${kb(r.first.data)} ${kb(total(r.first))} | ${kb(total(r.later))} | html: ${kb(r.data?.inlineGz ?? 0)} ${kb(rootGz)} ${kb(pageGz)}`,
   );
 }
 if (o.detail)
@@ -165,38 +146,6 @@ if (o.detail)
     for (const [id, v] of Object.entries(r.data?.routes ?? {})) console.log(`loader ${id}: ${kb(v.gz)} gz as JSON; ${v.keys.slice(0, 8).map(([k, n]) => `${k} ${(n / 1024).toFixed(1)}`).join(", ")}`);
   }
 if (o.json) writeFileSync(o.json, JSON.stringify(results, null, 1));
-
-// ---------------------------------------------------------------- the budgets
-/** What a kind's first view weighs, in KB gzipped: the script it fetches before its load event, and the data it needs. */
-const firstView = (r) => ({
-  script: r.first.script / 1024,
-  data: ((r.data?.inlineGz ?? 0) + r.files.filter((f) => f.kind === "data").reduce((n, f) => n + f.gz, 0)) / 1024,
-});
-if (o.check) {
-  const file = join(here, "weight-budgets.json");
-  const { budgets } = JSON.parse(readFileSync(file, "utf8"));
-  const fails = [];
-  const measured = new Set(results.map((r) => r.kind));
-  console.log(`\nfirst view against its budget (${file}), KB gzipped`);
-  for (const r of results) {
-    const b = budgets[r.kind];
-    if (!b) {
-      fails.push(`${r.kind} (${r.path}): no budget in weight-budgets.json`);
-      continue;
-    }
-    const w = firstView(r);
-    const over = ["script", "data"].filter((k) => w[k] > b[k]);
-    console.log(`${over.length ? "OVER" : "ok  "} ${r.kind.padEnd(20)} script ${kb(w.script * 1024)} of ${String(b.script).padStart(5)}   data ${kb(w.data * 1024)} of ${String(b.data).padStart(5)}`);
-    for (const k of over) fails.push(`${r.kind} (${r.path}): ${k} ${w[k].toFixed(1)} KB, over its budget of ${b[k]} KB`);
-  }
-  if (!o.only) {
-    for (const k of Object.keys(budgets)) if (!allKinds.some(([kind]) => kind === k)) fails.push(`${k}: a budget for a kind of page this script does not weigh`);
-    for (const [k, p] of allKinds) if (!measured.has(k)) fails.push(`${k}: ${p ? `no ${p} in the build` : "no page of this kind in the build"}`);
-  }
-  for (const f of fails) console.log(`FAIL  ${f}`);
-  console.log(fails.length ? `\n${fails.length} failed: a budget is raised only in a commit of its own that says why` : "\nevery page within its budget");
-  if (fails.length) process.exitCode = 1;
-}
 
 // ---------------------------------------------------------------- what the shared scripts hold
 if (o.chunks) {

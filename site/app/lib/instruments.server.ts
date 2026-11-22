@@ -115,14 +115,6 @@ export function seenWhere(c: CatalogEntry): string {
     .join("; ");
 }
 
-/** How a near-duplicate's resolution reads (data-schema 3.10: free text; the first words say which). */
-export function resolutionOf(text: string): "distinct" | "twice" | "unresolved" | null {
-  if (/^unresolved/i.test(text)) return "unresolved";
-  if (/^a different/i.test(text)) return "distinct";
-  if (/twice|duplicate/i.test(text.slice(0, 60))) return "twice";
-  return null;
-}
-
 // ---------------------------------------------------------------- the step to InstrumentTerms
 
 type InstrumentSpec = NonNullable<ParameterRecord["instruments"]>[string];

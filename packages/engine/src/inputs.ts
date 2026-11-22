@@ -2,7 +2,7 @@
 // inputs of one run: docs/method.md §2.4. Every value is passed through as it is, converted only from
 // percent to a fraction and from years to months. Anything missing or unexpected stops here with the
 // field named; a run the method cannot evaluate yet stops here with its gap (F-83 "not evaluated").
-import { securityRecord, parameterRecord, valueObject, productSchemaOf, type ValueObject, type ProductId, type ProductRecord } from "@finance-tool/schema";
+import { securityRecord, parameterRecord, valueObject, productSchemaOf, type ValueObject, type ProductId, type ProductRecord, assertNever } from "@finance-tool/schema";
 import type { z } from "zod";
 import type { BondInput } from "./ledgers/bond.ts";
 import type { Profile } from "./ledgers/common.ts";
@@ -235,6 +235,8 @@ export function runInputs(
     case "bond":
       // the coupon is paid every `couponEveryMonths` months at its share of the annual coupon (F-25)
       return { run: "runBond", input: { goal, market: { inflation }, bond: { coupon: cashRateIn(cashRate, rateBasis, { kind: "coupon", perYear: 12 / t.bond!.couponEveryMonths }), ...t.bond! }, tariff: t.tariff!, profile } };
+    default:
+      return assertNever(family);
   }
 }
 
@@ -253,6 +255,8 @@ export function runPlanned(plan: RunPlan, ctx: RunContext): RunResult {
       return runs.runMakam(plan.input, ctx);
     case "runBond":
       return runs.runBond(plan.input, ctx);
+    default:
+      return assertNever(plan);
   }
 }
 

@@ -70,7 +70,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
       names: rows.map((h) => <span key={h.provider.id} className={cx("block text-xl font-bold [overflow-wrap:anywhere]", h.provider.custom && "text-entered")}><ProviderLink p={h.provider} /></span>),
       lines: rows.map((h) => <HouseLine key={h.provider.id} house={h.provider} snapshot={bundle.snapshots.find((s) => s.id === h.provider.id)} charge={<>{c.pair.colCharges(LONGEST_YEARS)}: {fmt.nisWhole(LONGEST_AMOUNT)}</>} />),
     }),
-    [heldKey, bundle.snapshots], // eslint-disable-line react-hooks/exhaustive-deps
+    [heldKey, bundle.snapshots],
   );
   const houseId = chosen && rows.some((h) => h.provider.id === chosen) ? chosen : (ok[0]?.provider.id ?? null);
   const house = houseId ? providerName(view, houseId) : undefined;

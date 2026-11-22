@@ -7,6 +7,7 @@ import { isForeign, readFees, type ReadFee } from "./cases";
 import { fraction, monthOf, type FeeDeal, type Price, type ReadPick, type Stage, type ThirdPrice } from "./model";
 import { onAction } from "./offers/capabilities";
 import { engineBase } from "./shapes";
+import { assertNever } from "@finance-tool/schema";
 
 /** The parts a share of an action and a sum per unit share: bounds, the cap as a fraction, and the flat price where both its figures are given. */
 const actionParts = (p: Extract<Price, { form: "action" | "perUnit" }>) => ({
@@ -28,6 +29,8 @@ function engineThird(t: ThirdPrice): DealThird {
       return { kind: "perUnit", amount: t.amount.v, ...bounds, ...currencyOf(t.currency) };
     case "perAction":
       return { kind: "perAction", amount: t.amount.v, ...currencyOf(t.currency) };
+    default:
+      return assertNever(t);
   }
 }
 
@@ -68,6 +71,8 @@ function basePrice(p: Price): DealPrice {
       return { kind: "sum", amount: p.amount.v, everyMonths: p.every };
     case "perAction":
       return { kind: "perAction", amount: p.amount.v, ...(p.cap ? { cap: fraction(p.cap.v) } : {}), ...currencyOf(p.currency) };
+    default:
+      return assertNever(p);
   }
 }
 

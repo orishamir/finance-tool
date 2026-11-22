@@ -6,6 +6,7 @@ import { canAddBy, newBy, ownKept, removeBy, type NewBy } from "./edits/case";
 import { type DealRead } from "./deal-read";
 import { BY_MAX, CONDITIONS, isPlaceKind, isRangeKind, isWordsKind, type ByKind, type ConditionValues, type RangeUnit } from "./offers/conditions";
 import { thingName, valueWords, whenWords, type WhenWords } from "./case-words";
+import { assertNever } from "@finance-tool/schema";
 
 // ---------------------------------------------------------------- adding a thing, and a case's slot opened
 
@@ -83,6 +84,8 @@ export function byQuestion(fee: Fee, kind: ByKind): ByQuestion {
       return { ...base, ask: c.ask[kind]!, typed, label: c.ownLabel };
     case "track":
       return { ...base, ask: c.ask[kind]!, typed };
+    default:
+      return assertNever(values);
   }
 }
 
@@ -138,6 +141,8 @@ export function slotEdit(r: DealRead, feeId: string, caseId: string, t: number):
       for (const v of thingValues(fee, t)) if (!ids.includes(v)) ids.push(v);
       return { kind: "list", title: copy.cases.slot.list.replace("{thing}", thing), options: ids.map((id) => ({ id, words: valueWords(b.kind, id), ticked: named.includes(id) })), any, other: copy.cases.otherBy[b.kind] ?? copy.cases.otherValue };
     }
+    default:
+      return assertNever(values);
   }
 }
 

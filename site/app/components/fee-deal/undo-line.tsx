@@ -45,7 +45,6 @@ export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUnd
     if (!room) return;
     const t = window.setTimeout(() => setRoom(undefined), HOLD_MS);
     return () => window.clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const focus = useRef(false);
   const pointer = useRef(false);

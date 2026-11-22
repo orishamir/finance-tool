@@ -5,7 +5,7 @@
 import type { DealsInBundle } from "./deal-account/bundle";
 import type { Missing } from "./deal-account/plan";
 import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContext } from "@finance-tool/engine";
-import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
+import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord } from "@finance-tool/schema";
 import { formulaNames } from "../copy";
 import { isShekel, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
 import { withoutLtd } from "./company-name";
@@ -211,28 +211,6 @@ const SHORT_NAMES: Record<string, string> = {
 /** A label for a chart's right strip (display only): the provider's name without the company suffix. */
 export function shortName(id: string, name: string): string {
   return SHORT_NAMES[id] ?? withoutLtd(name.replace(/\s*\(.*\)\s*/g, " "));
-}
-
-/** A site parameter as a value object (P-01, A-28): the file's value with the marker the provenance sheet reads. */
-export function parameterValue(p: ParameterRecord, vo: ValueObject): SiteValue {
-  return { ...vo, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } };
-}
-
-/** A-28's start values (docs/method.md): one trade per contribution and twelve deposits a year. A method default, shown as a site parameter. */
-export function a28Value(value: number, about: string, today: string): SiteValue {
-  return {
-    value,
-    unit: "count",
-    source: { url: "docs/method.md#A-28", title: "A-28: התנהגות בסדנת הספקים", publisher: "האתר", strength: "primary" },
-    checked: today,
-    effective_from: null,
-    effective_to: null,
-    update_rule: "founder",
-    state: "sourced",
-    about,
-    notes: "",
-    parameter: { rationale: "ברירת המחדל של השיטה: פעולה אחת לכל הפקדה חודשית, 12 הפקדות בשנה." },
-  };
 }
 
 // ---------------------------------------------------------------- the subject fund
