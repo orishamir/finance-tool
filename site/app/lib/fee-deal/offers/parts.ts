@@ -180,8 +180,8 @@ const SPECS = {
   max: { kind: "bound", field: "max", carriesIn: formBoundsAction, capField: "max", figures: ["max"], ask: "sum", tool: "bound", lost: true, ...figureEdit("max") },
   cap: { kind: "bound", field: "cap", capField: "cap", figures: ["cap"], ask: "pct", tool: "bound", lost: true, ...figureEdit("cap") },
   flat: { kind: "bound", field: "flat", capField: "flat", figures: ["flat", "upTo"], ask: null, tool: null, lost: true, used: (p: Price) => boundsAction(p) && !!p.flat, apply: onPrice((p, on) => withFlat(p, on)) },
-  // a maximum on each security of a held share: charged on the deal's one security (F-14), and stated for several (§10.6's stated parts)
-  maxPerSecurity: { kind: "bound", field: "perSecurity", capField: "perSecurity", figures: ["perSecurity"], ask: "sum", tool: "bound", stated: true, lost: true, ...figureEdit("perSecurity") },
+  // a maximum on each security of a held share: charged on the deal's one security (F-14), and said so on the holding chart's lane
+  maxPerSecurity: { kind: "bound", field: "perSecurity", capField: "perSecurity", figures: ["perSecurity"], ask: "sum", tool: "bound", lost: true, ...figureEdit("perSecurity") },
   offset: { kind: "off", lost: true, field: "offset", figures: [], ask: "fee", tool: "off", stated: true, used: (p: Price) => charged(p) && !!p.offset, apply: onPrice((p, on, at) => withOffset(p, on ? at.against! : null)) },
   refund: { kind: "off", lost: true, field: "refund", figures: ["refund"], ask: null, tool: "off", stated: true, used: (p: Price) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) },
   unfilled: { kind: "rule", lost: true, field: "notes", figures: [], ask: null, tool: "rule", stated: true, ...noteEdit("unfilled") },

@@ -119,7 +119,8 @@ export interface LawPrice {
 
 /**
  * A fee of the deal whose kind has a line in the record's caps: the line and each of the fee's prices read against it (F-113), and what
- * its tag shows: the standing of its first price that is judged. A fee the law bans here is a row of its own, its line `banned`, with no
+ * its tag shows: the standing of its first price that is judged, or where the cap holds only in a case the deal does not state, that
+ * caveat. A fee the law bans here is a row of its own, its line `banned`, with no
  * price, after the rest.
  */
 export interface LawRow extends FeeRef {
@@ -150,8 +151,8 @@ function lawOf(r: DealRead): LawRow[] {
         last = { stage, row };
       }
     }
-    const judged = prices.filter((x) => x.standing.standing.judged);
-    const now = judged[0];
+    // a cap with a caveat judges no price, and its tag says the caveat
+    const now = prices.find((x) => x.standing.standing.judged) ?? prices.find((x) => x.standing.caveat);
     return [{ ...refOf(fee, r.today), cap, prices, ...(now ? { now: now.standing } : {}) }];
   }).concat(
     r.banned.map(({ fee: id, ...ban }) => {
@@ -226,8 +227,8 @@ export function pickLine(r: DealRead): PickLine | null {
 
 /**
  * A part of a price the reading states without computing (§10.6, "What the page states and does not compute"), on the fee it is printed
- * with: each part the registry marks stated (`StatedPartId`: a third party's fee with no figure, a maximum on each security held, an offset
- * against another fee, a refund, the notes on an order), with its sentence's words.
+ * with: each part the registry marks stated (`StatedPartId`: a third party's fee with no figure, an offset against another fee, a refund,
+ * the notes on an order), with its sentence's words. A maximum on each security held is said on its lane instead (`LanePart.perSecurity`).
  */
 export interface StatedPart {
   fee: FeeRef;
@@ -242,11 +243,8 @@ export interface StatedPart {
 /** The rules a stated part's sentence states, by the part: a bank's order through a clerk not carried out, at home and abroad (BRK-16). */
 export const STATED_RULES: Partial<Record<StatedPartId, readonly string[]>> = { unfilledClerk: ["BRK-16"], unfilledClerkAbroad: ["BRK-16"] };
 
-/**
- * The stated parts that may make an action cost more than the chart shows: a third party's fee with no figure in the list, and a maximum
- * on each security, which the chart applies as if one security were held (F-14).
- */
-export const STATED_UNDERSTATES: Partial<Record<StatedPartId, true>> = { third: true, maxPerSecurity: true };
+/** The stated parts that may make an action cost more than the chart shows: a third party's fee with no figure in the list. */
+export const STATED_UNDERSTATES: Partial<Record<StatedPartId, true>> = { third: true };
 
 const isStated = (id: PartId): id is StatedPartId => !!PARTS[id].stated;
 

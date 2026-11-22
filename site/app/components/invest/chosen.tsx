@@ -78,7 +78,7 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
         <FactTile
           edge="border-chart-by-account"
           head={c.pair.accountSlot}
-          link={house.custom ? (isDealProviderId(house.id) ? null : <StateTag state="entered" />) : snap && <DocLink source={snap.tariff} className="text-xs">{gershayim(c.pair.tariff)}</DocLink>}
+          link={house.custom ? (isDealProviderId(house.id) ? <Tag tone="entered">{c.dealAccount.tag}</Tag> : <StateTag state="entered" />) : snap && <DocLink source={snap.tariff} className="text-xs">{gershayim(c.pair.tariff)}</DocLink>}
           foot={
             <>
               {/* what the house's price is for this purchase: a standing order's, where the monthly deposit is bought on one */}
@@ -97,8 +97,8 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
           }
           name={
             <span className="flex items-baseline justify-between gap-2">
-              {/* an account of the person's own (a deal, or one they typed) in the entered ink, as its row in the list; a deal's edit, under it, carries the pencil */}
-              <span className={house.custom ? "text-entered" : undefined}>
+              {/* a deal's name is the person's words, in the text's own ink as the receipt writes it (H); an account they typed, in the entered ink */}
+              <span className={house.custom && !isDealProviderId(house.id) ? "text-entered" : undefined}>
                 <ProviderLink p={house} />
               </span>
               {house.id === view.yourBroker && <span className="shrink-0 text-sm font-normal text-entered">{c.pair.yoursTag}</span>}
