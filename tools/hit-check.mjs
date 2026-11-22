@@ -20,7 +20,7 @@
 import { createRequire } from "node:module";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { newContext, waitSettled } from "../site/scripts/browser.mjs";
+import { newContext, settled } from "../site/scripts/browser.mjs";
 
 const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
 const { chromium } = require("playwright");
@@ -53,7 +53,7 @@ for (const path of paths.split(",")) {
     const v = VIEW[w];
     const page = await (await newContext(browser, { viewport: { width: v.width, height: v.height }, hasTouch: !!v.hasTouch })).newPage();
     await page.goto(BASE + path, { waitUntil: "networkidle" });
-    await waitSettled(page);
+    await page.evaluate(settled);
     const count = await page.evaluate(() => {
       const sel = "button, a[href], summary, input:not([type=hidden]), select, textarea, [role=button]";
       const els = [...document.querySelectorAll(sel)].filter((e) => e.checkVisibility({ visibilityProperty: true, opacityProperty: false }) && !e.closest("[aria-hidden=true], .invisible, .sr-only, svg"));

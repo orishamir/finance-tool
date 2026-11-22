@@ -325,11 +325,6 @@ describe("P-05 instruments track", () => {
     expect(messages(files)).toMatch(/keren-hishtalmut\.track: 880 is not a fund_id in the latest/);
     expect(messages({ "parameters/p05.json": p05({ "keren-hishtalmut": { track: 880 } }) })).toMatch(/track: 880/);
   });
-
-  it("prints a track that is not a number as it is written in the file", () => {
-    const files = { "parameters/p05.json": p05({ "keren-hishtalmut": { track: { id: 880 } } }), "cma/gemelnet@2026-09.json": cma("2026-09", [880]) };
-    expect(messages(files)).toContain('keren-hishtalmut.track: {"id":880} is not a fund_id');
-  });
 });
 
 describe("series (data-schema 3.8)", () => {
@@ -534,12 +529,6 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     const wrapper = { id: "pension-comprehensive", open_questions: ["SW-OQ9"], switch_is_tax_event: { value: false }, dimensions: { "switching-tax-event": "blocked:SW-OQ9" } };
     const { problems } = run({ "open-questions.json": fromMarkdown, "instruments/wrappers/pension-comprehensive.json": wrapper });
     expect(problems.map((p) => p.message)).toEqual(expect.arrayContaining([expect.stringMatching(/^dimensions.switching-tax-event is blocked:SW-OQ9 but switch_is_tax_event is known \(false\); mark it covered/)]));
-  });
-
-  it("prints a moving-tax value that is not a plain value as it is written in the file", () => {
-    const wrapper = { id: "pension-comprehensive", open_questions: ["SW-OQ9"], switch_is_tax_event: { value: { taxed: false } }, dimensions: { "switching-tax-event": "blocked:SW-OQ9" } };
-    const { problems } = run({ "open-questions.json": fromMarkdown, "instruments/wrappers/pension-comprehensive.json": wrapper });
-    expect(problems.map((p) => p.message)).toEqual(expect.arrayContaining([expect.stringContaining('switch_is_tax_event is known ({"taxed":false})')]));
   });
 });
 

@@ -8,7 +8,6 @@
 // those keys keep; the undo line is the shortcut to the last step, so while its change is the last one made, "ביטול" is that step back.
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import { inBackground } from "../../lib/background";
 import { feeDeal as copy } from "../../copy";
 import { copiedHouse } from "../../lib/fee-deal/deal-read";
 import { kindById } from "../../lib/fee-deal/kinds";
@@ -68,7 +67,7 @@ export function useOpenedDeal(address: AddressDeal | null, saved: readonly FeeDe
     if (!opened.current?.fromAddress) return;
     const given = opened.current.given ? opened.current.deal : null;
     if (given) dealStore.update((ds) => savedIfWorth(ds, given, today) ?? ds);
-    inBackground(navigate({ search: "", hash: "" }, { replace: true, preventScrollReset: true }));
+    navigate({ search: "", hash: "" }, { replace: true, preventScrollReset: true });
   }, []);
   return opened.current.deal;
 }

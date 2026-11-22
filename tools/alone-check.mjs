@@ -12,7 +12,7 @@
 import { createRequire } from "node:module";
 import { readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
-import { newContext, waitSettled } from "../site/scripts/browser.mjs";
+import { newContext, settled } from "../site/scripts/browser.mjs";
 
 const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
 const { chromium } = require("playwright");
@@ -158,7 +158,7 @@ for (const w of widths) {
   for (const p of paths) {
     try {
       await page.goto(BASE + p, { waitUntil: "networkidle", timeout: 30000 });
-      await waitSettled(page);
+      await page.evaluate(settled);
       for (const h of [...(await page.evaluate(find)), ...(await page.evaluate(findPunct))]) {
         const key = `${h.what}|${h.words}`;
         if (!seen.has(key)) seen.set(key, { ...h, at: [] });

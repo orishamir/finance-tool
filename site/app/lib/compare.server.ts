@@ -410,14 +410,12 @@ function latestChecked(node: unknown, best: string | null = null): string | null
 /** The records a comparison reads, with the date each was last checked, for the saved comparison's versions. */
 function dataFileVersions(): BundleDataFile[] {
   const out: BundleDataFile[] = [];
-  // Each id field is a string in its schema; a record without one feeds nothing rather than a made-up id.
-  const id = (v: unknown): string[] => (typeof v === "string" && v ? [v] : []);
   const dirs: { dir: string; feeds: (rec: Record<string, unknown>) => string[] }[] = [
-    { dir: "data/instruments/wrappers", feeds: (r) => id(r.id) },
-    { dir: "data/instruments/securities", feeds: (r) => id(r.id) },
-    { dir: "data/instruments/exposures", feeds: (r) => id(r.id) },
-    { dir: "data/terms/deposits", feeds: (r) => id(r.wrapper_id) },
-    { dir: "data/funds", feeds: (r) => [...id(r.exposure_id), ...fundHoldingWrappers] },
+    { dir: "data/instruments/wrappers", feeds: (r) => [String(r.id)] },
+    { dir: "data/instruments/securities", feeds: (r) => [String(r.id)] },
+    { dir: "data/instruments/exposures", feeds: (r) => [String(r.id)] },
+    { dir: "data/terms/deposits", feeds: (r) => (typeof r.wrapper_id === "string" ? [r.wrapper_id] : []) },
+    { dir: "data/funds", feeds: (r) => [String(r.exposure_id ?? ""), ...fundHoldingWrappers].filter(Boolean) },
     { dir: "data/fees", feeds: () => [] },
   ];
   for (const { dir, feeds } of dirs) {
@@ -542,7 +540,7 @@ export function buildCompareBundle(): CompareBundle {
       }
       ev.set.keptAvailable?.run?.rules.forEach((r) => needed.add(r.id));
     } catch (e) {
-      console.log(`[compare] probe stopped: ${e instanceof Error ? e.message : String(e)}`);
+      console.log(`[compare] probe stopped: ${e instanceof Error ? e.message : e}`);
     }
   }
   const rules: RuleRecord[] = Object.values(allRules).filter((r) => needed.has(r.id));

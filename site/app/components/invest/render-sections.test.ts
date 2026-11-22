@@ -7,7 +7,7 @@ import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
-import { type SiteValue } from "../../lib/value";
+import { assumedReturn, type SiteValue } from "../../lib/value";
 import { Fees } from "./funds";
 import { reasonText } from "./parts";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
@@ -604,6 +604,36 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
       }
     }
     expect(grey, "no grey line rendered in any account lane").toBeGreaterThan(0);
+  });
+  it("the stairs as shown add up: each step's parts to minus its step, the start and the steps to the result, on hundreds of shekels where what is left rests on an assumed return (method.md F-91)", () => {
+    const signed = (text: string) => [...text.replace(/<[^>]+>/g, "").replace(/[\u2066-\u2069\u200e\u200f]/g, "").matchAll(/([−+-]?)([\d,]+) ₪/g)].map((m) => (m[1] === "−" || m[1] === "-" ? -1 : 1) * Number(m[2]!.replace(/,/g, "")));
+    let checked = 0;
+    for (const [assumed, grid] of [[false, 1], [true, 100]] as const) {
+      const p = assumed ? { ...plan, values: { ...plan.values, returnV: assumedReturn(plan.values.returnV) } } : plan;
+      for (const index of knownIndices(bundle)) {
+        const v = buildInvest({ bundle, index, plan: p });
+        const out = html(createElement(StairsFor, { view: v, bundle, plan: p, startHouse: null, startFund: null, example: true })).replace(/<!-- -->/g, "");
+        const steps = [...out.matchAll(/<li class="group relative[\s\S]*?<\/li>/g)].map((m) => m[0]);
+        if (steps.length < 2) continue;
+        const delta = (li: string) => signed(/<span class="ms-auto font-semibold tabular-nums">([\s\S]*?)<\/span><\/span>/.exec(li)?.[1] ?? "")[0]!;
+        let level = delta(steps[0]!);
+        expect(Math.abs(level) % grid, index.id).toBe(0);
+        for (const li of steps.slice(1)) {
+          const d = delta(li);
+          const parts = signed(/<span class="ps-\[19px\][^"]*">([\s\S]*?)<\/span><\/div>/.exec(li)?.[1] ?? "");
+          expect(Math.abs(d) % grid, index.id).toBe(0);
+          for (const n of parts) expect(Math.abs(n) % grid, index.id).toBe(0);
+          // a cost that rose by a sum takes that sum from what is left
+          if (parts.length) expect(parts.reduce((a, n) => a + n, 0), `${index.id}: the parts of a step of ${d}`).toBe(-d);
+          level += d;
+          checked++;
+        }
+        // the result's column: where the steps end, as the start and the steps add up
+        const result = signed(/<span class="block border-t border-border pt-1.5 text-base font-semibold">([\s\S]*?)<\/span>/g.exec(out.slice(out.lastIndexOf("block border-t border-border pt-1.5")-60))?.[1] ?? "")[0];
+        expect(result, index.id).toBe(level);
+      }
+    }
+    expect(checked).toBeGreaterThan(4);
   });
   it("One Zero prices an Israeli fund where a distribution agreement its manager reports names it; any other is open, never \"not sold\" (BRK-38, BRK OQ24); no ETF; and no fund traded outside the US", () => {
     const snap = bundle.snapshots.find((s) => s.id === "one-zero")!;

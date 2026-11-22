@@ -35,9 +35,13 @@ export function useCopyLink(deal: FeeDeal) {
   const ready = useRef<{ deal: FeeDeal; text: string | null } | null>(null);
   useEffect(() => {
     let on = true;
-    void dealLink(deal).then((text) => {
-      if (on) ready.current = { deal, text };
-    });
+    // where the link cannot be made ahead, the press makes it again, and a failure there brings up the page's failure notice
+    dealLink(deal).then(
+      (text) => {
+        if (on) ready.current = { deal, text };
+      },
+      (e: unknown) => console.error(e),
+    );
     return () => {
       on = false;
     };

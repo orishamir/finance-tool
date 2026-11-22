@@ -46,6 +46,7 @@ import { isoToday, useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
 import { groupNameOf, pickableGroups, withGroupPick } from "../lib/group-pick";
 import { useHydrated, useMedia } from "../lib/hooks";
+import { ToolBoundary } from "../components/tool-boundary";
 
 /** The data files this page fetches after it starts, requested with the HTML. */
 export const links = () => bundleLinks("indices-bundle.json", "compare-bundle.json");
@@ -91,6 +92,8 @@ type Data = Awaited<ReturnType<typeof loader>>;
 
 export default function Invest() {
   const data = useLoaderData<typeof loader>();
+  // another index tries the page's tool again after a failure
+  const { pathname } = useLocation();
   const [wb, setWb] = useState<IndicesBundle | null>(null);
   const [compare, setCompare] = useState<CompareBundle | null>(null);
   const [failed, setFailed] = useState(false);
@@ -108,7 +111,9 @@ export default function Invest() {
   }, [compare, wb, data.today, data.feeRules, data.feeTerms]);
   return (
     <PageShell current="other" data={provenance}>
-      <Page wb={wb} compare={compare} failed={failed} data={data} />
+      <ToolBoundary resetKey={pathname}>
+        <Page wb={wb} compare={compare} failed={failed} data={data} />
+      </ToolBoundary>
     </PageShell>
   );
 }

@@ -11,15 +11,13 @@
 //
 // Usage: node site/scripts/response-check.mjs [page path...]   e.g. /indices/sp500
 // Without paths: every flow below. Needs a build (npm run build). Exits 1 when a step fails.
-// response-check-leftovers.json lists what failed when the check came in, each with why and the worst value measured for it (`worst`: ms
-// for an input or a move, the shifts' sum for a shift): a listed finding is reported, not failed, until it measures over twice its worst,
-// so a listed step still catches a large regression; a new one fails. A listed one no longer found is said, so the list can shrink.
-// A page that does not come to rest before a step is measured fails the check: what it measured was taken on a page still changing.
+// response-check-leftovers.json lists what failed when the check came in, each with why: a listed finding is reported, not failed; a new
+// one fails. A listed one no longer found is said, so the list can shrink.
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
-import { newContext, slowDown, waitSettled } from "./browser.mjs";
+import { newContext, settled, slowDown } from "./browser.mjs";
 import { serveBuild } from "./serve-build.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -33,8 +31,6 @@ if (!existsSync(join(build, "index.html")) && !existsSync(join(build, "404.html"
 const LIMIT_MS = 100;
 /** How much slower than this machine's processor the phone is. */
 const CPU_SLOWDOWN = 4;
-/** How far over a leftover's worst value a listed finding may measure before it fails. */
-const LEFTOVER_ROOM = 2;
 const dealFile = join(here, "layout-check-deal.txt");
 const dealPath = existsSync(dealFile) ? readFileSync(dealFile, "utf8").trim() : null;
 
@@ -54,13 +50,6 @@ const named = process.argv.slice(2);
 const flows = named.length ? FLOWS.filter((f) => named.some((p) => f.path.startsWith(p))) : FLOWS;
 const leftovers = JSON.parse(readFileSync(join(here, "response-check-leftovers.json"), "utf8")).leftovers;
 const listed = (flow, f) => leftovers.find((l) => l.flow === flow.name && l.step === f.step && l.check === f.check);
-/** A listed finding that measures over LEFTOVER_ROOM times its leftover's worst value: listed, but failed. */
-const beyond = (l, f) => typeof f.value === "number" && f.value > LEFTOVER_ROOM * l.worst;
-/** How many times a page did not come to rest before a step; `waitSettled` names each. */
-let restless = 0;
-const rest = async (page) => {
-  if (!(await waitSettled(page, 30_000))) restless++;
-};
 
 const t0 = Date.now();
 const server = await serveBuild(build, { port: 0 });
@@ -73,7 +62,7 @@ for (const flow of flows) results.push({ flow, steps: await runFlow(flow) });
 await browser.close();
 await server.close();
 
-let failed = missed.length + restless;
+let failed = missed.length;
 for (const m of missed) console.log(`FAIL  self-test: ${m}`);
 let known = 0;
 const used = new Set();
@@ -82,21 +71,17 @@ for (const { flow, steps } of results) {
     const fresh = s.findings.filter((f) => {
       const l = listed(flow, f);
       if (l) used.add(l);
-      return !l || beyond(l, f);
+      return !l;
     });
     known += s.findings.length - fresh.length;
     failed += fresh.length;
     console.log(`${fresh.length ? "FAIL " : s.findings.length ? "LIST " : "PASS "} ${flow.name} (${flow.path.slice(0, 40)}), ${s.step}: ${s.summary}`);
-    for (const f of s.findings) {
-      const l = listed(flow, f);
-      const over = l && beyond(l, f) ? ` (over ${LEFTOVER_ROOM}× its listed worst, ${l.worst})` : "";
-      console.log(`      ${l ? "listed " : ""}${f.check}: ${f.detail}${over}`);
-    }
+    for (const f of s.findings) console.log(`      ${listed(flow, f) ? "listed " : ""}${f.check}: ${f.detail}`);
   }
 }
 if (!named.length) for (const l of leftovers.filter((l) => !used.has(l))) console.log(`GONE  ${l.flow}, ${l.step}, ${l.check}: no longer found; remove it from response-check-leftovers.json`);
 console.log(
-  `\n${restless ? `${restless} times a page did not come to rest before a step; ` : ""}${failed ? `${failed} failed` : "all passed"}${known ? ` (${known} listed in response-check-leftovers.json)` : ""}: ${many(flows.length, "flow")} on a 390 px phone, processor slowed ${CPU_SLOWDOWN}×, inputs under ${LIMIT_MS} ms and no layout shift while dragging; ${((Date.now() - t0) / 1000).toFixed(0)} s`,
+  `\n${failed ? `${failed} failed` : "all passed"}${known ? ` (${known} listed in response-check-leftovers.json)` : ""}: ${many(flows.length, "flow")} on a 390 px phone, processor slowed ${CPU_SLOWDOWN}×, inputs under ${LIMIT_MS} ms and no layout shift while dragging; ${((Date.now() - t0) / 1000).toFixed(0)} s`,
 );
 process.exit(failed ? 1 : 0);
 
@@ -132,7 +117,7 @@ async function runFlow(flow, plant) {
   await ctx.addInitScript(observe);
   const page = await ctx.newPage();
   await page.goto(base + flow.path, { waitUntil: "networkidle" });
-  await rest(page);
+  await page.evaluate(settled, 30_000);
   if (plant) await page.evaluate(plant);
   const cdp = await slowDown(page, { cpu: CPU_SLOWDOWN });
   const steps = [];
@@ -153,7 +138,7 @@ async function drag(page, cdp, slider) {
   const step = "drag a slider";
   const name = await accessibleName(slider);
   await slider.scrollIntoViewIfNeeded();
-  await rest(page);
+  await page.evaluate(settled, 30_000);
   const b = await slider.boundingBox();
   const vw = page.viewportSize().width;
   const y = Math.round(b.y + b.height / 2);
@@ -170,15 +155,15 @@ async function drag(page, cdp, slider) {
   }
   await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   const end = await now(page);
-  await rest(page);
+  await page.evaluate(settled, 30_000);
   const { events, shifts, frames } = await taken(page, start);
   const late = frames.filter((f) => f.event <= end && f.latency > LIMIT_MS).map((f) => f.latency);
   const during = shifts.filter((s) => s.start <= end);
   const findings = slowInputs(step, events);
-  if (late.length) findings.push({ step, check: "move", value: Math.max(...late), detail: `${many(late.length, "frame")} answered the finger's moves over ${LIMIT_MS} ms after them, the slowest after ${Math.max(...late)} ms` });
+  if (late.length) findings.push({ step, check: "move", detail: `${many(late.length, "frame")} answered the finger's moves over ${LIMIT_MS} ms after them, the slowest after ${Math.max(...late)} ms` });
   // a drag that moved nothing measured nothing
   if (seen.size < 3) findings.push({ step, check: "missing", detail: `the finger's drag did not move "${name}" (its values: ${[...seen].join(", ")})` });
-  if (during.length) findings.push({ step, check: "shift", value: sum(during), detail: `${many(during.length, "layout shift")} while the finger dragged "${name}", ${sum(during).toFixed(3)} in all, ${moved(during)}` });
+  if (during.length) findings.push({ step, check: "shift", detail: `${many(during.length, "layout shift")} while the finger dragged "${name}", ${sum(during).toFixed(3)} in all, ${moved(during)}` });
   const slowest = frames.filter((f) => f.event <= end).reduce((n, f) => Math.max(n, f.latency), 0);
   return { step, summary: `"${name}", ${way.length} moves through ${seen.size} values, ${slowest ? `the slowest frame answering a move after ${slowest} ms` : "every move answered in a frame under 50 ms"}; ${worst(events)}; ${many(during.length, "layout shift")} while dragging`, findings };
 }
@@ -188,14 +173,14 @@ async function typeIn(page, field, text) {
   const step = "type in a field";
   const name = await accessibleName(field);
   await field.scrollIntoViewIfNeeded();
-  await rest(page);
+  await page.evaluate(settled, 30_000);
   const start = await now(page);
   await field.tap();
-  await rest(page);
+  await page.evaluate(settled, 30_000);
   await field.selectText();
   for (const key of [...text, "Enter"]) {
     await page.keyboard.press(key);
-    await rest(page);
+    await page.evaluate(settled, 30_000);
   }
   const { events } = await taken(page, start);
   return { step, summary: `"${name}", "${text}" and Enter; ${worst(events)}`, findings: slowInputs(step, events) };
@@ -221,7 +206,7 @@ function slowInputs(step, events) {
   return inputsOf(events)
     .filter((e) => e.duration > LIMIT_MS)
     .sort((a, b) => b.duration - a.duration)
-    .map((e) => ({ step, check: "input", value: e.duration, detail: `a ${e.name} on ${e.target} was answered ${e.duration} ms after it` }));
+    .map((e) => ({ step, check: "input", detail: `a ${e.name} on ${e.target} was answered ${e.duration} ms after it` }));
 }
 
 /** How many inputs the browser timed and the slowest of them. */

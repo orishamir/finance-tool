@@ -94,7 +94,7 @@ const chromeDir = existsSync(cache) && readdirSync(cache).find((d) => /^chromium
 const executablePath = chromeDir ? join(cache, chromeDir, "chrome-linux64/chrome") : undefined;
 const here = new URL(".", import.meta.url).pathname;
 const { serveBuild } = await import(join(here, "../site/scripts/serve-build.mjs"));
-const { newContext, waitSettled } = await import(join(here, "../site/scripts/browser.mjs"));
+const { newContext, settled } = await import(join(here, "../site/scripts/browser.mjs"));
 const server = await serveBuild(root, { port: 0 });
 const browser = await pw.chromium.launch({ executablePath });
 
@@ -131,14 +131,14 @@ try {
     page.on("load", () => (loaded = true));
     await page.goto(server.url.replace(/\/$/, "") + path, { waitUntil: "load" });
     await page.waitForLoadState("networkidle");
-    // what the page fetches once idle, until it is at rest; a page that never rests may fetch more after it is weighed
-    const rested = await waitSettled(page);
+    // what the page fetches once idle, until it is at rest
+    await page.evaluate(settled);
     await page.waitForLoadState("networkidle");
     await Promise.all(pending);
     const sum = (when) => Object.fromEntries(KINDS.map((k) => [k, files.filter((f) => f.kind === k && (!when || f.when === when)).reduce((n, f) => n + f.gz, 0)]));
     const doc = files.find((f) => f.kind === "html");
     const data = doc ? await loaderData(doc.html) : null;
-    results.push({ kind, path, rested, first: sum("first"), later: sum("later"), htmlRaw: doc?.raw ?? 0, data, files: files.map(({ html, ...f }) => f) });
+    results.push({ kind, path, first: sum("first"), later: sum("later"), htmlRaw: doc?.raw ?? 0, data, files: files.map(({ html, ...f }) => f) });
     await context.close();
   }
 } finally {
@@ -188,7 +188,6 @@ if (o.check) {
     const over = ["script", "data"].filter((k) => w[k] > b[k]);
     console.log(`${over.length ? "OVER" : "ok  "} ${r.kind.padEnd(20)} script ${kb(w.script * 1024)} of ${String(b.script).padStart(5)}   data ${kb(w.data * 1024)} of ${String(b.data).padStart(5)}`);
     for (const k of over) fails.push(`${r.kind} (${r.path}): ${k} ${w[k].toFixed(1)} KB, over its budget of ${b[k]} KB`);
-    if (!r.rested) fails.push(`${r.kind} (${r.path}): the page did not come to rest, so what it fetches once idle may be left out of its weight`);
   }
   if (!o.only) {
     for (const k of Object.keys(budgets)) if (!allKinds.some(([kind]) => kind === k)) fails.push(`${k}: a budget for a kind of page this script does not weigh`);

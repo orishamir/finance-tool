@@ -6,7 +6,6 @@
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
 import { companyPath } from "../../lib/site-paths";
 import { useLocation, useNavigate } from "react-router";
-import { inBackground } from "../../lib/background";
 import { companies as companiesCopy, companyPage as w } from "../../copy";
 import { useAddressParams } from "../../lib/hooks";
 import { currentAddress, partOf } from "../../lib/company-page";
@@ -59,7 +58,7 @@ export function CompanyTemplate({ pageId, name, line, header, parts, groups, lis
   // an older address (a Hebrew product id) opens the same product under its address now
   const renamed = !lone && !current && asked ? parts.find((p) => p.id === currentAddress(asked)) : undefined;
   useEffect(() => {
-    if (renamed) inBackground(navigate(companyPath(pageId, { product: renamed.id, hash: location.hash.slice(1) }), { replace: true, preventScrollReset: true }));
+    if (renamed) navigate(companyPath(pageId, { product: renamed.id, hash: location.hash.slice(1) }), { replace: true, preventScrollReset: true });
   }, [renamed?.id]);
   const shownId = current?.id ?? "";
   const path = companyPath(pageId);
@@ -69,7 +68,7 @@ export function CompanyTemplate({ pageId, name, line, header, parts, groups, lis
   const hash = hydrated ? hashId(location.hash) : "";
   const owner = lone ? null : partOf(hash, [{ id: "", anchors: overview.anchors }, ...parts.map((p) => ({ id: p.id, anchors: p.anchors ?? [] }))]);
   useEffect(() => {
-    if (owner !== null && owner !== shownId) inBackground(navigate(companyPath(pageId, { product: owner, hash: encodeURIComponent(hash) }), { replace: true, preventScrollReset: true }));
+    if (owner !== null && owner !== shownId) navigate(companyPath(pageId, { product: owner, hash: encodeURIComponent(hash) }), { replace: true, preventScrollReset: true });
   }, [owner, shownId, hash]);
   useEffect(() => {
     if (!hash || (owner !== null && owner !== shownId)) return;

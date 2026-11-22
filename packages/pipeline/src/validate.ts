@@ -1390,7 +1390,7 @@ function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (fi
     const switchKnown = (rec as { switch_is_tax_event?: { value?: unknown } } | undefined)?.switch_is_tax_event?.value;
     const sw = marks["switching-tax-event"];
     if (switchKnown !== undefined && switchKnown !== null && typeof sw === "string" && sw.startsWith("blocked:"))
-      report(f, `dimensions.switching-tax-event is ${sw} but switch_is_tax_event is known (${JSON.stringify(switchKnown)}); mark it covered`);
+      report(f, `dimensions.switching-tax-event is ${sw} but switch_is_tax_event is known (${String(switchKnown)}); mark it covered`);
   }
 }
 
@@ -1462,7 +1462,7 @@ function checkInstrumentsMap(files: string[], dataDir: string, ruleIds: Map<stri
       check("ira_fees", fees.withList.has(spec?.ira_fees as string), "has no fees snapshot with a list line under data/fees/");
       check("series_rule", ruleIds.has(spec?.series_rule as string), "has no rule record under data/rules/");
       const track = spec?.track;
-      if (track !== undefined && !(typeof track === "number" && cmaFundIds?.has(track))) report(file, `${at}.track: ${JSON.stringify(track)} is not a fund_id in the latest data/cma/ period`);
+      if (track !== undefined && !(typeof track === "number" && cmaFundIds?.has(track))) report(file, `${at}.track: ${String(track)} is not a fund_id in the latest data/cma/ period`);
     }
   }
 }

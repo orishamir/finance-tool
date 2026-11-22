@@ -5,7 +5,6 @@ import { Link } from "react-router";
 import { buttons, search as searchCopy, searchMore, site } from "../copy";
 import { formatValue } from "../lib/format";
 import { rememberUncatalogued } from "../lib/inputs";
-import { handler } from "../lib/background";
 import { analyze, contentWords, groupHits, highlightRanges, isRuleKind, nearHits, normalize, relaxedHits, searchEntries, snippetOf, type Analysis, type SearchEntry, type SearchHit, type SearchKind, type SearchTexts } from "../lib/search";
 import { IconCopy, IconLock } from "./icons";
 import { Button, MixedName, RowArrow, TextLink, gershayim } from "./kit";
@@ -107,7 +106,7 @@ export function SearchBody({ text, setText, found }: { text: string; setText: (t
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
   const groups = groupHits(hits);
-  const copy = handler(async () => {
+  const copy = async () => {
     // a name goes to the device's list of names the site lacks; a question is only copied
     if (analysis.type === "name") rememberUncatalogued(text.trim());
     try {
@@ -117,7 +116,7 @@ export function SearchBody({ text, setText, found }: { text: string; setText: (t
     } catch {
       setCopied("failed");
     }
-  });
+  };
   return (
     <>
       {q.length === 0 && <p className="text-sm text-muted-foreground">{searchCopy.hint}</p>}

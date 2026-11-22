@@ -14,7 +14,7 @@ import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import http from "node:http";
 import { gzipSync } from "node:zlib";
-import { newContext, waitSettled, slowDown, SLOW_4G } from "../site/scripts/browser.mjs";
+import { newContext, settled, slowDown, SLOW_4G } from "../site/scripts/browser.mjs";
 
 const { values: o } = parseArgs({
   options: { build: { type: "string", default: "site/build/client" }, page: { type: "string", default: "/guide/keren-hishtalmut" }, runs: { type: "string", default: "3" }, fast: { type: "boolean" } },
@@ -37,9 +37,8 @@ const here = new URL(".", import.meta.url).pathname;
 const { serveBuild } = await import(join(here, "../site/scripts/serve-build.mjs"));
 const inner = await serveBuild(resolve(o.build), { port: 0 });
 // GitHub Pages sends text files gzipped; serve-build sends them as they are, which made the search index (1.3 MB, 0.13 MB gzipped)
-// take seconds on the slow connection. This front server gzips what Pages gzips; a file it cannot pass on is answered 502 and named, so
-// a run that measured a missing file says so.
-const pass = async (req, res) => {
+// take seconds on the slow connection. This front server gzips what Pages gzips.
+const front = http.createServer(async (req, res) => {
   const r = await fetch(inner.url.replace(/\/finance-tool\/?$/, "") + req.url, { redirect: "manual" });
   const body = Buffer.from(await r.arrayBuffer());
   const type = r.headers.get("content-type") ?? "";
@@ -48,13 +47,6 @@ const pass = async (req, res) => {
     const z = gzipSync(body);
     res.writeHead(r.status, { ...headers, "content-encoding": "gzip", "content-length": z.length }).end(z);
   } else res.writeHead(r.status, { ...headers, "content-length": body.length }).end(body);
-};
-const front = http.createServer((req, res) => {
-  pass(req, res).catch((e) => {
-    console.error(`could not pass on ${req.url}: ${e.message}`);
-    if (!res.headersSent) res.writeHead(502);
-    res.end();
-  });
 });
 await new Promise((ok) => front.listen(0, "127.0.0.1", ok));
 const server = { url: `http://127.0.0.1:${front.address().port}/finance-tool/`, close: () => (front.close(), inner.close()) };
@@ -89,15 +81,13 @@ const watch = (selector) => {
 const cases = {
   "term card": async (page) => {
     const t = page.locator(".term").first();
-    if (!(await t.count())) return false;
     await t.scrollIntoViewIfNeeded();
     await page.evaluate(watch, "dialog[open] h2");
     await t.tap();
   },
   "rule card": async (page) => {
-    // a rule's chip says "חוק או כלל: <the rule's title>" and opens the rule's card at once
-    const t = page.getByRole("button", { name: /^חוק או כלל/ }).first();
-    if (!(await t.count())) return false;
+    // a chip that rests on one rule opens the rule's card at once (a chip of several opens a list first)
+    const t = page.locator('button.rule-chip[aria-label="חוקים וכללים, 1"]').first();
     await t.scrollIntoViewIfNeeded();
     await page.evaluate(watch, "dialog[open] h2");
     await t.tap();
@@ -112,12 +102,9 @@ const cases = {
 };
 
 const results = {};
-/** The cases whose control the page does not have. */
-const absent = new Set();
 try {
   for (const [name, act] of Object.entries(cases)) {
     for (const when of ["at once", "after idle"]) {
-      if (absent.has(name)) break;
       for (let i = 0; i < Number(o.runs); i++) {
         const context = await newContext(browser, { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
         const page = await context.newPage();
@@ -127,16 +114,10 @@ try {
         await page.waitForFunction(() => [...document.querySelectorAll("header button")].some((b) => !b.disabled), null, { timeout: 60_000 });
         if (when === "after idle") {
           await page.waitForLoadState("networkidle");
-          await waitSettled(page, 30_000);
+          await page.evaluate(settled, 30_000);
         }
-        if ((await act(page)) === false) {
-          absent.add(name);
-          await context.close();
-          break;
-        }
-        await page.waitForFunction(() => window.__shown !== null, null, { timeout: 60_000 }).catch((e) => {
-          throw new Error(`${name} (${when}) on ${o.page}: no answer within 60 s`, { cause: e });
-        });
+        await act(page);
+        await page.waitForFunction(() => window.__shown !== null, null, { timeout: 60_000 });
         const ms = await page.evaluate(() => Math.round(window.__shown - window.__down));
         (results[`${name} (${when})`] ??= []).push(ms);
         await context.close();
@@ -149,5 +130,4 @@ try {
 }
 const median = (a) => [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)];
 console.log(`${o.page}, ${o.fast ? "no throttling" : "slow 4G, processor slowed 4x"}, ms from the finger or first key to the answer (median of ${o.runs}; each run)`);
-for (const name of absent) console.log(`${name.padEnd(44)} not on this page`);
 for (const [k, v] of Object.entries(results)) console.log(`${k.padEnd(44)} ${String(median(v)).padStart(6)}   ${v.join(", ")}`);

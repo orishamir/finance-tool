@@ -76,17 +76,6 @@ export function settled(limit = 5000) {
   })();
 }
 
-/**
- * Waits until `page` is at rest (`settled`, giving up after `limit` ms). When it gives up it prints a warning naming the page and returns
- * false, so what the script measures next is known to be taken on a page still changing, and a check whose measure needs a page at rest
- * fails on it.
- */
-export async function waitSettled(page, limit = 5000) {
-  const rested = await page.evaluate(settled, limit);
-  if (!rested) console.warn(`warning: ${page.url()} did not come to rest within ${limit} ms`);
-  return rested;
-}
-
 /** Waits for `n` of the page's frames: the page's own unit of change, for a script that samples what moves over time. */
 export const frames = (page, n = 1) =>
   page.evaluate(

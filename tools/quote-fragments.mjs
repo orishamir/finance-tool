@@ -29,7 +29,7 @@ import { createHash } from "node:crypto";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { israelToday } from "./israel-date.mjs";
-import { CONTEXT, frames, waitSettled } from "../site/scripts/browser.mjs";
+import { CONTEXT, frames, settled } from "../site/scripts/browser.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "..");
@@ -351,7 +351,7 @@ async function readPage(browser, url) {
       const res = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
       await page.waitForLoadState("networkidle", { timeout: 10000 }).catch(() => {});
       // a page that draws itself after loading (a list fetched by its script) comes to rest; one that never does is read after 5 s
-      await waitSettled(page).catch((e) => console.warn(`warning: ${url} could not be waited on to come to rest: ${e.message}`));
+      await page.evaluate(settled).catch(() => {});
       const type = res?.headers()["content-type"] ?? "";
       if (/pdf/i.test(type)) return { status: res.status(), pdf: true, text: "", title: "" };
       const title = await page.title();
@@ -424,7 +424,7 @@ async function landsInBrowser(rows, shots) {
     try {
       await page.goto(href, { waitUntil: "load", timeout: 45000 });
       // the browser scrolls to the quoted words once the page has drawn them: the page at rest, scroll included
-      await waitSettled(page, 10_000).catch((e) => console.warn(`warning: ${href} could not be waited on to come to rest: ${e.message}`));
+      await page.evaluate(settled, 10_000).catch(() => {});
       await page.addStyleTag({ content: "::target-text { background-color: rgb(255, 0, 255) !important; color: rgb(255, 0, 255) !important; }" });
       await frames(page, 2);
       const count = async (png) => {
