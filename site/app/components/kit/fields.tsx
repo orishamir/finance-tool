@@ -8,6 +8,7 @@ import { IconChevronDown, IconClose, IconReset, IconSearch } from "../icons";
 import { cx } from "./cx";
 import { useErrorRest } from "./error-rest";
 import { NameStack, useListSelect, type ListOption } from "./list-select";
+import { placeOf, stepFrom, valueAt, type SliderScale } from "./slider-scale";
 
 export interface FieldProps {
   label: ReactNode;
@@ -17,8 +18,9 @@ export interface FieldProps {
   /** The reader typed the value (it is not the start value). It changes nothing in the field's look: what the reader types looks the same as the default. */
   isEntered: boolean;
   /**
-   * The value the field starts at, its default: the reset on the label line says "חזרה ל־{start}" and shows while the value differs from
-   * it. `null`: there is nothing to go back to (no reset). Left out: the reset shows while `isEntered`, in general words.
+   * The value the field starts at, its default: the reset on the label line goes back to it ("חזרה ל־{start}" on a number field, "איפוס" on
+   * a slider) and shows while the value differs from it. `null`: there is nothing to go back to (no reset). Left out: the reset shows while
+   * `isEntered`, in general words.
    */
   start?: number | null;
   /** Returns an error message for a parsed number, or null. */
@@ -67,20 +69,26 @@ function resetShown({ value, isEntered, start, optional, disabled }: Pick<FieldP
 }
 
 /**
- * The reset at the far end of a field's label line: small and muted, "↺ חזרה ל־10". It holds its place while it is
- * hidden (`invisible` also takes it out of the tab order and what a screen reader reads), so nothing moves when it comes or goes; its tap
- * area reaches 44 px past its small text.
+ * The reset at the far end of a field's label line: small and muted. A number field's says the value it returns to, "↺ חזרה ל־10"
+ * (`figure`); a slider's says "↺ איפוס" alone, its value shown once in the box, and names the value only in its spoken name, "איפוס ל־10,000 ₪"
+ * (`word`). It holds its place while it is hidden (`invisible` also takes it out of the tab order and what a screen reader reads), so nothing
+ * moves when it comes or goes; its tap area reaches 44 px past its small text.
  */
-function ResetToStart({ shown, start, unit, onReset, describedBy, className }: { shown: boolean; start?: number | null; unit: string; onReset: () => void; /** The label's id: the reset is spoken with the field's name. */ describedBy?: string; className?: string }) {
+function ResetToStart({ shown, start, unit, onReset, describedBy, words = "figure", className }: { shown: boolean; start?: number | null; unit: string; onReset: () => void; /** The label's id: the reset is spoken with the field's name. */ describedBy?: string; words?: "figure" | "word"; className?: string }) {
+  const word = words === "word";
   return (
     <button
       type="button"
       onClick={onReset}
       aria-describedby={describedBy}
+      // a figure in an attribute can't hold <bdi>: the isolates keep "10,000 ₪" whole inside the Hebrew
+      aria-label={word && typeof start === "number" ? `${buttons.resetWordTo}\u2068${startText(start, unit)}\u2069` : undefined}
       className={cx("tap-area shrink-0 inline-flex items-center gap-1 text-xs leading-5 font-normal text-muted-foreground hover:text-foreground whitespace-nowrap", !shown && "invisible", className)}
     >
       <IconReset size={14} aria-hidden="true" />
-      {typeof start === "number" ? (
+      {word ? (
+        <span>{buttons.resetWord}</span>
+      ) : typeof start === "number" ? (
         <span>
           {buttons.resetTo}
           <bdi dir="ltr">{startText(start, unit)}</bdi>
@@ -100,8 +108,9 @@ const SIGN = /^[₪$€£%]$/;
  * page answers as the person types; a wrong one is not, so the page keeps the last right result. The text is what was typed while the box
  * has the focus, and stays after it is left while it is wrong, with its error, until the value changes from outside; otherwise it is the
  * value as the field writes it. The error shows once the hand rests (`useErrorRest`) and clears on the keystroke that puts it right.
+ * `unitShown: false` leaves the unit out of the box, where the label beside it already names it ("שנים").
  */
-function useNumberEntry(props: FieldProps) {
+function useNumberEntry(props: FieldProps, { unitShown = true }: { unitShown?: boolean } = {}) {
   const { unit, value, validate, onCommit, onReset, placeholder, disabled, compact, fit, optional, inputMode: mode = "decimal", autoFocus, inputId, externalError = null, agorot, groupAsTyped, hint } = props;
   // an amount of money is typed in whole shekels; a rate (interest, inflation, a return) and a price-list fee keep decimals
   const whole = /^nis/.test(unit) && !agorot;
@@ -176,7 +185,7 @@ function useNumberEntry(props: FieldProps) {
     return t;
   }
   const box = (
-    <div className={cx("field-box", SIGN.test(unitWord(unit)) && "field-box-sign", compact && "field-box-compact", compact && fit && "field-box-fit", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
+    <div className={cx("field-box", unitShown && SIGN.test(unitWord(unit)) && "field-box-sign", compact && "field-box-compact", compact && fit && "field-box-fit", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
       <input
         ref={inputRef}
         id={ids}
@@ -212,7 +221,7 @@ function useNumberEntry(props: FieldProps) {
         autoFocus={autoFocus}
         className="field-input"
       />
-      <span className="field-unit">{unitWord(unit)}</span>
+      {unitShown && <span className="field-unit">{unitWord(unit)}</span>}
     </div>
   );
   return { ids, box, shownError };
@@ -264,28 +273,29 @@ export function NumberField(props: FieldProps) {
   );
 }
 
-export interface RangeFieldProps extends FieldProps {
-  min: number;
-  max: number;
-  step: number;
-  /** A line under the slider (the goals board's own words). `false` or left out: none. */
-  footer?: ReactNode | false;
+export type RangeFieldProps = FieldProps & {
+  /** How the track maps to values: linear (`linearScale`: years, a return) or in steps that grow along it (`steppedScale`: money). */
+  scale: SliderScale;
+};
+
+/** Whether the label already names the field's unit in words ("שנים" for years), so the box beside it need not say it again. */
+function labelNamesUnit(label: ReactNode, unit: string): boolean {
+  const word = unitWord(unit);
+  return typeof label === "string" && word !== "" && !SIGN.test(word) && label.includes(word);
 }
 
 /**
- * A number and a slider for it, together: the label, its reset and the box on one row, the slider under them, and under the slider the
- * value at each of its ends as the field writes it (its least at the inline start, where the slider grows from), so it is clear which way
- * it grows. For a quantity with a natural range (years, a monthly deposit). The reset sits at the far end of the label, beside the box, and
- * keeps its place while hidden; where the row is too narrow for both it takes a second line in the same row, so nothing moves when it
- * comes. The box's error takes the reset's place while it lasts, so no line opens under the box; it is shown, not spoken on every keystroke.
+ * A number and a slider for it, together: the label, its reset and the box on one row, the slider under them. For a quantity with a natural
+ * range (years, a monthly deposit). The slider runs left to right, as a chart's time axis does, and shows its value once, in the box: no
+ * values at its ends. The box leaves out a unit the label names. The reset sits at the far end of the label, beside the box, says "↺ איפוס"
+ * with the value it returns to only in its spoken name, and keeps its place while hidden; where the row is too narrow for both it takes a
+ * second line in the same row, so nothing moves when it comes. The box's error takes the reset's place while it lasts, so no line opens
+ * under the box; it is shown, not spoken on every keystroke.
  */
 export function RangeField(props: RangeFieldProps) {
-  const { label, unit, min, max, step, value, onCommit, disabled, onReset, footer, start } = props;
+  const { label, unit, value, onCommit, disabled, onReset, start, scale } = props;
   const id = useId();
-  const { ids, box, shownError } = useNumberEntry({ ...props, compact: true });
-  const current = value ?? min;
-  const clamped = Math.max(min, Math.min(max, current));
-  const fill = ((clamped - min) / (max - min)) * 100;
+  const { ids, box, shownError } = useNumberEntry({ ...props, compact: true }, { unitShown: !labelNamesUnit(label, unit) });
   return (
     <div className="field range-field">
       <div className="flex items-center justify-between gap-3 min-h-target">
@@ -298,7 +308,7 @@ export function RangeField(props: RangeFieldProps) {
               {shownError}
             </span>
           ) : (
-            resetKept(props) && <ResetToStart shown={resetShown(props)} start={start} unit={unit} onReset={onReset} describedBy={`${id}-l`} className="ms-auto" />
+            resetKept(props) && <ResetToStart shown={resetShown(props)} start={start} unit={unit} onReset={onReset} describedBy={`${id}-l`} words="word" className="ms-auto" />
           )}
         </span>
         <div className="flex flex-col gap-1 items-end">
@@ -308,24 +318,56 @@ export function RangeField(props: RangeFieldProps) {
           {box}
         </div>
       </div>
-      <input
-        type="range"
-        className="slider"
-        aria-labelledby={`${id}-l`}
-        min={min}
-        max={max}
-        step={step}
-        value={clamped}
-        disabled={disabled}
-        style={{ "--fill": `${fill}%` } as CSSProperties}
-        onChange={(e) => onCommit(Number(e.target.value))}
-      />
-      <div data-slider-ends="" className="flex justify-between gap-3 text-xs text-muted-foreground">
-        <bdi dir="ltr">{startText(min, unit)}</bdi>
-        <bdi dir="ltr">{startText(max, unit)}</bdi>
-      </div>
-      {footer || null}
+      <ScaleSlider scale={scale} value={value} unit={unit} labelledBy={`${id}-l`} disabled={disabled} onCommit={onCommit} />
     </div>
+  );
+}
+
+/** How far Page Up and Page Down carry a slider: a tenth of its track. */
+const PAGE = 0.1;
+
+/**
+ * The slider: left to right, the native range holding the place on the track (0 to 1, any step) rather than the value, so a value off the
+ * steps sits at its own place; a drag gives the nearest step, and the keys move one step of the scale (the browser's own step for "any" is
+ * a hundredth of the track, less than a step, which the snap would undo). Its spoken value is the value as the box writes it.
+ */
+function ScaleSlider({ scale, value, unit, labelledBy, disabled, onCommit }: { scale: SliderScale; value: number | null; unit: string; labelledBy: string; disabled?: boolean; onCommit: (n: number) => void }) {
+  const at = value ?? scale.min;
+  const place = placeOf(scale, at);
+  const move = (n: number) => {
+    if (n !== value) onCommit(n);
+  };
+  const keyed: Record<string, () => number> = {
+    ArrowRight: () => stepFrom(scale, at, 1),
+    ArrowUp: () => stepFrom(scale, at, 1),
+    ArrowLeft: () => stepFrom(scale, at, -1),
+    ArrowDown: () => stepFrom(scale, at, -1),
+    PageUp: () => valueAt(scale, place + PAGE),
+    PageDown: () => valueAt(scale, place - PAGE),
+    Home: () => scale.min,
+    End: () => scale.max,
+  };
+  return (
+    <input
+      type="range"
+      dir="ltr"
+      className="slider"
+      aria-labelledby={labelledBy}
+      aria-valuetext={startText(at, unit)}
+      min={0}
+      max={1}
+      step="any"
+      value={place}
+      disabled={disabled}
+      style={{ "--fill": `${place * 100}%` } as CSSProperties}
+      onChange={(e) => move(valueAt(scale, Number(e.target.value)))}
+      onKeyDown={(e) => {
+        const key = keyed[e.key];
+        if (!key) return;
+        e.preventDefault();
+        move(key());
+      }}
+    />
   );
 }
 
