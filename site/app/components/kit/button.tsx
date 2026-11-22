@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { cx } from "./cx";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary" | "outline" | "framed" | "ghost" | "quiet" | "add" | "destructive" | "danger" | "icon" | "inline";
+  variant?: "primary" | "secondary" | "outline" | "framed" | "ghost" | "quiet" | "add" | "destructive" | "danger" | "icon" | "labelled" | "inline";
   /** `quiet` and `destructive` only: no side padding, so the words line up with the text above and below them (a text action at a line's start). */
   flush?: boolean;
   /**
@@ -28,7 +28,8 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 /**
  * An action. `primary` once per screen, `secondary` for the rest, `quiet` for a text-style action, `destructive` for a quiet one that
- * deletes, `icon` for a 44 px icon-only button. `outline`: a bordered button on the card's own surface, the face `MenuPicker` has, for an
+ * deletes, `icon` for a 44 px icon-only button, `labelled` for the same face with a word beside the icon, where the icon alone would not
+ * say what the button does (the site header's "תפריט"). `outline`: a bordered button on the card's own surface, the face `MenuPicker` has, for an
  * action that stands beside such a picker in a bar (the fee page's "קישור לעסקה"); `framed`: the same bordered face with its edge and words
  * in the action colour, for the one action a card offers where a filled button would outweigh the card's figures (the pair card's
  * "להזין מחיר שקיבלתם"); `danger`: a filled button in the danger colour, for the "מחיקה" of a question that takes something away for good
@@ -71,6 +72,7 @@ export function Button({ variant = "secondary", flush, size, gap, wide, bold, cl
     icon: size === "sm"
       ? "size-9 tap-wide inline-flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
       : "size-target inline-flex items-center justify-center rounded-md text-foreground hover:bg-accent",
+    labelled: "min-h-target px-2.5 inline-flex items-center rounded-md text-foreground hover:bg-accent",
   }[variant];
   return (
     <button type={type} className={cx("inline-flex items-center justify-center transition-colors duration-(--duration-fast)", gap === "sm" ? "gap-1.5" : "gap-2", styles, className)} {...rest}>

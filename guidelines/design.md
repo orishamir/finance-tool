@@ -39,6 +39,10 @@ What goes on a page is his call. When he asks for a change, build it this way:
   can. A small shift is better than a blank gap kept for a rare case.
 - **Phones.** Touch targets at least 44 px, nothing that depends on hover,
   nothing cut off at 390 px.
+- **The site's sections are in sight.** From 1024 px the header shows
+  them all; below that, the menu button carries the word "תפריט" beside
+  its icon. Hidden navigation is used about half as often
+  (research/2026-11-22-ui-data-tools.md).
 - **Computers.** A page uses the space a computer screen gives it: more
   shown side by side, tools that need the room. It is not a phone page made
   wider. Both sizes are designed, neither is the default.

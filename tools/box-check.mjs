@@ -288,10 +288,9 @@ for (const path of paths.split(",")) {
     };
     for (let i = 0; i < sliders; i++) {
       const s = page.locator("input[type=range]:visible").nth(i);
-      // a range field's slider holds its place on the track (0 to 1, step "any"), so a value there is a place, not snapped
-      const { min, max, step } = await s.evaluate((e) => ({ min: Number(e.min), max: Number(e.max), step: e.step === "any" ? 0 : Number(e.step) || 1 }));
+      const { min, max, step } = await s.evaluate((e) => ({ min: Number(e.min), max: Number(e.max), step: Number(e.step) || 1 }));
       const label = (await s.getAttribute("aria-label")) ?? `slider ${i + 1}`;
-      const snap = (v) => (step ? min + Math.round((v - min) / step) * step : v);
+      const snap = (v) => min + Math.round((v - min) / step) * step;
       const set = (val) =>
         s.evaluate((e, val) => {
           Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set.call(e, String(val));
