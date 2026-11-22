@@ -16,7 +16,7 @@ import { byLegend, hasCurrent, legendLines, legendName, lineClass, lineOf, partN
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, FundTerms } from "./custom-entries";
-import { AddDealButton, DealTerms, NotMovedLines } from "./deal-account";
+import { AddDealButton, DealEditMark, NotMovedLines } from "./deal-account";
 
 const n = c.noFund;
 
@@ -49,6 +49,17 @@ function SubLine({ kind, cheapest, standing, phone = null }: { kind: OptionId | 
       {cheapest && <span className="font-medium text-primary">{c.pair.cheapestTag}</span>}
       {standing && <span>{c.pair.standingTag}</span>}
       {phone && <SourcedTag value={phone}>{c.pair.phoneTag}</SourcedTag>}
+    </span>
+  );
+}
+
+/** An account's name in the list, and beside a deal's the pencil that edits it (`DealEditMark`), so the row keeps one line. Not a kit piece: this list's name cell. */
+function AccountName({ id, name, custom }: { id: string; name: string; custom: boolean }) {
+  if (!custom) return <>{name}</>;
+  return (
+    <span className="flex min-w-0 items-center gap-1">
+      <span className="min-w-0">{name}</span>
+      <DealEditMark id={id} />
     </span>
   );
 }
@@ -105,7 +116,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
         <>
           <span className="text-sm text-muted-foreground tabular-nums text-center">{places[i]}</span>
           <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", h.provider.custom && "text-entered")}>
-            {h.provider.short}
+            <AccountName id={h.provider.id} name={h.provider.short} custom={h.provider.custom} />
             {/* the kind of fund and the cheapest mark change with the plan: the line holds its longest case, so a row keeps its height */}
             <LongestCase cases={kinds.map((k) => <SubLine key={k} kind={k} cheapest standing={h.standing} phone={phoneAny(h.provider.id, h.provider.short, k)} />)}>
               <SubLine kind={g.option ?? null} cheapest={crown && i === 0} standing={h.standing && monthly > 0} phone={g.option ? phoneOnlyValue(snapOf(h.provider.id), g.option, g.venue, h.provider.short) : null} />
@@ -118,7 +129,6 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           {/* the kind the cost is for, else the house's: a row keeps its line whichever kind the plan makes cheapest */}
           <AsideLine lines={asideLines(snapOf(h.provider.id), (g.aside ?? []).length > 0 ? g.aside! : h.aside)} company={snapOf(h.provider.id)?.provider.name_he ?? h.provider.short} open={openAsides.includes(h.provider.id)} onOpen={(o) => onAside(h.provider.id, o)} />
           <GroupLine id={h.provider.id} house={h.provider.short} snapshots={bundle.snapshots} open={openGroups.includes(h.provider.id)} onOpen={onGroup} />
-          {h.provider.custom && <span className="col-start-2 col-end-[-1]"><DealTerms id={h.provider.id} /></span>}
         </>
       ),
     };
@@ -139,7 +149,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
         <>
           <span className="text-sm tabular-nums text-center">—</span>
           <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", h.provider.custom && "text-entered")}>
-            {h.provider.short}
+            <AccountName id={h.provider.id} name={h.provider.short} custom={h.provider.custom} />
             <span className="min-h-5" />
           </span>
           <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs text-muted-foreground @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
@@ -149,7 +159,6 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             </NoFundWords>
           </span>
           <span className="col-end-[-1] text-end font-semibold">—</span>
-          {h.provider.custom && <span className="col-start-2 col-end-[-1]"><DealTerms id={h.provider.id} /></span>}
         </>
       ),
     };

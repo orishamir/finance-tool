@@ -2,7 +2,7 @@
 // price as the page shows it with its figures in their number states, each price's standing against the cap (F-113) and what a fee is
 // charged on (F-111). The views (rows.ts, panel.ts, reading.ts, charts.ts) only arrange these.
 import { chargedOn, dealPeriods, groupAction, type CalendarMonth, type ChargedOn, type Deal, type DealAction, type DealReading } from "@finance-tool/engine";
-import { assertNever, type FeeCap } from "@finance-tool/schema";
+import { assertNever } from "@finance-tool/schema";
 import type { SiteValue } from "../value";
 import { feeOf, readFees, type MonthHeld, type ReadFee } from "./cases";
 import { capOf, kindById, standingOf, type BanSaid, type DealKind, type Standing } from "./kinds";
@@ -209,15 +209,12 @@ export const mainOf = (v: PriceView): SiteValue | undefined => v.yearly ?? v.fig
 export interface StandingView {
   standing: Standing;
   share: SiteValue | null;
-  /** Where the cap holds only in a case the deal does not state (`why: "caveat"`): which case, and the cap's rules. */
-  caveat?: { id: NonNullable<FeeCap["caveat"]>; rules: readonly string[] };
 }
 
 export function standingView(r: Pick<DealRead, "kind" | "deal" | "today">, fees: readonly Pick<SlimFee, "kind">[], i: number, p: Price, view: PriceView): StandingView {
   const fee = fees[i]!;
   const standing = standingOf(r.kind, fee.kind, p, r.deal.provider);
   const cap = capOf(r.kind, fee.kind);
-  if (!standing.judged && standing.why === "caveat" && cap?.caveat) return { standing, share: null, caveat: { id: cap.caveat, rules: cap.rule_ids ?? [] } };
   if (!standing.judged || standing.share === null || !cap) return { standing, share: null };
   const x = p.form === "free" ? null : mainOf(view);
   const inputs: Record<string, SiteValue> = { ...(x ? { [inputKey(fees, i)]: x } : {}), ...(view.figures.discount ? { [inputKey(fees, i, "discount")]: view.figures.discount } : {}), cap: { ...cap } as SiteValue };

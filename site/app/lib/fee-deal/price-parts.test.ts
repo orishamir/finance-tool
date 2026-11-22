@@ -380,7 +380,7 @@ describe("the templates", () => {
     const own = builder(read({ id: "d", name: "", kind: "brokerage-account", fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "free" } }] }] })).rows[0]!;
     expect(own.block.kind === "slim" && own.block.parts[0]!.words).toEqual({ lead: copy.price.free });
   });
-  it("fill a custody maximum on each security as one, say it on the holding lane, and charge it on the deal's one security, the lower of it and the deposit's (F-14)", () => {
+  it("fill a custody maximum on each security as one, stated, and charge it on the deal's one security, the lower of it and the deposit's (F-14)", () => {
     const custodyOf = (id: string, held: string) => filledFor(id, [{ by: "held", is: held }])("custody");
     // Discount: 0.2% a quarter, at most 7,500 ₪ on each security a quarter, and no maximum on the whole deposit
     expect(custodyOf("discount", "tase")).toMatchObject({ form: "held", rate: { v: 0.2 }, perSecurity: { v: 7500 } });
@@ -389,24 +389,17 @@ describe("the templates", () => {
     expect(custodyOf("leumi", "tase")).toMatchObject({ perSecurity: { v: 3700 }, max: { v: 11500 } });
     // Hapoalim's maximum is the same on each security and on the deposit: the holding's maximum, which it then is
     expect(custodyOf("hapoalim", "tase")).toMatchObject({ max: { v: 10600 } });
-    // the holding's lane is held to it, above 7,500 / 0.2% = 3,750,000 ₪, and says it is on each security
+    // the reading states it, and the holding's lane is held to it, above 7,500 / 0.2% = 3,750,000 ₪
     const readingAt = (house: string) => readingOf(read({ ...fillDeal(newDeal("brokerage-account"), `house:${house}`, data, TODAY)!, readFor: [{ by: "what", is: "tase" }, { by: "held", is: "tase" }] }), data.fx);
     const reading = readingAt("discount");
+    const stated = reading.stated.find((x) => x.part === "maxPerSecurity")!;
+    expect(stated.words.figure?.value).toBe(7500);
+    expect(stated.words.tail).toBe(copy.cases.stated.maxPerSecurity.tail);
     const maxOf = (r: typeof reading) => r.panels.held.flatMap((x) => ("chart" in x ? x.chart.lanes : [])).flatMap((l) => l.parts ?? []).find((x) => x.part === "max");
-    expect(maxOf(reading)).toMatchObject({ from: 3_750_000, figure: { value: 7500 }, perSecurity: true });
+    expect(maxOf(reading)).toMatchObject({ from: 3_750_000, figure: { value: 7500 } });
     // Leumi's lane is held to the lower of 3,700 on each security and 11,500 on the deposit (BRK-69, note 5), above 3,700 / 0.15%
-    expect(maxOf(readingAt("leumi"))).toMatchObject({ figure: { value: 3700 }, perSecurity: true });
+    expect(maxOf(readingAt("leumi"))).toMatchObject({ figure: { value: 3700 } });
     expect(maxOf(readingAt("leumi"))!.from).toBeCloseTo(3700 / 0.0015, 3);
-    // a lane says "on each security" only where that maximum is the one that binds: not where the deposit's is lower, nor where they are equal
-    const custodyLane = (perSecurity: number, max: number) =>
-      heldChart(account([{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.2), per: 3, every: 3, perSecurity: typed(perSecurity), max: typed(max) } }] }]))
-        ?.lanes.flatMap((l) => l.parts ?? [])
-        .find((x) => x.part === "max");
-    expect(custodyLane(20_000, 10_000)).toMatchObject({ figure: { value: 10_000 } });
-    expect(custodyLane(20_000, 10_000)).not.toHaveProperty("perSecurity");
-    expect(custodyLane(10_000, 10_000)).toMatchObject({ figure: { value: 10_000 } });
-    expect(custodyLane(10_000, 10_000)).not.toHaveProperty("perSecurity");
-    expect(custodyLane(5_000, 10_000)).toMatchObject({ figure: { value: 5_000 }, perSecurity: true });
     // each line whose maximum is on each security says so in its record (max_per), and its maximum on the deposit quotes the list
     const lines = latestSnapshots().flatMap((x) => x.lines);
     for (const l of lines.filter((x) => x.max_per === "security")) expect(`${l.max?.notes} ${l.max_deposit?.source.quote ?? ""}`, l.id).toMatch(/לני"ע|לנייר/);

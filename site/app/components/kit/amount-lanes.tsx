@@ -6,9 +6,8 @@
 // tap on a part hands it up (the chart's point moves into it), and the lane under the pointer is handed up too, so the page can set it
 // apart in the chart and the reading as well: the lane set apart has its name bold and every part outlined, and where the others step back
 // (`back`) their parts fade, the lit part staying as it is. A part takes a press 44 px tall and at least 44 px wide, however small it is
-// drawn. On a phone a lane's name takes its period (`per`) and its parts only their figures (`short`). A lane's "?" (`help`) stands after
-// its name, outside the parts, which are buttons themselves. Inside a `ShareStack` the stack draws the reader's line through the chart and
-// the lanes at once.
+// drawn. On a phone a lane's name takes its period (`per`) and its parts only their figures (`short`). Inside a `ShareStack` the stack draws
+// the reader's line through the chart and the lanes at once.
 import type { PointerEvent, ReactNode } from "react";
 import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
 import { logAt, type LogRange } from "./log-axis";
@@ -28,7 +27,7 @@ export interface AmountLanePart {
 /**
  * A fee's lane: its name, its swatch (`bg-fee-trade`) and its edge (`border-fee-trade`, a part's outline), its parts, or none for a price
  * the same at every amount, whose quiet line carries `price` after the name. `per`: the words a phone adds to the name (the period its
- * parts' figures are per). `group`: the group it stands in. `help`: a "?" after the name (`HelpMark`), for what its parts' words assume.
+ * parts' figures are per). `group`: the group it stands in.
  */
 export interface AmountLane {
   id: string;
@@ -39,7 +38,6 @@ export interface AmountLane {
   price?: ReactNode;
   per?: string;
   group?: string;
-  help?: ReactNode;
 }
 
 /** The narrowest container that still writes a part's whole words; narrower is a phone's. */
@@ -84,7 +82,6 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
                     <span aria-hidden="true" className={cx("size-2 rounded-full", l.swatch)} />
                     {name}
                     {l.price && <span>· {l.price}</span>}
-                    {l.help}
                   </span>
                   <span data-lane-bar aria-hidden="true" className={cx("flex-1 rounded-full transition-opacity", l.swatch, hot ? "h-[5px]" : "h-[3px]", hot ? "opacity-100" : dim ? "opacity-30" : "opacity-60")} style={{ marginLeft: SHARE_PLOT.left }} />
                 </div>
@@ -100,11 +97,9 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
               });
             return (
               <div key={l.id} {...events} className="flex flex-col gap-1">
-                {/* a "?" reaches 12 px under its line and a part's press 8 px over the bar: the room between keeps the two apart */}
-                <span className={cx(nameClass, l.help !== undefined && "pt-2 pb-4")}>
+                <span className={nameClass}>
                   <span aria-hidden="true" className={cx("size-2 rounded-full", l.swatch)} />
                   {name}
-                  {l.help}
                 </span>
                 <div data-lane-bar dir="ltr" className="relative h-7" style={inset}>
                   {parts.map(({ p, s, e, words, fits }) => (

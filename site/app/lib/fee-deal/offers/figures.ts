@@ -7,8 +7,8 @@ import { boundsAction, byAmount, byRate, charged, hasBounds, onAction } from "./
 /**
  * A figure of a price the screen edits: its rate, its bounds, its sum (a sum per unit's among them), its percent maximum (`cap`), its
  * flat price's two figures (`flat`, the price; `upTo`, the sum it holds up to), a discount's share (`discount`, F-116), a third party's
- * rate or sum and bounds (`third`, `thirdMin`, `thirdMax`, F-117), a refund (`refund`, one of §10.6's stated parts), and a held share's
- * maximum on each security (`perSecurity`, said on the holding chart's lane).
+ * rate or sum and bounds (`third`, `thirdMin`, `thirdMax`, F-117), a refund (`refund`), and a held share's maximum on each security
+ * (`perSecurity`), the last two §10.6's stated parts.
  */
 export type Figure = "rate" | "min" | "max" | "amount" | "cap" | "flat" | "upTo" | "discount" | "third" | "thirdMin" | "thirdMax" | "refund" | "perSecurity";
 
