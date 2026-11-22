@@ -3,7 +3,7 @@
 // reading's picks. Rates are typed in percent; `engineDeal` (to-engine.ts) is the one place they become the engine's fractions. `readDeal`
 // checks every field of a deal from the device, a file or a link, and drops whatever is not a deal. No engine at run time: the side
 // stores read this file on every page.
-import { productIds, type ProductId } from "@finance-tool/schema";
+import { productIds, type ProductId, assertNever } from "@finance-tool/schema";
 import type { CalendarMonth } from "@finance-tool/engine";
 import { newId } from "../ids";
 import { byAmount, byRate, formOnAction, KEY_FORMS, type PartKey } from "./offers/capabilities";
@@ -341,6 +341,8 @@ export function blankPrice(form: FormId): Price {
       return { form: "perAction", amount: blankFigure() };
     case "perUnit":
       return { form: "perUnit", amount: blankFigure() };
+    default:
+      return assertNever(form);
   }
 }
 
@@ -725,6 +727,8 @@ function readBy(raw: unknown, kind: FeeKindId): By | null {
       const values = isPlaceKind(k) ? read.filter((v) => LIST_IDS[k].includes(v) || !!own?.some((o) => o.name === v)) : read;
       return { kind: k, values, ...(own ? { own } : {}) } as By;
     }
+    default:
+      return assertNever(CONDITIONS[k].values);
   }
 }
 

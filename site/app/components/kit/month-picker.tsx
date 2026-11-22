@@ -166,7 +166,7 @@ export function MonthPicker({ id: givenId, label, chosen, bounds = {}, anchor, o
     const now = thisMonth();
     setToday(now);
     if (!chosen) setCursor(startMonth(null, now, bounds));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
   const takeFocus = useRef(false);
   useEffect(() => {
     if (chosen) setCursor(chosen);

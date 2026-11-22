@@ -294,7 +294,6 @@ function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
     const rows = variants.map((v) => rowLabels(v, index)).sort((a, b) => size(b) - size(a));
     const lines = [c.previewPriced, ...(openLine ? [openLine] : []), ...(["fee-unknown", "payout-unknown", "need-yield", "domicile-unknown", "no-hedge-entered"] as const).map((code) => reasonText({ code }, cls))].sort((a, b) => b.length - a.length);
     return { row: rows[0]!, line: lines[0]! };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draft.kind, index, cls, openLine]);
   return (
     <div className="flex flex-col gap-1.5">

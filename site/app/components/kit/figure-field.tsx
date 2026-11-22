@@ -154,7 +154,8 @@ export type Settled = "enter" | "left";
  * narrower than a `ch` and a point much narrower.
  */
 const widthOf = (text: string, placeholder: string | undefined, tight?: boolean, least = 0) => `${Math.max(tight && text ? text.length : Math.max(text.length, placeholder?.length ?? 0), tight ? 1 : 2, least) + (tight ? 0.15 : 0.5)}ch`;
-const FIT = "min-w-[1ch] supports-[field-sizing:content]:[field-sizing:content] supports-[field-sizing:content]:!w-auto";
+// w-auto! wins over the width the style attribute sets (widthOf), which only browsers without field-sizing need
+const FIT = "min-w-[1ch] supports-[field-sizing:content]:[field-sizing:content] supports-[field-sizing:content]:w-auto!";
 
 /**
  * The box a sourced figure's note is measured against, the row's cell the figure stands in: the nearest one marked `data-note-cell`, else
@@ -550,7 +551,6 @@ export function MonthField({ value, label, lead, tight, earliest, latest, taken,
   useEffect(() => {
     if (commits === 0 || focused.current) return;
     if (parseMonth(text) !== value) setText(shown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [commits]);
   useEffect(() => {
     if (autoFocus) setOpen(true);
@@ -640,7 +640,6 @@ export function MonthField({ value, label, lead, tight, earliest, latest, taken,
           ref={input}
           id={id}
           data-figure=""
-          // eslint-disable-next-line jsx-a11y/no-autofocus
           autoFocus={autoFocus}
           type="text"
           inputMode={touch ? "none" : "numeric"}
@@ -700,7 +699,7 @@ export function MonthField({ value, label, lead, tight, earliest, latest, taken,
       </span>
       {open && <MonthPicker id={grid} label={label} chosen={parseMonth(text) ?? value} bounds={{ earliest, latest, ...(taken ? { taken: taken.months } : {}) }} anchor={box} onPick={pick} onClose={toBox} />}
       {(error || refused) && (
-        <span id={`${id}-err`} role={refused ? "status" : undefined} className={cx("text-xs text-destructive", hang && "absolute start-0 top-full z-10 mt-0.5 whitespace-nowrap rounded-sm bg-card")}>
+        <span id={`${id}-err`} role={refused ? "status" : undefined} className={cx("text-xs text-destructive", hang && "absolute inset-s-0 top-full z-10 mt-0.5 whitespace-nowrap rounded-sm bg-card")}>
           {refused ?? kitCopy.figure.monthError}
         </span>
       )}

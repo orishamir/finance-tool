@@ -52,7 +52,7 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
             className={cx(
               "flex-1 inline-flex items-center justify-center gap-1 min-h-[30px] tap-area px-3 text-sm rounded-[9px]",
               long ? cx("min-w-0 text-center", fit === "always" ? "flex-auto" : fit && "sm:flex-auto") : "whitespace-nowrap",
-              "transition-colors duration-[var(--duration-fast)] disabled:opacity-40 disabled:cursor-not-allowed",
+              "transition-colors duration-(--duration-fast) disabled:opacity-40 disabled:cursor-not-allowed",
               on ? "bg-primary-subtle text-foreground" : "text-muted-foreground enabled:hover:bg-accent/60 enabled:hover:text-foreground",
             )}
           >
@@ -109,7 +109,7 @@ export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ar
   return (
     <div role="radiogroup" aria-label={ariaLabel} className={layout} onKeyDown={onKey}>
       {ids.map((id) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip gap-1.5 shrink-0 transition-[background-color,color,opacity] duration-[var(--duration-fast)]", value === id && "sec-chip-on ps-2.5", counts?.[id] === 0 && value !== id && "opacity-45", missing?.[id] && cx("chip-dashed", value !== id && "text-muted-foreground"))}>
+        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip gap-1.5 shrink-0 transition-[background-color,color,opacity] duration-(--duration-fast)", value === id && "sec-chip-on ps-2.5", counts?.[id] === 0 && value !== id && "opacity-45", missing?.[id] && cx("chip-dashed", value !== id && "text-muted-foreground"))}>
           {value === id && <IconCheck size={16} className="shrink-0" />}
           {/* the label laid out twice in one cell, once at the chosen weight and unseen: the words take one width chosen or not (the check
               alone widens the chosen chip) */}
@@ -230,11 +230,11 @@ export function TileChoice<T extends string>({ label, labelledBy, tiles, value, 
                 }
               }}
               className={cx(
-                "flex items-start gap-2.5 min-h-target rounded-md border px-3 py-2.5 cursor-pointer text-start transition-colors duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-ring",
+                "flex items-start gap-2.5 min-h-target rounded-md border px-3 py-2.5 cursor-pointer text-start transition-colors duration-(--duration-fast) focus-visible:outline-2 focus-visible:outline-ring",
                 on ? "border-primary bg-primary/10" : "border-border bg-card hover:bg-accent/60",
               )}
             >
-              <span aria-hidden="true" className={cx("size-4 shrink-0 rounded-full mt-0.5 transition-[border-width] duration-[var(--duration-fast)]", on ? "border-[5px] border-primary" : "border-[1.5px] border-input")} />
+              <span aria-hidden="true" className={cx("size-4 shrink-0 rounded-full mt-0.5 transition-[border-width] duration-(--duration-fast)", on ? "border-[5px] border-primary" : "border-[1.5px] border-input")} />
               <span className="flex flex-col gap-1.5 min-w-0">
                 {t.title && <span className={cx("text-sm", on && "font-medium")}>{t.title}</span>}
                 {t.body}
@@ -310,7 +310,7 @@ export function PickCard({ label, onPick, pad = "none", chosen, marked, classNam
   return (
     <div
       className={cx(
-        "relative rounded-lg border transition-colors duration-[var(--duration-fast)]",
+        "relative rounded-lg border transition-colors duration-(--duration-fast)",
         chosen ? "border-primary outline-1 outline-primary" : cx("border-border cursor-pointer hover:bg-accent/60", marked && "bg-accent/60"),
         CARD_PAD[pad],
         LIFT_INNER,

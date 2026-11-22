@@ -55,11 +55,11 @@ export function TabStrip({ tabs, current, onChange, ariaLabel, idBase, end, wrap
               tabIndex={on ? 0 : -1}
               onClick={() => onChange(t.key)}
               onKeyDown={keys}
-              className={cx("min-h-target md:min-h-9 md:tap-area shrink-0 inline-flex items-center gap-1.5 border-b-2 font-medium whitespace-nowrap transition-colors duration-[var(--duration-fast)]", on ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}
+              className={cx("min-h-target md:min-h-9 md:tap-area shrink-0 inline-flex items-center gap-1.5 border-b-2 font-medium whitespace-nowrap transition-colors duration-(--duration-fast)", on ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}
             >
               {t.label}
               {t.count !== undefined && (
-                <bdi dir="ltr" className="text-[13px] font-normal tabular-nums text-muted-foreground">
+                <bdi dir="ltr" className="text-xs-flow font-normal tabular-nums text-muted-foreground">
                   {fmt.number(t.count)}
                 </bdi>
               )}

@@ -12,6 +12,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { tsImport } from "tsx/esm/api";
+import { newContext } from "../site/scripts/browser.mjs";
 
 const { values: o } = parseArgs({ options: { out: { type: "string", default: "site/public/preview.png" } } });
 const repo = fileURLToPath(new URL("..", import.meta.url));
@@ -54,7 +55,7 @@ p { margin: 0; max-width: 960px; text-align: center; text-wrap: balance; font-si
 
 const browser = await pw.chromium.launch({ executablePath });
 try {
-  const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
+  const page = await (await newContext(browser, { viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 })).newPage();
   await page.setContent(html, { waitUntil: "load" });
   await page.evaluate(() => document.fonts.ready);
   const loaded = await page.evaluate(() => [...document.fonts].filter((f) => f.status === "loaded").map((f) => f.family));

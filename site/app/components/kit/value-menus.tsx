@@ -36,7 +36,7 @@ export function TickMenu({ title, options, ticked, onToggle, other }: { title: R
         const on = ticked.includes(o.id);
         return (
           <label key={o.id} className={cx("flex min-h-target cursor-pointer items-center gap-2.5 rounded-md px-2.5", on ? "outline-2 -outline-offset-2 outline-primary" : "hover:bg-accent")}>
-            <input type="checkbox" checked={on} onChange={() => onToggle(o.id)} className="size-5 shrink-0 accent-[var(--primary)]" />
+            <input type="checkbox" checked={on} onChange={() => onToggle(o.id)} className="size-5 shrink-0 accent-primary" />
             <span className="min-w-0 flex-1">{o.label}</span>
             {on && <Tag tone="primary" icon={<IconCheck size={14} className="shrink-0" />}>{copy.chosen}</Tag>}
           </label>
@@ -60,8 +60,8 @@ export function Switch({ label, checked, onChange }: { label: ReactNode; checked
   const id = useId();
   return (
     <div className="flex min-h-target w-fit items-center gap-3">
-      <button type="button" role="switch" id={id} aria-checked={checked} onClick={() => onChange(!checked)} className={cx("tap-wide relative h-6 w-10 shrink-0 rounded-full transition-colors duration-[var(--duration-fast)]", checked ? "bg-primary" : "bg-muted-foreground/40")}>
-        <span aria-hidden className={cx("absolute top-0.5 size-5 rounded-full transition-[inset-inline-start] duration-[var(--duration-fast)]", checked ? "start-[1.125rem] bg-primary-foreground" : "start-0.5 bg-foreground")} />
+      <button type="button" role="switch" id={id} aria-checked={checked} onClick={() => onChange(!checked)} className={cx("tap-wide relative h-6 w-10 shrink-0 rounded-full transition-colors duration-(--duration-fast)", checked ? "bg-primary" : "bg-muted-foreground/40")}>
+        <span aria-hidden className={cx("absolute top-0.5 size-5 rounded-full transition-[inset-inline-start] duration-(--duration-fast)", checked ? "inset-s-[1.125rem] bg-primary-foreground" : "inset-s-0.5 bg-foreground")} />
       </button>
       <label htmlFor={id} className="cursor-pointer font-medium">
         {label}

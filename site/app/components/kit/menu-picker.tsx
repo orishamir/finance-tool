@@ -169,9 +169,9 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
       onBlur={onListBlur}
       style={listHost ? (at ?? undefined) : room !== null ? { maxHeight: room } : undefined}
       className={cx(
-        "come-in absolute z-[var(--z-popover)]",
+        "come-in absolute z-(--z-popover)",
         DROP_PANEL,
-        !listHost && cx("start-0 min-w-full", up ? "bottom-full mb-1" : "top-full mt-1", room !== null && "overflow-y-auto"),
+        !listHost && cx("inset-s-0 min-w-full", up ? "bottom-full mb-1" : "top-full mt-1", room !== null && "overflow-y-auto"),
       )}
     >
       {items.map((item) => {
@@ -300,7 +300,7 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
         className="inline-flex max-w-full items-center gap-3 min-h-target rounded-md border border-input bg-card ps-4 pe-3 hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring"
       >
         <bdi className="truncate">{buttonLabel ?? chosen?.label ?? placeholder}</bdi>
-        <IconChevronDown size={18} className={cx("shrink-0 text-muted-foreground transition-transform duration-[var(--duration-fast)]", open && "rotate-180")} />
+        <IconChevronDown size={18} className={cx("shrink-0 text-muted-foreground transition-transform duration-(--duration-fast)", open && "rotate-180")} />
       </button>
       {open && (listHost ? at && createPortal(menu, listHost) : menu)}
     </span>

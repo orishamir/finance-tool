@@ -1,18 +1,12 @@
-// The index page's receipt (F-91, F-106, F-109): what was paid in, what the index added before any cost, what the tax, the account's fees
-// and the fund took, what the cash waiting for a whole unit did, and what is left, written so that the lines add up as a reader adds them:
-// paid in + added − tax − account − fund − waiting = left. The lines are rounded once, on the receipt's grid (`sumGrid`): hundreds of
-// shekels where what is left rests on an assumed return, whole shekels otherwise. What was paid in rests on no return and stays exact; what
-// the index added takes up the difference. Each other figure is its own rounding where it can be; the rounding that makes them agree goes
-// to the cost lines only, the account's to its own lines (its total is the account's fees, `accountFees`). A line shows its number as it is
-// (`reconciled`), never rounded again.
-import { nisOf } from "./format";
-import type { SiteValue } from "./value";
-import { gridParts, onGrid, sumGrid, wholeParts, type Grid } from "./whole-parts";
+// The index page's receipt in whole shekels (F-91, F-106, F-109): what was paid in, what the index added before any cost, what the tax, the
+// account's fees and the fund took, what the cash waiting for a whole unit did, and what is left, written so that the lines add up as a reader
+// adds them: paid in + added − tax − account − fund − waiting = left. Each figure is its own rounding where it can be; the rounding that makes
+// them agree goes to the cost lines only, the account's to its own lines (its total is the account's fees, `accountFees`).
+import { fmt } from "./format";
+import { wholeParts } from "./whole-parts";
 import type { PairCosts } from "./invest";
 
 export interface ReceiptAmounts {
-  /** The grid every line but what was paid in, what was added and the gain is rounded on (`sumGrid`). */
-  grid: Grid;
   paidIn: number;
   /** F-91's X less what was paid in: what the index added before any cost. */
   added: number;
@@ -32,18 +26,17 @@ export interface ReceiptAmounts {
 }
 
 export function receiptAmounts(pc: PairCosts): ReceiptAmounts {
-  const g = sumGrid(pc.left);
   const paidIn = Math.round(pc.paidIn.value as number);
-  const base = onGrid(pc.base, g);
-  const left = onGrid(pc.left.value as number, g);
-  const account = onGrid(pc.accountFees, g);
-  const waiting = onGrid(pc.waitingN, g);
+  const base = Math.round(pc.base);
+  const left = Math.round(pc.left.value as number);
+  const account = Math.round(pc.accountFees);
+  const waiting = Math.round(pc.waitingN);
   // the account's own lines: a deal's own fees where it is priced by a deal (F-128), else the tariff's lines
   const own = pc.dealLines ?? pc.account;
-  const lines = gridParts([...own.map((l) => (typeof l.cost.value === "number" ? l.cost.value : 0)), pc.interaction], account, g);
+  const lines = wholeParts([...own.map((l) => (typeof l.cost.value === "number" ? l.cost.value : 0)), pc.interaction], account);
   const lost = base - left - waiting;
-  const [fund, tax] = gridParts([typeof pc.fund.value === "number" ? pc.fund.value : 0, typeof pc.tax.value === "number" ? pc.tax.value : 0], lost - account, g);
-  return { grid: g, paidIn, added: base - paidIn, tax: tax!, account, accountLines: lines.slice(0, -1), remainder: lines.at(-1)!, fund: fund!, waiting, left, gain: left - paidIn, lost };
+  const [fund, tax] = wholeParts([typeof pc.fund.value === "number" ? pc.fund.value : 0, typeof pc.tax.value === "number" ? pc.tax.value : 0], lost - account);
+  return { paidIn, added: base - paidIn, tax: tax!, account, accountLines: lines.slice(0, -1), remainder: lines.at(-1)!, fund: fund!, waiting, left, gain: left - paidIn, lost };
 }
 
 /** Each part's whole share of `total` in percent, adding up to 100 (largest remainder); parts at or under zero take none. */
@@ -59,4 +52,4 @@ export function sharesOf(values: readonly number[]): number[] {
  * (the remainder of the account's fees together, the cash waiting for a unit while the fund fell, or a part the whole-shekel rounding took
  * under zero) with a plus, as the money it gave back ("+3 ₪"), so it never reads as one more cost.
  */
-export const takenWords = (n: number, of: Pick<SiteValue, "onAssumedReturn" | "reconciled"> = {}): string => nisOf(of, -n, { signed: true });
+export const takenWords = (n: number): string => fmt.signedNisWhole(-n);

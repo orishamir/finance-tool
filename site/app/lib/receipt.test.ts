@@ -28,38 +28,6 @@ describe("the receipt's lines add up as a reader adds them", () => {
   }
 });
 
-describe("the receipt's lines are rounded once, on hundreds of shekels where what is left rests on an assumed return (method.md F-91)", () => {
-  // the nearest whole shekel, or the nearest hundred (a half away from zero), worked here apart from the receipt's own rounding
-  const near = (x: number, g: 1 | 100) => (g === 1 ? Math.round(x) : Math.sign(x) * Math.round(Math.abs(x) / 100) * 100 || 0);
-  for (const [assumed, grid] of [[false, 1], [true, 100]] as const) {
-    for (const [index, years, monthly, returnPct] of [["index-sp500", 10, 500, 7], ["index-ta125", 25, 0, 7], ["index-msci-world", 1, 2000, 7], ["index-sp500", 10, 500, -5]] as const) {
-      it(`${assumed ? "an assumed return" : "a return that is no assumption"}: ${index}, ${years} years, ${monthly} a month at ${returnPct}%`, () => {
-        const pcs = allPricedPairs(bundle, index, { years, monthly, returnPct, assumed });
-        expect(pcs.length).toBeGreaterThan(5);
-        for (const pc of pcs) {
-          const r = receiptAmounts(pc);
-          const where = `${pc.providerId} ${pc.fundId}`;
-          expect(r.grid, where).toBe(grid);
-          // what was paid in rests on no return: exact; what the index added takes up the difference
-          expect(r.paidIn, where).toBe(Math.round(pc.paidIn.value as number));
-          expect(r.paidIn + r.added - r.tax - r.account - r.fund - r.waiting, where).toBe(r.left);
-          expect(r.accountLines.reduce((a, x) => a + x, 0) + r.remainder, where).toBe(r.account);
-          expect(r.left, where).toBe(near(pc.left.value as number, grid));
-          expect(r.account, where).toBe(near(pc.accountFees, grid));
-          expect(r.waiting, where).toBe(near(pc.waitingN, grid));
-          expect(r.paidIn + r.added, where).toBe(near(pc.base, grid));
-          // every other line is a multiple of the grid, the small ones too: no smaller grid inside one sum
-          for (const n of [r.tax, r.fund, r.account, r.waiting, r.left, r.lost, r.remainder, ...r.accountLines]) expect(Math.abs(n) % grid, where).toBe(0);
-          expect(Math.abs(r.tax - (pc.tax.value as number)), where).toBeLessThan(2 * grid);
-          expect(Math.abs(r.fund - (pc.fund.value as number)), where).toBeLessThan(2 * grid);
-          expect(r.gain, where).toBe(r.left - r.paidIn);
-          expect(r.lost, where).toBe(r.tax + r.account + r.fund);
-        }
-      });
-    }
-  }
-});
-
 describe("in whole units the receipt writes the fees charged as fees and the waiting cash on its own line (F-91, F-109)", () => {
   // the S&P 500 page's plan, 10,000 ₪ now and 500 ₪ a month for 10 years, at a fall and at a rise
   for (const returnPct of [-5, 7]) {

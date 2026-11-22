@@ -11,6 +11,7 @@
   },
   "scripts": {
     "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "node tools/lint.mjs",
     "test": "vitest run --project fast",
     "test:deep": "node tools/test-deep.mjs",
     "validate": "npm run validate -w @finance-tool/pipeline",
@@ -19,6 +20,8 @@
     "chart-check": "node site/scripts/chart-check/check.mjs",
     "layout-check": "node site/scripts/layout-check.mjs",
     "csp-check": "node site/scripts/csp-check.mjs",
+    "response-check": "node site/scripts/response-check.mjs",
+    "weight": "node tools/weight.mjs --check",
     "rank-scan": "bash tools/rank-scan.sh",
     "dev": "npm run dev -w site",
     "check": "node tools/check.mjs",

@@ -1,0 +1,50 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  // The rules that catch real mistakes (guidelines/code.md, "The checks decide"); style rules stay off. tools/lint.mjs runs this over
+  // the repository's code (research/, a record of its day, aside) and holds each rule's count to tools/lint-baseline.json.
+  "plugins": ["typescript", "react", "unicorn", "oxc"],
+  "options": {
+    "typeAware": true,
+    "respectEslintDisableDirectives": false,
+    "reportUnusedDisableDirectives": "error"
+  },
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "typescript/no-floating-promises": "error",
+    "typescript/no-misused-promises": "error",
+    "typescript/switch-exhaustiveness-check": ["error", { "considerDefaultExhaustiveForUnions": false }],
+    "typescript/restrict-template-expressions": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/no-non-null-assertion": "error",
+    // the rules of hooks, and the React Compiler's rules of React
+    "react/rules-of-hooks": "error",
+    // useIsoLayoutEffect (lib/hooks.ts) is useLayoutEffect in the browser
+    "react/exhaustive-deps": ["error", { "additionalHooks": "^useIsoLayoutEffect$" }],
+    "react/set-state-in-effect": "error",
+    "react/set-state-in-render": "error",
+    "react/no-deriving-state-in-effects": "error",
+    "react/purity": "error",
+    "react/static-components": "error",
+    "react/immutability": "error",
+    "react/refs": "error",
+    "react/globals": "error",
+    "react/use-memo": "error",
+    "react/preserve-manual-memoization": "error",
+    "react/incompatible-library": "error",
+    "react/error-boundaries": "error",
+    "react/unsupported-syntax": "error",
+    "react/no-unstable-nested-components": "error",
+    // a style rule filed under correctness
+    "unicorn/prefer-string-starts-ends-with": "off",
+    // `then` is a field of the domain (a price's later stretch, a step's next value), never a promise's
+    "unicorn/no-thenable": "off"
+  },
+  "overrides": [
+    // `any` is allowed in tests (guidelines/code.md, "Types")
+    { "files": ["**/*.test.ts", "**/*.test.tsx"], "rules": { "typescript/no-explicit-any": "off" } }
+  ],
+  // the vendored chart checker stays as its authors wrote it; research/ is a record of its day
+  "ignorePatterns": ["site/scripts/chart-check/vendor/**", "**/build/**", "**/.react-router/**", "**/coverage/**", ".claude/**", "research/**", "data/**"]
+}

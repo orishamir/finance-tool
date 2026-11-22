@@ -7,7 +7,7 @@ import { asideLines, firstCount, GROUP_OPTIONS, phoneOnlyValue, placesOf, type H
 import type { SiteValue } from "../../lib/value";
 import type { IndicesBundle } from "../../lib/providers";
 import { isGroupProvider } from "../../lib/group-pick";
-import { fmt, nisOf } from "../../lib/format";
+import { fmt } from "../../lib/format";
 import { IconCopy } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, DocLink, LongestCase, PickList, SourcedTag, Swatch, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
@@ -70,7 +70,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
       names: rows.map((h) => <span key={h.provider.id} className={cx("block text-xl font-bold [overflow-wrap:anywhere]", h.provider.custom && "text-entered")}><ProviderLink p={h.provider} /></span>),
       lines: rows.map((h) => <HouseLine key={h.provider.id} house={h.provider} snapshot={bundle.snapshots.find((s) => s.id === h.provider.id)} charge={<>{c.pair.colCharges(LONGEST_YEARS)}: {fmt.nisWhole(LONGEST_AMOUNT)}</>} />),
     }),
-    [heldKey, bundle.snapshots], // eslint-disable-line react-hooks/exhaustive-deps
+    [heldKey, bundle.snapshots],
   );
   const houseId = chosen && rows.some((h) => h.provider.id === chosen) ? chosen : (ok[0]?.provider.id ?? null);
   const house = houseId ? providerName(view, houseId) : undefined;
@@ -112,7 +112,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             </LongestCase>
           </span>
           <span className="flex items-center min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
-            <CostStack size="sm" parts={parts} total={Math.round(g.costN!)} scale={scale} highlight={legendPick.active} label={`${h.provider.short}: ${g.cost ? nisOf(g.cost, g.costN!) : fmt.nisWhole(g.costN!)}`} />
+            <CostStack size="sm" parts={parts} total={Math.round(g.costN!)} scale={scale} highlight={legendPick.active} label={`${h.provider.short}: ${fmt.nisWhole(g.costN!)}`} />
           </span>
           <span className="col-end-[-1] text-end font-semibold">{g.cost && <Num animate value={g.cost} />}</span>
           {/* the kind the cost is for, else the house's: a row keeps its line whichever kind the plan makes cheapest */}

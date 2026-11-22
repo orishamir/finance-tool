@@ -103,15 +103,15 @@ try {
     },
   ];
   const results = [];
-  for (const { name, path, steps } of VISITS) results.push([name, await visit(path, steps)]);
-  for (const [path, { problems, other }] of results) {
+  for (const { name, path, steps } of VISITS) results.push({ name, ...(await visit(path, steps)) });
+  for (const { name, problems, other } of results) {
     if (problems.length) {
       failed = true;
-      console.error(`csp-check: ${path}`);
+      console.error(`csp-check: ${name}`);
       for (const p of problems) console.error(`  ${p}`);
     }
     // an error the policy did not cause is another check's to judge: said, not failed
-    for (const p of other) console.log(`csp-check: ${path}, not a refusal: ${p.slice(0, 300)}`);
+    for (const p of other) console.log(`csp-check: ${name}, not a refusal: ${p.slice(0, 300)}`);
   }
   if (!failed) console.log(`csp-check: ${results.length} pages ran under their Content Security Policy with nothing refused (the planted script was)`);
 } finally {

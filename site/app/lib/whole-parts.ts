@@ -1,23 +1,5 @@
 // Whole numbers that add up to a set total (largest remainder): a sentence of parts never disagrees with its total. The cost bars
-// (kit CostStack), the index page's receipt (lib/receipt), the stairs and the study fund's bar share it, the last three on the grid of
-// their sum (`sumGrid`).
-import type { SiteValue } from "./value";
-
-/**
- * The grid the lines of a sum are rounded on so they add up (method.md F-91, F-96): hundreds of shekels where the total rests on a return
- * assumed for the years ahead (`SiteValue.onAssumedReturn`; wording.md, "Numbers and punctuation"), whole shekels otherwise. Inside one
- * sum there is no smaller grid for a small line: a line of 300 ₪ in a sum of hundreds is a hundred's multiple like the rest.
- */
-export type Grid = 1 | 100;
-export const sumGrid = (total: Pick<SiteValue, "onAssumedReturn">): Grid => (total.onAssumedReturn ? 100 : 1);
-
-/** `x` on grid `g`: the nearest whole shekel (`Math.round`), or the nearest hundred with a half away from zero, as `fmt.nisAssumed` rounds. */
-export const onGrid = (x: number, g: Grid): number => (g === 1 ? Math.round(x) : Math.sign(x) * Math.round(Math.abs(x) / g) * g || 0);
-
-/** `wholeParts` on grid `g`: multiples of `g` that add up to `target`, itself a multiple of `g` (largest remainder, in steps of `g`). */
-export function gridParts(xs: number[], target: number, g: Grid, can?: readonly boolean[]): number[] {
-  return wholeParts(xs.map((x) => x / g), Math.round(target / g), can).map((x) => x * g || 0);
-}
+// (kit CostStack) and the index page's receipt (lib/receipt) share it.
 /**
  * Whole shekels that add up to `target` (by default the rounded sum; largest remainder): a sentence of parts never disagrees with its total.
  * `can`: the parts whose amounts are written; the rounding goes only to them, and an amount not written is only rounded.

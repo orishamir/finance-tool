@@ -45,6 +45,8 @@
 // 24. a key never shows a made-up figure (the number key's "123 ממקור 123 מחושב" read as a placeholder left
 //     in the page): no `num-sample` element holds digits; a key draws each style on its own word, after a lead that says what it keys.
 // 25. a FilterChip is an on-or-off filter: one comparing a value in `on` is one of several values, which is ChoiceChips with counts.
+// 26. a physical direction class (`ml-`, `pr-`, `left-`, `text-right`, `rounded-l…`, `border-r…`) stands only in a chart's drawing, whose
+//     axes read left to right; everywhere else the layout is logical (`ms-`, `pe-`, `inset-s-`, `text-start`, `rounded-s…`, `border-e…`).
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -844,7 +846,6 @@ describe("a date in a page's text is the kit's When", () => {
     expect(joinLead("ב־", "שנה")).toBe("ב");
     expect(joinLead("ב־", "10 שנים")).toBe("ב־");
     expect(joinLead("ממוצע ", "נובמבר 2025")).toBe("ממוצע ");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const html = (n: (props: any) => ReturnType<typeof When>, p: Record<string, unknown>) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(n as never, p as never))).replace(/<[^>]+>/g, "");
     expect(html(When, { iso: "2025-11", lead: "תעריפון מ־" })).toBe("תעריפון מנובמבר 2025");
     expect(html(When, { iso: "2025-11-02", lead: "תעריפון מ־" })).toBe("תעריפון מ־02.11.2025");
@@ -958,5 +959,48 @@ describe("a FilterChip is an on-or-off filter, never one of several values (25)"
     expect('<FilterChip key={x} on={term === x} count={3} onClick={() => setTerm(x)}>'.match(ONE_OF_N_FILTER)).toHaveLength(1);
     expect('<FilterChip\n  on={group == g}\n  onClick={f}>'.match(ONE_OF_N_FILTER)).toHaveLength(1);
     expect('<FilterChip on={filters.changing} count={n} onClick={() => setFilters({ changing: !filters.changing })}>'.match(ONE_OF_N_FILTER)).toBeNull();
+  });
+});
+
+// 26. Physical direction classes only in a chart's drawing (guidelines/design.md, "Right to left"). A class is read in every string of a
+//     source, so one built in a prop or a constant counts as one written on the element. `left-1/2` beside `-translate-x-1/2` in the same
+//     string centres a thing, which has no direction, and passes.
+/** The chart pieces whose drawing reads left to right: the difference rows' bars around their middle line and the stairs' step heads. */
+const CHART_DRAWINGS = new Set(["components/kit/diff-row.tsx", "components/kit/stairs-chart.tsx"]);
+const SIZE = String.raw`(?:\d+(?:\.\d+)?|\d+\/\d+|px|full|auto|\[[^\]\s]+\]|\([^)\s]+\))`;
+const PHYSICAL = new RegExp(
+  String.raw`^(?:[^\s:]+:)*!?(?:-?(?:m|p|scroll-m|scroll-p)[lr]-${SIZE}|-?(?:left|right)-${SIZE}|text-(?:left|right)|(?:rounded|border)-(?:[lr]|[tb][lr])(?:-[\w.\[\]/()%-]+)?)!?$`,
+);
+/** Every physical direction class in a source's strings, but `left-1/2` centring beside `-translate-x-1/2` under the same variants. */
+function physicalClasses(src: string): string[] {
+  const out: string[] = [];
+  for (const m of code(src).matchAll(/"([^"\n]*)"|'([^'\n]*)'|`([^`]*)`/g)) {
+    const tokens = (m[1] ?? m[2] ?? m[3] ?? "").split(/\s+/).filter(Boolean);
+    for (const t of tokens) {
+      if (!PHYSICAL.test(t)) continue;
+      const centred = /^((?:[^\s:]+:)*)left-1\/2$/.exec(t);
+      if (centred && tokens.includes(`${centred[1]}-translate-x-1/2`)) continue;
+      out.push(t);
+    }
+  }
+  return out;
+}
+describe("a physical direction class stands only in a chart's drawing (26)", () => {
+  const found = new Map(files.filter((f) => /\.tsx?$/.test(f)).map((f) => [rel(f), physicalClasses(read(f))] as const).filter(([, h]) => h.length > 0));
+  it("no source outside the chart drawings holds one", () => {
+    expect([...found].filter(([f]) => !CHART_DRAWINGS.has(f)).map(([f, h]) => `${f}: ${h.join(" ")}`)).toEqual([]);
+  });
+  it("the allowance is still needed", () => {
+    for (const f of CHART_DRAWINGS) expect([...found.keys()], `${f} no longer holds a physical class: remove it from CHART_DRAWINGS`).toContain(f);
+  });
+  it("the scan sees each kind under any variant and leaves the logical classes, centring and words", () => {
+    for (const bad of ["ml-2", "md:mr-auto", "-mr-1", "pl-[3px]", "pr-1.5", "left-0", "hover:right-4", "-left-px", "right-1/2", "left-(--x)", "text-left", "lg:text-right", "rounded-l-md", "rounded-tr-lg", "rounded-r", "border-l", "border-r-2", "border-l-caution", "scroll-ml-4", "!pl-0", "pr-0!"])
+      expect(physicalClasses(`<i className="${bad}" />`), bad).toEqual([bad]);
+    expect(physicalClasses(`<i className="absolute left-1/2 -translate-x-1/2" />`)).toEqual([]);
+    expect(physicalClasses(`<i className="absolute left-1/2 md:-translate-x-1/2" />`)).toEqual(["left-1/2"]);
+    expect(physicalClasses(`<i className={cx("absolute", up ? "left-1/2" : "right-1/2")} />`)).toEqual(["left-1/2", "right-1/2"]);
+    for (const fine of ["ms-2", "pe-1.5", "inset-s-0", "-inset-e-3", "text-start", "text-end", "rounded-s-md", "border-e", "border-s-[3px]", "border-b-0", "rounded-t-md", "left-to-right", "a left-out row", "right-hand"])
+      expect(physicalClasses(`const x = "${fine}";`), fine).toEqual([]);
+    expect(physicalClasses(`// the bar grows from ml-2\nconst x = 1;`)).toEqual([]);
   });
 });

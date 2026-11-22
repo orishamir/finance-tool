@@ -1,7 +1,8 @@
 // How long the reader waits for the first answer of a page's controls, on a phone with a slow connection: a guide page's first term
 // card, its first rule card and the search's first results. Measured in the page, from the finger going down (or the first key) to the
 // sheet showing its card (or the results' first row), right after the page became interactive ("at once": the worst case, before
-// anything fetched on idle is in) and after three idle seconds ("after idle"). Each run starts with an empty cache.
+// anything fetched on idle is in) and once the network has gone quiet and the page is at rest ("after idle"). Each run starts with an
+// empty cache.
 //
 // Usage (from the repo or worktree root, after `npm run build`):
 //   node tools/first-tap.mjs [--build site/build/client] [--page /guide/keren-hishtalmut] [--runs 3] [--fast]
@@ -13,6 +14,7 @@ import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import http from "node:http";
 import { gzipSync } from "node:zlib";
+import { newContext, settled, slowDown, SLOW_4G } from "../site/scripts/browser.mjs";
 
 const { values: o } = parseArgs({
   options: { build: { type: "string", default: "site/build/client" }, page: { type: "string", default: "/guide/keren-hishtalmut" }, runs: { type: "string", default: "3" }, fast: { type: "boolean" } },
@@ -104,18 +106,16 @@ try {
   for (const [name, act] of Object.entries(cases)) {
     for (const when of ["at once", "after idle"]) {
       for (let i = 0; i < Number(o.runs); i++) {
-        const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+        const context = await newContext(browser, { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
         const page = await context.newPage();
-        if (!o.fast) {
-          const cdp = await context.newCDPSession(page);
-          await cdp.send("Network.enable");
-          await cdp.send("Network.emulateNetworkConditions", { offline: false, latency: 150, downloadThroughput: (1.6 * 1024 * 1024) / 8, uploadThroughput: (750 * 1024) / 8 });
-          await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
-        }
+        if (!o.fast) await slowDown(page, { cpu: 4, network: SLOW_4G });
         await page.goto(server.url.replace(/\/$/, "") + o.page, { waitUntil: "load" });
         // interactive: the header's search button is enabled once the page has hydrated
         await page.waitForFunction(() => [...document.querySelectorAll("header button")].some((b) => !b.disabled), null, { timeout: 60_000 });
-        if (when === "after idle") await page.waitForTimeout(3000);
+        if (when === "after idle") {
+          await page.waitForLoadState("networkidle");
+          await page.evaluate(settled, 30_000);
+        }
         await act(page);
         await page.waitForFunction(() => window.__shown !== null, null, { timeout: 60_000 });
         const ms = await page.evaluate(() => Math.round(window.__shown - window.__down));

@@ -172,7 +172,7 @@ function Joined({ parts, bare, lines, off }: { parts: readonly SlimPart[]; bare?
             <PartText part={p} bare={bare} />
             {x && (
               <span data-part-off="" className="relative inline-block h-[1lh] w-0 align-top">
-                <span className="absolute start-1 top-1/2 z-[1] -translate-y-1/2">
+                <span className="absolute inset-s-1 top-1/2 z-[1] -translate-y-1/2">
                   <KnobButton icon={X} label={x.label} tabIndex={-1} onClick={x.onOff} />
                 </span>
               </span>

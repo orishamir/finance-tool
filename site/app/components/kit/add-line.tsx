@@ -53,7 +53,7 @@ export function AddLine({ lead, items, onAdd, className }: { lead: ReactNode; it
             added.current = k;
             onAdd(it.id);
           }}
-          className={cx("tap-area inline-flex h-8 items-center gap-1.5 rounded-md px-2.5 text-sm transition-colors duration-[var(--duration-fast)]", it.usual ? "bg-secondary text-foreground font-medium hover:bg-secondary-hover" : "bg-muted text-muted-foreground hover:bg-accent")}
+          className={cx("tap-area inline-flex h-8 items-center gap-1.5 rounded-md px-2.5 text-sm transition-colors duration-(--duration-fast)", it.usual ? "bg-secondary text-foreground font-medium hover:bg-secondary-hover" : "bg-muted text-muted-foreground hover:bg-accent")}
         >
           <Plus size={14} strokeWidth={1.75} aria-hidden className="shrink-0 text-primary" />
           {it.label}

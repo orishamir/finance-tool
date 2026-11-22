@@ -17,6 +17,12 @@ export function durationChart(): number {
   return cssMs(getComputedStyle(document.documentElement).getPropertyValue("--duration-chart"));
 }
 
+/** How long a chart's labels and gridlines take to fade, in ms: the motion's own, and a short fade where motion is none. */
+function durationChartFade(): number {
+  if (typeof window === "undefined") return 0;
+  return cssMs(getComputedStyle(document.documentElement).getPropertyValue("--duration-chart-fade"));
+}
+
 /** The lines to draw on the way to `target`. A line's points may be more than the target's during the glide; at rest they are exactly its. */
 export function useGlidingSeries(target: GlideSeries): GlideSeries {
   const stable = useRef(target);
@@ -92,9 +98,8 @@ export function useFadingTicks(values: readonly number[]): GlideTick[] {
       return;
     }
     setList((prev) => mergeTicks(prev, values));
-    const t = setTimeout(() => setList((prev) => prev.filter((p) => p.phase !== "out")), durationChart());
+    const t = setTimeout(() => setList((prev) => prev.filter((p) => p.phase !== "out")), durationChartFade());
     return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
   return list;
 }
@@ -204,7 +209,6 @@ export function useFlip<E extends HTMLElement = HTMLOListElement>(order: string 
         slide.onfinish = slide.oncancel = done;
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
   return ref;
 }

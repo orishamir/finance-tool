@@ -146,7 +146,6 @@ export function NumberField(props: FieldProps) {
     adopted.current = true;
     const typed = inputRef.current?.value ?? "";
     if (typed !== "" && text === "" && value === null) change(typed);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const lastValue = useRef(value);
   useEffect(() => {
@@ -158,7 +157,6 @@ export function NumberField(props: FieldProps) {
       setText(value === null ? "" : formatTyped(value));
       setError(null);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, focused]);
   const shownError = error ?? externalError;
   const errorOutRef = useRef(errorOut);
@@ -360,9 +358,9 @@ function SearchBox({ id, value, onChange, clearLabel, inputRef, big, compact, ..
     else if (inputRef) inputRef.current = el;
   };
   return (
-    <div className={cx("field-box text-muted-foreground", big && "!h-14 border-primary bg-card text-base lg:text-lg", big && !compact && "lg:!h-16")}>
+    <div className={cx("field-box text-muted-foreground", big && "h-14 border-primary bg-card text-base lg:text-lg", big && !compact && "lg:h-16")}>
       <IconSearch size={big ? 20 : 18} aria-hidden="true" />
-      <input ref={setRef} id={id} type="text" dir="rtl" autoComplete="off" value={value} onChange={(e) => onChange(e.target.value, e.currentTarget)} className="field-input !text-start text-mixed text-foreground" {...input} />
+      <input ref={setRef} id={id} type="text" dir="rtl" autoComplete="off" value={value} onChange={(e) => onChange(e.target.value, e.currentTarget)} className="field-input text-mixed text-foreground" {...input} />
       {clearLabel && value && (
         <button
           type="button"
@@ -439,7 +437,7 @@ export function TextField({ label, value, onChange, hint, error, placeholder, ma
       </label>
       <div className={cx("field-body", grow && "min-w-0 flex-1")}>
         <div className={cx("field-box", inline && "field-box-compact max-w-full", inline && (grow ? "w-full min-w-56" : "w-56"), error ? "field-box-error" : false)}>
-          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className={cx("field-input !text-start text-mixed", inline && "font-semibold", grow && "text-ellipsis focus:text-clip")} />
+          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className={cx("field-input text-mixed", inline && "font-semibold", grow && "text-ellipsis focus:text-clip")} />
           {icon && (
             <span aria-hidden="true" className="inline-flex shrink-0 text-muted-foreground">
               {icon}
@@ -464,7 +462,7 @@ export function TextField({ label, value, onChange, hint, error, placeholder, ma
 export function CheckField({ label, checked, onChange }: { label: ReactNode; checked: boolean; onChange: (v: boolean) => void }) {
   return (
     <label className="flex items-center gap-3 min-h-target cursor-pointer">
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="size-5 shrink-0 accent-[var(--primary)]" />
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="size-5 shrink-0 accent-primary" />
       <span>{label}</span>
     </label>
   );
@@ -499,7 +497,7 @@ export function InlineSelect({ label, all, options, value, onChange, labelHidden
   const at = list.findIndex((o) => o.id === value);
   // a chip with nothing chosen shows `all`, which its list does not hold: it stands first in the stack
   const stack = at < 0 && all !== undefined && chip ? { names: [all, ...names], at: 0 } : { names, at: Math.max(at, 0) };
-  const chevron = <IconChevronDown size={16} aria-hidden="true" className={cx("shrink-0 text-muted-foreground transition-transform duration-[var(--duration-fast)]", s.open && "rotate-180")} />;
+  const chevron = <IconChevronDown size={16} aria-hidden="true" className={cx("shrink-0 text-muted-foreground transition-transform duration-(--duration-fast)", s.open && "rotate-180")} />;
   if (chip) {
     return (
       <span className="inline-flex max-w-full">
@@ -509,7 +507,7 @@ export function InlineSelect({ label, all, options, value, onChange, labelHidden
         <button
           {...s.button}
           className={cx(
-            "inline-flex min-h-target max-w-full items-center gap-2 rounded-md bg-secondary ps-3 pe-2.5 text-sm transition-colors duration-[var(--duration-fast)] hover:bg-secondary-hover focus-visible:outline-2 focus-visible:outline-ring",
+            "inline-flex min-h-target max-w-full items-center gap-2 rounded-md bg-secondary ps-3 pe-2.5 text-sm transition-colors duration-(--duration-fast) hover:bg-secondary-hover focus-visible:outline-2 focus-visible:outline-ring",
             value === null && "text-muted-foreground",
           )}
         >

@@ -11,9 +11,6 @@ import { baseOf, groupInputs, HOUSE_ACCOUNT_PREFIX, layeredOf, startingPointsOf,
 import type { BundleSnapshot, IndicesBundle } from "./providers";
 import { groupPrices as copy } from "../copy";
 
-/** The group's key in the address and the record: `group:<n>`, its place in the house's record. */
-export type GroupKey = `group:${number}`;
-
 /** The side of the record's prices a fund trades on: funds abroad pay the abroad prices, every fund listed in Tel Aviv the Israeli ones. */
 const sideOf = (option: OptionId) => (option === "abroad" ? "abroad" : "israel");
 

@@ -26,6 +26,7 @@ import type { DataBar } from "./offers/offer";
 import { fillFee, houseName } from "./templates";
 import type { FeesData } from "../fee-page-data";
 import type { LiftResult } from "./lifted";
+import { assertNever } from "@finance-tool/schema";
 
 /**
  * What the change did, for its line's words and its place: the fee taken away and where it stood, the fee filled and from which house,
@@ -344,6 +345,8 @@ export function undoWords(u: Undo | KindUndo, names: (fee: Fee) => string, data:
       return `${copy.builder.filled(houseName(u.what.house, data) ?? "")}.`;
     case "remove":
       return `${copy.builder.removed}${names(u.before)}.`;
+    default:
+      return assertNever(u.what);
   }
 }
 

@@ -145,7 +145,7 @@ describe("study fund page", () => {
     const at = (y: number) => years[y - 1]!.slice!;
     const more = Math.round(waitFigures(at(lock - 1), at(lock)).more);
     expect(more).toBeLessThan(Math.round(at(lock).net - at(lock - 1).net));
-    expect(text).toContain(`${fmt.nisAssumed(more)} מעבר להפקדות שבינתיים`);
+    expect(text).toContain(`${fmt.nisWhole(more)} מעבר להפקדות שבינתיים`);
     // the tax saved is its own figure, not a part of what waiting adds, which can be smaller than it or below zero
     expect(text).not.toContain("מתוכם");
     expect(text).toContain("מס הכנסה במשיכה שלא משלמים:");

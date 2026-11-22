@@ -10,12 +10,12 @@
 // A deal deleted in another tab while it is open stays on screen, saved no more, with /deal's line and its keep; the editor's data that
 // did not load is said with a retry. Under the account list, each account typed by hand before deals that could not become one says why
 // it is not in the list.
-import { createContext, useCallback, useContext, useDeferredValue, useEffect, useEffectEvent, useId, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
+import { createContext, useContext, useDeferredValue, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
 import { MoreHorizontal, Pencil } from "lucide-react";
 import { useNavigate } from "react-router";
 import { IconPencil } from "../icons";
 import { feeDeal, invest as root } from "../../copy";
-import { fmt, nisOf } from "../../lib/format";
+import { fmt } from "../../lib/format";
 import { dealOnFunds, dealRunOf, type DealOnPlan, type FundWay, type IndexRef, type InvestView } from "../../lib/invest";
 import { shortName, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
 import type { FeesData } from "../../lib/fee-page-data";
@@ -28,7 +28,7 @@ import type { PartWords } from "../../lib/fee-deal/part-words";
 import type { DealRead } from "../../lib/fee-deal/deal-read";
 import { amountWords, formatValue } from "../../lib/format";
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
-import { NisNum, Num, type ProvenanceData, ProvenanceProvider, useProvenanceData } from "../provenance";
+import { Num, ProvenanceProvider, useProvenanceData, type ProvenanceData } from "../provenance";
 import { recordsById } from "../../lib/scope";
 import { dealStore, rememberOpen, without } from "../../lib/fee-deal/store";
 import { DEAL_PATH } from "../../lib/site-paths";
@@ -51,7 +51,6 @@ import { TemplateList, type TemplateListWords } from "../fee-deal/picker";
 import { NoticeRow } from "../fee-deal/deal-notices";
 import type { MoveLeft } from "../../lib/deal-account/move-run";
 import { ActionMenu, Button, Card, ConfirmAsk, HouseAverageLine, KeyValue, MixedName, ReadForBand, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, useStuckRoom, When, type FeeHeadSlot, type GripAction } from "../kit";
-import { ToolBoundary } from "../tool-boundary";
 
 const w = root.dealAccount;
 
@@ -126,29 +125,16 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
   const [deleted, setDeleted] = useState<DeletedDeal | null>(null);
   const [started, setStarted] = useState<FeeDeal | null>(null);
   const headId = useId();
-  const isOpen = target !== null;
-  // the popup opens: the page holds its deals, and the fee page's data is asked for where it is not in yet
-  const openOn = useCallback(
-    (t: DealTarget) => {
-      onOpenChange(true);
-      if (!data) onWant();
-      setTarget(t);
-    },
-    [data, onOpenChange, onWant],
-  );
-  const close = () => {
-    setTarget(null);
-    onOpenChange(false);
-  };
-  // the page arrived with a house in its address: the popup opens on it once the page can price, and the address is cleaned
-  const openFromAddress = useEffectEvent((house: string) => {
-    openOn({ house });
-    onOpened();
-  });
-  const canPrice = world !== null;
   useEffect(() => {
-    if (opening && canPrice) openFromAddress(opening);
-  }, [opening, canPrice]);
+    if (target && !data) onWant();
+  }, [target, data]);
+  const isOpen = target !== null;
+  useEffect(() => onOpenChange(isOpen), [isOpen, onOpenChange]);
+  useEffect(() => {
+    if (!opening || !world) return;
+    setTarget({ house: opening });
+    onOpened();
+  }, [opening, !!world]);
   const api = useMemo<DealAccountsApi>(
     () => ({
       open: (t) => {
@@ -157,7 +143,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
         setDeleted(null);
         setStarted(null);
         setOpened(deal ?? null);
-        openOn(t);
+        setTarget(t);
       },
       dealOf: (id) => saved.find((d) => dealProviderId(d.id) === id),
       deleted,
@@ -179,8 +165,9 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
       },
       left,
     }),
-    [saved, deleted, data, world, left, openOn],
+    [saved, deleted, data, world, left],
   );
+  const close = () => setTarget(null);
   // the editor's rule and term sheets read the fee page's data (its rules, the records they point at, its terms) over the page's own
   const page = useProvenanceData();
   const provenance = useMemo<ProvenanceData | null>(
@@ -205,7 +192,6 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
         {target && data && world ? (
           first ? (
             <ProvenanceProvider data={provenance ?? EMPTY_PROVENANCE}>
-            <ToolBoundary resetKey={first.id}>
             <DealPopup
               key={first.id}
               data={data}
@@ -221,7 +207,6 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
                 close();
               }}
             />
-            </ToolBoundary>
             </ProvenanceProvider>
           ) : (
             <DealStart data={data} today={today} headId={headId} onStart={(id) => setStarted(id ? houseDeal(id, data, today) : newDeal(ACCOUNT_KIND))} />
@@ -349,7 +334,6 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
     ed.doc.setFocus({ fee: lacks, on: "card" });
     let frame = requestAnimationFrame(() => (frame = requestAnimationFrame(() => bringUnderTop(root.current, lacks))));
     return () => cancelAnimationFrame(frame);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const wide = useMedia(MQ.md);
   const [planShown, setPlanShown] = useState(false);
@@ -361,9 +345,9 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const leftFig = tiles?.left !== null && tiles?.left !== undefined && okAt ? okAt.figure(tiles.left, w.tiles.leftAbout) : null;
   const placeFig = tiles?.place ? computed(tiles.place.k, "count", "F-128", leftFig ? { [w.tiles.leftAbout]: leftFig } : {}, { today: world.bundle.today, about: w.tiles.placeAbout(tiles.place.of) }) : null;
   const diffFig = leftFig && tiles?.house && house ? differenceOf([w.tiles.leftAbout, leftFig], [w.tiles.houseAbout(house.short), tiles.house.value], "F-128", { today: world.bundle.today, about: w.tiles.diffAbout, round: Math.round, signed: true }) : null;
-  const leftNum = leftFig && <NisNum value={leftFig} />;
+  const leftNum = leftFig && <Num value={leftFig} display={(n) => fmt.nisWhole(n)} />;
   const placeNum = placeFig && tiles?.place && <Num value={placeFig} display={() => w.tiles.placeValue(tiles.place!.k, tiles.place!.of)} />;
-  const diffNum = diffFig && <NisNum signed value={diffFig} />;
+  const diffNum = diffFig && <Num value={diffFig} display={(n) => fmt.signedNisWhole(n)} />;
   const planLine = fund ? w.plan(fmt.nisWhole(p.amountNow), fmt.nisWhole(p.monthly), p.years, fmt.pct(p.grossReturn * 100), fund.name, where) : null;
   const head = (
     <DealHead deal={deal} headId={headId} isSaved={isSaved} writable={writable} onName={(name) => ed.doc.change({ ...deal, name: name.slice(0, NAME_MAX) })} onDelete={() => {
@@ -435,7 +419,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
       {run && wide && own.length > 0 && <ReadForBand lead={w.readFor} note={w.planKnows(where)} picks={pickItems(own, ed.onPick)} />}
       {ed.picker}
       {ed.columns(null)}
-      {bankLine && house && <Sentence size="sm" tone="muted" t={w.bankAccount(house.short, bankLine.cost !== null)} vars={{ monthly: <Num value={bankLine.monthly} />, cost: bankLine.cost && <Num value={bankLine.cost} display={costText(bankLine.cost)} /> }} />}
+      {bankLine && house && <Sentence size="sm" tone="muted" t={w.bankAccount(house.short, bankLine.cost !== null)} vars={{ monthly: <Num value={bankLine.monthly} />, cost: bankLine.cost && <Num value={bankLine.cost} display={costText} /> }} />}
       {ed.menus}
       {ed.footSheet}
     </div>
@@ -448,7 +432,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
  * site's header does over a page (`--z-sticky`): what the editor raises inside the fees (a grip, a figure's tap area) stays under it, so
  * nothing under it takes a click or is drawn over it, and the menus, in the layer above it, open over it.
  */
-const STICKY_TOP = "sticky z-[var(--z-sticky)] -mx-1 bg-popover px-1 pb-2 -top-1 -mt-1 pt-1 lg:-top-3 lg:-mt-3 lg:pt-3";
+const STICKY_TOP = "sticky z-(--z-sticky) -mx-1 bg-popover px-1 pb-2 -top-1 -mt-1 pt-1 lg:-top-3 lg:-mt-3 lg:pt-3";
 
 /** Brings fee `feeId`'s block of the popup in `root` to just under what stays at its top (`data-deal-top`). */
 function bringUnderTop(root: HTMLElement | null, feeId: string) {
@@ -472,7 +456,7 @@ function feeHeadOf(x: FeeOnPlan, cost: SiteValue | null, bank: string | null): F
         <span className={cost !== null ? "max-md:sr-only" : undefined}>{w.onPlan}</span>
         {cost !== null && (
           <strong className="text-base font-bold text-foreground tabular-nums">
-            <Num value={cost} display={costText(cost)} />
+            <Num value={cost} display={costText} />
           </strong>
         )}
       </span>
@@ -482,8 +466,7 @@ function feeHeadOf(x: FeeOnPlan, cost: SiteValue | null, bank: string | null): F
 
 /** What a fee took on the plan, as the popup shows it, less than nothing: whole shekels, agorot under 10 ₪ (wording.md). */
 const shownCost = (c: number): number => (Math.abs(c) < 10 ? -Math.round(c * 100) / 100 : -Math.round(c)) || 0;
-/** Fee cost `v`'s amount: agorot under 10 ₪, else as the figure rounds (`nisOf`: hundreds where it rests on an assumed return). */
-const costText = (v: SiteValue) => (n: number): string => (Math.abs(n) < 10 ? fmt.nis(n) : nisOf(v, n));
+const costText = (n: number): string => (Math.abs(n) < 10 ? fmt.nis(n) : fmt.nisWhole(n));
 
 /**
  * The column of a house's averages (F-122) under a fee's head: what the plan buys, in the sheet's columns, read as `columnOf` reads a list

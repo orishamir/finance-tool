@@ -39,7 +39,7 @@ export function DidYouKnow({ title, items, more, orderKey, className }: { title:
           {shown.map((f) => (
             <li key={f.id} className="rounded-md bg-background p-3 flex flex-col gap-1.5 text-[15px] leading-normal min-h-[216px] lg:min-h-[236px]">
               <p>{f.body}</p>
-              <p className="mt-auto text-[13px] text-muted-foreground">{f.source}</p>
+              <p className="mt-auto text-xs-flow text-muted-foreground">{f.source}</p>
               <div className="text-sm">{f.action}</div>
             </li>
           ))}
