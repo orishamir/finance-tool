@@ -6,8 +6,10 @@
 // names the deal and keeps its rename and delete; under it three tiles say what the deal leaves on the pair's fund, its place among the
 // accounts, and, for a deal filled from a house's list, what it leaves against that house's own row; the plan line says what it is read on,
 // and a pick bar what only the person knows (a track, a condition of their own). Each fee says under its block what the plan charges for it
-// or why it charges nothing. The popup prices the deal alone as it changes; the page takes the deal once the popup closes, since pricing
-// every account and fund again on each change would make typing wait. A new deal is saved only once it changes (use-deal-document.ts).
+// or why it charges nothing. Each fee's switch, in its card's corner beside that figure, leaves it out of every figure here, the tiles, the
+// fees' plan figures and marks and the abroad lines, all priced on the deal as it is counted (lib/fee-deal/off.ts); an off fee's figure is
+// held unseen in its place. The popup prices the deal alone as it changes; the page takes the deal, as it is counted, once the popup
+// closes, since pricing every account and fund again on each change would make typing wait. A new deal is saved only once it changes (use-deal-document.ts).
 // A deal deleted in another tab while it is open stays on screen, saved no more, with /deal's line and its keep; the editor's data that
 // did not load is said with a retry. Under the account list, each account typed by hand before deals that could not become one says why
 // it is not in the list.
@@ -38,6 +40,7 @@ import { addBlankCase } from "../../lib/fee-deal/edits/case";
 import { pickLine } from "../../lib/fee-deal/reading";
 import { feeNameOf } from "../../lib/fee-deal/part-words";
 import { dealProviderId, planContextOf, withDeals } from "../../lib/deal-account/bundle";
+import { countedDeal, feesOff, isFeeOff } from "../../lib/fee-deal/off";
 import { dealHouseId, feesOnPlan, PLAN_KEYS, planRead, whatOfRun, type FeeOnPlan, type Missing } from "../../lib/deal-account/plan";
 import { ACCOUNT_KIND } from "../../lib/fee-deal/kinds";
 import { dealTiles, listFunds } from "../../lib/deal-account/tiles";
@@ -169,6 +172,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
         if (!deal || !data || !world) return null;
         const run = dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId });
         if (!run) return null;
+        // the ticket asks only for the fees the page's run charges, the counted ones, whose words are the same read on the whole deal
         return <DealFeeWords read={planRead(deal, run, planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? null))} feeId={feeId} />;
       },
       left,
@@ -284,6 +288,9 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   // /deal reopens the deal last on screen there: only the popup's own links to it name this one (`rememberOpen`)
   const ed = useDealEditor({ data, today, saved, writable, first, withReading: false, untitled: true, remember: false, feeHead: (fee) => headRef.current(fee) });
   const deal = ed.deal;
+  // the deal as it is counted, without the fees switched off in their corners: what every figure of the popup prices
+  const off = feesOff.use();
+  const counted = useMemo(() => countedDeal(deal, off), [deal, off]);
   const providerId = dealProviderId(deal.id);
   const { view, pick } = world;
   // the fund the plan line names: the pair's where the deal is the pair's account, else the one the page would pair with it
@@ -292,7 +299,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const abroadFunds = useMemo(() => abroadOf(view), [view]);
   // the deal alone in the bundle, priced on the list's funds and the funds bought abroad as it changes; the runs wait for the hand to rest
   // (`useDeferredValue`)
-  const bundle = useMemo(() => withDeals(world.bundle, [deal], data.kinds), [world.bundle, deal, data.kinds]);
+  const bundle = useMemo(() => withDeals(world.bundle, [counted], data.kinds), [world.bundle, counted, data.kinds]);
   const settled = useDeferredValue(bundle);
   const got = useMemo(() => (fundId ? dealOnFunds({ bundle: settled, index: world.index, plan: world.plan, fundIds: [...new Set([fundId, ...funds.map((f) => f.rec.id), ...abroadFunds.map((f) => f.rec.id)])], providerId }) : new Map<string, DealOnPlan>()), [settled, world.index, world.plan, fundId, funds, abroadFunds, providerId]);
   const at = fundId ? (got.get(fundId) ?? null) : null;
@@ -302,12 +309,16 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.provider : undefined;
   // the deal is read on the page's plan as its run reads it: the page's run month, the page's current accounts and the house's line choice (F-128)
   const ctx = useMemo(() => planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? null), [world.bundle, deal, data.kinds, world.plan.currentAccounts]);
+  // what each fee is on the plan, every fee of the deal, its head saying so; and the same of the fees counted, which the run's reach is of
   const onPlan = useMemo(() => (run ? new Map(feesOnPlan(deal, run, ctx).map((x) => [x.fee, x])) : null), [deal, run, ctx]);
+  const countedOn = useMemo(() => (run ? (counted === deal ? [...(onPlan?.values() ?? [])] : feesOnPlan(counted, run, ctx)) : null), [counted, deal, run, ctx, onPlan]);
   // a fund bought abroad whose price waits on a case the deal lacks (E): each such fee, with the values the funds are bought as
   const abroad = useMemo(() => abroadGaps(abroadFunds, (f) => got.get(f.rec.id), (f) => dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId: f.rec.id })), [abroadFunds, got, world.bundle, world.index, world.plan]);
   const averages = houseId ? data.houses.find((h) => h.id === houseId)?.everyColumn : undefined;
-  // the deal read for the plan: the cases it reads, and the picks it cannot set, what only the person knows, saved with the deal
+  // the deal read for the plan: the picks it cannot set, what only the person knows, saved with the deal, of every fee; and the cases the
+  // plan reads, of the fees counted
   const read = useMemo(() => (run ? planRead(deal, run, ctx) : null), [deal, run, ctx]);
+  const countedRead = useMemo(() => (run ? (counted === deal ? read : planRead(counted, run, ctx)) : null), [counted, deal, run, ctx, read]);
   const picks = useMemo(() => (read ? pickLine(read) : null), [read]);
   headRef.current = (fee) => {
     const x = onPlan?.get(fee.id);
@@ -315,9 +326,12 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
     const average = avg && averages && house ? <HouseAverageLine customers averages={[avg]} house={house.short} /> : null;
     const gap = abroad.find((g) => g.missing.fee === fee.id);
     const foot = gap ? <AbroadCaseLine words={gap.words} onAdd={() => addAbroadCase(ed, fee, gap)} /> : null;
-    const slot = x ? feeHeadOf(x, at?.kind === "ok" ? at.figure(shownCost(at.byFee[fee.id] ?? 0), w.feeCostAbout(feeNameOf(fee.kind, fee.name))) : null, house?.short ?? null) : {};
-    // the cases the plan reads, a step of the account's size with the years the plan spends in it (B, F), any other step the plan reaches plainly, where the plan charges the fee
-    const marks = read && onPlan && x?.on === "charged" && hasCases(fee) ? planCases(read, fee.id, [...onPlan.values()], at?.kind === "ok" ? at.reach : null) : null;
+    const switchedOff = isFeeOff(off, deal.id, fee.id);
+    const cost: FeeCost = switchedOff ? "off" : at?.kind === "ok" ? at.figure(shownCost(at.byFee[fee.id] ?? 0), w.feeCostAbout(feeNameOf(fee.kind, fee.name))) : null;
+    const slot = x ? feeHeadOf(x, cost, house?.short ?? null) : {};
+    // the cases the plan reads, a step of the account's size with the years the plan spends in it (B, F), any other step the plan reaches
+    // plainly, where the plan charges the fee and it is counted
+    const marks = countedRead && countedOn && !switchedOff && x?.on === "charged" && hasCases(fee) ? planCases(countedRead, fee.id, countedOn, at?.kind === "ok" ? at.reach : null) : null;
     const caseMark = marks && marks.size ? (id: string) => (marks.has(id) ? w.planCase(marks.get(id)!.years) : undefined) : undefined;
     return { ...slot, ...(average || slot.under ? { under: <>{slot.under}{average}</> } : {}), ...(foot ? { foot } : {}), ...(caseMark ? { caseMark } : {}) };
   };
@@ -445,13 +459,25 @@ function bringUnderTop(root: HTMLElement | null, feeId: string) {
   body.scrollTop += block.getBoundingClientRect().top - top - 8;
 }
 
+/** What a fee the plan charges took on it: its figure, none yet (the run waits), or `off`, switched off, so it takes nothing. */
+type FeeCost = SiteValue | null | "off";
+
 /**
- * What a fee's head says on the plan (B): at its end what the plan charges for it ("בתוכנית −60 ₪", on a phone the sum alone, C), or the chip
- * saying the plan never charges it with why under the head, or, under the head, what it lacks for a price.
+ * What a fee's head says on the plan (B): at its end what the plan charges for it ("בתוכנית −60 ₪", on a phone the sum alone, C), held
+ * unseen in its place while the fee is switched off, which charges nothing (its switch says so); or the chip saying the plan never charges
+ * it with why under the head, or, under the head, what it lacks for a price.
  */
-function feeHeadOf(x: FeeOnPlan, cost: SiteValue | null, bank: string | null): FeeHeadSlot {
+function feeHeadOf(x: FeeOnPlan, cost: FeeCost, bank: string | null): FeeHeadSlot {
   if (x.on === "missing") return { under: <p>{w.missing[x.missing.why]!(feeNameOf(x.missing.kind, x.missing.name))}</p> };
   if (x.on === "off") return { end: <Tag>{w.offPlan}</Tag>, under: <p>{x.why === "own-bank" && bank ? w.ownBank(bank) : w.off[x.why]}</p> };
+  if (cost === "off")
+    return {
+      end: (
+        <span aria-hidden="true" className="invisible text-sm">
+          {w.onPlan}
+        </span>
+      ),
+    };
   return {
     end: (
       <span className="inline-flex items-baseline gap-1.5 text-sm text-muted-foreground">

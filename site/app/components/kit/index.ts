@@ -100,5 +100,6 @@ export { DropZone, useCarried, type DropHow, type SortOf } from "./drag-drop";
 export { Toolbox, type ToolGroup, type ToolHeld, type ToolKind, type ToolPart } from "./toolbox";
 export type { Landing } from "./landing";
 export { AskValues } from "./ask-values";
-export { RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet } from "./value-menus";
+export { RangeMenu, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet } from "./value-menus";
+export { OnOffSwitch, Switch } from "./switch";
 export { ReadForBand, type ReadPick } from "./read-for-band";

@@ -20,6 +20,7 @@ import { BeforeDeciding } from "../components/invest/before";
 import { CustomEntriesHost } from "../components/invest/custom-entries";
 import { DealAccountsHost } from "../components/invest/deal-account";
 import { dealStore } from "../lib/fee-deal/store";
+import { countedDeal, feesOff } from "../lib/fee-deal/off";
 import type { FeeDeal } from "../lib/fee-deal/model";
 import { isAccountDeal } from "../lib/deal-account/plan";
 import { withDeals } from "../lib/deal-account/bundle";
@@ -214,12 +215,13 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
   // the funds the person typed join the data here and nowhere else: this page alone compares them (D44)
   const typedBundle = useMemo(() => withCustomEntries(wb, invest.customFunds, customs), [wb, invest.customFunds, customs]);
   // the person's securities-account deals are accounts too (F-128): read with the fee page's data (the kinds, `useFeesData`), each with
-  // what its house's list fills that it has not had (`withLaterFills`); while the popup is open the page keeps the deals as they
-  // were, and takes them once it closes
+  // what its house's list fills that it has not had (`withLaterFills`), and each priced as it is counted, without the fees switched off
+  // (lib/fee-deal/off.ts); while the popup is open the page keeps the deals as they were, and takes them once it closes
   const { data: feesData, failed: feesFailed, want: wantFees, left: notMoved } = fees;
   const stored = dealStore.use();
   const savedDeals = useMemo(() => withLaterFillsAll(stored.value, feesData), [stored.value, feesData]);
-  const accountDeals = useMemo(() => savedDeals.filter(isAccountDeal), [savedDeals]);
+  const off = feesOff.use();
+  const accountDeals = useMemo(() => savedDeals.filter(isAccountDeal).map((d) => countedDeal(d, off)), [savedDeals, off]);
   const [dealOpen, setDealOpen] = useState(false);
   const heldDeals = useRef<FeeDeal[]>(accountDeals);
   if (!dealOpen) heldDeals.current = accountDeals;

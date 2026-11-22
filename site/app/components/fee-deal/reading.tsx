@@ -18,7 +18,7 @@ import { AmountLanes, Card, EmptyState, HelpMark, NumberField, PanelHead, PERIOD
 import { Num, Ruled } from "../provenance";
 import { leftByPanel, type LeftOut } from "../../lib/fee-deal/left-out";
 import { FeeOpen, useFeeLinks } from "./links";
-import { LeftOutList, LeftOutNotes } from "./left-out";
+import { LeftOutList, LeftOutNotes, type NoneRead } from "./left-out";
 import { CapRules, Fig, LawBlock, PriceWords, feeColour, feeName, formOf, refName, sumDisplay } from "./words";
 import { sumUnit } from "../../lib/fee-deal/values";
 import { assertNever } from "@finance-tool/schema";
@@ -1060,26 +1060,29 @@ function LawCard({ reading, saved }: { reading: Reading; saved: boolean }) {
  * beside what the law says (the timeline at the start, three fifths of the row; the law alone takes the row where nothing changes).
  * `left`: the fees the reading leaves out, each said as a note in the panel its fee stands on (`leftByPanel`, with the deal's `foreign`),
  * so none drops out unseen; where no panel stands, as a plain list. `saved`: the deal's product saves, so a share of what is held reads
- * "what has built up". `read`: whether any fee of the deal is read; where none is, only that list stands.
+ * "what has built up". `none`: why no fee of the deal is read (none priced, or every priced fee switched off); where none is, only
+ * that list stands, saying why.
  */
-export function ReadingCards({ reading, saved, fx, left, foreign = false, read = true, unitPrice = null, onUnitPrice = () => {} }: {
+export function ReadingCards({ reading, saved, fx, left, foreign = false, none = null, unitPrice = null, onUnitPrice = () => {} }: {
   reading: Reading;
   saved: boolean;
   fx: FxSnapshot | null;
   left?: LeftOut;
   foreign?: boolean;
-  read?: boolean;
+  /** Why the reading reads no fee, where it reads none; its panels then stand empty. */
+  none?: NoneRead | null;
   /** The unit's price typed beside a chart of a price per unit (`readingOf`'s), and what typing it does. */
   unitPrice?: number | null;
   onUnitPrice?: (n: number | null) => void;
 }) {
+  const read = none === null;
   const timeline = read && reading.timeline.length >= 2;
   const law = read && reading.law.some((r) => r.cap.state !== "absent");
   const panels = read ? reading.panels : { actions: [], held: [] };
   const placed = left ? leftByPanel(left, { foreign }, panels) : null;
   return (
     <TypedPlain className="nums-wide flex flex-col gap-4">
-      {left && placed && <LeftOutList left={placed.rest} empty={!read} />}
+      {left && placed && <LeftOutList left={placed.rest} empty={none} />}
       {read && reading.panels.actions.length > 0 && <ActionPanel reading={reading} fx={fx} saved={saved} unitPrice={unitPrice} onUnitPrice={onUnitPrice} left={placed?.byPanel ?? {}} />}
       {read && reading.panels.held.length > 0 && <HeldPanel reading={reading} saved={saved} left={placed?.byPanel.held} />}
       {(timeline || law) && (

@@ -20,7 +20,7 @@ import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
 import { Sheet } from "../Sheet";
-import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, PartFacts, StretchBar, StretchChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
+import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, OnOffSwitch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, PartFacts, StretchBar, StretchChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 import { linearScale, steppedScale } from "./slider-scale";
 
@@ -3756,6 +3756,7 @@ function PaletteDemo({ carried = false }: { carried?: boolean }) {
 function CaseDemos({ today }: { today: string }) {
   const [channels, setChannels] = useState(["branch", "web"]);
   const [mine, setMine] = useState(true);
+  const [counted, setCounted] = useState(true);
   const [what, setWhat] = useState("us");
   const [track, setTrack] = useState("1");
   return (
@@ -3894,6 +3895,32 @@ function CaseDemos({ today }: { today: string }) {
             <SlimFee dot="bg-fee-fx" name={sc.fx} label={sc.fx} onOpen={() => undefined} head={{ end: <Tag>{investWords.dealAccount.offPlan}</Tag>, under: <p>{investWords.dealAccount.off["shekel-fund"]}</p> }}>
               <span className="text-sm">0.5%</span>
             </SlimFee>
+          </div>
+        </State>
+        <State label={`the fee's switch in its corner (the deal's editor, on every host): alone on /deal, after the plan's figure in the indices page's popup, stacked under the switch where the card is narrow; an off fee dimmed, its plan figure held unseen; ${g.states.interactive}`} wide>
+          <div className="flex max-w-xl flex-col gap-3">
+            <FeeBlock dot="bg-fee-trade" name={sc.trade} head={{ counted: { on: counted, onChange: setCounted } }}>
+              <span aria-hidden className="h-10 rounded-md border border-dashed border-border" />
+            </FeeBlock>
+            <SlimFee dot="bg-fee-custody" name={sc.custody} label={sc.custody} onOpen={() => undefined} head={{ end: <span className="inline-flex items-baseline gap-1.5 text-sm text-muted-foreground">{investWords.dealAccount.onPlan}<strong className="text-base font-bold text-foreground tabular-nums">{fmt.nisWhole(-2384)}</strong></span>, counted: { on: true, onChange: () => undefined } }}>
+              <span className="text-sm">0.1%</span>
+            </SlimFee>
+            <SlimFee dot="bg-fee-fx" name={sc.fx} label={sc.fx} onOpen={() => undefined} head={{ end: <span aria-hidden="true" className="invisible text-sm">{investWords.dealAccount.onPlan}</span>, counted: { on: false, onChange: () => undefined } }}>
+              <span className="text-sm">0.5%</span>
+            </SlimFee>
+            <div className="max-w-72">
+              <SlimFee dot="bg-fee-custody" name={sc.custody} label={sc.custody} onOpen={() => undefined} head={{ end: <span className="inline-flex items-baseline gap-1.5 text-sm text-muted-foreground"><strong className="text-base font-bold text-foreground tabular-nums">{fmt.nisWhole(-2384)}</strong></span>, counted: { on: true, onChange: () => undefined } }}>
+                <span className="text-sm">0.1%</span>
+              </SlimFee>
+            </div>
+          </div>
+        </State>
+      </Demo>
+      <Demo name="OnOffSwitch" use={g.uses.OnOffSwitch}>
+        <State label={`on and off, the state in a word; as wide either way; ${g.states.interactive}`}>
+          <div className="flex flex-col">
+            <OnOffSwitch on={counted} words={caseWords.counted} onChange={setCounted} />
+            <OnOffSwitch on={false} words={caseWords.counted} onChange={() => undefined} />
           </div>
         </State>
       </Demo>

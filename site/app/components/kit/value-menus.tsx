@@ -12,6 +12,7 @@ import { Button } from "./button";
 import { cx } from "./cx";
 import { InlineSelect, TextField } from "./fields";
 import { MQ, useMedia } from "../../lib/hooks";
+import { Switch } from "./switch";
 import { Tag } from "./tag";
 
 /** A short line that heads a menu, in the muted ink: what is chosen there ("מה קונים במקרה הזה. אפשר לסמן כמה."). */
@@ -48,24 +49,6 @@ export function TickMenu({ title, options, ticked, onToggle, other }: { title: R
           {other.label ?? copy.menus.other}
         </Button>
       )}
-    </div>
-  );
-}
-
-/**
- * On or off, as a switch: the track and its knob, and the words beside it; the whole line is the target, the track's own area 44 px both
- * ways. The knob stands at the end when on, on the action colour's track.
- */
-export function Switch({ label, checked, onChange }: { label: ReactNode; checked: boolean; onChange: (on: boolean) => void }) {
-  const id = useId();
-  return (
-    <div className="flex min-h-target w-fit items-center gap-3">
-      <button type="button" role="switch" id={id} aria-checked={checked} onClick={() => onChange(!checked)} className={cx("tap-wide relative h-6 w-10 shrink-0 rounded-full transition-colors duration-(--duration-fast)", checked ? "bg-primary" : "bg-muted-foreground/40")}>
-        <span aria-hidden className={cx("absolute top-0.5 size-5 rounded-full transition-[inset-inline-start] duration-(--duration-fast)", checked ? "inset-s-[1.125rem] bg-primary-foreground" : "inset-s-0.5 bg-foreground")} />
-      </button>
-      <label htmlFor={id} className="cursor-pointer font-medium">
-        {label}
-      </label>
     </div>
   );
 }

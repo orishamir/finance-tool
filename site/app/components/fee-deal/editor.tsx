@@ -14,7 +14,9 @@
 // (`ToolDrop`, `PlaceHands`). A change that loses something (a fee taken away, a fee filled from a price list, a price, a case or a thing
 // taken away, a saved deal deleted) leaves one undo line where it happened (lib/fee-deal/undo.ts), which takes the focus as it appears and
 // lives through edits elsewhere until it is undone, a newer such change replaces it, another deal opens, the part it would put back into
-// changes, or ten seconds pass while neither the focus nor the pointer is on it.
+// changes, or ten seconds pass while neither the focus nor the pointer is on it. Each fee carries a switch in its card's corner: a fee
+// switched off (lib/fee-deal/off.ts) is left out of the reading and of what it says is left out, read on the deal as it is counted
+// (`counted`), while the columns draw it dimmed, still open to edit, and everything that writes the deal sees the whole deal.
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { dealCases } from "../../copy";
@@ -29,7 +31,8 @@ import type { PartId } from "../../lib/fee-deal/offers/parts";
 import { dropTakes, holdWords, letGoStep, samePlace, tapStep, waitAt, type HoldStep, type Place } from "../../lib/fee-deal/places";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { leftOut } from "../../lib/fee-deal/left-out";
-import { readingOf, type PickThing } from "../../lib/fee-deal/reading";
+import { pickLine, readingOf, type PickThing } from "../../lib/fee-deal/reading";
+import { countedDeal, feesOff, isFeeOff } from "../../lib/fee-deal/off";
 import { accountCapOf } from "../../lib/fee-deal/charts";
 import { kindById } from "../../lib/fee-deal/kinds";
 import { productOffered } from "../../lib/fee-deal/offers/offer";
@@ -53,6 +56,7 @@ import { SlotMenu, WhenText, whenText } from "./open-case";
 import { TemplatePicker } from "./picker";
 import { ToolboxCard, ToolboxColumn, applyTool, landingOf, partLabel, type ToolHands } from "./toolbox";
 import { useLetGo } from "./use-let-go";
+import type { NoneRead } from "./left-out";
 import type { FeeSlot, LiftHands, ToolDrop } from "./fee-block";
 import type { Landed, PlaceHands } from "./open-case";
 import { useUnitPrice } from "./use-unit-price";
@@ -108,6 +112,10 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
   const sheeted = !panelColumn;
   // the deal is read once for every view; choosing another fee builds only its panel again
   const read = useMemo(() => readDealFor(deal, data.kinds, today, (id) => houseName(id, data)), [deal, data, today]);
+  // the deal as it is counted, without the fees switched off, read for the reading; the same read where no fee is off
+  const off = feesOff.use();
+  const counted = useMemo(() => countedDeal(deal, off), [deal, off]);
+  const countedRead = useMemo(() => (counted === deal ? read : readDealFor(counted, data.kinds, today, (id) => houseName(id, data))), [counted, deal, read, data, today]);
   const oc = useOpenCase({ deal, read, chosen, setChosen: doc.setChosen, phone: sheeted, panelColumn });
   const { caseId } = oc;
   const chosenFee = oc.fee;
@@ -229,7 +237,8 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
   // the reading and the panel for a deal with a fee, with the fees the reading leaves out: one with none shows neither
   // BANK-35's cap on a current account, which the reading flags a year of holding above (F-102)
   const cap = useMemo(() => accountCapOf(data.rules), [data.rules]);
-  const views = useMemo(() => (read.deal.fees.length > 0 ? { left: leftOut(read), reading: withReading ? readingOf(read, data.fx, unitPrice, cap) : null } : null), [read, data.fx, unitPrice, withReading, cap]);
+  // the reading is of the deal as it is counted; its picks are of the whole deal, so a fee switched off leaves the picks as they stand
+  const views = useMemo(() => (read.deal.fees.length > 0 ? { left: leftOut(countedRead), reading: withReading ? { ...readingOf(countedRead, data.fx, unitPrice, cap), picks: pickLine(read) } : null } : null), [read, countedRead, data.fx, unitPrice, withReading, cap]);
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
   const pending = oc.pending.here;
   const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending) : null), [read, chosen, caseId, pending]);
@@ -390,7 +399,10 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
   const priceLists = useMemo(() => (chosenFee && chosenFee.kind !== "own" ? feePriceLists(deal, chosenFee.kind, data) : []), [chosenFee, deal, data]);
   const { shown, words } = doc.undo;
   const lines = doc.undo.lines;
-  const readSome = read.fees.length > 0;
+  // why the reading reads no fee, where it reads none: the deal has no fee with a price, or every fee that has one is switched off
+  const none: NoneRead | null = countedRead.fees.length > 0 ? null : read.fees.length > 0 ? "off" : "unpriced";
+  // each fee's head: the host's (`feeHead`), and the fee's switch in its corner
+  const headOf = (fee: Fee): FeeSlot => ({ ...feeHead?.(fee), counted: { on: !isFeeOff(off, deal.id, fee.id), onChange: (on) => feesOff.set(deal, fee.id, !on) } });
   // the toolbox for the open case: in a column of its own where the window has the room, sticking under the header as the fees scroll by;
   // anywhere narrower a short sheet pinned to the foot of the screen
   const toolboxView =
@@ -487,7 +499,7 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
       ask={oc.ask.asking && oc.ask.asking.fee === chosen ? { kind: oc.ask.asking.kind, ...(oc.ask.asking.split ? { split: oc.ask.asking.split } : {}) } : null}
       adding={adding}
       onDuplicate={onDuplicate}
-      headOf={feeHead}
+      headOf={headOf}
       untitled={untitled}
     />
   );
@@ -497,7 +509,9 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
     read,
     kind,
     saves,
-    readSome,
+    none,
+    /** The deal read as it is counted, without the fees switched off. */
+    countedRead,
     views,
     unitPrice,
     onUnitPrice,

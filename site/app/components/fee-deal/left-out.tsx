@@ -57,13 +57,16 @@ export function LeftOutNotes({ left }: { left: LeftOut | undefined }) {
   );
 }
 
-/** Where no panel stands: that no fee is read yet (`empty`), and the fees left out as a plain list; nothing where neither is so. */
-export function LeftOutList({ left, empty }: { left: LeftOut; empty?: boolean }) {
+/** Why the reading reads no fee: none has its price yet (`unpriced`), or every fee that has one is switched off (`off`). */
+export type NoneRead = "unpriced" | "off";
+
+/** Where no panel stands: that no fee is read, and why (`empty`), and the fees left out as a plain list; nothing where neither is so. */
+export function LeftOutList({ left, empty }: { left: LeftOut; empty?: NoneRead | null }) {
   if (!leavesOut(left) && !empty) return null;
   const lines = left.unpriced.length + left.unmatched.length + left.banned.length > 0;
   return (
     <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-      {empty && !lines && <p>{copy.leftOut.noneRead}</p>}
+      {empty && !lines && <p>{empty === "off" ? copy.leftOut.allOff : copy.leftOut.noneRead}</p>}
       <ul className="flex flex-col gap-1">
         <LeftOutNotes left={left} />
       </ul>

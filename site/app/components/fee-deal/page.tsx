@@ -8,7 +8,8 @@
 // fees do not all open opens the rest and names the ones left out. The strip's "לבחור תעריפון" opens the template picker, where a price list
 // opens a new deal beside this one; its track's button opens the tracks, and the track picked is set on the deal on screen (`pickTrack`). A
 // deal with no kind shows its kinds to choose from alone, a deal with a kind the line over its fees, in the card's one place, so the first
-// fee moves nothing; the toolbox comes with a fee open, and the reading with the first fee.
+// fee moves nothing; the toolbox comes with a fee open, and the reading with the first fee. The reading leaves out each fee switched off in
+// its card's corner (lib/fee-deal/off.ts), and says so where every fee with a price is off.
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { feeDeal as copy } from "../../copy";
@@ -228,11 +229,11 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
             reading={views.reading}
             saved={ed.saves}
             fx={data.fx}
-            read={ed.readSome}
+            none={ed.none}
             unitPrice={ed.unitPrice}
             onUnitPrice={ed.onUnitPrice}
             left={views.left}
-            foreign={ed.read.engine.foreign}
+            foreign={ed.countedRead.engine.foreign}
           />
         </Section>
       )}
