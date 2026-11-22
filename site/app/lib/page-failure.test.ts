@@ -5,15 +5,20 @@ import { isOwnError, isOwnRejection } from "./page-failure";
 const own = "https://example.test/finance-tool/";
 
 describe("a failure is the site's only where its own scripts are in it", () => {
-  it("an exception: thrown in a script under the site's origin and base path", () => {
-    expect(isOwnError("https://example.test/finance-tool/assets/index-abc.js", own)).toBe(true);
-    expect(isOwnError("https://example.test/finance-tool/guide", own)).toBe(true);
-    // a browser extension, another site on the same host, another site, the browser's own (no address)
-    expect(isOwnError("chrome-extension://abcdef/content.js", own)).toBe(false);
-    expect(isOwnError("https://example.test/other/app.js", own)).toBe(false);
-    expect(isOwnError("https://cdn.example.org/x.js", own)).toBe(false);
-    expect(isOwnError("", own)).toBe(false);
-    expect(isOwnError(undefined, own)).toBe(false);
+  it("an exception: a thrown value, in a script under the site's origin and base path", () => {
+    const thrown = (filename: unknown) => ({ filename, error: new Error("x") });
+    expect(isOwnError(thrown("https://example.test/finance-tool/assets/index-abc.js"), own)).toBe(true);
+    expect(isOwnError(thrown("https://example.test/finance-tool/guide"), own)).toBe(true);
+    // a browser extension, another site on the same host, another site, no address
+    expect(isOwnError(thrown("chrome-extension://abcdef/content.js"), own)).toBe(false);
+    expect(isOwnError(thrown("https://example.test/other/app.js"), own)).toBe(false);
+    expect(isOwnError(thrown("https://cdn.example.org/x.js"), own)).toBe(false);
+    expect(isOwnError(thrown(""), own)).toBe(false);
+    expect(isOwnError(thrown(undefined), own)).toBe(false);
+  });
+  it("the browser's own report under the page's address, with no thrown value (Chrome's ResizeObserver loop), is not the site's", () => {
+    expect(isOwnError({ filename: "https://example.test/finance-tool/deal", error: null }, own)).toBe(false);
+    expect(isOwnError({ filename: "https://example.test/finance-tool/deal", error: undefined }, own)).toBe(false);
   });
   it("a rejection: its stack runs through a script of the site, in Chrome's form or Firefox's", () => {
     const chrome = Object.assign(new Error("x"), { stack: "Error: x\n    at load (https://example.test/finance-tool/assets/page-1.js:1:200)" });

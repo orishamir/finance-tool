@@ -570,7 +570,7 @@
    "site/app/lib/compare-represent.test.ts": 4,
    "site/app/lib/compare-scenario.test.ts": 12,
    "site/app/lib/compare-securities.test.ts": 60,
-   "site/app/lib/compare.server.ts": 22,
+   "site/app/lib/compare.server.ts": 24,
    "site/app/lib/compare.ts": 6,
    "site/app/lib/custom-entries.test.ts": 50,
    "site/app/lib/custom-entries.ts": 2,

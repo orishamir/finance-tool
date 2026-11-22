@@ -73,11 +73,11 @@ export function lists(view: InvestView, b: IndicesBundle, p: WorkbenchInputs, pi
 
 const planAt = (a: number, m: number, y: number, r: number): WorkbenchInputs => ({ ...plan, amountNow: a, monthly: m, years: y, grossReturn: r, values: { ...plan.values, amount: entered(a, "nis", t), monthly: entered(m, "nis_per_month", t), years: entered(y, "years", t), returnV: entered(r * 100, "pct_per_year", t) } });
 /**
- * The sliders' ends and between. The movement script leaves each slider a quarter of the way along: on P-05's scales, 15,000 ₪ and 750 ₪ a
- * month (three quarters through the money sliders' first thirds), 11 years and 3%. A hedged fund picked at 125,000 ₪, 2,500 ₪ a month, 11
- * years and 3% puts the bar's total 1.46 ₪ off its one written part, which the rounding guard must take rather than throw on.
+ * The sliders' ends and between. The movement script leaves each slider a quarter of the way along (125,000 ₪, 2,500 ₪ a month, 11 years,
+ * 3%), and a hedged fund picked there made the bar's total 1.46 ₪ off its one written part: the rounding guard threw and the page showed its
+ * error screen.
  */
-const SLIDER_PLANS = [planAt(15000, 750, 11, 0.03), planAt(125000, 2500, 11, 0.03), planAt(500000, 10000, 40, 0.12), planAt(0, 100, 1, 0), planAt(1000, 0, 1, 0.07), planAt(250000, 5000, 21, 0.06)];
+const SLIDER_PLANS = [planAt(125000, 2500, 11, 0.03), planAt(500000, 10000, 40, 0.12), planAt(0, 100, 1, 0), planAt(1000, 0, 1, 0.07), planAt(250000, 5000, 21, 0.06)];
 
 /**
  * Each fund of `index` picked beside the headline's house, at each plan of `SLIDER_PLANS`, whose receipt and fees panel fail to render: the

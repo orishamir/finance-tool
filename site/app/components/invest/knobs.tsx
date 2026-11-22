@@ -6,8 +6,7 @@ import { useMemo } from "react";
 import { changedByShare, sweep } from "@finance-tool/engine";
 import type { P05Input } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
-import type { CompareBundle } from "../../lib/compare";
-import { enteredPlan, type EnteredPlan } from "../../lib/entered-plan";
+import type { EnteredPlan } from "../../lib/entered-plan";
 import { fmt } from "../../lib/format";
 import { useInputs } from "../../lib/inputs";
 import { useSettled } from "../../lib/settled";
@@ -15,10 +14,9 @@ import { pairCosts, pairLeft, type InvestView, type PlanInput } from "../../lib/
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, shortRow } from "../provenance";
-import { ChangeChart, KnobStrip, NumberField, PanelHead, percentCheck, rangeScale, type Knob } from "../kit";
+import { ChangeChart, KnobStrip, NumberField, PanelHead, percentCheck, type Knob } from "../kit";
 
-/** A slider's range as P-05 writes it: linear in `step`, or in `segments` for money (`rangeScale`). */
-type Range = { min: number; max: number; step?: number; segments?: { to: number; step: number }[] };
+type Range = { min: number; max: number; step: number };
 type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", Range>;
 type Id = "amount" | "monthly" | "years" | "ret";
 type Pair = { house: string; fund: string } | null;
@@ -58,31 +56,24 @@ function useSetKnob() {
   return (id: Id, n: number | null) => setEntered(KEY[id], n);
 }
 
-/** The plan from the values entered as they are now: the knobs read it themselves, so a key or a slider's move shows in its own field in the
- * render that answers it, while the page's plan work follows in a deferred render (routes/invest.tsx). */
-function useEnteredNow(compare: CompareBundle): EnteredPlan {
-  const { state } = useInputs();
-  return useMemo(() => enteredPlan(compare, state), [compare, state]);
-}
-
 const valueOf = (entered: EnteredPlan, id: Id) => {
   const v = entered.plan.values[id === "amount" ? "amount" : id === "monthly" ? "monthly" : id === "years" ? "years" : "returnV"];
   return { value: v.value as number, entered: v.state === "entered" };
 };
 
-export function PlanKnobs({ compare, ranges, pct, stacked }: { compare: CompareBundle; ranges: KnobRanges; pct: { min: number; max: number }; /** One under the other (the index page's side card). */ stacked?: boolean }) {
-  const entered = useEnteredNow(compare);
+export function PlanKnobs({ entered, ranges, pct, stacked }: { entered: EnteredPlan; ranges: KnobRanges; pct: { min: number; max: number }; /** One under the other (the index page's side card). */ stacked?: boolean }) {
   const setKnob = useSetKnob();
+  const span = (r: Range) => ({ min: r.min, max: r.max, step: r.step });
   const field = (id: Id) => {
     const v = valueOf(entered, id);
     return { id, label: labelOf[id], value: v.value, start: entered.starts[id === "amount" ? "amount" : id === "monthly" ? "monthly" : id === "years" ? "years" : "returnV"], isEntered: v.entered, onCommit: (n: number) => setKnob(id, n), onReset: () => setKnob(id, null) };
   };
   const negative = (n: number) => (n < 0 ? valuesCopy.errors.negative : null);
   const knobs: Knob[] = [
-    { ...field("amount"), unit: "nis", scale: rangeScale(ranges.amount_now), validate: negative, inputId: PLAN_AMOUNT_FIELD },
-    { ...field("monthly"), unit: "nis_per_month", scale: rangeScale(ranges.monthly_deposit), validate: negative },
-    { ...field("years"), unit: "years", unitInLabel: true, scale: rangeScale(ranges.horizon_years), inputMode: "numeric", validate: (n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null) },
-    { ...field("ret"), unit: "pct_per_year", scale: rangeScale(ranges["A-01"]), validate: percentCheck(pct) },
+    { ...field("amount"), unit: "nis", ...span(ranges.amount_now), validate: negative, inputId: PLAN_AMOUNT_FIELD },
+    { ...field("monthly"), unit: "nis_per_month", ...span(ranges.monthly_deposit), validate: negative },
+    { ...field("years"), unit: "years", ...span(ranges.horizon_years), inputMode: "numeric", validate: (n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null) },
+    { ...field("ret"), unit: "pct_per_year", ...span(ranges["A-01"]), validate: percentCheck(pct) },
   ];
   return <KnobStrip knobs={knobs} stacked={stacked} />;
 }
@@ -212,14 +203,12 @@ const LINE = [
 const CHOICES = [-20, -10, 10, 20, 50];
 
 /** What the button beside the sliders opens: inflation, written to the same entered values. */
-export function OtherAssumptions({ compare, pct }: { compare: CompareBundle; pct: { min: number; max: number } }) {
+export function OtherAssumptions({ inflation, inflationStart, pct }: { inflation: SiteValue; /** The inflation field's start value (P-05): its reset says "חזרה ל־2.5%". */ inflationStart?: number; pct: { min: number; max: number } }) {
   const { state, ready, setEntered } = useInputs();
-  const entered = useEnteredNow(compare);
-  const inflation = entered.plan.values.inflation;
   return (
     <div className="flex flex-col gap-4 lg:gap-[18px]">
       {/* the hint is the field's own, under its box */}
-      <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={inflation.value as number} start={entered.starts.inflation} isEntered={state.entered["A-02"] !== undefined} validate={percentCheck(pct)} onCommit={(n) => setEntered("A-02", n)} onReset={() => setEntered("A-02", null)} hint={valuesCopy.hints.inflation} disabled={!ready} />
+      <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={inflation.value as number} start={inflationStart} isEntered={state.entered["A-02"] !== undefined} validate={percentCheck(pct)} onCommit={(n) => setEntered("A-02", n)} onReset={() => setEntered("A-02", null)} hint={valuesCopy.hints.inflation} disabled={!ready} />
     </div>
   );
 }
