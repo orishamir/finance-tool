@@ -908,8 +908,7 @@ export function fillDeal(deal: FeeDeal, id: string, data: Pick<FeesData, "houses
     if (at >= 0) fees[at] = { ...asFee(f, fees[at]!.id), ...from };
     else fees = [...fees, { ...asFee(f, newFeeId()), ...from }];
   }
-  const later = id.startsWith(HOUSE) ? laterFillsOf(t.fees) : [];
-  return { ...deal, fees, template: { id, name: t.name, ...(later.length ? { laterFills: later } : {}) }, ...(t.provider ? { provider: t.provider } : {}) };
+  return { ...deal, fees, template: filledFrom(id, t), ...(t.provider ? { provider: t.provider } : {}) };
 }
 
 /**
@@ -920,6 +919,15 @@ const LATER_FILLS: readonly FeeKindId[] = ["current_account"];
 
 /** The kinds of `LATER_FILLS` a house's list fills, as a deal filled from it keeps them settled. */
 const laterFillsOf = (fees: readonly { kind: FeeKindId }[]): FeeKindId[] => LATER_FILLS.filter((k) => fees.some((f) => f.kind === k));
+
+/**
+ * The template a deal whose fees template `id` filled names: its id and name, and from a house's whole list the kinds of `LATER_FILLS` it
+ * filled, settled for the deal. Every fill of a deal's fees from a template names it through here, so none leaves them unsettled.
+ */
+function filledFrom(id: string, t: { name: string; fees: readonly { kind: FeeKindId }[] }): NonNullable<FeeDeal["template"]> {
+  const later = id.startsWith(HOUSE) ? laterFillsOf(t.fees) : [];
+  return { id, name: t.name, ...(later.length ? { laterFills: later } : {}) };
+}
 
 /**
  * A deal filled from a house's whole list, with each fee of `LATER_FILLS` the house's list fills now that the deal has not had settled:
@@ -1004,7 +1012,7 @@ export function pickTrack(deal: FeeDeal, id: string, data: Pick<FeesData, "house
   // a fee of a kind the deal already has keeps its id, so the fee chosen on screen stays chosen; a fee just added, still asking for its
   // price, stays where the track has none of its kind
   const fees = [...t.fees.map((f) => asFee(f, deal.fees.find((x) => x.kind === f.kind)?.id ?? newFeeId())), ...deal.fees.filter((f) => !t.fees.some((x) => x.kind === f.kind) && !pricePriced(pricedOf(f).stages[0]!.price))];
-  return { ...base, fees, template: { id, name: t.name }, ...(t.provider ? { provider: t.provider } : {}) };
+  return { ...base, fees, template: filledFrom(id, t), ...(t.provider ? { provider: t.provider } : {}) };
 }
 
 /** The houses whose price list fills a fee of `kind` for a securities account's deal: the price lists a single fee can be filled from. None for another kind of deal. */

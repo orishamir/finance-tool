@@ -753,7 +753,8 @@ function oneAction(r: DealRead, p: DealPeriod, action: DealAction, side: DealSid
  */
 export interface AccountCap {
   value: number;
-  from: CalendarMonth;
+  /** The month it takes effect; null where the figure gives none, so it holds throughout, as the run reads it from its first month. */
+  from: CalendarMonth | null;
   /** The rule's strength, which a flagged figure cites it with. */
   strength: RuleRecord["strength"];
 }
@@ -766,18 +767,24 @@ export function accountCapOf(rules: readonly RuleRecord[]): AccountCap | null {
   const rule = rules.find((x) => x.id === ACCOUNT_CAP_RULES[0]);
   if (!rule) return null;
   const f = ruleFigure(rule, "account_fee_up_to_2_actions", "");
-  const from = typeof f?.effective_from === "string" ? /^(\d{4})-(\d{2})/.exec(f.effective_from) : null;
-  return typeof f?.value === "number" && from ? { value: f.value, from: { y: Number(from[1]), m: Number(from[2]) }, strength: rule.strength } : null;
+  if (typeof f?.value !== "number") return null;
+  const from = f.effective_from ? /^(\d{4})-(\d{2})/.exec(f.effective_from) : null;
+  return { value: f.value, from: from ? { y: Number(from[1]), m: Number(from[2]) } : null, strength: rule.strength };
 }
 
 const monthNo = (c: CalendarMonth): number => c.y * 12 + c.m;
 
+/** Whether period `p` holds the cap's month or runs past it (it ends after that month, or runs on), or the cap holds throughout. */
+const reachesCap = (p: Pick<DealPeriod, "to">, cap: AccountCap): boolean => cap.from === null || p.to === null || monthNo(p.to) > monthNo(cap.from);
+
+/** Whether a chart's fee is a bank's current account (F-102). */
+const isAccount = (fee: ChartFee): boolean => fee.ref.kind === "current_account";
+
 /**
- * Whether a current account's year of holding in period `p` carries BANK-35's flag (F-102): the period reaches the cap's month (it ends
- * after it, or runs on), and the fee is charged above the cap a month, its year's cost over twelve.
+ * The cap that flags a year of holding in period `p` (F-102), null where none does: the period reaches the cap's month, and the deal's
+ * current accounts together, `accountYear` a year, are charged above the cap a month, as the run sums them in a month.
  */
-const capFlagged = (fee: ChartFee, p: DealPeriod, yearCost: number, cap: AccountCap | null): boolean =>
-  cap !== null && fee.ref.kind === "current_account" && (p.to === null || monthNo(p.to) > monthNo(cap.from)) && yearCost / 12 > cap.value;
+const capFlag = (p: DealPeriod, accountYear: number, cap: AccountCap | null): AccountCap | null => (cap !== null && reachesCap(p, cap) && accountYear / 12 > cap.value ? cap : null);
 
 /** A year of holding's cost (F-112), with BANK-35's flag where `flagged` gives its cap: the cost may be too high from the cap's start (F-102). */
 const yearCostOf = (value: number, formula: string, inputs: Record<string, SiteValue>, today: string, flagged: AccountCap | null): SiteValue =>
@@ -867,15 +874,15 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
     const amountIn = { "deal:amount": amount };
     const layers = heldLayers(r.engine, p, v, rates);
     const costOf = (fee: ChartFee) => layers.filter((l) => fee.idx.includes(l.fee)).reduce((a, l) => a + l.cost, 0);
-    const flagged = ordered.some((fee) => capFlagged(fee, p, costOf(fee), cap));
-    const total = yearCostOf(layers.reduce((a, l) => a + l.cost, 0), "F-112", { ...inputs, ...amountIn }, r.today, flagged ? cap : null);
+    const flag = capFlag(p, ordered.filter(isAccount).reduce((a, fee) => a + costOf(fee), 0), cap);
+    const total = yearCostOf(layers.reduce((a, l) => a + l.cost, 0), "F-112", { ...inputs, ...amountIn }, r.today, flag);
     const groups = (["share", "fixed"] as const).map((layer) => {
       const rows: HeldRow[] = ordered.flatMap((fee) => {
         const mine = layers.filter((l) => fee.idx.includes(l.fee));
         if (!mine.length || mine[0]!.layer !== layer) return [];
         const lane = lanes.find((l) => l.fee === fee)!;
         const part = lane.parts ? partAt(lane.parts, v) : undefined;
-        return [{ fee, cost: yearCostOf(costOf(fee), "F-112", { ...inputs, ...amountIn }, r.today, capFlagged(fee, p, costOf(fee), cap) ? cap : null), ...(part ? { part } : {}) }];
+        return [{ fee, cost: yearCostOf(costOf(fee), "F-112", { ...inputs, ...amountIn }, r.today, isAccount(fee) ? flag : null), ...(part ? { part } : {}) }];
       });
       const sum = layers.filter((l) => l.layer === layer).reduce((a, l) => a + l.cost, 0);
       return { layer, total: reading(sum, "nis", "F-123", { ...inputs, ...amountIn }, r.today), rows };
@@ -924,9 +931,9 @@ function oneHeld(r: DealRead, p: DealPeriod, fees: ChartFee[], lanes: readonly L
   }
   if (sums.length && !shares.length) {
     const c = holdingCost(r.engine, p, 1);
-    const flagged = sums.some((l) => capFlagged(l.fee, p, c.parts.filter((x) => l.fee.idx.includes(x.fee)).reduce((s, x) => s + x.cost, 0), cap));
+    const flag = capFlag(p, sums.filter((l) => isAccount(l.fee)).reduce((a, l) => a + c.parts.filter((x) => l.fee.idx.includes(x.fee)).reduce((s, x) => s + x.cost, 0), 0), cap);
     // a flagged year is the computed one, which carries the flag, not the price's own yearly figure
-    const one = sums.length === 1 && sums[0]!.price?.yearly && !flagged ? sums[0]!.price.yearly : yearCostOf(c.total, "F-111", inputs, r.today, flagged ? cap : null);
+    const one = sums.length === 1 && sums[0]!.price?.yearly && !flag ? sums[0]!.price.yearly : yearCostOf(c.total, "F-111", inputs, r.today, flag);
     return { periods: [at], fees, one: { value: one, of: "sum" }, prices };
   }
   return { periods: [at], fees, one: null, prices };
@@ -991,8 +998,8 @@ export function panelsOf(r: DealRead, fx: FxSnapshot | null, unit: { price: numb
   const actions = withUnpriced(r, [...tabs.entries()].map(([key, t]) => ({ key, action: t.action, side: t.side, views: merged(t.items, periodsOf) })));
   const held = merged(
     r.reading.periods.map((p, k) => ({
-      // a period that reaches BANK-35's cap is not merged with one that does not, whose figures carry no flag
-      sig: `${signature(r, p, onHolding(r, p))}${cap && (p.to === null || monthNo(p.to) > monthNo(cap.from)) ? ":cap" : ""}`,
+      // a period with a current account that reaches BANK-35's cap is not merged with one that does not, whose figures carry no flag
+      sig: `${signature(r, p, onHolding(r, p))}${cap && reachesCap(p, cap) && onHolding(r, p).some((i) => r.fees[i]?.kind === "current_account") ? ":cap" : ""}`,
       at: monthKey(p.from),
       make: () => heldView(r, p, k > 0 ? r.reading.periods[k - 1]! : null, fx, cards.find((c) => c.from === monthKey(p.from)), cap),
     })),

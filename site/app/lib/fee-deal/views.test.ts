@@ -9,7 +9,7 @@ import { panel } from "./panel";
 import { leftOut } from "./left-out";
 import { capLine, kindById, standingOf } from "./kinds";
 import { dealOfAddress, packDeal, unpackDeal } from "./link";
-import { NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num, type SlimFee, type Stage } from "./model";
+import { monthKey, NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num, type SlimFee, type Stage } from "./model";
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
@@ -819,13 +819,43 @@ describe("a bank's current account, filled from its whole list (F-102, D64)", ()
     expect(flags(deal(cap.value, null, 0))).toEqual([{ row: [], total: [] }]);
     expect(flags(deal(above, null, 0, false))).toEqual([{ one: ["BANK-35"] }]);
     // above the cap only in a period that ends before the cap's month: no flag; above it from a period that holds the cap's month: flagged
-    const capMonth = `${cap.from.y}-${String(cap.from.m).padStart(2, "0")}` as MonthKey;
-    const afterCap = `${cap.from.y}-${String(cap.from.m + 1).padStart(2, "0")}` as MonthKey;
+    const from = must(cap.from, "the cap's month");
+    const capMonth = monthKey(from);
+    const afterCap = monthKey({ y: from.y + Math.floor(from.m / 12), m: (from.m % 12) + 1 });
     expect(flags(deal(above, capMonth, below))).toEqual([{ row: [], total: [] }, { row: [], total: [] }]);
     expect(flags(deal(above, afterCap, below))).toEqual([{ row: ["BANK-35"], total: ["BANK-35"] }, { row: [], total: [] }]);
     expect(flags(deal(below, capMonth, above))).toEqual([{ row: [], total: [] }, { row: ["BANK-35"], total: ["BANK-35"] }]);
     // without the cap given, nothing is flagged
     expect(readingOf(read(deal(above, null, 0)), data.fx).panels.held.every((v) => !("chart" in v) || !v.chart.readAt(100_000).total.flags?.length)).toBe(true);
+    // two current accounts, each under the cap, are summed as the run sums a month's: both rows and the total are flagged
+    const half = cap.value / 2 + 0.5;
+    const two: FeeDeal = { ...deal(half, null, 0), fees: [...deal(half, null, 0).fees, { id: "fee-account-2", kind: "current_account", stages: [{ price: { form: "sum", amount: typed(half), every: 1 } }] }] };
+    const twoAt = readingOf(read(two), data.fx, null, cap).panels.held.flatMap((v) => ("chart" in v ? [v.chart.readAt(100_000)] : []));
+    expect(twoAt.flatMap((at) => at.groups.flatMap((g) => g.rows).filter((x) => x.fee.ref.kind === "current_account").map((x) => x.cost.flags ?? []))).toEqual([["BANK-35"], ["BANK-35"]]);
+    expect(twoAt.map((at) => at.total.flags ?? [])).toEqual([["BANK-35"]]);
+  });
+
+  it("a cap with no month it takes effect holds throughout, as the run reads it; a deal with no current account keeps its holding views whole", () => {
+    const rule = must(data.rules.find((r) => r.id === "BANK-35"), "BANK-35");
+    const undated = structuredClone(rule);
+    const figure = undated.figures?.account_fee_up_to_2_actions;
+    if (!figure || Array.isArray(figure) || !("effective_from" in figure)) throw new Error("the cap's figure");
+    figure.effective_from = null;
+    const cap = must(accountCapOf(data.rules), "the cap");
+    expect(accountCapOf([undated])).toEqual({ ...cap, from: null });
+    // a trade price that changes at the cap's month cuts two periods whose holding is the same: one holding view where no current account is held
+    const from = must(cap.from, "the cap's month");
+    const custody: FeeDeal = {
+      id: "deal-custody",
+      name: "",
+      kind: "brokerage-account",
+      fees: [
+        { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) }, until: monthKey(from) }, { price: { form: "action", rate: typed(0.2) } }] },
+        { id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12 } }] },
+      ],
+    };
+    expect(readingOf(read(custody), data.fx, null, cap).panels.held).toHaveLength(1);
+    expect(readingOf(read(custody), data.fx, null, cap).panels.held).toHaveLength(readingOf(read(custody), data.fx).panels.held.length);
   });
 
   it("a deal filled while its house's record priced no current account gets the card once the record prices one", () => {
@@ -840,6 +870,13 @@ describe("a bank's current account, filled from its whole list (F-102, D64)", ()
     expect(later.template).toEqual({ ...early.template, laterFills: ["current_account"] });
     // and once taken away it stays away
     const taken = { ...later, fees: later.fees.filter((f) => f.kind !== "current_account") };
+    expect(withLaterFills(taken, data)).toBe(taken);
+  });
+
+  it("a deal whose fees a bank's list fills by the template picker settles the card as a fill does, so taken away it stays away", () => {
+    const picked = must(pickTrack({ ...newDeal("brokerage-account"), id: "deal-picked" }, "house:leumi", data, TODAY), "Leumi's list picked");
+    expect(picked.template).toEqual(leumi().template);
+    const taken = { ...picked, fees: picked.fees.filter((f) => f.kind !== "current_account") };
     expect(withLaterFills(taken, data)).toBe(taken);
   });
 
