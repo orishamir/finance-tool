@@ -65,9 +65,8 @@ interface pieces follow [design.md](design.md).
   - `(2.55).toFixed(1)` is "2.5", and `Math.round(-2.5)` is -2.
   - `toFixed` is fine for SVG coordinates.
   - A value that rounds to zero never prints with a minus sign.
-  - A figure that rests on a return the reader assumed is shown to
-    hundreds of shekels ([wording.md](wording.md)). The value object says
-    which figures those are, so `fmt` rounds them, not each component.
+  - A calculated figure shows whole shekels ([wording.md](wording.md)),
+    so a breakdown's lines add up to its total.
 - **Never `formatRange` or compact notation.** They print a dash and a
   Latin "K", against [wording.md](wording.md).
 - **"Today" is the date on the person's own clock (`lib/today.ts`).**

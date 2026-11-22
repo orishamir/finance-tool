@@ -114,10 +114,10 @@ professional. Not a bank, not a blog, not a TV financial adviser.
   (`10 ₪`, not `10.00 ₪`). Agorot depend on the kind of value: a figure set
   by law or a price from a price list keeps the agorot it prints
   (`5,645.29 ₪`, `9.90 ₪`); what the site calculates shows whole shekels
-  (`952 ₪`), in tables too, except a cost under 10 ₪ (`3.20 ₪`). A figure
-  that rests on a return the reader assumed shows hundreds of shekels
-  (`48,300 ₪`): it isn't known to the shekel, and a round figure is
-  remembered better. Percent attached: `0.8%`.
+  (`952 ₪`), in tables too, except a cost under 10 ₪ (`3.20 ₪`), so the
+  lines of a breakdown add up to its total. A figure that rests on a
+  return the reader assumed says so in words ("בהנחה שהתשואה 5% בשנה"),
+  not by rounding. Percent attached: `0.8%`.
 - A figure inside an attribute or a title (`<title>`, `aria-label`,
   `title`, an `<option>`, an SVG `<title>`) can't hold `<bdi>`: wrap it in
   the Unicode isolates FSI and PDI (U+2068, U+2069).

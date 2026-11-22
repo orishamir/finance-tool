@@ -21,6 +21,8 @@ import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
 import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
+import type { Knob } from "./knobs";
+import { linearScale, steppedScale, type SliderScale } from "./slider-scale";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
 const custodyName = (guideBlocks.fees.custody as { name: string }).name;
@@ -171,6 +173,60 @@ function StackDemo() {
       />
       <SampleLanes at={at} onAt={setAt} />
     </ShareStack>
+  );
+}
+
+/**
+ * The index page's four plan sliders, as the page shows them (`ends`) and in the proposed `quiet` variant, from the same start values. The
+ * ranges are the index page's own; the money scales' steps are the proposal's, set here until the founder chooses them.
+ */
+const PLAN_KNOB_START = { amount: 10_000, monthly: 500, years: 10, ret: 7 } as const;
+type PlanKnobId = keyof typeof PLAN_KNOB_START;
+const PLAN_KNOB_ENDS: Record<PlanKnobId, { min: number; max: number; step: number }> = {
+  amount: { min: 0, max: 500_000, step: 1_000 },
+  monthly: { min: 0, max: 10_000, step: 100 },
+  years: { min: 1, max: 40, step: 1 },
+  ret: { min: 0, max: 12, step: 0.5 },
+};
+const PLAN_KNOB_SCALE: Record<PlanKnobId, SliderScale> = {
+  amount: steppedScale(0, [
+    { to: 20_000, step: 1_000 },
+    { to: 100_000, step: 5_000 },
+    { to: 500_000, step: 25_000 },
+  ]),
+  monthly: steppedScale(0, [
+    { to: 1_000, step: 50 },
+    { to: 3_000, step: 100 },
+    { to: 10_000, step: 500 },
+  ]),
+  years: linearScale(PLAN_KNOB_ENDS.years),
+  ret: linearScale(PLAN_KNOB_ENDS.ret),
+};
+const PLAN_KNOB_UNIT: Record<PlanKnobId, string> = { amount: "nis", monthly: "nis_per_month", years: "years", ret: "pct_per_year" };
+const PLAN_KNOB_IDS: readonly PlanKnobId[] = ["amount", "monthly", "years", "ret"];
+const planKnobCheck = (id: PlanKnobId) => (id === "years" ? yearsCheck(PLAN_KNOB_ENDS.years) : id === "ret" ? percentCheck({ min: 0, max: 100 }) : nonNegativeCheck);
+
+function PlanKnobsDemo({ variant, from = PLAN_KNOB_START }: { variant: "ends" | "quiet"; from?: Record<PlanKnobId, number> }) {
+  const [v, setV] = useState<Record<PlanKnobId, number>>(from);
+  const knobs: Knob[] = PLAN_KNOB_IDS.map((id) => {
+    const field = {
+      id,
+      label: investWords.plan.knobs[id],
+      unit: PLAN_KNOB_UNIT[id],
+      value: v[id],
+      start: PLAN_KNOB_START[id],
+      isEntered: v[id] !== PLAN_KNOB_START[id],
+      validate: planKnobCheck(id),
+      onCommit: (n: number) => setV((was) => ({ ...was, [id]: n })),
+      onReset: () => setV((was) => ({ ...was, [id]: PLAN_KNOB_START[id] })),
+      inputMode: id === "years" ? ("numeric" as const) : undefined,
+    };
+    return variant === "quiet" ? { ...field, variant, scale: PLAN_KNOB_SCALE[id] } : { ...field, ...PLAN_KNOB_ENDS[id] };
+  });
+  return (
+    <div className="max-w-sm">
+      <KnobStrip stacked knobs={knobs} />
+    </div>
   );
 }
 
@@ -1091,6 +1147,20 @@ function Fields() {
             <RangeField label={g.sample.range} unit="years" value={null} min={1} max={40} step={1} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} disabled />
           </State>
         </Grid>
+      </Demo>
+      <Demo name={'RangeField variant="quiet"'} use={g.uses.RangeFieldQuiet}>
+        {/* three side by side on a computer, so the changed state never stands under the page's own sliders as if it were theirs */}
+        <div className="grid gap-5 lg:grid-cols-3">
+          <State label={`${g.states.today}, ${g.states.interactive}`}>
+            <PlanKnobsDemo variant="ends" />
+          </State>
+          <State label={`${g.states.proposed}, ${g.states.interactive}`}>
+            <PlanKnobsDemo variant="quiet" />
+          </State>
+          <State label={`${g.states.proposed}, ${g.states.changed}: ${g.sample.offStep}`}>
+            <PlanKnobsDemo variant="quiet" from={{ ...PLAN_KNOB_START, amount: 750 }} />
+          </State>
+        </div>
       </Demo>
       <Demo name="KnobStrip" use={g.uses.KnobStrip}>
         <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
