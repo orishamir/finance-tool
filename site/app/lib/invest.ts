@@ -199,6 +199,8 @@ export interface BrokerCell {
   aside?: string[];
   /** The option the cell prices (a custom index's account list names the kind of fund each house's cost is for). */
   option?: OptionId;
+  /** The generic Israeli fund on an index not in shekels, run on the CPI though its status is not known (`Spec.statusStandIn`, G-40). */
+  statusStandIn?: true;
   reason?: Reason;
   availability?: Availability;
 }
@@ -460,6 +462,12 @@ interface Spec {
   cls: string;
   /** F-109 (D94): where the fund is bought (TASE, or the exchange abroad it trades on), so each house buys it in whole units or by amount. */
   listing?: "tase" | "us" | "europe";
+  /**
+   * The generic Israeli fund of a kind on an index not in shekels: its status as a foreign-investment fund is not known, yet it runs on the
+   * CPI alone (method G-40), since run under both readings of TXS OQ26 it would leave every house without a price for the kind. Its figures
+   * carry G-40's flag, and the account list its open chip, so none reads as settled.
+   */
+  statusStandIn?: true;
 }
 
 interface Ctx {
@@ -486,11 +494,13 @@ function makeCtx(bundle: IndicesBundle, plan: WorkbenchInputs, assumptions: Fund
   return { bundle, plan, fx: bundle.fx ? ratesOf(bundle.fx) : {}, theta, snaps: providersOfInvest(bundle), assumptions };
 }
 
-function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
+/** An index whose currency is not the shekel, or not known (one the person added, unless they said its fund is on a shekel index). */
+const foreignIndex = (index: IndexRef): boolean => !index.israeli && !(index.exposure && isShekel(index.exposure.currency));
+
+/** The generic fund of an option, with no fees of its own; `index`: the index the page is on, where there is one (method G-40). */
+function genericSpec(ctx: Ctx, option: OptionId, index?: IndexRef): Spec | null {
   const market = { grossReturn: ctx.plan.grossReturn };
-  // Stand-in: the generic Israeli fund of a kind has no foreign-investment-fund status and takes the CPI as its tax index (F-04), as a fund
-  // the person types does, until the queued item "ask the person whether a typed Israeli fund is a foreign-investment fund"
-  if (option === "il-tracking" || option === "il-etf") return { fund: { kind: "israeli-fund", drag: {} }, market, cls: OPTION_CLASS[option] };
+  if (option === "il-tracking" || option === "il-etf") return { fund: { kind: "israeli-fund", drag: {} }, market, cls: OPTION_CLASS[option], ...(index && foreignIndex(index) ? { statusStandIn: true as const } : {}) };
   if (option === "tase-foreign") return { fund: { kind: "tase-foreign-fund", drag: {} }, market, cls: OPTION_CLASS[option] };
   const usd = ctx.fx.USD;
   if (!usd) return null;
@@ -1042,7 +1052,7 @@ const tariffQuestions = (row: ComparedProvider): string[] => row.flags.filter((f
 
 /** An option's generic fund at a house (F-91 on F-63): the account's cost before tax, `whole` in whole shekels. */
 function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string | undefined, whole = false): SiteValue {
-  const flags = [...row.flags, ...row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c) && !row.flags.includes(c))];
+  const flags = [...row.flags, ...row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c) && !row.flags.includes(c)), ...(spec.statusStandIn ? ["G-40"] : [])];
   return computed(whole ? Math.round(row.horizonCostBeforeTax) : row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, { house: row.id, spec, row, tax: "before" }), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
 }
 
@@ -1176,7 +1186,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
   const exists = optionsOf(index.israeli).includes(option);
   const empty: OptionView = { id: option, exists, notRunnable: null, cells: [], bestCell: null, funds: [], bestWay: null, open: false };
   if (!exists) return empty;
-  const spec = genericSpec(ctx, option);
+  const spec = genericSpec(ctx, option, index);
   if (!spec) return { ...empty, notRunnable: "no-rate" };
 
   // (b) the broker cost of the option: a generic fund with no fees of its own
@@ -1200,6 +1210,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
         venue: p.venue,
         standing: p.standing,
         aside: p.aside,
+        ...(spec.statusStandIn ? { statusStandIn: true as const } : {}),
       };
       cellRuns.set(cell, { row, spec });
       return cell;

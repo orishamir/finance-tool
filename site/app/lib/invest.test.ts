@@ -668,6 +668,24 @@ describe("Interactive Brokers abroad: its pricing plans and ways to convert", ()
   });
 });
 
+describe("the generic Israeli fund of a kind (method G-40)", () => {
+  it("on an index not in shekels runs on the CPI though its status is not known: its costs carry G-40, never shown as settled; on a shekel index they do not", () => {
+    const cells = (id: string) => buildInvest({ bundle, index: indexById(bundle, id)!, plan: plan() }).options.filter((o) => o.id === "il-tracking" || o.id === "il-etf").flatMap((o) => o.cells).filter((c) => c.kind === "cost");
+    const sp500 = cells("index-sp500");
+    expect(sp500.length).toBeGreaterThan(0);
+    for (const c of sp500) {
+      expect(c.statusStandIn, c.providerId).toBe(true);
+      expect(c.cost?.flags, c.providerId).toContain("G-40");
+    }
+    const ta = cells("index-ta125");
+    expect(ta.length).toBeGreaterThan(0);
+    for (const c of ta) {
+      expect(c.statusStandIn, c.providerId).toBeUndefined();
+      expect(c.cost?.flags ?? [], c.providerId).not.toContain("G-40");
+    }
+  });
+});
+
 describe("a provider row whose run stopped on its rule", () => {
   it("carries the open question where there is one and the method gap where no reading exists, never the rule's id as a question", () => {
     expect(blockedReason(new BlockedError("TXG-09", "TXG OQ17"))).toEqual({ code: "rule-open", ruleId: "TXG-09", question: "TXG OQ17" });
