@@ -106,6 +106,11 @@ describe("the guides price an account and its securities on the comparison's pic
       }
     }
   });
+  it("the brokerage guide's houses are the comparison's providers for P-05's fund: a house that sells it under an agreement naming it is in both (BRK-38)", () => {
+    const p05 = loadParameters().find((p) => p.method_id === "P-05")!;
+    const rows = accountRuns(loadProducts().find((w) => w.id === "brokerage-account")!, "securities", p05, loadRules(), today());
+    expect(rows.map((r) => r.id).sort()).toEqual(Object.keys(entry("brokerage-account").providers!).sort());
+  });
   it("makam: a redemption is priced by the house's line that names it, on both paths (F-24)", () => {
     const makam = entry("makam");
     for (const p of Object.values(makam.providers!)) expect(p.tariff.redeem).toBeDefined();

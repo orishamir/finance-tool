@@ -3,7 +3,7 @@
 import { breakCount, listFeeRange, oneYearDeposits, pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
 import { exposurePath, guidePath } from "./site-paths";
 import { companyTermRule, isSecurity, type DepositTerms, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
-import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instruments.server";
+import { buildHishtalmutTerms, exposureFolds, loadExposures, loadFunds } from "./instruments.server";
 import { minDiscountMonths, pricedLine, providentLists, providentTerms } from "./compare.server";
 import { shortName } from "./providers";
 import { guideBlocks, guideSignature, r4catalogue, signatureFacts } from "../copy";
@@ -46,6 +46,8 @@ export interface GuidePageData {
   feeRange: { low: SiteValue; high: SiteValue; tracks: SiteValue; of: SiteValue } | null;
   /** What the collected deposits say about breaking them (F-104), on the bank-deposit guide. Null elsewhere. */
   breakTerms: BreakTerms | null;
+  /** The name of the fund P-05 names for this wrapper's example (the securities account's), from its record; null where P-05 names none. */
+  exampleFund: string | null;
   /**
    * The managers' list fees for each base, over every collected manager (F-105), on a provident wrapper with more than one list collected:
    * the lowest and the highest, how many managers, and how many of them print the legal cap. Null elsewhere.
@@ -320,10 +322,12 @@ export function buildGuidePage(id: string, extraTermIds: string[] = [], relatedI
   // what members paid on average, by track (F-64): on the study fund and the provident fund for investing, beside the documents' rates
   const feeRange = id === "keren-hishtalmut" || id === "kupat-gemel-lehashkaa" ? reportedFeeRange(id, t) : null;
   const breakTerms = id === "bank-deposit" ? depositBreakTerms(t) : null;
+  const exampleFundId = p05.instruments?.[id]?.fund;
+  const exampleFund = exampleFundId === undefined ? null : (loadFunds().find((f) => f.id === String(exampleFundId))?.names.he[0] ?? null);
   // the break rules of each bank the prose links to (its records' own), so each link opens
   for (const r of breakTerms?.breakable.flatMap((b) => b.rules) ?? []) if (allRules[r]) rules[r] = allRules[r]!;
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, feeRange, listRange, breakTerms, today: t };
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, feeRange, listRange, breakTerms, exampleFund, today: t };
 }
 
 export { familyOf };

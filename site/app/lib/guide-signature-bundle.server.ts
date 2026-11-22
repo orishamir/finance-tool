@@ -21,7 +21,7 @@ import { runWith, sideOf } from "./guide-signature-g2";
 import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
 import { loadFees, loadParameters } from "./data.server";
 import { latestOf, latestSnapshots } from "./providers.server";
-import { onlyWhatCanBeDone, shortName } from "./providers";
+import { onlyWhatCanBeDoneFor, shortName } from "./providers";
 import { computed, ownBy, type SiteValue, type Strength } from "./value";
 import { publisherHe } from "./publisher-he.server";
 
@@ -276,7 +276,11 @@ export function accountRuns(record: ProductRecord, family: InstrumentFamily, p05
     // a house that is part of another (PEPPER of Leumi) is not a house of its own, as in providersOf
     if (latest.missing || latest.provider.part_of) continue;
     if (record.id !== "brokerage-account" && latest.provider.class === "foreign_broker") continue;
-    if (!onlyWhatCanBeDone(latest).lines.some((l) => l.base === "trade" && l.applies_to.some((a) => classes.includes(a)))) continue;
+    // a house that sells the class fund by fund under its distribution agreements (BRK-38) sells the example's fund where an agreement in
+    // force names it, as the indices page and the goal comparison read the house
+    const fund = p05.instruments?.[record.id]?.fund;
+    const sells = onlyWhatCanBeDoneFor(latest, fund === undefined ? undefined : String(fund));
+    if (!sells.lines.some((l) => l.base === "trade" && l.applies_to.some((a) => classes.includes(a)))) continue;
     const spec = { ...p05.instruments?.[record.id], tariff: id };
     const bundle = buildInstrumentBundle(record, family, { ...p05, instruments: { ...p05.instruments, [record.id]: spec } } as ParameterRecord, allRules, t).bundle;
     const run = bundle ? runWith(bundle, plan, months) : null;

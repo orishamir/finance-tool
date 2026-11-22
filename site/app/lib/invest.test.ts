@@ -55,15 +55,17 @@ describe("invest page computation", () => {
     const banks = ["leumi", "massad", "fibi"];
     // the same houses with no standing-order line at all: every Israeli fund's figure is the same to the shekel
     const without = { ...bundle, snapshots: bundle.snapshots.map((s) => (banks.includes(s.id) ? { ...s, lines: s.lines.filter((l) => l.not_ranked === undefined) } : s)) };
-    const bare = buildInvest({ bundle: without, index: sp, plan: plan() });
-    const israeli = (v: typeof view) => v.options.filter((o) => o.id === "il-tracking" || o.id === "il-etf").flatMap((o) => o.funds);
+    // every index's Israeli funds, so the count does not rest on which of one index's funds are ranked (a fund listed before tax, F-118, has none)
+    const israeli = (b: typeof bundle) => knownIndices(b).flatMap((i) => buildInvest({ bundle: b, index: i, plan: plan() }).options.filter((o) => o.id === "il-tracking" || o.id === "il-etf").flatMap((o) => o.funds));
+    const withLines = israeli(bundle);
+    const bare = israeli(without);
     let seen = 0;
     for (const id of banks) {
       const setAside = bundle.snapshots.find((s) => s.id === id)!.lines.filter((l) => l.not_ranked !== undefined).map((l) => l.id);
       expect(setAside.length, id).toBeGreaterThan(0);
-      for (const f of israeli(view)) {
+      for (const [n, f] of withLines.entries()) {
         const at = f.byHouse[id];
-        const other = israeli(bare).find((g) => g.rec.id === f.rec.id)!.byHouse[id];
+        const other = bare[n]?.byHouse[id];
         if (!at || !("valueN" in at) || !other || !("valueN" in other)) continue;
         seen++;
         expect(at.valueN).toBe(other.valueN);
@@ -94,8 +96,13 @@ describe("invest page computation", () => {
     expect(doubtOf(oz, "il-etf")).toBeNull();
     expect(doubtOf(oz, "tase-foreign")).toContain("קרנות חוץ");
     const at = (option: string) => view.options.find((o) => o.id === option)!.funds.map((f) => f.byHouse["one-zero"] as { availability?: unknown; valueN?: number } | undefined);
-    expect(at("il-etf").length).toBeGreaterThan(0);
-    for (const h of at("il-etf")) expect(h?.availability).toBeDefined();
+    const etfs = view.options.find((o) => o.id === "il-etf")?.funds ?? [];
+    expect(etfs.length).toBeGreaterThan(0);
+    // a fund ranked at the houses reads One Zero's "not sold"; a fund listed before tax (F-118) is priced only where it is sold, never there
+    for (const f of etfs) {
+      if (f.reason) expect(f.beforeTax?.byHouse["one-zero"], f.rec.id).toBeUndefined();
+      else expect((f.byHouse["one-zero"] as { availability?: unknown } | undefined)?.availability, f.rec.id).toBeDefined();
+    }
     expect(at("tase-foreign").length).toBeGreaterThan(0);
     for (const h of at("tase-foreign")) {
       expect(h?.availability).toBeUndefined();
@@ -160,12 +167,16 @@ describe("invest page computation", () => {
     expect(v.lead).toContain("טלפונית מול חדר מסחר");
   });
 
-  it("the funds of an option are ranked by value at the option's cheapest broker", () => {
-    const o = view.options.find((x) => x.id === "il-tracking")!;
-    const vals = o.funds.flatMap((f) => (f.best ? [f.best.valueN] : []));
-    expect(vals.length).toBeGreaterThan(3);
-    expect([...vals].sort((a, b) => b - a)).toEqual(vals);
-    expect(o.funds.every((f) => !f.best || f.best.providerId === o.bestCell!.providerId)).toBe(true);
+  it("the funds of an option are ranked by value", () => {
+    let ranked = 0;
+    for (const index of knownIndices(bundle)) {
+      const o = buildInvest({ bundle, index, plan: plan() }).options.find((x) => x.id === "il-tracking");
+      if (!o) throw new Error(`${index.id} has an Israeli tracking-fund option`);
+      const vals = o.funds.flatMap((f) => (f.best ? [f.best.valueN] : []));
+      ranked += vals.length;
+      expect([...vals].sort((a, b) => b - a), index.id).toEqual(vals);
+    }
+    expect(ranked).toBeGreaterThan(3);
   });
 
   it("a person's broker is priced for the headline fund", () => {
@@ -184,10 +195,10 @@ describe("invest page computation", () => {
       if (o.id !== "tase-foreign") expect(o.cells.some((x) => x.kind === "cost")).toBe(true);
     }
     const tase = v.options.find((o) => o.id === "tase-foreign")!;
-    expect(tase.bestCell).toBeNull();
+    expect(tase.cells.some((x) => x.kind === "cost")).toBe(false);
     for (const x of tase.cells.filter((x) => x.kind !== "unavailable")) expect(x.reason).toEqual({ code: "rule-open", ruleId: "TXF-04" });
     expect(v.headline).toBeNull();
-    expect(v.genericHeadline).not.toBeNull();
+    expect(v.houses.some((h) => h.generic)).toBe(true);
   });
 
   it("lists a foreign fund in Tel Aviv with the open rule its tax rests on, with no price after tax at any house, never ranked (F-04, TXF-04, D84)", () => {
@@ -281,11 +292,14 @@ describe("invest page computation", () => {
     const world = indexById(bundle, "index-msci-world")!;
     const v = buildInvest({ bundle, index: world, plan: plan() });
     const funds = v.options.flatMap((o) => o.funds);
-    const hedged = funds.filter((f) => f.rec.hedged === true && f.best);
+    // every hedged fund stays in the list: priced, or listed with its reason (no full year in its report, or a tax open between two
+    // readings, F-118)
+    const hedged = funds.filter((f) => f.rec.hedged === true);
     expect(hedged.length).toBeGreaterThan(0);
+    for (const f of hedged) expect(f.best !== undefined || f.reason !== undefined, f.rec.id).toBe(true);
     // F-92: a hedged fund's shortfall beyond its fees is counted, so none leaves more than the headline on a steady dollar;
     // the one with no full year in its report is listed with its reason, not priced
-    expect(Math.max(...hedged.map((f) => f.best!.valueN))).toBeLessThan(v.headline!.valueN);
+    for (const f of hedged) if (f.best) expect(f.best.valueN, f.rec.id).toBeLessThan(v.headline?.valueN ?? Number.NaN);
     expect(funds.find((f) => f.rec.id === "5140165")!.reason).toEqual({ code: "no-hedge-record" });
     expect(v.headline!.fund.rec.hedged).not.toBe(true);
     const unhedged = funds.filter((f) => f.rec.hedged !== true && f.best && !f.best.open);
@@ -296,7 +310,8 @@ describe("invest page computation", () => {
     const world = indexById(bundle, "index-msci-world")!;
     const id = "5139696";
     const reasonOf = (b: typeof bundle) => buildInvest({ bundle: b, index: world, plan: plan() }).options.flatMap((o) => o.funds).find((f) => f.rec.id === id)!;
-    expect(reasonOf(bundle).best).toBeDefined();
+    // as collected the fund passes the hedged rule: whatever else lists it, not that
+    expect(reasonOf(bundle).reason?.code).not.toBe("no-hedge-record");
     for (const dividends of ["unstated", "gross"] as const) {
       const funds = bundle.funds.map((f) => (f.id === id ? { ...f, tracking_record: { ...f.tracking_record!, benchmark: { ...f.tracking_record!.benchmark, dividends } } } : f));
       const way = reasonOf({ ...bundle, funds });
@@ -307,12 +322,22 @@ describe("invest page computation", () => {
 
   it("a hedged fund is not moved by the dollar against the shekel; an unhedged one is (F-04, 2026-10-29)", () => {
     const sp500 = indexById(bundle, "index-sp500")!;
-    const at = (fx: number, id: string) => {
+    // each Israeli fund's figure: after tax where it is ranked, else before it (F-118, a tax open between two readings), at its best house
+    const left = (fx: number) => {
       const v = buildInvest({ bundle, index: sp500, plan: plan(), assumptions: { fxChange: fx } });
-      return v.options.flatMap((o) => o.funds).find((f) => f.rec.id === id)!.best!.valueN;
+      return new Map(v.options.flatMap((o) => o.funds).filter((f) => f.rec.domicile === "IL").map((f) => [f.rec.id, f.best?.valueN ?? Math.max(...Object.values(f.beforeTax?.byHouse ?? {}).map((x) => x.leftN))]));
     };
-    expect(at(-3, "5127527")).toBeCloseTo(at(3, "5127527"), 6);
-    expect(at(3, "5139282")).toBeGreaterThan(at(-3, "5139282"));
+    const [down, up] = [left(-3), left(3)];
+    const kinds = { hedged: 0, unhedged: 0 };
+    for (const f of bundle.funds.filter((x) => x.exposure_id === "index-sp500")) {
+      const was = down.get(f.id);
+      if (was === undefined || !Number.isFinite(was)) continue;
+      if (f.hedged === true) expect(up.get(f.id), f.id).toBeCloseTo(was, 6);
+      else expect(up.get(f.id), f.id).toBeGreaterThan(was);
+      kinds[f.hedged === true ? "hedged" : "unhedged"]++;
+    }
+    expect(kinds.hedged).toBeGreaterThan(0);
+    expect(kinds.unhedged).toBeGreaterThan(0);
   });
 
   it("reads the exchange a tariff band names", () => {
@@ -514,7 +539,9 @@ describe("what each figure's sheet lists", () => {
     expect(inputs(irish.best!.value)[words.pair.fundInputs.payout]!.value).toBe(irish.rec.distribution!.yield.value);
     expect(inputs(irish.best!.cost)[dollar]).toBeDefined();
     // the abroad option's generic fund is bought in dollars too; an Israeli fund reads no rate and pays nothing out
-    expect(inputs(abroad.bestCell!.cost!)[dollar]).toBeDefined();
+    const cell = abroad.cells.find((x) => x.kind === "cost");
+    if (!cell?.cost) throw new Error("the abroad option has a priced generic cell");
+    expect(inputs(cell.cost)[dollar]).toBeDefined();
     expect(inputs(israeli.best!.value)[dollar]).toBeUndefined();
     expect(inputs(israeli.best!.value)[words.pair.fundInputs.payout]).toBeUndefined();
   });
@@ -549,13 +576,10 @@ describe("what each figure's sheet lists", () => {
 
   it("an account's cost is F-91, and a gap between two ways is the one figure less the other", () => {
     expect(irish.best!.cost.computed_from!.formula).toBe("F-91");
-    const broker = view.bars.find((b) => b.id === "broker")!;
-    expect(broker.spread!.computed_from!.formula).toBe("F-91");
-    expect(broker.spread!.value).toBeCloseTo(broker.high! - broker.low!, 9);
-    const fund = view.bars.find((b) => b.id === "fund")!;
-    expect(fund.spread!.computed_from!.formula).toBe("F-65");
-    expect(Object.values(inputs(fund.spread!)).map((v) => v.computed_from!.formula)).toEqual(["F-65", "F-65"]);
-    for (const h of view.houses.filter((x) => x.gap)) expect(Object.keys(inputs(h.gap!))).toHaveLength(2);
+    for (const h of view.houses.filter((x) => x.gap)) {
+      expect(h.gap!.computed_from!.formula).toBe("F-65");
+      expect(Object.values(inputs(h.gap!)).map((v) => v.computed_from!.formula)).toEqual(["F-65", "F-65"]);
+    }
   });
 
   it("a pair's parts: the fund's part reads no account, X neither the fund nor the account, and the account's cost adds up its parts", () => {
@@ -645,10 +669,57 @@ describe("Interactive Brokers abroad: its pricing plans and ways to convert", ()
   });
 });
 
+describe("the generic Israeli fund of a kind (method F-04, G-40)", () => {
+  it("shows only the account's cost before tax, which no tax index enters: on an index not in shekels it carries no G-40 flag, as on a shekel index", () => {
+    const at = (id: string) => {
+      const index = indexById(bundle, id);
+      if (!index) throw new Error(`${id} is an index of the records`);
+      return index;
+    };
+    const cells = (id: string) => buildInvest({ bundle, index: at(id), plan: plan() }).options.filter((o) => o.id === "il-tracking" || o.id === "il-etf").flatMap((o) => o.cells).filter((c) => c.kind === "cost");
+    for (const id of ["index-sp500", "index-ta125"]) {
+      const priced = cells(id);
+      expect(priced.length, id).toBeGreaterThan(0);
+      for (const c of priced) {
+        expect(c.cost?.computed_from?.formula, `${id} ${c.providerId}`).toBe("F-91");
+        expect(c.cost?.flags ?? [], `${id} ${c.providerId}`).not.toContain("G-40");
+      }
+    }
+  });
+});
+
 describe("a provider row whose run stopped on its rule", () => {
   it("carries the open question where there is one and the method gap where no reading exists, never the rule's id as a question", () => {
     expect(blockedReason(new BlockedError("TXG-09", "TXG OQ17"))).toEqual({ code: "rule-open", ruleId: "TXG-09", question: "TXG OQ17" });
     expect(blockedReason(new BlockedError("CS-03", undefined, "G-38"))).toEqual({ code: "rule-open", ruleId: "CS-03", gap: "G-38" });
     expect(blockedReason(new BlockedError("TXF-04"))).toEqual({ code: "rule-open", ruleId: "TXF-04" });
+  });
+});
+
+describe("an Israeli fund that may be measured by a principal currency, on the data as collected (F-04, TXS OQ26, method §13)", () => {
+  const funds = (v: ReturnType<typeof buildInvest>) => v.options.filter((o) => o.exists).flatMap((o) => o.funds).filter((f) => f.rec.domicile === "IL");
+  const status = (f: { rec: { tax_status: { foreign_investment_fund?: { value: unknown } } } }) => f.rec.tax_status.foreign_investment_fund?.value;
+  const priced = (f: { best?: unknown; byHouse: Record<string, object> }) => f.best !== undefined && Object.values(f.byHouse).some((at) => "valueN" in at);
+  it("where A-03 and A-02 differ, both readings give the plan different taxes: listed before tax on TXS-14 with the question, never ranked", () => {
+    const view = buildInvest({ bundle, index: sp, plan: plan() });
+    const open = funds(view).filter((f) => typeof status(f) === "string" || status(f) === null);
+    expect(open.some((f) => typeof status(f) === "string")).toBe(true);
+    expect(open.some((f) => status(f) === null)).toBe(true);
+    for (const f of open) {
+      expect(f.reason, f.rec.id).toEqual({ code: "rule-open", ruleId: "TXS-14", question: "TXS OQ26" });
+      expect(f.beforeTax?.ruleId, f.rec.id).toBe("TXS-14");
+      expect(priced(f), f.rec.id).toBe(false);
+    }
+    // a fund whose documents say it is not one is measured by the CPI alone, and ranked
+    expect(funds(view).filter((f) => status(f) === false).some(priced)).toBe(true);
+  });
+  it("where the dollar moves as prices do (A-03 = A-02), both readings agree: the same funds are ranked", () => {
+    const view = buildInvest({ bundle, index: sp, plan: plan(), assumptions: { fxChange: 2 } });
+    const open = funds(view).filter((f) => typeof status(f) === "string" || status(f) === null);
+    expect(open.length).toBeGreaterThan(0);
+    for (const f of open) {
+      expect(f.reason, f.rec.id).toBeUndefined();
+      expect(priced(f), f.rec.id).toBe(true);
+    }
   });
 });

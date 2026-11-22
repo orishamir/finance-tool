@@ -91,15 +91,12 @@ export function ReceiptRule({ kind }: { kind: "double" | "dashed" }) {
 }
 
 /** One of the ticket's two side parts: a small label with the part's colour (`swatch`, a `bg-` class), the name large, then its lines. */
-export function TicketPart({ label, swatch, name, aside, children }: { label: ReactNode; swatch: string; name: ReactNode; /** Quiet references at the caption's other end (a fund's number and document), on the caption's own line. */ aside?: ReactNode; children: ReactNode }) {
+export function TicketPart({ label, swatch, name, children }: { label: ReactNode; swatch: string; name: ReactNode; children: ReactNode }) {
   return (
     <div className="flex min-w-0 flex-col gap-1">
-      <span className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs text-muted-foreground">
-        <span className="flex items-center gap-2">
-          <span aria-hidden="true" className={cx("inline-block size-2.5 shrink-0 rounded-[3px]", swatch)} />
-          {label}
-        </span>
-        {aside}
+      <span className="flex items-center gap-2 text-xs text-muted-foreground">
+        <span aria-hidden="true" className={cx("inline-block size-2.5 shrink-0 rounded-[3px]", swatch)} />
+        {label}
       </span>
       <span className="mb-2.5 text-2xl font-semibold leading-snug [overflow-wrap:anywhere]">{name}</span>
       <div className="flex flex-col gap-2.5 text-sm">{children}</div>

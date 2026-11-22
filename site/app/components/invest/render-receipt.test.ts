@@ -249,10 +249,13 @@ describe("the receipt's fund part marks a fund the person typed (D44, D7)", () =
   const name = "קרן משלי";
   const typed = fundFromDraft({ ...fundDraftOf(null, "il-tracking"), payout: "accumulating" as const, hedged: false, name, fixed: 0.1, variable: 0, trustee: 0 }, "custom-fund-mine", "index-sp500", t);
   const b = withCustomEntries(bundle, [typed]);
-  const view = buildInvest({ bundle: b, index, plan });
+  // a typed Israeli fund on an index in dollars has a status not known and runs under both readings of TXS OQ26 (method §13): the
+  // test's plan has the CPI change as the dollar does by default (A-02 = A-03 = 0), so the two readings agree and the fund is ranked
+  const flat = { ...plan, inflation: 0, values: { ...plan.values, inflation: entered(0, "pct_per_year", t) } };
+  const view = buildInvest({ bundle: b, index, plan: flat });
   /** The ticket's fund part: what follows its label, the ticket's last part. */
   const fundPart = (fund: string) => {
-    const out = html(createElement(PairReceipt, { view, bundle: b, plan, pick: { house, fund }, chosen: true, layout: "ticket" }));
+    const out = html(createElement(PairReceipt, { view, bundle: b, plan: flat, pick: { house, fund }, chosen: true, layout: "ticket" }));
     return out.slice(out.lastIndexOf(`>${w.receipt.parts.fund}</span>`));
   };
   it("its name in the entered ink and the entered tag, where a collected fund's part has neither", () => {

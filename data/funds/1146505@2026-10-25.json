@@ -27,7 +27,27 @@
   "distribution_policy": "accumulating",
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null
+    "tase_foreign_fund_90pct_test": null,
+    "foreign_investment_fund": {
+      "value": "USD",
+      "unit": "text",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724797-00.pdf#page=1",
+        "title": "דוח שנתי 'קסם NASDAQ 100 (4D) ETF' (מספר בורסה 1146505), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ, עמ' 1, 'מאפיינים עיקריים של הקרן': 'הקרן היא \"קרן נאמנות להשקעות חוץ\" כהגדרתה בתקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס\"ג-2003, ושער המטבע העיקרי שלה הוא דולר ארה\"ב'",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-11-22",
+      "effective_from": "2025-12-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXS-14"
+      ],
+      "state": "sourced",
+      "notes": "The report names the fund a foreign-investment fund under the 2003 regulations, with the US dollar as its principal currency (TXS-14). Whether those regulations still operate is TXS OQ26, so a run is made with the dollar and with the CPI as its tax index (F-04)."
+    }
   },
   "fees": {
     "fixed_management": {
