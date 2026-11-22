@@ -4005,7 +4005,6 @@ export const invest = {
     togetherAbout: "מה שהחשבון והקרן לוקחים יחד, בלי המס",
     collected: "התעריפון נאסף",
     aside: "מחיר אחר, שלא בחישוב",
-    none: "אין",
     fundDoc: "הדוח של הקרן",
     fundDocOther: "המסמך של הקרן",
     number: "מספר הקרן",
@@ -4605,7 +4604,7 @@ export const invest = {
     collectedOn: (date: string) => `נאסף ב־${date}`,
     /** Over the account list: the days the price lists were saved, oldest and newest. */
     collectedSpan: (from: string, to: string) => (from === to ? `התעריפונים נאספו ב־${from}.` : `התעריפונים נאספו בין ${from} ל־${to}.`),
-    /** On the chosen account's card, beside its price list: opens a new deal filled from the house's list (one link, not a line on every row). */
+    /** On a house's line on an index with no fund, beside its price list: opens a new deal filled from the house's list. */
     ownPrice: "להזין מחיר שקיבלתם",
     colLeft: "נשאר",
     /** The lists' head over what is left: its "?" says after what and in what money (design.md: a head says what it holds). */

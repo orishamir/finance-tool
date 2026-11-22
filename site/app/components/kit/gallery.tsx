@@ -250,7 +250,7 @@ function Basics() {
             <Button variant="add">{g.sample.hello}</Button>
           </div>
         </State>
-        <State label="framed: the bordered face in the action colour, a card's one action (the pair card's own price, /deal's link to the index page); danger: filled in the danger colour, the delete of ConfirmAsk beside an outline cancel; inline bold: a sentence's one action, underlined only under the pointer">
+        <State label="framed: the bordered face in the action colour, a card's one action (/deal's link to the index page); danger: filled in the danger colour, the delete of ConfirmAsk beside an outline cancel; inline bold: a sentence's one action, underlined only under the pointer">
           <div className="flex flex-wrap items-center gap-3">
             <Button variant="framed">{g.sample.hello}</Button>
             <LinkButton variant="framed" to="/kit">{g.sample.sentenceLink}</LinkButton>
