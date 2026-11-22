@@ -16,6 +16,7 @@ import { dealTiles, listPlace } from "./tiles";
 import { stretchOf } from "../stretch";
 import { feesOnPlan, missingKey, missingOf, planAccount, planDeal, planFees, planRead, planWhat, whatOfRun } from "./plan";
 import { planCases, yearSpans } from "./plan-cases";
+import { pickLine } from "../fee-deal/reading";
 import { bundle, data, flagsOf, fromHouse, housesBeside, onHouse, onPlan, plan, PLANS, t } from "./plan-fixtures";
 
 /**
@@ -211,6 +212,10 @@ describe("F-128 a deal filled from a house prices as the house does, on a few in
     expect(at("deal-stepped")).toBe(at("deal-flat-20"));
     expect(at("deal-picked")).toBe(at(leumi.id));
     expect(at("deal-picked")).toBeGreaterThan(at("deal-stepped"));
+    // the pick bar shows the step the plan charges: the dearest with no pick, the deal's own where it picks one
+    const chosen = (d: FeeDeal) => pickLine(planRead(d, run, ctx))?.things.find((x) => x.by === pickKey(by))?.chosen;
+    expect(chosen(stepped)).toBe(stepPick(2, true));
+    expect(chosen(picked)).toBe(stepPick(2));
   });
 
   it("the bank's current account is not counted on the bank the person marks as theirs", () => {

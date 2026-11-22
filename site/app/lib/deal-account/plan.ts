@@ -93,9 +93,11 @@ export function planRead(deal: FeeDeal, run: Pick<DealRun, "instrumentClass" | "
    * Each fee's reading: its own one, or, for a fee read across what the plan sets, one per combination of steps; a current account whose
    * price changes by a month's actions is read at the deal's own pick of them, else at its dearest step (`accountActionsPick`).
    */
+  const accountPicks: ReadPick[] = [];
   const readsOf = (f: Fee): { read: DealRead; within: PlanWithin[] }[] => {
     const things = planThings(f);
     const own = accountActionsPick(deal, f, (pick) => readAt(whatOf(f), [pick]));
+    if (own && !accountPicks.some((p) => p.by === own.by)) accountPicks.push(own);
     if (!things.length && !own) return [{ read: byHeld(f) ? held : bought, within: [] }];
     const combos = things.length ? stepCombos(things) : [{ picks: [], within: [] }];
     return combos.map((c) => ({ read: readAt(whatOf(f), [...c.picks, ...(own ? [own] : [])]), within: c.within }));
@@ -113,6 +115,8 @@ export function planRead(deal: FeeDeal, run: Pick<DealRun, "instrumentClass" | "
   const first = (f: Fee) => reads.get(f.id)![0]!.read;
   return {
     ...bought,
+    // the step a current account is read in stands among the picks, so the pick bar shows the step the plan charges
+    picks: [...bought.picks.filter((p) => !accountPicks.some((x) => x.by === p.by)), ...accountPicks],
     fees,
     unread: some("unread"),
     unpriced: some("unpriced").filter((id) => !some("unread").includes(id)),
