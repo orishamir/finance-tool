@@ -2,7 +2,8 @@
 // runs, grouped by the regulator's product type, same-name tracks grouped, the fee-pending note, the paste card.
 // What the company offers is the tracks page's list over
 // this company alone (components/tracks/company-browser.tsx): its products, funds and securities account are chips, "כל המוצרים" first.
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { useHash } from "../lib/address";
 import { companyPath } from "../lib/site-paths";
 import { useLoaderData, useLocation, type ShouldRevalidateFunctionArgs } from "react-router";
 import type { Route } from "./+types/company";
@@ -327,11 +328,15 @@ function ManagerCompany({ data }: { data: CompanyData }) {
 
 /** The names a company uses that are not yet matched to a track, folded; open when the address names them. */
 function Unassigned({ rows }: { rows: CompanyData["unassigned"] }) {
-  const location = useLocation();
+  // a router navigation fires no event: reading the location renders this again on one, and `useHash` reads the new address then
+  useLocation();
+  const hash = useHash();
   const [open, setOpen] = useState(false);
-  useEffect(() => {
-    if (location.hash === "#unassigned") setOpen(true);
-  }, [location.hash]);
+  const [hashBefore, setHashBefore] = useState("");
+  if (hash !== hashBefore) {
+    setHashBefore(hash);
+    if (hash === "unassigned") setOpen(true);
+  }
   return (
     <section id="unassigned" aria-label={catalogue.unassigned.title} className="anchor-target flex flex-col gap-3">
       <Disclosure look="link" open={open} onOpenChange={setOpen} label={catalogue.unassigned.title} className="flex flex-col gap-3">

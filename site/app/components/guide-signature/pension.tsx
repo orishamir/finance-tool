@@ -159,7 +159,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         </p>
         <div className="flex gap-0.5 text-sm" aria-hidden="false">
           {parts.map((p) => (
-            <div key={p.key} className="min-w-0 flex flex-col gap-0.5 transition-[width] duration-(--duration-chart)" style={{ width: share(p.n) }}>
+            <div key={p.key} className="min-w-0 flex flex-col gap-0.5 transition-[width] duration-[var(--duration-chart)]" style={{ width: share(p.n) }}>
               {/* a term keeps to one line elsewhere; here it may wrap, as the other labels do: at 320 px the severance label ran 17 px past its
                   part's column and the chart's edge */}
               <span className="text-xs text-muted-foreground leading-tight [&_.term]:whitespace-normal">{p.key === "severance" ? <Term id="מרכיב הפיצויים">{p.label}</Term> : p.label}</span>
@@ -171,11 +171,11 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         </div>
         <div className="flex gap-0.5 h-3.5" role="img" aria-label={copy.pension.chart.aria} data-zero="">
           {parts.map((p) => (
-            <div key={p.key} className={`${p.bar} first:rounded-s-sm last:rounded-e-sm transition-[width] duration-(--duration-chart)`} style={{ width: share(p.n) }} data-mark="part" />
+            <div key={p.key} className={`${p.bar} first:rounded-s-sm last:rounded-e-sm transition-[width] duration-[var(--duration-chart)]`} style={{ width: share(p.n) }} data-mark="part" />
           ))}
         </div>
         <div className="flex flex-col">
-          <div className="h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm transition-[width] duration-(--duration-chart)" style={{ width: share(model.you) }} />
+          <div className="h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm transition-[width] duration-[var(--duration-chart)]" style={{ width: share(model.you) }} />
           <span className="block text-sm text-muted-foreground mt-0.5">
             {copy.pension.returns.before} <Num value={v.relief} /> {copy.pension.returns.after} {copy.pension.returns.when.before} <Ruled id="TXP-34">{copy.pension.returns.when.stated}</Ruled>{copy.pension.returns.when.after} {copy.pension.returns.notice} <IdRef id="TXP OQ6" end="." /> {copy.pension.returns.otherwise.before} <Ruled id="TXP-02">{copy.pension.returns.otherwise.stated}</Ruled>.
           </span>

@@ -50,7 +50,7 @@ export function useFeeMark(feeId: string): { marked: boolean; handlers: Pick<HTM
 }
 
 /** The look of a line another column marks: the quiet fill of a row under the pointer, as a card under it is drawn. */
-export const markedLine = (marked: boolean) => cx("-mx-1.5 rounded-md px-1.5 transition-colors duration-(--duration-fast)", marked && "bg-accent/60");
+export const markedLine = (marked: boolean) => cx("-mx-1.5 rounded-md px-1.5 transition-colors duration-[var(--duration-fast)]", marked && "bg-accent/60");
 
 /**
  * A press on a fee's line chooses the fee, as its name does, except a press on another control in it (a figure's sheet): the line is the

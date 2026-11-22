@@ -247,7 +247,7 @@ export function useChartPick<T = string>(): ChartPick<T> {
 }
 
 /** The class that sets a series back while another is picked; it fades, and it holds the series' place. */
-export const pickDim = (active: string | null | undefined, id: string) => cx("transition-opacity duration-(--duration-fast)", active && active !== id && "opacity-20");
+export const pickDim = (active: string | null | undefined, id: string) => cx("transition-opacity duration-[var(--duration-fast)]", active && active !== id && "opacity-20");
 
 /**
  * A small box of values at a point of a chart, over the chart, so nothing under it moves. The parent is positioned, reads left to right and
@@ -272,7 +272,7 @@ export function ChartTip({ x, top = 0, width, near, children }: { x: number; top
     }
   });
   return (
-    <div ref={box} dir="rtl" className="absolute z-(--z-sticky) pointer-events-none w-max max-w-[min(100%,20rem)] rounded-md border border-border bg-popover px-2 py-1 text-xs leading-snug shadow-sm [&_bdi[dir=ltr]]:whitespace-nowrap" style={{ left: 0, top }}>
+    <div ref={box} dir="rtl" className="absolute z-20 pointer-events-none w-max max-w-[min(100%,20rem)] rounded-md border border-border bg-popover px-2 py-1 text-xs leading-snug shadow-sm [&_bdi[dir=ltr]]:whitespace-nowrap" style={{ left: 0, top }}>
       <CountingFigures on={false}>{children}</CountingFigures>
     </div>
   );

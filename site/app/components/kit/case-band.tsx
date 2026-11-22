@@ -32,7 +32,7 @@ const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shr
  * A menu chip of the band (a thing of its head, a value of the open case): a soft `secondary` fill, no outline, 8 px corners, one step
  * lighter under a computer's pointer; while its menu is open, one 2 px frame in the action colour inside its edge (design-system 2.6).
  */
-const menuChip = (open: boolean) => cx("rounded-md bg-secondary ps-3 pe-2.5 text-sm text-foreground transition-colors duration-(--duration-fast) hover:bg-secondary-hover", open && "outline-2 -outline-offset-2 outline-primary");
+const menuChip = (open: boolean) => cx("rounded-md bg-secondary ps-3 pe-2.5 text-sm text-foreground transition-colors duration-[var(--duration-fast)] hover:bg-secondary-hover", open && "outline-2 -outline-offset-2 outline-primary");
 
 /** A thing of the band's head: its id and its name. */
 export interface HeadThing {
@@ -154,7 +154,7 @@ export function CaseRow({ when, label, onOpen, grip, open, missing, mark, childr
       {/* the same room to the band's edge on both sides: under the words, as far in as they are; beside them, a hairline from the edge. Its
           parts' lines stand 44 px apart (a 30 px part and 14 px between), so a figure on one line and a figure on the next each keep a
           44 px press, the parts no bigger for it */}
-      <div className={cx("mx-3 flex min-h-target min-w-0 flex-wrap items-center gap-x-1.5 gap-y-3.5 rounded-md bg-card px-2 py-1.5 transition-colors duration-(--duration-fast) @min-[25rem]:ms-0 @min-[25rem]:me-1", onOpen && "group-hover:bg-accent", open && "outline-2 -outline-offset-2 outline-primary", missing != null && !open && MISSING, mark != null && !open && missing == null && MARKED)}>
+      <div className={cx("mx-3 flex min-h-target min-w-0 flex-wrap items-center gap-x-1.5 gap-y-3.5 rounded-md bg-card px-2 py-1.5 transition-colors duration-[var(--duration-fast)] @min-[25rem]:ms-0 @min-[25rem]:me-1", onOpen && "group-hover:bg-accent", open && "outline-2 -outline-offset-2 outline-primary", missing != null && !open && MISSING, mark != null && !open && missing == null && MARKED)}>
         {grip}
         {children}
         {missing != null && <span className="basis-full text-foreground">{missing}</span>}

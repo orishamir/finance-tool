@@ -88,7 +88,7 @@ function PartCard({ kind, part: p, held, onAdd, onRemove }: { kind: ToolKind; pa
       {...drag}
       data-kind={kind}
       className={cx(
-        "min-h-target max-w-full flex-wrap items-center gap-x-2 gap-y-1 px-3 py-1.5 text-start text-sm transition-colors duration-(--duration-fast)",
+        "min-h-target max-w-full flex-wrap items-center gap-x-2 gap-y-1 px-3 py-1.5 text-start text-sm transition-colors duration-[var(--duration-fast)]",
         CARD,
         held ? HELD : p.used ? cx("bg-kind-tile-on outline outline-1 -outline-offset-1 outline-kind", removes ? "enabled:hover:bg-kind-tile" : "cursor-default") : "bg-popover enabled:hover:bg-accent",
         p.off && "opacity-45",
@@ -111,7 +111,7 @@ function LineCard({ kind, line, held, onAdd }: { kind: ToolKind; line: ToolLine;
       disabled={line.off}
       aria-pressed={held || undefined}
       onClick={onAdd}
-      className={cx("flex min-h-target w-full items-center gap-2 rounded-lg px-3 text-sm transition-colors duration-(--duration-fast)", held ? HELD : "enabled:hover:bg-kind-tile", line.off && "opacity-45")}
+      className={cx("flex min-h-target w-full items-center gap-2 rounded-lg px-3 text-sm transition-colors duration-[var(--duration-fast)]", held ? HELD : "enabled:hover:bg-kind-tile", line.off && "opacity-45")}
     >
       <Plus size={16} strokeWidth={1.75} aria-hidden className="shrink-0 text-primary" />
       <WhenRule className="text-foreground">
@@ -250,7 +250,7 @@ export function Toolbox({ addTo, held, groups, onAdd, onRemove, foot, sheet, doc
         data-tool-sheet=""
         // a pinned sheet is a block the site's "back to the top" button steps aside from (shell.tsx)
         {...(docked ? { "data-docked": "", "data-keep-clear": "" } : {})}
-        className={cx("flex flex-col gap-3 rounded-t-xl border-t border-border bg-popover px-4 pt-1 shadow-lg", docked ? cx("fixed inset-x-0 bottom-0 z-(--z-sticky) max-h-[13.5rem]", (folded || held) && "pb-4") : "pb-4")}
+        className={cx("flex flex-col gap-3 rounded-t-xl border-t border-border bg-popover px-4 pt-1 shadow-lg", docked ? cx("fixed inset-x-0 bottom-0 z-[var(--z-sticky)] max-h-[13.5rem]", (folded || held) && "pb-4") : "pb-4")}
       >
         <div className="relative flex shrink-0 justify-center">
           {held ? (
@@ -271,7 +271,7 @@ export function Toolbox({ addTo, held, groups, onAdd, onRemove, foot, sheet, doc
             </button>
           )}
           {onClose && (
-            <button type="button" data-sheet-close="" aria-label={copy.toolbox.close} title={copy.toolbox.close} onClick={onClose} className="absolute -inset-e-2 top-1/2 flex size-target -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring">
+            <button type="button" data-sheet-close="" aria-label={copy.toolbox.close} title={copy.toolbox.close} onClick={onClose} className="absolute -end-2 top-1/2 flex size-target -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring">
               <X size={18} strokeWidth={1.75} aria-hidden />
             </button>
           )}
@@ -304,7 +304,7 @@ export function Toolbox({ addTo, held, groups, onAdd, onRemove, foot, sheet, doc
                   setFolded(false);
                 }}
               />
-              {cut && <span aria-hidden data-names-fade="" className="pointer-events-none absolute inset-y-0 -inset-e-4 w-10 bg-gradient-to-r from-popover to-transparent" />}
+              {cut && <span aria-hidden data-names-fade="" className="pointer-events-none absolute inset-y-0 -end-4 w-10 bg-gradient-to-r from-popover to-transparent" />}
             </div>
             <div id={`${id}-parts`} hidden={folded} className={cx("flex flex-col gap-3", docked && "-mx-4 min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4")}>
               {group && (

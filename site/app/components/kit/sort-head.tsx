@@ -17,7 +17,7 @@ export function SortHead({ label, state, onPress, className, alsoHolds, note, ra
     <button
       type="button"
       onClick={onPress}
-      className={cx("inline-flex items-start gap-1 min-h-11 -my-1 pt-1 text-start rounded-sm hover:text-foreground transition-colors duration-(--duration-fast)", on ? "text-foreground" : "text-muted-foreground", raised && "relative z-[1]", className)}
+      className={cx("inline-flex items-start gap-1 min-h-11 -my-1 pt-1 text-start rounded-sm hover:text-foreground transition-colors duration-[var(--duration-fast)]", on ? "text-foreground" : "text-muted-foreground", raised && "relative z-[1]", className)}
     >
       <span className="inline-flex flex-col">
         <span className="inline-grid *:[grid-area:1/1]">

@@ -6,7 +6,7 @@ import { computedInputs as ci } from "../copy";
 import { asParameter, parameterOf, type CompareBundle } from "./compare";
 import type { InputsState } from "./inputs";
 import type { WorkbenchInputs } from "./providers";
-import { asField, entered as enteredValue, type SiteValue } from "./value";
+import { asField, asP05Input, entered as enteredValue, type SiteValue } from "./value";
 
 export interface EnteredPlan {
   /** The plan as the page's runs take it, without the current accounts it counts (the page's own choice). */
@@ -25,7 +25,7 @@ export function enteredPlan(bundle: CompareBundle, released: InputsState): Enter
   const e = released.entered;
   // each is a field's value on the page, its default or what the reader typed: a plain number wherever it shows
   const val = (key: "amount_now" | "monthly_deposit" | "horizon_years" | "A-01" | "A-02", unit: ValueObject["unit"], about: string) =>
-    asField(e[key] !== undefined ? enteredValue(e[key]!, unit, bundle.runDate, about) : asParameter(p05, inp[key]!));
+    asP05Input(key, asField(e[key] !== undefined ? enteredValue(e[key]!, unit, bundle.runDate, about) : asParameter(p05, inp[key]!)));
   const amount = val("amount_now", "nis", ci.amountNow);
   const monthly = val("monthly_deposit", "nis_per_month", ci.monthly);
   const years = val("horizon_years", "years", ci.years);

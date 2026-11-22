@@ -11,6 +11,7 @@ import { site, system } from "./copy";
 import { pageMeta, type MetaPlace } from "./lib/page-meta";
 import { useIsoLayoutEffect } from "./lib/hooks";
 import { hashId } from "./lib/address-hash";
+import { z } from "zod";
 
 /**
  * What every page's provenance sheet needs to know: which parameters each formula uses, which parameter card each id belongs to,
@@ -38,11 +39,16 @@ export function links() {
 }
 
 const SCROLL_KEY = "mekor.scroll";
+/** What the tab keeps under SCROLL_KEY: a position by entry key. Anything else is unreadable, and the positions start empty. */
+const keptPositions = z.record(z.string(), z.number());
 const positions: Record<string, number> = {};
 try {
-  if (typeof window !== "undefined") Object.assign(positions, JSON.parse(window.sessionStorage.getItem(SCROLL_KEY) ?? "{}"));
+  if (typeof window !== "undefined") {
+    const kept = keptPositions.safeParse(JSON.parse(window.sessionStorage.getItem(SCROLL_KEY) ?? "{}"));
+    if (kept.success) Object.assign(positions, kept.data);
+  }
 } catch {
-  /* private mode: positions then live only until reload */
+  /* private mode, or text that is not JSON: positions then live only until reload */
 }
 const persist = () => {
   try {
@@ -132,7 +138,6 @@ export function Layout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="color-scheme" content="dark" />
         <meta name="robots" content="noindex" />
         {/* Zod tests whether it may compile code with Function(""), which the Content Security Policy refuses and reports
             on every page; this turns that test off before any schema is built (route modules build theirs as they load). */}
@@ -149,7 +154,17 @@ export function Layout({ children }: { children: ReactNode }) {
   );
 }
 
+/** Asks the browser once per load to keep the site's storage (where it has the call); its answer changes nothing on the page. */
+let askedToPersist = false;
+function askToPersist(): void {
+  if (askedToPersist || typeof navigator === "undefined" || typeof navigator.storage?.persist !== "function") return;
+  askedToPersist = true;
+  // refused, or the browser would not say: nothing changes, and the export file stays the backup
+  navigator.storage.persisted().then((kept) => kept || navigator.storage.persist()).catch(() => false);
+}
+
 export default function App() {
+  useEffect(askToPersist, []);
   return (
     <InputsProvider>
       <Outlet />

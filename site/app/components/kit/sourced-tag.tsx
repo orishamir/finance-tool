@@ -16,7 +16,7 @@ export function SourcedTag({ value, children, className }: { /** The fact as a s
       onClick={(e) => open(valueItem(value, children, false), e.currentTarget)}
       className={cx(
         "tap-area inline-flex w-fit items-center whitespace-nowrap rounded-sm bg-muted px-1.5 py-px align-middle text-xs font-medium text-foreground",
-        "underline decoration-sourced underline-offset-[3px] hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring transition-colors duration-(--duration-fast)",
+        "underline decoration-sourced underline-offset-[3px] hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring transition-colors duration-[var(--duration-fast)]",
         className,
       )}
     >

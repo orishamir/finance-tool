@@ -26,7 +26,7 @@ function PaletteCard({ item, onAdd }: { item: PaletteItem; onAdd: (id: string) =
         data-palette={item.id}
         {...drag}
         onClick={() => onAdd(item.id)}
-        className={cx("flex min-h-target w-full items-start gap-2.5 rounded-md border border-border bg-card px-3 py-2 text-start transition-colors duration-(--duration-fast) hover:bg-accent")}
+        className={cx("flex min-h-target w-full items-start gap-2.5 rounded-md border border-border bg-card px-3 py-2 text-start transition-colors duration-[var(--duration-fast)] hover:bg-accent")}
       >
         <Plus size={16} strokeWidth={1.75} aria-hidden className="mt-1 shrink-0 text-primary" />
         <span className="flex min-w-0 flex-col">

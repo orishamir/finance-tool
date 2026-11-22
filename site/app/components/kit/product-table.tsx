@@ -97,7 +97,7 @@ const MIN_SHARED_REM = 11;
 const DETAIL = "__detail";
 
 /** A dimmed column fades rather than jumps. */
-const DIM = "transition-opacity duration-(--duration-base)";
+const DIM = "transition-opacity duration-[var(--duration-base)]";
 
 /** The head's caption row: each run of neighbouring columns with one `band` under one cell, the others under empty cells. The first column
  *  stands alone, so its cell can stay in place while the table scrolls sideways. */
@@ -181,7 +181,7 @@ function HeadingParts({ heading, fold }: { heading: NonNullable<ProductGroup["he
           }}
           className="grp-fold"
         >
-          <IconChevronDown size={18} className={cx("transition-transform duration-(--duration-fold) ease-standard", fold.open && "rotate-180")} />
+          <IconChevronDown size={18} className={cx("transition-transform duration-[var(--duration-fold)] ease-standard", fold.open && "rotate-180")} />
         </button>
       )}
     </>
@@ -262,7 +262,7 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable, dens
             {banded && (
               <tr className="tbl-band">
                 {bandRuns(columns).map((run, i, runs) => (
-                  <th key={run.key} scope={run.band ? "colgroup" : undefined} colSpan={run.span} className={cx(run.band ? "pt-3 pb-0 border-b-0 text-xs font-normal text-muted-foreground" : "p-0 border-b-0", run.span === 1 ? first(i) : i === 0 && "tbl-start", i === runs.length - 1 && "tbl-end")}>
+                  <th key={run.key} scope={run.band ? "colgroup" : undefined} colSpan={run.span} className={cx(run.band ? "!pt-3 !pb-0 !border-b-0 text-xs font-normal text-muted-foreground" : "!p-0 !border-b-0", run.span === 1 ? first(i) : i === 0 && "tbl-start", i === runs.length - 1 && "tbl-end")}>
                     {/* a rule under the caption over its columns, so it reads as theirs, with the heads' own 10 px under it ("decrease the
                         forehead on the table"): 12 px over the caption and 16 px from its line to a head's words under it are the least
                         that lets a figure or a "?" in the caption keep its 44 px inside the card's rounded edge and clear of a head's
@@ -327,8 +327,8 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable, dens
               ...(g.banner && !shut
                 ? [
                     <tr key={`${g.key}-banner`} className="dup-row">
-                      <td colSpan={columns.length} className="tbl-start tbl-end pb-1 border-b-0 border-s-[3px] border-s-caution">
-                        <span className="dup-banner p-0">
+                      <td colSpan={columns.length} className="tbl-start tbl-end !pb-1 !border-b-0 border-s-[3px] border-s-caution">
+                        <span className="dup-banner !p-0">
                           <IconAlert size={16} className="text-caution shrink-0" />
                           {g.banner}
                         </span>
@@ -338,7 +338,7 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable, dens
                 : []),
               ...(shut ? [] : g.rows).flatMap((r) => {
                 const open = !!r.detail && opened.has(r.key);
-                const cellClass = (i: number, span = 1) => cx(first(i), end(i, span), i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.width && !columns[i]?.wrap ? "whitespace-nowrap" : null, columns[i]?.tight && "px-1", columns[i]?.cellClassName, DIM, columns[i]?.dim && "opacity-45", open && "border-b-0");
+                const cellClass = (i: number, span = 1) => cx(first(i), end(i, span), i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.width && !columns[i]?.wrap ? "whitespace-nowrap" : null, columns[i]?.tight && "px-1", columns[i]?.cellClassName, DIM, columns[i]?.dim && "opacity-45", open && "!border-b-0");
                 const rowClass = cx(g.banner ? "dup-row" : null, r.lit && "row-lit", r.mine && "row-mine");
                 const lines = r.lines && r.lines.rows.length > 1 ? r.lines : null;
                 const detailId = `${bannerId}-d-${r.key}`;
@@ -380,12 +380,12 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable, dens
                         if (j < 0)
                           return k === 0 ? (
                             // the table's last row has no rule under it; a cell that spans the lines ends there too
-                            <td key={c.id} rowSpan={lines.rows.length} className={cx(cellClass(i), lastRow === r && !open && "border-b-0")}>
+                            <td key={c.id} rowSpan={lines.rows.length} className={cx(cellClass(i), lastRow === r && !open && "!border-b-0")}>
                               {cells[i]}
                             </td>
                           ) : null;
                         return (
-                          <td key={c.id} colSpan={span > 1 ? span : undefined} className={cx(cellClass(i, span), k < last && "border-b-0 pb-1", k > 0 && "pt-1")}>
+                          <td key={c.id} colSpan={span > 1 ? span : undefined} className={cx(cellClass(i, span), k < last && "!border-b-0 !pb-1", k > 0 && "!pt-1")}>
                             {line.cells[j]}
                           </td>
                         );
@@ -420,7 +420,7 @@ export function RowFoldButton({ open, onToggle, marks, label, controls, classNam
           {m.icon}
         </span>
       ))}
-      <IconChevronDown size={18} aria-hidden="true" className={cx("transition-transform duration-(--duration-fold) ease-standard", open && "rotate-180")} />
+      <IconChevronDown size={18} aria-hidden="true" className={cx("transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
     </button>
   );
 }
@@ -436,7 +436,7 @@ export function RowArrow({ className }: { className?: string }) {
  * them 8 px apart, for a row whose lines are a block of their own each (a deposit's name, then its rates at each amount).
  */
 export function ProductPhoneRow({ stacked, roomy, className, children, rowOf, lit, mine }: { stacked?: boolean; roomy?: boolean; className?: string; children: ReactNode; /** As `ProductRow.rowOf`. */ rowOf?: string; /** As `ProductRow.lit`. */ lit?: boolean; /** As `ProductRow.mine`. */ mine?: boolean }) {
-  return <div data-row-of={rowOf} className={cx("track", stacked && "flex-col items-stretch", stacked && (roomy ? "gap-2" : "gap-1"), lit && "row-lit", mine && "row-mine", className)}>{children}</div>;
+  return <div data-row-of={rowOf} className={cx("track", stacked && "!flex-col !items-stretch", stacked && (roomy ? "!gap-2" : "!gap-1"), lit && "row-lit", mine && "row-mine", className)}>{children}</div>;
 }
 
 /** The fold token in ms: 0 for a reader who asked for less motion, and on the server. */
@@ -479,11 +479,11 @@ export function ProductPhoneFold({ name, figure, label, children }: { name: Reac
     };
   };
   return (
-    <div className="track flex-col items-stretch gap-0 py-0">
+    <div className="track !flex-col !items-stretch !gap-0 !py-0">
       <div className={cx("relative flex items-center gap-3 min-h-14 py-2", LIFT)}>
         <span className="flex-1 min-w-0 font-medium">{name}</span>
         {figure && <span className="shrink-0 inline-flex items-center gap-1.5 whitespace-nowrap">{figure}</span>}
-        <IconChevronDown size={18} aria-hidden="true" className={cx("shrink-0 text-muted-foreground transition-transform duration-(--duration-fold) ease-standard", open && "rotate-180")} />
+        <IconChevronDown size={18} aria-hidden="true" className={cx("shrink-0 text-muted-foreground transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
         <button type="button" data-fold-line="" aria-expanded={open} aria-controls={open ? id : undefined} aria-label={label} onClick={toggle} className="absolute -inset-x-4 inset-y-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2" />
       </div>
       {open && (

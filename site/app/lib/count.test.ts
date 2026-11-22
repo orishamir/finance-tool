@@ -2,7 +2,8 @@
 // thousands separator, never "1 שנים".
 import { describe, expect, it } from "vitest";
 import { companyPage, invest } from "../copy";
-import { countPhrase, plainNumber } from "./count";
+import { countPhrase } from "./count";
+import { plainNumber } from "./number-format";
 
 describe("countPhrase", () => {
   it("writes the number as fmt.number does, the true minus sign included", () => {

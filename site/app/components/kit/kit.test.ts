@@ -214,8 +214,8 @@ describe("the shared pieces' choices are props, never an overriding class", () =
     expect(cells[1]).toContain("px-1");
     expect(cells[2]).toContain("whitespace-nowrap");
     expect(out).toMatch(/<th scope="col" class="px-1 /);
-    expect(html(createElement(ProductPhoneRow, { stacked: true, roomy: true, children: "x" }))).toMatch(/class="[^"]*\bgap-2\b/);
-    expect(html(createElement(ProductPhoneRow, { stacked: true, children: "x" }))).toMatch(/class="[^"]*\bgap-1\b/);
+    expect(html(createElement(ProductPhoneRow, { stacked: true, roomy: true, children: "x" }))).toContain("!gap-2");
+    expect(html(createElement(ProductPhoneRow, { stacked: true, children: "x" }))).toContain("!gap-1");
   });
   it("a link out builds the address of its cited place", () => {
     expect(html(createElement(DocLink, { source: { url: "https://example.com/a.pdf", page: 2 }, children: "doc" }))).toContain('href="https://example.com/a.pdf#page=2"');

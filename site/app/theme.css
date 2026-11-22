@@ -369,17 +369,11 @@
   --num-underline-thickness: 1px; /* sourced solid, computed dotted */
   --num-underline-offset: 0.3em;
 
-  /* Motion. Movement is set to zero when the device asks for reduced motion; a chart then fades instead. */
+  /* Motion. Set to zero when the device asks for reduced motion. */
   --duration-fast: 120ms; /* press, hover, toggles */
   --duration-base: 200ms; /* sheets, popovers */
   --duration-fold: 280ms; /* a fold opening or closing, and what fades in with it */
-  --duration-chart-change: 400ms; /* a chart and its numbers moving to a one-off change: a new option chosen */
-  --duration-chart-follow: 220ms; /* a chart and its numbers following a slider or a field while the hand is on it */
-  /* what a chart moves in now, read by every chart (CSS transitions and the kit's glide): the one-off change's, and the follow's while
-     a slider is held or a field is typed in (below) */
-  --duration-chart: var(--duration-chart-change);
-  /* a chart's labels, gridlines and lines fading in and out with it; under reduced motion a short fade, where movement is none */
-  --duration-chart-fade: var(--duration-chart);
+  --duration-chart: 400ms; /* graphs and numbers moving to new values after an input changes */
   /* How long a fine pointer rests on a cell, a row or a head before its hover controls (grips, stretch knobs, a cell's bin, the plus
      under a row or between two heads, a closed fee card's corner) appear; they go at once when it leaves, and the keyboard's focus shows
      them at once. A wait, not a motion: it stays when the device asks for less motion. */
@@ -388,10 +382,6 @@
   /* Stacking (popovers and sheets use the top layer and need none) */
   --z-sticky: 20;
   --z-popover: 30; /* the search results under the page field (audit 2026-10-24, A5) */
-  /* while something is carried (kit/lift.tsx), over everything else on the page: */
-  --z-reach: 59; /* a knob's frame following the pointer */
-  --z-carry: 60; /* the carried thing's picture */
-  --z-carry-over: 61; /* over the picture: the bin it is dropped on, and the line under the pointer saying why a place does not take it */
 }
 
 /* A part's kind on an element (`data-kind`) sets its hue (`--kind`) and the fills mixed from it: the toolbox's hover on its line and on a
@@ -408,21 +398,12 @@
 [data-kind="when"] { --kind: var(--when); }
 [data-kind="rule"] { --kind: var(--part-rule); --kind-row: var(--secondary); }
 
-/* A chart follows the hand: while a slider is held or keyed, or a text field has the focus, every chart on the page moves in the follow
-   duration, so it keeps up with the hand; a press anywhere else (a chip, a select, a switch) takes the focus from the field, and the
-   change it makes moves in the one-off duration. */
-:root:has(input[type="range"]:is(:active, :focus-visible), input[type="text"]:focus) {
-  --duration-chart: var(--duration-chart-follow);
-}
-
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0ms;
     --duration-base: 0ms;
     --duration-fold: 0ms;
-    --duration-chart-change: 0ms;
-    --duration-chart-follow: 0ms;
-    --duration-chart-fade: 150ms;
+    --duration-chart: 0ms;
   }
 }
 
@@ -431,17 +412,13 @@
   --color-*: initial; /* no default palette: only the semantic colours below exist as utilities */
   --tracking-*: initial; /* never letter-space Hebrew */
 
-  /* Latin face first: Inter has no Hebrew, so Hebrew falls through to Heebo glyph by glyph. While the web fonts load, Arial
-     scaled to each face's metrics holds the layout (Inter Fallback for Latin and digits, Heebo Fallback for Hebrew), and plain
-     Arial anything else. ₪ comes from Heebo. */
-  --font-sans: "Inter Variable", "Inter Fallback", "Heebo Variable", "Heebo Fallback", Arial, sans-serif;
+  /* Latin face first: Inter has no Hebrew, so Hebrew falls through to Heebo glyph by glyph.
+     Arial (has Hebrew) holds the layout while the web fonts load. ₪ comes from Heebo. */
+  --font-sans: "Inter Variable", "Inter Fallback", "Heebo Variable", Arial, sans-serif;
 
   /* Type scale for Hebrew: body never below 16px, taller line heights than Latin */
   --text-xs: 0.8125rem; /* 13px: captions, axis ticks, source dates */
   --text-xs--line-height: 1.5;
-  /* 13px in the line height of the text around it, with none of its own: a count, a source or a hint inside a line or a box whose
-     spacing its surroundings set */
-  --text-xs-flow: 0.8125rem;
   --text-sm: 0.875rem; /* 14px: secondary text, labels, table cells on a phone */
   --text-sm--line-height: 1.6;
   --text-base: 1rem; /* 16px: body, inputs (16px stops iOS zooming into a field) */

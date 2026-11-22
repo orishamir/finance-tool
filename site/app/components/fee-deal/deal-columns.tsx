@@ -12,7 +12,7 @@ import { Card, cx, useStickyColumn } from "../kit";
  * under the top, or under what a host keeps at its top (`--toolbox-top`, the indices page's popup's head and tiles), until
  * `useStickyColumn` places it.
  */
-export const TOOLBOX_STICKY = "@min-[75rem]/deal:sticky @min-[75rem]/deal:top-(--toolbox-top,5rem)";
+export const TOOLBOX_STICKY = "@min-[75rem]/deal:sticky @min-[75rem]/deal:top-[var(--toolbox-top,5rem)]";
 
 /**
  * The fees the deal can still take, in the toolbox's column while no fee is open there: it sticks and scrolls inside itself as the open
