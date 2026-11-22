@@ -1999,6 +1999,12 @@ function Lists({ today }: { today: string }) {
             <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} rules={["TXS-05", "TXS-06"]} />
           </span>
         </State>
+        <State label="tone caution: the mark in the caution role, where what it opens holds a catch about the figures under it (a child-savings fee head)">
+          <span className="inline-flex items-center gap-1 text-sm font-medium">
+            {g.sample.helpText.head}
+            <HelpMark about={g.sample.helpText.head} text={g.sample.helpText.text} tone="caution" />
+          </span>
+        </State>
         <State label="words: a quiet text action of its words before the mark, at the end of a panel's heading; its spoken name starts with them">
           <span className="flex items-center gap-3">
             <span className="text-lg font-semibold">{custodyName}</span>

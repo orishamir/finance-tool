@@ -4077,46 +4077,29 @@ export const invest = {
     colLeft: "נשאר בסוף",
     /** A fund row's note where the pair's price rests on a rule that is an open question (`pair.openRow` in the chosen fund's tile). */
     openRow: "לא מדורגת: שאלה פתוחה",
-    /** In "נשאר בסוף"'s "?": which price a row counts; a price for some customers is in the chosen account's card. */
-    whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר אחר, לחלק מהלקוחות, לא נכנס לחישוב. הוא כתוב בפירוט של החשבון שנבחר.",
     /** Above several funds with no price at the chosen account, after why: a pick moves the account (`pair.pickMoves` for one fund). */
     pickMovesMany: (house: string) => `בחירה באחת מהן מעבירה את החשבון ${toName(house)}`,
     /** The accounts' side beside the ruler: an account is a stretch of it. */
     accounts: {
       title: "איפה: החשבון",
-      /** The line under the title, its last words bold. */
-      sets: { lead: "החשבון קובע את", what: "הקטע" },
-      each: "כל נקודה בקטע: קרן אחת שנקנית בו",
       /** An account's figure: what is left with its cheapest fund. */
       upTo: "עד",
-      /** In the "?" beside "הקטע": the small bar beside each row, on the ruler's scale (from 1280 px) or on one scale (below, with no ruler). */
-      barRuler: "הפס הקטן ליד כל חשבון: הקטע שלו על הסרגל, מהקרן הזולה בו עד היקרה.",
-      barAlone: "הפס הקטן ליד כל חשבון: הקטע שלו, מהקרן הזולה בו עד היקרה. לכל החשבונות אותו סולם.",
       /** An account whose every priced fund of the kind rests on an open rule (G-18): shown, not ranked, no stretch; why is G-18's text. */
       unranked: "לא מדורג",
     },
     /** The funds' side: a fund is a spot inside the chosen account's stretch. */
     funds: {
       title: "איך: הקרן",
-      sets: { lead: "הקרן קובעת את", what: "המקום בקטע" },
-      /** "בפסגות: עד 4,492 ₪ בין קרן לקרן": the stretch's length at the chosen account. */
-      span: "{house}: עד {span} בין קרן לקרן",
-      spanAbout: (house: string) => `הפער בין הקרן שמשאירה הכי הרבה לזו שמשאירה הכי מעט, ${inName(house)}`,
-      inHouse: (house: string) => inName(house),
       /** A fund's figure against the pair in the receipt: less, more or the same as it leaves. */
       less: "פחות",
       more: "עוד",
       same: "אותו סכום",
-      /** In the "?" beside "המקום בקטע", below 1280 px, where no ruler stands: the small bar beside each fund. */
-      barAlone: (house: string) => `הפס הקטן ליד כל קרן: הקטע של ${house}, והנקודה בו היא הקרן.`,
       /** The fold under the list: the funds the chosen account gives no price, with their reasons. */
       unpriced: (n: number) => (n === 1 ? "ועוד קרן אחת בלי מחיר בחשבון הזה" : `ועוד ${n} קרנות בלי מחיר בחשבון הזה`),
       unpricedLabel: (house: string) => `קרנות בלי מחיר ${inName(house)}`,
       /** The heading over the funds on an open rule (G-18), after the ranked ones of their kind: shown, not ranked. */
       unranked: "לא מדורגות",
     },
-    /** Under both lists, how a tap moves them. `ruler`: from 1280 px, where the ruler stands between them. */
-    note: (ruler: boolean) => (ruler ? "לחיצה על חשבון מחליפה את הקטע שעל הסרגל. לחיצה על קרן מזיזה את הנקודה בתוכו." : "לחיצה על חשבון מחליפה את הקטע. לחיצה על קרן מזיזה את הנקודה בתוכו."),
     /** The ruler's title, over it: what it measures. */
     rulerTitle: "כמה נשאר לכם בסוף, לפי התוכנית שלכם",
     /** Under both lists, for the chosen account: a price for some of its customers that the figure leaves out (a group's, or a standing
@@ -4129,22 +4112,21 @@ export const invest = {
    * ranked and never chosen as the pair.
    */
   beforeTax: {
-    /** The heading over them, in the blocked colours with the lock. */
+    /** The heading over them, in the blocked colours with the lock, and a caution "?" beside it that holds the note below. */
     heading: "לפני מס רווחי הון, בלי דירוג",
-    /** The plain note under the heading, by the rule: `{term}` is `noteTerm`, the words that open the rule's card. */
+    /** The caution "?"'s text, by the rule, ended by the rule's chip (`HelpMark` `rules`). */
     note: {
-      "TXF-04": "מס רווחי הון על הקרנות האלה {term}: אין נוסח רשמי שאומר אם הרווח בקרן חוץ שנסחרת בתל אביב נמדד מול שער המטבע או מול מדד המחירים לצרכן.",
+      "TXF-04": "מס רווחי הון על הקרנות האלה עוד לא ידוע: אין נוסח רשמי שאומר אם הרווח בקרן חוץ שנסחרת בתל אביב נמדד מול שער המטבע או מול מדד המחירים לצרכן.",
     } as Record<string, string>,
-    noteOther: "המס על הקרנות האלה {term}: הוא תלוי בכלל שעוד לא נקבע.",
-    noteTerm: "עוד לא ידוע",
+    noteOther: "המס על הקרנות האלה עוד לא ידוע: הוא תלוי בכלל שעוד לא נקבע.",
     /** The note's last sentence: what the figures are and what is not done with them. */
     noteTail: "לכן הסכומים כאן לפני מס רווחי הון, ואי אפשר להשוות אותם לקרנות שלמעלה או לבחור בהן.",
     /** The list's name, for a screen reader. */
     label: (house: string) => `קרנות לפני מס רווחי הון ${inName(house)}`,
-    colCharges: "החשבון גובה",
-    colChargesHelp: "מה החשבון גובה בכל התקופה, לפני המס שהעמלות חוסכות, בכסף של היום.",
-    colLeft: "נשאר לפני מס רווחי הון",
-    colLeftHelp: "מה שנשאר בסוף אחרי דמי הניהול והעמלות, לפני מס רווחי הון במכירה, בכסף של היום. המס לא ידוע, ולכן אין כאן סכום אחרי מס רווחי הון.",
+    /** The list's one figure column, as the fund list's: the figure's sheet lists what the account charges among what it reads. */
+    colLeft: "נשאר לפני מס",
+    /** What the account charges, on the sheet of the figure before tax, among what it reads. */
+    costInput: "מה החשבון גובה בכל התקופה, בכסף של היום",
     leftAbout: (fund: string, house: string) => `נשאר לפני מס רווחי הון: ${fund}, ${inName(house)}`,
     costAbout: (house: string) => `מה החשבון גובה: ${house}`,
   },
@@ -4356,6 +4338,8 @@ export const invest = {
   customEntries: {
     addFund: "להוסיף קרן אחרת",
     edit: "עריכה",
+    /** The pencil beside a typed fund's name, in the lists and the pair card: its spoken name. */
+    editFund: "לערוך את הקרן",
     unknownLine: (list: string) => `לא הזנתם, ולכן לא ידוע: ${list}.`,
     /** A fee of a typed fund left empty, where its figure would stand. */
     notTyped: "לא הוזן",
@@ -4542,7 +4526,7 @@ export const invest = {
     /** Before any pick, on an index with no ranked pair: the pair shown is the one that leaves the most, on an open rule, and says why it is not ranked. */
     openTop: "הזוג שמשאיר הכי הרבה, בלי דירוג כי המס תלוי בשאלה פתוחה",
     /** Every pair within the site's tie threshold of the top (P-01, F-80): none is crowned, and the count is said; with the
-     *  funds they hold where fewer, the count the fund list's "אחת מ־3 הקרנות השקולות" makes ("אחד מ־5 הזוגות" beside "מ־3"). */
+     *  funds they hold where fewer ("אחד מ־5 הזוגות, שבהם 3 קרנות שונות"). */
     tieTop: (n: number, funds = n) =>
       `${n === 2 ? "אחד משני הזוגות הזולים ביותר לתוכנית שלכם" : `אחד מ־${n} הזוגות הזולים ביותר לתוכנית שלכם`}${funds >= n ? "" : funds === 1 ? (n === 2 ? ", שניהם באותה קרן" : ", כולם באותה קרן") : funds === 2 ? ", שבהם שתי קרנות שונות" : `, שבהם ${funds} קרנות שונות`}`,
     /** The next pair, itself within the threshold: no order is shown between them. */
@@ -4640,14 +4624,13 @@ export const invest = {
     /** On a house's line on an index with no fund, beside its price list: opens a new deal filled from the house's list. */
     ownPrice: "להזין מחיר שקיבלתם",
     colLeft: "נשאר",
-    /** The lists' head over what is left: its "?" says after what and in what money (design.md: a head says what it holds). */
-    colLeftHelp: "מה שנשאר לכם בסוף, אחרי דמי הניהול, העמלות והמס, בכסף של היום.",
     colFund: "קרן",
     colNumber: "מספר נייר",
     colFees: "דמי ניהול",
     colYield: "תשואת חלוקה",
-    /** The page's own pick when it is one of the pairs the tiles call tied (a tie, then the site's mark on one of them). */
-    markedTie: (n: number) => (n === 2 ? "אחת משתי הקרנות השקולות" : `אחת מ־${n} הקרנות השקולות`),
+    /** Beside a fund's name in the list, before any pick, where the page's own pair is one of the pairs the tiles call tied (P-01, F-80):
+     *  each tied fund. How many are tied is the receipt's head ("אחד משני הזוגות הזולים ביותר"). */
+    tiedWord: "שקולה",
     cheapestTag: "★ הזול",
     whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר לקבוצות כתוב בשורה של הבנק או בית ההשקעות ולא נכנס לחישוב.",
     /** D64: the bank where the person already has a current account; that bank's row leaves the current account out. */
@@ -4736,18 +4719,6 @@ export const invest = {
     listLabelAccounts: "חשבונות ניירות ערך",
     listLabelFunds: "קרנות על המדד",
     moreFunds: (n: number) => (n === 1 ? "עוד קרן אחת" : `עוד ${n} קרנות`),
-    /**
-     * In the "?" beside the fund list's name head, where a fund's name carries an exposure profile such as (4D) (ETF-12; "(4D) and (4A)
-     * are never explained"): each code on the list in plain words, over the term's glossary card. The keys are the profile's two grades.
-     */
-    profile: {
-      about: "הקוד בסוגריים בשם של קרן",
-      lead: "הקוד בסוגריים בשם של קרן ישראלית הוא",
-      term: "פרופיל החשיפה שלה",
-      equity: { "4": "יכולה להיות כולה במניות" } as Record<string, string>,
-      currency: { D: "וגם כולה במטבע חוץ", A: "וכמעט בלי מטבע חוץ, כמו קרן מנוטרלת מט״ח", "0": "ובלי מטבע חוץ" } as Record<string, string>,
-      code: (code: string, words: string) => `\u2066(${code})\u2069: הקרן ${words}`,
-    },
   },
 
   typeTags: { "il-etf": "קרן סל", "il-tracking": "קרן מחקה", "tase-foreign": "קרן חוץ בת״א", abroad: "בחו״ל" } as Record<string, string>,
@@ -4801,17 +4772,6 @@ export const invest = {
       ]
         .filter(Boolean)
         .join(" "),
-    kindsNote: "בכל סוג הקרנות מסודרות לפי מה שנשאר, והסדר לא תלוי בדולר.",
-    /** The shekel column's "?" (design.md: a column's longer explanation goes in its head's "?"): a fund 0.28% behind can leave less than
-     *  funds 0.29% behind, since the shekels follow the fees, and a lead inside them earns nothing. */
-    diffHelp: (steadyRate: boolean, gap: boolean) =>
-      [
-        "ההפרש במה שנשאר בסוף, אחרי דמי הניהול, עמלות החשבון והמס.",
-        gap ? "זה לא הפער מהמדד: בחישוב הזה, פיגור מעבר לדמי הניהול נוסף לעלות, והקדמה על המדד לא נספרת כרווח." : null,
-        steadyRate ? "הסכומים הם אם שער המטבע לא משתנה מול השקל." : null,
-      ]
-        .filter(Boolean)
-        .join(" "),
     notCollected: "לא נאסף",
     noSuchFee: "אין",
     /** What "אין" and "לא נאסף" say: `lines` states ETF-14 and MF-20 and `foreign` ETF-71, after the prefix ו (D116); a "?" sheet joins them all. */
@@ -4837,10 +4797,8 @@ export const invest = {
     israelTitle: "קרנות ישראליות",
   },
 
-  /** Under the lists, once, whether their order holds at the ends of P-02's return range ({lo}, {hi}, {at}: its bounds). */
+  /** Beside what the price of a fund abroad leaves out (`AbroadNotes`): funds abroad waiting for a unit price. */
   foot: {
-    holds: "הסדר ברשימות לא משתנה בתשואה של {lo} ושל {hi}.",
-    changes: { one: "הסדר ברשימות משתנה בתשואה של {at}.", both: "הסדר ברשימות משתנה בתשואה של {lo} ושל {hi}." },
     sharePrice: "קרנות בחו״ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף.",
   },
 
@@ -5139,9 +5097,8 @@ export const leftOut = {
   other: "עוד דברים שבמסמכים ולא בחישוב",
   /** The document's name with the page the thing is on. */
   page: (title: string, n: number) => `${title}, עמוד ${n}`,
-  /** The mark beside an account's name: what a screen reader says, and the line under the list that says what it is. */
+  /** The mark beside an account's name: what a screen reader says; a tap on it says what it is. */
   mark: "יש דברים שלא נכללו במחיר",
-  markKey: "סמל המסמך ליד שם של חשבון: יש במסמכים שלו דברים שלא נכללו במחיר, והם יכולים לשנות אותו. לחיצה על הסמל מראה מה.",
 };
 
 /**

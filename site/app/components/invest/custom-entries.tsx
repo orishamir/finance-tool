@@ -1,5 +1,6 @@
 // The person's own fund on the index page (D44): the quiet button under the lists, the panel it opens, and what a fund's row says. Typing stays in the panel: nothing on the page changes until the person saves (guidelines/design.md, "little movement").
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { Pencil } from "lucide-react";
 import { invest as root } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
 import { customFundGap, DOMICILES, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type CustomFund, type EntryError, type EntryTerm, type FundDomicile, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
@@ -99,6 +100,21 @@ export function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: 
       {terms.empty.length > 0 && <span>{c.unknownLine(c.listWords(terms.empty))}</span>}
       <EditButton editing={editing} />
     </span>
+  );
+}
+
+/**
+ * Beside a typed fund's name in the lists and the pair card: the pencil that opens its panel, as a deal's (`DealEditMark`). With the name's
+ * entered ink it says the fund is the person's own; what was typed is in the panel and in the sheets of the figures it prices. Outside the
+ * host (a test of a list alone) it is not drawn.
+ */
+export function FundEditMark({ id }: { id: string }) {
+  const e = useEditors();
+  if (!e) return null;
+  return (
+    <Button variant="icon" size="mark" aria-label={c.editFund} onClick={() => e.edit({ kind: "fund", id })}>
+      <Pencil size={14} aria-hidden />
+    </Button>
   );
 }
 

@@ -104,15 +104,15 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
   });
   it("before any pick, the fund list calls the page's own fund one of the tied, not the site's pick (pass 5 readers)", () => {
     const out = shown(lists(sp3, bundle, long, head3));
-    expect(fundRow(lists(sp3, bundle, long, head3), head3.fund)).toContain(invest.pair.markedTie(2));
+    expect(fundRow(lists(sp3, bundle, long, head3), head3.fund)).toContain(invest.pair.tiedWord);
     expect(out).not.toContain(invest.pair.cheapestTag);
   });
   it("every tied fund's row in the fund list says it is one of the tied, in the same words, and no other row does (independent check of pass 5)", () => {
     const out = lists(sp3, bundle, long, head3);
     const tied = tieFunds(sp3, head3, theta);
-    for (const f of allFunds(sp3)) expect(fundRow(out, f.rec.id).includes(invest.pair.markedTie(2)), f.rec.id).toBe(tied.includes(f.rec.id));
+    for (const f of allFunds(sp3)) expect(fundRow(out, f.rec.id).includes(invest.pair.tiedWord), f.rec.id).toBe(tied.includes(f.rec.id));
   });
-  it("the fund list counts tied funds, not pairs: one fund tied at two houses is one (independent check of pass 5)", () => {
+  it("the fund list marks tied funds, not pairs: one fund tied at two houses is one row marked (independent check of pass 5)", () => {
     // MSCI World, 50,000 now, nothing a month, one year: six pairs within the threshold, three funds (One Zero sells some of them, BRK-38)
     const one: WorkbenchInputs = { ...base, amountNow: 50000, monthly: 0, years: 1, values: { ...base.values, amount: entered(50000, "nis", t), monthly: entered(0, "nis_per_month", t), years: entered(1, "years", t) } };
     const w = buildInvest({ bundle, index: indexById(bundle, "index-msci-world")!, plan: one });
@@ -121,9 +121,7 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     const tied = tieFunds(w, h, theta);
     expect(tied).toHaveLength(3);
     const out = lists(w, bundle, one, h);
-    expect(shown(out)).toContain(invest.pair.markedTie(3));
-    expect(shown(out)).not.toContain(invest.pair.markedTie(6));
-    for (const id of tied) expect(fundRow(out, id), id).toContain(invest.pair.markedTie(3));
+    for (const f of allFunds(w)) expect(fundRow(out, f.rec.id).includes(invest.pair.tiedWord), f.rec.id).toBe(tied.includes(f.rec.id));
   });
   it("before any pick, the pair set beside the page's is the other of the tie, and no pair is called first or next", () => {
     const out = shown(html(createElement(ReceiptAndFees, { view: sp3, bundle, plan: long, pick: head3, chosen: false, onPick: () => undefined })));
@@ -176,15 +174,6 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     const why = out.indexOf(invest.pair.tieWhy(2));
     expect(other).toBeGreaterThan(0);
     expect(why).toBeGreaterThan(other);
-  });
-  it("the fund list's head holds every account's line laid out as the shown one, so a pick of an account moves nothing under it", () => {
-    const out = lists(sp, bundle, base, head).replace(/&amp;/g, "&").replace(/&quot;/g, '"');
-    const funds = out.indexOf('data-anchor="funds"');
-    const headPart = out.slice(out.lastIndexOf(invest.lists.funds.title, funds), funds);
-    const held = [...headPart.matchAll(/<div aria-hidden="true" class="invisible">([\s\S]*?)<\/div>/g)].map((m) => shown(m[1]!)).join(" ");
-    const priced = sp.providers.filter((p) => allFunds(sp).some((f) => "valueN" in (f.byHouse[p.id] ?? {})) && !p.id.startsWith("house-account-group"));
-    expect(priced.length).toBeGreaterThan(2);
-    for (const p of priced) expect(held.replace(/\u00a0/g, " "), p.id).toContain(p.short.replace(/\u00a0/g, " "));
   });
 });
 

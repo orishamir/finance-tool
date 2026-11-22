@@ -8,6 +8,7 @@
 import { groupPrices, invest as c } from "../../copy";
 import { fmt } from "../../lib/format";
 import { isCustomFund } from "../../lib/custom-entries";
+import { FundEditMark } from "./custom-entries";
 import { accountSum, asideLines, gapListFor, type InvestView } from "../../lib/invest";
 import { brokeragePagePath } from "../../lib/site-paths";
 import { pickableGroups } from "../../lib/group-pick";
@@ -140,7 +141,17 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
               ))}
             </>
           }
-          name={<MixedName className={isCustomFund(fund.rec) ? "text-entered [overflow-wrap:anywhere]" : "[overflow-wrap:anywhere]"}>{fund.name}</MixedName>}
+          name={
+            // a fund the person typed in the entered ink, and beside its name the pencil that edits it, as its row in the list
+            isCustomFund(fund.rec) ? (
+              <span className="flex min-w-0 items-center gap-1">
+                <MixedName className="text-entered [overflow-wrap:anywhere]">{fund.name}</MixedName>
+                <FundEditMark id={fund.rec.id} />
+              </span>
+            ) : (
+              <MixedName className="[overflow-wrap:anywhere]">{fund.name}</MixedName>
+            )
+          }
         >
           {fund.number && (
             <KeyValue size="xs" label={c.chosen.number}>

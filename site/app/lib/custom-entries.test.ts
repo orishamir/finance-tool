@@ -37,7 +37,6 @@ const plan: WorkbenchInputs = {
   age: null,
   income: null,
   values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
-  returnFromParameter: false,
 };
 
 // the terms of tests/golden/expected_custom_entries.py, as a typed account kept them: every line typed, a fee not charged as 0; a minimum
@@ -308,15 +307,16 @@ describe("a typed row that cannot be priced is still where its terms are changed
     const next = out.slice(at + 1).search(/data-pick-key="/);
     return out.slice(out.lastIndexOf("<div", at), next < 0 ? undefined : at + 1 + next);
   };
-  it("a fund with a fee left empty: no pick, and its terms with the edit button on a line under its row", () => {
+  it("a fund with a fee left empty: no pick, and the pencil that opens its panel beside its name", () => {
     const r = row(blank.id);
     expect(r).toContain('aria-disabled="true"');
-    expect(r).toContain(invest.customEntries.edit);
+    expect(r).toContain(`aria-label="${invest.customEntries.editFund}"`);
   });
-  it("a typed fund that is priced keeps its terms on its row too, and the collected rows carry none", () => {
-    expect(row(fund.id)).toContain(invest.customEntries.edit);
+  it("a typed fund that is priced has the pencil on its row too, with no line of its terms, and the collected rows carry none", () => {
+    expect(row(fund.id)).toContain(`aria-label="${invest.customEntries.editFund}"`);
+    expect(row(fund.id)).not.toContain(invest.customEntries.edit + "<");
     const collected = view.providers.find((p) => !p.custom)!;
-    expect(row(collected.id)).not.toContain(invest.customEntries.edit);
+    expect(row(collected.id)).not.toContain(invest.customEntries.editFund);
   });
 });
 

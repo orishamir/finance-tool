@@ -191,12 +191,18 @@ export function StretchChart(p: StretchChartProps) {
           {p.rulerHead}
         </div>
       )}
-      <div className="col-start-1 row-start-2 min-w-0">{p.startList}</div>
+      {/* each side's foot right under its own list, in one cell over the rows of the ruler and the foots, so a short list's foot never
+          waits below the other side's longer list or the ruler */}
+      <div className="col-start-1 row-start-2 row-span-2 flex min-w-0 flex-col gap-3">
+        {p.startList}
+        {p.startFoot}
+      </div>
       {/* the ruler's room: its box reaches a row's half above the lists' first row, and its scale starts at that row's middle */}
       <div ref={ruler} aria-hidden="true" className="col-start-2 row-start-2 mx-auto -mt-4 h-[calc(34rem+2rem)] w-[5.25rem]" />
-      <div className="col-start-3 row-start-2 min-w-0">{p.endList}</div>
-      {p.startFoot && <div className="col-start-1 row-start-3 min-w-0">{p.startFoot}</div>}
-      {p.endFoot && <div className="col-start-3 row-start-3 min-w-0">{p.endFoot}</div>}
+      <div className="col-start-3 row-start-2 row-span-2 flex min-w-0 flex-col gap-3">
+        {p.endList}
+        {p.endFoot}
+      </div>
       {p.note && <div className="col-span-3 row-start-4 pt-3">{p.note}</div>}
       {geo && <Drawing geo={geo} {...p} />}
     </div>

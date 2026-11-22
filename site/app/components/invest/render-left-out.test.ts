@@ -46,10 +46,9 @@ describe("the indices page", () => {
     const listsOut = lists(view0, bundle, plan, { house: "leumi", fund }, { chosen: true });
     if (bundle.snapshots.every((s) => !leftOutOf(s)?.warn)) {
       expect(listsOut).not.toContain(markLabel);
-      expect(shown(listsOut)).not.toContain(c.markKey);
     }
   });
-  it("an account whose record has something that can change its price carries a mark in its row, and the list says what the mark is", () => {
+  it("an account whose record has something that can change its price carries a mark in its row, and no line under the list explains it", () => {
     const b = marked("interactive-brokers");
     const view = buildInvest({ bundle: b, index, plan });
     const out = lists(view, b, plan, { house: "leumi", fund }, { chosen: true });
@@ -62,7 +61,7 @@ describe("the indices page", () => {
     const warned = rows.filter((k) => pricesAny(k) && (leftOutOf(b.snapshots.find((s) => s.id === k))?.warn ?? 0) > 0);
     expect(warned).toContain("interactive-brokers");
     expect(out.split(markLabel).length - 1).toBe(warned.length);
-    expect(shown(out)).toContain(c.markKey);
+    expect(shown(out)).not.toContain("סמל המסמך");
   });
 });
 
