@@ -8,6 +8,8 @@ export interface ContentProps {
   figure: (ruleId: string, name: string) => SiteValue | null;
   /** What the collected deposits say about breaking them (F-104), on the bank-deposit guide; null elsewhere. */
   breakTerms?: BreakTerms | null;
+  /** The name of the fund P-05 names for the guide's example, from its record (the securities account's); null where it names none. */
+  exampleFund?: string | null;
 }
 
 /** A fact of a country's product (data/abroad, D114), by its key in the record; `who`, who may open it. */

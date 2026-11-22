@@ -52,6 +52,16 @@ export function onlyWhatCanBeDoneFundByFund<S extends FeesSnapshot>(s: S): S {
 }
 
 /**
+ * A house's lines for ranking a run of one fund (`fund`, the site's fund number; none for a run that holds no fund): where an agreement in
+ * force names the fund (BRK-38, `agreedFunds`), the classes the agreements decide fund by fund keep their lines
+ * (`onlyWhatCanBeDoneFundByFund`), else `onlyWhatCanBeDone`. The guides and the goal comparison read a house so for P-05's fund, as the indices
+ * page asks each fund of the reports (`fundByFundOf`).
+ */
+export function onlyWhatCanBeDoneFor<S extends FeesSnapshot>(s: S, fund: string | undefined): S {
+  return fund !== undefined && agreedFunds(s).has(fund) ? onlyWhatCanBeDoneFundByFund(s) : onlyWhatCanBeDone(s);
+}
+
+/**
  * What the indices page reads of a house's distribution agreements (BRK-38, data-schema §3.6), built at build time from the record
  * (`fundByFundOf`), the reports themselves staying on the server: the classes they decide fund by fund, the site's own fund numbers a report
  * of an agreement in force names (`named`), the search that found the reports, and what the page says of a fund none names (`unnamed`).
@@ -76,13 +86,18 @@ export const agreedClasses = (s: Pick<BundleSnapshot, "fundByFund">): readonly s
 export function fundByFundOf(s: Pick<FeesSnapshot, "distribution_agreements">, siteFunds: ReadonlySet<string>, searchTitle: (distributor: string) => string): FundByFund | null {
   const da = s.distribution_agreements;
   if (!da) return null;
-  const inForce = new Set(da.reports.filter((r) => !r.ends).flatMap((r) => r.funds));
+  const inForce = agreedFunds(s);
   return {
     applies_to: [...da.applies_to],
     named: [...siteFunds].filter((n) => inForce.has(n)).sort(),
     search: { url: da.searched.url, title: searchTitle(da.distributor_he), checked: da.searched.checked },
     unnamed: { reason_he: da.unnamed.reason_he, rule_ids: [...da.unnamed.rule_ids], open_questions: [...da.unnamed.open_questions] },
   };
+}
+
+/** The fund numbers a house's distribution agreements in force name (BRK-38): the funds of its reports that have not ended. */
+function agreedFunds(s: Pick<FeesSnapshot, "distribution_agreements">): Set<string> {
+  return new Set((s.distribution_agreements?.reports ?? []).filter((r) => !r.ends).flatMap((r) => r.funds));
 }
 
 /** The line fields no calculation or line of the indices page reads (data-schema §3.6a): the record keeps them for the pages that show them. */
@@ -271,6 +286,9 @@ export interface FundAssumptions {
 
 type RunSpecError = { kind: "fund-type" } | { kind: "need-rate"; currency: string } | { kind: "need-yield" } | { kind: "other-currency"; fund: string; exposure: string };
 
+/** The market inputs a fund's run takes (F-04): A-01, how it is quoted, A-03 for the fund's currency, and A-03 for its principal currency. */
+type FundMarket = { grossReturn: number; returnIn?: "instrument"; fxChange?: number; principalFxChange?: number };
+
 /** The run inputs a fund fixes: its kind and drag (the same builder as F-65), the currency and how the return is quoted (F-04). */
 export function fundRun(
   s: SubjectFund,
@@ -280,7 +298,7 @@ export function fundRun(
   fx?: FxSnapshot,
   /** F-92 (d): the list the fund is ranked on (`gapListFor`); without it a gross benchmark gives no A-07 from its years. */
   list?: GapList,
-): { fund: NonNullable<ReturnType<typeof fundOf>>["fund"]; market: { grossReturn: number; returnIn?: "instrument"; fxChange?: number }; currency?: { code: string; startRate: number } } | RunSpecError {
+): { fund: NonNullable<ReturnType<typeof fundOf>>["fund"]; market: FundMarket; currency?: { code: string; startRate: number } } | RunSpecError {
   const rec = s.record;
   if (!exposure || exposure.cash_like) return { kind: "fund-type" };
   const israeli = rec.domicile === "IL";
@@ -292,10 +310,24 @@ export function fundRun(
   const dist = recordDistribution(rec) ?? (entered ? { yield: entered.yield / 100, perYear: entered.perYear } : undefined);
   if (rec.distribution_policy === "distributing" && !dist) return { kind: "need-yield" };
   if (rec.distribution_policy === "distributing" && !israeli && rec.domicile !== "US" && rec.domicile !== "IE") return { kind: "fund-type" };
-  const built = fundOf(rec, kind, rec.distribution_policy === "distributing" ? dist : undefined, assumptions.w8ben, list, exposure.id ? usDividendsOf({ id: exposure.id, us_dividends: exposure.us_dividends }) : undefined);
+  const built = fundOf(rec, kind, {
+    distribution: rec.distribution_policy === "distributing" ? dist : undefined,
+    w8ben: assumptions.w8ben,
+    list,
+    usDividends: exposure.id ? usDividendsOf({ id: exposure.id, us_dividends: exposure.us_dividends }) : undefined,
+    foreignCurrency: isShekel(exposure.currency) ? undefined : exposure.currency,
+  });
   if (!built.hasManagement) return { kind: "fund-type" };
   const f = (assumptions.fxChange ?? 0) / 100;
-  const market: { grossReturn: number; returnIn?: "instrument"; fxChange?: number } = { grossReturn };
+  const market: FundMarket = { grossReturn };
+  // F-04, TXS-14: the principal-currency reading's tax index is that currency's path: the one the fund's documents name, which the data check
+  // holds to the exposure's (data-schema §4 item 21), or the exposure's own as the candidate where the status is not known; A-03 moves it
+  // whether or not the fund neutralises that currency in its value
+  const principal = built.fund.principalCurrency;
+  if (principal !== undefined) {
+    if (principal !== exposure.currency) throw new Error(`F-04: fund ${rec.id} principal currency ${principal} is not its exposure's ${exposure.currency}`);
+    market.principalFxChange = f;
+  }
   const fundCurrency = isShekel(rec.currency) ? "ILS" : rec.currency;
   if (fundCurrency === "ILS") {
     // a fund that neutralises the exposure's currency is not moved by A-03 (F-04)

@@ -1,5 +1,5 @@
-// The fund the engine runs for a fund record (`fundOf`): its fees, tracking difference, spread, promotions, distribution, domicile and
-// unit price, read from `data/funds/`, with the record's distribution (A-10) and the exposure's F-107 inputs. The provider workbench and
+// The fund the engine runs for a fund record (`fundOf`): its fees, tracking difference, spread, promotions, distribution, domicile,
+// principal currency and unit price, read from `data/funds/`, with the record's distribution (A-10) and the exposure's F-107 inputs. The provider workbench and
 // the site build each fund they run through it. No I/O: the records arrive as data.
 import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/schema";
 import { comparedYears, trackingBeyondFees, variableForward, type GapList } from "../formulas/fund-gap.ts";
@@ -41,12 +41,25 @@ export function usDividendsOf(exposure: Pick<ExposureRecord, "id" | "us_dividend
   return w === undefined ? undefined : { yield: y, weight: w };
 }
 
-/**
- * The fund the engine runs for a record, and the fee fields the record leaves empty. `list`: the list the fund is ranked on, for F-92 (d);
- * without it a gross benchmark gives no A-07 from its years.
- * `usDividends`: the exposure's F-107 inputs (`usDividendsOf`), read for an Irish fund that holds the shares.
- */
-export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: number; perYear: number } | undefined, w8ben: boolean | undefined, list?: GapList, usDividends?: { yield: number; weight: number }) {
+/** What `fundOf` reads beside the record and its kind; each left out where the caller has none. */
+export interface FundOfOptions {
+  /** A-10: the distribution the run pays out (yield and payments a year), for a fund that distributes. */
+  distribution?: { yield: number; perYear: number };
+  /** W-8BEN on file with the US payer (TXF-12, TXF-13). */
+  w8ben?: boolean;
+  /** The list the fund is ranked on, for F-92 (d); without it a gross benchmark gives no A-07 from its years. */
+  list?: GapList;
+  /** The exposure's F-107 inputs (`usDividendsOf`), read for an Irish fund that holds the shares. */
+  usDividends?: { yield: number; weight: number };
+  /**
+   * The exposure's currency where it is not the shekel, the candidate principal currency of an Israeli fund whose record says its status as
+   * a foreign-investment fund is not known (F-04).
+   */
+  foreignCurrency?: string;
+}
+
+/** The fund the engine runs for a record, and the fee fields the record leaves empty. */
+export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist, w8ben, list, usDividends, foreignCurrency }: FundOfOptions = {}) {
   const notCollected: string[] = [];
   const f = rec.fees;
   const get = (key: keyof FundRecord["fees"], unit: ValueObject["unit"]) => {
@@ -104,6 +117,11 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
     fund.sharePriceCurrency = unitCode;
   }
   if (kind === "tase-foreign-fund" && rec.tax_status.tase_foreign_fund_90pct_test?.value === true) fund.ninetyPercentTest = true;
+  // TXS-14, F-04: the principal currency the fund's own documents name; where its record says the status is not known (`value: null`), the
+  // exposure's foreign currency as the candidate, so the run meets both readings rather than reading the gap as either answer
+  const status = rec.tax_status.foreign_investment_fund;
+  const principal = typeof status?.value === "string" ? status.value : status?.value === null ? foreignCurrency : undefined;
+  if (kind === "israeli-fund" && principal !== undefined) fund.principalCurrency = principal;
   // TXF-11: the fund's own annex reports a ruling that taxes it at sale and on distributions only.
   if (rec.tax_ruling && rec.distribution_policy === "accumulating") fund.saleOnlyRuling = true;
   return { fund, notCollected, hasManagement: management !== undefined };

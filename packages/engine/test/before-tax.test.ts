@@ -125,19 +125,20 @@ describe("a TASE foreign fund read before tax (F-118, D84)", () => {
   });
 
   it("is read only for a run an open rule blocks: any other fund's run stays runSecurities's", () => {
-    expect(beforeTaxPathOf({ kind: "tase-foreign-fund" }, ctx)).toBe("TXF-04");
+    expect(beforeTaxPathOf(tase({ fund: { kind: "tase-foreign-fund" } }), ctx)).toEqual({ ruleId: "TXF-04" });
     for (const kind of ["israeli-fund", "foreign-fund", "money-market-daily"] as const) {
-      expect(beforeTaxPathOf({ kind }, ctx)).toBeNull();
-      expect(() => runSecuritiesBeforeTax(tase({ fund: { kind, drag: {} }, market: { grossReturn: 0.05, inflation: 0.02 } }), ctx)).toThrow(/F-118/);
+      const other = tase({ fund: { kind, drag: {} }, market: { grossReturn: 0.05, inflation: 0.02 } });
+      expect(beforeTaxPathOf(other, ctx)).toBeNull();
+      expect(() => runSecuritiesBeforeTax(other, ctx)).toThrow(/F-118/);
     }
     // with TXF-04 settled nothing blocks the run, so nothing is read before tax
-    expect(beforeTaxPathOf({ kind: "tase-foreign-fund" }, letter)).toBeNull();
+    expect(beforeTaxPathOf(tase({ fund: { kind: "tase-foreign-fund" } }), letter)).toBeNull();
   });
 
   it("gives a fund that pays out no figure: its form is unknown, and for an arrangement the tax on its distributions is open (TXF open question 19)", () => {
     const fund = { kind: "tase-foreign-fund" as const, distribution: { yield: 0.015, perYear: 4 } };
     expect(securitiesBlockedBy(fund, ctx)).toBe("TXF-04");
-    expect(beforeTaxPathOf(fund, ctx)).toBeNull();
+    expect(beforeTaxPathOf(tase({ fund }), ctx)).toBeNull();
     expect(() => runSecuritiesBeforeTax(tase({ fund }), ctx)).toThrow(NotEvaluatedError);
     expect(() => runSecuritiesBeforeTax(tase({ fund }), ctx)).toThrow("TXF-OQ19");
   });

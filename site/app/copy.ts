@@ -1028,6 +1028,8 @@ export const flags: Record<string, string> = {
   // F-12 at Interactive Israel's European minimum, 2.5 in the trade's currency, beside its collection sentence (BRK OQ25)
   "BRK-OQ25": "עמלת המינימום בקנייה ובמכירה כאן חושבה לפי 2.5 במטבע העסקה, כלשון התעריפון. אותו עמוד אומר גם שהעמלה נגבית במטבע הראשי של הבורסה. הוא לא אומר איך זה מתיישב עם מינימום בעסקה בדולרים, ולכן העמלה בפועל יכולה להיות שונה.",
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה. האתר עוד לא בדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
+  // F-04, method §13: a fund run under both readings of TXS OQ26 (TXS-14), beside a figure both readings give
+  "TXS-OQ26": "לא ידוע אם הרווח בקרן הזו נמדד מול שער המטבע העיקרי שלה או מול מדד המחירים לצרכן. כמטבע העיקרי האתר לוקח את המטבע שהמדד מחושב בו. בתוכנית הזו שתי הדרכים נותנות אותו מס.",
   "G-14": "הוצאות ישירות של המסלול עוד לא נאספו, ולכן לא נכללו בחישוב.",
   // F-119: an s.120ב amount read for a year after its freeze; TXG OQ16 (the rounding, the CPI readings, the unrounded 2024 amount) keeps it from being exact
   // the person's income stays as entered (A-12, A-13), and the figures linked to the average wage stay at 2026's (method G-36); a fall of the CPI is TXG OQ17,
@@ -1104,6 +1106,8 @@ export const flags: Record<string, string> = {
 
 /** Labels of the values a computation reads, shown in the number sheet (copy.md 3.8 "ערכים שנכנסו לחישוב"). */
 export const computedInputs = {
+  /** What the lowest in-fund cost of the goal comparison is (`classMinFee`): the cheapest of the funds P-05's fund is chosen from, by number. */
+  lowestSettled: (id: string) => `הנמוכה ביותר שנאספה באותה חשיפה, מבין הקרנות שלפי המסמכים שלהן אינן קרן נאמנות להשקעות חוץ (${id})`,
   /** A printed fee's period, as the value of `names.period` on the sheet of F-17's monthly sum. */
   periods: { month: "חודש", quarter: "רבעון", year: "שנה" },
   /** Hebrew names for the input keys the engine and the site's lifts write in English; a key not here (already Hebrew) is shown as written */
@@ -4098,9 +4102,13 @@ export const invest = {
   beforeTax: {
     /** The heading over them, in the blocked colours with the lock, and a caution "?" beside it that holds the note below. */
     heading: "לפני מס רווחי הון, בלי דירוג",
-    /** The caution "?"'s text, by the rule, ended by the rule's chip (`HelpMark` `rules`). */
+    /**
+     * The caution "?"'s text, by the rule, ended by the rule's chip (`HelpMark` `rules`). A list can hold funds of both rules (a TASE foreign
+     * fund stops before any run, an Israeli fund whose readings split stops by its run), so each sentence names the funds it speaks of.
+     */
     note: {
-      "TXF-04": "מס רווחי הון על הקרנות האלה עוד לא ידוע: אין נוסח רשמי שאומר אם הרווח בקרן חוץ שנסחרת בתל אביב נמדד מול שער המטבע או מול מדד המחירים לצרכן.",
+      "TXF-04": "בקרנות החוץ כאן מס רווחי הון עוד לא ידוע: אין נוסח רשמי שאומר אם הרווח בקרן חוץ שנסחרת בתל אביב נמדד מול שער המטבע או מול מדד המחירים לצרכן.",
+      "TXS-14": "בקרנות הישראליות כאן מס רווחי הון עוד לא ידוע: לא ידוע אם הרווח בהן נמדד מול שער המטבע העיקרי שלהן או מול מדד המחירים לצרכן, ובתוכנית הזו שתי הדרכים נותנות תוצאה שונה. כמטבע העיקרי האתר לוקח את המטבע שהמדד מחושב בו.",
     } as Record<string, string>,
     noteOther: "המס על הקרנות האלה עוד לא ידוע: הוא תלוי בכלל שעוד לא נקבע.",
     /** The note's last sentence: what the figures are and what is not done with them. */
@@ -4408,24 +4416,6 @@ export const invest = {
 
   worth: {
     lines: { house: "אותה קרן, בחשבון ניירות ערך אחר", fund: "אותו חשבון ניירות ערך, קרן אחרת" },
-    heading: "מה כל בחירה שווה, בפירוט",
-    sub: "ההפרש בין הבחירה הטובה לגרועה, בכסף של היום.",
-    bars: {
-      broker: "איזה חשבון ניירות ערך",
-      fund: "איזו קרן",
-      "etf-tracking": "קרן סל או קרן מחקה",
-      abroad: "בארץ או בחו״ל",
-    } as Record<string, string>,
-    barNote: {
-      broker: (option: string) => `בין הזול ליקר, ב${option}`,
-      fund: (option: string) => `בין הקרנות ב${option}, אצל הזול`,
-      "etf-tracking": "הטובה בכל אחת מהשתיים",
-      abroad: "הטובה בארץ מול הטובה בחו״ל",
-    },
-    upTo: "עד",
-    pendingNoRecords: "אין רשומות",
-    pendingNotPriced: "בחישוב",
-    open: "נשען על כלל פתוח",
   },
 
   options: {
@@ -5026,7 +5016,9 @@ export const invest = {
     "hedged-many": { text: (ccy: string) => `מנוטרלת ${ccy}`, explain: (ccy: string) => `הקרן מנטרלת רק את החשיפה לשער ה${ccy} מול השקל, חוץ מחשיפה מזערית לצרכים תפעוליים. המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות, ולכן המטבעות האחרים שבמדד עדיין משנים את ערכה, מול ה${ccy}. הנטרול יכול להוסיף לקרן או לקחת ממנה, לפי פער הריביות בין המטבעות ולפי האופן שבו המדד והמטבע זזים יחד. התוצאה נראית בפער של הקרן מהמדד שלה, והחישוב באתר כולל אותו.` },
     "currency-foreign": { text: "חשיפה למט״ח", explain: "את המדד הזה הוספתם, והאתר לא יודע באיזה מטבע הוא מחושב. ערך הקרן עולה ויורד גם עם שער המטבע הזה מול השקל. בדיקת השער באתר זהה לכל מטבע, ולכן היא לא תלויה בשאלה איזה מטבע זה." },
     "currency-many": { text: (ccy: string) => `חשיפה ל${ccy} ולמטבעות נוספים`, explain: (ccy: string) => `ערך הקרן עולה ויורד עם שער ה${ccy} מול השקל, ועם המטבעות האחרים שבמדד, כי המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות.` },
-    "tax-currency": { text: "מס גם על שינויי המטבע", explain: "ביחידות שקליות של קרן ישראלית, הרווח הריאלי נמדד מול מדד המחירים לצרכן, ולכן גם עליית המטבע שבתוך הרווח ממוסה. בקרן שכמעט כל השקעותיה צמודות למטבע עיקרי שבחרה, הרווח נמדד מול המטבע הזה. זה כך אם תקנות מ־2003 שקובעות זאת עדיין בתוקף, ולפי קריאה של האתר הן בתוקף." },
+    "tax-currency": { text: "מס גם על שינויי המטבע", explain: "ביחידות שקליות של קרן ישראלית שאינה קרן נאמנות להשקעות חוץ, הרווח הריאלי נמדד מול מדד המחירים לצרכן, ולכן גם עליית המטבע שבתוך הרווח ממוסה." },
+    "tax-currency-open": { text: "מס על המטבע: לא ידוע", explain: "לפי מסמכי הקרן היא קרן נאמנות להשקעות חוץ. בקרן כזו הרווח הריאלי נמדד מול שער המטבע העיקרי שלה, אם תקנות מ־2003 שקובעות זאת עדיין בתוקף, ולא ידוע אם הן בתוקף. אם לא, הרווח נמדד מול מדד המחירים לצרכן. האתר מחשב את שתי הדרכים, ומדרג את הקרן רק כשהן נותנות אותו מס." },
+    "tax-currency-unknown": { text: "מס על המטבע: לא ידוע", explain: "האתר לא יודע אם הקרן הזו היא קרן נאמנות להשקעות חוץ. בקרן כזו הרווח הריאלי נמדד מול שער המטבע העיקרי שלה, אם תקנות מ־2003 שקובעות זאת עדיין בתוקף, וגם זה לא ידוע. בקרן אחרת הוא נמדד מול מדד המחירים לצרכן. המטבע העיקרי נקבע בתשקיף, והאתר לוקח במקומו את המטבע שהמדד מחושב בו. האתר מחשב את שתי הדרכים, ומדרג את הקרן רק כשהן נותנות אותו מס." },
     "tax-fund-dividend": { text: "מס דיבידנד בתוך הקרן", explain: "קרן אירית משלמת מס אמריקני על דיבידנדים מחברות אמריקניות. המס הזה הוא עלות של הקרן ולא מזוכה בישראל: כך רשות המסים אומרת על קרן חוץ שרשומה בבורסה בתל אביב, ועל קרן שנקנית בחו״ל זו קריאה של האתר." },
     "tax-distribution": { text: "מס על כל חלוקה", explain: "קרן שמחלקת משלמת לכם דיבידנד, וממנו משלמים מס בכל חלוקה, לפני המכירה." },
     "pays-accumulating": { text: "צוברת", explain: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש." },

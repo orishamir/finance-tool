@@ -25,7 +25,27 @@
   "distribution_policy": "accumulating",
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null
+    "tase_foreign_fund_90pct_test": null,
+    "foreign_investment_fund": {
+      "value": null,
+      "unit": "text",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf#page=1",
+        "title": "דוח שנתי 'ילין לפידות מחקה (4D) S&P 500' (מספר בורסה 5139282), תאריך הדוח 31 דצמבר 2025, ילין לפידות - ניהול קרנות נאמנות בע\"מ, עמ' 1, 'מאפיינים עיקריים של הקרן': 'מסלול המס: פטורה'",
+        "publisher": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-11-22",
+      "effective_from": "2025-12-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXS-14"
+      ],
+      "state": "sourced",
+      "notes": "Not known. The annual report names the tax track only ('מסלול המס: פטורה'). Yalin Lapidot's main prospectus of 20.12.2025 (https://mayafiles.tase.co.il/rpdf/1709001-1710000/P1709452-00.pdf#page=23) states 'פטורה' for this fund and names no fund a foreign-investment fund in its tables (only its tax chapter, s.9, explains the status), so its column does not say whether this fund is one."
+    }
   },
   "fees": {
     "fixed_management": {
