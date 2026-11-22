@@ -125,7 +125,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
     line ? "rounded-lg px-2.5 py-1 min-h-8 pointer-coarse:min-h-target max-xl:min-h-target" : "px-4 py-2.5 min-h-target border-b border-border last:border-b-0",
   );
   const radio = (r: PickRow) => (line ? null : <span aria-hidden="true" className={cx("size-4 rounded-full border-[1.5px] self-start mt-1", r.selected ? "border-[5px] border-primary" : "border-input")} />);
-  const gridClass = line ? "grid-cols-(--pick-cols-phone) md:grid-cols-(--pick-cols)" : "grid-cols-[1.25rem_var(--pick-cols-phone)] md:grid-cols-[1.25rem_var(--pick-cols)]";
+  const gridClass = line ? "grid-cols-[var(--pick-cols-phone)] md:grid-cols-[var(--pick-cols)]" : "grid-cols-[1.25rem_var(--pick-cols-phone)] md:grid-cols-[1.25rem_var(--pick-cols)]";
   const chosenLine = { primary: "bg-primary/10 ring-[1.5px] ring-inset ring-primary hover:bg-primary/10", account: "bg-chart-by-account/15 ring-[1.5px] ring-inset ring-chart-by-account hover:bg-chart-by-account/15", fund: "bg-chart-by-fund/15 ring-[1.5px] ring-inset ring-chart-by-fund hover:bg-chart-by-fund/15" }[tone];
   const folds = !open && phoneLimit !== undefined && rows.length > phoneLimit + 1;
   // the rows the fold shows: the first N, the chosen one among them (further down, it takes the last place, so the count never changes);

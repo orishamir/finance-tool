@@ -1,7 +1,6 @@
 /* Fonts (audit 2026-10-24, A49): only the two subsets the site uses (Inter latin for digits and Latin, Heebo hebrew),
    preloaded from root.tsx. The fontsource entry files also declare latin-ext, cyrillic, greek, vietnamese and Heebo's
-   math and symbols; none is needed. "Inter Fallback" and "Heebo Fallback" are Arial scaled to Inter's and Heebo's metrics, each
-   on its own face's characters, so the late swap barely moves text. */
+   math and symbols; none is needed. "Inter Fallback" is Arial scaled to Inter's metrics, so the late swap barely moves text. */
 @font-face {
   font-family: "Inter Variable";
   font-style: normal;
@@ -27,28 +26,8 @@
   line-gap-override: 0%;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
 }
-/* Arial's Hebrew at Heebo's width and line: a Hebrew text is as wide in it, at body weight, as in Heebo (size-adjust), and its ascent
-   and descent are Heebo's (1.048 and 0.421 of the size), so a paragraph keeps its lines and its glyphs their place when Heebo arrives
-   (docs/design-system.md 2.4). Safari ignores the three overrides and keeps size-adjust: there the lines still match, and the
-   text sits under a pixel lower in its line until the swap. */
-@font-face {
-  font-family: "Heebo Fallback";
-  src: local("Arial");
-  size-adjust: 105.4%;
-  ascent-override: 99.4%;
-  descent-override: 39.9%;
-  line-gap-override: 0%;
-  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
-}
 @import "tailwindcss";
 @import "./theme.css";
-@layer theme, base, components, utilities, overrides;
-
-/* While something is carried (kit/lift.tsx), a cell of a fee table or grid keeps its resting look under the pointer: only a place that
-   takes the carried thing answers it (its dashed frame and preview, DropZone), so a cell that takes nothing never looks like one. A hover
-   fill inside a fee table or grid (`data-span-table`) is written `resting:hover:…`: it shows while nothing is carried, outside those
-   tables, and on the carried thing's own place (`data-lifted`). */
-@custom-variant resting (&:where(:root:not(:has([data-lift-ghost])) *, :not([data-span-table] *), [data-lifted]));
 
 /* Right to left throughout: use logical utilities (ms-, me-, ps-, pe-, inset-s-, inset-e-), never left/right.
    Tokens are in theme.css; how to use them is in docs/design-system.md. Component rules below follow
@@ -957,7 +936,7 @@
     position: fixed;
     left: 0;
     top: 0;
-    z-index: var(--z-carry-over);
+    z-index: 61;
     pointer-events: none;
     max-width: 18rem;
     padding: 0.25rem 0.5rem;
@@ -971,7 +950,7 @@
   /* The carried thing's picture: a clean copy of it, upright, on the card's surface and raised off the page. Over the bin it dims behind
      a red edge; with the modifier key held (a copy) a plus stands at its corner. */
   [data-lift-ghost] {
-    z-index: var(--z-carry);
+    z-index: 60;
     border-radius: var(--radius-md);
     background: var(--card);
     box-shadow: var(--shadow-lg);
@@ -1000,7 +979,7 @@
   /* A knob's pull (kit/lift.tsx `SpanKnob`): the cell's edge follows the pointer as a frame in the action colour */
   [data-reach-frame] {
     position: fixed;
-    z-index: var(--z-reach);
+    z-index: 59;
     pointer-events: none;
     border-radius: var(--radius-md);
     outline: 2px solid var(--primary);
@@ -1036,14 +1015,14 @@
   }
   /* an axis's label or gridline coming or going while the scale glides (kit, chart-glide) */
   .chart-tick-in {
-    animation: fade-in var(--duration-chart-fade) both;
+    animation: fade-in var(--duration-chart) both;
   }
   .chart-tick-out {
-    animation: fade-out var(--duration-chart-fade) both;
+    animation: fade-out var(--duration-chart) both;
   }
   /* a line or band that comes in; backwards only, so afterwards its own opacity (a dimmed series) holds */
   .chart-line {
-    animation: fade-in var(--duration-chart-fade) backwards;
+    animation: fade-in var(--duration-chart) backwards;
   }
   @media (min-width: 64rem) {
     @keyframes sheet-in {
@@ -1579,53 +1558,60 @@
   }
 }
 
-/* ---------------------------------------------------------------- What must beat the utilities
-   One layer declared after Tailwind's, so its rules win over every utility without leaving the layers. Each is selected by a data
-   attribute or a class of this stylesheet, never by an escaped Tailwind class name; the short-screen rule names the one utility it
-   undoes, `sticky`. */
-@layer overrides {
-  /* Under a table's caption row (ProductTable `band`), a head's "?" takes its 44 px from 4 px over its line downward, as a sorting head's
-     button beside it does, instead of centred on its line: centred, it reached 12 px up into the caption row, where a cap's figure ("4%")
-     stands over the deposit fee's "?" and took 8 px of it (2026-11-13). Its mark is drawn where it was, 2 px under its line's top. Here,
-     so it wins over the mark's own margins. */
-  .tbl-banded thead tr:not(.tbl-band) .help-mark {
-    margin-top: -4px;
-    margin-bottom: -20px;
-    align-items: flex-start;
-    padding-top: 6px;
-  }
+/* Under a table's caption row (ProductTable `band`), a head's "?" takes its 44 px from 4 px over its line downward, as a sorting head's
+   button beside it does, instead of centred on its line: centred, it reached 12 px up into the caption row, where a cap's figure ("4%")
+   stands over the deposit fee's "?" and took 8 px of it (2026-11-13). Its mark is drawn where it was, 2 px under its line's top. Outside the
+   layers, so it wins over the mark's own margins. */
+.tbl-banded thead tr:not(.tbl-band) .help-mark {
+  margin-top: -4px;
+  margin-bottom: -20px;
+  align-items: flex-start;
+  padding-top: 6px;
+}
 
-  /* Short screens (a phone on its side): the sticky chip bars, table heads and bottom bars would take most of it, so they
-     scroll with the page (audit 2026-10-24, A50). The header stays. Here, so it wins over the `sticky` utility it undoes. */
-  @media (max-height: 500px) {
-    main .sticky {
-      position: static;
-    }
+/* Short screens (a phone on its side): the sticky chip bars, table heads and bottom bars would take most of it, so they
+   scroll with the page (audit 2026-10-24, A50). The header stays. */
+@media (max-height: 500px) {
+  main .sticky {
+    position: static;
   }
+}
 
-  /* A grid's case cell is drawn by its face (kit/case-table.tsx, `data-cell-face`), a filled card that would cover the frame its drop
-     place draws on the cell (DropZone): while something is carried, the face wears that frame, dashed, and with the thing over it the
-     frame solid and the fill, as a table's cell does. Here, so it wins over the face's own fill. */
-  :root:has([data-lift-ghost]) [data-drop-zone] > * > [data-cell-face] {
-    outline: inherit;
-    outline-offset: inherit;
-  }
-  :root:has([data-lift-ghost]) [data-drop-zone][data-drop-over] > * > [data-cell-face] {
-    background-color: var(--color-accent);
-  }
+/* While something is carried, a cell of a fee table or grid keeps its resting look under the pointer: only a place that takes the
+   carried thing answers it (its dashed frame and preview, DropZone), so a cell that takes nothing never looks like one. Outside the layers, so it wins over the utilities' hover fill. */
+:root:has([data-lift-ghost]) [data-span-table] .hover\:bg-accent:hover:not(.bg-accent, [data-lifted]),
+:root:has([data-lift-ghost]) [data-span-table] .group:hover .group-hover\:bg-accent:not(.bg-accent, [data-pick-card], [data-drop-over] > * > *) {
+  background-color: var(--color-popover);
+}
+:root:has([data-lift-ghost]) [data-span-table] .group:hover [data-pick-card] {
+  background-color: transparent;
+}
+/* a table's cell rests on its tile, with no fill of its own */
+:root:has([data-lift-ghost]) [data-case-table] .hover\:bg-accent:hover:not(.bg-accent, [data-lifted]) {
+  background-color: transparent;
+}
 
-  /* A thing a mouse press on its own surface lifts (kit/lift.tsx, `data-lift-grab`: a fee table's or grid's cell, line or head, a part
-     of the open case) shows the grab hand over its padding and its plain words; a figure, a field or a button inside keeps its own. While
-     something is carried the hand is closed everywhere: on every element, since the browser, the utilities and this stylesheet each set
-     a hand of their own on some, and only the universal selector reaches them all. Here, so it wins over the utilities' pointer. */
-  @media (pointer: fine) {
-    [data-lift-grab],
-    [data-lift-grab] > [data-pick-card] {
-      cursor: grab;
-    }
+/* A grid's case cell is drawn by its face (kit/case-table.tsx, `data-cell-face`), a filled card that would cover the frame its drop
+   place draws on the cell (DropZone): while something is carried, the face wears that frame, dashed, and with the thing over it the
+   frame solid and the fill, as a table's cell does. Outside the layers, so it wins over the utilities. */
+:root:has([data-lift-ghost]) [data-drop-zone] > * > [data-cell-face] {
+  outline: inherit;
+  outline-offset: inherit;
+}
+:root:has([data-lift-ghost]) [data-drop-zone][data-drop-over] > * > [data-cell-face] {
+  background-color: var(--color-accent);
+}
+
+/* A thing a mouse press on its own surface lifts (kit/lift.tsx, `data-lift-grab`: a fee table's or grid's cell, line or head, a part
+   of the open case) shows the grab hand over its padding and its plain words; a figure, a field or a button inside keeps its own. While
+   something is carried the hand is closed everywhere. Outside the layers, so it wins over the utilities' pointer. */
+@media (pointer: fine) {
+  [data-lift-grab],
+  [data-lift-grab] > [data-pick-card] {
+    cursor: grab;
   }
-  :root:has([data-lift-ghost]),
-  :root:has([data-lift-ghost]) * {
-    cursor: grabbing;
-  }
+}
+:root:has([data-lift-ghost]),
+:root:has([data-lift-ghost]) * {
+  cursor: grabbing;
 }

@@ -39,13 +39,13 @@ export function PeriodBars({ bars, value, onChange, empty, label, chosenWord, cl
             aria-label={on ? `${b.spoken}, ${chosenWord}` : b.spoken}
             onClick={() => onChange(b.id)}
             className={cx(
-              "group/bar min-w-0 flex flex-col items-center gap-2 rounded-lg border pt-3 pb-2 md:pb-3 px-0.5 md:px-2 cursor-pointer transition-colors duration-(--duration-base)",
+              "group/bar min-w-0 flex flex-col items-center gap-2 rounded-lg border pt-3 pb-2 md:pb-3 px-0.5 md:px-2 cursor-pointer transition-colors duration-[var(--duration-base)]",
               on ? "border-primary bg-primary-subtle" : "border-transparent bg-muted/40 hover:bg-muted hover:border-border",
             )}
           >
             {/* the plot: a fixed height in every column, so the bars stand on one line; the figure sits on its bar */}
             <span className="relative w-full h-36 md:h-44 flex flex-col items-center justify-end gap-1">
-              <span aria-hidden="true" className={cx("text-xs md:text-sm font-semibold tabular-nums leading-tight whitespace-nowrap", b.value === null && "text-muted-foreground font-normal")}>
+              <span aria-hidden="true" className={cx("text-[13px] md:text-sm font-semibold tabular-nums leading-tight whitespace-nowrap", b.value === null && "text-muted-foreground font-normal")}>
                 {b.value === null ? (
                   empty
                 ) : (
@@ -59,7 +59,7 @@ export function PeriodBars({ bars, value, onChange, empty, label, chosenWord, cl
                 <span
                   aria-hidden="true"
                   data-mark="bar"
-                  className={cx("block w-[62%] md:w-[56%] max-w-24 rounded-t-[4px] transition-[height] duration-(--duration-chart) ease-standard motion-reduce:transition-none", on ? "bg-primary" : "bg-chart-value/55 group-hover/bar:bg-chart-value/70")}
+                  className={cx("block w-[62%] md:w-[56%] max-w-24 rounded-t-[4px] transition-[height] duration-[var(--duration-chart)] ease-standard motion-reduce:transition-none", on ? "bg-primary" : "bg-chart-value/55 group-hover/bar:bg-chart-value/70")}
                   // the figure's line takes about 1.5rem of the plot; the bar takes up to the rest
                   style={{ height: `calc((100% - 1.5rem) * ${share})`, minHeight: 2 }}
                 />
@@ -67,7 +67,7 @@ export function PeriodBars({ bars, value, onChange, empty, label, chosenWord, cl
               {/* the bars' zero line, for the chart check: unseen, as the chart draws none */}
               {i === 0 && <span aria-hidden="true" data-zero className="absolute inset-x-0 bottom-0 h-px opacity-0" />}
             </span>
-            <span aria-hidden="true" className={cx("w-full inline-flex items-center justify-center min-h-8 md:min-h-9 rounded-md border text-xs-flow md:text-sm font-semibold whitespace-nowrap px-0.5 md:px-3", on ? "bg-foreground text-background border-foreground" : "border-input text-foreground")}>
+            <span aria-hidden="true" className={cx("w-full inline-flex items-center justify-center min-h-8 md:min-h-9 rounded-md border text-[13px] md:text-sm font-semibold whitespace-nowrap px-0.5 md:px-3", on ? "bg-foreground text-background border-foreground" : "border-input text-foreground")}>
               <span className="hidden @2xl:inline">{b.label}</span>
               <span className="@2xl:hidden @max-[23rem]:hidden">{b.short ?? b.label}</span>
               <span className="hidden @max-[23rem]:inline">{b.tiny ?? b.short ?? b.label}</span>

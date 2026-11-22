@@ -715,7 +715,7 @@ export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; 
         } else if (e.key === "Tab") close();
       }}
       style={at ? { top: at.top, left: at.left } : { visibility: "hidden", top: 0, left: 0 }}
-      className={cx("come-in z-(--z-popover) flex min-w-44 flex-col rounded-md border border-border bg-popover p-1 shadow-lg", host ? "absolute" : "fixed")}
+      className={cx("come-in z-[var(--z-popover)] flex min-w-44 flex-col rounded-md border border-border bg-popover p-1 shadow-lg", host ? "absolute" : "fixed")}
     >
       {items.map((a) => (
         <button
@@ -772,7 +772,7 @@ export function DropBin({ accepts, onDrop, phone }: { accepts: (item: string) =>
   const name = useCarriedName();
   if (item === null || !accepts(item)) return null;
   return (
-    <DropZone accepts={accepts} onDrop={(it) => onDrop(it)} tone="danger" rounded="rounded-md" className={cx("come-in z-(--z-carry-over) bg-card shadow-lg", phone ? "fixed inset-x-3 bottom-3" : "absolute inset-x-0 top-full mt-2")}>
+    <DropZone accepts={accepts} onDrop={(it) => onDrop(it)} tone="danger" rounded="rounded-md" className={cx("come-in z-[61] bg-card shadow-lg", phone ? "fixed inset-x-3 bottom-3" : "absolute inset-x-0 top-full mt-2")}>
       <BinWords name={name} />
     </DropZone>
   );
@@ -852,7 +852,7 @@ export function SpanKnob({ edge, from, to, min, max, label, valueText, onReach, 
       data-knob-strip={axis}
       className={cx(
         "absolute z-10",
-        axis === "x" ? cx("inset-y-0 w-2.5", edge === "after" ? "inset-e-0 -translate-x-1/2" : "inset-s-0 translate-x-1/2") : cx("inset-x-0 h-2.5", edge === "after" ? "bottom-0 translate-y-1/2" : "top-0 -translate-y-1/2"),
+        axis === "x" ? cx("inset-y-0 w-2.5", edge === "after" ? "end-0 -translate-x-1/2" : "start-0 translate-x-1/2") : cx("inset-x-0 h-2.5", edge === "after" ? "bottom-0 translate-y-1/2" : "top-0 -translate-y-1/2"),
       )}
     >
       <button

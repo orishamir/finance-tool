@@ -1,7 +1,7 @@
 // "הידעת?": short facts from the rule base, each with its source and a way to the whole rule (the rules page; meant for the
 // guides too). Three at a time on a computer, a third fewer on a short screen, one on a phone; the next press brings the next ones, and
 // every card keeps one height, sized for the longest fact.
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { Button } from "./button";
 import { cx } from "./cx";
 import { useSoftSwap } from "./soft-swap";
@@ -19,12 +19,12 @@ const SHOWN = 3;
 export function DidYouKnow({ title, items, more, orderKey, className }: { title: ReactNode; items: FactItem[]; more: string; orderKey: string; className?: string }) {
   const [at, setAt] = useState(0);
   const list = useRef<HTMLUListElement>(null);
-  const started = useRef(orderKey);
-  useEffect(() => {
-    if (started.current === orderKey) return;
-    started.current = orderKey;
+  // a new order starts the block over, in the same render
+  const [startedFor, setStartedFor] = useState(orderKey);
+  if (startedFor !== orderKey) {
+    setStartedFor(orderKey);
     setAt(0);
-  }, [orderKey]);
+  }
   const fade = useSoftSwap<HTMLDivElement>(`${orderKey}:${at}`);
   const next = () => {
     const visible = [...(list.current?.children ?? [])].filter((c) => (c as HTMLElement).offsetHeight > 0).length || 1;
@@ -39,7 +39,7 @@ export function DidYouKnow({ title, items, more, orderKey, className }: { title:
           {shown.map((f) => (
             <li key={f.id} className="rounded-md bg-background p-3 flex flex-col gap-1.5 text-[15px] leading-normal min-h-[216px] lg:min-h-[236px]">
               <p>{f.body}</p>
-              <p className="mt-auto text-xs-flow text-muted-foreground">{f.source}</p>
+              <p className="mt-auto text-[13px] text-muted-foreground">{f.source}</p>
               <div className="text-sm">{f.action}</div>
             </li>
           ))}

@@ -20,7 +20,7 @@ export interface Landing {
   over?: boolean;
 }
 
-const OUTLINE = "inset-0 z-[1] rounded-md outline-1 -outline-offset-1 transition-[outline-color] duration-(--duration-fast)";
+const OUTLINE = "inset-0 z-[1] rounded-md outline-1 -outline-offset-1 transition-[outline-color] duration-[var(--duration-fast)]";
 /**
  * Over the whole copy, set on the element itself: a card whose face is one button lifts every button inside it into its own layer
  * (choice.tsx `LIFT_INNER`, a case's row), and a class would lose to that.
@@ -51,6 +51,6 @@ export function LandingCover({ landing }: { landing: Landing }) {
  */
 export const landingBody = (landing: Landing): string =>
   cx(
-    "transition-opacity duration-(--duration-fast) [&_[data-box]]:bg-transparent [&_button]:bg-transparent [&_button]:outline-1 [&_button]:outline-dashed [&_button]:-outline-offset-1 [&_button]:outline-input",
+    "transition-opacity duration-[var(--duration-fast)] [&_[data-box]]:bg-transparent [&_button]:bg-transparent [&_button]:outline-1 [&_button]:outline-dashed [&_button]:-outline-offset-1 [&_button]:outline-input",
     landing.over ? "opacity-70" : "opacity-40 peer-hover:opacity-70 peer-focus-visible:opacity-70",
   );

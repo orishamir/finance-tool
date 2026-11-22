@@ -63,7 +63,7 @@ export default function ExposurePage() {
             <ul data-wide className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {data.holders.map((h) => (
                 <li key={h.id}>
-                  <Card className="h-full flex flex-col gap-2 hover:bg-accent/40 transition-colors duration-(--duration-fast)">
+                  <Card className="h-full flex flex-col gap-2 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)]">
                     <Link to={guidePath(h.id)} className="flex items-center justify-between gap-4">
                       <span className="text-lg font-semibold">{gershayim(h.name)}</span>
                       <RowArrow />

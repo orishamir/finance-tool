@@ -77,7 +77,7 @@ export function UndoLine({ children, onUndo, onHold, take, refocus, refocusOnUnd
     <As
       ref={line as never}
       data-undo-line=""
-      className={cx("block transition-[min-height] duration-(--duration-fold) ease-standard", className)}
+      className={cx("block transition-[min-height] duration-[var(--duration-fold)] ease-[var(--ease-standard)]", className)}
       style={{ minHeight: room ?? 0 }}
       onFocus={() => {
         focus.current = true;
