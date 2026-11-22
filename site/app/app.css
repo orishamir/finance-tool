@@ -1,6 +1,7 @@
 /* Fonts (audit 2026-10-24, A49): only the two subsets the site uses (Inter latin for digits and Latin, Heebo hebrew),
    preloaded from root.tsx. The fontsource entry files also declare latin-ext, cyrillic, greek, vietnamese and Heebo's
-   math and symbols; none is needed. "Inter Fallback" is Arial scaled to Inter's metrics, so the late swap barely moves text. */
+   math and symbols; none is needed. "Inter Fallback" and "Heebo Fallback" are Arial scaled to Inter's and Heebo's metrics, each
+   on its own face's characters, so the late swap barely moves text. */
 @font-face {
   font-family: "Inter Variable";
   font-style: normal;
@@ -25,6 +26,19 @@
   descent-override: 22.5%;
   line-gap-override: 0%;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+/* Arial's Hebrew at Heebo's width and line: a Hebrew text is as wide in it, at body weight, as in Heebo (size-adjust), and its ascent
+   and descent are Heebo's (1.048 and 0.421 of the size), so a paragraph keeps its lines and its glyphs their place when Heebo arrives
+   (docs/design-system.md 2.4). Safari ignores the three overrides and keeps size-adjust: there the lines still match, and the
+   text sits under a pixel lower in its line until the swap. */
+@font-face {
+  font-family: "Heebo Fallback";
+  src: local("Arial");
+  size-adjust: 105.4%;
+  ascent-override: 99.4%;
+  descent-override: 39.9%;
+  line-gap-override: 0%;
+  unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
 }
 @import "tailwindcss";
 @import "./theme.css";
@@ -1022,14 +1036,14 @@
   }
   /* an axis's label or gridline coming or going while the scale glides (kit, chart-glide) */
   .chart-tick-in {
-    animation: fade-in var(--duration-chart) both;
+    animation: fade-in var(--duration-chart-fade) both;
   }
   .chart-tick-out {
-    animation: fade-out var(--duration-chart) both;
+    animation: fade-out var(--duration-chart-fade) both;
   }
   /* a line or band that comes in; backwards only, so afterwards its own opacity (a dimmed series) holds */
   .chart-line {
-    animation: fade-in var(--duration-chart) backwards;
+    animation: fade-in var(--duration-chart-fade) backwards;
   }
   @media (min-width: 64rem) {
     @keyframes sheet-in {
