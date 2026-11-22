@@ -5,13 +5,12 @@ import { flags, groupPrices, help, invest } from "../../copy";
 import { pickableGroups, withGroupPick } from "../../lib/group-pick";
 import { PairLists } from "./lists";
 import { asideLines, buildInvest, indexById, kindOf, pairCostsKept } from "../../lib/invest";
-import { receiptAmounts, receiptNominal } from "../../lib/receipt";
-import { ANCHOR, PairReceipt, PairStub, addedOf, gainOf, inflationOf, nominalOf, taxOf } from "./receipt";
+import { receiptAmounts } from "../../lib/receipt";
+import { ANCHOR, PairReceipt, PairStub } from "./receipt";
 import { ChosenPair } from "./chosen";
 import { allFunds, pickOfHeadline, pairVerdict, priced } from "./pair";
 import { stretchesOf } from "../../lib/stretch";
 import { bundle, plan, shown, html, nisIn, fundRow, t } from "./render-fixtures";
-import { entered, type SiteValue } from "../../lib/value";
 import { planOf } from "../../lib/receipt-fixtures";
 
 const w = invest;
@@ -19,7 +18,7 @@ const w = invest;
 function lines(out: string): Record<string, number> {
   const got: Record<string, number> = {};
   const text = shown(out).replace(/[⁦-⁩‎‏]/g, "").replace(/ /g, " ");
-  for (const label of [w.pair.paidIn, w.receipt.added, w.receipt.nominalLeft(plan.years), w.receipt.inflation, w.receipt.left, w.receipt.gain, w.receipt.lost]) {
+  for (const label of [w.pair.paidIn, w.receipt.added, w.receipt.left, w.receipt.gain, w.receipt.lost]) {
     const at = text.indexOf(label);
     if (at >= 0) got[label] = nisIn(text.slice(at + label.length, at + label.length + 40));
   }
@@ -32,21 +31,14 @@ describe("the receipt", () => {
   it("its lines add up as a reader adds them, and the account's lines to the account's figure", () => {
     const out = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }));
     const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house })!;
-    const real = receiptAmounts(pc);
-    const r = receiptNominal(pc);
+    const r = receiptAmounts(pc);
     const l = lines(out);
-    // in the shekels of the horizon down to what is left there; then the inflation; then what is left in today's money
     expect(l[w.pair.paidIn]).toBe(r.paidIn);
     expect(l[w.receipt.added]).toBe(r.added);
-    expect(l[w.receipt.nominalLeft(plan.years)]).toBe(r.left);
-    expect(l[w.receipt.inflation]).toBe(-r.inflation);
-    expect(l[w.receipt.left]).toBe(real.left);
-    expect(r.paidIn + r.added - r.tax - r.account - r.fund - r.waiting).toBe(r.left);
-    expect(r.left - r.inflation).toBe(real.left);
-    // the gain is in today's money, as what is left; what went on the way adds the lines above it
-    expect(l[w.receipt.gain]).toBe(real.gain);
+    expect(l[w.receipt.left]).toBe(r.left);
+    expect(l[w.receipt.gain]).toBe(r.gain);
     expect(l[w.receipt.lost]).toBe(r.lost);
-    expect(r.tax + r.account + r.fund).toBe(r.lost);
+    expect(r.paidIn + r.added - r.tax - r.account - r.fund - r.waiting).toBe(r.left);
     // the closing bar is a chart the chart check finds, its parts from the start
     expect(out).toContain('data-chart="share-bar"');
     // the account's lines carry their rate as the price list prints it
@@ -84,59 +76,9 @@ describe("the receipt", () => {
     const p = pickOfHeadline(ta)!;
     const out = html(createElement(PairReceipt, { view: ta, bundle, plan, pick: p, chosen: false }));
     // the caption's longest cases are laid out unseen; the shown one has no clause on a currency
-    const said = shown(out).replace(/[\u2066-\u2069]/g, "");
-    expect(said).toContain(w.receipt.caption(null));
+    const said = shown(out);
+    expect(said).toContain(w.receipt.caption(plan.years, null));
     expect(said).not.toContain(w.pair.steadyDollar);
-  });
-  it("the run's index at the horizon and its deposits as paid are F-03's and F-05's, which take the chain to the horizon's shekels", () => {
-    const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });
-    if (!pc) throw new Error("the page's own pair is priced");
-    // 2% a year over 20 years: I_T = 1.02^20 (F-02, F-03), and each monthly deposit rises with the index of its month (F-05, A-04)
-    const months = 12 * plan.years;
-    expect(pc.index.value as number).toBeCloseTo(1.02 ** plan.years, 9);
-    let paid = plan.amountNow;
-    for (let m = 1; m <= months; m++) paid += plan.monthly * 1.02 ** (m / 12);
-    expect(pc.paidInNominal.value as number).toBeCloseTo(paid, 4);
-    // a line in the horizon's shekels is its figure in today's money times I_T, and its sheet lists both
-    const tax = nominalOf(pc, pc.tax, "x", t);
-    expect(tax.value as number).toBeCloseTo((pc.tax.value as number) * 1.02 ** plan.years, 6);
-    expect(Object.keys(tax.computed_from?.inputs ?? {})).toEqual([w.receipt.nominal.today, w.pair.indexInput]);
-  });
-  it("the gain lists the deposits in today's money (F-106), and the tax's sheet says it holds the surtax where it applies", () => {
-    const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });
-    if (!pc) throw new Error("the page's own pair is priced");
-    const paid = (gainOf(pc, t).computed_from?.inputs as Record<string, SiteValue> | undefined)?.[w.receipt.paidInToday];
-    expect(paid?.computed_from?.formula).toBe("F-106");
-    // 6,000 now and 400 a month for 20 years, in today's money: the deposits as entered (F-106)
-    expect(paid?.value).toBe(6_000 + 400 * 12 * 20);
-    expect(taxOf(pc, t).about).toContain("מס נוסף");
-    expect(taxOf(pc, t).computed_from?.formula).toBe("F-129");
-  });
-  it("what the index added keeps its label as its title and says in its sheet it is in the horizon's shekels (F-91)", () => {
-    const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });
-    if (!pc) throw new Error("the page's own pair is priced");
-    const added = addedOf(pc, t);
-    expect(added.about).toBe(w.receipt.added);
-    expect(added.lead).toBe(w.receipt.addedLead);
-    expect(added.value).toBe(Math.round(pc.base * (pc.index.value as number)) - Math.round(pc.paidInNominal.value as number));
-  });
-  it("its inflation line is the end in the horizon's shekels less the end in today's money, the plan's inflation under it, and follows an entered one", () => {
-    const at = (pct: number) => {
-      const p = { ...plan, inflation: pct / 100, values: { ...plan.values, inflation: entered(pct, "pct_per_year", t) } };
-      const v = buildInvest({ bundle, index: view.index, plan: p });
-      const pc = pairCostsKept({ bundle, index: v.index, plan: p, fundId: pick.fund, providerId: pick.house });
-      if (!pc) throw new Error("the page's own pair is priced");
-      const text = shown(html(createElement(PairReceipt, { view: v, bundle, plan: p, pick, chosen: false }))).replace(/[\u2066-\u2069]/g, "");
-      return { text, pc, inflation: inflationOf(pc, p.years, t) };
-    };
-    const two = at(2), three = at(3.5);
-    const after = (x: string) => x.slice(x.indexOf(w.receipt.inflation) + w.receipt.inflation.length);
-    expect(after(two.text)).toMatch(/^[^\n]*?2% בשנה/);
-    expect(after(three.text)).toMatch(/^[^\n]*?3\.5% בשנה/);
-    expect(two.inflation.computed_from?.formula).toBe("F-130");
-    expect(two.inflation.value).toBe(Math.round((two.pc.left.value as number) * (two.pc.index.value as number)) - Math.round(two.pc.left.value as number));
-    // a higher inflation takes more on the way to today's money
-    expect(three.inflation.value as number).toBeGreaterThan(two.inflation.value as number);
   });
 });
 
@@ -185,10 +127,7 @@ describe("in whole units, the fees charged and the waiting cash apart (F-91, F-1
       const pc = pairCostsKept({ bundle, index: view.index, plan: p, fundId: pick.fund, providerId: pick.house });
       // in whole units while the house's record says nothing of selling that listing by amount (F-109); a record that does moves the case
       expect(pc?.units, "the pair is no longer bought in whole units: pick another").toBeTruthy();
-      // the receipt writes its costs in the shekels of the horizon; the card, in today's money
-      if (!pc) return;
-      const r = receiptNominal(pc);
-      const real = receiptAmounts(pc);
+      const r = receiptAmounts(pc!);
       const bare = (x: string) => x.replace(/[⁦-⁩‎‏]/g, "").replace(/ /g, " ");
       for (const layout of ["paper", "ticket"] as const) {
         const out = bare(shown(html(createElement(PairReceipt, { view, bundle, plan: p, pick, chosen: true, layout }))));
@@ -204,7 +143,7 @@ describe("in whole units, the fees charged and the waiting cash apart (F-91, F-1
         expect(lines(out)[w.receipt.lost]).toBe(r.tax + r.account + r.fund);
       }
       const card = bare(shown(html(createElement(ChosenPair, { view, bundle, plan: p, pick, chosen: true }))));
-      expect(card).toContain(`${w.chosen.together.before} ${(real.account + real.fund).toLocaleString("en-US")} ₪ ${w.chosen.together.after}`);
+      expect(card).toContain(`${w.chosen.together.before} ${(r.account + r.fund).toLocaleString("en-US")} ₪ ${w.chosen.together.after}`);
     });
   }
 });

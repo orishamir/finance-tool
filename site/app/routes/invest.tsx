@@ -2,13 +2,13 @@
 // for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
 // `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
 import { gershayim } from "../lib/format";
-import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useDeferredValue, useEffect, useId, useMemo, useRef, useState } from "react";
 import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
 import { brands, invest as c } from "../copy";
 import { pageMeta } from "../lib/page-meta";
-import { PLAN_AMOUNT_FIELD, PlanKnobs } from "../components/invest/knobs";
+import { OtherAssumptions, PLAN_AMOUNT_FIELD, PlanKnobs } from "../components/invest/knobs";
 import { TitleRow } from "../components/invest/title";
 import { PlanCard } from "../components/invest/plan-card";
 import { PairReceipt, PairStub } from "../components/invest/receipt";
@@ -17,6 +17,7 @@ import { pickOfHeadline, pickOfOpen, allFunds, type Moved, type Pick } from "../
 import { PairLists, listName } from "../components/invest/lists";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
 import { LabelSheetHost } from "../components/kit";
+import { returnHelpOf } from "../components/invest/foot";
 import { BeforeDeciding } from "../components/invest/before";
 import { CustomEntriesHost } from "../components/invest/custom-entries";
 import { DealAccountsHost } from "../components/invest/deal-account";
@@ -29,7 +30,9 @@ import { lastIndexStore } from "../lib/deal-account/last-index";
 import { loadFeesData, type FeesData } from "../lib/fee-page-data";
 import { Callout, EmptyState, useSwapGlide } from "../components/kit";
 import { IconCoins } from "../components/icons";
+import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
+import { Num, Term } from "../components/provenance";
 import { loadBundle, bundleLinks } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
 import { enteredPlan } from "../lib/entered-plan";
@@ -65,7 +68,8 @@ export async function loader({ params }: Route.LoaderArgs) {
   if (id && !indices.some((i) => i.id === id)) throw new Response("Not found", { status: 404 });
   // the glossary cards behind the fund list's fees "?", with the rules they cite
   const { loadRules, loadTerms } = await import("../lib/data.server");
-  const names = new Set<string>(brands.funds.feeTerms);
+  // and the surtax's card behind the assumptions' line on income
+  const names = new Set<string>([...brands.funds.feeTerms, c.plan.knobs.income.term]);
   const feeTerms = Object.fromEntries(loadTerms().filter((t) => names.has(t.he)).map((t) => [t.he, t]));
   const all = loadRules();
   const feeRules = [...new Set(Object.values(feeTerms).flatMap((t) => t.ruleIds))].flatMap((id) => (all[id] ? [all[id]] : []));
@@ -240,6 +244,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   const yourBroker: string | null = null;
   const view = useMemo(() => (index ? buildInvest({ bundle, index, plan, yourBroker }) : null), [bundle, index, plan, yourBroker]);
 
+  const [panelOpen, setPanelOpen] = useState(false);
   // a house's page opens a new deal filled from its price list through the address (`own`): once, and the address is cleaned
   const opening = new URLSearchParams(search).get("own");
   const { pathname } = useLocation();
@@ -249,6 +254,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
     const rest = q.toString();
     navigate(`${pathname}${rest ? `?${rest}` : ""}`, { replace: true });
   }, [search, pathname, navigate]);
+  const headId = useId();
   // From 1280 px the plan and the pair's card stand in a rail, and beside it the receipt's ticket stands over the two lists and their
   // ruler; below 1280 px everything stands in one column, the receipt above the lists with its stub at the screen's foot. The body renders
   // only in the browser, so its first render already knows the width.
@@ -361,7 +367,19 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
     />
   );
 
-  const planCard = <PlanCard knobs={<PlanKnobs compare={compare} ranges={data.form.knobs} pct={data.form.pct} stacked />} />;
+  // the knobs write the same entered values the assumptions write: a value set here is the value there
+  const planCard = (
+    <PlanCard
+      knobs={<PlanKnobs compare={compare} ranges={data.form.knobs} pct={data.form.pct} stacked />}
+      onOpen={() => setPanelOpen(true)}
+      fx={wb.fx}
+      today={data.today}
+      example={Object.keys(inputs.entered).length === 0}
+      dollar={!index?.israeli}
+      inflation={entered.plan.values.inflation}
+      returnHelp={view ? returnHelpOf(view) : undefined}
+    />
+  );
   // the receipt: below 1280 px paper above the lists, the stub's way back leading to it (focusable for that, never tabbed to); from 1280 px
   // a ticket over the lists, whose total the ruler's point joins
   const receipt = pick && shown && shownView && (
@@ -460,6 +478,18 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
       {!railed && pick && shown && shownView && fund && (
         <PairStub view={shownView} bundle={shownBundle} plan={livePlan} pick={shown} fundName={listName(shownView, fund.name)} target={receiptRef} area={pairArea} />
       )}
+      <Sheet open={panelOpen} onClose={() => setPanelOpen(false)} pc="center" height={78} labelledBy={`${headId}-as`}>
+        <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">
+          {c.plan.panelTitle}
+        </h2>
+        {/* what the results are and what they rest on, said here once (the plan card's line keeps to the return, the inflation and the dollar) */}
+        <p className="text-sm text-muted-foreground mb-3">{c.plan.knobs.assumptions}</p>
+        <p className="text-sm text-muted-foreground mb-3">
+          {c.plan.knobs.income.before} <Num value={entered.income} /> {c.plan.knobs.income.after} {c.plan.knobs.income.surtax} <Term id={c.plan.knobs.income.term}>{c.plan.knobs.income.term}</Term>
+          {c.plan.knobs.income.end}
+        </p>
+        {panelOpen && <OtherAssumptions compare={compare} pct={data.form.pct} />}
+      </Sheet>
       </CustomEntriesHost>
       </DealAccountsHost>
     </LabelSheetHost>

@@ -160,7 +160,6 @@ const st = copy.cases.stated;
  */
 export const STATED: Readonly<Record<StatedPartId, (c: StatedContext) => PartWords | null>> = {
   third: ({ p }) => (!onAction(p) || !p.third || p.third.price ? null : p.third.who ? { lead: `${st.thirdOf.lead}${p.third.who}`, tail: ` ${st.thirdOf.tail.trim()}` } : { lead: st.third }),
-  maxPerSecurity: ({ p, figures }) => (p.form === "held" && p.perSecurity ? { lead: st.maxPerSecurity.lead, ...fig(figures.perSecurity), tail: st.maxPerSecurity.tail } : null),
   offset: ({ p }) => (charged(p) && p.offset ? { lead: `${st.offset.lead}${feeNameOf(p.offset.kind)}`, tail: st.offset.tail } : null),
   refund: ({ p, figures }) => (charged(p) && p.refund && !p.refund.blank ? { lead: st.refund.lead, ...fig(figures.refund), tail: st.refund.tail } : null),
   unfilled: () => ({ lead: st.unfilled }),

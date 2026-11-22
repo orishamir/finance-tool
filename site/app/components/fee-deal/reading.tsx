@@ -14,7 +14,7 @@ import type { FeeRef } from "../../lib/fee-deal/deal-read";
 import type { LawRow, PeriodCard, PeriodRow, Reading, StatedPart } from "../../lib/fee-deal/reading";
 import { roundAmount, settleRange, type ActionReading, type ActionTab, type ActionView, type AmountRange, type ChartFee, type CurvePoint, type HeldReading, type HeldView, type Lane, type LanePart, type OneView, type TimelinePeriod, type UndrawnView, type UnpricedView } from "../../lib/fee-deal/charts";
 import { lawHead, periodsHead, type PeriodsHead } from "../../lib/fee-deal/reading-heads";
-import { AmountLanes, Card, EmptyState, NumberField, PanelHead, PERIOD_WIDE, PeriodTrack, periodColumns, RangeFields, SegmentedControl, ShareBar, ShareChart, ShareStack, Swatch, Tag, TypedPlain, When, cx, fill, shareAt, shareTicks, type AmountLane, type AmountLanePart, type ShareMark } from "../kit";
+import { AmountLanes, Card, EmptyState, HelpMark, NumberField, PanelHead, PERIOD_WIDE, PeriodTrack, periodColumns, RangeFields, SegmentedControl, ShareBar, ShareChart, ShareStack, Swatch, Tag, TypedPlain, When, cx, fill, shareAt, shareTicks, type AmountLane, type AmountLanePart, type ShareMark } from "../kit";
 import { Num, Ruled } from "../provenance";
 import { leftByPanel, type LeftOut } from "../../lib/fee-deal/left-out";
 import { FeeOpen, useFeeLinks } from "./links";
@@ -82,17 +82,21 @@ function NumAfter({ lead, ...rest }: { lead: string } & Omit<Parameters<typeof N
 
 // ---------------------------------------------------------------- the lanes
 
-/** A part's words on its lane: its kind's lead and its figure ("מינימום 39 $", "0.199% ברבעון"); on a phone, without its period. */
+/**
+ * A part's words on its lane: its kind's lead and its figure ("מינימום 39 $", "0.199% ברבעון"), and on a maximum on each security what it
+ * is on ("מקסימום 3,700 ₪ ברבעון לכל נייר ערך"); on a phone, without its period.
+ */
 function partWords(p: LanePart, phone: boolean): string {
   const lead = w.action.lane[p.part] ?? "";
   if (p.part === "free" || !p.figure) return lead.trim();
   const per = p.per && !phone ? ` ${copy.price.per[p.per] ?? ""}` : "";
-  return `${lead}${textOf(p.figure)}${per}`;
+  return `${lead}${textOf(p.figure)}${per}${p.perSecurity ? copy.cases.parts.perSecurity.each : ""}`;
 }
 
 /**
  * A fee's lane for the kit: its parts in words, or its price on one quiet line (what a share of what is held is of left to its group's
- * name); on a phone the period its parts are per joins its name ("… · ברבעון").
+ * name); on a phone the period its parts are per joins its name ("… · ברבעון"). A maximum on each security puts a "?" after the name: the
+ * chart charges it on one security (F-14).
  */
 function laneOf(l: Lane, saved: boolean): AmountLane {
   const pers = new Set((l.parts ?? []).map((p) => p.per));
@@ -106,6 +110,7 @@ function laneOf(l: Lane, saved: boolean): AmountLane {
     ...(l.price ? { price: <PriceWords price={l.price} kind={l.fee.ref.kind} saved={saved} ofSaid /> } : {}),
     ...(per ? { per: `${w.action.lanePer}${copy.price.per[per] ?? ""}` } : {}),
     ...(l.group ? { group: l.group } : {}),
+    ...(l.parts?.some((p) => p.perSecurity) ? { help: <HelpMark about={copy.panel.parts.perSecurity} text={w.held.perSecurity} /> } : {}),
   };
 }
 

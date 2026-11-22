@@ -226,8 +226,8 @@ export function pickLine(r: DealRead): PickLine | null {
 
 /**
  * A part of a price the reading states without computing (§10.6, "What the page states and does not compute"), on the fee it is printed
- * with: each part the registry marks stated (`StatedPartId`: a third party's fee with no figure, a maximum on each security held, an offset
- * against another fee, a refund, the notes on an order), with its sentence's words.
+ * with: each part the registry marks stated (`StatedPartId`: a third party's fee with no figure, an offset against another fee, a refund,
+ * the notes on an order), with its sentence's words. A maximum on each security held is said on its lane instead (`LanePart.perSecurity`).
  */
 export interface StatedPart {
   fee: FeeRef;
@@ -242,11 +242,8 @@ export interface StatedPart {
 /** The rules a stated part's sentence states, by the part: a bank's order through a clerk not carried out, at home and abroad (BRK-16). */
 export const STATED_RULES: Partial<Record<StatedPartId, readonly string[]>> = { unfilledClerk: ["BRK-16"], unfilledClerkAbroad: ["BRK-16"] };
 
-/**
- * The stated parts that may make an action cost more than the chart shows: a third party's fee with no figure in the list, and a maximum
- * on each security, which the chart applies as if one security were held (F-14).
- */
-export const STATED_UNDERSTATES: Partial<Record<StatedPartId, true>> = { third: true, maxPerSecurity: true };
+/** The stated parts that may make an action cost more than the chart shows: a third party's fee with no figure in the list. */
+export const STATED_UNDERSTATES: Partial<Record<StatedPartId, true>> = { third: true };
 
 const isStated = (id: PartId): id is StatedPartId => !!PARTS[id].stated;
 

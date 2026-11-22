@@ -145,7 +145,7 @@ function SampleLanes({ at, onAt }: { at: number; onAt: (a: number) => void }) {
             { id: "max", from: 900_000, to: null, label: s.parts.max },
           ],
         },
-        { id: "b", name: s.b, swatch: "bg-fee-custody", group: "share", parts: [{ id: "held", from: 0, to: null, label: s.parts.held, short: s.parts.short }], per: s.parts.per },
+        { id: "b", name: s.b, swatch: "bg-fee-custody", group: "share", parts: [{ id: "held", from: 0, to: null, label: s.parts.held, short: s.parts.short }], per: s.parts.per, help: <HelpMark about={s.help.about} text={s.help.text} /> },
         { id: "c", name: s.b, swatch: "bg-fee-account", group: "fixed", parts: null, price: s.price },
       ]}
       at={at}
