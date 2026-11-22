@@ -162,7 +162,7 @@ export function ChangeChart({
           width={w}
           height={height}
           aria-hidden="true"
-          className="block touch-pan-y cursor-ew-resize"
+          className="block touch-none cursor-ew-resize"
           onPointerDown={(e) => {
             setDrag(true);
             e.currentTarget.setPointerCapture(e.pointerId);
@@ -170,8 +170,6 @@ export function ChangeChart({
           }}
           onPointerMove={(e) => drag && set(e)}
           onPointerUp={() => setDrag(false)}
-          // a finger that moves down the chart scrolls the page (`touch-pan-y`), which ends the drag
-          onPointerCancel={() => setDrag(false)}
         >
           {grid.map((t) => (
             <g key={t.value} className={tickFade(t)}>
@@ -223,7 +221,7 @@ export function ChangeChart({
         {/* the bars of the differences from one zero line at the rows' start (charts.md: a bar in a Hebrew row grows with the row) */}
         <ol ref={rowList} aria-label={rowsLabel} data-chart="change-rows" className="flex flex-col">
           {rows.map((r, i) => (
-            <li key={r.id} data-flip={r.id} {...pick.bind(r.id)} className={cx("grid cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 border-b border-border px-1 py-2.5 transition-colors duration-[var(--duration-fast)]", pick.active === r.id && "bg-accent")}>
+            <li key={r.id} data-flip={r.id} {...pick.bind(r.id)} className={cx("grid cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 border-b border-border px-1 py-2.5 transition-colors duration-(--duration-fast)", pick.active === r.id && "bg-accent")}>
               <span className="flex min-w-0 flex-wrap items-baseline gap-x-2">
                 <span className="inline-flex items-center gap-2 font-semibold">
                   <span aria-hidden="true" className={cx("inline-block size-3 rounded-sm", r.swatch)} />
@@ -235,8 +233,8 @@ export function ChangeChart({
               </span>
               <span className="text-end font-semibold">{r.diff}</span>
               <span className="relative flex h-4 items-center">
-                {i === 0 && <span aria-hidden="true" data-zero className="absolute inset-y-0 start-0 w-px" />}
-                {top > 0 && r.size > 0 && <span aria-hidden="true" data-mark="bar" className={cx("block h-4 rounded-e-[4px] transition-[width] duration-[var(--duration-chart)] ease-standard motion-reduce:transition-none", r.swatch)} style={{ width: `${(100 * r.size) / top}%` }} />}
+                {i === 0 && <span aria-hidden="true" data-zero className="absolute inset-y-0 inset-s-0 w-px" />}
+                {top > 0 && r.size > 0 && <span aria-hidden="true" data-mark="bar" className={cx("block h-4 rounded-e-[4px] transition-[width] duration-(--duration-chart) ease-standard motion-reduce:transition-none", r.swatch)} style={{ width: `${(100 * r.size) / top}%` }} />}
               </span>
               <span className="text-end text-xs text-muted-foreground">
                 {head.left} {r.left}

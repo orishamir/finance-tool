@@ -95,10 +95,10 @@ export function ReceiptTicket({ label, top, start, middle, end, foot, ref }: { l
         <div className="min-w-0 px-6 pt-3.5 pb-4">{foot[2]}</div>
       </div>
       <div aria-hidden="true" className="pointer-events-none relative col-start-2 row-start-1 row-end-[-1]">
-        <span className={cx(notch, "-top-[11px] -start-[11px]")} />
-        <span className={cx(notch, "-top-[11px] -end-[11px]")} />
-        <span className={cx(notch, "-bottom-[11px] -start-[11px]")} />
-        <span className={cx(notch, "-bottom-[11px] -end-[11px]")} />
+        <span className={cx(notch, "-top-[11px] -inset-s-[11px]")} />
+        <span className={cx(notch, "-top-[11px] -inset-e-[11px]")} />
+        <span className={cx(notch, "-bottom-[11px] -inset-s-[11px]")} />
+        <span className={cx(notch, "-bottom-[11px] -inset-e-[11px]")} />
       </div>
     </section>
   );
@@ -166,7 +166,7 @@ export function ReceiptStub({ names, label, figure, go, target, area, inline = f
       inert={!shown}
       className={cx(
         "drop-shadow-up",
-        inline ? "relative" : "fixed inset-x-0 bottom-0 z-[var(--z-sticky)] transition-[translate,opacity] duration-[var(--duration-base)] ease-[var(--ease-standard)]",
+        inline ? "relative" : "fixed inset-x-0 bottom-0 z-(--z-sticky) transition-[translate,opacity] duration-(--duration-base) ease-standard",
         !inline && !shown && "pointer-events-none translate-y-full opacity-0",
       )}
     >

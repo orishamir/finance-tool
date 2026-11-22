@@ -69,7 +69,7 @@ function InstrumentCard({ href, name, line, plain, quiet }: { href: string; name
   return (
     <li>
       <Link to={href} className="block h-full">
-        <Card pad="snug" className={cx("h-full flex items-start justify-between gap-4 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)]", quiet ? "bg-background" : inList)}>
+        <Card pad="snug" className={cx("h-full flex items-start justify-between gap-4 hover:bg-accent/40 transition-colors duration-(--duration-fast)", quiet ? "bg-background" : inList)}>
           <span className="flex flex-col gap-1">
             <span className="font-semibold md:text-lg">{gershayim(name)}</span>
             {plain && (

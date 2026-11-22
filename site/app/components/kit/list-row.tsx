@@ -20,7 +20,7 @@ export function GroupHead({ children, count, as: Tag = "h3", id, className, plai
     <Tag id={id} className={cx("flex items-center gap-2 text-sm font-medium", nowrap && "flex-wrap", className)}>
       <span className={nowrap ? "shrink-0 whitespace-nowrap" : "min-w-0"}>{children}</span>
       {count != null && (
-        <bdi dir="ltr" className="shrink-0 text-[13px] font-normal tabular-nums text-muted-foreground">
+        <bdi dir="ltr" className="shrink-0 text-xs-flow font-normal tabular-nums text-muted-foreground">
           {count}
         </bdi>
       )}
@@ -30,11 +30,11 @@ export function GroupHead({ children, count, as: Tag = "h3", id, className, plai
 }
 
 /** The chosen row's look, shared by every list of rows that marks one (`ListRow`, `ChooseRow`, `SideNav`): a filled background; the others light on hover. */
-export const rowLook = (selected: boolean | undefined): string => cx("transition-colors duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2", selected ? "bg-accent" : "hover:bg-accent/50");
+export const rowLook = (selected: boolean | undefined): string => cx("transition-colors duration-(--duration-fast) focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2", selected ? "bg-accent" : "hover:bg-accent/50");
 
 /** The bar at the chosen row's start edge. */
 export function RowMark() {
-  return <span aria-hidden="true" className="absolute inset-y-0 start-0 w-[3px] bg-primary" />;
+  return <span aria-hidden="true" className="absolute inset-y-0 inset-s-0 w-[3px] bg-primary" />;
 }
 
 export function RowList({ children, className, label, plain }: { children: ReactNode; className?: string; label?: string; /** No box: the rows stand between hairlines, one over the first and one under the last (a company page's lists). */ plain?: boolean }) {
@@ -47,7 +47,7 @@ export function RowList({ children, className, label, plain }: { children: React
 
 export function ListRow({ title, lead, line, chips, meta, end, selected, dim, sub, onSelect, rowId, controls }: { title: ReactNode; /** One muted line, cut to the row's width; left out on a phone. */ lead?: ReactNode; /** One muted line that wraps and stays on a phone (a plan's price). */ line?: ReactNode; chips?: ReactNode; meta?: ReactNode; /** The identifier, small and muted at the end of the title's line. */ end?: ReactNode; selected?: boolean; /** Dimmed in place: it does not match what is chosen, and stays where it is. */ dim?: boolean; /** A row under its group's name (`RowGroup`): set in from the start edge, its title at the body's weight. */ sub?: boolean; onSelect: () => void; /** The row's element id (a link lands on it, and focus comes back to it). */ rowId?: string; /** The id of what the row opens. */ controls?: string }) {
   return (
-    <li className={cx("transition-opacity duration-[var(--duration-base)]", dim && "opacity-45")}>
+    <li className={cx("transition-opacity duration-(--duration-base)", dim && "opacity-45")}>
       <button
         type="button"
         id={rowId}
@@ -64,11 +64,11 @@ export function ListRow({ title, lead, line, chips, meta, end, selected, dim, su
         {(chips || lead || meta) && (
           <span className="flex flex-wrap md:flex-nowrap items-center gap-x-2 gap-y-1 min-w-0 leading-tight">
             {chips && <span className="shrink-0 flex flex-wrap items-center gap-1.5">{chips}</span>}
-            {lead && <span className="max-md:hidden min-w-0 flex-1 truncate text-[13px] text-muted-foreground">{lead}</span>}
+            {lead && <span className="max-md:hidden min-w-0 flex-1 truncate text-xs-flow text-muted-foreground">{lead}</span>}
             {meta && <span className={cx("text-xs text-muted-foreground md:shrink-0 md:whitespace-nowrap", !lead && "md:ms-auto")}>{meta}</span>}
           </span>
         )}
-        {line && <span className="text-[13px] leading-snug text-muted-foreground">{line}</span>}
+        {line && <span className="text-xs leading-snug text-muted-foreground">{line}</span>}
       </button>
     </li>
   );
@@ -100,14 +100,14 @@ const LIFT = "[&_:is(a,button,[role=button]):not([data-choose-row])]:relative [&
  */
 export function ChooseRow({ title, end, line, chosen, dim, onChoose, label, link }: { title: ReactNode; /** Short and muted at the end of the title's line (a count). */ end?: ReactNode; /** A quieter second line; it may hold figures that open their source. */ line?: ReactNode; chosen: boolean; dim?: boolean; onChoose: () => void; /** The button's spoken name. */ label: string; /** The arrow at the end: where it goes and its spoken name. */ link?: { to: string; label: string } }) {
   return (
-    <li className={cx("relative flex items-stretch transition-[background-color,opacity] duration-[var(--duration-base)]", LIFT, chosen ? "bg-accent" : "hover:bg-accent/50", dim && "opacity-45")}>
+    <li className={cx("relative flex items-stretch transition-[background-color,opacity] duration-(--duration-base)", LIFT, chosen ? "bg-accent" : "hover:bg-accent/50", dim && "opacity-45")}>
       {chosen && <RowMark />}
       <span className="flex-1 min-w-0 ps-3 pe-2 py-2 lg:ps-4 flex flex-col gap-0.5">
         <span className="flex items-baseline gap-3 min-w-0">
           <span className="flex-1 min-w-0 font-medium leading-snug">{title}</span>
           {end && <span className="shrink-0 text-sm text-muted-foreground">{end}</span>}
         </span>
-        {line && <span className="text-[13px] leading-snug text-muted-foreground">{line}</span>}
+        {line && <span className="text-xs leading-snug text-muted-foreground">{line}</span>}
       </span>
       {link && (
         <Link to={link.to} aria-label={link.label} className="shrink-0 w-11 flex items-center justify-center hover:bg-accent focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2">

@@ -74,7 +74,7 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
 
   return (
     <div className="flex flex-col gap-1">
-    <div ref={box} className={cx("relative w-full h-[240px] lg:h-[300px] transition-opacity duration-[var(--duration-base)]", dimmed && "opacity-60")}>
+    <div ref={box} className={cx("relative w-full h-[240px] lg:h-[300px] transition-opacity duration-(--duration-base)", dimmed && "opacity-60")}>
       <svg
         ref={zoom.svgRef}
         {...zoom.handlers}

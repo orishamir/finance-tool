@@ -65,7 +65,7 @@ export function Disclosure({ label, openLabel, children, className, defaultOpen,
       ) : (
         <summary className={cx("flex items-center", spread ? "justify-between gap-3" : link ? "justify-start gap-1" : "gap-2", size === "field" ? "min-h-12" : "min-h-target", SUMMARY_BASE, "select-none rounded-md", link && "hover:underline", summaryClassName)}>
           {as ? <LabelAs as={as} className={cx(link && "text-link", labelClassName)}>{shown}</LabelAs> : <span className={cx(link && "text-link", labelClassName)}>{shown}</span>}
-          <IconChevronDown className={cx("text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
+          <IconChevronDown className={cx("text-muted-foreground shrink-0 transition-transform duration-(--duration-fold) ease-standard", open && "rotate-180")} />
         </summary>
       )}
       {children}

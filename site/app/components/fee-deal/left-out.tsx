@@ -5,8 +5,7 @@ import type { BanSaid } from "../../lib/fee-deal/kinds";
 import type { FeeRef } from "../../lib/fee-deal/deal-read";
 import { leavesOut, type LeftOut } from "../../lib/fee-deal/left-out";
 import { cx } from "../kit";
-import { LIFT_INNER } from "../kit/choice";
-import { FeeOpen, markedLine, useFeeLinks, useFeeMark } from "./links";
+import { FeeOpen, markedLine, useFeeMark, useLineOpen } from "./links";
 import { UnreadWords, refName } from "./words";
 
 /** The id of the reading's section under the columns. */
@@ -19,12 +18,9 @@ export const READING_ID = "deal-reading";
  */
 function LeftLine({ fee, unmatched, noCurrency, notPrinted, banned }: { fee: FeeRef; unmatched?: boolean; noCurrency?: boolean; notPrinted?: boolean; banned?: BanSaid }) {
   const { marked, handlers } = useFeeMark(fee.fee);
-  const links = useFeeLinks();
+  const onClick = useLineOpen(fee.fee);
   return (
-    <li className={cx("flex flex-wrap items-baseline gap-x-1", markedLine(marked), links && cx("relative cursor-pointer", LIFT_INNER))} {...handlers} data-left-out={fee.fee}>
-      {/* a press anywhere on the line chooses the fee, as its name does: a button stretched under the line's controls, which keep their own
-          presses (a figure's sheet); the name is the keyboard's, so this one takes no Tab stop */}
-      {links && <button type="button" tabIndex={-1} aria-hidden="true" data-pick-card="" onClick={() => links.open(fee.fee)} className="absolute inset-0 rounded-md" />}
+    <li className={cx("flex flex-wrap items-baseline gap-x-1", markedLine(marked), onClick && "cursor-pointer")} {...handlers} onClick={onClick} data-left-out={fee.fee}>
       <FeeOpen fee={fee} after={copy.price.sep} />
       <span>
         <UnreadWords banned={banned} noCurrency={noCurrency} notPrinted={notPrinted} unmatched={unmatched} fee={refName(fee)} />

@@ -6,15 +6,12 @@ import { buttons, values as copy } from "../../copy";
 import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
 import { IconChevronDown, IconClose, IconReset, IconSearch } from "../icons";
 import { cx } from "./cx";
-import { useErrorRest } from "./error-rest";
 import { NameStack, useListSelect, type ListOption } from "./list-select";
 
-/**
- * A field commits each keystroke that leaves a right value, so nothing waits to be committed: a caller that reads every field's value
- * before saving finds it already there.
- */
+/** Commits typed values that are still waiting out the 150 ms typing pause (F13). */
+const pendingCommits = new Set<() => void>();
 export function flushPendingFields(): void {
-  // nothing waits: every right keystroke is committed as it is typed
+  for (const run of [...pendingCommits]) run();
 }
 
 export interface FieldProps {
@@ -53,6 +50,8 @@ export interface FieldProps {
   inputId?: string;
   /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
   externalError?: ReactNode | null;
+  /** Compact only: hands the error to the row that holds the box, which shows it in a line it already keeps, instead of a line under the box that would push what follows down (nothing moves). */
+  errorOut?: (error: ReactNode | null) => void;
 }
 
 /** How a field writes its start value in its reset: "10", "12,000 ₪", "4.5%", as the field shows it. */
@@ -103,45 +102,70 @@ function ResetToStart({ shown, start, unit, onReset, describedBy, className }: {
 /** A unit that is a sign (₪, $, €, £, %): it stands on the number's right in the box, as the page writes a figure ("100,000 ₪"); a unit in words follows the number in reading order. */
 const SIGN = /^[₪$€£%]$/;
 
-/**
- * What a number field holds while the person types in it, and its box. Every keystroke is read: a right value is committed at once, so the
- * page answers as the person types; a wrong one is not, so the page keeps the last right result. The text is what was typed while the box
- * has the focus, and stays after it is left while it is wrong, with its error, until the value changes from outside; otherwise it is the
- * value as the field writes it. The error shows once the hand rests (`useErrorRest`) and clears on the keystroke that puts it right.
- */
-function useNumberEntry(props: FieldProps) {
-  const { unit, value, validate, onCommit, onReset, placeholder, disabled, compact, fit, optional, inputMode: mode = "decimal", autoFocus, inputId, externalError = null, agorot, groupAsTyped, hint } = props;
+/** A box for one typed number, with its unit, hint and error, and the reset on its label line. The default for any number the reader may change. */
+export function NumberField(props: FieldProps) {
+  const { label, unit, value, validate, onCommit, onReset, hint, note, placeholder, disabled, compact, fit, optional, inputMode: mode = "decimal", autoFocus, inputId, externalError = null, errorOut, agorot, start, groupAsTyped } = props;
   // an amount of money is typed in whole shekels; a rate (interest, inflation, a return) and a price-list fee keep decimals
   const whole = /^nis/.test(unit) && !agorot;
   const inputMode = whole ? "numeric" : mode;
 
   const generated = useId();
   const ids = inputId ?? generated;
-  // what was typed, and the value it was left at (`base`, set when the box is left): a wrong text left in the box stays until the value moves
-  const [draft, setDraft] = useState<{ text: string; base?: number | null } | null>(null);
+  const [text, setText] = useState(value === null ? "" : formatTyped(value));
+  const [error, setError] = useState<ReactNode | null>(null);
   const [focused, setFocused] = useState(false);
-  const errorRest = useErrorRest();
-  const written = value === null ? "" : formatTyped(value);
-  const own = draft !== null && (focused || draft.base === value);
-  const text = own ? draft.text : written;
-  const check = (t: string): ReactNode | null => {
-    if (t.trim() === "" && optional) return null;
-    const n = parseNumber(t);
-    return Number.isNaN(n) ? copy.errors.nan : whole && !Number.isInteger(n) ? copy.errors.whole : validate(n);
+  const timer = useRef<number | null>(null);
+  const pending = useRef<(() => void) | null>(null);
+  const drop = () => {
+    if (timer.current) window.clearTimeout(timer.current);
+    timer.current = null;
+    if (pending.current) pendingCommits.delete(pending.current);
+    pending.current = null;
   };
-  const wrong = own ? check(text) : null;
-  const shownError = (errorRest.shows ? wrong : null) ?? externalError;
+  /** Runs `fn` after the typing pause, or at once when something flushes first (blur, a preset, navigation, unmount). */
+  const later = (fn: () => void) => {
+    drop();
+    const run = () => {
+      drop();
+      fn();
+    };
+    pending.current = run;
+    pendingCommits.add(run);
+    timer.current = window.setTimeout(run, 150);
+  };
+  const flush = () => pending.current?.();
+  const flushRef = useRef(flush);
+  flushRef.current = flush;
+  useEffect(() => () => flushRef.current(), []);
   // text typed before the script arrived sits in the pre-rendered input; take it in at the first commit instead of
-  // letting the first render with the field's own (empty) text wipe it
+  // letting the first re-render with the field's own (empty) state wipe it
   const inputRef = useRef<HTMLInputElement>(null);
   const adopted = useRef(false);
   useEffect(() => {
     if (adopted.current) return;
     adopted.current = true;
     const typed = inputRef.current?.value ?? "";
-    if (typed !== "" && value === null) change(typed);
+    if (typed !== "" && text === "" && value === null) change(typed);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const lastValue = useRef(value);
+  useEffect(() => {
+    const changed = lastValue.current !== value;
+    lastValue.current = value;
+    if (focused) return;
+    // a typed value that failed its check stays on screen with its message after the field loses focus (F7); a new value from outside replaces it
+    if (changed || !error) {
+      setText(value === null ? "" : formatTyped(value));
+      setError(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, focused]);
+  const shownError = error ?? externalError;
+  const errorOutRef = useRef(errorOut);
+  errorOutRef.current = errorOut;
+  useEffect(() => {
+    errorOutRef.current?.(shownError);
+  }, [shownError]);
   // with `groupAsTyped`, the caret stays after the same digit once the separators move
   const caret = useRef<number | null>(null);
   useIsoLayoutEffect(() => {
@@ -154,20 +178,25 @@ function useNumberEntry(props: FieldProps) {
     while (at < text.length && seen < want) if (/\d/.test(text[at++]!)) seen++;
     el.setSelectionRange(at, at);
   }, [text]);
-  function change(raw: string, at?: number | null) {
+  const change = (raw: string, at?: number | null) => {
     let t = raw;
     if (groupAsTyped && whole && /^[\d,\s]*$/.test(raw)) {
       const digits = raw.replace(/\D/g, "");
       t = digits === "" ? "" : formatTyped(Number(digits));
       if (at !== undefined && at !== null) caret.current = raw.slice(0, at).replace(/\D/g, "").length;
     }
-    setDraft({ text: t });
-    const err = check(t);
-    errorRest.typed(!err);
-    if (err) return;
-    if (t.trim() === "") onReset();
-    else onCommit(parseNumber(t));
-  }
+    setText(t);
+    drop();
+    if (t.trim() === "" && optional) {
+      setError(null);
+      later(() => onReset());
+      return;
+    }
+    const n = parseNumber(t);
+    const err = Number.isNaN(n) ? copy.errors.nan : whole && !Number.isInteger(n) ? copy.errors.whole : validate(n);
+    setError(err);
+    if (!err) later(() => onCommit(n));
+  };
   const box = (
     <div className={cx("field-box", SIGN.test(unitWord(unit)) && "field-box-sign", compact && "field-box-compact", compact && fit && "field-box-fit", shownError ? "field-box-error" : false, disabled && "opacity-60")}>
       <input
@@ -175,9 +204,6 @@ function useNumberEntry(props: FieldProps) {
         id={ids}
         type="text"
         inputMode={inputMode}
-        autoComplete="off"
-        spellCheck={false}
-        enterKeyHint="done"
         dir="ltr"
         value={text}
         placeholder={disabled ? copy.loading : placeholder}
@@ -185,18 +211,11 @@ function useNumberEntry(props: FieldProps) {
         aria-invalid={shownError ? true : undefined}
         aria-describedby={[hint ? `${ids}-hint` : null, shownError ? `${ids}-err` : null].filter(Boolean).join(" ") || undefined}
         onChange={(e) => change(e.target.value, e.target.selectionStart)}
-        onFocus={() => {
-          setFocused(true);
-          // the text as it stands is the person's from here: a value from outside does not change it under their fingers
-          setDraft({ text });
-        }}
+        onFocus={() => setFocused(true)}
         onBlur={() => {
+          flush();
           setFocused(false);
-          // a wrong text stays, with its error, until the value changes; a right one is written in the field's form
-          if (wrong) {
-            setDraft({ text, base: value });
-            errorRest.rest();
-          } else setDraft(null);
+          if (!error && value !== null && text.trim() !== "") setText(formatTyped(value));
         }}
         autoFocus={autoFocus}
         className="field-input"
@@ -204,13 +223,6 @@ function useNumberEntry(props: FieldProps) {
       <span className="field-unit">{unitWord(unit)}</span>
     </div>
   );
-  return { ids, box, shownError };
-}
-
-/** A box for one typed number, with its unit, hint and error, and the reset on its label line. The default for any number the reader may change. */
-export function NumberField(props: FieldProps) {
-  const { label, hint, note, compact, onReset, start, unit } = props;
-  const { ids, box, shownError } = useNumberEntry(props);
   if (compact) {
     return (
       <div className="flex flex-col gap-1 items-end">
@@ -218,7 +230,7 @@ export function NumberField(props: FieldProps) {
           {label}
         </label>
         {box}
-        {shownError && (
+        {shownError && !errorOut && (
           <span id={`${ids}-err`} className="text-xs text-destructive">
             {shownError}
           </span>
@@ -262,16 +274,15 @@ export interface RangeFieldProps extends FieldProps {
 }
 
 /**
- * A number and a slider for it, together: the label, its reset and the box on one row, the slider under them, and under the slider the
- * value at each of its ends as the field writes it (its least at the inline start, where the slider grows from), so it is clear which way
- * it grows. For a quantity with a natural range (years, a monthly deposit). The reset sits at the far end of the label, beside the box, and
- * keeps its place while hidden; where the row is too narrow for both it takes a second line in the same row, so nothing moves when it
- * comes. The box's error takes the reset's place while it lasts, so no line opens under the box; it is shown, not spoken on every keystroke.
+ * A number and a slider for it, together: the label, its reset and the box on one row, the slider under them. For a quantity with a
+ * natural range (years, a monthly deposit). The reset sits at the far end of the label, beside the box, and keeps its place while hidden;
+ * where the row is too narrow for both it takes a second line in the same row, so nothing moves when it comes. The
+ * box's error takes the reset's place while it lasts, so no line opens under the box.
  */
 export function RangeField(props: RangeFieldProps) {
   const { label, unit, min, max, step, value, onCommit, disabled, onReset, footer, start } = props;
   const id = useId();
-  const { ids, box, shownError } = useNumberEntry({ ...props, compact: true });
+  const [error, setError] = useState<ReactNode | null>(null);
   const current = value ?? min;
   const clamped = Math.max(min, Math.min(max, current));
   const fill = ((clamped - min) / (max - min)) * 100;
@@ -282,20 +293,15 @@ export function RangeField(props: RangeFieldProps) {
           <span className="field-label min-w-0" id={`${id}-l`}>
             {label}
           </span>
-          {shownError ? (
-            <span id={`${ids}-err`} className="ms-auto text-xs leading-5 text-destructive">
-              {shownError}
+          {error ? (
+            <span role="alert" className="ms-auto text-xs leading-5 text-destructive">
+              {error}
             </span>
           ) : (
             resetKept(props) && <ResetToStart shown={resetShown(props)} start={start} unit={unit} onReset={onReset} describedBy={`${id}-l`} className="ms-auto" />
           )}
         </span>
-        <div className="flex flex-col gap-1 items-end">
-          <label htmlFor={ids} className="sr-only">
-            {label}
-          </label>
-          {box}
-        </div>
+        <NumberField {...props} compact errorOut={setError} />
       </div>
       <input
         type="range"
@@ -309,10 +315,6 @@ export function RangeField(props: RangeFieldProps) {
         style={{ "--fill": `${fill}%` } as CSSProperties}
         onChange={(e) => onCommit(Number(e.target.value))}
       />
-      <div data-slider-ends="" className="flex justify-between gap-3 text-xs text-muted-foreground">
-        <bdi dir="ltr">{startText(min, unit)}</bdi>
-        <bdi dir="ltr">{startText(max, unit)}</bdi>
-      </div>
       {footer || null}
     </div>
   );
@@ -358,9 +360,9 @@ function SearchBox({ id, value, onChange, clearLabel, inputRef, big, compact, ..
     else if (inputRef) inputRef.current = el;
   };
   return (
-    <div className={cx("field-box text-muted-foreground", big && "!h-14 border-primary bg-card text-base lg:text-lg", big && !compact && "lg:!h-16")}>
+    <div className={cx("field-box text-muted-foreground", big && "h-14 border-primary bg-card text-base lg:text-lg", big && !compact && "lg:h-16")}>
       <IconSearch size={big ? 20 : 18} aria-hidden="true" />
-      <input ref={setRef} id={id} type="text" dir="rtl" autoComplete="off" value={value} onChange={(e) => onChange(e.target.value, e.currentTarget)} className="field-input !text-start text-mixed text-foreground" {...input} />
+      <input ref={setRef} id={id} type="text" dir="rtl" autoComplete="off" value={value} onChange={(e) => onChange(e.target.value, e.currentTarget)} className="field-input text-mixed text-foreground" {...input} />
       {clearLabel && value && (
         <button
           type="button"
@@ -437,7 +439,7 @@ export function TextField({ label, value, onChange, hint, error, placeholder, ma
       </label>
       <div className={cx("field-body", grow && "min-w-0 flex-1")}>
         <div className={cx("field-box", inline && "field-box-compact max-w-full", inline && (grow ? "w-full min-w-56" : "w-56"), error ? "field-box-error" : false)}>
-          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className={cx("field-input !text-start text-mixed", inline && "font-semibold", grow && "text-ellipsis focus:text-clip")} />
+          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className={cx("field-input text-mixed", inline && "font-semibold", grow && "text-ellipsis focus:text-clip")} />
           {icon && (
             <span aria-hidden="true" className="inline-flex shrink-0 text-muted-foreground">
               {icon}
@@ -462,7 +464,7 @@ export function TextField({ label, value, onChange, hint, error, placeholder, ma
 export function CheckField({ label, checked, onChange }: { label: ReactNode; checked: boolean; onChange: (v: boolean) => void }) {
   return (
     <label className="flex items-center gap-3 min-h-target cursor-pointer">
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="size-5 shrink-0 accent-[var(--primary)]" />
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="size-5 shrink-0 accent-primary" />
       <span>{label}</span>
     </label>
   );
@@ -497,7 +499,7 @@ export function InlineSelect({ label, all, options, value, onChange, labelHidden
   const at = list.findIndex((o) => o.id === value);
   // a chip with nothing chosen shows `all`, which its list does not hold: it stands first in the stack
   const stack = at < 0 && all !== undefined && chip ? { names: [all, ...names], at: 0 } : { names, at: Math.max(at, 0) };
-  const chevron = <IconChevronDown size={16} aria-hidden="true" className={cx("shrink-0 text-muted-foreground transition-transform duration-[var(--duration-fast)]", s.open && "rotate-180")} />;
+  const chevron = <IconChevronDown size={16} aria-hidden="true" className={cx("shrink-0 text-muted-foreground transition-transform duration-(--duration-fast)", s.open && "rotate-180")} />;
   if (chip) {
     return (
       <span className="inline-flex max-w-full">
@@ -507,7 +509,7 @@ export function InlineSelect({ label, all, options, value, onChange, labelHidden
         <button
           {...s.button}
           className={cx(
-            "inline-flex min-h-target max-w-full items-center gap-2 rounded-md bg-secondary ps-3 pe-2.5 text-sm transition-colors duration-[var(--duration-fast)] hover:bg-secondary-hover focus-visible:outline-2 focus-visible:outline-ring",
+            "inline-flex min-h-target max-w-full items-center gap-2 rounded-md bg-secondary ps-3 pe-2.5 text-sm transition-colors duration-(--duration-fast) hover:bg-secondary-hover focus-visible:outline-2 focus-visible:outline-ring",
             value === null && "text-muted-foreground",
           )}
         >

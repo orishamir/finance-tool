@@ -7,7 +7,7 @@ export function MeterBar({ share, tone, className }: { /** 0 to 1. */ share: num
   const fill = { stocks: "bg-chart-stocks", currency: "bg-chart-currency" }[tone];
   return (
     <span aria-hidden="true" className={cx("relative block h-1.5 w-full rounded-full bg-muted", className)}>
-      <span className={cx("absolute inset-y-0 start-0 rounded-full transition-[width] duration-[var(--duration-chart)] ease-standard motion-reduce:transition-none", fill)} style={{ width: `${Math.max(0, Math.min(1, share)) * 100}%` }} />
+      <span className={cx("absolute inset-y-0 inset-s-0 rounded-full transition-[width] duration-(--duration-chart) ease-standard motion-reduce:transition-none", fill)} style={{ width: `${Math.max(0, Math.min(1, share)) * 100}%` }} />
     </span>
   );
 }

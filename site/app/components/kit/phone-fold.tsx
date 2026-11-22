@@ -19,7 +19,7 @@ export function PhoneFold({ summary, more, less, children, below = "md", open: g
         <span className="min-w-0">{summary}</span>
         <span className="inline-flex items-center gap-1 shrink-0 text-link">
           {open ? less : more}
-          <IconChevronDown size={18} className={cx("transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
+          <IconChevronDown size={18} className={cx("transition-transform duration-(--duration-fold) ease-standard", open && "rotate-180")} />
         </span>
       </button>
       <div id={id} className={cx("flex-col gap-4", open ? "flex" : BODY[below])}>

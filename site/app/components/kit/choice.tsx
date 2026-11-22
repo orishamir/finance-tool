@@ -52,7 +52,7 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
             className={cx(
               "flex-1 inline-flex items-center justify-center gap-1 min-h-[30px] tap-area px-3 text-sm rounded-[9px]",
               long ? cx("min-w-0 text-center", fit === "always" ? "flex-auto" : fit && "sm:flex-auto") : "whitespace-nowrap",
-              "transition-colors duration-[var(--duration-fast)] disabled:opacity-40 disabled:cursor-not-allowed",
+              "transition-colors duration-(--duration-fast) disabled:opacity-40 disabled:cursor-not-allowed",
               on ? "bg-primary-subtle text-foreground" : "text-muted-foreground enabled:hover:bg-accent/60 enabled:hover:text-foreground",
             )}
           >
@@ -109,7 +109,7 @@ export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ar
   return (
     <div role="radiogroup" aria-label={ariaLabel} className={layout} onKeyDown={onKey}>
       {ids.map((id) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip gap-1.5 shrink-0 transition-[background-color,color,opacity] duration-[var(--duration-fast)]", value === id && "sec-chip-on ps-2.5", counts?.[id] === 0 && value !== id && "opacity-45", missing?.[id] && cx("chip-dashed", value !== id && "text-muted-foreground"))}>
+        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip gap-1.5 shrink-0 transition-[background-color,color,opacity] duration-(--duration-fast)", value === id && "sec-chip-on ps-2.5", counts?.[id] === 0 && value !== id && "opacity-45", missing?.[id] && cx("chip-dashed", value !== id && "text-muted-foreground"))}>
           {value === id && <IconCheck size={16} className="shrink-0" />}
           {/* the label laid out twice in one cell, once at the chosen weight and unseen: the words take one width chosen or not (the check
               alone widens the chosen chip) */}
@@ -217,24 +217,29 @@ export function TileChoice<T extends string>({ label, labelledBy, tiles, value, 
         {tiles.map((t, i) => {
           const on = value === t.value;
           return (
-            <button
+            <div
               key={t.value}
-              type="button"
               role="radio"
               aria-checked={on}
               tabIndex={on || (!chosen && i === 0) ? 0 : -1}
               onClick={() => onChange(t.value)}
+              onKeyDown={(e) => {
+                if (e.key === " " || e.key === "Enter") {
+                  e.preventDefault();
+                  onChange(t.value);
+                }
+              }}
               className={cx(
-                "flex items-start gap-2.5 min-h-target rounded-md border px-3 py-2.5 cursor-pointer text-start transition-colors duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-ring",
+                "flex items-start gap-2.5 min-h-target rounded-md border px-3 py-2.5 cursor-pointer text-start transition-colors duration-(--duration-fast) focus-visible:outline-2 focus-visible:outline-ring",
                 on ? "border-primary bg-primary/10" : "border-border bg-card hover:bg-accent/60",
               )}
             >
-              <span aria-hidden="true" className={cx("size-4 shrink-0 rounded-full mt-0.5 transition-[border-width] duration-[var(--duration-fast)]", on ? "border-[5px] border-primary" : "border-[1.5px] border-input")} />
+              <span aria-hidden="true" className={cx("size-4 shrink-0 rounded-full mt-0.5 transition-[border-width] duration-(--duration-fast)", on ? "border-[5px] border-primary" : "border-[1.5px] border-input")} />
               <span className="flex flex-col gap-1.5 min-w-0">
                 {t.title && <span className={cx("text-sm", on && "font-medium")}>{t.title}</span>}
                 {t.body}
               </span>
-            </button>
+            </div>
           );
         })}
       </div>
@@ -252,14 +257,6 @@ export function TileChoice<T extends string>({ label, labelledBy, tiles, value, 
  */
 export const LIFT_INNER =
   "[&_:is(a,button,[role=button],input,select,[data-lift]):not([data-pick-card])]:relative [&_:is(a,button,[role=button],input,select):not([data-pick-card],.num)]:z-10";
-
-/**
- * A block inside a card whose whole face is one button that stands over that button because it is positioned (a block that holds a grip
- * is, app.css `:has(> [data-grip-box])`) lets a press on its surface through to the button, so the press chooses the card as a press
- * anywhere else on it does; what has a tap of its own inside the block (the same as `OWN_TAP`) keeps it.
- */
-export const PRESS_THROUGH =
-  "[&_:has(>[data-grip-box])]:pointer-events-none [&_:has(>[data-grip-box])_:is(a,button,input,select,textarea,label,summary,[role=button],[role=slider],[data-lift],[data-grip-box],[data-knob-strip],dialog,[popover])]:pointer-events-auto";
 
 /** What a press on a card's or a cell's surface may never be taken as: a control, a field, a figure, a grip, a knob, or a sheet opened from it. */
 const OWN_TAP = "a, button, input, select, textarea, label, summary, [role=button], [role=slider], [data-lift], [data-grip-box], [data-knob-strip], dialog, [popover]";
@@ -293,8 +290,8 @@ export function onOwnSurface(t: Element, root: Element): boolean {
  * An option shown as a card, the whole card one button: a tap anywhere on it chooses it (guidelines/design.md, "Choose by
  * tapping the option itself"), never a "choose this" link inside it. Unlike TileChoice, what is inside may hold controls of its own (a
  * figure that opens its source, a fund number that opens its page, a figure typed in place): they lie above the card's button. The button
- * is stretched over the card and comes first inside it, so the keyboard meets the card before what is in it, and a part of the card
- * positioned over it lets a press through to it (`PRESS_THROUGH`); `label` names it for a screen reader. `chosen`: the option chosen, marked by the action colour's edge (a word inside says so too, never colour alone); it keeps
+ * is stretched over the card and comes first inside it, so the keyboard meets the card before what is in it; `label` names it for a
+ * screen reader. `chosen`: the option chosen, marked by the action colour's edge (a word inside says so too, never colour alone); it keeps
  * its button, so choosing moves no focus and the card's shape stays. A chosen card's button says it is pressed and does not light up.
  * `pad` takes Card's paddings (`snug` for an option in a list of options); `none`, the default, leaves it to what is inside. `marked`:
  * another part of the page points at this option (the fee page's glance under the pointer), drawn as the hover is.
@@ -313,13 +310,14 @@ export function PickCard({ label, onPick, pad = "none", chosen, marked, classNam
   return (
     <div
       className={cx(
-        "relative rounded-lg border transition-colors duration-[var(--duration-fast)]",
+        "relative rounded-lg border transition-colors duration-(--duration-fast)",
         chosen ? "border-primary outline-1 outline-primary" : cx("border-border cursor-pointer hover:bg-accent/60", marked && "bg-accent/60"),
         CARD_PAD[pad],
         LIFT_INNER,
-        PRESS_THROUGH,
         className,
       )}
+      // a press on a part of the card that stands over its button (a block positioned for a grip) still chooses it
+      onClick={(e) => onSurface(e) && onPick("pointer")}
     >
       <button
         type="button"
