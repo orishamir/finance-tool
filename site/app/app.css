@@ -567,6 +567,10 @@
     display: flex;
     animation: sheet-in var(--duration-base) var(--ease-standard);
   }
+  /* the kit page's lift demo in a sheet too short for its rows, so a carry scrolls its body (kit-input-check.mjs, "lift in a sheet") */
+  .sheet.sheet-kit-lift {
+    max-height: 20rem;
+  }
   .sheet[data-closing] {
     animation: sheet-out var(--duration-base) var(--ease-exit) forwards;
   }
@@ -688,6 +692,9 @@
     }
     .sheet[data-pc="popover"][open] {
       animation: pop-in var(--duration-base) var(--ease-standard);
+    }
+    .sheet.sheet-kit-lift {
+      width: min(46rem, calc(100vw - 2rem));
     }
     .sheet-search[data-pc="popover"] {
       width: min(30rem, calc(100vw - 2rem));

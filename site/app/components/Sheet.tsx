@@ -275,7 +275,8 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
       >
         <span />
       </div>
-      <div className="sheet-body" ref={body}>
+      {/* what a carry inside the sheet scrolls near its top or foot (kit/lift.tsx, `scrollerOf`) */}
+      <div className="sheet-body" data-carry-scroll="" ref={body}>
         {/* floats in the top corner beside the first line, and stays there while the body scrolls (it had a row
             of its own above the content) */}
         <div className="sheet-head" data-back={back ? "" : undefined}>

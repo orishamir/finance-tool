@@ -2,7 +2,7 @@
 // for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
 // `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
 import { gershayim } from "../lib/format";
-import { memo, useCallback, useDeferredValue, useEffect, useId, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
@@ -37,7 +37,7 @@ import { loadBundle, bundleLinks } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
 import { enteredPlan } from "../lib/entered-plan";
 import { useSettled } from "../lib/settled";
-import { useInputs, type InputsState } from "../lib/inputs";
+import { useInputs } from "../lib/inputs";
 import { withCustomEntries } from "../lib/custom-entries";
 import { buildInvest, chargesCurrentAccount, hasKinds, indexById, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { exposureIdOfSlug, INDICES_PATH } from "../lib/site-paths";
@@ -151,59 +151,18 @@ function Page({ wb, compare, failed, data }: { wb: IndicesBundle | null; compare
 /** The bank the person marked as theirs (D64), while a bank whose current account costs something has that id; else none. */
 const ownBankOf = (wb: IndicesBundle, id: string | null): string | null => (id && wb.snapshots.some((s) => s.id === id && chargesCurrentAccount(s)) ? id : null);
 
-type BodyProps = { wb: IndicesBundle; compare: CompareBundle; data: Data; search: string };
-
-/** The body on the values the person entered, deferred (code.md, "Slow work never delays the field"): a key or a slider's move answers in
- *  its own field at once, as the knobs read the entered values themselves, and the plan, the pair, the lists and the receipt follow in a
- *  render behind it, the last result staying on screen until then. Mounted once the saved values are read, so its first render has them. */
-function Body(props: BodyProps) {
-  const inputs = useDeferredValue(useInputs().state);
-  const invest = useInvestParts();
-  const fees = useFeesData(props.wb);
-  return <PlanBody {...props} inputs={inputs} invest={invest} fees={fees} />;
-}
-
-/** The parts of the saved state the page reads, one object while they stay the same: the entered values are saved in the same document, and
- *  their write after each key would otherwise render the whole page again in the key's own frame. */
-function useInvestParts() {
-  const { status, customIndices, customFunds, bank, setBank, add, rename, remove, saveFund, removeFund } = useInvestState();
-  return useMemo(
-    () => ({ status, customIndices, customFunds, bank, setBank, add, rename, remove, saveFund, removeFund }),
-    [status, customIndices, customFunds, bank, setBank, add, rename, remove, saveFund, removeFund],
-  );
-}
-
-/** The fee page's data (the kinds), loaded once a securities-account deal is saved, a typed account waits to move into one, or the deal's
- *  popup opens; and the typed accounts the move left (the move, method §10.4). Read beside the saved state, outside the page's body, for
- *  the same reason as `useInvestParts`. */
-function useFeesData(wb: IndicesBundle) {
-  const typed = useInvestState().customBrokers.length > 0;
-  const deals = dealStore.use();
-  const anyDeal = typed || deals.value.some(isAccountDeal);
-  const [data, setData] = useState<FeesData | null>(null);
-  // the fee page's data that did not load: the popup says so, and its retry asks again
-  const [failed, setFailed] = useState(false);
-  const want = useCallback(() => {
-    setFailed(false);
-    void loadFeesData().then(setData, () => setFailed(true));
-  }, []);
-  useEffect(() => {
-    if (anyDeal) want();
-  }, [anyDeal, want]);
-  const left = useTypedAccountsMove(data, wb);
-  return useMemo(() => ({ data, failed, want, left }), [data, failed, want, left]);
-}
-
-const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, invest, fees }: BodyProps & { inputs: InputsState; invest: ReturnType<typeof useInvestParts>; fees: ReturnType<typeof useFeesData> }) {
+function Body({ wb, compare, data, search }: { wb: IndicesBundle; compare: CompareBundle; data: Data; search: string }) {
   const navigate = useNavigate();
   const exposureId = exposureIdOf(useParams().slug, data.indices);
+  const released = useInputs();
+  const invest = useInvestState();
   // The numbers the person entered on this device, each one not entered taking the site's example (P-05)
-  const entered = useMemo(() => enteredPlan(compare, inputs), [compare, inputs]);
+  const entered = useMemo(() => enteredPlan(compare, released.state), [compare, released.state]);
   const ownBank = ownBankOf(wb, invest.bank);
   const currentAccounts = useMemo(() => ({ own: ownBank }), [ownBank]);
   // a bank's row counts its current account, except at the bank the person marked as theirs (D64)
   const livePlan: WorkbenchInputs = useMemo(() => ({ ...entered.plan, currentAccounts }), [entered, currentAccounts]);
-  // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider in the render deferred behind it (`Body`); the two lists price every
+  // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider live; the two lists price every
   // account and fund (about 200 ms) and wait until the slider rests. A bank
   // marked as the person's own is one pick, not a slide: the lists take it at once, with the plan as it last settled, so their rows
   // re-sort right after the pick rather than a moment later, when the hand may be on the list (0.6 to 1 s).
@@ -222,11 +181,23 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   const customs: CustomIndex[] = invest.customIndices;
   // the funds the person typed join the data here and nowhere else: this page alone compares them (D44)
   const typedBundle = useMemo(() => withCustomEntries(wb, invest.customFunds, customs), [wb, invest.customFunds, customs]);
-  // the person's securities-account deals are accounts too (F-128): read with the fee page's data (the kinds, `useFeesData`); while the
-  // popup is open the page keeps the deals as they were, and takes them once it closes
+  // the person's securities-account deals are accounts too (F-128): read with the fee page's data (the kinds), loaded once one is saved
+  // or the popup opens; while the popup is open the page keeps the deals as they were, and takes them once it closes
   const deals = dealStore.use();
   const accountDeals = useMemo(() => deals.value.filter(isAccountDeal), [deals.value]);
-  const { data: feesData, failed: feesFailed, want: wantFees, left: notMoved } = fees;
+  const [feesData, setFeesData] = useState<FeesData | null>(null);
+  // the fee page's data that did not load: the popup says so, and its retry asks again
+  const [feesFailed, setFeesFailed] = useState(false);
+  const wantFees = useCallback(() => {
+    setFeesFailed(false);
+    void loadFeesData().then(setFeesData, () => setFeesFailed(true));
+  }, []);
+  // a typed account still in the saved state waits for the price lists too, and moves into a deal once they are here (the move, method §10.4)
+  const anyDeal = accountDeals.length > 0 || invest.customBrokers.length > 0;
+  useEffect(() => {
+    if (anyDeal) wantFees();
+  }, [anyDeal, wantFees]);
+  const notMoved = useTypedAccountsMove(feesData, wb);
   const [dealOpen, setDealOpen] = useState(false);
   const heldDeals = useRef<FeeDeal[]>(accountDeals);
   if (!dealOpen) heldDeals.current = accountDeals;
@@ -370,11 +341,11 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   // the knobs write the same entered values the assumptions write: a value set here is the value there
   const planCard = (
     <PlanCard
-      knobs={<PlanKnobs compare={compare} ranges={data.form.knobs} pct={data.form.pct} stacked />}
+      knobs={<PlanKnobs entered={entered} ranges={data.form.knobs} pct={data.form.pct} stacked />}
       onOpen={() => setPanelOpen(true)}
       fx={wb.fx}
       today={data.today}
-      example={Object.keys(inputs.entered).length === 0}
+      example={Object.keys(released.state.entered).length === 0}
       dollar={!index?.israeli}
       inflation={entered.plan.values.inflation}
       returnHelp={view ? returnHelpOf(view) : undefined}
@@ -488,10 +459,10 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
           {c.plan.knobs.income.before} <Num value={entered.income} /> {c.plan.knobs.income.after} {c.plan.knobs.income.surtax} <Term id={c.plan.knobs.income.term}>{c.plan.knobs.income.term}</Term>
           {c.plan.knobs.income.end}
         </p>
-        {panelOpen && <OtherAssumptions compare={compare} pct={data.form.pct} />}
+        {panelOpen && <OtherAssumptions inflation={entered.plan.values.inflation} inflationStart={entered.starts.inflation} pct={data.form.pct} />}
       </Sheet>
       </CustomEntriesHost>
       </DealAccountsHost>
     </LabelSheetHost>
   );
-});
+}

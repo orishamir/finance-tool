@@ -32,6 +32,18 @@
 //   header   from 1024 px the site's five sections not all in sight on one line each, or overlapped by the open search; below it, no menu
 //            button named exactly "תפריט" (design.md, "The site's sections are in sight"). A section hidden on purpose must be caught first.
 //   touch    a chart dragged sideways by a finger that does not follow it, or that keeps the page from scrolling when the finger moves down.
+//   lift in a sheet   the kit's lift demo opened in a sheet (a modal dialog, in the top layer over the page): a row carried among the rows
+//            by its grip with a mouse at 1440 (the sheet centred by a transform) or pressed long and carried by a finger at 390 whose picture
+//            is not drawn over the sheet under the pointer while carried, or that does not move the row where it is let go; a knob pulled
+//            whose frame is not drawn over the sheet; a menu of actions (a grip's) not drawn over the sheet. In the same sheet, too short for
+//            its rows: the first row carried to the sheet's foot (a mouse at 1440, a finger at 390) that does not scroll the sheet's body,
+//            or the wheel that does not scroll it during a carry, or the row let go on the top of the last row, out of view when it was
+//            lifted, that does not land just before it.
+//   toolbox carry   on the fee page's deal at 1024 (the toolbox docked at the window's foot, its parts in a list that scrolls), a card
+//            carried from it over one case, the page wheeled down under the still pointer until the case below stands there, and let go
+//            with no move: the card not landing on that case (the drop aimed at the places as they stood before the scroll).
+
+import { existsSync, readFileSync } from "node:fs";
 
 const CONTEXT = { locale: "he-IL", timezoneId: "Asia/Jerusalem", reducedMotion: "reduce", colorScheme: "dark" };
 const PHONE = { ...CONTEXT, viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true };
@@ -69,7 +81,7 @@ const center = (r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2 });
 
 export async function kitInputCheck(browser, base) {
   const found = [];
-  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck]) {
+  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck]) {
     try {
       found.push(...(await run(browser, base)));
     } catch (e) {
@@ -597,5 +609,285 @@ async function headerCheck(browser, base) {
   const named = await phone.page.getByRole("button", { name: "תפריט", exact: true }).count();
   if (named !== 1) found.push(`header: at 390 px, ${named} buttons named exactly "תפריט" (one expected)`);
   await phone.ctx.close();
+  return found;
+}
+
+/**
+ * In the page: whether the element `sel` (drawn with no press of its own) is what a press at the point would reach were it pressed, the top
+ * thing drawn there, and whether its box holds the point; null where there is none.
+ */
+function drawnAt([sel, x, y]) {
+  const el = document.querySelector(sel);
+  if (!el) return null;
+  const was = el.style.pointerEvents;
+  el.style.pointerEvents = "auto";
+  const hit = document.elementFromPoint(x, y);
+  el.style.pointerEvents = was;
+  const r = el.getBoundingClientRect();
+  return { top: !!hit && el.contains(hit), holds: x >= r.left && x <= r.right && y >= r.top && y <= r.bottom };
+}
+
+/** The lift demo opened in its sheet on the kit page; the rows' order read from their grips (kit:row:<n>), outside the carried picture. */
+async function openLiftSheet(browser, base, options) {
+  const { ctx, page } = await open(browser, base, options);
+  const opener = page.locator('article[aria-label="Grip, DropBin, SpanKnob, EditInPlace"] button', { hasText: "לפתוח את העמלה בחלון" });
+  await opener.scrollIntoViewIfNeeded();
+  await (options.hasTouch ? opener.tap() : opener.click());
+  await page.locator("dialog[open] [data-lift-item^='kit:row:']").first().waitFor({ state: "attached", timeout: 3000 });
+  await page.evaluate(settled);
+  const rows = () => page.evaluate(() => [...document.querySelectorAll("dialog[open] [data-grip][data-lift-item^='kit:row:']")].filter((g) => !g.closest("[data-lift-ghost]")).map((g) => g.dataset.liftItem).join(","));
+  return { ctx, page, rows };
+}
+
+async function liftSheetCheck(browser, base) {
+  const found = [];
+  // a mouse at 1440, where the sheet stands centred by a transform
+  {
+    const { ctx, page, rows } = await openLiftSheet(browser, base, DESK);
+    const before = await rows();
+    const row = page.locator("dialog[open] [data-liftable]:has(> * [data-grip][data-lift-item='kit:row:0'], > [data-grip-box] [data-grip][data-lift-item='kit:row:0'])").first();
+    const other = page.locator("dialog[open] [data-liftable]:has(> * [data-grip][data-lift-item='kit:row:1'], > [data-grip-box] [data-grip][data-lift-item='kit:row:1'])").first();
+    await row.hover();
+    const g = center(await page.locator("dialog[open] [data-grip][data-lift-item='kit:row:0']").boundingBox());
+    const o = await other.boundingBox();
+    const to = { x: g.x, y: o.y + o.height - 4 };
+    await page.mouse.move(g.x, g.y);
+    await page.mouse.down();
+    await page.mouse.move(g.x, g.y + 6, { steps: 3 });
+    await page.mouse.move(to.x, to.y, { steps: 10 });
+    const ghost = await page.evaluate(drawnAt, ["[data-lift-ghost]", to.x, to.y]);
+    if (!ghost) found.push("lift in a sheet: a row's grip pressed and moved with a mouse lifts nothing");
+    else {
+      if (!ghost.top) found.push("lift in a sheet: the row carried with a mouse is not the top thing drawn at the pointer (hidden under the sheet's layer, or drawn elsewhere)");
+      if (!ghost.holds) found.push("lift in a sheet: the row carried with a mouse is not drawn under the pointer");
+    }
+    await page.mouse.up();
+    await page.evaluate(settled);
+    if ((await rows()) === before) found.push(`lift in a sheet: a row carried with a mouse below the next one and let go does not move (${before})`);
+    // a knob pulled toward the column before its cell, pressed where its strip is the top thing (the cell's grip stands over its middle)
+    const k = await page.evaluate(() => {
+      for (const knob of document.querySelectorAll("dialog[open] [data-span-knob]")) {
+        knob.scrollIntoView({ block: "center" });
+        const r = knob.getBoundingClientRect();
+        for (let y = r.top + 1; y < r.bottom; y += 2) if (document.elementFromPoint(r.left + r.width / 2, y)?.closest("[data-span-knob]") === knob) return { x: r.left + r.width / 2, y, mid: r.top + r.height / 2 };
+      }
+      return null;
+    });
+    if (!k) found.push("lift in a sheet: no knob in the sheet takes a press");
+    if (k) {
+      await page.mouse.move(k.x, k.y);
+      await page.mouse.down();
+      await page.mouse.move(k.x + 40, k.y, { steps: 4 });
+      // the frame spans the cell's height, as the knob's strip does: read in its middle, clear of its rounded corners
+      const frame = await page.evaluate(drawnAt, ["[data-reach-frame]", k.x + 30, k.mid]);
+      if (!frame) found.push("lift in a sheet: a knob pulled draws no frame");
+      else if (!frame.top) found.push("lift in a sheet: a knob's frame is not the top thing drawn beside the pointer (hidden under the sheet's layer, or drawn elsewhere)");
+      else if (!frame.holds) found.push("lift in a sheet: a knob's frame does not reach the pointer");
+      await page.mouse.up();
+      await page.evaluate(settled);
+    }
+    // the menu of actions the row strip's plus opens (ActionMenu, as a grip's menu)
+    const strip = page.locator('dialog[open] button[data-add-slot="row"]', { hasText: "חלק לכל השורה" }).last();
+    await strip.scrollIntoViewIfNeeded();
+    await strip.click();
+    const menu = page.locator("[role=menu]");
+    if (!(await menu.count())) found.push("lift in a sheet: the row strip's plus opens no menu");
+    else {
+      const m = center(await menu.boundingBox());
+      if (!(await page.evaluate(drawnAt, ["[role=menu]", m.x, m.y]))?.top) found.push("lift in a sheet: a menu of actions is not drawn over the sheet");
+    }
+    await ctx.close();
+  }
+  // a finger at 390: a long press on the row's head, then carried down past the next row
+  {
+    const { ctx, page, rows } = await openLiftSheet(browser, base, PHONE);
+    const before = await rows();
+    const head = page.locator("dialog[open] [data-liftable]:has([data-grip][data-lift-item='kit:row:0'])").last();
+    const next = page.locator("dialog[open] [data-liftable]:has([data-grip][data-lift-item='kit:row:1'])").last();
+    // the row at the top of the sheet's body; the finger stops short of the body's foot, where the body would scroll under it
+    await head.evaluate((el) => el.scrollIntoView({ block: "start" }));
+    await page.evaluate(settled);
+    const h = await head.boundingBox();
+    const n = await next.boundingBox();
+    const view = await page.evaluate(rowView, "kit:row:1");
+    const from = { x: h.x + h.width / 2, y: h.y + Math.min(h.height / 2, 14) };
+    const to = { x: from.x, y: Math.min(n.y + n.height - 4, (view?.bottom ?? 844) - 90) };
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [from] });
+    const lifted = await page.waitForFunction(() => !!document.querySelector("[data-lift-ghost]"), null, { timeout: 3000 }).then(() => true, () => false);
+    if (!lifted) found.push("lift in a sheet: a long press on a row's head lifts nothing");
+    for (let i = 1; i <= 10; i++) await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: from.x, y: from.y + ((to.y - from.y) * i) / 10 }] });
+    const ghost = lifted ? await page.evaluate(drawnAt, ["[data-lift-ghost]", to.x, to.y]) : null;
+    if (ghost && !ghost.top) found.push("lift in a sheet: the row carried by a finger is not the top thing drawn at the pointer (hidden under the sheet's layer, or drawn elsewhere)");
+    if (ghost && !ghost.holds) found.push("lift in a sheet: the row carried by a finger is not drawn under the finger");
+    await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await cdp.detach();
+    await page.evaluate(settled);
+    if (lifted && (await rows()) === before) found.push(`lift in a sheet: a row carried by a finger below the next one and let go does not move (${before})`);
+    await ctx.close();
+  }
+  for (const f of await liftScrollCheck(browser, base)) found.push(f);
+  return found;
+}
+
+/**
+ * In the page: the box the sheet's rows scroll in (the nearest around the row `item` whose height overflows), the part of the screen it
+ * shows, where the row stands, whether the box is scrolled to its end and how far it has left to scroll. Null where nothing around the row scrolls.
+ */
+function rowView(item) {
+  const grip = [...document.querySelectorAll(`dialog[open] [data-grip][data-lift-item="${item}"]`)].find((g) => !g.closest("[data-lift-ghost]"));
+  let s = grip?.parentElement ?? null;
+  while (s && !(s.scrollHeight > s.clientHeight + 1 && /auto|scroll/.test(getComputedStyle(s).overflowY))) s = s.parentElement;
+  if (!grip || !s) return null;
+  const v = s.getBoundingClientRect();
+  const r = grip.closest("[data-liftable]").getBoundingClientRect();
+  return { top: v.top, bottom: v.bottom, rowTop: r.top, rowBottom: r.bottom, x: r.left + r.width / 2, shown: r.top >= v.top && r.bottom <= v.bottom, end: s.scrollTop + s.clientHeight >= s.scrollHeight - 1, left: s.scrollHeight - s.clientHeight - s.scrollTop };
+}
+
+/**
+ * The lift demo's sheet, too short for its four rows (`lift in a sheet` above): the first row carried to the sheet's foot, which must scroll
+ * the sheet's body to its end, then let go on the top of the last row, out of view when the carry began, which must land it just before
+ * that row; with a mouse at 1440, with a finger at 390, and with a mouse whose wheel scrolls the sheet's body during the carry.
+ */
+async function liftScrollCheck(browser, base) {
+  const found = [];
+  const LAST = "kit:row:3";
+  for (const how of ["mouse", "finger", "wheel"]) {
+    const { ctx, page, rows } = await openLiftSheet(browser, base, how === "finger" ? PHONE : DESK);
+    const say = (f) => found.push(`lift in a sheet, scrolled (${how === "finger" ? "a finger at 390" : how === "wheel" ? "a mouse's wheel at 1440" : "a mouse at 1440"}): ${f}`);
+    const first = page.locator("dialog[open] [data-liftable]:has(> * [data-grip][data-lift-item='kit:row:0'], > [data-grip-box] [data-grip][data-lift-item='kit:row:0'])").first();
+    await first.evaluate((el) => el.scrollIntoView({ block: "nearest" }));
+    await page.evaluate(settled);
+    const start = await page.evaluate(rowView, LAST);
+    if (!start) {
+      say("the sheet's body does not scroll, so nothing is tested");
+      await ctx.close();
+      continue;
+    }
+    if (start.shown) say("the last row is in view before the carry, so nothing is tested");
+    const v0 = await page.evaluate(rowView, "kit:row:0");
+    const foot = { x: v0.x, y: start.bottom - 12 };
+    let cdp = null;
+    const lifted = await (async () => {
+      if (how === "finger") {
+        const from = { x: v0.x, y: (Math.max(v0.rowTop, start.top) + Math.min(v0.rowBottom, start.bottom)) / 2 };
+        cdp = await page.context().newCDPSession(page);
+        await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [from] });
+        const ok = await page.waitForFunction(() => !!document.querySelector("[data-lift-ghost]"), null, { timeout: 3000 }).then(() => true, () => false);
+        for (let i = 1; i <= 8; i++) await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: foot.x, y: from.y + ((foot.y - from.y) * i) / 8 }] });
+        return ok;
+      }
+      await first.hover();
+      const g = center(await page.locator("dialog[open] [data-grip][data-lift-item='kit:row:0']").boundingBox());
+      await page.mouse.move(g.x, g.y);
+      await page.mouse.down();
+      await page.mouse.move(g.x, g.y + 6, { steps: 3 });
+      if (how === "mouse") await page.mouse.move(foot.x, foot.y, { steps: 8 });
+      else {
+        // the pointer where the top of the last row will stand once the body is scrolled to its end, then the wheel, then let go with no
+        // move: only a carry that aims again as the body scrolls under the still pointer lands the row there
+        const v = await page.evaluate(rowView, LAST);
+        await page.mouse.move(v.x, v.rowTop - v.left + 6, { steps: 8 });
+        await page.mouse.wheel(0, 3000);
+      }
+      return !!(await page.evaluate(() => document.querySelector("[data-lift-ghost]")));
+    })();
+    if (!lifted) say("the first row lifts nothing");
+    else {
+      const reached = await page.waitForFunction((item) => {
+        const grip = [...document.querySelectorAll(`dialog[open] [data-grip][data-lift-item="${item}"]`)].find((g) => !g.closest("[data-lift-ghost]"));
+        let s = grip?.parentElement ?? null;
+        while (s && !(s.scrollHeight > s.clientHeight + 1 && /auto|scroll/.test(getComputedStyle(s).overflowY))) s = s.parentElement;
+        return !!s && s.scrollTop + s.clientHeight >= s.scrollHeight - 1;
+      }, LAST, { timeout: 5000 }).then(() => true, () => false);
+      if (!reached) say(how === "wheel" ? "the wheel does not scroll the sheet's body during the carry" : "carried to the sheet's foot, the sheet's body does not scroll to its end");
+      await page.evaluate(settled);
+      const end = await page.evaluate(rowView, LAST);
+      // the top of the last row: the place just before it, which a drop aimed by places as they stood before the scroll would miss
+      const to = { x: end.x, y: Math.max(end.rowTop, end.top) + 6 };
+      if (how === "wheel") await page.mouse.up();
+      else if (how === "finger") {
+        for (let i = 1; i <= 3; i++) await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: to.x, y: foot.y + ((to.y - foot.y) * i) / 3 }] });
+        await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      } else {
+        await page.mouse.move(to.x, to.y, { steps: 3 });
+        await page.mouse.up();
+      }
+      await page.evaluate(settled);
+      const after = (await rows()).split(",");
+      if (after.join(",") !== "kit:row:1,kit:row:2,kit:row:0,kit:row:3") say(`the first row let go on the top of the last row, out of view when it was lifted, does not land just before it (${after.join(",")})`);
+    }
+    if (cdp) await cdp.detach();
+    await ctx.close();
+  }
+  return found;
+}
+
+/**
+ * On the fee page's deal at 1024 (`toolbox carry` above), with its first fee and first case open: the first card the docked toolbox offers
+ * carried by a mouse over a place that takes it (A), the page wheeled down by the distance to the place under it in the same column (B),
+ * and let go there with no move. B must take the card; A and B are read by their keys, and the card's drop changes what B says.
+ */
+async function toolboxCarryCheck(browser, base) {
+  const file = new URL("./layout-check-deal.txt", import.meta.url);
+  if (!existsSync(file)) return [];
+  const found = [];
+  const say = (f) => found.push(`toolbox carry: ${f}`);
+  const { ctx, page } = await open(browser, base, { ...CONTEXT, viewport: { width: 1024, height: 800 } }, readFileSync(file, "utf8").trim());
+  await page.evaluate(() => document.querySelector("main [data-fee-head]")?.click());
+  await page.evaluate(settled);
+  await page.locator("main [role=gridcell][data-liftable]").first().click();
+  await page.evaluate(settled);
+  // the notice of a failed script stands over the toolbox at the window's foot (the toolbox's size observer can raise it, by a resize loop)
+  const notice = page.locator("[role=alert] button").last();
+  if (await notice.count()) await notice.click();
+  const cards = page.locator("[data-tool-sheet][data-docked] [data-drag-source]");
+  for (const chip of await page.locator("[data-tool-sheet][data-docked] [role=radio]").all()) {
+    if (await cards.count()) break;
+    await chip.click();
+    await page.evaluate(settled);
+  }
+  if (!(await cards.count())) {
+    say("the docked toolbox offers no card to carry, so nothing is tested");
+    await ctx.close();
+    return found;
+  }
+  await cards.first().scrollIntoViewIfNeeded();
+  const c = center(await cards.first().boundingBox());
+  await page.mouse.move(c.x, c.y);
+  await page.mouse.down();
+  await page.mouse.move(c.x - 10, c.y - 10, { steps: 3 });
+  // two cases that take the card, one above the other in a column, both under the header and over the toolbox, the page room to scroll
+  const pair = await page.evaluate(() => {
+    const top = (document.querySelector("[data-site-header]")?.getBoundingClientRect().bottom ?? 0) + 8;
+    const foot = (document.querySelector("[data-tool-sheet]")?.getBoundingClientRect().top ?? innerHeight) - 8;
+    const room = document.documentElement.scrollHeight - innerHeight - scrollY;
+    // cases (a grid's cells), whose words a card dropped on them changes
+    const zones = [...document.querySelectorAll("main [data-drop-zone]")].filter((z) => z.querySelector("[role=gridcell]") || z.closest("[role=gridcell]")).map((z) => ({ key: z.getAttribute("data-drop-key"), r: z.getBoundingClientRect(), text: z.innerText }));
+    for (const a of zones)
+      for (const b of zones) {
+        const ay = a.r.top + a.r.height / 2, by = b.r.top + b.r.height / 2;
+        if (Math.abs(a.r.left - b.r.left) < 2 && by > a.r.bottom && ay > top && ay < foot && by - ay < room) return { a: a.key, b: b.key, x: a.r.left + a.r.width / 2, y: ay, by: Math.round(by - ay), text: b.text };
+      }
+    return null;
+  });
+  if (!pair) say("no two places that take the card stand one above the other in view, so nothing is tested");
+  else {
+    await page.mouse.move(pair.x, pair.y, { steps: 6 });
+    const before = await page.evaluate(() => scrollY);
+    await page.mouse.wheel(0, pair.by);
+    await page.waitForFunction((y) => scrollY !== y, before, { timeout: 3000 }).catch(() => say("the wheel does not scroll the page during the carry"));
+    await page.evaluate(settled);
+    const under = await page.evaluate(([key, x, y]) => {
+      const r = document.querySelector(`[data-drop-key="${key}"]`)?.getBoundingClientRect();
+      return !!r && x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+    }, [pair.b, pair.x, pair.y]);
+    if (!under) say("after the wheel the lower place does not stand under the pointer, so nothing is tested");
+    await page.mouse.up();
+    await page.evaluate(settled);
+    const after = await page.evaluate((key) => document.querySelector(`[data-drop-key="${key}"]`)?.innerText ?? null, pair.b);
+    if (under && after === pair.text) say("a card carried from the docked toolbox and let go on a case after the page was wheeled under the still pointer does not land on that case");
+  }
+  await ctx.close();
   return found;
 }

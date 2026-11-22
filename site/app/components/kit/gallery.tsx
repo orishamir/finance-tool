@@ -19,6 +19,7 @@ import { AlsoChanged } from "./also-changed";
 import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
+import { Sheet } from "../Sheet";
 import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, StretchBar, StretchChart, FactTile, TileJoin, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
@@ -3575,16 +3576,16 @@ function ChangeRestDemo({ today }: { today: string }) {
  * condition's head taking a cell for every case they cover, and a figure edited where it is read. One price above 10 $ and above 100 $ in
  * one cell, nothing up to 10 $ until it is stretched there.
  */
-function LiftDemo({ today }: { today: string }) {
+function LiftDemo({ today, channels = [sc.channels.web, sc.channels.branch] }: { today: string; /** The rows' heads, one row each. */ channels?: readonly string[] }) {
   const steps = [sc.liftSteps.small, sc.liftSteps.mid, sc.liftSteps.big];
   const [cols, setCols] = useState([0, 1, 2]);
   // where each row's priced cell starts: at the second step, its first a place no case holds, or stretched over that place
-  const [starts, setStarts] = useState([1, 1]);
+  const [starts, setStarts] = useState(() => channels.map(() => 1));
   const [reach, setReach] = useState<{ row: number; from: number } | null>(null);
   const [rate, setRate] = useState(0.0875);
   const [gone, setGone] = useState<string | null>(null);
   // the rows are a sortable list: a row's head carried among them opens the gap where the pointer stands
-  const [order, setOrder] = useState([0, 1]);
+  const [order, setOrder] = useState(() => channels.map((_, i) => i));
   const [menuAt, setMenuAt] = useState<HTMLElement | null>(null);
   const n = cols.length;
   const lw = dealWords.cases.lifted;
@@ -3621,7 +3622,7 @@ function LiftDemo({ today }: { today: string }) {
         label={sc.fx}
         columns={cols.map((c, k) => ({ id: String(c), head: steps[c]!, grip: <Grip item={`kit:col:${k}`} label={`${lw.grip.step}${steps[c]}`} /> }))}
         rows={order.map((j) => {
-          const head = [sc.channels.web, sc.channels.branch][j]!;
+          const head = channels[j]!;
           const from = Math.min(starts[j]!, n - 1);
           const emptied = starts[j]! >= n;
           const shown = reach && reach.row === j ? reach.from : from;
@@ -3683,6 +3684,22 @@ function LiftDemo({ today }: { today: string }) {
         </p>
       )}
     </FeeBlock>
+  );
+}
+
+/**
+ * The lift demo in a sheet: what a carry draws (the picture, a knob's frame, a grip's menu) shows on the sheet's layer, over the page. Its
+ * four rows stand in a sheet too short for them, so a row carried near the sheet's foot scrolls the sheet's body to the rows out of view.
+ */
+function LiftSheetDemo({ today }: { today: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>{sc.liftInSheet}</Button>
+      <Sheet open={open} onClose={() => setOpen(false)} pc="center" className="sheet-kit-lift">
+        {open && <LiftDemo today={today} channels={[sc.channels.web, sc.channels.branch, sc.channels.phone, sc.channels.other]} />}
+      </Sheet>
+    </>
   );
 }
 
@@ -3892,6 +3909,9 @@ function CaseDemos({ today }: { today: string }) {
           <div className="max-w-2xl">
             <LiftDemo today={today} />
           </div>
+        </State>
+        <State label={`the same in a sheet, ${g.states.interactive}: the carried picture, a knob's frame and a grip's menu are drawn on the sheet's layer, over it; a row carried to the sheet's foot scrolls its body`}>
+          <LiftSheetDemo today={today} />
         </State>
       </Demo>
       <Demo name="DropZone, useDragSource" use={g.uses.DropZone}>

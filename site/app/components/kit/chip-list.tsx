@@ -12,6 +12,7 @@ import { Button } from "./button";
 import { OtherChip } from "./choice";
 import { BinIcon, RemoveButton } from "./remove-button";
 import { cx } from "./cx";
+import { fixedOrigin, layerOf } from "./carry-layer";
 
 /** Pixels the pointer travels before a press on a chip becomes a drag; a shorter press is a click. */
 const DRAG_START = 6;
@@ -85,6 +86,9 @@ interface Drag {
   x: number;
   y: number;
   active: boolean;
+  /** Where the floating copy is drawn (`layerOf`: the open dialog holding the list, else the body), and the screen point of its 0,0 there. */
+  layer: HTMLElement;
+  origin: { x: number; y: number };
 }
 
 /**
@@ -162,7 +166,8 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
     if (!movable || !i.movable || e.button !== 0 || !li) return;
     const r = li.getBoundingClientRect();
     e.currentTarget.setPointerCapture(e.pointerId);
-    setDrag({ id: i.id, order: items.map((x) => x.id), startX: e.clientX, startY: e.clientY, grabX: e.clientX - r.left, grabY: e.clientY - r.top, width: r.width, x: e.clientX, y: e.clientY, active: false });
+    const layer = layerOf(li);
+    setDrag({ id: i.id, order: items.map((x) => x.id), startX: e.clientX, startY: e.clientY, grabX: e.clientX - r.left, grabY: e.clientY - r.top, width: r.width, x: e.clientX, y: e.clientY, active: false, layer, origin: fixedOrigin(layer) });
   };
   const follow = (e: ReactPointerEvent<HTMLButtonElement>) => {
     const d = live.current;
@@ -312,7 +317,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
       {drag?.active &&
         byId.get(drag.id) &&
         createPortal(
-          <div aria-hidden="true" className="fixed z-(--z-popover) pointer-events-none inline-flex items-center rounded-[10px] bg-secondary shadow-lg cursor-grabbing" style={{ left: drag.x - drag.grabX, top: drag.y - drag.grabY, width: drag.width }}>
+          <div aria-hidden="true" className="fixed z-(--z-popover) pointer-events-none inline-flex items-center rounded-[10px] bg-secondary shadow-lg cursor-grabbing" style={{ left: drag.x - drag.grabX - drag.origin.x, top: drag.y - drag.grabY - drag.origin.y, width: drag.width }}>
             <span className={cx("sec-chip gap-1.5 ps-2.5", drag.id === value && "sec-chip-on")}>
               <GripVertical size={14} className="opacity-60 shrink-0" {...ic} />
               {drag.id === value && <IconCheck size={16} className="shrink-0" />}
@@ -333,7 +338,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
               </span>
             )}
           </div>,
-          document.body,
+          drag.layer,
         )}
     </section>
   );
