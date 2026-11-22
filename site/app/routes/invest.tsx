@@ -244,9 +244,9 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   const asked = useMemo(() => (pageIndex ? { bundle: pageBundle, ask: { index: pageIndex, plan: restingPlan, yourBroker } } : null), [pageBundle, pageIndex, restingPlan, yourBroker]);
   const run = useInvestView(asked);
   const view = run?.view ?? null;
-  const bundle = run?.bundle ?? pageBundle;
-  const index = run?.index ?? pageIndex;
-  const plan = run?.plan ?? restingPlan;
+  const bundle = run?.asked.bundle ?? pageBundle;
+  const index = run?.asked.ask.index ?? pageIndex;
+  const plan = run?.asked.ask.plan ?? restingPlan;
 
   // a house's page opens a new deal filled from its price list through the address (`own`): once, and the address is cleaned
   const opening = new URLSearchParams(search).get("own");
