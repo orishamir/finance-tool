@@ -27,7 +27,27 @@
   "distribution_policy": "accumulating",
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null
+    "tase_foreign_fund_90pct_test": null,
+    "foreign_investment_fund": {
+      "value": false,
+      "unit": "text",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1753001-1754000/P1753287-00.pdf#page=50",
+        "title": "תשקיף עיקרי מיטב קרנות נאמנות, 7 ביולי 2026, עמ' 50, שורת 'תכלית סל (4A) NASDAQ 100 מנוטרלת מט\"ח' (מספר בורסה 1143734), עמודת 'מיסוי': 'פטורה'",
+        "publisher": "מיטב קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-11-22",
+      "effective_from": "2026-07-07",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXS-14"
+      ],
+      "state": "sourced",
+      "notes": "The manager's prospectus tax column states this fund's status without naming it a foreign-investment fund, and names that status for the manager's funds that have it (1144385 and 1144237 ('פטורה, קרן להשקעות חוץ (מטבע עיקרי דולר ארה\"ב)', p.61)); the annual report names the tax track only. Its tax index is the CPI (TXS-14)."
+    }
   },
   "fees": {
     "fixed_management": {

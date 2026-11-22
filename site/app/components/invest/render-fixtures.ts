@@ -5,6 +5,7 @@ import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { invest } from "../../copy";
 import { buildIndicesBundle } from "../../lib/providers.server";
+import { asIfNoForeignInvestmentFund } from "../../lib/receipt-fixtures";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { LabelSheetHost } from "../kit";
@@ -18,7 +19,8 @@ import { PairReceipt } from "./receipt";
 import type { IndicesBundle } from "../../lib/providers";
 import { buildInvest, type IndexRef, type InvestView } from "../../lib/invest";
 
-export const bundle = buildIndicesBundle();
+/** The collected data, with no fund measured by a principal currency: the render tests pin ties and picks, not the tax index (`asIfNoForeignInvestmentFund`). */
+export const bundle = asIfNoForeignInvestmentFund(buildIndicesBundle());
 export const t = bundle.today;
 export const plan: WorkbenchInputs = {
   amountNow: 6000, monthly: 400, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null,

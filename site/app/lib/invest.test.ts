@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { BlockedError } from "@finance-tool/engine";
 import { accountSum, blockedReason, buildInvest, listReading, optionOpenRule, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
+import { asIfNoForeignInvestmentFund } from "./receipt-fixtures";
 import type { WorkbenchInputs } from "./providers";
 import { entered, type SiteValue } from "./value";
 import { invest as words } from "../copy";
@@ -11,8 +12,11 @@ import { invest as words } from "../copy";
 // the figures pinned below move with a fund's or a house's data, never with the daily rate refresh (which turned the check red on
 // 16.11.2026), and never read as stale. Re-pin with the data, never to fit.
 const FROZEN_PER_EUR = { USD: 1.1014, ILS: 3.5509, GBP: 0.8345, CHF: 0.9244, JPY: 175.78, CAD: 1.5734, AUD: 1.6301 };
+// The tests that pin picks and figures read it with no fund measured by a principal currency (`asIfNoForeignInvestmentFund`); the
+// foreign-investment funds' own test reads the data as collected (`collected`).
 const live = buildIndicesBundle();
-const bundle: typeof live = live.fx ? { ...live, fx: { ...live.fx, date: live.today, perEur: { ...live.fx.perEur, ...FROZEN_PER_EUR } } } : live;
+const collected: typeof live = live.fx ? { ...live, fx: { ...live.fx, date: live.today, perEur: { ...live.fx.perEur, ...FROZEN_PER_EUR } } } : live;
+const bundle = asIfNoForeignInvestmentFund(collected);
 const t = bundle.today;
 const plan = (over: Partial<WorkbenchInputs> = {}, ret = 7): WorkbenchInputs => ({
   amountNow: 6000,
@@ -650,5 +654,33 @@ describe("a provider row whose run stopped on its rule", () => {
     expect(blockedReason(new BlockedError("TXG-09", "TXG OQ17"))).toEqual({ code: "rule-open", ruleId: "TXG-09", question: "TXG OQ17" });
     expect(blockedReason(new BlockedError("CS-03", undefined, "G-38"))).toEqual({ code: "rule-open", ruleId: "CS-03", gap: "G-38" });
     expect(blockedReason(new BlockedError("TXF-04"))).toEqual({ code: "rule-open", ruleId: "TXF-04" });
+  });
+});
+
+describe("an Israeli fund that may be measured by a principal currency, on the data as collected (F-04, TXS OQ26, method §13)", () => {
+  const funds = (v: ReturnType<typeof buildInvest>) => v.options.filter((o) => o.exists).flatMap((o) => o.funds).filter((f) => f.rec.domicile === "IL");
+  const status = (f: { rec: { tax_status: { foreign_investment_fund?: { value: unknown } } } }) => f.rec.tax_status.foreign_investment_fund?.value;
+  const priced = (f: { best?: unknown; byHouse: Record<string, object> }) => f.best !== undefined && Object.values(f.byHouse).some((at) => "valueN" in at);
+  it("where A-03 and A-02 differ, both readings give the plan different taxes: listed before tax on TXS-14 with the question, never ranked", () => {
+    const view = buildInvest({ bundle: collected, index: sp, plan: plan() });
+    const open = funds(view).filter((f) => typeof status(f) === "string" || status(f) === null);
+    expect(open.some((f) => typeof status(f) === "string")).toBe(true);
+    expect(open.some((f) => status(f) === null)).toBe(true);
+    for (const f of open) {
+      expect(f.reason, f.rec.id).toEqual({ code: "rule-open", ruleId: "TXS-14", question: "TXS OQ26" });
+      expect(f.beforeTax?.ruleId, f.rec.id).toBe("TXS-14");
+      expect(priced(f), f.rec.id).toBe(false);
+    }
+    // a fund whose documents say it is not one is measured by the CPI alone, and ranked
+    expect(funds(view).filter((f) => status(f) === false).some(priced)).toBe(true);
+  });
+  it("where the dollar moves as prices do (A-03 = A-02), both readings agree: the same funds are ranked", () => {
+    const view = buildInvest({ bundle: collected, index: sp, plan: plan(), assumptions: { fxChange: 2 } });
+    const open = funds(view).filter((f) => typeof status(f) === "string" || status(f) === null);
+    expect(open.length).toBeGreaterThan(0);
+    for (const f of open) {
+      expect(f.reason, f.rec.id).toBeUndefined();
+      expect(priced(f), f.rec.id).toBe(true);
+    }
   });
 });
