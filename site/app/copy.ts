@@ -1814,9 +1814,6 @@ export const feeDeal = {
       closing_account: "התקרה חלה בבנק, כשסוגרים את החשבון ומעבירים את הניירות לחשבון שלכם בגוף אחר. הכללים מזכירים לצידה גם הוצאות צד שלישי. כשהחשבון נשאר פתוח חל מחיר אחר, בפיקוח. לכן המחיר לא נבדק מולה.",
       distribution_agreement: "בנק, או מפיץ אחר של הקרן שהוא לא משווק השקעות, לא רשאי לגבות מכם על קנייה או פדיון של יחידות הקרן כשיש לו הסכם הפצה עם הקרן.",
     } as Record<string, string>,
-    /** A cap with a figure that holds only in a case the deal does not state: the tag beside the fee's name in the law card, and the title of the "?" after it, which opens the caveat's words. */
-    caveatTag: { closing_account: "לא נבדק: רק בסגירת חשבון" } as Record<string, string>,
-    caveatAbout: "מתי התקרה חלה",
     /** The cap's line: its figure, with its unit's words after it. */
     capLine: "התקרה: ",
     /** What the cap's figure (or "לא נמצאה תקרה בחוק") opens, said before it by a screen reader: the fee's cap and the rules that set it. */
@@ -2318,6 +2315,8 @@ export const feeDeal = {
       thirdOf: { lead: "נוספת עמלת ", tail: " בלי סכום בתעריפון, ולכן הפעולה עולה יותר ממה שמוצג." },
       offset: { lead: "מתקזזת מול ", tail: " של אותו חודש, עד הסכום שלה. האתר מראה אותה בסכום המלא." },
       refund: { lead: "יש החזר של ", tail: ". האתר לא מנכה אותו." },
+      /** A maximum on each security held: the site applies it as if one security were held (F-14), so with several the fee can be higher. */
+      maxPerSecurity: { lead: "המקסימום של ", tail: " הוא לכל נייר ערך. האתר מחשב כאילו מחזיקים נייר ערך אחד: אם מחזיקים כמה ניירות ערך, העמלה יכולה להיות גבוהה יותר ממה שמוצג." },
       unfilled: "נגבית גם על הוראה שלא בוצעה.",
       /** At a bank, in the terms of the Bank of Israel's fee rules (BRK-16, notes to part 4(א)(1)); `stated` is the words that state BRK-16 (D116). */
       unfilledClerk: { lead: "בניירות ערך בבורסה בתל אביב, חוץ מקרנות נאמנות, ", stated: "הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום", tail: "." },
@@ -2439,8 +2438,6 @@ export const feeDeal = {
       /** The layers' groups, named on the chart. */
       groups: { share: "אחוזים", fixed: "סכומים קבועים" } as Record<string, string>,
       lanes: "מה קובע את המחיר של כל עמלה, לפי הסכום",
-      /** The "?" after the name of a lane whose maximum is on each security held: the chart charges it on one security (F-14). */
-      perSecurity: "האתר מחשב כאילו מחזיקים נייר ערך אחד: אם מחזיקים כמה ניירות ערך, העמלה יכולה להיות גבוהה יותר ממה שמוצג.",
       laneGroups: { share: "אחוזים ממה שמוחזק", shareSaved: "אחוזים ממה שנצבר", fixed: "סכומים קבועים, בכל סכום" } as Record<string, string>,
       /** Over the crossover's point. */
       crossMark: "כאן הקבועים שווים לאחוזים",
@@ -4167,11 +4164,12 @@ export const invest = {
 
   /** A securities-account deal the person saved, as an account of the lists, and the popup that edits it on the plan (F-128). */
   dealAccount: {
-    /** The tag beside the deal's name in the lists, the pair's card and the receipt. */
+    /** The tag beside the deal's name in the receipt; the lists and the pair's card say it by the name's entered ink and the pencil. */
     tag: "שלכם",
     add: "להזין תנאים שקיבלתם",
     /** The link on a house's own page: the indices page opens with a new deal filled from that house's price list. */
     fromHouse: (house: string) => `להזין תנאים שקיבלתם, על בסיס ${house}`,
+    /** The pencil beside the deal's name in the lists (its name for the browser), and the pair card's button. */
     edit: "לערוך את העסקה",
     /** Where a deleted deal's row stood, before its name. */
     deleted: "נמחקה מהמכשיר: ",
@@ -5519,8 +5517,6 @@ export const kit = {
         lanes: "מה קובע את המחיר, לדוגמה",
         parts: { min: "מינימום 20 ₪", rate: "0.2%", max: "מקסימום 500 ₪", held: "0.25% בשנה", short: "0.25%", per: ", בשנה" },
         price: "10 ₪ בחודש",
-        /** A lane's "?" after its name. */
-        help: { about: "העמלה הנוספת, לדוגמה", text: "הסבר קצר לדוגמה על מה שהמילים ברצועה מניחות." },
         range: { lead: "הסכומים בגרף:", from: "מ־", to: "עד", unit: "₪", reset: "חזרה לטווח שבפתיחה", hint: "אפשר גם לגרור על הגרף", fromName: "הסכום הקטן, לדוגמה", toName: "הסכום הגדול, לדוגמה" },
         over: (share: string, at: string) => `↑ ${share} ב־${at}`,
       },

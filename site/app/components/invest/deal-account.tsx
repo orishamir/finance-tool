@@ -648,34 +648,35 @@ function DealHead({ deal, headId, isSaved, writable, onName, onDelete }: { deal:
 }
 
 /**
- * Under a deal's row in the lists: that it is the person's, and its edit, which on a row the plan cannot price (`complete`) completes it,
- * after what the row waits for (`missing`, the fee that has no price yet, D1), said without a tap. Not a kit piece: the kit's `Tag` and
- * `Button`, wired to this page's popup.
+ * Beside a deal's name in the lists, where a house's row has its quiet mark: the pencil that opens the deal in the popup, on the fee the row
+ * waits for where it waits for one (`missing`, D1). With the name's entered ink it says the row is the person's own. `complete`: on a row
+ * the plan cannot price, the button's words say it completes the deal. Not a kit piece: the kit's `Button`, wired to this page's popup.
  */
-export function DealTerms({ id, complete = false, missing = null }: { id: string; complete?: boolean; missing?: Missing | null }) {
+export function DealEditMark({ id, complete = false, missing = null }: { id: string; complete?: boolean; missing?: Missing | null }) {
   const api = useDealAccounts();
   const deal = api?.dealOf(id);
   if (!api || !deal) return null;
-  const open = () => api.open({ dealId: deal.id, ...(missing ? { fee: missing.fee } : {}) });
-  if (missing)
-    return (
-      <span className="flex flex-col items-start gap-1.5 pb-1 text-sm leading-snug text-muted-foreground">
-        <Tag>{w.tag}</Tag>
-        <span>
-          {w.missing[missing.why]!(feeNameOf(missing.kind, missing.name))}{" "}
-          <Button variant="inline" bold onClick={open}>
-            <Pencil size={14} aria-hidden className="me-1 inline align-[-2px]" />
-            {w.complete}
-          </Button>
-        </span>
-      </span>
-    );
   return (
-    <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs leading-snug text-muted-foreground">
-      <Tag>{w.tag}</Tag>
-      <Button variant="quiet" className="min-h-target text-sm" onClick={open}>
-        <Pencil size={14} aria-hidden />
-        {complete ? w.complete : w.edit}
+    <Button variant="icon" size="mark" aria-label={complete ? w.complete : w.edit} onClick={() => api.open({ dealId: deal.id, ...(missing ? { fee: missing.fee } : {}) })}>
+      <Pencil size={14} aria-hidden />
+    </Button>
+  );
+}
+
+/**
+ * Under the row of a deal the plan cannot price yet (D1): the fee it waits for, said without a tap, and the way to complete it. Not a kit
+ * piece: the kit's `Button`, wired to this page's popup.
+ */
+export function DealMissing({ id, missing }: { id: string; missing: Missing }) {
+  const api = useDealAccounts();
+  const deal = api?.dealOf(id);
+  if (!api || !deal) return null;
+  return (
+    <span className="block pb-1 text-sm leading-snug text-muted-foreground">
+      {w.missing[missing.why]!(feeNameOf(missing.kind, missing.name))}{" "}
+      <Button variant="inline" bold onClick={() => api.open({ dealId: deal.id, fee: missing.fee })}>
+        <Pencil size={14} aria-hidden className="me-1 inline align-[-2px]" />
+        {w.complete}
       </Button>
     </span>
   );

@@ -11,7 +11,7 @@ import type { UnpricedSaid } from "../../lib/fee-deal/case-words";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { amountWords, computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
 import { ruleFigure, type SiteValue } from "../../lib/value";
-import { Button, GapNote, HelpMark, Swatch, Tag, When, cx } from "../kit";
+import { Button, GapNote, Swatch, Tag, When, cx } from "../kit";
 import { Num, Ruled, useProvenanceData } from "../provenance";
 import { assertNever } from "@finance-tool/schema";
 
@@ -275,8 +275,7 @@ export function StandingTag({ standing }: { standing: StandingView }) {
 /**
  * What one price's standing says, after the price: below the cap, its share ("שהם 57% מהתקרה"); at it, that it is the most that may be
  * charged; above it, that the law allows less and the typed price stays; not judged, why. `binds` says whom a cap binds where it binds
- * some providers only. A cap with a caveat says nothing per price: its tag and "?" say it once (`CaveatTag`), or the cap's line where the law
- * sets no figure (`CapCaveat`).
+ * some providers only. A cap with a caveat says nothing per price: the cap's line says it once, in the caveat's words (`CapCaveat`).
  */
 /** Whether a price's standing says more than the full stop that ends its line (`StandingWords`). */
 const standingSays = (standing: StandingView): boolean => {
@@ -307,29 +306,10 @@ function StandingWords({ standing, binds }: { standing: StandingView; binds?: st
   return <>.</>;
 }
 
-/** What a cap the law sets no figure for, holding only in a case the deal does not state, says after "לא נמצאה תקרה בחוק" (F-113); none without one. */
-function CapCaveat({ caveat }: { caveat?: string | undefined }) {
+/** What a cap that holds only in a case the deal does not state says, after the cap's figure or "לא נמצאה תקרה בחוק" (F-113); none without one. */
+export function CapCaveat({ caveat }: { caveat?: string | undefined }) {
   const words = caveat ? copy.standing.caveat[caveat] : undefined;
   return words ? <>. {words}</> : null;
-}
-
-/**
- * A cap with a figure that holds only in a case the deal does not state (F-113), beside the fee's name in the law card: a tag that the
- * price was not checked and why, in a few words, and a "?" that opens the caveat's words with the cap's rules.
- */
-function CaveatTag({ caveat, rules }: { caveat: string; rules: readonly string[] }) {
-  const tag = copy.standing.caveatTag[caveat];
-  const words = copy.standing.caveat[caveat];
-  return (
-    <span className="inline-flex items-center gap-1">
-      {tag && (
-        <Tag tone="outline" shape="roomy">
-          {tag}
-        </Tag>
-      )}
-      {words && <HelpMark about={copy.standing.caveatAbout} text={words} rules={rules} />}
-    </span>
-  );
 }
 
 /**
@@ -407,8 +387,8 @@ export function UnreadWords({ banned, noCurrency, notPrinted, unmatched, fee }: 
 }
 
 /**
- * The cap's line: its figure, that the law sets none (F-113) with its caveat, or that it bans the fee here; nothing where the kind has no
- * line for the fee. A figure's caveat is said by the tag beside the fee's name (`CaveatTag`). The figure, or the words "לא נמצאה תקרה בחוק", is the control: its sheet holds the cap's source and the rules that set it, so
+ * The cap's line: its figure with its caveat, that the law sets none (F-113), or that it bans the fee here; nothing where the kind has no
+ * line for the fee. The figure, or the words "לא נמצאה תקרה בחוק", is the control: its sheet holds the cap's source and the rules that set it, so
  * the line carries no rules of its own; a ban's words open the ban's rules. `fee`: the fee's name, which the control's spoken name says with what
  * it opens.
  */
@@ -430,8 +410,7 @@ export function CapRules({ cap, fee }: { cap: CapLine; fee: string }) {
           <CapFigure value={cap.value} name={copy.standing.capRules(fee)} />
         </>
       )}
-      {/* a cap with a figure says its caveat by the tag beside the fee's name (`CaveatTag`) */}
-      {cap.state === "none" && <CapCaveat caveat={cap.caveat} />}
+      <CapCaveat caveat={cap.caveat} />
     </p>
   );
 }
@@ -463,7 +442,7 @@ function LawPrices({ row, saved, first }: { row: LawRow; saved: boolean; first: 
 
 /**
  * A fee against its cap (F-113), the block the law card draws for a fee with a cap: its name and the tag of its standing now (a later price's
- * standing is said with that price), or of its caveat where the cap holds only in a case the deal does not state, then `children` (its price or prices in words, and the cap's line where the place says it). It
+ * standing is said with that price), then `children` (its price or prices in words, and the cap's line where the place says it). It
  * reads the fee's law row of the reading, so the two never disagree. The standing is said in words only: no bar. Its container lays the
  * pieces out as a column. Nothing where the cap has no figure.
  */
@@ -474,7 +453,6 @@ function CapBlock({ row, name, tag, children }: { row: LawRow; /** The fee's nam
       <span className="flex flex-wrap items-center gap-2">
         {name ?? <FeeName fee={row} className="font-medium" />}
         {tag !== undefined ? tag : row.now && <StandingTag standing={row.now} />}
-        {row.cap.caveat && <CaveatTag caveat={row.cap.caveat} rules={row.cap.ruleIds} />}
       </span>
       {children}
     </>

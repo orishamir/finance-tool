@@ -11,9 +11,11 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
    * `sm`: on `quiet` and `destructive`, 13 px words with no height of their own and a 44 px tap area, for a text action inside a line of
    * small text; on `icon`, a 36 px round button in the muted ink, its tap area still 44 px both ways, for one that floats over content (a
    * sheet's back and close). `compact`: on `quiet`, a text action among chips (the rules page's examples): 44 px high on a phone, where the chips
-   * may stand in a strip that scrolls sideways and would cut a tap area off, and from `lg` 28 px high with a 44 px tap area.
+   * may stand in a strip that scrolls sideways and would cut a tap area off, and from `lg` 28 px high with a 44 px tap area. `mark`: on
+   * `icon`, a 20 px face in the muted ink whose tap area is 44 px both ways, for an icon action beside a name in a list's row, where a
+   * row's quiet mark stands (the indices page's pencil beside the person's deal), so the row keeps its height.
    */
-  size?: "sm" | "compact";
+  size?: "sm" | "compact" | "mark";
   /** The room between an icon and the words: `sm` 6 px (a back arrow before its word, a copy mark); 8 px otherwise. */
   gap?: "sm";
   /**
@@ -68,9 +70,11 @@ export function Button({ variant = "secondary", flush, size, gap, wide, bold, cl
     add: cx("self-start -ms-2 px-2 text-link rounded-md", textAction, textHeight),
     // A quiet button that deletes. Its own variant: `text-destructive` added to `quiet` lost to `text-link` in the stylesheet.
     destructive: cx("text-destructive rounded-md", textAction, textHeight, side),
-    icon: size === "sm"
-      ? "size-9 tap-wide inline-flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
-      : "size-target inline-flex items-center justify-center rounded-md text-foreground hover:bg-accent",
+    icon: {
+      sm: "size-9 tap-wide inline-flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:bg-accent",
+      mark: "size-5 shrink-0 tap-wide inline-flex items-center justify-center rounded-sm text-muted-foreground hover:text-foreground",
+      none: "size-target inline-flex items-center justify-center rounded-md text-foreground hover:bg-accent",
+    }[size === "sm" || size === "mark" ? size : "none"],
     labelled: "min-h-target px-2.5 inline-flex items-center rounded-md text-foreground hover:bg-accent",
   }[variant];
   return (
