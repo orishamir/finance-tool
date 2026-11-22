@@ -668,7 +668,7 @@ describe("before deciding: the tab cards", () => {
   const pick = pickOfHeadline(view)!;
   const share = { min: -50, max: 50, step: 10, start: 20 };
   const stairs = { view, bundle, startHouse: null, startFund: null };
-  const before = (chosen: boolean) => html(createElement(BeforeDeciding, { view, bundle, plan, livePlan: plan, share, pick, chosen, hedge: true, stairs, onPick: () => undefined }));
+  const before = (chosen: boolean) => html(createElement(BeforeDeciding, { view, bundle, sweepOn: { bundle, group: null }, plan, livePlan: plan, share, pick, chosen, hedge: true, stairs, onPick: () => undefined }));
   it("the tab list holds only its tabs: each card is one tab, its answer plain words with no control of its own", () => {
     const out = before(false);
     const list = out.slice(out.indexOf('role="tablist"'), out.indexOf('role="tabpanel"'));

@@ -18,7 +18,15 @@ export interface TabCard {
   answer: ReactNode;
   /** One line under the answer: what the answer rests on. */
   note?: ReactNode;
+  /**
+   * The answer and the panel are still for what the page showed before (another pair, while the new one's figures are worked out): drawn
+   * dimmed, so they never read as the new one's, until they are replaced.
+   */
+  held?: boolean;
 }
+
+/** How a held answer and its panel are dimmed: the opacity another index's figures take while the next index's are worked out (`useSwapGlide`). */
+const HELD = "opacity-40";
 
 export function TabCards({ tabs, current, onChange, ariaLabel, idBase, openWord, children }: { tabs: TabCard[]; current: string; onChange: (key: string) => void; ariaLabel: string; idBase: string; /** On the open card below 1024 px, where no pointer joins it to the panel ("פתוח למטה"). */ openWord: string; /** The open tab's panel. */ children: ReactNode }) {
   const uid = useId();
@@ -53,11 +61,11 @@ export function TabCards({ tabs, current, onChange, ariaLabel, idBase, openWord,
                 </span>
                 {on && <span className="shrink-0 text-xs font-medium text-primary lg:hidden">{openWord}</span>}
               </span>
-              <span id={`${words}-a`} className="text-xl font-semibold leading-snug">
+              <span id={`${words}-a`} className={cx("text-xl font-semibold leading-snug", t.held && HELD)}>
                 {t.answer}
               </span>
               {t.note !== undefined && (
-                <span id={`${words}-n`} className="text-xs text-muted-foreground">
+                <span id={`${words}-n`} className={cx("text-xs text-muted-foreground", t.held && HELD)}>
                   {t.note}
                 </span>
               )}
@@ -67,7 +75,7 @@ export function TabCards({ tabs, current, onChange, ariaLabel, idBase, openWord,
           );
         })}
       </div>
-      <div role="tabpanel" id={panelId(idBase)} aria-labelledby={tabId(idBase, current)}>
+      <div role="tabpanel" id={panelId(idBase)} aria-labelledby={tabId(idBase, current)} className={cx(tabs.find((t) => t.key === current)?.held && HELD)}>
         {children}
       </div>
     </div>

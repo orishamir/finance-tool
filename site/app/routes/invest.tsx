@@ -42,7 +42,7 @@ import { exposureIdOfSlug, INDICES_PATH } from "../lib/site-paths";
 import { loadIndicesBundle, type IndicesBundle, type WorkbenchInputs } from "../lib/providers";
 import { isoToday, useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
-import { groupNameOf, pickableGroups, withGroupPick } from "../lib/group-pick";
+import { groupNameOf, pickableGroups, withGroupPick, type GroupAsk } from "../lib/group-pick";
 import { useHydrated, useMedia } from "../lib/hooks";
 import { ToolBoundary } from "../components/tool-boundary";
 
@@ -306,18 +306,23 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
   // it past 100 ms; a navigation is a transition, so a deferred value did not defer it)
   const groupHouse = own?.group ? own.house : null;
   const groupKey = own?.group ?? null;
-  const [priced, setPriced] = useState<(ReturnType<typeof withGroupPick> & { house: string; key: string }) | null>(null);
+  const groupShort = groupHouse && view ? (view.providers.find((p) => p.id === groupHouse)?.short ?? groupHouse) : null;
+  const [priced, setPriced] = useState<(ReturnType<typeof withGroupPick> & { ask: GroupAsk }) | null>(null);
   useEffect(() => {
-    if (!view || !index || !groupHouse || !groupKey) return setPriced(null);
-    const g = withGroupPick({ bundle, index, plan }, view, groupHouse, groupKey, view.providers.find((p) => p.id === groupHouse)?.short ?? groupHouse);
-    setPriced(g ? { ...g, house: groupHouse, key: groupKey } : null);
-  }, [view, index, bundle, plan, groupHouse, groupKey]);
+    if (!view || !index || !groupHouse || !groupKey || !groupShort) return setPriced(null);
+    const g = withGroupPick({ bundle, index, plan }, view, groupHouse, groupKey, groupShort);
+    setPriced(g ? { ...g, ask: { house: groupHouse, key: groupKey, short: groupShort } } : null);
+  }, [view, index, bundle, plan, groupHouse, groupKey, groupShort]);
   // the group's account stands in for its house only while it is the group picked; any other pick shows its own figures at once
-  const picked = priced && priced.house === groupHouse && priced.key === groupKey ? priced : null;
+  const picked = priced && priced.ask.house === groupHouse && priced.ask.key === groupKey ? priced : null;
   // what the pair and the sections under it show: the group's account in place of its house when one is picked
   const shownView = picked?.view ?? view;
   const shownBundle = picked?.bundle ?? bundle;
   const shown: Pick | null = pick && picked ? { house: picked.id, fund: pick.fund } : pick;
+  // the F-89 sweep is worked out in the page's worker on the data it already holds, the page's own, with the group's account added there by
+  // the group's name: a new group bundle on every plan would be sent to the worker again each time
+  const groupAsk = picked?.ask ?? null;
+  const sweepOn = useMemo(() => ({ bundle, group: groupAsk }), [bundle, groupAsk]);
   // a tap that changed the other half too: the row tapped says so, with the way back, until the next pick
   const [moved, setMoved] = useState<Moved | null>(null);
   const onPick = (p: Pick, m?: Moved) => {
@@ -454,6 +459,7 @@ const PlanBody = memo(function PlanBody({ wb, compare, data, search, inputs, inv
                 <BeforeDeciding
                   view={shownView}
                   bundle={shownBundle}
+                  sweepOn={sweepOn}
                   plan={plan}
                   livePlan={livePlan}
                   share={data.form.share}

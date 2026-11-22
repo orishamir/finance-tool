@@ -3,7 +3,7 @@ import { bundle as data, plan } from "../components/invest/render-fixtures";
 import { pickOfHeadline } from "../components/invest/pair";
 import { indexById } from "./invest";
 import { work, type FromWorker } from "./invest-work";
-import { channelOf, relink, type Client, type Held, type Job } from "./invest-run";
+import { channelOf, forPair, relink, type Client, type Held, type Job } from "./invest-run";
 import type { IndicesBundle } from "./providers";
 
 /** A worker that answers when the test says: what was posted, in order, and the replies still owed. */
@@ -28,7 +28,7 @@ const bundle = { funds: [] } as unknown as IndicesBundle;
 /** A request on the sweep, told apart by its plan's amount; what it was answered with lands in `got`. */
 function job(amount: number, got: Held<"changes">[]): Job<"changes"> {
   const plan = { amountNow: amount } as Job<"changes">["ask"]["plan"];
-  return { bundle, ask: { index: { id: "i" } as Job<"changes">["ask"]["index"], plan, house: "h", fund: "f", shares: [0] }, live: true, done: (h) => got.push(h) };
+  return { bundle, ask: { index: { id: "i" } as Job<"changes">["ask"]["index"], plan, house: "h", fund: "f", group: null, shares: [0] }, live: true, done: (h) => got.push(h) };
 }
 const amounts = (posted: Job<"changes">[]) => posted.map((j) => j.ask.plan.amountNow);
 
@@ -93,12 +93,26 @@ describe("an answer from the worker, as the page reads it (lib/invest-run.ts)", 
     const view = work.view(data, { index, plan, yourBroker: null });
     const pick = pickOfHeadline(view);
     if (!pick) throw new Error("the S&P 500 has a pair to price");
-    const ask = { index, plan, house: pick.house, fund: pick.fund, shares: [-20, 0, 20] };
+    const ask = { index, plan, house: pick.house, fund: pick.fund, group: null, shares: [-20, 0, 20] };
     const cloned = structuredClone(work.changes(data, ask));
     if (!cloned) throw new Error("the pair has a value left on the plan");
     const got = relink.changes({ bundle: data, ask, answer: cloned });
     expect(got.answer?.plan).toBe(plan);
     expect(got.answer?.shares).toBe(ask.shares);
     expect(got.answer?.lines).toEqual(cloned.lines);
+  });
+
+  it("a sweep is for the pair it was worked out for: another house, fund or index asked since holds it as not theirs", () => {
+    const view = work.view(data, { index, plan, yourBroker: null });
+    const pick = pickOfHeadline(view);
+    if (!pick) throw new Error("the S&P 500 has a pair to price");
+    const ask = { index, plan, house: pick.house, fund: pick.fund, group: null, shares: [0] };
+    const run = work.changes(data, ask);
+    if (!run) throw new Error("the pair has a value left on the plan");
+    expect(forPair(run, ask)).toBe(true);
+    expect(forPair(run, { ...ask, plan: { ...plan, years: plan.years + 1 } })).toBe(true);
+    expect(forPair(run, { ...ask, house: `${pick.house}-other` })).toBe(false);
+    expect(forPair(run, { ...ask, fund: `${pick.fund}-other` })).toBe(false);
+    expect(forPair(run, { ...ask, index: { ...index, id: "index-other" } })).toBe(false);
   });
 });

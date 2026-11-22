@@ -109,33 +109,41 @@ export function channelOf<K extends WorkKind>(kind: K) {
   };
 }
 
-/**
- * The last answer to `asked` (null while it is null), from the worker. `first` says what shows before the first answer: nothing (`wait`),
- * or the answer to the hook's first request worked out in place (`in place`), for a part whose absence would show as a gap that closes.
- */
-function useWork<K extends WorkKind>(kind: K, asked: Asked<K> | null, first: "wait" | "in place"): Got<K> | null {
+/** The last answer to `asked` (null while it is null, and until the first answer comes), from the worker. */
+function useWork<K extends WorkKind>(kind: K, asked: Asked<K> | null): Got<K> | null {
   const [channel] = useState(() => channelOf(kind));
-  const [start] = useState(() => ({ asked, got: first === "in place" && asked ? inPlace(kind, asked) : null }));
   const [held, setHeld] = useState<Held<K> | null>(null);
   // no worker: every request is worked out where it is asked, as the page did before it had one
   const here = useMemo(() => (!HAS_WORKER && asked ? inPlace(kind, asked) : null), [kind, asked]);
   useEffect(() => {
-    if (!HAS_WORKER || !asked || (start.got && asked === start.asked)) return;
+    if (!HAS_WORKER || !asked) return;
     const job: Job<K> = { ...asked, live: true, done: (h) => startTransition(() => setHeld(h)) };
     channel.ask(job, clientOf());
     return () => channel.drop(job);
-  }, [asked, channel, start]);
+  }, [asked, channel]);
   if (held && "failed" in held) throw new Error(held.failed);
-  return asked ? (here ?? held ?? start.got) : null;
+  return asked ? (here ?? held) : null;
 }
 
 /** The index page's view of the plan on the index (`buildInvest`), with the data, the index and the plan it was worked out on; null until the first answer. */
 export function useInvestView(asked: Asked<"view"> | null): { view: InvestView; bundle: IndicesBundle; index: InvestView["index"]; plan: Asked<"view">["ask"]["plan"] } | null {
-  const got = useWork("view", asked, "wait");
+  const got = useWork("view", asked);
   return useMemo(() => got && { view: got.answer, bundle: got.bundle, index: got.ask.index, plan: got.ask.plan }, [got]);
 }
 
-/** F-89 and F-90 on the pair the page prices; its first answer is worked out in place, so the tab that reads it does not appear a moment late. */
-export function usePlanChangesRun(asked: Asked<"changes"> | null): PlanChanges | null {
-  return useWork("changes", asked, "in place")?.answer ?? null;
+/**
+ * F-89 and F-90 on the pair the page prices: `waiting` until the first answer comes, then the last answer, and whether it is for the pair
+ * asked now; null where nothing is asked or the pair has no value left. An answer for another pair (the one picked before) is `held`: the
+ * page shows it dimmed, never as the new pair's, until the new pair's answer comes.
+ */
+export function usePlanChangesRun(asked: Asked<"changes"> | null): { run: PlanChanges; held: boolean } | "waiting" | null {
+  const got = useWork("changes", asked);
+  return useMemo(() => {
+    if (!asked) return null;
+    if (!got) return "waiting";
+    return got.answer && { run: got.answer, held: !forPair(got.answer, asked.ask) };
+  }, [got, asked]);
 }
+
+/** Whether an answer was worked out for the pair a request asks about: the same index, house (or group's account) and fund. */
+export const forPair = (run: PlanChanges, ask: Asked<"changes">["ask"]): boolean => run.index === ask.index.id && run.house === ask.house && run.fund === ask.fund;
