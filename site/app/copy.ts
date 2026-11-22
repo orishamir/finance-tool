@@ -885,6 +885,7 @@ export const formulaNames: Record<string, string> = {
   "F-95": "מה עשו הקרנות מכל סוג באותן שנים",
   "F-96": "הכסף בקרן השתלמות, שלב אחרי שלב",
   B3: "אפשרות שהכסף בה נעול עד סוף התקופה",
+  "P-07": "נקודת התחלה", // the comparison's goal presets
   /** Shown when a formula has no name above: no code in place of words. */
   _other: "חישוב של האתר",
 };

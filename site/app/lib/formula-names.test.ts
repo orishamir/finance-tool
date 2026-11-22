@@ -1,21 +1,20 @@
-// A formula's name is the same on every page: copy.ts holds it, and no other module replaces one when it loads; the comparison's module
-// (side-effect-modules.ts) adds only names copy.ts lacks. A name it replaced would show on the pre-rendered page (the server loads every
-// module) and not in the browser on a page that never loads that module, so the first render there would not match the pre-rendered page.
-import { describe, expect, it } from "vitest";
-import { formulaNames } from "../copy";
+// A formula's name is the same on every page: copy.ts holds it, and no module changes the table when it loads. A name a module put
+// there would show on the pre-rendered page (the server loads every module) and not in the browser on a page that never loads that
+// module, so the first render there would not match the pre-rendered page. Test files share modules in a worker (vitest.config.ts,
+// isolate off), so the table is read from fresh copies, before and after the modules that once changed it load.
+import { describe, expect, it, vi } from "vitest";
 
 describe("formula names", () => {
-  it("the comparison's module never replaces a formula name copy.ts holds", async () => {
+  it("loading the comparison's and the providers' modules leaves copy.ts's table as it is", async () => {
+    vi.resetModules();
+    const { formulaNames } = await import("../copy");
     const own = { ...formulaNames };
-    // the module loaded for what it does at load; one export named, so the test marks no other export of it as used
+    // each module loaded for what it does at load; one export named, so the test marks no other export of it as used
     const { evaluate } = await import("./compare");
-    expect(evaluate).toBeTypeOf("function");
-    for (const [id, name] of Object.entries(own)) expect(formulaNames[id], id).toBe(name);
-  });
-  it("the providers' module never replaces a formula name copy.ts holds", async () => {
-    const own = { ...formulaNames };
     const { isFxToFx } = await import("./providers");
+    expect(evaluate).toBeTypeOf("function");
     expect(isFxToFx).toBeTypeOf("function");
-    for (const [id, name] of Object.entries(own)) expect(formulaNames[id], id).toBe(name);
+    expect(formulaNames).toEqual(own);
+    vi.resetModules();
   });
 });

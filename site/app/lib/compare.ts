@@ -4,17 +4,13 @@
 // sheet can open it.
 import { buildCandidateSet, calendarMonthOf, coverageLine, withHeldRate, outcomeOrder, rankCandidates, tieThreshold, type Candidate, type CandidateSet, type CandidateSetInput, type ComparisonGoal, type CoverageLine, type InstrumentTerms, type OutcomeKind, type Ranking, type Reason, type RunContext } from "@finance-tool/engine";
 import type { ExposureRecord, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
-import { formulaNames, guideBlocks, ownTermsCopy, r2 } from "../copy";
+import { guideBlocks, ownTermsCopy, r2 } from "../copy";
 import type { Employment } from "./inputs";
 import type { FieldKey, PresetId, Presets } from "./goal";
 import { fitOf, type FitTableData } from "./fit";
 import { entered as enteredValue, sumOf as sumValues, type SiteValue } from "./value";
 
 
-// A name this screen's numbers use that copy.ts's table does not hold (P-07, the goal presets); the formulas' names are copy.ts's own.
-Object.assign(formulaNames, {
-  "P-07": "נקודת התחלה",
-});
 
 // ---------------------------------------------------------------- the bundle (built at build time)
 

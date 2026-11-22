@@ -43,8 +43,8 @@
 
 1. Locally, `npm run typecheck && npm test` (the fast tests, about 15 s),
    plus the deep suite of each topic the change touches:
-   `npm run test:deep -- <topic>`, the topics being deals, fees, tax, data
-   and pages (docs/architecture.md 3.8). Then a quick build without the
+   `npm run test:deep -- <topic>`, the topics being deals, fees, tax, data,
+   pages and properties (the property tests' many cases) (docs/architecture.md 3.8). Then a quick build without the
    company pages (`QUICK=1 npm run build`; list any company page worked on
    instead of 1). The full check, every deep suite included, runs on GitHub
    after the push, and the site updates only if it passes; look at that run
