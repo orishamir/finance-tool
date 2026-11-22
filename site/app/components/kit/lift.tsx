@@ -11,8 +11,9 @@
 // stood when the thing was lifted, so what a place shows never moves the target under a still pointer. What a place shows never moves the
 // page either: the blocks marked `data-carry-hold` keep the height they had when the thing was lifted, a shorter drawing leaving room in
 // them and a taller one drawn over what follows (a case grid its rows the same way, each by what stands on it), and the bin is laid over the page, so the page's height, its scrollbar and its scroll
-// stay as they were. Over the bin the picture dims and the bin says what goes. Let go, the thing settles where it lands; let go anywhere else, it goes back. Near the screen's top or foot the
-// page scrolls, once the pointer moves that way. A tap on a grip opens its menu (`GripMenu`), which does the same by keyboard, the things
+// stay as they were. Over the bin the picture dims and the bin says what goes. Let go, the thing settles where it lands; let go anywhere else, it goes back. Near the top or foot of what scrolls
+// under it (the page, or a sheet's body), that scrolls, once the pointer moves that way, and a drop aims at the places where the scroll has
+// left them. A tap on a grip opens its menu (`GripMenu`), which does the same by keyboard, the things
 // moving there the same way. A knob (↔, `SpanKnob`), a strip along a cell's whole edge, stretches the cell over its neighbours or back, its
 // edge following the pointer. Every grip and knob takes a 44 px press and no room of its own: it stands over the start of what it lifts.
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type RefObject } from "react";
@@ -26,6 +27,7 @@ import { around, inside, landing, placeAt, readingOrder, shifts, type Axis, type
 import { onOwnSurface } from "./choice";
 import { cx } from "./cx";
 import { BinIcon } from "./remove-button";
+import { fixedOrigin, layerOf } from "./carry-layer";
 
 /** How far a mouse moves before a press lifts; how long a finger holds before it lifts, and how far it may stray meanwhile. */
 const MOUSE_SLOP = 4;
@@ -73,6 +75,8 @@ interface Lifting {
   from: HTMLElement;
   ghost: HTMLElement;
   note: HTMLElement;
+  /** Where on the screen the ghost and the note stand at 0,0 in the layer they are drawn in (`fixedOrigin`). */
+  origin: { x: number; y: number };
   dx: number;
   dy: number;
   x: number;
@@ -91,14 +95,37 @@ interface Lifting {
   gaps: HTMLElement[];
   /** Lets go of the blocks held at their height (`holdBlocks`). */
   release: () => void;
+  /** What scrolls under the carry (`scrollerOf`). */
+  scroller: Scroller;
 }
 let lifting: Lifting | null = null;
 
-const pageBox = (el: Element): Box => {
+/**
+ * What scrolls under a carry: the nearest box around the carried thing that scrolls up and down (a sheet's body), else the page. Places are
+ * read in its terms (`boxIn`, `pointIn`): a point on the screen plus how far it is scrolled, so a scroll while the thing is carried, at the
+ * screen's edge (`edgeScroll`) or by the wheel, moves the pointer over the places as it moves the places on the screen.
+ */
+type Scroller = HTMLElement | Window;
+function scrollerOf(from: HTMLElement): Scroller {
+  for (let x = from.parentElement; x && x !== document.body; x = x.parentElement) if (x.scrollHeight > x.clientHeight + 1 && /auto|scroll/.test(getComputedStyle(x).overflowY)) return x;
+  return window;
+}
+const scrolledBy = (s: Scroller) => (s instanceof HTMLElement ? { x: s.scrollLeft, y: s.scrollTop } : { x: window.scrollX, y: window.scrollY });
+const boxIn = (s: Scroller, el: Element): Box => {
   const r = el.getBoundingClientRect();
-  return { left: r.left + window.scrollX, top: r.top + window.scrollY, right: r.right + window.scrollX, bottom: r.bottom + window.scrollY };
+  const d = scrolledBy(s);
+  return { left: r.left + d.x, top: r.top + d.y, right: r.right + d.x, bottom: r.bottom + d.y };
 };
-const pagePoint = (x: number, y: number) => ({ x: x + window.scrollX, y: y + window.scrollY });
+const pointIn = (s: Scroller, x: number, y: number) => {
+  const d = scrolledBy(s);
+  return { x: x + d.x, y: y + d.y };
+};
+/** The band of the screen `s` shows, from its top to its foot. */
+function viewOf(s: Scroller): { top: number; bottom: number } {
+  if (!(s instanceof HTMLElement)) return { top: 0, bottom: window.innerHeight };
+  const r = s.getBoundingClientRect();
+  return { top: Math.max(0, r.top), bottom: Math.min(window.innerHeight, r.bottom) };
+}
 
 /** The nearest element around all of `els` that draws a box of its own (a row drawn as `contents` has none). */
 function commonAncestor(els: readonly Element[]): Element | null {
@@ -139,12 +166,12 @@ function markGap(l: Lifting, previewing: boolean) {
 function plainAt(l: Lifting, x: number, y: number): string | null {
   const members = new Set(l.lists.flatMap((s) => s.keys));
   const places = [...l.zones].filter(([key, z]) => z.takes && !z.hands.sort && !members.has(key)).map(([key, z]) => ({ key, box: z.box, depth: z.depth, fixed: z.fixed, over: z.over }));
-  return placeAt(places, pagePoint(x, y), { x, y });
+  return placeAt(places, pointIn(l.scroller, x, y), { x, y });
 }
 
 /** Where in a list the pointer would land the thing: the first list whose area holds it. */
 function listTarget(l: Lifting, x: number, y: number): Target | null {
-  const p = pagePoint(x, y);
+  const p = pointIn(l.scroller, x, y);
   for (const [k, s] of l.lists.entries()) {
     if (!inside(s.area, p, LIST_MARGIN)) continue;
     const at = landing(s.boxes, s.source, p, s.axis);
@@ -192,8 +219,8 @@ function moveGhost(x: number, y: number) {
   if (!l) return;
   l.x = x;
   l.y = y;
-  l.ghost.style.transform = `translate(${x - l.dx}px, ${y - l.dy}px)`;
-  l.note.style.transform = `translate(${x + 12}px, ${y + 16}px)`;
+  l.ghost.style.transform = `translate(${x - l.dx - l.origin.x}px, ${y - l.dy - l.origin.y}px)`;
+  l.note.style.transform = `translate(${x + 12 - l.origin.x}px, ${y + 16 - l.origin.y}px)`;
   // where it would land follows the pointer alone, over the page as it stood when the thing was lifted (`plainAt`, `listTarget`)
   const plain = plainAt(l, x, y);
   const t = plain ? { key: plain } : listTarget(l, x, y);
@@ -204,12 +231,12 @@ function moveGhost(x: number, y: number) {
   l.note.hidden = !why;
 }
 
-/** The ghost settles on where the thing now stands (`to`), or fades where it went away; then it goes. */
-function settle(ghost: HTMLElement, to: HTMLElement | null, away: boolean) {
+/** The ghost settles on where the thing now stands (`to`), or fades where it went away; then it goes. `origin`: as `Lifting`'s. */
+function settle(ghost: HTMLElement, origin: { x: number; y: number }, to: HTMLElement | null, away: boolean) {
   const ms = motionMs();
   if (ms <= 0 || (!to && !away)) return ghost.remove();
   const r = to?.getBoundingClientRect();
-  const end = r && !away ? `translate(${r.left}px, ${r.top}px)` : `${ghost.style.transform} scale(0.92)`;
+  const end = r && !away ? `translate(${r.left - origin.x}px, ${r.top - origin.y}px)` : `${ghost.style.transform} scale(0.92)`;
   const a = ghost.animate([{ transform: ghost.style.transform, opacity: 1 }, { transform: end, opacity: away ? 0 : 1 }], { duration: ms, easing: easing(), fill: "forwards" });
   a.onfinish = () => ghost.remove();
   a.oncancel = () => ghost.remove();
@@ -226,6 +253,7 @@ function endLift(drop: boolean) {
   window.removeEventListener("keydown", onKey, true);
   window.removeEventListener("keyup", onModifier, true);
   window.removeEventListener("touchmove", noScroll);
+  window.removeEventListener("scroll", onScroll, true);
   l.note.remove();
   const key = drop ? (l.target?.key ?? null) : null;
   const z = key ? l.zones.get(key) : undefined;
@@ -249,7 +277,7 @@ function endLift(drop: boolean) {
   });
   play(before);
   const landed = [...document.querySelectorAll<HTMLElement>(`[data-lift-item="${CSS.escape(l.item)}"]`)].map((g) => g.closest<HTMLElement>("[data-liftable]")).find((x) => !!x);
-  settle(l.ghost, bin ? null : (landed ?? (l.from.isConnected ? l.from : null)), bin || (!!z && !landed));
+  settle(l.ghost, l.origin, bin ? null : (landed ?? (l.from.isConnected ? l.from : null)), bin || (!!z && !landed));
 }
 
 const onMove = (e: PointerEvent) => {
@@ -257,15 +285,17 @@ const onMove = (e: PointerEvent) => {
   e.preventDefault();
   const dy = e.clientY - lifting.lastY;
   lifting.lastY = e.clientY;
-  // the page scrolls only once the pointer moves toward the edge it is near
-  const h = window.innerHeight;
-  if (e.clientY > h - EDGE && dy > 0) lifting.armed = "down";
-  else if (e.clientY < EDGE && dy < 0) lifting.armed = "up";
-  else if (e.clientY >= EDGE && e.clientY <= h - EDGE) lifting.armed = null;
+  // what scrolls under the carry scrolls only once the pointer moves toward the edge of it it is near
+  const v = viewOf(lifting.scroller);
+  if (e.clientY > v.bottom - EDGE && dy > 0) lifting.armed = "down";
+  else if (e.clientY < v.top + EDGE && dy < 0) lifting.armed = "up";
+  else if (e.clientY >= v.top + EDGE && e.clientY <= v.bottom - EDGE) lifting.armed = null;
   setCopy(e.altKey || e.ctrlKey || e.metaKey);
   moveGhost(e.clientX, e.clientY);
 };
 const onUp = () => endLift(true);
+/** A scroll while the thing is carried (the edge's or the wheel's) moves the places under a still pointer: where it would land follows. */
+const onScroll = () => lifting && moveGhost(lifting.x, lifting.y);
 const onCancel = () => endLift(false);
 /** While a thing is carried by a finger, the page does not scroll under it (the scroll would cancel the carry). */
 const noScroll = (e: TouchEvent) => e.cancelable && e.preventDefault();
@@ -283,24 +313,25 @@ function setCopy(on: boolean) {
   lifting.ghost.toggleAttribute("data-copy", on);
 }
 
-/** Near the screen's top or foot, once the pointer moved that way, the page scrolls under the carried thing, faster the nearer the edge. */
+/**
+ * Near the top or foot of what scrolls under the carry (the screen's, or a sheet's body's), once the pointer moved that way, it scrolls under
+ * the carried thing, faster the nearer the edge; the scroll moves where it would land (`onScroll`).
+ */
 function edgeScroll() {
   const l = lifting;
   if (!l) return;
-  const h = window.innerHeight;
-  const deep = l.armed === "down" ? (l.y - (h - EDGE)) / EDGE : l.armed === "up" ? (EDGE - l.y) / EDGE : 0;
+  const v = viewOf(l.scroller);
+  const deep = l.armed === "down" ? (l.y - (v.bottom - EDGE)) / EDGE : l.armed === "up" ? (v.top + EDGE - l.y) / EDGE : 0;
   const bin = !!l.target?.key && !!zoneElement(l.target.key)?.querySelector("[data-drop-bin]");
-  if (deep > 0 && !bin) {
-    const before = window.scrollY;
-    window.scrollBy(0, Math.ceil(SCROLL * Math.min(1, deep)) * (l.armed === "down" ? 1 : -1));
-    if (window.scrollY !== before) moveGhost(l.x, l.y);
-  }
+  if (deep > 0 && !bin) l.scroller.scrollBy(0, Math.ceil(SCROLL * Math.min(1, deep)) * (l.armed === "down" ? 1 : -1));
   l.frame = requestAnimationFrame(edgeScroll);
 }
 
-/** Whether `el` stands fixed on the screen, itself or inside something that does (a phone's bin): the page scrolls under it. */
-function onScreen(el: Element): boolean {
-  for (let x: Element | null = el; x; x = x.parentElement) if (getComputedStyle(x).position === "fixed") return true;
+/** Whether `el` stays put on the screen while `s` scrolls: it stands outside `s`, or is fixed itself or inside something fixed within it (a phone's bin). */
+function staysPut(el: Element, s: Scroller): boolean {
+  const top = s instanceof HTMLElement ? s : null;
+  if (top && !top.contains(el)) return true;
+  for (let x: Element | null = el; x && x !== top; x = x.parentElement) if (getComputedStyle(x).position === "fixed") return true;
   return false;
 }
 
@@ -311,18 +342,23 @@ function countAround(el: Element): number {
   return n;
 }
 
-/** Every place on the page as it stands now, and the lists its members make (declared, `sort`, or liftable things side by side). */
-function freeze(item: string, from: HTMLElement): { zones: Map<string, Frozen>; lists: List[] } {
+/**
+ * Every place on the page as it stands now, and the lists its members make (declared, `sort`, or liftable things side by side). A thing in
+ * an open dialog (a sheet) lands only in that dialog: the page under a dialog shown modally is covered and inert.
+ */
+function freeze(item: string, from: HTMLElement, scroller: Scroller): { zones: Map<string, Frozen>; lists: List[] } {
+  const box = (el: Element) => boxIn(scroller, el);
   const zones = new Map<string, Frozen>();
   const els = new Map<string, HTMLElement>();
+  const layer = layerOf(from);
   for (const [key, z] of allZones()) {
     const el = zoneElement(key);
-    if (!el) continue;
-    const fixed = onScreen(el);
+    if (!el || !layer.contains(el)) continue;
+    const fixed = staysPut(el, scroller);
     const r = el.getBoundingClientRect();
     const depth = countAround(el);
     const over = !fixed && getComputedStyle(el).position === "absolute";
-    zones.set(key, { hands: z, takes: z.accepts(item), box: fixed ? { left: r.left, top: r.top, right: r.right, bottom: r.bottom } : pageBox(el), depth, fixed, over });
+    zones.set(key, { hands: z, takes: z.accepts(item), box: fixed ? { left: r.left, top: r.top, right: r.right, bottom: r.bottom } : box(el), depth, fixed, over });
     els.set(key, el);
   }
   const lists: List[] = [];
@@ -331,15 +367,17 @@ function freeze(item: string, from: HTMLElement): { zones: Map<string, Frozen>; 
   let inList = false;
   for (const keys of byList.values()) {
     const axis = zones.get(keys[0]!)!.hands.sort!.axis;
-    const order = readingOrder(keys.map((k) => zones.get(k)!.box), axis);
+    // a list's members in what scrolls under the carry, as the pointer is read in it (`listTarget`)
+    const raw = keys.map((k) => box(els.get(k)!));
+    const order = readingOrder(raw, axis);
     const sorted = order.map((i) => keys[i]!);
     // the member the thing was lifted from: the place around it (a list inside the thing, a fee's columns, is not its list)
     const source = sorted.findIndex((k) => els.get(k)!.contains(from));
     if (source >= 0) inList = true;
     if (!sorted.some((k, i) => i !== source && zones.get(k)!.takes)) continue;
-    const boxes = sorted.map((k) => zones.get(k)!.box);
+    const boxes = order.map((i) => raw[i]!);
     const common = commonAncestor(sorted.map((k) => els.get(k)!));
-    lists.push({ axis, keys: sorted, boxes, source: source >= 0 ? source : null, area: around(common ? [...boxes, pageBox(common)] : boxes) });
+    lists.push({ axis, keys: sorted, boxes, source: source >= 0 ? source : null, area: around(common ? [...boxes, box(common)] : boxes) });
   }
   // liftable things side by side, each with a place that takes the thing: a list that slides by itself
   if (!inList && from.parentElement) {
@@ -347,12 +385,12 @@ function freeze(item: string, from: HTMLElement): { zones: Map<string, Frozen>; 
     const keyIn = (el: HTMLElement) => [...el.querySelectorAll<HTMLElement>("[data-drop-key]")].map((z) => z.dataset.dropKey!).find((k) => zones.get(k)?.takes) ?? null;
     const keys = sibs.map((el) => (el === from ? null : keyIn(el)));
     if (keys.some((k) => k !== null)) {
-      const raw = sibs.map(pageBox);
+      const raw = sibs.map(box);
       const axis: Axis = raw.length > 1 && Math.abs(raw[1]!.top - raw[0]!.top) > Math.abs(raw[1]!.left - raw[0]!.left) ? "y" : "x";
       const order = readingOrder(raw, axis);
       const members = order.map((i) => sibs[i]!);
       const boxes = order.map((i) => raw[i]!);
-      lists.push({ axis, keys: order.map((i) => keys[i]!), boxes, source: members.indexOf(from), area: around([...boxes, pageBox(from.parentElement)]), slide: members });
+      lists.push({ axis, keys: order.map((i) => keys[i]!), boxes, source: members.indexOf(from), area: around([...boxes, box(from.parentElement)]), slide: members });
     }
   }
   return { zones, lists };
@@ -389,12 +427,14 @@ export function lift(item: string, from: HTMLElement, x: number, y: number, abou
   const shown = head ?? from;
   const box = shown.getBoundingClientRect();
   const ghost = pictureOf(shown, box.width);
-  document.body.appendChild(ghost);
   const note = document.createElement("div");
   note.setAttribute("data-lift-why", "");
   note.setAttribute("role", "status");
   note.hidden = true;
-  document.body.appendChild(note);
+  // drawn in the open dialog that holds the thing, on its layer (`layerOf`)
+  const layer = layerOf(from);
+  layer.append(ghost, note);
+  const origin = fixedOrigin(layer);
   // a thing carried by its head leaves a gap of its head's size: its place closes up to it, and what stood under it slides up
   let collapsed: string | null = null;
   if (head) {
@@ -406,10 +446,11 @@ export function lift(item: string, from: HTMLElement, x: number, y: number, abou
   } else if (!about.keep) from.setAttribute("data-lifted", "");
   flushSync(() => carry(item, null, about.name ?? null));
   const release = holdBlocks();
-  const { zones, lists } = atRest(() => freeze(item, from));
+  const scroller = scrollerOf(from);
+  const { zones, lists } = atRest(() => freeze(item, from, scroller));
   // the members of a list that slides by itself are places of their own (a fee's card): they draw no frame, the gap shows where it lands
   flushSync(() => listMembers(lists.flatMap((s) => (s.slide ? s.keys.filter((k): k is string => k !== null) : []))));
-  lifting = { item, name: about.name ?? null, from, ghost, note, dx: x - box.left, dy: Math.max(0, Math.min(y - box.top, box.height)), x, y, lastY: y, frame: 0, zones, lists, target: null, copy: false, armed: null, collapsed, gaps: about.keep ? [] : [from], release };
+  lifting = { item, name: about.name ?? null, from, ghost, note, origin, dx: x - box.left, dy: Math.max(0, Math.min(y - box.top, box.height)), x, y, lastY: y, frame: 0, zones, lists, target: null, copy: false, armed: null, collapsed, gaps: about.keep ? [] : [from], release, scroller };
   moveGhost(x, y);
   window.addEventListener("pointermove", onMove, { passive: false });
   window.addEventListener("pointerup", onUp);
@@ -417,6 +458,7 @@ export function lift(item: string, from: HTMLElement, x: number, y: number, abou
   window.addEventListener("keydown", onKey, true);
   window.addEventListener("keyup", onModifier, true);
   window.addEventListener("touchmove", noScroll, { passive: false });
+  window.addEventListener("scroll", onScroll, { capture: true, passive: true });
   lifting.frame = requestAnimationFrame(edgeScroll);
 }
 
@@ -654,7 +696,8 @@ export const GripRoom = () => <span aria-hidden data-grip-box="inside" />;
  * where the screen has no room under it, fixed to the screen so a table that scrolls inside itself never cuts it, and following the
  * control as the page scrolls. Its start edge stands under the control's start edge, or, where that runs off the screen, its end edge
  * under the control's end edge (`menuSpot`). A control inside an open dialog (a popup, a sheet) has its menu drawn in that dialog, on the
- * dialog's own layer, since a dialog shown modally covers everything drawn on the page's body. It opens with the focus on its first action.
+ * dialog's own layer, since a dialog shown modally covers everything drawn on the page's body; there the dialog's box stands for the
+ * screen, since the dialog cuts off what runs past it. It opens with the focus on its first action.
  * Esc, a press outside, the control leaving the screen or an action closes it, the focus back on the control; an action that moves things
  * moves them as a drag does (`flip`); an action with `then` shows its choices in its place.
  */
@@ -676,11 +719,14 @@ export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; 
     const g = control?.getBoundingClientRect();
     if (!control || !g || !box.current) return;
     if (g.bottom < 0 || g.top > window.innerHeight) return closeRef.current(false);
-    const spot = menuSpot(g, { width: box.current.offsetWidth, height: box.current.offsetHeight }, { width: window.innerWidth, height: window.innerHeight }, getComputedStyle(control).direction === "rtl");
-    // drawn in a dialog, whose padding box holds it: a dialog moved by a transform carries what is fixed inside it, so the menu is placed
-    // in the dialog's own terms
+    const size = { width: box.current.offsetWidth, height: box.current.offsetHeight };
+    const rtl = getComputedStyle(control).direction === "rtl";
+    // drawn in a dialog, whose padding box holds it and cuts off what runs past it: placed within that box, in the dialog's own terms (a
+    // dialog moved by a transform carries what is positioned inside it)
     const d = host?.getBoundingClientRect();
-    setAt(host && d ? { top: spot.top - d.top - host.clientTop, left: spot.left - d.left - host.clientLeft } : spot);
+    if (!host || !d) return setAt(menuSpot(g, size, { width: window.innerWidth, height: window.innerHeight }, rtl));
+    const x = d.left + host.clientLeft, y = d.top + host.clientTop;
+    setAt(menuSpot({ top: g.top - y, bottom: g.bottom - y, left: g.left - x, right: g.right - x }, size, { width: host.clientWidth, height: host.clientHeight }, rtl));
   };
   useLayoutEffect(() => {
     place();
@@ -696,7 +742,8 @@ export function ActionMenu({ actions, onClose, back }: { actions: GripAction[]; 
       window.removeEventListener("resize", moved);
     };
   }, []);
-  // drawn on the page's body: what holds its control may be moved (a grip stands translated over its thing), which would carry a fixed menu
+  // drawn in its dialog or on the page's body, not beside its control: what holds the control may be moved (a grip stands translated over
+  // its thing), which would carry a fixed menu
   return createPortal(
     <div
       ref={box}
@@ -801,7 +848,7 @@ function BinWords({ name }: { name: string | null }) {
  * `data-col` (their index) inside the nearest `data-span-table`.
  */
 export function SpanKnob({ edge, from, to, min, max, label, valueText, onReach, axis = "x" }: { edge: "before" | "after"; from: number; to: number; min: number; max: number; label: string; valueText: string; onReach: (from: number, to: number, done: boolean) => void; /** Across the columns (`x`), or down the rows of a grid (`y`: its edges above and below the cell, found by the rows' `data-rowpos`). */ axis?: "x" | "y" }) {
-  const drag = useRef<{ id: number; reach: [number, number]; frame: HTMLElement; cell: DOMRect } | null>(null);
+  const drag = useRef<{ id: number; reach: [number, number]; frame: HTMLElement; origin: { x: number; y: number }; cell: DOMRect } | null>(null);
   const reachTo = (col: number): [number, number] => (edge === "after" ? [from, Math.max(from, Math.min(max, col))] : [Math.min(to, Math.max(min, col)), to]);
   const heads = (el: HTMLElement) => [...(el.closest("[data-span-table]")?.querySelectorAll<HTMLElement>(axis === "x" ? "[data-col]" : "[data-rowpos]") ?? [])];
   const index = (h: HTMLElement) => Number(axis === "x" ? h.dataset.col : h.dataset.rowpos);
@@ -832,7 +879,7 @@ export function SpanKnob({ edge, from, to, min, max, label, valueText, onReach, 
       if (edge === "after") bottom = far;
       else top = far;
     }
-    Object.assign(d.frame.style, { left: `${left}px`, top: `${top}px`, width: `${right - left}px`, height: `${bottom - top}px` });
+    Object.assign(d.frame.style, { left: `${left - d.origin.x}px`, top: `${top - d.origin.y}px`, width: `${right - left}px`, height: `${bottom - top}px` });
   };
   const step = (by: number) => {
     const [a, b] = edge === "after" ? [from, Math.max(from, Math.min(max, to + by))] : [Math.min(to, Math.max(min, from - by)), to];
@@ -874,8 +921,10 @@ export function SpanKnob({ edge, from, to, min, max, label, valueText, onReach, 
           const frame = document.createElement("div");
           frame.setAttribute("data-reach-frame", "");
           frame.setAttribute("aria-hidden", "true");
-          document.body.appendChild(frame);
-          drag.current = { id: e.pointerId, reach: [from, to], frame, cell };
+          // drawn in the open dialog that holds the cell, on its layer (`layerOf`)
+          const layer = layerOf(e.currentTarget);
+          layer.appendChild(frame);
+          drag.current = { id: e.pointerId, reach: [from, to], frame, origin: fixedOrigin(layer), cell };
           frameTo(e.currentTarget, e.clientX, e.clientY);
         }}
         onPointerMove={(e) => {

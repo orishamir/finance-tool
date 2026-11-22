@@ -17,7 +17,6 @@ export { ChoiceChips, ChoicePair, ChoiceTray, OtherChip, onSurface, PickCard, Se
 export { ChipList, dropOrder, RenameInput, type ChipItem, type ChipListProps, type ChipListWords } from "./chip-list";
 export { MenuPicker, type MenuItem } from "./menu-picker";
 export { KnobStrip, type Knob } from "./knobs";
-export { linearScale, rangeScale } from "./slider-scale";
 export { ChangeChart, type ChangeLine, type ChangeRow } from "./change-chart";
 export { PileBar, PileYears, type PileBarPart, type PileSlice } from "./pile-story";
 export { STAIRS_MARGIN, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, wrapLines, type StairColumn, type StairHue, type StairStep } from "./stairs-chart";

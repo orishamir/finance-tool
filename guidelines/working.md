@@ -21,9 +21,6 @@
   back each departure; nothing unlisted ships.
 - Say what to leave alone, and what to report: each item done, left or
   already gone, with why; the checks. No screenshots.
-- Say that accessibility is out of scope ([project.md](project.md)): no
-  code or markup that serves only screen readers. Builders and reviewers
-  otherwise add it or ask for it.
 - **A new kind of thing gets its own abstraction, not a special case.**
   When the work meets something the code can't yet represent (a new kind of
   fee, condition, bound or source), the builder refactors so it has its own
