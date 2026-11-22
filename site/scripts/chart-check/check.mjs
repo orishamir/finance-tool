@@ -10,7 +10,7 @@ import { randomBytes } from "node:crypto";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
-import { newContext, settled } from "../browser.mjs";
+import { newContext, waitSettled } from "../browser.mjs";
 import { serveBuild } from "../serve-build.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -124,7 +124,7 @@ async function checkWidth(width) {
 async function checkPage(page, lab, p, width) {
   await page.goto(server.url.replace(/\/$/, "") + p, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
-  await page.evaluate(settled);
+  await waitSettled(page);
   const found = await page.evaluate(inspect, { MIN_TEXT_PX, MAX_COLOURS, scope: "main" });
   // panels behind tab cards are not in the page until their tab opens (the index page's "לפני שמחליטים"): each closed tab is opened in
   // turn and the charts of its panel alone are added
@@ -134,7 +134,7 @@ async function checkPage(page, lab, p, width) {
     if ((await tab.getAttribute("aria-selected")) === "true") continue;
     // the card's corner: a figure in its middle opens its own sheet
     await tab.click({ position: { x: 12, y: 12 } });
-    await page.evaluate(settled);
+    await waitSettled(page);
     found.push(...(await page.evaluate(inspect, { MIN_TEXT_PX, MAX_COLOURS, scope: `[role=tabpanel][id="${await tab.getAttribute("aria-controls")}"]` })));
   }
   let n = 0;

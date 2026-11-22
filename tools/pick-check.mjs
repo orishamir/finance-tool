@@ -5,7 +5,7 @@
 //   BASE=http://127.0.0.1:4173/finance-tool node tools/pick-check.mjs /indices/sp500 phone,pc
 // A folded list is opened first, so every kind of fund is picked.
 import { createRequire } from "node:module";
-import { newContext, settled } from "../site/scripts/browser.mjs";
+import { newContext, waitSettled } from "../site/scripts/browser.mjs";
 
 const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
 const { chromium } = require("playwright");
@@ -32,10 +32,10 @@ for (const path of paths.split(",")) {
     const ctx = await newContext(browser, { viewport: { width: VIEW[w].width, height: VIEW[w].height }, hasTouch: !!VIEW[w].hasTouch });
     const page = await ctx.newPage();
     await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
-    await page.evaluate(settled);
+    await waitSettled(page);
     // a folded list keeps some rows off the page; open it
     await page.evaluate(() => [...document.querySelectorAll("[role=radiogroup] ~ button, [role=radiogroup] button[aria-expanded=false]")].forEach((b) => b.click()));
-    await page.evaluate(settled);
+    await waitSettled(page);
     const lists = await page.evaluate(() => [...document.querySelectorAll("[role=radiogroup]")].map((l) => [...l.querySelectorAll("[data-pick-key]")].map((r) => r.dataset.pickKey)));
     const rowed = new Set(await page.evaluate(() => [...document.querySelectorAll("[role=radiogroup]")].filter((l) => l.querySelector("[data-pick-key]")).map((l) => l.getAttribute("aria-label"))));
     const seen = new Map();
@@ -61,7 +61,7 @@ for (const path of paths.split(",")) {
           return true;
         }, key);
         if (!hit) continue;
-        await page.evaluate(settled);
+        await waitSettled(page);
         note(key, await page.evaluate(read));
       }
     }
