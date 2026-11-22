@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the indices bundle. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { gershayim } from "./format";
-import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, isTie, beforeTaxPathOf, securitiesBlockedBy, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, isTie, beforeTaxPathOf, securitiesBlockedBy, securitiesStopOf, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomFund } from "./custom-entries";
@@ -455,7 +455,7 @@ function candidates(s: FeesSnapshot, option: OptionId): Cand[] {
 
 interface Spec {
   fund: Parameters<typeof providerWorkbench>[0]["fund"];
-  market: { grossReturn: number; returnIn?: "instrument" | "nis"; fxChange?: number };
+  market: { grossReturn: number; returnIn?: "instrument" | "nis"; fxChange?: number; principalFxChange?: number };
   currency?: { code: string; startRate: number };
   cls: string;
   /** F-109 (D94): where the fund is bought (TASE, or the exchange abroad it trades on), so each house buys it in whole units or by amount. */
@@ -488,6 +488,8 @@ function makeCtx(bundle: IndicesBundle, plan: WorkbenchInputs, assumptions: Fund
 
 function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
   const market = { grossReturn: ctx.plan.grossReturn };
+  // Stand-in: the generic Israeli fund of a kind has no foreign-investment-fund status and takes the CPI as its tax index (F-04), as a fund
+  // the person types does, until the queued item "ask the person whether a typed Israeli fund is a foreign-investment fund"
   if (option === "il-tracking" || option === "il-etf") return { fund: { kind: "israeli-fund", drag: {} }, market, cls: OPTION_CLASS[option] };
   if (option === "tase-foreign") return { fund: { kind: "tase-foreign-fund", drag: {} }, market, cls: OPTION_CLASS[option] };
   const usd = ctx.fx.USD;
@@ -532,13 +534,20 @@ function currentAccountOf(ctx: Ctx, s: FeesSnapshot): FeesSnapshot["current_acco
 /** A row of either workbench: F-63's, or F-118's for a fund whose exit tax rests on an open rule. */
 type SlotRow = ProviderRow | BeforeTaxProvider;
 
-function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[], untilExitTax = false): SlotRow[] {
+/** The person's age and income as a run's tax reads them: the surtax on the income with the gain (F-43), and from 60 the brackets the gain falls into (F-42). */
+function profileOf(ctx: Ctx): { ageAtStart?: number; annualIncome?: number } {
   const profile: { ageAtStart?: number; annualIncome?: number } = {};
   if (ctx.plan.age !== null) profile.ageAtStart = ctx.plan.age;
-  // the tax reads both: the surtax on the income with the gain (F-43), and from 60 the brackets the gain falls into (F-42)
   if (ctx.plan.income !== null && ctx.plan.income > 0) profile.annualIncome = ctx.plan.income;
+  return profile;
+}
+
+const goalOf = (ctx: Ctx) => ({ amountNow: ctx.plan.amountNow, monthly: ctx.plan.monthly, months: 12 * ctx.plan.years, firstMonth: calendarMonthOf(ctx.bundle.today) });
+
+function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[], untilExitTax = false): SlotRow[] {
+  const profile = profileOf(ctx);
   const input = (list: typeof items) => ({
-    goal: { amountNow: ctx.plan.amountNow, monthly: ctx.plan.monthly, months: 12 * ctx.plan.years, firstMonth: calendarMonthOf(ctx.bundle.today) },
+    goal: goalOf(ctx),
     market: { ...spec.market, inflation: ctx.plan.inflation },
     fund: spec.fund,
     profile,
@@ -1098,11 +1107,13 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   const listing = listingOf(rec, subject.instrumentClass);
   const spec: Spec = { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass, ...(listing ? { listing } : {}) };
   // a fund whose tax rests on an open rule is listed with the reason and no rank (F-04, G-35), with its figures before tax where F-118 reads
-  // them (D84: a fund that pays nothing out)
-  const open = securitiesBlockedBy(run.fund, ruleContext(ctx.bundle));
-  if (open) {
-    const path = beforeTaxPathOf(run.fund, ruleContext(ctx.bundle));
-    return { reason: { code: "rule-open", ruleId: open }, ...(path ? { beforeTax: { spec, ruleId: path } } : {}) };
+  // them (D84: a fund that pays nothing out): a TASE foreign fund on TXF-04, or a fund whose tax index is an open reading (TXS OQ26) where
+  // its readings give the plan different results (method §13)
+  const own = { goal: goalOf(ctx), market: { ...spec.market, inflation: ctx.plan.inflation }, fund: spec.fund, tariff: spec.currency ? { currency: spec.currency } : {}, profile: profileOf(ctx) };
+  const stop = securitiesStopOf(own, ruleContext(ctx.bundle));
+  if (stop) {
+    const path = beforeTaxPathOf(own, ruleContext(ctx.bundle));
+    return { reason: { code: "rule-open", ruleId: stop.ruleId, ...(stop.question ? { question: stop.question } : {}) }, ...(path ? { beforeTax: { spec, ruleId: path.ruleId } } : {}) };
   }
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
   const mismatch = !!exposure && !["NIS", "ILS"].includes(rec.currency) && rec.currency !== exposure.currency;

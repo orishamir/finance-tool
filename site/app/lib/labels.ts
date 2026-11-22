@@ -39,6 +39,7 @@ export type LabelId =
   | "currency-many"
   | "currency-foreign"
   | "tax-currency"
+  | "tax-currency-open"
   | "tax-fund-dividend"
   | "tax-distribution"
   | "tax-on-sale-open"
@@ -75,6 +76,7 @@ export const labelDefs: Record<LabelId, LabelDef> = {
   "currency-many": { icon: "sign", tone: "neutral", rules: ["ETF-12"] },
   "currency-foreign": { icon: "currency", tone: "neutral", rules: ["ETF-12"] },
   "tax-currency": { icon: "trendUpDown", tone: "neutral", rules: ["TXS-09", "TXS-14"] },
+  "tax-currency-open": { icon: "scale", tone: "open", rules: ["TXS-14"] },
   "tax-fund-dividend": { icon: "badgePercent", tone: "neutral", rules: ["TXF-16"] },
   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08", "TXS-10"] },
   "tax-on-sale-open": { icon: "lock", tone: "open", rules: ["TXF-11"] },
@@ -127,6 +129,7 @@ const familyOf: Record<LabelId, Label["family"]> = {
   "currency-many": "currency",
   "currency-foreign": "currency",
   "tax-currency": "tax",
+  "tax-currency-open": "tax",
   "tax-fund-dividend": "tax",
   "tax-distribution": "tax",
   "tax-on-sale-open": "tax",
@@ -183,8 +186,15 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   else if (indexCurrency && !isShekel(indexCurrency)) out.push(label(many ? "currency-many" : "currency", indexCurrency));
   // an index the person added: the site does not know its currency, so the label names none
   else if (!index.exposure && !index.israeli) out.push(label(index.custom ? "currency-foreign" : "currency", rec.currency));
-  // tax: an Israeli fund on a foreign index is taxed on the currency move too (TXS-09); an Irish fund pays tax inside on dividends (TXF-16)
-  if (rec.domicile === "IL" && !index.israeli && rec.hedged !== true) out.push(label("tax-currency"));
+  // tax: an Israeli fund on a foreign index that is not a foreign-investment fund is taxed on the currency move too (TXS-09, TXS-14); one
+  // whose documents name a principal currency, or whose status is not known, is run on both readings of TXS OQ26 and carries the question
+  // (F-04). A fund the person types has no status: it takes the CPI's chip, a stand-in until the queued item "ask the person whether a
+  // typed Israeli fund is a foreign-investment fund". An Irish fund pays tax inside on dividends (TXF-16).
+  const status = rec.tax_status.foreign_investment_fund;
+  if (rec.domicile === "IL" && !index.israeli) {
+    if (status && status.value !== false) out.push(label("tax-currency-open"));
+    else if (rec.hedged !== true) out.push(label("tax-currency"));
+  }
   if (rec.domicile === "IE") out.push(label("tax-fund-dividend"));
   if (rec.distribution_policy === "distributing") out.push(label("tax-distribution"));
   // an accumulating foreign fund: taxed only at sale on the ruling its own annex reports, else an open question (TXF-11);

@@ -251,7 +251,6 @@ function endLift(drop: boolean) {
   lifting = null;
   cancelAnimationFrame(l.frame);
   document.documentElement.removeAttribute("data-carrying");
-  swallowClick();
   window.removeEventListener("pointermove", onMove);
   window.removeEventListener("pointerup", onUp);
   window.removeEventListener("pointercancel", onCancel);
@@ -473,25 +472,14 @@ export function lift(item: string, from: HTMLElement, x: number, y: number, abou
   lifting.frame = requestAnimationFrame(edgeScroll);
 }
 
-/**
- * The click a carry ends in, swallowed, so a thing let go does not open, nor a chip add itself too (let go back over itself, its press and
- * release are a click on it). Held until that click comes, however long the carry took or after an Escape while the button is still down,
- * and let go at the next press or key, so a carry that ends in no click (a finger's) never swallows a later one.
- */
+/** The click a carry ends in, swallowed, so a thing let go does not open, nor a chip add itself too. */
 const swallowClick = () => {
   const swallow = (e: Event) => {
     e.preventDefault();
     e.stopPropagation();
-    done();
   };
-  const done = () => {
-    window.removeEventListener("click", swallow, { capture: true });
-    window.removeEventListener("pointerdown", done, { capture: true });
-    window.removeEventListener("keydown", done, { capture: true });
-  };
-  window.addEventListener("click", swallow, { capture: true });
-  window.addEventListener("pointerdown", done, { capture: true });
-  window.addEventListener("keydown", done, { capture: true });
+  window.addEventListener("click", swallow, { capture: true, once: true });
+  setTimeout(() => window.removeEventListener("click", swallow, { capture: true }), 600);
 };
 
 /**
@@ -515,7 +503,10 @@ function bodyPress(e: PointerEvent, item: string, from: HTMLElement, name: strin
     window.removeEventListener("pointercancel", stop);
     window.removeEventListener("dragstart", noDrag, true);
   };
-  const up = () => stop();
+  const up = () => {
+    if (lifted) swallowClick();
+    stop();
+  };
   window.addEventListener("pointermove", move);
   window.addEventListener("pointerup", up);
   window.addEventListener("pointercancel", stop);
@@ -541,6 +532,7 @@ export function dragSource(item: string): Required<DragSourceProps> {
       const move = (m: PointerEvent) => {
         if (m.pointerId !== id || Math.hypot(m.clientX - x0, m.clientY - y0) <= MOUSE_SLOP) return;
         stop();
+        swallowClick();
         lift(item, el, m.clientX, m.clientY, { name: el.textContent?.trim() ?? "", keep: true });
       };
       const stop = () => {
@@ -645,6 +637,7 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
         id: e.pointerId,
         timer: window.setTimeout(() => {
           hold = null;
+          swallowClick();
           lift(item, from, x, y, { ...(name ? { name } : {}) });
         }, HOLD_MS),
       };
