@@ -140,10 +140,29 @@ describe("both readings of TXS OQ26 (method §13)", () => {
     expect(() => runSecurities(input(), under("principal"))).toThrow(/principalFxChange/);
   });
 
-  it("leaves an Israeli fund that is not one on the CPI, with no flag", () => {
+  it("leaves an Israeli fund that is not one on the CPI, with no flag, citing TXS-14 for its index", () => {
     const r = runSecurities(input({ principalFxChange: 0 }, { kind: "israeli-fund", drag: {} }), ctx);
     expect(r.taxAtExit).toBeCloseTo(0.25 * (gross(0.06) - amount * 1.025 ** years), 2);
     expect(codes(r)).not.toContain("TXS-OQ26");
+    expect(ids(r)).toContain("TXS-14");
+  });
+
+  it("a book whose readings hold the question unanswered stops on TXS-14 and says the question", () => {
+    expect(securitiesStopOf(input({ principalFxChange: 0 }), { ...ctx, readings: { "TXS OQ26": null } })).toEqual({ ruleId: "TXS-14", question: "TXS OQ26" });
+  });
+
+  it("the value before tax, B = V_T real + the tax paid over I_T (F-91), is the same under both readings where they split: an account's cost before tax reads no tax index", () => {
+    // monthly purchases at a house with a commission, a minimum and custody: the after-tax values differ by reading, B does not
+    const account: SecuritiesInput = {
+      ...input({ principalFxChange: 0 }),
+      goal: { amountNow: 10_000, monthly: 500, months: 120 },
+      tariff: { buy: { rate: 0.004, min: 26 }, sell: { rate: 0.004, min: 26 }, custody: { rate: 0.0015, everyMonths: 3, min: 15 } },
+    };
+    const B = (r: ReturnType<typeof runSecurities>) => r.real + (r.taxDuring + r.taxAtExit) / r.series.at(-1)!.index;
+    const principal = runSecurities(account, under("principal"));
+    const cpi = runSecurities(account, under("cpi"));
+    expect(principal.taxAtExit).not.toBeCloseTo(cpi.taxAtExit, 0);
+    expect(B(principal)).toBeCloseTo(B(cpi), 6);
   });
 });
 

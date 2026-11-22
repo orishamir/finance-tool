@@ -11,7 +11,7 @@ export type FallReadingId = "lower" | "hold" | "carry";
 export type TaxIndexReadingId = "principal" | "cpi";
 export type ReadingId = FallReadingId | TaxIndexReadingId;
 
-export interface Reading {
+export interface FallReading {
   id: FallReadingId;
   /** The amount `value` after one yearly move per entry of `rises` (each a year's CPI rise, a fraction, below zero for a fall), in order. */
   amount(value: number, rises: readonly number[]): number;
@@ -24,7 +24,7 @@ export interface Reading {
  * - `carry`: a fall leaves the amount as it was and is carried against the next rises, so the amount moves only once the index passes its
  *   highest level since the amount was read, `value × max(1, the highest of the running products Π(1 + r))`.
  */
-export const fallReadings: readonly Reading[] = [
+export const fallReadings: readonly FallReading[] = [
   { id: "lower", amount: (value, rises) => rises.reduce((a, r) => a * (1 + r), value) },
   { id: "hold", amount: (value, rises) => rises.reduce((a, r) => a * Math.max(1, 1 + r), value) },
   {
@@ -52,7 +52,7 @@ export interface FallOpenReading extends OpenReadingBase {
   kind: "fall";
   /** The figures it covers: those that move by `move` in a later tax year, and, where named, only those of these rules. */
   covers: { move: YearlyMove["kind"]; rules?: readonly string[] };
-  readings: readonly Reading[];
+  readings: readonly FallReading[];
 }
 
 /** The index a fund's real gain is measured by at the exit (F-04): met by the tax index of a fund the case covers (`taxIndexOf`). */

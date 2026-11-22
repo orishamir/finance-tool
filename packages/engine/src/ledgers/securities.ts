@@ -246,6 +246,10 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "prin
     book.cite("TXS-14");
     return book.reading(foreignInvestmentFundIndex).id;
   }
+  if (fund.kind === "israeli-fund") {
+    book.cite("TXS-14");
+    return "cpi";
+  }
   if (fund.kind !== "tase-foreign-fund") return "cpi";
   book.cite("TXF-04");
   if (fund.ninetyPercentTest !== true) return "cpi";
@@ -277,7 +281,9 @@ export interface SecuritiesStop {
 
 /**
  * The fund's own run of an input (F-91's `∅`): the same plan, market, fund and profile, with no account's prices and bought by amount. Whether
- * the readings of the fund's tax index split is read on it, so every account's run of the fund is listed or ranked alike.
+ * the readings of the fund's tax index split is read on it, so a fund whose own run splits is listed before tax at every account, even one
+ * whose own readings agree. An account whose own readings split while the fund's agree is not made to agree: its run stops on TXS-14 with
+ * the question, and its row is not compared (method F-04).
  */
 const ownRunOf = (input: SecuritiesInput): SecuritiesInput => ({
   goal: input.goal,
@@ -300,7 +306,8 @@ export function securitiesStopOf(input: SecuritiesInput, ctx: RunContext): Secur
     taxIndexOf(input.fund, ruleBook(ctx));
     return null;
   } catch (e) {
-    if (e instanceof BlockedError) return { ruleId: e.ruleId };
+    // a book whose readings already hold the question stops on it with the question (`RunContext.readings`)
+    if (e instanceof BlockedError) return { ruleId: e.ruleId, ...(e.question ? { question: e.question } : {}) };
     if (!(e instanceof OpenReadingError)) throw e;
   }
   try {
