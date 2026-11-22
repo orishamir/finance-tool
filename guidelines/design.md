@@ -35,8 +35,9 @@ What goes on a page is his call. When he asks for a change, build it this way:
   `site/app/lib/fees-dead-ends.test.ts` guards it.
 - **A new fact goes into what the page already has before it becomes a
   sentence:** a line in the receipt, a column, a label, a figure's
-  details. Only a fact with no such place gets words, and then a few
-  beside the figure it concerns.
+  details. Or a mark says it without words: a "?" in caution colour
+  says there's a catch, a pencil says it's yours. Only a fact with no
+  such place gets words, and then a few beside the figure it concerns.
 - **Fast.** A slider or field answers in under 100 ms; work that takes longer
   waits until the hand rests. Measure it.
 - **Little movement.** When a number changes, the page shifts as little as it
@@ -164,7 +165,8 @@ What goes on a page is his call. When he asks for a change, build it this way:
   changes in view where possible.
 - **A slider runs left to right, like a chart's time axis
   ([charts.md](charts.md)), and shows its value once, in its box:** no
-  values at its ends, no figure in its reset ("↺ איפוס"). Hebrew readers
+  values at its ends, no figure in its reset (the icon ↺, spoken
+  "איפוס"). Hebrew readers
   expect a slider to grow rightward (research/2026-11-22-kit-ux.md).
 - **A money slider moves in steps that grow with the amount,** so a common
   amount isn't jammed against one end; a typed value between steps keeps
@@ -234,10 +236,9 @@ What goes on a page is his call. When he asks for a change, build it this way:
 - **When a head, name or cell needs more than it can say, add a "?" beside
   it** (`HelpMark`) that opens the longer explanation on a tap: a glossary
   term's card, or a short text of its own.
-- **A "?" explains. The fact the choice needs stays in sight in a few
-  words:** a heading, a label, a short line. A fee, a condition or the
-  reason for a result is never only behind a "?" or a fold; the why behind
-  it is.
+- **A "?" explains. That a choice has a catch stays in sight, as a mark
+  (a caution "?") or in a few words;** what the catch is, and why, goes
+  behind it.
 - **A sentence above a table may say what the table is about, never what
   one column, row or cell means.** That goes in the head or its "?". Where
   the table's title already says what it is about, keep just the title.

@@ -550,6 +550,9 @@ export const parametersPage = {
     "P-05.sliders.A-01.min": "מחוון התשואה: מינימום",
     "P-05.sliders.A-01.max": "מחוון התשואה: מקסימום",
     "P-05.sliders.A-01.step": "מחוון התשואה: גודל צעד",
+    "P-05.sliders.A-02.min": "מחוון האינפלציה: מינימום",
+    "P-05.sliders.A-02.max": "מחוון האינפלציה: מקסימום",
+    "P-05.sliders.A-02.step": "מחוון האינפלציה: גודל צעד",
     "P-05.sliders.change_share.min": "גרף השינויים בעמוד המדדים: הקצה השמאלי",
     "P-05.sliders.change_share.max": "גרף השינויים בעמוד המדדים: הקצה הימני",
     "P-05.sliders.change_share.step": "גרף השינויים בעמוד המדדים: גודל צעד",
@@ -696,8 +699,8 @@ export const track = {
   feeBalanceLabel: "ממוצע דמי הניהול מחיסכון שנגבו בפועל בשנת {year}",
   feeDepositLabel: "ממוצע דמי הניהול מהפקדה שנגבו בפועל בשנת {year}",
   feeWhole: "לקרן כולה",
-  /** A child-savings fee is what members past National Insurance's age paid, spread over the whole track (CS OQ9); the label's caution
-   * "?" says the rest (`trackBrowser.childFee`). */
+  /** A child-savings fee is what members past National Insurance's age paid, spread over the whole track (CS OQ9); the note over the
+   * list says the age, from CS-18's figure. */
   feeOver21: "על כל המסלול",
   feeNotReported: "עוד לא דווח",
   /** An empty deposit-fee average that PF-06 explains: the product has no deposit fee. */
@@ -811,6 +814,9 @@ export const pagePreview = {
 /** Hebrew names of the formulas a sheet names (method.md F-IDs); copy.md 3.8. */
 export const formulaNames: Record<string, string> = {
   "A-06": "העלות בתוך הקרן: סכום כל מרכיביה",
+  "F-03": "מדד המחירים לאורך התוכנית",
+  "F-129": "שורות הקבלה בשקלים של העתיד",
+  "F-130": "מה שהאינפלציה מורידה, עד הכסף של היום",
   "F-05": "ההפקדות לאורך הזמן",
   "F-06": "ערך בכסף של היום",
   "F-106": "סך ההפקדות בכסף של היום",
@@ -912,6 +918,23 @@ export const formulaKeys: Record<string, { lines?: string[]; symbols: [tex: stri
       ["C_m", "ההפקדה בכל חודש, בשקלים של אותו חודש"],
       ["C", "ההפקדה החודשית בתוכנית, בכסף של היום"],
       ["I_m", "מדד המחירים באותו חודש, ביחס להיום (היום הוא 1)"],
+    ],
+  },
+  "F-129": {
+    lines: ["כל שורה בשקלים של העתיד", "ההפקדות, כל אחת בשקלים של החודש שלה", "השורות מצטרפות לסכום שבסוף, בשקלים של העתיד"],
+    symbols: [
+      ["Y^{nom}", "השורה בשקלים של העתיד"],
+      ["Y", "אותה שורה בכסף של היום"],
+      ["I_T", "פי כמה המחירים עולים עד סוף התוכנית"],
+      ["D^{nom}", "סך ההפקדות, כל אחת בשקלים של החודש שבו היא מופקדת"],
+      ["C_m", "ההפקדה בחודש m, בשקלים של אותו חודש"],
+      ["V_T", "מה שנשאר בסוף, בשקלים של העתיד"],
+    ],
+  },
+  "F-130": {
+    symbols: [
+      ["V_T", "מה שנשאר בסוף, בשקלים של העתיד"],
+      ["V_T^{real}", "אותו סכום בכסף של היום"],
     ],
   },
   "F-106": {
@@ -1124,6 +1147,8 @@ export const computedInputs = {
   grossReturn: "תשואה בשנה",
   cashRate: "ריבית בשנה",
   inflation: "אינפלציה בשנה",
+  /** The age the person entered on the device. */
+  age: "הגיל שהזנתם",
   balanceFee: "דמי ניהול מחיסכון",
   depositFee: "דמי ניהול מהפקדה",
   directExpenses: "הוצאות ישירות",
@@ -1454,11 +1479,13 @@ export const help = {
 export const trackBrowser = {
   title: "כל המסלולים בכל החברות",
   tabs: { aria: "איך לראות את החברות והמסלולים", byCompany: "לפי חברה", byProduct: "לפי מוצר", deposits: "פיקדונות בבנקים" },
-  /** The "?" by the page's title: how to read the list (the fees' year, the figures' date, the source, the companies' order); the cards of
-   *  the fee, the exposure and the money managed follow it. */
-  pageHelp: {
-    about: "איך לקרוא את הרשימה",
-    text: (year: string | null, period: string) => `${year ? `דמי הניהול הם הממוצע שנגבה ב־${year}. ` : ""}החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}. מנתוני רשות שוק ההון. החברות מסודרות מהגדולה לקטנה לפי הכסף המנוהל.`,
+  /** The page's line: its year and date stand on a phone only, whose rows have no heads; from md the heads say them. */
+  lead: {
+    intro: "דמי הניהול הם הממוצע שנגבה ב־",
+    figures: ". החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
+    end: ". ",
+    source: "מנתוני רשות שוק ההון.",
+    noYear: "החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
   },
   controls: {
     product: "מוצר",
@@ -1483,13 +1510,17 @@ export const trackBrowser = {
     outOf: "מתוך",
     whatIs: "מה זה",
   },
-  /** Each sort's name, in the phone's sort control and its folded line. */
+  /** What each sort says in the line above the list: the column, then the direction. */
   sorts: {
-    name: { label: "שם" },
-    fee: { label: "דמי ניהול מהחיסכון" },
-    dep: { label: "דמי ניהול מהפקדה" },
-    stock: { label: "חשיפה למניות" },
-    assets: { label: "כסף מנוהל" },
+    name: { label: "שם", what: "שם המסלול", whatKind: "שם החברה", up: "בסדר הא״ב", down: "בסדר הא״ב ההפוך" },
+    fee: { label: "דמי ניהול מהחיסכון", what: "דמי הניהול מהחיסכון", up: "מהזול ליקר", down: "מהיקר לזול" },
+    dep: { label: "דמי ניהול מהפקדה", what: "דמי הניהול מהפקדה", up: "מהזול ליקר", down: "מהיקר לזול" },
+    stock: { label: "חשיפה למניות", what: "החשיפה למניות", up: "מהנמוכה לגבוהה", down: "מהגבוהה לנמוכה" },
+    assets: { label: "כסף מנוהל", what: "הכסף המנוהל", up: "מהמעט להרבה", down: "מההרבה למעט" },
+  },
+  order: {
+    company: "החברות מסודרות מהגדולה לקטנה לפי הכסף המנוהל. בתוך כל חברה המסלולים מסודרים לפי ",
+    kind: "המסלולים מסודרים לפי ",
   },
   /** The heading of a group: "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪ · דמי ניהול מהחיסכון: מ־0.54% עד 0.61%". */
   group: {
@@ -1525,13 +1556,8 @@ export const trackBrowser = {
   feeAverage: (year: string, wholeFund = false) => `דמי הניהול הם הממוצע שנגבה ב־${year}${wholeFund ? " בקרן כולה" : ""}. `,
   /** On a phone, whose rows have no heads, over a pension product's list: whose the fees are (CAT-39). */
   wholeFund: "בקרן פנסיה דמי הניהול הם של הקרן כולה, לא של המסלול: כל המסלולים של קרן אחת מראים אותם דמי ניהול.",
-  /** Behind a child-savings fee's caution "?" (its head, its label, a phone's "?" over the list): what the figure is, as the rule base reads
-   *  it, with CS-18's age; the open question's code becomes its chip in the sheet (CS OQ9). `about`: the "?"'s spoken name and the sheet's
-   *  title where the "?" is the child fee's alone. */
-  childFee: {
-    about: "דמי ניהול בחיסכון לכל ילד",
-    help: (age: string) => `בחיסכון לכל ילד דמי הניהול כאן הם, לפי קריאה של האתר, מה שעמיתים מעל גיל ${age} שילמו, בממוצע על כל הנכסים של המסלול. עד הגיל הזה הביטוח הלאומי משלם את דמי הניהול. זה לא המחיר שהקופה גובה. שאלה פתוחה CS OQ9.`,
-  },
+  /** Over a child-savings list or track: what its fee figure is, as the rule base reads it (CS OQ9); the question's chip follows. */
+  childFee: { before: "בחיסכון לכל ילד דמי הניהול כאן הם, לפי קריאה של האתר, מה שעמיתים מעל גיל", after: "שילמו, בממוצע על כל הנכסים של המסלול. עד הגיל הזה הביטוח הלאומי משלם את דמי הניהול. זה לא המחיר שהקופה גובה. שאלה פתוחה" },
   dates: (period: string) => `החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}.`,
   depositOnce: "דמי ניהול מהפקדה, בכל המסלולים:",
   /** A company page's link to the product's tracks at every company: "קרן השתלמות בכל החברות". */
@@ -3974,16 +4000,33 @@ export const invest = {
   receipt: {
     title: "קבלה",
     added: "המדד הוסיף, לפני כל עלות",
+    /** At the head of that line's sheet: above the inflation, the deposits' line is each deposit in its own month's shekels and every other line,
+     *  this one too, is in the shekels of the horizon, so it holds what prices do. */
+    addedLead: "מה שהמדד הוסיף לפני כל עלות, בשקלים של העתיד: כולל השינוי במחירים.",
+    /** The line under the costs: what is left in the shekels of the horizon (F-06 read back), before the inflation takes it to today's money. */
+    nominalLeft: (years: number) => `בעוד ${yearsSpan(years)}, בשקלים של העתיד`,
+    /** That line's sheet title, before `nominal.about` adds which money. */
+    nominalEnd: "מה שנשאר בסוף",
+    /** The line after it: what bringing that sum to today's money takes (F-06), with the plan's inflation (A-02) under it. */
+    inflation: "אינפלציה",
+    inflationLead: "ההפרש בין הסכום שבסוף בשקלים של העתיד לאותו סכום בכסף של היום, לפי האינפלציה של התוכנית.",
+    perYear: "בשנה",
+    /** The gain's input: what was paid in at today's prices (F-106), which the deposits' line, in the shekels each is paid in, is not. */
+    paidInToday: "הפקדתם, בכסף של היום",
+    /** The tax line's sheet: what the figure holds, the surtax with it where it applies (F-43), its label staying short. */
+    taxSheet: { sale: "מס רווחי הון במכירה, כולל מס נוסף אם חל", payouts: "מס רווחי הון במכירה ומס על הדיבידנד בכל חלוקה, כולל מס נוסף אם חל, ומה שהמס ששולם בדרך היה מרוויח עד הסוף" },
+    /** A line's figure in the shekels of the horizon: its sheet's title, and the same figure in today's money among its inputs. */
+    nominal: { today: "אותו סכום בכסף של היום", about: (label: string) => `${label}, בשקלים של העתיד` },
     left: "נשאר לכם",
     /** The receipt's stub at the screen's foot: the way back up to the receipt. */
     toReceipt: "לקבלה",
-    /** Under what is left: when, in what money, and on what the dollar does (only where the figure rests on it). */
-    caption: (years: number, steady: string | null) => `בעוד ${yearsSpan(years)}, בכסף של היום${steady ? `, ${steady}` : ""}.`,
+    /** Under what is left: in what money, and on what the dollar does (only where the figure rests on it). */
+    caption: (steady: string | null) => `בכסף של היום${steady ? `, ${steady}` : ""}.`,
     /** The ticket's two side parts: what the account and the fund take, under their names. */
     accountCharges: "החשבון גובה",
     fundCharges: "הקרן גובה",
     gain: "הרווח שלכם",
-    gainNote: "מה שנשאר, פחות מה שהפקדתם",
+    gainNote: "מה שנשאר, פחות מה שהפקדתם, שניהם בכסף של היום",
     lost: "מה ירד בדרך",
     lostBar: "מה ירד בדרך, לפי מי שלקח",
     /** The bar's parts besides the tax, by who took them. */
@@ -4117,7 +4160,7 @@ export const invest = {
       /** The headline: "הסעיף הגדול: דמי משמרת, 699 ₪ מתוך 1,173 ₪ עמלות". */
       largest: "הסעיף הגדול:",
       fees: "עמלות",
-      total: "סך העמלות בכל התקופה:",
+      total: "סך העמלות בכל התקופה, בכסף של היום:",
       /** Why the tax is not among the bars, by the exact tax's name (one tax, or the capital gains tax and the tax on what a fund pays out). */
       noTax: (tax: string, two: boolean) => (two ? `${tax} לא מופיעים כאן: הם לא עמלה, והם יורדים בכל מקרה. הם נשארים בקבלה.` : `${tax} לא מופיע כאן: הוא לא עמלה, והוא יורד בכל מקרה. הוא נשאר בקבלה.`),
       /** The pair set beside the chosen one, in a sentence: {role}, {pair} (a button that picks it), {fees}, {left} and {gap} are its parts. */
@@ -4223,7 +4266,7 @@ export const invest = {
     tiles: {
       left: (years: number) => `נשאר אחרי ${countPhrase(years, { one: "שנה אחת", two: "שנתיים", many: "שנים" })}`,
       leftNote: "בכסף של היום, אחרי דמי ניהול, עמלות ומס",
-      leftAbout: "מה שנשאר בעסקה שלכם בסוף התוכנית",
+      leftAbout: "מה שנשאר בעסקה שלכם בסוף התוכנית, בכסף של היום",
       place: "המקום בהשוואה",
       placeValue: (rank: number, of: number) => `${rank} מתוך ${of}`,
       placeNote: "לפי מה שנשאר בסוף",
@@ -4367,44 +4410,13 @@ export const invest = {
 
   plan: {
     heading: "התוכנית שלכם",
-    now: "היום",
-    monthly: "בחודש",
-    years: "שנים",
-    inflation: "אינפלציה",
-    ret: "תשואה",
-    retExample: "תשואה לדוגמה",
-    retEntered: "התשואה שהזנתם",
-    siteExample: "לדוגמה של האתר",
-    all: "כל ההנחות",
-    panelTitle: "ההנחות של החישוב",
     knobs: {
       amount: "סכום היום",
       monthly: "הפקדה חודשית",
       years: "שנים",
       ret: "תשואה בשנה",
-      more: "עוד",
-      today: "היום",
-      perMonth: "בחודש",
-      oneYear: "עוד שנה",
-      retStep: "תשואה",
-      most: "הכי משפיע",
-      others: "אינפלציה",
-      /** After the inflation's figure on the plan card's line. */
-      perYear: "בשנה",
-      /** What the yearly return is (A-01, a gross return: docs/method.md), on the plan card's line under the sliders, and at the head of the assumptions. */
-      retBefore: "התשואה בשנה היא לפני אינפלציה, דמי ניהול, עמלות ומס",
-      /** At the head of the assumptions: what the return is (A-01), what the results are, and A-04 "constant real" (F-05), since the
-       *  results hold only with the deposit rising with prices. */
-      assumptions: "התשואה בשנה היא לפני אינפלציה, דמי ניהול, עמלות ומס. מה שנשאר מחושב אחרי כל אלה, בכסף של היום. ההפקדה החודשית עולה עם האינפלציה, כך שבכסף של היום היא נשארת קבועה.",
-      /** Under them: the yearly income the runs assume (P-05 `annual_income`, or the one entered), and that the receipt's capital gains tax
-       *  line holds the surtax too when that income with the real gain passes its threshold in the year of the sale (F-43, TXG-09, TXG-10) */
-      income: {
-        before: "החישוב מניח הכנסה של",
-        after: "בשנה, מלבד הרווח.",
-        surtax: "השורה ״מס רווחי הון״ כוללת גם",
-        term: "מס נוסף",
-        end: ", אם בשנת המכירה ההכנסה יחד עם הרווח עוברת את הסף שלו.",
-      },
+      /** The fifth tile, the yearly inflation the plan's figures are in today's money by (A-02). */
+      inflation: "אינפלציה",
       changes: {
         title: "מה הכי משנה את מה שיישאר לכם",
         lead: "בכל קו משתנה מספר אחד, והשאר נשארים כמו בתוכנית שלכם. גררו את הקו האנכי בגרף, או בחרו שינוי:",
@@ -4427,9 +4439,6 @@ export const invest = {
         aboutDiff: "ההפרש ממה שיישאר לפי התוכנית שלכם",
       },
     },
-    dollar: "שער הדולר",
-    dollarSource: "מחושב משערי הייחוס של הבנק המרכזי האירופי",
-    dollarMissing: "הדרך בחו״ל לא מחושבת: אין שער דולר בשערי הייחוס.",
   },
 
   header: {
@@ -4495,6 +4504,18 @@ export const invest = {
   pair: {
     paidIn: "הפקדתם",
     paidInAbout: "סך ההפקדות",
+    /** At the head of the deposits' sheet: A-04 "constant real" (F-05), which the deposits' sum in today's money rests on. */
+    paidInLead: "בהנחה שההפקדה החודשית עולה עם האינפלציה, כך שבכסף של היום היא אותו סכום בכל חודש.",
+    /** What was paid in, each deposit in the shekels of its own month (F-05): the receipt's first line. */
+    paidInNominalAbout: "סך ההפקדות, כל אחת בשקלים של החודש שבו היא מופקדת",
+    /** I_T (F-03), among the inputs of the receipt's figures in the shekels of the horizon. */
+    indexAbout: "פי כמה המחירים ישתנו עד סוף התוכנית, לפי האינפלציה של התוכנית",
+    /** I_T (F-03) as an input of a receipt figure in the shekels of the horizon. */
+    indexInput: "פי כמה המחירים משתנים עד סוף התוכנית",
+    /** The age the person entered on the device, which decides the brackets a gain falls into from 60 (F-42), among the same inputs. */
+    ageInput: "גיל",
+    /** The income a run's tax tests the surtax on (F-43), among the inputs of the figures that come out of the run. */
+    incomeInput: "הכנסה שנתית, מלבד הרווח",
     /** The bank's monthly current-account minimum among a row's inputs, with its price list as the source (F-102). */
     accountMinimum: "דמי ניהול חשבון עו״ש בחודש",
     /** An exchange rate a run is priced at (F-84), among a figure's inputs: the currency the fund is bought in, or a price-list line set in it. */
@@ -4586,8 +4607,8 @@ export const invest = {
     taxLine: "מס רווחי הון",
     /** ... and, where a bar's fund pays out, the tax on what it pays (TXS-10, TXF-10) */
     taxLinePayouts: "מס רווחי הון ומס על דיבידנד",
-    taxAbout: "מס רווחי הון במכירה, בכסף של היום",
-    taxAboutPayouts: "מס רווחי הון במכירה ומס על הדיבידנד בכל חלוקה, בכסף של היום",
+    taxAbout: "מס רווחי הון במכירה, כולל מס נוסף אם חל, בכסף של היום",
+    taxAboutPayouts: "מס רווחי הון במכירה ומס על הדיבידנד בכל חלוקה, כולל מס נוסף אם חל, ומה שהמס ששולם בדרך היה מרוויח עד הסוף, בכסף של היום",
     /** The part of the account's cost no single fee line explains (F-91), named by what it adds and where it comes from. */
     remainder: "תוספת משילוב עמלות החשבון",
     remainderAbout: "החלק הזה לא שייך לעמלה אחת: גם בלי אחת מעמלות החשבון הוא עדיין היה נגבה. שאר עמלות החשבון היו גובות אותו מהכסף שאותה עמלה כבר לא הייתה לוקחת, ומהצמיחה של הכסף הזה.",
@@ -4813,17 +4834,10 @@ export const invest = {
     israelTitle: "קרנות ישראליות",
   },
 
-  /** Under the lists, once, whether their order holds at the ends of P-02's return range ({lo}, {hi}, {at}: its bounds); the "?" beside the
-   *  return under the sliders says what the return is and, where the order changes, which order and where. */
+  /** Under the lists, once, whether their order holds at the ends of P-02's return range ({lo}, {hi}, {at}: its bounds). */
   foot: {
-    returnAbout: "התשואה שבחישוב",
-    example: "תשואה לדוגמה, לא תחזית: הסדר של הדרכים לפי עלויות, לא לפי מה שהמדד יעשה.",
-    enteredHelp: "התשואה שבחישוב היא זו שהזנתם.",
     holds: "הסדר ברשימות לא משתנה בתשואה של {lo} ושל {hi}.",
     changes: { one: "הסדר ברשימות משתנה בתשואה של {at}.", both: "הסדר ברשימות משתנה בתשואה של {lo} ושל {hi}." },
-    flips: "הסדר משתנה בתשואה שונה:",
-    flipsAt: (at: number) => `ב־\u2068${at}%\u2069`,
-    flipWhat: { options: "הסדר בין האפשרויות", brokers: (o: string) => `הסדר בין החשבונות ב${o}`, funds: (o: string) => `הסדר בין הקרנות ב${o}` },
     sharePrice: "קרנות בחו״ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף.",
   },
 
@@ -5314,7 +5328,7 @@ export const kit = {
       Receipt: "קבלה: דף עם קצה תחתון קרוע, שורות של שם וסכום עם קו נקודות ביניהם, והחלקים של שורה מוזחים מתחתיה מאחורי קו בצבע שלה: עמלות של חשבון עם הסכום שלהן, עמלות של קרן עם השיעור שלהן. קו כפול לפני הסכום הסופי, וקו מקווקו לפני מה שנובע ממנו. כרטיס (ReceiptTicket): אותן שורות לרוחב עמודה רחבה, בשלושה חלקים: החשבון בצד אחד, הסכום שנשאר באמצע, הקרן בצד השני, ושורה מתחתיהם; חריצים עגולים במקום שבו קווי האמצע פוגשים את הקצוות. בטלפון, כשהקבלה למעלה מחוץ למסך, תלוש שלה עם קצה עליון קרוע נצמד לתחתית המסך: כמה נשאר, והקשה עליו מחזירה לקבלה.",
       FactTile: "אריח קטן של עובדות על דבר אחד: שורת כותרת עם קישור בסופה, שם, ושורות של שם וערך ב־13 פיקסלים. הקצה שלו בצבע של מה שהדבר גובה, כמו השורה שלו בקבלה. שני אריחים מחוברים ב־+ עגול על התפר.",
       ChipList: "רשימה שאפשר לבחור בה, להוסיף לה, לשנות שם ולמחוק: מטרות. הפריט הנבחר מקבל עיפרון ופח; גרירה רק כשיש onMove; הפריט האחרון (add) מוסיף.",
-      KnobStrip: "מספרי התוכנית כמחוונים שנשארים על המסך, לעמוד שנועד לשחק בו: שני טורים במחשב, אחד בטלפון. מספר שלא עובר בדיקה מקבל את ההודעה שלו בקצה שורת השם, במקום כפתור האיפוס, כך שהשורה לא גדלה.",
+      KnobStrip: "מספרי התוכנית שנשארים על המסך, לעמוד שנועד לשחק בו. כמחוונים: שני טורים במחשב, אחד בטלפון, ומספר שלא עובר בדיקה מקבל את ההודעה שלו בקצה שורת השם, במקום כפתור האיפוס. כאריחים: כל מספר באריח, ולחיצה על אריח פותחת מעליו חלון עם התיבה, האיפוס (↺) והמחוון, בלי להזיז שום דבר בעמוד.",
       ChangeChart: "כל מספר בתוכנית משתנה באותו אחוז, קו לכל מספר על גרף אחד, משמאל (פחות) לימין (יותר). סמן שגוררים או בוחרים קורא את כל הקווים, והטבלה אומרת לכל מספר: לפני, אחרי, מה נשאר וההפרש.",
       PileBar: "הסיפור של הכסף לפי שנת המשיכה: עמודה לכל שנה עם מה שנשאר בידיים מעליה, השנה שנבחרה והשנה שמשווים אליה בצבע מלא, וחץ עם מה שמשתנה אם מחכים. מתחת, השנה שנבחרה כפס אחד משמאל: מה שהופקד והתשואה, ובקצה מה שדמי הניהול והמס לקחו, וסוגר מתחת למה שנשאר.",
       StairsChart: "מדרגות: מה שנשאר בסוף על הציר האנכי, סדר הצעדים משמאל לימין. הראשונה אפורה עם סימן שבר כי הציר לא מתחיל באפס; כל מדרגה צפה בגוון של מה ששונה, ואדומה כשהיא מפסידה. שנלקחה: מלאה; מוצעת: בהירה ומוקפת; על כלל פתוח: חלולה. מתחתיה טבלה באותן עמודות (מחשב) או רשימת צעדים (טלפון).",

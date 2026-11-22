@@ -569,7 +569,7 @@ function knobRange(p05: ParameterRecord, key: string): KnobRange {
   return range;
 }
 
-/** What the indices page reads besides the bundle: the presets (P-07), the ranges, P-05's inflation, PEN-36's text. */
+/** What the indices page reads besides the bundle: the presets (P-07), the ranges, PEN-36's text. */
 export function goalFormData() {
   const t = today();
   const parameters = loadParameters();
@@ -600,12 +600,11 @@ export function goalFormData() {
     form: {
       horizon: range(p07.ranges.horizon_years!),
       // the indices page's knob strip: each slider's range, in its step or, for money, its segments (`rangeScale`)
-      knobs: Object.fromEntries((["amount_now", "monthly_deposit", "horizon_years", "A-01"] as const).map((k) => [k, knobRange(p05Record, k)])) as Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", KnobRange>,
+      knobs: Object.fromEntries((["amount_now", "monthly_deposit", "horizon_years", "A-01", "A-02"] as const).map((k) => [k, knobRange(p05Record, k)])) as Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01" | "A-02", KnobRange>,
       // the spider chart's shares (F-90), in percent
       share: { ...range(p05.sliders.change_share!), start: p05.sliders.change_share!.start!.value as number },
       age: { min: p05.ranges.age!.min.value as number, max: p05.ranges.age!.max.value as number },
       pct: { min: p05.ranges.pct!.min.value as number, max: p05.ranges.pct!.max.value as number },
-      inflationStart: p05.inputs["A-02"]!.value as number,
       minMonth: t.slice(0, 7),
       payslipText: (pen36 as { text_he?: string } | null)?.text_he ?? null,
     },

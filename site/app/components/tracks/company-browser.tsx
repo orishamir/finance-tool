@@ -9,15 +9,15 @@ import { company as companyCopy, trackBrowser as t } from "../../copy";
 import { useAddressParams } from "../../lib/hooks";
 import { useAddressSort } from "../../lib/list-sort";
 import { HELP_TERMS, SORT_IDS, buildProductView, defaultSort, feeRangeOf, sortInForce, sortTracks, sortableIn, trackProductIds, tracksPhrase, type SortId, type TbData, type TbGroup } from "../../lib/track-browser";
-import { GoLink, HelpMark, SelectField, useFlip } from "../kit";
-import { Num } from "../provenance";
+import { GoLink, SelectField, cx, useFlip } from "../kit";
+import { Num, Term } from "../provenance";
 import { fmt } from "../../lib/format";
-import { CapLead, CHILD_SAVINGS, childFeeHelp, CompanySize, TrackList, type ProductCaps } from "./list";
+import { CapLead, CHILD_SAVINGS, ChildFeeNote, CompanySize, TrackList, type ProductCaps } from "./list";
 
 /** As on the tracks page: the first rows at once, the rest the moment after. */
 const FIRST_ROWS = 12;
 
-export function CompanyTracks({ data, product, defaults, caps, foot }: { data: TbData; /** The product shown, chosen by the page (the company template's side list). */ product: string; /** The tracks a new member joins. */ defaults: readonly number[]; /** The product's legal caps (its record's `fee_caps`): from md each is the caption over its fee's head. */ caps: ProductCaps | null; /** The line under the list on a phone, whose rows have no heads (the caps); told whether the line above the list
+export function CompanyTracks({ data, product, defaults, caps, foot }: { data: TbData; /** The product shown, chosen by the page (the company template's side list). */ product: string; /** The tracks a new member joins. */ defaults: readonly number[]; /** The product's legal caps (its record's `fee_caps`): from md each is the caption over its fee's head. */ caps: ProductCaps | null; /** The lines under the list on a phone, whose rows have no heads (the caps, the direct expenses); told whether the line above the list
    *  already says the deposit fee's cap, so the foot leaves it out. */ foot: (depositCapAbove: boolean) => ReactNode }) {
   const view = useMemo(() => buildProductView(data, product) ?? null, [data, product]);
   const { hydrated } = useAddressParams();
@@ -50,50 +50,39 @@ export function CompanyTracks({ data, product, defaults, caps, foot }: { data: T
   const depositFigure = oneDeposit && typeof oneDeposit.value === "number" ? oneDeposit : null;
   // with no deposit column there is no caption to hold the deposit fee's cap: the line over the list says it, at every width
   const capAbove = oneDeposit && caps?.deposit ? caps.deposit : null;
-  // a child-savings fee is not the fund's price (CS OQ9): said first behind the phone's "?", in the caution role
-  const childHelp = view.id === CHILD_SAVINGS ? childFeeHelp(caps?.from) : null;
-  // the phone's "?" holds what the heads and their "?" say from md: the fees' year, the figures' date, the direct expenses the fee column
-  // leaves out (PF-10, with its card) and what the past yield is
-  const phoneLead = [childHelp?.text, feeYear ? t.feeAverage(feeYear, view.dataset === "pensia-net") : null, t.dates(fmt.period(data.reportPeriod)), `${companyCopy.fees.direct.stated} ${companyCopy.fees.direct.after}`, t.pastNote].filter(Boolean).join(" ");
   return (
     <div className="flex flex-col gap-4">
-      {/* the product's size, 8 px under the part's heading, whose section leaves 16; on a phone, whose rows have no heads, a "?" after it
-          says the fees' year and the figures' date and opens the cards the heads' "?" open from md, caution on child savings (CS OQ9) */}
+      {/* the product's size and dates, 8 px under the part's heading, whose section leaves 16 */}
       <div className="flex flex-col gap-1 -mt-2">
         <p>
-          <CompanySize
-            count={tracksPhrase(view.tracks.length)}
-            assets={view.companies[0]?.assets ?? null}
-            mark={
-              <span className="md:hidden">
-                <HelpMark term={[HELP_TERMS.fee, HELP_TERMS.direct, HELP_TERMS.exposure, HELP_TERMS.assets]} about={t.pageHelp.about} lead={phoneLead} rules={[...(childHelp?.rules ?? []), "PF-10"]} tone={childHelp ? "caution" : undefined} />
-              </span>
-            }
-          />
+          <CompanySize count={tracksPhrase(view.tracks.length)} assets={view.companies[0]?.assets ?? null} />
         </p>
-        {/* a deposit fee every track shares has no column: said once over the table, with its cap, at every width */}
-        {(depositFigure || capAbove) && (
-          <p className="text-sm text-muted-foreground">
-            {depositFigure ? (
-              <>
-                {t.depositOnce} <Num value={depositFigure} />
-                {capAbove && (
-                  <>
-                    {"; "}
-                    <CapLead from={caps?.from} /> <Num value={capAbove} />
-                  </>
-                )}
-                .
-              </>
-            ) : (
-              capAbove && (
+        {/* the year and the date stand on a phone only: from md the fee heads and the caption over the columns say them */}
+        <p className={cx("text-sm text-muted-foreground", !depositFigure && !capAbove && "md:hidden")}>
+          <span className="md:hidden">
+            {feeYear && t.feeAverage(feeYear, view.dataset === "pensia-net")}
+            {t.dates(fmt.period(data.reportPeriod))}{" "}
+          </span>
+          {depositFigure ? (
+            <>
+              {t.depositOnce} <Num value={depositFigure} />
+              {capAbove && (
                 <>
-                  <CapLead from={caps?.from} /> <Num value={capAbove} /> {companyCopy.fees.capDeposits}.
+                  {"; "}
+                  <CapLead from={caps?.from} /> <Num value={capAbove} />
                 </>
-              )
-            )}
-          </p>
-        )}
+              )}
+              .
+            </>
+          ) : (
+            capAbove && (
+              <>
+                <CapLead from={caps?.from} /> <Num value={capAbove} /> {companyCopy.fees.capDeposits}.
+              </>
+            )
+          )}
+        </p>
+        {view.id === CHILD_SAVINGS && <ChildFeeNote age={caps?.from} />}
       </div>
       <SelectField
         className="md:hidden"
@@ -103,11 +92,17 @@ export function CompanyTracks({ data, product, defaults, caps, foot }: { data: T
         value={sort.id}
         onChange={(v) => v && setSort({ id: v as SortId, dir: 1 })}
       />
+      {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
+      <p className="md:hidden text-sm text-muted-foreground">
+        {t.help.phoneLead} <Term id={HELP_TERMS.fee}>{t.help.fee}</Term> · <Term id={HELP_TERMS.exposure}>{t.help.exposure}</Term> · <Term id={HELP_TERMS.assets}>{t.help.assets}</Term>
+      </p>
       <div ref={list} className="scroll-mt-14 lg:scroll-mt-16 flex flex-col gap-3">
-        <TrackList view={view} groups={groups} by="company" sort={sort} sortable={sortable} onSort={pressHead} feeYear={feeYear} period={data.reportPeriod} limit={limit} fixed defaults={defaults} compact={oneDeposit ? "no-deposit" : "with-deposit"} caps={caps} childAge={view.id === CHILD_SAVINGS ? caps?.from : null} />
-        {/* on a phone, whose rows have no heads, under the list: the fee's caps; from md they are the captions over the fee heads */}
+        <TrackList view={view} groups={groups} by="company" sort={sort} sortable={sortable} onSort={pressHead} feeYear={feeYear} period={data.reportPeriod} limit={limit} fixed defaults={defaults} compact={oneDeposit ? "no-deposit" : "with-deposit"} caps={caps} />
+        {/* on a phone, whose rows have no heads, under the list: the fee's caps and the direct expenses, then what the yield is; from md the
+            caps are the captions over the fee heads, the direct expenses and the yield's caution the heads' "?" */}
         <div className="md:hidden flex flex-col gap-3">
           {foot(!!capAbove)}
+          <p className="text-xs text-muted-foreground">{t.pastNote}</p>
         </div>
       </div>
       {!view.noPage && (

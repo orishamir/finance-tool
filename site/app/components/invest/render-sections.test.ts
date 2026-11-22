@@ -33,7 +33,7 @@ describe("the index page's sections render", () => {
       createElement(ReceiptAndFees, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true, onPick: () => undefined }),
       createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null, group: null }),
       createElement(ChosenPair, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true }),
-      createElement(PlanCard, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true, dollar: true, inflation: plan.values.inflation })));
+      createElement(PlanCard, { knobs: null })));
     expect(out).toContain("הפקדתם");
     // a dollar index with funds of both kinds: the hedged ones stand under their own heading, each with its range across the dollar (F-94)
     expect(out).toContain(invest.kinds.name.hedged);
@@ -46,9 +46,9 @@ describe("the index page's sections render", () => {
     expect(out).toContain(invest.shownPair(false).row);
     expect(out).toContain(invest.before.fees.total);
     expect(out).toContain("פסגות");
-    expect(out).toContain("שער הדולר");
-    expect(out).toContain("אינפלציה");
-    expect(out).toContain("לדוגמה של האתר");
+    expect(out).toContain(invest.plan.heading);
+    // the receipt's inflation line, in what the reader sees: its label, then what it takes
+    expect(shown(out).replace(/[\u2066-\u2069]/g, "")).toMatch(new RegExp(`${invest.receipt.inflation}−[\\d,]+ ₪`));
   });
   it("an Israeli index keeps the pair beside the cheapest one (no kinds)", () => {
     const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan: { ...plan, returnFromParameter: true } });

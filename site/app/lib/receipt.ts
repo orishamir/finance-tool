@@ -5,6 +5,7 @@
 import { fmt } from "./format";
 import { wholeParts } from "./whole-parts";
 import type { PairCosts } from "./invest";
+import type { SiteValue } from "./value";
 
 export interface ReceiptAmounts {
   paidIn: number;
@@ -26,16 +27,32 @@ export interface ReceiptAmounts {
 }
 
 export function receiptAmounts(pc: PairCosts): ReceiptAmounts {
-  const paidIn = Math.round(pc.paidIn.value as number);
-  const base = Math.round(pc.base);
-  const left = Math.round(pc.left.value as number);
-  const account = Math.round(pc.accountFees);
-  const waiting = Math.round(pc.waitingN);
+  return amountsAt(pc, 1, pc.paidIn.value as number);
+}
+
+/**
+ * The same lines in the shekels of the horizon (F-06 read back: each F-91 figure times `I_T`, `pc.index`), what was paid in as the run paid
+ * it (`pc.paidInNominal`, F-05), and what bringing them to today's money takes: `inflation`, the nominal end less the real one, both whole,
+ * so paid in + added − tax − account − fund − waiting = left, and left − inflation = the receipt's real `left` (`receiptAmounts`).
+ */
+export function receiptNominal(pc: PairCosts): ReceiptAmounts & { inflation: number } {
+  const n = amountsAt(pc, pc.index.value as number, pc.paidInNominal.value as number);
+  return { ...n, inflation: n.left - Math.round(pc.left.value as number) };
+}
+
+/** The receipt's whole shekels with every figure at the horizon times `scale` (1: today's money) and what was paid in as given. */
+function amountsAt(pc: PairCosts, scale: number, paidInGiven: number): ReceiptAmounts {
+  const of = (v: SiteValue) => (typeof v.value === "number" ? v.value * scale : 0);
+  const paidIn = Math.round(paidInGiven);
+  const base = Math.round(pc.base * scale);
+  const left = Math.round((pc.left.value as number) * scale);
+  const account = Math.round(pc.accountFees * scale);
+  const waiting = Math.round(pc.waitingN * scale);
   // the account's own lines: a deal's own fees where it is priced by a deal (F-128), else the tariff's lines
   const own = pc.dealLines ?? pc.account;
-  const lines = wholeParts([...own.map((l) => (typeof l.cost.value === "number" ? l.cost.value : 0)), pc.interaction], account);
+  const lines = wholeParts([...own.map((l) => of(l.cost)), pc.interaction * scale], account);
   const lost = base - left - waiting;
-  const [fund, tax] = wholeParts([typeof pc.fund.value === "number" ? pc.fund.value : 0, typeof pc.tax.value === "number" ? pc.tax.value : 0], lost - account);
+  const [fund, tax] = wholeParts([of(pc.fund), of(pc.tax)], lost - account);
   return { paidIn, added: base - paidIn, tax: tax!, account, accountLines: lines.slice(0, -1), remainder: lines.at(-1)!, fund: fund!, waiting, left, gain: left - paidIn, lost };
 }
 
