@@ -19,7 +19,7 @@ import { Num, StateTag } from "../provenance";
 import { useState } from "react";
 import { Card, DocLink, FactTile, GroupPriceFold, HelpMark, KeyValue, LabelChip, LabelRow, MixedName, ProductIdLink, SourcedTag, Tag, TileJoin, When, gershayim, type GroupChoice } from "../kit";
 import { brands } from "../../copy";
-import { DealCardActions, DealRows } from "./deal-account";
+import { DealEditMark, DealRows } from "./deal-account";
 import { isDealProviderId } from "../../lib/deal-account/bundle";
 import { OptionTag } from "./parts";
 import { allFunds, asideWords, crownedHouse, GapCell, gapNoteOf, gapStateOf, inTieSet, labelsOf, mayaHrefOf, pairVerdict, phoneOf, pickHalf, priced, unitsLine, type OnPick, type Pick } from "./pair";
@@ -92,14 +92,16 @@ export function ChosenPair({ view, bundle, plan, pick, chosen, onPick, group = n
                   <SourcedTag value={phone}>{c.pair.phoneTag}</SourcedTag> {c.pair.phoneLine(house.short)}
                 </p>
               )}
-              {house.custom && isDealProviderId(house.id) && <DealCardActions id={house.id} />}
             </>
           }
           name={
             <span className="flex items-baseline justify-between gap-2">
-              {/* an account of the person's own (a deal, or one they typed) in the entered ink, as its row in the list; a deal's edit, under it, carries the pencil */}
-              <span className={house.custom ? "text-entered" : undefined}>
-                <ProviderLink p={house} />
+              {/* an account of the person's own (a deal, or one they typed) in the entered ink, and beside a deal's name the pencil that edits it, as its row in the list */}
+              <span className="flex min-w-0 items-center gap-1">
+                <span className={house.custom ? "text-entered" : undefined}>
+                  <ProviderLink p={house} />
+                </span>
+                {house.custom && <DealEditMark id={house.id} />}
               </span>
               {house.id === view.yourBroker && <span className="shrink-0 text-sm font-normal text-entered">{c.pair.yoursTag}</span>}
               {crowned && <span className="shrink-0 text-sm font-medium text-primary">{c.pair.cheapestTag}</span>}

@@ -4164,12 +4164,10 @@ export const invest = {
 
   /** A securities-account deal the person saved, as an account of the lists, and the popup that edits it on the plan (F-128). */
   dealAccount: {
-    /** The tag beside the deal's name in the receipt; the lists and the pair's card say it by the name's entered ink and the pencil. */
-    tag: "שלכם",
     add: "להזין תנאים שקיבלתם",
     /** The link on a house's own page: the indices page opens with a new deal filled from that house's price list. */
     fromHouse: (house: string) => `להזין תנאים שקיבלתם, על בסיס ${house}`,
-    /** The pencil beside the deal's name in the lists (its name for the browser), and the pair card's button. */
+    /** The pencil beside the deal's name in the lists and the pair card: its name for the browser. */
     edit: "לערוך את העסקה",
     /** Where a deleted deal's row stood, before its name. */
     deleted: "נמחקה מהמכשיר: ",

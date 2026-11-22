@@ -15,7 +15,7 @@ import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { receiptAmounts, sharesOf, takenWords } from "../../lib/receipt";
 import { differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { FEE_WORDS_HELP, HelpMark, LeftOutLine, LongestCase, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, ShareBar, Tag, TicketPart, cx } from "../kit";
+import { FEE_WORDS_HELP, HelpMark, LeftOutLine, LongestCase, MixedName, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, ShareBar, TicketPart, cx } from "../kit";
 import { isDealProviderId } from "../../lib/deal-account/bundle";
 import { isGroupProvider } from "../../lib/group-pick";
 import { leftOutOf } from "../../lib/left-out";
@@ -211,9 +211,8 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
         top={top}
         start={
           <TicketPart label={c.receipt.parts.account} swatch="bg-chart-by-account" name={<>
-            <MixedName>{short}</MixedName>
-            {/* the person's own deal says so beside its name, as in the lists and the pair card (A) */}
-            {isDealProviderId(pick.house) && <Tag tone="entered" className="ms-2 align-middle">{c.dealAccount.tag}</Tag>}
+            {/* the person's own deal in the entered ink, as in the lists and the pair card */}
+            <MixedName className={isDealProviderId(pick.house) ? "text-entered" : undefined}>{short}</MixedName>
           </>}>
             <ReceiptLine size="sm" edge="border-chart-by-account" label={c.receipt.accountCharges} value={accountValue} parts={accountParts} />
             {waitingLine}
@@ -255,8 +254,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
           edge="border-chart-by-account"
           label={
             <>
-              {c.pair.who.account} <MixedName>{short}</MixedName>
-              {isDealProviderId(pick.house) && <Tag tone="entered" className="ms-1.5">{c.dealAccount.tag}</Tag>}
+              {c.pair.who.account} <MixedName className={isDealProviderId(pick.house) ? "text-entered" : undefined}>{short}</MixedName>
             </>
           }
           value={accountValue}

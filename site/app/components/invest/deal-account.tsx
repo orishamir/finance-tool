@@ -648,7 +648,7 @@ function DealHead({ deal, headId, isSaved, writable, onName, onDelete }: { deal:
 }
 
 /**
- * Beside a deal's name in the lists, where a house's row has its quiet mark: the pencil that opens the deal in the popup, on the fee the row
+ * Beside a deal's name in the lists, where a house's row has its quiet mark, and in the pair card: the pencil that opens the deal in the popup, on the fee the row
  * waits for where it waits for one (`missing`, D1). With the name's entered ink it says the row is the person's own. `complete`: on a row
  * the plan cannot price, the button's words say it completes the deal. Not a kit piece: the kit's `Button`, wired to this page's popup.
  */
@@ -740,28 +740,6 @@ export function DealRows({ id, house }: { id: string; house: (houseId: string) =
         </KeyValue>
       )}
     </>
-  );
-}
-
-/**
- * The pair card's two ways on from the person's deal (H), side by side where the card has the room: edit it here (the popup) and open it on
- * /deal. Not a kit piece: the kit's `Button` and `TextLink`, wired to this page's popup.
- */
-export function DealCardActions({ id }: { id: string }) {
-  const api = useDealAccounts();
-  const deal = api?.dealOf(id);
-  if (!api || !deal) return null;
-  return (
-    <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-      <Button variant="outline" gap="sm" className="px-3" onClick={() => api.open({ dealId: deal.id })}>
-        <Pencil size={16} aria-hidden />
-        {w.edit}
-      </Button>
-      {/* /deal opens on the deal last on screen: this one */}
-      <TextLink to={DEAL_PATH} look="line" onClick={() => rememberOpen(deal.id)}>
-        {w.head.openDeal} ↗
-      </TextLink>
-    </div>
   );
 }
 
