@@ -2340,7 +2340,8 @@ export const feeDeal = {
   /** The reading's section under the columns (method §10.6, `readingOf`). */
   reading: "קוראים את העסקה",
   /** In the reading's place where reading the deal failed: the deal above still stands, and a change to it reads it again. */
-  readFailed: { title: "האתר לא הצליח לקרוא את העסקה", line: "אפשר לשנות את העסקה למעלה, והאתר יקרא אותה שוב." },
+  /** The reading's notice where it could not be read; `reset` clears the unit's price typed beside a chart, which may be what broke it. */
+  readFailed: { title: "האתר לא הצליח לקרוא את העסקה", line: "אפשר לשנות את העסקה למעלה, והאתר יקרא אותה שוב.", reset: "למחוק את מחיר היחידה" },
   read: {
     /** The periods of F-110: the timeline's stops and its headline. */
     periods: {
@@ -2447,8 +2448,6 @@ export const feeDeal = {
       fallsSaved: "ככל שמה שנצבר גדל, שנה עולה פחות באחוזים. ",
       /** The shares band by band above the crossover: "מעל 25,446 ₪ האחוזים קובעים: 0.896% בשנה עד 100,000 ₪, 0.7% עד 500,000 ₪ ו־0.5% מעל זה, כל אחד על כל הסכום." */
       bands: { lead: "מעל ", decides: " האחוזים קובעים: ", perYear: " בשנה", upTo: " עד ", sep: ", ", and: " ו־", above: " מעל זה", whole: ", כל אחד על כל הסכום", end: "." },
-      /** A fee offset against an action's fee: the chart shows a year without that action. */
-      offset: { lead: "הסכום הזה מתקזז מול ", month: " של אותו חודש, ולכן הגרף מראה שנה בלי ", end: "." },
       x: "הסכום שמוחזק (₪)",
       xSaved: "הסכום שנצבר (₪)",
       /** The axis's name on a phone. */

@@ -11,6 +11,7 @@ import { feesData } from "../../lib/fees.server";
 import { readDealFor, type DealRead } from "../../lib/fee-deal/deal-read";
 import { typed, type FeeDeal } from "../../lib/fee-deal/model";
 import { DealReading } from "./reading";
+import { ToolBoundary } from "../tool-boundary";
 
 const data = feesData();
 const TODAY = "2026-11-12";
@@ -36,7 +37,13 @@ function drawn(el: ReactElement): string {
 }
 
 const deal: FeeDeal = { id: "deal-a", name: "", kind: "brokerage-account", fees: [{ id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] }] };
-const reading = (read: DealRead) => DealReading({ input: { read, unitPrice: null, cap: null, picks: null }, saved: false, fx: data.fx });
+const reading = (read: DealRead, unitPrice: number | null = null, onUnitPrice?: (n: number | null) => void) =>
+  DealReading({ input: { read, unitPrice, cap: null, picks: null }, saved: false, fx: data.fx, ...(onUnitPrice ? { onUnitPrice } : {}) });
+/** A read with no periods, which breaks what the reading reads. */
+const broken = (): DealRead => {
+  const read = readDealFor(deal, data.kinds, TODAY);
+  return { ...read, reading: { ...read.reading, periods: undefined } } as unknown as DealRead;
+};
 
 describe("a reading that throws", () => {
   it("says the deal could not be read, in the reading's place, and throws nothing past it", () => {
@@ -46,6 +53,18 @@ describe("a reading that throws", () => {
     const shown = drawn(reading(broken));
     expect(shown).toContain(feeDeal.readFailed.title);
     expect(shown).toContain(feeDeal.readFailed.line);
+  });
+  it("offers to clear the unit's price typed beside a chart, which stands inside the reading it replaces, and nothing where none is typed", () => {
+    const cleared: (number | null)[] = [];
+    const el = reading(broken(), 50, (n) => cleared.push(n));
+    expect(drawn(el)).toContain(feeDeal.readFailed.reset);
+    (el.props as { onReset?: () => void }).onReset?.();
+    expect(cleared).toEqual([null]);
+    expect(drawn(reading(broken(), null, (n) => cleared.push(n)))).not.toContain(feeDeal.readFailed.reset);
+  });
+  it("is read again once the deal or the unit's price changes: a new key clears the failure, the same key keeps it", () => {
+    expect(ToolBoundary.getDerivedStateFromProps({ children: null, resetKey: "b" }, { failed: true, key: "a" })).toEqual({ failed: false, key: "b" });
+    expect(ToolBoundary.getDerivedStateFromProps({ children: null, resetKey: "a" }, { failed: true, key: "a" })).toBeNull();
   });
   it("is not said where the reading reads", () => {
     const shown = drawn(reading(readDealFor(deal, data.kinds, TODAY)));
