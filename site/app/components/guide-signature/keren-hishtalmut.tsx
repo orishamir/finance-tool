@@ -12,7 +12,7 @@ import { studyRange, studyStanding, studyYears, taxedAfterLock, waitFigures, typ
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, type SiteValue } from "../../lib/value";
-import { aboveZeroCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
+import { amountCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
 import { Num, ReadingTag, Ruled, Term } from "../provenance";
 import { text } from "./g2-parts";
 import { figure, Gap, inputSite, notFeeFlag, rulesOfBundle, rulesOfRuns, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
@@ -427,7 +427,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       {/* the first field takes a phone's whole row, so five fields and four take the same rows */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
         <div className="col-span-2 lg:col-span-1">
-          <NumberField label={copy.hishtalmut.income[employment]!} unit="nis" value={income} start={p05Number(base.p05, "annual_income") / 12} isEntered={incomePick !== null} validate={aboveZeroCheck} onCommit={setIncomePick} onReset={() => setIncomePick(null)} disabled={!inputs.ready} />
+          <NumberField label={copy.hishtalmut.income[employment]!} unit="nis" value={income} start={p05Number(base.p05, "annual_income") / 12} isEntered={incomePick !== null} validate={amountCheck(inputs.p05.amountMax, { aboveZero: true })} onCommit={setIncomePick} onReset={() => setIncomePick(null)} disabled={!inputs.ready} />
         </div>
         {isEmployee ? (
           <>

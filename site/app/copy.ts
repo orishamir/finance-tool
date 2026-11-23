@@ -56,7 +56,7 @@ export const numbers = {
    * figures short, and the track pages' managed money from a thousand million.
    */
   billion: "מיליארד",
-  /** A chart tick's short form (lib/format.ts `compactNis`): `200 אלף ₪`, `1.5 מיליון ₪`. */
+  /** A chart tick's short form (lib/format.ts `compactNis`): `200 אלף ₪`, `1.5 מיליון ₪`, and from a billion `billion`'s word (`93.5 מיליארד ₪`). */
   compact: { thousand: "אלף", million: "מיליון" },
   /** A count of years and of months in words (lib/format.ts `fmt.years`, `fmt.months`): "שנה", "שנתיים", "5 שנים". */
   yearWords: { one: "שנה", two: "שנתיים", many: "שנים" },
@@ -347,7 +347,21 @@ export const values = {
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
   agePlaceholder: "למשל 30", // from the approved mockup
-  errors: { nan: "הזינו מספר.", whole: "הזינו סכום בשקלים שלמים.", negative: "הסכום לא יכול להיות שלילי.", positive: "הזינו סכום גדול מאפס.", years: ["הזינו מספר שנים בין", "ל־"], age: ["הזינו גיל בין", "ל־"], pct: ["הזינו אחוז בין", "ל־"] },
+  errors: {
+    nan: "הזינו מספר.",
+    whole: "הזינו סכום בשקלים שלמים.",
+    // a point and three digits in a whole amount ("1.000"): a thousands separator or a decimal point, it cannot be told which
+    dotThousands: "לא ברור אם הנקודה מפרידה אלפים. הזינו את הסכום בלי נקודה.",
+    negative: "הסכום לא יכול להיות שלילי.",
+    positive: "הזינו סכום גדול מאפס.",
+    /** Before the largest amount a field takes (P-05 `ranges.amount`): "הזינו סכום עד 1,000,000,000 ₪." */
+    tooLarge: "הזינו סכום עד",
+    years: ["הזינו מספר שנים בין", "ל־"],
+    yearsWhole: "הזינו מספר שלם של שנים.",
+    age: ["הזינו גיל בין", "ל־"],
+    ageWhole: "הזינו גיל בשנים שלמות.",
+    pct: ["הזינו אחוז בין", "ל־"],
+  },
   loading: "טוען…",
 } as const;
 
@@ -552,6 +566,8 @@ export const parametersPage = {
     "P-05.ranges.age.max": "גיל מותר בשדה: מקסימום",
     "P-05.ranges.pct.min": "אחוז שנתי מותר בשדה: מינימום",
     "P-05.ranges.pct.max": "אחוז שנתי מותר בשדה: מקסימום",
+    "P-05.ranges.amount.min": "סכום מותר בשדה: מינימום",
+    "P-05.ranges.amount.max": "סכום מותר בשדה: מקסימום",
     "P-11.steps.0": "סכום 1",
     "P-11.steps.1": "סכום 2",
     "P-11.steps.2": "סכום 3",

@@ -188,6 +188,13 @@ export function p05Number(p05: ParameterRecord, key: P05Input): number {
   return (p05 as unknown as { inputs: Record<P05Input, ValueObject> }).inputs[key].value as number;
 }
 
+/** The largest amount of money a whole-shekel field takes (P-05 `ranges.amount`, its `max`): a bound against typing mistakes, not a rule. */
+export function p05AmountMax(p05: ParameterRecord): number {
+  const r = p05Range(p05, "ranges", "amount");
+  if (!r) throw new Error("data/parameters: P-05 holds no ranges.amount, the largest amount a field takes");
+  return r.max;
+}
+
 /**
  * P-05's page controls: slider ranges (design-system Q6) and the input ranges. A money slider has `segments` instead of a `step` (its last
  * runs to `max`; here every segment carries its `to`), for the kit's `rangeScale`. `values` holds the range's own value objects (its ends,

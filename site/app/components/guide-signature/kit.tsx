@@ -4,11 +4,11 @@
 import type { ReactNode } from "react";
 import type { P05Input, RunResult } from "@finance-tool/engine";
 import { computedInputs as ci, guideBlocks, guideSignature as copy } from "../../copy";
-import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
+import { p05AmountMax, p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
 import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, type SiteValue, type Strength } from "../../lib/value";
-import { GapNote, NumberField, RangeField, nonNegativeCheck, rangeScale, yearsCheck } from "../kit";
+import { GapNote, NumberField, RangeField, amountCheck, rangeScale, yearsCheck } from "../kit";
 import { IdText, Num } from "../provenance";
 
 // ---------------------------------------------------------------- the guide inputs a visual starts from
@@ -25,7 +25,8 @@ export interface SigInputs {
   setAmount: (n: number | null) => void;
   setMonthly: (n: number | null) => void;
   setYears: (n: number | null) => void;
-  p05: { amount: number; monthly: number; years: number };
+  /** P-05's starting values, and the largest amount a field takes (`ranges.amount`). */
+  p05: { amount: number; monthly: number; years: number; amountMax: number };
 }
 
 /**
@@ -34,7 +35,7 @@ export interface SigInputs {
  */
 export function useSigInputs(bundle: Bundle): SigInputs {
   const { state, ready, setEntered } = useInputs();
-  const p05 = { amount: p05Number(bundle.p05, "amount_now"), monthly: p05Number(bundle.p05, "monthly_deposit"), years: p05Number(bundle.p05, "horizon_years") };
+  const p05 = { amount: p05Number(bundle.p05, "amount_now"), monthly: p05Number(bundle.p05, "monthly_deposit"), years: p05Number(bundle.p05, "horizon_years"), amountMax: p05AmountMax(bundle.p05) };
   const pick = (entered: number | undefined, base: number): [number, InputSource] => (ready && entered !== undefined ? [entered, "guide"] : [base, "p05"]);
   const [amount, sa] = pick(state.entered.amount_now, p05.amount);
   const [monthly, sm] = pick(state.entered.monthly_deposit, p05.monthly);
@@ -48,11 +49,11 @@ export const yearsRange = (bundle: Bundle) => p05Range(bundle.p05, "sliders", "h
 
 /**
  * The guide's amount today (`amount`) or monthly deposit (`monthly`) as a visual's field: it shows and writes the guide's own field, the
- * one the timeline reads, starts at P-05's and takes no amount below zero.
+ * one the timeline reads, starts at P-05's and takes no amount below zero or above the largest (P-05 `ranges.amount`).
  */
 export function SigAmountField({ inputs, field, label }: { inputs: SigInputs; field: "amount" | "monthly"; label: ReactNode }) {
   const set = field === "amount" ? inputs.setAmount : inputs.setMonthly;
-  return <NumberField label={label} unit="nis" value={inputs[field]} start={inputs.p05[field]} isEntered={inputs.source[field] === "guide"} validate={nonNegativeCheck} onCommit={set} onReset={() => set(null)} disabled={!inputs.ready} />;
+  return <NumberField label={label} unit="nis" value={inputs[field]} start={inputs.p05[field]} isEntered={inputs.source[field] === "guide"} validate={amountCheck(inputs.p05.amountMax)} onCommit={set} onReset={() => set(null)} disabled={!inputs.ready} />;
 }
 
 /** The guide's years as a visual's field with its slider, on P-05's range: `value` is the years the visual runs on, the guide's own held to its range. */

@@ -93,7 +93,7 @@ describe("the deposits page", () => {
     const rows = rowsOf([early, late]);
     expect(rows).toHaveLength(1);
     expect(rowSplit(rows[0]!).exits).toBe(true);
-    const data: DbData = { today: "2026-11-12", read: "2026-11-12", banks: [{ id: "b1", name: "בנק" }], offers: [early, late], amounts: [], start: 10000 };
+    const data: DbData = { today: "2026-11-12", read: "2026-11-12", banks: [{ id: "b1", name: "בנק" }], offers: [early, late], amounts: [], start: 10000, amountMax: 1_000_000_000 };
     const names = sheetNames(data);
     expect(names.get("a")).toContain("כל 3 חודשים");
     expect(names.get("b")).toContain("אחרי 6 חודשים, ואז כל 3 חודשים");
