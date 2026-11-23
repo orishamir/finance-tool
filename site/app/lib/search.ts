@@ -2,7 +2,7 @@
 // Pure functions, no I/O: the index is a list of entries built at build time (routes/search-index.ts), the second file
 // (routes/search-texts.ts) holds the raw texts of rules, terms and parameters and only re-ranks and answers questions.
 import { aliasRows, sectionTopicWords, wordFamilies, type GuideTopic } from "./search-aliases";
-import { parseNumber } from "./format";
+import { gershayim, parseNumber } from "./format";
 
 // ------------------------------------------------------------------------------------------------ normalisation
 
@@ -153,6 +153,14 @@ export interface SearchHit {
 
 /** Which kind comes first when two entries match equally well: pages that explain, then rules and parameters, then names, then the catalogue. */
 export const kindRank: Record<SearchKind, number> = { section: 0, guide: 0, compare: 0, term: 1, rule: 2, companyRule: 2.5, parameter: 3, document: 4, notcovered: 5, company: 6, product: 7, bank: 8, track: 9 };
+
+/**
+ * An entry as the search shows it: the words a row prints (its name, its line, a figure's name) with an abbreviation's straight quote
+ * written as the gershayim (docs/copy.md 10.4), as the pages write the data's text. Its key and its matching words stay as they are.
+ */
+export function shownEntry(e: SearchEntry): SearchEntry {
+  return { ...e, name: gershayim(e.name), line: gershayim(e.line), ...(e.figs ? { figs: e.figs.map((f) => (f.f ? { ...f, f: gershayim(f.f) } : f)) } : {}) };
+}
 
 /**
  * The numeric figures of a rule for the index: the `value` of every value object under `figures` (bracket tables and

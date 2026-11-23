@@ -12,10 +12,10 @@ import { dealOfAddress, packDeal, unpackDeal } from "./link";
 import { monthKey, NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num, type SlimFee, type Stage } from "./model";
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./deal-read";
-import { readingOf } from "./reading";
+import { pickLine, readingOf } from "./reading";
 import { ACCOUNT_CAP_RULES, accountCapOf, type ActionView, type HeldPanelView, type HeldView } from "./charts";
 import { dataBar, dealFromTemplate, dealFromTrack, dealName, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions, withLaterFills, withLaterFillsAll } from "./templates";
-import { addFee, updateFee } from "./edits/deal";
+import { addFee, setPick, updateFee } from "./edits/deal";
 import { withFigure } from "./edits/price";
 import { editPrice } from "./edits/stage";
 import { offerFor } from "./offers/offer";
@@ -179,6 +179,18 @@ describe("templates", () => {
     for (const t of data.tracks) {
       const d = dealFromTrack(t.id, data, TODAY);
       if (d) expect(readDeal(JSON.parse(JSON.stringify(d))), `track ${t.id}`).toEqual(d);
+    }
+  });
+  it("reads every house's deal for each value of each thing its reading offers to pick, with and without a unit's price", () => {
+    for (const h of data.houses) {
+      const d = fillDeal(newDeal("brokerage-account"), `house:${h.id}`, data, TODAY);
+      if (!d) throw new Error(`no template: ${h.id}`);
+      for (const t of pickLine(read(d))?.things ?? [])
+        for (const o of t.options)
+          for (const unit of [null, 50]) {
+            const picked = setPick(d, t.by, o.is);
+            expect(() => readingOf(read(picked), data.fx, unit), `${h.id} ${t.by} ${o.is} ${unit}`).not.toThrow();
+          }
     }
   });
   it("fills a securities account from a house, keeping each fee's place and naming the house", () => {

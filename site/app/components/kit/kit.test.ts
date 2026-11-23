@@ -244,16 +244,18 @@ describe("the field checks say one message each", () => {
     expect(nonNegativeCheck(0)).toBeNull();
     expect(nonNegativeCheck(-1)).toBe("הסכום לא יכול להיות שלילי.");
   });
-  it("yearsCheck refuses a number outside its range, and a part of a year, with the range in its words", () => {
+  it("yearsCheck refuses a number outside its range with the range in its words, and a part of a year as not whole", () => {
     const check = yearsCheck({ min: 1, max: 40 });
     expect(check(1)).toBeNull();
     expect(check(40)).toBeNull();
-    for (const n of [0, 41, 2.5]) expect(check(n)).toBe("הזינו מספר שנים בין 1 ל־40.");
+    for (const n of [0, 41]) expect(check(n)).toBe("הזינו מספר שנים בין 1 ל־40.");
+    expect(check(2.5)).toBe("הזינו מספר שלם של שנים.");
   });
   it("ageCheck is the same test in the age's words, and aboveZeroCheck refuses zero and below", () => {
     const check = ageCheck({ min: 18, max: 67 });
     expect(check(30)).toBeNull();
-    for (const n of [17, 68, 30.5]) expect(check(n)).toBe("הזינו גיל בין 18 ל־67.");
+    for (const n of [17, 68]) expect(check(n)).toBe("הזינו גיל בין 18 ל־67.");
+    expect(check(30.5)).toBe("הזינו גיל בשנים שלמות.");
     expect(aboveZeroCheck(1)).toBeNull();
     for (const n of [0, -1]) expect(aboveZeroCheck(n)).toBe("הזינו סכום גדול מאפס.");
   });

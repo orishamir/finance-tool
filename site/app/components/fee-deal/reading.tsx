@@ -11,7 +11,7 @@ import type { SiteValue } from "../../lib/value";
 import { countPhrase, fmt, formatValue, joinLead } from "../../lib/format";
 import type { MonthKey } from "../../lib/fee-deal/model";
 import type { FeeRef } from "../../lib/fee-deal/deal-read";
-import type { LawRow, PeriodCard, PeriodRow, Reading, StatedPart } from "../../lib/fee-deal/reading";
+import { readingOf, type LawRow, type PeriodCard, type PeriodRow, type Reading, type ReadingInput, type StatedPart } from "../../lib/fee-deal/reading";
 import { roundAmount, settleRange, type ActionReading, type ActionTab, type ActionView, type AmountRange, type ChartFee, type CurvePoint, type HeldReading, type HeldView, type Lane, type LanePart, type OneView, type TimelinePeriod, type UndrawnView, type UnpricedView } from "../../lib/fee-deal/charts";
 import { lawHead, periodsHead, type PeriodsHead } from "../../lib/fee-deal/reading-heads";
 import { AmountLanes, Card, EmptyState, HelpMark, NumberField, PanelHead, PERIOD_WIDE, PeriodTrack, periodColumns, RangeFields, SegmentedControl, ShareBar, ShareChart, ShareStack, Swatch, Tag, TypedPlain, When, cx, fill, shareAt, shareTicks, type AmountLane, type AmountLanePart, type ShareMark } from "../kit";
@@ -22,6 +22,7 @@ import { LeftOutList, LeftOutNotes, type NoneRead } from "./left-out";
 import { CapRules, Fig, LawBlock, PriceWords, feeColour, feeName, formOf, refName, sumDisplay } from "./words";
 import { sumUnit } from "../../lib/fee-deal/values";
 import { assertNever } from "@finance-tool/schema";
+import { ToolBoundary } from "../tool-boundary";
 
 const w = copy.read;
 
@@ -1059,6 +1060,25 @@ function LawCard({ reading, saved }: { reading: Reading; saved: boolean }) {
  * "what has built up". `none`: why no fee of the deal is read (none priced, or every priced fee switched off); where none is, only
  * that list stands, saying why.
  */
+type CardsProps = Parameters<typeof ReadingCards>[0];
+
+/**
+ * /deal's reading, read here (`readingOf`) inside an error boundary of its own: a reading that throws says the deal could not be read, in
+ * its place, and leaves the editor standing, so the deal can be changed; a change to the deal or to the unit's price reads it again.
+ */
+export function DealReading({ input, ...cards }: { input: ReadingInput } & Omit<CardsProps, "reading">) {
+  return (
+    <ToolBoundary resetKey={JSON.stringify([input.read.deal, input.unitPrice])} words={copy.readFailed}>
+      <ReadOf input={input} {...cards} />
+    </ToolBoundary>
+  );
+}
+
+function ReadOf({ input, fx, ...cards }: { input: ReadingInput } & Omit<CardsProps, "reading">) {
+  const reading = useMemo(() => ({ ...readingOf(input.read, fx, input.unitPrice, input.cap), picks: input.picks }), [input, fx]);
+  return <ReadingCards reading={reading} fx={fx} {...cards} />;
+}
+
 export function ReadingCards({ reading, saved, fx, left, foreign = false, none = null, unitPrice = null, onUnitPrice = () => {} }: {
   reading: Reading;
   saved: boolean;

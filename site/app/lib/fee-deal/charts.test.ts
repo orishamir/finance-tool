@@ -178,3 +178,54 @@ describe("what changes and when", () => {
     expect(at("non-bank")).toEqual([]);
   });
 });
+
+describe("a deal read whole, whatever the fees an action or a holding prices are charged in", () => {
+  // a dollar at 3.70 ₪: the ECB's rates per euro, as a fixed snapshot
+  if (!data.fx) throw new Error("the site's exchange rates");
+  const fx = { ...data.fx, perEur: { ILS: 3.7, USD: 1 } };
+  const us = (fees: FeeDeal["fees"]): FeeDeal => ({ id: "deal-x", name: "", kind: "brokerage-account", readFor: [{ by: "what", is: "us" }], fees });
+  const trade = (rate: number): FeeDeal["fees"][number] => ({ id: "fee-t", kind: "trade", by: [{ kind: "what", values: ["us"] }], cases: [{ id: "c1", when: [["us"]], stages: [{ price: { form: "action", rate: typed(rate) } }] }] });
+  const account = { id: "fee-a", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(15), every: 1, offset: { kind: "trade" } } }] } as const satisfies FeeDeal["fees"][number];
+  const read = (deal: FeeDeal, unitPrice: number | null = null) => readingOf(readDealFor(deal, data.kinds, "2026-11-20"), fx, unitPrice);
+  const coverOf = (deal: FeeDeal, unitPrice: number | null = null) => read(deal, unitPrice).timeline.flatMap((t) => t.covers.map((c) => (c.from === "any" ? "any" : c.from.value)));
+
+  it("counts only the trade fee towards an offset set against it, beside a conversion with a minimum in dollars: 15 ₪ at 0.1% is 15,000 ₪ (F-127)", () => {
+    const fxFee = { id: "fee-x", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.2), min: typed(5), currency: "USD" } }] } as const satisfies FeeDeal["fees"][number];
+    expect(coverOf(us([trade(0.1), fxFee, account]))).toEqual([15_000]);
+  });
+  it("reads an offset set against a trade fee with a third party's sum per unit once the unit's price is given, and says nothing before (F-117, F-127)", () => {
+    // 0.1% with at least 5 ₪, and 0.005 $ a unit at 50 $ a unit, 0.01% of the action: max(5, 0.1% × a) + 0.01% × a reaches 15 ₪ at 13,636.36 ₪
+    const deal: FeeDeal = {
+      id: "deal-x",
+      name: "",
+      kind: "brokerage-account",
+      fees: [{ id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1), min: typed(5), third: { who: "הברוקר", price: { form: "perUnit", amount: typed(0.005), currency: "USD" } } } }] }, account],
+    };
+    expect(coverOf(deal)).toEqual([]);
+    expect(coverOf(deal, 50)).toEqual([13_637]);
+  });
+  it("reads a purchase whose conversion has a third party's sum per unit as one with a conversion priced per unit itself: no one rate (F-123)", () => {
+    const thirdFee = { id: "fee-x", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.2), third: { price: { form: "perUnit", amount: typed(0.005), currency: "USD" } } } }] } as const satisfies FeeDeal["fees"][number];
+    expect(read(us([trade(0.1), thirdFee]), 50).panels.actions.find((t) => t.key === "trade:all")?.views).toEqual([{ one: expect.objectContaining({ one: null }) }]);
+  });
+  it("reads a year of an account fee changed by the value held in dollars: 25 ₪ a month on a small value, 300 ₪ a year (F-111, F-115)", () => {
+    const deal: FeeDeal = {
+      id: "deal-x",
+      name: "",
+      kind: "brokerage-account",
+      fees: [
+        {
+          id: "fee-1",
+          kind: "fixed_period",
+          by: [{ kind: "portfolioSize", unit: "USD", tops: [typed(10_000)] }],
+          cases: [
+            { id: "c0", when: [0], stages: [{ price: { form: "sum", amount: typed(25), every: 1 } }] },
+            { id: "c1", when: [1], stages: [{ price: { form: "sum", amount: typed(15), every: 1 } }] },
+          ],
+        },
+      ],
+    };
+    const held = read(deal).panels.held;
+    expect(held).toEqual([{ one: expect.objectContaining({ one: { value: expect.objectContaining({ value: 300 }), of: "sum" } }) }]);
+  });
+});

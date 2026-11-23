@@ -665,6 +665,9 @@ function chargedOnAction(deal: Deal, period: DealPeriod, action: DealAction, sid
  */
 export const isConversionFee = (fee: Pick<DealFee, "base">): boolean => "key" in fee.base && fee.base.key === "fx";
 
+/** Whether a price's cost on an action needs the unit's price (F-112): a sum per unit, its own or its third party's (F-117). */
+export const needsUnitPrice = (p: DealPrice): boolean => p.kind === "perUnit" || ((p.kind === "action" || p.kind === "perAction") && p.third?.kind === "perUnit");
+
 /** The cost of fee `fee`'s price on an action of `a` shekels, with a third party's fee printed with it (F-117). */
 function feeCost(fee: DealFee, price: DealPrice, a: number, rates: Readonly<Record<string, number>>, unitPrice: number | undefined): number {
   if (price.kind !== "action" && price.kind !== "perUnit" && price.kind !== "perAction") return 0;
@@ -935,9 +938,9 @@ export function rateAt(deal: Deal, period: DealPeriod, on: { action: DealAction;
     return layers.reduce((a, l) => a + perYear(period.prices[l.fee]!.price)!, 0);
   }
   // F-13: a purchase's conversion is charged in the stretch of what it buys, on the shekels it converts (`buyConversion`); a sum per unit on
-  // it is no share
+  // it, its own or its third party's, is no share
   const fxOnBuy = on.side === "buy" ? chargedOnAction(deal, period, on.action, "buy").filter((i) => isConversionFee(deal.fees[i]!)) : [];
-  if (fxOnBuy.some((i) => priceOn(deal.fees[i]!, period.prices[i]!, "buy")!.kind === "perUnit")) return null;
+  if (fxOnBuy.some((i) => needsUnitPrice(priceOn(deal.fees[i]!, period.prices[i]!, "buy")!))) return null;
   const fx = fxOnBuy.length ? buyConversion(dealConversionStretches(deal, period, fxOnBuy, "buy", rates), amount > 0 ? amount : Number.MIN_VALUE) : null;
   let rate = 0;
   for (const i of onAction(deal, period, on.action).fees) {

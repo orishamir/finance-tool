@@ -22,8 +22,11 @@ function useScrollToHash(hash: string, ready: boolean) {
   }, [hash, ready]);
 }
 
-/** `company`: the fold is that company's section (a company with no page of its own, on /companies), so its cards show its part only. */
-function Cards({ ids, company }: { ids: readonly string[]; company?: string }) {
+/**
+ * `company`: the fold is that company's section (a company with no page of its own, on /companies), so its cards show its part only.
+ * `idOf`: a card's element id, the rule's own unless the card stands under another company too (one id names one element).
+ */
+function Cards({ ids, company, idOf = (id) => id }: { ids: readonly string[]; company?: string; idOf?: (id: string) => string }) {
   const page = useProvenanceData();
   if (!page) return null;
   const data = company ? { ...page, company, pageCompanies: [company] } : page;
@@ -32,7 +35,7 @@ function Cards({ ids, company }: { ids: readonly string[]; company?: string }) {
       {ids
         .filter((id) => data.rules[id])
         .map((id) => (
-          <Card as="li" key={id} id={id} className="min-w-0 [overflow-wrap:anywhere] flex flex-col anchor-target">
+          <Card as="li" key={id} id={idOf(id)} className="min-w-0 [overflow-wrap:anywhere] flex flex-col anchor-target">
             <RuleCard id={id} data={data} inline />
           </Card>
         ))}
@@ -48,7 +51,13 @@ function Cards({ ids, company }: { ids: readonly string[]; company?: string }) {
 export function NoPageCompanyTerms({ companies, none }: { companies: readonly { id: string; name: string; ids: string[] }[]; none: readonly string[] }) {
   const hash = useHash();
   const [opened, setOpened] = useState<Set<string>>(() => new Set());
-  const named = hash === noCompanyAnchor ? noCompanyAnchor : companies.find((c) => noPageAnchor(c.id) === hash)?.id;
+  // a record from the documents of two companies (TXF-49: BlackRock's and Invesco's) stands under each; its own id names its card under
+  // the first of them, where an address of it (#TXF-49) lands, and the other card's id is its company's (`terms-<company>-TXF-49`)
+  const firstUnder = new Map<string, string>();
+  for (const c of companies) for (const id of c.ids) if (!firstUnder.has(id)) firstUnder.set(id, c.id);
+  const cardId = (company: string) => (id: string) => (firstUnder.get(id) === company ? id : `${noPageAnchor(company)}-${id}`);
+  // the fold an address names: its own, or the one whose card it names, which opens so the card is there to land on
+  const named = hash === noCompanyAnchor || none.includes(hash) ? noCompanyAnchor : (companies.find((c) => noPageAnchor(c.id) === hash)?.id ?? firstUnder.get(hash) ?? companies.find((c) => hash.startsWith(`${noPageAnchor(c.id)}-`))?.id);
   // a fold the address comes to name opens, once each time it is named; the person may close it again
   const [namedBefore, setNamedBefore] = useState<string | undefined>(undefined);
   if (named !== namedBefore) {
@@ -66,7 +75,7 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
           <div className="flex flex-col gap-3">
             {companies.map((c) => (
               <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className="anchor-target" title={<bdi>{gershayim(c.name)}</bdi>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
-                <Cards ids={c.ids} company={c.id} />
+                <Cards ids={c.ids} company={c.id} idOf={cardId(c.id)} />
               </FoldGroup>
             ))}
           </div>
