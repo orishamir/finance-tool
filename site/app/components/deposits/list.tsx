@@ -75,14 +75,13 @@ function OfferName({ row }: { row: DbRow }) {
   );
 }
 
-function BankName({ bank, mine }: { bank: DbBank | undefined; mine: boolean }) {
+function BankName({ bank }: { bank: DbBank | undefined }) {
   if (!bank) return null;
   return (
     <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
       <Link to={companyPath(bank.id)} className="tap-area font-semibold hover:underline">
         <MixedName>{bank.name}</MixedName>
       </Link>
-      {mine && <Tag tone="primary">{t.mine}</Tag>}
     </span>
   );
 }
@@ -91,7 +90,6 @@ export interface ListRow {
   row: DbRow;
   /** The list's top offer: its rate in the accent. */
   top: boolean;
-  mine: boolean;
 }
 
 export interface ListContext {
@@ -115,12 +113,12 @@ function Interest({ o, ctx, small }: { o: DbOffer; ctx: ListContext; small?: boo
   return <Num value={v} display={(n: number) => interestText(n)} className={small ? "" : "font-semibold"} />;
 }
 
-function tableRow({ row, top, mine }: ListRow, ctx: ListContext): ProductRow {
+function tableRow({ row, top }: ListRow, ctx: ListContext): ProductRow {
   const bank = ctx.banks.find((b) => b.id === row.bank);
   const first = row.offers[0]!;
   const main: ReactNode[] = [
     <span className="flex flex-col items-start gap-0.5">
-      <BankName bank={bank} mine={mine} />
+      <BankName bank={bank} />
       <OfferName row={row} />
       <Tags row={row} />
     </span>,
@@ -147,21 +145,20 @@ function tableRow({ row, top, mine }: ListRow, ctx: ListContext): ProductRow {
     key: row.key,
     rowOf: row.bank,
     lit: ctx.lit === row.bank,
-    mine,
-    phone: <PhoneRow row={row} top={top} mine={mine} ctx={ctx} />,
+    phone: <PhoneRow row={row} top={top} ctx={ctx} />,
     cells: main,
     lines: row.offers.length > 1 ? { columns: ids, rows: row.offers.map((o, i) => ({ key: o.id, cells: i === 0 ? main : sub(o) })) } : undefined,
   };
 }
 
-function PhoneRow({ row, top, mine, ctx }: { row: DbRow; top: boolean; mine: boolean; ctx: ListContext }) {
+function PhoneRow({ row, top, ctx }: { row: DbRow; top: boolean; ctx: ListContext }) {
   const bank = ctx.banks.find((b) => b.id === row.bank);
   const first = row.offers[0]!;
   return (
-    <ProductPhoneRow stacked rowOf={row.bank} lit={ctx.lit === row.bank} mine={mine} roomy>
+    <ProductPhoneRow stacked rowOf={row.bank} lit={ctx.lit === row.bank} roomy>
       <span className="flex items-start justify-between gap-3">
         <span className="flex flex-col items-start gap-0.5 min-w-0">
-          <BankName bank={bank} mine={mine} />
+          <BankName bank={bank} />
           <OfferName row={row} />
         </span>
         {/* the rate over the interest, 12 px apart: each figure's 44 px area stays clear of the other's own box */}

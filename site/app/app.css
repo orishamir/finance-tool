@@ -1405,9 +1405,6 @@
   .tbl-pin tr.dup-row > .tbl-first {
     background: linear-gradient(color-mix(in oklch, var(--caution-subtle) 55%, transparent) 0 0), var(--card);
   }
-  .tbl-pin tr.row-mine > .tbl-first {
-    background: linear-gradient(color-mix(in oklch, var(--primary-subtle) 70%, transparent) 0 0), var(--card);
-  }
   .tbl-pin tr.row-lit > .tbl-first {
     animation-name: row-lit-pin;
   }
@@ -1526,20 +1523,6 @@
       outline: 2px solid var(--ring);
       outline-offset: -2px;
     }
-  }
-
-  /* The reader's own rows (ProductTable `mine`, the deposits page's bank they marked): a teal wash, and an accent bar at the row's start. */
-  .row-mine > td,
-  .track.row-mine {
-    background-color: color-mix(in oklch, var(--primary-subtle) 70%, transparent);
-  }
-  .row-mine > td:first-child,
-  .track.row-mine {
-    box-shadow: inset -3px 0 0 var(--primary);
-  }
-  [dir="ltr"] .row-mine > td:first-child,
-  [dir="ltr"] .track.row-mine {
-    box-shadow: inset 3px 0 0 var(--primary);
   }
 
   /* ---- company page tracks */

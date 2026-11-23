@@ -1584,8 +1584,6 @@ export const depositBrowser = {
     show: "להציג גם",
     conditional: "הצעות עם תנאי",
     linked: "צמודות למדד",
-    myBank: "לסמן את הבנק שלי",
-    noBank: "לא נבחר",
     sort: "מיון",
   },
   terms: { day: "יום", week: "שבוע", m1: "חודש", m3: "3 חודשים", m6: "6 חודשים", y1: "שנה", y2: "שנתיים", y3: "3 שנים" },
@@ -1639,7 +1637,6 @@ export const depositBrowser = {
     underOne: "פחות מ־⁦1 ₪⁩",
     variableNote: "ריבית משתנה: החישוב לפי הריבית של היום, והיא יכולה להשתנות במהלך התקופה.",
   },
-  mine: "הבנק שלי",
   fold: { more: "עוד ", less: "להציג פחות", change: "שינוי", close: "סגירה" },
   /** The linked offers, after the rest when their chip is on. */
   linkedLead: "צמודות למדד",

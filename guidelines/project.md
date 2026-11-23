@@ -29,10 +29,12 @@ and family make saving and investing decisions in Israel.
 - **The site.** Switching between providers, the goal comparison, idle cash
   and holdings are not on the site; they are to be designed again. Nothing
   is held for review: a page is on the site, with links to it, or not built.
-- **The product.** `docs/product.md` describes the site: who it is for, what
-  it does, and its numbered choices as they stand. Don't assume a feature, page, data source or scope that isn't
-  there. If a task needs a product choice nobody has made, say so instead of
-  inventing one. When something changes, update the text that describes it.
+- **The product.** `docs/product.md` says who the site is for, what it will
+  not do, and its numbered decisions, each with its reason, as they stand.
+  It doesn't describe pages: the site does. Don't assume a feature, page,
+  data source or scope that neither the site nor a decision has. If a task
+  needs a product choice nobody has made, say so instead of inventing one.
+  When a decision changes, its row is rewritten as it now stands.
   `docs/discovery.md` holds the founder interview and the research behind it.
 - **The data.** What is collected, from where and on what terms:
   `docs/data-inventory.md`. There is no fund list.
@@ -43,12 +45,22 @@ and family make saving and investing decisions in Israel.
 
 ## Comments and docs
 
+- **A doc holds only what the code can't say:** why something is so, a
+  source, a decision (what the site will not do among them), an assumption
+  with its default, a formula the engine is checked against, or a proof.
+  What the code already says stays in the code and its tests and is not
+  written again in words: what a page, card, link, prop or saved store does,
+  its layout, its states, its wording. When a paragraph mixes the two, keep
+  the reason and drop the description.
+- A doc changes only when one of those changes. A change to how a page
+  behaves needs no doc edit unless it rests on a new decision, formula,
+  assumption or source.
 - A code comment or a doc says what something is and why, as it stands
   now. No history: not who asked for it or said it, not when, not which
   review or reader found it, not what it was before. Git history holds
   that.
-- Code no page reaches is removed. Its method text stays, marked not
-  built, so it can come back from a written formula.
+- Code no page reaches is removed. Its formula stays in `docs/method.md`,
+  marked not built, so it can come back from a written formula.
 
 ## Repository layout
 

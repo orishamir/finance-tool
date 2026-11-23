@@ -58,8 +58,6 @@ export interface ProductRow {
   rowOf?: string;
   /** The row lights for a moment (`row-lit`): the rows a press elsewhere on the page scrolled to. */
   lit?: boolean;
-  /** The reader's own (a bank they marked): a tinted row with an accent bar at its start (`row-mine`); the phone row carries its own. */
-  mine?: boolean;
   /**
    * One product sold on several terms under one name (a bank's deposit with and without exit points): one line for each, under one name.
    * The columns named in `columns` take a cell on every line (`rows`, in order); every other column keeps the row's own cell, once,
@@ -344,7 +342,7 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable, dens
               ...(shut ? [] : g.rows).flatMap((r) => {
                 const open = !!r.detail && opened.has(r.key);
                 const cellClass = (i: number, span = 1) => cx(first(i), end(i, span), i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.width && !columns[i]?.wrap ? "whitespace-nowrap" : null, columns[i]?.tight && "px-1", columns[i]?.cellClassName, DIM, columns[i]?.dim && "opacity-45", open && "border-b-0");
-                const rowClass = cx(g.banner ? "dup-row" : null, r.lit && "row-lit", r.mine && "row-mine");
+                const rowClass = cx(g.banner ? "dup-row" : null, r.lit && "row-lit");
                 const lines = r.lines && r.lines.rows.length > 1 ? r.lines : null;
                 const detailId = `${bannerId}-d-${r.key}`;
                 const cells = marksMost >= 0 ? [...r.cells, r.detail ? <RowFoldButton open={open} onToggle={() => flip(r.key)} marks={r.detail.marks} label={r.detail.label} controls={detailId} /> : null] : r.cells;
@@ -440,8 +438,8 @@ export function RowArrow({ className }: { className?: string }) {
  * One product on a phone: a row of the list card. `stacked` when lines (fees, figures, labels) sit under the name, 4 px apart; `roomy` sets
  * them 8 px apart, for a row whose lines are a block of their own each (a deposit's name, then its rates at each amount).
  */
-export function ProductPhoneRow({ stacked, roomy, className, children, rowOf, lit, mine }: { stacked?: boolean; roomy?: boolean; className?: string; children: ReactNode; /** As `ProductRow.rowOf`. */ rowOf?: string; /** As `ProductRow.lit`. */ lit?: boolean; /** As `ProductRow.mine`. */ mine?: boolean }) {
-  return <div data-row-of={rowOf} className={cx("track", stacked && "flex-col items-stretch", stacked && (roomy ? "gap-2" : "gap-1"), lit && "row-lit", mine && "row-mine", className)}>{children}</div>;
+export function ProductPhoneRow({ stacked, roomy, className, children, rowOf, lit }: { stacked?: boolean; roomy?: boolean; className?: string; children: ReactNode; /** As `ProductRow.rowOf`. */ rowOf?: string; /** As `ProductRow.lit`. */ lit?: boolean; }) {
+  return <div data-row-of={rowOf} className={cx("track", stacked && "flex-col items-stretch", stacked && (roomy ? "gap-2" : "gap-1"), lit && "row-lit", className)}>{children}</div>;
 }
 
 /** The fold token in ms: 0 for a reader who asked for less motion, and on the server. */

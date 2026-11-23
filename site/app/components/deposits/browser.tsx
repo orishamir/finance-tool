@@ -9,7 +9,7 @@ import { useAddressSort } from "../../lib/list-sort";
 import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, interestOn, interestText, isLinked, offersOf, foldedOffers, offersPhrase, opens, periodBest, readSpan, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type TermId } from "../../lib/deposit-browser";
 import { fmt } from "../../lib/format";
 import { entered } from "../../lib/value";
-import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, SelectField, When, amountCheck, fieldRules, readFieldText, type FieldRules, type FieldText, type PeriodBar, DateSpanText } from "../kit";
+import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, When, amountCheck, fieldRules, readFieldText, type FieldRules, type FieldText, type PeriodBar, DateSpanText } from "../kit";
 import { Num, Term } from "../provenance";
 import { HELP_TERMS } from "../../lib/deposit-browser";
 import { DepositGrid } from "./grid";
@@ -48,8 +48,6 @@ export function DepositBrowser({ data }: { data: DbData }) {
   const kind: RateKind = kindParam === "variable" || kindParam === "fixed" ? kindParam : START_KIND;
   const withConditional = sp.get("conditional") !== "0";
   const withLinked = sp.get("linked") === "1";
-  const bankParam = sp.get("bank");
-  const myBank = data.banks.some((b) => b.id === bankParam) ? bankParam : null;
   const { chosen: sort, set: setSort, press } = useAddressSort(SORT_IDS, DEFAULT_SORT);
   const setTerm = (x: TermId) => update({ term: x === START_TERM ? null : x });
   const setAmount = (n: number | null) => update({ amount: n === null ? "none" : n === data.start ? null : String(n) });
@@ -86,15 +84,15 @@ export function DepositBrowser({ data }: { data: DbData }) {
   const amountValue = amount !== null ? entered(amount, "nis", data.today, t.interest.inputs.amount) : null;
   const ctx: ListContext = { term, amount: amount !== null && amountValue ? { n: amount, value: amountValue } : null, today: data.today, banks: data.banks, lit };
 
-  // the fold: the first rows, then the reader's bank's rows wherever they stand, then "עוד N הצעות"
+  // the fold: the first rows, then "עוד N הצעות"
   const all: { row: DbRow; linked: boolean }[] = [...ranked.map((row) => ({ row, linked: false })), ...linked.map((row) => ({ row, linked: true }))];
   const first = wide ? SHOWN.table : SHOWN.phone;
-  const shown = expanded ? all : all.filter((x, i) => i < first || x.row.bank === myBank);
+  const shown = expanded ? all : all.slice(0, first);
   // the days the list's rates were read: its rows' own, folded ones included, not the newest of every record
   const read = readSpan(all.map((x) => x.row));
   const hidden = all.length - shown.length;
   const topKey = ranked.find((r) => !r.offers[0]!.limited)?.key ?? ranked[0]?.key;
-  const asRow = (row: DbRow): ListRow => ({ row, top: row.key === topKey && sort.id === "rate", mine: row.bank === myBank });
+  const asRow = (row: DbRow): ListRow => ({ row, top: row.key === topKey && sort.id === "rate" });
 
   const termFor = t.termFor[term];
   const kindWords = t.kindWords[kind];
@@ -152,9 +150,6 @@ export function DepositBrowser({ data }: { data: DbData }) {
                   {t.controls.linked}
                 </FilterChip>
               </div>
-            </div>
-            <div className="md:w-48">
-              <SelectField wide label={<span className="text-sm text-muted-foreground">{t.controls.myBank}</span>} none={t.controls.noBank} options={data.banks.map((b) => ({ id: b.id, name: b.name }))} value={myBank} onChange={(id) => update({ bank: id })} />
             </div>
           </div>
         </PhoneFold>
@@ -217,7 +212,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
         {shutShown.length > 0 && (
           <Disclosure label={`${offersPhrase(rowsOf(shutShown).length)} ${shutUnknown ? t.closed.orUnknown : t.closed.before}${amount !== null ? fmt.nisWhole(amount) : ""}`} labelClassName="font-semibold" className="flex flex-col gap-3">
             <div className="pt-2">
-              <DepositList ranked={sortRows(rowsOf(shutShown), sort).map((row) => ({ row, top: false, mine: row.bank === myBank }))} linked={[]} ctx={{ ...ctx, amount: null }} sort={null} />
+              <DepositList ranked={sortRows(rowsOf(shutShown), sort).map((row) => ({ row, top: false }))} linked={[]} ctx={{ ...ctx, amount: null }} sort={null} />
             </div>
           </Disclosure>
         )}
