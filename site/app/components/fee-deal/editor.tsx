@@ -6,8 +6,8 @@
 // editor holds. The toolbox stands in a column of its own where the host gives the editor the room (`TOOLBOX_COLUMN_PX`), and anywhere
 // narrower in a short sheet pinned to the foot of the screen, the host keeping room under its end for it; the sheet comes folded to its
 // groups' names with a deal, and unfolds when a fee or a case is opened. The columns and the reading are one thing: a fee under the pointer
-// or the focus in one is marked in the others, and a fee's name in the reading opens it (`FeeLinks`). A toolbox card adds ("חינם" alone
-// replaces a price's charge and its parts, places.ts): tapped, it goes to its one place in the open case, or with several places it is held, each place drawing the card's landing copy where its tap
+// or the focus in one is marked in the others, and a fee's name in the reading opens it (`FeeLinks`). A toolbox card only adds: tapped, it
+// goes to its one place in the open case, or with several places it is held, each place drawing the card's landing copy where its tap
 // would put it (the open case as that tap would leave it, `toolStep`), until one is tapped or the hold ends (Escape, "ביטול", the card
 // again, a tap anywhere else), the focus then back on the card (places.ts). On a computer a card dragged from the toolbox onto one of its
 // places, or onto another case where it has one place, does there what its tap does, each place that takes it showing the same copy
@@ -31,7 +31,7 @@ import type { PartId } from "../../lib/fee-deal/offers/parts";
 import { dropTakes, holdWords, letGoStep, samePlace, tapStep, waitAt, type HoldStep, type Place } from "../../lib/fee-deal/places";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { leftOut } from "../../lib/fee-deal/left-out";
-import { pickLine, type PickThing, type ReadingInput } from "../../lib/fee-deal/reading";
+import { pickLine, readingOf, type PickThing } from "../../lib/fee-deal/reading";
 import { countedDeal, feesOff, isFeeOff } from "../../lib/fee-deal/off";
 import { accountCapOf } from "../../lib/fee-deal/charts";
 import { kindById } from "../../lib/fee-deal/kinds";
@@ -84,7 +84,7 @@ export interface EditorInput {
   first: FeeDeal;
   /** Another deal came on screen: what the host keeps of the deal before it goes. */
   onShown?: () => void;
-  /** Whether the host draws /deal's reading, which the editor then gives what it is read from (`ReadingInput`); a host that reads the deal otherwise leaves it out. */
+  /** Whether the host draws /deal's reading, which the editor then reads (`readingOf`); a host that reads the deal otherwise leaves it out. */
   withReading?: boolean;
   /** What the host adds to each fee, its head and its cases' marks (`FeeSlot`, `FeesColumn.headOf`). */
   feeHead?: (fee: Fee) => FeeSlot | undefined;
@@ -238,7 +238,7 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
   // BANK-35's cap on a current account, which the reading flags a year of holding above (F-102)
   const cap = useMemo(() => accountCapOf(data.rules), [data.rules]);
   // the reading is of the deal as it is counted; its picks are of the whole deal, so a fee switched off leaves the picks as they stand
-  const views = useMemo(() => (read.deal.fees.length > 0 ? { left: leftOut(countedRead), reading: withReading ? ({ read: countedRead, unitPrice, cap, picks: pickLine(read) } satisfies ReadingInput) : null } : null), [read, countedRead, unitPrice, withReading, cap]);
+  const views = useMemo(() => (read.deal.fees.length > 0 ? { left: leftOut(countedRead), reading: withReading ? { ...readingOf(countedRead, data.fx, unitPrice, cap), picks: pickLine(read) } : null } : null), [read, countedRead, data.fx, unitPrice, withReading, cap]);
   const builderView = useMemo(() => builder(read, bar, chosen ? { fee: chosen, case: caseId } : null), [read, bar, chosen, caseId]);
   const pending = oc.pending.here;
   const panel = useMemo(() => (chosen ? panelOf(read, chosen, caseId ?? undefined, pending) : null), [read, chosen, caseId, pending]);

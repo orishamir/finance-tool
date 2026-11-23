@@ -1,12 +1,10 @@
 // What a grip lifts, where it drops and what the bin takes (lifted.ts), on a deal of two fees: a conversion's grid by the channel and the
 // size, and a custody fee of one price. Each drop is one pure edit, and those that take something the person gave say so for the undo.
 import { describe, expect, it } from "vitest";
-import { binTakes, liftDrop, liftedOf, liftId, liftRemove, liftTakes, liftWhy, type Lifted, type LiftTarget } from "./lifted";
+import { binTakes, liftDrop, liftedOf, liftId, liftRemove, liftTakes, liftWhy, type Lifted } from "./lifted";
 import { WHOLE } from "./layout";
-import { FIRST } from "./edits/cells";
 import { byRank, typed, type CasesFee, type FeeDeal, type Price, type SlimFee } from "./model";
 import { feeDeal as copy } from "../../copy";
-import { fmt } from "../format";
 import { liftKept, undo } from "./undo";
 
 const action = (rate: number, min?: number): Price => ({ form: "action", rate: typed(rate), ...(min !== undefined ? { min: typed(min) } : {}) });
@@ -156,11 +154,11 @@ describe("a lifted thing", () => {
   });
 
   it("moves a part onto another fee that takes it, and says why where one does not", () => {
-    const min: Lifted = { k: "part", fee: "fee-fx", case: "d1", price: FIRST, row: "min" };
+    const min: Lifted = { k: "part", fee: "fee-fx", case: "d1", row: "min" };
     const r = liftDrop(deal(), min, { k: "case", fee: "fee-c", case: null })!;
     expect((r.deal.fees[1] as SlimFee).stages[0]!.price).toMatchObject({ min: { v: 5 } });
     expect(fxOf(r.deal).cases[1]!.stages[0]!.price).toEqual(action(0.0875));
-    const price: Lifted = { k: "part", fee: "fee-fx", case: "d1", price: FIRST, row: "price" };
+    const price: Lifted = { k: "part", fee: "fee-fx", case: "d1", row: "price" };
     expect(liftTakes(deal(), price, { k: "case", fee: "fee-c", case: null })).toBe(false);
     expect(liftWhy(deal(), price, { k: "case", fee: "fee-c", case: null })).toBe(copy.cases.lifted.notHere);
   });
@@ -188,7 +186,7 @@ describe("a case moved to a grid's empty place, and parts and notes moved", () =
   });
 
   it("keeps an undo for a part dropped on a case that had that part, saying what was replaced", () => {
-    const l: Lifted = { k: "part", fee: "fee-fx", case: "d1", price: FIRST, row: "min" };
+    const l: Lifted = { k: "part", fee: "fee-fx", case: "d1", row: "min" };
     const r = liftDrop(deal(), l, { k: "case", fee: "fee-fx", case: "b1" })!;
     expect(fxOf(r.deal).cases.find((c) => c.id === "b1")!.stages[0]!.price).toEqual(action(0.175, 5));
     expect(r.kept?.words).toBe(copy.cases.lifted.replaced.replace("{what}", copy.cases.rowHeads.min!));
@@ -199,7 +197,7 @@ describe("a case moved to a grid's empty place, and parts and notes moved", () =
   it("moves one note alone, added to the target's notes, and takes one note alone away", () => {
     const noted = (notes: string[]): Price => ({ ...action(0.1, 5), notes } as Price);
     const d: FeeDeal = { ...deal(), fees: [{ ...fx(), cases: fx().cases.map((c) => (c.id === "d1" ? { ...c, stages: [{ price: noted(["unfilled", "partial"]) }] } : c.id === "d2" ? { ...c, stages: [{ price: noted(["capRead"]) }] } : c)) }, custody()] };
-    const l: Lifted = { k: "part", fee: "fee-fx", case: "d1", price: FIRST, row: "notes", note: "partial" };
+    const l: Lifted = { k: "part", fee: "fee-fx", case: "d1", row: "notes", note: "partial" };
     const r = liftDrop(d, l, { k: "case", fee: "fee-fx", case: "d2" })!;
     const notesOf = (x: FeeDeal, id: string) => (fxOf(x).cases.find((c) => c.id === id)!.stages[0]!.price as { notes?: string[] }).notes;
     expect(notesOf(r.deal, "d1")).toEqual(["unfilled"]);
@@ -207,133 +205,5 @@ describe("a case moved to a grid's empty place, and parts and notes moved", () =
     const gone = liftRemove(d, l)!;
     expect(notesOf(gone.deal, "d1")).toEqual(["unfilled"]);
     expect(gone.kept?.words).toBe(copy.cases.lifted.noteRemoved);
-  });
-});
-
-describe("a part of a later price or of a sale, lifted from its own surface", () => {
-  /** A value that must be there, or the test fails saying so. */
-  const got = <T,>(x: T | null | undefined): T => {
-    if (x === null || x === undefined) throw new Error("a value the test needs is missing");
-    return x;
-  };
-  const sum = (v: number): Price => ({ form: "sum", amount: typed(v), every: 1 });
-  const later = (until: string, v: number) => [{ price: { form: "free" } as Price, until }, { price: sum(v) }];
-  /** A fixed fee by the channel: two cases whose price changes in August 2027, and one whose price changes in January 2028. */
-  const fixed = (): CasesFee => ({
-    id: "fee-f",
-    kind: "fixed_period",
-    by: [{ kind: "channel", values: [] }],
-    cases: [
-      { id: "a", when: [["direct"]], stages: later("2027-08", 80) },
-      { id: "b", when: [["branch"]], stages: later("2027-08", 50) },
-      { id: "c", when: [["phone"]], stages: later("2028-01", 30) },
-    ],
-  });
-  /** A fixed fee of one price over time, its price changing in August 2027. */
-  const slim = (): SlimFee => ({ id: "fee-s", kind: "fixed_period", stages: later("2027-08", 20) });
-  const d = (): FeeDeal => ({ id: "deal-p", name: "", kind: "brokerage-account", fees: [fixed(), slim()] });
-  const fOf = (x: FeeDeal) => x.fees[0] as CasesFee;
-  const stagesOf = (x: FeeDeal, id: string) => got(fOf(x).cases.find((c) => c.id === id)).stages;
-  const aug: Lifted = { k: "part", fee: "fee-f", case: "a", price: { side: "buy", from: "2027-08" }, row: "price" };
-
-  it("lands on the price of another case of its fee that starts the same month, the earlier prices left as they were", () => {
-    const r = got(liftDrop(d(), aug, { k: "case", fee: "fee-f", case: "b" }));
-    expect(stagesOf(r.deal, "b")).toEqual([{ price: { form: "free" }, until: "2027-08" }, { price: sum(80) }]);
-    // the price it left is not given, as the first price's is when its price is carried away
-    expect(stagesOf(r.deal, "a")).toEqual([{ price: { form: "free" }, until: "2027-08" }, { price: { form: "sum", amount: { v: 0, blank: true }, every: 1 } }]);
-    expect(r.kept?.words).toBe(copy.cases.lifted.replaced.replace("{what}", got(copy.cases.rowHeads.price)));
-    // copied, it stays where it was too
-    expect(stagesOf(got(liftDrop(d(), aug, { k: "case", fee: "fee-f", case: "b" }, { copy: true })).deal, "a")).toEqual(got(fixed().cases[0]).stages);
-  });
-
-  it("lands nowhere on a case with no price starting that month, nor on a head", () => {
-    expect(liftTakes(d(), aug, { k: "case", fee: "fee-f", case: "c" })).toBe(false);
-    expect(liftTakes(d(), aug, { k: "cases", fee: "fee-f", cases: ["a", "b", "c"], along: 0, names: {} })).toBe(false);
-    expect(liftWhy(d(), aug, { k: "cases", fee: "fee-f", cases: ["a", "b", "c"], along: 0, names: {} })).toBeNull();
-  });
-
-  it("lands on another fee's price starting the same month", () => {
-    const r = got(liftDrop(d(), aug, { k: "case", fee: "fee-s", case: null }));
-    expect((r.deal.fees[1] as SlimFee).stages).toEqual([{ price: { form: "free" }, until: "2027-08" }, { price: sum(80) }]);
-  });
-
-  it("goes in the bin from its own price alone, its line naming it", () => {
-    const r = got(liftRemove(d(), aug));
-    expect(got(stagesOf(r.deal, "a")[1]).price).toEqual({ form: "sum", amount: { v: 0, blank: true }, every: 1 });
-    expect(stagesOf(r.deal, "a")[0]).toEqual({ price: { form: "free" }, until: "2027-08" });
-    expect(r.kept?.words).toBe(copy.cases.lifted.part.price);
-    // a slim fee's later price the same way
-    const s = got(liftRemove(d(), { ...aug, fee: "fee-s", case: null }));
-    expect(got((s.deal.fees[1] as SlimFee).stages[1]).price).toEqual({ form: "sum", amount: { v: 0, blank: true }, every: 1 });
-  });
-
-  it("of a sale priced apart, lands on another fee's sale and never on its purchase", () => {
-    const trade = (id: string, sale: boolean): SlimFee => ({ id, kind: "trade", stages: [{ price: action(0.1) }], ...(sale ? { sale: [{ price: action(0.2) }] } : {}) });
-    const withMin = { ...trade("fee-t", true), sale: [{ price: action(0.2, 7) }] };
-    const x: FeeDeal = { id: "deal-t", name: "", kind: "brokerage-account", fees: [withMin, trade("fee-u", true), trade("fee-v", false)] };
-    const min: Lifted = { k: "part", fee: "fee-t", case: null, price: { side: "sell", from: null }, row: "min" };
-    const r = got(liftDrop(x, min, { k: "case", fee: "fee-u", case: null }));
-    const u = r.deal.fees[1] as SlimFee;
-    expect(u.sale).toEqual([{ price: action(0.2, 7) }]);
-    expect(u.stages).toEqual([{ price: action(0.1) }]);
-    expect((r.deal.fees[0] as SlimFee).sale).toEqual([{ price: action(0.2) }]);
-    expect((r.deal.fees[0] as SlimFee).stages).toEqual([{ price: action(0.1) }]);
-    // a fee whose sale is priced as its purchase has no sale's price to take it
-    expect(liftTakes(x, min, { k: "case", fee: "fee-v", case: null })).toBe(false);
-  });
-
-  it("travels as the carried item's id, its price's key with it", () => {
-    expect(liftedOf(liftId(aug))).toEqual(aug);
-  });
-
-  it("takes nothing from a free price in the bin: its part has nothing to take away", () => {
-    // a slim fee priced 5 ₪ a month until August 2027, then free
-    const ends: SlimFee = { id: "fee-e", kind: "fixed_period", stages: [{ price: sum(5), until: "2027-08" }, { price: { form: "free" } }] };
-    const x: FeeDeal = { ...d(), fees: [fixed(), ends] };
-    const free: Lifted = { k: "part", fee: "fee-e", case: null, price: { side: "buy", from: "2027-08" }, row: "price" };
-    expect(binTakes(x, free)).toBe(false);
-    expect(liftRemove(x, free)).toBeNull();
-    // a case's free first price the same way, while its later price, which charges, goes
-    const first: Lifted = { k: "part", fee: "fee-f", case: "a", price: FIRST, row: "price" };
-    expect(binTakes(d(), first)).toBe(false);
-    expect(binTakes(d(), aug)).toBe(true);
-  });
-
-  it("says why another fee with no price starting that month does not take it, and why one with no sale priced apart does not take a sale's", () => {
-    const x: FeeDeal = { ...d(), fees: [fixed(), { id: "fee-j", kind: "fixed_period", stages: later("2028-01", 20) }] };
-    expect(liftTakes(x, aug, { k: "case", fee: "fee-j", case: null })).toBe(false);
-    expect(liftWhy(x, aug, { k: "case", fee: "fee-j", case: null })).toBe(copy.cases.lifted.noPriceFrom.replace("{month}", fmt.period("2027-08")));
-    const trade = (id: string, sale: boolean): SlimFee => ({ id, kind: "trade", stages: [{ price: action(0.1) }], ...(sale ? { sale: [{ price: action(0.2, 7) }] } : {}) });
-    const t: FeeDeal = { id: "deal-t", name: "", kind: "brokerage-account", fees: [trade("fee-t", true), trade("fee-v", false)] };
-    const min: Lifted = { k: "part", fee: "fee-t", case: null, price: { side: "sell", from: null }, row: "min" };
-    expect(liftWhy(t, min, { k: "case", fee: "fee-v", case: null })).toBe(copy.cases.lifted.noSale);
-    // a fee that has the price, but whose kind does not take the part, says so
-    const c: FeeDeal = { ...d(), fees: [fixed(), { id: "fee-k", kind: "fx", stages: [{ price: { form: "free" }, until: "2027-08" }, { price: action(0.2) }] }] };
-    expect(liftWhy(c, aug, { k: "case", fee: "fee-k", case: null })).toBe(copy.cases.lifted.notHere);
-  });
-
-  it("moves a later price's note alone onto another fee's price starting the same month, the first prices left as they were", () => {
-    const noted = (p: Price, notes: string[]): Price => ({ ...p, notes } as Price);
-    const trade = (id: string, notes: string[]): SlimFee => ({ id, kind: "trade", stages: [{ price: action(0.1), until: "2027-08" }, { price: noted(action(0.2), notes) }] });
-    const x: FeeDeal = { id: "deal-n", name: "", kind: "brokerage-account", fees: [trade("fee-t", ["unfilled", "partial"]), trade("fee-u", ["unfilled"])] };
-    const note: Lifted = { k: "part", fee: "fee-t", case: null, price: { side: "buy", from: "2027-08" }, row: "notes", note: "partial" };
-    const r = got(liftDrop(x, note, { k: "case", fee: "fee-u", case: null }));
-    const [t, u] = r.deal.fees as [SlimFee, SlimFee];
-    expect(t.stages).toEqual([{ price: action(0.1), until: "2027-08" }, { price: noted(action(0.2), ["unfilled"]) }]);
-    expect(u.stages).toEqual([{ price: action(0.1), until: "2027-08" }, { price: noted(action(0.2), ["unfilled", "partial"]) }]);
-    // copied, it stays where it was too
-    expect((got(liftDrop(x, note, { k: "case", fee: "fee-u", case: null }, { copy: true })).deal.fees[0] as SlimFee).stages).toEqual(trade("fee-t", ["unfilled", "partial"]).stages);
-  });
-
-  it("of a sale's first price, lands on no head: a head's cases take the purchase's first price's parts alone", () => {
-    const grid = fx();
-    const x: FeeDeal = { ...deal(), fees: [{ ...grid, cases: grid.cases.map((c) => (c.id === "d1" ? { ...c, sale: [{ price: action(0.3, 9) }] } : c)) }, custody()] };
-    const min: Lifted = { k: "part", fee: "fee-fx", case: "d1", price: { side: "sell", from: null }, row: "min" };
-    const column: LiftTarget = { k: "cases", fee: "fee-fx", cases: ["d1", "b1"], along: 0, names: {} };
-    expect(liftDrop(x, min, column)).toBeNull();
-    expect(liftTakes(x, min, column)).toBe(false);
-    expect(liftWhy(x, min, column)).toBeNull();
-    // the purchase's first price's minimum, the same case and head, lands there
-    expect(liftTakes(x, { ...min, price: FIRST }, column)).toBe(true);
   });
 });

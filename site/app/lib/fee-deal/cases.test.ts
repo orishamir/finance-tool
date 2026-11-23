@@ -815,19 +815,19 @@ describe("a provident-family product's management fees", () => {
       { id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] },
       { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.6), per: 12, every: 1 } }] },
     ]);
-    expect(ids(deal, "fee-dep")).toEqual([["charge", ["share", "free"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
-    expect(ids(deal, "fee-bal")).toEqual([["charge", ["held", "free"]], ["by", ["by:track", "by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-dep")).toEqual([["charge", ["share"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-bal")).toEqual([["charge", ["held"]], ["by", ["by:track", "by:portfolioSize", "by:own"]]]);
     // every kind the records give the Capital Market Authority is of the family; a pension fund's deposit fee too
     expect(data.kinds.filter(providentFamily).map((k) => k.id).sort()).toEqual(["child-savings-provident", "ira-hishtalmut", "ira-provident", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "provident-for-annuity"]);
-    expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["charge", ["share", "free"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
+    expect(ids(of("pension-comprehensive", [{ id: "fee-dep", kind: "deposit", stages: [{ price: { form: "action", rate: typed(1) } }] }]), "fee-dep")).toEqual([["charge", ["share"]], ["by", ["by:track", "by:actionSize", "by:portfolioSize", "by:own"]]]);
   });
   it("leave an IRA's brokerage fees the parts its annexes print, and its management fee no track: an IRA is a fund of its own (IRA-17)", () => {
     const deal = of("ira-provident", [
       { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1) } }] },
       { id: "fee-bal", kind: "balance", stages: [{ price: { form: "held", rate: typed(0.5), per: 12, every: 1 } }] },
     ]);
-    expect(ids(deal, "fee-trade")).toEqual([["charge", ["share", "perUnit", "perAction", "third", "free"]], ["bound", ["min"]], ["by", ["by:what", "by:track", "by:portfolioSize"]], ["rule", ["unfilled", "partial"]]]);
-    expect(ids(deal, "fee-bal")).toEqual([["charge", ["held", "free"]], ["by", ["by:portfolioSize", "by:own"]]]);
+    expect(ids(deal, "fee-trade")).toEqual([["charge", ["share", "perUnit", "perAction", "third"]], ["bound", ["min"]], ["by", ["by:what", "by:track", "by:portfolioSize"]], ["rule", ["unfilled", "partial"]]]);
+    expect(ids(deal, "fee-bal")).toEqual([["charge", ["held"]], ["by", ["by:portfolioSize", "by:own"]]]);
     // a brokerage account's custody keeps its bounds and its conditions
     const custody = of("brokerage-account", [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.2), per: 12, every: 12 } }] }]);
     expect(ids(custody, "fee-c").map(([g]) => g)).toContain("bound");
