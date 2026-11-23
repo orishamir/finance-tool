@@ -10,7 +10,7 @@ import type { WorkbenchInputs } from "../../lib/providers";
 import { LabelSheetHost } from "../kit";
 import { ProvenanceProvider } from "../provenance";
 import { PairLists, type ListsProps } from "./lists";
-import { allFunds, pickOfHeadline, type OnPick, type Pick } from "./pair";
+import { allFunds, pickOfHeadline, type Pick } from "./pair";
 import { FeesPanel } from "./before";
 import { DollarSection, useDollarCase } from "./dollar";
 import { StairsSection, useStairs } from "./stairs";
@@ -47,10 +47,9 @@ export function writtenFees(out: string) {
   return items;
 }
 
-/** The receipt, then the fees panel under the lists (where the fees go, and the
- * pair set beside it). */
-export function ReceiptAndFees({ view, bundle: b, plan: p, pick, chosen, onPick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; chosen: boolean; onPick: OnPick }) {
-  return createElement(Fragment, null, createElement(PairReceipt, { view, bundle: b, plan: p, pick, chosen }), createElement(FeesPanel, { view, bundle: b, plan: p, pick, chosen, onPick }));
+/** The receipt, then the fees panel under the lists (where the fees go). */
+export function ReceiptAndFees({ view, bundle: b, plan: p, pick, chosen }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; chosen: boolean }) {
+  return createElement(Fragment, null, createElement(PairReceipt, { view, bundle: b, plan: p, pick, chosen }), createElement(FeesPanel, { view, bundle: b, plan: p, pick, chosen }));
 }
 
 /** The hedged-or-not panel as its tab opens it, with what it rests on read as the page reads it. */
@@ -91,7 +90,7 @@ export function unrenderedAtSliders(index: IndexRef): string[] {
     for (const f of allFunds(view)) {
       const pick = { house: head.house, fund: f.rec.id };
       try {
-        html(createElement(ReceiptAndFees, { view, bundle, plan: p, pick, chosen: true, onPick: () => undefined }));
+        html(createElement(ReceiptAndFees, { view, bundle, plan: p, pick, chosen: true }));
       } catch (e) {
         out.push(`${index.id} ${f.rec.id} ${p.amountNow}/${p.monthly}/${p.years}/${p.grossReturn}: ${(e as Error).message}`);
       }

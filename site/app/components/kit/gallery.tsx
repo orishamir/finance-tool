@@ -3524,6 +3524,7 @@ function TradeGrid({ today, three }: { today: string; three?: boolean }) {
       <ConditionBand things={[{ id: "what", name: sc.things.what }, { id: "channel", name: sc.things.channel }, ...(three ? [{ id: "track", name: sc.things.track }] : [])]} onThing={() => undefined}>
       <div className="px-3">
       <CaseGrid
+        corner={{ across: sc.things.channel, down: sc.things.what }}
         above={three && <SegmentedControl fit label={sc.things.track} options={sc.tracks.slice(0, 2).map((t, k) => ({ value: String(k + 1), label: t }))} value={track} onChange={setTrack} />}
         columns={[
           { id: "web", head: sc.channels.web },
@@ -3656,6 +3657,7 @@ function LiftDemo({ today, channels = [sc.channels.web, sc.channels.branch] }: {
       <CaseGrid
         steps
         label={sc.fx}
+        corner={{ across: sc.things.size, down: sc.things.channel }}
         columns={cols.map((c, k) => ({ id: String(c), head: steps[c]!, grip: <Grip item={`kit:col:${k}`} label={`${lw.grip.step}${steps[c]}`} /> }))}
         rows={order.map((j) => {
           const head = channels[j]!;
@@ -3836,7 +3838,7 @@ function CaseDemos({ today }: { today: string }) {
             </CaseRow>
           </div>
         </State>
-        <State label={`two things: a grid, each case a tile, the column heads plain words over a line, a soft line between the row heads only; a row's common minimum and maximum as tiles under its tiles, abroad on any channel one tile over its row, a place no case holds as a slot; a bare "+" at the end of the column heads adds a column, one under the row heads a row; ${g.states.interactive}: a tile opens its case, outlined`} wide>
+        <State label={`two things: a grid, each case a tile, the column heads plain words over a line, the corner over the row heads naming both things split by a diagonal (the columns' thing above it, toward them; the rows' under it), a soft line between the row heads only; a row's common minimum and maximum as tiles under its tiles, abroad on any channel one tile over its row, a place no case holds as a slot; a bare "+" at the end of the column heads adds a column, one under the row heads a row; ${g.states.interactive}: a tile opens its case, outlined`} wide>
           <div className="max-w-2xl">
             <TradeGrid today={today} />
           </div>

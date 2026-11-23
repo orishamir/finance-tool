@@ -719,6 +719,8 @@ export function FeeCases({
         }
       : {}),
   }));
+  /** Thing `t`'s name as its chip in the head says it (a grid's corner). */
+  const thingWords = (t: number): string => band.things.find((th) => th.thing === t)?.words ?? thingName(fee.kind, fee.by[t]!);
   // each chip opens its thing's menu, the fee open or not: its values, and the action that stops the price changing by it
   const head = { things: headThings, zone: (h: ReactNode) => zone([everyCase], `all:${fee.id}`, h), onThing: (id: string, at: HTMLElement) => onThing(fee.id, Number(id), at), openThing: open.thing?.fee === fee.id ? String(open.thing.t) : null };
 
@@ -1009,6 +1011,7 @@ export function FeeCases({
       <div className="px-3">
       <CaseGrid
         label={name}
+        corner={{ across: thingWords(1), down: thingWords(0) }}
         steps={g.across.range}
         above={g.switch && <ThingSwitch fee={fee} values={g.switch.values} chosen={g.switch.chosen} words={(h) => headWhen(h, 2)} mine={(h) => !!h.cases[0] && byCase.get(h.cases[0])!.mine} onChange={setSwitchTo} />}
         columns={g.columns.map((col, k) => {

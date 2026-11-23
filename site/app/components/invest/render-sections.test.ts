@@ -29,8 +29,8 @@ describe("the index page's sections render", () => {
     const leumi = { house: "leumi", fund: pick.fund };
     const out = html(createElement("div", null,
       createElement(TitleRow, { known: knownIndices(bundle), customs: [], index: view.index, others: knownIndices(bundle), bundle, onRemove: () => undefined, onRename: () => undefined, onSave: () => undefined, onGo: () => undefined }),
-      createElement(ReceiptAndFees, { view, bundle, plan: plan, pick, chosen: false, onPick: () => undefined }),
-      createElement(ReceiptAndFees, { view, bundle, plan: plan, pick: leumi, chosen: true, onPick: () => undefined }),
+      createElement(ReceiptAndFees, { view, bundle, plan: plan, pick, chosen: false }),
+      createElement(ReceiptAndFees, { view, bundle, plan: plan, pick: leumi, chosen: true }),
       createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null }),
       createElement(PairReceipt, { view, bundle, plan: plan, pick: leumi, chosen: true, layout: "ticket" }),
       createElement(PlanCard, { knobs: null })));
@@ -48,16 +48,9 @@ describe("the index page's sections render", () => {
     // the receipt's inflation line, in what the reader sees: its label, then what it takes
     expect(shown(out).replace(/[\u2066-\u2069]/g, "")).toMatch(new RegExp(`${invest.receipt.inflation}−[\\d,]+ ₪`));
   });
-  it("an Israeli index keeps the pair beside the cheapest one (no kinds)", () => {
-    const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan: plan });
-    const pick = pickOfHeadline(ta)!;
-    const out = html(createElement(ReceiptAndFees, { view: ta, bundle, plan: plan, pick: { ...pick, house: "leumi" }, chosen: true, onPick: () => undefined }));
-    expect(out).toContain("★ הזוג הזול ביותר לתוכנית שלכם");
-    expect(out).not.toContain("עם נטרול");
-  });
   it("before any pick, the page's own pair is never called the person's, and each tile names its account and fund (2026-11-05)", () => {
     const pick = pickOfHeadline(view)!;
-    const out = shown(html(createElement(ReceiptAndFees, { view, bundle, plan: plan, pick, chosen: false, onPick: () => undefined })));
+    const out = shown(html(createElement(ReceiptAndFees, { view, bundle, plan: plan, pick, chosen: false })));
     expect(out).not.toContain("הבחירה שלכם");
     const fund = view.options.flatMap((o) => o.funds).find((f) => f.rec.id === pick.fund)!;
     // an index's name keeps its number on the line ("S&P\u00a0500")
@@ -695,7 +688,7 @@ describe("before deciding: the tab cards", () => {
   const pick = pickOfHeadline(view)!;
   const share = { min: -50, max: 50, step: 10, start: 20 };
   const stairs = { view, bundle, startHouse: null, startFund: null };
-  const before = (chosen: boolean) => html(createElement(BeforeDeciding, { view, bundle, plan, livePlan: plan, share, pick, chosen, hedge: true, stairs, onPick: () => undefined }));
+  const before = (chosen: boolean) => html(createElement(BeforeDeciding, { view, bundle, plan, livePlan: plan, share, pick, chosen, hedge: true, stairs }));
   it("the tab list holds only its tabs: each card is one tab, its answer plain words with no control of its own", () => {
     const out = before(false);
     const list = out.slice(out.indexOf('role="tablist"'), out.indexOf('role="tabpanel"'));

@@ -400,7 +400,6 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
                   chosen={picks}
                   hedge={hasKinds(view) && !!wb.dollarRange}
                   stairs={{ view, bundle, startHouse: picks ? pick.house : null, startFund: picks ? pick.fund : null }}
-                  onPick={onPick}
                 />
               )}
             </>

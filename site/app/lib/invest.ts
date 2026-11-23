@@ -1836,12 +1836,6 @@ export function kindMoney(a: InvestArgs & { unhedged: { fundId: string; provider
 
 /** P-01 as the page reads it: the share of the larger value below which two pairs are a tie (F-80). */
 export const tieShareOf = (bundle: Pick<IndicesBundle, "p01">): number => tieThreshold([bundle.p01]);
-/** P-01 as a figure the page writes, with its card (the threshold that makes funds "שקולות" was nowhere on the page). */
-export const tieThresholdValue = (bundle: Pick<IndicesBundle, "p01">): SiteValue => {
-  const p = bundle.p01;
-  const v = p.value!;
-  return { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } };
-};
 
 /**
  * The place of each value in a ranked list, best first (F-80, P-01): every value within the tie threshold of the first

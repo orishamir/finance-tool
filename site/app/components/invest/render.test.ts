@@ -47,7 +47,7 @@ describe("the fees panel's and the receipt's written amounts add up, on every in
       const view = buildInvest({ bundle, index, plan: p });
       const pick = pickOfHeadline(view);
       if (!pick) return;
-      const out = html(createElement(ReceiptAndFees, { view, bundle, plan: p, pick, chosen: false, onPick: () => undefined }));
+      const out = html(createElement(ReceiptAndFees, { view, bundle, plan: p, pick, chosen: false }));
       const items = writtenFees(out);
       expect(items.length, index.id).toBeGreaterThan(1);
       expect(items.filter((x) => x.who === "fund").length, index.id).toBe(1);

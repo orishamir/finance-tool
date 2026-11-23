@@ -131,27 +131,6 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     expect(tieFunds(sp3, head3, theta)).toHaveLength(fundsOf(e30).size);
     expect(crowned(sp3, head3, theta)).toBe(false);
   });
-  it("the tied pair neither chosen nor set beside it is named in the fees panel, with its number where another fund has its name (fourth pass)", () => {
-    const raw = html(createElement(ReceiptAndFees, { view: sp3, bundle: tied, plan: long, pick: head3, chosen: false, onPick: () => undefined }));
-    const line = shown(raw).replace(/\u00a0/g, " ").slice(shown(raw).indexOf(invest.pair.tieWhy(n30)));
-    // the pairs of the tie other than the page's own and the one set beside it, the first of them named
-    const other = sure(pairVerdict(sp3, tied, long, head3, false).other, "the pair set beside the page's");
-    const rest = tieSet(sp3, head3, theta).filter((x) => key(x) !== key(head3) && key(x) !== key(other));
-    expect(rest.length).toBe(n30 - 2);
-    const first = sure(rest[0], "a third pair in the tie");
-    const fw = sure(allFunds(sp3).find((f) => f.rec.id === first.fund), "the third pair's fund");
-    const number = allFunds(sp3).some((f) => f !== fw && f.name === fw.name) ? ` ⁦${fw.number}⁩` : "";
-    const house = sure(sp3.providers.find((x) => x.id === first.house), "the third pair's house").short;
-    const words = rest.length === 1 ? invest.pair.tieThird : invest.pair.tieRest;
-    const more = rest.length > 1 ? ` ${invest.pair.tieMore(rest.length - 1)}` : "";
-    // the sentence, cut where it ends: it closes the paragraph that says why no pair is first
-    const at = raw.indexOf(words, raw.indexOf(invest.pair.tieWhy(n30)));
-    expect(at).toBeGreaterThan(0);
-    expect(shown(raw.slice(at, raw.indexOf("</p>", at))).replace(/\u00a0/g, " ")).toBe(`${words} ${house} ${invest.pair.tieWith} ${fw.name}${number}${more}.`);
-    // what makes a tie is said where the tie is named, with P-01 read from data/parameters
-    const rule = line.slice(line.indexOf(invest.pair.tieRule.before.trim()));
-    expect(rule.replace(/[\u2066-\u2069\u200e\u200f]/g, "")).toContain(`${invest.pair.tieRule.before.trim()}${fmt.pct((bundle.p01.value as { value: number }).value)}${invest.pair.tieRule.after}`);
-  });
   it("before any pick, the fund list calls the page's own fund one of the tied, not the site's pick (pass 5 readers)", () => {
     const out = shown(lists(sp3, tied, long, head3));
     expect(fundRow(lists(sp3, tied, long, head3), head3.fund)).toContain(invest.pair.tiedWord);
@@ -179,26 +158,6 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     expect(marked).toHaveLength(funds.length);
     expect(new Set(marked)).toEqual(new Set(funds));
   });
-  it("before any pick, the pair set beside the page's is the other of the tie, and no pair is called first or next", () => {
-    const out = shown(html(createElement(ReceiptAndFees, { view: sp3, bundle: tied, plan: long, pick: head3, chosen: false, onPick: () => undefined })));
-    expect(out).toContain(invest.pair.tieOther);
-    expect(out).toContain(invest.pair.tieWhy(n30));
-    expect(out).not.toContain(invest.pair.next);
-    expect(out).not.toContain("★");
-  });
-  it("with the person's own pick far from the best pair, the best pair is not crowned either, and the tie is counted (the account list's test)", () => {
-    const out = shown(html(createElement(ReceiptAndFees, { view: sp3, bundle: tied, plan: long, pick: { house: "leumi", fund: head3.fund }, chosen: true, onPick: () => undefined })));
-    expect(out).not.toContain(invest.pair.cheapestStar);
-    expect(out).toContain(invest.pair.tieTop(n30, fundsOf(e30).size));
-  });
-  it("a pick inside the tie set: the other pair is not called the cheap one, and the tie is counted as the title counts", () => {
-    const tiedPick = sure(tieSet(sp3, head3, theta).find((x) => key(x) !== key(head3)), "a pair of the tie other than the top");
-    const out = shown(html(createElement(ReceiptAndFees, { view: sp3, bundle: tied, plan: long, pick: tiedPick, chosen: true, onPick: () => undefined })));
-    expect(out).toContain(invest.pair.tieTop(n30, fundsOf(e30).size));
-    expect(out).toContain(invest.pair.tieWhy(n30));
-    expect(out).not.toContain(invest.pair.moreIfCheapest);
-    expect(out).toContain(invest.pair.vsYours);
-  });
   it("no list row carries the star", () => {
     expect(shown(lists(sp, tied, base, head))).not.toContain(invest.pair.cheapestTag);
   });
@@ -214,13 +173,6 @@ describe("the tie set of F-80 in the fees panel and the lists", () => {
     expect(shown(two)).toEqual(shown(first));
     // no row is marked as one the fold never shows
     expect(lists(sp, tied, base, head)).not.toContain("data-cannot");
-  });
-  it("why no pair is first follows the pair it is set beside, never before it", () => {
-    const out = html(createElement(ReceiptAndFees, { view: sp, bundle: tied, plan: base, pick: head, chosen: false, onPick: () => undefined }));
-    const other = out.indexOf(invest.pair.pickCheapest);
-    const why = out.indexOf(invest.pair.tieWhy(n10));
-    expect(other).toBeGreaterThan(0);
-    expect(why).toBeGreaterThan(other);
   });
 });
 
@@ -257,7 +209,7 @@ describe("the account card's notes on prices abroad (D65, D66)", () => {
     const view = buildInvest({ bundle, index: sp, plan: p });
     const fund = pickOfHeadline(view)!.fund;
     const panel = (house: string) => {
-      const out = html(createElement(ReceiptAndFees, { view, bundle, plan: p, pick: { house, fund }, chosen: true, onPick: () => undefined }));
+      const out = html(createElement(ReceiptAndFees, { view, bundle, plan: p, pick: { house, fund }, chosen: true }));
       return shown(out.slice(out.indexOf('data-chart="option-bars"')));
     };
     let banks = 0;

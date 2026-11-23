@@ -1,5 +1,5 @@
 // "לפני שמחליטים", under the two lists of the index page: questions about the receipt's pair, a card each with its answer as a live figure,
-// and one panel open under them. Where the fees go (the receipt's fee lines as bars, and the pair set beside this one), what moves the
+// and one panel open under them. Where the fees go (the receipt's fee lines as bars), what moves the
 // result most (F-89, F-90), hedged or not (F-95, wherever the index has funds of both kinds and the section has its figures) and the
 // stairs. Each answer reads the same computation as its panel, lifted here so a closed panel's card still answers: the fees follow a slider
 // as the receipt does, the others wait until the plan has rested, as they did as sections. An answer is plain words (a card is a tab, and
@@ -7,18 +7,18 @@
 import { useId, useState, type ReactNode } from "react";
 import { invest as c } from "../../copy";
 import { fmt } from "../../lib/format";
-import { accountSum, gapListFor, pricedVariable, tieThresholdValue, type InvestView, type PairCosts } from "../../lib/invest";
+import { accountSum, gapListFor, pricedVariable, type InvestView, type PairCosts } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { rateWords } from "../../lib/rate-words";
 import { receiptAmounts } from "../../lib/receipt";
 import { sumOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { Button, Card, MixedName, OptionBars, PanelHead, SourcedTag, TabCards, Tpl, type OptionBar, type TabCard } from "../kit";
+import { Card, MixedName, OptionBars, PanelHead, TabCards, type OptionBar, type TabCard } from "../kit";
 import { Fees } from "./funds";
 import { changesAt, PlanChanges, shareWord, usePlanChanges } from "./knobs";
 import { DollarSection, dollarSwing, useDollarCase, type DollarCase } from "./dollar";
 import { StairsSection, useStairs } from "./stairs";
-import { allFunds, pairVerdict, phoneOf, tieSet, type OnPick, type Pick, type PairVerdict } from "./pair";
+import { allFunds, pairVerdict, type Pick } from "./pair";
 import { partName } from "./cost-lines";
 import { RateLine } from "./receipt";
 
@@ -66,7 +66,7 @@ export function hedgeCard(d: DollarCase): TabCard {
   return { key: "hedge", question: c.before.hedge.question, answer: `${swing.lo} ${c.dollar.to} ${swing.hi}`, note: c.dollar.cancelsNote(swing.from, swing.to) };
 }
 
-export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chosen, hedge, stairs, onPick }: {
+export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chosen, hedge, stairs }: {
   view: InvestView;
   /** The data the pair is priced on, as the page's worker holds it (the sweep asks the worker on it). */
   bundle: IndicesBundle;
@@ -82,7 +82,6 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
   hedge: boolean;
   /** The stairs read the page's view and the person's own pick (or none: the page's example). */
   stairs: { view: InvestView; bundle: IndicesBundle; startHouse: string | null; startFund: string | null };
-  onPick: OnPick;
 }) {
   const idBase = useId();
   const [open, setOpen] = useState<Key>("fees");
@@ -105,7 +104,7 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
       question: c.before.fees.question,
       answer: `${top.name}: ${amount(top.amount)}`,
       note: `${c.before.fees.of} ${amount(fees.r.account + fees.r.fund)} ${c.before.fees.ofTail}`,
-      panel: () => <FeesPanel view={view} bundle={bundle} plan={livePlan} pick={pick} chosen={chosen} onPick={onPick} />,
+      panel: () => <FeesPanel view={view} bundle={bundle} plan={livePlan} pick={pick} chosen={chosen} />,
     },
   ];
   if (changes) {
@@ -164,9 +163,8 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
   );
 }
 
-/** Where the fees go: the chosen pair's fee items as bars, the largest first, then their total, why the tax is not among them, and the
- * pair set beside the chosen one in a sentence (a tap on its names chooses it), with why no pair is first where they tie (F-80, P-01). */
-export function FeesPanel({ view, bundle, plan, pick, chosen, onPick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; chosen: boolean; onPick: OnPick }) {
+/** Where the fees go: the chosen pair's fee items as bars, the largest first, then their total and why the tax is not among them. */
+export function FeesPanel({ view, bundle, plan, pick, chosen }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; chosen: boolean }) {
   const f = c.before.fees;
   // the pair is priced once per plan for the receipt, the card and this panel (`pairCostsKept`)
   const v = pairVerdict(view, bundle, plan, pick, chosen);
@@ -207,88 +205,7 @@ export function FeesPanel({ view, bundle, plan, pick, chosen, onPick }: { view: 
           </strong>{" "}
           {f.noTax(v.taxName, v.taxName === c.pair.taxLinePayouts)}
         </p>
-        <OtherPair view={view} bundle={bundle} plan={plan} pick={pick} v={v} onPick={onPick} />
       </div>
     </div>
-  );
-}
-
-/** The pair set beside the chosen one (the cheapest, or on the cheapest the next one), what it charges and leaves and how it stands
- * against the chosen pair; under a tie, why neither is first, with the threshold as a figure and the tie's other pairs. */
-function OtherPair({ view, bundle, pick, v, onPick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; v: PairVerdict; onPick: OnPick }) {
-  const { best, onBest, other, pc, pcOther, theta, n, nFunds, crown, tied, tie, mineKey, otherKey, gap, moreIfOther, nameOf, fundOf } = v;
-  if (!other || !pcOther || !pc) return null;
-  const today = bundle.today;
-  // the receipt's pair by what it is: the person's, else under a tie the one the panel is about (never the person's choice), else the cheapest
-  const vsMine = v.mineRole === c.pair.yours ? c.pair.vsYours : tie ? c.shownPair(false).vs : c.pair.vsCheapest;
-  const role = onBest ? (tie ? c.pair.tieOther : c.pair.next) : crown ? c.pair.cheapestStar : c.pair.tieTop(n, nFunds);
-  const r = receiptAmounts(pcOther);
-  const phone = phoneOf(view, bundle, other);
-  // a fund named as another of the index is (iShares on the exchange here and abroad) is told apart by its number
-  const twin = (id: string) => {
-    const fw = allFunds(view).find((x) => x.rec.id === id);
-    return fw && allFunds(view).some((x) => x !== fw && x.name === fw.name) ? fw.number : null;
-  };
-  const pairName = (p: { house: string; fund: string }) => (
-    <>
-      <MixedName>{nameOf(p)}</MixedName> {c.pair.tieWith} <MixedName>{fundOf(p)}</MixedName>
-      {twin(p.fund) && <> {`⁦${twin(p.fund)}⁩`}</>}
-    </>
-  );
-  const gapWords = onBest ? (
-    <>
-      <Num value={gap(pcOther.left, c.pair.input(otherKey, c.pair.colLeft), pc.left, c.pair.input(mineKey, c.pair.colLeft), vsMine)} /> {vsMine}
-    </>
-  ) : (
-    // the pick in the tie set: the other pair is not "the cheap one", only the other one
-    <>
-      <Num value={moreIfOther!} display={fmt.signedNisWhole} /> {tied ? vsMine : c.pair.moreIfCheapest}
-    </>
-  );
-  // why there is no order, counted as the badge counts; the pairs of the tie not named here follow, one and a count
-  const rest = tie || tied ? tieSet(view, best, theta).filter((x) => !(x.house === pick.house && x.fund === pick.fund) && !(x.house === other.house && x.fund === other.fund)) : [];
-  const restLine =
-    rest.length === 0 ? null : (
-      <>
-        {" "}
-        {rest.length === 1 ? c.pair.tieThird : c.pair.tieRest} {pairName(rest[0]!)}
-        {rest.length > 1 && <> {c.pair.tieMore(rest.length - 1)}</>}.
-      </>
-    );
-  return (
-    <p>
-      <Tpl
-        t={c.before.fees.other}
-        vars={{
-          role,
-          pair: (
-            <>
-              <Button variant="inline" aria-label={`${c.pair.pickCheapest}: ${nameOf(other)}, ${fundOf(other)}`} onClick={() => onPick(other)}>
-                {pairName(other)}
-              </Button>
-              {phone && (
-                <>
-                  {" "}
-                  <SourcedTag value={phone}>{c.pair.phoneTag}</SourcedTag>
-                </>
-              )}
-            </>
-          ),
-          fees: <Num value={togetherOf(pcOther, today)} display={fmt.nisWhole(r.account + r.fund)} />,
-          left: <Num value={pcOther.left} />,
-          gap: gapWords,
-        }}
-      />
-      {(tie || tied) && (
-        <>
-          {" "}
-          {c.pair.tieWhy(Math.max(n, 2))}
-          {c.pair.tieRule.before}
-          <Num value={tieThresholdValue(bundle)} />
-          {c.pair.tieRule.after}
-          {restLine}
-        </>
-      )}
-    </p>
   );
 }

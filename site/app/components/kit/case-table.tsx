@@ -655,6 +655,25 @@ function HeadWords({ head, end, grip, onRename }: { head: ReactNode; end?: boole
 }
 
 /**
+ * A grid's corner, over the row heads and beside the column heads: what the two things are, split by a 1 px diagonal in the border's
+ * colour from its top start corner to its bottom end corner (founder, 2026-11-23). The columns' thing above the line at its end, toward the
+ * columns; the rows' thing under it at its start, over the row heads; both small, in the muted colour, each wrapping within most of the
+ * width so a long name stays on its side of the line. It stands on the column heads' 1 px line, and is at least 52 px tall, so the
+ * diagonal has room.
+ */
+function GridCorner({ across, down }: { across: string; down: string }) {
+  return (
+    <div data-grid-corner="" style={{ gridColumn: 1, gridRow: 1 }} className="relative flex min-h-13 flex-col justify-between gap-1 rounded-t-md border-b border-border px-1 pt-1 pb-2 text-xs leading-4 text-muted-foreground">
+      <svg className="pointer-events-none absolute inset-0 size-full text-border rtl:-scale-x-100" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <line x1="0" y1="0" x2="100" y2="100" stroke="currentColor" strokeWidth={1} vectorEffect="non-scaling-stroke" />
+      </svg>
+      <span className="relative max-w-[70%] self-end text-end">{across}</span>
+      <span className="relative max-w-[70%] self-start">{down}</span>
+    </div>
+  );
+}
+
+/**
  * A fee that changes by two things, as a grid (founder, 2026-11-20): the first thing's values down the side (`rows`), the second's across
  * the top (`columns`); one tile per case (equal neighbours one tile), raised on the cases' band as a table's, 8 px apart, a press anywhere on
  * it opening it, a case on any value across spanning its row and one down over several rows spanning them; the open case's tile outlined
@@ -666,9 +685,10 @@ function HeadWords({ head, end, grip, onRename }: { head: ReactNode; end?: boole
  * A row's head is as tall as its tiles and its lines; a row's `addPart`, the plus under it that opens the toolbox on every case of the row.
  * `above`: the switch of a third thing. `steps`: the values across are a ladder's steps, whose heads hold a box each while their fee is
  * open, and take the room for it. `foot`: what stands under the grid (the bin while something is lifted, laid over what follows). Wider
- * than its block, it scrolls inside itself, sideways only, as a table does.
+ * than its block, it scrolls inside itself, sideways only, as a table does. `corner`: what the two things are, in the place over the row
+ * heads and beside the column heads (`GridCorner`).
  */
-export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertColumn, above, steps, foot, label }: { columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; /** The plus between row `k - 1` and row `k`. */ insertRow?: (k: number) => AddSpec | null; /** The plus between column `k - 1` and column `k`. */ insertColumn?: (k: number) => AddSpec | null; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
+export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertColumn, above, steps, foot, label, corner }: { /** The things' names: `across` the second's (the columns'), `down` the first's (the rows'). */ corner?: { across: string; down: string }; columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; /** The plus between row `k - 1` and row `k`. */ insertRow?: (k: number) => AddSpec | null; /** The plus between column `k - 1` and column `k`. */ insertColumn?: (k: number) => AddSpec | null; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
   const n = columns.length;
   const keys = useCellKeys();
   const carried = useCarried();
@@ -696,6 +716,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
         {rows.slice(0, -1).map((r, j) => (
           <div key={`hairline:${r.id}`} aria-hidden data-hairline="row" style={{ gridColumn: 1, gridRow: between(j) }} className="pointer-events-none h-px self-center bg-border" />
         ))}
+        {corner && <GridCorner {...corner} />}
         <div role="row" className="contents">
           {columns.map((c, k) => {
             const head = <HeadWords head={c.head} end grip={c.grip} onRename={c.onRename} />;
