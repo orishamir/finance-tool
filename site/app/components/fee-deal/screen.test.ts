@@ -5,14 +5,14 @@ import { createElement, type ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { dealCases, feeDeal, help } from "../../copy";
+import { dealCases, feeDeal, help, site } from "../../copy";
 import { fmt, formatValue } from "../../lib/format";
 import { feesData } from "../../lib/fees.server";
 import { builder } from "../../lib/fee-deal/rows";
 import { panel } from "../../lib/fee-deal/panel";
 import { casesToolbox, toolbox } from "../../lib/fee-deal/toolbox";
 import { leftOut } from "../../lib/fee-deal/left-out";
-import { hasCases, typed, type FeeDeal } from "../../lib/fee-deal/model";
+import { hasCases, typed, type FeeDeal, type Price } from "../../lib/fee-deal/model";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { readDealFor } from "../../lib/fee-deal/deal-read";
 import { readingOf } from "../../lib/fee-deal/reading";
@@ -23,11 +23,12 @@ import { feeName } from "./words";
 import { ToolboxColumn } from "./toolbox";
 import type { OpenHere } from "./fee-block";
 import type { PlaceHands } from "./open-case";
-import { applyTool, landingOf } from "./toolbox";
-import { tapStep } from "../../lib/fee-deal/places";
+import { landingOf } from "./toolbox";
 import { cardOf } from "../../lib/fee-deal/toolbox";
-import { changeFormKept, formStep, undo, undoWords } from "../../lib/fee-deal/undo";
-import { ReadingCards } from "./reading";
+import { changeFormKept } from "../../lib/fee-deal/undo";
+import { HeldBox, HeldChange, ReadingCards } from "./reading";
+import { fill } from "../kit";
+import type { HeldView } from "../../lib/fee-deal/charts";
 import { sumDisplay, upToDisplay } from "./words";
 
 const data = feesData();
@@ -208,6 +209,160 @@ describe("the panels' headlines", () => {
     expect(shown).toContain(`${r.maxAt.lead}2,300,000 ₪${r.maxAt.stops}6,900 ₪${r.maxAt.falls}${r.maxAt.end}`);
     expect(shown).toContain(r.lanes);
     expect(shown).not.toContain(r.lanesEach);
+  });
+});
+
+describe("the holding chart's words", () => {
+  it("head a chart with no sum per period by its one mark: where the custody's minimum of 900 ₪ a year ends, at 600,000 ₪", () => {
+    const d = account();
+    d.fees = [{ id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 12, every: 12, min: typed(900) } }] }];
+    const shown = drawReading(d);
+    expect(shown).toContain("עד 600,000 ₪ המינימום קובע");
+    expect(shown).not.toContain(feeDeal.read.held.cross.after);
+  });
+  it("say each price that changes in a later period as one sentence: a fee that stops, one that rises, one that starts and one that falls", () => {
+    const d = account();
+    const sum = (n: number) => ({ form: "sum" as const, amount: typed(n), every: 1 as const });
+    const held = (pct: number) => ({ form: "held" as const, rate: typed(pct), per: 12 as const, every: 12 as const });
+    d.fees = [
+      { id: "fee-fixed", kind: "fixed_period", stages: [{ price: sum(80), until: "2027-08" }, { price: sum(0) }] },
+      { id: "fee-custody", kind: "custody", stages: [{ price: held(0.15), until: "2027-08" }, { price: held(0.2) }] },
+      { id: "fee-fund", kind: "fund_management", stages: [{ price: { form: "free" }, until: "2027-08" }, { price: held(0.1) }] },
+      { id: "fee-current", kind: "current_account", stages: [{ price: sum(12), until: "2027-08" }, { price: sum(9) }] },
+    ];
+    const later = (readingOf(readDealFor(d, data.kinds, TODAY), data.fx).panels.held[1] as { chart: HeldView }).chart;
+    // a later period's panel opens only on a tap, so each row is drawn alone, with the space that follows it before the next, and without
+    // the frame's own words (the sheet's "יש עוד למטה")
+    const said = later.changes.map((row) => text(createElement(HeldChange, { row, saved: false })).replace(site.moreBelow, ""));
+    expect(said).toEqual(["דמי חשבון קבועים מפסיקים להיגבות. ", "דמי ניהול פיקדון ניירות ערך עולים ל־0.2% בשנה ממה שמוחזק. ", "דמי הניהול של הקרן מתחילים להיגבות: 0.1% בשנה ממה שמוחזק. ", "חשבון עובר ושב בבנק יורד ל־9 ₪ בחודש. "]);
+  });
+  it("say the shares' bands from where every share is at its rate: from 600,000 ₪, where the custody's minimum ends above the crossover", () => {
+    // custody of 0.15% a year with at least 900 ₪, a fund's 0.1% and 1,000 ₪ a year meet at 100,000 ₪, inside the minimum's stretch
+    const d = account();
+    d.fees = [
+      { id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 12, every: 12, min: typed(900) } }] },
+      { id: "fee-fund", kind: "fund_management", stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12 } }] },
+      { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(1000), every: 12 } }] },
+    ];
+    const shown = drawReading(d);
+    expect(shown).toContain("עד 100,000 ₪, הסכומים הקבועים עולים בשנה יותר מכל האחוזים");
+    expect(shown).toContain("מעל 600,000 ₪ האחוזים קובעים: 0.25% בשנה.");
+  });
+  it("name the one fee whose price changes at the one mark, and meet no shares where none is charged: custody of 10 ₪ a month to 100,000 ₪", () => {
+    const d = account();
+    const toTop = (id: string, kind: "custody" | "own", amount: number): FeeDeal["fees"][number] => ({
+      id,
+      kind,
+      ...(kind === "own" ? { name: "עמלת בדיקה" } : {}),
+      by: [{ kind: "portfolioSize", unit: "ILS", tops: [typed(100_000)] }],
+      cases: [
+        { id: `${id}-1`, when: [0], stages: [{ price: { form: "sum", amount: typed(amount), every: 1 } }] },
+        { id: `${id}-2`, when: [1], stages: [{ price: { form: "free" } }] },
+      ],
+    });
+    d.fees = [toTop("fee-custody", "custody", 10)];
+    const shown = drawReading(d);
+    expect(shown).toContain("ב־100,000 ₪ המחיר של דמי ניהול פיקדון ניירות ערך משתנה");
+    expect(shown).not.toContain(feeDeal.read.held.cross.after);
+    expect(shown).not.toContain(feeDeal.read.held.bands.decides);
+    // two fees whose prices change at the same mark: neither is named
+    d.fees = [toTop("fee-custody", "custody", 10), toTop("fee-own", "own", 5)];
+    expect(drawReading(d)).toContain("ב־100,000 ₪ המחיר משתנה");
+  });
+  it("say at a step's top what the custody does over it: it stops, beside a fund's share or a fixed sum, or its share holds on the whole amount", () => {
+    const d = account();
+    const custody = (below: Price, above: Price): FeeDeal["fees"][number] => ({
+      id: "fee-custody",
+      kind: "custody",
+      by: [{ kind: "portfolioSize", unit: "ILS", tops: [typed(100_000)] }],
+      cases: [
+        { id: "c1", when: [0], stages: [{ price: below }] },
+        { id: "c2", when: [1], stages: [{ price: above }] },
+      ],
+    });
+    const stops = fill(feeDeal.read.held.drop.stops, { name: "דמי ניהול פיקדון ניירות ערך" });
+    // 10 ₪ a month up to 100,000 ₪, free above, beside a fund's 0.1% a year: 120 + 99 ₪ under the top, 101 ₪ over it
+    d.fees = [custody({ form: "sum", amount: typed(10), every: 1 }, { form: "free" }), { id: "fee-fund", kind: "fund_management", stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12 } }] }];
+    let shown = drawReading(d);
+    expect(shown).toContain(stops);
+    expect(shown).toContain("101,000 ₪ עולים 101 ₪ בשנה, ו־99,000 ₪ עולים 219 ₪");
+    expect(shown).not.toContain(feeDeal.read.held.drop.share);
+    // 0.2% a year up to 100,000 ₪, free above, beside 100 ₪ a year
+    d.fees = [custody({ form: "held", rate: typed(0.2), per: 12, every: 12 }, { form: "free" }), { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(100), every: 12 } }] }];
+    shown = drawReading(d);
+    expect(shown).toContain(stops);
+    expect(shown).toContain("101,000 ₪ עולים 100 ₪ בשנה, ו־99,000 ₪ עולים 298 ₪");
+    expect(shown).not.toContain(feeDeal.read.held.drop.share);
+    // 240 ₪ a year up to 100,000 ₪, then 0.1%, beside 1,200 ₪ a year: the share holds on the whole amount, and meets the sums at 1,200,000 ₪
+    d.fees = [custody({ form: "sum", amount: typed(240), every: 12 }, { form: "held", rate: typed(0.1), per: 12, every: 12 }), { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(1200), every: 12 } }] }];
+    shown = drawReading(d);
+    expect(shown).toContain(feeDeal.read.held.drop.share);
+    expect(shown).toContain("101,000 ₪ עולים 1,301 ₪ בשנה, ו־99,000 ₪ עולים 1,440 ₪");
+    expect(shown).toContain("עד 1,200,000 ₪, הסכומים הקבועים עולים בשנה יותר מכל האחוזים");
+    expect(shown).toContain(feeDeal.read.held.crossMark.same);
+    expect(shown).not.toContain(stops);
+  });
+  it("say over a crossover at a step's top that the shares cost more from there: 120 ₪ a year up to 100,000 ₪, then 0.15%", () => {
+    const d = account();
+    d.fees = [
+      {
+        id: "fee-custody",
+        kind: "custody",
+        by: [{ kind: "portfolioSize", unit: "ILS", tops: [typed(100_000)] }],
+        cases: [
+          { id: "c1", when: [0], stages: [{ price: { form: "sum", amount: typed(120), every: 12 } }] },
+          { id: "c2", when: [1], stages: [{ price: { form: "held", rate: typed(0.15), per: 12, every: 12 } }] },
+        ],
+      },
+    ];
+    const shown = drawReading(d);
+    expect(shown).toContain("עד 100,000 ₪, הסכומים הקבועים עולים בשנה יותר מכל האחוזים");
+    expect(shown).toContain(feeDeal.read.held.crossMark.past);
+    expect(shown).not.toContain(feeDeal.read.held.crossMark.same);
+  });
+  it("head a chart whose one mark is where a maximum starts: custody of 0.15% a year with at most 1,500 ₪, from 1,000,000 ₪", () => {
+    const d = account();
+    d.fees = [{ id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 12, every: 12, max: typed(1500) } }] }];
+    expect(drawReading(d)).toContain("מעל 1,000,000 ₪ המקסימום קובע");
+  });
+});
+
+describe("the holding chart's box at an amount", () => {
+  const box = (d: FeeDeal, at: number) => {
+    const v = readingOf(readDealFor(d, data.kinds, TODAY), data.fx).panels.held[0];
+    if (!v || !("chart" in v)) throw new Error("no holding chart");
+    return text(createElement(HeldBox, { read: v.chart.readAt(at), strong: null, saved: false }));
+  };
+  it("says where a minimum decides a fee's year: custody of 0.15% a year with at least 900 ₪, at 100,000 ₪", () => {
+    const d = account();
+    d.fees = [{ id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 12, every: 12, min: typed(900) } }] }];
+    expect(box(d, 100_000)).toContain("דמי ניהול פיקדון ניירות ערך · מינימום900 ₪");
+    expect(box(d, 1_000_000)).toContain("דמי ניהול פיקדון ניירות ערך1,500 ₪");
+  });
+  it("files the custody under its sum alone at the top of that step: 240 ₪ a year up to 100,000 ₪, then 0.1%, and 1,200 ₪ a year, at 100,000 ₪", () => {
+    const d = account();
+    d.fees = [
+      {
+        id: "fee-custody",
+        kind: "custody",
+        by: [{ kind: "portfolioSize", unit: "ILS", tops: [typed(100_000)] }],
+        cases: [
+          { id: "c1", when: [0], stages: [{ price: { form: "sum", amount: typed(240), every: 12 } }] },
+          { id: "c2", when: [1], stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12 } }] },
+        ],
+      },
+      { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(1200), every: 12 } }] },
+    ];
+    const said = box(d, 100_000);
+    expect(said).toContain("1,440 ₪");
+    expect(said).toContain("דמי ניהול פיקדון ניירות ערך240 ₪");
+    expect(said).not.toContain(feeDeal.read.held.groups.share);
+  });
+  it("says where a maximum on each security decides it: 0.15% a quarter with at most 3,700 ₪ a security, at 5,000,000 ₪", () => {
+    // 3,700 ₪ a quarter from 3,700 / 0.0015 = 2,466,667 ₪: 14,800 ₪ a year
+    const d = account();
+    d.fees = [{ id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 3, every: 3, perSecurity: typed(3700), max: typed(11500) } }] }];
+    expect(box(d, 5_000_000)).toContain("דמי ניהול פיקדון ניירות ערך · מקסימום14,800 ₪");
   });
 });
 
@@ -672,62 +827,5 @@ describe("a fee whose price is not given in the case the reading reads", () => {
     expect(words).toContain(u.feeLine("בעמלת קנייה ומכירה", u.missing.unit!, "בניירות ערך בתל אביב, באינטרנט ובאפליקציה"));
     expect(words).toContain(u.enter.unit!);
     expect(words).not.toContain(feeDeal.builder.facts.noPrice);
-  });
-});
-
-describe("the card \"חינם\"", () => {
-  /** A trade fee with two prices over time, each a percent of the action with a minimum, and a balance fee free throughout. */
-  const deal = (): FeeDeal => ({
-    ...account(),
-    fees: [
-      { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25), min: typed(15) }, until: "2027-01" }, { price: { form: "action", rate: typed(0.1), min: typed(10) } }] },
-      { id: "fee-free", kind: "trade", stages: [{ price: { form: "free" }, until: "2027-01" }, { price: { form: "free" } }] },
-    ],
-  });
-  /** A value that must be there, or the test fails saying so. */
-  const got = <T,>(x: T | null | undefined): T => {
-    if (x === null || x === undefined) throw new Error("a value the test needs is missing");
-    return x;
-  };
-  const card = (feeId: string) => cardOf(got(toolbox(readDealFor(deal(), data.kinds, TODAY), feeId)), "free");
-
-  it("stands in \"כמה גובים\", its places every price that charges something", () => {
-    const box = got(toolbox(readDealFor(deal(), data.kinds, TODAY), "fee-trade"));
-    const charge = got(box.groups.find((g) => g.parts.some((p) => p.id === "free")));
-    expect(charge.head).toBe(feeDeal.cases.groups.charge);
-    expect(card("fee-trade")).not.toHaveProperty("off");
-    expect(card("fee-trade")).toMatchObject({ k: "part", places: [{ on: "price", side: "buy", k: 0 }, { on: "price", side: "buy", k: 1 }] });
-  });
-
-  it("is off where every price is free already, saying why", () => {
-    expect(card("fee-free")).toMatchObject({ k: "part", used: false, off: feeDeal.cases.allFree, places: [] });
-  });
-
-  it("draws \"חינם\" on each price that charges, in place of its charge and its parts", () => {
-    const d = deal();
-    expect(partsDrawn(markup(builderOf(d, "fee-trade", null, null, holding(d, "fee-trade", "free"))))).toEqual(["+charge", "+charge"]);
-  });
-
-  it("makes the price it goes on free, its charge and its parts gone, kept for the undo, whose line says so: a tap holding it, then a tap or a drop at its place", () => {
-    const d = deal();
-    const fee = got(d.fees[0]);
-    // the page's way: the card's tap holds it over its places, and a tap or a drop at one does there what the card does (`applyTool`),
-    // its charge through the page's `changeForm` (`formStep`, with no undo kept)
-    const step = tapStep(null, { fee: "fee-trade", case: null, card: "free" }, got(card("fee-trade")).places);
-    expect(step).toMatchObject({ held: { card: "free" }, add: null });
-    const at = { on: "price" as const, side: "buy" as const, k: 1 };
-    const made: ReturnType<typeof formStep>[] = [];
-    applyTool("free", fee, null, at, {
-      onAsk: () => undefined,
-      onPending: () => undefined,
-      onCharge: (part, place) => void (place.on === "price" && made.push(formStep(d, null, "fee-trade", part, "fee-trade", null, { side: place.side, k: place.k }))),
-      onPart: () => undefined,
-    });
-    const m = got(made[0]);
-    const r = got("r" in m ? m.r : null);
-    expect(got(r.deal.fees[0]).stages).toEqual([got(fee.stages)[0], { price: { form: "free" } }]);
-    const f = feeDeal.cases.formChanged;
-    expect(undoWords(got(r.undo), (x) => x.kind, data)).toBe(f.lost.replace("{parts}", got(f.parts.min)).replace("{verb}", f.one));
-    expect(got(undo(r.deal, got(r.undo), "fee-trade")).deal).toEqual(d);
   });
 });

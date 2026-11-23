@@ -20,7 +20,7 @@ import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
 import { Sheet } from "../Sheet";
-import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, OnOffSwitch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, PartFacts, StretchBar, StretchChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, type Landing } from "./index";
+import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, OnOffSwitch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, PartFacts, StretchBar, StretchChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, GripRoom, type Landing } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 import { linearScale, steppedScale } from "./slider-scale";
 
@@ -152,6 +152,59 @@ function SampleLanes({ at, onAt }: { at: number; onAt: (a: number) => void }) {
       entered
       onPart={(_, p) => onAt(Math.sqrt(Math.max(p.from, 1000) * (p.to ?? 1_000_000)))}
     />
+  );
+}
+
+/**
+ * One fee with a lane and a layer in each group (`of`): a sum up to 100,000 and a share above it, the reader's amount at the step's top,
+ * where only the sum's part is lit; the pointer over any of its lanes or layers sets all of them apart.
+ */
+function SplitDemo() {
+  const [strong, setStrong] = useState<string | null>(null);
+  const s = g.sample.amount;
+  const range = { lo: 10_000, hi: 1_000_000 };
+  const points = logSamples(range.lo, range.hi, 200, [100_000]).map((a) => {
+    const layers = [a > 100_000 ? 0.25 : 0, a > 100_000 ? 0 : (120 / a) * 100, (60 / a) * 100];
+    return { at: a, share: layers.reduce((x, y) => x + y, 0), layers };
+  });
+  const groups = [
+    { id: "share", label: s.groups.share },
+    { id: "fixed", label: s.groups.fixed },
+  ];
+  return (
+    <ShareStack range={range} at={100_000}>
+      <ShareChart
+        range={range}
+        points={points}
+        top={Math.max(...points.map((p) => p.share)) * 1.06}
+        layers={[
+          { id: "a:share", of: "a", fill: "fill-fee-custody", edge: "stroke-fee-custody", group: "share" },
+          { id: "a:fixed", of: "a", fill: "fill-fee-custody", edge: "stroke-fee-custody", group: "fixed" },
+          { id: "b", fill: "fill-fee-account", edge: "stroke-fee-account", group: "fixed" },
+        ]}
+        groups={groups}
+        strong={strong}
+        onStrong={setStrong}
+        xTitle={s.x}
+      />
+      <AmountLanes
+        title={s.lanes}
+        range={range}
+        groups={[
+          { id: "share", label: s.laneGroups.share },
+          { id: "fixed", label: s.laneGroups.fixed },
+        ]}
+        lanes={[
+          { id: "a:share", of: "a", name: s.a, swatch: "bg-fee-custody", edge: "border-fee-custody", group: "share", parts: [{ id: "rate", from: 100_000, to: null, label: s.parts.held, short: s.parts.short }] },
+          { id: "a:fixed", of: "a", name: s.a, swatch: "bg-fee-custody", edge: "border-fee-custody", group: "fixed", parts: [{ id: "sum", from: 0, to: 100_000, label: s.price }] },
+          { id: "b", name: s.b, swatch: "bg-fee-account", group: "fixed", parts: null, price: s.price },
+        ]}
+        at={100_000}
+        strong={strong}
+        back
+        onLane={setStrong}
+      />
+    </ShareStack>
   );
 }
 
@@ -2910,6 +2963,11 @@ function DealDemos({ today }: { today: string }) {
             <LanesDemo />
           </Card>
         </State>
+        <State label={`one fee with a lane and a layer in each group (of), the reader's amount at its step's top, 100,000, where only the lower step's part is lit; ${g.states.interactive}: point at any of its lanes or layers to set them all apart`} wide>
+          <Card className="max-w-3xl">
+            <SplitDemo />
+          </Card>
+        </State>
       </Demo>
       <Demo name="RangeFields" use={g.uses.RangeFields}>
         <State label={`the range a chart opened at, and the reader's own with its reset; ${g.states.interactive}`} wide>
@@ -3208,7 +3266,6 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
         { id: "unit", label: `$ ${dealWords.price.perUnit}`, used: u("unit") },
         { id: "sum", label: `$ ${perAction}`, used: u("sum") },
         { id: "third", label: sc.thirdPartyPart, used: u("third") },
-        { id: "free", label: dealWords.panel.forms.free ?? "", used: false },
       ],
     },
     {
@@ -3248,8 +3305,6 @@ function toolGroups(used: string[], full = false): ToolGroup[] {
 
 /** The charges among the gallery's toolbox cards: each goes only on a price that charges nothing. */
 const CHARGES = new Set(["pct", "unit", "sum"]);
-/** The gallery's sample parts a price that charges keeps beside its charge, which "חינם" takes away with it. */
-const KEPT_BESIDE = new Set(["third", "discount", "offset", "refund", "min", "max", "cap", "unexecuted", "partial"]);
 
 /**
  * The toolbox on several cases at once: every case charges a share, has a maximum and keeps its sums in shekels or dollars, so the other
@@ -3258,7 +3313,7 @@ const KEPT_BESIDE = new Set(["third", "discount", "offset", "refund", "min", "ma
 function severalGroups(): ToolGroup[] {
   const off = dealWords.cases.casesOff;
   return toolGroups(["pct", "max", "what", "channel"]).map((gr) => {
-    if (gr.kind === "charge") return { ...gr, parts: gr.parts.map((p) => ((CHARGES.has(p.id) || p.id === "free") && !p.used ? { ...p, off: true } : p)), offWhy: off.perCase };
+    if (gr.kind === "charge") return { ...gr, parts: gr.parts.map((p) => (CHARGES.has(p.id) && !p.used ? { ...p, off: true } : p)), offWhy: off.perCase };
     if (gr.kind === "bound") return { ...gr, parts: gr.parts.map((p) => (p.id === "min" ? { ...p, off: true } : p)), offWhy: off.currencies };
     if (gr.kind === "when")
       return { ...gr, parts: gr.parts.map((p) => (p.id === "sale" ? { ...p, off: true } : p)), lines: gr.lines?.map((l) => ({ ...l, off: true })), offWhy: off.perCase };
@@ -3271,8 +3326,7 @@ const caseLine = { lead: caseWords.toolbox.target, target: sc.target };
 
 /**
  * A tap adds a part (its card takes the ✓); a tap on "הערוץ" asks for the channels first; a tap on a thing with its ✓ takes it away. The
- * case charges per unit, so the other charges are off, the group saying why; "חינם", the one card that replaces, makes the price free, its
- * charge and its parts gone, and is then off itself while the charges are back on.
+ * case charges per unit, so the other charges are off, the group saying why.
  */
 function ToolboxDemo() {
   const [used, setUsed] = useState(["unit", "min", "cap", "what", "track", "unexecuted"]);
@@ -3280,15 +3334,11 @@ function ToolboxDemo() {
   const [channels, setChannels] = useState(["branch", "web"]);
   const ask = asking && <AskValuesDemo chosen={channels} onToggle={(id) => setChannels((c) => (c.includes(id) ? c.filter((x) => x !== id) : [...c, id]))} onDone={(add) => (setAsking(false), add && setUsed((u) => [...u, "channel"]))} />;
   const charging = [...CHARGES].some((id) => used.includes(id));
-  const groups = toolGroups(used).map((gr) => {
-    if (gr.kind !== "charge") return gr;
-    if (charging) return { ...gr, parts: gr.parts.map((p) => (CHARGES.has(p.id) && !p.used ? { ...p, off: true } : p)), offWhy: dealWords.cases.charging };
-    return { ...gr, parts: gr.parts.map((p) => (p.id === "free" ? { ...p, off: true } : p)), offWhy: dealWords.cases.allFree };
-  });
+  const groups = toolGroups(used).map((gr) => (gr.kind === "charge" && charging ? { ...gr, parts: gr.parts.map((p) => (CHARGES.has(p.id) && !p.used ? { ...p, off: true } : p)), offWhy: dealWords.cases.charging } : gr));
   return (
     <div className="flex max-w-lg flex-col gap-4">
       {ask}
-      <Toolbox addTo={caseLine} groups={groups} onAdd={(group, part) => (group === "when" && part === "channel" ? setAsking(true) : part === "free" ? setUsed((u) => u.filter((x) => !CHARGES.has(x) && !KEPT_BESIDE.has(x))) : setUsed((u) => [...u, part]))} onRemove={(_group, part) => setUsed((u) => u.filter((x) => x !== part))} />
+      <Toolbox addTo={caseLine} groups={groups} onAdd={(group, part) => (group === "when" && part === "channel" ? setAsking(true) : setUsed((u) => [...u, part]))} onRemove={(_group, part) => setUsed((u) => u.filter((x) => x !== part))} />
     </div>
   );
 }
@@ -3797,18 +3847,10 @@ function CaseDemos({ today }: { today: string }) {
             ))}
           </div>
         </State>
-        <State label={`in edit, carried from its own surface (a mouse's press moved a few pixels, a finger's long press; its box keeps its own press), with no grip, its bin beside it; dropped in a case's cell, the cell's knob then stretches it across the row; ${g.states.interactive}`} wide>
-          <div className="flex max-w-lg flex-col gap-2" data-figures>
-            <PartEdit kind="bound" mark="min" lead={dealWords.builder.minWord} onRemove={() => undefined} lift={{ item: "kit:part:min" }}>
-              <FigureField value={null} label={dealWords.builder.minWord} unit="₪" sign="₪" tight onCommit={() => undefined} />
-            </PartEdit>
-            <PartEdit kind="charge" lead={dealWords.panel.forms.free} lift={{ item: "kit:part:free" }} />
-          </div>
-        </State>
-        <State label={`the landing copy of a part a held toolbox card would put on a price, over the part as a tap puts it there: no fill, no kind's colour, its bin unseen with its room kept, a dashed outline and its contents faint; ${g.states.interactive}: the outline turns solid in the action colour and the contents rise under the pointer and on the keyboard's focus, as under a carried card (the last); a tap adds it`} wide>
+        <State label={`the landing copy of a part a held toolbox card would put on a price, over the part as a tap puts it there: no fill, no kind's colour, no bin or grip (their room kept, the grip's by GripRoom), a dashed outline and its contents faint; ${g.states.interactive}: the outline turns solid in the action colour and the contents rise under the pointer and on the keyboard's focus, as under a carried card (the last); a tap adds it`} wide>
           <div className="flex max-w-lg flex-col gap-2">
             {[{ label: dealWords.cases.addHere.replace("{card}", dealWords.builder.minWord).replace("{place}", dealWords.cases.place.price), onAdd: () => undefined }, null, { over: true }].map((landing, n) => (
-              <PartEdit key={n} kind="bound" mark="min" lead={dealWords.builder.minWord} onRemove={() => undefined} {...(landing ? { landing } : {})}>
+              <PartEdit key={n} kind="bound" mark="min" lead={dealWords.builder.minWord} onRemove={() => undefined} grip={landing ? <GripRoom /> : <Grip item="kit:landing" label={`${dealWords.cases.lifted.grip.part}${dealWords.builder.minWord}`} still />} {...(landing ? { landing } : {})}>
                 <FigureField value={null} label={dealWords.builder.minWord} unit="₪" sign="₪" tight onCommit={() => undefined} />
               </PartEdit>
             ))}
@@ -3943,7 +3985,7 @@ function CaseDemos({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="Toolbox" use={g.uses.Toolbox}>
-        <State label={`the column on a computer: the case already has the parts with a ✓; ${g.states.interactive}: a tap adds a part, "הערוץ" asks for the channels first, a thing with its ✓ is taken away by a tap, and "חינם", the one card that replaces, makes the price free (its charge and parts gone), after which it is off and the charges are on`} wide>
+        <State label={`the column on a computer: the case already has the parts with a ✓; ${g.states.interactive}: a tap adds a part, "הערוץ" asks for the channels first, a thing with its ✓ is taken away by a tap`} wide>
           <ToolboxDemo />
         </State>
         <State label="several cases at once: the line names them all; a form, a sale priced apart and the date line are off (set in each case alone), a minimum is off where the cases keep two currencies; each group says why" wide>

@@ -1,14 +1,13 @@
 // The toolbox for the case open in place (method §10.6, `toolbox`), or for several of the open fee's cases at once (`casesToolbox`): on a
 // computer the column "העמלה שבחרתם", the fee's name as its head and the parts to add in groups by kind, and at its end filling the fee
 // from a price list; on a phone the same in the short sheet pinned to the foot of the screen. A case's toolbox names it in its first line;
-// a slim fee's has none. A card adds, but "חינם", which makes a price free. A tap on one goes to the page (`onCard`): on the open case, a card with one place goes there at
+// a slim fee's has none. A card only adds. A tap on one goes to the page (`onCard`): on the open case, a card with one place goes there at
 // once and one with several is held, the toolbox's line then saying what is being added with its "ביטול" (`held`), until a tap on its
 // landing copy in the block picks the place (places.ts); on several cases at once it does what `casesTool` says. At its place a card does
 // what `toolStep` says, which the page carries out (`applyTool`) and draws ahead as the card's landing copy: a thing to change by asks its
 // question in the fee's block (`AskThing`), and a tap on one the fee changes by already stops it, as its bin in the band does; the line
 // "+ התאריך" asks, at the foot of its side's prices, the month a price changes from; a part that needs its figure, month or fee first asks for
-// it there (`onPending`); a charge goes on a price that charges nothing, its figure blank and focused, and "חינם" on a price that charges
-// something, in place of its charge and its parts, kept for the undo as the bin of the charge keeps it (`onCharge`); any other part goes on
+// it there (`onPending`); a charge goes on a price that charges nothing, its figure blank and focused (`onCharge`); any other part goes on
 // the price at once. A card off there is greyed, its group saying why. A card dragged onto a place does the same there.
 import type { ReactNode, RefObject } from "react";
 import { feeDeal as copy } from "../../copy";
@@ -83,10 +82,7 @@ function kitGroups(view: ToolboxView): ToolGroup[] {
 export interface ToolHands {
   onAsk: (kind: ByKind) => void;
   onPending: (part: PendingPart, place: Place) => void;
-  /**
-   * A form of the price put on through the page: a charge on a price that charges nothing, the focus then in its blank figure; "חינם" on a
-   * price that charges something, kept for the undo, whose line says so.
-   */
+  /** A charge put on a price that charges nothing (a form of the price), through the page, which puts the focus in its blank figure. */
   onCharge: (part: FormPart, place: Place) => void;
   /** A part that goes on at once: the fee with it, and the part and the price it went on, which take the focus. */
   onPart: (next: Fee, at: { part: PartId; side: Side; k: number }) => void;
@@ -98,13 +94,13 @@ export interface ToolHands {
  * month or fee asks for it there (`pending`); a charge goes on the price through the page (`charge`); any other part goes on at once
  * (`part`: the fee with it, and the part and the price it went on).
  */
-type ToolStep =
+export type ToolStep =
   | { k: "ask"; kind: ByKind }
   | { k: "pending"; part: PendingPart; place: Place }
   | { k: "charge"; part: FormPart; place: Place }
   | { k: "part"; fee: Fee; at: { part: PartId; side: Side; k: number } };
 
-function toolStep(item: string, fee: Fee, caseId: string | null, place: Place): ToolStep {
+export function toolStep(item: string, fee: Fee, caseId: string | null, place: Place): ToolStep {
   const thing = cardThing(item);
   if (thing) return { k: "ask", kind: thing };
   const id = item as PartId;

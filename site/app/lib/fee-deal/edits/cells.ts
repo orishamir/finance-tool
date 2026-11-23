@@ -3,7 +3,8 @@
 // neighbours gives them what it holds, so they hold the same and share one cell (layout.ts, rule 2); stretched back, the cases it leaves keep
 // it as a copy, in spans of their own, so they stand apart until changed. A cell's content moves to another case (or another fee), or is
 // taken away. What a part row holds follows the part registry: each part's key, and the row the part stands in (part-rows.ts).
-import { blankFigure, copiedPrice, copiedPriced, copiedStages, hasCases, pricesOn, sameContent, type Case, type Fee, type MonthKey, type Priced, type Side, type Span, type Stage, type When } from "../model";
+import { blankFigure, blankPrice, copiedPrice, copiedPriced, copiedStages, hasCases, pricesOn, sameContent, type Case, type Fee, type Priced, type Span, type Stage, type When } from "../model";
+import { capacity } from "../offers/capacity";
 import { byRate, onAction } from "../offers/capabilities";
 import { editPrice } from "./stage";
 import { heldAlike } from "../alike";
@@ -159,24 +160,24 @@ function cellBuilt(kind: FeeKindId, from: Priced, to: Priced, row: CellRow): Pri
 }
 
 /**
- * Case prices without what cell `row` holds: the first price not given (the price row: its figure blank, its other parts kept), which the
- * reading leaves out until it is given (§10.6); a free price stays free, since "חינם" has nothing to take away; no later prices; or the
- * row's keys gone (a sale priced apart with the notes).
+ * Case prices without what cell `row` holds: the first price not given (the price row: its figure blank, its other parts kept; a free
+ * price becomes the fee's usual form, blank), which the reading leaves out until it is given (§10.6); no later prices; or the row's keys
+ * gone (a sale priced apart with the notes).
  */
-export function withoutCell(x: Priced, row: PartRow): Priced {
+export function withoutCell(x: Priced, row: PartRow, kind: FeeKindId): Priced {
   const [first, ...later] = x.stages as [Stage, ...Stage[]];
   const sale = x.sale && row !== "notes" ? { sale: x.sale } : {};
   if (row === "until") {
     const { until: _u, ...head } = first;
     return { stages: [head], ...sale };
   }
-  const price: Price = row === "price" ? notGiven(first.price) : withoutKeys(first.price, ROW_KEYS[row]);
+  const price: Price = row === "price" ? notGiven(first.price, kind) : withoutKeys(first.price, ROW_KEYS[row]);
   return { stages: [{ ...first, price }, ...later], ...sale };
 }
 
-/** A price whose figure is not given yet: its rate or sum blank, its other parts kept; a free price, as it is (it has no figure). */
-function notGiven(p: Price): Price {
-  if (p.form === "free") return p;
+/** A price whose figure is not given yet: its rate or sum blank, its other parts kept; a free price, the fee's usual form, blank. */
+function notGiven(p: Price, kind: FeeKindId): Price {
+  if (p.form === "free") return blankPrice(capacity(kind).usual);
   const main = byRate(p) ? "rate" : "amount";
   return { ...p, [main]: blankFigure() } as Price;
 }
@@ -292,85 +293,29 @@ export function shrinkAway(fee: Fee, off: readonly string[], row: CellRow): Fee 
   return off.reduce<Fee>((x, id) => removeCase(x, id), fee);
 }
 
-/**
- * A fee whose cases `ids` no longer hold what part row `row` holds on price `at` (`withoutCell`; the purchase's first where none is said).
- * A case with nothing there, or no such price, is left as it is.
- */
-export function clearCells(fee: Fee, ids: readonly string[], row: PartRow, at: PriceAt = FIRST): Fee {
+/** A fee whose cases `ids` no longer hold what part row `row` holds (`withoutCell`). A case with nothing there is left as it is. */
+export function clearCells(fee: Fee, ids: readonly string[], row: PartRow): Fee {
   if (!hasCases(fee)) return fee;
-  const cleared = (c: Case): Case => {
-    const v = priceView(c, at);
-    return v && cellHolds(v, row) ? priced(c, withView(c, at, withoutCell(v, row))) : c;
-  };
-  const next = { ...fee, cases: fee.cases.map((c) => (ids.includes(c.id) ? cleared(c) : c)) };
+  const next = { ...fee, cases: fee.cases.map((c) => (ids.includes(c.id) && cellHolds(c, row) ? priced(c, withoutCell(c, row, fee.kind)) : c)) };
   return sameContent(next, fee) ? fee : next;
 }
 
 /**
- * A fee whose case `toId` takes what part row `row` of case `fromId` holds on price `at` (the purchase's first where none is said), which
- * leaves `fromId` (`copy`: stays there too). Refused where the target has no such price or cannot hold it.
+ * A fee whose case `toId` takes what part row `row` of case `fromId` holds, which leaves `fromId` (`copy`: stays there too). Refused where
+ * the target cannot hold it.
  */
-export function moveCell(fee: Fee, fromId: string, toId: string, row: PartRow, copy = false, at: PriceAt = FIRST): Fee {
+export function moveCell(fee: Fee, fromId: string, toId: string, row: PartRow, copy = false): Fee {
   if (!hasCases(fee) || fromId === toId) return fee;
   const from = fee.cases.find((c) => c.id === fromId);
   const to = fee.cases.find((c) => c.id === toId);
-  const vf = from && priceView(from, at), vt = to && priceView(to, at);
-  if (!from || !to || !vf || !vt || !cellHolds(vf, row)) return fee;
-  const x = withCell(fee.kind, vf, vt, row);
+  if (!from || !to || !cellHolds(from, row)) return fee;
+  const x = withCell(fee.kind, from, to, row);
   if (!x) return fee;
-  return { ...fee, cases: fee.cases.map((c) => (c.id === toId ? priced(c, withView(to, at, x)) : c.id === fromId && !copy ? priced(c, withView(from, at, withoutCell(vf, row))) : c)) };
+  return { ...fee, cases: fee.cases.map((c) => (c.id === toId ? priced(c, x) : c.id === fromId && !copy ? priced(c, withoutCell(c, row, fee.kind)) : c)) };
 }
 
 /** The prices of fee `fee`'s case `caseId`, or its own where it changes by nothing. */
 export const pricesOf = (fee: Fee, caseId: string | null): Priced | undefined => (hasCases(fee) ? fee.cases.find((c) => c.id === caseId) : fee);
-
-/**
- * One price among a case's prices, by a key that stays while the prices around it change: its side, and the month it starts (`from`; null:
- * the side's first price). A part lifted from the open case names its price so.
- */
-export interface PriceAt {
-  side: Side;
-  from: MonthKey | null;
-}
-
-/** The purchase's first price: the one a table's cells, a head's parts and a case's notes stand on. */
-export const FIRST: PriceAt = { side: "buy", from: null };
-
-/** Whether `at` is the purchase's first price. */
-export const isFirst = (at: PriceAt): boolean => at.side === "buy" && at.from === null;
-
-/** The prices of a side of case prices `x`: a sale's only where it is priced apart. */
-const sideOf = (x: Priced, side: Side): readonly Stage[] | undefined => (side === "sell" ? x.sale : x.stages);
-
-/** Where price `at` stands among its side's prices in `x`; -1 where `x` has no such price (no sale priced apart, no price starting that month). */
-function indexAt(x: Priced, at: PriceAt): number {
-  const stages = sideOf(x, at.side);
-  if (!stages) return -1;
-  return at.from === null ? 0 : stages.findIndex((_, k) => k > 0 && stages[k - 1]?.until === at.from);
-}
-
-/**
- * Price `at` of case prices `x` as case prices of their own, so a cell's edits read it as they read a first price: the purchase's first is
- * `x` itself (its later prices and its sale with it, as a table's cell holds them); any other is that one price alone. Null where `x` has no
- * such price.
- */
-export function priceView(x: Priced, at: PriceAt): Priced | null {
-  if (isFirst(at)) return x;
-  const stage = sideOf(x, at.side)?.[indexAt(x, at)];
-  return stage ? { stages: [{ price: stage.price }] } : null;
-}
-
-/** Case prices `x` with price `at` as `view` leaves it (`priceView`'s mirror): the purchase's first, `view` whole; any other, its one price. */
-export function withView(x: Priced, at: PriceAt, view: Priced): Priced {
-  if (isFirst(at)) return view;
-  const k = indexAt(x, at);
-  const stages = sideOf(x, at.side);
-  if (k < 0 || !stages) return x;
-  const price = view.stages[0]?.price;
-  if (!price) return x;
-  const next = stages.map((s, j) => (j === k ? { ...s, price } : s));
-  return at.side === "sell" ? { ...x, sale: next } : { ...x, stages: next };
-}
 
 /** A fee with its prices (or case `caseId`'s) replaced. */
 export function withPrices(fee: Fee, caseId: string | null, x: Priced): Fee {
@@ -379,37 +324,24 @@ export function withPrices(fee: Fee, caseId: string | null, x: Priced): Fee {
   return { ...head, stages: x.stages, ...(x.sale ? { sale: x.sale } : {}) } as Fee;
 }
 
-/** Price `at` of fee `fee`'s case `caseId` (null: a fee whose price changes by nothing) as case prices of its own (`priceView`); null where there is none. */
-export const viewOf = (fee: Fee, caseId: string | null, at: PriceAt): Priced | null => {
-  const x = pricesOf(fee, caseId);
-  return x ? priceView(x, at) : null;
-};
-
-/** Fee `fee` with price `at` of its case `caseId` as `view` leaves it (`withView`). */
-const withViewOf = (fee: Fee, caseId: string | null, at: PriceAt, view: Priced): Fee => {
-  const x = pricesOf(fee, caseId);
-  return x ? withPrices(fee, caseId, withView(x, at, view)) : fee;
-};
-
 /**
- * Whether part row `row` of price `at` (the purchase's first where none is said) of fee `from`'s case `fromCase` (null: a fee whose price
- * changes by nothing) can move to the same price of fee `to`'s case `toCase`: another fee, which has that price, and whose kind takes every
- * part the row holds there (`cellFits`).
+ * Whether part row `row` of fee `from`'s case `fromCase` (null: a fee whose price changes by nothing) can move to fee `to`'s case `toCase`:
+ * another fee, whose kind takes every part the row holds there (`cellFits`).
  */
-export function cellMovesTo(from: Fee, fromCase: string | null, to: Fee, toCase: string | null, row: PartRow, at: PriceAt = FIRST): boolean {
-  const a = viewOf(from, fromCase, at), b = viewOf(to, toCase, at);
+export function cellMovesTo(from: Fee, fromCase: string | null, to: Fee, toCase: string | null, row: PartRow): boolean {
+  const a = pricesOf(from, fromCase), b = pricesOf(to, toCase);
   return !!a && !!b && from.id !== to.id && cellHolds(a, row) && withCell(to.kind, a, b, row) !== null;
 }
 
 /**
- * Two fees once part row `row` of price `at` of `from`'s case `fromCase` moved to the same price of `to`'s case `toCase` (`copy`: stays in
- * `from` too). Null where it cannot (`cellMovesTo`).
+ * Two fees once part row `row` of `from`'s case `fromCase` moved to `to`'s case `toCase` (`copy`: stays in `from` too). Null where it cannot
+ * (`cellMovesTo`).
  */
-export function moveCellTo(from: Fee, fromCase: string | null, to: Fee, toCase: string | null, row: PartRow, copy = false, at: PriceAt = FIRST): { from: Fee; to: Fee } | null {
-  const a = viewOf(from, fromCase, at), b = viewOf(to, toCase, at);
-  const x = a && b && from.id !== to.id && cellHolds(a, row) ? withCell(to.kind, a, b, row) : null;
-  if (!a || !x) return null;
-  return { from: copy ? from : withViewOf(from, fromCase, at, withoutCell(a, row)), to: withViewOf(to, toCase, at, x) };
+export function moveCellTo(from: Fee, fromCase: string | null, to: Fee, toCase: string | null, row: PartRow, copy = false): { from: Fee; to: Fee } | null {
+  if (!cellMovesTo(from, fromCase, to, toCase, row)) return null;
+  const a = pricesOf(from, fromCase)!, b = pricesOf(to, toCase)!;
+  const x = withCell(to.kind, a, b, row)!;
+  return { from: copy ? from : withPrices(from, fromCase, withoutCell(a, row, from.kind)), to: withPrices(to, toCase, x) };
 }
 
 /** A first price's notes with `note` put in, at the end (`on`), or taken out; its other parts kept. */
@@ -422,30 +354,27 @@ function notesWith(p: Price, note: Note, on: boolean): Price {
 
 const withFirst = (x: Priced, f: (p: Price) => Price): Priced => ({ ...x, stages: [{ ...x.stages[0]!, price: f(x.stages[0]!.price) }, ...x.stages.slice(1)] });
 
-/** Whether case `caseId` of `fee` (null: a fee whose price changes by nothing) has note `note` on price `at` (the purchase's first where none is said). */
-export const hasNote = (fee: Fee, caseId: string | null, note: Note, at: PriceAt = FIRST): boolean => !!(viewOf(fee, caseId, at)?.stages[0]?.price as { notes?: Note[] } | undefined)?.notes?.includes(note);
+/** Whether case `caseId` of `fee` (null: a fee whose price changes by nothing) has note `note` on its first price. */
+export const hasNote = (fee: Fee, caseId: string | null, note: Note): boolean => !!(pricesOf(fee, caseId)?.stages[0]!.price as { notes?: Note[] } | undefined)?.notes?.includes(note);
 
-/** A fee whose case `caseId` (null: a fee whose price changes by nothing) no longer has note `note` on price `at`, its other notes kept. */
-export function withoutNote(fee: Fee, caseId: string | null, note: Note, at: PriceAt = FIRST): Fee {
-  const v = viewOf(fee, caseId, at);
-  return v && hasNote(fee, caseId, note, at) ? withViewOf(fee, caseId, at, withFirst(v, (p) => notesWith(p, note, false))) : fee;
+/** A fee whose case `caseId` (null: a fee whose price changes by nothing) no longer has note `note`, its other notes kept. */
+export function withoutNote(fee: Fee, caseId: string | null, note: Note): Fee {
+  const x = pricesOf(fee, caseId);
+  return x && hasNote(fee, caseId, note) ? withPrices(fee, caseId, withFirst(x, (p) => notesWith(p, note, false))) : fee;
 }
 
 /**
- * One note of price `at` (the purchase's first where none is said) lifted alone and dropped on another case, of its fee or another (`to`,
- * `toCase`): added to the notes of that case's same price, which it keeps, and taken from its own (`copy`: kept there too). Null where the
- * target has no such price, its price cannot hold the note or has it already, or it is the same case.
+ * One note lifted alone and dropped on another case, of its fee or another (`to`, `toCase`): added to that case's notes, which it keeps,
+ * and taken from its own (`copy`: kept there too). Null where the target's price cannot hold it, has it already, or it is the same case.
  */
-export function moveNoteTo(from: Fee, fromCase: string | null, to: Fee, toCase: string | null, note: Note, copy = false, at: PriceAt = FIRST): { from: Fee; to: Fee } | null {
+export function moveNoteTo(from: Fee, fromCase: string | null, to: Fee, toCase: string | null, note: Note, copy = false): { from: Fee; to: Fee } | null {
   const same = from.id === to.id;
-  if ((same && fromCase === toCase) || !hasNote(from, fromCase, note, at) || hasNote(to, toCase, note, at)) return null;
-  const target = viewOf(to, toCase, at)?.stages[0]?.price;
-  if (!target || !PARTS[note].holds(to.kind, target)) return null;
-  const left = copy ? from : withoutNote(from, fromCase, note, at);
+  if ((same && fromCase === toCase) || !hasNote(from, fromCase, note) || hasNote(to, toCase, note)) return null;
+  const target = pricesOf(to, toCase);
+  if (!target || !PARTS[note].holds(to.kind, target.stages[0]!.price)) return null;
+  const left = copy ? from : withoutNote(from, fromCase, note);
   const base = same ? left : to;
-  const onto = viewOf(base, toCase, at);
-  if (!onto) return null;
-  const added = withViewOf(base, toCase, at, withFirst(onto, (p) => notesWith(p, note, true)));
+  const added = withPrices(base, toCase, withFirst(pricesOf(base, toCase)!, (p) => notesWith(p, note, true)));
   return same ? { from: added, to: added } : { from: left, to: added };
 }
 

@@ -243,8 +243,8 @@ export function FeeCases({
   actions: BlockActions;
   /** A drop zone around `el` for the places `on` (the first that takes a thing gets it): it takes a toolbox part, and lifted things. */
   zone: ZoneOf;
-  /** The open case's parts in edit, with the spoken name of its boxes. */
-  openParts: (spoken: string) => ReactNode;
+  /** The open case's parts in edit, with the spoken name of its boxes and the heads over it its parts' menus apply them to. */
+  openParts: (spoken: string, heads?: readonly HeadApply[]) => ReactNode;
   /** A host's mark on a case (`FeeSlot.caseMark`, the indices page's "בתוכנית"), in every layout; /deal marks none. */
   caseMark?: ((caseId: string) => ReactNode) | undefined;
   /** The fee's card around its cases (`cases`: the parts every case holds alike, then the cases' band, under the fee's name's line). */
@@ -540,8 +540,8 @@ export function FeeCases({
   const allAlong = layout.shape === "grid" ? 1 : layout.shape === "table" ? layout.thing : 0;
   const everyCase = headCases(fee.cases.map((x) => x.id), allAlong);
   /**
-   * The heads a part cell's part may be applied to from its grip's menu, each with its words, the first that covers the same cases kept:
-   * its row, then every case of the fee; a head over one case alone is no wider than the case.
+   * The heads a part may be applied to from a menu, each with its words, the first that covers the same cases kept: `row` (a grid's row),
+   * `column` (a grid's column, drawn as one), then every case of the fee; a head over one case alone is no wider than the case.
    */
   const applyTo = (heads: readonly (readonly [string, readonly string[], number] | null)[]): HeadApply[] => {
     const seen = new Set<string>();
@@ -742,11 +742,18 @@ export function FeeCases({
         {...(ov.canCopy ? { onCopy: () => addAndOpen(copyCase(fee, r.case)) } : {})}
         {...(ov.canRemove ? { onRemove: () => onRemoveCase(fee.id, r.case) } : {})}
       >
-        {openParts(`${name}, ${caseText(r.when)}`)}
+        {openParts(`${name}, ${caseText(r.when)}`, openHeads(r.case))}
       </OpenCase>,
     );
   };
   const openRow = openCase && open.view ? byCase.get(openCase) : undefined;
+  /** The heads over an open case its parts' menus apply them to: a grid's row and, drawn as a grid, its column; every case of the fee. */
+  function openHeads(id: string): HeadApply[] {
+    if (layout.shape !== "grid") return applyTo([allHead]);
+    const row = layout.rows.find((x) => x.cases.includes(id));
+    const col = wide ? layout.columns.find((x) => x.cases.includes(id)) : undefined;
+    return applyTo([row ? [lw.menu.applyRow, row.cases, 1] : null, col ? [lw.menu.applyColumn, col.cases, 0] : null, allHead]);
+  }
 
   /**
    * A case as a band row: its grip (`still` where nothing would take it), its words (`when`), the parts it still shows, its standing; open,

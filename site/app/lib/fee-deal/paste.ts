@@ -9,7 +9,7 @@ import { feeDeal as copy } from "../../copy";
 import { hasCases, sameContent, type Fee, type FeeDeal, type Priced } from "./model";
 import { WHOLE } from "./layout";
 import { isPartRow } from "./part-rows";
-import { FIRST, pricesOf, withCell, withPrices, type CellRow } from "./edits/cells";
+import { pricesOf, withCell, withPrices, type CellRow } from "./edits/cells";
 import { updateFee } from "./edits/deal";
 import type { FeeKindId } from "./shapes";
 import { liftDrop, type Lifted, type LiftResult, type LiftTarget } from "./lifted";
@@ -64,7 +64,7 @@ export function pasteOn(deal: FeeDeal, clip: Clip, on: PastePlace): LiftResult |
   if (clip.row === WHOLE) return wholeOnto(deal, clip, on);
   if (!isPartRow(clip.row)) return null;
   const stand = { id: CLIP_FEE, kind: clip.kind, ...structuredClone(clip.from) } as Fee;
-  const r = liftDrop({ ...deal, fees: [...deal.fees, stand] }, { k: "part", fee: CLIP_FEE, case: null, price: FIRST, row: clip.row }, on, { copy: true });
+  const r = liftDrop({ ...deal, fees: [...deal.fees, stand] }, { k: "part", fee: CLIP_FEE, case: null, row: clip.row }, on, { copy: true });
   if (!r) return null;
   return { deal: { ...r.deal, fees: r.deal.fees.filter((f) => f.id !== CLIP_FEE) }, ...(r.kept && r.kept.feeId !== CLIP_FEE ? { kept: r.kept } : {}) };
 }

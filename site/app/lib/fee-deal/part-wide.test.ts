@@ -3,7 +3,7 @@
 // case the head covers, replacing what each held there, and reads as one cell where the row's cases now hold it alike; the source keeps
 // it, a figure keeps its source only where the case held that very figure, and one undo puts back every case.
 import { describe, expect, it } from "vitest";
-import { FIRST, noteToCases as noteTo, partToCases as partTo } from "./edits/cells";
+import { noteToCases as noteTo, partToCases as partTo } from "./edits/cells";
 import { liftDrop, liftTakes, liftWhy, type Lifted, type LiftTarget } from "./lifted";
 import { layoutOf, WHOLE } from "./layout";
 import { byRank, type Case, type CasesFee, type FeeDeal, type Num, type Price, type SlimFee } from "./model";
@@ -54,7 +54,7 @@ const row = (w: "makam" | "tase") => head(w === "makam" ? ["mw", "mb"] : ["sw", 
 const branchColumn = head(["mb", "sb"], 0);
 const every = head(["mw", "mb", "sw", "sb"], 1);
 /** The maximum of מק״מ at the branch, lifted from the open case. */
-const lifted: Lifted = { k: "part", fee: "fee-t", case: "mb", price: FIRST, row: "max" };
+const lifted: Lifted = { k: "part", fee: "fee-t", case: "mb", row: "max" };
 
 describe("a part applied to a head's cases", () => {
   it("replaces the part in every case of the row, so the row reads it as one cell, and leaves the other rows", () => {
@@ -141,7 +141,7 @@ describe("a part dropped on a head", () => {
   });
 
   it("from another fee whose part the fee's kind does not take: the head does not light, and says why", () => {
-    const rate: Lifted = { k: "part", fee: "fee-c", case: null, price: FIRST, row: "price" };
+    const rate: Lifted = { k: "part", fee: "fee-c", case: null, row: "price" };
     const on = head(["mw", "mb"], 1);
     expect(liftTakes(deal(), rate, on)).toBe(false);
     expect(liftWhy(deal(), rate, on)).toBe(copy.cases.lifted.notHere);
@@ -194,7 +194,7 @@ describe("a sum carries its own currency wherever it goes", () => {
   });
 
   it("a $ minimum stretched over a ₪ case that keeps a ₪ maximum is refused there too", () => {
-    const min: Lifted = { k: "part", fee: "fee-t", case: "fw", price: FIRST, row: "min" };
+    const min: Lifted = { k: "part", fee: "fee-t", case: "fw", row: "min" };
     expect(liftTakes(abroad(), min, onto("mb"))).toBe(false);
     expect(liftWhy(abroad(), min, onto("mb"))).toBe("המינימום בדולרים והמקסימום כאן בשקלים.");
   });
