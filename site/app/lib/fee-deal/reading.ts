@@ -1,7 +1,7 @@
 // The reading of a deal (method §10.6): the picks it is read for (F-114), its periods as cards (F-110), the two panels of charts and the
 // timeline (charts.ts: F-112's curves as F-123's share, F-124 to F-127), the law rows for the deal's own fees that have a cap on the kind's
 // record (F-113), and the parts of a price it states without computing (§10.6, "What the page states and does not compute").
-import { changeKind, perUnitOf, type ChangeKind, type DealSide } from "@finance-tool/engine";
+import { changeKind, type ChangeKind, type DealPeriod, type DealSide } from "@finance-tool/engine";
 import { feeDeal as copy } from "../../copy";
 import type { FxSnapshot } from "../fx";
 import { entered, type SiteValue } from "../value";
@@ -86,6 +86,12 @@ function cardOf(r: DealRead, k: number): PeriodCard {
 export interface UnitPrice {
   currency: string;
   value: SiteValue | null;
+}
+
+/** A price's sum per unit, its own or its third party's (F-117), where it has one. */
+function perUnitOf(x: DealPeriod["prices"][number]["price"]): { currency?: string } | null {
+  if (x.kind === "perUnit") return x;
+  return (x.kind === "action" || x.kind === "perAction") && x.third?.kind === "perUnit" ? x.third : null;
 }
 
 /**

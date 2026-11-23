@@ -111,6 +111,18 @@ describe("differenceOf and sumOf", () => {
     expect(s.value).toBe(700);
     expect(Object.keys(s.computed_from!.inputs)).toEqual(["א", "ב"]);
   });
+  it("take a difference of the figures as the page writes them, so it matches them", () => {
+    // the current account's cost: 10,768 ₪ in the fund less 8,203 ₪ in the account is 2,565 ₪, though the unrounded gap is 2,564.8
+    const fund = computed(10_767.6, "nis", "F-67", {}, { today });
+    const account = computed(8_202.8, "nis", "F-67", {}, { today });
+    expect(differenceOf(["א", fund], ["ב", account], "F-67", { today }).value).toBe(2_565);
+    // a computed sum under 10 ₪ keeps its agorot on the page, and so in the difference; a sourced price keeps the agorot it prints
+    expect(differenceOf(["א", computed(9.996, "nis", "F-67", {}, { today })], ["ב", computed(3.204, "nis", "F-67", {}, { today })], "F-67", { today }).value).toBeCloseTo(6.8, 9);
+    const price: SiteValue = { ...a, state: "sourced", update_rule: "market", value: 1_234.56 };
+    expect(differenceOf(["א", price], ["ב", b], "F-67", { today }).value).toBeCloseTo(1_034.56, 9);
+    // a unit that is not a sum of shekels is not rounded
+    expect(differenceOf(["א", computed(2.345, "pct_per_year", "F-67", {}, { today })], ["ב", computed(1.2, "pct_per_year", "F-67", {}, { today })], "F-67", { today }).value).toBeCloseTo(1.145, 9);
+  });
   it("are null when a figure is not a number", () => {
     expect(differenceOf(["א", a], ["ב", { ...b, value: null }], "F-91", { today }).value).toBeNull();
     expect(sumOf({}, "F-91", { today }).value).toBeNull();

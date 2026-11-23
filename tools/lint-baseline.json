@@ -671,7 +671,7 @@
    "site/app/lib/import-check.ts": 2,
    "site/app/lib/inputs.tsx": 2,
    "site/app/lib/institutions.server.ts": 6,
-   "site/app/lib/institutions.test.ts": 5,
+   "site/app/lib/institutions.test.ts": 4,
    "site/app/lib/instrument-terms.test.ts": 8,
    "site/app/lib/instruments.server.ts": 7,
    "site/app/lib/invest.test.ts": 140,

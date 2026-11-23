@@ -3,7 +3,7 @@
 import { custodyFee, fixedFee, saleCommission, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { makamPrice } from "../formulas/holding-tax.ts";
 import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
-import { ruleBook } from "../resolver.ts";
+import { BlockedError, ruleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
 import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, OrderCash, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
@@ -65,6 +65,10 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
   const first = goal.firstMonth ?? 1;
   const I = cpiPath(input.market.inflation, T);
   const C = contributions(goal, I);
+  // G-41: a negative yield is a series issued above 100, which has no discount; the rule base holds no rule for its shortfall at redemption
+  // (TXI OQ15), whether negative interest (TXI-01) or a capital loss on redemption (s.88's sale includes redemption; TXI-12, TXI-17), so the
+  // run stops on the discount's rule rather than tax it at a negative amount
+  if (makam.yield < 0) throw new BlockedError("TXI-11", undefined, "G-41");
   const discountRate = book.rate("TXI-11", "rate");
   const custodyFree = input.memberKind !== "non-bank";
   if (custodyFree) book.cite("BRK-17");

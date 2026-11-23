@@ -57,6 +57,12 @@ P-05, `data/parameters/illustrative-scenario.json`: the starting values of the g
 
 **Why:** the sliders cover what most people would try; a larger value or another return can be typed. A money slider moves in steps that grow with the amount (`guidelines/design.md`, "Fields"): each of its three parts takes a third of the track, its steps are round amounts, and the starting value (10,000 NIS, 500 NIS a month) lands in the first third rather than against the slider's end; an amount between the steps can be typed and keeps its own place on the track. Years, the return and inflation move in equal steps; inflation's slider ends where the sensitivity check's inflation range ends (P-02, 0% to 5%), and another inflation, a negative one included, can be typed. Half and one and a half times the plan cover the changes a person would weigh; +20% is a change large enough to tell the numbers apart and small enough to be within reach. Chosen by Claude, revisable.
 
+### Field ranges
+
+**Values:** the age field 0 to 120; a yearly percentage (a return, inflation, a money-market fund's rate) −50% to 50% (`ranges.pct`); the interest rate of a guide whose run taxes it as interest (the current account, a bank deposit, a savings plan, makam, a government bond) 0% to 50% (`ranges.interest`).
+
+**Why:** the bounds catch a typing mistake, not a forecast. A return, inflation and a money-market fund's return can fall below zero, so their range does: the money-market fund's guides take −1% as typed, keep it on the device and run it. Interest below zero is not run: the rule base holds no rule for its tax (method G-41, TXI OQ15), so its field starts at 0. The range applies where the rate is typed: which range a guide's rate field takes is its wrapper's kind (`cashRateRange`, `site/app/lib/guide-signature.ts`), and the device keeps any rate typed, so a negative interest rate kept from an older device or an imported file reaches the run, which stops on G-41 and says why. The interest range is the site's choice (Claude, 2026-11-23), not the founder's; revisable.
+
 ### Representative instruments
 
 `instruments` names, for each wrapper, the collected records the illustrative run takes its terms from (deposit terms, fund, fees provider, government-bond series rule, track). A wrapper with no entry has no timeline on its guide page.

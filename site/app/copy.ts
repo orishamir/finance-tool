@@ -557,6 +557,8 @@ export const parametersPage = {
     "P-05.ranges.age.max": "גיל מותר בשדה: מקסימום",
     "P-05.ranges.pct.min": "אחוז שנתי מותר בשדה: מינימום",
     "P-05.ranges.pct.max": "אחוז שנתי מותר בשדה: מקסימום",
+    "P-05.ranges.interest.min": "ריבית שנתית מותרת בשדה: מינימום",
+    "P-05.ranges.interest.max": "ריבית שנתית מותרת בשדה: מקסימום",
     "P-11.steps.0": "סכום 1",
     "P-11.steps.1": "סכום 2",
     "P-11.steps.2": "סכום 3",
@@ -620,7 +622,8 @@ export const companyFocus = {
   fees: "דמי ניהול מהחיסכון",
   to: "עד",
   tariffGroups: "בתעריפון:",
-  asOf: "לפי פרסום הבנק, נכון ל־",
+  /** The date of a bank product's records: one day, or the oldest and the newest. */
+  asOf: { one: "לפי פרסום הבנק, נכון ל־", from: "לפי פרסום הבנק, נכון לימים ", to: "עד " },
   more: "עוד בעמוד המלא",
   terms: "מה כתוב במסמכים",
   /** The arrow's spoken name. */
@@ -1060,6 +1063,12 @@ export const flags: Record<string, string> = {
   // F-120 at a falling CPI: a figure linked to the CPI every 1 January, of a rule no open reading covers, has no reading (method G-38); the
   // timeline's band shows this beside the rule the run stopped on (CS-03 on the child savings guides)
   "G-38": "הסכום של הכלל הזה מתעדכן בכל 1 בינואר לפי עליית המדד. האתר לא מצא במקורות מה קורה לו כשהמדד יורד, ואין לו הנחה משלו. לכן כשהאינפלציה בחישוב שלילית, האתר לא מחשב את השנים שאחרי השנה הראשונה.",
+  // F-21, F-22, F-24, F-25, F-26 at a rate below zero: the rule base holds no rule for the tax on interest below zero (method G-41);
+  // the timeline's band shows this beside the rule that would tax the interest, for a negative rate kept on the device or imported
+  "G-41": "האתר לא מצא בכללים שקרא איך ממוסה ריבית מתחת לאפס, ולכן הוא לא מחשב אותה. אפשר להזין ריבית מ־0% ומעלה.",
+  // F-22 on the savings plan guide: the ladder locks each monthly deposit on its own, the method's convention (method G-42, BANK OQ12); the
+  // sheet of each figure that rests on it says so
+  "G-42": "המספר מניח שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. זו הנחה של האתר, לא כלל: האתר לא מצא בכללים שקרא אם כך בתוכנית שהדוגמה מחושבת עליה, ובחלק מהתוכניות שהאתר קרא את התנאים שלהן זה אחרת.",
   // F-20: a distribution at a foreign broker is not withheld in Israel; its advance is due by 30 April after the tax year (TXF-21), and the run charges it in the month
   "TXF-21": "בבית השקעות בחו״ל לא מנכים בישראל את המס על דיבידנד או ריבית שהקרן מחלקת. משלמים אותו בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי. החישוב מחשיב אותו כאילו שולם כבר בחודש החלוקה.",
   // F-09: a sale at a foreign broker is not withheld in Israel; the gain is reported with an advance by 31 July and 31 January, and a return is due (TXF-22); the run charges it in the month of the sale
@@ -1564,8 +1573,9 @@ export const depositBrowser = {
   title: "פיקדונות בכל הבנקים",
   /** The page's line: `stated` is the words that state BANK-13 and BANK-50 (an annual nominal rate, before tax), which open them (D116). */
   lead: { before: "הריבית שהבנקים מפרסמים לפיקדון בשקלים,", stated: "בשנה ולפני המס", after: ", לא הצעה אישית. בנק אש ישראל לא נכלל: לא נמצא לו אתר." },
-  /** At the end of the list's heading line: "נקרא מאתרי הבנקים ב־09.11.2026". */
-  read: "נקרא מאתרי הבנקים ב־",
+  /** At the end of the list's heading line, the days the rates in the list were read: "נקרא מאתרי הבנקים ב־09.11.2026", or where the
+   *  rows were read on several days, "נקרא מאתרי הבנקים מ־23.10.2026 עד 14.11.2026". */
+  read: { one: "נקרא מאתרי הבנקים ב־", from: "נקרא מאתרי הבנקים מ־", to: "עד " },
   controls: {
     amount: "כמה מפקידים",
     picks: "סכומים מוכנים",
@@ -2340,8 +2350,7 @@ export const feeDeal = {
   /** The reading's section under the columns (method §10.6, `readingOf`). */
   reading: "קוראים את העסקה",
   /** In the reading's place where reading the deal failed: the deal above still stands, and a change to it reads it again. */
-  /** The reading's notice where it could not be read; `reset` clears the unit's price typed beside a chart, which may be what broke it. */
-  readFailed: { title: "האתר לא הצליח לקרוא את העסקה", line: "אפשר לשנות את העסקה למעלה, והאתר יקרא אותה שוב.", reset: "למחוק את מחיר היחידה" },
+  readFailed: { title: "האתר לא הצליח לקרוא את העסקה", line: "אפשר לשנות את העסקה למעלה, והאתר יקרא אותה שוב." },
   read: {
     /** The periods of F-110: the timeline's stops and its headline. */
     periods: {
@@ -2448,6 +2457,8 @@ export const feeDeal = {
       fallsSaved: "ככל שמה שנצבר גדל, שנה עולה פחות באחוזים. ",
       /** The shares band by band above the crossover: "מעל 25,446 ₪ האחוזים קובעים: 0.896% בשנה עד 100,000 ₪, 0.7% עד 500,000 ₪ ו־0.5% מעל זה, כל אחד על כל הסכום." */
       bands: { lead: "מעל ", decides: " האחוזים קובעים: ", perYear: " בשנה", upTo: " עד ", sep: ", ", and: " ו־", above: " מעל זה", whole: ", כל אחד על כל הסכום", end: "." },
+      /** A fee offset against an action's fee: the chart shows a year without that action. */
+      offset: { lead: "הסכום הזה מתקזז מול ", month: " של אותו חודש, ולכן הגרף מראה שנה בלי ", end: "." },
       x: "הסכום שמוחזק (₪)",
       xSaved: "הסכום שנצבר (₪)",
       /** The axis's name on a phone. */
@@ -2812,7 +2823,8 @@ export const companyPage = {
     /** A current account's rate, where the bank pays it only on its conditions (the product's part spells them out). */
     current: (conditional: boolean) => (conditional ? "ריבית בשנה על יתרת זכות, בתנאים" : "ריבית בשנה על יתרת זכות"),
     parts: "מה יש בו",
-    asOf: "נכון ל־",
+    /** The date of the records the range is from: one day, or the oldest and the newest ("נכון לימים 23.10.2026 עד 13.11.2026"). */
+    asOf: { one: "נכון ל־", from: "נכון לימים ", to: "עד " },
   },
   /** A manager's overview table. */
   overviewTable: {
@@ -2826,7 +2838,8 @@ export const companyPage = {
     note: { fees: (year: string | null) => (year ? `דמי הניהול במסלולים הם הממוצע שנגבה ב־${year}, מהחיסכון, מהמסלול הזול ליקר.` : "דמי הניהול במסלולים הם מהחיסכון, מהמסלול הזול ליקר."), assets: "הכסף המנוהל נכון לסוף ", end: "." },
   },
   deposits: {
-    asOf: "לפי פרסום הבנק, נכון ל־",
+    /** The date of the table's records: one day, or the oldest and the newest. */
+    asOf: { one: "לפי פרסום הבנק, נכון ל־", from: "לפי פרסום הבנק, נכון לימים ", to: "עד " },
     sharedDeposits: "נכון לכל הפיקדונות בטבלה:",
     sharedPlans: "נכון לכל התוכניות בטבלה:",
     beforeTax: "הריבית שנתית ונומינלית, לפני המס על הריבית.",
@@ -3410,7 +3423,6 @@ export const guideSignature = {
     outOfRange: { before: "הסכום מחוץ לטווח שהריבית שפורסמה נקבעה לו:", middle: "עד", after: "." },
     gaps: {
       depositBreak: "הבנק מתאר שבירה בתנאים שהאתר עוד לא מחשב.",
-      planLockPerDeposit: "ההנחה כאן: לכל הפקדה חודשית יש נעילה משלה, באורך תקופת התוכנית, כמו בפיקדון שנפתח בכל חודש. אין כלל כללי שקובע את זה: כל בנק קובע בהסכם התוכנית שלו. האתר קרא את החוזה של בנק אחד. בחוזה הזה התוכניות נפתחות כולן יחד, בנקודת יציאה שנספרת מתחילת התוכנית. שאלה פתוחה BANK-OQ12",
       accountBanks: "הריביות שהבנקים מפרסמים על יתרה בעו״ש עוד לא נאספו.",
       depositBanks: "הריביות שהבנקים מפרסמים על פיקדון לשנה עוד לא נאספו.",
     } as Record<string, string>,
@@ -3507,6 +3519,19 @@ export const guideSignature = {
     lockLine: { before: "בתוכנית של לאומי התקופה היא", middle: "והריבית", after: "בשנה. אין אפשרות שבירה." },
     alt: { before: "בפיקדון חד־פעמי", ofBank: "של", forTerm: "לתקופה של", rate: "ריבית", middle: "כל הסכום נעול ואז פנוי בבת אחת." },
     rangeLine: "האתר קורא את הטווח בטבלה של הבנק כסכום להפקדה אחת. הטבלה לא אומרת זאת במילים.",
+    /**
+     * Beside the three figures, what they rest on (method F-22, G-42) and what the plan terms read say. Each `stated` is the words that
+     * state its rule (D116): BANK-28, no law or Bank of Israel directive read decides it (`term` opens its card); BPN-10, Hapoalim's four plans; BANK-38, four of
+     * Mizrahi-Tefahot's ענבים plans. Leumi's own terms on it are BANK OQ12.
+     */
+    lock: {
+      assumption: "שלושת המספרים האלה מניחים שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. זו הנחה של האתר, לא כלל. האתר לא מצא בכללים שקרא אם כך בתוכנית של לאומי, שהדוגמה מחושבת עליה. שאלה פתוחה BANK-OQ12.",
+      general: { before: "בחוקים ובהוראות של", term: "בנק ישראל", read: "שהאתר קרא", stated: "אין קביעה אם כל הפקדה נעולה לבדה, וכל בנק קובע את זה בתנאי התוכניות שלו", after: "." },
+      others: "בחלק מהתוכניות שהאתר קרא את התנאים שלהן זה אחרת, למשל:",
+      hapoalim: { stated: "בארבע מהתוכניות של בנק הפועלים ההפקדות לא נעולות כל אחת לבדה, ומושכים את כל החיסכון יחד, בתחנות יציאה שנספרות מתחילת התוכנית", after: ";" },
+      mizrahi: { stated: "בארבע מתוכניות ״ענבים״ של מזרחי טפחות אפשר למשוך בתחנת יציאה את כל הכסף, או רק חלק ממנו ולהשאיר את ״12 הפקדות אחרונות והרווחים עליהם״", after: "." },
+      end: "בתוכניות כאלה הכסף פנוי במועדים אחרים מאלה שבגרף.",
+    },
     about: { free: "מה שפנוי לקחת ביום שבחרתם: ההפקדות שהתקופה שלהן הסתיימה, אחרי מס", locked: "הכסף שהופקד ועדיין נעול ביום שבחרתם", last: "החודש שבו ההפקדה האחרונה נפתחת" },
   },
   ladder: {
