@@ -197,6 +197,9 @@
   --slider: var(--entered); /* the filled part of the track and the thumb */
   --slider-active: var(--palette-blue-400); /* the same while dragged */
   --slider-track: var(--palette-neutral-800); /* the part of the track not yet filled: a grey that stands off the card */
+  /* A scrollbar under a computer's pointer: a thin rounded thumb on no track, quiet until the pointer reaches it. */
+  --scrollbar-thumb: var(--palette-neutral-700);
+  --scrollbar-thumb-hover: var(--palette-neutral-500); /* under the pointer and while dragged */
 
   /* Flags and marks */
   --caution: var(--palette-amber-400); /* icon: stale (D3), secondary or institution source (D10) */

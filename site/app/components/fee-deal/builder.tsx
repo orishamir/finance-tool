@@ -5,9 +5,9 @@
 // the deal has a fee in it, each fee in its block (fee-block.tsx). A fee just taken away leaves the page's undo line (`UndoLine`) in its
 // place, in the block's room for a moment before it closes up to the line; another kind that takes fees away leaves it under the kind. After the groups, one quiet line offers the
 // fees the deal could add: the kind's usual ones it lacks first, then the rarer ones and a fee of the person's own; a fee added lands in
-// its group, open, and takes the focus in its first box. A block under the pointer or the focus marks the fee in the summary. A closed
-// fee's card carries its bin and its duplicate in its corner under a fine pointer, and its grip's menu holds both for touch and the
-// keyboard; a duplicate stands right after its fee.
+// its group, open, and takes the focus in its first box. A block under the pointer or the focus marks the fee in the summary. A fee's
+// duplicate and bin stand after its name (on a closed card under a resting fine pointer, on an open one always), and a press on its card
+// moved carries it to another place in its group; a duplicate stands right after its fee.
 import { useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
@@ -22,8 +22,8 @@ import type { UndoWhat } from "../../lib/fee-deal/undo";
 import { FEE_KIND_IDS, holdsFunds, type FeeKindId } from "../../lib/fee-deal/shapes";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { Copy } from "lucide-react";
-import { AddLine, Button, ChoiceChips, DropZone, FeePalette, Grip, GroupHead, KnobButton, RemoveButton, Section, Step, StepStrip, focusPartEdit, useCanDrag, type AddItem, type GripAction, type PaletteItem } from "../kit";
-import { liftDrop, liftId, liftedOf, liftTakes, type Lifted } from "../../lib/fee-deal/lifted";
+import { AddLine, Button, ChoiceChips, DropZone, FeePalette, GroupHead, KnobButton, RemoveButton, Section, Step, StepStrip, focusPartEdit, useCanDrag, useLiftFrom, type AddItem, type PaletteItem } from "../kit";
+import { liftDrop, liftId, liftedOf, liftTakes } from "../../lib/fee-deal/lifted";
 import { keepPicks } from "../../lib/fee-deal/cases";
 import { partFieldId } from "./figures";
 import { bringIntoView } from "./in-view";
@@ -37,7 +37,6 @@ import type { HouseAverages } from "../../lib/house-averages";
 import type { Refusal } from "./use-deal-document";
 
 const b = copy.builder;
-const lw = copy.cases.lifted;
 
 /** The page's undo line, where it stands among the fees: in the place of a fee taken away, in that fee's group. */
 export interface FeeUndoLine {
@@ -369,31 +368,16 @@ export function FeesColumn({
   // the one before it, else the add line
   const shown = groups.flatMap(([, items]) => items);
   const shownIds = shown.flatMap((it) => (it === "line" ? [] : [it.fee.id]));
-  // a fee's card moves within its group: lifted by its grip onto another card of the group, or by its menu
-  const feeLift = (fee: Fee, group: string, k: number, count: number) => {
-    const l: Lifted = { k: "fee", fee: fee.id, group };
-    const ids = (groups.find(([g]) => g === group)?.[1] ?? []).flatMap((it) => (it === "line" ? [] : [it.fee.id]));
-    const to = (other: string | undefined) => () => {
-      const r = other && liftDrop(deal, l, { k: "fee", fee: other, group }, { shown: shownIds });
-      if (r) onDeal(r.deal);
-    };
-    const menu: GripAction[] = [];
-    if (k > 0) menu.push({ label: lw.menu.up, onPick: to(ids[k - 1]) });
-    if (k < count - 1) menu.push({ label: lw.menu.down, onPick: to(ids[k + 1]) });
-    const dup = onDuplicate?.(fee) ?? null;
-    if (dup) menu.push({ label: copy.cases.feeCorner.menuDuplicate, onPick: dup });
-    menu.push({ label: lw.menu.remove, danger: true, onPick: () => blockActions.onRemoveFee(fee.id) });
-    // named as its card names it: a fee copied from another house's list says the house after its name; alone in its group, its menu only
-    const name = feeName(fee.kind, fee.name, rows.get(fee.id)?.house);
-    return <Grip item={liftId(l)} label={`${count > 1 ? lw.grip.fee : copy.cases.feeCorner.grip}${name}`} actions={menu} {...(count > 1 ? {} : { still: true })} />;
-  };
-  /** A closed card's corner: its duplicate, where the page duplicates it, and its bin, which takes it away with the undo line. */
-  const corner = (fee: Fee) => {
+  // a fee's card moves within its group: lifted by a press on its own card onto another card of the group (`FeeItem`); alone in its group
+  // it lifts nothing
+  const feeLift = (fee: Fee, group: string, count: number): FeeLift => ({ item: liftId({ k: "fee", fee: fee.id, group }), name: feeName(fee.kind, fee.name, rows.get(fee.id)?.house), still: count < 2 });
+  /** A fee's actions after its name: its duplicate, where the page duplicates it, and its bin, which takes it away with the undo line. */
+  const tools = (fee: Fee) => {
     const dup = onDuplicate?.(fee) ?? null;
     return (
       <>
-        {dup && <KnobButton icon={Copy} label={copy.cases.feeCorner.duplicate} tabIndex={-1} onClick={dup} />}
-        <RemoveButton knob label={copy.panel.remove} tabIndex={-1} onRemove={() => blockActions.onRemoveFee(fee.id)} />
+        {dup && <KnobButton icon={Copy} label={copy.cases.feeCorner.duplicate} tabIndex={0} onClick={dup} />}
+        <RemoveButton knob label={copy.panel.remove} tabIndex={0} onRemove={() => blockActions.onRemoveFee(fee.id)} />
       </>
     );
   };
@@ -468,10 +452,9 @@ export function FeesColumn({
                 if (it === "line") return [undoLine(line!)];
                 // a form's line stands in its open case (`formLine`), and nowhere while that case is closed
                 const cl = caseLine?.feeId === it.fee.id && !caseLine.inCase ? caseLine : null;
-                const k = fees.indexOf(it);
                 const li = (
-                  <FeeItem key={it.fee.id} id={it.fee.id}>
-                    {feeZone(it.fee, key, <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} formLine={formLine(it.fee)} actions={blockActions} onFee={onFee} onSplit={(f) => onDeal(keepPicks(deal, { ...deal, fees: deal.fees.map((x) => (x.id === f.id ? f : x)) }))} grip={feeLift(it.fee, key, k, fees.length)} corner={corner(it.fee)} head={headOf?.(it.fee)} />)}
+                  <FeeItem key={it.fee.id} id={it.fee.id} lift={feeLift(it.fee, key, fees.length)}>
+                    {feeZone(it.fee, key, <FeeBlockView fee={it.fee} row={rows.get(it.fee.id)} deal={deal} open={open} ask={ask} formLine={formLine(it.fee)} actions={blockActions} onFee={onFee} onSplit={(f) => onDeal(keepPicks(deal, { ...deal, fees: deal.fees.map((x) => (x.id === f.id ? f : x)) }))} tools={tools(it.fee)} head={headOf?.(it.fee)} />)}
                     {refusal?.feeId === it.fee.id && <RefusalLine refusal={refusal} />}
                     {cl && (
                       <UndoLine key={`undo:case:${cl.feeId}`} as="div" className="mt-2" onUndo={cl.onUndo} onHold={cl.onHold} take={cl.take} refocusOnUndo refocus={() => backTo(cl)}>
@@ -514,11 +497,20 @@ function RefusalLine({ refusal }: { refusal: Refusal }) {
   );
 }
 
-/** One fee among the column's: under the pointer or the focus it marks its fee in the summary. */
-function FeeItem({ id, children }: { id: string; children: ReactNode }) {
+/** How a fee's card is lifted from its own surface (`useLiftFrom`): what it carries, the name the bin says, and `still`, alone in its group. */
+interface FeeLift {
+  item: string;
+  name: string;
+  still: boolean;
+}
+
+/** One fee among the column's: under the pointer or the focus it marks its fee in the summary; a press on its card moved lifts it (`lift`). */
+function FeeItem({ id, lift, children }: { id: string; lift: FeeLift; children: ReactNode }) {
   const { handlers } = useFeeMark(id);
+  const li = useRef<HTMLLIElement>(null);
+  useLiftFrom(() => li.current, lift.item, lift.name, lift.still);
   return (
-    <li data-fee={id} data-figures="" data-liftable="" className="come-in" {...handlers}>
+    <li ref={li} data-fee={id} data-figures="" data-liftable="" data-lift-body="" className="come-in" {...handlers}>
       {children}
     </li>
   );

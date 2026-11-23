@@ -107,7 +107,7 @@
   "types": {
    "site/app/components/fee-deal/toolbox.tsx": 1,
    "site/app/components/kit/chart-glide.tsx": 1,
-   "site/app/components/kit/index.ts": 56,
+   "site/app/components/kit/index.ts": 55,
    "site/app/components/kit/lift.tsx": 1,
    "site/app/components/kit/side-nav.tsx": 1,
    "site/app/components/kit/toolbox.tsx": 2,

@@ -1,7 +1,7 @@
 // The indices page computed over a grid of plans, to find rankings that look wrong on their face (tools/rank-flags.mjs reads the
 // output): for every index, every kind of fund, every fund and every house, the value left, the account's cost split by fee line,
 // and the fund's own part and the tax (per fund, from pairCosts at its best house). The plan is the page's: the return the site
-// illustrates with (A-01, 7%), inflation 2%, and every bank's current account counted (no bank marked as the person's, D64).
+// illustrates with (A-01, 7%), inflation 2%, and every bank's current account counted (D64).
 // Run from the repository root (about three minutes, a 50 MB file):
 //   npx tsx tools/rank-scan.ts <out.jsonl> [index ids...]
 //   node tools/rank-flags.mjs <out.jsonl>

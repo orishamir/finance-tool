@@ -2232,8 +2232,8 @@
         "url": "https://www.bankmassad.co.il/media/e11agh3s/חלק-1-חשבון-עובר-ושב-46.pdf",
         "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד, חלק 1 חשבון עובר ושב"
       },
-      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Part 1 p.1 (printed p.3) s.1.2.1 note 4: the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3).",
-      "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 6.30 ₪ לחודש, אלא אם סימנתם שזה הבנק שלכם. האתר סופר רק את עמלת המינימום שבתעריפון, בלי עמלות על פעולות בחשבון ובלי מסלולי עו״ש בתשלום חודשי.",
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Part 1 p.1 (printed p.3) s.1.2.1 note 4: the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3).",
+      "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 6.30 ₪ לחודש. האתר סופר רק את עמלת המינימום שבתעריפון, בלי עמלות על פעולות בחשבון ובלי מסלולי עו״ש בתשלום חודשי.",
       "could_change_price": false
     },
     {

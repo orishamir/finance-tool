@@ -258,8 +258,10 @@ describe("F-128 a deal filled from a house prices as the house does, on a few in
     const at = (id: string) => Math.round(etfOn(v, id).price?.valueN ?? NaN);
     expect(at(dealProviderId("deal-leumi"))).toBe(at("leumi"));
     expect(at(dealProviderId("deal-mine"))).toBeLessThan(at(dealProviderId("deal-leumi")));
-    // taken away, the plan counts none
+    // taken away, the plan counts none: the deal leaves what the bank's row leaves where the page counts no current account
     expect(at(dealProviderId("deal-none"))).toBeGreaterThan(at(dealProviderId("deal-leumi")));
+    const { currentAccounts: _c, ...uncounted } = plan;
+    expect(at(dealProviderId("deal-none"))).toBe(Math.round(etfOn(buildInvest({ bundle: bs, index: ix, plan: uncounted }), "leumi").price?.valueN ?? NaN));
     // the page opens a deal saved before with the card, so its account is counted, once
     expect(at(dealProviderId("deal-opened"))).toBe(at(dealProviderId("deal-leumi")));
     expect(at(dealProviderId("deal-stored"))).toBe(at(dealProviderId("deal-none")));

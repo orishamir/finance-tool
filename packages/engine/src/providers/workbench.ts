@@ -757,7 +757,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     }
   }
 
-  // F-102 (D64): the current account at a bank, where the caller counts it (the indices page: every bank but the one the person marks)
+  // F-102 (D64): the current account at a bank, where the caller counts it (the indices page: every bank)
   if (p.currentAccount && snapshot.current_account) {
     const m = snapshot.current_account.monthly_minimum;
     if (m.unit !== "nis_per_month" || typeof m.value !== "number") throw new RecordInputError(`provider ${snapshot.id}: current_account.monthly_minimum must be a number in nis_per_month`);

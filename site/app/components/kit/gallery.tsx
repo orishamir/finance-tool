@@ -3121,7 +3121,7 @@ function TradeFee({ today }: { today: string }) {
   };
   return (
     <>
-      <FeeBlock dot="bg-fee-trade" name={sc.trade} remove={{ label: dealWords.panel.remove, onRemove: () => undefined }}>
+      <FeeBlock dot="bg-fee-trade" name={sc.trade} open tools={<RemoveButton knob label={dealWords.panel.remove} onRemove={() => undefined} />}>
         <ConditionBand
           things={[
             { id: "what", name: sc.things.what },

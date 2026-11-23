@@ -222,7 +222,7 @@ export function dealHouseId(deal: Pick<FeeDeal, "template">): string | null {
 }
 
 /**
- * F-128 Each fee of the deal on one run of the plan. A current account is charged unless the deal was filled from the bank the person marks
+ * F-128 Each fee of the deal on one run of the plan. A current account is charged where the page counts one
  * (D64); the fund's own fee comes from the fund's record; a fee in the person's own words is charged where F-111 places it on what is held
  * or on the account (every price it charges a share of what is held or a sum per period, `chargedOnHolding`), and never on an action; every
  * other fee as `planChargeOf` says. A fee the plan charges must be priced (§10.6), in order (F-110), and have a case for what the plan buys (F-114),
@@ -233,7 +233,7 @@ export function feesOnPlan(deal: FeeDeal, run: DealRun, ctx: PlanContext): FeeOn
   const read = planRead(deal, run, ctx);
   const facts = { converts: run.currency !== null, distributes: run.distributes };
   return deal.fees.map((f): FeeOnPlan => {
-    const off = offOf(deal, f, facts, ctx);
+    const off = offOf(f, facts, ctx);
     if (off) return { fee: f.id, on: "off", why: off };
     if (read.banned.some((b) => b.fee === f.id)) return { fee: f.id, on: "off", why: "banned" };
     const miss = (why: MissingWhy): FeeOnPlan => ({ fee: f.id, on: "missing", missing: { why, fee: f.id, kind: f.kind, ...(f.name ? { name: f.name } : {}) } });
@@ -248,7 +248,7 @@ export function feesOnPlan(deal: FeeDeal, run: DealRun, ctx: PlanContext): FeeOn
 /** F-111 on a fee in the person's own words: whether it charges something, and every price it charges is on what is held or on the account. */
 const ownOnHolding = (f: Fee): boolean => (hasCases(f) ? f.cases : [f]).some((x) => [...x.stages, ...(x.sale ?? [])].some((st) => st.price.form !== "free")) && chargedOnHolding(f);
 
-function offOf(deal: FeeDeal, f: Fee, facts: { converts: boolean; distributes: boolean }, ctx: PlanContext): OffPlan | null {
+function offOf(f: Fee, facts: { converts: boolean; distributes: boolean }, ctx: PlanContext): OffPlan | null {
   if (f.kind === "current_account") return ctx.currentAccounts ? null : "no-current-account";
   if (f.kind === "fund_management") return "fund-record";
   if (f.kind === "own") return ownOnHolding(f) ? null : "own-words";

@@ -5,7 +5,7 @@
 // version and keeps the holdings and entries, where a newer version would have it offer to start again over them. Any goals,
 // current goal or saved comparisons a document or file holds are left out without a word: no page reads them. It replaces the
 // release 2 keys `mekor.v1.inputs`, `mekor.v1.goals` and `mekor.v1.uncatalogued`: the first load after the release migrates them
-// once (of the goals document, only the bank) and removes them after a successful write. Browser only; nothing is sent anywhere.
+// once (nothing of the goals document) and removes them after a successful write. Browser only; nothing is sent anywhere.
 // `lib/inputs.tsx` reads and writes through this store.
 //
 // The export file (`StateFile`) is this document with a header; the import checks it before anything changes.
@@ -271,7 +271,7 @@ export interface V1Docs {
   uncatalogued?: unknown;
 }
 
-/** Migration v1 → v3: the three release 2 documents become one, of the goals document only its bank. Returns null when there was nothing to carry over. */
+/** Migration v1 → v3: the three release 2 documents become one, nothing of the goals document. Returns null when there was nothing to carry over. */
 export function migrateV1(v1: V1Docs, today = isoToday()): StateV3 | null {
   const s = emptyState();
   let found = false;

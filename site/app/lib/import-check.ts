@@ -79,8 +79,8 @@ export function inputProblem(v: unknown): Problem | null {
 
 /**
  * The state of an import file with every item that fails its check taken out, and one entry per rejection. The goals, the current goal
- * and the saved comparisons of an older file are not read, so they pass unchecked (`readState` leaves them out, and of a version 1
- * goals document reads only the bank). Only arrays and maps that are present are touched; anything else is left for `checkState`.
+ * and the saved comparisons of an older file are not read, so they pass unchecked (`readState` leaves them out, and reads nothing of a
+ * version 1 goals document). Only arrays and maps that are present are touched; anything else is left for `checkState`.
  */
 export function sanitizeRawState(raw: unknown): { state: unknown; rejected: Rejected[] } {
   if (!isRec(raw)) return { state: raw, rejected: [] };

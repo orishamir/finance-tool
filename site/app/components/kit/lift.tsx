@@ -16,7 +16,7 @@
 // left them. A tap on a grip opens its menu (`GripMenu`), which does the same by keyboard, the things
 // moving there the same way. A knob (↔, `SpanKnob`), a strip along a cell's whole edge, stretches the cell over its neighbours or back, its
 // edge following the pointer. Every grip and knob takes a 44 px press and no room of its own: it stands over the start of what it lifts.
-import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type RefObject } from "react";
+import { useEffect, useEffectEvent, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type RefObject } from "react";
 import { createPortal, flushSync } from "react-dom";
 import { GripVertical, MoveHorizontal, MoveVertical } from "lucide-react";
 import { dealCases as copy } from "../../copy";
@@ -147,8 +147,10 @@ function pictureOf(el: HTMLElement, width: number): HTMLElement {
   g.setAttribute("aria-hidden", "true");
   g.setAttribute("data-lift-ghost", "");
   g.removeAttribute("style");
-  // as compact as its words: a head as tall as its row is carried as its words alone
-  Object.assign(g.style, { position: "fixed", left: "0", top: "0", width: `${width}px`, height: "auto", minHeight: "0", maxHeight: `${Math.max(44, el.getBoundingClientRect().height)}px`, margin: "0", pointerEvents: "none" });
+  // as compact as its words: a head as tall as its row is carried as its words alone. No animation of its own: a copy of a thing that
+  // came in with one (a fee's `come-in`) would play it again, and an animated transform overrides the place set below, so the picture
+  // stood at the layer's corner until the animation ended
+  Object.assign(g.style, { animation: "none", position: "fixed", left: "0", top: "0", width: `${width}px`, height: "auto", minHeight: "0", maxHeight: `${Math.max(44, el.getBoundingClientRect().height)}px`, margin: "0", pointerEvents: "none" });
   return g;
 }
 
@@ -575,52 +577,14 @@ export interface GripAction {
 }
 
 /**
- * A grip (⋮⋮): pressed and moved (on a phone, a long press anywhere on what it lifts; with a mouse, a press on the surface of a thing
- * marked `data-lift-body`, moved, which shows the grab hand by `data-lift-grab`), it lifts the nearest element marked `data-liftable`
- * around it as `item`, `name` the thing's words (the bin says them); tapped or pressed with Enter, it opens its menu (`actions`), where there
- * is one. `still`: it lifts nothing (nothing would take the thing), its menu alone. `label` is its spoken name. Delete takes the thing
- * away where the menu can (`onRemove`). It takes no room: it stands over the start of the element around it (`inside`), or just before
- * it, over the room between it and its neighbour (`outside`, a table's cell, a fee's name). It is drawn while what it lifts
- * is under a fine pointer or has the focus; on touch only inside the open fee, where what it stands over makes room for it.
+ * What lifts a thing (`from`, an element marked `data-liftable`) as `item`, `name` its words: on touch a long press anywhere on it (on
+ * what is inside it that lifts itself, that alone); with a mouse, where it is marked `data-lift-body`, a press on its own surface moved a
+ * few pixels (`bodyPress`). `still`: it lifts nothing. A grip calls it on the thing around it; a thing with no grip (a fee's card) on itself.
  */
-export function Grip({ item, name, label, actions = [], onRemove, still, place = "inside", className }: { item: string; name?: string; label: string; actions?: GripAction[]; onRemove?: () => void; still?: boolean; place?: "inside" | "outside"; className?: string }) {
-  const press = useRef<{ x: number; y: number; id: number; timer: number; touch: boolean } | null>(null);
-  const lifted = useRef(false);
-  const btn = useRef<HTMLButtonElement>(null);
-  const [menu, setMenu] = useState(false);
-  const clear = () => {
-    if (press.current) clearTimeout(press.current.timer);
-    press.current = null;
-  };
-  const start = (x: number, y: number) => {
-    const from = btn.current?.closest<HTMLElement>("[data-liftable]");
-    clear();
-    if (!from || still) return;
-    lifted.current = true;
-    setMenu(false);
-    lift(item, from, x, y, { ...(name ? { name } : {}) });
-  };
-  const onPointerDown = (e: ReactPointerEvent<HTMLButtonElement>) => {
-    if (e.button !== 0) return;
-    const touch = e.pointerType === "touch";
-    lifted.current = false;
-    // the moves that follow come here even once the pointer leaves the grip, so a quick drag still lifts
-    e.currentTarget.setPointerCapture(e.pointerId);
-    const x = e.clientX, y = e.clientY;
-    press.current = { x, y, id: e.pointerId, touch, timer: touch && !still ? window.setTimeout(() => start(x, y), HOLD_MS) : 0 };
-  };
-  const onPointerMove = (e: ReactPointerEvent<HTMLButtonElement>) => {
-    const p = press.current;
-    if (!p || p.id !== e.pointerId) return;
-    const far = Math.hypot(e.clientX - p.x, e.clientY - p.y);
-    if (p.touch) {
-      if (far > TOUCH_SLOP) clear();
-    } else if (far > MOUSE_SLOP) start(e.clientX, e.clientY);
-  };
-  // on touch a long press anywhere on what it lifts lifts it (on what is inside it that lifts itself, that alone); with a mouse, on a
-  // thing marked `data-lift-body`, a press on its own surface moved a few pixels (`bodyPress`)
+export function useLiftFrom(fromOf: () => HTMLElement | null, item: string, name: string | undefined, still = false): void {
+  const resolve = useEffectEvent(fromOf);
   useEffect(() => {
-    const from = btn.current?.closest<HTMLElement>("[data-liftable]");
+    const from = resolve();
     if (!from || still) return;
     const body = from.hasAttribute("data-lift-body");
     if (body) from.setAttribute("data-lift-grab", "");
@@ -664,6 +628,52 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
       from.removeEventListener("pointercancel", stop);
     };
   }, [item, name, still]);
+}
+
+/**
+ * A grip (⋮⋮): pressed and moved (on a phone, a long press anywhere on what it lifts; with a mouse, a press on the surface of a thing
+ * marked `data-lift-body`, moved, which shows the grab hand by `data-lift-grab`), it lifts the nearest element marked `data-liftable`
+ * around it as `item`, `name` the thing's words (the bin says them); tapped or pressed with Enter, it opens its menu (`actions`), where there
+ * is one. `still`: it lifts nothing (nothing would take the thing), its menu alone. `label` is its spoken name. Delete takes the thing
+ * away where the menu can (`onRemove`). It takes no room: it stands over the start of the element around it (`inside`), or just before
+ * it, over the room between it and its neighbour (`outside`, a table's cell, a fee's name). It is drawn while what it lifts
+ * is under a fine pointer or has the focus; on touch only inside the open fee, where what it stands over makes room for it.
+ */
+export function Grip({ item, name, label, actions = [], onRemove, still, place = "inside", className }: { item: string; name?: string; label: string; actions?: GripAction[]; onRemove?: () => void; still?: boolean; place?: "inside" | "outside"; className?: string }) {
+  const press = useRef<{ x: number; y: number; id: number; timer: number; touch: boolean } | null>(null);
+  const lifted = useRef(false);
+  const btn = useRef<HTMLButtonElement>(null);
+  const [menu, setMenu] = useState(false);
+  const clear = () => {
+    if (press.current) clearTimeout(press.current.timer);
+    press.current = null;
+  };
+  const start = (x: number, y: number) => {
+    const from = btn.current?.closest<HTMLElement>("[data-liftable]");
+    clear();
+    if (!from || still) return;
+    lifted.current = true;
+    setMenu(false);
+    lift(item, from, x, y, { ...(name ? { name } : {}) });
+  };
+  const onPointerDown = (e: ReactPointerEvent<HTMLButtonElement>) => {
+    if (e.button !== 0) return;
+    const touch = e.pointerType === "touch";
+    lifted.current = false;
+    // the moves that follow come here even once the pointer leaves the grip, so a quick drag still lifts
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const x = e.clientX, y = e.clientY;
+    press.current = { x, y, id: e.pointerId, touch, timer: touch && !still ? window.setTimeout(() => start(x, y), HOLD_MS) : 0 };
+  };
+  const onPointerMove = (e: ReactPointerEvent<HTMLButtonElement>) => {
+    const p = press.current;
+    if (!p || p.id !== e.pointerId) return;
+    const far = Math.hypot(e.clientX - p.x, e.clientY - p.y);
+    if (p.touch) {
+      if (far > TOUCH_SLOP) clear();
+    } else if (far > MOUSE_SLOP) start(e.clientX, e.clientY);
+  };
+  useLiftFrom(() => btn.current?.closest<HTMLElement>("[data-liftable]") ?? null, item, name, still);
   const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     if ((e.key === "Delete" || e.key === "Backspace") && onRemove) {
       e.preventDefault();

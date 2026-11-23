@@ -813,9 +813,19 @@ async function liftSheetCheck(browser, base) {
     const g = center(await page.locator("dialog[open] [data-grip][data-lift-item='kit:row:0']").boundingBox());
     const o = await other.boundingBox();
     const to = { x: g.x, y: o.y + o.height - 4 };
+    // the row came in with an animated transform, as a fee's card does (`come-in`): its carried copy must not play it again, which would
+    // hold the picture at the sheet's corner until it ended (a rule added through the style sheet's object, which the page's policy allows)
+    await page.evaluate(() => {
+      const sheet = [...document.styleSheets].find((x) => { try { return !!x.cssRules; } catch { return false; } });
+      sheet?.insertRule("@keyframes kit-check-in { from { transform: translateY(-4px); } }");
+      sheet?.insertRule(".kit-check-in { animation: kit-check-in 3s; }");
+      document.querySelector("dialog[open] [data-grip][data-lift-item='kit:row:0']")?.closest("[data-liftable]")?.classList.add("kit-check-in");
+    });
     await page.mouse.move(g.x, g.y);
     await page.mouse.down();
     await page.mouse.move(g.x, g.y + 6, { steps: 3 });
+    const first = await page.evaluate(drawnAt, ["[data-lift-ghost]", g.x, g.y + 6]);
+    if (first && !first.holds) found.push("lift in a sheet: right after the lift, the row carried with a mouse is not drawn under the pointer (its copy plays an animation of the row's, which moves it)");
     await page.mouse.move(to.x, to.y, { steps: 10 });
     const ghost = await page.evaluate(drawnAt, ["[data-lift-ghost]", to.x, to.y]);
     if (!ghost) found.push("lift in a sheet: a row's grip pressed and moved with a mouse lifts nothing");

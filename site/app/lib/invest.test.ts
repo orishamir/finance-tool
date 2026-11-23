@@ -459,7 +459,7 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
   };
   const banks = bundle.snapshots.filter((s) => s.current_account && (s.current_account.monthly_minimum.value as number) > 0).map((s) => s.id);
 
-  it("with no bank marked, every bank whose price list charges for a current account has it as a line of its own, and leaves less", () => {
+  it("every bank whose price list charges for a current account has it as a line of its own, and leaves less", () => {
     expect(banks.sort()).toEqual(["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "yahav"]);
     for (const id of banks) {
       const at = best(counted, id);

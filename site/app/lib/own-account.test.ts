@@ -265,7 +265,7 @@ describe("the tariff built in layers (F-101)", () => {
     const short = unwrap(layeredTariff(dAccount({ untilYears: 2 }), counted, dReading.run));
     expect(short.until!.months).toBe(24);
     expect(short.until!.then.currentAccount).toBe(5.9);
-    // where the row does not count the current account (the person's own bank), the group adds nothing
+    // where the row does not count the current account, the group adds nothing
     expect(unwrap(layeredTariff(dAccount(), dList, dReading.run)).currentAccount).toBeUndefined();
   });
   it("a group whose annex leaves the minimum unclear pays the ordinary minimum throughout (D56, D64; lens review M2)", () => {

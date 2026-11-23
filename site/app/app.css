@@ -110,6 +110,42 @@
     opacity: 1;
   }
 
+  /* Scrollbars on a computer: a thin rounded thumb on no track and no arrow buttons, lighter under the pointer and while dragged
+     (docs/design-system.md 2.2). A phone keeps its own overlay bar. Chrome and Safari draw the ::-webkit-scrollbar parts; Chrome
+     ignores them on any element that sets scrollbar-width or scrollbar-color, so those standard properties are for Firefox only.
+     `.scrollbar-none` still hides a bar in both. */
+  @media (hover: hover) and (pointer: fine) {
+    ::-webkit-scrollbar {
+      width: 12px;
+      height: 12px;
+      background: transparent;
+    }
+    ::-webkit-scrollbar-track,
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--scrollbar-thumb);
+      background-clip: padding-box;
+      border: 3px solid transparent;
+      border-radius: 999px;
+      min-height: 40px;
+    }
+    ::-webkit-scrollbar-thumb:hover,
+    ::-webkit-scrollbar-thumb:active {
+      background-color: var(--scrollbar-thumb-hover);
+    }
+    ::-webkit-scrollbar-button {
+      display: none;
+    }
+    @supports not selector(::-webkit-scrollbar) {
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb) transparent;
+      }
+    }
+  }
+
   [data-mirror] {
     transform: scaleX(-1);
   }
@@ -912,27 +948,21 @@
   :root:has([data-lift-ghost], [data-reach-frame]) [data-part-off] {
     visibility: hidden !important;
   }
-  /* A closed fee card's corner actions (kit/fee-block.tsx): drawn, and taking a press, only once a fine pointer has rested on the card
-     `--hover-rest`; touch
-     and the keyboard reach the same in the fee's grip menu; never while something is carried (important on touch and then, so it stays
-     hidden over every rule that shows it) */
-  [data-fee-corner] {
+  /* A fee's actions after its name (kit/fee-block.tsx, its duplicate and its bin): drawn while the fee is open; on a closed card drawn,
+     and taking a press, only once a fine pointer has rested on the card `--hover-rest`, their room kept meanwhile; touch and the keyboard
+     reach them by opening the fee; never while something is carried (important then, so it stays hidden over every rule that shows it) */
+  [data-fee-tools]:not([data-shown]) {
     opacity: 0;
     visibility: hidden;
   }
   @media (pointer: fine) {
-    :has(> [data-fee-corner]):hover > [data-fee-corner] {
+    [data-fee-card]:hover [data-fee-tools]:not([data-shown]) {
       opacity: 1;
       visibility: visible;
       transition: opacity var(--duration-fast) linear var(--hover-rest), visibility 0s linear var(--hover-rest);
     }
   }
-  @media (pointer: coarse) {
-    [data-fee-corner] {
-      visibility: hidden !important;
-    }
-  }
-  :root:has([data-lift-ghost], [data-reach-frame]) [data-fee-corner] {
+  :root:has([data-lift-ghost], [data-reach-frame]) [data-fee-tools] {
     visibility: hidden !important;
   }
   /* While something is carried (kit/lift.tsx) only the pointer at the screen's edge scrolls the page: the browser does not scroll it to
