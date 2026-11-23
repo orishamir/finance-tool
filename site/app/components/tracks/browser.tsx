@@ -141,6 +141,7 @@ export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge
             onChange: (id) => setKind(id === ALL_KINDS ? "" : id),
             // the place of the kinds says why there are none, so the control is not just gone
             hint: t.controls.noKinds,
+            labelAbove: true,
           }}
         />
         <SelectField

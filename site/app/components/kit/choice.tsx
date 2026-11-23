@@ -146,15 +146,15 @@ export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ar
  * here; then its label and its own row of choices, which scrolls sideways rather than wrap (the companies page's products under the kind of
  * product). Its height never changes, so what stands below it never moves.
  */
-export function ChoiceTray({ label, hint, children, labelId }: { label: string; /** Shown while the tray holds no choices. */ hint: ReactNode; children?: ReactNode; /** The label's element id (the row inside names itself by it). */ labelId?: string }) {
+export function ChoiceTray({ label, hint, children, labelId, labelAbove }: { label: string; /** The label stands on its own line above the row, as the first level's label does, instead of before it. */ labelAbove?: boolean; /** Shown while the tray holds no choices. */ hint: ReactNode; children?: ReactNode; /** The label's element id (the row inside names itself by it). */ labelId?: string }) {
   return (
-    <div className="h-16 md:h-12 flex items-center gap-3 min-w-0 overflow-hidden">
+    <div className={cx("flex min-w-0 overflow-hidden", labelAbove ? "h-20 md:h-[4.5rem] flex-col justify-center gap-2" : "h-16 md:h-12 items-center gap-3")}>
       {children ? (
         <>
           <span id={labelId} className="shrink-0 text-sm font-medium">
             {label}
           </span>
-          <div className="flex-1 min-w-0">{children}</div>
+          <div className={labelAbove ? "min-w-0" : "flex-1 min-w-0"}>{children}</div>
         </>
       ) : (
         <p className="min-w-0 line-clamp-2 md:line-clamp-none md:truncate text-sm text-muted-foreground">{hint}</p>
@@ -169,7 +169,7 @@ export function ChoiceTray({ label, hint, children, labelId }: { label: string; 
  * either level moves nothing below. While the first level opens nothing, the tray holds `child.hint`. `start` stands before the first row
  * on its line from md (a search field); `under` is a line under it (a link about the choice).
  */
-export function ChoicePair<P extends string, C extends string>({ parent, child, start, under }: { parent: { label: string; ids: readonly P[]; labels: Record<string, string>; value: P; counts?: Partial<Record<P, number>>; onChange: (id: P) => void }; child: { label: string; ids: readonly C[]; labels: Record<string, string>; value: C | null; counts?: Partial<Record<C, number>>; onChange: (id: C) => void; /** Shown while there is nothing to choose at this level. */ hint: ReactNode }; start?: ReactNode; under?: ReactNode }) {
+export function ChoicePair<P extends string, C extends string>({ parent, child, start, under }: { parent: { label: string; ids: readonly P[]; labels: Record<string, string>; value: P; counts?: Partial<Record<P, number>>; onChange: (id: P) => void }; child: { label: string; ids: readonly C[]; labels: Record<string, string>; value: C | null; counts?: Partial<Record<C, number>>; onChange: (id: C) => void; /** Shown while there is nothing to choose at this level. */ hint: ReactNode; /** See `ChoiceTray`. */ labelAbove?: boolean }; start?: ReactNode; under?: ReactNode }) {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex flex-col md:flex-row md:items-end gap-4 md:gap-6">
@@ -180,7 +180,7 @@ export function ChoicePair<P extends string, C extends string>({ parent, child, 
         </div>
       </div>
       {under}
-      <ChoiceTray label={child.label} hint={child.hint}>
+      <ChoiceTray label={child.label} hint={child.hint} labelAbove={child.labelAbove}>
         {child.ids.length > 0 && <ChoiceChips ids={child.ids} labels={child.labels} value={child.value} counts={child.counts} onChange={child.onChange} ariaLabel={child.label} line bleed="" />}
       </ChoiceTray>
     </div>
