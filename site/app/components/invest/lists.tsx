@@ -64,9 +64,11 @@ export interface ListsProps {
 
 /** A list's figure column named at its end with its computed mark (every figure in the column is computed, so the mark stands in the head
  *  and the cells stay plain, design.md); the items' column has no name, since the side's title above already says what they are. */
-function Head({ figure }: { figure: string }) {
+function Head({ figure, lead }: { figure: string; lead?: ReactNode }) {
+  // `lead`: a heading on the head's own row, at its start, level with the figure's name
   return (
-    <span className="col-span-full flex items-end justify-end gap-3">
+    <span className={cx("col-span-full flex gap-3", lead ? "items-center justify-between" : "items-end justify-end")}>
+      {lead}
       <span className="num num-computed num-sample text-end whitespace-nowrap">{figure}</span>
     </span>
   );
@@ -532,26 +534,31 @@ export function PairLists(props: ListsProps) {
     ) : null;
   const beforeTaxList =
     beforeTaxRows.length > 0 ? (
-      // on a touch screen the room under the heading keeps its caution "?" a whole touch target over the list's head
-      <section className="flex flex-col gap-1.5 pointer-coarse:gap-3">
-        {/* why these funds have no figure after tax, and so no rank, behind a caution "?" beside the heading, with the rules it rests on */}
-        <h4 className="flex items-center gap-1.5 text-sm font-medium text-blocked-foreground">
-          <IconLock size={14} />
-          {c.beforeTax.heading}
-          <HelpMark
-            tone="caution"
-            about={c.beforeTax.heading}
-            text={[...beforeTaxRules.map((id) => c.beforeTax.note[id] ?? c.beforeTax.noteOther), c.beforeTax.noteTail].join(" ")}
-            rules={beforeTaxRules}
-          />
-        </h4>
+      <section className="flex flex-col">
         <div className="nums-plain">
           <PickList
             look="line"
             tone="fund"
             label={c.beforeTax.label(short)}
             columns="minmax(0,1fr) auto"
-            head={<Head figure={c.beforeTax.colLeft} />}
+            head={
+              <Head
+                figure={c.beforeTax.colLeft}
+                lead={
+                  // why these funds have no figure after tax, and so no rank, behind a caution "?" beside the heading, with the rules it rests on
+                  <h4 className="flex items-center gap-1.5 text-sm font-medium text-blocked-foreground">
+                    <IconLock size={14} />
+                    {c.beforeTax.heading}
+                    <HelpMark
+                      tone="caution"
+                      about={c.beforeTax.heading}
+                      text={[...beforeTaxRules.map((id) => c.beforeTax.note[id] ?? c.beforeTax.noteOther), c.beforeTax.noteTail].join(" ")}
+                      rules={beforeTaxRules}
+                    />
+                  </h4>
+                }
+              />
+            }
             rows={beforeTaxRows}
           />
         </div>

@@ -46,7 +46,7 @@ export interface FocusProduct {
 }
 
 /** The one line under a company's name in the pane. `at`: the day the price list was collected, ISO. */
-export type FocusLine = { kind: "members"; names: string[] } | { kind: "tariff"; at: string } | { kind: "class"; text: string };
+export type FocusLine = { kind: "tariff"; at: string } | { kind: "class"; text: string };
 
 /** The sourced values behind a company's figures, by company id: its line's date and each product's figures. */
 export type FocusFigures = Record<string, { line?: SiteValue; products: Record<string, { assets?: SiteValue | null; fees?: { low: SiteValue; high: SiteValue } | null; asOf?: DateSpan<SiteValue> | null }> }>;
@@ -156,11 +156,6 @@ export function countWords(unit: CountUnit, n: number | null): string {
 export function countMark(p: FocusProduct | undefined): string {
   if (!p) return "";
   return p.count === null ? "✓" : fmt.number(p.count);
-}
-
-/** "10 מוצרים באתר". */
-export function productsOnSite(n: number): string {
-  return countPhrase(n, w.productsOnSite);
 }
 
 // ---------------------------------------------------------------- the address

@@ -2,18 +2,49 @@
 // only draw what the page's state says; lib/company-focus.ts holds the logic. Filtering and searching dim rows in place, never move them.
 import { companyFocus as w } from "../../copy";
 import { companyPath } from "../../lib/site-paths";
-import { countMark, countWords, matches, productsOnSite, companyGroups, productTypes, type FocusCompany, type FocusData, type FocusFigures, type FocusProduct, type FocusProductKind, type FocusState } from "../../lib/company-focus";
+import {
+  countMark,
+  countWords,
+  matches,
+  companyGroups,
+  productTypes,
+  type FocusCompany,
+  type FocusData,
+  type FocusFigures,
+  type FocusProduct,
+  type FocusProductKind,
+  type FocusState,
+} from "../../lib/company-focus";
 import { assetsText } from "../../lib/track-browser";
 import { fmt, formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
 import { IconDrillIn } from "../icons";
-import { ChooseRow, DateSpanText, GroupHead, ListRow, MixedName, RowList, Section, TextLink, cx, gershayim } from "../kit";
+import {
+  ChooseRow,
+  DateSpanText,
+  GroupHead,
+  ListRow,
+  MixedName,
+  RowList,
+  Section,
+  TextLink,
+  cx,
+  gershayim,
+} from "../kit";
 
 // ---------------------------------------------------------------- the list
 
 /** The three groups side by side from lg (one under another below it), each a heading with its count and one compact row per company. */
-export function CompanyList({ data, state, onFocus }: { data: FocusData; state: FocusState; onFocus: (id: string, el: HTMLElement) => void }) {
+export function CompanyList({
+  data,
+  state,
+  onFocus,
+}: {
+  data: FocusData;
+  state: FocusState;
+  onFocus: (id: string, el: HTMLElement) => void;
+}) {
   const filtered = state.type !== "all" || !!state.q.trim();
   return (
     <div className="grid gap-6 lg:gap-3 lg:grid-cols-3">
@@ -21,13 +52,32 @@ export function CompanyList({ data, state, onFocus }: { data: FocusData; state: 
         const list = data.companies.filter((c) => c.group === g);
         const shown = list.filter((c) => matches(data.kinds, c, state)).length;
         return (
-          <section key={g} aria-labelledby={`cg-${g}`} className="flex flex-col gap-2 min-w-0">
-            <GroupHead as="h2" id={`cg-${g}`} nowrap count={filtered ? <bdi dir="rtl">{w.of(fmt.number(shown), fmt.number(list.length))}</bdi> : fmt.number(list.length)}>
+          <section
+            key={g}
+            aria-labelledby={`cg-${g}`}
+            className="flex flex-col gap-2 min-w-0"
+          >
+            <GroupHead
+              as="h2"
+              id={`cg-${g}`}
+              nowrap
+              count={
+                filtered ? (
+                  <bdi dir="rtl">
+                    {w.of(fmt.number(shown), fmt.number(list.length))}
+                  </bdi>
+                ) : (
+                  fmt.number(list.length)
+                )
+              }
+            >
               {w.groups[g]}
             </GroupHead>
             <RowList>
               {list.map((c) => {
-                const on = state.product ? c.products.find((p) => p.id === state.product) : undefined;
+                const on = state.product
+                  ? c.products.find((p) => p.id === state.product)
+                  : undefined;
                 return (
                   <ListRow
                     key={c.id}
@@ -35,13 +85,18 @@ export function CompanyList({ data, state, onFocus }: { data: FocusData; state: 
                     title={<MixedName>{c.short}</MixedName>}
                     end={
                       // a fixed slot, so a count coming or going moves nothing
-                      <bdi dir="ltr" className="inline-block w-[3ch] text-end tabular-nums text-sm">
+                      <bdi
+                        dir="ltr"
+                        className="inline-block w-[3ch] text-end tabular-nums text-sm"
+                      >
                         {countMark(on)}
                       </bdi>
                     }
                     selected={state.focus === c.id}
                     dim={!matches(data.kinds, c, state)}
-                    onSelect={() => onFocus(c.id, document.getElementById(`co-${c.id}`)!)}
+                    onSelect={() =>
+                      onFocus(c.id, document.getElementById(`co-${c.id}`)!)
+                    }
                   />
                 );
               })}
@@ -56,7 +111,13 @@ export function CompanyList({ data, state, onFocus }: { data: FocusData; state: 
 // ---------------------------------------------------------------- the company in focus
 
 /** A figure of the pane: its sourced value once the page has fetched it (it then opens its source), until then the same text, plain. */
-function Fig({ value, text }: { value: SiteValue | null | undefined; text: string }) {
+function Fig({
+  value,
+  text,
+}: {
+  value: SiteValue | null | undefined;
+  text: string;
+}) {
   if (value) return <Num value={value} display={text} />;
   return <span className="whitespace-nowrap">{text}</span>;
 }
@@ -64,12 +125,22 @@ function Fig({ value, text }: { value: SiteValue | null | undefined; text: strin
 const pct = (n: number) => formatValue(n, "pct_per_year", "computed");
 
 /** The quiet line of a product's row. */
-export function ProductLine({ p, figures }: { p: FocusProduct; figures: FocusFigures[string]["products"][string] | undefined }) {
-  if (p.tariffGroups) return <>{`${w.tariffGroups} ${p.tariffGroups.join(", ")}`}</>;
+export function ProductLine({
+  p,
+  figures,
+}: {
+  p: FocusProduct;
+  figures: FocusFigures[string]["products"][string] | undefined;
+}) {
+  if (p.tariffGroups)
+    return <>{`${w.tariffGroups} ${p.tariffGroups.join(", ")}`}</>;
   if (p.asOf !== undefined) {
     if (!p.asOf) return null;
     // the oldest and the newest date of the bank's records of the product, said once where they agree, each opening its record
-    const span = { from: { iso: p.asOf.from, value: figures?.asOf?.from }, to: { iso: p.asOf.to, value: figures?.asOf?.to } };
+    const span = {
+      from: { iso: p.asOf.from, value: figures?.asOf?.from },
+      to: { iso: p.asOf.to, value: figures?.asOf?.to },
+    };
     return (
       <DateSpanText
         span={span}
@@ -96,7 +167,8 @@ export function ProductLine({ p, figures }: { p: FocusProduct; figures: FocusFig
     const one = p.fees.low === p.fees.high;
     parts.push(
       <span key="f">
-        <span className="whitespace-nowrap">{w.fees}</span> <Fig value={figures?.fees?.low} text={pct(p.fees.low)} />
+        <span className="whitespace-nowrap">{w.fees}</span>{" "}
+        <Fig value={figures?.fees?.low} text={pct(p.fees.low)} />
         {!one && (
           <>
             {" "}
@@ -121,9 +193,25 @@ export function ProductLine({ p, figures }: { p: FocusProduct; figures: FocusFig
 
 /** The company in focus: its name and page, how many products the site has of it, one line about it, its products by kind (each chooses
  *  itself as the filter, its arrow opens it on the company's page), the further sections of its page, and what the site has none of. */
-export function FocusPane({ company: c, data, state, figures, onChoose, headId }: { company: FocusCompany; data: FocusData; state: FocusState; figures: FocusFigures | null; onChoose: (productId: string) => void; headId?: string }) {
+export function FocusPane({
+  company: c,
+  data,
+  state,
+  figures,
+  onChoose,
+  headId,
+}: {
+  company: FocusCompany;
+  data: FocusData;
+  state: FocusState;
+  figures: FocusFigures | null;
+  onChoose: (productId: string) => void;
+  headId?: string;
+}) {
   const kindOf = (id: string) => data.kinds.find((k) => k.id === id)!;
-  const types = productTypes.filter((t) => c.products.some((p) => kindOf(p.id).type === t));
+  const types = productTypes.filter((t) =>
+    c.products.some((p) => kindOf(p.id).type === t),
+  );
   const own = figures?.[c.id];
   const page = companyPath(c.id);
   return (
@@ -138,36 +226,29 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
         </TextLink>
       }
       under={
-        <>
-          <p className="text-sm">{productsOnSite(c.products.length)}</p>
-          {c.line && (
-            <p className="text-sm text-muted-foreground">
-              {c.line.kind === "members" ? (
-                <>
-                  {w.members}{" "}
-                  {c.line.names.map((n, i) => (
-                    <span key={n}>
-                      {i > 0 && " · "}
-                      <MixedName>{n}</MixedName>
-                    </span>
-                  ))}
-                </>
-              ) : c.line.kind === "tariff" ? (
-                <>
-                  {w.tariffAt}
-                  <Fig value={own?.line} text={formatValue(c.line.at, "text")} />
-                </>
-              ) : (
-                c.line.text
-              )}
-            </p>
-          )}
-        </>
+        c.line && (
+          <p className="text-sm text-muted-foreground">
+            {c.line.kind === "tariff" ? (
+              <>
+                {w.tariffAt}
+                <Fig value={own?.line} text={formatValue(c.line.at, "text")} />
+              </>
+            ) : (
+              c.line.text
+            )}
+          </p>
+        )
       }
     >
-      <p className="text-xs-flow text-muted-foreground">{w.paneHint}</p>
       {types.map((t) => (
-        <section key={t} aria-label={w.types[t]} className={cx("flex flex-col gap-2 transition-opacity duration-(--duration-base)", state.type !== "all" && state.type !== t && "opacity-45")}>
+        <section
+          key={t}
+          aria-label={w.types[t]}
+          className={cx(
+            "flex flex-col gap-2 transition-opacity duration-(--duration-base)",
+            state.type !== "all" && state.type !== t && "opacity-45",
+          )}
+        >
           <GroupHead>{w.types[t]}</GroupHead>
           <RowList>
             {c.products
@@ -183,7 +264,10 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
                     chosen={state.product === p.id}
                     onChoose={() => onChoose(p.id)}
                     label={k.name}
-                    link={{ to: p.href, label: w.open(k.name, gershayim(c.name)) }}
+                    link={{
+                      to: p.href,
+                      label: w.open(k.name, gershayim(c.name)),
+                    }}
                   />
                 );
               })}
@@ -196,14 +280,22 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
           <ul className="flex flex-wrap gap-x-4">
             {c.sections.map((s) => (
               <li key={s.id}>
-                <TextLink look="line" to={companyPath(c.id, { hash: s.id })} className="text-sm">
+                <TextLink
+                  look="line"
+                  to={companyPath(c.id, { hash: s.id })}
+                  className="text-sm"
+                >
                   {s.title}
                 </TextLink>
               </li>
             ))}
             {c.terms > 0 && (
               <li>
-                <TextLink look="line" to={companyPath(c.id, { hash: "company-terms" })} className="text-sm">
+                <TextLink
+                  look="line"
+                  to={companyPath(c.id, { hash: "company-terms" })}
+                  className="text-sm"
+                >
                   {w.terms}
                   <bdi dir="ltr" className="text-muted-foreground tabular-nums">
                     {fmt.number(c.terms)}
@@ -217,4 +309,3 @@ export function FocusPane({ company: c, data, state, figures, onChoose, headId }
     </Section>
   );
 }
-

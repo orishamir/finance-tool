@@ -95,14 +95,12 @@ export function buildCompanyFocus(): { data: FocusData; figures: FocusFigures; a
       const g = funds.find((x) => x.kind === k);
       return g ? [{ kind: { id: `funds-${k}`, name: brandsCopy.funds.groups[k], type: "funds" as const, unit: "funds" as const }, product: { id: `funds-${k}`, count: g.funds.length, href: companyPath(b.page, { product: `funds-${k}` }) } }] : [];
     });
-    // the legal companies the page stands for, as its header lists them (routes/company.tsx)
-    const members = [...new Set([company?.name, brokerage?.tariff.providerName, ...b.fundManagers].filter((x): x is string => !!x))];
     return {
       id: b.page,
       name: b.name,
       group: "houses",
       match: [b.id, company?.name, ...b.members.map((m) => m.name_he), ...b.fundManagers].join(" "),
-      line: members.length > 1 ? { kind: "members", names: members } : null,
+      line: null,
       products: take(b.page, [...(tb ? savingsProducts(tb, b.page) : []), ...fundProducts, ...brokerageProduct(brokerage?.tariff, b.page)]),
       sections: [],
       terms: termsOf(b.page),
