@@ -10,7 +10,7 @@ function offer(id: string, rate: number, extra: Partial<DbOffer> = {}): DbOffer 
   return { id, bank: "b", term: "y1", name: id, kind: "fixed", linkage: "none", limited: false, labels: [], rate_offered: v(rate), anchor: null, spread: null, amount_range: { min: v(1000), max: null }, breakTerm: "none", exits: { exists: false, everyMonths: null, firstMonths: null }, ...extra };
 }
 
-const data = (offers: DbOffer[]): DbData => ({ today: "2026-11-09", read: "2026-11-09", banks: [], offers, amounts: [], start: 10000, amountMax: 1_000_000_000 });
+const data = (offers: DbOffer[]): DbData => ({ today: "2026-11-09", banks: [], offers, amounts: [], start: 10000, amountMax: 1_000_000_000 });
 
 describe("scaleTop", () => {
   it("ends at the highest rate", () => {

@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { TermCard } from "../provenance-sheets";
-import { AbroadNote, AddLine, Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
+import { AbroadNote, GainBars, AddLine, Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
@@ -15,6 +15,7 @@ import { gershayim, keepTitleWhole } from "./name";
 import { chipName } from "./choice";
 import { markLabels, ShareChart } from "./share-chart";
 import { AmountLanes } from "./amount-lanes";
+import { computed } from "../../lib/value";
 
 const today = "2026-10-25";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -462,5 +463,21 @@ describe("a thing with a lane and a layer in each group", () => {
     expect(out).toContain("EDGE-A");
     expect(out).toContain("EDGE-B");
     expect(out).not.toContain("EDGE-C");
+  });
+});
+
+describe("GainBars", () => {
+  const bar = (key: string, v: number) => ({ key, label: key, value: computed(v, "nis", "F-08", {}, { today }), tone: "value" as const });
+  const diff = (v: number) => computed(v, "nis", "F-08", {}, { today });
+  it("says the two are the same, with no gap, where their gap as written is 0 (method §13)", () => {
+    // 10,767.6 ₪ and 10,767.9 ₪ are both written "10,768 ₪": the gap is 0, never "0 ₪ more"
+    const out = html(createElement(GainBars, { bars: [bar("a", 10_767.6), bar("b", 10_767.9)], diff: diff(0), diffLabel: "SAME-LINE" }));
+    expect(out).toContain("SAME-LINE");
+    expect(out).not.toMatch(/>0 ₪</);
+  });
+  it("shows the gap in its line where it is not 0", () => {
+    const out = html(createElement(GainBars, { bars: [bar("a", 10_000), bar("b", 9_000)], diff: diff(1_000), diffLabel: "MORE {gap}" }));
+    expect(out).toContain("MORE");
+    expect(out).toContain("1,000 ₪");
   });
 });

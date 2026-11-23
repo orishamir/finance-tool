@@ -2,10 +2,13 @@
 import { describe, expect, it } from "vitest";
 import { bondPrice, makamPrice } from "@finance-tool/engine";
 import { buildGuidePage, depositSheetNames } from "./guide.server";
+import { loadRules } from "./data.server";
+import { loadDepositTerms } from "./instruments.server";
 import type { DepositTerms } from "@finance-tool/schema";
-import { runTimeline } from "./engine";
-import { guideSignature } from "../copy";
-import { accountAxis, accountFact, bankYearlyMax, bondModel, brokenCondition, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer, type SignatureData } from "./guide-signature";
+import { p05Range, runTimeline } from "./engine";
+import { percentCheck } from "../components/kit";
+import { flags, guideSignature } from "../copy";
+import { accountAxis, accountFact, cashRateRangeOf, ladderPlanCheck, planLevelPlans, bankYearlyMax, bondModel, brokenCondition, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer, type SignatureData } from "./guide-signature";
 
 const page = (id: string) => buildGuidePage(id)!;
 const cashRate = (id: string) => ((page(id).bundle!.p05 as unknown as { inputs: { cash_rate: { value: number } } }).inputs.cash_rate.value);
@@ -65,6 +68,25 @@ describe("timeline fixes on the cash-like pages", () => {
     if (a.kind !== "ok" || c.kind !== "ok") throw new Error("run failed");
     expect(c.years.at(-1)!.nominal).toBe(a.years.at(-1)!.nominal);
   });
+  it("takes no interest rate below 0 where the run taxes it as interest, and does not run one (method G-41)", () => {
+    const interestPages = ["current-account", "bank-deposit", "savings-plan", "makam", "government-bond"];
+    for (const id of interestPages) {
+      expect(cashRateRangeOf(id)).toBe("interest");
+      const b = page(id).bundle;
+      const range = b ? p05Range(b.p05, "ranges", "interest") : null;
+      if (!b || !range) throw new Error(`${id}: no bundle or no P-05 ranges.interest`);
+      expect(range.min).toBeGreaterThanOrEqual(0);
+      expect(percentCheck(range)(-10)).not.toBeNull();
+      expect(percentCheck(range)(range.min)).toBeNull();
+      // a negative rate kept from before is not run as a tax refund: the run stops on the rule that would tax it, naming G-41's line
+      const t = runTimeline(b, { entered: { cash_rate: -10 }, age: null });
+      expect(t.kind === "blocked" ? t.gap : t.kind).toBe("G-41");
+      expect(flags["G-41"]).toBeTruthy();
+    }
+    // a money-market fund's return below zero is a fund's loss, which its run computes: its field keeps the shared range
+    expect(cashRateRangeOf("money-market-fund-daily")).toBe("pct");
+    expect(cashRateRangeOf("brokerage-account")).toBeNull();
+  });
   it("keeps the brokerage account without a visual", () => {
     expect(page("brokerage-account").signature).toBeNull();
   });
@@ -80,7 +102,6 @@ describe("current account", () => {
     if (a.kind !== "ok" || f.kind !== "ok") throw new Error("run failed");
     expect(m.end.account).toBe(a.years.at(-1)!.real);
     expect(m.end.fund).toBe(f.years.at(-1)!.real);
-    expect(m.end.cost).toBeCloseTo(m.end.fund - m.end.account, 9);
   });
 
   it("leads with the rate most banks pay (F-85): 0%, 4 of the 8 banks collected, 4 of them paying", () => {
@@ -97,8 +118,9 @@ describe("current account", () => {
     expect(m.ceiling).toBeNull();
     expect(m.end.account).toBeCloseTo(10000 / Math.pow(1.02, 10), 6);
     expect(Math.round(m.end.account)).toBe(8203);
-    expect(Math.round(-m.end.change)).toBe(1797);
-    expect(m.end.cost).toBeGreaterThan(0);
+    // the change the page shows is the difference of the two as written (method §13): 10,000 ₪ less 8,203 ₪
+    expect(m.start - Math.round(m.end.account)).toBe(1797);
+    expect(m.end.fund).toBeGreaterThan(m.end.account);
   });
 
   it("the picker redraws the account line at the bank's rate and ceiling, assuming its conditions are met", () => {
@@ -283,7 +305,19 @@ describe("savings plan", () => {
     expect(at.locked).toBe(7);
     expect(at.freeValue).toBeCloseTo(5 * m.perDeposit, 9);
     expect(at.lockedPrincipal).toBe(3500);
-    expect(d.gaps).toContain("planLockPerDeposit");
+  });
+  it("never runs the ladder on a plan whose terms do not lock each deposit on its own (F-22, G-42)", () => {
+    const records = new Map(loadDepositTerms().map((r) => [r.id, r]));
+    for (const [id, rule] of Object.entries(planLevelPlans)) {
+      // each is a collected savings plan, and the rule that says so is one the rule base holds
+      expect(records.get(id)?.wrapper_id, id).toBe("savings-plan");
+      expect(loadRules()[rule], rule).toBeTruthy();
+      expect(() => ladderPlanCheck(id)).toThrow(/G-42/);
+    }
+    // whatever plan P-05 names for the guide, it is not one of them (the guide's page builds)
+    const example = page("savings-plan").bundle?.p05.instruments?.["savings-plan"]?.deposit_terms;
+    expect(example).toBeTruthy();
+    expect(() => ladderPlanCheck(example ?? "")).not.toThrow();
   });
 });
 

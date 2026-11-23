@@ -3,7 +3,7 @@
 import { custodyFee, fixedFee, saleCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { bondCoupon } from "../formulas/holding-tax.ts";
 import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
-import { ruleBook } from "../resolver.ts";
+import { BlockedError, ruleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
 import { RUN_RESULT_FIELDS, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, maxRateTax, OrderCash, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
@@ -45,6 +45,9 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
   const I = cpiPath(input.market.inflation, T);
   const C = contributions(goal, I);
   const linked = bond.linkage === "cpi";
+  // G-41: a coupon below zero is interest below zero, whose tax the rule base holds no rule for (TXI OQ20): the run stops on the coupon's rule
+  // rather than tax it at a negative amount
+  if (bond.coupon < 0) throw new BlockedError(linked ? "TXI-14" : "TXI-15", undefined, "G-41");
   const couponRate = linked ? book.rate("TXI-14", "rate") : book.rate("TXI-15", "rate");
   if (linked) {
     book.cite("TXI-05");

@@ -2,6 +2,10 @@
 // "guide"). Entered, so shown in blue wherever used; kept on this device under one key per goal id until the saved state takes it in (see
 // device-store.ts), and carried by the export file (side-stores.ts). A stored number is a rate; a stored object holds `{ rate?, fee?,
 // provider?, index? }`. No page reads `fee`, `provider` or `index`: they are kept so the store and the export file hold what the device holds.
+// A rate is kept within the widest range any rate field takes (`STORED_RATE_RANGE`, P-05 `ranges.pct`, which a test holds equal). Which
+// range a guide's field takes is a site parameter by the wrapper's kind (P-05 `ranges.interest` or `ranges.pct`, `cashRateRange`), and
+// the field applies it (`cashRateCheck`): a money-market fund's −1% is kept and run, and a negative interest rate kept from an older device
+// or an imported file reaches the run, which says why it stops (method G-41).
 import { deviceStore } from "./device-store";
 
 /** One wrapper's stored terms: `rate` and `fee` in % a year, `provider` and `index` ids. */
@@ -18,18 +22,22 @@ export type OwnTermsStored = number | OwnTerms;
 /** goal id -> wrapper id -> the entered terms as stored. */
 export type OwnRates = Record<string, Record<string, OwnTermsStored>>;
 
-const okPct = (v: unknown): v is number => typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= 50;
+/** The widest range, in % a year, of any rate field the stored rate comes from: P-05 `ranges.pct`, which a test holds equal. */
+export const STORED_RATE_RANGE = { min: -50, max: 50 } as const;
+
+const okRate = (v: unknown): v is number => typeof v === "number" && Number.isFinite(v) && v >= STORED_RATE_RANGE.min && v <= STORED_RATE_RANGE.max;
+const okFee = (v: unknown): v is number => okRate(v) && v >= 0 && v <= 50;
 
 const okProvider = (v: unknown): v is string => typeof v === "string" && /^[a-z0-9][a-z0-9-]{0,63}$/.test(v);
 
 /** One stored value as terms, or null when nothing in it is usable. */
 function termsOfStored(v: unknown): OwnTerms | null {
-  if (okPct(v)) return { rate: v };
+  if (okRate(v)) return { rate: v };
   if (!v || typeof v !== "object") return null;
   const o = v as Record<string, unknown>;
   const out: OwnTerms = {};
-  if (okPct(o.rate)) out.rate = o.rate;
-  if (okPct(o.fee)) out.fee = o.fee;
+  if (okRate(o.rate)) out.rate = o.rate;
+  if (okFee(o.fee)) out.fee = o.fee;
   if (okProvider(o.provider)) out.provider = o.provider;
   if (okProvider(o.index)) out.index = o.index;
   return Object.keys(out).length > 0 ? out : null;

@@ -1,6 +1,7 @@
 // Value objects on the site: the schema's object plus what a page needs to show it (D7, D3, D10).
 import type { P05Input } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
+import { amountShown } from "./format";
 
 export type Strength = ValueObject["source"]["strength"];
 
@@ -187,13 +188,14 @@ export type ComputedOptions = Parameters<typeof computed>[4];
 
 /**
  * A figure worked out from two others on the page, `a − b` (a gap between two ways, what a change adds): the value is computed here from
- * the two, and its inputs are the two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either
- * is not a number. `round` shapes the result (a whole shekel).
+ * the two as the page writes them (`amountShown`: 10,768 ₪ less 8,203 ₪ is 2,565 ₪, whatever agorot each holds), and its inputs are the
+ * two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either is not a number. `round`
+ * shapes the result (its size alone).
  */
 export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const [an, av] = a;
   const [bn, bv] = b;
-  const n = typeof av.value === "number" && typeof bv.value === "number" ? av.value - bv.value : null;
+  const n = typeof av.value === "number" && typeof bv.value === "number" ? amountShown(av.value, av.unit, av.state, isParameter(av)) - amountShown(bv.value, bv.unit, bv.state, isParameter(bv)) : null;
   return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? av.unit, formula, { [an]: av, [bn]: bv }, options);
 }
 

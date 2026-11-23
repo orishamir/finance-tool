@@ -32,7 +32,7 @@
       "BANK-28"
     ],
     "state": "sourced",
-    "notes": "Printed as 'פיקדון ל-5 שנים'; recorded as 60 months. 'תשלומים' is Leumi's name for a periodic-deposit plan: its general terms say an instalment deposit takes consecutive monthly deposits (s.2.5.2, BANK-38)."
+    "notes": "Printed as 'פיקדון ל-5 שנים'; recorded as 60 months. 'תשלומים' is Leumi's name for a periodic-deposit plan: its general terms say an instalment deposit takes consecutive monthly deposits: 'תנאים כלליים לניהול חשבון' 310-93, version 06.26, s.2.5.2, p.10, 'הלקוחות יפקידו בפיקדון תשלומים חודשיים רצופים מדי חודש' (https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/General/chozim%20achidim/310-93%20-%20%D7%AA%D7%99%D7%A7%D7%95%D7%9F%20%D7%94%D7%9C%D7%95%D7%95%D7%90%D7%95%D7%AA%20%D7%90%D7%95%D7%9F%20%D7%A7%D7%95%D7%9C%20(002)%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9-PDFUA.pdf#page=10, library 92690e4986a08814); the section does not say whether each deposit is locked on its own (BANK OQ12)."
   },
   "rate_type": "fixed",
   "anchor": null,

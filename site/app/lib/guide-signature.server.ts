@@ -10,7 +10,7 @@ import { p05Value } from "./engine";
 import { accountBanks, breakFact, breakInput, commonAccountRate, currentAccountRecords, depositRange, familyOf, guideInstrumentBundle, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
 // the break column moved beside the deposit example that counts by it; the guide loader still takes it from here
 export { breakFact, breakInput };
-import type { SignatureData } from "./guide-signature";
+import { ladderPlanCheck, type SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
 import { emptyData, figureOf, withRules, type SignatureCtx } from "./guide-signature-ctx.server";
 import { buildPension, buildStudyFund } from "./guide-signature-g2.server";
@@ -127,7 +127,9 @@ builders["current-account"] = (c) => {
 builders["savings-plan"] = (c) => {
   const d = emptyData(c.id);
   addBundle(d, c, "savings-plan");
-  depositFacts(d, c, "savings-plan");
+  const { rec } = depositFacts(d, c, "savings-plan");
+  // F-22's ladder locks each deposit on its own, the method's convention (G-42): never on a plan whose terms say otherwise
+  if (rec) ladderPlanCheck(rec.id);
   // the nearest alternative: one lump sum in the bank deposit
   const lump = publishedDeposit("bank-deposit", c.p05.instruments?.["bank-deposit"], c.deposits);
   if (lump) {
@@ -135,11 +137,9 @@ builders["savings-plan"] = (c) => {
     d.facts.lumpRate = ownBy(lump.rate, lumpBank);
     if (typeof lump.record.term_months.value === "number") d.facts.lumpTerm = ownBy({ ...lump.record.term_months } as SiteValue, lumpBank);
   } else d.gaps.push("deposit:bank-deposit");
-  // BANK-28 / BANK OQ12: no general rule says whether each monthly instalment has its own lock-up; each bank's plan agreement does (one bank's: BPN-10), so the ladder is the F-22 reading
-  d.gaps.push("planLockPerDeposit");
   const brk = d.facts.break;
   if (brk && brk.value !== "not_allowed" && brk.value !== "none") d.gaps.push("depositBreak");
-  return withRules(d, "BANK-28", "BANK-06", "BANK-27", "TXI-03", "TXI-07");
+  return withRules(d, "BANK-28", "BANK-38", "BPN-10", "BANK-06", "BANK-27", "TXI-03", "TXI-07");
 };
 
 // ---------------------------------------------------------------- daily money-market fund (the ladder)

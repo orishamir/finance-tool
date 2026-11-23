@@ -1,7 +1,7 @@
 // Bank deposits, savings plans and the current account: F-21, F-22, F-26, F-41.
 import { currentAccountInterest, currentAccountMonthlyRate, depositGrowth, interestOver, lowIncomeDeduction, type InterestCalc, type RateBasis } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
-import { ruleBook } from "../resolver.ts";
+import { BlockedError, ruleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
 import { RUN_RESULT_FIELDS, type RunContext, type RunResult } from "../result.ts";
 import { maxRateTax, Tally, yearlySurtax, type Profile } from "./common.ts";
@@ -125,6 +125,10 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
   const tally = new Tally();
   const effective = deposit.rateBasis === "effective";
   const facts = { basis: deposit.rateBasis, termDays: deposit.termDays, calc: deposit.interestCalc, paidOut: deposit.interestPaidOut };
+  // G-41: the rule base holds no rule for the tax on interest below zero (TXI OQ20: the bank withholds on interest it pays, TXI-07, TXI-08;
+  // TXI-25 is negative linkage, not a negative rate), so a negative rate, a CPI-linked deposit's real rate included, stops on the rule that
+  // would tax it rather than tax it at a negative amount
+  if (deposit.rate < 0) throw new BlockedError(linked ? "TXI-05" : "TXI-03", undefined, "G-41");
   // interest paid out at a rate quoted as effective is not in the method (F-21, G-37)
   if (!isCurrentAccount && effective && deposit.interestPaidOut) throw new NotEvaluatedError("G-37");
   // F-21: how the term's interest grows, worked out once for the run; a term over a year compounds at a rate only the product's own terms

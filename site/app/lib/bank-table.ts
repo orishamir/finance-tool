@@ -3,6 +3,7 @@
 // row is said once over the table. Pure: no React, no I/O.
 import type { ProductRowData } from "../components/decoder/institutions/types";
 import { numberOf, type SiteValue } from "./value";
+import { dateSpan, type DateSpan } from "./date-span";
 import { r4catalogue as copy } from "../copy";
 import { termWords } from "./deposit-kind";
 
@@ -165,12 +166,27 @@ export function rangeLinkage(products: readonly ProductRowData[]): { linkage: Pr
   return null;
 }
 
-/** The lowest and highest rate among the records (the overview's line); null when none prints a number. */
-export function rateRange(products: readonly ProductRowData[]): { low: SiteValue; high: SiteValue } | null {
+/**
+ * The lowest and highest rate among the records (the overview's line), with the dates of the records it spans, the ones that print a
+ * number (`asOf`); null when none prints a number.
+ */
+export function rateRange(products: readonly ProductRowData[]): { low: SiteValue; high: SiteValue; asOf: DateSpan<SiteValue> } | null {
   const rated = products.filter((p) => numberOf(p.rate) !== null);
-  if (rated.length === 0) return null;
+  const asOf = asOfSpan(rated);
+  if (!asOf) return null;
   const sorted = [...rated].sort((a, b) => numberOf(a.rate)! - numberOf(b.rate)!);
-  return { low: sorted[0]!.rate, high: sorted.at(-1)!.rate };
+  return { low: sorted[0]!.rate, high: sorted.at(-1)!.rate, asOf };
+}
+
+/** The ISO day of a record's "נכון ליום". */
+export const asOfDay = (v: SiteValue): string => String(v.value);
+
+/** The oldest and the newest "נכון ליום" of the records (each its rates' own date, else the day they were collected); null for none. */
+export function asOfSpan(products: readonly ProductRowData[]): DateSpan<SiteValue> | null {
+  return dateSpan(
+    products.map((p) => p.asOf),
+    asOfDay,
+  );
 }
 
 /**

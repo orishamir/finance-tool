@@ -21,6 +21,7 @@ import type {
 import { distributionRuleIds } from "../components/decoder/institutions/types";
 import { loadChecklistRows, loadRules, loadProducts, loadTerms, loadWrappers, pointedRecords, root, today } from "./data.server";
 import { HELP_TERMS as DEPOSIT_TERMS } from "./deposit-browser";
+import { asOfSpan } from "./bank-table";
 import { topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 import { isFxToFx, shortName } from "./providers";
@@ -301,11 +302,6 @@ export function brokeragePart(id: string): { kind: InstitutionKind; tariff: Tari
 
 // ---------------------------------------------------------------- the page
 
-/** The record whose rates are the newest of `deposits` (their "נכון ליום", else the day they were collected). */
-export function latestDeposit<T extends { rate_offered: { effective_from: string | null }; snapshot: string }>(deposits: readonly T[]): T | undefined {
-  return [...deposits].sort((a, b) => ((a.rate_offered.effective_from ?? a.snapshot) < (b.rate_offered.effective_from ?? b.snapshot) ? 1 : -1))[0];
-}
-
 export function buildInstitution(id: string): InstitutionPageData | null {
   const t = today();
   const snap = institutionSnapshots().find((s) => s.id === id);
@@ -317,8 +313,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
   const groups: ProductGroup[] = wrapperOrder
     .map((w) => {
       const products = rows.filter((r) => r.wrapperId === w).sort((a, b) => heCollator.compare(a.name, b.name));
-      const latest = latestDeposit(deposits.filter((d) => d.wrapper_id === w));
-      return { wrapperId: w, wrapperName: wrappers.find((x) => x.id === w)?.names.he[0] ?? w, products, asOf: rows.find((r) => r.id === latest?.id)?.asOf ?? null };
+      return { wrapperId: w, wrapperName: wrappers.find((x) => x.id === w)?.names.he[0] ?? w, products, asOf: asOfSpan(products) };
     })
     .filter((g) => g.products.length > 0);
   const tariff = snap ? tariffCard(snap, allRules, t) : null;

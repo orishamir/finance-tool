@@ -8,7 +8,7 @@ import { fmt, formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
 import { IconDrillIn } from "../icons";
-import { ChooseRow, GroupHead, ListRow, MixedName, RowList, Section, TextLink, cx, gershayim } from "../kit";
+import { ChooseRow, DateSpanText, GroupHead, ListRow, MixedName, RowList, Section, TextLink, cx, gershayim } from "../kit";
 
 // ---------------------------------------------------------------- the list
 
@@ -64,15 +64,24 @@ function Fig({ value, text }: { value: SiteValue | null | undefined; text: strin
 const pct = (n: number) => formatValue(n, "pct_per_year", "computed");
 
 /** The quiet line of a product's row. */
-function ProductLine({ p, figures }: { p: FocusProduct; figures: FocusFigures[string]["products"][string] | undefined }) {
+export function ProductLine({ p, figures }: { p: FocusProduct; figures: FocusFigures[string]["products"][string] | undefined }) {
   if (p.tariffGroups) return <>{`${w.tariffGroups} ${p.tariffGroups.join(", ")}`}</>;
   if (p.asOf !== undefined) {
     if (!p.asOf) return null;
+    // the oldest and the newest date of the bank's records of the product, said once where they agree, each opening its record
+    const span = { from: { iso: p.asOf.from, value: figures?.asOf?.from }, to: { iso: p.asOf.to, value: figures?.asOf?.to } };
     return (
-      <>
-        {w.asOf}
-        <Fig value={figures?.asOf} text={formatValue(p.asOf, "text")} />
-      </>
+      <DateSpanText
+        span={span}
+        day={(x) => x.iso}
+        words={w.asOf}
+        renderDate={(x, lead) => (
+          <>
+            {lead}
+            <Fig value={x.value} text={formatValue(x.iso, "text")} />
+          </>
+        )}
+      />
     );
   }
   const parts = [];

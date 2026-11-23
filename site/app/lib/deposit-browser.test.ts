@@ -2,7 +2,7 @@
 // a chip counts the offers the chosen amount opens, as the count line does.
 import { describe, expect, it } from "vitest";
 import { buildDepositBrowser } from "./deposit-browser.server";
-import { TERMS, accessOf, interestOn, interestUnknown, isLinked, offersOf, periodBest, rowSplit, rowsOf, sortRows, type DbData, type DbOffer } from "./deposit-browser";
+import { TERMS, accessOf, interestOn, interestUnknown, isLinked, offersOf, periodBest, readSpan, rowSplit, rowsOf, sortRows, type DbData, type DbOffer, type DbRow } from "./deposit-browser";
 import { depositName, shownName } from "./deposit-kind";
 import { entered } from "./value";
 import type { SiteValue } from "./value";
@@ -148,5 +148,15 @@ describe("an offer's words and interest", () => {
     expect(depositName({ names: { "447": ["פיקדון לשנה", "דגם: 231/1 חסכון שקלי לשנה", "חסכון שקלי לשנה"] }, type_447: "פיקדון לשנה" } as never)).toBe("חסכון שקלי לשנה");
     expect(depositName({ names: { "447": ["(איתן-בשקלים בריבית קבועה (לשנה ויותר"] }, type_447: "פיקדון לשנה" } as never)).toBe("איתן-בשקלים בריבית קבועה (לשנה ויותר)");
     expect(depositName({ names: { "447": [] }, type_447: "פיקדון לשנה" } as never)).toBe("פיקדון לשנה");
+  });
+});
+
+describe("the days a list's rates were read (readSpan)", () => {
+  it("are its rows' own oldest and newest `checked`, not every record's newest", () => {
+    const at = (checked: string) => ({ rate_offered: { checked } }) as unknown as DbOffer;
+    const row = (...days: string[]) => ({ offers: days.map(at) }) as unknown as DbRow;
+    expect(readSpan([row("2026-11-09", "2026-10-23"), row("2026-11-14")])).toEqual({ from: "2026-10-23", to: "2026-11-14" });
+    expect(readSpan([row("2026-11-09")])).toEqual({ from: "2026-11-09", to: "2026-11-09" });
+    expect(readSpan([])).toBeNull();
   });
 });

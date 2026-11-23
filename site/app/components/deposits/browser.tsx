@@ -6,14 +6,17 @@ import { useMemo, useRef, useState } from "react";
 import { depositBrowser as t } from "../../copy";
 import { MQ, useAddressParams, useMedia } from "../../lib/hooks";
 import { useAddressSort } from "../../lib/list-sort";
-import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, interestOn, interestText, isLinked, offersOf, foldedOffers, offersPhrase, opens, periodBest, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type TermId } from "../../lib/deposit-browser";
+import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, interestOn, interestText, isLinked, offersOf, foldedOffers, offersPhrase, opens, periodBest, readSpan, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type TermId } from "../../lib/deposit-browser";
 import { fmt } from "../../lib/format";
 import { entered } from "../../lib/value";
-import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, SelectField, When, amountCheck, fieldRules, readFieldText, type FieldRules, type FieldText, type PeriodBar } from "../kit";
+import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, SelectField, When, amountCheck, fieldRules, readFieldText, type FieldRules, type FieldText, type PeriodBar, DateSpanText } from "../kit";
 import { Num, Term } from "../provenance";
 import { HELP_TERMS } from "../../lib/deposit-browser";
 import { DepositGrid } from "./grid";
 import { DepositList, FoldFoot, type ListContext, type ListRow } from "./list";
+
+/** An ISO day is its own day, for a span of the days the rows were read. */
+const isoDay = (d: string) => d;
 
 /** The rows shown before "עוד N הצעות": eight on a computer, six on a phone. */
 const SHOWN = { table: 8, phone: 6 } as const;
@@ -87,6 +90,8 @@ export function DepositBrowser({ data }: { data: DbData }) {
   const all: { row: DbRow; linked: boolean }[] = [...ranked.map((row) => ({ row, linked: false })), ...linked.map((row) => ({ row, linked: true }))];
   const first = wide ? SHOWN.table : SHOWN.phone;
   const shown = expanded ? all : all.filter((x, i) => i < first || x.row.bank === myBank);
+  // the days the list's rates were read: its rows' own, folded ones included, not the newest of every record
+  const read = readSpan(all.map((x) => x.row));
   const hidden = all.length - shown.length;
   const topKey = ranked.find((r) => !r.offers[0]!.limited)?.key ?? ranked[0]?.key;
   const asRow = (row: DbRow): ListRow => ({ row, top: row.key === topKey && sort.id === "rate", mine: row.bank === myBank });
@@ -175,7 +180,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
           title={empty ? empty.title : <Heading count={ranked.length} best={best} ctx={ctx} />}
           action={
             <p className="hidden md:block text-sm text-muted-foreground">
-              <When iso={data.read} lead={t.read} />
+              {read && <DateSpanText span={read} day={isoDay} words={t.read} renderDate={(iso, lead) => <When iso={iso} lead={lead} />} />}
             </p>
           }
         >
@@ -197,9 +202,11 @@ export function DepositBrowser({ data }: { data: DbData }) {
             )}
           </div>
           <div className="flex flex-col gap-1 text-sm text-muted-foreground">
-            <p className="md:hidden">
-              <When iso={data.read} lead={t.read} />.
-            </p>
+            {read && (
+              <p className="md:hidden">
+                <DateSpanText span={read} day={isoDay} words={t.read} renderDate={(iso, lead) => <When iso={iso} lead={lead} />} />.
+              </p>
+            )}
             {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
             <p className="md:hidden">
               {t.help.phoneLead} <Term id={HELP_TERMS.rate}>{t.help.rate}</Term> · <Term id={HELP_TERMS.exits}>{t.help.exits}</Term> · <Term id={HELP_TERMS.break}>{t.help.break}</Term>
@@ -261,3 +268,4 @@ function Heading({ count, best, ctx }: { count: number; best: DbOffer | null; ct
     </>
   );
 }
+

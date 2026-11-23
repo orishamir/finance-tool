@@ -11,7 +11,7 @@ import { type InvestView, type PlanInput } from "../../lib/invest";
 import type { PlanChanges as PlanChangesRun } from "../../lib/invest-work";
 import { usePlanChangesRun } from "../../lib/invest-run";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
-import { computed, type SiteValue } from "../../lib/value";
+import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, shortRow } from "../provenance";
 import { ChangeChart, KnobStrip, PanelHead, percentCheck, rangeScale, yearsCheck, type Knob } from "../kit";
 import type { PlanBounds } from "../../lib/plan-bounds";
@@ -108,8 +108,8 @@ export function changesAt(run: PlanChangesRun, at: number, share: Share, today: 
         n,
         to,
         after: afterValue,
-        // the value left after the change less the value left on the plan, as the row writes the two: the difference of the whole figures
-        diff: after === null || !afterValue ? null : computed(Math.round(after) - Math.round(run.base.value as number), "nis", "F-89", { [ch.aboutLeft]: afterValue, [k.changes.planHead]: run.base }, { today, about: ch.aboutDiff }),
+        // the value left after the change less the value left on the plan, as the two are written (`differenceOf`)
+        diff: after === null || !afterValue ? null : differenceOf([ch.aboutLeft, afterValue], [k.changes.planHead, run.base], "F-89", { today, about: ch.aboutDiff }),
       };
     })
     .sort((a, b) => Math.abs((b.diff?.value as number) ?? 0) - Math.abs((a.diff?.value as number) ?? 0));
