@@ -1873,7 +1873,6 @@ export const feeDeal = {
     fieldName: (fee: string, field: string) => `${fee}, ${field}`,
     /** The facts a row says beside its prices. */
     facts: {
-      noBounds: "בלי מינימום ובלי מקסימום",
       /** A fee whose rate or sum nobody typed yet: it is not read until it is. */
       noPrice: "עוד לא הוזן מחיר",
       insideFund: "נגבים בתוך הקרן",

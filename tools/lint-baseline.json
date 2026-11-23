@@ -431,7 +431,7 @@
    "site/app/components/fee-deal/builder.tsx": 4,
    "site/app/components/fee-deal/copy-fee.tsx": 1,
    "site/app/components/fee-deal/editor.tsx": 4,
-   "site/app/components/fee-deal/fee-block.tsx": 2,
+   "site/app/components/fee-deal/fee-block.tsx": 1,
    "site/app/components/fee-deal/fee-cases.tsx": 95,
    "site/app/components/fee-deal/figures.tsx": 1,
    "site/app/components/fee-deal/open-case.tsx": 6,

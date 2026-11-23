@@ -1,5 +1,5 @@
-// A fee in the builder (design-system 11, "Cases and parts"): its mark (an emoji on a faint tile of its colour) and name, under a thin
-// stripe of its colour along the card's top, then its price. A fee whose price does not change is
+// A fee in the builder (design-system 11, "Cases and parts"): its mark (an emoji on a faint tile of its colour) and name, between thin
+// stripes of its colour along the card's top and bottom, then its price. A fee whose price does not change is
 // one slim line, its parts after its name (`SlimFee`), which opens in place as a case does; a fee whose price changes holds its cases
 // under its name's line (`FeeBlock`): the parts every case holds alike, then the cases' band. Each fee keeps its own dot colour; no block takes it. Its actions (`tools`: its duplicate and its bin) stand right after its
 // name: drawn always while the fee is open, and on a closed card only once a fine pointer has rested on it (app.css, `data-fee-tools`),
@@ -36,14 +36,14 @@ function FeeName({ dot, mark, name, end }: { dot: string; mark?: string | undefi
 }
 
 /**
- * The thin stripe of the fee's colour along its card's top edge, bending down its rounded corners as a top border does: the card's shape
- * in the fee's colour, masked to its 3 px top border.
+ * The stripes of the fee's colour along its card's top and bottom edges, bending round its rounded corners as borders do: the card's
+ * shape in the fee's colour, masked to its 3 px top and bottom borders, so the card stands between the two (founder, 2026-11-23).
  */
 const Stripe = ({ dot }: { dot: string }) => (
   <span
     aria-hidden
     className={cx(
-      "fee-stripe pointer-events-none absolute -inset-px rounded-lg border-t-[3px] border-transparent",
+      "fee-stripe pointer-events-none absolute -inset-px rounded-lg border-y-[3px] border-transparent",
       dot,
     )}
   />
@@ -124,7 +124,7 @@ export interface FeeHeadSlot {
 export function SlimFee({ dot, mark, name, label, onOpen, open, actions, tools, head, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; label: string; onOpen: () => void; open?: boolean; actions?: ReactNode; /** Its actions after its name (its duplicate, its bin). */ tools?: ReactNode; head?: FeeHeadSlot | undefined; children: ReactNode }) {
   return (
     <div data-fee-card="" className="contents">
-    <PickCard label={label} onPick={onOpen} chosen={open} className={cx("@container bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 py-1", dimmed(head) && "opacity-60")}>
+    <PickCard label={label} onPick={onOpen} chosen={open} className={cx("@container bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-1 pb-3", dimmed(head) && "opacity-60")}>
       {/* open, the outline in the action colour frames it; a stripe of the fee's colour over it would cut its corners */}
       {!open && <Stripe dot={dot} />}
       {open ? (

@@ -16,7 +16,6 @@ import { cardThing, type CasesTarget } from "../../lib/fee-deal/toolbox";
 import type { CasesAsk } from "../../lib/fee-deal/every-case";
 import { type Side } from "../../lib/fee-deal/model";
 import { hasCases, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
-import { keeps } from "../../lib/fee-deal/offers/capacity";
 import type { ByKind } from "../../lib/fee-deal/offers/conditions";
 import { DropZone, FeeBlock, Grip, SlimFee, type DropHow, type FeeHeadSlot, type SortOf } from "../kit";
 import { liftId, liftedOf, type Lifted, type LiftResult, type LiftTarget } from "../../lib/fee-deal/lifted";
@@ -139,14 +138,14 @@ const isThing = (item: string): boolean => cardThing(item) !== null;
 
 /**
  * The facts a slim line says at its end, in its card on a line of their own: that its price is not given yet (`UnpricedNote`, whose link
- * `onOpen` opens the price) or not read, its next change, where it is charged, its bounds.
+ * `onOpen` opens the price) or not read, its next change, where it is charged. A price with no minimum or maximum says nothing of it
+ * (founder, 2026-11-23).
  */
 function RowNotes({ row, fee, onOpen }: { row: BuilderRow; fee: Fee; onOpen: () => void }) {
   const notes: ReactNode[] = [];
   if (row.unpriced) notes.push(<UnpricedNote key="unread" fee={fee} unpriced={row.unpriced} onOpen={onOpen} />);
   else if (row.banned || !row.priced) notes.push(<UnreadWords key="unread" banned={row.banned} noCurrency={row.noCurrency} notPrinted={row.notPrinted} unmatched={row.unmatched} />);
   if (row.insideFund) notes.push(b.facts.insideFund);
-  if (row.priced && row.stages[0]!.price.form === "action" && keeps(fee.kind, "action", "min") && !row.bounds.min && !row.bounds.max) notes.push(b.facts.noBounds);
   if (notes.length === 0) return null;
   return (
     <ul className="flex basis-full flex-col items-start gap-1 pb-1 text-sm text-muted-foreground">
