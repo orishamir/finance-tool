@@ -10,7 +10,7 @@ import { p05Value } from "./engine";
 import { accountBanks, breakFact, breakInput, commonAccountRate, currentAccountRecords, depositRange, familyOf, guideInstrumentBundle, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
 // the break column moved beside the deposit example that counts by it; the guide loader still takes it from here
 export { breakFact, breakInput };
-import { ladderPlanCheck, type SignatureData } from "./guide-signature";
+import { planEndCheck, type SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
 import { emptyData, figureOf, withRules, type SignatureCtx } from "./guide-signature-ctx.server";
 import { buildPension, buildStudyFund } from "./guide-signature-g2.server";
@@ -128,8 +128,8 @@ builders["savings-plan"] = (c) => {
   const d = emptyData(c.id);
   addBundle(d, c, "savings-plan");
   const { rec } = depositFacts(d, c, "savings-plan");
-  // F-22's ladder locks each deposit on its own, the method's convention (G-42): never on a plan whose terms say otherwise
-  if (rec) ladderPlanCheck(rec.id);
+  // F-22: the picture pays every deposit out at the plan's end, as the example's own terms read; never on a plan not read so (G-42)
+  if (rec) planEndCheck(rec.id);
   // the nearest alternative: one lump sum in the bank deposit
   const lump = publishedDeposit("bank-deposit", c.p05.instruments?.["bank-deposit"], c.deposits);
   if (lump) {

@@ -19,6 +19,11 @@ const reading = async () => {
   return readingOf(readDealFor(deal!, data.kinds, "2026-11-20"), data.fx);
 };
 const chartOf = (v: { chart: ActionView } | object) => (v as { chart: ActionView }).chart;
+/** What a test reads that must be there; it fails naming what is missing. */
+const got = <T,>(x: T | null | undefined, what: string): T => {
+  if (x === null || x === undefined) throw new Error(`the reading has no ${what}`);
+  return x;
+};
 const heldOf = (v: { chart: HeldView } | object) => (v as { chart: HeldView }).chart;
 
 describe("the axis", () => {
@@ -66,9 +71,12 @@ describe("what a purchase or sale costs", () => {
   it("reads the first mark: the two minimums, $44 at the day's ECB rate, 0.77% of it, and what the trade's rate alone would charge", async () => {
     const c = chartOf((await reading()).panels.actions.find((t) => t.key === "trade:all")!.views[0]!);
     const r = c.readAt(c.start);
-    // the minimums are set in dollars, so the shekel sum moves with each data/series/ecb-fx.json refresh
-    expect(r.total.value).toBeCloseTo(44 * nisPerNumber(data.fx!, "USD")!, 6);
-    expect(r.share.value).toBeCloseTo((Number(r.total.value) / c.start) * 100, 9);
+    // the minimums are set in dollars, so the shekel sum moves with each data/series/ecb-fx.json refresh; the total is the two as shown
+    const usd = got(nisPerNumber(got(data.fx, "rates"), "USD"), "dollar");
+    expect(r.parts.map((p) => p.cost.value)).toEqual([expect.closeTo(39 * usd, 6), expect.closeTo(5 * usd, 6)]);
+    expect(r.total.value).toBe(Math.round(39 * usd) + Math.round(5 * usd));
+    // the share is of the cost itself (F-123), not of the total as shown
+    expect(r.share.value).toBeCloseTo(((44 * usd) / c.start) * 100, 9);
     expect(r.share.value).toBeCloseTo(0.77, 3);
     expect(r.parts.map((p) => p.part?.part)).toEqual(["min", "min"]);
     expect(r.parts[0]!.rateAlone!.value).toBeCloseTo(c.start * 0.0025, 9);
@@ -108,7 +116,9 @@ describe("a purchase's conversion, read on what it buys (F-13)", () => {
     // the 100 $ top at half the minimum; from 392.20 ₪ the full minimum, 6 $ = 22.20 ₪, buys more than the top
     for (const [a, part, figure, cost] of [[40, "free", null, 0], [380, "min", 3, 11.1], [385, "min", 3, 11.1], [400, "min", 6, 22.2]] as const) {
       const r = c.readAt(a);
-      expect(r.total.value).toBeCloseTo(cost, 9);
+      expect(got(r.parts[0], "part").cost.value).toBeCloseTo(cost, 9);
+      // the total is its one line as shown, in whole shekels from 10 ₪
+      expect(r.total.value).toBe(Math.round(cost));
       expect(r.parts).toHaveLength(1);
       expect(r.parts[0]!.part?.part).toBe(part);
       expect(r.parts[0]!.part?.figure?.value ?? null).toBe(figure);
@@ -148,7 +158,6 @@ describe("what holding costs", () => {
     expect(now!.bands?.each.map((b) => b.rate.value)).toEqual([expect.closeTo(0.896, 9), expect.closeTo(0.7, 9), expect.closeTo(0.5, 9)]);
     expect(now?.bands?.from.value).toBeCloseTo(228 / 0.00896, 6);
     expect(later!.changes.map((x) => x.kind)).toEqual(["fixed_period"]);
-    expect(later!.offsets).toEqual([expect.objectContaining({ against: "trade", action: "trade" })]);
   });
   it("compares a year just under each step's top with one just over it, the new rate on the whole amount (F-125)", async () => {
     const now = heldOf((await reading()).panels.held[0]!);
@@ -158,9 +167,10 @@ describe("what holding costs", () => {
   });
   it("reads a year on an amount by layer, the shares first", async () => {
     const r = heldOf((await reading()).panels.held[0]!).readAt(60_000);
+    // each group's sum is its rows' as shown: the custody's 477.60 ₪ and the fund's 60 ₪ show as 478 ₪ and 60 ₪
     expect(r.groups.map((g) => [g.group, g.total.value])).toEqual([
-      ["share", expect.closeTo(537.6, 6)],
-      ["sum", expect.closeTo(228, 6)],
+      ["share", 538],
+      ["sum", 228],
     ]);
     expect(r.share.value).toBeCloseTo(1.276, 9);
   });
@@ -423,6 +433,22 @@ describe("a deal read whole, whatever the fees an action or a holding prices are
     };
     expect(coverOf(deal)).toEqual([]);
     expect(coverOf(deal, 50)).toEqual([13_637]);
+    // the figure rests on the unit's price given, as on the trade fee's figures
+    const [cover] = read(deal, 50).timeline.flatMap((t) => t.covers);
+    expect(cover?.from !== "any" && cover?.from.computed_from?.inputs).toMatchObject({ "deal:unit-price": expect.objectContaining({ value: 50, state: "entered" }), "deal:trade": expect.anything() });
+  });
+  it("says the cover beside another fee on the action priced per unit before the unit's price is given: it prices only the trade fee (F-127)", () => {
+    const deal: FeeDeal = {
+      id: "deal-x",
+      name: "",
+      kind: "brokerage-account",
+      fees: [
+        { id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1), min: typed(5) } }] },
+        { id: "fee-s", kind: "spread", stages: [{ price: { form: "action", rate: typed(0.05), third: { who: "הברוקר", price: { form: "perUnit", amount: typed(0.005), currency: "USD" } } } }] },
+        account,
+      ],
+    };
+    expect(coverOf(deal)).toEqual([15_000]);
   });
   it("reads a purchase whose conversion has a third party's sum per unit as one with a conversion priced per unit itself: no one rate (F-123)", () => {
     const thirdFee = { id: "fee-x", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.2), third: { price: { form: "perUnit", amount: typed(0.005), currency: "USD" } } } }] } as const satisfies FeeDeal["fees"][number];
@@ -450,5 +476,201 @@ describe("a deal read whole, whatever the fees an action or a holding prices are
     expect(held && "chart" in held).toBe(true);
     if (!held || !("chart" in held)) return;
     expect(held.chart.readAt(1_000).total.value).toBe(300);
+  });
+});
+
+describe("a step that charges nothing, free or a price of zero (F-110, F-115)", () => {
+  const held = (rate: number) => ({ price: { form: "held", rate: typed(rate), per: 12, every: 12 } }) as const;
+  const free = { price: { form: "free" } } as const;
+  const custody = (tops: number[], ...steps: FeeDeal["fees"][number]["stages"][]): FeeDeal["fees"][number] =>
+    ({ id: "fee-c", kind: "custody", by: [{ kind: "portfolioSize", unit: "ILS", tops: tops.map((t) => typed(t)) }], cases: steps.map((stages, k) => ({ id: `c${k}`, when: [k], stages })) }) as FeeDeal["fees"][number];
+  const fund = { id: "fee-m", kind: "fund_management", stages: [held(0.1)] } as FeeDeal["fees"][number];
+  const account = (amount: number) => ({ id: "fee-a", kind: "current_account", stages: [{ price: { form: "sum", amount: typed(amount), every: 1 } }] }) as FeeDeal["fees"][number];
+  const deal = (...fees: FeeDeal["fees"]): FeeDeal => ({ id: "deal-x", name: "", kind: "brokerage-account", fees });
+  const view = (d: FeeDeal) => got(readingOf(readDealFor(d, data.kinds, "2026-11-20"), data.fx).panels.held[0], "holding view");
+  const parts = (v: ReturnType<typeof view>) => got(heldOf(v).lanes.find((l) => l.fee.ref.kind === "custody")?.parts, "custody's parts").map((x) => [x.part, x.from, x.to]);
+
+  it("stays a step on the holding chart: its top is a mark, and the shares' bands rise there, so the share is not said to fall", () => {
+    // custody free up to 100,000 ₪ and 0.2% above, a fund's 0.1% and 5 ₪ a month: the fund alone reaches 60 ₪ at 60,000 ₪ (F-124)
+    const shown = view(deal(custody([100_000], [free], [held(0.2)]), fund, account(5)));
+    const v = heldOf(shown);
+    expect(parts(shown)).toEqual([["free", 0, 100_000], ["rate", 100_000, null]]);
+    expect(v.marks.map((m) => Math.round(m.at))).toEqual([60_000, 100_000]);
+    expect(v.bands?.each.map((b) => [b.rate.value, b.to?.value ?? null])).toEqual([[expect.closeTo(0.1, 9), 100_000], [expect.closeTo(0.3, 9), null]]);
+    expect(v.falls).toBe(false);
+  });
+  it("draws a chart, not one number, where a free step comes before a share, and marks the top of a share before a free step", () => {
+    const after = view(deal(custody([100_000], [free], [held(0.1)])));
+    expect("chart" in after).toBe(true);
+    expect(heldOf(after).marks.map((m) => m.at)).toEqual([100_000]);
+    const before = view(deal(custody([1_000_000], [held(0.2)], [free])));
+    expect(parts(before)).toEqual([["rate", 0, 1_000_000], ["free", 1_000_000, null]]);
+    expect(heldOf(before).readAt(2_000_000).total.value).toBe(0);
+  });
+  it("reads a step of 0% as a free one", () => {
+    expect(parts(view(deal(custody([100_000], [held(0.2)], [held(0)]))))).toEqual([["rate", 0, 100_000], ["free", 100_000, null]]);
+  });
+  it("leaves a fee that charges nothing in the period off the chart, so the others' one number stands: 0 ₪ a month, or 0% a year", () => {
+    expect(view(deal({ id: "fee-c", kind: "custody", stages: [held(0.1)] } as FeeDeal["fees"][number], account(0)))).toEqual({ one: expect.objectContaining({ one: { value: expect.objectContaining({ value: 0.1 }), of: "share" } }) });
+    expect(view(deal({ id: "fee-c", kind: "custody", stages: [held(0)] } as FeeDeal["fees"][number], account(10)))).toEqual({ one: expect.objectContaining({ one: { value: expect.objectContaining({ value: 120 }), of: "sum" } }) });
+  });
+});
+
+describe("what an action costs at the reader's amount, as the card says it", () => {
+  // a dollar at 3.70 ₪: the ECB's rates per euro, as a fixed snapshot
+  if (!data.fx) throw new Error("the site's exchange rates");
+  const fx = { ...data.fx, perEur: { ILS: 3.7, USD: 1 } };
+  const deal = (fees: FeeDeal["fees"], us = false): FeeDeal => ({ id: "deal-x", name: "", kind: "brokerage-account", ...(us ? { readFor: [{ by: "what", is: "us" }] } : {}), fees });
+  const tradeOf = (d: FeeDeal) => chartOf(got(readingOf(readDealFor(d, data.kinds, "2026-11-20"), fx).panels.actions.find((t) => t.action === "trade")?.views[0], "trade's view"));
+  const withThird = { id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1), min: typed(5), third: { who: "הבורסה", price: { form: "action", rate: typed(0.02) } } } }] } as FeeDeal["fees"][number];
+
+  it("counts a third party's share in the rate the headline and the card name: 0.12% from 5,000 ₪, not 0.1% (F-117)", () => {
+    const c = tradeOf(deal([withThird]));
+    expect(c.head).toMatchObject({ kind: "below", below: { value: 5000 }, rate: { value: expect.closeTo(0.12, 9) } });
+    expect(c.readAt(10_000).parts[0]?.rate?.value).toBeCloseTo(0.12, 9);
+  });
+  it("adds the fee's share with its third party's to the others': 0.32% is 0.12% and the conversion's 0.2%", () => {
+    const c = tradeOf(deal([withThird, { id: "fee-x", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.2) } }] }], true));
+    expect(c.head.kind === "below" && c.head.adds.map((a) => a.rate.value)).toEqual([expect.closeTo(0.12, 9), 0.2]);
+  });
+  it("says what the minimum adds to the fee's own rate alone, the third party's share apart: 3 ₪ at 2,000 ₪, by the fee's 0.1%", () => {
+    const p = got(tradeOf(deal([withThird])).readAt(2000).parts[0], "part");
+    expect(p.cost.value).toBeCloseTo(5.4, 9);
+    expect(p.rate?.value).toBe(0.1);
+    expect(p.rateAlone?.value).toBeCloseTo(2, 9);
+    expect(p.apart?.value).toBeCloseTo(3, 9);
+  });
+  it("names the rate of the step the point is in where its minimum decides: half the line's 0.17% at 380 ₪ (F-115, F-116)", () => {
+    const usd = (q: Omit<Extract<Price, { form: "action" }>, "form" | "currency">): Price => ({ form: "action", ...q, currency: "USD" });
+    const line = { rate: typed(0.17), min: typed(6), max: typed(1055) };
+    const conversion = deal([
+      {
+        id: "fee-fx",
+        kind: "fx",
+        by: [{ kind: "actionSize", unit: "USD", tops: [typed(10), typed(100)] }],
+        cases: [
+          { id: "x1", when: [0], stages: [{ price: { form: "free" } }] },
+          { id: "x2", when: [1], stages: [{ price: { ...usd(line), discount: { pct: typed(50), alsoMin: true } } as Price }] },
+          { id: "x3", when: [2], stages: [{ price: usd(line) }] },
+        ],
+      },
+    ]);
+    const tab = readingOf(readDealFor(conversion, data.kinds, "2026-11-20"), fx).panels.actions.find((t) => t.action === "conversion");
+    const p = got(chartOf(got(tab?.views[0], "conversion's view")).readAt(380).parts[0], "part");
+    expect(p.part?.part).toBe("min");
+    expect(p.rate?.value).toBeCloseTo(0.085, 9);
+  });
+  it("says nothing of a minimum that adds less than the figures show: at 4,996 ₪, 5 ₪ against 0.1%'s 5.00 ₪", () => {
+    const p = got(tradeOf(deal([{ id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1), min: typed(5) } }] }])).readAt(4996).parts[0], "part");
+    expect(p.part?.part).toBe("min");
+    expect(p.apart).toBeUndefined();
+  });
+  it("gives each fee's cost as shown and their total as the sum of those: 42 ₪ and 17 ₪ make 59 ₪, not 58 ₪", () => {
+    const r = tradeOf(
+      deal(
+        [
+          { id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.4178), min: typed(1) } }] },
+          { id: "fee-x", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.1671) } }] },
+        ],
+        true,
+      ),
+    ).readAt(10_000);
+    // the lines show 42 ₪ and 17 ₪; their values stay as computed, 41.78 ₪ and 16.71 ₪
+    expect(r.parts.map((p) => p.cost.value)).toEqual([expect.closeTo(41.78, 9), expect.closeTo(16.71, 9)]);
+    expect(r.total.value).toBe(59);
+  });
+  it("gives each year's row as shown and the groups and the total as their sums on the holding chart", () => {
+    const held = (rate: number, extra = {}) => ({ price: { form: "held", rate: typed(rate), per: 12, every: 12, ...extra } }) as const;
+    const d = deal([
+      { id: "fee-c", kind: "custody", stages: [held(0.4178, { min: typed(1) })] },
+      { id: "fee-m", kind: "fund_management", stages: [held(0.1671)] },
+    ] as FeeDeal["fees"]);
+    const v = heldOf(got(readingOf(readDealFor(d, data.kinds, "2026-11-20"), fx).panels.held[0], "holding view")).readAt(10_000);
+    expect(v.groups.flatMap((g) => g.rows.map((x) => x.cost.value))).toEqual([expect.closeTo(41.78, 9), expect.closeTo(16.71, 9)]);
+    expect(v.groups.map((g) => g.total.value)).toEqual([59]);
+    expect(v.total.value).toBe(59);
+  });
+});
+
+describe("a stretch under the axis's start (F-112)", () => {
+  it("is listed to be said in words under the chart, and the headline counts only the marks the chart draws", () => {
+    // a trade of 4 ₪ up to 100 ₪ and 0.1% above, up to 50,000 ₪, and 0.05% above that: the axis opens from 10,000 ₪, the rate's end
+    const d: FeeDeal = {
+      id: "deal-x",
+      name: "",
+      kind: "brokerage-account",
+      fees: [
+        {
+          id: "fee-t",
+          kind: "trade",
+          by: [{ kind: "actionSize", unit: "ILS", tops: [typed(50_000)] }],
+          cases: [
+            { id: "c0", when: [0], stages: [{ price: { form: "action", rate: typed(0.1), flat: { amount: typed(4), upTo: typed(100) } } }] },
+            { id: "c1", when: [1], stages: [{ price: { form: "action", rate: typed(0.05) } }] },
+          ],
+        },
+      ],
+    };
+    const c = chartOf(got(readingOf(readDealFor(d, data.kinds, "2026-11-20"), data.fx).panels.actions[0]?.views[0], "action's view"));
+    expect(c.range.lo).toBe(10_000);
+    expect(c.below.map((b) => [b.fee.ref.kind, b.part.part, b.part.end?.value])).toEqual([["trade", "flat", 100]]);
+    expect(c.head).toEqual({ kind: "marks", n: 1 });
+  });
+});
+
+describe("a drop at a step's top (F-125)", () => {
+  it("says the price falls, not that the new rate holds on the whole amount, where the next step's minimum decides over it", () => {
+    // custody of 0.3% a year up to 100,000 ₪, and 0.1% with at least 200 ₪ above: 101,000 ₪ costs the 200 ₪ minimum, not 0.1% of it
+    const d: FeeDeal = {
+      id: "deal-x",
+      name: "",
+      kind: "brokerage-account",
+      fees: [
+        {
+          id: "fee-c",
+          kind: "custody",
+          by: [{ kind: "portfolioSize", unit: "ILS", tops: [typed(100_000)] }],
+          cases: [
+            { id: "c0", when: [0], stages: [{ price: { form: "held", rate: typed(0.3), per: 12, every: 12 } }] },
+            { id: "c1", when: [1], stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12, min: typed(200) } }] },
+          ],
+        },
+      ],
+    };
+    const v = heldOf(got(readingOf(readDealFor(d, data.kinds, "2026-11-20"), data.fx).panels.held[0], "holding view"));
+    const drop = got(v.drops.find((x) => x.at === 100_000), "drop at 100,000 ₪");
+    expect([drop.under.cost.value, drop.over.cost.value]).toEqual([expect.closeTo(297, 9), 200]);
+    expect(drop.what).toEqual({ kind: "falls", fee: expect.objectContaining({ kind: "custody" }) });
+  });
+});
+
+describe("the periods a chart holds (F-110, F-112)", () => {
+  it("joins only periods in a row: a price that comes back after a change starts a view of its own, so each view is one stretch of time", () => {
+    // 80 ₪ a month, 20 ₪ from 08.2027 and 80 ₪ again from 01.2028, beside a fund's 0.3% a year
+    const d: FeeDeal = {
+      id: "deal-x",
+      name: "",
+      kind: "brokerage-account",
+      fees: [
+        { id: "fee-a", kind: "current_account", stages: [{ price: { form: "sum", amount: typed(80), every: 1 }, until: "2027-08" }, { price: { form: "sum", amount: typed(20), every: 1 }, until: "2028-01" }, { price: { form: "sum", amount: typed(80), every: 1 } }] },
+        { id: "fee-m", kind: "fund_management", stages: [{ price: { form: "held", rate: typed(0.3), per: 12, every: 12 } }] },
+      ],
+    };
+    const views = readingOf(readDealFor(d, data.kinds, "2026-11-20"), data.fx).panels.held;
+    expect(views.map((v) => heldOf(v).periods)).toEqual([["2026-11"], ["2027-08"], ["2028-01"]]);
+  });
+});
+
+describe("a year that costs a smaller share of a larger value (F-123)", () => {
+  const custody = (extra: object): FeeDeal => ({ id: "deal-x", name: "", kind: "brokerage-account", fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12, ...extra } }] }] });
+  const falls = (d: FeeDeal) => heldOf(got(readingOf(readDealFor(d, data.kinds, "2026-11-20"), data.fx).panels.held[0], "holding view")).falls;
+  it("is not said where the share stays flat over a stretch: 0.1% a year up to its 1,000 ₪ maximum, or above its 900 ₪ minimum", () => {
+    expect(falls(custody({ max: typed(1000) }))).toBe(false);
+    expect(falls(custody({ min: typed(900) }))).toBe(false);
+  });
+  it("is said where a sum is charged beside the share, so the share falls at every value", () => {
+    const d = custody({ min: typed(900) });
+    d.fees.push({ id: "fee-a", kind: "current_account", stages: [{ price: { form: "sum", amount: typed(10), every: 1 } }] });
+    expect(falls(d)).toBe(true);
   });
 });

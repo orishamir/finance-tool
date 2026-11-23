@@ -46,6 +46,13 @@ export interface DepositInput {
      * number is taken as absent.
      */
     exitEveryMonths?: number;
+    /**
+     * F-22: a savings plan whose own terms run it as one term from its start and pay every instalment out at its end, each earning
+     * from its own month to the end (the site's `planEndPlans`). A piece then matures at the end of the plan it was paid into, the
+     * plans following one another every `termMonths` months from the run's first month, not `termMonths` after its own start.
+     * Read for a savings plan only.
+     */
+    planEnd?: boolean;
   };
   profile: Profile;
 }
@@ -102,7 +109,8 @@ export function pieceAtExitPoint(m: number, startMonth: number, deposit: Pick<De
  * F-21 Bank deposit, laddered (F-22 savings plan, F-26 current account, F-41 exit). Each contribution
  * opens its own deposit of term n; at maturity the interest is taxed and principal plus net interest rolls
  * into a new deposit. At T the open deposits are treated as matured on the exit day.
- * F-22 Savings plan: the same ladder with the plan's own rate and term (TXI-07, BANK-28).
+ * F-22 Savings plan: the same ladder with the plan's own rate and term (TXI-07, BANK-28); a plan whose terms pay every instalment
+ * out at its end (`planEnd`) matures each piece at the end of the plan it was paid into.
  * F-41 Deposits at exit: tax was charged at each maturity; the last open deposit matures on the exit day. A run that holds
  * a piece still inside its term that day raises G-16 (the break is not priced), or G-34 in its place when the piece is unlinked
  * and at one of its exit points (what an exit point pays is not in the records). Neither flag changes an amount.
@@ -167,6 +175,10 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
   let yearIncome = 0;
   let yearWithheld = 0;
 
+  // the month a piece paid in on `start` matures: its own term after it, or, for a plan paid out at its end (F-22), that plan's end
+  const planEnd = deposit.kind === "savings-plan" && deposit.planEnd === true;
+  const maturesOn = (start: number) => (planEnd ? Math.ceil(start / n) * n : start + n - 1);
+
   let open: OpenDeposit[] = [];
   let finalValue = 0;
   tally.point(0, 1, 0);
@@ -192,7 +204,7 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
       }
     }
 
-    const due = open.filter((d) => d.startMonth + n - 1 === m || m === T);
+    const due = open.filter((d) => maturesOn(d.startMonth) === m || m === T);
     open = open.filter((d) => !due.includes(d));
     let rolled = 0;
     // F-26: the current account pays on the first `balanceCeiling` of the whole balance; the open pieces share that
@@ -203,8 +215,8 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
       if (balance > deposit.balanceCeiling) earning = deposit.balanceCeiling / balance;
     }
     for (const d of due) {
-      // The piece's age on month m: the months it has earned, its start month included. It matures when its age is n
-      // (startMonth + n - 1 === m).
+      // The piece's age on month m: the months it has earned, its start month included. It matures when its age is n, or at its
+      // plan's end for a plan paid out there (`maturesOn`).
       const months = m - d.startMonth + 1;
       // G-16: a piece still inside its term on the exit day is priced as if it matured that day. The records hold whether a break
       // is allowed, not what it pays, so the break is not priced; the run says so on the number.
@@ -215,7 +227,7 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
       // founder's open question (F-41).
       // A CPI-linked piece takes G-16 at an exit point too: the rule base holds no rule for the tax on a linked deposit left at
       // an exit point (TXI OQ14), so the run reads no exit point for it and says only that it priced the piece as matured.
-      if (months < n) tally.flag(!linked && pieceAtExitPoint(m, d.startMonth, deposit) ? "G-34" : "G-16");
+      if (m < maturesOn(d.startMonth)) tally.flag(!linked && pieceAtExitPoint(m, d.startMonth, deposit) ? "G-34" : "G-16");
       const indexed = d.principal * (linked ? I[m]! / d.baseIndex : 1);
       // F-26 or F-21, by the product's term (BANK-50); interest paid out was paid and taxed month by month
       const interest = paysMonthly ? 0 : termInterest(indexed * earning, months);

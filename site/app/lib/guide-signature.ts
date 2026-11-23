@@ -2,6 +2,7 @@
 // Everything here is a pure function over the data the page loader ships (`SignatureData`): each figure is an engine run on a
 // bundle (`runTimeline`, `runAtMonths`) or an engine formula over a sourced figure, never a number typed here. The components
 // wrap the results in `computed(...)` value objects so every figure goes through `Num` with its state.
+import { paysAtPlanEnd } from "./plan-end";
 import { bondPrice, brokenBalanceCondition, calendarMonthOf, cashRateIn, currentAccountYearlyInterest, makamPrice, rateBasisOf, runInputs, runPlanned, type AnnualRateForm, type P05Input, type RunResult } from "@finance-tool/engine";
 import type { ValueObject } from "@finance-tool/schema";
 import { p05Value, runTimeline, type Bundle } from "./engine";
@@ -232,62 +233,51 @@ export function accountAxis(values: number[]): { lo: number; hi: number } {
 export interface PlanRow {
   /** Month the deposit goes in, counted from the plan's start (0 is the first). */
   from: number;
-  /** The month its lock ends (F-22 reading: each deposit has the plan's term). */
+  /** The month it is paid out: the plan's end, the same for every deposit (F-22). */
   unlock: number;
 }
 
 export interface PlanModel {
   term: number;
+  /** One deposit a month, from the plan's start up to the month before its end. */
   rows: PlanRow[];
-  /** The net value of one deposit when its term ends (an engine run of the plan's record for one deposit). */
-  perDeposit: number;
-  lastUnlock: number;
+  /** Each deposit's net value at the plan's end, by its row: an engine run of the plan's record for one deposit, from its month to the end. */
+  values: number[];
+  /** The whole plan's net value at its end: the deposits' values summed. */
+  endValue: number;
   at: (month: number) => { free: number; locked: number; freeValue: number; lockedPrincipal: number; notYet: number };
 }
 
-/**
- * The savings plans whose terms, as the rule base reads them, do not lock each monthly deposit on its own (method F-22, G-42), by record
- * id, with the rule that says so: Bank Hapoalim's four plans of BPN-10 (only the whole saving out, at exit points counted from the plan's
- * start), Mizrahi-Tefahot's ענבים (a partial withdrawal at an exit point leaves the last deposits, BANK-38), Bank of Jerusalem's five-year
- * plan (only the whole balance at an exit point, BANK-38) and One Zero's monthly plan (part or all at an exit point counted from the plan's
- * opening, BANK-38). F-22's ladder, a lock per deposit, is never run on one (`ladderPlanCheck`).
- */
-export const planLevelPlans: Readonly<Record<string, string>> = {
-  "hapoalim-hoshvim-kadima": "BPN-10",
-  "hapoalim-hoshvim-kadima-tzamud": "BPN-10",
-  "hapoalim-shikli-latzaad-haba": "BPN-10",
-  "hapoalim-hisachon-tzomeach-leatid": "BPN-10",
-  "mizrahi-tefahot-anavim-prime-25y-283": "BANK-38",
-  "mizrahi-tefahot-anavim-ladira-prime-18y-284": "BANK-38",
-  "mizrahi-tefahot-anavim-prime-6y-286": "BANK-38",
-  "mizrahi-tefahot-anavim-lekol-matara-madad-18y-199": "BANK-38",
-  "mizrahi-tefahot-anavim-ladira-madad-18y-202": "BANK-38",
-  "jerusalem-yareach-shikli-5y": "BANK-38",
-  "one-zero-hisachon-hodshi-12m": "BANK-38",
-};
-
-/** Throws where a savings plan's record is one whose terms do not lock each deposit on its own: the ladder must not run it (F-22, G-42). */
-export function ladderPlanCheck(recordId: string): void {
-  const rule = planLevelPlans[recordId];
-  if (rule) throw new Error(`F-22: ${recordId}'s terms do not lock each monthly deposit on its own (${rule}); the ladder, a lock per deposit, cannot run it (method G-42)`);
+/** Throws where a savings plan's record is not one whose terms are read as paying every deposit out at the plan's end (F-22, G-42). */
+export function planEndCheck(recordId: string): void {
+  if (!paysAtPlanEnd(recordId)) throw new Error(`F-22: the savings plan guide pays every deposit out at the plan's end, as its records' terms read (planEndPlans); ${recordId}'s are not read so (method G-42)`);
 }
 
-export function planModel(d: SignatureData, c: { monthly: number; deposits: number }): PlanModel | null {
+/**
+ * F-22 on the guide: a deposit of `monthly` at the start of each month from the plan's start (month 0) to the month before its end, each
+ * worth at the end what the plan's record earns on it from its own month to the end, after tax; nothing is paid out before the end.
+ */
+export function planModel(d: SignatureData, monthly: number): PlanModel | null {
   const plan = d.bundles["savings-plan"];
   const term = factNumber(d, "term");
-  if (!plan || term === null) return null;
-  const one = runAtMonths(plan, { amount_now: c.monthly, monthly_deposit: 0 }, term);
-  if (!one) return null;
-  const rows: PlanRow[] = Array.from({ length: c.deposits }, (_, from) => ({ from, unlock: from + term }));
+  if (!plan || term === null || !Number.isInteger(term) || term < 1) return null;
+  const rows: PlanRow[] = Array.from({ length: term }, (_, from) => ({ from, unlock: term }));
+  const values: number[] = [];
+  for (const r of rows) {
+    const run = runAtMonths(plan, { amount_now: monthly, monthly_deposit: 0 }, term - r.from);
+    if (!run) return null;
+    values.push(run.nominal);
+  }
+  const endValue = values.reduce((a, b) => a + b, 0);
   return {
     term,
     rows,
-    perDeposit: one.nominal,
-    lastUnlock: rows[rows.length - 1]!.unlock,
+    values,
+    endValue,
     at: (month) => {
-      const free = rows.filter((r) => r.unlock <= month).length;
-      const locked = rows.filter((r) => r.from <= month && r.unlock > month).length;
-      return { free, locked, freeValue: free * one.nominal, lockedPrincipal: locked * c.monthly, notYet: c.deposits - free - locked };
+      if (month >= term) return { free: term, locked: 0, freeValue: endValue, lockedPrincipal: 0, notYet: 0 };
+      const locked = Math.min(term, Math.max(0, month + 1));
+      return { free: 0, locked, freeValue: 0, lockedPrincipal: locked * monthly, notYet: term - locked };
     },
   };
 }

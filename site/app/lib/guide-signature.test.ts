@@ -2,13 +2,13 @@
 import { describe, expect, it } from "vitest";
 import { bondPrice, makamPrice } from "@finance-tool/engine";
 import { buildGuidePage, depositSheetNames } from "./guide.server";
-import { loadRules } from "./data.server";
 import { loadDepositTerms } from "./instruments.server";
 import type { DepositTerms } from "@finance-tool/schema";
 import { p05Range, runTimeline } from "./engine";
 import { percentCheck } from "../components/kit";
 import { flags, guideSignature } from "../copy";
-import { accountAxis, accountFact, cashRateRangeOf, ladderPlanCheck, planLevelPlans, bankYearlyMax, bondModel, brokenCondition, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer, type SignatureData } from "./guide-signature";
+import { planEndPlans } from "./plan-end";
+import { accountAxis, accountFact, cashRateRangeOf, planEndCheck, bankYearlyMax, bondModel, brokenCondition, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer, type SignatureData } from "./guide-signature";
 
 const page = (id: string) => buildGuidePage(id)!;
 const cashRate = (id: string) => ((page(id).bundle!.p05 as unknown as { inputs: { cash_rate: { value: number } } }).inputs.cash_rate.value);
@@ -295,29 +295,42 @@ describe("bank deposit", () => {
 
 describe("savings plan", () => {
   const d = page("savings-plan").signature!;
-  it("unlocks each deposit after the term and counts free and locked on a date", () => {
-    const m = planModel(d, { monthly: 500, deposits: 12 })!;
+  const run = (months: number) => {
+    const bundle = d.bundles["savings-plan"];
+    return bundle ? runAtMonths(bundle, { amount_now: 500, monthly_deposit: 0 }, months)?.nominal : undefined;
+  };
+  it("pays every deposit out at the plan's end, each worth what it earned from its own month, and counts locked deposits before (F-22)", () => {
+    const m = planModel(d, 500);
+    if (!m) throw new Error("no plan model");
     expect(m.term).toBe(36);
-    expect(m.lastUnlock).toBe(47);
-    expect(m.perDeposit).toBe(runAtMonths(d.bundles["savings-plan"]!, { amount_now: 500, monthly_deposit: 0 }, 36)!.nominal);
-    const at = m.at(40);
-    expect(at.free).toBe(5);
-    expect(at.locked).toBe(7);
-    expect(at.freeValue).toBeCloseTo(5 * m.perDeposit, 9);
-    expect(at.lockedPrincipal).toBe(3500);
+    // a deposit a month from the start to the month before the end, every one paid out at the end
+    expect(m.rows).toHaveLength(36);
+    expect(m.rows.every((r) => r.unlock === 36)).toBe(true);
+    expect(m.rows.at(-1)?.from).toBe(35);
+    // the first deposit earns the whole term, the last one month
+    expect(m.values[0]).toBe(run(36));
+    expect(m.values[35]).toBe(run(1));
+    expect(m.values[0] ?? 0).toBeGreaterThan(m.values[35] ?? Infinity);
+    expect(m.endValue).toBeCloseTo(m.values.reduce((a, b) => a + b, 0), 9);
+    // before the end nothing is free: the deposits made so far are locked at their face
+    expect(m.at(20)).toEqual({ free: 0, locked: 21, freeValue: 0, lockedPrincipal: 10_500, notYet: 15 });
+    expect(m.at(35)).toMatchObject({ free: 0, locked: 36, notYet: 0 });
+    // at the end all of it
+    expect(m.at(36)).toEqual({ free: 36, locked: 0, freeValue: m.endValue, lockedPrincipal: 0, notYet: 0 });
   });
-  it("never runs the ladder on a plan whose terms do not lock each deposit on its own (F-22, G-42)", () => {
+  it("runs only a plan whose own terms are read as paying out at its end (F-22, G-42)", () => {
     const records = new Map(loadDepositTerms().map((r) => [r.id, r]));
-    for (const [id, rule] of Object.entries(planLevelPlans)) {
-      // each is a collected savings plan, and the rule that says so is one the rule base holds
-      expect(records.get(id)?.wrapper_id, id).toBe("savings-plan");
-      expect(loadRules()[rule], rule).toBeTruthy();
-      expect(() => ladderPlanCheck(id)).toThrow(/G-42/);
+    for (const [id, fields] of Object.entries(planEndPlans)) {
+      // each is a collected savings plan whose named fields' notes quote the plan's end
+      const rec = records.get(id) as unknown as Record<string, { notes?: string }> & { wrapper_id: string };
+      expect(rec?.wrapper_id, id).toBe("savings-plan");
+      for (const f of fields.split(", ")) expect(rec[f]?.notes ?? "", `${id} ${f}`).toMatch(/תום תקופת הפיקדון/);
+      expect(() => planEndCheck(id)).not.toThrow();
     }
-    // whatever plan P-05 names for the guide, it is not one of them (the guide's page builds)
-    const example = page("savings-plan").bundle?.p05.instruments?.["savings-plan"]?.deposit_terms;
-    expect(example).toBeTruthy();
-    expect(() => ladderPlanCheck(example ?? "")).not.toThrow();
+    // a plan whose terms are read otherwise, or not read, is refused
+    expect(() => planEndCheck("hapoalim-hoshvim-kadima")).toThrow(/G-42/);
+    // the guide's own plan is one of them (its page builds)
+    expect(page("savings-plan").bundle?.p05.instruments?.["savings-plan"]?.deposit_terms).toBe("leumi-tashlumim-shekeli-3y");
   });
 });
 

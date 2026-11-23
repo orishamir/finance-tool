@@ -2,6 +2,7 @@
 // instrument collections and the step from the records P-05's `instruments` map names to the engine's
 // `InstrumentTerms`. Server-only. Nothing here holds a rate or a term: every number comes from a record under
 // `data/` and keeps its value object, so the values sheet can show its source.
+import { paysAtPlanEnd } from "./plan-end";
 import { invest as investCopy } from "../copy";
 import { exposurePath, guidePath } from "./site-paths";
 import { fundOf, gapListOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
@@ -187,6 +188,8 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
         const renews = wrapperId === "savings-plan" && rec.auto_renew.value !== false;
         if (!noTerm && !renews && exists && whole(firstAfter)) terms.deposit.exitFirstMonth = firstAfter;
         if (!noTerm && !renews && exists && whole(every)) terms.deposit.exitEveryMonths = every;
+        // F-22: a plan whose terms pay every instalment out at its end matures each piece there (`planEnd`); any other, per instalment (G-42)
+        if (wrapperId === "savings-plan" && paysAtPlanEnd(rec.id)) terms.deposit.planEnd = true;
         if (!noTerm) feeValues.term = { ...rec.term_months };
         feeValues.linkage = textValue(linkage, "text", { source: rec.source, checked: rec.snapshot }, `from the record's linkage "${rec.linkage}"${rec.anchor ? ` and anchor "${rec.anchor}"` : ""}`);
       }

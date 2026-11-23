@@ -713,7 +713,9 @@ describe("the reading", () => {
     expect(min!.to).toBeCloseTo(10000 * usd, 6);
     // at 10,000 $ the units' 1 $ is the minimum
     const at = chart.readAt(10000 * usd);
-    expect(at.total.value).toBeCloseTo(usd, 6);
+    expect(at.parts.map((x) => x.cost.value)).toEqual([expect.closeTo(usd, 6)]);
+    // the total is its one line as shown: under 10 ₪, with its agorot
+    expect(at.total.value).toBe(Math.round(usd * 100) / 100);
     expect(at.total.computed_from?.inputs?.["deal:unit-price"]).toMatchObject({ value: 50 });
   });
   it("gives the headline the rates' sum above the minimum", () => {

@@ -84,13 +84,14 @@ function NumAfter({ lead, ...rest }: { lead: string } & Omit<Parameters<typeof N
 // ---------------------------------------------------------------- the lanes
 
 /**
- * A part's words on its lane: its kind's lead and its figure ("מינימום 39 $", "0.199% ברבעון"), and on a maximum on each security what it
- * is on, before its period as the fee's card says it ("מקסימום 3,700 ₪ לכל נייר ערך ברבעון"); on a phone, without its period.
+ * A part's words on its lane: its kind's lead and its figure ("מינימום 39 $", "0.199% ברבעון"), a sum per unit's with what it is for
+ * ("0.005 $ לכל יחידה"), and on a maximum on each security what it is on, before its period as the fee's card says it ("מקסימום 3,700 ₪
+ * לכל נייר ערך ברבעון"); on a phone, without its period.
  */
 function partWords(p: LanePart, phone: boolean): string {
   const lead = w.action.lane[p.part] ?? "";
   if (p.part === "free" || !p.figure) return lead.trim();
-  const each = p.perSecurity ? copy.cases.parts.perSecurity.each : "";
+  const each = p.perSecurity ? copy.cases.parts.perSecurity.each : p.figure.unit.endsWith("_per_share") ? ` ${copy.price.perUnit}` : "";
   const per = p.per && !phone ? ` ${copy.price.per[p.per] ?? ""}` : "";
   return `${lead}${textOf(p.figure)}${each}${per}`;
 }
@@ -120,12 +121,12 @@ function laneOf(l: Lane, saved: boolean): AmountLane {
 
 // ---------------------------------------------------------------- around a chart
 
-/** The line beside a chart with a sum in another currency: the rate of F-84 it enters the chart at, and its day. */
-function RateLine({ currency, rate, fx }: { currency: string; rate: SiteValue; fx: FxSnapshot | null }) {
+/** The line beside a chart, or one number (`one`), with a sum in another currency: the rate of F-84 it is worked out at, and its day. */
+function RateLine({ currency, rate, fx, one = false }: { currency: string; rate: SiteValue; fx: FxSnapshot | null; one?: boolean }) {
   const r = w.chart.rate;
   return (
     <p>
-      {r.before(copy.panel.currencies[currency] ?? currency)}
+      {(one ? r.one : r.before)(copy.panel.currencies[currency] ?? currency)}
       <Num value={rate} />
       {r.per[currency] ?? ""}
       {fx ? <When iso={fx.date} lead={r.date} /> : null}.
@@ -174,11 +175,11 @@ function StatedLine({ part }: { part: StatedPart }) {
 const dealFee = (f: FeeRef) => f.of ?? f.fee;
 const sameWords = (a: StatedPart, b: StatedPart) => dealFee(a.fee) === dealFee(b.fee) && a.part === b.part && (a.words.figure?.value ?? null) === (b.words.figure?.value ?? null);
 /**
- * The stated parts under a chart: those of its fees, less an offset fee's (its period's sub and the timeline say it), each said once where
- * a size's steps print the same words on each step, then under the deal fee's own name.
+ * The stated parts under a chart: those of its fees, an offset fee's among them (beside its fee, in every period it is charged), each said
+ * once where a size's steps print the same words on each step, then under the deal fee's own name.
  */
-function statedOf(parts: readonly StatedPart[], fees: readonly ChartFee[], offsets: readonly { fee: FeeRef }[] = []): StatedPart[] {
-  const mine = parts.filter((s) => fees.some((f) => f.ref.fee === dealFee(s.fee)) && !offsets.some((o) => o.fee.fee === dealFee(s.fee)));
+function statedOf(parts: readonly StatedPart[], fees: readonly ChartFee[]): StatedPart[] {
+  const mine = parts.filter((s) => fees.some((f) => f.ref.fee === dealFee(s.fee)));
   return mine.filter((s, k) => mine.findIndex((t) => sameWords(s, t)) === k).map((s) => (s.fee.step && mine.filter((t) => dealFee(t.fee) === dealFee(s.fee) && t.part === s.part).every((t) => sameWords(s, t)) ? { ...s, fee: { ...s.fee, step: undefined } as FeeRef } : s));
 }
 
@@ -194,8 +195,8 @@ function OneHeadline({ one, noun, held }: { one: OneView; noun: string; held: bo
   );
 }
 
-/** Each fee's price under a one-number panel. */
-function OnePrices({ one, saved }: { one: OneView; saved: boolean }) {
+/** Each fee's price under a one-number panel, and the rate a sum in another currency is worked out at. */
+function OnePrices({ one, saved, fx }: { one: OneView; saved: boolean; fx: FxSnapshot | null }) {
   if (one.prices.length === 0) return null;
   return (
     <ul className="flex flex-col gap-1 text-sm text-muted-foreground">
@@ -204,6 +205,12 @@ function OnePrices({ one, saved }: { one: OneView; saved: boolean }) {
           <FeeOpen fee={p.fee.ref} after={copy.price.sep} /> <PriceWords price={p.price} kind={p.fee.ref.kind} saved={saved} />
         </li>
       ))}
+      {one.one &&
+        one.rates.map((r) => (
+          <li key={r.currency}>
+            <RateLine currency={r.currency} rate={r.rate} fx={fx} one />
+          </li>
+        ))}
     </ul>
   );
 }
@@ -265,10 +272,17 @@ function ActionHeadline({ view, tab }: { view: ActionView; tab: ActionTab }) {
     );
   }
   if (h.kind === "max")
-    return (
+    return view.lanes.length === 1 ? (
       <>
         <FigAfter value={h.at} lead={a.max.before} />
         {a.max.after}
+      </>
+    ) : (
+      <>
+        <FigAfter value={h.at} lead={a.max.before} />
+        {a.max.of}
+        {refName(h.fee.ref)}
+        <FigAfter value={h.figure} lead={a.max.stops} />
       </>
     );
   return <>{countPhrase(h.n, a.marks)}</>;
@@ -278,7 +292,7 @@ function ActionHeadline({ view, tab }: { view: ActionView; tab: ActionTab }) {
 function ActionSub({ view, tab }: { view: ActionView; tab: ActionTab }) {
   const h = view.head;
   const a = w.action;
-  const sale = tab.action === "trade" && tab.side === "all" ? a.sameSale : "";
+  const sale = tab.action === "trade" && view.sameSale ? a.sameSale : "";
   if (h.kind !== "below" || (h.adds.length < 2 && !h.max)) return sale ? <p className="text-muted-foreground">{sale}</p> : null;
   return (
     <p className="text-muted-foreground">
@@ -321,14 +335,17 @@ function ActionSub({ view, tab }: { view: ActionView; tab: ActionTab }) {
   );
 }
 
-/** Why a fee's part costs what it does at the reader's amount: "המינימום, 39 $, קובע: 0.25% היו 47 ₪", or a rate's share. */
-function WhyLine({ part, lane, share }: { part: ActionReading["parts"][number]; lane: Lane | undefined; share: string }) {
+/**
+ * Why a fee's part costs what it does at the reader's amount: "המינימום מוסיף 9 ₪: לפי 0.3% זה היה 30 ₪.", by the rate of the step the
+ * amount is in; "המינימום, 39 $, קובע" where that is not known; or the fee's share where its rate decides, its third party's with it.
+ */
+function WhyLine({ part, share }: { part: ActionReading["parts"][number]; share: string }) {
   const a = w.action;
   const p = part.part;
   if (!p) return null;
   if (p.part === "free") return <>{copy.price.free}</>;
-  if (p.part === "rate") return p.figure ? <><Fig value={p.figure} /> {share}</> : null;
-  const rate = lane?.parts?.find((x) => x.part === "rate")?.figure;
+  if (p.part === "rate") return part.rate ? <><Fig value={part.rate} /> {share}</> : null;
+  const rate = part.rate;
   // what the part adds to its rate alone, or saves off it, where both are known and differ
   if (rate && part.rateAlone && part.apart && (part.apart.value as number) > 0)
     return (
@@ -355,6 +372,33 @@ function WhyLine({ part, lane, share }: { part: ActionReading["parts"][number]; 
   );
 }
 
+/** A stretch the axis does not reach, in words under the chart (F-112): the fee, where the stretch ends, and the part that decides it. */
+function UnderLine({ fee, part }: { fee: ChartFee; part: LanePart }) {
+  const a = w.action;
+  return (
+    <li>
+      {refName(fee.ref)}
+      {part.end && <FigAfter value={part.end} lead={a.under.upTo} />}
+      {a.under.sep}
+      {part.part === "free" ? (
+        copy.price.free
+      ) : (
+        <>
+          {a.part[part.part]}
+          {part.figure && (
+            <>
+              {a.why.sep}
+              <Fig value={part.figure} />
+            </>
+          )}
+          {a.why.decides}
+        </>
+      )}
+      {a.under.end}
+    </li>
+  );
+}
+
 /** The parts of a reading at the reader's amount, largest first, as the bar runs. */
 const largestFirst = (parts: ActionReading["parts"]) => [...parts].sort((p, q) => (q.cost.value as number) - (p.cost.value as number));
 
@@ -362,7 +406,7 @@ const largestFirst = (parts: ActionReading["parts"]) => [...parts].sort((p, q) =
  * The reading at the reader's amount, beside the chart: the amount, the total and its share, the parts as a bar and as rows (largest
  * first), and the notes. A fee set apart (`strong`) is bold here as in the lanes; the others stay as they are.
  */
-function ActionCard({ read, view, tab, strong, onStrong, notes }: { read: ActionReading; view: ActionView; tab: ActionTab; strong: string | null; onStrong: (id: string | null) => void; notes: ReactNode }) {
+function ActionCard({ read, tab, strong, onStrong, notes }: { read: ActionReading; tab: ActionTab; strong: string | null; onStrong: (id: string | null) => void; notes: ReactNode }) {
   const a = w.action;
   const share = tabWord(a.share, tab);
   const total = read.total.value as number;
@@ -403,7 +447,7 @@ function ActionCard({ read, view, tab, strong, onStrong, notes }: { read: Action
               {/* the figures of the line under a fee's name take their tap areas in the layer of a control (app.css), so they reach their
                   44 px over the empty foot of the name's own target above them */}
               <span className="ps-5 text-xs text-muted-foreground [&_.num]:after:z-[1]">
-                <WhyLine part={p} lane={view.lanes.find((l) => l.fee.ref.fee === id)} share={share} />
+                <WhyLine part={p} share={share} />
               </span>
             </li>
           );
@@ -457,6 +501,9 @@ function ActionChart({ view, tab, stated, fx, left }: { view: ActionView; tab: A
   const move = (a: number) => setAt(Math.max(range.lo, Math.min(range.hi, roundAmount(a))));
   const notes = (
     <ul className="flex flex-col gap-1.5 border-t border-border pt-3 text-xs text-muted-foreground">
+      {view.below.map((b) => (
+        <UnderLine key={`${b.fee.ref.fee}:${b.part.from}`} fee={b.fee} part={b.part} />
+      ))}
       {statedOf(stated, view.fees).map((s) => (
         <StatedLine key={`${s.fee.fee}:${s.part}`} part={s} />
       ))}
@@ -488,7 +535,7 @@ function ActionChart({ view, tab, stated, fx, left }: { view: ActionView; tab: A
           <AmountLanes title={view.lanes.length > 1 ? w.action.lanesEach : w.action.lanes} range={range} lanes={view.lanes.map((l) => laneOf(l, false))} at={at} entered strong={strong} onLane={setStrong} onPart={(_, p) => setAt(middleOf(p, range))} />
         </ShareStack>
       </div>
-      <ActionCard read={read} view={view} tab={tab} strong={strong} onStrong={setStrong} notes={notes} />
+      <ActionCard read={read} tab={tab} strong={strong} onStrong={setStrong} notes={notes} />
     </div>
   );
 }
@@ -540,14 +587,14 @@ function ActionPanel({ reading, fx, saved, unitPrice, onUnitPrice, left }: { rea
           ) : undefined
         }
       >
-        {"chart" in view ? <ActionHeadline view={view.chart} tab={tab} /> : "one" in view ? <OneHeadline one={view.one} noun={tabWord(w.action.noun, tab)} held={false} /> : "unpriced" in view ? null : w.action.tabs[tab.key]}
+        {"chart" in view ? <ActionHeadline view={view.chart} tab={tab} /> : "one" in view ? <OneHeadline one={view.one} noun={w.action.oneNoun[tab.key] ?? tabWord(w.action.noun, tab)} held={false} /> : "unpriced" in view ? null : w.action.tabs[tab.key]}
       </PanelHead>
       {tab.views.length > 1 && <PeriodChoice periods={periods} reading={reading} value={k} onChange={setK} />}
       {reading.unitPrice && unitFee && <UnitPriceField unit={reading.unitPrice} fee={unitFee} value={unitPrice} onChange={onUnitPrice} />}
       {"chart" in view ? (
         <ActionChart key={`${tab.key}:${k}`} view={view.chart} tab={tab} stated={reading.panels.stated[tab.key] ?? []} fx={fx} left={left[tab.key]} />
       ) : "one" in view ? (
-        <OnePrices one={view.one} saved={saved} />
+        <OnePrices one={view.one} saved={saved} fx={fx} />
       ) : "unpriced" in view ? (
         <UnpricedBody view={view.unpriced} tab={tab} />
       ) : (
@@ -564,7 +611,7 @@ function HeldHeadline({ view, later, from }: { view: HeldView; later: boolean; f
   const h = view.head;
   const c = w.held.cross;
   if (h.kind === "marks") return <>{countPhrase(h.n, w.action.marks)}</>;
-  const said = h.kind === "cross" ? c : h.of === "edge" && h.fee ? { ...w.held.mark.edge, after: fill(w.held.mark.edge.named, { name: refName(h.fee) }) } : w.held.mark[h.of];
+  const said = h.kind === "cross" ? c : h.fee ? { ...w.held.mark[h.of], after: fill(w.held.mark[h.of].named, { name: refName(h.fee) }) } : w.held.mark[h.of];
   return (
     <>
       {later && (
@@ -600,7 +647,7 @@ export function HeldChange({ row, saved }: { row: PeriodRow; saved: boolean }) {
   );
 }
 
-/** The sub: in a later period, what changed in it and the offsets it shows a year without; else how the share falls, and its bands. */
+/** The sub: in a later period, what changed in it; else how the share falls, and its bands. */
 function HeldSub({ view, saved }: { view: HeldView; saved: boolean }) {
   const b = w.held.bands;
   if (view.changes.length > 0)
@@ -608,15 +655,6 @@ function HeldSub({ view, saved }: { view: HeldView; saved: boolean }) {
       <p className="text-muted-foreground">
         {view.changes.map((row) => (
           <HeldChange key={row.fee} row={row} saved={saved} />
-        ))}
-        {view.offsets.map((o) => (
-          <span key={o.fee.fee}>
-            {w.held.offset.lead}
-            {feeName(o.against)}
-            {w.held.offset.month}
-            {(o.action && w.action.noun[o.action]) || w.action.noun.none}
-            {w.held.offset.end}
-          </span>
         ))}
       </p>
     );
@@ -721,7 +759,7 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
   });
   const setFrom = (lo: number, hi: number) => setRange(settleRange(lo, hi, view.range));
   const r = w.held.range;
-  const notes = statedOf(stated, view.fees, view.offsets);
+  const notes = statedOf(stated, view.fees);
   return (
     <div className="flex flex-col gap-4">
       <RangeFields lo={range.lo} hi={range.hi} moved={moved} onRange={setFrom} onReset={() => setRange(null)} words={r} />
@@ -777,7 +815,7 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
   );
 }
 
-function HeldPanel({ reading, saved, left }: { reading: Reading; saved: boolean; left: LeftOut | undefined }) {
+function HeldPanel({ reading, saved, fx, left }: { reading: Reading; saved: boolean; fx: FxSnapshot | null; left: LeftOut | undefined }) {
   const views = reading.panels.held;
   const [chosen, setK] = useState(0);
   // an edit can join the periods under the one chosen: the last one left stands
@@ -792,7 +830,7 @@ function HeldPanel({ reading, saved, left }: { reading: Reading; saved: boolean;
       {"chart" in view ? (
         <HeldChart key={k} view={view.chart} stated={reading.panels.stated.held ?? []} saved={saved} left={left} />
       ) : "one" in view ? (
-        <OnePrices one={view.one} saved={saved} />
+        <OnePrices one={view.one} saved={saved} fx={fx} />
       ) : (
         <Undrawn view={view.undrawn} />
       )}
@@ -1082,11 +1120,13 @@ type CardsProps = Parameters<typeof ReadingCards>[0];
 
 /**
  * /deal's reading, read here (`readingOf`) inside an error boundary of its own: a reading that throws says the deal could not be read, in
- * its place, and leaves the editor standing, so the deal can be changed; a change to the deal or to the unit's price reads it again.
+ * its place, and leaves the editor standing, so the deal can be changed; a change to the deal or to the unit's price reads it again. Where
+ * a unit's price is typed, the notice offers to clear it, since the field stands inside the reading the notice replaces.
  */
 export function DealReading({ input, ...cards }: { input: ReadingInput } & Omit<CardsProps, "reading">) {
+  const { onUnitPrice } = cards;
   return (
-    <ToolBoundary resetKey={JSON.stringify([input.read.deal, input.unitPrice])} words={copy.readFailed}>
+    <ToolBoundary resetKey={JSON.stringify([input.read.deal, input.unitPrice])} words={copy.readFailed} {...(input.unitPrice !== null && onUnitPrice ? { onReset: () => onUnitPrice(null) } : {})}>
       <ReadOf input={input} {...cards} />
     </ToolBoundary>
   );
@@ -1118,7 +1158,7 @@ export function ReadingCards({ reading, saved, fx, left, foreign = false, none =
     <TypedPlain className="nums-wide flex flex-col gap-4">
       {left && placed && <LeftOutList left={placed.rest} empty={none} />}
       {read && reading.panels.actions.length > 0 && <ActionPanel reading={reading} fx={fx} saved={saved} unitPrice={unitPrice} onUnitPrice={onUnitPrice} left={placed?.byPanel ?? {}} />}
-      {read && reading.panels.held.length > 0 && <HeldPanel reading={reading} saved={saved} left={placed?.byPanel.held} />}
+      {read && reading.panels.held.length > 0 && <HeldPanel reading={reading} saved={saved} fx={fx} left={placed?.byPanel.held} />}
       {(timeline || law) && (
         <div className={cx("grid items-start gap-4", timeline && law && "lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]")}>
           {timeline && <TimelineCard reading={reading} saved={saved} />}

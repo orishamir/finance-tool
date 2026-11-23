@@ -1,33 +1,27 @@
-// Savings plan (D29): when can I take my money out? A ladder: each monthly deposit is a bar from the month it goes in to the month its
-// lock ends (the plan's term from the deposit record; F-22's convention, method G-42, which the page says beside the figures), a draggable
-// date, and what is free and what is still locked on that date. The value of one finished deposit is an engine run of the plan's record.
+// Savings plan (D29): when can I take my money out? Each monthly deposit is a bar from the month it goes in to the plan's end, where all of
+// them are paid out together (F-22, as the example's own terms read: the plan's term from its start, a deposit each month up to the month
+// before the end), a draggable date, and what is free and what is still locked on that date. Each deposit's value at the end is an engine
+// run of the plan's record from its month to the end.
 import { scaleLinear } from "d3-scale";
 import { useId, useMemo, useState } from "react";
 import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, factNumber, planModel } from "../../lib/guide-signature";
 
-import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, SegmentedControl, Stat, StatRow, Swatch, useGlidingNumbers, useWidth } from "../kit";
-import { IdText, Num, Ruled, Term } from "../provenance";
+import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, Stat, StatRow, Swatch, useWidth } from "../kit";
+import { Num, Ruled, Term } from "../provenance";
 import { figure, inputSite, rulesOfBundle, SigAmountField, useSigInputs, typed, type VisualProps } from "./kit";
 
 const TOP = 22;
 const AXIS = 24;
-/** The ladder's height in px: 5 px a row at the most deposits on offer, 36. */
+/** The bars' height in px: 5 px a row at a plan of 36 deposits. */
 const LADDER = 180;
-
-type Count = "6" | "12" | "24" | "36";
-
-/** The figures that rest on a lock per deposit, F-22's convention, carry G-42 in their sheets. */
-const LOCK_FLAGS = ["G-42"];
 
 export function SavingsPlanVisual({ data, today }: VisualProps) {
   const bundle = data.bundles["savings-plan"]!;
   const inputs = useSigInputs(bundle);
-  const [count, setCount] = useState<Count>("12");
-  const n = Number(count);
   const monthly = Math.max(0, inputs.monthly);
-  const model = useMemo(() => planModel(data, { monthly, deposits: n }), [data, monthly, n]);
+  const model = useMemo(() => planModel(data, monthly), [data, monthly]);
   const rate = fact(data, "rate")!;
   const termFact = fact(data, "term")!;
   const term = factNumber(data, "term") ?? 36;
@@ -36,15 +30,15 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
   const min = fact(data, "amountMin");
   const max = fact(data, "amountMax");
   const [month, setMonth] = useState<number | null>(null);
-  const last = n - 1 + term;
-  const m = Math.min(last, Math.max(0, month ?? term + Math.floor(n / 2)));
+  // the axis runs to the plan's end, where every deposit is paid out; the date starts there
+  const last = term;
+  const m = Math.min(last, Math.max(0, month ?? term));
   const [box, width] = useWidth();
   const pid = useId().replace(/:/g, "");
-  // another number of deposits: the ladder's axis and its rows glide there, and the rows share one height, so nothing under it moves
-  const [lastNow, rowH] = useGlidingNumbers([last, LADDER / n]) as [number, number];
+  const rowH = LADDER / Math.max(1, model?.rows.length ?? term);
   const height = TOP + LADDER + AXIS + 6;
   const plotW = width - 8;
-  const x = scaleLinear().domain([0, lastNow]).range([0, plotW]);
+  const x = scaleLinear().domain([0, last]).range([0, plotW]);
   const ticks = Array.from({ length: Math.floor(last / 12) + 1 }, (_, i) => i * 12);
   const at = model?.at(m);
   const outOfRange = (min && typeof min.value === "number" && monthly < min.value) || (max && typeof max.value === "number" && monthly > max.value);
@@ -52,23 +46,16 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
   const monthlyIn = inputSite(bundle, "monthly_deposit", monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
   const runInputs = { [copy.common.inputNames.monthly]: monthlyIn, [copy.common.inputNames.rate]: rate, [copy.common.inputNames.term]: termFact };
   const dateIn = typed(m, "months", today, copy.plan.marker);
-  const countIn = { [copy.plan.count]: typed(n, "count", today, copy.plan.count) };
-  // the number of deposits counts only once the date is past the last of them (what is locked) or past the last one's end (what is free)
-  const free = model && at ? figure(at.freeValue, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn, ...(m - term + 1 >= n ? countIn : {}) }, today, copy.plan.about.free, rulesOfBundle(bundle), LOCK_FLAGS) : null;
-  // what is still locked is the deposits made and not yet free, at their face: no interest in it
-  const locked = model && at ? figure(at.lockedPrincipal, "nis", "F-22", { [copy.common.inputNames.monthly]: monthlyIn, [copy.common.inputNames.term]: termFact, [copy.plan.marker]: dateIn, ...(m >= n - 1 ? countIn : {}) }, today, copy.plan.about.locked, [], LOCK_FLAGS) : null;
-  const lastUnlock = model ? figure(model.lastUnlock, "months", "F-22", { [copy.common.inputNames.term]: termFact, ...countIn }, today, copy.plan.about.last, [], LOCK_FLAGS) : null;
+  // free: nothing before the plan's end, then every deposit with its interest, after tax
+  const free = model && at ? figure(at.freeValue, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn }, today, copy.plan.about.free, rulesOfBundle(bundle)) : null;
+  // what is still locked is the deposits made by then, at their face: no interest in it
+  const locked = model && at ? figure(at.lockedPrincipal, "nis", "F-22", { [copy.common.inputNames.monthly]: monthlyIn, [copy.common.inputNames.term]: termFact, [copy.plan.marker]: dateIn }, today, copy.plan.about.locked) : null;
+  const end = model ? figure(model.term, "months", "F-22", { [copy.common.inputNames.term]: termFact }, today, copy.plan.about.last) : null;
 
   return (
     <div className="flex flex-col gap-5">
       <div className="grid gap-4 sm:grid-cols-2">
         <SigAmountField inputs={inputs} field="monthly" label={copy.plan.monthly} />
-        <div className="flex flex-col gap-1.5">
-          <span className="field-label" id="sig-plan-count">
-            {copy.plan.count}
-          </span>
-          <SegmentedControl<Count> labelledBy="sig-plan-count" options={copy.plan.countOptions.map((c) => ({ value: c as Count, label: c }))} value={count} onChange={(c) => { setCount(c); setMonth(null); }} />
-        </div>
       </div>
       {outOfRange && min && max && (
         <Callout tone="caution">
@@ -134,21 +121,16 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
         <StatRow cols={3}>
           <Stat label={copy.plan.figures.free} tone="value">{free && <Num value={free} />}</Stat>
           <Stat label={copy.plan.figures.locked}>{locked && <Num value={locked} />}</Stat>
-          <Stat label={copy.plan.figures.last}>{lastUnlock && <Num value={lastUnlock} />}</Stat>
+          <Stat label={copy.plan.figures.last}>{end && <Num value={end} />}</Stat>
         </StatRow>
-        {/* what the three figures rest on, beside them: a lock per deposit, the method's convention (F-22, G-42) */}
-        <Callout tone="caution">
-          <IdText text={copy.plan.lock.assumption} /> {copy.plan.lock.general.before} <Term id="בנק ישראל">{copy.plan.lock.general.term}</Term>{" "}
-          {copy.plan.lock.general.read} <Ruled id="BANK-28">{copy.plan.lock.general.stated}</Ruled>
-          {copy.plan.lock.general.after} {copy.plan.lock.others} <Ruled id="BPN-10">{copy.plan.lock.hapoalim.stated}</Ruled>
-          {copy.plan.lock.hapoalim.after} <Ruled id="BANK-38">{copy.plan.lock.mizrahi.stated}</Ruled>
-          {copy.plan.lock.mizrahi.after} {copy.plan.lock.end}
-        </Callout>
       </div>
 
       <div className="flex flex-col gap-2 text-sm max-w-measure">
         <p>
           {copy.plan.lockLine.before} <Num value={termFact} display={fmt.months(term)} /> {copy.plan.lockLine.middle} <Num value={rate} /> {copy.plan.lockLine.after}
+        </p>
+        <p>
+          {copy.plan.endLine.before} <Term prefix={copy.plan.endLine.prefix} id="חשבון עובר ושב">{copy.plan.endLine.term}</Term> {copy.plan.endLine.after}
         </p>
         {lumpTerm && lumpRate && (
           <p>

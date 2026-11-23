@@ -1,7 +1,7 @@
 // docs/method.md §10.6, F-112's parts and F-123 to F-127: what the reading's charts read off a deal. Every expected figure is worked by
 // hand from the formula.
 import { describe, expect, it } from "vitest";
-import { acrossDrop, costShare, coverFrom, dealPeriods, heldCrossover, idleMonth, priceParts, rateAt, type Deal } from "../src/index.ts";
+import { acrossDrop, costShare, coverFrom, coverPriced, dealPeriods, heldCrossover, holdingCost, idleMonth, priceParts, rateAt, type Deal, type DealPeriod } from "../src/index.ts";
 
 const today = { y: 2026, m: 11 };
 const USD = 3.264;
@@ -26,6 +26,13 @@ const account: Deal = {
   ],
 };
 const [now, later] = dealPeriods(account, today).periods as [never, never];
+
+/** A deal's first period, which every deal has (F-110). */
+const firstOf = (d: Deal): DealPeriod => {
+  const [p] = dealPeriods(d, today).periods;
+  if (!p) throw new Error("a deal has a first period (F-110)");
+  return p;
+};
 
 describe("F-112 a price's parts along the size", () => {
   it("gives the cap up to 130 $, the minimum up to 15,600 $, the rate, and the maximum above 2,760,000 $", () => {
@@ -70,8 +77,8 @@ describe("F-123 the share a cost is of its amount, and the rate where every fee 
   it("has no rate on what is held where a share's minimum decides its charge: 0.1% a quarter with at least 40 ₪ up to 40,000 ₪", () => {
     const d: Deal = { foreign: false, fees: [{ base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 3, min: 40 } }] }] };
     const p = dealPeriods(d, today).periods[0]!;
-    expect(rateAt(d, p, "held", 20000)).toBeNull();
-    expect(rateAt(d, p, "held", 50000)).toBeCloseTo(0.004, 12);
+    expect(rateAt(d, p, "held", 20000, {})).toBeNull();
+    expect(rateAt(d, p, "held", 50000, {})).toBeCloseTo(0.004, 12);
   });
 
   it("adds the rates where every fee is at its rate: 0.25% and the conversion's 0.0875% above 15,600 $", () => {
@@ -90,20 +97,38 @@ describe("F-123 the share a cost is of its amount, and the rate where every fee 
         { base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.002 } }] },
       ],
     };
-    expect(rateAt(d, dealPeriods(d, today).periods[0]!, { action: "trade", side: "buy" }, 50000)).toBeCloseTo(0.002, 12);
+    expect(rateAt(d, dealPeriods(d, today).periods[0]!, { action: "trade", side: "buy" }, 50000, {})).toBeCloseTo(0.002, 12);
   });
 
   it("adds the yearly shares of what is held step by step, leaving the sums out", () => {
-    expect(rateAt(account, now, "held", 50000)).toBeCloseTo(0.00896, 9);
-    expect(rateAt(account, now, "held", 200000)).toBeCloseTo(0.007, 9);
-    expect(rateAt(account, now, "held", 800000)).toBeCloseTo(0.005, 9);
+    expect(rateAt(account, now, "held", 50000, {})).toBeCloseTo(0.00896, 9);
+    expect(rateAt(account, now, "held", 200000, {})).toBeCloseTo(0.007, 9);
+    expect(rateAt(account, now, "held", 800000, {})).toBeCloseTo(0.005, 9);
+  });
+});
+
+describe("F-112 a year of holding beside a step that charges nothing", () => {
+  it("reads nothing of a step that charges nothing, so its currency needs no rate: 15 ₪ a month beside custody free in every step by dollars", () => {
+    // custody priced by the value held in dollars, free up to 10 $, free up to 15,000 $, and 0% above: it charges nothing in any step
+    const steps = [{ from: 0, to: 10 }, { from: 10, to: 15000 }, { from: 15000, to: null }];
+    const d: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "custody" }, stages: [{ price: { kind: "sum", amount: 15, everyMonths: 1 } }] },
+        ...steps.map((w, k) => ({ base: { key: "custody" as const }, stages: [{ price: k < 2 ? { kind: "free" as const } : { kind: "held" as const, rate: 0, everyMonths: 12 } }], within: { on: "held" as const, ...w, currency: "USD" } })),
+      ],
+    };
+    const p = firstOf(d);
+    expect(holdingCost(d, p, 50_000, {})).toEqual({ total: 180, parts: [{ fee: 0, cost: 180 }] });
+    expect(heldCrossover(d, p, {})).toBeNull();
+    expect(acrossDrop(d, p, 100_000, {}).over.cost).toBe(180);
   });
 });
 
 describe("F-124 where the shares come to cost as much as the sums per period", () => {
   it("is 228 ₪ over 0.896% today, and 468 ₪ over 0.896% once the account fee starts", () => {
-    expect(heldCrossover(account, now)).toBeCloseTo(228 / 0.00896, 6);
-    expect(heldCrossover(account, later)).toBeCloseTo(468 / 0.00896, 6);
+    expect(heldCrossover(account, now, {})).toBeCloseTo(228 / 0.00896, 6);
+    expect(heldCrossover(account, later, {})).toBeCloseTo(468 / 0.00896, 6);
   });
 
   it("is the step's bottom where the shares jump past the sums there", () => {
@@ -116,17 +141,17 @@ describe("F-124 where the shares come to cost as much as the sums per period", (
         { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 500, everyMonths: 12 } }] },
       ],
     };
-    expect(heldCrossover(d, dealPeriods(d, today).periods[0]!)).toBe(100000);
+    expect(heldCrossover(d, dealPeriods(d, today).periods[0]!, {})).toBe(100000);
   });
 
   it("is none with no sum, with no share, or where a share's maximum keeps it below the sums", () => {
     const shares: Deal = { foreign: false, fees: [account.fees[4]!] };
-    expect(heldCrossover(shares, dealPeriods(shares, today).periods[0]!)).toBeNull();
+    expect(heldCrossover(shares, dealPeriods(shares, today).periods[0]!, {})).toBeNull();
     const sums: Deal = { foreign: false, fees: [account.fees[5]!] };
-    expect(heldCrossover(sums, dealPeriods(sums, today).periods[0]!)).toBeNull();
+    expect(heldCrossover(sums, dealPeriods(sums, today).periods[0]!, {})).toBeNull();
     // 0.4% a year with at most 50 ₪ a year never costs more than 50 ₪, so it never reaches 108 ₪
     const capped: Deal = { foreign: false, fees: [{ base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.004, everyMonths: 12, max: 50 } }] }, account.fees[5]!] };
-    expect(heldCrossover(capped, dealPeriods(capped, today).periods[0]!)).toBeNull();
+    expect(heldCrossover(capped, dealPeriods(capped, today).periods[0]!, {})).toBeNull();
   });
 
   it("is 38,000 ₪ for 228 ₪ a year against 0.15% a quarter with at most 3,700 ₪ a quarter, which stays above the sums", () => {
@@ -140,7 +165,7 @@ describe("F-124 where the shares come to cost as much as the sums per period", (
         { base: { name: "data" }, stages: [{ price: { kind: "sum", amount: 10, everyMonths: 1 } }] },
       ],
     };
-    expect(heldCrossover(d, dealPeriods(d, today).periods[0]!)).toBeCloseTo(38000, 6);
+    expect(heldCrossover(d, dealPeriods(d, today).periods[0]!, {})).toBeCloseTo(38000, 6);
   });
 
   it("is 100,000 ₪ under a maximum per charge on the whole deposit charged every month", () => {
@@ -153,7 +178,7 @@ describe("F-124 where the shares come to cost as much as the sums per period", (
         { base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount: 50, everyMonths: 1 } }] },
       ],
     };
-    expect(heldCrossover(d, dealPeriods(d, today).periods[0]!)).toBeCloseTo(100000, 6);
+    expect(heldCrossover(d, dealPeriods(d, today).periods[0]!, {})).toBeCloseTo(100000, 6);
   });
 });
 
@@ -161,7 +186,7 @@ describe("F-124 the fees by their kind: the sums per period against every share 
   // custody of 0.15% a year with at least 900 ₪ a year: its minimum holds up to 900 / 0.0015 = 600,000 ₪
   const custody: Deal["fees"][number] = { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.0015, everyMonths: 12, min: 900 } }] };
   const sums = (amount: number): Deal["fees"][number] => ({ base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount, everyMonths: 12 } }] });
-  const at = (d: Deal) => heldCrossover(d, dealPeriods(d, today).periods[0]!);
+  const at = (d: Deal) => heldCrossover(d, dealPeriods(d, today).periods[0]!, {});
 
   it("is none where the shares cost more at every value: 500 ₪ a year against custody that costs at least 900 ₪", () => {
     expect(at({ foreign: false, fees: [custody, sums(500)] })).toBeNull();
@@ -274,7 +299,7 @@ describe("F-124 the fees by their kind: the sums per period against every share 
 
 describe("F-125 a year just under and just over a drop", () => {
   it("sets 99,000 ₪ at 1,115 ₪ against 101,000 ₪ at 935 ₪", () => {
-    const x = acrossDrop(account, now, 100000);
+    const x = acrossDrop(account, now, 100000, {});
     expect(x.under.value).toBeCloseTo(99000, 6);
     expect(x.over.value).toBeCloseTo(101000, 6);
     // 99,000 × (0.796% + 0.1%) + 228 = 1,115.04; 101,000 × (0.6% + 0.1%) + 228 = 935
@@ -286,7 +311,7 @@ describe("F-125 a year just under and just over a drop", () => {
     // 0.2% a year up to 100,000 ₪, 0.1% up to 100,400 ₪ and 0.05% above: the side over 100,000 ₪ reads 100,200 ₪, inside the middle step
     const step = (rate: number, from: number, to: number | null) => ({ base: { key: "custody" as const }, stages: [{ price: { kind: "held" as const, rate, everyMonths: 12 } }], within: { on: "held" as const, from, to, currency: "ILS" } });
     const d: Deal = { foreign: false, fees: [step(0.002, 0, 100000), step(0.001, 100000, 100400), step(0.0005, 100400, null)] };
-    const x = acrossDrop(d, dealPeriods(d, today).periods[0]!, 100000);
+    const x = acrossDrop(d, dealPeriods(d, today).periods[0]!, 100000, {});
     expect(x.under.value).toBeCloseTo(99000, 6);
     expect(x.over.value).toBeCloseTo(100200, 6);
     expect(x.over.cost).toBeCloseTo(100.2, 6);
@@ -321,22 +346,64 @@ describe("F-126 a month with no action and nothing held", () => {
 });
 
 describe("F-127 the smallest action whose charges reach a sum", () => {
-  it("covers 20 ₪ from an action of 66.67 ₪, where 30% of it reaches 20 ₪", () => {
-    const at = coverFrom(account, later, [0], "trade", "buy", 20, rates)!;
-    expect(at).toBeCloseTo(20 / 0.3, 6);
+  it("covers 20 ₪ from an action of 67 ₪, the first whole shekel from 66.67 ₪, where 30% of it reaches 20 ₪", () => {
+    expect(coverFrom(account, later, [0], "trade", "buy", 20, rates)).toBe(67);
+  });
+
+  it("covers from the whole shekel past a step's top or a flat price's end where the charges jump there: 1,001 ₪ and 30,001 ₪", () => {
+    // free up to 1,000 ₪, then 0.1% with at least 20 ₪: 1,000 ₪ is the free step's, so 15 ₪ is reached only past it
+    const step: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "trade" }, stages: [{ price: { kind: "free" } }], within: { on: "action", from: 0, to: 1000, currency: "ILS" } },
+        { base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001, min: 20 } }], within: { on: "action", from: 1000, to: null, currency: "ILS" } },
+      ],
+    };
+    expect(coverFrom(step, firstOf(step), [0, 1], "trade", "buy", 15, {})).toBe(1001);
+    // 4 ₪ on an action up to 30,000 ₪, then 0.1%: 30,000 ₪ pays the 4 ₪, and from just past it 30 ₪
+    const flat: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001, flat: { amount: 4, upTo: 30000 } } }] }] };
+    expect(coverFrom(flat, firstOf(flat), [0], "trade", "buy", 15, {})).toBe(30001);
+  });
+
+  it("prices only the fees it is set against: another fee on the action in dollars or per unit needs no rate and no unit's price", () => {
+    const d: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.0025 } }] },
+        { base: { key: "spread" }, stages: [{ price: { kind: "perUnit", amount: 0.005, min: 1, currency: "USD" } }] },
+      ],
+    };
+    const p = firstOf(d);
+    expect(coverPriced(d, p, [0], "trade", "buy")).toEqual([0]);
+    expect(coverFrom(d, p, [0], "trade", "buy", 20, {})).toBe(8000);
+  });
+
+  it("prices a purchase's conversion with every conversion fee whose stretch decides what it converts, and a sale's alone", () => {
+    const d: Deal = {
+      foreign: true,
+      fees: [
+        { base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.0025 } }] },
+        { base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.002 } }], within: { on: "action", from: 10, to: null, currency: "USD" } },
+        { base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.001, flat: { amount: 1, upTo: 5 }, currency: "USD" } }], within: { on: "action", from: 0, to: 10, currency: "USD" } },
+      ],
+    };
+    const p = firstOf(d);
+    expect(coverPriced(d, p, [1], "trade", "buy")).toEqual([1, 2]);
+    expect(coverPriced(d, p, [1], "trade", "sell")).toEqual([1]);
+    expect(coverPriced(d, p, [0], "trade", "buy")).toEqual([0]);
   });
 
   it("is nothing where every action reaches the sum, and none where no action does", () => {
     const d: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001, min: 30 } }] }] };
     const p = dealPeriods(d, today).periods[0]!;
-    expect(coverFrom(d, p, [0], "trade", "buy", 20)).toBe(0);
+    expect(coverFrom(d, p, [0], "trade", "buy", 20, {})).toBe(0);
     const capped: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001, max: 10 } }] }] };
-    expect(coverFrom(capped, dealPeriods(capped, today).periods[0]!, [0], "trade", "buy", 20)).toBeNull();
+    expect(coverFrom(capped, dealPeriods(capped, today).periods[0]!, [0], "trade", "buy", 20, {})).toBeNull();
   });
 
   it("finds the amount past a flat price that ends above the sum", () => {
     // 25 ₪ for an action up to 1,000 ₪, then 0.5%: 20 ₪ is reached on every action up to 1,000 ₪, then again only from 4,000 ₪
     const d: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.005, flat: { amount: 25, upTo: 1000 } } }] }] };
-    expect(coverFrom(d, dealPeriods(d, today).periods[0]!, [0], "trade", "buy", 20)).toBeCloseTo(4000, 4);
+    expect(coverFrom(d, dealPeriods(d, today).periods[0]!, [0], "trade", "buy", 20, {})).toBeCloseTo(4000, 4);
   });
 });

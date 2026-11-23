@@ -1082,9 +1082,9 @@ export const flags: Record<string, string> = {
   // F-21, F-22, F-24, F-25, F-26 at a rate below zero: the rule base holds no rule for the tax on interest below zero (method G-41);
   // the timeline's band shows this beside the rule that would tax the interest, for a negative rate kept on the device or imported
   "G-41": "האתר לא מצא בכללים שקרא איך ממוסה ריבית מתחת לאפס, ולכן הוא לא מחשב אותה. אפשר להזין ריבית מ־0% ומעלה.",
-  // F-22 on the savings plan guide: the ladder locks each monthly deposit on its own, the method's convention (method G-42, BANK OQ12); the
-  // sheet of each figure that rests on it says so
-  "G-42": "המספר מניח שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. זו הנחה של האתר, לא כלל: האתר לא מצא בכללים שקרא אם כך בתוכנית שהדוגמה מחושבת עליה, ובחלק מהתוכניות שהאתר קרא את התנאים שלהן זה אחרת.",
+  // F-22 for a savings plan whose terms are not read as paying out at the plan's end: the run locks each monthly deposit on its own, the
+  // method's convention (method G-42, BANK OQ12); the sheet of a figure that rests on it says so
+  "G-42": "המספר מניח שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. זו הנחה של האתר, לא כלל: כל בנק קובע את זה בתנאי התוכניות שלו, ובחלק מהתוכניות שהאתר קרא את התנאים שלהן זה אחרת.",
   // F-20: a distribution at a foreign broker is not withheld in Israel; its advance is due by 30 April after the tax year (TXF-21), and the run charges it in the month
   "TXF-21": "בבית השקעות בחו״ל לא מנכים בישראל את המס על דיבידנד או ריבית שהקרן מחלקת. משלמים אותו בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי. החישוב מחשיב אותו כאילו שולם כבר בחודש החלוקה.",
   // F-09: a sale at a foreign broker is not withheld in Israel; the gain is reported with an advance by 31 July and 31 January, and a return is due (TXF-22); the run charges it in the month of the sale
@@ -2364,7 +2364,8 @@ export const feeDeal = {
   /** The reading's section under the columns (method §10.6, `readingOf`). */
   reading: "קוראים את העסקה",
   /** In the reading's place where reading the deal failed: the deal above still stands, and a change to it reads it again. */
-  readFailed: { title: "האתר לא הצליח לקרוא את העסקה", line: "אפשר לשנות את העסקה למעלה, והאתר יקרא אותה שוב." },
+  /** The reading's notice where it could not be read; `reset` clears the unit's price typed beside a chart, which may be what broke it. */
+  readFailed: { title: "האתר לא הצליח לקרוא את העסקה", line: "אפשר לשנות את העסקה למעלה, והאתר יקרא אותה שוב.", reset: "למחוק את מחיר היחידה" },
   read: {
     /** The periods of F-110: the timeline's stops and its headline. */
     periods: {
@@ -2415,8 +2416,11 @@ export const feeDeal = {
        * 39 ₪, שהם 3.9% ממנה. רק מ־13,000 ₪ המחיר יורד ל־0.3%". The gender is the noun's.
        */
       below: { costs: " עולה ", which: ", שהם ", of: { f: " ממנה", m: " ממנו" }, only: ". רק מ־", falls: " המחיר יורד ל־" },
-      /** The headline where a maximum decides above a sum. */
-      max: { before: "מעל ", after: " המקסימום קובע" },
+      /**
+       * The headline where a maximum decides above a sum: "מעל 2,300,000 ₪ המקסימום קובע" where the action has one fee, and "מעל 50,000 ₪
+       * המחיר של {fee} נעצר על 50 ₪" where it has several, since the others still charge above it.
+       */
+      max: { before: "מעל ", after: " המקסימום קובע", of: " המחיר של ", stops: " נעצר על " },
       marks: { one: "העלות משנה התנהגות בסכום אחד", two: "העלות משנה התנהגות בשני סכומים", many: "העלות משנה התנהגות ב־{n} סכומים" },
       part: { min: "המינימום", cap: "המקסימום באחוזים", flat: "המחיר הקבוע", sum: "המחיר", free: "הפטור", max: "המקסימום", rate: "האחוז" } as Record<string, string>,
       /** The sub, where several fees add to the headline's rate: "ה־0.45% הם {fee} 0.25% ועוד {fee} 0.2%." */
@@ -2443,6 +2447,11 @@ export const feeDeal = {
        * "המינימום מוסיף 9 ₪: לפי 0.3% זה היה 30 ₪."; where that is not known, "המינימום, 39 $, קובע". Every part's name is masculine.
        */
       why: { sep: ", ", decides: ", קובע", adds: " מוסיף ", saves: " חוסך ", alone: ": לפי ", would: " זה היה ", end: "." },
+      /**
+       * A stretch the axis does not reach, under the chart, by the part that decides it (`part`, `why`): "עמלת קנייה ומכירה עד 100 ₪:
+       * המחיר הקבוע, 4 ₪, קובע." or "עמלת המרה עד 10 $: חינם."
+       */
+      under: { upTo: " עד ", sep: ": ", end: "." },
       bar: "העלות לפי עמלה",
       /** Over the lanes: the deciding part of one fee, or of each of several. */
       lanes: "מה קובע את המחיר",
@@ -2455,6 +2464,8 @@ export const feeDeal = {
       line: { sep: ": ", and: ", " },
       /** Where nothing varies: one number, a share or a sum, in every size. */
       one: { share: " מכל {noun}, בכל גודל", sum: " לכל {noun}, בכל גודל" },
+      /** The action in the one number's words, by its tab's key, where it is not the noun: a tab of both sides costs the same on each. */
+      oneNoun: { "trade:all": "קנייה או מכירה" } as Record<string, string>,
     },
     /** What a year of holding costs by the amount held (F-112, F-123, F-124, F-125). */
     held: {
@@ -2465,14 +2476,20 @@ export const feeDeal = {
       periodsName: "התקופה",
       /** The headline: "עד 25,446 ₪, הסכומים הקבועים עולים בשנה יותר מכל האחוזים"; a later period's month before it, with a comma. */
       cross: { lead: "עד ", after: ", הסכומים הקבועים עולים בשנה יותר מכל האחוזים", month: ", " },
-      /** The headline with no crossover and one mark, by what changes there: "עד 600,000 ₪ המינימום קובע"; where one fee's price changes, its name. */
-      mark: { minEnd: { lead: "עד ", after: " המינימום קובע" }, maxStart: { lead: "מעל ", after: " המקסימום קובע" }, edge: { lead: "ב־", after: " המחיר משתנה", named: " המחיר של {name} משתנה" } },
+      /**
+       * The headline with no crossover and one mark, by what changes there: "עד 600,000 ₪ המינימום קובע" where the chart has one fee; where
+       * it has several, the fee whose minimum or maximum it is, since the others still charge ("עד 600,000 ₪ המחיר של {name} הוא המינימום");
+       * where one fee's price changes, its name.
+       */
+      mark: {
+        minEnd: { lead: "עד ", after: " המינימום קובע", named: " המחיר של {name} הוא המינימום" },
+        maxStart: { lead: "מעל ", after: " המקסימום קובע", named: " המחיר של {name} נעצר במקסימום" },
+        edge: { lead: "ב־", after: " המחיר משתנה", named: " המחיר של {name} משתנה" },
+      },
       falls: "ככל שמה שמוחזק גדל, שנה עולה פחות באחוזים. ",
       fallsSaved: "ככל שמה שנצבר גדל, שנה עולה פחות באחוזים. ",
       /** The shares band by band above the crossover: "מעל 25,446 ₪ האחוזים קובעים: 0.896% בשנה עד 100,000 ₪, 0.7% עד 500,000 ₪ ו־0.5% מעל זה, כל אחד על כל הסכום." */
       bands: { lead: "מעל ", decides: " האחוזים קובעים: ", perYear: " בשנה", upTo: " עד ", sep: ", ", and: " ו־", above: " מעל זה", whole: ", כל אחד על כל הסכום", end: "." },
-      /** A fee offset against an action's fee: the chart shows a year without that action. */
-      offset: { lead: "הסכום הזה מתקזז מול ", month: " של אותו חודש, ולכן הגרף מראה שנה בלי ", end: "." },
       x: "הסכום שמוחזק (₪)",
       xSaved: "הסכום שנצבר (₪)",
       /** The axis's name on a phone. */
@@ -2503,7 +2520,8 @@ export const feeDeal = {
     },
     /** Around a chart: the rate a sum in another currency enters it at, a chart that cannot be drawn, and the unit's price a sum per unit needs. */
     chart: {
-      rate: { before: (plural: string) => `סכום ב${plural} נכנס לגרף בשקלים: `, per: { USD: " לדולר", EUR: " לאירו", GBP: " ללירה שטרלינג" } as Record<string, string>, date: ", לפי השער של " },
+      /** The rate a sum in another currency is worked out at: on a chart (`before`), or in one number with no chart (`one`). */
+      rate: { before: (plural: string) => `סכום ב${plural} נכנס לגרף בשקלים: `, one: (plural: string) => `סכום ב${plural} מחושב בשקלים: `, per: { USD: " לדולר", EUR: " לאירו", GBP: " ללירה שטרלינג" } as Record<string, string>, date: ", לפי השער של " },
       undrawn: (plural: string) => `אין כאן גרף: מינימום או מקסימום בעסקה הוא ב${plural}, ולאתר אין עכשיו שער שלו.`,
       unitPrice: "מחיר יחידה",
       unitWhy: "{name} היא לפי יחידות, ולכן הגרף צריך את מחיר היחידה.",
@@ -3532,34 +3550,22 @@ export const guideSignature = {
   },
   plan: {
     monthly: "הפקדה חודשית",
-    count: "כמה חודשים מפקידים",
-    countOptions: ["6", "12", "24", "36"] as readonly string[],
     marker: "מתי תצטרכו את הכסף?",
     unit: "חודשים מתחילת התוכנית",
-    chart: { aria: "תרשים: כל הפקדה חודשית כפס מיום ההפקדה עד היום שהיא נפתחת" },
+    chart: { aria: "תרשים: כל הפקדה חודשית כפס מיום ההפקדה עד סוף התוכנית, שבו כל ההפקדות נפתחות יחד" },
     legend: { free: "פנויה", locked: "נעולה", notYet: "עוד לא הופקדה" },
     at: { before: "אחרי", after: "חודשים מתחילת התוכנית" },
-    figures: { free: "פנוי לקחת", locked: "עדיין נעול", last: "ההפקדה האחרונה נפתחת בחודש" },
+    figures: { free: "פנוי לקחת", locked: "עדיין נעול", last: "הכסף נפתח בחודש" },
     // the example runs on Leumi's plan (P-05); other banks' plans are collected too, on terms of their own
     // `stated`, after its one-letter prefix, is the words that state BANK-28, each bank setting its plan's terms (D116)
     onlyCollected: { before: "לפי הפרסום של לאומי. האתר אסף תוכניות חיסכון גם מבנקים אחרים,", prefix: "ו", stated: "כל בנק קובע את התנאים של התוכניות שלו", after: "." },
     lockLine: { before: "בתוכנית של לאומי התקופה היא", middle: "והריבית", after: "בשנה. אין אפשרות שבירה." },
+    // Leumi's own terms, quoted in the record's notes (`planEndPlans`, method F-22): one term from the plan's start, a deposit each month up
+    // to the month before its end, each deposit's interest from its own date, all of it to the current account at the end
+    endLine: { before: "בתנאים של לאומי התקופה נספרת מיום פתיחת התוכנית. מפקידים כל חודש עד החודש שלפני הסוף, הריבית על כל הפקדה נספרת מהיום שהופקדה, ובסוף כל הכסף עובר", prefix: "ל", term: "עו״ש", after: "יחד." },
     alt: { before: "בפיקדון חד־פעמי", ofBank: "של", forTerm: "לתקופה של", rate: "ריבית", middle: "כל הסכום נעול ואז פנוי בבת אחת." },
     rangeLine: "האתר קורא את הטווח בטבלה של הבנק כסכום להפקדה אחת. הטבלה לא אומרת זאת במילים.",
-    /**
-     * Beside the three figures, what they rest on (method F-22, G-42) and what the plan terms read say. Each `stated` is the words that
-     * state its rule (D116): BANK-28, no law or Bank of Israel directive read decides it (`term` opens its card); BPN-10, Hapoalim's four plans; BANK-38, four of
-     * Mizrahi-Tefahot's ענבים plans. Leumi's own terms on it are BANK OQ12.
-     */
-    lock: {
-      assumption: "שלושת המספרים האלה מניחים שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. זו הנחה של האתר, לא כלל. האתר לא מצא בכללים שקרא אם כך בתוכנית של לאומי, שהדוגמה מחושבת עליה. שאלה פתוחה BANK-OQ12.",
-      general: { before: "בחוקים ובהוראות של", term: "בנק ישראל", read: "שהאתר קרא", stated: "אין קביעה אם כל הפקדה נעולה לבדה, וכל בנק קובע את זה בתנאי התוכניות שלו", after: "." },
-      others: "בחלק מהתוכניות שהאתר קרא את התנאים שלהן זה אחרת, למשל:",
-      hapoalim: { stated: "בארבע מהתוכניות של בנק הפועלים ההפקדות לא נעולות כל אחת לבדה, ומושכים את כל החיסכון יחד, בתחנות יציאה שנספרות מתחילת התוכנית", after: ";" },
-      mizrahi: { stated: "בארבע מתוכניות ״ענבים״ של מזרחי טפחות אפשר למשוך בתחנת יציאה את כל הכסף, או רק חלק ממנו ולהשאיר את ״12 הפקדות אחרונות והרווחים עליהם״", after: "." },
-      end: "בתוכניות כאלה הכסף פנוי במועדים אחרים מאלה שבגרף.",
-    },
-    about: { free: "מה שפנוי לקחת ביום שבחרתם: ההפקדות שהתקופה שלהן הסתיימה, אחרי מס", locked: "הכסף שהופקד ועדיין נעול ביום שבחרתם", last: "החודש שבו ההפקדה האחרונה נפתחת" },
+    about: { free: "מה שפנוי לקחת ביום שבחרתם: לפני סוף התוכנית כלום, ובסוף כל ההפקדות והריבית עליהן, אחרי מס", locked: "הכסף שהופקד ועדיין נעול ביום שבחרתם", last: "החודש שבו התוכנית נגמרת וכל הכסף בה עובר לעו״ש" },
   },
   ladder: {
     // a table of the four products instead of a filter over cards; how soon the money is back is a coloured tag with
