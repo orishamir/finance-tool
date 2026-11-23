@@ -337,7 +337,6 @@ export function pairVerdict(view: InvestView, bundle: IndicesBundle, plan: Workb
   const moreIfOther = pc && pcOther ? gap(pcOther.left, c.pair.input(otherKey, c.pair.colLeft), pc.left, c.pair.input(mineKey, c.pair.colLeft), c.pair.moreIfCheapest) : null;
   return { best, onBest, other, pc, pcOther, theta, n, nFunds, crown, tied, tie, mineRole, otherRole, taxName, nameOf, fundOf, mineKey, otherKey, gap, moreIfOther };
 }
-export type PairVerdict = ReturnType<typeof pairVerdict>;
 
 /** A foreign fund's figure rests on a steady dollar (a custom index's, on its currency), and says so; a hedged fund's and an Israeli index's do not. */
 export function steadyOf(view: InvestView, bundle: IndicesBundle, fund: string): string | null {

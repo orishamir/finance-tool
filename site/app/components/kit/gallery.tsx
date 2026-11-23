@@ -3396,7 +3396,7 @@ const fig = (n: number, unit: Unit, today: string) => <Num value={listed(n, unit
 /**
  * Custody by what is held: each case a tile, its whole price in its cell a part a line, the maximum both hold once over the band with "+
  * חלק לכל המקרים" after it, the condition heading the band; a value
- * no case names, a tile whose slot adds its case; the bare "+" after the tiles.
+ * no case names, a tile whose bare plus adds its case; the bare "+" after the tiles.
  */
 function CustodyTable({ today }: { today: string }) {
   const [open, setOpen] = useState<string | null>(null);
@@ -3820,7 +3820,7 @@ function CaseDemos({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="CaseTable, CaseGrid, EveryCaseParts, SharedLine, AddSlot" use={g.uses.CaseTable}>
-        <State label={`one thing: each case a column tile, its head over a line and its whole price under it, a part a line; the maximum both cases hold alike once over the band, in a cell of its own, then the quiet "+ חלק לכל המקרים", which opens the toolbox on every case; what the price changes by heading the band; a value no case names, a tile whose slot adds its case; a bare "+" after the tiles; ${g.states.interactive}: a tile's head or cell opens its case, its whole tile outlined`} wide>
+        <State label={`one thing: each case a column tile, its head over a line and its whole price under it, a part a line; the maximum both cases hold alike once over the band, in a cell of its own, then the quiet "+ חלק לכל המקרים", which opens the toolbox on every case; what the price changes by heading the band; a value no case names, a tile whose bare plus adds its case; a bare "+" after the tiles; ${g.states.interactive}: a tile's head or cell opens its case, its whole tile outlined`} wide>
           <div className="max-w-2xl">
             <CustodyTable today={today} />
           </div>
@@ -3838,7 +3838,7 @@ function CaseDemos({ today }: { today: string }) {
             </CaseRow>
           </div>
         </State>
-        <State label={`two things: a grid, each case a tile, the column heads plain words over a line, the corner over the row heads naming both things split by a diagonal (the columns' thing above it, toward them; the rows' under it), a soft line between the row heads only; a row's common minimum and maximum as tiles under its tiles, abroad on any channel one tile over its row, a place no case holds as a slot; a bare "+" at the end of the column heads adds a column, one under the row heads a row; ${g.states.interactive}: a tile opens its case, outlined`} wide>
+        <State label={`two things: a grid, each case a tile, the column heads plain words over a line, the corner over the row heads naming both things split by a diagonal (the columns' thing above it, toward them; the rows' under it), a soft line between the row heads only; a row's common minimum and maximum as tiles under its tiles, abroad on any channel one tile over its row, a place no case holds as a bare plus; a bare "+" at the end of the column heads adds a column, one under the row heads a row; ${g.states.interactive}: a tile opens its case, outlined`} wide>
           <div className="max-w-2xl">
             <TradeGrid today={today} />
           </div>

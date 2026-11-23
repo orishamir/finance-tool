@@ -155,11 +155,26 @@ export interface AddSpec {
 }
 
 /**
- * What adds a new case, row or column where it stands in the table's own room (a grid's place no case holds, the cases read as rows): a
- * dashed frame as wide as what it is under, a plus and its words in the action colour. Beside the heads the add is a bare plus
- * (`TileAdd`), or, on the line between two heads, a plus knob (`BetweenAdd`).
+ * What adds a new case, row or column where it stands in the table's own room: where the cases read as rows, a dashed frame as wide as
+ * what it is under, a plus and its words in the action colour; in a table's or a grid's place no case holds (`bare`), the whole place is
+ * the button, drawn as nothing but the bare muted plus the heads have, in its middle (founder, 2026-11-23), its words spoken and in its
+ * title. Beside the heads the add is a bare plus (`TileAdd`), or, on the line between two heads, a plus knob (`BetweenAdd`).
  */
-export function AddSlot({ add, className }: { add: AddSpec; className?: string }) {
+export function AddSlot({ add, className, bare }: { add: AddSpec; className?: string; bare?: boolean }) {
+  if (bare)
+    return (
+      <button
+        type="button"
+        data-add-slot="place"
+        aria-expanded={add.expanded}
+        aria-label={add.spoken ?? add.label}
+        title={add.spoken ?? add.label}
+        onClick={(e) => add.onAdd(e.currentTarget)}
+        className={cx("flex min-h-target w-full items-center justify-center rounded-md text-muted-foreground resting:hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring", add.expanded && "text-foreground", className)}
+      >
+        <Plus size={14} strokeWidth={2} />
+      </button>
+    );
   return (
     <button
       type="button"
@@ -489,7 +504,7 @@ export function CaseTable({ columns, rows, add, insert, ladder, foot, label }: {
           c.empty ? (
             // a value no case names: under its head, over every row of its tile, the slot that adds its case
             <div key={`empty:${c.id}`} style={{ gridColumn: k + 1, gridRow: `2 / span ${Math.max(rows.length, 1)}` }} data-flip="" className="px-3 py-2.5 *:h-full">
-              <AddSlot add={c.empty} />
+              <AddSlot bare add={c.empty} />
             </div>
           ) : null,
         )}
@@ -755,7 +770,7 @@ export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertCo
                             <CellBody content={null} fill={cell.fill} lit />
                           </div>
                         ) : (
-                          <AddSlot add={add} className={cx("h-full", cell.lit && LIT)} />
+                          <AddSlot bare add={add} className={cx("h-full", cell.lit && LIT)} />
                         )}
                       </span>
                     </div>

@@ -720,7 +720,7 @@ export function FeeCases({
       : {}),
   }));
   /** Thing `t`'s name as its chip in the head says it (a grid's corner). */
-  const thingWords = (t: number): string => band.things.find((th) => th.thing === t)?.words ?? thingName(fee.kind, fee.by[t]!);
+  const thingWords = (t: number): string => band.things.find((th) => th.thing === t)?.words ?? "";
   // each chip opens its thing's menu, the fee open or not: its values, and the action that stops the price changing by it
   const head = { things: headThings, zone: (h: ReactNode) => zone([everyCase], `all:${fee.id}`, h), onThing: (id: string, at: HTMLElement) => onThing(fee.id, Number(id), at), openThing: open.thing?.fee === fee.id ? String(open.thing.t) : null };
 
