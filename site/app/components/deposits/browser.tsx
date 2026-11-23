@@ -10,7 +10,7 @@ import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, inte
 import { fmt } from "../../lib/format";
 import { entered } from "../../lib/value";
 import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, SelectField, When, type PeriodBar } from "../kit";
-import { NumberLegend, Num, Term } from "../provenance";
+import { Num, Term } from "../provenance";
 import { HELP_TERMS } from "../../lib/deposit-browser";
 import { DepositGrid } from "./grid";
 import { DepositList, FoldFoot, type ListContext, type ListRow } from "./list";
@@ -181,7 +181,6 @@ export function DepositBrowser({ data }: { data: DbData }) {
             )}
           </div>
           <div className="flex flex-col gap-1 text-sm text-muted-foreground">
-            <NumberLegend />
             <p className="md:hidden">
               <When iso={data.read} lead={t.read} />.
             </p>

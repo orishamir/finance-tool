@@ -9,7 +9,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, typ
 import { useLoaderData, useLocation, useNavigate } from "react-router";
 import { rulesFront as copy, scopeWords, sourceBlock, system, topicName } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
-import { NumberLegend, StrengthLabel, type RuleUses } from "../components/provenance";
+import { StrengthLabel, type RuleUses } from "../components/provenance";
 import { RuleCard, RuleDetail, SlottedText, TopMatch } from "../components/provenance-sheets";
 import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
@@ -737,7 +737,6 @@ export default function Rules() {
         )}
 
         <footer className={cx("flex flex-col gap-2 border-t border-border pt-3 text-xs-flow text-muted-foreground max-w-measure", hideWhenOpen)}>
-          <NumberLegend />
           <p>{sourceBlock.legendLine}</p>
           <p>
             {scopeWords.rulesLine.before}{" "}

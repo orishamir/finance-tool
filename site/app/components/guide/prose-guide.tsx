@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { ProseGuideData } from "../../lib/prose-guide.server";
 import { ruleFigure, type SiteValue } from "../../lib/value";
-import { NumberLegend } from "../provenance";
 import { PageShell } from "../shell";
 import { GuideFrame, GuideHeader, GuideSection, useCurrentSection, type SectionDef } from "./sections";
 
@@ -24,7 +23,7 @@ export function ProseGuide<Id extends string>({ copy, data, body, children }: {
   const blocks = body(figure);
   return (
     <PageShell current="guide" data={pd}>
-      <GuideFrame sections={copy.sections} current={current} foot={<NumberLegend term />}>
+      <GuideFrame sections={copy.sections} current={current}>
         <GuideHeader title={copy.title} lede={copy.lede} />
         {copy.sections.map((s) => (
           <GuideSection key={s.id} id={s.id} title={s.title}>

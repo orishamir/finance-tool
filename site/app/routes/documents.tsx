@@ -7,7 +7,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useLoaderData, useLocation } from "react-router";
 import { documents as copy } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
-import { Num, NumberLegend, StrengthLabel } from "../components/provenance";
+import { Num, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { NoPageCompanyTerms } from "../components/decoder/company-terms";
 import { Card, cx, Disclosure, DocLink, FoldGroup, gershayim, MixedName, PageHead, Section, Sentence, TariffDate, TextLink, When } from "../components/kit";
@@ -252,9 +252,7 @@ export default function Documents() {
   return (
     <PageShell current="other" data={pd}>
       <div className="flex flex-col gap-6 lg:gap-8">
-        <PageHead title={copy.title} lede={copy.lede}>
-          <NumberLegend />
-        </PageHead>
+        <PageHead title={copy.title} lede={copy.lede} />
         <div className="flex flex-col gap-3">
           {sections.map((sec) => (
             <Group key={sec.id} id={sec.id} title={copy.sections[sec.id]} count={sec.count} level={2} open={open.has(sec.id)} onOpen={toggle(setOpen, sec.id)}>

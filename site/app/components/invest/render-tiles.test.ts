@@ -6,7 +6,7 @@ import { buildInvest, indexById, tieShareOf, hasKinds, kindOf } from "../../lib/
 import { entered } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import type { WorkbenchInputs } from "../../lib/providers";
-import { allFunds, crowned, ownBankHelp, pairVerdict, pickOfHeadline, tieCount, tieFunds, tieSet } from "./pair";
+import { allFunds, crowned, pairVerdict, pickOfHeadline, tieCount, tieFunds, tieSet } from "./pair";
 import { Terms } from "./custom-entries";
 import { bundle, t, plan, shown, fundRow, html, lists, DollarFor, ReceiptAndFees } from "./render-fixtures";
 
@@ -232,16 +232,16 @@ describe("a typed entry's line", () => {
   });
 });
 
-describe("the account card's notes on prices abroad and its own-bank list (D64, D65, D66)", () => {
+describe("the account card's notes on prices abroad (D65, D66)", () => {
   const sp = indexById(bundle, "index-sp500")!;
   const ta = indexById(bundle, "index-ta125")!;
-  const card = (index: typeof sp, own: string | null) => {
-    const view = buildInvest({ bundle, index, plan: { ...plan, currentAccounts: { own } } });
-    return shown(lists(view, bundle, { ...plan, currentAccounts: { own } }, pickOfHeadline(view)!, { ownBank: { value: own, onChange: () => undefined } }));
+  const card = (index: typeof sp) => {
+    const view = buildInvest({ bundle, index, plan: { ...plan, currentAccounts: true } });
+    return shown(lists(view, bundle, { ...plan, currentAccounts: true }, pickOfHeadline(view)!));
   };
 
   it("names the houses whose price lists limit the spread, from their records, on an index with funds bought abroad", () => {
-    const out = card(sp, null);
+    const out = card(sp);
     expect(out).toContain(invest.pair.abroadSpread(["אי.בי.אי", "אלטשולר טרייד", "מיטב טרייד"]));
     // F-103 (D67): One Zero prints a charge per dividend abroad, which its figures count; the note says so
     expect(out).toContain(invest.pair.abroadOthers);
@@ -253,7 +253,7 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
   });
 
   it("the fees panel names a bank's current account as an item only where the pair's account charges one", () => {
-    const p = { ...plan, currentAccounts: { own: null } };
+    const p = { ...plan, currentAccounts: true as const };
     const view = buildInvest({ bundle, index: sp, plan: p });
     const fund = pickOfHeadline(view)!.fund;
     const panel = (house: string) => {
@@ -273,22 +273,8 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
 
   it("says neither on an index whose funds are all bought in Tel Aviv, if it has none bought abroad", () => {
     const view = buildInvest({ bundle, index: ta, plan });
-    const out = card(ta, null);
+    const out = card(ta);
     const abroad = view.options.some((o) => o.id === "abroad" && o.exists);
     expect(out.includes(invest.pair.abroadTitle)).toBe(abroad);
-  });
-
-  it("offers every bank whose current account costs something, under the list, with what it does in its \"?\"", () => {
-    // the bank whose current account is free is named, so its row reads as a bank's
-    expect(ownBankHelp(buildInvest({ bundle, index: sp, plan }), bundle)).toBe(invest.pair.ownBank.counted(["וואן זירו"]));
-    const raw = lists(buildInvest({ bundle, index: sp, plan }), bundle, plan, pickOfHeadline(buildInvest({ bundle, index: sp, plan }))!, { ownBank: { value: null, onChange: () => undefined } });
-    // at the bottom of the card, under the list it changes, its words in the "?" and not in a line under it
-    expect(raw.indexOf(invest.pair.ownBank.label)).toBeGreaterThan(raw.indexOf(invest.pair.listLabelAccounts));
-    expect(shown(raw)).not.toContain(invest.pair.ownBank.counted(["וואן זירו"]));
-    for (const id of ["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "yahav"]) expect(raw).toContain(`value="${id}"`);
-    // One Zero's price list prints its current account free: marking it would change no figure (guidelines/design.md)
-    expect(raw).not.toContain(`value="one-zero"`);
-    expect(raw).not.toContain(`value="psagot"`);
-    expect(raw).not.toContain(`value="pepper"`);
   });
 });

@@ -125,12 +125,9 @@ export interface DealProvider {
 /** The id a current account's source takes among a tariff's `lineSources` (F-102): it is the snapshot's, not one of its lines. */
 export const CURRENT_ACCOUNT_LINE = "current-account";
 
-/**
- * F-102 (D64): whether a provider's row counts its current account: a bank whose record names one, unless it is the bank the person marks
- * as their own (`own`, a snapshot id), which they pay anyway. A house that needs no current account with it has none to count.
- */
-export function countsCurrentAccount(snapshot: Pick<FeesSnapshot, "id" | "current_account">, own: string | null): boolean {
-  return snapshot.current_account !== undefined && snapshot.id !== own;
+/** F-102 (D64): whether a provider's row counts its current account: a bank whose record names one. A house that needs no current account with it has none to count. */
+export function countsCurrentAccount(snapshot: Pick<FeesSnapshot, "current_account">): boolean {
+  return snapshot.current_account !== undefined;
 }
 
 export interface WorkbenchInput {

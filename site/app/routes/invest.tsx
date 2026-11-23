@@ -37,7 +37,7 @@ import { useSettled } from "../lib/settled";
 import { useInputs, type InputsState } from "../lib/inputs";
 import { withCustomEntries } from "../lib/custom-entries";
 import { useInvestView } from "../lib/invest-run";
-import { chargesCurrentAccount, hasKinds, indexById, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
+import { hasKinds, indexById, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { exposureIdOfSlug, INDICES_PATH } from "../lib/site-paths";
 import { loadIndicesBundle, type IndicesBundle, type WorkbenchInputs } from "../lib/providers";
 import { isoToday, useInvestState } from "../lib/state";
@@ -140,9 +140,6 @@ function Page({ wb, failed, data }: { wb: IndicesBundle | null; failed: boolean;
   return <Body wb={wb} data={data} search={search} />;
 }
 
-/** The bank the person marked as theirs (D64), while a bank whose current account costs something has that id; else none. */
-const ownBankOf = (wb: IndicesBundle, id: string | null): string | null => (id && wb.snapshots.some((s) => s.id === id && chargesCurrentAccount(s)) ? id : null);
-
 type BodyProps = { wb: IndicesBundle; data: Data; search: string };
 
 /** The body on the values the person entered, deferred (code.md, "Slow work never delays the field"): a key or a slider's move answers in
@@ -158,10 +155,10 @@ function Body(props: BodyProps) {
 /** The parts of the saved state the page reads, one object while they stay the same: the entered values are saved in the same document, and
  *  their write after each key would otherwise render the whole page again in the key's own frame. */
 function useInvestParts() {
-  const { status, customIndices, customFunds, bank, setBank, add, rename, remove, saveFund, removeFund } = useInvestState();
+  const { status, customIndices, customFunds, add, rename, remove, saveFund, removeFund } = useInvestState();
   return useMemo(
-    () => ({ status, customIndices, customFunds, bank, setBank, add, rename, remove, saveFund, removeFund }),
-    [status, customIndices, customFunds, bank, setBank, add, rename, remove, saveFund, removeFund],
+    () => ({ status, customIndices, customFunds, add, rename, remove, saveFund, removeFund }),
+    [status, customIndices, customFunds, add, rename, remove, saveFund, removeFund],
   );
 }
 
@@ -191,25 +188,11 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
   const exposureId = exposureIdOf(useParams().slug, data.indices);
   // The numbers the person entered on this device, each one not entered taking the site's example (P-05)
   const entered = useMemo(() => enteredPlan(wb, inputs), [wb, inputs]);
-  const ownBank = ownBankOf(wb, invest.bank);
-  const currentAccounts = useMemo(() => ({ own: ownBank }), [ownBank]);
-  // a bank's row counts its current account, except at the bank the person marked as theirs (D64)
-  const livePlan: WorkbenchInputs = useMemo(() => ({ ...entered.plan, currentAccounts }), [entered, currentAccounts]);
+  // every bank's row counts its current account (D64)
+  const livePlan: WorkbenchInputs = useMemo(() => ({ ...entered.plan, currentAccounts: true }), [entered]);
   // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider in the render deferred behind it (`Body`); the two lists price every
-  // account and fund (in the page's worker, below) and wait until the slider rests. A bank
-  // marked as the person's own is one pick, not a slide: the lists take it at once, with the plan as it last settled, so their rows
-  // re-sort right after the pick rather than a moment later, when the hand may be on the list (0.6 to 1 s).
-  const settledPlan = useSettled(livePlan, 250);
-  const merged = useRef<WorkbenchInputs | null>(null);
-  const restingPlan = useMemo(() => {
-    const next = settledPlan.currentAccounts === currentAccounts ? settledPlan : { ...settledPlan, currentAccounts };
-    // the plan that settles after the pick is the one the lists already took: kept, so they are not priced twice
-    const prev = merged.current;
-    const same = prev && (Object.keys(next) as (keyof WorkbenchInputs)[]).every((k) => prev[k] === next[k]) && Object.keys(prev).length === Object.keys(next).length;
-    merged.current = same ? prev : next;
-    return merged.current!;
-  }, [settledPlan, currentAccounts]);
-  const ownBankControl = useMemo(() => ({ value: ownBankOf(wb, invest.bank), onChange: invest.setBank }), [wb, invest.bank, invest.setBank]);
+  // account and fund (in the page's worker, below) and wait until the slider rests.
+  const restingPlan = useSettled(livePlan, 250);
 
   const customs: CustomIndex[] = invest.customIndices;
   // the funds the person typed join the data here and nowhere else: this page alone compares them (D44)
@@ -390,14 +373,14 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
                 ) : pick && view ? (
                   <>
                     {receipt}
-                    <PairLists view={view} bundle={bundle} plan={plan} livePlan={livePlan} today={data.today} pick={pick} chosen={picks} onPick={onPick} moved={movedNow} ownBank={ownBankControl} ruler={wide} above={ticketRef} />
+                    <PairLists view={view} bundle={bundle} plan={plan} livePlan={livePlan} today={data.today} pick={pick} chosen={picks} onPick={onPick} moved={movedNow} ruler={wide} above={ticketRef} />
                   </>
                 ) : (
                   // the same two lists as every index, the receipt set aside until a fund is added
                   <>
                     <NoFundCall view={view} />
                     <div className={lists}>
-                      <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} ownBank={ownBankControl} />
+                      <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} />
                       {join}
                       <NoFundColumn view={view} mayaHref={wb.links.maya?.href ?? null} />
                     </div>

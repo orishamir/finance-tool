@@ -2,7 +2,7 @@
 // Every figure on the site is a Num; a tap opens where it comes from. The words a rule states (Ruled), glossary terms (Term) and the
 // rule chips open their cards in the same sheet, with a back arrow when they were reached from a number. What the sheet shows (the cards) is in
 // provenance-sheets.tsx, fetched while the page hydrates, so the script a page needs to show itself holds only the figures and chips.
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, useSyncExternalStore, type MouseEvent, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, type MouseEvent, type ReactNode } from "react";
 import { Link } from "react-router";
 import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { formulaNames, numbers, parametersPage, provenance as copy, rule as ruleCopy, scopeWords, strength as strengthCopy } from "../copy";
@@ -148,10 +148,8 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   const push = useCallback((item: Item) => setStack((s) => [...s, item]), []);
   const headId = useId();
   const descId = useId();
-  const [states] = useState(statesStore);
   return (
     <Ctx.Provider value={api}>
-      <StatesCtx.Provider value={states}>
       <DataCtx.Provider value={data}>
       <TodayCtx.Provider value={data.today}>
       <OpenAnchorCtx.Provider value={open ? anchor : null}>{children}</OpenAnchorCtx.Provider>
@@ -164,7 +162,6 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
       </PushCtx.Provider>
       </TodayCtx.Provider>
       </DataCtx.Provider>
-      </StatesCtx.Provider>
     </Ctx.Provider>
   );
 }
@@ -226,32 +223,6 @@ const StaleSaidCtx = createContext(false);
  * plain words, not a control. Its sheet would only say the person typed it, and the box it was typed in is beside the block.
  */
 export const TypedPlainCtx = createContext(false);
-
-/** How many figures the person entered the page shows now: the legend's "you entered" sample stands only beside one.
- * A store, not state, so a figure that comes or goes redraws the legend alone. */
-/** How many figures of each state the page shows (a `Num` counts itself while it is on the page), so the legend names only the states the
- *  page has. */
-function statesStore() {
-  const n: Record<string, number> = {};
-  const subs = new Set<() => void>();
-  const ping = () => subs.forEach((f) => f());
-  return {
-    add: (state: string) => {
-      n[state] = (n[state] ?? 0) + 1;
-      ping();
-      return () => {
-        n[state]! -= 1;
-        ping();
-      };
-    },
-    subscribe: (f: () => void) => {
-      subs.add(f);
-      return () => subs.delete(f);
-    },
-    has: (state: string) => (n[state] ?? 0) > 0,
-  };
-}
-const StatesCtx = createContext<ReturnType<typeof statesStore> | null>(null);
 
 /**
  * The figures inside leave out their own clock: a notice above them already says their source is old (the regulator's period on the
@@ -341,12 +312,10 @@ export function Num({ value: given, size = "inline", display, animate, className
   const aheadSaid = useAheadSaid();
   const param = isParameter(value);
   const counting = useCounting();
-  const states = useContext(StatesCtx);
   const unseen = useUnseen();
-  // a copy that only holds a block's size (LongestCase) is not on the page; a field's value shows no state, so the legend leaves it out
+  // a copy that only holds a block's size (LongestCase) is not on the page
   const plain = !!value.field;
   const typedPlain = useContext(TypedPlainCtx);
-  useEffect(() => (!unseen && !plain && states ? states.add(value.state) : undefined), [value.state, unseen, plain, states]);
   // a copy laid out unseen holds a height only: it lands at once, and its frames cost nothing (a list's cases counted on every key)
   const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, !unseen && (animate ?? (counting && countsByItself(value.state, value.unit))));
   // display rounding (A13): computed and entered amounts round, in table cells too ("16,000.00 ₪" in a table); `exact` keeps the agorot
@@ -850,77 +819,6 @@ export function Ruled({ id, prefix, name, children }: { /** The rule or rules th
  * carries when it rests on a company's document used out of its own context (D31); a page passes `institution` only when it has such a figure. `term`
  * adds the glossary-term sample (dotted grey underline, `.term`) for pages whose text has `Term`s (the guide, exposure pages).
  */
-const noSubscribe = () => () => {};
-const yes = () => true;
-const no = () => false;
-
-/** The key to the number states: each sample stands only while the page shows a figure of its state ("you entered"
- *  on a page where nothing was entered, "computed" on a page with no computed figure). The room of every sample is kept, so nothing below
- *  moves when one comes or goes; "you entered" has room only on a page with fields (`canEnter`), and "press a number" stands only beside a
- *  number sample (a calculator before anything is typed has no figure to press). Before the page is in the browser the
- *  figures are not counted yet, and the legend shows the sourced and computed samples as it always did. */
-export function NumberLegend({ className, institution = false, doubt = false, term = false, canEnter = false }: { className?: string; institution?: boolean; /** The page shows a figure its record doubts (`anyDoubt`). */ doubt?: boolean; term?: boolean; canEnter?: boolean }) {
-  const store = useContext(StatesCtx);
-  const subscribe = store?.subscribe ?? noSubscribe;
-  const sourced = useSyncExternalStore(subscribe, () => store?.has("sourced") ?? true, yes);
-  const computed = useSyncExternalStore(subscribe, () => store?.has("computed") ?? true, yes);
-  const entered = useSyncExternalStore(subscribe, () => store?.has("entered") ?? false, no);
-  const legend = (shown: { sourced: boolean; computed: boolean; entered: boolean }) => <LegendLine className={className} institution={institution} doubt={doubt} term={term} {...shown} />;
-  return <LongestCase cases={[legend({ sourced: true, computed: true, entered: canEnter })]}>{legend({ sourced, computed, entered: canEnter && entered })}</LongestCase>;
-}
-
-function LegendLine({ className, institution, doubt, term, sourced, computed, entered }: { className?: string; institution: boolean; doubt: boolean; term: boolean; sourced: boolean; computed: boolean; entered: boolean }) {
-  // Each state's own word drawn in its style, after a lead that says what the key is: the old "123" samples read as a placeholder left in
-  // the page. A key never shows a made-up figure (design-system 3.2).
-  const anyNumber = sourced || computed || entered || institution || doubt;
-  return (
-    <p className={cx("flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground", className)} data-sample>
-      {(sourced || computed || entered) && <span className="whitespace-nowrap">{numbers.legend.lead}</span>}
-      {sourced && (
-        <span className="num num-sourced num-sample whitespace-nowrap">
-          {numbers.legend.sourced}
-        </span>
-      )}
-      {computed && (
-        <span className="num num-computed num-sample whitespace-nowrap">
-          {numbers.legend.computed}
-        </span>
-      )}
-      {entered && (
-        <span className="num num-entered num-sample whitespace-nowrap">
-          {numbers.legend.enteredSample}
-        </span>
-      )}
-      {institution && (
-        <span>
-          <MarkHead mark={<IconAlert size={14} className="text-caution inline-block align-[-2px] me-1" aria-hidden="true" />} text={numbers.legend.institution} />
-        </span>
-      )}
-      {/* the figure a record doubts, drawn as the figure is: the amber tint and the caution mark on the word itself */}
-      {doubt && (
-        <span>
-          <span className="num-doubt whitespace-nowrap">
-            <IconAlert size={14} className="text-caution inline-block align-[-2px] me-1" aria-hidden="true" />
-            {numbers.doubt}
-          </span>
-          : {numbers.legend.doubtMeaning}
-        </span>
-      )}
-      {anyNumber && (
-        <>
-          <span className="lg:hidden">{numbers.legendHintPhone}</span>
-          <span className="hidden lg:inline">{numbers.legendHintPc}</span>
-        </>
-      )}
-      {term && (
-        <span className="whitespace-nowrap">
-          <span className="term" aria-hidden="true">{numbers.legend.term}</span> {numbers.legend.termMeaning}
-        </span>
-      )}
-    </p>
-  );
-}
-
 /** A question's entry in the page's `openQuestions`, by either spelling of its code (`TX2 OQ6`, `TX2-OQ6`). */
 export function questionOf(data: ProvenanceData | null, id: string) {
   return data?.openQuestions?.[id.replace("-OQ", " OQ")] ?? data?.openQuestions?.[id];

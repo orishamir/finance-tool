@@ -104,7 +104,7 @@ describe("reading the document again (another tab, a page brought back by Back)"
 });
 
 describe("migration from the release 2 keys and from version 2", () => {
-  it("reads the three v1 keys into one document, of the goals only the bank, then removes them after the write", () => {
+  it("reads the three v1 keys into one document, of the goals nothing (the bank an old file names is left out), then removes them after the write", () => {
     const g = oldGoal("g1");
     storage.setItem("mekor.v1.inputs", JSON.stringify({ entered: { "A-01": 6, amount_now: 30000 }, age: 22, employment: "employee" }));
     storage.setItem("mekor.v1.goals", JSON.stringify({ version: 1, goals: [g], currentId: g.id, bank: "leumi" }));
@@ -112,7 +112,7 @@ describe("migration from the release 2 keys and from version 2", () => {
     const snap = ensureLoaded();
     expect(snap.status).toBe("ok");
     expect(snap.state.version).toBe(3);
-    expect(snap.state.bank).toBe("leumi");
+    expect(snap.state).not.toHaveProperty("bank");
     expect(snap.state.goals).toEqual([]);
     expect(snap.state.inputs["A-01"]).toMatchObject({ value: 6, unit: "pct_per_year", state: "entered" });
     expect(snap.state.inputs.age?.value).toBe(22);
@@ -156,7 +156,7 @@ describe("migration from the release 2 keys and from version 2", () => {
     const raw = JSON.stringify({ version: 4, whatever: true });
     storage.setItem(STATE_KEY, raw);
     expect(ensureLoaded().status).toBe("old-version");
-    updateState((s) => ({ ...s, bank: "x" }));
+    updateState((s) => ({ ...s, broker: "x" }));
     flush();
     expect(storage.getItem(STATE_KEY)).toBe(raw);
   });
@@ -252,10 +252,10 @@ describe("import", () => {
     expect(r.ok && r.preview.state.holdings).toHaveLength(1);
   });
 
-  it("migrates an older version (the goals document alone), keeping its bank", () => {
+  it("migrates an older version (the goals document alone), leaving out the bank it names", () => {
     const r = readImport(file({ version: 1, goals: [oldGoal("g1")], currentId: "g1", bank: "hapoalim" }, 1));
     expect(r.ok && r.preview.migrated).toBe(true);
-    expect(r.ok && r.preview.state.bank).toBe("hapoalim");
+    expect(r.ok && r.preview.state).not.toHaveProperty("bank");
     expect(r.ok && r.preview.state.goals).toEqual([]);
   });
 
@@ -511,17 +511,13 @@ describe("the index page's saved state (D28)", () => {
     expect(getSnapshot().state.customIndices).toBeUndefined();
   });
 
-  it("keeps the bank marked as the person's own through the store and the export file, and clears it (D64)", async () => {
-    const { setOwnBank } = await import("./state");
-    ensureLoaded();
-    setOwnBank("hapoalim");
+  it("leaves out a bank an earlier version 3 document marked as the person's own, and writes none back", () => {
+    storage.data.set(STATE_KEY, JSON.stringify({ version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [], bank: "hapoalim" }));
+    expect(ensureLoaded().status).toBe("ok");
+    expect(getSnapshot().state).not.toHaveProperty("bank");
+    updateState((s) => ({ ...s, broker: "x" }));
     flush(true);
-    expect(JSON.parse(storage.data.get(STATE_KEY)!).bank).toBe("hapoalim");
-    const read = readImport(stateFileText(buildStateFile(getSnapshot().state, site, new Date("2026-11-06T10:00:00Z"))));
-    if (!read.ok) throw new Error("refused");
-    expect(read.preview.state.bank).toBe("hapoalim");
-    setOwnBank(null);
-    expect(getSnapshot().state.bank).toBeUndefined();
+    expect(JSON.parse(storage.data.get(STATE_KEY)!)).not.toHaveProperty("bank");
   });
 
   it("loads a version 3 document, and leaves out a custom index that fails its shape", () => {

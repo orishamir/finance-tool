@@ -450,8 +450,7 @@ describe("places in a ranked list (F-80, P-01, 2026-11-05)", () => {
 
 describe("a bank's current account on the indices page (D64, F-102)", () => {
   const before = buildInvest({ bundle, index: sp, plan: plan() });
-  const counted = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
-  const ownLeumi = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: "leumi" } }) });
+  const counted = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: true }) });
   const best = (v: typeof before, id: string) => v.houses.find((h) => h.provider.id === id)!.best!.price!;
   /** The account's tariff lines of the house's best way, as the pair's breakdown writes them. */
   const linesAt = (v: typeof before, p: ReturnType<typeof plan>, id: string) => {
@@ -464,7 +463,7 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
     expect(banks.sort()).toEqual(["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "yahav"]);
     for (const id of banks) {
       const at = best(counted, id);
-      expect(linesAt(counted, plan({ currentAccounts: { own: null } }), id)).toContain("account");
+      expect(linesAt(counted, plan({ currentAccounts: true }), id)).toContain("account");
       // 240 monthly minimums of 4 to 9.50 shekels: more than a thousand shekels of today's money left behind, and less than three thousand
       expect(best(before, id).valueN - at.valueN).toBeGreaterThan(900);
       expect(best(before, id).valueN - at.valueN).toBeLessThan(3_000);
@@ -481,15 +480,14 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
       expect(m.state).toBe("sourced");
       expect((best(counted, id).value.computed_from!.inputs as Record<string, unknown>)[words.pair.accountMinimum]).toBeDefined();
     }
-    // not where nothing is counted: before the page counts it, at the bank marked as the person's own, at an investment house
+    // not where nothing is counted: before the page counts it, at an investment house
     expect(minimumOf(before, "leumi")).toBeUndefined();
-    expect(minimumOf(ownLeumi, "leumi")).toBeUndefined();
     expect(minimumOf(counted, "psagot")).toBeUndefined();
     // the bank's own figure on its own row weakens nothing (D31)
     expect(best(counted, "leumi").value.weakest).toBe(best(before, "leumi").value.weakest);
     // the pair's breakdown: its cost lines list the minimum, what was paid in (the plan alone) does not
     const fundId = counted.houses.find((h) => h.provider.id === "leumi")!.best!.fund.rec.id;
-    const pc = pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }), fundId, providerId: "leumi" })!;
+    const pc = pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: true }), fundId, providerId: "leumi" })!;
     expect((pc.account[0]!.cost.computed_from!.inputs as Record<string, unknown>)[words.pair.accountMinimum]).toBeDefined();
     expect((pc.paidIn.computed_from!.inputs as Record<string, unknown>)[words.pair.accountMinimum]).toBeUndefined();
   });
@@ -500,12 +498,6 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
       if (!h?.best?.price) continue;
       expect(best(counted, id).valueN).toBe(h.best.price.valueN);
     }
-  });
-
-  it("the bank the person marks leaves it out, and only that bank", () => {
-    expect(best(ownLeumi, "leumi").valueN).toBe(best(before, "leumi").valueN);
-    expect(linesAt(ownLeumi, plan({ currentAccounts: { own: "leumi" } }), "leumi")).not.toContain("account");
-    expect(best(ownLeumi, "hapoalim").valueN).toBe(best(counted, "hapoalim").valueN);
   });
 
   it("re-sorts the list where the gap is smaller than the account (evidence: 8dd1f013:research/audit/2026-11-06-indices-pricing)", () => {
@@ -520,22 +512,18 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
 
 describe("BANK-35 sits on the account's cost, not on what is left (independent check 2, must-fix 1)", () => {
   it("a bank's row whose counted current account is above the cap from July 2027 carries the note on its cost figure only", () => {
-    const view = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
+    const view = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: true }) });
     const ways = view.options.flatMap((o) => o.funds).map((f) => f.byHouse.leumi).filter((x): x is Extract<typeof x, { valueN: number }> => !!x && "valueN" in x);
     expect(ways.length).toBeGreaterThan(0);
     for (const w of ways) {
       expect(w.cost.flags).toContain("BANK-35");
       expect(w.value.flags ?? []).not.toContain("BANK-35");
     }
-    // the bank the person marks as their own counts no current account, and its cost has no such note
-    const own = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: "leumi" } }) });
-    const mine = own.options.flatMap((o) => o.funds).map((f) => f.byHouse.leumi).filter((x): x is Extract<typeof x, { valueN: number }> => !!x && "valueN" in x);
-    for (const w of mine) expect(w.cost.flags ?? []).not.toContain("BANK-35");
   });
 });
 
 describe("what each figure's sheet lists", () => {
-  const view = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
+  const view = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: true }) });
   const inputs = (v: SiteValue) => v.computed_from!.inputs as Record<string, SiteValue>;
   const abroad = view.options.find((o) => o.id === "abroad")!;
   const irish = abroad.funds.find((f) => f.rec.id === "ie0031442068")!;
@@ -568,7 +556,7 @@ describe("what each figure's sheet lists", () => {
     expect(tax.value).toBeCloseTo(0.15 * (of[words.pair.fundInputs.usYield]!.value as number), 3);
     // the swap funds collected trade in Tel Aviv, whose tax is open (F-04): the same Irish fund abroad, held as a swap, is the case
     const asSwap = { ...irish.rec, id: "ie-swap-case", replication: { ...irish.rec.replication!, method: "swap" as const } };
-    const swapView = buildInvest({ bundle: { ...bundle, funds: [...bundle.funds, asSwap] }, index: sp, plan: plan({ currentAccounts: { own: null } }) });
+    const swapView = buildInvest({ bundle: { ...bundle, funds: [...bundle.funds, asSwap] }, index: sp, plan: plan({ currentAccounts: true }) });
     const swap = swapView.options.flatMap((o) => o.funds).find((f) => f.rec.id === "ie-swap-case");
     expect(swap?.best).toBeDefined();
     expect(inputs(swap!.best!.value)[words.pair.fundInputs.usWithholding]).toBeUndefined();
@@ -592,7 +580,7 @@ describe("what each figure's sheet lists", () => {
 
   it("a pair's parts: the fund's part reads no account, X neither the fund nor the account, and the account's cost adds up its parts", () => {
     const fundId = view.houses.find((h) => h.provider.id === "leumi")!.best!.fund.rec.id;
-    const pc = pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }), fundId, providerId: "leumi" })!;
+    const pc = pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: true }), fundId, providerId: "leumi" })!;
     expect(inputs(pc.fund)[words.pair.accountMinimum]).toBeUndefined();
     expect(inputs(pc.tax)[words.pair.accountMinimum]).toBeDefined();
     expect(inputs(pc.fund)[words.pair.fundInputs.fixed]).toBeDefined();
@@ -610,7 +598,7 @@ describe("what each figure's sheet lists", () => {
   };
 
   it("the tax lists the income the run tests the surtax on (F-43), which moves it; a figure before any tax lists none", () => {
-    const at = (income: number | null) => leumiPair(plan({ income, values: { ...plan().values, ...(income === null ? {} : { income: entered(income, "nis", t) }) }, currentAccounts: { own: null } }));
+    const at = (income: number | null) => leumiPair(plan({ income, values: { ...plan().values, ...(income === null ? {} : { income: entered(income, "nis", t) }) }, currentAccounts: true }));
     const low = at(1), high = at(5_000_000);
     expect(inputs(low.tax)[words.pair.incomeInput]?.value).toBe(1);
     expect(inputs(high.tax)[words.pair.incomeInput]?.value).toBe(5_000_000);
@@ -620,7 +608,7 @@ describe("what each figure's sheet lists", () => {
     expect(inputs(at(null).tax)[words.pair.incomeInput]).toBeUndefined();
     // the costs before the tax they save, and a value before the exit tax (F-118), read no income
     for (const before of [high.baseValue, high.fund, high.remainder, ...high.account.map((l) => l.cost)]) expect(inputs(before)[words.pair.incomeInput]).toBeUndefined();
-    const withIncome = plan({ income: 5_000_000, values: { ...plan().values, income: entered(5_000_000, "nis", t) }, currentAccounts: { own: null } });
+    const withIncome = plan({ income: 5_000_000, values: { ...plan().values, income: entered(5_000_000, "nis", t) }, currentAccounts: true });
     const v = buildInvest({ bundle, index: sp, plan: withIncome });
     const tlv = v.options.find((o) => o.id === "tase-foreign")?.funds.find((x) => x.rec.id === "1159250")?.beforeTax?.byHouse.psagot;
     expect(tlv).toBeDefined();
@@ -629,7 +617,7 @@ describe("what each figure's sheet lists", () => {
     // what a list shows as left after the tax reads it
     const leumiFund = v.houses.find((h) => h.provider.id === "leumi")?.best;
     // an age on the device is listed beside it, since from 60 the brackets the gain falls into read both (F-42); never before the tax
-    const aged = leumiPair(plan({ age: 64, income: 100_000, values: { ...plan().values, income: entered(100_000, "nis", t), age: entered(64, "years", t) }, currentAccounts: { own: null } }));
+    const aged = leumiPair(plan({ age: 64, income: 100_000, values: { ...plan().values, income: entered(100_000, "nis", t), age: entered(64, "years", t) }, currentAccounts: true }));
     expect(inputs(aged.tax)[words.pair.ageInput]?.value).toBe(64);
     expect(inputs(aged.fund)[words.pair.ageInput]).toBeUndefined();
     expect(inputs(high.tax)[words.pair.ageInput]).toBeUndefined();
@@ -637,7 +625,7 @@ describe("what each figure's sheet lists", () => {
   });
 
   it("on a fund that pays out, a difference of B lists the income (the payouts' surtax counts in its tax), a line carried in whole units does not", () => {
-    const p = plan({ income: 900_000, values: { ...plan().values, income: entered(900_000, "nis", t) }, currentAccounts: { own: null } });
+    const p = plan({ income: 900_000, values: { ...plan().values, income: entered(900_000, "nis", t) }, currentAccounts: true });
     const houses = Object.keys(irish.byHouse);
     const priced = houses.flatMap((h) => {
       const pc = pairCosts({ bundle, index: sp, plan: p, fundId: irish.rec.id, providerId: h });

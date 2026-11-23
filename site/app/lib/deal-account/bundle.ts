@@ -68,7 +68,7 @@ export function withDeals(bundle: IndicesBundle, deals: readonly FeeDeal[], kind
  * accounts, and, for a deal filled from a house's whole list, that house's line choice. A bank's current account is the deal's own fee
  * (F-102), which the bank's whole list fills.
  */
-export function planContextOf(bundle: Pick<IndicesBundle, "snapshots" | "today">, deal: FeeDeal, kinds: readonly DealKind[], currentAccounts: PlanContext["currentAccounts"]): PlanContext {
+export function planContextOf(bundle: Pick<IndicesBundle, "snapshots" | "today">, deal: FeeDeal, kinds: readonly DealKind[], currentAccounts: boolean): PlanContext {
   const house = houseSnap(bundle, deal);
   return { kinds, today: bundle.today, currentAccounts, ...(house ? { lineValue: lineValueOf(house) } : {}) };
 }

@@ -496,24 +496,13 @@ export function optionOpenRule(bundle: IndicesBundle, option: OptionId): string 
 const houseOfSnap = (ctx: Ctx, s: FeesSnapshot): string => ctx.bundle.entered?.bases?.[s.id] ?? s.id;
 
 /**
- * A bank whose current account costs something a month (F-102, D64): the banks the person can mark as theirs. A bank whose price list
- * prints its current account free (One Zero) is left out, since marking it would change no figure.
- */
-export const chargesCurrentAccount = (s: Pick<FeesSnapshot, "current_account">): boolean => {
-  const v = s.current_account?.monthly_minimum.value;
-  return typeof v === "number" && v > 0;
-};
-
-/**
- * The row counts a current account (F-102, D64): only on the indices page, at a bank whose record prices one, unless it is the bank the
- * person marked as theirs. An account built on a bank (F-101) is an account at that bank, so it reads the bank's record and mark.
+ * The row counts a current account (F-102, D64): only on the indices page, at a bank whose record prices one. An account built on a bank (F-101) is an account at that bank, so it reads the bank's record.
  */
 function currentAccountOf(ctx: Ctx, s: FeesSnapshot): FeesSnapshot["current_account"] | null {
-  const marks = ctx.plan.currentAccounts;
-  if (!marks) return null;
+  if (!ctx.plan.currentAccounts) return null;
   const house = houseOfSnap(ctx, s);
   const record = house === s.id ? s : ctx.bundle.snapshots.find((x) => x.id === house);
-  return record && countsCurrentAccount({ id: house, current_account: record.current_account }, marks.own) ? record.current_account! : null;
+  return record && countsCurrentAccount({ current_account: record.current_account }) ? record.current_account! : null;
 }
 
 /** A row of either workbench: F-63's, or F-118's for a fund whose exit tax rests on an open rule. */
@@ -544,7 +533,7 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[],
     fx: ctx.fx,
     theta: ctx.theta,
     // a deal the person saved is priced by the deal itself (F-128), beside the price lists
-    deals: list.flatMap((x) => { const d = dealProviderOf(ctx.bundle, x.s as BundleSnapshot, { currentAccounts: ctx.plan.currentAccounts ?? null }); return d ? [d] : []; }),
+    deals: list.flatMap((x) => { const d = dealProviderOf(ctx.bundle, x.s as BundleSnapshot, { currentAccounts: ctx.plan.currentAccounts ?? false }); return d ? [d] : []; }),
     providers: list.filter((x) => !isDealProviderId(x.s.id)).map((x) => {
       // an account built on a house (F-101): the house's own list tariff for this fund and reading, with the group's and the person's prices over
       // it. No page puts one in the bundle: the branch stays as the move tests' oracle, what a typed account left before its move into a deal

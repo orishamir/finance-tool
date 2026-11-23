@@ -365,10 +365,10 @@ export interface WorkbenchInputs {
    *  (F-43) and, from 60, the brackets the gain falls into (F-42), which the age decides. */
   values: { amount: SiteValue; monthly: SiteValue; years: SiteValue; returnV: SiteValue; inflation: SiteValue; income?: SiteValue; age?: SiteValue };
   /**
-   * The indices page alone (D64): a bank's row counts its current account's monthly minimum (F-102), except at `own`, the bank the
-   * person marked as theirs (null: none marked, every bank counts it). Absent on every other page, where no row counts it.
+   * The indices page alone (D64): a bank's row counts its current account's monthly minimum (F-102). Absent on every other page, where no
+   * row counts it.
    */
-  currentAccounts?: { own: string | null };
+  currentAccounts?: true;
 }
 
 // ---------------------------------------------------------------- the view

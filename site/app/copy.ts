@@ -41,23 +41,11 @@ export const numbers = {
     sourced: "ממקור",
     computed: "מחושב",
     entered: "הזנתם",
-    // "123 ממקור 123 מחושב" read as a placeholder; the key says what it is and draws each state on its own word
-    lead: "כך מסומן מספר:",
-    enteredSample: "שהזנתם",
-    // the fourth legend item, the caution mark beside a figure that rests on a company's own document
-    institution: "לפי החברה: המספר מבוסס על מסמך של החברה",
-    // the caution item for a figure its record doubts, after the word "יש ספק" (numbers.doubt) drawn in the figure's tint
-    doubtMeaning: "המקור לא חד־משמעי",
-    // asked by the guides package: the glossary-term sample in the legend
-    term: "מונח",
-    termMeaning: "הקישו להסבר",
   },
   /** the tag on a figure or rate that rests on the site's own reading of official texts (the engine's "reading" label, a rate whose reach no official text states); not a secondary source, which is a press article or a forum post. */
   reading: "קריאה של האתר",
   // a figure whose rate or fee takes effect after today; the date follows the maqaf
   startsOn: "נכנס לתוקף ב־",
-  legendHintPhone: "הקישו על מספר כדי לראות מאיפה הוא.",
-  legendHintPc: "לחצו על מספר כדי לראות מאיפה הוא.",
   details: "פרטים",
   unknown: "לא ידוע",
   /** The unit of the regulator's amounts (data-schema 2, `nis_millions`): `25,706.14 מיליון ₪`. */
@@ -4253,7 +4241,6 @@ export const invest = {
       "no-current-account": "בעמוד הזה לא סופרים חשבון עובר ושב.",
       banned: "לפי הכללים, עמלה כזאת לא נגבית כאן.",
     } as Record<string, string>,
-    ownBank: (bank: string) => `סימנתם בעמוד שיש לכם כבר חשבון עו״ש ב${bank}.`,
     /** What a fee took on the plan, as its figure's sheet says (F-128). */
     feeCostAbout: (fee: string) => `העלות של ${fee} בתוכנית, בכסף של היום`,
     /** The pick bar: what only the person knows (a track, a condition of their own), then what the plan sets itself. */
@@ -4552,15 +4539,6 @@ export const invest = {
     tiedWord: "שקולה",
     cheapestTag: "★ הזול",
     whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר לקבוצות כתוב בשורה של הבנק או בית ההשקעות ולא נכנס לחישוב.",
-    /** D64: the bank where the person already has a current account; that bank's row leaves the current account out. */
-    ownBank: {
-      label: "הבנק שבו כבר יש לכם חשבון עו״ש",
-      none: "לא באחד מהבנקים האלה",
-      /** `free`: the banks whose price list charges nothing for a current account, which the box leaves out (One Zero, D64), so its row
-       * reads as a bank's that counts no fee. */
-      counted: (free: string[]) =>
-        `בשורה של כל בנק החישוב סופר גם חשבון עובר ושב בבנק: עמלת המינימום החודשית מהתעריפון שלו, בהנחה שחשבון ניירות הערך מתנהל לצד חשבון עו״ש באותו בנק. כבר יש לכם חשבון עו״ש באחד מהבנקים? בחרו אותו בתיבה, והשורה שלו לא תספור אותו.${free.length > 0 ? ` ${andList(free)} ${free.length > 1 ? "לא גובים" : "לא גובה"} עמלת מינימום על חשבון עו״ש.` : ""} בשורה של בית השקעות החישוב לא סופר חשבון עו״ש.`,
-    },
     /** D65 and D66: said once, for an index with funds bought abroad; `capped`: the houses whose price lists print a limit on the spread, which their figures count at the limit (F-13). */
     abroadTitle: "מה לא נכנס למחיר של קרן שנקנית בחו״ל",
     abroadSpread: (capped: string[]) => `מעבר לעמלת המרת המטבע, יש בנקים ובתי השקעות שגובים גם מרווח המרה: הם ממירים את השקלים לדולרים בשער שהם קובעים. מבין התעריפונים שנאספו, תקרה למרווח כתובה רק בתעריפון של ${andList(capped.map((x, i) => (i > 0 && i === capped.length - 1 && /^[A-Za-z]/.test(x) ? `־${x}` : x)))}. אצלם החישוב סופר אותו בגובה התקרה. אצל השאר הוא לא נכנס לחישוב.`,

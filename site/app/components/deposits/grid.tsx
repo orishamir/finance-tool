@@ -1,4 +1,4 @@
-// The deposits page's grid (D92), folded under the list: the banks by the eight terms of the standard table. A cell is the highest rate of
+// The deposits page's grid (D92), under the list, open under its heading: the banks by the eight terms of the standard table. A cell is the highest rate of
 // the chosen kind, among the bank's offers of the term that are unlinked and open to every customer, that the chosen amount opens (method
 // F-108), with "ועוד n" for the bank's other offers of the term; a cell with none says why. Shaded by rate on one scale from no interest to
 // the highest rate of the kind, so every rate has a shade of its own; the highest cell of each column is framed and says so. Each cell is
@@ -8,7 +8,7 @@ import { useMemo } from "react";
 import { depositBrowser as t } from "../../copy";
 import { TERMS, cellOf, columnBest, scaleTop, sheetNames, type DbCell, type DbData, type DbOffer, type RateKind, type TermId } from "../../lib/deposit-browser";
 import { fmt } from "../../lib/format";
-import { FoldGroup, HelpMark, MixedName, cx } from "../kit";
+import { HelpMark, MixedName, cx } from "../kit";
 
 /** The shade's strength for a rate on the scale `0..top`: never so faint a low rate disappears into the card. */
 const strength = (rate: number, top: number) => 0.14 + 0.76 * Math.min(1, Math.max(0, rate / top));
@@ -99,16 +99,12 @@ export function DepositGrid({ data, kind, amount, onCell }: { data: DbData; kind
   const props = { rows, kind, top, best, onCell, hasRows };
   if (amount === null) return null;
   return (
-    <FoldGroup
-      variant="section"
-      title={
-        <>
-          {t.grid.title[kind]}
-          <bdi dir="ltr" className="tabular-nums">{fmt.nisWhole(amount)}</bdi>
-        </>
-      }
-    >
-      <section className="flex flex-col gap-3 pt-2" data-keep-clear>
+    <section className="flex flex-col gap-3" data-keep-clear>
+      <h2 className="text-lg font-semibold flex flex-wrap items-baseline gap-x-2">
+        {t.grid.title[kind]}
+        <bdi dir="ltr" className="tabular-nums">{fmt.nisWhole(amount)}</bdi>
+      </h2>
+      <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <p className="text-sm text-muted-foreground max-w-measure inline-flex items-start gap-1">
             <span>{t.grid.line}</span>
@@ -125,8 +121,8 @@ export function DepositGrid({ data, kind, amount, onCell }: { data: DbData; kind
             </div>
           ))}
         </div>
-      </section>
-    </FoldGroup>
+      </div>
+    </section>
   );
 }
 

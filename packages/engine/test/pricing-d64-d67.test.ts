@@ -1,4 +1,4 @@
-// F-102 (D64): a bank's current account, counted on its row unless the person marks the bank as their own. F-103 (D67): a charge for each
+// F-102 (D64): a bank's current account, counted on its row. F-103 (D67): a charge for each
 // corporate event abroad, priced on each dividend of a fund bought abroad that pays dividends. The snapshots are copies of real records with
 // the value under test set here, so the test does not move when a record is refreshed.
 import { readFileSync } from "node:fs";
@@ -43,11 +43,9 @@ describe("F-102 the current account at a bank (D64)", () => {
     expect(currentAccountFee(5.5, -1)).toBe(0);
   });
 
-  it("counts every bank with a current account except the one the person marks, and no house without one", () => {
-    expect(countsCurrentAccount(leumi, null)).toBe(true);
-    expect(countsCurrentAccount(leumi, "hapoalim")).toBe(true);
-    expect(countsCurrentAccount(leumi, "leumi")).toBe(false);
-    expect(countsCurrentAccount({ id: "psagot", current_account: undefined }, null)).toBe(false);
+  it("counts every bank with a current account, and no house without one", () => {
+    expect(countsCurrentAccount(leumi)).toBe(true);
+    expect(countsCurrentAccount({ current_account: undefined })).toBe(false);
   });
 
   it("a counted current account is a line of its own: 120 monthly minimums paid, and the row's cost grows by about them and their growth", () => {

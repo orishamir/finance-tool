@@ -124,20 +124,6 @@ export function ownEach(values: Record<string, SiteValue>, company: string, pick
   return Object.fromEntries(Object.entries(values).map(([k, v]) => [k, pick(k) ? ownBy(v, company) : v]));
 }
 
-/** Whether any of the figures is one its record doubts (`doubt`): what decides if a page's legend lists the doubt item. */
-export const anyDoubt = (values: Iterable<SiteValue | null | undefined>): boolean => [...values].some((v) => !!v?.doubt);
-
-/** Whether any of the figures, or any input a computed one rests on, carries the caution (D31): what decides if a page's legend lists the company item. */
-export function anyWeak(values: Iterable<SiteValue | null | undefined>): boolean {
-  for (const v of values) {
-    if (!v || typeof v !== "object") continue;
-    if (isWeak(v)) return true;
-    const inputs = v.computed_from?.inputs as Record<string, SiteValue> | undefined;
-    if (inputs && anyWeak(Object.values(inputs))) return true;
-  }
-  return false;
-}
-
 export function isParameter(v: SiteValue): boolean {
   return v.update_rule === "founder" && v.state === "sourced";
 }

@@ -20,7 +20,7 @@ export function PageHead({ title, lede, crumb, tabs, marks, aside, pickerHost, r
   pickerHost?: (el: HTMLDivElement | null) => void;
   /** A hairline under the head, where the page's body starts with a part of its own (a company's page). */
   rule?: boolean;
-  /** Under the lede: what else belongs to the head (a legend of the number marks, a line of examples, a callout). */
+  /** Under the lede: what else belongs to the head (a line of examples, a callout). */
   children?: ReactNode;
   /** Places the head or hides it (`hidden` while a view covers it), never restyles it. */
   className?: string;

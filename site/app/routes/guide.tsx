@@ -7,7 +7,7 @@ import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, pagePre
 import { pageMeta } from "../lib/page-meta";
 import { feeRowKind, type FeeFacts } from "../lib/guide-fees";
 import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, RelatedProducts, RuleRows, GuideFrame, GuideHeader, TaxSteps, useCurrentSection, type FeeRow, type GlanceItem, type RuleRowItem, type TaxStep } from "../components/guide/sections";
-import { IdRef, Num, NumberLegend, ReadingTag, Ruled, StrengthLabel, VariesByCompany } from "../components/provenance";
+import { IdRef, Num, ReadingTag, Ruled, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
 import { Timeline } from "../components/timeline/Timeline";
@@ -23,7 +23,7 @@ import { exitRateLines, exitStepMark, type ExitRate } from "../lib/exit-step";
 import { guideContent } from "../content/guide";
 import { GuideAbroad } from "../components/guide/abroad";
 import { abroadView } from "../lib/abroad";
-import { anyDoubt, anyWeak, feeYear, ruleFigure, type SiteValue } from "../lib/value";
+import { feeYear, ruleFigure, type SiteValue } from "../lib/value";
 import { generalOnly, isGeneral } from "../lib/scope";
 import { productOffered } from "../lib/fee-deal/offers/offer";
 
@@ -448,7 +448,6 @@ export default function GuidePage() {
   return (
     <PageShell current="guide" data={provenance}>
       <GuideFrame
-        foot={<NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} doubt={anyDoubt((signature?.banks ?? []).map((b) => b.rate))} />}
         sections={copy.sections.filter((x) => !omitted(x.id) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0 || !!abroad) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current}>
         <GuideHeader title={gershayim(data.name)} lede={data.lede && gershayim(data.lede)} glance={glance}>
           {data.heldIn && (

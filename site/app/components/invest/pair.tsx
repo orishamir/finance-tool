@@ -2,20 +2,20 @@
 // page says of them. Here: the pair's verdict and ties (the pair set beside the chosen one, which the receipt and the fees panel read),
 // how a pick moves the other half, and the pieces the lists (lists.tsx), the receipt's parts (receipt.tsx) and the custom index's lists
 // (no-fund.tsx) share: a house's groups (the custom index's lists only), standing-order and phone-only prices, the notes on prices abroad,
-// the own-bank field, and a fund's gap from its index.
+// and a fund's gap from its index.
 import { mayaFundHref } from "../../lib/sources";
 import { Fragment, type ReactNode } from "react";
 import { isTie, type GapList } from "@finance-tool/engine";
 import { groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { chargesCurrentAccount, doubtAt, doubtOf, entryRules, tieShareOf, paybackMayLower, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type Availability, type FundWay, type OptionId, type InvestView, type Kind, type Reason, type WayPrice } from "../../lib/invest";
+import { doubtAt, doubtOf, entryRules, tieShareOf, paybackMayLower, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type Availability, type FundWay, type OptionId, type InvestView, type Kind, type Reason, type WayPrice } from "../../lib/invest";
 import { brokeragePagePath } from "../../lib/site-paths";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { Num, Ruled, Term, type SheetPart } from "../provenance";
-import { HelpMark, ClampedText, gershayim, Disclosure, DocLink, LabelRow, NoteList, SelectField, Tag, Tpl, GroupPriceFold, fill } from "../kit";
+import { ClampedText, gershayim, Disclosure, DocLink, LabelRow, NoteList, Tag, Tpl, GroupPriceFold, fill } from "../kit";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { DealFromHouseButton } from "./deal-account";
@@ -469,34 +469,6 @@ export const LONGEST_AMOUNT = 9_999_999;
 export const LONGEST_LEFT = 999_999_999;
 /** The most years a plan's sliders give, for a sentence's unseen longest case. */
 export const LONGEST_YEARS = 40;
-
-/**
- * The bank where the person already has a current account (D64): that bank's row leaves its current account out, every other bank's row
- * counts it (F-102). The banks are those whose current account costs something a month. The field sits at the bottom of the accounts card,
- * under the list it changes, and what it does is said in its label's "?". A pick re-sorts the list above with its rows sliding
- * (design-system 2.5a); the list
- * keeps its rows and their heights, so the field under it stays where the hand is.
- */
-/** What the own-bank field does, for its "?". A bank whose price list charges nothing for its current account is not in the box: the text
- *  names it, so its row is read as a bank's. */
-export const ownBankHelp = (view: InvestView, bundle: IndicesBundle): string =>
-  c.pair.ownBank.counted(view.providers.filter((p) => !p.custom && bundle.snapshots.some((s) => s.id === p.id && s.current_account && !chargesCurrentAccount(s))).map((p) => p.short).sort((a, b) => a.localeCompare(b, "he")));
-
-export function OwnBankField({ view, bundle, value, onChange }: { view: InvestView; bundle: IndicesBundle; value: string | null; onChange: (id: string | null) => void }) {
-  const banks = view.providers.filter((p) => bundle.snapshots.some((s) => s.id === p.id && chargesCurrentAccount(s))).sort((a, b) => a.short.localeCompare(b.short, "he"));
-  if (banks.length === 0) return null;
-  const marked = banks.find((b) => b.id === value) ?? null;
-  return (
-    <SelectField
-      label={c.pair.ownBank.label}
-      mark={<HelpMark about={c.pair.ownBank.label} text={ownBankHelp(view, bundle)} />}
-      none={c.pair.ownBank.none}
-      options={banks.map((b) => ({ id: b.id, name: b.short }))}
-      value={marked?.id ?? null}
-      onChange={onChange}
-    />
-  );
-}
 
 /**
  * What a price for a fund bought abroad leaves out, said once on the page (D65, D66): a spread the price list does not limit, naming the

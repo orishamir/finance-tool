@@ -38,7 +38,7 @@ import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
 import { ANCHOR, verdictOf } from "./receipt";
-import { AbroadNotes, OwnBankField, allFunds, asideParts, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
+import { AbroadNotes, allFunds, asideParts, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
 
 /** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the receipt has it whole. */
 export const listName = (view: InvestView, name: string) => shortFundName(name, [pillName(view.index.name), ...(view.index.exposure?.names.he ?? []), ...(view.index.exposure?.names.en ?? []), ...(view.index.custom ? [view.index.custom.name] : [])]);
@@ -57,8 +57,6 @@ export interface ListsProps {
   onPick: OnPick;
   /** The tap before changed the other half too: the chosen row of the list tapped says so, with the way back. */
   moved: Moved | null;
-  /** The bank where the person already has a current account, and its setter (D64). */
-  ownBank?: { value: string | null; onChange: (id: string | null) => void };
   /** From 1280 px: the lists stand either side of the ruler, under the receipt's ticket (`above`), whose total the ruler's point joins. */
   ruler?: boolean;
   above?: RefObject<HTMLElement | null>;
@@ -99,7 +97,7 @@ const figureCell = (word: ReactNode, amount: ReactNode, v: number) => (
 const underRow = (node: ReactNode) => <span className="col-span-full pt-0.5 pb-1">{node}</span>;
 
 export function PairLists(props: ListsProps) {
-  const { view, bundle, plan, livePlan, today, pick, chosen, onPick, moved, ownBank, ruler = false, above } = props;
+  const { view, bundle, plan, livePlan, today, pick, chosen, onPick, moved, ruler = false, above } = props;
   const dealApi = useDealAccounts();
   const sp = c.shownPair(chosen);
   const funds = allFunds(view);
@@ -603,7 +601,6 @@ export function PairLists(props: ListsProps) {
     <div className="flex flex-col gap-3">
       <NotMovedLines />
       <AddDealButton />
-      {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />
     </div>
   );
@@ -637,7 +634,7 @@ export function PairLists(props: ListsProps) {
     </div>
   );
   // what moves the rows: the picks, the plan the lists are sorted on, the index, the lists' sizes and the fold under the funds
-  const watch = [view.index.id, pick.house, pick.fund, plan.amountNow, plan.monthly, plan.years, plan.grossReturn, plan.inflation, plan.currentAccounts?.own ?? "", providers.length, funds.length, moved?.back ? 1 : 0, unpricedOpen].join("|");
+  const watch = [view.index.id, pick.house, pick.fund, plan.amountNow, plan.monthly, plan.years, plan.grossReturn, plan.inflation, providers.length, funds.length, moved?.back ? 1 : 0, unpricedOpen].join("|");
 
   if (ruler)
     return (

@@ -88,8 +88,6 @@ export interface StateV3 {
   goals: [];
   /** Always empty, for the same reason. */
   savedComparisons: [];
-  /** The bank where the person already has a current account (a fee snapshot id): the indices page leaves that bank's current account out of its row (D64). */
-  bank?: string;
   /** The guide inputs (A-01, A-02, the P-05 amounts, age, employment), each a value object. */
   inputs: Record<string, ValueObject>;
   holdings: Holding[];
@@ -255,7 +253,6 @@ function normalizeState(s: Record<string, unknown>): StateV3 {
     version: 3,
     goals: [],
     savedComparisons: [],
-    ...(typeof s.bank === "string" ? { bank: s.bank } : {}),
     ...(Array.isArray(s.customIndices) && validCustomIndices(s.customIndices).length ? { customIndices: validCustomIndices(s.customIndices) } : {}),
     ...(Array.isArray(s.customBrokers) && validCustomBrokers(s.customBrokers).length ? { customBrokers: validCustomBrokers(s.customBrokers) } : {}),
     ...(Array.isArray(s.customFunds) && validCustomFunds(s.customFunds).length ? { customFunds: shekelFromIndex(validCustomFunds(s.customFunds), Array.isArray(s.customIndices) ? validCustomIndices(s.customIndices) : []) } : {}),
@@ -291,7 +288,6 @@ export function migrateV1(v1: V1Docs, today = isoToday()): StateV3 | null {
     found = true;
   }
   if (isObj(v1.goals) && v1.goals.version === 1 && Array.isArray(v1.goals.goals)) {
-    if (typeof v1.goals.bank === "string") s.bank = v1.goals.bank;
     found = true;
   }
   if (Array.isArray(v1.uncatalogued)) {
@@ -635,15 +631,6 @@ export function setCurrentBroker(id: string | null): void {
   });
 }
 
-/** The bank where the person already has a current account (D64); null clears it. */
-export function setOwnBank(id: string | null): void {
-  updateState((s) => {
-    const { bank: _drop, ...rest } = s;
-    void _drop;
-    return id ? { ...rest, bank: id } : rest;
-  });
-}
-
 /** One empty list for every render: a new `[]` each time made the index page price every account and fund again on any change. */
 const NO_CUSTOM: CustomIndex[] = [];
 const NO_BROKERS: CustomBroker[] = [];
@@ -651,7 +638,7 @@ const NO_FUNDS: CustomFund[] = [];
 
 export function useInvestState() {
   const snapshot = useStateStore();
-  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? NO_CUSTOM, customBrokers: snapshot.state.customBrokers ?? NO_BROKERS, customFunds: snapshot.state.customFunds ?? NO_FUNDS, broker: snapshot.state.broker ?? null, bank: snapshot.state.bank ?? null, setBank: setOwnBank, saved: snapshot.saved, add: saveCustomIndex, rename: renameCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker, saveFund: saveCustomFund, removeFund: removeCustomFund };
+  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? NO_CUSTOM, customBrokers: snapshot.state.customBrokers ?? NO_BROKERS, customFunds: snapshot.state.customFunds ?? NO_FUNDS, broker: snapshot.state.broker ?? null, saved: snapshot.saved, add: saveCustomIndex, rename: renameCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker, saveFund: saveCustomFund, removeFund: removeCustomFund };
 }
 
 // ---------------------------------------------------------------- imported items
@@ -867,7 +854,6 @@ export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "
     inputs,
     holdings,
     uncatalogued: names,
-    ...(current.bank ? { bank: current.bank } : incoming.bank ? { bank: incoming.bank } : {}),
     ...(() => {
       // an index, or a broker or fund the person typed, that the device already has (by id) stays as it is; the file's others are added; the device's own broker stays
       const merged = <T extends { id: string }>(have: T[] = [], file: T[] = []) => [...have, ...file.filter((c) => !have.some((x) => x.id === c.id))];

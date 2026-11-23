@@ -7,7 +7,7 @@ import { exposurePage as copy, guideIndex, invest, pagePreview } from "../copy";
 import { pageMeta } from "../lib/page-meta";
 import { GuideSection, GuideFrame, GuideHeader, useCurrentSection, type GlanceItem } from "../components/guide/sections";
 import { IconLock } from "../components/icons";
-import { NumberLegend, RuleRef } from "../components/provenance";
+import { RuleRef } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Card, GoLink, RowArrow, Tag, gershayim } from "../components/kit";
 import { exposureContent } from "../content/exposure";
@@ -46,7 +46,7 @@ export default function ExposurePage() {
   glance.push({ id: "currency", label: copy.currencyLabel, value: invest.currencies[record.currency] ?? record.currency });
   return (
     <PageShell current="guide" data={provenance}>
-      <GuideFrame sections={[...copy.sections]} current={current} foot={<NumberLegend term />}>
+      <GuideFrame sections={[...copy.sections]} current={current}>
         <GuideHeader title={gershayim(data.name)} lede={data.lede && gershayim(data.lede)} glance={glance} />
 
         <GuideSection id="what" title={copy.sections[0].title}>

@@ -74,16 +74,15 @@ export function SectionIndex({ sections, current }: { sections: readonly Section
 }
 
 /**
- * A guide page's columns: the section index beside the page's header and sections; `foot` closes the page under a hairline (the key to
- * the number marks). The header (`GuideHeader`, the first child) carries the page's top padding.
+ * A guide page's columns: the section index beside the page's header and sections. The header (`GuideHeader`, the first child) carries the
+ * page's top padding.
  */
-export function GuideFrame({ sections, current, children, foot }: { sections: readonly SectionDef[]; current: string; children: ReactNode; foot?: ReactNode }) {
+export function GuideFrame({ sections, current, children }: { sections: readonly SectionDef[]; current: string; children: ReactNode }) {
   return (
     <div className="lg:flex lg:gap-12">
       <SectionIndex sections={sections} current={current} />
       <div className="flex-1 min-w-0 flex flex-col gap-section">
         {children}
-        {foot && <div className="border-t border-border pt-6">{foot}</div>}
       </div>
     </div>
   );

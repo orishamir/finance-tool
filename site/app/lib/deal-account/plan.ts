@@ -195,23 +195,22 @@ export interface Missing {
 }
 
 /**
- * Why the plan never charges a fee (F-128, `planChargeOf`), as the page says it: the engine's reasons, a bank's current account the person
- * pays anyway (`own-bank`, D64), a current account on a page that counts none (`no-current-account`, F-102), a fee in the person's own words
+ * Why the plan never charges a fee (F-128, `planChargeOf`), as the page says it: the engine's reasons, a current account on a page that counts none (`no-current-account`, F-102), a fee in the person's own words
  * (`own-words`), and a fee the law bans here, read as nothing charged (`banned`).
  */
-export type OffPlan = Exclude<NotOnPlan, "named"> | "own-bank" | "no-current-account" | "own-words" | "banned";
+export type OffPlan = Exclude<NotOnPlan, "named"> | "no-current-account" | "own-words" | "banned";
 
 /** A fee of the deal on the plan: charged, never charged with why, or lacking what the plan needs. */
 export type FeeOnPlan = { fee: string; on: "charged" } | { fee: string; on: "off"; why: OffPlan } | { fee: string; on: "missing"; missing: Missing };
 
 /**
- * What the reading of the run needs beside the deal: the kinds (bans, caps), the device's day, and the page's current accounts (F-102,
- * D64): the bank the person marked as theirs, or null where the page counts no current account (only the indices page counts one).
+ * What the reading of the run needs beside the deal: the kinds (bans, caps), the device's day, and whether the page counts a current account (F-102,
+ * D64; only the indices page does).
  */
 export interface PlanContext {
   kinds: readonly DealKind[];
   today: string;
-  currentAccounts: { own: string | null } | null;
+  currentAccounts: boolean;
   /** The line choice of the house the deal was filled from, where it was filled from a house's whole list (`LineValue`). */
   lineValue?: LineValue;
 }
@@ -250,7 +249,7 @@ export function feesOnPlan(deal: FeeDeal, run: DealRun, ctx: PlanContext): FeeOn
 const ownOnHolding = (f: Fee): boolean => (hasCases(f) ? f.cases : [f]).some((x) => [...x.stages, ...(x.sale ?? [])].some((st) => st.price.form !== "free")) && chargedOnHolding(f);
 
 function offOf(deal: FeeDeal, f: Fee, facts: { converts: boolean; distributes: boolean }, ctx: PlanContext): OffPlan | null {
-  if (f.kind === "current_account") return !ctx.currentAccounts ? "no-current-account" : dealHouseId(deal) !== null && dealHouseId(deal) === ctx.currentAccounts.own ? "own-bank" : null;
+  if (f.kind === "current_account") return ctx.currentAccounts ? null : "no-current-account";
   if (f.kind === "fund_management") return "fund-record";
   if (f.kind === "own") return ownOnHolding(f) ? null : "own-words";
   const c = planChargeOf(engineBase(f.kind), facts);

@@ -27,7 +27,7 @@ const FEW = ["index-ta125", "index-msci-world"];
 /** The plans of `PLANS` the fast run compares at: every custody maximum binding from the start, and as monthly deposits build it, at both of A-03's bounds. */
 const FEW_PLANS = ["1,000,000 now, 20 years at 5%, the dollar up 3% a year", "40,000 a month, 10 years at 7%, the dollar down 3% a year"];
 const run = { instrumentClass: "etf_units", listing: "tase" as const, currency: null, distributes: false, fx: {} };
-const ctx = { kinds: data.kinds, today: t, currentAccounts: { own: null } };
+const ctx = { kinds: data.kinds, today: t, currentAccounts: true };
 
 describe("F-128 the plan sets what is bought and the channel", () => {
   it("reads what is bought from the fund, and the internet as the channel, over the deal's own picks", () => {
@@ -235,13 +235,6 @@ describe("F-128 a deal filled from a house prices as the house does, on a few in
     }
   });
 
-  it("the bank's current account is not counted on the bank the person marks as theirs", () => {
-    const own = buildInvest({ bundle: b, index: indexById(b, "index-ta125")!, plan: { ...plan, currentAccounts: { own: "leumi" } } });
-    const at = (v: typeof view, pid: string) => v.houses.find((r) => r.provider.id === pid)!.entries.find((e) => e.fund.option === "il-etf")!.price!.valueN;
-    expect(at(own, dealProviderId("deal-leumi"))).toBeGreaterThan(at(view, dealProviderId("deal-leumi")));
-    expect(Math.round(at(own, dealProviderId("deal-leumi")))).toBe(Math.round(at(own, "leumi")));
-  });
-
   it("the deal's own current account is the one the plan counts: at its own price, not at all once taken away, never the bank's beside it", () => {
     const leumi = fromHouse("leumi");
     const card = leumi.fees.find((f) => f.kind === "current_account");
@@ -261,25 +254,15 @@ describe("F-128 a deal filled from a house prices as the house does, on a few in
       if (!e?.price) throw new Error(`${id} prices an Israeli ETF`);
       return e;
     };
-    const atOn = (own: string | null) => {
-      const v = buildInvest({ bundle: bs, index: ix, plan: { ...plan, currentAccounts: { own } } });
-      return (id: string) => Math.round(etfOn(v, id).price?.valueN ?? NaN);
-    };
-    const at = atOn(null);
-    const own = atOn("leumi");
+    const v = buildInvest({ bundle: bs, index: ix, plan: { ...plan, currentAccounts: true } });
+    const at = (id: string) => Math.round(etfOn(v, id).price?.valueN ?? NaN);
     expect(at(dealProviderId("deal-leumi"))).toBe(at("leumi"));
     expect(at(dealProviderId("deal-mine"))).toBeLessThan(at(dealProviderId("deal-leumi")));
-    // taken away, the plan counts none: the deal leaves what the bank's row leaves where the person marks the bank as theirs
+    // taken away, the plan counts none
     expect(at(dealProviderId("deal-none"))).toBeGreaterThan(at(dealProviderId("deal-leumi")));
-    expect(at(dealProviderId("deal-none"))).toBe(own("leumi"));
     // the page opens a deal saved before with the card, so its account is counted, once
     expect(at(dealProviderId("deal-opened"))).toBe(at(dealProviderId("deal-leumi")));
     expect(at(dealProviderId("deal-stored"))).toBe(at(dealProviderId("deal-none")));
-    // at the bank the person marks as theirs the card stays, not on the plan, whatever its price
-    for (const d of [leumi, mine]) {
-      expect(feesOnPlan(d, run, { ...ctx, currentAccounts: { own: "leumi" } }).find((x) => x.fee === card.id)).toEqual({ fee: card.id, on: "off", why: "own-bank" });
-      expect(own(dealProviderId(d.id))).toBe(own("leumi"));
-    }
     // the receipt writes the card as one of the deal's own lines, and no other current account
     const fund = etfOn(buildInvest({ bundle: bs, index: ix, plan }), dealProviderId("deal-leumi")).fund.rec.id;
     const lines = pairCosts({ bundle: bs, index: ix, plan, fundId: fund, providerId: dealProviderId("deal-leumi") })?.dealLines ?? [];

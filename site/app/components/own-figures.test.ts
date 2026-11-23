@@ -5,7 +5,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { formulaNames } from "../copy";
 import { computed, type SiteValue } from "../lib/value";
-import { Num, NumberLegend, ProvenanceProvider } from "./provenance";
+import { Num, ProvenanceProvider } from "./provenance";
 import { ValueSheet } from "./provenance-sheets";
 import { FeeFigure } from "./kit";
 
@@ -69,14 +69,5 @@ describe("a fund's fee in a list of funds", () => {
     const html = inProvider(createElement(FeeFigure, { value: fee({ own: "הראל" }) }));
     expect(html).toContain("0.24");
     expect(caution(html)).toBe(0);
-  });
-});
-
-describe("the legend", () => {
-  it("leaves the company item out unless the page has an out-of-context company figure", () => {
-    // the words as read: the item's icon is held to its first word by a span of its own
-    const words = (props: { institution?: boolean } | null) => renderToStaticMarkup(createElement(NumberLegend, props)).replace(/<[^>]+>/g, "");
-    expect(words(null)).not.toContain("לפי החברה");
-    expect(words({ institution: true })).toContain("לפי החברה");
   });
 });

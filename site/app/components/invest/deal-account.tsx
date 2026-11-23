@@ -173,7 +173,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
         const run = dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId });
         if (!run) return null;
         // the ticket asks only for the fees the page's run charges, the counted ones, whose words are the same read on the whole deal
-        return <DealFeeWords read={planRead(deal, run, planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? null))} feeId={feeId} />;
+        return <DealFeeWords read={planRead(deal, run, planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? false))} feeId={feeId} />;
       },
       left,
     }),
@@ -308,7 +308,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const tiles = fundId ? dealTiles(view, got, providerId, deal.name, houseId, fundId, funds) : null;
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.provider : undefined;
   // the deal is read on the page's plan as its run reads it: the page's run month, the page's current accounts and the house's line choice (F-128)
-  const ctx = useMemo(() => planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? null), [world.bundle, deal, data.kinds, world.plan.currentAccounts]);
+  const ctx = useMemo(() => planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? false), [world.bundle, deal, data.kinds, world.plan.currentAccounts]);
   // what each fee is on the plan, every fee of the deal, its head saying so; and the same of the fees counted, which the run's reach is of
   const onPlan = useMemo(() => (run ? new Map(feesOnPlan(deal, run, ctx).map((x) => [x.fee, x])) : null), [deal, run, ctx]);
   const countedOn = useMemo(() => (run ? (counted === deal ? [...(onPlan?.values() ?? [])] : feesOnPlan(counted, run, ctx)) : null), [counted, deal, run, ctx, onPlan]);
@@ -328,7 +328,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
     const foot = gap ? <AbroadCaseLine words={gap.words} onAdd={() => addAbroadCase(ed, fee, gap)} /> : null;
     const switchedOff = isFeeOff(off, deal.id, fee.id);
     const cost: FeeCost = switchedOff ? "off" : at?.kind === "ok" ? at.figure(shownCost(at.byFee[fee.id] ?? 0), w.feeCostAbout(feeNameOf(fee.kind, fee.name))) : null;
-    const slot = x ? feeHeadOf(x, cost, house?.short ?? null) : {};
+    const slot = x ? feeHeadOf(x, cost) : {};
     // the cases the plan reads, a step of the account's size with the years the plan spends in it (B, F), any other step the plan reaches
     // plainly, where the plan charges the fee and it is counted
     const marks = countedRead && countedOn && !switchedOff && x?.on === "charged" && hasCases(fee) ? planCases(countedRead, fee.id, countedOn, at?.kind === "ok" ? at.reach : null) : null;
@@ -467,9 +467,9 @@ type FeeCost = SiteValue | null | "off";
  * unseen in its place while the fee is switched off, which charges nothing (its switch says so); or the chip saying the plan never charges
  * it with why under the head, or, under the head, what it lacks for a price.
  */
-function feeHeadOf(x: FeeOnPlan, cost: FeeCost, bank: string | null): FeeHeadSlot {
+function feeHeadOf(x: FeeOnPlan, cost: FeeCost): FeeHeadSlot {
   if (x.on === "missing") return { under: <p>{w.missing[x.missing.why]!(feeNameOf(x.missing.kind, x.missing.name))}</p> };
-  if (x.on === "off") return { end: <Tag>{w.offPlan}</Tag>, under: <p>{x.why === "own-bank" && bank ? w.ownBank(bank) : w.off[x.why]}</p> };
+  if (x.on === "off") return { end: <Tag>{w.offPlan}</Tag>, under: <p>{w.off[x.why]}</p> };
   if (cost === "off")
     return {
       end: (

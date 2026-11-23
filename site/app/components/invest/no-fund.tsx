@@ -10,7 +10,7 @@ import { fmt } from "../../lib/format";
 import { IconCopy } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, DocLink, LongestCase, PickList, SourcedTag, Swatch, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { AsideLine, barScale, GroupLine, HouseLine, LONGEST_AMOUNT, LONGEST_YEARS, AbroadNotes, OwnBankField, NoFundWords, whyNoKindAt, type WhyNone } from "./pair";
+import { AsideLine, barScale, GroupLine, HouseLine, LONGEST_AMOUNT, LONGEST_YEARS, AbroadNotes, NoFundWords, whyNoKindAt, type WhyNone } from "./pair";
 import { byLegend, hasCurrent, legendLines, legendName, lineClass, lineOf, partName } from "./cost-lines";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -72,7 +72,7 @@ function AccountName({ id, name, custom }: { id: string; name: string; custom: b
   );
 }
 
-export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, onPick, ownBank }: { view: InvestView; bundle: IndicesBundle; years: number; /** At 0 no purchase runs on a standing order. */ monthly?: number; chosen: string | null; onPick: (id: string) => void; /** The bank where the person already has a current account, and its setter (D64). */ ownBank?: { value: string | null; onChange: (id: string | null) => void } }) {
+export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, onPick }: { view: InvestView; bundle: IndicesBundle; years: number; /** At 0 no purchase runs on a standing order. */ monthly?: number; chosen: string | null; onPick: (id: string) => void }) {
   const legendPick = useChartPick();
   const { rows, ok, missing } = ordered(view);
   const heldKey = `${view.index.id}:${rows.length}`;
@@ -207,7 +207,6 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           {saved.length > 0 && <> {c.pair.collectedSpan(`\u2066${fmt.date(saved[0]!)}\u2069`, `\u2066${fmt.date(saved.at(-1)!)}\u2069`)}</>}
         </span>
         <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />
-        {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       </div>
       <div className="@container">
         <PickList

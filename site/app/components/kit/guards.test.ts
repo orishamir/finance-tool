@@ -351,7 +351,7 @@ function lastCompound(part: string): string {
   }
   return compound;
 }
-/** Figures that are deliberately not buttons: the legend's samples and a sheet's head figure (provenance.tsx). Their area is off on purpose. */
+/** Figures that are deliberately not buttons: a list head's computed mark (a `num-sample`) and a sheet's head figure (provenance.tsx). Their area is off on purpose. */
 const AREA_OFF_ALLOWED = [".num-static", ".num-sample"];
 /** Whether a selector part reaches a figure's, a term's or rule words' tap area (::after) or own box (::before): its last compound carries the
  *  pseudo-element and a `.num…`, `.term…` or `.ruled…` class, or nothing but the pseudo-element (which reaches every element). `allowed` when it is one of the
