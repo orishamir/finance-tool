@@ -155,59 +155,6 @@ function SampleLanes({ at, onAt }: { at: number; onAt: (a: number) => void }) {
   );
 }
 
-/**
- * One fee with a lane and a layer in each group (`of`): a sum up to 100,000 and a share above it, the reader's amount at the step's top,
- * where only the sum's part is lit; the pointer over any of its lanes or layers sets all of them apart.
- */
-function SplitDemo() {
-  const [strong, setStrong] = useState<string | null>(null);
-  const s = g.sample.amount;
-  const range = { lo: 10_000, hi: 1_000_000 };
-  const points = logSamples(range.lo, range.hi, 200, [100_000]).map((a) => {
-    const layers = [a > 100_000 ? 0.25 : 0, a > 100_000 ? 0 : (120 / a) * 100, (60 / a) * 100];
-    return { at: a, share: layers.reduce((x, y) => x + y, 0), layers };
-  });
-  const groups = [
-    { id: "share", label: s.groups.share },
-    { id: "fixed", label: s.groups.fixed },
-  ];
-  return (
-    <ShareStack range={range} at={100_000}>
-      <ShareChart
-        range={range}
-        points={points}
-        top={Math.max(...points.map((p) => p.share)) * 1.06}
-        layers={[
-          { id: "a:share", of: "a", fill: "fill-fee-custody", edge: "stroke-fee-custody", group: "share" },
-          { id: "a:fixed", of: "a", fill: "fill-fee-custody", edge: "stroke-fee-custody", group: "fixed" },
-          { id: "b", fill: "fill-fee-account", edge: "stroke-fee-account", group: "fixed" },
-        ]}
-        groups={groups}
-        strong={strong}
-        onStrong={setStrong}
-        xTitle={s.x}
-      />
-      <AmountLanes
-        title={s.lanes}
-        range={range}
-        groups={[
-          { id: "share", label: s.laneGroups.share },
-          { id: "fixed", label: s.laneGroups.fixed },
-        ]}
-        lanes={[
-          { id: "a:share", of: "a", name: s.a, swatch: "bg-fee-custody", edge: "border-fee-custody", group: "share", parts: [{ id: "rate", from: 100_000, to: null, label: s.parts.held, short: s.parts.short }] },
-          { id: "a:fixed", of: "a", name: s.a, swatch: "bg-fee-custody", edge: "border-fee-custody", group: "fixed", parts: [{ id: "sum", from: 0, to: 100_000, label: s.price }] },
-          { id: "b", name: s.b, swatch: "bg-fee-account", group: "fixed", parts: null, price: s.price },
-        ]}
-        at={100_000}
-        strong={strong}
-        back
-        onLane={setStrong}
-      />
-    </ShareStack>
-  );
-}
-
 function StackDemo() {
   const [at, setAt] = useState(4_000);
   const points = logSamples(ACTION_RANGE.lo, ACTION_RANGE.hi, 200, [10_000]).map((a) => ({ at: a, share: actionShare(a) }));
@@ -2961,11 +2908,6 @@ function DealDemos({ today }: { today: string }) {
         <State label={`a lane with three parts, the last too narrow for its words, a quiet lane, the reader's amount at 30,000; ${g.states.interactive}: tap a part`} wide>
           <Card className="max-w-3xl">
             <LanesDemo />
-          </Card>
-        </State>
-        <State label={`one fee with a lane and a layer in each group (of), the reader's amount at its step's top, 100,000, where only the lower step's part is lit; ${g.states.interactive}: point at any of its lanes or layers to set them all apart`} wide>
-          <Card className="max-w-3xl">
-            <SplitDemo />
           </Card>
         </State>
       </Demo>

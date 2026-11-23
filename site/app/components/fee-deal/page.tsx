@@ -31,7 +31,7 @@ import { pickItems, useDealEditor } from "./editor";
 import { FeeLinksProvider } from "./links";
 import { UndoLine } from "./undo-line";
 import { READING_ID } from "./left-out";
-import { DealReading } from "./reading";
+import { ReadingCards } from "./reading";
 import { useOpenedDeal } from "./use-deal-document";
 import { feeName } from "./words";
 import { todayLocal } from "../../lib/today";
@@ -224,9 +224,9 @@ function Deal({ data, today, saved, writable, address }: { data: FeesData; today
             </div>
           )}
           {/* the chart's chosen period belongs to the deal it was chosen on: another deal starts from its own */}
-          <DealReading
+          <ReadingCards
             key={deal.id}
-            input={views.reading}
+            reading={views.reading}
             saved={ed.saves}
             fx={data.fx}
             none={ed.none}

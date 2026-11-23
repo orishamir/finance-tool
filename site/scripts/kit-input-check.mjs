@@ -51,6 +51,9 @@
 //   notice in a sheet   with a sheet open on the kit page and a script's failure planted (at 390 a sheet at the foot, at 1440 a short sheet
 //            centred by a transform), the notice's title or its reload button not the top thing at its middle (drawn under the sheet, or cut
 //            by its card), the notice not at the window's foot, or the button not reloading the page.
+//   chip     at 1440 and 390, an option of a row that chooses one (`ChoiceChips`, `SegmentedControl`) whose box moves or changes size
+//            when another option of the row is chosen (a chosen chip's check that widened it and moved its neighbours). An option planted
+//            to widen when chosen must be caught first.
 
 import { existsSync, readFileSync } from "node:fs";
 
@@ -93,7 +96,7 @@ const center = (r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2 });
 
 export async function kitInputCheck(browser, base) {
   const found = [];
-  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, noticeSheetCheck]) {
+  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, noticeSheetCheck, chipCheck]) {
     try {
       found.push(...(await run(browser, base)));
     } catch (e) {
@@ -1145,6 +1148,63 @@ async function noticeSheetCheck(browser, base) {
     await (at === "phone" ? page.touchscreen.tap(b.x, b.y) : page.mouse.click(b.x, b.y));
     if (!(await loaded)) found.push(`notice in a sheet: ${where}, a press on the failure notice's reload button does not reload the page`);
     await ctx.close();
+  }
+  return found;
+}
+
+/** The options of a row that chooses one: a `ChoiceChips` chip, or a `SegmentedControl` option. */
+const CHOICE_ROW = ":is([role=radiogroup]:has(> .sec-chip[role=radio]), [role=group]:has(> button[aria-pressed]))";
+const CHOICE_OPTION = ":scope > :is(.sec-chip[role=radio], button[aria-pressed])";
+
+/**
+ * Every option's box in the choice row `row`, after its first option not chosen, shown and enabled is pressed, set against its box before:
+ * the rows whose options moved or changed size, in words. Null when the row has no option to press.
+ */
+async function chosenShift(page, row, phone) {
+  const opts = row.locator(CHOICE_OPTION);
+  const boxes = () => opts.evaluateAll((es) => es.map((e) => e.getBoundingClientRect()).map((r) => [r.x, r.y, r.width, r.height]));
+  const n = await opts.count();
+  for (let k = 0; k < n; k++) {
+    const o = opts.nth(k);
+    if ((await o.getAttribute("aria-checked")) === "true" || (await o.getAttribute("aria-pressed")) === "true" || (await o.isDisabled()) || !(await o.isVisible())) continue;
+    await o.scrollIntoViewIfNeeded();
+    const before = await boxes();
+    await (phone ? o.tap() : o.click());
+    await page.evaluate(settled);
+    const after = await boxes();
+    const moved = before.flatMap((b, j) => (after[j] && b.some((v, q) => Math.abs(v - after[j][q]) > 0.5) ? [`option ${j + 1} ${b.map(Math.round).join(",")} → ${after[j].map(Math.round).join(",")}`] : []));
+    const name = (await o.getAttribute("aria-label")) || (await o.innerText()).trim();
+    return moved.length ? `"${name.slice(0, 30)}" chosen: ${moved.join("; ")}` : "";
+  }
+  return null;
+}
+
+/**
+ * A choice's options on the kit page at 1440 and 390 (`chip` above): pressing an option of a row of chips or of a segmented control changes
+ * the size or the place of an option of the row (a chosen chip's check that widens it moves its neighbours). An option planted to widen
+ * when chosen must be caught first.
+ */
+async function chipCheck(browser, base) {
+  const found = [];
+  for (const at of ["desk", "phone"]) {
+    const phone = at === "phone";
+    const width = phone ? 390 : 1440;
+    const { ctx, page } = await open(browser, base, phone ? PHONE : DESK);
+    // a row of chips, which takes its options' widths at every width (a segmented control across its line shares the line out evenly)
+    const planted = page.locator("main [role=radiogroup]:has(> .sec-chip[role=radio])").filter({ visible: true }).first();
+    await planted.evaluate((r) => r.setAttribute("data-planted", ""));
+    await page.addStyleTag({ content: "[data-planted] > :is([aria-checked=true], [aria-pressed=true])::before { content: ''; flex: none; width: 18px; }" });
+    if (!(await chosenShift(page, planted, phone))) found.push(`chip: self-test: at ${width}, an option planted on /kit to widen when chosen was not caught`);
+    await ctx.close();
+    const fresh = await open(browser, base, phone ? PHONE : DESK);
+    const all = fresh.page.locator(`main ${CHOICE_ROW}`);
+    const n = await all.count();
+    if (!n) found.push(`chip: no row of chips or segmented control on the kit page at ${width}`);
+    for (let i = 0; i < n; i++) {
+      const shift = await chosenShift(fresh.page, all.nth(i), phone);
+      if (shift) found.push(`chip: at ${width}, choosing an option moves its row: ${shift}`);
+    }
+    await fresh.ctx.close();
   }
   return found;
 }
