@@ -17,7 +17,7 @@
 // of the head has a grip (⋮⋮, lifted.ts says where each drops and what the bin takes), whose menu moves, duplicates or removes by
 // keyboard; a table's columns, a grid's rows and columns and the cases read as rows are sortable lists, the others opening the gap where
 // the pointer stands, and every place shows what a drop would do while a thing is over it (the page draws the deal as it would leave it).
-// Every cell of a grid has knobs that stretch it over its neighbours, writing over what they held there with one undo (reach.ts), the cells it would cover showing its
+// Every cell of a table or a grid has knobs that stretch it where nothing is overwritten (reach.ts), the cells it would cover showing its
 // price while it is pulled, a cell over its whole row saying so. Under a grid's row a plus drawn while the pointer is there opens the
 // toolbox on every case of it, as its head's menu does, a part it adds that asks its amount asking it on a line under the row; while the
 // toolbox adds to a grid row's cases, each of them is drawn open (to every case of the fee, none). A toolbox part dragged here drops on a case's cell, on the open case, or on
@@ -243,8 +243,8 @@ export function FeeCases({
   actions: BlockActions;
   /** A drop zone around `el` for the places `on` (the first that takes a thing gets it): it takes a toolbox part, and lifted things. */
   zone: ZoneOf;
-  /** The open case's parts in edit, with the spoken name of its boxes. */
-  openParts: (spoken: string) => ReactNode;
+  /** The open case's parts in edit, with the spoken name of its boxes and the heads over it its parts' menus apply them to. */
+  openParts: (spoken: string, heads?: readonly HeadApply[]) => ReactNode;
   /** A host's mark on a case (`FeeSlot.caseMark`, the indices page's "בתוכנית"), in every layout; /deal marks none. */
   caseMark?: ((caseId: string) => ReactNode) | undefined;
   /** The fee's card around its cases (`cases`: the parts every case holds alike, then the cases' band, under the fee's name's line). */
@@ -540,8 +540,8 @@ export function FeeCases({
   const allAlong = layout.shape === "grid" ? 1 : layout.shape === "table" ? layout.thing : 0;
   const everyCase = headCases(fee.cases.map((x) => x.id), allAlong);
   /**
-   * The heads a part cell's part may be applied to from its grip's menu, each with its words, the first that covers the same cases kept:
-   * its row, then every case of the fee; a head over one case alone is no wider than the case.
+   * The heads a part may be applied to from a menu, each with its words, the first that covers the same cases kept: `row` (a grid's row),
+   * `column` (a grid's column, drawn as one), then every case of the fee; a head over one case alone is no wider than the case.
    */
   const applyTo = (heads: readonly (readonly [string, readonly string[], number] | null)[]): HeadApply[] => {
     const seen = new Set<string>();
@@ -614,11 +614,10 @@ export function FeeCases({
   const plural = (t: number) => lw.things[fee.by[t]!.kind] ?? lw.things.own!;
   /**
    * The knobs of a cell over columns `from` to `from + span - 1` of a line whose places are `cases`, in part row `row` (or the whole case)
-   * along thing `t`: one on each edge that can move (reach.ts), toward a case, which takes the cell's content in place of what it held there
-   * (a case that cannot hold it, or counts its sums in another currency, is left as it is, named in the undo line), or a grid's place no
-   * case holds (filled with a copy of the case, `stretchOver`), or back where it covers more than one place, which takes from the places
-   * it leaves what the stretch gave (`shrinkAway`; a table's price leaves a copy, `shrink`). Each keeps one undo, which brings back what was
-   * written over. While a knob is pulled, the cells it would cover show its `content` as they would hold it (`fillAt`).
+   * along thing `t`: one on each edge that can move without overwriting a price (reach.ts), toward a case that holds nothing there (it
+   * takes the cell's part) or a grid's place no case holds (filled with a copy of the case, `stretchOver`), or back where it covers more
+   * than one place, which takes from the places it leaves what the stretch gave (`shrinkAway`; a table's price leaves a copy, `shrink`).
+   * Each keeps an undo. While a knob is pulled, the cells it would cover show its `content` as they would hold it (`fillAt`).
    */
   const knobsOf = (rowKey: string, cases: readonly Slot[], from: number, span: number, row: PartRow | typeof WHOLE, t: number, axis: "x" | "y" = "x", content: ReactNode = null) => {
     const to = from + span - 1;
@@ -628,11 +627,10 @@ export function FeeCases({
     const onReach = (a: number, b: number, done: boolean) => {
       if (!done) return setReach({ row: rowKey, base: from, from: a, to: b, fill: content });
       setReach(null);
-      const { over, replaced, places, off } = reachEdits(cases, from, to, a, b);
-      const said = replaced.length ? lw.stretchedOver : lw.stretched;
+      const { over, places, off } = reachEdits(cases, from, to, a, b);
       // down a grid's column only a named span merges (layout.ts): the stretch names one
-      if (places.length) lift.onStretch(stretchOver(fee, own, over, places, t, axis === "y"), [said, ...leftOut(own, over, row)].join(" "));
-      else if (over.length) lift.onStretch(stretch(fee, own, over, row, t, axis === "y"), [said, ...leftOut(own, over, row)].join(" "));
+      if (places.length) lift.onStretch(stretchOver(fee, own, over, places, t, axis === "y"), lw.stretched);
+      else if (over.length) lift.onStretch(stretch(fee, own, over, row, t, axis === "y"), [lw.stretched, ...leftOut(own, over, row)].join(" "));
       else if (off.length && shrinkEmpties(layout.shape === "grid", row)) lift.onStretch(shrinkAway(fee, off, row), shrunk(off, row));
       else if (off.length) onFee(shrink(fee, off, row, t));
     };
@@ -744,11 +742,18 @@ export function FeeCases({
         {...(ov.canCopy ? { onCopy: () => addAndOpen(copyCase(fee, r.case)) } : {})}
         {...(ov.canRemove ? { onRemove: () => onRemoveCase(fee.id, r.case) } : {})}
       >
-        {openParts(`${name}, ${caseText(r.when)}`)}
+        {openParts(`${name}, ${caseText(r.when)}`, openHeads(r.case))}
       </OpenCase>,
     );
   };
   const openRow = openCase && open.view ? byCase.get(openCase) : undefined;
+  /** The heads over an open case its parts' menus apply them to: a grid's row and, drawn as a grid, its column; every case of the fee. */
+  function openHeads(id: string): HeadApply[] {
+    if (layout.shape !== "grid") return applyTo([allHead]);
+    const row = layout.rows.find((x) => x.cases.includes(id));
+    const col = wide ? layout.columns.find((x) => x.cases.includes(id)) : undefined;
+    return applyTo([row ? [lw.menu.applyRow, row.cases, 1] : null, col ? [lw.menu.applyColumn, col.cases, 0] : null, allHead]);
+  }
 
   /**
    * A case as a band row: its grip (`still` where nothing would take it), its words (`when`), the parts it still shows, its standing; open,

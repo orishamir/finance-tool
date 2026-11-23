@@ -1,29 +1,37 @@
 // A bank's page from its real deposit records (data/terms/deposits/): each product's rates carry their own records' date, and the
 // catalogue's names say in Hebrew where they were seen.
 import { describe, expect, it } from "vitest";
-import { buildInstitution, latestDeposit } from "./institutions.server";
+import { buildInstitution } from "./institutions.server";
+import { rangeLinkage, rateRange } from "./bank-table";
+import { numberOf } from "./value";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 
 describe("a bank's products and their dates", () => {
-  it("the newest record is the one whose rates are newest, else the one collected last", () => {
-    const d = (id: string, from: string | null, snapshot: string) => ({ id, rate_offered: { effective_from: from }, snapshot });
-    expect(latestDeposit([d("a", "2026-10-25", "2026-10-23"), d("b", "2026-11-09", "2026-11-09"), d("c", null, "2026-10-30")])?.id).toBe("b");
-    expect(latestDeposit([d("a", null, "2026-10-23"), d("c", null, "2026-10-30")])?.id).toBe("c");
-    expect(latestDeposit([])).toBeUndefined();
-  });
-
-  it("each of a bank's products is dated by its own records, not by another product's (Leumi)", () => {
+  it("each of a bank's products is dated by its own records, the oldest and the newest, not by another product's (Leumi)", () => {
     const page = buildInstitution("leumi")!;
     const records = loadDepositTerms().filter((d) => d.bank === "leumi");
     expect(page.groups.length).toBeGreaterThan(1);
     for (const g of page.groups) {
-      const own = latestDeposit(records.filter((d) => d.wrapper_id === g.wrapperId))!;
-      expect(g.asOf?.value).toBe(own.rate_offered.effective_from ?? own.snapshot);
+      const days = records.filter((d) => d.wrapper_id === g.wrapperId).map((d) => d.rate_offered.effective_from ?? d.snapshot).sort();
+      expect(g.asOf?.from.value).toBe(days[0]);
+      expect(g.asOf?.to.value).toBe(days.at(-1));
     }
     const current = page.groups.find((g) => g.wrapperId === "current-account")!;
     const deposits = page.groups.find((g) => g.wrapperId === "bank-deposit")!;
-    expect(current.asOf?.value).toBe("2026-11-15");
-    expect(current.asOf?.value).not.toBe(deposits.asOf?.value);
+    expect(current.asOf?.to.value).toBe("2026-11-15");
+    expect(current.asOf?.to.value).not.toBe(deposits.asOf?.to.value);
+  });
+
+  it("the overview's rate range is dated by the records it spans, not by a record of another linkage (every bank)", () => {
+    for (const id of new Set(loadDepositTerms().map((d) => d.bank))) {
+      for (const g of buildInstitution(id)?.groups ?? []) {
+        const ranged = rangeLinkage(g.products);
+        const range = ranged ? rateRange(ranged.products) : null;
+        if (!ranged || !range) continue;
+        const days = ranged.products.filter((p) => numberOf(p.rate) !== null).map((p) => String(p.asOf.value)).sort();
+        expect([range.asOf.from.value, range.asOf.to.value], `${id} ${g.wrapperId}`).toEqual([days[0], days.at(-1)]);
+      }
+    }
   });
 });
 

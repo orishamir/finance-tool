@@ -1,6 +1,7 @@
 // The companies page (/companies): every company at once beside one company in focus. What the loader ships for each company, and the
 // pure logic of the page's filters: which companies a type, a product and a search match, the counts the chips, the group heads and the
 // status line say, and the page's address. Nothing here reads files; lib/company-focus.server.ts builds the data at build.
+import type { DateSpan } from "./date-span";
 import { companyFocus as w } from "../copy";
 import { countPhrase, fmt } from "./format";
 import { normalize } from "./search";
@@ -38,8 +39,8 @@ export interface FocusProduct {
   fees?: { low: number; high: number } | null;
   /** A securities account: the names of its price list's groups of fees. */
   tariffGroups?: string[];
-  /** Deposits and savings plans: the bank's latest "נכון ליום" over them, ISO. */
-  asOf?: string | null;
+  /** Deposits and savings plans: the oldest and the newest "נכון ליום" of the bank's records of them, ISO. */
+  asOf?: DateSpan<string> | null;
   /** Where the arrow opens the product on the company's page. */
   href: string;
 }
@@ -48,7 +49,7 @@ export interface FocusProduct {
 export type FocusLine = { kind: "members"; names: string[] } | { kind: "tariff"; at: string } | { kind: "class"; text: string };
 
 /** The sourced values behind a company's figures, by company id: its line's date and each product's figures. */
-export type FocusFigures = Record<string, { line?: SiteValue; products: Record<string, { assets?: SiteValue | null; fees?: { low: SiteValue; high: SiteValue } | null; asOf?: SiteValue | null }> }>;
+export type FocusFigures = Record<string, { line?: SiteValue; products: Record<string, { assets?: SiteValue | null; fees?: { low: SiteValue; high: SiteValue } | null; asOf?: DateSpan<SiteValue> | null }> }>;
 
 export interface FocusCompany {
   /** The address of its page, `/companies/<id>`. */

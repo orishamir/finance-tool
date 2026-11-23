@@ -162,7 +162,9 @@ export interface GainBar {
  * Two (or more) amounts as bars from the same start, the difference between the two ends as a bracket with its own number
  * (D29 rule 6: a difference is drawn as a difference, never as a third bar that reads like a third option). Bars grow from the start edge.
  * `diffLabel` is a sentence with `{gap}` that says which side has more ("קרן ההשתלמות משאירה {gap} יותר"): the number sits in it under
- * the bracket, not in the amounts' column, where a bare "400 ₪" read like a third amount with no sign.
+ * the bracket, not in the amounts' column, where a bare "400 ₪" read like a third amount with no sign. `diff` is the gap between the two
+ * as the page writes them (`differenceOf`, method §13): where it is 0 there is no bracket, and `diffLabel` is a sentence that says the two
+ * are the same, with no `{gap}`.
  */
 export function GainBars({ bars, diff, diffLabel }: { bars: GainBar[]; diff: SiteValue | null; diffLabel: string }) {
   const nums = bars.map((b) => Math.max(0, Number(b.value.value) || 0));
@@ -184,7 +186,8 @@ export function GainBars({ bars, diff, diffLabel }: { bars: GainBar[]; diff: Sit
           </div>
         </div>
       ))}
-      {diff && bars.length === 2 && hi > lo && (
+      {diff && bars.length === 2 && Number(diff.value) === 0 && <p className="text-sm text-end">{diffLabel}</p>}
+      {diff && bars.length === 2 && Number(diff.value) !== 0 && hi > lo && (
         <div className="flex items-start gap-2">
           <div className="flex-1 min-w-0">
             <div className="relative h-3">

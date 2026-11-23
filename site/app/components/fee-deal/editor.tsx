@@ -6,8 +6,8 @@
 // editor holds. The toolbox stands in a column of its own where the host gives the editor the room (`TOOLBOX_COLUMN_PX`), and anywhere
 // narrower in a short sheet pinned to the foot of the screen, the host keeping room under its end for it; the sheet comes folded to its
 // groups' names with a deal, and unfolds when a fee or a case is opened. The columns and the reading are one thing: a fee under the pointer
-// or the focus in one is marked in the others, and a fee's name in the reading opens it (`FeeLinks`). A toolbox card adds ("חינם" alone
-// replaces a price's charge and its parts, places.ts): tapped, it goes to its one place in the open case, or with several places it is held, each place drawing the card's landing copy where its tap
+// or the focus in one is marked in the others, and a fee's name in the reading opens it (`FeeLinks`). A toolbox card only adds: tapped, it
+// goes to its one place in the open case, or with several places it is held, each place drawing the card's landing copy where its tap
 // would put it (the open case as that tap would leave it, `toolStep`), until one is tapped or the hold ends (Escape, "ביטול", the card
 // again, a tap anywhere else), the focus then back on the card (places.ts). On a computer a card dragged from the toolbox onto one of its
 // places, or onto another case where it has one place, does there what its tap does, each place that takes it showing the same copy
@@ -17,7 +17,7 @@
 // changes, or ten seconds pass while neither the focus nor the pointer is on it. Each fee carries a switch in its card's corner: a fee
 // switched off (lib/fee-deal/off.ts) is left out of the reading and of what it says is left out, read on the deal as it is counted
 // (`counted`), while the columns draw it dimmed, still open to edit, and everything that writes the deal sees the whole deal.
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { dealCases } from "../../copy";
 import { builder } from "../../lib/fee-deal/rows";
@@ -46,7 +46,7 @@ import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { MQ, useMedia, useWiderThan } from "../../lib/hooks";
 import { feeDeal as copy } from "../../copy";
-import { ThingMenu, ValueMenuSheet, holdFloors, type ReadPick } from "../kit";
+import { ThingMenu, ValueMenuSheet, type ReadPick } from "../kit";
 import { FeesColumn, Palette, SetupStrip, feeGroup, paletteItems, shownFeeOrder } from "./builder";
 import { DealColumns, PaletteColumn } from "./deal-columns";
 import { useSaid } from "./deal-notices";
@@ -294,22 +294,10 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
   // the held card's words: a line's own words while it is held, a part's card's words
   const heldWords = heldCard ? (heldCard.k === "line" ? heldCard.held : partLabel(heldCard)) : "";
   const holdLine = holdWords(heldWords, heldPlaces);
-  // while a card is held, the open case's prices keep their height at rest, as while one is carried (`holdFloors`), held before its
-  // landing copies are drawn and let go once the hold has ended
-  const floors = useRef<(() => void) | null>(null);
-  const holding = !!held;
-  useLayoutEffect(() => {
-    if (!holding) return;
-    return () => {
-      floors.current?.();
-      floors.current = null;
-    };
-  }, [holding]);
   // a step of the hold (places.ts `HoldStep`): the card held next, card `item` added at its place, and the focus on the earliest place's
   // landing copy, so Enter adds there and Tab goes round the others (use-let-go.ts), or back on the card
   const holdStep = (step: HoldStep | null, item?: string) => {
     if (!step) return;
-    if (step.held && !floors.current) floors.current = holdFloors();
     oc.hold.set(step.held);
     if (step.add && item && chosenFee) applyAt(item, chosenFee, caseId, step.add);
     const f = step.focus;

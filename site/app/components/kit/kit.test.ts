@@ -6,14 +6,16 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { TermCard } from "../provenance-sheets";
-import { AbroadNote, AddLine, Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
+import { AbroadNote, GainBars, AddLine, Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
 import { SHORT_IN_ROW, shortBillions } from "../../lib/format";
 import { gershayim, keepTitleWhole } from "./name";
 import { chipName } from "./choice";
-import { markLabels } from "./share-chart";
+import { markLabels, ShareChart } from "./share-chart";
+import { AmountLanes } from "./amount-lanes";
+import { computed } from "../../lib/value";
 
 const today = "2026-10-25";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -421,5 +423,55 @@ describe("ShareChart's mark labels", () => {
       800,
     );
     expect(n2!.lx + 60).toBeLessThanOrEqual(300);
+  });
+});
+
+describe("a thing with a lane and a layer in each group", () => {
+  // a fee that is a sum per period up to 100,000 and a share above: a lane and a layer in each group, both of the one fee
+  const range = { lo: 10_000, hi: 1_000_000 };
+  const lanes = [
+    { id: "fee:share", of: "fee", name: "SHARE-LANE", swatch: "", group: "share", parts: [{ id: "s", from: 100_000, to: null, label: "0.1%" }] },
+    { id: "fee:sum", of: "fee", name: "SUM-LANE", swatch: "", group: "sum", parts: [{ id: "f", from: 0, to: 100_000, label: "240" }] },
+  ];
+  const pressed = (at: number) => {
+    const out = renderToString(createElement(AmountLanes, { title: "", range, lanes, groups: [{ id: "share", label: "" }, { id: "sum", label: "" }], at }));
+    return [...out.matchAll(/<button[^>]*aria-label="([^"]*)"[^>]*aria-pressed="true"/g)].map((m) => m[1]);
+  };
+
+  it("lights only the part that charges at a step's top: the lower step's, up to and with its top", () => {
+    expect(pressed(100_000)).toEqual(["SUM-LANE: 240"]);
+    expect(pressed(100_001)).toEqual(["SHARE-LANE: 0.1%"]);
+    expect(pressed(50_000)).toEqual(["SUM-LANE: 240"]);
+  });
+
+  it("sets every layer of the thing apart, each near solid with its edge, the others stepping back", () => {
+    const points = [10_000, 100_000, 100_000.1, 1_000_000].map((at) => ({ at, share: 1, layers: [0.5, 0.25, 0.25] }));
+    const layers = [
+      { id: "fee:share", of: "fee", fill: "", edge: "EDGE-A", group: "share" },
+      { id: "fee:sum", of: "fee", fill: "", edge: "EDGE-B", group: "sum" },
+      { id: "other", fill: "", edge: "EDGE-C", group: "sum" },
+    ];
+    const out = renderToString(createElement(ShareChart, { range, points, top: 1, layers, strong: "fee", xTitle: "" }));
+    expect([...out.matchAll(/data-mark="area"/g)]).toHaveLength(3);
+    expect([...out.matchAll(/fill-opacity="([\d.]+)"/g)].map((m) => m[1])).toEqual(["0.8", "0.8", "0.2"]);
+    expect(out).toContain("EDGE-A");
+    expect(out).toContain("EDGE-B");
+    expect(out).not.toContain("EDGE-C");
+  });
+});
+
+describe("GainBars", () => {
+  const bar = (key: string, v: number) => ({ key, label: key, value: computed(v, "nis", "F-08", {}, { today }), tone: "value" as const });
+  const diff = (v: number) => computed(v, "nis", "F-08", {}, { today });
+  it("says the two are the same, with no gap, where their gap as written is 0 (method §13)", () => {
+    // 10,767.6 ₪ and 10,767.9 ₪ are both written "10,768 ₪": the gap is 0, never "0 ₪ more"
+    const out = html(createElement(GainBars, { bars: [bar("a", 10_767.6), bar("b", 10_767.9)], diff: diff(0), diffLabel: "SAME-LINE" }));
+    expect(out).toContain("SAME-LINE");
+    expect(out).not.toMatch(/>0 ₪</);
+  });
+  it("shows the gap in its line where it is not 0", () => {
+    const out = html(createElement(GainBars, { bars: [bar("a", 10_000), bar("b", 9_000)], diff: diff(1_000), diffLabel: "MORE {gap}" }));
+    expect(out).toContain("MORE");
+    expect(out).toContain("1,000 ₪");
   });
 });

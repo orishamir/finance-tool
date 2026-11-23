@@ -229,6 +229,18 @@ export class NotEvaluatedError extends Error {
 export const memberKindOf = (providerClass: string): NonNullable<SecuritiesInput["memberKind"]> => (providerClass === "bank" ? "bank" : "non-bank");
 
 /**
+ * F-20, a taxable fund's own tax on one month, per unit (TXS-44): the fund is a taxpayer of its own, its own losses are set against its own
+ * later gains, and the holder gets no credit or refund for its tax (circular 7/2003, "לא ינתן לבעל היחידה זיכוי או החזר"). `gain` is the
+ * month's gain per unit, `carried` the fund's loss per unit not yet set against a gain. A loss adds to what is carried and pays no tax; a gain
+ * pays `rate` on what is left of it after the carried loss. The tax is never below 0.
+ */
+export function fundLevelTaxOn(gain: number, carried: number, rate: number): { tax: number; carried: number } {
+  if (gain <= 0) return { tax: 0, carried: carried - gain };
+  const offset = Math.min(carried, gain);
+  return { tax: rate * (gain - offset), carried: carried - offset };
+}
+
+/**
  * F-04 The tax index of a fund held in a securities account: the exchange rate for a foreign-currency fund held directly (TXF-03), the CPI
  * for an Israeli fund's shekel units (TXS-14's first bullet). An Israeli fund that may be measured by a principal currency
  * (`principalCurrency`) is read under each reading of TXS OQ26 (`foreignInvestmentFundIndex`): the principal currency's exchange rate, or
@@ -532,12 +544,13 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   const spread = fund.halfSpread ?? 0;
   if (spread > 0) book.cite("ETF-06");
 
-  // F-20, taxable fund: the fund pays 15% of its nominal interest (TXS-12(b), derived); the holder pays nothing.
+  // F-20, taxable fund: the fund pays 15% of its nominal interest (TXS-12(b), derived), after its own losses (TXS-44); the holder pays nothing.
   let fundLevelRate = 0;
   if (fund.kind === "money-market-taxable") {
     fundLevelRate = book.rate("TXS-12", "taxable_fund_rate");
     book.label("derived", "TXS-12");
     book.cite("TXS-11");
+    book.cite("TXS-44");
     formulas.push("F-20");
   }
 
@@ -789,6 +802,8 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   let foreignTax = 0;
   let israeliDistTax = 0;
   let fundLevelTax = 0;
+  // the taxable fund's own loss not yet set against its gains, per unit (TXS-44)
+  let fundLossPerUnit = 0;
   let distThisYear = 0;
   let exitYearDist = 0;
   tally.point(0, 1, 0);
@@ -808,9 +823,13 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
     const before = units * nav;
     const dm = deltaAt(m);
     tally.fee("fund", (before * dm) / 12);
-    fundLevelTax += before * fundLevelRate * g;
-    nav *= 1 + g - dm / 12 - fundLevelRate * g;
-    tally.grow(1 + g - dm / 12 - fundLevelRate * g);
+    // F-20, taxable fund: the fund's tax on its month, per unit, after its own losses carried (TXS-44); never below 0
+    const fundTax = fundLevelTaxOn(nav * g, fundLossPerUnit, fundLevelRate);
+    fundLossPerUnit = fundTax.carried;
+    fundLevelTax += units * fundTax.tax;
+    const growth = 1 + g - dm / 12 - fundTax.tax / nav;
+    nav *= growth;
+    tally.grow(growth);
 
     // 4. Distributions (F-20): paid out of the fund's value; the net is reinvested as a new lot.
     if (fund.distribution && m % (12 / fund.distribution.perYear) === 0) {

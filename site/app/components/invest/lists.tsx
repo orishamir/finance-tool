@@ -38,7 +38,7 @@ import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
 import { ANCHOR, verdictOf } from "./receipt";
-import { AbroadNotes, allFunds, asideParts, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
+import { AbroadNotes, allFunds, asideParts, inTieSet, labelsOf, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
 
 /** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the receipt has it whole. */
 export const listName = (view: InvestView, name: string) => shortFundName(name, [pillName(view.index.name), ...(view.index.exposure?.names.he ?? []), ...(view.index.exposure?.names.en ?? []), ...(view.index.custom ? [view.index.custom.name] : [])]);
@@ -378,7 +378,8 @@ export function PairLists(props: ListsProps) {
       name
     );
   };
-  const diff = (n: number, f: FundWay, at: WayPrice) => nis(n, "F-65", sp.diffAbout, today, { [c.pair.input(f.name, c.pair.colLeft)]: at.value, [pickKey]: selAt.value });
+  // what a fund leaves against the pick, the two as the list writes them (method §13): its word and its order come from it
+  const diff = (f: FundWay, at: WayPrice) => differenceOf([c.pair.input(f.name, c.pair.colLeft), at.value], [pickKey, selAt.value], "F-65", { today, about: sp.diffAbout });
   // each ranked fund's spot in the chosen account's stretch: its pair's value, or, for a fund of the other kind, where its difference from the
   // pair in the receipt runs over the dollar's range (a segment, held inside the scale's ends); a fund on an open rule has none
   const spots: Record<string, StretchSpot> = {};
@@ -391,7 +392,8 @@ export function PairLists(props: ListsProps) {
     const at = f.byHouse[pick.house] as WayPrice;
     const selected = f.rec.id === pick.fund;
     const x = cross.get(f.rec.id);
-    const n = Math.round(at.valueN - selAt.valueN);
+    const gap = diff(f, at);
+    const n = typeof gap.value === "number" ? gap.value : 0;
     const figure = selected ? (
       chosenWord(chosen, "text-chart-by-fund")
     ) : x && range ? (
@@ -401,7 +403,7 @@ export function PairLists(props: ListsProps) {
         <Num animate value={x.hi} display={fmt.signedNisWhole} /> <HelpMark about={sp.diffAbout} text={`${c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}.`} />
       </span>
     ) : (
-      figureCell(n < 0 ? c.lists.funds.less : n > 0 ? c.lists.funds.more : null, <Num animate value={diff(n, f, at)} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : fmt.nisWhole(Math.abs(v)))} />, n)
+      figureCell(n < 0 ? c.lists.funds.less : n > 0 ? c.lists.funds.more : null, <Num animate value={gap} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : fmt.nisWhole(Math.abs(v)))} />, n)
     );
     const typed = isCustomFund(f.rec);
     return {

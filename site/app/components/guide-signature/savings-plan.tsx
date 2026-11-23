@@ -1,6 +1,6 @@
 // Savings plan (D29): when can I take my money out? A ladder: each monthly deposit is a bar from the month it goes in to the month its
-// lock ends (the plan's term from the deposit record; F-22 reading, an open question the page says), a draggable date, and what is
-// free and what is still locked on that date. The value of one finished deposit is an engine run of the plan's record.
+// lock ends (the plan's term from the deposit record; F-22's convention, method G-42, which the page says beside the figures), a draggable
+// date, and what is free and what is still locked on that date. The value of one finished deposit is an engine run of the plan's record.
 import { scaleLinear } from "d3-scale";
 import { useId, useMemo, useState } from "react";
 import { guideSignature as copy } from "../../copy";
@@ -8,7 +8,7 @@ import { fmt } from "../../lib/format";
 import { fact, factNumber, planModel } from "../../lib/guide-signature";
 
 import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, SegmentedControl, Stat, StatRow, Swatch, useGlidingNumbers, useWidth } from "../kit";
-import { IdText, Num, Ruled } from "../provenance";
+import { IdText, Num, Ruled, Term } from "../provenance";
 import { figure, inputSite, rulesOfBundle, SigAmountField, useSigInputs, typed, type VisualProps } from "./kit";
 
 const TOP = 22;
@@ -17,6 +17,9 @@ const AXIS = 24;
 const LADDER = 180;
 
 type Count = "6" | "12" | "24" | "36";
+
+/** The figures that rest on a lock per deposit, F-22's convention, carry G-42 in their sheets. */
+const LOCK_FLAGS = ["G-42"];
 
 export function SavingsPlanVisual({ data, today }: VisualProps) {
   const bundle = data.bundles["savings-plan"]!;
@@ -51,10 +54,10 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
   const dateIn = typed(m, "months", today, copy.plan.marker);
   const countIn = { [copy.plan.count]: typed(n, "count", today, copy.plan.count) };
   // the number of deposits counts only once the date is past the last of them (what is locked) or past the last one's end (what is free)
-  const free = model && at ? figure(at.freeValue, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn, ...(m - term + 1 >= n ? countIn : {}) }, today, copy.plan.about.free, rulesOfBundle(bundle)) : null;
+  const free = model && at ? figure(at.freeValue, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn, ...(m - term + 1 >= n ? countIn : {}) }, today, copy.plan.about.free, rulesOfBundle(bundle), LOCK_FLAGS) : null;
   // what is still locked is the deposits made and not yet free, at their face: no interest in it
-  const locked = model && at ? figure(at.lockedPrincipal, "nis", "F-22", { [copy.common.inputNames.monthly]: monthlyIn, [copy.common.inputNames.term]: termFact, [copy.plan.marker]: dateIn, ...(m >= n - 1 ? countIn : {}) }, today, copy.plan.about.locked) : null;
-  const lastUnlock = model ? figure(model.lastUnlock, "months", "F-22", { [copy.common.inputNames.term]: termFact, ...countIn }, today, copy.plan.about.last) : null;
+  const locked = model && at ? figure(at.lockedPrincipal, "nis", "F-22", { [copy.common.inputNames.monthly]: monthlyIn, [copy.common.inputNames.term]: termFact, [copy.plan.marker]: dateIn, ...(m >= n - 1 ? countIn : {}) }, today, copy.plan.about.locked, [], LOCK_FLAGS) : null;
+  const lastUnlock = model ? figure(model.lastUnlock, "months", "F-22", { [copy.common.inputNames.term]: termFact, ...countIn }, today, copy.plan.about.last, [], LOCK_FLAGS) : null;
 
   return (
     <div className="flex flex-col gap-5">
@@ -133,6 +136,14 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
           <Stat label={copy.plan.figures.locked}>{locked && <Num value={locked} />}</Stat>
           <Stat label={copy.plan.figures.last}>{lastUnlock && <Num value={lastUnlock} />}</Stat>
         </StatRow>
+        {/* what the three figures rest on, beside them: a lock per deposit, the method's convention (F-22, G-42) */}
+        <Callout tone="caution">
+          <IdText text={copy.plan.lock.assumption} /> {copy.plan.lock.general.before} <Term id="בנק ישראל">{copy.plan.lock.general.term}</Term>{" "}
+          {copy.plan.lock.general.read} <Ruled id="BANK-28">{copy.plan.lock.general.stated}</Ruled>
+          {copy.plan.lock.general.after} {copy.plan.lock.others} <Ruled id="BPN-10">{copy.plan.lock.hapoalim.stated}</Ruled>
+          {copy.plan.lock.hapoalim.after} <Ruled id="BANK-38">{copy.plan.lock.mizrahi.stated}</Ruled>
+          {copy.plan.lock.mizrahi.after} {copy.plan.lock.end}
+        </Callout>
       </div>
 
       <div className="flex flex-col gap-2 text-sm max-w-measure">
@@ -149,7 +160,6 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
           {copy.plan.onlyCollected.after}
         </p>
       </div>
-      <Callout tone="caution"><IdText text={copy.common.gaps.planLockPerDeposit ?? ""} /></Callout>
     </div>
   );
 }

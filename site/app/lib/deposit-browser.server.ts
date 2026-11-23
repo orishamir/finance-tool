@@ -67,7 +67,6 @@ export function buildDepositBrowser(): DbData {
   const known = new Set(Object.keys(loadRules()));
   const records = loadDepositTerms().filter((d) => d.wrapper_id === "bank-deposit");
   const offers = records.map((d) => offerOf(d, t, known)).filter((o): o is DbOffer => o !== null);
-  const read = records.reduce((m, d) => (d.rate_offered.checked > m ? d.rate_offered.checked : m), "");
   const ids = [...new Set(offers.map((o) => o.bank))];
   const banks: DbBank[] = ids
     .map((id) => ({ id, name: shortName(id, id) }))
@@ -77,7 +76,7 @@ export function buildDepositBrowser(): DbData {
   const p05 = parameters.find((p) => p.method_id === "P-05");
   if (!p11 || !p05) throw new Error("data/parameters: the deposits page needs P-11 (its amounts) and P-05 (the amount it starts at)");
   const steps = (p11 as unknown as { steps: ValueObject[] }).steps;
-  return { today: t, read, banks, offers, amounts: steps.map((v) => asParameter(p11, v)), start: p05Number(p05, "amount_now") };
+  return { today: t, banks, offers, amounts: steps.map((v) => asParameter(p11, v)), start: p05Number(p05, "amount_now") };
 }
 
 /** The rules the page's sheets cite: the deposits' kinds and the standard table. */

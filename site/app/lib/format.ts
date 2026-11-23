@@ -16,10 +16,11 @@ const dollars = numberFormat({ style: "currency", currency: "USD", minimumFracti
 const dollarsWhole = numberFormat({ style: "currency", currency: "USD", maximumFractionDigits: 0 });
 const euros = numberFormat({ style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pounds = numberFormat({ style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 2 });
-const eurosWhole = numberFormat({ style: "currency", currency: "EUR", maximumFractionDigits: 0 });
-const poundsWhole = numberFormat({ style: "currency", currency: "GBP", maximumFractionDigits: 0 });
-/** An amount with no cents to show: a whole amount never shows them ("60,000 $", not "60,000.00 $"). */
-const wholeCents = (v: number) => Math.round(Math.abs(v) * 100) % 100 === 0;
+/**
+ * A sum written with two decimals, its ".00" dropped: a whole amount never shows cents or agorot ("60,000 $", "10 ₪", not "10.00 ₪"). The
+ * cents are the formatter's own, rounded once on the value's shortest decimal, so 9.995 ₪ is "10 ₪" and never "10.00 ₪".
+ */
+const withCents = (f: Intl.NumberFormat, v: number): string => f.format(v).replace(/\.00(?!\d)/, "");
 // a price per share is a fraction of a cent (0.0035 $): up to four decimals
 const dollarsFine = numberFormat({ style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 4 });
 const shekelsFine = numberFormat({ style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 4 });
@@ -91,16 +92,16 @@ export function shortBillions(text: string, from = 1e9): string | null {
 export const fmt = {
   /** `1,234.50 ₪` (two decimals, method §13). */
   // a whole amount never shows agorot: "10 ₪", not "10.00 ₪"
-  nis: (v: number) => withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? currencyWhole : currency).format(v))),
+  nis: (v: number) => withMinus(plainMarks(withCents(currency, v))),
   /** `1,234 ₪`, whole shekels. `isolate`: wrapped in a left-to-right isolate, for an amount inside Hebrew text with no element of its own (none by default). */
   nisWhole: (v: number, { isolate = false }: SignedOptions = {}) => isolated(withMinus(plainMarks(currencyWhole.format(v))), { isolate }),
   /** `7 $`, `0.35 $`: a bound or a fee a foreign or bank price list prints in dollars; a whole amount shows no cents, as `nis` (wording.md). */
-  usd: (v: number) => withMinus(plainMarks((wholeCents(v) ? dollarsWhole : dollars).format(v))),
+  usd: (v: number) => withMinus(plainMarks(withCents(dollars, v))),
   /** `60,000 $`: a whole amount a law sets in dollars, with no cents. */
   usdWhole: (v: number) => withMinus(plainMarks(dollarsWhole.format(v))),
   /** `25 €` and `5.50 £`: a bound a price list prints in euros or pounds, for trades abroad; a whole amount shows no cents. */
-  eur: (v: number) => withMinus(plainMarks((wholeCents(v) ? eurosWhole : euros).format(v))),
-  gbp: (v: number) => withMinus(plainMarks((wholeCents(v) ? poundsWhole : pounds).format(v))),
+  eur: (v: number) => withMinus(plainMarks(withCents(euros, v))),
+  gbp: (v: number) => withMinus(plainMarks(withCents(pounds, v))),
   /** `22.70 מיליארד $`: a dollar amount of a billion or more in its short form, two decimals as `nisBillions`. */
   usdBillions: (v: number) => `${withMinus(billions.format(v / 1e9))} ${numbers.billion} $`,
   /** `20,000`, `3,844.80`: an amount written before its currency's word in a Hebrew line (an amount abroad, "20,000 ליש״ט"): whole, or with
@@ -219,12 +220,30 @@ const fixed = (digits: number, style: "decimal" | "percent"): Intl.NumberFormat 
  * rounded.
  */
 export function nisShown(v: number, state?: "sourced" | "computed" | "entered", parameter = false): string {
+  return showsWhole(v, state, parameter) ? fmt.nisWhole(v) : fmt.nis(v);
+}
+
+/** Whether `nisShown` writes an amount in whole shekels, else with its agorot. */
+function showsWhole(v: number, state: "sourced" | "computed" | "entered" | undefined, parameter: boolean): boolean {
   const derived = state === "computed" || state === "entered" || parameter;
   // what the site calculates (or the person entered) shows whole shekels, except a cost of a few shekels, where rounding changes the meaning;
   // a figure set by law or a price list keeps the agorot it prints
-  if (derived && (Math.abs(v) >= 10 || Number.isInteger(v))) return fmt.nisWhole(v);
-  if (Math.abs(v) >= 1000 && Number.isInteger(v)) return fmt.nisWhole(v);
-  return fmt.nis(v);
+  return (derived && (Math.abs(v) >= 10 || Number.isInteger(v))) || (Math.abs(v) >= 1000 && Number.isInteger(v));
+}
+
+/** The units of a sum of shekels that `formatValue` writes by the display rule (`nisShown`). */
+const SHEKEL_SUMS: ReadonlySet<string> = new Set(["nis", "nis_per_month", "nis_per_trade", "nis_per_transfer"]);
+
+/**
+ * The number a shekel amount reads as on the page: the number `formatValue` writes, read back from its text, so the two are one rounding
+ * (method §13). A figure worked out from shown amounts starts from these, so it agrees with them as written. Any other unit is returned
+ * as it is.
+ */
+export function amountShown(v: number, unit: string, state?: "sourced" | "computed" | "entered", parameter = false): number {
+  if (!SHEKEL_SUMS.has(unit)) return v;
+  const text = formatValue(v, unit, state, parameter);
+  const n = Number(text.replace(/[^\d.]/g, ""));
+  return text.includes("\u2212") ? -n : n;
 }
 
 /**
@@ -244,7 +263,7 @@ export const currencyOfUnit = (unit: string): string | null =>
  */
 export function typedSum(v: number, unit: string): string | undefined {
   const f = sumForms(unit);
-  return f ? withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? f.whole : f.cents).format(v))) : undefined;
+  return f ? withMinus(plainMarks(withCents(f.cents, v))) : undefined;
 }
 
 /**
@@ -281,6 +300,7 @@ export function formatValue(value: number | string | boolean | null, unit: strin
     if (dm && numbers.monthsHe[dm[2]!]) return `${dm[1]} ${numbers.monthsHe[dm[2]!]}`;
     return value;
   }
+  if (SHEKEL_SUMS.has(unit)) return state ? nisShown(value, state, parameter) : fmt.nis(value);
   switch (unit) {
     case "nis_per_share":
       return fmt.nisFine(value);
@@ -288,11 +308,6 @@ export function formatValue(value: number | string | boolean | null, unit: strin
       return fmt.eurFine(value);
     case "gbp_per_share":
       return fmt.gbpFine(value);
-    case "nis":
-    case "nis_per_month":
-    case "nis_per_trade":
-    case "nis_per_transfer":
-      return state ? nisShown(value, state, parameter) : fmt.nis(value);
     case "usd":
       return Math.abs(value) >= 1e9 ? fmt.usdBillions(value) : fmt.usd(value);
     case "usd_per_trade":
