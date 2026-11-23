@@ -654,3 +654,17 @@ describe("the periods a chart holds (F-110, F-112)", () => {
     expect(views.map((v) => heldOf(v).periods)).toEqual([["2026-11"], ["2027-08"], ["2028-01"]]);
   });
 });
+
+describe("a year that costs a smaller share of a larger value (F-123)", () => {
+  const custody = (extra: object): FeeDeal => ({ id: "deal-x", name: "", kind: "brokerage-account", fees: [{ id: "fee-c", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12, ...extra } }] }] });
+  const falls = (d: FeeDeal) => heldOf(readingOf(readDealFor(d, data.kinds, "2026-11-20"), data.fx).panels.held[0]!).falls;
+  it("is not said where the share stays flat over a stretch: 0.1% a year up to its 1,000 ₪ maximum, or above its 900 ₪ minimum", () => {
+    expect(falls(custody({ max: typed(1000) }))).toBe(false);
+    expect(falls(custody({ min: typed(900) }))).toBe(false);
+  });
+  it("is said where a sum is charged beside the share, so the share falls at every value", () => {
+    const d = custody({ min: typed(900) });
+    d.fees.push({ id: "fee-a", kind: "current_account", stages: [{ price: { form: "sum", amount: typed(10), every: 1 } }] });
+    expect(falls(d)).toBe(true);
+  });
+});

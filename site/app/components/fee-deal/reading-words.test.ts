@@ -96,3 +96,16 @@ describe("a maximum in the headline, beside other fees", () => {
     expect(drawn(deal([custody]))).toContain(w.held.mark.maxStart.after);
   });
 });
+
+describe("one number on an action (charts.md)", () => {
+  const dollars = deal([{ id: "fee-t", kind: "trade", stages: [{ price: { form: "perAction", amount: typed(11), currency: "USD" } }] }] as FeeDeal["fees"]);
+  it("names a purchase and a sale where the tab is both, and the exchange rate a sum in dollars is worked out at", () => {
+    const shown = drawn(dollars);
+    expect(shown).toContain(`${w.action.oneNoun["trade:all"]}, בכל גודל`);
+    expect(shown).toContain(w.chart.rate.one(feeDeal.panel.currencies.USD!));
+  });
+  it("rests on the rate it converts at", () => {
+    const [view] = readingOf(readDealFor(dollars, data.kinds, TODAY), data.fx).panels.actions[0]!.views;
+    expect(view && "one" in view && view.one.one?.value.computed_from?.inputs).toHaveProperty("deal:rate:USD");
+  });
+});

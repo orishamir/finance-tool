@@ -120,12 +120,12 @@ function laneOf(l: Lane, saved: boolean): AmountLane {
 
 // ---------------------------------------------------------------- around a chart
 
-/** The line beside a chart with a sum in another currency: the rate of F-84 it enters the chart at, and its day. */
-function RateLine({ currency, rate, fx }: { currency: string; rate: SiteValue; fx: FxSnapshot | null }) {
+/** The line beside a chart, or one number (`one`), with a sum in another currency: the rate of F-84 it is worked out at, and its day. */
+function RateLine({ currency, rate, fx, one = false }: { currency: string; rate: SiteValue; fx: FxSnapshot | null; one?: boolean }) {
   const r = w.chart.rate;
   return (
     <p>
-      {r.before(copy.panel.currencies[currency] ?? currency)}
+      {(one ? r.one : r.before)(copy.panel.currencies[currency] ?? currency)}
       <Num value={rate} />
       {r.per[currency] ?? ""}
       {fx ? <When iso={fx.date} lead={r.date} /> : null}.
@@ -194,8 +194,8 @@ function OneHeadline({ one, noun, held }: { one: OneView; noun: string; held: bo
   );
 }
 
-/** Each fee's price under a one-number panel. */
-function OnePrices({ one, saved }: { one: OneView; saved: boolean }) {
+/** Each fee's price under a one-number panel, and the rate a sum in another currency is worked out at. */
+function OnePrices({ one, saved, fx }: { one: OneView; saved: boolean; fx: FxSnapshot | null }) {
   if (one.prices.length === 0) return null;
   return (
     <ul className="flex flex-col gap-1 text-sm text-muted-foreground">
@@ -204,6 +204,12 @@ function OnePrices({ one, saved }: { one: OneView; saved: boolean }) {
           <FeeOpen fee={p.fee.ref} after={copy.price.sep} /> <PriceWords price={p.price} kind={p.fee.ref.kind} saved={saved} />
         </li>
       ))}
+      {one.one &&
+        one.rates.map((r) => (
+          <li key={r.currency}>
+            <RateLine currency={r.currency} rate={r.rate} fx={fx} one />
+          </li>
+        ))}
     </ul>
   );
 }
@@ -580,14 +586,14 @@ function ActionPanel({ reading, fx, saved, unitPrice, onUnitPrice, left }: { rea
           ) : undefined
         }
       >
-        {"chart" in view ? <ActionHeadline view={view.chart} tab={tab} /> : "one" in view ? <OneHeadline one={view.one} noun={tabWord(w.action.noun, tab)} held={false} /> : "unpriced" in view ? null : w.action.tabs[tab.key]}
+        {"chart" in view ? <ActionHeadline view={view.chart} tab={tab} /> : "one" in view ? <OneHeadline one={view.one} noun={w.action.oneNoun[tab.key] ?? tabWord(w.action.noun, tab)} held={false} /> : "unpriced" in view ? null : w.action.tabs[tab.key]}
       </PanelHead>
       {tab.views.length > 1 && <PeriodChoice periods={periods} reading={reading} value={k} onChange={setK} />}
       {reading.unitPrice && unitFee && <UnitPriceField unit={reading.unitPrice} fee={unitFee} value={unitPrice} onChange={onUnitPrice} />}
       {"chart" in view ? (
         <ActionChart key={`${tab.key}:${k}`} view={view.chart} tab={tab} stated={reading.panels.stated[tab.key] ?? []} fx={fx} left={left[tab.key]} />
       ) : "one" in view ? (
-        <OnePrices one={view.one} saved={saved} />
+        <OnePrices one={view.one} saved={saved} fx={fx} />
       ) : "unpriced" in view ? (
         <UnpricedBody view={view.unpriced} tab={tab} />
       ) : (
@@ -808,7 +814,7 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
   );
 }
 
-function HeldPanel({ reading, saved, left }: { reading: Reading; saved: boolean; left: LeftOut | undefined }) {
+function HeldPanel({ reading, saved, fx, left }: { reading: Reading; saved: boolean; fx: FxSnapshot | null; left: LeftOut | undefined }) {
   const views = reading.panels.held;
   const [chosen, setK] = useState(0);
   // an edit can join the periods under the one chosen: the last one left stands
@@ -823,7 +829,7 @@ function HeldPanel({ reading, saved, left }: { reading: Reading; saved: boolean;
       {"chart" in view ? (
         <HeldChart key={k} view={view.chart} stated={reading.panels.stated.held ?? []} saved={saved} left={left} />
       ) : "one" in view ? (
-        <OnePrices one={view.one} saved={saved} />
+        <OnePrices one={view.one} saved={saved} fx={fx} />
       ) : (
         <Undrawn view={view.undrawn} />
       )}
@@ -1151,7 +1157,7 @@ export function ReadingCards({ reading, saved, fx, left, foreign = false, none =
     <TypedPlain className="nums-wide flex flex-col gap-4">
       {left && placed && <LeftOutList left={placed.rest} empty={none} />}
       {read && reading.panels.actions.length > 0 && <ActionPanel reading={reading} fx={fx} saved={saved} unitPrice={unitPrice} onUnitPrice={onUnitPrice} left={placed?.byPanel ?? {}} />}
-      {read && reading.panels.held.length > 0 && <HeldPanel reading={reading} saved={saved} left={placed?.byPanel.held} />}
+      {read && reading.panels.held.length > 0 && <HeldPanel reading={reading} saved={saved} fx={fx} left={placed?.byPanel.held} />}
       {(timeline || law) && (
         <div className={cx("grid items-start gap-4", timeline && law && "lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]")}>
           {timeline && <TimelineCard reading={reading} saved={saved} />}

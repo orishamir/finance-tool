@@ -2440,6 +2440,8 @@ export const feeDeal = {
       line: { sep: ": ", and: ", " },
       /** Where nothing varies: one number, a share or a sum, in every size. */
       one: { share: " מכל {noun}, בכל גודל", sum: " לכל {noun}, בכל גודל" },
+      /** The action in the one number's words, by its tab's key, where it is not the noun: a tab of both sides costs the same on each. */
+      oneNoun: { "trade:all": "קנייה או מכירה" } as Record<string, string>,
     },
     /** What a year of holding costs by the amount held (F-112, F-123, F-124, F-125). */
     held: {
@@ -2494,7 +2496,8 @@ export const feeDeal = {
     },
     /** Around a chart: the rate a sum in another currency enters it at, a chart that cannot be drawn, and the unit's price a sum per unit needs. */
     chart: {
-      rate: { before: (plural: string) => `סכום ב${plural} נכנס לגרף בשקלים: `, per: { USD: " לדולר", EUR: " לאירו", GBP: " ללירה שטרלינג" } as Record<string, string>, date: ", לפי השער של " },
+      /** The rate a sum in another currency is worked out at: on a chart (`before`), or in one number with no chart (`one`). */
+      rate: { before: (plural: string) => `סכום ב${plural} נכנס לגרף בשקלים: `, one: (plural: string) => `סכום ב${plural} מחושב בשקלים: `, per: { USD: " לדולר", EUR: " לאירו", GBP: " ללירה שטרלינג" } as Record<string, string>, date: ", לפי השער של " },
       undrawn: (plural: string) => `אין כאן גרף: מינימום או מקסימום בעסקה הוא ב${plural}, ולאתר אין עכשיו שער שלו.`,
       unitPrice: "מחיר יחידה",
       unitWhy: "{name} היא לפי יחידות, ולכן הגרף צריך את מחיר היחידה.",
