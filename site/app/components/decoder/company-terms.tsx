@@ -11,7 +11,7 @@ import { companyTermsAnchor, noCompanyAnchor, noPageAnchor } from "../../lib/sco
 import { useProvenanceData } from "../provenance";
 import { RuleCard } from "../provenance-sheets";
 import { useHash } from "../../lib/address";
-import { Card, FoldGroup, Section, gershayim } from "../kit";
+import { Card, FoldGroup, Section, MixedName } from "../kit";
 
 /** Scrolls to the element the address names once it exists (its fold opened after the first paint). */
 function useScrollToHash(hash: string, ready: boolean) {
@@ -74,7 +74,7 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
         <Section id={companyTermsAnchor} title={scopeWords.noPage.title}>
           <div className="flex flex-col gap-3">
             {companies.map((c) => (
-              <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className="anchor-target" title={<bdi>{gershayim(c.name)}</bdi>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
+              <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className="anchor-target" title={<MixedName>{c.name}</MixedName>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
                 <Cards ids={c.ids} company={c.id} idOf={cardId(c.id)} />
               </FoldGroup>
             ))}

@@ -15,7 +15,7 @@ import { pensionModel } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, type SiteValue } from "../../lib/value";
-import { amountCheck, Callout, DotLine, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
+import { amountCheck, Callout, DotLine, NumberField, PercentField, Sentence, Stat, StatRow, MixedName } from "../kit";
 import { IdRef, Num, Ruled, Term } from "../provenance";
 import { figure, Gap, inputSite, rulesOfBundle, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
@@ -248,7 +248,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         )}
         {trackName && trackFee ? (
           <Sentence tone="muted">
-            {copy.pension.feesLine.before} ״<bdi>{String(trackName.value)}</bdi>״: <Num value={trackFee} /> {copy.pension.feesLine.balance}
+            {copy.pension.feesLine.before} ״<MixedName>{String(trackName.value)}</MixedName>״: <Num value={trackFee} /> {copy.pension.feesLine.balance}
             {depositFee ? (
               <>
                 {" "}

@@ -230,7 +230,8 @@ export function DepositList({ ranked, linked, ctx, sort, onSort, foot }: { ranke
           },
         ]
       : []),
-    { id: "amount", head: head("min", t.columns.amount), width: 12.5, sort: onSort ? state("min") : undefined },
+    // a range breaks between its two ends, and before "(לא כולל)", rather than run into the next cell
+    { id: "amount", head: head("min", t.columns.amount), width: 12.5, wrap: true, sort: onSort ? state("min") : undefined },
     {
       id: "access",
       head: (

@@ -5,7 +5,7 @@ import { Link, useLoaderData } from "react-router";
 import { guideIndex as copy, limitedBondFund, mutualFunds, site } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { PageShell } from "../components/shell";
-import { Card, ChipList, cx, gershayim, GroupHead, PageHead, RowArrow, RowList, Section } from "../components/kit";
+import { Card, ChipList, cx, gershayim, GroupHead, PageHead, RowArrow, RowList, Section, MixedName } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
 
 export async function loader() {
@@ -74,7 +74,7 @@ function InstrumentCard({ href, name, line, plain, quiet }: { href: string; name
             <span className="font-semibold md:text-lg">{gershayim(name)}</span>
             {plain && (
               <span className="text-sm">
-                {copy.alsoCalled} <bdi>{gershayim(plain)}</bdi>
+                {copy.alsoCalled} <MixedName>{plain}</MixedName>
               </span>
             )}
             {line && <span className="text-sm text-muted-foreground">{gershayim(line)}</span>}

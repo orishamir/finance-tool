@@ -817,8 +817,9 @@ in the kit fits is added to the kit.
   terms are the bank's.
 - `HelpMark`: a "?" beside a head or a label, only where its card says what the label leaves out; `tone="caution"` where what it opens
   holds a catch about the figure, `note` ("!") where it opens a fact added to the figure rather than the label's meaning.
-- `MixedName`: every fund, house or manager name inside Hebrew text; a plain `<bdi>` takes its direction from the first letter and is
-  right only for a name known to be Latin or a number (a ratchet).
+- `MixedName`: every fund, house or manager name, and every document title or other text from the data, inside Hebrew text (`DocLink`
+  draws a title with it); a plain `<bdi>` takes its direction from the first letter and is right only for a name known to be Latin or a
+  number (a ratchet, and the layout check's `direction` check on the built pages).
 - `keepTitleWhole`: a document's Hebrew title as drawn in a source line.
 - `When`: every date a page writes in its text (guard 21); a month a document prints alone is said in words, never padded with an
   invented first day.
@@ -826,6 +827,7 @@ in the kit fits is added to the kit.
 - `TariffDate`: every price list's date line, what the document prints (a misprinted date as printed, marked "(כך במקור)"); never a
   caution-coloured "no date" of a page's own.
 - `AnchorSpread`, `AmountRange`: a deposit's variable rate and the amounts the bank takes, the same on every page that shows a deposit.
+  A table column of amounts is `wrap`: a range breaks between its two ends, and before "(לא כולל)", rather than run into the next cell.
 - `CompanyLinks`: a lead and the companies it is about (D30), reached through `VariesByCompany`.
 - `PrintedText`, `PrintedQuotes`, `DoubtNote`: a record's own Hebrew, a document's terms quoted word for word, a record's open doubt;
   never a bare `{x.conditions}` (guard 15). The record's English working notes never reach a page.

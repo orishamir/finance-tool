@@ -10,7 +10,7 @@ import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { Num, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { NoPageCompanyTerms } from "../components/decoder/company-terms";
-import { Card, cx, Disclosure, DocLink, FoldGroup, gershayim, MixedName, PageHead, Section, Sentence, TariffDate, TextLink, When } from "../components/kit";
+import { Card, cx, Disclosure, DocLink, FoldGroup, MixedName, PageHead, Section, Sentence, TariffDate, TextLink, When } from "../components/kit";
 import { fmt } from "../lib/format";
 import type { DocumentCard, DocumentSection } from "../lib/documents.server";
 import { isPdfUrl } from "../lib/sources";
@@ -66,14 +66,14 @@ export function meta({ location }: MetaPlace) {
 const firstRules = 6;
 
 function Latin({ text, english }: { text: string; english: boolean }) {
-  return english ? <bdi dir="ltr">{text}</bdi> : <bdi>{text}</bdi>;
+  return english ? <bdi dir="ltr">{text}</bdi> : <MixedName>{text}</MixedName>;
 }
 
 /** A rule that rests on a document: its title is the link to the rule; the code stays in the rule's card. */
 function RuleLink({ rule }: { rule: DocumentCard["rules"][number] }) {
   return (
     <TextLink look="line" to={rule.href}>
-      <bdi>{gershayim(rule.title)}</bdi>
+      <MixedName>{rule.title}</MixedName>
     </TextLink>
   );
 }
@@ -92,7 +92,7 @@ function DocCard({ doc }: { doc: DocumentCard }) {
         <Latin text={doc.title} english={doc.titleEnglish} />
       </h3>
       <p className="text-sm text-muted-foreground">
-        <bdi>{doc.publisher}</bdi> · {copy.kinds[doc.kind] ?? copy.kinds.other}
+        <MixedName>{doc.publisher}</MixedName> · {copy.kinds[doc.kind] ?? copy.kinds.other}
       </p>
       <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <DocLink source={doc}>
@@ -150,7 +150,7 @@ function DocRows({ rows }: { rows: DocumentCard[] }) {
             <Latin text={doc.title} english={doc.titleEnglish} />
           </DocLink>
           <span className="text-muted-foreground">
-            <bdi>{doc.publisher}</bdi>
+            <MixedName>{doc.publisher}</MixedName>
           </span>
           {doc.strength !== "primary" && <StrengthLabel strength={doc.strength} />}
           <ul className="basis-full flex flex-col">
@@ -287,7 +287,7 @@ export default function Documents() {
                 <ul className="grid gap-4 lg:grid-cols-2 pt-2">
                   {data.funds.map((f) => (
                     <Card as="li" key={f.key} className="flex flex-col gap-1 min-w-0">
-                      <h4 className="text-lg font-semibold"><bdi>{f.title}</bdi></h4>
+                      <h4 className="text-lg font-semibold"><MixedName>{f.title}</MixedName></h4>
                       <p className="text-sm text-muted-foreground"><bdi>{f.line}</bdi></p>
                       <DataLink href={f.href} />
                     </Card>
@@ -310,14 +310,14 @@ export default function Documents() {
               <ul className="grid gap-4 lg:grid-cols-2 pt-2">
                 {data.series.map((s) => (
                   <Card as="li" key={s.key} className="flex flex-col gap-1 min-w-0 [overflow-wrap:anywhere]">
-                    <h4 className="text-lg font-semibold"><bdi>{s.title}</bdi></h4>
+                    <h4 className="text-lg font-semibold"><MixedName>{s.title}</MixedName></h4>
                     {s.valueDate && (
                       <Sentence size="sm" tone="muted">
                         {s.value ? <>{d.latest}: <Num value={s.value} /> </> : <>{copy.checked} </>}
                         {s.value ? <>(<When iso={s.valueDate} />)</> : <When iso={s.valueDate} />}
                       </Sentence>
                     )}
-                    {s.attribution && <p className={cx("text-xs text-muted-foreground")}><bdi>{s.attribution}</bdi></p>}
+                    {s.attribution && <p className={cx("text-xs text-muted-foreground")}><MixedName>{s.attribution}</MixedName></p>}
                   </Card>
                 ))}
               </ul>

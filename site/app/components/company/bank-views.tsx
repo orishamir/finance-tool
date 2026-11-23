@@ -274,7 +274,7 @@ export function BankTable({ kind, products, known, asOf }: { kind: "deposits" | 
     { id: "name", head: deposits ? w.deposits.cols.deposit : w.deposits.cols.plan },
     ...(!deposits && !shared.term ? [{ id: "term", head: copy.labels.term, width: 7 }] : []),
     ...(!shared.rateType ? [{ id: "rateType", head: copy.labels.rateType, width: 6.5 }] : []),
-    ...(amountColumn ? [{ id: "amount", head: w.deposits.cols.amount, width: 10 }] : []),
+    ...(amountColumn ? [{ id: "amount", head: w.deposits.cols.amount, width: 10, wrap: true }] : []),
     ...(bands
       ? bands.map((b) => ({ id: `r:${b.key}`, head: <AmountRange min={b.min} max={b.max} fromOnly={fromOnly} edges={b.edges} />, band: w.deposits.cols.rateBand, bandHead: <RateHead label={w.deposits.cols.rateBand} deposits={deposits} />, width: RATE_REM[kind], dim: amount !== ALL && amount !== b.key }))
       : [{ id: "rate", head: <RateHead label={w.deposits.cols.rate} deposits={deposits} />, width: RATE_REM[kind] }]),

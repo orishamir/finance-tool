@@ -10,6 +10,9 @@
 //            "₪" ran into the next step's head at 1440), at every width;
 //   overlap  two pieces of text drawn over each other inside one card (`.bg-card`) or one table head (`thead`), at every width (2026-11-22:
 //            a company page's fee cap caption, "התקרה בתקנות אחרי גיל 21: 1.05%", ran over the dates caption beside it at 1440);
+//   direction  words with Hebrew in them, in a <bdi> or under dir="auto" with no direction of their own, that start with a Latin letter: the
+//            browser takes the direction from the first letter and lays the Hebrew out left to right (2026-11-24: a deposit's label sheet
+//            cited "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות…)" read from the left). The kit's MixedName sets the direction; at every width.
 //   warning  a caution or blocked callout in a figure's sheet that the smallest phone (320 × 568) shows only after scrolling (2026-11-08:
 //            Mercantile's doubt sat last in its sheet, under the source details). Checked on the first figures of each page that carry a
 //            doubt or a lock.
@@ -1049,6 +1052,9 @@ async function selfTest() {
   });
   if (!(await page.evaluate(duplicateIds)).some((d) => d.id === "planted-dup")) missed.push("id");
   await page.evaluate(() => document.querySelectorAll("#planted-dup").forEach((el) => el.remove()));
+  await page.evaluate(() => document.querySelector("main").append(Object.assign(document.createElement("bdi"), { id: "planted-direction", textContent: "ONE ZERO, טבלת הפיקדונות" })));
+  if (!(await page.evaluate(backwardHebrew)).some((b) => b.startsWith("ONE ZERO"))) missed.push("direction");
+  await page.evaluate(() => document.getElementById("planted-direction").remove());
   const doubted = page.locator("main button.num-doubt").first();
   if (await doubted.count()) {
     await doubted.scrollIntoViewIfNeeded();
@@ -1151,6 +1157,7 @@ async function checkPage(page, path, width) {
     for (const o of (await page.evaluate(overlaps)).slice(0, 6)) add({ check: "overlap", id: o.id, detail: `"${o.a}" and "${o.b}" are drawn over each other (${o.where})` });
     for (const x of await page.evaluate(pokes)) add({ check: "poke", id: x.id, detail: `${x.where} scrolls sideways ${x.by} px past what is in it: a press area or a frame pokes out of it` });
     for (const d of await page.evaluate(duplicateIds)) add({ check: "id", id: d.id, detail: `the id "${d.id}" names ${d.n} elements: an address's #${d.id} lands on the first only, and a label naming it reads the first` });
+    for (const b of await page.evaluate(backwardHebrew)) add({ check: "direction", id: b, detail: `"${b}" has Hebrew in it but starts with a Latin letter, in a <bdi> or dir="auto" with no direction of its own: it is laid out left to right; draw it with the kit's MixedName` });
   };
   await look();
   // a closed tab card's panel is not in the page (the index page's "לפני שמחליטים"): each is opened in turn and the page looked at again,
@@ -1288,6 +1295,27 @@ function cutWords() {
 // Runs in the page. Every visible glossary term (`.term`, white-space: nowrap) wider than its column: the content box of the nearest ancestor
 // laid out as a block (not inline, not `contents`), which is where its line wraps. A term in a box that scrolls sideways on purpose is left
 // out. One finding for each term's words.
+/**
+ * Words with Hebrew in them whose direction the browser takes from a first letter that is Latin (`direction` above): every <bdi> and
+ * dir="auto" with no direction of its own. The first strong letter is looked for as the browser does, past the isolates inside (a nested
+ * <bdi> or an element with its own dir), which do not count. Returns the words, up to 60 characters each.
+ */
+function backwardHebrew() {
+  const HEB = /[\u0590-\u05FF]/;
+  const STRONG = /[A-Za-z\u00C0-\u024F\u0590-\u05FF]/;
+  const found = new Set();
+  for (const el of document.querySelectorAll('bdi:not([dir]), [dir="auto"]')) {
+    if (!HEB.test(el.textContent)) continue;
+    const walk = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => (n !== el && n.nodeType === 1 && (n.tagName === "BDI" || n.hasAttribute("dir")) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+    });
+    let first = null;
+    for (let n = walk.nextNode(); n && !first; n = walk.nextNode()) if (n.nodeType === 3) first = n.data.match(STRONG)?.[0] ?? null;
+    if (first && !HEB.test(first)) found.add(el.textContent.trim().replace(/\s+/g, " ").slice(0, 60));
+  }
+  return [...found];
+}
+
 function wideTerms() {
   const out = [];
   const seen = new Set();

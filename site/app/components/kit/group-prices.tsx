@@ -13,6 +13,7 @@ import { isPdfUrl, sourceHref, type CitedPlace } from "../../lib/sources";
 import { DocLink } from "./doc-link";
 import { TableCols } from "./table-cols";
 import { Tag } from "./tag";
+import { MixedName } from "./name";
 
 type Groups = NonNullable<FeesSnapshot["groups"]>;
 export type GroupEntry = Groups["entries"][number];
@@ -179,18 +180,18 @@ export function GroupPriceRows({ entries, sources, className, headHelp }: { entr
                 return (
                   <tr key={e.name_he}>
                     <td className={cx("[overflow-wrap:anywhere]", own)}>
-                      <bdi>{e.who_short_he ?? e.name_he}</bdi>
-                      {sources && e.who_short_he && e.who_short_he !== e.name_he && <span className="block text-xs text-muted-foreground"><bdi>{e.name_he}</bdi></span>}
+                      <MixedName>{e.who_short_he ?? e.name_he}</MixedName>
+                      {sources && e.who_short_he && e.who_short_he !== e.name_he && <span className="block text-xs text-muted-foreground"><MixedName>{e.name_he}</MixedName></span>}
                     </td>
                     {i === 0 && (
                       <td rowSpan={b.entries.length} className={cx("[overflow-wrap:anywhere]", sources && "border-b-0")}>
-                        <bdi>{b.cheaper}</bdi>
+                        <MixedName>{b.cheaper}</MixedName>
                         <FundMark b={b} />
                       </td>
                     )}
                     {(!b.sameEnd || i === 0) && (
                       <td rowSpan={b.sameEnd ? b.entries.length : undefined} className={cx("[overflow-wrap:anywhere]", b.sameEnd ? sources && "border-b-0" : own)}>
-                        <bdi>{ends(e)}</bdi>
+                        <MixedName>{ends(e)}</MixedName>
                       </td>
                     )}
                   </tr>

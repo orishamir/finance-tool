@@ -47,9 +47,10 @@ function RulesListSheet({ ids, name, headId }: { ids: readonly string[]; name?: 
 
 const asSourced = (r: RuleRecord): SourcedRule => r as unknown as SourcedRule;
 
-/** Text that may hold Latin letters or digits: isolated so it keeps its order inside Hebrew. */
+/** Text that may hold Latin letters or digits: isolated so it keeps its order inside Hebrew. Words with Hebrew in them are laid out right
+ *  to left whatever letter they start with: a plain <bdi> took "LAYA: דף הבית" left to right from its first letter. */
 function Iso({ children, ltr }: { children: ReactNode; ltr?: boolean }) {
-  return <bdi dir={ltr ? "ltr" : undefined}>{children}</bdi>;
+  return <bdi dir={ltr ? "ltr" : typeof children === "string" && hasHebrew(children) ? "rtl" : undefined}>{children}</bdi>;
 }
 
 /**

@@ -10,6 +10,7 @@ import { useGlidingNumbers, useGlidingRows } from "./chart-glide";
 import { ChartTip, pickDim, useChartPick } from "./chart-interact";
 import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
 import { useWidth } from "./marker";
+import { MixedName } from "./name";
 
 const H = 250;
 /** Air above the highest figure. */
@@ -166,10 +167,10 @@ export function PairBars({ items: goal, format, label, fillA, fillB, nameA, name
             <bdi dir="ltr">{read.year}</bdi>
           </span>
           <span className="block">
-            <bdi>{nameA}</bdi>: <bdi dir="ltr">{format(read.a)}</bdi>
+            <MixedName>{nameA}</MixedName>: <bdi dir="ltr">{format(read.a)}</bdi>
           </span>
           <span className="block">
-            <bdi>{nameB}</bdi>: <bdi dir="ltr">{format(read.b)}</bdi>
+            <MixedName>{nameB}</MixedName>: <bdi dir="ltr">{format(read.b)}</bdi>
           </span>
         </ChartTip>
       )}

@@ -137,7 +137,7 @@ function NameCell({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
     <span className="flex flex-col items-start gap-1">
       <span className="flex flex-col items-start gap-0.5">
         <TextLink tone="plain" to={companyPath(company?.id ?? "")} className="font-semibold">
-          <bdi>{gershayim(x.companyName)}</bdi>
+          <MixedName>{x.companyName}</MixedName>
         </TextLink>
         {company && (
           <span className={mutedWord}>
@@ -232,7 +232,7 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
           ) : (
             <>
               <span className="font-semibold">
-                <bdi>{gershayim(x.companyName)}</bdi>
+                <MixedName>{x.companyName}</MixedName>
               </span>
               {showsShortName(x) && (
                 <span>
@@ -454,10 +454,10 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       heading: g.by === "kind" || fixed ? undefined : {
         title: g.companyId ? (
           <TextLink tone="plain" to={companyPath(g.companyId)} className="inline-flex items-center min-h-target min-w-11 md:min-h-0 md:min-w-0 md:tap-area">
-            <bdi>{g.title}</bdi>
+            <MixedName>{g.title}</MixedName>
           </TextLink>
         ) : (
-          <bdi>{g.title}</bdi>
+          <MixedName>{g.title}</MixedName>
         ),
         line: <GroupLine g={g} />,
       },

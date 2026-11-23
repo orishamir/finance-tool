@@ -91,22 +91,11 @@ patterns["a row of rule chips"] = {
 };
 
 // a name in a plain <bdi> takes its direction from its first letter, so a Hebrew name that starts with Latin
-// letters ("MTF סל (4D) S&P 500") was laid out left to right and read backwards. Names go through MixedName; the indices page is done.
+// letters ("MTF סל (4D) S&P 500") was laid out left to right and read backwards. Names go through MixedName; none is left (2026-11-24).
 patterns["a name in a plain bdi"] = {
   count: (s) => (s.match(/<bdi>\{[^}]*([nN]ame|manager)[^}]*\}<\/bdi>/g) ?? []).length,
   kit: "MixedName (a name that may mix Hebrew and Latin)",
-  allowed: {
-    "components/decoder/company-terms.tsx": 1,
-    "components/decoder/institutions/brokerage-card.tsx": 1,
-    "components/guide-signature/current-account.tsx": 3,
-    "components/guide-signature/keren-hishtalmut.tsx": 2,
-    "components/guide-signature/makam.tsx": 1,
-    "components/guide-signature/pension.tsx": 1,
-    "components/guide/sections.tsx": 1,
-    "components/tracks/list.tsx": 2,
-    "routes/company.tsx": 1,
-    "routes/track.tsx": 2,
-  },
+  allowed: {},
 };
 
 // a text action is the kit's Button `quiet`, and a choice that changed something else, with the way back, is the

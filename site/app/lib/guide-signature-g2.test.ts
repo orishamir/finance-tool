@@ -3,6 +3,7 @@
 import { createElement, Fragment } from "react";
 import { describe, expect, it } from "vitest";
 import { html } from "../components/invest/render-fixtures";
+import { keepIndexWhole } from "../components/kit/name";
 import { guideContent } from "../content/guide";
 import { calendarMonthOf, ruleBook, runInputs, runPlanned, taxYearOf } from "@finance-tool/engine";
 import { buildGuidePage } from "./guide.server";
@@ -385,6 +386,7 @@ describe("the securities account's guide names the example's fund from its recor
     const use = guideContent["brokerage-account"]?.use;
     if (!use) throw new Error("the securities account's guide has a use section");
     const out = html(createElement(Fragment, null, use({ figure: () => null, exampleFund: data.exampleFund })));
-    expect(out).toContain(`<bdi>${name.replace(/&/g, "&amp;")}</bdi>`);
+    // a Hebrew name laid out right to left whatever letter it starts with, its index's name kept with its number (MixedName)
+    expect(out).toContain(`<bdi dir="rtl">${keepIndexWhole(name).replace(/&/g, "&amp;")}</bdi>`);
   });
 });

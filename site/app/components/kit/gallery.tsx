@@ -264,7 +264,9 @@ function Demo({ name, use, children }: { name: string; use: string; children: Re
 function State({ label, children, wide }: { label: string; children: ReactNode; wide?: boolean }) {
   return (
     <div className={cx("flex flex-col gap-1.5 min-w-0", wide && "w-full")}>
-      <bdi dir="auto" className="text-xs text-muted-foreground">
+      {/* a caption is a note in English, with the Hebrew it shows inside it: left to right when it starts with a Latin letter, said here
+          so the layout check's direction check takes it as meant */}
+      <bdi dir={/^[A-Za-z]/.test(label) ? "ltr" : "auto"} className="text-xs text-muted-foreground">
         {label}
       </bdi>
       {children}

@@ -9,7 +9,7 @@ import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
 import { IdRef, RuleTitleList, StrengthLabel } from "../provenance";
 import { Breadcrumb } from "../shell";
-import { Card, cx, Disclosure, gershayim, GoLink, HelpMark, KeyValueList, PageHead, Section, Stat, StatRow, TableCols, TextLink } from "../kit";
+import { Card, cx, Disclosure, gershayim, GoLink, HelpMark, KeyValueList, PageHead, Section, Stat, StatRow, TableCols, TextLink, MixedName } from "../kit";
 
 export interface SectionDef {
   id: string;
@@ -413,7 +413,7 @@ function CompanyColumns({ companies }: { companies: { id: string; name: string }
       {companies.map((c) => (
         <li key={c.id} className="flex break-inside-avoid">
           <TextLink to={companyPath(c.id)} look="line">
-            <bdi>{gershayim(c.name)}</bdi>
+            <MixedName>{c.name}</MixedName>
           </TextLink>
         </li>
       ))}

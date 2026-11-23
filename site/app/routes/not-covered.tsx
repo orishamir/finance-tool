@@ -7,7 +7,7 @@ import { notCovered as copy, provenance } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
 import { Ruled, RuleTitleRow, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Disclosure, DocLink, LinkButton, PageHead, RowList, Section, Tpl, fill, gershayim, When } from "../components/kit";
+import { Disclosure, DocLink, LinkButton, PageHead, RowList, Section, Tpl, fill, gershayim, When, MixedName } from "../components/kit";
 import type { GraduationStatusView } from "../lib/graduation.server";
 import type { NotCoveredRow } from "../lib/data.server";
 import { sourceLabel } from "../lib/source-label";
@@ -141,7 +141,7 @@ export default function NotCovered() {
             {data.cards.map(({ status: s, row: r }) => (
               <li key={s.id} id={s.id} className="anchor-target flex flex-col gap-2 p-4 md:p-5">
                 <h2 className="text-lg font-semibold">
-                  <bdi>{gershayim(r.he)}</bdi>
+                  <MixedName>{r.he}</MixedName>
                 </h2>
                 {r.variants.length > 0 && (
                   <p className="text-sm text-muted-foreground">

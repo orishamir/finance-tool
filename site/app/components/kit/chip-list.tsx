@@ -13,6 +13,7 @@ import { OtherChip } from "./choice";
 import { BinIcon, RemoveButton } from "./remove-button";
 import { cx } from "./cx";
 import { fixedOrigin, layerOf } from "./carry-layer";
+import { MixedName } from "./name";
 
 /** Pixels the pointer travels before a press on a chip becomes a drag; a shorter press is a click. */
 const DRAG_START = 6;
@@ -321,7 +322,7 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
             <span className={cx("sec-chip gap-1.5 ps-2.5", drag.id === value && "sec-chip-on")}>
               <GripVertical size={14} className="opacity-60 shrink-0" {...ic} />
               {drag.id === value && <IconCheck size={16} className="shrink-0" />}
-              <bdi>{byId.get(drag.id)!.label}</bdi>
+              <MixedName>{byId.get(drag.id)!.label}</MixedName>
             </span>
             {drag.id === value && (
               <span className="inline-flex text-foreground">

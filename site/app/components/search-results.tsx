@@ -91,7 +91,7 @@ function HitRow({ hit, found, text }: { hit: SearchHit; found: Found; text: stri
           </span>
           {also.length > 0 && (
             <span className="text-xs text-muted-foreground">
-              {searchCopy.also} <bdi>{also.map(gershayim).join(" · ")}</bdi>
+              {searchCopy.also} <MixedName>{also.map(gershayim).join(" · ")}</MixedName>
             </span>
           )}
         </span>
@@ -149,7 +149,7 @@ export function SearchBody({ text, setText, found }: { text: string; setText: (t
           <h3 className="text-lg font-semibold">{searchCopy.empty.title}</h3>
           <p className="text-sm">
             {searchCopy.empty.bodyBefore}
-            <bdi dir="auto">{text.trim()}</bdi>
+            <MixedName>{text.trim()}</MixedName>
             {searchCopy.empty.bodyAfter}
           </p>
           <TextLink look="line" to={site.notCovered.href} className="self-start">

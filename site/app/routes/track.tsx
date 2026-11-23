@@ -137,7 +137,7 @@ export default function TrackPage() {
       <div className="flex flex-col gap-8">
         <PageHead
           crumb={<Breadcrumb parent={{ href: companyPath(track.companyId), label: gershayim(track.companyName) }} current={gershayim(track.name)} />}
-          title={<bdi>{gershayim(track.name)}</bdi>}
+          title={<MixedName>{track.name}</MixedName>}
           marks={
             (data.isDefault || trackLabels(track).length > 0) && (
               <>
@@ -173,7 +173,7 @@ export default function TrackPage() {
             plain
             wide
             items={[
-              { id: "manager", label: copy.labels.manager, value: <TextLink look="line" to={companyPath(track.companyId)}><bdi>{gershayim(track.companyName)}</bdi></TextLink> },
+              { id: "manager", label: copy.labels.manager, value: <TextLink look="line" to={companyPath(track.companyId)}><MixedName>{track.companyName}</MixedName></TextLink> },
               {
                 id: "product",
                 label: copy.labels.product,
@@ -200,8 +200,8 @@ export default function TrackPage() {
                   </span>
                 ),
               },
-              ...(track.specialization ? [{ id: "classification", label: copy.labels.classification, value: <bdi>{gershayim(track.specialization)}</bdi> }] : []),
-              ...(track.subSpecialization ? [{ id: "holds", label: copy.labels.holds, value: <bdi>{gershayim(track.subSpecialization)}</bdi> }] : []),
+              ...(track.specialization ? [{ id: "classification", label: copy.labels.classification, value: <MixedName>{track.specialization}</MixedName> }] : []),
+              ...(track.subSpecialization ? [{ id: "holds", label: copy.labels.holds, value: <MixedName>{track.subSpecialization}</MixedName> }] : []),
               { id: "balanceFee", label: childHelp ? <HeldMark words={feeText(copy.feeBalanceLabel, data.values.balanceFee)} mark={<HelpMark about={trackBrowser.childFee.about} text={childHelp.text} rules={childHelp.rules} tone="caution" />} /> : feeText(copy.feeBalanceLabel, data.values.balanceFee), value: <FeeNum value={data.values.balanceFee} /> },
               { id: "depositFee", label: feeText(copy.feeDepositLabel, data.values.depositFee), value: <FeeNum value={data.values.depositFee} /> },
               ...(data.values.exposure?.stock ? [{ id: "stock", label: companyCopy.stock.rowStock.replace("{period}", fmt.period(track.reportPeriod)), value: <ShareNum value={data.values.exposure.stock} /> }] : []),

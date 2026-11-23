@@ -123,7 +123,7 @@ function coversText(l: TariffLineRow): string {
 function Covers({ l, phone, noChannel }: { l: TariffLineRow; /** On a phone the spread comes after the price. */ phone?: boolean; /** The line's price is the same in every channel: no channel's name. */ noChannel?: boolean }) {
   return (
     <span className="flex flex-col items-start gap-0.5">
-      <bdi>{gershayim(coversText(l))}</bdi>
+      <MixedName>{coversText(l)}</MixedName>
       {/* one quiet line under the name (the designer's mock): the channel, the plan's own name (it tells two lines of one fee apart: a fixed and
           a tiered price, a standing order, a redemption), and the conversion spread */}
       {((l.channel && !noChannel) || l.band || (!phone && l.spread)) && (
@@ -298,7 +298,7 @@ function CanBuy({ rows }: { rows: AvailabilityRow[] }) {
                     {copy.card.canBuy.state[a.state]}
                   </Ruled>
                 </Tag>
-                <bdi>{classWords(a.classes)}</bdi>
+                <MixedName>{classWords(a.classes)}</MixedName>
               </span>
               {a.reason && <span className="text-sm text-muted-foreground max-w-measure">{a.reason}</span>}
               {!one && <WhereLink w={placeOf(a)} />}
@@ -352,7 +352,7 @@ function Facts({ tariff }: { tariff: TariffCardData }) {
     {
       id: "regulator",
       label: copy.card.regulator,
-      value: <bdi>{regulator}</bdi>,
+      value: <MixedName>{regulator}</MixedName>,
       tag: tariff.tase ? <Tag>{copy.card.tase}</Tag> : undefined,
       // the words name what the rules say: the notice a provider gives before it changes its fees (D116)
       footer: tariff.notice.length > 0 ? <p className="text-sm text-muted-foreground"><Ruled id={tariff.notice}>{copy.card.notice}</Ruled></p> : undefined,
@@ -441,7 +441,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
           {tariff && (
             <DocLink source={tariff} className="text-sm">
               {copy.missingLinks.tariffPageBefore}
-              <bdi>{gershayim(tariff.providerName)}</bdi>
+              <MixedName>{tariff.providerName}</MixedName>
             </DocLink>
           )}
           <LinkButton to={compareHref} variant="secondary">

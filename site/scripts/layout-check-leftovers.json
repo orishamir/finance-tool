@@ -2,69 +2,6 @@
   "about": "Findings of site/scripts/layout-check.mjs that were on the site when the check came in (2026-11-08). Each is reported, not failed; a new finding fails. `pages` is a path prefix, `id` the box or text the finding names. Remove an entry when its fix lands (a full run says GONE).",
   "leftovers": [
     {
-      "pages": "/deposits",
-      "width": 1440,
-      "check": "overlap",
-      "id": "(לא כולל) | נעול עד סוף התקופה",
-      "why": "Found when the overlap check came in (2026-11-22): a deposit's exit words run over the next cell's words in the deposits table; not fixed on the branch that added the check."
-    },
-    {
-      "pages": "/companies/mizrahi-tefahot?product=bank-deposit",
-      "width": 1440,
-      "check": "overlap",
-      "id": "(לא כולל) | 1.72%",
-      "why": "Found when the overlap check came in (2026-11-22): the same deposits-table words over a rate in the bank's table."
-    },
-    {
-      "pages": "/companies/mizrahi-tefahot?product=bank-deposit",
-      "width": 1440,
-      "check": "overlap",
-      "id": "(לא כולל) | 1.15%",
-      "why": "As the line above."
-    },
-    {
-      "pages": "/companies/yahav?product=bank-deposit",
-      "width": 1440,
-      "check": "overlap",
-      "id": "(לא כולל) | 0.05%",
-      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
-    },
-    {
-      "pages": "/companies/yahav?product=bank-deposit",
-      "width": 1440,
-      "check": "overlap",
-      "id": "(לא כולל) | 0.1%",
-      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
-    },
-    {
-      "pages": "/companies/yahav?product=bank-deposit",
-      "width": 1440,
-      "check": "overlap",
-      "id": "(לא כולל) | 0.55%",
-      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
-    },
-    {
-      "pages": "/companies/yahav?product=bank-deposit",
-      "width": 1440,
-      "check": "overlap",
-      "id": "(לא כולל) | 1.8%",
-      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
-    },
-    {
-      "pages": "/companies/yahav?product=bank-deposit",
-      "width": 1440,
-      "check": "overlap",
-      "id": "(לא כולל) | 2%",
-      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
-    },
-    {
-      "pages": "/companies/yahav?product=bank-deposit",
-      "width": 1440,
-      "check": "overlap",
-      "id": "(לא כולל) | 1.95%",
-      "why": "Found when the overlap check came in (2026-11-22): the deposits-table words \"(לא כולל)\" run over a rate in the bank's table."
-    },
-    {
       "pages": "/companies/interactive-israel",
       "width": 1440,
       "check": "overlap",

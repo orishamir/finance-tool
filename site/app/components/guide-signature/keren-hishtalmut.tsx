@@ -12,7 +12,7 @@ import { studyRange, studyStanding, studyYears, taxedAfterLock, waitFigures, typ
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, type SiteValue } from "../../lib/value";
-import { amountCheck, DotLine, gershayim, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
+import { amountCheck, DotLine, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
 import { Num, ReadingTag, Ruled, Term } from "../provenance";
 import { text } from "./g2-parts";
 import { figure, Gap, inputSite, notFeeFlag, rulesOfBundle, rulesOfRuns, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
@@ -382,7 +382,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         />
         {!n.employee && fundName && brokerCount && (
           <p>
-            {story.held.account} ״<bdi>{fundName}</bdi>״ (<bdi dir="ltr">{fundNumber}</bdi>) {story.held.tariff} <bdi>{gershayim(brokerName)}</bdi>, {story.held.pick} <Num value={brokerCount} /> {story.held.collected}
+            {story.held.account} ״<MixedName>{fundName}</MixedName>״ (<bdi dir="ltr">{fundNumber}</bdi>) {story.held.tariff} <MixedName>{brokerName}</MixedName>, {story.held.pick} <Num value={brokerCount} /> {story.held.collected}
           </p>
         )}
       </div>

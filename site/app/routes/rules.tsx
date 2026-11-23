@@ -15,7 +15,7 @@ import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
 import { Sheet } from "../components/Sheet";
 import { IconAll, IconArrowBack, IconChevronDown, IconLock } from "../components/icons";
-import { AskField, Button, Card, ChoiceChips, cx, gershayim, DidYouKnow, DocLink, FilterChip, FoldGroup, GroupHead, InlineSelect, ListRow, PageHead, PHONE_GONE, RowList, SelectField, TabStrip, TableCols, Tag, TextLink, When, panelId, tabId, type FactItem } from "../components/kit";
+import { AskField, Button, Card, ChoiceChips, cx, gershayim, DidYouKnow, DocLink, FilterChip, FoldGroup, GroupHead, InlineSelect, ListRow, PageHead, PHONE_GONE, RowList, SelectField, TabStrip, TableCols, Tag, TextLink, When, panelId, tabId, type FactItem, MixedName } from "../components/kit";
 import { claimTopics, docGroup, docGroups, docsForTopics, editionText, pageHref, type CompanyDoc, type DocGroup } from "../lib/company-docs";
 import { fmt } from "../lib/format";
 import { MQ, useMedia } from "../lib/hooks";
@@ -802,7 +802,7 @@ function CompanyResults({ company, names, docs, pd, failed }: { company: string[
           {docs.filter((d) => d.group === group).map((d) => (
             <tr key={d.id}>
               <th scope="row" className="font-medium align-top">
-                <bdi>{d.company}</bdi>
+                <MixedName>{d.company}</MixedName>
                 <span className="md:hidden block font-normal text-xs-flow text-muted-foreground">{d.title}</span>
               </th>
               <td className={cx(PHONE_GONE, "align-top")}>{d.title}</td>

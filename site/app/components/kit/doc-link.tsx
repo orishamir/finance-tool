@@ -10,7 +10,7 @@ import type { ReactNode } from "react";
 import { sourceHref, type CitedPlace } from "../../lib/sources";
 import { IconExternal } from "../icons";
 import { cx } from "./cx";
-import { gershayim } from "./name";
+import { MixedName } from "./name";
 
 type Target = { source: CitedPlace; href?: never } | { href: string; source?: never };
 
@@ -20,8 +20,9 @@ export function DocLink({ children, className, look = "line", ...to }: Target & 
   const href = to.source ? sourceHref(to.source) : to.href;
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className={cx("text-link hover:underline inline-flex items-center gap-1 [overflow-wrap:anywhere]", HEIGHT[look], className)}>
-      {/* a document's title from the data spells בע"מ with a straight quote: drawn with the gershayim (copy.md 10.4) */}
-      <bdi>{typeof children === "string" ? gershayim(children) : children}</bdi>
+      {/* a document's title from the data spells בע"מ with a straight quote: drawn with the gershayim (copy.md 10.4); a title with Hebrew in it
+          is laid out right to left whatever letter it starts with ("ONE ZERO, 'פיקדונות'" read left to right in a plain <bdi>) */}
+      {typeof children === "string" ? <MixedName>{children}</MixedName> : <bdi>{children}</bdi>}
       <IconExternal size={14} className="shrink-0" />
     </a>
   );

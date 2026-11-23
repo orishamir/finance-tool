@@ -9,7 +9,7 @@ import { fmt } from "../../lib/format";
 import { fact, makamModel } from "../../lib/guide-signature";
 import type { SiteValue } from "../../lib/value";
 
-import { Callout, InputSlot, LongestCase, Marker, MarkerMark, Sentence, Stat, StatRow, fill, useWidth } from "../kit";
+import { Callout, InputSlot, LongestCase, Marker, MarkerMark, Sentence, Stat, StatRow, fill, useWidth, MixedName } from "../kit";
 import { Num, Ruled, Term } from "../provenance";
 import { figure, inputSite, rulesOfBundle, SigAmountField, termInputs, termOf, useSigInputs, typed, type VisualProps } from "./kit";
 
@@ -91,10 +91,10 @@ export function MakamVisual({ data, today }: VisualProps) {
         )}
         {house && bundle.pick && (
           <>
-            , {copy.makam.feesWhose.before} <bdi>{house}</bdi>
+            , {copy.makam.feesWhose.before} <MixedName>{house}</MixedName>
             {bundle.pick.tied ? (
               <>
-                . {copy.makam.feesWhose.tied} <bdi>{bundle.pick.tied.names.filter((n) => n !== house).join(" · ")}</bdi>: {copy.makam.feesWhose.tiedGap}{bundle.pick.tied.theta && <>, <Num value={bundle.pick.tied.theta} /></>}.
+                . {copy.makam.feesWhose.tied} <MixedName>{bundle.pick.tied.names.filter((n) => n !== house).join(" · ")}</MixedName>: {copy.makam.feesWhose.tiedGap}{bundle.pick.tied.theta && <>, <Num value={bundle.pick.tied.theta} /></>}.
               </>
             ) : (
               <>

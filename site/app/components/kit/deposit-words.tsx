@@ -36,13 +36,14 @@ export function AnchorSpread({ variable, anchor, spread, look = "under" }: { var
  * The amounts a deposit takes, each figure sourced, in the words of `amountRangeForm`: "מ־1,000 ₪", "1,000 עד 50,000 ₪", "עד 50,000 ₪",
  * "ללא מינימום". A range with two ends breaks, where it must, between them. A top the record holds with no number is unknown, not no top
  * (F-108): "50,000 עד לא ידוע", the unknown figure opening its source. A bound the bank's table prints as not included (`edges`, F-108)
- * says so as the table does: "מעל 25,000 ₪" for a minimum, "(לא כולל)" after a maximum.
+ * says so as the table does: "מעל 25,000 ₪" for a minimum, "(לא כולל)" after a maximum. In a narrow cell "(לא כולל)" breaks onto a line
+ * of its own under the maximum rather than run out of the cell.
  */
 export function AmountRange({ min, max, fromOnly, edges }: { min: SiteValue; max: SiteValue | null; /** Ranges that follow one another with no gap: each said by where it starts. */ fromOnly?: boolean; /** How the amount at each bound stands, where the record says (F-108). */ edges?: { min_edge?: "excluded" | "unknown"; max_edge?: "excluded" | "unknown" } }) {
   const low = numberOf(min);
   const unknownTop = !fromOnly && max !== null && numberOf(max) === null && low !== null && low > 0;
   const form = unknownTop ? "between" : amountRangeForm(low, numberOf(max), fromOnly);
-  const topOut = edges?.max_edge === "excluded" ? <> {copy.amount.notIncluded}</> : null;
+  const topOut = edges?.max_edge === "excluded" ? <>{" "}<span className="whitespace-nowrap">{copy.amount.notIncluded}</span></> : null;
   if (form === "none") return <>{copy.amount.noMin}</>;
   if (form === "from")
     return (
@@ -53,8 +54,10 @@ export function AmountRange({ min, max, fromOnly, edges }: { min: SiteValue; max
     );
   if (form === "upTo")
     return (
-      <span className="whitespace-nowrap">
-        {copy.amount.to} <Num value={max!} />
+      <span>
+        <span className="whitespace-nowrap">
+          {copy.amount.to} <Num value={max!} />
+        </span>
         {topOut}
       </span>
     );
@@ -66,8 +69,8 @@ export function AmountRange({ min, max, fromOnly, edges }: { min: SiteValue; max
       </span>{" "}
       <span className="whitespace-nowrap">
         <Num value={max!} />
-        {topOut}
       </span>
+      {topOut}
     </span>
   );
 }

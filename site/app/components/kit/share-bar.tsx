@@ -5,6 +5,7 @@
 // largest part, which carries its sum inside it. The amounts themselves are the caller's, written beside the bar; the bar says shares only. The chart check
 // finds it by `data-chart` and reads its start (`data-zero`) and its parts (`data-mark`).
 import { cx } from "./cx";
+import { MixedName } from "./name";
 
 export interface SharePart {
   id: string;
@@ -38,7 +39,7 @@ export function ShareBar({ parts, label, bare }: { parts: SharePart[]; /** The b
         {parts.map((p) => (
           <span key={p.id} className="inline-flex items-center gap-1.5 whitespace-nowrap">
             <span className={cx("inline-block size-2.5 rounded-[2px]", p.className)} />
-            <bdi>{p.name}</bdi>
+            <MixedName>{p.name}</MixedName>
             <bdi className="font-semibold text-foreground tabular-nums">{p.words ?? `${p.share}%`}</bdi>
           </span>
         ))}

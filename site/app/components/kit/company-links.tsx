@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { cx } from "./cx";
-import { gershayim } from "./name";
+import { MixedName } from "./name";
 
 export interface CompanyLinkItem {
   /** The company's Hebrew name. */
@@ -26,7 +26,7 @@ export function CompanyLinks({ lead, items, size = "sm", end, className }: { lea
           {i > 0 && ", "}
           {/* a two-word name ("מיטב טרייד") never breaks between its words; the line breaks between names */}
           <Link to={c.href} className="text-link hover:underline whitespace-nowrap">
-            <bdi>{gershayim(c.name)}</bdi>
+            <MixedName>{c.name}</MixedName>
           </Link>
         </span>
       ))}

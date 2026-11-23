@@ -12,7 +12,7 @@ import { p05Value } from "../../lib/engine";
 import { accountAxis, accountFact, bankYearlyMax, brokenCondition, currentAccountModel, fact, payingBanks, silentBanks, type AccountCondition, type SignatureData } from "../../lib/guide-signature";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import type { WorthFactRow } from "../guide/worth-knowing";
-import { AxisLabels, ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, pickDim, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When, yearTicksIn } from "../kit";
+import { AxisLabels, ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, pickDim, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When, yearTicksIn, MixedName } from "../kit";
 import { LeadTail, Num, Ruled, Term } from "../provenance";
 import { CommonRateLine, Gap, isMajority, figure, inputSite, rulesOfBundle, SigAmountField, SigYearsField, termInputs, typed, useSigInputs, type VisualProps } from "./kit";
 
@@ -189,7 +189,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                     <tr key={b.id} className={cx("flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-border py-3 md:table-row")}>
                       <td className="md:table-cell md:py-3 md:pe-4 md:align-top flex-1 min-w-32">
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                          <span className="font-medium"><bdi>{b.name}</bdi></span>
+                          <span className="font-medium"><MixedName>{b.name}</MixedName></span>
                           {b.until && (
                             <Tag tone="neutral">
                               <When iso={b.until} lead={`${f.until} `} />
@@ -223,7 +223,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                         )}
                         {printedZero.map((b) => (
                           <p key={b.id}>
-                            <bdi>{b.name}</bdi> {f.silent.printedZero.mid} <Num value={b.rate} />
+                            <MixedName>{b.name}</MixedName> {f.silent.printedZero.mid} <Num value={b.rate} />
                             {f.silent.printedZero.end}
                           </p>
                         ))}
@@ -270,7 +270,7 @@ function AccountWorthFact({ data }: { data: SignatureData }) {
           {w.capped[form]} <Num value={f.ceiling} display={wholeNis(f.ceiling)} /> {w.capped.only}
         </>
       ) : null}
-      ; {w.best} <Num value={f.top.rate} />, {w.at} <bdi>{f.top.name}</bdi>.{" "}
+      ; {w.best} <Num value={f.top.rate} />, {w.at} <MixedName>{f.top.name}</MixedName>.{" "}
       <a href={`#${FOLD_ID}`} onClick={openFold} className="text-link hover:underline">
         {w.link}
       </a>

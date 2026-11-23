@@ -18,7 +18,7 @@ import { PageShell } from "../components/shell";
 import { CompanyTracks } from "../components/tracks/company-browser";
 import { CapLead, type ProductCaps } from "../components/tracks/list";
 import { assetsText, buildProductView, feeRangeOf, tracksPhrase, type ProductView, type TbData } from "../lib/track-browser";
-import { Callout, Card, Disclosure, FeeWordsNote, TariffDate, When, gershayim } from "../components/kit";
+import { Callout, Card, Disclosure, FeeWordsNote, TariffDate, When, gershayim, MixedName } from "../components/kit";
 import { CompanyTemplate, type CompanyPart } from "../components/company/template";
 import { Overview, OverviewTable, type OverviewHeads, type OverviewTableRow } from "../components/company/overview";
 import { MoreDocs, ProductDocs, docCount } from "../components/company/docs";
@@ -300,12 +300,12 @@ function ManagerCompany({ data }: { data: CompanyData }) {
               {data.members.map((m, i) => (
                 <span key={m}>
                   {i > 0 && " · "}
-                  <bdi>{gershayim(m)}</bdi>
+                  <MixedName>{m}</MixedName>
                 </span>
               ))}
             </>
           ) : company ? (
-            <bdi>{gershayim(company.name)}</bdi>
+            <MixedName>{company.name}</MixedName>
           ) : undefined
         }
         header={
