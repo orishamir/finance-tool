@@ -19,7 +19,6 @@ import {
   heldLayers,
   holdingCost,
   idleMonth,
-  needsUnitPrice,
   priceParts,
   rateAt,
   sideOf,
@@ -573,7 +572,10 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
   const at = monthKey(p.from);
   const idx = onAction(r, p, action, side);
   const fees = chartFees(r, idx);
-  const perUnit = idx.some((i) => needsUnitPrice(pricesOf(r, p, i, side).e));
+  const perUnit = idx.some((i) => {
+    const e = pricesOf(r, p, i, side).e;
+    return e.kind === "perUnit" || ((e.kind === "action" || e.kind === "perAction") && e.third?.kind === "perUnit");
+  });
   if (perUnit && (unit.price === null || unit.currency === null)) return { undrawn: { periods: [at], why: "unit-price", currency: unit.currency ?? "ILS" } };
   const got = ratesFor(r, p, idx, fx, perUnit ? [unit.currency!] : []);
   if ("missing" in got) return { undrawn: { periods: [at], why: "rate", currency: got.missing } };
@@ -810,7 +812,7 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
   const inputs = chartInputs(r, p, idx, "all", values);
   const crossValue = cross !== null ? reading(cross, "nis", "F-124", inputs, r.today) : null;
   const markAts = [...all.map((b) => b.at), ...(cross !== null ? [cross] : [])];
-  if (!markAts.length) return { one: oneHeld(r, p, fees, lanes, inputs, cap, rates) };
+  if (!markAts.length) return { one: oneHeld(r, p, fees, lanes, inputs, cap) };
   const range = openingRange(markAts);
   const cost = (v: number) => holdingCost(r.engine, p, v, rates);
   const layerOf = (v: number) => {
@@ -917,20 +919,20 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
 }
 
 /** Holding with nothing that varies by the value: the yearly rate its shares add to, or the yearly sums, else neither. */
-function oneHeld(r: DealRead, p: DealPeriod, fees: ChartFee[], lanes: readonly Lane[], inputs: Record<string, SiteValue>, cap: AccountCap | null, rates: Readonly<Record<string, number>>): OneView {
+function oneHeld(r: DealRead, p: DealPeriod, fees: ChartFee[], lanes: readonly Lane[], inputs: Record<string, SiteValue>, cap: AccountCap | null): OneView {
   const prices = lanes.map((l) => ({ fee: l.fee, price: l.price! }));
   const shares = lanes.filter((l) => l.group === "share");
   const sums = lanes.filter((l) => l.group === "fixed");
   const at = monthKey(p.from);
   if (shares.length && !sums.length) {
-    const R = rateAt(r.engine, p, "held", 1, rates);
+    const R = rateAt(r.engine, p, "held", 1);
     if (R !== null) {
       const one = shares.length === 1 && shares[0]!.price?.yearly ? shares[0]!.price.yearly : reading(R * 100, "pct_per_year", "F-123", inputs, r.today);
       return { periods: [at], fees, one: { value: one, of: "share" }, prices };
     }
   }
   if (sums.length && !shares.length) {
-    const c = holdingCost(r.engine, p, 1, rates);
+    const c = holdingCost(r.engine, p, 1);
     const flag = capFlag(p, sums.filter((l) => isAccount(l.fee)).reduce((a, l) => a + c.parts.filter((x) => l.fee.idx.includes(x.fee)).reduce((s, x) => s + x.cost, 0), 0), cap);
     // a flagged year is the computed one, which carries the flag, not the price's own yearly figure
     const one = sums.length === 1 && sums[0]!.price?.yearly && !flag ? sums[0]!.price.yearly : yearCostOf(c.total, "F-111", inputs, r.today, flag);
@@ -1072,14 +1074,11 @@ function coversIn(r: DealRead, p: DealPeriod, fx: FxSnapshot | null, unit: { pri
     const against = againstOf(r, s.offset.kind);
     const action = offsetAction(r, p, s.offset.kind);
     if (!action) return [];
-    const sides: ("buy" | "sell")[] = against.some((j) => p.prices[j]!.sale) ? ["buy", "sell"] : ["buy"];
-    // the cost of the action prices every fee charged on it, though only those it is set against are counted: each needs its rates and the
-    // unit's price
-    const priced = [...new Set(sides.flatMap((side) => onAction(r, p, action, side)))];
-    const perUnit = priced.some((j) => [p.prices[j]!.price, p.prices[j]!.sale].some((x) => x !== undefined && needsUnitPrice(x)));
-    const got = ratesFor(r, p, priced, fx, perUnit && unit.currency ? [unit.currency] : []);
+    const perUnit = against.some((j) => p.prices[j]!.price.kind === "perUnit" || p.prices[j]!.sale?.kind === "perUnit");
+    const got = ratesFor(r, p, against, fx, perUnit && unit.currency ? [unit.currency] : []);
     if ("missing" in got || (perUnit && (unit.price === null || unit.currency === null))) return [];
     const unitNis = perUnit ? unit.price! * (unit.currency === "ILS" ? 1 : got.rates[unit.currency!]!) : undefined;
+    const sides: ("buy" | "sell")[] = against.some((j) => p.prices[j]!.sale) ? ["buy", "sell"] : ["buy"];
     const found = sides.map((side) => ({ side, at: coverFrom(r.engine, p, against, action, side, e.amount, got.rates, unitNis) }));
     if (found.some((x) => x.at === null)) return [];
     const one = found.every((x) => x.at === found[0]!.at);

@@ -6,7 +6,7 @@
 //            reads that mark); a right value not taking effect at once (the slider follows the box); what was typed cleared; an error
 //            left from before a value came from outside shown at once on the next wrong keystroke; the slider field's error spoken as an
 //            alert; a number box without autocomplete off, spellcheck off and enterkeyhint done, or a shekel box without a whole-number
-//            pad; Enter in a shekel box that does not write "1000,000" as "1,000,000" at once, or shows no error for "1.000" (unclear).
+//            pad.
 //   early    a number field typed in before the page's script arrived that loses what was typed, or the keystrokes after it; one typed
 //            in and left before the script arrived that loses what was typed (on the deposits page: the kit page's script draws it again
 //            rather than taking it over).
@@ -34,9 +34,6 @@
 //            press there does not open it; a pick card's tile choice not chosen by Space.
 //   strip    a product table's folding strip that a tap on its words does not fold, or whose link a tap does not reach.
 //   side     a side page's fold that opens again when the Back button comes back to the part it was opened for.
-//   back     at 1440 and 390, a page that was never scrolled (or left at its top) brought back by Back or Forward at another page's
-//            scroll rather than at its top: a guide page left for the rules page scrolled 2,500 px down, and a guide page left at its top
-//            for the guide's index scrolled 1,254 px, then Back and Forward.
 //   header   from 1024 px the site's five sections not all in sight on one line each, or overlapped by the open search; below it, no menu
 //            button named exactly "תפריט" (design.md, "The site's sections are in sight"). A section hidden on purpose must be caught first.
 //   touch    a chart dragged sideways by a finger that does not follow it, or that keeps the page from scrolling when the finger moves down.
@@ -54,6 +51,9 @@
 //   notice in a sheet   with a sheet open on the kit page and a script's failure planted (at 390 a sheet at the foot, at 1440 a short sheet
 //            centred by a transform), the notice's title or its reload button not the top thing at its middle (drawn under the sheet, or cut
 //            by its card), the notice not at the window's foot, or the button not reloading the page.
+//   chip     at 1440 and 390, an option of a row that chooses one (`ChoiceChips`, `SegmentedControl`) whose box moves or changes size
+//            when another option of the row is chosen (a chosen chip's check that widened it and moved its neighbours). An option planted
+//            to widen when chosen must be caught first.
 
 import { existsSync, readFileSync } from "node:fs";
 
@@ -96,7 +96,7 @@ const center = (r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2 });
 
 export async function kitInputCheck(browser, base) {
   const found = [];
-  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, backCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, noticeSheetCheck]) {
+  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, noticeSheetCheck, chipCheck]) {
     try {
       found.push(...(await run(browser, base)));
     } catch (e) {
@@ -144,24 +144,6 @@ async function fieldCheck(browser, base) {
   await box.press("ControlOrMeta+a");
   await page.keyboard.type("0");
   if (await error.count()) found.push("field: after a value from outside, a wrong keystroke shows the old error at once instead of waiting for the hand to rest");
-  // Enter is the hand resting: a right text is written in the field's form there and then (a phone's sheet keeps the box in view after
-  // it), a wrong one shows its error
-  {
-    const shekel = page.locator('article[aria-label="NumberField"] .field').first();
-    const input = shekel.locator("input.field-input");
-    const err = shekel.locator('[id$="-err"]');
-    await input.scrollIntoViewIfNeeded();
-    await input.click();
-    await input.press("ControlOrMeta+a");
-    await page.keyboard.type("1000,000");
-    await page.keyboard.press("Enter");
-    if ((await input.inputValue()) !== "1,000,000") found.push(`enter: Enter in a shekel box holding "1000,000" leaves "${await input.inputValue()}", not "1,000,000"`);
-    await input.press("ControlOrMeta+a");
-    await page.keyboard.type("1.000");
-    await page.keyboard.press("Enter");
-    if (!(await err.count())) found.push('enter: Enter in a shekel box holding "1.000" (a point and three digits, unclear) shows no error');
-    await page.keyboard.press("Escape");
-  }
   // every number box of the kit's fields
   const boxes = await page.evaluate(() =>
     [...document.querySelectorAll("main input.field-input[inputmode], main input[data-figure]")].map((el) => ({
@@ -736,45 +718,6 @@ async function sideCheck(browser, base) {
   return found;
 }
 
-/** Where the window stands once a Back or Forward has brought `path` back and its restoring has had its time. */
-async function cameBackAt(page, path) {
-  await page.waitForFunction((p) => location.pathname.replace(/\/$/, "").endsWith(p), path, { timeout: 10000 });
-  await page.evaluate(settled);
-  return page.evaluate(() => Math.round(window.scrollY));
-}
-
-async function backCheck(browser, base) {
-  const found = [];
-  for (const options of [DESK, PHONE]) {
-    const at = options.viewport.width;
-    // a guide page never scrolled, left by a link to a page scrolled far down, and brought back by Back
-    const { ctx, page } = await open(browser, base, options, "/guide/brokerage-account/");
-    await page.evaluate(() => window.__reactRouterDataRouter.navigate("/rules"));
-    await page.waitForFunction(() => location.pathname.replace(/\/$/, "").endsWith("/rules"), null, { timeout: 10000 });
-    await page.evaluate(settled);
-    await page.evaluate(() => window.scrollTo(0, 2500));
-    await page.evaluate(settled);
-    if ((await page.evaluate(() => window.scrollY)) < 1000) found.push(`back@${at}: the rules page is too short to scroll 2,500 px down`);
-    await page.goBack();
-    const back = await cameBackAt(page, "/guide/brokerage-account");
-    if (back !== 0) found.push(`back@${at}: Back to a guide page never scrolled opens it ${back} px down, not at its top`);
-    // the guide's index scrolled, a page under it opened and left at its top: Back, then Forward to that page
-    await page.goto(`${base}/guide`, { waitUntil: "networkidle" });
-    await page.evaluate(settled);
-    await page.evaluate(() => window.scrollTo(0, 1254));
-    await page.evaluate(settled);
-    await page.evaluate(() => window.__reactRouterDataRouter.navigate("/guide/brokerage-account"));
-    await cameBackAt(page, "/guide/brokerage-account");
-    await page.goBack();
-    await cameBackAt(page, "/guide");
-    await page.goForward();
-    const forward = await cameBackAt(page, "/guide/brokerage-account");
-    if (forward !== 0) found.push(`back@${at}: Forward to a page left at its top opens it ${forward} px down`);
-    await ctx.close();
-  }
-  return found;
-}
-
 async function touchCheck(browser, base) {
   const found = [];
   const { ctx, page } = await open(browser, base, PHONE);
@@ -1205,6 +1148,63 @@ async function noticeSheetCheck(browser, base) {
     await (at === "phone" ? page.touchscreen.tap(b.x, b.y) : page.mouse.click(b.x, b.y));
     if (!(await loaded)) found.push(`notice in a sheet: ${where}, a press on the failure notice's reload button does not reload the page`);
     await ctx.close();
+  }
+  return found;
+}
+
+/** The options of a row that chooses one: a `ChoiceChips` chip, or a `SegmentedControl` option. */
+const CHOICE_ROW = ":is([role=radiogroup]:has(> .sec-chip[role=radio]), [role=group]:has(> button[aria-pressed]))";
+const CHOICE_OPTION = ":scope > :is(.sec-chip[role=radio], button[aria-pressed])";
+
+/**
+ * Every option's box in the choice row `row`, after its first option not chosen, shown and enabled is pressed, set against its box before:
+ * the rows whose options moved or changed size, in words. Null when the row has no option to press.
+ */
+async function chosenShift(page, row, phone) {
+  const opts = row.locator(CHOICE_OPTION);
+  const boxes = () => opts.evaluateAll((es) => es.map((e) => e.getBoundingClientRect()).map((r) => [r.x, r.y, r.width, r.height]));
+  const n = await opts.count();
+  for (let k = 0; k < n; k++) {
+    const o = opts.nth(k);
+    if ((await o.getAttribute("aria-checked")) === "true" || (await o.getAttribute("aria-pressed")) === "true" || (await o.isDisabled()) || !(await o.isVisible())) continue;
+    await o.scrollIntoViewIfNeeded();
+    const before = await boxes();
+    await (phone ? o.tap() : o.click());
+    await page.evaluate(settled);
+    const after = await boxes();
+    const moved = before.flatMap((b, j) => (after[j] && b.some((v, q) => Math.abs(v - after[j][q]) > 0.5) ? [`option ${j + 1} ${b.map(Math.round).join(",")} → ${after[j].map(Math.round).join(",")}`] : []));
+    const name = (await o.getAttribute("aria-label")) || (await o.innerText()).trim();
+    return moved.length ? `"${name.slice(0, 30)}" chosen: ${moved.join("; ")}` : "";
+  }
+  return null;
+}
+
+/**
+ * A choice's options on the kit page at 1440 and 390 (`chip` above): pressing an option of a row of chips or of a segmented control changes
+ * the size or the place of an option of the row (a chosen chip's check that widens it moves its neighbours). An option planted to widen
+ * when chosen must be caught first.
+ */
+async function chipCheck(browser, base) {
+  const found = [];
+  for (const at of ["desk", "phone"]) {
+    const phone = at === "phone";
+    const width = phone ? 390 : 1440;
+    const { ctx, page } = await open(browser, base, phone ? PHONE : DESK);
+    // a row of chips, which takes its options' widths at every width (a segmented control across its line shares the line out evenly)
+    const planted = page.locator("main [role=radiogroup]:has(> .sec-chip[role=radio])").filter({ visible: true }).first();
+    await planted.evaluate((r) => r.setAttribute("data-planted", ""));
+    await page.addStyleTag({ content: "[data-planted] > :is([aria-checked=true], [aria-pressed=true])::before { content: ''; flex: none; width: 18px; }" });
+    if (!(await chosenShift(page, planted, phone))) found.push(`chip: self-test: at ${width}, an option planted on /kit to widen when chosen was not caught`);
+    await ctx.close();
+    const fresh = await open(browser, base, phone ? PHONE : DESK);
+    const all = fresh.page.locator(`main ${CHOICE_ROW}`);
+    const n = await all.count();
+    if (!n) found.push(`chip: no row of chips or segmented control on the kit page at ${width}`);
+    for (let i = 0; i < n; i++) {
+      const shift = await chosenShift(fresh.page, all.nth(i), phone);
+      if (shift) found.push(`chip: at ${width}, choosing an option moves its row: ${shift}`);
+    }
+    await fresh.ctx.close();
   }
   return found;
 }

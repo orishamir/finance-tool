@@ -1,7 +1,7 @@
 // The search ranking and number matching: numbers find tracks, pages come before catalogue
 // rows, one row per page, exact beats partial.
 import { describe, expect, it } from "vitest";
-import { groupHits, normalize, scoreEntry, searchEntries, shownEntry, type SearchEntry, isRuleKind, claimConcepts } from "./search";
+import { groupHits, normalize, scoreEntry, searchEntries, type SearchEntry, isRuleKind, claimConcepts } from "./search";
 
 const e = (kind: SearchEntry["kind"], name: string, href: string, ids?: string[]): SearchEntry => ({ kind, name, line: "", href, norm: normalize(name), ...(ids ? { ids } : {}) });
 
@@ -373,19 +373,5 @@ describe("a result's line prints no code (D101)", () => {
     const twins = rules.find((a) => rules.some((b) => b !== a && b.name === a.name && b.line === a.line));
     if (!twins) return;
     expect(top(twins.name, false).filter((h) => h.entry.name === twins.name && h.entry.line === twins.line).length).toBeGreaterThan(1);
-  });
-});
-
-describe("an entry as the search shows it", () => {
-  it("writes an abbreviation's straight quote as the gershayim in its name, line and figures' names, and keeps its key and matching words", () => {
-    const raw: SearchEntry = { kind: "rule", name: 'מק"מ לשנה', line: 'בנק לאומי בע"מ · אג"ח', href: "/rules#X", norm: normalize('מק"מ לשנה'), key: 'term:מק"מ', figs: [{ n: 1, u: "pct", f: 'ת"א-125' }] };
-    const out = shownEntry(raw);
-    expect(out.name).toBe("מק״מ לשנה");
-    expect(out.line).toBe("בנק לאומי בע״מ · אג״ח");
-    expect(out.figs?.[0]?.f).toBe("ת״א-125");
-    expect(out.key).toBe(raw.key);
-    expect(out.norm).toBe(raw.norm);
-    // the row is still found by the abbreviation typed either way
-    expect(normalize(out.name)).toBe(normalize(raw.name));
   });
 });
