@@ -319,14 +319,18 @@ describe("AddLine", () => {
 });
 
 describe("ChoiceChips", () => {
-  it("marks the chosen chip by its fill, a check before its words and its words held at the chosen weight; the others carry no check", () => {
+  it("marks the chosen chip by its fill and a check before its words; the others show no check, and every chip holds the room of the check and its words at the chosen weight", () => {
     const out = html(createElement(ChoiceChips, { ids: ["a", "b"], labels: { a: "חוק", b: "תקנות" }, value: "a", onChange: () => {}, ariaLabel: "x" }));
-    const [on, off] = out.split('role="radio"').slice(1);
-    expect(on).toMatch(/class="sec-chip [^"]*sec-chip-on ps-2\.5"/);
-    expect(on).toContain("lucide-check");
-    expect(on).toContain("invisible font-semibold");
+    const [on = "", off = ""] = out.split('role="radio"').slice(1);
+    // the room held: the chosen look laid out unseen, its check and its words at the chosen weight
+    const room = /<span aria-hidden="true" class="invisible [^"]*font-semibold[^"]*"><svg [^>]*lucide-check.*?<\/span><\/span>/;
+    expect(on).toMatch(room);
+    expect(off).toMatch(room);
+    const shown = (chip: string) => chip.replace(room, "");
+    expect(on).toMatch(/class="sec-chip [^"]*sec-chip-on"/);
+    expect(shown(on)).toContain("lucide-check");
     expect(off).not.toContain("sec-chip-on");
-    expect(off).not.toContain("lucide-check");
+    expect(shown(off)).not.toContain("lucide-check");
   });
   it("names each chip by its words and, where the row counts, its count, as the eye reads it", () => {
     expect(chipName("אג\"ח", 12)).toBe(`${gershayim("אג\"ח")} 12`);
