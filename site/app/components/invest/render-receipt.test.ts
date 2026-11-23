@@ -90,8 +90,12 @@ describe("the receipt", () => {
     const abroad = allFunds(view).find((f) => f.option === "abroad");
     if (!abroad) throw new Error("the page's index has a fund bought abroad");
     expect(totalNoteOf(view, bundle, abroad.rec.id)).toContain(w.pair.abroadShort);
-    const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan });
-    expect(totalNoteOf(ta, bundle, pickOfHeadline(ta)!.fund)).toBeNull();
+    const index = indexById(bundle, "index-ta125");
+    if (!index) throw new Error("the TA-125 index is collected");
+    const ta = buildInvest({ bundle, index, plan });
+    const headline = pickOfHeadline(ta);
+    if (!headline) throw new Error("the TA-125 page has a headline pair");
+    expect(totalNoteOf(ta, bundle, headline.fund)).toBeNull();
   });
   it("the run's index at the horizon and its deposits as paid are F-03's and F-05's, which take the chain to the horizon's shekels", () => {
     const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });

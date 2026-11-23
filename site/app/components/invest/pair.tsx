@@ -4,7 +4,7 @@
 // (no-fund.tsx) share: a house's groups (the custom index's lists only), standing-order and phone-only prices, the notes on prices abroad,
 // and a fund's gap from its index.
 import { mayaFundHref } from "../../lib/sources";
-import { Fragment, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { isTie, type GapList } from "@finance-tool/engine";
 import { groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
@@ -15,7 +15,7 @@ import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/la
 import { computed, differenceOf, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { Num, Ruled, Term, type SheetPart } from "../provenance";
-import { ClampedText, gershayim, Disclosure, DocLink, LabelRow, NoteList, Tag, Tpl, GroupPriceFold, fill } from "../kit";
+import { ClampedText, gershayim, DocLink, LabelRow, Tag, Tpl, GroupPriceFold, fill } from "../kit";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { DealFromHouseButton } from "./deal-account";
@@ -473,44 +473,6 @@ export const LONGEST_AMOUNT = 9_999_999;
 export const LONGEST_LEFT = 999_999_999;
 /** The most years a plan's sliders give, for a sentence's unseen longest case. */
 export const LONGEST_YEARS = 40;
-
-/**
- * What a price for a fund bought abroad leaves out, said once on the page (D65, D66): a spread the price list does not limit, naming the
- * houses whose lists limit it, and what others abroad charge the house. Only on an index with funds bought abroad, folded, so the list
- * stays near its heading on a phone; `open` is kept by the list, whose held height starts over when it opens or closes.
- */
-export function AbroadNotes({ view, bundle, open, onOpenChange }: { view: InvestView; bundle: IndicesBundle; open: boolean; onOpenChange: (open: boolean) => void }) {
-  if (!view.options.some((o) => o.id === "abroad" && o.exists)) return null;
-  const limits = (id: string) => bundle.snapshots.some((s) => s.id === id && s.lines.some((l) => l.base === "fx" && typeof l.spread?.value === "number"));
-  const capped = view.providers.filter((p) => !p.custom && limits(p.id)).map((p) => p.short).sort((a, b) => a.localeCompare(b, "he"));
-  // F-103 (D67): the houses whose price lists print a charge per corporate event abroad, which their figures count on each dividend
-  const charge = (id: string) => bundle.snapshots.find((s) => s.id === id)?.lines.find((l) => l.base === "corporate_event" && typeof l.rate.value === "number")?.rate;
-  // the note says custody abroad there is free, from the house's own custody line for securities abroad: only where that line prints 0
-  const custodyAbroad = (id: string) => bundle.snapshots.find((s) => s.id === id)?.lines.find((l) => l.base === "custody" && l.applies_to.includes("foreign_securities") && l.rate.value === 0)?.rate;
-  const perDividend = view.providers.flatMap((p) => { const rate = p.custom ? undefined : charge(p.id); const custody = p.custom ? undefined : custodyAbroad(p.id); return rate && custody ? [{ name: p.short, rate, custody }] : []; }).sort((a, b) => a.name.localeCompare(b.name, "he"));
-  return (
-    <Disclosure look="link" label={c.pair.abroadTitle} open={open} onOpenChange={onOpenChange} summaryClassName="text-sm">
-      <NoteList
-        className="text-xs pb-1"
-        items={[
-          ...(capped.length > 0 ? [c.pair.abroadSpread(capped)] : []),
-          <>
-            {c.pair.abroadOthers}
-            {perDividend.map((x) => (
-              <Fragment key={x.name}>
-                {" "}
-                <Tpl t={c.pair.abroadPerDividend} vars={{ name: x.name, custody: <Num value={ownBy(x.custody as SiteValue, x.name)} display={fmt.pct(x.custody.value as number)} />, amount: <Num value={ownBy(x.rate as SiteValue, x.name)} display={fmt.usd(x.rate.value as number)} /> }} />
-              </Fragment>
-            ))}
-          </>,
-          // beside what the price of a fund abroad leaves out, not collected at the page's foot (wording.md: a note beside what it qualifies);
-          // only while a fund abroad on the page has no unit price
-          ...(allFunds(view).some((f) => f.option === "abroad" && f.noUnitPrice) ? [c.foot.sharePrice] : []),
-        ]}
-      />
-    </Disclosure>
-  );
-}
 
 // ---------------------------------------------------------------- the fund column
 

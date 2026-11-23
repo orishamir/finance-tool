@@ -4,7 +4,6 @@ import { describe, expect, it } from "vitest";
 import { invest } from "../../copy";
 import { buildInvest, indexById, tieShareOf, hasKinds, kindOf } from "../../lib/invest";
 import { entered } from "../../lib/value";
-import { fmt } from "../../lib/format";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { allFunds, crowned, pairVerdict, pickOfHeadline, tieCount, tieFunds, tieSet } from "./pair";
 import { Terms } from "./custom-entries";
@@ -184,25 +183,8 @@ describe("a typed entry's line", () => {
   });
 });
 
-describe("the account card's notes on prices abroad (D65, D66)", () => {
+describe("the account card's fees panel", () => {
   const sp = indexById(bundle, "index-sp500")!;
-  const ta = indexById(bundle, "index-ta125")!;
-  const card = (index: typeof sp) => {
-    const view = buildInvest({ bundle, index, plan: { ...plan, currentAccounts: true } });
-    return shown(lists(view, bundle, { ...plan, currentAccounts: true }, pickOfHeadline(view)!));
-  };
-
-  it("names the houses whose price lists limit the spread, from their records, on an index with funds bought abroad", () => {
-    const out = card(sp);
-    expect(out).toContain(invest.pair.abroadSpread(["אי.בי.אי", "אלטשולר טרייד", "מיטב טרייד"]));
-    // F-103 (D67): One Zero prints a charge per dividend abroad, which its figures count; the note says so
-    expect(out).toContain(invest.pair.abroadOthers);
-    // why One Zero's charge is counted while other written ceilings are not, and on which funds
-    for (const part of invest.pair.abroadPerDividend.replace("{name}", "וואן זירו").split(/\{amount\}|\{custody\}/)) expect(out).toContain(part);
-    expect(out).toContain(fmt.usd(50));
-    // the custody abroad it calls free is the price list's own 0, not typed
-    expect(out).toContain(fmt.pct(0));
-  });
 
   it("the fees panel names a bank's current account as an item only where the pair's account charges one", () => {
     const p = { ...plan, currentAccounts: true as const };
@@ -221,12 +203,5 @@ describe("the account card's notes on prices abroad (D65, D66)", () => {
       expect(panel(h).includes(invest.pair.lines.account!), h).toBe(current);
     }
     expect(banks).toBeGreaterThan(0);
-  });
-
-  it("says neither on an index whose funds are all bought in Tel Aviv, if it has none bought abroad", () => {
-    const view = buildInvest({ bundle, index: ta, plan });
-    const out = card(ta);
-    const abroad = view.options.some((o) => o.id === "abroad" && o.exists);
-    expect(out.includes(invest.pair.abroadTitle)).toBe(abroad);
   });
 });

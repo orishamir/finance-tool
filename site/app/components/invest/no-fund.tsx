@@ -10,7 +10,7 @@ import { fmt } from "../../lib/format";
 import { IconCopy } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, DocLink, LongestCase, PickList, SourcedTag, Swatch, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { AsideLine, barScale, GroupLine, HouseLine, LONGEST_AMOUNT, LONGEST_YEARS, AbroadNotes, NoFundWords, whyNoKindAt, type WhyNone } from "./pair";
+import { AsideLine, barScale, GroupLine, HouseLine, LONGEST_AMOUNT, LONGEST_YEARS, NoFundWords, whyNoKindAt, type WhyNone } from "./pair";
 import { byLegend, hasCurrent, legendLines, legendName, lineClass, lineOf, partName } from "./cost-lines";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -78,11 +78,10 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const heldKey = `${view.index.id}:${rows.length}`;
   const [openGroups, setOpenGroups] = useState<string[]>([]);
   const onGroup = (id: string, open: boolean) => setOpenGroups((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
-  const [abroadOpen, setAbroadOpen] = useState(false);
   // a house's left-out standing-order price shows two lines; the rest opens at a tap, and the held height starts over with it
   const [openAsides, setOpenAsides] = useState<string[]>([]);
   const onAside = (id: string, open: boolean) => setOpenAsides((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
-  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${abroadOpen}:${openAsides.join()}`);
+  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${openAsides.join()}`);
   // every house the header can name, laid out unseen, so a long one moves nothing above the list
   const longest = useMemo(
     () => ({
@@ -206,7 +205,6 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           {c.pair.whichPrice}
           {saved.length > 0 && <> {c.pair.collectedSpan(`\u2066${fmt.date(saved[0]!)}\u2069`, `\u2066${fmt.date(saved.at(-1)!)}\u2069`)}</>}
         </span>
-        <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />
       </div>
       <div className="@container">
         <PickList

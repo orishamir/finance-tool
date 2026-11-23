@@ -19,8 +19,7 @@ import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, StateTag, shortRow } from "../provenance";
-import { DocLink, FEE_WORDS_HELP, HelpMark, LabelChip, LeftOutLine, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
-import { leftOutOf } from "../../lib/left-out";
+import { DocLink, FEE_WORDS_HELP, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
 import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, priced, totalNoteOf, whole, type Pick } from "./pair";
 import { OptionTag } from "./parts";
@@ -350,8 +349,6 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
         const sub = accountLineSub(l, { pc, plan, pick, dealApi });
         return <ReceiptLine key={l.key} size="sm" label={name} value={<Num value={nom(l.cost, name)} display={minus(l.amount)} />} sub={sub ?? undefined} />;
       })}
-      {/* what the house's documents hold and its price leaves out, under its lines (D106) */}
-      <LeftOutLine view={leftOutOf(bundle.snapshots.find((s) => s.id === pick.house))} house={short} />
     </>
   );
   const accountValue = <Num value={nom(accountSum(pc, c.pair.who.account, today), c.receipt.parts.account)} display={minus(r.account)} />;

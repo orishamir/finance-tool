@@ -4499,7 +4499,7 @@ export const invest = {
     baseAbout: "ההפקדות עם התשואה של התוכנית בלבד, בלי מה שהחשבון, הקרן והמדינה לוקחים, בכסף של היום",
     left: (years: number) => `נשאר לכם בעוד ${yearsSpan(years)}`,
     steadyDollar: "בהנחה שהדולר לא זז מול השקל",
-    /** In the "!" beside the total, for a fund bought abroad: the short form of `abroadOthers` and `abroadSpread`, which say it in full. */
+    /** In the "!" beside the total, for a fund bought abroad: said once for the page, since the price of a fund bought abroad leaves these out. */
     abroadShort: "בקרן שנקנית בחו״ל החישוב לא כולל חיובים של ברוקר, של צד שלישי ושל רשויות, ולא מרווח המרה שאין לו תקרה כתובה. בפועל אפשר לשלם יותר.",
     steadyIndexCurrency: "בהנחה ששער המטבע של המדד לא זז מול השקל",
     cheapest: "הזוג הזול ביותר",
@@ -4601,18 +4601,6 @@ export const invest = {
     tiedWord: "שקולה",
     cheapestTag: "★ הזול",
     whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר לקבוצות כתוב בשורה של הבנק או בית ההשקעות ולא נכנס לחישוב.",
-    /** D65 and D66: said once, for an index with funds bought abroad; `capped`: the houses whose price lists print a limit on the spread, which their figures count at the limit (F-13). */
-    abroadTitle: "מה לא נכנס למחיר של קרן שנקנית בחו״ל",
-    abroadSpread: (capped: string[]) => `מעבר לעמלת המרת המטבע, יש בנקים ובתי השקעות שגובים גם מרווח המרה: הם ממירים את השקלים לדולרים בשער שהם קובעים. מבין התעריפונים שנאספו, תקרה למרווח כתובה רק בתעריפון של ${andList(capped.map((x, i) => (i > 0 && i === capped.length - 1 && /^[A-Za-z]/.test(x) ? `־${x}` : x)))}. אצלם החישוב סופר אותו בגובה התקרה. אצל השאר הוא לא נכנס לחישוב.`,
-    /** D66: what others abroad charge a house is left out, with or without a printed ceiling; said against the spread above, which the house
-     * sets itself: a written ceiling counted there and not here would read as a contradiction. */
-    abroadOthers:
-      "יש תעריפונים שכותבים: עסקה בחו״ל עשויה לשאת חיובים נוספים מעבר לעמלה, למשל של ברוקר, של צד שלישי או של רשויות. את החיובים האלה קובע גוף בחו״ל, בשונה ממרווח ההמרה, שהבנק או בית ההשקעות קובעים בעצמם. לכן הם לא נכנסים לחישוב, גם כשהתעריפון כותב להם תקרה. קרן שנקנית בחו״ל יכולה לעלות יותר ממה שמחושב כאן.",
-    /** D67, F-103: a house whose price list prints custody abroad at `{custody}` (0%, its own line) and passes on the custodian's cost per
-     * corporate event, up to `{amount}` (One Zero): counted at that ceiling on each dividend of a fund that pays one, and never on a fund that
-     * keeps its profit. */
-    abroadPerDividend:
-      "יוצא מן הכלל: בתעריפון של {name} דמי ניהול פיקדון ניירות ערך בחו״ל הם {custody}. בנוסף, העלות של הגוף ששומר את ניירות הערך עוברת ללקוח, עד {amount} על כל דיבידנד. בלי העלות הזאת שמירת ניירות הערך שם הייתה נראית בחינם. לכן בקרן בחו״ל שמחלקת דיבידנד (רווח שהקרן משלמת למחזיקים בה), החישוב סופר את המרב: {amount} על כל דיבידנד. קרן שצוברת את הרווח בתוכה (בשמה כתוב Accumulating) לא משלמת אותה.",
     standingTag: "מחיר להוראת קבע",
     /**
      * a house that sells this kind of fund only by phone, in its own words (an availability entry's `phone_only`): a tag beside
@@ -4748,11 +4736,6 @@ export const invest = {
     copied: "הועתק",
     noOption: "אין קרנות שנאספו שנקנות בחשבון הזה.",
     israelTitle: "קרנות ישראליות",
-  },
-
-  /** Beside what the price of a fund abroad leaves out (`AbroadNotes`): funds abroad waiting for a unit price. */
-  foot: {
-    sharePrice: "קרנות בחו״ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף.",
   },
 
   /** Hedged or not: the fund list's two groups and rows (F-94). */

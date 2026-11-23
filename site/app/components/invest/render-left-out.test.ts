@@ -28,21 +28,14 @@ describe("the indices page", () => {
   const index = indexById(bundle, "index-sp500")!;
   const view0 = buildInvest({ bundle, index, plan });
   const fund = pickOfHeadline(view0)!.fund;
-  it("the receipt says under the chosen account's lines what its price leaves out, its words opening the sheet (the ticket's account part; on paper, behind a tap on the account's name)", () => {
+  it("the receipt has no line under the account's lines saying what its price leaves out: the mark in the account's row says it", () => {
     const b = marked("leumi");
     const view = buildInvest({ bundle: b, index, plan });
     const out = html(createElement(PairReceipt, { view, bundle: b, plan, pick: { house: "leumi", fund }, chosen: true, layout: "ticket" }));
-    // the record's own marked things count too, now that the records carry them
-    const warn = leftOutOf(b.snapshots.find((s) => s.id === "leumi"))!.warn;
-    expect(warn).toBeGreaterThan(0);
-    expect(out).toContain(`data-left-out="${warn}"`);
-    expect(shown(out)).toContain(`${c.lead} ${c.canChange(warn)}`);
-    expect(out).toMatch(new RegExp(`class="term"[^>]*>${c.canChange(warn)}<`));
+    expect(shown(out)).not.toContain(c.lead);
+    expect(out).not.toContain("data-left-out=");
   });
-  it("before the records say what can change a price, the line counts what the documents hold, and no account carries the mark", () => {
-    const n = leftOutOf(bundle.snapshots.find((s) => s.id === "leumi"))!;
-    const out = html(createElement(PairReceipt, { view: view0, bundle, plan, pick: { house: "leumi", fund }, chosen: true, layout: "ticket" }));
-    if (n.warn === 0) expect(shown(out)).toContain(`${c.lead} ${c.some(n.other)}`);
+  it("before the records say what can change a price, no account carries the mark", () => {
     const listsOut = lists(view0, bundle, plan, { house: "leumi", fund }, { chosen: true });
     if (bundle.snapshots.every((s) => !leftOutOf(s)?.warn)) {
       expect(listsOut).not.toContain(markLabel);

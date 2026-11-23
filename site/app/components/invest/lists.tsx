@@ -38,7 +38,7 @@ import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
 import { ANCHOR, verdictOf } from "./receipt";
-import { AbroadNotes, allFunds, asideParts, inTieSet, labelsOf, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
+import { allFunds, asideParts, inTieSet, labelsOf, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
 
 /** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the receipt has it whole. */
 export const listName = (view: InvestView, name: string) => shortFundName(name, [pillName(view.index.name), ...(view.index.exposure?.names.he ?? []), ...(view.index.exposure?.names.en ?? []), ...(view.index.custom ? [view.index.custom.name] : [])]);
@@ -116,7 +116,6 @@ export function PairLists(props: ListsProps) {
   const dealApi = useDealAccounts();
   const sp = c.shownPair(chosen);
   const funds = allFunds(view);
-  const [abroadOpen, setAbroadOpen] = useState(false);
   const [unpricedOpen, setUnpricedOpen] = useState(false);
   const kinds = hasKinds(view) && !!bundle.dollarRange;
   const range = bundle.dollarRange;
@@ -621,7 +620,6 @@ export function PairLists(props: ListsProps) {
     <div className="flex flex-col gap-3">
       <NotMovedLines />
       <AddDealButton />
-      <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />
     </div>
   );
   const fundsList = (
