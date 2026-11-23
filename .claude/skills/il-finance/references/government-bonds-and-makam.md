@@ -216,10 +216,10 @@ Scope: makam (מק"ם) and every type of Israeli government shekel bond a reside
 - Likely to change: no.
 
 ### GOV-23 Makam issue schedule
-- Rule: BoI's published schedule shows one new makam series a month, from 02/12/2025 (series 1216) to 02/02/2027 (series 218), each running 364 to 371 days to redemption.
-- Conditions / exceptions: BoI notes dates may change with advance notice. Current issues are about one year, inside the general conditions' 14-day to 13-month range (GOV-03, GOV OQ3). Auction results are on BoI's statistics page (updated 21/10/2026), for the data track.
+- Rule: BoI's published schedule shows one new makam series a month, from 01/12/2026 (series 1227) to 01/02/2028 (series 219), each running 364 to 371 days to redemption.
+- Conditions / exceptions: BoI notes dates may change with advance notice. Current issues are about one year, inside the general conditions' 14-day to 13-month range (GOV-03, GOV OQ3). Auction results are on BoI's statistics page (updated 18/11/2026), for the data track.
 - Figures: as above.
-- Source: [בנק ישראל: מק"מ - מועדי הנפקות עתידיים](https://www.boi.org.il/boi_files/hanpaka.pdf), p.1 · checked 2026-10-25 · primary. [בנק ישראל: מק"מ - מכרזים ויתרות](https://www.boi.org.il/roles/statistics/makamandbonds/actions-and-balances/) · checked 2026-10-25 · primary.
+- Source: [בנק ישראל: מק"מ - מועדי הנפקות עתידיים](https://www.boi.org.il/boi_files/hanpaka.pdf), p.1 · checked 2026-11-23 · primary. [בנק ישראל: מק"מ - מכרזים ויתרות](https://www.boi.org.il/roles/statistics/makamandbonds/actions-and-balances/) · checked 2026-11-23 · primary.
 - Scope: general
 - Dimensions: `liquidity-lockup`
 - Likely to change: yes, monthly.

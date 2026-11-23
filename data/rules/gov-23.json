@@ -12,7 +12,7 @@
     "liquidity-lockup"
   ],
   "likely_to_change": "yes",
-  "recheck_date": "2026-11-15",
+  "recheck_date": "2027-05-15",
   "figures": {
     "term_days_min": {
       "value": 364,
@@ -23,16 +23,16 @@
         "publisher": "Bank of Israel",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
-      "effective_from": "2025-12-02",
-      "effective_to": "2027-02-02",
+      "checked": "2026-11-23",
+      "effective_from": "2026-12-01",
+      "effective_to": "2028-02-01",
       "tax_year": null,
       "update_rule": "market",
       "rule_ids": [
         "GOV-23"
       ],
       "state": "sourced",
-      "notes": "BoI's schedule shows one new series a month, from 02/12/2025 (series 1216) to 02/02/2027 (series 218), each running 364 to 371 days to redemption; dates may change with advance notice."
+      "notes": "BoI's schedule, read 2026-11-23, shows one new series a month, 15 issues from 01/12/2026 (series 1227, redeemed 08/12/2027) to 01/02/2028 (series 219, redeemed 07/02/2029), each running 364 to 371 days to redemption; dates may change with advance notice. The PDF prints no date of its own (its file metadata says 15/11/2026). The schedule read on 2026-10-25 ran from 02/12/2025 (series 1216) to 02/02/2027 (series 218)."
     },
     "term_days_max": {
       "value": 371,
@@ -43,9 +43,9 @@
         "publisher": "Bank of Israel",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
-      "effective_from": "2025-12-02",
-      "effective_to": "2027-02-02",
+      "checked": "2026-11-23",
+      "effective_from": "2026-12-01",
+      "effective_to": "2028-02-01",
       "tax_year": null,
       "update_rule": "market",
       "rule_ids": [
@@ -56,7 +56,7 @@
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
-  "checked": "2026-10-22",
+  "checked": "2026-11-23",
   "scope": "general",
   "sources": [
     {
@@ -70,7 +70,7 @@
       "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
-      "checked": "2026-10-25"
+      "checked": "2026-11-23"
     },
     {
       "url": "https://www.boi.org.il/roles/statistics/makamandbonds/actions-and-balances/",
@@ -80,7 +80,7 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-11-23"
     }
   ]
 }

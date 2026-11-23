@@ -2,14 +2,14 @@
   "id": "MF-66",
   "title": "Near a fund's end: bonds that end later than the year in its name, and fewer holdings",
   "title_he": "קרוב לסוף הקרן: איגרות שנגמרות אחרי השנה שבשם, ופחות החזקות",
-  "text_he": "לפי הבהרות של קסם (29.10.2026) ושל ילין לפידות (1.11.2026), במדד יכולות להיכלל איגרות עם מועד פדיון סופי מאוחר מהשנה שבשם הקרן. זה קורה אם למנפיק יש זכות לפדיון מוקדם מלא במועד מוגדר. אם המנפיק לא משתמש בזכות, האיגרת יוצאת מהמדד, ואצל ילין לפידות משקלה עובר למק״מ. שתי החברות כותבות שזו הבהרה ולא שינוי. קסם דיווחה גם שבמדד של קרן 5138565 היו ב־26.8.2026 רק 12 ניירות ערך, וחמשת הגדולים שקלו 60.22%. המסקנה שקרן קרובה לסופה מחזיקה פחות ניירות ערך נשענת על דיווח אחד. ב־2.11.2026 לא נמצאה הודעת פירוק בדיווחים של קרן 5138565 ושל קרן 5137492 של ילין לפידות.",
+  "text_he": "לפי הבהרות של קסם (29.10.2026) ושל ילין לפידות (1.11.2026), במדד יכולות להיכלל איגרות עם מועד פדיון סופי מאוחר מהשנה שבשם הקרן. זה קורה אם למנפיק יש זכות לפדיון מוקדם מלא במועד מוגדר. אם המנפיק לא משתמש בזכות, האיגרת יוצאת מהמדד, ואצל ילין לפידות משקלה עובר למק״מ. שתי החברות כותבות שזו הבהרה ולא שינוי. קסם דיווחה גם שבמדד של קרן 5138565 היו ב־26.8.2026 רק 12 ניירות ערך, וחמשת הגדולים שקלו 60.22%. המסקנה שקרן קרובה לסופה מחזיקה פחות ניירות ערך נשענת על דיווח אחד. ב־23.11.2026 עוד לא נמצאה הודעת פירוק בדיווחים של קרן 5138565 ושל קרן 5137492 של ילין לפידות.",
   "strength": "institution",
   "dimensions": [
     "liquidity-lockup"
   ],
   "likely_to_change": "yes",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
-  "checked": "2026-11-02",
+  "checked": "2026-11-23",
   "recheck_date": "2027-07-01",
   "figures": {
     "holdings": {
@@ -113,15 +113,15 @@
       "notes": "תאריך ההבהרה"
     },
     "notice_checked": {
-      "value": "2026-11-02",
+      "value": "2026-11-23",
       "unit": "text",
       "source": {
         "url": "https://maya.tase.co.il/he/funds/mutual-funds/5137492/reports",
-        "title": "הדיווחים של קרן 5137492 במאיה, נבדקו ב־2.11.2026",
+        "title": "מאיה, דיווחי קרנות - י.ל מחקה לפדיון 2026 צמוד (קרן 5137492)",
         "publisher": "ילין לפידות",
         "strength": "institution"
       },
-      "checked": "2026-11-02",
+      "checked": "2026-11-23",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -130,7 +130,7 @@
         "MF-66"
       ],
       "state": "sourced",
-      "notes": "התאריך שבו נבדקו הדיווחים של קרנות 5138565 ו־5137492: לא נמצאה בהן הודעת פירוק"
+      "notes": "התאריך שבו נבדקו הדיווחים של קרנות 5138565 ו־5137492 במאיה: לא נמצאה בהן הודעת פירוק. הדיווח האחרון ברשימה: בקרן 5137492 מ־23.11.2026, ובקרן 5138565 מ־19.11.2026."
     }
   },
   "scope": "institution",
@@ -145,6 +145,24 @@
     }
   ],
   "sources": [
+    {
+      "url": "https://maya.tase.co.il/he/funds/mutual-funds/5138565/reports",
+      "title": "Kesem, reports of fund 5138565 on Maya, 23.11.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-23"
+    },
+    {
+      "url": "https://maya.tase.co.il/he/funds/mutual-funds/5137492/reports",
+      "title": "Yalin Lapidot, reports of fund 5137492 on Maya, 23.11.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-23"
+    },
     {
       "url": "https://mayafiles.tase.co.il/rhtm/1778001-1779000/H1778660.htm",
       "title": "Kesem, report of 29.10.2026",
@@ -166,24 +184,6 @@
     {
       "url": "https://mayafiles.tase.co.il/rhtm/1766001-1767000/H1766613.htm",
       "title": "Kesem, report of 27.8.2026",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-11-02"
-    },
-    {
-      "url": "https://maya.tase.co.il/he/funds/mutual-funds/5138565/reports",
-      "title": "Kesem, reports of fund 5138565 on Maya, 2.11.2026",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-11-02"
-    },
-    {
-      "url": "https://maya.tase.co.il/he/funds/mutual-funds/5137492/reports",
-      "title": "Yalin Lapidot, reports of fund 5137492 on Maya, 2.11.2026",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
