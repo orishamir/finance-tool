@@ -1,8 +1,7 @@
 // An error boundary around one tool (a calculator, the deal editor): a tool that throws on odd input shows a notice in its place, and
 // the rest of the page stands. `resetKey`: a new value (another index, other fields) tries the tool again. `onReset`: for a tool that
-// reads fields kept on the device, which would throw again after a reload, the notice offers to put them back to the site's example, or to
-// clear the one field that may have broken it. `words`: the notice's title and line, for a tool whose notice says what to do about it, and
-// the reset's button where it does something other than put the fields back; else the site's general ones.
+// reads fields kept on the device, which would throw again after a reload, the notice offers to put them back to the site's example.
+// `words`: the notice's title and line, for a tool whose notice says what to do about it; else the site's general ones.
 import { Component, type ReactNode } from "react";
 import { system } from "../copy";
 import { Button, Callout } from "./kit";
@@ -10,9 +9,9 @@ import { Button, Callout } from "./kit";
 interface Props {
   children: ReactNode;
   resetKey?: string;
-  /** Puts the fields the tool reads back to the site's example, or clears the one that may have broken it; the tool is then tried again. */
+  /** Puts the fields the tool reads back to the site's example; the tool is then tried again. */
   onReset?: () => void;
-  words?: { title: string; line: string; reset?: string };
+  words?: { title: string; line: string };
 }
 
 interface State {
@@ -48,7 +47,7 @@ export class ToolBoundary extends Component<Props, State> {
                 this.setState({ failed: false });
               }}
             >
-              {this.props.words?.reset ?? system.toolFailed.resetFields}
+              {system.toolFailed.resetFields}
             </Button>
           )}
           <Button variant="quiet" flush onClick={() => window.location.reload()}>

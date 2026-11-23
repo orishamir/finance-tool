@@ -193,6 +193,18 @@ export function freedCurrency(u: Undo | KindUndo | null, deal: FeeDeal, feeId: s
 }
 
 /**
+ * What putting charge `part` on price `at.k` on side `at.side` of fee `feeId` (in case `caseId`) does, `kept` the undo the page keeps now:
+ * where a charge added again right after its bin made the price free, the price put back as it was, with its parts, by that undo
+ * (`back`); else the change of form (`r`, `changeFormKept`), in the currency the freed price had; null where nothing changes.
+ */
+export function formStep(deal: FeeDeal, kept: Undo | KindUndo | null, feeId: string, part: PartId, chosen: string | null, caseId: string | null, at: { side: Side; k: number }): { back: Undo } | { r: MaybeUndoable } | null {
+  // `formBack` holds only for an undo of a change of form, which is an `Undo`
+  if (kept && formBack(kept, deal, feeId, part, caseId ?? undefined, at.k, at.side)) return { back: kept as Undo };
+  const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at.k, freedCurrency(kept, deal, feeId, caseId ?? undefined, at.k, at.side), at.side);
+  return r ? { r } : null;
+}
+
+/**
  * The deal with change `k` of a fee's prices on `side` taken away at its divider, the later price merging back into the earlier
  * (`removeChange`): kept for the undo where the later price differs from the earlier, gone silently where it is still the earlier's copy
  * (`changeUntouched`). Null where no change `k` stands.

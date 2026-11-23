@@ -9,7 +9,6 @@ import type { CoverageLine, Reason } from "../compare/types.ts";
 import { computedValue, weakestStrength } from "../fees/computed.ts";
 import { feeLines, withoutFeeLine, type FeeLine } from "../fees/materiality.ts";
 import type { Commission, ConversionPrice, Custody, SizeStep } from "../formulas/fees.ts";
-import { perUnitOf } from "../formulas/deal.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
 import { beforeTaxPathOf, checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, runSecuritiesBeforeTax, type BeforeTaxRun, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
@@ -1037,7 +1036,7 @@ function dealCurrencies(a: DealAccount): string[] {
 /** Whether a deal prices a trade per unit (F-12's price per share), or counts a month's trading in units (F-128), which needs the fund's unit price. */
 const dealPerUnit = (a: DealAccount): boolean =>
   (a.planWithin ?? []).some((ws) => ws?.some((w) => w.unit === "units")) ||
-  a.deal.fees.some((f) => [...f.stages, ...(f.sale ?? [])].some((st) => perUnitOf(st.price) !== null));
+  a.deal.fees.some((f) => [...f.stages, ...(f.sale ?? [])].some((st) => st.price.kind === "perUnit" || ((st.price.kind === "action" || st.price.kind === "perAction") && st.price.third?.kind === "perUnit")));
 
 /** Every provider of the run, then every deal account (F-128), each read for the run. */
 function preparedAll(input: WorkbenchInput, runFund: Fund): (ReadyProvider | NotComparableProvider)[] {
