@@ -1433,6 +1433,8 @@ export const catalogue = {
  */
 export const r2 = {
   form: {
+    errYears: "הזינו לפחות שנה אחת.",
+    errYearsWhole: "הזינו מספר שלם של שנים.",
   },
 } as const;
 
@@ -2654,7 +2656,7 @@ export const r3transfer = {
   title: "העברה למכשיר אחר",
   lede: "קובץ אחד עם כל מה שהזנתם. בלי חשבון, בלי שרת: הקובץ עובר רק לאן שאתם שולחים אותו.",
   exportHeading: "לשמור קובץ מהמכשיר הזה",
-  contents: { goals: "מטרות", holdings: "החזקות", names: "שמות שלא קוטלגו", inputs: "המספרים שהזנתם לתוכנית", versions: "גרסת האתר והנתונים" },
+  contents: { goals: "מטרות", holdings: "החזקות", names: "שמות שלא קוטלגו", inputs: "הערכים שהזנתם במדריך", versions: "גרסת האתר והנתונים" },
   caution: "הקובץ מכיל את הסכומים והשכר שהזנתם. שלחו אותו רק למי שאתם רוצים שיראה אותם.",
   buttons: { share: "שיתוף", download: "הורדה", copy: "העתקה", copied: "הועתק" },
   fileName: "שם הקובץ:",
@@ -2679,7 +2681,6 @@ export const r3transfer = {
   errors: {
     newer: "הקובץ נוצר בגרסה חדשה יותר של האתר. רעננו את העמוד ונסו שוב.",
     format: "זה לא קובץ של מקור.",
-    damaged: "הקובץ פגום: חלק ממנו חסר או השתנה. לא שונה כלום במכשיר.",
     invalidBefore: "הקובץ לא תקין:",
     invalidAfter: ". לא שונה כלום במכשיר.",
     unreadable: "האתר לא הצליח לקרוא את הקובץ.",
@@ -2695,11 +2696,6 @@ export const r3transfer = {
     ticks: { one: "סימון אחד ב״איך עוברים״", two: "שני סימונים ב״איך עוברים״", many: "סימונים ב״איך עוברים״" },
     ownRates: { one: "ריבית שהזנתם להשוואה", two: "שתי ריביות שהזנתם להשוואה", many: "ריביות שהזנתם להשוואה" },
     deals: { one: "עסקה שמורה אחת בעמוד העמלות", two: "שתי עסקאות שמורות בעמוד העמלות", many: "עסקאות שמורות בעמוד העמלות" },
-    // the indices page's own entries, and the plan numbers a load added (the export and the preview say only that the file holds them: `contents.inputs`)
-    indices: { one: "מדד אחד שהוספתם", two: "שני מדדים שהוספתם", many: "מדדים שהוספתם" },
-    funds: { one: "קרן אחת שהזנתם", two: "שתי קרנות שהזנתם", many: "קרנות שהזנתם" },
-    accounts: { one: "חשבון ניירות ערך אחד שהזנתם", two: "שני חשבונות ניירות ערך שהזנתם", many: "חשבונות ניירות ערך שהזנתם" },
-    inputs: { one: "מספר אחד לתוכנית", two: "שני מספרים לתוכנית", many: "מספרים לתוכנית" },
   },
   // one person per device; Safari deletes a site's storage after seven days of use without a tap, click or key on it, and a copy on the
   // Home Screen, which it spares, keeps storage of its own that starts empty (guidelines/code.md, "In the browser")
@@ -2711,9 +2707,7 @@ export const r3transfer = {
   sideFailed: "ההצעות, ההנחות והסימונים לא נשמרו במכשיר הזה.",
   rejectedHeading: "לא ייטענו, כי שדה בהם לא תקין:",
   rejectedItem: "{kind} {at}, {field}: {problem}.",
-  /** A plan number left out: its name, not its key in the file. */
-  rejectedInput: "{kind} ״{name}״: {problem}.",
-  rejectedKinds: { holding: "החזקה", input: "מספר בתוכנית", offers: "הצעה", variants: "הנחות לחשיפה", ticks: "סימונים", ownRates: "ריבית שהוזנה", deals: "עסקה שמורה" }, // ownRates:
+  rejectedKinds: { holding: "החזקה", input: "ערך במדריך", offers: "הצעה", variants: "הנחות לחשיפה", ticks: "סימונים", ownRates: "ריבית שהוזנה", deals: "עסקה שמורה" }, // ownRates:
   rejectedProblems: {
     structure: "המבנה לא תקין",
     "not-number": "לא מספר",
@@ -2722,14 +2716,9 @@ export const r3transfer = {
     date: "לא תאריך",
     wrapper: "סוג חיסכון לא מוכר",
     "gain-over-balance": "גדול מהיתרה",
-    "not-whole": "לא מספר שלם",
   },
-  /** A plan number outside its bound: "לא בין 1 ל־40"; a bound with no top, "מתחת ל־…". */
-  outOfBound: { between: ["לא בין", "ל־"], below: "מתחת ל־" },
-  /** The plan numbers by their key in the file, for a line about one left out; a key not here is shown as it is. */
-  rejectedInputs: { amount_now: "סכום היום", monthly_deposit: "הפקדה חודשית", horizon_years: "שנים", "A-01": "תשואה בשנה", "A-02": "אינפלציה בשנה", cash_rate: "ריבית בשנה", annual_income: "הכנסה שנתית", age: "גיל", employment: "סוג ההעסקה", insurance: "דמי הביטוח בקרן הפנסיה" },
   rejectedFields: {
-    id: "המזהה",
+    id: "המזהה", age: "הגיל", insurance: "דמי הביטוח בקרן הפנסיה",
     holding: "ההחזקה", wrapperId: "סוג החיסכון", company: "החברה", order: "הסדר", track: "המסלול", balance: "היתרה",
     feeBalance: "דמי הניהול מחיסכון", feeDeposit: "דמי הניהול מהפקדה", directExpenses: "הוצאות ישירות", monthlyOwn: "ההפקדה החודשית שלכם",
     monthlyEmployer: "ההפקדה החודשית של המעסיק", embeddedGain: "הרווח שבתוך היתרה", statementDate: "תאריך הדוח", firstDeposit: "ההפקדה הראשונה",

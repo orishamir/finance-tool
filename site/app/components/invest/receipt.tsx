@@ -12,11 +12,11 @@
 import { Fragment, type ReactNode, type Ref, type RefObject } from "react";
 import { brands, invest as c, site } from "../../copy";
 import { fmt, wholeSum } from "../../lib/format";
-import { gapListFor, pricedVariable, accountSum, pairCostsKept, type FundWay, type InvestView, type PairCosts } from "../../lib/invest";
-import { assertNever, type FundRecord } from "@finance-tool/schema";
+import { gapListFor, pricedVariable, accountSum, pairCostsKept, type FundWay, type InvestView } from "../../lib/invest";
+import type { FundRecord } from "@finance-tool/schema";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
-import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
+import { receiptAmounts, receiptChain, takenWords, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, StateTag } from "../provenance";
 import { DocLink, FEE_WORDS_HELP, HelpMark, LabelChip, LeftOutLine, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
@@ -273,38 +273,6 @@ function FundFacts({ view, bundle, fund, refs }: { view: InvestView; bundle: Ind
   return <PartFacts labels={labels} details={details} />;
 }
 
-/** An account line's name: a deal's fee by its own name, a price list's line by its part's, the remainder as itself. */
-export function accountLineName(l: AccountLine): string {
-  switch (l.kind) {
-    case "deal":
-      return l.name;
-    case "list":
-      return partName(l.line) ?? "";
-    case "remainder":
-      return c.pair.remainder;
-    default:
-      return assertNever(l);
-  }
-}
-
-/** The words under an account line: a deal's fee as the deal prices it, a price list's line at its rate; none under the remainder. */
-export function accountLineSub(l: AccountLine, at: { pc: PairCosts; plan: WorkbenchInputs; pick: Pick; dealApi: ReturnType<typeof useDealAccounts> }): ReactNode {
-  switch (l.kind) {
-    case "deal": {
-      const words = at.dealApi?.feeWords(at.pick.house, at.pick.fund, l.fee) ?? null;
-      return words ? <span className="text-xs text-muted-foreground">{words}</span> : null;
-    }
-    case "list": {
-      const words = rateWords(l.line, at.pc.priced, at.plan.monthly);
-      return words ? <RateLine words={words} house={at.pc.priced.house} /> : null;
-    }
-    case "remainder":
-      return null;
-    default:
-      return assertNever(l);
-  }
-}
-
 /**
  * The pair's receipt: `paper` (one column, above the lists below 1280 px: the lines that add up to the total, the account's and the fund's
  * parts behind a tap on each one's name) or `ticket` (across the page's column from 1280 px, above the lists: the account's part at the
@@ -329,6 +297,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const fundName = <MixedName className={fund && isCustomFund(fund.rec) ? "text-entered" : undefined}>{fund?.name ?? pick.fund}</MixedName>;
   const short = house?.short ?? pick.house;
   // the figures each line shows are whole shekels that add up; each opens the figure it stands for, with that figure's sources
+  const company = pc.priced.house;
   const steady = steadyOf(view, bundle, pick.fund);
   const years = plan.years;
   const ticket = layout === "ticket";
@@ -345,11 +314,16 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   // F-128: an account priced by a deal writes the deal's own fees, each under its name, in whole shekels that add up with the remainder
   const accountParts = (
     <>
-      {accountLinesOf(pc, r).map((l) => {
-        const name = accountLineName(l);
-        const sub = accountLineSub(l, { pc, plan, pick, dealApi });
-        return <ReceiptLine key={l.key} size="sm" label={name} value={<Num value={nom(l.cost, name)} display={minus(l.amount)} />} sub={sub ?? undefined} />;
-      })}
+      {pc.dealLines
+        ? pc.dealLines.map((l, i) => {
+            const words = dealApi?.feeWords(pick.house, pick.fund, l.fee) ?? null;
+            return <ReceiptLine key={l.fee} size="sm" label={l.name} value={<Num value={nom(l.cost, l.name)} display={minus(r.accountLines[i]!)} />} sub={words ? <span className="text-xs text-muted-foreground">{words}</span> : undefined} />;
+          })
+        : pc.account.map((l, i) => {
+            const words = rateWords(l.line, pc.priced, plan.monthly);
+            return <ReceiptLine key={l.line} size="sm" label={partName(l.line)} value={<Num value={nom(l.cost, partName(l.line) ?? l.line)} display={minus(r.accountLines[i]!)} />} sub={words ? <RateLine words={words} house={company} /> : undefined} />;
+          })}
+      {r.remainder !== 0 && <ReceiptLine size="sm" label={c.pair.remainder} value={<Num value={nom(pc.remainder, c.pair.remainder)} display={minus(r.remainder)} />} />}
       {/* what the house's documents hold and its price leaves out, under its lines (D106) */}
       <LeftOutLine view={leftOutOf(bundle.snapshots.find((s) => s.id === pick.house))} house={short} />
     </>

@@ -101,10 +101,13 @@ function RestoreScroll() {
     if (type !== "POP" && samePage && !location.hash) return;
     const html = document.documentElement;
     const target = type === "POP" ? positions[entryKey(location)] : undefined;
+    // with scrollRestoration manual the browser leaves the window where the page before stood, so an entry with no position kept
+    // (never scrolled) or a kept 0 is brought to its top here, Back and Forward included, at once rather than by the page's smooth
+    // scrolling, which would show the old page's place sliding away
     if (target === undefined || target <= 0) {
-      const el = location.hash ? document.getElementById(hashId(location.hash)) : null;
+      const el = target === undefined && location.hash ? document.getElementById(hashId(location.hash)) : null;
       if (el) el.scrollIntoView();
-      else if (type !== "POP") window.scrollTo(0, 0);
+      else window.scrollTo({ top: 0, behavior: "instant" });
       return;
     }
     html.style.scrollBehavior = "auto";

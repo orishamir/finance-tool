@@ -1,5 +1,5 @@
 // The track browser (D54): the controls and the list for one product. The product is in the address
-// (`/tracks/<id>`), so the back button and a shared link work; the kind, the search and the sort are the person's state on the page.
+// (`/tracks/<id>`), so the back button and a shared link work; the kind, the search and the sort are in its query, so a shared link opens the same list.
 // No kind chosen, the tracks stand under their companies; a kind chosen, its tracks of every company are one list. The loader's data covers the six products, so choosing another keeps the page and fetches nothing.
 // With no kind and no search the list opens folded: each company one row with its count and its money, the first open, and on a phone each
 // track one line that opens in place; on a computer the companies fold the same way and the table keeps its rows.
@@ -88,7 +88,15 @@ export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge
   const kindParam = normName(sp.get("kind") ?? "");
   const kind = (kindParam && view.kinds.find((k) => normName(k.sub) === kindParam)?.sub) || "";
   const setKind = (sub: string) => update({ kind: sub || null });
-  const [q, setQ] = useState("");
+  // the search is in the address too (?q=), so a link or Back opens the same list. While the box has the focus it shows what was typed,
+  // as the address follows each keystroke a moment later: the address read back mid-typing would move the caret
+  const [typing, setTyping] = useState<string | null>(null);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const q = searchFocused && typing !== null ? typing : (sp.get("q") ?? "");
+  const setQ = (value: string) => {
+    setTyping(value);
+    update({ q: value || null });
+  };
   const dq = useDeferredValue(q);
   // a kind holds at most one track of most companies, so under the companies' headings its sort would move nothing: it is one list
   const by: GroupBy = kind ? "kind" : "company";
@@ -159,7 +167,14 @@ export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge
         />
       </PhoneFold>
 
-      <div className="grid md:grid-cols-[minmax(0,22rem)]">
+      <div
+        className="grid md:grid-cols-[minmax(0,22rem)]"
+        onFocus={() => setSearchFocused(true)}
+        onBlur={() => {
+          setSearchFocused(false);
+          setTyping(null);
+        }}
+      >
         <TextField label={t.controls.search} value={q} onChange={setQ} placeholder={t.controls.searchPlaceholder} />
       </div>
 

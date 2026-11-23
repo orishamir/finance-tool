@@ -89,6 +89,19 @@ describe("filter and search", () => {
     expect(b.map((x) => x.id)).toEqual(a.map((x) => x.id));
   });
 
+  it("the search finds a track by its fund number", () => {
+    for (const x of gemel.tracks.slice(0, 5)) expect(filterTracks(gemel, { kind: "", q: String(x.id) }).map((y) => y.id)).toContain(x.id);
+  });
+
+  it("niqqud in the search does not matter, as in the site's search", () => {
+    const name = gemel.tracks[0]!.companyName;
+    // a dagesh and a qamats after each letter: "מִגְדָּל" for "מגדל"
+    const pointed = [...name].map((c) => (/[א-ת]/.test(c) ? `${c}ָּ` : c)).join("");
+    const plain = filterTracks(gemel, { kind: "", q: name });
+    expect(plain.length).toBeGreaterThan(0);
+    expect(filterTracks(gemel, { kind: "", q: pointed }).map((x) => x.id)).toEqual(plain.map((x) => x.id));
+  });
+
   it("the search also finds a track by the legal name of its company", () => {
     expect(filterTracks(gemel, { kind: "", q: "הראל פנסיה וגמל" }).length).toBe(15);
   });

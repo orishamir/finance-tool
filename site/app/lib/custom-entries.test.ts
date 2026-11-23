@@ -24,19 +24,7 @@ import { buildInvest, indexById, indexSeenBy, optionOfFund, refOfCustom, type Wa
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { applyImport, buildStateFile, dropTypedAccounts, replaceState, ensureLoaded, exportCounts, flush, getSnapshot, isEmptyState, readImport, removeCustomFund, removeCustomIndex, resetStore, saveCustomFund, saveCustomIndex, STATE_KEY, stateFileText, type StateV3 } from "./state";
-import type { PlanBounds } from "./plan-bounds";
 import { entered, type SiteValue } from "./value";
-
-/** The plan numbers' bounds an import checks against, fixed here (P-05's as written on 2026-11-23: the horizon slider's 1 to 40 years, its
- *  `pct` and `age` ranges). */
-const BOUNDS: PlanBounds = {
-  amount_now: { min: 0, max: null, whole: false },
-  monthly_deposit: { min: 0, max: null, whole: false },
-  horizon_years: { min: 1, max: 40, whole: true },
-  "A-01": { min: -50, max: 50, whole: false },
-  "A-02": { min: -50, max: 50, whole: false },
-  age: { min: 0, max: 120, whole: true },
-};
 
 const bundle = buildIndicesBundle();
 const t = bundle.today;
@@ -393,10 +381,9 @@ describe("kept on the device and carried in the export file (D44)", () => {
     expect(json(getSnapshot().state.customBrokers)).toEqual(json([cheap]));
     expect(json(getSnapshot().state.customFunds)).toEqual(json([fund]));
     const state = getSnapshot().state;
-    expect(exportCounts(state).funds).toBe(1);
-    expect(exportCounts(state).accounts).toBe(1);
+    expect(exportCounts(state).entries).toBe(2);
     expect(isEmptyState(state)).toBe(false);
-    const read = readImport(stateFileText(buildStateFile(state, site, new Date("2026-10-31T10:00:00Z"))), BOUNDS);
+    const read = readImport(stateFileText(buildStateFile(state, site, new Date("2026-10-31T10:00:00Z"))));
     if (!read.ok) throw new Error("refused");
     expect(json(read.preview.state.customBrokers)).toEqual(json([cheap]));
     expect(json(read.preview.state.customFunds)).toEqual(json([fund]));

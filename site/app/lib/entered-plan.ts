@@ -6,7 +6,6 @@ import { computedInputs as ci } from "../copy";
 import type { InputsState } from "./inputs";
 import type { IndicesBundle, WorkbenchInputs } from "./providers";
 import { asField, asParameter, entered as enteredValue } from "./value";
-import { boundProblem, withinBounds, type PlanBounds } from "./plan-bounds";
 
 export interface EnteredPlan {
   /** The plan as the page's runs take it, without the current accounts it counts (the page's own choice). */
@@ -15,14 +14,12 @@ export interface EnteredPlan {
   starts: { amount: number; monthly: number; years: number; inflation: number; returnV: number };
 }
 
-/** The plan from what the person entered, each number not entered taking P-05's; every value is a field's own (`asField`). A number the device
- *  holds outside its bound (`bounds`, P-05's) reads as not entered: the fields refuse it, and a run on it (a thousand years) would hold the page. */
-export function enteredPlan(bundle: Pick<IndicesBundle, "p05" | "today">, released: InputsState, bounds: PlanBounds): EnteredPlan {
+/** The plan from what the person entered, each number not entered taking P-05's; every value is a field's own (`asField`). */
+export function enteredPlan(bundle: Pick<IndicesBundle, "p05" | "today">, released: InputsState): EnteredPlan {
   const { p05 } = bundle;
   const inp = (p05 as unknown as { inputs: Record<string, ValueObject> }).inputs;
   const num = (key: string) => inp[key]!.value as number;
-  const e = withinBounds(released.entered, bounds);
-  const age = released.age !== null && !boundProblem(bounds.age, released.age) ? released.age : null;
+  const e = released.entered;
   // each is a field's value on the page, its default or what the reader typed: a plain number wherever it shows
   const val = (key: "amount_now" | "monthly_deposit" | "horizon_years" | "A-01" | "A-02", unit: ValueObject["unit"], about: string) =>
     asField(e[key] !== undefined ? enteredValue(e[key]!, unit, bundle.today, about) : asParameter(p05, inp[key]!));
@@ -42,9 +39,9 @@ export function enteredPlan(bundle: Pick<IndicesBundle, "p05" | "today">, releas
       years: years.value as number,
       grossReturn: (returnV.value as number) / 100,
       inflation: (inflation.value as number) / 100,
-      age,
+      age: released.age,
       income: income > 0 ? income : null,
-      values: { amount, monthly, years, returnV, inflation, ...(income > 0 && incomeV ? { income: incomeV } : {}), ...(age !== null ? { age: enteredValue(age, "years", bundle.today, ci.age) } : {}) },
+      values: { amount, monthly, years, returnV, inflation, ...(income > 0 && incomeV ? { income: incomeV } : {}), ...(released.age !== null ? { age: enteredValue(released.age, "years", bundle.today, ci.age) } : {}) },
     },
     starts: { amount: num("amount_now"), monthly: num("monthly_deposit"), years: num("horizon_years"), inflation: num("A-02"), returnV: num("A-01") },
   };
