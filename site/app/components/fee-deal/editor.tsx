@@ -6,8 +6,8 @@
 // editor holds. The toolbox stands in a column of its own where the host gives the editor the room (`TOOLBOX_COLUMN_PX`), and anywhere
 // narrower in a short sheet pinned to the foot of the screen, the host keeping room under its end for it; the sheet comes folded to its
 // groups' names with a deal, and unfolds when a fee or a case is opened. The columns and the reading are one thing: a fee under the pointer
-// or the focus in one is marked in the others, and a fee's name in the reading opens it (`FeeLinks`). A toolbox card only adds: tapped, it
-// goes to its one place in the open case, or with several places it is held, each place drawing the card's landing copy where its tap
+// or the focus in one is marked in the others, and a fee's name in the reading opens it (`FeeLinks`). A toolbox card adds ("חינם" alone
+// replaces a price's charge and its parts, places.ts): tapped, it goes to its one place in the open case, or with several places it is held, each place drawing the card's landing copy where its tap
 // would put it (the open case as that tap would leave it, `toolStep`), until one is tapped or the hold ends (Escape, "ביטול", the card
 // again, a tap anywhere else), the focus then back on the card (places.ts). On a computer a card dragged from the toolbox onto one of its
 // places, or onto another case where it has one place, does there what its tap does, each place that takes it showing the same copy

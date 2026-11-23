@@ -16,7 +16,7 @@
 // left them. A tap on a grip opens its menu (`GripMenu`), which does the same by keyboard, the things
 // moving there the same way. A knob (↔, `SpanKnob`), a strip along a cell's whole edge, stretches the cell over its neighbours or back, its
 // edge following the pointer. Every grip and knob takes a 44 px press and no room of its own: it stands over the start of what it lifts.
-import { useEffect, useEffectEvent, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type RefObject } from "react";
+import { useEffect, useEffectEvent, useLayoutEffect, useRef, useState, type ComponentType, type KeyboardEvent, type PointerEvent as ReactPointerEvent, type RefObject } from "react";
 import { createPortal, flushSync } from "react-dom";
 import { GripVertical, MoveHorizontal, MoveVertical } from "lucide-react";
 import { dealCases as copy } from "../../copy";
@@ -27,6 +27,7 @@ import { around, inside, landing, placeAt, readingOrder, shifts, type Axis, type
 import { onOwnSurface } from "./choice";
 import { cx } from "./cx";
 import { BinIcon } from "./remove-button";
+import { KnobButton } from "./knob-button";
 import { fixedOrigin, layerOf } from "./carry-layer";
 
 /** How far a mouse moves before a press lifts; how long a finger holds before it lifts, and how far it may stray meanwhile. */
@@ -409,17 +410,21 @@ function freeze(item: string, from: HTMLElement, scroller: Scroller): { zones: M
  * Holds every block marked `data-carry-hold` at the height it has now, until the returned function lets go: what a place shows while the
  * thing is over it draws inside, a shorter drawing leaving room at the block's foot and a taller one drawn over what follows it (app.css
  * draws the block after it while something is carried), so nothing after the block moves and the page keeps its height and its scrollbar.
- * A case grid holds its rows' tracks itself, each by what stands on it (case-table.tsx, `useHeldTracks`), since a preview may add or take
- * away a line under a row.
+ * A block marked `data-carry-floor` (a price of the open case, where a toolbox card's landing copy stands in for what the card would take
+ * away) keeps at least the height it has now, so a shorter landing copy leaves room rather than pulling up what follows. Called before the
+ * carry is drawn, so the heights held are those at rest. A case grid holds its rows' tracks itself, each by what stands on it
+ * (case-table.tsx, `useHeldTracks`), since a preview may add or take away a line under a row.
  */
 function holdBlocks(): () => void {
-  const els = [...document.querySelectorAll<HTMLElement>("[data-carry-hold]")];
+  const held = [...document.querySelectorAll<HTMLElement>("[data-carry-hold]")].map((el) => ({ el, prop: "height" as const }));
+  const floors = [...document.querySelectorAll<HTMLElement>("[data-carry-floor]")].map((el) => ({ el, prop: "minHeight" as const }));
+  const all = [...held, ...floors];
   // read every size before setting any, to the fraction of a pixel (a rounded one would move the page by it)
-  const heights = els.map((el) => getComputedStyle(el).height);
-  const was = els.map((el) => el.style.height);
-  els.forEach((el, i) => (el.style.height = heights[i]!));
+  const heights = all.map(({ el }) => getComputedStyle(el).height);
+  const was = all.map(({ el, prop }) => el.style[prop]);
+  all.forEach(({ el, prop }, i) => (el.style[prop] = heights[i]!));
   return () => {
-    els.forEach((el, i) => (el.style.height = was[i]!));
+    all.forEach(({ el, prop }, i) => (el.style[prop] = was[i]!));
   };
 }
 
@@ -453,8 +458,9 @@ export function lift(item: string, from: HTMLElement, x: number, y: number, abou
     from.setAttribute("data-lifted", "");
     play(before);
   } else if (!about.keep) from.setAttribute("data-lifted", "");
-  flushSync(() => carry(item, null, about.name ?? null));
+  // the blocks are held at their height at rest, before the carry draws anything (a toolbox card's landing copies) that could move them
   const release = holdBlocks();
+  flushSync(() => carry(item, null, about.name ?? null));
   const scroller = scrollerOf(from);
   const { zones, lists } = atRest(() => freeze(item, from, scroller));
   // the members of a list that slides by itself are places of their own (a fee's card): they draw no frame, the gap shows where it lands
@@ -712,10 +718,25 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
 }
 
 /**
- * The room a grip takes where it stands inside (`Grip`'s `inside`), with no grip in it: a part's landing copy keeps the room of the grip the
- * part will have (on touch, inside the open fee, the padding a grip's part makes for it), and lifts nothing.
+ * A small action that opens a menu of actions (`ActionMenu`) where a thing lifted from its own surface has no grip to hold one: a
+ * `KnobButton` (`icon`, `label` its spoken words and title), whose tap or Enter opens `actions` under it, the focus back on it when the menu
+ * closes. Drawn only where there is an action. A part of the open case keeps here what a drop on a head does (lifted.ts), for the keyboard
+ * and for touch.
  */
-export const GripRoom = () => <span aria-hidden data-grip-box="inside" />;
+export function MenuKnob({ icon, label, actions }: { icon: ComponentType<{ size?: number; strokeWidth?: number; "aria-hidden"?: boolean }>; label: string; actions: GripAction[] }) {
+  const btn = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false);
+  if (actions.length === 0) return null;
+  return (
+    <>
+      <KnobButton ref={btn} icon={icon} label={label} tabIndex={0} expanded={open} onClick={(e) => {
+        e.stopPropagation();
+        setOpen((o) => !o);
+      }} />
+      {open && <ActionMenu actions={actions} onClose={() => setOpen(false)} back={btn} />}
+    </>
+  );
+}
 
 /**
  * A grip's menu, or any small menu of actions opened from a control (`back`): its actions in a small list under the control, or over it

@@ -17,7 +17,8 @@ import { SPOKEN } from "../../lib/fee-deal/part-words";
 import type { RangeUnit } from "../../lib/fee-deal/offers/conditions";
 import { amountWords, fmt, formatValue } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
-import { ChangeDivider, DropZone, FigureField, GripRoom, InlineSelect, MonthField, RangeMenu, RemoveButton, TextField, TickMenu, TrackMenu, monthText, useCarried, type Landing } from "../kit";
+import { ChangeDivider, DropZone, FigureField, InlineSelect, MonthField, RangeMenu, RemoveButton, TextField, TickMenu, TrackMenu, monthText, useCarried, type Landing, type PartLift } from "../kit";
+import type { PriceAt } from "../../lib/fee-deal/edits/cells";
 import { bringIntoView } from "./in-view";
 import { PriceFigure, partFieldId, partPlaceId } from "./figures";
 import { NEW_OWN, OwnValueForm, type OwnTyped } from "./own-value";
@@ -97,19 +98,22 @@ function PriceParts({
   caseId,
   side,
   stage,
+  price,
   name,
   deal,
   pending,
   onFee,
   onRemoveCharge,
   pendingHands,
-  grip,
+  lift,
   landing,
 }: {
   fee: Fee;
   caseId?: string;
   side: Side;
   stage: OpenStage;
+  /** The price by its key (its side, the month it starts), which a part lifted from it names. */
+  price: PriceAt;
   name: string;
   deal: FeeDeal;
   /** The part asking for what it needs here, where it was added on this price. */
@@ -117,7 +121,7 @@ function PriceParts({
   onFee: (f: Fee) => void;
   onRemoveCharge: () => void;
   pendingHands: PendingHands;
-  grip?: PartGrip;
+  lift?: PartLiftOf;
   /** The landing copy of what a held or carried toolbox card would put on this price. */
   landing: Land | null;
 }) {
@@ -139,9 +143,9 @@ function PriceParts({
     <>
       {parts.map(({ part: p, lands }) =>
         lands && landing && landAt ? (
-          <PartLine key={p.id} part={p} at={landAt} onRemove={p.remove ? () => undefined : undefined} {...(grip?.(p.id, side, k) ? { grip: <GripRoom /> } : {})} landing={landing.mark} />
+          <PartLine key={p.id} part={p} at={landAt} onRemove={p.remove ? () => undefined : undefined} landing={landing.mark} />
         ) : (
-          <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} grip={grip?.(p.id, side, k)} />
+          <PartLine key={p.id} part={p} at={at} onRemove={remove(p)} {...(lift?.(p.id, price) ?? {})} />
         ),
       )}
       {ask &&
@@ -154,8 +158,11 @@ function PriceParts({
   );
 }
 
-/** A part's grip in the open case, by its id and the price it is on; null where it has none. */
-export type PartGrip = (part: PartId, side: Side, k: number) => ReactNode;
+/**
+ * What a part of the open case is carried as, by its id and the price it is on (`price`, its key): its carried item and words (`lift`), and
+ * its other actions beside its bin (`more`); null where it is carried nowhere.
+ */
+export type PartLiftOf = (part: PartId, price: PriceAt) => { lift: PartLift; more?: ReactNode } | null;
 
 /**
  * Where the open case's places take toolbox cards (places.ts): the card held, its words for its copies' spoken names, and its places, each
@@ -209,7 +216,7 @@ export function OpenParts({
   onRemoveCharge,
   places,
   pendingHands,
-  grip,
+  lift,
 }: {
   fee: Fee;
   open: OpenCase;
@@ -222,8 +229,8 @@ export function OpenParts({
   onRemoveCharge: (side: Side, k: number, caseId: string | undefined) => void;
   places: PlaceHands;
   pendingHands: PendingHands;
-  /** A part's grip, which lifts it onto another case or fee, or into the bin (a part of the purchase's first price; none elsewhere). */
-  grip?: PartGrip;
+  /** What each part is carried as, onto another case or fee or into the bin, with its other actions (lifted.ts). */
+  lift?: PartLiftOf;
 }) {
   const caseId = open.case ?? undefined;
   const c = copy.panel.change;
@@ -257,9 +264,10 @@ export function OpenParts({
             )}
             <PlaceZone place={place} hands={places} label={addLabel(place)}>
               {(land) => (
-                <div className="flex items-center gap-3" {...(from ? { "data-stage-from": `${s}:${from}` } : {})}>
+                // a price keeps at least its height at rest while a card is carried: a landing copy shorter than what it takes away leaves room
+                <div data-carry-floor="" className="flex items-center gap-3" {...(from ? { "data-stage-from": `${s}:${from}` } : {})}>
                   <div className="flex min-w-0 flex-col gap-2">
-                    <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} name={stageName} deal={deal} pending={waitingAt(place)} onFee={onFee} onRemoveCharge={() => onRemoveCharge(s, st.k, caseId)} pendingHands={pendingHands} {...(grip ? { grip } : {})} landing={land} />
+                    <PriceParts fee={fee} {...(caseId ? { caseId } : {})} side={s} stage={st} price={{ side: s, from: from ?? null }} name={stageName} deal={deal} pending={waitingAt(place)} onFee={onFee} onRemoveCharge={() => onRemoveCharge(s, st.k, caseId)} pendingHands={pendingHands} {...(lift ? { lift } : {})} landing={land} />
                   </div>
                 </div>
               )}
