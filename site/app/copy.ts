@@ -61,7 +61,7 @@ export const numbers = {
    * figures short, and the track pages' managed money from a thousand million.
    */
   billion: "מיליארד",
-  /** A chart tick's short form (lib/format.ts `compactNis`): `200 אלף ₪`, `1.5 מיליון ₪`. */
+  /** A chart tick's short form (lib/format.ts `compactNis`): `200 אלף ₪`, `1.5 מיליון ₪`, and from a billion `billion`'s word (`93.5 מיליארד ₪`). */
   compact: { thousand: "אלף", million: "מיליון" },
   /** A count of years and of months in words (lib/format.ts `fmt.years`, `fmt.months`): "שנה", "שנתיים", "5 שנים". */
   yearWords: { one: "שנה", two: "שנתיים", many: "שנים" },
@@ -352,7 +352,21 @@ export const values = {
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
   agePlaceholder: "למשל 30", // from the approved mockup
-  errors: { nan: "הזינו מספר.", whole: "הזינו סכום בשקלים שלמים.", negative: "הסכום לא יכול להיות שלילי.", positive: "הזינו סכום גדול מאפס.", years: ["הזינו מספר שנים בין", "ל־"], age: ["הזינו גיל בין", "ל־"], pct: ["הזינו אחוז בין", "ל־"] },
+  errors: {
+    nan: "הזינו מספר.",
+    whole: "הזינו סכום בשקלים שלמים.",
+    // a point and three digits in a whole amount ("1.000"): a thousands separator or a decimal point, it cannot be told which
+    dotThousands: "לא ברור אם הנקודה מפרידה אלפים. הזינו את הסכום בלי נקודה.",
+    negative: "הסכום לא יכול להיות שלילי.",
+    positive: "הזינו סכום גדול מאפס.",
+    /** Before the largest amount a field takes (P-05 `ranges.amount`): "הזינו סכום עד 1,000,000,000 ₪." */
+    tooLarge: "הזינו סכום עד",
+    years: ["הזינו מספר שנים בין", "ל־"],
+    yearsWhole: "הזינו מספר שלם של שנים.",
+    age: ["הזינו גיל בין", "ל־"],
+    ageWhole: "הזינו גיל בשנים שלמות.",
+    pct: ["הזינו אחוז בין", "ל־"],
+  },
   loading: "טוען…",
 } as const;
 
@@ -557,8 +571,8 @@ export const parametersPage = {
     "P-05.ranges.age.max": "גיל מותר בשדה: מקסימום",
     "P-05.ranges.pct.min": "אחוז שנתי מותר בשדה: מינימום",
     "P-05.ranges.pct.max": "אחוז שנתי מותר בשדה: מקסימום",
-    "P-05.ranges.interest.min": "ריבית שנתית מותרת בשדה: מינימום",
-    "P-05.ranges.interest.max": "ריבית שנתית מותרת בשדה: מקסימום",
+    "P-05.ranges.amount.min": "סכום מותר בשדה: מינימום",
+    "P-05.ranges.amount.max": "סכום מותר בשדה: מקסימום",
     "P-11.steps.0": "סכום 1",
     "P-11.steps.1": "סכום 2",
     "P-11.steps.2": "סכום 3",
@@ -622,8 +636,7 @@ export const companyFocus = {
   fees: "דמי ניהול מהחיסכון",
   to: "עד",
   tariffGroups: "בתעריפון:",
-  /** The date of a bank product's records: one day, or the oldest and the newest. */
-  asOf: { one: "לפי פרסום הבנק, נכון ל־", from: "לפי פרסום הבנק, נכון לימים ", to: "עד " },
+  asOf: "לפי פרסום הבנק, נכון ל־",
   more: "עוד בעמוד המלא",
   terms: "מה כתוב במסמכים",
   /** The arrow's spoken name. */
@@ -1063,12 +1076,6 @@ export const flags: Record<string, string> = {
   // F-120 at a falling CPI: a figure linked to the CPI every 1 January, of a rule no open reading covers, has no reading (method G-38); the
   // timeline's band shows this beside the rule the run stopped on (CS-03 on the child savings guides)
   "G-38": "הסכום של הכלל הזה מתעדכן בכל 1 בינואר לפי עליית המדד. האתר לא מצא במקורות מה קורה לו כשהמדד יורד, ואין לו הנחה משלו. לכן כשהאינפלציה בחישוב שלילית, האתר לא מחשב את השנים שאחרי השנה הראשונה.",
-  // F-21, F-22, F-24, F-25, F-26 at a rate below zero: the rule base holds no rule for the tax on interest below zero (method G-41);
-  // the timeline's band shows this beside the rule that would tax the interest, for a negative rate kept on the device or imported
-  "G-41": "האתר לא מצא בכללים שקרא איך ממוסה ריבית מתחת לאפס, ולכן הוא לא מחשב אותה. אפשר להזין ריבית מ־0% ומעלה.",
-  // F-22 on the savings plan guide: the ladder locks each monthly deposit on its own, the method's convention (method G-42, BANK OQ12); the
-  // sheet of each figure that rests on it says so
-  "G-42": "המספר מניח שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. זו הנחה של האתר, לא כלל: האתר לא מצא בכללים שקרא אם כך בתוכנית שהדוגמה מחושבת עליה, ובחלק מהתוכניות שהאתר קרא את התנאים שלהן זה אחרת.",
   // F-20: a distribution at a foreign broker is not withheld in Israel; its advance is due by 30 April after the tax year (TXF-21), and the run charges it in the month
   "TXF-21": "בבית השקעות בחו״ל לא מנכים בישראל את המס על דיבידנד או ריבית שהקרן מחלקת. משלמים אותו בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי. החישוב מחשיב אותו כאילו שולם כבר בחודש החלוקה.",
   // F-09: a sale at a foreign broker is not withheld in Israel; the gain is reported with an advance by 31 July and 31 January, and a return is due (TXF-22); the run charges it in the month of the sale
@@ -1440,18 +1447,6 @@ export const catalogue = {
   search: "שם מהקטלוג",
 } as const;
 
-// ---------------------------------------------------------------- release 2: words from docs/copy.md section 6
-/**
- * Words the indices page shows (docs/copy.md 6.0 to 6.4).
- * Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
- */
-export const r2 = {
-  form: {
-    errYears: "הזינו לפחות שנה אחת.",
-    errYearsWhole: "הזינו מספר שלם של שנים.",
-  },
-} as const;
-
 // Release 3: the track workbench and the entry points (docs/copy.md 7.0, 7.3, 7.5; flows 12.3, 12.5). The strings the
 // build added are in copy.md 7.3's "Added 2026-10-24" table, keyed by path.
 // ---------------------------------------------------------------- the track browser (D54)
@@ -1573,9 +1568,8 @@ export const depositBrowser = {
   title: "פיקדונות בכל הבנקים",
   /** The page's line: `stated` is the words that state BANK-13 and BANK-50 (an annual nominal rate, before tax), which open them (D116). */
   lead: { before: "הריבית שהבנקים מפרסמים לפיקדון בשקלים,", stated: "בשנה ולפני המס", after: ", לא הצעה אישית. בנק אש ישראל לא נכלל: לא נמצא לו אתר." },
-  /** At the end of the list's heading line, the days the rates in the list were read: "נקרא מאתרי הבנקים ב־09.11.2026", or where the
-   *  rows were read on several days, "נקרא מאתרי הבנקים מ־23.10.2026 עד 14.11.2026". */
-  read: { one: "נקרא מאתרי הבנקים ב־", from: "נקרא מאתרי הבנקים מ־", to: "עד " },
+  /** At the end of the list's heading line: "נקרא מאתרי הבנקים ב־09.11.2026". */
+  read: "נקרא מאתרי הבנקים ב־",
   controls: {
     amount: "כמה מפקידים",
     picks: "סכומים מוכנים",
@@ -2074,6 +2068,8 @@ export const feeDeal = {
       column: "העמודה ״{name}״ נמחקה.",
       cases: "המקרים הוסרו.",
       stretched: "המחיר חל עכשיו גם על התאים שלידו.",
+      /** A cell stretched over neighbours that held their own: what they held is written over, and the undo brings it back. */
+      stretchedOver: "המחיר חל עכשיו גם על התאים שלידו, במקום מה שהיה בהם.",
       /** One note taken away alone; a part dropped on a case that had that row's part ("מה שהיה ב״מינימום״ הוחלף."). */
       noteRemoved: "ההערה נמחקה.",
       replaced: "מה שהיה ב״{what}״ הוחלף.",
@@ -2088,6 +2084,12 @@ export const feeDeal = {
       part: { price: "המחיר נמחק.", min: "המינימום נמחק.", max: "המקסימום נמחק.", cap: "המקסימום באחוזים נמחק.", flat: "המחיר הקבוע לפעולה קטנה נמחק.", maxPerSecurity: "המקסימום לכל נייר ערך נמחק.", discount: "ההנחה נמחקה.", third: "העמלה של הצד השלישי נמחקה.", until: "השינוי במחיר נמחק.", offset: "הקיזוז נמחק.", refund: "ההחזר נמחק.", notes: "ההערות על המחיר נמחקו." },
       notHere: "העמלה הזו לא יכולה לקבל את החלק הזה.",
       /**
+       * A part of a later price lifted onto another fee with no price starting that month ("לעמלה הזו אין מחיר שמתחיל באוגוסט 2027."), and
+       * a part of a sale priced apart onto one whose sale is priced as its purchase.
+       */
+      noPriceFrom: "לעמלה הזו אין מחיר שמתחיל ב{month}.",
+      noSale: "לעמלה הזו אין מחיר אחר למכירה.",
+      /**
        * A sum moved onto a price counted in another currency: a figure carries its own, and one currency serves all of a price's sums, so a
        * price that keeps a sum in another does not take it ("המקסימום בשקלים והמינימום כאן בדולרים."); a head names each case it left out.
        */
@@ -2099,8 +2101,8 @@ export const feeDeal = {
         leftOut: "{where}: לא השתנה, כי {why}.",
       },
       /** A grip's spoken name, before what it lifts; `colOnly`, the last case's, which only duplicates it. */
-      grip: { col: "להזיז או למחוק את המקרה: ", colOnly: "לשכפל את המקרה: ", step: "למחוק את המדרגה: ", row: "להזיז את השורה: ", column: "להזיז את העמודה: ", cell: "להזיז או למחוק: ", partRow: "למחוק את השורה: ", part: "להזיז או למחוק: ", thing: "להחליף בין השורות לעמודות: " },
-      menu: { duplicateRow: "שכפול השורה", duplicateColumn: "שכפול העמודה", up: "הזזה למעלה", down: "הזזה למטה", before: "הזזה ימינה", after: "הזזה שמאלה", remove: "מחיקה", swap: "החלפה בין השורות לעמודות", swapWith: "החלפה עם {thing}", addRow: "הוספת חלק לכל השורה", addAllCases: "הוספת חלק לכל המקרים", applyRow: "להחיל על כל השורה", applyColumn: "להחיל על כל העמודה", applyAll: "להחיל על כל המקרים" },
+      grip: { col: "להזיז או למחוק את המקרה: ", colOnly: "לשכפל את המקרה: ", step: "למחוק את המדרגה: ", row: "להזיז את השורה: ", column: "להזיז את העמודה: ", cell: "להזיז או למחוק: ", partRow: "למחוק את השורה: ", thing: "להחליף בין השורות לעמודות: " },
+      menu: { duplicateRow: "שכפול השורה", duplicateColumn: "שכפול העמודה", up: "הזזה למעלה", down: "הזזה למטה", before: "הזזה ימינה", after: "הזזה שמאלה", remove: "מחיקה", swap: "החלפה בין השורות לעמודות", swapWith: "החלפה עם {thing}", addRow: "הוספת חלק לכל השורה", addAllCases: "הוספת חלק לכל המקרים", applyRow: "להחיל על כל השורה", applyAll: "להחיל על כל המקרים" },
       /** A carried thing's words, which the bin says while it is over it ("משחררים כדי למחוק: השורה ״בסניף״"). */
       name: { row: "השורה ״{name}״", column: "העמודה ״{name}״", step: "המדרגה {name}", case: "המקרה ״{name}״", partRow: "השורה ״{name}״" },
       copyName: "{name} (עותק)",
@@ -2223,6 +2225,8 @@ export const feeDeal = {
     dateHeld: "תאריך שהמחיר משתנה בו",
     /** Why a charge's card is off: every price of the case already charges, in another way; the bin of what a price charges makes it free. */
     charging: "כל המחירים כבר גובים בדרך אחרת. כדי לגבות בדרך הזו, מסירים קודם את מה שגובים במחיר.",
+    /** Why the card "חינם" is off: no price of the case charges anything. */
+    allFree: "כל המחירים כאן כבר חינם.",
     groups: { charge: "כמה גובים", off: "מה יורד מהמחיר", bound: "מינימום ומקסימום", by: "המחיר משתנה לפי", rule: "כללי הגבייה" } as Record<string, string>,
     /** The toolbox's line under "המחיר משתנה לפי" that splits the price at a month: "+ התאריך". */
     dateLine: "התאריך",
@@ -2689,7 +2693,7 @@ export const r3transfer = {
   title: "העברה למכשיר אחר",
   lede: "קובץ אחד עם כל מה שהזנתם. בלי חשבון, בלי שרת: הקובץ עובר רק לאן שאתם שולחים אותו.",
   exportHeading: "לשמור קובץ מהמכשיר הזה",
-  contents: { goals: "מטרות", holdings: "החזקות", names: "שמות שלא קוטלגו", inputs: "הערכים שהזנתם במדריך", versions: "גרסת האתר והנתונים" },
+  contents: { goals: "מטרות", holdings: "החזקות", names: "שמות שלא קוטלגו", inputs: "המספרים שהזנתם לתוכנית", versions: "גרסת האתר והנתונים" },
   caution: "הקובץ מכיל את הסכומים והשכר שהזנתם. שלחו אותו רק למי שאתם רוצים שיראה אותם.",
   buttons: { share: "שיתוף", download: "הורדה", copy: "העתקה", copied: "הועתק" },
   fileName: "שם הקובץ:",
@@ -2714,6 +2718,7 @@ export const r3transfer = {
   errors: {
     newer: "הקובץ נוצר בגרסה חדשה יותר של האתר. רעננו את העמוד ונסו שוב.",
     format: "זה לא קובץ של מקור.",
+    damaged: "הקובץ פגום: חלק ממנו חסר או השתנה. לא שונה כלום במכשיר.",
     invalidBefore: "הקובץ לא תקין:",
     invalidAfter: ". לא שונה כלום במכשיר.",
     unreadable: "האתר לא הצליח לקרוא את הקובץ.",
@@ -2729,6 +2734,11 @@ export const r3transfer = {
     ticks: { one: "סימון אחד ב״איך עוברים״", two: "שני סימונים ב״איך עוברים״", many: "סימונים ב״איך עוברים״" },
     ownRates: { one: "ריבית שהזנתם להשוואה", two: "שתי ריביות שהזנתם להשוואה", many: "ריביות שהזנתם להשוואה" },
     deals: { one: "עסקה שמורה אחת בעמוד העמלות", two: "שתי עסקאות שמורות בעמוד העמלות", many: "עסקאות שמורות בעמוד העמלות" },
+    // the indices page's own entries, and the plan numbers a load added (the export and the preview say only that the file holds them: `contents.inputs`)
+    indices: { one: "מדד אחד שהוספתם", two: "שני מדדים שהוספתם", many: "מדדים שהוספתם" },
+    funds: { one: "קרן אחת שהזנתם", two: "שתי קרנות שהזנתם", many: "קרנות שהזנתם" },
+    accounts: { one: "חשבון ניירות ערך אחד שהזנתם", two: "שני חשבונות ניירות ערך שהזנתם", many: "חשבונות ניירות ערך שהזנתם" },
+    inputs: { one: "מספר אחד לתוכנית", two: "שני מספרים לתוכנית", many: "מספרים לתוכנית" },
   },
   // one person per device; Safari deletes a site's storage after seven days of use without a tap, click or key on it, and a copy on the
   // Home Screen, which it spares, keeps storage of its own that starts empty (guidelines/code.md, "In the browser")
@@ -2740,7 +2750,9 @@ export const r3transfer = {
   sideFailed: "ההצעות, ההנחות והסימונים לא נשמרו במכשיר הזה.",
   rejectedHeading: "לא ייטענו, כי שדה בהם לא תקין:",
   rejectedItem: "{kind} {at}, {field}: {problem}.",
-  rejectedKinds: { holding: "החזקה", input: "ערך במדריך", offers: "הצעה", variants: "הנחות לחשיפה", ticks: "סימונים", ownRates: "ריבית שהוזנה", deals: "עסקה שמורה" }, // ownRates:
+  /** A plan number left out: its name, not its key in the file. */
+  rejectedInput: "{kind} ״{name}״: {problem}.",
+  rejectedKinds: { holding: "החזקה", input: "מספר בתוכנית", offers: "הצעה", variants: "הנחות לחשיפה", ticks: "סימונים", ownRates: "ריבית שהוזנה", deals: "עסקה שמורה" }, // ownRates:
   rejectedProblems: {
     structure: "המבנה לא תקין",
     "not-number": "לא מספר",
@@ -2749,9 +2761,14 @@ export const r3transfer = {
     date: "לא תאריך",
     wrapper: "סוג חיסכון לא מוכר",
     "gain-over-balance": "גדול מהיתרה",
+    "not-whole": "לא מספר שלם",
   },
+  /** A plan number outside its bound: "לא בין 1 ל־40"; a bound with no top, "מתחת ל־…". */
+  outOfBound: { between: ["לא בין", "ל־"], below: "מתחת ל־" },
+  /** The plan numbers by their key in the file, for a line about one left out; a key not here is shown as it is. */
+  rejectedInputs: { amount_now: "סכום היום", monthly_deposit: "הפקדה חודשית", horizon_years: "שנים", "A-01": "תשואה בשנה", "A-02": "אינפלציה בשנה", cash_rate: "ריבית בשנה", annual_income: "הכנסה שנתית", age: "גיל", employment: "סוג ההעסקה", insurance: "דמי הביטוח בקרן הפנסיה" },
   rejectedFields: {
-    id: "המזהה", age: "הגיל", insurance: "דמי הביטוח בקרן הפנסיה",
+    id: "המזהה",
     holding: "ההחזקה", wrapperId: "סוג החיסכון", company: "החברה", order: "הסדר", track: "המסלול", balance: "היתרה",
     feeBalance: "דמי הניהול מחיסכון", feeDeposit: "דמי הניהול מהפקדה", directExpenses: "הוצאות ישירות", monthlyOwn: "ההפקדה החודשית שלכם",
     monthlyEmployer: "ההפקדה החודשית של המעסיק", embeddedGain: "הרווח שבתוך היתרה", statementDate: "תאריך הדוח", firstDeposit: "ההפקדה הראשונה",
@@ -2823,8 +2840,7 @@ export const companyPage = {
     /** A current account's rate, where the bank pays it only on its conditions (the product's part spells them out). */
     current: (conditional: boolean) => (conditional ? "ריבית בשנה על יתרת זכות, בתנאים" : "ריבית בשנה על יתרת זכות"),
     parts: "מה יש בו",
-    /** The date of the records the range is from: one day, or the oldest and the newest ("נכון לימים 23.10.2026 עד 13.11.2026"). */
-    asOf: { one: "נכון ל־", from: "נכון לימים ", to: "עד " },
+    asOf: "נכון ל־",
   },
   /** A manager's overview table. */
   overviewTable: {
@@ -2838,8 +2854,7 @@ export const companyPage = {
     note: { fees: (year: string | null) => (year ? `דמי הניהול במסלולים הם הממוצע שנגבה ב־${year}, מהחיסכון, מהמסלול הזול ליקר.` : "דמי הניהול במסלולים הם מהחיסכון, מהמסלול הזול ליקר."), assets: "הכסף המנוהל נכון לסוף ", end: "." },
   },
   deposits: {
-    /** The date of the table's records: one day, or the oldest and the newest. */
-    asOf: { one: "לפי פרסום הבנק, נכון ל־", from: "לפי פרסום הבנק, נכון לימים ", to: "עד " },
+    asOf: "לפי פרסום הבנק, נכון ל־",
     sharedDeposits: "נכון לכל הפיקדונות בטבלה:",
     sharedPlans: "נכון לכל התוכניות בטבלה:",
     beforeTax: "הריבית שנתית ונומינלית, לפני המס על הריבית.",
@@ -3423,6 +3438,7 @@ export const guideSignature = {
     outOfRange: { before: "הסכום מחוץ לטווח שהריבית שפורסמה נקבעה לו:", middle: "עד", after: "." },
     gaps: {
       depositBreak: "הבנק מתאר שבירה בתנאים שהאתר עוד לא מחשב.",
+      planLockPerDeposit: "ההנחה כאן: לכל הפקדה חודשית יש נעילה משלה, באורך תקופת התוכנית, כמו בפיקדון שנפתח בכל חודש. אין כלל כללי שקובע את זה: כל בנק קובע בהסכם התוכנית שלו. האתר קרא את החוזה של בנק אחד. בחוזה הזה התוכניות נפתחות כולן יחד, בנקודת יציאה שנספרת מתחילת התוכנית. שאלה פתוחה BANK-OQ12",
       accountBanks: "הריביות שהבנקים מפרסמים על יתרה בעו״ש עוד לא נאספו.",
       depositBanks: "הריביות שהבנקים מפרסמים על פיקדון לשנה עוד לא נאספו.",
     } as Record<string, string>,
@@ -3519,19 +3535,6 @@ export const guideSignature = {
     lockLine: { before: "בתוכנית של לאומי התקופה היא", middle: "והריבית", after: "בשנה. אין אפשרות שבירה." },
     alt: { before: "בפיקדון חד־פעמי", ofBank: "של", forTerm: "לתקופה של", rate: "ריבית", middle: "כל הסכום נעול ואז פנוי בבת אחת." },
     rangeLine: "האתר קורא את הטווח בטבלה של הבנק כסכום להפקדה אחת. הטבלה לא אומרת זאת במילים.",
-    /**
-     * Beside the three figures, what they rest on (method F-22, G-42) and what the plan terms read say. Each `stated` is the words that
-     * state its rule (D116): BANK-28, no law or Bank of Israel directive read decides it (`term` opens its card); BPN-10, Hapoalim's four plans; BANK-38, four of
-     * Mizrahi-Tefahot's ענבים plans. Leumi's own terms on it are BANK OQ12.
-     */
-    lock: {
-      assumption: "שלושת המספרים האלה מניחים שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. זו הנחה של האתר, לא כלל. האתר לא מצא בכללים שקרא אם כך בתוכנית של לאומי, שהדוגמה מחושבת עליה. שאלה פתוחה BANK-OQ12.",
-      general: { before: "בחוקים ובהוראות של", term: "בנק ישראל", read: "שהאתר קרא", stated: "אין קביעה אם כל הפקדה נעולה לבדה, וכל בנק קובע את זה בתנאי התוכניות שלו", after: "." },
-      others: "בחלק מהתוכניות שהאתר קרא את התנאים שלהן זה אחרת, למשל:",
-      hapoalim: { stated: "בארבע מהתוכניות של בנק הפועלים ההפקדות לא נעולות כל אחת לבדה, ומושכים את כל החיסכון יחד, בתחנות יציאה שנספרות מתחילת התוכנית", after: ";" },
-      mizrahi: { stated: "בארבע מתוכניות ״ענבים״ של מזרחי טפחות אפשר למשוך בתחנת יציאה את כל הכסף, או רק חלק ממנו ולהשאיר את ״12 הפקדות אחרונות והרווחים עליהם״", after: "." },
-      end: "בתוכניות כאלה הכסף פנוי במועדים אחרים מאלה שבגרף.",
-    },
     about: { free: "מה שפנוי לקחת ביום שבחרתם: ההפקדות שהתקופה שלהן הסתיימה, אחרי מס", locked: "הכסף שהופקד ועדיין נעול ביום שבחרתם", last: "החודש שבו ההפקדה האחרונה נפתחת" },
   },
   ladder: {
@@ -3607,8 +3610,6 @@ export const guideSignature = {
     bars: { sell: "אם מוכרים היום", hold: "אם מחזיקים עד הפדיון: הקרן חוזרת", holdLinked: "אם מחזיקים עד הפדיון: הקרן, לפני השינוי במדד" },
     diffLoss: "ההפרש: במכירה היום תקבלו {gap} פחות",
     diffGain: "ההפרש: במכירה היום תקבלו {gap} יותר",
-    /** Where the two amounts, as the page writes them, are the same (method §13): no bracket and no gap. */
-    diffSame: "במכירה היום תקבלו אותו סכום כמו בהחזקה עד הפדיון.",
     holdLine: {
       before: "בפדיון מקבלים בחזרה",
       middle: "ובדרך משולמים קופונים של",
@@ -3982,7 +3983,6 @@ export const invest = {
   custom: {
     heading: "מדד אחר",
     field: "שם המדד",
-    placeholder: "למשל ניקיי 225",
     go: "הוספה",
     matched: (name: string) => `האתר מכיר את ״${name}״ ובחר אותו.`,
     cancel: "ביטול",
@@ -4411,6 +4411,10 @@ export const invest = {
     israeliNote: { before: "קרנות ישראליות, שמחזיקות בדרך כלל את המניות.", stated: "אין קרן חוץ שמתמחה בישראל", after: "." },
   },
 
+  worth: {
+    lines: { house: "אותה קרן, בחשבון ניירות ערך אחר", fund: "אותו חשבון ניירות ערך, קרן אחרת" },
+  },
+
   options: {
     foldLabel: "קרן סל או קרן מחקה: מה ההבדל",
     foldSub: "כל אחת היא דרך אחרת להחזיק את אותו מדד: איך קונים אותה, איך היא מתומחרת ואיך היא ממוסה.",
@@ -4436,6 +4440,7 @@ export const invest = {
   },
 
   houses: {
+    gapAbout: (name: string) => `פער מהדרך הזולה, ${name}`,
     costAbout: (name: string) => `עלות ${name}`,
   },
 
@@ -4959,6 +4964,19 @@ export const invest = {
     } as Record<string, string>,
     ruleOpenOther: "אי אפשר לחשב: המס על הקרן תלוי בכלל שעוד לא ידוע, ולכן הקרן לא מדורגת.",
   },
+  /** The same reasons said once over two funds or more that share them (the fund list's fold of funds with no price). */
+  reasonsMany: {
+    fundType: "הקרנות האלה עוד לא מחושבות באתר (סוג או מס שאין להם חישוב).",
+    needYield: "הקרנות מחלקות, וצריך את תשואת החלוקה של כל אחת כדי לחשב.",
+    usFundOpen: "אין מחיר לקרנות האלה: תשואת החלוקה שלהן לא נאספה, כי לא נמצא נוסח רשמי שאומר איך ממסים בישראל את החלוקה של הקרנות.",
+    noBroker: "אין חשבון ניירות ערך שאפשר לחשב לו את הקרנות האלה.",
+    noHedgeRecord: "אי אפשר לחשב: בדוחות השנתיים של הקרנות עוד אין שנה מלאה, ובקרנות המנוטרלות שבנתוני האתר רוב העלות היא הפער מהמדד, מעבר לדמי הניהול.",
+    noHedgeEntered: "אי אפשר לחשב: בקרנות המנוטרלות שבנתוני האתר רוב העלות היא הפער מהמדד, מעבר לדמי הניהול, והאתר לא יודע אותו לקרנות שהזנתם.",
+    payoutUnknown: "אי אפשר לחשב: לא צוין אם הקרנות צוברות או מחלקות, והמס תלוי בזה.",
+    feeUnknown: "אי אפשר לחשב: חלק מדמי הניהול של הקרנות לא הוזנו. השלימו אותם בעריכה.",
+    domicileUnknown: "אי אפשר לחשב: הקרנות מחלקות, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה כל אחת רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
+    noAgreementFound: "לא ידוע אם אפשר לקנות את הקרנות האלה שם: לא נמצא הסכם הפצה עליהן.",
+  },
 
   /** The word for an option inside a sentence ("ב…"). */
   optionIn: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "דרך בחו״ל" } as Record<string, string>,
@@ -5178,7 +5196,6 @@ export const kit = {
       draggable: "אפשר לגרור",
       withIcon: "עם אייקון",
       wide: "על כל הרוחב",
-      sameShown: "אותו סכום כפי שהוא כתוב",
     },
     uses: {
       FilterChip: "מסנן שדולק או כבוי בלי קשר למסננים האחרים, עם מספר השורות שיוצגו כשהוא דולק. למספר יש מקום קבוע, ומסנן שלא יציג כלום מתעמעם ונשאר במקומו. בחירה של ערך אחד מכמה, שמבטלים זה את זה, היא ChoiceChips עם counts.",
@@ -5298,7 +5315,6 @@ export const kit = {
       LabelChip: "מה המוצר הוא או עושה, במילה או שתיים ואייקון: איך הקרן עוקבת אחרי המדד, אם היא מחלקת, המטבע. הקשה פותחת דף אחד לעמוד (LabelSheetHost) עם ההסבר והחוקים. סוג הוא תווית, לא עמודה. LabelRow: שורה של תוויות.",
       GroupPrices: "מחירים לקבוצות לצד דירוג, אף פעם לא בתוכו: שורה סגורה מתחת לשורה של בית ההשקעות אומרת למי יש מחיר אחר, ונפתחת בהקשה לשורה לכל מחיר בשלוש עמודות: מי, מה זול יותר, עד מתי. קבוצות עם אותו מחיר הן שורה אחת. בעמוד של בית ההשקעות אותן שורות, עם המקום שבו כל אחת כתובה.",
       DocLink: "קישור החוצה למסמך שבו כתובים מילה או מספר: עמוד בתעריפון, תקנון של מבצע, הדף שבו נראה פרסום. נפתח בלשונית חדשה ומסתיים בחץ החוצה.",
-      DateSpanText: "התאריך ליד מספרים מכמה רשומות: הישן והחדש ביניהם, ותאריך אחד כשכולן מאותו יום. כך רשימה שנקראה בכמה ימים לא נראית כאילו נקראה כולה ביום האחרון.",
       When: "תאריך בתוך טקסט: יום משמאל לימין, וחודש שמסמך מדפיס לבד במילים, בלי יום שהאתר המציא. המילים שלפניו נשארות איתו בשורה, ו״מ־״ או ״ב־״ לפני שם של חודש נכתבים צמודים: ״מנובמבר 2025״.",
       TariffDate: "שורת התאריך של תעריפון: מה שהמסמך עצמו מדפיס, בצבע רגיל. תאריך אחד לכל המסמך, תאריך של החלק שהאתר קורא, גרסה, תאריך שהודפס בטעות כמו שהוא, או שאין תאריך מודפס ומתי האתר בדק. מתחת לכותרת שכבר אומרת ״תעריפון״ המילה לא חוזרת.",
       ConditionBand: "הראש של עמלה שהמחיר שלה משתנה לפי דבר אחד עד שלושה (מה קונים, הערוץ, המסלול, גודל הפעולה): ״המחיר משתנה לפי״ והדברים, כל דבר כפתור עם חץ שפותח את התפריט שלו, גם כשהעמלה סגורה. בתפריט אפשר להפסיק להבחין לפיו, ואין פח לידו. הוא בראש פס צהוב, והמקרים בתוך הפס: טבלה במחשב, וכשהמקרים נקראים כשורות (בטלפון, או יותר מחמישה מקרים) שורה לכל מקרה, התנאי במילים מעל החלקים, ״בכל …״ חלש יותר, ״שלכם״ ליד המסלול של האדם. טבלה של שני דברים נקראת בקבוצה לכל ערך של הדבר הראשון. מקרים שאינם של האדם מקופלים לשורה אחת. מקרה אחד פתוח: מסגרת, ״נבחר״, הערכים שלו כמקומות לבחירה והחלקים עם התיבות שלהם.",
@@ -5309,9 +5325,9 @@ export const kit = {
       SlimFee: "עמלה שיש לה מחיר אחד: שורה אחת, הסמל שלה על משבצת בצבע שלה, השם והחלקים, ופס בצבע שלה לאורך הקצה העליון. הקשה פותחת אותה במקומה, כמו מקרה. FeeBlock: עמלה שהמחיר שלה משתנה: השם בשורה משלו, מתחתיו החלקים שזהים בכל המקרים, ומתחתם הפס של המקרים. בפינה של כל עמלה בעסקה יש מתג, ״בחישוב״ או ״לא בחישוב״; עמלה שלא בחישוב מעומעמת.",
       RemoveButton: "הפקד שמוריד משהו: פח, הסמל לבדו בעיגול, המילים שלו נאמרות ומופיעות כשמצביעים עליו. בטלפון 44 פיקסלים מכל צד. ✕ רק סוגר (חלונית, גיליון, תפריט); מה שמוריד חלק, מקרה, דבר שהמחיר משתנה לפיו או עמלה הוא תמיד הפח.",
       KnobButton: "כפתור ריבועי קטן שעומד בקצה של מה שהוא פועל עליו ולא תופס מקום: פלוס בסוף הכותרות או בין שתי כותרות, פלוס מתחת לשורה, איקס בסוף שורה של חלק, ושכפול ומחיקה ליד השם של עמלה. המילים שלו נשמעות ומופיעות כשמרחפים עליו, ואפשר ללחוץ עליו גם מעט מחוץ לריבוע.",
-      Lift: "ידית (⋮⋮) מרימה ראש של עמודה או שורה, תא או חלק: בעכבר כשזזים, בטלפון בלחיצה ארוכה. ראש, תא, חלק או כרטיס של עמלה אפשר להרים בעכבר גם מכל מקום ריק בו או מהמילים שבו, לא ממספר או מכפתור. מה שהורם נע עם המצביע ומקומו נשאר ריק בקו מקווקו. כל מקום שמקבל אותו מסומן, וסל אדום מופיע רק בזמן ההרמה. הקשה על הידית פותחת תפריט שעושה את אותו הדבר מהמקלדת. את הקצה של תא אפשר לתפוס בכל מקום לאורכו (↔) ולמתוח את התא על מקום ריק או על מקרה שאין בו את החלק הזה, או להחזיר אותו, גם בחצים. תא לא נמתח על שכן שיש לו מחיר משלו. הקשה על מספר בתא או בכרטיס סגור הופכת אותו לשדה במקומו.",
+      Lift: "ידית (⋮⋮) מרימה ראש של עמודה או שורה, תא או חלק: בעכבר כשזזים, בטלפון בלחיצה ארוכה. ראש, תא, חלק או כרטיס של עמלה אפשר להרים בעכבר גם מכל מקום ריק בו או מהמילים שבו, לא ממספר או מכפתור. מה שהורם נע עם המצביע ומקומו נשאר ריק בקו מקווקו. כל מקום שמקבל אותו מסומן, וסל אדום מופיע רק בזמן ההרמה. הקשה על הידית פותחת תפריט שעושה את אותו הדבר מהמקלדת. את הקצה של תא אפשר לתפוס בכל מקום לאורכו (↔) ולמתוח את התא על מקום ריק או על מקרים שלידו, או להחזיר אותו, גם בחצים. מקרה שהתא נמתח עליו מקבל את מה שבתא במקום מה שהיה בו, וביטול אחד מחזיר את מה שהיה. הקשה על מספר בתא או בכרטיס סגור הופכת אותו לשדה במקומו.",
       DropZone: "גרירה של שבב אל מקום שמקבל אותו, במחשב בלבד: שבב שהקשה עליו כבר עושה משהו נגרר גם אל מקום בעמוד, והשחרור שם עושה מה שההקשה עושה, באותו מקום. בזמן הגרירה כל מקום שמקבל את השבב מוקף בצבע הפעולה, או מראה סימן משלו (מחיר של המקרה הפתוח מראה את החלק שיתווסף אליו, חיוור, במקום שבו יעמוד), ומקום שלא יקבל אותו לא מראה כלום. בטלפון נשארת ההקשה.",
-      Toolbox: "החלקים שאפשר להוסיף למקרה הפתוח, בקבוצות לפי מה שהם עושים למחיר. הצבע של קבוצה רק בריבוע הקטן שלפני השם שלה; כל כרטיס פשוט, ״+״ והמילים שלו, ומספר שהוא מבקש נאמר במילים (״הנחה % מהמחיר״), שני כרטיסים בשורה. כרטיס רק מוסיף, ולא מחליף: כל דרך גבייה היא כרטיס רגיל, שאפשר להוסיף רק למחיר שלא גובה כלום (״חינם״). הקשה על כרטיס שיש לו מקום אחד מוסיפה אותו לשם. לכרטיס שיש לו כמה מקומות ההקשה מחזיקה אותו: הוא מסומן ברקע ובמסגרת בצבע הפעולה, ובמקום השורה שמתחת לכותרת כתוב מה מוסיפים, עם ״ביטול״. בכל מקום שהוא יכול להגיע אליו מופיע החלק שיתווסף, חיוור, בדיוק במקום שבו יעמוד, והקשה עליו מוסיפה אותו לשם. במחשב אפשר גם לגרור כרטיס אל המקום שלו. חלק שכבר נמצא בכל מקום שמתאים לו מסומן ב־✓, במסגרת וברקע עדין בצבע הקבוצה, ולא נעלם. ״התאריך״, בסוף ״המחיר משתנה לפי״, הוא לא כרטיס בעמודה אלא הקו שהוא מוסיף, לכל רוחב הקבוצה. כרטיס שאי אפשר להוסיף חלש יותר, ומתחת לקבוצה כתוב למה. כשארגז הכלים פתוח על כמה מקרים יחד, אפשר להוסיף רק מה שיהיה אחרי זה זהה בכולם. בטלפון: לשונית קצרה בתחתית המסך, קבוצה אחת בכל פעם, והקבוצות כלשוניות שגוללות לצדדים. כשכרטיס מוחזק, הלשונית מתקפלת לידית ולשורה שאומרת מה מוסיפים, כדי שהמקומות שמעליה יישארו גלויים.",
+      Toolbox: "החלקים שאפשר להוסיף למקרה הפתוח, בקבוצות לפי מה שהם עושים למחיר. הצבע של קבוצה רק בריבוע הקטן שלפני השם שלה; כל כרטיס פשוט, ״+״ והמילים שלו, ומספר שהוא מבקש נאמר במילים (״הנחה % מהמחיר״), שני כרטיסים בשורה. כרטיס מוסיף, ולא מחליף: כל דרך גבייה היא כרטיס רגיל, שאפשר להוסיף רק למחיר שלא גובה כלום (״חינם״). הכרטיס היחיד שמחליף הוא ״חינם״: אפשר לשים אותו רק על מחיר שגובה משהו, והוא הופך את המחיר לחינם, בלי הגבייה ובלי שאר החלקים שלו. הקשה על כרטיס שיש לו מקום אחד מוסיפה אותו לשם. לכרטיס שיש לו כמה מקומות ההקשה מחזיקה אותו: הוא מסומן ברקע ובמסגרת בצבע הפעולה, ובמקום השורה שמתחת לכותרת כתוב מה מוסיפים, עם ״ביטול״. בכל מקום שהוא יכול להגיע אליו מופיע החלק שיתווסף, חיוור, בדיוק במקום שבו יעמוד, והקשה עליו מוסיפה אותו לשם. במחשב אפשר גם לגרור כרטיס אל המקום שלו. חלק שכבר נמצא בכל מקום שמתאים לו מסומן ב־✓, במסגרת וברקע עדין בצבע הקבוצה, ולא נעלם. ״התאריך״, בסוף ״המחיר משתנה לפי״, הוא לא כרטיס בעמודה אלא הקו שהוא מוסיף, לכל רוחב הקבוצה. כרטיס שאי אפשר להוסיף חלש יותר, ומתחת לקבוצה כתוב למה. כשארגז הכלים פתוח על כמה מקרים יחד, אפשר להוסיף רק מה שיהיה אחרי זה זהה בכולם. בטלפון: לשונית קצרה בתחתית המסך, קבוצה אחת בכל פעם, והקבוצות כלשוניות שגוללות לצדדים. כשכרטיס מוחזק, הלשונית מתקפלת לידית ולשורה שאומרת מה מוסיפים, כדי שהמקומות שמעליה יישארו גלויים.",
       AskValues: "השאלה שעולה פעם אחת כשמוסיפים דבר שהמחיר משתנה לפיו: אילו ערכים יש בתעריפון, כבחירות שמסמנים, ״אחר״ בשם משלכם, משפט שאומר כמה מקרים יהיו, ו״להוסיף״ או ״ביטול״.",
       OnOffSwitch: "מתג שאומר במילה אם הדבר דלוק או כבוי, לא רק בצבע: העמלה בפינה של הכרטיס שלה, ״בחישוב״ או ״לא בחישוב״. הכפתור באותו רוחב בשני המצבים, כך שלחיצה לא מזיזה דבר לידו.",
       ValueMenus: "מה שנפתח כשמקישים על מקום של ערך במקרה הפתוח. TickMenu: רשימה לסימון, אפשר כמה, ושורה אחרונה לערך בשם משלכם. TrackMenu: שם המסלול כמו שהוא כתוב, ומתג ״זה המסלול שלי״. RangeMenu: ״עד״ או ״מעל״, המספר והיחידה, ושורה שאומרת מה המקרה שלפניו. ValueMenuSheet: הכרטיס שמחזיק אותם, ליד המקום במחשב ומלמטה בטלפון. ThingMenu: מה שנפתח כשמקישים על דבר בראש הפס בזמן שהעמלה פתוחה: הערכים שלו במקרים, ״להפסיק להבחין לפי …״, ושורה שאומרת מה יקרה למקרים.",
@@ -5526,8 +5542,6 @@ export const kit = {
       barB: "אפשרות ב",
       diff: "ההפרש",
       diffLine: "ההפרש: באפשרות א יש {gap} יותר",
-      diffSame: "בשתי האפשרויות אותו סכום.",
-      spanWords: { one: "נקרא מאתרי הבנקים ב־", from: "נקרא מאתרי הבנקים מ־", to: "עד " },
       reason: "אין עדיין נתון על הדמים המלאים של החשבון.",
       sourceLead: "מקור ההתחלה:",
       sourceItems: ["מה שהזנתם", "המטרה השמורה"],

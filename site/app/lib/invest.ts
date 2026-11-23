@@ -13,7 +13,7 @@ import { feeNameOf } from "./fee-deal/part-words";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput, isShekel, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
-import { computed, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
+import { computed, differenceOf, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
 
@@ -259,6 +259,8 @@ export interface FundWay {
   option: OptionId;
   /** The broker the figure is at: the option's cheapest for this fund. */
   best?: WayPrice;
+  /** At the person's broker, when known. */
+  atYours?: WayPrice | { reason: Reason; providerId: string };
   /** The fund's run at every house of the option (a price, or why it has none); `best` is the highest of the ranked ones. */
   /** `availability`: a sourced fact says the house does not sell this kind of fund ("not possible there"); any other reason is "no data". */
   byHouse: Record<string, WayPrice | FundNotPriced>;
@@ -325,6 +327,8 @@ export interface HouseRow {
   entries: HouseEntry[];
   /** The house's cheapest way: the best ranked entry. */
   best: HouseEntry | null;
+  /** The headline's value less this house's: a computed gap, null for the headline's own house and for houses with no ranked way. */
+  gap: SiteValue | null;
   /** Why the house has no way: not sold there (sourced), or the reason it cannot be priced. */
   unavailable: Availability | null;
   reason: Reason | null;
@@ -341,14 +345,27 @@ export interface HouseRow {
   aside: string[];
 }
 
+export interface WorthLines {
+  /** Same fund, other houses: the headline's value less the lowest value among the other houses of its group; null when the fund prices at no other house. */
+  house: SiteValue | null;
+  houseCount: number;
+  /** Same house, other funds. */
+  fund: SiteValue | null;
+  fundCount: number;
+}
+
 export interface InvestView {
   index: IndexRef;
   options: OptionView[];
   providers: ProviderInfo[];
   headline: Way | null;
   yourBroker: string | null;
+  /** The person's broker priced for the headline's fund. */
+  atYours: { providerId: string; price: WayPrice | null; reason: Reason | null; less: SiteValue | null } | null;
   /** Every house with the funds of its group priced at it, the cheapest way first (the index page's section 1). */
   houses: HouseRow[];
+  /** The two slices through the headline's cell (F-63, "The worth lines"). */
+  worth: WorthLines | null;
   returnPct: number;
   fundCount: number;
 }
@@ -1131,7 +1148,7 @@ function beforeTaxPrices(ctx: Ctx, rec: FundRecord, option: OptionId, spec: Spec
 
 // ---------------------------------------------------------------- the option
 
-function computeOption(ctx: Ctx, index: IndexRef, option: OptionId): OptionView {
+function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: string | null): OptionView {
   const exists = optionsOf(index.israeli).includes(option);
   const empty: OptionView = { id: option, exists, notRunnable: null, cells: [], funds: [], bestWay: null, open: false };
   if (!exists) return empty;
@@ -1168,6 +1185,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId): OptionView 
   // (a) the funds of the option, each at its cheapest broker
   // a custom index has no exposure record: a fund the person added on it names the index itself (D44)
   const recs = ctx.bundle.funds.filter((f) => f.exposure_id === (index.exposure?.id ?? index.id) && optionOfFund(f, index.exposure ?? undefined) === option);
+  const yours = yourBroker ? ctx.snaps.find((s) => s.id === yourBroker) : undefined;
   const funds: FundWay[] = recs.map((rec) => {
     const base = { rec, name: nameOf(rec), number: numberOf(rec), option, currencyMismatch: false, noUnitPrice: unitPriceMissing(rec, option), byHouse: {} as FundWay["byHouse"] };
     const fs = fundSpec(ctx, rec);
@@ -1205,7 +1223,8 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId): OptionView 
         failure ??= p.reason;
       }
     }
-    return { ...base, currencyMismatch: fs.mismatch, ...(best ? { best } : failure ? { reason: failure } : { reason: { code: "no-applicable-line", detail: "no broker" } }) };
+    const atYours = yours ? base.byHouse[yours.id] : undefined;
+    return { ...base, currencyMismatch: fs.mismatch, ...(best ? { best } : failure ? { reason: failure } : { reason: { code: "no-applicable-line", detail: "no broker" } }), ...(atYours ? { atYours } : {}) };
   });
   funds.sort((a, b) => (b.best?.valueN ?? -Infinity) - (a.best?.valueN ?? -Infinity));
   const top = funds.find((f) => f.best);
@@ -1215,8 +1234,8 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId): OptionView 
 
 // ---------------------------------------------------------------- the view
 
-function core(ctx: Ctx, index: IndexRef): OptionView[] {
-  return OPTION_IDS.map((o) => computeOption(ctx, index, o));
+function core(ctx: Ctx, index: IndexRef, yourBroker: string | null): OptionView[] {
+  return OPTION_IDS.map((o) => computeOption(ctx, index, o, yourBroker));
 }
 
 /**
@@ -1233,6 +1252,19 @@ function headlineOf(options: OptionView[]): Way | null {
   return from.sort((a, b) => b.valueN - a.valueN)[0] ?? null;
 }
 
+/** One end of a gap between two ways: its number, its figure (what is left, or what an account costs) and the name its sheet gives it. */
+interface GapEnd {
+  n: number;
+  v: SiteValue;
+  name: string;
+}
+/** The gap between two ways' figures, `a − b`, each opening its own sheet (what a choice is worth, a house's distance from the cheapest way). */
+const gapOf2 = (ctx: Ctx, a: GapEnd, b: GapEnd, formula: string, about: string): SiteValue => differenceOf([a.name, a.v], [b.name, b.v], formula, { today: ctx.bundle.today, about });
+/** A way's figure of what is left, named by whose it is. */
+const leftEnd = (name: string, n: number, v: SiteValue): GapEnd => ({ n, v, name: copy.pair.input(name, copy.pair.colLeft) });
+/** The cheapest way's figure, the one every gap to it starts from. */
+const headlineEnd = (w: Way): GapEnd => leftEnd(copy.pair.cheapest, w.valueN, w.value);
+const lowest = (xs: GapEnd[]) => xs.reduce<GapEnd | null>((a, x) => (!a || x.n < a.n ? x : a), null);
 const shortOf = (ctx: Ctx, id: string) => {
   const s = ctx.snaps.find((x) => x.id === id);
   return s ? providerInfo(s).short : id;
@@ -1258,7 +1290,7 @@ function splitOf(ctx: Ctx, cell: BrokerCell): CostSplit {
 /** A view with no pair to show: no option has a way that leaves something (`bestWay`), so the page shows the account list of an index with no fund to price. */
 const pairlessOf = (options: OptionView[]): boolean => !options.some((o) => o.bestWay);
 
-function housesOf(ctx: Ctx, options: OptionView[], providers: ProviderInfo[]): HouseRow[] {
+function housesOf(ctx: Ctx, options: OptionView[], headline: Way | null, providers: ProviderInfo[]): HouseRow[] {
   const pairless = pairlessOf(options);
   const rows = providers.map((provider): HouseRow => {
     // a broker the person typed is in the group of what it sells; selling both, all of it counts (D44)
@@ -1275,14 +1307,42 @@ function housesOf(ctx: Ctx, options: OptionView[], providers: ProviderInfo[]): H
     const generic = cells.filter((c) => c.kind === "cost").sort((a, b) => a.costN! - b.costN!)[0] ?? null;
     const split = generic && pairless ? splitOf(ctx, generic) : null;
     const na = cells.find((c) => c.kind === "unavailable");
+    const gap = best && headline && headline.providerId !== provider.id && headline.valueN - best.price!.valueN > 0 ? gapOf2(ctx, headlineEnd(headline), leftEnd(provider.short, best.price!.valueN, best.price!.value), "F-65", copy.houses.gapAbout(provider.name)) : null;
     const reason = best || generic ? null : (entries.find((e) => e.reason)?.reason ?? cells.find((c) => c.reason)?.reason ?? null);
     const standing = cells.some((c) => c.standing) || entries.some((e) => e.price?.standing);
     const aside = [...new Set([...cells.flatMap((c) => c.aside ?? []), ...entries.flatMap((e) => e.price?.aside ?? [])])];
-    return { provider, group, entries, best, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, split, standing, aside };
+    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, split, standing, aside };
   });
   const priced = (r: HouseRow) => r.best ?? r.generic;
   const cost = (r: HouseRow) => (r.best ? -r.best.price!.valueN : r.generic ? r.generic.costN! : Infinity);
   return rows.sort((a, b) => Number(!priced(a)) - Number(!priced(b)) || a.group.localeCompare(b.group) * -1 || cost(a) - cost(b) || a.provider.name.localeCompare(b.provider.name, "he"));
+}
+
+function worthOf(ctx: Ctx, options: OptionView[], headline: Way | null, providers: ProviderInfo[]): WorthLines | null {
+  if (!headline) return null;
+  const foreign = providers.find((p) => p.id === headline.providerId)?.foreign ?? false;
+  const group = foreign ? GROUP_OPTIONS.foreign : GROUP_OPTIONS.il;
+  const fStar = headline.fund;
+  const others: GapEnd[] = [];
+  for (const p of providers) {
+    if (p.foreign !== foreign || p.id === headline.providerId) continue;
+    const at = fStar.byHouse[p.id];
+    if (at && "value" in at && !at.open) others.push(leftEnd(p.short, at.valueN, at.value));
+  }
+  const sameHouse: GapEnd[] = [];
+  for (const o of options) {
+    if (!o.exists || !(group as readonly OptionId[]).includes(o.id)) continue;
+    for (const f of o.funds) {
+      if (f.rec.id === fStar.rec.id) continue;
+      const at = f.byHouse[headline.providerId];
+      if (at && "value" in at && !at.open) sameHouse.push(leftEnd(f.name, at.valueN, at.value));
+    }
+  }
+  const gap = (xs: GapEnd[], about: string) => {
+    const low = lowest(xs);
+    return low ? gapOf2(ctx, headlineEnd(headline), low, "F-65", about) : null;
+  };
+  return { house: gap(others, copy.worth.lines.house), houseCount: others.length, fund: gap(sameHouse, copy.worth.lines.fund), fundCount: sameHouse.length };
 }
 
 export interface InvestArgs {
@@ -1301,8 +1361,14 @@ export function buildInvest(a: InvestArgs): InvestView {
 function build(a: InvestArgs): InvestView {
   const ctx = makeCtx(a.bundle, a.plan, a.assumptions);
   const yourBroker = a.yourBroker && ctx.snaps.some((s) => s.id === a.yourBroker) ? a.yourBroker : null;
-  const options = core(ctx, a.index);
+  const options = core(ctx, a.index, yourBroker);
   const headline = headlineOf(options);
+  let atYours: InvestView["atYours"] = null;
+  if (yourBroker && headline) {
+    const y = headline.fund.atYours;
+    const price = y && "value" in y ? y : null;
+    atYours = { providerId: yourBroker, price, reason: y && "reason" in y ? y.reason : null, less: price ? gapOf2(ctx, headlineEnd(headline), leftEnd(shortOf(ctx, yourBroker), price.valueN, price.value), "F-65", "less") : null };
+  }
   const providers = ctx.snaps.map(providerInfo);
   return {
     index: a.index,
@@ -1310,7 +1376,9 @@ function build(a: InvestArgs): InvestView {
     providers,
     headline,
     yourBroker,
-    houses: housesOf(ctx, options, providers),
+    atYours,
+    houses: housesOf(ctx, options, headline, providers),
+    worth: worthOf(ctx, options, headline, providers),
     returnPct: a.plan.grossReturn * 100,
     fundCount: a.bundle.funds.filter((f) => f.exposure_id === (a.index.exposure?.id ?? a.index.id)).length,
   };

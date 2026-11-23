@@ -285,7 +285,7 @@
         "effective_to": null,
         "update_rule": "founder",
         "notes": "",
-        "rationale_he": "הנקודה שבה מחוון האופק נגמר, בטווח שרוב האנשים ינסו. אפשר להקליד גם מספר שנים גבוה יותר."
+        "rationale_he": "הנקודה שבה מחוון האופק נגמר, בטווח שרוב האנשים ינסו. זה גם מספר השנים הגבוה ביותר שאפשר להקליד."
       },
       "step": {
         "value": 1,
@@ -740,14 +740,14 @@
         "rationale_he": "האחוז השנתי הגבוה ביותר ששדות התשואה והאינפלציה מקבלים. זה גבול שהאתר קבע כדי לתפוס טעות הקלדה, לא תחזית."
       }
     },
-    "interest": {
+    "amount": {
       "min": {
         "value": 0,
-        "unit": "pct_per_year",
+        "unit": "nis",
         "source": {
           "url": "docs/parameters-rationale.md#illustrative-scenario",
           "title": "The site's range for the guide page's input fields",
-          "publisher": "the site",
+          "publisher": "founder",
           "strength": "primary"
         },
         "checked": "2026-11-23",
@@ -757,16 +757,16 @@
         "update_rule": "founder",
         "rule_ids": [],
         "state": "sourced",
-        "notes": "lowest yearly interest rate the interest field of a guide that taxes it as interest accepts (a deposit, a savings plan, the current account, makam, a government bond); the site's choice (Claude, 2026-11-23), not the founder's: the rule base has no rule for the tax on interest below zero (method G-41), so a field below 0 would only lead to a run that stops",
-        "rationale_he": "הריבית השנתית הנמוכה ביותר ששדה הריבית מקבל בעו״ש, בפיקדון, בתוכנית חיסכון, במק״מ ובאג״ח מדינה. האתר לא מצא בכללים שקרא איך ממוסה ריבית מתחת לאפס, ולכן הוא לא מחשב אותה."
+        "notes": "lowest amount of money a whole-shekel field accepts: no amount below zero",
+        "rationale_he": "הסכום הנמוך ביותר ששדה של סכום כסף מקבל. סכום לא יכול להיות שלילי."
       },
       "max": {
-        "value": 50,
-        "unit": "pct_per_year",
+        "value": 1000000000,
+        "unit": "nis",
         "source": {
           "url": "docs/parameters-rationale.md#illustrative-scenario",
           "title": "The site's range for the guide page's input fields",
-          "publisher": "the site",
+          "publisher": "founder",
           "strength": "primary"
         },
         "checked": "2026-11-23",
@@ -776,8 +776,8 @@
         "update_rule": "founder",
         "rule_ids": [],
         "state": "sourced",
-        "notes": "highest yearly interest rate the interest field of a guide that taxes it as interest accepts; the site's choice (Claude, 2026-11-23), not the founder's: the same bound as ranges.pct, to catch a typing mistake",
-        "rationale_he": "הריבית השנתית הגבוהה ביותר ששדה הריבית מקבל. זה גבול שהאתר קבע כדי לתפוס טעות הקלדה, לא תחזית."
+        "notes": "highest amount of money a whole-shekel field or the deposits page's address accepts: one billion shekels, twenty times the largest bound a bank's deposit table read prints (50,000,000) and the fee page's largest sum (SUM_MAX); far above a personal saving, and short of where a double stops holding whole shekels through 40 years of growth",
+        "rationale_he": "הסכום הגבוה ביותר ששדה של סכום כסף מקבל: מיליארד ₪. זה גבול שהאתר קבע כדי לתפוס טעות הקלדה, לא כלל."
       }
     }
   }

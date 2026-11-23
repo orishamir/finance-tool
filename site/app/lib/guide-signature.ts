@@ -25,29 +25,8 @@ export interface SignatureData {
   ruleIds: string[];
 }
 
-/**
- * Which P-05 range bounds the cash rate's field: `interest` for a run that taxes the rate as interest (a deposit, a savings plan, the
- * current account, makam's discount, a bond's coupon), which takes no rate below 0, as the rule base holds no rule for the tax on interest
- * below zero (method G-41); `pct` for a money-market fund, whose return below zero is a fund's loss, as any fund's return may
- * be. The field applies it (`cashRateCheck`); the device keeps any rate typed (`own-rate.ts`).
- */
-export type CashRateRange = "interest" | "pct";
-
-/** The wrappers whose illustrative run rests on a cash rate, not on A-01 (the timeline edits "ריבית בשנה" for them), with the range of that field. */
-export const cashRateRange = {
-  "current-account": "interest",
-  "bank-deposit": "interest",
-  "savings-plan": "interest",
-  "money-market-fund-daily": "pct",
-  "money-market-fund-renewable": "pct",
-  makam: "interest",
-  "government-bond": "interest",
-} as const satisfies Record<string, CashRateRange>;
-
-/** The range of a wrapper's cash-rate field, or null where its run rests on A-01 and not on a cash rate. */
-export const cashRateRangeOf = (id: string): CashRateRange | null =>
-  // `Object.hasOwn` has just checked that `id` is one of the table's own keys, which the compiler does not follow
-  Object.hasOwn(cashRateRange, id) ? cashRateRange[id as keyof typeof cashRateRange] : null;
+/** The wrappers whose illustrative run rests on a cash rate, not on A-01 (the timeline edits "ריבית בשנה" for them). */
+export const cashLikeIds = ["current-account", "bank-deposit", "savings-plan", "money-market-fund-daily", "money-market-fund-renewable", "makam", "government-bond"];
 
 /** The wrappers whose timeline runs one amount put in today, with no monthly deposit: a deposit is opened with one sum, and money paid in every month goes to a savings plan (BANK-28). */
 export const lumpSumIds = ["bank-deposit"];
@@ -169,10 +148,12 @@ export interface AccountModel {
   /** In today's money, year 0 to `years`. */
   points: { year: number; account: number; fund: number }[];
   start: number;
-  /** The two lines' values at the end, in today's money; the page works out the cost and the account's change from them as it writes them (method §13). */
   end: {
     account: number;
     fund: number;
+    cost: number;
+    /** The account less the starting balance: negative when the money lost value. */
+    change: number;
   };
   /** The rate the account line runs on: the chosen bank's printed rate, else the rate most banks pay (F-85). */
   rate: SiteValue;
@@ -202,7 +183,7 @@ export function currentAccountModel(d: SignatureData, c: { balance: number; year
   return {
     points,
     start: c.balance,
-    end: { account: last.account, fund: last.fund },
+    end: { account: last.account, fund: last.fund, cost: last.fund - last.account, change: last.account - c.balance },
     rate: bank ? bank.rate : base,
     ceiling: bank ? (rateOf(bank) > 0 ? bank.ceiling : null) : (bundle.feeValues.balanceCeiling ?? null),
     bank,
@@ -243,33 +224,6 @@ export interface PlanModel {
   perDeposit: number;
   lastUnlock: number;
   at: (month: number) => { free: number; locked: number; freeValue: number; lockedPrincipal: number; notYet: number };
-}
-
-/**
- * The savings plans whose terms, as the rule base reads them, do not lock each monthly deposit on its own (method F-22, G-42), by record
- * id, with the rule that says so: Bank Hapoalim's four plans of BPN-10 (only the whole saving out, at exit points counted from the plan's
- * start), Mizrahi-Tefahot's ענבים (a partial withdrawal at an exit point leaves the last deposits, BANK-38), Bank of Jerusalem's five-year
- * plan (only the whole balance at an exit point, BANK-38) and One Zero's monthly plan (part or all at an exit point counted from the plan's
- * opening, BANK-38). F-22's ladder, a lock per deposit, is never run on one (`ladderPlanCheck`).
- */
-export const planLevelPlans: Readonly<Record<string, string>> = {
-  "hapoalim-hoshvim-kadima": "BPN-10",
-  "hapoalim-hoshvim-kadima-tzamud": "BPN-10",
-  "hapoalim-shikli-latzaad-haba": "BPN-10",
-  "hapoalim-hisachon-tzomeach-leatid": "BPN-10",
-  "mizrahi-tefahot-anavim-prime-25y-283": "BANK-38",
-  "mizrahi-tefahot-anavim-ladira-prime-18y-284": "BANK-38",
-  "mizrahi-tefahot-anavim-prime-6y-286": "BANK-38",
-  "mizrahi-tefahot-anavim-lekol-matara-madad-18y-199": "BANK-38",
-  "mizrahi-tefahot-anavim-ladira-madad-18y-202": "BANK-38",
-  "jerusalem-yareach-shikli-5y": "BANK-38",
-  "one-zero-hisachon-hodshi-12m": "BANK-38",
-};
-
-/** Throws where a savings plan's record is one whose terms do not lock each deposit on its own: the ladder must not run it (F-22, G-42). */
-export function ladderPlanCheck(recordId: string): void {
-  const rule = planLevelPlans[recordId];
-  if (rule) throw new Error(`F-22: ${recordId}'s terms do not lock each monthly deposit on its own (${rule}); the ladder, a lock per deposit, cannot run it (method G-42)`);
 }
 
 export function planModel(d: SignatureData, c: { monthly: number; deposits: number }): PlanModel | null {

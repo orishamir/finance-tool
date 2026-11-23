@@ -26,10 +26,14 @@ export interface SheetProps {
   describedBy?: string;
   onBack?: () => void;
   /**
-   * What the sheet shows, where one open sheet shows one thing after another (the provenance sheet's drill-in and back): a new value starts
-   * at the top too (a figure opened from inside a sheet opened at the scroll of the one before, its head hidden).
+   * What the sheet shows, where one open sheet shows one thing after another (the provenance sheet's drill-in and back, a list whose pick
+   * opens what was picked in its place): a new value starts at the top too (a figure opened from inside a sheet opened at the scroll of the
+   * one before, its head hidden), and where the focus was in what went, it goes to the new view's `data-autofocus`, else to the sheet's
+   * first control.
    */
   view?: string | number;
+  /** Where the focus goes as the sheet closes when what opened it has left the page meanwhile (a row deleted from inside the sheet). */
+  focusAfter?: () => HTMLElement | null;
   children: ReactNode;
   className?: string;
 }
@@ -81,7 +85,7 @@ function unlockScroll() {
 }
 
 
-export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labelledBy, describedBy, onBack, view, children, className }: SheetProps) {
+export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labelledBy, describedBy, onBack, view, focusAfter, children, className }: SheetProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const closing = useRef<number | null>(null);
   // Many sheets drop their content when they close: what was in it stays until the sheet has finished leaving.
@@ -98,9 +102,11 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
   // the latest `onClose` and `open`, for the stack and the dialog's events, which come after a render has been drawn
   const onCloseNow = useRef(onClose);
   const openNow = useRef(open);
+  const focusAfterNow = useRef(focusAfter);
   useIsoLayoutEffect(() => {
     onCloseNow.current = onClose;
     openNow.current = open;
+    focusAfterNow.current = focusAfter;
   });
   // the sheet closes its dialog itself (once it has left, or while another covers it): the close event that follows is its own
   const ownClose = useRef(false);
@@ -129,8 +135,12 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
     const dialog = ref.current;
     if (!dialog) return;
     if (open) {
-      // every opening starts at the top: the body kept the last sheet's scroll, and a second sheet opened at the first one's end
+      // every opening starts at the top: the body kept the last sheet's scroll, and a second sheet opened at the first one's end; a new view
+      // in an open sheet takes the focus where what had it went with the view before
       if ((!wasOpen.current || lastView.current !== view) && body.current) body.current.scrollTop = 0;
+      if (wasOpen.current && lastView.current !== view && dialog.open && !dialog.contains(document.activeElement)) {
+        (dialog.querySelector<HTMLElement>("[data-autofocus]") ?? dialog.querySelector<HTMLElement>(".sheet-body button, .sheet-body a[href], .sheet-body input"))?.focus({ preventScroll: true });
+      }
       if (closing.current) {
         window.clearTimeout(closing.current);
         closing.current = null;
@@ -142,6 +152,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
           dialog,
           close: () => onCloseNow.current(),
           opener: active instanceof HTMLElement && active !== document.body ? active : (anchor ?? null),
+          focusAfter: () => focusAfterNow.current?.() ?? null,
           onCover: () => {
             coveredAt.current = body.current?.scrollTop ?? 0;
             ownClose.current = true;

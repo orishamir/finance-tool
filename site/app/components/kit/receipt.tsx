@@ -49,7 +49,8 @@ export function ReceiptLine({ label, value, swatch, sub, parts, edge, opens, siz
 }) {
   return (
     <div className="flex flex-col gap-1">
-      <div className={cx("flex items-baseline gap-2", size === "sm" ? "text-sm" : "text-base", strong && "font-semibold")}>
+      {/* on a touch screen each line is a whole touch target tall, so its figure's and its name's tap areas never share a line's room */}
+      <div className={cx("flex items-baseline gap-2 pointer-coarse:min-h-target pointer-coarse:items-center", size === "sm" ? "text-sm" : "text-base", strong && "font-semibold")}>
         {swatch && <span aria-hidden="true" className={cx("inline-block size-2.5 shrink-0 self-center rounded-[2px]", swatch)} />}
         {opens ? <LineOpens title={opens.title} body={opens.body}>{label}</LineOpens> : <span className="min-w-0">{label}</span>}
         <Leader />

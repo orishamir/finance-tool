@@ -18,7 +18,8 @@ import { Pencil } from "lucide-react";
 import { IconPencil } from "../icons";
 import { feeDeal, invest as root } from "../../copy";
 import { fmt } from "../../lib/format";
-import { dealOnFunds, dealRunOf, type DealOnPlan, type FundWay, type IndexRef, type InvestView } from "../../lib/invest";
+import { dealOnFunds, dealRunOf, pairCosts, type DealOnPlan, type FundWay, type IndexRef, type InvestView } from "../../lib/invest";
+import { accountLinesOf, receiptAmounts } from "../../lib/receipt";
 import { shortName, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
 import type { FeesData } from "../../lib/fee-page-data";
 import { averageOf as columnAverage, type AverageColumn } from "../../lib/house-averages";
@@ -76,6 +77,8 @@ interface DealAccountsApi {
   dealOf: (providerId: string) => FeeDeal | undefined;
   /** The deal just deleted from the popup, said at its row's place in the list; null after any other step. */
   deleted: DeletedDeal | null;
+  /** The id of the line that says it (`DeletedLine`), which takes the focus as the popup closes: the pencil that opened the popup went with the row. */
+  deletedLineId: string;
   /**
    * The deal's fee that lacks a case for a fund bought abroad on this page (E), where that case is what keeps the deal account `providerId`
    * from a price there, as the page priced it; null otherwise (a fund the house it was filled from does not sell keeps the house's words).
@@ -102,7 +105,7 @@ export interface DealWorld {
   kinds: boolean;
 }
 
-export function DealAccountsHost({ data, onWant, failed, saved, writable, today, world, opening, onOpened, onOpenChange, left, children }: {
+export function DealAccountsHost({ data, onWant, failed, saved, writable, today, world, opening, onOpened, onOpenChange, onDeleted, left, children }: {
   /** The fee page's data, which the editor reads; null until loaded (`onWant` asks for it, and asks again after a failure). */
   data: FeesData | null;
   onWant: () => void;
@@ -118,6 +121,8 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
   onOpened: () => void;
   /** The popup opened or closed: the page holds its deals as they were while it is open. */
   onOpenChange: (open: boolean) => void;
+  /** A deal was deleted from the popup: its account id on the page, which the page's address may still name. */
+  onDeleted: (providerId: string) => void;
   left: readonly MoveLeft[];
   children: ReactNode;
 }) {
@@ -127,6 +132,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
   const [deleted, setDeleted] = useState<DeletedDeal | null>(null);
   const [started, setStarted] = useState<FeeDeal | null>(null);
   const headId = useId();
+  const deletedLineId = useId();
   const isOpen = target !== null;
   // the popup opens: the page holds its deals, and the fee page's data is asked for where it is not in yet
   const openOn = useCallback(
@@ -176,8 +182,9 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
         return <DealFeeWords read={planRead(deal, run, planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? false))} feeId={feeId} />;
       },
       left,
+      deletedLineId,
     }),
-    [saved, deleted, data, world, left, openOn],
+    [saved, deleted, deletedLineId, data, world, left, openOn],
   );
   // the editor's rule and term sheets read the fee page's data (its rules, the records they point at, its terms) over the page's own
   const page = useProvenanceData();
@@ -199,7 +206,8 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
   return (
     <DealAccountsCtx.Provider value={api}>
       {children}
-      <Sheet open={isOpen} onClose={close} pc="center" height={100} labelledBy={headId} className={target && data && world && !first ? "sheet-wide" : "sheet-deal"}>
+      {/* the start's list and each deal are a view of their own: a deal picked low in the list opens at its top (`view`) */}
+      <Sheet open={isOpen} onClose={close} pc="center" height={100} labelledBy={headId} view={first?.id ?? "start"} focusAfter={() => (deleted ? document.getElementById(deletedLineId) : null)} className={target && data && world && !first ? "sheet-wide" : "sheet-deal"}>
         {target && data && world ? (
           first ? (
             <ProvenanceProvider data={provenance ?? EMPTY_PROVENANCE}>
@@ -216,6 +224,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
               headId={headId}
               onDeleted={(name, at) => {
                 setDeleted({ name, at });
+                onDeleted(dealProviderId(first.id));
                 close();
               }}
             />
@@ -303,6 +312,11 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const settled = useDeferredValue(bundle);
   const got = useMemo(() => (fundId ? dealOnFunds({ bundle: settled, index: world.index, plan: world.plan, fundIds: [...new Set([fundId, ...funds.map((f) => f.rec.id), ...abroadFunds.map((f) => f.rec.id)])], providerId }) : new Map<string, DealOnPlan>()), [settled, world.index, world.plan, fundId, funds, abroadFunds, providerId]);
   const at = fundId ? (got.get(fundId) ?? null) : null;
+  // each fee's whole shekels as "לאן הולכות העמלות" writes them on the same pair (`accountLinesOf`), so a fee reads the same in both places
+  const wholeByFee = useMemo(() => {
+    const pc = fundId && at?.kind === "ok" ? pairCosts({ bundle: settled, index: world.index, plan: world.plan, fundId, providerId }) : null;
+    return pc ? new Map(accountLinesOf(pc, receiptAmounts(pc)).flatMap((l) => (l.kind === "deal" ? [[l.fee, l.amount] as const] : []))) : null;
+  }, [settled, world.index, world.plan, fundId, providerId, at?.kind]);
   const run = useMemo(() => (fundId ? dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId }) : null), [world.bundle, world.index, world.plan, fundId]);
   const houseId = dealHouseId(deal);
   const tiles = fundId ? dealTiles(view, got, providerId, deal.name, houseId, fundId, funds) : null;
@@ -327,7 +341,8 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
     const gap = abroad.find((g) => g.missing.fee === fee.id);
     const foot = gap ? <AbroadCaseLine words={gap.words} onAdd={() => addAbroadCase(ed, fee, gap)} /> : null;
     const switchedOff = isFeeOff(off, deal.id, fee.id);
-    const cost: FeeCost = switchedOff ? "off" : at?.kind === "ok" ? at.figure(shownCost(at.byFee[fee.id] ?? 0), w.feeCostAbout(feeNameOf(fee.kind, fee.name))) : null;
+    const whole = wholeByFee?.get(fee.id);
+    const cost: FeeCost = switchedOff ? "off" : at?.kind === "ok" ? at.figure(whole !== undefined ? -whole || 0 : shownCost(at.byFee[fee.id] ?? 0), w.feeCostAbout(feeNameOf(fee.kind, fee.name))) : null;
     const slot = x ? feeHeadOf(x, cost) : {};
     // the cases the plan reads, a step of the account's size with the years the plan spends in it (B, F), any other step the plan reaches
     // plainly, where the plan charges the fee and it is counted
@@ -583,7 +598,7 @@ function DealHead({ deal, headId, isSaved, writable, onName, onDelete }: { deal:
   const wide = useMedia(MQ.md);
   const nameField = (
     <span className="flex min-w-0 flex-[1_1_22rem] items-center">
-      <TextField inline grow labelHidden label={w.head.nameField} value={deal.name} maxLength={NAME_MAX} placeholder={w.start.title} icon={<IconPencil size={16} />} onChange={onName} />
+      <TextField inline grow labelHidden label={w.head.nameField} value={deal.name} maxLength={NAME_MAX} dir="auto" icon={<IconPencil size={16} />} onChange={onName} />
     </span>
   );
   const link = isSaved && (
@@ -736,8 +751,15 @@ const monthDots = (until: string): string => {
 
 /** Where a deal just deleted from the popup stood in the account list (G): its name, in /deal's words, on the kit's card. Not a kit piece: one line said only here. */
 export function DeletedLine({ name }: { name: string }) {
+  const api = useDealAccounts();
+  const ref = useRef<HTMLDivElement>(null);
+  // it takes the focus as the popup closes (`focusAfter`), never by Tab; drawn again at another row's place (the address let go of the
+  // deal, so the pick moved), it takes it back where nothing else has it
+  useEffect(() => {
+    if (document.activeElement === document.body) ref.current?.focus({ preventScroll: true });
+  }, []);
   return (
-    <Card pad="strip" className="text-sm text-muted-foreground">
+    <Card ref={ref} pad="strip" id={api?.deletedLineId} tabIndex={-1} className="text-sm text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring">
       {w.deleted}
       <strong className="font-semibold text-foreground">{name}</strong>
     </Card>

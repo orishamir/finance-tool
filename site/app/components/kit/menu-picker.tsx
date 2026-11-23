@@ -203,7 +203,7 @@ export function MenuPicker({ name, items, value, placeholder, buttonLabel, words
                   onClick={(e) => {
                     // a plain tap: the page follows it itself; a new tab stays the browser's
                     if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-                    close(false);
+                    close();
                     if (!onFollow || on) return;
                     e.preventDefault();
                     onFollow(item.href!);

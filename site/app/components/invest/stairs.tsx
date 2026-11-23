@@ -10,9 +10,10 @@ import { pairCosts, type FundWay, type InvestView, type ProviderInfo, type WayPr
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
+import { receiptAmounts, type ReceiptAmounts } from "../../lib/receipt";
 import { IconLock } from "../icons";
 import { LeadTail, Num, type SheetPart } from "../provenance";
-import { Button, wholeParts, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
+import { Button, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
 import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, NoFundWords, whyNoFundAt } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
@@ -38,12 +39,21 @@ interface Level {
   /** The fund's and the state's parts (F-91); null where the way's cost could not be split by who takes it (`pairCosts` gave none): the cell says so, never a 0. */
   fund: SiteValue | null;
   tax: SiteValue | null;
-  /** The four parts less the stair before's, in whole shekels that add up to minus the difference in what is left (F-91); null for the start, and where this stair or the one before has no split. */
+  /** The four parts in whole shekels as the pair's receipt writes them (`receiptAmounts`), adding up to what the index added less what is
+   *  left; null where the way's cost could not be split. */
+  whole: [number, number, number, number] | null;
+  /** The four parts less the stair before's, each the difference of the two whole figures, so a row adds up from the start's figure to the
+   *  result's and a column to minus the difference in what is left (F-91); null for the start, and where this stair or the one before has no
+   *  split. */
   dParts: [number, number, number, number] | null;
 }
 
-/** A part's figure at a level as a number: the waiting cash of a way that buys by amount is 0. */
-const partValue = (l: Level, k: Part): number => (PARTS[k] === "waiting" ? ((l.waiting?.value as number | undefined) ?? 0) : (l[PARTS[k]]!.value as number));
+/** A level's own part as the table writes it: its receipt's whole shekels, so the differences beside it add up to it; the figure's own
+ *  rounding where the pair has no split. */
+const wholeShown = (l: Level, k: Part): ((n: number) => string) => (n) => fmt.nisWhole(l.whole ? l.whole[k] : n);
+
+/** A pair's four parts in whole shekels, in `PARTS` order, as its receipt writes them. */
+const wholeOf = (r: ReceiptAmounts): [number, number, number, number] => [r.account, r.waiting, r.fund, r.tax];
 
 /** The status line's jump to the top pair: one element for the line and its unseen cases, which must wrap as it does. */
 function JumpLink({ children, onClick }: { children: ReactNode; onClick?: () => void }) {
@@ -92,13 +102,14 @@ export function useStairs({ view, bundle, plan, startHouse, startFund, example }
         waiting: pc?.waiting ?? null,
         fund: pc?.fund ?? null,
         tax: pc?.tax ?? null,
+        whole: pc ? wholeOf(receiptAmounts(pc)) : null,
         dParts: null,
       };
       const prev = out[i - 1];
-      if (prev && level.fund && level.tax && prev.fund && prev.tax) {
-        const raw = ([0, 1, 2, 3] as const).map((k) => partValue(level, k) - partValue(prev, k));
-        // whole shekels that add up to the difference in what is left, so the figures under a stair never disagree with the stair
-        level.dParts = wholeParts(raw, -(stair.d ?? 0)) as [number, number, number, number];
+      if (prev?.whole && level.whole) {
+        // the difference of the figures as each pair's receipt writes them: the start's figure and these differences add up to the result's
+        const [now, before] = [level.whole, prev.whole];
+        level.dParts = [now[0] - before[0], now[1] - before[1], now[2] - before[2], now[3] - before[3]];
       }
       out.push(level);
     });
@@ -150,7 +161,9 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const jump = (p: Pos) => set({ start: p, taken: [] });
 
   const delta = (n: number, a: SiteValue, an: string, b: SiteValue, bn: string, about: string) => computed(n, "nis", "F-91", { [an]: a, [bn]: b }, { today, about });
-  const diffOf = (l: Level, prev: Level) => delta(l.stair.d ?? 0, l.left, `${t.about.left}: ${l.fundName}, ${l.house.short}`, prev.left, `${t.about.left}: ${prev.fundName}, ${prev.house.short}`, t.about.versus);
+  // a stair's difference is the difference of what is left as the two levels write it, in whole shekels
+  const shownDiff = (l: Level, prev: Level) => Math.round(l.left.value as number) - Math.round(prev.left.value as number);
+  const diffOf = (l: Level, prev: Level) => delta(shownDiff(l, prev), l.left, `${t.about.left}: ${l.fundName}, ${l.house.short}`, prev.left, `${t.about.left}: ${prev.fundName}, ${prev.house.short}`, t.about.versus);
   const partName = (k: Part) => [t.table.accountCost, t.table.waiting, t.table.fundCost, t.table.tax][k]!;
   const partOf = (l: Level, prev: Level, k: Part) => {
     const name = partName(k);
@@ -169,7 +182,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       id: `${fold + i}|${s.pos.a}|${s.pos.f}`,
       level: s.v,
       from: first || !prevLevel ? s.v : prevLevel.stair.v,
-      top: first ? fmt.nisWhole(s.v) : fmt.signedNisWhole(s.d ?? 0),
+      top: first || !prevLevel ? fmt.nisWhole(s.v) : fmt.signedNisWhole(shownDiff(l, prevLevel)),
       hue: hueOf(s.lane),
       loses: (s.d ?? 0) < 0,
       taken: s.taken,
@@ -208,7 +221,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
     // the start shows its own costs; a stair whose split is missing (here or on the stair before) says so, never a difference against a 0
     const own = l[key];
     if (key === "waiting" && !prev && !own) return <span className="text-muted-foreground">—</span>;
-    if (!prev) return own ? <Num value={own} /> : <span className="text-muted-foreground">{t.table.notSplit}</span>;
+    if (!prev) return own ? <Num value={own} display={wholeShown(l, k)} /> : <span className="text-muted-foreground">{t.table.notSplit}</span>;
     if (!l.dParts) return <span className="text-muted-foreground">{t.table.notSplit}</span>;
     return (
       <span className={tone(l, k)}>
@@ -254,15 +267,15 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
     { id: "left", head: t.table.left, cells: visible.map((l, i) => <span key={i} className="block border-t border-border pt-1.5 text-base font-semibold"><Num value={l.left} /></span>) },
   ];
   // the result's column: where the steps end, with the pair's own costs, as the start shows its own
-  const own = (v: SiteValue | null) => (v ? <Num value={v} /> : <span className="text-muted-foreground">{t.table.notSplit}</span>);
+  const own = (v: SiteValue | null, k: Part) => (v ? <Num value={v} display={wholeShown(end, k)} /> : <span className="text-muted-foreground">{t.table.notSplit}</span>);
   const resultCells: Record<string, ReactNode> = {
     what: <span className="inline-flex min-h-7 items-center justify-center font-semibold">{t.result(levels.length - 1)}</span>,
     fund: <span className="block min-h-[3lh] text-muted-foreground"><MixedName>{end.fundName}</MixedName></span>,
     account: <span className="block min-h-[3lh] text-muted-foreground"><ProviderLink short p={end.house} muted /></span>,
-    ac: own(end.account),
-    wt: end.waiting ? <Num value={end.waiting} /> : <span className="text-muted-foreground">—</span>,
-    fc: own(end.fund),
-    tx: own(end.tax),
+    ac: own(end.account, 0),
+    wt: end.waiting ? <Num value={end.waiting} display={wholeShown(end, 1)} /> : <span className="text-muted-foreground">—</span>,
+    fc: own(end.fund, 2),
+    tx: own(end.tax, 3),
     left: <span className="block border-t border-border pt-1.5 text-base font-semibold"><Num value={end.left} /></span>,
   };
   for (const row of rowsTable) row.cells = [...row.cells, ...Array(slots - 1 - row.cells.length).fill(null), <span key="r">{resultCells[row.id]}</span>];

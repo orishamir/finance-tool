@@ -10,6 +10,8 @@ export interface StackedSheet {
   close: () => void;
   /** What had the focus, or what the sheet opened from, when it opened: it gets the focus back when the sheet closes. */
   opener: HTMLElement | null;
+  /** Where the focus goes when the sheet closes and its opener has left the page (a row deleted from inside the sheet). */
+  focusAfter?: () => HTMLElement | null;
   /** Another sheet is about to cover it: what it must keep while hidden (its scroll) is read now. */
   onCover?: () => void;
   /** It shows again, uncovered: what it kept is put back. */
@@ -82,6 +84,7 @@ export function dropSheet(s: StackedSheet): void {
       under.onUncover?.();
     }
     if (s.opener?.isConnected) s.opener.focus({ preventScroll: true });
+    else s.focusAfter?.()?.focus({ preventScroll: true });
   }
   emit();
 }

@@ -12,7 +12,7 @@ import { doubtAt, doubtOf, entryRules, tieShareOf, paybackMayLower, gapOf, gapUn
 import { brokeragePagePath } from "../../lib/site-paths";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
-import { computed, differenceOf, ownBy, type SiteValue } from "../../lib/value";
+import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { Num, Ruled, Term, type SheetPart } from "../provenance";
 import { ClampedText, gershayim, Disclosure, DocLink, LabelRow, NoteList, Tag, Tpl, GroupPriceFold, fill } from "../kit";
@@ -27,6 +27,8 @@ export interface Pick {
   fund: string;
 }
 
+/** A computed shekel figure of this page, whole shekels (the totals and gaps the bars and lists show). */
+export const nis = (n: number, formula: string, about: string, today: string, inputs: Record<string, SiteValue> = {}): SiteValue => computed(Math.round(n), "nis", formula, inputs, { today, about });
 /** A figure rounded to whole shekels, as the receipt's lines show it: the input of a difference taken between shown figures (F-91). */
 export const whole = (v: SiteValue): SiteValue => ({ ...v, value: Math.round(v.value as number) });
 /** A fund's entry at a house is a price, not a reason it has none. */
@@ -330,7 +332,7 @@ export function pairVerdict(view: InvestView, bundle: IndicesBundle, plan: Workb
   // a figure's sheet names its two inputs by whose they are; two pairs of one role are told apart by their account and fund
   const mineKey = mineRole === otherRole ? `${mineRole}, ${nameOf(pick)} · ${fundOf(pick)}` : mineRole;
   const otherKey = other && mineRole === otherRole ? `${otherRole}, ${nameOf(other)} · ${fundOf(other)}` : otherRole;
-  const gap = (a: SiteValue, aName: string, b: SiteValue, bName: string, about: string) => differenceOf([aName, a], [bName, b], "F-65", { today: bundle.today, about });
+  const gap = (a: SiteValue, aName: string, b: SiteValue, bName: string, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { [aName]: a, [bName]: b });
   // what the other pair leaves more than the pick (F-65), where the pick is not the best
   const moreIfOther = pc && pcOther ? gap(pcOther.left, c.pair.input(otherKey, c.pair.colLeft), pc.left, c.pair.input(mineKey, c.pair.colLeft), c.pair.moreIfCheapest) : null;
   return { best, onBest, other, pc, pcOther, theta, n, nFunds, crown, tied, tie, mineRole, otherRole, taxName, nameOf, fundOf, mineKey, otherKey, gap, moreIfOther };

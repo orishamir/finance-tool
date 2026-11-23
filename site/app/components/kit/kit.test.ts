@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { TermCard } from "../provenance-sheets";
-import { AbroadNote, GainBars, AddLine, Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
+import { AbroadNote, AddLine, Button, chipAfterAdd, ChoiceChips, Disclosure, DocLink, KeyValueList, MeterBar, PageHead, PickCard, PrintedQuotes, ProductPhoneRow, ProductTable, SearchField, Section, Sentence, Stat, StatRow, Tag, TextLink, aboveZeroCheck, ageCheck, nonNegativeCheck, yearsCheck } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
@@ -15,7 +15,6 @@ import { gershayim, keepTitleWhole } from "./name";
 import { chipName } from "./choice";
 import { markLabels, ShareChart } from "./share-chart";
 import { AmountLanes } from "./amount-lanes";
-import { computed } from "../../lib/value";
 
 const today = "2026-10-25";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -246,16 +245,18 @@ describe("the field checks say one message each", () => {
     expect(nonNegativeCheck(0)).toBeNull();
     expect(nonNegativeCheck(-1)).toBe("הסכום לא יכול להיות שלילי.");
   });
-  it("yearsCheck refuses a number outside its range, and a part of a year, with the range in its words", () => {
+  it("yearsCheck refuses a number outside its range with the range in its words, and a part of a year as not whole", () => {
     const check = yearsCheck({ min: 1, max: 40 });
     expect(check(1)).toBeNull();
     expect(check(40)).toBeNull();
-    for (const n of [0, 41, 2.5]) expect(check(n)).toBe("הזינו מספר שנים בין 1 ל־40.");
+    for (const n of [0, 41]) expect(check(n)).toBe("הזינו מספר שנים בין 1 ל־40.");
+    expect(check(2.5)).toBe("הזינו מספר שלם של שנים.");
   });
   it("ageCheck is the same test in the age's words, and aboveZeroCheck refuses zero and below", () => {
     const check = ageCheck({ min: 18, max: 67 });
     expect(check(30)).toBeNull();
-    for (const n of [17, 68, 30.5]) expect(check(n)).toBe("הזינו גיל בין 18 ל־67.");
+    for (const n of [17, 68]) expect(check(n)).toBe("הזינו גיל בין 18 ל־67.");
+    expect(check(30.5)).toBe("הזינו גיל בשנים שלמות.");
     expect(aboveZeroCheck(1)).toBeNull();
     for (const n of [0, -1]) expect(aboveZeroCheck(n)).toBe("הזינו סכום גדול מאפס.");
   });
@@ -320,14 +321,18 @@ describe("AddLine", () => {
 });
 
 describe("ChoiceChips", () => {
-  it("marks the chosen chip by its fill, a check before its words and its words held at the chosen weight; the others carry no check", () => {
+  it("marks the chosen chip by its fill and a check before its words; the others show no check, and every chip holds the room of the check and its words at the chosen weight", () => {
     const out = html(createElement(ChoiceChips, { ids: ["a", "b"], labels: { a: "חוק", b: "תקנות" }, value: "a", onChange: () => {}, ariaLabel: "x" }));
-    const [on, off] = out.split('role="radio"').slice(1);
-    expect(on).toMatch(/class="sec-chip [^"]*sec-chip-on ps-2\.5"/);
-    expect(on).toContain("lucide-check");
-    expect(on).toContain("invisible font-semibold");
+    const [on = "", off = ""] = out.split('role="radio"').slice(1);
+    // the room held: the chosen look laid out unseen, its check and its words at the chosen weight
+    const room = /<span aria-hidden="true" class="invisible [^"]*font-semibold[^"]*"><svg [^>]*lucide-check.*?<\/span><\/span>/;
+    expect(on).toMatch(room);
+    expect(off).toMatch(room);
+    const shown = (chip: string) => chip.replace(room, "");
+    expect(on).toMatch(/class="sec-chip [^"]*sec-chip-on"/);
+    expect(shown(on)).toContain("lucide-check");
     expect(off).not.toContain("sec-chip-on");
-    expect(off).not.toContain("lucide-check");
+    expect(shown(off)).not.toContain("lucide-check");
   });
   it("names each chip by its words and, where the row counts, its count, as the eye reads it", () => {
     expect(chipName("אג\"ח", 12)).toBe(`${gershayim("אג\"ח")} 12`);
@@ -457,21 +462,5 @@ describe("a thing with a lane and a layer in each group", () => {
     expect(out).toContain("EDGE-A");
     expect(out).toContain("EDGE-B");
     expect(out).not.toContain("EDGE-C");
-  });
-});
-
-describe("GainBars", () => {
-  const bar = (key: string, v: number) => ({ key, label: key, value: computed(v, "nis", "F-08", {}, { today }), tone: "value" as const });
-  const diff = (v: number) => computed(v, "nis", "F-08", {}, { today });
-  it("says the two are the same, with no gap, where their gap as written is 0 (method §13)", () => {
-    // 10,767.6 ₪ and 10,767.9 ₪ are both written "10,768 ₪": the gap is 0, never "0 ₪ more"
-    const out = html(createElement(GainBars, { bars: [bar("a", 10_767.6), bar("b", 10_767.9)], diff: diff(0), diffLabel: "SAME-LINE" }));
-    expect(out).toContain("SAME-LINE");
-    expect(out).not.toMatch(/>0 ₪</);
-  });
-  it("shows the gap in its line where it is not 0", () => {
-    const out = html(createElement(GainBars, { bars: [bar("a", 10_000), bar("b", 9_000)], diff: diff(1_000), diffLabel: "MORE {gap}" }));
-    expect(out).toContain("MORE");
-    expect(out).toContain("1,000 ₪");
   });
 });

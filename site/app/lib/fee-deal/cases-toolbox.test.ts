@@ -119,6 +119,17 @@ describe("the toolbox on every case of a fee", () => {
     expect(casesTool(read(deal), every(deal), "until")).toBeNull();
   });
 
+  it("leaves off \"חינם\", set in each case on its own as the other forms are, where every case's first price is free and its later one charges", () => {
+    const deal = fibi();
+    const fee = tradeOf(deal);
+    const cases = fee.cases.map((c) => ({ ...c, stages: [{ price: { form: "free" } as Price, until: "2027-08" }, ...c.stages] }));
+    const later: FeeDeal = { ...deal, fees: deal.fees.map((f) => (f.id === fee.id ? { ...fee, cases } : f)) };
+    expect(card(later, "free")).toMatchObject({ used: false, off: copy.casesOff.perCase });
+    expect(casesTool(read(later), every(later), "free")).toBeNull();
+    // as it is where every case charges
+    expect(card(deal, "free")).toMatchObject({ used: false, off: copy.casesOff.perCase });
+  });
+
   it("puts a note beside the notes a case has, in every case that lacks it", () => {
     const deal = fibi();
     const fee = tradeOf(deal);

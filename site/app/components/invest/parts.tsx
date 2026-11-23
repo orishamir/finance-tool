@@ -50,33 +50,34 @@ export function LabelsLegend() {
 /** The tariff class each option is bought as, for the sentence that names a missing tariff line. */
 export const optionClass = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "tase_foreign_fund_units", abroad: "foreign_securities" } as const;
 
-/** The sentence for a price the engine or the site could not give. */
-export function reasonText(r: Reason, cls: string): string {
+/** The sentence for a price the engine or the site could not give, of one fund or, `many`, of the funds it is said once over. */
+export function reasonText(r: Reason, cls: string, many = false): string {
+  const w = many ? { ...c.reasons, ...c.reasonsMany } : c.reasons;
   switch (r.code) {
     case "fund-type":
-      return c.reasons.fundType;
+      return w.fundType;
     case "need-yield":
-      return c.reasons.needYield;
+      return w.needYield;
     case "us-fund-open":
-      return c.reasons.usFundOpen;
+      return w.usFundOpen;
     case "need-rate":
       return c.reasons.needRate(r.currency);
     case "no-fund-rate":
-      return c.reasons.noBroker;
+      return w.noBroker;
     case "no-hedge-record":
-      return c.reasons.noHedgeRecord;
+      return w.noHedgeRecord;
     case "no-hedge-entered":
-      return c.reasons.noHedgeEntered;
+      return w.noHedgeEntered;
     case "payout-unknown":
-      return c.reasons.payoutUnknown;
+      return w.payoutUnknown;
     case "fee-unknown":
-      return c.reasons.feeUnknown;
+      return w.feeUnknown;
     case "domicile-unknown":
-      return c.reasons.domicileUnknown;
+      return w.domicileUnknown;
     case "sold-fund-by-fund":
       return c.reasons.soldFundByFund;
     case "no-agreement-found":
-      return c.reasons.noAgreementFound;
+      return w.noAgreementFound;
     default:
       return reasonSentence(r, cls, r4workbench.providers.behaviour.channelOptions.direct);
   }

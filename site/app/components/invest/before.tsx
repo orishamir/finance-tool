@@ -9,8 +9,7 @@ import { invest as c } from "../../copy";
 import { fmt } from "../../lib/format";
 import { accountSum, gapListFor, pricedVariable, type InvestView, type PairCosts } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
-import { rateWords } from "../../lib/rate-words";
-import { receiptAmounts } from "../../lib/receipt";
+import { accountLinesOf, receiptAmounts } from "../../lib/receipt";
 import { sumOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
 import { Card, MixedName, OptionBars, PanelHead, TabCards, type OptionBar, type TabCard } from "../kit";
@@ -19,8 +18,8 @@ import { changesAt, PlanChanges, shareWord, usePlanChanges } from "./knobs";
 import { DollarSection, dollarSwing, useDollarCase, type DollarCase } from "./dollar";
 import { StairsSection, useStairs } from "./stairs";
 import { allFunds, pairVerdict, type Pick } from "./pair";
-import { partName } from "./cost-lines";
-import { RateLine } from "./receipt";
+import { accountLineName, accountLineSub } from "./receipt";
+import { useDealAccounts } from "./deal-account";
 
 type Share = { min: number; max: number; step: number; start: number };
 
@@ -31,16 +30,13 @@ type Key = "fees" | "sens" | "hedge" | "stairs";
 /** The account's and the fund's fees together, without the tax, in today's money. */
 const togetherOf = (pc: PairCosts, today: string): SiteValue => sumOf({ [c.receipt.parts.account]: accountSum(pc, c.receipt.parts.account, today, Math.round), [c.receipt.parts.fund]: pc.fund }, "F-91", { today, about: c.chosen.togetherAbout, round: Math.round });
 
-/** The chosen pair's fees item by item, as the receipt writes them (whole shekels that add up), the largest first. */
-function feeItems(view: InvestView, bundle: IndicesBundle, plan: WorkbenchInputs, pick: Pick, pc: PairCosts) {
+/** The chosen pair's fees item by item, as the receipt writes them (whole shekels that add up): the account's lines as the receipt draws them
+ *  (`accountLinesOf`: a deal's own fees, else the price list's lines, and the remainder), then the fund's; the largest first. */
+function feeItems(view: InvestView, bundle: IndicesBundle, plan: WorkbenchInputs, pick: Pick, pc: PairCosts, dealApi: ReturnType<typeof useDealAccounts>) {
   const r = receiptAmounts(pc);
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
   const items: { id: string; name: string; amount: number; value: SiteValue; who: "account" | "fund"; sub: ReactNode }[] = [
-    ...pc.account.map((l, i) => {
-      const words = rateWords(l.line, pc.priced, plan.monthly);
-      return { id: l.line, name: partName(l.line) ?? "", amount: r.accountLines[i]!, value: l.cost, who: "account" as const, sub: words ? <RateLine words={words} house={pc.priced.house} /> : null };
-    }),
-    ...(r.remainder !== 0 ? [{ id: "remainder", name: c.pair.remainder, amount: r.remainder, value: pc.remainder, who: "account" as const, sub: null }] : []),
+    ...accountLinesOf(pc, r).map((l) => ({ id: l.key, name: accountLineName(l), amount: l.amount, value: l.cost, who: "account" as const, sub: accountLineSub(l, { pc, plan, pick, dealApi }) })),
     {
       id: "fund",
       name: c.pair.fundLine,
@@ -84,6 +80,7 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
   stairs: { view: InvestView; bundle: IndicesBundle; startHouse: string | null; startFund: string | null };
 }) {
   const idBase = useId();
+  const dealApi = useDealAccounts();
   const [open, setOpen] = useState<Key>("fees");
   const [at, setAt] = useState(share.start);
   const today = bundle.today;
@@ -96,7 +93,7 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
   // after the rest and moves what is under it; the section is far below the screen's first view, and that answer takes well under a second
   if (!pick || !pc || !verdict || changes === "waiting") return null;
 
-  const fees = feeItems(view, bundle, livePlan, pick, pc);
+  const fees = feeItems(view, bundle, livePlan, pick, pc, dealApi);
   const top = fees.items[0]!;
   const tabs: (TabCard & { key: Key; panel: () => ReactNode })[] = [
     {
@@ -147,7 +144,8 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
     </>
   );
   return (
-    <section aria-labelledby={`${idBase}-h`} className="flex flex-col gap-4">
+    // the shell's "back to the top" steps aside while the panels pass under it, as over the lists (`data-keep-clear`)
+    <section aria-labelledby={`${idBase}-h`} className="flex flex-col gap-4" data-keep-clear>
       <div className="flex flex-col gap-1">
         <h2 id={`${idBase}-h`} className="text-2xl font-semibold">
           {c.before.title}
@@ -166,10 +164,11 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
 /** Where the fees go: the chosen pair's fee items as bars, the largest first, then their total and why the tax is not among them. */
 export function FeesPanel({ view, bundle, plan, pick, chosen }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; chosen: boolean }) {
   const f = c.before.fees;
+  const dealApi = useDealAccounts();
   // the pair is priced once per plan for the receipt, the card and this panel (`pairCostsKept`)
   const v = pairVerdict(view, bundle, plan, pick, chosen);
   if (!v.pc) return null;
-  const fees = feeItems(view, bundle, plan, pick, v.pc);
+  const fees = feeItems(view, bundle, plan, pick, v.pc, dealApi);
   const together = <Num value={togetherOf(v.pc, bundle.today)} display={fmt.nisWhole(fees.r.account + fees.r.fund)} />;
   const top = fees.items[0]!;
   const bars: OptionBar[] = fees.items.map((x) => ({

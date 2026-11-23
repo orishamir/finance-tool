@@ -13,7 +13,7 @@
 // (the last chip of its example line), so the sliders that live only in the phone's sheet are moved too (2026-11-07: at 390 the check
 // found 0 sliders and tested nothing). `--pick=<text>` first clicks the visible element with that
 // text (a list's row that shows more once picked). `--tables` opens every closed fold first, so the tables behind them are measured too.
-// After its own checks it runs hit-check.mjs --checks (every guide page and both fee pages at 390 and 1280; `--no-hit` skips it).
+// After its own checks it runs hit-check.mjs --checks (every guide page and both fee pages at 390 and 1280, the indices page at 390; `--no-hit` skips it).
 // SEED_STORAGE=<file.json> puts {key: value} in the device's storage before the first page loads.
 // `--whole` measures the whole page instead of the screen, as the check did before D63 (to find every block that changes, seen or not).
 // `--plans` types whole plans into the slider rows' boxes, past the sliders' ends too, then text that fails the

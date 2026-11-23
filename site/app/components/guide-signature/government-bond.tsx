@@ -72,12 +72,8 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
         makam: figure(model.makamChangePct, "pct", "F-24", { [copy.bond.shift]: shiftIn, [copy.common.inputNames.assumption]: cash, ...termOf(data.bundles["makam"]) }, today, copy.bond.about.makam),
       }
     : null;
-  // what a sale today brings against holding to redemption: the gap between the two figures above as they are written (method §13), whose
-  // sign says a loss, a gain or the same, and whose size the bracket shows
-  const gap = v ? differenceOf([copy.bond.bars.sell, v.sale], [linked ? copy.bond.bars.holdLinked : copy.bond.bars.hold, v.redeem], "F-25", { today, about: copy.bond.about.diff }) : null;
-  const signed = typeof gap?.value === "number" ? gap.value : null;
-  const diff = gap && signed !== null ? { ...gap, value: Math.abs(signed) } : null;
-  const diffLabel = signed === null || signed === 0 ? copy.bond.diffSame : signed < 0 ? copy.bond.diffLoss : copy.bond.diffGain;
+  // what a sale today brings against holding to redemption: the gap between the two figures above
+  const diff = v ? differenceOf([copy.bond.bars.sell, v.sale], [linked ? copy.bond.bars.holdLinked : copy.bond.bars.hold, v.redeem], "F-25", { today, about: copy.bond.about.diff, round: Math.abs }) : null;
 
   return (
     <div className="flex flex-col gap-5">
@@ -119,7 +115,7 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
               { key: "hold", label: linked ? copy.bond.bars.holdLinked : copy.bond.bars.hold, value: v.redeem, tone: "alt" },
             ]}
             diff={diff}
-            diffLabel={diffLabel}
+            diffLabel={model.saleValue < model.redemption ? copy.bond.diffLoss : copy.bond.diffGain}
           />
           <Sentence size="sm" measure>
             {copy.bond.holdLine.before} <Num value={v.redeem} /> {copy.bond.holdLine.middle} <Num value={v.coupons} /> {copy.bond.holdLine.after[linked ? "cpi" : "unlinked"]}

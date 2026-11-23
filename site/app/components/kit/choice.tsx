@@ -7,6 +7,27 @@ import { cx } from "./cx";
 import { gershayim } from "./name";
 import { fmt } from "../../lib/format";
 
+/**
+ * What a choice shows inside its box, as wide chosen or not: the chosen look (the check, then the words at the chosen weight) laid out
+ * unseen in the same cell as what shows, so an option that is not chosen keeps the room of its check and its bold words, its words centred
+ * in it. Choosing one then changes no option's width, and nothing beside it moves. `check` is the chosen option's mark (none: room for the
+ * bold words alone); `gap` the room between the mark and the words.
+ */
+function ChosenRoom({ check, gap, on, children }: { check: ReactNode; gap: string; on: boolean; children: ReactNode }) {
+  return (
+    <span className="inline-grid justify-items-center items-center *:[grid-area:1/1]">
+      <span aria-hidden="true" className={cx("invisible inline-flex items-center font-semibold", gap)}>
+        {check}
+        <span>{children}</span>
+      </span>
+      <span className={cx("inline-flex items-center", gap)}>
+        {on && check}
+        <span className={on ? "font-semibold" : undefined}>{children}</span>
+      </span>
+    </span>
+  );
+}
+
 export interface SegmentOption<T extends string> {
   value: T;
   label: string;
@@ -16,8 +37,8 @@ export interface SegmentOption<T extends string> {
 /**
  * Two to four short options of equal weight, one always chosen (real or nominal, a count). role="group" with aria-pressed buttons, one stop
  * of the Tab key (the chosen option); the arrow keys move between the options and choose. A compact strip, 30 px tall with a 44 px tap area, its options never wrapping their words: the chosen one in
- * the dark action fill with light bold words and a small check; the others in the muted ink. Each option holds room for its words at the
- * chosen weight, so choosing moves nothing. A disabled option is faint and cannot be chosen. Options too long to stand side by side in
+ * the dark action fill with light bold words and a small check; the others in the muted ink. Each option holds room for the check and its
+ * words at the chosen weight (`ChosenRoom`), so choosing moves nothing. A disabled option is faint and cannot be chosen. Options too long to stand side by side in
  * the room given go onto a second row, each still on one line, rather than out of the box.
  */
 export function SegmentedControl<T extends string>({ label, options, value, onChange, className, labelledBy, check = true, fit, long }: { label?: string; options: SegmentOption<T>[]; value: T | null; onChange: (v: T) => void; className?: string; labelledBy?: string; /** As wide as its options from 640 px, not the full width; `"always"`, at every width, at the start of its line (a card's tabs on a phone). */ fit?: boolean | "always"; /** Options of several words that may each wrap inside it on a narrow screen, so it never runs past what holds it. */ long?: boolean; /** The check on the pressed option; a company page's controls go without it, the fill alone (the designer's mocks). */ check?: boolean }) {
@@ -50,20 +71,15 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
             disabled={o.disabled}
             onClick={() => onChange(o.value)}
             className={cx(
-              "flex-1 inline-flex items-center justify-center gap-1 min-h-[30px] tap-area px-3 text-sm rounded-[9px]",
+              "flex-1 inline-flex items-center justify-center min-h-[30px] tap-area px-3 text-sm rounded-[9px]",
               long ? cx("min-w-0 text-center", fit === "always" ? "flex-auto" : fit && "sm:flex-auto") : "whitespace-nowrap",
               "transition-colors duration-(--duration-fast) disabled:opacity-40 disabled:cursor-not-allowed",
               on ? "bg-primary-subtle text-foreground" : "text-muted-foreground enabled:hover:bg-accent/60 enabled:hover:text-foreground",
             )}
           >
-            {check && on && <IconCheck size={14} className="shrink-0 text-primary" />}
-            {/* the words laid out twice in one cell, once at the chosen weight and unseen: an option is as wide chosen or not */}
-            <span className="inline-grid *:[grid-area:1/1]">
-              <span aria-hidden="true" className="invisible font-semibold">
-                {words}
-              </span>
-              <span className={on ? "font-semibold" : undefined}>{words}</span>
-            </span>
+            <ChosenRoom check={check && <IconCheck size={14} className="shrink-0 text-primary" />} gap="gap-1" on={on}>
+              {words}
+            </ChosenRoom>
           </button>
         );
       })}
@@ -75,8 +91,8 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
  * A row of chips, one chosen at a time: one of many values narrowing a list (with `counts`), or preset answers to a question (without,
  * and `other` for the reader's own value); docs/design-system.md 11, "Which choice control". Scrolls sideways on a phone and wraps from md
  * (or wraps always with `wrap`, or stays one line at every width with `line`). A chip never submits. `value` may be null (nothing chosen).
- * The chips have a soft fill and no outline; the chosen one a teal fill, a thin teal ring and a check before its words. Its words hold room
- * for the chosen weight, so only the check widens the chosen chip (a small shift, design.md "Little movement").
+ * The chips have a soft fill and no outline; the chosen one a teal fill, a thin teal ring and a check before its words. Every chip holds
+ * room for the check and its words at the chosen weight (`ChosenRoom`), so choosing changes no chip's width and moves no chip beside it.
  * `counts` puts a number in a fixed slot after each label (how many rows a choice would show); a chip that would show none dims in place.
  * `missing` marks chips whose choice holds nothing found (a country with no product like the guide's): a dashed outline and muted words, and
  * still a chip that can be chosen, since choosing it says what was looked for. Its label says it in words too, never the dashes alone.
@@ -109,16 +125,10 @@ export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ar
   return (
     <div role="radiogroup" aria-label={ariaLabel} className={layout} onKeyDown={onKey}>
       {ids.map((id) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip gap-1.5 shrink-0 transition-[background-color,color,opacity] duration-(--duration-fast)", value === id && "sec-chip-on ps-2.5", counts?.[id] === 0 && value !== id && "opacity-45", missing?.[id] && cx("chip-dashed", value !== id && "text-muted-foreground"))}>
-          {value === id && <IconCheck size={16} className="shrink-0" />}
-          {/* the label laid out twice in one cell, once at the chosen weight and unseen: the words take one width chosen or not (the check
-              alone widens the chosen chip) */}
-          <span className="inline-grid *:[grid-area:1/1]">
-            <span aria-hidden="true" className="invisible font-semibold">
-              {labels[id]}
-            </span>
-            <span>{labels[id]}</span>
-          </span>
+        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip gap-1.5 shrink-0 transition-[background-color,color,opacity] duration-(--duration-fast)", value === id && "sec-chip-on", counts?.[id] === 0 && value !== id && "opacity-45", missing?.[id] && cx("chip-dashed", value !== id && "text-muted-foreground"))}>
+          <ChosenRoom check={<IconCheck size={16} className="shrink-0" />} gap="gap-1.5" on={value === id}>
+            {labels[id]}
+          </ChosenRoom>
           {counts && (
             <bdi dir="ltr" className="ms-0.5 inline-block min-w-[3ch] text-end tabular-nums font-normal opacity-70">
               {counts[id] !== undefined ? fmt.number(counts[id]) : ""}

@@ -187,7 +187,7 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
   const navigate = useNavigate();
   const exposureId = exposureIdOf(useParams().slug, data.indices);
   // The numbers the person entered on this device, each one not entered taking the site's example (P-05)
-  const entered = useMemo(() => enteredPlan(wb, inputs), [wb, inputs]);
+  const entered = useMemo(() => enteredPlan(wb, inputs, data.form.bounds), [wb, inputs, data.form.bounds]);
   // every bank's row counts its current account (D64)
   const livePlan: WorkbenchInputs = useMemo(() => ({ ...entered.plan, currentAccounts: true }), [entered]);
   // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider in the render deferred behind it (`Body`); the two lists price every
@@ -241,6 +241,18 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
     const rest = q.toString();
     navigate(`${pathname}${rest ? `?${rest}` : ""}`, { replace: true });
   }, [search, pathname, navigate]);
+  // a deal deleted from its popup leaves the address too, where the address names it as the account: the fund it names stays, opened at the
+  // account where it leaves the most
+  const onDealDeleted = useCallback(
+    (providerId: string) => {
+      const q = new URLSearchParams(search);
+      if (q.get("house") !== providerId) return;
+      q.delete("house");
+      const rest = q.toString();
+      void navigate(`${pathname}${rest ? `?${rest}` : ""}`, { replace: true, preventScrollReset: true });
+    },
+    [search, pathname, navigate],
+  );
   // One column at every width, the plan first, then the receipt, then the two lists: from 1280 px the plan's tiles stand in one row, the
   // receipt is a ticket and the lists stand either side of their ruler; below 1280 px the receipt is paper with its stub at the screen's
   // foot. The body renders only in the browser, so its first render already knows the width.
@@ -322,7 +334,7 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
     />
   );
 
-  const planCard = <PlanCard knobs={<PlanKnobs bundle={wb} ranges={data.form.knobs} pct={data.form.pct} />} />;
+  const planCard = <PlanCard knobs={<PlanKnobs bundle={wb} ranges={data.form.knobs} bounds={data.form.bounds} />} />;
   // the receipt: below 1280 px paper above the lists, the stub's way back leading to it (focusable for that, never tabbed to); from 1280 px
   // a ticket over the lists, whose total the ruler's point joins
   const receipt = pick && view && (
@@ -350,7 +362,7 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
 
   return (
     <LabelSheetHost>
-      <DealAccountsHost data={feesData} onWant={wantFees} failed={feesFailed} left={notMoved} saved={savedDeals} writable={stored.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen}>
+      <DealAccountsHost data={feesData} onWant={wantFees} failed={feesFailed} left={notMoved} saved={savedDeals} writable={stored.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen} onDeleted={onDealDeleted}>
       <CustomEntriesHost index={pageIndex} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
       <Frame title={title}>
         <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">

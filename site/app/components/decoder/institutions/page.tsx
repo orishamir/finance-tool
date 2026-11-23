@@ -7,7 +7,7 @@ import { companyPath } from "../../../lib/site-paths";
 import { catalogue, companyPage as w, r4catalogue as copy } from "../../../copy";
 import { Num, NumAfter } from "../../provenance";
 import { PageShell } from "../../shell";
-import { Callout, Card, DateSpanText, DocLink, Section, TariffDate, When, gershayim } from "../../kit";
+import { Callout, Card, DocLink, Section, TariffDate, When, gershayim } from "../../kit";
 import { BrokerageGroupCard } from "./brokerage-card";
 import { BankProductRow } from "./product-row";
 import type { InstitutionPageData, ProductGroup } from "./types";
@@ -19,7 +19,6 @@ import { CompanyTemplate, type CompanyPart } from "../../company/template";
 import { Overview, type OverviewRow } from "../../company/overview";
 import { MoreDocs, ProductDocs, docCount } from "../../company/docs";
 import { BankLinks, BankTable } from "../../company/bank-views";
-import { asOfDay } from "../../../lib/bank-table";
 import { companyTermsAnchor } from "../../../lib/scope";
 
 const groupTitle: Record<string, string> = { "bank-deposit": copy.groups.deposits, "savings-plan": copy.groups.savings, "current-account": copy.groups.current };
@@ -92,8 +91,6 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
       const linkageWord = ranged && (ranged.mixed || ranged.linkage !== "none") ? (w.overviewFact.linkage[ranged.linkage] ?? null) : null;
       const many = g.products.length > 1;
       const current = g.products.every((x) => x.currentAccount);
-      // the date of the records the range is from, not of every record the product holds
-      const dated = range?.asOf ?? g.asOf;
       return {
         ...base,
         end: many ? (g.wrapperId === "bank-deposit" ? w.units.deposits : w.units.plans)(depositCount(g.products)) : copy.count.one,
@@ -112,7 +109,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
               },
             }
           : {}),
-        date: dated ? <DateSpanText span={dated} day={asOfDay} words={w.overviewFact.asOf} renderDate={(v, lead) => <NumAfter lead={lead} value={v} />} /> : undefined,
+        date: g.asOf ? <NumAfter lead={w.overviewFact.asOf} value={g.asOf} /> : undefined,
       };
     }
     return {

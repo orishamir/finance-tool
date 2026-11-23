@@ -11,11 +11,14 @@
 //
 // `--checks` is the check (fix pass 8, 2026-11-07: value pencils at 24 to 35 px, rule chips at 36 to 42 and the guide's section index at
 // 43 px got past guard 22, which reads classes): every guide page in site/build/client/guide and the fee pages of the provident fund for
-// investing and the study fund, at 390 and 1280. It fails on any control under 44 px that hit-leftovers.json does not list for that page
-// and width, and on a listed one that is now 44 px or gone, which is struck: the list only shrinks. box-check.mjs runs it after its own
+// investing and the study fund at 390 and 1280, and the indices page on the S&P 500 at 390. It fails on any control under 44 px that
+// hit-leftovers.json does not list for that page and width, and on a listed one that is now 44 px or gone, which is struck: the list only
+// shrinks. box-check.mjs runs it after its own
 // checks (`--no-hit` skips it).
-// A link, a figure or a term inside running text (a <p> or <li> line with words of its own around it) is left out, as guard 19 leaves a
-// figure in text: its line is the text's line height, and the 44 px rule is for controls that stand alone (design-system 2.5).
+// A link, a figure, a term or words that state a rule (`.ruled`) inside running text (a <p> or <li> line with words of its own around it)
+// is left out, as guard 19 leaves a figure in text: its line is the text's line height, and the 44 px rule is for controls that stand alone
+// (design-system 2.5: no tap area on words inside running text, whose area would cover the lines above and below).
+// A control inside an `inert` block (a receipt stub slid below the screen) takes no press, so it is left out.
 // A figure's or a month's field is measured by its box, which takes a press anywhere in it for the field (the kit's `focusInBox`).
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -35,9 +38,12 @@ const guidePages = () => {
   return existsSync(dir) ? readdirSync(dir, { withFileTypes: true }).filter((d) => d.isDirectory() && existsSync(`${dir}${d.name}/index.html`)).map((d) => `/guide/${d.name}`).sort() : [];
 };
 let [paths = "/", widths = "phone"] = args.filter((a) => !a.startsWith("--"));
+/** The widths each checked page is measured at: the indices page at the phone's only, its lists on a computer being rows for a mouse. */
+const only = {};
 if (checks) {
-  paths = [...guidePages(), "/deal/?wrapper=kupat-gemel-lehashkaa", "/deal/?wrapper=keren-hishtalmut"].join(",");
+  paths = [...guidePages(), "/deal/?wrapper=kupat-gemel-lehashkaa", "/deal/?wrapper=keren-hishtalmut", "/indices/sp500"].join(",");
   widths = "phone,pc";
+  only["/indices/sp500"] = "phone";
 }
 /** page@width → names of the controls still under 44 px, by the name the check prints. */
 const leftovers = checks && existsSync(LEFT) ? JSON.parse(readFileSync(LEFT, "utf8")) : {};
@@ -48,14 +54,14 @@ const MIN = 44;
 const browser = await chromium.launch({ executablePath: CHROME });
 let failures = 0;
 for (const path of paths.split(",")) {
-  for (const w of widths.split(",")) {
+  for (const w of (only[path] ?? widths).split(",")) {
     const v = VIEW[w];
     const page = await (await newContext(browser, { viewport: { width: v.width, height: v.height }, hasTouch: !!v.hasTouch })).newPage();
     await page.goto(BASE + path, { waitUntil: "networkidle" });
     await waitSettled(page);
     const count = await page.evaluate(() => {
       const sel = "button, a[href], summary, input:not([type=hidden]), select, textarea, [role=button]";
-      const els = [...document.querySelectorAll(sel)].filter((e) => e.checkVisibility({ visibilityProperty: true, opacityProperty: false }) && !e.closest("[aria-hidden=true], .invisible, .sr-only, svg"));
+      const els = [...document.querySelectorAll(sel)].filter((e) => e.checkVisibility({ visibilityProperty: true, opacityProperty: false }) && !e.closest("[aria-hidden=true], .invisible, .sr-only, svg, [inert]"));
       els.forEach((e, i) => e.setAttribute("data-hit", String(i)));
       return els.length;
     });
@@ -75,7 +81,7 @@ for (const path of paths.split(",")) {
           let line = e.parentElement;
           while (line && getComputedStyle(line).display.startsWith("inline")) line = line.parentElement;
           if (line && !line.matches("p, li, dd, td") && !["block", "list-item", "table-cell"].includes(getComputedStyle(line).display)) line = null;
-          if (line && line !== e && getComputedStyle(e).display.startsWith("inline") && (e.tagName === "A" || e.matches(".num, .term"))) {
+          if (line && line !== e && getComputedStyle(e).display.startsWith("inline") && (e.tagName === "A" || e.matches(".num, .term, .ruled"))) {
             const own = (e.textContent ?? "").trim();
             const rest = (line.textContent ?? "").replace(own, "").trim();
             if (rest.length > 12) return null;

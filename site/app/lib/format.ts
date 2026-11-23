@@ -16,11 +16,10 @@ const dollars = numberFormat({ style: "currency", currency: "USD", minimumFracti
 const dollarsWhole = numberFormat({ style: "currency", currency: "USD", maximumFractionDigits: 0 });
 const euros = numberFormat({ style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const pounds = numberFormat({ style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 2 });
-/**
- * A sum written with two decimals, its ".00" dropped: a whole amount never shows cents or agorot ("60,000 $", "10 ₪", not "10.00 ₪"). The
- * cents are the formatter's own, rounded once on the value's shortest decimal, so 9.995 ₪ is "10 ₪" and never "10.00 ₪".
- */
-const withCents = (f: Intl.NumberFormat, v: number): string => f.format(v).replace(/\.00(?!\d)/, "");
+const eurosWhole = numberFormat({ style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+const poundsWhole = numberFormat({ style: "currency", currency: "GBP", maximumFractionDigits: 0 });
+/** An amount with no cents to show: a whole amount never shows them ("60,000 $", not "60,000.00 $"). */
+const wholeCents = (v: number) => Math.round(Math.abs(v) * 100) % 100 === 0;
 // a price per share is a fraction of a cent (0.0035 $): up to four decimals
 const dollarsFine = numberFormat({ style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 4 });
 const shekelsFine = numberFormat({ style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 4 });
@@ -52,8 +51,10 @@ export const GERSHAYIM = /(?<=[\u05d0-\u05ea])"(?=[\u05d0-\u05ea])/g;
 /** An abbreviation's straight quote written as the gershayim (docs/copy.md 10.4): the data spells ני"ע, the page shows ני״ע. */
 export const gershayim = (text: string) => text.replace(GERSHAYIM, "\u05f4");
 
+/** A scale mark's number and word: from a billion in billions, the word a figure's short form uses (`nisBillions`), so an axis and the figure above it read in one form. */
 function compactNisParts(v: number): { num: string; word: string | null } {
   const a = Math.abs(v);
+  if (a >= 1e9) return { num: compactFormat(v / 1e9), word: numbers.billion };
   if (a >= 1e6) return { num: compactFormat(v / 1e6), word: numbers.compact.million };
   if (a >= 1e3) return { num: compactFormat(v / 1e3), word: numbers.compact.thousand };
   return { num: compactFormat(v), word: null };
@@ -92,16 +93,16 @@ export function shortBillions(text: string, from = 1e9): string | null {
 export const fmt = {
   /** `1,234.50 ₪` (two decimals, method §13). */
   // a whole amount never shows agorot: "10 ₪", not "10.00 ₪"
-  nis: (v: number) => withMinus(plainMarks(withCents(currency, v))),
+  nis: (v: number) => withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? currencyWhole : currency).format(v))),
   /** `1,234 ₪`, whole shekels. `isolate`: wrapped in a left-to-right isolate, for an amount inside Hebrew text with no element of its own (none by default). */
   nisWhole: (v: number, { isolate = false }: SignedOptions = {}) => isolated(withMinus(plainMarks(currencyWhole.format(v))), { isolate }),
   /** `7 $`, `0.35 $`: a bound or a fee a foreign or bank price list prints in dollars; a whole amount shows no cents, as `nis` (wording.md). */
-  usd: (v: number) => withMinus(plainMarks(withCents(dollars, v))),
+  usd: (v: number) => withMinus(plainMarks((wholeCents(v) ? dollarsWhole : dollars).format(v))),
   /** `60,000 $`: a whole amount a law sets in dollars, with no cents. */
   usdWhole: (v: number) => withMinus(plainMarks(dollarsWhole.format(v))),
   /** `25 €` and `5.50 £`: a bound a price list prints in euros or pounds, for trades abroad; a whole amount shows no cents. */
-  eur: (v: number) => withMinus(plainMarks(withCents(euros, v))),
-  gbp: (v: number) => withMinus(plainMarks(withCents(pounds, v))),
+  eur: (v: number) => withMinus(plainMarks((wholeCents(v) ? eurosWhole : euros).format(v))),
+  gbp: (v: number) => withMinus(plainMarks((wholeCents(v) ? poundsWhole : pounds).format(v))),
   /** `22.70 מיליארד $`: a dollar amount of a billion or more in its short form, two decimals as `nisBillions`. */
   usdBillions: (v: number) => `${withMinus(billions.format(v / 1e9))} ${numbers.billion} $`,
   /** `20,000`, `3,844.80`: an amount written before its currency's word in a Hebrew line (an amount abroad, "20,000 ליש״ט"): whole, or with
@@ -220,30 +221,12 @@ const fixed = (digits: number, style: "decimal" | "percent"): Intl.NumberFormat 
  * rounded.
  */
 export function nisShown(v: number, state?: "sourced" | "computed" | "entered", parameter = false): string {
-  return showsWhole(v, state, parameter) ? fmt.nisWhole(v) : fmt.nis(v);
-}
-
-/** Whether `nisShown` writes an amount in whole shekels, else with its agorot. */
-function showsWhole(v: number, state: "sourced" | "computed" | "entered" | undefined, parameter: boolean): boolean {
   const derived = state === "computed" || state === "entered" || parameter;
   // what the site calculates (or the person entered) shows whole shekels, except a cost of a few shekels, where rounding changes the meaning;
   // a figure set by law or a price list keeps the agorot it prints
-  return (derived && (Math.abs(v) >= 10 || Number.isInteger(v))) || (Math.abs(v) >= 1000 && Number.isInteger(v));
-}
-
-/** The units of a sum of shekels that `formatValue` writes by the display rule (`nisShown`). */
-const SHEKEL_SUMS: ReadonlySet<string> = new Set(["nis", "nis_per_month", "nis_per_trade", "nis_per_transfer"]);
-
-/**
- * The number a shekel amount reads as on the page: the number `formatValue` writes, read back from its text, so the two are one rounding
- * (method §13). A figure worked out from shown amounts starts from these, so it agrees with them as written. Any other unit is returned
- * as it is.
- */
-export function amountShown(v: number, unit: string, state?: "sourced" | "computed" | "entered", parameter = false): number {
-  if (!SHEKEL_SUMS.has(unit)) return v;
-  const text = formatValue(v, unit, state, parameter);
-  const n = Number(text.replace(/[^\d.]/g, ""));
-  return text.includes("\u2212") ? -n : n;
+  if (derived && (Math.abs(v) >= 10 || Number.isInteger(v))) return fmt.nisWhole(v);
+  if (Math.abs(v) >= 1000 && Number.isInteger(v)) return fmt.nisWhole(v);
+  return fmt.nis(v);
 }
 
 /**
@@ -263,7 +246,7 @@ export const currencyOfUnit = (unit: string): string | null =>
  */
 export function typedSum(v: number, unit: string): string | undefined {
   const f = sumForms(unit);
-  return f ? withMinus(plainMarks(withCents(f.cents, v))) : undefined;
+  return f ? withMinus(plainMarks((Math.round(Math.abs(v) * 100) % 100 === 0 ? f.whole : f.cents).format(v))) : undefined;
 }
 
 /**
@@ -300,7 +283,6 @@ export function formatValue(value: number | string | boolean | null, unit: strin
     if (dm && numbers.monthsHe[dm[2]!]) return `${dm[1]} ${numbers.monthsHe[dm[2]!]}`;
     return value;
   }
-  if (SHEKEL_SUMS.has(unit)) return state ? nisShown(value, state, parameter) : fmt.nis(value);
   switch (unit) {
     case "nis_per_share":
       return fmt.nisFine(value);
@@ -308,6 +290,11 @@ export function formatValue(value: number | string | boolean | null, unit: strin
       return fmt.eurFine(value);
     case "gbp_per_share":
       return fmt.gbpFine(value);
+    case "nis":
+    case "nis_per_month":
+    case "nis_per_trade":
+    case "nis_per_transfer":
+      return state ? nisShown(value, state, parameter) : fmt.nis(value);
     case "usd":
       return Math.abs(value) >= 1e9 ? fmt.usdBillions(value) : fmt.usd(value);
     case "usd_per_trade":
@@ -419,4 +406,33 @@ export const amountWords = (text: string): string => `\u2066${text.replace(/ /g,
 /** Thousands separators for a typed field, left to right (`1,500`, `5`, `-2.5`). */
 export function formatTyped(n: number): string {
   return numberFormat({ maximumFractionDigits: 4 }, "en-US").format(n);
+}
+
+/**
+ * A whole amount written with one point and exactly three digits after it, a first group of one to three digits ("1.000", "12.500"): a
+ * thousands separator in the European way or a decimal point, it cannot be told which. `parseNumber` reads it as a decimal; a field of
+ * whole shekels says it is unclear rather than take 1 for 1,000.
+ */
+export function isDotThousands(text: string): boolean {
+  return /^[+\-−–—‐]?[1-9]\d{0,2}\.\d{3}$/.test(text.replace(/[\s  ‎‏‪-‮⁦-⁩₪]/g, ""));
+}
+
+/**
+ * A whole amount's box as the person types (`NumberField`'s `groupAsTyped`): the text `raw` with its thousands separators set, given the
+ * text the box held before (`before`). Digits typed or deleted inside the separators the box itself set are grouped again ("1,234" less
+ * its last digit is "123"); a comma the person typed or pasted is read by `parseNumber`'s rules, and the text is grouped only when it is a
+ * whole amount that way ("1000,000" is "1,000,000"); otherwise it stays as typed, so its error shows ("2,5", "10,00,000", "01,000").
+ * A text with anything but digits, commas and spaces stays as typed.
+ */
+export function groupTyped(raw: string, before: string): string {
+  if (!/^[\d,\s]*$/.test(raw)) return raw;
+  const digits = raw.replace(/\D/g, "");
+  if (digits === "") return raw.trim() === "" ? "" : raw;
+  const regroup = (text: string) => formatTyped(Number(text.replace(/\D/g, "")));
+  const commas = (text: string) => text.split(",").length - 1;
+  // the box held its own grouping (or nothing), and no comma came in: the commas in `raw` are the box's
+  const boxs = before.trim() === "" || (/^[\d,]+$/.test(before) && before === regroup(before));
+  if (boxs && commas(raw) <= commas(before)) return regroup(raw);
+  const n = parseNumber(raw);
+  return Number.isInteger(n) && n >= 0 ? formatTyped(n) : raw;
 }

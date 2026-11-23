@@ -499,3 +499,16 @@ describe("the lists beside the receipt", () => {
     expect(out).toMatch(/inert=""/);
   });
 });
+
+describe("the receipt's large figures in one form (a phone mixed \"101.33 מיליארד ₪\" with \"−589,012,081 ₪\")", () => {
+  it("where one figure is a billion or more, every figure of a hundred million or more has its short form too", () => {
+    const big: typeof plan = { ...plan, amountNow: 5e8, values: { ...plan.values, amount: entered(5e8, "nis", t) } };
+    const view = buildInvest({ bundle, index: need(indexById(bundle, "index-sp500"), "the S&P 500"), plan: big });
+    const pick = need(pickOfHeadline(view), "the page's pair");
+    const out = html(createElement(PairReceipt, { view, bundle, plan: big, pick, chosen: false }));
+    const buttons = [...out.matchAll(/<button[^>]*class="num[^"]*"[^>]*>([\s\S]*?)<\/button>/g)].map((m) => shown(m[1] ?? "").replace(/[⁦-⁩‎‏]/g, ""));
+    const large = buttons.filter((b) => [...b.matchAll(/(\d{1,3}(?:,\d{3})+) ₪/g)].some((m) => Number((m[1] ?? "").replace(/,/g, "")) >= 1e8));
+    expect(large.length).toBeGreaterThan(1);
+    for (const b of large) expect(b, b).toContain(numbers.billion);
+  });
+});

@@ -24,6 +24,18 @@ import {
 } from "./state";
 import { entered } from "./value";
 import { readSideStores, sideCounts, type SideStores } from "./side-stores";
+import type { PlanBounds } from "./plan-bounds";
+
+/** The plan numbers' bounds an import checks against, fixed here (P-05's as written on 2026-11-23: the horizon slider's 1 to 40 years, its
+ *  `pct` and `age` ranges). */
+const BOUNDS: PlanBounds = {
+  amount_now: { min: 0, max: null, whole: false },
+  monthly_deposit: { min: 0, max: null, whole: false },
+  horizon_years: { min: 1, max: 40, whole: true },
+  "A-01": { min: -50, max: 50, whole: false },
+  "A-02": { min: -50, max: 50, whole: false },
+  age: { min: 0, max: 120, whole: true },
+};
 
 class FakeStorage {
   data = new Map<string, string>();
@@ -203,33 +215,33 @@ describe("import", () => {
   const base = (): StateV3 => ({ ...emptyOf(), holdings: [holding("a")], uncatalogued: [{ name: "קרן Y", seen: day }] });
 
   it("reads a file it wrote, with the counts, and changes nothing on the device", () => {
-    const r = readImport(file(base()));
-    expect(r.ok && r.preview.counts).toEqual({ holdings: 1, names: 1, offers: 0, variants: 0, ticks: 0, ownRates: 0, deals: 0 });
+    const r = readImport(file(base()), BOUNDS);
+    expect(r.ok && r.preview.counts).toEqual({ holdings: 1, names: 1, inputs: false, indices: 0, funds: 0, accounts: 0, offers: 0, variants: 0, ticks: 0, ownRates: 0, deals: 0 });
     expect(r.ok && r.preview.migrated).toBe(false);
     expect(storage.data.size).toBe(0);
   });
 
   it("refuses text that is not the site's format", () => {
-    expect(readImport("דוח שנתי לעמית 2025")).toEqual({ ok: false, refusal: { kind: "format" } });
-    expect(readImport(JSON.stringify({ hello: 1 }))).toEqual({ ok: false, refusal: { kind: "format" } });
+    expect(readImport("דוח שנתי לעמית 2025", BOUNDS)).toEqual({ ok: false, refusal: { kind: "format" } });
+    expect(readImport(JSON.stringify({ hello: 1 }), BOUNDS)).toEqual({ ok: false, refusal: { kind: "format" } });
   });
 
   it("names the header field that is out of order, and shows the header of a file it reads", () => {
     const head = { format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00Z", site, state: base() };
-    expect(readImport(JSON.stringify({ ...head, version: "3" }))).toEqual({ ok: false, refusal: { kind: "invalid", field: "version" } });
-    expect(readImport(JSON.stringify({ ...head, exported: 5 }))).toEqual({ ok: false, refusal: { kind: "invalid", field: "exported" } });
-    expect(readImport(JSON.stringify({ ...head, site: { version: "r3-test" } }))).toEqual({ ok: false, refusal: { kind: "invalid", field: "site" } });
-    const r = readImport(JSON.stringify(head));
+    expect(readImport(JSON.stringify({ ...head, version: "3" }), BOUNDS)).toEqual({ ok: false, refusal: { kind: "invalid", field: "version" } });
+    expect(readImport(JSON.stringify({ ...head, exported: 5 }), BOUNDS)).toEqual({ ok: false, refusal: { kind: "invalid", field: "exported" } });
+    expect(readImport(JSON.stringify({ ...head, site: { version: "r3-test" } }), BOUNDS)).toEqual({ ok: false, refusal: { kind: "invalid", field: "site" } });
+    const r = readImport(JSON.stringify(head), BOUNDS);
     expect(r.ok && r.preview.file).toEqual({ format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00Z", site });
   });
 
   it("refuses a newer version", () => {
-    expect(readImport(file(base(), 4))).toEqual({ ok: false, refusal: { kind: "newer" } });
+    expect(readImport(file(base(), 4), BOUNDS)).toEqual({ ok: false, refusal: { kind: "newer" } });
   });
 
   it("imports a version 3 file with goals and saved comparisons, even unreadable ones, and leaves them out without a word", () => {
     const v3 = { ...base(), version: 3, goals: [oldGoal("g1"), { ...oldGoal("g2"), exposures: { makam: { return: 3 } }, horizonYears: { value: "ten", entered: true } }], currentId: "g1", savedComparisons: [{ id: "c1", goalId: "g1", mode: "wrapper", savedOn: day }, 5] };
-    const r = readImport(file(v3, 3));
+    const r = readImport(file(v3, 3), BOUNDS);
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(r.preview.rejected).toEqual([]);
@@ -239,11 +251,11 @@ describe("import", () => {
     expect(r.preview.state.savedComparisons).toEqual([]);
     expect("currentId" in r.preview.state).toBe(false);
     const out = applyImport(emptyOf(), r.preview.state, "add", day);
-    expect(out.added).toEqual({ holdings: 1, names: 1 });
+    expect(out.added).toEqual({ holdings: 1, names: 1, inputs: 0, indices: 0, funds: 0, accounts: 0 });
   });
 
   it("migrates a version 2 file: its goals and a leftover visits field are left out", () => {
-    const r = readImport(file({ ...base(), version: 2, goals: [oldGoal("g1")], visits: { last: "2026-10-23" } }, 2));
+    const r = readImport(file({ ...base(), version: 2, goals: [oldGoal("g1")], visits: { last: "2026-10-23" } }, 2), BOUNDS);
     expect(r.ok && r.preview.migrated).toBe(true);
     expect(r.ok && r.preview.state.version).toBe(3);
     expect(r.ok && r.preview.state.goals).toEqual([]);
@@ -253,7 +265,7 @@ describe("import", () => {
   });
 
   it("migrates an older version (the goals document alone), leaving out the bank it names", () => {
-    const r = readImport(file({ version: 1, goals: [oldGoal("g1")], currentId: "g1", bank: "hapoalim" }, 1));
+    const r = readImport(file({ version: 1, goals: [oldGoal("g1")], currentId: "g1", bank: "hapoalim" }, 1), BOUNDS);
     expect(r.ok && r.preview.migrated).toBe(true);
     expect(r.ok && r.preview.state).not.toHaveProperty("bank");
     expect(r.ok && r.preview.state.goals).toEqual([]);
@@ -262,7 +274,7 @@ describe("import", () => {
   it("leaves out a holding whose balance is a bare number, naming the field", () => {
     const s = base() as unknown as { holdings: { balance: unknown }[] };
     s.holdings[0]!.balance = 80_000;
-    const r = readImport(file(s));
+    const r = readImport(file(s), BOUNDS);
     expect(r.ok && r.preview.state.holdings).toHaveLength(0);
     expect(r.ok && r.preview.rejected).toEqual([{ kind: "holding", at: 1, field: "balance", problem: "structure" }]);
   });
@@ -270,7 +282,7 @@ describe("import", () => {
   it("leaves out a holding with an unknown wrapper", () => {
     const s = base();
     (s.holdings[0] as { wrapperId: string }).wrapperId = "bitcoin";
-    const r = readImport(file(s));
+    const r = readImport(file(s), BOUNDS);
     expect(r.ok && r.preview.rejected).toEqual([{ kind: "holding", at: 1, field: "wrapperId", problem: "wrapper" }]);
   });
 
@@ -279,10 +291,10 @@ describe("import", () => {
     const r = applyImport(mine, base(), "add", day);
     // holding "a" is identical to mine: skipped; the name is new
     expect(r.skipped).toBe(1);
-    expect(r.added).toEqual({ holdings: 0, names: 1 });
+    expect(r.added).toEqual({ holdings: 0, names: 1, inputs: 0, indices: 0, funds: 0, accounts: 0 });
     expect(r.state.holdings).toHaveLength(2);
     expect(r.state.uncatalogued[0]?.importedAt).toBe(day);
-    expect(importedCount(r.state)).toEqual({ holdings: 0, names: 1, total: 1 });
+    expect(importedCount(r.state)).toEqual({ holdings: 0, names: 1, inputs: 0, indices: 0, funds: 0, accounts: 0, total: 1 });
   });
 
   it("add: a holding with the same id and other content is kept as a new item", () => {
@@ -318,7 +330,7 @@ describe("import", () => {
     const text = stateFileText(buildStateFile(getSnapshot().state, site, exported));
     resetStore(new FakeStorage());
     ensureLoaded();
-    const r = readImport(text);
+    const r = readImport(text, BOUNDS);
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     const out = applyImport(getSnapshot().state, r.preview.state, "add", day);
@@ -336,9 +348,9 @@ describe("import twice in add mode (A33, A69)", () => {
   it("adds nothing the second time, and the count says so", () => {
     const incoming = theirs();
     const first = applyImport(mine(), incoming, "add", day);
-    expect(first.added).toEqual({ holdings: 1, names: 1 });
+    expect(first.added).toEqual({ holdings: 1, names: 1, inputs: 0, indices: 0, funds: 0, accounts: 0 });
     const second = applyImport(first.state, incoming, "add", day);
-    expect(second.added).toEqual({ holdings: 0, names: 0 });
+    expect(second.added).toEqual({ holdings: 0, names: 0, inputs: 0, indices: 0, funds: 0, accounts: 0 });
     expect(second.skipped).toBe(2);
     expect(second.state.holdings).toHaveLength(2);
     // a third time, a day later: still nothing
@@ -366,13 +378,13 @@ describe("import twice in add mode (A33, A69)", () => {
     const s = theirs();
     s.holdings = [holding("a"), holding("neg", { balance: entered(-5, "nis", day) }), holding("fee", { feeBalance: entered(140, "pct_per_year", day) }), holding("date", { statementDate: text("אתמול") }), holding("gain", { embeddedGain: entered(900_000, "nis", day) })];
     s.inputs = { amount_now: { ...entered(1, "nis", day), value: "הרבה" as never } };
-    const r = readImport(file(s));
+    const r = readImport(file(s), BOUNDS);
     expect(r.ok && r.preview.rejected).toEqual([
       { kind: "holding", at: 2, field: "balance", problem: "negative" },
       { kind: "holding", at: 3, field: "feeBalance", problem: "over-100" },
       { kind: "holding", at: 4, field: "statementDate", problem: "date" },
       { kind: "holding", at: 5, field: "embeddedGain", problem: "gain-over-balance" },
-      { kind: "input", at: "amount_now", field: "amount_now", problem: "not-number" },
+      { kind: "input", key: "amount_now", problem: "not-number" },
     ]);
     expect(r.ok && r.preview.state.holdings.map((h) => h.id)).toEqual(["a"]);
     expect(JSON.stringify(r.ok && r.preview.state)).not.toMatch(/NaN/);
@@ -408,7 +420,7 @@ describe("side stores in the export file (A32)", () => {
     const other = new FakeStorage();
     resetStore(other);
     ensureLoaded();
-    const r = readImport(text);
+    const r = readImport(text, BOUNDS);
     expect(r.ok && r.preview.counts).toMatchObject({ offers: 1, variants: 1, ticks: 2, ownRates: 1 });
     if (!r.ok) return;
     const first = applySideImport(r.preview.side, "add");
@@ -437,7 +449,7 @@ describe("side stores in the export file (A32)", () => {
     bad.sideStores.offers.push({ providerId: "p2", lines: { trade: { rate: { ...entered(0.1, "pct", day), value: -3 } } }, savedAt: day });
     bad.sideStores.variantAssumptions.x = { fxChange: "הרבה" };
     bad.sideStores.playbookTicks.k = [1];
-    const r = readImport(JSON.stringify(bad));
+    const r = readImport(JSON.stringify(bad), BOUNDS);
     expect(r.ok && r.preview.sideProblems).toEqual([
       { store: "offers", item: "p2", reason: "not-number" },
       { store: "variants", item: "x", reason: "not-number" },
@@ -458,16 +470,16 @@ describe("side stores in the export file (A32)", () => {
   it("an old-shaped tick key in a file folds into its wrapper's key on import", () => {
     const f = JSON.parse(stateFileText(buildStateFile(emptyOf(), site, exported, device())));
     f.sideStores.playbookTicks = { "keren-hishtalmut|a|b": ["s1"], "keren-hishtalmut|c|d": ["s2"], other: ["x"] };
-    const r = readImport(JSON.stringify(f));
+    const r = readImport(JSON.stringify(f), BOUNDS);
     expect(r.ok && r.preview.side?.playbookTicks).toEqual({ "keren-hishtalmut": ["s1", "s2"], other: ["x"] });
   });
 
   it("a file without own rates reads as none; an own rate out of range is named", () => {
     const f = JSON.parse(stateFileText(buildStateFile(emptyOf(), site, exported, device())));
     delete f.sideStores.ownRates;
-    expect(readImport(JSON.stringify(f)).ok && sideCounts((readImport(JSON.stringify(f)) as { preview: { side: SideStores } }).preview.side).ownRates).toBe(0);
+    expect(readImport(JSON.stringify(f), BOUNDS).ok && sideCounts((readImport(JSON.stringify(f), BOUNDS) as { preview: { side: SideStores } }).preview.side).ownRates).toBe(0);
     f.sideStores.ownRates = { g1: { "bank-deposit": 3, makam: 400 } };
-    const r = readImport(JSON.stringify(f));
+    const r = readImport(JSON.stringify(f), BOUNDS);
     expect(r.ok && r.preview.sideProblems).toEqual([{ store: "ownRates", item: "g1/makam", reason: "not-number" }]);
   });
 
@@ -504,7 +516,7 @@ describe("the index page's saved state (D28)", () => {
     expect(raw.customIndices).toEqual([nikkei]);
     expect(raw.broker).toBe("leumi");
     const file = buildStateFile(getSnapshot().state, site, new Date("2026-10-25T10:00:00Z"));
-    const read = readImport(stateFileText(file));
+    const read = readImport(stateFileText(file), BOUNDS);
     if (!read.ok) throw new Error("refused");
     expect(read.preview.state.customIndices).toEqual([nikkei]);
     removeCustomIndex("custom-nikkei");
@@ -548,5 +560,82 @@ describe("an index's old answer moves to its funds (2026-11-05)", () => {
       { id: "custom-zar", name: "זר", israeli: false, added: day },
     ]);
     expect(out.map((f) => f.shekelIndex === true)).toEqual([true, false, false]);
+  });
+});
+
+describe("what an import brings of the index page's own and of the plan (the transfer page)", () => {
+  const fund = (id: string, indexId: string) => ({ id, name: id, number: null, indexId, kind: "il-tracking" as const, fixed: null, variable: null, trustee: null, hedged: false, payout: null, yield: null, perYear: null, domicile: null, tracking: null, added: day });
+  const theirs = (): StateV3 => ({
+    ...emptyOf(),
+    inputs: { horizon_years: entered(20, "years", day), "A-01": entered(5, "pct_per_year", day) },
+    customIndices: [{ id: "custom-nikkei", name: "ניקיי", added: day }],
+    customFunds: [fund("custom-fund-n", "custom-nikkei"), fund("custom-fund-s", "index-sp500")],
+    broker: "leumi",
+  });
+  const mine = (): StateV3 => ({ ...emptyOf(), inputs: { "A-01": entered(6, "pct_per_year", day) }, customIndices: [{ id: "custom-own", name: "שלי", added: day }], customFunds: [fund("custom-fund-own", "custom-own")] });
+
+  it("counts a file's custom index, its funds and its plan numbers in the preview", () => {
+    const r = readImport(JSON.stringify({ format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00Z", site, state: theirs() }), BOUNDS);
+    expect(r.ok && r.preview.counts).toMatchObject({ holdings: 0, names: 0, inputs: true, indices: 1, funds: 2, accounts: 0 });
+  });
+
+  it("a file with only a custom index adds it into an empty device, and says it added it", () => {
+    const only: StateV3 = { ...emptyOf(), customIndices: [{ id: "custom-nikkei", name: "ניקיי", added: day }] };
+    const r = applyImport(emptyOf(), only, "add", day);
+    expect(r.added).toEqual({ holdings: 0, names: 0, inputs: 0, indices: 1, funds: 0, accounts: 0 });
+    expect(r.state.customIndices).toHaveLength(1);
+  });
+
+  it("delete what was imported takes away exactly the indices, funds, plan numbers and broker the import brought", () => {
+    const r = applyImport(mine(), theirs(), "add", day);
+    expect(r.added).toEqual({ holdings: 0, names: 0, inputs: 1, indices: 1, funds: 2, accounts: 0 });
+    expect(importedCount(r.state).total).toBe(5);
+    const cleaned = withoutImported(r.state);
+    expect(cleaned.inputs).toEqual(mine().inputs);
+    expect(cleaned.customIndices).toEqual(mine().customIndices);
+    expect(cleaned.customFunds).toEqual(mine().customFunds);
+    expect(cleaned.broker).toBeUndefined();
+    expect(importedCount(cleaned).total).toBe(0);
+  });
+
+  it("a fund the person added later on an imported index goes with the index", () => {
+    const r = applyImport(mine(), theirs(), "add", day);
+    const later = { ...r.state, customFunds: [...(r.state.customFunds ?? []), fund("custom-fund-later", "custom-nikkei")] };
+    expect(withoutImported(later).customFunds?.map((f) => f.id)).toEqual(["custom-fund-own"]);
+  });
+
+  it("the same file a second time adds nothing and writes no record of an import", () => {
+    const first = applyImport(mine(), theirs(), "add", day);
+    const second = applyImport(first.state, theirs(), "add", day);
+    expect(second.added).toEqual({ holdings: 0, names: 0, inputs: 0, indices: 0, funds: 0, accounts: 0 });
+    expect(second.state.imports).toHaveLength(1);
+  });
+});
+
+describe("a plan number outside the bound the fields hold (P-05's) is left out of an import", () => {
+  const file = (inputs: Record<string, unknown>) => JSON.stringify({ format: "mekor-state", version: 3, exported: "2026-10-24T08:00:00Z", site, state: { ...emptyOf(), inputs } });
+
+  it("a thousand years is refused with the bound; forty years is kept", () => {
+    const r = readImport(file({ horizon_years: entered(1000, "years", day), amount_now: entered(5000, "nis", day) }), BOUNDS);
+    expect(r.ok && r.preview.rejected).toEqual([{ kind: "input", key: "horizon_years", problem: "out-of-bound", bound: BOUNDS.horizon_years }]);
+    expect(r.ok && Object.keys(r.preview.state.inputs)).toEqual(["amount_now"]);
+    const ok = readImport(file({ horizon_years: entered(40, "years", day) }), BOUNDS);
+    expect(ok.ok && ok.preview.rejected).toEqual([]);
+  });
+
+  it("a part of a year, a negative amount, a return past the percent range and an age past its range are each refused", () => {
+    const r = readImport(file({ horizon_years: entered(2.5, "years", day), monthly_deposit: entered(-1, "nis_per_month", day), "A-01": entered(80, "pct_per_year", day), age: entered(130, "years", day) }), BOUNDS);
+    expect(r.ok && r.preview.rejected).toEqual([
+      { kind: "input", key: "horizon_years", problem: "not-whole" },
+      { kind: "input", key: "monthly_deposit", problem: "negative" },
+      { kind: "input", key: "A-01", problem: "out-of-bound", bound: BOUNDS["A-01"] },
+      { kind: "input", key: "age", problem: "out-of-bound", bound: BOUNDS.age },
+    ]);
+  });
+
+  it("a file cut short is called damaged, not another kind of file", () => {
+    const whole = file({ horizon_years: entered(20, "years", day) });
+    expect(readImport(whole.slice(0, Math.floor(whole.length / 2)), BOUNDS)).toEqual({ ok: false, refusal: { kind: "damaged" } });
+    expect(readImport("{ not json", BOUNDS)).toEqual({ ok: false, refusal: { kind: "format" } });
   });
 });

@@ -88,11 +88,8 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       }
     : null;
   const cost = values ? differenceOf([copy.account.figures.fund, values.fund], [copy.account.figures.account, values.account], "F-67", { today, about: copy.account.about.cost }) : null;
-  // the account's change, the two as the page writes them (method §13): its size is shown, and its sign says less, more or the same
-  const signedChange = values ? differenceOf([copy.account.figures.account, values.account], [copy.account.balance, balanceValue], "F-67", { today, about: copy.account.about.change }) : null;
-  const moved = typeof signedChange?.value === "number" ? signedChange.value : 0;
-  const change = signedChange ? { ...signedChange, value: Math.abs(moved) } : null;
-  const direction = moved < 0 ? copy.account.headline.less : moved > 0 ? copy.account.headline.more : null;
+  const change = values ? differenceOf([copy.account.figures.account, values.account], [copy.account.balance, balanceValue], "F-67", { today, about: copy.account.about.change, round: Math.abs }) : null;
+  const direction = model ? (model.end.change < -0.5 ? copy.account.headline.less : model.end.change > 0.5 ? copy.account.headline.more : null) : null;
 
   const paying = payingBanks(data);
   const silent = silentBanks(data);

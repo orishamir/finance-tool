@@ -1,40 +1,29 @@
 // A bank's page from its real deposit records (data/terms/deposits/): each product's rates carry their own records' date, and the
 // catalogue's names say in Hebrew where they were seen.
 import { describe, expect, it } from "vitest";
-import { buildInstitution } from "./institutions.server";
-import { rangeLinkage, rateRange } from "./bank-table";
-import type { SiteValue } from "./value";
-import type { ProductRowData } from "../components/decoder/institutions/types";
+import { buildInstitution, latestDeposit } from "./institutions.server";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 
 describe("a bank's products and their dates", () => {
-  it("each of a bank's products is dated by its own records, the oldest and the newest, not by another product's (Leumi)", () => {
+  it("the newest record is the one whose rates are newest, else the one collected last", () => {
+    const d = (id: string, from: string | null, snapshot: string) => ({ id, rate_offered: { effective_from: from }, snapshot });
+    expect(latestDeposit([d("a", "2026-10-25", "2026-10-23"), d("b", "2026-11-09", "2026-11-09"), d("c", null, "2026-10-30")])?.id).toBe("b");
+    expect(latestDeposit([d("a", null, "2026-10-23"), d("c", null, "2026-10-30")])?.id).toBe("c");
+    expect(latestDeposit([])).toBeUndefined();
+  });
+
+  it("each of a bank's products is dated by its own records, not by another product's (Leumi)", () => {
     const page = buildInstitution("leumi")!;
     const records = loadDepositTerms().filter((d) => d.bank === "leumi");
     expect(page.groups.length).toBeGreaterThan(1);
     for (const g of page.groups) {
-      const days = records.filter((d) => d.wrapper_id === g.wrapperId).map((d) => d.rate_offered.effective_from ?? d.snapshot).sort();
-      expect(g.asOf?.from.value).toBe(days[0]);
-      expect(g.asOf?.to.value).toBe(days.at(-1));
+      const own = latestDeposit(records.filter((d) => d.wrapper_id === g.wrapperId))!;
+      expect(g.asOf?.value).toBe(own.rate_offered.effective_from ?? own.snapshot);
     }
     const current = page.groups.find((g) => g.wrapperId === "current-account")!;
     const deposits = page.groups.find((g) => g.wrapperId === "bank-deposit")!;
-    expect(current.asOf?.to.value).toBe("2026-11-15");
-    expect(current.asOf?.to.value).not.toBe(deposits.asOf?.to.value);
-  });
-
-  it("the overview's rate range is dated by the records it spans, not by a record of another linkage", () => {
-    // Discount's deposits: unlinked rows read on 08.11.2026 and a CPI-linked row on 13.11.2026; the range is the unlinked one, dated 08.11
-    const day = (iso: string) => ({ value: iso, unit: "date", state: "sourced" }) as unknown as SiteValue;
-    const pct = (n: number) => ({ value: n, unit: "pct_per_year", state: "sourced" }) as unknown as SiteValue;
-    const row = (linkage: ProductRowData["linkage"], rate: number, asOf: string) => ({ linkage, rate: pct(rate), asOf: day(asOf) }) as unknown as ProductRowData;
-    const rows = [row("none", 2.1, "2026-11-08"), row("none", 2.6, "2026-11-08"), row("cpi", 0.4, "2026-11-13")];
-    const ranged = rangeLinkage(rows);
-    const range = ranged ? rateRange(ranged.products) : null;
-    expect([range?.asOf.from.value, range?.asOf.to.value]).toEqual(["2026-11-08", "2026-11-08"]);
-    // unlinked rows read on two days span the two
-    const spread = rateRange([row("none", 2.1, "2026-11-08"), row("none", 2.6, "2026-11-13")]);
-    expect([spread?.asOf.from.value, spread?.asOf.to.value]).toEqual(["2026-11-08", "2026-11-13"]);
+    expect(current.asOf?.value).toBe("2026-11-15");
+    expect(current.asOf?.value).not.toBe(deposits.asOf?.value);
   });
 });
 

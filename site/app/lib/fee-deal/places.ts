@@ -1,7 +1,8 @@
 // Where a toolbox card can go in the case open in place (method §10.6), a card held while the person picks one of several, and a part
 // waiting at its place for what it asks. A card's places are found from the part registry (`partGoes`, `holds`, `used`): a part a price
 // keeps goes on each price that can hold it and has it not yet; a charge (a form of the price) goes only on a price that charges nothing,
-// so the toolbox never swaps one charge for another; the month a price changes from goes on each side's prices as a whole (the
+// so the toolbox never swaps one charge for another, and "חינם", the form that charges nothing, only on a price that charges something,
+// whose charge and parts it takes away; the month a price changes from goes on each side's prices as a whole (the
 // purchase's, a sale priced apart's), its month then deciding which price splits; a sale priced apart goes on the case as a whole. A tap
 // on a card with one place adds it there; with several it holds the card, each place drawing the card's landing copy until one is tapped
 // or the hold ends (`tapStep`, `letGoStep`). A card dropped on a case goes where it has one place there (`dropTakes`). A part added that asks for
@@ -10,9 +11,9 @@
 import { feeDeal as copy } from "../../copy";
 import { fmt, joinLead } from "../format";
 import { monthKey, monthOf, type MonthKey, type Price, type Priced, type Side } from "./model";
-import { charged } from "./offers/capabilities";
-import { isFormPart, PARTS, partGoes, type PartAt, type PartId, type PendingPart } from "./offers/parts";
-import type { FeeKindId } from "./shapes";
+import { charged, formCharged } from "./offers/capabilities";
+import { PARTS, partGoes, type PartAt, type PartId, type PendingPart } from "./offers/parts";
+import type { FeeKindId, FormId } from "./shapes";
 
 /**
  * A place a toolbox card can go in the open case: one of its prices (`price`, price `k` among those on `side`), one side's prices as a
@@ -66,8 +67,10 @@ export function cardPlaces(kind: FeeKindId, x: Priced, part: PartId): CardPlaces
     if (!def.holds(kind, p)) return { fits: 0, places: [] };
     return { fits: 1, places: def.used(p, x) ? [] : [{ on: "fee" }] };
   }
-  // a charge stands only on a price that charges nothing, or charges in that very form: a price that charges otherwise is no place for it
-  const fitsOn = (p: Priced["stages"][number]["price"]) => def.holds(kind, p) && (!isFormPart(part) || !charged(p) || p.form === def.form);
+  // a charge stands only on a price that charges nothing, or charges in that very form: a price that charges otherwise is no place for it;
+  // the form that charges nothing stands only in place of a charge, so a price free already is no place for it either
+  const formFits = (p: Price, form: FormId) => (formCharged(form) ? !charged(p) || p.form === form : charged(p));
+  const fitsOn = (p: Price) => def.holds(kind, p) && (def.form === undefined || formFits(p, def.form));
   const fit = sidesOf(x).flatMap((side) => stagesOn(x, side).flatMap((s, k) => (fitsOn(s.price) ? [{ side, k, price: s.price }] : [])));
   return { fits: fit.length, places: fit.filter((f) => !def.used(f.price, x)).map((f): Place => ({ on: "price", side: f.side, k: f.k })) };
 }

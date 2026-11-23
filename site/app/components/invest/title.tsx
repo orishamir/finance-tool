@@ -128,7 +128,7 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
         {c.custom.field}
       </label>
       <div className="flex flex-wrap gap-2">
-        <input id={`${id}-n`} list={`${id}-l`} value={name} autoFocus onChange={(e) => { setName(e.target.value); setNote(null); }} onKeyDown={(e) => e.key === "Enter" && go()} placeholder={c.custom.placeholder} className="h-field flex-1 min-w-48 rounded-md bg-card border border-input px-3" />
+        <input id={`${id}-n`} list={`${id}-l`} value={name} autoFocus onChange={(e) => { setName(e.target.value); setNote(null); }} onKeyDown={(e) => e.key === "Enter" && go()} dir="auto" className="h-field flex-1 min-w-48 rounded-md bg-card border border-input px-3" />
         <datalist id={`${id}-l`}>
           {names.map((n) => (
             <option key={n} value={n} />

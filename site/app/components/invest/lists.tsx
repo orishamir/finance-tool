@@ -38,7 +38,7 @@ import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
 import { ANCHOR, verdictOf } from "./receipt";
-import { AbroadNotes, allFunds, asideParts, inTieSet, labelsOf, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
+import { AbroadNotes, allFunds, asideParts, inTieSet, labelsOf, nis, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
 
 /** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the receipt has it whole. */
 export const listName = (view: InvestView, name: string) => shortFundName(name, [pillName(view.index.name), ...(view.index.exposure?.names.he ?? []), ...(view.index.exposure?.names.en ?? []), ...(view.index.custom ? [view.index.custom.name] : [])]);
@@ -95,6 +95,21 @@ const figureCell = (word: ReactNode, amount: ReactNode, v: number) => (
 );
 /** A line under a row (what a deal still misses, a tap's way back), across the row. */
 const underRow = (node: ReactNode) => <span className="col-span-full pt-0.5 pb-1">{node}</span>;
+
+/**
+ * "חזרה ל…" under a row: the pick goes back, and the line with its button goes with it; the focus goes to the list's chosen row, the pick
+ * put back, once the page has drawn it (two frames: the address changes, then the list), unless something else has taken it meanwhile.
+ */
+function backAndFocus(button: HTMLElement, back: () => void) {
+  const list = button.closest<HTMLElement>("[role=radiogroup]");
+  back();
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => {
+      if (document.activeElement && document.activeElement !== document.body && document.activeElement.isConnected) return;
+      list?.querySelector<HTMLElement>('[aria-checked="true"]')?.focus({ preventScroll: true });
+    }),
+  );
+}
 
 export function PairLists(props: ListsProps) {
   const { view, bundle, plan, livePlan, today, pick, chosen, onPick, moved, ruler = false, above } = props;
@@ -180,7 +195,7 @@ export function PairLists(props: ListsProps) {
     moved?.back && moved.half === half
       ? underRow(
           <span className="block text-xs">
-            <AlsoChanged stack what={half === "fund" ? c.pair.movedFund : c.pair.movedHouse(shortOf(moved.at.house))} back={c.pair.moveBackTo(shortOf(moved.prev.house))} onBack={moved.back} />
+            <AlsoChanged stack what={half === "fund" ? c.pair.movedFund : c.pair.movedHouse(shortOf(moved.at.house))} back={c.pair.moveBackTo(shortOf(moved.prev.house))} onBack={(e) => moved.back && backAndFocus(e.currentTarget, moved.back)} />
           </span>,
         )
       : null;
@@ -378,8 +393,7 @@ export function PairLists(props: ListsProps) {
       name
     );
   };
-  // what a fund leaves against the pick, the two as the list writes them (method §13): its word and its order come from it
-  const diff = (f: FundWay, at: WayPrice) => differenceOf([c.pair.input(f.name, c.pair.colLeft), at.value], [pickKey, selAt.value], "F-65", { today, about: sp.diffAbout });
+  const diff = (n: number, f: FundWay, at: WayPrice) => nis(n, "F-65", sp.diffAbout, today, { [c.pair.input(f.name, c.pair.colLeft)]: at.value, [pickKey]: selAt.value });
   // each ranked fund's spot in the chosen account's stretch: its pair's value, or, for a fund of the other kind, where its difference from the
   // pair in the receipt runs over the dollar's range (a segment, held inside the scale's ends); a fund on an open rule has none
   const spots: Record<string, StretchSpot> = {};
@@ -392,8 +406,7 @@ export function PairLists(props: ListsProps) {
     const at = f.byHouse[pick.house] as WayPrice;
     const selected = f.rec.id === pick.fund;
     const x = cross.get(f.rec.id);
-    const gap = diff(f, at);
-    const n = typeof gap.value === "number" ? gap.value : 0;
+    const n = Math.round(at.valueN - selAt.valueN);
     const figure = selected ? (
       chosenWord(chosen, "text-chart-by-fund")
     ) : x && range ? (
@@ -403,7 +416,7 @@ export function PairLists(props: ListsProps) {
         <Num animate value={x.hi} display={fmt.signedNisWhole} /> <HelpMark about={sp.diffAbout} text={`${c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}.`} />
       </span>
     ) : (
-      figureCell(n < 0 ? c.lists.funds.less : n > 0 ? c.lists.funds.more : null, <Num animate value={gap} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : fmt.nisWhole(Math.abs(v)))} />, n)
+      figureCell(n < 0 ? c.lists.funds.less : n > 0 ? c.lists.funds.more : null, <Num animate value={diff(n, f, at)} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : fmt.nisWhole(Math.abs(v)))} />, n)
     );
     const typed = isCustomFund(f.rec);
     return {
@@ -434,9 +447,11 @@ export function PairLists(props: ListsProps) {
   // the account's words open why for the funds under them, as an account's row does: the rule the record names, or each kind's reason with
   // its document (D105; "המחיר בפסגות לא ברור בתעריפון" said nothing of what was unclear)
   const greyWords = (k: string) => {
-    if (!k.includes("|")) return k;
-    const [line, to] = k.split("|") as [string, string];
     const under = unpricedFunds.filter((f) => greyKey(f) === k);
+    // a fund's own reason, said once over every fund it holds for: in the plural over two or more
+    const [one] = under;
+    if (!k.includes("|")) return under.length > 1 && one?.reason ? reasonText(one.reason, optionClass[one.option], true) : k;
+    const [line, to] = k.split("|") as [string, string];
     const told = whyNoFundAt(bundle, pick.house, under);
     const said = (
       <NoFundWords told={told} name={line}>
@@ -516,7 +531,8 @@ export function PairLists(props: ListsProps) {
     ) : null;
   const beforeTaxList =
     beforeTaxRows.length > 0 ? (
-      <section className="flex flex-col gap-1.5">
+      // on a touch screen the room under the heading keeps its caution "?" a whole touch target over the list's head
+      <section className="flex flex-col gap-1.5 pointer-coarse:gap-3">
         {/* why these funds have no figure after tax, and so no rank, behind a caution "?" beside the heading, with the rules it rests on */}
         <h4 className="flex items-center gap-1.5 text-sm font-medium text-blocked-foreground">
           <IconLock size={14} />
@@ -663,8 +679,10 @@ export function PairLists(props: ListsProps) {
         watch={watch}
       />
     );
+  // the shell's "back to the top" steps aside while the lists pass under it (`data-keep-clear`): it covered their rows and figures, and the
+  // receipt's stub is the way back up from here
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8" data-keep-clear>
       <ListsHead view={view} bundle={bundle} livePlan={livePlan} pick={pick} chosen={chosen} />
       <section className="flex flex-col gap-3">
         {accountsHead}

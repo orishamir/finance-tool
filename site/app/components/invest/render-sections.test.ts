@@ -733,3 +733,31 @@ describe("a record that names the rules behind what an account does not sell nam
     for (const id of new Set(named)) expect(existsSync(join(fileURLToPath(new URL("../../../../data/rules", import.meta.url)), `${id.toLowerCase()}.json`)), id).toBe(true);
   });
 });
+
+describe("the fold of funds with no price says its reason in the plural over two funds or more", () => {
+  it("a fund's own reason shared by several funds reads in the plural, and in the singular over one", () => {
+    // every index whose fund list holds funds no account prices for one reason of their own, at the page's pair
+    let seen = 0;
+    for (const index of knownIndices(bundle)) {
+      const view = buildInvest({ bundle, index, plan });
+      const pick = pickOfHeadline(view);
+      if (!pick) continue;
+      const own = allFunds(view).flatMap((f) => (f.reason && !f.byHouse[pick.house] ? [{ f, reason: f.reason }] : []));
+      const byReason = new Map<string, number>();
+      for (const { reason } of own) byReason.set(reason.code, (byReason.get(reason.code) ?? 0) + 1);
+      const out = shown(lists(view, bundle, plan, pick));
+      for (const { f, reason } of own) {
+        const cls = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "tase_foreign_fund_units", abroad: "foreign_securities" }[f.option];
+        const one = reasonText(reason, cls);
+        const many = reasonText(reason, cls, true);
+        if (one === many) continue;
+        seen++;
+        if ((byReason.get(reason.code) ?? 0) > 1) {
+          expect(out, `${index.id}: ${reason.code}`).toContain(many);
+          expect(out, `${index.id}: ${reason.code}`).not.toContain(one);
+        } else expect(out, `${index.id}: ${reason.code}`).toContain(one);
+      }
+    }
+    expect(seen).toBeGreaterThan(0);
+  });
+});

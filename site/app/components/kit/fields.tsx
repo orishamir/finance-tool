@@ -3,7 +3,7 @@
 import { useEffect, useId, useRef, useState, type CSSProperties, type InputHTMLAttributes, type ReactNode, type Ref } from "react";
 import { useIsoLayoutEffect } from "../../lib/hooks";
 import { buttons, values as copy } from "../../copy";
-import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
+import { fmt, formatTyped, groupTyped, isDotThousands, parseNumber, unitWord, type NumberKind } from "../../lib/format";
 import { IconChevronDown, IconClose, IconReset, IconSearch } from "../icons";
 import { cx } from "./cx";
 import { useErrorRest } from "./error-rest";
@@ -47,6 +47,41 @@ export interface FieldProps {
   inputId?: string;
   /** An error that comes from another field's value (for example "kept available" above "amount now"); shown when the field has no error of its own. */
   externalError?: ReactNode | null;
+  /**
+   * The text the value came as from outside the field when it is no right value (an address's `?amount=abc`): the box shows it, with its
+   * error at once, as a text left wrong in it, until the person types or the value changes. `value` is then what the page runs on instead.
+   */
+  outsideText?: string | null;
+}
+
+/** What a number field's text is, read by the field's rules: nothing (an optional field left empty), a right number, or what is wrong. */
+export type FieldText = { kind: "empty" } | { kind: "number"; n: number } | { kind: "wrong"; message: ReactNode };
+
+/** The rules a field reads its text by: a whole amount of shekels, a comma read as a rate's or an amount's, may be empty, and its own check. */
+export interface FieldRules {
+  whole: boolean;
+  kind: NumberKind;
+  optional?: boolean;
+  validate: (n: number) => ReactNode | null;
+}
+
+/** The rules of a field with these props: a shekel unit without `agorot` takes whole shekels, a percent unit reads a comma as a rate's. */
+export function fieldRules({ unit, agorot, optional, validate }: Pick<FieldProps, "unit" | "agorot" | "optional" | "validate">): FieldRules {
+  return { whole: /^nis/.test(unit) && !agorot, kind: /^pct/.test(unit) ? "rate" : "amount", optional, validate };
+}
+
+/**
+ * A number field's text read by its rules (`parseNumber`, then the field's check): the one reading of what is typed in a box, and of a
+ * figure a page keeps as text outside it (an address), so both say the same thing is wrong.
+ */
+export function readFieldText(text: string, { whole, kind, optional, validate }: FieldRules): FieldText {
+  if (text.trim() === "") return optional ? { kind: "empty" } : { kind: "wrong", message: copy.errors.nan };
+  if (whole && isDotThousands(text)) return { kind: "wrong", message: copy.errors.dotThousands };
+  const n = parseNumber(text, kind);
+  if (Number.isNaN(n)) return { kind: "wrong", message: copy.errors.nan };
+  if (whole && !Number.isInteger(n)) return { kind: "wrong", message: copy.errors.whole };
+  const message = validate(n);
+  return message ? { kind: "wrong", message } : { kind: "number", n };
 }
 
 /** How a field writes its start value in its reset: "10", "12,000 ₪", "4.5%", as the field shows it. */
@@ -115,9 +150,10 @@ const SIGN = /^[₪$€£%]$/;
  * `unitShown: false` leaves the unit out of the box, where the label beside it already names it ("שנים").
  */
 function useNumberEntry(props: FieldProps, { unitShown = true, labelledBy }: { unitShown?: boolean; /** The id of the words that name the box, where no `<label>` stands for it. */ labelledBy?: string } = {}) {
-  const { unit, value, validate, onCommit, onReset, placeholder, disabled, compact, fit, optional, inputMode: mode = "decimal", autoFocus, inputId, externalError = null, agorot, groupAsTyped, hint } = props;
+  const { unit, value, onCommit, onReset, placeholder, disabled, compact, fit, inputMode: mode = "decimal", autoFocus, inputId, externalError = null, groupAsTyped, hint, outsideText = null } = props;
   // an amount of money is typed in whole shekels; a rate (interest, inflation, a return) and a price-list fee keep decimals
-  const whole = /^nis/.test(unit) && !agorot;
+  const rules = fieldRules(props);
+  const { whole } = rules;
   const inputMode = whole ? "numeric" : mode;
 
   const generated = useId();
@@ -128,14 +164,15 @@ function useNumberEntry(props: FieldProps, { unitShown = true, labelledBy }: { u
   const errorRest = useErrorRest();
   const written = value === null ? "" : formatTyped(value);
   const own = draft !== null && (focused || draft.base === value);
-  const text = own ? draft.text : written;
+  const text = own ? draft.text : (outsideText ?? written);
+  const read = (t: string): FieldText => readFieldText(t, rules);
   const check = (t: string): ReactNode | null => {
-    if (t.trim() === "" && optional) return null;
-    const n = parseNumber(t);
-    return Number.isNaN(n) ? copy.errors.nan : whole && !Number.isInteger(n) ? copy.errors.whole : validate(n);
+    const r = read(t);
+    return r.kind === "wrong" ? r.message : null;
   };
-  const wrong = own ? check(text) : null;
-  const shownError = (errorRest.shows ? wrong : null) ?? externalError;
+  const wrong = own || outsideText !== null ? check(text) : null;
+  // a wrong text from outside was not typed: no hand is moving, so its error shows at once
+  const shownError = (own ? (errorRest.shows ? wrong : null) : wrong) ?? externalError;
   // text typed before the script arrived sits in the pre-rendered input; take it in at the first commit instead of
   // letting the first render with the field's own text wipe it. A box that has the focus then is being typed in: its text is the
   // person's from here, as after a focus (its focus came before the script, so no focus event says so). A box typed in and left before
@@ -175,17 +212,15 @@ function useNumberEntry(props: FieldProps, { unitShown = true, labelledBy }: { u
   /** Takes in a text as typed, committing it where it is right; returns the text as the box holds it. */
   function change(raw: string, at?: number | null): string {
     let t = raw;
-    if (groupAsTyped && whole && /^[\d,\s]*$/.test(raw)) {
-      const digits = raw.replace(/\D/g, "");
-      t = digits === "" ? "" : formatTyped(Number(digits));
-      if (at !== undefined && at !== null) caret.current = raw.slice(0, at).replace(/\D/g, "").length;
+    if (groupAsTyped && whole) {
+      t = groupTyped(raw, text);
+      if (t !== raw && at !== undefined && at !== null) caret.current = raw.slice(0, at).replace(/\D/g, "").length;
     }
     setDraft({ text: t });
-    const err = check(t);
-    errorRest.typed(!err);
-    if (err) return t;
-    if (t.trim() === "") onReset();
-    else onCommit(parseNumber(t));
+    const r = read(t);
+    errorRest.typed(r.kind !== "wrong");
+    if (r.kind === "empty") onReset();
+    else if (r.kind === "number") onCommit(r.n);
     return t;
   }
   const box = (
@@ -208,10 +243,21 @@ function useNumberEntry(props: FieldProps, { unitShown = true, labelledBy }: { u
         data-wrong={wrong ? "" : undefined}
         aria-describedby={[hint ? `${ids}-hint` : null, shownError ? `${ids}-err` : null].filter(Boolean).join(" ") || undefined}
         onChange={(e) => change(e.target.value, e.target.selectionStart)}
+        onKeyDown={(e) => {
+          if (e.key !== "Enter") return;
+          // Enter is the hand resting, as leaving the box is: a right text is written in the field's form, a wrong one shows its error
+          const r = read(text);
+          if (r.kind === "number") setDraft({ text: formatTyped(r.n) });
+          else if (r.kind === "wrong") errorRest.rest();
+        }}
         onFocus={() => {
           setFocused(true);
-          // an error shown for a text a value from outside has since replaced is gone with it: the next wrong keystroke waits for a rest
-          if (!own) errorRest.clear();
+          // an error shown for a text a value from outside has since replaced is gone with it: the next wrong keystroke waits for a rest;
+          // a wrong text from outside keeps its error shown
+          if (!own) {
+            if (outsideText !== null && wrong) errorRest.rest();
+            else errorRest.clear();
+          }
           // the text as it stands is the person's from here: a value from outside does not change it under their fingers
           setDraft({ text });
         }}
@@ -388,15 +434,23 @@ export const nonNegativeCheck = (n: number): string | null => (n < 0 ? copy.erro
 /** The check for an amount that must be above zero (a salary, an income): the standard sentence "הזינו סכום גדול מאפס.". */
 export const aboveZeroCheck = (n: number): string | null => (n <= 0 ? copy.errors.positive : null);
 
-/** A whole number in the range, else the sentence's two halves around the range ("… 1 ל־40."). */
-const wholeInRange = (range: { min: number; max: number }, words: readonly [string, string]) => (n: number): string | null =>
-  n < range.min || n > range.max || !Number.isInteger(n) ? `${words[0]} ${fmt.number(range.min)} ${words[1]}${fmt.number(range.max)}.` : null;
+/** A whole number in the range: a number with a fraction gets `notWhole`, one out of the range the sentence's two halves around it ("… 1 ל־40."). */
+const wholeInRange = (range: { min: number; max: number }, words: readonly [string, string], notWhole: string) => (n: number): string | null =>
+  !Number.isInteger(n) ? notWhole : n < range.min || n > range.max ? `${words[0]} ${fmt.number(range.min)} ${words[1]}${fmt.number(range.max)}.` : null;
 
-/** The check for a number of years: a whole number in the range, else the standard sentence "הזינו מספר שנים בין … ל־…". */
-export const yearsCheck = (range: { min: number; max: number }) => wholeInRange(range, copy.errors.years);
+/** The check for a number of years: a whole number ("הזינו מספר שלם של שנים."), in the range ("הזינו מספר שנים בין … ל־…"). */
+export const yearsCheck = (range: { min: number; max: number }) => wholeInRange(range, copy.errors.years, copy.errors.yearsWhole);
 
-/** The check for an age: the same test as `yearsCheck`, in the age's words, "הזינו גיל בין … ל־…". */
-export const ageCheck = (range: { min: number; max: number }) => wholeInRange(range, copy.errors.age);
+/** The check for an age: the same test as `yearsCheck`, in the age's words ("הזינו גיל בשנים שלמות.", "הזינו גיל בין … ל־…"). */
+export const ageCheck = (range: { min: number; max: number }) => wholeInRange(range, copy.errors.age, copy.errors.ageWhole);
+
+/**
+ * The check for an amount of money up to the site's largest (P-05 `ranges.amount`, `max`): not below zero ("הסכום לא יכול להיות שלילי.")
+ * or, with `aboveZero`, above it ("הזינו סכום גדול מאפס."), and not above `max` ("הזינו סכום עד … ₪.").
+ */
+export function amountCheck(max: number, { aboveZero = false }: { aboveZero?: boolean } = {}): (n: number) => string | null {
+  return (n) => (aboveZero ? aboveZeroCheck(n) : nonNegativeCheck(n)) ?? (n > max ? `${copy.errors.tooLarge} ${fmt.nisWhole(max)}.` : null);
+}
 
 /** The check for a percent field: the number must lie in the range, else the standard sentence "הזינו אחוז בין … ל־…". */
 export function percentCheck(range: { min: number; max: number } = { min: 0, max: 100 }): (n: number) => string | null {
@@ -492,7 +546,7 @@ export function SearchField({ label, labelHidden, value, onChange, clearLabel, i
  * cut never shows half of a bracket pair. `labelHidden`: the label is spoken, not shown, where the box stands in the place of what it names
  * (the fee page's panel, whose heading is the name of a fee of the person's own, typed in place).
  */
-export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, grow, icon, labelHidden, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; inline?: boolean; grow?: boolean; icon?: ReactNode; labelHidden?: boolean; className?: string }) {
+export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", inline, grow, icon, labelHidden, className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier, `auto` for a name the reader typed. */ dir?: "rtl" | "ltr" | "auto"; inline?: boolean; grow?: boolean; icon?: ReactNode; labelHidden?: boolean; className?: string }) {
   const id = useId();
   return (
     <div className={cx(inline ? cx("flex items-center gap-2", grow ? "min-w-0 flex-1" : "flex-wrap") : "field", className)}>

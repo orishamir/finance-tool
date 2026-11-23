@@ -186,6 +186,13 @@ describe("invest page computation", () => {
     expect(ranked).toBeGreaterThan(3);
   });
 
+  it("a person's broker is priced for the headline fund", () => {
+    const v = buildInvest({ bundle, index: sp, plan: plan(), yourBroker: "leumi" });
+    expect(v.atYours?.providerId).toBe("leumi");
+    expect(v.atYours?.price).not.toBeNull();
+    expect(v.atYours!.less!.value as number).toBeGreaterThan(0);
+  });
+
   it("a custom non-Israeli index shows broker costs per option and no funds; a foreign fund in Tel Aviv has none, its tax being open (F-04)", () => {
     const c: CustomIndex = { id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t };
     const v = buildInvest({ bundle, index: refOfCustom(c), plan: plan() });
@@ -268,11 +275,24 @@ describe("invest page computation", () => {
     expect(matchKnownIndex(bundle, "ניקיי 225")).toBeNull();
   });
 
-  it("the houses: ranked by what is left, the headline's own house first", () => {
+  it("the houses: ranked by what is left, the headline's own house first, each gap measured from the headline", () => {
     const il = view.houses.filter((h) => h.group === "il" && h.best);
     expect(il[0]!.provider.id).toBe(view.headline!.providerId);
+    expect(il[0]!.gap).toBeNull();
     const left = il.map((h) => h.best!.price!.valueN);
     expect([...left].sort((a, b) => b - a)).toEqual(left);
+    for (const h of il.slice(1)) expect(h.gap!.value as number).toBeCloseTo(view.headline!.valueN - h.best!.price!.valueN, 6);
+  });
+
+  it("the worth lines are slices through the headline's cell: same fund at other houses, same house with other funds", () => {
+    const h = view.headline!;
+    const w = view.worth!;
+    const sameFund = Object.values(h.fund.byHouse).flatMap((x) => ("value" in x && !x.open && x.providerId !== h.providerId ? [x.valueN] : []));
+    expect(w.houseCount).toBe(sameFund.length);
+    expect(w.house!.value as number).toBeCloseTo(h.valueN - Math.min(...sameFund), 6);
+    const sameHouse = view.options.filter((o) => o.id !== "abroad").flatMap((o) => o.funds).flatMap((f) => { const x = f.byHouse[h.providerId]; return f.rec.id !== h.fund.rec.id && x && "value" in x && !x.open ? [x.valueN] : []; });
+    expect(w.fundCount).toBe(sameHouse.length);
+    expect(w.fund!.value as number).toBeCloseTo(h.valueN - Math.min(...sameHouse), 6);
   });
 
   it("opens on an unhedged fund (founder, 2026-10-28); hedged funds stay in the list, priced and pickable", () => {
@@ -550,8 +570,12 @@ describe("what each figure's sheet lists", () => {
     for (const b of beyond) expect(inputs(b)[words.pair.fundInputs.listedFixed]).toBeDefined();
   });
 
-  it("an account's cost is F-91", () => {
+  it("an account's cost is F-91, and a gap between two ways is the one figure less the other", () => {
     expect(irish.best!.cost.computed_from!.formula).toBe("F-91");
+    for (const h of view.houses.filter((x) => x.gap)) {
+      expect(h.gap!.computed_from!.formula).toBe("F-65");
+      expect(Object.values(inputs(h.gap!)).map((v) => v.computed_from!.formula)).toEqual(["F-65", "F-65"]);
+    }
   });
 
   it("a pair's parts: the fund's part reads no account, X neither the fund nor the account, and the account's cost adds up its parts", () => {

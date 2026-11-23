@@ -23,9 +23,10 @@ import { feeName } from "./words";
 import { ToolboxColumn } from "./toolbox";
 import type { OpenHere } from "./fee-block";
 import type { PlaceHands } from "./open-case";
-import { landingOf } from "./toolbox";
+import { applyTool, landingOf } from "./toolbox";
+import { tapStep } from "../../lib/fee-deal/places";
 import { cardOf } from "../../lib/fee-deal/toolbox";
-import { changeFormKept } from "../../lib/fee-deal/undo";
+import { changeFormKept, formStep, undo, undoWords } from "../../lib/fee-deal/undo";
 import { HeldBox, HeldChange, ReadingCards } from "./reading";
 import { fill } from "../kit";
 import type { HeldView } from "../../lib/fee-deal/charts";
@@ -827,5 +828,62 @@ describe("a fee whose price is not given in the case the reading reads", () => {
     expect(words).toContain(u.feeLine("בעמלת קנייה ומכירה", u.missing.unit!, "בניירות ערך בתל אביב, באינטרנט ובאפליקציה"));
     expect(words).toContain(u.enter.unit!);
     expect(words).not.toContain(feeDeal.builder.facts.noPrice);
+  });
+});
+
+describe("the card \"חינם\"", () => {
+  /** A trade fee with two prices over time, each a percent of the action with a minimum, and a balance fee free throughout. */
+  const deal = (): FeeDeal => ({
+    ...account(),
+    fees: [
+      { id: "fee-trade", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.25), min: typed(15) }, until: "2027-01" }, { price: { form: "action", rate: typed(0.1), min: typed(10) } }] },
+      { id: "fee-free", kind: "trade", stages: [{ price: { form: "free" }, until: "2027-01" }, { price: { form: "free" } }] },
+    ],
+  });
+  /** A value that must be there, or the test fails saying so. */
+  const got = <T,>(x: T | null | undefined): T => {
+    if (x === null || x === undefined) throw new Error("a value the test needs is missing");
+    return x;
+  };
+  const card = (feeId: string) => cardOf(got(toolbox(readDealFor(deal(), data.kinds, TODAY), feeId)), "free");
+
+  it("stands in \"כמה גובים\", its places every price that charges something", () => {
+    const box = got(toolbox(readDealFor(deal(), data.kinds, TODAY), "fee-trade"));
+    const charge = got(box.groups.find((g) => g.parts.some((p) => p.id === "free")));
+    expect(charge.head).toBe(feeDeal.cases.groups.charge);
+    expect(card("fee-trade")).not.toHaveProperty("off");
+    expect(card("fee-trade")).toMatchObject({ k: "part", places: [{ on: "price", side: "buy", k: 0 }, { on: "price", side: "buy", k: 1 }] });
+  });
+
+  it("is off where every price is free already, saying why", () => {
+    expect(card("fee-free")).toMatchObject({ k: "part", used: false, off: feeDeal.cases.allFree, places: [] });
+  });
+
+  it("draws \"חינם\" on each price that charges, in place of its charge and its parts", () => {
+    const d = deal();
+    expect(partsDrawn(markup(builderOf(d, "fee-trade", null, null, holding(d, "fee-trade", "free"))))).toEqual(["+charge", "+charge"]);
+  });
+
+  it("makes the price it goes on free, its charge and its parts gone, kept for the undo, whose line says so: a tap holding it, then a tap or a drop at its place", () => {
+    const d = deal();
+    const fee = got(d.fees[0]);
+    // the page's way: the card's tap holds it over its places, and a tap or a drop at one does there what the card does (`applyTool`),
+    // its charge through the page's `changeForm` (`formStep`, with no undo kept)
+    const step = tapStep(null, { fee: "fee-trade", case: null, card: "free" }, got(card("fee-trade")).places);
+    expect(step).toMatchObject({ held: { card: "free" }, add: null });
+    const at = { on: "price" as const, side: "buy" as const, k: 1 };
+    const made: ReturnType<typeof formStep>[] = [];
+    applyTool("free", fee, null, at, {
+      onAsk: () => undefined,
+      onPending: () => undefined,
+      onCharge: (part, place) => void (place.on === "price" && made.push(formStep(d, null, "fee-trade", part, "fee-trade", null, { side: place.side, k: place.k }))),
+      onPart: () => undefined,
+    });
+    const m = got(made[0]);
+    const r = got("r" in m ? m.r : null);
+    expect(got(r.deal.fees[0]).stages).toEqual([got(fee.stages)[0], { price: { form: "free" } }]);
+    const f = feeDeal.cases.formChanged;
+    expect(undoWords(got(r.undo), (x) => x.kind, data)).toBe(f.lost.replace("{parts}", got(f.parts.min)).replace("{verb}", f.one));
+    expect(got(undo(r.deal, got(r.undo), "fee-trade")).deal).toEqual(d);
   });
 });

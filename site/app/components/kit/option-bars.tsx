@@ -28,8 +28,9 @@ export function OptionBars({ bars, label, className }: { bars: OptionBar[]; /** 
     <ul aria-label={label} data-chart="option-bars" className={cx("flex flex-col", className)}>
       {bars.map((b, i) => {
         const share = top > 0 ? Math.max(0, b.value) / top : 0;
+        // on a touch screen the gap under the name keeps a figure in the line under it (a fee's rate) a whole touch target from the amount
         return (
-          <li key={b.id} className="grid gap-x-4 gap-y-1 border-b border-border py-2 md:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] md:items-stretch">
+          <li key={b.id} className="grid gap-x-4 gap-y-1 pointer-coarse:gap-y-5 border-b border-border py-2 md:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] md:items-stretch">
             <span className="flex min-w-0 flex-col justify-center">
               <span className="text-sm font-medium">{b.name}</span>
               {b.sub !== undefined && <span className="text-xs text-muted-foreground">{b.sub}</span>}

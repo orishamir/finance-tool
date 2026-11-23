@@ -49,8 +49,8 @@ const SIDE = 8;
  * its tile, or over it where only that side has the room, and kept inside the window, so opening it moves nothing on the page. On open the
  * focus goes to the box, or to the popup itself when a finger opened it (a box with the focus raises the phone's keyboard over what the
  * slider moves, and a slider with the focus makes the next tap on the box answer late); Escape closes it and gives the tile the focus back,
- * a press outside it or the focus leaving it closes it. Tab from the open tile goes into the popup, and out of it back to the tile or on to
- * the next tile.
+ * a press outside it or the focus leaving it closes it, and Enter in its box closes it where the number is right. Tab from the open tile
+ * goes into the popup, and out of it back to the tile or on to the next tile.
  */
 function KnobTiles({ knobs }: { knobs: Knob[] }) {
   const uid = useId();
@@ -120,6 +120,11 @@ function KnobTiles({ knobs }: { knobs: Knob[] }) {
     if (e.key === "Escape") {
       e.preventDefault();
       e.stopPropagation();
+      close(true);
+    } else if (e.key === "Enter" && e.target instanceof HTMLInputElement && e.target.type === "text" && !e.target.hasAttribute("data-wrong")) {
+      // the box's "done" (`enterkeyhint`): a right number is already in, so the popup closes and the tile takes the focus back; a wrong
+      // one keeps it open, with its error
+      e.preventDefault();
       close(true);
     } else if (e.key === "Tab") {
       const list = stops();
