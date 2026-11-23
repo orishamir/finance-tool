@@ -2,11 +2,6 @@
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
 import { countPhrase } from "./lib/count";
 import type { FeeCap } from "@finance-tool/schema";
-import type { ChangeKind, HeldKind } from "@finance-tool/engine";
-import type { FeeKindId } from "./lib/fee-deal/core";
-
-/** A name's gender and number, which the words after it agree with: masculine, feminine, and each plural. */
-export type NameForm = "m" | "f" | "mp" | "fp";
 
 export const site = {
   name: "מקור",
@@ -1712,9 +1707,9 @@ export const feeDeal = {
     fund_management: { g: "mp" },
     fx_spread: { g: "m" },
     current_account: { g: "m", the: "החשבון העובר ושב בבנק" },
-  } satisfies Record<Exclude<FeeKindId, "own">, { g: NameForm; the?: string }>,
+  } as Record<string, { g: "m" | "f" | "mp" | "fp"; the?: string }>,
   /** "Larger than", after a name that is the subject, agreeing with it ("דמי החשבון הקבועים גדולים מדמי ניהול הפיקדון"). */
-  larger: { m: " גדול מ", f: " גדולה מ", mp: " גדולים מ", fp: " גדולות מ" } satisfies Record<NameForm, string>,
+  larger: { m: " גדול מ", f: " גדולה מ", mp: " גדולים מ", fp: " גדולות מ" } as Record<string, string>,
   /** The rate a cost curve converts a bound in another currency at (F-84), by the currencies a bound may be typed in, as a value's input. */
   rateNames: { USD: "שער הדולר בשקלים", EUR: "שער האירו בשקלים", GBP: "שער הלירה שטרלינג בשקלים" } as Record<string, string>,
   /** The bar under the page's head: the deal's name and where it is kept. */
@@ -2078,6 +2073,14 @@ export const feeDeal = {
       part: { price: "המחיר נמחק.", min: "המינימום נמחק.", max: "המקסימום נמחק.", cap: "המקסימום באחוזים נמחק.", flat: "המחיר הקבוע לפעולה קטנה נמחק.", maxPerSecurity: "המקסימום לכל נייר ערך נמחק.", discount: "ההנחה נמחקה.", third: "העמלה של הצד השלישי נמחקה.", until: "השינוי במחיר נמחק.", offset: "הקיזוז נמחק.", refund: "ההחזר נמחק.", notes: "ההערות על המחיר נמחקו." },
       notHere: "העמלה הזו לא יכולה לקבל את החלק הזה.",
       /**
+       * A part of a later price lifted onto another fee with no price starting that month ("לעמלה הזו אין מחיר שמתחיל באוגוסט 2027."), and
+       * a part of a sale priced apart onto one whose sale is priced as its purchase.
+       */
+      noPriceFrom: "לעמלה הזו אין מחיר שמתחיל ב{month}.",
+      noSale: "לעמלה הזו אין מחיר אחר למכירה.",
+      /** The knob beside a part of the open case whose menu applies the part to a head's cases (a grid's row or column, every case). */
+      applyTo: "להחיל על עוד מקרים",
+      /**
        * A sum moved onto a price counted in another currency: a figure carries its own, and one currency serves all of a price's sums, so a
        * price that keeps a sum in another does not take it ("המקסימום בשקלים והמינימום כאן בדולרים."); a head names each case it left out.
        */
@@ -2089,7 +2092,7 @@ export const feeDeal = {
         leftOut: "{where}: לא השתנה, כי {why}.",
       },
       /** A grip's spoken name, before what it lifts; `colOnly`, the last case's, which only duplicates it. */
-      grip: { col: "להזיז או למחוק את המקרה: ", colOnly: "לשכפל את המקרה: ", step: "למחוק את המדרגה: ", row: "להזיז את השורה: ", column: "להזיז את העמודה: ", cell: "להזיז או למחוק: ", partRow: "למחוק את השורה: ", part: "להזיז או למחוק: ", thing: "להחליף בין השורות לעמודות: " },
+      grip: { col: "להזיז או למחוק את המקרה: ", colOnly: "לשכפל את המקרה: ", step: "למחוק את המדרגה: ", row: "להזיז את השורה: ", column: "להזיז את העמודה: ", cell: "להזיז או למחוק: ", partRow: "למחוק את השורה: ", thing: "להחליף בין השורות לעמודות: " },
       menu: { duplicateRow: "שכפול השורה", duplicateColumn: "שכפול העמודה", up: "הזזה למעלה", down: "הזזה למטה", before: "הזזה ימינה", after: "הזזה שמאלה", remove: "מחיקה", swap: "החלפה בין השורות לעמודות", swapWith: "החלפה עם {thing}", addRow: "הוספת חלק לכל השורה", addAllCases: "הוספת חלק לכל המקרים", applyRow: "להחיל על כל השורה", applyColumn: "להחיל על כל העמודה", applyAll: "להחיל על כל המקרים" },
       /** A carried thing's words, which the bin says while it is over it ("משחררים כדי למחוק: השורה ״בסניף״"). */
       name: { row: "השורה ״{name}״", column: "העמודה ״{name}״", step: "המדרגה {name}", case: "המקרה ״{name}״", partRow: "השורה ״{name}״" },
@@ -2213,6 +2216,8 @@ export const feeDeal = {
     dateHeld: "תאריך שהמחיר משתנה בו",
     /** Why a charge's card is off: every price of the case already charges, in another way; the bin of what a price charges makes it free. */
     charging: "כל המחירים כבר גובים בדרך אחרת. כדי לגבות בדרך הזו, מסירים קודם את מה שגובים במחיר.",
+    /** Why the card "חינם" is off: no price of the case charges anything. */
+    allFree: "כל המחירים כאן כבר חינם.",
     groups: { charge: "כמה גובים", off: "מה יורד מהמחיר", bound: "מינימום ומקסימום", by: "המחיר משתנה לפי", rule: "כללי הגבייה" } as Record<string, string>,
     /** The toolbox's line under "המחיר משתנה לפי" that splits the price at a month: "+ התאריך". */
     dateLine: "התאריך",
@@ -2339,6 +2344,8 @@ export const feeDeal = {
   },
   /** The reading's section under the columns (method §10.6, `readingOf`). */
   reading: "קוראים את העסקה",
+  /** In the reading's place where reading the deal failed: the deal above still stands, and a change to it reads it again. */
+  readFailed: { title: "האתר לא הצליח לקרוא את העסקה", line: "אפשר לשנות את העסקה למעלה, והאתר יקרא אותה שוב." },
   read: {
     /** The periods of F-110: the timeline's stops and its headline. */
     periods: {
@@ -2350,20 +2357,8 @@ export const feeDeal = {
       until: "עד ",
       /** Before the months left in today's period (a computed figure). */
       left: "עוד ",
-      /**
-       * A price that changed at the period's start, after the fee's name, by how it changed and the name's gender and number: "דמי חשבון
-       * קבועים עולים ל־80 ₪ בחודש.", the new price and a full stop after it. A fee whose price falls to nothing stops, and no price is said:
-       * "דמי חשבון קבועים מפסיקים להיגבות."
-       */
-      change: {
-        starts: { m: " מתחיל להיגבות: ", f: " מתחילה להיגבות: ", mp: " מתחילים להיגבות: ", fp: " מתחילות להיגבות: " },
-        rises: { m: " עולה ל־", f: " עולה ל־", mp: " עולים ל־", fp: " עולות ל־" },
-        falls: { m: " יורד ל־", f: " יורדת ל־", mp: " יורדים ל־", fp: " יורדות ל־" },
-        changes: { m: " משתנה: ", f: " משתנה: ", mp: " משתנים: ", fp: " משתנות: " },
-      } satisfies Record<Exclude<ChangeKind, "ends">, Record<NameForm, string>>,
-      stops: { m: " מפסיק להיגבות.", f: " מפסיקה להיגבות.", mp: " מפסיקים להיגבות.", fp: " מפסיקות להיגבות." } satisfies Record<NameForm, string>,
-      /** After a changed price, and between two changes. */
-      changeEnd: ". ",
+      /** Before a price that changed at the period's start, by how it changed. */
+      change: { starts: "מתחיל: ", ends: "נגמר: ", rises: "עולה: ", falls: "יורד: ", changes: "משתנה: " } as Record<string, string>,
       /** The headline: one change, after its month ("בינואר 2027 …"), with the fee's name. */
       one: { starts: "נגמר הפטור מ{name}", ends: "המחיר של {name} יורד לאפס", rises: "המחיר של {name} עולה", falls: "המחיר של {name} יורד", changes: "המחיר של {name} משתנה" } as Record<string, string>,
       /** After a rise to or past the cap. */
@@ -2439,12 +2434,12 @@ export const feeDeal = {
       periodsName: "התקופה",
       /** The headline: "עד 25,446 ₪, הסכומים הקבועים עולים בשנה יותר מכל האחוזים"; a later period's month before it, with a comma. */
       cross: { lead: "עד ", after: ", הסכומים הקבועים עולים בשנה יותר מכל האחוזים", month: ", " },
-      /** The headline with no crossover and one mark, by what changes there: "עד 600,000 ₪ המינימום קובע"; where one fee's price changes, its name. */
-      mark: { minEnd: { lead: "עד ", after: " המינימום קובע" }, maxStart: { lead: "מעל ", after: " המקסימום קובע" }, edge: { lead: "ב־", after: " המחיר משתנה", named: " המחיר של {name} משתנה" } },
       falls: "ככל שמה שמוחזק גדל, שנה עולה פחות באחוזים. ",
       fallsSaved: "ככל שמה שנצבר גדל, שנה עולה פחות באחוזים. ",
       /** The shares band by band above the crossover: "מעל 25,446 ₪ האחוזים קובעים: 0.896% בשנה עד 100,000 ₪, 0.7% עד 500,000 ₪ ו־0.5% מעל זה, כל אחד על כל הסכום." */
       bands: { lead: "מעל ", decides: " האחוזים קובעים: ", perYear: " בשנה", upTo: " עד ", sep: ", ", and: " ו־", above: " מעל זה", whole: ", כל אחד על כל הסכום", end: "." },
+      /** A fee that starts in a later period, after its name and price, by the name's gender and number. */
+      joins: { m: " מצטרף לסכומים הקבועים. ", f: " מצטרפת לסכומים הקבועים. ", mp: " מצטרפים לסכומים הקבועים. ", fp: " מצטרפות לסכומים הקבועים. " } as Record<string, string>,
       /** A fee offset against an action's fee: the chart shows a year without that action. */
       offset: { lead: "הסכום הזה מתקזז מול ", month: " של אותו חודש, ולכן הגרף מראה שנה בלי ", end: "." },
       x: "הסכום שמוחזק (₪)",
@@ -2453,21 +2448,15 @@ export const feeDeal = {
       xShort: "הסכום שמוחזק (₪)",
       xShortSaved: "הסכום שנצבר (₪)",
       /** The layers' groups, named on the chart. */
-      groups: { share: "אחוזים", sum: "סכומים קבועים" } satisfies Record<HeldKind, string>,
+      groups: { share: "אחוזים", fixed: "סכומים קבועים" } as Record<string, string>,
       lanes: "מה קובע את המחיר של כל עמלה, לפי הסכום",
       /** The "?" after the name of a lane whose maximum is on each security held: the chart charges it on one security (F-14). */
       perSecurity: "האתר מחשב כאילו מחזיקים נייר ערך אחד: אם מחזיקים כמה ניירות ערך, העמלה יכולה להיות גבוהה יותר ממה שמוצג.",
-      laneGroups: { share: "אחוזים ממה שמוחזק", shareSaved: "אחוזים ממה שנצבר", sum: "סכומים קבועים" },
-      /**
-       * Over the crossover's point, by how the two kinds meet there (F-124): costing the same, or at a cut past which the shares cost more,
-       * the sums still more at the cut itself.
-       */
-      crossMark: { same: "כאן הקבועים שווים לאחוזים", past: "מעל זה האחוזים עולים יותר" } satisfies Record<"same" | "past", string>,
-      /**
-       * At a drop, by what the fee whose step ends there does over it (F-125), then the two years: "האחוז החדש חל על כל הסכום:", "מעל
-       * הסכום הזה המחיר של {name} יורד:" or "מעל הסכום הזה לא גובים {name}:", and "101,000 ₪ עולים 935 ₪ בשנה, ו־99,000 ₪ עולים 1,115 ₪".
-       */
-      drop: { share: "האחוז החדש חל על כל הסכום:", falls: "מעל הסכום הזה המחיר של {name} יורד:", stops: "מעל הסכום הזה לא גובים {name}:", costs: " עולים ", year: " בשנה, ו־" },
+      laneGroups: { share: "אחוזים ממה שמוחזק", shareSaved: "אחוזים ממה שנצבר", fixed: "סכומים קבועים, בכל סכום" } as Record<string, string>,
+      /** Over the crossover's point. */
+      crossMark: "כאן הקבועים שווים לאחוזים",
+      /** At a drop: "האחוז החדש חל על כל הסכום:" and "101,000 ₪ עולים 935 ₪ בשנה, ו־99,000 ₪ עולים 1,115 ₪". */
+      drop: { lead: "האחוז החדש חל על כל הסכום:", costs: " עולים ", year: " בשנה, ו־" },
       /** The reading at an amount: "שנה על 60,000 ₪", and its share "1.28% ממה שמוחזק". */
       box: { head: "שנה על ", share: " ממה שמוחזק", shareSaved: " ממה שנצבר", sep: " · " },
       range: { lead: "הסכומים בגרף:", from: "מ־", to: "עד", unit: "₪", reset: "חזרה לטווח שבפתיחה", hint: "אפשר גם לגרור על הגרף כדי להתקרב לטווח", fromName: "הסכום הקטן בגרף", toName: "הסכום הגדול בגרף" },
@@ -5286,7 +5275,7 @@ export const kit = {
       KnobButton: "כפתור ריבועי קטן שעומד בקצה של מה שהוא פועל עליו ולא תופס מקום: פלוס בסוף הכותרות או בין שתי כותרות, פלוס מתחת לשורה, איקס בסוף שורה של חלק, ושכפול ומחיקה ליד השם של עמלה. המילים שלו נשמעות ומופיעות כשמרחפים עליו, ואפשר ללחוץ עליו גם מעט מחוץ לריבוע.",
       Lift: "ידית (⋮⋮) מרימה ראש של עמודה או שורה, תא או חלק: בעכבר כשזזים, בטלפון בלחיצה ארוכה. ראש, תא, חלק או כרטיס של עמלה אפשר להרים בעכבר גם מכל מקום ריק בו או מהמילים שבו, לא ממספר או מכפתור. מה שהורם נע עם המצביע ומקומו נשאר ריק בקו מקווקו. כל מקום שמקבל אותו מסומן, וסל אדום מופיע רק בזמן ההרמה. הקשה על הידית פותחת תפריט שעושה את אותו הדבר מהמקלדת. את הקצה של תא אפשר לתפוס בכל מקום לאורכו (↔) ולמתוח את התא על מקום ריק או על מקרה שאין בו את החלק הזה, או להחזיר אותו, גם בחצים. תא לא נמתח על שכן שיש לו מחיר משלו. הקשה על מספר בתא או בכרטיס סגור הופכת אותו לשדה במקומו.",
       DropZone: "גרירה של שבב אל מקום שמקבל אותו, במחשב בלבד: שבב שהקשה עליו כבר עושה משהו נגרר גם אל מקום בעמוד, והשחרור שם עושה מה שההקשה עושה, באותו מקום. בזמן הגרירה כל מקום שמקבל את השבב מוקף בצבע הפעולה, או מראה סימן משלו (מחיר של המקרה הפתוח מראה את החלק שיתווסף אליו, חיוור, במקום שבו יעמוד), ומקום שלא יקבל אותו לא מראה כלום. בטלפון נשארת ההקשה.",
-      Toolbox: "החלקים שאפשר להוסיף למקרה הפתוח, בקבוצות לפי מה שהם עושים למחיר. הצבע של קבוצה רק בריבוע הקטן שלפני השם שלה; כל כרטיס פשוט, ״+״ והמילים שלו, ומספר שהוא מבקש נאמר במילים (״הנחה % מהמחיר״), שני כרטיסים בשורה. כרטיס רק מוסיף, ולא מחליף: כל דרך גבייה היא כרטיס רגיל, שאפשר להוסיף רק למחיר שלא גובה כלום (״חינם״). הקשה על כרטיס שיש לו מקום אחד מוסיפה אותו לשם. לכרטיס שיש לו כמה מקומות ההקשה מחזיקה אותו: הוא מסומן ברקע ובמסגרת בצבע הפעולה, ובמקום השורה שמתחת לכותרת כתוב מה מוסיפים, עם ״ביטול״. בכל מקום שהוא יכול להגיע אליו מופיע החלק שיתווסף, חיוור, בדיוק במקום שבו יעמוד, והקשה עליו מוסיפה אותו לשם. במחשב אפשר גם לגרור כרטיס אל המקום שלו. חלק שכבר נמצא בכל מקום שמתאים לו מסומן ב־✓, במסגרת וברקע עדין בצבע הקבוצה, ולא נעלם. ״התאריך״, בסוף ״המחיר משתנה לפי״, הוא לא כרטיס בעמודה אלא הקו שהוא מוסיף, לכל רוחב הקבוצה. כרטיס שאי אפשר להוסיף חלש יותר, ומתחת לקבוצה כתוב למה. כשארגז הכלים פתוח על כמה מקרים יחד, אפשר להוסיף רק מה שיהיה אחרי זה זהה בכולם. בטלפון: לשונית קצרה בתחתית המסך, קבוצה אחת בכל פעם, והקבוצות כלשוניות שגוללות לצדדים. כשכרטיס מוחזק, הלשונית מתקפלת לידית ולשורה שאומרת מה מוסיפים, כדי שהמקומות שמעליה יישארו גלויים.",
+      Toolbox: "החלקים שאפשר להוסיף למקרה הפתוח, בקבוצות לפי מה שהם עושים למחיר. הצבע של קבוצה רק בריבוע הקטן שלפני השם שלה; כל כרטיס פשוט, ״+״ והמילים שלו, ומספר שהוא מבקש נאמר במילים (״הנחה % מהמחיר״), שני כרטיסים בשורה. כרטיס מוסיף, ולא מחליף: כל דרך גבייה היא כרטיס רגיל, שאפשר להוסיף רק למחיר שלא גובה כלום (״חינם״). הכרטיס היחיד שמחליף הוא ״חינם״: אפשר לשים אותו רק על מחיר שגובה משהו, והוא הופך את המחיר לחינם, בלי הגבייה ובלי שאר החלקים שלו. הקשה על כרטיס שיש לו מקום אחד מוסיפה אותו לשם. לכרטיס שיש לו כמה מקומות ההקשה מחזיקה אותו: הוא מסומן ברקע ובמסגרת בצבע הפעולה, ובמקום השורה שמתחת לכותרת כתוב מה מוסיפים, עם ״ביטול״. בכל מקום שהוא יכול להגיע אליו מופיע החלק שיתווסף, חיוור, בדיוק במקום שבו יעמוד, והקשה עליו מוסיפה אותו לשם. במחשב אפשר גם לגרור כרטיס אל המקום שלו. חלק שכבר נמצא בכל מקום שמתאים לו מסומן ב־✓, במסגרת וברקע עדין בצבע הקבוצה, ולא נעלם. ״התאריך״, בסוף ״המחיר משתנה לפי״, הוא לא כרטיס בעמודה אלא הקו שהוא מוסיף, לכל רוחב הקבוצה. כרטיס שאי אפשר להוסיף חלש יותר, ומתחת לקבוצה כתוב למה. כשארגז הכלים פתוח על כמה מקרים יחד, אפשר להוסיף רק מה שיהיה אחרי זה זהה בכולם. בטלפון: לשונית קצרה בתחתית המסך, קבוצה אחת בכל פעם, והקבוצות כלשוניות שגוללות לצדדים. כשכרטיס מוחזק, הלשונית מתקפלת לידית ולשורה שאומרת מה מוסיפים, כדי שהמקומות שמעליה יישארו גלויים.",
       AskValues: "השאלה שעולה פעם אחת כשמוסיפים דבר שהמחיר משתנה לפיו: אילו ערכים יש בתעריפון, כבחירות שמסמנים, ״אחר״ בשם משלכם, משפט שאומר כמה מקרים יהיו, ו״להוסיף״ או ״ביטול״.",
       OnOffSwitch: "מתג שאומר במילה אם הדבר דלוק או כבוי, לא רק בצבע: העמלה בפינה של הכרטיס שלה, ״בחישוב״ או ״לא בחישוב״. הכפתור באותו רוחב בשני המצבים, כך שלחיצה לא מזיזה דבר לידו.",
       ValueMenus: "מה שנפתח כשמקישים על מקום של ערך במקרה הפתוח. TickMenu: רשימה לסימון, אפשר כמה, ושורה אחרונה לערך בשם משלכם. TrackMenu: שם המסלול כמו שהוא כתוב, ומתג ״זה המסלול שלי״. RangeMenu: ״עד״ או ״מעל״, המספר והיחידה, ושורה שאומרת מה המקרה שלפניו. ValueMenuSheet: הכרטיס שמחזיק אותם, ליד המקום במחשב ומלמטה בטלפון. ThingMenu: מה שנפתח כשמקישים על דבר בראש הפס בזמן שהעמלה פתוחה: הערכים שלו במקרים, ״להפסיק להבחין לפי …״, ושורה שאומרת מה יקרה למקרים.",

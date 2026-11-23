@@ -14,12 +14,12 @@ import {
   dealConversionStretches,
   groupAction,
   heldBounds,
-  type HeldKind,
   heldCrossover,
-  heldKind,
   isConversionFee,
+  heldLayers,
   holdingCost,
   idleMonth,
+  needsUnitPrice,
   priceParts,
   rateAt,
   sideOf,
@@ -144,13 +144,11 @@ export interface LanePart {
  * whole range), which the chart draws as one quiet line with its price; `price` is its price in words for that line.
  */
 export interface Lane {
-  /** The lane's own id: its fee's, with its kind after it where the fee has a lane of each kind on the holding chart. */
-  id: string;
   fee: ChartFee;
   parts: LanePart[] | null;
   price: PriceView | null;
-  /** On the holding chart, the kind of the fee's steps the lane holds: a share of what is held, or a sum per period (F-124). */
-  group?: HeldKind;
+  /** On the holding chart: a share of what is held, or a fixed sum (F-123). */
+  group?: "share" | "fixed";
 }
 
 /** The shekels per unit of each currency a curve reads its sums at (F-84). */
@@ -200,7 +198,7 @@ function partFigure(r: DealRead, i: number, part: PricePart, e: DealPrice, s: Pr
     case "flat":
       return { ...opt("figure", f.flat), ...opt("upTo", f.upTo) };
     case "sum":
-      return { ...opt("figure", charged(r, i, f, "amount", get("amount"), false)), ...(e.kind === "sum" ? { per: (s as Extract<Price, { form: "sum" }>).every } : {}) };
+      return opt("figure", charged(r, i, f, "amount", get("amount"), false));
     default:
       return assertNever(part);
   }
@@ -228,10 +226,9 @@ function laneParts(r: DealRead, p: DealPeriod, fee: ChartFee, side: DealSide, ra
     const cur = partCurrency(e);
     const rate = cur === "ILS" ? 1 : rates[cur];
     if (rate === undefined) return null;
-    const w = r.engine.fees[i]!.within;
-    // a sum per period charged on one step of the value held is its sum throughout its step (F-115), though no size moves it
-    const parts = e.kind === "sum" && w?.on === "held" ? [{ part: "sum" as const, from: 0, to: null }] : priceParts(e, unitNis !== undefined ? unitNis / rate : undefined);
+    const parts = priceParts(e, unitNis !== undefined ? unitNis / rate : undefined);
     if (!parts) return null;
+    const w = r.engine.fees[i]!.within;
     const wr = w ? (w.currency === "ILS" ? 1 : rates[w.currency]) : 1;
     if (wr === undefined) return null;
     const lo = w ? w.from * wr : 0;
@@ -262,12 +259,6 @@ function laneParts(r: DealRead, p: DealPeriod, fee: ChartFee, side: DealSide, ra
   return joined;
 }
 
-/** The kinds of fee on what is held, in the order the holding chart stacks and names them (F-124). */
-export const HELD_KINDS = ["share", "sum"] as const satisfies readonly HeldKind[];
-
-/** A lane's parts as drawn: none where one part holds over every amount, which the lane says as one quiet line with its price. */
-const drawnParts = (parts: LanePart[] | null): LanePart[] | null => (parts && (parts.length > 1 || parts.some((x) => x.from > 0 || x.to !== null)) ? parts : null);
-
 const sameFigure = (a: SiteValue | undefined, b: SiteValue | undefined) => (a?.value ?? null) === (b?.value ?? null) && (a?.unit ?? null) === (b?.unit ?? null);
 
 /** The figures a stretch's end rests on: the price's own (F-112). */
@@ -280,11 +271,8 @@ function endInputs(r: DealRead, i: number, _e: DealPrice, s: Price): Record<stri
   return out;
 }
 
-/**
- * The part of a lane at an amount: the one whose stretch holds it, more than its bottom and up to its top (F-115: an amount at a part's top
- * is that part's, "עד" taking its top in); none outside every part, where the lane's fee charges nothing.
- */
-export const partAt = (parts: readonly LanePart[], a: number): LanePart | undefined => parts.find((x) => a > x.from * (1 + 1e-9) && (x.to === null || a <= x.to * (1 + 1e-9)));
+/** The part of a lane at an amount: the one whose stretch holds it (an amount at a part's top is that part's, "עד" taking its top in). */
+export const partAt = (parts: readonly LanePart[], a: number): LanePart | undefined => parts.find((x) => a > x.from - 1e-9 * Math.max(1, x.from) && (x.to === null || a <= x.to * (1 + 1e-12))) ?? parts[0];
 
 /**
  * A purchase's conversion lane on the chart's axis, the shekels the purchase converts at most (F-13, `buyConversion`). Its steps' tops and
@@ -362,24 +350,19 @@ export interface ActionReading {
   parts: ActionPart[];
 }
 
-/** A fee's year at the reader's value on the holding chart, in its lane of the kind charged there, and the part of its price that decides it. */
+/** A fee's year at the reader's value on the holding chart, and the part of its price that decides it. */
 export interface HeldRow {
-  /** Its lane's id. */
-  lane: string;
   fee: ChartFee;
   cost: SiteValue;
   part?: LanePart;
 }
 
-/**
- * What a year of holding the reader's value costs (F-112, F-123), its fees grouped by kind as the lanes are, each group with its sum: a
- * fee that charges nothing at that value has no row, and a group with no row is left out.
- */
+/** What a year of holding the reader's value costs (F-112, F-123), grouped by layer, each with its sum. */
 export interface HeldReading {
   amount: SiteValue;
   total: SiteValue;
   share: SiteValue;
-  groups: { group: HeldKind; total: SiteValue; rows: HeldRow[] }[];
+  groups: { layer: "share" | "fixed"; total: SiteValue; rows: HeldRow[] }[];
 }
 
 /** A sample of a curve at an amount: its share (F-123), and on the holding chart each fee's share, in the order of `fees`. */
@@ -398,30 +381,8 @@ export type ActionHead =
   /** The cost changes behaviour at `n` amounts. */
   | { kind: "marks"; n: number };
 
-/**
- * What the headline of the holding chart says: where the sums per period and the shares meet (F-124); else, where the cost changes
- * behaviour at one amount alone, that amount and what changes there; else at how many amounts it does.
- */
-export type HeldHead =
-  /**
-   * Where the shares start to cost more (F-124): `same`, where the two cost the same there; `past`, at a cut where the sums drop or the
-   * shares jump, where the lower step still charges and the shares cost more only past it.
-   */
-  | { kind: "cross"; at: SiteValue; meets: "same" | "past" }
-  /** A minimum ends, or a maximum starts. */
-  | { kind: "mark"; at: SiteValue; of: "minEnd" | "maxStart" }
-  /** A price changes: the one fee whose price changes there, none where several do. */
-  | { kind: "mark"; at: SiteValue; of: "edge"; fee: FeeRef | null }
-  | { kind: "marks"; n: number };
-
-/**
- * The shares' rate band by band from `from`, the first value at or above the crossover where every share is at its rate (F-123): the
- * crossover itself, or the cut above it where the last minimum ends.
- */
-interface HeldBands {
-  from: SiteValue;
-  each: Band[];
-}
+/** What the headline of the holding chart says (F-124): where the fixed sums and the shares meet, and what the sub says. */
+export type HeldHead = { kind: "cross"; at: SiteValue } | { kind: "marks"; n: number };
 
 /** The rate of the shares in each band above the crossover (F-123): up to `to` (none for the last), on the whole amount where a step's top ends it. */
 export interface Band {
@@ -429,22 +390,12 @@ export interface Band {
   to?: SiteValue;
 }
 
-/**
- * A sentence at a drop on the whole amount (F-125): just under it and just over it, and what the fee whose step ends there does over it
- * (`DropKind`).
- */
+/** A sentence at a drop on the whole amount (F-125): just under it and just over it. */
 export interface Drop {
   at: number;
-  what: DropKind;
   under: { value: SiteValue; cost: SiteValue };
   over: { value: SiteValue; cost: SiteValue };
 }
-
-/**
- * What a fee whose step ends at a drop does just over it (F-125, by the kind of its step there, `heldKind`): its next step is a share,
- * whose rate holds on the whole amount; or its next step is a sum per period, lower; or it charges nothing there.
- */
-export type DropKind = { kind: "share" } | { kind: "falls" | "stops"; fee: FeeRef };
 
 /** One chart of a panel: the periods it holds in (by their first month), its curve, lanes, marks and words. */
 export interface ChartView {
@@ -471,8 +422,8 @@ export interface ActionView extends ChartView {
 export interface HeldView extends ChartView {
   head: HeldHead;
   cross: number | null;
-  /** The shares' rate band by band from the crossover up (F-123), where they are at their rates above it; a band of 0% is never one. */
-  bands: HeldBands | null;
+  /** The shares' rate band by band from the crossover up (F-123). */
+  bands: Band[];
   /** Whether a year costs a smaller share of a larger value at every value (F-123's check). */
   falls: boolean;
   drops: Drop[];
@@ -622,10 +573,7 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
   const at = monthKey(p.from);
   const idx = onAction(r, p, action, side);
   const fees = chartFees(r, idx);
-  const perUnit = idx.some((i) => {
-    const e = pricesOf(r, p, i, side).e;
-    return e.kind === "perUnit" || ((e.kind === "action" || e.kind === "perAction") && e.third?.kind === "perUnit");
-  });
+  const perUnit = idx.some((i) => needsUnitPrice(pricesOf(r, p, i, side).e));
   if (perUnit && (unit.price === null || unit.currency === null)) return { undrawn: { periods: [at], why: "unit-price", currency: unit.currency ?? "ILS" } };
   const got = ratesFor(r, p, idx, fx, perUnit ? [unit.currency!] : []);
   if ("missing" in got) return { undrawn: { periods: [at], why: "rate", currency: got.missing } };
@@ -642,7 +590,7 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
   };
   const lanes: Lane[] = fees.map((fee) => {
     const parts = partsOf(fee);
-    return { id: fee.ref.fee, fee, parts: drawnParts(parts), price: viewOf(r, p, fee.idx[0]!, side) };
+    return { fee, parts: parts && parts.length > 1 ? parts : null, price: viewOf(r, p, fee.idx[0]!, side) };
   });
   const all = boundaries(lanes);
   if (!all.length) return { one: oneAction(r, p, action, side, fees, rates, unitNis) };
@@ -726,11 +674,7 @@ function zonesOf(lanes: readonly Lane[], range: AmountRange): Zone[] {
   const zones: Zone[] = [];
   for (let k = 0; k + 1 < cuts.length; k++) {
     const mid = Math.sqrt(cuts[k]! * cuts[k + 1]!);
-    // a lane with no part there charges nothing there
-    const kinds = parted.map((l) => {
-      const part = l.parts ? partAt(l.parts, mid) : undefined;
-      return part ? zoneKind(part.part) : "free";
-    });
+    const kinds = parted.map((l) => zoneKind(partAt(l.parts!, mid)!.part));
     const below = kinds.find((x) => x !== "rate" && x !== "max" && x !== "free") as Zone["kind"] | undefined;
     const kind: Zone["kind"] = below ?? (kinds.includes("max") ? "max" : "rate");
     const last = zones.at(-1);
@@ -853,28 +797,20 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
   const got = ratesFor(r, p, idx, fx);
   if ("missing" in got) return { undrawn: { periods: [at], why: "rate", currency: got.missing } };
   const { rates, values } = got;
-  // a lane for each kind a fee's steps have (F-124, `heldKind`), holding those steps alone, so a fee that is a sum per period on small
-  // values and a share on larger ones stands under both kinds, each lane with its own steps' parts; the shares first, then the sums per
-  // period, each in the deal's order: the layers stack in this order
-  const kindOf = (i: number) => heldKind(p.prices[i]!.price);
-  const lanes: Lane[] = HELD_KINDS.flatMap((kind) =>
-    fees.flatMap((fee): Lane[] => {
-      const own = fee.idx.filter((i) => kindOf(i) === kind);
-      const [first] = own;
-      if (first === undefined) return [];
-      const mine = { ref: fee.ref, idx: own };
-      // every step on the chart is a share or a sum (a free one has none), so a step left out is of the other kind
-      const both = own.length < fee.idx.length;
-      return [{ id: both ? `${fee.ref.fee}:${kind}` : fee.ref.fee, fee: mine, parts: drawnParts(laneParts(r, p, mine, "all", rates, undefined)), price: viewOf(r, p, first, "all"), group: kind }];
-    }),
-  );
+  const lanes: Lane[] = fees.map((fee) => {
+    const e = p.prices[fee.idx[0]!]!.price;
+    const parts = laneParts(r, p, fee, "all", rates, undefined);
+    return { fee, parts: parts && parts.length > 1 ? parts : null, price: viewOf(r, p, fee.idx[0]!, "all"), group: e.kind === "sum" ? "fixed" : "share" };
+  });
+  // the shares first, then the fixed sums, each in the deal's order: the layers stack in this order
+  lanes.sort((a, b) => (a.group === b.group ? 0 : a.group === "share" ? -1 : 1));
   const ordered = lanes.map((l) => l.fee);
   const cross = heldCrossover(r.engine, p, rates);
   const all = boundaries(lanes);
   const inputs = chartInputs(r, p, idx, "all", values);
   const crossValue = cross !== null ? reading(cross, "nis", "F-124", inputs, r.today) : null;
   const markAts = [...all.map((b) => b.at), ...(cross !== null ? [cross] : [])];
-  if (!markAts.length) return { one: oneHeld(r, p, fees, lanes, inputs, cap) };
+  if (!markAts.length) return { one: oneHeld(r, p, fees, lanes, inputs, cap, rates) };
   const range = openingRange(markAts);
   const cost = (v: number) => holdingCost(r.engine, p, v, rates);
   const layerOf = (v: number) => {
@@ -895,49 +831,24 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
       return { at: b.at, label: b.part.end!, kind };
     }),
   ]);
-  const head = ((): HeldHead => {
-    if (crossValue && cross !== null) {
-      // the two kinds at the crossover itself: the same where they meet inside a stretch, the sums still more at a cut they drop at or the
-      // shares jump past
-      const c = cost(cross).parts;
-      const sumOf = (kind: HeldKind) => c.filter((x) => kindOf(x.fee) === kind).reduce((a, x) => a + x.cost, 0);
-      const sums = sumOf("sum");
-      return { kind: "cross", at: crossValue, meets: Math.abs(sumOf("share") - sums) <= 1e-9 * Math.max(1, sums) ? "same" : "past" };
-    }
-    const [lone] = marks;
-    if (marks.length !== 1 || !lone || lone.kind === "cross" || lone.kind === "part") return { kind: "marks", n: marks.length };
-    if (lone.kind !== "edge") return { kind: "mark", at: lone.label, of: lone.kind };
-    // the fee whose price changes there, where it is one
-    const there = [...new Map(all.filter((b) => Math.abs(b.at - lone.at) < 1e-6 * lone.at).map((b) => [b.lane.fee.ref.fee, b.lane.fee.ref])).values()];
-    return { kind: "mark", at: lone.label, of: "edge", fee: there.length === 1 ? (there[0] ?? null) : null };
-  })();
-  // the shares' rate band by band, from the first cut at or above the crossover where every share is at its rate, cut where a share's
-  // step or bound changes (F-123); a band of 0% is never said, and none follows one where a share is held to a bound
+  // the shares' rate band by band from the crossover up, cut where a share's step or bound changes (F-123)
   const bandCuts = [...new Set(all.map((b) => b.at))].sort((a, b) => a - b);
-  const cutLabel = (c: number) => all.find((b) => Math.abs(b.at - c) < 1e-9 * c)?.part.end;
-  let bands: HeldBands | null = null;
-  if (cross !== null && crossValue) {
+  const bands: Band[] = [];
+  if (cross !== null) {
     const from = [cross, ...bandCuts.filter((c) => c > cross)];
-    const each: Band[] = [];
-    let start: SiteValue | undefined;
-    for (const [k, lo] of from.entries()) {
+    for (let k = 0; k < from.length; k++) {
+      const lo = from[k]!;
       const hi = from[k + 1];
       const R = rateAt(r.engine, p, "held", hi !== undefined ? Math.sqrt(lo * hi) : lo * 2, rates);
-      if (R === null || !(R > 0)) {
-        if (start) break;
-        continue;
-      }
-      start ??= k === 0 ? crossValue : cutLabel(lo);
-      if (!start) break;
-      const to = hi !== undefined ? cutLabel(hi) : undefined;
-      const prevBand = each.at(-1);
+      if (R === null) break;
+      const to = hi !== undefined ? all.find((b) => Math.abs(b.at - hi) < 1e-9 * hi)?.part.end : undefined;
+      const prevBand = bands.at(-1);
       const rate = reading(R * 100, "pct_per_year", "F-123", inputs, r.today);
       if (prevBand && (prevBand.rate.value as number).toFixed(9) === (rate.value as number).toFixed(9)) {
         if (to) prevBand.to = to;
         else delete prevBand.to;
-      } else each.push({ rate, ...(to ? { to } : {}) });
+      } else bands.push({ rate, ...(to ? { to } : {}) });
     }
-    if (start && each.length) bands = { from: start, each };
   }
   // a year costs a smaller share of a larger value: checked at each bend from both sides (F-123)
   const checkAt = [1, ...bandCuts.flatMap((c) => [c * (1 - 1e-9), c * (1 + 1e-9)]), (bandCuts.at(-1) ?? 1) * 10].sort((a, b) => a - b);
@@ -950,35 +861,31 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
       const top = w && w.to !== null ? w.to * (w.currency === "ILS" ? 1 : rates[w.currency]!) : null;
       return top !== null && Math.abs(top - b.at) < 1e-9 * top;
     })
-    .flatMap((b): Drop[] => {
+    .flatMap((b) => {
       const x = acrossDrop(r.engine, p, b.at, rates);
       if (!(x.over.cost < x.under.cost)) return [];
-      // what the fee whose step ends here charges just over it, by any of its steps (a free one charges nothing)
-      const steps = fees.find((f) => f.ref.fee === b.lane.fee.ref.fee)?.idx ?? [];
-      const over = cost(x.over.value).parts.filter((y) => steps.includes(y.fee) && y.cost > 0);
-      const what: DropKind = !over.length ? { kind: "stops", fee: b.lane.fee.ref } : over.some((y) => kindOf(y.fee) === "share") ? { kind: "share" } : { kind: "falls", fee: b.lane.fee.ref };
       const v = (n: number) => reading(n, "nis", "F-125", { ...inputs, "deal:step-top": b.part.end! }, r.today);
-      return [{ at: b.at, what, under: { value: v(x.under.value), cost: v(x.under.cost) }, over: { value: v(x.over.value), cost: v(x.over.cost) } }];
+      return [{ at: b.at, under: { value: v(x.under.value), cost: v(x.under.cost) }, over: { value: v(x.over.value), cost: v(x.over.cost) } }];
     });
   const readAt = (v: number): HeldReading => {
     const amount = entered(v, "nis", r.today);
     const amountIn = { "deal:amount": amount };
-    const parts = cost(v).parts;
-    const costOf = (fee: ChartFee) => parts.filter((x) => fee.idx.includes(x.fee)).reduce((a, x) => a + x.cost, 0);
+    const layers = heldLayers(r.engine, p, v, rates);
+    const costOf = (fee: ChartFee) => layers.filter((l) => fee.idx.includes(l.fee)).reduce((a, l) => a + l.cost, 0);
     const flag = capFlag(p, ordered.filter(isAccount).reduce((a, fee) => a + costOf(fee), 0), cap);
-    const total = yearCostOf(parts.reduce((a, x) => a + x.cost, 0), "F-112", { ...inputs, ...amountIn }, r.today, flag);
-    const groups = HELD_KINDS.map((group) => {
-      // each fee in its lane of the kind its step charged here is (`heldKind`), as the chart and the lanes group it; a lane charging
-      // nothing here says nothing
-      const rows: HeldRow[] = lanes.flatMap((lane) => {
-        const cost = costOf(lane.fee);
-        if (lane.group !== group || !(cost > 0)) return [];
+    const total = yearCostOf(layers.reduce((a, l) => a + l.cost, 0), "F-112", { ...inputs, ...amountIn }, r.today, flag);
+    const groups = (["share", "fixed"] as const).map((layer) => {
+      const rows: HeldRow[] = ordered.flatMap((fee) => {
+        const mine = layers.filter((l) => fee.idx.includes(l.fee));
+        if (!mine.length || mine[0]!.layer !== layer) return [];
+        const lane = lanes.find((l) => l.fee === fee)!;
         const part = lane.parts ? partAt(lane.parts, v) : undefined;
-        // the flag is on the sum of the current accounts: on the total and each account's row
-        return [{ lane: lane.id, fee: lane.fee, cost: yearCostOf(cost, "F-112", { ...inputs, ...amountIn }, r.today, isAccount(lane.fee) ? flag : null), ...(part ? { part } : {}) }];
+        // the flag is on the sum of the current accounts: on the total and each row that charges something, never on a row of 0 ₪
+        const cost = costOf(fee);
+        return [{ fee, cost: yearCostOf(cost, "F-112", { ...inputs, ...amountIn }, r.today, isAccount(fee) && cost > 0 ? flag : null), ...(part ? { part } : {}) }];
       });
-      const sum = rows.reduce((a, row) => a + (row.cost.value as number), 0);
-      return { group, total: reading(sum, "nis", "F-112", { ...inputs, ...amountIn }, r.today), rows };
+      const sum = layers.filter((l) => l.layer === layer).reduce((a, l) => a + l.cost, 0);
+      return { layer, total: reading(sum, "nis", "F-123", { ...inputs, ...amountIn }, r.today), rows };
     });
     return { amount, total, share: reading(costShare(total.value as number, v) * 100, "pct", "F-123", { ...amountIn, "deal:cost": total }, r.today), groups: groups.filter((g) => g.rows.length > 0) };
   };
@@ -997,7 +904,7 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
       range,
       sample,
       rates: values,
-      head,
+      head: crossValue ? { kind: "cross", at: crossValue } : { kind: "marks", n: marks.length },
       cross,
       bands,
       falls,
@@ -1010,20 +917,20 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
 }
 
 /** Holding with nothing that varies by the value: the yearly rate its shares add to, or the yearly sums, else neither. */
-function oneHeld(r: DealRead, p: DealPeriod, fees: ChartFee[], lanes: readonly Lane[], inputs: Record<string, SiteValue>, cap: AccountCap | null): OneView {
+function oneHeld(r: DealRead, p: DealPeriod, fees: ChartFee[], lanes: readonly Lane[], inputs: Record<string, SiteValue>, cap: AccountCap | null, rates: Readonly<Record<string, number>>): OneView {
   const prices = lanes.map((l) => ({ fee: l.fee, price: l.price! }));
   const shares = lanes.filter((l) => l.group === "share");
-  const sums = lanes.filter((l) => l.group === "sum");
+  const sums = lanes.filter((l) => l.group === "fixed");
   const at = monthKey(p.from);
   if (shares.length && !sums.length) {
-    const R = rateAt(r.engine, p, "held", 1);
+    const R = rateAt(r.engine, p, "held", 1, rates);
     if (R !== null) {
       const one = shares.length === 1 && shares[0]!.price?.yearly ? shares[0]!.price.yearly : reading(R * 100, "pct_per_year", "F-123", inputs, r.today);
       return { periods: [at], fees, one: { value: one, of: "share" }, prices };
     }
   }
   if (sums.length && !shares.length) {
-    const c = holdingCost(r.engine, p, 1);
+    const c = holdingCost(r.engine, p, 1, rates);
     const flag = capFlag(p, sums.filter((l) => isAccount(l.fee)).reduce((a, l) => a + c.parts.filter((x) => l.fee.idx.includes(x.fee)).reduce((s, x) => s + x.cost, 0), 0), cap);
     // a flagged year is the computed one, which carries the flag, not the price's own yearly figure
     const one = sums.length === 1 && sums[0]!.price?.yearly && !flag ? sums[0]!.price.yearly : yearCostOf(c.total, "F-111", inputs, r.today, flag);
@@ -1165,11 +1072,14 @@ function coversIn(r: DealRead, p: DealPeriod, fx: FxSnapshot | null, unit: { pri
     const against = againstOf(r, s.offset.kind);
     const action = offsetAction(r, p, s.offset.kind);
     if (!action) return [];
-    const perUnit = against.some((j) => p.prices[j]!.price.kind === "perUnit" || p.prices[j]!.sale?.kind === "perUnit");
-    const got = ratesFor(r, p, against, fx, perUnit && unit.currency ? [unit.currency] : []);
+    const sides: ("buy" | "sell")[] = against.some((j) => p.prices[j]!.sale) ? ["buy", "sell"] : ["buy"];
+    // the cost of the action prices every fee charged on it, though only those it is set against are counted: each needs its rates and the
+    // unit's price
+    const priced = [...new Set(sides.flatMap((side) => onAction(r, p, action, side)))];
+    const perUnit = priced.some((j) => [p.prices[j]!.price, p.prices[j]!.sale].some((x) => x !== undefined && needsUnitPrice(x)));
+    const got = ratesFor(r, p, priced, fx, perUnit && unit.currency ? [unit.currency] : []);
     if ("missing" in got || (perUnit && (unit.price === null || unit.currency === null))) return [];
     const unitNis = perUnit ? unit.price! * (unit.currency === "ILS" ? 1 : got.rates[unit.currency!]!) : undefined;
-    const sides: ("buy" | "sell")[] = against.some((j) => p.prices[j]!.sale) ? ["buy", "sell"] : ["buy"];
     const found = sides.map((side) => ({ side, at: coverFrom(r.engine, p, against, action, side, e.amount, got.rates, unitNis) }));
     if (found.some((x) => x.at === null)) return [];
     const one = found.every((x) => x.at === found[0]!.at);

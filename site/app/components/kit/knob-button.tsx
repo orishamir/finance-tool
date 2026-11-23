@@ -4,7 +4,7 @@
 // two heads, the plus under a row that opens the toolbox on every case of it, the ✕ at a part line's end, and a closed fee card's corner
 // actions. Where it stands alone its press reaches 44 px both ways (`wide`); beside other controls, 44 px tall. It carries no transition
 // of its own: where it is drawn only on hover, app.css fades it in after the pointer rests (`--hover-rest`).
-import type { ComponentType, MouseEvent } from "react";
+import type { ComponentType, MouseEvent, Ref } from "react";
 import { cx } from "./cx";
 
 type Data = { [k: `data-${string}`]: string | undefined };
@@ -17,6 +17,7 @@ export function KnobButton({
   wide,
   tabIndex,
   className,
+  ref,
   ...data
 }: {
   icon: ComponentType<{ size?: number; strokeWidth?: number; "aria-hidden"?: boolean }>;
@@ -29,9 +30,12 @@ export function KnobButton({
   wide?: boolean;
   tabIndex?: number;
   className?: string;
+  /** The button, for a menu it opens to stand under and give the focus back to. */
+  ref?: Ref<HTMLButtonElement>;
 } & Data) {
   return (
     <button
+      ref={ref}
       type="button"
       tabIndex={tabIndex}
       aria-label={label}

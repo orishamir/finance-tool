@@ -5,12 +5,13 @@
 // as the toolbox's card that adds it and the dot before it in a cell. Its figures keep their own number state (the sourced line, the
 // entered blue), as everywhere on the site. Parts keep a fixed order. A part a toolbox card would put on a price is drawn first as its
 // landing copy (`PartEdit`'s `landing`, landing.tsx): the same part, in the same room, faint and outlined, the whole of it one button.
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { ArrowDownToLine, ArrowUpToLine, Link2, type LucideIcon } from "lucide-react";
 import { dealCases as copy } from "../../copy";
 import { RemoveButton } from "./remove-button";
 import { LandingCover, landingBody, type Landing } from "./landing";
 import { cx } from "./cx";
+import { useLiftFrom } from "./lift";
 
 /**
  * What a part does to the price: what is charged, what comes off it, its floor and ceiling (a bound's told by its icon too), the month it
@@ -70,44 +71,59 @@ export function PartChip({ kind, mark, lead, figure, unit, words, children }: { 
   );
 }
 
+/** What a part in edit is carried as (lift.tsx): its carried item, and its words, which the bin says. */
+export interface PartLift {
+  item: string;
+  name?: string;
+}
+
 /**
  * A part in edit, in the open case: as wide as its content (founder, 2026-11-20), its icon and first word, then its boxes and choices as
  * `children` (the kit's `FigureField`, `InlineSelect`, words between them), and right after them a bin, which removes it (none where there
- * is nothing to remove: a free price). 48 px tall at least; where its content runs out of the width (a phone) it takes the full width, its
- * boxes wrap and the bin stays in the corner. With an `id` the page can give it
- * the focus (`focusPartEdit`): the part itself then takes it, out of the Tab order and named by its own words, where it has no box or
- * choice. With `landing`, it is the landing copy of a part not yet there (landing.tsx): no fill, no kind's colour, its lead in the muted
- * ink, its bin and its grip (`grip`: the grip's room alone, `GripRoom`) kept unseen for their room, and it lifts nothing.
+ * is nothing to remove: a free price), and its other actions (`more`, beside the bin). Every part is as tall as one whose body holds a box
+ * (a box's 44 px and the room around it), so a part with a box and one with none take the same room, and the landing copy of a charge that
+ * would take a free price's place takes the very room "חינם" had; where its content runs out of the width (a phone) it takes the full width,
+ * its boxes wrap and the bin stays in the corner. With `lift`, it is carried from its own surface (`useLiftFrom`): a mouse's press there
+ * moved a few pixels, a finger's long press anywhere on it but a box or a choice, which keep their own press. It is positioned, so inside
+ * a card whose whole face is one button (an open slim fee, `PickCard`) it stands over that button and a press on its surface is its own. With an `id` the page can
+ * give it the focus (`focusPartEdit`): the part itself then takes it, out of the Tab order and named by its own words, where it has no box
+ * or choice. With `landing`, it is the landing copy of a part not yet there (landing.tsx): no fill, no kind's colour, its lead in the muted
+ * ink, its bin and its actions kept unseen for their room, and it lifts nothing.
  */
-export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.removePart, asking, grip, landing, children }: { /** Its element's id, where the page gives the focus into it. */ id?: string; kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The bin's spoken name: what it removes. */ removeLabel?: string; /** A part still asking its amount, in a box that gives it when left: a press on its bin leaves the focus in the box (`RemoveButton`'s `keepsFocus`). */ asking?: boolean; /** A grip (⋮⋮) at its start that lifts it (lift.tsx). */ grip?: ReactNode; /** Drawn as the landing copy of the part a toolbox card would put here. */ landing?: Landing; children?: ReactNode }) {
+export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.removePart, asking, lift, more, landing, children }: { /** Its element's id, where the page gives the focus into it. */ id?: string; kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The bin's spoken name: what it removes. */ removeLabel?: string; /** A part still asking its amount, in a box that gives it when left: a press on its bin leaves the focus in the box (`RemoveButton`'s `keepsFocus`). */ asking?: boolean; /** What it is carried as, where it can be. */ lift?: PartLift; /** Its other actions, after its bin (the kit's `MenuKnob`). */ more?: ReactNode; /** Drawn as the landing copy of the part a toolbox card would put here. */ landing?: Landing; children?: ReactNode }) {
+  const root = useRef<HTMLDivElement>(null);
+  useLiftFrom(() => root.current, lift?.item ?? "", lift?.name, !lift || !!landing);
   const words = id && !landing ? `${id}-words` : undefined;
   const bin = onRemove && <RemoveButton label={removeLabel} onRemove={onRemove} {...(asking ? { keepsFocus: true } : {})} className={cx("mt-0.5", landing && "invisible")} />;
+  const actions = more && <span className={cx("mt-0.5 inline-flex", landing && "invisible")}>{more}</span>;
   if (landing)
     return (
-      <div data-landing="" data-kind={kind} className="relative flex w-fit max-w-full min-h-12 items-start gap-2 rounded-md border-s-[3px] border-s-transparent py-0.5 ps-2 pe-1">
+      <div data-landing="" data-kind={kind} className="relative flex w-fit max-w-full items-start gap-2 rounded-md border-s-[3px] border-s-transparent py-0.5 ps-2 pe-1">
         <LandingCover landing={landing} />
-        {grip}
-        <div inert aria-hidden className={cx("flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5", landingBody(landing))}>
+        <div inert aria-hidden className={cx("flex min-h-12 min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5", landingBody(landing))}>
           <Lead mark={mark} lead={lead} />
           {children}
         </div>
         {bin}
+        {actions}
       </div>
     );
   return (
     <div
+      ref={root}
       id={id}
       data-liftable="" data-lift-body=""
       {...(id ? { role: "group", tabIndex: -1, "aria-labelledby": words } : {})}
       data-kind={kind}
-      className={cx("flex w-fit max-w-full min-h-12 items-start gap-2 py-0.5 ps-2 pe-1 focus-visible:outline-2 focus-visible:outline-ring", EDIT_LOOK)}
+      // positioned, so it stands over the button stretched over the card it is in (a slim fee open, `PickCard`): a press on its surface is its own
+      className={cx("relative flex w-fit max-w-full items-start gap-2 py-0.5 ps-2 pe-1 focus-visible:outline-2 focus-visible:outline-ring", EDIT_LOOK)}
     >
-      {grip}
-      <div id={words} data-part-body="" className="flex min-h-target min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">
+      <div id={words} data-part-body="" className="flex min-h-12 min-w-0 flex-1 flex-wrap items-center gap-2 py-0.5">
         <Lead mark={mark} lead={lead} inked />
         {children}
       </div>
       {bin}
+      {actions}
     </div>
   );
 }
