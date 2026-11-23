@@ -14,9 +14,8 @@
 // investing and the study fund, at 390 and 1280. It fails on any control under 44 px that hit-leftovers.json does not list for that page
 // and width, and on a listed one that is now 44 px or gone, which is struck: the list only shrinks. box-check.mjs runs it after its own
 // checks (`--no-hit` skips it).
-// A link, a figure, a term or words that state a rule (`.ruled`) inside running text (a <p> or <li> line with words of its own around it)
-// is left out, as guard 19 leaves a figure in text: its line is the text's line height, and the 44 px rule is for controls that stand alone
-// (design-system 2.5: no tap area on words inside running text, whose area would cover the lines above and below).
+// A link, a figure or a term inside running text (a <p> or <li> line with words of its own around it) is left out, as guard 19 leaves a
+// figure in text: its line is the text's line height, and the 44 px rule is for controls that stand alone (design-system 2.5).
 // A figure's or a month's field is measured by its box, which takes a press anywhere in it for the field (the kit's `focusInBox`).
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -76,7 +75,7 @@ for (const path of paths.split(",")) {
           let line = e.parentElement;
           while (line && getComputedStyle(line).display.startsWith("inline")) line = line.parentElement;
           if (line && !line.matches("p, li, dd, td") && !["block", "list-item", "table-cell"].includes(getComputedStyle(line).display)) line = null;
-          if (line && line !== e && getComputedStyle(e).display.startsWith("inline") && (e.tagName === "A" || e.matches(".num, .term, .ruled"))) {
+          if (line && line !== e && getComputedStyle(e).display.startsWith("inline") && (e.tagName === "A" || e.matches(".num, .term"))) {
             const own = (e.textContent ?? "").trim();
             const rest = (line.textContent ?? "").replace(own, "").trim();
             if (rest.length > 12) return null;

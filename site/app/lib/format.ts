@@ -51,10 +51,8 @@ export const GERSHAYIM = /(?<=[\u05d0-\u05ea])"(?=[\u05d0-\u05ea])/g;
 /** An abbreviation's straight quote written as the gershayim (docs/copy.md 10.4): the data spells ני"ע, the page shows ני״ע. */
 export const gershayim = (text: string) => text.replace(GERSHAYIM, "\u05f4");
 
-/** A scale mark's number and word: from a billion in billions, the word a figure's short form uses (`nisBillions`), so an axis and the figure above it read in one form. */
 function compactNisParts(v: number): { num: string; word: string | null } {
   const a = Math.abs(v);
-  if (a >= 1e9) return { num: compactFormat(v / 1e9), word: numbers.billion };
   if (a >= 1e6) return { num: compactFormat(v / 1e6), word: numbers.compact.million };
   if (a >= 1e3) return { num: compactFormat(v / 1e3), word: numbers.compact.thousand };
   return { num: compactFormat(v), word: null };
@@ -406,33 +404,4 @@ export const amountWords = (text: string): string => `\u2066${text.replace(/ /g,
 /** Thousands separators for a typed field, left to right (`1,500`, `5`, `-2.5`). */
 export function formatTyped(n: number): string {
   return numberFormat({ maximumFractionDigits: 4 }, "en-US").format(n);
-}
-
-/**
- * A whole amount written with one point and exactly three digits after it, a first group of one to three digits ("1.000", "12.500"): a
- * thousands separator in the European way or a decimal point, it cannot be told which. `parseNumber` reads it as a decimal; a field of
- * whole shekels says it is unclear rather than take 1 for 1,000.
- */
-export function isDotThousands(text: string): boolean {
-  return /^[+\-−–—‐]?[1-9]\d{0,2}\.\d{3}$/.test(text.replace(/[\s  ‎‏‪-‮⁦-⁩₪]/g, ""));
-}
-
-/**
- * A whole amount's box as the person types (`NumberField`'s `groupAsTyped`): the text `raw` with its thousands separators set, given the
- * text the box held before (`before`). Digits typed or deleted inside the separators the box itself set are grouped again ("1,234" less
- * its last digit is "123"); a comma the person typed or pasted is read by `parseNumber`'s rules, and the text is grouped only when it is a
- * whole amount that way ("1000,000" is "1,000,000"); otherwise it stays as typed, so its error shows ("2,5", "10,00,000", "01,000").
- * A text with anything but digits, commas and spaces stays as typed.
- */
-export function groupTyped(raw: string, before: string): string {
-  if (!/^[\d,\s]*$/.test(raw)) return raw;
-  const digits = raw.replace(/\D/g, "");
-  if (digits === "") return raw.trim() === "" ? "" : raw;
-  const regroup = (text: string) => formatTyped(Number(text.replace(/\D/g, "")));
-  const commas = (text: string) => text.split(",").length - 1;
-  // the box held its own grouping (or nothing), and no comma came in: the commas in `raw` are the box's
-  const boxs = before.trim() === "" || (/^[\d,]+$/.test(before) && before === regroup(before));
-  if (boxs && commas(raw) <= commas(before)) return regroup(raw);
-  const n = parseNumber(raw);
-  return Number.isInteger(n) && n >= 0 ? formatTyped(n) : raw;
 }

@@ -79,8 +79,6 @@ export interface DbData {
   /** P-11's steps, each the parameter's value object; the page starts at `start` (P-05's amount now). */
   amounts: SiteValue[];
   start: number;
-  /** The largest amount the field and the address take (P-05 `ranges.amount`). */
-  amountMax: number;
 }
 
 /** The glossary cards behind the list's column heads, the kind of rate's "?" and the linked group's heading (as the track browser keeps its own). */

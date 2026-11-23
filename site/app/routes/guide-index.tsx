@@ -114,7 +114,7 @@ export default function GuideIndex() {
                 e.kinds.length > 0 ? (
                   <li key={e.key}>
                     <Card pad="snug" className={cx("h-full flex flex-col gap-2", inList)}>
-                      <Link to={e.href} className="tap-area flex items-start justify-between gap-4 hover:underline">
+                      <Link to={e.href} className="flex items-start justify-between gap-4 hover:underline">
                         <span className="font-semibold md:text-lg">{gershayim(e.name)}</span>
                         <RowArrow className="mt-1" />
                       </Link>

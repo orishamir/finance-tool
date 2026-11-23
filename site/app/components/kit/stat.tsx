@@ -9,9 +9,8 @@ const SWATCH = { alt: "bg-chart-alt", value: "bg-chart-value", net: "bg-chart-ne
 
 /** One figure with its name above it (and a note under it): a result of a visual or a card. Sits in a `<dl>`; `tone` adds the swatch of the bar or line it names. */
 export function Stat({ label, children, note, tone }: { label: ReactNode; children: ReactNode; note?: ReactNode; tone?: keyof typeof SWATCH }) {
-  // 6 px between the name and the figure: a term in the name keeps its own box clear of the figure's 44 px area
   return (
-    <div className="flex flex-col gap-1.5 min-w-0">
+    <div className="flex flex-col gap-0.5 min-w-0">
       <dt className="text-sm text-muted-foreground flex items-center gap-1.5">
         {tone && <span aria-hidden="true" className={cx("size-2.5 rounded-sm shrink-0", SWATCH[tone])} />}
         {label}

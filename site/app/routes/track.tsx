@@ -173,7 +173,7 @@ export default function TrackPage() {
             plain
             wide
             items={[
-              { id: "manager", label: copy.labels.manager, value: <TextLink look="line" to={companyPath(track.companyId)}><bdi>{gershayim(track.companyName)}</bdi></TextLink> },
+              { id: "manager", label: copy.labels.manager, value: <TextLink to={companyPath(track.companyId)}><bdi>{gershayim(track.companyName)}</bdi></TextLink> },
               {
                 id: "product",
                 label: copy.labels.product,
