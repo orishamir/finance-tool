@@ -1571,7 +1571,7 @@ export const trackBrowser = {
 export const depositBrowser = {
   title: "פיקדונות בכל הבנקים",
   /** The page's line: `stated` is the words that state BANK-13 and BANK-50 (an annual nominal rate, before tax), which open them (D116). */
-  lead: { before: "הריבית שהבנקים מפרסמים לפיקדון בשקלים,", stated: "בשנה ולפני המס", after: ", לא הצעה אישית. בנק אש ישראל לא נכלל: לא נמצא לו אתר." },
+  lead: { before: "הריבית שהבנקים מפרסמים לפיקדון בשקלים,", stated: "בשנה ולפני המס", after: ", לא הצעה אישית." },
   /** At the end of the list's heading line, the days the rates in the list were read: "נקרא מאתרי הבנקים ב־09.11.2026", or where the
    *  rows were read on several days, "נקרא מאתרי הבנקים מ־23.10.2026 עד 14.11.2026". */
   read: { one: "נקרא מאתרי הבנקים ב־", from: "נקרא מאתרי הבנקים מ־", to: "עד " },
