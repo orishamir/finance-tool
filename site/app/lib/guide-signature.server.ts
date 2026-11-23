@@ -135,11 +135,12 @@ builders["savings-plan"] = (c) => {
     d.facts.lumpRate = ownBy(lump.rate, lumpBank);
     if (typeof lump.record.term_months.value === "number") d.facts.lumpTerm = ownBy({ ...lump.record.term_months } as SiteValue, lumpBank);
   } else d.gaps.push("deposit:bank-deposit");
-  // BANK-28 / BANK OQ12: no general rule says whether each monthly instalment has its own lock-up; each bank's plan agreement does (one bank's: BPN-10), so the ladder is the F-22 reading
+  // BANK-28 / BANK OQ12: no general rule says whether each monthly instalment has its own lock-up; each bank's plan terms do, and those read
+  // (BPN-10, BANK-38) do not lock each instalment on its own, while Leumi's, the example's, are not read on it: the ladder is the F-22 reading
   d.gaps.push("planLockPerDeposit");
   const brk = d.facts.break;
   if (brk && brk.value !== "not_allowed" && brk.value !== "none") d.gaps.push("depositBreak");
-  return withRules(d, "BANK-28", "BANK-06", "BANK-27", "TXI-03", "TXI-07");
+  return withRules(d, "BANK-28", "BANK-38", "BPN-10", "BANK-06", "BANK-27", "TXI-03", "TXI-07");
 };
 
 // ---------------------------------------------------------------- daily money-market fund (the ladder)

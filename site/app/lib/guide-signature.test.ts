@@ -70,11 +70,12 @@ describe("timeline fixes on the cash-like pages", () => {
     const interestPages = ["current-account", "bank-deposit", "savings-plan", "makam", "government-bond"];
     for (const id of interestPages) {
       expect(cashRateRangeOf(id)).toBe("interest");
-      const b = page(id).bundle!;
-      const range = p05Range(b.p05, "ranges", cashRateRangeOf(id)!);
-      expect(range!.min).toBeGreaterThanOrEqual(0);
-      expect(percentCheck(range!)(-10)).not.toBeNull();
-      expect(percentCheck(range!)(range!.min)).toBeNull();
+      const b = page(id).bundle;
+      const range = b ? p05Range(b.p05, "ranges", "interest") : null;
+      if (!b || !range) throw new Error(`${id}: no bundle or no P-05 ranges.interest`);
+      expect(range.min).toBeGreaterThanOrEqual(0);
+      expect(percentCheck(range)(-10)).not.toBeNull();
+      expect(percentCheck(range)(range.min)).toBeNull();
       // a negative rate kept from before is not run as a tax refund
       expect(runTimeline(b, { entered: { cash_rate: -10 }, age: null }).kind).toBe("failed");
     }

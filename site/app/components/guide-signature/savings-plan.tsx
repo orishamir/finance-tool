@@ -149,7 +149,10 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
           {copy.plan.onlyCollected.after}
         </p>
       </div>
-      <Callout tone="caution"><IdText text={copy.common.gaps.planLockPerDeposit ?? ""} /></Callout>
+      <Callout tone="caution">
+        <IdText text={copy.plan.lock.assumption} /> <Ruled id="BANK-28">{copy.plan.lock.general.stated}</Ruled>
+        {copy.plan.lock.general.after} {copy.plan.lock.others} <Ruled id="BPN-10">{copy.plan.lock.hapoalim}</Ruled>; <Ruled id="BANK-38">{copy.plan.lock.mizrahi}</Ruled>. {copy.plan.lock.end}
+      </Callout>
     </div>
   );
 }

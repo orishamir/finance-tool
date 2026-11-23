@@ -622,7 +622,8 @@ export const companyFocus = {
   fees: "דמי ניהול מהחיסכון",
   to: "עד",
   tariffGroups: "בתעריפון:",
-  asOf: "לפי פרסום הבנק, נכון ל־",
+  /** The date of a bank product's records: one day, or the oldest and the newest. */
+  asOf: { one: "לפי פרסום הבנק, נכון ל־", from: "לפי פרסום הבנק, נכון לימים ", to: "עד " },
   more: "עוד בעמוד המלא",
   terms: "מה כתוב במסמכים",
   /** The arrow's spoken name. */
@@ -1566,8 +1567,9 @@ export const depositBrowser = {
   title: "פיקדונות בכל הבנקים",
   /** The page's line: `stated` is the words that state BANK-13 and BANK-50 (an annual nominal rate, before tax), which open them (D116). */
   lead: { before: "הריבית שהבנקים מפרסמים לפיקדון בשקלים,", stated: "בשנה ולפני המס", after: ", לא הצעה אישית. בנק אש ישראל לא נכלל: לא נמצא לו אתר." },
-  /** At the end of the list's heading line: "נקרא מאתרי הבנקים ב־09.11.2026". */
-  read: "נקרא מאתרי הבנקים ב־",
+  /** At the end of the list's heading line, the days the rates in the list were read: "נקרא מאתרי הבנקים ב־09.11.2026", or where the
+   *  rows were read on several days, "נקרא מאתרי הבנקים מ־23.10.2026 עד 14.11.2026". */
+  read: { one: "נקרא מאתרי הבנקים ב־", from: "נקרא מאתרי הבנקים מ־", to: "עד " },
   controls: {
     amount: "כמה מפקידים",
     picks: "סכומים מוכנים",
@@ -2815,7 +2817,8 @@ export const companyPage = {
     /** A current account's rate, where the bank pays it only on its conditions (the product's part spells them out). */
     current: (conditional: boolean) => (conditional ? "ריבית בשנה על יתרת זכות, בתנאים" : "ריבית בשנה על יתרת זכות"),
     parts: "מה יש בו",
-    asOf: "נכון ל־",
+    /** The date of the records the range is from: one day, or the oldest and the newest ("נכון לימים 23.10.2026 עד 13.11.2026"). */
+    asOf: { one: "נכון ל־", from: "נכון לימים ", to: "עד " },
   },
   /** A manager's overview table. */
   overviewTable: {
@@ -2829,7 +2832,8 @@ export const companyPage = {
     note: { fees: (year: string | null) => (year ? `דמי הניהול במסלולים הם הממוצע שנגבה ב־${year}, מהחיסכון, מהמסלול הזול ליקר.` : "דמי הניהול במסלולים הם מהחיסכון, מהמסלול הזול ליקר."), assets: "הכסף המנוהל נכון לסוף ", end: "." },
   },
   deposits: {
-    asOf: "לפי פרסום הבנק, נכון ל־",
+    /** The date of the table's records: one day, or the oldest and the newest. */
+    asOf: { one: "לפי פרסום הבנק, נכון ל־", from: "לפי פרסום הבנק, נכון לימים ", to: "עד " },
     sharedDeposits: "נכון לכל הפיקדונות בטבלה:",
     sharedPlans: "נכון לכל התוכניות בטבלה:",
     beforeTax: "הריבית שנתית ונומינלית, לפני המס על הריבית.",
@@ -3413,7 +3417,6 @@ export const guideSignature = {
     outOfRange: { before: "הסכום מחוץ לטווח שהריבית שפורסמה נקבעה לו:", middle: "עד", after: "." },
     gaps: {
       depositBreak: "הבנק מתאר שבירה בתנאים שהאתר עוד לא מחשב.",
-      planLockPerDeposit: "ההנחה כאן: לכל הפקדה חודשית יש נעילה משלה, באורך תקופת התוכנית, כמו בפיקדון שנפתח בכל חודש. אין כלל כללי שקובע את זה: כל בנק קובע בהסכם התוכנית שלו. האתר קרא את החוזה של בנק אחד. בחוזה הזה התוכניות נפתחות כולן יחד, בנקודת יציאה שנספרת מתחילת התוכנית. שאלה פתוחה BANK-OQ12",
       accountBanks: "הריביות שהבנקים מפרסמים על יתרה בעו״ש עוד לא נאספו.",
       depositBanks: "הריביות שהבנקים מפרסמים על פיקדון לשנה עוד לא נאספו.",
     } as Record<string, string>,
@@ -3510,6 +3513,18 @@ export const guideSignature = {
     lockLine: { before: "בתוכנית של לאומי התקופה היא", middle: "והריבית", after: "בשנה. אין אפשרות שבירה." },
     alt: { before: "בפיקדון חד־פעמי", ofBank: "של", forTerm: "לתקופה של", rate: "ריבית", middle: "כל הסכום נעול ואז פנוי בבת אחת." },
     rangeLine: "האתר קורא את הטווח בטבלה של הבנק כסכום להפקדה אחת. הטבלה לא אומרת זאת במילים.",
+    /**
+     * What the ladder assumes and what the plan terms read say. Each `stated` is the words that state its rule (D116): BANK-28, no general
+     * rule; BPN-10, Hapoalim's four plans; BANK-38, Mizrahi-Tefahot's ענבים. Leumi's own terms on it are BANK OQ12.
+     */
+    lock: {
+      assumption: "הגרף מניח שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. האתר לא מצא בכללים שקרא אם כך בתוכנית של לאומי, שהדוגמה מחושבת עליה. שאלה פתוחה BANK-OQ12.",
+      general: { stated: "אין כלל כללי שקובע את זה, וכל בנק קובע בתנאי התוכניות שלו", after: "." },
+      others: "בתנאים שהאתר קרא בבנקים אחרים זה אחרת:",
+      hapoalim: "בארבע מהתוכניות של בנק הפועלים ההפקדות לא נעולות כל אחת לבדה, ומושכים את כל החיסכון יחד, בתחנות יציאה שנספרות מתחילת התוכנית",
+      mizrahi: "בארבע מתוכניות ״ענבים״ של מזרחי טפחות אפשר למשוך חלק מהכסף בתחנת יציאה ולהשאיר את 12 ההפקדות האחרונות",
+      end: "בתוכניות כאלה הכסף פנוי במועדים אחרים מאלה שבגרף.",
+    },
     about: { free: "מה שפנוי לקחת ביום שבחרתם: ההפקדות שהתקופה שלהן הסתיימה, אחרי מס", locked: "הכסף שהופקד ועדיין נעול ביום שבחרתם", last: "החודש שבו ההפקדה האחרונה נפתחת" },
   },
   ladder: {

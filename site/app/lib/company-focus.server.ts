@@ -125,7 +125,7 @@ export function buildCompanyFocus(): { data: FocusData; figures: FocusFigures; a
       const g = inst.groups.find((x) => x.wrapperId === p.id);
       if (!g || g.products.length === 0) return [];
       const asOf = g.asOf;
-      return [{ kind: { id: p.id, name: p.name, type: "bank" as const, unit: p.unit }, product: { id: p.id, count: p.unit === "has" ? null : depositCount(g.products), asOf: asOf ? String(asOf.value) : null, href: companyPath(r.id, { product: p.id }) }, figures: { asOf } }];
+      return [{ kind: { id: p.id, name: p.name, type: "bank" as const, unit: p.unit }, product: { id: p.id, count: p.unit === "has" ? null : depositCount(g.products), asOf: asOf ? { from: String(asOf.from.value), to: String(asOf.to.value) } : null, href: companyPath(r.id, { product: p.id }) }, figures: { asOf } }];
     });
     const tariff = inst.tariff && !inst.tariff.missing ? inst.tariff : null;
     const line: FocusLine | null = bank ? (tariff ? { kind: "tariff", at: String(tariff.snapshot.value) } : null) : { kind: "class", text: r4catalogue.brokerClassLine };

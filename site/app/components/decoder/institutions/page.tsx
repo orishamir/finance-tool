@@ -19,6 +19,7 @@ import { CompanyTemplate, type CompanyPart } from "../../company/template";
 import { Overview, type OverviewRow } from "../../company/overview";
 import { MoreDocs, ProductDocs, docCount } from "../../company/docs";
 import { BankLinks, BankTable } from "../../company/bank-views";
+import { AsOfDates } from "../../company/as-of";
 import { companyTermsAnchor } from "../../../lib/scope";
 
 const groupTitle: Record<string, string> = { "bank-deposit": copy.groups.deposits, "savings-plan": copy.groups.savings, "current-account": copy.groups.current };
@@ -109,7 +110,8 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
               },
             }
           : {}),
-        date: g.asOf ? <NumAfter lead={w.overviewFact.asOf} value={g.asOf} /> : undefined,
+        // the date of the records the range is from, not of every record the product holds
+        date: range ? <AsOfDates span={range.asOf} words={w.overviewFact.asOf} /> : g.asOf ? <AsOfDates span={g.asOf} words={w.overviewFact.asOf} /> : undefined,
       };
     }
     return {
