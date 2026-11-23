@@ -4,7 +4,7 @@
 import type { DateSpan } from "./date-span";
 import { companyFocus as w } from "../copy";
 import { countPhrase, fmt } from "./format";
-import { normalize } from "./search";
+import { normalize } from "./normalize";
 import type { SiteValue } from "./value";
 
 /** The four kinds of product the page filters by, the designer's grouping. */

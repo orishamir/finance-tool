@@ -9,7 +9,7 @@ import { PairLists } from "./lists";
 import { asideLines, buildInvest, indexById, kindOf, pairCostsKept, type InvestView } from "../../lib/invest";
 import { receiptAmounts, receiptChain } from "../../lib/receipt";
 import { ANCHOR, PairReceipt, PairStub, addedOf, inflationOf, leftOf, nominalOf, taxOf } from "./receipt";
-import { allFunds, asideParts, labelsOf, pickOfHeadline, pairVerdict, steadyOf } from "./pair";
+import { allFunds, asideParts, labelsOf, pickOfHeadline, pairVerdict, steadyOf, totalNoteOf } from "./pair";
 import { stretchesOf } from "../../lib/stretch";
 import { bundle, plan, shown, html, nisIn, fundRow, t } from "./render-fixtures";
 import { entered, type SiteValue } from "../../lib/value";
@@ -85,6 +85,13 @@ describe("the receipt", () => {
     const p = pickOfHeadline(ta)!;
     const out = html(createElement(PairReceipt, { view: ta, bundle, plan, pick: p, chosen: false }));
     expect(out).not.toContain(leftMark);
+  });
+  it("the total's \"!\" also says what a fund bought abroad leaves out of its price, and an Israeli fund's says nothing", () => {
+    const abroad = allFunds(view).find((f) => f.option === "abroad");
+    if (!abroad) throw new Error("the page's index has a fund bought abroad");
+    expect(totalNoteOf(view, bundle, abroad.rec.id)).toContain(w.pair.abroadShort);
+    const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan });
+    expect(totalNoteOf(ta, bundle, pickOfHeadline(ta)!.fund)).toBeNull();
   });
   it("the run's index at the horizon and its deposits as paid are F-03's and F-05's, which take the chain to the horizon's shekels", () => {
     const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house });

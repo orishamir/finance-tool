@@ -4499,6 +4499,8 @@ export const invest = {
     baseAbout: "ההפקדות עם התשואה של התוכנית בלבד, בלי מה שהחשבון, הקרן והמדינה לוקחים, בכסף של היום",
     left: (years: number) => `נשאר לכם בעוד ${yearsSpan(years)}`,
     steadyDollar: "בהנחה שהדולר לא זז מול השקל",
+    /** In the "!" beside the total, for a fund bought abroad: the short form of `abroadOthers` and `abroadSpread`, which say it in full. */
+    abroadShort: "בקרן שנקנית בחו״ל החישוב לא כולל חיובים של ברוקר, של צד שלישי ושל רשויות, ולא מרווח המרה שאין לו תקרה כתובה. בפועל אפשר לשלם יותר.",
     steadyIndexCurrency: "בהנחה ששער המטבע של המדד לא זז מול השקל",
     cheapest: "הזוג הזול ביותר",
     cheapestStar: "★ הזוג הזול ביותר לתוכנית שלכם",

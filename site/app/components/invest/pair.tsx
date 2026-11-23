@@ -344,6 +344,13 @@ export function steadyOf(view: InvestView, bundle: IndicesBundle, fund: string):
   return view.index.custom ? c.pair.steadyIndexCurrency : c.pair.steadyDollar;
 }
 
+/** The "!" beside the total: the dollar held still where the figure rests on it, and for a fund bought abroad what its price leaves out. */
+export function totalNoteOf(view: InvestView, bundle: IndicesBundle, fund: string): string | null {
+  const abroad = allFunds(view).find((f) => f.rec.id === fund)?.option === "abroad";
+  const sayings = [steadyOf(view, bundle, fund), abroad ? c.pair.abroadShort : null].filter((x): x is string => !!x);
+  return sayings.length === 0 ? null : sayings.map((x) => (x.endsWith(".") ? x : `${x}.`)).join(" ");
+}
+
 // ---------------------------------------------------------------- the account column
 
 /** The bars' scale: the costs of the main group, so one or two far larger accounts do not flatten the rest (they get a break mark). */

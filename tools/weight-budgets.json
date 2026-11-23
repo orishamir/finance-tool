@@ -3,7 +3,7 @@
   "budgets": {
     "front page": { "script": 327, "data": 14 },
     "guides": { "script": 326, "data": 16 },
-    "guide": { "script": 482, "data": 120 },
+    "guide": { "script": 482, "data": 124 },
     "bond fund guide": { "script": 333, "data": 114 },
     "mutual funds guide": { "script": 333, "data": 95 },
     "exposure": { "script": 332, "data": 77 },
@@ -18,7 +18,7 @@
     "rules": { "script": 364, "data": 107 },
     "rules shelf": { "script": 311, "data": 134 },
     "documents": { "script": 342, "data": 84 },
-    "parameters": { "script": 312, "data": 21 },
+    "parameters": { "script": 312, "data": 22 },
     "not covered": { "script": 323, "data": 67 },
     "kit": { "script": 474, "data": 13 }
   }

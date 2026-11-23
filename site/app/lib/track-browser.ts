@@ -10,7 +10,7 @@ import { exposureShares, type CompactHoldings, type ExposureShares, type Holding
 import { trackLabels, youngerThanYears } from "./track-labels";
 import { kindLabel, kindWordSet, nameAddsToKind, nameSaysKind, normName, shortTrackNames } from "./track-names";
 import { countPhrase, fmt, heCollator } from "./format";
-import { normalize } from "./search";
+import { normalize } from "./normalize";
 import type { ListSort } from "./list-sort";
 import { computed, depositFeeNoneByRule, expandFee, numberOf, type CompactFee, type SiteValue } from "./value";
 

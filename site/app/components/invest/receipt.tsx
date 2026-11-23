@@ -22,7 +22,7 @@ import { Num, ShortRow, StateTag, shortRow } from "../provenance";
 import { DocLink, FEE_WORDS_HELP, HelpMark, LabelChip, LeftOutLine, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
 import { leftOutOf } from "../../lib/left-out";
 import { isCustomFund } from "../../lib/custom-entries";
-import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, priced, steadyOf, whole, type Pick } from "./pair";
+import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, priced, totalNoteOf, whole, type Pick } from "./pair";
 import { OptionTag } from "./parts";
 import { brokerLabels } from "../../lib/labels";
 import { partName } from "./cost-lines";
@@ -329,7 +329,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const fundName = <MixedName className={fund && isCustomFund(fund.rec) ? "text-entered" : undefined}>{fund?.name ?? pick.fund}</MixedName>;
   const short = house?.short ?? pick.house;
   // the figures each line shows are whole shekels that add up; each opens the figure it stands for, with that figure's sources
-  const steady = steadyOf(view, bundle, pick.fund);
+  const steady = totalNoteOf(view, bundle, pick.fund);
   const years = plan.years;
   const ticket = layout === "ticket";
   const top = (
