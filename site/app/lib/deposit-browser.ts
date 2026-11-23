@@ -2,7 +2,6 @@
 // of a record, which offers the reader's amount opens, the period chart's bars and the grid's cell (F-108), the interest an offer pays on
 // the amount (F-21), the list's order and its words. No React, no I/O.
 import { amountOpens, amountUnknown, bestOpenOffer, depositInterest, interestCalcOf } from "@finance-tool/engine";
-import { dateSpan, type DateSpan } from "./date-span";
 import { depositBrowser as t } from "../copy";
 import { breakText, exitFirstOf, exitTiming, exitWords, type ExitPoints } from "./deposit-kind";
 import { countPhrase, fmt } from "./format";
@@ -72,12 +71,16 @@ export interface DbBank {
 
 export interface DbData {
   today: string;
+  /** The day the tables were read (the latest `checked` of the records). */
+  read: string;
   /** In the order the grid and the groups show them: by name, in Hebrew order (no size or rank). */
   banks: DbBank[];
   offers: DbOffer[];
   /** P-11's steps, each the parameter's value object; the page starts at `start` (P-05's amount now). */
   amounts: SiteValue[];
   start: number;
+  /** The largest amount the field and the address take (P-05 `ranges.amount`). */
+  amountMax: number;
 }
 
 /** The glossary cards behind the list's column heads, the kind of rate's "?" and the linked group's heading (as the track browser keeps its own). */
@@ -318,14 +321,6 @@ export interface DbRow {
   linkage: DbOffer["linkage"];
   labels: Label[];
   offers: DbOffer[];
-}
-
-/** The days the rates of a list's rows were read from the banks' sites (their `checked`): the oldest and the newest; null for no rows. */
-export function readSpan(rows: readonly DbRow[]): DateSpan<string> | null {
-  return dateSpan(
-    rows.flatMap((r) => r.offers.map((o) => o.rate_offered.checked)),
-    (d) => d,
-  );
 }
 
 /** What the row's offers do not share: each of these shows on every line, beside its rate; the rest once for the row. */

@@ -10,6 +10,7 @@ import { exposureShares, type CompactHoldings, type ExposureShares, type Holding
 import { trackLabels, youngerThanYears } from "./track-labels";
 import { kindLabel, kindWordSet, nameAddsToKind, nameSaysKind, normName, shortTrackNames } from "./track-names";
 import { countPhrase, fmt, heCollator } from "./format";
+import { normalize } from "./search";
 import type { ListSort } from "./list-sort";
 import { computed, depositFeeNoneByRule, expandFee, numberOf, type CompactFee, type SiteValue } from "./value";
 
@@ -312,11 +313,14 @@ export function sortInForce(chosen: SortState, sortable: ReadonlySet<SortId>): S
   return { id, dir: 1 };
 }
 
-/** The search matches the name as the company writes it and the company's name (spaces, quotes and dashes ignored). */
+/** A name or a search as the list compares them: the site search's normalisation (niqqud, final letters, quotes), then no spaces, quotes or dashes. */
+const searchKey = (s: string): string => normName(normalize(s));
+
+/** Whether a track answers the search: its fund number, its name, its company's short or full name. */
 export function matchesSearch(x: TbTrack, company: TbCompany | undefined, q: string): boolean {
-  const n = normName(q.trim());
+  const n = searchKey(q.trim());
   if (!n) return true;
-  return normName(x.fullName).includes(n) || normName(x.companyName).includes(n) || normName(company?.fullName ?? "").includes(n);
+  return String(x.id).includes(n) || [x.fullName, x.companyName, company?.fullName ?? ""].some((name) => searchKey(name).includes(n));
 }
 
 export function filterTracks(view: ProductView, query: { kind: string; q: string }): TbTrack[] {

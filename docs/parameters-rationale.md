@@ -59,9 +59,9 @@ P-05, `data/parameters/illustrative-scenario.json`: the starting values of the g
 
 ### Field ranges
 
-**Values:** the age field 0 to 120; a yearly percentage (a return, inflation, a money-market fund's rate) −50% to 50% (`ranges.pct`); the interest rate of a guide whose run taxes it as interest (the current account, a bank deposit, a savings plan, makam, a government bond) 0% to 50% (`ranges.interest`).
+**Values:** an age 0 to 120; a yearly percentage (a return, inflation) −50% to 50%; an amount of money 0 to 1,000,000,000 NIS (`ranges.amount`), in every whole-shekel field and in the deposits page's address.
 
-**Why:** the bounds catch a typing mistake, not a forecast. A return, inflation and a money-market fund's return can fall below zero, so their range does: the money-market fund's guides take −1% as typed, keep it on the device and run it. Interest below zero is not run: the rule base holds no rule for its tax (method G-41, TXI OQ15), so its field starts at 0. The range applies where the rate is typed: which range a guide's rate field takes is its wrapper's kind (`cashRateRange`, `site/app/lib/guide-signature.ts`), and the device keeps any rate typed, so a negative interest rate kept from an older device or an imported file reaches the run, which stops on G-41 and says why. The interest range is the site's choice (Claude, 2026-11-23), not the founder's; revisable.
+**Why:** bounds that catch a typing mistake, not rules. The amount's top is one billion shekels: the fee page already refuses a sum above it, it is twenty times the largest bound any bank deposit table read prints (50,000,000 NIS on 2026-11-23), and far above a personal saving; with no top, a typed 99,999,999,999,999 ran through the guides' charts and an address's amount of twenty digits lost its last ones. Chosen by Claude, revisable.
 
 ### Representative instruments
 

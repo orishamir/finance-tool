@@ -18,11 +18,12 @@ export function GoLink({ to, children, className }: { to: string; children: Reac
 
 /**
  * `inline`: words in running text, at the text's size and on its lines (no tap area of its own: it would cover the lines above and below).
- * `line`: a link on a line of its own, or among controls: a 44 px target as wide as its words, its words and an icon centred in it.
+ * `line`: a link on a line of its own, or among controls: a 44 px target as wide as its words, its words and an icon centred in it, on the
+ * layer of a control that stands alone (`tap-area`), so the areas of the figures around it never cut into it.
  */
 const LOOK = {
   inline: "",
-  line: "inline-flex w-fit items-center gap-1 min-h-target",
+  line: "tap-area inline-flex w-fit items-center gap-1 min-h-target",
 } as const;
 
 /**

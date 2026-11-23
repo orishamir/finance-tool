@@ -12,11 +12,9 @@ import { fmt } from "../../lib/format";
 import { HELP_TERMS as DEPOSIT_TERMS } from "../../lib/deposit-browser";
 import { numberOf, type SiteValue } from "../../lib/value";
 import { IconAlert, IconFile } from "../icons";
-import { Num } from "../provenance";
+import { Num, NumAfter } from "../provenance";
 import { AmountRange, AnchorSpread, ChoiceChips, Disclosure, GoLink, HelpMark, SegmentedControl, DoubtNote, FigureLines, LabelRow, LabelSheetHost, MixedName, PrintedQuotes, PrintedText, ProductPhoneRow, ProductTable, RowFoldButton, SharedFacts, Tag, When, cx, gershayim, type FoldMark, type ProductColumn, type ProductRow } from "../kit";
 import type { ProductRowData } from "../decoder/institutions/types";
-import type { DateSpan } from "../../lib/date-span";
-import { AsOfDates } from "./as-of";
 import { statedKnown } from "../decoder/institutions/product-row";
 
 const muted = "text-sm text-muted-foreground";
@@ -258,7 +256,7 @@ function PhoneRow({ row, shared, known, bands, amount, fromOnly }: { row: TableR
 }
 
 /** One bank's deposits or savings plans as one table. */
-export function BankTable({ kind, products, known, asOf }: { kind: "deposits" | "savings"; products: readonly ProductRowData[]; known: ReadonlySet<string>; /** The oldest and the newest as-of date of the table's records, for the line under the heading. */ asOf: DateSpan<SiteValue> | null }) {
+export function BankTable({ kind, products, known, asOf }: { kind: "deposits" | "savings"; products: readonly ProductRowData[]; known: ReadonlySet<string>; /** The latest "נכון ליום" of the bank's records, for the line under the heading. */ asOf: SiteValue | null }) {
   const rows = useMemo(() => tableRows(products), [products]);
   const shared = useMemo(() => sharedFacts(products), [products]);
   const bands = useMemo(() => sharedBands(rows), [rows]);
@@ -309,7 +307,7 @@ export function BankTable({ kind, products, known, asOf }: { kind: "deposits" | 
           {asOf && (
             <>
               {" · "}
-              <AsOfDates span={asOf} words={w.deposits.asOf} />
+              <NumAfter lead={w.deposits.asOf} value={asOf} />
             </>
           )}
         </p>

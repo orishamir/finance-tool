@@ -2,11 +2,6 @@
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
 import { countPhrase } from "./lib/count";
 import type { FeeCap } from "@finance-tool/schema";
-import type { ChangeKind, HeldKind } from "@finance-tool/engine";
-import type { FeeKindId } from "./lib/fee-deal/core";
-
-/** A name's gender and number, which the words after it agree with: masculine, feminine, and each plural. */
-export type NameForm = "m" | "f" | "mp" | "fp";
 
 export const site = {
   name: "מקור",
@@ -61,7 +56,7 @@ export const numbers = {
    * figures short, and the track pages' managed money from a thousand million.
    */
   billion: "מיליארד",
-  /** A chart tick's short form (lib/format.ts `compactNis`): `200 אלף ₪`, `1.5 מיליון ₪`. */
+  /** A chart tick's short form (lib/format.ts `compactNis`): `200 אלף ₪`, `1.5 מיליון ₪`, and from a billion `billion`'s word (`93.5 מיליארד ₪`). */
   compact: { thousand: "אלף", million: "מיליון" },
   /** A count of years and of months in words (lib/format.ts `fmt.years`, `fmt.months`): "שנה", "שנתיים", "5 שנים". */
   yearWords: { one: "שנה", two: "שנתיים", many: "שנים" },
@@ -352,7 +347,21 @@ export const values = {
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
   agePlaceholder: "למשל 30", // from the approved mockup
-  errors: { nan: "הזינו מספר.", whole: "הזינו סכום בשקלים שלמים.", negative: "הסכום לא יכול להיות שלילי.", positive: "הזינו סכום גדול מאפס.", years: ["הזינו מספר שנים בין", "ל־"], age: ["הזינו גיל בין", "ל־"], pct: ["הזינו אחוז בין", "ל־"] },
+  errors: {
+    nan: "הזינו מספר.",
+    whole: "הזינו סכום בשקלים שלמים.",
+    // a point and three digits in a whole amount ("1.000"): a thousands separator or a decimal point, it cannot be told which
+    dotThousands: "לא ברור אם הנקודה מפרידה אלפים. הזינו את הסכום בלי נקודה.",
+    negative: "הסכום לא יכול להיות שלילי.",
+    positive: "הזינו סכום גדול מאפס.",
+    /** Before the largest amount a field takes (P-05 `ranges.amount`): "הזינו סכום עד 1,000,000,000 ₪." */
+    tooLarge: "הזינו סכום עד",
+    years: ["הזינו מספר שנים בין", "ל־"],
+    yearsWhole: "הזינו מספר שלם של שנים.",
+    age: ["הזינו גיל בין", "ל־"],
+    ageWhole: "הזינו גיל בשנים שלמות.",
+    pct: ["הזינו אחוז בין", "ל־"],
+  },
   loading: "טוען…",
 } as const;
 
@@ -557,8 +566,8 @@ export const parametersPage = {
     "P-05.ranges.age.max": "גיל מותר בשדה: מקסימום",
     "P-05.ranges.pct.min": "אחוז שנתי מותר בשדה: מינימום",
     "P-05.ranges.pct.max": "אחוז שנתי מותר בשדה: מקסימום",
-    "P-05.ranges.interest.min": "ריבית שנתית מותרת בשדה: מינימום",
-    "P-05.ranges.interest.max": "ריבית שנתית מותרת בשדה: מקסימום",
+    "P-05.ranges.amount.min": "סכום מותר בשדה: מינימום",
+    "P-05.ranges.amount.max": "סכום מותר בשדה: מקסימום",
     "P-11.steps.0": "סכום 1",
     "P-11.steps.1": "סכום 2",
     "P-11.steps.2": "סכום 3",
@@ -622,8 +631,7 @@ export const companyFocus = {
   fees: "דמי ניהול מהחיסכון",
   to: "עד",
   tariffGroups: "בתעריפון:",
-  /** The date of a bank product's records: one day, or the oldest and the newest. */
-  asOf: { one: "לפי פרסום הבנק, נכון ל־", from: "לפי פרסום הבנק, נכון לימים ", to: "עד " },
+  asOf: "לפי פרסום הבנק, נכון ל־",
   more: "עוד בעמוד המלא",
   terms: "מה כתוב במסמכים",
   /** The arrow's spoken name. */
@@ -1063,12 +1071,6 @@ export const flags: Record<string, string> = {
   // F-120 at a falling CPI: a figure linked to the CPI every 1 January, of a rule no open reading covers, has no reading (method G-38); the
   // timeline's band shows this beside the rule the run stopped on (CS-03 on the child savings guides)
   "G-38": "הסכום של הכלל הזה מתעדכן בכל 1 בינואר לפי עליית המדד. האתר לא מצא במקורות מה קורה לו כשהמדד יורד, ואין לו הנחה משלו. לכן כשהאינפלציה בחישוב שלילית, האתר לא מחשב את השנים שאחרי השנה הראשונה.",
-  // F-21, F-22, F-24, F-25, F-26 at a rate below zero: the rule base holds no rule for the tax on interest below zero (method G-41);
-  // the timeline's band shows this beside the rule that would tax the interest, for a negative rate kept on the device or imported
-  "G-41": "האתר לא מצא בכללים שקרא איך ממוסה ריבית מתחת לאפס, ולכן הוא לא מחשב אותה. אפשר להזין ריבית מ־0% ומעלה.",
-  // F-22 on the savings plan guide: the ladder locks each monthly deposit on its own, the method's convention (method G-42, BANK OQ12); the
-  // sheet of each figure that rests on it says so
-  "G-42": "המספר מניח שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. זו הנחה של האתר, לא כלל: האתר לא מצא בכללים שקרא אם כך בתוכנית שהדוגמה מחושבת עליה, ובחלק מהתוכניות שהאתר קרא את התנאים שלהן זה אחרת.",
   // F-20: a distribution at a foreign broker is not withheld in Israel; its advance is due by 30 April after the tax year (TXF-21), and the run charges it in the month
   "TXF-21": "בבית השקעות בחו״ל לא מנכים בישראל את המס על דיבידנד או ריבית שהקרן מחלקת. משלמים אותו בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי. החישוב מחשיב אותו כאילו שולם כבר בחודש החלוקה.",
   // F-09: a sale at a foreign broker is not withheld in Israel; the gain is reported with an advance by 31 July and 31 January, and a return is due (TXF-22); the run charges it in the month of the sale
@@ -1573,9 +1575,8 @@ export const depositBrowser = {
   title: "פיקדונות בכל הבנקים",
   /** The page's line: `stated` is the words that state BANK-13 and BANK-50 (an annual nominal rate, before tax), which open them (D116). */
   lead: { before: "הריבית שהבנקים מפרסמים לפיקדון בשקלים,", stated: "בשנה ולפני המס", after: ", לא הצעה אישית. בנק אש ישראל לא נכלל: לא נמצא לו אתר." },
-  /** At the end of the list's heading line, the days the rates in the list were read: "נקרא מאתרי הבנקים ב־09.11.2026", or where the
-   *  rows were read on several days, "נקרא מאתרי הבנקים מ־23.10.2026 עד 14.11.2026". */
-  read: { one: "נקרא מאתרי הבנקים ב־", from: "נקרא מאתרי הבנקים מ־", to: "עד " },
+  /** At the end of the list's heading line: "נקרא מאתרי הבנקים ב־09.11.2026". */
+  read: "נקרא מאתרי הבנקים ב־",
   controls: {
     amount: "כמה מפקידים",
     picks: "סכומים מוכנים",
@@ -1722,9 +1723,9 @@ export const feeDeal = {
     fund_management: { g: "mp" },
     fx_spread: { g: "m" },
     current_account: { g: "m", the: "החשבון העובר ושב בבנק" },
-  } satisfies Record<Exclude<FeeKindId, "own">, { g: NameForm; the?: string }>,
+  } as Record<string, { g: "m" | "f" | "mp" | "fp"; the?: string }>,
   /** "Larger than", after a name that is the subject, agreeing with it ("דמי החשבון הקבועים גדולים מדמי ניהול הפיקדון"). */
-  larger: { m: " גדול מ", f: " גדולה מ", mp: " גדולים מ", fp: " גדולות מ" } satisfies Record<NameForm, string>,
+  larger: { m: " גדול מ", f: " גדולה מ", mp: " גדולים מ", fp: " גדולות מ" } as Record<string, string>,
   /** The rate a cost curve converts a bound in another currency at (F-84), by the currencies a bound may be typed in, as a value's input. */
   rateNames: { USD: "שער הדולר בשקלים", EUR: "שער האירו בשקלים", GBP: "שער הלירה שטרלינג בשקלים" } as Record<string, string>,
   /** The bar under the page's head: the deal's name and where it is kept. */
@@ -2362,20 +2363,8 @@ export const feeDeal = {
       until: "עד ",
       /** Before the months left in today's period (a computed figure). */
       left: "עוד ",
-      /**
-       * A price that changed at the period's start, after the fee's name, by how it changed and the name's gender and number: "דמי חשבון
-       * קבועים עולים ל־80 ₪ בחודש.", the new price and a full stop after it. A fee whose price falls to nothing stops, and no price is said:
-       * "דמי חשבון קבועים מפסיקים להיגבות."
-       */
-      change: {
-        starts: { m: " מתחיל להיגבות: ", f: " מתחילה להיגבות: ", mp: " מתחילים להיגבות: ", fp: " מתחילות להיגבות: " },
-        rises: { m: " עולה ל־", f: " עולה ל־", mp: " עולים ל־", fp: " עולות ל־" },
-        falls: { m: " יורד ל־", f: " יורדת ל־", mp: " יורדים ל־", fp: " יורדות ל־" },
-        changes: { m: " משתנה: ", f: " משתנה: ", mp: " משתנים: ", fp: " משתנות: " },
-      } satisfies Record<Exclude<ChangeKind, "ends">, Record<NameForm, string>>,
-      stops: { m: " מפסיק להיגבות.", f: " מפסיקה להיגבות.", mp: " מפסיקים להיגבות.", fp: " מפסיקות להיגבות." } satisfies Record<NameForm, string>,
-      /** After a changed price, and between two changes. */
-      changeEnd: ". ",
+      /** Before a price that changed at the period's start, by how it changed. */
+      change: { starts: "מתחיל: ", ends: "נגמר: ", rises: "עולה: ", falls: "יורד: ", changes: "משתנה: " } as Record<string, string>,
       /** The headline: one change, after its month ("בינואר 2027 …"), with the fee's name. */
       one: { starts: "נגמר הפטור מ{name}", ends: "המחיר של {name} יורד לאפס", rises: "המחיר של {name} עולה", falls: "המחיר של {name} יורד", changes: "המחיר של {name} משתנה" } as Record<string, string>,
       /** After a rise to or past the cap. */
@@ -2451,12 +2440,12 @@ export const feeDeal = {
       periodsName: "התקופה",
       /** The headline: "עד 25,446 ₪, הסכומים הקבועים עולים בשנה יותר מכל האחוזים"; a later period's month before it, with a comma. */
       cross: { lead: "עד ", after: ", הסכומים הקבועים עולים בשנה יותר מכל האחוזים", month: ", " },
-      /** The headline with no crossover and one mark, by what changes there: "עד 600,000 ₪ המינימום קובע"; where one fee's price changes, its name. */
-      mark: { minEnd: { lead: "עד ", after: " המינימום קובע" }, maxStart: { lead: "מעל ", after: " המקסימום קובע" }, edge: { lead: "ב־", after: " המחיר משתנה", named: " המחיר של {name} משתנה" } },
       falls: "ככל שמה שמוחזק גדל, שנה עולה פחות באחוזים. ",
       fallsSaved: "ככל שמה שנצבר גדל, שנה עולה פחות באחוזים. ",
       /** The shares band by band above the crossover: "מעל 25,446 ₪ האחוזים קובעים: 0.896% בשנה עד 100,000 ₪, 0.7% עד 500,000 ₪ ו־0.5% מעל זה, כל אחד על כל הסכום." */
       bands: { lead: "מעל ", decides: " האחוזים קובעים: ", perYear: " בשנה", upTo: " עד ", sep: ", ", and: " ו־", above: " מעל זה", whole: ", כל אחד על כל הסכום", end: "." },
+      /** A fee that starts in a later period, after its name and price, by the name's gender and number. */
+      joins: { m: " מצטרף לסכומים הקבועים. ", f: " מצטרפת לסכומים הקבועים. ", mp: " מצטרפים לסכומים הקבועים. ", fp: " מצטרפות לסכומים הקבועים. " } as Record<string, string>,
       /** A fee offset against an action's fee: the chart shows a year without that action. */
       offset: { lead: "הסכום הזה מתקזז מול ", month: " של אותו חודש, ולכן הגרף מראה שנה בלי ", end: "." },
       x: "הסכום שמוחזק (₪)",
@@ -2465,21 +2454,15 @@ export const feeDeal = {
       xShort: "הסכום שמוחזק (₪)",
       xShortSaved: "הסכום שנצבר (₪)",
       /** The layers' groups, named on the chart. */
-      groups: { share: "אחוזים", sum: "סכומים קבועים" } satisfies Record<HeldKind, string>,
+      groups: { share: "אחוזים", fixed: "סכומים קבועים" } as Record<string, string>,
       lanes: "מה קובע את המחיר של כל עמלה, לפי הסכום",
       /** The "?" after the name of a lane whose maximum is on each security held: the chart charges it on one security (F-14). */
       perSecurity: "האתר מחשב כאילו מחזיקים נייר ערך אחד: אם מחזיקים כמה ניירות ערך, העמלה יכולה להיות גבוהה יותר ממה שמוצג.",
-      laneGroups: { share: "אחוזים ממה שמוחזק", shareSaved: "אחוזים ממה שנצבר", sum: "סכומים קבועים" },
-      /**
-       * Over the crossover's point, by how the two kinds meet there (F-124): costing the same, or at a cut past which the shares cost more,
-       * the sums still more at the cut itself.
-       */
-      crossMark: { same: "כאן הקבועים שווים לאחוזים", past: "מעל זה האחוזים עולים יותר" } satisfies Record<"same" | "past", string>,
-      /**
-       * At a drop, by what the fee whose step ends there does over it (F-125), then the two years: "האחוז החדש חל על כל הסכום:", "מעל
-       * הסכום הזה המחיר של {name} יורד:" or "מעל הסכום הזה לא גובים {name}:", and "101,000 ₪ עולים 935 ₪ בשנה, ו־99,000 ₪ עולים 1,115 ₪".
-       */
-      drop: { share: "האחוז החדש חל על כל הסכום:", falls: "מעל הסכום הזה המחיר של {name} יורד:", stops: "מעל הסכום הזה לא גובים {name}:", costs: " עולים ", year: " בשנה, ו־" },
+      laneGroups: { share: "אחוזים ממה שמוחזק", shareSaved: "אחוזים ממה שנצבר", fixed: "סכומים קבועים, בכל סכום" } as Record<string, string>,
+      /** Over the crossover's point. */
+      crossMark: "כאן הקבועים שווים לאחוזים",
+      /** At a drop: "האחוז החדש חל על כל הסכום:" and "101,000 ₪ עולים 935 ₪ בשנה, ו־99,000 ₪ עולים 1,115 ₪". */
+      drop: { lead: "האחוז החדש חל על כל הסכום:", costs: " עולים ", year: " בשנה, ו־" },
       /** The reading at an amount: "שנה על 60,000 ₪", and its share "1.28% ממה שמוחזק". */
       box: { head: "שנה על ", share: " ממה שמוחזק", shareSaved: " ממה שנצבר", sep: " · " },
       range: { lead: "הסכומים בגרף:", from: "מ־", to: "עד", unit: "₪", reset: "חזרה לטווח שבפתיחה", hint: "אפשר גם לגרור על הגרף כדי להתקרב לטווח", fromName: "הסכום הקטן בגרף", toName: "הסכום הגדול בגרף" },
@@ -2823,8 +2806,7 @@ export const companyPage = {
     /** A current account's rate, where the bank pays it only on its conditions (the product's part spells them out). */
     current: (conditional: boolean) => (conditional ? "ריבית בשנה על יתרת זכות, בתנאים" : "ריבית בשנה על יתרת זכות"),
     parts: "מה יש בו",
-    /** The date of the records the range is from: one day, or the oldest and the newest ("נכון לימים 23.10.2026 עד 13.11.2026"). */
-    asOf: { one: "נכון ל־", from: "נכון לימים ", to: "עד " },
+    asOf: "נכון ל־",
   },
   /** A manager's overview table. */
   overviewTable: {
@@ -2838,8 +2820,7 @@ export const companyPage = {
     note: { fees: (year: string | null) => (year ? `דמי הניהול במסלולים הם הממוצע שנגבה ב־${year}, מהחיסכון, מהמסלול הזול ליקר.` : "דמי הניהול במסלולים הם מהחיסכון, מהמסלול הזול ליקר."), assets: "הכסף המנוהל נכון לסוף ", end: "." },
   },
   deposits: {
-    /** The date of the table's records: one day, or the oldest and the newest. */
-    asOf: { one: "לפי פרסום הבנק, נכון ל־", from: "לפי פרסום הבנק, נכון לימים ", to: "עד " },
+    asOf: "לפי פרסום הבנק, נכון ל־",
     sharedDeposits: "נכון לכל הפיקדונות בטבלה:",
     sharedPlans: "נכון לכל התוכניות בטבלה:",
     beforeTax: "הריבית שנתית ונומינלית, לפני המס על הריבית.",
@@ -3423,6 +3404,7 @@ export const guideSignature = {
     outOfRange: { before: "הסכום מחוץ לטווח שהריבית שפורסמה נקבעה לו:", middle: "עד", after: "." },
     gaps: {
       depositBreak: "הבנק מתאר שבירה בתנאים שהאתר עוד לא מחשב.",
+      planLockPerDeposit: "ההנחה כאן: לכל הפקדה חודשית יש נעילה משלה, באורך תקופת התוכנית, כמו בפיקדון שנפתח בכל חודש. אין כלל כללי שקובע את זה: כל בנק קובע בהסכם התוכנית שלו. האתר קרא את החוזה של בנק אחד. בחוזה הזה התוכניות נפתחות כולן יחד, בנקודת יציאה שנספרת מתחילת התוכנית. שאלה פתוחה BANK-OQ12",
       accountBanks: "הריביות שהבנקים מפרסמים על יתרה בעו״ש עוד לא נאספו.",
       depositBanks: "הריביות שהבנקים מפרסמים על פיקדון לשנה עוד לא נאספו.",
     } as Record<string, string>,
@@ -3519,19 +3501,6 @@ export const guideSignature = {
     lockLine: { before: "בתוכנית של לאומי התקופה היא", middle: "והריבית", after: "בשנה. אין אפשרות שבירה." },
     alt: { before: "בפיקדון חד־פעמי", ofBank: "של", forTerm: "לתקופה של", rate: "ריבית", middle: "כל הסכום נעול ואז פנוי בבת אחת." },
     rangeLine: "האתר קורא את הטווח בטבלה של הבנק כסכום להפקדה אחת. הטבלה לא אומרת זאת במילים.",
-    /**
-     * Beside the three figures, what they rest on (method F-22, G-42) and what the plan terms read say. Each `stated` is the words that
-     * state its rule (D116): BANK-28, no law or Bank of Israel directive read decides it (`term` opens its card); BPN-10, Hapoalim's four plans; BANK-38, four of
-     * Mizrahi-Tefahot's ענבים plans. Leumi's own terms on it are BANK OQ12.
-     */
-    lock: {
-      assumption: "שלושת המספרים האלה מניחים שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. זו הנחה של האתר, לא כלל. האתר לא מצא בכללים שקרא אם כך בתוכנית של לאומי, שהדוגמה מחושבת עליה. שאלה פתוחה BANK-OQ12.",
-      general: { before: "בחוקים ובהוראות של", term: "בנק ישראל", read: "שהאתר קרא", stated: "אין קביעה אם כל הפקדה נעולה לבדה, וכל בנק קובע את זה בתנאי התוכניות שלו", after: "." },
-      others: "בחלק מהתוכניות שהאתר קרא את התנאים שלהן זה אחרת, למשל:",
-      hapoalim: { stated: "בארבע מהתוכניות של בנק הפועלים ההפקדות לא נעולות כל אחת לבדה, ומושכים את כל החיסכון יחד, בתחנות יציאה שנספרות מתחילת התוכנית", after: ";" },
-      mizrahi: { stated: "בארבע מתוכניות ״ענבים״ של מזרחי טפחות אפשר למשוך בתחנת יציאה את כל הכסף, או רק חלק ממנו ולהשאיר את ״12 הפקדות אחרונות והרווחים עליהם״", after: "." },
-      end: "בתוכניות כאלה הכסף פנוי במועדים אחרים מאלה שבגרף.",
-    },
     about: { free: "מה שפנוי לקחת ביום שבחרתם: ההפקדות שהתקופה שלהן הסתיימה, אחרי מס", locked: "הכסף שהופקד ועדיין נעול ביום שבחרתם", last: "החודש שבו ההפקדה האחרונה נפתחת" },
   },
   ladder: {

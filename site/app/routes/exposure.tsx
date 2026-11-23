@@ -9,7 +9,7 @@ import { GuideSection, GuideFrame, GuideHeader, useCurrentSection, type GlanceIt
 import { IconLock } from "../components/icons";
 import { RuleRef } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { Card, GoLink, RowArrow, Tag, gershayim } from "../components/kit";
+import { Card, GoLink, RowArrow, Tag, cx, gershayim } from "../components/kit";
 import { exposureContent } from "../content/exposure";
 import { ruleFigure, type SiteValue } from "../lib/value";
 
@@ -26,6 +26,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   const { indexPath } = await import("../lib/site-paths");
   return { ...data, indicesHref: data.record.kind === "equity_index" ? indexPath(data.record.id) : null };
 }
+
+/** Links and buttons inside a card whose whole face is its link lie above that link's area and keep their own tap. */
+const CARD_LIFT = "[&_:is(a,button,[role=button]):not([data-card-link])]:relative [&_:is(a,button,[role=button]):not([data-card-link])]:z-10";
 
 export function meta({ loaderData: data, location }: Route.MetaArgs) {
   const name = data?.name ?? guideIndex.title;
@@ -63,8 +66,10 @@ export default function ExposurePage() {
             <ul data-wide className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {data.holders.map((h) => (
                 <li key={h.id}>
-                  <Card className="h-full flex flex-col gap-2 hover:bg-accent/40 transition-colors duration-(--duration-fast)">
-                    <Link to={guidePath(h.id)} className="flex items-center justify-between gap-4">
+                  {/* the whole card is the link (design-system 7, "Instrument card"): its area covers the card, and the rules' chips in it
+                      lie above it and keep their own tap */}
+                  <Card className={cx("relative h-full flex flex-col gap-2 hover:bg-accent/40 transition-colors duration-(--duration-fast)", CARD_LIFT)}>
+                    <Link to={guidePath(h.id)} data-card-link className="flex items-center justify-between gap-4 after:absolute after:inset-0 after:rounded-lg">
                       <span className="text-lg font-semibold">{gershayim(h.name)}</span>
                       <RowArrow />
                     </Link>

@@ -6,7 +6,7 @@ import { companyPath, documentsPath, guidePath, rulesPath, trackBrowserPath, tra
 export async function loader() {
   const { loadCma, loadTerms, loadProducts, loadRules, loadParameters } = await import("../lib/data.server");
   const { exposureHref, loadCatalog, loadExposures } = await import("../lib/instruments.server");
-  const { normalize, ruleFigs } = await import("../lib/search");
+  const { normalize, ruleFigs, shownEntry } = await import("../lib/search");
   const { gershayim } = await import("../lib/format");
   const { limitedBondFund, mutualFunds, search, searchMore, sourceBlock, parametersPage, topicName } = await import("../copy");
   const entries: SearchEntry[] = [];
@@ -172,5 +172,5 @@ export async function loader() {
   }
   // the deposits page (D92): found by what it is, among the bank results
   for (const name of depositBrowser.search.names) entries.push({ kind: "bank", name, line: depositBrowser.search.line, href: "/deposits", norm: normalize(name) });
-  return Response.json(entries);
+  return Response.json(entries.map(shownEntry));
 }

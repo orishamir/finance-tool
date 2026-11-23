@@ -13,7 +13,7 @@ import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
 import { Timeline } from "../components/timeline/Timeline";
 import { hasSignatureVisual, SignatureFrame, signatureTitle } from "../components/guide-signature";
 import { accountWorthRow } from "../components/guide-signature/current-account";
-import { cashRateRangeOf, lumpSumIds } from "../lib/guide-signature";
+import { cashLikeIds, lumpSumIds } from "../lib/guide-signature";
 import { gershayim, Sentence, TextLink, When } from "../components/kit";
 import { fmt } from "../lib/format";
 import { trackProductIds } from "../lib/track-browser";
@@ -421,8 +421,7 @@ export default function GuidePage() {
   const signature = hasSignatureVisual(record.id, data.signature) ? data.signature : null;
   // the current account starts from the rate most of the collected banks publish (F-85), and says how many do
   const common = record.id === "current-account" && signature?.facts.commonCount && signature.facts.bankCount ? { count: signature.facts.commonCount, of: signature.facts.bankCount } : null;
-  const rateRange = cashRateRangeOf(record.id);
-  const cash = rateRange ? { id: record.id, rateRange, common } : null;
+  const cash = cashLikeIds.includes(record.id) ? { id: record.id, published: !!data.bundle?.feeValues.balanceCeiling || ["bank-deposit", "savings-plan", "current-account"].includes(record.id), common } : null;
   // a fact the site computes from the collected records, listed with the pinned rules
   const worthFacts = signature && record.id === "current-account" ? [accountWorthRow(signature)].filter((r) => r !== null) : [];
   const abroad = data.abroad && content?.abroad ? <GuideAbroad view={data.abroad} words={content.abroad} cp={cp} /> : null;

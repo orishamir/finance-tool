@@ -68,19 +68,10 @@ function ProductLine({ p, figures }: { p: FocusProduct; figures: FocusFigures[st
   if (p.tariffGroups) return <>{`${w.tariffGroups} ${p.tariffGroups.join(", ")}`}</>;
   if (p.asOf !== undefined) {
     if (!p.asOf) return null;
-    // the oldest and the newest date of the bank's records of the product, said once where they agree
-    if (p.asOf.from === p.asOf.to)
-      return (
-        <>
-          {w.asOf.one}
-          <Fig value={figures?.asOf?.to} text={formatValue(p.asOf.to, "text")} />
-        </>
-      );
     return (
       <>
-        {w.asOf.from}
-        <Fig value={figures?.asOf?.from} text={formatValue(p.asOf.from, "text")} /> {w.asOf.to}
-        <Fig value={figures?.asOf?.to} text={formatValue(p.asOf.to, "text")} />
+        {w.asOf}
+        <Fig value={figures?.asOf} text={formatValue(p.asOf, "text")} />
       </>
     );
   }

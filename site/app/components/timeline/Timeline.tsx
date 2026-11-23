@@ -2,7 +2,6 @@
 // assumption chips (phone), readout, table (each figure opens the rules its run used); the values sheet (phone) or panel (PC) beside it.
 import { useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { paidInAsEntered, type P05Input } from "@finance-tool/engine";
-import type { ParameterRecord } from "@finance-tool/schema";
 import { buttons, computedInputs as ci, flags, guide as copy, guideBlocks, provenance as provCopy, system, values as valuesCopy } from "../../copy";
 import { p05Number, p05Range, p05Value, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
 import { fmt, nisShown } from "../../lib/format";
@@ -10,7 +9,7 @@ import { useInputs, type Employment } from "../../lib/inputs";
 import { useOwnRates } from "../../lib/own-rate";
 import { useValueMode, type ValueMode as Mode } from "../../lib/mode-store";
 import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
-import { lumpSumEntered, type CashRateRange } from "../../lib/guide-signature";
+import { lumpSumEntered } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconReset } from "../icons";
 import { IdRef, Num, RuleRef, StateTag } from "../provenance";
@@ -33,7 +32,7 @@ export interface TimelineProps {
    * A cash-like page (guide-page sweep): the run rests on a rate, not on A-01, so the field reads "ריבית בשנה" and edits the rate the run
    * uses, kept on this device per page (the own-rates store, goal id "guide"). A rate the person enters applies to the whole balance (F-26, no ceiling).
    */
-  cash?: { id: string; /** The P-05 range the cash rate's field takes (`cashRateRange`). */ rateRange: CashRateRange; /** The run starts from the rate most of the collected banks publish (F-85): how many print it, out of how many (the current account). */ common?: { count: SiteValue; of: SiteValue } | null } | null;
+  cash?: { id: string; published: boolean; /** The run starts from the rate most of the collected banks publish (F-85): how many print it, out of how many (the current account). */ common?: { count: SiteValue; of: SiteValue } | null } | null;
   /**
    * The run is one amount put in today, with no monthly deposit (`lumpSumIds`): the monthly field, its chip and its words are left out,
    * a monthly deposit entered on another page does not reach this run, and `note` says where money paid in every month goes instead.
@@ -541,15 +540,6 @@ function TermsList({ bundle }: { bundle: Bundle }) {
   );
 }
 
-/**
- * The check of the cash rate's field: P-05's range of the wrapper's kind (`cashRateRange`), `ranges.interest` from 0 where the run taxes the
- * rate as interest (method G-41), `ranges.pct` for a money-market fund, whose return may fall below zero. The one place the range applies:
- * the device keeps any rate typed (`own-rate.ts`), and a negative interest rate kept from elsewhere stops the run on G-41 with its line.
- */
-export function cashRateCheck(p05: ParameterRecord, kind: CashRateRange): (n: number) => string | null {
-  return percentCheck(p05Range(p05, "ranges", kind) ?? undefined);
-}
-
 /** The fields, in the order of design-spec 4; used both in the phone sheet and the PC panel. */
 function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, ownRate, setOwnRate }: { bundle: Bundle; focusField: P05Input | "all"; employment: boolean; showAge: boolean; cash: TimelineProps["cash"]; lumpSum: boolean; ownRate: number | undefined; setOwnRate: (n: number | null) => void }) {
   const { state, ready, setEntered, setAge, setEmployment } = useInputs();
@@ -568,7 +558,6 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
   // the age's range is a site parameter (P-05 ranges.age); without it, only a whole number is asked
   const checkAge = ageRange ? ageCheck(ageRange) : (n: number) => (Number.isInteger(n) ? null : valuesCopy.errors.nan);
   const pctCheck = percentCheck(pctRange ?? undefined);
-  const cashCheck = cash ? cashRateCheck(p05, cash.rateRange) : pctCheck;
   const publishedFrom = cashBase.update_rule === "founder" ? null : cashBase.effective_from;
   const common = cash?.common;
   // a deposit or a savings plan renews at the end of its term at the rate the bank publishes that day (BANK-05): past the first term the
@@ -615,7 +604,7 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
       </div>
       <div className="field-row grid grid-cols-2 gap-3">
         {cash ? (
-          <div data-field="cash_rate" className="contents"><NumberField label={valuesCopy.fields.cash_rate} unit="pct_per_year" value={current("cash_rate")} start={p05Number(p05, "cash_rate")} isEntered={isEntered("cash_rate")} validate={cashCheck} onCommit={(n) => setOwnRate(n === p05Number(p05, "cash_rate") ? null : n)} onReset={() => setOwnRate(null)} disabled={!ready} autoFocus={focusField === "cash_rate"} /></div>
+          <div data-field="cash_rate" className="contents"><NumberField label={valuesCopy.fields.cash_rate} unit="pct_per_year" value={current("cash_rate")} start={p05Number(p05, "cash_rate")} isEntered={isEntered("cash_rate")} validate={pctCheck} onCommit={(n) => setOwnRate(n === p05Number(p05, "cash_rate") ? null : n)} onReset={() => setOwnRate(null)} disabled={!ready} autoFocus={focusField === "cash_rate"} /></div>
         ) : (
           <div data-field="A-01" className="contents"><NumberField label={valuesCopy.fields["A-01"]} unit="pct_per_year" value={current("A-01")} start={p05Number(p05, "A-01")} isEntered={isEntered("A-01")} validate={pctCheck} onCommit={commit("A-01")} onReset={() => setEntered("A-01", null)} disabled={!ready} autoFocus={focusField === "A-01"} /></div>
         )}
