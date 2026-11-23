@@ -3,7 +3,8 @@
 import { describe, expect, it } from "vitest";
 import { buildInstitution } from "./institutions.server";
 import { rangeLinkage, rateRange } from "./bank-table";
-import { numberOf } from "./value";
+import type { SiteValue } from "./value";
+import type { ProductRowData } from "../components/decoder/institutions/types";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 
 describe("a bank's products and their dates", () => {
@@ -22,16 +23,18 @@ describe("a bank's products and their dates", () => {
     expect(current.asOf?.to.value).not.toBe(deposits.asOf?.to.value);
   });
 
-  it("the overview's rate range is dated by the records it spans, not by a record of another linkage (every bank)", () => {
-    for (const id of new Set(loadDepositTerms().map((d) => d.bank))) {
-      for (const g of buildInstitution(id)?.groups ?? []) {
-        const ranged = rangeLinkage(g.products);
-        const range = ranged ? rateRange(ranged.products) : null;
-        if (!ranged || !range) continue;
-        const days = ranged.products.filter((p) => numberOf(p.rate) !== null).map((p) => String(p.asOf.value)).sort();
-        expect([range.asOf.from.value, range.asOf.to.value], `${id} ${g.wrapperId}`).toEqual([days[0], days.at(-1)]);
-      }
-    }
+  it("the overview's rate range is dated by the records it spans, not by a record of another linkage", () => {
+    // Discount's deposits: unlinked rows read on 08.11.2026 and a CPI-linked row on 13.11.2026; the range is the unlinked one, dated 08.11
+    const day = (iso: string) => ({ value: iso, unit: "date", state: "sourced" }) as unknown as SiteValue;
+    const pct = (n: number) => ({ value: n, unit: "pct_per_year", state: "sourced" }) as unknown as SiteValue;
+    const row = (linkage: ProductRowData["linkage"], rate: number, asOf: string) => ({ linkage, rate: pct(rate), asOf: day(asOf) }) as unknown as ProductRowData;
+    const rows = [row("none", 2.1, "2026-11-08"), row("none", 2.6, "2026-11-08"), row("cpi", 0.4, "2026-11-13")];
+    const ranged = rangeLinkage(rows);
+    const range = ranged ? rateRange(ranged.products) : null;
+    expect([range?.asOf.from.value, range?.asOf.to.value]).toEqual(["2026-11-08", "2026-11-08"]);
+    // unlinked rows read on two days span the two
+    const spread = rateRange([row("none", 2.1, "2026-11-08"), row("none", 2.6, "2026-11-13")]);
+    expect([spread?.asOf.from.value, spread?.asOf.to.value]).toEqual(["2026-11-08", "2026-11-13"]);
   });
 });
 

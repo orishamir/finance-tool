@@ -9,12 +9,14 @@ import { useAddressSort } from "../../lib/list-sort";
 import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, interestOn, interestText, isLinked, offersOf, foldedOffers, offersPhrase, opens, periodBest, readSpan, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type TermId } from "../../lib/deposit-browser";
 import { fmt } from "../../lib/format";
 import { entered } from "../../lib/value";
-import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, SelectField, When, type PeriodBar } from "../kit";
+import { Card, ChoiceChips, DateSpanText, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, SelectField, When, type PeriodBar } from "../kit";
 import { Num, Term } from "../provenance";
 import { HELP_TERMS } from "../../lib/deposit-browser";
 import { DepositGrid } from "./grid";
 import { DepositList, FoldFoot, type ListContext, type ListRow } from "./list";
-import { oneDay, type DateSpan } from "../../lib/date-span";
+
+/** An ISO day is its own day, for a span of the days the rows were read. */
+const isoDay = (d: string) => d;
 
 /** The rows shown before "עוד N הצעות": eight on a computer, six on a phone. */
 const SHOWN = { table: 8, phone: 6 } as const;
@@ -162,7 +164,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
           title={empty ? empty.title : <Heading count={ranked.length} best={best} ctx={ctx} />}
           action={
             <p className="hidden md:block text-sm text-muted-foreground">
-              {read && <ReadDates span={read} />}
+              {read && <DateSpanText span={read} day={isoDay} words={t.read} renderDate={(iso, lead) => <When iso={iso} lead={lead} />} />}
             </p>
           }
         >
@@ -186,7 +188,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
           <div className="flex flex-col gap-1 text-sm text-muted-foreground">
             {read && (
               <p className="md:hidden">
-                <ReadDates span={read} />.
+                <DateSpanText span={read} day={isoDay} words={t.read} renderDate={(iso, lead) => <When iso={iso} lead={lead} />} />.
               </p>
             )}
             {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
@@ -251,12 +253,3 @@ function Heading({ count, best, ctx }: { count: number; best: DbOffer | null; ct
   );
 }
 
-/** The days the list's rates were read: one day, or the oldest and the newest. */
-function ReadDates({ span }: { span: DateSpan<string> }) {
-  if (oneDay(span, (d) => d)) return <When iso={span.to} lead={t.read.one} />;
-  return (
-    <>
-      <When iso={span.from} lead={t.read.from} /> <When iso={span.to} lead={t.read.to} />
-    </>
-  );
-}

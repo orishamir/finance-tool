@@ -63,7 +63,7 @@ export { GroupPriceFold, GroupPriceRows, groupBlocks, groupLineWho, type GroupBl
 export { ClaimCheck, ClaimList } from "./claim-check";
 export { DocLink } from "./doc-link";
 export { TariffDate } from "./tariff-date";
-export { When } from "./when";
+export { DateSpanText, When } from "./when";
 export { MixedName, NameLine, gershayim, keepIndexWhole, keepTitleWhole } from "./name";
 export { AlsoChanged } from "./also-changed";
 export { ClampedText } from "./clamped-text";

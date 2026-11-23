@@ -178,11 +178,14 @@ export function rateRange(products: readonly ProductRowData[]): { low: SiteValue
   return { low: sorted[0]!.rate, high: sorted.at(-1)!.rate, asOf };
 }
 
+/** The ISO day of a record's "נכון ליום". */
+export const asOfDay = (v: SiteValue): string => String(v.value);
+
 /** The oldest and the newest "נכון ליום" of the records (each its rates' own date, else the day they were collected); null for none. */
 export function asOfSpan(products: readonly ProductRowData[]): DateSpan<SiteValue> | null {
   return dateSpan(
     products.map((p) => p.asOf),
-    (v) => String(v.value),
+    asOfDay,
   );
 }
 
