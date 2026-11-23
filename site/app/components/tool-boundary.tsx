@@ -1,6 +1,7 @@
 // An error boundary around one tool (a calculator, the deal editor): a tool that throws on odd input shows a notice in its place, and
 // the rest of the page stands. `resetKey`: a new value (another index, other fields) tries the tool again. `onReset`: for a tool that
 // reads fields kept on the device, which would throw again after a reload, the notice offers to put them back to the site's example.
+// `words`: the notice's title and line, for a tool whose notice says what to do about it; else the site's general ones.
 import { Component, type ReactNode } from "react";
 import { system } from "../copy";
 import { Button, Callout } from "./kit";
@@ -10,6 +11,7 @@ interface Props {
   resetKey?: string;
   /** Puts the fields the tool reads back to the site's example; the tool is then tried again. */
   onReset?: () => void;
+  words?: { title: string; line: string };
 }
 
 interface State {
@@ -31,10 +33,10 @@ export class ToolBoundary extends Component<Props, State> {
 
   override render(): ReactNode {
     if (!this.state.failed) return this.props.children;
-    const { onReset } = this.props;
+    const { onReset, words = system.toolFailed } = this.props;
     return (
-      <Callout tone="caution" title={system.toolFailed.title}>
-        <p>{system.toolFailed.line}</p>
+      <Callout tone="caution" title={words.title}>
+        <p>{words.line}</p>
         <div className="flex flex-wrap gap-x-6">
           {onReset && (
             <Button
