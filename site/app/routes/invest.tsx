@@ -187,7 +187,7 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
   const navigate = useNavigate();
   const exposureId = exposureIdOf(useParams().slug, data.indices);
   // The numbers the person entered on this device, each one not entered taking the site's example (P-05)
-  const entered = useMemo(() => enteredPlan(wb, inputs), [wb, inputs]);
+  const entered = useMemo(() => enteredPlan(wb, inputs, data.form.bounds), [wb, inputs, data.form.bounds]);
   // every bank's row counts its current account (D64)
   const livePlan: WorkbenchInputs = useMemo(() => ({ ...entered.plan, currentAccounts: true }), [entered]);
   // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider in the render deferred behind it (`Body`); the two lists price every
@@ -322,7 +322,7 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
     />
   );
 
-  const planCard = <PlanCard knobs={<PlanKnobs bundle={wb} ranges={data.form.knobs} pct={data.form.pct} />} />;
+  const planCard = <PlanCard knobs={<PlanKnobs bundle={wb} ranges={data.form.knobs} bounds={data.form.bounds} />} />;
   // the receipt: below 1280 px paper above the lists, the stub's way back leading to it (focusable for that, never tabbed to); from 1280 px
   // a ticket over the lists, whose total the ruler's point joins
   const receipt = pick && view && (

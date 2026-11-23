@@ -22,11 +22,14 @@ import {
   replaceState,
   stateFileText,
   useStateStore,
+  type ImportAdded,
   type ImportPreviewData,
   type Refusal,
 } from "../../lib/state";
-import { emptySide, type SideStores } from "../../lib/side-stores";
+import { emptySide, type SideCounts, type SideStores } from "../../lib/side-stores";
 import type { Rejected } from "../../lib/import-check";
+import type { PlanBounds } from "../../lib/plan-bounds";
+import { fmt } from "../../lib/format";
 import { entered } from "../../lib/value";
 import { IconAlert, IconCopy, IconDownload, IconFileUp, IconShare } from "../icons";
 import { Num } from "../provenance";
@@ -52,20 +55,22 @@ function CountForm({ n, forms }: { n: number; forms: Forms }) {
   );
 }
 
-/** The non-zero counts, each in its form, between middle dots (or the given separator). */
-function CountList({ items, sep = "·" }: { items: { n: number; forms: Forms }[]; sep?: string }) {
-  const shown = items.filter((i) => i.n > 0);
+/** A line's parts between middle dots (or the given separator): a separator only ever stands between two parts. */
+function Joined({ parts, sep = "·" }: { parts: { key: string; node: ReactNode }[]; sep?: string }) {
   return (
     <>
-      {shown.map((i, k) => (
-        <Fragment key={i.forms.many}>
+      {parts.map((p, k) => (
+        <Fragment key={p.key}>
           {k > 0 && <span aria-hidden="true">{sep}</span>}
-          <span><CountForm n={i.n} forms={i.forms} /></span>
+          <span>{p.node}</span>
         </Fragment>
       ))}
     </>
   );
 }
+
+/** The non-zero counts, each in its form, as a line's parts. */
+const countParts = (items: { n: number; forms: Forms }[]) => items.filter((i) => i.n > 0).map((i) => ({ key: i.forms.many, node: <CountForm n={i.n} forms={i.forms} /> }));
 
 /** A rejection: the plain alert icon, not the red lock of an open rule. */
 function ErrorNote({ children }: { children: ReactNode }) {
@@ -77,17 +82,26 @@ function ErrorNote({ children }: { children: ReactNode }) {
   );
 }
 
-const countItems = (c: { holdings: number; names: number; offers: number; variants: number; ticks: number; ownRates: number; deals?: number }) => [
+/** What a file or the device holds, kind by kind; the plan numbers are counted where a load added them (`ImportAdded`), else only said to be there. */
+type Counts = { holdings: number; names: number; indices: number; funds: number; accounts: number } & SideCounts;
+
+const countItems = (c: Counts) => [
   { n: c.holdings, forms: copy.forms.holdings },
   { n: c.names, forms: copy.forms.names },
+  { n: c.indices, forms: copy.forms.indices },
+  { n: c.funds, forms: copy.forms.funds },
+  { n: c.accounts, forms: copy.forms.accounts },
   { n: c.offers, forms: copy.forms.offers },
   { n: c.variants, forms: copy.forms.variants },
   { n: c.ticks, forms: copy.forms.ticks },
   { n: c.ownRates, forms: copy.forms.ownRates },
-  { n: c.deals ?? 0, forms: copy.forms.deals },
+  { n: c.deals, forms: copy.forms.deals },
 ];
 
-export function TransferPanel({ site, crumb }: { site: Site; crumb: ReactNode }) {
+/** The kinds a file or the device holds as a line's parts, the plan numbers among them where there are any. */
+const contentParts = (c: Counts & { inputs: boolean }) => [...countParts(countItems(c)), ...(c.inputs ? [{ key: "inputs", node: copy.contents.inputs }] : [])];
+
+export function TransferPanel({ site, bounds, crumb }: { site: Site; /** The plan numbers' bounds an import checks against (P-05's). */ bounds: PlanBounds; crumb: ReactNode }) {
   const snap = useStateStore();
   useEffect(() => {
     ensureLoaded();
@@ -104,7 +118,7 @@ export function TransferPanel({ site, crumb }: { site: Site; crumb: ReactNode })
       <div className="flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-x-12 lg:items-start">
         <ExportHalf site={site} />
         <hr className="border-border lg:hidden" />
-        <ImportHalf />
+        <ImportHalf bounds={bounds} />
       </div>
     </div>
   );
@@ -186,15 +200,7 @@ function ExportHalf({ site }: { site: Site }) {
           <p className="text-muted-foreground">{copy.nothing}</p>
         ) : (
           <p className="text-sm flex flex-wrap items-center gap-x-1.5 gap-y-1">
-            <CountList items={countItems(counts)} />
-            {counts.inputs && (
-              <>
-                <span aria-hidden="true">·</span>
-                {c.inputs}
-              </>
-            )}
-            <span aria-hidden="true">·</span>
-            {c.versions}
+            <Joined parts={[...contentParts(counts), { key: "versions", node: c.versions }]} />
           </p>
         )}
         <Callout tone="caution">{copy.caution}</Callout>
@@ -242,6 +248,8 @@ function refusalText(r: Refusal): { text: string; tone: "blocked" | "caution" } 
       return { text: e.newer, tone: "caution" };
     case "format":
       return { text: e.format, tone: "blocked" };
+    case "damaged":
+      return { text: e.damaged, tone: "blocked" };
     case "unreadable":
       return { text: e.unreadable, tone: "blocked" };
     case "invalid":
@@ -251,21 +259,21 @@ function refusalText(r: Refusal): { text: string; tone: "blocked" | "caution" } 
   }
 }
 
-function ImportHalf() {
+function ImportHalf({ bounds }: { bounds: PlanBounds }) {
   const snap = useStateStore();
   const [pasted, setPasted] = useState("");
   const [fileText, setFileText] = useState<{ text: string; name: string } | null>(null);
   const [unreadable, setUnreadable] = useState(false);
   const [mode, setMode] = useState<"add" | "replace">("add");
   const [confirm, setConfirm] = useState(false);
-  const [done, setDone] = useState<{ mode: "add" | "replace"; added: { holdings: number; names: number; offers: number; variants: number; ticks: number; ownRates: number }; skipped: number; date: string; sideFailed: boolean } | null>(null);
+  const [done, setDone] = useState<{ mode: "add" | "replace"; added: ImportAdded & SideCounts; skipped: number; date: string; sideFailed: boolean } | null>(null);
   const [drag, setDrag] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const input = useRef<HTMLInputElement>(null);
 
   const source = fileText?.text ?? pasted;
-  const read = useMemo(() => (source.trim() === "" ? null : readImport(source)), [source]);
+  const read = useMemo(() => (source.trim() === "" ? null : readImport(source, bounds)), [source, bounds]);
   // new text asks again before it replaces anything, and puts away the line about the last import
   const [readSource, setReadSource] = useState(source);
   if (source !== readSource) {
@@ -360,8 +368,8 @@ function ImportHalf() {
             ) : (
               <p className="flex flex-wrap items-center gap-x-1.5">
                 <span>{copy.afterImport.before}</span>
-                <CountList items={countItems(done.added)} sep="," />.
-                {done.mode === "add" && done.added.holdings + done.added.names > 0 && (
+                <Joined parts={[...countParts(countItems(done.added)), ...countParts([{ n: done.added.inputs, forms: copy.forms.inputs }])]} sep="," />.
+                {done.mode === "add" && (
                   <>
                     {" "}
                     <When iso={done.date} lead={copy.afterImport.tag} />
@@ -416,7 +424,29 @@ function ImportHalf() {
   );
 }
 
+/** What is wrong with a plan number left out: a problem's words, or the bound it is outside ("לא בין 1 ל־40"). */
+function inputProblemWords(r: Extract<Rejected, { kind: "input" }>): ReactNode {
+  if (r.problem !== "out-of-bound") return copy.rejectedProblems[r.problem];
+  const b = r.bound;
+  const ob = copy.outOfBound;
+  return b.max === null ? (
+    <>
+      {ob.below}
+      <bdi>{fmt.number(b.min)}</bdi>
+    </>
+  ) : (
+    <>
+      {ob.between[0]} <bdi>{fmt.number(b.min)}</bdi> {ob.between[1]}
+      <bdi>{fmt.number(b.max)}</bdi>
+    </>
+  );
+}
+
 function RejectedLine({ r }: { r: Rejected }) {
+  if (r.kind === "input") {
+    const name = (copy.rejectedInputs as Record<string, string>)[r.key];
+    return <Tpl t={copy.rejectedInput} vars={{ kind: copy.rejectedKinds.input, name: name ?? <bdi dir="ltr" className="num-id">{r.key}</bdi>, problem: inputProblemWords(r) }} />;
+  }
   const field = (copy.rejectedFields as Record<string, string>)[r.field];
   return (
     <Tpl
@@ -439,7 +469,7 @@ function Preview({ p, mode, onMode, confirm, onConfirm, onLoad }: { p: ImportPre
         · {copy.previewCreated.mid} <bdi dir="ltr" className="num-id">{p.file.site.version}</bdi>
       </p>
       <p className="text-sm flex flex-wrap items-center gap-x-1.5">
-        <CountList items={countItems(p.counts)} />
+        <Joined parts={contentParts(p.counts)} />
       </p>
       {(p.rejected.length > 0 || p.sideProblems.length > 0) && (
         <Callout tone="caution">

@@ -3,7 +3,7 @@
 // (F-89, F-90).
 import { useMemo } from "react";
 import type { P05Input } from "@finance-tool/engine";
-import { invest as c, r2, values as valuesCopy } from "../../copy";
+import { invest as c, values as valuesCopy } from "../../copy";
 import { enteredPlan, type EnteredPlan } from "../../lib/entered-plan";
 import { fmt } from "../../lib/format";
 import { useInputs } from "../../lib/inputs";
@@ -13,7 +13,8 @@ import { usePlanChangesRun } from "../../lib/invest-run";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, shortRow } from "../provenance";
-import { ChangeChart, KnobStrip, PanelHead, percentCheck, rangeScale, type Knob } from "../kit";
+import { ChangeChart, KnobStrip, PanelHead, percentCheck, rangeScale, yearsCheck, type Knob } from "../kit";
+import type { PlanBounds } from "../../lib/plan-bounds";
 
 /** A slider's range as P-05 writes it: linear in `step`, or in `segments` for money (`rangeScale`). */
 type Range = { min: number; max: number; step?: number; segments?: { to: number; step: number }[] };
@@ -39,9 +40,9 @@ function useSetKnob() {
 
 /** The plan from the values entered as they are now: the knobs read it themselves, so a key or a slider's move shows in its own field in the
  * render that answers it, while the page's plan work follows in a deferred render (routes/invest.tsx). */
-function useEnteredNow(bundle: Pick<IndicesBundle, "p05" | "today">): EnteredPlan {
+function useEnteredNow(bundle: Pick<IndicesBundle, "p05" | "today">, bounds: PlanBounds): EnteredPlan {
   const { state } = useInputs();
-  return useMemo(() => enteredPlan(bundle, state), [bundle, state]);
+  return useMemo(() => enteredPlan(bundle, state, bounds), [bundle, state, bounds]);
 }
 
 const valueOf = (entered: EnteredPlan, id: Id) => {
@@ -49,8 +50,9 @@ const valueOf = (entered: EnteredPlan, id: Id) => {
   return { value: v.value as number, entered: v.state === "entered" };
 };
 
-export function PlanKnobs({ bundle, ranges, pct }: { bundle: Pick<IndicesBundle, "p05" | "today">; ranges: KnobRanges; pct: { min: number; max: number } }) {
-  const entered = useEnteredNow(bundle);
+/** The plan's tiles; each field refuses a number outside its bound (`bounds`, P-05's), the years past the horizon slider's end among them. */
+export function PlanKnobs({ bundle, ranges, bounds }: { bundle: Pick<IndicesBundle, "p05" | "today">; ranges: KnobRanges; bounds: PlanBounds }) {
+  const entered = useEnteredNow(bundle, bounds);
   const setKnob = useSetKnob();
   const { setEntered } = useInputs();
   const field = (id: Id) => {
@@ -61,11 +63,11 @@ export function PlanKnobs({ bundle, ranges, pct }: { bundle: Pick<IndicesBundle,
   const knobs: Knob[] = [
     { ...field("amount"), unit: "nis", scale: rangeScale(ranges.amount_now), validate: negative, inputId: PLAN_AMOUNT_FIELD, tileId: PLAN_AMOUNT_TILE },
     { ...field("monthly"), unit: "nis_per_month", scale: rangeScale(ranges.monthly_deposit), validate: negative },
-    { ...field("years"), unit: "years", unitInLabel: true, scale: rangeScale(ranges.horizon_years), inputMode: "numeric", validate: (n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null) },
-    { ...field("ret"), unit: "pct_per_year", scale: rangeScale(ranges["A-01"]), validate: percentCheck(pct) },
+    { ...field("years"), unit: "years", unitInLabel: true, scale: rangeScale(ranges.horizon_years), inputMode: "numeric", validate: yearsCheck(bounds.horizon_years) },
+    { ...field("ret"), unit: "pct_per_year", scale: rangeScale(ranges["A-01"]), validate: percentCheck(bounds["A-01"]) },
     // inflation moves the plan's figures in today's money (A-02, F-06), every line of the change chart among them, but is not one of the
     // four numbers that chart changes (F-89)
-    { id: "inflation", label: k.inflation, value: entered.plan.values.inflation.value as number, start: entered.starts.inflation, isEntered: entered.plan.values.inflation.state === "entered", unit: "pct_per_year", scale: rangeScale(ranges["A-02"]), validate: percentCheck(pct), onCommit: (n: number) => setEntered("A-02", n), onReset: () => setEntered("A-02", null) },
+    { id: "inflation", label: k.inflation, value: entered.plan.values.inflation.value as number, start: entered.starts.inflation, isEntered: entered.plan.values.inflation.state === "entered", unit: "pct_per_year", scale: rangeScale(ranges["A-02"]), validate: percentCheck(bounds["A-02"]), onCommit: (n: number) => setEntered("A-02", n), onReset: () => setEntered("A-02", null) },
   ];
   return <KnobStrip knobs={knobs} layout="tiles" />;
 }

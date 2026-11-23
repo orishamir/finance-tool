@@ -18,6 +18,7 @@ import { todayLocal } from "./today";
 import { askToKeepStorage } from "./keep-storage";
 import { entered as enteredValue, p05Units } from "./value";
 import { sanitizeRawState, type Rejected } from "./import-check";
+import type { PlanBounds } from "./plan-bounds";
 import { IMPORTED_SIDE_KEY, mergeSide, noSideCounts, readImportedSide, readSideFile, readSideStores, removeImportedSide, sideCounts, sideTotal, sideIsEmpty, writeSideStores, type DealProblem, type SideCounts, type SideMerge, type SideProblem, type SideStores } from "./side-stores";
 
 export const STATE_KEY = "mekor.v2.state";
@@ -80,6 +81,38 @@ export interface ImportRecord {
   holdings: number;
   names: number;
   skipped: number;
+  /** What an "add" import put on the device that is kept by id or key, not tagged: "מחיקת מה שיובא" takes exactly this away. Absent in a
+   *  record written before, and in a "replace" (what it loaded is the device's own). */
+  brought?: Brought;
+}
+
+/** The index page's entries and the plan numbers an "add" import put on the device: ids and keys the device did not have. */
+export interface Brought {
+  /** The keys of the guide inputs only the file had (`inputs`). */
+  inputs: string[];
+  indices: string[];
+  funds: string[];
+  /** The typed securities accounts (`customBrokers`). */
+  accounts: string[];
+  /** The current broker, where the device had none. */
+  broker: string | null;
+}
+
+const brought = z.object({ inputs: z.array(z.string()), indices: z.array(z.string()), funds: z.array(z.string()), accounts: z.array(z.string()), broker: z.string().nullable() });
+
+/** Everything the device's import records say an "add" import brought; a record that is not one (an older tab's, a hand-edited file's) adds nothing. */
+function broughtOf(imports: readonly unknown[]): Brought {
+  const all: Brought = { inputs: [], indices: [], funds: [], accounts: [], broker: null };
+  for (const r of imports) {
+    const b = brought.safeParse(isObj(r) ? r.brought : undefined);
+    if (!b.success) continue;
+    all.inputs.push(...b.data.inputs);
+    all.indices.push(...b.data.indices);
+    all.funds.push(...b.data.funds);
+    all.accounts.push(...b.data.accounts);
+    all.broker = b.data.broker ?? all.broker;
+  }
+  return all;
 }
 
 export interface StateV3 {
@@ -169,6 +202,8 @@ const readable = (v: unknown): boolean => v === 2 || v === STATE_VERSION;
 export type Refusal =
   | { kind: "unreadable" }
   | { kind: "format" }
+  /** The site's own file, cut short or changed by hand so it no longer reads. */
+  | { kind: "damaged" }
   | { kind: "newer" }
   | { kind: "invalid"; field: string };
 
@@ -643,15 +678,44 @@ export function useInvestState() {
 
 // ---------------------------------------------------------------- imported items
 
-export function importedCount(s: StateV3): { holdings: number; names: number; total: number } {
+/** What "add" imports put on the device that is still there: holdings and names by their tag, the rest as their records say (`Brought`). */
+export function importedCount(s: StateV3): { holdings: number; names: number; inputs: number; indices: number; funds: number; accounts: number; total: number } {
+  const b = broughtOf(s.imports);
   const holdings = s.holdings.filter((h) => h.importedAt).length;
   const names = s.uncatalogued.filter((u) => u.importedAt).length;
-  return { holdings, names, total: holdings + names };
+  const inputs = b.inputs.filter((k) => k in s.inputs).length;
+  const indices = (s.customIndices ?? []).filter((x) => b.indices.includes(x.id)).length;
+  const funds = (s.customFunds ?? []).filter((x) => b.funds.includes(x.id)).length;
+  const accounts = (s.customBrokers ?? []).filter((x) => b.accounts.includes(x.id)).length;
+  const broker = b.broker !== null && s.broker === b.broker ? 1 : 0;
+  return { holdings, names, inputs, indices, funds, accounts, total: holdings + names + inputs + indices + funds + accounts + broker };
 }
 
-/** "מחיקת מה שיובא": every item with `importedAt` goes, the rest stays. */
+/** "מחיקת מה שיובא": every item an "add" import brought goes (the tagged holdings and names, and what the records name: the plan numbers,
+ *  the indices with the funds on them, the funds, the typed accounts, the broker), the rest stays. */
 export function withoutImported(s: StateV3): StateV3 {
-  return { ...s, holdings: s.holdings.filter((h) => !h.importedAt), uncatalogued: s.uncatalogued.filter((u) => !u.importedAt), imports: [] };
+  const b = broughtOf(s.imports);
+  const { customIndices: _i, customFunds: _f, customBrokers: _a, broker: _b, ...rest } = s;
+  void _i;
+  void _f;
+  void _a;
+  void _b;
+  const indices = (s.customIndices ?? []).filter((x) => !b.indices.includes(x.id));
+  // a fund on an index that goes goes with it, as when the person removes the index (`removeCustomIndex`)
+  const funds = (s.customFunds ?? []).filter((x) => !b.funds.includes(x.id) && !b.indices.includes(x.indexId));
+  const accounts = (s.customBrokers ?? []).filter((x) => !b.accounts.includes(x.id));
+  const broker = s.broker !== undefined && s.broker !== b.broker ? s.broker : null;
+  return {
+    ...rest,
+    inputs: Object.fromEntries(Object.entries(s.inputs).filter(([k]) => !b.inputs.includes(k))),
+    holdings: s.holdings.filter((h) => !h.importedAt),
+    uncatalogued: s.uncatalogued.filter((u) => !u.importedAt),
+    ...(indices.length ? { customIndices: indices } : {}),
+    ...(funds.length ? { customFunds: funds } : {}),
+    ...(accounts.length ? { customBrokers: accounts } : {}),
+    ...(broker ? { broker } : {}),
+    imports: [],
+  };
 }
 
 export function deleteImported(): void {
@@ -677,7 +741,8 @@ export function exportCounts(s: StateV3, side?: SideStores) {
     names: s.uncatalogued.length,
     inputs: Object.keys(s.inputs).length > 0,
     indices: (s.customIndices ?? []).length,
-    entries: (s.customBrokers ?? []).length + (s.customFunds ?? []).length,
+    funds: (s.customFunds ?? []).length,
+    accounts: (s.customBrokers ?? []).length,
     offers: sc.offers,
     variants: sc.variants,
     ticks: sc.ticks,
@@ -694,7 +759,7 @@ export function currentSideStores(): SideStores {
 /** Nothing worth a file: no holding, no name, no guide input, no entry of the index page, no side store. */
 export function isEmptyState(s: StateV3, side?: SideStores): boolean {
   const c = exportCounts(s, side);
-  return c.holdings === 0 && c.names === 0 && !c.inputs && c.indices === 0 && c.entries === 0 && c.offers + c.variants + c.ticks + c.ownRates + c.deals === 0;
+  return c.holdings === 0 && c.names === 0 && !c.inputs && c.indices === 0 && c.funds === 0 && c.accounts === 0 && c.offers + c.variants + c.ticks + c.ownRates + c.deals === 0;
 }
 
 export function buildStateFile(s: StateV3, site: { version: string; data: string }, now = new Date(), side?: SideStores): StateFile {
@@ -741,7 +806,7 @@ export interface ImportPreviewData {
   /** The file's state as this release reads it (an older version already migrated), without the items that failed their check. */
   state: StateV3;
   migrated: boolean;
-  counts: { holdings: number; names: number; offers: number; variants: number; ticks: number; ownRates: number; deals: number };
+  counts: ImportCounts;
   /** The file's side stores that passed their check, or null when the file has none. */
   side: SideStores | null;
   /** Holdings and inputs left out for a field that failed (A33), and side-store items likewise. */
@@ -751,22 +816,25 @@ export interface ImportPreviewData {
   dealProblems: DealProblem[];
 }
 
+/** What a file holds, by kind: the state's items and the side stores' (`inputs`: whether it holds plan numbers). */
+export type ImportCounts = { holdings: number; names: number; inputs: boolean; indices: number; funds: number; accounts: number } & SideCounts;
+
 export type ImportRead = { ok: true; preview: ImportPreviewData } | { ok: false; refusal: Refusal };
 
-/** Parses and checks text or a file's content. Nothing on the device changes. */
-export function readImport(text: string): ImportRead {
+/** Parses and checks text or a file's content, each plan number against its bound (`bounds`, P-05's). Nothing on the device changes. */
+export function readImport(text: string, bounds: PlanBounds): ImportRead {
   let json: unknown;
   try {
     json = JSON.parse(text);
   } catch {
-    // text that is not JSON at all: most likely something else was pasted (a statement)
-    return { ok: false, refusal: { kind: text.trim() === "" ? "unreadable" : "format" } };
+    // text that is not JSON at all: most likely something else was pasted (a statement); text that names the site's format is its file, damaged
+    return { ok: false, refusal: { kind: text.trim() === "" ? "unreadable" : /"format"\s*:\s*"mekor-state"/.test(text) ? "damaged" : "format" } };
   }
   if (!isObj(json) || json.format !== "mekor-state") return { ok: false, refusal: { kind: "format" } };
   const head = stateFileHeader.safeParse(json);
   // the first field out of order is named, in the header's order
   if (!head.success) return { ok: false, refusal: { kind: "invalid", field: headerFields.find((f) => head.error.issues.some((i) => i.path[0] === f)) ?? "format" } };
-  const { state: cleaned, rejected } = sanitizeRawState(json.state);
+  const { state: cleaned, rejected } = sanitizeRawState(json.state, bounds);
   const r = readState(cleaned, head.data.version);
   if (!r.ok) return r;
   const { side, problems, dealProblems } = readSideFile(json.sideStores);
@@ -777,7 +845,7 @@ export function readImport(text: string): ImportRead {
       file: head.data,
       state: r.state,
       migrated: r.migrated,
-      counts: { holdings: r.state.holdings.length, names: r.state.uncatalogued.length, ...sc },
+      counts: { holdings: r.state.holdings.length, names: r.state.uncatalogued.length, inputs: Object.keys(r.state.inputs).length > 0, indices: (r.state.customIndices ?? []).length, funds: (r.state.customFunds ?? []).length, accounts: (r.state.customBrokers ?? []).length, ...sc },
       side,
       rejected,
       sideProblems: problems,
@@ -792,9 +860,12 @@ const fingerprint = (x: object): string => {
   return JSON.stringify(rest);
 };
 
+/** What a load added, by kind (`inputs`: how many plan numbers only the file had). */
+export type ImportAdded = { holdings: number; names: number; inputs: number; indices: number; funds: number; accounts: number };
+
 export interface ImportResult {
   state: StateV3;
-  added: { holdings: number; names: number };
+  added: ImportAdded;
   skipped: number;
 }
 
@@ -802,14 +873,15 @@ export interface ImportResult {
  * "Add": holdings and names are merged; an item that is already on the device is skipped and counted, whatever
  * its place in the list or import tag, and a copy an earlier import added under a new id (so the same file twice adds nothing the second time, A33); an item with the same id and
  * other content is added under a new id; appended items carry `importedAt` and an `order` after the existing ones. The guide inputs
- * are kept as they are on the device, and a value only the file has is filled in.
+ * are kept as they are on the device, and a value only the file has is filled in. An index, a fund or a typed account the device already has
+ * (by id) stays as it is. What was added by id or key is written in the import's record (`brought`); an import that adds nothing writes none.
  * "Replace": the file's state as it is (its items carry no imported tag: they are what the device now holds).
  */
 export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "replace", today = isoToday()): ImportResult {
   if (mode === "replace") {
     return {
       state: { ...incoming, imports: [...incoming.imports, { at: today, mode, holdings: incoming.holdings.length, names: incoming.uncatalogued.length, skipped: 0 }] },
-      added: { holdings: incoming.holdings.length, names: incoming.uncatalogued.length },
+      added: { holdings: incoming.holdings.length, names: incoming.uncatalogued.length, inputs: Object.keys(incoming.inputs).length, indices: (incoming.customIndices ?? []).length, funds: (incoming.customFunds ?? []).length, accounts: (incoming.customBrokers ?? []).length },
       skipped: 0,
     };
   }
@@ -848,24 +920,34 @@ export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "
       added.names += 1;
     }
   }
-  const inputs = { ...incoming.inputs, ...current.inputs };
+  const newInputs = Object.keys(incoming.inputs).filter((k) => !(k in current.inputs));
+  // an entry the device already has (by id) stays as it is and counts as skipped; the file's others are added
+  const fresh = <T extends { id: string }>(have: T[] = [], file: T[] = []) => {
+    const add = file.filter((c) => !have.some((x) => x.id === c.id));
+    skipped += file.length - add.length;
+    return { all: [...have, ...add], ids: add.map((c) => c.id) };
+  };
+  const indices = fresh(current.customIndices, incoming.customIndices);
+  const funds = fresh(current.customFunds, incoming.customFunds);
+  const accounts = fresh(current.customBrokers, incoming.customBrokers);
+  // the device's own broker stays; the file's fills a device with none
+  const fileBroker = current.broker === undefined && incoming.broker !== undefined ? incoming.broker : null;
+  const broker = current.broker ?? incoming.broker;
+  const b: Brought = { inputs: newInputs, indices: indices.ids, funds: funds.ids, accounts: accounts.ids, broker: fileBroker };
+  const all: ImportAdded = { ...added, inputs: newInputs.length, indices: indices.ids.length, funds: funds.ids.length, accounts: accounts.ids.length };
+  const any = Object.values(all).some((n) => n > 0) || fileBroker !== null;
   const state: StateV3 = {
     ...current,
-    inputs,
+    inputs: { ...incoming.inputs, ...current.inputs },
     holdings,
     uncatalogued: names,
-    ...(() => {
-      // an index, or a broker or fund the person typed, that the device already has (by id) stays as it is; the file's others are added; the device's own broker stays
-      const merged = <T extends { id: string }>(have: T[] = [], file: T[] = []) => [...have, ...file.filter((c) => !have.some((x) => x.id === c.id))];
-      const all = merged(current.customIndices, incoming.customIndices);
-      const brokers = merged(current.customBrokers, incoming.customBrokers);
-      const funds = merged(current.customFunds, incoming.customFunds);
-      const broker = current.broker ?? incoming.broker;
-      return { ...(all.length ? { customIndices: all } : {}), ...(brokers.length ? { customBrokers: brokers } : {}), ...(funds.length ? { customFunds: funds } : {}), ...(broker ? { broker } : {}) };
-    })(),
-    imports: [...current.imports, { at: today, mode, holdings: added.holdings, names: added.names, skipped }],
+    ...(indices.all.length ? { customIndices: indices.all } : {}),
+    ...(accounts.all.length ? { customBrokers: accounts.all } : {}),
+    ...(funds.all.length ? { customFunds: funds.all } : {}),
+    ...(broker ? { broker } : {}),
+    imports: any ? [...current.imports, { at: today, mode, holdings: added.holdings, names: added.names, skipped, brought: b }] : current.imports,
   };
-  return { state, added, skipped };
+  return { state, added: all, skipped };
 }
 
 /** Merges a file's side stores into the device's and writes them. Returns what was added and skipped. */

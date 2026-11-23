@@ -73,6 +73,24 @@ function amountsAt(pc: PairCosts, scale: number, paidInGiven: number): ReceiptAm
 }
 
 /**
+ * One of the account's lines as the receipt writes them, with its whole shekels from `ReceiptAmounts`: a deal's own fee (F-128), a price
+ * list's line, or the remainder no single line explains. The receipt and "לאן הולכות העמלות" both draw these, so the two always show the
+ * same lines with the same figures, whether the account is a house's price list or the person's deal.
+ */
+export type AccountLine =
+  | { kind: "deal"; key: string; fee: string; name: string; cost: SiteValue; amount: number }
+  | { kind: "list"; key: string; line: PairCosts["account"][number]["line"]; cost: SiteValue; amount: number }
+  | { kind: "remainder"; key: "remainder"; cost: SiteValue; amount: number };
+
+/** The account's lines in the receipt's order, each with its share of `r.account` (the remainder only where it is not zero). */
+export function accountLinesOf(pc: PairCosts, r: ReceiptAmounts): AccountLine[] {
+  const own: AccountLine[] = pc.dealLines
+    ? pc.dealLines.map((l, i) => ({ kind: "deal", key: l.fee, fee: l.fee, name: l.name, cost: l.cost, amount: r.accountLines[i]! }))
+    : pc.account.map((l, i) => ({ kind: "list", key: l.line, line: l.line, cost: l.cost, amount: r.accountLines[i]! }));
+  return r.remainder !== 0 ? [...own, { kind: "remainder", key: "remainder", cost: pc.remainder, amount: r.remainder }] : own;
+}
+
+/**
  * A cost line's amount as the receipt writes it, isolated in Hebrew: what was taken with a true minus ("−1,057 ₪"), and a line below zero
  * (the remainder of the account's fees together, the cash waiting for a unit while the fund fell, or a part the whole-shekel rounding took
  * under zero) with a plus, as the money it gave back ("+3 ₪"), so it never reads as one more cost.

@@ -158,9 +158,8 @@ const SPECS = {
   perAction: { kind: "charge", form: "perAction", figures: ["amount"], ask: null, tool: "charge", ...formEdit("perAction") },
   held: { kind: "charge", form: "held", figures: ["rate"], ask: null, tool: "charge", ...formEdit("held") },
   sum: { kind: "charge", form: "sum", figures: ["amount"], ask: null, tool: "charge", ...formEdit("sum") },
-  // a price that charges nothing reads "חינם": the toolbox adds a charge to it; its own card, and the bin of a price's charge, make a price
-  // that charges something free, its charge and its parts gone
-  free: { kind: "charge", form: "free", figures: [], ask: null, tool: "charge", ...formEdit("free") },
+  // a price that charges nothing reads "חינם": no card adds it; the toolbox adds a charge to it, and the bin of its charge makes it free
+  free: { kind: "charge", form: "free", figures: [], ask: null, tool: null, ...formEdit("free") },
   discount: { kind: "off", lost: true, field: "discount", figures: ["discount"], ask: null, tool: "off", used: (p: Price) => onAction(p) && !!p.discount, apply: onPrice((p, on) => withDiscount(p, on)) },
   third: { kind: "charge", lost: true, field: "third", figures: ["third", "thirdMin", "thirdMax"], ask: null, tool: "charge", stated: true, used: (p: Price) => onAction(p) && !!p.third, apply: onPrice((p, on) => withThird(p, on)) },
   // the month a price changes from (F-110): the toolbox draws it as the line it adds, not as a card of a group's (toolbox.ts `TOOLBOX`

@@ -14,7 +14,7 @@ import { partAt, samePlace, stillWaits, type Waiting } from "../../lib/fee-deal/
 import type { PartGiven } from "../../lib/fee-deal/edits/cells";
 import type { PendingWords } from "../../lib/fee-deal/part-words";
 import { FEE_KIND_IDS, type FeeKindId } from "../../lib/fee-deal/shapes";
-import { FigureField, InlineSelect, PartEdit, Switch, TextField, focusPartEdit, type Landing, type PartLift, type PartMark, type Settled } from "../kit";
+import { FigureField, InlineSelect, PartEdit, Switch, TextField, focusPartEdit, type Landing, type PartMark, type Settled } from "../kit";
 import { partFieldId, partPlaceId, signText } from "./figures";
 import { bringIntoView } from "./in-view";
 import { IdRef } from "../provenance";
@@ -241,14 +241,13 @@ const BODIES: Readonly<Record<LinePart, { Body: ComponentType<BodyProps>; lead?:
 
 /**
  * One part of the open case's price in edit: its icon and lead, its body, and its bin (`onRemove`; a charge's makes the price free; none
- * for a free price), with its other actions (`more`); carried from its own surface as `lift`, where it can be. With `landing`, the landing
- * copy of the part a toolbox card would put on the price (`at`: the price as the card's tap leaves it), its bin and its other actions kept for
- * their room.
+ * for a free price). With `landing`, the landing copy of the part a toolbox card would put on the price (`at`: the price as the card's tap
+ * leaves it), its bin and grip kept for their room.
  */
-export function PartLine({ part, at, onRemove, lift, more, landing }: { part: OpenPart; at: PartPlace; onRemove: (() => void) | undefined; lift?: PartLift; more?: ReactNode; landing?: Landing }) {
+export function PartLine({ part, at, onRemove, grip, landing }: { part: OpenPart; at: PartPlace; onRemove: (() => void) | undefined; /** Its grip (⋮⋮), where it can be lifted. */ grip?: ReactNode; landing?: Landing }) {
   const { Body, lead } = BODIES[part.id];
   return (
-    <PartEdit {...(landing ? { landing } : { id: partFieldId(at.fee.id, partPlaceId(at.side, at.k, part.id)) })} kind={part.kind} mark={PART_MARK[part.id]} lead={bare(lead ?? part.words.lead)} onRemove={onRemove} removeLabel={at.label(dealCases.removePart)} {...(lift ? { lift } : {})} {...(more ? { more } : {})}>
+    <PartEdit {...(landing ? { landing } : { id: partFieldId(at.fee.id, partPlaceId(at.side, at.k, part.id)) })} kind={part.kind} mark={PART_MARK[part.id]} lead={bare(lead ?? part.words.lead)} onRemove={onRemove} removeLabel={at.label(dealCases.removePart)} grip={grip}>
       <Body part={part} at={at} />
     </PartEdit>
   );

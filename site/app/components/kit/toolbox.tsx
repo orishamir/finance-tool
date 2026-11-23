@@ -1,7 +1,7 @@
 // The parts that can be added to the open case (design-system 11, "Cases and parts"), in groups by what they do to the price, each group
 // headed by a small square of its kind's colour, the only colour the group's cards carry: each card is a plain raised card with a "+" in
-// the action colour and its words, a figure it asks for said in them ("הנחה % מהמחיר"), two to a row. A card adds, but for the one the page
-// says replaces ("חינם", which makes a price that charges something free, its charge and its parts gone): a tap on one puts it on, or holds it while the page shows where it can go (`held`: the card drawn held, in a teal fill and outline, and the line under the
+// the action colour and its words, a figure it asks for said in them ("הנחה % מהמחיר"), two to a row. A card only adds: a tap on one adds
+// it, or holds it while the page shows where it can go (`held`: the card drawn held, in a teal fill and outline, and the line under the
 // head saying what is being added, with its "ביטול"); on a computer a card can also be dragged onto the place it goes (`useDragSource`,
 // the page's `DropZone`s), which does what its tap does there. A part the case already has wherever it fits is on: a ✓ in the action
 // colour, an outline and a faint fill of its kind's colour, and it stays where it is; one the page lets a tap take away again

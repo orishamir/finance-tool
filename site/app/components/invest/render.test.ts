@@ -12,6 +12,8 @@ import { invest } from "../../copy";
 import { providerName } from "./sections";
 import { bundle, t, plan, shown, html, nisIn, writtenFees, ReceiptAndFees } from "./render-fixtures";
 import { PairReceipt } from "./receipt";
+import { dealProviderId, withDeals } from "../../lib/deal-account/bundle";
+import { data as dealData, fromHouse } from "../../lib/deal-account/plan-fixtures";
 
 describe("the pair set beside the person's (2026-10-28)", () => {
   it("an unhedged pick is set beside the headline; a hedged pick beside the best hedged pair, never one that leaves less", () => {
@@ -75,4 +77,28 @@ describe("the fees panel's and the receipt's written amounts add up, on every in
       expect(-nisIn(receipt.slice(at + label.length, at + label.length + 40)), `${index.id}: the receipt's account line against ${inHorizon}`).toBe(inHorizon);
     });
   }
+});
+
+describe("the fees panel with the person's own deal as the account (F-128)", () => {
+  it("its bars are the receipt's account lines, the deal's own fees among them, and they add up to its total as a house's do", () => {
+    const b = withDeals(bundle, [fromHouse("psagot")], dealData.kinds);
+    const index = knownIndices(b).find((ix) => ix.id === "index-sp500")!;
+    const view = buildInvest({ bundle: b, index, plan });
+    const house = dealProviderId("deal-psagot");
+    const fund = view.houses.find((r) => r.provider.id === house)!.entries.find((e) => e.price)!.fund.rec.id;
+    const pick = { house, fund };
+    const pc = pairCostsKept({ bundle: b, index: view.index, plan, fundId: fund, providerId: house })!;
+    expect(pc.dealLines!.length).toBeGreaterThan(0);
+    const out = html(createElement(ReceiptAndFees, { view, bundle: b, plan, pick, chosen: true }));
+    const items = writtenFees(out);
+    const r = receiptAmounts(pc);
+    // every fee of the deal that took a shekel is a bar, and the remainder where there is one, beside the fund's one bar
+    expect(items.filter((x) => x.who === "account").length).toBe(pc.dealLines!.length + (r.remainder !== 0 ? 1 : 0));
+    const bars = shown(out.slice(out.indexOf('data-chart="option-bars"')).split("</ul>")[0]!);
+    for (const l of pc.dealLines!) expect(bars).toContain(l.name);
+    const text = shown(out.slice(out.indexOf('data-chart="option-bars"')));
+    const total = nisIn(text.slice(text.indexOf(invest.before.fees.total) + invest.before.fees.total.length));
+    expect(items.reduce((a, x) => a + x.amount, 0)).toBe(total);
+    expect(items.filter((x) => x.who === "account").reduce((a, x) => a + x.amount, 0)).toBe(r.account);
+  });
 });

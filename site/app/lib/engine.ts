@@ -20,6 +20,7 @@ import {
 import type { ParameterRecord, RuleRecord, ValueObject, ProductRecord } from "@finance-tool/schema";
 import { blockedHe, failureHe, figureNotUpdatedHe } from "./failure-he";
 import { entered as enteredValue, p05Units, type SiteValue } from "./value";
+import type { Bound, ClosedBound, PlanBounds } from "./plan-bounds";
 
 export interface Bundle {
   record: ProductRecord;
@@ -186,6 +187,22 @@ export function p05Value(p05: ParameterRecord, key: P05Input): SiteValue {
 
 export function p05Number(p05: ParameterRecord, key: P05Input): number {
   return (p05 as unknown as { inputs: Record<P05Input, ValueObject> }).inputs[key].value as number;
+}
+
+/** The bounds of the plan numbers a person enters (lib/plan-bounds.ts), as P-05 writes them: the horizon slider's ends, the amounts' slider
+ *  starts with no top, P-05's `pct` range for each percentage and its `age` range. */
+export function p05Bounds(p05: ParameterRecord): PlanBounds {
+  const range = (group: "sliders" | "ranges", key: string) => {
+    const r = p05Range(p05, group, key);
+    if (!r) throw new Error(`P-05 has no ${group} ${key}`);
+    return r;
+  };
+  const years = range("sliders", "horizon_years");
+  const pct = range("ranges", "pct");
+  const age = range("ranges", "age");
+  const from = (key: string): Bound => ({ min: range("sliders", key).min, max: null, whole: false });
+  const rate: ClosedBound = { min: pct.min, max: pct.max, whole: false };
+  return { amount_now: from("amount_now"), monthly_deposit: from("monthly_deposit"), horizon_years: { min: years.min, max: years.max, whole: true }, "A-01": rate, "A-02": rate, age: { min: age.min, max: age.max, whole: true } };
 }
 
 /**

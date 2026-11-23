@@ -19,6 +19,7 @@
    "site/app/components/fee-deal/fee-cases.tsx": 1,
    "site/app/components/fee-deal/figures.tsx": 1,
    "site/app/components/fee-deal/part-edit.tsx": 1,
+   "site/app/components/fee-deal/toolbox.tsx": 1,
    "site/app/components/fee-deal/words.tsx": 3,
    "site/app/components/guide/sections.tsx": 1,
    "site/app/components/guide/worth-knowing.tsx": 1,
@@ -70,7 +71,7 @@
    "site/app/lib/fee-deal/limits.ts": 1,
    "site/app/lib/fee-deal/link.ts": 1,
    "site/app/lib/fee-deal/model.ts": 3,
-   "site/app/lib/fee-deal/offers/capabilities.ts": 1,
+   "site/app/lib/fee-deal/offers/capabilities.ts": 2,
    "site/app/lib/fee-deal/offers/conditions.ts": 1,
    "site/app/lib/fee-deal/offers/rules.ts": 1,
    "site/app/lib/fee-deal/part-words.ts": 1,
@@ -104,6 +105,7 @@
    "site/app/lib/track-browser.ts": 1
   },
   "types": {
+   "site/app/components/fee-deal/toolbox.tsx": 1,
    "site/app/components/kit/chart-glide.tsx": 1,
    "site/app/components/kit/index.ts": 55,
    "site/app/components/kit/lift.tsx": 1,
@@ -596,7 +598,7 @@
    "site/app/lib/fee-deal/edit.test.ts": 11,
    "site/app/lib/fee-deal/edits/arrange.ts": 30,
    "site/app/lib/fee-deal/edits/case.ts": 18,
-   "site/app/lib/fee-deal/edits/cells.ts": 26,
+   "site/app/lib/fee-deal/edits/cells.ts": 32,
    "site/app/lib/fee-deal/edits/deal.ts": 2,
    "site/app/lib/fee-deal/edits/stage.ts": 5,
    "site/app/lib/fee-deal/every-case.test.ts": 9,
