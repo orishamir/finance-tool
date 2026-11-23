@@ -8,7 +8,6 @@ import { acrossReadings } from "../open-readings.ts";
 import { RUN_RESULT_FIELDS, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, maxRateTax, OrderCash, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, removeFifo, type Lot } from "./lots.ts";
-import { NotEvaluatedError } from "./securities.ts";
 
 export interface BondInput {
   goal: Goal;
@@ -45,8 +44,6 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
   const first = goal.firstMonth ?? 1;
   const I = cpiPath(input.market.inflation, T);
   const C = contributions(goal, I);
-  // a coupon below zero is interest below zero, whose tax the rule base holds no rule for: the run stops rather than refund tax (G-41)
-  if (bond.coupon < 0) throw new NotEvaluatedError("G-41");
   const linked = bond.linkage === "cpi";
   const couponRate = linked ? book.rate("TXI-14", "rate") : book.rate("TXI-15", "rate");
   if (linked) {

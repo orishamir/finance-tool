@@ -10,6 +10,7 @@ import {
   buyConversion,
   costShare,
   coverFrom,
+  coverPriced,
   curveEnd,
   dealConversionStretches,
   groupAction,
@@ -20,7 +21,7 @@ import {
   isConversionFee,
   holdingCost,
   idleMonth,
-  needsUnitPrice,
+  perUnitOf,
   priceParts,
   rateAt,
   sideOf,
@@ -623,7 +624,7 @@ function actionView(r: DealRead, p: DealPeriod, action: DealAction, side: DealSi
   const at = monthKey(p.from);
   const idx = onAction(r, p, action, side);
   const fees = chartFees(r, idx);
-  const perUnit = idx.some((i) => needsUnitPrice(pricesOf(r, p, i, side).e));
+  const perUnit = idx.some((i) => perUnitOf(pricesOf(r, p, i, side).e) !== null);
   if (perUnit && (unit.price === null || unit.currency === null)) return { undrawn: { periods: [at], why: "unit-price", currency: unit.currency ?? "ILS" } };
   const got = ratesFor(r, p, idx, fx, perUnit ? [unit.currency!] : []);
   if ("missing" in got) return { undrawn: { periods: [at], why: "rate", currency: got.missing } };
@@ -1164,23 +1165,27 @@ function coversIn(r: DealRead, p: DealPeriod, fx: FxSnapshot | null, unit: { pri
     const action = offsetAction(r, p, s.offset.kind);
     if (!action) return [];
     const sides: ("buy" | "sell")[] = against.some((j) => p.prices[j]!.sale) ? ["buy", "sell"] : ["buy"];
-    // the cost of the action prices every fee charged on it, though only those it is set against are counted: each needs its rates and the
-    // unit's price
-    const priced = [...new Set(sides.flatMap((side) => onAction(r, p, action, side)))];
-    const perUnit = priced.some((j) => [p.prices[j]!.price, p.prices[j]!.sale].some((x) => x !== undefined && needsUnitPrice(x)));
+    // only the fees the cover prices need their rates and the unit's price: those it is set against, and on a purchase the conversion
+    // fees whose stretch decides what it converts (`coverPriced`)
+    const priced = [...new Set(sides.flatMap((side) => coverPriced(r.engine, p, against, action, side)))];
+    const perUnit = priced.some((j) => [p.prices[j]!.price, p.prices[j]!.sale].some((x) => x !== undefined && perUnitOf(x) !== null));
     const got = ratesFor(r, p, priced, fx, perUnit && unit.currency ? [unit.currency] : []);
     if ("missing" in got || (perUnit && (unit.price === null || unit.currency === null))) return [];
     const unitNis = perUnit ? unit.price! * (unit.currency === "ILS" ? 1 : got.rates[unit.currency!]!) : undefined;
     const found = sides.map((side) => ({ side, at: coverFrom(r.engine, p, against, action, side, e.amount, got.rates, unitNis) }));
     if (found.some((x) => x.at === null)) return [];
     const one = found.every((x) => x.at === found[0]!.at);
-    const inputs = { [inputKey(r.fees, i)]: viewOf(r, p, i, "all").figures.amount!, ...chartInputs(r, p, against, "all", got.values) };
-    // coverFrom stops within a billionth of the amount above it: the first whole shekel is read under that
+    // the cover rests on the offset fee's sum, the figures of every fee it prices, the rates it converts at and the unit's price given
+    const inputs = {
+      [inputKey(r.fees, i)]: viewOf(r, p, i, "all").figures.amount!,
+      ...chartInputs(r, p, priced, "all", got.values),
+      ...(perUnit ? { "deal:unit-price": entered(unit.price!, sumUnit(unit.currency!), r.today) } : {}),
+    };
     return (one ? [found[0]!] : found).map((x) => ({
       fee: refOf(f, r.today),
       against: s.offset!.kind,
       action,
-      from: x.at === 0 ? ("any" as const) : reading(Math.ceil(x.at! * (1 - 1e-8)), "nis", "F-127", inputs, r.today),
+      from: x.at === 0 ? ("any" as const) : reading(x.at!, "nis", "F-127", inputs, r.today),
       side: one ? ("all" as DealSide) : x.side,
     }));
   });

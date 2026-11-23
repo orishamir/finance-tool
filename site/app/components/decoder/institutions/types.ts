@@ -1,6 +1,5 @@
 // The shapes the bank and broker pages and the companies list share (flows 15.4, design-spec 20). Plain JSON: the
 // loader builds them in lib/institutions.server.ts, the components in this folder show them.
-import type { DateSpan } from "../../../lib/date-span";
 import type { TariffDated } from "../../../lib/tariff-date";
 import type { LeftOutView } from "../../../lib/left-out";
 import type { RuleRecord } from "@finance-tool/schema";
@@ -75,8 +74,8 @@ export interface ProductGroup {
   wrapperId: string;
   wrapperName: string;
   products: ProductRowData[];
-  /** The oldest and the newest "נכון ליום" of this product's records: each product's rates are as of their own records' dates, not another product's. */
-  asOf: DateSpan<SiteValue> | null;
+  /** The latest "נכון ליום" of this product's records: each product's rates are as of their own records' date, not another product's. */
+  asOf: SiteValue | null;
 }
 
 export type LineBase = "trade" | "custody" | "fx" | "fixed_period";

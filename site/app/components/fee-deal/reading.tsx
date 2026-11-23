@@ -1082,11 +1082,13 @@ type CardsProps = Parameters<typeof ReadingCards>[0];
 
 /**
  * /deal's reading, read here (`readingOf`) inside an error boundary of its own: a reading that throws says the deal could not be read, in
- * its place, and leaves the editor standing, so the deal can be changed; a change to the deal or to the unit's price reads it again.
+ * its place, and leaves the editor standing, so the deal can be changed; a change to the deal or to the unit's price reads it again. Where
+ * a unit's price is typed, the notice offers to clear it, since the field stands inside the reading the notice replaces.
  */
 export function DealReading({ input, ...cards }: { input: ReadingInput } & Omit<CardsProps, "reading">) {
+  const { onUnitPrice } = cards;
   return (
-    <ToolBoundary resetKey={JSON.stringify([input.read.deal, input.unitPrice])} words={copy.readFailed}>
+    <ToolBoundary resetKey={JSON.stringify([input.read.deal, input.unitPrice])} words={copy.readFailed} {...(input.unitPrice !== null && onUnitPrice ? { onReset: () => onUnitPrice(null) } : {})}>
       <ReadOf input={input} {...cards} />
     </ToolBoundary>
   );

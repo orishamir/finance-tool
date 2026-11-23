@@ -237,8 +237,6 @@ Where code goes in `site/app/`, and the shared pieces a change reuses before wri
 | A tool that can throw on odd input, kept from taking the page down | `ToolBoundary` (`components/tool-boundary.tsx`) |
 | Asking the browser once to keep the site's storage, after the first write of something the person made or an export (a device store says which it holds: `holds: "made" \| "kept"`) | `askToKeepStorage` (`lib/keep-storage.ts`) |
 | A value object's number; a rule's figure for the tax year, with its stale flag; the unit of a P-05 input | `numberOf`, `ruleFigure`, `p05Units` (`lib/value.ts`) |
-| A figure worked out from two others on the page, from them as the page writes them (`amountShown`, `lib/format.ts`) | `differenceOf` (`lib/value.ts`) |
-| The date beside figures from many records: their oldest and newest, said once where they agree | `dateSpan` (`lib/date-span.ts`); a bank's rates `asOfSpan` (`lib/bank-table.ts`) and `AsOfDates` (`components/company/as-of.tsx`); the deposits list `readSpan` (`lib/deposit-browser.ts`) |
 | The end of a `switch` over a union's kind, so a new kind fails to compile where it isn't handled | `default: return assertNever(x)` (`@finance-tool/schema`) |
 | Numbers, dates and Hebrew sort order; the shekel's currency code | `fmt`, `parseNumber`, `heCollator` (`lib/format.ts`), every number format through `numberFormat` (`lib/number-format.ts`); `isShekel` (`lib/fx.ts`) |
 | Reading `data/` at build | the `load*` functions, `readDirFiles`, `collectRuleIds`, `refLink` (`lib/data.server.ts`), all through the read cache (`lib/read-cache.server.ts`) |

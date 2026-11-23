@@ -423,6 +423,22 @@ describe("a deal read whole, whatever the fees an action or a holding prices are
     };
     expect(coverOf(deal)).toEqual([]);
     expect(coverOf(deal, 50)).toEqual([13_637]);
+    // the figure rests on the unit's price given, as on the trade fee's figures
+    const [cover] = read(deal, 50).timeline.flatMap((t) => t.covers);
+    expect(cover?.from !== "any" && cover?.from.computed_from?.inputs).toMatchObject({ "deal:unit-price": expect.objectContaining({ value: 50, state: "entered" }), "deal:trade": expect.anything() });
+  });
+  it("says the cover beside another fee on the action priced per unit before the unit's price is given: it prices only the trade fee (F-127)", () => {
+    const deal: FeeDeal = {
+      id: "deal-x",
+      name: "",
+      kind: "brokerage-account",
+      fees: [
+        { id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1), min: typed(5) } }] },
+        { id: "fee-s", kind: "spread", stages: [{ price: { form: "action", rate: typed(0.05), third: { who: "הברוקר", price: { form: "perUnit", amount: typed(0.005), currency: "USD" } } } }] },
+        account,
+      ],
+    };
+    expect(coverOf(deal)).toEqual([15_000]);
   });
   it("reads a purchase whose conversion has a third party's sum per unit as one with a conversion priced per unit itself: no one rate (F-123)", () => {
     const thirdFee = { id: "fee-x", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.2), third: { price: { form: "perUnit", amount: typed(0.005), currency: "USD" } } } }] } as const satisfies FeeDeal["fees"][number];
