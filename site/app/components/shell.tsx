@@ -255,7 +255,7 @@ function MenuSheet({ open, onClose, current }: { open: boolean; onClose: () => v
 
 // ---------------------------------------------------------------- breadcrumbs
 
-/** Phone: the parent as a back link with a chevron pointing right. PC: parent › current (design-system 3.1). */
+/** Phone: the parent as a back link with a chevron pointing right. PC: parent › current. */
 export function Breadcrumb({ parent, middle, current }: { parent: { href: string; label: string }; /** A step between the parent and this page (a company, before the product shown on its page); on a phone the back link goes to it. */ middle?: { href: string; label: string }; current: string }) {
   // the first page is "ראשי", not the site's name
   if (parent.href === "/") parent = { href: "/", label: site.homeCrumb };

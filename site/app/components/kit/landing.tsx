@@ -1,4 +1,4 @@
-// The look a part takes as a landing copy (design-system 11, `PartEdit`'s and `ChangeDivider`'s `landing`): while a toolbox card is held,
+// The look a part takes as a landing copy (the `landing` prop of `PartEdit`, kit/part-chip.tsx, and of `ChangeDivider`, kit/change-divider.tsx): while a toolbox card is held,
 // or carried over a place that takes it, the page draws the part where a tap or a drop would put it, as it would then stand, so the
 // person sees what lands where before it does. Truly faint, never as if added: no fill, no kind's colour, no ✓, no bin, no grip. A 1 px
 // dashed outline in the controls' edge colour over the whole part, and its contents (its lead, its empty box, its words) at 40%; under a

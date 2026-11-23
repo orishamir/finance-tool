@@ -1,5 +1,5 @@
-// Lucide icons, 1.75px stroke (design-system 2.8). Chevrons and the external-link arrow mirror in RTL;
-// the rest do not. `data-mirror` is set once here, never per use.
+// Lucide icons, 1.75px stroke. Chevrons and the external-link arrow mirror in RTL;
+// the rest do not (design-system 2.8). `data-mirror` is set once here, never per use.
 import {
   ArrowLeft,
   ArrowRight,

@@ -110,8 +110,8 @@
     opacity: 1;
   }
 
-  /* Scrollbars on a computer: a thin rounded thumb on no track and no arrow buttons, lighter under the pointer and while dragged
-     (docs/design-system.md 2.2). A phone keeps its own overlay bar. Chrome and Safari draw the ::-webkit-scrollbar parts; Chrome
+  /* Scrollbars on a computer: a thin rounded thumb on no track and no arrow buttons, lighter under the pointer and while dragged.
+     A phone keeps its own overlay bar. Chrome and Safari draw the ::-webkit-scrollbar parts; Chrome
      ignores them on any element that sets scrollbar-width or scrollbar-color, so those standard properties are for Firefox only.
      `.scrollbar-none` still hides a bar in both. */
   @media (hover: hover) and (pointer: fine) {
