@@ -2,11 +2,6 @@
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
 import { countPhrase } from "./lib/count";
 import type { FeeCap } from "@finance-tool/schema";
-import type { ChangeKind, HeldKind } from "@finance-tool/engine";
-import type { FeeKindId } from "./lib/fee-deal/core";
-
-/** A name's gender and number, which the words after it agree with: masculine, feminine, and each plural. */
-export type NameForm = "m" | "f" | "mp" | "fp";
 
 export const site = {
   name: "מקור",
@@ -61,7 +56,7 @@ export const numbers = {
    * figures short, and the track pages' managed money from a thousand million.
    */
   billion: "מיליארד",
-  /** A chart tick's short form (lib/format.ts `compactNis`): `200 אלף ₪`, `1.5 מיליון ₪`. */
+  /** A chart tick's short form (lib/format.ts `compactNis`): `200 אלף ₪`, `1.5 מיליון ₪`, and from a billion `billion`'s word (`93.5 מיליארד ₪`). */
   compact: { thousand: "אלף", million: "מיליון" },
   /** A count of years and of months in words (lib/format.ts `fmt.years`, `fmt.months`): "שנה", "שנתיים", "5 שנים". */
   yearWords: { one: "שנה", two: "שנתיים", many: "שנים" },
@@ -352,7 +347,21 @@ export const values = {
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
   agePlaceholder: "למשל 30", // from the approved mockup
-  errors: { nan: "הזינו מספר.", whole: "הזינו סכום בשקלים שלמים.", negative: "הסכום לא יכול להיות שלילי.", positive: "הזינו סכום גדול מאפס.", years: ["הזינו מספר שנים בין", "ל־"], age: ["הזינו גיל בין", "ל־"], pct: ["הזינו אחוז בין", "ל־"] },
+  errors: {
+    nan: "הזינו מספר.",
+    whole: "הזינו סכום בשקלים שלמים.",
+    // a point and three digits in a whole amount ("1.000"): a thousands separator or a decimal point, it cannot be told which
+    dotThousands: "לא ברור אם הנקודה מפרידה אלפים. הזינו את הסכום בלי נקודה.",
+    negative: "הסכום לא יכול להיות שלילי.",
+    positive: "הזינו סכום גדול מאפס.",
+    /** Before the largest amount a field takes (P-05 `ranges.amount`): "הזינו סכום עד 1,000,000,000 ₪." */
+    tooLarge: "הזינו סכום עד",
+    years: ["הזינו מספר שנים בין", "ל־"],
+    yearsWhole: "הזינו מספר שלם של שנים.",
+    age: ["הזינו גיל בין", "ל־"],
+    ageWhole: "הזינו גיל בשנים שלמות.",
+    pct: ["הזינו אחוז בין", "ל־"],
+  },
   loading: "טוען…",
 } as const;
 
@@ -557,6 +566,8 @@ export const parametersPage = {
     "P-05.ranges.age.max": "גיל מותר בשדה: מקסימום",
     "P-05.ranges.pct.min": "אחוז שנתי מותר בשדה: מינימום",
     "P-05.ranges.pct.max": "אחוז שנתי מותר בשדה: מקסימום",
+    "P-05.ranges.amount.min": "סכום מותר בשדה: מינימום",
+    "P-05.ranges.amount.max": "סכום מותר בשדה: מקסימום",
     "P-11.steps.0": "סכום 1",
     "P-11.steps.1": "סכום 2",
     "P-11.steps.2": "סכום 3",
@@ -1712,9 +1723,9 @@ export const feeDeal = {
     fund_management: { g: "mp" },
     fx_spread: { g: "m" },
     current_account: { g: "m", the: "החשבון העובר ושב בבנק" },
-  } satisfies Record<Exclude<FeeKindId, "own">, { g: NameForm; the?: string }>,
+  } as Record<string, { g: "m" | "f" | "mp" | "fp"; the?: string }>,
   /** "Larger than", after a name that is the subject, agreeing with it ("דמי החשבון הקבועים גדולים מדמי ניהול הפיקדון"). */
-  larger: { m: " גדול מ", f: " גדולה מ", mp: " גדולים מ", fp: " גדולות מ" } satisfies Record<NameForm, string>,
+  larger: { m: " גדול מ", f: " גדולה מ", mp: " גדולים מ", fp: " גדולות מ" } as Record<string, string>,
   /** The rate a cost curve converts a bound in another currency at (F-84), by the currencies a bound may be typed in, as a value's input. */
   rateNames: { USD: "שער הדולר בשקלים", EUR: "שער האירו בשקלים", GBP: "שער הלירה שטרלינג בשקלים" } as Record<string, string>,
   /** The bar under the page's head: the deal's name and where it is kept. */
@@ -2340,8 +2351,7 @@ export const feeDeal = {
   /** The reading's section under the columns (method §10.6, `readingOf`). */
   reading: "קוראים את העסקה",
   /** In the reading's place where reading the deal failed: the deal above still stands, and a change to it reads it again. */
-  /** The reading's notice where it could not be read; `reset` clears the unit's price typed beside a chart, which may be what broke it. */
-  readFailed: { title: "האתר לא הצליח לקרוא את העסקה", line: "אפשר לשנות את העסקה למעלה, והאתר יקרא אותה שוב.", reset: "למחוק את מחיר היחידה" },
+  readFailed: { title: "האתר לא הצליח לקרוא את העסקה", line: "אפשר לשנות את העסקה למעלה, והאתר יקרא אותה שוב." },
   read: {
     /** The periods of F-110: the timeline's stops and its headline. */
     periods: {
@@ -2353,20 +2363,8 @@ export const feeDeal = {
       until: "עד ",
       /** Before the months left in today's period (a computed figure). */
       left: "עוד ",
-      /**
-       * A price that changed at the period's start, after the fee's name, by how it changed and the name's gender and number: "דמי חשבון
-       * קבועים עולים ל־80 ₪ בחודש.", the new price and a full stop after it. A fee whose price falls to nothing stops, and no price is said:
-       * "דמי חשבון קבועים מפסיקים להיגבות."
-       */
-      change: {
-        starts: { m: " מתחיל להיגבות: ", f: " מתחילה להיגבות: ", mp: " מתחילים להיגבות: ", fp: " מתחילות להיגבות: " },
-        rises: { m: " עולה ל־", f: " עולה ל־", mp: " עולים ל־", fp: " עולות ל־" },
-        falls: { m: " יורד ל־", f: " יורדת ל־", mp: " יורדים ל־", fp: " יורדות ל־" },
-        changes: { m: " משתנה: ", f: " משתנה: ", mp: " משתנים: ", fp: " משתנות: " },
-      } satisfies Record<Exclude<ChangeKind, "ends">, Record<NameForm, string>>,
-      stops: { m: " מפסיק להיגבות.", f: " מפסיקה להיגבות.", mp: " מפסיקים להיגבות.", fp: " מפסיקות להיגבות." } satisfies Record<NameForm, string>,
-      /** After a changed price, and between two changes. */
-      changeEnd: ". ",
+      /** Before a price that changed at the period's start, by how it changed. */
+      change: { starts: "מתחיל: ", ends: "נגמר: ", rises: "עולה: ", falls: "יורד: ", changes: "משתנה: " } as Record<string, string>,
       /** The headline: one change, after its month ("בינואר 2027 …"), with the fee's name. */
       one: { starts: "נגמר הפטור מ{name}", ends: "המחיר של {name} יורד לאפס", rises: "המחיר של {name} עולה", falls: "המחיר של {name} יורד", changes: "המחיר של {name} משתנה" } as Record<string, string>,
       /** After a rise to or past the cap. */
@@ -2442,12 +2440,12 @@ export const feeDeal = {
       periodsName: "התקופה",
       /** The headline: "עד 25,446 ₪, הסכומים הקבועים עולים בשנה יותר מכל האחוזים"; a later period's month before it, with a comma. */
       cross: { lead: "עד ", after: ", הסכומים הקבועים עולים בשנה יותר מכל האחוזים", month: ", " },
-      /** The headline with no crossover and one mark, by what changes there: "עד 600,000 ₪ המינימום קובע"; where one fee's price changes, its name. */
-      mark: { minEnd: { lead: "עד ", after: " המינימום קובע" }, maxStart: { lead: "מעל ", after: " המקסימום קובע" }, edge: { lead: "ב־", after: " המחיר משתנה", named: " המחיר של {name} משתנה" } },
       falls: "ככל שמה שמוחזק גדל, שנה עולה פחות באחוזים. ",
       fallsSaved: "ככל שמה שנצבר גדל, שנה עולה פחות באחוזים. ",
       /** The shares band by band above the crossover: "מעל 25,446 ₪ האחוזים קובעים: 0.896% בשנה עד 100,000 ₪, 0.7% עד 500,000 ₪ ו־0.5% מעל זה, כל אחד על כל הסכום." */
       bands: { lead: "מעל ", decides: " האחוזים קובעים: ", perYear: " בשנה", upTo: " עד ", sep: ", ", and: " ו־", above: " מעל זה", whole: ", כל אחד על כל הסכום", end: "." },
+      /** A fee that starts in a later period, after its name and price, by the name's gender and number. */
+      joins: { m: " מצטרף לסכומים הקבועים. ", f: " מצטרפת לסכומים הקבועים. ", mp: " מצטרפים לסכומים הקבועים. ", fp: " מצטרפות לסכומים הקבועים. " } as Record<string, string>,
       /** A fee offset against an action's fee: the chart shows a year without that action. */
       offset: { lead: "הסכום הזה מתקזז מול ", month: " של אותו חודש, ולכן הגרף מראה שנה בלי ", end: "." },
       x: "הסכום שמוחזק (₪)",
@@ -2456,21 +2454,15 @@ export const feeDeal = {
       xShort: "הסכום שמוחזק (₪)",
       xShortSaved: "הסכום שנצבר (₪)",
       /** The layers' groups, named on the chart. */
-      groups: { share: "אחוזים", sum: "סכומים קבועים" } satisfies Record<HeldKind, string>,
+      groups: { share: "אחוזים", fixed: "סכומים קבועים" } as Record<string, string>,
       lanes: "מה קובע את המחיר של כל עמלה, לפי הסכום",
       /** The "?" after the name of a lane whose maximum is on each security held: the chart charges it on one security (F-14). */
       perSecurity: "האתר מחשב כאילו מחזיקים נייר ערך אחד: אם מחזיקים כמה ניירות ערך, העמלה יכולה להיות גבוהה יותר ממה שמוצג.",
-      laneGroups: { share: "אחוזים ממה שמוחזק", shareSaved: "אחוזים ממה שנצבר", sum: "סכומים קבועים" },
-      /**
-       * Over the crossover's point, by how the two kinds meet there (F-124): costing the same, or at a cut past which the shares cost more,
-       * the sums still more at the cut itself.
-       */
-      crossMark: { same: "כאן הקבועים שווים לאחוזים", past: "מעל זה האחוזים עולים יותר" } satisfies Record<"same" | "past", string>,
-      /**
-       * At a drop, by what the fee whose step ends there does over it (F-125), then the two years: "האחוז החדש חל על כל הסכום:", "מעל
-       * הסכום הזה המחיר של {name} יורד:" or "מעל הסכום הזה לא גובים {name}:", and "101,000 ₪ עולים 935 ₪ בשנה, ו־99,000 ₪ עולים 1,115 ₪".
-       */
-      drop: { share: "האחוז החדש חל על כל הסכום:", falls: "מעל הסכום הזה המחיר של {name} יורד:", stops: "מעל הסכום הזה לא גובים {name}:", costs: " עולים ", year: " בשנה, ו־" },
+      laneGroups: { share: "אחוזים ממה שמוחזק", shareSaved: "אחוזים ממה שנצבר", fixed: "סכומים קבועים, בכל סכום" } as Record<string, string>,
+      /** Over the crossover's point. */
+      crossMark: "כאן הקבועים שווים לאחוזים",
+      /** At a drop: "האחוז החדש חל על כל הסכום:" and "101,000 ₪ עולים 935 ₪ בשנה, ו־99,000 ₪ עולים 1,115 ₪". */
+      drop: { lead: "האחוז החדש חל על כל הסכום:", costs: " עולים ", year: " בשנה, ו־" },
       /** The reading at an amount: "שנה על 60,000 ₪", and its share "1.28% ממה שמוחזק". */
       box: { head: "שנה על ", share: " ממה שמוחזק", shareSaved: " ממה שנצבר", sep: " · " },
       range: { lead: "הסכומים בגרף:", from: "מ־", to: "עד", unit: "₪", reset: "חזרה לטווח שבפתיחה", hint: "אפשר גם לגרור על הגרף כדי להתקרב לטווח", fromName: "הסכום הקטן בגרף", toName: "הסכום הגדול בגרף" },

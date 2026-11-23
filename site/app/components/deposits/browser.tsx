@@ -9,7 +9,7 @@ import { useAddressSort } from "../../lib/list-sort";
 import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, interestOn, interestText, isLinked, offersOf, foldedOffers, offersPhrase, opens, periodBest, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type TermId } from "../../lib/deposit-browser";
 import { fmt } from "../../lib/format";
 import { entered } from "../../lib/value";
-import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, SelectField, When, type PeriodBar } from "../kit";
+import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, SelectField, When, amountCheck, fieldRules, readFieldText, type FieldRules, type FieldText, type PeriodBar } from "../kit";
 import { Num, Term } from "../provenance";
 import { HELP_TERMS } from "../../lib/deposit-browser";
 import { DepositGrid } from "./grid";
@@ -18,13 +18,29 @@ import { DepositList, FoldFoot, type ListContext, type ListRow } from "./list";
 /** The rows shown before "עוד N הצעות": eight on a computer, six on a phone. */
 const SHOWN = { table: 8, phone: 6 } as const;
 
+/** The amount field's rules: a whole amount above zero, up to the site's largest (P-05 `ranges.amount`); empty is allowed (no amount). */
+const depositAmountRules = (data: Pick<DbData, "amountMax">): FieldRules => fieldRules({ unit: "nis", optional: true, validate: amountCheck(data.amountMax, { aboveZero: true }) });
+
+/**
+ * The address's `?amount=`, read by the field's own rules: none is the page's start, "none" is the field left empty, and anything else is
+ * what the field would make of it typed. An amount the field refuses ("abc", "0", "2.5", "1e9", one past the largest) is wrong, shown in
+ * the field with its error, and nothing is computed from it.
+ */
+export function amountFromAddress(param: string | null, data: Pick<DbData, "amountMax" | "start">): FieldText {
+  if (param === null) return { kind: "number", n: data.start };
+  if (param === "none") return { kind: "empty" };
+  return readFieldText(param, depositAmountRules(data));
+}
+
 export function DepositBrowser({ data }: { data: DbData }) {
   const { params: sp, update } = useAddressParams();
   const termParam = sp.get("term");
   const term: TermId = (TERMS as readonly string[]).includes(termParam ?? "") ? (termParam as TermId) : START_TERM;
   const amountParam = sp.get("amount");
-  // any whole amount the reader types; "none" while the field is empty, and an address of 0 reads as the field does when 0 is typed
-  const amount: number | null = amountParam === "none" || (amountParam !== null && /^0+$/.test(amountParam)) ? null : amountParam && /^\d+$/.test(amountParam) && Number(amountParam) > 0 ? Number(amountParam) : data.start;
+  const amountRules = depositAmountRules(data);
+  const amountRead = amountFromAddress(amountParam, data);
+  const amount: number | null = amountRead.kind === "number" ? amountRead.n : null;
+  const amountWrong = amountRead.kind === "wrong" ? amountParam : null;
   const kindParam = sp.get("kind");
   const kind: RateKind = kindParam === "variable" || kindParam === "fixed" ? kindParam : START_KIND;
   const withConditional = sp.get("conditional") !== "0";
@@ -100,7 +116,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
         <PhoneFold summary={summary} more={t.fold.change} less={t.fold.close}>
           <div className="flex flex-col md:flex-row md:items-end gap-3 md:gap-4">
             <div className="md:w-56 shrink-0">
-              <NumberField label={t.controls.amount} unit="nis" value={amount} isEntered={amount !== data.start} start={null} optional groupAsTyped validate={() => null} onCommit={(n) => setAmount(n > 0 ? Math.round(n) : null)} onReset={() => setAmount(null)} />
+              <NumberField label={t.controls.amount} unit="nis" value={amount} isEntered={amount !== data.start} start={null} optional groupAsTyped validate={amountRules.validate} outsideText={amountWrong} onCommit={setAmount} onReset={() => setAmount(null)} />
             </div>
             <ChoiceChips wrap ariaLabel={t.controls.picks} ids={data.amounts.map((a) => String(a.value))} labels={Object.fromEntries(data.amounts.map((a) => [String(a.value), <bdi dir="ltr">{fmt.nisWhole(a.value as number)}</bdi>]))} value={pick} onChange={(v) => setAmount(Number(v))} />
           </div>

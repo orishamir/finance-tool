@@ -8,7 +8,7 @@ import { feesData } from "../fees.server";
 import { unpackDeal } from "./link";
 import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
-import { openingRange, partAt, roundAmount, settleRange, type ActionView, type HeldView, type LanePart } from "./charts";
+import { openingRange, roundAmount, settleRange, type ActionView, type HeldView } from "./charts";
 import { nisPerNumber } from "../fx";
 import { typed, type FeeDeal, type Price } from "./model";
 
@@ -145,8 +145,7 @@ describe("what holding costs", () => {
     expect(now!.cross).toBeCloseTo(228 / 0.00896, 6);
     expect(later!.cross).toBeCloseTo(468 / 0.00896, 6);
     expect(now!.falls).toBe(true);
-    expect(now!.bands?.each.map((b) => b.rate.value)).toEqual([expect.closeTo(0.896, 9), expect.closeTo(0.7, 9), expect.closeTo(0.5, 9)]);
-    expect(now?.bands?.from.value).toBeCloseTo(228 / 0.00896, 6);
+    expect(now!.bands.map((b) => b.rate.value)).toEqual([expect.closeTo(0.896, 9), expect.closeTo(0.7, 9), expect.closeTo(0.5, 9)]);
     expect(later!.changes.map((x) => x.kind)).toEqual(["fixed_period"]);
     expect(later!.offsets).toEqual([expect.objectContaining({ against: "trade", action: "trade" })]);
   });
@@ -154,233 +153,14 @@ describe("what holding costs", () => {
     const now = heldOf((await reading()).panels.held[0]!);
     const at100 = now.drops.find((d) => d.at === 100_000)!;
     expect([at100.under.value.value, at100.under.cost.value, at100.over.value.value, at100.over.cost.value]).toEqual([99_000, expect.closeTo(1115.04, 6), 101_000, expect.closeTo(935, 6)]);
-    expect(at100.what).toEqual({ kind: "share" });
   });
   it("reads a year on an amount by layer, the shares first", async () => {
     const r = heldOf((await reading()).panels.held[0]!).readAt(60_000);
-    expect(r.groups.map((g) => [g.group, g.total.value])).toEqual([
+    expect(r.groups.map((g) => [g.layer, g.total.value])).toEqual([
       ["share", expect.closeTo(537.6, 6)],
-      ["sum", expect.closeTo(228, 6)],
+      ["fixed", expect.closeTo(228, 6)],
     ]);
     expect(r.share.value).toBeCloseTo(1.276, 9);
-  });
-});
-
-describe("holding, the fees by their kind: custody of 0.15% a year with at least 900 ₪, and 80 ₪ a month of account fee to 08.2027", () => {
-  const deal: FeeDeal = {
-    id: "deal-k",
-    name: "",
-    kind: "brokerage-account",
-    fees: [
-      { id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 12, every: 12, min: typed(900) } }] },
-      { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(80), every: 1 }, until: "2027-08" }, { price: { form: "sum", amount: typed(0), every: 1 } }] },
-    ],
-  };
-  /** The chart of today's period, or of the one from 08.2027. */
-  const held = (k: 0 | 1): HeldView => {
-    const v = readingOf(readDealFor(deal, data.kinds, "2026-11-20"), data.fx).panels.held[k];
-    if (!v || !("chart" in v)) throw new Error(`no holding chart in period ${k}`);
-    return v.chart;
-  };
-  const said = (r: ReturnType<HeldView["readAt"]>) => r.groups.map((g) => [g.group, g.total.value, g.rows.map((x) => [x.fee.ref.kind, x.cost.value, x.part?.part])]);
-
-  it("meets 960 ₪ a year of account fee where the custody's rate passes it, at 640,000 ₪, not where its minimum ends", () => {
-    const now = held(0);
-    expect(now.cross).toBeCloseTo(960 / 0.0015, 6);
-    expect(now.head).toMatchObject({ kind: "cross" });
-  });
-
-  it("files the custody at its minimum under the shares, as its lane, and the account fee under the sums", () => {
-    const now = held(0);
-    expect(now.lanes.map((l) => [l.fee.ref.kind, l.group])).toEqual([
-      ["custody", "share"],
-      ["fixed_period", "sum"],
-    ]);
-    expect(said(now.readAt(100_000))).toEqual([
-      ["share", 900, [["custody", 900, "min"]]],
-      ["sum", 960, [["fixed_period", 960, undefined]]],
-    ]);
-  });
-
-  it("from 08.2027 has no crossover, heads the chart with the minimum's end at 600,000 ₪, and leaves the account fee of 0 ₪ out of the box", () => {
-    const later = held(1);
-    expect(later.cross).toBeNull();
-    expect(later.head).toMatchObject({ kind: "mark", of: "minEnd", at: { value: expect.closeTo(600_000, 6) } });
-    expect(said(later.readAt(100_000))).toEqual([["share", 900, [["custody", 900, "min"]]]]);
-    expect(said(later.readAt(1_000_000))).toEqual([["share", expect.closeTo(1500, 9), [["custody", expect.closeTo(1500, 9), "rate"]]]]);
-  });
-});
-
-describe("holding, a fee whose steps by the value held mix a sum per period and a share (F-124, heldKind)", () => {
-  /** Custody by the value held: `sum` ₪ a year up to 100,000 ₪ and `pct`% a year above, with `fixed` ₪ a year of fixed fee beside it. */
-  const deal = (sum: number, pct: number, fixed: number): FeeDeal => ({
-    id: "deal-m",
-    name: "",
-    kind: "brokerage-account",
-    fees: [
-      {
-        id: "fee-custody",
-        kind: "custody",
-        by: [{ kind: "portfolioSize", unit: "ILS", tops: [typed(100_000)] }],
-        cases: [
-          { id: "c1", when: [0], stages: [{ price: { form: "sum", amount: typed(sum), every: 12 } }] },
-          { id: "c2", when: [1], stages: [{ price: { form: "held", rate: typed(pct), per: 12, every: 12 } }] },
-        ],
-      },
-      ...(fixed > 0 ? [{ id: "fee-fixed", kind: "fixed_period" as const, stages: [{ price: { form: "sum" as const, amount: typed(fixed), every: 12 as const } }] }] : []),
-    ],
-  });
-  const held = (d: FeeDeal): HeldView => {
-    const v = readingOf(readDealFor(d, data.kinds, "2026-11-20"), data.fx).panels.held[0];
-    if (!v || !("chart" in v)) throw new Error("no holding chart");
-    return v.chart;
-  };
-  const said = (r: ReturnType<HeldView["readAt"]>) => r.groups.map((g) => [g.group, g.total.value, g.rows.map((x) => [x.fee.ref.kind, x.cost.value, x.part?.part])]);
-
-  it("stands the custody under both kinds, each lane with its own steps: the sum up to 100,000 ₪, the share above it", () => {
-    const c = held(deal(240, 0.1, 1200));
-    expect(c.lanes.map((l) => [l.fee.ref.kind, l.group])).toEqual([
-      ["custody", "share"],
-      ["custody", "sum"],
-      ["fixed_period", "sum"],
-    ]);
-    expect(new Set(c.lanes.map((l) => l.id)).size).toBe(3);
-    expect(c.lanes.map((l) => l.parts?.map((x) => [x.part, x.figure?.value, x.from, x.to]) ?? null)).toEqual([
-      [["rate", 0.1, 100_000, null]],
-      [["sum", 240, 0, 100_000]],
-      null,
-    ]);
-  });
-
-  it("files the custody's year under the kind its step charges, in the box and in the layers: a sum at 50,000 ₪, a share at 2,000,000 ₪", () => {
-    const c = held(deal(240, 0.1, 1200));
-    // 50,000 ₪: the custody's 240 ₪ and the fixed 1,200 ₪, both sums; 2,000,000 ₪: the custody's 0.1% = 2,000 ₪, and the fixed 1,200 ₪
-    expect(said(c.readAt(50_000))).toEqual([["sum", 1440, [["custody", 240, "sum"], ["fixed_period", 1200, undefined]]]]);
-    expect(said(c.readAt(2_000_000))).toEqual([
-      ["share", expect.closeTo(2000, 9), [["custody", expect.closeTo(2000, 9), "rate"]]],
-      ["sum", 1200, [["fixed_period", 1200, undefined]]],
-    ]);
-    const at = (v: number) => c.sample({ lo: v, hi: v * 1.0001 }, 1)[0]?.layers;
-    expect(at(50_000)).toEqual([0, expect.closeTo(240 / 50_000, 12), expect.closeTo(1200 / 50_000, 12)]);
-    expect(at(2_000_000)).toEqual([expect.closeTo(0.001, 12), 0, expect.closeTo(1200 / 2_000_000, 12)]);
-  });
-
-  it("meets the sums where the share passes them: 1,200 ₪ a year over 0.1% is 1,200,000 ₪, the bands from there", () => {
-    const c = held(deal(240, 0.1, 1200));
-    expect(c.cross).toBeCloseTo(1_200_000, 6);
-    expect(c.bands?.from.value).toBeCloseTo(1_200_000, 6);
-    expect(c.bands?.each.map((b) => b.rate.value)).toEqual([expect.closeTo(0.1, 9)]);
-  });
-
-  it("at exactly 100,000 ₪ charges the sum's step alone: its marks, headline, drop, box and the parts holding it", () => {
-    const c = held(deal(240, 0.1, 1200));
-    // the step's top and the crossover, where 0.1% of 1,200,000 ₪ is the fixed 1,200 ₪
-    expect(c.marks.map((m) => [m.kind, m.at])).toEqual([
-      ["edge", 100_000],
-      ["cross", expect.closeTo(1_200_000, 6)],
-    ]);
-    expect(c.head).toMatchObject({ kind: "cross", meets: "same", at: { value: expect.closeTo(1_200_000, 6) } });
-    // 99,000 ₪: 240 + 1,200 = 1,440 ₪; 101,000 ₪: 0.1% of it, 101 ₪, and 1,200 ₪ = 1,301 ₪; above the top the custody is a share
-    expect(c.drops.map((d) => [d.at, d.what, d.under.value.value, d.under.cost.value, d.over.value.value, d.over.cost.value])).toEqual([[100_000, { kind: "share" }, 99_000, 1440, 101_000, expect.closeTo(1301, 9)]]);
-    // F-115: at the top the lower step charges, so the custody is the sum's 240 ₪ and nothing is a share
-    expect(said(c.readAt(100_000))).toEqual([["sum", 1440, [["custody", 240, "sum"], ["fixed_period", 1200, undefined]]]]);
-    expect(c.lanes.map((l) => (l.parts ? (partAt(l.parts, 100_000)?.part ?? "none") : null))).toEqual(["none", "sum", null]);
-    expect(c.lanes.map((l) => (l.parts ? (partAt(l.parts, 100_001)?.part ?? "none") : null))).toEqual(["rate", "none", null]);
-  });
-
-  it("adds its groups' totals up to the year's total at every value", () => {
-    const c = held(deal(240, 0.1, 1200));
-    for (const v of [10_000, 99_000, 100_000, 101_000, 1_200_000, 5_000_000]) {
-      const r = c.readAt(v);
-      expect(r.groups.reduce((a, g) => a + (g.total.value as number), 0), String(v)).toBeCloseTo(r.total.value as number, 9);
-    }
-  });
-
-  it("is a cut where the sums drop to the share's charge: 120 ₪ a year up to 100,000 ₪, then 0.15%, where the shares cost more past it", () => {
-    // at 100,000 ₪ the sum's 120 ₪ still charges and nothing is a share; just above, the share is 150 ₪ and the sums nothing
-    const c = held(deal(120, 0.15, 0));
-    expect(c.cross).toBe(100_000);
-    expect(c.head).toMatchObject({ kind: "cross", meets: "past" });
-  });
-});
-
-describe("holding, the sentence at a drop, by what the fee whose step ends there does over it (F-125)", () => {
-  /** Custody by the value held: `below` up to 100,000 ₪ and `above` over it, with `fixed` ₪ a year of fixed fee and a fund's `fund`% beside it. */
-  const deal = (below: Price, above: Price, fixed = 0, fund = 0): FeeDeal => ({
-    id: "deal-d",
-    name: "",
-    kind: "brokerage-account",
-    fees: [
-      {
-        id: "fee-custody",
-        kind: "custody",
-        by: [{ kind: "portfolioSize", unit: "ILS", tops: [typed(100_000)] }],
-        cases: [
-          { id: "c1", when: [0], stages: [{ price: below }] },
-          { id: "c2", when: [1], stages: [{ price: above }] },
-        ],
-      },
-      ...(fixed > 0 ? [{ id: "fee-fixed", kind: "fixed_period" as const, stages: [{ price: { form: "sum" as const, amount: typed(fixed), every: 12 as const } }] }] : []),
-      ...(fund > 0 ? [{ id: "fee-fund", kind: "fund_management" as const, stages: [{ price: { form: "held" as const, rate: typed(fund), per: 12 as const, every: 12 as const } }] }] : []),
-    ],
-  });
-  const drops = (d: FeeDeal) => {
-    const v = readingOf(readDealFor(d, data.kinds, "2026-11-20"), data.fx).panels.held[0];
-    if (!v || !("chart" in v)) throw new Error("no holding chart");
-    return v.chart.drops.map((x) => [x.at, x.what.kind, x.under.value.value, x.under.cost.value, x.over.value.value, x.over.cost.value]);
-  };
-  const free: Price = { form: "free" };
-  const monthly = (n: number): Price => ({ form: "sum", amount: typed(n), every: 1 });
-  const yearly = (n: number): Price => ({ form: "sum", amount: typed(n), every: 12 });
-
-  it("says the custody stops where 10 ₪ a month ends at 100,000 ₪: 99,000 ₪ cost 120 ₪ and 101,000 ₪ nothing", () => {
-    expect(drops(deal(monthly(10), free))).toEqual([[100_000, "stops", 99_000, 120, 101_000, 0]]);
-    // beside a fund's 0.1% a year: 120 + 99 = 219 ₪ under it, 101 ₪ over it
-    expect(drops(deal(monthly(10), free, 0, 0.1))).toEqual([[100_000, "stops", 99_000, expect.closeTo(219, 9), 101_000, expect.closeTo(101, 9)]]);
-  });
-
-  it("says the custody stops where 0.2% a year ends at 100,000 ₪, beside 100 ₪ a year: 298 ₪ under it, 100 ₪ over it", () => {
-    expect(drops(deal({ form: "held", rate: typed(0.2), per: 12, every: 12 }, free, 100))).toEqual([[100_000, "stops", 99_000, expect.closeTo(298, 9), 101_000, 100]]);
-  });
-
-  it("says the custody's price falls where 240 ₪ a year gives way to 60 ₪ a year at 100,000 ₪", () => {
-    expect(drops(deal(yearly(240), yearly(60)))).toEqual([[100_000, "falls", 99_000, 240, 101_000, 60]]);
-  });
-});
-
-describe("a lane's part at an amount (partAt)", () => {
-  const part = (from: number, to: number | null): LanePart => ({ part: "sum", from, to, i: 0 });
-
-  it("is the part holding the amount, more than its bottom and up to its top, and none outside every part", () => {
-    const sumUpTo = [part(0, 100_000)];
-    const shareFrom = [part(100_000, null)];
-    expect(partAt(sumUpTo, 100_000)).toBe(sumUpTo[0]);
-    expect(partAt(sumUpTo, 150_000)).toBeUndefined();
-    expect(partAt(shareFrom, 100_000)).toBeUndefined();
-    expect(partAt(shareFrom, 100_001)).toBe(shareFrom[0]);
-    expect(partAt(shareFrom, 50_000)).toBeUndefined();
-  });
-});
-
-describe("holding, the bands from the first value above the crossover where every share is at its rate", () => {
-  it("starts them where the custody's minimum ends, 600,000 ₪, when the crossover, 100,000 ₪, falls inside it", () => {
-    // custody of 0.15% a year with at least 900 ₪, a fund's 0.1% a year, and 1,000 ₪ a year: the shares cost 900 + 0.001 × B up to
-    // 600,000 ₪, which is 1,000 ₪ at 100,000 ₪; from 600,000 ₪ both shares are at their rates, 0.25% a year
-    const deal: FeeDeal = {
-      id: "deal-b",
-      name: "",
-      kind: "brokerage-account",
-      fees: [
-        { id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 12, every: 12, min: typed(900) } }] },
-        { id: "fee-fund", kind: "fund_management", stages: [{ price: { form: "held", rate: typed(0.1), per: 12, every: 12 } }] },
-        { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(1000), every: 12 } }] },
-      ],
-    };
-    const v = readingOf(readDealFor(deal, data.kinds, "2026-11-20"), data.fx).panels.held[0];
-    if (!v || !("chart" in v)) throw new Error("no holding chart");
-    expect(v.chart.cross).toBeCloseTo(100_000, 6);
-    expect(v.chart.bands?.from.value).toBeCloseTo(600_000, 6);
-    expect(v.chart.bands?.each.map((b) => [b.rate.value, b.to])).toEqual([[expect.closeTo(0.25, 9), undefined]]);
   });
 });
 
@@ -423,22 +203,6 @@ describe("a deal read whole, whatever the fees an action or a holding prices are
     };
     expect(coverOf(deal)).toEqual([]);
     expect(coverOf(deal, 50)).toEqual([13_637]);
-    // the figure rests on the unit's price given, as on the trade fee's figures
-    const [cover] = read(deal, 50).timeline.flatMap((t) => t.covers);
-    expect(cover?.from !== "any" && cover?.from.computed_from?.inputs).toMatchObject({ "deal:unit-price": expect.objectContaining({ value: 50, state: "entered" }), "deal:trade": expect.anything() });
-  });
-  it("says the cover beside another fee on the action priced per unit before the unit's price is given: it prices only the trade fee (F-127)", () => {
-    const deal: FeeDeal = {
-      id: "deal-x",
-      name: "",
-      kind: "brokerage-account",
-      fees: [
-        { id: "fee-t", kind: "trade", stages: [{ price: { form: "action", rate: typed(0.1), min: typed(5) } }] },
-        { id: "fee-s", kind: "spread", stages: [{ price: { form: "action", rate: typed(0.05), third: { who: "הברוקר", price: { form: "perUnit", amount: typed(0.005), currency: "USD" } } } }] },
-        account,
-      ],
-    };
-    expect(coverOf(deal)).toEqual([15_000]);
   });
   it("reads a purchase whose conversion has a third party's sum per unit as one with a conversion priced per unit itself: no one rate (F-123)", () => {
     const thirdFee = { id: "fee-x", kind: "fx", stages: [{ price: { form: "action", rate: typed(0.2), third: { price: { form: "perUnit", amount: typed(0.005), currency: "USD" } } } }] } as const satisfies FeeDeal["fees"][number];
@@ -461,10 +225,7 @@ describe("a deal read whole, whatever the fees an action or a holding prices are
         },
       ],
     };
-    // a sum by the value held has a mark at its step's top (F-115), so it is a chart, read at a small value
-    const [held] = read(deal).panels.held;
-    expect(held && "chart" in held).toBe(true);
-    if (!held || !("chart" in held)) return;
-    expect(held.chart.readAt(1_000).total.value).toBe(300);
+    const held = read(deal).panels.held;
+    expect(held).toEqual([{ one: expect.objectContaining({ one: { value: expect.objectContaining({ value: 300 }), of: "sum" } }) }]);
   });
 });

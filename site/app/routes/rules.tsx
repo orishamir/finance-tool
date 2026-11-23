@@ -5,7 +5,7 @@
 // its own below 1280 px, with a way back to where the list was. The address holds the state (?product=&shelf=&changing=1&q=, and the
 // open rule as #ID), so a link presets it. The page ships a light list of every rule (what a row shows); the full records and their uses
 // come per shelf from /rules-data/<shelf>.json, fetched for the rule that is open and the search's top match.
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { useLoaderData, useLocation, useNavigate } from "react-router";
 import { rulesFront as copy, scopeWords, sourceBlock, system, topicName } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
@@ -256,6 +256,8 @@ function RuleGroups({ rules, shelf, lightById, selected, onOpen }: { rules: Ligh
 
 /** The products by group: "כל המוצרים" first, marked apart by an icon, each line with how many rules it holds; the chosen one filled and bold with a bar at its start. */
 function ProductList({ names, counts, total, current, onPick }: { names: Map<string, string>; counts: Map<string, number>; total: number; current: string | null; onPick: (id: string | null) => void }) {
+  // the list stands twice on the page (beside the rules from xl, in the phone's sheet below it): its group heads' ids are its own
+  const uid = useId();
   const groups = groupProducts([...names.keys()]);
   const line = (id: string | null, name: string, n: number, all = false) => (
     <button
@@ -283,8 +285,8 @@ function ProductList({ names, counts, total, current, onPick }: { names: Map<str
     <div className="flex flex-col gap-5">
       {line(null, copy.products.all, total, true)}
       {groups.map((g) => (
-        <div key={g.id} role="group" aria-labelledby={`products-${g.id}`} className="flex flex-col gap-0.5">
-          <GroupHead id={`products-${g.id}`} className="ps-3 pb-1">
+        <div key={g.id} role="group" aria-labelledby={`${uid}products-${g.id}`} className="flex flex-col gap-0.5">
+          <GroupHead id={`${uid}products-${g.id}`} className="ps-3 pb-1">
             {copy.nav.groups[g.id] ?? g.id}
           </GroupHead>
           {g.ids.map((id) => line(id, names.get(id) ?? id, counts.get(id) ?? 0))}

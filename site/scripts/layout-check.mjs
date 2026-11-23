@@ -47,6 +47,8 @@
 //   grip     on the fee page's deal at 390 as a touch phone, with a fee open, a grip (kit/lift.tsx `Grip`) whose tap area is under 44 px
 //            wide or tall where a finger lands, or that covers the middle of another control within reach (2026-11-21: the grips drew
 //            20 px wide and reached 21 px).
+//   id       an id that more than one element of the page carries, at every width: an address's #id lands on the first only (a list
+//            drawn twice, beside the content and in a phone's sheet; a card listed under two companies).
 //   input    on the kit page, the kit's pieces as a hand uses them, with keys, a mouse and a finger: number fields as they are typed in,
 //            sliders, sheets and their close request, a figure's source note, presses through a card's surface, a table's folding strip and
 //            a chart dragged by a finger (kit-input-check.mjs says each).
@@ -1042,6 +1044,11 @@ async function selfTest() {
   });
   if (!(await page.evaluate(pokes)).some((x) => x.id === "planted-poke")) missed.push("poke");
   await page.evaluate(() => ["planted-poke", "planted-poke-style"].forEach((id) => document.getElementById(id).remove()));
+  await page.evaluate(() => {
+    for (let i = 0; i < 2; i++) document.querySelector("main").append(Object.assign(document.createElement("div"), { id: "planted-dup" }));
+  });
+  if (!(await page.evaluate(duplicateIds)).some((d) => d.id === "planted-dup")) missed.push("id");
+  await page.evaluate(() => document.querySelectorAll("#planted-dup").forEach((el) => el.remove()));
   const doubted = page.locator("main button.num-doubt").first();
   if (await doubted.count()) {
     await doubted.scrollIntoViewIfNeeded();
@@ -1143,6 +1150,7 @@ async function checkPage(page, path, width) {
     for (const h of await page.evaluate(wideHeads)) add({ check: "head", id: h.text, detail: `the head "${h.text}" runs ${h.by} px past its column` });
     for (const o of (await page.evaluate(overlaps)).slice(0, 6)) add({ check: "overlap", id: o.id, detail: `"${o.a}" and "${o.b}" are drawn over each other (${o.where})` });
     for (const x of await page.evaluate(pokes)) add({ check: "poke", id: x.id, detail: `${x.where} scrolls sideways ${x.by} px past what is in it: a press area or a frame pokes out of it` });
+    for (const d of await page.evaluate(duplicateIds)) add({ check: "id", id: d.id, detail: `the id "${d.id}" names ${d.n} elements: an address's #${d.id} lands on the first only, and a label naming it reads the first` });
   };
   await look();
   // a closed tab card's panel is not in the page (the index page's "לפני שמחליטים"): each is opened in turn and the page looked at again,
@@ -1437,6 +1445,13 @@ function warningsOutOfSight() {
 // its start, and scrolls sideways further than the boxes inside it reach from its start edge (the right one, right to left) with its padding
 // at the end: by how much, and its tag and first classes, or its id. Content too wide reaches as far as the box scrolls; a pseudo-element's
 // area (a 44 px press) has no box of its own to read, and is what is left.
+/** Each id that more than one element of the page carries, with how many: an address's `#id` lands on the first only. */
+function duplicateIds() {
+  const n = new Map();
+  for (const el of document.querySelectorAll("[id]")) if (el.id) n.set(el.id, (n.get(el.id) ?? 0) + 1);
+  return [...n].filter(([, k]) => k > 1).map(([id, k]) => ({ id, n: k }));
+}
+
 function pokes() {
   const out = [];
   for (const el of document.querySelectorAll('main [class*="overflow-x-"], main [class*="overflow-auto"], main [class*="overflow-scroll"], main [id^="planted-"]')) {

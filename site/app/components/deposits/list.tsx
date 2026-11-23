@@ -79,7 +79,7 @@ function BankName({ bank, mine }: { bank: DbBank | undefined; mine: boolean }) {
   if (!bank) return null;
   return (
     <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
-      <Link to={companyPath(bank.id)} className="font-semibold hover:underline">
+      <Link to={companyPath(bank.id)} className="tap-area font-semibold hover:underline">
         <MixedName>{bank.name}</MixedName>
       </Link>
       {mine && <Tag tone="primary">{t.mine}</Tag>}
@@ -164,7 +164,8 @@ function PhoneRow({ row, top, mine, ctx }: { row: DbRow; top: boolean; mine: boo
           <BankName bank={bank} mine={mine} />
           <OfferName row={row} />
         </span>
-        <span className="flex flex-col items-end shrink-0 gap-0.5">
+        {/* the rate over the interest, 12 px apart: each figure's 44 px area stays clear of the other's own box */}
+        <span className="flex flex-col items-end shrink-0 gap-3">
           <Num value={first.rate_offered} className={cx("text-2xl font-semibold", top && "text-primary")} />
           {ctx.amount && (
             <span className={muted}>
@@ -186,7 +187,8 @@ function PhoneRow({ row, top, mine, ctx }: { row: DbRow; top: boolean; mine: boo
         </span>
       </span>
       {row.offers.slice(1).map((o) => (
-        <span key={o.id} className="flex items-baseline justify-between gap-3 border-s-2 border-border ps-3">
+        // a line of its own 44 px tall, so its rate's area reaches its 44 px between the lines' figures
+        <span key={o.id} className="flex min-h-target items-center justify-between gap-3 border-s-2 border-border ps-3">
           <span className={cx(muted, "whitespace-normal")}>{o.exits.exists && exitTiming(o.exits) !== null && rowSplit(row).exits ? `${t.variant.withWords}${accessOf(o)[0]!.words}` : variantWords(row, o)}</span>
           <Num value={o.rate_offered} className="font-semibold shrink-0" />
         </span>

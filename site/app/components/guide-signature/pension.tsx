@@ -15,7 +15,7 @@ import { pensionModel } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, type SiteValue } from "../../lib/value";
-import { aboveZeroCheck, Callout, DotLine, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
+import { amountCheck, Callout, DotLine, NumberField, PercentField, Sentence, Stat, StatRow } from "../kit";
 import { IdRef, Num, Ruled, Term } from "../provenance";
 import { figure, Gap, inputSite, rulesOfBundle, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
 
@@ -130,7 +130,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           value={salary}
           start={p05Salary}
           isEntered={salaryPick !== null}
-          validate={aboveZeroCheck}
+          validate={amountCheck(inputs.p05.amountMax, { aboveZero: true })}
           onCommit={(n) => setSalaryPick(n)}
           onReset={() => setSalaryPick(null)}
           disabled={!inputs.ready}

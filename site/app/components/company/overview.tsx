@@ -84,8 +84,9 @@ export function OverviewTable({ groups, heads, note }: { groups: { key: string; 
     { id: "fees", head: heads ? <SortNote label={cols.fees} note={heads.fees} /> : cols.fees, width: 12.75, wrap: true },
     { id: "go", head: <span className="sr-only">{cols.go}</span>, width: 3, tight: true },
   ];
-  const name = (r: OverviewTableRow) => (
-    <TextLink tone="plain" to={r.to} preventScrollReset className="font-semibold">
+  // on a phone the name stands on its own line over the row's figures: a 44 px target there (`line`), so their areas do not cut it
+  const name = (r: OverviewTableRow, look: "inline" | "line" = "inline") => (
+    <TextLink look={look} tone="plain" to={r.to} preventScrollReset className="font-semibold">
       {r.title}
     </TextLink>
   );
@@ -105,8 +106,8 @@ export function OverviewTable({ groups, heads, note }: { groups: { key: string; 
       ],
       phone: (
         <ProductPhoneRow stacked>
-          <span className="flex items-baseline justify-between gap-3">
-            {name(r)}
+          <span className="flex items-center justify-between gap-3">
+            {name(r, "line")}
             {r.count && <span className="text-sm text-muted-foreground">{r.count}</span>}
           </span>
           <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm">
