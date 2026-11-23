@@ -588,7 +588,7 @@
    "site/app/lib/fee-deal/cases.test.ts": 197,
    "site/app/lib/fee-deal/cases.ts": 16,
    "site/app/lib/fee-deal/cells-edits.test.ts": 91,
-   "site/app/lib/fee-deal/charts.test.ts": 47,
+   "site/app/lib/fee-deal/charts.test.ts": 46,
    "site/app/lib/fee-deal/charts.ts": 100,
    "site/app/lib/fee-deal/copy-fee.test.ts": 41,
    "site/app/lib/fee-deal/deal-read.ts": 9,

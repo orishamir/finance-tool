@@ -637,7 +637,7 @@ function HeldSub({ view, saved }: { view: HeldView; saved: boolean }) {
   );
 }
 
-/** A year at the reader's amount: the sum and its share, then each layer with its subtotal and its fees, the one set apart bolder. */
+/** A year at the reader's amount: the sum and its share, then each layer with its fees, its subtotal only where it holds two or more, the one set apart bolder. */
 function HeldBox({ read, strong, saved }: { read: HeldReading; strong: string | null; saved: boolean }) {
   const x = w.held.box;
   return (
@@ -655,7 +655,8 @@ function HeldBox({ read, strong, saved }: { read: HeldReading; strong: string | 
         <div key={g.layer} className="flex flex-col gap-0.5 pt-1">
           <p className="flex justify-between gap-4 font-semibold">
             <span>{w.held.groups[g.layer]}</span>
-            <Fig value={g.total} />
+            {/* a layer of one fee: its subtotal is that fee's figure, said once, on the fee's line (founder, 2026-11-23) */}
+            {g.rows.length > 1 && <Fig value={g.total} />}
           </p>
           {g.rows.map((r) => (
             <p key={r.fee.ref.fee} className={cx("flex justify-between gap-4", strong === r.fee.ref.fee ? "font-semibold text-foreground" : "text-muted-foreground")}>
@@ -921,29 +922,24 @@ function TimelineStop({ stop, before, saved, track }: { stop: TimelinePeriod; be
           ))}
         </ul>
       )}
-      {(idle || stop.rest) && (
+      {idle && (
         <p className="text-pretty">
-          {idle && (
+          <FigAfter value={idle.total} lead={t.idle.lead} className="font-semibold" />
+          {!before && idle.parts.length > 1 ? (
             <>
-              <FigAfter value={idle.total} lead={t.idle.lead} className="font-semibold" />
-              {!before && idle.parts.length > 1 ? (
-                <>
-                  {t.idle.parts}
-                  {joined(
-                    idle.parts.map((x) => (
-                      <>
-                        {refName(x.fee)} <Fig value={x.amount} />
-                      </>
-                    )),
-                    t.idle.sep,
-                    t.idle.and,
-                  )}
-                </>
-              ) : null}
-              {t.idle.end}
+              {t.idle.parts}
+              {joined(
+                idle.parts.map((x) => (
+                  <>
+                    {refName(x.fee)} <Fig value={x.amount} />
+                  </>
+                )),
+                t.idle.sep,
+                t.idle.and,
+              )}
             </>
-          )}
-          {stop.rest && ` ${t.rest}`}
+          ) : null}
+          {t.idle.end}
         </p>
       )}
     </li>

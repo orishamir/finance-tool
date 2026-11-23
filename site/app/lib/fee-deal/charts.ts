@@ -1042,8 +1042,6 @@ export interface TimelinePeriod {
   card: PeriodCard;
   idle: { total: SiteValue; parts: { fee: FeeRef; amount: SiteValue }[]; bank: readonly string[] } | null;
   covers: { fee: FeeRef; against: FeeKindId; action: DealAction; from: SiteValue | "any"; side: DealSide }[];
-  /** Whether a fee kept its price from the period before (the period's own words say the rest stays). */
-  rest: boolean;
 }
 
 /** The periods of a deal read again for a month (`readForMonth`) that overlap a period of the reading: the month's figures read in each. */
@@ -1113,7 +1111,6 @@ export function timelineOf(r: DealRead, cards: readonly PeriodCard[], fx: FxSnap
     const card = cards[k]!;
     const idle = throughout(overlapping(empty, p).map((q) => idleIn(empty, q)), (x) => JSON.stringify([x.total.value, x.parts.map((y) => [y.fee.fee, y.amount.value])]));
     const covers = throughout(overlapping(single, p).map((q) => coversIn(single, q, fx, unit)), coverKey) ?? [];
-    const rest = k > 0 && card.rows.some((row) => !row.change && !row.sale?.change);
-    return { card, idle: idle ? { ...idle, bank } : null, covers, rest };
+    return { card, idle: idle ? { ...idle, bank } : null, covers };
   });
 }

@@ -747,9 +747,9 @@ describe("a thing of the band's head, opened", () => {
       return undoWords(r.undo, () => "", data);
     };
     // the two US tracks merge: 5 cases are 4
-    expect(words(deal(), 1)).toBe("המחיר כבר לא משתנה לפי המסלול שבחרתם: 5 מקרים הם עכשיו 4.");
+    expect(words(deal(), 1)).toBe("המחיר כבר לא משתנה לפי המסלול: 5 מקרים הם עכשיו 4.");
     expect(thingMenu(read(deal()), "fee-trade", 1)!.after).toContain("5 מקרים יהיו 4");
-    expect(words({ ...deal(), fees: [{ ...trade(), cases: trade().cases.filter((c) => c.id !== "c4") }] }, 1)).toBe("המחיר כבר לא משתנה לפי המסלול שבחרתם. המקרים נשארו כמו שהם, כי הם שונים גם בדבר אחר.");
+    expect(words({ ...deal(), fees: [{ ...trade(), cases: trade().cases.filter((c) => c.id !== "c4") }] }, 1)).toBe("המחיר כבר לא משתנה לפי המסלול. המקרים נשארו כמו שהם, כי הם שונים גם בדבר אחר.");
     expect(words({ ...deal(), fees: [removeBy(trade(), 1)] }, 0)).toBe("המחיר כבר לא משתנה לפי מה קונים. נשאר המחיר של המקרה הראשון.");
   });
   it("keeps the person's own track's price where cases become one, else the first case's, and says whose it kept", () => {
@@ -767,7 +767,7 @@ describe("a thing of the band's head, opened", () => {
     expect(ownKept(byTrack, 0)).toBe(true);
     expect(removeBy(byTrack, 0)).toEqual({ id: "fee-trade", kind: "trade", stages: byTrack.cases[1]!.stages });
     const one = (f: Fee): FeeDeal => ({ ...deal(), fees: [f] });
-    expect(undoWords(removeByKept(one(byTrack), "fee-trade", 0, null)!.undo, () => "", data)).toBe("המחיר כבר לא משתנה לפי המסלול שבחרתם. נשאר המחיר של המסלול שלכם.");
+    expect(undoWords(removeByKept(one(byTrack), "fee-trade", 0, null)!.undo, () => "", data)).toBe("המחיר כבר לא משתנה לפי המסלול. נשאר המחיר של המסלול שלכם.");
     expect(thingMenu(read(one(byTrack)), "fee-trade", 0)!.after).toBe(copy.cases.thingMenu.slimOwn);
     // no case the person's: the first case's price, as before
     const noneMine: CasesFee = { ...byTrack, cases: byTrack.cases.map(({ mine: _m, ...c }) => c) };

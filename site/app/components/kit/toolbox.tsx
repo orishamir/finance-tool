@@ -28,7 +28,7 @@ export interface ToolPart {
   label: ReactNode;
   /** The case already has it: on (a ✓, an outline and a faint fill of its kind's colour), and no tap unless a tap takes it away (`removeLabel`). */
   used?: boolean;
-  /** Where the case has it and a tap takes it away again: the spoken name of that tap ("להפסיק להבחין לפי המסלול שבחרתם"). */
+  /** Where the case has it and a tap takes it away again: the spoken name of that tap ("להפסיק להבחין לפי המסלול"). */
   removeLabel?: string;
   /** The case cannot take it (a fourth thing to change by): faint, no tap; the group says why (`offWhy`). */
   off?: boolean;

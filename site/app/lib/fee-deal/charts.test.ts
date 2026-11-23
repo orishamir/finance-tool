@@ -170,7 +170,6 @@ describe("what changes and when", () => {
     expect(now!.idle!.total.value).toBe(19);
     expect(later!.idle!.total.value).toBe(39);
     expect(later!.covers).toEqual([expect.objectContaining({ against: "trade", action: "trade", side: "all", from: expect.objectContaining({ value: 67, computed_from: expect.objectContaining({ formula: "F-127" }) }) })]);
-    expect(later!.rest).toBe(true);
   });
   it("states directive 415's bound beside the idle month at a bank, and nothing beside it elsewhere (F-126)", async () => {
     const deal = (await unpackDeal(link.split("#d=")[1]!))!;

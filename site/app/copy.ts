@@ -1978,7 +1978,7 @@ export const feeDeal = {
     /** The head of a fee's cases, before the things it changes by. */
     changesBy: "המחיר משתנה לפי",
     /** Each thing a price may change by, as a chip and as a part in the toolbox (shapes.ts, `ByKind`). */
-    things: { what: "מה קונים", held: "מה מחזיקים", channel: "הערוץ", track: "המסלול שבחרתם", currency: "המטבע", actionSize: "גודל הפעולה", portfolioSize: "גודל התיק", volume: "היקף המסחר בחודש", count: "מספר הפעולות בחודש", own: "תנאי משלכם" } as Record<string, string>,
+    things: { what: "מה קונים", held: "מה מחזיקים", channel: "הערוץ", track: "המסלול", currency: "המטבע", actionSize: "גודל הפעולה", portfolioSize: "גודל התיק", volume: "היקף המסחר בחודש", count: "מספר הפעולות בחודש", own: "תנאי משלכם" } as Record<string, string>,
     /** The size of the action, by the fee: its own action's size ("גודל ההמרה"); `default` for a fee on a purchase or a sale. */
     actionSize: { default: "גודל הפעולה", fx: "גודל ההמרה", fx_spread: "גודל ההמרה", deposit: "גודל ההפקדה", insurance_premium: "גודל ההפקדה", exit: "גודל המשיכה", transfer_out: "גודל ההעברה", distribution_handling: "גודל התשלום" } as Record<string, string>,
     /** The values the site names, by thing (shapes.ts, `LIST_IDS`). */
@@ -2466,7 +2466,6 @@ export const feeDeal = {
       noEnd: "בלי סוף",
       /** What a month with nothing in it costs: "חודש בלי פעולה ובלי החזקה עולה 19 ₪: חשבון עובר ושב 9 ₪ ומנוי לנתוני מסחר 10 ₪." */
       idle: { lead: "חודש בלי פעולה ובלי החזקה עולה ", parts: ": ", sep: ", ", and: " ו", end: "." },
-      rest: "שאר העמלות נשארות כמו היום.",
       /** A price that changed: from, an arrow, to. */
       arrow: " ← ",
       /**
@@ -5279,7 +5278,7 @@ export const kit = {
         fx: "המרת מטבע",
         custody: "דמי ניהול פיקדון ניירות ערך",
         fixed: "דמי חשבון קבועים",
-        things: { what: "מה קונים", track: "המסלול שבחרתם", channel: "הערוץ", size: "גודל ההמרה", held: "מה מחזיקים", portfolio: "גודל התיק" },
+        things: { what: "מה קונים", track: "המסלול", channel: "הערוץ", size: "גודל ההמרה", held: "מה מחזיקים", portfolio: "גודל התיק" },
         heldValues: { ta: "ניירות ערך בתל אביב, קרנות נאמנות", abroad: "ניירות ערך בחו״ל" },
         perCharge: "לכל חיוב",
         what: { ta: "ניירות ערך בתל אביב", mutual: "קרנות נאמנות מסורתיות", money: "קרנות כספיות", makam: "מק״מ", us: "ניירות ערך בחו״ל, בארה״ב", europe: "ניירות ערך בחו״ל, באירופה", world: "ניירות ערך בחו״ל, בשאר העולם", notUs: "ניירות ערך בחו״ל, מחוץ לארה״ב" },
@@ -5316,7 +5315,7 @@ export const kit = {
         thirdPartyPart: "ועוד עמלה של צד שלישי",
         capWords: "מהפעולה",
         groups: { charge: "כמה גובים", off: "מה יורד מהמחיר", bound: "מינימום ומקסימום", when: "המחיר משתנה לפי", rule: "כללי הגבייה" },
-        whenParts: { what: "מה קונים", track: "המסלול שבחרתם", channel: "הערוץ", action: "גודל הפעולה", portfolio: "גודל התיק", volume: "היקף המסחר בחודש", count: "מספר הפעולות בחודש", own: "תנאי משלכם" },
+        whenParts: { what: "מה קונים", track: "המסלול", channel: "הערוץ", action: "גודל הפעולה", portfolio: "גודל התיק", volume: "היקף המסחר בחודש", count: "מספר הפעולות בחודש", own: "תנאי משלכם" },
         fourth: "לעמלה יש כבר שלושה דברים שהמחיר משתנה לפיהם, וזה המספר הגדול ביותר.",
         target: "בחו״ל, בארה״ב · מסלול 1",
         ask: "לפי הערוץ: אילו ערוצים יש בתעריפון שלכם?",
@@ -5329,7 +5328,7 @@ export const kit = {
         menuOpen: "הערך של המקרה",
         /** ThingMenu: a thing of the band's head opened, its values in the cases, the action that drops it and what that does. */
         thingTitle: "המקרים מבחינים בין:",
-        thingStop: "להפסיק להבחין לפי המסלול שבחרתם",
+        thingStop: "להפסיק להבחין לפי המסלול",
         thingAfter: "4 מקרים יהיו 2: מקרים שנבדלים רק בזה יאוחדו, במחיר של הראשון מהם.",
         thingOpen: "הדבר שהמחיר משתנה לפיו",
       },
