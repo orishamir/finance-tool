@@ -13,12 +13,12 @@ import { useNavigate, useParams } from "react-router";
 import { inBackground } from "../../lib/background";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
-import { HELP_TERMS, SORT_IDS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, sortTracks, tracksPhrase, type GroupBy, type ProductView, type SortId, type TbData, type TbProduct } from "../../lib/track-browser";
+import { HELP_TERMS, SORT_IDS, sortInForce, sortableIn, buildGroups, buildProductView, defaultProduct, defaultSort, filterTracks, sortTracks, type GroupBy, type SortId, type TbData, type TbProduct } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
 import { useAddressSort } from "../../lib/list-sort";
 import { useAddressParams } from "../../lib/hooks";
 import { normName } from "../../lib/track-names";
-import { ChoicePair, HelpMark, LongestCase, PhoneFold, SelectField, TextField, TextLink, gershayim, useFlip } from "../kit";
+import { ChoicePair, HelpMark, PhoneFold, SelectField, TextField, TextLink, gershayim, useFlip } from "../kit";
 
 /** The kind chip that stands for every kind (the regulator never names a kind so). */
 const ALL_KINDS = "*";
@@ -54,20 +54,6 @@ export function TracksHelp({ data, childAge = null }: { data: TbData; childAge?:
   const child = product.id === CHILD_SAVINGS ? childFeeHelp(childAge) : null;
   const lead = [child?.text, product.dataset === "pensia-net" ? t.wholeFund : null, t.pageHelp.text(feeYear, fmt.period(product.period)), t.pastNote].filter(Boolean).join(" ");
   return <HelpMark term={[HELP_TERMS.fee, HELP_TERMS.exposure, HELP_TERMS.assets]} about={t.pageHelp.about} lead={lead} rules={child?.rules} tone={child ? "caution" : undefined} />;
-}
-
-/** "133 מסלולים של 12 חברות (מתוך 133)." No fee range: the table's cells show the fees. */
-function CountLine({ view, shown, companies }: { view: ProductView; shown: number; companies: number }) {
-  const total = view.tracks.length;
-  return (
-    <p className="text-sm text-muted-foreground">
-      <span className="whitespace-nowrap">
-        {shown === 0 ? t.count.tracksNone : `${tracksPhrase(shown)} ${t.count.of} ${companiesPhrase(companies)}`}
-        {shown < total && ` (${t.count.outOf} ${fmt.number(total)})`}
-      </span>
-      .
-    </p>
-  );
 }
 
 /** `childAge`: CS-18's age until which National Insurance pays a child-savings fund's fee, for that product's fee head's caution "?". */
@@ -178,11 +164,6 @@ export function TrackBrowser({ data, childAge = null }: { data: TbData; childAge
         <TextField label={t.controls.search} value={q} onChange={setQ} placeholder={t.controls.searchPlaceholder} />
       </div>
 
-      <div className="pt-1">
-        <LongestCase cases={[<CountLine key="a" view={view} shown={view.tracks.length} companies={view.companies.length} />, <CountLine key="b" view={view} shown={view.tracks.length - 1} companies={view.companies.length} />]}>
-          <CountLine view={view} shown={shown.length} companies={companiesIn(shown)} />
-        </LongestCase>
-      </div>
       <div ref={list} className="scroll-mt-14 lg:scroll-mt-16">
         {groups.length === 0 ? (
           <p className="py-6 text-muted-foreground">

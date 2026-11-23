@@ -301,7 +301,7 @@ contains invisible direction marks).
 | Kind | Form | Notes |
 |---|---|---|
 | Shekel amount | `1,234.50 ₪` | comma thousands, point decimals; precision per method §13, display rounding below |
-| Dollar, euro, pound amount | `7.00 $`, `25.00 €`, `5.00 £` | two decimals, up to four for a price per share |
+| Dollar, euro, pound amount | `7 $`, `0.35 $`, `25 €`, `5.50 £` | two decimals where there are cents, none on a whole amount; up to four for a price per share |
 | Percent | `1.05%` | data stores percent numbers (`1.05` means 1.05%) |
 | Date | `22.10.2026` | day first, dots; never ISO or a slash form on the page |
 | Report period | `ספטמבר 2026` | the month in words |
@@ -399,7 +399,7 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
 - A figure in headline size carries a state tag below it, because a headline number deserves its label in words.
 - **Flags.** A stale figure carries a clock. Under a caution notice that already says the figures' source is old (`StaleSaid`), the
   figures inside leave the clock out (the accessible name and the sheet still say it). A secondary-strength figure, or an institution's
-  figure out of its own context, carries the caution icon before the digits, never between a number and its unit word; the strength word
+  figure out of its own context, carries the caution icon before the digits (a computed figure only at figure size, its sheet naming the weak inputs), never between a number and its unit word; the strength word
   is in the accessible name and the sheet, not in the line. A company's figure about its own product, shown on that product, carries no
   icon and its sheet names the company's document (D31). A sourced figure whose `effective_from` is after the page date carries the same
   icon, which a figure inside an `upcoming` callout leaves out. A figure its record doubts carries the icon with its digits in the caution
@@ -418,7 +418,7 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   value ("none", "unlinked_15") never reaches a reader, and every such value also has a Hebrew word. A number's sheet keeps its digits.
   (Guard 14.)
 
-**Provenance sheet.** It opens in a native `<dialog>` (`site/app/components/Sheet.tsx`), in the browser's top layer (architecture 3.5).
+**Provenance sheet.** It opens in a native `<dialog>` (`site/app/components/Sheet.tsx`), in the browser's top layer: a bottom sheet on a phone, a card beside the number on a computer.
 
 - **"More below" is said in words, in a strip of its own.** With no sign, a line under the edge gives no hint that more follows; a fade
   alone reads as the sheet cut off; a sign over the last line hides it and the sheet is misread. So the sign has its own strip under the
@@ -599,7 +599,6 @@ These are kit pieces (section 11); `ui.tsx` re-exports them for `provenance.tsx`
   upcoming callout leave out their "starts on" mark (3.2).
 - **Tag.** Never colour alone: a word or an icon.
 - **Disclosure.** Native `details` and `summary`, so it works before scripts.
-- **Sheet.** The provenance popover on a computer is not a dialog (3.2).
 - **Popover.** No hover tooltips anywhere: everything opens on tap.
 - **Table.** Numeric columns align to the start (right): numbers are left-to-right runs, so their units and decimals line up on the right
   edge, with ₪ to their left. Every table is fixed (2.5a). Real tables from `md`; on a phone each row becomes a stacked block with the
@@ -622,7 +621,7 @@ These are kit pieces (section 11); `ui.tsx` re-exports them for `provenance.tsx`
 
 The home route (`routes/home.tsx`). Three groups named by what the reader came to do: "להבין", "להשוות" and "לבדוק מה אמרו לכם". Rows
 in boxes, never cards in cards. The one figure on the page is the highest one-year fixed rate open to everyone at P-05's amount and the
-bank that pays it, picked at build from the deposits page's own data by the pick its heading uses (`startBest`, F-108), a sourced figure
+bank that pays it, picked at build from the deposits page's own data by the pick its heading uses as it opens (`startBest`, F-108), a sourced figure
 that opens its sheet; with no pick, the line says what the page answers in words.
 
 ---
@@ -651,7 +650,7 @@ of 2.3, one per fee across the whole page.
   terms differ in anything that is not a figure, or where a figure its words do not show differs. A slim fee's line keeps every price whole.
 - **A new value starts with no case,** so the fee is not read for it until a price is entered there. A fee keeps at least one case. A
   value goes only by its head, with its cases. A value the site names is not renamed, since the reading picks by it.
-- **Dropping a thing a price changes by** merges the cases that then differ in nothing; they keep the person's track's price where one
+- **"להפסיק להבחין לפי …"** (a thing's menu, or a tap on its ✓ card in the toolbox) takes the thing away and merges the cases that then differ in nothing; they keep the person's track's price where one
   of them is theirs, else the first one's.
 - **Taking a ladder's step away** puts it into the step before it, the first into the one after; where the step it joins has no case for
   some values, the removed step's case moves onto it, so no size is left without a case. A price taken away leaves it not given, read
@@ -665,8 +664,8 @@ of 2.3, one per fee across the whole page.
   would change which case another set of values reads is refused, and the question says so.
 - **Every case the price list has shows,** in its order, the person's own marked "שלכם"; none is folded away or greyed for not being
   theirs.
-- **A toolbox card only adds.** A charge goes only on a price that charges nothing; a price that charges is no place for another charge,
-  so the toolbox never swaps one for another; a price that charges nothing reads "חינם". A change of price with time splits no case. A
+- **A toolbox card never swaps one charge for another.** A charge goes only on a price that charges nothing, and "חינם" only on a price
+  that charges something, whose charge and parts it takes away; a price that charges nothing reads "חינם". A change of price with time splits no case. A
   sale priced apart stands under its own head, never as a part of the purchase's price.
 - **Nothing of the law in the toolbox.** The law has one place, the law card: each fee's standing in words and the cap's figure, which
   opens the cap's rules; no bar against a cap anywhere on the page.
@@ -676,7 +675,7 @@ of 2.3, one per fee across the whole page.
   point starts at the deal's first mark, never a sum the site picks. Why a fee costs what it does is said only where the two figures
   differ as shown, and the total is the sum of the lines as shown. A chart with a sum per unit asks for the unit's price, empty at first,
   and is drawn once it is given. The holding chart's range is typed or dragged, with no presets; its
-  sub never names a band of 0%. The foot says what changes and when (F-110, F-126, F-127, and directive 415's bound stated once, BRK-61)
+  sub never names a band of 0%. The foot says what changes and when (F-110, F-126, F-127, and directive 415's bound at a bank stated once, BRK-61)
   and what the law says (F-113).
 - **One fee, one look.** A fee's name, its colour, its price in words and its standing against its cap are written through
   `components/fee-deal/words.tsx`, so a fee reads the same in every column.
@@ -789,7 +788,7 @@ such as a sentence with a number laid out as a flex column, one piece to a line,
 from being made page by page. The kit is `site/app/components/kit/`, re-exported from `kit/index.ts`; import from `components/kit`,
 never from a neighbouring feature. The gallery at `/kit` shows each component in its states (every number on it is a labelled example)
 and is where a piece is checked at 1440 and 390 px (guidelines/design.md, step 4); who judges how it looks is in guidelines/working.md. What a piece does, its props and its states
-are in its file and the gallery.
+are in its file and the gallery. The survey of duplicate pieces behind the kit: `8dd1f013:research/specs/2026-10-25-ui-kit/survey.md`.
 
 **The rule.** A new pattern goes into the kit first, with its gallery entry and, where it can be named, a guard in `kit/guards.test.ts`
 or a ratchet in `kit/ratchets.test.ts`, never into a feature folder; then the feature uses it (guidelines/design.md, steps 1 and 2). A
@@ -971,7 +970,8 @@ in the kit fits is added to the kit.
 - `OnOffSwitch`: a thing switched on or off where it stands, its state in a word; unlike `Switch`, it names no setting beside it.
 - `EditInPlace`: a figure edited where it is read, on a closed card or in a table's cell.
 - `RemoveButton`: the one control that takes something away, on every page (a ratchet); ✕ closes, and takes away only one part line of a
-  cell.
+  cell. A cell's bin is out of the Tab order (Delete on the cell does the same); a fee's bin is in it, since nothing else reaches it
+  by keyboard.
 - `KnobButton`: a small action at an edge or a corner of what it acts on, taking no room.
 - `Grip`, `DropBin`, `SpanKnob`, `lift`, `holdFloors`, `ActionMenu`, `flip`: moving and taking away by dragging, the result shown while it
   happens. A grip draws only once a fine pointer has rested on what it lifts, so a pass over a table draws none. Where a thing lands is read
@@ -1009,7 +1009,7 @@ in the kit fits is added to the kit.
 - `ShareBar`: a whole split into a few parts as one bar of shares; nothing is written inside the thin bar, where only the largest part
   has room. A part that took money and whose whole share is zero stays in the key and is not drawn.
 - `ReceiptPaper`, `ReceiptLine`, `ReceiptRule`, `ReceiptTicket`, `TicketPart`, `PartFacts`, `ReceiptStub`: a receipt of what is left,
-  as a sheet, a wide ticket or a stub pinned to a phone's foot; a part's facts are labels, never sentences, written once for both widths.
+  as a sheet, a wide ticket or a stub pinned to the foot of a narrow screen; one total under a double rule, with nothing under it; a part's facts are labels, never sentences, written once for both widths.
 - `PairBars`: two bars a year from zero.
 - `YearBars`: a value a year as a bar from zero.
 - `StretchChart`, `StretchBar`: a ruler between two lists, decoration only; the lists and their words carry everything it shows.
@@ -1081,7 +1081,8 @@ one width chosen or not, a count has a fixed slot, and `ChoicePair`'s second lev
 **Chips.** A list of things the person can choose among, add to, rename or delete is a `ChipList`; a single choice is `ChoiceChips`
 (above). A page never writes its own `chip` class, nor the chip's corners on the `secondary` fill by hand.
 
-**Guards and ratchets.** `kit/guards.test.ts` (run by `npm test`) lists its guards at its top. Leftovers counted by name are ratchets in
+**Guards and ratchets.** `kit/guards.test.ts` (run by `npm test`) lists most of its guards at its top; the stairs (guard 10), ids through `IdRef`, the page frame and a re-sorted or filtered list are
+further down. Leftovers counted by name are ratchets in
 `kit/ratchets.test.ts`; their lists only shrink. `tools/merge-review.mjs` flags the same patterns on a branch's added lines.
 
 **Where the kit stops.** Chart drawings (the SVG plots of sections 3.4 and 10), the provenance component and its sheet, the shell, and

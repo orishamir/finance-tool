@@ -5,7 +5,7 @@
 // groups is a way to read the list (F-99, F-100).
 import { companyAssets, groupFeeRange, kindStockMedian } from "@finance-tool/engine";
 import { trackPath } from "./site-paths";
-import { companyFocus, trackBrowser as t } from "../copy";
+import { trackBrowser as t } from "../copy";
 import { exposureShares, type CompactHoldings, type ExposureShares, type HoldingsTemplate } from "./track-exposure";
 import { trackLabels, youngerThanYears } from "./track-labels";
 import { kindLabel, kindWordSet, nameAddsToKind, nameSaysKind, normName, shortTrackNames } from "./track-names";
@@ -383,19 +383,11 @@ export function missingYield(x: TbTrack, years: 3 | 5): string {
   return (years === 3 ? x.young3 : x.young5) ? t.yield.young : t.yield.missing;
 }
 
-/** The number of companies among the shown tracks. */
-export const companiesIn = (list: readonly TbTrack[]): number => new Set(list.map((x) => x.company)).size;
-
 // ---------------------------------------------------------------- the words of the page
 
 /** "אין מסלולים", "מסלול אחד", "שני מסלולים", "16 מסלולים". */
 export function tracksPhrase(k: number): string {
   return countPhrase(k, { zero: t.count.tracksNone, one: t.count.tracksOne, two: t.count.tracksTwo, many: t.count.tracksMany });
-}
-
-/** "אין חברות", "חברה אחת", "שתי חברות", "12 חברות": the words the companies page counts companies in (`companiesWord`). */
-export function companiesPhrase(k: number): string {
-  return countPhrase(k, { zero: t.count.companiesNone, ...companyFocus.companies });
 }
 
 /** An amount in NIS millions as the page writes it: "19.14 מיליארד ₪" from a thousand million up (`fmt.nisBillions`), else "850 מיליון ₪". */
