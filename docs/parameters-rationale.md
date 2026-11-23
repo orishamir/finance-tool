@@ -57,12 +57,6 @@ P-05, `data/parameters/illustrative-scenario.json`: the starting values of the g
 
 **Why:** the sliders cover what most people would try; a larger value or another return can be typed. A money slider moves in steps that grow with the amount (`guidelines/design.md`, "Fields"): each of its three parts takes a third of the track, its steps are round amounts, and the starting value (10,000 NIS, 500 NIS a month) lands in the first third rather than against the slider's end; an amount between the steps can be typed and keeps its own place on the track. Years, the return and inflation move in equal steps; inflation's slider ends where the sensitivity check's inflation range ends (P-02, 0% to 5%), and another inflation, a negative one included, can be typed. Half and one and a half times the plan cover the changes a person would weigh; +20% is a change large enough to tell the numbers apart and small enough to be within reach. Chosen by Claude, revisable.
 
-### Field ranges
-
-**Values:** an age 0 to 120; a yearly percentage (a return, inflation) −50% to 50%; an amount of money 0 to 1,000,000,000 NIS (`ranges.amount`), in every whole-shekel field and in the deposits page's address.
-
-**Why:** bounds that catch a typing mistake, not rules. The amount's top is one billion shekels: the fee page already refuses a sum above it, it is twenty times the largest bound any bank deposit table read prints (50,000,000 NIS on 2026-11-23), and far above a personal saving; with no top, a typed 99,999,999,999,999 ran through the guides' charts and an address's amount of twenty digits lost its last ones. Chosen by Claude, revisable.
-
 ### Representative instruments
 
 `instruments` names, for each wrapper, the collected records the illustrative run takes its terms from (deposit terms, fund, fees provider, government-bond series rule, track). A wrapper with no entry has no timeline on its guide page.

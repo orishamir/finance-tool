@@ -231,7 +231,7 @@ describe("F-111 what a fee is charged on, and what adds", () => {
     expect(held.rate).toBeCloseTo(0.0062, 12);
     // no minimum of cover is marked, and cover is no cost of holding
     expect(dealMarks(deal, p!)).toEqual([]);
-    expect(holdingCost(deal, p!, 10000).parts.map((x) => x.fee)).toEqual([0, 2]);
+    expect(holdingCost(deal, p!, 10000, {}).parts.map((x) => x.fee)).toEqual([0, 2]);
   });
 
   it("states custody of 0.1% a quarter as 0.4% a year, and a sum every month as twelve a year", () => {
@@ -286,8 +286,8 @@ describe("F-111 what a fee is charged on, and what adds", () => {
     expect(groups.map((g) => (g.on === "action" ? [g.side, g.fees] : g.on))).toEqual([["buy", [0, 1]], ["sell", [0, 2]]]);
     expect(groups[0]!.rate).toBeCloseTo(0.011, 12);
     expect(groups[1]!.rate).toBeCloseTo(0.006, 12);
-    expect(actionCost(deal, p!, "trade", 1000, "buy").parts.map((x) => x.fee)).toEqual([0, 1]);
-    expect(actionCost(deal, p!, "trade", 1000, "sell").total).toBeCloseTo(6, 10);
+    expect(actionCost(deal, p!, "trade", 1000, "buy", {}).parts.map((x) => x.fee)).toEqual([0, 1]);
+    expect(actionCost(deal, p!, "trade", 1000, "sell", {}).total).toBeCloseTo(6, 10);
   });
 });
 
@@ -295,8 +295,8 @@ describe("F-112 the sums a deal's prices mark", () => {
   it("marks a commission of 0.25% with a 15 ₪ minimum binding below 6,000 ₪", () => {
     const [p] = dealPeriods(example, today).periods;
     expect(dealMarks(example, p!)).toEqual([{ kind: "min", on: "action", fee: 0, side: "all", amount: 6000, currency: "ILS" }]);
-    expect(actionCost(example, p!, "trade", 5000).total).toBeCloseTo(15 + 10, 10);
-    const at8000 = actionCost(example, p!, "trade", 8000);
+    expect(actionCost(example, p!, "trade", 5000, "buy", {}).total).toBeCloseTo(15 + 10, 10);
+    const at8000 = actionCost(example, p!, "trade", 8000, "buy", {});
     expect(at8000.parts.map((x) => x.fee)).toEqual([0, 3]);
     expect(at8000.parts[0]!.cost).toBeCloseTo(20, 10);
     expect(at8000.total).toBeCloseTo(36, 10);
@@ -304,7 +304,7 @@ describe("F-112 the sums a deal's prices mark", () => {
 
   it("prices a year of 10 ₪ a month and custody of 0.4% a year at 30,000 ₪", () => {
     const periods = dealPeriods(example, today).periods;
-    const at = holdingCost(example, periods[2]!, 30000);
+    const at = holdingCost(example, periods[2]!, 30000, {});
     expect(at.parts.map((x) => x.fee)).toEqual([1, 2, 4]);
     expect(at.parts[0]!.cost).toBeCloseTo(120, 10);
     expect(at.parts[1]!.cost).toBe(120);
@@ -315,9 +315,9 @@ describe("F-112 the sums a deal's prices mark", () => {
     const deal: Deal = { foreign: false, fees: [{ base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 3, min: 10, max: 100 } }] }] };
     const [p] = dealPeriods(deal, today).periods;
     expect(dealMarks(deal, p!).map((m) => [m.kind, m.on, Math.round(m.amount)])).toEqual([["min", "held", 10000], ["max", "held", 100000]]);
-    expect(holdingCost(deal, p!, 5000).total).toBeCloseTo(40, 10);
-    expect(holdingCost(deal, p!, 50000).total).toBeCloseTo(200, 10);
-    expect(holdingCost(deal, p!, 500000).total).toBeCloseTo(400, 10);
+    expect(holdingCost(deal, p!, 5000, {}).total).toBeCloseTo(40, 10);
+    expect(holdingCost(deal, p!, 50000, {}).total).toBeCloseTo(200, 10);
+    expect(holdingCost(deal, p!, 500000, {}).total).toBeCloseTo(400, 10);
   });
 
   it("holds a charge of a held share to the lower of its maximum and its maximum on each security, on the deal's one security (F-14)", () => {
@@ -331,11 +331,11 @@ describe("F-112 the sums a deal's prices mark", () => {
     const deal: Deal = { foreign: false, fees: [{ base: { key: "custody" }, stages: [{ price: leumi }] }, { base: { key: "custody" }, stages: [{ price: discount }] }] };
     const [p] = dealPeriods(deal, today).periods;
     // on 10,000,000 ₪: 0.15% is 15,000 a quarter, held to 3,700; 0.2% is 20,000, held to 7,500
-    expect(heldCharge(deal, p!, 0, 10_000_000)).toBe(3700);
-    expect(heldCharge(deal, p!, 1, 10_000_000)).toBe(7500);
-    expect(holdingCost(deal, p!, 10_000_000).total).toBeCloseTo(4 * (3700 + 7500), 9);
+    expect(heldCharge(deal, p!, 0, 10_000_000, {})).toBe(3700);
+    expect(heldCharge(deal, p!, 1, 10_000_000, {})).toBe(7500);
+    expect(holdingCost(deal, p!, 10_000_000, {}).total).toBeCloseTo(4 * (3700 + 7500), 9);
     // below the maximum, the rate: 0.15% of 1,000,000 is 1,500
-    expect(heldCharge(deal, p!, 0, 1_000_000)).toBeCloseTo(1500, 9);
+    expect(heldCharge(deal, p!, 0, 1_000_000, {})).toBeCloseTo(1500, 9);
     // the curve's maximum starts where the lower maximum binds: 3,700 / 0.15% and 7,500 / 0.2%
     expect(dealMarks(deal, p!).map((m) => [m.kind, m.fee, Math.round(m.amount)])).toEqual([["max", 0, 2_466_667], ["max", 1, 3_750_000]]);
   });
@@ -350,8 +350,8 @@ describe("F-112 the sums a deal's prices mark", () => {
     };
     const [p] = dealPeriods(deal, today).periods;
     // on 5 ₪ a run's charge is at most the 5 ₪ held; the curve shows the minimum, 10 ₪ a quarter, and the sums in full
-    expect(holdingCost(deal, p!, 5).parts).toEqual([{ fee: 0, cost: 40 }, { fee: 1, cost: 120 }]);
-    expect(holdingCost(deal, p!, 0).total).toBe(160);
+    expect(holdingCost(deal, p!, 5, {}).parts).toEqual([{ fee: 0, cost: 40 }, { fee: 1, cost: 120 }]);
+    expect(holdingCost(deal, p!, 0, {}).total).toBe(160);
   });
 
   it("starts an action's curve at its minimum: the smallest action pays the minimum or the sum per action", () => {
@@ -364,7 +364,7 @@ describe("F-112 the sums a deal's prices mark", () => {
       ],
     };
     const [p] = dealPeriods(deal, today).periods;
-    expect(actionCost(deal, p!, "trade", 0).parts).toEqual([{ fee: 0, cost: 15 }, { fee: 1, cost: 2 }, { fee: 2, cost: 0 }]);
+    expect(actionCost(deal, p!, "trade", 0, "buy", {}).parts).toEqual([{ fee: 0, cost: 15 }, { fee: 1, cost: 2 }, { fee: 2, cost: 0 }]);
   });
 
   it("gives a mark on the same sum for a purchase and for a sale once, on both", () => {
@@ -382,7 +382,7 @@ describe("F-112 the sums a deal's prices mark", () => {
   it("needs no exchange rate for a price that names a currency but has no bound typed", () => {
     const deal: Deal = { foreign: true, fees: [{ base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.002, currency: "USD" } }] }] };
     const [p] = dealPeriods(deal, today).periods;
-    expect(actionCost(deal, p!, "trade", 1000).total).toBeCloseTo(2, 10);
+    expect(actionCost(deal, p!, "trade", 1000, "buy", {}).total).toBeCloseTo(2, 10);
   });
 
   it("gives a bound typed in another currency its sum in that currency, and converts it only for a cost", () => {
@@ -393,7 +393,7 @@ describe("F-112 the sums a deal's prices mark", () => {
     expect(marks[0]!.amount).toBeCloseTo(6.7 / 0.0019, 8);
     // 100 ₪ converted: 0.19 ₪ at the rate, the minimum 6.70 $ × 3.70 = 24.79 ₪ instead (F-13's example)
     expect(actionCost(deal, p!, "trade", 100, "buy", { USD: 3.7 }).total).toBeCloseTo(24.79, 10);
-    expect(() => actionCost(deal, p!, "trade", 100)).toThrow(RangeError);
+    expect(() => actionCost(deal, p!, "trade", 100, "buy", {})).toThrow(RangeError);
   });
 
   it("marks nothing for a bound with no rate or a free price", () => {
@@ -407,7 +407,7 @@ describe("F-112 the sums a deal's prices mark", () => {
     };
     const [p] = dealPeriods(deal, today).periods;
     expect(dealMarks(deal, p!)).toEqual([]);
-    expect(actionCost(deal, p!, "trade", 1000).total).toBe(7);
+    expect(actionCost(deal, p!, "trade", 1000, "buy", {}).total).toBe(7);
   });
 
   it("ends an axis at 1, 2 or 5 times a power of ten, at least three times the largest mark", () => {
@@ -569,8 +569,8 @@ describe("F-112 a percent maximum, a flat price for a small action, a sum per un
   it("leaves no stretch to a minimum and a cap that a flat price covers (PEPPER: 4 ₪ up to 30,000 ₪)", () => {
     const d = one({ kind: "action", rate: 0.004, min: 26, max: 6300, cap: 0.27, flat: { amount: 4, upTo: 30000 } });
     expect(dealMarks(d, first(d)).map((m) => [m.kind, m.from ?? null, m.amount])).toEqual([["flat", null, 30000], ["max", null, 1_575_000]]);
-    expect(actionCost(d, first(d), "trade", 30000).total).toBe(4);
-    expect(actionCost(d, first(d), "trade", 30001).total).toBeCloseTo(120.004, 10);
+    expect(actionCost(d, first(d), "trade", 30000, "buy", {}).total).toBe(4);
+    expect(actionCost(d, first(d), "trade", 30001, "buy", {}).total).toBeCloseTo(120.004, 10);
   });
 
   it("marks a price per unit's minimum in units, after the cap's stretch in dollars (Interactive Brokers, IBKR Pro Fixed, US)", () => {
@@ -595,7 +595,7 @@ describe("F-112 a percent maximum, a flat price for a small action, a sum per un
   it("prices a sum per action in dollars at the dollar's rate (One Zero's 50 $ for each corporate event)", () => {
     const d: Deal = { foreign: true, fees: [{ base: { key: "corporate_event" }, stages: [{ price: { kind: "perAction", amount: 50, currency: "USD" } }] }] };
     expect(actionCost(d, first(d), "distribution", 1000, "buy", { USD: 3.7 }).total).toBeCloseTo(185, 10);
-    expect(() => actionCost(d, first(d), "distribution", 1000)).toThrow(RangeError);
+    expect(() => actionCost(d, first(d), "distribution", 1000, "buy", {})).toThrow(RangeError);
     expect(dealMarks(d, first(d))).toEqual([]);
   });
 
@@ -605,12 +605,12 @@ describe("F-112 a percent maximum, a flat price for a small action, a sum per un
     expect(changeKind(commission, capped)).toBe("ends");
     expect(changeKind(free, { kind: "perUnit", amount: 0.005, min: 1, cap: 0, currency: "USD" })).toBeNull();
     const d: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: capped }] }] };
-    expect(actionCost(d, first(d), "trade", 1000).total).toBe(0);
+    expect(actionCost(d, first(d), "trade", 1000, "buy", {}).total).toBe(0);
     // the flat price is charged alone on an action up to its sum, beside the cap
     const flat: DealPrice = { ...capped, flat: { amount: 4, upTo: 500 } };
     expect(changeKind(free, flat)).toBe("starts");
     const f: Deal = { foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: flat }] }] };
-    expect(actionCost(f, first(f), "trade", 400).total).toBe(4);
+    expect(actionCost(f, first(f), "trade", 400, "buy", {}).total).toBe(4);
   });
 
   it("counts a flat price as charging something, and a price per unit or a cap as a change", () => {
@@ -742,9 +742,9 @@ describe("F-115 a fee charged on one step of sizes", () => {
         { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 12 } }] },
       ],
     };
-    expect(holdingCost(held, first(held), 50000).total).toBeCloseTo(120 + 50, 9);
-    expect(holdingCost(held, first(held), 200000).total).toBeCloseTo(200, 9);
-    expect(() => holdingCost({ ...held, fees: [{ ...held.fees[0]!, within: { on: "held", from: 0, to: 100, currency: "USD" } }] }, first(held), 50)).toThrow(RangeError);
+    expect(holdingCost(held, first(held), 50000, {}).total).toBeCloseTo(120 + 50, 9);
+    expect(holdingCost(held, first(held), 200000, {}).total).toBeCloseTo(200, 9);
+    expect(() => holdingCost({ ...held, fees: [{ ...held.fees[0]!, within: { on: "held", from: 0, to: 100, currency: "USD" } }] }, first(held), 50, {})).toThrow(RangeError);
   });
 });
 
@@ -773,8 +773,8 @@ describe("F-117 a third party's fee printed with a price", () => {
   it("adds its cost to the action's, priced on its own", () => {
     const d = trade({ kind: "action", rate: 0.001, min: 10, third: { kind: "action", rate: 0.0005, min: 2 } });
     // 0.1% of 5,000 is 5, lifted to 10; the third party's 0.05% is 2.5
-    expect(actionCost(d, first(d), "trade", 5000).total).toBeCloseTo(12.5, 9);
-    expect(actionCost(d, first(d), "trade", 1000).total).toBeCloseTo(12, 9);
+    expect(actionCost(d, first(d), "trade", 5000, "buy", {}).total).toBeCloseTo(12.5, 9);
+    expect(actionCost(d, first(d), "trade", 1000, "buy", {}).total).toBeCloseTo(12, 9);
     const perAction = trade({ kind: "perAction", amount: 16, third: { kind: "perAction", amount: 3, currency: "USD" } });
     expect(actionCost(perAction, first(perAction), "trade", 1000, "buy", { USD: 3.5 }).total).toBeCloseTo(16 + 10.5, 9);
   });

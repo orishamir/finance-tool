@@ -739,46 +739,6 @@
         "notes": "highest yearly percentage the return and inflation fields accept; set for the site on 2026-10-23 for the values sheet's error messages (copy 3.7)",
         "rationale_he": "האחוז השנתי הגבוה ביותר ששדות התשואה והאינפלציה מקבלים. זה גבול שהאתר קבע כדי לתפוס טעות הקלדה, לא תחזית."
       }
-    },
-    "amount": {
-      "min": {
-        "value": 0,
-        "unit": "nis",
-        "source": {
-          "url": "docs/parameters-rationale.md#illustrative-scenario",
-          "title": "The site's range for the guide page's input fields",
-          "publisher": "founder",
-          "strength": "primary"
-        },
-        "checked": "2026-11-23",
-        "effective_from": "2026-11-23",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "founder",
-        "rule_ids": [],
-        "state": "sourced",
-        "notes": "lowest amount of money a whole-shekel field accepts: no amount below zero",
-        "rationale_he": "הסכום הנמוך ביותר ששדה של סכום כסף מקבל. סכום לא יכול להיות שלילי."
-      },
-      "max": {
-        "value": 1000000000,
-        "unit": "nis",
-        "source": {
-          "url": "docs/parameters-rationale.md#illustrative-scenario",
-          "title": "The site's range for the guide page's input fields",
-          "publisher": "founder",
-          "strength": "primary"
-        },
-        "checked": "2026-11-23",
-        "effective_from": "2026-11-23",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "founder",
-        "rule_ids": [],
-        "state": "sourced",
-        "notes": "highest amount of money a whole-shekel field or the deposits page's address accepts: one billion shekels, twenty times the largest bound a bank's deposit table read prints (50,000,000) and the fee page's largest sum (SUM_MAX); far above a personal saving, and short of where a double stops holding whole shekels through 40 years of growth",
-        "rationale_he": "הסכום הגבוה ביותר ששדה של סכום כסף מקבל: מיליארד ₪. זה גבול שהאתר קבע כדי לתפוס טעות הקלדה, לא כלל."
-      }
     }
   }
 }
