@@ -407,8 +407,7 @@ export const feesSnapshot = z.strictObject({
   minimums: z.strictObject({ account_opening: feeValue.nullable() }),
   /**
    * D64: what a current account at the bank costs an ordinary customer a month, the price list's monthly minimum (unit `nis_per_month`).
-   * Required of a bank's latest record by the data check, and absent from an investment house. F-102 counts it on the bank's row unless the
-   * person marks the bank as their own. That a bank's securities account needs a current account there is D64's premise, not a rule of the
+   * Required of a bank's latest record by the data check, and absent from an investment house. F-102 counts it on every bank's row. That a bank's securities account needs a current account there is D64's premise, not a rule of the
    * rule base (F-102).
    */
   current_account: z.strictObject({ monthly_minimum: feeValue }).optional(),

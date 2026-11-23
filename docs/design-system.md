@@ -418,8 +418,7 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   value ("none", "unlinked_15") never reaches a reader, and every such value also has a Hebrew word. A number's sheet keeps its digits.
   (Guard 14.)
 
-**Provenance popover.** It uses the native `popover` attribute, so it works in the pre-rendered page before any script loads
-(architecture 3.5).
+**Provenance sheet.** It opens in a native `<dialog>` (`site/app/components/Sheet.tsx`), in the browser's top layer (architecture 3.5).
 
 - **"More below" is said in words, in a strip of its own.** With no sign, a line under the edge gives no hint that more follows; a fade
   alone reads as the sheet cut off; a sign over the last line hides it and the sheet is misread. So the sign has its own strip under the
