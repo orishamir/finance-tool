@@ -1,6 +1,6 @@
 # Data schema: the format of every fee, term and rule figure under `data/`
 
-Every number the engine reads comes from a file in one of the collections below, for `docs/method.md`. No value appears without a source URL and a checked date (CLAUDE.md standing rule, D3). The checked schemas are in `packages/schema` (Zod); where this text and the schema differ, the schema is the truth and this text is corrected.
+Every number the engine reads comes from a file in one of the collections below, for `docs/method.md`. No value appears without a source URL and a checked date (CLAUDE.md standing rule, D3). The checked schemas are in `packages/schema` (Zod): each field's name, type, whether it is optional and its allowed values are there. Where this text and the schema differ, the schema is the truth and this text is corrected. This text says what the schema can't: what to record in a field and from which document, its unit, how to read an edge case, and why the field exists.
 
 ---
 
@@ -68,28 +68,21 @@ Units: `nis`, `nis_millions`, `usd`, `eur`, `gbp`, `pct` (a share), `pct_per_yea
 Units that need a word:
 
 - `pct_per_year_effective`: an annual rate quoted as effective, compounded at each payment, as the Bank of Israel's averages of deposit rates paid are (BANK-53: reporting directives 823A s.8, 823 s.8 and 877 s.9; A-21). It is read where a rate may be either kind, P-05's `cash_rate` (a run's cash rate, F-21, F-60), and the validator accepts it nowhere else: a deposit record's `rate_offered` is a bank's directive 447 rate, which is nominal (BANK-50), so it stays in `pct_per_year`. In `cash_rate` a rate in `pct_per_year` is nominal, as a bank publishes its own (BANK-50), and each run reads the unit to take the rate in the form its formula needs (F-60). A field that is effective by what it is, `interest_calc.effective_annual` and `rate_effective` (§3.7), stays in `pct_per_year`: its field, not its unit, says it is effective.
-- `nis_millions`: an amount in millions of shekels, as the CMA datasets report amounts (CAT-03), used by the `holdings` of §3.13 (D34). The site shows it as `25,706.14 מיליון ₪` and does not convert it.
+- `nis_millions`: an amount in millions of shekels, as the CMA datasets report amounts (CAT-03), used by the `holdings` of §3.13 (D34). It is not converted.
 - `usd`, `eur`, `gbp`: an amount in dollars, euros or pounds sterling, as its source prints it. An amount abroad (§3.16) stays in its own currency and is never converted, since a conversion would add a rate that needs a source and a date of its own.
 - `usd_per_share`: a dollar amount per share, a per-share commission rate. `nis_per_share`, `eur_per_share` and `gbp_per_share`: the same in shekels, euros or pounds, a sum per unit the person types on the fee page (method F-112); no price list collected prints one. `usd_per_trade` and `gbp_per_trade`: a dollar or pound amount per trade, a minimum or maximum commission in a foreign currency. They serve the foreign brokers' tariffs; the engine converts them at the run's exchange rate.
 - `usd_per_event`: a dollar amount for each corporate event of a security held abroad, as One Zero prints its custodian's cost (D67). F-103 charges it on each dividend of a fund bought abroad, converted at the run's rate.
 - `nis_per_usd`: shekels per dollar converted, for a conversion printed as agorot a dollar (Psagot's 1.5 agorot). F-13 charges it on the dollars converted.
 - `fx_per_eur`: units of a currency per one euro, the ECB reference rate, for the FX series of §3.8.
 
-Fee bases (`fee.base`): `deposit`, `balance`, `trade`, `custody`, `fx`, `exit`, `fixed_period`, `corporate_event`, `distribution_handling`, `spread`, `creation_redemption`, `transfer_out`, `load`, `redemption_deduction`, `variable_management`, `trustee`, `direct_expenses`, `insurance_premium`.
+The other vocabularies are enums in `packages/schema/src/value.ts` (fee bases, security types, wrapper, security and product IDs) and in each collection's schema (provider classes and regulators in `fees.ts`). What their names do not say:
 
-Security types for tariff lines (`fee.applies_to`, and a snapshot's `availability.applies_to`): `tase_shares_bonds`, `tase_bonds` (a bonds-only line, for a tariff that prices bonds apart from shares and ETFs), `makam`, `foreign_securities`, `mutual_fund_units`, `money_market_units`, `etf_units`, `tase_foreign_fund_units`, `all`.
-
-Provider classes (`provider.class` of a fee snapshot): `bank`, `broker`, `foreign_broker`, `provident-manager`, `fund-manager`, `insurer`. Regulators (`provider.regulator`): `BoI`, `ISA`, `CMA`, `foreign`.
-
-Wrapper IDs (`data/instruments/wrappers/`): `current-account`, `bank-deposit`, `savings-plan`, `brokerage-account`, `kupat-gemel-lehashkaa`, `keren-hishtalmut`, `pension-comprehensive`, `pension-general`, `provident-for-annuity`, `child-savings-provident`, `child-savings-bank`, `ira-hishtalmut`, `ira-provident`. Tier-2 wrappers get IDs when they graduate (D2).
-
-Security IDs (`data/instruments/securities/`, D6): `makam`, `government-bond`, `money-market-fund-daily`, `money-market-fund-renewable`. A tier-2 instrument bought inside a securities account (corporate bonds, REITs) graduates as a security, not a wrapper.
-
-Product IDs: a wrapper ID or a security ID, what a person chooses between. A guide page (`/guide/<id>`), a term's and an exposure's `wrapper_ids` and P-05's `instruments` are named by product ID (`productId` in `packages/schema`).
-
-Exposure IDs (`data/instruments/exposures/`): `shekel-cash`, `makam`, `government-bond-unlinked`, `government-bond-cpi`, `index-<index-code>` (for example `index-sp500`, `index-ta125`), `general-track`.
-
-Dimensions (`data/dimensions/`): the vocabulary in `il-finance` README (`tax-at-exit`, `fee-management-balance`, ...): the 26 rows of `docs/glossary.md` section 2, an enum in the schema (`dimensionId`).
+- Security types for tariff lines (`fee.applies_to`, and a snapshot's `availability.applies_to`): `tase_bonds` is a bonds-only line, for a tariff that prices bonds apart from shares and ETFs; `all` is every one.
+- Wrapper IDs (`data/instruments/wrappers/`): tier-2 wrappers get IDs when they graduate (D2).
+- Security IDs (`data/instruments/securities/`, D6): a tier-2 instrument bought inside a securities account (corporate bonds, REITs) graduates as a security, not a wrapper.
+- Product IDs: a wrapper ID or a security ID, what a person chooses between. A guide page (`/guide/<id>`), a term's and an exposure's `wrapper_ids` and P-05's `instruments` are named by product ID (`productId` in `packages/schema`).
+- Exposure IDs (`data/instruments/exposures/`): `shekel-cash`, `makam`, `government-bond-unlinked`, `government-bond-cpi`, `index-<index-code>` (for example `index-sp500`, `index-ta125`), `general-track`.
+- Dimensions (`data/dimensions/`): the vocabulary in `il-finance` README (`tax-at-exit`, `fee-management-balance`, ...): the 26 rows of `docs/glossary.md` section 2 (`dimensionId` in the schema).
 
 ---
 
@@ -99,224 +92,121 @@ Dimensions (`data/dimensions/`): the vocabulary in `il-finance` README (`tax-at-
 
 The rules themselves stay in `il-finance` (markdown). This collection holds only their **figures**, one file per rule, so the engine never parses markdown and every figure carries its own tax year. The schema is `ruleRecord`.
 
-```json
-{
-  "id": "TXS-09",
-  "title": "Exempt fund: tax on real gain at sale or redemption",
-  "strength": "primary",
-  "dimensions": ["tax-at-exit", "real-vs-nominal"],
-  "likely_to_change": "no",
-  "recheck_date": "2027-01-15",
-  "figures": {
-    "rate_on_real_gain": { "value": 25, "unit": "pct", "tax_year": 2026, "...": "value object" },
-    "withholding_rate": { "value": 25, "unit": "pct", "tax_year": 2026, "...": "value object" }
-  },
-  "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22"
-}
-```
-
 - `figures` keys are the names used in `docs/method.md` formulas. A figure that differs by tax year is stored once per year in `figures.<name>.by_tax_year`, a map from year to value object.
-- Bracket tables (TXG-02, TXG-04) store `figures.brackets` as an ordered array of `{ "up_to": value object, "rate": value object }`.
+- Bracket tables (TXG-02, TXG-04) store `figures.brackets` as an ordered array of brackets, each with its `up_to` and its `rate`.
 - `strength: open` records exist (for the rules page and the blocked marks) but carry no `figures`.
 - `recheck_date` is required for every rule on the "likely to change" list (`likely_to_change: "yes"`, product.md 3.8).
-- **Hebrew.** `title_he` (optional) is the Hebrew title shown in lists and on cards; `text_he` (optional, 2 to 4 sentences of plain Hebrew) is shown on the rule card; `figure_names_he` (optional) maps each figure key to its Hebrew name. The English `title` stays the key and the fallback when they are absent.
+- **Hebrew.** `title_he` is the Hebrew title shown in lists and on cards; `text_he` (2 to 4 sentences of plain Hebrew) is shown on the rule card; `figure_names_he` maps each figure key to its Hebrew name. The English `title` stays the key and the fallback when they are absent.
 - A zero a rule sets, a fee it bars, is a figure like any other, with its own `source` naming the passage in its title (MF-26 `mmf_unit_fee_under_distribution_agreement`, BANK-18 `custody_on_money_market_fund`, the zero lines of a money-market fund bought through a bank). A page that cites the rule for a figure reads the figure's source; it never picks an entry of `sources` by its locator's words.
 - Conflicts (coverage.md §9) are recorded in `notes` on the figure and the engine uses the value the rule base says computes (for example TXI-11's 15%).
-- **`sources`**, extracted from the `- Source:` line under each rule's heading in `il-finance`; every record carries it or `sources_missing_reason`. An array of entries sorted by preference (regulator or ministry document, Knesset gazette, institution, article; then locator present; then newer `checked`); a company's own data page (a `dataset` of strength `institution`, such as TASE's index pages) ranks with the institutions, not with the regulators. Each entry:
+- **`sources`**, extracted from the `- Source:` line under each rule's heading in `il-finance`; every record carries it or `sources_missing_reason`. The entries are sorted by preference (regulator or ministry document, Knesset gazette, institution, article; then locator present; then newer `checked`); a company's own data page (a `dataset` of strength `institution`, such as TASE's index pages) ranks with the institutions, not with the regulators. In each entry:
   - `url`: the link as the block writes it, except that an entry split off a link carrying `#page=` (below) names its own page there, so the address opens where its passage is; the data check holds the address to the block but for that number;
-  - `title` (as the markdown wrote it, often an English working title), optional `title_he`;
-  - `publisher` (English, from `data/sources/publishers.json` by host, else the host) and optional `publisher_he`;
-  - `kind`: `law`, `regulation`, `circular`, `regulator_page`, `official_pdf`, `exchange_rules`, `institution_doc`, `article`, `dataset`, `form`, `other`;
-  - `strength`: `primary`, `institution`, `secondary`. A copy of an official text (on Wikisource, Nevo or any third-party host) is never a source: the extraction leaves it out as a lead, and the data check fails one;
-  - `locator` (raw: "s. 3(ה4)(3)", "pp. 27–30") with `locator_he` (only when the locator translates fully); a remark in English, in parentheses or as a part after "; " that opens on a word naming no place and holds no reference ("; the ISA directives list shows no later version"), is left out;
+  - `title` is as the markdown wrote it, often an English working title;
+  - `publisher` is English, from `data/sources/publishers.json` by host, else the host;
+  - `strength`: a copy of an official text (on Wikisource, Nevo or any third-party host) is never a source: the extraction leaves it out as a lead, and the data check fails one;
+  - `locator` is raw ("s. 3(ה4)(3)", "pp. 27–30"), with `locator_he` only when the locator translates fully; a remark in English, in parentheses or as a part after "; " that opens on a word naming no place and holds no reference ("; the ISA directives list shows no later version"), is left out;
   - `page`: first page for `#page=`, only on a PDF URL and never a printed page: the page of the first passage of the locator that names one, plain (`p.5`) or the file's (`file p.9 (gazette p.300)`); within one passage a `file p.` wins over a plain `p.`, which is then the printed number (`p.909 (file p.21)`). A PDF URL is a `.pdf` path, a gov.il blob folder file, or a gazette file from the Ministry of Justice's Reshumot service at `free-justice.openapi.gov.il/…/Documents/…`, whose links already carry their `#page=`;
   - `anchor`: a section id on an HTML page, without `#`; only on an HTML URL;
   - `quote`: the document's own words, verbatim from a quoted Hebrew span in the markdown, 8 to 240 characters, never composed;
-  - `checked`; `qualifier` (the markdown's parenthetical after the strength word); `note` (English, never shown).
+  - `qualifier` is the markdown's parenthetical after the strength word; `note` is English, never shown.
 
   One link may cite several passages, each opening with its page (`p.8, s.4.1 "…"; p.9, s.4.2.3 "…"`). The passages before the first one whose quoted words become a `quote` are one entry, opening at their first page; that passage and each after it is an entry of its own, with its own `locator`, `page` and `quote`. So every entry's `page` is the first page its own `locator` names, and where the link carries `#page=`, each entry's address carries its own page.
 
   A figure's own `source` object stays as it is.
 - `sources_missing_reason` replaces `sources` when the Source line names no link (the raw text). `derived_from` lists the rule ids a Source line points to ("as in FXD-07", "pointers to X, Y"), for the chips on the card. A general rule's pointer to a record that is not general (a company's term named beside the general source) goes to `examples` instead: a named example, shown under "לדוגמה", never a derivation; a general rule's `derived_from` holds general rules only, and only a general rule carries `examples`.
-- **`scope`** (required; D30, build spec `8dd1f013:research/specs/2026-10-25-rules-scope/spec.md`): who the rule applies to, extracted from the `- Scope:` line of the rule's block.
+- **`scope`** (D30, build spec `8dd1f013:research/specs/2026-10-25-rules-scope/spec.md`): who the rule applies to, extracted from the `- Scope:` line of the rule's block.
   - `general`: a law, regulation, regulator's text or exchange rule says it, and it binds every institution of that kind;
   - `institution`: one named company's own term;
   - `unsettled`: it reads like a general rule, but only company documents (or the press) support it so far.
 
-  `scope_institutions` (an array of `{ id, name_he }`, ids and names from `data/sources/institutions.json`) names the companies: required for `institution`, the companies whose documents were seen ("seen at") for `unsettled`, absent for `general`. `scope_settle` (English working text, never shown) is what would settle an `unsettled` rule, and is set exactly for that scope. A Scope line has one of three forms: `general`; `institution: <names>`; `unsettled: <what would settle it>[; seen at: <names>]`. A name two companies of one group share (IBI, the broker and the fund manager) resolves by the registry's `only_records`.
-- **The extraction.** `packages/pipeline/scripts/extract-sources.ts` (`npm run extract:sources -w @finance-tool/pipeline`, `--dry` to only print the report, `-- --only=KGL-12,MF-25` to write only the records of the blocks just edited, `-- --drift` to list the records that differ from what their blocks give today; the check fails while any does, `packages/pipeline/test/records-match-blocks.test.ts`) writes its keys in place (`scope`, `scope_institutions`, `scope_settle`, `sources`, `sources_missing_reason`, `derived_from`, `examples`) and nothing else, never edits the markdown, and saves `8dd1f013:research/knowledge/2026-10-24-extraction-report.md`. It is re-runnable: it replaces its own keys and reads `data/sources/publishers.json`, `data/sources/documents.json` and `data/sources/institutions.json` when present. A `documents.json` row matches a link by substrings of its title; a row with `hosts` labels only links on those hosts. A link to a copy of an official text is left out as a lead and listed in the report. A host whose default kind is `law` (the official gazette) gives way to a title that names regulations. A Scope line that is missing or names a company the registry does not resolve is printed and leaves the run's exit code at 1.
-- **The source tables** (`packages/schema/src/collections/sources.ts`). `data/sources/publishers.json` maps each host (without "www.") to `{ publisher, publisher_he, kind }`. `data/sources/documents.json` holds one row per recurring document, `{ id, match, title_he, publisher_he, kind, official_url, hosts?, library_id?, doc_kind?, institution?, version?, pages?, topics?, read_note?, note? }`: `match` are the substrings that find it, and the optional fields after `hosts` describe a company's own terms for the law and terms browser (its row in the document library, the kind of document, the institution whose term it is, the edition it prints, its pages, where each topic sits, and why no copy is in the library). A company's term is shown under its name and never as a fact about a product (D30).
-- **The institution registry** `data/sources/institutions.json`: one row per company a scope can name, `{ id, name_he, kind, scope_names, cma_legal_id, fees_id, deposit_bank_id, own_hosts, filing_names?, note? }`.
-  - `kind` is `provident-manager`, `bank`, `broker`, `foreign-broker`, `fund-manager`, `insurer`, `index-provider`, `exchange`, `regulator` or `other`.
-  - `scope_names` are the names the rule base writes (`{ name, only_records? }`; a name shared with another row carries `only_records` on every row but one).
+  `scope_institutions` (ids and names from `data/sources/institutions.json`) names the companies: required for `institution`, the companies whose documents were seen ("seen at") for `unsettled`, absent for `general`. `scope_settle` (English working text, never shown) is what would settle an `unsettled` rule, and is set exactly for that scope. A Scope line has one of three forms: `general`; `institution: <names>`; `unsettled: <what would settle it>[; seen at: <names>]`. A name two companies of one group share (IBI, the broker and the fund manager) resolves by the registry's `only_records`.
+- **The extraction.** `packages/pipeline/scripts/extract-sources.ts` writes these keys (`scope`, `scope_institutions`, `scope_settle`, `sources`, `sources_missing_reason`, `derived_from`, `examples`) from the rule base and nothing else, and never edits the markdown; how to run it is in its header. The check fails while any record differs from what its block gives (`packages/pipeline/test/records-match-blocks.test.ts`).
+- **The source tables.** `data/sources/publishers.json` maps each host (without "www.") to its publisher, Hebrew name and kind. `data/sources/documents.json` holds one row per recurring document: `match` are the substrings that find it, and the optional fields after `hosts` describe a company's own terms for the law and terms browser (its row in the document library, the kind of document, the institution whose term it is, the edition it prints, its pages, where each topic sits, and why no copy is in the library). A company's term is shown under its name and never as a fact about a product (D30).
+- **The institution registry** `data/sources/institutions.json`: one row per company a scope can name.
+  - `scope_names` are the names the rule base writes; a name shared with another row carries `only_records` on every row but one.
   - `own_hosts` are the hosts of the company's own sites, without "www." (a subdomain counts; a group's site serves each of its companies); `filing_names` are the names its filings on Maya (`mayafiles.tase.co.il`) open with. A source there is the company's own document; a record is listed in the company's section only when it cites one, and never when it is a not-rule (`listedAt` in `packages/schema/src/scope.ts`). A press report or a forum post about a company is not its document.
   - The company's page is `/companies/<cma_legal_id>` for a managing company, else `/companies/<fees_id>` or `/companies/<deposit_bank_id>` for a bank or broker the site has a page for; a row with none of these has no page, and its terms are listed on `/companies` under "companies with no page here".
-- **The quote fragments** `data/sources/fragments.json` (founder, 2026-11-07): one row per cited web page and quoted words, `{ url, words, text: { prefix?, start, end?, suffix? }, seen }`, so the link opens at those words by text fragment (`#:~:text=`). `url` and `words` are exactly a record's link and its `quote` (or an advertising entry's `claim_he` or `binding_he`); `text` is the fragment's terms in the page's own characters, kept only where the words stand on the page as it prints them and the fragment lands on them first; `seen` is the day the page was read (not `checked`, so it never moves the data's date). Written only by `tools/quote-fragments.mjs`, which keeps a row only where Chromium lands on the words and paints them; the site attaches each row to its record when it reads it (`site/app/lib/fragments.server.ts`: an object with `url` and `quote`, or a place `<x>_source` beside its words `<x>_he`) and `sourceHref` builds the link. The places that can carry it declare an optional `fragment` (`textFragment` in `value.ts`) so a record checked again after reading keeps it; the validator fails a record file that writes one. A PDF has no row: its link opens at its `page`.
-- **The brands** `data/sources/brands.json` (D33): one row per group the site shows as one company, `{ id, name_he, members, fund_managers, note? }`. `members` are registry ids, each in one brand at most; `fund_managers` are the `manager` strings of the fund records under `data/funds/` whose funds the brand's page lists. The page's address is the members' CMA id when one is in the CMA data (so track addresses do not change), else the broker's snapshot id, else the brand's id; every member's CMA, snapshot and deposit id and the brand's id show the same page. The validator fails a member missing from the registry, a member in two brands, a repeated id, and a fund manager no fund record names.
+- **The quote fragments** `data/sources/fragments.json`: one row per cited web page and quoted words, so the link opens at those words by text fragment (`#:~:text=`). `url` and `words` are exactly a record's link and its `quote` (or an advertising entry's `claim_he` or `binding_he`); `text` is the fragment's terms in the page's own characters, kept only where the words stand on the page as it prints them and the fragment lands on them first; `seen` is the day the page was read (not `checked`, so it never moves the data's date). Written only by `tools/quote-fragments.mjs`. The site attaches each row to its record when it reads it, so a record file never writes a `fragment` (the validator fails one). A PDF has no row: its link opens at its `page`.
+- **The brands** `data/sources/brands.json` (D33): one row per group the site shows as one company. `members` are registry ids, each in one brand at most; `fund_managers` are the `manager` strings of the fund records under `data/funds/` whose funds the brand's page lists. The page's address is the members' CMA id when one is in the CMA data (so track addresses do not change), else the broker's snapshot id, else the brand's id; every member's CMA, snapshot and deposit id and the brand's id show the same page.
 
 ### 3.2 `data/parameters/` — site parameters (N1)
 
-```json
-{
-  "id": "tie-threshold",
-  "method_id": "P-01",
-  "value": { "value": 0.5, "unit": "pct", "state": "sourced", "source": { "url": "docs/parameters-rationale.md#tie-threshold", "title": "Founder rationale", "publisher": "founder", "strength": "primary" }, "checked": "2026-10-22", "effective_from": "2026-10-22", "effective_to": null, "update_rule": "founder" },
-  "rationale": "text the page shows under 'site parameter'",
-  "shown_as": "site parameter"
-}
-```
+The schema is `parameterRecord`: the object is loose, so each parameter's own fields (below) pass unchecked except P-05's `instruments` and `sliders`. `rationale` is the text the page shows under "site parameter". An optional `rationale_he` holds the Hebrew version of `rationale` for the page: the file's general line, what the whole parameter is and why the site sets it.
 
-The schema is `parameterRecord`: `id`, `method_id` (`P-nn`), `rationale` and `shown_as` (`site parameter`) are required, `value` is optional, and the object is loose, so each parameter's own fields (below) pass unchecked except P-05's `instruments` and `sliders`. An optional `rationale_he` (string) holds the Hebrew version of `rationale` for the page: the file's general line, what the whole parameter is and why the site sets it.
+**A line for each number.** Every value object inside a parameter file (an input, a slider bound, a table cell, a preset field, a bound of the sensitivity test) may carry its own `rationale_he` (plain Hebrew, one or two sentences). The number's sheet shows that line first, and the file's general `rationale_he` only behind "עוד על הפרמטר"; a number with no line of its own shows the file's line directly. **What the reader text may say:** what the number is, what it is used for, and, when the site chose it, that it is a round starting value or a judgement, not a measured average, a forecast or a rule. **What it may not say:** who chose it ("Claude"), test scenarios, audit ids, a history of earlier values or a repair; all of that stays in `docs/parameters-rationale.md`. A digit that repeats the number is avoided too, because the sheet shows the number above the line and a copy drifts when the value changes.
 
-**A line for each number.** Every value object inside a parameter file (an input, a slider bound, a table cell, a preset field, a bound of the sensitivity test) may carry its own optional `rationale_he` (string, plain Hebrew, one or two sentences, `valueObject` in `packages/schema/src/value.ts`). The number's sheet shows that line first, and the file's general `rationale_he` only behind "עוד על הפרמטר"; a number with no line of its own shows the file's line directly. **What the reader text may say:** what the number is, what it is used for, and, when the site chose it, that it is a round starting value or a judgement, not a measured average, a forecast or a rule. **What it may not say:** who chose it ("Claude"), test scenarios, audit ids, a history of earlier values or a repair; all of that stays in `docs/parameters-rationale.md`. A digit that repeats the number is avoided too, because the sheet shows the number above the line and a copy drifts when the value changes.
-
-The parameters and their fields:
+The parameters:
 
 - `tie-threshold` (P-01): `value`.
 - `sensitivity-bounds` (P-02): one entry per assumption ID (`A-01` ...) with `lo` and `hi` value objects.
-- `illustrative-scenario` (P-05): `inputs` (`amount_now`, `monthly_deposit`, `horizon_years`, `A-01`, `A-02`, `cash_rate`, and the optional `annual_income`, `nis`, read only by runs that need an income) and `sliders` (`sliderRange`: `min` and `max` for the monthly deposit, the years, the amount today, A-01 and A-02, and `change_share` with its `start` for the indices page's change chart, F-90), and `instruments`, below. A linear slider (the years, A-01, A-02, `change_share`) has a `step`; a money slider (the amount today, the monthly deposit) has `segments` instead, an array of `{ to, step }` value objects, each taking an equal part of the track, so its steps grow with the amount (`guidelines/design.md`, "Fields"). The segments grow from `min`, each a whole number of its steps; every segment but the last has its `to`, and the last has none and runs to `max`. A linear slider's `max` is above its `min` by a whole number of its `step`. Every step is above zero. The schema refuses a slider with both a `step` and `segments`, or neither, and a range that breaks any of these.
+- `illustrative-scenario` (P-05): `inputs` (`amount_now`, `monthly_deposit`, `horizon_years`, `A-01`, `A-02`, `cash_rate`, and the optional `annual_income`, `nis`, read only by runs that need an income), `sliders` (`min` and `max` for the monthly deposit, the years, the amount today, A-01 and A-02, and `change_share` with its `start` for the indices page's change chart, F-90), and `instruments`, below. A linear slider (the years, A-01, A-02, `change_share`) has a `step`; a money slider (the amount today, the monthly deposit) has `segments` instead, each taking an equal part of the track, so its steps grow with the amount (`guidelines/design.md`, "Fields"). The schema (`sliderRange`) holds the steps and segments to a range they fit.
 - `golden-tolerance` (P-06): `abs_nis` and `rel_pct`.
 - The other files: `pinned-rules` (P-09, checked by §4 item 12) and `home-guide-door` (P-10).
 
-**P-05 `instruments`** (`instrumentSpec`, strict): a map from product id to the data records of the representative instrument the guide page's illustrative run takes its terms from, each key naming a record by id:
+**P-05 `instruments`**: a map from product id to the data records of the representative instrument the guide page's illustrative run takes its terms from, each key naming a record by id:
 
 - `deposit_terms`: a `data/terms/deposits/` id (deposit family). `current-account` names a `deposit_terms` record whose `term_months` may be null (no term; the run uses the ledger's month-to-month balance).
 - `fund` (a `data/funds/` id) and `tariff` (a `data/fees/` provider id whose `list` lines are the tariff) for the securities family; `ira_fees` (a fees provider id; only `ira-hishtalmut`); `tariff` alone for `makam`; `tariff` with `series_rule` (a `data/rules/` GOV rule id) for `government-bond`.
-- `track` (a CMA `fund_id`) for a provident-family wrapper that no managing company publishes a list fee for (`keren-hishtalmut`, `pension-general` and `provident-for-annuity` today): the run takes the track's `avg_annual_management_fee` and `avg_deposit_fee` (§3.13) as its balance and deposit fees, labelled as an average actually charged, not a list price.
-- `employment` (`self-employed` or `employee`; `keren-hishtalmut` only): the employment type the illustrative run uses.
-- `chosen_by` (text): an entry chosen after the record says who chose it (2026-11-07: `kupat-gemel-lehashkaa`'s `track`, D88; its run prices the collected lists, F-80).
+- `track` (a CMA `fund_id`) for a provident-family wrapper that no managing company publishes a list fee for (`keren-hishtalmut`, `pension-general` and `provident-for-annuity`): the run takes the track's `avg_annual_management_fee` and `avg_deposit_fee` (§3.13) as its balance and deposit fees, labelled as an average actually charged, not a list price.
+- `employment` (`keren-hishtalmut` only): the employment type the illustrative run uses.
+- `chosen_by` (text): an entry chosen after the record says who chose it (`kupat-gemel-lehashkaa`'s `track`, D88; its run prices the collected lists, F-80).
 - The two money-market funds name a `fund` and no `tariff`: their trade and custody lines are 0 under MF-26 and BANK-18.
 
-A product with no entry has no timeline on its guide page, and the build logs which input is missing. The validator checks that every id the map names exists, and that a `track` is a `fund_id` of the latest period in `data/cma/` (§4). The mapping is in `docs/method.md` §2.4 "Instrument terms". The values are the founder's (`docs/parameters-rationale.md`).
+A product with no entry has no timeline on its guide page, and the build logs which input is missing. Every id the map names must exist, and a `track` must be a `fund_id` of the latest period in `data/cma/` (§4). The mapping is in `docs/method.md` §2.4 "Instrument terms". The values are the founder's (`docs/parameters-rationale.md`).
 
 ### 3.3 `data/instruments/wrappers/` — one record per wrapper (D6)
 
-```json
-{
-  "id": "kupat-gemel-lehashkaa",
-  "names": { "he": ["קופת גמל להשקעה"], "statement": [], "app": ["חיסכון פלוס"] },
-  "regulator": { "value": "CMA", "...": "value object with REG rule_ids" },
-  "fee_bases_allowed": ["deposit", "balance", "direct_expenses"],
-  "fee_caps": {
-    "deposit": { "value": 4, "unit": "pct_of_deposit", "rule_ids": ["PF-02", "KGL-14"], "...": "value object" },
-    "balance": { "value": 1.05, "unit": "pct_per_year", "rule_ids": ["PF-02", "KGL-14"], "...": "value object" }
-  },
-  "ceiling": { "per": "person_per_calendar_year", "amount": { "value": 83641, "unit": "nis", "tax_year": 2026, "update_rule": "cpi-linked 1 jan", "rule_ids": ["KGL-02", "KGL-03", "KGL-24"], "...": "value object" } },
-  "deposit_side_tax": { "formula": "F-33", "rule_ids": ["TXK-01"] },
-  "tax_during": { "formula": "F-27", "rule_ids": ["TXK-03"] },
-  "tax_at_exit": { "formula": "F-44", "rule_ids": ["TXK-05", "TXK-06", "TXK-07"], "blocked_by": [], "labels": ["secondary source: base"] },
-  "lawful_exit": { "kind": "any_time", "payout_business_days": { "value": 4, "unit": "business_days", "rule_ids": ["KGL-08"], "...": "value object" } },
-  "switch_is_tax_event": { "value": false, "rule_ids": ["TXK-04"], "...": "value object" },
-  "transfer_routes": [{ "to": "kupat-gemel-lehashkaa", "rule_ids": ["PF-17", "KGL-10"] }, { "to": "provident-for-annuity", "condition": "age >= 60", "rule_ids": ["KGL-09", "TXK-10"] }],
-  "eligibility": { "rule_ids": ["KGL-06"], "text": "anyone, any age" },
-  "protection": { "rule_ids": ["PF-29"], "text": "assets held in trust, cannot be attached" },
-  "dimensions": { "tax-at-exit": "covered", "age-or-use-exemption": "covered", "loss-offset": "blocked:TXK-OQ10" },
-  "tier": 1,
-  "open_questions": ["TXK-OQ3", "TXK-OQ10"],
-  "checked": "2026-10-22"
-}
-```
-
-- The schema is `wrapperRecord` in `packages/schema`. It is strict: a field not named here is an error. Which fields become a run's inputs is in `docs/method.md` §2.4.
+- The schema is `wrapperRecord` in `packages/schema`. It is strict: a field the schema does not name is an error. Which fields become a run's inputs is in `docs/method.md` §2.4.
 - `tax_*.formula` points to `docs/method.md` (an `F-nn` id); `blocked_by` lists open-question IDs; when non-empty the engine applies B3.
-- A `fee_caps` entry is a value object with two more optional fields. `binds` is whom the cap binds where it binds only some providers. `banks` is a cap that binds banks only (the price of moving securities out, BRK-18; the ban on custody of makam, BRK-17); `banks_and_fund_distributors` is a cap that binds banks, and a fund's distributor that is not an investment marketer where it has a distribution agreement for the fund (the ban on custody of money-market units, BANK-18, MF-26 reg. 2(ד)). Set it only where the entry's own `notes` say so. With no `binds` the cap binds every provider of the product. The fee page judges a cap with `binds` only where the deal names a bank, since which non-bank members are such distributors is not known (method F-113, BRK-52). `caveat` marks a cap that holds only in a case a deal does not state: the fee page states it in the caveat's words and judges no price against it, at any provider (method F-113). `closing_account`: a bank's price for moving securities out is at most the value only when the account is being closed and the securities move to the client's own account at another financial body; the rules name third-party costs with the value, and whether they are inside it or on top of it is not settled; while the account stays open the supervised price holds (BRK-18, SW-33). So a price above the value may be lawful and one below it may not be. `distribution_agreement`: no cap is set in general (the value is empty), but a bank, or another distributor of the fund that is not an investment marketer, with a distribution agreement for the fund may charge the holder nothing for buying or redeeming its units (MF-26 regs. 1 and 2(ד)). Set it only where the entry's own `notes` say so. The schema is `feeCap`.
+- A `fee_caps` entry is a value object. `binds` is whom the cap binds where it binds only some providers. `banks` is a cap that binds banks only (the price of moving securities out, BRK-18; the ban on custody of makam, BRK-17); `banks_and_fund_distributors` is a cap that binds banks, and a fund's distributor that is not an investment marketer where it has a distribution agreement for the fund (the ban on custody of money-market units, BANK-18, MF-26 reg. 2(ד)). Set it only where the entry's own `notes` say so. With no `binds` the cap binds every provider of the product. The fee page judges a cap with `binds` only where the deal names a bank, since which non-bank members are such distributors is not known (method F-113, BRK-52). `caveat` marks a cap that holds only in a case a deal does not state: the fee page states it in the caveat's words and judges no price against it, at any provider (method F-113). `closing_account`: a bank's price for moving securities out is at most the value only when the account is being closed and the securities move to the client's own account at another financial body; the rules name third-party costs with the value, and whether they are inside it or on top of it is not settled; while the account stays open the supervised price holds (BRK-18, SW-33). So a price above the value may be lawful and one below it may not be. `distribution_agreement`: no cap is set in general (the value is empty), but a bank, or another distributor of the fund that is not an investment marketer, with a distribution agreement for the fund may charge the holder nothing for buying or redeeming its units (MF-26 regs. 1 and 2(ד)). Set it only where the entry's own `notes` say so.
 - A `fee_caps` entry of 0 on a base the record does not list in `fee_bases_allowed` is a fee the law bars (a study fund's or an IRA's fee from deposits, KH-22, PF-06): the product has no such fee, and the guide's fee table shows it as a row of its own, "לא גובים", from that cap.
-- `ceiling` may be `null`; `tier` is `1` or `2`; `transfer_routes[].to` is a product ID.
-- `dimensions` is computed from `rule_ids` at build time (product.md 3.3) and stored for display; a hand edit is not allowed. A mark is `covered` or `blocked:<id>`, where `<id>` is an open question of the rule base that the record also lists in `open_questions`; the data check fails a bare `blocked` (2026-11-07: two records had one with no question opened, and a page showed "חסום" with nothing to open). A page still reads a bare mark as blocked, with no question beside it.
-- `company_terms` (optional, D30): a property each company sets for itself, as a map from dimension id to the `institution` or `unsettled` rule records that hold the companies' own terms (`{ "fee-fx": ["BRK-23"] }`). An entry is a record id when the record names one company, or `{ "rule": "BRK-28", "companies": ["meitav-trade", "fair"] }` naming the companies whose own term on the property the record states (BRK-28 gives an opening minimum for Meitav Trade and Fair, not for Leumi or Psagot). A record that names several companies is always written this way, even when it states the property for all of them. The guide's fee rows and its rows under "מי מציע ומי מפקח" (D49) say "תלוי בחברה" there and link to those companies' pages. They are not `rule_ids`: a wrapper is a product context and cites general rules only, and a company's term marks no dimension.
-- `lawful_exit.kind` is a string with this vocabulary: `any_time`, `at_maturity`, `after_years`, `at_age`, `at_child_age`, `trading_day` (the schema checks only that it is a non-empty string). Besides `payout_business_days`, a record may carry `years`, `age`, `term_months` (each a value object) and `text` (the condition in plain words). The object stays strict.
+- `dimensions` is computed from `rule_ids` at build time (product.md 3.3) and stored for display; a hand edit is not allowed. A mark is `covered` or `blocked:<id>`, where `<id>` is an open question of the rule base that the record also lists in `open_questions`; the data check fails a bare `blocked`, since a page would show the mark with no question to open. A page still reads a bare mark as blocked, with no question beside it.
+- `company_terms` (D30): a property each company sets for itself, as a map from dimension id to the `institution` or `unsettled` rule records that hold the companies' own terms (`{ "fee-fx": ["BRK-23"] }`). An entry is a record id when the record names one company, or `{ "rule": "BRK-28", "companies": ["meitav-trade", "fair"] }` naming the companies whose own term on the property the record states (BRK-28 gives an opening minimum for Meitav Trade and Fair, not for Leumi or Psagot). A record that names several companies is always written this way, even when it states the property for all of them. The guide's fee rows and its rows under "מי מציע ומי מפקח" (D49) say "תלוי בחברה" there and link to those companies' pages. They are not `rule_ids`: a wrapper is a product context and cites general rules only, and a company's term marks no dimension.
+- `lawful_exit.kind` is a string with this vocabulary: `any_time`, `at_maturity`, `after_years`, `at_age`, `at_child_age`, `trading_day` (the schema checks only that it is a non-empty string). `text` states the condition in plain words.
 - A closed wrapper (for example after a future merger of wrappers, D6) keeps its record with `effective_to` set; the field is absent or `null` while the wrapper is open.
 
 ### 3.3a `data/instruments/securities/` — one record per security held in a wrapper (D6)
 
-A security, in the site's model, is what a person buys inside a wrapper and that carries rules of its own: a security held directly (makam, a government bond) or units of a fund (the money-market funds). Only the securities that are products a person chooses between have a record here; the index funds an account holds are `data/funds/` records with their exposure. Its record has every field of a wrapper record, with the same meaning, plus two:
+A security, in the site's model, is what a person buys inside a wrapper and that carries rules of its own: a security held directly (makam, a government bond) or units of a fund (the money-market funds). Only the securities that are products a person chooses between have a record here; the index funds an account holds are `data/funds/` records with their exposure. Its record has every field of a wrapper record, with the same meaning, plus `held_as` and `held_in`. The schema is `securityRecord`.
 
-```json
-{
-  "id": "makam",
-  "held_as": "direct",
-  "held_in": {
-    "wrapper_ids": ["brokerage-account", "ira-hishtalmut", "ira-provident"],
-    "rule_ids": ["GOV-21", "GOV-22", "GOV-05", "BRK-01", "IRA-11"],
-    "text": "a security held directly in a securities account at a bank or a TASE member ..."
-  },
-  "names": { "he": ["מק\"מ"], "statement": [], "app": ["מק\"מ"] },
-  "...": "the fields of §3.3"
-}
-```
-
-- `held_as` is `direct` (held directly) or `fund_units` (units of a fund).
 - `held_in.wrapper_ids` names the wrappers that can hold it; the first is the one its guide page runs in (the securities account for all four). `rule_ids` are the rules that say it is held there; they may cover a dimension the security's own rules do not (validator §4 item 9), but a dimension only they carry need not be marked.
 - The other fields hold what belongs to the security: its tax in a taxable account, its own liquidity, the issuer or fund law behind it (`regulator`, `protection`), its own route and minimum (`eligibility`), and a fee rule set by its security type (`fee_caps`: a bank may not charge custody on makam or money-market units, BRK-17). What the wrapper decides (who may open the account, who supervises it, how client assets are kept, what happens if the member fails) is read from the wrapper's record and is not copied into the security's.
 - Inside a wrapper that sets its own tax (an IRA), the wrapper's tax applies instead of the security's.
-- The schema is `securityRecord` in `packages/schema`; `productRecord` is either, `productSchemaOf` picks the schema by the presence of `held_in`.
 
 ### 3.4 `data/instruments/exposures/` — one record per exposure type
 
-```json
-{
-  "id": "index-sp500",
-  "names": { "he": ["S&P 500", "אס אנד פי 500"], "en": ["S&P 500"] },
-  "kind": "equity_index",
-  "currency": "USD",
-  "cash_like": false,
-  "return_source": { "mode": "entered", "series": null },
-  "variants": ["fund:1159250", "fund:ie00b5bmr087", "fund:us4642872000", "fund:11xxxxx-ibi-sp500"],
-  "wrapper_ids": ["brokerage-account"],
-  "checked": "2026-10-22"
-}
-```
+The schema is `exposureRecord`.
 
-- The schema is `exposureRecord` in `packages/schema` (strict). `id` is lowercase kebab. `names` holds `he` and `en`. `kind` is one of `equity_index`, `bond_index`, `cash_like`, `mixed`, `commodity`, `other`. `currency` is an ISO 4217 code. Optional `rule_ids` and `open_questions` list rule and open-question IDs.
-- `wrapper_ids` (optional) lists the products that can hold the exposure, as product IDs: `brokerage-account` means "through a fund in a securities account", a security ID (`makam`, `government-bond`) means "bought directly". The makam exposure does not list `brokerage-account`, because holding makam directly in the account is the `makam` security record.
-- `return_source.mode` is `entered` or `series`. For cash-like exposures it is `series`, and `series` names the `data/series/` ID (A-20 to A-24).
-- `one_line_he` (optional) is the one Hebrew line on what the money is invested in, shown under the page's h1 and on the guide list.
-- `constituents_israeli` (optional boolean, S5): `true` when the index is made of Israeli companies (TA-35, TA-90, TA-125), `false` when it is not (S&P 500, NASDAQ-100, MSCI World, MSCI ACWI). Left out for the cash and bond exposures and the general track, where the question has no meaning. The indices page reads it to decide which ways of owning the index exist (an Israeli index has only Israeli funds).
-- `other_currencies` (optional boolean): `true` when the index holds shares priced in currencies other than `currency` (MSCI World and ACWI: 23 or 47 countries, ETF-48). A fund that neutralises `currency` keeps the others, against it; the labels say so. Left out for a one-currency index.
-- `us_dividends` (optional, F-107): the index's US shares, as an Irish fund that holds them meets them. `yield` is a value object, the dividend yield of those shares in `pct_per_year`; `weight` (optional value object, `pct`) is their share of the index, left out when the index is made of US companies only. Both come from the index provider's own factsheet: the S&P 500's, or MSCI USA's yield with the country weights of MSCI World or ACWI. Left out where the provider prints no dividend yield (NASDAQ-100). The engine counts F-107 from it for an Irish fund that holds the shares (A-11).
+- `wrapper_ids` lists the products that can hold the exposure, as product IDs: `brokerage-account` means "through a fund in a securities account", a security ID (`makam`, `government-bond`) means "bought directly". The makam exposure does not list `brokerage-account`, because holding makam directly in the account is the `makam` security record.
+- `return_source.mode` is `entered` or `series`. For cash-like exposures (`cash_like: true`) it is `series`, and `series` names the `data/series/` ID (A-20 to A-24).
+- `one_line_he` is the one Hebrew line on what the money is invested in, shown under the page's h1 and on the guide list.
+- `constituents_israeli` (S5): `true` when the index is made of Israeli companies (TA-35, TA-90, TA-125), `false` when it is not (S&P 500, NASDAQ-100, MSCI World, MSCI ACWI). Left out for the cash and bond exposures and the general track, where the question has no meaning. The indices page reads it to decide which ways of owning the index exist (an Israeli index has only Israeli funds).
+- `other_currencies`: `true` when the index holds shares priced in currencies other than `currency` (MSCI World and ACWI: 23 or 47 countries, ETF-48). A fund that neutralises `currency` keeps the others, against it; the labels say so. Left out for a one-currency index.
+- `us_dividends` (F-107): the index's US shares, as an Irish fund that holds them meets them. `yield` is a value object, the dividend yield of those shares in `pct_per_year`; `weight` (`pct`) is their share of the index, left out when the index is made of US companies only. Both come from the index provider's own factsheet: the S&P 500's, or MSCI USA's yield with the country weights of MSCI World or ACWI. Left out where the provider prints no dividend yield (NASDAQ-100). The engine counts F-107 from it for an Irish fund that holds the shares (A-11).
 - `variants` lists the funds that have a `data/funds/` record; a `fund:<id>` entry must be the `id` of a record under `data/funds/` (validator). It is not the candidate set: for Israeli funds and foreign funds traded on TASE the workbench takes every fund in the latest list in `data/fund-lists/` that matches the exposure (§3.14, method F-65, product D17), and a fund with no record here is shown as not evaluated.
 
 ### 3.5 `data/funds/` — hand-collected fund details (dependency 6, N4)
 
 One record per fund whose details have been collected. The set of Israeli funds and of foreign funds traded on TASE that the workbench chooses from is `data/fund-lists/` (§3.14); foreign-domiciled funds traded abroad exist only here, because no complete list of them was found (method G-29).
 
-```json
-{
-  "id": "ie00b5bmr087",
-  "names": { "en": ["iShares Core S&P 500 UCITS ETF USD (Acc)"], "he": [], "tase": ["01159250"] },
-  "identifiers": { "isin": "IE00B5BMR087", "tase_number": "1159250", "cusip": null, "ticker": { "LSE": "CSPX", "TASE": "..." } },
-  "manager": "BlackRock", "domicile": "IE", "legal_form": "UCITS",
-  "exposure_id": "index-sp500",
-  "currency": "USD", "trading_currency_on_tase": "NIS",
-  "distribution_policy": "accumulating",
-  "tax_status": { "il_fund_tax_track": null, "tase_foreign_fund_90pct_test": { "value": true, "rule_ids": ["TXF-04"], "...": "value object" } },
-  "fees": {
-    "fixed_management": { "value": 0.07, "unit": "pct_per_year", "source": { "...": "prospectus or factsheet" }, "...": "value object" },
-    "trustee": null, "variable_management": null,
-    "tracking_difference_12m": { "value": null, "unit": "pct_per_year", "...": "value object" },
-    "median_spread": { "value": null, "unit": "pct_of_trade", "...": "value object" },
-    "fund_level_withholding_drag": null
-  },
-  "dimensions": { "foreign-withholding-domicile": "covered", "tax-during": "blocked:TXF-OQ1", "estate-situs": "covered:TXF-27" },
-  "prospectus": { "url": "...", "date": "2025-..." },
-  "snapshot": "2026-10-22"
-}
-```
-
-- **Schema.** `fundRecord` (strict). `id` is lowercase ASCII, digits and hyphens, without a prefix; an exposure's `variants` names the record as `fund:<id>`, and the file is `funds/<id>@<snapshot>.json`. `distribution_policy` is `accumulating`, `distributing` or `null`; `tax_status.il_fund_tax_track` is `exempt`, `taxable` or `null`; `tax_status.tase_foreign_fund_90pct_test` is a value object or `null`; `tax_status.foreign_investment_fund` is a value object (its value a currency code, `false` or `null`) or left out (below); `trading_currency_on_tase` and `prospectus.date` may be `null`. `dimensions` marks use the wrapper format (`covered`, `blocked:<OQ>`).
+- **Schema.** `fundRecord`. `identifiers` holds the numbers the fund is known by (`isin`, `tase_number`, `cusip`, `ticker` by exchange). An exposure's `variants` names the record as `fund:<id>`, and the file is `funds/<id>@<snapshot>.json`. `dimensions` marks use the wrapper format (`covered`, `blocked:<OQ>`).
 - **Fees.** Each entry of `fees` is a value object, `null`, or left out. On a fund whose `domicile` is not `IL`, `fees.variable_management` and `fees.trustee` hold `null`: the fund does not have these lines, because they belong to Israeli fund law (ETF-14, MF-20), which does not apply to it (ETF-71). The site writes "אין". On any other field, or on an Israeli fund, a missing fee is not collected, and a value object with `value: null` always is; the site writes "לא נאסף".
 - **Withholding** (`fees.fund_level_withholding_drag`, A-11): the tax withheld inside the fund, in `pct_per_year`, where a document of the fund gives it; it replaces F-107. Left null, an Irish fund that holds its index's shares takes F-107 from its exposure's `us_dividends`.
-- **The load** (`fees.load`, optional, MF-21): the load on purchase (הוספה) as a value object in `pct_of_trade`, from the fund's own document, with the page in `source.url` (`#page=`) and the document's words in `source.title`; `update_rule` is `provider-set`, `rule_ids` holds `MF-21`. `0` means a document was read and says zero; left out means not read, so a missing value is never shown as zero. ETFs and foreign funds leave it out: they print no such line. It stands apart from `creation_redemption_fee_category`, a different cost paid by a different person, and from a distributor's commission, which is a tariff line. The reports state the load as a share of the unit price (`ממחיר היחידה`); `pct_of_trade` is the nearest unit. A load above zero fails the validator (§4 item 15) because the page does not price one yet. The redemption deduction (MF-22) has not been read and has no field.
-- **Distribution** (`distribution`, optional, A-10): `{ yield, per_year }`. `yield` is a value object in `pct_per_year` from the fund's own factsheet or the manager's page, with the document's words and date in `source.title` and `effective_from` the date the figure is as of; `update_rule` is `provider-set`. `per_year` is the payments a year the same source prints (1, 2, 3, 4, 6 or 12). The validator fails it on a fund that does not distribute. Left out, not estimated, when it was not read: a distributing fund without it has no price.
-- **How the fund is built** (S4), three optional fields, all left out when the record does not say:
-  - `replication: { method, source }`: how the fund follows its index. `method` is `physical` (holds the index securities), `swap` (unfunded swaps on the index), `futures` (futures on the index) or `mixed` (more than one of these as co-equal parts, for example swaps and futures, or the securities plus synthetic options). `source` is `{ url, page?, checked }`: the document that says so (the annual report or the factsheet), the PDF page that says it (never a printed page), and the date it was read. The Israeli records carry it from the sentence after `REPLICATION:` in `legal_form`; the iShares record from its factsheet ('Methodology: Physical Replication').
-  - `hedged` (boolean): `true` when the fund's name or its Maya record says the currency is neutralised (מנוטרלת מט"ח / דולר, currency-hedged). Left out, not `false`, when the record does not say.
+- **The load** (`fees.load`, MF-21): the load on purchase (הוספה) in `pct_of_trade`, from the fund's own document, with the page in `source.url` (`#page=`) and the document's words in `source.title`; `update_rule` is `provider-set`, `rule_ids` holds `MF-21`. `0` means a document was read and says zero; left out means not read, so a missing value is never shown as zero. ETFs and foreign funds leave it out: they print no such line. It stands apart from `creation_redemption_fee_category`, a different cost paid by a different person, and from a distributor's commission, which is a tariff line. The reports state the load as a share of the unit price (`ממחיר היחידה`); `pct_of_trade` is the nearest unit. A load above zero fails the validator (§4 item 15) because the page does not price one yet. The redemption deduction (MF-22) has not been read and has no field.
+- **Distribution** (`distribution`, A-10): `yield` is a value object in `pct_per_year` from the fund's own factsheet or the manager's page, with the document's words and date in `source.title` and `effective_from` the date the figure is as of; `update_rule` is `provider-set`. `per_year` is the payments a year the same source prints. The validator fails it on a fund that does not distribute. Left out, not estimated, when it was not read: a distributing fund without it has no price.
+- **How the fund is built** (S4), three fields, all left out when the record does not say:
+  - `replication`: how the fund follows its index. `method` is `physical` (holds the index securities), `swap` (unfunded swaps on the index), `futures` (futures on the index) or `mixed` (more than one of these as co-equal parts, for example swaps and futures, or the securities plus synthetic options). `source` is the document that says so (the annual report or the factsheet), the PDF page that says it (never a printed page), and the date it was read. The Israeli records carry it from the sentence after `REPLICATION:` in `legal_form`; the iShares record from its factsheet ('Methodology: Physical Replication').
+  - `hedged`: `true` when the fund's name or its Maya record says the currency is neutralised (מנוטרלת מט"ח / דולר, currency-hedged). Left out, not `false`, when the record does not say.
   - `share_price`: a value object in a currency unit (`usd`, `nis`, `eur`) with its own source and date: the price of one unit, which a per-share commission (`usd_per_share`) and buying in whole units (F-109, D94) need. It is the issuer's own figure, from its page for the fund (the NAV per share it prints, `effective_from` the day it is as of); a market price is not collected. A Tel Aviv line of a foreign fund takes its issuer's NAV of the same share class, in the class's currency, where the line's own Israeli document names that share class (its ISIN); the run converts it at its own rate. Never a price from TASE or Maya: the data check refuses a source on their hosts. An Israeli ETF without one is priced by amount and its row says the unit price was not collected.
-- **Tracking record** (`tracking_record`, optional, F-92): `{ years: [{ year, fund_pct, tracking_pct, fees_charged? }], years_printed, source, page, fees_page?, changes_page?, variable_rate_since?, variable_positive_only?, checked }`, the fund's return and its tracking asset's in each full calendar year its report prints, in percent, from the report named in `source` (the same document as `fees.tracking_difference_12m`; `page` is the PDF page when the notes name it, else null). `fees_charged` is `{ fixed, variable, trustee }`, the fees charged that year in percent of average net assets as the same report's table "הוצאות שנפרעו מנכסי הקרן" prints them on `fees_page` (2026-11-07, F-92 (b)): each figure as printed, a cell printed "-" or "* שיעור זניח" and a row the table does not print recorded as 0, the variable fee negative where the table prints it so. Every year of an Israeli record carries it; a foreign record leaves it out, its document printing no yearly table. An Israeli record with `fees_page` also names `changes_page`, the page of the same report's table "שינויים במאפייני הקרן", and `variable_rate_since`, the day today's listed variable management fee came into force as that table prints it, or null when it prints no change of the variable fee in its years or after them (2026-11-07, pass 6, F-92 (b): the years charged at today's rate give the variable fee counted forward). `variable_positive_only: true` marks a report whose footnote says its table leaves out the negative variable fees ("נתון זה לא מקבל ביטוי בטבלה"); no net figure is estimated. A part year is left out, and a fund with no full year has no field. `years_printed` lists, oldest first, every full calendar year the returns table on `page` prints, and `years` holds exactly those (§4 item 17): an Israeli annual report prints the last three or four calendar years and the current part year, a factsheet up to ten. A foreign fund's record takes its figures from the issuer's own factsheet, key investor information or fund page (2026-11-07), in its own currency; a foreign record without the field has not had them collected, which says nothing about its age, so the page tells the two apart by domicile. `benchmark` (required on every record that has the field, Israeli and foreign alike) is `{ name, dividends, source?, page?, rule_ids? }`: the benchmark's name as the document prints it (an Israeli fund's tracking asset as Maya's fund page names it), and `dividends` `net` (the index counts dividends after the tax withheld at source), `gross` (before it) or `unstated` (no official document says), by the fund's own binding documents (its prospectus, Israeli annex or annual report, whose line "אופן חישוב המדד" says NTR or GTR), TASE's own name for the tracking asset ("... - NTR"), TASE's own page for a Tel Aviv index ("אופן חישוב המדד: תשואה כוללת ברוטו (GTR)", the page the fund's annual report links to; `rule_ids` then names the rule that records it: ETF-42 for TA-125, ETF-44 for TA-35, ETF-45 for TA-90), or the issuer's own factsheet line naming the net index as the benchmark ("MSCI World Index (Net)", "S&P 500 Net Total Return"), its statement about its own product (F-92 (d)); `page` is the PDF page that says so, and `source` the document when it is not the one in `source`. A `net` record shows a gap and takes A-07 from its years; a `gross` one does only on TA-35, TA-90 or TA-125, for an exempt Israeli fund, when every fund on its index measures against a gross series too (F-92 (d)). The values are the report's own figures; the gap and A-07 are computed (F-92), never stored.
-- **Tax ruling** (`tax_ruling`, optional, TXF-11): `{ ruling_date, source, pages: { ruling, sale, distribution }, quote, checked }`, on a foreign fund whose own Israeli prospectus annex reports a Tax Authority ruling given to it and names a sale and a distribution as the only taxed events. `source` is the annex; `pages` are its PDF pages; `quote` is the annex's own sentence on the ruling. The founder judged it enough for that fund (D10): an accumulating fund that carries it is ranked rather than listed under G-18. A record of the same ISIN bought abroad carries it too, since the units are the same.
-- **Promotions** (`promotions`, optional, F-121): `[{ fee, rate }]`, a fee the manager or the trustee lowers for a stated period and reports as a promotion ("דיווח זה הינו דיווח על מבצע בשכר הנאמן", with the rate that returns on a stated day). `fee` names a key of `fees` (`fixed_management`, `variable_management`, `trustee`); `rate` is a value object in the fee's unit, the rate charged during the promotion, whose `effective_from` and `effective_to` are its first and last days as the report prints them, its source the report that announces it. The fee's own value object holds the rate outside the promotion. A run charges the promotion's rate until it ends and the fee's own rate after (F-121); a page shows it beside the fee ("0.0085% עד 31.12.2026"). The data check (§4) holds each to a fee the record has, in the same unit and above the promotion's rate, with both days, and one promotion to a fee.
-- **Israeli funds** (Maya export, CAT-34, TXS-24) add `il_fund_tax_track` (`exempt` or `taxable`, MF/TXS), the exposure code (MF-54, field `exposure_code`), `distribution_fee_type` (MF-24) and `creation_redemption_fee_category` (ETF-05); the last three are optional strings (or `null`).
+- **Tracking record** (`tracking_record`, F-92): the fund's return and its tracking asset's in each full calendar year its report prints, in percent, from the report named in `source` (the same document as `fees.tracking_difference_12m`; `page` is the PDF page when the notes name it, else null).
+  - `fees_charged` is the fees charged that year (`fixed`, `variable`, `trustee`) in percent of average net assets as the same report's table "הוצאות שנפרעו מנכסי הקרן" prints them on `fees_page` (F-92 (b)): each figure as printed, a cell printed "-" or "* שיעור זניח" and a row the table does not print recorded as 0, the variable fee negative where the table prints it so. Every year of an Israeli record carries it; a foreign record leaves it out, its document printing no yearly table.
+  - An Israeli record with `fees_page` also names `changes_page`, the page of the same report's table "שינויים במאפייני הקרן", and `variable_rate_since`, the day today's listed variable management fee came into force as that table prints it, or null when it prints no change of the variable fee in its years or after them (F-92 (b): the years charged at today's rate give the variable fee counted forward). `variable_positive_only: true` marks a report whose footnote says its table leaves out the negative variable fees ("נתון זה לא מקבל ביטוי בטבלה"); no net figure is estimated.
+  - A part year is left out, and a fund with no full year has no field. `years_printed` lists, oldest first, every full calendar year the returns table on `page` prints, and `years` holds exactly those (§4 item 17): an Israeli annual report prints the last three or four calendar years and the current part year, a factsheet up to ten. A foreign fund's record takes its figures from the issuer's own factsheet, key investor information or fund page, in its own currency; a foreign record without the field has not had them collected, which says nothing about its age, so the page tells the two apart by domicile.
+  - `benchmark`, on every record that has the field, Israeli and foreign alike: the benchmark's name as the document prints it (an Israeli fund's tracking asset as Maya's fund page names it), and `dividends` `net` (the index counts dividends after the tax withheld at source), `gross` (before it) or `unstated` (no official document says), by the fund's own binding documents (its prospectus, Israeli annex or annual report, whose line "אופן חישוב המדד" says NTR or GTR), TASE's own name for the tracking asset ("... - NTR"), TASE's own page for a Tel Aviv index ("אופן חישוב המדד: תשואה כוללת ברוטו (GTR)", the page the fund's annual report links to; `rule_ids` then names the rule that records it: ETF-42 for TA-125, ETF-44 for TA-35, ETF-45 for TA-90), or the issuer's own factsheet line naming the net index as the benchmark ("MSCI World Index (Net)", "S&P 500 Net Total Return"), its statement about its own product (F-92 (d)); `page` is the PDF page that says so, and `source` the document when it is not the one in `source`. A `net` record shows a gap and takes A-07 from its years; a `gross` one does only on TA-35, TA-90 or TA-125, for an exempt Israeli fund, when every fund on its index measures against a gross series too (F-92 (d)).
+  - The values are the report's own figures; the gap and A-07 are computed (F-92), never stored.
+- **Tax ruling** (`tax_ruling`, TXF-11): on a foreign fund whose own Israeli prospectus annex reports a Tax Authority ruling given to it and names a sale and a distribution as the only taxed events. `source` is the annex; `pages` are its PDF pages (the ruling, the sale, the distribution); `quote` is the annex's own sentence on the ruling. It is enough for that fund (D10): an accumulating fund that carries it is ranked rather than listed under G-18. A record of the same ISIN bought abroad carries it too, since the units are the same.
+- **Promotions** (`promotions`, F-121): a fee the manager or the trustee lowers for a stated period and reports as a promotion ("דיווח זה הינו דיווח על מבצע בשכר הנאמן", with the rate that returns on a stated day). `fee` names a key of `fees` (`fixed_management`, `variable_management`, `trustee`); `rate` is a value object in the fee's unit, the rate charged during the promotion, whose `effective_from` and `effective_to` are its first and last days as the report prints them, its source the report that announces it. The fee's own value object holds the rate outside the promotion. A run charges the promotion's rate until it ends and the fee's own rate after (F-121). The data check (§4) holds each to a fee the record has, in the same unit and above the promotion's rate, with both days, and one promotion to a fee.
+- **Israeli funds** (Maya export, CAT-34, TXS-24) add `il_fund_tax_track` (`exempt` or `taxable`, MF/TXS), the exposure code (MF-54, field `exposure_code`), `distribution_fee_type` (MF-24) and `creation_redemption_fee_category` (ETF-05).
 - **Foreign-investment fund** (`tax_status.foreign_investment_fund`, TXS-14, method F-04): whether the fund is a "קרן נאמנות להשקעות חוץ" under the 2003 regulations, as its own documents say. A value object in unit `text`, `update_rule` `provider-set`, `rule_ids` holding `TXS-14`:
   - `value` is the principal currency's ISO 4217 code (`"USD"` for "דולר ארה\"ב") where the fund's annual report names it one (its main characteristics, פרק א') or its manager's prospectus does (the fund's row of its tables). `source` is that document with the page (`#page=`) and its words in `source.title`; `effective_from` is the date it is as of.
   - `false` where the fund's own document says it is not one, or where its manager's main prospectus, whose tax column (or the column beside it) names that status for the manager's funds that have it, states this fund's status without it. `source` is the prospectus page with the fund's row and the column's words; `notes` names a fund of the same manager the column names one.
@@ -326,103 +216,57 @@ One record per fund whose details have been collected. The set of Israeli funds 
 
 ### 3.6 `data/fees/` — provider tariffs, dated snapshots (dependency 5)
 
-One file per provider per snapshot: `fees/<provider-id>@<date>.json`. The schema is `feesSnapshot` (strict).
-
-```json
-{
-  "id": "leumi",
-  "provider": { "name_he": "בנק לאומי", "class": "bank", "regulator": "BoI", "tase_member": true, "protection_rule_ids": ["BRK-10", "BRK-13"] },
-  "tariff": { "url": "...", "title": "תעריפון מלא, חלק 4", "published": "2026-10-01", "format": "pdf" },
-  "snapshot": "2026-10-22",
-  "missing": false,
-  "missing_reason": null,
-  "lines": [
-    {
-      "id": "leumi-buy-sell-tase",
-      "base": "trade",
-      "applies_to": ["tase_shares_bonds"],
-      "level": "list",
-      "rate": { "value": 0.5, "unit": "pct_of_trade", "...": "value object" },
-      "min": { "value": 25, "unit": "nis_per_trade", "...": "value object" },
-      "max": null,
-      "period": null,
-      "channel": "direct",
-      "band": null,
-      "statement_code": null,
-      "names": { "tariff": ["קנייה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה"] }
-    },
-    {
-      "id": "leumi-custody-israel",
-      "base": "custody", "applies_to": ["tase_shares_bonds", "etf_units", "mutual_fund_units"],
-      "excludes": ["makam", "money_market_units"], "excludes_rule_ids": ["BRK-17", "BANK-18"],
-      "level": "list",
-      "rate": { "value": 0.15, "unit": "pct_of_balance_per_period", "...": "value object" },
-      "period": "quarter", "min": { "...": "value object" }, "max": { "...": "value object" }
-    },
-    {
-      "id": "leumi-fx-conversion", "base": "fx", "applies_to": ["all"], "level": "list",
-      "rate": { "...": "value object" }, "spread": { "value": null, "notes": "FXD OQ2: spread not published" }
-    }
-  ],
-  "averages": [
-    { "line_id": "leumi-buy-sell-tase", "level": "regulator_average", "band": "100k-200k",
-      "rate": { "value": 0.21, "unit": "pct_of_trade", "source": { "url": "https://edge.boi.org.il/...FEES_DASH", "publisher": "Bank of Israel", "strength": "primary" }, "checked": "2026-10-22", "effective_from": "2026-04-01", "effective_to": "2026-06-30", "rule_ids": ["BRK-26"] } },
-    { "line_id": "leumi-buy-sell-tase", "level": "tase_average", "band": "100k-200k", "rate": { "...": "TASE s.45טז calculator, BRK-33" } }
-  ],
-  "minimums": { "account_opening": null },
-  "notice_rule_ids": ["BRK-21"]
-}
-```
+One file per provider per snapshot: `fees/<provider-id>@<date>.json`. The schema is `feesSnapshot`.
 
 **The provider and the document.**
 
-- `provider.class` and `provider.regulator` take the values of §2. For a foreign broker (S1), `class: foreign_broker` and `regulator: foreign` go together; the validator fails one without the other. `provider.regulator_foreign: { name, name_he, country }` is required exactly when `regulator` is `foreign` and names the supervisor (for Interactive Israel, CySEC in Cyprus).
-- `provider.israeli_tax_service` (optional, BRK-36): `true` on a foreign broker whose own terms offer a service that withholds Israeli tax.
+- For a foreign broker (S1), `provider.class: foreign_broker` and `provider.regulator: foreign` go together; the validator fails one without the other. `provider.regulator_foreign` is required exactly when `regulator` is `foreign` and names the supervisor (for Interactive Israel, CySEC in Cyprus).
+- `provider.israeli_tax_service` (BRK-36): `true` on a foreign broker whose own terms offer a service that withholds Israeli tax.
 - **A house within another** (D43). `provider.part_of` names the house whose price list holds this record's prices (PEPPER: `leumi`, whose price list has a PEPPER annex; its prices stand as a group of Leumi). The record stays as read; the indices page lists no house with `part_of`. The data check holds it to another house with a record under `data/fees/`.
-- `tariff.title` is the document's name as its publisher writes it ("תעריפון יחיד/עסק קטן - בנק דיסקונט לישראל"): the site shows it as the source's name on every figure from the record. How the document was read (its parts, pages and dates per part, files read alongside, file metadata, links, what was blocked) goes in the optional `tariff.notes`, which the site does not show. A figure's `source.title` is the document's name and its section, without such notes. The data check fails a tariff title with a link, process words or more than 100 characters. `tariff.published` may be `null`; `tariff.format` is `pdf`, `html` or `xlsx`. Where `published` is `null` on a collected record, `tariff.printed` says what the document prints instead, so the page says what is known rather than only that a date is missing (2026-11-07): `{ "kind": "part", "part_he", "date", "as_printed" }` for a document that dates each part and not the whole (the part the site reads, named as the site shows it, "חלק ניירות הערך"; `date` is the printed date, `null` where the print is no real date, such as "06/02/20217", and the data check compares it with `as_printed`); `{ "kind": "version", "version": "04/2026" }` for a version printed in place of a date; `{ "kind": "none" }` for nothing printed. The data check asks for it on every latest record that has no `published` and is not `missing`, and refuses it beside a `published` date. The site writes the line with the kit's `TariffDate`: "תעריפון מ־{date}", "חלק ניירות הערך מ־{date}", "חלק ניירות הערך מ־06/02/20217 (כך במקור)", "תעריפון גרסת 04/2026" or "בלי תאריך מודפס" (under a heading that already names the price list, `titled`: "מתאריך {date}", "גרסת 04/2026"), the misprint and the empty forms followed by "נאסף ב־" and the day the record was checked (`snapshot`) where the page shows no other day.
-- A provider whose tariff could not be obtained has `missing: true` and `missing_reason` (for example "PDF not located"), and no `lines`; the workbench shows the row as "not comparable, data missing". The optional `missing_reason_he` is the reason in Hebrew, for the page, where the plain "not collected" would be untrue.
+- `tariff.title` is the document's name as its publisher writes it ("תעריפון יחיד/עסק קטן - בנק דיסקונט לישראל"): the site shows it as the source's name on every figure from the record. How the document was read (its parts, pages and dates per part, files read alongside, file metadata, links, what was blocked) goes in `tariff.notes`, which the site does not show. A figure's `source.title` is the document's name and its section, without such notes. The data check fails a tariff title with a link, process words or more than 100 characters.
+- Where `tariff.published` is `null` on a collected record, `tariff.printed` says what the document prints instead, so the page says what is known rather than only that a date is missing: `part` for a document that dates each part and not the whole (the part the site reads, named as the site shows it, "חלק ניירות הערך"; `date` is the printed date, `null` where the print is no real date, such as "06/02/20217", and the data check compares it with `as_printed`); `version` for a version printed in place of a date ("04/2026"); `none` for nothing printed. The data check asks for it on every latest record that has no `published` and is not `missing`, and refuses it beside a `published` date. Where the page shows no other day, a misprinted date and `none` are followed by the day the record was checked (`snapshot`).
+- A provider whose tariff could not be obtained has `missing: true` and `missing_reason` (for example "PDF not located"), and no `lines`; the workbench shows the row as "not comparable, data missing". `missing_reason_he` is the reason in Hebrew, for the page, where the plain "not collected" would be untrue.
 
 **Lines.**
 
 - `applies_to` lists security types (§2) or wrapper IDs; `all` is every one. A bonds-only line uses `applies_to: ["tase_bonds"]`.
-- `level` is `list`, `regulator_average` or `tase_average` (D4). A fourth level, `entered`, is never stored under `data/`; it lives in saved state with the same shape.
-- `period` is `month`, `quarter`, `year` or `null`.
+- `level` (D4): a fourth level, `entered`, is never stored under `data/`; it lives in saved state with the same shape.
 - A line's `band` is the tariff's own text for a plan or sub-class; `band: null` is the standard line, which F-63 prefers, and a plan line is read only when the person names the plan.
-- A banded line the price list prints but the house's own documents do not show an ordinary customer can use for the holdings it names (a standing order limited to a list of funds the house does not publish, or one no document says where to set up) carries `not_ranked: { reason_he, source: { url, title, checked, page?, quote } }` (D41, D56): `reason_he` says why in the reader's words (at most 240 characters), `source` is the document whose words, or silence, it rests on. The ranked price never reads the line: the standard line prices those orders, and the indices page shows the line beside the house's row with `reason_he`; the company pages show it as printed. The data check refuses it on a standard line (`band: null`).
-- **By amount** (`by_amount`, optional; F-109, D94): `[{ venue, orders, list_only, shares_only?, source: { url, title, checked, page?, quote }, note? }]`, the listings abroad (`us`, `europe`, as `venueOfBand` tells them apart) the house's own document says it sells by amount: an order in money, or in fractions of a unit. `orders` is `all`, or `recurring_plan` for the monthly purchases of its recurring plan only (the purchases its recurring-plan conversion line prices, F-13). `list_only: true` marks a document that limits it to a list of securities the house does not publish and that names none of the site's funds: the entry is kept, and changes nothing (D42). `shares_only: true` marks words that name shares and no exchange-traded fund, where the house's own records name funds when they mean them ("מניות ו-ETF'S"): for a fund that is silence (D56), and the entry is kept for its reason and changes nothing. `quote` is the document's words, which must name fractions ("שבר") or an order by sum ("סכום"). A listing with no entry, and every listing on TASE, is bought in whole units (silence is not a yes, D56). The data check holds one entry to a listing, a recurring-plan entry to a record that prints a recurring-plan conversion line, and an entry to a record that prices funds bought abroad.
+- A banded line the price list prints but the house's own documents do not show an ordinary customer can use for the holdings it names (a standing order limited to a list of funds the house does not publish, or one no document says where to set up) carries `not_ranked` (D41, D56): `reason_he` says why in the reader's words, `source` is the document whose words, or silence, it rests on. The ranked price never reads the line: the standard line prices those orders, and the indices page shows the line beside the house's row with `reason_he`; the company pages show it as printed. The data check refuses it on a standard line (`band: null`).
+- **By amount** (`by_amount`; F-109, D94): the listings abroad (`us`, `europe`, as `venueOfBand` tells them apart) the house's own document says it sells by amount: an order in money, or in fractions of a unit. `orders` is `all`, or `recurring_plan` for the monthly purchases of its recurring plan only (the purchases its recurring-plan conversion line prices, F-13). `list_only: true` marks a document that limits it to a list of securities the house does not publish and that names none of the site's funds: the entry is kept, and changes nothing (D42). `shares_only: true` marks words that name shares and no exchange-traded fund, where the house's own records name funds when they mean them ("מניות ו-ETF'S"): for a fund that is silence (D56), and the entry is kept for its reason and changes nothing. `quote` is the document's words, which must name fractions ("שבר") or an order by sum ("סכום"). A listing with no entry, and every listing on TASE, is bought in whole units (silence is not a yes, D56). The data check holds one entry to a listing, a recurring-plan entry to a record that prints a recurring-plan conversion line, and an entry to a record that prices funds bought abroad.
 - A line with `band` `פדיון` (F-24) prices a redemption of makam: `applies_to: ["makam"]`, `channel: null`, the tariff's line that names redemption; a house whose document does not name it has no such line and pays nothing at redemption. It is not an order's line, so F-63 never picks it for a buy or a sale.
 - A conversion line printed for one currency carries `conversion_currency` (ISO code): it prices a fund in that currency, and a line without one prices the others (F-13).
-- A line takes an optional `cap` value object (unit `pct_of_trade`, S2): a ceiling as a share of the trade value. Commission = min(cap x trade value, max(`min`, `rate` x base)); a cap below the minimum wins. A per-share line has `rate` in `usd_per_share` and `min` and `max` in `usd_per_trade` (or `gbp_per_trade`).
-- A line takes an optional `flat_up_to: { amount, up_to }`, two value objects: an order up to `up_to` pays `amount`; a larger order pays the line's rate, minimum and maximum. On a conversion line (`base: fx`, F-13) the two sums are in the same currency as the line's minimum and maximum (dollars at the banks) and the flat price is below the minimum; the data check holds both (`checkFlatPrices`). There it is one step of a price by the conversion's size (§3.6a item 3).
+- `cap` (unit `pct_of_trade`, S2) is a ceiling as a share of the trade value. Commission = min(cap x trade value, max(`min`, `rate` x base)); a cap below the minimum wins. A per-share line has `rate` in `usd_per_share` and `min` and `max` in `usd_per_trade` (or `gbp_per_trade`).
+- `flat_up_to`: an order up to `up_to` pays `amount`; a larger order pays the line's rate, minimum and maximum. On a conversion line (`base: fx`, F-13) the two sums are in the same currency as the line's minimum and maximum (dollars at the banks) and the flat price is below the minimum; the data check holds both (`checkFlatPrices`). There it is one step of a price by the conversion's size (§3.6a item 3).
 - Provident and pension managers use the same file with `base: deposit`, `base: balance`, `base: direct_expenses` lines per track (`track_id` = CMA fund number), the discount period (`discount_months`, A-19) and the list fee the discount reverts to (`reverts_to`). A list rate printed below the most the binding documents allow carries `reverts_to` (that most) and `discount_months` (`value: null` when no period is printed; the run then uses PF-13's five years). A printed rate made conditional on a document that is not published carries `offer_he`, the document's own words for the condition: it is an offer (D56), shown with those words and priced at `reverts_to` from the start; the data check fails `offer_he` without `reverts_to`.
 - Non-bank extra lines (BRK-24) use `fixed_period` (monthly fee), `distribution_handling`, `spread`.
 - A `corporate_event` line (unit `usd_per_event`, `applies_to: ["foreign_securities"]`) is a charge for each corporate event of a security held abroad; F-103 reads it as a charge on each dividend of a fund bought abroad that pays dividends, and an accumulating fund pays none (D67).
-- **The place of a value.** A value's `source` may also carry its exact place, both optional: `page`, the file's own page of a PDF (the document library's count, not the number printed on the sheet), and `quote`, the document's own words that carry the value, at most 240 characters. A web page has only `quote`. A value gets them only when its own line was read on that page; no `page` means not yet confirmed, not absent from the document. The same two fields may sit on an `availability` entry's `source`. They are read by nothing on the site yet.
-- `current_account: { monthly_minimum }` (D64): what a current account at the bank costs an ordinary customer a month, the price list's monthly minimum as a value object in `nis_per_month`, with its quote (and its page in a PDF) as "the place of a value" above says. Where the minimum is "not above the price of one teller action", the quote is either the line that prints the price or the clause, and the notes quote the other. The data check requires a quote on a minimum above 0; a free account read only in a browser (One Zero) may have none, and its notes say how it was read. A bank's latest record must carry it; a house that is not a bank, or that is part of another (`part_of`), must not. F-102 counts it on the bank's row on the indices page. A group entry may carry its own price for it, `groups.entries[].current_account: { price_he, exempt: true, for_months, source }`, only where the group's annex prints the minimum itself free: the data check holds `for_months` to the entry's printed end, the words and quote to "פטור" and the quote to the minimum ("מינימום"), and the record must price a current account (F-102, F-101). An exemption read from other rows (a free teller action under a minimum bounded by its price) is not recorded: the group pays the ordinary minimum, the most the documents allow (D56, D64).
-- `averages[]` holds `{ line_id, level, band, rate }`, `level` being `regulator_average` or `tase_average`. `minimums.account_opening` is a value object or `null`.
+- **The place of a value.** A value's `source` may also carry its exact place: `page`, the file's own page of a PDF (the document library's count, not the number printed on the sheet), and `quote`, the document's own words that carry the value, at most 240 characters. A web page has only `quote`. A value gets them only when its own line was read on that page; no `page` means not yet confirmed, not absent from the document. The same two fields may sit on an `availability` entry's `source`.
+- `minimums.account_opening` is a value object or `null`.
+- `current_account.monthly_minimum` (D64): what a current account at the bank costs an ordinary customer a month, the price list's monthly minimum in `nis_per_month`, with its quote (and its page in a PDF) as "the place of a value" above says. Where the minimum is "not above the price of one teller action", the quote is either the line that prints the price or the clause, and the notes quote the other. The data check requires a quote on a minimum above 0; a free account read only in a browser (One Zero) may have none, and its notes say how it was read. A bank's latest record must carry it; a house that is not a bank, or that is part of another (`part_of`), must not. F-102 counts it on the bank's row on the indices page. A group entry may carry its own price for it, `groups.entries[].current_account`, only where the group's annex prints the minimum itself free: the data check holds `for_months` to the entry's printed end, the words and quote to "פטור" and the quote to the minimum ("מינימום"), and the record must price a current account (F-102, F-101). An exemption read from other rows (a free teller action under a minimum bounded by its price) is not recorded: the group pays the ordinary minimum, the most the documents allow (D56, D64).
 
-**What can be bought there** (S3). The snapshot takes an optional `availability: [{ applies_to, available, source: { url, title, checked, page?, quote? }, note?, reason_he?, rule_ids? }]`. `rule_ids` (optional) names the rules of the rule base that hold the entry's fact; the house's row on the indices page opens their cards from its words ("לא אפשרי שם", "לא ברור אם אפשר שם"), and it changes no price. `applies_to` lists instrument classes (the security types of §2, `all` included), and a class appears in at most one entry. `available: false` is a sourced statement that a private client cannot buy that class there (Interactive Israel and TASE securities: 'ללקוחות מוסדיים בלבד'); `true` is a sourced statement that it can. With no entry for a class, availability is derived: it is available when a trade line applies. A class the source does not settle gets no entry, or an `"unknown"` entry where its row should say why (next paragraph); "not found" is never "not available".
+**What can be bought there** (S3). The snapshot's `availability` entries each name instrument classes (`applies_to`: the security types of §2, `all` included), and a class appears in at most one entry. `rule_ids` names the rules of the rule base that hold the entry's fact; the house's row on the indices page opens their cards from its words ("לא אפשרי שם", "לא ברור אם אפשר שם"), and it changes no price. `available: false` is a sourced statement that a private client cannot buy that class there (Interactive Israel and TASE securities: 'ללקוחות מוסדיים בלבד'); `true` is a sourced statement that it can. With no entry for a class, availability is derived: it is available when a trade line applies. A class the source does not settle gets no entry, or an `"unknown"` entry where its row should say why (next paragraph); "not found" is never "not available".
 
-**Who pays, what it covers, what was left out.** `available` may also be `"unknown"`, with `reason_he` for the row: the documents leave it open, so the kind of holding is not priced. A bank's or broker's record must carry `price_for_he` (who pays) and `left_out` (`[{ what, page?, source?, why, why_he?, could_change_price? }]`, empty when nothing was found; `source` (`{ url, title }`) is the document the entry quotes where that is not `tariff` (another part of the price list, an account-type page, a sheet of the fees customers paid), and `page` is then that document's page, the file's own as in every source; with no `source` the entry quotes the tariff and the page links there; `why_he` is the reason in plain Hebrew for the reader, and `could_change_price` marks what can make a reader's real price differ from the one shown, which a page says beside the house's price, with a link to the document at its page), and every kind of holding it prices needs an `availability` entry; an entry with `available: true` quotes the document's words naming that kind. `npm run validate` fails otherwise, and the ranking drops any kind of holding without such an entry.
+**Who pays, what it covers, what was left out.** `available` may also be `"unknown"`, with `reason_he` for the row: the documents leave it open, so the kind of holding is not priced. A bank's or broker's record must carry `price_for_he` (who pays) and `left_out` (empty when nothing was found). In a `left_out` entry, `source` is the document the entry quotes where that is not `tariff` (another part of the price list, an account-type page, a sheet of the fees customers paid), and `page` is then that document's page, the file's own as in every source; with no `source` the entry quotes the tariff and the page links there; `why_he` is the reason in plain Hebrew for the reader, and `could_change_price` marks what can make a reader's real price differ from the one shown, which a page says beside the house's price, with a link to the document at its page. Every kind of holding such a record prices needs an `availability` entry; an entry with `available: true` quotes the document's words naming that kind. `npm run validate` fails otherwise, and the ranking drops any kind of holding without such an entry.
 
-**By phone only** (2026-11-08). An entry with `available: true` may carry `phone_only: { venues?, source: { url, title, checked, page?, quote }, note? }`: the house says that kind can be bought there only by phone, through its trading desk, and `quote` is the house's own words saying so (it must say "טלפון" or "טלפוני"). `venues` (`us`, `europe`) narrows it to a fund bought on those exchanges, read from the trade line that prices the fund (`venueOfBand`), and only an entry for `foreign_securities` alone may carry it. It changes no price and no ranking: the site shows a small tag "בטלפון בלבד" beside the house, or among the account's labels in the receipt, which opens this source. A house's written answer is cited at `docs/company-answers.md#<company>-<date>` (below).
+**By phone only.** An entry with `available: true` may carry `phone_only`: the house says that kind can be bought there only by phone, through its trading desk, and `quote` is the house's own words saying so (it must say "טלפון" or "טלפוני"). `venues` (`us`, `europe`) narrows it to a fund bought on those exchanges, read from the trade line that prices the fund (`venueOfBand`), and only an entry for `foreign_securities` alone may carry it. It changes no price and no ranking. A house's written answer is cited at `docs/company-answers.md#<company>-<date>` (below).
 
-**The funds a house sells fund by fund** (`distribution_agreements`, optional, BRK-38). Some houses sell an Israeli fund only where its manager has a distribution agreement with them (One Zero: "אשר הבנק התקשר בהסכמי הפצה בגינם", information/5683). The manager reports each agreement on Maya as event 5307 "התקשרות בהסכם הפצה", listing every fund it covers with its fund number, and an end as event 5308 "סיום התקשרות מנהל עם מפיץ".
+**The funds a house sells fund by fund** (`distribution_agreements`, BRK-38). Some houses sell an Israeli fund only where its manager has a distribution agreement with them (One Zero: "אשר הבנק התקשר בהסכמי הפצה בגינם", information/5683). The manager reports each agreement on Maya as event 5307 "התקשרות בהסכם הפצה", listing every fund it covers with its fund number, and an end as event 5308 "סיום התקשרות מנהל עם מפיץ".
 
-- On the snapshot, `distribution_agreements: { applies_to, distributor_he, searched, reports, unnamed }`. `applies_to` lists the classes whose availability the agreements decide fund by fund (`mutual_fund_units` at One Zero); the class's own `availability` entry stays `"unknown"`, with the reason a page gives for a fund the site has no record of. `distributor_he` is the distributor's name as the reports print it.
-- `searched: { url, words, checked, result }`: the search that found the reports (its link, the event ids and words, the count). It is a lead, not the house's own list (BRK OQ24).
-- `reports: [{ url, file, manager, published, reference, agreement_date, checked, ends?, funds }]`: `url` is the report's page `https://maya.tase.co.il/he/reports/funds/<id>`, `file` the report's file that was read, `reference` its אסמכתא, `published` the day it was broadcast and `agreement_date` the day the report says the agreement was made; `ends` is the event-5308 report that ends it. `funds` holds, as strings, every fund number the report lists (the products defined by religious law left out): One Zero's 13 reports name 1,767 funds.
-- `unnamed: { reason_he, rule_ids, open_questions }`: what a page says of a fund of the class that no report names, since whether the house sells it stays open (never "not sold"): its words, the rules behind them and the open question (`BRK-OQ24`).
-- A fund of a class in `applies_to` is sold there when a report that has not ended names it; for any other fund it is open, with `unnamed` and the search as its source (method, "A house that sells a kind of fund fund by fund"). The house's lines for the class stay in the indices page's data (`onlyWhatCanBeDoneFundByFund`), and each fund is asked of the agreements; the indices bundle ships only the site's own fund numbers a report names (`fundByFund`), never the reports. Every other page reads the class as the open entry says.
+- `applies_to` lists the classes whose availability the agreements decide fund by fund (`mutual_fund_units` at One Zero); the class's own `availability` entry stays `"unknown"`, with the reason a page gives for a fund the site has no record of. `distributor_he` is the distributor's name as the reports print it.
+- `searched` is the search that found the reports (its link, the event ids and words, the count). It is a lead, not the house's own list (BRK OQ24).
+- In each of `reports`, `url` is the report's page `https://maya.tase.co.il/he/reports/funds/<id>`, `file` the report's file that was read, `reference` its אסמכתא, `published` the day it was broadcast and `agreement_date` the day the report says the agreement was made; `ends` is the event-5308 report that ends it. `funds` holds, as strings, every fund number the report lists (the products defined by religious law left out).
+- `unnamed`: what a page says of a fund of the class that no report names, since whether the house sells it stays open (never "not sold"): its words, the rules behind them and the open question (`BRK-OQ24`).
+- A fund of a class in `applies_to` is sold there when a report that has not ended names it; for any other fund it is open, with `unnamed` and the search as its source (method, "A house that sells a kind of fund fund by fund"). The indices page asks each fund of the agreements; every other page reads the class as the open entry says.
 - The data check holds the class's entry to `"unknown"`, a report to no fund named twice, and its dates in order.
 
 **A company's written answer.** A value may cite a company's written answer, or a document it sent on request that has no public copy, at `docs/company-answers.md#<company>-<date>`: that section holds the answer in the company's words with its date, and the words of the document with its version and pages, never the name or money of whoever asked (`guidelines/research.md`, "Privacy"). The site opens it at the file's public page in the repository. The document itself is filed in the document library, not in the repository.
 
-**Group prices** (D43). A bank's or broker's snapshot must carry `groups: { state, note, read: [{ url, title, read_in? }], entries }`.
+**Group prices** (D43). A bank's or broker's snapshot must carry `groups`.
 
-- `state` is `prices`, `none_on_securities` (a group annex with no securities row), `no_mention` (what was read names no group) or `not_read`. `read_in` (optional) is `chrome`: the document was read in Chrome.
-- An entry is `{ kind, name_he, who_he, who_source, ends_printed, ends_he, ends_source?, prices, inferred?, who_short_he, cheaper_he, ends_short_he }`. `kind` is `young`, `soldier`, `released`, `student`, `salary` (a lower price for those who move their salary to the bank or hold a portfolio there) or `other`. A price is `{ fee, price_he, holdings_he, names_fund, source, value? }`, `fee` being `trade_israel`, `trade_abroad`, `custody_israel` or `custody_abroad`; a source is `{ url, title, page?, row?, quote }`. `holdings_he` is the document's words, and `names_fund` must agree with them; words after "למעט" take funds out of `names_fund`.
-- **The sub-row.** The three short fields are the sub-row under the house's row on the indices page (who, what is cheaper, until when; at most 48, 80 and 40 characters) and restate the long words with no new fact. On the latest record the data check requires them, and holds:
+- `state` is `prices`, `none_on_securities` (a group annex with no securities row), `no_mention` (what was read names no group) or `not_read`. `read_in: chrome` marks a document read in Chrome.
+- An entry's `kind` `salary` is a lower price for those who move their salary to the bank or hold a portfolio there. In a price, `holdings_he` is the document's words, and `names_fund` must agree with them; words after "למעט" take funds out of `names_fund`.
+- **The sub-row.** The three short fields are the sub-row under the house's row on the indices page (who, what is cheaper, until when) and restate the long words with no new fact. On the latest record the data check requires them, and holds:
   - every number in `who_short_he` to `name_he` and `who_he`, and every number in `ends_short_he` to `ends_he`;
   - every number in `cheaper_he` to the entry's prices, except an ordinary price after "במקום", which must be a rate on a line of the same fee (the fee named by the last fee word before it) and above the group's; "פטור" only where a price says it;
   - the same words for entries with the same prices (they are one sub-row), and the same fees for entries that share words;
@@ -430,173 +274,69 @@ One file per provider per snapshot: `fees/<provider-id>@<date>.json`. The schema
 - **A price's numbers** (F-101). A price may carry `value`, the numbers its words state and nothing more:
   - exactly one of `exempt: true` ("פטור", "0 עמלה"), `discount_pct` off the house's own price for the same fee (with `not_below_pct` where the words floor it), `rate_pct` with `per` (`trade` for a trade fee; `month`, `quarter` or `year` for custody), `flat` for each operation (with `flat_up_to` where the words limit the order's size) or `per_share_cents`;
   - `min` and `max` where the words print a bound (a custody `max` is the one per security); an exempt price has no bounds;
-  - `currency` (`ILS` or `USD`) whenever there is an amount;
-  - `side` (`buy` or `sell`, a trade fee only) only where the words name a purchase only or a sale only (Mercantile Top's and Deluxe's "עמלת קניה בחו\"ל"), absent for both, and the other side keeps the house's price;
+  - `currency` whenever there is an amount;
+  - `side` (a trade fee only) only where the words name a purchase only or a sale only (Mercantile Top's and Deluxe's "עמלת קניה בחו\"ל"), absent for both, and the other side keeps the house's price;
   - `for_months`, how long the price holds from joining, where the price's words say so or its entry prints a plain period from joining as its end (`ends_printed`).
 
   A bound the words do not print is left out and the house's own stays (silence is not zero). A price whose words give two prices, tiers, a condition on the balance or on the number of orders, or an extra fee they do not size has no `value`: the words alone stand. The data check holds every number of `value` to the price's words or its quote, the period and the currency to the words, `exempt` to a word of the price, `side` to the purchase or sale the words name alone, and `for_months` to the months the words say. A price that rests on advertising (a joining offer outside the binding price list) or on a condition on the number of orders has no `value` (Altshuler Trade's joining offer, PEPPER's "עד 30 פעולות בחודש", Excellence's 40 purchases).
 - A price whose `names_fund` is false is not applied by the site to a fund unless the person adopts it as their own value (D42). Only an account built on a house reads `value`: a typed account's group as it moves into a deal (F-101, `site/app/lib/own-account.ts`; the move, method §10.4); the rest of the group data is read by no calculation.
 
-**Advertising against the binding documents** (D57). A snapshot may carry `advertising: [{ fee, verdict, claim_he, claim_source: { url, title, seen }, binding_he?, binding_source: { kind, url, title, page?, row?, dated, dated_from, checked } }]`, one entry per claim the house's own advertising makes about a fee the indices page counts (`fee`: `custody`, `account` for a handling, usage or periodic fee, `trade`, `conversion`, `standing_order`).
+**Advertising against the binding documents** (D57). A snapshot may carry `advertising`, one entry per claim the house's own advertising makes about a fee the indices page counts (`fee`: `custody`, `account` for a handling, usage or periodic fee, `trade`, `conversion`, `standing_order`).
 
 - `verdict` is `contradicted` (a binding document prints the fee the advert says is not charged), `offer` (the advert reads as for everyone; the binding terms give it to some customers, for a time, or let the house withdraw it) or `not_found` (no binding document says it).
 - `claim_he` (at most 240 characters) and `binding_he` (at most 400) are the documents' own words; fragments of one place are joined with " … ".
-- `binding_source.kind` is `price_list`, `account_terms`, `fee_annex` or `promotion_terms`; `dated` is the document's own date, printed (`dated_from: printed`) or, when it prints none, the file's (`file`).
+- `binding_source.kind` is the kind of binding document read (price list, account terms, fee annex or promotion terms); `dated` is the document's own date, printed (`dated_from: printed`) or, when it prints none, the file's (`file`).
 - The data check fails a `contradicted` or `offer` entry without `binding_he`, a `not_found` entry with it, a binding source that is the advert's own page, a `price_list` that is not a document the record's tariff or lines cite, any other kind on another site than the house's tariff, and a date after the day it was checked.
 - A guarantee is not a finding, and offers for one profession, employer, age group or community stay under `groups`. The house's page shows the entries; the calculation reads none of them.
 
 ### 3.6a Price-list facts the /deal templates read
 
-Six fields on a line or a snapshot of a bank's, broker's or foreign broker's record (`packages/schema/src/collections/fees.ts`), each with the price list's own words as its quote (the place of a value, §3.6: `page` in a PDF, `quote` of at most 240 characters), so a tap opens the document where it says so. The values were read on 2026-11-14 in each house's current list. The data check is `packages/pipeline/src/price-list-facts.ts`.
+Six fields on a line or a snapshot of a bank's, broker's or foreign broker's record (`packages/schema/src/collections/fees.ts`), each with the price list's own words as its quote (the place of a value, §3.6: `page` in a PDF, `quote` of at most 240 characters), so a tap opens the document where it says so. The data check is `packages/pipeline/src/price-list-facts.ts`.
 
-**1. A bound in the trade's currency.** A new unit, `trade_ccy_per_trade`: an amount per trade in units of whatever currency the trade is in, as the list prints it ("מינימום 30 במטבע העסקה"). It replaces the dollar unit such a `min` (or `max`) carries today. Optional beside it, on the line, `trade_currencies` (array of ISO codes): only where the list's own words name the currencies (Excellence: `["ILS", "USD", "EUR"]` from "בש"ח/$ ארה"ב/יורו"); absent, any currency. Carried by `trade` lines of `bank`, `broker` and `foreign_broker` records. The check: the unit only on a trade line's `min` or `max`, its quote naming "מטבע העסקה" (or "בהתאם למטבע העסקה"), and `trade_currencies` only beside it. F-12 reads it in the currency the run trades the fund in, and does not price a trade in a currency outside `trade_currencies`; /deal fills it as a sum in the trade's currency, with the currencies, and leaves the fee unread for a trade in another currency, saying why (F-114, method §10.6).
-
-| Line | Value | The list's words (quote) |
-|---|---|---|
-| `excellence-buy-sell-foreign-non-us` `min` | 35, `trade_currencies` ILS, USD, EUR | "0.4% משווי העסקה עם מינימום 35 בש"ח/$ ארה"ב/יורו במטבע העסקה" (p.4, item 7) |
-| `ibi-buy-sell-foreign-other-markets` `min` | 30 | "0.3%, מינימום 30 במטבע העסקה" (annex p.73; the public list p.4: "ני"ע באסיה ובאירופה 0.3% משווי העסקה, מינימום 30 במטבע העסקה") |
-| `meitav-trade-buy-sell-foreign-world` `min` | 25 | "מסחר בשאר בורסות העולם: 0.25%, מינימום 25 במטבע העסקה" (p.3) |
-| `interactive-israel-buy-sell-europe` `min` | 2.5, `open_questions` BRK-OQ25 | "עבור מניות/תעודות סל הנסחרות באירופה - התעריף הוא 0.15% משווי העסקה, מינימום 2.5 בהתאם למטבע העסקה" (p.1); its table prints 2.5 for each currency, "USD (Shares) 0.01 2.5 USD" among them |
+**1. A bound in the trade's currency.** The unit `trade_ccy_per_trade`: an amount per trade in units of whatever currency the trade is in, as the list prints it ("מינימום 30 במטבע העסקה"). Such a `min` (or `max`) takes this unit, not the dollar unit. Beside it, on the line, `trade_currencies` (ISO codes): only where the list's own words name the currencies (Excellence: `["ILS", "USD", "EUR"]` from "בש"ח/$ ארה"ב/יורו"); absent, any currency. Carried by `trade` lines of `bank`, `broker` and `foreign_broker` records. The check: the unit only on a trade line's `min` or `max`, its quote naming "מטבע העסקה" (or "בהתאם למטבע העסקה"), and `trade_currencies` only beside it. F-12 reads it in the currency the run trades the fund in, and does not price a trade in a currency outside `trade_currencies`; /deal fills it as a sum in the trade's currency, with the currencies, and leaves the fee unread for a trade in another currency, saying why (F-114, method §10.6).
 
 Psagot's Europe minimum is not one: it is fixed in euros and only collected in the trade's currency ("הגבייה בפועל מהלקוח תעשה בהתאם למטבע בו בוצעה הפעולה ... העמלה המינימלית תהיה 15 יורו לאחר המרתם לפרנק שוויצרי"), so it keeps `eur`.
 
-**Open questions a line rests on.** On any line, optional `open_questions`: the ids of the rule base's open questions its price rests on, where the list's words leave a part of it open. Every run that reads the line flags them on its figures; the company page shows each beside the line by its title, and /deal's template carries them on the price it fills (`questions`), each a chip after its figure. The data check holds each id to the rule base. One line today: `interactive-israel-buy-sell-europe`, `BRK-OQ25`, for its collection sentence, "עמלת הביצוע ... תיגבה במטבע הראשי של הבורסה בה נסחר נייר הערך" (p.1), beside a minimum in the trade's own currency.
+**Open questions a line rests on.** On any line, `open_questions`: the ids of the rule base's open questions its price rests on, where the list's words leave a part of it open (Interactive Israel's European minimum, `BRK-OQ25`: its collection sentence, "עמלת הביצוע ... תיגבה במטבע הראשי של הבורסה בה נסחר נייר הערך", stands beside a minimum in the trade's own currency). Every run that reads the line flags them on its figures; the company page shows each beside the line by its title, and /deal's template carries them on the price it fills (`questions`), each a chip after its figure. The data check holds each id to the rule base.
 
-**2. The scope of a custody maximum.** On a `custody` line with a `max`: `max_per`, required there, one of `security` (each security, Discount's "₪ 7,500 לני"ע לרבעון"), `deposit` (the whole securities deposit, Yahav's "8,500.00 לפיקדון"), or `unstated` (the list prints the figure with no scope; the notes say what else was read). Where the scope is read from another document of the house than the one `max` quotes (its own sheet in TASE's fee calculator, which the house fills, BRK-24), `max_per_source` cites it: link, title, publisher, strength `institution`, quote and the day it was read. And `max_deposit`, optional: a value object in `nis`, a second maximum on the whole deposit printed beside a `max` on each security, with its own quote. Where the list prints one figure for both (Hapoalim's "10,600.00 לנייר ערך" and "10,600.00 לפקדון"), `max` holds it with `max_per: deposit`, which then binds first, and no `max_deposit`. A maximum's period: every list read prints it in the line's own period (a quarter), so no field is proposed; a list that prints another period would need one. Carried by `custody` lines of `bank` and `broker` records. The data check requires `max_per` on every custody line with a maximum on a house's latest record, `max_deposit` only beside `max_per: security`, in `nis`, with its quote and no lower than the maximum on each security. The check also holds `max_per_source` to a `security` or `deposit` scope and to the house's own document. /deal fills a maximum on each security as one (stated) and a maximum on the deposit as the holding's maximum, and charges the lower of the two on the deal's one security (method F-14); an `unstated` maximum is left out and listed with why, the cautious reading.
+**2. The scope of a custody maximum.** On a `custody` line with a `max`: `max_per`, required there: `security` (each security, Discount's "₪ 7,500 לני"ע לרבעון"), `deposit` (the whole securities deposit, Yahav's "8,500.00 לפיקדון"), or `unstated` (the list prints the figure with no scope; the notes say what else was read). Where the scope is read from another document of the house than the one `max` quotes (its own sheet in TASE's fee calculator, which the house fills, BRK-24), `max_per_source` cites it: link, title, publisher, strength `institution`, quote and the day it was read. And `max_deposit`: a value object in `nis`, a second maximum on the whole deposit printed beside a `max` on each security, with its own quote (Leumi's "מכסימום 3700 ש"ח לני"ע 11500 לפקדון"). Where the list prints one figure for both (Hapoalim's "10,600.00 לנייר ערך" and "10,600.00 לפקדון"), `max` holds it with `max_per: deposit`, which then binds first, and no `max_deposit`. A maximum's period: every list read prints it in the line's own period (a quarter), so it has no field; a list that prints another period would need one. Carried by `custody` lines of `bank` and `broker` records. The data check requires `max_per` on every custody line with a maximum on a house's latest record, `max_deposit` only beside `max_per: security`, in `nis`, with its quote and no lower than the maximum on each security. The check also holds `max_per_source` to a `security` or `deposit` scope and to the house's own document. /deal fills a maximum on each security as one (stated) and a maximum on the deposit as the holding's maximum, and charges the lower of the two on the deal's one security (method F-14); an `unstated` maximum is left out and listed with why, the cautious reading.
 
-| Line(s) | `max_per` | `max_deposit` | The list's words (quote) |
-|---|---|---|---|
-| `discount-custody-israel`, `-foreign` | security | none | "₪ 7,500 לני"ע לרבעון" (p.14) |
-| `mercantile-custody-israel`, `-foreign` | security | none | "₪ 7,500 לני"ע לרבעון" (p.15) |
-| `leumi-custody-israel` | security | 11,500 | "מכסימום 3700 ש"ח לני"ע 11500 לפקדון" (p.32) |
-| `leumi-custody-foreign` | security | 23,000 | "מכסימום 7400 ש"ח לני"ע 23000 לפקדון" (p.32) |
-| `pepper-custody-israel`, `-foreign` | security | 11,500 | Leumi's line (p.32); the PEPPER row: "מכסימום 3,700 ש"ח לני"ע, 11,500 ש"ח לפיקדון" (p.11) |
-| `fibi-custody-israel`, `-foreign` | security | 10,000 | "מקס' לנייר/פעולה 4,000 מקס' לפיקדון 10,000" (part 4, p.3) |
-| `massad-custody-israel`, `-foreign` | deposit | none | "מקס' לנייר/פעולה - 10,000 מקס' לפיקדון - 10,000" (part 4, p.3) |
-| `hapoalim-custody-israel`, `-foreign` | deposit | none | "10,600.00 לנייר ערך" and "10,600.00 לפקדון" (the XLS, ניירות ערך) |
-| `yahav-custody-israel`, `-foreign` | deposit | none | "8,500.00 לפיקדון" (p.15) |
-| `jerusalem-custody-israel`, `-foreign` | deposit | none | "0.15% לרבעון (10,000 ₪ מקסימום)" (p.6); `max_per_source`: the bank's sheet in TASE's calculator, 'דמי ניהול/טיפול פקדון ני"ע כללי - לפקדון … 10,000.00 ₪ לרבעון' |
-| `mizrahi-custody-israel`, `-foreign` | deposit | none | "₪ 10,750.00" in the "מירבי" column (p.11); `max_per_source`: the bank's sheet, 'דמי ניהול/טיפול פקדון ני"ע הנסחרים בישראל - לפקדון' (and "בחו"ל") '… 10,750.00 ₪ לרבעון'; the sheet prints the same figure "לני"ע", so the deposit's binds first |
+A house's notes on how the two combine stay in `notes` (Leumi's "בחיוב רבעוני - תיגבה עמלת מקסימום לני"ע או לפיקדון הנמוכה מביניהן" and "בהקטנת יתרה במהלך רבעון - תיגבה עמלת מקסימום לעסקה ללא צבירה", p.32).
 
-Leumi's notes on how the two combine stay in `notes`: "בחיוב רבעוני - תיגבה עמלת מקסימום לני"ע או לפיקדון הנמוכה מביניהן" and "בהקטנת יתרה במהלך רבעון - תיגבה עמלת מקסימום לעסקה ללא צבירה" (p.32).
+**3. A conversion priced by its size.** On an `fx` line: `size_tiers`, sorted by amount: `up_to` in `usd` (the last tier `null`, above the one before); `on` is `fee` (the conversion fee) or `spread` (the spread the line records); exactly one of `exempt: true`, `discount_pct` (in `pct`, off the line's own price, the words saying whether it reaches the minimum), `flat` (in `usd`) or `rate` (in `pct_of_trade`, the spread in that tier). For example, Discount's "בעסקאות מט"ח שסכומן עד 10 $-פטור. עד 100$- 50% הנחה, לרבות על המינימום" is two steps on the fee, and IBI's spread of 0.7% up to 15,000 dollars and 0.5% above is two steps on the spread. Every run of a house's tariff at the list level reads every step, the fee's and the spread's, the indices page's among them (F-13); an average drops them with the line's bounds (F-63). `flat_up_to` (§3.6) is the line's flat step; where a line has both, the data check holds the two to the same figure. The data check also holds that no step raises the price: a spread step (`rate`) at or under the line's spread, a share off between 0 and 100, a flat step at or under the line's minimum where it has one and at or under the line's own price at the step's bottom. A step's top is measured on the deal's value, the currency bought on a purchase and the currency sold on a sale (F-13). The fee page's template fills every step as the conversion's sizes (method §10.6, "What a template fills and leaves out"). Each step's figures cite BRK-68 for the six banks it records, and BRK-48 with BRK-24 for IBI. Carried by `fx` lines of `bank`, `broker` and `foreign_broker` records.
 
-**3. A conversion priced by its size.** On an `fx` line: `size_tiers`, an array sorted by amount, each `{ up_to, on, exempt?, discount_pct?, flat?, rate?, source }`: `up_to` a value object in `usd` (the last tier `null`, above the one before); `on` is `fee` (the conversion fee) or `spread` (the spread the line records); exactly one of `exempt: true`, `discount_pct` (a value object in `pct`, off the line's own price, the words saying whether it reaches the minimum), `flat` (a value object in `usd`) or `rate` (a value object in `pct_of_trade`, the spread in that tier). Every run of a house's tariff at the list level reads every step, the fee's and the spread's, the indices page's among them (F-13, which the indices bundle ships them for, without their figures' notes and quotes); an average drops them with the line's bounds (F-63). `flat_up_to` (§3.6) is the line's flat step; where a line has both, the data check holds the two to the same figure. The data check also holds that no step raises the price: a spread step (`rate`) at or under the line's spread, a share off between 0 and 100, a flat step at or under the line's minimum where it has one and at or under the line's own price at the step's bottom. A step's top is measured on the deal's value, the currency bought on a purchase and the currency sold on a sale (F-13). The fee page's template fills every step as the conversion's sizes (method §10.6, "What a template fills and leaves out"). Each step's figures cite BRK-68 for the six banks it records, and BRK-48 with BRK-24 for IBI. Carried by `fx` lines of `bank`, `broker` and `foreign_broker` records.
+Not a size step: Mizrahi's margin at the "known" rate ("בתוספת 2.00%" on a purchase, "בהפחתה של 2.00%" on a sale, p.14, note (4)) depends on the kind of rate, not the size, and stays in its notes; Interactive Israel's conversion price by currency (p.6) is `conversion_currency`.
 
-| Line(s) | Tiers | The list's words (quote) |
-|---|---|---|
-| `ibi-fx-spread` | on spread: up to 15,000 USD 0.7%; above 0.5% | "מרווח המרה בשיעור של 0.7% לעסקאות ששוויין נמוך מ-15,000 דולר ארה"ב ובשיעור של 0.5% לעסקאות ששוויין עולה על 15,000 דולר ארה"ב" (annex p.75, item ד) |
-| `discount-fx-conversion-branch`, `-direct`; `mercantile-fx-conversion-*` | on fee: up to 10 USD exempt; up to 100 USD 50% off, the minimum included | "בעסקאות מט"ח שסכומן עד 10 $-פטור. עד 100$- 50% הנחה, לרבות על המינימום" (Discount p.18, Mercantile p.19, note (*)) |
-| `fibi-fx-conversion-branch`; `massad-fx-conversion-branch` | on fee: up to 10 USD exempt; up to 100 USD 3.0 USD | "עסקות המרה/רכישת מט"ח עד לגובה (שווה ערך) 10$ - פטורות מעמלה" (part 5, note 8); "המרות בחשבון - עד 3.0$ - 100$" (part 5, note 2.3) |
-| `fibi-fx-conversion-direct`; `massad-fx-conversion-direct` | on fee: up to 10 USD exempt; up to 100 USD 1.5 USD (First International), 1.0 USD (Massad) | part 5's note 8, which annex E's closing note carries into the direct channels: "הוצאות נוספות, הערות ותנאים הרשומים לצד השירות בתעריפון המלא, יחולו גם ביחס לתעריפים לפעילות בערוצים ישירים, לפי העניין"; annex E's row "עמלת חליפין (מט"י/מט"ח) - עד 100$" |
-| `mizrahi-fx-conversion-*` | on fee: up to 10 USD exempt; up to 50 USD 3.00 USD | "רכישה/מכירה בסכומים קטנים: עד $10.00- פטור עד $50.00- $3.00" (p.14, note (6)) |
-| `hapoalim-fx-conversion-branch`, `-direct` | on fee: up to 99 USD 5.50 USD at a clerk, 3.3 USD in a direct channel | the row "עד 99 $" priced "$5.50" (the XLS, מטבע חוץ); annex E "3.3 $" |
+**4. A fixed fee that trading in the month offsets.** On a `fixed_period` line: `offset: { against, source }`, `against` being `trade_fees_same_month` (the trade fees charged in the same month reduce it, never below zero), with the source's words. Carried by `fixed_period` lines of `broker` records; /deal fills it as the account fee's offset. For example IBI's account fee: "עלות חודשית הניתנת לקיזוז כנגד חיובי עמלות בגין פעולות אשר בוצעו בחודש החיוב ₪ 15" (annex p.72), the annex adding "החיוב בגין דמי שימוש יתבצע ללא תלות בפעילות ו/או בהיעדר פעילות הלקוח בחודש מסוים". The same annex prints the same offset for the other quote and system tracks (₪ 100, ₪ 30, ₪ 800, ₪ 250), which the record does not price.
 
-Not proposed here: Mizrahi's margin at the "known" rate ("בתוספת 2.00%" on a purchase, "בהפחתה של 2.00%" on a sale, p.14, note (4)) depends on the kind of rate, not the size, and stays in its notes; Interactive Israel's conversion price by currency (p.6) is already `conversion_currency`.
+**5. Third-party fees.** On a snapshot: `third_party`, one entry per place the house's document says a third party's fee may be charged on top of its own. `fee` is the kind of fee; `venues` narrows it where the words name markets; `ceiling` is a value object where the document prints a most a fee may be (Leumi's custodian "בעלות מירבית של עד 3 דולר לנייר" in the US, Discount's "עד 2.5$ לפעולה" in the US) and `null` where it prints none ("לפי הגביה בפועל", "בהתאם להוצאה הממשית"); `words_he` is the document's words. Read by no price and shown by no page yet: no record carries an entry, and the third parties' fees stay in `left_out`, where the pages show them, until the entries are collected. Carried by `bank`, `broker` and `foreign_broker` records. Examples: Excellence, "ייתכנו עמלות צדדים שלישיים בשווקים מסוימים" (p.4, item 7, outside the US only); Altshuler Trade, "ייתכנו חיובים נוספים בעבור כל פעולה ו/או החזקה של ני"ע" and "יובהר כי חיובים אלו אינם חלק מהעמלות הנגבות בעסקה וייגבו בנוסף לעמלה המוגדרת ללקוח" (p.2, item 7); Discount, "בנוסף, בגין ני"ע נסחרים ושאינם נסחרים בחו"ל, יגבו הוצאות הקסטודיאן בחו"ל" (p.14, note (6)) with its part 11.3.7 (p.31).
 
-**4. A fixed fee that trading in the month offsets.** On a `fixed_period` line: `offset: { against, source }`, `against` being `trade_fees_same_month` (the trade fees charged in the same month reduce it, never below zero), with the source's words. Carried by `fixed_period` lines of `broker` records; /deal fills it as the account fee's offset. One line today: `ibi-account-fee`, "עלות חודשית הניתנת לקיזוז כנגד חיובי עמלות בגין פעולות אשר בוצעו בחודש החיוב ₪ 15" (annex p.72), the annex adding "החיוב בגין דמי שימוש יתבצע ללא תלות בפעילות ו/או בהיעדר פעילות הלקוח בחודש מסוים". The same annex prints the same offset for the other quote and system tracks (₪ 100, ₪ 30, ₪ 800, ₪ 250), which the record does not price.
-
-**5. Third-party fees.** On a snapshot: `third_party: [{ fee, venues?, ceiling, words_he, source }]`, one entry per place the house's document says a third party's fee may be charged on top of its own. `fee` is `trade`, `custody`, `conversion`, `transfer`, `corporate_event` or `other`; `venues` (`us`, `europe`, `other`) narrows it where the words name markets; `ceiling` is a value object where the document prints a most a fee may be (Leumi's custodian "בעלות מירבית של עד 3 דולר לנייר" in the US, Discount's "עד 2.5$ לפעולה" in the US) and `null` where it prints none ("לפי הגביה בפועל", "בהתאם להוצאה הממשית"); `words_he` is the document's words (at most 240 characters). Read by no price and shown by no page yet: no record carries an entry, and the third parties' fees stay in `left_out`, where the pages show them, until the entries are collected. Carried by `bank`, `broker` and `foreign_broker` records. Examples: Excellence, "ייתכנו עמלות צדדים שלישיים בשווקים מסוימים" (p.4, item 7, outside the US only); Altshuler Trade, "ייתכנו חיובים נוספים בעבור כל פעולה ו/או החזקה של ני"ע" and "יובהר כי חיובים אלו אינם חלק מהעמלות הנגבות בעסקה וייגבו בנוסף לעמלה המוגדרת ללקוח" (p.2, item 7); Discount, "בנוסף, בגין ני"ע נסחרים ושאינם נסחרים בחו"ל, יגבו הוצאות הקסטודיאן בחו"ל" (p.14, note (6)) with its part 11.3.7 (p.31).
-
-**6. When a fee is collected.** On a `custody` or `fixed_period` line: `collection: { words_he, source }`, the list's words in its "מועד הגביה" column. It is not the price's period (`period` stays the period the price prints) and no calculation reads it. Excellence's custody line: "חודשי/רבעוני" (p.4, item 8), beside a price printed "0.6% לרבעון עם מינימום 40 ₪ לחודש"; the list does not say which customers are collected from monthly and which quarterly.
+**6. When a fee is collected.** On a `custody` or `fixed_period` line: `collection`, the list's words in its "מועד הגביה" column. It is not the price's period (`period` stays the period the price prints) and no calculation reads it. Excellence's custody line: "חודשי/רבעוני" (p.4, item 8), beside a price printed "0.6% לרבעון עם מינימום 40 ₪ לחודש"; the list does not say which customers are collected from monthly and which quarterly.
 
 ### 3.7 `data/terms/deposits/` — deposit and savings-plan product terms (BANK, BPN)
 
-One file per bank per product per snapshot. The folder `terms/deposits/` is matched before `terms/`.
+One file per bank per product per snapshot. The folder `terms/deposits/` is matched before `terms/`. The schema is `depositTerms`. `rate_offered` is nominal annual, before tax (BANK-13).
 
-```json
-{
-  "id": "discount-pikadon-shavui",
-  "bank": "discount",
-  "names": { "447": ["פיקדון שבועי"], "app": [], "ad": [], "abbrev": ["פז\"ק"] },
-  "type_447": "פיקדון שבועי",
-  "wrapper_id": "bank-deposit",
-  "term_months": { "value": 0.25, "unit": "months", "...": "value object" },
-  "term_days": "optional: value object in days, the term as the table prints it in days",
-  "rate_type": "variable",
-  "anchor": "prime", "spread": { "value": -1.5, "unit": "pct_per_year", "...": "value object" },
-  "rate_offered": { "value": 3.25, "unit": "pct_per_year", "notes": "nominal annual, before tax (BANK-13)", "...": "value object" },
-  "rate_effective": "optional: value object, the bank's own one-figure rate where rate_offered is not one number",
-  "interest_calc": "optional: { \"effective_annual\": value object in pct_per_year, \"effective_decimals\": value object in count (with effective_annual), \"periods_per_year\": value object in count }, either or both",
-  "linkage": "none",
-  "tax_bucket": { "value": "unlinked_15", "rule_ids": ["TXI-03", "TXI-04"], "...": "value object" },
-  "amount_range": { "min": { "...": "value object" }, "max": null, "min_edge": "optional: \"excluded\" | \"unknown\"", "max_edge": "optional, likewise" },
-  "break": { "allowed": true, "penalty": "with_penalty", "mechanism_text": "..." , "rule_ids": ["BANK-06", "BANK-14"] },
-  "exit_points": { "exists": false, "every_months": null, "first_after_months": "number or null where exit points exist; otherwise absent or null" },
-  "auto_renew": { "value": true, "max_renewals": null },
-  "balance_conditions": "optional, a current account: [{ \"measure\": \"daily_balance\" | \"average_balance\" | \"total_assets\", \"bound\": \"min\" | \"max\", \"inclusive\": true, \"value\": value object in nis }]",
-  "conditions_he": "optional: a short plain-Hebrew summary of the conditions the bank prints for the rate",
-  "variant": "optional: [\"campaign\" | \"closed_system\" | \"new_customers\" | \"interest_during_term\" | \"best_of\"], absent on a plain deposit",
-  "doubt_he": "optional: one sentence on an open doubt about the record",
-  "snapshot": "2026-10-22",
-  "source": { "url": "...", "title": "Discount 447 concentrated publication", "publisher": "Discount Bank", "strength": "institution" }
-}
-```
-
-- The schema is `depositTerms` (strict). Enums: `rate_type` is `fixed` or `variable`; `linkage` is `none`, `cpi` or `fx`; `break.penalty` is `none`, `with_penalty` or `not_allowed`, and `break.allowed` is false exactly when `break.penalty` is `not_allowed` (the schema fails a record where they disagree). `anchor` and `spread` are `null` or absent for a fixed rate. `exit_points.every_months` and `auto_renew.max_renewals` are numbers or `null`. `exit_points.every_months` is the interval between exit points, as the bank prints how often they come; `exit_points.first_after_months` (added 2026-11-12) is the months from the deposit's start to its first exit point, as the bank prints it ("בתום 6 חודשים, וכל 3 חודשים לאחר מכן" is 6 and 3), a week being 0.25. A record with exit points always carries the key: it is `null` where the bank prints only how often they come, and the first exit point is then not known and is never taken to fall one interval after the start; the key left out would be a record nobody read for it, and the schema fails that. A record without exit points leaves it out or `null`, and its `every_months` is `null`. Both figures are above zero, and the first falls inside the term (`packages/schema/test/deposit-exit-points.test.ts`).
-- `tax_bucket.value` (an enum, `taxBucket` in the schema) says which tax the deposit's interest bears: `unlinked_15`, 15% fixed on the whole nominal interest (TXI-03), for any deposit not fully linked to the index, a prime-linked one included (TXI-04); `linked_25`, a deposit fully linked to the consumer price index: the linkage is exempt and the interest above it is taxed at up to 25% (TXI-02, TXI-05), at a lower bracket from age 60 (TXI-19). It is `null` with `source.strength` `open` while no rule covers the deposit (a best-of deposit, BPN-09); the page then shows the open question with its lock, never a rate. The engine reads no `tax_bucket` today.
-- `conditions_he` (optional, plain Hebrew) summarises the conditions the bank prints for the rate (who gets it, on what balance, how often it is paid); it is faithful to the printed text quoted in the notes of `rate_offered` and adds nothing that is not printed. A bank that pays nothing gets the sentence it prints ("לא מוצעת ריבית…").
-- `variant` (optional, added 2026-11-06) says what sets a deposit apart from the bank's plain deposit of its term and kind, from the bank's own table or terms: `campaign` (the bank calls it a campaign product), `closed_system` (a deposit through a closed-system account: the money comes only from and returns only to the person's account at another bank, BANK-21; who may open one is the bank's own term), `new_customers` (only people who join the bank may open it, until a date the bank prints, which `conditions_he` says), `interest_during_term` (interest paid during the term, not at its end), `best_of` (a choice at the end between two returns). It is absent on a plain deposit; exit points and linkage have their own fields. F-86 reads one plain deposit per bank by it.
-- `rate_effective` (optional, a value object in `pct_per_year`) is the rate the bank prints in a column of its own beside the offered rate ("ריבית אפקטיבית" in Mizrahi-Tefahot's table), recorded only where `rate_offered` is not one number because the table prints a rate for each period between exit points. A page shows it, as the bank's figure, where it would show `rate_offered`; the engine does not read it. The bank defines the column only in some product terms (an average rate where the rate is not uniform over the term), so the record's `doubt_he` says what the figure is.
-- `doubt_he` (optional, plain Hebrew) is one sentence on an open doubt the researcher found (the printed rate and its conditions disagree, a stated end date has passed); the page shows it beside the figure with the caution mark, and the doubt stays out of the rate itself.
-- `amount_range.min_edge` and `amount_range.max_edge` (optional) say how the amount at a bound stands (F-108). Absent, the bound is in the range, as "מ־X" and "עד X" read. `excluded`: the bank's table prints the bound as not included (Mizrahi-Tefahot heads its amount column "טווח סכום להפקדה (לא כולל)"; Yahav prints "מעל 25,000"), or another table of the bank in the same file starts the next tier at it and prints the same rates for the tiers the two share (Yahav's fixed-rate board, "מ-50,000", for the six-month and one-year fixed deposits' "1,000 עד 50,000"). `unknown`: two amount tiers of one product print the same figure, each as its own ("1,000 עד 50,000" beside "50,000 עד 100,000", or "500,000 ומעלה"), so which rate that amount gets is not in the source; the amount is then unknown at both tiers. Set only on a bound that is a number; the schema fails one set on a bound with no number or on no maximum.
-- `term_days` (optional, a value object in `days`) is the term as the bank's table prints it in days beside the term ("פיקדון ל-3 חודשים (90 יום)", Mercantile's "30 יום"), its notes quoting it. F-21 counts a term under a year by these days; a range of days ("30-59 יום") is no term and is not recorded.
-- `interest_calc` (optional) says how the product calculates interest, where the bank prints it (BANK-50: the disclosure rules' Schedule A leaves `m`, the times a year interest is calculated, to each product; BANK OQ21 where unread). `effective_annual` is the effective annual rate the bank prints beside the nominal one ("ריבית מתואמת"; Mizrahi-Tefahot's column "ריבית אפקטיבית", recorded where its table prints one figure in every tier of the row), in `pct_per_year`, read with `rate_offered` as the pair F-21 takes `m` from; `effective_decimals`, in `count`, stands with it and gives the decimals of a percent the bank prints it to ("2.02%" is 2, "1.8500%" 4), the precision at which F-21 reads every `m` the pair allows; `periods_per_year` is the times a year the bank's words say interest is calculated or credited ("בריבית דריבית חודשית" is 12, a current account's "בכל סוף רבעון" 4), in `count`. Each value's notes quote the record. F-21 reads it for a term of a year or more (over a year with neither, the term's interest is not known), F-26 for a current account's crediting. The schema fails an `interest_calc` with neither, and an `effective_annual` without its `effective_decimals`.
-- `balance_conditions` (optional, a current account) holds the bank's printed conditions on the balance itself, each `{ measure, bound, inclusive, value }`: `measure` is `daily_balance` (the balance on every day of the month), `average_balance` (the month's average balance) or `total_assets` (everything the customer holds in the account: the current account, securities, deposits); `bound` is `min` or `max`; `inclusive` is false where the bank prints "below" or "above" rather than "up to" or "and more"; `value` is a value object in `nis` whose notes quote the bank's words. F-26 tests the balance against them. A condition that is not a figure on a balance (a salary, card spending, a tariff track) stays in `conditions_he` only.
+- `anchor` and `spread` are `null` or absent for a fixed rate.
+- `exit_points.every_months` is the interval between exit points, as the bank prints how often they come; `exit_points.first_after_months` is the months from the deposit's start to its first exit point, as the bank prints it ("בתום 6 חודשים, וכל 3 חודשים לאחר מכן" is 6 and 3), a week being 0.25. A record with exit points always carries the key: it is `null` where the bank prints only how often they come, and the first exit point is then not known and is never taken to fall one interval after the start; the key left out would be a record nobody read for it, and the schema fails that. A record without exit points leaves it out or `null`, and its `every_months` is `null`.
+- `tax_bucket.value` says which tax the deposit's interest bears: `unlinked_15`, 15% fixed on the whole nominal interest (TXI-03), for any deposit not fully linked to the index, a prime-linked one included (TXI-04); `linked_25`, a deposit fully linked to the consumer price index: the linkage is exempt and the interest above it is taxed at up to 25% (TXI-02, TXI-05), at a lower bracket from age 60 (TXI-19). It is `null` with `source.strength` `open` while no rule covers the deposit (a best-of deposit, BPN-09); the page then shows the open question with its lock, never a rate.
+- `conditions_he` (plain Hebrew) summarises the conditions the bank prints for the rate (who gets it, on what balance, how often it is paid); it is faithful to the printed text quoted in the notes of `rate_offered` and adds nothing that is not printed. A bank that pays nothing gets the sentence it prints ("לא מוצעת ריבית…").
+- `variant` says what sets a deposit apart from the bank's plain deposit of its term and kind, from the bank's own table or terms: `campaign` (the bank calls it a campaign product), `closed_system` (a deposit through a closed-system account: the money comes only from and returns only to the person's account at another bank, BANK-21; who may open one is the bank's own term), `new_customers` (only people who join the bank may open it, until a date the bank prints, which `conditions_he` says), `interest_during_term` (interest paid during the term, not at its end), `best_of` (a choice at the end between two returns). It is absent on a plain deposit; exit points and linkage have their own fields. F-86 reads one plain deposit per bank by it.
+- `rate_effective` (`pct_per_year`) is the rate the bank prints in a column of its own beside the offered rate ("ריבית אפקטיבית" in Mizrahi-Tefahot's table), recorded only where `rate_offered` is not one number because the table prints a rate for each period between exit points. A page shows it, as the bank's figure, where it would show `rate_offered`. The bank defines the column only in some product terms (an average rate where the rate is not uniform over the term), so the record's `doubt_he` says what the figure is.
+- `doubt_he` (plain Hebrew) is one sentence on an open doubt the researcher found (the printed rate and its conditions disagree, a stated end date has passed); the page shows it beside the figure with the caution mark, and the doubt stays out of the rate itself.
+- `amount_range.min_edge` and `amount_range.max_edge` say how the amount at a bound stands (F-108). Absent, the bound is in the range, as "מ־X" and "עד X" read. `excluded`: the bank's table prints the bound as not included (Mizrahi-Tefahot heads its amount column "טווח סכום להפקדה (לא כולל)"; Yahav prints "מעל 25,000"), or another table of the bank in the same file starts the next tier at it and prints the same rates for the tiers the two share (Yahav's fixed-rate board, "מ-50,000", for the six-month and one-year fixed deposits' "1,000 עד 50,000"). `unknown`: two amount tiers of one product print the same figure, each as its own ("1,000 עד 50,000" beside "50,000 עד 100,000", or "500,000 ומעלה"), so which rate that amount gets is not in the source; the amount is then unknown at both tiers. Set only on a bound that is a number.
+- `term_days` (`days`) is the term as the bank's table prints it in days beside the term ("פיקדון ל-3 חודשים (90 יום)", Mercantile's "30 יום"), its notes quoting it. F-21 counts a term under a year by these days; a range of days ("30-59 יום") is no term and is not recorded.
+- `interest_calc` says how the product calculates interest, where the bank prints it (BANK-50: the disclosure rules' Schedule A leaves `m`, the times a year interest is calculated, to each product; BANK OQ21 where unread). `effective_annual` is the effective annual rate the bank prints beside the nominal one ("ריבית מתואמת"; Mizrahi-Tefahot's column "ריבית אפקטיבית", recorded where its table prints one figure in every tier of the row), in `pct_per_year`, read with `rate_offered` as the pair F-21 takes `m` from; `effective_decimals`, in `count`, stands with it and gives the decimals of a percent the bank prints it to ("2.02%" is 2, "1.8500%" 4), the precision at which F-21 reads every `m` the pair allows; `periods_per_year` is the times a year the bank's words say interest is calculated or credited ("בריבית דריבית חודשית" is 12, a current account's "בכל סוף רבעון" 4), in `count`. Each value's notes quote the record. F-21 reads it for a term of a year or more (over a year with neither, the term's interest is not known), F-26 for a current account's crediting.
+- `balance_conditions` (a current account) holds the bank's printed conditions on the balance itself: `measure` is `daily_balance` (the balance on every day of the month), `average_balance` (the month's average balance) or `total_assets` (everything the customer holds in the account: the current account, securities, deposits); `inclusive` is false where the bank prints "below" or "above" rather than "up to" or "and more"; `value` is in `nis`, its notes quoting the bank's words. F-26 tests the balance against them. A condition that is not a figure on a balance (a salary, card spending, a tariff track) stays in `conditions_he` only.
 - **The current account.** A current-account record with `amount_range.max` is read as the balance that earns the rate (BANK-09, F-26). The page of the current account reads every `wrapper_id: "current-account"` record: the most common `rate_offered` among them is the default (F-85).
 
 ### 3.8 `data/series/` — sourced time series (dependency 7)
 
-One file per series, appended on each refresh. Observations are value objects with `date`. The example is `cbs-cpi.json` with its latest observation only.
+One file per series, appended on each refresh. Observations are value objects with `date`. The schema is `seriesRecord` (`packages/schema/src/collections/series.ts`).
 
-```json
-{
-  "id": "cbs-cpi",
-  "names": {
-    "he": [
-      "מדד המחירים לצרכן - כללי"
-    ]
-  },
-  "publisher": "Central Bureau of Statistics",
-  "flow": "CBS price-index API (api.cbs.gov.il/index/data/price)",
-  "series_code": "120010",
-  "unit": "index_points",
-  "cadence": "monthly",
-  "stale_after_days": 45,
-  "terms_of_use": {
-    "terms_url": "https://www.cbs.gov.il/he/Pages/רישיון-שימוש.aspx",
-    "read_on": "2026-10-23",
-    "attribution": "הלשכה המרכזית לסטטיסטיקה (הלמ\"ס), מדד המחירים לצרכן - כללי (קוד 120010), (2026-10-23), ניתן לצפייה באתר: https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=01-2025 מועתק ומופץ כמות שהוא – as is – על פי רישיון שימוש של הלמ\"ס בכתובת אתר האינטרנט https://www.cbs.gov.il/he/Pages/רישיון-שימוש.aspx"
-  },
-  "rule_ids": [],
-  "notes": "General CPI as the CBS prints it, base 2024 ממוצע = 100, from 2025-01. The CBS publishes a month's index on the 15th of the next month. Months before 2025-01 are printed in the 2022 base and are not stored; chaining coefficients are at https://api.cbs.gov.il/index/data/price_selected?id=120010. date is the index month (first day); effective_to is its last day. This series is the history deflator, not an inflation expectation.",
-  "raw": {
-    "archive_key": "cbs-cpi/2026-10-23.json.gz",
-    "sha256": "886fbbacd61b15b1f89b73236b5ed58289eb1a9344f9f841e6b1c9d98f7287eb"
-  },
-  "observations": [
-    {
-      "value": 105.3,
-      "unit": "index_points",
-      "source": {
-        "url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=01-2025",
-        "title": "מדד המחירים לצרכן - כללי (code 120010), CBS price-index API, base 2024 ממוצע = 100, index of 2026-09",
-        "publisher": "Central Bureau of Statistics",
-        "strength": "primary"
-      },
-      "checked": "2026-10-23",
-      "effective_from": "2026-09-01",
-      "effective_to": "2026-09-30",
-      "update_rule": "market",
-      "state": "sourced",
-      "date": "2026-09-01"
-    }
-  ]
-}
-```
-
-- The schema is `seriesRecord` (strict; `packages/schema/src/collections/series.ts`). `names` holds `he` (at least one) and optional `en`. `cadence` is `daily`, `monthly` or `on change`; `stale_after_days` is a positive integer; `unit` comes from §2 (`index_points` for an index, `pct_per_year` for rates). Optional `notes` says what the base period or a value means and how the file is thinned; optional `raw` (`archive_key`, `sha256`) is the evidence of the latest download that changed the file.
-- **The licence.** `terms_of_use` records the publisher's licence as read, all three fields required: `terms_url` (the licence or terms page), `read_on` (the day it was read) and `attribution` (the attribution line the licence prescribes, shown next to the numbers).
-- **Observations.** Each is a value object with `date` (a full ISO date; a monthly index uses the first day of its month, with `effective_to` the last day) and, for a series that holds several (a multi-key series such as bank rates by plan), an optional `key` string, unique per `date`. The validator checks that observations are sorted by `date` then `key`, with no two the same, and that every `rule_ids` entry is in the rule base.
+- `unit` comes from §2 (`index_points` for an index, `pct_per_year` for rates). `notes` says what the base period or a value means and how the file is thinned; `raw` (`archive_key`, `sha256`) is the evidence of the latest download that changed the file.
+- **The licence.** `terms_of_use` records the publisher's licence as read: `terms_url` (the licence or terms page), `read_on` (the day it was read) and `attribution` (the attribution line the licence prescribes, shown next to the numbers).
+- **Observations.** Each has `date` (a full ISO date; a monthly index uses the first day of its month, with `effective_to` the last day) and, for a series that holds several (a multi-key series such as bank rates by plan), a `key`, unique per `date`. Observations are sorted by `date` then `key`, with no two the same, and every `rule_ids` entry is in the rule base.
 - **The series in the data**, written by the pipeline (`npm run refresh -- <source>...`):
   - `cbs-cpi` (source `cbs-cpi`): the general CPI, base 2024 average = 100 from 2025-01; the CPI history of F-03.
   - `mof-child-savings-rates` (source `mof-child-savings`; CS-10, CS-22, CS-23): key `<bank>|<plan>|<age>|<saving period>|<metric>`, thinned to first, changes and latest per key, latest 14 months.
@@ -608,7 +348,7 @@ One file per series, appended on each refresh. Observations are value objects wi
 
 ### 3.9 `data/averages/` — the fees a house actually charged on average
 
-The schema is `averagesRecord` (strict; `packages/schema/src/collections/averages.ts`), one kind today, `tase_member_fees`. The other regulator fee averages the data holds are the CMA's per-track averages (§3.13) and a fee line's `averages` (§3.6).
+The schema is `averagesRecord` (`packages/schema/src/collections/averages.ts`), one kind, `tase_member_fees`. The other regulator fee averages the data holds are the CMA's per-track averages (§3.13) and a fee line's `averages` (§3.6).
 
 **TASE's fee calculator, one record per member** (BRK-15, BRK-33; method F-122). TASE's calculator (https://market.tase.co.il/he/market_data/trading_fees) publishes, for each member, a sheet with the average fees actually charged ("עמלות ממוצעות") for a reporting period, by portfolio band and by five columns, and the member's main list fees ("עמלות תעריפון") with the date they were updated. Its data come from `https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=<id>`, the member ids from `.../loadcommissions`. A fee line's `averages` (§3.6) does not hold them:
 
@@ -618,88 +358,33 @@ The schema is `averagesRecord` (strict; `packages/schema/src/collections/average
 
 So a collection of its own, `data/averages/`, written as `tase-<provider-id>@<date>.json`, one per member whose house has a record under `data/fees/`:
 
-```json
-{
-  "id": "tase-meitav-trade",
-  "kind": "tase_member_fees",
-  "provider_id": "meitav-trade",
-  "member": { "tase_id": 5018, "name_he": "מיטב טרייד ניירות ערך בע\"מ" },
-  "page": { "url": "https://market.tase.co.il/he/market_data/trading_fees", "title": "מחשבון עמלות מסחר", "publisher": "Tel Aviv Stock Exchange", "checked": "2026-11-14" },
-  "exceptional_message_he": null,
-  "member_tariff_link": "https://www.meitav.co.il/media/...pdf",
-  "averages": {
-    "period": { "from": "2026-01-01", "to": "2026-06-30" },
-    "band_header_he": "שווי תיק ניירות ערך בסוף התקופה (באלפי ₪)",
-    "band_note_he": "...", "definitions_he": { "trade": "...", "custody": "..." }, "comment_he": null,
-    "rows": [
-      { "fee": "trade", "securities": "il_shares_bonds", "column_he": "קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח",
-        "band": { "text_he": "עד 25", "above_thousands_nis": null, "up_to_thousands_nis": 25 },
-        "rate": { "value": 0.0779, "unit": "pct_of_trade", "source": { "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=5018", "...": "value object" }, "effective_from": "2026-01-01", "effective_to": "2026-06-30" } }
-    ]
-  },
-  "list": { "updated": "2026-07-07", "header_he": ["סוג עמלה", "סכום / שיעור עמלה", "מינימום עמלה", "מקסימום עמלה"], "comment_he": null,
-    "rows": [ { "desc_he": "קניה/ מכירה/ פדיון - ני\"ע ישראלים: מניות, אג\"ח", "no_service": false, "amount": { "value": "0.3000%  משווי עסקה", "unit": "text", "...": "value object" }, "min": { "...": "value object" }, "max": null } ] },
-  "card_date_as_printed": "01-06 2026",
-  "snapshot": "2026-11-14"
-}
-```
-
-- `averages.rows` holds every cell of the sheet: 9 bands by 5 columns. `fee` is `trade` or `custody`; `securities` is the column's kind, `il_shares_bonds`, `il_makam` or `foreign` for a trade and `il` or `foreign` for custody; `column_he` is the column's heading as printed. A trade rate is in `pct_of_trade`, a custody rate in `pct_per_year`, both copied as printed ("0.0779%" is 0.0779); a cell the sheet leaves empty is `value: null` with a note. `effective_from` and `effective_to` are the reporting period, and the source is the member's sheet.
+- `averages.rows` holds every cell of the sheet: 9 bands by 5 columns. `securities` is the column's kind, `il_shares_bonds`, `il_makam` or `foreign` for a trade and `il` or `foreign` for custody; `column_he` is the column's heading as printed. A trade rate is in `pct_of_trade`, a custody rate in `pct_per_year`, both copied as printed ("0.0779%" is 0.0779); a cell the sheet leaves empty is `value: null` with a note. `effective_from` and `effective_to` are the reporting period, and the source is the member's sheet.
 - `band` is the sheet's own text with the bounds it prints, in thousands of shekels of the portfolio as the sheet's band header says (`band_header_he`, `band_note_he`).
 - `list.rows` are the calculator's list rows, each cell a value object in `text` as printed, `null` where the cell is empty, with `no_service` where the sheet marks the service as not given. They are the member's report to TASE, not its binding price list (BRK-24, BRK-37): `data/fees/` stays the price list, and the two can differ in date and wording.
 - `exceptional_message_he` is the sheet's note on what the member serves (One Zero's), `member_tariff_link` the link the sheet gives to the member's price list, and `card_date_as_printed` the date on the member's card in the calculator's comparison view, as printed.
-- A house's company page and /deal show the averages beside the house's list price, for reference only (F-122): the cells of the column that matches the line's kind (`site/app/lib/house-averages.ts`), the reporting period, and a link to the calculator's page. No calculation reads them, and F-63's `tase_average` level does not read this collection. A custody average is a yearly rate whatever the list line's period.
-- The data check holds the record to its file name (`<id>@<snapshot>.json`), `id` to `tase-<provider_id>`, `provider_id` to a house with a record under `data/fees/`, every cell's `effective_from` and `effective_to` to the reporting period, and one cell to each kind and band. Collected for 15 members on 2026-11-14.
+- The averages are shown beside the house's list price for reference only (F-122). No calculation reads them, and F-63's `tase_average` level does not read this collection. A custody average is a yearly rate whatever the list line's period.
+- The data check holds the record to its file name (`<id>@<snapshot>.json`), `id` to `tase-<provider_id>`, `provider_id` to a house with a record under `data/fees/`, every cell's `effective_from` and `effective_to` to the reporting period, and one cell to each kind and band.
 
 ### 3.10 `data/catalog/` — institution-facing names (3.10)
 
-Names the CMA data and the Maya export do not hold: an institution's own name for a product or track where it differs from the regulator's name, and bank deposit and savings-plan products. One entry per name and institution.
-
-```json
-{
-  "id": "meitav-kaspi-shikli",
-  "institution": "meitav",
-  "where_seen": "מיטב, פלייר תפעולי, עמוד 3: ״גמל להשקעה - מ.ה קופה 7857״, https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf",
-  "seen_on": "2026-10-22",
-  "seen_by": "il-finance CAT-11, CAT-13",
-  "names": { "he": ["כספי (שיקלי)"] },
-  "maps_to": { "wrapper_id": "kupat-gemel-lehashkaa", "cma_fund_id": 7857, "track_ids": [7861] },
-  "near_duplicates": [],
-  "status": "catalogued | not-catalogued-yet"
-}
-```
+Names the CMA data and the Maya export do not hold: an institution's own name for a product or track where it differs from the regulator's name, and bank deposit and savings-plan products. One entry per name and institution. The schema is `catalogEntry`.
 
 - `where_seen` is what the track page shows after "מקור:": each document in Hebrew, as a reader would name it, followed by its link, the documents separated by "; ". The page drops the links; the first one is the source its date opens.
-- The schema is `catalogEntry` (strict, optional `notes`). `status` is `catalogued` or `not-catalogued-yet`. `near_duplicates` is an array of `{ name, track_ids, resolution }`. Optional `default_at_joining` (boolean) is the institution's own statement that this is the track a joiner gets without choosing; the track page shows the "ברירת המחדל" tag from it.
+- `default_at_joining` is the institution's own statement that this is the track a joiner gets without choosing; the track page shows the "ברירת המחדל" tag from it.
 - `cma_fund_id` is the fund (קופה) number as the institution's documents and the CMA transfer directory give it (CAT-09); the monthly datasets list tracks, not funds, so the validator checks only that every `track_ids` entry is a `fund_id` in the latest file of a `data/cma/` dataset (§4 item 10).
 - `cma_fund_id` and `track_ids` are empty for a bank product; `maps_to` then names the wrapper and, once collected, the `data/terms/deposits/` record.
 - `near_duplicates` records names that one institution uses for more than one product or track, with the resolution from the data, or "unresolved".
 
 ### 3.11 `data/terms/` — term matching (3.1) and `data/dimensions/` (3.3)
 
-`terms/<id>.json` (schema `termRecord`, strict; `id` matches `^[a-z0-9-]+$`):
+`terms/<id>.json` (schema `termRecord`):
 
-```json
-{
-  "id": "kupat-gemel",
-  "he": "קופת גמל",
-  "en": null,
-  "meaning": "one-line Hebrew explanation",
-  "where": ["statement", "payslip", "app", "law"],
-  "wrapper_ids": ["kupat-gemel-lehashkaa"],
-  "variants": ["other spellings"],
-  "rule_ids": ["KGL-01"],
-  "source": { "url": "...", "title": "...", "publisher": "...", "strength": "institution", "checked": "2026-10-23" },
-  "seen_by": "optional, for payslip labels (G-19)"
-}
-```
-
-- `where` entries come from `statement`, `bank-statement`, `payslip`, `app`, `ad`, `law`, `form`, `bylaws`, `gemel-net`, `prospectus` (a fund prospectus), `tariff` (a provider tariff), `fund-name` (a fund's name), `tax-form` (a tax form such as form 106 or 867), `pensia-net` (the pension-net site), `provider-site` (a provider's site or rate table).
-- `wrapper_ids` are product IDs, for guide pages; optional `exposure_ids` lists the exposure records the term belongs to (ids as in §3.4). `en` may be `null`.
+- `meaning` is a one-line Hebrew explanation. `where` names the places a reader meets the term: `tax-form` is a tax form such as form 106 or 867, `pensia-net` the pension-net site, `provider-site` a provider's site or rate table.
+- `wrapper_ids` are product IDs, for guide pages; `exposure_ids` lists the exposure records the term belongs to (ids as in §3.4).
 - Payslip labels carry `strength: institution` and `seen_by` (G-19). `source` here is the `source` block of a value object plus `checked`, not a full value object.
 - Two records may not share a Hebrew name and a page (§4 item 16).
 
-`dimensions/<id>.json` (schema `dimensionRecord`, strict): `{ "id": "tax-at-exit", "he": "...", "one_line": "...", "source": { ...as above }, "rule_ids": [...] }`. `id` is one of the 26 rows of `docs/glossary.md` section 2 (an enum in the schema). The list is hand-maintained; the marks are computed.
+`dimensions/<id>.json` (schema `dimensionRecord`): `id` is one of the 26 rows of `docs/glossary.md` section 2. The list is hand-maintained; the marks are computed.
 
 ### 3.12 (removed)
 
@@ -709,153 +394,54 @@ The change log, removed by D24: the site keeps no change log.
 
 One file per dataset per report period, written by the pipeline: `cma/<dataset>@<YYYY-MM>.json`, where `dataset` is `gemelnet` (provident, hishtalmut, gemel lehashkaa, child savings) or `pensia-net` (pension). The latest period is the one the catalogue and the track workbench read. The schema is `cmaPeriodFile`.
 
-```json
-{
-  "dataset": "gemelnet",
-  "report_period": "2026-09",
-  "source": { "url": "https://data.gov.il/he/datasets/cma/gemelnet", "title": "גמל נט, resource 2024-today", "publisher": "Capital Market, Insurance and Savings Authority (data.gov.il)", "strength": "primary" },
-  "checked": "2026-10-22",
-  "raw": { "archive_key": "cma/gemelnet/2026-10-22.csv.gz", "sha256": "..." },
-  "funds": [
-    {
-      "fund_id": 7978,
-      "names": { "cma": ["<FUND_NAME exactly as in the source>"] },
-      "managing_corporation": { "name": "<MANAGING_CORPORATION>", "legal_id": "<MANAGING_CORPORATION_LEGAL_ID>" },
-      "controlling_corporation": "<CONTROLLING_CORPORATION>",
-      "fund_classification": "<FUND_CLASSIFICATION>",
-      "target_population": "<TARGET_POPULATION>",
-      "specialization": "<SPECIALIZATION>",
-      "sub_specialization": "<SUB_SPECIALIZATION>",
-      "inception_date": "YYYY-MM-DD",
-      "raw_fields": { "AVG_ANNUAL_MANAGEMENT_FEE": "<as received>", "AVG_DEPOSIT_FEE": "<as received>", "TOTAL_ASSETS": "<as received>", "STOCK_MARKET_EXPOSURE": "<as received>", "...": "the kept columns, below" },
-      "fees": {
-        "avg_annual_management_fee": { "value": 0.61, "unit": "pct_per_year", "...": "value object, below" },
-        "avg_deposit_fee": { "value": 0, "unit": "pct_of_deposit", "...": "value object, below" }
-      },
-      "holdings": {
-        "total_assets": { "value": 3947.03, "unit": "nis_millions", "...": "value object, below" },
-        "stock_market_exposure": { "value": 1933.12, "unit": "nis_millions", "...": "value object, below" },
-        "foreign_currency_exposure": { "value": 822.49, "unit": "nis_millions", "...": "value object, below" }
-      },
-      "yields": {
-        "avg_annual_yield_3y": { "value": 13.16, "unit": "pct_per_year", "...": "value object, below" },
-        "avg_annual_yield_5y": { "value": 8.19, "unit": "pct_per_year", "...": "value object, below" }
-      },
-      "closed_to_joiners": "optional: { \"by\": \"company-terms\", \"rule_ids\": [\"CAT-55\"] }, below",
-      "joining_open": "optional: { \"open_question\": \"CAT-OQ36\" }, below"
-    }
-  ]
-}
-```
-
-- Text fields are stored exactly as the source spells them (§1, Hebrew), after decoding the CSV from Windows-1255. `inception_date` may be `null`.
+- Text fields are stored exactly as the source spells them (§1, Hebrew), after decoding the CSV from Windows-1255.
 - Identity, names, manager and classification serve the catalogue (3.10) and the fit mark (F-70), the two fee fields the track workbench (F-64), and the amounts of `holdings` the stock and currency exposure shares (F-87, F-88).
-- **Kept columns** (the founder: "for future use"). `raw_fields` also keeps, as received and only when the file has them, `FOREIGN_EXPOSURE`, `LIQUID_ASSETS_PERCENT`, `DEPOSITS`, `MONTHLY_DEPOSITS`, `WITHDRAWLS`, `INTERNAL_TRANSFERS`, `NET_MONTHLY_DEPOSITS`, `MONTHLY_YIELD`, `YEAR_TO_DATE_YIELD`, `YIELD_TRAILING_3_YRS`, `YIELD_TRAILING_5_YRS`, `AVG_ANNUAL_YIELD_TRAILING_3YRS`, `AVG_ANNUAL_YIELD_TRAILING_5YRS`, `STANDARD_DEVIATION`, `ALPHA` and `SHARPE_RATIO` (the adapter's `KEPT_COLUMNS`). Only the two average annual yields have value objects (`yields`, below); no page reads the others, and a capability that shows one first adds its value object beside `fees`, `holdings` and `yields`, with its unit from the dictionary (CAT-03). A past return stays history, never a ranking key (product.md section 2). The refresh diff compares them, so a change writes the file.
-- **Fee fields** (CAT-35 to CAT-39, CAT-06). `raw_fields` keeps the two fields as received; `fees` is required and holds `avg_annual_management_fee` (unit `pct_per_year`, from `AVG_ANNUAL_MANAGEMENT_FEE`) and `avg_deposit_fee` (unit `pct_of_deposit`, from `AVG_DEPOSIT_FEE`) as value objects. Both are percent (0.61 is 0.61%).
+- **Kept columns**, for future use. `raw_fields` also keeps, as received and only when the file has them, the columns the adapter's `KEPT_COLUMNS` names. Only the two average annual yields have value objects (`yields`, below); no page reads the others, and a capability that shows one first adds its value object beside `fees`, `holdings` and `yields`, with its unit from the dictionary (CAT-03). A past return stays history, never a ranking key (product.md section 2). The refresh diff compares them, so a change writes the file.
+- **Fee fields** (CAT-35 to CAT-39, CAT-06). `raw_fields` keeps the two fields as received; `fees` holds `avg_annual_management_fee` (unit `pct_per_year`, from `AVG_ANNUAL_MANAGEMENT_FEE`) and `avg_deposit_fee` (unit `pct_of_deposit`, from `AVG_DEPOSIT_FEE`) as value objects. Both are percent (0.61 is 0.61%).
   - Each is the average fee actually charged from all members, after discounts, over the last completed calendar year, so a row of report year Y holds the Y−1 average (CAT-36, CAT-37): `effective_from`/`effective_to` are 1 January and 31 December of Y−1, `tax_year` is `null`, `update_rule` is `market`, `state` is `sourced`, `checked` is the file's `checked`, and `source` is the dataset source with the field name in the title. `rule_ids` are `CAT-35`, `CAT-36`, `CAT-37`, `CAT-06` (pensia-net adds `CAT-39`: the pair is per fund, every track of a fund carries the fund's values).
   - An empty raw field gives `value: null` with `notes` starting "לא דווח" and the reason (no full calendar year yet, or unknown, CAT OQ22); empty is not zero, and zero is a reported 0.00%.
   - An empty `AVG_DEPOSIT_FEE` of a product type whose fee regulation has no deposit-fee item (study funds, central severance funds and other-purpose funds by `fund_classification`, and IRA funds by a name with "בניהול אישי" or "IRA", IRA-03) gets a note that starts "אין דמי ניהול מהפקדה" instead of "לא דווח" and adds `PF-06` to `rule_ids`: the value stays `null` as reported, and the site reads it as no fee.
   - A negative value is kept as reported, with a note (it can be a refund, CAT-40).
   - The weighting of the average (by assets or by members) is not published and stays open (CAT OQ2, OQ23): the site says "ממוצע" and the year, never "משוקלל".
   - The site marks the figure stale when the previous calendar year is older than the fee's year (`staleCmaFee`), not by the monthly rule.
-- **Holdings** (D34, F-87, F-88). Optional: a file written before 2026-10-26 has none, and the adapter writes it only when the CSV has `TOTAL_ASSETS`, `STOCK_MARKET_EXPOSURE` or `FOREIGN_CURRENCY_EXPOSURE`. `total_assets`, `stock_market_exposure` and `foreign_currency_exposure` (optional: only when the CSV has the column) are value objects in `nis_millions` at the end of the report period: `effective_from` and `effective_to` are the period's first and last day, `rule_ids` is `CAT-24`, `state` is `sourced`, `source` is the dataset source with the field name in the title. The unit of `TOTAL_ASSETS` is the dictionary's (CAT-03); those of `STOCK_MARKET_EXPOSURE` and `FOREIGN_CURRENCY_EXPOSURE` are read the same way, which the dictionary does not state (CAT OQ4), and the note says so, and that the regulator does not publish whether the exposure counts derivatives or looks through the funds a track holds. An empty field is `value: null` with the note "לא דווח."; the site marks both stale by the monthly rule (`staleCma`).
-- **Yields** (D54, the track browser). Optional: the adapter writes it when the CSV has `AVG_ANNUAL_YIELD_TRAILING_3YRS` or `AVG_ANNUAL_YIELD_TRAILING_5YRS`, and `renormaliseFees` rebuilds it from `raw_fields` (`npm run renormalise:cma -w @finance-tool/pipeline`, no download). `avg_annual_yield_3y` and `avg_annual_yield_5y` are value objects in `pct_per_year` (13.16 is 13.16%): the track's average annual yield over its last 3 and 5 years. `effective_from` and `effective_to` are the first and last day of the report period, `rule_ids` are `CAT-04` and `CAT-05`, `state` is `sourced`, `source` is the dataset source with the field name in the title.
+- **Holdings** (D34, F-87, F-88). The adapter writes them only when the CSV has `TOTAL_ASSETS`, `STOCK_MARKET_EXPOSURE` or `FOREIGN_CURRENCY_EXPOSURE`. `total_assets`, `stock_market_exposure` and `foreign_currency_exposure` (only when the CSV has the column) are value objects in `nis_millions` at the end of the report period: `effective_from` and `effective_to` are the period's first and last day, `rule_ids` is `CAT-24`, `state` is `sourced`, `source` is the dataset source with the field name in the title. The unit of `TOTAL_ASSETS` is the dictionary's (CAT-03); those of `STOCK_MARKET_EXPOSURE` and `FOREIGN_CURRENCY_EXPOSURE` are read the same way, which the dictionary does not state (CAT OQ4), and the note says so, and that the regulator does not publish whether the exposure counts derivatives or looks through the funds a track holds. An empty field is `value: null` with the note "לא דווח."; the site marks both stale by the monthly rule (`staleCma`).
+- **Yields** (D54, the track browser). The adapter writes them when the CSV has `AVG_ANNUAL_YIELD_TRAILING_3YRS` or `AVG_ANNUAL_YIELD_TRAILING_5YRS`. `avg_annual_yield_3y` and `avg_annual_yield_5y` are value objects in `pct_per_year` (13.16 is 13.16%): the track's average annual yield over its last 3 and 5 years. `effective_from` and `effective_to` are the first and last day of the report period, `rule_ids` are `CAT-04` and `CAT-05`, `state` is `sourced`, `source` is the dataset source with the field name in the title.
   - The regulator states that every yield is nominal and gross (CAT-04): before management fees, and not net of tax; the note says so, and that it is a past return. That the window ends at the report month and that the figure is a geometric annualisation are read from the data, not stated (CAT-05), and the note says that too.
   - An empty field is `value: null` with the note "לא דווח." (CAT-05: null when the track is younger than the window), or "לא דווח: למסלול עוד אין N שנים מלאות (נפתח …)" when the track opened less than N years before the period's end. A negative yield is kept as reported.
   - The site marks both stale by the monthly rule (`staleCma`) and never ranks by them.
-- **Closed on the company's terms** (D51). Optional: `closed_to_joiners` is `{ "by": "company-terms", "rule_ids": [...] }` on a track whose managing company's own terms (its bylaws or its own pages) close it to new members, with the rules that quote them, as the adapter's track readings hold it (`TRACK_READINGS`, `company-closed`; `closedToJoiners`). The adapter writes it on a refresh and `renormaliseFees` rebuilds it; a test holds the stored files to the readings. The file keeps such a track, and the site leaves it out wherever it reads the file (`takesNewMembers`). Today: the nine guaranteed-yield tracks (CAT-55) and 923 (CAT-54).
-- **Joining open** (D51). Optional: `joining_open` is `{ "open_question": "CAT-OQ36" }` on a track whose reading leaves open whether new members may join, with the open question that holds it as the rule base writes it (`TRACK_READINGS`, `unsettled`; `joiningOpen`). The adapter writes it on a refresh and `renormaliseFees` rebuilds it; a test holds the stored files to the readings. The data and the site keep such a track, and the site says beside it, on its page and in the tracks list, that whether new members may join is open, with the question's card. Today: 119, 260 and 263 (CAT OQ36).
+- **Closed on the company's terms** (D51). `closed_to_joiners` marks a track whose managing company's own terms (its bylaws or its own pages) close it to new members, with the rules that quote them, as the adapter's track readings hold it (`TRACK_READINGS`, `company-closed`). The file keeps such a track, and the site leaves it out wherever it reads the file (`takesNewMembers`).
+- **Joining open** (D51). `joining_open` marks a track whose reading leaves open whether new members may join, with the open question that holds it as the rule base writes it (`TRACK_READINGS`, `unsettled`). The data and the site keep such a track, and the site says beside it, on its page and in the tracks list, that whether new members may join is open, with the question's card.
 
 ### 3.14 `data/fund-lists/` — the fund lists (3.4 fund variants, 3.10, product D17)
 
-**No file is in the repository.** The site shows the funds that have records and links out to Maya, with no count and no fund list (product.md dependency 6). The schema and the reader stand for a saved list: the site reads the latest file of each list (`loadFundLists` in `site/app/lib/variants.server.ts`).
+**No file is in the repository.** The site shows the funds that have records and links out to Maya, with no count and no fund list (product.md dependency 6). The schema (`fundListFile`, `packages/schema/src/collections/fund-lists.ts`) and the reader stand for a saved list: the site reads the latest file of each list.
 
 The two lists, each saved by hand, because the pages block scripts:
 
 - `fund-lists/maya-mutual-funds@<YYYY-MM-DD>.json`, from the export of TASE's Maya fund list (CAT-33, CAT-34): the Israeli open-end funds (mutual funds, tracking funds and money-market funds).
 - `fund-lists/tase-foreign-funds@<YYYY-MM-DD>.json`, from TASE's list of foreign funds traded on TASE (ETF-32): fund number, name, manager, classification and reference index, in the same shape with the fields that list has.
 
-Together they are the set of funds the workbench chooses from (method F-65, F-83) and that a fund manager's catalogue page lists. The file:
+Together they are the set of funds the workbench chooses from (method F-65, F-83) and that a fund manager's catalogue page lists.
 
-```json
-{
-  "list": "maya-mutual-funds",
-  "snapshot": "2026-10-22",
-  "source": { "url": "https://maya.tase.co.il/he/funds/mutual-funds", "title": "...", "publisher": "...", "strength": "primary" },
-  "checked": "2026-10-22",
-  "terms_of_use": { "terms_url": "...", "read_on": "...", "attribution": "..." },
-  "raw": { "archive_key": "...", "sha256": "..." },
-  "funds": [
-    {
-      "fund_number": "<as in the export>",
-      "isin": "<as in the export, or null>",
-      "names": { "he": ["<as in the export>"] },
-      "manager": "<as in the export>",
-      "trustee": "<as in the export>",
-      "classification": ["<top heading>", "<main heading>", "<sub heading>"],
-      "characteristics": ["<as in the export>"],
-      "exposure_code": "<as in the export>",
-      "reference_asset": "<as in the export>",
-      "tax_status": "<as in the export>",
-      "distribution_fee_class": "<as in the export>",
-      "management_fee": { "value": null, "unit": "pct_per_year", "...": "value object" },
-      "trustee_fee": { "value": null, "unit": "pct_per_year", "...": "value object" },
-      "data_date": "YYYY-MM-DD"
-    }
-  ]
-}
-```
-
-- The schema is `fundListFile` (`packages/schema/src/collections/fund-lists.ts`), strict: `list` (`maya-mutual-funds` or `tase-foreign-funds`), `snapshot` (the save date, equal to the `@<date>` in the file name), `source` (the source block of §1), `checked`, `terms_of_use` (as the series schema, §3.8), `raw { archive_key, sha256 }` and `funds[]`.
-- A row's text is stored as the list prints it. `isin`, `exposure_code` and `tax_status` are `null` where the list prints none; `trustee`, `reference_asset` and `distribution_fee_class` may be `null` or left out; `characteristics`, `management_fee` and `trustee_fee` are optional. `classification` holds the headings top to bottom (Maya: three; the TASE foreign list: the one it has).
+- `snapshot` is the save date, equal to the `@<date>` in the file name; `terms_of_use` is as in the series (§3.8).
+- A row's text is stored as the list prints it. `classification` holds the headings top to bottom (Maya: three; the TASE foreign list: the one it has).
 - Only the fields the catalogue, the candidate set (F-65 matches on classification and reference asset) and the fee comparison use are kept; prices and returns are not, since the site does not rank by past return (product.md section 4).
-- The validator fails a file whose name differs from `<list>@<snapshot>.json`, or that repeats a `fund_number`. An exposure's `fund:<id>` variants resolve against `data/funds/` only, never against these lists.
+- A file's name is `<list>@<snapshot>.json`, and a `fund_number` appears once in it. An exposure's `fund:<id>` variants resolve against `data/funds/` only, never against these lists.
 
 ### 3.15 `data/open-questions.json` — the open questions of the rule base
 
-One file, an array with one entry per numbered item of the "## Open questions" section of every rule-base file (`.claude/skills/il-finance/references/*.md`), in file order:
-
-```json
-[
-  { "id": "TXI OQ19", "status": "open", "title_he": "<one short line: what is unknown>" },
-  { "id": "PEN OQ7", "status": "narrowed", "title_he": "<what is unknown>", "blocks_he": "<what on the site waits for it>" },
-  { "id": "BANK OQ1", "status": "open" }
-]
-```
+One file, an array with one entry per numbered item of the "## Open questions" section of every rule-base file (`.claude/skills/il-finance/references/*.md`), in file order. The schema is `openQuestionsFile` in `packages/schema`.
 
 - `id` is the code the site uses: the file's prefix from the references README's file table, a space, `OQ` and the item's number. Guide records write the same question as `PEN-OQ7` (§3.3). An id appears once.
-- `status`: `open` or `narrowed`. The markdown does not mark narrowing, so the file keeps the status it has, and a new id takes the class of the open-questions audit (8dd1f013:research/knowledge/2026-10-26-open-questions/merged.json) when there is one.
-- An answered question is deleted from the markdown once its answer is in a rule, and leaves the file with it (founder, 2026-11-08); git keeps the history. Its number is never used again: a new question takes a number above any its file has used. A struck item left in the markdown stops the generator and fails the validator.
+- `status`: the markdown does not mark narrowing, so the file keeps the status it has, and a new id takes the class of the open-questions audit (8dd1f013:research/knowledge/2026-10-26-open-questions/merged.json) when there is one.
+- An answered question is deleted from the markdown once its answer is in a rule, and leaves the file with it; git keeps the history. Its number is never used again: a new question takes a number above any its file has used. A struck item left in the markdown stops the generator and fails the validator.
 - `title_he` (one short Hebrew line, what is unknown, in plain words) and `blocks_he` (what on the site waits for the answer, only where something does) are written by hand; every question the site names has them. The question sheet shows them.
-- Generated by `npm run gen:open-questions -w @finance-tool/pipeline` (`packages/pipeline/scripts/gen-open-questions.ts`), which keeps the hand-written fields and prints any id that left the markdown with its Hebrew. The schema is `openQuestionsFile` in `packages/schema`, strict.
+- Generated by `npm run gen:open-questions -w @finance-tool/pipeline` (`packages/pipeline/scripts/gen-open-questions.ts`), which keeps the hand-written fields and prints any id that left the markdown with its Hebrew.
 - Every question the repository names exists: the validator (§4 item 13) fails a code in data/, the docs, the rule base, the packages' sources or the golden workings that the rule base does not have, and the kit guard (`site/app/components/kit/guards.test.ts`) fails a site source that names one. A citation of an answered question points at the rule that answered it instead. The not-covered page names each closure of a tier-2 status section by the rules that answered it.
 
 ### 3.16 `data/abroad/` — the same kind of product in other countries (D114)
 
-One file per guide page that has the note "במדינות אחרות" at the end of its "שווה לדעת", named by the guide's product id (`data/abroad/<id>.json`). The rule base covers Israel only, so these facts live here, each with the page it was read on and the day.
-
-```json
-{
-  "id": "kupat-gemel-lehashkaa",
-  "opens_on": "gb",
-  "tiles": ["deposit_limit", "tax_on_gain", "withdraw"],
-  "countries": [
-    {
-      "country": "gb", "found": true, "product": "ISA", "product_name": "Individual Savings Account",
-      "pages": [{ "url": "https://www.gov.uk/individual-savings-accounts", "title": "…", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "checked": "2026-11-13" }],
-      "who": { "statement": "18 or over, and resident in the UK …", "source": { "…": "as a fact's source" }, "checked": "2026-11-13" },
-      "facts": {
-        "deposit_limit": {
-          "value": 20000, "unit": "gbp",
-          "source": { "url": "https://www.gov.uk/individual-savings-accounts", "title": "…", "publisher": "GOV.UK", "publisher_he": "אתר ממשלת בריטניה", "kind": "regulator_page", "strength": "primary", "locator": "Overview", "quote": "In the 2026 to 2027 tax year, the maximum you can save in ISAs is £20,000" },
-          "checked": "2026-11-13", "effective_from": "2026-04-06", "effective_to": "2027-04-05", "update_rule": "set yearly", "state": "sourced", "notes": "…"
-        }
-      }
-    },
-    { "country": "us", "found": false, "checked": "2026-11-13", "looked_for": "…" }
-  ]
-}
-```
+One file per guide page that has the note "במדינות אחרות" at the end of its "שווה לדעת", named by the guide's product id (`data/abroad/<id>.json`). The rule base covers Israel only, so these facts live here, each with the page it was read on and the day. The schema is `abroadRecord` in `packages/schema/src/collections/abroad.ts`.
 
 - `countries` holds the four countries the note compares with, Britain (`gb`), the United States (`us`), France (`fr`) and Italy (`it`), each once and in that order on every guide (D114). A country is `found` with a product like the guide's, or not, with the day it was looked for (`checked`) and what was looked for (`looked_for`, English, never shown).
 - `opens_on` is the country the note opens on, the closest match; it must be found.
@@ -865,7 +451,7 @@ One file per guide page that has the note "במדינות אחרות" at the end
 - `product` is the product's name as its own pages write it ("ISA", "Roth IRA"), the chip's second word; `product_name` its full name where that is an abbreviation. `who` says who may open it where the page says so (an age, residence, an income from work), sourced like a fact, and is absent where the page is silent; the page ships it among the facts under the key `who`, so no fact is keyed `who`.
 - `pages` are the pages the note's source line names, the first being the one its link opens; `checked` is the day each was read.
 - A source whose text stops being in force on a known day carries `superseded`: `from`, that day; `by`, the text that carries the same rule from then; and `basis`, the provisions that repeal the text and set the day, each with its `url`, `title`, `locator` and verbatim `quote`. From `from` on, the data check warns that the source must move, naming `by`; the fact may still hold, and the page keeps showing it. Italy's PIR: its facts cite Law 232/2016 art. 1 cc.100-114, which the Testo unico of D.Lgs. 19 June 2026 n. 117 repeals (art. 376 c.1 lett. eeeee)) from the day it applies, 1.1.2027 (art. 377 c.1), and whose art. 209 carries the same rules; each fact names its comma of art. 209 in `by`, as `"by": "D.Lgs. 19 giugno 2026, n. 117, Testo unico imposte sui redditi, art. 209, comma 2"`.
-- The schema is `abroadRecord` in `packages/schema/src/collections/abroad.ts`, strict. The validator fails a record whose `id` differs from its file name, and checks every source's host as it checks any primary source (§4 item 12): the governments' and regulators' hosts are listed in `OFFICIAL_HOSTS`.
+- The record's `id` is its file name, and every source's host is checked as any primary source's is (§4 item 12): the governments' and regulators' hosts are listed in `OFFICIAL_HOSTS`.
 
 ## 4. Validation (run before every build)
 

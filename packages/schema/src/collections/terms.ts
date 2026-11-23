@@ -1,5 +1,5 @@
 // data/terms/<id>.json (term matching) and data/dimensions/<id>.json. docs/data-schema.md §3.11.
-// Strict: a field the doc does not name is an error.
+// Strict: a field the schema does not name is an error.
 import { z } from "zod";
 import { isoDate, productId, source } from "../value.ts";
 

@@ -1,9 +1,9 @@
 // data/instruments/exposures/: one record per exposure type. docs/data-schema.md §3.4.
-// Strict: a field the doc does not name is an error.
+// Strict: a field the schema does not name is an error.
 import { z } from "zod";
 import { isoDate, productId, valueObject } from "../value.ts";
 
-/** data-schema §3.4, `kind`. */
+/** An exposure record's `kind`. */
 export const exposureKind = z.enum(["equity_index", "bond_index", "cash_like", "mixed", "commodity", "other"]);
 
 export const exposureRecord = z.strictObject({

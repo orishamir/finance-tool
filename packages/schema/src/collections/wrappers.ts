@@ -1,5 +1,5 @@
 // data/instruments/wrappers/: one record per wrapper; data/instruments/securities/: one record per security (D6).
-// docs/data-schema.md §3.3. Strict at every level: a field the doc does not name is an error, so a typo cannot pass as data.
+// docs/data-schema.md §3.3. Strict at every level: a field the schema does not name is an error, so a typo cannot pass as data.
 import { z } from "zod";
 import { feeBase, securityId, isoDate, productId, valueObject, wrapperId } from "../value.ts";
 

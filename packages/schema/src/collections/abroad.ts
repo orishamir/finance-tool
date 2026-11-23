@@ -1,5 +1,5 @@
 // data/abroad/<guide id>.json: how the same kind of product works in other countries, the note at the end of a guide's "שווה לדעת"
-// (product D114). docs/data-schema.md §3.16. Strict: a field the doc does not name is an error.
+// (product D114). docs/data-schema.md §3.16. Strict: a field the schema does not name is an error.
 import { z } from "zod";
 import { isoDate, productId, valueObject } from "../value.ts";
 

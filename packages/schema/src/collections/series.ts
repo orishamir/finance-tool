@@ -1,5 +1,5 @@
 // data/series/<id>.json: sourced time series. docs/data-schema.md §3.8.
-// Strict: a field the doc does not name is an error.
+// Strict: a field the schema does not name is an error.
 import { z } from "zod";
 import { isoDate, unit, valueObject } from "../value.ts";
 

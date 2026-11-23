@@ -465,7 +465,7 @@ function rankOf(s: ExtractedSource, host: string): number {
 }
 
 const KEY_ORDER = ["url", "title", "title_he", "publisher", "publisher_he", "kind", "strength", "locator", "locator_he", "page", "quote", "checked", "qualifier", "note"];
-/** The keys in the order of docs/data-schema.md 3.1, so the JSON reads the same in every record. */
+/** The keys in the order `ruleSource` declares them (packages/schema/src/collections/rules.ts), so the JSON reads the same in every record. */
 function orderKeys(e: ExtractedSource): ExtractedSource {
   const src = e as unknown as Record<string, unknown>;
   return Object.fromEntries(KEY_ORDER.filter((k) => src[k] !== undefined).map((k) => [k, src[k]])) as unknown as ExtractedSource;

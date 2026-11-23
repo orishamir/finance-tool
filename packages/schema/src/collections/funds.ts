@@ -1,5 +1,5 @@
 // data/funds/: hand-collected fund details. docs/data-schema.md §3.5.
-// Strict: a field the doc does not name is an error. Every fee entry is a value object or null.
+// Strict: a field the schema does not name is an error. Every fee entry is a value object or null.
 import { z } from "zod";
 import { isoDate, source, valueObject } from "../value.ts";
 
@@ -70,7 +70,7 @@ export const fundRecord = z.strictObject({
   }),
   dimensions: z.record(z.string(), z.string().regex(/^(covered|blocked)(:[A-Z0-9-]+)?$/)),
   prospectus: z.strictObject({ url: z.string().min(1), date: z.string().nullable() }),
-  // Israeli funds only (Maya export, data-schema §3.5 paragraph under the example).
+  // Israeli funds only (Maya export, data-schema §3.5, "Israeli funds").
   exposure_code: z.string().nullable().optional(),
   distribution_fee_type: z.string().nullable().optional(),
   creation_redemption_fee_category: z.string().nullable().optional(),

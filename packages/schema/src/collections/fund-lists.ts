@@ -1,5 +1,5 @@
 // data/fund-lists/: the Maya export of Israeli mutual funds and TASE's list of foreign funds traded on TASE.
-// docs/data-schema.md §3.14. Strict: a field the doc does not name is an error. Text is stored as the list prints it.
+// docs/data-schema.md §3.14. Strict: a field the schema does not name is an error. Text is stored as the list prints it.
 import { z } from "zod";
 import { isoDate, source, valueObject } from "../value.ts";
 import { seriesTerms } from "./series.ts";

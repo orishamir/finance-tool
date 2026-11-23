@@ -1,5 +1,5 @@
 // data/averages/: the fees a house actually charged on average, as an official publication reports them. docs/data-schema.md §3.9.
-// One file per house per snapshot: averages/tase-<provider-id>@<date>.json. Strict: a field the doc does not name is an error.
+// One file per house per snapshot: averages/tase-<provider-id>@<date>.json. Strict: a field the schema does not name is an error.
 import { z } from "zod";
 import { isoDate, valueObject } from "../value.ts";
 
