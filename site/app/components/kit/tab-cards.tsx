@@ -87,16 +87,18 @@ export function TabCards({ tabs, current, onChange, ariaLabel, idBase, openWord,
  * `end`: a control at the end of the small line's row (a chart card's switch between periods), which wraps under it where the row is short.
  * `sub`: the lines under the headline, at the reading width; with them the headline wraps evenly, and a control in `end` stands after them
  * on a phone, so the card reads its words first, and at the end of the small line's row from 768 px. No `children`: the panel has no
- * conclusion to head it, and its body says why under its own heading (an `EmptyState` in its place).
+ * conclusion to head it, and its body says why under its own heading (an `EmptyState` in its place). `wideSub`: the lines under the
+ * headline take the panel's whole width, so a sentence the founder wants on one line keeps to one where the width allows (the holding
+ * chart's, 2026-11-23).
  */
-export function PanelHead({ kicker, end, sub, children }: { kicker: ReactNode; end?: ReactNode; sub?: ReactNode; /** The conclusion. */ children?: ReactNode }) {
+export function PanelHead({ kicker, end, sub, wideSub, children }: { kicker: ReactNode; end?: ReactNode; sub?: ReactNode; wideSub?: boolean; /** The conclusion. */ children?: ReactNode }) {
   if (sub !== undefined)
     return (
       <div className="grid grid-cols-[minmax(0,1fr)] gap-y-1 [grid-template-areas:'kicker'_'head'_'sub'_'end'] md:grid-cols-[minmax(0,1fr)_auto] md:gap-x-3 md:[grid-template-areas:'kicker_end'_'head_head'_'sub_sub']">
         <p className="self-center text-sm text-primary [grid-area:kicker]">{kicker}</p>
         {end && <div className="mt-3 [grid-area:end] md:mt-0 md:self-center">{end}</div>}
         {children != null && <h3 className="text-xl font-semibold leading-snug text-balance [grid-area:head]">{children}</h3>}
-        <div className="mt-1 max-w-measure text-pretty [grid-area:sub]">{sub}</div>
+        <div className={cx("mt-1 text-pretty [grid-area:sub]", !wideSub && "max-w-measure")}>{sub}</div>
       </div>
     );
   return (

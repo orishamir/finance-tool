@@ -2431,8 +2431,8 @@ export const feeDeal = {
       joins: { m: " מצטרף לסכומים הקבועים. ", f: " מצטרפת לסכומים הקבועים. ", mp: " מצטרפים לסכומים הקבועים. ", fp: " מצטרפות לסכומים הקבועים. " } as Record<string, string>,
       /** A fee offset against an action's fee: the chart shows a year without that action. */
       offset: { lead: "הסכום הזה מתקזז מול ", month: " של אותו חודש, ולכן הגרף מראה שנה בלי ", end: "." },
-      x: "הסכום שמוחזק (₪) · כל הגרף: שנה שלמה, באחוזים ממה שמוחזק",
-      xSaved: "הסכום שנצבר (₪) · כל הגרף: שנה שלמה, באחוזים ממה שנצבר",
+      x: "הסכום שמוחזק (₪)",
+      xSaved: "הסכום שנצבר (₪)",
       /** The axis's name on a phone. */
       xShort: "הסכום שמוחזק (₪)",
       xShortSaved: "הסכום שנצבר (₪)",

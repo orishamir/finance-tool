@@ -767,7 +767,7 @@ function HeldPanel({ reading, saved, left }: { reading: Reading; saved: boolean;
   const periods = views.map((v) => ("chart" in v ? v.chart.periods : "one" in v ? v.one.periods : v.undrawn.periods)[0]!);
   return (
     <Card className="flex flex-col gap-4">
-      <PanelHead kicker={saved ? w.held.kickerSaved : w.held.kicker} sub={"chart" in view ? <HeldSub view={view.chart} saved={saved} /> : null} end={views.length > 1 ? <PeriodChoice periods={periods} reading={reading} value={k} onChange={setK} /> : undefined}>
+      <PanelHead wideSub kicker={saved ? w.held.kickerSaved : w.held.kicker} sub={"chart" in view ? <HeldSub view={view.chart} saved={saved} /> : null} end={views.length > 1 ? <PeriodChoice periods={periods} reading={reading} value={k} onChange={setK} /> : undefined}>
         {"chart" in view ? <HeldHeadline view={view.chart} later={k > 0} from={periods[k]!} /> : "one" in view ? <OneHeadline one={view.one} noun="" held /> : saved ? w.held.kickerSaved : w.held.kicker}
       </PanelHead>
       {"chart" in view ? (

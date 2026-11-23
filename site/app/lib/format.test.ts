@@ -30,15 +30,26 @@ describe("parseNumber (audit A6)", () => {
   ];
   for (const [text, want] of ok) it(`"${text}" is ${want}`, () => expect(parseNumber(text)).toBe(want));
   // a dollar, euro or pound sign is no part of a number the site reads: only a box in that currency takes it (figure-field.tsx)
-  const bad = ["", " ", "abc", "1e5", "2,5,5", "1,2345", "--3", "5-", "1.2.3", ",", "₪", "12a", "1,234,5", "7 $", "€5", "£3"];
+  const bad = ["", " ", "abc", "1e5", "2,5,5", "--3", "5-", "1.2.3", ",", "₪", "12a", "1,234,5", "7 $", "€5", "£3"];
   for (const text of bad) it(`"${text}" is not a number`, () => expect(parseNumber(text)).toBeNaN());
   it("reads a comma in an amount as thousands only in correct groups, and as a decimal point after a lone zero", () => {
     expect(parseNumber("0,125")).toBe(0.125);
     expect(parseNumber(",125")).toBe(0.125);
     expect(parseNumber("12,500")).toBe(12500);
     expect(parseNumber("1,000")).toBe(1000);
-    expect(parseNumber("1234,567")).toBeNaN();
     expect(parseNumber("0,125,000")).toBeNaN();
+  });
+  it("drops an amount's thousands separators typed in the wrong places, three digits or more after each, and reads nothing else into them", () => {
+    expect(parseNumber("1000,000")).toBe(1000000);
+    expect(parseNumber("1,0000")).toBe(10000);
+    expect(parseNumber("1234,567")).toBe(1234567);
+    expect(parseNumber("1,2345")).toBe(12345);
+    expect(parseNumber("10,0000,000")).toBe(100000000);
+    expect(parseNumber("1,0000", "rate")).toBe(1);
+    expect(parseNumber("1,0000,000", "rate")).toBe(10000000);
+    expect(parseNumber("10,00,000")).toBeNaN();
+    expect(parseNumber("1,000,00")).toBeNaN();
+    expect(parseNumber("01,0000")).toBeNaN();
   });
   it("reads a single comma in a rate as a decimal point, whatever follows it", () => {
     expect(parseNumber("0,125", "rate")).toBe(0.125);
