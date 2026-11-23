@@ -7,7 +7,7 @@ import { InputsProvider } from "./lib/inputs";
 import NotFound from "./routes/not-found";
 import { PageShell } from "./components/shell";
 import { Button } from "./components/kit";
-import { pagePreview, site, system } from "./copy";
+import { site, system } from "./copy";
 import { pageMeta, type MetaPlace } from "./lib/page-meta";
 import { useIsoLayoutEffect } from "./lib/hooks";
 import { hashId } from "./lib/address-hash";
@@ -24,13 +24,8 @@ export async function loader() {
   return rootData();
 }
 
-/**
- * The head of a page no route answers for (the fallback the build writes as 404.html): the site's own card. Each route's `meta` replaces
- * it. An address a route matches but finds nothing at (`/guide/nonexistent`, `/companies/999999999`) ends at this route's boundary, whose
- * head is this: the not-found page's title, as its heading says.
- */
-export function meta({ location, error }: MetaPlace & { error?: unknown }) {
-  if (isNotFound(error)) return pageMeta({ title: system.notFound.title, description: pagePreview.notFound, location });
+/** The head of a page no route answers for (the fallback the build writes as 404.html): the site's own card. Each route's `meta` replaces it. */
+export function meta({ location }: MetaPlace) {
   return pageMeta({ title: null, description: site.tagline, location });
 }
 
@@ -89,32 +84,27 @@ function RestoreScroll() {
     window.addEventListener("pagehide", save);
     return () => window.removeEventListener("pagehide", save);
   }, []);
-  // the entry the window's scroll belongs to, set at the commit that shows it: a listener tied to its own entry and removed with the
-  // passive effects would still hear the scroll the next page's restoring makes, and keep that page's place as its own (a page left at
-  // its top then came back by Forward at the place of the page Back had restored)
-  const current = useRef("");
   useEffect(() => {
+    const key = entryKey(location);
     const on = () => {
-      if (current.current) positions[current.current] = window.scrollY;
+      positions[key] = window.scrollY;
     };
     window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
-  }, []);
-  useEffect(() => persist, [location.key]);
+    return () => {
+      window.removeEventListener("scroll", on);
+      persist();
+    };
+  }, [location.key]);
   useIsoLayoutEffect(() => {
-    current.current = entryKey(location);
     const samePage = lastPath.current === location.pathname;
     lastPath.current = location.pathname;
     if (type !== "POP" && samePage && !location.hash) return;
     const html = document.documentElement;
     const target = type === "POP" ? positions[entryKey(location)] : undefined;
-    // with scrollRestoration manual the browser leaves the window where the page before stood, so an entry with no position kept
-    // (never scrolled) or a kept 0 is brought to its top here, Back and Forward included, at once rather than by the page's smooth
-    // scrolling, which would show the old page's place sliding away
     if (target === undefined || target <= 0) {
-      const el = target === undefined && location.hash ? document.getElementById(hashId(location.hash)) : null;
+      const el = location.hash ? document.getElementById(hashId(location.hash)) : null;
       if (el) el.scrollIntoView();
-      else window.scrollTo({ top: 0, behavior: "instant" });
+      else if (type !== "POP") window.scrollTo(0, 0);
       return;
     }
     html.style.scrollBehavior = "auto";
@@ -180,14 +170,9 @@ function isMissingData(error: unknown): boolean {
   return /No result found for routeId|Unable to decode turbo-stream/.test(error.message);
 }
 
-/** An error that means the address names nothing: a loader's 404, or a missing `.data` file. */
-function isNotFound(error: unknown): boolean {
-  return (isRouteErrorResponse(error) && error.status === 404) || isMissingData(error);
-}
-
 export function ErrorBoundary() {
   const error = useRouteError();
-  if (isNotFound(error)) return <NotFound />;
+  if ((isRouteErrorResponse(error) && error.status === 404) || isMissingData(error)) return <NotFound />;
   return (
     <PageShell current="other" data={{ rules: {}, terms: {}, dimensions: {}, today: "" }}>
       <div className="mx-auto w-full max-w-measure flex flex-col gap-4 pt-10">

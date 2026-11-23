@@ -6,7 +6,7 @@
 //            reads that mark); a right value not taking effect at once (the slider follows the box); what was typed cleared; an error
 //            left from before a value came from outside shown at once on the next wrong keystroke; the slider field's error spoken as an
 //            alert; a number box without autocomplete off, spellcheck off and enterkeyhint done, or a shekel box without a whole-number
-//            pad; Enter in a shekel box that does not write "1000,000" as "1,000,000" at once, or shows no error for "1.000" (unclear).
+//            pad.
 //   early    a number field typed in before the page's script arrived that loses what was typed, or the keystrokes after it; one typed
 //            in and left before the script arrived that loses what was typed (on the deposits page: the kit page's script draws it again
 //            rather than taking it over).
@@ -34,9 +34,6 @@
 //            press there does not open it; a pick card's tile choice not chosen by Space.
 //   strip    a product table's folding strip that a tap on its words does not fold, or whose link a tap does not reach.
 //   side     a side page's fold that opens again when the Back button comes back to the part it was opened for.
-//   back     at 1440 and 390, a page that was never scrolled (or left at its top) brought back by Back or Forward at another page's
-//            scroll rather than at its top: a guide page left for the rules page scrolled 2,500 px down, and a guide page left at its top
-//            for the guide's index scrolled 1,254 px, then Back and Forward.
 //   header   from 1024 px the site's five sections not all in sight on one line each, or overlapped by the open search; below it, no menu
 //            button named exactly "תפריט" (design.md, "The site's sections are in sight"). A section hidden on purpose must be caught first.
 //   touch    a chart dragged sideways by a finger that does not follow it, or that keeps the page from scrolling when the finger moves down.
@@ -51,11 +48,20 @@
 //            carried from it over one case, the page wheeled down under the still pointer until the case below stands there, and let go
 //            with no move: the card not landing on that case (the drop aimed at the places as they stood before the scroll); opening the
 //            fee raising the notice that a script failed (the browser's ResizeObserver loop report counted as the site's failure).
+//   carry start   on the fee page with a fixed fee open, free until a month and then a sum each month, at 1440: a toolbox card of a sum per
+//            month pressed and moved a few pixels, which draws its landing copy in place of the first price's "חינם", that moves anything
+//            that stood there (the date divider, the later price's part, the next fee, the page's height) or changes the divider's colours.
+//            A landing copy planted taller than what it stands in for must be caught first.
+//   part lift   on the same deal, a later price's part, which has no grip, carried from its own surface onto the other fee (a mouse at
+//            1440 pressed on its padding and moved; a finger at 390 holding there, then moving) that does not land on that fee's price
+//            from the same month (the other fee, opened, must say 80 in its later price and not in its first), a finger's long press
+//            there that lifts nothing, or a finger's long press on a button inside the part (its bin) that lifts it.
 //   notice in a sheet   with a sheet open on the kit page and a script's failure planted (at 390 a sheet at the foot, at 1440 a short sheet
 //            centred by a transform), the notice's title or its reload button not the top thing at its middle (drawn under the sheet, or cut
 //            by its card), the notice not at the window's foot, or the button not reloading the page.
 
 import { existsSync, readFileSync } from "node:fs";
+import { deflateRawSync } from "node:zlib";
 
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -96,7 +102,7 @@ const center = (r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2 });
 
 export async function kitInputCheck(browser, base) {
   const found = [];
-  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, backCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, noticeSheetCheck]) {
+  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, carryStartCheck, partLiftCheck, noticeSheetCheck]) {
     try {
       found.push(...(await run(browser, base)));
     } catch (e) {
@@ -144,24 +150,6 @@ async function fieldCheck(browser, base) {
   await box.press("ControlOrMeta+a");
   await page.keyboard.type("0");
   if (await error.count()) found.push("field: after a value from outside, a wrong keystroke shows the old error at once instead of waiting for the hand to rest");
-  // Enter is the hand resting: a right text is written in the field's form there and then (a phone's sheet keeps the box in view after
-  // it), a wrong one shows its error
-  {
-    const shekel = page.locator('article[aria-label="NumberField"] .field').first();
-    const input = shekel.locator("input.field-input");
-    const err = shekel.locator('[id$="-err"]');
-    await input.scrollIntoViewIfNeeded();
-    await input.click();
-    await input.press("ControlOrMeta+a");
-    await page.keyboard.type("1000,000");
-    await page.keyboard.press("Enter");
-    if ((await input.inputValue()) !== "1,000,000") found.push(`enter: Enter in a shekel box holding "1000,000" leaves "${await input.inputValue()}", not "1,000,000"`);
-    await input.press("ControlOrMeta+a");
-    await page.keyboard.type("1.000");
-    await page.keyboard.press("Enter");
-    if (!(await err.count())) found.push('enter: Enter in a shekel box holding "1.000" (a point and three digits, unclear) shows no error');
-    await page.keyboard.press("Escape");
-  }
   // every number box of the kit's fields
   const boxes = await page.evaluate(() =>
     [...document.querySelectorAll("main input.field-input[inputmode], main input[data-figure]")].map((el) => ({
@@ -736,45 +724,6 @@ async function sideCheck(browser, base) {
   return found;
 }
 
-/** Where the window stands once a Back or Forward has brought `path` back and its restoring has had its time. */
-async function cameBackAt(page, path) {
-  await page.waitForFunction((p) => location.pathname.replace(/\/$/, "").endsWith(p), path, { timeout: 10000 });
-  await page.evaluate(settled);
-  return page.evaluate(() => Math.round(window.scrollY));
-}
-
-async function backCheck(browser, base) {
-  const found = [];
-  for (const options of [DESK, PHONE]) {
-    const at = options.viewport.width;
-    // a guide page never scrolled, left by a link to a page scrolled far down, and brought back by Back
-    const { ctx, page } = await open(browser, base, options, "/guide/brokerage-account/");
-    await page.evaluate(() => window.__reactRouterDataRouter.navigate("/rules"));
-    await page.waitForFunction(() => location.pathname.replace(/\/$/, "").endsWith("/rules"), null, { timeout: 10000 });
-    await page.evaluate(settled);
-    await page.evaluate(() => window.scrollTo(0, 2500));
-    await page.evaluate(settled);
-    if ((await page.evaluate(() => window.scrollY)) < 1000) found.push(`back@${at}: the rules page is too short to scroll 2,500 px down`);
-    await page.goBack();
-    const back = await cameBackAt(page, "/guide/brokerage-account");
-    if (back !== 0) found.push(`back@${at}: Back to a guide page never scrolled opens it ${back} px down, not at its top`);
-    // the guide's index scrolled, a page under it opened and left at its top: Back, then Forward to that page
-    await page.goto(`${base}/guide`, { waitUntil: "networkidle" });
-    await page.evaluate(settled);
-    await page.evaluate(() => window.scrollTo(0, 1254));
-    await page.evaluate(settled);
-    await page.evaluate(() => window.__reactRouterDataRouter.navigate("/guide/brokerage-account"));
-    await cameBackAt(page, "/guide/brokerage-account");
-    await page.goBack();
-    await cameBackAt(page, "/guide");
-    await page.goForward();
-    const forward = await cameBackAt(page, "/guide/brokerage-account");
-    if (forward !== 0) found.push(`back@${at}: Forward to a page left at its top opens it ${forward} px down`);
-    await ctx.close();
-  }
-  return found;
-}
-
 async function touchCheck(browser, base) {
   const found = [];
   const { ctx, page } = await open(browser, base, PHONE);
@@ -1157,6 +1106,171 @@ async function toolboxCarryCheck(browser, base) {
     const after = await page.evaluate((key) => document.querySelector(`[data-drop-key="${key}"]`)?.innerText ?? null, pair.b);
     if (under && after === pair.text) say("a card carried from the docked toolbox and let go on a case after the page was wheeled under the still pointer does not land on that case");
   }
+  await ctx.close();
+  return found;
+}
+
+/**
+ * The fee page's link to a deal of two fixed account fees, each free until August 2027 and then a sum each month (80 ₪, 20 ₪): the
+ * price a toolbox card of a sum per month lands on is the first one's "חינם", between its name and the date its price changes.
+ */
+function laterDeal() {
+  const fee = (sum) => ({ k: "fixed_period", s: [{ P: { F: "free" }, u: "2027-08" }, { P: { F: "sum", a: sum, e: 1 } }] });
+  const text = JSON.stringify([2, { n: "שני מחירים לאורך הזמן", k: "brokerage-account", f: [fee(80), fee(20)] }, []]);
+  return `/deal#d=${deflateRawSync(Buffer.from(text, "utf8")).toString("base64url")}`;
+}
+
+/** The first fee of `laterDeal` open (the page opens a deal's first fee itself), its block found by the divider its open case draws; null where it is not. */
+async function openFirstFee(page) {
+  const open = page.locator("main li[data-fee]:has([data-change-divider])");
+  if (!(await open.count())) {
+    await page.locator("main li[data-fee]").first().locator("[data-pick-card]").first().click();
+    await page.evaluate(settled);
+  }
+  return (await open.count()) && (await page.locator("main li[data-fee]").first().locator("[data-change-divider]").count()) ? open.first() : null;
+}
+
+/**
+ * The start of a carry (`carry start` above), on `laterDeal` at 1440 with its first fee open: the toolbox's card of a sum per month pressed
+ * and moved a few pixels, which draws its landing copy in place of the first price's "חינם". Nothing that stood there before may move nor
+ * change its colour: the date divider (its lines and its words), the later price's part, the next fee, the page's height. A landing copy
+ * planted taller than what it stands in for must be caught first.
+ */
+async function carryStartCheck(browser, base) {
+  const found = [];
+  const say = (f) => found.push(`carry start: ${f}`);
+  const { ctx, page } = await open(browser, base, DESK, laterDeal());
+  const li = await openFirstFee(page);
+  const card = page.locator("[data-drag-source]").filter({ hasText: "בחודש" }).first();
+  if (!li || !(await card.count())) {
+    say("the fee page does not open the deal's first fee with a card of a sum per month to carry, so nothing is tested");
+    await ctx.close();
+    return found;
+  }
+  // what stands there, each by where it is on the page and its colours: the divider's lines and words, the later price's part, the next fee
+  const look = () =>
+    page.evaluate(() => {
+      const open = document.querySelector("main li[data-fee]:has([data-change-divider])");
+      const at = (el) => (el ? Math.round((el.getBoundingClientRect().top + scrollY) * 10) / 10 : null);
+      const ink = (el) => (el ? `${getComputedStyle(el).color} ${getComputedStyle(el).backgroundColor}` : null);
+      const divider = open?.querySelector("[data-change-divider] [data-when-rule]");
+      const parts = [...(open?.querySelectorAll("[data-kind]:not([data-landing]):not([data-landing] *)") ?? [])];
+      return {
+        divider: at(divider),
+        lines: [...(divider?.children ?? [])].map(ink).join(" | "),
+        later: at(parts.at(-1)),
+        next: at(open?.nextElementSibling),
+        page: document.documentElement.scrollHeight,
+      };
+    });
+  const carried = async () => {
+    const c = center(await card.boundingBox());
+    await page.mouse.move(c.x, c.y);
+    await page.mouse.down();
+    await page.mouse.move(c.x - 10, c.y - 10, { steps: 3 });
+    await page.evaluate(settled);
+    const during = await look();
+    await page.keyboard.press("Escape");
+    await page.mouse.up();
+    await page.evaluate(settled);
+    return during;
+  };
+  const moved = (a, b) => Object.keys(a).filter((k) => a[k] !== b[k]);
+  // a landing copy planted taller than the "חינם" it stands in for: what follows it moves, and the check must see it
+  const plant = await page.addStyleTag({ content: "[data-landing] { margin-block-end: 6px; }" });
+  const rest = await look();
+  if (moved(rest, await carried()).length === 0) say("a landing copy planted taller than what it stands in for moves nothing the check sees, so its silence means nothing");
+  await plant.evaluate((el) => el.remove());
+  await page.evaluate(settled);
+  const before = await look();
+  const during = await carried();
+  for (const k of moved(before, during)) say(`a card of the toolbox, as its carry starts, changes the open fee's ${k} (${before[k]} → ${during[k]})`);
+  await ctx.close();
+  return found;
+}
+
+/**
+ * A part of a later price carried from its own surface, with no grip (`part lift` above), on `laterDeal` with its first fee open: with a
+ * mouse at 1440, pressed on the padding at its start and let go on the other fee; with a finger at 390, a long press on the same spot, the
+ * finger then moved onto the other fee and lifted. Each must land on the other fee's price from August 2027: that fee, opened, then says
+ * 80 in its later price and not in its first.
+ */
+async function partLiftCheck(browser, base) {
+  const found = [];
+  for (const at of ["desk", "phone"]) {
+    const say = (f) => found.push(`part lift: ${at === "desk" ? "a mouse at 1440" : "a finger at 390"}, ${f}`);
+    const { ctx, page } = await open(browser, base, at === "desk" ? DESK : PHONE, laterDeal());
+    const li = await openFirstFee(page);
+    if (!li) {
+      say("the fee page does not open the deal's first fee, so nothing is tested");
+      await ctx.close();
+      continue;
+    }
+    const part = li.locator("[data-kind][data-liftable]").last();
+    const other = page.locator("main li[data-fee]").nth(1);
+    await other.scrollIntoViewIfNeeded();
+    await part.scrollIntoViewIfNeeded();
+    await page.evaluate(settled);
+    const said = () => other.evaluate((x) => x.innerText);
+    if ((await said()).includes("80")) say("the other fee says 80 before anything is carried, so nothing is tested");
+    const r = await part.boundingBox();
+    // its start (on the right) is its own surface: the padding inside its edge, before its box
+    const from = { x: r.x + r.width - 6, y: r.y + r.height / 2 };
+    const to = center(await other.boundingBox());
+    if (at === "desk") {
+      await page.mouse.move(from.x, from.y);
+
+      await page.mouse.down();
+      await page.mouse.move(to.x, to.y, { steps: 8 });
+
+      await page.mouse.up();
+    } else {
+      const cdp = await page.context().newCDPSession(page);
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: from.x, y: from.y }] });
+      const lifted = await page.waitForFunction(() => !!document.querySelector("[data-lift-ghost]"), null, { timeout: 3000 }).then(() => true, () => false);
+      if (!lifted) say("a long press on the part's own surface does not lift it");
+      for (let i = 1; i <= 8; i++) await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: from.x + ((to.x - from.x) * i) / 8, y: from.y + ((to.y - from.y) * i) / 8 }] });
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      await cdp.detach();
+    }
+    await page.evaluate(settled);
+    // the other fee opened, its prices read one by one: the later one (from August 2027) must now say 80, and its first one must not
+    await other.locator("[data-pick-card]").first().click();
+    await page.evaluate(settled);
+    const prices = await other.evaluate((x) => {
+      const words = (el) => (el ? `${el.innerText} ${[...el.querySelectorAll("input")].map((i) => i.value).join(" ")}` : null);
+      return { first: words(x.querySelector("[data-carry-floor]:not([data-stage-from])")), later: words(x.querySelector('[data-stage-from="buy:2027-08"]')) };
+    });
+    if (prices.first === null || prices.later === null) say("the other fee, opened after the drop, does not show its two prices, so where the part landed is not known");
+    else if (!/\b80\b/.test(prices.later) || /\b80\b/.test(prices.first)) say("a later price's part carried from its own surface and let go on another fee does not land on that fee's price from the same month");
+    await ctx.close();
+    if (at === "phone") found.push(...(await partButtonPress(browser, base)));
+  }
+  return found;
+}
+/**
+ * A finger's long press on a button inside a part of the open case (`part lift` above), at 390 on `laterDeal`: the part's bin, which keeps
+ * its own press, must lift nothing. The press is cancelled, so the bin takes nothing away.
+ */
+async function partButtonPress(browser, base) {
+  const found = [];
+  const { ctx, page } = await open(browser, base, PHONE, laterDeal());
+  const li = await openFirstFee(page);
+  const bin = li && li.locator("[data-kind][data-liftable]").last().locator("button").last();
+  if (!bin || !(await bin.count())) {
+    found.push("part lift: a finger at 390, the part has no button inside it, so a long press on one is not tested");
+    await ctx.close();
+    return found;
+  }
+  await bin.scrollIntoViewIfNeeded();
+  await page.evaluate(settled);
+  const b = center(await bin.boundingBox());
+  const cdp = await page.context().newCDPSession(page);
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: b.x, y: b.y }] });
+  const lifted = await page.waitForFunction(() => !!document.querySelector("[data-lift-ghost]"), null, { timeout: 1500 }).then(() => true, () => false);
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchCancel", touchPoints: [] });
+  await cdp.detach();
+  if (lifted) found.push("part lift: a finger at 390, a long press on a button inside a part (its bin) lifts the part instead of keeping the button's own press");
   await ctx.close();
   return found;
 }

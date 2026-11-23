@@ -1,6 +1,7 @@
 // The toolbox for the case open in place (method §10.6): the parts the product's fee is offered that some price of the case can hold, in
 // the toolbox's groups and order, each with its words, its box and the places it can go (places.ts), and the things the fee may change
-// by. A card only adds: a charge goes on a price that charges nothing, never in place of another charge. The same toolbox for several of a
+// by. A card adds, but for "חינם": a charge goes on a price that charges nothing, never in place of another charge, and "חינם" goes on a
+// price that charges something, in place of its charge and its parts. The same toolbox for several of a
 // fee's cases at once (`casesToolbox`), which adds only what then stands in every one of them alike.
 import { feeDeal as copy } from "../../copy";
 import { hasCases, pricedOf, type Case, type CasesFee, type Fee, type Price, type Priced } from "./model";
@@ -9,6 +10,7 @@ import { PARTS, besideThePrice, isPending, type PartId, type PartKind, type Tool
 import { holdsPart, partAcross, standsBeside } from "./edits/cells";
 import { askAcross, type CasesAsk } from "./every-case";
 import { OFFERED, PENDING, type PartWords, type ToolBox } from "./part-words";
+import { formCharged } from "./offers/capabilities";
 import { type DealRead } from "./deal-read";
 import { BY_MAX, isOwnKind, isRangeKind, pickKind, type ByKind } from "./offers/conditions";
 import { firstCase, thingName, whenWords, type WhenWords } from "./case-words";
@@ -84,12 +86,13 @@ export interface Toolbox {
 
 /**
  * The order of each toolbox group's cards: the parts the registry puts in the group (`PARTS[id].tool`). The compiler checks that no other
- * part stands in a group, and offers/parts.test.ts that every one of them does. A price that charges nothing has no card: it reads "חינם",
- * and the charges are the cards that add to it. A sale priced apart stands with the fee's things, as what the price changes by. A flat
- * price for a small action has no card: it is the price of the first size of the action (§10.6, a size of the action's first range).
+ * part stands in a group, and offers/parts.test.ts that every one of them does. The charges add to a price that charges nothing; "חינם",
+ * last of them, is the one card that replaces: it makes a price that charges something free. A sale priced apart stands with the fee's
+ * things, as what the price changes by. A flat price for a small action has no card: it is the price of the first size of the action
+ * (§10.6, a size of the action's first range).
  */
 export const TOOL_ORDER = {
-  charge: ["share", "perUnit", "perAction", "held", "sum", "third"],
+  charge: ["share", "perUnit", "perAction", "held", "sum", "third", "free"],
   off: ["discount", "offset", "refund"],
   bound: ["min", "max", "cap", "maxPerSecurity"],
   by: ["sale"],
@@ -125,11 +128,23 @@ function partCard(g: (typeof TOOLBOX)[number], id: ToolPartId, fee: Fee, x: Pric
     kind: g.kind,
     ...OFFERED[id]({ kind: fee.kind, p }),
     used: state === "used",
-    ...(state === "off" ? { off: copy.cases.charging } : {}),
+    ...(state === "off" ? { off: offWhy(id) } : {}),
     ...(g.group === "by" ? { row: "what" as const } : {}),
     places: c.places,
   };
 }
+
+/**
+ * Why a card no price of the case can take is off: a charge, where every price charges in another way; "חינם", a form that charges nothing,
+ * where every price is free already.
+ */
+const offWhy = (id: ToolPartId): string => (frees(id) ? copy.cases.allFree : copy.cases.charging);
+
+/** Whether part `id` is "חינם", the form that charges nothing: the one card that replaces a price's charge and its parts. */
+const frees = (id: PartId): boolean => {
+  const form = PARTS[id].form;
+  return form !== undefined && !formCharged(form);
+};
 
 /** Each line's words on its card, and while it is held. */
 const LINE_WORDS: Readonly<Record<LinePartId, { words: string; held: string }>> = { until: { words: copy.cases.dateLine, held: copy.cases.dateHeld } };
@@ -215,13 +230,16 @@ type CasesCard = { k: "used" } | { k: "add"; cases: string[] } | { k: "off"; why
 const cardIn = (box: Toolbox | undefined, part: string): ToolPart | undefined => box?.groups.flatMap((g) => g.parts).find((p) => p.id === part);
 
 /**
- * Part `part` for cases `cases` of `fee`, their toolboxes `boxes`: had where every one of them has it; else added only where it then
+ * Part `part` for cases `cases` of `fee`, their toolboxes `boxes`: "חינם", which replaces a price's charge, set in each case on its own;
+ * any other, had where every one of them has it; else added only where it then
  * stands in every one alike, so it reads once for them all (`everyCaseRows`): a part a price keeps beside its main figure
  * (`besideThePrice`), which every case's price can hold, none has in its row yet, and that all ask for alike (`askAcross`); a note, which
  * stands beside a case's other notes, goes into those that lack that very note.
  */
 function casesCard(fee: CasesFee, boxes: ReadonlyMap<string, Toolbox>, cases: readonly string[], part: PartId): CasesCard {
   const listed = cases.map((id) => cardIn(boxes.get(id), part));
+  // a case whose first price is free may have a later one that charges: "חינם" is never had across cases
+  if (frees(part)) return { k: "off", why: "perCase" };
   const has = cases.map((id, j) => holdsPart(fee.cases.find((c) => c.id === id)!, part) || !!listed[j]?.used);
   if (has.every(Boolean)) return { k: "used" };
   if (!besideThePrice(part)) return { k: "off", why: "perCase" };

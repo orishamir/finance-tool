@@ -17,7 +17,7 @@ import { dealBreach, LIMITS, takeRefusal, type Limit } from "../../lib/fee-deal/
 import type { AddressDeal } from "../../lib/fee-deal/link";
 import { NAME_MAX, newDeal, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
 import { dealStore, lastOpenId, rememberOpen, reopened, sameDeal, savedIfWorth, savedTwin, savedWith, without, worthSaving } from "../../lib/fee-deal/store";
-import { changeFormKept, deleteStored, formBack, freedCurrency, renameStored, standing, undo, undoDeleteStored, undoWords as feeUndoWords, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
+import { deleteStored, formStep as formStepOf, renameStored, standing, undo, undoDeleteStored, undoWords as feeUndoWords, type KindUndo, type MaybeUndoable, type Undo } from "../../lib/fee-deal/undo";
 import type { PartId } from "../../lib/fee-deal/offers/parts";
 import type { Side } from "../../lib/fee-deal/model";
 import type { FeesData } from "../../lib/fee-page-data";
@@ -188,17 +188,8 @@ export function useDealDocument({ first, saved, today, data, onShown, remember =
     wasSaved.current = deal.id;
     dealStore.update((ds) => savedWith(ds, deal, today));
   };
-  /**
-   * What putting charge `part` on price `at.k` on side `at.side` of a fee (in case `caseId`) does: where a charge added again right after
-   * its bin made the price free, the price put back as it was, with its parts, by the undo (`back`); else the change of form (`r`), in
-   * the currency the freed price had; null where nothing changes.
-   */
-  const formStep = (feeId: string, part: PartId, caseId: string | null, at: { side: Side; k: number }): { back: Undo } | { r: MaybeUndoable } | null => {
-    const kept = undoing && "dealId" in undoing ? undoing : null;
-    if (kept && formBack(kept, deal, feeId, part, caseId ?? undefined, at.k, at.side)) return { back: kept as Undo };
-    const r = changeFormKept(deal, feeId, part, chosen, caseId ?? undefined, at.k, freedCurrency(kept, deal, feeId, caseId ?? undefined, at.k, at.side), at.side);
-    return r ? { r } : null;
-  };
+  /** What putting charge `part` on a price does (`formStep`), with the undo the page keeps now. */
+  const formStep = (feeId: string, part: PartId, caseId: string | null, at: { side: Side; k: number }) => formStepOf(deal, undoing && "dealId" in undoing ? undoing : null, feeId, part, chosen, caseId, at);
   /**
    * A charge put on price `at.k` on side `at.side` of a fee (in case `caseId`): the toolbox's, on a price that charges nothing, or "free"
    * from the bin of the price's charge, which keeps the price as it stood for the undo, whose line stands under the fee's block without

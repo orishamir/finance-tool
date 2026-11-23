@@ -4,7 +4,6 @@
 export async function loader() {
   const { loadRules, loadParameters, loadTerms, loadProducts } = await import("../lib/data.server");
   const { loadExposures } = await import("../lib/instruments.server");
-  const { gershayim } = await import("../lib/format");
   const texts: Record<string, string> = {};
   for (const rule of Object.values(loadRules())) if (rule.text_he) texts[rule.id] = rule.text_he;
   for (const p of loadParameters()) if (p.rationale_he) texts[p.method_id] = p.rationale_he;
@@ -15,6 +14,5 @@ export async function loader() {
     const page = term.wrapperIds.some((id) => wrappers.some((w) => w.id === id)) || term.exposureIds.some((id) => exposures.some((e) => e.id === id));
     if (page && term.explanation) texts[`term:${term.he}`] = term.explanation;
   }
-  // an abbreviation's straight quote as the gershayim, as the pages write the data's text (an answer quotes these words)
-  return Response.json(Object.fromEntries(Object.entries(texts).map(([k, v]) => [k, gershayim(v)])));
+  return Response.json(texts);
 }

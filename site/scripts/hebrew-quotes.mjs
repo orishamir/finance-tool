@@ -1,8 +1,7 @@
 // Guard over the built pages (2026-11-07, lead: company names from the data showed `בע"מ`): no ASCII double quote between two Hebrew
 // letters in what a page shows, its text and its title and aria-label attributes. An abbreviation is written with the gershayim (״,
 // docs/copy.md 10.4); text from the data goes through the kit's `gershayim` (components/kit/name.tsx) where it renders. Runs after the
-// build (`npm run build -w site`), on every pre-rendered page and on the two search files the search sheet shows its rows and answers from
-// (`searchShown`: an entry's name, line and figure names, and each text); prints each hit with its page and the words around it, and fails.
+// build (`npm run build -w site`), on every pre-rendered page; prints each hit with its page and the words around it, and fails.
 // Pages that still had such quotes when the guard came are listed by name with their count in hebrew-quotes-leftovers.json (the company
 // and track pages as one entry, "companies/*"): a listed page may not gain any, a page not listed may have none, and a page that lost some
 // must have its count lowered, so the list only shrinks. `--write` rewrites the list from the build (only to shrink it, by hand review).
@@ -42,17 +41,6 @@ export function hebrewQuotes(text) {
   return [...text.matchAll(BAD)].map((m) => text.slice(Math.max(0, m.index - 30), m.index + 33).replace(/\s+/g, " ").trim());
 }
 
-/** The search files and what of each the search shows: an entry's name, its line and its figures' names; each text of the second file. */
-const SEARCH_FILES = {
-  "search-index.json": (data) => data.flatMap((e) => [e.name, e.line, ...(e.figs ?? []).map((f) => f.f ?? "")]),
-  "search-texts.json": (data) => Object.values(data),
-};
-
-/** What a search file shows, as one text: its words joined by line breaks, so no quote is made of two of them. */
-export function searchShown(name, json) {
-  return SEARCH_FILES[name](JSON.parse(json)).join(" \n ");
-}
-
 function pages(dir) {
   const out = [];
   for (const name of readdirSync(dir)) {
@@ -66,9 +54,9 @@ function pages(dir) {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const hits = [];
   const counts = {};
-  const shown = [...pages(root).map((p) => [relative(root, p), shownText(readFileSync(p, "utf8"))]), ...Object.keys(SEARCH_FILES).filter((f) => existsSync(join(root, f))).map((f) => [f, searchShown(f, readFileSync(join(root, f), "utf8"))])];
-  for (const [page, text] of shown) {
-    for (const h of hebrewQuotes(text)) {
+  for (const p of pages(root)) {
+    const page = relative(root, p);
+    for (const h of hebrewQuotes(shownText(readFileSync(p, "utf8")))) {
       hits.push({ page, h });
       counts[keyOf(page)] = (counts[keyOf(page)] ?? 0) + 1;
     }

@@ -33,6 +33,8 @@ import { fixedOrigin, layerOf } from "./carry-layer";
 const MOUSE_SLOP = 4;
 const HOLD_MS = 380;
 const TOUCH_SLOP = 8;
+/** What keeps its own press inside a thing lifted from its own surface (`data-lift-body`), on touch as with a mouse: a control or a link. */
+const TOUCH_OWN = "a, button, [role=button], [role=combobox], [role=slider]";
 /** The band at the screen's top and foot where the page scrolls under a carried thing, and the most it scrolls in a frame. */
 const EDGE = 72;
 const SCROLL = 16;
@@ -409,17 +411,47 @@ function freeze(item: string, from: HTMLElement, scroller: Scroller): { zones: M
  * Holds every block marked `data-carry-hold` at the height it has now, until the returned function lets go: what a place shows while the
  * thing is over it draws inside, a shorter drawing leaving room at the block's foot and a taller one drawn over what follows it (app.css
  * draws the block after it while something is carried), so nothing after the block moves and the page keeps its height and its scrollbar.
- * A case grid holds its rows' tracks itself, each by what stands on it (case-table.tsx, `useHeldTracks`), since a preview may add or take
- * away a line under a row.
+ * The floors are held too (`holdFloors`). Called before the carry is drawn, so the heights held are those at rest. A case grid holds its
+ * rows' tracks itself, each by what stands on it (case-table.tsx, `useHeldTracks`), since a preview may add or take away a line under a row.
  */
 function holdBlocks(): () => void {
   const els = [...document.querySelectorAll<HTMLElement>("[data-carry-hold]")];
   // read every size before setting any, to the fraction of a pixel (a rounded one would move the page by it)
   const heights = els.map((el) => getComputedStyle(el).height);
   const was = els.map((el) => el.style.height);
+  const letFloorsGo = holdFloors();
   els.forEach((el, i) => (el.style.height = heights[i]!));
   return () => {
     els.forEach((el, i) => (el.style.height = was[i]!));
+    letFloorsGo();
+  };
+}
+
+/** The floors held now, each block with the height it had before, and how many holds keep them (`holdFloors`). */
+let floors: { blocks: { el: HTMLElement; was: string }[]; holds: number } | null = null;
+
+/**
+ * Keeps every block marked `data-carry-floor` (a price of the open case, where a toolbox card's landing copy stands in for what the card
+ * would take away) at least as tall as it is now, until the returned function lets go, so a shorter landing copy leaves room rather than
+ * pulling up what follows. A card held by a tap holds them as a carry does, before its copies are drawn; while one hold keeps them, another
+ * keeps the heights the first found at rest, and they go back when the last lets go.
+ */
+export function holdFloors(): () => void {
+  if (!floors) {
+    // read every size before setting any, to the fraction of a pixel
+    const blocks = [...document.querySelectorAll<HTMLElement>("[data-carry-floor]")].map((el) => ({ el, was: el.style.minHeight, height: getComputedStyle(el).height }));
+    for (const { el, height } of blocks) el.style.minHeight = height;
+    floors = { blocks, holds: 0 };
+  }
+  floors.holds++;
+  let held = true;
+  return () => {
+    if (!held || !floors) return;
+    held = false;
+    floors.holds--;
+    if (floors.holds > 0) return;
+    for (const { el, was } of floors.blocks) el.style.minHeight = was;
+    floors = null;
   };
 }
 
@@ -453,8 +485,9 @@ export function lift(item: string, from: HTMLElement, x: number, y: number, abou
     from.setAttribute("data-lifted", "");
     play(before);
   } else if (!about.keep) from.setAttribute("data-lifted", "");
-  flushSync(() => carry(item, null, about.name ?? null));
+  // the blocks are held at their height at rest, before the carry draws anything (a toolbox card's landing copies) that could move them
   const release = holdBlocks();
+  flushSync(() => carry(item, null, about.name ?? null));
   const scroller = scrollerOf(from);
   const { zones, lists } = atRest(() => freeze(item, from, scroller));
   // the members of a list that slides by itself are places of their own (a fee's card): they draw no frame, the gap shows where it lands
@@ -578,7 +611,7 @@ export interface GripAction {
 
 /**
  * What lifts a thing (`from`, an element marked `data-liftable`) as `item`, `name` its words: on touch a long press anywhere on it (on
- * what is inside it that lifts itself, that alone); with a mouse, where it is marked `data-lift-body`, a press on its own surface moved a
+ * what is inside it that lifts itself, that alone; where it is marked `data-lift-body`, not on a button, a link or a choice inside it); with a mouse, where it is marked `data-lift-body`, a press on its own surface moved a
  * few pixels (`bodyPress`). `still`: it lifts nothing. A grip calls it on the thing around it; a thing with no grip (a fee's card) on itself.
  */
 export function useLiftFrom(fromOf: () => HTMLElement | null, item: string, name: string | undefined, still = false): void {
@@ -602,6 +635,9 @@ export function useLiftFrom(fromOf: () => HTMLElement | null, item: string, name
         return;
       }
       if (e.pointerType !== "touch" || t.closest("input, select, textarea, [data-grip], [data-span-knob]")) return;
+      // a thing lifted from its own surface: a button inside it (a bin, a choice's chip, a link) keeps its own press; the button stretched over
+      // a card is its surface
+      if (body && t.closest(TOUCH_OWN) && !t.closest("[data-pick-card]")) return;
       const x = e.clientX, y = e.clientY;
       hold = {
         x,
@@ -710,12 +746,6 @@ export function Grip({ item, name, label, actions = [], onRemove, still, place =
     </span>
   );
 }
-
-/**
- * The room a grip takes where it stands inside (`Grip`'s `inside`), with no grip in it: a part's landing copy keeps the room of the grip the
- * part will have (on touch, inside the open fee, the padding a grip's part makes for it), and lifts nothing.
- */
-export const GripRoom = () => <span aria-hidden data-grip-box="inside" />;
 
 /**
  * A grip's menu, or any small menu of actions opened from a control (`back`): its actions in a small list under the control, or over it

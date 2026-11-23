@@ -1,31 +1,36 @@
-// What the fee page's grips lift, where each can be dropped, and what a drop does (method §10.6, F-114): a table's column, a ladder's step,
-// a grid's row or column, a cell, a table's part row, a part of the open case, a thing of the band's head, and a fee's card. Dropped on a
-// place, a thing moves there (a column or a row among its own, a part onto another case or another fee, a case into a grid's empty place),
-// or swaps (two things of a head, two cases of a grid); a part dropped on a head (a grid's row or column, the fee's condition) goes into
+// What the fee page lifts (by a grip, or from a thing's own surface), where each can be dropped, and what a drop does (method §10.6, F-114): a
+// table's column, a ladder's step, a grid's row or column, a cell, a table's part row, a part of any price of the open case, a thing of the
+// band's head, and a fee's card. Dropped on a place, a thing moves there (a column or a row among its own, a part onto the same price of
+// another case or another fee, the price of its side starting the same month, a case into a grid's empty place), or swaps (two things of a
+// head, two cases of a grid); a part of the purchase's first price dropped on a head (a grid's row or column, the fee's condition) goes into
 // every case of it; a grid's case alone in its row or its column, dropped on another head of that side, moves its row or column there; a
 // part cell takes no other cell. Dropped in the bin, it is taken away. Each drop is one of the pure edits
 // (edits/arrange.ts, edits/cells.ts, edits/case.ts) and says, where it took something the person gave, what it did, for the undo line.
 // Pure.
 import { assertNever } from "@finance-tool/schema";
 import { feeDeal as copy } from "../../copy";
+import { fmt } from "../format";
 import { hasCases, sameContent, type Fee, type FeeDeal, type When } from "./model";
 import { valueKey, WHOLE } from "./layout";
 import { isPartRow, type PartRow } from "./part-rows";
 import { moveCase, moveValue, orderFees, removeColumn, removeStep, removeValue, swapThings } from "./edits/arrange";
-import { cellHolds, cellMovesTo, clearCells, currencyClash, type CurrencyClash, type SumsIn, moveCell, moveCellTo, moveNoteTo, noteToCases, partToCases, pricesOf, withPrices, withoutCell, withoutNote, type CellRow } from "./edits/cells";
+import { cellHolds, cellMovesTo, clearCells, currencyClash, FIRST as FIRST_PRICE, isFirst, priceView, type CurrencyClash, type PriceAt, type SumsIn, moveCell, moveCellTo, moveNoteTo, noteToCases, partToCases, pricesOf, viewOf, withPrices, withView, withoutCell, withoutNote, type CellRow } from "./edits/cells";
 import type { Note } from "./core";
 import { removeCase, setWhen } from "./edits/case";
 import { updateFee } from "./edits/deal";
 
-/** A thing lifted by its grip, with the words it is named by (`name`) where its undo line names it. */
+/** A thing lifted, with the words it is named by (`name`) where its undo line names it. */
 export type Lifted =
   | { k: "col"; fee: string; case: string }
   | { k: "step"; fee: string; t: number; step: number; name: string }
   | { k: "value"; fee: string; t: number; key: string; name: string }
   | { k: "cell"; fee: string; cases: string[]; row: CellRow; along: number }
   | { k: "row"; fee: string; row: PartRow }
-  /** A part of the open case's first price: its row's content, or one note alone (`note`), which leaves the case's other notes. */
-  | { k: "part"; fee: string; case: string | null; row: PartRow; note?: Note }
+  /**
+   * A part of one price of the open case (`price`: its side, and the month it starts): its row's content, or one note alone (`note`), which
+   * leaves the price's other notes.
+   */
+  | { k: "part"; fee: string; case: string | null; price: PriceAt; row: PartRow; note?: Note }
   /** A thing of the band's head, by its place, with its words (so the chip a swap moves is not taken for the one now in its place). */
   | { k: "thing"; fee: string; t: number; name?: string }
   | { k: "fee"; fee: string; group: string };
@@ -128,8 +133,9 @@ export function liftDrop(deal: FeeDeal, l: Lifted, on: LiftTarget, opts: { copy?
       return null;
     }
     case "part":
-      if (on.k === "cases") return l.note ? noteHeadDrop(deal, fee, l.case, l.note, on, !!opts.copy) : headDrop(deal, fee, [l.case], l.row, on, !!opts.copy);
-      return l.note ? noteDrop(deal, fee, l.case, l.note, on, !!opts.copy) : partDrop(deal, fee, l.case, l.row, on, !!opts.copy);
+      // a head's cases take the purchase's first price's parts alone: it is the price their cells and their parts said once stand on
+      if (on.k === "cases") return !isFirst(l.price) ? null : l.note ? noteHeadDrop(deal, fee, l.case, l.note, on, !!opts.copy) : headDrop(deal, fee, [l.case], l.row, on, !!opts.copy);
+      return l.note ? noteDrop(deal, fee, l.case, l.note, on, !!opts.copy, l.price) : partDrop(deal, fee, l.case, l.row, on, !!opts.copy, [], l.price);
     case "thing":
       if (on.k !== "thing" || on.fee !== l.fee || on.t === l.t) return null;
       return oneFee(deal, fee, swapThings(fee, l.t, on.t));
@@ -184,11 +190,12 @@ function aloneMoved(fee: Fee, id: string, t: number, at: string): Fee {
 const caseIn = (fee: Fee, id: string) => (hasCases(fee) ? fee.cases.find((c) => c.id === id) : undefined);
 
 /**
- * A part row dropped on another case of its fee (it moves there) or on another fee's case or line (it moves there, where that fee takes it).
- * A line over several cases (`from` and `also`) leaves every one of them unless copied, so the part stands only where it was dropped: on
- * one of its own cases, it stays there alone (copied, nothing changes).
+ * A part row of price `at` dropped on another case of its fee (it moves there) or on another fee's case or line (it moves there, where that
+ * fee takes it): onto the same price of the case it lands on, its side's price starting the same month, and nowhere where that case has no
+ * such price. A line over several cases (`from` and `also`) leaves every one of them unless copied, so the part stands only where it was
+ * dropped: on one of its own cases, it stays there alone (copied, nothing changes).
  */
-function partDrop(deal: FeeDeal, fee: Fee, from: string | null, row: PartRow, on: LiftTarget, keep: boolean, also: readonly string[] = []): LiftResult | null {
+function partDrop(deal: FeeDeal, fee: Fee, from: string | null, row: PartRow, on: LiftTarget, keep: boolean, also: readonly string[] = [], at: PriceAt = FIRST_PRICE): LiftResult | null {
   if (on.k !== "case" && on.k !== "cell") return null;
   const to = on.k === "case" ? on.case : on.cases[0]!;
   if (on.fee === fee.id) {
@@ -196,25 +203,29 @@ function partDrop(deal: FeeDeal, fee: Fee, from: string | null, row: PartRow, on
     if (to === from) return keep ? null : oneFee(deal, fee, partOut(fee, also, row));
     // the case it lands on had that row's part: kept for the undo, which says what was replaced
     // a case the line already covered held this very part: nothing the person gave there is replaced
-    const had = cellHolds(caseIn(fee, to)!, row) && !also.includes(to);
-    const moved = moveCell(fee, from, to, row, keep);
+    const target = priceView(caseIn(fee, to)!, at);
+    const had = !!target && cellHolds(target, row) && !also.includes(to);
+    const moved = moveCell(fee, from, to, row, keep, at);
     return oneFee(deal, fee, keep ? moved : partOut(moved, also.filter((id) => id !== to), row), had ? copy.cases.lifted.replaced.replace("{what}", copy.cases.rowHeads[row] ?? "") : undefined);
   }
   const other = feeOf(deal, on.fee);
   if (!other) return null;
-  const moved = moveCellTo(fee, from, other, to, row, keep);
+  const moved = moveCellTo(fee, from, other, to, row, keep, at);
   if (!moved) return null;
   const left = keep ? moved.from : partOut(moved.from, also, row);
   return { deal: updateFee(updateFee(deal, fee.id, () => left), other.id, () => moved.to) };
 }
 
-/** One note dropped on another case, of its fee or another: added to its notes, taken from its own case unless copied (`moveNoteTo`). */
-function noteDrop(deal: FeeDeal, fee: Fee, from: string | null, note: Note, on: LiftTarget, keep: boolean): LiftResult | null {
+/**
+ * One note of price `at` dropped on another case, of its fee or another: added to the notes of that case's same price, taken from its own
+ * case unless copied (`moveNoteTo`).
+ */
+function noteDrop(deal: FeeDeal, fee: Fee, from: string | null, note: Note, on: LiftTarget, keep: boolean, at: PriceAt): LiftResult | null {
   if (on.k !== "case" && on.k !== "cell") return null;
   const to = on.k === "case" ? on.case : on.cases[0]!;
   const other = feeOf(deal, on.fee);
   if (!other) return null;
-  const moved = moveNoteTo(fee, from, other, to, note, keep);
+  const moved = moveNoteTo(fee, from, other, to, note, keep, at);
   if (!moved) return null;
   return { deal: other.id === fee.id ? updateFee(deal, fee.id, () => moved.to) : updateFee(updateFee(deal, fee.id, () => moved.from), other.id, () => moved.to) };
 }
@@ -227,7 +238,7 @@ const leaves = (from: readonly (string | null)[], same: boolean, on: Extract<Lif
 function partOut(fee: Fee, ids: readonly (string | null)[], row: PartRow): Fee {
   if (hasCases(fee)) return clearCells(fee, ids.filter((id): id is string => id !== null), row);
   const x = pricesOf(fee, null);
-  return ids.includes(null) && x && cellHolds(x, row) ? withPrices(fee, null, withoutCell(x, row, fee.kind)) : fee;
+  return ids.includes(null) && x && cellHolds(x, row) ? withPrices(fee, null, withoutCell(x, row)) : fee;
 }
 
 /** Why a sum cannot go onto a price in its currency, in words with no full stop: "המקסימום בשקלים והמינימום כאן בדולרים". */
@@ -300,8 +311,9 @@ function noteHeadDrop(deal: FeeDeal, fee: Fee, from: string | null, note: Note, 
 export const liftTakes = (deal: FeeDeal, l: Lifted, on: LiftTarget, shown?: readonly string[]): boolean => liftDrop(deal, l, on, { shown: shown ?? deal.fees.map((f) => f.id) }) !== null;
 
 /**
- * Why a part lifted from one fee does not drop on another fee's case: that fee's kind does not take it there. Null where it does, or where
- * the place is not another fee's.
+ * Why a part lifted from one fee does not drop on another fee's case: that fee has no such price (no price of its side starting that
+ * month, no sale priced apart), or its kind does not take it there; or its sums are in a currency the place does not count them in. Null
+ * where it does, or where the place is not another fee's.
  */
 export function liftWhy(deal: FeeDeal, l: Lifted, on: LiftTarget): string | null {
   if ((l.k !== "part" && l.k !== "cell") || (on.k !== "case" && on.k !== "cell" && on.k !== "cases")) return null;
@@ -309,14 +321,20 @@ export function liftWhy(deal: FeeDeal, l: Lifted, on: LiftTarget): string | null
   const row = l.row;
   if (!from || !to || !isPartRow(row) || liftTakes(deal, l, on)) return null;
   const fromCase = l.k === "part" ? l.case : l.cases[0]!;
+  // a part names its price; a cell stands on the purchase's first
+  const at = l.k === "part" ? l.price : FIRST_PRICE;
+  // a head takes the purchase's first price's parts alone, and says nothing of another's
+  if (on.k === "cases" && !isFirst(at)) return null;
   const targets = on.k === "case" ? [on.case] : on.k === "cell" ? [on.cases[0]!] : on.cases;
+  // another fee with no such price: no sale priced apart, or no price of its side starting that month
+  if (on.fee !== l.fee && !targets.some((id) => viewOf(to, id, at))) return at.from !== null ? copy.cases.lifted.noPriceFrom.replace("{month}", fmt.period(at.from)) : copy.cases.lifted.noSale;
   // its sums in a currency the place does not count them in: of a head, the first case the head covers
-  const src = pricesOf(from, fromCase);
-  const clash = src && targets.map((id) => (id === fromCase && from.id === to.id ? null : currencyClash(to.kind, src, pricesOf(to, id) ?? src, row))).find((c) => c);
+  const src = viewOf(from, fromCase, at);
+  const clash = src && targets.map((id) => (id === fromCase && from.id === to.id ? null : currencyClash(to.kind, src, viewOf(to, id, at) ?? src, row))).find((c) => c);
   if (clash) return `${clashWords(clash)}.`;
   // another fee whose kind does not take it in any case the head covers
   if (on.fee === l.fee) return null;
-  return targets.some((id) => cellMovesTo(from, fromCase, to, id, row)) ? null : copy.cases.lifted.notHere;
+  return targets.some((id) => cellMovesTo(from, fromCase, to, id, row, at)) ? null : copy.cases.lifted.notHere;
 }
 
 /** Whether the bin takes `l`: it can be taken away (`liftRemove` would change something). */
@@ -324,7 +342,7 @@ export const binTakes = (deal: FeeDeal, l: Lifted): boolean => liftRemove(deal, 
 
 /**
  * What the bin does with `l`: a column's case, a ladder's step, a grid's row or column, a cell's cases (a grid) or its part (a table), a
- * part row in every case, a part of the open case. Each keeps an undo, with its words; null where nothing can be taken away (the last
+ * part row in every case, a part of a price of the open case. Each keeps an undo, with its words; null where nothing can be taken away (the last
  * case, a thing of a head, a fee's card).
  */
 export function liftRemove(deal: FeeDeal, l: Lifted): LiftResult | null {
@@ -349,12 +367,12 @@ export function liftRemove(deal: FeeDeal, l: Lifted): LiftResult | null {
     case "row":
       return hasCases(fee) ? oneFee(deal, fee, clearCells(fee, fee.cases.map((c) => c.id), l.row), w.part[l.row]) : null;
     case "part": {
-      if (l.note) return oneFee(deal, fee, withoutNote(fee, l.case, l.note), w.noteRemoved);
-      if (hasCases(fee)) return l.case ? oneFee(deal, fee, clearCells(fee, [l.case], l.row), w.part[l.row]) : null;
-      if (!cellHolds(fee, l.row)) return null;
-      const x = withoutCell(fee, l.row, fee.kind);
-      const { stages: _s, sale: _sale, ...head } = fee;
-      return oneFee(deal, fee, { ...head, stages: x.stages, ...(x.sale ? { sale: x.sale } : {}) } as Fee, w.part[l.row]);
+      if (l.note) return oneFee(deal, fee, withoutNote(fee, l.case, l.note, l.price), w.noteRemoved);
+      const x = viewOf(fee, l.case, l.price);
+      // a free price's part has nothing to take away: `withoutCell` leaves it as it is, so the bin takes nothing from it
+      if (!x || !cellHolds(x, l.row)) return null;
+      if (hasCases(fee)) return l.case ? oneFee(deal, fee, clearCells(fee, [l.case], l.row, l.price), w.part[l.row]) : null;
+      return oneFee(deal, fee, withPrices(fee, null, withView(fee, l.price, withoutCell(x, l.row))), w.part[l.row]);
     }
     // a thing of a head and a fee's card are moved, never taken away
     case "thing":

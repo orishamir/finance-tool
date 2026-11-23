@@ -4,7 +4,7 @@ import type { DepositTerms, ValueObject } from "@finance-tool/schema";
 import { depositLabels, depositName, exitPointsOf, shownRate } from "./deposit-kind";
 import { termOf, type DbBank, type DbData, type DbOffer } from "./deposit-browser";
 import { loadParameters, loadRules, today } from "./data.server";
-import { p05AmountMax, p05Number } from "./engine";
+import { p05Number } from "./engine";
 import { site } from "./institutions.server";
 import { loadDepositTerms } from "./instruments.server";
 import { shortName } from "./providers";
@@ -77,7 +77,7 @@ export function buildDepositBrowser(): DbData {
   const p05 = parameters.find((p) => p.method_id === "P-05");
   if (!p11 || !p05) throw new Error("data/parameters: the deposits page needs P-11 (its amounts) and P-05 (the amount it starts at)");
   const steps = (p11 as unknown as { steps: ValueObject[] }).steps;
-  return { today: t, read, banks, offers, amounts: steps.map((v) => asParameter(p11, v)), start: p05Number(p05, "amount_now"), amountMax: p05AmountMax(p05) };
+  return { today: t, read, banks, offers, amounts: steps.map((v) => asParameter(p11, v)), start: p05Number(p05, "amount_now") };
 }
 
 /** The rules the page's sheets cite: the deposits' kinds and the standard table. */
