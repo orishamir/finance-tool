@@ -51,7 +51,7 @@ import { assertNever } from "@finance-tool/schema";
 // ---------------------------------------------------------------- the axis
 
 /**
- * The range the person may set the holding chart to, in shekels (method F-112), each end widened to the opening range's where that lies
+ * The range the person may set the holding chart to, in shekels, each end widened to the opening range's where that lies
  * past it, and how much wider its top must be than its bottom.
  */
 export const RANGE_BOUNDS = [1_000, 10_000_000] as const;
@@ -77,7 +77,7 @@ export function settleRange(a: number, b: number, opening: AmountRange): AmountR
 }
 
 /**
- * A curve's opening range (method F-112): from the largest power of ten at most half its smallest mark to `curveEnd` of its largest, never
+ * A curve's opening range: from the largest power of ten at most half its smallest mark to `curveEnd` of its largest, never
  * cut to the bounds the person may set, so every mark of the deal falls inside it.
  */
 export function openingRange(marks: readonly number[]): AmountRange {

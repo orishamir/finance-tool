@@ -2,9 +2,9 @@
 
 Each site parameter (`docs/method.md` §2.3, stored in `data/parameters/`) is a judgement, not a rule. This file records the current value of each and why it was chosen, so the page can show it under "site parameter". There are eleven, P-01 to P-11, one file each.
 
-The founder set P-01 and chose P-10 himself. He asked Claude to choose the others ("do whatever you think fits"); each of those files records who chose it in `chosen_by`. Parameters are Claude's to decide and carry no sign-off (guidelines/working-with-the-founder.md; founder, 2026-11-08). Any value can be changed at any time.
+The founder set P-01 and chose P-10 himself. He asked Claude to choose the others ("do whatever you think fits"); each of those files records who chose it in `chosen_by`. Parameters are Claude's to decide and carry no sign-off (guidelines/working-with-the-founder.md). Any value can be changed at any time.
 
-**Reader text.** Each number in every parameter file carries its own short Hebrew line (`rationale_he` on the value object), and the file has a general line; what the reader text may and may not say is in `docs/data-schema.md` section 3.2. Who chose a value, test scenarios, audit ids and earlier values stay in this file, never on the page, and `site/app/lib/parameter-text.test.ts` fails if they appear there.
+**Reader text.** Each number in every parameter file carries its own short Hebrew line (`rationale_he` on the value object), and the file has a general line; what the reader text may and may not say is in `docs/data-schema.md` section 3.2. Who chose a value, test scenarios and audit ids stay in this file, never on the page, and `site/app/lib/parameter-text.test.ts` fails if they appear there.
 
 ## Tie threshold
 
@@ -67,7 +67,7 @@ P-05, `data/parameters/illustrative-scenario.json`: the starting values of the g
 
 **Values:** the age field 0 to 120; a yearly percentage (a return, inflation, a money-market fund's rate) −50% to 50% (`ranges.pct`); the interest rate of a guide whose run taxes it as interest (the current account, a bank deposit, a savings plan, makam, a government bond) 0% to 50% (`ranges.interest`).
 
-**Why:** the bounds catch a typing mistake, not a forecast. A return, inflation and a money-market fund's return can fall below zero, so their range does: the money-market fund's guides take −1% as typed, keep it on the device and run it. Interest below zero is not run: the rule base holds no rule for its tax (method G-41, TXI OQ20), so its field starts at 0. The range applies where the rate is typed: which range a guide's rate field takes is its wrapper's kind (`cashRateRange`, `site/app/lib/guide-signature.ts`), and the device keeps any rate typed, so a negative interest rate kept from an older device or an imported file reaches the run, which stops on G-41 and says why. The interest range is the site's choice (Claude, 2026-11-23), not the founder's; revisable.
+**Why:** the bounds catch a typing mistake, not a forecast. A return, inflation and a money-market fund's return can fall below zero, so their range does: the money-market fund's guides take −1% as typed, keep it on the device and run it. Interest below zero is not run: the rule base holds no rule for its tax (method G-41, TXI OQ20), so its field starts at 0. The range applies where the rate is typed: which range a guide's rate field takes is its wrapper's kind (`cashRateRange`, `site/app/lib/guide-signature.ts`), and the device keeps any rate typed, so a negative interest rate kept from an older device or an imported file reaches the run, which stops on G-41 and says why. The interest range is the site's choice, not the founder's; revisable.
 
 ### Representative instruments
 
@@ -76,10 +76,10 @@ P-05, `data/parameters/illustrative-scenario.json`: the starting values of the g
 **Values:**
 - bank deposit: `leumi-pakam-kavua-365`; savings plan: `leumi-tashlumim-shekeli-3y`; current account: `leumi-current-account`;
 - daily money-market fund: 5138763; renewable money-market fund: 1223866;
-- brokerage account: fund 5139100, tariff Leumi. **Chosen by Claude on 2026-11-22**: the entry says so (`chosen_by`); makam: tariff Leumi; government bond: tariff Leumi, series rule GOV-11;
+- brokerage account: fund 5139100, tariff Leumi. **Chosen by Claude**: the entry says so (`chosen_by`); makam: tariff Leumi; government bond: tariff Leumi, series rule GOV-11;
 - study fund (`keren-hishtalmut`): track 880, run as self-employed;
 - general pension fund: track 2158; provident fund for annuity: track 7215;
-- provident fund for investing (`kupat-gemel-lehashkaa`): track 7978, Meitav's general track; the run prices the collected lists (F-80). **Chosen by Claude on 2026-11-07**: the entry says so (`chosen_by`).
+- provident fund for investing (`kupat-gemel-lehashkaa`): track 7978, Meitav's general track; the run prices the collected lists (F-80). **Chosen by Claude**: the entry says so (`chosen_by`).
 
 **Why:** the representative instrument is the first collected record of each kind, chosen by Claude at the founder's request; revisable. It is not a recommendation: the page names the records it used, and every term shown carries that record's source. Where a page chooses among all collected records instead, the entry does not price the run:
 
@@ -93,7 +93,7 @@ P-05, `data/parameters/illustrative-scenario.json`: the starting values of the g
 
 **Pension and annuity tracks:** no managing company publishes a list fee for a general pension fund or a provident fund for annuity, so, as for the study fund, the guides use the regulator's average on a named track (method 2.4).
 - `pension-general` names track **2158**, "מיטב פנסיה כללית לבני 50 ומטה" (Meitav, classification "קרנות כלליות", the age-banded default track for someone under 50). The CMA reports the pension fees per fund and not per track (CAT-39), so every Meitav general-pension track shows the same 0.14% balance and 1.07% deposit average for 2025, and the choice moves no number.
-- `provident-for-annuity` names track **7215**, "מיטב גמל לבני 50 ומטה" (Meitav, classification "תגמולים ואישית לפיצויים", specialization "מדרגות", sub-specialization "עד 50"): the age-banded default track a new member under 50 joins when they choose none (CAT-19 s.4(ב)), as 2158 is for the general pension fund. A provident fund for annuity may keep a general track only closed to members who were not in it on 1.1.2016 (CAT-19), so its "כללי" tracks are not what a new member can join, except in a fund the circular leaves out: Gemel-Net's general tracks 119, 260 and 263 sit in guaranteed-yield funds the circular leaves out, and whether that takes their general tracks is open (CAT-53, CAT OQ36, D51); 923 "מיטב בטחון" is closed to new members on Meitav's own terms (CAT-54, D51). **Chosen by Claude on 2026-11-14**: the entry says so (`chosen_by`). The regulator has no separate classification for a provident fund for annuity, so this classification is the nearest the data offers.
+- `provident-for-annuity` names track **7215**, "מיטב גמל לבני 50 ומטה" (Meitav, classification "תגמולים ואישית לפיצויים", specialization "מדרגות", sub-specialization "עד 50"): the age-banded default track a new member under 50 joins when they choose none (CAT-19 s.4(ב)), as 2158 is for the general pension fund. A provident fund for annuity may keep a general track only closed to members who were not in it on 1.1.2016 (CAT-19), so its "כללי" tracks are not what a new member can join, except in a fund the circular leaves out: Gemel-Net's general tracks 119, 260 and 263 sit in guaranteed-yield funds the circular leaves out, and whether that takes their general tracks is open (CAT-53, CAT OQ36, D51); 923 "מיטב בטחון" is closed to new members on Meitav's own terms (CAT-54, D51). **Chosen by Claude**: the entry says so (`chosen_by`). The regulator has no separate classification for a provident fund for annuity, so this classification is the nearest the data offers.
 - The comprehensive pension fund keeps Meitav's list fee lines.
 
 **Why:** the first collected Meitav track of each kind, chosen by Claude at the founder's request, revisable; the page names the track and every fee carries the CMA record's source and year. The insurance cost (A-17) is not a site parameter: the person enters it, and a pension fund without it is "not evaluated".
@@ -173,7 +173,7 @@ P-10, `data/parameters/home-guide-door.json`. Chosen by the founder (option A of
 
 ## Deposit amounts
 
-P-11, `data/parameters/deposit-amounts.json`. Chosen by Claude with the drawing of the deposits page the founder approved (2026-11-09); revisable.
+P-11, `data/parameters/deposit-amounts.json`. Chosen by Claude with the drawing of the deposits page the founder approved; revisable.
 
 **Values:** 250, 1,000, 10,000, 100,000, 250,000 and 500,000 NIS, offered on the deposits page as "מפקידים לפחות", one at a time. The page starts at P-05's amount now, 10,000 NIS, the site's example; the validator fails if that amount is not one of the steps.
 
