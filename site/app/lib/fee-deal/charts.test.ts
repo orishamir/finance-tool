@@ -156,11 +156,51 @@ describe("what holding costs", () => {
   });
   it("reads a year on an amount by layer, the shares first", async () => {
     const r = heldOf((await reading()).panels.held[0]!).readAt(60_000);
-    expect(r.groups.map((g) => [g.layer, g.total.value])).toEqual([
+    expect(r.groups.map((g) => [g.group, g.total.value])).toEqual([
       ["share", expect.closeTo(537.6, 6)],
       ["fixed", expect.closeTo(228, 6)],
     ]);
     expect(r.share.value).toBeCloseTo(1.276, 9);
+  });
+});
+
+describe("holding, the fees by their kind: custody of 0.15% a year with at least 900 ₪, and 80 ₪ a month of account fee to 08.2027", () => {
+  const deal: FeeDeal = {
+    id: "deal-k",
+    name: "",
+    kind: "brokerage-account",
+    fees: [
+      { id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 12, every: 12, min: typed(900) } }] },
+      { id: "fee-fixed", kind: "fixed_period", stages: [{ price: { form: "sum", amount: typed(80), every: 1 }, until: "2027-08" }, { price: { form: "sum", amount: typed(0), every: 1 } }] },
+    ],
+  };
+  const held = () => readingOf(readDealFor(deal, data.kinds, "2026-11-20"), data.fx).panels.held.map(heldOf);
+  const said = (r: ReturnType<HeldView["readAt"]>) => r.groups.map((g) => [g.group, g.total.value, g.rows.map((x) => [x.fee.ref.kind, x.cost.value, x.part?.part])]);
+
+  it("meets 960 ₪ a year of account fee where the custody's rate passes it, at 640,000 ₪, not where its minimum ends", () => {
+    const [now] = held();
+    expect(now!.cross).toBeCloseTo(960 / 0.0015, 6);
+    expect(now!.head).toMatchObject({ kind: "cross" });
+  });
+
+  it("files the custody at its minimum under the shares, as its lane, and the account fee under the sums", () => {
+    const [now] = held();
+    expect(now!.lanes.map((l) => [l.fee.ref.kind, l.group])).toEqual([
+      ["custody", "share"],
+      ["fixed_period", "fixed"],
+    ]);
+    expect(said(now!.readAt(100_000))).toEqual([
+      ["share", 900, [["custody", 900, "min"]]],
+      ["fixed", 960, [["fixed_period", 960, undefined]]],
+    ]);
+  });
+
+  it("from 08.2027 has no crossover, heads the chart with the minimum's end at 600,000 ₪, and leaves the account fee of 0 ₪ out of the box", () => {
+    const [, later] = held();
+    expect(later!.cross).toBeNull();
+    expect(later!.head).toMatchObject({ kind: "mark", of: "minEnd", at: { value: expect.closeTo(600_000, 6) } });
+    expect(said(later!.readAt(100_000))).toEqual([["share", 900, [["custody", 900, "min"]]]]);
+    expect(said(later!.readAt(1_000_000))).toEqual([["share", expect.closeTo(1500, 9), [["custody", expect.closeTo(1500, 9), "rate"]]]]);
   });
 });
 

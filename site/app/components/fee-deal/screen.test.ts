@@ -26,7 +26,8 @@ import type { PlaceHands } from "./open-case";
 import { landingOf } from "./toolbox";
 import { cardOf } from "../../lib/fee-deal/toolbox";
 import { changeFormKept } from "../../lib/fee-deal/undo";
-import { ReadingCards } from "./reading";
+import { HeldChange, ReadingCards } from "./reading";
+import type { HeldView } from "../../lib/fee-deal/charts";
 import { sumDisplay, upToDisplay } from "./words";
 
 const data = feesData();
@@ -207,6 +208,33 @@ describe("the panels' headlines", () => {
     expect(shown).toContain(`${r.maxAt.lead}2,300,000 ₪${r.maxAt.stops}6,900 ₪${r.maxAt.falls}${r.maxAt.end}`);
     expect(shown).toContain(r.lanes);
     expect(shown).not.toContain(r.lanesEach);
+  });
+});
+
+describe("the holding chart's words", () => {
+  it("head a chart with no sum per period by its one mark: where the custody's minimum of 900 ₪ a year ends, at 600,000 ₪", () => {
+    const d = account();
+    d.fees = [{ id: "fee-custody", kind: "custody", stages: [{ price: { form: "held", rate: typed(0.15), per: 12, every: 12, min: typed(900) } }] }];
+    const shown = drawReading(d);
+    expect(shown).toContain("עד 600,000 ₪ המינימום קובע");
+    expect(shown).not.toContain(feeDeal.read.held.cross.after);
+  });
+  it("say each price that changes in a later period as one sentence: a fee that stops, one that rises, one that starts and one that falls", () => {
+    const d = account();
+    const sum = (n: number) => ({ form: "sum" as const, amount: typed(n), every: 1 as const });
+    const held = (pct: number) => ({ form: "held" as const, rate: typed(pct), per: 12 as const, every: 12 as const });
+    d.fees = [
+      { id: "fee-fixed", kind: "fixed_period", stages: [{ price: sum(80), until: "2027-08" }, { price: sum(0) }] },
+      { id: "fee-custody", kind: "custody", stages: [{ price: held(0.15), until: "2027-08" }, { price: held(0.2) }] },
+      { id: "fee-fund", kind: "fund_management", stages: [{ price: { form: "free" }, until: "2027-08" }, { price: held(0.1) }] },
+      { id: "fee-current", kind: "current_account", stages: [{ price: sum(12), until: "2027-08" }, { price: sum(9) }] },
+    ];
+    const later = (readingOf(readDealFor(d, data.kinds, TODAY), data.fx).panels.held[1] as { chart: HeldView }).chart;
+    // each row drawn alone, the page's frame (its "יש עוד למטה") after it
+    const said = later.changes.map((row) => text(createElement(HeldChange, { row, saved: false })));
+    const sentences = ["דמי חשבון קבועים מפסיקים להיגבות.", "דמי ניהול פיקדון ניירות ערך עולים ל־0.2% בשנה ממה שמוחזק.", "דמי הניהול של הקרן מתחילים להיגבות: 0.1% בשנה ממה שמוחזק.", "חשבון עובר ושב בבנק יורד ל־9 ₪ בחודש."];
+    expect(said).toHaveLength(sentences.length);
+    sentences.forEach((x, k) => expect(said[k]!.startsWith(x), `${said[k]} starts with ${x}`).toBe(true));
   });
 });
 

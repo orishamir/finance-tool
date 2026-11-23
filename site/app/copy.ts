@@ -2345,8 +2345,20 @@ export const feeDeal = {
       until: "עד ",
       /** Before the months left in today's period (a computed figure). */
       left: "עוד ",
-      /** Before a price that changed at the period's start, by how it changed. */
-      change: { starts: "מתחיל: ", ends: "נגמר: ", rises: "עולה: ", falls: "יורד: ", changes: "משתנה: " } as Record<string, string>,
+      /**
+       * A price that changed at the period's start, after the fee's name, by how it changed and the name's gender and number: "דמי חשבון
+       * קבועים עולים ל־80 ₪ בחודש.", the new price and a full stop after it. A fee whose price falls to nothing stops, and no price is said:
+       * "דמי חשבון קבועים מפסיקים להיגבות."
+       */
+      change: {
+        starts: { m: " מתחיל להיגבות: ", f: " מתחילה להיגבות: ", mp: " מתחילים להיגבות: ", fp: " מתחילות להיגבות: " },
+        rises: { m: " עולה ל־", f: " עולה ל־", mp: " עולים ל־", fp: " עולות ל־" },
+        falls: { m: " יורד ל־", f: " יורדת ל־", mp: " יורדים ל־", fp: " יורדות ל־" },
+        changes: { m: " משתנה: ", f: " משתנה: ", mp: " משתנים: ", fp: " משתנות: " },
+      } as Record<string, Record<string, string>>,
+      stops: { m: " מפסיק להיגבות.", f: " מפסיקה להיגבות.", mp: " מפסיקים להיגבות.", fp: " מפסיקות להיגבות." } as Record<string, string>,
+      /** After a changed price, and between two changes. */
+      changeEnd: ". ",
       /** The headline: one change, after its month ("בינואר 2027 …"), with the fee's name. */
       one: { starts: "נגמר הפטור מ{name}", ends: "המחיר של {name} יורד לאפס", rises: "המחיר של {name} עולה", falls: "המחיר של {name} יורד", changes: "המחיר של {name} משתנה" } as Record<string, string>,
       /** After a rise to or past the cap. */
@@ -2422,12 +2434,12 @@ export const feeDeal = {
       periodsName: "התקופה",
       /** The headline: "עד 25,446 ₪, הסכומים הקבועים עולים בשנה יותר מכל האחוזים"; a later period's month before it, with a comma. */
       cross: { lead: "עד ", after: ", הסכומים הקבועים עולים בשנה יותר מכל האחוזים", month: ", " },
+      /** The headline with no crossover and one mark, by what changes there: "עד 600,000 ₪ המינימום קובע". */
+      mark: { minEnd: { lead: "עד ", after: " המינימום קובע" }, maxStart: { lead: "מעל ", after: " המקסימום קובע" }, edge: { lead: "ב־", after: " המחיר משתנה" } },
       falls: "ככל שמה שמוחזק גדל, שנה עולה פחות באחוזים. ",
       fallsSaved: "ככל שמה שנצבר גדל, שנה עולה פחות באחוזים. ",
       /** The shares band by band above the crossover: "מעל 25,446 ₪ האחוזים קובעים: 0.896% בשנה עד 100,000 ₪, 0.7% עד 500,000 ₪ ו־0.5% מעל זה, כל אחד על כל הסכום." */
       bands: { lead: "מעל ", decides: " האחוזים קובעים: ", perYear: " בשנה", upTo: " עד ", sep: ", ", and: " ו־", above: " מעל זה", whole: ", כל אחד על כל הסכום", end: "." },
-      /** A fee that starts in a later period, after its name and price, by the name's gender and number. */
-      joins: { m: " מצטרף לסכומים הקבועים. ", f: " מצטרפת לסכומים הקבועים. ", mp: " מצטרפים לסכומים הקבועים. ", fp: " מצטרפות לסכומים הקבועים. " } as Record<string, string>,
       /** A fee offset against an action's fee: the chart shows a year without that action. */
       offset: { lead: "הסכום הזה מתקזז מול ", month: " של אותו חודש, ולכן הגרף מראה שנה בלי ", end: "." },
       x: "הסכום שמוחזק (₪)",

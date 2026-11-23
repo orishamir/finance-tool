@@ -1,7 +1,7 @@
 // docs/method.md §10.6, F-112's parts and F-123 to F-127: what the reading's charts read off a deal. Every expected figure is worked by
 // hand from the formula.
 import { describe, expect, it } from "vitest";
-import { acrossDrop, costShare, coverFrom, dealPeriods, heldCrossover, heldLayers, idleMonth, priceParts, rateAt, type Deal } from "../src/index.ts";
+import { acrossDrop, costShare, coverFrom, dealPeriods, heldCrossover, idleMonth, priceParts, rateAt, type Deal } from "../src/index.ts";
 
 const today = { y: 2026, m: 11 };
 const USD = 3.264;
@@ -60,30 +60,18 @@ describe("F-112 a price's parts along the size", () => {
   });
 });
 
-describe("F-123 the share a cost is of its amount, and the layers of holding", () => {
+describe("F-123 the share a cost is of its amount, and the rate where every fee is at its rate", () => {
   it("divides the cost by the amount", () => {
     expect(costShare(144, 18650)).toBeCloseTo(0.0077212, 6);
     expect(costShare(24, 0)).toBe(Infinity);
     expect(costShare(0, 0)).toBe(0);
   });
 
-  it("puts each share at its rate in the share layer and the sums in the fixed layer", () => {
-    // 60,000 ₪: custody 0.199% × 4 = 477.6 ₪, the fund 60 ₪, and 108 + 120 ₪
-    const l = heldLayers(account, now, 60000);
-    expect(l.map((x) => [x.fee, x.layer])).toEqual([
-      [1, "share"],
-      [4, "share"],
-      [5, "fixed"],
-      [6, "fixed"],
-    ]);
-    expect(l[0]!.cost).toBeCloseTo(477.6, 6);
-  });
-
-  it("puts a share whose minimum decides its charge in the fixed layer", () => {
+  it("has no rate on what is held where a share's minimum decides its charge: 0.1% a quarter with at least 40 ₪ up to 40,000 ₪", () => {
     const d: Deal = { foreign: false, fees: [{ base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 3, min: 40 } }] }] };
     const p = dealPeriods(d, today).periods[0]!;
-    expect(heldLayers(d, p, 20000)[0]).toEqual({ fee: 0, cost: 160, layer: "fixed" });
-    expect(heldLayers(d, p, 50000)[0]!.layer).toBe("share");
+    expect(rateAt(d, p, "held", 20000)).toBeNull();
+    expect(rateAt(d, p, "held", 50000)).toBeCloseTo(0.004, 12);
   });
 
   it("adds the rates where every fee is at its rate: 0.25% and the conversion's 0.0875% above 15,600 $", () => {
@@ -166,6 +154,39 @@ describe("F-124 where the shares come to cost as much as the fixed sums", () => 
       ],
     };
     expect(heldCrossover(d, dealPeriods(d, today).periods[0]!)).toBeCloseTo(100000, 6);
+  });
+});
+
+describe("F-124 the fees by their kind: the sums per period against every share of what is held at its charge", () => {
+  // custody of 0.15% a year with at least 900 ₪ a year: its minimum holds up to 900 / 0.0015 = 600,000 ₪
+  const custody: Deal["fees"][number] = { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.0015, everyMonths: 12, min: 900 } }] };
+  const sums = (amount: number): Deal["fees"][number] => ({ base: { key: "fixed_period" }, stages: [{ price: { kind: "sum", amount, everyMonths: 12 } }] });
+  const at = (d: Deal) => heldCrossover(d, dealPeriods(d, today).periods[0]!);
+
+  it("is none where the shares cost more at every value: 500 ₪ a year against custody that costs at least 900 ₪", () => {
+    expect(at({ foreign: false, fees: [custody, sums(500)] })).toBeNull();
+  });
+
+  it("is where the rate passes the sums: 960 ₪ a year against the same custody is 960 / 0.0015 = 640,000 ₪", () => {
+    expect(at({ foreign: false, fees: [custody, sums(960)] })).toBeCloseTo(640000, 6);
+  });
+
+  it("is none with no sum per period: the custody's own minimum, ending at 600,000 ₪, is no sum", () => {
+    expect(at({ foreign: false, fees: [custody] })).toBeNull();
+    expect(at({ foreign: false, fees: [custody, sums(0)] })).toBeNull();
+  });
+
+  it("counts a share held to its maximum with the shares: 1% a year at most 100 ₪, and 0.1% a year, pass 300 ₪ at 200,000 ₪", () => {
+    // from 10,000 ₪ the first share is 100 ₪ a year, so the shares cost 100 + 0.001 × B, which is 300 ₪ at 200,000 ₪
+    const d: Deal = {
+      foreign: false,
+      fees: [
+        { base: { key: "custody" }, stages: [{ price: { kind: "held", rate: 0.01, everyMonths: 12, max: 100 } }] },
+        { base: { name: "fund" }, stages: [{ price: { kind: "held", rate: 0.001, everyMonths: 12 } }] },
+        sums(300),
+      ],
+    };
+    expect(at(d)).toBeCloseTo(200000, 6);
   });
 });
 

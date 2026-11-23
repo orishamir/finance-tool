@@ -561,6 +561,7 @@ function HeldHeadline({ view, later, from }: { view: HeldView; later: boolean; f
   const h = view.head;
   const c = w.held.cross;
   if (h.kind === "marks") return <>{countPhrase(h.n, w.action.marks)}</>;
+  const said = h.kind === "cross" ? c : w.held.mark[h.of];
   return (
     <>
       {later && (
@@ -569,9 +570,30 @@ function HeldHeadline({ view, later, from }: { view: HeldView; later: boolean; f
           {c.month}
         </>
       )}
-      <FigAfter value={h.at} lead={c.lead} />
-      {c.after}
+      <FigAfter value={h.at} lead={said.lead} />
+      {said.after}
     </>
+  );
+}
+
+/** A price that changed at a later period's start, in a sentence after the fee's name: its new price, or that it stops. */
+export function HeldChange({ row, saved }: { row: PeriodRow; saved: boolean }) {
+  const p = w.periods;
+  const form = formOf(row);
+  if (row.change === "ends")
+    return (
+      <span>
+        {refName(row)}
+        {p.stops[form]}{" "}
+      </span>
+    );
+  return (
+    <span>
+      {refName(row)}
+      {p.change[row.change ?? "changes"]![form]}
+      <PriceWords price={row.price} kind={row.kind} saved={saved} />
+      {p.changeEnd}
+    </span>
   );
 }
 
@@ -582,23 +604,7 @@ function HeldSub({ view, saved }: { view: HeldView; saved: boolean }) {
     return (
       <p className="text-muted-foreground">
         {view.changes.map((row) => (
-          <span key={row.fee}>
-            {refName(row)}
-            {row.change === "starts" ? (
-              <>
-                {", "}
-                <PriceWords price={row.price} kind={row.kind} saved={saved} />
-                {w.held.joins[formOf(row)]}
-              </>
-            ) : (
-              <>
-                {copy.price.sep}
-                {w.periods.change[row.change ?? "changes"]}
-                <PriceWords price={row.price} kind={row.kind} saved={saved} />
-                {". "}
-              </>
-            )}
-          </span>
+          <HeldChange key={row.fee} row={row} saved={saved} />
         ))}
         {view.offsets.map((o) => (
           <span key={o.fee.fee}>
@@ -637,7 +643,10 @@ function HeldSub({ view, saved }: { view: HeldView; saved: boolean }) {
   );
 }
 
-/** A year at the reader's amount: the sum and its share, then each layer with its fees, its subtotal only where it holds two or more, the one set apart bolder. */
+/**
+ * A year at the reader's amount: the sum and its share, then each kind of fee with its fees as the lanes group them, its subtotal only
+ * where it holds two or more, a fee held to its minimum or maximum there saying so, the one set apart bolder.
+ */
 function HeldBox({ read, strong, saved }: { read: HeldReading; strong: string | null; saved: boolean }) {
   const x = w.held.box;
   return (
@@ -652,10 +661,10 @@ function HeldBox({ read, strong, saved }: { read: HeldReading; strong: string | 
         {saved ? x.shareSaved : x.share}
       </p>
       {read.groups.map((g) => (
-        <div key={g.layer} className="flex flex-col gap-0.5 pt-1">
+        <div key={g.group} className="flex flex-col gap-0.5 pt-1">
           <p className="flex justify-between gap-4 font-semibold">
-            <span>{w.held.groups[g.layer]}</span>
-            {/* a layer of one fee: its subtotal is that fee's figure, said once, on the fee's line (founder, 2026-11-23) */}
+            <span>{w.held.groups[g.group]}</span>
+            {/* a group of one fee: its subtotal is that fee's figure, said once, on the fee's line */}
             {g.rows.length > 1 && <Fig value={g.total} />}
           </p>
           {g.rows.map((r) => (
@@ -663,6 +672,12 @@ function HeldBox({ read, strong, saved }: { read: HeldReading; strong: string | 
               <span className="flex items-center gap-1.5">
                 <Swatch shape="box" className={colourOf(r.fee).bg} />
                 {refName(r.fee.ref)}
+                {r.part && (r.part.part === "min" || r.part.part === "max") && (
+                  <>
+                    {x.sep}
+                    {copy.panel[r.part.part]}
+                  </>
+                )}
               </span>
               <Fig value={r.cost} />
             </p>

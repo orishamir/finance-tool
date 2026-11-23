@@ -124,7 +124,7 @@ export interface FeeHeadSlot {
 export function SlimFee({ dot, mark, name, label, onOpen, open, actions, tools, head, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; label: string; onOpen: () => void; open?: boolean; actions?: ReactNode; /** Its actions after its name (its duplicate, its bin). */ tools?: ReactNode; head?: FeeHeadSlot | undefined; children: ReactNode }) {
   return (
     <div data-fee-card="" className="contents">
-    <PickCard label={label} onPick={onOpen} chosen={open} className={cx("@container bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 py-1", dimmed(head) && "opacity-60")}>
+    <PickCard label={label} onPick={onOpen} chosen={open} className={cx("@container bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-1 pb-3", dimmed(head) && "opacity-60")}>
       {/* open, the outline in the action colour frames it; a stripe of the fee's colour over it would cut its corners */}
       {!open && <Stripe dot={dot} />}
       {open ? (

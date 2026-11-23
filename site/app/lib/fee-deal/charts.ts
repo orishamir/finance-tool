@@ -16,7 +16,6 @@ import {
   heldBounds,
   heldCrossover,
   isConversionFee,
-  heldLayers,
   holdingCost,
   idleMonth,
   priceParts,
@@ -146,8 +145,8 @@ export interface Lane {
   fee: ChartFee;
   parts: LanePart[] | null;
   price: PriceView | null;
-  /** On the holding chart: a share of what is held, or a fixed sum (F-123). */
-  group?: "share" | "fixed";
+  /** On the holding chart, the fee's kind: a share of what is held, or a sum per period (F-124). */
+  group?: HeldGroup;
 }
 
 /** The shekels per unit of each currency a curve reads its sums at (F-84). */
@@ -349,6 +348,9 @@ export interface ActionReading {
   parts: ActionPart[];
 }
 
+/** A fee's kind on the holding chart, which its lane, its layer and its row in the reading are grouped by (F-124). */
+export type HeldGroup = "share" | "fixed";
+
 /** A fee's year at the reader's value on the holding chart, and the part of its price that decides it. */
 export interface HeldRow {
   fee: ChartFee;
@@ -356,12 +358,15 @@ export interface HeldRow {
   part?: LanePart;
 }
 
-/** What a year of holding the reader's value costs (F-112, F-123), grouped by layer, each with its sum. */
+/**
+ * What a year of holding the reader's value costs (F-112, F-123), its fees grouped by kind as the lanes are, each group with its sum: a
+ * fee that charges nothing at that value has no row, and a group with no row is left out.
+ */
 export interface HeldReading {
   amount: SiteValue;
   total: SiteValue;
   share: SiteValue;
-  groups: { layer: "share" | "fixed"; total: SiteValue; rows: HeldRow[] }[];
+  groups: { group: HeldGroup; total: SiteValue; rows: HeldRow[] }[];
 }
 
 /** A sample of a curve at an amount: its share (F-123), and on the holding chart each fee's share, in the order of `fees`. */
@@ -380,8 +385,14 @@ export type ActionHead =
   /** The cost changes behaviour at `n` amounts. */
   | { kind: "marks"; n: number };
 
-/** What the headline of the holding chart says (F-124): where the fixed sums and the shares meet, and what the sub says. */
-export type HeldHead = { kind: "cross"; at: SiteValue } | { kind: "marks"; n: number };
+/**
+ * What the headline of the holding chart says: where the sums per period and the shares meet (F-124); else, where the cost changes
+ * behaviour at one amount alone, that amount and what changes there; else at how many amounts it does.
+ */
+export type HeldHead = { kind: "cross"; at: SiteValue } | { kind: "mark"; at: SiteValue; of: HeldMarkKind } | { kind: "marks"; n: number };
+
+/** What changes at a mark on the holding chart, other than the crossover: a minimum ends, a maximum starts, or a price changes. */
+export type HeldMarkKind = "minEnd" | "maxStart" | "edge";
 
 /** The rate of the shares in each band above the crossover (F-123): up to `to` (none for the last), on the whole amount where a step's top ends it. */
 export interface Band {
@@ -833,6 +844,7 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
       return { at: b.at, label: b.part.end!, kind };
     }),
   ]);
+  const lone = marks.length === 1 ? marks[0]! : null;
   // the shares' rate band by band from the crossover up, cut where a share's step or bound changes (F-123)
   const bandCuts = [...new Set(all.map((b) => b.at))].sort((a, b) => a - b);
   const bands: Band[] = [];
@@ -872,22 +884,21 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
   const readAt = (v: number): HeldReading => {
     const amount = entered(v, "nis", r.today);
     const amountIn = { "deal:amount": amount };
-    const layers = heldLayers(r.engine, p, v, rates);
-    const costOf = (fee: ChartFee) => layers.filter((l) => fee.idx.includes(l.fee)).reduce((a, l) => a + l.cost, 0);
+    const parts = cost(v).parts;
+    const costOf = (fee: ChartFee) => parts.filter((x) => fee.idx.includes(x.fee)).reduce((a, x) => a + x.cost, 0);
     const flag = capFlag(p, ordered.filter(isAccount).reduce((a, fee) => a + costOf(fee), 0), cap);
-    const total = yearCostOf(layers.reduce((a, l) => a + l.cost, 0), "F-112", { ...inputs, ...amountIn }, r.today, flag);
-    const groups = (["share", "fixed"] as const).map((layer) => {
-      const rows: HeldRow[] = ordered.flatMap((fee) => {
-        const mine = layers.filter((l) => fee.idx.includes(l.fee));
-        if (!mine.length || mine[0]!.layer !== layer) return [];
-        const lane = lanes.find((l) => l.fee === fee)!;
+    const total = yearCostOf(parts.reduce((a, x) => a + x.cost, 0), "F-112", { ...inputs, ...amountIn }, r.today, flag);
+    const groups = (["share", "fixed"] as const).map((group) => {
+      // each fee under its lane's kind, as the chart and the lanes group it; a fee charging nothing here says nothing
+      const rows: HeldRow[] = lanes.flatMap((lane) => {
+        const cost = costOf(lane.fee);
+        if (lane.group !== group || !(cost > 0)) return [];
         const part = lane.parts ? partAt(lane.parts, v) : undefined;
-        // the flag is on the sum of the current accounts: on the total and each row that charges something, never on a row of 0 ₪
-        const cost = costOf(fee);
-        return [{ fee, cost: yearCostOf(cost, "F-112", { ...inputs, ...amountIn }, r.today, isAccount(fee) && cost > 0 ? flag : null), ...(part ? { part } : {}) }];
+        // the flag is on the sum of the current accounts: on the total and each account's row
+        return [{ fee: lane.fee, cost: yearCostOf(cost, "F-112", { ...inputs, ...amountIn }, r.today, isAccount(lane.fee) ? flag : null), ...(part ? { part } : {}) }];
       });
-      const sum = layers.filter((l) => l.layer === layer).reduce((a, l) => a + l.cost, 0);
-      return { layer, total: reading(sum, "nis", "F-123", { ...inputs, ...amountIn }, r.today), rows };
+      const sum = rows.reduce((a, row) => a + (row.cost.value as number), 0);
+      return { group, total: reading(sum, "nis", "F-112", { ...inputs, ...amountIn }, r.today), rows };
     });
     return { amount, total, share: reading(costShare(total.value as number, v) * 100, "pct", "F-123", { ...amountIn, "deal:cost": total }, r.today), groups: groups.filter((g) => g.rows.length > 0) };
   };
@@ -906,7 +917,7 @@ function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSna
       range,
       sample,
       rates: values,
-      head: crossValue ? { kind: "cross", at: crossValue } : { kind: "marks", n: marks.length },
+      head: crossValue ? { kind: "cross", at: crossValue } : lone && lone.kind !== "cross" && lone.kind !== "part" ? { kind: "mark", at: lone.label, of: lone.kind } : { kind: "marks", n: marks.length },
       cross,
       bands,
       falls,
