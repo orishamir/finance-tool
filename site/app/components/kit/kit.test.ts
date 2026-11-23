@@ -13,7 +13,8 @@ import { KitGallery } from "./gallery";
 import { SHORT_IN_ROW, shortBillions } from "../../lib/format";
 import { gershayim, keepTitleWhole } from "./name";
 import { chipName } from "./choice";
-import { markLabels } from "./share-chart";
+import { markLabels, ShareChart } from "./share-chart";
+import { AmountLanes } from "./amount-lanes";
 
 const today = "2026-10-25";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -318,18 +319,14 @@ describe("AddLine", () => {
 });
 
 describe("ChoiceChips", () => {
-  it("marks the chosen chip by its fill and a check before its words; the others show no check, and every chip holds the room of the check and its words at the chosen weight", () => {
+  it("marks the chosen chip by its fill, a check before its words and its words held at the chosen weight; the others carry no check", () => {
     const out = html(createElement(ChoiceChips, { ids: ["a", "b"], labels: { a: "חוק", b: "תקנות" }, value: "a", onChange: () => {}, ariaLabel: "x" }));
-    const [on = "", off = ""] = out.split('role="radio"').slice(1);
-    // the room held: the chosen look laid out unseen, its check and its words at the chosen weight
-    const room = /<span aria-hidden="true" class="invisible [^"]*font-semibold[^"]*"><svg [^>]*lucide-check.*?<\/span><\/span>/;
-    expect(on).toMatch(room);
-    expect(off).toMatch(room);
-    const shown = (chip: string) => chip.replace(room, "");
-    expect(on).toMatch(/class="sec-chip [^"]*sec-chip-on"/);
-    expect(shown(on)).toContain("lucide-check");
+    const [on, off] = out.split('role="radio"').slice(1);
+    expect(on).toMatch(/class="sec-chip [^"]*sec-chip-on ps-2\.5"/);
+    expect(on).toContain("lucide-check");
+    expect(on).toContain("invisible font-semibold");
     expect(off).not.toContain("sec-chip-on");
-    expect(shown(off)).not.toContain("lucide-check");
+    expect(off).not.toContain("lucide-check");
   });
   it("names each chip by its words and, where the row counts, its count, as the eye reads it", () => {
     expect(chipName("אג\"ח", 12)).toBe(`${gershayim("אג\"ח")} 12`);
@@ -425,5 +422,39 @@ describe("ShareChart's mark labels", () => {
       800,
     );
     expect(n2!.lx + 60).toBeLessThanOrEqual(300);
+  });
+});
+
+describe("a thing with a lane and a layer in each group", () => {
+  // a fee that is a sum per period up to 100,000 and a share above: a lane and a layer in each group, both of the one fee
+  const range = { lo: 10_000, hi: 1_000_000 };
+  const lanes = [
+    { id: "fee:share", of: "fee", name: "SHARE-LANE", swatch: "", group: "share", parts: [{ id: "s", from: 100_000, to: null, label: "0.1%" }] },
+    { id: "fee:sum", of: "fee", name: "SUM-LANE", swatch: "", group: "sum", parts: [{ id: "f", from: 0, to: 100_000, label: "240" }] },
+  ];
+  const pressed = (at: number) => {
+    const out = renderToString(createElement(AmountLanes, { title: "", range, lanes, groups: [{ id: "share", label: "" }, { id: "sum", label: "" }], at }));
+    return [...out.matchAll(/<button[^>]*aria-label="([^"]*)"[^>]*aria-pressed="true"/g)].map((m) => m[1]);
+  };
+
+  it("lights only the part that charges at a step's top: the lower step's, up to and with its top", () => {
+    expect(pressed(100_000)).toEqual(["SUM-LANE: 240"]);
+    expect(pressed(100_001)).toEqual(["SHARE-LANE: 0.1%"]);
+    expect(pressed(50_000)).toEqual(["SUM-LANE: 240"]);
+  });
+
+  it("sets every layer of the thing apart, each near solid with its edge, the others stepping back", () => {
+    const points = [10_000, 100_000, 100_000.1, 1_000_000].map((at) => ({ at, share: 1, layers: [0.5, 0.25, 0.25] }));
+    const layers = [
+      { id: "fee:share", of: "fee", fill: "", edge: "EDGE-A", group: "share" },
+      { id: "fee:sum", of: "fee", fill: "", edge: "EDGE-B", group: "sum" },
+      { id: "other", fill: "", edge: "EDGE-C", group: "sum" },
+    ];
+    const out = renderToString(createElement(ShareChart, { range, points, top: 1, layers, strong: "fee", xTitle: "" }));
+    expect([...out.matchAll(/data-mark="area"/g)]).toHaveLength(3);
+    expect([...out.matchAll(/fill-opacity="([\d.]+)"/g)].map((m) => m[1])).toEqual(["0.8", "0.8", "0.2"]);
+    expect(out).toContain("EDGE-A");
+    expect(out).toContain("EDGE-B");
+    expect(out).not.toContain("EDGE-C");
   });
 });

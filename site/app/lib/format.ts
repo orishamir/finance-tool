@@ -219,12 +219,26 @@ const fixed = (digits: number, style: "decimal" | "percent"): Intl.NumberFormat 
  * rounded.
  */
 export function nisShown(v: number, state?: "sourced" | "computed" | "entered", parameter = false): string {
+  return showsWhole(v, state, parameter) ? fmt.nisWhole(v) : fmt.nis(v);
+}
+
+/** Whether `nisShown` writes an amount in whole shekels, else with its agorot. */
+function showsWhole(v: number, state: "sourced" | "computed" | "entered" | undefined, parameter: boolean): boolean {
   const derived = state === "computed" || state === "entered" || parameter;
   // what the site calculates (or the person entered) shows whole shekels, except a cost of a few shekels, where rounding changes the meaning;
   // a figure set by law or a price list keeps the agorot it prints
-  if (derived && (Math.abs(v) >= 10 || Number.isInteger(v))) return fmt.nisWhole(v);
-  if (Math.abs(v) >= 1000 && Number.isInteger(v)) return fmt.nisWhole(v);
-  return fmt.nis(v);
+  return (derived && (Math.abs(v) >= 10 || Number.isInteger(v))) || (Math.abs(v) >= 1000 && Number.isInteger(v));
+}
+
+/**
+ * The number a shekel amount reads as on the page (`formatValue` by `nisShown`): whole shekels or agorot, rounded half away from zero as
+ * the formatter rounds. A figure worked out from shown amounts starts from these, so it agrees with them as written. Any other unit is
+ * returned as it is.
+ */
+export function amountShown(v: number, unit: string, state?: "sourced" | "computed" | "entered", parameter = false): number {
+  if (!["nis", "nis_per_month", "nis_per_trade", "nis_per_transfer"].includes(unit)) return v;
+  const scale = showsWhole(v, state, parameter) ? 1 : 100;
+  return (Math.sign(v) * Math.round(Math.abs(v) * scale)) / scale + 0;
 }
 
 /**

@@ -26,13 +26,21 @@ export interface SharePoint {
   layers?: number[];
 }
 
-/** A layer of a layered chart, bottom up: its fill (`fill-fee-custody`), its edge while it is set apart (`stroke-fee-custody`), and the group it is named with. */
+/**
+ * A layer of a layered chart, bottom up: its fill (`fill-fee-custody`), its edge while it is set apart (`stroke-fee-custody`), and the group
+ * it is named with. `of`: the thing it is a layer of, where that thing has several (a fee with a layer in each group): the layers of one
+ * `of` are set apart together, and the pointer over any of them hands up the `of`.
+ */
 export interface ShareLayer {
   id: string;
   fill: string;
   edge?: string;
   group: string;
+  of?: string;
 }
+
+/** What setting a layer apart names: its `of`, else its own id. */
+const setOf = (l: ShareLayer): string => l.of ?? l.id;
 
 /** A group of layers, named on its band where the band holds the name (`groupNameAt`). */
 export interface ShareGroup {
@@ -321,8 +329,9 @@ export const useInStack = () => useContext(StackCtx);
  * `range`: the amounts the axis spans. `points`: the curve sampled over it, rising (two samples at one amount where it jumps). `top`: the
  * least the value axis reaches (its nice step at or above it is its top); the curve above it is cut at the top, and `over` is then written
  * over the value axis ("↑ 14.4% ב־1,000"), on a row of its own where the first zone's name would meet it. `layers` and `groups`: a layered
- * chart's layers bottom up, each sample's `layers` their shares; `strong`, a layer set apart (it turns near solid with an edge in its own
- * colour, `edge`, and the others step back), and `onStrong`, the layer under the pointer. `marks`, `zones`: as their types say.
+ * chart's layers bottom up, each sample's `layers` their shares; `strong`, a layer set apart, or every layer of one `of` (each turns near
+ * solid with an edge in its own colour, `edge`, and the others step back), and `onStrong`, the layer under the pointer (its `of` where it
+ * has one). `marks`, `zones`: as their types say.
  * `point`: the reader's amount and its tag, which a drag, a tap or the arrow keys move (`onPoint`); `spoken` names it; on a phone the tag
  * and the marks' words give way and the point is held by a large knob on the amount axis. Without a point, the pointer reads the amount
  * under it (`onRead`, null as it leaves; `boxed` where the chart shows `tip`'s box of values beside it, from 640 px), with a dot where its
@@ -534,7 +543,7 @@ export function ShareChart({
     if (!layers?.length || !onStrong) return;
     const v = ((base - (e.clientY - e.currentTarget.getBoundingClientRect().top)) / plotH) * yTop;
     const k = tops.findIndex((t) => shareAt(points, a, t) >= v);
-    onStrong(v >= 0 && k >= 0 ? layers[k]!.id : null);
+    onStrong(v >= 0 && k >= 0 ? setOf(layers[k]!) : null);
   };
   const down = (e: PointerEvent<SVGSVGElement>) => {
     const a = amountFrom(e);
@@ -598,8 +607,8 @@ export function ShareChart({
 
   // the layers in their fee colours a little under half over the card, so the group names in the foreground read on them at 4.5:1; the
   // layer set apart turns near solid and the others step back to under half of that
-  const opacity = (id: string) => (!strong ? 0.45 : strong === id ? 0.8 : 0.2);
-  const hot = strong ? (layers ?? []).findIndex((l) => l.id === strong) : -1;
+  const opacity = (l: ShareLayer) => (!strong ? 0.45 : strong === setOf(l) ? 0.8 : 0.2);
+  const hot = strong ? (layers ?? []).flatMap((l, k) => (setOf(l) === strong && l.edge ? [{ k, edge: l.edge }] : [])) : [];
   const clipId = `share-plot-${uid.replace(/:/g, "")}`;
 
   return (
@@ -637,14 +646,14 @@ export function ShareChart({
             </g>
           ))}
           <g clipPath={`url(#${clipId})`}>
-            {layers?.map((l, k) => <path key={l.id} d={area(k)} className={l.fill} fillOpacity={opacity(l.id)} data-mark="area" />)}
+            {layers?.map((l, k) => <path key={l.id} d={area(k)} className={l.fill} fillOpacity={opacity(l)} data-mark="area" />)}
             {layers?.map((l, k) => <path key={`${l.id}:top`} d={path(tops[k]!)} fill="none" className="stroke-card" strokeWidth={1} />)}
-            {hot >= 0 && layers![hot]!.edge && (
-              <g fill="none" className={layers![hot]!.edge} strokeWidth={2}>
-                <path d={path(tops[hot]!)} />
-                <path d={hot ? path(tops[hot - 1]!) : `M${plotL} ${base}H${plotR}`} />
+            {hot.map(({ k, edge }) => (
+              <g key={`${k}:edge`} fill="none" className={edge} strokeWidth={2}>
+                <path d={path(tops[k]!)} />
+                <path d={k ? path(tops[k - 1]!) : `M${plotL} ${base}H${plotR}`} />
               </g>
-            )}
+            ))}
             <path d={path((p) => p.share)} fill="none" className="stroke-foreground" strokeWidth={2} strokeLinejoin="round" />
           </g>
           {names.map((n) => (

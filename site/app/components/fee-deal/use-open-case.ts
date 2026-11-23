@@ -60,20 +60,6 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
       if (!panelColumn) bringIntoView(panelCard.current);
     }
   }, [chosen]);
-  // a fee opened by the pointer stays where it was under it: the fee open before closes in the same frame, and where it stood above, the
-  // page moves by what it gave back, before the frame is painted (and once more after the browser's own scroll anchoring)
-  const opened = useRef<{ fee: string; top: number } | null>(null);
-  useIsoLayoutEffect(() => {
-    const o = opened.current;
-    opened.current = null;
-    if (!o || o.fee !== chosen) return;
-    const hold = () => {
-      const top = feeCard(o.fee)?.getBoundingClientRect().top;
-      if (top !== undefined && Math.abs(top - o.top) > 0.5) window.scrollBy({ top: top - o.top, behavior: "instant" });
-    };
-    hold();
-    requestAnimationFrame(hold);
-  }, [chosen]);
   // a case opened in place is brought into view once drawn: under the header, and above a phone's sheet, which unfolds with it; opened by a
   // press on a table's cell or head, never so far that the cell pressed leaves the view
   const [caseShown, setCaseShown] = useState(0);
@@ -101,8 +87,6 @@ export function useOpenCase({ deal, read, chosen, setChosen, phone, panelColumn 
       pressed.current = null;
     }
     if (caseId) setCaseShown((n) => n + 1);
-    const card = by === "pointer" && feeId !== chosen ? feeCard(feeId) : null;
-    opened.current = card ? { fee: feeId, top: card.getBoundingClientRect().top } : null;
     setChosen(feeId);
     setCaseOpen(caseId ? { fee: feeId, case: caseId } : null);
     setSeveral(null);

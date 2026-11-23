@@ -7,6 +7,7 @@ import { ruleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
 import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult } from "../result.ts";
 import { exitTax, OrderCash, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
+import { NotEvaluatedError } from "./securities.ts";
 
 export interface MakamInput {
   goal: Goal;
@@ -65,6 +66,10 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
   const first = goal.firstMonth ?? 1;
   const I = cpiPath(input.market.inflation, T);
   const C = contributions(goal, I);
+  // a negative yield redeems a series below its cost: TXI-11 taxes a discount, and TXI-13's capital loss at redemption reaches only a holder
+  // who did not hold the series from its issue, which this run's buyer did, so no rule says how the shortfall is taxed; the run stops rather
+  // than tax it as negative interest (G-41)
+  if (makam.yield < 0) throw new NotEvaluatedError("G-41");
   const discountRate = book.rate("TXI-11", "rate");
   const custodyFree = input.memberKind !== "non-bank";
   if (custodyFree) book.cite("BRK-17");

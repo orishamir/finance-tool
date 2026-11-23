@@ -25,8 +25,26 @@ export interface SignatureData {
   ruleIds: string[];
 }
 
-/** The wrappers whose illustrative run rests on a cash rate, not on A-01 (the timeline edits "ריבית בשנה" for them). */
-export const cashLikeIds = ["current-account", "bank-deposit", "savings-plan", "money-market-fund-daily", "money-market-fund-renewable", "makam", "government-bond"];
+/**
+ * Which P-05 range bounds the cash rate's field: `interest` for a run that taxes the rate as interest (a deposit, a savings plan, the
+ * current account, makam's discount, a bond's coupon), which takes no rate below 0, as the rule base holds no rule for the tax on interest
+ * below zero (method G-41); `pct` for a money-market fund, whose return below zero is a fund's loss, as any fund's return may be.
+ */
+export type CashRateRange = "interest" | "pct";
+
+/** The wrappers whose illustrative run rests on a cash rate, not on A-01 (the timeline edits "ריבית בשנה" for them), with the range of that field. */
+export const cashRateRange = {
+  "current-account": "interest",
+  "bank-deposit": "interest",
+  "savings-plan": "interest",
+  "money-market-fund-daily": "pct",
+  "money-market-fund-renewable": "pct",
+  makam: "interest",
+  "government-bond": "interest",
+} as const satisfies Record<string, CashRateRange>;
+
+/** The range of a wrapper's cash-rate field, or null where its run rests on A-01 and not on a cash rate. */
+export const cashRateRangeOf = (id: string): CashRateRange | null => (Object.hasOwn(cashRateRange, id) ? cashRateRange[id as keyof typeof cashRateRange] : null);
 
 /** The wrappers whose timeline runs one amount put in today, with no monthly deposit: a deposit is opened with one sum, and money paid in every month goes to a savings plan (BANK-28). */
 export const lumpSumIds = ["bank-deposit"];

@@ -12,10 +12,10 @@ import { dealOfAddress, packDeal, unpackDeal } from "./link";
 import { monthKey, NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num, type SlimFee, type Stage } from "./model";
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./deal-read";
-import { readingOf } from "./reading";
+import { pickLine, readingOf } from "./reading";
 import { ACCOUNT_CAP_RULES, accountCapOf, type ActionView, type HeldPanelView, type HeldView } from "./charts";
 import { dataBar, dealFromTemplate, dealFromTrack, dealName, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions, withLaterFills, withLaterFillsAll } from "./templates";
-import { addFee, updateFee } from "./edits/deal";
+import { addFee, setPick, updateFee } from "./edits/deal";
 import { withFigure } from "./edits/price";
 import { editPrice } from "./edits/stage";
 import { offerFor } from "./offers/offer";
@@ -179,6 +179,18 @@ describe("templates", () => {
     for (const t of data.tracks) {
       const d = dealFromTrack(t.id, data, TODAY);
       if (d) expect(readDeal(JSON.parse(JSON.stringify(d))), `track ${t.id}`).toEqual(d);
+    }
+  });
+  it("reads every house's deal for each value of each thing its reading offers to pick, with and without a unit's price", () => {
+    for (const h of data.houses) {
+      const d = fillDeal(newDeal("brokerage-account"), `house:${h.id}`, data, TODAY);
+      if (!d) throw new Error(`no template: ${h.id}`);
+      for (const t of pickLine(read(d))?.things ?? [])
+        for (const o of t.options)
+          for (const unit of [null, 50]) {
+            const picked = setPick(d, t.by, o.is);
+            expect(() => readingOf(read(picked), data.fx, unit), `${h.id} ${t.by} ${o.is} ${unit}`).not.toThrow();
+          }
     }
   });
   it("fills a securities account from a house, keeping each fee's place and naming the house", () => {
@@ -734,7 +746,7 @@ describe("a bank's current account, filled from its whole list (F-102, D64)", ()
     const withCard = yearAt(d);
     const without = yearAt({ ...d, fees: d.fees.filter((f) => f.kind !== "current_account") });
     expect((withCard.total.value as number) - (without.total.value as number)).toBeCloseTo(monthly() * 12, 6);
-    const fixed = withCard.groups.find((g) => g.layer === "fixed")?.rows.find((x) => x.fee.ref.kind === "current_account");
+    const fixed = withCard.groups.find((g) => g.group === "sum")?.rows.find((x) => x.fee.ref.kind === "current_account");
     expect(fixed?.cost.value).toBeCloseTo(monthly() * 12, 6);
   });
 
@@ -833,11 +845,12 @@ describe("a bank's current account, filled from its whole list (F-102, D64)", ()
     const twoAt = readingOf(read(two), data.fx, null, cap).panels.held.flatMap((v) => ("chart" in v ? [v.chart.readAt(100_000)] : []));
     expect(twoAt.flatMap((at) => at.groups.flatMap((g) => g.rows).filter((x) => x.fee.ref.kind === "current_account").map((x) => x.cost.flags ?? []))).toEqual([["BANK-35"], ["BANK-35"]]);
     expect(twoAt.map((at) => at.total.flags ?? [])).toEqual([["BANK-35"]]);
-    // a current account that charges nothing beside one above the cap: the sum's flag is on the total and the row that charges, not on 0 ₪
+    // a current account that charges nothing beside one above the cap: the sum's flag is on the total and the row that charges; the one of
+    // 0 ₪ has no row
     const free: FeeDeal = { ...deal(above, null, 0), fees: [...deal(above, null, 0).fees, { id: "fee-account-free", kind: "current_account", stages: [{ price: { form: "sum", amount: typed(0), every: 1 } }] }] };
     const freeAt = readingOf(read(free), data.fx, null, cap).panels.held.flatMap((v) => ("chart" in v ? [v.chart.readAt(100_000)] : []));
     const accounts = freeAt.flatMap((at) => at.groups.flatMap((g) => g.rows).filter((x) => x.fee.ref.kind === "current_account"));
-    expect(accounts.map((x) => [x.cost.value, x.cost.flags ?? []])).toEqual([[above * 12, ["BANK-35"]], [0, []]]);
+    expect(accounts.map((x) => [x.cost.value, x.cost.flags ?? []])).toEqual([[above * 12, ["BANK-35"]]]);
     expect(freeAt.map((at) => at.total.flags ?? [])).toEqual([["BANK-35"]]);
   });
 

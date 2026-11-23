@@ -3,9 +3,10 @@ import { describe, expect, it } from "vitest";
 import { bondPrice, makamPrice } from "@finance-tool/engine";
 import { buildGuidePage, depositSheetNames } from "./guide.server";
 import type { DepositTerms } from "@finance-tool/schema";
-import { runTimeline } from "./engine";
+import { p05Range, runTimeline } from "./engine";
+import { percentCheck } from "../components/kit";
 import { guideSignature } from "../copy";
-import { accountAxis, accountFact, bankYearlyMax, bondModel, brokenCondition, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer, type SignatureData } from "./guide-signature";
+import { accountAxis, accountFact, cashRateRangeOf, bankYearlyMax, bondModel, brokenCondition, slowerPayNoMore, bundleAtBank, currentAccountModel, fact, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, silentBanks, topPayer, type SignatureData } from "./guide-signature";
 
 const page = (id: string) => buildGuidePage(id)!;
 const cashRate = (id: string) => ((page(id).bundle!.p05 as unknown as { inputs: { cash_rate: { value: number } } }).inputs.cash_rate.value);
@@ -64,6 +65,22 @@ describe("timeline fixes on the cash-like pages", () => {
     const c = runTimeline(b, { entered: { "A-01": 12 }, age: null });
     if (a.kind !== "ok" || c.kind !== "ok") throw new Error("run failed");
     expect(c.years.at(-1)!.nominal).toBe(a.years.at(-1)!.nominal);
+  });
+  it("takes no interest rate below 0 where the run taxes it as interest, and does not run one (method G-41)", () => {
+    const interestPages = ["current-account", "bank-deposit", "savings-plan", "makam", "government-bond"];
+    for (const id of interestPages) {
+      expect(cashRateRangeOf(id)).toBe("interest");
+      const b = page(id).bundle!;
+      const range = p05Range(b.p05, "ranges", cashRateRangeOf(id)!);
+      expect(range!.min).toBeGreaterThanOrEqual(0);
+      expect(percentCheck(range!)(-10)).not.toBeNull();
+      expect(percentCheck(range!)(range!.min)).toBeNull();
+      // a negative rate kept from before is not run as a tax refund
+      expect(runTimeline(b, { entered: { cash_rate: -10 }, age: null }).kind).toBe("failed");
+    }
+    // a money-market fund's return below zero is a fund's loss, which its run computes: its field keeps the shared range
+    expect(cashRateRangeOf("money-market-fund-daily")).toBe("pct");
+    expect(cashRateRangeOf("brokerage-account")).toBeNull();
   });
   it("keeps the brokerage account without a visual", () => {
     expect(page("brokerage-account").signature).toBeNull();

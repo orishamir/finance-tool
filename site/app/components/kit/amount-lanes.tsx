@@ -16,7 +16,10 @@ import { SHARE_PLOT, useInStack } from "./share-chart";
 import { cx } from "./cx";
 import { useWidth } from "./marker";
 
-/** A part of a lane: the amounts it holds over (`to` null: to the axis's end), its words, and its words on a phone. */
+/**
+ * A part of a lane: the amounts it holds over, more than `from` and up to `to` (null: to the axis's end), so an amount on the line between
+ * two parts is the lower one's ("עד" takes its top in), its words, and its words on a phone.
+ */
 export interface AmountLanePart {
   id: string;
   from: number;
@@ -29,9 +32,12 @@ export interface AmountLanePart {
  * A fee's lane: its name, its swatch (`bg-fee-trade`) and its edge (`border-fee-trade`, a part's outline), its parts, or none for a price
  * the same at every amount, whose quiet line carries `price` after the name. `per`: the words a phone adds to the name (the period its
  * parts' figures are per). `group`: the group it stands in. `help`: a "?" after the name (`HelpMark`), for what its parts' words assume.
+ * `of`: the thing it is a lane of, where that thing has several (a fee with a lane in each group): the lanes of one `of` are set apart
+ * together, and the pointer over any of them hands up the `of`.
  */
 export interface AmountLane {
   id: string;
+  of?: string;
   name: string;
   swatch: string;
   edge?: string;
@@ -51,8 +57,8 @@ const clip = (range: LogRange, a: number) => Math.max(0, Math.min(1, logAt(range
 
 /**
  * `title`: the lanes' heading. `groups`: the groups' names in order, by id (lanes without a group stand first, under no name). `at`: the
- * reader's amount; `strong`: the lane set apart, and `back`, whether the other lanes step back while it is. `onPart` and `onLane`: a tap on
- * a part, the lane under the pointer (null as it leaves).
+ * reader's amount; `strong`: the lane set apart, or every lane of one `of`, and `back`, whether the other lanes step back while it is.
+ * `onPart` and `onLane`: a tap on a part, the lane under the pointer (its `of` where it has one; null as it leaves).
  */
 export function AmountLanes({ title, range, lanes, groups = [], at = null, entered = false, strong = null, back = false, onPart, onLane, className }: { title: ReactNode; range: LogRange; lanes: AmountLane[]; groups?: { id: string; label: string }[]; at?: number | null; /** The reader's amount is one they set (the chart's point): its line is in the entered colour. */ entered?: boolean; strong?: string | null; back?: boolean; onPart?: (lane: string, part: AmountLanePart) => void; onLane?: (lane: string | null) => void; className?: string }) {
   const [ref, w] = useWidth(560);
@@ -60,9 +66,9 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
   const phone = w < PHONE;
   const plotW = Math.max(1, w - SHARE_PLOT.left - SHARE_PLOT.right);
   const sets = [{ id: "", label: "" }, ...groups].map((g) => ({ g, lanes: lanes.filter((l) => (l.group ?? "") === g.id) })).filter((s) => s.lanes.length > 0);
-  // one part lit in a lane, at a boundary the earlier one (a part "up to" a sum takes its top in), as the reading picks it
-  const holds = (p: AmountLanePart) => at !== null && at > p.from * (1 - 1e-9) && (p.to === null || at <= p.to * (1 + 1e-9));
-  const lit = (p: AmountLanePart) => holds(p) && lanes.find((l) => l.parts?.includes(p))?.parts?.find(holds) === p;
+  // the part holding the reader's amount is lit: more than its bottom and up to its top, so at a boundary only the lower part is, in its
+  // own lane or in another lane of the same thing
+  const lit = (p: AmountLanePart) => at !== null && at > p.from * (1 + 1e-9) && (p.to === null || at <= p.to * (1 + 1e-9));
   const inset = { marginLeft: SHARE_PLOT.left, marginRight: SHARE_PLOT.right };
 
   return (
@@ -73,10 +79,10 @@ export function AmountLanes({ title, range, lanes, groups = [], at = null, enter
           {g.label && <p className="text-xs text-muted-foreground">{g.label}</p>}
           {ls.map((l) => {
             const name = phone && l.per ? `${l.name}${l.per}` : l.name;
-            const hot = strong === l.id;
+            const hot = strong === (l.of ?? l.id);
             const dim = back && strong !== null && !hot;
             const nameClass = cx("flex items-center gap-1.5 text-xs", hot ? "font-semibold text-foreground" : "text-muted-foreground", dim && "opacity-70");
-            const events = onLane ? { onPointerEnter: (e: PointerEvent) => e.pointerType === "mouse" && onLane(l.id), onPointerLeave: (e: PointerEvent) => e.pointerType === "mouse" && onLane(null) } : {};
+            const events = onLane ? { onPointerEnter: (e: PointerEvent) => e.pointerType === "mouse" && onLane(l.of ?? l.id), onPointerLeave: (e: PointerEvent) => e.pointerType === "mouse" && onLane(null) } : {};
             if (!l.parts)
               return (
                 <div key={l.id} {...events} className="flex items-center gap-3">

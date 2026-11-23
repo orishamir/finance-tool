@@ -125,6 +125,9 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
   const tally = new Tally();
   const effective = deposit.rateBasis === "effective";
   const facts = { basis: deposit.rateBasis, termDays: deposit.termDays, calc: deposit.interestCalc, paidOut: deposit.interestPaidOut };
+  // the rule base holds no rule for the tax on interest below zero (TXI-07, TXI-08 withhold on interest paid; TXI-25 is negative linkage,
+  // not a negative rate), so a negative rate, a CPI-linked deposit's real rate included, is not run rather than taxed as a refund (G-41)
+  if (deposit.rate < 0) throw new NotEvaluatedError("G-41");
   // interest paid out at a rate quoted as effective is not in the method (F-21, G-37)
   if (!isCurrentAccount && effective && deposit.interestPaidOut) throw new NotEvaluatedError("G-37");
   // F-21: how the term's interest grows, worked out once for the run; a term over a year compounds at a rate only the product's own terms

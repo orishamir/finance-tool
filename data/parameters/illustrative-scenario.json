@@ -739,6 +739,46 @@
         "notes": "highest yearly percentage the return and inflation fields accept; set for the site on 2026-10-23 for the values sheet's error messages (copy 3.7)",
         "rationale_he": "האחוז השנתי הגבוה ביותר ששדות התשואה והאינפלציה מקבלים. זה גבול שהאתר קבע כדי לתפוס טעות הקלדה, לא תחזית."
       }
+    },
+    "interest": {
+      "min": {
+        "value": 0,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "The site's range for the guide page's input fields",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-11-23",
+        "effective_from": "2026-11-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "founder",
+        "rule_ids": [],
+        "state": "sourced",
+        "notes": "lowest yearly interest rate the interest field of a guide that taxes it as interest accepts (a deposit, a savings plan, the current account, makam, a government bond): the rule base has no rule for the tax on interest below zero (method G-41)",
+        "rationale_he": "הריבית השנתית הנמוכה ביותר ששדה הריבית מקבל בעו״ש, בפיקדון, בתוכנית חיסכון, במק״מ ובאג״ח מדינה. האתר לא מצא בכללים שקרא איך ממוסה ריבית מתחת לאפס, ולכן הוא לא מחשב אותה."
+      },
+      "max": {
+        "value": 50,
+        "unit": "pct_per_year",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "The site's range for the guide page's input fields",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-11-23",
+        "effective_from": "2026-11-23",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "founder",
+        "rule_ids": [],
+        "state": "sourced",
+        "notes": "highest yearly interest rate the interest field of a guide that taxes it as interest accepts; the same bound as ranges.pct",
+        "rationale_he": "הריבית השנתית הגבוהה ביותר ששדה הריבית מקבל. זה גבול שהאתר קבע כדי לתפוס טעות הקלדה, לא תחזית."
+      }
     }
   }
 }

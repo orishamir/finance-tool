@@ -290,6 +290,17 @@ export interface Reading {
 }
 
 /**
+ * What /deal's reading is read from (`readingOf`), besides the exchange rates: the deal as it is counted, the unit's price typed, BANK-35's
+ * cap, and the picks, which are of the whole deal (`pickLine`), so a fee switched off leaves them as they stand.
+ */
+export interface ReadingInput {
+  read: DealRead;
+  unitPrice: number | null;
+  cap: AccountCap | null;
+  picks: PickLine | null;
+}
+
+/**
  * The reading of a deal, from the deal read once (`readDealFor`), with the site's exchange rates (F-84) for a sum in another currency, and
  * the unit's price the person gave beside the chart (`unitPrice`, a number in `Reading.unitPrice.currency`; absent, or not above nothing,
  * where none is given), and BANK-35's cap (`cap`, `accountCapOf`), which flags a current account's year of holding where it is above it.

@@ -9,7 +9,7 @@ import { useInputs, type Employment } from "../../lib/inputs";
 import { useOwnRates } from "../../lib/own-rate";
 import { useValueMode, type ValueMode as Mode } from "../../lib/mode-store";
 import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
-import { lumpSumEntered } from "../../lib/guide-signature";
+import { lumpSumEntered, type CashRateRange } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconReset } from "../icons";
 import { IdRef, Num, RuleRef, StateTag } from "../provenance";
@@ -32,7 +32,7 @@ export interface TimelineProps {
    * A cash-like page (guide-page sweep): the run rests on a rate, not on A-01, so the field reads "ריבית בשנה" and edits the rate the run
    * uses, kept on this device per page (the own-rates store, goal id "guide"). A rate the person enters applies to the whole balance (F-26, no ceiling).
    */
-  cash?: { id: string; published: boolean; /** The run starts from the rate most of the collected banks publish (F-85): how many print it, out of how many (the current account). */ common?: { count: SiteValue; of: SiteValue } | null } | null;
+  cash?: { id: string; /** The P-05 range the "ריבית בשנה" field takes (`cashRateRange`). */ rateRange: CashRateRange; published: boolean; /** The run starts from the rate most of the collected banks publish (F-85): how many print it, out of how many (the current account). */ common?: { count: SiteValue; of: SiteValue } | null } | null;
   /**
    * The run is one amount put in today, with no monthly deposit (`lumpSumIds`): the monthly field, its chip and its words are left out,
    * a monthly deposit entered on another page does not reach this run, and `note` says where money paid in every month goes instead.
@@ -558,6 +558,8 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
   // the age's range is a site parameter (P-05 ranges.age); without it, only a whole number is asked
   const checkAge = ageRange ? ageCheck(ageRange) : (n: number) => (Number.isInteger(n) ? null : valuesCopy.errors.nan);
   const pctCheck = percentCheck(pctRange ?? undefined);
+  // the cash rate's own range: P-05 `ranges.interest`, from 0, where the run taxes the rate as interest (method G-41), else `ranges.pct`
+  const cashCheck = cash ? percentCheck(p05Range(p05, "ranges", cash.rateRange) ?? undefined) : pctCheck;
   const publishedFrom = cashBase.update_rule === "founder" ? null : cashBase.effective_from;
   const common = cash?.common;
   // a deposit or a savings plan renews at the end of its term at the rate the bank publishes that day (BANK-05): past the first term the
@@ -604,7 +606,7 @@ function ValuesPanel({ bundle, focusField, employment, showAge, cash, lumpSum, o
       </div>
       <div className="field-row grid grid-cols-2 gap-3">
         {cash ? (
-          <div data-field="cash_rate" className="contents"><NumberField label={valuesCopy.fields.cash_rate} unit="pct_per_year" value={current("cash_rate")} start={p05Number(p05, "cash_rate")} isEntered={isEntered("cash_rate")} validate={pctCheck} onCommit={(n) => setOwnRate(n === p05Number(p05, "cash_rate") ? null : n)} onReset={() => setOwnRate(null)} disabled={!ready} autoFocus={focusField === "cash_rate"} /></div>
+          <div data-field="cash_rate" className="contents"><NumberField label={valuesCopy.fields.cash_rate} unit="pct_per_year" value={current("cash_rate")} start={p05Number(p05, "cash_rate")} isEntered={isEntered("cash_rate")} validate={cashCheck} onCommit={(n) => setOwnRate(n === p05Number(p05, "cash_rate") ? null : n)} onReset={() => setOwnRate(null)} disabled={!ready} autoFocus={focusField === "cash_rate"} /></div>
         ) : (
           <div data-field="A-01" className="contents"><NumberField label={valuesCopy.fields["A-01"]} unit="pct_per_year" value={current("A-01")} start={p05Number(p05, "A-01")} isEntered={isEntered("A-01")} validate={pctCheck} onCommit={commit("A-01")} onReset={() => setEntered("A-01", null)} disabled={!ready} autoFocus={focusField === "A-01"} /></div>
         )}
