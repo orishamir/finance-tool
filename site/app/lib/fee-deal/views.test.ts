@@ -734,7 +734,7 @@ describe("a bank's current account, filled from its whole list (F-102, D64)", ()
     const withCard = yearAt(d);
     const without = yearAt({ ...d, fees: d.fees.filter((f) => f.kind !== "current_account") });
     expect((withCard.total.value as number) - (without.total.value as number)).toBeCloseTo(monthly() * 12, 6);
-    const fixed = withCard.groups.find((g) => g.group === "fixed")?.rows.find((x) => x.fee.ref.kind === "current_account");
+    const fixed = withCard.groups.find((g) => g.group === "sum")?.rows.find((x) => x.fee.ref.kind === "current_account");
     expect(fixed?.cost.value).toBeCloseTo(monthly() * 12, 6);
   });
 

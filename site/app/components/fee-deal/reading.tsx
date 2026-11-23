@@ -12,7 +12,7 @@ import { countPhrase, fmt, formatValue, joinLead } from "../../lib/format";
 import type { MonthKey } from "../../lib/fee-deal/model";
 import type { FeeRef } from "../../lib/fee-deal/deal-read";
 import type { LawRow, PeriodCard, PeriodRow, Reading, StatedPart } from "../../lib/fee-deal/reading";
-import { roundAmount, settleRange, type ActionReading, type ActionTab, type ActionView, type AmountRange, type ChartFee, type CurvePoint, type HeldReading, type HeldView, type Lane, type LanePart, type OneView, type TimelinePeriod, type UndrawnView, type UnpricedView } from "../../lib/fee-deal/charts";
+import { HELD_KINDS, roundAmount, settleRange, type ActionReading, type ActionTab, type ActionView, type AmountRange, type ChartFee, type CurvePoint, type HeldReading, type HeldView, type Lane, type LanePart, type OneView, type TimelinePeriod, type UndrawnView, type UnpricedView } from "../../lib/fee-deal/charts";
 import { lawHead, periodsHead, type PeriodsHead } from "../../lib/fee-deal/reading-heads";
 import { AmountLanes, Card, EmptyState, HelpMark, NumberField, PanelHead, PERIOD_WIDE, PeriodTrack, periodColumns, RangeFields, SegmentedControl, ShareBar, ShareChart, ShareStack, Swatch, Tag, TypedPlain, When, cx, fill, shareAt, shareTicks, type AmountLane, type AmountLanePart, type ShareMark } from "../kit";
 import { Num, Ruled } from "../provenance";
@@ -103,7 +103,7 @@ function laneOf(l: Lane, saved: boolean): AmountLane {
   const pers = new Set((l.parts ?? []).map((p) => p.per));
   const per = pers.size === 1 ? [...pers][0] : undefined;
   return {
-    id: l.fee.ref.fee,
+    id: l.id,
     name: refName(l.fee.ref),
     swatch: colourOf(l.fee).bg,
     edge: colourOf(l.fee).border,
@@ -561,7 +561,7 @@ function HeldHeadline({ view, later, from }: { view: HeldView; later: boolean; f
   const h = view.head;
   const c = w.held.cross;
   if (h.kind === "marks") return <>{countPhrase(h.n, w.action.marks)}</>;
-  const said = h.kind === "cross" ? c : w.held.mark[h.of];
+  const said = h.kind === "cross" ? c : h.of === "edge" && h.fee ? { ...w.held.mark.edge, after: fill(w.held.mark.edge.named, { name: refName(h.fee) }) } : w.held.mark[h.of];
   return (
     <>
       {later && (
@@ -590,7 +590,7 @@ export function HeldChange({ row, saved }: { row: PeriodRow; saved: boolean }) {
   return (
     <span>
       {refName(row)}
-      {p.change[row.change ?? "changes"]![form]}
+      {p.change[row.change ?? "changes"][form]}
       <PriceWords price={row.price} kind={row.kind} saved={saved} />
       {p.changeEnd}
     </span>
@@ -620,22 +620,22 @@ function HeldSub({ view, saved }: { view: HeldView; saved: boolean }) {
   return (
     <p className="text-muted-foreground">
       {view.falls && (saved ? w.held.fallsSaved : w.held.falls)}
-      {view.cross !== null && view.head.kind === "cross" && view.bands.length > 0 && (
+      {view.bands && (
         <>
-          <FigAfter value={view.head.at} lead={b.lead} />
+          <FigAfter value={view.bands.from} lead={b.lead} />
           {b.decides}
           {joined(
-            view.bands.map((band, k) => (
+            view.bands.each.map((band, k, each) => (
               <>
                 <Fig value={band.rate} />
                 {k === 0 && b.perYear}
-                {band.to ? <FigAfter value={band.to} lead={b.upTo} /> : view.bands.length > 1 ? b.above : ""}
+                {band.to ? <FigAfter value={band.to} lead={b.upTo} /> : each.length > 1 ? b.above : ""}
               </>
             )),
             b.sep,
             b.and,
           )}
-          {view.bands.length > 1 && b.whole}
+          {view.bands.each.length > 1 && b.whole}
           {b.end}
         </>
       )}
@@ -647,7 +647,7 @@ function HeldSub({ view, saved }: { view: HeldView; saved: boolean }) {
  * A year at the reader's amount: the sum and its share, then each kind of fee with its fees as the lanes group them, its subtotal only
  * where it holds two or more, a fee held to its minimum or maximum there saying so, the one set apart bolder.
  */
-function HeldBox({ read, strong, saved }: { read: HeldReading; strong: string | null; saved: boolean }) {
+export function HeldBox({ read, strong, saved }: { read: HeldReading; strong: string | null; saved: boolean }) {
   const x = w.held.box;
   return (
     <div className="flex min-w-48 flex-col gap-1 text-xs">
@@ -668,7 +668,7 @@ function HeldBox({ read, strong, saved }: { read: HeldReading; strong: string | 
             {g.rows.length > 1 && <Fig value={g.total} />}
           </p>
           {g.rows.map((r) => (
-            <p key={r.fee.ref.fee} className={cx("flex justify-between gap-4", strong === r.fee.ref.fee ? "font-semibold text-foreground" : "text-muted-foreground")}>
+            <p key={r.lane} className={cx("flex justify-between gap-4", strong === r.lane ? "font-semibold text-foreground" : "text-muted-foreground")}>
               <span className="flex items-center gap-1.5">
                 <Swatch shape="box" className={colourOf(r.fee).bg} />
                 {refName(r.fee.ref)}
@@ -700,9 +700,6 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
   const [strong, setStrong] = useState<string | null>(null);
   const moved = own !== null && !sameRange(own, view.range);
   const points = useMemo(() => asPercents(view.sample(range, 480)), [view, range]);
-  // the layers bottom up as the lanes stand: the shares, then the fixed sums
-  const order = view.lanes.map((l) => view.fees.findIndex((f) => f.ref.fee === l.fee.ref.fee));
-  const layered = points.map((p) => ({ at: p.at, share: p.share, layers: order.map((i) => p.layers?.[i] ?? 0) }));
   const top = Math.max(...points.map((p) => p.share)) * 1.06;
   const drop = (m: number) => view.drops.find((d) => Math.abs(d.at - m) < 1e-6 * d.at);
   const marks: ShareMark[] = view.marks.map((m, k) => {
@@ -724,10 +721,10 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
       <ShareStack range={range} at={at}>
         <ShareChart
           range={range}
-          points={layered}
+          points={points}
           top={top}
-          layers={view.lanes.map((l) => ({ id: l.fee.ref.fee, fill: colourOf(l.fee).fill, edge: colourOf(l.fee).stroke, group: l.group ?? "share" }))}
-          groups={(["share", "fixed"] as const).map((g) => ({ id: g, label: w.held.groups[g]! }))}
+          layers={view.lanes.map((l) => ({ id: l.id, fill: colourOf(l.fee).fill, edge: colourOf(l.fee).stroke, group: l.group ?? "share" }))}
+          groups={HELD_KINDS.map((g) => ({ id: g, label: w.held.groups[g] }))}
           strong={strong}
           onStrong={setStrong}
           marks={marks}
@@ -747,8 +744,8 @@ function HeldChart({ view, stated, saved, left }: { view: HeldView; stated: Stat
           range={range}
           lanes={view.lanes.map((l) => laneOf(l, saved))}
           groups={[
-            { id: "share", label: saved ? w.held.laneGroups.shareSaved! : w.held.laneGroups.share! },
-            { id: "fixed", label: w.held.laneGroups.fixed! },
+            { id: "share", label: saved ? w.held.laneGroups.shareSaved : w.held.laneGroups.share },
+            { id: "sum", label: w.held.laneGroups.sum },
           ]}
           at={at}
           strong={strong}

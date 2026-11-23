@@ -2,6 +2,10 @@
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
 import { countPhrase } from "./lib/count";
 import type { FeeCap } from "@finance-tool/schema";
+import type { ChangeKind, HeldKind } from "@finance-tool/engine";
+
+/** A name's gender and number, which the words after it agree with: masculine, feminine, and each plural. */
+export type NameForm = "m" | "f" | "mp" | "fp";
 
 export const site = {
   name: "מקור",
@@ -1707,7 +1711,7 @@ export const feeDeal = {
     fund_management: { g: "mp" },
     fx_spread: { g: "m" },
     current_account: { g: "m", the: "החשבון העובר ושב בבנק" },
-  } as Record<string, { g: "m" | "f" | "mp" | "fp"; the?: string }>,
+  } as Record<string, { g: NameForm; the?: string }>,
   /** "Larger than", after a name that is the subject, agreeing with it ("דמי החשבון הקבועים גדולים מדמי ניהול הפיקדון"). */
   larger: { m: " גדול מ", f: " גדולה מ", mp: " גדולים מ", fp: " גדולות מ" } as Record<string, string>,
   /** The rate a cost curve converts a bound in another currency at (F-84), by the currencies a bound may be typed in, as a value's input. */
@@ -2355,8 +2359,8 @@ export const feeDeal = {
         rises: { m: " עולה ל־", f: " עולה ל־", mp: " עולים ל־", fp: " עולות ל־" },
         falls: { m: " יורד ל־", f: " יורדת ל־", mp: " יורדים ל־", fp: " יורדות ל־" },
         changes: { m: " משתנה: ", f: " משתנה: ", mp: " משתנים: ", fp: " משתנות: " },
-      } as Record<string, Record<string, string>>,
-      stops: { m: " מפסיק להיגבות.", f: " מפסיקה להיגבות.", mp: " מפסיקים להיגבות.", fp: " מפסיקות להיגבות." } as Record<string, string>,
+      } satisfies Record<Exclude<ChangeKind, "ends">, Record<NameForm, string>>,
+      stops: { m: " מפסיק להיגבות.", f: " מפסיקה להיגבות.", mp: " מפסיקים להיגבות.", fp: " מפסיקות להיגבות." } satisfies Record<NameForm, string>,
       /** After a changed price, and between two changes. */
       changeEnd: ". ",
       /** The headline: one change, after its month ("בינואר 2027 …"), with the fee's name. */
@@ -2434,8 +2438,8 @@ export const feeDeal = {
       periodsName: "התקופה",
       /** The headline: "עד 25,446 ₪, הסכומים הקבועים עולים בשנה יותר מכל האחוזים"; a later period's month before it, with a comma. */
       cross: { lead: "עד ", after: ", הסכומים הקבועים עולים בשנה יותר מכל האחוזים", month: ", " },
-      /** The headline with no crossover and one mark, by what changes there: "עד 600,000 ₪ המינימום קובע". */
-      mark: { minEnd: { lead: "עד ", after: " המינימום קובע" }, maxStart: { lead: "מעל ", after: " המקסימום קובע" }, edge: { lead: "ב־", after: " המחיר משתנה" } },
+      /** The headline with no crossover and one mark, by what changes there: "עד 600,000 ₪ המינימום קובע"; where one fee's price changes, its name. */
+      mark: { minEnd: { lead: "עד ", after: " המינימום קובע" }, maxStart: { lead: "מעל ", after: " המקסימום קובע" }, edge: { lead: "ב־", after: " המחיר משתנה", named: " המחיר של {name} משתנה" } },
       falls: "ככל שמה שמוחזק גדל, שנה עולה פחות באחוזים. ",
       fallsSaved: "ככל שמה שנצבר גדל, שנה עולה פחות באחוזים. ",
       /** The shares band by band above the crossover: "מעל 25,446 ₪ האחוזים קובעים: 0.896% בשנה עד 100,000 ₪, 0.7% עד 500,000 ₪ ו־0.5% מעל זה, כל אחד על כל הסכום." */
@@ -2448,11 +2452,11 @@ export const feeDeal = {
       xShort: "הסכום שמוחזק (₪)",
       xShortSaved: "הסכום שנצבר (₪)",
       /** The layers' groups, named on the chart. */
-      groups: { share: "אחוזים", fixed: "סכומים קבועים" } as Record<string, string>,
+      groups: { share: "אחוזים", sum: "סכומים קבועים" } satisfies Record<HeldKind, string>,
       lanes: "מה קובע את המחיר של כל עמלה, לפי הסכום",
       /** The "?" after the name of a lane whose maximum is on each security held: the chart charges it on one security (F-14). */
       perSecurity: "האתר מחשב כאילו מחזיקים נייר ערך אחד: אם מחזיקים כמה ניירות ערך, העמלה יכולה להיות גבוהה יותר ממה שמוצג.",
-      laneGroups: { share: "אחוזים ממה שמוחזק", shareSaved: "אחוזים ממה שנצבר", fixed: "סכומים קבועים, בכל סכום" } as Record<string, string>,
+      laneGroups: { share: "אחוזים ממה שמוחזק", shareSaved: "אחוזים ממה שנצבר", sum: "סכומים קבועים, בכל סכום" },
       /** Over the crossover's point. */
       crossMark: "כאן הקבועים שווים לאחוזים",
       /** At a drop: "האחוז החדש חל על כל הסכום:" and "101,000 ₪ עולים 935 ₪ בשנה, ו־99,000 ₪ עולים 1,115 ₪". */

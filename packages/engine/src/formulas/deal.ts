@@ -895,6 +895,22 @@ export function costShare(cost: number, amount: number): number {
   return amount > 0 ? cost / amount : cost > 0 ? Infinity : 0;
 }
 
+/** F-124 The two kinds of fee on what is held: a share of what is held, and a sum per period. */
+export type HeldKind = "share" | "sum";
+
+/**
+ * F-124 The kind of a price on what is held: a share of what is held, or a sum per period; null for a price that charges nothing there (a
+ * free one, or one on an action). A fee charged by steps of the value held has a price in each step (F-115), so its kind is read step by
+ * step: one fee can be a sum on small values and a share on larger ones. The crossover, the reading's box, its layers and its lanes all
+ * group the fees by this.
+ */
+export function heldKind(price: DealPrice): HeldKind | null {
+  return price.kind === "held" ? "share" : price.kind === "sum" ? "sum" : null;
+}
+
+/** Whether a price is a share of what is held (`heldKind`), as its form. */
+const isShare = (price: DealPrice): price is Extract<DealPrice, { kind: "held" }> => heldKind(price) === "share";
+
 /**
  * F-123 Whether a share of what is held charges at its rate on a value of `value` shekels: neither its minimum nor its maximum per charge
  * decides there (a charge exactly at a bound counts as the rate's).
@@ -918,7 +934,7 @@ export function rateAt(deal: Deal, period: DealPeriod, on: { action: DealAction;
     let rate = 0;
     for (const { fee } of holdingCost(deal, period, amount, rates).parts) {
       const p = period.prices[fee]!.price;
-      if (p.kind !== "held") continue;
+      if (!isShare(p)) continue;
       if (!atRate(p, amount)) return null;
       rate += perYear(p)!;
     }
@@ -961,8 +977,10 @@ export function rateAt(deal: Deal, period: DealPeriod, on: { action: DealAction;
  * below it they cost less. Between two cuts (a step's bottom or top, F-115, and the value where a share's minimum or maximum per charge
  * meets its rate, F-112) each fee charges one way: the sums `F`, and the shares `c + s × B`, `c` the shares held to a bound and `s` the
  * rates of the rest, so the shares' lead over the sums only grows inside a stretch. They meet at `B = (F − c) / s` where that falls inside,
- * or at the cut where the shares jump past the sums. Null where the shares cost at least the sums from the smallest value (so wherever no
- * sum per period is charged there), where they never reach them, or where they fall back below them at a larger value.
+ * or at the cut where the shares jump past the sums or the sums drop to meet them (a sum's step ends). The shares must charge something
+ * from there up, more than nothing at every larger value. Null where the shares cost at least the sums from the smallest value (so
+ * wherever no sum per period is charged there), where they never reach them, where they fall back below them at a larger value, or where
+ * they charge nothing above where they meet. Each fee's kind is its price's in the step charged (`heldKind`).
  */
 export function heldCrossover(deal: Deal, period: DealPeriod, rates: Readonly<Record<string, number>> = {}): number | null {
   const pts = [0, ...heldCuts(deal, period, rates)];
@@ -975,9 +993,11 @@ export function heldCrossover(deal: Deal, period: DealPeriod, rates: Readonly<Re
     let slope = 0;
     for (const { fee, cost } of holdingCost(deal, period, v, rates).parts) {
       const p = period.prices[fee]!.price;
-      if (p.kind !== "held") sums += cost;
-      else if (atRate(p, v)) slope += cost / v;
-      else bound += cost;
+      if (heldKind(p) === "sum") sums += cost;
+      else if (isShare(p)) {
+        if (atRate(p, v)) slope += cost / v;
+        else bound += cost;
+      }
     }
     return { sums, bound, slope };
   };
@@ -995,6 +1015,11 @@ export function heldCrossover(deal: Deal, period: DealPeriod, rates: Readonly<Re
   if (!found) return null;
   // past it the shares must stay at or above the sums: each later stretch from its start (inside a stretch their lead only grows)
   for (let k = found.k + 1; k < pts.length; k++) if (!reached(pts[k]!, split(k))) return null;
+  // and charge something from there up: within a stretch they cost `c + s × B`, more than nothing above its start where `c` or `s` is
+  for (let k = found.k; k < pts.length; k++) {
+    const s = split(k);
+    if (!(s.bound > 0 || s.slope > 0)) return null;
+  }
   return found.at;
 }
 
