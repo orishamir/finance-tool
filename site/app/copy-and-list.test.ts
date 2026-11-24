@@ -9,4 +9,9 @@ describe("a list joined with ו", () => {
   it("puts a maqaf after the ו before a word that starts with ו", () => {
     expect(andList(["אי.בי.אי", "וואן זירו"])).toBe("אי.בי.אי ו־וואן זירו");
   });
+
+  it("puts a maqaf after the ו before a Latin word or a figure, so the two never run together right to left", () => {
+    expect(andList(["אינטראקטיב ישראל", "Interactive Brokers"])).toBe("אינטראקטיב ישראל ו־Interactive Brokers");
+    expect(andList(["פסגות", "2025"])).toBe("פסגות ו־2025");
+  });
 });

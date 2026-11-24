@@ -355,7 +355,7 @@ describe("AbroadNote", () => {
   const shown = out.slice(out.lastIndexOf('aria-hidden="true" class="invisible"'));
   it("opens on the country it is given, with its heading, its facts under the three headings and its source line", () => {
     expect(out).toContain('role="radio" aria-checked="true"');
-    for (const w of ["TITLE-GB", "BODY-GB", "H1", "F3", "PUB-A וPUB-B", "לעמוד בPUB-A", "13.11.2026"]) expect(shown, w).toContain(w);
+    for (const w of ["TITLE-GB", "BODY-GB", "H1", "F3", "PUB-A ו־PUB-B", "לעמוד בPUB-A", "13.11.2026"]) expect(shown, w).toContain(w);
   });
   it("keeps a chip for a country with nothing like the product, dashed and saying so in words", () => {
     expect(out).toMatch(/chip-dashed text-muted-foreground[^>]*>.*?ארצות הברית.*?לא נמצא/);
