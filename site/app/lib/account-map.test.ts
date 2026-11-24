@@ -395,6 +395,8 @@ describe("the account map (F-131)", () => {
     expect([back.to, back.lo, back.hi]).toEqual(["b", expect.closeTo(20_000, -2), expect.closeTo(40_000, -2)]);
     expect(back.then).toMatchObject({ dir: "up", to: "b" });
     expect(back.then?.at).toBeCloseTo(150_000, -3);
+    // the axis follows the first change, the stretch, with room: to 60,000 ₪; the switch past it is in the words only
+    expect(got.max.amount).toBe(60_000);
   });
 
   it("names where an account is clearly cheaper before another takes over, and runs the axes past it", () => {

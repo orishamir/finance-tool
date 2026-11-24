@@ -134,7 +134,7 @@ const LOWEST = 1 / 1000;
 /** The searches read nothing under this share of the sliders' reach (5,000 ₪ today, 100 ₪ a month): the step a reader moves a slider by
  *  at its low end, where a point is no decision anyone makes, and where two accounts that differ by a few shekels flip on rounding. */
 const NAMED = 1 / 100;
-/** The axis's end is past the farthest change named up its line by this factor (and the cap past a plan beyond the sliders' reach), rounded up to a clean value. */
+/** The axis's end is past the first change named up its line by this factor (and the cap past a plan beyond the sliders' reach), rounded up to a clean value. */
 const ROOM = 1.5;
 /** An axis runs to this many times the plan's own value on it (the plan at a third of the way), so a small plan is not a dot in a corner. */
 const PLAN_SPAN = 3;
@@ -420,8 +420,9 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const equal = { amount: nearer(plan.amount, evenUp.amount, evenOn(lines.amount.down, floor.amount)), monthly: nearer(plan.monthly, evenUp.monthly, evenOn(lines.monthly.down, floor.monthly)) };
 
   // ------------------------------------------------ the axes
-  // fitted to the plan: PLAN_SPAN times its own value, past the nearest change up its line with room (the switch up, else the far end of
-  // a stretch up, else the even point, else where the plan's first stops being θ ahead), at a clean value; at least MIN_SPAN of the
+  // fitted to the plan: PLAN_SPAN times its own value, past the first change up its line with room (the switch up, else the far end of the
+  // stretch up that comes first, a switch after it left to the words, else the even point, else where the plan's first stops being θ
+  // ahead), at a clean value; at least MIN_SPAN of the
   // sliders' reach, so a plan of no money on an axis still has a modest span to show; at most the reach (or the plan with room, past it)
   const capA = cleanUp(Math.max(reachA, ROOM * plan.amount));
   const capM = cleanUp(Math.max(reachM, ROOM * plan.monthly));
