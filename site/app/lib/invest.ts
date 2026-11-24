@@ -1132,6 +1132,14 @@ function beforeTaxPrices(ctx: Ctx, rec: FundRecord, option: OptionId, spec: Spec
 // ---------------------------------------------------------------- the option
 
 /** One fund of an option at every house (F-63, F-65): its price at each house that sells it, or why it has none, and its cheapest ranked house. */
+/**
+ * Items most first by `value`, a tie (equal values) to the one earlier in `items`: the headline's pair is the first of a fund's prices in the
+ * houses' order (`providersOfInvest`, by full name), and the account map (F-131) ranks the accounts at each point the same way.
+ */
+export function rankByValue<T>(items: readonly T[], value: (t: T) => number): T[] {
+  return items.map((t, k) => ({ t, k, v: value(t) })).sort((a, b) => b.v - a.v || a.k - b.k).map((x) => x.t);
+}
+
 function fundWayOf(ctx: Ctx, rec: FundRecord, option: OptionId): FundWay {
   const base = { rec, name: nameOf(rec), number: numberOf(rec), option, currencyMismatch: false, noUnitPrice: unitPriceMissing(rec, option), byHouse: {} as FundWay["byHouse"] };
   const fs = fundSpec(ctx, rec);
@@ -1141,7 +1149,7 @@ function fundWayOf(ctx: Ctx, rec: FundRecord, option: OptionId): FundWay {
   if ("reason" in fs) return { ...base, reason: fs.reason, ...(fs.beforeTax && sells.length ? { beforeTax: { ruleId: fs.beforeTax.ruleId, byHouse: beforeTaxPrices(ctx, rec, option, fs.beforeTax.spec, sells, venue) } } : {}) };
   // the fund at every house that sells it, the exchange it trades on for a fund abroad
   const got = sells.length ? priceMany(ctx, fs.spec, option, sells, venue) : new Map<string, Priced>();
-  let best: WayPrice | undefined;
+  const ways: WayPrice[] = [];
   let failure: Reason | undefined;
   for (const s of ctx.snaps) {
     const na = unavailable(s, option);
@@ -1163,12 +1171,13 @@ function fundWayOf(ctx: Ctx, rec: FundRecord, option: OptionId): FundWay {
     if (p.kind === "ok") {
       const w = wayPrice(ctx, p, s.id, nameOf(rec), rec.id, fs.spec);
       base.byHouse[s.id] = w;
-      if (!best || w.valueN > best.valueN) best = w;
+      ways.push(w);
     } else {
       base.byHouse[s.id] = { providerId: s.id, reason: p.reason };
       failure ??= p.reason;
     }
   }
+  const best = rankByValue(ways, (w) => w.valueN)[0];
   return { ...base, currencyMismatch: fs.mismatch, ...(best ? { best } : failure ? { reason: failure } : { reason: { code: "no-applicable-line", detail: "no broker" } }) };
 }
 
