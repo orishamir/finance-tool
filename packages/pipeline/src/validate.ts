@@ -258,7 +258,8 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkStaleUnknowns(files, ctx.dataDir, ruleRecords, warn);
   checkUnofficialSources(files, ctx.dataDir, report);
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
-  checkForeignInvestmentFunds(files, ctx.dataDir, report);
+  const currencies = exposureCurrencies(files, ctx.dataDir);
+  checkForeignInvestmentFunds(files, ctx.dataDir, currencies, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
   checkHomeGuideDoor(files, ctx.dataDir, report);
   checkDepositAmounts(files, ctx.dataDir, report);
@@ -1482,16 +1483,11 @@ function checkInstrumentsMap(files: string[], dataDir: string, ruleIds: Map<stri
  * fund, so no run reads a missing field as either answer; a foreign fund's record does not carry it; and a principal currency is the
  * exposure's currency, the one exchange-rate path a run has.
  */
-function checkForeignInvestmentFunds(files: string[], dataDir: string, report: (file: string, message: string) => void) {
-  const currencies = new Map<string, string>();
+function checkForeignInvestmentFunds(files: string[], dataDir: string, currencies: ReadonlyMap<string, string>, report: (file: string, message: string) => void) {
   const latest = new Map<string, string>();
   for (const file of files) {
     const rel = relative(dataDir, file).split(/[\\/]/).join("/");
     if (!file.endsWith(".json")) continue;
-    if (rel.startsWith("instruments/exposures/")) {
-      const v = parseJson(readFileSync(file, "utf8")).value as { id?: unknown; currency?: unknown } | undefined;
-      if (typeof v?.id === "string" && typeof v.currency === "string") currencies.set(v.id, v.currency);
-    }
     const id = /^funds\/([^/@]+)@[^/]+\.json$/.exec(rel)?.[1];
     if (id !== undefined && rel > (latest.get(id) ?? "")) latest.set(id, rel);
   }
@@ -1511,6 +1507,18 @@ function checkForeignInvestmentFunds(files: string[], dataDir: string, report: (
     if (typeof fif?.value === "string" && exposureCurrency !== undefined && fif.value !== exposureCurrency)
       report(file, `tax_status.foreign_investment_fund: principal currency ${fif.value} is not the exposure's currency ${exposureCurrency}, the one exchange-rate path a run has (F-04)`);
   }
+}
+
+/** Each exposure's currency by its id (data/instruments/exposures/): the one exchange-rate path a run of a fund on it has (F-04). */
+function exposureCurrencies(files: string[], dataDir: string): Map<string, string> {
+  const currencies = new Map<string, string>();
+  for (const file of files) {
+    const rel = relative(dataDir, file).split(/[\\/]/).join("/");
+    if (!file.endsWith(".json") || !rel.startsWith("instruments/exposures/")) continue;
+    const v = parseJson(readFileSync(file, "utf8")).value as { id?: unknown; currency?: unknown } | undefined;
+    if (typeof v?.id === "string" && typeof v.currency === "string") currencies.set(v.id, v.currency);
+  }
+  return currencies;
 }
 
 /** Fund IDs of the latest period of each CMA dataset; null when there is no CMA file (the check is then skipped). */
