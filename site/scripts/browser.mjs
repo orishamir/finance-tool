@@ -68,7 +68,9 @@ function countWaiting() {
  */
 export function settled(limit = 5000) {
   const end = performance.now() + limit;
-  const idle = () => new Promise((done) => requestIdleCallback(() => done(), { timeout: 1000 }));
+  // a frame first: headless Chrome can give no idle period while no frame is coming, and an idle callback asked for then waits out its
+  // whole timeout, up to a second a call
+  const idle = () => new Promise((done) => requestAnimationFrame(() => requestIdleCallback(() => done(), { timeout: 1000 })));
   const frame = () => new Promise((done) => requestAnimationFrame(() => done()));
   let changed = false;
   const mark = () => (changed = true);

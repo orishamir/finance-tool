@@ -36,9 +36,11 @@ const listen = () => {
   window.cspRefusals = [];
   document.addEventListener("securitypolicyviolation", (e) => window.cspRefusals.push(`${e.effectiveDirective} refused ${e.blockedURI || "an inline script"}${e.sourceFile ? ` (${e.sourceFile}:${e.lineNumber})` : ""}`));
 };
-// Runs in the page: resolves once the main thread is idle and two frames have drawn, twice (the page hydrated and drew again).
+// Runs in the page: resolves once the main thread is idle and two frames have drawn, twice (the page hydrated and drew again). The idle
+// callback is asked for after a frame: headless Chrome can give no idle period while no frame is coming, and one asked for then waits out
+// its whole 10 s timeout.
 const settled = () => {
-  const once = () => new Promise((done) => requestIdleCallback(() => requestAnimationFrame(() => requestAnimationFrame(() => done())), { timeout: 10000 }));
+  const once = () => new Promise((done) => requestAnimationFrame(() => requestIdleCallback(() => requestAnimationFrame(() => requestAnimationFrame(() => done())), { timeout: 10000 })));
   return once().then(once);
 };
 

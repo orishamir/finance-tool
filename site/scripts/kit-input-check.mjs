@@ -87,9 +87,13 @@ const DESK = { ...CONTEXT, viewport: { width: 1440, height: 900 } };
 // the sheets with their opening and closing played: a close request can come while a sheet is still leaving
 const MOVING_PHONE = { ...PHONE, reducedMotion: "no-preference" };
 
-/** Two frames after the browser is idle: what a render started has been drawn. */
+/**
+ * Two frames after the browser is idle: what a render started has been drawn. The idle callback is asked for after a frame: headless
+ * Chrome can give no idle period while no frame is coming, and one asked for then waits out its whole 10 s timeout (after most presses on
+ * /kit at 1440).
+ */
 const settled = () => {
-  const once = () => new Promise((done) => requestIdleCallback(() => requestAnimationFrame(() => requestAnimationFrame(() => done())), { timeout: 10000 }));
+  const once = () => new Promise((done) => requestAnimationFrame(() => requestIdleCallback(() => requestAnimationFrame(() => requestAnimationFrame(() => done())), { timeout: 10000 })));
   return once().then(once);
 };
 
