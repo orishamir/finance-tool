@@ -291,13 +291,14 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
     };
     const figure = (s: MapSwitch, axis: "amount" | "monthly", which: ChangeFigure) => <Num value={pointValue(s, axis, which === "till" ? m.tillAbout : m.switchAbout)} display={fmt.nisRough(s.at)} />;
     const words = mapWords<ReactNode>(map, house, (id) => shortOf(view, id), figure, thetaText(bundle));
-    // a guide along each axis: to the switch, else to a stretch, else to where the two are equal, else to the axis's end with no words
+    // a guide along each axis: to the switch, else to a stretch, each on the axis, else to where the two are equal, else to the axis's end with no words
     const guides = (["amount", "monthly"] as const).map((axis): RegionGuide => {
     const along = axis === "amount" ? ("x" as const) : ("y" as const);
     const end = axis === "amount" ? map.max.amount : map.max.monthly;
     const unit = axis === "monthly" ? ` ${m.perMonth}` : "";
     const s = map.switches[axis];
-    if (s) return { axis: along, at: s.at, label: { text: `${m.about}${fmt.nisRough(s.at)}${unit}`, node: <>{m.about}{figure(s, axis, "switch")}{unit}</> } };
+    // a switch up past the axis's end (the axis held at the sliders' reach) draws no guide off the plot
+    if (s && s.at <= end) return { axis: along, at: s.at, label: { text: `${m.about}${fmt.nisRough(s.at)}${unit}`, node: <>{m.about}{figure(s, axis, "switch")}{unit}</> } };
     // a stretch where another is clearly cheaper: the guide to its end nearer the plan, its words both ends
     const st = map.stretches[axis];
     if (st && Math.min(st.lo, st.hi) <= end) {

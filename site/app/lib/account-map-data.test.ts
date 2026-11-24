@@ -13,7 +13,6 @@ import { entered, type SiteValue } from "./value";
 import { fmt } from "./format";
 import { chartTextWidth } from "../components/kit/chart-text";
 import { lineMeetsBox, regionTones } from "../components/kit/region-map";
-import { p05Range } from "./engine";
 import type { WorkbenchInputs } from "./providers";
 
 /** A value the test's setup must have, else the test stops naming what was missing. */
@@ -107,15 +106,14 @@ for (const [slug, plan] of [["index-sp500", planAt(10_000, 500, 10)], ["index-sp
       expect(wrong).toEqual([]);
     });
 
-    it("shows every account clearly first somewhere within the sliders' reach, the line for no monthly deposit included", () => {
-      // an even 6 × 6 grid over the whole reach (the sliders' ends, P-05), its bottom row at no monthly deposit at all
-      const reach = (key: string) => need(p05Range(bundle.p05, "sliders", key)?.max, `the slider's end for ${key}`);
+    it("shows every account clearly first somewhere within its axes, the line for no monthly deposit included", () => {
+      // an even 6 × 6 grid over the map's own range (fitted to the plan), its bottom row at no monthly deposit at all
       const missing: string[] = [];
       const K = 6;
       for (let i = 0; i <= K; i++)
         for (let j = 0; j <= K; j++) {
           if (i + j === 0) continue;
-          const [a, m] = [(reach("amount_now") * i) / K, (reach("monthly_deposit") * j) / K];
+          const [a, m] = [(map.max.amount * i) / K, (map.max.monthly * j) / K];
           const want = exactAt(leftAt(a, m, null));
           if (want.ahead < 1 || !want.first) continue;
           const k = map.accounts.indexOf(want.first);
@@ -197,6 +195,26 @@ describe("the guides from the plan on the default S&P 500 plan", () => {
     }
     // with no point kept, nothing under the map
     expect(plain).not.toContain(invest.before.map.planHead);
+  });
+
+  it("draws no guide to a switch past the axis's end, where the axis is held at the sliders' reach", () => {
+    const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
+    const plan = planAt(10_000, 500, 10);
+    const view = buildInvest({ bundle, index, plan });
+    const pick = need(pickOfHeadline(view), "the page's pair");
+    const answer = work.map(bundle, { index, plan, fund: pick.fund });
+    const real = need(answer.kind === "map" ? answer.map : null, "the map");
+    const past = 2 * real.max.amount;
+    const far: AccountMap = { ...real, switches: { ...real.switches, amount: { at: past, dir: "up", to: real.accounts[0] ?? "" } }, stretches: { ...real.stretches, amount: null }, equal: { ...real.equal, amount: null } };
+    const out = html(createElement(AccountMapPanel, { view, bundle, house: pick.house, map: far, on: { bundle, ask: { index, plan, fund: pick.fund } } }));
+    expect(shown(out).replace(/[\u2060\u2066-\u2069]/g, "")).not.toContain(fmt.nisRough(past));
+    // the guides are drawn as with no switch along today's amount: to the axis's end
+    const guides = (m: AccountMap) => {
+      const h = html(createElement(AccountMapPanel, { view, bundle, house: pick.house, map: m, on: { bundle, ask: { index, plan, fund: pick.fund } } }));
+      return [...h.matchAll(/data-mark="guide"><line [^>]*>/g)].map((x) => x[0]);
+    };
+    expect(guides(far)).toHaveLength(2);
+    expect(guides(far)).toEqual(guides({ ...far, switches: { ...far.switches, amount: null } }));
   });
 });
 

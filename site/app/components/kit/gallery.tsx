@@ -4132,10 +4132,10 @@ function CaseDemos({ today }: { today: string }) {
 
 /**
  * The region map's demo: three made-up options whose costs are lines, each leaving today's amount and 100 times the monthly deposit less its
- * cost. A leads at the point, C in a middle stretch, and B past it, clearly first only beyond what changes up the point's own lines, so the
- * map always shows an area in the middle and the axes stretched to show B; along the bottom edge, with no monthly deposit, A, C and B in turn.
+ * cost. A leads at the point, C past a switch up each of the point's lines, and B in the far corner, clearly first there within the axes
+ * fitted to the point; along the bottom edge, with no monthly deposit, A and then C.
  */
-const REGION_COSTS: Record<string, (a: number, m: number) => number> = { a: (a, m) => 0.08 * a + 4 * m, b: (a, m) => 6000 + 0.016 * a + 0.8 * m, c: (a, m) => 1200 + 0.04 * a + 2 * m };
+const REGION_COSTS: Record<string, (a: number, m: number) => number> = { a: (a, m) => 0.08 * a + 4 * m, b: (a, m) => 2500 + 0.016 * a + 0.8 * m, c: (a, m) => 1200 + 0.04 * a + 2 * m };
 const regionLeft: LeftAt = (a, m, ids) => new Map((ids ?? ["a", "b", "c"]).map((id) => [id, a + 100 * m - (REGION_COSTS[id]?.(a, m) ?? Infinity)]));
 const REGION_MAP = accountMap({ leftAt: regionLeft, order: ["a", "b", "c"], theta: 0.005, plan: { amount: 10_000, monthly: 200 }, reach: { amount: 500_000, monthly: 10_000 } });
 
