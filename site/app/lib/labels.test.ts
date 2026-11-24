@@ -66,7 +66,7 @@ describe("the tax index a Tel Aviv foreign fund's own annex states (F-04, D84)",
   it("says the fund's own statement, with its annex opened at the page, on the Tel Aviv line only", () => {
     const onDollar = tax({ ...rec, tax_ruling: { ...ruling, index: main } }, "tase-foreign");
     expect(onDollar.map((l) => l.id)).toEqual(["tax-index-currency"]);
-    expect(onDollar[0]?.text).toBe("מס לפי שער הדולר");
+    expect(onDollar[0]?.text).toBe("רווח מול שער הדולר");
     expect(onDollar[0]?.doc?.href).toBe(`${ruling.source.url}#page=17`);
     expect(onDollar[0]?.explain).toContain("זו הצהרה של הקרן, ואין נוסח רשמי של רשות המסים שמאשר אותה");
     const onCpi = tax({ ...rec, tax_ruling: { ...ruling, index: cpi } }, "tase-foreign");
