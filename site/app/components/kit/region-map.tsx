@@ -6,7 +6,7 @@
 // the points where the leads either side cancel, found between the grid's nodes, so it runs smooth rather than along the grid's cells.
 // Over the whole band where the two are close, faint diagonal stripes in the next one's colour (`stripeLayer`), drawn at the screen's
 // pixels on a layer of their own, so the band shows where the fill is already the leader's alone; the line stays over them.
-// Each area's name stands inside it, and words of the caller's on the stripes where they fit; a marked point (the reader's own) has dashed
+// Each area's name stands inside it, and the legend's last items say what the stripes mean, one for each pair whose stripes show; a marked point (the reader's own) has dashed
 // guides from it along each axis; and a value of the bottom edge is drawn apart as a thick line, blended the same way, each area along it
 // named over its stretch where the words fit. The x axis grows left to right and the y axis up from 0 (charts.md).
 // The pointer reads any point: on a computer a box follows it and the area under it lightens; a click or a tap keeps a point (its mark and
@@ -42,6 +42,21 @@ const INK: Record<RegionTone, string> = {
   "region-3": "text-chart-region-3",
   "region-4": "text-chart-region-4",
   other: "text-chart-region-other",
+};
+/** An area's colour as the fill of the stripes' swatch, and as its stripes. */
+const FILL: Record<RegionTone, string> = {
+  "region-1": "fill-chart-region-1",
+  "region-2": "fill-chart-region-2",
+  "region-3": "fill-chart-region-3",
+  "region-4": "fill-chart-region-4",
+  other: "fill-chart-region-other",
+};
+const STROKE: Record<RegionTone, string> = {
+  "region-1": "stroke-chart-region-1",
+  "region-2": "stroke-chart-region-2",
+  "region-3": "stroke-chart-region-3",
+  "region-4": "stroke-chart-region-4",
+  other: "stroke-chart-region-other",
 };
 /** A reading's row set apart in its area's colour: a light wash of it behind the row. */
 const WASH: Record<RegionTone, string> = {
@@ -120,8 +135,7 @@ export const stripeStrength = (ahead: number): number => {
 /** The stripes' line width, and their spacing as a share of the plot's width, held between a phone's and a computer's, in CSS px. */
 const STRIPE_WIDTH = 1.5;
 const STRIPE_STEP = { share: 1 / 120, min: 5, max: 9 };
-/** The band's words stand on the stripes: where they are at least this strong under every part of them. */
-const STRIPED = 0.5;
+
 /** A line of the words over the map. */
 const LINE = 20;
 
@@ -218,6 +232,34 @@ export function stripeLayer(grid: RegionGrid, w: number, h: number, look: { step
   return out;
 }
 
+/** A legend item for a pair's stripes shows where they cover at least this share of the plot's nodes: a hundredth, about 50 by 100 px on a
+ *  computer and 30 by 25 on a phone, a patch the eye finds. */
+const STRIPES_SEEN = 0.01;
+
+/**
+ * The pairs of areas whose stripes cover at least STRIPES_SEEN of a grid (the lead under 1), most first: each as [the one first on more of
+ * the pair's striped nodes, the other], the base colour and the stripes' in the legend.
+ */
+export function stripedPairs(grid: RegionGrid): [number, number][] {
+  const count = new Map<string, { n: number; by: Map<number, number> }>();
+  grid.first.forEach((f, k) => {
+    const s = grid.second[k] ?? -1;
+    if (f < 0 || s < 0 || f === s || (grid.ahead[k] ?? 1) >= 1) return;
+    const key = `${Math.min(f, s)}|${Math.max(f, s)}`;
+    const c = count.get(key) ?? { n: 0, by: new Map<number, number>() };
+    c.n++;
+    c.by.set(f, (c.by.get(f) ?? 0) + 1);
+    count.set(key, c);
+  });
+  return [...count]
+    .filter(([, c]) => c.n >= STRIPES_SEEN * grid.first.length)
+    .sort((a, b) => b[1].n - a[1].n)
+    .map(([key, c]) => {
+      const [x = 0, y = 0] = key.split("|").map(Number);
+      return (c.by.get(x) ?? 0) >= (c.by.get(y) ?? 0) ? [x, y] : [y, x];
+    });
+}
+
 /** A piece of the line where two areas are equal, in the grid's own units (node columns and rows, from the bottom left). */
 type Seg = readonly [x0: number, y0: number, x1: number, y1: number];
 
@@ -287,8 +329,8 @@ export function RegionMap({
   /** The bottom edge's value, one row from 0 to `max.x`: the words over its longest clear stretch, and each other area's name over its own. */
   edge: RegionGrid;
   edgeLabel: (id: string) => RegionWords;
-  /** Words for the band where two areas are close, drawn on its stripes where they fit. */
-  bandLabel: string;
+  /** What the stripes mean, an item in the legend for each pair whose stripes show: its words, and its title naming the pair. */
+  bandLabel: { text: string; pair: (a: string, b: string) => string };
   /** The reader's own point, and its words under it. */
   mark: { at: RegionPoint; label: RegionWords };
   guides: readonly RegionGuide[];
@@ -383,6 +425,18 @@ export function RegionMap({
 
   const mx = sx(mark.at[0]);
   const my = sy(mark.at[1]);
+  // the legend's items for the stripes, one for each pair whose stripes show, most first, in the pair's colours as the map draws them
+  const { text: sameText, pair: samePair } = bandLabel;
+  const striped = useMemo(
+    () =>
+      stripedPairs(field).flatMap(([f, s]) => {
+        const [base, stripes] = [areas[f], areas[s]];
+        if (!base || !stripes) return [];
+        const [one, two] = f < s ? [base, stripes] : [stripes, base];
+        return [{ id: `${STRIPED_ID}:${base.id}:${stripes.id}`, swatch: <StripeSwatch base={base.tone} stripes={stripes.tone} />, label: <span title={samePair(one.name, two.name)}>{sameText}</span>, still: true }];
+      }),
+    [field, areas, sameText, samePair],
+  );
   // the words over the map and where they stand: worked out again only when the map or its size changes, the names' and the band's places
   // being a search over the plot
   const layout = useMemo(() => {
@@ -482,13 +536,13 @@ export function RegionMap({
     const holds = (b: Box, ok: (k: number) => boolean) => samples(b).every((k) => k >= 0 && ok(k));
     const dots: [number, number][] = [[mxL, myL], ...guideDraw.flatMap(({ g, gx, gy }) => (g.label ? [[gx, gy] as [number, number]] : []))];
     const taken: Box[] = [...placed];
-    // the box with the most room; with `apart`, its area held a few px around it too, so no line runs through it
-    const find = (tw: number, h: number, ok: (k: number) => boolean, apart = false): { b: Box; room: number } | null => {
+    // the box with the most room
+    const find = (tw: number, h: number, ok: (k: number) => boolean): { b: Box; room: number } | null => {
       let best: { b: Box; room: number } | null = null;
       for (let cy = TOP + h / 2 + 4; cy <= bottom - EDGE_PX - h / 2 - 4; cy += 8)
         for (let cx0 = left + tw / 2 + 8; cx0 <= right - tw / 2 - 8; cx0 += 8) {
           const b = { x: cx0 - tw / 2 - 4, y: cy - h / 2, w: tw + 8, h };
-          if (!holds(apart ? { x: b.x - 8, y: b.y - 6, w: b.w + 16, h: b.h + 12 } : b, ok) || taken.some((t) => meets(b, t))) continue;
+          if (!holds(b, ok) || taken.some((t) => meets(b, t))) continue;
           // the room: how far the box grows before it leaves its area, and how far it is from the mark and the guides' dots
           let grow = 0;
           for (const g of [6, 12, 20]) if (holds({ x: b.x - g, y: b.y - g / 2, w: b.w + 2 * g, h: b.h + g }, ok)) grow = g;
@@ -507,21 +561,8 @@ export function RegionMap({
       const b = take(find(chartTextWidth(a.name, 16), 24, (k) => field.first[k] === n && (field.ahead[k] ?? 0) >= CLEAR));
       return b ? [{ a, b }] : [];
     });
-    // the band's words: once in each band between two areas, on its stripes and on one side of the line where the two are equal
-    const pairOf = (k: number) => {
-      const f = field.first[k] ?? -1;
-      const s = field.second[k] ?? -1;
-      return s < 0 || stripeStrength(field.ahead[k] ?? 1) < STRIPED ? null : `${Math.min(f, s)}|${Math.max(f, s)}`;
-    };
-    const pairs = new Set(field.first.map((_, k) => pairOf(k)).filter((x): x is string => x !== null));
-    const bands = [...pairs].flatMap((pair) => {
-      const tw = chartTextWidth(bandLabel);
-      const sides = pair.split("|").map((f) => find(tw, LINE, (k) => pairOf(k) === pair && field.first[k] === Number(f), true));
-      const b = take(sides.filter((x) => x !== null).sort((x, y) => y.room - x.room)[0]);
-      return b ? [{ pair, b }] : [];
-    });
-    return { edgeWords, edgeInside, edgeNames, longestArea, markBox, guideDraw, names, bands };
-  }, [field, edge, areas, mark, guides, bandLabel, edgeLabel, max.x, max.y, left, right, bottom]);
+    return { edgeWords, edgeInside, edgeNames, longestArea, markBox, guideDraw, names };
+  }, [field, edge, areas, mark, guides, edgeLabel, max.x, max.y, left, right, bottom]);
   const { edgeWords, edgeInside, longestArea, markBox, guideDraw } = layout;
 
   const set = (p: RegionPoint | null) => setPinned(p);
@@ -566,7 +607,7 @@ export function RegionMap({
 
   return (
     <div className="flex flex-col gap-2">
-      <ChartLegend items={areas.map((a) => ({ id: a.id, swatch: <Swatch shape="box" className={SWATCH[a.tone]} />, label: a.name }))} pick={pick} />
+      <ChartLegend items={[...areas.map((a) => ({ id: a.id, swatch: <Swatch shape="box" className={SWATCH[a.tone]} />, label: a.name })), ...striped]} pick={pick} />
       {/* the y axis's name over its figures, at the plot's left edge, as the axis reads left to right */}
       <p dir="ltr" className="text-xs text-muted-foreground">
         <bdi dir="rtl">{yTitle}</bdi>
@@ -639,11 +680,6 @@ export function RegionMap({
                 {a.name}
               </text>
             ))}
-            {layout.bands.map(({ pair, b }) => (
-              <text key={pair} x={b.x + b.w / 2} y={b.y + b.h / 2 + 4} textAnchor="middle" className="fill-chart-region-ink text-xs pointer-events-none">
-                {bandLabel}
-              </text>
-            ))}
           </g>
           {/* the guides from the mark, and the mark itself on top */}
           {guideDraw.map(({ g, gx, gy }) => (
@@ -697,6 +733,28 @@ export const regionWash = (t: RegionTone): string => WASH[t];
 
 /** The tones in the order they are given out: the first four areas each their own, the rest grey. */
 export const regionTones = (n: number): RegionTone[] => Array.from({ length: n }, (_, k) => (k < 4 ? (`region-${k + 1}` as RegionTone) : "other"));
+
+/** The start of the legend items' ids for the stripes, apart from every area's. */
+const STRIPED_ID = "region-map:about-the-same";
+
+/** The stripes' swatch: a box in one area's colour with the map's 45° stripes over it in the other's, as strong as the map's. Its name
+ *  beside it says what it means, as every swatch's does. */
+function StripeSwatch({ base, stripes }: { base: RegionTone; stripes: RegionTone }) {
+  const clip = useId();
+  return (
+    <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" className="shrink-0" data-mark="stripes-swatch">
+      <clipPath id={clip}>
+        <rect width="10" height="10" rx="2" />
+      </clipPath>
+      <g clipPath={`url(#${clip})`}>
+        <rect width="10" height="10" className={FILL[base]} />
+        {[-10, -5, 0, 5, 10].map((c) => (
+          <line key={c} x1={c} y1={10} x2={c + 10} y2={0} className={STROKE[stripes]} strokeWidth={STRIPE_WIDTH} style={{ strokeOpacity: "var(--chart-region-stripe)" }} />
+        ))}
+      </g>
+    </svg>
+  );
+}
 
 /** Words over the map in their box, in the dark ink the light areas take. */
 function Words({ box, words }: { box: Box; words: RegionWords }) {

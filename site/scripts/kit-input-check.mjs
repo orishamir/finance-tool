@@ -1540,7 +1540,12 @@ async function regionCheck(browser, base) {
     await page.evaluate(settled);
     if ((await painted("areas")).sum === before) found.push("region: the pointer over an area does not lighten it");
     await page.mouse.move(r.x - 40, r.y - 40);
-    if (!(await map.locator("svg text", { hasText: "בערך אותו דבר" }).count())) found.push("region: the band between two areas carries no words");
+    if (await map.locator("svg text", { hasText: "בערך אותו דבר" }).count()) found.push("region: the words for the stripes stand on the plot, not in the legend");
+    // the demo's stripes: A and C about the same around one line, C and B around the other, A and B nowhere: two legend items, each
+    // with its swatch and the pair in its title
+    const sameItems = demo.locator("ul li", { hasText: "בערך אותו דבר" });
+    const titles = await sameItems.locator("[title]").evaluateAll((els) => els.map((e) => e.getAttribute("title")));
+    if ((await sameItems.locator('[data-mark="stripes-swatch"]').count()) !== 2 || titles.length !== 2) found.push(`region: the legend has not one item with its swatch for each of the demo's two pairs about the same (${JSON.stringify(titles)})`);
     // the line where two areas are equal: drawn, and smooth, so some piece of it runs neither along a row nor along a column
     const d = (await map.locator('path[data-mark="equal"]').getAttribute("d").catch(() => null)) ?? "";
     const pieces = [...d.matchAll(/M([\d.]+) ([\d.]+)L([\d.]+) ([\d.]+)/g)].map((x) => x.slice(1).map(Number));

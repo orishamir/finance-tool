@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { equalLines, secondShare, stripeLayer, stripeStrength, type RegionGrid } from "./region-map";
+import { createElement } from "react";
+import { renderToString } from "react-dom/server";
+import { equalLines, RegionMap, secondShare, stripedPairs, stripeLayer, stripeStrength, type RegionGrid } from "./region-map";
 
 /** A grid whose two areas' lead is a plane, d = (i + 0.5 j − 6.3) / 10 in grid units: area 0 leads where d > 0, area 1 where d < 0, each
  *  ahead by |d|, so the two are equal on the line i + 0.5 j = 6.3. */
@@ -79,5 +81,53 @@ describe("the stripes where two areas are about the same (F-131)", () => {
     const area = [...Array(w).keys()].filter((x) => (10 * x) / (w - 1) > 3.6 && (10 * x) / (w - 1) < 6.4).length * h;
     expect(inBand / area).toBeGreaterThan(0.2);
     expect(inBand / area).toBeLessThan(0.6);
+  });
+});
+
+describe("the legend's items for the stripes", () => {
+  const SAME = "about the same";
+  const legendOf = (field: RegionGrid) =>
+    renderToString(
+      createElement(RegionMap, {
+        max: { x: 100, y: 100 },
+        areas: [{ id: "p", name: "P", tone: "region-1" }, { id: "q", name: "Q", tone: "region-2" }],
+        field: { ...field, from: 1 },
+        edge: { cols: 2, rows: 1, first: [0, 0], second: [-1, -1], ahead: [1, 1] },
+        edgeLabel: (id: string) => ({ text: id }),
+        bandLabel: { text: SAME, pair: (a: string, b: string) => `${a} & ${b}: ${SAME}` },
+        mark: { at: [10, 10], label: { text: "mark" } },
+        guides: [],
+        xTitle: "x",
+        yTitle: "y",
+        xTick: String,
+        yTick: String,
+        snap: { x: 1, y: 1 },
+        renderTip: () => null,
+      }),
+    );
+
+  it("names each pair whose stripes show, the area first on more of them as the base, with the pair in its title", () => {
+    const g = planeGrid();
+    // area 1 leads on more nodes of this plane than area 0 (i + 0.5 j < 6.3), and every node is within θ
+    const ones = g.first.filter((f) => f === 1).length;
+    expect(stripedPairs(g)).toEqual([ones > g.first.length / 2 ? [1, 0] : [0, 1]]);
+    expect(legendOf(g)).toContain(SAME);
+    expect(legendOf(g)).toContain(`P &amp; Q: ${SAME}`);
+  });
+
+  it("leaves out a pair whose stripes cover under a hundredth of the plot", () => {
+    const g = planeGrid();
+    // the lead under 1 only at one node of the 121
+    const one: RegionGrid = { ...g, ahead: g.ahead.map((a, k) => (k === 60 ? 0.5 : 1)) };
+    expect(stripedPairs(one)).toEqual([]);
+    const two: RegionGrid = { ...g, ahead: g.ahead.map((a, k) => (k === 60 || k === 61 ? 0.5 : 1)) };
+    expect(stripedPairs(two).length).toBe(1);
+  });
+
+  it("is absent where no two areas are within θ anywhere", () => {
+    const g = planeGrid();
+    const clear: RegionGrid = { ...g, second: g.second.map(() => -1), ahead: g.ahead.map(() => 1) };
+    expect(stripedPairs(clear)).toEqual([]);
+    expect(legendOf(clear)).not.toContain(SAME);
   });
 });

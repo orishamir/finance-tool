@@ -4182,8 +4182,10 @@ export const invest = {
       equalAt: "שווים בכ־\u2060",
       perMonth: "בחודש",
       today: "היום",
-      /** "בערך אותו דבר": two accounts within the tie threshold of each other, in the words on the map, the card and the readings. */
+      /** "בערך אותו דבר": two accounts within the tie threshold of each other, in the map's legend, the card and the readings. */
       same: "בערך אותו דבר",
+      /** The legend item for one pair's stripes, named with the pair (its title). */
+      samePair: (a: string, b: string) => `${andList([a, b])}: בערך אותו דבר`,
       /** The card's line after a switch: what "clearly cheaper" means. */
       clearlyNote: (theta: string) => `זול יותר בבירור: בהפרש של ${theta} לפחות`,
       /** The card's answer and line where the receipt's account is not the cheapest at the plan. */
@@ -5411,7 +5413,7 @@ export const kit = {
     },
     sample: {
       /** The region map: three made-up options, its axes and its point. */
-      regions: { a: "אפשרות א", b: "אפשרות ב", c: "אפשרות ג", x: "סכום היום (₪)", y: "הפקדה חודשית (₪)", mark: "הנקודה שלכם", edge: (name: string) => `בלי הפקדה חודשית: ${name}`, same: "בערך אותו דבר", point: (x: string, y: string) => `${x} היום, ${y} בחודש` },
+      regions: { a: "אפשרות א", b: "אפשרות ב", c: "אפשרות ג", x: "סכום היום (₪)", y: "הפקדה חודשית (₪)", mark: "הנקודה שלכם", edge: (name: string) => `בלי הפקדה חודשית: ${name}`, same: "בערך אותו דבר", samePair: (a: string, b: string) => `${andList([a, b])}: בערך אותו דבר`, point: (x: string, y: string) => `${x} היום, ${y} בחודש` },
       /** The cases and parts (ConditionBand, PartChip, SlimFee, Toolbox, AskValues, the value menus, ReadForBand): a deal's words, made up. */
       cases: {
         trade: "עמלת קנייה ומכירה",

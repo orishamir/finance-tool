@@ -996,8 +996,8 @@ in the kit fits is added to the kit.
   today's amount and the monthly deposit), not for one option's value over two amounts. Up to four areas in their own light colour, a
   fifth in a grey under its own name, more than five gathered in that grey as "אחרות"; where two options are close their colours blend in a
   narrow strip around a thin line where the two are equal, and faint diagonal stripes in the next option's colour cover the whole band
-  where they are about the same (their strength the token `--chart-region-stripe`); a value at the bottom edge with no range above it is its own thick line, blended
-  the same way.
+  where they are about the same (their strength the token `--chart-region-stripe`), named in the legend by an item for each pair whose
+  stripes show, a swatch of them in the pair's colours, never by words on the plot; a value at the bottom edge with no range above it is its own thick line, blended the same way.
 - `PileYears`, `PileStory`: a sum built up step by step where the reader picks the moment; not for comparing products. A sixth slot,
   `other`, only for a choice the person really has.
 - `StairsChart`, `StairsTable`, `StairsSteps`: the stairs, how each change adds up (guard 10). The first column is the start, grey with a

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { accountMap, cleanUp, type AccountMap, type LeftAt } from "./account-map";
+import { stripedPairs } from "../components/kit/region-map";
 
 /**
  * Made-up accounts over the same deposits: what each leaves is today's amount and 100 times the monthly deposit, less its own cost, so the
@@ -288,6 +289,9 @@ describe("the account map (F-131)", () => {
     }
     expect(nodeAt(got, got.field.cols - 1, got.field.rows - 1)).toEqual({ first: "b", ahead: 1 });
     expectFieldTrue(got, three);
+    // the legend's stripes: A and C about the same around where they are equal, and C and B around theirs; A and B never meet
+    const pairs = stripedPairs(got.field).map((p) => p.map((k) => got.accounts[k] ?? "").sort((x, y) => x.localeCompare(y)).join("|"));
+    expect(pairs.sort((x, y) => x.localeCompare(y))).toEqual(["a|c", "b|c"]);
   });
 
   it("prices only the accounts that can lead once the coarse grid has found them", () => {

@@ -81,6 +81,8 @@ export interface LegendItem {
   /** The mark; an item without one is a plain line of text (a remainder note). */
   swatch?: ReactNode;
   label: ReactNode;
+  /** A mark that is no series of its own (a pattern over the others): never a pick, even in a legend that has one. */
+  still?: boolean;
   /** What stands after the item, outside its pick: what the series rests on that its name leaves out, in a few weak words with a "?"
    *  (`HelpMark`) for the rest (the return the site assumes for a fund's line). */
   after?: ReactNode;
@@ -111,7 +113,7 @@ export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: Chart
       {rows.map(({ head, it }) => (
         <li key={it.id} className={it.swatch ? "flex items-center gap-1.5" : undefined}>
           {head && <span className="me-2.5">{head.label}</span>}
-          {pick && it.swatch ? (
+          {pick && it.swatch && !it.still ? (
             <button type="button" aria-pressed={pick.pinned === it.id} {...pick.bind(it.id)} className={cx("inline-flex items-center gap-1.5 max-md:min-h-target md:tap-area cursor-pointer transition-opacity duration-(--duration-fast) hover:text-foreground", pick.active === it.id && "text-foreground", pick.active && pick.active !== it.id && "opacity-50")}>
               {it.swatch}
               {it.label}
