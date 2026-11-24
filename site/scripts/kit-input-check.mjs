@@ -1579,11 +1579,11 @@ async function regionCheck(browser, base) {
     });
     // measured with the pointer off the map and off the legend, whose item under it sets its area apart
     await page.mouse.move(1, 1);
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const bandBefore = (await painted("band")).sum;
     for (const at of [...(bandAt ? [bandAt] : []), { x: now.x + now.width * 0.2, y: now.y + now.height * 0.2 }]) {
       await page.mouse.move(at.x, at.y);
-      await page.evaluate(settled);
+      await page.evaluate(settled, TIMERS_MS);
       if ((await painted("areas")).sum !== before || (await painted("band")).sum !== bandBefore) found.push(`region: the pointer at (${Math.round(at.x)}, ${Math.round(at.y)}) lights part of the map, along the grid's cells`);
     }
     if (!bandAt) found.push("region: no point of the band found to point at");
