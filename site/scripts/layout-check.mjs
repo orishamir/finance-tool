@@ -59,7 +59,11 @@
 //            left end to its right does not carry to its most and back to its least (guidelines/design.md, "Fields"; `sliderRules` in
 //            kit-input-check.mjs, whose slider check plants one with every fault on /kit first). The drags write the page's entered values,
 //            so the tab's storage is emptied after it.
-// Usage: node site/scripts/layout-check.mjs [page path...]   e.g. /guide/current-account /companies/ibi
+// Usage: node site/scripts/layout-check.mjs [--part=grids|kit:K/N|pages:K/N] [page path...]   e.g. /guide/current-account /companies/ibi
+// --part runs one share of the check, so that machines side by side run the whole of it (GitHub, .github/workflows/ci.yml): `grids` the
+// self-test and the fee grids by keys, pointer and finger (keys, lines, drag, ask, grip), `kit:K/N` the K-th of N shares of the checks of
+// the kit's pieces by hand (input), and `pages:K/N` the K-th of N shares of the pages at every width, every N-th page from the K-th. With
+// no --part, all of it.
 // Without paths: every guide, exposure, index and company page (each of a company's products too), the top pages, the kit, and the fee
 // page with a filled deal (its link in layout-check-deal.txt). Needs a build (npm run build). Exits 1 when a
 // check fails. What a script cannot judge (balance, what draws the eye, whether a change reads as asked) still needs a look.
@@ -91,21 +95,30 @@ const SHEET_FIGURES = 3; // figures with a warning opened on each page
 const TABS = Number(process.env.LAYOUT_CHECK_TABS) || Math.max(4, Math.min(10, Math.floor(cpus().length / 3)));
 const leftovers = JSON.parse(readFileSync(join(here, "layout-check-leftovers.json"), "utf8")).leftovers;
 const listed = (path, width, f) => leftovers.find((l) => path.startsWith(l.pages) && l.width === width && l.check === f.check && l.id === f.id);
-const named = process.argv.slice(2);
-const paths = named.length ? named : defaultPages();
+const named = process.argv.slice(2).filter((a) => !a.startsWith("--"));
+const part = process.argv.slice(2).find((a) => a.startsWith("--part="))?.slice("--part=".length);
+const [, partOf, k, n] = part?.match(/^(kit|pages):(\d+)\/(\d+)$/) ?? [];
+const share = partOf && [Number(k), Number(n)];
+if (part && part !== "grids" && !(share && share[0] >= 1 && share[0] <= share[1])) {
+  console.error(`--part=${part}: give --part=grids, --part=kit:K/N or --part=pages:K/N, K from 1 to N`);
+  process.exit(2);
+}
+const grids = !part || part === "grids";
+const kit = !part || partOf === "kit";
+const paths = part && partOf !== "pages" ? [] : (named.length ? named : defaultPages()).filter((_, i) => !share || i % share[1] === share[0] - 1);
 const t0 = Date.now();
 
 const server = await serveBuild(build, { port: 0 });
 const base = server.url.replace(/\/$/, "");
 const browser = await chromium.launch();
 // each check must catch a failure planted on the kit page before its passing on the site counts
-const missed = await selfTest();
-const keyFindings = await keysCheck();
-const lineFindings = await linesCheck();
-const dragFindings = await dragCheck();
-const askFindings = await askCheck();
-const gripFindings = await gripCheck();
-const inputFindings = await kitInputCheck(browser, base);
+const missed = grids ? await selfTest() : [];
+const keyFindings = grids ? await keysCheck() : [];
+const lineFindings = grids ? await linesCheck() : [];
+const dragFindings = grids ? await dragCheck() : [];
+const askFindings = grids ? await askCheck() : [];
+const gripFindings = grids ? await gripCheck() : [];
+const inputFindings = kit ? await kitInputCheck(browser, base, share ?? [1, 1]) : [];
 const results = await Promise.all(WIDTHS.map(checkWidth));
 await browser.close();
 await server.close();
@@ -156,10 +169,10 @@ for (const [i, width] of WIDTHS.entries()) {
     for (const f of fresh) console.log(`      ${f.check}: ${f.detail}`);
   }
 }
-// a full run says which listed leftovers are gone, so the list can shrink
-if (!named.length) for (const l of leftovers.filter((l) => !used.has(l))) console.log(`GONE  ${l.pages} at ${l.width}, ${l.check} ${l.id}: no longer found; remove it from layout-check-leftovers.json`);
+// a full run says which listed leftovers are gone, so the list can shrink (a share of the pages can't tell: a leftover's pages may be in another)
+if (!named.length && !part) for (const l of leftovers.filter((l) => !used.has(l))) console.log(`GONE  ${l.pages} at ${l.width}, ${l.check} ${l.id}: no longer found; remove it from layout-check-leftovers.json`);
 console.log(
-  `\n${failed ? `${failed} failed` : "all passed"}${known ? ` (${known} listed in layout-check-leftovers.json)` : ""}: ${paths.length} pages at ${WIDTHS.join(", ")} px (page width, "?" marks, terms), ${sheets} sheets with a warning opened at ${SHEET_WIDTH} × ${HEIGHT[SHEET_WIDTH]}; ${((Date.now() - t0) / 1000).toFixed(0)} s`,
+  `\n${failed ? `${failed} failed` : "all passed"}${part ? ` (part ${part})` : ""}${known ? ` (${known} listed in layout-check-leftovers.json)` : ""}: ${paths.length} pages at ${WIDTHS.join(", ")} px (page width, "?" marks, terms), ${sheets} sheets with a warning opened at ${SHEET_WIDTH} × ${HEIGHT[SHEET_WIDTH]}; ${((Date.now() - t0) / 1000).toFixed(0)} s`,
 );
 process.exit(failed ? 1 : 0);
 

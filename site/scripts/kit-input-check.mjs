@@ -119,9 +119,14 @@ async function touchDrag(page, from, to, steps = 10) {
 
 const center = (r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2 });
 
-export async function kitInputCheck(browser, base) {
+/**
+ * Every check below, or with `share` [K, N] the K-th of N shares of them, every N-th from the K-th (layout-check.mjs --part=kit:K/N). Each
+ * opens a context of its own, so their order is free: it keeps the slowest two by far, the slider and the lifted sheet, in different halves.
+ */
+export async function kitInputCheck(browser, base, share = [1, 1]) {
   const found = [];
-  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, backCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, carryStartCheck, partLiftCheck, noticeSheetCheck, chipCheck, regionCheck]) {
+  const runs = [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, backCheck, touchCheck, liftSheetCheck, headerCheck, toolboxCarryCheck, carryStartCheck, partLiftCheck, noticeSheetCheck, chipCheck, regionCheck];
+  for (const run of runs.filter((_, i) => i % share[1] === share[0] - 1)) {
     try {
       found.push(...(await run(browser, base)));
     } catch (e) {
