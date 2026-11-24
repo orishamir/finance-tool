@@ -2,7 +2,7 @@
 // owning it, the cheapest broker for each option and the cheapest complete way (broker + fund) for the plan. Pure: the
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the indices bundle. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { rankByValue } from "./rank";
+import { bestRanked } from "./rank";
 import { gershayim } from "./format";
 import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, isTie, beforeTaxPathOf, securitiesBlockedBy, securitiesStopOf, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
@@ -1170,7 +1170,7 @@ function fundWayOf(ctx: Ctx, rec: FundRecord, option: OptionId): FundWay {
       failure ??= p.reason;
     }
   }
-  const best = rankByValue(ways, (w) => w.valueN)[0];
+  const best = bestRanked(ways, (w) => w.valueN);
   return { ...base, currencyMismatch: fs.mismatch, ...(best ? { best } : failure ? { reason: failure } : { reason: { code: "no-applicable-line", detail: "no broker" } }) };
 }
 
