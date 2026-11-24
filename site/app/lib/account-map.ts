@@ -375,13 +375,16 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const lines = { amount: { up: lineOn(0, "up", reachA), down: lineOn(0, "down", floor.amount) }, monthly: { up: lineOn(1, "up", reachM), down: lineOn(1, "down", floor.monthly) } };
   // each way along each line, the first change: the switch, unless an account is clearly cheaper first for a stretch before it (its first
   // run of samples, ending before the line does), then the stretch with the switch after it, so the words name what comes first, each
-  // account only where it holds, and what follows the stretch
+  // account only where it holds, and what follows the stretch. A stretch and a switch by the same account, first at every sample between
+  // them (its lead only dipping under θ, as whole units make it, F-109), are the switch alone
   const changeOn = (line: Line | null, floorAt: number): { sw: MapSwitch | null; st: MapStretch | null } => {
     const sw = switchAlong(line, order, theta, tied, floorAt);
     const st = stretchAlong(line, order, theta, tied, floorAt);
     if (!line || !st) return { sw, st: null };
     const toEnd = line.dir === "up" ? st.hi >= line.end : st.lo <= line.end;
-    return toEnd ? { sw, st: null } : { sw: null, st: { ...st, then: sw } };
+    const gap = (v: number) => (!sw ? false : line.dir === "up" ? v > st.hi && v < sw.at : v < st.lo && v > sw.at);
+    const dip = !!sw && sw.to === st.to && line.samples().every((x) => !gap(x.v) || leadOf(x.left, order, theta)?.first === st.to);
+    return toEnd || dip ? { sw, st: null } : { sw: null, st: { ...st, then: sw } };
   };
   const ways = {
     amount: { up: changeOn(lines.amount.up, floor.amount), down: changeOn(lines.amount.down, floor.amount) },

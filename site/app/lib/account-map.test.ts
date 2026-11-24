@@ -362,13 +362,12 @@ describe("the account map (F-131)", () => {
 
   it("a switch holds to the end of the search: a lead that dips under θ and back cannot place it", () => {
     // B's lead over A grows with today's amount and wavers by two fifths every 40,000 ₪, so it first reaches θ at 35,623 ₪ and stays there
-    // only past its last dip, from 65,259 ₪: the stretch before the dip is named first, then the switch past it
+    // only past its last dip, from 65,259 ₪; B is first all along the dip, so its stretch before it and its switch past it are one switch
     const lead = (a: number) => THETA * (a / 40_000) * (1 + 0.4 * Math.sin((2 * Math.PI * a) / 40_000 + 1));
     const wavy = { a: (a: number, m: number) => left(a, m, 0), b: (a: number, m: number) => left(a, m, 0) / (1 - lead(a)) };
     const map = mapOf(wavy, { amount: 10_000, monthly: 200 });
-    const st = need(map.stretches.amount, "the stretch before the dip");
-    expect(st.lo).toBeCloseTo(35_623, -1);
-    const at = need(st.then, "the switch past the dip").at;
+    expect(map.stretches.amount).toBeNull();
+    const at = need(map.switches.amount, "the switch").at;
     const gap = (a: number) => {
       const [x, y] = [wavy.a(a, 200), wavy.b(a, 200)];
       return (y - x) / y;
