@@ -945,7 +945,7 @@ export const formulaKeys: Record<string, { lines?: string[]; symbols: [tex: stri
   "F-131": {
     lines: ["החשבון שמשאיר הכי הרבה, בכל סכום היום והפקדה חודשית", "כמה הוא לפני החשבון הבא, ביחס לסף התיקו: 0 כשהם שווים, 1 מהסף והלאה"],
     symbols: [
-      ["p_1(a, m)", "החשבון שמשאיר הכי הרבה, כלומר גובה הכי מעט"],
+      ["p_1(a, m)", "החשבון שמשאיר הכי הרבה"],
       ["p_2", "החשבון הבא אחריו"],
       ["s(a, m)", "כמה הראשון לפני הבא: מתחת ל־1 הם בערך אותו דבר"],
       ["θ", "סף התיקו של האתר"],
@@ -4208,7 +4208,7 @@ export const invest = {
       nearStays: "גם בסכומים אחרים",
       /** The card of a plan with nothing in it. */
       empty: "אין כסף בתוכנית",
-      emptyNote: "בלי כסף אין עמלות",
+      emptyNote: "אין כסף בחשבון, אז לא נגבה ממנו כלום",
       /** The card where no account is ranked with the fund, by why. */
       unranked: "אין מפה לקרן הזו",
       unrankedWhy: { "open-rule": "המס עליה תלוי בשאלה פתוחה, ולכן האתר לא מדרג חשבונות איתה", unpriced: "אף חשבון לא מדורג עם הקרן הזו" },
@@ -4216,7 +4216,7 @@ export const invest = {
       headCheapest: (w: string) => `בתוכנית שלכם ${w} הכי זול.`,
       headCheaper: (w: string, house: string) => `בתוכנית שלכם ${w} זול יותר ${fromPrefix(house)}${house}.`,
       headNear: (names: string[]) => `בתוכנית שלכם ${andList(names)} בערך אותו דבר.`,
-      headEmpty: "בתוכנית שלכם אין כסף, ולכן אין עמלות. המפה מראה איזה חשבון זול יותר בכל צירוף אחר.",
+      headEmpty: "בתוכנית שלכם אין כסף, אז לא נגבה כלום. המפה מראה איזה חשבון זול יותר בכל צירוף אחר.",
       /** "אי.בי.אי זול יותר בבירור מעל כ־108 אלף ₪ היום", then ", או …" where the same account is clearly cheaper the other way, or a
        *  sentence of its own where another is. */
       cheaperFrom: (to: string) => `${to} זול יותר בבירור`,
@@ -4225,7 +4225,7 @@ export const invest = {
       headNearStays: "אף אחד מהם לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
       headAll: "הוא הכי זול בכל צירוף במפה.",
       /** The line under the headline: what the map is, and what its blended colours mean (θ, P-01, as a figure). */
-      what: (years: number) => `החשבון שגובה הכי מעט עם הקרן הזו, בכל צירוף של סכום היום והפקדה חודשית, ${inYears(years)}. איפה שהצבעים מתערבבים, ההפרש קטן מ־`,
+      what: (years: number) => `החשבון שמשאיר לכם הכי הרבה עם הקרן הזו, בכל צירוף של סכום היום והפקדה חודשית, ${inYears(years)}. איפה שהצבעים מתערבבים, ההפרש קטן מ־`,
       /** After it: what the thin line on the map marks. */
       equalLine: "על הקו הדק שני החשבונות שווים.",
       xTitle: "סכום היום (₪)",
@@ -4240,8 +4240,10 @@ export const invest = {
       less: "פחות",
       /** Where the two are within the tie threshold: neither is set apart. */
       sameNote: "בערך אותו דבר: ההפרש קטן מ־",
-      none: "בלי כסף אין עמלות: כל החשבונות משאירים 0 ₪.",
-      onlyOne: "אין חשבון אחר שמוכר את הקרן",
+      none: "אין כסף בחשבון, אז לא נגבה כלום: כל החשבונות משאירים 0 ₪.",
+      /** A point where no account is ranked with the fund (its tax on an open rule, or no account priced there). */
+      unrankedHere: "כאן אף חשבון לא מדורג עם הקרן הזו",
+      onlyOne: "כאן אין עוד חשבון שמדורג עם הקרן הזו",
       /** The sheets of the map's figures. */
       switchAbout: "הסכום שממנו חשבון אחר זול יותר בבירור",
       tillAbout: "הסכום שעד אליו חשבון אחר זול יותר בבירור",

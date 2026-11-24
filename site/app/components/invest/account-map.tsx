@@ -177,9 +177,10 @@ function readerOf(view: InvestView, bundle: IndicesBundle, on: Asked<"map">, ton
     if (had) return had;
     const at = p ? planAt(plan, p, today) : plan;
     const pointHead = p ? m.pointHead(fmt.nisWhole(p[0]), fmt.nisWhole(p[1])) : `${m.planHead} ${m.pointHead(fmt.nisWhole(plan.amountNow), fmt.nisWhole(plan.monthly))}`;
-    const [w, r] = at.amountNow === 0 && at.monthly === 0 ? [] : rankedWays(on, at);
+    const nothing = at.amountNow === 0 && at.monthly === 0;
+    const [w, r] = nothing ? [] : rankedWays(on, at);
     let got: Reading;
-    if (!w) got = { head: pointHead, rows: [{ id: "none", label: m.none, value: null }] };
+    if (!w) got = { head: pointHead, rows: [{ id: "none", label: nothing ? m.none : m.unrankedHere, value: null }] };
     else {
       const same = !!r && isTie(w.valueN, r.valueN, theta);
       const head = same ? (
