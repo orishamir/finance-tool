@@ -1112,7 +1112,7 @@ function ClampedDemo() {
   );
 }
 
-function Fields() {
+function Fields({ today }: { today: string }) {
   const [a, setA] = useState<number | null>(1000);
   const [b, setB] = useState<number | null>(3000);
   const [c, setC] = useState<number | null>(1000);
@@ -1235,7 +1235,7 @@ function Fields() {
       </Demo>
       <Demo name="RegionMap" use={g.uses.RegionMap}>
         <State label={g.states.interactive} wide>
-          <RegionDemo />
+          <RegionDemo today={today} />
         </State>
       </Demo>
       <Demo name="PileYears, PileBar" use={g.uses.PileBar}>
@@ -2593,7 +2593,7 @@ export function KitGallery({ today }: { today: string }) {
         <Choices />
         <Chips />
         <Words today={today} />
-        <Fields />
+        <Fields today={today} />
         <MarkerDemo today={today} />
         <ChartParts today={today} />
         <Lists today={today} />
@@ -4139,7 +4139,7 @@ const REGION_COSTS: Record<string, (a: number, m: number) => number> = { a: (a, 
 const regionLeft: LeftAt = (a, m, ids) => new Map((ids ?? ["a", "b", "c"]).map((id) => [id, a + 100 * m - (REGION_COSTS[id]?.(a, m) ?? Infinity)]));
 const REGION_MAP = accountMap({ leftAt: regionLeft, order: ["a", "b", "c"], theta: 0.005, plan: { amount: 10_000, monthly: 200 }, reach: { amount: 500_000, monthly: 10_000 } });
 
-function RegionDemo() {
+function RegionDemo({ today }: { today: string }) {
   const r = g.sample.regions;
   if (!REGION_MAP) return null;
   const map = REGION_MAP;
@@ -4150,7 +4150,7 @@ function RegionDemo() {
     const at = p ?? ([map.plan.amount, map.plan.monthly] as const);
     const left = [...regionLeft(at[0], at[1], null)].sort((x, y) => y[1] - x[1]);
     const tone = (id: string) => areas.find((x) => x.id === id)?.tone ?? "other";
-    return { at, rows: left.slice(0, 2).map(([id, v], k) => ({ id, swatch: <Swatch shape="box" className={regionSwatch(tone(id))} />, label: names[id] ?? id, value: fmt.nisWhole(Math.round(v)), ...(k === 0 ? { wash: regionWash(tone(id)) } : {}) })) };
+    return { at, rows: left.slice(0, 2).map(([id, v], k) => ({ id, swatch: <Swatch shape="box" className={regionSwatch(tone(id))} />, label: names[id] ?? id, value: <Num value={computed(Math.round(v), "nis", "F-131", {}, { today, about: r.left(names[id] ?? id) })} display={fmt.nisWhole(Math.round(v))} />, ...(k === 0 ? { wash: regionWash(tone(id)) } : {}) })) };
   };
   const sw = map.switches;
   return (

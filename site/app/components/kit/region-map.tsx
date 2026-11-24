@@ -608,8 +608,9 @@ export function RegionMap({
     set([Math.min(max.x, Math.max(0, from[0] + dx * n * snap.x)), Math.min(max.y, Math.max(0, from[1] + dy * n * snap.y))]);
   };
 
-  // the box: the pointer's point (the marked one's words on the mark) while it is over the map, else the kept point's, which stays
-  const tip: { at: RegionPoint; reads: RegionPoint | null; kept: boolean } | null = hover ? { at: hover.onMark ? mark.at : hover.p, reads: hover.onMark ? null : hover.p, kept: false } : pinned ? { at: pinned, reads: pinned, kept: true } : null;
+  // the box: the kept point's while a point is kept, so the mouse can reach its figures; else the pointer's point (the marked one's words on
+  // the mark) while it is over the map
+  const tip: { at: RegionPoint; reads: RegionPoint | null; kept: boolean } | null = pinned ? { at: pinned, reads: pinned, kept: true } : hover ? { at: hover.onMark ? mark.at : hover.p, reads: hover.onMark ? null : hover.p, kept: false } : null;
   const pinX = pinned ? sx(pinned[0]) : 0;
   const pinY = pinned ? sy(pinned[1]) : 0;
   // the line where two areas are equal, in px

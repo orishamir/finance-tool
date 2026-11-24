@@ -63,7 +63,8 @@
 //            centred by a transform), the notice's title or its reload button not the top thing at its middle (drawn under the sheet, or cut
 //            by its card), the notice not at the window's foot, or the button not reloading the page.
 //   region   the region map (`RegionMap`) at 1440 with a mouse and keys: a box or a reading shown with no point kept and the pointer off
-//            the map; a click on the plot that keeps no point, or whose box does not stay at it once the pointer leaves; a second click that
+//            the map; a click on the plot that keeps no point, or whose box does not stay at it once the pointer leaves; the mouse moved
+//            from the kept point onto a figure in its box and clicking it, whose sheet does not open; a second click that
 //            does not move the kept point or its box; a click on it or Escape that does not let it go with its box; arrow keys that keep no
 //            point or do not move it; a name inside an area, or a legend item, that does not set its area apart (the areas' colours), or a
 //            name's click that keeps a point; the pointer over an area that does not lighten it; the band's words missing; the line where
@@ -1501,6 +1502,25 @@ async function regionCheck(browser, base) {
     const firstBox = await keptBox();
     if (!(await kept())) found.push("region: a click on the map keeps no point");
     else if (!firstBox) found.push("region: the kept point's box does not stay once the pointer leaves the map");
+    // the mouse moves from the kept point onto a figure in its box, over the map, and clicks it: the figure's sheet opens
+    {
+      const fig = map.locator('[data-region-tip="kept"] button').first();
+      const fb = await fig.boundingBox().catch(() => null);
+      if (!fb) found.push("region: the kept box holds no figure to click");
+      else {
+        const c = center(fb);
+        await page.mouse.move(p.x, p.y);
+        await page.mouse.move(c.x, c.y, { steps: 8 });
+        await page.mouse.click(c.x, c.y);
+        const opened = await page.locator("dialog[open]").waitFor({ timeout: 3000 }).then(() => true, () => false);
+        if (!opened) found.push("region: a mouse moved onto a figure in the kept box and clicking it does not open its sheet");
+        else {
+          await page.keyboard.press("Escape");
+          await page.waitForFunction(() => ![...document.querySelectorAll("dialog")].some((d) => d.open), null, { timeout: 3000 }).catch(() => found.push("region: Escape does not close the sheet of a kept box's figure"));
+        }
+        await off();
+      }
+    }
     const first = await pinAt();
     p = at(0.4, 0.55);
     await page.mouse.click(p.x, p.y);
