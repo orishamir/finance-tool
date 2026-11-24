@@ -136,16 +136,17 @@
   --palette-olive-600: oklch(0.55 0.12 115);
 
   /* Region pastels, in charts only: the areas of a map, each the full area of a plot, so light and soft on the dark card rather than a
-     saturated colour at low opacity, which on the card turns muddy. Each keeps the hue of a ramp the charts may use (teal, orange,
-     magenta, gold) at a lightness that stays bright and a chroma that reads as colour; no blue or violet (entered and computed numbers),
-     no red, amber or green (status). The four differ in lightness as well as hue, so they stay apart for a colour-blind reader: validated
-     with the dataviz validator against the card (`--mode dark --pairs all`): colour-blind ΔE at least 10.0, normal vision at least 15.2,
-     each over 3:1 against the card. A fifth light pastel that keeps those apart was not found, so a map with more winners gathers the
-     rest in a grey. */
-  --palette-region-teal: oklch(0.84 0.09 185);
-  --palette-region-peach: oklch(0.79 0.11 45);
-  --palette-region-pink: oklch(0.7 0.14 345);
-  --palette-region-cream: oklch(0.93 0.09 100);
+     saturated colour at low opacity, which on the card turns muddy. Their hues sit between those the page already gives a meaning, so an
+     area is not read as one of them: sky (220) between the teal of links and values (190) and the blue of entered numbers (262), lemon
+     (108) past the amber of caution (70), orchid (322) between the computed violet (302) and the hedged magenta (335), apricot (62)
+     between the fees' orange (48) and amber; no red or green (status). The four differ in lightness as well as hue, so they stay apart
+     for a colour-blind reader: validated with the dataviz validator against the card (`--mode dark --pairs all`, the grey of the fifth
+     area among them): colour-blind ΔE at least 9.8, normal vision at least 15.0, each over 3:1 against the card. Two areas blend where
+     their accounts are close (`RegionMap`), so a blend of any two must stay light too, which these do. */
+  --palette-region-sky: oklch(0.82 0.09 220);
+  --palette-region-lemon: oklch(0.94 0.1 108);
+  --palette-region-orchid: oklch(0.68 0.15 322);
+  --palette-region-apricot: oklch(0.8 0.12 62);
 
   /* Rose: tax, in charts only */
   --palette-rose-50: oklch(0.975 0.013 358);
@@ -289,17 +290,17 @@
   --chart-stocks: var(--palette-teal-400);
   --chart-currency: var(--palette-gold-200);
   --chart-alt: var(--palette-gold-200); /* the nearest alternative in a guide page's two-line drawing (D29, 2026-10-25): gold against the teal value line; same pair as fee kinds 2 and 3 */
+  /* a region map's areas (`RegionMap`), in the order they are given out: the first to the area the map is about. Text and lines on them
+     are in the dark ink, since every area is light; the grey is a fifth area's, and gathers those past it ("אחרות", charts.md) */
+  --chart-region-1: var(--palette-region-sky);
+  --chart-region-2: var(--palette-region-lemon);
+  --chart-region-3: var(--palette-region-orchid);
+  --chart-region-4: var(--palette-region-apricot);
+  --chart-region-other: var(--palette-neutral-400);
+  --chart-region-ink: var(--palette-neutral-975);
   /* the index page's two kinds of fund (2026-10-29, founder: option A of 8dd1f013:research/specs/2026-10-29-hedging): keeping the index's currency, and
      neutralising it: teal against magenta (not gold: amber and its neighbours mean status, charts.md), not the fee orange the
      page's cost bars use */
-  /* a region map's areas (`RegionMap`), in the order they are given out: the first to the area the map is about. Text and lines on them
-     are in the dark ink, since every area is light; the grey gathers the areas past the fourth ("אחרות", charts.md) */
-  --chart-region-1: var(--palette-region-teal);
-  --chart-region-2: var(--palette-region-peach);
-  --chart-region-3: var(--palette-region-pink);
-  --chart-region-4: var(--palette-region-cream);
-  --chart-region-other: var(--palette-neutral-400);
-  --chart-region-ink: var(--palette-neutral-975);
   --chart-kind-unhedged: var(--palette-teal-300);
   --chart-kind-hedged: var(--palette-magenta-400);
   /* the index page's cost bar (founder, 2026-10-27, 8dd1f013:research/specs/2026-10-27-invest-improvements 3.10): one hue per part, by who
