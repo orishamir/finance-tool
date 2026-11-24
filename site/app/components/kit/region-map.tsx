@@ -5,8 +5,8 @@
 // canvas), so the strip has no steps on any screen. Where two areas meet, the two are equal: a thin line marks it over the strip, through
 // the points where the leads either side cancel, found between the grid's nodes, so it runs smooth rather than along the grid's cells.
 // Each area's name stands inside it, and words of the caller's on the strip where they fit; a marked point (the reader's own) has dashed
-// guides from it along each axis; and a value of the bottom edge is drawn apart as a thick line, blended the same way.
-// The x axis grows left to right and the y axis up from 0 (charts.md).
+// guides from it along each axis; and a value of the bottom edge is drawn apart as a thick line, blended the same way, each area along it
+// named over its stretch where the words fit. The x axis grows left to right and the y axis up from 0 (charts.md).
 // The pointer reads any point: on a computer a box follows it and the area under it lightens; a click or a tap keeps a point (its mark and
 // its box stay, and the box's figures can be tapped), a second one elsewhere moves it, and a tap on it or Escape lets it go. The map takes
 // the focus, and the arrow keys move the kept point (from the marked one; with Shift in larger steps). A legend item or an area's name sets
@@ -223,7 +223,7 @@ export function RegionMap({
   areas: RegionArea[];
   /** Who leads over the plane: its columns from 0 to `max.x`, its rows from `from` to `max.y` (under `from` is the bottom edge's). */
   field: RegionGrid & { from: number };
-  /** The bottom edge's value, one row from 0 to `max.x`, and the words over its longest clear stretch. */
+  /** The bottom edge's value, one row from 0 to `max.x`: the words over its longest clear stretch, and each other area's name over its own. */
   edge: RegionGrid;
   edgeLabel: (id: string) => RegionWords;
   /** Words for the band where two areas are close, drawn on its strip of fade where they fit. */
@@ -318,7 +318,9 @@ export function RegionMap({
         last.last = i;
       } else runs.push({ area: f, from: x, to: x, last: i });
     });
-    const longest = [...runs].sort((a, b) => b.to - b.from - (a.to - a.from))[0];
+    // each area's longest stretch, the longest first: it carries the edge's words, each other its area's name
+    const stretches = [...runs].sort((a, b) => b.to - b.from - (a.to - a.from)).filter((r, k, all) => all.findIndex((x) => x.area === r.area) === k);
+    const [longest, ...others] = stretches;
     const longestArea = longest ? areas[longest.area] : undefined;
     const edgeWords = longestArea ? edgeLabel(longestArea.id) : null;
 
@@ -337,11 +339,22 @@ export function RegionMap({
       placed.push(got);
       return got;
     };
-    // the bottom edge's words, over its longest clear stretch, ending at the stretch's right end, on one line; where they do not fit there,
-    // they stand under the map, after a piece of the edge's line
-    const edgeTw = edgeWords ? chartTextWidth(edgeWords.text) : 0;
-    const edgeInside = longest ? clearOf([{ x: Math.max(left + 4, Math.min(right - 4, sxL(longest.to) - 4) - edgeTw), y: bottom - EDGE_PX - 6 - LINE, w: edgeTw, h: LINE }]) : undefined;
+    // the bottom edge's words, over its longest clear stretch, ending at the stretch's right end, on one line; where they do not fit inside
+    // the stretch, they stand under the map, after a piece of the edge's line. Each other stretch carries its area's name where it fits
+    // inside it, so an edge that changes hands names each account along it
+    const overStretch = (r: (typeof runs)[number], tw: number) => {
+      const x = Math.min(right - 4, sxL(r.to) - 4) - tw;
+      return x >= Math.max(left + 4, sxL(r.from)) ? clearOf([{ x, y: bottom - EDGE_PX - 6 - LINE, w: tw, h: LINE }]) : undefined;
+    };
+    const edgeInside = longest && edgeWords ? overStretch(longest, chartTextWidth(edgeWords.text)) : undefined;
     if (edgeInside) placed.push(edgeInside);
+    const edgeNames = others.flatMap((r) => {
+      const a = areas[r.area];
+      const box = a ? overStretch(r, chartTextWidth(a.name)) : undefined;
+      if (!a || !box) return [];
+      placed.push(box);
+      return [{ id: a.id, box, words: { text: a.name } }];
+    });
     // a box's left edge moved inside the plot, where its words are narrower than the plot
     const inside = (x: number, tw: number) => Math.min(right - tw - 4, Math.max(left + 4, x));
     // the mark's words: under the dot, else over it beside its vertical guide, else beside the dot, else a line higher, held inside the plot
@@ -426,7 +439,7 @@ export function RegionMap({
       const b = take(sides.filter((x) => x !== null).sort((x, y) => y.room - x.room)[0]);
       return b ? [{ pair, b }] : [];
     });
-    return { edgeWords, edgeInside, longestArea, markBox, guideDraw, names, bands };
+    return { edgeWords, edgeInside, edgeNames, longestArea, markBox, guideDraw, names, bands };
   }, [field, edge, areas, mark, guides, bandLabel, edgeLabel, max.x, max.y, left, right, bottom]);
   const { edgeWords, edgeInside, longestArea, markBox, guideDraw } = layout;
 
@@ -570,6 +583,9 @@ export function RegionMap({
         {guideDraw.map(({ g, box }) => box && g.label && <Words key={g.axis} box={box} words={g.label} />)}
         <Words box={markBox} words={mark.label} />
         {edgeWords && edgeInside && <Words box={edgeInside} words={edgeWords} />}
+        {layout.edgeNames.map((n) => (
+          <Words key={n.id} box={n.box} words={n.words} />
+        ))}
         {tip && (
           <div className="contents" data-region-tip={tip.kept ? "kept" : "pointer"}>
             <ChartTip x={sx(tip.at[0])} width={w} near={{ y: sy(tip.at[1]), bottom: height }} variant={tip.kept ? "kept" : "follow"}>
