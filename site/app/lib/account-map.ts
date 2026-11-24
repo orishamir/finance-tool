@@ -196,8 +196,9 @@ function lineOf(leftAt: LeftAt, order: readonly string[], theta: number, tied: r
  * accounts are not clearly beaten, and between it and the next, the point past which they are, narrowed twice by finer samples (the last
  * that fails each time), then by halving. Null where the plan's accounts are not clearly beaten at the line's end: a switch holds at every
  * sample to the end of the search, so a lead that dips under θ and back (the whole units of F-109) does not place it where it first reaches θ.
+ * Null too where it falls under `floor` (`LOWEST` of the reach, on the way up from no money at all): that change is the value of no money's.
  */
-function switchAlong(line: Line | null, order: readonly string[], theta: number, tied: readonly string[]): MapSwitch | null {
+function switchAlong(line: Line | null, order: readonly string[], theta: number, tied: readonly string[], floor = 0): MapSwitch | null {
   if (!line || !clearOf(line.all.at(-1)?.left ?? new Map(), order, tied, theta)) return null;
   const samples = line.samples();
   const failing = (holds: (string | null)[]) => holds.findLastIndex((h) => h === null);
@@ -217,12 +218,13 @@ function switchAlong(line: Line | null, order: readonly string[], theta: number,
     else lo = mid;
   }
   const to = test(hi);
-  return to ? { at: hi, dir: line.dir, to } : null;
+  return to && hi >= floor ? { at: hi, dir: line.dir, to } : null;
 }
 
 /** The first point along a line where `changed` holds of the reading there: the first sample where it does, narrowed by halving from the
- *  sample before it (the plan, for the first). Null where no sample to the line's end reads changed. */
-function firstChange(line: Line | null, order: readonly string[], theta: number, changed: (l: ReturnType<typeof leadOf>) => boolean): { at: number; lead: ReturnType<typeof leadOf> } | null {
+ *  sample before it (the plan, for the first). Null where no sample to the line's end reads changed, and where the first change falls under
+ *  `floor`: no money at all today, or a month, is a value of its own, and a change found only past it is that value's, not the line's. */
+function firstChange(line: Line | null, order: readonly string[], theta: number, floor: number, changed: (l: ReturnType<typeof leadOf>) => boolean): { at: number; lead: ReturnType<typeof leadOf> } | null {
   if (!line) return null;
   const samples = line.samples();
   const k = samples.findIndex((s) => changed(leadOf(s.left, order, theta)));
@@ -235,7 +237,7 @@ function firstChange(line: Line | null, order: readonly string[], theta: number,
     if (changed(leadOf(line.price(mid), order, theta))) hi = mid;
     else lo = mid;
   }
-  return { at: hi, lead: leadOf(line.price(hi), order, theta) };
+  return hi >= floor ? { at: hi, lead: leadOf(line.price(hi), order, theta) } : null;
 }
 
 /**
@@ -306,27 +308,28 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const lowM = reachM * LOWEST;
   const lineOn = (axis: 0 | 1, dir: MapSwitch["dir"], to: number) => (tied.length === 0 ? null : lineOf(leftAt, order, theta, tied, planPt, axis, dir, to));
   const lines = { amount: { up: lineOn(0, "up", reachA), down: lineOn(0, "down", lowA) }, monthly: { up: lineOn(1, "up", reachM), down: lineOn(1, "down", lowM) } };
-  const up = { amount: switchAlong(lines.amount.up, order, theta, tied), monthly: switchAlong(lines.monthly.up, order, theta, tied) };
+  // under a thousandth of the reach no point is named, either way: no money at all today (or a month) is a value of its own, as the bottom
+  // edge is, and a change found only there is that value's, not a point along the line
+  const floor = { amount: reachA * LOWEST, monthly: reachM * LOWEST };
+  const up = { amount: switchAlong(lines.amount.up, order, theta, tied, floor.amount), monthly: switchAlong(lines.monthly.up, order, theta, tied, floor.monthly) };
   const switches = {
     amount: nearer(plan.amount, up.amount, switchAlong(lines.amount.down, order, theta, tied)),
     monthly: nearer(plan.monthly, up.monthly, switchAlong(lines.monthly.down, order, theta, tied)),
   };
   const planFirst = lead.kind === "clear" ? lead.first : lead.kind === "near" ? lead.tied[0] : null;
-  // where another account first leaves more than the plan's first, up or down a line: there the two leave the same. Under a thousandth of
-  // the reach, none is named: no money at all today (or a month) is a value of its own, as the bottom edge is, and a change found only
-  // there is that value's, not a point along the line
-  const evenOn = (line: Line | null, floor: number): MapSwitch | null => {
-    const c = firstChange(line, order, theta, (l) => l?.first !== planFirst);
+  // where another account first leaves more than the plan's first, up or down a line: there the two leave the same
+  const evenOn = (line: Line | null, at: number): MapSwitch | null => {
+    const c = firstChange(line, order, theta, at, (l) => l?.first !== planFirst);
     const to = c?.lead?.first;
-    return line && c && to && c.at >= floor ? { at: c.at, dir: line.dir, to } : null;
+    return line && c && to ? { at: c.at, dir: line.dir, to } : null;
   };
-  const evenUp = { amount: evenOn(lines.amount.up, 0), monthly: evenOn(lines.monthly.up, 0) };
-  const changesUp = (line: Line | null, even: MapSwitch | null): LineChanges => ({
-    band: lead.kind === "clear" ? (firstChange(line, order, theta, (l) => l?.first !== planFirst || l.ahead < 1)?.at ?? null) : null,
+  const evenUp = { amount: evenOn(lines.amount.up, floor.amount), monthly: evenOn(lines.monthly.up, floor.monthly) };
+  const changesUp = (line: Line | null, at: number, even: MapSwitch | null): LineChanges => ({
+    band: lead.kind === "clear" ? (firstChange(line, order, theta, at, (l) => l?.first !== planFirst || l.ahead < 1)?.at ?? null) : null,
     even: even?.at ?? null,
   });
-  const changes = { amount: changesUp(lines.amount.up, evenUp.amount), monthly: changesUp(lines.monthly.up, evenUp.monthly) };
-  const equal = { amount: nearer(plan.amount, evenUp.amount, evenOn(lines.amount.down, reachA * LOWEST)), monthly: nearer(plan.monthly, evenUp.monthly, evenOn(lines.monthly.down, reachM * LOWEST)) };
+  const changes = { amount: changesUp(lines.amount.up, floor.amount, evenUp.amount), monthly: changesUp(lines.monthly.up, floor.monthly, evenUp.monthly) };
+  const equal = { amount: nearer(plan.amount, evenUp.amount, evenOn(lines.amount.down, floor.amount)), monthly: nearer(plan.monthly, evenUp.monthly, evenOn(lines.monthly.down, floor.monthly)) };
 
   // ------------------------------------------------ the axes
   // past the plan and the farthest change up its line with room (the band's near edge, the even point, the switch up), at a clean value;

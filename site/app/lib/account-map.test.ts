@@ -104,6 +104,23 @@ describe("the account map (F-131)", () => {
     expect(mapOf(atNothing, { amount: 10_000, monthly: 200 }).equal.amount).toBeNull();
   });
 
+  it("names nothing up a line from no money at all where the accounts differ only there: no equal point, no switch, no change", () => {
+    // B leaves 1% less than A with no monthly deposit (or nothing today), and 0.1% more, within θ, wherever there is one: up the line from
+    // 0 nothing changes along it, since no money at all is a value of its own, as the bottom edge is
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    const noDeposit = { a: base, b: (a: number, m: number) => base(a, m) * (m === 0 ? 0.99 : 1.001) };
+    const noAmount = { a: base, b: (a: number, m: number) => base(a, m) * (a === 0 ? 0.99 : 1.001) };
+    for (const [accounts, plan, axis] of [[noDeposit, { amount: 10_000, monthly: 0 }, "monthly"], [noAmount, { amount: 0, monthly: 200 }, "amount"]] as const) {
+      const got = mapOf(accounts, plan);
+      expect(got.plan.lead, axis).toEqual({ kind: "clear", first: "a" });
+      expect(got.equal[axis], axis).toBeNull();
+      expect(got.switches[axis], axis).toBeNull();
+      expect(got.changes[axis], axis).toEqual({ band: null, even: null });
+      // where nothing changes up a line, a quarter of the sliders' reach: 125,000 ₪, up to 150,000 ₪, and 2,500 ₪ a month
+      expect(got.max, axis).toEqual({ amount: 150_000, monthly: 2500 });
+    }
+  });
+
   it("shows the band and the other account's side up a line where the other never becomes clearly cheaper", () => {
     // A: 2% of today's amount and 0.6 ₪ a shekel of the deposit; B as before. Up the deposit at 10,000 ₪, B leaves 0.4 m − 450 more: A is θ
     // ahead while 450 − 0.4 m ≥ 0.005 (9,800 + 99.4 m), to 447.0 ₪ a month, B leaves more from 1,125 ₪, and B is never θ ahead, since
