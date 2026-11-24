@@ -121,6 +121,22 @@ describe("the account map (F-131)", () => {
     }
   });
 
+  it("an account of the plan with no ranked price at a point is not compared there: neither beaten nor equal (F-80)", () => {
+    // A has no ranked price from 50,000 ₪ today (the list does not rank it there); B is A's twin, or 1% behind it, where both are priced
+    const unpricedFrom = (accounts: Record<string, (a: number, m: number) => number>): LeftAt => (a, m, houses) =>
+      new Map((houses ?? Object.keys(accounts)).flatMap((id) => (accounts[id] && !(id === "a" && a >= 50_000) ? [[id, accounts[id](a, m)] as const] : [])));
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    const plan = { amount: 10_000, monthly: 200 };
+    const run = (accounts: Record<string, (a: number, m: number) => number>) => need(accountMap({ leftAt: unpricedFrom(accounts), order: ["a", "b"], theta: THETA, plan, reach }), "the map");
+    const twins = run({ a: base, b: base });
+    expect(twins.plan.lead).toEqual({ kind: "near", tied: ["a", "b"] });
+    expect(twins.switches.amount).toBeNull();
+    const behind = run({ a: base, b: (a, m) => base(a, m) * 0.99 });
+    expect(behind.plan.lead).toEqual({ kind: "clear", first: "a" });
+    expect(behind.equal.amount).toBeNull();
+    expect(behind.changes.amount).toEqual({ band: null, even: null });
+  });
+
   it("shows the band and the other account's side up a line where the other never becomes clearly cheaper", () => {
     // A: 2% of today's amount and 0.6 ₪ a shekel of the deposit; B as before. Up the deposit at 10,000 ₪, B leaves 0.4 m − 450 more: A is θ
     // ahead while 450 − 0.4 m ≥ 0.005 (9,800 + 99.4 m), to 447.0 ₪ a month, B leaves more from 1,125 ₪, and B is never θ ahead, since

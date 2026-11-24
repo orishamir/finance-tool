@@ -140,16 +140,18 @@ function nearTop(left: ReadonlyMap<string, number>, order: readonly string[], th
 
 /**
  * Whether the plan's accounts `tied` are clearly beaten at a point: the account that leaves the most there is at least θ ahead of every one
- * of them but itself (an account of `tied` counts too, against the others); that account, else null.
+ * of them but itself (an account of `tied` counts too, against the others), each of them priced there; that account, else null.
  */
 function clearOf(left: ReadonlyMap<string, number>, order: readonly string[], tied: readonly string[], theta: number): string | null {
   const q = rankedAt(left, order)[0];
   if (!q) return null;
   const others = tied.filter((id) => id !== q.id);
   if (others.length === 0) return null;
+  // an account of the plan's with no ranked price here is not compared (F-80: an option with no value is neither ranked nor tied), so
+  // nothing is clearly beaten where one is missing
   return others.every((id) => {
     const v = left.get(id);
-    return v === undefined || !isTie(q.v, v, theta);
+    return v !== undefined && !isTie(q.v, v, theta);
   })
     ? q.id
     : null;
@@ -224,17 +226,18 @@ function switchAlong(line: Line | null, order: readonly string[], theta: number,
 /** The first point along a line where `changed` holds of the reading there: the first sample where it does, narrowed by halving from the
  *  sample before it (the plan, for the first). Null where no sample to the line's end reads changed, and where the first change falls under
  *  `floor`: no money at all today, or a month, is a value of its own, and a change found only past it is that value's, not the line's. */
-function firstChange(line: Line | null, order: readonly string[], theta: number, floor: number, changed: (l: ReturnType<typeof leadOf>) => boolean): { at: number; lead: ReturnType<typeof leadOf> } | null {
+function firstChange(line: Line | null, order: readonly string[], theta: number, floor: number, changed: (l: ReturnType<typeof leadOf>, left: ReadonlyMap<string, number>) => boolean): { at: number; lead: ReturnType<typeof leadOf> } | null {
   if (!line) return null;
   const samples = line.samples();
-  const k = samples.findIndex((s) => changed(leadOf(s.left, order, theta)));
+  const k = samples.findIndex((s) => changed(leadOf(s.left, order, theta), s.left));
   const found = samples[k];
   if (!found) return null;
   let lo = samples[k - 1]?.v ?? line.own;
   let hi = found.v;
   for (let i = 0; i < BISECT; i++) {
     const mid = (lo + hi) / 2;
-    if (changed(leadOf(line.price(mid), order, theta))) hi = mid;
+    const left = line.price(mid);
+    if (changed(leadOf(left, order, theta), left)) hi = mid;
     else lo = mid;
   }
   return hi >= floor ? { at: hi, lead: leadOf(line.price(hi), order, theta) } : null;
@@ -317,15 +320,17 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     monthly: nearer(plan.monthly, up.monthly, switchAlong(lines.monthly.down, order, theta, tied)),
   };
   const planFirst = lead.kind === "clear" ? lead.first : lead.kind === "near" ? lead.tied[0] : null;
-  // where another account first leaves more than the plan's first, up or down a line: there the two leave the same
+  // where another account first leaves more than the plan's first, up or down a line: there the two leave the same. Where the plan's first
+  // has no ranked price it is not compared (F-80), so its reading has not changed there
+  const firstPriced = (left: ReadonlyMap<string, number>) => planFirst !== null && left.has(planFirst);
   const evenOn = (line: Line | null, at: number): MapSwitch | null => {
-    const c = firstChange(line, order, theta, at, (l) => l?.first !== planFirst);
+    const c = firstChange(line, order, theta, at, (l, left) => firstPriced(left) && l?.first !== planFirst);
     const to = c?.lead?.first;
     return line && c && to ? { at: c.at, dir: line.dir, to } : null;
   };
   const evenUp = { amount: evenOn(lines.amount.up, floor.amount), monthly: evenOn(lines.monthly.up, floor.monthly) };
   const changesUp = (line: Line | null, at: number, even: MapSwitch | null): LineChanges => ({
-    band: lead.kind === "clear" ? (firstChange(line, order, theta, at, (l) => l?.first !== planFirst || l.ahead < 1)?.at ?? null) : null,
+    band: lead.kind === "clear" ? (firstChange(line, order, theta, at, (l, left) => firstPriced(left) && (l?.first !== planFirst || l.ahead < 1))?.at ?? null) : null,
     even: even?.at ?? null,
   });
   const changes = { amount: changesUp(lines.amount.up, floor.amount, evenUp.amount), monthly: changesUp(lines.monthly.up, floor.monthly, evenUp.monthly) };
