@@ -260,6 +260,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
   const currencies = exposureCurrencies(files, ctx.dataDir);
   checkForeignInvestmentFunds(files, ctx.dataDir, currencies, report);
+  checkStatedTaxIndex(files, ctx.dataDir, currencies, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
   checkHomeGuideDoor(files, ctx.dataDir, report);
   checkDepositAmounts(files, ctx.dataDir, report);
@@ -1519,6 +1520,23 @@ function exposureCurrencies(files: string[], dataDir: string): Map<string, strin
     if (typeof v?.id === "string" && typeof v.currency === "string") currencies.set(v.id, v.currency);
   }
   return currencies;
+}
+
+/**
+ * data-schema §3.5 `tax_ruling.index` (method F-04, D84): the main currency a fund's annex states as its tax index is the exposure's
+ * currency, since a run measures the index on the one exchange-rate path it has, the exposure's.
+ */
+function checkStatedTaxIndex(files: string[], dataDir: string, currencies: ReadonlyMap<string, string>, report: (file: string, message: string) => void) {
+  for (const file of files) {
+    const rel = relative(dataDir, file).split(/[\\/]/).join("/");
+    if (!/^funds\/[^/@]+@[^/]+\.json$/.test(rel)) continue;
+    const rec = parseJson(readFileSync(file, "utf8")).value as Partial<Pick<FundRecord, "exposure_id" | "tax_ruling">> | undefined;
+    const index = rec?.tax_ruling?.index;
+    if (index?.basis !== "main-currency") continue;
+    const exposureCurrency = rec?.exposure_id ? currencies.get(rec.exposure_id) : undefined;
+    if (exposureCurrency !== undefined && index.currency !== exposureCurrency)
+      report(file, `tax_ruling.index.currency: the main currency ${index.currency} is not the exposure's currency ${exposureCurrency}, the one exchange-rate path a run has (F-04)`);
+  }
 }
 
 /** Fund IDs of the latest period of each CMA dataset; null when there is no CMA file (the check is then skipped). */
