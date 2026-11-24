@@ -12,13 +12,20 @@ on:
 permissions:
   contents: read
 
-# Two jobs side by side, the tests in one and the site build with its browser checks in the other, and the deploy after both
-# (2026-11-08: one job running everything in turn took about eight and a half minutes from a push to the live site).
+# A newer push to the same branch or pull request cancels the run before it: that run's commit is in the newer one, which runs every
+# check and, on main, deploys once they pass. A deploy the cancel stops leaves the site as it was until the newer run deploys.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# The jobs run side by side on machines of their own: the tests, the deep tests, and the site built once, then opened in a browser by
+# eight jobs at once (`browser`), each taking one share of the browser checks off the one build, so the longest share sets the run's time
+# rather than their sum. The deploy waits for all of them.
 #
-# Both check out the tree without research/user-lab: screenshots and reports, 111 of the tree's 147 MB, that no check reads.
-# A check that comes to read a file there fails for want of it: take the folder out of the two lists below.
+# Each checks out the tree without research/user-lab: screenshots and reports, 111 of the tree's 147 MB, that no check reads.
+# A check that comes to read a file there fails for want of it: take the folder out of the lists below.
 jobs:
-  # The typecheck, the tests (the fast ones, then every deep suite: vitest.config.ts) and the data check.
+  # The typecheck, the lint, the fast tests and the data check.
   test:
     runs-on: ubuntu-latest
     steps:
@@ -37,11 +44,10 @@ jobs:
       # after the typecheck, which generates the route types the lint's type-aware rules read
       - run: npm run lint
       - run: npm test
-      - run: npm run test:deep
       - run: npm run validate
 
-  # The site build and the checks that open it in a browser; on main, the site for the deploy. (The copy to run offline is offline.yml, run by hand.)
-  check:
+  # Every deep suite (vitest.config.ts, DEEP_TOPICS and the property tests' many cases).
+  deep:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -55,14 +61,82 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # Playwright's headless Chrome, at the version package.json pins, installs while the site builds (about 13 s, most of it apt);
-      # "Wait for Chrome" below prints its log and fails the run if it failed. The system packages come from Ubuntu's archive: when
-      # it does not answer within 2 minutes the install goes on with the browser alone, on the packages the runner already has
-      # (a library Chrome then lacks fails the checks when they start it).
+      - run: npm run test:deep
+
+  # The site build, kept for the browser jobs below as the artifact `site`, and on main as the site to deploy: what is checked is what
+  # goes live. (The copy to run offline is offline.yml, run by hand.)
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/research/user-lab/
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: site
+          path: site/build/client
+          retention-days: 1
+          if-no-files-found: error
+          include-hidden-files: true
+      - if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
+        with:
+          path: site/build/client
+
+  # The checks that open the built site in a browser, in shares that take about the same time:
+  #   pages 1/4 to 4/4  the layout check (site/scripts/layout-check.mjs) on every page at 1440, 390 and 320 px, every fourth page each: a
+  #                     page wider than the screen, words that run out of their card or cell, a "?" on a line of its own, or a warning a small
+  #                     phone's sheet hides below its fold fails the run;
+  #   grids             the layout check's self-test and its checks of the fee grids by keys, pointer and finger (keys, lines, drag, ask, grip);
+  #   kit 1/2 and 2/2   the layout check's checks of the kit's pieces by hand (site/scripts/kit-input-check.mjs), half each;
+  #   others            the policy check (site/scripts/csp-check.mjs: a sample of the pages; anything a page's Content Security Policy refuses,
+  #                     an inline script without its hash, a font or a fetch from elsewhere, eval, fails the run), the chart check
+  #                     (site/scripts/chart-check/: python3 with only its standard library, which ubuntu-latest has; a chart that overlaps, cuts
+  #                     off or shrinks its text, or draws bars off the zero line or in more than six colours, fails the run) and the weight
+  #                     check (tools/weight.mjs --check: each kind of page's first-view script and data against its budget in
+  #                     tools/weight-budgets.json; it counts bytes, so a slower runner can't fail it).
+  # The response check runs only in npm run check: its 100 ms limit is measured on a processor slowed four times, and a shared runner's
+  # own speed would make it fail by chance. Every share runs even when another fails, so one run says all that failed.
+  browser:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        part: [pages:1/4, pages:2/4, pages:3/4, pages:4/4, grids, kit:1/2, kit:2/2, others]
+    name: browser (${{ matrix.part }})
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/research/user-lab/
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Playwright's headless Chrome, at the version package.json pins, installs while the build comes down (about 13 s, most of it apt);
+      # "Wait for Chrome" below prints its log and fails the run if it failed. The system packages come from Ubuntu's archive: when it does
+      # not answer within 2 minutes the install goes on with the browser alone, on the packages the runner already has (a library Chrome
+      # then lacks fails the checks when they start it).
       - name: Install Chrome for the browser checks (in the background)
         run: |
           nohup sh -c '(timeout 120 npx playwright install --with-deps --only-shell chromium || { echo "the install with system packages failed or ran over 2 minutes: installing the browser alone"; npx playwright install --only-shell chromium; }) > "$RUNNER_TEMP/chrome.log" 2>&1; echo $? > "$RUNNER_TEMP/chrome.done"' > /dev/null 2>&1 &
-      - run: npm run build
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: site
+          path: site/build/client
       # An install still running after 5 minutes is given up on with its log printed, so the run says where it stood.
       - name: Wait for Chrome
         timeout-minutes: 6
@@ -71,29 +145,19 @@ jobs:
           cat "$RUNNER_TEMP/chrome.log"
           [ -f "$RUNNER_TEMP/chrome.done" ] || { echo "Chrome's install did not finish in 5 minutes"; ps -eo pid,etimes,args | grep -i "playwright\|apt\|dpkg" | grep -v grep; exit 1; }
           exit "$(cat "$RUNNER_TEMP/chrome.done")"
-      # The policy check (site/scripts/csp-check.mjs): a sample of the pages in Chrome. Anything a page's Content Security Policy refuses
-      # (an inline script without its hash, a font or a fetch from elsewhere, eval) fails the run.
-      - run: npm run csp-check
-      # The chart check (site/scripts/chart-check/): headless Chrome and python3 with only its standard library, which ubuntu-latest has.
-      # A chart that overlaps, cuts off or shrinks its text, or draws bars off the zero line or in more than six colours, fails the run,
-      # and the site doesn't update.
-      - run: npm run chart-check
-      # The layout check (site/scripts/layout-check.mjs): every page at 1440, 390 and 320 px. A page wider than the screen, words that run out
-      # of their card or cell, a "?" on a line of its own, or a warning a small phone's sheet hides below its fold fails the run.
-      - run: npm run layout-check
-      # The weight check (tools/weight.mjs --check): each kind of page's first-view script and data against its budget in
-      # tools/weight-budgets.json. It counts bytes, so a slower runner can't fail it. The response check runs only in npm run check: its
-      # 100 ms limit is measured on a processor slowed four times, and a shared runner's own speed would make it fail by chance.
-      - run: npm run weight
-      - if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
-        with:
-          path: site/build/client
+      - if: matrix.part != 'others'
+        run: npm run layout-check -- --part=${{ matrix.part }}
+      - if: matrix.part == 'others'
+        run: npm run csp-check
+      - if: matrix.part == 'others' && !cancelled()
+        run: npm run chart-check
+      - if: matrix.part == 'others' && !cancelled()
+        run: npm run weight
 
   # GitHub Pages (docs/architecture.md section 6). Only main is deployed, and only after every check passed.
   deploy:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
-    needs: [test, check]
+    needs: [test, deep, build, browser]
     runs-on: ubuntu-latest
     # publishing to Pages, and the OpenID token Pages checks the run by
     permissions:
