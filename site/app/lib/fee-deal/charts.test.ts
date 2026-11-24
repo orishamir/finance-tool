@@ -8,7 +8,7 @@ import { feesData } from "../fees.server";
 import { unpackDeal } from "./link";
 import { readDealFor } from "./deal-read";
 import { readingOf } from "./reading";
-import { openingRange, partAt, roundAmount, settleRange, type ActionView, type HeldView, type LanePart } from "./charts";
+import { openingRange, partAt, roundAmount, samples, settleRange, type ActionView, type HeldView, type LanePart } from "./charts";
 import { nisPerNumber } from "../fx";
 import { typed, type FeeDeal, type Price } from "./model";
 
@@ -672,5 +672,20 @@ describe("a year that costs a smaller share of a larger value (F-123)", () => {
     const d = custody({ min: typed(900) });
     d.fees.push({ id: "fee-a", kind: "current_account", stages: [{ price: { form: "sum", amount: typed(10), every: 1 } }] });
     expect(falls(d)).toBe(true);
+  });
+});
+
+describe("a curve's samples around a cut", () => {
+  it("put the cut and the point just above it next to each other, even where the even spread lands on the cut", () => {
+    // the cut where a conversion's second step ended on the ECB rate of 23.11.2026; a range centred on it puts a point of the spread a
+    // floating-point step above it, which read the step below and stood between the two
+    const c = 357.7541274339519;
+    for (const range of [{ lo: c / 2, hi: c * 2 }, { lo: c / 3, hi: c * 3 }, { lo: c * 0.9, hi: c * 1.5 }]) {
+      const xs = samples(range, [c], 480);
+      const k = xs.indexOf(c);
+      expect(k).toBeGreaterThan(0);
+      expect(xs[k + 1]).toBe(c * (1 + 1e-9));
+      expect(xs.filter((x) => Math.abs(x - c) <= c * 1e-9)).toEqual([c]);
+    }
   });
 });

@@ -681,11 +681,14 @@ function chartInputs(r: DealRead, p: DealPeriod, idx: readonly number[], side: D
 }
 
 /** Samples of a curve over a range, log-spaced, with each jump read on both sides (`cuts`). */
-function samples(range: AmountRange, cuts: readonly number[], n: number): number[] {
+export function samples(range: AmountRange, cuts: readonly number[], n: number): number[] {
   const lo = Math.log10(range.lo);
   const span = Math.log10(range.hi) - lo;
-  const xs = Array.from({ length: n + 1 }, (_, k) => 10 ** (lo + (k / n) * span));
-  for (const c of cuts) if (c > range.lo && c < range.hi) xs.push(c, c * (1 + 1e-9));
+  const inside = cuts.filter((c) => c > range.lo && c < range.hi);
+  // a point of the even spread that falls on a cut within floating-point error (a range centred on the cut puts one there) reads either
+  // side of it: it goes, so the cut and the point just above it stand next to each other and the step is drawn where it is
+  const xs = Array.from({ length: n + 1 }, (_, k) => 10 ** (lo + (k / n) * span)).filter((x) => !inside.some((c) => Math.abs(x - c) <= c * 1e-9));
+  for (const c of inside) xs.push(c, c * (1 + 1e-9));
   return xs.sort((a, b) => a - b);
 }
 
