@@ -290,7 +290,8 @@
   --chart-stocks: var(--palette-teal-400);
   --chart-currency: var(--palette-gold-200);
   --chart-alt: var(--palette-gold-200); /* the nearest alternative in a guide page's two-line drawing (D29, 2026-10-25): gold against the teal value line; same pair as fee kinds 2 and 3 */
-  /* a region map's areas (`RegionMap`), in the order they are given out: the first to the area the map is about. Text and lines on them
+  /* a region map's areas (`RegionMap`), in the order they are given out (the account map gives them by the houses' order, so an account
+     keeps its colour on every plan). Text and lines on them
      are in the dark ink, since every area is light; the grey is a fifth area's, and gathers those past it ("אחרות", charts.md) */
   --chart-region-1: var(--palette-region-sky);
   --chart-region-2: var(--palette-region-lemon);

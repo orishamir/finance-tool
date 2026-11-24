@@ -177,19 +177,28 @@ function gridOf(f: MapField, areaOf: (k: number) => number): RegionGrid {
 }
 
 /**
- * The map's areas: the first four accounts each their own colour, the plan's first; a fifth in the grey under its own name, more than five
- * gathered there under "אחרות". With each account's tone, and the field and the edge as the areas' grids.
+ * The map's areas, in the map's order (the plan's first first). Each account's colour is set by the houses' order among the accounts on
+ * the map, never by its rank at the plan, so it does not move as a slider does while the same accounts show: the first four of `order`
+ * (the map's accounts, in the houses' order) each their own, the rest the grey, under its own name where one such account shows and
+ * gathered under "אחרות" where more do. With each account's tone,
+ * and the field and the edge as the areas' grids.
  */
-function areasOf(view: InvestView, map: AccountMap) {
-  const many = map.accounts.length > 5;
-  const ids = many ? [...map.accounts.slice(0, 4), OTHERS] : map.accounts;
-  const tones = regionTones(ids.length);
-  const areas: RegionArea[] = ids.map((id, k) => ({ id, name: shortOf(view, id), tone: id === OTHERS ? "other" : (tones[k] ?? "other") }));
-  const areaOf = (k: number) => (many && k >= 4 ? 4 : k);
-  const toneOf = (id: string): RegionTone => {
-    const k = map.accounts.indexOf(id);
-    return (k < 0 ? undefined : areas[areaOf(k)]?.tone) ?? "other";
+export function mapAreas(view: InvestView, map: AccountMap, order: readonly string[]): { areas: RegionArea[]; toneOf: (id: string) => RegionTone; field: RegionGrid & { from: number }; edge: RegionGrid } {
+  const palette = regionTones(4);
+  const fixed = (id: string): RegionTone => {
+    const k = order.indexOf(id);
+    return (k >= 0 ? palette[k] : undefined) ?? "other";
   };
+  const grey = map.accounts.filter((id) => fixed(id) === "other");
+  const gather = grey.length > 1;
+  const ids = [...map.accounts.filter((id) => !gather || fixed(id) !== "other"), ...(gather ? [OTHERS] : [])];
+  const areas: RegionArea[] = ids.map((id) => ({ id, name: shortOf(view, id), tone: id === OTHERS ? "other" : fixed(id) }));
+  const areaOf = (k: number) => {
+    const id = map.accounts[k] ?? "";
+    const at = ids.indexOf(gather && fixed(id) === "other" ? OTHERS : id);
+    return at;
+  };
+  const toneOf = (id: string): RegionTone => fixed(id);
   return { areas, toneOf, field: { ...gridOf(map.field, areaOf), from: map.bottom }, edge: gridOf(map.edge, areaOf) };
 }
 
@@ -266,7 +275,8 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
   const thetaFig = thetaValue(bundle);
   const thetaNode = thetaFig ? <Num value={thetaFig} display={thetaText(bundle)} /> : thetaText(bundle);
 
-  const { areas, toneOf, field, edge } = useMemo(() => areasOf(view, map), [view, map]);
+  // the map's accounts in the houses' order: the order the colours go by
+  const { areas, toneOf, field, edge } = useMemo(() => mapAreas(view, map, providersOfInvest(on.bundle).map((s) => s.id).filter((id) => map.accounts.includes(id))), [view, map, on]);
 
   const { head, guides, mark, edgeLabel } = useMemo(() => {
     // each figure priced once, though the card's words and a guide both write it

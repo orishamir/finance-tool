@@ -3,16 +3,16 @@ import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { bundle, html, lists, plan as fixturePlan, shown } from "../components/invest/render-fixtures";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
-import { AccountMapPanel, mapCard, mapPointValue } from "../components/invest/account-map";
-import { invest } from "../copy";
+import { AccountMapPanel, mapAreas, mapCard, mapPointValue } from "../components/invest/account-map";
+import { invest, kit as kitCopy } from "../copy";
 import type { AccountMap } from "./account-map";
-import { buildInvest, indexById, knownIndices, tieShareOf } from "./invest";
+import { buildInvest, indexById, knownIndices, providersOfInvest, tieShareOf } from "./invest";
 import { leftWith, work } from "./invest-work";
 import { rankedAt } from "./stretch";
 import { entered, type SiteValue } from "./value";
 import { fmt } from "./format";
 import { chartTextWidth } from "../components/kit/chart-text";
-import { lineMeetsBox } from "../components/kit/region-map";
+import { lineMeetsBox, regionTones } from "../components/kit/region-map";
 import { p05Range } from "./engine";
 import type { WorkbenchInputs } from "./providers";
 
@@ -22,6 +22,7 @@ function need<T>(x: T | null | undefined, what: string): T {
   return x;
 }
 const t = bundle.today;
+const kitLegend = kitCopy.legend;
 const theta = tieShareOf(bundle);
 const planAt = (amount: number, monthly: number, years: number): WorkbenchInputs => ({ ...fixturePlan, amountNow: amount, monthly, years, values: { ...fixturePlan.values, amount: entered(amount, "nis", t), monthly: entered(monthly, "nis_per_month", t), years: entered(years, "years", t) } });
 const firstOf = (map: AccountMap) => (map.plan.lead.kind === "clear" ? map.plan.lead.first : map.plan.lead.kind === "near" ? map.plan.lead.tied[0] : null);
@@ -253,5 +254,35 @@ describe("the words over the map on TA-125 at 10,000 ₪ today and 10,000 ₪ a 
     const equal = [...d.matchAll(/M([\d.]+) ([\d.]+)L([\d.]+) ([\d.]+)/g)].map((x) => [Number(x[1]), Number(x[2]), Number(x[3]), Number(x[4])] as const);
     const crossed = words.flatMap((w) => [...guides, ...equal].filter((l) => lineMeetsBox(l, w.b, 0)).map(() => w.text));
     expect([...new Set(crossed)]).toEqual([]);
+  });
+});
+
+describe("each account's colour on the map", () => {
+  it("is set by the houses' order among the map's accounts, never by their rank at the plan, and colours every account on a map of four", () => {
+    const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
+    const houses = providersOfInvest(bundle).map((s) => s.id);
+    const small = planAt(10_000, 500, 10);
+    const pick = need(pickOfHeadline(buildInvest({ bundle, index, plan: small })), "the page's pair");
+    for (const plan of [small, planAt(150_000, 3000, 20), planAt(100_000, 0, 10)]) {
+      const answer = work.map(bundle, { index, plan, fund: pick.fund });
+      const map = need(answer.kind === "map" ? answer.map : null, "the map");
+      const order = houses.filter((id) => map.accounts.includes(id));
+      const { toneOf } = mapAreas(buildInvest({ bundle, index, plan }), map, order);
+      // the first four in the houses' order each their own colour, whatever leads at the plan; the rest the grey
+      const tones = order.map((id) => toneOf(id));
+      expect(tones.slice(0, 4), `${plan.amountNow}`).toEqual(regionTones(4).slice(0, Math.min(4, order.length)));
+      expect(tones.slice(4).every((t) => t === "other")).toBe(true);
+      // the same accounts in another order (as a plan that ranks them otherwise has them): the same colours
+      const shuffled: AccountMap = { ...map, accounts: [...map.accounts].reverse(), field: { ...map.field, first: map.field.first.map((k) => map.accounts.length - 1 - k) } };
+      const again = mapAreas(buildInvest({ bundle, index, plan }), shuffled, order).toneOf;
+      for (const id of map.accounts) expect(again(id), id).toBe(toneOf(id));
+      // the panel colours them so: the legend names each of the first four, never all of them "אחרות"
+      const view = buildInvest({ bundle, index, plan });
+      const out = html(createElement(AccountMapPanel, { view, bundle, house: pick.house, map, on: { bundle, ask: { index, plan, fund: pick.fund } } }));
+      const from = out.indexOf(`aria-label="${kitLegend}"`);
+      expect(from).toBeGreaterThan(0);
+      const legend = out.slice(from, out.indexOf("</ul>", from)).replace(/&quot;/g, '"');
+      for (const id of order.slice(0, 4)) expect(legend, id).toContain(need(view.providers.find((p) => p.id === id), id).short);
+    }
   });
 });
