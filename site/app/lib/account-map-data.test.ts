@@ -3,13 +3,13 @@ import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { bundle, html, lists, plan as fixturePlan, shown } from "../components/invest/render-fixtures";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
-import { AccountMapPanel, mapCard } from "../components/invest/account-map";
+import { AccountMapPanel, mapCard, mapPointValue } from "../components/invest/account-map";
 import { invest } from "../copy";
 import type { AccountMap } from "./account-map";
 import { buildInvest, indexById, knownIndices, tieShareOf } from "./invest";
 import { leftWith, work } from "./invest-work";
 import { rankedAt } from "./stretch";
-import { entered } from "./value";
+import { entered, type SiteValue } from "./value";
 import { fmt } from "./format";
 import { p05Range } from "./engine";
 import type { WorkbenchInputs } from "./providers";
@@ -194,5 +194,37 @@ describe("the guides from the plan on the default S&P 500 plan", () => {
     }
     // with no point kept, nothing under the map
     expect(plain).not.toContain(invest.before.map.planHead);
+  });
+});
+
+describe("a switch's figure on the collected data", () => {
+  it("rests on the runs of every account of the plan's tied set and the account it names, its point F-131's and not an entry", () => {
+    const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
+    const plan = planAt(10_000, 500, 10);
+    const view = buildInvest({ bundle, index, plan });
+    const pick = need(pickOfHeadline(view), "the page's pair");
+    const answer = work.map(bundle, { index, plan, fund: pick.fund });
+    const map = need(answer.kind === "map" ? answer.map : null, "the map");
+    const on = { bundle, ask: { index, plan, fund: pick.fund } };
+    // whatever the data says, three accounts ranked with the fund at 50,000 ₪ today: two taken as tied at the plan, a switch to the third
+    const ranked = [...leftWith(bundle, index, plan, pick.fund)(50_000, 500, null).keys()];
+    const [a, b, c] = ranked;
+    if (!a || !b || !c) throw new Error("three accounts ranked with the fund");
+    const near: AccountMap = { ...map, plan: { ...map.plan, lead: { kind: "near", tied: [a, b] } } };
+    const v = mapPointValue(view, on, near, { at: 50_000, dir: "up", to: c }, "amount", invest.before.map.switchAbout);
+    // beside the plan's own numbers, an input for each account's run
+    const plain = new Set<string>(Object.values(invest.planInputs));
+    const runs = Object.keys(v.computed_from?.inputs ?? {}).filter((k) => !plain.has(k));
+    expect(runs.length, JSON.stringify(runs)).toBe(3);
+    // every value it rests on, all the way down
+    const all: SiteValue[] = [];
+    const walk = (x: SiteValue) => {
+      all.push(x);
+      // a computed figure's inputs are values the site made with `computed`
+      for (const y of Object.values(x.computed_from?.inputs ?? {})) walk(y as SiteValue);
+    };
+    walk(v);
+    expect(all.filter((x) => x.about === invest.before.map.pointAbout)).toEqual([]);
+    expect(all.some((x) => x.state === "computed" && x.computed_from?.formula === "F-131" && x.value === 50_000)).toBe(true);
   });
 });

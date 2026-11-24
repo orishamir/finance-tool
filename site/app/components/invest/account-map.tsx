@@ -134,6 +134,26 @@ function rankedWays(on: Asked<"map">, plan: WorkbenchInputs, houses?: readonly s
   return rankByValue(ways, (w) => w.valueN);
 }
 
+/**
+ * A switch, a stretch's end or an equal point as a figure: F-131 at the point of the plan's line where it is, resting on the plan and on the
+ * runs there of the plan's accounts (the tied set, on a plan in the band) and of the account it names, with what they carry. The point's
+ * own coordinate is F-131's, never the reader's entry.
+ */
+export function mapPointValue(view: InvestView, on: Asked<"map">, map: AccountMap, s: MapSwitch, axis: "amount" | "monthly", about: string): SiteValue {
+  const { plan } = on.ask;
+  const today = on.bundle.today;
+  const unit = axis === "amount" ? "nis" : "nis_per_month";
+  const lead = map.plan.lead;
+  const mine = lead.kind === "clear" ? [lead.first] : lead.kind === "near" ? lead.tied : [];
+  const houses = [...new Set([...mine, s.to])];
+  const located = computed(s.at, unit, "F-131", planInputs(plan, WHOLE_PLAN), { today, about });
+  const at: WorkbenchInputs = axis === "amount" ? { ...plan, amountNow: s.at, values: { ...plan.values, amount: located } } : { ...plan, monthly: s.at, values: { ...plan.values, monthly: located } };
+  const ways = rankedWays(on, at, houses);
+  const runs = ways.map((w) => w.value);
+  const inputs = { ...planInputs(plan, WHOLE_PLAN), ...Object.fromEntries(ways.map((w) => [m.leftAbout(shortOf(view, w.providerId)), w.value])) };
+  return computed(Math.round(s.at), unit, "F-131", inputs, { today, about, ...carriedBy(runs) });
+}
+
 /** A grid of the map's accounts as the map's areas: each index through `areaOf`, a second in the same area as its first not shown. */
 function gridOf(f: MapField, areaOf: (k: number) => number): RegionGrid {
   const first = f.first.map((k) => (k < 0 ? -1 : areaOf(k)));
@@ -214,7 +234,6 @@ export function NoMapPanel({ why }: { why: "open-rule" | "unpriced" }) {
 }
 
 export function AccountMapPanel({ view, bundle, house, map, on }: { view: InvestView; bundle: IndicesBundle; house: string; map: AccountMap; on: Asked<"map"> }) {
-  const today = bundle.today;
   const { plan, fund } = on.ask;
   const fundName = allFunds(view).find((f) => f.rec.id === fund)?.name ?? fund;
   const thetaFig = thetaValue(bundle);
@@ -222,16 +241,7 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
 
   const { areas, toneOf, field, edge } = useMemo(() => areasOf(view, map), [view, map]);
 
-  // a switch or an equal point as a figure: F-131 at the point of the plan's line where it is, resting on the two accounts' runs there (with
-  // what they carry)
-  const from = map.plan.lead.kind === "clear" ? map.plan.lead.first : map.plan.lead.kind === "near" ? map.plan.lead.tied[0] : null;
-  const pointValue = (s: MapSwitch, axis: "amount" | "monthly", about: string): SiteValue => {
-    const point: RegionPoint = axis === "amount" ? [s.at, plan.monthly] : [plan.amountNow, s.at];
-    const ways = rankedWays(on, planAt(plan, point, today), from ? [from, s.to] : [s.to]);
-    const runs = ways.map((w) => w.value);
-    const inputs = { ...planInputs(plan, WHOLE_PLAN), ...Object.fromEntries(ways.map((w) => [m.leftAbout(shortOf(view, w.providerId)), w.value])) };
-    return computed(Math.round(s.at), axis === "amount" ? "nis" : "nis_per_month", "F-131", inputs, { today, about, ...carriedBy(runs) });
-  };
+  const pointValue = (s: MapSwitch, axis: "amount" | "monthly", about: string) => mapPointValue(view, on, map, s, axis, about);
   const figure = (s: MapSwitch, axis: "amount" | "monthly", which: ChangeFigure) => <Num value={pointValue(s, axis, which === "till" ? m.tillAbout : m.switchAbout)} display={fmt.nisRough(s.at)} />;
   const words = mapWords<ReactNode>(map, house, (id) => shortOf(view, id), figure, thetaText(bundle));
   // a guide along each axis: to the switch, else to where the two are equal, else to the axis's end with no words
