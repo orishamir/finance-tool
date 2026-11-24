@@ -10,6 +10,7 @@ describe("label icons (2026-11-05 sweep)", () => {
     ["currency", "currency-many"],
     ["hedged", "hedged-many"],
     ["tax-currency-open", "tax-currency-unknown"],
+    ["tax-index-currency", "tax-index-cpi"],
   ];
   const kin = (a: string, b: string) => same.some((g) => g.includes(a) && g.includes(b));
 
@@ -50,5 +51,30 @@ describe("the currency's tax on an Israeli fund on a foreign index (TXS-14, F-04
     // the words: a fund named one is said to be one; a fund whose status is not known is said not to be known
     expect(label("tax-currency-open").explain).toContain("לפי מסמכי הקרן היא קרן נאמנות להשקעות חוץ");
     expect(label("tax-currency-unknown").explain).toContain("האתר לא יודע אם הקרן הזו היא קרן נאמנות להשקעות חוץ");
+  });
+});
+
+describe("the tax index a Tel Aviv foreign fund's own annex states (F-04, D84)", () => {
+  const rec = loadFunds().find((f) => f.id === "1159250");
+  const index = knownIndices(buildIndicesBundle()).find((i) => i.id === rec?.exposure_id);
+  if (!rec?.tax_ruling || !index) throw new Error("the S&P 500's Tel Aviv line 1159250, its ruling and its index are in the data");
+  const ruling = rec.tax_ruling;
+  const { index: _stated, ...unstated } = ruling;
+  const main = { basis: "main-currency" as const, currency: "USD", page: 17, quote: "בסיס המדד", currency_quote: "דולר ארה״ב" };
+  const cpi = { basis: "cpi" as const, page: 16, quote: "מדד המחירים לצרכן" };
+  const tax = (r: typeof rec, option: "tase-foreign" | "abroad") => fundLabels(r, index, option).filter((l) => l.id === "tax-index-currency" || l.id === "tax-index-cpi");
+  it("says the fund's own statement, with its annex opened at the page, on the Tel Aviv line only", () => {
+    const onDollar = tax({ ...rec, tax_ruling: { ...ruling, index: main } }, "tase-foreign");
+    expect(onDollar.map((l) => l.id)).toEqual(["tax-index-currency"]);
+    expect(onDollar[0]?.text).toBe("מס לפי שער הדולר");
+    expect(onDollar[0]?.doc?.href).toBe(`${ruling.source.url}#page=17`);
+    expect(onDollar[0]?.explain).toContain("זו הצהרה של הקרן, ואין נוסח רשמי של רשות המסים שמאשר אותה");
+    const onCpi = tax({ ...rec, tax_ruling: { ...ruling, index: cpi } }, "tase-foreign");
+    expect(onCpi.map((l) => l.id)).toEqual(["tax-index-cpi"]);
+    expect(onCpi[0]?.doc?.href).toBe(`${ruling.source.url}#page=16`);
+    expect(onCpi[0]?.explain).toContain("מדד המחירים לצרכן");
+    // the same units bought abroad keep TXF-03; an annex that states no index says nothing
+    expect(tax({ ...rec, tax_ruling: { ...ruling, index: main } }, "abroad")).toEqual([]);
+    expect(tax({ ...rec, tax_ruling: unstated }, "tase-foreign")).toEqual([]);
   });
 });

@@ -2,7 +2,7 @@
 // a chip of an icon and two or three words, a row of them, and the one sheet per page that a tap opens with the label's meaning
 // and its rules. The words and the rules come from lib/labels.ts.
 import { createContext, useContext, useId, useState, type ReactNode } from "react";
-import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, Building2, CalendarClock, Coins, Currency, DollarSign, Euro, EyeOff, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Megaphone, Percent, Package, PiggyBank, PoundSterling, ReceiptText, Scale, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, UserPlus, type LucideProps } from "lucide-react";
+import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, Building2, CalendarClock, Coins, Currency, DollarSign, Euro, EyeOff, FileCheck, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Megaphone, Percent, Package, PiggyBank, PoundSterling, ReceiptText, Scale, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, UserPlus, type LucideProps } from "lucide-react";
 import { invest as c } from "../../copy";
 import type { Label, LabelIconKey } from "../../lib/labels";
 import { RuleRef } from "../provenance";
@@ -20,6 +20,7 @@ const icons: Record<LabelIconKey, React.ComponentType<LucideProps>> = {
   box: Package,
   swap: ArrowRightLeft,
   fileClock: FileClock,
+  fileCheck: FileCheck,
   blend: Blend,
   dollar: DollarSign,
   euro: Euro,

@@ -826,6 +826,8 @@ export function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): 
   return Object.fromEntries(which.map((k) => [copy.planInputs[k], of[k]]));
 }
 const rulesOf = (row: ComparedProvider) => row.run.rules.map((u) => ({ id: u.id, strength: u.strength as Strength }));
+/** What a figure after the run's tax rests on besides its rules: the fund's own statements the run read in place of one (D84, the tax index its annex states). */
+const statementsOf = (row: ComparedProvider) => row.run.statements ?? [];
 
 /** What one engine run reads, for the sheet of a figure that comes out of it (`inputsOfRun`). */
 interface RunReads {
@@ -1008,7 +1010,7 @@ function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string | 
 
 /** What is left with one account and one fund (F-65's real value), as every list and the stairs show it, with what its run reads. */
 function valueFigure(ctx: Ctx, row: ComparedProvider, reads: RunReads, about: string, extra: Record<string, SiteValue> = {}): SiteValue {
-  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, { ...reads, tax: "after" }), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, { ...reads, tax: "after" }), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
 }
 
 function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string, spec: Spec): WayPrice {
@@ -1475,7 +1477,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout, lead: copy.pair.paidInLead }),
     paidInNominal: computed(row.run.paidIn, "nis", "F-05", planInputs(ctx.plan, ["amount", "monthly", "years", "inflation"]), { today: ctx.bundle.today, about: copy.pair.paidInNominalAbout, lead: copy.pair.paidInLead }),
     index: computed(end.index, "index_points", "F-03", planInputs(ctx.plan, ["inflation", "years"]), { today: ctx.bundle.today, about: copy.pair.indexAbout }),
-    left: computed(row.real, "nis", "F-65", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
+    left: computed(row.real, "nis", "F-65", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), about: nameOf(rec) }),
     account: lines,
     interaction,
     remainder: at(interaction, "F-91", copy.pair.lineAbout(copy.pair.remainder), bInputs),
@@ -1485,7 +1487,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     waiting: unitsOf(row.run) ? at(waitingN, "F-109", copy.pair.waitingAbout) : null,
     distributes: !!distribution,
     fund: at(parts.fund, "F-91", copy.pair.fundAbout, inputsOfRun(ctx, { fund: rec.id, spec: fs.spec, tax: "before" })),
-    tax: at(parts.state, "F-91", distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout, taxedInputs),
+    tax: computed(parts.state, "nis", "F-91", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), about: distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout }),
     base,
     // X reads the plan and the rate alone: no fund cost, no distribution, no account (its run's rules are a tax's, which X is before)
     baseValue: computed(base, "nis", "F-91", inputsOfRun(ctx, { spec: fs.spec, costsOff: true }), { today: ctx.bundle.today, about: copy.pair.baseAbout }),
@@ -1578,7 +1580,7 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
     }
     const row = got.row;
     const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row };
-    const of = (tax: RunReads["tax"]) => (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, tax }), { today: ctx.bundle.today, rules: rulesOf(row), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+    const of = (tax: RunReads["tax"]) => (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, tax }), { today: ctx.bundle.today, rules: rulesOf(row), ...(tax === "after" ? { statements: statementsOf(row) } : {}), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
     out.set(fundId, { kind: "ok", valueN: row.real, open: row.run.outcome.code === "listed-not-ranked", byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure: of(undefined), left: of("after") });
   }
   return out;

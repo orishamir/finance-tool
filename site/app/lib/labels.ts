@@ -15,7 +15,7 @@ export type LabelTone = "neutral" | "caution" | "open";
 export type LabelIconKey =
   | "home" | "landmark" | "globe"
   | "pulse" | "calendarClock"
-  | "box" | "swap" | "fileClock" | "blend"
+  | "box" | "swap" | "fileClock" | "fileCheck" | "blend"
   | "dollar" | "euro" | "pound" | "yen" | "franc" | "currency" | "shield"
   | "trendUpDown" | "badgePercent" | "percent" | "lock" | "gavel"
   | "piggy" | "handCoins"
@@ -45,6 +45,8 @@ export type LabelId =
   | "tax-distribution"
   | "tax-on-sale-open"
   | "tax-on-sale-ruling"
+  | "tax-index-currency"
+  | "tax-index-cpi"
   | "pays-accumulating"
   | "pays-distributing"
   | "ask-self-report"
@@ -83,6 +85,8 @@ export const labelDefs: Record<LabelId, LabelDef> = {
   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08", "TXS-10"] },
   "tax-on-sale-open": { icon: "lock", tone: "open", rules: ["TXF-11"] },
   "tax-on-sale-ruling": { icon: "gavel", tone: "neutral", rules: ["TXF-11"] },
+  "tax-index-currency": { icon: "fileCheck", tone: "neutral", rules: ["TXF-04"] },
+  "tax-index-cpi": { icon: "fileCheck", tone: "neutral", rules: ["TXF-04"] },
   "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
   "pays-distributing": { icon: "handCoins", tone: "neutral", rules: ["MF-49"] },
   "ask-self-report": { icon: "filePen", tone: "caution", rules: ["TXF-22", "TXF-29"] },
@@ -137,6 +141,8 @@ const familyOf: Record<LabelId, Label["family"]> = {
   "tax-distribution": "tax",
   "tax-on-sale-open": "tax",
   "tax-on-sale-ruling": "tax",
+  "tax-index-currency": "tax",
+  "tax-index-cpi": "tax",
   "pays-accumulating": "payout",
   "pays-distributing": "payout",
   "ask-self-report": "asks",
@@ -205,8 +211,14 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   // the same test the engine ranks it by (instruments.server.ts, saleOnlyRuling)
   else if (rec.distribution_policy === "accumulating" && rec.domicile !== "IL")
     out.push(rec.tax_ruling ? { ...label("tax-on-sale-ruling"), doc: { href: sourceHref({ url: rec.tax_ruling.source.url, page: rec.tax_ruling.pages.ruling }), title: rec.tax_ruling.source.title } } : label("tax-on-sale-open"));
+  // a foreign fund in Tel Aviv whose own annex states its tax index under its ruling: the fund's statement, its page linked (F-04, D84);
+  // the same units bought abroad keep TXF-03 whatever the record carries, so only the Tel Aviv line says it
+  const stated = option === "tase-foreign" ? rec.tax_ruling?.index : undefined;
+  if (rec.tax_ruling && stated) {
+    const doc = { href: sourceHref({ url: rec.tax_ruling.source.url, page: stated.page }), title: rec.tax_ruling.source.title };
+    out.push({ ...(stated.basis === "main-currency" ? label("tax-index-currency", stated.currency) : label("tax-index-cpi")), doc });
+  }
   if (rec.domicile === "US") out.push(label("ask-estate"), label("ask-w8"));
-  void option;
   return out;
 }
 

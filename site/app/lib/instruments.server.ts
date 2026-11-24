@@ -5,7 +5,7 @@
 import { paysAtPlanEnd } from "./plan-end";
 import { invest as investCopy } from "../copy";
 import { exposurePath, guidePath } from "./site-paths";
-import { fundOf, gapListOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
+import { fundOf, gapListOf, statedIndexOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { feeAbsent, instrumentClassOf } from "./providers";
 import { isShekel } from "./fx";
 import {
@@ -362,6 +362,9 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
       fund.ninetyPercentTest = t.value;
       feeValues.ninetyPercentTest = { ...t };
     } else missing.push(`${wrapperId}: fund "${rec.id}" has no 90% test value (TXF-04)`);
+    // F-04, D84: the index the fund's own annex states under its ruling, read as the indices page reads it (`fundOf`)
+    const stated = statedIndexOf(rec);
+    if (stated) fund.statedIndex = stated;
   }
   // TXS-14, F-04: the fund's status as a foreign-investment fund, read as the indices page reads it (`fundOf`): the principal currency its
   // documents name, or, where its record says the status is not known, its index's foreign currency as the candidate; such a fund is run

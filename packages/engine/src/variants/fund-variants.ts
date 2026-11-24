@@ -5,6 +5,7 @@ import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/sche
 import { comparedYears, trackingBeyondFees, variableForward, type GapList } from "../formulas/fund-gap.ts";
 import type { Fund } from "../ledgers/securities.ts";
 import { RecordInputError } from "../resolver.ts";
+import type { FundStatement } from "../result.ts";
 
 function fraction(vo: ValueObject | null | undefined, unit: ValueObject["unit"], what: string): number | undefined {
   if (!vo || vo.value === null) return undefined;
@@ -39,6 +40,18 @@ export function usDividendsOf(exposure: Pick<ExposureRecord, "id" | "us_dividend
   if (y === undefined) return undefined;
   const w = u?.weight ? fraction(u.weight, "pct", `exposure ${exposure?.id} us_dividends.weight`) : 1;
   return w === undefined ? undefined : { yield: y, weight: w };
+}
+
+/**
+ * F-04, D84: the tax index the fund's own Israeli prospectus annex states under its ruling (`tax_ruling.index`), as the fund's statement:
+ * the main currency's exchange rate (the data check holds the currency to the exposure's) or the CPI. Undefined where the annex states none.
+ */
+export function statedIndexOf(rec: Pick<FundRecord, "tax_ruling">): FundStatement | undefined {
+  const ruling = rec.tax_ruling;
+  const index = ruling?.index;
+  if (!ruling || !index) return undefined;
+  const at = { term: "tax-index", source: ruling.source, page: index.page, quote: index.quote } as const;
+  return index.basis === "main-currency" ? { ...at, index: "fx", currency: index.currency } : { ...at, index: "cpi" };
 }
 
 /** What `fundOf` reads beside the record and its kind; each left out where the caller has none. */
@@ -117,6 +130,9 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
     fund.sharePriceCurrency = unitCode;
   }
   if (kind === "tase-foreign-fund" && rec.tax_status.tase_foreign_fund_90pct_test?.value === true) fund.ninetyPercentTest = true;
+  // F-04, D84: the index a Tel Aviv line's own annex states; a record of the same units bought abroad may carry it, and keeps TXF-03
+  const stated = kind === "tase-foreign-fund" ? statedIndexOf(rec) : undefined;
+  if (stated) fund.statedIndex = stated;
   // TXS-14, F-04: the principal currency the fund's own documents name; where its record says the status is not known (`value: null`), the
   // exposure's foreign currency as the candidate, so the run meets both readings rather than reading the gap as either answer
   const status = rec.tax_status.foreign_investment_fund;

@@ -206,7 +206,7 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     // every field of every result type a ledger compares is declared, each with a role (a field added to a type fails to compile otherwise),
     // and the fields that are not outputs are exactly these: re-declaring an output (`detail`, `routed`, `years`) as working or trail fails
     const notOutputs = (fields: Readonly<Record<string, string>>) => Object.fromEntries(Object.entries(fields).filter(([, role]) => role !== "output"));
-    const trail = { flags: "trail", labels: "trail", formulas: "trail", rules: "trail" };
+    const trail = { flags: "trail", labels: "trail", formulas: "trail", rules: "trail", statements: "trail" };
     expect(notOutputs(RUN_RESULT_FIELDS)).toEqual(trail);
     expect(notOutputs(PROVIDENT_RESULT_FIELDS)).toEqual(trail);
     expect(notOutputs(PENSION_RESULT_FIELDS)).toEqual({ ...trail, working: "working" });
@@ -218,7 +218,7 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     expect(PENSION_RESULT_FIELDS).toMatchObject({ detail: "output", years: "output", deposits: "output", exit: "output" });
     expect(EMPLOYER_LINE_FIELDS).toMatchObject({ line: "output", ranked: "output", exit: "output" });
     expect(Object.keys(RUN_RESULT_FIELDS).sort()).toEqual(
-      ["dealReach", "detail", "exitMonth", "fees", "feesCarried", "feesCarriedBy", "flags", "formulas", "labels", "nominal", "outcome", "paidIn", "real", "rules", "series", "taxAtExit", "taxDuring", "waitingCarried"],
+      ["dealReach", "detail", "exitMonth", "fees", "feesCarried", "feesCarriedBy", "flags", "formulas", "labels", "nominal", "outcome", "paidIn", "real", "rules", "series", "statements", "taxAtExit", "taxDuring", "waitingCarried"],
     );
   });
 });

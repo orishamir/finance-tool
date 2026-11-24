@@ -1,5 +1,6 @@
 // Cases from the finance review of the release 1 engine (2026-10-23): each pins a rule the golden
 // scenarios do not reach.
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
 import {
@@ -7,6 +8,7 @@ import {
   beneficiaryRelief,
   deductionValue,
   exitTax,
+  fundOf,
   runPension,
   taxAtBrackets,
   type PensionInput,
@@ -19,6 +21,7 @@ import {
   runSecurities,
   securitiesBlockedBy,
   surtax,
+  type FundStatement,
   type SecuritiesInput,
 } from "../src/index.ts";
 import { context, loadRules, runDate, withTxf04AsTheLetterCopy } from "./golden/harness.ts";
@@ -134,12 +137,85 @@ describe("an accumulating foreign fund bought abroad (TXF-11, G-18)", () => {
 });
 
 describe("foreign funds on TASE (TXF-04)", () => {
-  it("stops every run of a TASE foreign fund while TXF-04 is open, with or without the 90% test (F-04, G-35)", () => {
+  it("stops every run of a TASE foreign fund whose annex states no index while TXF-04 is open, with or without the 90% test (F-04, G-35)", () => {
     for (const ninetyPercentTest of [true, false, undefined]) {
       const f = { kind: "tase-foreign-fund" as const, ...(ninetyPercentTest === undefined ? {} : { ninetyPercentTest }) };
       expect(() => runSecurities(fund({ fund: f }), ctx)).toThrow(BlockedError);
       expect(securitiesBlockedBy(f, ctx)).toBe("TXF-04");
     }
+  });
+
+  // D84: the fund's own annex states its index under its ruling. The oracle is the same fund on the letter's copy of TXF-04 (harness), where
+  // a fund on the 90% test takes the exchange rate and any other the CPI: the figures must be the same, the source the fund's statement.
+  const statement = (index: "fx" | "cpi"): FundStatement => ({
+    term: "tax-index" as const,
+    ...(index === "fx" ? { index, currency: "USD" } : { index }),
+    source: { url: "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244042-01.pdf", title: "נספח לתשקיף קרן חוץ נסחרת", publisher: "BlackRock (iShares VII plc)", strength: "institution" as const },
+    page: 17,
+    quote: "בסיס המדד לחישוב סכום אינפלציוני יהא על פי השינוי בשער המטבע העיקרי",
+  });
+  const letter = context(withTxf04AsTheLetterCopy(rules));
+
+  it("runs a fund whose annex states the main currency on the exchange rate, carrying the statement and citing no TXF-04 (F-04, D84)", () => {
+    for (const market of [{ grossReturn: 0.06, inflation: 0.025, fxChange: 0.01 }, { grossReturn: -0.02, inflation: 0.025, fxChange: -0.03 }]) {
+      const stated = statement("fx");
+      // the annex that states the index reports the ruling that taxes the fund at sale only (TXF-11), so the fund is ranked
+      const f = { kind: "tase-foreign-fund" as const, drag: { management: 0.0007 }, saleOnlyRuling: true, statedIndex: stated };
+      expect(securitiesBlockedBy(f, ctx)).toBeNull();
+      const r = runSecurities(fund({ market, fund: f }), ctx);
+      const oracle = runSecurities(fund({ market, fund: { kind: "tase-foreign-fund", drag: { management: 0.0007 }, saleOnlyRuling: true, ninetyPercentTest: true } }), letter);
+      expect(r.detail.realGain).toBeCloseTo(oracle.detail.realGain ?? Number.NaN, 6);
+      expect(r.nominal).toBeCloseTo(oracle.nominal, 6);
+      expect(r.statements).toEqual([stated]);
+      expect(ids(r)).not.toContain("TXF-04");
+      expect(r.outcome).toEqual({ code: "eligible" });
+    }
+  });
+
+  it("runs a fund whose annex states the CPI on the CPI, carrying the statement (F-04, D84)", () => {
+    const stated = statement("cpi");
+    const f = { kind: "tase-foreign-fund" as const, drag: { management: 0.0007 }, statedIndex: stated };
+    const r = runSecurities(fund({ fund: f }), ctx);
+    const oracle = runSecurities(fund({ fund: { kind: "tase-foreign-fund", drag: { management: 0.0007 }, ninetyPercentTest: false } }), letter);
+    const onFx = runSecurities(fund({ fund: { ...f, statedIndex: statement("fx") } }), ctx);
+    expect(r.detail.realGain).toBeCloseTo(oracle.detail.realGain ?? Number.NaN, 6);
+    expect(r.detail.realGain).not.toBeCloseTo(onFx.detail.realGain ?? Number.NaN, 0);
+    expect(r.statements).toEqual([stated]);
+    expect(ids(r)).not.toContain("TXF-04");
+  });
+
+  it("taxes the real gain over the index the annex states: worked by hand, one sum, no costs, five years (F-04, F-09, TXF-02)", () => {
+    // 25% of the gain above the stated index: 100,000 × 1.06⁵ less 100,000 × 1.03⁵ on the dollar, less 100,000 × 1.025⁵ on the CPI
+    const bare = (index: "fx" | "cpi") => fund({ market: { grossReturn: 0.06, inflation: 0.025, fxChange: 0.03 }, fund: { kind: "tase-foreign-fund", drag: {}, saleOnlyRuling: true, statedIndex: statement(index) }, tariff: {} });
+    expect(runSecurities(bare("fx"), ctx).taxAtExit).toBeCloseTo(0.25 * (100_000 * 1.06 ** 5 - 100_000 * 1.03 ** 5), 2);
+    expect(runSecurities(bare("cpi"), ctx).taxAtExit).toBeCloseTo(0.25 * (100_000 * 1.06 ** 5 - 100_000 * 1.025 ** 5), 2);
+  });
+
+  it("gives a Tel Aviv line the index its record's annex states, and the same record bought abroad none (fundOf)", () => {
+    const rec = JSON.parse(readFileSync(new URL("../../../data/funds/1159250@2026-11-07.json", import.meta.url), "utf8"));
+    const index = { basis: "main-currency", currency: "USD", page: 17, quote: "בסיס המדד", currency_quote: "דולר ארה\"ב" };
+    const stated = { ...rec, tax_ruling: { ...rec.tax_ruling, index } };
+    expect(fundOf(stated, "tase-foreign-fund").fund.statedIndex).toEqual({
+      term: "tax-index",
+      index: "fx",
+      currency: "USD",
+      source: { url: rec.tax_ruling.source.url, title: rec.tax_ruling.source.title, publisher: rec.tax_ruling.source.publisher, strength: "institution" },
+      page: 17,
+      quote: "בסיס המדד",
+    });
+    expect(fundOf({ ...stated, tax_ruling: { ...stated.tax_ruling, index: { basis: "cpi", page: 16, quote: "מדד המחירים לצרכן" } } }, "tase-foreign-fund").fund.statedIndex?.index).toBe("cpi");
+    expect(fundOf(stated, "foreign-fund").fund.statedIndex).toBeUndefined();
+    const { index: _none, ...unstated } = stated.tax_ruling;
+    expect(fundOf({ ...stated, tax_ruling: unstated }, "tase-foreign-fund").fund.statedIndex).toBeUndefined();
+  });
+
+  it("keeps TXF-03 for the same units bought abroad, whatever statement the record carries (F-04)", () => {
+    const abroad = { kind: "foreign-fund" as const, domicile: "ireland" as const, drag: { management: 0.0007 } };
+    const plain = runSecurities(fund({ fund: abroad }), ctx);
+    const carrying = runSecurities(fund({ fund: { ...abroad, statedIndex: statement("cpi") } }), ctx);
+    expect(carrying.detail.realGain).toBeCloseTo(plain.detail.realGain ?? Number.NaN, 9);
+    expect(carrying.statements).toBeUndefined();
+    expect(ids(carrying)).toContain("TXF-03");
   });
 
   it("names no open rule for a fund whose tax index is known (F-04)", () => {

@@ -5,7 +5,7 @@ import { useContext, useState, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
+import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, invest as investCopy, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { ownFigures, spanWords, wordUnits } from "../lib/rule-row";
 import { fmt, formatValue } from "../lib/format";
@@ -612,6 +612,18 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
                   </span>
                 ))}
               </div>
+            </div>
+          )}
+          {/* a fund's own statement the figure rests on in place of a rule (D84): said as the fund's, its document opened at the page */}
+          {value.statements && value.statements.length > 0 && (
+            <div className="flex flex-col gap-1.5">
+              <span className="text-sm text-muted-foreground">{copy.computed.statements}</span>
+              {value.statements.map((st) => (
+                <div key={`${st.term}|${st.source.url}|${st.page}`} className="flex flex-col">
+                  <p className="text-sm">{copy.computed.statement[st.term](st.index === "fx" ? (investCopy.currencies[st.currency] ?? st.currency) : null)}</p>
+                  <DocLink href={sourceHref({ url: st.source.url, page: st.page })}>{copy.computed.statementDoc(st.source.title, st.page)}</DocLink>
+                </div>
+              ))}
             </div>
           )}
           {value.flags?.map((code) => (

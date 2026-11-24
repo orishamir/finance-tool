@@ -4,7 +4,7 @@ import { bracketTaxOnTopSlice, surtax } from "../formulas/exit-tax.ts";
 import { buyWithCash, type Commission, type TradeTerms } from "../formulas/fees.ts";
 import { lastMonthOfTaxYear, taxYearOf } from "../formulas/time.ts";
 import { BlockedError, type RuleBook } from "../resolver.ts";
-import { emptyFees, type FeeType, type Flag, type MonthPoint, type Outcome, type RunResult } from "../result.ts";
+import { emptyFees, type FeeType, type Flag, type FundStatement, type MonthPoint, type Outcome, type RunResult } from "../result.ts";
 
 /** The taxpayer inputs (A-12 to A-14). */
 export interface Profile {
@@ -157,6 +157,7 @@ export class Tally {
   paidIn = 0;
   flags: Flag[] = [];
   series: MonthPoint[] = [];
+  statements: FundStatement[] = [];
 
   /** F-91 on a run in whole units: each fee in units of the fund's total-return index at the time it was paid (`grow`), so `feesCarried` is what it would be worth at the exit. */
   private carried = emptyFees();
@@ -197,6 +198,11 @@ export class Tally {
   /** F-109: the same cash at the month's end, after every share of the month (`grow`), as it joins the next order. */
   waitTo(cash: number) {
     this.waited -= cash / this.growth;
+  }
+
+  /** D84: a fund statement the run reads in place of a rule, carried on its result (`RunResult.statements`). */
+  state(statement: FundStatement) {
+    if (!this.statements.includes(statement)) this.statements.push(statement);
   }
 
   flag(code: string, month?: number) {
@@ -244,6 +250,7 @@ export class Tally {
       outcome: r.outcome ?? { code: "eligible" },
       formulas: r.formulas,
       rules: book.used(),
+      ...(this.statements.length ? { statements: this.statements } : {}),
       ...(this.grows ? { feesCarried: Object.fromEntries(Object.entries(this.carried).map(([k, v]) => [k, v * this.growth])) as Record<FeeType, number> } : {}),
       ...(this.grows && this.waits ? { waitingCarried: this.waited * this.growth } : {}),
       ...(this.carriedBy.length ? { feesCarriedBy: Array.from(this.carriedBy, (v) => (v ?? 0) * this.growth) } : {}),

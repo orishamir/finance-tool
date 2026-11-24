@@ -2,7 +2,7 @@
 import { fileURLToPath } from "node:url";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { help, invest, leftOut } from "../../copy";
+import { help, invest, leftOut, provenance } from "../../copy";
 import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
@@ -416,7 +416,9 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(raw).toContain(`aria-label="${help.markLabel.replace("{about}", invest.beforeTax.heading)}"`);
     expect(text).not.toContain(invest.beforeTax.note["TXF-04"]!);
     expect(text).toContain(invest.beforeTax.colLeft);
-    for (const id of ["1159250", "1183441"]) {
+    // the Invesco line's annex states no index (TXF-04 open); the iShares line's states the dollar, so it is ranked, not listed here (D84)
+    expect(allFunds(sp).find((x) => x.rec.id === "1159250")?.beforeTax).toBeUndefined();
+    for (const id of ["1183441"]) {
       const f = allFunds(sp).find((x) => x.rec.id === id)!;
       const at = f.beforeTax!.byHouse[pick.house]!;
       const row = fundRow(raw, id);
@@ -435,10 +437,36 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     const funds = allFunds(sp).filter((f) => kindOf(f.rec) === "unhedged");
     const distinct = new Set(funds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size;
     expect(distinct).toBeLessThan(funds.length);
-    // the Tel Aviv line has no price while its tax is open (F-04, TXF-04), so it is never chosen
-    expect(allFunds(sp).find((f) => f.rec.id === "1159250")!.reason).toEqual({ code: "rule-open", ruleId: "TXF-04" });
+    // a Tel Aviv line whose annex states no index has no price while its tax is open (F-04, TXF-04), so it is never chosen; one whose
+    // annex states its index is priced on it (D84)
+    expect(allFunds(sp).find((f) => f.rec.id === "1183441")?.reason).toEqual({ code: "rule-open", ruleId: "TXF-04" });
+    const stated = allFunds(sp).find((f) => f.rec.id === "1159250");
+    expect(stated).toBeDefined();
+    expect(stated?.reason).toBeUndefined();
     // the list counts funds, so the head names no count of rows that would differ from it
     expect(shown(lists(sp, bundle, plan, pickOfHeadline(sp)!))).not.toContain("בשתי שורות");
+  });
+  it("what a Tel Aviv line whose annex states its index leaves names the statement as the fund's, its annex opened at the page (F-04, D84)", () => {
+    const sheetOf = (v: SiteValue) => html(createElement(ValueSheet, { value: v, exact: false, data, headId: "h", descId: "d" }));
+    // the fund's figure where it is priced: a test whose fund is missing or unpriced fails on its own line
+    const priced = (index: string, id: string) => {
+      const ref = indexById(bundle, index);
+      const f = ref ? allFunds(buildInvest({ bundle, index: ref, plan })).find((x) => x.rec.id === id) : undefined;
+      if (!f?.best) throw new Error(`${id} is priced on ${index}`);
+      return { rec: f.rec, value: f.best.value };
+    };
+    for (const [index, id, page, words] of [
+      ["index-sp500", "1159250", 17, provenance.computed.statement["tax-index"]("דולר")],
+      ["index-msci-acwi", "1159235", 16, provenance.computed.statement["tax-index"](null)],
+    ] as const) {
+      const f = priced(index, id);
+      const sheet = sheetOf(f.value);
+      expect(shown(sheet), id).toContain(provenance.computed.statements);
+      expect(shown(sheet), id).toContain(words);
+      expect(sheet, id).toContain(`href="${f.rec.tax_ruling?.source.url ?? "(no ruling)"}#page=${page}"`);
+    }
+    // a fund bought abroad, the same units, is taxed on TXF-03: its sheet names no statement
+    expect(shown(sheetOf(priced("index-sp500", "ie00b5bmr087").value))).not.toContain(provenance.computed.statements);
   });
 });
 
