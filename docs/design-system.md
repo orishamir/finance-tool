@@ -986,7 +986,6 @@ in the kit fits is added to the kit.
 - `PeriodBars`: one of a few ordered periods chosen on a bar chart.
 - `MeterBar`: a thin bar of one share from 0 to 100% beside its figure in a table row; a single figure gets no bar under it against the
   list's highest. Never a hand bar in the computed ink (a ratchet).
-- `OptionBars`: bars comparing options (charts.md, "Bars (comparing options)").
 - `ShareChart`: what something costs as a share of an amount, on a log axis (F-112, F-123).
 - `ShareStack`: a `ShareChart` and its `AmountLanes` on one axis with one reader's line; not for an amount over time, which is a year
   chart.
