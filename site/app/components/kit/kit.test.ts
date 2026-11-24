@@ -28,6 +28,12 @@ describe("the gallery", () => {
       expect(out, name).toContain(`>${name}</code>`);
     }
   });
+  it("names a stretch on the region map's demo in words, \"בין … ל…\", never with a dash", () => {
+    const demo = out.slice(out.indexOf("data-region-map"));
+    const words = [...demo.matchAll(/data-chart-words[^>]*>(.*?)<\/span>/g)].map((x) => (x[1] ?? "").replace(/<[^>]+>/g, ""));
+    expect(words.some((w) => /^בין .+ ל־/.test(w)), JSON.stringify(words)).toBe(true);
+    expect(words.filter((w) => w.includes("–"))).toEqual([]);
+  });
   it("leaves no template place unfilled", () => {
     expect(out).not.toMatch(/\{(a|b|n)\}/);
   });

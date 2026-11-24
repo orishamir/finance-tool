@@ -4158,7 +4158,7 @@ function RegionDemo({ today }: { today: string }) {
     const st = map.stretches[axis];
     const at = sw ? sw.at : st ? (st.dir === "up" ? st.lo : st.hi) : null;
     if (at === null) return [];
-    const text = sw ? fmt.nisRough(sw.at) : st ? `${fmt.nisRough(st.lo)}–${fmt.nisRough(st.hi)}` : "";
+    const text = sw ? fmt.nisRough(sw.at) : st ? r.between(fmt.nisRough(st.lo), fmt.nisRough(st.hi)) : "";
     return [{ axis: axis === "amount" ? "x" : "y", at, label: { text } }];
   };
   return (
