@@ -339,6 +339,14 @@ describe("the account map (F-131)", () => {
     expect(all - asked).toBeLessThan(10 * 200);
   });
 
+  it("a lead just short of θ is never rounded into a clear lead", () => {
+    // B leaves 0.9997 θ less than A everywhere: about the same at every node, the edge's included
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    const short = { a: base, b: (a: number, m: number) => base(a, m) * (1 - 0.9997 * THETA) };
+    const got = mapOf(short, { amount: 10_000, monthly: 200 });
+    expect(Math.max(...got.field.ahead, ...got.edge.ahead)).toBeLessThan(1);
+  });
+
   it("rounds an axis's end up to a clean value", () => {
     expect([cleanUp(114_000), cleanUp(2812.5), cleanUp(100_000), cleanUp(31)]).toEqual([150_000, 3000, 100_000, 40]);
   });

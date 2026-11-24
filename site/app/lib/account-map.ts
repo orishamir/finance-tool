@@ -509,7 +509,8 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     rows,
     first: ls.map((l) => (l ? (index.get(l.first) ?? -1) : -1)),
     second: ls.map((l) => (l?.second && l.ahead < 1 ? (index.get(l.second) ?? -1) : -1)),
-    ahead: ls.map((l) => (l ? Math.round(l.ahead * 1000) / 1000 : 1)),
+    // to a thousandth, rounded down, so a lead short of θ never reads as θ ahead
+    ahead: ls.map((l) => (l ? Math.floor(l.ahead * 1000) / 1000 : 1)),
   });
   return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, field: fieldOf(leads, N + 1, N + 1), edge: fieldOf(edgeLeads, N + 1, 1), switches, changes, equal };
 }
