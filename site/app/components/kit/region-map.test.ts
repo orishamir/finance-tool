@@ -132,7 +132,7 @@ describe("the legend's items for the band", () => {
         xTick: String,
         yTick: String,
         snap: { x: 1, y: 1 },
-        renderTip: () => null,
+        reading: () => ({ head: "", rows: [] }),
       }),
     );
 

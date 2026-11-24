@@ -18,7 +18,7 @@ import { rankedAt } from "../../lib/stretch";
 import { asParameter, carriedBy, computed, differenceOf, entered, type SiteValue } from "../../lib/value";
 import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
-import { MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionPoint, type RegionTone, type TabCard } from "../kit";
+import { MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
 import { providerName } from "./sections";
 import { allFunds, type Pick } from "./pair";
 
@@ -160,9 +160,6 @@ function gridOf(f: MapField, areaOf: (k: number) => number): RegionGrid {
   return { cols: f.cols, rows: f.rows, first, second: f.second.map((k, n) => (k < 0 || areaOf(k) === first[n] ? -1 : areaOf(k))), ahead: f.ahead };
 }
 
-/** A reading of a point: its head and its rows, the account that leaves the most set apart unless the next is about the same. */
-type Reading = { head: ReactNode; rows: { id: string; swatch?: ReactNode; label: ReactNode; value: ReactNode; wash?: string }[] };
-
 /**
  * The map's areas: the first four accounts each their own colour, the plan's first; a fifth in the grey under its own name, more than five
  * gathered there under "אחרות". With each account's tone, and the field and the edge as the areas' grids.
@@ -184,13 +181,13 @@ function areasOf(view: InvestView, map: AccountMap) {
  * The reading of a point (the plan's where it is null): the account that leaves the most there and what it leaves, the next and how much
  * less (both F-65, in today's money), on the fund and plan the map was worked out for; each point priced once, as the pointer comes back.
  */
-function readerOf(view: InvestView, bundle: IndicesBundle, on: Asked<"map">, toneOf: (id: string) => RegionTone): (p: RegionPoint | null) => Reading {
+function readerOf(view: InvestView, bundle: IndicesBundle, on: Asked<"map">, toneOf: (id: string) => RegionTone): (p: RegionPoint | null) => RegionReading {
   const today = bundle.today;
   const { plan } = on.ask;
   const theta = tieShareOf(bundle);
   const thetaFig = thetaValue(bundle);
   const swatch = (id: string) => <Swatch shape="box" className={regionSwatch(toneOf(id))} />;
-  const kept = new Map<string, Reading>();
+  const kept = new Map<string, RegionReading>();
   return (p) => {
     const k = p ? `${p[0]}|${p[1]}` : "plan";
     const had = kept.get(k);
@@ -199,7 +196,7 @@ function readerOf(view: InvestView, bundle: IndicesBundle, on: Asked<"map">, ton
     const pointHead = p ? m.pointHead(fmt.nisWhole(p[0]), fmt.nisWhole(p[1])) : `${m.planHead} ${m.pointHead(fmt.nisWhole(plan.amountNow), fmt.nisWhole(plan.monthly))}`;
     const nothing = at.amountNow === 0 && at.monthly === 0;
     const [w, r] = nothing ? [] : rankedWays(on, at);
-    let got: Reading;
+    let got: RegionReading;
     if (!w) got = { head: pointHead, rows: [{ id: "none", label: nothing ? m.none : m.unrankedHere, value: null }] };
     else {
       const same = !!r && isTie(w.valueN, r.valueN, theta);
@@ -216,7 +213,7 @@ function readerOf(view: InvestView, bundle: IndicesBundle, on: Asked<"map">, ton
         pointHead
       );
       const wName = shortOf(view, w.providerId);
-      const rows: Reading["rows"] = [{ id: w.providerId, swatch: swatch(w.providerId), label: wName, value: <>{m.leaves} <Num value={{ ...w.value, about: m.leftAbout(wName) }} display={fmt.nisWhole(Math.round(w.valueN))} /></>, ...(same ? {} : { wash: regionWash(toneOf(w.providerId)) }) }];
+      const rows: RegionReading["rows"] = [{ id: w.providerId, swatch: swatch(w.providerId), label: wName, value: <>{m.leaves} <Num value={{ ...w.value, about: m.leftAbout(wName) }} display={fmt.nisWhole(Math.round(w.valueN))} /></>, ...(same ? {} : { wash: regionWash(toneOf(w.providerId)) }) }];
       if (r) {
         const gap = differenceOf([wName, w.value], [shortOf(view, r.providerId), r.value], "F-65", { today, about: m.gapAbout(wName), round: Math.round, ...carriedBy([w.value, r.value]) });
         rows.push({ id: r.providerId, swatch: swatch(r.providerId), label: shortOf(view, r.providerId), value: typeof gap.value === "number" ? <>{m.leaves} <Num value={gap} display={fmt.nisWhole(gap.value)} /> {m.less}</> : null });
@@ -297,21 +294,7 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
         xTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
         yTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
         snap={{ x: snapOf(map.max.amount), y: snapOf(map.max.monthly) }}
-        renderTip={(p) => {
-          const r = reading(p);
-          return (
-            <span className="flex flex-col gap-0.5">
-              <span className="font-semibold">{r.head}</span>
-              {r.rows.map((row) => (
-                <span key={row.id} className={row.wash ? `flex items-center gap-1.5 rounded-sm px-1 font-semibold ${row.wash}` : "flex items-center gap-1.5 px-1"}>
-                  {row.swatch}
-                  <span>{row.label}</span>
-                  {row.value && <span>· {row.value}</span>}
-                </span>
-              ))}
-            </span>
-          );
-        }}
+        reading={reading}
       />
     </div>
   );

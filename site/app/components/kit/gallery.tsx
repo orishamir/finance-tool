@@ -4168,20 +4168,9 @@ function RegionDemo({ today }: { today: string }) {
       xTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
       yTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
       snap={{ x: 1000, y: 10 }}
-      renderTip={(p) => {
+      reading={(p) => {
         const b = best(p);
-        return (
-          <span className="flex flex-col gap-0.5">
-            <span className="font-semibold">{r.point(fmt.nisWhole(b.at[0]), fmt.nisWhole(b.at[1]))}</span>
-            {b.rows.map((row) => (
-              <span key={row.id} className={row.wash ? `flex items-center gap-1.5 rounded-sm px-1 font-semibold ${row.wash}` : "flex items-center gap-1.5 px-1"}>
-                {row.swatch}
-                <span>{row.label}</span>
-                {row.value && <span>· {row.value}</span>}
-              </span>
-            ))}
-          </span>
-        );
+        return { head: r.point(fmt.nisWhole(b.at[0]), fmt.nisWhole(b.at[1])), rows: b.rows };
       }}
     />
   );

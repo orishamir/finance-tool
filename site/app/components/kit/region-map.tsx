@@ -17,7 +17,7 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import { scaleLinear } from "d3-scale";
 import { pickDim, useChartPick, ChartTip } from "./chart-interact";
-import { ChartLegend, Swatch } from "./chart-parts";
+import { ChartLegend, Swatch, type ReadoutRow } from "./chart-parts";
 import { chartTextWidth } from "./chart-text";
 import { cx } from "./cx";
 import { useWidth } from "./marker";
@@ -75,6 +75,12 @@ export interface RegionGrid {
 export interface RegionWords {
   text: string;
   node?: ReactNode;
+}
+
+/** What a point holds, in its box: a head line, then a row for each option read there, the one the reading is about set apart (`wash`). */
+export interface RegionReading {
+  head: ReactNode;
+  rows: ReadoutRow[];
 }
 
 /** A guide from the marked point along one axis to `at`, ending in a dot with its words; with no words, it runs on with no dot. */
@@ -346,7 +352,7 @@ export function RegionMap({
   xTick,
   yTick,
   snap,
-  renderTip,
+  reading,
 }: {
   /** The plot runs from 0 to `max` on each axis. */
   max: { x: number; y: number };
@@ -372,7 +378,7 @@ export function RegionMap({
   /** The steps a read point is rounded to, on each axis, so a reading names round amounts. */
   snap: { x: number; y: number };
   /** What a point holds, in the box that follows the pointer and the one that stays at a kept point; `null` reads the marked point. */
-  renderTip: (p: RegionPoint | null) => ReactNode;
+  reading: (p: RegionPoint | null) => RegionReading;
 }) {
   const [ref, w] = useWidth(600);
   const plane = useRef<HTMLCanvasElement>(null);
@@ -731,7 +737,7 @@ export function RegionMap({
         {tip && (
           <div className="contents" data-region-tip={tip.kept ? "kept" : "pointer"}>
             <ChartTip x={sx(tip.at[0])} width={w} near={{ y: sy(tip.at[1]), bottom: height }} variant={tip.kept ? "kept" : "follow"}>
-              {renderTip(tip.reads)}
+              <ReadingRows {...reading(tip.reads)} />
             </ChartTip>
           </div>
         )}
@@ -778,6 +784,22 @@ function BandSwatch({ p, q }: { p: RegionTone; q: RegionTone }) {
   const soft = "(1 - var(--chart-region-texture)) * 0.5";
   const background = `repeating-linear-gradient(135deg, ${mix(`(${soft} + var(--chart-region-texture))`)} 0 calc(var(--chart-region-period) * 0.3536px), ${mix(`(${soft})`)} 0 calc(var(--chart-region-period) * 0.7071px))`;
   return <span className="h-3 w-6 shrink-0 rounded-sm" style={{ background }} data-mark="band-swatch" />;
+}
+
+/** A point's reading in its box: the head in bold, then each row's swatch, name and figure, the row set apart washed in its colour. */
+function ReadingRows({ head, rows }: RegionReading) {
+  return (
+    <span className="flex flex-col gap-0.5">
+      <span className="font-semibold">{head}</span>
+      {rows.map((row) => (
+        <span key={row.id} className={row.wash ? cx("flex items-center gap-1.5 rounded-sm px-1 font-semibold", row.wash) : "flex items-center gap-1.5 px-1"}>
+          {row.swatch}
+          <span>{row.label}</span>
+          {row.value && <span>· {row.value}</span>}
+        </span>
+      ))}
+    </span>
+  );
 }
 
 /** Words over the map in their box, in the dark ink the light areas take. */
