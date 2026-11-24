@@ -4207,7 +4207,9 @@ export const invest = {
       staysNote: "גם בסכום אחר היום או בהפקדה אחרת",
       /** The card where the plan is in the band: the accounts about the same, and, where one becomes clearly cheaper, where. */
       near: (names: string[]) => `${andList(names)} בערך אותו דבר`,
-      nearStays: "גם בסכומים אחרים",
+      /** Where none becomes clearly cheaper than all of the plan's accounts about the same, two or more ("משניהם", "מכולם"): what the
+       *  search finds, though one of them may become clearly cheaper than another where a third leads them both. */
+      nearStays: (n: number) => `אף חשבון לא זול בבירור ${n === 2 ? "משניהם" : "מכולם"}`,
       /** The card of a plan with nothing in it. */
       empty: "אין כסף בתוכנית",
       emptyNote: "אין כסף בחשבון, אז לא נגבה ממנו כלום",
@@ -4224,7 +4226,7 @@ export const invest = {
       cheaperFrom: (to: string) => `${to} זול יותר בבירור`,
       or: "או",
       headStays: "אף חשבון אחר לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
-      headNearStays: "אף אחד מהם לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
+      headNearStays: (n: number) => `אף חשבון לא נעשה זול יותר בבירור ${n === 2 ? "משניהם" : "מכולם"}, גם בסכום אחר היום או בהפקדה חודשית אחרת.`,
       headAll: "הוא הכי זול בכל צירוף במפה.",
       /** No change along the plan's lines, but another account clearly cheaper elsewhere on the map: "אי.בי.אי זול יותר בבירור בצירופים
        *  אחרים במפה", and the card's short answer after its name. */

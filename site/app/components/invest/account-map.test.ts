@@ -116,9 +116,12 @@ describe("the account map's words", () => {
     });
     expect(said(near)).toEqual({
       answer: "פסגות ואי.בי.אי בערך אותו דבר",
-      note: "גם בסכומים אחרים",
-      head: "בתוכנית שלכם פסגות ואי.בי.אי בערך אותו דבר. אף אחד מהם לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
+      note: "אף חשבון לא זול בבירור משניהם",
+      head: "בתוכנית שלכם פסגות ואי.בי.אי בערך אותו דבר. אף חשבון לא נעשה זול יותר בבירור משניהם, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
     });
+    // three about the same: than all of them
+    const three: AccountMap = { ...near, plan: { ...near.plan, lead: { kind: "near", tied: ["psagot", "ibi", "one-zero"] } } };
+    expect(said(three).note).toBe("אף חשבון לא זול בבירור מכולם");
   });
 
   it("a plan with nothing in it", () => {

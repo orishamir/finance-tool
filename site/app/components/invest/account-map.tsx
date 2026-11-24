@@ -87,7 +87,7 @@ export function mapWords<F>(map: AccountMap, house: string, name: (id: string) =
     if (!first) {
       const away = elsewhere([]);
       if (away.length) return { answer: [m.near(names)], note: [m.elsewhere(away.map(name))], head: [start, " ", m.elsewhere(away.map(name)), "."] };
-      return { answer: [m.near(names)], note: [m.nearStays], head: [start, " ", m.headNearStays] };
+      return { answer: [m.near(names)], note: [m.nearStays(names.length)], head: [start, " ", m.headNearStays(names.length)] };
     }
     return { answer: [m.near(names)], note: [m.cheaperFrom(name(first.s.to)), " ", ...at(first, firstAxis, false)], head: [start, " ", ...switchesHead(first)] };
   }
