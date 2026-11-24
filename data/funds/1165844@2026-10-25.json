@@ -29,7 +29,7 @@
     "il_fund_tax_track": "exempt",
     "tase_foreign_fund_90pct_test": null,
     "foreign_investment_fund": {
-      "value": null,
+      "value": false,
       "unit": "text",
       "source": {
         "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732058-00.pdf#page=1",
@@ -37,7 +37,7 @@
         "publisher": "מור ניהול קרנות נאמנות (2013) בע\"מ",
         "strength": "institution"
       },
-      "checked": "2026-11-22",
+      "checked": "2026-11-25",
       "effective_from": "2025-12-31",
       "effective_to": null,
       "tax_year": null,
@@ -46,7 +46,7 @@
         "TXS-14"
       ],
       "state": "sourced",
-      "notes": "Not known. The annual report names the tax track only ('מסלול המס: פטורה'). Mor's main prospectus of 5.10.2025 (reference 2025-03-073790), which the report names, was not found on the Maya file server and was not read."
+      "notes": "Not a foreign-investment fund, as its manager reports it: page 1 of the annual report, under 'מאפיינים עיקריים של הקרן', gives the tax track ('מסלול המס: פטורה') and does not state the status, which the annual-report regulations make that heading state, with the principal currency, for a fund that has it (reg. 7(8), TXS-14; KT 7646, 2016). Its tax index is the CPI (TXS-14). Read 2026-11-25; until then the record held null, since no rule in the rule base required the report to state it."
     }
   },
   "fees": {

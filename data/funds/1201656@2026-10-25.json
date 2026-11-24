@@ -28,7 +28,7 @@
     "il_fund_tax_track": "exempt",
     "tase_foreign_fund_90pct_test": null,
     "foreign_investment_fund": {
-      "value": null,
+      "value": false,
       "unit": "text",
       "source": {
         "url": "https://mayafiles.tase.co.il/rpdf/1723001-1724000/P1723806-00.pdf#page=1",
@@ -36,7 +36,7 @@
         "publisher": "ילין לפידות - ניהול קרנות נאמנות בע\"מ",
         "strength": "institution"
       },
-      "checked": "2026-11-22",
+      "checked": "2026-11-25",
       "effective_from": "2025-12-31",
       "effective_to": null,
       "tax_year": null,
@@ -45,7 +45,7 @@
         "TXS-14"
       ],
       "state": "sourced",
-      "notes": "Not known. The annual report names the tax track only ('מסלול המס: פטורה'). Yalin Lapidot's main prospectus of 20.12.2025 (https://mayafiles.tase.co.il/rpdf/1709001-1710000/P1709452-00.pdf#page=27) states 'פטורה' for this fund and names no fund a foreign-investment fund in its tables (only its tax chapter, s.9, explains the status), so its column does not say whether this fund is one."
+      "notes": "Not a foreign-investment fund, as its manager reports it: page 1 of the annual report, under 'מאפיינים עיקריים של הקרן', gives the tax track ('מסלול המס: פטורה') and does not state the status, which the annual-report regulations make that heading state, with the principal currency, for a fund that has it (reg. 7(8), TXS-14; KT 7646, 2016). Its tax index is the CPI (TXS-14). Read 2026-11-25; until then the record held null, since no rule in the rule base required the report to state it. Yalin Lapidot's main prospectus of 20.12.2025 (https://mayafiles.tase.co.il/rpdf/1709001-1710000/P1709452-00.pdf#page=27) gives 'פטורה' for this fund, while the same column names the status for the manager's fund that has it (5140678, https://mayafiles.tase.co.il/rpdf/1709001-1710000/P1709452-00.pdf#page=24: 'פטורה*, קרן להשקעות חוץ (מטבע עיקרי: דולר ארה\"ב)')."
     }
   },
   "fees": {
