@@ -100,6 +100,20 @@ describe("the account map's words", () => {
     expect(said({ ...base, field: lone(200, 7), edge: two(20) }).answer).toBe("אי.בי.אי, בצירופים אחרים במפה");
   });
 
+  it("a stretch, then the switch after it: by another account, named after the stretch; by the same, in one run", () => {
+    const st = (lo: number, hi: number, then: ReturnType<typeof up>) => ({ amount: { lo, hi, dir: "up" as const, to: "ibi", then }, monthly: null });
+    expect(said({ ...base, stretches: st(30_000, 40_000, up(40_000, "one-zero")) })).toEqual({
+      answer: "אי.בי.אי, בין כ־30 אלף ₪ לכ־40 אלף ₪, ו־וואן זירו מעל כ־40 אלף ₪",
+      note: "זול יותר בבירור: בהפרש של 0.5% לפחות",
+      head: "בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור בין כ־30 אלף ₪ לכ־40 אלף ₪ היום, ו־וואן זירו מעל כ־40 אלף ₪.",
+    });
+    expect(said({ ...base, stretches: st(20_000, 40_000, up(150_000)) }).head).toBe("בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור בין כ־20 אלף ₪ לכ־40 אלף ₪ ומעל כ־150 אלף ₪ היום.");
+    // along the deposit, the other account's switch with its unit
+    expect(said({ ...base, stretches: { amount: null, monthly: { lo: 800, hi: 1500, dir: "up", to: "ibi", then: up(1500, "one-zero") } } }).head).toBe(
+      "בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור בין כ־800 ₪ לכ־1,500 ₪ בחודש, ו־וואן זירו מעל כ־1,500 ₪ בחודש.",
+    );
+  });
+
   it("one account cheapest everywhere on the map", () => {
     expect(said({ ...base, accounts: ["psagot"] })).toEqual({
       answer: "אף חשבון",

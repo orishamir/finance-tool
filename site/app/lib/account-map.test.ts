@@ -362,11 +362,13 @@ describe("the account map (F-131)", () => {
 
   it("a switch holds to the end of the search: a lead that dips under θ and back cannot place it", () => {
     // B's lead over A grows with today's amount and wavers by two fifths every 40,000 ₪, so it first reaches θ at 35,623 ₪ and stays there
-    // only past its last dip, from 65,259 ₪
+    // only past its last dip, from 65,259 ₪: the stretch before the dip is named first, then the switch past it
     const lead = (a: number) => THETA * (a / 40_000) * (1 + 0.4 * Math.sin((2 * Math.PI * a) / 40_000 + 1));
     const wavy = { a: (a: number, m: number) => left(a, m, 0), b: (a: number, m: number) => left(a, m, 0) / (1 - lead(a)) };
     const map = mapOf(wavy, { amount: 10_000, monthly: 200 });
-    const at = need(map.switches.amount, "the switch").at;
+    const st = need(map.stretches.amount, "the stretch before the dip");
+    expect(st.lo).toBeCloseTo(35_623, -1);
+    const at = need(st.then, "the switch past the dip").at;
     const gap = (a: number) => {
       const [x, y] = [wavy.a(a, 200), wavy.b(a, 200)];
       return (y - x) / y;
@@ -374,6 +376,25 @@ describe("the account map (F-131)", () => {
     for (let a = Math.ceil(at); a < 100_000; a += 5) expect(gap(a) >= THETA, `${a}`).toBe(true);
     expect(gap(at - 1)).toBeLessThan(THETA);
     expect(at).toBeCloseTo(65_259, -1);
+  });
+
+  it("names a stretch first and the switch after it, by another account or by the same one", () => {
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    // C 2% ahead of A from 30,000 ₪ to the end, B 3% ahead of A from 30,000 ₪ to 40,000 ₪: B's stretch, then C's switch at 40,000 ₪
+    const two = { a: base, b: (a: number, m: number) => base(a, m) * (a >= 30_000 && a < 40_000 ? 1.03 : 0.97), c: (a: number, m: number) => base(a, m) * (a >= 30_000 ? 1.02 : 0.98) };
+    const st = need(mapOf(two, { amount: 10_000, monthly: 200 }).stretches.amount, "B's stretch");
+    expect(st).toMatchObject({ dir: "up", to: "b" });
+    expect([st.lo, st.hi]).toEqual([expect.closeTo(30_000, -2), expect.closeTo(40_000, -2)]);
+    expect(st.then).toMatchObject({ dir: "up", to: "c" });
+    expect(st.then?.at).toBeCloseTo(40_000, -2);
+    // B 1% ahead from 20,000 ₪ to 40,000 ₪ and from 150,000 ₪ on, behind between: B's stretch, then B's switch at 150,000 ₪
+    const again = { a: base, b: (a: number, m: number) => base(a, m) * ((a >= 20_000 && a < 40_000) || a >= 150_000 ? 1.01 : 0.99) };
+    const got = mapOf(again, { amount: 10_000, monthly: 200 });
+    expect(got.switches.amount).toBeNull();
+    const back = need(got.stretches.amount, "B's stretch");
+    expect([back.to, back.lo, back.hi]).toEqual(["b", expect.closeTo(20_000, -2), expect.closeTo(40_000, -2)]);
+    expect(back.then).toMatchObject({ dir: "up", to: "b" });
+    expect(back.then?.at).toBeCloseTo(150_000, -3);
   });
 
   it("names where an account is clearly cheaper before another takes over, and runs the axes past it", () => {

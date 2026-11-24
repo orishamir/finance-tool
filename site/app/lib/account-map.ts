@@ -45,6 +45,9 @@ export interface MapStretch {
   /** Up: at more than the plan's own value; down: at less. */
   dir: "up" | "down";
   to: string;
+  /** The switch past it the same way along the line, by this account or another, where the line has one: the words name it after the
+   *  stretch, so the reader does not take the plan's account to be the cheapest again past the stretch. */
+  then?: MapSwitch | null;
 }
 
 /** The plan's own point: no money at all, one account at least θ ahead of every other, or several within θ of the first (the first first). */
@@ -368,12 +371,15 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const floor = { amount: Math.max(reachA * LOWEST, reach.amount * NAMED), monthly: Math.max(reachM * LOWEST, reach.monthly * NAMED) };
   const lineOn = (axis: 0 | 1, dir: MapSwitch["dir"], to: number) => (tied.length === 0 ? null : lineOf(leftAt, order, theta, tied, planPt, axis, dir, to));
   const lines = { amount: { up: lineOn(0, "up", reachA), down: lineOn(0, "down", floor.amount) }, monthly: { up: lineOn(1, "up", reachM), down: lineOn(1, "down", floor.monthly) } };
-  // each way along each line, the first change: the switch, unless another account is clearly cheaper first, for a stretch before it (its
-  // first run of samples, by another account than the switch's), so the words name what comes first and each account only where it holds
+  // each way along each line, the first change: the switch, unless an account is clearly cheaper first for a stretch before it (its first
+  // run of samples, ending before the line does), then the stretch with the switch after it, so the words name what comes first, each
+  // account only where it holds, and what follows the stretch
   const changeOn = (line: Line | null, floorAt: number): { sw: MapSwitch | null; st: MapStretch | null } => {
     const sw = switchAlong(line, order, theta, tied, floorAt);
     const st = stretchAlong(line, order, theta, tied, floorAt);
-    return st && st.to !== sw?.to ? { sw: null, st } : { sw, st: null };
+    if (!line || !st) return { sw, st: null };
+    const toEnd = line.dir === "up" ? st.hi >= line.end : st.lo <= line.end;
+    return toEnd ? { sw, st: null } : { sw: null, st: { ...st, then: sw } };
   };
   const ways = {
     amount: { up: changeOn(lines.amount.up, floor.amount), down: changeOn(lines.amount.down, floor.amount) },

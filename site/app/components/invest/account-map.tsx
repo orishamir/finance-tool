@@ -64,8 +64,13 @@ export function mapWords<F>(map: AccountMap, house: string, name: (id: string) =
   const at = (c: LineChange, axis: "amount" | "monthly", today: boolean): (string | F)[] => {
     const unit = axis === "monthly" ? ` ${m.perMonth}` : today ? ` ${m.today}` : "";
     if (c.kind === "switch") return [c.s.dir === "up" ? m.above : m.below, fig(c.s, axis, "switch"), unit];
-    const { lo, hi, dir, to } = c.s;
-    return [m.between, fig({ at: lo, dir, to }, axis, "from"), m.betweenTo, fig({ at: hi, dir, to }, axis, "till"), unit];
+    const { lo, hi, dir, to, then: past } = c.s;
+    const range = [m.between, fig({ at: lo, dir, to }, axis, "from"), m.betweenTo, fig({ at: hi, dir, to }, axis, "till")];
+    if (!past) return [...range, unit];
+    // the switch after the stretch: by the same account, in one run ("… ומעל כ־150 אלף ₪ היום"); by another, named after the stretch
+    // ("…, וג׳ מעל כ־40 אלף ₪"), a month's with its unit
+    if (past.to === to) return [...range, " ", past.dir === "up" ? m.thenAbove : m.thenBelow, fig(past, axis, "switch"), unit];
+    return [...range, unit, m.thenOther(name(past.to)), past.dir === "up" ? m.above : m.below, fig(past, axis, "switch"), axis === "monthly" ? ` ${m.perMonth}` : ""];
   };
   const first = sa ?? sm;
   const firstAxis = sa ? "amount" : "monthly";

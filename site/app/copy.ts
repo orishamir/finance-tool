@@ -3115,12 +3115,13 @@ export const r4catalogue = {
   searchGroupBank: "בנקים ומוצרי בנק",
 } as const;
 
+/** "ו" before a word: a ו before a word that starts with ו takes a maqaf, so the two don't run together ("ו־וואן זירו", not "ווואן זירו"),
+ *  and so does one before a Latin word or a figure (wording.md: a maqaf between a prefix and a number, code or Latin word). */
+const andWord = (w: string): string => `ו${/^[ו\p{Script=Latin}\d]/u.test(w) ? "־" : ""}${w}`;
 /** "א, ב וג": a list in running Hebrew, "ו" before the last. */
 export const andList = (items: string[]): string => {
   const last = items[items.length - 1] ?? "";
-  // a ו before a word that starts with ו takes a maqaf, so the two don't run together ("ו־וואן זירו", not "ווואן זירו"), and so does one
-  // before a Latin word or a figure (wording.md: a maqaf between a prefix and a number, code or Latin word)
-  return items.length < 2 ? last : `${items.slice(0, -1).join(", ")} ו${/^[ו\p{Script=Latin}\d]/u.test(last) ? "־" : ""}${last}`;
+  return items.length < 2 ? last : `${items.slice(0, -1).join(", ")} ${andWord(last)}`;
 };
 
 /** Group prices (D43): the line under a house's row and its sub-rows, on the indices page and on the house's page (kit/group-prices.tsx). */
@@ -4183,6 +4184,10 @@ export const invest = {
       /** A stretch of a line where another account is clearly cheaper, though not past it: "בין כ־30 אלף ₪ לכ־70 אלף ₪". */
       between: "בין כ־\u2060",
       betweenTo: " לכ־\u2060",
+      /** After a stretch, the switch past it: by the same account, "ומעל כ־150 אלף ₪"; by another, ", וג׳ מעל כ־40 אלף ₪". */
+      thenAbove: "ומעל כ־\u2060",
+      thenBelow: "ומתחת לכ־\u2060",
+      thenOther: (w: string) => `, ${andWord(w)} `,
       /** Before a figure said roughly, alone: "כ־108 אלף ₪". */
       about: "כ־\u2060",
       /** A guide's words where it ends on the line where two accounts are equal: "שווים בכ־2,460 ₪ בחודש". */
