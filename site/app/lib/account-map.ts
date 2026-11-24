@@ -46,7 +46,7 @@ export interface MapStretch {
   dir: "up" | "down";
   to: string;
   /** The switch past it the same way along the line, by this account or another, where the line has one: the words name it after the
-   *  stretch, so the reader does not take the plan's account to be the cheapest again past the stretch. */
+   *  stretch. Only the first stretch is named, and this switch; a second stretch after the first, with no switch, is not. */
   then?: MapSwitch | null;
 }
 
