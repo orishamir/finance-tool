@@ -18,7 +18,7 @@ import { rankedAt } from "../../lib/stretch";
 import { asParameter, carriedBy, differenceOf, entered, type SiteValue } from "../../lib/value";
 import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
-import { HeldMark, HelpMark, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionGuide, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
+import { HelpMark, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionGuide, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
 import { providerName } from "./sections";
 import { allFunds, type Pick } from "./pair";
 
@@ -213,7 +213,7 @@ export function mapGuides(map: AccountMap): RegionGuide[] {
  * that changed would make the map place its words again, a search over the plot.
  */
 export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, house, map, on }: { view: InvestView; bundle: IndicesBundle; house: string; map: AccountMap; on: Asked<"map"> }) {
-  const { plan, fund } = on.ask;
+  const { fund } = on.ask;
   const fundName = allFunds(view).find((f) => f.rec.id === fund)?.name ?? fund;
 
   // the map's accounts in the houses' order: the order the colours go by
@@ -242,7 +242,7 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
         }
         sub={
           <p className="text-sm text-muted-foreground">
-            <HeldMark words={m.what(plan.years)} mark={<HelpMark about={m.howTo.about} text={m.howTo.text(thetaText(bundle))} />} />
+            {m.what}
           </p>
         }
       >
@@ -256,7 +256,7 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
         field={field}
         edge={edge}
         edgeLabel={edgeLabel}
-        bandLabel={{ text: m.same, pair: m.samePair }}
+        bandLabel={{ text: m.same, pair: m.samePair, help: <HelpMark about={m.howTo.about} text={m.howTo.text(thetaText(bundle))} className="ms-0.5" /> }}
         mark={mark}
         guides={guides}
         xTitle={m.xTitle}

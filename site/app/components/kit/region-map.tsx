@@ -18,7 +18,7 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import { scaleLinear } from "d3-scale";
 import { pickDim, useChartPick, ChartTip } from "./chart-interact";
-import { ChartLegend, Swatch, type ReadoutRow } from "./chart-parts";
+import { ChartLegend, Swatch, type LegendItem, type ReadoutRow } from "./chart-parts";
 import { chartTextWidth } from "./chart-text";
 import { cx } from "./cx";
 import { useWidth } from "./marker";
@@ -104,6 +104,12 @@ const REACH = 22;
 const DIMMED = 0.75;
 /** A name stands where its area leads by θ or more (F-80: under it the two are a tie). */
 const CLEAR = 1;
+
+/** Legend items with `help` after the last of them: the band's last item where the band shows, else the last account's. */
+function withHelp(items: LegendItem[], help: ReactNode): LegendItem[] {
+  if (!help) return items;
+  return items.map((it, k) => (k === items.length - 1 ? { ...it, after: help } : it));
+}
 /**
  * The room a chart's words take: their measured width (chart-text.ts) and an eighth more. The advances are Inter's and Heebo's as headless
  * Chrome draws them; another system draws the same words up to a tenth wider (a reader's Windows Chrome cut "6 אלף" on the y axis and the
@@ -425,7 +431,8 @@ export function RegionMap({
    *  there being about the same. */
   edgeLabel: (id: string | null) => RegionWords;
   /** What the stripes mean, an item in the legend for each pair whose stripes show: its words, and its title naming the pair. */
-  bandLabel: { text: string; pair: (a: string, b: string) => string };
+  /** The band's words in the legend, the pair's for its hint, and a "?" after its item (the last such item; with none, after the last item). */
+  bandLabel: { text: string; pair: (a: string, b: string) => string; help?: ReactNode };
   /** The reader's own point, and its words under it. */
   mark: { at: RegionPoint; label: RegionWords };
   guides: readonly RegionGuide[];
@@ -509,7 +516,7 @@ export function RegionMap({
   const my = sy(mark.at[1]);
   // the legend's items for the band, one for each pair whose band shows, most first, in the pair's colours as the map draws them; the title
   // naming the pair is a hint under a computer's pointer
-  const { text: sameText, pair: samePair } = bandLabel;
+  const { text: sameText, pair: samePair, help: bandHelp } = bandLabel;
   const striped = useMemo(
     () =>
       stripedPairs(field).flatMap(([p, q]) => {
@@ -696,7 +703,7 @@ export function RegionMap({
 
   return (
     <div className="flex flex-col gap-2">
-      <ChartLegend items={[...areas.map((a) => ({ id: a.id, swatch: <Swatch shape="box" className={SWATCH[a.tone]} />, label: a.name })), ...striped]} pick={pick} />
+      <ChartLegend items={withHelp([...areas.map((a) => ({ id: a.id, swatch: <Swatch shape="box" className={SWATCH[a.tone]} />, label: a.name })), ...striped], bandHelp)} pick={pick} />
       {/* the y axis's name over its figures, at the plot's left edge, as the axis reads left to right */}
       <p dir="ltr" className="text-xs text-muted-foreground">
         <bdi dir="rtl">{yTitle}</bdi>

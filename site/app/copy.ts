@@ -4199,12 +4199,12 @@ export const invest = {
       unranked: "אין מפה לקרן הזו",
       unrankedWhy: { "open-rule": "המס עליה תלוי בשאלה פתוחה, ולכן האתר לא מדרג חשבונות איתה", unpriced: "אף חשבון לא מדורג עם הקרן הזו" },
       headEmpty: "בתוכנית שלכם אין כסף, אז כל החשבונות משאירים 0 ₪. המפה מראה איזה חשבון זול יותר בכל צירוף אחר.",
-      /** The line under the headline: what the map is, in one sentence; how to read it is behind its "?" (`howTo`). */
-      what: (years: number) => `כל נקודה במפה היא סכום היום והפקדה חודשית, והצבע שלה הוא החשבון שמשאיר לכם שם הכי הרבה עם הקרן הזו ${inYears(years)}.`,
-      /** The "?" after it: what the blended colours (the legend's "בערך אותו דבר", θ of P-01), the thin line and the marked point mean. */
+      /** The line under the headline: how to read the map, short enough for one line on a computer. */
+      what: "הצבע של כל נקודה הוא החשבון שמשאיר לכם הכי הרבה בסכום ובהפקדה שלה.",
+      /** The "?" after the legend's "בערך אותו דבר": what the blended colours (θ of P-01) and the thin line mean. */
       howTo: {
-        about: "איך קוראים את המפה",
-        text: (theta: string) => `כל צבע הוא חשבון. איפה שהצבעים מתערבבים, ובמקרא "בערך אותו דבר", ההפרש בין שני החשבונות קטן מ־${theta}. על הקו הדק שני החשבונות שווים. הנקודה המסומנת היא התוכנית שלכם, והקווים המקווקווים ממנה מראים מה משתנה כשמשנים רק את הסכום היום או רק את ההפקדה.`,
+        about: "בערך אותו דבר",
+        text: (theta: string) => `איפה שהצבעים מתערבבים, ההפרש בין שני החשבונות קטן מ־${theta}. על הקו הדק שני החשבונות שווים.`,
       },
       xTitle: "סכום היום (₪)",
       yTitle: "הפקדה חודשית (₪)",
