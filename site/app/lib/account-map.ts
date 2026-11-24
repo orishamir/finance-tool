@@ -498,7 +498,8 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   // ------------------------------------------------ the bottom edge: no monthly deposit at all, from a thousandth of the axis
   const ex = (i: number) => Math.max(maxA * LOWEST, xOf(i));
   const edgePriced = new Map<number, ReadonlyMap<string, number>>();
-  const edgeCan = new Set<string>();
+  // the plan's accounts are asked for along the edge too, as on the areas, so one with no price there is known to have none
+  const edgeCan = new Set<string>(tied);
   for (const i of [0, 2, 8, ...Array.from({ length: COARSE }, (_, k) => (k + 1) * coarse)]) {
     const left = leftAt(ex(i), 0, null);
     edgePriced.set(i, left);

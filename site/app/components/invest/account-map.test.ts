@@ -1,7 +1,7 @@
 // The words of the account map's card and headline (F-131), in every case, against the sentences they must make: a switch is where another
 // account becomes clearly cheaper (by the tie threshold or more), and within it two accounts are about the same.
 import { describe, expect, it } from "vitest";
-import type { AccountMap, MapSwitch } from "../../lib/account-map";
+import { accountMap, type AccountMap, type LeftAt, type MapSwitch } from "../../lib/account-map";
 import { fmt } from "../../lib/format";
 import { mapWords } from "./account-map";
 
@@ -98,6 +98,20 @@ describe("the account map's words", () => {
     const two = (n: number) => ({ ...lone(n, 7), first: Array.from({ length: n }, (_, i) => (i === 7 || i === 8 ? 1 : 0)) });
     expect(said({ ...base, field: two(200) }).answer).toBe("אי.בי.אי, בצירופים אחרים במפה");
     expect(said({ ...base, field: lone(200, 7), edge: two(20) }).answer).toBe("אי.בי.אי, בצירופים אחרים במפה");
+  });
+
+  it("names no account clearly cheaper along the bottom edge where the plan's account has no price there (F-80)", () => {
+    // A, the plan's account, has no ranked price with no monthly deposit; B leaves 1% less than A wherever both are priced: along the edge
+    // B is alone, not clearly cheaper than A
+    const left = (a: number, m: number) => a + 100 * m - 0.01 * a - m;
+    const priceOf = (id: string, a: number, m: number): number | null => (id === "psagot" ? (m === 0 ? null : left(a, m)) : id === "ibi" ? left(a, m) * 0.99 : null);
+    const leftAt: LeftAt = (a, m, houses) => new Map((houses ?? ["psagot", "ibi"]).flatMap((id): [string, number][] => {
+      const v = priceOf(id, a, m);
+      return v === null ? [] : [[id, v]];
+    }));
+    const map = accountMap({ leftAt, order: ["psagot", "ibi"], theta: 0.005, plan: { amount: 10_000, monthly: 200 }, reach: { amount: 500_000, monthly: 10_000 } });
+    if (!map) throw new Error("missing: the map");
+    expect(said(map).answer).toBe("אף חשבון לא זול בבירור מפסגות");
   });
 
   it("a stretch, then the switch after it: by another account, named after the stretch; by the same, in one run", () => {
