@@ -627,6 +627,7 @@ export function RegionMap({
   // runs between them; the plot clips them
   const cellX = (right - left) / (field.cols - 1);
   const cellY = (sy(field.from) - TOP) / (field.rows - 1);
+  const edgeCellX = (right - left) / (edge.cols - 1);
 
   return (
     <div className="flex flex-col gap-2">
@@ -639,7 +640,7 @@ export function RegionMap({
         <div className="pointer-events-none absolute overflow-clip" style={{ left, top: TOP, width: right - left, height: bottom - TOP }}>
           <canvas ref={plane} className="absolute block" style={{ left: -cellX / 2, top: -cellY / 2, width: right - left + cellX, height: sy(field.from) - TOP + cellY }} data-mark="areas" />
           <canvas ref={band} className="absolute block" style={{ left: 0, top: 0, width: plotW, height: plotH }} data-mark="band" />
-          <canvas ref={line} className="absolute block" style={{ left: -cellX / 2, top: bottom - TOP - EDGE_PX, width: right - left + cellX, height: EDGE_PX }} data-mark="edge" />
+          <canvas ref={line} className="absolute block" style={{ left: -edgeCellX / 2, top: bottom - TOP - EDGE_PX, width: right - left + edgeCellX, height: EDGE_PX }} data-mark="edge" />
         </div>
         <svg
           width={w}
