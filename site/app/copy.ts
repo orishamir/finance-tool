@@ -820,7 +820,7 @@ export const formulaNames: Record<string, string> = {
   "F-131": "איזה חשבון הכי זול בכל סכום היום והפקדה חודשית, ואיפה חשבון אחר זול יותר בבירור",
   "F-05": "ההפקדות לאורך הזמן",
   "F-06": "ערך בהתחשב באינפלציה",
-  "F-106": "סך ההפקדות בהתחשב באינפלציה",
+  "F-106": "סך ההפקדות במחירים של היום",
   "F-107": "מס אמריקני על דיבידנדים בתוך קרן אירית",
   "F-109": "קנייה ביחידות שלמות, והכסף שמחכה ליחידה",
   "F-110": "התקופות של העסקה: מתי כל עמלה משתנה",
@@ -913,7 +913,7 @@ export const formulaKeys: Record<string, { lines?: string[]; symbols: [tex: stri
     lines: ["כשההפקדה עולה עם האינפלציה, כך שבהתחשב בה היא קבועה", "כשההפקדה קבועה בשקלים"],
     symbols: [
       ["C_m", "ההפקדה בכל חודש, בשקלים של אותו חודש"],
-      ["C", "ההפקדה החודשית בתוכנית, בהתחשב באינפלציה"],
+      ["C", "ההפקדה החודשית בתוכנית, במחירים של היום"],
       ["I_m", "מדד המחירים באותו חודש, ביחס להיום (היום הוא 1)"],
     ],
   },
@@ -957,9 +957,9 @@ export const formulaKeys: Record<string, { lines?: string[]; symbols: [tex: stri
   },
   "F-106": {
     symbols: [
-      ["P", "סך ההפקדות, בהתחשב באינפלציה"],
+      ["P", "סך ההפקדות, במחירים של היום"],
       ["C_0", "הסכום שמפקידים היום"],
-      ["C", "ההפקדה החודשית, בהתחשב באינפלציה"],
+      ["C", "ההפקדה החודשית, במחירים של היום"],
       ["n", "מספר השנים"],
     ],
   },
@@ -1144,8 +1144,8 @@ export const computedInputs = {
     real_value_at_new_rate: "הערך בהתחשב באינפלציה, בשיעור החדש",
     real_value_without_provider_fees: "הערך בהתחשב באינפלציה, בלי עמלות הספק",
     real_value_with_provider_fees: "הערך בהתחשב באינפלציה, עם עמלות הספק",
-    nominal_value_without_provider_fees: "הערך בלי עמלות הספק",
-    nominal_value_with_provider_fees: "הערך עם עמלות הספק",
+    nominal_value_without_provider_fees: "הערך בלי עמלות הספק, בשקלים של השנה הראשונה",
+    nominal_value_with_provider_fees: "הערך עם עמלות הספק, בשקלים של השנה הראשונה",
     real_value_no_switch: "הערך בלי מעבר, בהתחשב באינפלציה",
     real_value_with_switch: "הערך עם המעבר, בהתחשב באינפלציה",
     fee_line: "שורת העמלה",
@@ -3768,11 +3768,11 @@ export const guideSignature = {
         account: "מה שנשאר מאותה הפקדה בחשבון ניירות ערך על אותו מדד, אחרי עמלות ומס, בהתחשב באינפלציה",
         ownMonthly: "ההפקדה החודשית שלכם: האחוז שבשדה כפול השכר",
         employerMonthly: "ההפקדה החודשית של המעסיק: האחוז שבשדה כפול השכר",
-        over: "מה שמופקד מעל התקרה של הפטור בסכומים של היום",
+        over: "מה שמופקד מעל התקרה של הפטור, במחירים של היום",
         overSelf: "מה שמופקד בשנה מלאה מעל התקרה של הפטור, לפי ההפקדה החודשית שהזנתם, לפני החזר המס",
         overOwn: "מה שאתם מפקידים בחודש מעל התקרה של הפטור",
         overEmployer: "מה שהמעסיק מפקיד בחודש מעל התקרה של הפטור",
-        room: "כמה עוד אפשר להפקיד בחודש עם פטור, בסכומים של היום",
+        room: "כמה עוד אפשר להפקיד בחודש עם פטור, במחירים של היום",
         roomSelf: "כמה עוד אפשר להפקיד בשנה מלאה עד התקרה של הפטור, לפי ההפקדה החודשית שהזנתם, לפני החזר המס",
         crossYear: "השנה הראשונה שבה הפקדה עוברת את התקרה של הפטור",
         first: "מה שנכנס לחשבון במשיכה בשנה שנבחרה, לפני דוח שנתי או בקשת החזר: מה שנשאר אחרי המס, ועוד מה שנוכה מעבר למס, בהתחשב באינפלציה",
@@ -4055,7 +4055,7 @@ export const invest = {
      *  left and the state's part, which for a fund that pays out holds the growth the tax paid on the way would have earned: not all of it is tax). */
     beforeTax: { nominal: "אחרי החשבון והקרן, בלי להתחשב באינפלציה", today: "אחרי החשבון והקרן, בהתחשב באינפלציה", lead: "סכום השורות שמעל האינפלציה, כפי שהן כתובות בקבלה." },
     /** The gain's input: what was paid in at today's prices (F-106), which the deposits' line, in the shekels each is paid in, is not. */
-    paidInToday: "הפקדתם, בהתחשב באינפלציה",
+    paidInToday: "הפקדתם, במחירים של היום",
     /** The tax line's sheet: what the figure holds, the surtax with it where it applies (F-43), its label staying short. */
     taxSheet: { sale: "מס רווחי הון במכירה, כולל מס נוסף אם חל, והסכום בהתחשב באינפלציה", payouts: "מס רווחי הון במכירה ומס על הדיבידנד בכל חלוקה, כולל מס נוסף אם חל, ומה שהמס ששולם בדרך היה מרוויח עד הסוף, והסכום בהתחשב באינפלציה" },
     /** A line's figure in the shekels of the horizon: its sheet's title, and the same figure in today's money among its inputs. */

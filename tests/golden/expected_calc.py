@@ -2010,7 +2010,7 @@ def s56():
         f'| 7 | Surtax: other income 144,000 (P-05) plus the gain is far below the threshold; no National Insurance or health on the gains | {L("TXG-09", "TXK-27")} | 0 |\n'
         f'| 8 | Real values after exit tax, (B_T − tax) / I_T: with every fee V(F); with none V(∅); with no deposit fee; with no balance fee (a line removed in both its periods) | method F-06, F-61 | V(F) {f2(vF)}; V(∅) {f2(v0)}; no deposit fee {f2(eNoDep["realV25"])}; no balance fee {f2(eNoBal["realV25"])} |\n'
         f'| 9 | F-61: cost of a line = V(F without it) − V(F); total = V(∅) − V(F); combined effect = total − Σ line costs | method F-61 | deposit {f2(c_dep)}; balance {f2(c_bal)}; total {f2(total)}; combined {f2(rem)} |\n'
-        f'| 10 | The headline under the page\'s title ("העמלות ב… יעלו לכם … ב־10 שנים, בכסף של היום") is the total, after exit tax; the chart\'s last point is before exit tax, and the note under it gives the difference | method F-61 (per month) | headline {f2(total)}; chart end {f2(pre)}; note {f2(gap)} |\n'
+        f'| 10 | The headline under the page\'s title, the fees\' cost over 10 years in today\'s money, is the total, after exit tax; the chart\'s last point is before exit tax, and the note under it gives the difference | method F-61 (per month) | headline {f2(total)}; chart end {f2(pre)}; note {f2(gap)} |\n'
         f'| 10\' | For reference, V(∅) with each deposit at the index of the month before (500 × I_(m−1), taxed from I_(m−1)), as an outside hand check had it: the method puts a deposit of month m at I_m (F-03, F-05), and Q1 closed this timing under the 0.5% line | method F-03, F-05; Q1 | {f2(eLag["realV25"])} |\n'
     )
     section('S56', 'Kupat gemel lehashkaa on the fee page, a discount that ends', 'computed', body,

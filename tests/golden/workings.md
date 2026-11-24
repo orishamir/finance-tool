@@ -1252,7 +1252,7 @@ Status: computed.
 | 7 | Surtax: other income 144,000 (P-05) plus the gain is far below the threshold; no National Insurance or health on the gains | [TXG-09](<https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf>), [TXK-27](<https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FstatuteBook%2F2126%2Fheb#page=14>) | 0 |
 | 8 | Real values after exit tax, (B_T − tax) / I_T: with every fee V(F); with none V(∅); with no deposit fee; with no balance fee (a line removed in both its periods) | method F-06, F-61 | V(F) 82,303.22; V(∅) 87,525.89; no deposit fee 83,595.93; no balance fee 86,205.37 |
 | 9 | F-61: cost of a line = V(F without it) − V(F); total = V(∅) − V(F); combined effect = total − Σ line costs | method F-61 | deposit 1,292.70; balance 3,902.15; total 5,222.66; combined 27.81 |
-| 10 | The headline under the page's title ("העמלות ב… יעלו לכם … ב־10 שנים, בכסף של היום") is the total, after exit tax; the chart's last point is before exit tax, and the note under it gives the difference | method F-61 (per month) | headline 5,222.66; chart end 6,563.55; note 1,340.89 |
+| 10 | The headline under the page's title, the fees' cost over 10 years in today's money, is the total, after exit tax; the chart's last point is before exit tax, and the note under it gives the difference | method F-61 (per month) | headline 5,222.66; chart end 6,563.55; note 1,340.89 |
 | 10' | For reference, V(∅) with each deposit at the index of the month before (500 × I_(m−1), taxed from I_(m−1)), as an outside hand check had it: the method puts a deposit of month m at I_m (F-03, F-05), and Q1 closed this timing under the 0.5% line | method F-03, F-05; Q1 | 87,430.38 |
 
 
@@ -1298,7 +1298,7 @@ Strength is the one recorded on the rule's first source.
 | [GOV-12](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5>) | CPI-linked bond in deflation: no floor in the regulation text | 2026-10-25 | primary |
 | [GOV-13](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf>) | Fixed-rate shekel bond (אג"ח ממשלתית; the type "שחר", first issued 1995, is separate) | 2026-10-25 | primary |
 | [GOV-22](<https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/>) | Bank of Israel's consumer page on makam | 2026-10-25 | primary |
-| [GOV-23](<https://www.boi.org.il/boi_files/hanpaka.pdf>) | Makam issue schedule | 2026-10-25 | primary |
+| [GOV-23](<https://www.boi.org.il/boi_files/hanpaka.pdf>) | Makam issue schedule | 2026-11-23 | primary |
 | [IRA-17](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6>) | Management fee level and cap | 2026-10-25 | primary; |
 | [IRA-21](<https://www.meitav.co.il/media/r2djwzpw/26061426l-תוצאות-מכרז-לניהול-אישי-2026-לאומי.pdf>) | Meitav: brokerage tariffs inside the IRA, effective 01.05.2026 | 2026-10-25 | institution; |
 | [KGL-02](<https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf>) | Annual deposit ceiling: one ceiling per person across all managers, CPI-linked | 2026-10-25 | primary |

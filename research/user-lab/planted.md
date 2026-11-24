@@ -170,7 +170,7 @@ founder patterns 2.11 ("Full words"); the first planted run, where both sessions
 
 | Instance | Page, device | What is planted | Split |
 |---|---|---|---|
-| `p07-word-sp500-phone` | S&P 500, phone | "אחרי דמי ניהול ומס, בכסף של היום" becomes "נטו, בערכים ריאליים" | score |
+| `p07-word-sp500-phone` | S&P 500, phone | "אחרי דמי ניהול ומס, בהתחשב באינפלציה" becomes "נטו, בערכים ריאליים" | score |
 | `p07-word-keren-pc` | study fund, pc | the chart's "אחרי דמי ניהול" becomes "ריאלית, נטו" | tune |
 | `p07-word-tracks-pc` | tracks, pc | the return column's "לפני דמי ניהול" becomes "ברוטו" | score |
 
