@@ -219,7 +219,7 @@ function readerOf(view: InvestView, bundle: IndicesBundle, on: Asked<"map">, ton
       const rows: Reading["rows"] = [{ id: w.providerId, swatch: swatch(w.providerId), label: wName, value: <>{m.leaves} <Num value={{ ...w.value, about: m.leftAbout(wName) }} display={fmt.nisWhole(Math.round(w.valueN))} /></>, ...(same ? {} : { wash: regionWash(toneOf(w.providerId)) }) }];
       if (r) {
         const gap = differenceOf([wName, w.value], [shortOf(view, r.providerId), r.value], "F-65", { today, about: m.gapAbout(wName), round: Math.round, ...carriedBy([w.value, r.value]) });
-        rows.push({ id: r.providerId, swatch: swatch(r.providerId), label: shortOf(view, r.providerId), value: <>{m.leaves} <Num value={gap} display={fmt.nisWhole(gap.value as number)} /> {m.less}</> });
+        rows.push({ id: r.providerId, swatch: swatch(r.providerId), label: shortOf(view, r.providerId), value: typeof gap.value === "number" ? <>{m.leaves} <Num value={gap} display={fmt.nisWhole(gap.value)} /> {m.less}</> : null });
       } else rows.push({ id: "only", label: m.onlyOne, value: null });
       got = { head, rows };
     }
