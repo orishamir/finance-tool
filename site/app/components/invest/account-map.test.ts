@@ -56,8 +56,8 @@ describe("the account map's words", () => {
 
   it("no account clearly cheaper along either of the plan's lines", () => {
     expect(said(base)).toEqual({
-      answer: "פסגות נשאר הכי זול",
-      note: "אף חשבון לא זול יותר בבירור בסכום אחר",
+      answer: "אף חשבון לא זול בבירור מפסגות",
+      note: "גם בסכום אחר היום או בהפקדה אחרת",
       head: "בתוכנית שלכם פסגות הכי זול. אף חשבון אחר לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
     });
   });

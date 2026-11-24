@@ -4201,9 +4201,10 @@ export const invest = {
       /** The card where one account is cheapest at every point of the map. */
       noOther: "אף חשבון",
       cheapestAll: (w: string) => `${w} הכי זול בכל המפה`,
-      /** The card where the plan's account is not clearly beaten along either of the plan's lines. */
-      stays: (w: string) => `${w} נשאר הכי זול`,
-      staysNote: "אף חשבון לא זול יותר בבירור בסכום אחר",
+      /** The card where the plan's account is not clearly beaten along either of the plan's lines: no account becomes θ ahead of it, though
+       *  one may lead it within θ ("אף חשבון לא זול בבירור מפסגות"). */
+      stays: (w: string) => `אף חשבון לא זול בבירור ${fromPrefix(w)}${w}`,
+      staysNote: "גם בסכום אחר היום או בהפקדה אחרת",
       /** The card where the plan is in the band: the accounts about the same, and, where one becomes clearly cheaper, where. */
       near: (names: string[]) => `${andList(names)} בערך אותו דבר`,
       nearStays: "גם בסכומים אחרים",
