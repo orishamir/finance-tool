@@ -12,11 +12,11 @@ on:
 permissions:
   contents: read
 
-# A newer push to the same branch or pull request cancels the run before it: that run's commit is in the newer one, which runs every
-# check and, on main, deploys once they pass. A deploy the cancel stops leaves the site as it was until the newer run deploys.
+# On another branch a newer push cancels the run before it: that run's commit is in the newer one. On main runs queue instead (only the
+# newest waiting one is kept), so a green run, a data refresh's included, always deploys, and an older run never deploys after a newer one.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 # The jobs run side by side on machines of their own: the tests, the deep tests, and the site built once, then opened in a browser by
 # eight jobs at once (`browser`), each taking one share of the browser checks off the one build, so the longest share sets the run's time
@@ -84,7 +84,7 @@ jobs:
         with:
           name: site
           path: site/build/client
-          retention-days: 1
+          retention-days: 3
           if-no-files-found: error
           include-hidden-files: true
       - if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
