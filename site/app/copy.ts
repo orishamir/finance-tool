@@ -4188,6 +4188,9 @@ export const invest = {
       thenAbove: "ומעל כ־\u2060",
       thenBelow: "ומתחת לכ־\u2060",
       thenOther: (w: string) => `, ${andWord(w)} `,
+      /** A switch down reads as the range the search checked, from its lowest amount: "בין כ־5,000 ₪ לכ־60 אלף ₪"; after a stretch by
+       *  the same account, "ובין כ־5,000 ₪ לכ־40 אלף ₪". */
+      thenBetween: "ובין כ־\u2060",
       /** Before a figure said roughly, alone: "כ־108 אלף ₪". */
       about: "כ־\u2060",
       /** A guide's words where it ends on the line where two accounts are equal: "שווים בכ־2,460 ₪ בחודש". */
@@ -4264,6 +4267,7 @@ export const invest = {
       /** The sheets of the map's figures. */
       switchAbout: "הסכום שממנו חשבון אחר זול יותר בבירור",
       tillAbout: "הסכום שעד אליו חשבון אחר זול יותר בבירור",
+      floorAbout: "הסכום הנמוך ביותר שהאתר בודק במפה",
       equalAbout: "הסכום שבו שני החשבונות משאירים אותו דבר",
       leftAbout: (w: string) => `מה שנשאר בחשבון ${w}, בהתחשב באינפלציה`,
       gapAbout: (w: string) => `כמה פחות נשאר בחשבון הזה מאשר ב${w}`,

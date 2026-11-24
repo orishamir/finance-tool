@@ -77,6 +77,9 @@ export interface AccountMap {
   /** The accounts the map shows: first somewhere, or within θ of the first somewhere. The plan's first comes first, then by the area each is
    *  first in, largest first. */
   accounts: string[];
+  /** The least today's amount and monthly deposit the search reads (a hundredth of the sliders' reach): a switch down holds from there
+   *  to its point, so its words name that range. */
+  floor: { amount: number; monthly: number };
   /** The accounts priced on the map, in the order `MapField.missing` names them by. */
   asked: string[];
   /** The areas: `cols` nodes from 0 to the amount's end, `rows` from `bottom` to the monthly end. */
@@ -561,5 +564,5 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     ahead: ls.map((l) => (l ? Math.floor(l.ahead * 1000) / 1000 : 1)),
     missing: gaps.map((g) => g.reduce((m, id) => m | (bit.get(id) ?? 0), 0)),
   });
-  return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, asked, field: fieldOf(leads, fieldGaps, N + 1, N + 1), edge: fieldOf(edgeLeads, edgeGaps, N + 1, 1), switches, stretches, changes, equal };
+  return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, floor, asked, field: fieldOf(leads, fieldGaps, N + 1, N + 1), edge: fieldOf(edgeLeads, edgeGaps, N + 1, 1), switches, stretches, changes, equal };
 }

@@ -7,7 +7,7 @@ import { mapWords } from "./account-map";
 
 const names: Record<string, string> = { psagot: "פסגות", ibi: "אי.בי.אי", "one-zero": "וואן זירו" };
 const grid = { cols: 0, rows: 0, first: [], second: [], ahead: [] };
-const base: AccountMap = { max: { amount: 200_000, monthly: 4000 }, bottom: 40, plan: { amount: 10_000, monthly: 500, lead: { kind: "clear", first: "psagot" } }, accounts: ["psagot", "ibi", "one-zero"], asked: ["psagot", "ibi", "one-zero"], field: grid, edge: grid, switches: { amount: null, monthly: null }, stretches: { amount: null, monthly: null }, changes: { amount: { band: null, even: null }, monthly: { band: null, even: null } }, equal: { amount: null, monthly: null } };
+const base: AccountMap = { max: { amount: 200_000, monthly: 4000 }, bottom: 40, plan: { amount: 10_000, monthly: 500, lead: { kind: "clear", first: "psagot" } }, accounts: ["psagot", "ibi", "one-zero"], floor: { amount: 5000, monthly: 100 }, asked: ["psagot", "ibi", "one-zero"], field: grid, edge: grid, switches: { amount: null, monthly: null }, stretches: { amount: null, monthly: null }, changes: { amount: { band: null, even: null }, monthly: { band: null, even: null } }, equal: { amount: null, monthly: null } };
 const up = (at: number, to = "ibi"): MapSwitch => ({ at, dir: "up", to });
 /** The card's answer and line and the headline, as plain words (the isolates a figure keeps its order with, and the joiner that keeps "כ־" on its figure's line, set aside). */
 function said(map: AccountMap, house = "psagot") {
@@ -46,11 +46,11 @@ describe("the account map's words", () => {
     });
   });
 
-  it("a switch at a lower amount", () => {
+  it("a switch at a lower amount, as the range the search checked it over, from its lowest amount", () => {
     expect(said({ ...base, switches: { amount: { at: 76_000, dir: "down", to: "ibi" }, monthly: null } })).toEqual({
-      answer: "אי.בי.אי, מתחת לכ־76 אלף ₪",
+      answer: "אי.בי.אי, בין כ־5,000 ₪ לכ־76 אלף ₪",
       note: "זול יותר בבירור: בהפרש של 0.5% לפחות",
-      head: "בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור מתחת לכ־76 אלף ₪ היום.",
+      head: "בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור בין כ־5,000 ₪ לכ־76 אלף ₪ היום.",
     });
   });
 
@@ -108,6 +108,10 @@ describe("the account map's words", () => {
       head: "בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור בין כ־30 אלף ₪ לכ־40 אלף ₪ היום, ו־וואן זירו מעל כ־40 אלף ₪.",
     });
     expect(said({ ...base, stretches: st(20_000, 40_000, up(150_000)) }).head).toBe("בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור בין כ־20 אלף ₪ לכ־40 אלף ₪ ומעל כ־150 אלף ₪ היום.");
+    // down the line, the same account's switch after its stretch, as the range the search checked it over
+    expect(said({ ...base, plan: { ...base.plan, amount: 100_000 }, stretches: { amount: { lo: 60_000, hi: 80_000, dir: "down", to: "ibi", then: { at: 40_000, dir: "down", to: "ibi" } }, monthly: null } }).head).toBe(
+      "בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור בין כ־60 אלף ₪ לכ־80 אלף ₪ ובין כ־5,000 ₪ לכ־40 אלף ₪ היום.",
+    );
     // along the deposit, the other account's switch with its unit
     expect(said({ ...base, stretches: { amount: null, monthly: { lo: 800, hi: 1500, dir: "up", to: "ibi", then: up(1500, "one-zero") } } }).head).toBe(
       "בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור בין כ־800 ₪ לכ־1,500 ₪ בחודש, ו־וואן זירו מעל כ־1,500 ₪ בחודש.",
@@ -142,7 +146,7 @@ describe("the account map's words", () => {
     expect(said({ ...ibiFirst, switches: { amount: { at: 76_000, dir: "down", to: "psagot" }, monthly: null } })).toEqual({
       answer: "אי.בי.אי, כבר בתוכנית שלכם",
       note: "במקום פסגות",
-      head: "בתוכנית שלכם אי.בי.אי זול יותר מפסגות. פסגות זול יותר בבירור מתחת לכ־76 אלף ₪ היום.",
+      head: "בתוכנית שלכם אי.בי.אי זול יותר מפסגות. פסגות זול יותר בבירור בין כ־5,000 ₪ לכ־76 אלף ₪ היום.",
     });
     expect(said({ ...ibiFirst, accounts: ["ibi"] }).head).toBe("בתוכנית שלכם אי.בי.אי זול יותר מפסגות. הוא הכי זול בכל צירוף במפה.");
   });
@@ -152,7 +156,7 @@ describe("the account map's words", () => {
     expect(said({ ...near, switches: { amount: up(108_000), monthly: { at: 300, dir: "down", to: "psagot" } } })).toEqual({
       answer: "פסגות ואי.בי.אי בערך אותו דבר",
       note: "אי.בי.אי זול יותר בבירור מעל כ־108 אלף ₪",
-      head: "בתוכנית שלכם פסגות ואי.בי.אי בערך אותו דבר. אי.בי.אי זול יותר בבירור מעל כ־108 אלף ₪ היום. פסגות זול יותר בבירור מתחת לכ־300 ₪ בחודש.",
+      head: "בתוכנית שלכם פסגות ואי.בי.אי בערך אותו דבר. אי.בי.אי זול יותר בבירור מעל כ־108 אלף ₪ היום. פסגות זול יותר בבירור בין כ־100 ₪ לכ־300 ₪ בחודש.",
     });
     expect(said(near)).toEqual({
       answer: "פסגות ואי.בי.אי בערך אותו דבר",
