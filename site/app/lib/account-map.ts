@@ -19,7 +19,7 @@
 // priced at 0 ₪ a month exactly, along today's amount alone. At 0 ₪ today and 0 ₪ a month every account leaves 0 and none leads: the edge
 // starts at a thousandth of its axis, and a plan of nothing at all is a case of its own (`PlanLead`).
 import { isTie, relativeGap } from "@finance-tool/engine";
-import { rankByValue } from "./invest";
+import { rankByValue } from "./rank";
 
 /** A point of the map: today's amount, and the monthly deposit, in shekels. */
 type MapPoint = readonly [amount: number, monthly: number];

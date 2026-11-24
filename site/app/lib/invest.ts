@@ -2,6 +2,7 @@
 // owning it, the cheapest broker for each option and the cheapest complete way (broker + fund) for the plan. Pure: the
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the indices bundle. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
+import { rankByValue } from "./rank";
 import { gershayim } from "./format";
 import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, isTie, beforeTaxPathOf, securitiesBlockedBy, securitiesStopOf, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
@@ -1132,14 +1133,6 @@ function beforeTaxPrices(ctx: Ctx, rec: FundRecord, option: OptionId, spec: Spec
 // ---------------------------------------------------------------- the option
 
 /** One fund of an option at every house (F-63, F-65): its price at each house that sells it, or why it has none, and its cheapest ranked house. */
-/**
- * Items most first by `value`, a tie (equal values) to the one earlier in `items`: the headline's pair is the first of a fund's prices in the
- * houses' order (`providersOfInvest`, by full name), and the account map (F-131) ranks the accounts at each point the same way.
- */
-export function rankByValue<T>(items: readonly T[], value: (t: T) => number): T[] {
-  return items.map((t, k) => ({ t, k, v: value(t) })).sort((a, b) => b.v - a.v || a.k - b.k).map((x) => x.t);
-}
-
 function fundWayOf(ctx: Ctx, rec: FundRecord, option: OptionId): FundWay {
   const base = { rec, name: nameOf(rec), number: numberOf(rec), option, currencyMismatch: false, noUnitPrice: unitPriceMissing(rec, option), byHouse: {} as FundWay["byHouse"] };
   const fs = fundSpec(ctx, rec);
