@@ -702,10 +702,11 @@ describe("before deciding: the tab cards", () => {
     expect(shown(list)).toContain(invest.before.hedge.question);
   });
   it("before any pick, the pair is the receipt's, never the chosen one", () => {
-    const out = shown(before(false));
-    expect(out).toContain(`${invest.shownPair(false).name}:`);
+    // the section names the pair only in its cards' spoken name, now that no line leads it
+    const out = before(false);
+    expect(out).toContain(`aria-label="${invest.shownPair(false).tabs}"`);
     expect(out).not.toContain(invest.shownPair(true).name);
-    expect(shown(before(true))).toContain(`${invest.shownPair(true).name}:`);
+    expect(before(true)).toContain(`aria-label="${invest.shownPair(true).tabs}"`);
   });
   it("with no plan figure to say, the hedged-or-not card answers with how far the dollar moved, never blank", () => {
     let card: ReturnType<typeof hedgeCard> | null = null;

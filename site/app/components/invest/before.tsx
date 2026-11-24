@@ -138,22 +138,12 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
   }
   // a tab that has gone (another index with funds of one kind) leaves the first open
   const shown = tabs.find((t) => t.key === open) ?? tabs[0]!;
-  const pairWords = (
-    <>
-      <MixedName>{verdict.nameOf(pick)}</MixedName>, <MixedName>{verdict.fundOf(pick)}</MixedName>
-    </>
-  );
   return (
     // the shell's "back to the top" steps aside while the panels pass under it, as over the lists (`data-keep-clear`)
     <section aria-labelledby={`${idBase}-h`} className="flex flex-col gap-4" data-keep-clear>
-      <div className="flex flex-col gap-1">
-        <h2 id={`${idBase}-h`} className="text-2xl font-semibold">
-          {c.before.title}
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          {c.shownPair(chosen).questions(tabs.length)} {pairWords}. {c.before.leadTail(tabs.length)}
-        </p>
-      </div>
+      <h2 id={`${idBase}-h`} className="text-2xl font-semibold">
+        {c.before.title}
+      </h2>
       <TabCards tabs={tabs} current={shown.key} onChange={(k) => setOpen(k as Key)} ariaLabel={c.shownPair(chosen).tabs} openWord={c.before.openWord} idBase={idBase}>
         <Card pad="roomy">{shown.panel()}</Card>
       </TabCards>

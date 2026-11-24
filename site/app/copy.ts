@@ -3919,9 +3919,6 @@ const gapUnit = (n: number, year?: number) => (n === 1 && year ? `ב־${year}` :
 /** "בשנה אחת", "בשנתיים", "ב־10 שנים". */
 const inYears = (n: number) => countPhrase(n, { one: "בשנה אחת", two: "בשנתיים", many: "ב־{n} שנים" });
 
-/** How many questions "לפני שמחליטים" asks, in words. */
-const questionCount = (n: number) => (n === 4 ? "ארבע שאלות" : n === 3 ? "שלוש שאלות" : n === 2 ? "שתי שאלות" : "שאלה אחת");
-
 /**
  * The pair the receipt shows, named by whether the person picked it. Picked, it is the chosen pair. Before any pick it is the page's own:
  * never called the person's choice, nor the site's ("בחירת האתר" reads as a recommendation beside "האתר לא ממליץ על מדד"), and named by
@@ -3936,8 +3933,7 @@ const shownPair = (chosen: boolean) => {
     /** A difference's sheet: what it is. */
     diffAbout: `ההפרש מ${name}`,
     vs: `לעומת ${name}`,
-    /** "לפני שמחליטים": its lead before the pair's names, and the tabs' spoken name. */
-    questions: (n: number) => `${questionCount(n)} על ${name}:`,
+    /** "לפני שמחליטים": the tabs' spoken name. */
     tabs: `שאלות על ${name}`,
     /** The fees panel's bars. */
     feeBars: `העמלות של ${name}, לפי סעיף`,
@@ -4156,7 +4152,6 @@ export const invest = {
   /** "לפני שמחליטים" under the lists: a few questions about the chosen pair, a card each with its answer, one panel open at a time. */
   before: {
     title: "לפני שמחליטים",
-    leadTail: (n: number) => (n === 1 ? "הכרטיס פותח ניתוח." : "כל כרטיס פותח ניתוח אחד."),
     /** On the open card below 1024 px, where the cards stand over one another and no pointer joins the open one to its panel. */
     openWord: "פתוח למטה",
     fees: {
