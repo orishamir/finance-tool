@@ -4204,12 +4204,12 @@ export const invest = {
       /** The card where the plan's account is not clearly beaten along either of the plan's lines: no account becomes θ ahead of it, though
        *  one may lead it within θ ("אף חשבון לא זול בבירור מפסגות"). */
       stays: (w: string) => `אף חשבון לא זול בבירור ${fromPrefix(w)}${w}`,
-      staysNote: "גם בסכום אחר היום או בהפקדה אחרת",
+      staysNote: "גם בסכום אחר היום או בהפקדה אחרת, בטווח שהאתר בודק",
       /** The card where the plan is in the band: the accounts about the same, and, where one becomes clearly cheaper, where. */
       near: (names: string[]) => `${andList(names)} בערך אותו דבר`,
       /** Where none becomes clearly cheaper than all of the plan's accounts about the same, two or more ("משניהם", "מכולם"): what the
        *  search finds, though one of them may become clearly cheaper than another where a third leads them both. */
-      nearStays: (n: number) => `אף חשבון לא זול בבירור ${n === 2 ? "משניהם" : "מכולם"}`,
+      nearStays: (n: number) => `אף חשבון לא זול בבירור ${n === 2 ? "משניהם" : "מכולם"}, בטווח שהאתר בודק`,
       /** The card of a plan with nothing in it. */
       empty: "אין כסף בתוכנית",
       emptyNote: "אין כסף בחשבון, אז כל החשבונות משאירים 0 ₪",
@@ -4225,8 +4225,10 @@ export const invest = {
        *  sentence of its own where another is. */
       cheaperFrom: (to: string) => `${to} זול יותר בבירור`,
       or: "או",
-      headStays: "אף חשבון אחר לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
-      headNearStays: (n: number) => `אף חשבון לא נעשה זול יותר בבירור ${n === 2 ? "משניהם" : "מכולם"}, גם בסכום אחר היום או בהפקדה חודשית אחרת.`,
+      /** No change along the plan's lines, within what the search reads (from a hundredth of the sliders' reach to their ends, F-131):
+       *  "בטווח שהאתר בודק". */
+      headStays: "אף חשבון אחר לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת, בטווח שהאתר בודק.",
+      headNearStays: (n: number) => `אף חשבון לא נעשה זול יותר בבירור ${n === 2 ? "משניהם" : "מכולם"}, גם בסכום אחר היום או בהפקדה חודשית אחרת, בטווח שהאתר בודק.`,
       headAll: "הוא הכי זול בכל צירוף במפה.",
       /** No change along the plan's lines, but another account clearly cheaper elsewhere on the map: "אי.בי.אי זול יותר בבירור בצירופים
        *  אחרים במפה", and the card's short answer after its name. */
