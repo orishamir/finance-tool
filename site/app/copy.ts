@@ -4232,6 +4232,8 @@ export const invest = {
       yTitle: "הפקדה חודשית (₪)",
       plan: "התוכנית שלכם",
       noDeposit: (w: string) => `בלי הפקדה חודשית: ${w}`,
+      /** The bottom edge where no account is clearly cheaper over enough of it to be named. */
+      noDepositSame: "בלי הפקדה חודשית: בערך אותו דבר",
       others: "אחרות",
       /** The reading at a point: its head, the account that leaves the most and what it leaves, the next and how much less it leaves. */
       pointHead: (amount: string, monthly: string) => `${amount} היום, ${monthly} בחודש`,
@@ -5422,7 +5424,7 @@ export const kit = {
     },
     sample: {
       /** The region map: three made-up options, its axes and its point. */
-      regions: { a: "אפשרות א", b: "אפשרות ב", c: "אפשרות ג", x: "סכום היום (₪)", y: "הפקדה חודשית (₪)", mark: "הנקודה שלכם", edge: (name: string) => `בלי הפקדה חודשית: ${name}`, same: "בערך אותו דבר", samePair: (a: string, b: string) => `${andList([a, b])}: בערך אותו דבר`, point: (x: string, y: string) => `${x} היום, ${y} בחודש` },
+      regions: { a: "אפשרות א", b: "אפשרות ב", c: "אפשרות ג", x: "סכום היום (₪)", y: "הפקדה חודשית (₪)", mark: "הנקודה שלכם", edge: (name: string) => `בלי הפקדה חודשית: ${name}`, edgeSame: "בלי הפקדה חודשית: בערך אותו דבר", same: "בערך אותו דבר", samePair: (a: string, b: string) => `${andList([a, b])}: בערך אותו דבר`, point: (x: string, y: string) => `${x} היום, ${y} בחודש` },
       /** The cases and parts (ConditionBand, PartChip, SlimFee, Toolbox, AskValues, the value menus, ReadForBand): a deal's words, made up. */
       cases: {
         trade: "עמלת קנייה ומכירה",

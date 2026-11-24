@@ -4159,7 +4159,7 @@ function RegionDemo() {
       areas={areas}
       field={{ ...map.field, from: map.bottom }}
       edge={map.edge}
-      edgeLabel={(id) => ({ text: r.edge(names[id] ?? id) })}
+      edgeLabel={(id) => ({ text: id === null ? r.edgeSame : r.edge(names[id] ?? id) })}
       bandLabel={{ text: r.same, pair: r.samePair }}
       mark={{ at: [map.plan.amount, map.plan.monthly], label: { text: r.mark } }}
       guides={[...(sw.amount ? [{ axis: "x" as const, at: sw.amount.at, label: { text: fmt.nisRough(sw.amount.at) } }] : []), ...(sw.monthly ? [{ axis: "y" as const, at: sw.monthly.at, label: { text: fmt.nisRough(sw.monthly.at) } }] : [])]}

@@ -288,7 +288,7 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
         areas={areas}
         field={field}
         edge={edge}
-        edgeLabel={(id) => ({ text: m.noDeposit(shortOf(view, id)) })}
+        edgeLabel={(id) => ({ text: id === null ? m.noDepositSame : m.noDeposit(shortOf(view, id)) })}
         bandLabel={{ text: m.same, pair: m.samePair }}
         mark={{ at: [map.plan.amount, map.plan.monthly], label: { text: m.plan } }}
         guides={guides}

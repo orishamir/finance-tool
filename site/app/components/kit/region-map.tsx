@@ -94,8 +94,8 @@ const REACH = 22;
 /** How much an area is lightened under the pointer, and how far a set-back area fades into the card. */
 const LIT = 0.28;
 const DIMMED = 0.75;
-/** A name stands where its area leads at least this far ahead. */
-const CLEAR = 0.9;
+/** A name stands where its area leads by θ or more (F-80: under it the two are a tie). */
+const CLEAR = 1;
 /**
  * Where two areas are close (the leader's lead `s` under 1), the point is a mix of the pair's two colours, P the area earlier in the list
  * and Q the later: Q's share is half of (1 − s) where P leads and the rest where Q leads, so the mix runs on across the line where they are
@@ -265,6 +265,29 @@ export function stripedPairs(grid: RegionGrid): [number, number][] {
     });
 }
 
+/** The bottom edge names an area only where it is clear over at least this share of the edge's nodes: a tenth, about 130 px on a computer
+ *  and 35 on a phone, so a name never stands for a sliver the eye cannot find. */
+const EDGE_NAMED = 0.1;
+
+/**
+ * The bottom edge's stretches that carry a name: for each area, its longest run of nodes where it leads clearly (by θ or more), where that
+ * run covers at least EDGE_NAMED of the edge; longest first, each as its first and last node.
+ */
+export function edgeStretches(edge: RegionGrid): { area: number; from: number; to: number }[] {
+  const runs: { area: number; from: number; to: number }[] = [];
+  edge.first.forEach((f, i) => {
+    if (f < 0 || (edge.ahead[i] ?? 0) < CLEAR) return;
+    const last = runs.at(-1);
+    if (last && last.area === f && last.to === i - 1) last.to = i;
+    else runs.push({ area: f, from: i, to: i });
+  });
+  const long = (r: { from: number; to: number }) => r.to - r.from + 1;
+  return runs
+    .filter((r) => long(r) >= EDGE_NAMED * edge.cols)
+    .sort((a, b) => long(b) - long(a))
+    .filter((r, k, all) => all.findIndex((x) => x.area === r.area) === k);
+}
+
 /** A piece of the line where two areas are equal, in the grid's own units (node columns and rows, from the bottom left). */
 type Seg = readonly [x0: number, y0: number, x1: number, y1: number];
 
@@ -331,9 +354,12 @@ export function RegionMap({
   areas: RegionArea[];
   /** Who leads over the plane: its columns from 0 to `max.x`, its rows from `from` to `max.y` (under `from` is the bottom edge's). */
   field: RegionGrid & { from: number };
-  /** The bottom edge's value, one row from 0 to `max.x`: the words over its longest clear stretch, and each other area's name over its own. */
+  /** The bottom edge's value, one row from 0 to `max.x`: the words over its longest clear stretch, and each other area's name over its own
+   *  (`edgeStretches`). */
   edge: RegionGrid;
-  edgeLabel: (id: string) => RegionWords;
+  /** The edge's words for the area of its longest clear stretch; null where no area is clear over enough of it to be named, the areas
+   *  there being about the same. */
+  edgeLabel: (id: string | null) => RegionWords;
   /** What the stripes mean, an item in the legend for each pair whose stripes show: its words, and its title naming the pair. */
   bandLabel: { text: string; pair: (a: string, b: string) => string };
   /** The reader's own point, and its words under it. */
@@ -453,22 +479,13 @@ export function RegionMap({
     const overlap = (a: Box, b: Box) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x)) * Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
     const fits = (b: Box) => b.x >= left && b.x + b.w <= right && b.y >= TOP && b.y + b.h <= bottom - EDGE_PX;
 
-    // the bottom edge's clear stretches: runs of nodes one area leads clearly
-    const runs: { area: number; from: number; to: number; last: number }[] = [];
-    edge.first.forEach((f, i) => {
-      const x = (max.x * i) / (edge.cols - 1);
-      const last = runs.at(-1);
-      if (f < 0 || (edge.ahead[i] ?? 0) < CLEAR) return;
-      if (last && last.area === f && last.last === i - 1) {
-        last.to = x;
-        last.last = i;
-      } else runs.push({ area: f, from: x, to: x, last: i });
-    });
-    // each area's longest stretch, the longest first: it carries the edge's words, each other its area's name
-    const stretches = [...runs].sort((a, b) => b.to - b.from - (a.to - a.from)).filter((r, k, all) => all.findIndex((x) => x.area === r.area) === k);
-    const [longest, ...others] = stretches;
+    // the bottom edge's named stretches, in px, the longest first: it carries the edge's words, each other its area's name; with none, the
+    // edge's words say the areas there are about the same, over the whole edge
+    const nodeX = (i: number) => (max.x * i) / (edge.cols - 1);
+    const runs = edgeStretches(edge).map((r) => ({ area: r.area, from: nodeX(r.from), to: nodeX(r.to) }));
+    const [longest, ...others] = runs;
     const longestArea = longest ? areas[longest.area] : undefined;
-    const edgeWords = longestArea ? edgeLabel(longestArea.id) : null;
+    const edgeWords = edgeLabel(longestArea?.id ?? null);
 
     // the words, each placed clear of those placed before it: the bottom edge's, then the mark's, then each guide's; a box tries its places
     // in order and takes the first inside the plot that meets none, else the one that meets least
@@ -492,7 +509,7 @@ export function RegionMap({
       const x = Math.min(right - 4, sxL(r.to) - 4) - tw;
       return x >= Math.max(left + 4, sxL(r.from)) ? clearOf([{ x, y: bottom - EDGE_PX - 6 - LINE, w: tw, h: LINE }]) : undefined;
     };
-    const edgeInside = longest && edgeWords ? overStretch(longest, chartTextWidth(edgeWords.text)) : undefined;
+    const edgeInside = overStretch(longest ?? { area: -1, from: 0, to: max.x }, chartTextWidth(edgeWords.text));
     if (edgeInside) placed.push(edgeInside);
     const edgeNames = others.flatMap((r) => {
       const a = areas[r.area];
@@ -705,7 +722,7 @@ export function RegionMap({
         {/* the words on the map: in HTML over the drawing, each in its box beside what it names */}
         {guideDraw.map(({ g, box }) => box && g.label && <Words key={g.axis} box={box} words={g.label} />)}
         <Words box={markBox} words={mark.label} />
-        {edgeWords && edgeInside && <Words box={edgeInside} words={edgeWords} />}
+        {edgeInside && <Words box={edgeInside} words={edgeWords} />}
         {layout.edgeNames.map((n) => (
           <Words key={n.id} box={n.box} words={n.words} />
         ))}
@@ -720,9 +737,9 @@ export function RegionMap({
       <p className="text-center text-xs text-muted-foreground" style={{ paddingLeft: left }}>
         {xTitle}
       </p>
-      {edgeWords && longestArea && !edgeInside && (
+      {!edgeInside && (
         <p className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className={cx("h-1.5 w-4 shrink-0 rounded-sm", SWATCH[longestArea.tone])} />
+          {longestArea && <span className={cx("h-1.5 w-4 shrink-0 rounded-sm", SWATCH[longestArea.tone])} />}
           {edgeWords.node ?? edgeWords.text}
         </p>
       )}

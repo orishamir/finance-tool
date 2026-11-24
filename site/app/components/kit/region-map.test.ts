@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
-import { bandLayer, bandWeight, ease, equalLines, laterShare, RegionMap, stripedPairs, type RegionGrid } from "./region-map";
+import { bandLayer, bandWeight, ease, edgeStretches, equalLines, laterShare, RegionMap, stripedPairs, type RegionGrid } from "./region-map";
 
 /** A grid whose two areas' lead is a plane, d = (i + 0.5 j − 6.3) / 10 in grid units: area 0 leads where d > 0, area 1 where d < 0, each
  *  ahead by |d|, so the two are equal on the line i + 0.5 j = 6.3. */
@@ -116,14 +116,14 @@ describe("the band's layer over a grid", () => {
 
 describe("the legend's items for the band", () => {
   const SAME = "about the same";
-  const legendOf = (field: RegionGrid) =>
+  const legendOf = (field: RegionGrid, edge: RegionGrid = { cols: 2, rows: 1, first: [0, 0], second: [-1, -1], ahead: [1, 1] }) =>
     renderToString(
       createElement(RegionMap, {
         max: { x: 100, y: 100 },
         areas: [{ id: "p", name: "P", tone: "region-1" }, { id: "q", name: "Q", tone: "region-2" }],
         field: { ...field, from: 1 },
-        edge: { cols: 2, rows: 1, first: [0, 0], second: [-1, -1], ahead: [1, 1] },
-        edgeLabel: (id: string) => ({ text: id }),
+        edge,
+        edgeLabel: (id: string | null) => ({ text: id === null ? "the edge about the same" : `the edge: ${id}` }),
         bandLabel: { text: SAME, pair: (a: string, b: string) => `${a} & ${b}: ${SAME}` },
         mark: { at: [10, 10], label: { text: "mark" } },
         guides: [],
@@ -135,6 +135,15 @@ describe("the legend's items for the band", () => {
         renderTip: () => null,
       }),
     );
+
+  it("the bottom edge's words name its longest clear stretch, or say the areas are about the same where none is clear over enough", () => {
+    const g = planeGrid();
+    expect(legendOf(g)).toContain("the edge: p");
+    const sliver: RegionGrid = { cols: 97, rows: 1, first: Array.from({ length: 97 }, () => 0), second: Array.from({ length: 97 }, (_, i) => (i < 2 ? -1 : 1)), ahead: Array.from({ length: 97 }, (_, i) => (i < 2 ? 1 : 0.5)) };
+    const out = legendOf(g, sliver);
+    expect(out).toContain("the edge about the same");
+    expect(out).not.toContain("the edge: p");
+  });
 
   it("names each pair whose band shows, the earlier area first, with the pair in its title", () => {
     const g = planeGrid();
@@ -158,5 +167,25 @@ describe("the legend's items for the band", () => {
     const clear: RegionGrid = { ...g, second: g.second.map(() => -1), ahead: g.ahead.map(() => 1) };
     expect(stripedPairs(clear)).toEqual([]);
     expect(legendOf(clear)).not.toContain(SAME);
+  });
+});
+
+describe("the bottom edge's named stretches", () => {
+  /** An edge of 97 nodes: area 0 clear on `clear` of them from the start, the rest the band between 0 and 1 at `rest`. */
+  const edgeOf = (clear: number, rest: number): RegionGrid => ({
+    cols: 97,
+    rows: 1,
+    first: Array.from({ length: 97 }, () => 0),
+    second: Array.from({ length: 97 }, (_, i) => (i < clear ? -1 : 1)),
+    ahead: Array.from({ length: 97 }, (_, i) => (i < clear ? 1 : rest)),
+  });
+
+  it("names no account clear on only a small share of the edge: 2 of 97 nodes", () => {
+    expect(edgeStretches(edgeOf(2, 0.5))).toEqual([]);
+  });
+
+  it("names an account clear on a tenth of the edge or more, and only where it is θ ahead, not 0.95 of it", () => {
+    expect(edgeStretches(edgeOf(40, 0.5))).toEqual([{ area: 0, from: 0, to: 39 }]);
+    expect(edgeStretches(edgeOf(2, 0.95))).toEqual([]);
   });
 });
