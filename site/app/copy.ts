@@ -4241,10 +4241,13 @@ export const invest = {
        *  אחרים במפה", and the card's short answer after its name. */
       elsewhere: (names: string[]) => `${andList(names)} ${names.length > 1 ? "זולים" : "זול"} יותר בבירור בצירופים אחרים במפה`,
       elsewhereShort: "בצירופים אחרים במפה",
-      /** The line under the headline: what the map is, and what its blended colours mean (θ, P-01, as a figure). */
-      what: (years: number) => `החשבון שמשאיר לכם הכי הרבה עם הקרן הזו, בכל צירוף של סכום היום והפקדה חודשית, ${inYears(years)}. איפה שהצבעים מתערבבים, ההפרש קטן מ־`,
-      /** After it: what the thin line on the map marks. */
-      equalLine: "על הקו הדק שני החשבונות שווים.",
+      /** The line under the headline: what the map is, in one sentence; how to read it is behind its "?" (`howTo`). */
+      what: (years: number) => `כל נקודה במפה היא סכום היום והפקדה חודשית, והצבע שלה הוא החשבון שמשאיר לכם שם הכי הרבה עם הקרן הזו ${inYears(years)}.`,
+      /** The "?" after it: what the blended colours (the legend's "בערך אותו דבר", θ of P-01), the thin line and the marked point mean. */
+      howTo: {
+        about: "איך קוראים את המפה",
+        text: (theta: string) => `כל צבע הוא חשבון. איפה שהצבעים מתערבבים, ובמקרא "בערך אותו דבר", ההפרש בין שני החשבונות קטן מ־${theta}. על הקו הדק שני החשבונות שווים. הנקודה המסומנת היא התוכנית שלכם, והקווים המקווקווים ממנה מגיעים למקום שבו חשבון אחר נעשה זול יותר.`,
+      },
       xTitle: "סכום היום (₪)",
       yTitle: "הפקדה חודשית (₪)",
       plan: "התוכנית שלכם",

@@ -19,7 +19,7 @@ import { rankedAt } from "../../lib/stretch";
 import { asParameter, carriedBy, computed, differenceOf, entered, type SiteValue } from "../../lib/value";
 import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
-import { edgeStretches, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionGuide, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
+import { edgeStretches, HeldMark, HelpMark, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionGuide, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
 import { providerName } from "./sections";
 import { allFunds, type Pick } from "./pair";
 
@@ -314,8 +314,6 @@ export function NoMapPanel({ why }: { why: "open-rule" | "unpriced" }) {
 export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, house, map, on }: { view: InvestView; bundle: IndicesBundle; house: string; map: AccountMap; on: Asked<"map"> }) {
   const { plan, fund } = on.ask;
   const fundName = allFunds(view).find((f) => f.rec.id === fund)?.name ?? fund;
-  const thetaFig = thetaValue(bundle);
-  const thetaNode = thetaFig ? <Num value={thetaFig} display={thetaText(bundle)} /> : thetaText(bundle);
 
   // the map's accounts in the houses' order: the order the colours go by
   const { areas, toneOf, field, edge } = useMemo(() => mapAreas(view, map, providersOfInvest(on.bundle).map((s) => s.id).filter((id) => map.accounts.includes(id))), [view, map, on]);
@@ -377,8 +375,7 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
         }
         sub={
           <p className="text-sm text-muted-foreground">
-            {m.what(plan.years)}
-            {thetaNode}. {m.equalLine}
+            <HeldMark words={m.what(plan.years)} mark={<HelpMark about={m.howTo.about} text={m.howTo.text(thetaText(bundle))} />} />
           </p>
         }
       >
