@@ -297,6 +297,40 @@ function inspect({ MIN_TEXT_PX, MAX_COLOURS, scope }) {
         if (!t.textContent.trim() || !shown(t)) continue;
         cutBy(t.getBoundingClientRect(), area, findings, `text ${snip(t.textContent)}`);
       }
+      // words in HTML laid over the drawing (`data-chart-words`, the region map's): a line of the chart (its own lines, and its paths of
+      // straight pieces: a guide, the line where two areas are equal) through any line of them
+      const words = root.parentElement ? [...root.parentElement.querySelectorAll(":scope > [data-chart-words]")].filter(shown) : [];
+      if (words.length) {
+        const ctm = root.getScreenCTM();
+        const pt = (x, y) => {
+          const q = new DOMPoint(x, y).matrixTransform(ctm);
+          return [q.x, q.y];
+        };
+        const segs = [];
+        for (const l of root.querySelectorAll("line")) if (shown(l)) segs.push([...pt(+l.getAttribute("x1"), +l.getAttribute("y1")), ...pt(+l.getAttribute("x2"), +l.getAttribute("y2"))]);
+        for (const el of root.querySelectorAll("path")) {
+          const d = el.getAttribute("d") ?? "";
+          if (!shown(el) || !/^[ML\d.\s,-]+$/.test(d)) continue;
+          for (const m of d.matchAll(/M\s*([\d.-]+)[\s,]+([\d.-]+)\s*L\s*([\d.-]+)[\s,]+([\d.-]+)/g)) segs.push([...pt(+m[1], +m[2]), ...pt(+m[3], +m[4])]);
+        }
+        // Liang and Barsky: whether a segment passes through a box
+        const through = ([x0, y0, x1, y1], r) => {
+          let [t0, t1] = [0, 1];
+          for (const [p, q] of [[x0 - x1, x0 - r.left], [x1 - x0, r.right - x0], [y0 - y1, y0 - r.top], [y1 - y0, r.bottom - y0]]) {
+            if (p === 0) {
+              if (q < 0) return false;
+            } else if (p < 0) t0 = Math.max(t0, q / p);
+            else t1 = Math.min(t1, q / p);
+            if (t0 > t1) return false;
+          }
+          return true;
+        };
+        for (const w of words) {
+          const range = document.createRange();
+          range.selectNodeContents(w);
+          if ([...range.getClientRects()].some((r) => segs.some((sg) => through(sg, r)))) findings.push({ check: "text-on-line", severity: "fail", where: `words ${snip(w.textContent)}`, detail: "a line of the chart (a guide, the line where two areas are equal) runs through them" });
+        }
+      }
       const stats = { zero: zero(root, findings), colours: colours(root, findings) };
       // each colour as drawn (over the chart's background, through its own and its groups' opacity) with the colour it was given: two drawn
       // colours of one given colour are one series set apart by opacity (a dimmed year), not two series for the colour-blindness check
@@ -369,6 +403,40 @@ function inspect({ MIN_TEXT_PX, MAX_COLOURS, scope }) {
           if (o.el === t.el) continue;
           const meet = t.lines.some((a) => o.lines.some((b) => Math.min(a.right, b.right) - Math.max(a.left, b.left) > TOL && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > TOL));
           if (meet) findings.push({ check: "text-overlap", severity: "fail", where: `${o.what} and ${t.what}`, detail: "the two texts meet" });
+        }
+      }
+      // words in HTML laid over the drawing (`data-chart-words`, the region map's): a line of the chart (its own lines, and its paths of
+      // straight pieces: a guide, the line where two areas are equal) through any line of them
+      const words = root.parentElement ? [...root.parentElement.querySelectorAll(":scope > [data-chart-words]")].filter(shown) : [];
+      if (words.length) {
+        const ctm = root.getScreenCTM();
+        const pt = (x, y) => {
+          const q = new DOMPoint(x, y).matrixTransform(ctm);
+          return [q.x, q.y];
+        };
+        const segs = [];
+        for (const l of root.querySelectorAll("line")) if (shown(l)) segs.push([...pt(+l.getAttribute("x1"), +l.getAttribute("y1")), ...pt(+l.getAttribute("x2"), +l.getAttribute("y2"))]);
+        for (const el of root.querySelectorAll("path")) {
+          const d = el.getAttribute("d") ?? "";
+          if (!shown(el) || !/^[ML\d.\s,-]+$/.test(d)) continue;
+          for (const m of d.matchAll(/M\s*([\d.-]+)[\s,]+([\d.-]+)\s*L\s*([\d.-]+)[\s,]+([\d.-]+)/g)) segs.push([...pt(+m[1], +m[2]), ...pt(+m[3], +m[4])]);
+        }
+        // Liang and Barsky: whether a segment passes through a box
+        const through = ([x0, y0, x1, y1], r) => {
+          let [t0, t1] = [0, 1];
+          for (const [p, q] of [[x0 - x1, x0 - r.left], [x1 - x0, r.right - x0], [y0 - y1, y0 - r.top], [y1 - y0, r.bottom - y0]]) {
+            if (p === 0) {
+              if (q < 0) return false;
+            } else if (p < 0) t0 = Math.max(t0, q / p);
+            else t1 = Math.min(t1, q / p);
+            if (t0 > t1) return false;
+          }
+          return true;
+        };
+        for (const w of words) {
+          const range = document.createRange();
+          range.selectNodeContents(w);
+          if ([...range.getClientRects()].some((r) => segs.some((sg) => through(sg, r)))) findings.push({ check: "text-on-line", severity: "fail", where: `words ${snip(w.textContent)}`, detail: "a line of the chart (a guide, the line where two areas are equal) runs through them" });
         }
       }
       const stats = { zero: zero(root, findings), colours: colours(root, findings) };

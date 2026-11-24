@@ -11,6 +11,8 @@ import { leftWith, work } from "./invest-work";
 import { rankedAt } from "./stretch";
 import { entered, type SiteValue } from "./value";
 import { fmt } from "./format";
+import { chartTextWidth } from "../components/kit/chart-text";
+import { lineMeetsBox } from "../components/kit/region-map";
 import { p05Range } from "./engine";
 import type { WorkbenchInputs } from "./providers";
 
@@ -226,5 +228,30 @@ describe("a switch's figure on the collected data", () => {
     walk(v);
     expect(all.filter((x) => x.about === invest.before.map.pointAbout)).toEqual([]);
     expect(all.some((x) => x.state === "computed" && x.computed_from?.formula === "F-131" && x.value === 50_000)).toBe(true);
+  });
+});
+
+describe("the words over the map on TA-125 at 10,000 ₪ today and 10,000 ₪ a month", () => {
+  it("stand clear of the guides and of the line where two accounts are equal", () => {
+    const index = need(indexById(bundle, "index-ta125"), "TA-125");
+    const plan = planAt(10_000, 10_000, 10);
+    const view = buildInvest({ bundle, index, plan });
+    const pick = need(pickOfHeadline(view), "the page's pair");
+    const answer = work.map(bundle, { index, plan, fund: pick.fund });
+    const map = need(answer.kind === "map" ? answer.map : null, "the map");
+    const out = html(createElement(AccountMapPanel, { view, bundle, house: pick.house, map, on: { bundle, ask: { index, plan, fund: pick.fund } } }));
+    const host = need(out.slice(out.indexOf("data-region-map")), "the map in the panel");
+    // the words: each absolute span over the drawing, at its left and top, as wide as its text measures
+    const words = [...host.matchAll(/<span dir="rtl" class="absolute[^"]*" style="left:([\d.]+)px;top:([\d.]+)px"[^>]*>(.*?)<\/span>(?=<span dir="rtl" class="absolute|<div|<\/div>)/g)].map((x) => {
+      const text = (x[3] ?? "").replace(/<[^>]+>/g, "").replace(/&#x27;/g, "'");
+      return { text, b: { x: Number(x[1]), y: Number(x[2]), w: chartTextWidth(text), h: 20 } };
+    });
+    expect(words.length).toBeGreaterThanOrEqual(2);
+    const guides = [...host.matchAll(/data-mark="guide"><line x1="([\d.]+)" y1="([\d.]+)" x2="([\d.]+)" y2="([\d.]+)"/g)].map((x) => [Number(x[1]), Number(x[2]), Number(x[3]), Number(x[4])] as const);
+    expect(guides).toHaveLength(2);
+    const d = /d="([^"]*)"[^>]*data-mark="equal"/.exec(host)?.[1] ?? "";
+    const equal = [...d.matchAll(/M([\d.]+) ([\d.]+)L([\d.]+) ([\d.]+)/g)].map((x) => [Number(x[1]), Number(x[2]), Number(x[3]), Number(x[4])] as const);
+    const crossed = words.flatMap((w) => [...guides, ...equal].filter((l) => lineMeetsBox(l, w.b, 0)).map(() => w.text));
+    expect([...new Set(crossed)]).toEqual([]);
   });
 });

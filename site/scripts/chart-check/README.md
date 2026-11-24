@@ -33,7 +33,10 @@ or when a page named on the command line has no chart.
 What fails:
 - `text-overlap`, `text-on-line`, `text-on-area`: a label collides with
   another label, a line, or the edge of a bar or area (in an HTML chart, two
-  texts meet).
+  texts meet). Words in HTML laid over an svg (`data-chart-words`, the
+  region map's) are checked against the svg's lines and its paths of
+  straight pieces: a guide or the line where two areas are equal through
+  them fails.
 - `small-text`: chart text under 13 px as shown.
 - `text-clipped`: text past the svg's edge or its clip region.
 - `text-cut`: text past the edge of an element that clips it (overflow hidden)

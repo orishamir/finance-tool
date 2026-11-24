@@ -294,6 +294,24 @@ export function edgeStretches(edge: RegionGrid): { area: number; from: number; t
     .filter((r, k, all) => all.findIndex((x) => x.area === r.area) === k);
 }
 
+/** Whether a line from (x0, y0) to (x1, y1) passes through a box, grown by `pad` px on each side (Liang and Barsky's clipping). */
+export function lineMeetsBox(seg: readonly [number, number, number, number], b: { x: number; y: number; w: number; h: number }, pad = 2): boolean {
+  const [x0, y0, x1, y1] = seg;
+  const [dx, dy] = [x1 - x0, y1 - y0];
+  let [t0, t1] = [0, 1];
+  for (const [p, q] of [[-dx, x0 - (b.x - pad)], [dx, b.x + b.w + pad - x0], [-dy, y0 - (b.y - pad)], [dy, b.y + b.h + pad - y0]] as const) {
+    if (p === 0) {
+      if (q < 0) return false;
+    } else {
+      const t = q / p;
+      if (p < 0) t0 = Math.max(t0, t);
+      else t1 = Math.min(t1, t);
+      if (t0 > t1) return false;
+    }
+  }
+  return true;
+}
+
 /** A piece of the line where two areas are equal, in the grid's own units (node columns and rows, from the bottom left). */
 type Seg = readonly [x0: number, y0: number, x1: number, y1: number];
 
@@ -483,7 +501,13 @@ export function RegionMap({
     const myL = syL(mark.at[1]);
     const meets = (a: Box, b: Box) => a.x < b.x + b.w + 6 && b.x < a.x + a.w + 6 && a.y < b.y + b.h && b.y < a.y + a.h;
     const overlap = (a: Box, b: Box) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x)) * Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
-    const fits = (b: Box) => b.x >= left && b.x + b.w <= right && b.y >= TOP && b.y + b.h <= bottom - EDGE_PX;
+    // the lines words keep clear of: each guide, from the mark to its end, and the line where two areas are equal
+    const gxL = (i: number) => sxL((max.x * i) / (field.cols - 1));
+    const gyL = (j: number) => syL(field.from + ((max.y - field.from) * j) / (field.rows - 1));
+    const equalPx = equalLines(field).map(([x0, y0, x1, y1]) => [gxL(x0), gyL(y0), gxL(x1), gyL(y1)] as const);
+    const guidePx = guides.map((g) => [mxL, myL, g.axis === "x" ? sxL(g.at) : mxL, g.axis === "x" ? myL : syL(g.at)] as const);
+    const crossed = (b: Box) => guidePx.some((l) => lineMeetsBox(l, b)) || equalPx.some((l) => lineMeetsBox(l, b));
+    const fits = (b: Box) => b.x >= left && b.x + b.w <= right && b.y >= TOP && b.y + b.h <= bottom - EDGE_PX && !crossed(b);
 
     // the bottom edge's named stretches, in px, the longest first: it carries the edge's words, each other its area's name; with none, the
     // edge's words say the areas there are about the same, over the whole edge
@@ -508,12 +532,14 @@ export function RegionMap({
       placed.push(got);
       return got;
     };
-    // the bottom edge's words, over its longest clear stretch, ending at the stretch's right end, on one line; where they do not fit inside
-    // the stretch, they stand under the map, after a piece of the edge's line. Each other stretch carries its area's name where it fits
-    // inside it, so an edge that changes hands names each account along it
+    // the bottom edge's words, over its longest clear stretch, as far right in it as a line crosses them nowhere, on one line; where they do
+    // not fit inside the stretch, they stand under the map, after a piece of the edge's line. Each other stretch carries its area's name
+    // where it fits inside it, so an edge that changes hands names each account along it
     const overStretch = (r: (typeof runs)[number], tw: number) => {
-      const x = Math.min(right - 4, sxL(r.to) - 4) - tw;
-      return x >= Math.max(left + 4, sxL(r.from)) ? clearOf([{ x, y: bottom - EDGE_PX - 6 - LINE, w: tw, h: LINE }]) : undefined;
+      const from = Math.max(left + 4, sxL(r.from));
+      const tries: Box[] = [];
+      for (let x = Math.min(right - 4, sxL(r.to) - 4) - tw; x >= from; x -= 8) tries.push({ x, y: bottom - EDGE_PX - 6 - LINE, w: tw, h: LINE });
+      return clearOf(tries);
     };
     const edgeInside = overStretch(longest ?? { area: -1, from: 0, to: max.x }, chartTextWidth(edgeWords.text));
     if (edgeInside) placed.push(edgeInside);
@@ -570,7 +596,7 @@ export function RegionMap({
       for (let cy = TOP + h / 2 + 4; cy <= bottom - EDGE_PX - h / 2 - 4; cy += 8)
         for (let cx0 = left + tw / 2 + 8; cx0 <= right - tw / 2 - 8; cx0 += 8) {
           const b = { x: cx0 - tw / 2 - 4, y: cy - h / 2, w: tw + 8, h };
-          if (!holds(b, ok) || taken.some((t) => meets(b, t))) continue;
+          if (!holds(b, ok) || taken.some((t) => meets(b, t)) || crossed(b)) continue;
           // the room: how far the box grows before it leaves its area, and how far it is from the mark and the guides' dots
           let grow = 0;
           for (const g of [6, 12, 20]) if (holds({ x: b.x - g, y: b.y - g / 2, w: b.w + 2 * g, h: b.h + g }, ok)) grow = g;
@@ -589,9 +615,10 @@ export function RegionMap({
       const b = take(find(chartTextWidth(a.name, 16), 24, (k) => field.first[k] === n && (field.ahead[k] ?? 0) >= CLEAR));
       return b ? [{ a, b }] : [];
     });
-    return { edgeWords, edgeInside, edgeNames, longestArea, markBox, guideDraw, names };
+    const equal = equalPx.map(([x0, y0, x1, y1]) => `M${x0.toFixed(1)} ${y0.toFixed(1)}L${x1.toFixed(1)} ${y1.toFixed(1)}`).join("");
+    return { edgeWords, edgeInside, edgeNames, longestArea, markBox, guideDraw, names, equal };
   }, [field, edge, areas, mark, guides, edgeLabel, max.x, max.y, left, right, bottom]);
-  const { edgeWords, edgeInside, longestArea, markBox, guideDraw } = layout;
+  const { edgeWords, edgeInside, longestArea, markBox, guideDraw, equal } = layout;
 
   const set = (p: RegionPoint | null) => setPinned(p);
   const onMarkAt = (px: number, py: number) => Math.hypot(px - mx, py - my) <= REACH;
@@ -619,16 +646,6 @@ export function RegionMap({
   const tip: { at: RegionPoint; reads: RegionPoint | null; kept: boolean } | null = pinned ? { at: pinned, reads: pinned, kept: true } : hover ? { at: hover.onMark ? mark.at : hover.p, reads: hover.onMark ? null : hover.p, kept: false } : null;
   const pinX = pinned ? sx(pinned[0]) : 0;
   const pinY = pinned ? sy(pinned[1]) : 0;
-  // the line where two areas are equal, in px
-  const equal = useMemo(() => {
-    const sxE = scaleLinear().domain([0, max.x]).range([left, right]);
-    const syE = scaleLinear().domain([0, max.y]).range([bottom, TOP]);
-    const gx = (i: number) => sxE((max.x * i) / (field.cols - 1));
-    const gy = (j: number) => syE(field.from + ((max.y - field.from) * j) / (field.rows - 1));
-    return equalLines(field)
-      .map(([x0, y0, x1, y1]) => `M${gx(x0).toFixed(1)} ${gy(y0).toFixed(1)}L${gx(x1).toFixed(1)} ${gy(y1).toFixed(1)}`)
-      .join("");
-  }, [field, max.x, max.y, left, right, bottom]);
   // the canvases reach half a node past the plot on each side, so each node's colour sits on its own point and the browser's smoothing
   // runs between them; the plot clips them
   const cellX = (right - left) / (field.cols - 1);
@@ -805,7 +822,7 @@ function ReadingRows({ head, rows }: RegionReading) {
 /** Words over the map in their box, in the dark ink the light areas take. */
 function Words({ box, words }: { box: Box; words: RegionWords }) {
   return (
-    <span dir="rtl" className="absolute whitespace-nowrap text-xs leading-5 font-semibold text-chart-region-ink" style={{ left: box.x, top: box.y }}>
+    <span dir="rtl" className="absolute whitespace-nowrap text-xs leading-5 font-semibold text-chart-region-ink" style={{ left: box.x, top: box.y }} data-chart-words>
       {words.node ?? words.text}
     </span>
   );
