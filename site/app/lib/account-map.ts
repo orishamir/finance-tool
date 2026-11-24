@@ -217,17 +217,19 @@ function lineOf(leftAt: LeftAt, order: readonly string[], theta: number, tied: r
  * accounts are not clearly beaten, and between it and the next, the point past which they are, narrowed twice by finer samples (the last
  * that fails each time), then by halving. Null where the plan's accounts are not clearly beaten at the line's end: a switch holds at every
  * sample to the end of the search, so a lead that dips under θ and back (the whole units of F-109) does not place it where it first reaches θ.
- * Null too where it falls under `floor` (`LOWEST` of the reach, on the way up from no money at all): that change is the value of no money's.
+ * The search reads nothing under `floor` (a hundredth of the sliders' reach, NAMED): a line down ends there, and one up from a plan under it
+ * starts there, so a switch that would fall under it is placed at it, where it holds all the same.
  */
-function switchAlong(line: Line | null, order: readonly string[], theta: number, tied: readonly string[], floor = 0): MapSwitch | null {
+function switchAlong(line: Line | null, order: readonly string[], theta: number, tied: readonly string[], floor: number): MapSwitch | null {
   if (!line || !clearOf(line.all.at(-1)?.left ?? new Map(), order, tied, theta)) return null;
-  const samples = line.samples();
+  const samples = line.samples().filter((s) => s.v >= floor);
   const failing = (holds: (string | null)[]) => holds.findLastIndex((h) => h === null);
   const k = failing(samples.map((s) => clearOf(s.left, order, tied, theta)));
   const test = (v: number) => clearOf(line.price(v), order, tied, theta);
-  const hi = narrow(samples[k]?.v ?? line.own, samples[k + 1]?.v ?? line.end, (v) => test(v) !== null);
+  const from = Math.max(line.own, floor);
+  const hi = k < 0 && from > line.own && test(from) !== null ? from : narrow(samples[k]?.v ?? from, samples[k + 1]?.v ?? line.end, (v) => test(v) !== null);
   const to = test(hi);
-  return to && hi >= floor ? { at: hi, dir: line.dir, to } : null;
+  return to ? { at: hi, dir: line.dir, to } : null;
 }
 
 /**
@@ -254,11 +256,12 @@ function narrow(out: number, inn: number, holds: (v: number) => boolean): number
 /**
  * The first stretch along one of the plan's lines, one way, where an account clearly beats the plan's accounts (`clearOf`) though not to the
  * line's end: the first of the line's samples where it does and the run of samples after it where the same account does, each end narrowed
- * from the sample outside it as a switch is (`narrow`). Null where no sample reads so, and where the stretch starts under `floor`.
+ * from the sample outside it as a switch is (`narrow`). Null where no sample reads so. As a switch's search, it reads nothing under `floor`:
+ * a stretch that runs under it is cut at it.
  */
 function stretchAlong(line: Line | null, order: readonly string[], theta: number, tied: readonly string[], floor: number): MapStretch | null {
   if (!line) return null;
-  const samples = line.samples();
+  const samples = line.samples().filter((sm) => sm.v >= floor);
   const holds = samples.map((sm) => clearOf(sm.left, order, tied, theta));
   const k = holds.findIndex((h) => h !== null);
   const to = holds[k];
@@ -267,23 +270,30 @@ function stretchAlong(line: Line | null, order: readonly string[], theta: number
   let e = k;
   while (holds[e + 1] === to) e++;
   const test = (v: number) => clearOf(line.price(v), order, tied, theta) === to;
-  const start = narrow(samples[k - 1]?.v ?? line.own, first.v, test);
+  const from = Math.max(line.own, floor);
+  const start = k === 0 && from > line.own && test(from) ? from : narrow(samples[k - 1]?.v ?? from, first.v, test);
   const after = samples[e + 1];
   const end = after ? narrow(after.v, samples[e]?.v ?? first.v, test) : line.end;
   const [lo, hi] = [Math.min(start, end), Math.max(start, end)];
-  return lo >= floor ? { lo, hi, dir: line.dir, to } : null;
+  return { lo, hi, dir: line.dir, to };
 }
 
 /** The first point along a line where `changed` holds of the reading there: the first sample where it does, narrowed by halving from the
- *  sample before it (the plan, for the first). Null where no sample to the line's end reads changed, and where the first change falls under
- *  `floor`: no money at all today, or a month, is a value of its own, and a change found only past it is that value's, not the line's. */
-function firstChange(line: Line | null, order: readonly string[], theta: number, floor: number, changed: (l: ReturnType<typeof leadOf>, left: ReadonlyMap<string, number>) => boolean): { at: number; lead: ReturnType<typeof leadOf>; before: ReturnType<typeof leadOf> } | null {
+ *  sample before it (the plan, for the first). Null where no sample to the line's end reads changed. As a switch's search, it reads nothing
+ *  under `floor`: on a line up from a plan under it, a reading changed there already is placed at it (`at` the floor, `cut`). */
+function firstChange(line: Line | null, order: readonly string[], theta: number, floor: number, changed: (l: ReturnType<typeof leadOf>, left: ReadonlyMap<string, number>) => boolean): { at: number; lead: ReturnType<typeof leadOf>; before: ReturnType<typeof leadOf>; cut: boolean } | null {
   if (!line) return null;
-  const samples = line.samples();
+  const samples = line.samples().filter((s) => s.v >= floor);
   const k = samples.findIndex((s) => changed(leadOf(s.left, order, theta), s.left));
   const found = samples[k];
   if (!found) return null;
-  let lo = samples[k - 1]?.v ?? line.own;
+  const from = Math.max(line.own, floor);
+  if (k === 0 && from > line.own) {
+    const left = line.price(from);
+    const l = leadOf(left, order, theta);
+    if (changed(l, left)) return { at: from, lead: l, before: l, cut: true };
+  }
+  let lo = samples[k - 1]?.v ?? from;
   let hi = found.v;
   for (let i = 0; i < BISECT; i++) {
     const mid = (lo + hi) / 2;
@@ -291,7 +301,7 @@ function firstChange(line: Line | null, order: readonly string[], theta: number,
     if (changed(leadOf(left, order, theta), left)) hi = mid;
     else lo = mid;
   }
-  return hi >= floor ? { at: hi, lead: leadOf(line.price(hi), order, theta), before: leadOf(line.price(lo), order, theta) } : null;
+  return { at: hi, lead: leadOf(line.price(hi), order, theta), before: leadOf(line.price(lo), order, theta), cut: false };
 }
 
 /** The nearer of a switch up and a switch down. */
@@ -351,13 +361,12 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const tied = lead.kind === "empty" ? [] : tiedIds;
 
   // ------------------------------------------------ the plan's two lines: the switch along each, the nearer of up and down, and the changes up
-  const lowA = plan.monthly > 0 ? 0 : reachA * LOWEST;
-  const lowM = reachM * LOWEST;
-  const lineOn = (axis: 0 | 1, dir: MapSwitch["dir"], to: number) => (tied.length === 0 ? null : lineOf(leftAt, order, theta, tied, planPt, axis, dir, to));
-  const lines = { amount: { up: lineOn(0, "up", reachA), down: lineOn(0, "down", lowA) }, monthly: { up: lineOn(1, "up", reachM), down: lineOn(1, "down", lowM) } };
   // under a hundredth of the sliders' reach no point is named, either way (NAMED): no money at all today (or a month) is a value of its
-  // own, as the bottom edge is, and a change found only near it is too small to act on
+  // own, as the bottom edge is, and a change found only near it is too small to act on. The searches read nothing under it: a line down
+  // ends there, and one up from a plan under it starts there
   const floor = { amount: Math.max(reachA * LOWEST, reach.amount * NAMED), monthly: Math.max(reachM * LOWEST, reach.monthly * NAMED) };
+  const lineOn = (axis: 0 | 1, dir: MapSwitch["dir"], to: number) => (tied.length === 0 ? null : lineOf(leftAt, order, theta, tied, planPt, axis, dir, to));
+  const lines = { amount: { up: lineOn(0, "up", reachA), down: lineOn(0, "down", floor.amount) }, monthly: { up: lineOn(1, "up", reachM), down: lineOn(1, "down", floor.monthly) } };
   const up = { amount: switchAlong(lines.amount.up, order, theta, tied, floor.amount), monthly: switchAlong(lines.monthly.up, order, theta, tied, floor.monthly) };
   const switches = {
     amount: nearer(plan.amount, up.amount, switchAlong(lines.amount.down, order, theta, tied, floor.amount)),
@@ -376,7 +385,8 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     const c = firstChange(line, order, theta, at, (l, left) => firstPriced(left) && l?.first !== planFirst);
     const to = c?.lead?.first;
     // where the gap jumps across zero rather than passing through it, the two never leave the same amount
-    const through = !!c && (c.lead?.ahead ?? 1) < EVEN_JUMP && (c.before?.ahead ?? 1) < EVEN_JUMP;
+    // and where the change is under the floor already, the point where they are equal is under it too: not named
+    const through = !!c && !c.cut && (c.lead?.ahead ?? 1) < EVEN_JUMP && (c.before?.ahead ?? 1) < EVEN_JUMP;
     return line && c && to && through ? { at: c.at, dir: line.dir, to } : null;
   };
   const evenUp = { amount: evenOn(lines.amount.up, floor.amount), monthly: evenOn(lines.monthly.up, floor.monthly) };

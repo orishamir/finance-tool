@@ -105,7 +105,7 @@ describe("the account map (F-131)", () => {
     expect(mapOf(atNothing, { amount: 10_000, monthly: 200 }).equal.amount).toBeNull();
   });
 
-  it("names nothing up a line from no money at all where the accounts differ only there: no equal point, no switch, no change", () => {
+  it("names nothing up a line from no money at all where the accounts differ only there: no equal point and no switch", () => {
     // B leaves 1% less than A with no monthly deposit (or nothing today), and 0.1% more, within θ, wherever there is one: up the line from
     // 0 nothing changes along it, since no money at all is a value of its own, as the bottom edge is
     const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
@@ -116,7 +116,8 @@ describe("the account map (F-131)", () => {
       expect(got.plan.lead, axis).toEqual({ kind: "clear", first: "a" });
       expect(got.equal[axis], axis).toBeNull();
       expect(got.switches[axis], axis).toBeNull();
-      expect(got.changes[axis], axis).toEqual({ band: null, even: null });
+      // the plan's first is not θ ahead from the hundredth on, where the search starts: the band's edge is cut there, never an equal point
+      expect(got.changes[axis], axis).toEqual({ band: axis === "monthly" ? 100 : 5000, even: null });
       // where nothing changes up a line, three times the plan's own value; on an axis where the plan has no money, a fiftieth of the
       // sliders' reach: 10,000 ₪ today, 200 ₪ a month
       expect(got.max, axis).toEqual(axis === "monthly" ? { amount: 30_000, monthly: 200 } : { amount: 10_000, monthly: 600 });
@@ -134,6 +135,31 @@ describe("the account map (F-131)", () => {
     // and one at 150 ₪ a month is named
     const named = { a: base, b: (a: number, m: number) => base(a, m) * (1 + 0.00002 * (150 - m)) };
     expect(mapOf(named, { amount: 10_000, monthly: 200 }).equal.monthly?.at).toBeCloseTo(150, -1);
+  });
+
+  it("reads nothing under a hundredth of the sliders' reach: what runs under it is cut there, rather than dropped", () => {
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    // B 1% ahead of A from 2,000 ₪ to 60,000 ₪ today, 1% behind elsewhere: on a plan of 100,000 ₪, B clearly cheaper from 60,000 ₪ down to
+    // the hundredth, 5,000 ₪, where the search ends
+    const middle = { a: base, b: (a: number, m: number) => base(a, m) * (a >= 2000 && a <= 60_000 ? 1.01 : 0.99) };
+    const down = need(mapOf(middle, { amount: 100_000, monthly: 200 }).switches.amount, "the switch down today's amount");
+    expect(down).toMatchObject({ dir: "down", to: "b" });
+    expect(down.at).toBeCloseTo(60_000, -2);
+    // B 1% ahead from 4,000 ₪ today: on a plan of 2,000 ₪, B clearly cheaper from the hundredth up
+    const above = { a: base, b: (a: number, m: number) => base(a, m) * (a > 4000 ? 1.01 : 0.99) };
+    expect(mapOf(above, { amount: 2000, monthly: 100 }).switches.amount).toEqual({ at: 5000, dir: "up", to: "b" });
+    // the monthly line: B 1% ahead from 50 ₪ to 1,500 ₪ a month, on a plan of 3,000 ₪ a month: B clearly cheaper from 1,500 ₪ down to the
+    // hundredth, 100 ₪ a month
+    const deposits = { a: base, b: (a: number, m: number) => base(a, m) * (m >= 50 && m <= 1500 ? 1.01 : 0.99) };
+    const monthly = need(mapOf(deposits, { amount: 10_000, monthly: 3000 }).switches.monthly, "the switch down the deposit");
+    expect(monthly).toMatchObject({ dir: "down", to: "b" });
+    expect(monthly.at).toBeCloseTo(1500, -1);
+    // and a stretch that runs under the hundredth, B 1% ahead from 3,000 ₪ to 20,000 ₪ on a plan of 2,000 ₪ (under the hundredth): cut
+    // at 5,000 ₪
+    const low = { a: base, b: (a: number, m: number) => base(a, m) * (a >= 3000 && a <= 20_000 ? 1.01 : 0.99) };
+    const st = need(mapOf(low, { amount: 2000, monthly: 100 }).stretches.amount, "the stretch up today's amount");
+    expect(st).toMatchObject({ dir: "up", to: "b", lo: 5000 });
+    expect(st.hi).toBeCloseTo(20_000, -2);
   });
 
   it("an account of the plan with no ranked price at a point is not compared there: neither beaten nor equal (F-80)", () => {
