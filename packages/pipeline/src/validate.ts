@@ -1523,18 +1523,23 @@ function exposureCurrencies(files: string[], dataDir: string): Map<string, strin
 }
 
 /**
- * data-schema §3.5 `tax_ruling.index` (method F-04, D84): the main currency a fund's annex states as its tax index is the exposure's
- * currency, since a run measures the index on the one exchange-rate path it has, the exposure's.
+ * data-schema §3.5 `tax_ruling.index` (method F-04, D84): the main currency a fund's annex states as its tax index is the record's own
+ * `currency` and the exposure's, since a run measures the index on the one exchange-rate path it has, built from the record's currency. A
+ * record whose exposure has no file leaves that path unchecked, and is reported rather than passed.
  */
 function checkStatedTaxIndex(files: string[], dataDir: string, currencies: ReadonlyMap<string, string>, report: (file: string, message: string) => void) {
   for (const file of files) {
     const rel = relative(dataDir, file).split(/[\\/]/).join("/");
     if (!/^funds\/[^/@]+@[^/]+\.json$/.test(rel)) continue;
-    const rec = parseJson(readFileSync(file, "utf8")).value as Partial<Pick<FundRecord, "exposure_id" | "tax_ruling">> | undefined;
+    const rec = parseJson(readFileSync(file, "utf8")).value as Partial<Pick<FundRecord, "currency" | "exposure_id" | "tax_ruling">> | undefined;
     const index = rec?.tax_ruling?.index;
     if (index?.basis !== "main-currency") continue;
-    const exposureCurrency = rec?.exposure_id ? currencies.get(rec.exposure_id) : undefined;
-    if (exposureCurrency !== undefined && index.currency !== exposureCurrency)
+    if (rec?.currency !== undefined && index.currency !== rec.currency)
+      report(file, `tax_ruling.index.currency: the main currency ${index.currency} is not the record's own currency ${rec.currency}, whose exchange-rate path the run indexes on (F-04)`);
+    if (rec?.exposure_id === undefined) continue;
+    const exposureCurrency = currencies.get(rec.exposure_id);
+    if (exposureCurrency === undefined) report(file, `tax_ruling.index.currency: exposure ${rec.exposure_id} has no file with a currency, so the main currency ${index.currency} cannot be held to the exposure's (F-04)`);
+    else if (index.currency !== exposureCurrency)
       report(file, `tax_ruling.index.currency: the main currency ${index.currency} is not the exposure's currency ${exposureCurrency}, the one exchange-rate path a run has (F-04)`);
   }
 }
