@@ -1,5 +1,6 @@
-// How the index page asks for its heavy work (lib/invest-work.ts): in a Web Worker (lib/invest-worker.ts) wherever the browser has one, so
-// no task on the page waits for it, and in place where there is none (the tests, the build) or where it fails twice (`makeClient`). Each hook is a channel of its own: it shows the
+// How the index page asks for its heavy work (lib/invest-work.ts): in Web Workers (lib/invest-worker.ts) wherever the browser has them, the
+// map in one of its own (`WORKER_OF`), so no task on the page waits for it and the lists never wait for the map, and in place where there is
+// none (the tests, the build) or where one fails twice (`makeClient`). Each hook is a channel of its own: it shows the
 // last answer it got until the next one comes, its answer renders in a transition, which React splits into short tasks, and a newer request
 // replaces one not yet sent, so the worker never works on a plan no one is looking at any more. An answer is a structured clone: its fund
 // records and its index are put back as the page's own objects, and it comes with the data and the request it was worked out on, so what
@@ -45,8 +46,8 @@ export type Client = { post: <K extends WorkKind>(kind: K, asked: Asked<K>, repl
 export type WorkerLike = Pick<Worker, "postMessage" | "addEventListener" | "terminate">;
 
 /**
- * How long a request may wait for its answer before the worker is taken as stuck: generous, many times the longest work (the S&P 500's
- * view, about 830 ms on a phone slowed four times) and the one request of the other channel that may run before it.
+ * How long a request may wait for its answer before the worker is taken as stuck: generous, many times the longest work in each worker
+ * (the S&P 500's view, about 830 ms on a phone slowed four times, with the one sweep that may run before it; the map, several seconds there).
  */
 export const ANSWER_WITHIN_MS = 20_000;
 
@@ -140,14 +141,35 @@ export function makeClient(start: () => WorkerLike, warn: (why: string) => void)
   };
 }
 
-/** The page's worker, started on the first request. */
-let client: Client | undefined;
+/**
+ * Which worker each kind of work runs in. The map has one of its own: it takes about a second in node on the S&P 500 and several on a phone
+ * slowed four times, a worker answers one request at a time and a running one cannot be stopped, so in a shared worker a moved slider's
+ * view and sweep would wait behind a map no one looks at any more. The view and the sweep are short, and share the other.
+ */
+const WORKER_OF = { view: "lists", changes: "lists", map: "map" } as const satisfies Record<WorkKind, string>;
 
-const clientOf = (): Client =>
-  (client ??= makeClient(
+/** A client per worker of WORKER_OF, each started on its first request, each with its own data and its own restarts (`makeClient`). */
+export function clientsOf(start: () => WorkerLike, warn: (why: string) => void): (kind: WorkKind) => Client {
+  const clients = new Map<string, Client>();
+  return (kind) => {
+    const w = WORKER_OF[kind];
+    let c = clients.get(w);
+    if (!c) {
+      c = makeClient(start, warn);
+      clients.set(w, c);
+    }
+    return c;
+  };
+}
+
+/** The page's workers. */
+let clientFor: ((kind: WorkKind) => Client) | undefined;
+
+const clientOf = (kind: WorkKind): Client =>
+  (clientFor ??= clientsOf(
     () => new Worker(new URL("./invest-worker.ts", import.meta.url), { type: "module" }),
     (why) => console.warn(why),
-  ));
+  ))(kind);
 
 /** A channel's requests: one with the worker at a time, and the newest of those that came meanwhile next. */
 export function channelOf<K extends WorkKind, A extends Asked<K> = Asked<K>>(kind: K) {
@@ -185,9 +207,9 @@ function useWork<K extends WorkKind, A extends Asked<K>>(kind: K, asked: A | nul
   useEffect(() => {
     if (!HAS_WORKER || !asked) return;
     const job: Job<K, A> = { asked, live: true, done: (h) => startTransition(() => setHeld(h)) };
-    channel.ask(job, clientOf());
+    channel.ask(job, clientOf(kind));
     return () => channel.drop(job);
-  }, [asked, channel]);
+  }, [kind, asked, channel]);
   if (held && "failed" in held) throw new Error(held.failed);
   return asked ? (here ?? held) : null;
 }

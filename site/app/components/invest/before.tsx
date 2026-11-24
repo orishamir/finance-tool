@@ -2,7 +2,8 @@
 // and one panel open under them. When another account is cheaper (F-131, a map over today's amount and the monthly deposit), what moves
 // the result most (F-89, F-90), hedged or not (F-95, wherever the index has funds of both kinds and the section has its figures) and the
 // stairs. Each answer reads the same computation as its panel, lifted here so a closed panel's card still answers; each waits until the
-// plan has rested. An answer is plain words (a card is a tab, and a tab holds no control): the same figure in the open panel opens its
+// plan has rested. The map is worked out in a worker of its own and takes longest: the section stands without it, its card in place and
+// blank until it comes. An answer is plain words (a card is a tab, and a tab holds no control): the same figure in the open panel opens its
 // sheet. The open card stays open while the plan or the pair changes.
 import { useId, useState, type ReactNode } from "react";
 import { invest as c } from "../../copy";
@@ -10,7 +11,7 @@ import { fmt } from "../../lib/format";
 import type { InvestView } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { Card, MixedName, TabCards, type TabCard } from "../kit";
-import { AccountMapPanel, mapCard, NoMapPanel, useAccountMap } from "./account-map";
+import { AccountMapPanel, mapCard, MapWaitingPanel, NoMapPanel, useAccountMap } from "./account-map";
 import { changesAt, PlanChanges, shareWord, usePlanChanges } from "./knobs";
 import { DollarSection, dollarSwing, useDollarCase, type DollarCase } from "./dollar";
 import { StairsSection, useStairs } from "./stairs";
@@ -21,6 +22,17 @@ type Share = { min: number; max: number; step: number; start: number };
 /** A whole-shekel amount in a card's plain words, isolated so it keeps its order inside Hebrew. */
 const amount = (n: number) => `\u2066${fmt.nisWhole(n)}\u2069`;
 type Key = "map" | "sens" | "hedge" | "stairs";
+
+/**
+ * The map's card and panel: the map of the fund and plan it was worked out for, while the next one is worked out; where no account is ranked
+ * with the fund, why; and before the first map comes, the card in its place with its question and no answer yet, and the panel kept for it.
+ */
+export function mapTab(mapRun: ReturnType<typeof useAccountMap>, view: InvestView, pick: Pick, bundle: IndicesBundle): (TabCard & { key: "map"; panel: () => ReactNode }) | null {
+  if (mapRun === null) return null;
+  if (mapRun === "waiting") return { key: "map", question: c.before.map.question, answer: "\u00a0", note: "\u00a0", panel: () => <MapWaitingPanel /> };
+  const { answer, on, held } = mapRun;
+  return { ...mapCard(answer, view, bundle, pick.house, held), key: "map", panel: () => (answer.kind === "map" ? <AccountMapPanel view={view} bundle={on.bundle} house={pick.house} map={answer.map} on={on} /> : <NoMapPanel why={answer.why} />) };
+}
 
 /** The hedged-or-not card: what the plan's pair of one kind leaves more than the other's; where the plan has no such figure (no pair of
  *  each kind to price), the section's lead figure, how far the dollar moved in one year, so the card never stands blank. */
@@ -57,16 +69,13 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
   const st = useStairs({ view: stairs.view, bundle: stairs.bundle, plan, startHouse: stairs.startHouse, startFund: stairs.startFund, example: stairs.startHouse === null });
   const verdict = pick ? pairVerdict(view, bundle, livePlan, pick, chosen) : null;
   const pc = verdict?.pc ?? null;
-  // the section stands once the page's worker has sent its first sweep and its first map, so neither card's answer comes in a moment after
-  // the rest and moves what is under it; the section is far below the screen's first view, and the two take about a second
-  if (!pick || !pc || !verdict || changes === "waiting" || mapRun === "waiting") return null;
+  // the section stands once the lists' worker has sent its first sweep, so that card's answer never comes in a moment after the rest; the
+  // map's card stands in its place before its map comes
+  if (!pick || !pc || !verdict || changes === "waiting") return null;
 
   const tabs: (TabCard & { key: Key; panel: () => ReactNode })[] = [];
-  // the map of the fund and plan it was worked out for, while the next one is worked out; where no account is ranked with the fund, why
-  if (mapRun) {
-    const { answer, on, held } = mapRun;
-    tabs.push({ ...mapCard(answer, view, bundle, pick.house, held), key: "map", panel: () => (answer.kind === "map" ? <AccountMapPanel view={view} bundle={on.bundle} house={pick.house} map={answer.map} on={on} /> : <NoMapPanel why={answer.why} />) });
-  }
+  const map = mapTab(mapRun, view, pick, bundle);
+  if (map) tabs.push(map);
   if (changes) {
     const { run, held } = changes;
     const rows = changesAt(run, at, share, today);

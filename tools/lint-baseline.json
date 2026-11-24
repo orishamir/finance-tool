@@ -229,7 +229,7 @@
    "site/app/components/fee-deal/edit-here.tsx": 1,
    "site/app/components/fee-deal/fee-cases.tsx": 2,
    "site/app/components/fee-deal/reading.tsx": 2,
-   "site/app/components/invest/before.tsx": 4,
+   "site/app/components/invest/before.tsx": 3,
    "site/app/components/invest/deal-account.tsx": 1,
    "site/app/components/kit/gallery.tsx": 6,
    "site/app/components/tracks/list.tsx": 1,

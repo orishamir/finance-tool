@@ -17,7 +17,7 @@ import { PlanCard } from "./plan-card";
 import { ValueSheet } from "../provenance-sheets";
 import { PairLists, listName, markView } from "./lists";
 import { PairReceipt } from "./receipt";
-import { BeforeDeciding, hedgeCard } from "./before";
+import { BeforeDeciding, hedgeCard, mapTab } from "./before";
 import { useDollarCase } from "./dollar";
 import { bundle, t, plan, data, shown, html, lists, fundRow, StairsFor } from "./render-fixtures";
 
@@ -46,6 +46,20 @@ describe("the index page's sections render", () => {
     // the receipt's inflation line, in what the reader sees: its label, then what it takes
     expect(shown(out).replace(/[\u2066-\u2069]/g, "")).toMatch(new RegExp(`${invest.receipt.inflation}−[\\d,]+ ₪`));
   });
+  it("before the first map comes, the map's card stands in its place with its question and no answer, and its panel keeps the room", () => {
+    const pick = pickOfHeadline(view);
+    if (!pick) throw new Error("missing: the page's pair");
+    const tab = mapTab("waiting", view, pick, bundle);
+    expect(tab?.key).toBe("map");
+    expect(tab?.question).toBe(invest.before.map.question);
+    // a blank that keeps the card's line
+    expect(tab?.answer).toBe("\u00a0");
+    const out = html(createElement("div", null, tab?.panel()));
+    expect(out).toContain(invest.before.map.question);
+    // nothing asked, no card
+    expect(mapTab(null, view, pick, bundle)).toBeNull();
+  });
+
   it("before any pick, the page's own pair is never called the person's, and each tile names its account and fund (2026-11-05)", () => {
     const pick = pickOfHeadline(view)!;
     const out = shown(html(createElement(PairReceipt, { view, bundle, plan: plan, pick, chosen: false })));

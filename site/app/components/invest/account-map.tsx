@@ -225,6 +225,15 @@ function readerOf(view: InvestView, bundle: IndicesBundle, on: Asked<"map">, ton
   };
 }
 
+/** The panel before the first map comes: its question, and the room the map will take, so nothing under it moves when it comes. */
+export function MapWaitingPanel() {
+  return (
+    <div className="flex min-h-[38rem] flex-col gap-4">
+      <PanelHead kicker={m.question} />
+    </div>
+  );
+}
+
 /** The panel where there is no map: why. */
 export function NoMapPanel({ why }: { why: "open-rule" | "unpriced" }) {
   return <PanelHead kicker={m.question} sub={<p className="text-sm text-muted-foreground">{m.unrankedWhy[why]}.</p>}>{m.unranked}</PanelHead>;

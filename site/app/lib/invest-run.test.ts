@@ -3,7 +3,7 @@ import { bundle as data, plan } from "../components/invest/render-fixtures";
 import { pickOfHeadline } from "../components/invest/pair";
 import { indexById } from "./invest";
 import { work, type FromWorker } from "./invest-work";
-import { ANSWER_WITHIN_MS, channelOf, forPair, makeClient, relink, type Asked, type Client, type WorkerLike, type Held, type Job } from "./invest-run";
+import { ANSWER_WITHIN_MS, channelOf, clientsOf, forPair, makeClient, relink, type Asked, type Client, type WorkerLike, type Held, type Job } from "./invest-run";
 import type { IndicesBundle } from "./providers";
 
 /** A worker that answers when the test says: what was posted, in order, and the replies still owed. */
@@ -208,5 +208,28 @@ describe("a worker that fails (lib/invest-run.ts, makeClient)", () => {
     const answer = { id: c.nth(1).sent[0]?.id, answer: null };
     c.nth(1).fire("message", new MessageEvent("message", { data: answer }));
     expect(c.got).toEqual([answer]);
+  });
+});
+
+describe("the index page's workers (lib/invest-run.ts, clientsOf)", () => {
+  it("the map runs in a worker of its own: a view or a sweep asked while a map is worked out goes to the other, and is answered first", () => {
+    const workers: ReturnType<typeof standIn>[] = [];
+    const clientFor = clientsOf(() => {
+      const w = standIn();
+      workers.push(w);
+      return w.worker;
+    }, () => undefined);
+    const asked = { bundle: data, ask: {} } as never;
+    const got: string[] = [];
+    clientFor("map").post("map", asked, () => got.push("map"));
+    clientFor("view").post("view", asked, () => got.push("view"));
+    clientFor("changes").post("changes", asked, () => got.push("changes"));
+    expect(workers).toHaveLength(2);
+    const [map, lists] = workers;
+    expect(map?.sent.map((m) => m.kind)).toEqual(["map"]);
+    expect(lists?.sent.map((m) => m.kind)).toEqual(["view", "changes"]);
+    // the lists' worker answers while the map's is still at work
+    for (const m of lists?.sent ?? []) lists?.fire("message", new MessageEvent("message", { data: { id: m.id, answer: null } }));
+    expect(got).toEqual(["view", "changes"]);
   });
 });

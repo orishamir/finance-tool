@@ -2,7 +2,7 @@
 // (lib/invest-run.ts): the view of one plan (`buildInvest`, about 830 ms on a phone slowed four times for the S&P 500), what each plan
 // number changed by the same share does to one pair's result (F-89, F-90: 4 lines of 21 runs), and which account leaves the most with one
 // fund at each mix of today's amount and monthly deposit (F-131, lib/account-map.ts: a few hundred points, most at two or three
-// accounts). A request names its data by number, and carries it only the first time: the worker keeps the latest it was sent.
+// accounts, about a second in node on the S&P 500, in a worker of its own). A request names its data by number, and carries it only the first time: the worker keeps the latest it was sent.
 import { changedByShare, sweep } from "@finance-tool/engine";
 import { accountMap, type AccountMap, type LeftAt } from "./account-map";
 import { p05Range } from "./engine";
@@ -113,8 +113,8 @@ export const work: { [K in WorkKind]: (bundle: IndicesBundle, ask: Works[K]["ask
 
 /**
  * How many sets of data the worker keeps, the latest sent: the page's own and the one its last answer was worked out on. The page keeps the
- * same list of what it sent, letting go of the oldest the same way, and its one worker reads messages in the order they were sent, so a
- * request that names its data by number always finds it there.
+ * same list of what it sent to each worker, letting go of the oldest the same way, and a worker reads messages in the order they were sent,
+ * so a request that names its data by number always finds it there.
  */
 export const KEPT_DATA = 2;
 

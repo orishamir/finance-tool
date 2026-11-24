@@ -1,7 +1,8 @@
-// The index page's Web Worker (guidelines/code.md: work over about 50 ms on a phone slowed four times moves to one): it keeps the last two
-// sets of data the page sent (the page's own and the one its last answer was worked out on) and answers each request, once, on the one it
-// names with `work` (lib/invest-work.ts), one at a time, in the order they came. The page sends a request only when the one before it on
-// the same channel has been answered (lib/invest-run.ts), so none waits behind work no one wants any more.
+// The index page's Web Worker (guidelines/code.md: work over about 50 ms on a phone slowed four times moves to one), started twice, one for
+// the lists' work and one for the map (lib/invest-run.ts, `WORKER_OF`): it keeps the last two sets of data its page client sent (the page's
+// own and the one its last answer was worked out on) and answers each request, once, on the one it names with `work`
+// (lib/invest-work.ts), one at a time, in the order they came. The page sends a request only when the one before it on the same channel
+// has been answered, so none waits behind work no one wants any more.
 import { KEPT_DATA, work, type FromWorker, type ToWorker, type WorkKind, type Works } from "./invest-work";
 import type { IndicesBundle } from "./providers";
 
