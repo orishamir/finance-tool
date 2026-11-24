@@ -6,7 +6,7 @@
 import { changedByShare, sweep } from "@finance-tool/engine";
 import { accountMap, type AccountMap, type LeftAt } from "./account-map";
 import { p05Range } from "./engine";
-import { buildInvest, fundWayAt, pairCosts, pairLeft, providerInfo, providersOfInvest, type IndexRef, type InvestView } from "./invest";
+import { buildInvest, fundWayAt, pairCosts, pairLeft, providersOfInvest, tieShareOf, type IndexRef, type InvestView } from "./invest";
 import { rankedAt } from "./stretch";
 import type { IndicesBundle, WorkbenchInputs } from "./providers";
 import type { SiteValue } from "./value";
@@ -56,11 +56,15 @@ interface MapAsk {
   fund: string;
 }
 
+/** F-131's answer: the map, or why there is none (no account is ranked with the fund: its tax rests on an open rule, F-118 or G-18, or none
+ *  prices it). */
+export type MapAnswer = { kind: "map"; map: AccountMap } | { kind: "unranked"; why: "open-rule" | "unpriced" };
+
 /** Each kind of work: what it is asked, and what it answers. */
 export interface Works {
   view: { ask: ViewAsk; answer: InvestView };
   changes: { ask: ChangesAsk; answer: PlanChanges | null };
-  map: { ask: MapAsk; answer: AccountMap | null };
+  map: { ask: MapAsk; answer: MapAnswer };
 }
 export type WorkKind = keyof Works;
 
@@ -88,17 +92,16 @@ export function leftWith(bundle: IndicesBundle, index: IndexRef, plan: Workbench
   };
 }
 
-/** The accounts in the order the account list breaks a tie in: by short name. */
-const tieOrder = (bundle: IndicesBundle): string[] =>
-  providersOfInvest(bundle)
-    .map(providerInfo)
-    .sort((a, b) => a.short.localeCompare(b.short, "he"))
-    .map((p) => p.id);
-
-/** F-131: the map for the plan, its switches looked for as far as the plan's sliders reach (P-05). */
-function mapOf(bundle: IndicesBundle, a: MapAsk): AccountMap | null {
+/** F-131: the map for the plan, its switches looked for as far as the plan's sliders reach (P-05), a tie to the house the headline takes. */
+function mapOf(bundle: IndicesBundle, a: MapAsk): MapAnswer {
   const reach = (key: string) => p05Range(bundle.p05, "sliders", key)?.max ?? 0;
-  return accountMap({ leftAt: leftWith(bundle, a.index, a.plan, a.fund), order: tieOrder(bundle), plan: { amount: a.plan.amountNow, monthly: a.plan.monthly }, reach: { amount: reach("amount_now"), monthly: reach("monthly_deposit") } });
+  const order = providersOfInvest(bundle).map((s) => s.id);
+  const map = accountMap({ leftAt: leftWith(bundle, a.index, a.plan, a.fund), order, theta: tieShareOf(bundle), plan: { amount: a.plan.amountNow, monthly: a.plan.monthly }, reach: { amount: reach("amount_now"), monthly: reach("monthly_deposit") } });
+  if (map) return { kind: "map", map };
+  const way = fundWayAt({ bundle, index: a.index, plan: a.plan, fundId: a.fund });
+  // a fund priced only before its exit tax (F-118) or on an open rule (G-18) is shown, never ranked
+  const open = !!way?.beforeTax || Object.values(way?.byHouse ?? {}).some((w) => "valueN" in w && w.open);
+  return { kind: "unranked", why: open ? "open-rule" : "unpriced" };
 }
 
 /** The work of each kind, on the data it names. */

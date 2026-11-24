@@ -1,19 +1,23 @@
 // "מתי חשבון אחר זול יותר?" under the lists of the index page: which account costs least with the receipt's fund at each mix of today's
-// amount and monthly deposit (F-131), the plan's years, return and inflation held. The map is worked out in the page's worker once the plan
-// has rested (lib/account-map.ts); a point the reader reads is priced here, at that point, as the lists price it (`fundWayAt`), so its
-// figures are the list's own. Its words cover every case: one account cheapest everywhere, no switch along either of the plan's lines, a
-// switch only one way, a switch below the plan, and the receipt's account not the cheapest at the plan.
-import { useMemo, type ReactNode } from "react";
+// amount and monthly deposit (F-131), the plan's years, return and inflation held; where two are within the site's tie threshold (P-01) they
+// are about the same, and a switch is where another becomes clearly cheaper. The map is worked out in the page's worker once the plan has
+// rested (lib/account-map.ts); a point the reader reads is priced here, at that point, as the lists price the fund (`fundWayAt`), once per
+// point. Everything the panel reads is the fund and plan the map shown was worked out for, so a map still shown while the next is worked out
+// never reads another fund. Its words cover every case: one account cheapest everywhere, the plan clearly in one account's area or in the
+// band, a switch one way or both, up or down, a plan with nothing in it, and a fund no account is ranked with.
+import { useCallback, useMemo, type ReactNode } from "react";
 import { invest as c } from "../../copy";
-import type { AccountMap, MapSwitch } from "../../lib/account-map";
+import type { AccountMap, MapField, MapSwitch } from "../../lib/account-map";
 import { fmt } from "../../lib/format";
-import { fundWayAt, planInputs, WHOLE_PLAN, type InvestView, type WayPrice } from "../../lib/invest";
-import { useAccountMapRun } from "../../lib/invest-run";
+import { fundWayAt, planInputs, providersOfInvest, rankByValue, tieShareOf, WHOLE_PLAN, type InvestView, type WayPrice } from "../../lib/invest";
+import { useAccountMapRun, type Asked } from "../../lib/invest-run";
+import type { MapAnswer } from "../../lib/invest-work";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { rankedAt } from "../../lib/stretch";
-import { computed, differenceOf, entered, type SiteValue } from "../../lib/value";
+import { asParameter, carriedBy, computed, differenceOf, entered, type SiteValue } from "../../lib/value";
+import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
-import { ChartReadout, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, Swatch, type RegionArea, type RegionPoint, type RegionTile, type RegionTone, type TabCard } from "../kit";
+import { ChartReadout, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionPoint, type RegionTone, type TabCard } from "../kit";
 import { providerName } from "./sections";
 import { allFunds, type Pick } from "./pair";
 
@@ -36,47 +40,60 @@ export interface MapWords<F> {
 
 /**
  * What the map says, for every case (F-131): `name` gives an account's short name, `fig` writes a switch's figure (plain words on the card,
- * a figure that opens its sheet in the panel), and `house` is the receipt's account.
+ * a figure that opens its sheet in the panel), `house` is the receipt's account and `theta` the tie threshold as the card says it ("0.5%").
  */
-export function mapWords<F>(map: AccountMap, house: string, name: (id: string) => string, fig: (s: MapSwitch, axis: "amount" | "monthly") => F): MapWords<F> {
-  const w = name(map.plan.winner);
+export function mapWords<F>(map: AccountMap, house: string, name: (id: string) => string, fig: (s: MapSwitch, axis: "amount" | "monthly") => F, theta: string): MapWords<F> {
+  const lead = map.plan.lead;
+  if (lead.kind === "empty") return { answer: [m.empty], note: [m.emptyNote], head: [m.headEmpty] };
   const { amount: sa, monthly: sm } = map.switches;
-  const start = map.plan.winner === house ? m.headCheapest(w) : m.headCheaper(w, name(house));
   // "מעל כ־108 אלף ₪", "מתחת לכ־2,400 ₪ בחודש": a switch's side, its figure and, a month's, its unit
   const at = (s: MapSwitch, axis: "amount" | "monthly", today: boolean): (string | F)[] => [s.dir === "up" ? m.above : m.below, fig(s, axis), axis === "monthly" ? ` ${m.perMonth}` : today ? ` ${m.today}` : ""];
-  if (map.winners.length === 1) {
-    return map.plan.winner === house
-      ? { answer: [m.noOther], note: [m.cheapestAll(w)], head: [start, " ", m.headAll] }
-      : { answer: [m.already(w)], note: [m.insteadOf(name(house))], head: [start, " ", m.headAll] };
-  }
   const first = sa ?? sm;
-  if (!first) {
-    return map.plan.winner === house ? { answer: [m.stays(w)], note: [m.staysNote], head: [start, " ", m.headStays] } : { answer: [m.already(w)], note: [m.insteadOf(name(house))], head: [start, " ", m.headStays] };
-  }
   const firstAxis = sa ? "amount" : "monthly";
   const second = sa && sm ? sm : null;
-  const allUp = [sa, sm].every((s) => !s || s.dir === "up");
-  // the second switch: the same account ("או מעל כ־2,400 ₪ בחודש"), or another in words of its own ("וואן זירו זול יותר מעל …")
-  const then = (s: MapSwitch, where: "card" | "head"): (string | F)[] => (s.to === first.to ? [where === "card" ? `${m.or} ` : `, ${m.or} `] : [where === "card" ? `${name(s.to)} ` : `. ${m.cheaperFrom(name(s.to))} `]);
-  const head: (string | F)[] = [start, " ", m.cheaperFrom(name(first.to)), " ", ...at(first, firstAxis, true), ...(second ? [...then(second, "head"), ...at(second, "monthly", true)] : []), "."];
-  const tail = allUp ? m.upTo(w) : m.atPlan(w);
-  if (map.plan.winner !== house) return { answer: [m.already(w)], note: [m.insteadOf(name(house))], head };
+  // the second switch: the same account ("או מעל כ־2,300 ₪ בחודש"), or another in words of its own ("וואן זירו זול יותר בבירור מעל …")
+  const then = (s: MapSwitch, to: string, where: "card" | "head"): (string | F)[] => (s.to === to ? [where === "card" ? `${m.or} ` : `, ${m.or} `] : [where === "card" ? `${name(s.to)} ` : `. ${m.cheaperFrom(name(s.to))} `]);
+  const switchesHead = (f: MapSwitch): (string | F)[] => [m.cheaperFrom(name(f.to)), " ", ...at(f, firstAxis, true), ...(second ? [...then(second, f.to, "head"), ...at(second, "monthly", true)] : []), "."];
+
+  if (lead.kind === "near") {
+    const names = lead.tied.map(name);
+    const start = m.headNear(names);
+    if (!first) return { answer: [m.near(names)], note: [m.nearStays], head: [start, " ", m.headNearStays] };
+    return { answer: [m.near(names)], note: [m.cheaperFrom(name(first.to)), " ", ...at(first, firstAxis, false)], head: [start, " ", ...switchesHead(first)] };
+  }
+
+  const w = name(lead.first);
+  const mine = lead.first === house;
+  const start = mine ? m.headCheapest(w) : m.headCheaper(w, name(house));
+  const other = { answer: [m.already(w)], note: [m.insteadOf(name(house))] };
+  if (map.accounts.length === 1) return mine ? { answer: [m.noOther], note: [m.cheapestAll(w)], head: [start, " ", m.headAll] } : { ...other, head: [start, " ", m.headAll] };
+  if (!first) return mine ? { answer: [m.stays(w)], note: [m.staysNote], head: [start, " ", m.headStays] } : { ...other, head: [start, " ", m.headStays] };
+  const head = [start, " ", ...switchesHead(first)];
+  if (!mine) return { ...other, head };
   return {
     answer: [name(first.to), ", ", ...at(first, firstAxis, false)],
-    note: second ? [...then(second, "card"), ...at(second, "monthly", false), ". ", tail] : [tail],
+    note: second ? [...then(second, first.to, "card"), ...at(second, "monthly", false), ". ", m.clearlyNote(theta)] : [m.clearlyNote(theta)],
     head,
   };
 }
 
-/** The card of the map, in plain words (a card is a tab, and a tab holds no control). */
-export function mapCard(map: AccountMap, view: InvestView, house: string, held: boolean): TabCard {
-  const words = mapWords(map, house, (id) => shortOf(view, id), (s) => fmt.nisRough(s.at));
+/** P-01 as the card says it, and as a figure that opens its source. */
+const thetaText = (bundle: IndicesBundle) => fmt.pct(tieShareOf(bundle) * 100);
+const thetaValue = (bundle: IndicesBundle): SiteValue | null => {
+  const v = bundle.p01.value;
+  return v ? asParameter(bundle.p01, v) : null;
+};
+
+/** The card of the map, in plain words (a card is a tab, and a tab holds no control); where there is no map, why. */
+export function mapCard(answer: MapAnswer, view: InvestView, bundle: IndicesBundle, house: string, held: boolean): TabCard {
+  if (answer.kind === "unranked") return { key: "map", question: m.question, answer: m.unranked, note: m.unrankedWhy[answer.why], held };
+  const words = mapWords(answer.map, house, (id) => shortOf(view, id), (s) => fmt.nisRough(s.at), thetaText(bundle));
   return { key: "map", question: m.question, answer: words.answer.join(""), note: words.note.join(""), held };
 }
 
 const shortOf = (view: InvestView, id: string) => (id === OTHERS ? m.others : (providerName(view, id)?.short ?? id));
 
-/** The id the areas past the fourth are gathered under ("אחרות", charts.md: at most six colours, and here four pastels). */
+/** The id the areas past the fifth are gathered under ("אחרות", charts.md: at most six colours, and here four pastels and a grey). */
 const OTHERS = "others";
 
 /** The plan at a point of the map: its amount and deposit as the reader pointed at them, the rest as the plan has them. */
@@ -84,30 +101,116 @@ function planAt(plan: WorkbenchInputs, p: RegionPoint, today: string): Workbench
   return { ...plan, amountNow: p[0], monthly: p[1], values: { ...plan.values, amount: entered(p[0], "nis", today, m.pointAbout), monthly: entered(p[1], "nis_per_month", today, m.pointAbout) } };
 }
 
-/** The accounts at a point as the lists rank them: the one that costs least and the next, with their figures. */
-function firstTwoAt(view: InvestView, bundle: IndicesBundle, plan: WorkbenchInputs, fund: string): WayPrice[] {
-  const way = fundWayAt({ bundle, index: view.index, plan, fundId: fund });
-  const ranked = Object.values(way?.byHouse ?? {}).filter(rankedAt);
-  return ranked.sort((a, b) => b.valueN - a.valueN || shortOf(view, a.providerId).localeCompare(shortOf(view, b.providerId), "he")).slice(0, 2);
+/** The accounts at a point as the map ranks them (`rankByValue`, the houses' order for a tie), on the data, index and fund the map was
+ *  worked out for: their prices, most left first. */
+function rankedWays(on: Asked<"map">, plan: WorkbenchInputs, houses?: readonly string[]): WayPrice[] {
+  const { bundle } = on;
+  const way = fundWayAt({ bundle, index: on.ask.index, plan, fundId: on.ask.fund, ...(houses ? { houses } : {}) });
+  const ways = providersOfInvest(bundle).flatMap((s) => {
+    const w = way?.byHouse[s.id];
+    return rankedAt(w) ? [w] : [];
+  });
+  return rankByValue(ways, (w) => w.valueN);
 }
 
-export function AccountMapPanel({ view, bundle, plan, pick, map }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; map: AccountMap }) {
-  const today = bundle.today;
-  const fundName = allFunds(view).find((f) => f.rec.id === pick.fund)?.name ?? pick.fund;
-  // the first four winners each their own colour, the plan's first; the rest gathered in a grey
-  const gathered = (id: string) => (map.winners.indexOf(id) >= 4 && map.winners.length > 5 ? OTHERS : id);
-  const ids = [...new Set(map.winners.map(gathered))];
+/** A grid of the map's accounts as the map's areas: each index through `areaOf`, a second in the same area as its first not shown. */
+function gridOf(f: MapField, areaOf: (k: number) => number): RegionGrid {
+  const first = f.first.map((k) => (k < 0 ? -1 : areaOf(k)));
+  return { cols: f.cols, rows: f.rows, first, second: f.second.map((k, n) => (k < 0 || areaOf(k) === first[n] ? -1 : areaOf(k))), ahead: f.ahead };
+}
+
+/** A reading of a point: its head and its rows, the account that leaves the most set apart unless the next is about the same. */
+type Reading = { head: ReactNode; rows: { id: string; swatch?: ReactNode; label: ReactNode; value: ReactNode; wash?: string }[] };
+
+/**
+ * The map's areas: the first four accounts each their own colour, the plan's first; a fifth in the grey under its own name, more than five
+ * gathered there under "אחרות". With each account's tone, and the field and the edge as the areas' grids.
+ */
+function areasOf(view: InvestView, map: AccountMap) {
+  const many = map.accounts.length > 5;
+  const ids = many ? [...map.accounts.slice(0, 4), OTHERS] : map.accounts;
   const tones = regionTones(ids.length);
   const areas: RegionArea[] = ids.map((id, k) => ({ id, name: shortOf(view, id), tone: id === OTHERS ? "other" : (tones[k] ?? "other") }));
-  const toneOf = new Map<string, RegionTone>(areas.map((a) => [a.id, a.tone]));
-  const tiles: RegionTile[] = map.tiles.map((t) => ({ id: gathered(t.id), poly: t.poly }));
-  const edge = map.edge.map((e) => ({ ...e, id: gathered(e.id) }));
+  const areaOf = (k: number) => (many && k >= 4 ? 4 : k);
+  const toneOf = (id: string): RegionTone => {
+    const k = map.accounts.indexOf(id);
+    return (k < 0 ? undefined : areas[areaOf(k)]?.tone) ?? "other";
+  };
+  return { areas, toneOf, field: { ...gridOf(map.field, areaOf), from: map.bottom }, edge: gridOf(map.edge, areaOf) };
+}
 
-  // a switch as a figure: what F-131 reads is the plan and the two accounts' figures there
-  const inputs = planInputs(plan, WHOLE_PLAN);
-  const switchValue = (s: MapSwitch, axis: "amount" | "monthly"): SiteValue => computed(Math.round(s.at), axis === "amount" ? "nis" : "nis_per_month", "F-131", inputs, { today, about: m.switchAbout });
+/**
+ * The reading of a point (the plan's where it is null): the account that leaves the most there and what it leaves, the next and how much
+ * less (both F-65, in today's money), on the fund and plan the map was worked out for; each point priced once, as the pointer comes back.
+ */
+function readerOf(view: InvestView, bundle: IndicesBundle, on: Asked<"map">, toneOf: (id: string) => RegionTone): (p: RegionPoint | null) => Reading {
+  const today = bundle.today;
+  const { plan } = on.ask;
+  const theta = tieShareOf(bundle);
+  const thetaFig = thetaValue(bundle);
+  const swatch = (id: string) => <Swatch shape="box" className={regionSwatch(toneOf(id))} />;
+  const kept = new Map<string, Reading>();
+  return (p) => {
+    const k = p ? `${p[0]}|${p[1]}` : "plan";
+    const had = kept.get(k);
+    if (had) return had;
+    const at = p ? planAt(plan, p, today) : plan;
+    const pointHead = p ? m.pointHead(fmt.nisWhole(p[0]), fmt.nisWhole(p[1])) : `${m.planHead} ${m.pointHead(fmt.nisWhole(plan.amountNow), fmt.nisWhole(plan.monthly))}`;
+    const [w, r] = at.amountNow === 0 && at.monthly === 0 ? [] : rankedWays(on, at);
+    let got: Reading;
+    if (!w) got = { head: pointHead, rows: [{ id: "none", label: m.none, value: null }] };
+    else {
+      const same = !!r && isTie(w.valueN, r.valueN, theta);
+      const head = same ? (
+        <>
+          {pointHead}
+          <span className="font-normal text-muted-foreground">
+            {" · "}
+            {m.sameNote}
+            {thetaFig ? <Num value={thetaFig} display={thetaText(bundle)} /> : thetaText(bundle)}
+          </span>
+        </>
+      ) : (
+        pointHead
+      );
+      const wName = shortOf(view, w.providerId);
+      const rows: Reading["rows"] = [{ id: w.providerId, swatch: swatch(w.providerId), label: wName, value: <>{m.leaves} <Num value={{ ...w.value, about: m.leftAbout(wName) }} display={fmt.nisWhole(Math.round(w.valueN))} /></>, ...(same ? {} : { wash: regionWash(toneOf(w.providerId)) }) }];
+      if (r) {
+        const gap = differenceOf([wName, w.value], [shortOf(view, r.providerId), r.value], "F-65", { today, about: m.gapAbout(wName), round: Math.round, ...carriedBy([w.value, r.value]) });
+        rows.push({ id: r.providerId, swatch: swatch(r.providerId), label: shortOf(view, r.providerId), value: <>{m.leaves} <Num value={gap} display={fmt.nisWhole(gap.value as number)} /> {m.less}</> });
+      } else rows.push({ id: "only", label: m.onlyOne, value: null });
+      got = { head, rows };
+    }
+    kept.set(k, got);
+    return got;
+  };
+}
+
+/** The panel where there is no map: why. */
+export function NoMapPanel({ why }: { why: "open-rule" | "unpriced" }) {
+  return <PanelHead kicker={m.question} sub={<p className="text-sm text-muted-foreground">{m.unrankedWhy[why]}.</p>}>{m.unranked}</PanelHead>;
+}
+
+export function AccountMapPanel({ view, bundle, house, map, on }: { view: InvestView; bundle: IndicesBundle; house: string; map: AccountMap; on: Asked<"map"> }) {
+  const today = bundle.today;
+  const { plan, fund } = on.ask;
+  const fundName = allFunds(view).find((f) => f.rec.id === fund)?.name ?? fund;
+  const thetaFig = thetaValue(bundle);
+  const thetaNode = thetaFig ? <Num value={thetaFig} display={thetaText(bundle)} /> : thetaText(bundle);
+
+  const { areas, toneOf, field, edge } = useMemo(() => areasOf(view, map), [view, map]);
+
+  // a switch as a figure: F-131 at the point of the plan's line where it is, resting on the two accounts' runs there (with what they carry)
+  const from = map.plan.lead.kind === "clear" ? map.plan.lead.first : map.plan.lead.kind === "near" ? map.plan.lead.tied[0] : null;
+  const switchValue = (s: MapSwitch, axis: "amount" | "monthly"): SiteValue => {
+    const point: RegionPoint = axis === "amount" ? [s.at, plan.monthly] : [plan.amountNow, s.at];
+    const ways = rankedWays(on, planAt(plan, point, today), from ? [from, s.to] : [s.to]);
+    const runs = ways.map((w) => w.value);
+    const inputs = { ...planInputs(plan, WHOLE_PLAN), ...Object.fromEntries(ways.map((w) => [m.leftAbout(shortOf(view, w.providerId)), w.value])) };
+    return computed(Math.round(s.at), axis === "amount" ? "nis" : "nis_per_month", "F-131", inputs, { today, about: m.switchAbout, ...carriedBy(runs) });
+  };
   const figure = (s: MapSwitch, axis: "amount" | "monthly") => <Num value={switchValue(s, axis)} display={fmt.nisRough(s.at)} />;
-  const words = mapWords<ReactNode>(map, pick.house, (id) => shortOf(view, id), figure);
+  const words = mapWords<ReactNode>(map, house, (id) => shortOf(view, id), figure, thetaText(bundle));
   const guides = (["amount", "monthly"] as const).flatMap((axis) => {
     const s = map.switches[axis];
     if (!s) return [];
@@ -115,21 +218,11 @@ export function AccountMapPanel({ view, bundle, plan, pick, map }: { view: Inves
     return [{ axis: axis === "amount" ? ("x" as const) : ("y" as const), at: s.at, label: { text: `${m.about}${fmt.nisRough(s.at)}${unit}`, node: <>{m.about}{figure(s, axis)}{unit}</> } }];
   });
 
-  const swatch = (id: string) => <Swatch shape="box" className={regionSwatch(toneOf.get(gathered(id)) ?? "other")} />;
-  // a reading: the point's two cheapest accounts, the first's fees and how much more the second costs
-  const reading = (p: RegionPoint | null): { head: ReactNode; rows: Row[] } => {
-    const at = p ? planAt(plan, p, today) : plan;
-    const head = p ? m.pointHead(fmt.nisWhole(p[0]), fmt.nisWhole(p[1])) : `${m.planHead} ${m.pointHead(fmt.nisWhole(plan.amountNow), fmt.nisWhole(plan.monthly))}`;
-    if (at.amountNow === 0 && at.monthly === 0) return { head, rows: [{ id: "none", label: m.none, value: null }] };
-    const [w, r] = firstTwoAt(view, bundle, at, pick.fund);
-    if (!w) return { head, rows: [] };
-    const rows: Row[] = [{ id: w.providerId, swatch: swatch(w.providerId), label: `${shortOf(view, w.providerId)} ${m.cheapest}`, value: <>{m.fees} <Num value={w.cost} display={fmt.nisWhole(Math.round(w.accountCost))} /></> }];
-    if (r) {
-      const gap = differenceOf([shortOf(view, w.providerId), w.value], [shortOf(view, r.providerId), r.value], "F-131", { today, about: m.gapAbout(shortOf(view, w.providerId)), round: Math.round });
-      rows.push({ id: r.providerId, swatch: swatch(r.providerId), label: shortOf(view, r.providerId), value: <><Num value={gap} display={fmt.nisWhole(gap.value as number)} /> {m.more}</> });
-    } else rows.push({ id: "only", label: m.onlyOne, value: null });
-    return { head, rows };
-  };
+  const reading = useMemo(() => readerOf(view, bundle, on, toneOf), [view, bundle, on, toneOf]);
+  const renderBelow = useCallback((p: RegionPoint | null) => {
+    const r = reading(p);
+    return <ChartReadout title={r.head} rows={r.rows} />;
+  }, [reading]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -139,19 +232,24 @@ export function AccountMapPanel({ view, bundle, plan, pick, map }: { view: Inves
             {m.kicker} <MixedName>{fundName}</MixedName>
           </>
         }
-        sub={<p className="text-sm text-muted-foreground">{m.what(fmt.years(plan.years))}</p>}
+        sub={
+          <p className="text-sm text-muted-foreground">
+            {m.what(plan.years)}
+            {thetaNode}.
+          </p>
+        }
       >
         {words.head}
       </PanelHead>
       {/* a new map is another chart: a point kept on the old one goes with it */}
       <RegionMap
-        key={`${pick.fund}|${map.plan.amount}|${map.plan.monthly}|${map.max.amount}|${map.max.monthly}`}
+        key={`${fund}|${map.plan.amount}|${map.plan.monthly}|${map.max.amount}|${map.max.monthly}`}
         max={{ x: map.max.amount, y: map.max.monthly }}
         areas={areas}
-        tiles={tiles}
-        borders={map.borders}
+        field={field}
         edge={edge}
         edgeLabel={(id) => ({ text: m.noDeposit(shortOf(view, id)) })}
+        bandLabel={m.same}
         mark={{ at: [map.plan.amount, map.plan.monthly], label: { text: m.plan } }}
         guides={guides}
         xTitle={m.xTitle}
@@ -165,7 +263,7 @@ export function AccountMapPanel({ view, bundle, plan, pick, map }: { view: Inves
             <span className="flex flex-col gap-0.5">
               <span className="font-semibold">{r.head}</span>
               {r.rows.map((row) => (
-                <span key={row.id} className="flex items-center gap-1.5">
+                <span key={row.id} className={row.wash ? `flex items-center gap-1.5 rounded-sm px-1 font-semibold ${row.wash}` : "flex items-center gap-1.5 px-1"}>
                   {row.swatch}
                   <span>{row.label}</span>
                   {row.value && <span>· {row.value}</span>}
@@ -174,17 +272,11 @@ export function AccountMapPanel({ view, bundle, plan, pick, map }: { view: Inves
             </span>
           );
         }}
-        renderBelow={(p) => {
-          const r = reading(p);
-          return <ChartReadout title={r.head} rows={r.rows.map((row) => ({ id: row.id, swatch: row.swatch, label: row.label, value: row.value }))} />;
-        }}
+        renderBelow={renderBelow}
       />
     </div>
   );
 }
-
-/** A row of a reading: an account with its colour and its figure, or a line of words. */
-type Row = { id: string; swatch?: ReactNode; label: ReactNode; value: ReactNode };
 
 /** The step a read point is rounded to: a power of ten about a fiftieth of the axis (1,000 ₪ on 200,000, 10 ₪ on 4,000). */
 const snapOf = (max: number) => 10 ** Math.floor(Math.log10(max / 50));

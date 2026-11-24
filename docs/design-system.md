@@ -992,9 +992,11 @@ in the kit fits is added to the kit.
 - `AmountLanes`: the lanes under a `ShareChart`, a fee a lane.
 - `PeriodTrack`: a deal's periods as stops on one line; not a control.
 - `ChangeChart`: what moves the result, every plan number changed by the same share.
-- `RegionMap`: which of a few options holds at each point of a plane of two amounts (F-131: the cheapest account over today's amount and
-  the monthly deposit), not for one option's value over two amounts. Up to four areas in their own light colour, the rest gathered in a
-  grey; a value at the bottom edge with no range above it is its own thick line.
+- `RegionMap`: which of a few options leads at each point of a plane of two amounts, and by how much (F-131: the cheapest account over
+  today's amount and the monthly deposit), not for one option's value over two amounts. Up to four areas in their own light colour, a
+  fifth in a grey under its own name, more than five gathered in that grey as "אחרות"; where two options are close their colours blend, so
+  areas meet in a soft band, never at a drawn border; a value at the bottom edge with no range above it is its own thick line, blended
+  the same way.
 - `PileYears`, `PileStory`: a sum built up step by step where the reader picks the moment; not for comparing products. A sixth slot,
   `other`, only for a choice the person really has.
 - `StairsChart`, `StairsTable`, `StairsSteps`: the stairs, how each change adds up (guard 10). The first column is the start, grey with a

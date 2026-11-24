@@ -382,7 +382,7 @@ export function providersOfInvest(bundle: Pick<IndicesBundle, "snapshots">): rea
   return out;
 }
 
-export const providerInfo = (s: FeesSnapshot): ProviderInfo => {
+const providerInfo = (s: FeesSnapshot): ProviderInfo => {
   // an account the person saved as a deal: no company page of its own
   const custom = isDealProviderId(s.id);
   return { id: s.id, name: gershayim(s.provider.name_he), short: custom ? s.provider.name_he : shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", taxService: s.provider.israeli_tax_service === true, // every bank and broker on this page has a company page, a foreign one too

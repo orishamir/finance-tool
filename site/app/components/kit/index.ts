@@ -102,4 +102,4 @@ export { AskValues } from "./ask-values";
 export { RangeMenu, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet } from "./value-menus";
 export { OnOffSwitch, Switch } from "./switch";
 export { ReadForBand, type ReadPick } from "./read-for-band";
-export { RegionMap, regionSwatch, regionTones, type RegionArea, type RegionPoint, type RegionTile, type RegionTone } from "./region-map";
+export { RegionMap, regionSwatch, regionTones, regionWash, type RegionArea, type RegionGrid, type RegionPoint, type RegionTone } from "./region-map";

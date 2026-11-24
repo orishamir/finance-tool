@@ -10,7 +10,7 @@ import { fmt } from "../../lib/format";
 import type { InvestView } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { Card, MixedName, TabCards, type TabCard } from "../kit";
-import { AccountMapPanel, mapCard, useAccountMap } from "./account-map";
+import { AccountMapPanel, mapCard, NoMapPanel, useAccountMap } from "./account-map";
 import { changesAt, PlanChanges, shareWord, usePlanChanges } from "./knobs";
 import { DollarSection, dollarSwing, useDollarCase, type DollarCase } from "./dollar";
 import { StairsSection, useStairs } from "./stairs";
@@ -62,7 +62,11 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
   if (!pick || !pc || !verdict || changes === "waiting" || mapRun === "waiting") return null;
 
   const tabs: (TabCard & { key: Key; panel: () => ReactNode })[] = [];
-  if (mapRun) tabs.push({ ...mapCard(mapRun.map, view, pick.house, mapRun.held), key: "map", panel: () => <AccountMapPanel view={view} bundle={bundle} plan={mapRun.on.ask.plan} pick={pick} map={mapRun.map} /> });
+  // the map of the fund and plan it was worked out for, while the next one is worked out; where no account is ranked with the fund, why
+  if (mapRun) {
+    const { answer, on, held } = mapRun;
+    tabs.push({ ...mapCard(answer, view, bundle, pick.house, held), key: "map", panel: () => (answer.kind === "map" ? <AccountMapPanel view={view} bundle={on.bundle} house={pick.house} map={answer.map} on={on} /> : <NoMapPanel why={answer.why} />) });
+  }
   if (changes) {
     const { run, held } = changes;
     const rows = changesAt(run, at, share, today);

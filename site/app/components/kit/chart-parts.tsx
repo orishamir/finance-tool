@@ -135,6 +135,8 @@ export interface ReadoutRow {
   label: ReactNode;
   /** Usually a `Num`. */
   value: ReactNode;
+  /** The row the reading is about, set apart: a background in its series' colour (a class such as `regionWash`'s), its words bold. */
+  wash?: string;
 }
 
 /** The values of every series at the hovered year (or at the horizon): a head line with the year, then one row per series. */
@@ -147,7 +149,7 @@ export function ChartReadout({ title, rows }: { title: ReactNode; rows: ReadoutR
         <dd />
       </div>
       {rows.map((r) => (
-        <div key={r.id} className="readout-row">
+        <div key={r.id} className={r.wash ? cx("readout-row rounded-sm px-2 font-semibold [&_dt]:text-foreground", r.wash) : "readout-row"}>
           <dt className={r.swatch ? "flex items-center gap-2" : undefined}>
             {r.swatch}
             {r.label}

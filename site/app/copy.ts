@@ -817,7 +817,7 @@ export const formulaNames: Record<string, string> = {
   "F-03": "מדד המחירים לאורך התוכנית",
   "F-129": "שורות הקבלה בשקלים של העתיד",
   "F-130": "מה שהאינפלציה מורידה, עד הכסף של היום",
-  "F-131": "איזה חשבון הכי זול בכל סכום היום והפקדה חודשית, ואיפה זה מתחלף",
+  "F-131": "איזה חשבון הכי זול בכל סכום היום והפקדה חודשית, ואיפה חשבון אחר זול יותר בבירור",
   "F-05": "ההפקדות לאורך הזמן",
   "F-06": "ערך בכסף של היום",
   "F-106": "סך ההפקדות בכסף של היום",
@@ -942,14 +942,16 @@ export const formulaKeys: Record<string, { lines?: string[]; symbols: [tex: stri
     ],
   },
   "F-131": {
-    lines: ["החשבון שמשאיר הכי הרבה, בכל סכום היום והפקדה חודשית", "הגבול בין שני חשבונות: שם שניהם משאירים אותו סכום"],
+    lines: ["החשבון שמשאיר הכי הרבה, בכל סכום היום והפקדה חודשית", "כמה הוא לפני החשבון הבא, ביחס לסף התיקו: 0 כשהם שווים, 1 מהסף והלאה"],
     symbols: [
-      ["W(a, m)", "החשבון שמשאיר הכי הרבה, כלומר גובה הכי מעט"],
+      ["p_1(a, m)", "החשבון שמשאיר הכי הרבה, כלומר גובה הכי מעט"],
+      ["p_2", "החשבון הבא אחריו"],
+      ["s(a, m)", "כמה הראשון לפני הבא: מתחת ל־1 הם בערך אותו דבר"],
+      ["θ", "סף התיקו של האתר"],
       ["V^{real}_T", "מה שנשאר בסוף, אחרי העמלות והמס, בכסף של היום"],
       ["a", "סכום היום"],
       ["m", "ההפקדה החודשית"],
       ["p", "חשבון ניירות ערך"],
-      ["q", "חשבון אחר"],
       ["u", "הקרן שבקבלה"],
     ],
   },
@@ -4163,8 +4165,9 @@ export const invest = {
     /** On the open card below 1024 px, where the cards stand over one another and no pointer joins the open one to its panel. */
     openWord: "פתוח למטה",
     /**
-     * Which account costs least at each mix of today's amount and monthly deposit (F-131). A figure said roughly comes as `rough`
-     * ("108 אלף ₪", fmt.nisRough) and is said after "כ־".
+     * Which account costs least with the pair's fund at each mix of today's amount and monthly deposit (F-131), and where another becomes
+     * clearly cheaper: by the site's tie threshold or more (P-01, `theta`, said as "0.5%"); within it two accounts are "about the same". A
+     * figure said roughly comes as `rough` ("108 אלף ₪", fmt.nisRough) and is said after "כ־".
      */
     map: {
       question: "מתי חשבון אחר זול יותר?",
@@ -4177,45 +4180,60 @@ export const invest = {
       about: "כ־\u2060",
       perMonth: "בחודש",
       today: "היום",
-      /** The card's line after its switches: up, "עד שם פסגות"; a switch down, "בתוכנית שלכם: פסגות". */
-      upTo: (w: string) => `עד שם ${w}`,
-      atPlan: (w: string) => `בתוכנית שלכם: ${w}`,
+      /** "בערך אותו דבר": two accounts within the tie threshold of each other, in the words on the map, the card and the readings. */
+      same: "בערך אותו דבר",
+      /** The card's line after a switch: what "clearly cheaper" means. */
+      clearlyNote: (theta: string) => `זול יותר בבירור: בהפרש של ${theta} לפחות`,
       /** The card's answer and line where the receipt's account is not the cheapest at the plan. */
       already: (w: string) => `${w}, כבר בתוכנית שלכם`,
       insteadOf: (house: string) => `במקום ${house}`,
       /** The card where one account is cheapest at every point of the map. */
       noOther: "אף חשבון",
       cheapestAll: (w: string) => `${w} הכי זול בכל המפה`,
-      /** The card where no switch comes along either of the plan's lines. */
+      /** The card where the plan's account is not clearly beaten along either of the plan's lines. */
       stays: (w: string) => `${w} נשאר הכי זול`,
-      staysNote: "גם בסכום אחר היום, או בהפקדה חודשית אחרת",
-      /** The headline's start: the plan's account, cheapest or cheaper than the receipt's. */
+      staysNote: "אף חשבון לא זול יותר בבירור בסכום אחר",
+      /** The card where the plan is in the band: the accounts about the same, and, where one becomes clearly cheaper, where. */
+      near: (names: string[]) => `${andList(names)} בערך אותו דבר`,
+      nearStays: "גם בסכומים אחרים",
+      /** The card of a plan with nothing in it. */
+      empty: "אין כסף בתוכנית",
+      emptyNote: "בלי כסף אין עמלות",
+      /** The card where no account is ranked with the fund, by why. */
+      unranked: "אין מפה לקרן הזו",
+      unrankedWhy: { "open-rule": "המס עליה תלוי בשאלה פתוחה, ולכן האתר לא מדרג חשבונות איתה", unpriced: "אף חשבון לא מדורג עם הקרן הזו" },
+      /** The headline's start: the plan's account cheapest, cheaper than the receipt's, or the accounts about the same; or no money. */
       headCheapest: (w: string) => `בתוכנית שלכם ${w} הכי זול.`,
       headCheaper: (w: string, house: string) => `בתוכנית שלכם ${w} זול יותר ${fromPrefix(house)}${house}.`,
-      /** "אי.בי.אי זול יותר מעל כ־108 אלף ₪ היום", then ", או …" where the same account is cheaper the other way, or a sentence of its own
-       *  where another is. */
-      cheaperFrom: (to: string) => `${to} זול יותר`,
+      headNear: (names: string[]) => `בתוכנית שלכם ${andList(names)} בערך אותו דבר.`,
+      headEmpty: "בתוכנית שלכם אין כסף, ולכן אין עמלות. המפה מראה איזה חשבון זול יותר בכל צירוף אחר.",
+      /** "אי.בי.אי זול יותר בבירור מעל כ־108 אלף ₪ היום", then ", או …" where the same account is clearly cheaper the other way, or a
+       *  sentence of its own where another is. */
+      cheaperFrom: (to: string) => `${to} זול יותר בבירור`,
       or: "או",
-      headStays: "הוא נשאר הכי זול גם בסכום אחר היום, או בהפקדה חודשית אחרת.",
+      headStays: "אף חשבון אחר לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
+      headNearStays: "אף אחד מהם לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
       headAll: "הוא הכי זול בכל צירוף במפה.",
-      /** The line under the headline: what the map is. */
-      what: (years: string) => `החשבון שגובה הכי מעט בכל צירוף של סכום היום והפקדה חודשית, עם אותה קרן ו־${years}.`,
+      /** The line under the headline: what the map is, and what its blended colours mean (θ, P-01, as a figure). */
+      what: (years: number) => `החשבון שגובה הכי מעט עם הקרן הזו, בכל צירוף של סכום היום והפקדה חודשית, ${inYears(years)}. איפה שהצבעים מתערבבים, ההפרש קטן מ־`,
       xTitle: "סכום היום (₪)",
       yTitle: "הפקדה חודשית (₪)",
       plan: "התוכנית שלכם",
       noDeposit: (w: string) => `בלי הפקדה חודשית: ${w}`,
       others: "אחרות",
-      /** The reading at a point: its head, and the two accounts that cost least there. */
+      /** The reading at a point: its head, the account that leaves the most and what it leaves, the next and how much less it leaves. */
       pointHead: (amount: string, monthly: string) => `${amount} היום, ${monthly} בחודש`,
       planHead: "התוכנית שלכם:",
-      cheapest: "הכי זול",
-      fees: "עמלות החשבון",
-      more: "יותר",
+      leaves: "נשארים",
+      less: "פחות",
+      /** Where the two are within the tie threshold: neither is set apart. */
+      sameNote: "בערך אותו דבר: ההפרש קטן מ־",
       none: "בלי כסף אין עמלות: כל החשבונות משאירים 0 ₪.",
       onlyOne: "אין חשבון אחר שמוכר את הקרן",
       /** The sheets of the map's figures. */
-      switchAbout: "הסכום שבו חשבון אחר נעשה זול יותר",
-      gapAbout: (w: string) => `כמה יותר עולה החשבון לעומת ${w}`,
+      switchAbout: "הסכום שממנו חשבון אחר זול יותר בבירור",
+      leftAbout: (w: string) => `מה שנשאר בחשבון ${w}, בכסף של היום`,
+      gapAbout: (w: string) => `כמה פחות נשאר בחשבון הזה מאשר ב${w}`,
       pointAbout: "הנקודה שבחרתם במפה",
     },
     sens: {
@@ -5278,7 +5296,7 @@ export const kit = {
       Receipt: "קבלה: דף עם קצה תחתון קרוע, שורות של שם וסכום עם קו נקודות ביניהם, והחלקים של שורה מוזחים מתחתיה מאחורי קו בצבע שלה: עמלות של חשבון עם הסכום שלהן, עמלות של קרן עם השיעור שלהן. קו כפול לפני הסכום הסופי, וקו מקווקו לפני מה שנובע ממנו. כרטיס (ReceiptTicket): אותן שורות לרוחב עמודה רחבה, בשלושה חלקים: החשבון בצד אחד, הסכום שנשאר באמצע, הקרן בצד השני, ושורה מתחתיהם; חריצים עגולים במקום שבו קווי האמצע פוגשים את הקצוות. בטלפון, כשהקבלה למעלה מחוץ למסך, תלוש שלה עם קצה עליון קרוע נצמד לתחתית המסך: כמה נשאר, והקשה עליו מחזירה לקבלה.",
       ChipList: "רשימה שאפשר לבחור בה, להוסיף לה, לשנות שם ולמחוק: מטרות. הפריט הנבחר מקבל עיפרון ופח; גרירה רק כשיש onMove; הפריט האחרון (add) מוסיף.",
       KnobStrip: "מספרי התוכנית שנשארים על המסך, לעמוד שנועד לשחק בו. כמחוונים: שני טורים במחשב, אחד בטלפון, ומספר שלא עובר בדיקה מקבל את ההודעה שלו בקצה שורת השם, במקום כפתור האיפוס. כאריחים: כל מספר באריח, ולחיצה על אריח פותחת מעליו חלון עם התיבה, האיפוס (↺) והמחוון, בלי להזיז שום דבר בעמוד.",
-      RegionMap: "מפה של שטחים על שני סכומים: איזו אפשרות מתקיימת בכל נקודה. לכל אפשרות שטח בצבע בהיר משלה עם השם שלה בתוכו, וקו בכל גבול. הנקודה שלכם מסומנת, עם קווים מקווקווים ממנה אל הגבול הקרוב בכל ציר. ערך אחד בתחתית (בלי טווח מעליו) הוא קו עבה בצבע של מה שמתקיים בו. העכבר קורא כל נקודה וקופסה הולכת איתו; לחיצה או הקשה משאירה נקודה והקריאה שמתחת למפה היא שלה; הקשה עליה או Escape משחררים אותה; החצים מזיזים אותה.",
+      RegionMap: "מפה של שטחים על שני סכומים: איזו אפשרות מובילה בכל נקודה, ובכמה. לכל אפשרות שטח בצבע בהיר משלה עם השם שלה בתוכו. איפה ששתי אפשרויות קרובות, הצבעים שלהן מתערבבים, כך שבין שני שטחים עובר פס רך ולא קו, ובתוכו כתוב שהן בערך אותו דבר. הנקודה שלכם מסומנת, עם קווים מקווקווים ממנה לאורך כל ציר. ערך אחד בתחתית (בלי טווח מעליו) הוא קו עבה בצבעים של מה שמתקיים בו. העכבר קורא כל נקודה וקופסה הולכת איתו; לחיצה או הקשה משאירה נקודה והקריאה שמתחת למפה היא שלה; הקשה עליה או Escape משחררים אותה; החצים מזיזים אותה. לחיצה על שם או על פריט במקרא מבליטה את השטח שלו.",
       ChangeChart: "כל מספר בתוכנית משתנה באותו אחוז, קו לכל מספר על גרף אחד, משמאל (פחות) לימין (יותר). סמן שגוררים או בוחרים קורא את כל הקווים, והטבלה אומרת לכל מספר: לפני, אחרי, מה נשאר וההפרש.",
       PileBar: "הסיפור של הכסף לפי שנת המשיכה: עמודה לכל שנה עם מה שנשאר בידיים מעליה, השנה שנבחרה והשנה שמשווים אליה בצבע מלא, וחץ עם מה שמשתנה אם מחכים. מתחת, השנה שנבחרה כפס אחד משמאל: מה שהופקד והתשואה, ובקצה מה שדמי הניהול והמס לקחו, וסוגר מתחת למה שנשאר.",
       StairsChart: "מדרגות: מה שנשאר בסוף על הציר האנכי, סדר הצעדים משמאל לימין. הראשונה אפורה עם סימן שבר כי הציר לא מתחיל באפס; כל מדרגה צפה בגוון של מה ששונה, ואדומה כשהיא מפסידה. שנלקחה: מלאה; מוצעת: בהירה ומוקפת; על כלל פתוח: חלולה. מתחתיה טבלה באותן עמודות (מחשב) או רשימת צעדים (טלפון).",
@@ -5388,7 +5406,7 @@ export const kit = {
     },
     sample: {
       /** The region map: three made-up options, its axes and its point. */
-      regions: { a: "אפשרות א", b: "אפשרות ב", c: "אפשרות ג", x: "סכום היום (₪)", y: "הפקדה חודשית (₪)", mark: "הנקודה שלכם", edge: (name: string) => `בלי הפקדה חודשית: ${name}`, point: (x: string, y: string) => `${x} היום, ${y} בחודש` },
+      regions: { a: "אפשרות א", b: "אפשרות ב", c: "אפשרות ג", x: "סכום היום (₪)", y: "הפקדה חודשית (₪)", mark: "הנקודה שלכם", edge: (name: string) => `בלי הפקדה חודשית: ${name}`, same: "בערך אותו דבר", point: (x: string, y: string) => `${x} היום, ${y} בחודש` },
       /** The cases and parts (ConditionBand, PartChip, SlimFee, Toolbox, AskValues, the value menus, ReadForBand): a deal's words, made up. */
       cases: {
         trade: "עמלת קנייה ומכירה",

@@ -1,8 +1,11 @@
 // The account map (F-131) on the collected data: what must hold whatever the data says, so a routine refresh never breaks it.
 import { describe, expect, it } from "vitest";
-import { bundle, plan as fixturePlan } from "../components/invest/render-fixtures";
+import { bundle, lists, plan as fixturePlan } from "../components/invest/render-fixtures";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
-import { buildInvest, indexById } from "./invest";
+import { mapCard } from "../components/invest/account-map";
+import { invest } from "../copy";
+import type { AccountMap } from "./account-map";
+import { buildInvest, indexById, knownIndices, tieShareOf } from "./invest";
 import { leftWith, work } from "./invest-work";
 import { rankedAt } from "./stretch";
 import { entered } from "./value";
@@ -14,52 +17,122 @@ function need<T>(x: T | null | undefined, what: string): T {
   return x;
 }
 const t = bundle.today;
+const theta = tieShareOf(bundle);
 const planAt = (amount: number, monthly: number, years: number): WorkbenchInputs => ({ ...fixturePlan, amountNow: amount, monthly, years, values: { ...fixturePlan.values, amount: entered(amount, "nis", t), monthly: entered(monthly, "nis_per_month", t), years: entered(years, "years", t) } });
+const firstOf = (map: AccountMap) => (map.plan.lead.kind === "clear" ? map.plan.lead.first : map.plan.lead.kind === "near" ? map.plan.lead.tied[0] : null);
+/** The first account and its lead at a point, from what every account leaves there, sorted here. */
+function exactAt(left: ReadonlyMap<string, number>) {
+  const [p, q] = [...left].sort((x, y) => y[1] - x[1]);
+  return { first: p?.[0], ahead: p && q ? Math.min(1, (p[1] - q[1]) / p[1] / theta) : 1 };
+}
 
 for (const [slug, plan] of [["index-sp500", planAt(10_000, 500, 10)], ["index-sp500", planAt(150_000, 3000, 20)], ["index-ta125", planAt(10_000, 500, 10)]] as const) {
   describe(`${slug} at ${plan.amountNow} ₪ and ${plan.monthly} ₪ a month for ${plan.years} years`, () => {
     const index = need(indexById(bundle, slug), slug);
     const view = buildInvest({ bundle, index, plan });
     const pick = need(pickOfHeadline(view), "the page's pair");
-    const map = need(work.map(bundle, { index, plan, fund: pick.fund }), "the map");
+    const answer = work.map(bundle, { index, plan, fund: pick.fund });
+    const map = need(answer.kind === "map" ? answer.map : null, "the map");
     const leftAt = leftWith(bundle, index, plan, pick.fund);
 
-    it("names, at the plan, the account the account list ranks first for the fund", () => {
-      const fund = need(allFunds(view).find((f) => f.rec.id === pick.fund), "the pair's fund");
-      const left = (id: string) => {
-        const at = fund.byHouse[id];
-        return rankedAt(at) ? at.valueN : -Infinity;
-      };
-      const ranked = view.providers.filter((p) => rankedAt(fund.byHouse[p.id])).sort((a, b) => left(b.id) - left(a.id) || a.short.localeCompare(b.short, "he"));
-      expect(map.plan.winner).toBe(ranked[0]?.id);
+    it("with the headline's fund, names at the plan the account the account list shows first", () => {
+      const out = lists(view, bundle, plan, pick);
+      const ranked = view.providers.filter((p) => allFunds(view).some((f) => rankedAt(f.byHouse[p.id])));
+      const at = (id: string) => out.indexOf(`data-pick-key="${id}"`);
+      const shownFirst = [...ranked].sort((a, b) => at(a.id) - at(b.id))[0]?.id;
+      expect(firstOf(map)).toBe(shownFirst);
     });
 
-    it("draws every border where the two accounts leave the same", () => {
-      const pts = map.borders.flatMap((b) => b.points.map((p) => ({ a: b.a, b: b.b, p })));
-      // every few points, to keep the run short
-      for (const { a, b, p } of pts.filter((_, k) => k % 5 === 0)) {
-        const left = leftAt(p[0], p[1], [a, b]);
-        expect(Math.abs(need(left.get(a), a) - need(left.get(b), b))).toBeLessThan(0.5);
+    it("with another fund, names at the plan the account that leaves the most with that fund", () => {
+      const other = need(
+        allFunds(view).find((f) => f.rec.id !== pick.fund && Object.values(f.byHouse).filter(rankedAt).length > 1),
+        "a fund other than the headline's, ranked at two accounts",
+      );
+      const got = work.map(bundle, { index, plan, fund: other.rec.id });
+      const otherMap = need(got.kind === "map" ? got.map : null, "the other fund's map");
+      const values = Object.values(other.byHouse).filter(rankedAt).sort((a, b) => b.valueN - a.valueN);
+      const top = need(values[0], "the other fund's first account");
+      const lead = otherMap.plan.lead;
+      if (lead.kind === "near") expect(lead.tied).toContain(top.providerId);
+      else expect(lead).toEqual({ kind: "clear", first: top.providerId });
+      // every account within θ of the first is among those the map names about the same, and no other
+      const within = values.filter((w) => (top.valueN - w.valueN) / top.valueN < theta).map((w) => w.providerId);
+      expect(lead.kind === "near" ? [...lead.tied].sort() : [top.providerId]).toEqual([...within].sort());
+    });
+
+    it("reads its areas as the accounts' own figures do, at points across the map", () => {
+      const wrong: string[] = [];
+      for (const [fi, fj] of [[0.07, 0.05], [0.2, 0.6], [0.35, 0.3], [0.5, 0.9], [0.66, 0.15], [0.8, 0.45], [0.93, 0.75], [0.12, 0.95]] as const) {
+        const i = Math.round(fi * (map.field.cols - 1));
+        const j = Math.round(fj * (map.field.rows - 1));
+        const a = (map.max.amount * i) / (map.field.cols - 1);
+        const m = map.bottom + ((map.max.monthly - map.bottom) * j) / (map.field.rows - 1);
+        const want = exactAt(leftAt(a, m, null));
+        const k = j * map.field.cols + i;
+        const got = { first: map.accounts[map.field.first[k] ?? -1], ahead: map.field.ahead[k] ?? NaN };
+        if ((want.ahead > 0.33 && got.first !== want.first) || Math.abs(got.ahead - want.ahead) > 0.15) wrong.push(`(${a}, ${m}): ${JSON.stringify(got)} against ${JSON.stringify(want)}`);
       }
+      expect(wrong).toEqual([]);
     });
 
-    it("starts the line for no monthly deposit at 0, and changes its account exactly where the cheapest one there changes", () => {
-      const at = (amount: number) => {
-        const left = leftAt(amount, 0, null);
-        return [...left].sort((x, y) => y[1] - x[1])[0]?.[0];
-      };
-      const first = need(map.edge[0], "the edge's first stretch");
-      expect(first.from).toBe(0);
-      expect(map.edge.at(-1)?.to).toBe(map.max.amount);
-      // the account just above 0 is the first stretch's (at 0 itself every account leaves 0): at a thousandth of the map's width, about a
-      // pixel; nearer 0 the accounts' figures differ by agorot on a few shekels, which no drawing can show
-      expect(first.id).toBe(at(map.max.amount / 1000));
-      map.edge.slice(1).forEach((e, k) => {
-        const before = need(map.edge[k], "the stretch before");
-        expect(before.to).toBe(e.from);
-        expect(at(e.from * 0.995)).toBe(before.id);
-        expect(at(e.from * 1.005)).toBe(e.id);
-      });
+    it("reads the line for no monthly deposit as the accounts do, from just above 0", () => {
+      const wrong: string[] = [];
+      const n = map.edge.cols - 1;
+      for (let i = 0; i <= n; i += 6) {
+        const a = Math.max(map.max.amount / 1000, (map.max.amount * i) / n);
+        const want = exactAt(leftAt(a, 0, null));
+        const got = { first: map.accounts[map.edge.first[i] ?? -1], ahead: map.edge.ahead[i] ?? NaN };
+        if ((want.ahead > 0.33 && got.first !== want.first) || Math.abs(got.ahead - want.ahead) > 0.15) wrong.push(`${a}: ${JSON.stringify(got)} against ${JSON.stringify(want)}`);
+      }
+      expect(wrong).toEqual([]);
+    });
+
+    it("a switch is where an account is first and θ ahead of the plan's accounts but itself, and stays so at points past it", () => {
+      const lead = map.plan.lead;
+      const tied = lead.kind === "near" ? lead.tied : lead.kind === "clear" ? [lead.first] : [];
+      for (const [axis, s] of Object.entries(map.switches)) {
+        if (!s) continue;
+        const at = (v: number) => (axis === "amount" ? leftAt(v, plan.monthly, null) : leftAt(plan.amountNow, v, null));
+        for (const f of [1.001, 1.05, 1.2]) {
+          const v = s.dir === "up" ? s.at * f : s.at / f;
+          const left = at(v);
+          const q = need(exactAt(left).first, "the first account");
+          const others = tied.filter((id) => id !== q);
+          expect(others.length, `${axis} at ${v}`).toBeGreaterThan(0);
+          const vq = need(left.get(q), q);
+          for (const id of others) expect((vq - (left.get(id) ?? 0)) / vq, `${axis} at ${v}: ${q} against ${id}`).toBeGreaterThanOrEqual(theta);
+        }
+      }
     });
   });
 }
+
+describe("a fund no account is ranked with", () => {
+  it("has no map, and says its tax rests on an open rule (F-118)", () => {
+    const plan = planAt(10_000, 500, 10);
+    const found = knownIndices(bundle).flatMap((index) => {
+      const view = buildInvest({ bundle, index, plan });
+      return allFunds(view)
+        .filter((f) => f.beforeTax && !Object.values(f.byHouse).some(rankedAt))
+        .map((f) => ({ index, fund: f.rec.id }));
+    });
+    // each such fund the data holds (a few, to keep the run short)
+    for (const f of found.slice(0, 3)) {
+      const answer = work.map(bundle, { index: f.index, plan, fund: f.fund });
+      expect(answer, f.fund).toEqual({ kind: "unranked", why: "open-rule" });
+      // the card stays, saying why there is no map
+      const card = mapCard(answer, buildInvest({ bundle, index: f.index, plan }), bundle, "psagot", false);
+      expect([card.answer, card.note]).toEqual([invest.before.map.unranked, invest.before.map.unrankedWhy["open-rule"]]);
+    }
+  });
+});
+
+describe("a plan of nothing at all on the collected data", () => {
+  it("still has its map, with no account leading at the plan", () => {
+    const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
+    const plan = planAt(0, 0, 10);
+    const pick = need(pickOfHeadline(buildInvest({ bundle, index, plan: planAt(10_000, 500, 10) })), "the page's pair");
+    const answer = work.map(bundle, { index, plan, fund: pick.fund });
+    expect(answer.kind === "map" ? [answer.map.plan.lead, answer.map.switches, answer.map.accounts.length > 0] : answer).toEqual([{ kind: "empty" }, { amount: null, monthly: null }, true]);
+  });
+});

@@ -199,6 +199,22 @@ export function differenceOf(a: readonly [name: string, value: SiteValue], b: re
   return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? av.unit, formula, { [an]: av, [bn]: bv }, options);
 }
 
+/**
+ * The rules, flags and labels of the runs a figure rests on, each once, for a figure computed from them that is not their sum or difference
+ * alone (a point where two runs cross): every run that reads a rule or a line carries what it carries (F-12, F-128).
+ */
+export function carriedBy(values: readonly SiteValue[]): Pick<ComputedOptions, "rules" | "flags" | "labels"> {
+  const rules = new Map<string, { id: string; strength: Strength }>();
+  const flags = new Set<string>();
+  const labels = new Map<string, { code: string; ruleId: string }>();
+  for (const v of values) {
+    for (const r of v.rulesUsed ?? []) rules.set(r.id, r);
+    for (const f of v.flags ?? []) flags.add(f);
+    for (const l of v.labels ?? []) labels.set(`${l.code}|${l.ruleId}`, l);
+  }
+  return { rules: [...rules.values()], flags: [...flags], labels: [...labels.values()] };
+}
+
 /** A figure that adds up others on the page (a cost of several lines, a total of parts): the same as `differenceOf`, for a sum. Null when any part is not a number. */
 export function sumOf(parts: Record<string, SiteValue>, formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const list = Object.values(parts);

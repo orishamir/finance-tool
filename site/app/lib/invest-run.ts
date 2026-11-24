@@ -5,8 +5,7 @@
 // records and its index are put back as the page's own objects, and it comes with the data and the request it was worked out on, so what
 // the page shows beside it reads the same plan.
 import { startTransition, useEffect, useMemo, useState } from "react";
-import { KEPT_DATA, work, type FromWorker, type PlanChanges, type WorkKind, type Works } from "./invest-work";
-import type { AccountMap } from "./account-map";
+import { KEPT_DATA, work, type FromWorker, type MapAnswer, type PlanChanges, type WorkKind, type Works } from "./invest-work";
 import type { InvestView } from "./invest";
 import type { IndicesBundle } from "./providers";
 
@@ -220,15 +219,15 @@ export function usePlanChangesRun(asked: Asked<"changes"> | null): { run: PlanCh
 export const forPair = (run: PlanChanges, ask: Asked<"changes">["ask"]): boolean => run.index === ask.index.id && run.house === ask.house && run.fund === ask.fund;
 
 /**
- * F-131 on the pair's fund: `waiting` until the first answer comes, then the last answer with the request it was worked out on, and whether
- * it is for the request asked now (`held` otherwise: the page shows it dimmed until the new one comes); null where nothing is asked or no
- * account prices the fund.
+ * F-131 on the pair's fund: `waiting` until the first answer comes, then the last answer (the map, or why there is none) with the request it
+ * was worked out on, and whether it is for the request asked now (`held` otherwise: the page shows it dimmed until the new one comes); null
+ * where nothing is asked.
  */
-export function useAccountMapRun(asked: Asked<"map"> | null): { map: AccountMap; on: Asked<"map">; held: boolean } | "waiting" | null {
+export function useAccountMapRun(asked: Asked<"map"> | null): { answer: MapAnswer; on: Asked<"map">; held: boolean } | "waiting" | null {
   const got = useWork("map", asked);
   return useMemo(() => {
     if (!asked) return null;
     if (!got) return "waiting";
-    return got.answer && { map: got.answer, on: got.asked, held: got.asked !== asked };
+    return { answer: got.answer, on: got.asked, held: got.asked !== asked };
   }, [got, asked]);
 }

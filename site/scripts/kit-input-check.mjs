@@ -62,6 +62,13 @@
 //   notice in a sheet   with a sheet open on the kit page and a script's failure planted (at 390 a sheet at the foot, at 1440 a short sheet
 //            centred by a transform), the notice's title or its reload button not the top thing at its middle (drawn under the sheet, or cut
 //            by its card), the notice not at the window's foot, or the button not reloading the page.
+//   region   the region map (`RegionMap`) at 1440 with a mouse and keys: a click on the plot that keeps no point or leaves the reading under
+//            the map on the marked point, a second click that does not move the kept point, a click on it or Escape that does not let it
+//            go, arrow keys that keep no point or do not move it; a name inside an area, or a legend item, that does not set its area apart
+//            (the areas' colours), or a name's click that keeps a point; the pointer over an area that does not lighten it; the band's
+//            words missing; the bottom edge's line not drawn as a thin band at the plot's foot in more than one colour. At 390 with a
+//            finger: a tap that keeps no point, a tap on it that does not let it go, and a finger moving up the map that keeps a point or
+//            does not scroll the page.
 //   chip     at 1440 and 390, an option of a row that chooses one (`ChoiceChips`, `SegmentedControl`) whose box moves or changes size
 //            when another option of the row is chosen (a chosen chip's check that widened it and moved its neighbours). An option planted
 //            to widen when chosen must be caught first.
@@ -108,7 +115,7 @@ const center = (r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2 });
 
 export async function kitInputCheck(browser, base) {
   const found = [];
-  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, backCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, carryStartCheck, partLiftCheck, noticeSheetCheck, chipCheck]) {
+  for (const run of [fieldCheck, earlyCheck, sliderCheck, sheetCheck, sheetLeaveCheck, popoverCheck, throughCheck, stripCheck, sideCheck, backCheck, touchCheck, headerCheck, liftSheetCheck, toolboxCarryCheck, carryStartCheck, partLiftCheck, noticeSheetCheck, chipCheck, regionCheck]) {
     try {
       found.push(...(await run(browser, base)));
     } catch (e) {
@@ -1439,6 +1446,116 @@ async function chipCheck(browser, base) {
       if (shift) found.push(`chip: at ${width}, choosing an option moves its row: ${shift}`);
     }
     await fresh.ctx.close();
+  }
+  return found;
+}
+
+/** The region map's demo on the kit page: the map, its plot, its kept point and the reading under it, and its painted areas and edge. */
+function regionParts(page) {
+  const demo = page.locator('article[aria-label="RegionMap"]');
+  const map = demo.locator("[data-region-map]");
+  const pin = map.locator('[data-mark="pin"] circle').nth(1);
+  const painted = (which) =>
+    map.locator(`canvas[data-mark="${which}"]`).evaluate((c) => {
+      const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data;
+      const colours = new Set();
+      let sum = 0;
+      for (let i = 0; i < d.length; i += 4) {
+        sum += d[i] + d[i + 1] + d[i + 2];
+        colours.add(`${d[i]},${d[i + 1]},${d[i + 2]}`);
+      }
+      return { sum, colours: colours.size };
+    });
+  return { demo, map, svg: map.locator("svg").first(), pin, kept: () => pin.count(), pinAt: () => pin.getAttribute("cx"), head: () => demo.locator("dl[aria-live] dt").first().innerText(), painted };
+}
+
+async function regionCheck(browser, base) {
+  const found = [];
+  {
+    const { ctx, page } = await open(browser, base, DESK);
+    const { demo, map, svg, kept, pinAt, head, painted, pin } = regionParts(page);
+    await map.scrollIntoViewIfNeeded();
+    await page.evaluate(settled);
+    const r = await svg.boundingBox();
+    const at = (fx, fy) => ({ x: r.x + r.width * fx, y: r.y + r.height * fy });
+    const planHead = await head();
+    let p = at(0.6, 0.3);
+    await page.mouse.click(p.x, p.y);
+    if (!(await kept())) found.push("region: a click on the map keeps no point");
+    else if ((await head()) === planHead) found.push("region: the reading under the map stays on the marked point after a click kept another");
+    const first = await pinAt();
+    p = at(0.4, 0.55);
+    await page.mouse.click(p.x, p.y);
+    if ((await pinAt()) === first) found.push("region: a second click elsewhere does not move the kept point");
+    if (await kept()) {
+      const c = center(await pin.boundingBox());
+      await page.mouse.click(c.x, c.y);
+      if (await kept()) found.push("region: a click on the kept point does not let it go");
+    }
+    p = at(0.6, 0.3);
+    await page.mouse.click(p.x, p.y);
+    await page.keyboard.press("Escape");
+    if (await kept()) found.push("region: Escape does not let the kept point go");
+    await map.focus();
+    await page.keyboard.press("ArrowRight");
+    if (!(await kept())) found.push("region: an arrow key keeps no point");
+    const keyed = await pinAt();
+    await page.keyboard.press("ArrowUp");
+    await page.keyboard.press("ArrowRight");
+    if ((await pinAt()) === keyed) found.push("region: the arrow keys do not move the kept point");
+    await page.keyboard.press("Escape");
+    // a name inside its area and a legend item each set the area apart, the name keeping no point; measured with the pointer off the map
+    await page.mouse.move(1, 1);
+    await page.evaluate(settled);
+    const before = (await painted("areas")).sum;
+    const name = map.locator("[data-region-name]").first();
+    if (!(await name.count())) found.push("region: no area's name is drawn inside it");
+    else {
+      await name.click();
+      await page.evaluate(settled);
+      if (await kept()) found.push("region: a click on an area's name keeps a point");
+      if ((await painted("areas")).sum === before) found.push("region: a click on an area's name does not set its area apart");
+      await name.click();
+      await page.evaluate(settled);
+    }
+    const legend = demo.locator('ul button[aria-pressed]').nth(1);
+    await legend.click();
+    await page.evaluate(settled);
+    if ((await painted("areas")).sum === before) found.push("region: a legend item does not set its area apart");
+    await legend.click();
+    // the clicks may have scrolled the page: the plot where it stands now
+    const now = await svg.boundingBox();
+    await page.mouse.move(now.x + now.width * 0.2, now.y + now.height * 0.2);
+    await page.evaluate(settled);
+    if ((await painted("areas")).sum === before) found.push("region: the pointer over an area does not lighten it");
+    await page.mouse.move(r.x - 40, r.y - 40);
+    if (!(await map.locator("svg text", { hasText: "בערך אותו דבר" }).count())) found.push("region: the band between two areas carries no words");
+    // the bottom edge: a thin band at the plot's foot, its own colours along it
+    const edge = map.locator('canvas[data-mark="edge"]');
+    const e = await edge.boundingBox();
+    if (!e || e.height > 8 || e.height < 4 || Math.abs(e.y + e.height - (r.y + r.height - 30)) > 2) found.push(`region: the bottom edge's line is not a band of 6 px at the plot's foot (${JSON.stringify(e)})`);
+    if ((await painted("edge")).colours < 2) found.push("region: the bottom edge's line is painted in one colour, though two options hold along it");
+    await ctx.close();
+  }
+  {
+    const { ctx, page } = await open(browser, base, PHONE);
+    const { map, svg, kept, pin } = regionParts(page);
+    await map.scrollIntoViewIfNeeded();
+    await page.evaluate(settled);
+    const r = await svg.boundingBox();
+    await page.touchscreen.tap(r.x + r.width * 0.5, r.y + r.height * 0.4);
+    if (!(await kept())) found.push("region: a tap on the map keeps no point");
+    else {
+      const c = center(await pin.boundingBox());
+      await page.touchscreen.tap(c.x, c.y);
+      if (await kept()) found.push("region: a tap on the kept point does not let it go");
+    }
+    const top = await page.evaluate(() => window.scrollY);
+    await touchDrag(page, { x: r.x + r.width * 0.5, y: r.y + r.height * 0.7 }, { x: r.x + r.width * 0.5, y: r.y + r.height * 0.3 }, 12);
+    await page.evaluate(settled);
+    if (await kept()) found.push("region: a finger moving up the map keeps a point");
+    if ((await page.evaluate(() => window.scrollY)) === top) found.push("region: a finger moving up the map does not scroll the page");
+    await ctx.close();
   }
   return found;
 }
