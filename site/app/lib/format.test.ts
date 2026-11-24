@@ -298,3 +298,10 @@ describe("a dollar, euro or pound amount", () => {
     expect(formatValue(22_700_000_000, "usd")).toBe("22.70 מיליארד $");
   });
 });
+
+describe("a figure said roughly (fmt.nisRough)", () => {
+  const plain = (s: string) => s.replace(/[⁦-⁩‎‏]/g, "").replace(/ /g, " ");
+  it("reads in thousands in words wherever it comes to 10,000 or more, the same on both sides of 10,000", () => {
+    expect([9_949, 9_950, 10_000, 108_400, 2_449, 350, 25].map((v) => plain(fmt.nisRough(v)))).toEqual(["9,900 ₪", "10 אלף ₪", "10 אלף ₪", "108 אלף ₪", "2,400 ₪", "350 ₪", "25 ₪"]);
+  });
+});

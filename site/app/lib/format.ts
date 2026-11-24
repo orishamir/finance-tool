@@ -173,14 +173,15 @@ export const fmt = {
     return p.word ? `\u2066${p.word} ${p.num}\u2069` : p.num;
   },
   /**
-   * A figure said roughly, after "כ־": from 10,000 in whole thousands in words (`108 אלף ₪`), below that to two significant digits
-   * (`2,400 ₪`, `350 ₪`), and below 100 whole (`25 ₪`). Isolated right to left, as Hebrew writes an amount, so "כ־" before it never
-   * takes its shekel sign to the other side.
+   * A figure said roughly, after "כ־": to two significant digits (`2,400 ₪`, `350 ₪`), below 100 whole (`25 ₪`), and where that comes to
+   * 10,000 or more, in whole thousands in words (`108 אלף ₪`; 9,950 comes to 10,000 and reads `10 אלף ₪`, as 10,000 does). Isolated right
+   * to left, as Hebrew writes an amount, so "כ־" before it never takes its shekel sign to the other side.
    */
   nisRough: (v: number) => {
     const a = Math.abs(v);
     const unit = a >= 100 ? 10 ** (Math.floor(Math.log10(a)) - 1) : 1;
-    return `\u2067${a >= 1e4 ? fmt.compactNis(Math.round(v / 1e3) * 1e3) : fmt.nisWhole(Math.round(v / unit) * unit)}\u2069`;
+    const rough = Math.round(v / unit) * unit;
+    return `\u2067${Math.abs(rough) >= 1e4 ? fmt.compactNis(Math.round(v / 1e3) * 1e3) : fmt.nisWhole(rough)}\u2069`;
   },
   /** A shekel amount in billions, always with two decimals: `19.14 מיליארד ₪`. */
   nisBillions,
