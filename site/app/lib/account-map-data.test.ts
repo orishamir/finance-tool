@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { bundle, html, lists, plan as fixturePlan, shown } from "../components/invest/render-fixtures";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
-import { AccountMapPanel, mapAreas, mapCard, mapPointValue } from "../components/invest/account-map";
+import { AccountMapPanel, mapAreas, mapCard, mapFloorValue, mapPointValue } from "../components/invest/account-map";
 import { invest, kit as kitCopy } from "../copy";
 import type { AccountMap } from "./account-map";
 import { buildInvest, indexById, knownIndices, providersOfInvest, tieShareOf } from "./invest";
@@ -11,6 +11,7 @@ import { leftWith, work } from "./invest-work";
 import { rankedAt } from "./stretch";
 import { entered, type SiteValue } from "./value";
 import { fmt } from "./format";
+import { p05Range } from "./engine";
 import { chartTextWidth } from "../components/kit/chart-text";
 import { lineMeetsBox, regionTones } from "../components/kit/region-map";
 import type { WorkbenchInputs } from "./providers";
@@ -211,6 +212,28 @@ describe("the guides from the plan on the default S&P 500 plan", () => {
         if (st) expect(st.hi, `${plan.amountNow}/${plan.monthly} ${axis}`).toBeLessThanOrEqual(end);
       }
     }
+  });
+});
+
+describe("the floor's figure on the collected data", () => {
+  it("is a hundredth of P-05's slider end, resting on that end and on no account's run; on the plan too where the plan is far past the reach", () => {
+    const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
+    const plan = planAt(100_000, 500, 10);
+    const view = buildInvest({ bundle, index, plan });
+    const pick = need(pickOfHeadline(view), "the page's pair");
+    const answer = work.map(bundle, { index, plan, fund: pick.fund });
+    const map = need(answer.kind === "map" ? answer.map : null, "the map");
+    const on = { bundle, ask: { index, plan, fund: pick.fund } };
+    for (const [axis, key] of [["amount", "amount_now"], ["monthly", "monthly_deposit"]] as const) {
+      const end = need(p05Range(bundle.p05, "sliders", key), `P-05's ${key} slider`).max;
+      const v = mapFloorValue(on, map, axis);
+      expect(v.value).toBe(end / 100);
+      expect(v.computed_from?.formula).toBe("F-131");
+      expect(Object.keys(v.computed_from?.inputs ?? {})).toEqual([invest.before.map.reachAbout]);
+      expect((v.computed_from?.inputs[invest.before.map.reachAbout] as SiteValue | undefined)?.parameter).toBeTruthy();
+    }
+    const far: AccountMap = { ...map, floor: { ...map.floor, amount: map.floor.amount * 2 } };
+    expect(Object.keys(mapFloorValue(on, far, "amount").computed_from?.inputs ?? {}).length).toBeGreaterThan(1);
   });
 });
 

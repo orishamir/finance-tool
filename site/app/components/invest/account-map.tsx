@@ -7,7 +7,8 @@
 // band, a switch one way or both, up or down, a plan with nothing in it, and a fund no account is ranked with.
 import { Fragment, memo, useMemo, type ReactNode } from "react";
 import { invest as c } from "../../copy";
-import type { AccountMap, MapField, MapStretch, MapSwitch } from "../../lib/account-map";
+import { NAMED, type AccountMap, type MapField, type MapStretch, type MapSwitch } from "../../lib/account-map";
+import { p05Range } from "../../lib/engine";
 import { fmt } from "../../lib/format";
 import { fundWayAt, planInputs, providersOfInvest, tieShareOf, WHOLE_PLAN, type InvestView, type WayPrice } from "../../lib/invest";
 import { rankByValue } from "../../lib/rank";
@@ -181,6 +182,17 @@ function rankedWays(on: Asked<"map">, plan: WorkbenchInputs, houses?: readonly s
 }
 
 /**
+ * The low end of a switch down's range as a figure: F-131's floor, a hundredth of P-05's slider reach on the axis (NAMED), resting on that
+ * slider's end; and on the plan where the plan lies so far past the reach that the floor is a share of the plan's value instead.
+ */
+export function mapFloorValue(on: Asked<"map">, map: AccountMap, axis: "amount" | "monthly"): SiteValue {
+  const end = p05Range(on.bundle.p05, "sliders", axis === "amount" ? "amount_now" : "monthly_deposit")?.values.max;
+  const hundredth = typeof end?.value === "number" ? end.value * NAMED : null;
+  const inputs = { ...(end ? { [m.reachAbout]: end } : {}), ...(map.floor[axis] === hundredth ? {} : planInputs(on.ask.plan, WHOLE_PLAN)) };
+  return computed(Math.round(map.floor[axis]), axis === "amount" ? "nis" : "nis_per_month", "F-131", inputs, { today: on.bundle.today, about: m.floorAbout });
+}
+
+/**
  * A switch, a stretch's end or an equal point as a figure: F-131 at the point of the plan's line where it is, resting on the plan and on the
  * runs there of the plan's accounts (the tied set, on a plan in the band) and of the account it names, with what they carry. The point's
  * own coordinate is F-131's, never the reader's entry.
@@ -319,8 +331,8 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
       priced.set(k, v);
       return v;
     };
-    const about = { switch: m.switchAbout, from: m.switchAbout, till: m.tillAbout, floor: m.floorAbout };
-    const figure = (s: MapSwitch, axis: "amount" | "monthly", which: ChangeFigure) => <Num value={pointValue(s, axis, about[which])} display={fmt.nisRough(s.at)} />;
+    const about = { switch: m.switchAbout, from: m.switchAbout, till: m.tillAbout };
+    const figure = (s: MapSwitch, axis: "amount" | "monthly", which: ChangeFigure) => <Num value={which === "floor" ? mapFloorValue(on, map, axis) : pointValue(s, axis, about[which])} display={fmt.nisRough(s.at)} />;
     const words = mapWords<ReactNode>(map, house, (id) => shortOf(view, id), figure, thetaText(bundle));
     // a guide along each axis: to the switch, else to a stretch, each on the axis, else to where the two are equal, else to the axis's end with no words
     const guides = (["amount", "monthly"] as const).map((axis): RegionGuide => {

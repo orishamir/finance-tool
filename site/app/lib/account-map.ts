@@ -133,7 +133,7 @@ const ABOVE_EDGE = 0.01;
 const LOWEST = 1 / 1000;
 /** The searches read nothing under this share of the sliders' reach (5,000 ₪ today, 100 ₪ a month): the step a reader moves a slider by
  *  at its low end, where a point is no decision anyone makes, and where two accounts that differ by a few shekels flip on rounding. */
-const NAMED = 1 / 100;
+export const NAMED = 1 / 100;
 /** The axis's end is past the first change named up its line by this factor (and the cap past a plan beyond the sliders' reach), rounded up to a clean value. */
 const ROOM = 1.5;
 /** An axis runs to this many times the plan's own value on it (the plan at a third of the way), so a small plan is not a dot in a corner. */
