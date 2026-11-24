@@ -633,6 +633,9 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
                 <div key={statementKey(st)} className="flex flex-col">
                   <p className="text-sm">{statementSentence(st)}</p>
                   <DocLink href={sourceHref({ url: st.source.url, page: st.page })}>{copy.computed.statementDoc(st.source.title, st.page)}</DocLink>
+                  <p className="text-xs text-muted-foreground">
+                    {sourceCopy.checked} <Iso ltr>{fmt.date(st.checked)}</Iso>
+                  </p>
                 </div>
               ))}
             </div>

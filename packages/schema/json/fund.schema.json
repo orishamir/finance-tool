@@ -2621,6 +2621,10 @@
                 "currency_quote": {
                   "type": "string",
                   "minLength": 1
+                },
+                "checked": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
                 }
               },
               "required": [
@@ -2628,7 +2632,8 @@
                 "currency",
                 "page",
                 "quote",
-                "currency_quote"
+                "currency_quote",
+                "checked"
               ],
               "additionalProperties": false
             },
@@ -2647,12 +2652,17 @@
                 "quote": {
                   "type": "string",
                   "minLength": 1
+                },
+                "checked": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
                 }
               },
               "required": [
                 "basis",
                 "page",
-                "quote"
+                "quote",
+                "checked"
               ],
               "additionalProperties": false
             }

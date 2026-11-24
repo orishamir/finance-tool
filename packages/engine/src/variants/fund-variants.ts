@@ -50,7 +50,7 @@ export function taxIndexStatementOf(rec: Pick<FundRecord, "tax_ruling">): TaxInd
   const ruling = rec.tax_ruling;
   const index = ruling?.index;
   if (!ruling || !index) return undefined;
-  const at = { term: "tax-index", source: ruling.source, page: index.page, quote: index.quote } as const;
+  const at = { term: "tax-index", source: ruling.source, page: index.page, quote: index.quote, checked: index.checked } as const;
   return index.basis === "main-currency" ? { ...at, index: "fx", currency: index.currency } : { ...at, index: "cpi" };
 }
 

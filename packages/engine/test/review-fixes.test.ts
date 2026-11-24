@@ -153,6 +153,7 @@ describe("foreign funds on TASE (TXF-04)", () => {
     source: { url: "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244042-01.pdf", title: "נספח לתשקיף קרן חוץ נסחרת", publisher: "BlackRock (iShares VII plc)", strength: "institution" as const },
     page: 17,
     quote: "בסיס המדד לחישוב סכום אינפלציוני יהא על פי השינוי בשער המטבע העיקרי",
+    checked: "2026-11-25",
   });
   const letter = context(withTxf04AsTheLetterCopy(rules));
 
@@ -193,7 +194,7 @@ describe("foreign funds on TASE (TXF-04)", () => {
 
   it("gives a Tel Aviv line the index its record's annex states, and the same record bought abroad none (fundOf)", () => {
     const rec = JSON.parse(readFileSync(new URL("../../../data/funds/1159250@2026-11-07.json", import.meta.url), "utf8"));
-    const index = { basis: "main-currency", currency: "USD", page: 17, quote: "בסיס המדד", currency_quote: "דולר ארה\"ב" };
+    const index = { basis: "main-currency", currency: "USD", page: 17, quote: "בסיס המדד", currency_quote: "דולר ארה\"ב", checked: "2026-11-25" };
     const stated = { ...rec, tax_ruling: { ...rec.tax_ruling, index } };
     expect(fundOf(stated, "tase-foreign-fund").fund.statedIndex).toEqual({
       term: "tax-index",
@@ -202,8 +203,9 @@ describe("foreign funds on TASE (TXF-04)", () => {
       source: { url: rec.tax_ruling.source.url, title: rec.tax_ruling.source.title, publisher: rec.tax_ruling.source.publisher, strength: "institution" },
       page: 17,
       quote: "בסיס המדד",
+      checked: "2026-11-25",
     });
-    expect(fundOf({ ...stated, tax_ruling: { ...stated.tax_ruling, index: { basis: "cpi", page: 16, quote: "מדד המחירים לצרכן" } } }, "tase-foreign-fund").fund.statedIndex?.index).toBe("cpi");
+    expect(fundOf({ ...stated, tax_ruling: { ...stated.tax_ruling, index: { basis: "cpi", page: 16, quote: "מדד המחירים לצרכן", checked: "2026-11-25" } } }, "tase-foreign-fund").fund.statedIndex?.index).toBe("cpi");
     expect(fundOf(stated, "foreign-fund").fund.statedIndex).toBeUndefined();
     const { index: _none, ...unstated } = stated.tax_ruling;
     expect(fundOf({ ...stated, tax_ruling: unstated }, "tase-foreign-fund").fund.statedIndex).toBeUndefined();

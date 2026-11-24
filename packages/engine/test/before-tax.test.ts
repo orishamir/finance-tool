@@ -152,6 +152,7 @@ describe("a TASE foreign fund read before tax (F-118, D84)", () => {
       source: { url: "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244042-01.pdf", title: "נספח לתשקיף קרן חוץ נסחרת", publisher: "BlackRock (iShares VII plc)", strength: "institution" },
       page: 17,
       quote: "בסיס המדד לחישוב סכום אינפלציוני יהא על פי השינוי בשער המטבע העיקרי",
+      checked: "2026-11-25",
     };
     const fund = { kind: "tase-foreign-fund" as const, drag: { management: 0.0007 }, saleOnlyRuling: true, statedIndex, distribution: { yield: 0.015, perYear: 4 } };
     expect(securitiesBlockedBy(fund, ctx)).toBe("TXF-04");

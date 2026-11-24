@@ -60,8 +60,8 @@ describe("the tax index a Tel Aviv foreign fund's own annex states (F-04, D84)",
   if (!rec?.tax_ruling || !index) throw new Error("the S&P 500's Tel Aviv line 1159250, its ruling and its index are in the data");
   const ruling = rec.tax_ruling;
   const { index: _stated, ...unstated } = ruling;
-  const main = { basis: "main-currency" as const, currency: "USD", page: 17, quote: "בסיס המדד", currency_quote: "דולר ארה״ב" };
-  const cpi = { basis: "cpi" as const, page: 16, quote: "מדד המחירים לצרכן" };
+  const main = { basis: "main-currency" as const, currency: "USD", page: 17, quote: "בסיס המדד", currency_quote: "דולר ארה״ב", checked: "2026-11-25" };
+  const cpi = { basis: "cpi" as const, page: 16, quote: "מדד המחירים לצרכן", checked: "2026-11-25" };
   const tax = (r: typeof rec, option: "tase-foreign" | "abroad") => fundLabels(r, index, option).filter((l) => l.id === "tax-index-currency" || l.id === "tax-index-cpi");
   it("says the fund's own statement, with its annex opened at the page, on the Tel Aviv line only", () => {
     const onDollar = tax({ ...rec, tax_ruling: { ...ruling, index: main } }, "tase-foreign");

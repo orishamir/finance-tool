@@ -79,11 +79,15 @@ export const RUN_FLAG_CODES: readonly string[] = [
  */
 export type FundStatement = TaxIndexStatement;
 
-/** What every fund statement carries: the document as the fund record holds it, the page of its PDF the words are on, and its words there. */
+/**
+ * What every fund statement carries: the document as the fund record holds it, the page of its PDF the words are on, its words there, and
+ * the date they were read (ISO).
+ */
 interface StatementSource {
   source: ValueObject["source"];
   page: number;
   quote: string;
+  checked: string;
 }
 
 /** The index of the inflationary amount on a sale by an individual (F-04) a fund's annex states. */
