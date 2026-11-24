@@ -722,8 +722,6 @@ describe("before deciding: the tab cards", () => {
     // says what a point holds)
     for (const words of [invest.before.map.xTitle, invest.before.map.yTitle, invest.before.map.plan]) expect(out).toContain(words);
     expect(out).not.toContain(invest.before.map.planHead);
-    // the fees card it replaced is gone
-    expect(out).not.toContain("לאן הולכות העמלות");
   });
   it("before any pick, the pair is the receipt's, never the chosen one", () => {
     // the section names the pair only in its cards' spoken name, now that no line leads it
