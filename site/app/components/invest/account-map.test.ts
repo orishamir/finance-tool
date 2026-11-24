@@ -7,7 +7,7 @@ import { mapWords } from "./account-map";
 
 const names: Record<string, string> = { psagot: "פסגות", ibi: "אי.בי.אי", "one-zero": "וואן זירו" };
 const grid = { cols: 0, rows: 0, first: [], second: [], ahead: [] };
-const base: AccountMap = { max: { amount: 200_000, monthly: 4000 }, bottom: 40, plan: { amount: 10_000, monthly: 500, lead: { kind: "clear", first: "psagot" } }, accounts: ["psagot", "ibi", "one-zero"], field: grid, edge: grid, switches: { amount: null, monthly: null }, stretches: { amount: null, monthly: null }, changes: { amount: { band: null, even: null }, monthly: { band: null, even: null } }, equal: { amount: null, monthly: null } };
+const base: AccountMap = { max: { amount: 200_000, monthly: 4000 }, bottom: 40, plan: { amount: 10_000, monthly: 500, lead: { kind: "clear", first: "psagot" } }, accounts: ["psagot", "ibi", "one-zero"], asked: ["psagot", "ibi", "one-zero"], field: grid, edge: grid, switches: { amount: null, monthly: null }, stretches: { amount: null, monthly: null }, changes: { amount: { band: null, even: null }, monthly: { band: null, even: null } }, equal: { amount: null, monthly: null } };
 const up = (at: number, to = "ibi"): MapSwitch => ({ at, dir: "up", to });
 /** The card's answer and line and the headline, as plain words (the isolates a figure keeps its order with, and the joiner that keeps "כ־" on its figure's line, set aside). */
 function said(map: AccountMap, house = "psagot") {
@@ -106,6 +106,21 @@ describe("the account map's words", () => {
       note: "פסגות הכי זול בכל המפה",
       head: "בתוכנית שלכם פסגות הכי זול. הוא הכי זול בכל צירוף במפה.",
     });
+  });
+
+  it("calls no account beaten where it has no ranked price (F-80): such nodes count neither for one account everywhere nor for another elsewhere", () => {
+    // psagot alone on the map, but אי.בי.אי (bit 1 of `asked`) has no ranked price at one node: psagot is not the cheapest in every combination
+    const gap = { cols: 3, rows: 1, first: [0, 0, 0], second: [-1, -1, -1], ahead: [1, 1, 1], missing: [0, 2, 0] };
+    expect(said({ ...base, accounts: ["psagot"], field: gap }).head).toBe("בתוכנית שלכם פסגות הכי זול. אף חשבון אחר לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת, בטווח שהאתר בודק.");
+    // אי.בי.אי clear on two nodes of 200, where psagot (bit 0), the plan's account, has no ranked price: not named elsewhere
+    const n = 200;
+    const field = { cols: n, rows: 1, first: Array.from({ length: n }, (_, i) => (i === 7 || i === 8 ? 1 : 0)), second: Array.from({ length: n }, () => -1), ahead: Array.from({ length: n }, () => 1), missing: Array.from({ length: n }, (_, i) => (i === 7 || i === 8 ? 1 : 0)) };
+    expect(said({ ...base, field }).answer).toBe("אף חשבון לא זול בבירור מפסגות");
+    // the same on the bottom edge's run
+    const edge = { ...field, cols: 20, first: field.first.slice(0, 20), second: field.second.slice(0, 20), ahead: field.ahead.slice(0, 20), missing: field.missing.slice(0, 20) };
+    expect(said({ ...base, edge }).answer).toBe("אף חשבון לא זול בבירור מפסגות");
+    // with psagot priced there, both are named
+    expect(said({ ...base, field: { ...field, missing: undefined } }).answer).toBe("אי.בי.אי, בצירופים אחרים במפה");
   });
 
   it("the receipt's account is not the cheapest at the plan", () => {

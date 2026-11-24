@@ -72,16 +72,27 @@ export function mapWords<F>(map: AccountMap, house: string, name: (id: string) =
   const second = sa && sm ? sm : null;
   // the second change: the same account ("או מעל כ־2,300 ₪ בחודש"), or another in words of its own ("וואן זירו זול יותר בבירור מעל …")
   const then = (c: LineChange, to: string, where: "card" | "head"): (string | F)[] => (c.s.to === to ? [where === "card" ? `${m.or} ` : `, ${m.or} `] : [where === "card" ? `${name(c.s.to)} ` : `. ${m.cheaperFrom(name(c.s.to))} `]);
+  // the bits of `map.asked` of some accounts: a node whose `missing` holds one of them has no ranked price for it there (F-80)
+  const bitsOf = (ids: readonly string[]) => ids.reduce((b, id) => b | (map.asked.indexOf(id) >= 0 && map.asked.indexOf(id) < 31 ? 1 << map.asked.indexOf(id) : 0), 0);
+  const lacks = (f: MapField, n: number, bits: number) => ((f.missing?.[n] ?? 0) & bits) !== 0;
   // with no change along the plan's lines, the accounts the map still shows clearly first over a share of it the eye can find (the plan's
   // own first aside, where it is θ ahead at the plan): a hundredth of the areas' nodes (ELSEWHERE_SEEN), or a run the bottom edge names (a
   // tenth of it, `edgeStretches`). The words never say nothing changes where the map draws another's clear area, and never name one
-  // that is clear at a lone node
+  // that is clear at a lone node. A node where an account of the plan's (its first, or its tied accounts) has no ranked price does not
+  // count: there it is not compared, so not beaten (F-80)
+  const plans = bitsOf(lead.kind === "clear" ? [lead.first] : lead.kind === "near" ? lead.tied : []);
   const elsewhere = (mine: readonly string[]): string[] => {
     const count = new Map<number, number>();
-    map.field.first.forEach((k, n) => k >= 0 && (map.field.ahead[n] ?? 0) >= 1 && count.set(k, (count.get(k) ?? 0) + 1));
+    map.field.first.forEach((k, n) => k >= 0 && (map.field.ahead[n] ?? 0) >= 1 && !lacks(map.field, n, plans) && count.set(k, (count.get(k) ?? 0) + 1));
     const seen = new Set([...count].filter(([, c]) => c >= ELSEWHERE_SEEN * map.field.first.length).map(([k]) => k));
-    for (const r of edgeStretches(map.edge)) seen.add(r.area);
+    const edge = { ...map.edge, ahead: map.edge.ahead.map((a, n) => (lacks(map.edge, n, plans) ? 0 : a)) };
+    for (const r of edgeStretches(edge)) seen.add(r.area);
     return map.accounts.filter((id, k) => seen.has(k) && !mine.includes(id));
+  };
+  // one account cheapest in every combination: only where every account of the map's is priced at every node
+  const whole = () => {
+    const bits = bitsOf(map.asked);
+    return [map.field, map.edge].every((f) => f.first.every((_, n) => !lacks(f, n, bits)));
   };
   const switchesHead = (f: LineChange): (string | F)[] => [m.cheaperFrom(name(f.s.to)), " ", ...at(f, firstAxis, true), ...(second ? [...then(second, f.s.to, "head"), ...at(second, "monthly", true)] : []), "."];
 
@@ -101,7 +112,7 @@ export function mapWords<F>(map: AccountMap, house: string, name: (id: string) =
   const start = mine ? m.headCheapest(w) : m.headCheaper(w, name(house));
   const other = { answer: [m.already(w)], note: [m.insteadOf(name(house))] };
   if (!first) {
-    if (map.accounts.length === 1) return mine ? { answer: [m.noOther], note: [m.cheapestAll(w)], head: [start, " ", m.headAll] } : { ...other, head: [start, " ", m.headAll] };
+    if (map.accounts.length === 1 && whole()) return mine ? { answer: [m.noOther], note: [m.cheapestAll(w)], head: [start, " ", m.headAll] } : { ...other, head: [start, " ", m.headAll] };
     const away = elsewhere([lead.first]);
     if (away.length) {
       const head = [start, " ", m.elsewhere(away.map(name)), "."];

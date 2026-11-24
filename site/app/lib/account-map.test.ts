@@ -195,6 +195,25 @@ describe("the account map (F-131)", () => {
     expect(behind.changes.amount).toEqual({ band: null, even: null });
   });
 
+  it("marks at each node the accounts asked for there with no ranked price (F-80), the first being the first among those priced", () => {
+    // B has no ranked price from 50,000 ₪ today; on a plan of 40,000 ₪ today's amount runs past it
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    const accounts: Record<string, (a: number, m: number) => number> = { a: base, b: (a, m) => base(a, m) * 0.99 };
+    const unpriced: LeftAt = (a, m, houses) => new Map((houses ?? ["a", "b"]).flatMap((id) => (accounts[id] && !(id === "b" && a >= 50_000) ? [[id, accounts[id](a, m)] as const] : [])));
+    const got = need(accountMap({ leftAt: unpriced, order: ["a", "b"], theta: THETA, plan: { amount: 40_000, monthly: 200 }, reach }), "the map");
+    const b = 1 << got.asked.indexOf("b");
+    expect(got.asked).toContain("b");
+    const row = Math.floor(got.field.rows / 2);
+    for (let i = 0; i < got.field.cols; i++) {
+      const x = xOf(got, i);
+      const k = row * got.field.cols + i;
+      if (x > 52_000) expect([nodeAt(got, i, row).first, (got.field.missing?.[k] ?? 0) & b], `${x}`).toEqual(["a", b]);
+    }
+    // and B priced, so not marked, where the map's cells reach no further than 50,000 ₪ (a cell reads an account only where every corner
+    // prices it)
+    expect(got.field.missing?.some((x) => (x & b) === 0)).toBe(true);
+  });
+
   it("shows the band and the other account's side up a line where the other never becomes clearly cheaper", () => {
     // A: 2% of today's amount and 0.6 ₪ a shekel of the deposit; B as before. Up the deposit at 10,000 ₪, B leaves 0.4 m − 450 more: A is θ
     // ahead while 450 − 0.4 m ≥ 0.005 (9,800 + 99.4 m), to 447.0 ₪ a month, B leaves more from 1,125 ₪, and B is never θ ahead, since

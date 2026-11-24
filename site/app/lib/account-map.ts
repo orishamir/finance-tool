@@ -61,6 +61,9 @@ export interface MapField {
   first: number[];
   second: number[];
   ahead: number[];
+  /** At each node, the accounts asked for there that have no ranked price (F-80), as bits over `AccountMap.asked` (bit k for its k-th
+   *  account; the first 31 only); absent, none. The first is the first among the accounts priced there. */
+  missing?: number[];
 }
 
 export interface AccountMap {
@@ -71,6 +74,8 @@ export interface AccountMap {
   /** The accounts the map shows: first somewhere, or within θ of the first somewhere. The plan's first comes first, then by the area each is
    *  first in, largest first. */
   accounts: string[];
+  /** The accounts priced on the map, in the order `MapField.missing` names them by. */
+  asked: string[];
   /** The areas: `cols` nodes from 0 to the amount's end, `rows` from `bottom` to the monthly end. */
   field: MapField;
   /** The bottom edge, no monthly deposit: one row of nodes along today's amount. */
@@ -471,10 +476,14 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     for (let a = i; a < i + s; a++) for (let b = j; b < j + s; b++) leafOf[a * N + b] = n;
   });
   const leads: ReturnType<typeof leadOf>[] = [];
+  // the accounts asked for at each node that have no ranked price there (one missing at any corner of its cell has none in the blend)
+  const fieldGaps: string[][] = [];
   for (let j = 0; j <= N; j++)
     for (let i = 0; i <= N; i++) {
       const [li, lj, ls] = leaves[leafOf[Math.min(i, N - 1) * N + Math.min(j, N - 1)] ?? 0] ?? [0, 0, coarse];
-      leads.push(leadOf(blend(cornersOf(li, lj, ls), houses, (i - li) / ls, (j - lj) / ls), houses, theta));
+      const left = blend(cornersOf(li, lj, ls), houses, (i - li) / ls, (j - lj) / ls);
+      leads.push(leadOf(left, houses, theta));
+      fieldGaps.push(houses.filter((id) => !left.has(id)));
     }
 
   // ------------------------------------------------ the bottom edge: no monthly deposit at all, from a thousandth of the axis
@@ -514,10 +523,13 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   edgeLeaves.forEach(([i, s], n) => {
     for (let a = i; a < i + s; a++) edgeLeafOf[a] = n;
   });
+  const edgeGaps: string[][] = [];
   const edgeLeads = Array.from({ length: N + 1 }, (_, i) => {
     const [li, ls] = edgeLeaves[edgeLeafOf[Math.min(i, N - 1)] ?? 0] ?? [0, 8];
     const [a, b] = [eAt(li), eAt(li + ls)];
-    return leadOf(blend([a, b, b, a], edgeHouses, (i - li) / ls, 0), edgeHouses, theta);
+    const left = blend([a, b, b, a], edgeHouses, (i - li) / ls, 0);
+    edgeGaps.push(edgeHouses.filter((id) => !left.has(id)));
+    return leadOf(left, edgeHouses, theta);
   });
 
   // ------------------------------------------------ the accounts shown, and the leads as their indices
@@ -532,13 +544,16 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const size = (id: string) => area.get(id) ?? 0;
   const accounts = [...shows].sort((a, b) => Number(b === planFirst) - Number(a === planFirst) || size(b) - size(a) || order.indexOf(a) - order.indexOf(b));
   const index = new Map(accounts.map((id, k) => [id, k]));
-  const fieldOf = (ls: readonly (ReturnType<typeof leadOf>)[], cols: number, rows: number): MapField => ({
+  const asked = order.filter((id) => houses.includes(id) || edgeHouses.includes(id));
+  const bit = new Map(asked.slice(0, 31).map((id, k) => [id, 1 << k]));
+  const fieldOf = (ls: readonly (ReturnType<typeof leadOf>)[], gaps: readonly string[][], cols: number, rows: number): MapField => ({
     cols,
     rows,
     first: ls.map((l) => (l ? (index.get(l.first) ?? -1) : -1)),
     second: ls.map((l) => (l?.second && l.ahead < 1 ? (index.get(l.second) ?? -1) : -1)),
     // to a thousandth, rounded down, so a lead short of θ never reads as θ ahead
     ahead: ls.map((l) => (l ? Math.floor(l.ahead * 1000) / 1000 : 1)),
+    missing: gaps.map((g) => g.reduce((m, id) => m | (bit.get(id) ?? 0), 0)),
   });
-  return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, field: fieldOf(leads, N + 1, N + 1), edge: fieldOf(edgeLeads, N + 1, 1), switches, stretches, changes, equal };
+  return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, asked, field: fieldOf(leads, fieldGaps, N + 1, N + 1), edge: fieldOf(edgeLeads, edgeGaps, N + 1, 1), switches, stretches, changes, equal };
 }
