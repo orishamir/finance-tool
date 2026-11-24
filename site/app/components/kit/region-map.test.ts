@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { equalLines, type RegionGrid } from "./region-map";
+import { equalLines, secondShare, type RegionGrid } from "./region-map";
 
 /** A grid whose two areas' lead is a plane, d = (i + 0.5 j − 6.3) / 10 in grid units: area 0 leads where d > 0, area 1 where d < 0, each
  *  ahead by |d|, so the two are equal on the line i + 0.5 j = 6.3. */
@@ -34,5 +34,18 @@ describe("the line where two areas are equal", () => {
   it("draws nothing where one area leads everywhere", () => {
     const g = planeGrid();
     expect(equalLines({ ...g, first: g.first.map(() => 0) })).toEqual([]);
+  });
+});
+
+describe("the next one's share of a point's colour (F-131: half of (1 − s) to the 6th power)", () => {
+  it("is half where the two are equal and none once the leader is clearly ahead", () => {
+    expect([secondShare(0), secondShare(1)]).toEqual([0.5, 0]);
+  });
+
+  it("falls fast: under a tenth a quarter of the way to clearly ahead, where an even fade still gave three eighths", () => {
+    // 0.5 × 0.75⁶ = 0.089; 0.5 × 0.5⁶ = 0.0078
+    expect(secondShare(0.25)).toBeCloseTo(0.089, 3);
+    expect(secondShare(0.5)).toBeCloseTo(0.0078, 4);
+    for (let s = 0; s < 1; s += 0.05) expect(secondShare(s + 0.05)).toBeLessThan(secondShare(s));
   });
 });

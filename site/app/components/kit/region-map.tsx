@@ -1,11 +1,12 @@
 // A map of areas over two amounts: which of a few options leads at each point of a plane, and by how much. Each point is filled with the
 // colour of the option that leads there, blended with the next one's where the two are close: half and half where they are equal, the
-// leader's own colour once it is clearly ahead, so between two areas runs a soft band, not a line. The fill is a small grid of colours the
-// browser scales up smoothly (a canvas), so the band has no steps on any screen. Where two areas meet, the two are equal: a thin line marks
-// it over the band, through the points where the leads either side cancel, found between the grid's nodes, so it runs smooth rather than
-// along the grid's cells. Each area's name stands inside it, and words of the caller's in the band where they fit; a marked point (the
-// reader's own) has dashed guides from it along each axis; and a value of the bottom edge is drawn apart as a thick line, blended the same
-// way. The x axis grows left to right and the y axis up from 0 (charts.md).
+// next one's share falling fast as the leader moves ahead (`secondShare`), so between two areas runs a narrow soft strip, not a line, and
+// the leader's colour comes back well before it is clearly ahead. The fill is a small grid of colours the browser scales up smoothly (a
+// canvas), so the strip has no steps on any screen. Where two areas meet, the two are equal: a thin line marks it over the strip, through
+// the points where the leads either side cancel, found between the grid's nodes, so it runs smooth rather than along the grid's cells.
+// Each area's name stands inside it, and words of the caller's on the strip where they fit; a marked point (the reader's own) has dashed
+// guides from it along each axis; and a value of the bottom edge is drawn apart as a thick line, blended the same way.
+// The x axis grows left to right and the y axis up from 0 (charts.md).
 // The pointer reads any point: on a computer a box follows it and the area under it lightens; a click or a tap keeps a point (its mark and
 // its box stay, and the box's figures can be tapped), a second one elsewhere moves it, and a tap on it or Escape lets it go. The map takes
 // the focus, and the arrow keys move the kept point (from the marked one; with Shift in larger steps). A legend item or an area's name sets
@@ -91,9 +92,20 @@ const REACH = 22;
 /** How much an area is lightened under the pointer, and how far a set-back area fades into the card. */
 const LIT = 0.28;
 const DIMMED = 0.75;
-/** A name stands where its area leads at least this far ahead, and the band's words where the two are at most this far apart. */
+/** A name stands where its area leads at least this far ahead. */
 const CLEAR = 0.9;
-const BAND = 0.6;
+/**
+ * How fast the next one's colour gives way: its share of a point's colour is half of (1 − ahead) to this power. On the default S&P 500 map
+ * the strip where it holds at least a twentieth (or a tenth) of the colour is then about a quarter of what an even fade (power 1) gave, so
+ * most of each area shows its own colour; a higher power would leave the strip about a node of the grid wide, where the browser's smoothing
+ * alone draws it.
+ */
+const FADE = 6;
+/** The next one's share of a point's colour, from half where the two are equal (ahead 0) to none once the leader is clearly ahead (1). */
+export const secondShare = (ahead: number): number => 0.5 * Math.max(0, 1 - ahead) ** FADE;
+/** The band's words stand where the next one's colour shows: at least this share of it under some part of them, and half of it on the
+ *  mean of their sampled points. */
+const SEEN = 0.1;
 /** A line of the words over the map. */
 const LINE = 20;
 
@@ -135,7 +147,7 @@ function paint(canvas: HTMLCanvasElement, grid: RegionGrid, colour: (area: numbe
       const f = grid.first[k] ?? -1;
       const s = grid.second[k] ?? -1;
       const lead = f < 0 ? empty : colour(f);
-      const c = s < 0 || f < 0 ? lead : mixRgb(colour(s), lead, 0.5 + 0.5 * (grid.ahead[k] ?? 1));
+      const c = s < 0 || f < 0 ? lead : mixRgb(lead, colour(s), secondShare(grid.ahead[k] ?? 1));
       const o = ((grid.rows - 1 - j) * grid.cols + i) * 4;
       img.data[o] = c[0];
       img.data[o + 1] = c[1];
@@ -214,7 +226,7 @@ export function RegionMap({
   /** The bottom edge's value, one row from 0 to `max.x`, and the words over its longest clear stretch. */
   edge: RegionGrid;
   edgeLabel: (id: string) => RegionWords;
-  /** Words for the band where two areas are close, drawn inside it where they fit. */
+  /** Words for the band where two areas are close, drawn on its strip of fade where they fit. */
   bandLabel: string;
   /** The reader's own point, and its words under it. */
   mark: { at: RegionPoint; label: RegionWords };
@@ -359,52 +371,59 @@ export function RegionMap({
     });
 
     // each area's name, and the band's words, where they have the most room: a box whose every sampled point the area leads clearly (or,
-    // for the band, where the two are close), clear of the words above, as far as it can be from the mark and the guides' dots
+    // for the band, where the next one's colour shows), clear of the words above, as far as it can be from the mark and the guides' dots
     const node = (px: number, py: number) => {
       const i = Math.round((sxL.invert(px) / max.x) * (field.cols - 1));
       const j = Math.round(((syL.invert(py) - field.from) / (max.y - field.from)) * (field.rows - 1));
       return i < 0 || j < 0 || i >= field.cols || j >= field.rows ? -1 : j * field.cols + i;
     };
-    const holds = (b: Box, ok: (k: number) => boolean) => {
-      for (let a = 0; a <= 4; a++)
-        for (let c = 0; c <= 2; c++) {
-          const k = node(b.x + (b.w * a) / 4, b.y + (b.h * c) / 2);
-          if (k < 0 || !ok(k)) return false;
-        }
-      return true;
-    };
+    // a box's sampled points: five across, three down
+    const samples = (b: Box) => Array.from({ length: 15 }, (_, n) => node(b.x + (b.w * (n % 5)) / 4, b.y + (b.h * Math.floor(n / 5)) / 2));
+    const holds = (b: Box, ok: (k: number) => boolean) => samples(b).every((k) => k >= 0 && ok(k));
     const dots: [number, number][] = [[mxL, myL], ...guideDraw.flatMap(({ g, gx, gy }) => (g.label ? [[gx, gy] as [number, number]] : []))];
     const taken: Box[] = [...placed];
-    const find = (tw: number, h: number, ok: (k: number) => boolean): Box | null => {
+    // the box with the most room; with `fade`, the one with the most of the next one's colour under it (the mean share at its sampled
+    // points, at least half of SEEN), some point of it on the strip (SEEN or more), and its area held a few px around it, so no line runs
+    // through it
+    const find = (tw: number, h: number, ok: (k: number) => boolean, fade = false): { b: Box; room: number } | null => {
       let best: { b: Box; room: number } | null = null;
       for (let cy = TOP + h / 2 + 4; cy <= bottom - EDGE_PX - h / 2 - 4; cy += 8)
         for (let cx0 = left + tw / 2 + 8; cx0 <= right - tw / 2 - 8; cx0 += 8) {
           const b = { x: cx0 - tw / 2 - 4, y: cy - h / 2, w: tw + 8, h };
-          if (!holds(b, ok) || taken.some((t) => meets(b, t))) continue;
+          if (!holds(fade ? { x: b.x - 8, y: b.y - 6, w: b.w + 16, h: b.h + 12 } : b, ok) || taken.some((t) => meets(b, t))) continue;
           // the room: how far the box grows before it leaves its area, and how far it is from the mark and the guides' dots
           let grow = 0;
           for (const g of [6, 12, 20]) if (holds({ x: b.x - g, y: b.y - g / 2, w: b.w + 2 * g, h: b.h + g }, ok)) grow = g;
           const far = Math.min(40, ...dots.map(([px, py]) => Math.max(Math.abs(px - cx0) - tw / 2, Math.abs(py - cy) - h / 2)));
           if (far < 8) continue;
-          const room = grow + far;
+          const shares = fade ? samples(b).map((k) => secondShare(field.ahead[k] ?? 1)) : [];
+          const mean = fade ? shares.reduce((n, x) => n + x, 0) / shares.length : 0;
+          if (fade && (Math.max(...shares) < SEEN || mean < SEEN / 2)) continue;
+          const room = fade ? 1000 * mean + far : grow + far;
           if (!best || room > best.room) best = { b, room };
         }
-      if (best) taken.push(best.b);
-      return best?.b ?? null;
+      return best;
+    };
+    const take = (got: { b: Box } | null | undefined): Box | null => {
+      if (got) taken.push(got.b);
+      return got?.b ?? null;
     };
     const names = areas.flatMap((a, n) => {
-      const b = find(chartTextWidth(a.name, 16), 24, (k) => field.first[k] === n && (field.ahead[k] ?? 0) >= CLEAR);
+      const b = take(find(chartTextWidth(a.name, 16), 24, (k) => field.first[k] === n && (field.ahead[k] ?? 0) >= CLEAR));
       return b ? [{ a, b }] : [];
     });
-    // the band's words: once in each band between two areas
+    // the band's words: once in each band between two areas, inside it on one side of the line where the two are equal, where the most of
+    // its fade shows under them
     const pairOf = (k: number) => {
       const f = field.first[k] ?? -1;
       const s = field.second[k] ?? -1;
-      return s < 0 || (field.ahead[k] ?? 1) > BAND ? null : `${Math.min(f, s)}|${Math.max(f, s)}`;
+      return s < 0 || (field.ahead[k] ?? 1) >= 1 ? null : `${Math.min(f, s)}|${Math.max(f, s)}`;
     };
-    const pairs = new Set(field.first.map((_, k) => pairOf(k)).filter((x): x is string => x !== null));
+    const pairs = new Set(field.first.map((_, k) => (secondShare(field.ahead[k] ?? 1) >= SEEN ? pairOf(k) : null)).filter((x): x is string => x !== null));
     const bands = [...pairs].flatMap((pair) => {
-      const b = find(chartTextWidth(bandLabel), LINE, (k) => pairOf(k) === pair);
+      const tw = chartTextWidth(bandLabel);
+      const sides = pair.split("|").map((f) => find(tw, LINE, (k) => pairOf(k) === pair && field.first[k] === Number(f), true));
+      const b = take(sides.filter((x) => x !== null).sort((x, y) => y.room - x.room)[0]);
       return b ? [{ pair, b }] : [];
     });
     return { edgeWords, edgeInside, longestArea, markBox, guideDraw, names, bands };

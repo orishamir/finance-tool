@@ -994,8 +994,8 @@ in the kit fits is added to the kit.
 - `ChangeChart`: what moves the result, every plan number changed by the same share.
 - `RegionMap`: which of a few options leads at each point of a plane of two amounts, and by how much (F-131: the cheapest account over
   today's amount and the monthly deposit), not for one option's value over two amounts. Up to four areas in their own light colour, a
-  fifth in a grey under its own name, more than five gathered in that grey as "אחרות"; where two options are close their colours blend, so
-  areas meet in a soft band, never at a drawn border; a value at the bottom edge with no range above it is its own thick line, blended
+  fifth in a grey under its own name, more than five gathered in that grey as "אחרות"; where two options are close their colours blend in a
+  narrow strip around a thin line where the two are equal; a value at the bottom edge with no range above it is its own thick line, blended
   the same way.
 - `PileYears`, `PileStory`: a sum built up step by step where the reader picks the moment; not for comparing products. A sixth slot,
   `other`, only for a choice the person really has.
