@@ -2,6 +2,7 @@
 import { fileURLToPath } from "node:url";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
+import { taxIndexStatementOf } from "@finance-tool/engine";
 import { help, invest, leftOut, provenance } from "../../copy";
 import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
@@ -455,14 +456,17 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
       if (!f?.best) throw new Error(`${id} is priced on ${index}`);
       return { rec: f.rec, value: f.best.value };
     };
-    for (const [index, id, page, words] of [
-      ["index-sp500", "1159250", 17, provenance.computed.statement["tax-index"]("דולר")],
-      ["index-msci-acwi", "1159235", 16, provenance.computed.statement["tax-index"](null)],
+    for (const [index, id, page, basis] of [
+      ["index-sp500", "1159250", 17, "מס רווחי הון מחושב לפי שער הדולר"],
+      ["index-msci-acwi", "1159235", 16, "מס רווחי הון מחושב לפי מדד המחירים לצרכן"],
     ] as const) {
       const f = priced(index, id);
       const sheet = sheetOf(f.value);
+      const stated = taxIndexStatementOf(f.rec);
+      if (!stated) throw new Error(`${id}'s record states its tax index`);
       expect(shown(sheet), id).toContain(provenance.computed.statements);
-      expect(shown(sheet), id).toContain(words);
+      expect(shown(sheet), id).toContain(provenance.computed.statement["tax-index"](stated));
+      expect(shown(sheet), id).toContain(basis);
       expect(sheet, id).toContain(`href="${f.rec.tax_ruling?.source.url ?? "(no ruling)"}#page=${page}"`);
     }
     // a fund bought abroad, the same units, is taxed on TXF-03: its sheet names no statement

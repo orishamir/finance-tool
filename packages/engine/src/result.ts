@@ -75,17 +75,20 @@ export const RUN_FLAG_CODES: readonly string[] = [
  * A fund's own document stating a tax term for its own units (product D84): its Israeli prospectus annex, stating the term under the tax
  * ruling given to the fund. It is the fund's statement, never a rule: it holds for that fund alone, and no official text of the Tax
  * Authority stands behind it. A run that reads one carries it (`RunResult.statements`), so a page names it as the fund's beside the figures
- * it moves, as a rule the run reads reaches the page by `rules`.
+ * it moves, as a rule the run reads reaches the page by `rules`. One member per term it states, keyed by `term`.
  */
-export type FundStatement = {
-  /** What it states: the index of the inflationary amount on a sale by an individual (F-04). */
-  term: "tax-index";
-  /** The document as the fund record holds it, the page of its PDF the words are on, and its words there. */
+export type FundStatement = TaxIndexStatement;
+
+/** What every fund statement carries: the document as the fund record holds it, the page of its PDF the words are on, and its words there. */
+interface StatementSource {
   source: ValueObject["source"];
   page: number;
   quote: string;
-} & (
-  /** The main currency's exchange rate (its ISO code), the exposure's currency and so the run's one exchange-rate path (`fx`). */
+}
+
+/** The index of the inflationary amount on a sale by an individual (F-04) a fund's annex states. */
+export type TaxIndexStatement = StatementSource & { term: "tax-index" } & (
+  /** The main currency's exchange rate (its ISO code), the record's own currency and the exposure's, and so the run's one exchange-rate path (`fx`). */
   | { index: "fx"; currency: string }
   /** The CPI. */
   | { index: "cpi" }

@@ -9,7 +9,7 @@ import { promotedDrag } from "../formulas/fund-promotion.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
 import { acrossReadings, foreignInvestmentFundIndex, OpenReadingError } from "../open-readings.ts";
 import { memoRun } from "../run-memo.ts";
-import { RUN_RESULT_FIELDS, type FundStatement, type Outcome, type RunContext, type RunResult } from "../result.ts";
+import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult, type TaxIndexStatement } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, LotQueue } from "./lots.ts";
 import { dealCharges, scaled, type Charged, type DealAccount, type MonthActivity } from "./deal-account.ts";
@@ -66,7 +66,7 @@ export interface Fund {
    * TASE foreign fund (F-04, D84): the tax index its own Israeli prospectus annex states under the tax ruling given to it, the fund's
    * statement for its own units. Only a `tase-foreign-fund` reads it (`statedTaxIndexOf`): units of the same ISIN bought abroad keep TXF-03.
    */
-  statedIndex?: FundStatement;
+  statedIndex?: TaxIndexStatement;
   /**
    * Israeli fund that may be measured by a principal currency (TXS-14, F-04): the currency (ISO code) its own documents name where they name
    * it a foreign-investment fund, or, where its record says the status is not known, its exposure's currency as the candidate. The run is
@@ -250,7 +250,7 @@ export function fundLevelTaxOn(gain: number, carried: number, rate: number): { t
  * statement settles only the index: a fund that distributes stops on its distribution's open part whatever its annex states (G-35, TXF open
  * question 19: the run does not know its legal form), so its runs read none and stop on TXF-04 as an unstated one's do.
  */
-export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex" | "distribution">): FundStatement | null {
+export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex" | "distribution">): TaxIndexStatement | null {
   return fund.kind === "tase-foreign-fund" && !fund.distribution ? (fund.statedIndex ?? null) : null;
 }
 

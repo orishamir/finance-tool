@@ -4,15 +4,16 @@
 import { useContext, useState, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link } from "react-router";
-import type { RuleRecord } from "@finance-tool/schema";
-import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, invest as investCopy, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
+import { assertNever, type RuleRecord } from "@finance-tool/schema";
+import type { FundStatement } from "@finance-tool/engine";
+import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { ownFigures, spanWords, wordUnits } from "../lib/rule-row";
 import { fmt, formatValue } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isOpenValue, isParameter, isWeak, ownBy, ruleFigure, strengthOf, type SiteValue } from "../lib/value";
+import { isOpenValue, isParameter, isWeak, ownBy, ruleFigure, statementKey, strengthOf, type SiteValue } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
@@ -452,6 +453,16 @@ export function SlottedText({ text, rules, today }: { text: string; rules: Recor
   );
 }
 
+/** A fund statement's sentence on a figure's sheet, by the term it states (D84). */
+function statementSentence(st: FundStatement): string {
+  switch (st.term) {
+    case "tax-index":
+      return copy.computed.statement["tax-index"](st);
+    default:
+      return assertNever(st.term);
+  }
+}
+
 /** The sheet behind a figure (exported for the render tests). */
 export function ValueSheet({ value, exact, display, data, headId, descId }: { value: SiteValue; exact: boolean; display?: string; data: ProvenanceData; headId: string; descId: string }) {
   const strength = strengthOf(value);
@@ -619,8 +630,8 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
             <div className="flex flex-col gap-1.5">
               <span className="text-sm text-muted-foreground">{copy.computed.statements}</span>
               {value.statements.map((st) => (
-                <div key={`${st.term}|${st.source.url}|${st.page}`} className="flex flex-col">
-                  <p className="text-sm">{copy.computed.statement[st.term](st.index === "fx" ? (investCopy.currencies[st.currency] ?? st.currency) : null)}</p>
+                <div key={statementKey(st)} className="flex flex-col">
+                  <p className="text-sm">{statementSentence(st)}</p>
                   <DocLink href={sourceHref({ url: st.source.url, page: st.page })}>{copy.computed.statementDoc(st.source.title, st.page)}</DocLink>
                 </div>
               ))}

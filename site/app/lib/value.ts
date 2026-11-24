@@ -203,6 +203,11 @@ export function differenceOf(a: readonly [name: string, value: SiteValue], b: re
   return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? av.unit, formula, { [an]: av, [bn]: bv }, options);
 }
 
+/** A fund statement's identity on a page: the term it states, its document and the page there, so one statement is carried and listed once. */
+export function statementKey(st: FundStatement): string {
+  return `${st.term}|${st.source.url}|${st.page}`;
+}
+
 /**
  * The rules, flags and labels of the runs a figure rests on, each once, for a figure computed from them that is not their sum or difference
  * alone (a point where two runs cross): every run that reads a rule or a line carries what it carries (F-12, F-128).
@@ -214,7 +219,7 @@ export function carriedBy(values: readonly SiteValue[]): Pick<ComputedOptions, "
   const labels = new Map<string, { code: string; ruleId: string }>();
   for (const v of values) {
     for (const r of v.rulesUsed ?? []) rules.set(r.id, r);
-    for (const st of v.statements ?? []) statements.set(`${st.term}|${st.source.url}|${st.page}`, st);
+    for (const st of v.statements ?? []) statements.set(statementKey(st), st);
     for (const f of v.flags ?? []) flags.add(f);
     for (const l of v.labels ?? []) labels.set(`${l.code}|${l.ruleId}`, l);
   }
