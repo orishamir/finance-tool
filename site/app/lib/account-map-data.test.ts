@@ -197,24 +197,20 @@ describe("the guides from the plan on the default S&P 500 plan", () => {
     expect(plain).not.toContain(invest.before.map.planHead);
   });
 
-  it("draws no guide to a switch past the axis's end, where the axis is held at the sliders' reach", () => {
+  it("runs each axis past the switch or the stretch it names, so each guide ends on the plot", () => {
     const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
-    const plan = planAt(10_000, 500, 10);
-    const view = buildInvest({ bundle, index, plan });
-    const pick = need(pickOfHeadline(view), "the page's pair");
-    const answer = work.map(bundle, { index, plan, fund: pick.fund });
-    const real = need(answer.kind === "map" ? answer.map : null, "the map");
-    const past = 2 * real.max.amount;
-    const far: AccountMap = { ...real, switches: { ...real.switches, amount: { at: past, dir: "up", to: real.accounts[0] ?? "" } }, stretches: { ...real.stretches, amount: null }, equal: { ...real.equal, amount: null } };
-    const out = html(createElement(AccountMapPanel, { view, bundle, house: pick.house, map: far, on: { bundle, ask: { index, plan, fund: pick.fund } } }));
-    expect(shown(out).replace(/[\u2060\u2066-\u2069]/g, "")).not.toContain(fmt.nisRough(past));
-    // the guides are drawn as with no switch along today's amount: to the axis's end
-    const guides = (m: AccountMap) => {
-      const h = html(createElement(AccountMapPanel, { view, bundle, house: pick.house, map: m, on: { bundle, ask: { index, plan, fund: pick.fund } } }));
-      return [...h.matchAll(/data-mark="guide"><line [^>]*>/g)].map((x) => x[0]);
-    };
-    expect(guides(far)).toHaveLength(2);
-    expect(guides(far)).toEqual(guides({ ...far, switches: { ...far.switches, amount: null } }));
+    for (const plan of [planAt(10_000, 500, 10), planAt(1000, 100, 10), planAt(100_000, 0, 10), planAt(10_000, 10_000, 10)]) {
+      const pick = need(pickOfHeadline(buildInvest({ bundle, index, plan })), "the page's pair");
+      const answer = work.map(bundle, { index, plan, fund: pick.fund });
+      const map = need(answer.kind === "map" ? answer.map : null, "the map");
+      for (const axis of ["amount", "monthly"] as const) {
+        const end = map.max[axis];
+        const s = map.switches[axis];
+        const st = map.stretches[axis];
+        if (s) expect(s.at, `${plan.amountNow}/${plan.monthly} ${axis}`).toBeLessThanOrEqual(end);
+        if (st) expect(st.hi, `${plan.amountNow}/${plan.monthly} ${axis}`).toBeLessThanOrEqual(end);
+      }
+    }
   });
 });
 

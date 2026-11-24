@@ -304,8 +304,7 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
     const end = axis === "amount" ? map.max.amount : map.max.monthly;
     const unit = axis === "monthly" ? ` ${m.perMonth}` : "";
     const s = map.switches[axis];
-    // a switch up past the axis's end (the axis held at the sliders' reach) draws no guide off the plot
-    if (s && s.at <= end) return { axis: along, at: s.at, label: { text: `${m.about}${fmt.nisRough(s.at)}${unit}`, node: <>{m.about}{figure(s, axis, "switch")}{unit}</> } };
+    if (s) return { axis: along, at: s.at, label: { text: `${m.about}${fmt.nisRough(s.at)}${unit}`, node: <>{m.about}{figure(s, axis, "switch")}{unit}</> } };
     // a stretch where another is clearly cheaper: the guide to its end nearer the plan, its words both ends
     const st = map.stretches[axis];
     if (st && Math.min(st.lo, st.hi) <= end) {
