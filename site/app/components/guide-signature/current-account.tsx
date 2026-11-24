@@ -118,7 +118,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
           <p className="text-lg lg:text-xl font-medium">
             {copy.account.headline.lead} <InputSlot><Num value={yearsValue} display={fmt.years(years)} /></InputSlot>, <InputSlot><Num value={balanceValue} /></InputSlot>{" "}
             {copy.account.headline.inAccount}{" "}
-            <Num value={values.account} /> {copy.account.headline.today.before} <Term id="אינפלציה">{copy.account.headline.today.term}</Term>{copy.account.headline.today.after} {direction ? <><Num value={change} /> {direction}</> : copy.account.headline.same}.
+            <Num value={values.account} /> {copy.account.headline.today.before} <Term prefix={copy.account.headline.today.prefix} id="אינפלציה">{copy.account.headline.today.term}</Term>{copy.account.headline.today.after} {direction ? <><Num value={change} /> {direction}</> : copy.account.headline.same}.
           </p>
           {commonIsZero && <p>{commonCount && bankCount && isMajority(commonCount, bankCount) ? copy.account.mostPayNothing : copy.account.modePaysNothing}</p>}
         </div>

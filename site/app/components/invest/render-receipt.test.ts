@@ -125,7 +125,7 @@ describe("the receipt", () => {
     // the tax line's sheet says it is in today's money, on a fund that pays out too
     for (const distributes of [false, true]) {
       const about = taxOf({ ...pc, distributes }).about;
-      expect(about, `distributes: ${distributes}`).toContain("בניכוי אינפלציה");
+      expect(about, `distributes: ${distributes}`).toContain("בהתחשב באינפלציה");
       expect(about).toBe(distributes ? w.receipt.taxSheet.payouts : w.receipt.taxSheet.sale);
     }
   });
