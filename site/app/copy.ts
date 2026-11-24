@@ -4178,6 +4178,8 @@ export const invest = {
       below: "מתחת לכ־\u2060",
       /** Before a figure said roughly, alone: "כ־108 אלף ₪". */
       about: "כ־\u2060",
+      /** A guide's words where it ends on the line where two accounts are equal: "שווים בכ־2,460 ₪ בחודש". */
+      equalAt: "שווים בכ־\u2060",
       perMonth: "בחודש",
       today: "היום",
       /** "בערך אותו דבר": two accounts within the tie threshold of each other, in the words on the map, the card and the readings. */
@@ -4216,6 +4218,8 @@ export const invest = {
       headAll: "הוא הכי זול בכל צירוף במפה.",
       /** The line under the headline: what the map is, and what its blended colours mean (θ, P-01, as a figure). */
       what: (years: number) => `החשבון שגובה הכי מעט עם הקרן הזו, בכל צירוף של סכום היום והפקדה חודשית, ${inYears(years)}. איפה שהצבעים מתערבבים, ההפרש קטן מ־`,
+      /** After it: what the thin line on the map marks. */
+      equalLine: "על הקו הדק שני החשבונות שווים.",
       xTitle: "סכום היום (₪)",
       yTitle: "הפקדה חודשית (₪)",
       plan: "התוכנית שלכם",
@@ -4232,6 +4236,7 @@ export const invest = {
       onlyOne: "אין חשבון אחר שמוכר את הקרן",
       /** The sheets of the map's figures. */
       switchAbout: "הסכום שממנו חשבון אחר זול יותר בבירור",
+      equalAbout: "הסכום שבו שני החשבונות משאירים אותו דבר",
       leftAbout: (w: string) => `מה שנשאר בחשבון ${w}, בכסף של היום`,
       gapAbout: (w: string) => `כמה פחות נשאר בחשבון הזה מאשר ב${w}`,
       pointAbout: "הנקודה שבחרתם במפה",

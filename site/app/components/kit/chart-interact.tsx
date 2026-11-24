@@ -256,9 +256,10 @@ export const pickDim = (active: string | null | undefined, id: string) => cx("tr
  * (one line of two long fund names was 575 px; on a phone it widened the page, at 1440 the right-hand year put it off the left
  * edge). Measured before paint, so it never shows in the wrong place. `near`: the point it reads, in px from the parent's top (`y`), with the
  * lowest its foot may reach (`bottom`): the box then opens beside the point, to its right unless it would leave the parent, its foot 10 px
- * over the point, or under the point where there is no room above it.
+ * over the point, or under the point where there is no room above it. `variant`: a box that follows the pointer lets it through; one kept at
+ * a point the reader chose (`kept`) takes taps, so a figure in it opens its source.
  */
-export function ChartTip({ x, top = 0, width, near, children }: { x: number; top?: number; width: number; near?: { y: number; bottom: number }; children: ReactNode }) {
+export function ChartTip({ x, top = 0, width, near, variant = "follow", children }: { x: number; top?: number; width: number; near?: { y: number; bottom: number }; variant?: "follow" | "kept"; children: ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const el = box.current;
@@ -272,7 +273,7 @@ export function ChartTip({ x, top = 0, width, near, children }: { x: number; top
     }
   });
   return (
-    <div ref={box} dir="rtl" className="absolute z-(--z-sticky) pointer-events-none w-max max-w-[min(100%,20rem)] rounded-md border border-border bg-popover px-2 py-1 text-xs leading-snug shadow-sm [&_bdi[dir=ltr]]:whitespace-nowrap" style={{ left: 0, top }}>
+    <div ref={box} dir="rtl" className={cx("absolute z-(--z-sticky) w-max max-w-[min(100%,20rem)] rounded-md border border-border bg-popover px-2 py-1 text-xs leading-snug shadow-sm [&_bdi[dir=ltr]]:whitespace-nowrap", variant === "kept" ? "pointer-events-auto" : "pointer-events-none")} style={{ left: 0, top }}>
       <CountingFigures on={false}>{children}</CountingFigures>
     </div>
   );

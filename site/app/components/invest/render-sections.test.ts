@@ -712,8 +712,10 @@ describe("before deciding: the tab cards", () => {
     const tabs = out.slice(0, out.indexOf(invest.before.map.kicker));
     expect(tabs.indexOf(invest.before.map.question)).toBeGreaterThanOrEqual(0);
     expect(tabs.indexOf(invest.before.map.question)).toBeLessThan(tabs.indexOf(invest.before.sens.question));
-    // the panel: its axes by name, the plan's point and the reading under the map, which starts at the plan
-    for (const words of [invest.before.map.xTitle, invest.before.map.yTitle, invest.before.map.plan, invest.before.map.planHead]) expect(out).toContain(words);
+    // the panel: its axes by name and the plan's point; with no point kept, no reading under the map (a box at the pointer or a kept point
+    // says what a point holds)
+    for (const words of [invest.before.map.xTitle, invest.before.map.yTitle, invest.before.map.plan]) expect(out).toContain(words);
+    expect(out).not.toContain(invest.before.map.planHead);
     // the fees card it replaced is gone
     expect(out).not.toContain("לאן הולכות העמלות");
   });

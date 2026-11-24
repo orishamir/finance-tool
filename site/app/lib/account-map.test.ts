@@ -83,6 +83,18 @@ describe("the account map (F-131)", () => {
     expect(map.changes.monthly.even).toBeCloseTo(562.5, 0);
   });
 
+  it("finds where along each of the plan's lines the other account leaves as much, the nearer way", () => {
+    // B leaves 0.015 a − 440 more at 200 ₪ a month: equal at 29,333.3 ₪, up from 10,000 ₪ and down from 100,000 ₪; at 10,000 ₪ today
+    // B leaves 0.8 m − 450 more: equal at 562.5 ₪ a month
+    expect(map.equal.amount).toMatchObject({ dir: "up", to: "b" });
+    expect(map.equal.amount?.at).toBeCloseTo(29_333.3, -2);
+    expect(map.equal.monthly).toMatchObject({ dir: "up", to: "b" });
+    expect(map.equal.monthly?.at).toBeCloseTo(562.5, 0);
+    const past = mapOf(linear, { amount: 100_000, monthly: 200 });
+    expect(past.equal.amount).toMatchObject({ dir: "down", to: "a" });
+    expect(past.equal.amount?.at).toBeCloseTo(29_333.3, -2);
+  });
+
   it("shows the band and the other account's side up a line where the other never becomes clearly cheaper", () => {
     // A: 2% of today's amount and 0.6 ₪ a shekel of the deposit; B as before. Up the deposit at 10,000 ₪, B leaves 0.4 m − 450 more: A is θ
     // ahead while 450 − 0.4 m ≥ 0.005 (9,800 + 99.4 m), to 447.0 ₪ a month, B leaves more from 1,125 ₪, and B is never θ ahead, since

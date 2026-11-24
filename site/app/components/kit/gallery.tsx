@@ -4181,17 +4181,7 @@ function RegionDemo() {
           </span>
         );
       }}
-      renderBelow={regionBelow}
     />
   );
 }
 
-/** The demo's reading under the map: the two options at the kept point, the first set apart. */
-function regionBelow(p: RegionPoint | null) {
-  const r = g.sample.regions;
-  const at = p ?? ([REGION_MAP?.plan.amount ?? 0, REGION_MAP?.plan.monthly ?? 0] as const);
-  const left = [...regionLeft(at[0], at[1], null)].sort((x, y) => y[1] - x[1]);
-  const names: Record<string, string> = { a: r.a, b: r.b, c: r.c };
-  const tone = (id: string) => regionTones(REGION_MAP?.accounts.length ?? 0)[REGION_MAP?.accounts.indexOf(id) ?? -1] ?? "other";
-  return <ChartReadout title={r.point(fmt.nisWhole(at[0]), fmt.nisWhole(at[1]))} rows={left.slice(0, 2).map(([id, v], k) => ({ id, swatch: <Swatch shape="box" className={regionSwatch(tone(id))} />, label: names[id] ?? id, value: fmt.nisWhole(Math.round(v)), ...(k === 0 ? { wash: regionWash(tone(id)) } : {}) }))} />;
-}

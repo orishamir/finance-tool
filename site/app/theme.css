@@ -298,6 +298,8 @@
   --chart-region-4: var(--palette-region-apricot);
   --chart-region-other: var(--palette-neutral-400);
   --chart-region-ink: var(--palette-neutral-975);
+  /* the thin line where two areas are equal, over the band between them: near-black, which reads on every pastel and on the grey */
+  --chart-region-equal: var(--palette-neutral-975);
   /* the index page's two kinds of fund (2026-10-29, founder: option A of 8dd1f013:research/specs/2026-10-29-hedging): keeping the index's currency, and
      neutralising it: teal against magenta (not gold: amber and its neighbours mean status, charts.md), not the fee orange the
      page's cost bars use */
@@ -575,6 +577,7 @@
   --color-chart-region-4: var(--chart-region-4);
   --color-chart-region-other: var(--chart-region-other);
   --color-chart-region-ink: var(--chart-region-ink);
+  --color-chart-region-equal: var(--chart-region-equal);
   --color-chart-kind-unhedged: var(--chart-kind-unhedged);
   --color-chart-kind-hedged: var(--chart-kind-hedged);
   --color-chart-fee-4: var(--chart-fee-4);

@@ -5,7 +5,7 @@
 // point. Everything the panel reads is the fund and plan the map shown was worked out for, so a map still shown while the next is worked out
 // never reads another fund. Its words cover every case: one account cheapest everywhere, the plan clearly in one account's area or in the
 // band, a switch one way or both, up or down, a plan with nothing in it, and a fund no account is ranked with.
-import { useCallback, useMemo, type ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 import { invest as c } from "../../copy";
 import type { AccountMap, MapField, MapSwitch } from "../../lib/account-map";
 import { fmt } from "../../lib/format";
@@ -17,7 +17,7 @@ import { rankedAt } from "../../lib/stretch";
 import { asParameter, carriedBy, computed, differenceOf, entered, type SiteValue } from "../../lib/value";
 import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
-import { ChartReadout, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionPoint, type RegionTone, type TabCard } from "../kit";
+import { MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionPoint, type RegionTone, type TabCard } from "../kit";
 import { providerName } from "./sections";
 import { allFunds, type Pick } from "./pair";
 
@@ -200,29 +200,31 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
 
   const { areas, toneOf, field, edge } = useMemo(() => areasOf(view, map), [view, map]);
 
-  // a switch as a figure: F-131 at the point of the plan's line where it is, resting on the two accounts' runs there (with what they carry)
+  // a switch or an equal point as a figure: F-131 at the point of the plan's line where it is, resting on the two accounts' runs there (with
+  // what they carry)
   const from = map.plan.lead.kind === "clear" ? map.plan.lead.first : map.plan.lead.kind === "near" ? map.plan.lead.tied[0] : null;
-  const switchValue = (s: MapSwitch, axis: "amount" | "monthly"): SiteValue => {
+  const pointValue = (s: MapSwitch, axis: "amount" | "monthly", about: string): SiteValue => {
     const point: RegionPoint = axis === "amount" ? [s.at, plan.monthly] : [plan.amountNow, s.at];
     const ways = rankedWays(on, planAt(plan, point, today), from ? [from, s.to] : [s.to]);
     const runs = ways.map((w) => w.value);
     const inputs = { ...planInputs(plan, WHOLE_PLAN), ...Object.fromEntries(ways.map((w) => [m.leftAbout(shortOf(view, w.providerId)), w.value])) };
-    return computed(Math.round(s.at), axis === "amount" ? "nis" : "nis_per_month", "F-131", inputs, { today, about: m.switchAbout, ...carriedBy(runs) });
+    return computed(Math.round(s.at), axis === "amount" ? "nis" : "nis_per_month", "F-131", inputs, { today, about, ...carriedBy(runs) });
   };
-  const figure = (s: MapSwitch, axis: "amount" | "monthly") => <Num value={switchValue(s, axis)} display={fmt.nisRough(s.at)} />;
+  const figure = (s: MapSwitch, axis: "amount" | "monthly") => <Num value={pointValue(s, axis, m.switchAbout)} display={fmt.nisRough(s.at)} />;
   const words = mapWords<ReactNode>(map, house, (id) => shortOf(view, id), figure, thetaText(bundle));
-  const guides = (["amount", "monthly"] as const).flatMap((axis) => {
-    const s = map.switches[axis];
-    if (!s) return [];
+  // a guide along each axis: to the switch, else to where the two are equal, else to the axis's end with no words
+  const guides = (["amount", "monthly"] as const).map((axis) => {
+    const along = axis === "amount" ? ("x" as const) : ("y" as const);
+    const end = axis === "amount" ? map.max.amount : map.max.monthly;
     const unit = axis === "monthly" ? ` ${m.perMonth}` : "";
-    return [{ axis: axis === "amount" ? ("x" as const) : ("y" as const), at: s.at, label: { text: `${m.about}${fmt.nisRough(s.at)}${unit}`, node: <>{m.about}{figure(s, axis)}{unit}</> } }];
+    const s = map.switches[axis];
+    if (s) return { axis: along, at: s.at, label: { text: `${m.about}${fmt.nisRough(s.at)}${unit}`, node: <>{m.about}{figure(s, axis)}{unit}</> } };
+    const e = map.equal[axis];
+    if (e && e.at <= end) return { axis: along, at: e.at, label: { text: `${m.equalAt}${fmt.nisRough(e.at)}${unit}`, node: <>{m.equalAt}<Num value={pointValue(e, axis, m.equalAbout)} display={fmt.nisRough(e.at)} />{unit}</> } };
+    return { axis: along, at: end };
   });
 
   const reading = useMemo(() => readerOf(view, bundle, on, toneOf), [view, bundle, on, toneOf]);
-  const renderBelow = useCallback((p: RegionPoint | null) => {
-    const r = reading(p);
-    return <ChartReadout title={r.head} rows={r.rows} />;
-  }, [reading]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -235,7 +237,7 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
         sub={
           <p className="text-sm text-muted-foreground">
             {m.what(plan.years)}
-            {thetaNode}.
+            {thetaNode}. {m.equalLine}
           </p>
         }
       >
@@ -272,7 +274,6 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
             </span>
           );
         }}
-        renderBelow={renderBelow}
       />
     </div>
   );

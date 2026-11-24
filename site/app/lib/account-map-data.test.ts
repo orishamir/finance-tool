@@ -1,14 +1,16 @@
 // The account map (F-131) on the collected data: what must hold whatever the data says, so a routine refresh never breaks it.
 import { describe, expect, it } from "vitest";
-import { bundle, lists, plan as fixturePlan } from "../components/invest/render-fixtures";
+import { createElement } from "react";
+import { bundle, html, lists, plan as fixturePlan, shown } from "../components/invest/render-fixtures";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
-import { mapCard } from "../components/invest/account-map";
+import { AccountMapPanel, mapCard } from "../components/invest/account-map";
 import { invest } from "../copy";
 import type { AccountMap } from "./account-map";
 import { buildInvest, indexById, knownIndices, tieShareOf } from "./invest";
 import { leftWith, work } from "./invest-work";
 import { rankedAt } from "./stretch";
 import { entered } from "./value";
+import { fmt } from "./format";
 import type { WorkbenchInputs } from "./providers";
 
 /** A value the test's setup must have, else the test stops naming what was missing. */
@@ -148,5 +150,28 @@ describe("a plan of nothing at all on the collected data", () => {
     const pick = need(pickOfHeadline(buildInvest({ bundle, index, plan: planAt(10_000, 500, 10) })), "the page's pair");
     const answer = work.map(bundle, { index, plan, fund: pick.fund });
     expect(answer.kind === "map" ? [answer.map.plan.lead, answer.map.switches, answer.map.accounts.length > 0] : answer).toEqual([{ kind: "empty" }, { amount: null, monthly: null }, true]);
+  });
+});
+
+describe("the guides from the plan on the default S&P 500 plan", () => {
+  it("runs one along each axis, to its switch, else to where the two accounts are equal", () => {
+    const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
+    const plan = planAt(10_000, 500, 10);
+    const pick = need(pickOfHeadline(buildInvest({ bundle, index, plan })), "the page's pair");
+    const answer = work.map(bundle, { index, plan, fund: pick.fund });
+    const map = need(answer.kind === "map" ? answer.map : null, "the map");
+    const out = shown(html(createElement(AccountMapPanel, { view: buildInvest({ bundle, index, plan }), bundle, house: pick.house, map, on: { bundle, ask: { index, plan, fund: pick.fund } } })));
+    const bare = (x: string) => x.replace(/[\u2060\u2066-\u2069]/g, "");
+    const plain = bare(out);
+    // whatever the data says, a guide along each axis: to a switch, else to the equal point, as the map has them
+    for (const axis of ["amount", "monthly"] as const) {
+      const s = map.switches[axis];
+      const e = map.equal[axis];
+      const unit = axis === "monthly" ? ` ${invest.before.map.perMonth}` : "";
+      if (s) expect(plain).toContain(bare(`${invest.before.map.about}${fmt.nisRough(s.at)}${unit}`));
+      else if (e) expect(plain).toContain(bare(`${invest.before.map.equalAt}${fmt.nisRough(e.at)}${unit}`));
+    }
+    // with no point kept, nothing under the map
+    expect(plain).not.toContain(invest.before.map.planHead);
   });
 });

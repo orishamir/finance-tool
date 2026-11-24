@@ -62,11 +62,13 @@
 //   notice in a sheet   with a sheet open on the kit page and a script's failure planted (at 390 a sheet at the foot, at 1440 a short sheet
 //            centred by a transform), the notice's title or its reload button not the top thing at its middle (drawn under the sheet, or cut
 //            by its card), the notice not at the window's foot, or the button not reloading the page.
-//   region   the region map (`RegionMap`) at 1440 with a mouse and keys: a click on the plot that keeps no point or leaves the reading under
-//            the map on the marked point, a second click that does not move the kept point, a click on it or Escape that does not let it
-//            go, arrow keys that keep no point or do not move it; a name inside an area, or a legend item, that does not set its area apart
-//            (the areas' colours), or a name's click that keeps a point; the pointer over an area that does not lighten it; the band's
-//            words missing; the bottom edge's line not drawn as a thin band at the plot's foot in more than one colour. At 390 with a
+//   region   the region map (`RegionMap`) at 1440 with a mouse and keys: a box or a reading shown with no point kept and the pointer off
+//            the map; a click on the plot that keeps no point, or whose box does not stay at it once the pointer leaves; a second click that
+//            does not move the kept point or its box; a click on it or Escape that does not let it go with its box; arrow keys that keep no
+//            point or do not move it; a name inside an area, or a legend item, that does not set its area apart (the areas' colours), or a
+//            name's click that keeps a point; the pointer over an area that does not lighten it; the band's words missing; the line where
+//            two areas are equal missing, or drawn only along the grid (no piece of it slanted); a guide missing along either axis; the
+//            bottom edge's line not drawn as a thin band at the plot's foot in more than one colour. At 390 with a
 //            finger: a tap that keeps no point, a tap on it that does not let it go, and a finger moving up the map that keeps a point or
 //            does not scroll the page.
 //   chip     at 1440 and 390, an option of a row that chooses one (`ChoiceChips`, `SegmentedControl`) whose box moves or changes size
@@ -1450,7 +1452,7 @@ async function chipCheck(browser, base) {
   return found;
 }
 
-/** The region map's demo on the kit page: the map, its plot, its kept point and the reading under it, and its painted areas and edge. */
+/** The region map's demo on the kit page: the map, its plot, its kept point and the box kept at it, and its painted areas and edge. */
 function regionParts(page) {
   const demo = page.locator('article[aria-label="RegionMap"]');
   const map = demo.locator("[data-region-map]");
@@ -1466,36 +1468,45 @@ function regionParts(page) {
       }
       return { sum, colours: colours.size };
     });
-  return { demo, map, svg: map.locator("svg").first(), pin, kept: () => pin.count(), pinAt: () => pin.getAttribute("cx"), head: () => demo.locator("dl[aria-live] dt").first().innerText(), painted };
+  const keptBox = map.locator('[data-region-tip="kept"]');
+  return { demo, map, svg: map.locator("svg").first(), pin, kept: () => pin.count(), pinAt: () => pin.getAttribute("cx"), keptBox: async () => ((await keptBox.count()) ? keptBox.innerText() : null), painted };
 }
 
 async function regionCheck(browser, base) {
   const found = [];
   {
     const { ctx, page } = await open(browser, base, DESK);
-    const { demo, map, svg, kept, pinAt, head, painted, pin } = regionParts(page);
+    const { demo, map, svg, kept, pinAt, keptBox, painted, pin } = regionParts(page);
     await map.scrollIntoViewIfNeeded();
     await page.evaluate(settled);
     const r = await svg.boundingBox();
     const at = (fx, fy) => ({ x: r.x + r.width * fx, y: r.y + r.height * fy });
-    const planHead = await head();
+    const off = () => page.mouse.move(r.x - 40, r.y - 40);
+    await off();
+    if ((await map.locator("[data-region-tip]").count()) || (await demo.locator("dl").count())) found.push("region: a box or a reading shows with no point kept and the pointer off the map");
     let p = at(0.6, 0.3);
     await page.mouse.click(p.x, p.y);
+    await off();
+    const firstBox = await keptBox();
     if (!(await kept())) found.push("region: a click on the map keeps no point");
-    else if ((await head()) === planHead) found.push("region: the reading under the map stays on the marked point after a click kept another");
+    else if (!firstBox) found.push("region: the kept point's box does not stay once the pointer leaves the map");
     const first = await pinAt();
     p = at(0.4, 0.55);
     await page.mouse.click(p.x, p.y);
+    await off();
     if ((await pinAt()) === first) found.push("region: a second click elsewhere does not move the kept point");
+    else if ((await keptBox()) === firstBox) found.push("region: the kept box does not read the point a second click kept");
     if (await kept()) {
       const c = center(await pin.boundingBox());
       await page.mouse.click(c.x, c.y);
-      if (await kept()) found.push("region: a click on the kept point does not let it go");
+      await off();
+      if ((await kept()) || (await keptBox())) found.push("region: a click on the kept point does not let it go with its box");
     }
     p = at(0.6, 0.3);
     await page.mouse.click(p.x, p.y);
+    await off();
     await page.keyboard.press("Escape");
-    if (await kept()) found.push("region: Escape does not let the kept point go");
+    if ((await kept()) || (await keptBox())) found.push("region: Escape does not let the kept point go with its box");
     await map.focus();
     await page.keyboard.press("ArrowRight");
     if (!(await kept())) found.push("region: an arrow key keeps no point");
@@ -1530,6 +1541,12 @@ async function regionCheck(browser, base) {
     if ((await painted("areas")).sum === before) found.push("region: the pointer over an area does not lighten it");
     await page.mouse.move(r.x - 40, r.y - 40);
     if (!(await map.locator("svg text", { hasText: "בערך אותו דבר" }).count())) found.push("region: the band between two areas carries no words");
+    // the line where two areas are equal: drawn, and smooth, so some piece of it runs neither along a row nor along a column
+    const d = (await map.locator('path[data-mark="equal"]').getAttribute("d").catch(() => null)) ?? "";
+    const pieces = [...d.matchAll(/M([\d.]+) ([\d.]+)L([\d.]+) ([\d.]+)/g)].map((x) => x.slice(1).map(Number));
+    if (!pieces.length) found.push("region: no line where two areas are equal");
+    else if (!pieces.some(([x0, y0, x1, y1]) => Math.abs(x1 - x0) > 0.05 && Math.abs(y1 - y0) > 0.05)) found.push("region: the line where two areas are equal runs only along the grid's rows and columns");
+    if ((await map.locator('[data-mark="guide"]').count()) !== 2) found.push("region: the marked point has no guide along one of the axes");
     // the bottom edge: a thin band at the plot's foot, its own colours along it
     const edge = map.locator('canvas[data-mark="edge"]');
     const e = await edge.boundingBox();

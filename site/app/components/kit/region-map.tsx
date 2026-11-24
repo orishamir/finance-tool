@@ -1,13 +1,15 @@
 // A map of areas over two amounts: which of a few options leads at each point of a plane, and by how much. Each point is filled with the
 // colour of the option that leads there, blended with the next one's where the two are close: half and half where they are equal, the
 // leader's own colour once it is clearly ahead, so between two areas runs a soft band, not a line. The fill is a small grid of colours the
-// browser scales up smoothly (a canvas), so the band has no steps on any screen. Each area's name stands inside it, and words of the caller's
-// in the band where they fit; a marked point (the reader's own) has dashed guides from it along each axis; and a value of the bottom edge
-// is drawn apart as a thick line, blended the same way. The x axis grows left to right and the y axis up from 0 (charts.md).
-// The pointer reads any point: on a computer a box follows it and the area under it lightens; a click or a tap keeps a point (its mark stays,
-// and the reading under the map is that point's), a second one elsewhere moves it, and a tap on it or Escape lets it go. The map takes the
-// focus, and the arrow keys move the kept point (from the marked one; with Shift in larger steps). A legend item or an area's name sets that
-// area apart while pointed at, and keeps it on a click or a tap, without keeping a point.
+// browser scales up smoothly (a canvas), so the band has no steps on any screen. Where two areas meet, the two are equal: a thin line marks
+// it over the band, through the points where the leads either side cancel, found between the grid's nodes, so it runs smooth rather than
+// along the grid's cells. Each area's name stands inside it, and words of the caller's in the band where they fit; a marked point (the
+// reader's own) has dashed guides from it along each axis; and a value of the bottom edge is drawn apart as a thick line, blended the same
+// way. The x axis grows left to right and the y axis up from 0 (charts.md).
+// The pointer reads any point: on a computer a box follows it and the area under it lightens; a click or a tap keeps a point (its mark and
+// its box stay, and the box's figures can be tapped), a second one elsewhere moves it, and a tap on it or Escape lets it go. The map takes
+// the focus, and the arrow keys move the kept point (from the marked one; with Shift in larger steps). A legend item or an area's name sets
+// that area apart while pointed at, and keeps it on a click or a tap, without keeping a point.
 // The caller gives who leads at each node of an even grid and says what a reading holds; the piece draws and answers the pointer.
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import { scaleLinear } from "d3-scale";
@@ -72,11 +74,11 @@ export interface RegionWords {
   node?: ReactNode;
 }
 
-/** A guide from the marked point along one axis, ending in a dot with its words. */
+/** A guide from the marked point along one axis to `at`, ending in a dot with its words; with no words, it runs on with no dot. */
 export interface RegionGuide {
   axis: "x" | "y";
   at: number;
-  label: RegionWords;
+  label?: RegionWords;
 }
 
 const TOP = 12;
@@ -143,6 +145,50 @@ function paint(canvas: HTMLCanvasElement, grid: RegionGrid, colour: (area: numbe
   ctx.putImageData(img, 0, 0);
 }
 
+/** A piece of the line where two areas are equal, in the grid's own units (node columns and rows, from the bottom left). */
+type Seg = readonly [x0: number, y0: number, x1: number, y1: number];
+
+/**
+ * The line where two areas are equal, over a grid: on each side between two nodes whose leaders differ, the point where the two leads
+ * cancel, linearly between them (each node's lead taken as how far its leader is ahead, the other's as behind); in each cell, its two such
+ * points joined, or, where more meet (three areas, or a saddle), each joined to their middle.
+ */
+export function equalLines(grid: RegionGrid): Seg[] {
+  const { cols, rows, first, ahead } = grid;
+  const at = (i: number, j: number) => j * cols + i;
+  /** The point between two nodes where their leaders are equal, as a fraction from the first; null where one leader holds both. */
+  const cross = (a: number, b: number): number | null => {
+    const fa = first[a] ?? -1;
+    const fb = first[b] ?? -1;
+    if (fa < 0 || fb < 0 || fa === fb) return null;
+    const la = ahead[a] ?? 1;
+    const lb = ahead[b] ?? 1;
+    return la + lb === 0 ? 0.5 : la / (la + lb);
+  };
+  const out: Seg[] = [];
+  for (let j = 0; j + 1 < rows; j++)
+    for (let i = 0; i + 1 < cols; i++) {
+      const pts: [number, number][] = [];
+      const bottom = cross(at(i, j), at(i + 1, j));
+      if (bottom !== null) pts.push([i + bottom, j]);
+      const right = cross(at(i + 1, j), at(i + 1, j + 1));
+      if (right !== null) pts.push([i + 1, j + right]);
+      const top = cross(at(i + 1, j + 1), at(i, j + 1));
+      if (top !== null) pts.push([i + 1 - top, j + 1]);
+      const left = cross(at(i, j + 1), at(i, j));
+      if (left !== null) pts.push([i, j + 1 - left]);
+      const [p, q] = pts;
+      if (!p || !q) continue;
+      if (pts.length === 2) out.push([p[0], p[1], q[0], q[1]]);
+      else {
+        const mx = pts.reduce((n, x) => n + x[0], 0) / pts.length;
+        const my = pts.reduce((n, x) => n + x[1], 0) / pts.length;
+        for (const x of pts) out.push([x[0], x[1], mx, my]);
+      }
+    }
+  return out;
+}
+
 export function RegionMap({
   max,
   areas,
@@ -158,7 +204,6 @@ export function RegionMap({
   yTick,
   snap,
   renderTip,
-  renderBelow,
 }: {
   /** The plot runs from 0 to `max` on each axis. */
   max: { x: number; y: number };
@@ -180,11 +225,8 @@ export function RegionMap({
   yTick: (v: number) => string;
   /** The steps a read point is rounded to, on each axis, so a reading names round amounts. */
   snap: { x: number; y: number };
-  /** What a point holds, in the box that follows the pointer; `null` reads the marked point. */
+  /** What a point holds, in the box that follows the pointer and the one that stays at a kept point; `null` reads the marked point. */
   renderTip: (p: RegionPoint | null) => ReactNode;
-  /** The reading under the map, of the kept point, or the marked one while none is kept; one height in every state. Called again only when
-   *  the kept point or the function changes. */
-  renderBelow: (p: RegionPoint | null) => ReactNode;
 }) {
   const [ref, w] = useWidth(600);
   const plane = useRef<HTMLCanvasElement>(null);
@@ -296,6 +338,7 @@ export function RegionMap({
     const guideDraw = guides.map((g) => {
       const gx = g.axis === "x" ? sxL(g.at) : mxL;
       const gy = g.axis === "x" ? myL : syL(g.at);
+      if (!g.label) return { g, gx, gy, box: null };
       const tw = chartTextWidth(g.label.text);
       const box = place(
         g.axis === "x"
@@ -320,7 +363,7 @@ export function RegionMap({
         }
       return true;
     };
-    const dots: [number, number][] = [[mxL, myL], ...guideDraw.map(({ gx, gy }) => [gx, gy] as [number, number])];
+    const dots: [number, number][] = [[mxL, myL], ...guideDraw.flatMap(({ g, gx, gy }) => (g.label ? [[gx, gy] as [number, number]] : []))];
     const taken: Box[] = [...placed];
     const find = (tw: number, h: number, ok: (k: number) => boolean): Box | null => {
       let best: { b: Box; room: number } | null = null;
@@ -379,11 +422,20 @@ export function RegionMap({
     set([Math.min(max.x, Math.max(0, from[0] + dx * n * snap.x)), Math.min(max.y, Math.max(0, from[1] + dy * n * snap.y))]);
   };
 
-  const shownTip = hover ? (hover.onMark ? null : hover.p) : undefined;
-  const tipAt = hover ? (hover.onMark ? mark.at : hover.p) : null;
+  // the box: the pointer's point (the marked one's words on the mark) while it is over the map, else the kept point's, which stays
+  const tip: { at: RegionPoint; reads: RegionPoint | null; kept: boolean } | null = hover ? { at: hover.onMark ? mark.at : hover.p, reads: hover.onMark ? null : hover.p, kept: false } : pinned ? { at: pinned, reads: pinned, kept: true } : null;
   const pinX = pinned ? sx(pinned[0]) : 0;
   const pinY = pinned ? sy(pinned[1]) : 0;
-  const below = useMemo(() => renderBelow(pinned), [renderBelow, pinned]);
+  // the line where two areas are equal, in px
+  const equal = useMemo(() => {
+    const sxE = scaleLinear().domain([0, max.x]).range([left, right]);
+    const syE = scaleLinear().domain([0, max.y]).range([bottom, TOP]);
+    const gx = (i: number) => sxE((max.x * i) / (field.cols - 1));
+    const gy = (j: number) => syE(field.from + ((max.y - field.from) * j) / (field.rows - 1));
+    return equalLines(field)
+      .map(([x0, y0, x1, y1]) => `M${gx(x0).toFixed(1)} ${gy(y0).toFixed(1)}L${gx(x1).toFixed(1)} ${gy(y1).toFixed(1)}`)
+      .join("");
+  }, [field, max.x, max.y, left, right, bottom]);
   // the canvases reach half a node past the plot on each side, so each node's colour sits on its own point and the browser's smoothing
   // runs between them; the plot clips them
   const cellX = (right - left) / (field.cols - 1);
@@ -455,6 +507,8 @@ export function RegionMap({
             </text>
           ))}
           <g clipPath={`url(#${clip})`}>
+            {/* where two areas are equal, over the band */}
+            {equal && <path d={equal} className="stroke-chart-region-equal pointer-events-none" fill="none" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" data-mark="equal" />}
             {/* the names inside their areas: a pointer on one sets its area apart */}
             {layout.names.map(({ a, b }) => (
               <text key={a.id} x={b.x + b.w / 2} y={b.y + b.h / 2 + 5} textAnchor="middle" {...pick.bind(a.id)} data-region-name className={cx("fill-chart-region-ink text-base font-semibold cursor-pointer", pickDim(pick.active, a.id))}>
@@ -469,9 +523,9 @@ export function RegionMap({
           </g>
           {/* the guides from the mark, and the mark itself on top */}
           {guideDraw.map(({ g, gx, gy }) => (
-            <g key={g.axis} className="pointer-events-none">
+            <g key={g.axis} className="pointer-events-none" data-mark="guide">
               <line x1={mx} y1={my} x2={gx} y2={gy} className="stroke-chart-region-ink" strokeWidth={1.5} strokeDasharray="4 3" />
-              <circle cx={gx} cy={gy} r={4} className="fill-chart-region-ink" />
+              {g.label && <circle cx={gx} cy={gy} r={4} className="fill-chart-region-ink" />}
             </g>
           ))}
           <circle cx={mx} cy={my} r={6.5} className="fill-card stroke-chart-region-ink pointer-events-none" strokeWidth={2.5} />
@@ -484,15 +538,15 @@ export function RegionMap({
           )}
         </svg>
         {/* the words on the map: in HTML over the drawing, each in its box beside what it names */}
-        {guideDraw.map(({ g, box }) => (
-          <Words key={g.axis} box={box} words={g.label} />
-        ))}
+        {guideDraw.map(({ g, box }) => box && g.label && <Words key={g.axis} box={box} words={g.label} />)}
         <Words box={markBox} words={mark.label} />
         {edgeWords && edgeInside && <Words box={edgeInside} words={edgeWords} />}
-        {tipAt && (
-          <ChartTip x={sx(tipAt[0])} width={w} near={{ y: sy(tipAt[1]), bottom: height }}>
-            {renderTip(shownTip ?? null)}
-          </ChartTip>
+        {tip && (
+          <div className="contents" data-region-tip={tip.kept ? "kept" : "pointer"}>
+            <ChartTip x={sx(tip.at[0])} width={w} near={{ y: sy(tip.at[1]), bottom: height }} variant={tip.kept ? "kept" : "follow"}>
+              {renderTip(tip.reads)}
+            </ChartTip>
+          </div>
         )}
       </div>
       <p className="text-center text-xs text-muted-foreground" style={{ paddingLeft: left }}>
@@ -504,7 +558,6 @@ export function RegionMap({
           {edgeWords.node ?? edgeWords.text}
         </p>
       )}
-      {below}
     </div>
   );
 }

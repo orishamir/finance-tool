@@ -68,6 +68,9 @@ export interface AccountMap {
   /** Up each of the plan's lines from the plan, the first points where its reading changes, within the search's reach: where the plan's
    *  first stops being θ ahead (`band`; null where it is not θ ahead at the plan) and where another account leaves more (`even`). */
   changes: { amount: LineChanges; monthly: LineChanges };
+  /** The nearest point along each of the plan's lines, up or down, where another account leaves as much as the plan's first (`to`, the one
+   *  that leaves more just past it): where the line crosses the place the two are equal. */
+  equal: { amount: MapSwitch | null; monthly: MapSwitch | null };
 }
 
 /** Where the reading first changes up one of the plan's lines; null where it does not within the search's reach. */
@@ -214,7 +217,7 @@ function switchAlong(line: Line | null, order: readonly string[], theta: number,
 
 /** The first point along a line where `changed` holds of the reading there: the first sample where it does, narrowed by halving from the
  *  sample before it (the plan, for the first). Null where no sample to the line's end reads changed. */
-function firstChange(line: Line | null, order: readonly string[], theta: number, changed: (l: ReturnType<typeof leadOf>) => boolean): number | null {
+function firstChange(line: Line | null, order: readonly string[], theta: number, changed: (l: ReturnType<typeof leadOf>) => boolean): { at: number; lead: ReturnType<typeof leadOf> } | null {
   if (!line) return null;
   const samples = line.samples();
   const k = samples.findIndex((s) => changed(leadOf(s.left, order, theta)));
@@ -227,7 +230,7 @@ function firstChange(line: Line | null, order: readonly string[], theta: number,
     if (changed(leadOf(line.price(mid), order, theta))) hi = mid;
     else lo = mid;
   }
-  return hi;
+  return { at: hi, lead: leadOf(line.price(hi), order, theta) };
 }
 
 /** The nearer of a switch up and a switch down. */
@@ -290,11 +293,19 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     monthly: nearer(plan.monthly, up.monthly, switchAlong(lines.monthly.down, order, theta, tied)),
   };
   const planFirst = lead.kind === "clear" ? lead.first : lead.kind === "near" ? lead.tied[0] : null;
-  const changesUp = (line: Line | null): LineChanges => ({
-    band: lead.kind === "clear" ? firstChange(line, order, theta, (l) => l?.first !== planFirst || l.ahead < 1) : null,
-    even: firstChange(line, order, theta, (l) => l?.first !== planFirst),
+  // where another account first leaves more than the plan's first, up or down a line: there the two leave the same
+  const evenOn = (line: Line | null): MapSwitch | null => {
+    const c = firstChange(line, order, theta, (l) => l?.first !== planFirst);
+    const to = c?.lead?.first;
+    return line && c && to ? { at: c.at, dir: line.dir, to } : null;
+  };
+  const evenUp = { amount: evenOn(lines.amount.up), monthly: evenOn(lines.monthly.up) };
+  const changesUp = (line: Line | null, even: MapSwitch | null): LineChanges => ({
+    band: lead.kind === "clear" ? (firstChange(line, order, theta, (l) => l?.first !== planFirst || l.ahead < 1)?.at ?? null) : null,
+    even: even?.at ?? null,
   });
-  const changes = { amount: changesUp(lines.amount.up), monthly: changesUp(lines.monthly.up) };
+  const changes = { amount: changesUp(lines.amount.up, evenUp.amount), monthly: changesUp(lines.monthly.up, evenUp.monthly) };
+  const equal = { amount: nearer(plan.amount, evenUp.amount, evenOn(lines.amount.down)), monthly: nearer(plan.monthly, evenUp.monthly, evenOn(lines.monthly.down)) };
 
   // the axes: past the plan and the farthest change up its line with room (the band's near edge, the even point, the switch up), at a clean
   // value; at least a tenth of the sliders' reach where something changes up the line and a quarter where nothing does; at most the
@@ -429,5 +440,5 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     second: ls.map((l) => (l?.second && l.ahead < 1 ? (index.get(l.second) ?? -1) : -1)),
     ahead: ls.map((l) => (l ? Math.round(l.ahead * 1000) / 1000 : 1)),
   });
-  return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, field: fieldOf(leads, N + 1, N + 1), edge: fieldOf(edgeLeads, N + 1, 1), switches, changes };
+  return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, field: fieldOf(leads, N + 1, N + 1), edge: fieldOf(edgeLeads, N + 1, 1), switches, changes, equal };
 }
