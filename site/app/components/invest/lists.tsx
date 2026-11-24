@@ -23,13 +23,14 @@ import { isCustomFund } from "../../lib/custom-entries";
 import { fmt } from "../../lib/format";
 import { shortFundName } from "../../lib/fund-name";
 import { asideLines, dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWay, type InvestView, type WayPrice } from "../../lib/invest";
-import { leftOutOf } from "../../lib/left-out";
+import { leftOutOf, withAside, type LeftOutView } from "../../lib/left-out";
+import type { FeesSnapshot } from "@finance-tool/schema";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
-import { Num, Term } from "../provenance";
-import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, MixedName, PickList, StretchBar, StretchChart, Tag, Tpl, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
+import { Num } from "../provenance";
+import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, MixedName, PickList, StretchBar, StretchChart, Tag, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, FundEditMark } from "./custom-entries";
 import { AddDealButton, DealEditMark, DealMissing, DeletedLine, NotMovedLines, useDealAccounts } from "./deal-account";
 import { dealIdOf, isDealProviderId } from "../../lib/deal-account/bundle";
@@ -113,6 +114,12 @@ function backAndFocus(button: HTMLElement, back: () => void) {
   );
 }
 
+/** What the mark beside an account's name opens (D106): what its documents hold and its price leaves out, led by a standing order's price
+ *  its price list prints and the figure for this fund leaves out (D41, D56), with the record's reason and their documents. */
+export function markView(snap: FeesSnapshot | undefined, at: FundWay["byHouse"][string] | undefined): LeftOutView | null {
+  return withAside(leftOutOf(snap), c.lists.otherPriceWords, priced(at) ? asideParts(asideLines(snap, at.aside)) : []);
+}
+
 export function PairLists(props: ListsProps) {
   const { view, bundle, plan, livePlan, today, pick, chosen, onPick, moved, ruler = false, above } = props;
   const dealApi = useDealAccounts();
@@ -182,9 +189,10 @@ export function PairLists(props: ListsProps) {
     <span className={cx("min-w-0 text-sm", selected ? "font-semibold" : "font-medium", (p.id === view.yourBroker || p.custom) && "text-entered")}>{p.short}</span>
   );
   // what an account's documents hold and its price leaves out, where it can change what some reader pays: a quiet mark beside the name
-  // that opens it, so it is seen before the account is chosen (D106); the receipt says it under the chosen account's lines. A deal's record
-  // lists nothing left out (lib/deal-account/bundle, `snapshotOfDeal`): its place beside the name holds the pencil that edits it
-  const leftOutAt = new Map(providers.map((p) => [p.id, leftOutOf(snapOf(p.id))]));
+  // that opens it, so it is seen before the account is chosen (D106); the receipt says it under the chosen account's lines. A standing
+  // order's price the account's price list prints and the figure for this fund leaves out (D41, D56) is the first thing its sheet says. A
+  // deal's record lists nothing left out (lib/deal-account/bundle, `snapshotOfDeal`): its place beside the name holds the pencil that edits it
+  const leftOutAt = new Map(providers.map((p) => [p.id, markView(snapOf(p.id), fund.byHouse[p.id])]));
   const nameWithMark = (p: (typeof providers)[number], selected: boolean) => (
     <span className="flex min-w-0 items-center gap-1">
       {nameOf(p, selected)}
@@ -567,8 +575,6 @@ export function PairLists(props: ListsProps) {
 
   // ---------------------------------------------------------------- what the page says of the chosen rows, under both lists
   const at = selAt;
-  // a standing order's price the figure leaves out: the words that say so open the price, the record's reason and their documents
-  const aside = asideParts(asideLines(snapOf(pick.house), at.aside));
   const chosenNotes = [
     at.open ? (
       <span key="open" className="inline-flex items-center gap-1 text-blocked-foreground">
@@ -577,11 +583,6 @@ export function PairLists(props: ListsProps) {
       </span>
     ) : null,
     fund.noUnitPrice ? <span key="unit">{c.pair.unitPriceMissing}</span> : null,
-    aside.length > 0 ? (
-      <span key="other">
-        <Tpl t={c.lists.otherPrice(short)} vars={{ price: <Term id={[]} name={c.lists.otherPriceWords} parts={aside}>{c.lists.otherPriceWords}</Term> }} />
-      </span>
-    ) : null,
   ].filter(Boolean);
   // what the ruler measures is its title, over it (`rulerHead`); under the lists, what holds for the chosen pair
   const note =

@@ -2,9 +2,8 @@
 import { fileURLToPath } from "node:url";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { help, invest } from "../../copy";
+import { help, invest, leftOut } from "../../copy";
 import { fmt } from "../../lib/format";
-import { fill } from "../kit";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
@@ -16,7 +15,7 @@ import { TitleRow } from "./title";
 import { allFunds, GapCell, gapKindOf, gapNoteOf, gapStateOf, gapValue, pickOfHeadline, whyNoFundAt, whyNoKindAt } from "./pair";
 import { PlanCard } from "./plan-card";
 import { ValueSheet } from "../provenance-sheets";
-import { PairLists, listName } from "./lists";
+import { PairLists, listName, markView } from "./lists";
 import { PairReceipt } from "./receipt";
 import { BeforeDeciding, hedgeCard } from "./before";
 import { useDollarCase } from "./dollar";
@@ -196,18 +195,26 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
   });
 });
 
-describe("a bank's standing-order price the figure leaves out is said under the lists for the chosen account (D41, D56, D104)", () => {
+describe("a bank's standing-order price the figure leaves out is said in the sheet of the mark beside its name (D41, D56, D104, D106)", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const tracking = view.options.find((o) => o.id === "il-tracking")!.funds[0]!;
-  it("no row carries a star, and the chosen bank's note says it has another price", () => {
+  it("no row carries a star or a line under the lists; the bank's mark opens a sheet that leads with the other price and its reason", () => {
     for (const id of ["leumi", "massad", "fibi"]) {
       const out = lists(view, bundle, plan, { house: id, fund: tracking.rec.id });
       expect(shown(out), id).not.toContain("*");
-      const short = view.providers.find((p) => p.id === id)!.short;
-      expect(shown(out).replace(/\u00a0/g, " "), id).toContain(fill(invest.lists.otherPrice(short), { price: invest.lists.otherPriceWords }).replace(/\u00a0/g, " "));
+      expect(shown(out), id).not.toContain(invest.lists.otherPriceWords);
+      const snap = bundle.snapshots.find((s) => s.id === id);
+      const sheet = markView(snap, tracking.byHouse[id]);
+      expect(sheet?.parts[0]?.head, id).toBe(invest.lists.otherPriceWords);
+      const reason = snap?.lines.find((l) => l.not_ranked)?.not_ranked?.reason_he;
+      expect(reason, id).toBeTruthy();
+      expect(sheet?.parts.some((p) => p.text === reason), id).toBe(true);
+      // the other price counts among what can change what some reader pays, so the mark is drawn beside the name
+      expect(sheet?.warn, id).toBeGreaterThan(0);
+      expect(out, id).toContain(leftOut.mark);
     }
     // an account with no other price says nothing of one
-    expect(shown(lists(view, bundle, plan, { house: "psagot", fund: tracking.rec.id }))).not.toContain(invest.lists.otherPriceWords);
+    expect(markView(bundle.snapshots.find((s) => s.id === "psagot"), tracking.byHouse.psagot)?.parts.some((p) => p.head === invest.lists.otherPriceWords) ?? false).toBe(false);
   });
   it("a custom index's account list says the same, and under its head that monthly purchases are priced on the regular line", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });

@@ -4115,9 +4115,8 @@ export const invest = {
     },
     /** The ruler's title, over it: what it measures. */
     rulerTitle: "כמה נשאר לכם בסוף, לפי התוכנית שלכם",
-    /** Under both lists, for the chosen account: a standing order's price its price list prints and the figure leaves out (D41, D56);
-     *  `{price}` is `otherPriceWords`, which open the price, the record's reason and their documents. */
-    otherPrice: (house: string) => `${inName(house)} יש גם {price}. הוא לא נכנס לחישוב.`,
+    /** The head, in the sheet of the mark beside an account's name, over a standing order's price its price list prints and the figure
+     *  leaves out (D41, D56), its reason and their documents. */
     otherPriceWords: "מחיר אחר לקנייה בהוראת קבע",
   },
 

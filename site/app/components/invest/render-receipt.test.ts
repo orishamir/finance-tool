@@ -1,11 +1,10 @@
 // The receipt, with its account and fund parts, rendered on the collected data (part of render.test.ts, which says why it is split).
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { flags, help, invest, numbers } from "../../copy";
-import { fill } from "../kit";
+import { flags, help, invest, leftOut, numbers } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "../../lib/custom-entries";
-import { PairLists } from "./lists";
+import { PairLists, markView } from "./lists";
 import { asideLines, buildInvest, indexById, kindOf, pairCostsKept, type InvestView } from "../../lib/invest";
 import { receiptAmounts, receiptChain } from "../../lib/receipt";
 import { ANCHOR, PairReceipt, PairStub, addedOf, inflationOf, leftOf, nominalOf, taxOf } from "./receipt";
@@ -341,12 +340,14 @@ describe("a standing order's price the figure leaves out, under the lists (D41, 
   it("the data has such a price", () => expect(ways.length).toBeGreaterThan(0));
   const first = ways[0];
   if (!first) return;
-  it("the note names it, and its words are what the reader taps", () => {
+  it("no line under the lists names it; the sheet of the mark beside the account's name leads with it", () => {
     const out = html(createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick: { house: first.house, fund: first.fund }, chosen: true, onPick: () => undefined, moved: null }));
-    const words = w.lists.otherPriceWords;
-    expect(shown(out)).toContain(fill(w.lists.otherPrice(first.short), { price: words }));
-    // the words themselves open a sheet, as a row's "why" words do
-    expect(out).toMatch(new RegExp(`role="button"[^>]*aria-haspopup="dialog"[^>]*>${words}<`));
+    expect(shown(out)).not.toContain(w.lists.otherPriceWords);
+    const fund = allFunds(view).find((f) => f.rec.id === first.fund);
+    const sheet = markView(bundle.snapshots.find((s) => s.id === first.house), fund?.byHouse[first.house]);
+    expect(sheet?.parts[0]?.head).toBe(w.lists.otherPriceWords);
+    // the mark opens a sheet, as a row's "why" words do
+    expect(out).toMatch(new RegExp(`aria-haspopup="dialog"[^>]*>(?:(?!</button>).)*${leftOut.mark}`));
   });
   it("its sheet holds the printed price with the price list it is printed in, and the record's reason with its document", () => {
     const parts = asideParts(first.lines);

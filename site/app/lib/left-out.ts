@@ -49,3 +49,13 @@ export function leftOutOf(snap: Record_ | undefined | null): LeftOutView | null 
     parts: [...shown.map((e) => ({ head: gershayim(e.what), text: gershayim(e.why_he!), doc: doc(e) })), ...others.map((text) => ({ text, group: shown.length > 0 ? c.other : "" }))],
   };
 }
+
+/**
+ * The view with a price the house's documents print and the ranked price leaves out (a standing order's, D41, D56) said first among the
+ * things that can change what some reader pays, under `head`; the view as it was where there is none.
+ */
+export function withAside(view: LeftOutView | null, head: string, aside: readonly LeftOutPart[]): LeftOutView | null {
+  const [first, ...rest] = aside;
+  if (!first) return view;
+  return { warn: (view?.warn ?? 0) + 1, other: view?.other ?? 0, lead: c.sheetLead, parts: [{ ...first, head }, ...rest, ...(view?.parts ?? [])] };
+}
