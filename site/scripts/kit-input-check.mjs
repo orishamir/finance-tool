@@ -1552,6 +1552,18 @@ async function regionCheck(browser, base) {
     const e = await edge.boundingBox();
     if (!e || e.height > 8 || e.height < 4 || Math.abs(e.y + e.height - (r.y + r.height - 30)) > 2) found.push(`region: the bottom edge's line is not a band of 6 px at the plot's foot (${JSON.stringify(e)})`);
     if ((await painted("edge")).colours < 2) found.push("region: the bottom edge's line is painted in one colour, though two options hold along it");
+    // the stripes where two options are about the same: drawn somewhere, and none in the demo's top right corner, where B is clearly first
+    const stripes = await map.locator('canvas[data-mark="stripes"]').evaluate((c) => {
+      const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data;
+      let striped = 0;
+      for (let i = 3; i < d.length; i += 4) if (d[i] > 0) striped++;
+      const corner = c.getContext("2d").getImageData(Math.floor(c.width * 0.9), Math.floor(c.height * 0.05), Math.floor(c.width * 0.08), Math.floor(c.height * 0.1)).data;
+      let inCorner = 0;
+      for (let i = 3; i < corner.length; i += 4) if (corner[i] > 0) inCorner++;
+      return { striped, inCorner };
+    }).catch(() => null);
+    if (!stripes || !stripes.striped) found.push("region: no stripes where two options are about the same");
+    else if (stripes.inCorner) found.push("region: stripes where one option is clearly first");
     await ctx.close();
   }
   {

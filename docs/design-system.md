@@ -995,7 +995,8 @@ in the kit fits is added to the kit.
 - `RegionMap`: which of a few options leads at each point of a plane of two amounts, and by how much (F-131: the cheapest account over
   today's amount and the monthly deposit), not for one option's value over two amounts. Up to four areas in their own light colour, a
   fifth in a grey under its own name, more than five gathered in that grey as "אחרות"; where two options are close their colours blend in a
-  narrow strip around a thin line where the two are equal; a value at the bottom edge with no range above it is its own thick line, blended
+  narrow strip around a thin line where the two are equal, and faint diagonal stripes in the next option's colour cover the whole band
+  where they are about the same (their strength the token `--chart-region-stripe`); a value at the bottom edge with no range above it is its own thick line, blended
   the same way.
 - `PileYears`, `PileStory`: a sum built up step by step where the reader picks the moment; not for comparing products. A sixth slot,
   `other`, only for a choice the person really has.

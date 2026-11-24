@@ -4,7 +4,9 @@
 // the leader's colour comes back well before it is clearly ahead. The fill is a small grid of colours the browser scales up smoothly (a
 // canvas), so the strip has no steps on any screen. Where two areas meet, the two are equal: a thin line marks it over the strip, through
 // the points where the leads either side cancel, found between the grid's nodes, so it runs smooth rather than along the grid's cells.
-// Each area's name stands inside it, and words of the caller's on the strip where they fit; a marked point (the reader's own) has dashed
+// Over the whole band where the two are close, faint diagonal stripes in the next one's colour (`stripeLayer`), drawn at the screen's
+// pixels on a layer of their own, so the band shows where the fill is already the leader's alone; the line stays over them.
+// Each area's name stands inside it, and words of the caller's on the stripes where they fit; a marked point (the reader's own) has dashed
 // guides from it along each axis; and a value of the bottom edge is drawn apart as a thick line, blended the same way, each area along it
 // named over its stretch where the words fit. The x axis grows left to right and the y axis up from 0 (charts.md).
 // The pointer reads any point: on a computer a box follows it and the area under it lightens; a click or a tap keeps a point (its mark and
@@ -103,9 +105,23 @@ const CLEAR = 0.9;
 const FADE = 6;
 /** The next one's share of a point's colour, from half where the two are equal (ahead 0) to none once the leader is clearly ahead (1). */
 export const secondShare = (ahead: number): number => 0.5 * Math.max(0, 1 - ahead) ** FADE;
-/** The band's words stand where the next one's colour shows: at least this share of it under some part of them, and half of it on the
- *  mean of their sampled points. */
-const SEEN = 0.1;
+/**
+ * Where the two are close (ahead under 1), faint diagonal stripes in the next one's colour lie over the fill, so the band shows even where
+ * the fill is the leader's alone. They come in as the lead drops below 1 and are at full strength from this lead down: by 0.5 the fill's
+ * own blend is under a hundredth of the next one's colour (`secondShare`), so from there the stripes alone say the two are close, and
+ * between 0.5 and 1 they fade in, so the band has no hard edge.
+ */
+const STRIPE_FULL = 0.5;
+/** How strong the stripes are, 0 where the leader is clearly ahead to 1 from STRIPE_FULL down, eased at both ends. */
+export const stripeStrength = (ahead: number): number => {
+  const t = Math.min(1, Math.max(0, (1 - ahead) / (1 - STRIPE_FULL)));
+  return t * t * (3 - 2 * t);
+};
+/** The stripes' line width, and their spacing as a share of the plot's width, held between a phone's and a computer's, in CSS px. */
+const STRIPE_WIDTH = 1.5;
+const STRIPE_STEP = { share: 1 / 120, min: 5, max: 9 };
+/** The band's words stand on the stripes: where they are at least this strong under every part of them. */
+const STRIPED = 0.5;
 /** A line of the words over the map. */
 const LINE = 20;
 
@@ -155,6 +171,51 @@ function paint(canvas: HTMLCanvasElement, grid: RegionGrid, colour: (area: numbe
       img.data[o + 3] = 255;
     }
   ctx.putImageData(img, 0, 0);
+}
+
+/**
+ * The stripes over a grid's plane, as the RGBA pixels of a `w` × `h` layer whose corners are the grid's corner nodes (its top row the grid's
+ * last): at each pixel the lead blended from the four nodes around it, the stripes' strength from it (`stripeStrength`) times `alpha`, in
+ * the colour of the next one at the nearest of those nodes that has one. Lines run at 45°, `step` apart and `width` wide, `scale` pixels to
+ * a CSS px, each line's edge smoothed over a pixel.
+ */
+export function stripeLayer(grid: RegionGrid, w: number, h: number, look: { step: number; width: number; scale: number; alpha: number }, colour: (area: number) => Rgb): Uint8ClampedArray {
+  const out = new Uint8ClampedArray(w * h * 4);
+  const { cols, rows, second, ahead } = grid;
+  const period = look.step * look.scale * Math.SQRT2;
+  const half = (look.width * look.scale) / 2;
+  for (let py = 0; py < h; py++) {
+    const gy = (rows - 1) * (1 - py / Math.max(1, h - 1));
+    const j0 = Math.min(rows - 2, Math.max(0, Math.floor(gy)));
+    const v = gy - j0;
+    for (let px = 0; px < w; px++) {
+      // the distance to the nearest line, across it, in pixels
+      const along = (((px + py) % period) + period) % period;
+      const cover = Math.min(1, Math.max(0, half + 0.5 - Math.abs(along - period / 2) / Math.SQRT2));
+      if (cover <= 0) continue;
+      const gx = (cols - 1) * (px / Math.max(1, w - 1));
+      const i0 = Math.min(cols - 2, Math.max(0, Math.floor(gx)));
+      const u = gx - i0;
+      const corners = [
+        [j0 * cols + i0, (1 - u) * (1 - v)],
+        [j0 * cols + i0 + 1, u * (1 - v)],
+        [(j0 + 1) * cols + i0 + 1, u * v],
+        [(j0 + 1) * cols + i0, (1 - u) * v],
+      ] as const;
+      const s = corners.reduce((n, [k, wt]) => n + wt * (ahead[k] ?? 1), 0);
+      const strength = stripeStrength(s);
+      if (strength <= 0) continue;
+      const next = [...corners].filter(([k]) => (second[k] ?? -1) >= 0).sort((a, b) => b[1] - a[1])[0];
+      if (!next) continue;
+      const c = colour(second[next[0]] ?? 0);
+      const o = (py * w + px) * 4;
+      out[o] = c[0];
+      out[o + 1] = c[1];
+      out[o + 2] = c[2];
+      out[o + 3] = Math.round(255 * cover * strength * look.alpha);
+    }
+  }
+  return out;
 }
 
 /** A piece of the line where two areas are equal, in the grid's own units (node columns and rows, from the bottom left). */
@@ -226,7 +287,7 @@ export function RegionMap({
   /** The bottom edge's value, one row from 0 to `max.x`: the words over its longest clear stretch, and each other area's name over its own. */
   edge: RegionGrid;
   edgeLabel: (id: string) => RegionWords;
-  /** Words for the band where two areas are close, drawn on its strip of fade where they fit. */
+  /** Words for the band where two areas are close, drawn on its stripes where they fit. */
   bandLabel: string;
   /** The reader's own point, and its words under it. */
   mark: { at: RegionPoint; label: RegionWords };
@@ -243,6 +304,7 @@ export function RegionMap({
   const [ref, w] = useWidth(600);
   const plane = useRef<HTMLCanvasElement>(null);
   const line = useRef<HTMLCanvasElement>(null);
+  const stripes = useRef<HTMLCanvasElement>(null);
   const clip = useId();
   const pick = useChartPick();
   const [hover, setHover] = useState<{ p: RegionPoint; onMark: boolean } | null>(null);
@@ -293,6 +355,31 @@ export function RegionMap({
     if (plane.current) paint(plane.current, field, colour, card);
     if (line.current) paint(line.current, edge, colour, card);
   }, [ref, areas, field, edge, active, lit]);
+  // the stripes over the band, painted at the screen's own pixels so the lines stay sharp: again when the field, its size or the area set
+  // apart changes, never as the pointer moves; their strength is the theme's
+  const plotW = right - left;
+  const plotH = sy(field.from) - TOP;
+  useEffect(() => {
+    const host = ref.current;
+    const canvas = stripes.current;
+    if (!host || !canvas) return;
+    const [card = [0, 0, 0], ...tones] = coloursOf(host, ["text-card", ...areas.map((a) => INK[a.tone])]);
+    const colour = (k: number): Rgb => {
+      const c = tones[k] ?? card;
+      return active >= 0 && k !== active ? mixRgb(c, card, DIMMED) : c;
+    };
+    const scale = window.devicePixelRatio || 1;
+    const [cw, ch] = [Math.max(1, Math.round(plotW * scale)), Math.max(1, Math.round(plotH * scale))];
+    canvas.width = cw;
+    canvas.height = ch;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const alpha = Number.parseFloat(getComputedStyle(host).getPropertyValue("--chart-region-stripe")) || 0;
+    const step = Math.min(STRIPE_STEP.max, Math.max(STRIPE_STEP.min, plotW * STRIPE_STEP.share));
+    const img = ctx.createImageData(cw, ch);
+    img.data.set(stripeLayer(field, cw, ch, { step, width: STRIPE_WIDTH, scale, alpha }, colour));
+    ctx.putImageData(img, 0, 0);
+  }, [ref, areas, field, active, plotW, plotH]);
 
   const mx = sx(mark.at[0]);
   const my = sy(mark.at[1]);
@@ -395,24 +482,19 @@ export function RegionMap({
     const holds = (b: Box, ok: (k: number) => boolean) => samples(b).every((k) => k >= 0 && ok(k));
     const dots: [number, number][] = [[mxL, myL], ...guideDraw.flatMap(({ g, gx, gy }) => (g.label ? [[gx, gy] as [number, number]] : []))];
     const taken: Box[] = [...placed];
-    // the box with the most room; with `fade`, the one with the most of the next one's colour under it (the mean share at its sampled
-    // points, at least half of SEEN), some point of it on the strip (SEEN or more), and its area held a few px around it, so no line runs
-    // through it
-    const find = (tw: number, h: number, ok: (k: number) => boolean, fade = false): { b: Box; room: number } | null => {
+    // the box with the most room; with `apart`, its area held a few px around it too, so no line runs through it
+    const find = (tw: number, h: number, ok: (k: number) => boolean, apart = false): { b: Box; room: number } | null => {
       let best: { b: Box; room: number } | null = null;
       for (let cy = TOP + h / 2 + 4; cy <= bottom - EDGE_PX - h / 2 - 4; cy += 8)
         for (let cx0 = left + tw / 2 + 8; cx0 <= right - tw / 2 - 8; cx0 += 8) {
           const b = { x: cx0 - tw / 2 - 4, y: cy - h / 2, w: tw + 8, h };
-          if (!holds(fade ? { x: b.x - 8, y: b.y - 6, w: b.w + 16, h: b.h + 12 } : b, ok) || taken.some((t) => meets(b, t))) continue;
+          if (!holds(apart ? { x: b.x - 8, y: b.y - 6, w: b.w + 16, h: b.h + 12 } : b, ok) || taken.some((t) => meets(b, t))) continue;
           // the room: how far the box grows before it leaves its area, and how far it is from the mark and the guides' dots
           let grow = 0;
           for (const g of [6, 12, 20]) if (holds({ x: b.x - g, y: b.y - g / 2, w: b.w + 2 * g, h: b.h + g }, ok)) grow = g;
           const far = Math.min(40, ...dots.map(([px, py]) => Math.max(Math.abs(px - cx0) - tw / 2, Math.abs(py - cy) - h / 2)));
           if (far < 8) continue;
-          const shares = fade ? samples(b).map((k) => secondShare(field.ahead[k] ?? 1)) : [];
-          const mean = fade ? shares.reduce((n, x) => n + x, 0) / shares.length : 0;
-          if (fade && (Math.max(...shares) < SEEN || mean < SEEN / 2)) continue;
-          const room = fade ? 1000 * mean + far : grow + far;
+          const room = grow + far;
           if (!best || room > best.room) best = { b, room };
         }
       return best;
@@ -425,14 +507,13 @@ export function RegionMap({
       const b = take(find(chartTextWidth(a.name, 16), 24, (k) => field.first[k] === n && (field.ahead[k] ?? 0) >= CLEAR));
       return b ? [{ a, b }] : [];
     });
-    // the band's words: once in each band between two areas, inside it on one side of the line where the two are equal, where the most of
-    // its fade shows under them
+    // the band's words: once in each band between two areas, on its stripes and on one side of the line where the two are equal
     const pairOf = (k: number) => {
       const f = field.first[k] ?? -1;
       const s = field.second[k] ?? -1;
-      return s < 0 || (field.ahead[k] ?? 1) >= 1 ? null : `${Math.min(f, s)}|${Math.max(f, s)}`;
+      return s < 0 || stripeStrength(field.ahead[k] ?? 1) < STRIPED ? null : `${Math.min(f, s)}|${Math.max(f, s)}`;
     };
-    const pairs = new Set(field.first.map((_, k) => (secondShare(field.ahead[k] ?? 1) >= SEEN ? pairOf(k) : null)).filter((x): x is string => x !== null));
+    const pairs = new Set(field.first.map((_, k) => pairOf(k)).filter((x): x is string => x !== null));
     const bands = [...pairs].flatMap((pair) => {
       const tw = chartTextWidth(bandLabel);
       const sides = pair.split("|").map((f) => find(tw, LINE, (k) => pairOf(k) === pair && field.first[k] === Number(f), true));
@@ -493,6 +574,7 @@ export function RegionMap({
       <div ref={ref} dir="ltr" tabIndex={0} onKeyDown={step} className="relative select-none rounded-md outline-none focus-visible:outline-2 focus-visible:outline-ring" data-region-map>
         <div className="pointer-events-none absolute overflow-clip" style={{ left, top: TOP, width: right - left, height: bottom - TOP }}>
           <canvas ref={plane} className="absolute block" style={{ left: -cellX / 2, top: -cellY / 2, width: right - left + cellX, height: sy(field.from) - TOP + cellY }} data-mark="areas" />
+          <canvas ref={stripes} className="absolute block" style={{ left: 0, top: 0, width: plotW, height: plotH }} data-mark="stripes" />
           <canvas ref={line} className="absolute block" style={{ left: -cellX / 2, top: bottom - TOP - EDGE_PX, width: right - left + cellX, height: EDGE_PX }} data-mark="edge" />
         </div>
         <svg

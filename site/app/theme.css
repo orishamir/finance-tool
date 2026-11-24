@@ -300,6 +300,9 @@
   --chart-region-ink: var(--palette-neutral-975);
   /* the thin line where two areas are equal, over the band between them: near-black, which reads on every pastel and on the grey */
   --chart-region-equal: var(--palette-neutral-975);
+  /* how strong a region map's stripes are where two areas are about the same (a share of the next area's colour on each stripe at full
+     strength): light enough that the area still reads in its first's colour, strong enough to see over two pastels on a phone */
+  --chart-region-stripe: 0.7;
   /* the index page's two kinds of fund (2026-10-29, founder: option A of 8dd1f013:research/specs/2026-10-29-hedging): keeping the index's currency, and
      neutralising it: teal against magenta (not gold: amber and its neighbours mean status, charts.md), not the fee orange the
      page's cost bars use */
