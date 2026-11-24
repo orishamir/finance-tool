@@ -325,14 +325,17 @@ export function RegionMap({
     const edgeTw = edgeWords ? chartTextWidth(edgeWords.text) : 0;
     const edgeInside = longest ? clearOf([{ x: Math.max(left + 4, Math.min(right - 4, sxL(longest.to) - 4) - edgeTw), y: bottom - EDGE_PX - 6 - LINE, w: edgeTw, h: LINE }]) : undefined;
     if (edgeInside) placed.push(edgeInside);
-    // the mark's words: under the dot, else over it beside its vertical guide, else beside the dot
+    // a box's left edge moved inside the plot, where its words are narrower than the plot
+    const inside = (x: number, tw: number) => Math.min(right - tw - 4, Math.max(left + 4, x));
+    // the mark's words: under the dot, else over it beside its vertical guide, else beside the dot, else a line higher, held inside the plot
     const markTw = chartTextWidth(mark.label.text);
     const markBox = place([
-      { x: Math.min(right - markTw - 4, Math.max(left + 4, mxL - markTw / 2)), y: myL + 10, w: markTw, h: LINE },
+      { x: inside(mxL - markTw / 2, markTw), y: myL + 10, w: markTw, h: LINE },
       { x: mxL + 8, y: myL - 26, w: markTw, h: LINE },
       { x: mxL - 8 - markTw, y: myL - 26, w: markTw, h: LINE },
       { x: mxL + 12, y: myL + 4, w: markTw, h: LINE },
       { x: mxL - 12 - markTw, y: myL + 4, w: markTw, h: LINE },
+      ...[myL - 26, myL - 46].map((y) => ({ x: inside(mxL + 8, markTw), y, w: markTw, h: LINE })),
     ]);
     // each guide's dot and its words beside it: over the dashed line or under it, after the dot or before it
     const guideDraw = guides.map((g) => {
@@ -340,10 +343,11 @@ export function RegionMap({
       const gy = g.axis === "x" ? myL : syL(g.at);
       if (!g.label) return { g, gx, gy, box: null };
       const tw = chartTextWidth(g.label.text);
+      // beside the dot, over or under its line, else held inside the plot where the words are wider than the room beside it
       const box = place(
         g.axis === "x"
-          ? [gy - 24, gy + 4, gy - 46].flatMap((y) => [{ x: gx + 8, y, w: tw, h: LINE }, { x: gx - 8 - tw, y, w: tw, h: LINE }])
-          : [{ x: gx + 8, y: gy - 10, w: tw, h: LINE }, { x: gx - 8 - tw, y: gy - 10, w: tw, h: LINE }, { x: gx + 8, y: gy - 30, w: tw, h: LINE }],
+          ? [gy - 24, gy + 4, gy - 46].flatMap((y) => [{ x: gx + 8, y, w: tw, h: LINE }, { x: gx - 8 - tw, y, w: tw, h: LINE }, { x: inside(gx - tw / 2, tw), y, w: tw, h: LINE }])
+          : [gy - 10, gy - 30, gy + 10].flatMap((y) => [{ x: gx + 8, y, w: tw, h: LINE }, { x: gx - 8 - tw, y, w: tw, h: LINE }, { x: inside(gx + 8, tw), y, w: tw, h: LINE }]),
       );
       return { g, gx, gy, box };
     });
