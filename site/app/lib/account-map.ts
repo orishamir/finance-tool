@@ -428,7 +428,7 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     }
     return won;
   };
-  const known = new Set([lead.kind === "clear" ? lead.first : null, up.amount?.to, up.monthly?.to]);
+  const known = new Set([planFirst, up.amount?.to, up.monthly?.to]);
   const won = clearOn(outside.filter((n) => !n.all).map((n) => n.at), surveyed);
   const unseen = [...won.keys()].filter((id) => !known.has(id));
   const inside = unseen.length ? clearOn(nodes.filter((n) => inBase(n.at)).map((n) => n.at), []) : new Map<string, MapPoint[]>();
