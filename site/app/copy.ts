@@ -4186,7 +4186,6 @@ export const invest = {
       betweenTo: " לכ־\u2060",
       /** After a stretch, the switch past it: by the same account, "ומעל כ־150 אלף ₪"; by another, ", וג׳ מעל כ־40 אלף ₪". */
       thenAbove: "ומעל כ־\u2060",
-      thenBelow: "ומתחת לכ־\u2060",
       thenOther: (w: string) => `, ${andWord(w)} `,
       /** A switch down reads as the range the search checked, from its lowest amount: "בין כ־5,000 ₪ לכ־60 אלף ₪"; after a stretch by
        *  the same account, "ובין כ־5,000 ₪ לכ־40 אלף ₪". */
