@@ -584,7 +584,7 @@ export function PairLists(props: ListsProps) {
     ) : null,
     fund.noUnitPrice ? <span key="unit">{c.pair.unitPriceMissing}</span> : null,
   ].filter(Boolean);
-  // what the ruler measures is its title, over it (`rulerHead`); under the lists, what holds for the chosen pair
+  // under the lists, what holds for the chosen pair
   const note =
     chosenNotes.length > 0 ? (
       <div className="flex flex-col gap-1.5 text-xs text-muted-foreground">
@@ -672,7 +672,6 @@ export function PairLists(props: ListsProps) {
         endList={fundsList}
         endFoot={fundsFoot}
         note={note}
-        rulerHead={c.lists.rulerTitle}
         startAnchor={ANCHOR.accounts}
         endAnchor={ANCHOR.funds}
         scale={scale}

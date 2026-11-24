@@ -428,8 +428,8 @@ describe("the lists beside the receipt", () => {
     expect(at(ANCHOR.accounts)).toBeLessThan(at(ANCHOR.funds));
     const priced = allFunds(view).filter((f) => { const a = f.byHouse[pick.house]; return !!a && "valueN" in a && !a.open; }).length;
     expect((out.match(/data-spot-dot=""/g) ?? []).length).toBe(priced);
-    // what the ruler measures is its title
-    expect(shown(out)).toContain(w.lists.rulerTitle);
+    // the ruler has no title over it (2026-11-24)
+    expect(shown(out)).not.toContain("כמה נשאר לכם בסוף");
   });
   it("a fund on an open rule is shown, not ranked: after the ranked funds of its kind, under one heading, with no spot and no tag on its row (G-18)", () => {
     // an account that prices a fund on an open rule (an accumulating Irish fund bought abroad): the headline's house sells none abroad

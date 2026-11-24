@@ -4128,8 +4128,6 @@ export const invest = {
       /** The heading over the funds on an open rule (G-18), after the ranked ones of their kind: shown, not ranked. */
       unranked: "לא מדורגות",
     },
-    /** The ruler's title, over it: what it measures. */
-    rulerTitle: "כמה נשאר לכם בסוף, לפי התוכנית שלכם",
     /** The head, in the sheet of the mark beside an account's name, over a standing order's price its price list prints and the figure
      *  leaves out (D41, D56), its reason and their documents. */
     otherPriceWords: "מחיר אחר לקנייה בהוראת קבע",
@@ -5540,7 +5538,7 @@ export const kit = {
       },
       docTitle: 'קרן לדוגמה, דוח שנתי "קרן לדוגמה MSCI AC World (4A) ETF ת"א 35" (1234567), 31.12.2025',
       receipt: { title: "קבלה לדוגמה", stubNames: "חשבון לדוגמה + קרן לדוגמה", paid: "הפקדתם", added: "צמיחה לדוגמה", tax: "מס רווחי הון לדוגמה", account: "החשבון: חשבון לדוגמה", accountLine: "עמלה לדוגמה", rate: "0.1% מכל פעולה (דוגמה)", fund: "הקרן: קרן לדוגמה", fundFee: "דמי ניהול לדוגמה", factTag: "תווית לדוגמה", factLink: "מסמך לדוגמה", factLine: "מנהל הקרן: חברה לדוגמה", inflation: "אינפלציה לדוגמה", left: "נשאר לכם", catch: "בכסף של היום, אם הדולר לא זז מול השקל.", bar: "מה ירד בדרך, לדוגמה", underOne: "פחות מ־⁦1%⁩" },
-      stretch: { accounts: "חשבונות לדוגמה", funds: "קרנות לדוגמה", ruler: "כמה נשאר בסוף, לדוגמה", upTo: "עד", less: "פחות", chosen: "נבחר", years: "10 שנים לדוגמה" },
+      stretch: { accounts: "חשבונות לדוגמה", funds: "קרנות לדוגמה", upTo: "עד", less: "פחות", chosen: "נבחר", years: "10 שנים לדוגמה" },
       tile: { account: "החשבון", fund: "הקרן", name: "בית השקעות לדוגמה" },
       cost: { trade: "קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fund: "דמי ניהול הקרן", tax: "מס רווחי הון", remainder: "תוספת משילוב עמלות החשבון", remainderAbout: "החלק הזה לא שייך לעמלה אחת: גם בלי אחת מעמלות החשבון הוא עדיין היה נגבה. שאר עמלות החשבון היו גובות אותו מהכסף שאותה עמלה כבר לא הייתה לוקחת, ומהצמיחה של הכסף הזה.", fromComputed: "חישוב של האתר", fromList: "מהתעריפון של בית השקעות לדוגמה", fromGroup: "מהמסמך של קבוצה לדוגמה", fromYours: "מה שהזנתם", states: { list: "התעריפון", group: "קבוצה", yours: "שלכם" } as Record<string, string>, stateLabel: "מחירים לדוגמה" },
       periods: ["יום", "שבוע", "חודש", "3 חודשים", "6 חודשים", "שנה", "שנתיים", "3 שנים"],
