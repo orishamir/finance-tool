@@ -90,18 +90,20 @@ const MOVING_PHONE = { ...PHONE, reducedMotion: "no-preference" };
 /**
  * Two frames after the browser is idle: what a render started has been drawn. The idle callback is asked for after a frame: headless
  * Chrome can give no idle period while no frame is coming, and one asked for then waits out its whole 10 s timeout (after most presses on
- * /kit at 1440).
+ * /kit at 1440). Then it waits out the kit's longest timer (an error's rest, 600 ms: kit/error-rest.ts; a touch hold, 380 ms; a slider's
+ * rest before slow work) and settles again, so a check that something did not appear is not read before a timer could have shown it.
  */
-const settled = () => {
+const TIMERS_MS = 700;
+const settled = (timers) => {
   const once = () => new Promise((done) => requestAnimationFrame(() => requestIdleCallback(() => requestAnimationFrame(() => requestAnimationFrame(() => done())), { timeout: 10000 })));
-  return once().then(once);
+  return once().then(once).then(() => new Promise((done) => setTimeout(done, timers))).then(once);
 };
 
 async function open(browser, base, options, path = "/kit") {
   const ctx = await browser.newContext(options);
   const page = await ctx.newPage();
   await page.goto(`${base}${path}`, { waitUntil: "networkidle" });
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   return { ctx, page };
 }
 
@@ -238,7 +240,7 @@ async function earlyCheck(browser, base) {
     if (left) await page.locator("main h1").first().click();
     release();
     await page.waitForFunction(() => !!window.__reactRouterDataRouter, null, { timeout: 15000 });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const which = left ? "typed in and left" : "typed in";
     // the digits only: the field may write the amount with its thousands separator
     const digits = async () => (await box.inputValue()).replace(left ? /\D/g : /$^/, "");
@@ -273,11 +275,11 @@ async function sliderCheck(browser, base) {
     const y = r.y + r.height / 2;
     const before = await box.inputValue();
     await touchDrag(page, { x: r.x + 6, y }, { x: r.x + r.width - 6, y });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const up = await box.inputValue();
     if (up !== top) found.push(`slider: a finger dragged across a range field from its left end to its right does not carry its box to the top of its scale (${before} to ${up}, not ${top})`);
     await touchDrag(page, { x: r.x + r.width - 6, y }, { x: r.x + 6, y });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const down = await box.inputValue();
     if (down !== bottom) found.push(`slider: a finger dragged across a range field from its right end to its left does not carry its box to the bottom of its scale (${up} to ${down}, not ${bottom})`);
   }
@@ -354,7 +356,7 @@ async function sliderDataCheck(browser, base) {
   ];
   for (const [from, to, want, where] of steps) {
     await touchDrag(page, { x: from, y }, { x: to, y });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const got = await box.inputValue();
     if (got !== want) found.push(`slider: a finger dragged across the index page's amount slider (P-05's segments) ${where} gives ${got}, not ${want}`);
   }
@@ -442,7 +444,7 @@ async function sheetCheck(browser, base) {
   await opener.scrollIntoViewIfNeeded();
   await opener.tap();
   await page.locator("dialog[open]").waitFor({ timeout: 3000 });
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   if (!(await page.evaluate(() => document.activeElement?.hasAttribute("data-autofocus")))) found.push("sheet: the confirmation does not open with the focus on its first thing to act on");
   if (await page.evaluate(() => document.querySelector("dialog[open]")?.hasAttribute("tabindex"))) found.push("sheet: the dialog carries a tabindex");
   // Escape is the browser's close request, as the phone's Back is on Android
@@ -467,7 +469,7 @@ async function sheetCheck(browser, base) {
     const firstOpen = (i) => document.querySelectorAll("dialog")[i].open;
     // in place once its opening has played
     await page.waitForFunction((i) => document.querySelectorAll("dialog")[i].getAnimations({ subtree: true }).length === 0, firstId, { timeout: 3000 });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     // the first sheet scrolled down (made taller than the phone, with room over and under its words), its rule still well in view, clear of
     // the floating buttons at its top (a tap on a rule under them would scroll it first)
     await first.evaluate((d) => {
@@ -476,11 +478,11 @@ async function sheetCheck(browser, base) {
       body.style.paddingBottom = "2000px";
       body.scrollTop = 60;
     });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const scrolled = await first.evaluate((d) => d.querySelector(".sheet-body").scrollTop);
     await rule.tap();
     await page.waitForFunction((i) => !document.querySelectorAll("dialog")[i].open && [...document.querySelectorAll("dialog")].some((d) => d.open), firstId, { timeout: 3000 }).catch(() => found.push("sheet: a rule opened from inside a sheet shows over it instead of in its place"));
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     if ((await shown()) !== 1) found.push(`sheet: ${await shown()} sheets show at once`);
     if ((await modal()) !== 1) found.push(`sheet: ${await modal()} sheets are modal at once (a close request must reach the top one only)`);
     const back = page.locator("dialog[open] .sheet-head[data-back] button").first();
@@ -488,7 +490,7 @@ async function sheetCheck(browser, base) {
     else {
       await back.tap();
       await page.waitForFunction(firstOpen, firstId, { timeout: 3000 }).catch(() => found.push("sheet: the way back does not bring back the sheet it was opened from"));
-      await page.evaluate(settled);
+      await page.evaluate(settled, TIMERS_MS);
       if (!(await rule.evaluate((el) => el === document.activeElement))) found.push("sheet: back in the first sheet, the focus is not on the rule that opened the second");
       const at = await first.evaluate((d) => d.querySelector(".sheet-body").scrollTop);
       if (Math.abs(at - scrolled) > 1) found.push(`sheet: back in the first sheet, it is scrolled to ${at} px, not the ${scrolled} px it was left at`);
@@ -496,10 +498,10 @@ async function sheetCheck(browser, base) {
     // Escape closes the top of the two, then the other, the focus going back each time
     await rule.tap();
     await page.waitForFunction((i) => !document.querySelectorAll("dialog")[i].open, firstId, { timeout: 3000 }).catch(() => found.push("sheet: a rule opened again from inside a sheet does not take its place"));
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     await page.keyboard.press("Escape");
     await page.waitForFunction(firstOpen, firstId, { timeout: 3000 }).catch(() => found.push("sheet: Escape on a sheet opened inside another does not bring that one back"));
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     if ((await shown()) !== 1) found.push(`sheet: after Escape on the top of two sheets, ${await shown()} show`);
     if (!(await rule.evaluate((el) => el === document.activeElement))) found.push("sheet: after Escape on the top sheet, the focus is not on the rule that opened it");
     await page.keyboard.press("Escape");
@@ -509,12 +511,12 @@ async function sheetCheck(browser, base) {
     await label.tap();
     await page.locator("dialog[open] .rule-chip").first().tap();
     await page.waitForFunction((i) => !document.querySelectorAll("dialog")[i].open, firstId, { timeout: 3000 }).catch(() => found.push("sheet: a rule opened again from inside a sheet does not take its place"));
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     await page.keyboard.press("Escape");
     await page.keyboard.press("Escape");
     // every closing played out: a sheet the top one uncovers shows as the top one's closing ends
     await page.waitForFunction(() => !document.querySelector("dialog[data-closing]"), null, { timeout: 3000 });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     if (await shown()) found.push("sheet: two quick Escapes on two sheets leave the first one open");
     if (!(await label.evaluate((el) => el === document.activeElement))) found.push("sheet: after two quick Escapes, the focus is not on what opened the first sheet");
     // a close request the page may not refuse (the browser's own, with no press since the last): its cancel cannot be refused, and the
@@ -523,7 +525,7 @@ async function sheetCheck(browser, base) {
     await label.tap();
     await page.locator("dialog[open] .rule-chip").first().tap();
     await page.waitForFunction((i) => !document.querySelectorAll("dialog")[i].open && [...document.querySelectorAll("dialog")].some((d) => d.open), firstId, { timeout: 3000 });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const atClose = await page.evaluate(
       (i) =>
         new Promise((done) => {
@@ -537,7 +539,7 @@ async function sheetCheck(browser, base) {
     );
     if (!atClose) found.push("sheet: the browser closing the top of two sheets itself does not bring the other back at once");
     await page.waitForFunction(() => !document.querySelector("dialog[data-closing]"), null, { timeout: 3000 });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     if (!(await page.evaluate(firstOpen, firstId)) || (await shown()) !== 1) found.push(`sheet: a close request the page may not refuse on the top of two sheets leaves ${await shown()} open, not the one under it`);
     await page.keyboard.press("Escape");
     await noneOpen().catch(() => found.push("sheet: after the browser closed the top sheet itself, Escape does not close the other"));
@@ -558,7 +560,7 @@ async function sheetLeaveCheck(browser, base) {
     if (added !== 1) found.push(`${where}: the page it opened added ${added} history entries, not 1`);
     await page.goBack();
     await page.waitForFunction((p) => location.pathname.endsWith(p), from, { timeout: 10000 }).catch(() => found.push(`${where}: one Back from the page it opened does not come back to the page`));
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     // a sheet that comes back would open within its opening's time
     await page
       .waitForFunction(() => [...document.querySelectorAll("dialog")].some((d) => d.open), null, { timeout: 1000 })
@@ -577,10 +579,10 @@ async function sheetLeaveCheck(browser, base) {
     await link.waitFor({ timeout: 3000 }).catch(() => undefined);
     if (!(await link.count())) found.push("sheet link: the rule sheet on the kit page holds no link to the rules page");
     else {
-      await page.evaluate(settled);
+      await page.evaluate(settled, TIMERS_MS);
       await link.tap();
       await page.waitForFunction(() => location.pathname.endsWith("/rules"), null, { timeout: 10000 });
-      await page.evaluate(settled);
+      await page.evaluate(settled, TIMERS_MS);
       await left(page, "sheet link", before, "/kit");
     }
     await ctx.close();
@@ -598,12 +600,12 @@ async function sheetLeaveCheck(browser, base) {
     await box.fill("פיקדון");
     const hit = page.locator("dialog[open] a[href]").first();
     await hit.waitFor({ timeout: 10000 }).catch(() => undefined);
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const href = (await hit.count()) ? await hit.getAttribute("href") : null;
     if (!href?.includes("/guide/") || href.includes("#")) found.push(`search sheet: the word's first hit (${href}) is not another guide page: the check needs another word`);
     await box.press("Enter");
     await page.waitForFunction((p) => !location.pathname.endsWith(p), from, { timeout: 10000 }).catch(() => found.push("search sheet: Enter does not open the first hit's page"));
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     if (!(await page.evaluate((p) => location.pathname.endsWith(p), from))) await left(page, "search sheet", before, from);
     await ctx.close();
   }
@@ -673,7 +675,7 @@ async function throughCheck(browser, base) {
   const planted = await page.evaluate(pressSpots, { selector: 'article[aria-label="PickCard"] div:has(> button[data-pick-card])', plant: "positioned" });
   if (!planted.length || planted.every((s) => s.through)) found.push("through: self-test: a positioned block planted in a pick card was not caught");
   await page.reload({ waitUntil: "networkidle" });
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   for (const s of await page.evaluate(pressSpots, { selector: "main div:has(> button[data-pick-card])", plant: "grip" }))
     if (!s.through) found.push(`through: a press on the surface of a block holding a grip in "${s.label}" does not reach its button`);
   // a case row whose press opens it (the kit's trade fee), pressed on its parts' cell holding a grip
@@ -694,7 +696,7 @@ async function throughCheck(browser, base) {
     const rows = () => page.evaluate((label) => [...document.querySelectorAll("button[data-pick-card]")].filter((b) => b.getAttribute("aria-label") === label).length, spot.label);
     const before = await rows();
     await page.touchscreen.tap(spot.x, spot.y);
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     // the row it opens gives way to the open case
     opened = (await rows()) < before;
   }
@@ -726,7 +728,7 @@ async function stripCheck(browser, base) {
   const was = await fold.getAttribute("aria-expanded");
   const words = await strip.locator(".grp-title").boundingBox();
   await page.touchscreen.tap(words.x + 4, words.y + words.height / 2);
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   if ((await fold.getAttribute("aria-expanded")) === was) found.push("strip: a tap on a folding strip's words does not fold it");
   // a link in a strip's words stands over the strip's stretched button
   const linked = page.locator("main .grp-phone.grp-foldable > span a").first();
@@ -748,7 +750,7 @@ async function sideCheck(browser, base) {
   const ctx = await browser.newContext(PHONE);
   const page = await ctx.newPage();
   await page.goto(`${base}/kit?side=1`, { waitUntil: "networkidle" });
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   const fold = page.locator("[data-side-page] [data-side-nav] button[aria-expanded]").first();
   await fold.scrollIntoViewIfNeeded();
   await fold.tap();
@@ -756,11 +758,11 @@ async function sideCheck(browser, base) {
   // another part chosen without the fold (a navigation), then Back to the part it was opened for
   await page.evaluate(() => window.__reactRouterDataRouter.navigate("/kit?side=2"));
   await page.waitForFunction(() => location.search === "?side=2", null, { timeout: 3000 });
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   if ((await fold.getAttribute("aria-expanded")) !== "false") found.push("side: choosing another part does not close a side page's fold");
   await page.goBack();
   await page.waitForFunction(() => location.search === "?side=1", null, { timeout: 3000 });
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   if ((await fold.getAttribute("aria-expanded")) !== "false") found.push("side: Back to the part a side page's fold was opened for opens the fold again");
   await ctx.close();
   return found;
@@ -769,7 +771,7 @@ async function sideCheck(browser, base) {
 /** Where the window stands once a Back or Forward has brought `path` back and its restoring has had its time. */
 async function cameBackAt(page, path) {
   await page.waitForFunction((p) => location.pathname.replace(/\/$/, "").endsWith(p), path, { timeout: 10000 });
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   return page.evaluate(() => Math.round(window.scrollY));
 }
 
@@ -781,18 +783,18 @@ async function backCheck(browser, base) {
     const { ctx, page } = await open(browser, base, options, "/guide/brokerage-account/");
     await page.evaluate(() => window.__reactRouterDataRouter.navigate("/rules"));
     await page.waitForFunction(() => location.pathname.replace(/\/$/, "").endsWith("/rules"), null, { timeout: 10000 });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     await page.evaluate(() => window.scrollTo(0, 2500));
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     if ((await page.evaluate(() => window.scrollY)) < 1000) found.push(`back@${at}: the rules page is too short to scroll 2,500 px down`);
     await page.goBack();
     const back = await cameBackAt(page, "/guide/brokerage-account");
     if (back !== 0) found.push(`back@${at}: Back to a guide page never scrolled opens it ${back} px down, not at its top`);
     // the guide's index scrolled, a page under it opened and left at its top: Back, then Forward to that page
     await page.goto(`${base}/guide`, { waitUntil: "networkidle" });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     await page.evaluate(() => window.scrollTo(0, 1254));
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     await page.evaluate(() => window.__reactRouterDataRouter.navigate("/guide/brokerage-account"));
     await cameBackAt(page, "/guide/brokerage-account");
     await page.goBack();
@@ -814,7 +816,7 @@ async function touchCheck(browser, base) {
   const drawn = () => chart.evaluate((s) => s.innerHTML);
   const before = await drawn();
   await touchDrag(page, { x: r.x + r.width * 0.8, y: r.y + r.height / 2 }, { x: r.x + r.width * 0.2, y: r.y + r.height / 2 });
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   if ((await drawn()) === before) found.push("touch: a finger dragged sideways across the change chart does not move what it shows");
   const top = await page.evaluate(() => window.scrollY);
   const c = center(await chart.boundingBox());
@@ -849,9 +851,9 @@ async function headerCheck(browser, base) {
   const ctx = await browser.newContext({ ...CONTEXT, viewport: { width: 1024, height: 800 } });
   const page = await ctx.newPage();
   await page.goto(`${base}/rules`, { waitUntil: "networkidle" });
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   await page.locator("#header-search").focus();
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   for (const f of await headerFaults(page)) found.push(`header: at 1024 px on /rules, ${f}`);
   // the check must see a section hidden on purpose before its silence means anything
   await page.addStyleTag({ content: 'header nav[aria-label="ראשי"] a:last-child { display: none !important; }' });
@@ -886,7 +888,7 @@ async function openLiftSheet(browser, base, options) {
   await opener.scrollIntoViewIfNeeded();
   await (options.hasTouch ? opener.tap() : opener.click());
   await page.locator("dialog[open] [data-lift-item^='kit:row:']").first().waitFor({ state: "attached", timeout: 3000 });
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   const rows = () => page.evaluate(() => [...document.querySelectorAll("dialog[open] [data-grip][data-lift-item^='kit:row:']")].filter((g) => !g.closest("[data-lift-ghost]")).map((g) => g.dataset.liftItem).join(","));
   return { ctx, page, rows };
 }
@@ -924,7 +926,7 @@ async function liftSheetCheck(browser, base) {
       if (!ghost.holds) found.push("lift in a sheet: the row carried with a mouse is not drawn under the pointer");
     }
     await page.mouse.up();
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     if ((await rows()) === before) found.push(`lift in a sheet: a row carried with a mouse below the next one and let go does not move (${before})`);
     // a knob pulled toward the column before its cell, pressed where its strip is the top thing (the cell's grip stands over its middle)
     const k = await page.evaluate(() => {
@@ -946,7 +948,7 @@ async function liftSheetCheck(browser, base) {
       else if (!frame.top) found.push("lift in a sheet: a knob's frame is not the top thing drawn beside the pointer (hidden under the sheet's layer, or drawn elsewhere)");
       else if (!frame.holds) found.push("lift in a sheet: a knob's frame does not reach the pointer");
       await page.mouse.up();
-      await page.evaluate(settled);
+      await page.evaluate(settled, TIMERS_MS);
     }
     // a fee to add, carried with a mouse across the sheet's words and let go with Escape, selects no words on its way: in a modal dialog a
     // press on a button's words begins a selection, which the carry would stretch over the pointer's way
@@ -970,7 +972,7 @@ async function liftSheetCheck(browser, base) {
       if (picked) found.push(`lift in a sheet: carrying a fee selected words on the way: "${picked.replace(/\s+/g, " ").slice(0, 40)}"`);
       await page.keyboard.press("Escape");
       await page.mouse.up();
-      await page.evaluate(settled);
+      await page.evaluate(settled, TIMERS_MS);
       // carried out over the rows and back, slowly (a carry lasting longer than any short guard), and let go on itself: its press and
       // release are a click on it, which the carry swallows, so the fee is not added
       const name = (await fee.innerText()).trim();
@@ -982,7 +984,7 @@ async function liftSheetCheck(browser, base) {
       const back = center(await fee.boundingBox());
       await page.mouse.move(back.x, back.y, { steps: 40 });
       await page.mouse.up();
-      await page.evaluate(settled);
+      await page.evaluate(settled, TIMERS_MS);
       const still = await page.evaluate((n) => [...document.querySelectorAll("dialog[open] [data-drag-source]")].some((el) => el.innerText.trim() === n), name);
       if (!still) found.push(`lift in a sheet: a fee carried away and let go back on itself was added ("${name.replace(/\s+/g, " ").slice(0, 30)}")`);
     }
@@ -1006,7 +1008,7 @@ async function liftSheetCheck(browser, base) {
     const next = page.locator("dialog[open] [data-liftable]:has([data-grip][data-lift-item='kit:row:1'])").last();
     // the row at the top of the sheet's body; the finger stops short of the body's foot, where the body would scroll under it
     await head.evaluate((el) => el.scrollIntoView({ block: "start" }));
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const h = await head.boundingBox();
     const n = await next.boundingBox();
     const view = await page.evaluate(rowView, "kit:row:1");
@@ -1022,7 +1024,7 @@ async function liftSheetCheck(browser, base) {
     if (ghost && !ghost.holds) found.push("lift in a sheet: the row carried by a finger is not drawn under the finger");
     await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
     await cdp.detach();
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     if (lifted && (await rows()) === before) found.push(`lift in a sheet: a row carried by a finger below the next one and let go does not move (${before})`);
     await ctx.close();
   }
@@ -1057,7 +1059,7 @@ async function liftScrollCheck(browser, base) {
     const say = (f) => found.push(`lift in a sheet, scrolled (${how === "finger" ? "a finger at 390" : how === "wheel" ? "a mouse's wheel at 1440" : "a mouse at 1440"}): ${f}`);
     const first = page.locator("dialog[open] [data-liftable]:has(> * [data-grip][data-lift-item='kit:row:0'], > [data-grip-box] [data-grip][data-lift-item='kit:row:0'])").first();
     await first.evaluate((el) => el.scrollIntoView({ block: "nearest" }));
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const start = await page.evaluate(rowView, LAST);
     if (!start) {
       say("the sheet's body does not scroll, so nothing is tested");
@@ -1101,7 +1103,7 @@ async function liftScrollCheck(browser, base) {
         return !!s && s.scrollTop + s.clientHeight >= s.scrollHeight - 1;
       }, LAST, { timeout: 5000 }).then(() => true, () => false);
       if (!reached) say(how === "wheel" ? "the wheel does not scroll the sheet's body during the carry" : "carried to the sheet's foot, the sheet's body does not scroll to its end");
-      await page.evaluate(settled);
+      await page.evaluate(settled, TIMERS_MS);
       const end = await page.evaluate(rowView, LAST);
       // the top of the last row: the place just before it, which a drop aimed by places as they stood before the scroll would miss
       const to = { x: end.x, y: Math.max(end.rowTop, end.top) + 6 };
@@ -1113,7 +1115,7 @@ async function liftScrollCheck(browser, base) {
         await page.mouse.move(to.x, to.y, { steps: 3 });
         await page.mouse.up();
       }
-      await page.evaluate(settled);
+      await page.evaluate(settled, TIMERS_MS);
       const after = (await rows()).split(",");
       if (after.join(",") !== "kit:row:1,kit:row:2,kit:row:0,kit:row:3") say(`the first row let go on the top of the last row, out of view when it was lifted, does not land just before it (${after.join(",")})`);
     }
@@ -1135,16 +1137,16 @@ async function toolboxCarryCheck(browser, base) {
   const say = (f) => found.push(`toolbox carry: ${f}`);
   const { ctx, page } = await open(browser, base, { ...CONTEXT, viewport: { width: 1024, height: 800 } }, readFileSync(file, "utf8").trim());
   await page.evaluate(() => document.querySelector("main [data-fee-head]")?.click());
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   await page.locator("main [role=gridcell][data-liftable]").first().click();
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   // nothing failed: the browser's own reports (a ResizeObserver loop as the toolbox docks) raise no failure notice
   if (await page.getByRole("alert").filter({ hasText: "משהו בעמוד השתבש" }).count()) say("opening a fee raises the notice that a script failed, with nothing failed");
   const cards = page.locator("[data-tool-sheet][data-docked] [data-drag-source]");
   for (const chip of await page.locator("[data-tool-sheet][data-docked] [role=radio]").all()) {
     if (await cards.count()) break;
     await chip.click();
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
   }
   if (!(await cards.count())) {
     say("the docked toolbox offers no card to carry, so nothing is tested");
@@ -1176,14 +1178,14 @@ async function toolboxCarryCheck(browser, base) {
     const before = await page.evaluate(() => scrollY);
     await page.mouse.wheel(0, pair.by);
     await page.waitForFunction((y) => scrollY !== y, before, { timeout: 3000 }).catch(() => say("the wheel does not scroll the page during the carry"));
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const under = await page.evaluate(([key, x, y]) => {
       const r = document.querySelector(`[data-drop-key="${key}"]`)?.getBoundingClientRect();
       return !!r && x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
     }, [pair.b, pair.x, pair.y]);
     if (!under) say("after the wheel the lower place does not stand under the pointer, so nothing is tested");
     await page.mouse.up();
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const after = await page.evaluate((key) => document.querySelector(`[data-drop-key="${key}"]`)?.innerText ?? null, pair.b);
     if (under && after === pair.text) say("a card carried from the docked toolbox and let go on a case after the page was wheeled under the still pointer does not land on that case");
   }
@@ -1206,7 +1208,7 @@ async function openFirstFee(page) {
   const open = page.locator("main li[data-fee]:has([data-change-divider])");
   if (!(await open.count())) {
     await page.locator("main li[data-fee]").first().locator("[data-pick-card]").first().click();
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
   }
   return (await open.count()) && (await page.locator("main li[data-fee]").first().locator("[data-change-divider]").count()) ? open.first() : null;
 }
@@ -1249,11 +1251,11 @@ async function carryStartCheck(browser, base) {
     await page.mouse.move(c.x, c.y);
     await page.mouse.down();
     await page.mouse.move(c.x - 10, c.y - 10, { steps: 3 });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const during = await look();
     await page.keyboard.press("Escape");
     await page.mouse.up();
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     return during;
   };
   const moved = (a, b) => Object.keys(a).filter((k) => a[k] !== b[k]);
@@ -1262,7 +1264,7 @@ async function carryStartCheck(browser, base) {
   const rest = await look();
   if (moved(rest, await carried()).length === 0) say("a landing copy planted taller than what it stands in for moves nothing the check sees, so its silence means nothing");
   await plant.evaluate((el) => el.remove());
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   const before = await look();
   const during = await carried();
   for (const k of moved(before, during)) say(`a card of the toolbox, as its carry starts, changes the open fee's ${k} (${before[k]} → ${during[k]})`);
@@ -1291,7 +1293,7 @@ async function partLiftCheck(browser, base) {
     const other = page.locator("main li[data-fee]").nth(1);
     await other.scrollIntoViewIfNeeded();
     await part.scrollIntoViewIfNeeded();
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const said = () => other.evaluate((x) => x.innerText);
     if ((await said()).includes("80")) say("the other fee says 80 before anything is carried, so nothing is tested");
     const r = await part.boundingBox();
@@ -1314,10 +1316,10 @@ async function partLiftCheck(browser, base) {
       await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
       await cdp.detach();
     }
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     // the other fee opened, its prices read one by one: the later one (from August 2027) must now say 80, and its first one must not
     await other.locator("[data-pick-card]").first().click();
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const prices = await other.evaluate((x) => {
       const words = (el) => (el ? `${el.innerText} ${[...el.querySelectorAll("input")].map((i) => i.value).join(" ")}` : null);
       return { first: words(x.querySelector("[data-carry-floor]:not([data-stage-from])")), later: words(x.querySelector('[data-stage-from="buy:2027-08"]')) };
@@ -1344,7 +1346,7 @@ async function partButtonPress(browser, base) {
     return found;
   }
   await bin.scrollIntoViewIfNeeded();
-  await page.evaluate(settled);
+  await page.evaluate(settled, TIMERS_MS);
   const b = center(await bin.boundingBox());
   const cdp = await page.context().newCDPSession(page);
   await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: b.x, y: b.y }] });
@@ -1373,9 +1375,9 @@ async function noticeSheetCheck(browser, base) {
     await (at === "phone" ? opener.tap() : opener.click());
     await page.locator("dialog[open]").waitFor({ timeout: 3000 });
     if (at === "desk") await page.addStyleTag({ content: "dialog[open] { max-height: 5rem !important; }" });
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     await plant(page);
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const notice = page.getByRole("alert").filter({ hasText: "משהו בעמוד השתבש" });
     const reload = notice.getByRole("button", { name: "לרענן את העמוד" });
     if (!(await reload.count())) {
@@ -1422,7 +1424,7 @@ async function chosenShift(page, row, phone) {
     await o.scrollIntoViewIfNeeded();
     const before = await boxes();
     await (phone ? o.tap() : o.click());
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const after = await boxes();
     const moved = before.flatMap((b, j) => (after[j] && b.some((v, q) => Math.abs(v - after[j][q]) > 0.5) ? [`option ${j + 1} ${b.map(Math.round).join(",")} → ${after[j].map(Math.round).join(",")}`] : []));
     const name = (await o.getAttribute("aria-label")) || (await o.innerText()).trim();
@@ -1487,7 +1489,7 @@ async function regionCheck(browser, base) {
     const { ctx, page } = await open(browser, base, DESK);
     const { demo, map, svg, kept, pinAt, keptBox, painted, pin } = regionParts(page);
     await map.scrollIntoViewIfNeeded();
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const r = await svg.boundingBox();
     const at = (fx, fy) => ({ x: r.x + r.width * fx, y: r.y + r.height * fy });
     const off = () => page.mouse.move(r.x - 40, r.y - 40);
@@ -1526,27 +1528,27 @@ async function regionCheck(browser, base) {
     await page.keyboard.press("Escape");
     // a name inside its area and a legend item each set the area apart, the name keeping no point; measured with the pointer off the map
     await page.mouse.move(1, 1);
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const before = (await painted("areas")).sum;
     const name = map.locator("[data-region-name]").first();
     if (!(await name.count())) found.push("region: no area's name is drawn inside it");
     else {
       await name.click();
-      await page.evaluate(settled);
+      await page.evaluate(settled, TIMERS_MS);
       if (await kept()) found.push("region: a click on an area's name keeps a point");
       if ((await painted("areas")).sum === before) found.push("region: a click on an area's name does not set its area apart");
       await name.click();
-      await page.evaluate(settled);
+      await page.evaluate(settled, TIMERS_MS);
     }
     const legend = demo.locator('ul button[aria-pressed]').nth(1);
     await legend.click();
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     if ((await painted("areas")).sum === before) found.push("region: a legend item does not set its area apart");
     await legend.click();
     // the clicks may have scrolled the page: the plot where it stands now
     const now = await svg.boundingBox();
     await page.mouse.move(now.x + now.width * 0.2, now.y + now.height * 0.2);
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     if ((await painted("areas")).sum === before) found.push("region: the pointer over an area does not lighten it");
     await page.mouse.move(r.x - 40, r.y - 40);
     if (await map.locator("svg text", { hasText: "בערך אותו דבר" }).count()) found.push("region: the words for the band stand on the plot, not in the legend");
@@ -1584,7 +1586,7 @@ async function regionCheck(browser, base) {
     const { ctx, page } = await open(browser, base, PHONE);
     const { map, svg, kept, pin } = regionParts(page);
     await map.scrollIntoViewIfNeeded();
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     const r = await svg.boundingBox();
     await page.touchscreen.tap(r.x + r.width * 0.5, r.y + r.height * 0.4);
     if (!(await kept())) found.push("region: a tap on the map keeps no point");
@@ -1595,7 +1597,7 @@ async function regionCheck(browser, base) {
     }
     const top = await page.evaluate(() => window.scrollY);
     await touchDrag(page, { x: r.x + r.width * 0.5, y: r.y + r.height * 0.7 }, { x: r.x + r.width * 0.5, y: r.y + r.height * 0.3 }, 12);
-    await page.evaluate(settled);
+    await page.evaluate(settled, TIMERS_MS);
     if (await kept()) found.push("region: a finger moving up the map keeps a point");
     if ((await page.evaluate(() => window.scrollY)) === top) found.push("region: a finger moving up the map does not scroll the page");
     await ctx.close();
