@@ -1131,6 +1131,47 @@ function beforeTaxPrices(ctx: Ctx, rec: FundRecord, option: OptionId, spec: Spec
 
 // ---------------------------------------------------------------- the option
 
+/** One fund of an option at every house (F-63, F-65): its price at each house that sells it, or why it has none, and its cheapest ranked house. */
+function fundWayOf(ctx: Ctx, rec: FundRecord, option: OptionId): FundWay {
+  const base = { rec, name: nameOf(rec), number: numberOf(rec), option, currencyMismatch: false, noUnitPrice: unitPriceMissing(rec, option), byHouse: {} as FundWay["byHouse"] };
+  const fs = fundSpec(ctx, rec);
+  const venue = option === "abroad" ? venueOfFund(rec) : null;
+  // the houses that sell this fund: the kind, and where a house sells it fund by fund, the fund itself (BRK-38)
+  const sells = ctx.snaps.filter((s) => sellsFund(s, option, rec));
+  if ("reason" in fs) return { ...base, reason: fs.reason, ...(fs.beforeTax && sells.length ? { beforeTax: { ruleId: fs.beforeTax.ruleId, byHouse: beforeTaxPrices(ctx, rec, option, fs.beforeTax.spec, sells, venue) } } : {}) };
+  // the fund at every house that sells it, the exchange it trades on for a fund abroad
+  const got = sells.length ? priceMany(ctx, fs.spec, option, sells, venue) : new Map<string, Priced>();
+  let best: WayPrice | undefined;
+  let failure: Reason | undefined;
+  for (const s of ctx.snaps) {
+    const na = unavailable(s, option);
+    if (na) {
+      base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-applicable-line", detail: "unavailable" }, availability: na };
+      continue;
+    }
+    // sold fund by fund: a fund the person typed is not named by any report; a fund no report names is open, with its own words
+    const agreed = agreementAt(s, option, rec);
+    if (agreed?.at === "typed") {
+      base.byHouse[s.id] = { providerId: s.id, reason: { code: "sold-fund-by-fund" } };
+      continue;
+    }
+    if (agreed?.at === "open") {
+      base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-agreement-found" }, doubt: agreed.doubt };
+      continue;
+    }
+    const p = got.get(s.id)!;
+    if (p.kind === "ok") {
+      const w = wayPrice(ctx, p, s.id, nameOf(rec), rec.id, fs.spec);
+      base.byHouse[s.id] = w;
+      if (!best || w.valueN > best.valueN) best = w;
+    } else {
+      base.byHouse[s.id] = { providerId: s.id, reason: p.reason };
+      failure ??= p.reason;
+    }
+  }
+  return { ...base, currencyMismatch: fs.mismatch, ...(best ? { best } : failure ? { reason: failure } : { reason: { code: "no-applicable-line", detail: "no broker" } }) };
+}
+
 function computeOption(ctx: Ctx, index: IndexRef, option: OptionId): OptionView {
   const exists = optionsOf(index.israeli).includes(option);
   const empty: OptionView = { id: option, exists, notRunnable: null, cells: [], funds: [], bestWay: null, open: false };
@@ -1168,45 +1209,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId): OptionView 
   // (a) the funds of the option, each at its cheapest broker
   // a custom index has no exposure record: a fund the person added on it names the index itself (D44)
   const recs = ctx.bundle.funds.filter((f) => f.exposure_id === (index.exposure?.id ?? index.id) && optionOfFund(f, index.exposure ?? undefined) === option);
-  const funds: FundWay[] = recs.map((rec) => {
-    const base = { rec, name: nameOf(rec), number: numberOf(rec), option, currencyMismatch: false, noUnitPrice: unitPriceMissing(rec, option), byHouse: {} as FundWay["byHouse"] };
-    const fs = fundSpec(ctx, rec);
-    const venue = option === "abroad" ? venueOfFund(rec) : null;
-    // the houses that sell this fund: the kind, and where a house sells it fund by fund, the fund itself (BRK-38)
-    const sells = ctx.snaps.filter((s) => sellsFund(s, option, rec));
-    if ("reason" in fs) return { ...base, reason: fs.reason, ...(fs.beforeTax && sells.length ? { beforeTax: { ruleId: fs.beforeTax.ruleId, byHouse: beforeTaxPrices(ctx, rec, option, fs.beforeTax.spec, sells, venue) } } : {}) };
-    // the fund at every house that sells it, the exchange it trades on for a fund abroad
-    const got = sells.length ? priceMany(ctx, fs.spec, option, sells, venue) : new Map<string, Priced>();
-    let best: WayPrice | undefined;
-    let failure: Reason | undefined;
-    for (const s of ctx.snaps) {
-      const na = unavailable(s, option);
-      if (na) {
-        base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-applicable-line", detail: "unavailable" }, availability: na };
-        continue;
-      }
-      // sold fund by fund: a fund the person typed is not named by any report; a fund no report names is open, with its own words
-      const agreed = agreementAt(s, option, rec);
-      if (agreed?.at === "typed") {
-        base.byHouse[s.id] = { providerId: s.id, reason: { code: "sold-fund-by-fund" } };
-        continue;
-      }
-      if (agreed?.at === "open") {
-        base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-agreement-found" }, doubt: agreed.doubt };
-        continue;
-      }
-      const p = got.get(s.id)!;
-      if (p.kind === "ok") {
-        const w = wayPrice(ctx, p, s.id, nameOf(rec), rec.id, fs.spec);
-        base.byHouse[s.id] = w;
-        if (!best || w.valueN > best.valueN) best = w;
-      } else {
-        base.byHouse[s.id] = { providerId: s.id, reason: p.reason };
-        failure ??= p.reason;
-      }
-    }
-    return { ...base, currencyMismatch: fs.mismatch, ...(best ? { best } : failure ? { reason: failure } : { reason: { code: "no-applicable-line", detail: "no broker" } }) };
-  });
+  const funds: FundWay[] = recs.map((rec) => fundWayOf(ctx, rec, option));
   funds.sort((a, b) => (b.best?.valueN ?? -Infinity) - (a.best?.valueN ?? -Infinity));
   const top = funds.find((f) => f.best);
   const bestWay: Way | null = top?.best ? { option, fund: top, providerId: top.best.providerId, value: top.best.value, valueN: top.best.valueN, open: top.best.open } : null;
