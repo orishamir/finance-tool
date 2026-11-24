@@ -269,7 +269,8 @@ export const guide = {
   // the headline says it is an example and names its inputs; each gap is filled by a Num
   // a cash-like page runs on a rate, not a return; a lump-sum page (lumpSumIds) names one amount, with no monthly deposit
   headlineExample: { lead: "דוגמה:", plus: "ועוד", perMonth: "בחודש, בתשואה של", perMonthCash: "בחודש, בריבית של", lump: "בתשואה של", lumpCash: "בריבית של", perYear: "בשנה, משאירים לכם אחרי" },
-  modes: { real: "בהתחשב באינפלציה", nominal: "בלי להתחשב באינפלציה" },
+  // the switch's nominal side names inflation once, beside the real side: the full words run past the switch at 320 px
+  modes: { real: "בהתחשב באינפלציה", nominal: "בלי להתחשב בה" },
   // the "?" beside the switch says what each side's figure is; the other side's figure is the switch's other side
   modeHelp: { about: "בהתחשב באינפלציה ובלי להתחשב בה", text: "בהתחשב באינפלציה: הסכום שיהיה אז, אחרי שמורידים ממנו את עליית המחירים עד אז, כלומר מה שהוא יקנה במחירים של היום. בלי להתחשב באינפלציה: מה שיהיה כתוב אז בדוח או בחשבון. סכום כזה יקנה אז פחות ממה שהוא קונה היום, כי המחירים עולים." },
   modeLabel: "אופן הצגת הסכומים",
