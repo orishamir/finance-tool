@@ -23,7 +23,7 @@ import { Sheet } from "../Sheet";
 import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, OnOffSwitch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, amountCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, PartFacts, StretchBar, StretchChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, type Landing, DateSpanText } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 import { linearScale, steppedScale } from "./slider-scale";
-import { RegionMap, regionSwatch, regionTones, regionWash, type RegionArea, type RegionPoint } from "./region-map";
+import { RegionMap, regionSwatch, regionTones, regionWash, type RegionArea, type RegionGuide, type RegionPoint } from "./region-map";
 import { accountMap, type LeftAt } from "../../lib/account-map";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
@@ -4132,7 +4132,7 @@ function CaseDemos({ today }: { today: string }) {
 
 /**
  * The region map's demo: three made-up options whose costs are lines, each leaving today's amount and 100 times the monthly deposit less its
- * cost. A leads at the point, C past a switch up each of the point's lines, and B in the far corner, clearly first there within the axes
+ * cost. A leads at the point, C in a stretch up each of the point's lines, and B past it, clearly first in the far corner within the axes
  * fitted to the point; along the bottom edge, with no monthly deposit, A and then C.
  */
 const REGION_COSTS: Record<string, (a: number, m: number) => number> = { a: (a, m) => 0.08 * a + 4 * m, b: (a, m) => 2500 + 0.016 * a + 0.8 * m, c: (a, m) => 1200 + 0.04 * a + 2 * m };
@@ -4152,7 +4152,15 @@ function RegionDemo({ today }: { today: string }) {
     const tone = (id: string) => areas.find((x) => x.id === id)?.tone ?? "other";
     return { at, rows: left.slice(0, 2).map(([id, v], k) => ({ id, swatch: <Swatch shape="box" className={regionSwatch(tone(id))} />, label: names[id] ?? id, value: <Num value={computed(Math.round(v), "nis", "F-131", {}, { today, about: r.left(names[id] ?? id) })} display={fmt.nisWhole(Math.round(v))} />, ...(k === 0 ? { wash: regionWash(tone(id)) } : {}) })) };
   };
-  const sw = map.switches;
+  // a guide along each axis to its switch, else to its stretch's end nearer the point, as the index page's map draws them
+  const guideOn = (axis: "amount" | "monthly"): RegionGuide[] => {
+    const sw = map.switches[axis];
+    const st = map.stretches[axis];
+    const at = sw ? sw.at : st ? (st.dir === "up" ? st.lo : st.hi) : null;
+    if (at === null) return [];
+    const text = sw ? fmt.nisRough(sw.at) : st ? `${fmt.nisRough(st.lo)}–${fmt.nisRough(st.hi)}` : "";
+    return [{ axis: axis === "amount" ? "x" : "y", at, label: { text } }];
+  };
   return (
     <RegionMap
       max={{ x: map.max.amount, y: map.max.monthly }}
@@ -4162,7 +4170,7 @@ function RegionDemo({ today }: { today: string }) {
       edgeLabel={(id) => ({ text: id === null ? r.edgeSame : r.edge(names[id] ?? id) })}
       bandLabel={{ text: r.same, pair: r.samePair }}
       mark={{ at: [map.plan.amount, map.plan.monthly], label: { text: r.mark } }}
-      guides={[...(sw.amount ? [{ axis: "x" as const, at: sw.amount.at, label: { text: fmt.nisRough(sw.amount.at) } }] : []), ...(sw.monthly ? [{ axis: "y" as const, at: sw.monthly.at, label: { text: fmt.nisRough(sw.monthly.at) } }] : [])]}
+      guides={[...guideOn("amount"), ...guideOn("monthly")]}
       xTitle={r.x}
       yTitle={r.y}
       xTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}

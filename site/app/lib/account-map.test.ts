@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import { accountMap, cleanUp, type AccountMap, type LeftAt } from "./account-map";
-import { stripedPairs } from "../components/kit/region-map";
 
 /**
  * Made-up accounts over the same deposits: what each leaves is today's amount and 100 times the monthly deposit, less its own cost, so the
@@ -135,6 +134,24 @@ describe("the account map (F-131)", () => {
     // and one at 150 ₪ a month is named
     const named = { a: base, b: (a: number, m: number) => base(a, m) * (1 + 0.00002 * (150 - m)) };
     expect(mapOf(named, { amount: 10_000, monthly: 200 }).equal.monthly?.at).toBeCloseTo(150, -1);
+  });
+
+  it("names each account only where it is clearly cheaper: one that is first for a while is not credited with what lies past it", () => {
+    // up today's amount, B 1% ahead of A from 30,000 ₪ to 60,000 ₪, C 2% ahead of A from 60,000 ₪ on: the plan's account is clearly beaten
+    // from 30,000 ₪, by B and then by C. B clearly cheaper from 30,000 ₪ to 60,000 ₪, named first, as the nearer change; never B from
+    // 30,000 ₪ on
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    const two = { a: base, b: (a: number, m: number) => base(a, m) * (a >= 30_000 && a < 60_000 ? 1.01 : 0.99), c: (a: number, m: number) => base(a, m) * (a >= 60_000 ? 1.02 : 0.98) };
+    const got = mapOf(two, { amount: 10_000, monthly: 200 });
+    expect(got.switches.amount).toBeNull();
+    const st = need(got.stretches.amount, "B's stretch up today's amount");
+    expect(st).toMatchObject({ dir: "up", to: "b" });
+    expect(st.lo).toBeCloseTo(30_000, -2);
+    expect(st.hi).toBeCloseTo(60_000, -2);
+    // with no B, the switch is C's, from 60,000 ₪
+    const s = need(mapOf({ a: base, c: two.c }, { amount: 10_000, monthly: 200 }).switches.amount, "C's switch");
+    expect(s).toMatchObject({ dir: "up", to: "c" });
+    expect(s.at).toBeCloseTo(60_000, -2);
   });
 
   it("reads nothing under a hundredth of the sliders' reach: what runs under it is cut there, rather than dropped", () => {
@@ -340,11 +357,11 @@ describe("the account map (F-131)", () => {
     expect(at).toBeCloseTo(65_259, -1);
   });
 
-  it("keeps the axes to the plan's range: an account clearly first only far past it has no area", () => {
+  it("names where an account is clearly cheaper before another takes over, and runs the axes past it", () => {
     // A: 8% of today's amount and 4 ₪ a shekel of the deposit; B: 6,000 ₪, 1.6% and 0.8 ₪; C: 1,200 ₪, 4% and 2 ₪. At the plan A is first;
-    // C is clearly cheaper up both lines (from about 25,300 ₪ today and 558 ₪ a month): today's amount runs to 1.5 × 25,300 = 37,950, up to
-    // 40,000 ₪, and the deposit to 1.5 × 558 = 837, up to 1,000 ₪. B is clearly first only from 250,000 ₪ with no monthly deposit (0.024 a −
-    // 4,800 = 0.005 (0.984 a − 6,000)), far past the plan, and the axis is not stretched to it
+    // up today's amount at 200 ₪ a month C is clearly cheaper from about 25,300 ₪, and B, cheaper still, from 190,000 ₪ (0.024 a − 4,800 −
+    // 160 θ-ahead of C: 0.024 a − 4,960 = 0.005 (0.984 a + 13,840)): C's stretch is named, not a switch to B, and today's amount runs to
+    // 1.5 × 190,000 = 285,000, up to 300,000 ₪; the deposit the same way, to 6,000 ₪ a month
     const three = {
       a: (a: number, m: number) => left(a, m, 0.08 * a + 4 * m),
       b: (a: number, m: number) => left(a, m, 6000 + 0.016 * a + 0.8 * m),
@@ -352,12 +369,25 @@ describe("the account map (F-131)", () => {
     };
     const got = mapOf(three, { amount: 10_000, monthly: 200 });
     expect(got.plan.lead).toEqual({ kind: "clear", first: "a" });
-    expect(got.max).toEqual({ amount: 40_000, monthly: 1000 });
-    expect([...got.accounts].sort()).toEqual(["a", "c"]);
+    expect(got.switches).toEqual({ amount: null, monthly: null });
+    const st = need(got.stretches.amount, "C's stretch up today's amount");
+    expect(st).toMatchObject({ dir: "up", to: "c" });
+    expect(st.lo).toBeCloseTo(25_341, -1);
+    expect(st.hi).toBeCloseTo(190_000, -2);
+    expect(got.max).toEqual({ amount: 300_000, monthly: 6000 });
+    expect([...got.accounts].sort()).toEqual(["a", "b", "c"]);
     expectFieldTrue(got, three);
-    // the legend's stripes: A and C about the same around where they are equal, and no other pair
-    const pairs = stripedPairs(got.field).map((p) => p.map((k) => got.accounts[k] ?? "").sort((x, y) => x.localeCompare(y)).join("|"));
-    expect(pairs).toEqual(["a|c"]);
+  });
+
+  it("keeps the axes to the plan's range: an account clearly first only far past it has no area", () => {
+    // D leaves A's figure and a share of today's amount times the deposit less 6,000 ₪: clearly first only where both are large (at 500,000
+    // ₪ and 10,000 ₪ a month, 19,000 ₪ more), and θ behind A all along the plan's lines (5,500 ₪ less at their far ends). Nothing changes up
+    // them: the axes run to three times the plan, 30,000 ₪ and 600 ₪ a month, where D is behind
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    const corner = { a: base, d: (a: number, m: number) => base(a, m) + (a * m) / 200_000 - 6000 };
+    const got = mapOf(corner, { amount: 10_000, monthly: 200 });
+    expect(got.max).toEqual({ amount: 30_000, monthly: 600 });
+    expect(got.accounts).toEqual(["a"]);
   });
 
   it("prices only the accounts that can lead once the coarse grid has found them", () => {
