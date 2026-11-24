@@ -3,10 +3,10 @@
 // so a record that prints only how often exit points come (`every_months` alone) leaves every piece inside its term flagged G-16.
 import { describe, expect, it } from "vitest";
 import { runInputs, runPlanned } from "@finance-tool/engine";
-import type { DepositTerms } from "@finance-tool/schema";
+import type { DepositTerms, FundRecord } from "@finance-tool/schema";
 import { flags as flagWords } from "../copy";
 import { loadParameters, loadRules, loadWrappers } from "./data.server";
-import { buildInstrumentTerms, loadDepositTerms } from "./instruments.server";
+import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
 
 const deposits = loadDepositTerms();
 const rules = loadRules();
@@ -108,5 +108,20 @@ describe("buildInstrumentTerms: a deposit's exit points", () => {
     expect(said(36)).toBe(""); // the plan's end
     // and the note has its sentence on the page
     expect(flagWords["G-34"]).toMatch(/תחנת יציאה/);
+  });
+});
+
+describe("buildInstrumentTerms: a Tel Aviv foreign fund's tax index (F-04, D84)", () => {
+  const rec = loadFunds().find((f) => f.id === "1159250");
+  if (!rec?.tax_ruling?.index) throw new Error("the S&P 500's Tel Aviv line 1159250 and the index its annex states are in the data");
+  const { index: _stated, ...unstated } = rec.tax_ruling;
+  const missingOf = (r: FundRecord) => {
+    const built = buildInstrumentTerms("brokerage-account", "securities", { fund: r.id }, { fees: [], funds: [r], deposits, rules, today: "2026-11-12" });
+    return "missing" in built ? built.missing : [];
+  };
+  it("asks for a 90% test value only of a fund whose annex states no index: only TXF-04's index reads it", () => {
+    const noTest = { ...rec, tax_status: { ...rec.tax_status, tase_foreign_fund_90pct_test: null } };
+    expect(missingOf(noTest).some((m) => m.includes("90% test value"))).toBe(false);
+    expect(missingOf({ ...noTest, tax_ruling: unstated }).some((m) => m.includes("90% test value"))).toBe(true);
   });
 });
