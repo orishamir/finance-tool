@@ -12,6 +12,8 @@ import { invest } from "../../copy";
 import { providerName } from "./sections";
 import { bundle, t, plan, shown, html, nisIn } from "./render-fixtures";
 import { PairReceipt } from "./receipt";
+import { dealProviderId, withDeals } from "../../lib/deal-account/bundle";
+import { data as dealData, fromHouse } from "../../lib/deal-account/plan-fixtures";
 
 describe("the pair set beside the person's (2026-10-28)", () => {
   it("an unhedged pick is set beside the headline; a hedged pick beside the best hedged pair, never one that leaves less", () => {
@@ -62,4 +64,29 @@ describe("the receipt's account line is the account's fees on every index (pass 
       expect(-nisIn(receipt.slice(at + label.length, at + label.length + 40)), `${index.id}: the receipt's account line against ${inHorizon}`).toBe(inHorizon);
     });
   }
+});
+
+/** A value the test's setup must have found, else the test stops with what was missing. */
+function need<T>(x: T | null | undefined, what: string): T {
+  if (x === null || x === undefined) throw new Error(`missing: ${what}`);
+  return x;
+}
+
+describe("the receipt with the person's own deal as the account (F-128)", () => {
+  it("the ticket names each of the deal's own fees, and its account line is the deal's fees in the horizon's shekels", () => {
+    const b = withDeals(bundle, [fromHouse("psagot")], dealData.kinds);
+    const index = need(knownIndices(b).find((ix) => ix.id === "index-sp500"), "the S&P 500");
+    const view = buildInvest({ bundle: b, index, plan });
+    const house = dealProviderId("deal-psagot");
+    const fund = need(view.houses.find((r) => r.provider.id === house)?.entries.find((e) => e.price), "a fund the deal prices").fund.rec.id;
+    const pick = { house, fund };
+    const pc = need(pairCostsKept({ bundle: b, index: view.index, plan, fundId: fund, providerId: house }), "the deal's pair");
+    const dealLines = need(pc.dealLines, "the deal's lines");
+    expect(dealLines.length).toBeGreaterThan(0);
+    const ticket = shown(html(createElement(PairReceipt, { view, bundle: b, plan, pick, chosen: true, layout: "ticket" }))).replace(/[\u2066-\u2069\u200e\u200f]/g, "").replace(/\u00a0/g, " ");
+    for (const l of dealLines) expect(ticket, l.name).toContain(l.name);
+    const at = ticket.indexOf(invest.receipt.accountCharges);
+    expect(at).toBeGreaterThanOrEqual(0);
+    expect(-nisIn(ticket.slice(at + invest.receipt.accountCharges.length, at + invest.receipt.accountCharges.length + 40))).toBe(receiptChain(pc).nominal.account);
+  });
 });
