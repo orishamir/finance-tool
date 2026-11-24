@@ -771,12 +771,13 @@ const VAR: Record<RegionTone, string> = {
 };
 
 /** The band's swatch: the pair where the two are equal, Q's share a half, in the map's own mix (`bandWeight`): its smooth half under the
- *  pattern's 45° stripes, at the theme's weight and period. */
+ *  pattern's 45° stripes, at the theme's weight and period. Wider than an area's swatch (24 by 12 px against 10), so several stripes show
+ *  and it never reads as a dot. */
 function BandSwatch({ p, q }: { p: RegionTone; q: RegionTone }) {
   const mix = (weight: string) => `color-mix(in srgb, ${VAR[q]} calc(${weight} * 100%), ${VAR[p]})`;
   const soft = "(1 - var(--chart-region-texture)) * 0.5";
   const background = `repeating-linear-gradient(135deg, ${mix(`(${soft} + var(--chart-region-texture))`)} 0 calc(var(--chart-region-period) * 0.3536px), ${mix(`(${soft})`)} 0 calc(var(--chart-region-period) * 0.7071px))`;
-  return <span className="size-2.5 shrink-0 rounded-sm" style={{ background }} data-mark="band-swatch" />;
+  return <span className="h-3 w-6 shrink-0 rounded-sm" style={{ background }} data-mark="band-swatch" />;
 }
 
 /** Words over the map in their box, in the dark ink the light areas take. */
