@@ -4166,7 +4166,7 @@ function RegionDemo({ today }: { today: string }) {
       xTitle={r.x}
       yTitle={r.y}
       xTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
-      yTick={(v) => fmt.number(v)}
+      yTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
       snap={{ x: 1000, y: 10 }}
       renderTip={(p) => {
         const b = best(p);

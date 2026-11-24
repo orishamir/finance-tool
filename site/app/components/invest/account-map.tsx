@@ -295,7 +295,7 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
         xTitle={m.xTitle}
         yTitle={m.yTitle}
         xTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
-        yTick={(v) => fmt.number(v)}
+        yTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
         snap={{ x: snapOf(map.max.amount), y: snapOf(map.max.monthly) }}
         renderTip={(p) => {
           const r = reading(p);
