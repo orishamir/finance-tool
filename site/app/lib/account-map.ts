@@ -293,19 +293,21 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     monthly: nearer(plan.monthly, up.monthly, switchAlong(lines.monthly.down, order, theta, tied)),
   };
   const planFirst = lead.kind === "clear" ? lead.first : lead.kind === "near" ? lead.tied[0] : null;
-  // where another account first leaves more than the plan's first, up or down a line: there the two leave the same
-  const evenOn = (line: Line | null): MapSwitch | null => {
+  // where another account first leaves more than the plan's first, up or down a line: there the two leave the same. Under a thousandth of
+  // the reach, none is named: no money at all today (or a month) is a value of its own, as the bottom edge is, and a change found only
+  // there is that value's, not a point along the line
+  const evenOn = (line: Line | null, floor: number): MapSwitch | null => {
     const c = firstChange(line, order, theta, (l) => l?.first !== planFirst);
     const to = c?.lead?.first;
-    return line && c && to ? { at: c.at, dir: line.dir, to } : null;
+    return line && c && to && c.at >= floor ? { at: c.at, dir: line.dir, to } : null;
   };
-  const evenUp = { amount: evenOn(lines.amount.up), monthly: evenOn(lines.monthly.up) };
+  const evenUp = { amount: evenOn(lines.amount.up, 0), monthly: evenOn(lines.monthly.up, 0) };
   const changesUp = (line: Line | null, even: MapSwitch | null): LineChanges => ({
     band: lead.kind === "clear" ? (firstChange(line, order, theta, (l) => l?.first !== planFirst || l.ahead < 1)?.at ?? null) : null,
     even: even?.at ?? null,
   });
   const changes = { amount: changesUp(lines.amount.up, evenUp.amount), monthly: changesUp(lines.monthly.up, evenUp.monthly) };
-  const equal = { amount: nearer(plan.amount, evenUp.amount, evenOn(lines.amount.down)), monthly: nearer(plan.monthly, evenUp.monthly, evenOn(lines.monthly.down)) };
+  const equal = { amount: nearer(plan.amount, evenUp.amount, evenOn(lines.amount.down, reachA * LOWEST)), monthly: nearer(plan.monthly, evenUp.monthly, evenOn(lines.monthly.down, reachM * LOWEST)) };
 
   // the axes: past the plan and the farthest change up its line with room (the band's near edge, the even point, the switch up), at a clean
   // value; at least a tenth of the sliders' reach where something changes up the line and a quarter where nothing does; at most the

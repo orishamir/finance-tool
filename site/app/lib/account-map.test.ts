@@ -95,6 +95,14 @@ describe("the account map (F-131)", () => {
     expect(past.equal.amount?.at).toBeCloseTo(29_333.3, -2);
   });
 
+  it("names no equal point where another account leads only with no money at all today", () => {
+    // C leaves 300 ₪ less than A wherever there is money today, and 100 ₪ more at exactly 0 ₪: not a point along the line, but the value
+    // of no money at all, as the bottom edge is
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    const atNothing = { a: base, c: (a: number, m: number) => base(a, m) + (a === 0 ? 100 : -300) };
+    expect(mapOf(atNothing, { amount: 10_000, monthly: 200 }).equal.amount).toBeNull();
+  });
+
   it("shows the band and the other account's side up a line where the other never becomes clearly cheaper", () => {
     // A: 2% of today's amount and 0.6 ₪ a shekel of the deposit; B as before. Up the deposit at 10,000 ₪, B leaves 0.4 m − 450 more: A is θ
     // ahead while 450 − 0.4 m ≥ 0.005 (9,800 + 99.4 m), to 447.0 ₪ a month, B leaves more from 1,125 ₪, and B is never θ ahead, since
