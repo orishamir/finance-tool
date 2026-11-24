@@ -5434,7 +5434,7 @@ export const kit = {
     },
     sample: {
       /** The region map: three made-up options, its axes and its point. */
-      regions: { a: "אפשרות א", b: "אפשרות ב", c: "אפשרות ג", x: "סכום היום (₪)", y: "הפקדה חודשית (₪)", mark: "הנקודה שלכם", edge: (name: string) => `בלי הפקדה חודשית: ${name}`, edgeSame: "בלי הפקדה חודשית: בערך אותו דבר", same: "בערך אותו דבר", samePair: (a: string, b: string) => `${andList([a, b])}: בערך אותו דבר`, point: (x: string, y: string) => `${x} היום, ${y} בחודש`, left: (name: string) => `מה שנשאר ב${name}, דוגמה בלבד` },
+      regions: { a: "אפשרות א", b: "אפשרות ב", c: "אפשרות ג", x: "סכום היום (₪)", y: "הפקדה חודשית (₪)", mark: "הנקודה שלכם", edge: (name: string) => `בלי הפקדה חודשית: ${name}`, edgeSame: "בלי הפקדה חודשית: בערך אותו דבר", same: "בערך אותו דבר", samePair: (a: string, b: string) => `${andList([a, b])}: בערך אותו דבר`, point: (x: string, y: string) => `${x} היום, ${y} בחודש` },
       /** The cases and parts (ConditionBand, PartChip, SlimFee, Toolbox, AskValues, the value menus, ReadForBand): a deal's words, made up. */
       cases: {
         trade: "עמלת קנייה ומכירה",

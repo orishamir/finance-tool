@@ -4150,7 +4150,7 @@ function RegionDemo({ today }: { today: string }) {
     const at = p ?? ([map.plan.amount, map.plan.monthly] as const);
     const left = [...regionLeft(at[0], at[1], null)].sort((x, y) => y[1] - x[1]);
     const tone = (id: string) => areas.find((x) => x.id === id)?.tone ?? "other";
-    return { at, rows: left.slice(0, 2).map(([id, v], k) => ({ id, swatch: <Swatch shape="box" className={regionSwatch(tone(id))} />, label: names[id] ?? id, value: <Num value={computed(Math.round(v), "nis", "F-131", {}, { today, about: r.left(names[id] ?? id) })} display={fmt.nisWhole(Math.round(v))} />, ...(k === 0 ? { wash: regionWash(tone(id)) } : {}) })) };
+    return { at, rows: left.slice(0, 2).map(([id, v], k) => ({ id, swatch: <Swatch shape="box" className={regionSwatch(tone(id))} />, label: names[id] ?? id, value: <Num value={entered(Math.round(v), "nis", today, g.sampleAbout)} display={fmt.nisWhole(Math.round(v))} />, ...(k === 0 ? { wash: regionWash(tone(id)) } : {}) })) };
   };
   // a guide along each axis to its switch, else to its stretch's end nearer the point, as the index page's map draws them
   const guideOn = (axis: "amount" | "monthly"): RegionGuide[] => {
