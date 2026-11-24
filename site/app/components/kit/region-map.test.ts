@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
-import { equalLines, RegionMap, secondShare, stripedPairs, stripeLayer, stripeStrength, type RegionGrid } from "./region-map";
+import { bandLayer, bandWeight, ease, equalLines, laterShare, RegionMap, stripedPairs, type RegionGrid } from "./region-map";
 
 /** A grid whose two areas' lead is a plane, d = (i + 0.5 j − 6.3) / 10 in grid units: area 0 leads where d > 0, area 1 where d < 0, each
  *  ahead by |d|, so the two are equal on the line i + 0.5 j = 6.3. */
@@ -39,52 +39,82 @@ describe("the line where two areas are equal", () => {
   });
 });
 
-describe("the next one's share of a point's colour (F-131: half of (1 − s) to the 6th power)", () => {
-  it("is half where the two are equal and none once the leader is clearly ahead", () => {
-    expect([secondShare(0), secondShare(1)]).toEqual([0.5, 0]);
+describe("the band's mix (F-131, ט5)", () => {
+  const look = { period: 5, texture: 0.45 };
+
+  it("gives Q, the later area, half of (1 − s) where P leads and the rest where Q leads: half on the equal line, nothing swapping there", () => {
+    expect([laterShare(0, 1, 1), laterShare(1, 0, 1)]).toEqual([0, 1]);
+    expect([laterShare(0, 1, 0), laterShare(1, 0, 0)]).toEqual([0.5, 0.5]);
+    expect(laterShare(0, 1, 0.2)).toBeCloseTo(0.4, 12);
+    expect(laterShare(1, 0, 0.2)).toBeCloseTo(0.6, 12);
   });
 
-  it("falls fast: under a tenth a quarter of the way to clearly ahead, where an even fade still gave three eighths", () => {
-    // 0.5 × 0.75⁶ = 0.089; 0.5 × 0.5⁶ = 0.0078
-    expect(secondShare(0.25)).toBeCloseTo(0.089, 3);
-    expect(secondShare(0.5)).toBeCloseTo(0.0078, 4);
-    for (let s = 0; s < 1; s += 0.05) expect(secondShare(s + 0.05)).toBeLessThan(secondShare(s));
+  it("eases the smooth part narrowly: 0.5 + sign(q − 0.5) |2 (q − 0.5)|^0.35 / 2", () => {
+    expect([ease(0), ease(0.5), ease(1)]).toEqual([0, 0.5, 1]);
+    // 0.5 + 0.5^0.35 / 2 = 0.892; 0.5 − 0.2^0.35 / 2 = 0.215
+    expect(ease(0.75)).toBeCloseTo(0.892, 3);
+    expect(ease(0.4)).toBeCloseTo(0.215, 3);
+  });
+
+  it("weighs Q at 0.55 of the eased share and 0.45 where the 45° pattern, fract((x + y) / 5), is under the share", () => {
+    expect([bandWeight(0, 1, 1, look), bandWeight(1, 1, 1, look)]).toEqual([0, 1]);
+    // q = 0.5: the pattern at (1, 1) is 0.4, under it; at (2, 1) 0.6, over it
+    expect(bandWeight(0.5, 1, 1, look)).toBeCloseTo(0.725, 12);
+    expect(bandWeight(0.5, 2, 1, look)).toBeCloseTo(0.275, 12);
+    // the pattern repeats along x + y every 5 px
+    expect(bandWeight(0.3, 7, 4, look)).toBe(bandWeight(0.3, 2, 4, look));
+    // counted by cover, a stripe thinner than a pixel fades with its share: a twentieth of the period under a pixel 1 px each way
+    expect(bandWeight(0.05, 0, 0.125, look, 1)).toBeCloseTo(0.55 * ease(0.05) + (0.45 * 0.25) / 2, 12);
+    expect(bandWeight(0.01, 0, 0.025, look, 1)).toBeLessThan(bandWeight(0.05, 0, 0.125, look, 1));
   });
 });
 
-describe("the stripes where two areas are about the same (F-131)", () => {
-  it("come in as the lead drops below 1 and are full from 0.5 down", () => {
-    expect([stripeStrength(1), stripeStrength(0.5), stripeStrength(0.2), stripeStrength(0)]).toEqual([0, 1, 1, 1]);
-    for (let s = 0.5; s < 1; s += 0.05) expect(stripeStrength(s + 0.05)).toBeLessThan(stripeStrength(s));
-  });
+describe("the band's layer over a grid", () => {
+  // 21 columns, two rows: area 0 leads left of column 10 and area 1 from it, by |i − 10| / 6, clearly from 6 columns away
+  const cols = 21;
+  const lead = (i: number) => Math.min(1, Math.abs(i - 10) / 6);
+  const grid: RegionGrid = {
+    cols,
+    rows: 2,
+    first: [...Array(cols * 2).keys()].map((k) => ((k % cols) < 10 ? 0 : 1)),
+    second: [...Array(cols * 2).keys()].map((k) => (lead(k % cols) < 1 ? ((k % cols) < 10 ? 1 : 0) : -1)),
+    ahead: [...Array(cols * 2).keys()].map((k) => lead(k % cols)),
+  };
+  const [w, h] = [201, 21];
+  // P black and Q white, so a pixel's red is Q's weight
+  const px = bandLayer(grid, w, h, { period: 5, texture: 0.45, scale: 1 }, (k) => (k === 0 ? [0, 0, 0] : [255, 255, 255]));
+  const at = (x: number, y: number) => ({ q: (px[(y * w + x) * 4] ?? 0) / 255, alpha: px[(y * w + x) * 4 + 3] ?? 0 });
+  const gx = (x: number) => (20 * x) / (w - 1);
 
-  it("lie exactly over the nodes' band, the lead under 1, in the next area's colour", () => {
-    // area 0 leads everywhere, by |i − 5| / 3 up to 1: under 1 between columns 2 and 8 only, the band where area 1 is next
-    const cols = 11;
-    const rows = 11;
-    const ahead = Array.from({ length: cols * rows }, (_, k) => Math.min(1, Math.abs((k % cols) - 5) / 3));
-    const grid: RegionGrid = { cols, rows, first: ahead.map(() => 0), second: ahead.map((a) => (a < 1 ? 1 : -1)), ahead };
-    const [w, h] = [201, 101];
-    const px = stripeLayer(grid, w, h, { step: 6, width: 1.5, scale: 1, alpha: 0.7 }, (k) => (k === 1 ? [10, 20, 30] : [200, 200, 200]));
-    let inBand = 0;
+  it("is clear where one area leads clearly, so the grid's solid colour shows", () => {
     for (let y = 0; y < h; y++)
-      for (let x = 0; x < w; x++) {
-        const o = (y * w + x) * 4;
-        const gx = (10 * x) / (w - 1);
-        const a = px[o + 3] ?? 0;
-        if (gx <= 2 || gx >= 8) expect(a, `${x}, ${y}`).toBe(0);
-        else if (a > 0) expect([px[o], px[o + 1], px[o + 2]]).toEqual([10, 20, 30]);
-        expect(a).toBeLessThanOrEqual(Math.round(255 * 0.7));
-        if (gx > 3.6 && gx < 6.4) inBand += a > 0 ? 1 : 0;
-      }
-    // where the lead is 0.5 or less the stripes are drawn: about a quarter of the pixels lie on a line 1.5 px wide every 6 px
-    const area = [...Array(w).keys()].filter((x) => (10 * x) / (w - 1) > 3.6 && (10 * x) / (w - 1) < 6.4).length * h;
-    expect(inBand / area).toBeGreaterThan(0.2);
-    expect(inBand / area).toBeLessThan(0.6);
+      for (let x = 0; x < w; x++) if (gx(x) <= 4 || gx(x) >= 16) expect(at(x, y).alpha, `${x}, ${y}`).toBe(0);
+  });
+
+  it("runs on across the equal line: a pixel and the next one of the same pattern, 5 px on, either side of it differ only by the smooth part", () => {
+    // the line is at column 10, pixel 100; pixels 98 and 103 lie on the pattern's same phase (x + y moves by 5). Only the smooth part
+    // changes between them, steeply near the line; stripes that swapped there would differ by the texture's whole 0.45 as well
+    for (let y = 0; y < h; y++) expect(Math.abs(at(98, y).q - at(103, y).q), `${y}`).toBeLessThan(0.25);
+  });
+
+  it("is half and half on the equal line, between its pattern's two weights there", () => {
+    const qs = [...Array(h).keys()].map((y) => at(100, y).q);
+    // each pixel between 0.275 and 0.725, the pattern's two weights (a pixel on a stripe's edge between them)
+    for (const q of qs) expect(q > 0.27 && q < 0.73, `${q}`).toBe(true);
+    const mean = qs.reduce((n, q) => n + q, 0) / qs.length;
+    expect(Math.abs(mean - 0.5)).toBeLessThan(0.1);
+  });
+
+  it("moves towards each one's own colour as its lead grows", () => {
+    const meanAt = (x: number) => [...Array(h).keys()].reduce((n, y) => n + at(x, y).q, 0) / h;
+    expect(meanAt(60)).toBeLessThan(meanAt(90));
+    expect(meanAt(140)).toBeGreaterThan(meanAt(110));
+    expect(meanAt(45)).toBeLessThan(0.15);
+    expect(meanAt(155)).toBeGreaterThan(0.85);
   });
 });
 
-describe("the legend's items for the stripes", () => {
+describe("the legend's items for the band", () => {
   const SAME = "about the same";
   const legendOf = (field: RegionGrid) =>
     renderToString(
@@ -106,16 +136,15 @@ describe("the legend's items for the stripes", () => {
       }),
     );
 
-  it("names each pair whose stripes show, the area first on more of them as the base, with the pair in its title", () => {
+  it("names each pair whose band shows, the earlier area first, with the pair in its title", () => {
     const g = planeGrid();
-    // area 1 leads on more nodes of this plane than area 0 (i + 0.5 j < 6.3), and every node is within θ
-    const ones = g.first.filter((f) => f === 1).length;
-    expect(stripedPairs(g)).toEqual([ones > g.first.length / 2 ? [1, 0] : [0, 1]]);
+    // every node of this plane is within θ
+    expect(stripedPairs(g)).toEqual([[0, 1]]);
     expect(legendOf(g)).toContain(SAME);
     expect(legendOf(g)).toContain(`P &amp; Q: ${SAME}`);
   });
 
-  it("leaves out a pair whose stripes cover under a hundredth of the plot", () => {
+  it("leaves out a pair whose band covers under a hundredth of the plot", () => {
     const g = planeGrid();
     // the lead under 1 only at one node of the 121
     const one: RegionGrid = { ...g, ahead: g.ahead.map((a, k) => (k === 60 ? 0.5 : 1)) };

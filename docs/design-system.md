@@ -993,11 +993,12 @@ in the kit fits is added to the kit.
 - `PeriodTrack`: a deal's periods as stops on one line; not a control.
 - `ChangeChart`: what moves the result, every plan number changed by the same share.
 - `RegionMap`: which of a few options leads at each point of a plane of two amounts, and by how much (F-131: the cheapest account over
-  today's amount and the monthly deposit), not for one option's value over two amounts. Up to four areas in their own light colour, a
-  fifth in a grey under its own name, more than five gathered in that grey as "אחרות"; where two options are close their colours blend in a
-  narrow strip around a thin line where the two are equal, and faint diagonal stripes in the next option's colour cover the whole band
-  where they are about the same (their strength the token `--chart-region-stripe`), named in the legend by an item for each pair whose
-  stripes show, a swatch of them in the pair's colours, never by words on the plot; a value at the bottom edge with no range above it is its own thick line, blended the same way.
+  today's amount and the monthly deposit), not for one option's value over two amounts. Up to four areas in their own light colour, a fifth
+  in a grey under its own name, more than five gathered in that grey as "אחרות"; where two options are close their colours mix, half and
+  half where they are equal and each one's own colour once one is clearly ahead, a smooth change near a thin line where they are equal under
+  45° stripes that thin out as the lead grows (their weight and period the tokens `--chart-region-texture` and `--chart-region-period`),
+  named in the legend by an item for each pair whose band shows, a swatch of the pair where they are equal, never by words on the plot; a
+  value at the bottom edge with no range above it is its own thick line, in the smooth mix alone.
 - `PileYears`, `PileStory`: a sum built up step by step where the reader picks the moment; not for comparing products. A sixth slot,
   `other`, only for a choice the person really has.
 - `StairsChart`, `StairsTable`, `StairsSteps`: the stairs, how each change adds up (guard 10). The first column is the start, grey with a

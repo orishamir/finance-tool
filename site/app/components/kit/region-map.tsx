@@ -1,14 +1,14 @@
 // A map of areas over two amounts: which of a few options leads at each point of a plane, and by how much. Each point is filled with the
-// colour of the option that leads there, blended with the next one's where the two are close: half and half where they are equal, the
-// next one's share falling fast as the leader moves ahead (`secondShare`), so between two areas runs a narrow soft strip, not a line, and
-// the leader's colour comes back well before it is clearly ahead. The fill is a small grid of colours the browser scales up smoothly (a
-// canvas), so the strip has no steps on any screen. Where two areas meet, the two are equal: a thin line marks it over the strip, through
-// the points where the leads either side cancel, found between the grid's nodes, so it runs smooth rather than along the grid's cells.
-// Over the whole band where the two are close, faint diagonal stripes in the next one's colour (`stripeLayer`), drawn at the screen's
-// pixels on a layer of their own, so the band shows where the fill is already the leader's alone; the line stays over them.
-// Each area's name stands inside it, and the legend's last items say what the stripes mean, one for each pair whose stripes show; a marked point (the reader's own) has dashed
-// guides from it along each axis; and a value of the bottom edge is drawn apart as a thick line, blended the same way, each area along it
-// named over its stretch where the words fit. The x axis grows left to right and the y axis up from 0 (charts.md).
+// colour of the option that leads there; where two are close, a mix of their two colours that runs on across the line where they are
+// equal, half and half on it and each one's own colour once one is clearly ahead: a smooth part eased narrowly towards the line, and 45°
+// stripes whose width follows the lead, so the whole band where the two are close shows (`bandWeight`). The areas are a small grid of
+// colours the browser scales up smoothly (a canvas); the band is a layer of its own at the screen's pixels, so its stripes stay sharp
+// (`bandLayer`). Where two areas meet, the two are equal: a thin line marks it over the band, through the points where the leads either
+// side cancel, found between the grid's nodes, so it runs smooth rather than along the grid's cells.
+// Each area's name stands inside it, and the legend's last items say what the band means, one for each pair whose band shows; a marked
+// point (the reader's own) has dashed guides from it along each axis; and a value of the bottom edge is drawn apart as a thick line in the
+// smooth mix alone, each area along it named over its stretch where the words fit. The x axis grows left to right and the y axis up from 0
+// (charts.md).
 // The pointer reads any point: on a computer a box follows it and the area under it lightens; a click or a tap keeps a point (its mark and
 // its box stay, and the box's figures can be tapped), a second one elsewhere moves it, and a tap on it or Escape lets it go. The map takes
 // the focus, and the arrow keys move the kept point (from the marked one; with Shift in larger steps). A legend item or an area's name sets
@@ -42,21 +42,6 @@ const INK: Record<RegionTone, string> = {
   "region-3": "text-chart-region-3",
   "region-4": "text-chart-region-4",
   other: "text-chart-region-other",
-};
-/** An area's colour as the fill of the stripes' swatch, and as its stripes. */
-const FILL: Record<RegionTone, string> = {
-  "region-1": "fill-chart-region-1",
-  "region-2": "fill-chart-region-2",
-  "region-3": "fill-chart-region-3",
-  "region-4": "fill-chart-region-4",
-  other: "fill-chart-region-other",
-};
-const STROKE: Record<RegionTone, string> = {
-  "region-1": "stroke-chart-region-1",
-  "region-2": "stroke-chart-region-2",
-  "region-3": "stroke-chart-region-3",
-  "region-4": "stroke-chart-region-4",
-  other: "stroke-chart-region-other",
 };
 /** A reading's row set apart in its area's colour: a light wash of it behind the row. */
 const WASH: Record<RegionTone, string> = {
@@ -112,29 +97,37 @@ const DIMMED = 0.75;
 /** A name stands where its area leads at least this far ahead. */
 const CLEAR = 0.9;
 /**
- * How fast the next one's colour gives way: its share of a point's colour is half of (1 − ahead) to this power. On the default S&P 500 map
- * the strip where it holds at least a twentieth (or a tenth) of the colour is then about a quarter of what an even fade (power 1) gave, so
- * most of each area shows its own colour; a higher power would leave the strip about a node of the grid wide, where the browser's smoothing
- * alone draws it.
+ * Where two areas are close (the leader's lead `s` under 1), the point is a mix of the pair's two colours, P the area earlier in the list
+ * and Q the later: Q's share is half of (1 − s) where P leads and the rest where Q leads, so the mix runs on across the line where they are
+ * equal with nothing swapping there, half and half on it and each one's own colour at s = 1 (`laterShare`). Of the mix, a smooth part
+ * eased narrowly towards the line (`ease`) and a texture of 45° stripes, Q's where the pattern is under its share, so the stripes thin out
+ * on each side as the lead grows (`bandColour`); the texture's weight and the pattern's period are the theme's.
  */
-const FADE = 6;
-/** The next one's share of a point's colour, from half where the two are equal (ahead 0) to none once the leader is clearly ahead (1). */
-export const secondShare = (ahead: number): number => 0.5 * Math.max(0, 1 - ahead) ** FADE;
+export function laterShare(first: number, second: number, ahead: number): number {
+  const q2 = (1 - Math.min(1, Math.max(0, ahead))) / 2;
+  return first > second ? 1 - q2 : q2;
+}
+/** The smooth part's ease: 0 and 1 at the ends, a half at a half, and steep around it, so the soft change stays close to the equal line. */
+export const ease = (q: number): number => 0.5 + (Math.sign(q - 0.5) * Math.abs(2 * (q - 0.5)) ** 0.35) / 2;
 /**
- * Where the two are close (ahead under 1), faint diagonal stripes in the next one's colour lie over the fill, so the band shows even where
- * the fill is the leader's alone. They come in as the lead drops below 1 and are at full strength from this lead down: by 0.5 the fill's
- * own blend is under a hundredth of the next one's colour (`secondShare`), so from there the stripes alone say the two are close, and
- * between 0.5 and 1 they fade in, so the band has no hard edge.
+ * Q's weight in the colour at a point of the pattern (x, y in CSS px), Q's share there being `q`: the smooth part and the stripes, Q's
+ * where fract((x + y) / period) is under `q`. With `pixel` (a screen pixel's size in CSS px) the stripe counts by how much of the pixel it
+ * covers, so a stripe thinner than a pixel fades out with its share instead of stopping at a pixel's edge.
  */
-const STRIPE_FULL = 0.5;
-/** How strong the stripes are, 0 where the leader is clearly ahead to 1 from STRIPE_FULL down, eased at both ends. */
-export const stripeStrength = (ahead: number): number => {
-  const t = Math.min(1, Math.max(0, (1 - ahead) / (1 - STRIPE_FULL)));
-  return t * t * (3 - 2 * t);
-};
-/** The stripes' line width, and their spacing as a share of the plot's width, held between a phone's and a computer's, in CSS px. */
-const STRIPE_WIDTH = 1.5;
-const STRIPE_STEP = { share: 1 / 120, min: 5, max: 9 };
+export function bandWeight(q: number, x: number, y: number, look: { period: number; texture: number }, pixel = 0): number {
+  const u = ((((x + y) % look.period) + look.period) % look.period);
+  const wide = q * look.period;
+  let hard: number;
+  if (pixel <= 0) hard = u < wide ? 1 : 0;
+  else {
+    // along x + y a pixel spans `pixel` on each side of its centre; the stripes lie on [k period, k period + wide)
+    const [a, b] = [u - pixel, u + pixel];
+    let cover = 0;
+    for (const k of [-1, 0, 1]) cover += Math.max(0, Math.min(b, k * look.period + wide) - Math.max(a, k * look.period));
+    hard = Math.min(1, cover / (2 * pixel));
+  }
+  return (1 - look.texture) * ease(q) + look.texture * hard;
+}
 
 /** A line of the words over the map. */
 const LINE = 20;
@@ -164,8 +157,9 @@ function coloursOf(host: HTMLElement, classes: readonly string[]): Rgb[] {
   });
 }
 
-/** Paints a grid into a canvas a pixel a node, the top row last (the grid's first row is its bottom): each node the blend of its two. */
-function paint(canvas: HTMLCanvasElement, grid: RegionGrid, colour: (area: number) => Rgb, empty: Rgb) {
+/** Paints a grid into a canvas a pixel a node, the top row last (the grid's first row is its bottom): each node its leader's colour, or with
+ *  `smooth` the pair's smooth mix (the bottom edge, too thin for the stripes). */
+function paint(canvas: HTMLCanvasElement, grid: RegionGrid, colour: (area: number) => Rgb, empty: Rgb, smooth: boolean) {
   canvas.width = grid.cols;
   canvas.height = grid.rows;
   const ctx = canvas.getContext("2d");
@@ -177,7 +171,7 @@ function paint(canvas: HTMLCanvasElement, grid: RegionGrid, colour: (area: numbe
       const f = grid.first[k] ?? -1;
       const s = grid.second[k] ?? -1;
       const lead = f < 0 ? empty : colour(f);
-      const c = s < 0 || f < 0 ? lead : mixRgb(lead, colour(s), secondShare(grid.ahead[k] ?? 1));
+      const c = !smooth || s < 0 || f < 0 ? lead : mixRgb(colour(Math.min(f, s)), colour(Math.max(f, s)), ease(laterShare(f, s, grid.ahead[k] ?? 1)));
       const o = ((grid.rows - 1 - j) * grid.cols + i) * 4;
       img.data[o] = c[0];
       img.data[o + 1] = c[1];
@@ -188,25 +182,30 @@ function paint(canvas: HTMLCanvasElement, grid: RegionGrid, colour: (area: numbe
 }
 
 /**
- * The stripes over a grid's plane, as the RGBA pixels of a `w` × `h` layer whose corners are the grid's corner nodes (its top row the grid's
- * last): at each pixel the lead blended from the four nodes around it, the stripes' strength from it (`stripeStrength`) times `alpha`, in
- * the colour of the next one at the nearest of those nodes that has one. Lines run at 45°, `step` apart and `width` wide, `scale` pixels to
- * a CSS px, each line's edge smoothed over a pixel.
+ * The band over a grid's plane, as the RGBA pixels of a `w` × `h` layer whose corners are the grid's corner nodes (its top row the grid's
+ * last), `scale` pixels to a CSS px: at each pixel where two areas are close, Q's share blended from the four nodes around it for the pair
+ * of the nearest node that has one (a node of P alone counts as none of Q, of Q alone as all of it), and the colour from it and the
+ * pattern (`bandWeight`); clear where one area is clearly ahead, the grid's own colour showing there.
  */
-export function stripeLayer(grid: RegionGrid, w: number, h: number, look: { step: number; width: number; scale: number; alpha: number }, colour: (area: number) => Rgb): Uint8ClampedArray {
+export function bandLayer(grid: RegionGrid, w: number, h: number, look: { period: number; texture: number; scale: number }, colour: (area: number) => Rgb): Uint8ClampedArray {
   const out = new Uint8ClampedArray(w * h * 4);
-  const { cols, rows, second, ahead } = grid;
-  const period = look.step * look.scale * Math.SQRT2;
-  const half = (look.width * look.scale) / 2;
+  const { cols, rows, first, second, ahead } = grid;
+  // Q's share at a node for the pair (p, q): from its lead where its pair is that one, none or all where p or q leads it clearly; null
+  // where another area leads it
+  const shareAt = (k: number, p: number, q: number): number | null => {
+    const f = first[k] ?? -1;
+    const sc = second[k] ?? -1;
+    const close = sc >= 0 && (ahead[k] ?? 1) < 1;
+    if (close && ((f === p && sc === q) || (f === q && sc === p))) return laterShare(f, sc, ahead[k] ?? 1);
+    if (f === p) return 0;
+    if (f === q) return 1;
+    return null;
+  };
   for (let py = 0; py < h; py++) {
     const gy = (rows - 1) * (1 - py / Math.max(1, h - 1));
     const j0 = Math.min(rows - 2, Math.max(0, Math.floor(gy)));
     const v = gy - j0;
     for (let px = 0; px < w; px++) {
-      // the distance to the nearest line, across it, in pixels
-      const along = (((px + py) % period) + period) % period;
-      const cover = Math.min(1, Math.max(0, half + 0.5 - Math.abs(along - period / 2) / Math.SQRT2));
-      if (cover <= 0) continue;
       const gx = (cols - 1) * (px / Math.max(1, w - 1));
       const i0 = Math.min(cols - 2, Math.max(0, Math.floor(gx)));
       const u = gx - i0;
@@ -216,47 +215,53 @@ export function stripeLayer(grid: RegionGrid, w: number, h: number, look: { step
         [(j0 + 1) * cols + i0 + 1, u * v],
         [(j0 + 1) * cols + i0, (1 - u) * v],
       ] as const;
-      const s = corners.reduce((n, [k, wt]) => n + wt * (ahead[k] ?? 1), 0);
-      const strength = stripeStrength(s);
-      if (strength <= 0) continue;
-      const next = [...corners].filter(([k]) => (second[k] ?? -1) >= 0).sort((a, b) => b[1] - a[1])[0];
-      if (!next) continue;
-      const c = colour(second[next[0]] ?? 0);
+      let near: (typeof corners)[number] | undefined;
+      for (const c of corners) if ((second[c[0]] ?? -1) >= 0 && (ahead[c[0]] ?? 1) < 1 && (!near || c[1] > near[1])) near = c;
+      if (!near) continue;
+      const f0 = first[near[0]] ?? 0;
+      const s0 = second[near[0]] ?? 0;
+      const [p, q] = [Math.min(f0, s0), Math.max(f0, s0)];
+      let share = 0;
+      let weight = 0;
+      for (const [k, wt] of corners) {
+        const of = shareAt(k, p, q);
+        if (of === null) continue;
+        share += wt * of;
+        weight += wt;
+      }
+      if (weight <= 0) continue;
+      share /= weight;
+      if (share <= 0 || share >= 1) continue;
+      const c = mixRgb(colour(p), colour(q), bandWeight(share, (px + 0.5) / look.scale, (py + 0.5) / look.scale, look, 1 / look.scale));
       const o = (py * w + px) * 4;
       out[o] = c[0];
       out[o + 1] = c[1];
       out[o + 2] = c[2];
-      out[o + 3] = Math.round(255 * cover * strength * look.alpha);
+      out[o + 3] = 255;
     }
   }
   return out;
 }
 
-/** A legend item for a pair's stripes shows where they cover at least this share of the plot's nodes: a hundredth, about 50 by 100 px on a
+/** A legend item for a pair's band shows where it covers at least this share of the plot's nodes: a hundredth, about 50 by 100 px on a
  *  computer and 30 by 25 on a phone, a patch the eye finds. */
 const STRIPES_SEEN = 0.01;
 
-/**
- * The pairs of areas whose stripes cover at least STRIPES_SEEN of a grid (the lead under 1), most first: each as [the one first on more of
- * the pair's striped nodes, the other], the base colour and the stripes' in the legend.
- */
+/** The pairs of areas whose band covers at least STRIPES_SEEN of a grid (the lead under 1), most first, each as [P, Q] (the earlier first). */
 export function stripedPairs(grid: RegionGrid): [number, number][] {
-  const count = new Map<string, { n: number; by: Map<number, number> }>();
+  const count = new Map<string, number>();
   grid.first.forEach((f, k) => {
     const s = grid.second[k] ?? -1;
     if (f < 0 || s < 0 || f === s || (grid.ahead[k] ?? 1) >= 1) return;
     const key = `${Math.min(f, s)}|${Math.max(f, s)}`;
-    const c = count.get(key) ?? { n: 0, by: new Map<number, number>() };
-    c.n++;
-    c.by.set(f, (c.by.get(f) ?? 0) + 1);
-    count.set(key, c);
+    count.set(key, (count.get(key) ?? 0) + 1);
   });
   return [...count]
-    .filter(([, c]) => c.n >= STRIPES_SEEN * grid.first.length)
-    .sort((a, b) => b[1].n - a[1].n)
-    .map(([key, c]) => {
-      const [x = 0, y = 0] = key.split("|").map(Number);
-      return (c.by.get(x) ?? 0) >= (c.by.get(y) ?? 0) ? [x, y] : [y, x];
+    .filter(([, n]) => n >= STRIPES_SEEN * grid.first.length)
+    .sort((a, b) => b[1] - a[1])
+    .map(([key]) => {
+      const [p = 0, q = 0] = key.split("|").map(Number);
+      return [p, q];
     });
 }
 
@@ -346,7 +351,7 @@ export function RegionMap({
   const [ref, w] = useWidth(600);
   const plane = useRef<HTMLCanvasElement>(null);
   const line = useRef<HTMLCanvasElement>(null);
-  const stripes = useRef<HTMLCanvasElement>(null);
+  const band = useRef<HTMLCanvasElement>(null);
   const clip = useId();
   const pick = useChartPick();
   const [hover, setHover] = useState<{ p: RegionPoint; onMark: boolean } | null>(null);
@@ -394,16 +399,16 @@ export function RegionMap({
       if (active >= 0 && k !== active) return mixRgb(c, card, DIMMED);
       return k === lit ? mixRgb(c, light, LIT) : c;
     };
-    if (plane.current) paint(plane.current, field, colour, card);
-    if (line.current) paint(line.current, edge, colour, card);
+    if (plane.current) paint(plane.current, field, colour, card, false);
+    if (line.current) paint(line.current, edge, colour, card, true);
   }, [ref, areas, field, edge, active, lit]);
-  // the stripes over the band, painted at the screen's own pixels so the lines stay sharp: again when the field, its size or the area set
-  // apart changes, never as the pointer moves; their strength is the theme's
+  // the band over the areas, painted at the screen's own pixels so its stripes stay sharp: again when the field, its size or the area set
+  // apart changes, never as the pointer moves; the stripes' weight and period are the theme's
   const plotW = right - left;
   const plotH = sy(field.from) - TOP;
   useEffect(() => {
     const host = ref.current;
-    const canvas = stripes.current;
+    const canvas = band.current;
     if (!host || !canvas) return;
     const [card = [0, 0, 0], ...tones] = coloursOf(host, ["text-card", ...areas.map((a) => INK[a.tone])]);
     const colour = (k: number): Rgb => {
@@ -416,24 +421,24 @@ export function RegionMap({
     canvas.height = ch;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const alpha = Number.parseFloat(getComputedStyle(host).getPropertyValue("--chart-region-stripe")) || 0;
-    const step = Math.min(STRIPE_STEP.max, Math.max(STRIPE_STEP.min, plotW * STRIPE_STEP.share));
+    const token = (name: string) => Number.parseFloat(getComputedStyle(host).getPropertyValue(name));
+    const look = { texture: token("--chart-region-texture") || 0, period: token("--chart-region-period") || 5, scale };
     const img = ctx.createImageData(cw, ch);
-    img.data.set(stripeLayer(field, cw, ch, { step, width: STRIPE_WIDTH, scale, alpha }, colour));
+    img.data.set(bandLayer(field, cw, ch, look, colour));
     ctx.putImageData(img, 0, 0);
   }, [ref, areas, field, active, plotW, plotH]);
 
   const mx = sx(mark.at[0]);
   const my = sy(mark.at[1]);
-  // the legend's items for the stripes, one for each pair whose stripes show, most first, in the pair's colours as the map draws them
+  // the legend's items for the band, one for each pair whose band shows, most first, in the pair's colours as the map draws them; the title
+  // naming the pair is a hint under a computer's pointer
   const { text: sameText, pair: samePair } = bandLabel;
   const striped = useMemo(
     () =>
-      stripedPairs(field).flatMap(([f, s]) => {
-        const [base, stripes] = [areas[f], areas[s]];
-        if (!base || !stripes) return [];
-        const [one, two] = f < s ? [base, stripes] : [stripes, base];
-        return [{ id: `${STRIPED_ID}:${base.id}:${stripes.id}`, swatch: <StripeSwatch base={base.tone} stripes={stripes.tone} />, label: <span title={samePair(one.name, two.name)}>{sameText}</span>, still: true }];
+      stripedPairs(field).flatMap(([p, q]) => {
+        const [one, two] = [areas[p], areas[q]];
+        if (!one || !two) return [];
+        return [{ id: `${STRIPED_ID}:${one.id}:${two.id}`, swatch: <BandSwatch p={one.tone} q={two.tone} />, label: <span title={samePair(one.name, two.name)}>{sameText}</span>, still: true }];
       }),
     [field, areas, sameText, samePair],
   );
@@ -615,7 +620,7 @@ export function RegionMap({
       <div ref={ref} dir="ltr" tabIndex={0} onKeyDown={step} className="relative select-none rounded-md outline-none focus-visible:outline-2 focus-visible:outline-ring" data-region-map>
         <div className="pointer-events-none absolute overflow-clip" style={{ left, top: TOP, width: right - left, height: bottom - TOP }}>
           <canvas ref={plane} className="absolute block" style={{ left: -cellX / 2, top: -cellY / 2, width: right - left + cellX, height: sy(field.from) - TOP + cellY }} data-mark="areas" />
-          <canvas ref={stripes} className="absolute block" style={{ left: 0, top: 0, width: plotW, height: plotH }} data-mark="stripes" />
+          <canvas ref={band} className="absolute block" style={{ left: 0, top: 0, width: plotW, height: plotH }} data-mark="band" />
           <canvas ref={line} className="absolute block" style={{ left: -cellX / 2, top: bottom - TOP - EDGE_PX, width: right - left + cellX, height: EDGE_PX }} data-mark="edge" />
         </div>
         <svg
@@ -737,23 +742,22 @@ export const regionTones = (n: number): RegionTone[] => Array.from({ length: n }
 /** The start of the legend items' ids for the stripes, apart from every area's. */
 const STRIPED_ID = "region-map:about-the-same";
 
-/** The stripes' swatch: a box in one area's colour with the map's 45° stripes over it in the other's, as strong as the map's. Its name
- *  beside it says what it means, as every swatch's does. */
-function StripeSwatch({ base, stripes }: { base: RegionTone; stripes: RegionTone }) {
-  const clip = useId();
-  return (
-    <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" className="shrink-0" data-mark="stripes-swatch">
-      <clipPath id={clip}>
-        <rect width="10" height="10" rx="2" />
-      </clipPath>
-      <g clipPath={`url(#${clip})`}>
-        <rect width="10" height="10" className={FILL[base]} />
-        {[-10, -5, 0, 5, 10].map((c) => (
-          <line key={c} x1={c} y1={10} x2={c + 10} y2={0} className={STROKE[stripes]} strokeWidth={STRIPE_WIDTH} style={{ strokeOpacity: "var(--chart-region-stripe)" }} />
-        ))}
-      </g>
-    </svg>
-  );
+/** An area's colour as a CSS variable, for the band's swatch. */
+const VAR: Record<RegionTone, string> = {
+  "region-1": "var(--chart-region-1)",
+  "region-2": "var(--chart-region-2)",
+  "region-3": "var(--chart-region-3)",
+  "region-4": "var(--chart-region-4)",
+  other: "var(--chart-region-other)",
+};
+
+/** The band's swatch: the pair where the two are equal, Q's share a half, in the map's own mix (`bandWeight`): its smooth half under the
+ *  pattern's 45° stripes, at the theme's weight and period. */
+function BandSwatch({ p, q }: { p: RegionTone; q: RegionTone }) {
+  const mix = (weight: string) => `color-mix(in srgb, ${VAR[q]} calc(${weight} * 100%), ${VAR[p]})`;
+  const soft = "(1 - var(--chart-region-texture)) * 0.5";
+  const background = `repeating-linear-gradient(135deg, ${mix(`(${soft} + var(--chart-region-texture))`)} 0 calc(var(--chart-region-period) * 0.3536px), ${mix(`(${soft})`)} 0 calc(var(--chart-region-period) * 0.7071px))`;
+  return <span className="size-2.5 shrink-0 rounded-sm" style={{ background }} data-mark="band-swatch" />;
 }
 
 /** Words over the map in their box, in the dark ink the light areas take. */

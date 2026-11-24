@@ -1540,12 +1540,12 @@ async function regionCheck(browser, base) {
     await page.evaluate(settled);
     if ((await painted("areas")).sum === before) found.push("region: the pointer over an area does not lighten it");
     await page.mouse.move(r.x - 40, r.y - 40);
-    if (await map.locator("svg text", { hasText: "בערך אותו דבר" }).count()) found.push("region: the words for the stripes stand on the plot, not in the legend");
-    // the demo's stripes: A and C about the same around one line, C and B around the other, A and B nowhere: two legend items, each
+    if (await map.locator("svg text", { hasText: "בערך אותו דבר" }).count()) found.push("region: the words for the band stand on the plot, not in the legend");
+    // the demo's band: A and C about the same around one line, C and B around the other, A and B nowhere: two legend items, each
     // with its swatch and the pair in its title
     const sameItems = demo.locator("ul li", { hasText: "בערך אותו דבר" });
     const titles = await sameItems.locator("[title]").evaluateAll((els) => els.map((e) => e.getAttribute("title")));
-    if ((await sameItems.locator('[data-mark="stripes-swatch"]').count()) !== 2 || titles.length !== 2) found.push(`region: the legend has not one item with its swatch for each of the demo's two pairs about the same (${JSON.stringify(titles)})`);
+    if ((await sameItems.locator('[data-mark="band-swatch"]').count()) !== 2 || titles.length !== 2) found.push(`region: the legend has not one item with its swatch for each of the demo's two pairs about the same (${JSON.stringify(titles)})`);
     // the line where two areas are equal: drawn, and smooth, so some piece of it runs neither along a row nor along a column
     const d = (await map.locator('path[data-mark="equal"]').getAttribute("d").catch(() => null)) ?? "";
     const pieces = [...d.matchAll(/M([\d.]+) ([\d.]+)L([\d.]+) ([\d.]+)/g)].map((x) => x.slice(1).map(Number));
@@ -1557,8 +1557,8 @@ async function regionCheck(browser, base) {
     const e = await edge.boundingBox();
     if (!e || e.height > 8 || e.height < 4 || Math.abs(e.y + e.height - (r.y + r.height - 30)) > 2) found.push(`region: the bottom edge's line is not a band of 6 px at the plot's foot (${JSON.stringify(e)})`);
     if ((await painted("edge")).colours < 2) found.push("region: the bottom edge's line is painted in one colour, though two options hold along it");
-    // the stripes where two options are about the same: drawn somewhere, and none in the demo's top right corner, where B is clearly first
-    const stripes = await map.locator('canvas[data-mark="stripes"]').evaluate((c) => {
+    // the band where two options are about the same: drawn somewhere, and clear in the demo's top right corner, where B is clearly first
+    const band = await map.locator('canvas[data-mark="band"]').evaluate((c) => {
       const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data;
       let striped = 0;
       for (let i = 3; i < d.length; i += 4) if (d[i] > 0) striped++;
@@ -1567,8 +1567,8 @@ async function regionCheck(browser, base) {
       for (let i = 3; i < corner.length; i += 4) if (corner[i] > 0) inCorner++;
       return { striped, inCorner };
     }).catch(() => null);
-    if (!stripes || !stripes.striped) found.push("region: no stripes where two options are about the same");
-    else if (stripes.inCorner) found.push("region: stripes where one option is clearly first");
+    if (!band || !band.striped) found.push("region: no band where two options are about the same");
+    else if (band.inCorner) found.push("region: the band drawn where one option is clearly first");
     await ctx.close();
   }
   {

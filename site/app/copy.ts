@@ -3115,7 +3115,11 @@ export const r4catalogue = {
 } as const;
 
 /** "א, ב וג": a list in running Hebrew, "ו" before the last. */
-const andList = (items: string[]) => (items.length < 2 ? (items[0] ?? "") : `${items.slice(0, -1).join(", ")} ו${items[items.length - 1]}`);
+export const andList = (items: string[]): string => {
+  const last = items[items.length - 1] ?? "";
+  // a ו before a word that starts with ו takes a maqaf, so the two don't run together ("ו־וואן זירו", not "ווואן זירו")
+  return items.length < 2 ? last : `${items.slice(0, -1).join(", ")} ו${last.startsWith("ו") ? "־" : ""}${last}`;
+};
 
 /** Group prices (D43): the line under a house's row and its sub-rows, on the indices page and on the house's page (kit/group-prices.tsx). */
 export const groupPrices = {
