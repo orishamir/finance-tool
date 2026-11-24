@@ -166,7 +166,7 @@ export function label(id: LabelId, arg?: string): Label {
 }
 
 /** A label made from a fund's own statement (D84): its words, and its document opened at the page the statement is on, in place of rules. */
-export function statementLabel(st: FundStatement): Label {
+function statementLabel(st: FundStatement): Label {
   const doc = { href: sourceHref({ url: st.source.url, page: st.page }), title: st.source.title };
   switch (st.term) {
     case "tax-index":

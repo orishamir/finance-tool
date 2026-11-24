@@ -281,7 +281,8 @@ describe("invest page computation", () => {
     // the value before the exit tax reads no tax index either (F-118, F-91): the 165,162 NIS F-118 gave the fund before its index was
     // known is what is left after tax plus the state's part (an accumulating fund pays no tax along the way), within a shekel of rounding;
     // the cash waiting for a whole unit is inside both, since the sale's value holds it (F-109)
-    const pair = pairCosts({ bundle, index: v.index, plan: plan(), fundId: "1159250", providerId: "psagot" })!;
+    const pair = pairCosts({ bundle, index: v.index, plan: plan(), fundId: "1159250", providerId: "psagot" });
+    if (!pair) throw new Error("Psagot prices 1159250's parts");
     expect(Math.abs((pair.left.value as number) + (pair.tax.value as number) - 165_162)).toBeLessThan(1);
   });
 
