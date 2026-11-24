@@ -1393,7 +1393,7 @@ function pairOf(ctx: Ctx, a: { index: IndexRef; fundId: string; providerId: stri
   return { rec, s, fs, price };
 }
 
-/** `pairCosts`, kept per data and plan object: the receipt, the fees panel and the lists' fund parts price the same pair on the same plan, once. */
+/** `pairCosts`, kept per data and plan object: the receipt and the lists' fund parts price the same pair on the same plan, once. */
 const keptCosts = new WeakMap<object, WeakMap<object, Map<string, PairCosts | null>>>();
 export function pairCostsKept(a: InvestArgs & { fundId: string; providerId: string }): PairCosts | null {
   if (a.assumptions) return pairCosts(a);
@@ -1490,6 +1490,22 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     units: unitsOf(row.run),
     priced: pricedLines(ctx, s, row),
   };
+}
+
+/**
+ * One fund on a plan at every house, priced as the lists price it (`fundWayOf`, F-63, F-65): each house's `WayPrice` (what is left, `valueN`,
+ * the figure the account list ranks by) or why it has none. `houses` limits the pricing to those houses (the others are absent from
+ * `byHouse`), for a caller that prices the same fund at many plans and has already ruled the rest out. Null where the fund is not on the
+ * bundle or not on the index.
+ */
+export function fundWayAt(a: InvestArgs & { fundId: string; houses?: readonly string[] }): FundWay | null {
+  const ctx = makeCtx(a.bundle, a.plan, a.assumptions);
+  const rec = ctx.bundle.funds.find((f) => f.id === a.fundId);
+  if (!rec) return null;
+  const option = optionOfFund(rec, a.index.exposure ?? undefined);
+  if (!optionsOf(a.index.israeli).includes(option)) return null;
+  const only = a.houses;
+  return fundWayOf(only ? { ...ctx, snaps: ctx.snaps.filter((s) => only.includes(s.id)) } : ctx, rec, option);
 }
 
 /** The run a deal account is read for on one fund of the plan (F-128, `DealRun`): what is bought and where, its currency and its payouts; null where the fund does not run. */

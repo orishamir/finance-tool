@@ -7,7 +7,8 @@ import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { allFunds, crowned, pairVerdict, pickOfHeadline, tieCount, tieFunds, tieSet } from "./pair";
 import { Terms } from "./custom-entries";
-import { bundle, t, plan, shown, fundRow, html, lists, DollarFor, ReceiptAndFees } from "./render-fixtures";
+import { bundle, t, plan, shown, fundRow, html, lists, DollarFor } from "./render-fixtures";
+import { PairReceipt } from "./receipt";
 
 /** The value, or a failure that names what was not there. */
 function sure<T>(x: T | null | undefined, what: string): T {
@@ -183,24 +184,21 @@ describe("a typed entry's line", () => {
   });
 });
 
-describe("the account card's fees panel", () => {
+describe("the receipt's account lines", () => {
   const sp = indexById(bundle, "index-sp500")!;
 
-  it("the fees panel names a bank's current account as an item only where the pair's account charges one", () => {
+  it("the receipt's ticket names a bank's current account as a line only where the pair's account charges one", () => {
     const p = { ...plan, currentAccounts: true as const };
     const view = buildInvest({ bundle, index: sp, plan: p });
     const fund = pickOfHeadline(view)!.fund;
-    const panel = (house: string) => {
-      const out = html(createElement(ReceiptAndFees, { view, bundle, plan: p, pick: { house, fund }, chosen: true }));
-      return shown(out.slice(out.indexOf('data-chart="option-bars"')));
-    };
+    const receipt = (house: string) => shown(html(createElement(PairReceipt, { view, bundle, plan: p, pick: { house, fund }, chosen: true, layout: "ticket" })));
     let banks = 0;
     for (const h of view.providers.filter((x) => !x.custom).map((x) => x.id)) {
       const pc = pairVerdict(view, bundle, p, { house: h, fund }, true).pc;
       if (!pc) continue;
       const current = pc.account.some((l) => l.line === "account");
       if (current) banks++;
-      expect(panel(h).includes(invest.pair.lines.account!), h).toBe(current);
+      expect(receipt(h).includes(invest.pair.lines.account!), h).toBe(current);
     }
     expect(banks).toBeGreaterThan(0);
   });

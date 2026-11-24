@@ -135,6 +135,18 @@
      neutral) let seven parts pass together, so this one step was added */
   --palette-olive-600: oklch(0.55 0.12 115);
 
+  /* Region pastels, in charts only: the areas of a map, each the full area of a plot, so light and soft on the dark card rather than a
+     saturated colour at low opacity, which on the card turns muddy. Each keeps the hue of a ramp the charts may use (teal, orange,
+     magenta, gold) at a lightness that stays bright and a chroma that reads as colour; no blue or violet (entered and computed numbers),
+     no red, amber or green (status). The four differ in lightness as well as hue, so they stay apart for a colour-blind reader: validated
+     with the dataviz validator against the card (`--mode dark --pairs all`): colour-blind ΔE at least 10.0, normal vision at least 15.2,
+     each over 3:1 against the card. A fifth light pastel that keeps those apart was not found, so a map with more winners gathers the
+     rest in a grey. */
+  --palette-region-teal: oklch(0.84 0.09 185);
+  --palette-region-peach: oklch(0.79 0.11 45);
+  --palette-region-pink: oklch(0.7 0.14 345);
+  --palette-region-cream: oklch(0.93 0.09 100);
+
   /* Rose: tax, in charts only */
   --palette-rose-50: oklch(0.975 0.013 358);
   --palette-rose-100: oklch(0.945 0.029 358);
@@ -280,6 +292,14 @@
   /* the index page's two kinds of fund (2026-10-29, founder: option A of 8dd1f013:research/specs/2026-10-29-hedging): keeping the index's currency, and
      neutralising it: teal against magenta (not gold: amber and its neighbours mean status, charts.md), not the fee orange the
      page's cost bars use */
+  /* a region map's areas (`RegionMap`), in the order they are given out: the first to the area the map is about. Text and lines on them
+     are in the dark ink, since every area is light; the grey gathers the areas past the fourth ("אחרות", charts.md) */
+  --chart-region-1: var(--palette-region-teal);
+  --chart-region-2: var(--palette-region-peach);
+  --chart-region-3: var(--palette-region-pink);
+  --chart-region-4: var(--palette-region-cream);
+  --chart-region-other: var(--palette-neutral-400);
+  --chart-region-ink: var(--palette-neutral-975);
   --chart-kind-unhedged: var(--palette-teal-300);
   --chart-kind-hedged: var(--palette-magenta-400);
   /* the index page's cost bar (founder, 2026-10-27, 8dd1f013:research/specs/2026-10-27-invest-improvements 3.10): one hue per part, by who
@@ -548,6 +568,12 @@
   --color-chart-lever-2: var(--chart-lever-2);
   --color-chart-lever-3: var(--chart-lever-3);
   --color-chart-lever-4: var(--chart-lever-4);
+  --color-chart-region-1: var(--chart-region-1);
+  --color-chart-region-2: var(--chart-region-2);
+  --color-chart-region-3: var(--chart-region-3);
+  --color-chart-region-4: var(--chart-region-4);
+  --color-chart-region-other: var(--chart-region-other);
+  --color-chart-region-ink: var(--chart-region-ink);
   --color-chart-kind-unhedged: var(--chart-kind-unhedged);
   --color-chart-kind-hedged: var(--chart-kind-hedged);
   --color-chart-fee-4: var(--chart-fee-4);

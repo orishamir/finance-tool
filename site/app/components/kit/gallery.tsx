@@ -23,6 +23,8 @@ import { Sheet } from "../Sheet";
 import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, OnOffSwitch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, OptionBars, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, amountCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, PartFacts, StretchBar, StretchChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutLine, LeftOutMark, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, type Landing, DateSpanText } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 import { linearScale, steppedScale } from "./slider-scale";
+import { RegionMap, regionSwatch, type RegionArea, type RegionPoint } from "./region-map";
+import { accountMap, type LeftAt } from "../../lib/account-map";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
 const custodyName = (guideBlocks.fees.custody as { name: string }).name;
@@ -1229,6 +1231,11 @@ function Fields() {
               { id: "b", swatch: "bg-chart-lever-4", name: g.sample.percent, from: fmt.nisWhole(400), to: fmt.nisWhole(480), diff: fmt.nisWhole(80), size: 80, left: fmt.nisWhole(5280) },
             ]}
           />
+        </State>
+      </Demo>
+      <Demo name="RegionMap" use={g.uses.RegionMap}>
+        <State label={g.states.interactive} wide>
+          <RegionDemo />
         </State>
       </Demo>
       <Demo name="PileYears, PileBar" use={g.uses.PileBar}>
@@ -4136,3 +4143,55 @@ function CaseDemos({ today }: { today: string }) {
   );
 }
 
+
+/** The region map's demo: three made-up options whose costs are lines, so its border is straight; the third holds only along the bottom edge. */
+const REGION_COSTS: Record<string, (a: number, m: number) => number> = { a: (a, m) => 0.004 * a + 0.24 * m, b: (a, m) => 300 + 0.001 * a + 0.096 * m, c: (a, m) => 0.0035 * a + (m > 0 ? 2000 : 0) };
+const regionLeft: LeftAt = (a, m, ids) => new Map((ids ?? ["a", "b", "c"]).map((id) => [id, 1.3 * a + 140 * m - (REGION_COSTS[id]?.(a, m) ?? Infinity)]));
+const REGION_MAP = accountMap({ leftAt: regionLeft, order: ["a", "b", "c"], plan: { amount: 10_000, monthly: 500 }, reach: { amount: 1_000_000, monthly: 10_000 } });
+
+function RegionDemo() {
+  const r = g.sample.regions;
+  if (!REGION_MAP) return null;
+  const names: Record<string, string> = { a: r.a, b: r.b, c: r.c };
+  const areas: RegionArea[] = [{ id: "a", name: r.a, tone: "region-1" }, { id: "b", name: r.b, tone: "region-2" }, { id: "c", name: r.c, tone: "region-3" }];
+  const best = (p: RegionPoint | null) => {
+    const at = p ?? ([REGION_MAP.plan.amount, REGION_MAP.plan.monthly] as const);
+    const left = [...regionLeft(at[0], at[1], null)].sort((x, y) => y[1] - x[1]);
+    return { at, rows: left.slice(0, 2).map(([id, v]) => ({ id, swatch: <Swatch shape="box" className={regionSwatch(areas.find((x) => x.id === id)?.tone ?? "other")} />, label: names[id] ?? id, value: fmt.nisWhole(Math.round(v)) })) };
+  };
+  const sw = REGION_MAP.switches;
+  return (
+    <RegionMap
+      max={{ x: REGION_MAP.max.amount, y: REGION_MAP.max.monthly }}
+      areas={areas}
+      tiles={REGION_MAP.tiles}
+      borders={REGION_MAP.borders}
+      edge={REGION_MAP.edge}
+      edgeLabel={(id) => ({ text: r.edge(names[id] ?? id) })}
+      mark={{ at: [REGION_MAP.plan.amount, REGION_MAP.plan.monthly], label: { text: r.mark } }}
+      guides={[...(sw.amount ? [{ axis: "x" as const, at: sw.amount.at, label: { text: fmt.nisRough(sw.amount.at) } }] : []), ...(sw.monthly ? [{ axis: "y" as const, at: sw.monthly.at, label: { text: fmt.nisRough(sw.monthly.at) } }] : [])]}
+      xTitle={r.x}
+      yTitle={r.y}
+      xTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
+      yTick={(v) => fmt.number(v)}
+      snap={{ x: 1000, y: 10 }}
+      renderTip={(p) => {
+        const b = best(p);
+        return (
+          <span className="flex flex-col">
+            <span className="font-semibold">{r.point(fmt.nisWhole(b.at[0]), fmt.nisWhole(b.at[1]))}</span>
+            {b.rows.map((row) => (
+              <span key={row.id} className="flex items-center gap-1.5">
+                {row.swatch} {row.label} · {row.value}
+              </span>
+            ))}
+          </span>
+        );
+      }}
+      renderBelow={(p) => {
+        const b = best(p);
+        return <ChartReadout title={r.point(fmt.nisWhole(b.at[0]), fmt.nisWhole(b.at[1]))} rows={b.rows} />;
+      }}
+    />
+  );
+}

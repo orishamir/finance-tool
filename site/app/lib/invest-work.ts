@@ -1,9 +1,13 @@
 // The index page's heavy work, pure and in plain data both ways, so it runs in a Web Worker (lib/invest-worker.ts) as well as on the page
-// (lib/invest-run.ts): the view of one plan (`buildInvest`, about 830 ms on a phone slowed four times for the S&P 500), and what each plan
-// number changed by the same share does to one pair's result (F-89, F-90: 4 lines of 21 runs). A request names its data by number, and
-// carries it only the first time: the worker keeps the latest it was sent.
+// (lib/invest-run.ts): the view of one plan (`buildInvest`, about 830 ms on a phone slowed four times for the S&P 500), what each plan
+// number changed by the same share does to one pair's result (F-89, F-90: 4 lines of 21 runs), and which account leaves the most with one
+// fund at each mix of today's amount and monthly deposit (F-131, lib/account-map.ts: a few hundred points, most at two or three
+// accounts). A request names its data by number, and carries it only the first time: the worker keeps the latest it was sent.
 import { changedByShare, sweep } from "@finance-tool/engine";
-import { buildInvest, pairCosts, pairLeft, type IndexRef, type InvestView } from "./invest";
+import { accountMap, type AccountMap, type LeftAt } from "./account-map";
+import { p05Range } from "./engine";
+import { buildInvest, fundWayAt, pairCosts, pairLeft, providerInfo, providersOfInvest, type IndexRef, type InvestView } from "./invest";
+import { rankedAt } from "./stretch";
 import type { IndicesBundle, WorkbenchInputs } from "./providers";
 import type { SiteValue } from "./value";
 
@@ -45,10 +49,18 @@ export interface PlanChanges {
   lines: { id: (typeof CHANGED)[number]["id"]; key: (typeof CHANGED)[number]["key"]; scale: number; tos: number[]; ys: (number | null)[] }[];
 }
 
+/** F-131 on one fund: which account leaves the most at each mix of today's amount and monthly deposit, the plan's other numbers held. */
+interface MapAsk {
+  index: IndexRef;
+  plan: WorkbenchInputs;
+  fund: string;
+}
+
 /** Each kind of work: what it is asked, and what it answers. */
 export interface Works {
   view: { ask: ViewAsk; answer: InvestView };
   changes: { ask: ChangesAsk; answer: PlanChanges | null };
+  map: { ask: MapAsk; answer: AccountMap | null };
 }
 export type WorkKind = keyof Works;
 
@@ -65,10 +77,35 @@ function planChanges(bundle: IndicesBundle, a: ChangesAsk): PlanChanges | null {
   return { index: a.index.id, house: a.house, fund: a.fund, plan: a.plan, shares: a.shares, base, lines };
 }
 
+/**
+ * What each account leaves with one fund at a point (`WayPrice.valueN`, the figure the account list ranks by), only where the list ranks
+ * the pair: priced as the lists price it (`fundWayAt`), the plan's other numbers held.
+ */
+export function leftWith(bundle: IndicesBundle, index: IndexRef, plan: WorkbenchInputs, fund: string): LeftAt {
+  return (amount, monthly, houses) => {
+    const way = fundWayAt({ bundle, index, plan: { ...plan, amountNow: amount, monthly }, fundId: fund, ...(houses ? { houses } : {}) });
+    return new Map(Object.values(way?.byHouse ?? {}).flatMap((w) => (rankedAt(w) ? [[w.providerId, w.valueN] as const] : [])));
+  };
+}
+
+/** The accounts in the order the account list breaks a tie in: by short name. */
+const tieOrder = (bundle: IndicesBundle): string[] =>
+  providersOfInvest(bundle)
+    .map(providerInfo)
+    .sort((a, b) => a.short.localeCompare(b.short, "he"))
+    .map((p) => p.id);
+
+/** F-131: the map for the plan, its switches looked for as far as the plan's sliders reach (P-05). */
+function mapOf(bundle: IndicesBundle, a: MapAsk): AccountMap | null {
+  const reach = (key: string) => p05Range(bundle.p05, "sliders", key)?.max ?? 0;
+  return accountMap({ leftAt: leftWith(bundle, a.index, a.plan, a.fund), order: tieOrder(bundle), plan: { amount: a.plan.amountNow, monthly: a.plan.monthly }, reach: { amount: reach("amount_now"), monthly: reach("monthly_deposit") } });
+}
+
 /** The work of each kind, on the data it names. */
 export const work: { [K in WorkKind]: (bundle: IndicesBundle, ask: Works[K]["ask"]) => Works[K]["answer"] } = {
   view: (bundle, a) => buildInvest({ bundle, index: a.index, plan: a.plan, yourBroker: a.yourBroker }),
   changes: planChanges,
+  map: mapOf,
 };
 
 /**

@@ -1,9 +1,8 @@
 // What the index page's render tests share (render.test.ts, the files split from it and render-pair-bars.pages.deep.test.ts): the collected
 // data, one plan, and readers of the rendered markup.
-import { createElement, Fragment } from "react";
+import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
-import { invest } from "../../copy";
 import { buildIndicesBundle } from "../../lib/providers.server";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
@@ -11,7 +10,6 @@ import { LabelSheetHost } from "../kit";
 import { ProvenanceProvider } from "../provenance";
 import { PairLists, type ListsProps } from "./lists";
 import { allFunds, pickOfHeadline, type Pick } from "./pair";
-import { FeesPanel } from "./before";
 import { DollarSection, useDollarCase } from "./dollar";
 import { StairsSection, useStairs } from "./stairs";
 import { PairReceipt } from "./receipt";
@@ -35,23 +33,6 @@ export function nisIn(markup: string): number {
   const m = /(−|-)?\s*([\d,]+)/.exec(shown(markup).replace(/[\u2066-\u2069\u200e\u200f]/g, ""));
   return m ? (m[1] ? -1 : 1) * Number(m[2]!.replace(/,/g, "")) : NaN;
 }
-/** The fees panel's items as the reader sees them: each amount written past its bar, and whose it is by the line under its name. */
-export function writtenFees(out: string) {
-  const list = out.slice(out.indexOf('data-chart="option-bars"'));
-  const items = [...list.split("</ul>")[0]!.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/g)].map((m) => {
-    const cells = m[1]!;
-    const sub = shown(cells.split('<span class="relative')[0]!.split('<span class="text-xs text-muted-foreground">')[1] ?? "");
-    const amount = nisIn(cells.slice(cells.lastIndexOf('<span class="ms-2')));
-    return { who: sub.startsWith(invest.receipt.parts.fund) ? ("fund" as const) : ("account" as const), amount };
-  });
-  return items;
-}
-
-/** The receipt, then the fees panel under the lists (where the fees go). */
-export function ReceiptAndFees({ view, bundle: b, plan: p, pick, chosen }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; chosen: boolean }) {
-  return createElement(Fragment, null, createElement(PairReceipt, { view, bundle: b, plan: p, pick, chosen }), createElement(FeesPanel, { view, bundle: b, plan: p, pick, chosen }));
-}
-
 /** The hedged-or-not panel as its tab opens it, with what it rests on read as the page reads it. */
 export function DollarFor({ view, bundle: b, plan: p, pick }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick }) {
   const d = useDollarCase(view, b, p, pick);
@@ -78,7 +59,7 @@ const planAt = (a: number, m: number, y: number, r: number): WorkbenchInputs => 
 const SLIDER_PLANS = [planAt(15000, 750, 11, 0.03), planAt(125000, 2500, 11, 0.03), planAt(500000, 10000, 40, 0.12), planAt(0, 100, 1, 0), planAt(1000, 0, 1, 0.07), planAt(250000, 5000, 21, 0.06)];
 
 /**
- * Each fund of `index` picked beside the headline's house, at each plan of `SLIDER_PLANS`, whose receipt and fees panel fail to render: the
+ * Each fund of `index` picked beside the headline's house, at each plan of `SLIDER_PLANS`, whose receipt fails to render: the
  * fund, the plan (amount now, monthly, years, return) and the error.
  */
 export function unrenderedAtSliders(index: IndexRef): string[] {
@@ -90,7 +71,7 @@ export function unrenderedAtSliders(index: IndexRef): string[] {
     for (const f of allFunds(view)) {
       const pick = { house: head.house, fund: f.rec.id };
       try {
-        html(createElement(ReceiptAndFees, { view, bundle, plan: p, pick, chosen: true }));
+        html(createElement(PairReceipt, { view, bundle, plan: p, pick, chosen: true }));
       } catch (e) {
         out.push(`${index.id} ${f.rec.id} ${p.amountNow}/${p.monthly}/${p.years}/${p.grossReturn}: ${(e as Error).message}`);
       }

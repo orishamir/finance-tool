@@ -19,17 +19,17 @@ import { PairLists, listName, markView } from "./lists";
 import { PairReceipt } from "./receipt";
 import { BeforeDeciding, hedgeCard } from "./before";
 import { useDollarCase } from "./dollar";
-import { bundle, t, plan, data, shown, html, lists, fundRow, ReceiptAndFees, StairsFor } from "./render-fixtures";
+import { bundle, t, plan, data, shown, html, lists, fundRow, StairsFor } from "./render-fixtures";
 
 describe("the index page's sections render", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: plan, yourBroker: "leumi" });
-  it("all sections of a known index: the title, the plan, the receipt with its account and fund parts, the two linked lists and the fees panel", () => {
+  it("all sections of a known index: the title, the plan, the receipt with its account and fund parts and the two linked lists", () => {
     const pick = pickOfHeadline(view)!;
     const leumi = { house: "leumi", fund: pick.fund };
     const out = html(createElement("div", null,
       createElement(TitleRow, { known: knownIndices(bundle), customs: [], index: view.index, others: knownIndices(bundle), bundle, onRemove: () => undefined, onRename: () => undefined, onSave: () => undefined, onGo: () => undefined }),
-      createElement(ReceiptAndFees, { view, bundle, plan: plan, pick, chosen: false }),
-      createElement(ReceiptAndFees, { view, bundle, plan: plan, pick: leumi, chosen: true }),
+      createElement(PairReceipt, { view, bundle, plan: plan, pick, chosen: false }),
+      createElement(PairReceipt, { view, bundle, plan: plan, pick: leumi, chosen: true }),
       createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null }),
       createElement(PairReceipt, { view, bundle, plan: plan, pick: leumi, chosen: true, layout: "ticket" }),
       createElement(PlanCard, { knobs: null })));
@@ -41,7 +41,6 @@ describe("the index page's sections render", () => {
     expect(out).toContain(invest.lists.kicker);
     expect(out).toContain(invest.lists.colLeft);
     expect(out).toContain(invest.shownPair(false).row);
-    expect(out).toContain(invest.before.fees.total);
     expect(out).toContain("פסגות");
     expect(out).toContain(invest.plan.heading);
     // the receipt's inflation line, in what the reader sees: its label, then what it takes
@@ -49,7 +48,7 @@ describe("the index page's sections render", () => {
   });
   it("before any pick, the page's own pair is never called the person's, and each tile names its account and fund (2026-11-05)", () => {
     const pick = pickOfHeadline(view)!;
-    const out = shown(html(createElement(ReceiptAndFees, { view, bundle, plan: plan, pick, chosen: false })));
+    const out = shown(html(createElement(PairReceipt, { view, bundle, plan: plan, pick, chosen: false })));
     expect(out).not.toContain("הבחירה שלכם");
     const fund = view.options.flatMap((o) => o.funds).find((f) => f.rec.id === pick.fund)!;
     // an index's name keeps its number on the line ("S&P\u00a0500")
@@ -707,6 +706,16 @@ describe("before deciding: the tab cards", () => {
     expect(list).toContain(invest.before.openWord);
     // the hedged-or-not card stands wherever its section has its figures
     expect(shown(list)).toContain(invest.before.hedge.question);
+  });
+  it("the first card asks when another account is cheaper, and its map is the panel open under the cards", () => {
+    const out = shown(before(false));
+    const tabs = out.slice(0, out.indexOf(invest.before.map.kicker));
+    expect(tabs.indexOf(invest.before.map.question)).toBeGreaterThanOrEqual(0);
+    expect(tabs.indexOf(invest.before.map.question)).toBeLessThan(tabs.indexOf(invest.before.sens.question));
+    // the panel: its axes by name, the plan's point and the reading under the map, which starts at the plan
+    for (const words of [invest.before.map.xTitle, invest.before.map.yTitle, invest.before.map.plan, invest.before.map.planHead]) expect(out).toContain(words);
+    // the fees card it replaced is gone
+    expect(out).not.toContain("לאן הולכות העמלות");
   });
   it("before any pick, the pair is the receipt's, never the chosen one", () => {
     // the section names the pair only in its cards' spoken name, now that no line leads it

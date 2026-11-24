@@ -312,7 +312,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const settled = useDeferredValue(bundle);
   const got = useMemo(() => (fundId ? dealOnFunds({ bundle: settled, index: world.index, plan: world.plan, fundIds: [...new Set([fundId, ...funds.map((f) => f.rec.id), ...abroadFunds.map((f) => f.rec.id)])], providerId }) : new Map<string, DealOnPlan>()), [settled, world.index, world.plan, fundId, funds, abroadFunds, providerId]);
   const at = fundId ? (got.get(fundId) ?? null) : null;
-  // each fee's whole shekels as "לאן הולכות העמלות" writes them on the same pair (`accountLinesOf`), so a fee reads the same in both places
+  // each fee's whole shekels as the receipt writes them on the same pair (`accountLinesOf`), so a fee reads the same in both places
   const wholeByFee = useMemo(() => {
     const pc = fundId && at?.kind === "ok" ? pairCosts({ bundle: settled, index: world.index, plan: world.plan, fundId, providerId }) : null;
     return pc ? new Map(accountLinesOf(pc, receiptAmounts(pc)).flatMap((l) => (l.kind === "deal" ? [[l.fee, l.amount] as const] : []))) : null;

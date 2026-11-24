@@ -6,6 +6,7 @@
 // the page shows beside it reads the same plan.
 import { startTransition, useEffect, useMemo, useState } from "react";
 import { KEPT_DATA, work, type FromWorker, type PlanChanges, type WorkKind, type Works } from "./invest-work";
+import type { AccountMap } from "./account-map";
 import type { InvestView } from "./invest";
 import type { IndicesBundle } from "./providers";
 
@@ -28,6 +29,7 @@ export const relink: { [K in WorkKind]: (asked: Asked<K>, answer: Works[K]["answ
     return answer;
   },
   changes: (asked, answer) => answer && { ...answer, plan: asked.ask.plan, shares: asked.ask.shares },
+  map: (_asked, answer) => answer,
 };
 
 const inPlace = <K extends WorkKind, A extends Asked<K>>(kind: K, asked: A): Got<K, A> => ({ asked, answer: work[kind](asked.bundle, asked.ask) });
@@ -216,3 +218,17 @@ export function usePlanChangesRun(asked: Asked<"changes"> | null): { run: PlanCh
 
 /** Whether an answer was worked out for the pair a request asks about: the same index, house and fund. */
 export const forPair = (run: PlanChanges, ask: Asked<"changes">["ask"]): boolean => run.index === ask.index.id && run.house === ask.house && run.fund === ask.fund;
+
+/**
+ * F-131 on the pair's fund: `waiting` until the first answer comes, then the last answer with the request it was worked out on, and whether
+ * it is for the request asked now (`held` otherwise: the page shows it dimmed until the new one comes); null where nothing is asked or no
+ * account prices the fund.
+ */
+export function useAccountMapRun(asked: Asked<"map"> | null): { map: AccountMap; on: Asked<"map">; held: boolean } | "waiting" | null {
+  const got = useWork("map", asked);
+  return useMemo(() => {
+    if (!asked) return null;
+    if (!got) return "waiting";
+    return got.answer && { map: got.answer, on: got.asked, held: got.asked !== asked };
+  }, [got, asked]);
+}

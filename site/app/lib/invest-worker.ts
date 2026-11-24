@@ -19,7 +19,7 @@ self.addEventListener("message", (e: MessageEvent<ToWorker>) => {
   try {
     const bundle = data.get(m.data);
     if (!bundle) throw new Error(`the worker holds no data numbered ${m.data}: the page keeps the same ${KEPT_DATA} latest it sent`);
-    answer({ id: m.id, answer: m.kind === "view" ? work.view(bundle, m.ask) : work.changes(bundle, m.ask) });
+    answer({ id: m.id, answer: m.kind === "view" ? work.view(bundle, m.ask) : m.kind === "changes" ? work.changes(bundle, m.ask) : work.map(bundle, m.ask) });
   } catch (error) {
     answer({ id: m.id, failed: error instanceof Error ? `${error.name}: ${error.message}` : String(error) });
   }

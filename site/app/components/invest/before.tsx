@@ -1,58 +1,26 @@
 // "לפני שמחליטים", under the two lists of the index page: questions about the receipt's pair, a card each with its answer as a live figure,
-// and one panel open under them. Where the fees go (the receipt's fee lines as bars), what moves the
-// result most (F-89, F-90), hedged or not (F-95, wherever the index has funds of both kinds and the section has its figures) and the
-// stairs. Each answer reads the same computation as its panel, lifted here so a closed panel's card still answers: the fees follow a slider
-// as the receipt does, the others wait until the plan has rested, as they did as sections. An answer is plain words (a card is a tab, and
-// a tab holds no control): the same figure in the open panel opens its sheet. The open card stays open while the plan or the pair changes.
+// and one panel open under them. When another account is cheaper (F-131, a map over today's amount and the monthly deposit), what moves
+// the result most (F-89, F-90), hedged or not (F-95, wherever the index has funds of both kinds and the section has its figures) and the
+// stairs. Each answer reads the same computation as its panel, lifted here so a closed panel's card still answers; each waits until the
+// plan has rested. An answer is plain words (a card is a tab, and a tab holds no control): the same figure in the open panel opens its
+// sheet. The open card stays open while the plan or the pair changes.
 import { useId, useState, type ReactNode } from "react";
 import { invest as c } from "../../copy";
 import { fmt } from "../../lib/format";
-import { accountSum, gapListFor, pricedVariable, type InvestView, type PairCosts } from "../../lib/invest";
+import type { InvestView } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
-import { accountLinesOf, receiptAmounts } from "../../lib/receipt";
-import { sumOf, type SiteValue } from "../../lib/value";
-import { Num } from "../provenance";
-import { Card, MixedName, OptionBars, PanelHead, TabCards, type OptionBar, type TabCard } from "../kit";
-import { Fees } from "./funds";
+import { Card, MixedName, TabCards, type TabCard } from "../kit";
+import { AccountMapPanel, mapCard, useAccountMap } from "./account-map";
 import { changesAt, PlanChanges, shareWord, usePlanChanges } from "./knobs";
 import { DollarSection, dollarSwing, useDollarCase, type DollarCase } from "./dollar";
 import { StairsSection, useStairs } from "./stairs";
-import { allFunds, pairVerdict, type Pick } from "./pair";
-import { accountLineName, accountLineSub } from "./receipt";
-import { useDealAccounts } from "./deal-account";
+import { pairVerdict, type Pick } from "./pair";
 
 type Share = { min: number; max: number; step: number; start: number };
 
 /** A whole-shekel amount in a card's plain words, isolated so it keeps its order inside Hebrew. */
 const amount = (n: number) => `\u2066${fmt.nisWhole(n)}\u2069`;
-type Key = "fees" | "sens" | "hedge" | "stairs";
-
-/** The account's and the fund's fees together, without the tax, in today's money. */
-const togetherOf = (pc: PairCosts, today: string): SiteValue => sumOf({ [c.receipt.parts.account]: accountSum(pc, c.receipt.parts.account, today, Math.round), [c.receipt.parts.fund]: pc.fund }, "F-91", { today, about: c.chosen.togetherAbout, round: Math.round });
-
-/** The chosen pair's fees item by item, as the receipt writes them (whole shekels that add up): the account's lines as the receipt draws them
- *  (`accountLinesOf`: a deal's own fees, else the price list's lines, and the remainder), then the fund's; the largest first. */
-function feeItems(view: InvestView, bundle: IndicesBundle, plan: WorkbenchInputs, pick: Pick, pc: PairCosts, dealApi: ReturnType<typeof useDealAccounts>) {
-  const r = receiptAmounts(pc);
-  const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
-  const items: { id: string; name: string; amount: number; value: SiteValue; who: "account" | "fund"; sub: ReactNode }[] = [
-    ...accountLinesOf(pc, r).map((l) => ({ id: l.key, name: accountLineName(l), amount: l.amount, value: l.cost, who: "account" as const, sub: accountLineSub(l, { pc, plan, pick, dealApi }) })),
-    {
-      id: "fund",
-      name: c.pair.fundLine,
-      amount: r.fund,
-      value: pc.fund,
-      who: "fund" as const,
-      // the fund's cost is one figure: the calculation has no split by fee, so its line says the fees it rests on
-      sub: fund ? (
-        <span className="inline-flex flex-wrap gap-x-3 [&_.whitespace-nowrap]:whitespace-normal">
-          <Fees rec={fund.rec} inline priced={pricedVariable(fund.rec, gapListFor(bundle, fund.rec), bundle.today)} today={bundle.today} />
-        </span>
-      ) : null,
-    },
-  ];
-  return { r, items: items.sort((a, b) => b.amount - a.amount) };
-}
+type Key = "map" | "sens" | "hedge" | "stairs";
 
 /** The hedged-or-not card: what the plan's pair of one kind leaves more than the other's; where the plan has no such figure (no pair of
  *  each kind to price), the section's lead figure, how far the dollar moved in one year, so the card never stands blank. */
@@ -80,30 +48,21 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
   stairs: { view: InvestView; bundle: IndicesBundle; startHouse: string | null; startFund: string | null };
 }) {
   const idBase = useId();
-  const dealApi = useDealAccounts();
-  const [open, setOpen] = useState<Key>("fees");
+  const [open, setOpen] = useState<Key>("map");
   const [at, setAt] = useState(share.start);
   const today = bundle.today;
   const changes = usePlanChanges({ plan, share, bundle, view, pick });
+  const mapRun = useAccountMap({ view, bundle, plan, pick });
   const dollar = useDollarCase(hedge ? view : null, bundle, plan, pick);
   const st = useStairs({ view: stairs.view, bundle: stairs.bundle, plan, startHouse: stairs.startHouse, startFund: stairs.startFund, example: stairs.startHouse === null });
   const verdict = pick ? pairVerdict(view, bundle, livePlan, pick, chosen) : null;
   const pc = verdict?.pc ?? null;
-  // the section stands once the page's worker has sent its first sweep, so its "what moves the result most" card never comes in a moment
-  // after the rest and moves what is under it; the section is far below the screen's first view, and that answer takes well under a second
-  if (!pick || !pc || !verdict || changes === "waiting") return null;
+  // the section stands once the page's worker has sent its first sweep and its first map, so neither card's answer comes in a moment after
+  // the rest and moves what is under it; the section is far below the screen's first view, and the two take about a second
+  if (!pick || !pc || !verdict || changes === "waiting" || mapRun === "waiting") return null;
 
-  const fees = feeItems(view, bundle, livePlan, pick, pc, dealApi);
-  const top = fees.items[0]!;
-  const tabs: (TabCard & { key: Key; panel: () => ReactNode })[] = [
-    {
-      key: "fees",
-      question: c.before.fees.question,
-      answer: `${top.name}: ${amount(top.amount)}`,
-      note: `${c.before.fees.of} ${amount(fees.r.account + fees.r.fund)} ${c.before.fees.ofTail}`,
-      panel: () => <FeesPanel view={view} bundle={bundle} plan={livePlan} pick={pick} chosen={chosen} />,
-    },
-  ];
+  const tabs: (TabCard & { key: Key; panel: () => ReactNode })[] = [];
+  if (mapRun) tabs.push({ ...mapCard(mapRun.map, view, pick.house, mapRun.held), key: "map", panel: () => <AccountMapPanel view={view} bundle={bundle} plan={mapRun.on.ask.plan} pick={pick} map={mapRun.map} /> });
   if (changes) {
     const { run, held } = changes;
     const rows = changesAt(run, at, share, today);
@@ -137,7 +96,8 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
     });
   }
   // a tab that has gone (another index with funds of one kind) leaves the first open
-  const shown = tabs.find((t) => t.key === open) ?? tabs[0]!;
+  const shown = tabs.find((t) => t.key === open) ?? tabs[0];
+  if (!shown) return null;
   return (
     // the shell's "back to the top" steps aside while the panels pass under it, as over the lists (`data-keep-clear`)
     <section aria-labelledby={`${idBase}-h`} className="flex flex-col gap-4" data-keep-clear>
@@ -148,53 +108,5 @@ export function BeforeDeciding({ view, bundle, plan, livePlan, share, pick, chos
         <Card pad="roomy">{shown.panel()}</Card>
       </TabCards>
     </section>
-  );
-}
-
-/** Where the fees go: the chosen pair's fee items as bars, the largest first, then their total and why the tax is not among them. */
-export function FeesPanel({ view, bundle, plan, pick, chosen }: { view: InvestView; bundle: IndicesBundle; plan: WorkbenchInputs; pick: Pick; chosen: boolean }) {
-  const f = c.before.fees;
-  const dealApi = useDealAccounts();
-  // the pair is priced once per plan for the receipt, the card and this panel (`pairCostsKept`)
-  const v = pairVerdict(view, bundle, plan, pick, chosen);
-  if (!v.pc) return null;
-  const fees = feeItems(view, bundle, plan, pick, v.pc, dealApi);
-  const together = <Num value={togetherOf(v.pc, bundle.today)} display={fmt.nisWhole(fees.r.account + fees.r.fund)} />;
-  const top = fees.items[0]!;
-  const bars: OptionBar[] = fees.items.map((x) => ({
-    id: x.id,
-    name: x.name,
-    // who charges it, then its rate: on the same line for an account's fee, on its own line for the fund's fees
-    sub: (
-      <>
-        {c.receipt.parts[x.who]}
-        {x.sub && (x.who === "account" ? <> · {x.sub}</> : <span className="block">{x.sub}</span>)}
-      </>
-    ),
-    value: x.amount,
-    amount: <Num value={x.value} display={fmt.nisWhole(x.amount)} />,
-    className: x.who === "account" ? "bg-chart-by-account" : "bg-chart-by-fund",
-  }));
-  return (
-    <div className="flex flex-col gap-4">
-      <PanelHead
-        kicker={
-          <>
-            {f.kicker} <MixedName>{v.nameOf(pick)}</MixedName>, <MixedName>{v.fundOf(pick)}</MixedName>
-          </>
-        }
-      >
-        {f.largest} {top.name}, <Num value={top.value} display={fmt.nisWhole(top.amount)} /> {f.of} {together} {f.fees}
-      </PanelHead>
-      <OptionBars bars={bars} label={c.shownPair(chosen).feeBars} />
-      <div className="flex flex-col gap-2 text-sm">
-        <p>
-          <strong className="font-semibold">
-            {f.total} {together}.
-          </strong>{" "}
-          {f.noTax(v.taxName, v.taxName === c.pair.taxLinePayouts)}
-        </p>
-      </div>
-    </div>
   );
 }

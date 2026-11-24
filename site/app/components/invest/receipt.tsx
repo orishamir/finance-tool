@@ -3,8 +3,8 @@
 // for a whole unit did, F-109, not a fee), all in the shekels of the horizon; then what the inflation takes from what they leave on the
 // way to today's money, the tax in today's money (F-91's state), and what is left, in today's money. Nothing stands under the
 // total: a "?" beside it says in what money it is and, where it rests on it, that the dollar holds still (a caution "?"), and its sheet
-// holds the gain. The figures follow the plan as a slider moves (the pair is priced once per plan for this card and the fees panel under the
-// lists, `pairCostsKept`), and they add up as a reader adds them (lib/receipt).
+// holds the gain. The figures follow the plan as a slider moves (the pair is priced once per plan for this card and what else reads it,
+// `pairCostsKept`), and they add up as a reader adds them (lib/receipt).
 // From 1280 px it is a ticket across the page's column, above the two lists and the ruler: the account's part at the start side and the
 // fund's at the end side, each with its facts as labels under its name and its own lines (each fee and its rate), and the lines that add
 // up to the total in the middle. Below 1280 px it is paper above the lists with the middle's lines only, each part (the same facts and
@@ -273,7 +273,7 @@ function FundFacts({ view, bundle, fund, refs }: { view: InvestView; bundle: Ind
 }
 
 /** An account line's name: a deal's fee by its own name, a price list's line by its part's, the remainder as itself. */
-export function accountLineName(l: AccountLine): string {
+function accountLineName(l: AccountLine): string {
   switch (l.kind) {
     case "deal":
       return l.name;
@@ -287,7 +287,7 @@ export function accountLineName(l: AccountLine): string {
 }
 
 /** The words under an account line: a deal's fee as the deal prices it, a price list's line at its rate; none under the remainder. */
-export function accountLineSub(l: AccountLine, at: { pc: PairCosts; plan: WorkbenchInputs; pick: Pick; dealApi: ReturnType<typeof useDealAccounts> }): ReactNode {
+function accountLineSub(l: AccountLine, at: { pc: PairCosts; plan: WorkbenchInputs; pick: Pick; dealApi: ReturnType<typeof useDealAccounts> }): ReactNode {
   switch (l.kind) {
     case "deal": {
       const words = at.dealApi?.feeWords(at.pick.house, at.pick.fund, l.fee) ?? null;

@@ -1,7 +1,7 @@
 // A fund the person types (D44): it runs through the engine's path, ranks with the collected funds, and goes through the saved state and the
 // export file; and an account typed before a deal took its place leaves, once moved into a deal (the move, method §10.4), what it left. The expected figures
 // are printed by tests/golden/expected_custom_entries.py, none written by hand.
-import { ReceiptAndFees } from "../components/invest/render-fixtures";
+import { PairReceipt } from "../components/invest/receipt";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
@@ -314,7 +314,7 @@ describe("the rows mark what was typed (D7)", () => {
   const data = { rules: {}, terms: {}, dimensions: {}, today: t };
   const html = (el: React.ReactElement) => renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, el) })));
   it("the lists and the result name it in the entered colour, and link to no tariff or company page", () => {
-    const out = html(createElement("div", null, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick, chosen: true, onPick: () => undefined, moved: null }), createElement(ReceiptAndFees, { view, bundle: b, plan, pick, chosen: true })));
+    const out = html(createElement("div", null, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick, chosen: true, onPick: () => undefined, moved: null }), createElement(PairReceipt, { view, bundle: b, plan, pick, chosen: true })));
     expect(out).toContain(fund.name);
     expect(out).toContain("text-entered");
     expect(out).not.toContain('href="local"');
