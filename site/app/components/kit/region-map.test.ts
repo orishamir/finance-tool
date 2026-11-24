@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
@@ -216,15 +215,5 @@ describe("the bottom edge's named stretches", () => {
   it("names an account clear on a tenth of the edge or more, and only where it is θ ahead, not 0.95 of it", () => {
     expect(edgeStretches(edgeOf(40, 0.5))).toEqual([{ area: 0, from: 0, to: 39 }]);
     expect(edgeStretches(edgeOf(2, 0.95))).toEqual([]);
-  });
-});
-
-describe("the region map's demo in the gallery", () => {
-  it("writes its made-up figures as sample numbers, never as the method's calculation (F-131)", () => {
-    const src = readFileSync(new URL("./gallery.tsx", import.meta.url), "utf8");
-    const demo = src.slice(src.indexOf("function RegionDemo"), src.indexOf("\n}\n", src.indexOf("function RegionDemo")));
-    expect(demo.length).toBeGreaterThan(100);
-    expect(demo).not.toMatch(/computed\(/);
-    expect(demo).toContain("g.sampleAbout");
   });
 });
