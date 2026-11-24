@@ -3,15 +3,13 @@ import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { bundle, html, lists, plan as fixturePlan, shown } from "../components/invest/render-fixtures";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
-import { AccountMapPanel, mapAreas, mapCard, mapFloorValue, mapPointValue } from "../components/invest/account-map";
+import { AccountMapPanel, mapAreas, mapCard } from "../components/invest/account-map";
 import { invest, kit as kitCopy } from "../copy";
 import type { AccountMap } from "./account-map";
 import { buildInvest, indexById, knownIndices, providersOfInvest, tieShareOf } from "./invest";
 import { leftWith, work } from "./invest-work";
 import { rankedAt } from "./stretch";
-import { entered, type SiteValue } from "./value";
-import { fmt } from "./format";
-import { p05Range } from "./engine";
+import { entered } from "./value";
 import { chartTextWidth } from "../components/kit/chart-text";
 import { lineMeetsBox, regionTones } from "../components/kit/region-map";
 import type { WorkbenchInputs } from "./providers";
@@ -175,27 +173,18 @@ describe("a plan of nothing at all on the collected data", () => {
 });
 
 describe("the guides from the plan on the default S&P 500 plan", () => {
-  it("runs one along each axis, to its switch, else to a stretch where another is clearly cheaper, else to where the two are equal", () => {
+  it("runs a dashed line along each axis from the plan, with no figure on it", () => {
     const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
     const plan = planAt(10_000, 500, 10);
     const pick = need(pickOfHeadline(buildInvest({ bundle, index, plan })), "the page's pair");
     const answer = work.map(bundle, { index, plan, fund: pick.fund });
     const map = need(answer.kind === "map" ? answer.map : null, "the map");
-    const out = shown(html(createElement(AccountMapPanel, { view: buildInvest({ bundle, index, plan }), bundle, house: pick.house, map, on: { bundle, ask: { index, plan, fund: pick.fund } } })));
-    const bare = (x: string) => x.replace(/[\u2060\u2066-\u2069]/g, "");
-    const plain = bare(out);
-    // whatever the data says, a guide along each axis: to a switch, else to a stretch, else to the equal point, as the map has them
-    for (const axis of ["amount", "monthly"] as const) {
-      const s = map.switches[axis];
-      const st = map.stretches[axis];
-      const e = map.equal[axis];
-      const unit = axis === "monthly" ? ` ${invest.before.map.perMonth}` : "";
-      if (s) expect(plain).toContain(bare(`${invest.before.map.about}${fmt.nisRough(s.at)}${unit}`));
-      else if (st) expect(plain).toContain(bare(`${invest.before.map.between}${fmt.nisRough(st.lo)}`));
-      else if (e) expect(plain).toContain(bare(`${invest.before.map.equalAt}${fmt.nisRough(e.at)}${unit}`));
-    }
+    const out = html(createElement(AccountMapPanel, { view: buildInvest({ bundle, index, plan }), bundle, house: pick.house, map, on: { bundle, ask: { index, plan, fund: pick.fund } } }));
+    expect(out.match(/data-mark="guide"/g)?.length).toBe(2);
+    // a figure on a guide held along that line only, and read as true at another plan; nothing over the map says "כ־"
+    expect(shown(out)).not.toMatch(/כ־/);
     // with no point kept, nothing under the map
-    expect(plain).not.toContain(invest.before.map.planHead);
+    expect(shown(out)).not.toContain(invest.before.map.planHead);
   });
 
   it("runs each axis past the switch or the stretch it names, so each guide ends on the plot", () => {
@@ -212,60 +201,6 @@ describe("the guides from the plan on the default S&P 500 plan", () => {
         if (st) expect(st.hi, `${plan.amountNow}/${plan.monthly} ${axis}`).toBeLessThanOrEqual(end);
       }
     }
-  });
-});
-
-describe("the floor's figure on the collected data", () => {
-  it("is a hundredth of P-05's slider end, resting on that end and on no account's run; on the plan too where the plan is far past the reach", () => {
-    const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
-    const plan = planAt(100_000, 500, 10);
-    const view = buildInvest({ bundle, index, plan });
-    const pick = need(pickOfHeadline(view), "the page's pair");
-    const answer = work.map(bundle, { index, plan, fund: pick.fund });
-    const map = need(answer.kind === "map" ? answer.map : null, "the map");
-    const on = { bundle, ask: { index, plan, fund: pick.fund } };
-    for (const [axis, key] of [["amount", "amount_now"], ["monthly", "monthly_deposit"]] as const) {
-      const end = need(p05Range(bundle.p05, "sliders", key), `P-05's ${key} slider`).max;
-      const v = mapFloorValue(on, map, axis);
-      expect(v.value).toBe(end / 100);
-      expect(v.computed_from?.formula).toBe("F-131");
-      expect(Object.keys(v.computed_from?.inputs ?? {})).toEqual([invest.before.map.reachAbout]);
-      expect((v.computed_from?.inputs[invest.before.map.reachAbout] as SiteValue | undefined)?.parameter).toBeTruthy();
-    }
-    const far: AccountMap = { ...map, floor: { ...map.floor, amount: map.floor.amount * 2 } };
-    expect(Object.keys(mapFloorValue(on, far, "amount").computed_from?.inputs ?? {}).length).toBeGreaterThan(1);
-  });
-});
-
-describe("a switch's figure on the collected data", () => {
-  it("rests on the runs of every account of the plan's tied set and the account it names, its point F-131's and not an entry", () => {
-    const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
-    const plan = planAt(10_000, 500, 10);
-    const view = buildInvest({ bundle, index, plan });
-    const pick = need(pickOfHeadline(view), "the page's pair");
-    const answer = work.map(bundle, { index, plan, fund: pick.fund });
-    const map = need(answer.kind === "map" ? answer.map : null, "the map");
-    const on = { bundle, ask: { index, plan, fund: pick.fund } };
-    // whatever the data says, three accounts ranked with the fund at 50,000 ₪ today: two taken as tied at the plan, a switch to the third
-    const ranked = [...leftWith(bundle, index, plan, pick.fund)(50_000, 500, null).keys()];
-    const [a, b, c] = ranked;
-    if (!a || !b || !c) throw new Error("three accounts ranked with the fund");
-    const near: AccountMap = { ...map, plan: { ...map.plan, lead: { kind: "near", tied: [a, b] } } };
-    const v = mapPointValue(view, on, near, { at: 50_000, dir: "up", to: c }, "amount", invest.before.map.switchAbout);
-    // beside the plan's own numbers, an input for each account's run
-    const plain = new Set<string>(Object.values(invest.planInputs));
-    const runs = Object.keys(v.computed_from?.inputs ?? {}).filter((k) => !plain.has(k));
-    expect(runs.length, JSON.stringify(runs)).toBe(3);
-    // every value it rests on, all the way down
-    const all: SiteValue[] = [];
-    const walk = (x: SiteValue) => {
-      all.push(x);
-      // a computed figure's inputs are values the site made with `computed`
-      for (const y of Object.values(x.computed_from?.inputs ?? {})) walk(y as SiteValue);
-    };
-    walk(v);
-    expect(all.filter((x) => x.about === invest.before.map.pointAbout)).toEqual([]);
-    expect(all.some((x) => x.state === "computed" && x.computed_from?.formula === "F-131" && x.value === 50_000)).toBe(true);
   });
 });
 

@@ -815,7 +815,7 @@ export function doubtOf(s: FeesSnapshot | undefined, option: OptionId): string |
 /** One of the plan's five inputs. */
 export type PlanInput = keyof typeof copy.planInputs;
 /** What a run of the whole plan rests on: every input (a balance at the horizon moves with each). */
-export const WHOLE_PLAN: readonly PlanInput[] = ["amount", "monthly", "years", "return", "inflation"];
+const WHOLE_PLAN: readonly PlanInput[] = ["amount", "monthly", "years", "return", "inflation"];
 /**
  * The plan's inputs a figure rests on, each named by the caller, so a figure lists only what its formula uses: what was paid in rests on
  * the amount, the deposit and the years, not on the return.

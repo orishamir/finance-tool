@@ -4177,14 +4177,6 @@ export const invest = {
     map: {
       question: "מי הכי זול בתוכניות דומות?",
       kicker: "החשבון הכי זול בכל תוכנית, עם",
-      /** A guide's words, where another account becomes clearly cheaper along the plan's line: "כ־108 אלף ₪", or a stretch of it, "בין
-       *  כ־30 אלף ₪ לכ־70 אלף ₪". A word joiner after the maqaf keeps "כ־" on the line of its figure. */
-      about: "כ־\u2060",
-      between: "בין כ־\u2060",
-      betweenTo: " לכ־\u2060",
-      /** A guide's words where it ends on the line where two accounts are equal: "שווים בכ־2,460 ₪ בחודש". */
-      equalAt: "שווים בכ־\u2060",
-      perMonth: "בחודש",
       /** "בערך אותו דבר": two accounts within the tie threshold of each other, in the map's legend, the card and the readings. */
       same: "בערך אותו דבר",
       /** The legend item for one pair's stripes, named with the pair (its title). */
@@ -4233,11 +4225,6 @@ export const invest = {
       unrankedHere: "כאן אף חשבון לא מדורג עם הקרן הזו",
       onlyOne: "כאן אין עוד חשבון שמדורג עם הקרן הזו",
       /** The sheets of the map's figures. */
-      switchAbout: "הסכום שממנו חשבון אחר זול יותר בבירור",
-      tillAbout: "הסכום שעד אליו חשבון אחר זול יותר בבירור",
-      floorAbout: "הסכום הנמוך ביותר שהאתר בודק כשהוא משנה רק את הסכום היום או רק את ההפקדה",
-      reachAbout: "הקצה העליון של המחוון",
-      equalAbout: "הסכום שבו שני החשבונות משאירים אותו דבר",
       leftAbout: (w: string) => `מה שנשאר בחשבון ${w}, בהתחשב באינפלציה`,
       gapAbout: (w: string) => `כמה פחות נשאר בחשבון הזה מאשר ב${w}`,
       pointAbout: "הנקודה שבחרתם במפה",

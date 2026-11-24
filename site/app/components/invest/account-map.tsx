@@ -7,16 +7,15 @@
 // band, a switch one way or both, up or down, a plan with nothing in it, and a fund no account is ranked with.
 import { memo, useMemo } from "react";
 import { invest as c } from "../../copy";
-import { NAMED, type AccountMap, type MapField, type MapSwitch } from "../../lib/account-map";
-import { p05Range } from "../../lib/engine";
+import type { AccountMap, MapField } from "../../lib/account-map";
 import { fmt } from "../../lib/format";
-import { fundWayAt, planInputs, providersOfInvest, tieShareOf, WHOLE_PLAN, type InvestView, type WayPrice } from "../../lib/invest";
+import { fundWayAt, providersOfInvest, tieShareOf, type InvestView, type WayPrice } from "../../lib/invest";
 import { rankByValue } from "../../lib/rank";
 import { useAccountMapRun, type Asked } from "../../lib/invest-run";
 import type { MapAnswer } from "../../lib/invest-work";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { rankedAt } from "../../lib/stretch";
-import { asParameter, carriedBy, computed, differenceOf, entered, type SiteValue } from "../../lib/value";
+import { asParameter, carriedBy, differenceOf, entered, type SiteValue } from "../../lib/value";
 import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
 import { HeldMark, HelpMark, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionGuide, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
@@ -93,37 +92,6 @@ function rankedWays(on: Asked<"map">, plan: WorkbenchInputs, houses?: readonly s
     return rankedAt(w) ? [w] : [];
   });
   return rankByValue(ways, (w) => w.valueN);
-}
-
-/**
- * The low end of a switch down's range as a figure: F-131's floor, a hundredth of P-05's slider reach on the axis (NAMED), resting on that
- * slider's end; and on the plan where the plan lies so far past the reach that the floor is a share of the plan's value instead.
- */
-export function mapFloorValue(on: Asked<"map">, map: AccountMap, axis: "amount" | "monthly"): SiteValue {
-  const end = p05Range(on.bundle.p05, "sliders", axis === "amount" ? "amount_now" : "monthly_deposit")?.values.max;
-  const hundredth = typeof end?.value === "number" ? end.value * NAMED : null;
-  const inputs = { ...(end ? { [m.reachAbout]: end } : {}), ...(map.floor[axis] === hundredth ? {} : planInputs(on.ask.plan, WHOLE_PLAN)) };
-  return computed(Math.round(map.floor[axis]), axis === "amount" ? "nis" : "nis_per_month", "F-131", inputs, { today: on.bundle.today, about: m.floorAbout });
-}
-
-/**
- * A switch, a stretch's end or an equal point as a figure: F-131 at the point of the plan's line where it is, resting on the plan and on the
- * runs there of the plan's accounts (the tied set, on a plan in the band) and of the account it names, with what they carry. The point's
- * own coordinate is F-131's, never the reader's entry.
- */
-export function mapPointValue(view: InvestView, on: Asked<"map">, map: AccountMap, s: MapSwitch, axis: "amount" | "monthly", about: string): SiteValue {
-  const { plan } = on.ask;
-  const today = on.bundle.today;
-  const unit = axis === "amount" ? "nis" : "nis_per_month";
-  const lead = map.plan.lead;
-  const mine = lead.kind === "clear" ? [lead.first] : lead.kind === "near" ? lead.tied : [];
-  const houses = [...new Set([...mine, s.to])];
-  const located = computed(s.at, unit, "F-131", planInputs(plan, WHOLE_PLAN), { today, about });
-  const at: WorkbenchInputs = axis === "amount" ? { ...plan, amountNow: s.at, values: { ...plan.values, amount: located } } : { ...plan, monthly: s.at, values: { ...plan.values, monthly: located } };
-  const ways = rankedWays(on, at, houses);
-  const runs = ways.map((w) => w.value);
-  const inputs = { ...planInputs(plan, WHOLE_PLAN), ...Object.fromEntries(ways.map((w) => [m.leftAbout(shortOf(view, w.providerId)), w.value])) };
-  return computed(Math.round(s.at), unit, "F-131", inputs, { today, about, ...carriedBy(runs) });
 }
 
 /** A grid of the map's accounts as the map's areas: each index through `areaOf`, a second in the same area as its first not shown. */
@@ -233,39 +201,19 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
   const { areas, toneOf, field, edge } = useMemo(() => mapAreas(view, map, providersOfInvest(on.bundle).map((s) => s.id).filter((id) => map.accounts.includes(id))), [view, map, on]);
 
   const { head, guides, mark, edgeLabel } = useMemo(() => {
-    // each figure priced once, though the card's words and a guide both write it
-    const priced = new Map<string, SiteValue>();
-    const pointValue = (s: MapSwitch, axis: "amount" | "monthly", about: string) => {
-      const k = `${axis}|${s.at}|${about}`;
-      const had = priced.get(k);
-      if (had) return had;
-      const v = mapPointValue(view, on, map, s, axis, about);
-      priced.set(k, v);
-      return v;
-    };
-    const about = { switch: m.switchAbout, from: m.switchAbout, till: m.tillAbout };
-    const figure = (s: MapSwitch, axis: "amount" | "monthly", which: "switch" | "from" | "till" | "floor") => <Num value={which === "floor" ? mapFloorValue(on, map, axis) : pointValue(s, axis, about[which])} display={fmt.nisRough(s.at)} />;
     const words = mapWords(map, house, (id) => shortOf(view, id));
-    // a guide along each axis: to the switch, else to a stretch, each on the axis, else to where the two are equal, else to the axis's end with no words
+    // a dashed line along each axis from the plan, with no words: to the switch, else to a stretch's end nearer the plan, each on the
+    // axis, else to where the two are equal, else to the axis's end. A figure on it held along that line only, and the map's areas and
+    // the reading at a point say the same for every point
     const guides = (["amount", "monthly"] as const).map((axis): RegionGuide => {
     const along = axis === "amount" ? ("x" as const) : ("y" as const);
     const end = axis === "amount" ? map.max.amount : map.max.monthly;
-    const unit = axis === "monthly" ? ` ${m.perMonth}` : "";
     const s = map.switches[axis];
-    // a switch up by its point; one down by the range the search checked it over, from its lowest amount
-    if (s && s.dir === "up") return { axis: along, at: s.at, label: { text: `${m.about}${fmt.nisRough(s.at)}${unit}`, node: <>{m.about}{figure(s, axis, "switch")}{unit}</> } };
-    if (s) {
-      const low = { at: map.floor[axis], dir: s.dir, to: s.to };
-      return { axis: along, at: s.at, label: { text: `${m.between}${fmt.nisRough(low.at)}${m.betweenTo}${fmt.nisRough(s.at)}${unit}`, node: <>{m.between}{figure(low, axis, "floor")}{m.betweenTo}{figure(s, axis, "switch")}{unit}</> } };
-    }
-    // a stretch where another is clearly cheaper: the guide to its end nearer the plan, its words both ends
+    if (s) return { axis: along, at: s.at };
     const st = map.stretches[axis];
-    if (st && Math.min(st.lo, st.hi) <= end) {
-      const [lo, hi] = [{ at: st.lo, dir: st.dir, to: st.to }, { at: st.hi, dir: st.dir, to: st.to }];
-      return { axis: along, at: st.dir === "up" ? st.lo : st.hi, label: { text: `${m.between}${fmt.nisRough(st.lo)}${m.betweenTo}${fmt.nisRough(st.hi)}${unit}`, node: <>{m.between}{figure(lo, axis, "from")}{m.betweenTo}{figure(hi, axis, "till")}{unit}</> } };
-    }
+    if (st && Math.min(st.lo, st.hi) <= end) return { axis: along, at: st.dir === "up" ? st.lo : st.hi };
     const e = map.equal[axis];
-    if (e && e.at <= end) return { axis: along, at: e.at, label: { text: `${m.equalAt}${fmt.nisRough(e.at)}${unit}`, node: <>{m.equalAt}<Num value={pointValue(e, axis, m.equalAbout)} display={fmt.nisRough(e.at)} />{unit}</> } };
+    if (e && e.at <= end) return { axis: along, at: e.at };
     return { axis: along, at: end };
     });
     return {
@@ -274,7 +222,7 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
       mark: { at: [map.plan.amount, map.plan.monthly] as const, label: { text: m.plan } },
       edgeLabel: (id: string | null) => ({ text: id === null ? m.noDepositSame : m.noDeposit(shortOf(view, id)) }),
     };
-  }, [view, house, map, on]);
+  }, [view, house, map]);
 
   const reading = useMemo(() => readerOf(view, bundle, on, toneOf), [view, bundle, on, toneOf]);
 
