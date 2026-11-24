@@ -75,6 +75,20 @@ describe("the account map's words", () => {
     );
   });
 
+  it("no change along the plan's lines, but another account clearly first elsewhere on the map: never that nothing changes", () => {
+    // אי.בי.אי (index 1) clearly first at one node of the field
+    const field = { cols: 2, rows: 1, first: [0, 1], second: [-1, -1], ahead: [1, 1.4] };
+    expect(said({ ...base, field })).toEqual({
+      answer: "אי.בי.אי, בצירופים אחרים במפה",
+      note: "זול יותר בבירור: בהפרש של 0.5% לפחות",
+      head: "בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור בצירופים אחרים במפה.",
+    });
+    // on a plan in the band, psagot about the same as ibi at the first node, and ibi clear at the other
+    const nearField = { cols: 2, rows: 1, first: [0, 1], second: [1, -1], ahead: [0.5, 1.4] };
+    const near: AccountMap = { ...base, field: nearField, plan: { ...base.plan, lead: { kind: "near", tied: ["psagot", "ibi"] } } };
+    expect(said(near).head).toBe("בתוכנית שלכם פסגות ואי.בי.אי בערך אותו דבר. אי.בי.אי זול יותר בבירור בצירופים אחרים במפה.");
+  });
+
   it("one account cheapest everywhere on the map", () => {
     expect(said({ ...base, accounts: ["psagot"] })).toEqual({
       answer: "אף חשבון",

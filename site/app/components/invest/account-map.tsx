@@ -72,12 +72,23 @@ export function mapWords<F>(map: AccountMap, house: string, name: (id: string) =
   const second = sa && sm ? sm : null;
   // the second change: the same account ("או מעל כ־2,300 ₪ בחודש"), or another in words of its own ("וואן זירו זול יותר בבירור מעל …")
   const then = (c: LineChange, to: string, where: "card" | "head"): (string | F)[] => (c.s.to === to ? [where === "card" ? `${m.or} ` : `, ${m.or} `] : [where === "card" ? `${name(c.s.to)} ` : `. ${m.cheaperFrom(name(c.s.to))} `]);
+  // with no change along the plan's lines, the accounts the map still shows clearly first somewhere (the plan's own first aside, where it is
+  // θ ahead at the plan): the words never say nothing changes where the map draws another's clear area
+  const elsewhere = (mine: readonly string[]): string[] => {
+    const seen = new Set<number>();
+    for (const f of [map.field, map.edge]) f.first.forEach((k, n) => k >= 0 && (f.ahead[n] ?? 0) >= 1 && seen.add(k));
+    return map.accounts.filter((id, k) => seen.has(k) && !mine.includes(id));
+  };
   const switchesHead = (f: LineChange): (string | F)[] => [m.cheaperFrom(name(f.s.to)), " ", ...at(f, firstAxis, true), ...(second ? [...then(second, f.s.to, "head"), ...at(second, "monthly", true)] : []), "."];
 
   if (lead.kind === "near") {
     const names = lead.tied.map(name);
     const start = m.headNear(names);
-    if (!first) return { answer: [m.near(names)], note: [m.nearStays], head: [start, " ", m.headNearStays] };
+    if (!first) {
+      const away = elsewhere([]);
+      if (away.length) return { answer: [m.near(names)], note: [m.elsewhere(away.map(name))], head: [start, " ", m.elsewhere(away.map(name)), "."] };
+      return { answer: [m.near(names)], note: [m.nearStays], head: [start, " ", m.headNearStays] };
+    }
     return { answer: [m.near(names)], note: [m.cheaperFrom(name(first.s.to)), " ", ...at(first, firstAxis, false)], head: [start, " ", ...switchesHead(first)] };
   }
 
@@ -87,6 +98,11 @@ export function mapWords<F>(map: AccountMap, house: string, name: (id: string) =
   const other = { answer: [m.already(w)], note: [m.insteadOf(name(house))] };
   if (!first) {
     if (map.accounts.length === 1) return mine ? { answer: [m.noOther], note: [m.cheapestAll(w)], head: [start, " ", m.headAll] } : { ...other, head: [start, " ", m.headAll] };
+    const away = elsewhere([lead.first]);
+    if (away.length) {
+      const head = [start, " ", m.elsewhere(away.map(name)), "."];
+      return mine ? { answer: [away.map(name)[0] ?? "", ", ", m.elsewhereShort], note: [m.clearlyNote(theta)], head } : { ...other, head };
+    }
     return mine ? { answer: [m.stays(w)], note: [m.staysNote], head: [start, " ", m.headStays] } : { ...other, head: [start, " ", m.headStays] };
   }
   const head = [start, " ", ...switchesHead(first)];

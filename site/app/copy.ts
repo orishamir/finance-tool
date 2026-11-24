@@ -4225,6 +4225,10 @@ export const invest = {
       headStays: "אף חשבון אחר לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
       headNearStays: "אף אחד מהם לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
       headAll: "הוא הכי זול בכל צירוף במפה.",
+      /** No change along the plan's lines, but another account clearly cheaper elsewhere on the map: "אי.בי.אי זול יותר בבירור בצירופים
+       *  אחרים במפה", and the card's short answer after its name. */
+      elsewhere: (names: string[]) => `${andList(names)} ${names.length > 1 ? "זולים" : "זול"} יותר בבירור בצירופים אחרים במפה`,
+      elsewhereShort: "בצירופים אחרים במפה",
       /** The line under the headline: what the map is, and what its blended colours mean (θ, P-01, as a figure). */
       what: (years: number) => `החשבון שמשאיר לכם הכי הרבה עם הקרן הזו, בכל צירוף של סכום היום והפקדה חודשית, ${inYears(years)}. איפה שהצבעים מתערבבים, ההפרש קטן מ־`,
       /** After it: what the thin line on the map marks. */
