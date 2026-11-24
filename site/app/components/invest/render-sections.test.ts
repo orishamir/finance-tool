@@ -694,7 +694,13 @@ describe("before deciding: the tab cards", () => {
   const pick = pickOfHeadline(view)!;
   const share = { min: -50, max: 50, step: 10, start: 20 };
   const stairs = { view, bundle, startHouse: null, startFund: null };
-  const before = (chosen: boolean) => html(createElement(BeforeDeciding, { view, bundle, plan, livePlan: plan, share, pick, chosen, hedge: true, stairs }));
+  // each render works out the account map, a second or two: one render of each kind serves every test below
+  const rendered = new Map<boolean, string>();
+  const before = (chosen: boolean) => {
+    const out = rendered.get(chosen) ?? html(createElement(BeforeDeciding, { view, bundle, plan, livePlan: plan, share, pick, chosen, hedge: true, stairs }));
+    rendered.set(chosen, out);
+    return out;
+  };
   it("the tab list holds only its tabs: each card is one tab, its answer plain words with no control of its own", () => {
     const out = before(false);
     const list = out.slice(out.indexOf('role="tablist"'), out.indexOf('role="tabpanel"'));

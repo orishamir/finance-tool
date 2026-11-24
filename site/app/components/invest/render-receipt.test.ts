@@ -132,8 +132,7 @@ describe("the receipt", () => {
   it("the inflation's sheet is the line's own, what the account and the fund leave in both moneys as written, on every plan; the future-shekel one is the sum of the lines above it (F-129)", () => {
     for (const years of [1, 3, 7, 10, 20, 33]) for (const monthly of [0, 250, 1_234]) {
       const p = planOf(t, { years, monthly, returnPct: 7 });
-      const v = buildInvest({ bundle, index: view.index, plan: p });
-      const pc = pairCostsKept({ bundle, index: v.index, plan: p, fundId: pick.fund, providerId: pick.house });
+      const pc = pairCostsKept({ bundle, index: view.index, plan: p, fundId: pick.fund, providerId: pick.house });
       if (!pc) continue;
       const ch = receiptChain(pc);
       const infl = inflationOf(pc, ch, w.pair.taxLine, t);
