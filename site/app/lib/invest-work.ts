@@ -94,7 +94,12 @@ export function leftWith(bundle: IndicesBundle, index: IndexRef, plan: Workbench
 
 /** F-131: the map for the plan, its switches looked for as far as the plan's sliders reach (P-05), a tie to the house the headline takes. */
 function mapOf(bundle: IndicesBundle, a: MapAsk): MapAnswer {
-  const reach = (key: string) => p05Range(bundle.p05, "sliders", key)?.max ?? 0;
+  // the reach is P-05's: with no slider range there is no axis to draw, and a map on 0 would be points at NaN, so the work fails, naming it
+  const reach = (key: string) => {
+    const max = p05Range(bundle.p05, "sliders", key)?.max;
+    if (!(typeof max === "number" && max > 0)) throw new Error(`F-131: P-05 has no slider range for ${key}, so the account map has no reach`);
+    return max;
+  };
   const order = providersOfInvest(bundle).map((s) => s.id);
   const map = accountMap({ leftAt: leftWith(bundle, a.index, a.plan, a.fund), order, theta: tieShareOf(bundle), plan: { amount: a.plan.amountNow, monthly: a.plan.monthly }, reach: { amount: reach("amount_now"), monthly: reach("monthly_deposit") } });
   if (map) return { kind: "map", map };

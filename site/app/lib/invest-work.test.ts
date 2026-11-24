@@ -41,3 +41,16 @@ describe("the index page's work is plain data both ways, as the worker sends it 
     expect(priced.filter((h) => !h.split).map((h) => h.provider.id)).toEqual([]);
   });
 });
+
+describe("the account map's work (F-131)", () => {
+  it("fails naming P-05 where it has no slider range to reach, never a map on axes of 0", () => {
+    const index = knownIndices(bundle)[0];
+    if (!index) throw new Error("missing: an index");
+    const view = work.view(bundle, { index, plan, yourBroker: null });
+    const pick = pickOfHeadline(view);
+    if (!pick) throw new Error("missing: the page's pair");
+    const { sliders: _gone, ...rest } = bundle.p05 as unknown as Record<string, unknown>;
+    const bare = { ...bundle, p05: rest as unknown as typeof bundle.p05 };
+    expect(() => work.map(bare, { index, plan, fund: pick.fund })).toThrow(/P-05 has no slider range for amount_now/);
+  });
+});
