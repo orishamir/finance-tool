@@ -116,7 +116,7 @@ describe("the band's layer over a grid", () => {
 
 describe("the legend's items for the band", () => {
   const SAME = "about the same";
-  const legendOf = (field: RegionGrid, edge: RegionGrid = { cols: 2, rows: 1, first: [0, 0], second: [-1, -1], ahead: [1, 1] }) =>
+  const legendOf = (field: RegionGrid, edge: RegionGrid = { cols: 2, rows: 1, first: [0, 0], second: [-1, -1], ahead: [1, 1] }, guides: { axis: "x" | "y"; at: number; label?: { text: string } }[] = []) =>
     renderToString(
       createElement(RegionMap, {
         max: { x: 100, y: 100 },
@@ -126,7 +126,7 @@ describe("the legend's items for the band", () => {
         edgeLabel: (id: string | null) => ({ text: id === null ? "the edge about the same" : `the edge: ${id}` }),
         bandLabel: { text: SAME, pair: (a: string, b: string) => `${a} & ${b}: ${SAME}` },
         mark: { at: [10, 10], label: { text: "mark" } },
-        guides: [],
+        guides,
         xTitle: "x",
         yTitle: "y",
         xTick: String,
@@ -143,6 +143,14 @@ describe("the legend's items for the band", () => {
     const out = legendOf(g, sliver);
     expect(out).toContain("the edge about the same");
     expect(out).not.toContain("the edge: p");
+  });
+
+  it("draws no guide shorter than the mark's dot, nor its words: the figure stays in the headline", () => {
+    // the mark at 10 on axes of 100: a guide to 11 is a few px long, one to 60 is drawn
+    const out = legendOf(planeGrid(), undefined, [{ axis: "y", at: 11, label: { text: "short guide" } }, { axis: "x", at: 60, label: { text: "long guide" } }]);
+    expect(out).not.toContain("short guide");
+    expect(out).toContain("long guide");
+    expect(out.match(/data-mark="guide"/g)).toHaveLength(1);
   });
 
   it("names each pair whose band shows, the earlier area first, with the pair in its title", () => {

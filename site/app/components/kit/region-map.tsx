@@ -96,6 +96,8 @@ const BOTTOM = 30;
 const RIGHT = 16;
 /** The bottom edge's line: thick, so a value with no range still reads as a mark of its own. */
 const EDGE_PX = 6;
+/** The shortest guide drawn, in px: about the mark's dot across with room. */
+const GUIDE_MIN = 16;
 /** A finger's or a pointer's reach around a point: the site's touch size, 44 px across. */
 const REACH = 22;
 /** How far a set-back area fades into the card. */
@@ -492,7 +494,9 @@ export function RegionMap({
     const gxL = (i: number) => sxL((max.x * i) / (field.cols - 1));
     const gyL = (j: number) => syL(field.from + ((max.y - field.from) * j) / (field.rows - 1));
     const equalPx = equalLines(field).map(([x0, y0, x1, y1]) => [gxL(x0), gyL(y0), gxL(x1), gyL(y1)] as const);
-    const guidePx = guides.map((g) => [mxL, myL, g.axis === "x" ? sxL(g.at) : mxL, g.axis === "x" ? myL : syL(g.at)] as const);
+    // a guide shorter than the mark's dot is not drawn: its line would hide under the dot and its words stand away from its point
+    const shown = guides.filter((g) => Math.abs(g.axis === "x" ? sxL(g.at) - mxL : syL(g.at) - myL) >= GUIDE_MIN);
+    const guidePx = shown.map((g) => [mxL, myL, g.axis === "x" ? sxL(g.at) : mxL, g.axis === "x" ? myL : syL(g.at)] as const);
     const crossed = (b: Box) => guidePx.some((l) => lineMeetsBox(l, b)) || equalPx.some((l) => lineMeetsBox(l, b));
     const inPlot = (b: Box) => b.x >= left && b.x + b.w <= right && b.y >= TOP && b.y + b.h <= bottom - EDGE_PX;
     const fits = (b: Box) => inPlot(b) && !crossed(b);
@@ -561,7 +565,7 @@ export function RegionMap({
       ...[myL - 26, myL - 46].map((y) => ({ x: inside(mxL + 8, markTw), y, w: markTw, h: LINE })),
     ], [mxL, myL]);
     // each guide's dot and its words beside it: over the dashed line or under it, after the dot or before it
-    const guideDraw = guides.map((g) => {
+    const guideDraw = shown.map((g) => {
       const gx = g.axis === "x" ? sxL(g.at) : mxL;
       const gy = g.axis === "x" ? myL : syL(g.at);
       if (!g.label) return { g, gx, gy, box: null };
