@@ -80,7 +80,10 @@ export function mapWords<F>(map: AccountMap, house: string, name: (id: string) =
   const firstAxis = sa ? "amount" : "monthly";
   const second = sa && sm ? sm : null;
   // the second change: the same account ("או מעל כ־2,300 ₪ בחודש"), or another in words of its own ("וואן זירו זול יותר בבירור מעל …")
-  const then = (c: LineChange, to: string, where: "card" | "head"): (string | F)[] => (c.s.to === to ? [where === "card" ? `${m.or} ` : `, ${m.or} `] : [where === "card" ? `${name(c.s.to)} ` : `. ${m.cheaperFrom(name(c.s.to))} `]);
+  // after a first change that ends on another account's switch ("…, וג׳ מעל כ־40 אלף ₪"), an "או" would read as that account's: the second
+  // change then names its own account
+  const mixed = !!first && first.kind === "stretch" && !!first.s.then && first.s.then.to !== first.s.to;
+  const then = (c: LineChange, to: string, where: "card" | "head"): (string | F)[] => (c.s.to === to && !mixed ? [where === "card" ? `${m.or} ` : `, ${m.or} `] : [where === "card" ? `${name(c.s.to)} ` : `. ${m.cheaperFrom(name(c.s.to))} `]);
   // the bits of `map.asked` of some accounts: a node whose `missing` holds one of them has no ranked price for it there (F-80)
   const bitsOf = (ids: readonly string[]) => ids.reduce((b, id) => b | (map.asked.indexOf(id) >= 0 && map.asked.indexOf(id) < 31 ? 1 << map.asked.indexOf(id) : 0), 0);
   const lacks = (f: MapField, n: number, bits: number) => ((f.missing?.[n] ?? 0) & bits) !== 0;

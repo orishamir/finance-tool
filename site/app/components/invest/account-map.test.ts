@@ -132,6 +132,13 @@ describe("the account map's words", () => {
     );
   });
 
+  it("after a stretch ending on another account's switch, the deposit's change names its own account, not \"או\"", () => {
+    const sts = { amount: { lo: 30_000, hi: 40_000, dir: "up" as const, to: "ibi", then: up(40_000, "one-zero") }, monthly: null };
+    const got = said({ ...base, stretches: sts, switches: { amount: null, monthly: up(2300) } });
+    expect(got.head).toBe("בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור בין כ־30 אלף ₪ לכ־40 אלף ₪ היום, ו־וואן זירו מעל כ־40 אלף ₪. אי.בי.אי זול יותר בבירור מעל כ־2,300 ₪ בחודש.");
+    expect(got.note).toBe("אי.בי.אי מעל כ־2,300 ₪ בחודש. זול יותר בבירור: בהפרש של 0.5% לפחות");
+  });
+
   it("one account cheapest everywhere on the map", () => {
     expect(said({ ...base, accounts: ["psagot"] })).toEqual({
       answer: "אף חשבון",
