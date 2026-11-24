@@ -121,6 +121,19 @@ describe("the account map (F-131)", () => {
     }
   });
 
+  it("names no switch or equal point under a hundredth of the sliders' reach: 100 ₪ a month, 5,000 ₪ today", () => {
+    // B leaves more than A under 60 ₪ a month (or 3,000 ₪ today) and less from there, the gap passing through zero: equal at 60 ₪
+    // (3,000 ₪), too low to name
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    const lowMonthly = { a: base, b: (a: number, m: number) => base(a, m) * (1 + 0.00002 * (60 - m)) };
+    const lowAmount = { a: base, b: (a: number, m: number) => base(a, m) * (1 + 0.0000005 * (3000 - a)) };
+    expect(mapOf(lowMonthly, { amount: 10_000, monthly: 200 }).equal.monthly).toBeNull();
+    expect(mapOf(lowAmount, { amount: 10_000, monthly: 200 }).equal.amount).toBeNull();
+    // and one at 150 ₪ a month is named
+    const named = { a: base, b: (a: number, m: number) => base(a, m) * (1 + 0.00002 * (150 - m)) };
+    expect(mapOf(named, { amount: 10_000, monthly: 200 }).equal.monthly?.at).toBeCloseTo(150, -1);
+  });
+
   it("an account of the plan with no ranked price at a point is not compared there: neither beaten nor equal (F-80)", () => {
     // A has no ranked price from 50,000 ₪ today (the list does not rank it there); B is A's twin, or 1% behind it, where both are priced
     const unpricedFrom = (accounts: Record<string, (a: number, m: number) => number>): LeftAt => (a, m, houses) =>

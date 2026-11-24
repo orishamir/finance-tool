@@ -122,6 +122,10 @@ const ABOVE_EDGE = 0.01;
 /** The least amount a search reaches, as a share of its reach, where the other axis is 0 (so it never lands on 0 ₪ and 0 ₪ a month), and the
  *  least monthly deposit (no deposit at all is the edge's). The edge starts at the same share of its axis. */
 const LOWEST = 1 / 1000;
+/** No switch, stretch or equal point is named under this share of the sliders' reach (5,000 ₪ today, 100 ₪ a month): the step a reader
+ *  moves a slider by at its low end, where a point is no decision anyone makes, and where two accounts that differ by a few shekels flip
+ *  on rounding. The map's areas start at the same share of the monthly axis (ABOVE_EDGE). */
+const NAMED = 1 / 100;
 /** The axis's end is past the plan and the farthest change up its line by this factor, rounded up to a clean value. */
 const ROOM = 1.5;
 /** The least share of the sliders' reach an axis spans: where something changes up its line, and where nothing does. */
@@ -364,17 +368,17 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const lowM = reachM * LOWEST;
   const lineOn = (axis: 0 | 1, dir: MapSwitch["dir"], to: number) => (tied.length === 0 ? null : lineOf(leftAt, order, theta, tied, planPt, axis, dir, to));
   const lines = { amount: { up: lineOn(0, "up", reachA), down: lineOn(0, "down", lowA) }, monthly: { up: lineOn(1, "up", reachM), down: lineOn(1, "down", lowM) } };
-  // under a thousandth of the reach no point is named, either way: no money at all today (or a month) is a value of its own, as the bottom
-  // edge is, and a change found only there is that value's, not a point along the line
-  const floor = { amount: reachA * LOWEST, monthly: reachM * LOWEST };
+  // under a hundredth of the sliders' reach no point is named, either way (NAMED): no money at all today (or a month) is a value of its
+  // own, as the bottom edge is, and a change found only near it is too small to act on
+  const floor = { amount: Math.max(reachA * LOWEST, reach.amount * NAMED), monthly: Math.max(reachM * LOWEST, reach.monthly * NAMED) };
   const up = { amount: switchAlong(lines.amount.up, order, theta, tied, floor.amount), monthly: switchAlong(lines.monthly.up, order, theta, tied, floor.monthly) };
   const switches = {
-    amount: nearer(plan.amount, up.amount, switchAlong(lines.amount.down, order, theta, tied)),
-    monthly: nearer(plan.monthly, up.monthly, switchAlong(lines.monthly.down, order, theta, tied)),
+    amount: nearer(plan.amount, up.amount, switchAlong(lines.amount.down, order, theta, tied, floor.amount)),
+    monthly: nearer(plan.monthly, up.monthly, switchAlong(lines.monthly.down, order, theta, tied, floor.monthly)),
   };
   // along a line with no switch either way, the nearest stretch where another account is clearly cheaper all the same
   const stretchOn = (axis: "amount" | "monthly") =>
-    switches[axis] ? { up: null, down: null } : { up: stretchAlong(lines[axis].up, order, theta, tied, floor[axis]), down: stretchAlong(lines[axis].down, order, theta, tied, 0) };
+    switches[axis] ? { up: null, down: null } : { up: stretchAlong(lines[axis].up, order, theta, tied, floor[axis]), down: stretchAlong(lines[axis].down, order, theta, tied, floor[axis]) };
   const stretchBy = { amount: stretchOn("amount"), monthly: stretchOn("monthly") };
   const stretches = { amount: nearerStretch(plan.amount, stretchBy.amount.up, stretchBy.amount.down), monthly: nearerStretch(plan.monthly, stretchBy.monthly.up, stretchBy.monthly.down) };
   const planFirst = lead.kind === "clear" ? lead.first : lead.kind === "near" ? lead.tied[0] : null;
