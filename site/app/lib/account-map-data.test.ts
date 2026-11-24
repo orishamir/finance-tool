@@ -3,11 +3,12 @@ import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { bundle, html, lists, plan as fixturePlan, shown } from "../components/invest/render-fixtures";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
-import { AccountMapPanel, mapAreas, mapCard } from "../components/invest/account-map";
+import { AccountMapPanel, mapAreas, mapCard, mapGuides } from "../components/invest/account-map";
 import { invest, kit as kitCopy } from "../copy";
 import type { AccountMap } from "./account-map";
 import { buildInvest, indexById, knownIndices, providersOfInvest, tieShareOf } from "./invest";
 import { leftWith, work } from "./invest-work";
+import { p05Range } from "./engine";
 import { rankedAt } from "./stretch";
 import { entered } from "./value";
 import { chartTextWidth } from "../components/kit/chart-text";
@@ -187,20 +188,48 @@ describe("the guides from the plan on the default S&P 500 plan", () => {
     expect(shown(out)).not.toContain(invest.before.map.planHead);
   });
 
-  it("runs each axis past the switch or the stretch it names, so each guide ends on the plot", () => {
+  it("a change within 5× the plan is on the plot, a farther one is not, and its guide ends at the axis", () => {
     const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
-    for (const plan of [planAt(10_000, 500, 10), planAt(1000, 100, 10), planAt(100_000, 0, 10), planAt(10_000, 10_000, 10)]) {
+    // the founder's examples: each axis at 1.5 times the plan, past a change up its line only within five times the plan (or a fiftieth
+    // of the slider's reach), at a clean value
+    const cases = [
+      [planAt(50_000, 2000, 30), { amount: 80_000, monthly: 3000 }],
+      [planAt(10_000, 500, 10), { amount: 15_000, monthly: 4000 }],
+      [planAt(10_000, 10_000, 10), { amount: 15_000, monthly: 15_000 }],
+      [planAt(1000, 100, 10), { amount: 10_000, monthly: 200 }],
+      [planAt(100_000, 0, 10), { amount: 500_000, monthly: 1500 }],
+    ] as const;
+    const reach = { amount: need(p05Range(bundle.p05, "sliders", "amount_now"), "P-05's amount slider").max, monthly: need(p05Range(bundle.p05, "sliders", "monthly_deposit"), "P-05's deposit slider").max };
+    let far = 0;
+    for (const [plan, axes] of cases) {
       const pick = need(pickOfHeadline(buildInvest({ bundle, index, plan })), "the page's pair");
       const answer = work.map(bundle, { index, plan, fund: pick.fund });
       const map = need(answer.kind === "map" ? answer.map : null, "the map");
-      for (const axis of ["amount", "monthly"] as const) {
+      const what = `${plan.amountNow}/${plan.monthly}/${plan.years}`;
+      expect(map.max, what).toEqual(axes);
+      const guides = mapGuides(map);
+      for (const [n, axis] of (["amount", "monthly"] as const).entries()) {
+        const own = axis === "amount" ? plan.amountNow : plan.monthly;
+        const near = 5 * Math.max(own, reach[axis] / 50);
         const end = map.max[axis];
-        const s = map.switches[axis];
+        const sw = map.switches[axis];
         const st = map.stretches[axis];
-        if (s) expect(s.at, `${plan.amountNow}/${plan.monthly} ${axis}`).toBeLessThanOrEqual(end);
-        if (st) expect(st.hi, `${plan.amountNow}/${plan.monthly} ${axis}`).toBeLessThanOrEqual(end);
+        const ups = [sw?.dir === "up" ? sw.at : null, st?.dir === "up" ? st.hi : null, map.changes[axis].even, map.changes[axis].band].filter((v): v is number => v !== null);
+        for (const v of ups) {
+          if (v <= near) expect(1.5 * v, `${what} ${axis}: ${v} within 5×`).toBeLessThanOrEqual(end);
+          else far++;
+        }
+        // a switch past the axis's end has its guide at the axis's end, never past it
+        const guide = need(guides[n], `${what} ${axis}'s guide`);
+        expect(guide.at, `${what} ${axis}`).toBeLessThanOrEqual(end);
+        if (sw && sw.at > end) {
+          expect(sw.at, `${what} ${axis}: a switch past the axis lies past 5×`).toBeGreaterThan(near);
+          expect(guide.at, `${what} ${axis}`).toBe(map.equal[axis] && map.equal[axis].at <= end ? map.equal[axis].at : end);
+        }
       }
     }
+    // the examples hold changes past five times the plan: the switch up today's amount at 10,000 ₪, among them
+    expect(far).toBeGreaterThan(0);
   });
 });
 

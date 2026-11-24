@@ -72,9 +72,10 @@ describe("the account map (F-131)", () => {
   });
 
   it("runs each axis past the farthest change up the plan's line with room, to a clean value", () => {
-    // the switches up are the nearest changes up the plan's lines, past three times the plan (30,000 ₪, 600 ₪ a month): 1.5 × 53,546 =
-    // 80,319, up to 100,000; 1.5 × 1,650 = 2,475, up to 2,500
-    expect(map.max).toEqual({ amount: 100_000, monthly: 2500 });
+    // a change is shown within five times the plan (50,000 ₪ today, 1,000 ₪ a month): the switches up, at 53,546 ₪ and 1,650 ₪, are past
+    // it; the farthest within it is the even point (below), past 1.5 times the plan (15,000 ₪, 300 ₪): 1.5 × 29,333 = 44,000, up to 50,000;
+    // 1.5 × 562.5 = 844, up to 1,000
+    expect(map.max).toEqual({ amount: 50_000, monthly: 1000 });
     // up today's amount at 200 ₪ a month, A is θ ahead while 440 − 0.015 a ≥ 0.005 (0.98 a + 19,800), to 17,135.7 ₪, and B leaves more
     // from 29,333.3 ₪; up the deposit at 10,000 ₪, A is θ ahead while 450 − 0.8 m ≥ 0.005 (9,800 + 99 m), to 309.7 ₪ a month, and B leaves
     // more from 562.5 ₪
@@ -117,9 +118,9 @@ describe("the account map (F-131)", () => {
       expect(got.switches[axis], axis).toBeNull();
       // the plan's first is not θ ahead from the hundredth on, where the search starts: the band's edge is cut there, never an equal point
       expect(got.changes[axis], axis).toEqual({ band: axis === "monthly" ? 100 : 5000, even: null });
-      // where nothing changes up a line, three times the plan's own value; on an axis where the plan has no money, a fiftieth of the
-      // sliders' reach: 10,000 ₪ today, 200 ₪ a month
-      expect(got.max, axis).toEqual(axis === "monthly" ? { amount: 30_000, monthly: 200 } : { amount: 10_000, monthly: 600 });
+      // where nothing changes up a line, 1.5 times the plan's own value; on an axis where the plan has no money, a fiftieth of the sliders'
+      // reach, 10,000 ₪ today and 200 ₪ a month, past the band's edge with room (1.5 × 5,000 ₪, 1.5 × 100 ₪)
+      expect(got.max, axis).toEqual(axis === "monthly" ? { amount: 15_000, monthly: 200 } : { amount: 10_000, monthly: 300 });
     }
   });
 
@@ -217,27 +218,31 @@ describe("the account map (F-131)", () => {
   it("shows the band and the other account's side up a line where the other never becomes clearly cheaper", () => {
     // A: 2% of today's amount and 0.6 ₪ a shekel of the deposit; B as before. Up the deposit at 10,000 ₪, B leaves 0.4 m − 450 more: A is θ
     // ahead while 450 − 0.4 m ≥ 0.005 (9,800 + 99.4 m), to 447.0 ₪ a month, B leaves more from 1,125 ₪, and B is never θ ahead, since
-    // 0.4 m − 450 ≥ 0.005 (9,350 + 99.8 m) holds for no m. The axis runs to 1.5 × 1,125 = 1,687.5, up to 2,000.
+    // 0.4 m − 450 ≥ 0.005 (9,350 + 99.8 m) holds for no m. On a plan of 300 ₪ a month both lie within five times it (1,500 ₪): the axis
+    // runs to 1.5 × 1,125 = 1,687.5, up to 2,000.
     const slow = { a: (a: number, m: number) => left(a, m, 0.02 * a + 0.6 * m), b: (a: number, m: number) => left(a, m, 600 + 0.005 * a + 0.2 * m) };
-    const got = mapOf(slow, { amount: 10_000, monthly: 200 });
+    const got = mapOf(slow, { amount: 10_000, monthly: 300 });
     expect(got.switches.monthly).toBeNull();
     expect(got.changes.monthly.band).toBeCloseTo(447.0, 0);
     expect(Math.abs((got.changes.monthly.even ?? NaN) - 1125)).toBeLessThan(1);
     expect(got.max.monthly).toBe(2000);
-    // up today's amount at 200 ₪ a month, B leaves 0.015 a − 520 more: clearly from 61,526.2 ₪ (0.015 a − 520 ≥ 0.005 (0.995 a + 19,360)),
-    // 1.5 × 61,526 = 92,289, up to 100,000
-    expect(need(got.switches.amount, "the switch up today's amount").at).toBeCloseTo(61_526.2, 0);
-    expect(got.max.amount).toBe(100_000);
+    // up today's amount at 300 ₪ a month, B leaves 0.015 a − 480 more than A's 0.98 a + 29,820: A is θ ahead to 16,628.1 ₪ (330.9 ≥ 0.0199 a),
+    // B leaves more from 32,000 ₪, and clearly from 62,513.7 ₪ (0.015 a − 480 ≥ 0.005 (0.995 a + 29,340)), past five times the plan
+    // (50,000 ₪): not shown, the axis run past the even point, 1.5 × 32,000 = 48,000, up to 50,000
+    expect(got.changes.amount.band).toBeCloseTo(16_628.1, -2);
+    expect(got.changes.amount.even).toBeCloseTo(32_000, -2);
+    expect(need(got.switches.amount, "the switch up today's amount").at).toBeCloseTo(62_513.7, 0);
+    expect(got.max.amount).toBe(50_000);
     expectFieldTrue(got, slow);
   });
 
-  it("where nothing changes up a line, the axis spans three times the plan's own value", () => {
+  it("where nothing changes up a line, the axis spans 1.5 times the plan's own value", () => {
     // B costs 600 ₪, 2% of today's amount and 1 ₪ a shekel of the deposit more than A, which leaves at least 0.6% more everywhere: A is θ
-    // ahead up both lines. Three times 10,000 ₪ is 30,000 ₪; three times 200 ₪ a month is 600 ₪.
+    // ahead up both lines. 1.5 times 10,000 ₪ is 15,000 ₪; 1.5 times 200 ₪ a month is 300 ₪.
     const still = { a: (a: number, m: number) => left(a, m, 0), b: (a: number, m: number) => left(a, m, 600 + 0.02 * a + m) };
     const got = mapOf(still, { amount: 10_000, monthly: 200 });
     expect(got.changes).toEqual({ amount: { band: null, even: null }, monthly: { band: null, even: null } });
-    expect(got.max).toEqual({ amount: 30_000, monthly: 600 });
+    expect(got.max).toEqual({ amount: 15_000, monthly: 300 });
     // a plan of nothing has no line to change along: a fiftieth of the sliders' reach on each axis, 10,000 ₪ and 200 ₪ a month
     expect(mapOf(linear, { amount: 0, monthly: 0 }).max).toEqual({ amount: 10_000, monthly: 200 });
   });
@@ -325,15 +330,15 @@ describe("the account map (F-131)", () => {
   });
 
   it("a turn inside the first step of an axis is not carried up the cell above it", () => {
-    // C leaves 0.2% less than A under 9 ₪ a month and 2.2% less from there; D the same under 200 ₪ today. On these maps the areas' rows
-    // start at 6 ₪ a month, 6.2 ₪ apart, and the columns are 312.5 ₪ apart: the turn falls between the first row (or column) and the next,
+    // C leaves 0.2% less than A under 4.5 ₪ a month and 2.2% less from there; D the same under 100 ₪ today. On these maps the areas' rows
+    // start at 3 ₪ a month, 3.1 ₪ apart, and the columns are 156.25 ₪ apart: the turn falls between the first row (or column) and the next,
     // and a cell's corners on the first row (or column) would carry C (or D) within θ of A across the whole cell
     const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
-    const lowMonthly = { a: base, c: (a: number, m: number) => base(a, m) * (m < 9 ? 0.998 : 0.978) };
-    const lowAmount = { a: base, d: (a: number, m: number) => base(a, m) * (a < 200 ? 0.998 : 0.978) };
+    const lowMonthly = { a: base, c: (a: number, m: number) => base(a, m) * (m < 4.5 ? 0.998 : 0.978) };
+    const lowAmount = { a: base, d: (a: number, m: number) => base(a, m) * (a < 100 ? 0.998 : 0.978) };
     for (const accounts of [lowMonthly, lowAmount]) {
       const got = mapOf(accounts, { amount: 10_000, monthly: 200 });
-      expect([got.max, got.bottom]).toEqual([{ amount: 30_000, monthly: 600 }, 6]);
+      expect([got.max, got.bottom]).toEqual([{ amount: 15_000, monthly: 300 }, 3]);
       expectFieldTrue(got, accounts);
     }
   });
@@ -351,11 +356,13 @@ describe("the account map (F-131)", () => {
 
   it("finds an area narrower than a coarse cell, which none of the cell's corners shows: C leads only from 57,067 ₪ to 58,933 ₪ today", () => {
     // C leaves 0.7% more than the better of A and B at 58,000 ₪, less with the distance, and 0.8% less from 2,000 ₪ away: third at every
-    // node of the coarse grid (16,667 ₪ apart on this map), first only around the middle of one cell
+    // node of the coarse grid (16,667 ₪ apart on this map, whose amount runs past B's switch at 53,546 ₪, within five times the plan's
+    // 15,000 ₪, to 100,000 ₪), first only around the middle of one cell
     const [la, lb] = [need(linear.a, "A"), need(linear.b, "B")];
     const best = (a: number, m: number) => Math.max(la(a, m), lb(a, m));
     const narrow = { ...linear, c: (a: number, m: number) => best(a, m) * (1 + 0.015 * Math.max(0, 1 - Math.abs(a - 58_000) / 2000) - 0.008) };
-    const map = mapOf(narrow, { amount: 10_000, monthly: 200 });
+    const map = mapOf(narrow, { amount: 15_000, monthly: 200 });
+    expect(map.max.amount).toBe(100_000);
     expect(map.accounts).toContain("c");
     expectFieldTrue(map, narrow);
   });
@@ -394,28 +401,33 @@ describe("the account map (F-131)", () => {
     expect([back.to, back.lo, back.hi]).toEqual(["b", expect.closeTo(20_000, -2), expect.closeTo(40_000, -2)]);
     expect(back.then).toMatchObject({ dir: "up", to: "b" });
     expect(back.then?.at).toBeCloseTo(150_000, -3);
-    // the axis follows the first change, the stretch, with room: to 60,000 ₪; the switch past it is in the words only
+    // the axis runs past the stretch's far end with room, to 60,000 ₪; the switch past it, beyond five times the plan's 10,000 ₪, is not shown
     expect(got.max.amount).toBe(60_000);
   });
 
   it("names where an account is clearly cheaper before another takes over, and runs the axes past it", () => {
-    // A: 8% of today's amount and 4 ₪ a shekel of the deposit; B: 6,000 ₪, 1.6% and 0.8 ₪; C: 1,200 ₪, 4% and 2 ₪. At the plan A is first;
-    // up today's amount at 200 ₪ a month C is clearly cheaper from about 25,300 ₪, and B, cheaper still, from 190,000 ₪ (0.024 a − 4,800 −
-    // 160 θ-ahead of C: 0.024 a − 4,960 = 0.005 (0.984 a + 13,840)): C's stretch is named, not a switch to B, and today's amount runs to
-    // 1.5 × 190,000 = 285,000, up to 300,000 ₪; the deposit the same way, to 6,000 ₪ a month
+    // A: 8% of today's amount and 4 ₪ a shekel of the deposit; B: 2,340 ₪, 1.6% and 0.8 ₪; C: 1,200 ₪, 4% and 2 ₪. At the plan, 12,000 ₪
+    // and 200 ₪ a month, A is first, 320 ₪ (1.1%) ahead of C. Up today's amount C leaves 0.04 a − 800 more than A: clearly cheaper from
+    // 25,340.9 ₪ (0.0352 a ≥ 892), until B, leaving 0.024 a − 900 more than C, passes it at 37,500 ₪: C's stretch is named, not a switch to
+    // B, and today's amount runs past the stretch, within five times the plan (60,000 ₪), 1.5 × 37,500 = 56,250, up to 60,000 ₪. Up the
+    // deposit at 12,000 ₪ C leaves 2 m − 720 more than A, clearly from 511.0 ₪ a month (1.51 m ≥ 771.6), and B 1.2 m − 852 more than C,
+    // passing it at 710 ₪: 1.5 × 710 = 1,065, up to 1,500 ₪ a month
     const three = {
       a: (a: number, m: number) => left(a, m, 0.08 * a + 4 * m),
-      b: (a: number, m: number) => left(a, m, 6000 + 0.016 * a + 0.8 * m),
+      b: (a: number, m: number) => left(a, m, 2340 + 0.016 * a + 0.8 * m),
       c: (a: number, m: number) => left(a, m, 1200 + 0.04 * a + 2 * m),
     };
-    const got = mapOf(three, { amount: 10_000, monthly: 200 });
+    const got = mapOf(three, { amount: 12_000, monthly: 200 });
     expect(got.plan.lead).toEqual({ kind: "clear", first: "a" });
     expect(got.switches).toEqual({ amount: null, monthly: null });
     const st = need(got.stretches.amount, "C's stretch up today's amount");
     expect(st).toMatchObject({ dir: "up", to: "c" });
     expect(st.lo).toBeCloseTo(25_341, -1);
-    expect(st.hi).toBeCloseTo(190_000, -2);
-    expect(got.max).toEqual({ amount: 300_000, monthly: 6000 });
+    expect(st.hi).toBeCloseTo(37_500, -1);
+    expect(st.then).toMatchObject({ dir: "up", to: "b" });
+    const sm = need(got.stretches.monthly, "C's stretch up the deposit");
+    expect([sm.to, sm.lo, sm.hi]).toEqual(["c", expect.closeTo(511.0, 0), expect.closeTo(710, 0)]);
+    expect(got.max).toEqual({ amount: 60_000, monthly: 1500 });
     expect([...got.accounts].sort()).toEqual(["a", "b", "c"]);
     expectFieldTrue(got, three);
   });
@@ -423,11 +435,11 @@ describe("the account map (F-131)", () => {
   it("keeps the axes to the plan's range: an account clearly first only far past it has no area", () => {
     // D leaves A's figure and a share of today's amount times the deposit less 6,000 ₪: clearly first only where both are large (at 500,000
     // ₪ and 10,000 ₪ a month, 19,000 ₪ more), and θ behind A all along the plan's lines (5,500 ₪ less at their far ends). Nothing changes up
-    // them: the axes run to three times the plan, 30,000 ₪ and 600 ₪ a month, where D is behind
+    // them: the axes run to 1.5 times the plan, 15,000 ₪ and 300 ₪ a month, where D is behind
     const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
     const corner = { a: base, d: (a: number, m: number) => base(a, m) + (a * m) / 200_000 - 6000 };
     const got = mapOf(corner, { amount: 10_000, monthly: 200 });
-    expect(got.max).toEqual({ amount: 30_000, monthly: 600 });
+    expect(got.max).toEqual({ amount: 15_000, monthly: 300 });
     expect(got.accounts).toEqual(["a"]);
   });
 
@@ -448,7 +460,7 @@ describe("the account map (F-131)", () => {
     // its gap jumps across zero at each end, where the two never leave the same amount
     const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
     const middle = { a: base, b: (a: number, m: number) => base(a, m) * (a > 30_000 && a < 70_000 ? 1.01 : 0.99) };
-    const got = mapOf(middle, { amount: 10_000, monthly: 200 });
+    const got = mapOf(middle, { amount: 15_000, monthly: 200 });
     expect(got.plan.lead).toEqual({ kind: "clear", first: "a" });
     expect(got.switches.amount).toBeNull();
     const st = need(got.stretches.amount, "the stretch along today's amount");
@@ -457,8 +469,10 @@ describe("the account map (F-131)", () => {
     expect(st.hi).toBeCloseTo(70_000, -1);
     expect(got.equal.amount).toBeNull();
     expect(got.stretches.monthly).toBeNull();
-    // the axis runs past the stretch's far end with room: 1.5 × 70,000 = 105,000, up to 150,000
+    // the stretch's far end lies within five times the plan's 15,000 ₪ (75,000 ₪): the axis runs past it with room, 1.5 × 70,000 =
+    // 105,000, up to 150,000; on a plan of 10,000 ₪ it lies past five times (50,000 ₪), and the axis stops short of it, at 50,000 ₪
     expect(got.max.amount).toBe(150_000);
+    expect(mapOf(middle, { amount: 10_000, monthly: 200 }).max.amount).toBe(50_000);
   });
 
   it("a lead just short of θ is never rounded into a clear lead", () => {

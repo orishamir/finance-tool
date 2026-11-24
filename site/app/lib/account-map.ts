@@ -134,10 +134,14 @@ const LOWEST = 1 / 1000;
 /** The searches read nothing under this share of the sliders' reach (5,000 ₪ today, 100 ₪ a month): the step a reader moves a slider by
  *  at its low end, where a point is no decision anyone makes, and where two accounts that differ by a few shekels flip on rounding. */
 const NAMED = 1 / 100;
-/** The axis's end is past the first change named up its line by this factor (and the cap past a plan beyond the sliders' reach), rounded up to a clean value. */
+/** The axis's end is past the farthest change shown up its line by this factor (and the cap past a plan beyond the sliders' reach), rounded up to a clean value. */
 const ROOM = 1.5;
-/** An axis runs to this many times the plan's own value on it (the plan at a third of the way), so a small plan is not a dot in a corner. */
-const PLAN_SPAN = 3;
+/** An axis runs to this many times the plan's own value on it (the plan two thirds of the way), so the map shows plans like the person's,
+ *  not a wide range where nothing changes. */
+const PLAN_SPAN = 1.5;
+/** A change up the plan's line is shown, the axis run past it, only where it lies within this many times the plan's value (or the least
+ *  span, for a plan of little or no money on the axis): a change far out would squeeze the plans like the person's into a corner. */
+const NEAR_CHANGE = 5;
 /** The least share of the sliders' reach an axis spans: 10,000 ₪ today and 200 ₪ a month, what a plan of a few thousand shekels and a
  *  small deposit spans, so a plan of nothing on an axis still shows a modest range from 0, never the whole reach. */
 const MIN_SPAN = 1 / 50;
@@ -423,16 +427,19 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const equal = { amount: nearer(plan.amount, evenUp.amount, evenOn(lines.amount.down, floor.amount)), monthly: nearer(plan.monthly, evenUp.monthly, evenOn(lines.monthly.down, floor.monthly)) };
 
   // ------------------------------------------------ the axes
-  // fitted to the plan: PLAN_SPAN times its own value, past the first change up its line with room (the switch up, else the far end of the
-  // stretch up that comes first, a switch after it left to the words, else the even point, else where the plan's first stops being θ
-  // ahead), at a clean value; at least MIN_SPAN of the
-  // sliders' reach, so a plan of no money on an axis still has a modest span to show; at most the reach (or the plan with room, past it)
+  // fitted to the plan: PLAN_SPAN times its own value, and past the farthest change up its line within NEAR_CHANGE of it with room (the
+  // switch up, the far end of the stretch up that comes first, the even point, where the plan's first stops being θ ahead), at a clean
+  // value; at least MIN_SPAN of the sliders' reach, so a plan of no money on an axis still has a modest span to show; at most the reach (or
+  // the plan with room, past it)
   const capA = cleanUp(Math.max(reachA, ROOM * plan.amount));
   const capM = cleanUp(Math.max(reachM, ROOM * plan.monthly));
-  const nearestUp = (axis: "amount" | "monthly") => up[axis]?.at ?? stretchBy[axis].up?.hi ?? changes[axis].even ?? changes[axis].band ?? 0;
+  const nearUp = (axis: "amount" | "monthly", own: number, r: number) => {
+    const near = NEAR_CHANGE * Math.max(own, r * MIN_SPAN);
+    return Math.max(0, ...[up[axis]?.at, stretchBy[axis].up?.hi, changes[axis].even, changes[axis].band].filter((v): v is number => v != null && v <= near));
+  };
   const axisEnd = (own: number, to: number, r: number, cap: number) => Math.min(cleanUp(Math.max(PLAN_SPAN * own, ROOM * to, r * MIN_SPAN)), cap);
-  const maxA = axisEnd(plan.amount, nearestUp("amount"), reach.amount, capA);
-  const maxM = axisEnd(plan.monthly, nearestUp("monthly"), reach.monthly, capM);
+  const maxA = axisEnd(plan.amount, nearUp("amount", plan.amount, reach.amount), reach.amount, capA);
+  const maxM = axisEnd(plan.monthly, nearUp("monthly", plan.monthly, reach.monthly), reach.monthly, capM);
   const bottom = maxM * ABOVE_EDGE;
 
   // ------------------------------------------------ the areas: every account on the coarse grid and its low rows and columns

@@ -189,6 +189,25 @@ export function NoMapPanel({ why }: { why: "open-rule" | "unpriced" }) {
 }
 
 /**
+ * A dashed line along each axis from the plan, with no words: to the switch, else to a stretch's end nearer the plan, each within the axis,
+ * else to where the two are equal, else to the axis's end. A change past the axis's end, too far from the plan to be shown (F-131), is not
+ * drawn to. It carries no figure: one would hold along that line only, while the map's areas and the reading at a point hold at every point.
+ */
+export function mapGuides(map: AccountMap): RegionGuide[] {
+  return (["amount", "monthly"] as const).map((axis): RegionGuide => {
+    const along = axis === "amount" ? ("x" as const) : ("y" as const);
+    const end = map.max[axis];
+    const s = map.switches[axis];
+    if (s && s.at <= end) return { axis: along, at: s.at };
+    const st = map.stretches[axis];
+    if (st && Math.min(st.lo, st.hi) <= end) return { axis: along, at: st.dir === "up" ? st.lo : st.hi };
+    const e = map.equal[axis];
+    if (e && e.at <= end) return { axis: along, at: e.at };
+    return { axis: along, at: end };
+  });
+}
+
+/**
  * The panel of the map. Memoised, as are the words and guides it hands the map: the section around it renders on every move of a plan's
  * slider (the receipt's live figures), while the map, its words and the figures each switch prices change only with a new map; a guide
  * that changed would make the map place its words again, a search over the plot.
@@ -202,20 +221,7 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
 
   const { head, guides, mark, edgeLabel } = useMemo(() => {
     const words = mapWords(map, house, (id) => shortOf(view, id));
-    // a dashed line along each axis from the plan, with no words: to the switch, else to a stretch's end nearer the plan, each on the
-    // axis, else to where the two are equal, else to the axis's end. A figure on it held along that line only, and the map's areas and
-    // the reading at a point say the same for every point
-    const guides = (["amount", "monthly"] as const).map((axis): RegionGuide => {
-    const along = axis === "amount" ? ("x" as const) : ("y" as const);
-    const end = axis === "amount" ? map.max.amount : map.max.monthly;
-    const s = map.switches[axis];
-    if (s) return { axis: along, at: s.at };
-    const st = map.stretches[axis];
-    if (st && Math.min(st.lo, st.hi) <= end) return { axis: along, at: st.dir === "up" ? st.lo : st.hi };
-    const e = map.equal[axis];
-    if (e && e.at <= end) return { axis: along, at: e.at };
-    return { axis: along, at: end };
-    });
+    const guides = mapGuides(map);
     return {
       head: words.head,
       guides,
