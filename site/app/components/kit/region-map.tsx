@@ -105,6 +105,13 @@ const DIMMED = 0.75;
 /** A name stands where its area leads by θ or more (F-80: under it the two are a tie). */
 const CLEAR = 1;
 /**
+ * The room a chart's words take: their measured width (chart-text.ts) and an eighth more. The advances are Inter's and Heebo's as headless
+ * Chrome draws them; another system draws the same words up to a tenth wider (a reader's Windows Chrome cut "6 אלף" on the y axis and the
+ * bottom edge's words at the plot's end), so a place that fits only the measure would cut them off.
+ */
+const ROOM = 1.125;
+const textRoom = (text: string, px?: number) => chartTextWidth(text, px) * ROOM;
+/**
  * Where two areas are close (the leader's lead `s` under 1), the point is a mix of the pair's two colours, P the area earlier in the list
  * and Q the later: Q's share is half of (1 − s) where P leads and the rest where Q leads, so the mix runs on across the line where they are
  * equal with nothing swapping there, half and half on it and each one's own colour at s = 1 (`laterShare`). Of the mix, a smooth part
@@ -445,12 +452,12 @@ export function RegionMap({
   const narrow = w < 520;
   const height = narrow ? 400 : Math.min(500, Math.max(380, Math.round(w * 0.5)));
   const yTicks = scaleLinear().domain([0, max.y]).ticks(narrow ? 4 : 6);
-  const left = 10 + Math.ceil(Math.max(...yTicks.map((t) => chartTextWidth(yTick(t))), chartTextWidth(xTick(0)) / 2));
+  const left = 10 + Math.ceil(Math.max(...yTicks.map((t) => textRoom(yTick(t))), textRoom(xTick(0)) / 2));
   // the x axis's ticks: as many clean values as fit with room between their words, measured (chart-text.ts)
-  const widest = (ts: number[]) => Math.max(0, ...ts.map((t) => chartTextWidth(xTick(t))));
+  const widest = (ts: number[]) => Math.max(0, ...ts.map((t) => textRoom(xTick(t))));
   const roomFor = (ts: number[]) => ts.length < 2 || (w - left - RIGHT) / (ts.length - 1) > widest(ts) + 16;
   const xTicks = [6, 5, 4, 3, 2].map((n) => scaleLinear().domain([0, max.x]).ticks(n)).find(roomFor) ?? [0, max.x];
-  const lastHalf = chartTextWidth(xTick(xTicks.at(-1) ?? max.x)) / 2;
+  const lastHalf = textRoom(xTick(xTicks.at(-1) ?? max.x)) / 2;
   const right = w - Math.max(RIGHT, Math.ceil(lastHalf) + 4);
   const bottom = height - BOTTOM;
   const sx = scaleLinear().domain([0, max.x]).range([left, right]);
@@ -574,11 +581,11 @@ export function RegionMap({
       for (let x = Math.min(right - 4, sxL(r.to) - 4) - tw; x >= from; x -= 8) tries.push({ x, y: bottom - EDGE_PX - 6 - LINE, w: tw, h: LINE });
       return clearOf(tries);
     };
-    const edgeInside = overStretch(longest ?? { area: -1, from: 0, to: max.x }, chartTextWidth(edgeWords.text));
+    const edgeInside = overStretch(longest ?? { area: -1, from: 0, to: max.x }, textRoom(edgeWords.text));
     if (edgeInside) placed.push(edgeInside);
     const edgeNames = others.flatMap((r) => {
       const a = areas[r.area];
-      const box = a ? overStretch(r, chartTextWidth(a.name)) : undefined;
+      const box = a ? overStretch(r, textRoom(a.name)) : undefined;
       if (!a || !box) return [];
       placed.push(box);
       return [{ id: a.id, box, words: { text: a.name } }];
@@ -586,7 +593,7 @@ export function RegionMap({
     // a box's left edge moved inside the plot, where its words are narrower than the plot
     const inside = (x: number, tw: number) => Math.min(right - tw - 4, Math.max(left + 4, x));
     // the mark's words: under the dot, else over it beside its vertical guide, else beside the dot, else a line higher, held inside the plot
-    const markTw = chartTextWidth(mark.label.text);
+    const markTw = textRoom(mark.label.text);
     const markBox = place([
       { x: inside(mxL - markTw / 2, markTw), y: myL + 10, w: markTw, h: LINE },
       { x: mxL + 8, y: myL - 26, w: markTw, h: LINE },
@@ -602,7 +609,7 @@ export function RegionMap({
       const gx = g.axis === "x" ? sxL(g.at) : mxL;
       const gy = g.axis === "x" ? myL : syL(g.at);
       if (!g.label) return { g, gx, gy, box: null };
-      const tw = chartTextWidth(g.label.text);
+      const tw = textRoom(g.label.text);
       // beside the dot, over or under its line, else held inside the plot where the words are wider than the room beside it
       const tries =
         g.axis === "x"
@@ -647,7 +654,7 @@ export function RegionMap({
       return got?.b ?? null;
     };
     const names = areas.flatMap((a, n) => {
-      const b = take(find(chartTextWidth(a.name, 16), 24, (k) => field.first[k] === n && (field.ahead[k] ?? 0) >= CLEAR));
+      const b = take(find(textRoom(a.name, 16), 24, (k) => field.first[k] === n && (field.ahead[k] ?? 0) >= CLEAR));
       return b ? [{ a, b }] : [];
     });
     const equal = equalPx.map(([x0, y0, x1, y1]) => `M${x0.toFixed(1)} ${y0.toFixed(1)}L${x1.toFixed(1)} ${y1.toFixed(1)}`).join("");
