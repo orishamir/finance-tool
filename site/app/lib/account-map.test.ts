@@ -191,6 +191,20 @@ describe("the account map (F-131)", () => {
     expectFieldTrue(map, minimum);
   });
 
+  it("a turn inside the first step of an axis is not carried up the cell above it", () => {
+    // C leaves 0.2% less than A under 60 ₪ a month and 2.2% less from there; D the same under 2,000 ₪ today. On these maps the areas' rows
+    // start at 25 ₪ a month, 25.8 ₪ apart, and the columns are 1,562.5 ₪ apart: the turn falls between the first row (or column) and the
+    // next, and a cell's corners on the first row (or column) would carry C (or D) within θ of A across the whole cell
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    const lowMonthly = { a: base, c: (a: number, m: number) => base(a, m) * (m < 60 ? 0.998 : 0.978) };
+    const lowAmount = { a: base, d: (a: number, m: number) => base(a, m) * (a < 2000 ? 0.998 : 0.978) };
+    for (const accounts of [lowMonthly, lowAmount]) {
+      const got = mapOf(accounts, { amount: 10_000, monthly: 200 });
+      expect([got.max, got.bottom]).toEqual([{ amount: 150_000, monthly: 2500 }, 25]);
+      expectFieldTrue(got, accounts);
+    }
+  });
+
   it("a step in a price list: B's custody drops from 3% to 1% at 50,000 ₪, so it is clearly cheaper from exactly there", () => {
     const step = {
       a: (a: number, m: number) => left(a, m, 0.02 * a),

@@ -75,6 +75,20 @@ for (const [slug, plan] of [["index-sp500", planAt(10_000, 500, 10)], ["index-sp
       expect(wrong).toEqual([]);
     });
 
+    it("reads its lowest rows as the accounts do, where a deposit too small for a trade's minimum or a whole unit turns the figures", () => {
+      const wrong: string[] = [];
+      for (let j = 0; j <= 8; j++)
+        for (let i = 0; i < map.field.cols; i += 4) {
+          const a = (map.max.amount * i) / (map.field.cols - 1);
+          const m = map.bottom + ((map.max.monthly - map.bottom) * j) / (map.field.rows - 1);
+          const want = exactAt(leftAt(a, m, null));
+          const k = j * map.field.cols + i;
+          const got = { first: map.accounts[map.field.first[k] ?? -1], ahead: map.field.ahead[k] ?? NaN };
+          if ((want.ahead > 0.33 && got.first !== want.first) || Math.abs(got.ahead - want.ahead) > 0.15) wrong.push(`(${a}, ${m}): ${JSON.stringify(got)} against ${JSON.stringify(want)}`);
+        }
+      expect(wrong).toEqual([]);
+    });
+
     it("reads the line for no monthly deposit as the accounts do, from just above 0", () => {
       const wrong: string[] = [];
       const n = map.edge.cols - 1;

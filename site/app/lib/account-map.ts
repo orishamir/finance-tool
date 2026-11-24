@@ -336,14 +336,18 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   };
   const cornersOf = (i: number, j: number, s: number) => [at(i, j), at(i + s, j), at(i + s, j + s), at(i, j + s)] as const;
 
-  // each cell split while its centre reads otherwise than its corners' blend, or its corners have different firsts and it is large
+  // each cell split while its centre reads otherwise than its corners' blend, or its corners have different firsts and it is large. A cell on
+  // the first row also reads the point a smallest step above the middle of its bottom side, and one on the first column the point a smallest
+  // step right of the middle of its left side: there the figures can turn within that step (a deposit too small for a trade's minimum,
+  // F-12, or for a whole unit, F-109), and a blend from the side's corners would carry the turn across the whole cell
   const leaves: [number, number, number][] = [];
   const cell = (i: number, j: number, s: number) => {
     if (s > 1) {
       const corners = cornersOf(i, j, s);
       const firsts = new Set(corners.map((c) => leadOf(c, houses, theta)?.first));
       const h = s / 2;
-      if ((firsts.size > 1 && s > BORDER_CELL) || readsOtherwise(leadOf(blend(corners, houses, 0.5, 0.5), houses, theta), leadOf(at(i + h, j + h), houses, theta))) {
+      const otherwise = (u: number, w: number) => readsOtherwise(leadOf(blend(corners, houses, u / s, w / s), houses, theta), leadOf(at(i + u, j + w), houses, theta));
+      if ((firsts.size > 1 && s > BORDER_CELL) || otherwise(h, h) || (j === 0 && otherwise(h, 1)) || (i === 0 && otherwise(1, h))) {
         for (const [di, dj] of [[0, 0], [h, 0], [h, h], [0, h]] as const) cell(i + di, j + dj, h);
         return;
       }
