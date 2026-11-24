@@ -510,8 +510,14 @@ export function RegionMap({
     const clearOf = (tries: Box[]) => tries.find((b) => fits(b) && !placed.some((t) => meets(b, t)));
     // where none of its places is clear, the words stand in the nearest clear place around the point they name, a line at a time further
     // up or down, beside it or held inside the plot; only where none is clear either, in the place that meets least
-    const around = (b: Box, at: [number, number]): Box[] =>
-      [10, -30, 30, -50, 50, -70, 70, -90, 90].flatMap((dy) => [at[0] + 8, at[0] - 8 - b.w, at[0] - b.w / 2].map((x) => ({ ...b, x: Math.min(right - b.w - 4, Math.max(left + 4, x)), y: at[1] + dy - b.h / 2 })));
+    const around = (b: Box, at: [number, number]): Box[] => {
+      const near = [10, -30, 30, -50, 50, -70, 70, -90, 90].flatMap((dy) => [at[0] + 8, at[0] - 8 - b.w, at[0] - b.w / 2].map((x) => ({ ...b, x: Math.min(right - b.w - 4, Math.max(left + 4, x)), y: at[1] + dy - b.h / 2 })));
+      // then wider, nearest first: on a phone's narrow plot the lines (a guide, the equal line) can cross every place beside the point
+      const wide: Box[] = [];
+      for (let dy = -150; dy <= 150; dy += 10) for (let dx = -160; dx <= 160; dx += 16) wide.push({ ...b, x: Math.min(right - b.w - 4, Math.max(left + 4, at[0] + dx - b.w / 2)), y: at[1] + dy - b.h / 2 });
+      const dist = (x: Box) => Math.hypot(x.x + x.w / 2 - at[0], x.y + x.h / 2 - at[1]);
+      return [...near, ...wide.sort((x, y) => dist(x) - dist(y))];
+    };
     const place = (tries: Box[], at: [number, number]): Box => {
       const cost = (b: Box) => placed.reduce((n, t) => n + overlap(b, t), 0) + (fits(b) ? 0 : 1e6);
       const first = tries[0];

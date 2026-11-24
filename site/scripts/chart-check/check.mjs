@@ -124,7 +124,9 @@ async function checkWidth(width) {
 async function checkPage(page, lab, p, width) {
   await page.goto(server.url.replace(/\/$/, "") + p, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
-  await waitSettled(page);
+  // an index page's account map is worked out in a worker of its own and comes seconds after the rest, with tabs side by side longer: the
+  // page is measured once every worker has answered
+  await waitSettled(page, 30_000);
   const found = await page.evaluate(inspect, { MIN_TEXT_PX, MAX_COLOURS, scope: "main" });
   // panels behind tab cards are not in the page until their tab opens (the index page's "לפני שמחליטים"): each closed tab is opened in
   // turn and the charts of its panel alone are added
