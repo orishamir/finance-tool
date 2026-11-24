@@ -67,7 +67,7 @@
 //            from the kept point onto a figure in its box and clicking it, whose sheet does not open; a second click that
 //            does not move the kept point or its box; a click on it or Escape that does not let it go with its box; arrow keys that keep no
 //            point or do not move it; a name inside an area, or a legend item, that does not set its area apart (the areas' colours), or a
-//            name's click that keeps a point; the pointer over an area that does not lighten it; the band's words missing; the line where
+//            name's click that keeps a point; the pointer over the band or an area that lights any of the map; the band's words missing; the line where
 //            two areas are equal missing, or drawn only along the grid (no piece of it slanted); a guide missing along either axis; the
 //            bottom edge's line not drawn as a thin band at the plot's foot in more than one colour. At 390 with a
 //            finger: a tap that keeps no point, a tap on it that does not let it go, and a finger moving up the map that keeps a point or
@@ -1565,11 +1565,28 @@ async function regionCheck(browser, base) {
     await page.evaluate(settled, TIMERS_MS);
     if ((await painted("areas")).sum === before) found.push("region: a legend item does not set its area apart");
     await legend.click();
-    // the clicks may have scrolled the page: the plot where it stands now
+    // the pointer over the map, in the band and in a clear area, lights nothing: the areas are a coarse grid smoothed under a band drawn
+    // at the screen's pixels, and lighting one area's nodes drew the grid's cells as a staircase at the band's edge
     const now = await svg.boundingBox();
-    await page.mouse.move(now.x + now.width * 0.2, now.y + now.height * 0.2);
-    await page.evaluate(settled, TIMERS_MS);
-    if ((await painted("areas")).sum === before) found.push("region: the pointer over an area does not lighten it");
+    const bandAt = await map.locator('canvas[data-mark="band"]').evaluate((c) => {
+      const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data;
+      for (let y = Math.floor(c.height * 0.2); y < c.height; y += 3)
+        for (let x = Math.floor(c.width * 0.2); x < c.width; x += 3) if (d[(y * c.width + x) * 4 + 3] > 0) {
+          const b = c.getBoundingClientRect();
+          return { x: b.x + (x / c.width) * b.width, y: b.y + (y / c.height) * b.height };
+        }
+      return null;
+    });
+    // measured with the pointer off the map and off the legend, whose item under it sets its area apart
+    await page.mouse.move(1, 1);
+    await page.evaluate(settled);
+    const bandBefore = (await painted("band")).sum;
+    for (const at of [...(bandAt ? [bandAt] : []), { x: now.x + now.width * 0.2, y: now.y + now.height * 0.2 }]) {
+      await page.mouse.move(at.x, at.y);
+      await page.evaluate(settled);
+      if ((await painted("areas")).sum !== before || (await painted("band")).sum !== bandBefore) found.push(`region: the pointer at (${Math.round(at.x)}, ${Math.round(at.y)}) lights part of the map, along the grid's cells`);
+    }
+    if (!bandAt) found.push("region: no point of the band found to point at");
     await page.mouse.move(r.x - 40, r.y - 40);
     if (await map.locator("svg text", { hasText: "בערך אותו דבר" }).count()) found.push("region: the words for the band stand on the plot, not in the legend");
     // the demo's band: A and C about the same around one line, C and B around the other, A and B nowhere: two legend items, each

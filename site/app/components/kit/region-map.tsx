@@ -9,7 +9,8 @@
 // point (the reader's own) has dashed guides from it along each axis; and a value of the bottom edge is drawn apart as a thick line in the
 // smooth mix alone, each area along it named over its stretch where the words fit. The x axis grows left to right and the y axis up from 0
 // (charts.md).
-// The pointer reads any point: on a computer a box follows it and the area under it lightens; a click or a tap keeps a point (its mark and
+// The pointer reads any point: on a computer a box follows it (nothing is lit under it: the areas are a coarse grid smoothed by the browser
+// under a band drawn at the screen's pixels, and lighting one area's nodes showed the grid's cells at the band's edge); a click or a tap keeps a point (its mark and
 // its box stay, and the box's figures can be tapped), a second one elsewhere moves it, and a tap on it or Escape lets it go. The map takes
 // the focus, and the arrow keys move the kept point (from the marked one; with Shift in larger steps). A legend item or an area's name sets
 // that area apart while pointed at, and keeps it on a click or a tap, without keeping a point.
@@ -97,8 +98,7 @@ const RIGHT = 16;
 const EDGE_PX = 6;
 /** A finger's or a pointer's reach around a point: the site's touch size, 44 px across. */
 const REACH = 22;
-/** How much an area is lightened under the pointer, and how far a set-back area fades into the card. */
-const LIT = 0.28;
+/** How far a set-back area fades into the card. */
 const DIMMED = 0.75;
 /** A name stands where its area leads by θ or more (F-80: under it the two are a tie). */
 const CLEAR = 1;
@@ -426,32 +426,19 @@ export function RegionMap({
   const fromPy = (py: number) => Math.min(max.y, Math.max(0, sy.invert(py)));
   const round = (p: RegionPoint): RegionPoint => [Math.round(p[0] / snap.x) * snap.x, Math.round(p[1] / snap.y) * snap.y];
 
-  // the node of the field nearest a point, and of the edge
-  const nodeAt = (p: RegionPoint): number => {
-    const i = Math.round((p[0] / max.x) * (field.cols - 1));
-    const j = Math.round(((p[1] - field.from) / (max.y - field.from)) * (field.rows - 1));
-    return Math.min(field.rows - 1, Math.max(0, j)) * field.cols + Math.min(field.cols - 1, Math.max(0, i));
-  };
-  const areaAt = (p: RegionPoint): number | null => {
-    const f = p[1] < field.from ? edge.first[Math.round((p[0] / max.x) * (edge.cols - 1))] : field.first[nodeAt(p)];
-    return f === undefined || f < 0 ? null : f;
-  };
-
-  const lit = hover && !hover.onMark ? areaAt(hover.p) : null;
   const active = pick.active === null ? -1 : areas.findIndex((a) => a.id === pick.active);
-  // the canvases, painted again when the field, the area set apart or the one under the pointer changes; each colour read from the page
+  // the canvases, painted again when the field or the area set apart changes; each colour read from the page
   useEffect(() => {
     const host = ref.current;
     if (!host) return;
-    const [card = [0, 0, 0], light = [255, 255, 255], ...tones] = coloursOf(host, ["text-card", "text-foreground", ...areas.map((a) => INK[a.tone])]);
+    const [card = [0, 0, 0], ...tones] = coloursOf(host, ["text-card", ...areas.map((a) => INK[a.tone])]);
     const colour = (k: number): Rgb => {
       const c = tones[k] ?? card;
-      if (active >= 0 && k !== active) return mixRgb(c, card, DIMMED);
-      return k === lit ? mixRgb(c, light, LIT) : c;
+      return active >= 0 && k !== active ? mixRgb(c, card, DIMMED) : c;
     };
     if (plane.current) paint(plane.current, field, colour, card, false);
     if (line.current) paint(line.current, edge, colour, card, true);
-  }, [ref, areas, field, edge, active, lit]);
+  }, [ref, areas, field, edge, active]);
   // the band over the areas, painted at the screen's own pixels so its stripes stay sharp: again when the field, its size or the area set
   // apart changes, never as the pointer moves; the stripes' weight and period are the theme's
   const plotW = right - left;
