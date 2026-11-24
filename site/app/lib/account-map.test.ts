@@ -339,6 +339,24 @@ describe("the account map (F-131)", () => {
     expect(all - asked).toBeLessThan(10 * 200);
   });
 
+  it("a stretch in the middle of a line where the other account is clearly cheaper, and no equal point at a step", () => {
+    // B leaves 1% more than A from 30,000 ₪ to 70,000 ₪ today and 1% less elsewhere: clearly cheaper only in that stretch, so no switch;
+    // its gap jumps across zero at each end, where the two never leave the same amount
+    const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
+    const middle = { a: base, b: (a: number, m: number) => base(a, m) * (a > 30_000 && a < 70_000 ? 1.01 : 0.99) };
+    const got = mapOf(middle, { amount: 10_000, monthly: 200 });
+    expect(got.plan.lead).toEqual({ kind: "clear", first: "a" });
+    expect(got.switches.amount).toBeNull();
+    const st = need(got.stretches.amount, "the stretch along today's amount");
+    expect([st.dir, st.to]).toEqual(["up", "b"]);
+    expect(st.lo).toBeCloseTo(30_000, -1);
+    expect(st.hi).toBeCloseTo(70_000, -1);
+    expect(got.equal.amount).toBeNull();
+    expect(got.stretches.monthly).toBeNull();
+    // the axis runs past the stretch's far end with room: 1.5 × 70,000 = 105,000, up to 150,000
+    expect(got.max.amount).toBe(150_000);
+  });
+
   it("a lead just short of θ is never rounded into a clear lead", () => {
     // B leaves 0.9997 θ less than A everywhere: about the same at every node, the edge's included
     const base = (a: number, m: number) => left(a, m, 0.01 * a + m);

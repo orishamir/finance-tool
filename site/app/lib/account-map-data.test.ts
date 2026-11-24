@@ -173,7 +173,7 @@ describe("a plan of nothing at all on the collected data", () => {
 });
 
 describe("the guides from the plan on the default S&P 500 plan", () => {
-  it("runs one along each axis, to its switch, else to where the two accounts are equal", () => {
+  it("runs one along each axis, to its switch, else to a stretch where another is clearly cheaper, else to where the two are equal", () => {
     const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
     const plan = planAt(10_000, 500, 10);
     const pick = need(pickOfHeadline(buildInvest({ bundle, index, plan })), "the page's pair");
@@ -182,12 +182,14 @@ describe("the guides from the plan on the default S&P 500 plan", () => {
     const out = shown(html(createElement(AccountMapPanel, { view: buildInvest({ bundle, index, plan }), bundle, house: pick.house, map, on: { bundle, ask: { index, plan, fund: pick.fund } } })));
     const bare = (x: string) => x.replace(/[\u2060\u2066-\u2069]/g, "");
     const plain = bare(out);
-    // whatever the data says, a guide along each axis: to a switch, else to the equal point, as the map has them
+    // whatever the data says, a guide along each axis: to a switch, else to a stretch, else to the equal point, as the map has them
     for (const axis of ["amount", "monthly"] as const) {
       const s = map.switches[axis];
+      const st = map.stretches[axis];
       const e = map.equal[axis];
       const unit = axis === "monthly" ? ` ${invest.before.map.perMonth}` : "";
       if (s) expect(plain).toContain(bare(`${invest.before.map.about}${fmt.nisRough(s.at)}${unit}`));
+      else if (st) expect(plain).toContain(bare(`${invest.before.map.between}${fmt.nisRough(st.lo)}`));
       else if (e) expect(plain).toContain(bare(`${invest.before.map.equalAt}${fmt.nisRough(e.at)}${unit}`));
     }
     // with no point kept, nothing under the map

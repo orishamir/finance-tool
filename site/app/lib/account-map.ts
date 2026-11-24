@@ -37,6 +37,16 @@ export interface MapSwitch {
   to: string;
 }
 
+/** A stretch of one of the plan's lines where another account is clearly cheaper than the plan's, though not to the end of the search (so
+ *  no switch): from `lo` to `hi` shekels (today's amount, or a month), `to` being the account clearly cheaper there. */
+export interface MapStretch {
+  lo: number;
+  hi: number;
+  /** Up: at more than the plan's own value; down: at less. */
+  dir: "up" | "down";
+  to: string;
+}
+
 /** The plan's own point: no money at all, one account at least θ ahead of every other, or several within θ of the first (the first first). */
 type PlanLead = { kind: "empty" } | { kind: "clear"; first: string } | { kind: "near"; tied: [string, string, ...string[]] };
 
@@ -68,6 +78,8 @@ export interface AccountMap {
   /** The nearest point along today's amount (the monthly deposit held), and along the monthly deposit, where another account becomes clearly
    *  cheaper and stays so to the end of the search, up or down. */
   switches: { amount: MapSwitch | null; monthly: MapSwitch | null };
+  /** Along a line with no switch, the stretch nearest the plan where another account is clearly cheaper, as the line's samples find it. */
+  stretches: { amount: MapStretch | null; monthly: MapStretch | null };
   /** Up each of the plan's lines from the plan, the first points where its reading changes, within the search's reach: where the plan's
    *  first stops being θ ahead (`band`; null where it is not θ ahead at the plan) and where another account leaves more (`even`). */
   changes: { amount: LineChanges; monthly: LineChanges };
@@ -82,6 +94,9 @@ interface LineChanges {
   even: number | null;
 }
 
+/** An equal point is named only where the leads either side of it are each under this share of θ: where the gap jumps across zero (a step
+ *  in a price list), the two never leave the same amount. */
+const EVEN_JUMP = 0.25;
 /** The coarse grid's cells along each axis, and how many times a cell is split in four at most. */
 const COARSE = 6;
 const DEPTH = 4;
@@ -205,28 +220,60 @@ function switchAlong(line: Line | null, order: readonly string[], theta: number,
   const samples = line.samples();
   const failing = (holds: (string | null)[]) => holds.findLastIndex((h) => h === null);
   const k = failing(samples.map((s) => clearOf(s.left, order, tied, theta)));
-  let lo = samples[k]?.v ?? line.own;
-  let hi = samples[k + 1]?.v ?? line.end;
   const test = (v: number) => clearOf(line.price(v), order, tied, theta);
+  const hi = narrow(samples[k]?.v ?? line.own, samples[k + 1]?.v ?? line.end, (v) => test(v) !== null);
+  const to = test(hi);
+  return to && hi >= floor ? { at: hi, dir: line.dir, to } : null;
+}
+
+/**
+ * The edge between a point `out` where `holds` fails and a point `inn` where it holds, the first point on the way in past which it holds:
+ * twice FINE_SAMPLES − 1 points between them, the last that fails each time and the next, then halving. It holds at every sample, not
+ * between samples. Returns the point on the side where it holds.
+ */
+function narrow(out: number, inn: number, holds: (v: number) => boolean): number {
+  let [lo, hi] = [out, inn];
   for (let round = 0; round < FINE_ROUNDS; round++) {
     const fine = Array.from({ length: FINE_SAMPLES - 1 }, (_, f) => lo + ((hi - lo) * (f + 1)) / FINE_SAMPLES);
-    const f = failing(fine.map(test));
+    const f = fine.findLastIndex((v) => !holds(v));
     lo = fine[f] ?? lo;
     hi = fine[f + 1] ?? hi;
   }
   for (let i = 0; i < BISECT; i++) {
     const mid = (lo + hi) / 2;
-    if (test(mid)) hi = mid;
+    if (holds(mid)) hi = mid;
     else lo = mid;
   }
-  const to = test(hi);
-  return to && hi >= floor ? { at: hi, dir: line.dir, to } : null;
+  return hi;
+}
+
+/**
+ * The first stretch along one of the plan's lines, one way, where an account clearly beats the plan's accounts (`clearOf`) though not to the
+ * line's end: the first of the line's samples where it does and the run of samples after it where the same account does, each end narrowed
+ * from the sample outside it as a switch is (`narrow`). Null where no sample reads so, and where the stretch starts under `floor`.
+ */
+function stretchAlong(line: Line | null, order: readonly string[], theta: number, tied: readonly string[], floor: number): MapStretch | null {
+  if (!line) return null;
+  const samples = line.samples();
+  const holds = samples.map((sm) => clearOf(sm.left, order, tied, theta));
+  const k = holds.findIndex((h) => h !== null);
+  const to = holds[k];
+  const first = samples[k];
+  if (!to || !first) return null;
+  let e = k;
+  while (holds[e + 1] === to) e++;
+  const test = (v: number) => clearOf(line.price(v), order, tied, theta) === to;
+  const start = narrow(samples[k - 1]?.v ?? line.own, first.v, test);
+  const after = samples[e + 1];
+  const end = after ? narrow(after.v, samples[e]?.v ?? first.v, test) : line.end;
+  const [lo, hi] = [Math.min(start, end), Math.max(start, end)];
+  return lo >= floor ? { lo, hi, dir: line.dir, to } : null;
 }
 
 /** The first point along a line where `changed` holds of the reading there: the first sample where it does, narrowed by halving from the
  *  sample before it (the plan, for the first). Null where no sample to the line's end reads changed, and where the first change falls under
  *  `floor`: no money at all today, or a month, is a value of its own, and a change found only past it is that value's, not the line's. */
-function firstChange(line: Line | null, order: readonly string[], theta: number, floor: number, changed: (l: ReturnType<typeof leadOf>, left: ReadonlyMap<string, number>) => boolean): { at: number; lead: ReturnType<typeof leadOf> } | null {
+function firstChange(line: Line | null, order: readonly string[], theta: number, floor: number, changed: (l: ReturnType<typeof leadOf>, left: ReadonlyMap<string, number>) => boolean): { at: number; lead: ReturnType<typeof leadOf>; before: ReturnType<typeof leadOf> } | null {
   if (!line) return null;
   const samples = line.samples();
   const k = samples.findIndex((s) => changed(leadOf(s.left, order, theta), s.left));
@@ -240,7 +287,7 @@ function firstChange(line: Line | null, order: readonly string[], theta: number,
     if (changed(leadOf(left, order, theta), left)) hi = mid;
     else lo = mid;
   }
-  return hi >= floor ? { at: hi, lead: leadOf(line.price(hi), order, theta) } : null;
+  return hi >= floor ? { at: hi, lead: leadOf(line.price(hi), order, theta), before: leadOf(line.price(lo), order, theta) } : null;
 }
 
 /**
@@ -260,6 +307,12 @@ function surveyNodes(reachA: number, reachM: number): { at: MapPoint; all: boole
 function nearer(own: number, up: MapSwitch | null, down: MapSwitch | null): MapSwitch | null {
   if (!up || !down) return up ?? down;
   return Math.abs(up.at - own) <= Math.abs(down.at - own) ? up : down;
+}
+
+/** The nearer of a stretch up and a stretch down, by the end of each nearer the plan. */
+function nearerStretch(own: number, up: MapStretch | null, down: MapStretch | null): MapStretch | null {
+  if (!up || !down) return up ?? down;
+  return up.lo - own <= own - down.hi ? up : down;
 }
 
 /** The blend of the corners' figures at (u, w) inside a cell, 0 to 1 from its first corner, for every account priced at all four. */
@@ -319,6 +372,11 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     amount: nearer(plan.amount, up.amount, switchAlong(lines.amount.down, order, theta, tied)),
     monthly: nearer(plan.monthly, up.monthly, switchAlong(lines.monthly.down, order, theta, tied)),
   };
+  // along a line with no switch either way, the nearest stretch where another account is clearly cheaper all the same
+  const stretchOn = (axis: "amount" | "monthly") =>
+    switches[axis] ? { up: null, down: null } : { up: stretchAlong(lines[axis].up, order, theta, tied, floor[axis]), down: stretchAlong(lines[axis].down, order, theta, tied, 0) };
+  const stretchBy = { amount: stretchOn("amount"), monthly: stretchOn("monthly") };
+  const stretches = { amount: nearerStretch(plan.amount, stretchBy.amount.up, stretchBy.amount.down), monthly: nearerStretch(plan.monthly, stretchBy.monthly.up, stretchBy.monthly.down) };
   const planFirst = lead.kind === "clear" ? lead.first : lead.kind === "near" ? lead.tied[0] : null;
   // where another account first leaves more than the plan's first, up or down a line: there the two leave the same. Where the plan's first
   // has no ranked price it is not compared (F-80), so its reading has not changed there
@@ -326,7 +384,9 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const evenOn = (line: Line | null, at: number): MapSwitch | null => {
     const c = firstChange(line, order, theta, at, (l, left) => firstPriced(left) && l?.first !== planFirst);
     const to = c?.lead?.first;
-    return line && c && to ? { at: c.at, dir: line.dir, to } : null;
+    // where the gap jumps across zero rather than passing through it, the two never leave the same amount
+    const through = !!c && (c.lead?.ahead ?? 1) < EVEN_JUMP && (c.before?.ahead ?? 1) < EVEN_JUMP;
+    return line && c && to && through ? { at: c.at, dir: line.dir, to } : null;
   };
   const evenUp = { amount: evenOn(lines.amount.up, floor.amount), monthly: evenOn(lines.monthly.up, floor.monthly) };
   const changesUp = (line: Line | null, at: number, even: MapSwitch | null): LineChanges => ({
@@ -337,16 +397,17 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const equal = { amount: nearer(plan.amount, evenUp.amount, evenOn(lines.amount.down, floor.amount)), monthly: nearer(plan.monthly, evenUp.monthly, evenOn(lines.monthly.down, floor.monthly)) };
 
   // ------------------------------------------------ the axes
-  // past the plan and the farthest change up its line with room (the band's near edge, the even point, the switch up), at a clean value;
+  // past the plan and the farthest change up its line with room (the band's near edge, the even point, the switch up, the far end of a
+  // stretch up where another account is clearly cheaper), at a clean value;
   // at least a tenth of the sliders' reach where something changes up the line and a quarter where nothing does; at most the search's reach
   const capA = cleanUp(Math.max(reachA, ROOM * plan.amount));
   const capM = cleanUp(Math.max(reachM, ROOM * plan.monthly));
-  const axisEnd = (own: number, c: LineChanges, s: MapSwitch | null, r: number, cap: number) => {
-    const far = Math.max(c.band ?? 0, c.even ?? 0, s?.at ?? 0);
+  const axisEnd = (own: number, c: LineChanges, s: MapSwitch | null, st: MapStretch | null, r: number, cap: number) => {
+    const far = Math.max(c.band ?? 0, c.even ?? 0, s?.at ?? 0, st?.hi ?? 0);
     return Math.min(cleanUp(Math.max(ROOM * Math.max(own, far), r * (far > 0 ? SPAN_CHANGING : SPAN_STILL))), cap);
   };
-  const baseA = axisEnd(plan.amount, changes.amount, up.amount, reach.amount, capA);
-  const baseM = axisEnd(plan.monthly, changes.monthly, up.monthly, reach.monthly, capM);
+  const baseA = axisEnd(plan.amount, changes.amount, up.amount, stretchBy.amount.up, reach.amount, capA);
+  const baseM = axisEnd(plan.monthly, changes.monthly, up.monthly, stretchBy.monthly.up, reach.monthly, capM);
   // then wider where an account is clearly first somewhere within the reach past those ends (the survey's nodes there) and nowhere inside
   // them: to the point nearest to 0 where it still is, along the line from 0 to its node that asks for the least room, with the same room,
   // so the account has an area large enough to see and to name. Of two nodes that ask for as much, the one with less a month: today's
@@ -512,5 +573,5 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     // to a thousandth, rounded down, so a lead short of θ never reads as θ ahead
     ahead: ls.map((l) => (l ? Math.floor(l.ahead * 1000) / 1000 : 1)),
   });
-  return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, field: fieldOf(leads, N + 1, N + 1), edge: fieldOf(edgeLeads, N + 1, 1), switches, changes, equal };
+  return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, field: fieldOf(leads, N + 1, N + 1), edge: fieldOf(edgeLeads, N + 1, 1), switches, stretches, changes, equal };
 }

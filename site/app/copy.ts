@@ -4179,6 +4179,9 @@ export const invest = {
        *  joiner after the maqaf keeps "כ־" on the line of its figure. */
       above: "מעל כ־\u2060",
       below: "מתחת לכ־\u2060",
+      /** A stretch of a line where another account is clearly cheaper, though not past it: "בין כ־30 אלף ₪ לכ־70 אלף ₪". */
+      between: "בין כ־\u2060",
+      betweenTo: " לכ־\u2060",
       /** Before a figure said roughly, alone: "כ־108 אלף ₪". */
       about: "כ־\u2060",
       /** A guide's words where it ends on the line where two accounts are equal: "שווים בכ־2,460 ₪ בחודש". */
@@ -4241,6 +4244,7 @@ export const invest = {
       onlyOne: "אין חשבון אחר שמוכר את הקרן",
       /** The sheets of the map's figures. */
       switchAbout: "הסכום שממנו חשבון אחר זול יותר בבירור",
+      tillAbout: "הסכום שעד אליו חשבון אחר זול יותר בבירור",
       equalAbout: "הסכום שבו שני החשבונות משאירים אותו דבר",
       leftAbout: (w: string) => `מה שנשאר בחשבון ${w}, בהתחשב באינפלציה`,
       gapAbout: (w: string) => `כמה פחות נשאר בחשבון הזה מאשר ב${w}`,

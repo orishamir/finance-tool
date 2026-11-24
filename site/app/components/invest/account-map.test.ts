@@ -7,7 +7,7 @@ import { mapWords } from "./account-map";
 
 const names: Record<string, string> = { psagot: "פסגות", ibi: "אי.בי.אי", "one-zero": "וואן זירו" };
 const grid = { cols: 0, rows: 0, first: [], second: [], ahead: [] };
-const base: AccountMap = { max: { amount: 200_000, monthly: 4000 }, bottom: 40, plan: { amount: 10_000, monthly: 500, lead: { kind: "clear", first: "psagot" } }, accounts: ["psagot", "ibi", "one-zero"], field: grid, edge: grid, switches: { amount: null, monthly: null }, changes: { amount: { band: null, even: null }, monthly: { band: null, even: null } }, equal: { amount: null, monthly: null } };
+const base: AccountMap = { max: { amount: 200_000, monthly: 4000 }, bottom: 40, plan: { amount: 10_000, monthly: 500, lead: { kind: "clear", first: "psagot" } }, accounts: ["psagot", "ibi", "one-zero"], field: grid, edge: grid, switches: { amount: null, monthly: null }, stretches: { amount: null, monthly: null }, changes: { amount: { band: null, even: null }, monthly: { band: null, even: null } }, equal: { amount: null, monthly: null } };
 const up = (at: number, to = "ibi"): MapSwitch => ({ at, dir: "up", to });
 /** The card's answer and line and the headline, as plain words (the isolates a figure keeps its order with, and the joiner that keeps "כ־" on its figure's line, set aside). */
 function said(map: AccountMap, house = "psagot") {
@@ -60,6 +60,19 @@ describe("the account map's words", () => {
       note: "אף חשבון לא זול יותר בבירור בסכום אחר",
       head: "בתוכנית שלכם פסגות הכי זול. אף חשבון אחר לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת.",
     });
+  });
+
+  it("another account clearly cheaper only in a stretch of a line: its two ends", () => {
+    const stretch = { lo: 30_000, hi: 70_000, dir: "up" as const, to: "ibi" };
+    expect(said({ ...base, stretches: { amount: stretch, monthly: null } })).toEqual({
+      answer: "אי.בי.אי, בין כ־30 אלף ₪ לכ־70 אלף ₪",
+      note: "זול יותר בבירור: בהפרש של 0.5% לפחות",
+      head: "בתוכנית שלכם פסגות הכי זול. אי.בי.אי זול יותר בבירור בין כ־30 אלף ₪ לכ־70 אלף ₪ היום.",
+    });
+    // a switch on one line, a stretch on the other
+    expect(said({ ...base, switches: { amount: up(108_000), monthly: null }, stretches: { amount: null, monthly: { lo: 800, hi: 1500, dir: "up", to: "ibi" } } }).note).toBe(
+      "או בין כ־800 ₪ לכ־1,500 ₪ בחודש. זול יותר בבירור: בהפרש של 0.5% לפחות",
+    );
   });
 
   it("one account cheapest everywhere on the map", () => {

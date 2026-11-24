@@ -7,7 +7,7 @@
 // band, a switch one way or both, up or down, a plan with nothing in it, and a fund no account is ranked with.
 import { useMemo, type ReactNode } from "react";
 import { invest as c } from "../../copy";
-import type { AccountMap, MapField, MapSwitch } from "../../lib/account-map";
+import type { AccountMap, MapField, MapStretch, MapSwitch } from "../../lib/account-map";
 import { fmt } from "../../lib/format";
 import { fundWayAt, planInputs, providersOfInvest, tieShareOf, WHOLE_PLAN, type InvestView, type WayPrice } from "../../lib/invest";
 import { rankByValue } from "../../lib/rank";
@@ -39,41 +39,61 @@ export interface MapWords<F> {
   head: (string | F)[];
 }
 
+/** Where another account is clearly cheaper along one of the plan's lines: past a switch, or only in a stretch of it (F-131). */
+type LineChange = { kind: "switch"; s: MapSwitch } | { kind: "stretch"; s: MapStretch };
+/** Which figure of a change is written: a switch's, or a stretch's two ends. */
+export type ChangeFigure = "switch" | "from" | "till";
+
 /**
- * What the map says, for every case (F-131): `name` gives an account's short name, `fig` writes a switch's figure (plain words on the card,
- * a figure that opens its sheet in the panel), `house` is the receipt's account and `theta` the tie threshold as the card says it ("0.5%").
+ * What the map says, for every case (F-131): `name` gives an account's short name, `fig` writes a switch's or a stretch's figure (plain
+ * words on the card, a figure that opens its sheet in the panel), `house` is the receipt's account and `theta` the tie threshold as the
+ * card says it ("0.5%"). The words speak of the plan's own lines only, as the search reads them at its samples.
  */
-export function mapWords<F>(map: AccountMap, house: string, name: (id: string) => string, fig: (s: MapSwitch, axis: "amount" | "monthly") => F, theta: string): MapWords<F> {
+export function mapWords<F>(map: AccountMap, house: string, name: (id: string) => string, fig: (s: MapSwitch, axis: "amount" | "monthly", which: ChangeFigure) => F, theta: string): MapWords<F> {
   const lead = map.plan.lead;
   if (lead.kind === "empty") return { answer: [m.empty], note: [m.emptyNote], head: [m.headEmpty] };
-  const { amount: sa, monthly: sm } = map.switches;
-  // "מעל כ־108 אלף ₪", "מתחת לכ־2,400 ₪ בחודש": a switch's side, its figure and, a month's, its unit
-  const at = (s: MapSwitch, axis: "amount" | "monthly", today: boolean): (string | F)[] => [s.dir === "up" ? m.above : m.below, fig(s, axis), axis === "monthly" ? ` ${m.perMonth}` : today ? ` ${m.today}` : ""];
+  const changeOn = (axis: "amount" | "monthly"): LineChange | null => {
+    const sw = map.switches[axis];
+    const st = map.stretches[axis];
+    return sw ? { kind: "switch", s: sw } : st ? { kind: "stretch", s: st } : null;
+  };
+  const sa = changeOn("amount");
+  const sm = changeOn("monthly");
+  // "מעל כ־108 אלף ₪", "מתחת לכ־2,400 ₪ בחודש", "בין כ־30 אלף ₪ לכ־70 אלף ₪": a switch's side and its figure, or a stretch's two ends;
+  // a month's with its unit
+  const at = (c: LineChange, axis: "amount" | "monthly", today: boolean): (string | F)[] => {
+    const unit = axis === "monthly" ? ` ${m.perMonth}` : today ? ` ${m.today}` : "";
+    if (c.kind === "switch") return [c.s.dir === "up" ? m.above : m.below, fig(c.s, axis, "switch"), unit];
+    const { lo, hi, dir, to } = c.s;
+    return [m.between, fig({ at: lo, dir, to }, axis, "from"), m.betweenTo, fig({ at: hi, dir, to }, axis, "till"), unit];
+  };
   const first = sa ?? sm;
   const firstAxis = sa ? "amount" : "monthly";
   const second = sa && sm ? sm : null;
-  // the second switch: the same account ("או מעל כ־2,300 ₪ בחודש"), or another in words of its own ("וואן זירו זול יותר בבירור מעל …")
-  const then = (s: MapSwitch, to: string, where: "card" | "head"): (string | F)[] => (s.to === to ? [where === "card" ? `${m.or} ` : `, ${m.or} `] : [where === "card" ? `${name(s.to)} ` : `. ${m.cheaperFrom(name(s.to))} `]);
-  const switchesHead = (f: MapSwitch): (string | F)[] => [m.cheaperFrom(name(f.to)), " ", ...at(f, firstAxis, true), ...(second ? [...then(second, f.to, "head"), ...at(second, "monthly", true)] : []), "."];
+  // the second change: the same account ("או מעל כ־2,300 ₪ בחודש"), or another in words of its own ("וואן זירו זול יותר בבירור מעל …")
+  const then = (c: LineChange, to: string, where: "card" | "head"): (string | F)[] => (c.s.to === to ? [where === "card" ? `${m.or} ` : `, ${m.or} `] : [where === "card" ? `${name(c.s.to)} ` : `. ${m.cheaperFrom(name(c.s.to))} `]);
+  const switchesHead = (f: LineChange): (string | F)[] => [m.cheaperFrom(name(f.s.to)), " ", ...at(f, firstAxis, true), ...(second ? [...then(second, f.s.to, "head"), ...at(second, "monthly", true)] : []), "."];
 
   if (lead.kind === "near") {
     const names = lead.tied.map(name);
     const start = m.headNear(names);
     if (!first) return { answer: [m.near(names)], note: [m.nearStays], head: [start, " ", m.headNearStays] };
-    return { answer: [m.near(names)], note: [m.cheaperFrom(name(first.to)), " ", ...at(first, firstAxis, false)], head: [start, " ", ...switchesHead(first)] };
+    return { answer: [m.near(names)], note: [m.cheaperFrom(name(first.s.to)), " ", ...at(first, firstAxis, false)], head: [start, " ", ...switchesHead(first)] };
   }
 
   const w = name(lead.first);
   const mine = lead.first === house;
   const start = mine ? m.headCheapest(w) : m.headCheaper(w, name(house));
   const other = { answer: [m.already(w)], note: [m.insteadOf(name(house))] };
-  if (map.accounts.length === 1) return mine ? { answer: [m.noOther], note: [m.cheapestAll(w)], head: [start, " ", m.headAll] } : { ...other, head: [start, " ", m.headAll] };
-  if (!first) return mine ? { answer: [m.stays(w)], note: [m.staysNote], head: [start, " ", m.headStays] } : { ...other, head: [start, " ", m.headStays] };
+  if (!first) {
+    if (map.accounts.length === 1) return mine ? { answer: [m.noOther], note: [m.cheapestAll(w)], head: [start, " ", m.headAll] } : { ...other, head: [start, " ", m.headAll] };
+    return mine ? { answer: [m.stays(w)], note: [m.staysNote], head: [start, " ", m.headStays] } : { ...other, head: [start, " ", m.headStays] };
+  }
   const head = [start, " ", ...switchesHead(first)];
   if (!mine) return { ...other, head };
   return {
-    answer: [name(first.to), ", ", ...at(first, firstAxis, false)],
-    note: second ? [...then(second, first.to, "card"), ...at(second, "monthly", false), ". ", m.clearlyNote(theta)] : [m.clearlyNote(theta)],
+    answer: [name(first.s.to), ", ", ...at(first, firstAxis, false)],
+    note: second ? [...then(second, first.s.to, "card"), ...at(second, "monthly", false), ". ", m.clearlyNote(theta)] : [m.clearlyNote(theta)],
     head,
   };
 }
@@ -211,7 +231,7 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
     const inputs = { ...planInputs(plan, WHOLE_PLAN), ...Object.fromEntries(ways.map((w) => [m.leftAbout(shortOf(view, w.providerId)), w.value])) };
     return computed(Math.round(s.at), axis === "amount" ? "nis" : "nis_per_month", "F-131", inputs, { today, about, ...carriedBy(runs) });
   };
-  const figure = (s: MapSwitch, axis: "amount" | "monthly") => <Num value={pointValue(s, axis, m.switchAbout)} display={fmt.nisRough(s.at)} />;
+  const figure = (s: MapSwitch, axis: "amount" | "monthly", which: ChangeFigure) => <Num value={pointValue(s, axis, which === "till" ? m.tillAbout : m.switchAbout)} display={fmt.nisRough(s.at)} />;
   const words = mapWords<ReactNode>(map, house, (id) => shortOf(view, id), figure, thetaText(bundle));
   // a guide along each axis: to the switch, else to where the two are equal, else to the axis's end with no words
   const guides = (["amount", "monthly"] as const).map((axis) => {
@@ -219,7 +239,13 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
     const end = axis === "amount" ? map.max.amount : map.max.monthly;
     const unit = axis === "monthly" ? ` ${m.perMonth}` : "";
     const s = map.switches[axis];
-    if (s) return { axis: along, at: s.at, label: { text: `${m.about}${fmt.nisRough(s.at)}${unit}`, node: <>{m.about}{figure(s, axis)}{unit}</> } };
+    if (s) return { axis: along, at: s.at, label: { text: `${m.about}${fmt.nisRough(s.at)}${unit}`, node: <>{m.about}{figure(s, axis, "switch")}{unit}</> } };
+    // a stretch where another is clearly cheaper: the guide to its end nearer the plan, its words both ends
+    const st = map.stretches[axis];
+    if (st && Math.min(st.lo, st.hi) <= end) {
+      const [lo, hi] = [{ at: st.lo, dir: st.dir, to: st.to }, { at: st.hi, dir: st.dir, to: st.to }];
+      return { axis: along, at: st.dir === "up" ? st.lo : st.hi, label: { text: `${m.between}${fmt.nisRough(st.lo)}${m.betweenTo}${fmt.nisRough(st.hi)}${unit}`, node: <>{m.between}{figure(lo, axis, "from")}{m.betweenTo}{figure(hi, axis, "till")}{unit}</> } };
+    }
     const e = map.equal[axis];
     if (e && e.at <= end) return { axis: along, at: e.at, label: { text: `${m.equalAt}${fmt.nisRough(e.at)}${unit}`, node: <>{m.equalAt}<Num value={pointValue(e, axis, m.equalAbout)} display={fmt.nisRough(e.at)} />{unit}</> } };
     return { axis: along, at: end };
