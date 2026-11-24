@@ -170,6 +170,11 @@ describe("foreign funds on TASE (TXF-04)", () => {
       expect(r.statements).toEqual([stated]);
       expect(ids(r)).not.toContain("TXF-04");
       expect(r.outcome).toEqual({ code: "eligible" });
+      // on a fall the stated index rests on TXS-02 alone, the statement in place of the rule that makes the exchange rate the index (F-09)
+      if (market.fxChange < 0) {
+        expect(ids(r)).toContain("TXS-02");
+        expect(ids(r)).not.toContain("TXF-03");
+      }
     }
   });
 
