@@ -74,8 +74,7 @@ function amountsAt(pc: PairCosts, scale: number, paidInGiven: number): ReceiptAm
 
 /**
  * One of the account's lines as the receipt writes them, with its whole shekels from `ReceiptAmounts`: a deal's own fee (F-128), a price
- * list's line, or the remainder no single line explains. The receipt and "לאן הולכות העמלות" both draw these, so the two always show the
- * same lines with the same figures, whether the account is a house's price list or the person's deal.
+ * list's line, or the remainder no single line explains, whether the account is a house's price list or the person's deal.
  */
 export type AccountLine =
   | { kind: "deal"; key: string; fee: string; name: string; cost: SiteValue; amount: number }
