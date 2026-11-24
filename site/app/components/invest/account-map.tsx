@@ -5,7 +5,7 @@
 // point. Everything the panel reads is the fund and plan the map shown was worked out for, so a map still shown while the next is worked out
 // never reads another fund. Its words cover every case: one account cheapest everywhere, the plan clearly in one account's area or in the
 // band, a switch one way or both, up or down, a plan with nothing in it, and a fund no account is ranked with.
-import { useMemo, type ReactNode } from "react";
+import { Fragment, memo, useMemo, type ReactNode } from "react";
 import { invest as c } from "../../copy";
 import type { AccountMap, MapField, MapStretch, MapSwitch } from "../../lib/account-map";
 import { fmt } from "../../lib/format";
@@ -18,7 +18,7 @@ import { rankedAt } from "../../lib/stretch";
 import { asParameter, carriedBy, computed, differenceOf, entered, type SiteValue } from "../../lib/value";
 import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
-import { MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
+import { MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionGuide, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
 import { providerName } from "./sections";
 import { allFunds, type Pick } from "./pair";
 
@@ -230,7 +230,12 @@ export function NoMapPanel({ why }: { why: "open-rule" | "unpriced" }) {
   return <PanelHead kicker={m.question} sub={<p className="text-sm text-muted-foreground">{m.unrankedWhy[why]}.</p>}>{m.unranked}</PanelHead>;
 }
 
-export function AccountMapPanel({ view, bundle, house, map, on }: { view: InvestView; bundle: IndicesBundle; house: string; map: AccountMap; on: Asked<"map"> }) {
+/**
+ * The panel of the map. Memoised, as are the words and guides it hands the map: the section around it renders on every move of a plan's
+ * slider (the receipt's live figures), while the map, its words and the figures each switch prices change only with a new map; a guide
+ * that changed would make the map place its words again, a search over the plot.
+ */
+export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, house, map, on }: { view: InvestView; bundle: IndicesBundle; house: string; map: AccountMap; on: Asked<"map"> }) {
   const { plan, fund } = on.ask;
   const fundName = allFunds(view).find((f) => f.rec.id === fund)?.name ?? fund;
   const thetaFig = thetaValue(bundle);
@@ -238,11 +243,21 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
 
   const { areas, toneOf, field, edge } = useMemo(() => areasOf(view, map), [view, map]);
 
-  const pointValue = (s: MapSwitch, axis: "amount" | "monthly", about: string) => mapPointValue(view, on, map, s, axis, about);
-  const figure = (s: MapSwitch, axis: "amount" | "monthly", which: ChangeFigure) => <Num value={pointValue(s, axis, which === "till" ? m.tillAbout : m.switchAbout)} display={fmt.nisRough(s.at)} />;
-  const words = mapWords<ReactNode>(map, house, (id) => shortOf(view, id), figure, thetaText(bundle));
-  // a guide along each axis: to the switch, else to where the two are equal, else to the axis's end with no words
-  const guides = (["amount", "monthly"] as const).map((axis) => {
+  const { head, guides, mark, edgeLabel } = useMemo(() => {
+    // each figure priced once, though the card's words and a guide both write it
+    const priced = new Map<string, SiteValue>();
+    const pointValue = (s: MapSwitch, axis: "amount" | "monthly", about: string) => {
+      const k = `${axis}|${s.at}|${about}`;
+      const had = priced.get(k);
+      if (had) return had;
+      const v = mapPointValue(view, on, map, s, axis, about);
+      priced.set(k, v);
+      return v;
+    };
+    const figure = (s: MapSwitch, axis: "amount" | "monthly", which: ChangeFigure) => <Num value={pointValue(s, axis, which === "till" ? m.tillAbout : m.switchAbout)} display={fmt.nisRough(s.at)} />;
+    const words = mapWords<ReactNode>(map, house, (id) => shortOf(view, id), figure, thetaText(bundle));
+    // a guide along each axis: to the switch, else to a stretch, else to where the two are equal, else to the axis's end with no words
+    const guides = (["amount", "monthly"] as const).map((axis): RegionGuide => {
     const along = axis === "amount" ? ("x" as const) : ("y" as const);
     const end = axis === "amount" ? map.max.amount : map.max.monthly;
     const unit = axis === "monthly" ? ` ${m.perMonth}` : "";
@@ -257,7 +272,15 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
     const e = map.equal[axis];
     if (e && e.at <= end) return { axis: along, at: e.at, label: { text: `${m.equalAt}${fmt.nisRough(e.at)}${unit}`, node: <>{m.equalAt}<Num value={pointValue(e, axis, m.equalAbout)} display={fmt.nisRough(e.at)} />{unit}</> } };
     return { axis: along, at: end };
-  });
+    });
+    return {
+      // the headline's words and figures, each its own child
+      head: words.head.map((x, k) => <Fragment key={k}>{x}</Fragment>),
+      guides,
+      mark: { at: [map.plan.amount, map.plan.monthly] as const, label: { text: m.plan } },
+      edgeLabel: (id: string | null) => ({ text: id === null ? m.noDepositSame : m.noDeposit(shortOf(view, id)) }),
+    };
+  }, [view, bundle, house, map, on]);
 
   const reading = useMemo(() => readerOf(view, bundle, on, toneOf), [view, bundle, on, toneOf]);
 
@@ -276,7 +299,7 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
           </p>
         }
       >
-        {words.head}
+        {head}
       </PanelHead>
       {/* a new map is another chart: a point kept on the old one goes with it */}
       <RegionMap
@@ -285,9 +308,9 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
         areas={areas}
         field={field}
         edge={edge}
-        edgeLabel={(id) => ({ text: id === null ? m.noDepositSame : m.noDeposit(shortOf(view, id)) })}
+        edgeLabel={edgeLabel}
         bandLabel={{ text: m.same, pair: m.samePair }}
-        mark={{ at: [map.plan.amount, map.plan.monthly], label: { text: m.plan } }}
+        mark={mark}
         guides={guides}
         xTitle={m.xTitle}
         yTitle={m.yTitle}
@@ -298,7 +321,7 @@ export function AccountMapPanel({ view, bundle, house, map, on }: { view: Invest
       />
     </div>
   );
-}
+});
 
 /** The step a read point is rounded to: a power of ten about a fiftieth of the axis (1,000 ₪ on 200,000, 10 ₪ on 4,000). */
 const snapOf = (max: number) => 10 ** Math.floor(Math.log10(max / 50));
