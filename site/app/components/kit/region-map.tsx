@@ -595,19 +595,21 @@ export function RegionMap({
       { x: mxL - 12 - markTw, y: myL + 4, w: markTw, h: LINE },
       ...[myL - 26, myL - 46].map((y) => ({ x: inside(mxL + 8, markTw), y, w: markTw, h: LINE })),
     ], [mxL, myL]);
-    // each guide's dot and its words beside it: over the dashed line or under it, after the dot or before it
+    // each guide's dot and its words beside it: over the dashed line or under it, after the dot or before it; where no place near it is
+    // clear of the lines and of the words before them, the guide has no words (its figure is in the headline the map stands under), as a
+    // guide shorter than the dot has none: words a line runs through are hard to read and stand away from the point they name
     const guideDraw = shown.map((g) => {
       const gx = g.axis === "x" ? sxL(g.at) : mxL;
       const gy = g.axis === "x" ? myL : syL(g.at);
       if (!g.label) return { g, gx, gy, box: null };
       const tw = chartTextWidth(g.label.text);
       // beside the dot, over or under its line, else held inside the plot where the words are wider than the room beside it
-      const box = place(
+      const tries =
         g.axis === "x"
           ? [gy - 24, gy + 4, gy - 46].flatMap((y) => [{ x: gx + 8, y, w: tw, h: LINE }, { x: gx - 8 - tw, y, w: tw, h: LINE }, { x: inside(gx - tw / 2, tw), y, w: tw, h: LINE }])
-          : [gy - 10, gy - 30, gy + 10].flatMap((y) => [{ x: gx + 8, y, w: tw, h: LINE }, { x: gx - 8 - tw, y, w: tw, h: LINE }, { x: inside(gx + 8, tw), y, w: tw, h: LINE }]),
-        [gx, gy],
-      );
+          : [gy - 10, gy - 30, gy + 10].flatMap((y) => [{ x: gx + 8, y, w: tw, h: LINE }, { x: gx - 8 - tw, y, w: tw, h: LINE }, { x: inside(gx + 8, tw), y, w: tw, h: LINE }]);
+      const box = clearOf(tries) ?? (tries[0] ? clearOf(around(tries[0], [gx, gy])) : undefined) ?? null;
+      if (box) placed.push(box);
       return { g, gx, gy, box };
     });
 

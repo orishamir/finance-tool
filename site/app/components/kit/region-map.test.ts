@@ -165,6 +165,14 @@ describe("the legend's items for the band", () => {
     expect(out.match(/data-mark="guide"/g)).toHaveLength(1);
   });
 
+  it("writes no words for a guide where no place near its dot is clear, its line and dot drawn all the same", () => {
+    // words wider than the plot fit nowhere inside it
+    const long = "the words of a guide far wider than the plot ".repeat(12);
+    const out = legendOf(planeGrid(), undefined, [{ axis: "x", at: 60, label: { text: long } }]);
+    expect(out).not.toContain(long.slice(0, 40));
+    expect(out.match(/data-mark="guide"/g)).toHaveLength(1);
+  });
+
   it("names each pair whose band shows, the earlier area first, with the pair in its title", () => {
     const g = planeGrid();
     // every node of this plane is within θ
