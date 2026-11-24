@@ -39,7 +39,7 @@ export interface MapSwitch {
 
 /** A stretch of one of the plan's lines where another account is clearly cheaper than the plan's, though not to the end of the search (so
  *  no switch): from `lo` to `hi` shekels (today's amount, or a month), `to` being the account clearly cheaper there. */
-export interface MapStretch {
+interface MapStretch {
   lo: number;
   hi: number;
   /** Up: at more than the plan's own value; down: at less. */

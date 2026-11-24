@@ -4175,78 +4175,44 @@ export const invest = {
      * figure said roughly comes as `rough` ("108 אלף ₪", fmt.nisRough) and is said after "כ־".
      */
     map: {
-      question: "מתי חשבון אחר זול יותר?",
-      kicker: "מתי חשבון אחר זול יותר:",
-      /** A switch: "מעל כ־108 אלף ₪", "מתחת לכ־2,400 ₪"; a monthly one adds "בחודש", one of today's amount "היום" in the headline. A word
-       *  joiner after the maqaf keeps "כ־" on the line of its figure. */
-      above: "מעל כ־\u2060",
-      below: "מתחת לכ־\u2060",
-      /** A stretch of a line where another account is clearly cheaper, though not past it: "בין כ־30 אלף ₪ לכ־70 אלף ₪". */
+      question: "מי הכי זול בתוכניות דומות?",
+      kicker: "החשבון הכי זול בכל תוכנית, עם",
+      /** A guide's words, where another account becomes clearly cheaper along the plan's line: "כ־108 אלף ₪", or a stretch of it, "בין
+       *  כ־30 אלף ₪ לכ־70 אלף ₪". A word joiner after the maqaf keeps "כ־" on the line of its figure. */
+      about: "כ־\u2060",
       between: "בין כ־\u2060",
       betweenTo: " לכ־\u2060",
-      /** After a stretch, the switch past it: by the same account, "ומעל כ־150 אלף ₪"; by another, ", וג׳ מעל כ־40 אלף ₪". */
-      thenAbove: "ומעל כ־\u2060",
-      thenOther: (w: string) => `, ${andWord(w)} `,
-      /** A switch down reads as the range the search checked, from its lowest amount: "בין כ־5,000 ₪ לכ־60 אלף ₪"; after a stretch by
-       *  the same account, "ובין כ־5,000 ₪ לכ־40 אלף ₪". */
-      thenBetween: "ובין כ־\u2060",
-      /** Before a figure said roughly, alone: "כ־108 אלף ₪". */
-      about: "כ־\u2060",
       /** A guide's words where it ends on the line where two accounts are equal: "שווים בכ־2,460 ₪ בחודש". */
       equalAt: "שווים בכ־\u2060",
       perMonth: "בחודש",
-      today: "היום",
       /** "בערך אותו דבר": two accounts within the tie threshold of each other, in the map's legend, the card and the readings. */
       same: "בערך אותו דבר",
       /** The legend item for one pair's stripes, named with the pair (its title). */
       samePair: (a: string, b: string) => `${andList([a, b])}: בערך אותו דבר`,
-      /** The card's line after a switch: what "clearly cheaper" means. */
-      clearlyNote: (theta: string) => `זול יותר בבירור: בהפרש של ${theta} לפחות`,
-      /** The card's answer and line where the receipt's account is not the cheapest at the plan. */
-      already: (w: string) => `${w}, כבר בתוכנית שלכם`,
-      insteadOf: (house: string) => `במקום ${house}`,
-      /** The card where one account is cheapest at every point of the map. */
-      noOther: "אף חשבון",
-      cheapestAll: (w: string) => `${w} הכי זול בכל המפה`,
-      /** The card where the plan's account is not clearly beaten along either of the plan's lines: no account becomes θ ahead of it, though
-       *  one may lead it within θ ("אף חשבון לא זול בבירור מפסגות"). */
-      stays: (w: string) => `אף חשבון לא זול בבירור ${fromPrefix(w)}${w}`,
-      staysNote: "גם בסכום אחר היום או בהפקדה אחרת, בטווח שהאתר בודק",
-      /** The card where the plan is in the band: the accounts about the same, and, where one becomes clearly cheaper, where. */
+      /** The plan's account: cheapest, cheaper than the receipt's, or the accounts about the same there. */
+      cheapest: (w: string) => `${w} הכי זול`,
+      cheaper: (w: string, house: string) => `${w} זול יותר ${fromPrefix(house)}${house}`,
       near: (names: string[]) => `${andList(names)} בערך אותו דבר`,
-      /** Where none becomes clearly cheaper than all of the plan's accounts about the same, two or more ("משניהם", "מכולם"): what the
-       *  search finds, though one of them may become clearly cheaper than another where a third leads them both. */
-      nearStays: (n: number) => `אף חשבון לא זול בבירור ${n === 2 ? "משניהם" : "מכולם"}, בטווח שהאתר בודק`,
+      /** The headline: the plan's account, then a question the map answers. */
+      atPlanHead: (w: string) => `בתוכנית שלכם ${w}.`,
+      similar: "ומה לגבי תוכניות דומות?",
+      /** The card: the accounts first somewhere on the map ("פסגות או אי.בי.אי"), or one first all over it; its line, the plan's account. */
+      orList: (names: string[]) => (names.length > 3 ? `${names.slice(0, 3).join(", ")} ועוד ${names.length - 3}` : names.length > 1 ? `${names.slice(0, -1).join(", ")} או ${names[names.length - 1]}` : (names[0] ?? "")),
+      wholeMap: (w: string) => `${w}, בכל המפה`,
+      atPlanNote: (w: string) => `בתוכנית שלכם: ${w}`,
       /** The card of a plan with nothing in it. */
       empty: "אין כסף בתוכנית",
       emptyNote: "אין כסף בחשבון, אז כל החשבונות משאירים 0 ₪",
       /** The card where no account is ranked with the fund, by why. */
       unranked: "אין מפה לקרן הזו",
       unrankedWhy: { "open-rule": "המס עליה תלוי בשאלה פתוחה, ולכן האתר לא מדרג חשבונות איתה", unpriced: "אף חשבון לא מדורג עם הקרן הזו" },
-      /** The headline's start: the plan's account cheapest, cheaper than the receipt's, or the accounts about the same; or no money. */
-      headCheapest: (w: string) => `בתוכנית שלכם ${w} הכי זול.`,
-      headCheaper: (w: string, house: string) => `בתוכנית שלכם ${w} זול יותר ${fromPrefix(house)}${house}.`,
-      headNear: (names: string[]) => `בתוכנית שלכם ${andList(names)} בערך אותו דבר.`,
       headEmpty: "בתוכנית שלכם אין כסף, אז כל החשבונות משאירים 0 ₪. המפה מראה איזה חשבון זול יותר בכל צירוף אחר.",
-      /** "אי.בי.אי זול יותר בבירור מעל כ־108 אלף ₪ היום", then ", או …" where the same account is clearly cheaper the other way, or a
-       *  sentence of its own where another is. */
-      cheaperFrom: (to: string) => `${to} זול יותר בבירור`,
-      or: "או",
-      /** No change along the plan's lines, within what the search reads (from a hundredth of the sliders' reach to their ends, F-131):
-       *  "בטווח שהאתר בודק". */
-      headStays: "אף חשבון אחר לא נעשה זול יותר בבירור, גם בסכום אחר היום או בהפקדה חודשית אחרת, בטווח שהאתר בודק.",
-      headNearStays: (n: number) => `אף חשבון לא נעשה זול יותר בבירור ${n === 2 ? "משניהם" : "מכולם"}, גם בסכום אחר היום או בהפקדה חודשית אחרת, בטווח שהאתר בודק.`,
-      headAll: "הוא הכי זול בכל צירוף במפה.",
-      /** No change along the plan's lines, but another account clearly cheaper elsewhere on the map: "אי.בי.אי זול יותר בבירור בצירופים
-       *  אחרים במפה", and the card's short answer after its name. */
-      elsewhere: (names: string[]) => `${andList(names)} ${names.length > 1 ? "זולים" : "זול"} יותר בבירור בצירופים אחרים במפה`,
-      elsewhereShort: "בצירופים אחרים במפה",
       /** The line under the headline: what the map is, in one sentence; how to read it is behind its "?" (`howTo`). */
       what: (years: number) => `כל נקודה במפה היא סכום היום והפקדה חודשית, והצבע שלה הוא החשבון שמשאיר לכם שם הכי הרבה עם הקרן הזו ${inYears(years)}.`,
       /** The "?" after it: what the blended colours (the legend's "בערך אותו דבר", θ of P-01), the thin line and the marked point mean. */
       howTo: {
         about: "איך קוראים את המפה",
-        text: (theta: string) => `כל צבע הוא חשבון. איפה שהצבעים מתערבבים, ובמקרא "בערך אותו דבר", ההפרש בין שני החשבונות קטן מ־${theta}. על הקו הדק שני החשבונות שווים. הנקודה המסומנת היא התוכנית שלכם, והקווים המקווקווים ממנה מגיעים למקום שבו חשבון אחר נעשה זול יותר.`,
+        text: (theta: string) => `כל צבע הוא חשבון. איפה שהצבעים מתערבבים, ובמקרא "בערך אותו דבר", ההפרש בין שני החשבונות קטן מ־${theta}. על הקו הדק שני החשבונות שווים. הנקודה המסומנת היא התוכנית שלכם, והקווים המקווקווים ממנה מראים מה משתנה כשמשנים רק את הסכום היום או רק את ההפקדה.`,
       },
       xTitle: "סכום היום (₪)",
       yTitle: "הפקדה חודשית (₪)",
