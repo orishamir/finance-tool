@@ -71,10 +71,44 @@ describe("the account map (F-131)", () => {
     expect(need(map.switches.monthly, "a switch along the deposit").at).toBeCloseTo(1650.3, 0);
   });
 
-  it("runs each axis past the plan's farther switch with room, to a clean value, and at least a tenth of the sliders' reach", () => {
-    // 1.5 × 53,546 = 80,319, up to 100,000; 1.5 × 1,650 = 2,475, up to 2,500
+  it("runs each axis past the farthest change up the plan's line with room, to a clean value", () => {
+    // the switches up are the farthest changes: 1.5 × 53,546 = 80,319, up to 100,000; 1.5 × 1,650 = 2,475, up to 2,500
     expect(map.max).toEqual({ amount: 100_000, monthly: 2500 });
-    expect(mapOf(linear, { amount: 0, monthly: 0 }).max).toEqual({ amount: 50_000, monthly: 1000 });
+    // up today's amount at 200 ₪ a month, A is θ ahead while 440 − 0.015 a ≥ 0.005 (0.98 a + 19,800), to 17,135.7 ₪, and B leaves more
+    // from 29,333.3 ₪; up the deposit at 10,000 ₪, A is θ ahead while 450 − 0.8 m ≥ 0.005 (9,800 + 99 m), to 309.7 ₪ a month, and B leaves
+    // more from 562.5 ₪
+    expect(map.changes.amount.band).toBeCloseTo(17_135.7, -2);
+    expect(map.changes.amount.even).toBeCloseTo(29_333.3, -2);
+    expect(Math.abs((map.changes.monthly.band ?? NaN) - 309.7)).toBeLessThan(1);
+    expect(map.changes.monthly.even).toBeCloseTo(562.5, 0);
+  });
+
+  it("shows the band and the other account's side up a line where the other never becomes clearly cheaper", () => {
+    // A: 2% of today's amount and 0.6 ₪ a shekel of the deposit; B as before. Up the deposit at 10,000 ₪, B leaves 0.4 m − 450 more: A is θ
+    // ahead while 450 − 0.4 m ≥ 0.005 (9,800 + 99.4 m), to 447.0 ₪ a month, B leaves more from 1,125 ₪, and B is never θ ahead, since
+    // 0.4 m − 450 ≥ 0.005 (9,350 + 99.8 m) holds for no m. The axis runs to 1.5 × 1,125 = 1,687.5, up to 2,000.
+    const slow = { a: (a: number, m: number) => left(a, m, 0.02 * a + 0.6 * m), b: (a: number, m: number) => left(a, m, 600 + 0.005 * a + 0.2 * m) };
+    const got = mapOf(slow, { amount: 10_000, monthly: 200 });
+    expect(got.switches.monthly).toBeNull();
+    expect(got.changes.monthly.band).toBeCloseTo(447.0, 0);
+    expect(Math.abs((got.changes.monthly.even ?? NaN) - 1125)).toBeLessThan(1);
+    expect(got.max.monthly).toBe(2000);
+    // up today's amount at 200 ₪ a month, B leaves 0.015 a − 520 more: clearly from 61,526.2 ₪ (0.015 a − 520 ≥ 0.005 (0.995 a + 19,360)),
+    // 1.5 × 61,526 = 92,289, up to 100,000
+    expect(need(got.switches.amount, "the switch up today's amount").at).toBeCloseTo(61_526.2, 0);
+    expect(got.max.amount).toBe(100_000);
+    expectFieldTrue(got, slow);
+  });
+
+  it("where nothing changes up a line, the axis spans a quarter of the sliders' reach", () => {
+    // B costs 600 ₪, 2% of today's amount and 1 ₪ a shekel of the deposit more than A, which leaves at least 0.6% more everywhere: A is θ
+    // ahead up both lines. A quarter of 500,000 ₪ is 125,000 ₪, up to 150,000 ₪; a quarter of 10,000 ₪ a month is 2,500 ₪.
+    const still = { a: (a: number, m: number) => left(a, m, 0), b: (a: number, m: number) => left(a, m, 600 + 0.02 * a + m) };
+    const got = mapOf(still, { amount: 10_000, monthly: 200 });
+    expect(got.changes).toEqual({ amount: { band: null, even: null }, monthly: { band: null, even: null } });
+    expect(got.max).toEqual({ amount: 150_000, monthly: 2500 });
+    // a plan of nothing has no line to change along
+    expect(mapOf(linear, { amount: 0, monthly: 0 }).max).toEqual({ amount: 150_000, monthly: 2500 });
   });
 
   it("reads every node of the areas as the accounts do, the band between them included", () => {

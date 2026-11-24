@@ -7,7 +7,7 @@ import { mapWords } from "./account-map";
 
 const names: Record<string, string> = { psagot: "פסגות", ibi: "אי.בי.אי", "one-zero": "וואן זירו" };
 const grid = { cols: 0, rows: 0, first: [], second: [], ahead: [] };
-const base: AccountMap = { max: { amount: 200_000, monthly: 4000 }, bottom: 40, plan: { amount: 10_000, monthly: 500, lead: { kind: "clear", first: "psagot" } }, accounts: ["psagot", "ibi", "one-zero"], field: grid, edge: grid, switches: { amount: null, monthly: null } };
+const base: AccountMap = { max: { amount: 200_000, monthly: 4000 }, bottom: 40, plan: { amount: 10_000, monthly: 500, lead: { kind: "clear", first: "psagot" } }, accounts: ["psagot", "ibi", "one-zero"], field: grid, edge: grid, switches: { amount: null, monthly: null }, changes: { amount: { band: null, even: null }, monthly: { band: null, even: null } } };
 const up = (at: number, to = "ibi"): MapSwitch => ({ at, dir: "up", to });
 /** The card's answer and line and the headline, as plain words (the isolates a figure keeps its order with, and the joiner that keeps "כ־" on its figure's line, set aside). */
 function said(map: AccountMap, house = "psagot") {
