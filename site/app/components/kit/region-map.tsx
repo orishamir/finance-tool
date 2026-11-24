@@ -494,7 +494,8 @@ export function RegionMap({
     const equalPx = equalLines(field).map(([x0, y0, x1, y1]) => [gxL(x0), gyL(y0), gxL(x1), gyL(y1)] as const);
     const guidePx = guides.map((g) => [mxL, myL, g.axis === "x" ? sxL(g.at) : mxL, g.axis === "x" ? myL : syL(g.at)] as const);
     const crossed = (b: Box) => guidePx.some((l) => lineMeetsBox(l, b)) || equalPx.some((l) => lineMeetsBox(l, b));
-    const fits = (b: Box) => b.x >= left && b.x + b.w <= right && b.y >= TOP && b.y + b.h <= bottom - EDGE_PX && !crossed(b);
+    const inPlot = (b: Box) => b.x >= left && b.x + b.w <= right && b.y >= TOP && b.y + b.h <= bottom - EDGE_PX;
+    const fits = (b: Box) => inPlot(b) && !crossed(b);
 
     // the bottom edge's named stretches, in px, the longest first: it carries the edge's words, each other its area's name; with none, the
     // edge's words say the areas there are about the same, over the whole edge
@@ -519,9 +520,13 @@ export function RegionMap({
       return [...near, ...wide.sort((x, y) => dist(x) - dist(y))];
     };
     const place = (tries: Box[], at: [number, number]): Box => {
-      const cost = (b: Box) => placed.reduce((n, t) => n + overlap(b, t), 0) + (fits(b) ? 0 : 1e6);
+      // never out of the plot; crossed by a line before meeting other words
+      const cost = (b: Box) => placed.reduce((n, t) => n + overlap(b, t), 0) + (inPlot(b) ? 0 : 1e6) + (crossed(b) ? 1e4 : 0);
       const first = tries[0];
-      const got = clearOf(tries) ?? (first && clearOf(around(first, at))) ?? [...tries].sort((x, y) => cost(x) - cost(y))[0] ?? { x: left, y: TOP, w: 0, h: 0 };
+      const wider = first ? around(first, at) : [];
+      // held inside the plot, or at its left edge where the words are wider than it
+      const held = (b: Box): Box => ({ ...b, x: Math.max(0, Math.min(right - b.w - 4, Math.max(left + 4, b.x))), y: Math.min(bottom - EDGE_PX - b.h, Math.max(TOP, b.y)) });
+      const got = clearOf(tries) ?? clearOf(wider) ?? [...tries, ...wider].map(held).sort((x, y) => cost(x) - cost(y))[0] ?? { x: left, y: TOP, w: 0, h: 0 };
       placed.push(got);
       return got;
     };
