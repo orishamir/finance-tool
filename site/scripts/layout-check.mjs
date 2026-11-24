@@ -1106,6 +1106,8 @@ function defaultPages() {
       ? readdirSync(join(build, dir))
           .filter((d) => statSync(join(build, dir, d)).isDirectory() && existsSync(join(build, dir, d, "index.html")))
           .map((d) => `/${dir}/${d}`)
+          // sorted: each CI share (`--part=pages:K/N`) lists the pages on its own runner, where a directory's order is not given
+          .sort()
       : [];
   const top = ["/", "/guide", "/indices", "/companies", "/rules", "/parameters", "/deal", "/not-covered", "/tracks", "/deposits", "/transfer", "/documents", "/kit"];
   const companies = under("companies");
