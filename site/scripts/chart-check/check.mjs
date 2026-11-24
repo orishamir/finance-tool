@@ -288,7 +288,7 @@ function inspect({ MIN_TEXT_PX, MAX_COLOURS, scope }) {
   /**
    * Words in HTML laid over a drawing (`data-chart-words`, the region map's): a finding for each whose any line a line of the drawing runs
    * through (each svg's own lines, and its paths of straight pieces: a guide, the line where two areas are equal), each svg's points taken
-   * to the screen by its own matrix.
+   * to the screen by its own matrix. An HTML chart passes the svgs drawn inside it, an svg chart itself.
    */
   function wordsOnLines(svgs, all, findings) {
     const words = all.filter(shown);
@@ -296,6 +296,7 @@ function inspect({ MIN_TEXT_PX, MAX_COLOURS, scope }) {
     const segs = [];
     for (const svg of svgs) {
       const ctm = svg.getScreenCTM();
+      if (!ctm) continue;
       const pt = (x, y) => {
         const q = new DOMPoint(x, y).matrixTransform(ctm);
         return [q.x, q.y];
@@ -416,8 +417,8 @@ function inspect({ MIN_TEXT_PX, MAX_COLOURS, scope }) {
           if (meet) findings.push({ check: "text-overlap", severity: "fail", where: `${o.what} and ${t.what}`, detail: "the two texts meet" });
         }
       }
-      // words in HTML laid over the drawing (`data-chart-words`, the region map's)
-      wordsOnLines([root], root.parentElement ? [...root.parentElement.querySelectorAll(":scope > [data-chart-words]")] : [], findings);
+      // words in HTML laid over the drawing, beside the chart or inside it (`data-chart-words`): any svg drawn in it and its lines
+      wordsOnLines([...root.querySelectorAll("svg")], [...(root.parentElement ? root.parentElement.querySelectorAll(":scope > [data-chart-words]") : []), ...root.querySelectorAll("[data-chart-words]")], findings);
       const stats = { zero: zero(root, findings), colours: colours(root, findings) };
       const bg = bgOf(root);
       const hexes = [...new Set([...root.querySelectorAll("[data-mark]")].filter((m) => { const b = m.getBoundingClientRect(); return b.width > 0.5 && b.height > 0.5 && shown(m); }).map((m) => colourOf(m, bg)))].filter((c) => !grey(c)).map((c) => "#" + c.split(",").map((v) => Number(v).toString(16).padStart(2, "0")).join("").toUpperCase());
