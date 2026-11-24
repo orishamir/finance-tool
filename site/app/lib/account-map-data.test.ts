@@ -11,6 +11,7 @@ import { leftWith, work } from "./invest-work";
 import { rankedAt } from "./stretch";
 import { entered } from "./value";
 import { fmt } from "./format";
+import { p05Range } from "./engine";
 import type { WorkbenchInputs } from "./providers";
 
 /** A value the test's setup must have, else the test stops naming what was missing. */
@@ -101,6 +102,24 @@ for (const [slug, plan] of [["index-sp500", planAt(10_000, 500, 10)], ["index-sp
         if ((want.ahead > 0.33 && got.first !== want.first) || Math.abs(got.ahead - want.ahead) > 0.15) wrong.push(`${a}: ${JSON.stringify(got)} against ${JSON.stringify(want)}`);
       }
       expect(wrong).toEqual([]);
+    });
+
+    it("shows every account clearly first somewhere within the sliders' reach, the line for no monthly deposit included", () => {
+      // an even 6 × 6 grid over the whole reach (the sliders' ends, P-05), its bottom row at no monthly deposit at all
+      const reach = (key: string) => need(p05Range(bundle.p05, "sliders", key)?.max, `the slider's end for ${key}`);
+      const missing: string[] = [];
+      const K = 6;
+      for (let i = 0; i <= K; i++)
+        for (let j = 0; j <= K; j++) {
+          if (i + j === 0) continue;
+          const [a, m] = [(reach("amount_now") * i) / K, (reach("monthly_deposit") * j) / K];
+          const want = exactAt(leftAt(a, m, null));
+          if (want.ahead < 1 || !want.first) continue;
+          const k = map.accounts.indexOf(want.first);
+          const clear = [map.field, map.edge].some((f) => f.first.some((x, n) => x === k && f.ahead[n] === 1));
+          if (!clear) missing.push(`${want.first} at (${a}, ${m})`);
+        }
+      expect(missing).toEqual([]);
     });
 
     it("a switch is where an account is first and θ ahead of the plan's accounts but itself, and stays so at points past it", () => {

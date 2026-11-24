@@ -263,6 +263,33 @@ describe("the account map (F-131)", () => {
     expect(at).toBeCloseTo(65_259, -1);
   });
 
+  it("stretches an axis to show an account clearly first only past the changes up the plan's lines", () => {
+    // A: 8% of today's amount and 4 ₪ a shekel of the deposit; B: 6,000 ₪, 1.6% and 0.8 ₪; C: 1,200 ₪, 4% and 2 ₪. At the plan A is first;
+    // C is clearly cheaper up both lines (from about 25,300 ₪ today and 558 ₪ a month), so the plan alone sets the axes to 50,000 ₪ (a tenth
+    // of the reach) and 1,000 ₪ a month, where B is first nowhere. With no monthly deposit B leaves 0.024 a − 4,800 more than C, θ of B's
+    // 0.984 a − 6,000 from 0.024 a − 4,800 = 0.005 (0.984 a − 6,000), a = 250,000 ₪ (A is further behind there): today's amount runs to
+    // 1.5 × 250,000 = 375,000, up to 400,000 ₪, and the deposit stays at 1,000 ₪
+    const three = {
+      a: (a: number, m: number) => left(a, m, 0.08 * a + 4 * m),
+      b: (a: number, m: number) => left(a, m, 6000 + 0.016 * a + 0.8 * m),
+      c: (a: number, m: number) => left(a, m, 1200 + 0.04 * a + 2 * m),
+    };
+    const got = mapOf(three, { amount: 10_000, monthly: 200 });
+    expect(got.plan.lead).toEqual({ kind: "clear", first: "a" });
+    expect(got.max).toEqual({ amount: 400_000, monthly: 1000 });
+    expect([...got.accounts].sort()).toEqual(["a", "b", "c"]);
+    // B clearly first along the bottom edge from 250,000 ₪, and in the areas' far corner (at 400,000 ₪ and 1,000 ₪ a month it costs 13,200 ₪
+    // against C's 19,200 ₪)
+    const n = got.edge.cols - 1;
+    for (let i = 0; i <= n; i++) {
+      const a = (got.max.amount * i) / n;
+      if (a > 252_000) expect([got.accounts[got.edge.first[i] ?? -1], got.edge.ahead[i]], `${a}`).toEqual(["b", 1]);
+      if (a < 248_000) expect([got.accounts[got.edge.first[i] ?? -1], got.edge.ahead[i]], `${a}`).not.toEqual(["b", 1]);
+    }
+    expect(nodeAt(got, got.field.cols - 1, got.field.rows - 1)).toEqual({ first: "b", ahead: 1 });
+    expectFieldTrue(got, three);
+  });
+
   it("prices only the accounts that can lead once the coarse grid has found them", () => {
     const many: Record<string, (a: number, m: number) => number> = { ...linear };
     for (let k = 0; k < 10; k++) many[`far${k}`] = (a, m) => left(a, m, 0.05 * a + 5 * m + 1000);

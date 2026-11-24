@@ -12,6 +12,9 @@
 // near a border every account's figure is close to a plane, so the place where two are equal and the band where they are within θ come
 // out where the figures put them, not where a grid happened to step.
 //
+// The axes run past what changes up the plan's own lines, and further where an account is clearly first only out there: a survey of the
+// sliders' whole reach finds it, so every account clearly first somewhere within the reach has an area on the map.
+//
 // No monthly deposit at all is one value, not the bottom of a range: the map's areas start just above it, and the bottom edge (`edge`) is
 // priced at 0 ₪ a month exactly, along today's amount alone. At 0 ₪ today and 0 ₪ a month every account leaves 0 and none leads: the edge
 // starts at a thousandth of its axis, and a plan of nothing at all is a case of its own (`PlanLead`).
@@ -97,6 +100,8 @@ const DENSE_SAMPLES = 32;
 const FINE_SAMPLES = 16;
 const FINE_ROUNDS = 2;
 const BISECT = 8;
+/** The survey's steps along each axis over the sliders' whole reach. */
+const SURVEY = 6;
 /** The map's areas start this share of the monthly range above 0: what is under it is the bottom edge's (no deposit). */
 const ABOVE_EDGE = 0.01;
 /** The least amount a search reaches, as a share of its reach, where the other axis is 0 (so it never lands on 0 ₪ and 0 ₪ a month), and the
@@ -233,6 +238,19 @@ function firstChange(line: Line | null, order: readonly string[], theta: number,
   return { at: hi, lead: leadOf(line.price(hi), order, theta) };
 }
 
+/**
+ * The nodes of the survey of the sliders' whole reach: SURVEY steps along each axis from 0, spaced by the square so they are denser near 0,
+ * where a per-trade minimum (F-12) bends the figures most, the bottom row at no monthly deposit at all (the bottom edge's value); never 0 ₪
+ * today and 0 ₪ a month. `all`: every account is priced there, at every other node of the bottom row, which no line of the plan reaches, and
+ * at the far corner, which none comes near; the plan's lines reach the far ends of both axes.
+ */
+function surveyNodes(reachA: number, reachM: number): { at: MapPoint; all: boolean }[] {
+  const u = (k: number) => (k / SURVEY) ** 2;
+  const nodes: { at: MapPoint; all: boolean }[] = [];
+  for (let i = 0; i <= SURVEY; i++) for (let j = 0; j <= SURVEY; j++) if (i + j > 0) nodes.push({ at: [reachA * u(i), reachM * u(j)], all: (j === 0 && i % 2 === 0) || (i === SURVEY && j === SURVEY) });
+  return nodes;
+}
+
 /** The nearer of a switch up and a switch down. */
 function nearer(own: number, up: MapSwitch | null, down: MapSwitch | null): MapSwitch | null {
   if (!up || !down) return up ?? down;
@@ -274,7 +292,8 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const reachM = Math.max(reach.monthly, plan.monthly);
   // a plan of nothing is read at a tenth of the reach, only to know some account is ranked with the fund
   const empty = plan.amount === 0 && plan.monthly === 0;
-  const atPlan = rankedAt(empty ? leftAt(reachA / 10, reachM / 10, null) : leftAt(plan.amount, plan.monthly, null), order);
+  const planLeft = empty ? leftAt(reachA / 10, reachM / 10, null) : leftAt(plan.amount, plan.monthly, null);
+  const atPlan = rankedAt(planLeft, order);
   const top = atPlan[0];
   if (!top) return null;
   const tiedIds = atPlan.filter((x) => isTie(top.v, x.v, theta)).map((x) => x.id);
@@ -309,15 +328,57 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const changes = { amount: changesUp(lines.amount.up, evenUp.amount), monthly: changesUp(lines.monthly.up, evenUp.monthly) };
   const equal = { amount: nearer(plan.amount, evenUp.amount, evenOn(lines.amount.down, reachA * LOWEST)), monthly: nearer(plan.monthly, evenUp.monthly, evenOn(lines.monthly.down, reachM * LOWEST)) };
 
-  // the axes: past the plan and the farthest change up its line with room (the band's near edge, the even point, the switch up), at a clean
-  // value; at least a tenth of the sliders' reach where something changes up the line and a quarter where nothing does; at most the
-  // search's reach
-  const axisEnd = (own: number, c: LineChanges, s: MapSwitch | null, r: number, searched: number) => {
+  // ------------------------------------------------ the axes
+  // past the plan and the farthest change up its line with room (the band's near edge, the even point, the switch up), at a clean value;
+  // at least a tenth of the sliders' reach where something changes up the line and a quarter where nothing does; at most the search's reach
+  const capA = cleanUp(Math.max(reachA, ROOM * plan.amount));
+  const capM = cleanUp(Math.max(reachM, ROOM * plan.monthly));
+  const axisEnd = (own: number, c: LineChanges, s: MapSwitch | null, r: number, cap: number) => {
     const far = Math.max(c.band ?? 0, c.even ?? 0, s?.at ?? 0);
-    return Math.min(cleanUp(Math.max(ROOM * Math.max(own, far), r * (far > 0 ? SPAN_CHANGING : SPAN_STILL))), cleanUp(Math.max(searched, ROOM * own)));
+    return Math.min(cleanUp(Math.max(ROOM * Math.max(own, far), r * (far > 0 ? SPAN_CHANGING : SPAN_STILL))), cap);
   };
-  const maxA = axisEnd(plan.amount, changes.amount, up.amount, reach.amount, reachA);
-  const maxM = axisEnd(plan.monthly, changes.monthly, up.monthly, reach.monthly, reachM);
+  const baseA = axisEnd(plan.amount, changes.amount, up.amount, reach.amount, capA);
+  const baseM = axisEnd(plan.monthly, changes.monthly, up.monthly, reach.monthly, capM);
+  // then wider where an account is clearly first somewhere within the reach past those ends (the survey's nodes there) and nowhere inside
+  // them: to the point nearest to 0 where it still is, along the line from 0 to its node that asks for the least room, with the same room,
+  // so the account has an area large enough to see and to name. Of two nodes that ask for as much, the one with less a month: today's
+  // amount is stretched before the deposit, which keeps the plan off the floor. The plan's first, and an account a switch up a line goes
+  // to, are clearly first inside those ends already
+  const nodes = surveyNodes(reachA, reachM);
+  const inBase = (p: MapPoint) => p[0] <= baseA && p[1] <= baseM;
+  const near = new Set<string>(tied);
+  const outside = nodes.filter((n) => !inBase(n.at));
+  const surveyed = outside.filter((n) => n.all).map((n) => ({ at: n.at, left: leftAt(...n.at, null) }));
+  for (const sv of [{ left: planLeft }, ...surveyed, ...[lines.amount.up, lines.amount.down, lines.monthly.up, lines.monthly.down].flatMap((l) => l?.all ?? [])]) for (const id of nearTop(sv.left, order, theta)) near.add(id);
+  const nearIds = order.filter((id) => near.has(id));
+  const clearOn = (points: readonly MapPoint[], priced: readonly { at: MapPoint; left: ReadonlyMap<string, number> }[]) => {
+    const won = new Map<string, MapPoint[]>();
+    for (const sv of [...priced, ...points.map((at) => ({ at, left: leftAt(...at, nearIds) }))]) {
+      const l = leadOf(sv.left, order, theta);
+      if (l && l.ahead >= 1) won.set(l.first, [...(won.get(l.first) ?? []), sv.at]);
+    }
+    return won;
+  };
+  const known = new Set([lead.kind === "clear" ? lead.first : null, up.amount?.to, up.monthly?.to]);
+  const won = clearOn(outside.filter((n) => !n.all).map((n) => n.at), surveyed);
+  const unseen = [...won.keys()].filter((id) => !known.has(id));
+  const inside = unseen.length ? clearOn(nodes.filter((n) => inBase(n.at)).map((n) => n.at), []) : new Map<string, MapPoint[]>();
+  // the room a point asks for: the box from 0 to it with room, held to the ends already set and the reach, as a share of the reach's
+  const asks = (p: MapPoint) => (Math.min(capA, Math.max(baseA, ROOM * p[0])) / capA) * (Math.min(capM, Math.max(baseM, ROOM * p[1])) / capM);
+  let [maxA, maxM] = [baseA, baseM];
+  for (const id of unseen.filter((x) => !inside.has(x))) {
+    const [p] = [...(won.get(id) ?? [])].sort((x, y) => asks(x) - asks(y) || x[1] / capM - y[1] / capM || x[0] - y[0]);
+    if (!p) continue;
+    let [lo, hi] = [0, 1];
+    for (let k = 0; k < BISECT; k++) {
+      const mid = (lo + hi) / 2;
+      const l = leadOf(leftAt(p[0] * mid, p[1] * mid, nearIds), order, theta);
+      if (l?.first === id && l.ahead >= 1) hi = mid;
+      else lo = mid;
+    }
+    maxA = Math.max(maxA, Math.min(capA, cleanUp(ROOM * p[0] * hi)));
+    maxM = Math.max(maxM, Math.min(capM, cleanUp(ROOM * p[1] * hi)));
+  }
   const bottom = maxM * ABOVE_EDGE;
 
   // ------------------------------------------------ the areas: every account on the coarse grid and its low rows and columns
@@ -325,18 +386,18 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const yOf = (j: number) => bottom + ((maxM - bottom) * j) / N;
   const key = (i: number, j: number) => i * (N + 1) + j;
   const priced = new Map<number, ReadonlyMap<string, number>>();
-  const can = new Set<string>(tied);
+  // the survey's winners are priced at every point after
+  const can = new Set<string>([...tied, ...won.keys()]);
   const coarse = N / COARSE;
   // the coarse nodes, and the middle of each cell side along the first row and the first column
   const steps = Array.from({ length: COARSE + 1 }, (_, k) => k * coarse);
   const grid = [...steps.flatMap((i) => steps.map((j) => [i, j] as const)), ...steps.flatMap((k) => [[coarse / 2, k], [k, coarse / 2]] as const), [coarse / 2, coarse / 2] as const];
-  for (const [i, j] of grid)
-    {
-      if (priced.has(key(i, j))) continue;
-      const left = leftAt(xOf(i), yOf(j), null);
-      priced.set(key(i, j), left);
-      for (const id of nearTop(left, order, theta)) can.add(id);
-    }
+  for (const [i, j] of grid) {
+    if (priced.has(key(i, j))) continue;
+    const left = leftAt(xOf(i), yOf(j), null);
+    priced.set(key(i, j), left);
+    for (const id of nearTop(left, order, theta)) can.add(id);
+  }
   const houses = order.filter((id) => can.has(id));
   const at = (i: number, j: number): ReadonlyMap<string, number> => {
     const k = key(i, j);
@@ -383,7 +444,7 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   // ------------------------------------------------ the bottom edge: no monthly deposit at all, from a thousandth of the axis
   const ex = (i: number) => Math.max(maxA * LOWEST, xOf(i));
   const edgePriced = new Map<number, ReadonlyMap<string, number>>();
-  const edgeCan = new Set<string>();
+  const edgeCan = new Set<string>(won.keys());
   for (const i of [0, 2, 8, ...Array.from({ length: COARSE }, (_, k) => (k + 1) * coarse)]) {
     const left = leftAt(ex(i), 0, null);
     edgePriced.set(i, left);
