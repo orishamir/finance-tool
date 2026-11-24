@@ -73,6 +73,9 @@ describe("the tax index a Tel Aviv foreign fund's own annex states (F-04, D84)",
     expect(onCpi.map((l) => l.id)).toEqual(["tax-index-cpi"]);
     expect(onCpi[0]?.doc?.href).toBe(`${ruling.source.url}#page=16`);
     expect(onCpi[0]?.explain).toContain("מדד המחירים לצרכן");
+    // the statement is the fund's, never a rule: the chip opens no rule card, only the annex
+    for (const l of [...onDollar, ...onCpi]) expect(l.rules).toEqual([]);
+    for (const id of ["tax-index-currency", "tax-index-cpi"] as const) expect(label(id).rules).toEqual([]);
     // the same units bought abroad keep TXF-03; an annex that states no index says nothing
     expect(tax({ ...rec, tax_ruling: { ...ruling, index: main } }, "abroad")).toEqual([]);
     expect(tax({ ...rec, tax_ruling: unstated }, "tase-foreign")).toEqual([]);

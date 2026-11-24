@@ -3,6 +3,7 @@
 // a sourced fact or an open rule; it never praises. A label shows on every row it is true of, even when every row has it
 // ; its colour is its family's (the kit's LabelChip).
 import type { FundRecord } from "@finance-tool/schema";
+import { taxIndexStatementOf, type FundStatement } from "@finance-tool/engine";
 import { invest as c } from "../copy";
 import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
@@ -56,11 +57,11 @@ export type LabelId =
   | "ask-w8"
   | "unavailable";
 
-interface LabelDef {
-  icon: IconDef;
-  tone: LabelTone;
-  rules: string[];
-}
+/**
+ * What a label rests on: the rules whose cards its sheet opens, or a fund's own statement about its units (product D84), which is never a
+ * rule: such a label names no rule, and links the statement's document at its page where it is made from it (`statementLabel`).
+ */
+type LabelDef = { icon: IconDef; tone: LabelTone } & ({ rules: string[] } | { statement: FundStatement["term"] });
 
 /** Structure only: the words are in copy.ts. */
 export const labelDefs: Record<LabelId, LabelDef> = {
@@ -85,8 +86,8 @@ export const labelDefs: Record<LabelId, LabelDef> = {
   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08", "TXS-10"] },
   "tax-on-sale-open": { icon: "lock", tone: "open", rules: ["TXF-11"] },
   "tax-on-sale-ruling": { icon: "gavel", tone: "neutral", rules: ["TXF-11"] },
-  "tax-index-currency": { icon: "fileCheck", tone: "neutral", rules: ["TXF-04"] },
-  "tax-index-cpi": { icon: "fileCheck", tone: "neutral", rules: ["TXF-04"] },
+  "tax-index-currency": { icon: "fileCheck", tone: "neutral", statement: "tax-index" },
+  "tax-index-cpi": { icon: "fileCheck", tone: "neutral", statement: "tax-index" },
   "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
   "pays-distributing": { icon: "handCoins", tone: "neutral", rules: ["MF-49"] },
   "ask-self-report": { icon: "filePen", tone: "caution", rules: ["TXF-22", "TXF-29"] },
@@ -161,7 +162,18 @@ export function label(id: LabelId, arg?: string): Label {
   const def = labelDefs[id];
   const words = c.labels[id] as { text: string | ((ccy: string) => string); explain: string | ((ccy: string) => string) };
   const say = (w: string | ((ccy: string) => string)) => (typeof w === "function" ? w(currencyName(arg ?? "USD")) : w);
-  return { id, text: say(words.text), explain: say(words.explain), icon: def.icon === "sign" ? signOf(arg ?? "USD") : def.icon, tone: def.tone, rules: def.rules, family: familyOf[id] };
+  return { id, text: say(words.text), explain: say(words.explain), icon: def.icon === "sign" ? signOf(arg ?? "USD") : def.icon, tone: def.tone, rules: "rules" in def ? def.rules : [], family: familyOf[id] };
+}
+
+/** A label made from a fund's own statement (D84): its words, and its document opened at the page the statement is on, in place of rules. */
+export function statementLabel(st: FundStatement): Label {
+  const doc = { href: sourceHref({ url: st.source.url, page: st.page }), title: st.source.title };
+  switch (st.term) {
+    case "tax-index":
+      return { ...(st.index === "fx" ? label("tax-index-currency", st.currency) : label("tax-index-cpi")), doc };
+    default:
+      return assertNever(st.term);
+  }
 }
 
 /** What holds for every fund in the option (shown once on its card): where it is held and how it trades. */
@@ -214,11 +226,8 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   // a foreign fund in Tel Aviv whose own annex states its tax index under its ruling: the fund's statement, its page linked (F-04, D84);
   // the same units bought abroad keep TXF-03 whatever the record carries, so only the Tel Aviv line says it, and a distributing one stops
   // on its distribution's open part whatever its annex states (G-35), so only an accumulating one does
-  const stated = option === "tase-foreign" && rec.distribution_policy === "accumulating" ? rec.tax_ruling?.index : undefined;
-  if (rec.tax_ruling && stated) {
-    const doc = { href: sourceHref({ url: rec.tax_ruling.source.url, page: stated.page }), title: rec.tax_ruling.source.title };
-    out.push({ ...(stated.basis === "main-currency" ? label("tax-index-currency", stated.currency) : label("tax-index-cpi")), doc });
-  }
+  const stated = option === "tase-foreign" && rec.distribution_policy === "accumulating" ? taxIndexStatementOf(rec) : undefined;
+  if (stated) out.push(statementLabel(stated));
   if (rec.domicile === "US") out.push(label("ask-estate"), label("ask-w8"));
   return out;
 }
