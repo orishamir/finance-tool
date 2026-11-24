@@ -192,7 +192,7 @@ export const fundRecord = z.strictObject({
        * the main currency's exchange rate (`main-currency`, with the currency the annex names as the fund's main currency) or the CPI
        * (`cpi`). `page` is the annex's PDF page, `quote` its words on the index and `currency_quote` its words naming the currency, `checked` the date the index was read. It is
        * the fund's statement for its own units, never a rule; only a Tel Aviv line reads it. The data check holds `currency` to the
-       * exposure's currency.
+       * record's own `currency` and the exposure's.
        */
       index: taxRulingIndex.optional(),
     })

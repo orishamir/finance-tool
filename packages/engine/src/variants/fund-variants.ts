@@ -44,7 +44,7 @@ export function usDividendsOf(exposure: Pick<ExposureRecord, "id" | "us_dividend
 
 /**
  * F-04, D84: the tax index the fund's own Israeli prospectus annex states under its ruling (`tax_ruling.index`), as the fund's statement:
- * the main currency's exchange rate (the data check holds the currency to the exposure's) or the CPI. Undefined where the annex states none.
+ * the main currency's exchange rate (the data check holds the currency to the record's own and the exposure's) or the CPI. Undefined where the annex states none.
  */
 export function taxIndexStatementOf(rec: Pick<FundRecord, "tax_ruling">): TaxIndexStatement | undefined {
   const ruling = rec.tax_ruling;

@@ -262,8 +262,8 @@ export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex" | "dist
  * for an Israeli fund's shekel units (TXS-14's first bullet). An Israeli fund that may be measured by a principal currency
  * (`principalCurrency`) is read under each reading of TXS OQ26 (`foreignInvestmentFundIndex`): the principal currency's exchange rate, or
  * the CPI; a book with no reading chosen stops so that `acrossReadings` makes the run under each. A TASE foreign fund whose own annex
- * states its index under its ruling takes that index (`statedTaxIndexOf`, D84): the main currency's exchange rate, which is the exposure's
- * and so the run's one exchange-rate path, or the CPI; the run carries the statement, and no rule is cited for it. A distributing one
+ * states its index under its ruling takes that index (`statedTaxIndexOf`, D84): the main currency's exchange rate, which is the record's own
+ * currency and the exposure's, and so the run's one exchange-rate path, or the CPI; the run carries the statement, and no rule is cited for it. A distributing one
  * reads no statement (`statedTaxIndexOf`). Any other TASE foreign fund takes the index TXF-04 states, and TXF-04 is open, so neither is
  * known for it, with or without its 90% test: the book stops on it (BlockedError) and the run computes nothing after tax (D10); F-118
  * reads the value before the exit tax of one that pays nothing out. Were TXF-04 settled as the letter's copy states it (the golden
