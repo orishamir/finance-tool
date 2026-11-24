@@ -60,7 +60,10 @@ export interface Fund {
   /** The instrument's currency per one unit of `sharePriceCurrency` at the start (the run's rate), where the two differ: the price is taken
    *  to the instrument's currency with it. Absent where it is needed, the run has no share price (a per-share fee then cannot be priced). */
   sharePriceRate?: number;
-  /** TASE foreign fund: the prospectus commits to the 90% main-currency test (TXF-04); while TXF-04 is open the run stops whatever its value (F-04). */
+  /**
+   * TASE foreign fund: the prospectus commits to the 90% main-currency test (TXF-04). Only TXF-04's index reads it: a fund whose annex states
+   * its index is run on that (`statedIndex`), and while TXF-04 is open any other stops whatever this value (F-04).
+   */
   ninetyPercentTest?: boolean;
   /**
    * TASE foreign fund (F-04, D84): the tax index its own Israeli prospectus annex states under the tax ruling given to it, the fund's
@@ -991,11 +994,11 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   const cost = lotsLeft.reduce((s, l) => s + l.basis, 0);
   // Each lot indexed by J_T / J_lot; when the index (CPI or exchange rate) fell, its inflationary amount is zero and
   // the part of a nominal loss equal to the fall is not allowable (TXS-02; method F-09). With the exchange
-  // rate as the index, the rule that makes it the index is cited beside it: TXF-03 for a foreign-currency security held
-  // directly, TXS-14 for an Israeli foreign-investment fund's principal currency, TXF-04 for a TASE foreign fund (TXF-03 says its own test
-  // does not answer for such a fund; TXF-04 is open); for a TASE foreign fund whose annex states its index, the statement the run already
-  // carries, and no rule. The exit
-  // year's fees are deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
+  // rate as the index, what makes it the index is named beside it: TXF-03 for a foreign-currency security held directly, TXS-14 for an
+  // Israeli foreign-investment fund's principal currency, and for a TASE foreign fund the statement its annex makes, which the run already
+  // carries, and no rule (D84). A TASE foreign fund whose annex states none reaches here only with TXF-04 settled (the golden harness),
+  // and cites it. The exit year's fees are deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits
+  // is an open reading (G-07).
   const adjusted = indexedCost(lotsLeft, J![T]!, nav * (1 - spread));
   const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;
   const nominalGain = gross - cost;
