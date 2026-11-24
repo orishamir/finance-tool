@@ -3,9 +3,9 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { bandLayer, bandWeight, ease, edgeStretches, equalLines, laterShare, RegionMap, stripedPairs, type RegionGrid } from "./region-map";
 
-/** A grid whose two areas' lead is a plane, d = (i + 0.5 j − 6.3) / 10 in grid units: area 0 leads where d > 0, area 1 where d < 0, each
- *  ahead by |d|, so the two are equal on the line i + 0.5 j = 6.3. */
-function planeGrid(): RegionGrid {
+/** A grid whose two areas' lead is a plane, d = (i + 0.5 j − 6.3) / `per` in grid units: area 0 leads where d > 0, area 1 where d < 0,
+ *  each ahead by |d|, so the two are equal on the line i + 0.5 j = 6.3; with `per` at 10 the two are within θ everywhere. */
+function planeGrid(per = 10): RegionGrid {
   const cols = 11;
   const rows = 11;
   const first: number[] = [];
@@ -13,7 +13,7 @@ function planeGrid(): RegionGrid {
   const ahead: number[] = [];
   for (let j = 0; j < rows; j++)
     for (let i = 0; i < cols; i++) {
-      const d = (i + 0.5 * j - 6.3) / 10;
+      const d = (i + 0.5 * j - 6.3) / per;
       first.push(d > 0 ? 0 : 1);
       second.push(d > 0 ? 1 : 0);
       ahead.push(Math.abs(d));
@@ -23,7 +23,8 @@ function planeGrid(): RegionGrid {
 
 describe("the line where two areas are equal", () => {
   it("runs through the points where the leads either side cancel, between the nodes, not along the cells", () => {
-    const segs = equalLines(planeGrid());
+    // clear on each side within 4 columns of the line
+    const segs = equalLines(planeGrid(4));
     expect(segs.length).toBeGreaterThan(5);
     for (const [x0, y0, x1, y1] of segs) {
       expect(x0 + 0.5 * y0).toBeCloseTo(6.3, 9);
@@ -31,6 +32,17 @@ describe("the line where two areas are equal", () => {
     }
     // slanted, as the line is: no piece runs along a row or a column
     expect(segs.every(([x0, y0, x1, y1]) => x0 !== x1 && y0 !== y1)).toBe(true);
+  });
+
+  it("draws no line between two areas about the same across the whole grid", () => {
+    expect(equalLines(planeGrid(10))).toEqual([]);
+  });
+
+  it("leaves out an island of a few nodes where the leader flips on rounding, so the line runs as it would without it", () => {
+    const g = planeGrid(4);
+    // area 1 leads a single node deep in area 0's side, and area 0 a pair of nodes in area 1's
+    const flipped = { ...g, first: g.first.map((f, k) => (k === 9 * 11 + 9 || k === 1 || k === 2 ? 1 - f : f)) };
+    expect(equalLines(flipped)).toEqual(equalLines(g));
   });
 
   it("draws nothing where one area leads everywhere", () => {

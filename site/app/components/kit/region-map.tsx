@@ -314,6 +314,9 @@ export function lineMeetsBox(seg: readonly [number, number, number, number], b: 
   return true;
 }
 
+/** The fewest nodes a leader's island keeps on the equal line: fewer take the leader around them. */
+const ISLAND = 6;
+
 /** A piece of the line where two areas are equal, in the grid's own units (node columns and rows, from the bottom left). */
 type Seg = readonly [x0: number, y0: number, x1: number, y1: number];
 
@@ -323,13 +326,41 @@ type Seg = readonly [x0: number, y0: number, x1: number, y1: number];
  * points joined, or, where more meet (three areas, or a saddle), each joined to their middle.
  */
 export function equalLines(grid: RegionGrid): Seg[] {
-  const { cols, rows, first, ahead } = grid;
+  const { cols, rows, ahead } = grid;
+  // a leader's island of fewer than ISLAND nodes takes the leader around it: two accounts a few shekels apart flip on rounding, and the
+  // line would draw each flip as a coast of its own
+  const first = [...grid.first];
+  const seen = new Int32Array(first.length).fill(-1);
+  const near4 = (k: number) => {
+    const [i, j] = [k % cols, Math.floor(k / cols)];
+    return [i > 0 ? k - 1 : -1, i + 1 < cols ? k + 1 : -1, j > 0 ? k - cols : -1, j + 1 < rows ? k + cols : -1].filter((n) => n >= 0);
+  };
+  for (let k0 = 0; k0 < first.length; k0++) {
+    if (seen[k0] !== -1) continue;
+    const f = first[k0] ?? -1;
+    const part = [k0];
+    seen[k0] = k0;
+    for (let n = 0; n < part.length; n++)
+      for (const m of near4(part[n] ?? 0)) if (seen[m] === -1 && first[m] === f) {
+        seen[m] = k0;
+        part.push(m);
+      }
+    if (part.length >= ISLAND) continue;
+    // the leader most of its border has
+    const count = new Map<number, number>();
+    for (const k of part) for (const m of near4(k)) if (first[m] !== f) count.set(first[m] ?? -1, (count.get(first[m] ?? -1) ?? 0) + 1);
+    const [around] = [...count].sort((a, b) => b[1] - a[1])[0] ?? [f];
+    for (const k of part) first[k] = around;
+  }
+  // a pair neither of which is clearly ahead anywhere is about the same across the whole map: no line between them
+  const clearSomewhere = new Set<number>();
+  first.forEach((f, k) => (ahead[k] ?? 0) >= 1 && clearSomewhere.add(f));
   const at = (i: number, j: number) => j * cols + i;
   /** The point between two nodes where their leaders are equal, as a fraction from the first; null where one leader holds both. */
   const cross = (a: number, b: number): number | null => {
     const fa = first[a] ?? -1;
     const fb = first[b] ?? -1;
-    if (fa < 0 || fb < 0 || fa === fb) return null;
+    if (fa < 0 || fb < 0 || fa === fb || (!clearSomewhere.has(fa) && !clearSomewhere.has(fb))) return null;
     const la = ahead[a] ?? 1;
     const lb = ahead[b] ?? 1;
     return la + lb === 0 ? 0.5 : la / (la + lb);
