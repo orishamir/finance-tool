@@ -47,7 +47,8 @@ export type ChangeFigure = "switch" | "from" | "till" | "floor";
 /**
  * What the map says, for every case (F-131): `name` gives an account's short name, `fig` writes a switch's or a stretch's figure (plain
  * words on the card, a figure that opens its sheet in the panel), `house` is the receipt's account and `theta` the tie threshold as the
- * card says it ("0.5%"). The words speak of the plan's own lines only, as the search reads them at its samples.
+ * card says it ("0.5%"). The words speak of the plan's own lines, as the search reads them at its samples, and of the map away from them
+ * only to name an account clearly cheaper elsewhere on it where nothing changes along the lines (`elsewhere`).
  */
 export function mapWords<F>(map: AccountMap, house: string, name: (id: string) => string, fig: (s: MapSwitch, axis: "amount" | "monthly", which: ChangeFigure) => F, theta: string): MapWords<F> {
   const lead = map.plan.lead;

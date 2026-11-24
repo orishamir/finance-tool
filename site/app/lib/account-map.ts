@@ -131,9 +131,8 @@ const ABOVE_EDGE = 0.01;
 /** The least amount a search reaches, as a share of its reach, where the other axis is 0 (so it never lands on 0 ₪ and 0 ₪ a month), and the
  *  least monthly deposit (no deposit at all is the edge's). The edge starts at the same share of its axis. */
 const LOWEST = 1 / 1000;
-/** No switch, stretch or equal point is named under this share of the sliders' reach (5,000 ₪ today, 100 ₪ a month): the step a reader
- *  moves a slider by at its low end, where a point is no decision anyone makes, and where two accounts that differ by a few shekels flip
- *  on rounding. The map's areas start at the same share of the monthly axis (ABOVE_EDGE). */
+/** The searches read nothing under this share of the sliders' reach (5,000 ₪ today, 100 ₪ a month): the step a reader moves a slider by
+ *  at its low end, where a point is no decision anyone makes, and where two accounts that differ by a few shekels flip on rounding. */
 const NAMED = 1 / 100;
 /** The axis's end is past the farthest change named up its line by this factor (and the cap past a plan beyond the sliders' reach), rounded up to a clean value. */
 const ROOM = 1.5;
