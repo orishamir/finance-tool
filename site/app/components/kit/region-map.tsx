@@ -314,9 +314,14 @@ export function RegionMap({
     // in order and takes the first inside the plot that meets none, else the one that meets least
     const placed: Box[] = [];
     const clearOf = (tries: Box[]) => tries.find((b) => fits(b) && !placed.some((t) => meets(b, t)));
-    const place = (tries: Box[]): Box => {
+    // where none of its places is clear, the words stand in the nearest clear place around the point they name, a line at a time further
+    // up or down, beside it or held inside the plot; only where none is clear either, in the place that meets least
+    const around = (b: Box, at: [number, number]): Box[] =>
+      [10, -30, 30, -50, 50, -70, 70, -90, 90].flatMap((dy) => [at[0] + 8, at[0] - 8 - b.w, at[0] - b.w / 2].map((x) => ({ ...b, x: Math.min(right - b.w - 4, Math.max(left + 4, x)), y: at[1] + dy - b.h / 2 })));
+    const place = (tries: Box[], at: [number, number]): Box => {
       const cost = (b: Box) => placed.reduce((n, t) => n + overlap(b, t), 0) + (fits(b) ? 0 : 1e6);
-      const got = clearOf(tries) ?? [...tries].sort((x, y) => cost(x) - cost(y))[0] ?? { x: left, y: TOP, w: 0, h: 0 };
+      const first = tries[0];
+      const got = clearOf(tries) ?? (first && clearOf(around(first, at))) ?? [...tries].sort((x, y) => cost(x) - cost(y))[0] ?? { x: left, y: TOP, w: 0, h: 0 };
       placed.push(got);
       return got;
     };
@@ -336,7 +341,7 @@ export function RegionMap({
       { x: mxL + 12, y: myL + 4, w: markTw, h: LINE },
       { x: mxL - 12 - markTw, y: myL + 4, w: markTw, h: LINE },
       ...[myL - 26, myL - 46].map((y) => ({ x: inside(mxL + 8, markTw), y, w: markTw, h: LINE })),
-    ]);
+    ], [mxL, myL]);
     // each guide's dot and its words beside it: over the dashed line or under it, after the dot or before it
     const guideDraw = guides.map((g) => {
       const gx = g.axis === "x" ? sxL(g.at) : mxL;
@@ -348,6 +353,7 @@ export function RegionMap({
         g.axis === "x"
           ? [gy - 24, gy + 4, gy - 46].flatMap((y) => [{ x: gx + 8, y, w: tw, h: LINE }, { x: gx - 8 - tw, y, w: tw, h: LINE }, { x: inside(gx - tw / 2, tw), y, w: tw, h: LINE }])
           : [gy - 10, gy - 30, gy + 10].flatMap((y) => [{ x: gx + 8, y, w: tw, h: LINE }, { x: gx - 8 - tw, y, w: tw, h: LINE }, { x: inside(gx + 8, tw), y, w: tw, h: LINE }]),
+        [gx, gy],
       );
       return { g, gx, gy, box };
     });
