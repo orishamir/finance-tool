@@ -245,9 +245,13 @@ export function fundLevelTaxOn(gain: number, carried: number, rate: number): { t
   return { tax: rate * (gain - offset), carried: carried - offset };
 }
 
-/** F-04, D84: the statement a TASE foreign fund's own annex makes of its tax index, which its runs are made on; null for any other fund. */
-export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex">): FundStatement | null {
-  return fund.kind === "tase-foreign-fund" ? (fund.statedIndex ?? null) : null;
+/**
+ * F-04, D84: the statement a TASE foreign fund's own annex makes of its tax index, which its runs are made on; null for any other fund. A
+ * statement settles only the index: a fund that distributes stops on its distribution's open part whatever its annex states (G-35, TXF open
+ * question 19: the run does not know its legal form), so its runs read none and stop on TXF-04 as an unstated one's do.
+ */
+export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex" | "distribution">): FundStatement | null {
+  return fund.kind === "tase-foreign-fund" && !fund.distribution ? (fund.statedIndex ?? null) : null;
 }
 
 /**
@@ -256,12 +260,13 @@ export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex">): Fund
  * (`principalCurrency`) is read under each reading of TXS OQ26 (`foreignInvestmentFundIndex`): the principal currency's exchange rate, or
  * the CPI; a book with no reading chosen stops so that `acrossReadings` makes the run under each. A TASE foreign fund whose own annex
  * states its index under its ruling takes that index (`statedTaxIndexOf`, D84): the main currency's exchange rate, which is the exposure's
- * and so the run's one exchange-rate path, or the CPI; the run carries the statement, and no rule is cited for it. Any other TASE foreign
- * fund takes the index TXF-04 states, and TXF-04 is open, so neither is known for it, with or without its 90% test: the book stops on it
- * (BlockedError) and the run computes nothing after tax (D10); F-118 reads its value before the exit tax. Were TXF-04 settled as the
- * letter's copy states it (the golden harness), a fund on the 90% test would take the exchange rate and any other the CPI.
+ * and so the run's one exchange-rate path, or the CPI; the run carries the statement, and no rule is cited for it. A distributing one
+ * reads no statement (`statedTaxIndexOf`). Any other TASE foreign fund takes the index TXF-04 states, and TXF-04 is open, so neither is
+ * known for it, with or without its 90% test: the book stops on it (BlockedError) and the run computes nothing after tax (D10); F-118
+ * reads the value before the exit tax of one that pays nothing out. Were TXF-04 settled as the letter's copy states it (the golden
+ * harness), a fund on the 90% test would take the exchange rate and any other the CPI.
  */
-export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency" | "statedIndex">, book: RuleBook): "fx" | "principal" | "cpi" {
+export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency" | "statedIndex" | "distribution">, book: RuleBook): "fx" | "principal" | "cpi" {
   if (fund.kind === "foreign-fund") {
     book.cite("TXF-03");
     return "fx";
@@ -288,7 +293,7 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "prin
  * running it, so nothing is ranked on a guessed index. A fund whose tax index is an open reading (TXS OQ26) is not stopped by it before a
  * run: whether its readings split is the run's to say (`securitiesStopOf`).
  */
-export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency" | "statedIndex">, ctx: RunContext): string | null {
+export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency" | "statedIndex" | "distribution">, ctx: RunContext): string | null {
   try {
     taxIndexOf(fund, ruleBook(ctx));
     return null;
@@ -322,10 +327,10 @@ const ownRunOf = (input: SecuritiesInput): SecuritiesInput => ({
 });
 
 /**
- * Method §13, F-04: what the after-tax runs of an input's fund stop on, or null where they compute. A TASE foreign fund stops on TXF-04
- * before any run (`securitiesBlockedBy`). A fund whose tax index is an open reading (a foreign-investment fund, TXS OQ26) is run on its own
- * (`ownRunOf`) under each reading: where they give different results, its runs stop on TXS-14 with the question; where they agree, they
- * compute and carry the question as a flag.
+ * Method §13, F-04: what the after-tax runs of an input's fund stop on, or null where they compute. A TASE foreign fund whose annex states
+ * no index, or that distributes, stops on TXF-04 before any run (`securitiesBlockedBy`). A fund whose tax index is an open reading (a
+ * foreign-investment fund, TXS OQ26) is run on its own (`ownRunOf`) under each reading: where they give different results, its runs stop
+ * on TXS-14 with the question; where they agree, they compute and carry the question as a flag.
  */
 export function securitiesStopOf(input: SecuritiesInput, ctx: RunContext): SecuritiesStop | null {
   try {

@@ -212,8 +212,9 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   else if (rec.distribution_policy === "accumulating" && rec.domicile !== "IL")
     out.push(rec.tax_ruling ? { ...label("tax-on-sale-ruling"), doc: { href: sourceHref({ url: rec.tax_ruling.source.url, page: rec.tax_ruling.pages.ruling }), title: rec.tax_ruling.source.title } } : label("tax-on-sale-open"));
   // a foreign fund in Tel Aviv whose own annex states its tax index under its ruling: the fund's statement, its page linked (F-04, D84);
-  // the same units bought abroad keep TXF-03 whatever the record carries, so only the Tel Aviv line says it
-  const stated = option === "tase-foreign" ? rec.tax_ruling?.index : undefined;
+  // the same units bought abroad keep TXF-03 whatever the record carries, so only the Tel Aviv line says it, and a distributing one stops
+  // on its distribution's open part whatever its annex states (G-35), so only an accumulating one does
+  const stated = option === "tase-foreign" && rec.distribution_policy === "accumulating" ? rec.tax_ruling?.index : undefined;
   if (rec.tax_ruling && stated) {
     const doc = { href: sourceHref({ url: rec.tax_ruling.source.url, page: stated.page }), title: rec.tax_ruling.source.title };
     out.push({ ...(stated.basis === "main-currency" ? label("tax-index-currency", stated.currency) : label("tax-index-cpi")), doc });
