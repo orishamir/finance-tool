@@ -422,7 +422,7 @@ export function RegionMap({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const token = (name: string) => Number.parseFloat(getComputedStyle(host).getPropertyValue(name));
-    const look = { texture: token("--chart-region-texture") || 0, period: token("--chart-region-period") || 5, scale };
+    const look = { texture: token("--chart-region-texture") || 0, period: token("--chart-region-period") || 7, scale };
     const img = ctx.createImageData(cw, ch);
     img.data.set(bandLayer(field, cw, ch, look, colour));
     ctx.putImageData(img, 0, 0);

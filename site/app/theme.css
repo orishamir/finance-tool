@@ -303,8 +303,8 @@
   /* where two areas of a region map are about the same, the share of their mix the 45° stripes carry (the rest a smooth change near the
      line where they are equal), and the stripes' period along x + y, in CSS px: light enough that each area still reads in its own colour,
      the stripes still seen on a phone */
-  --chart-region-texture: 0.45;
-  --chart-region-period: 5;
+  --chart-region-texture: 0.7;
+  --chart-region-period: 7;
   /* the index page's two kinds of fund (2026-10-29, founder: option A of 8dd1f013:research/specs/2026-10-29-hedging): keeping the index's currency, and
      neutralising it: teal against magenta (not gold: amber and its neighbours mean status, charts.md), not the fee orange the
      page's cost bars use */
