@@ -4212,7 +4212,7 @@ export const invest = {
       nearStays: (n: number) => `אף חשבון לא זול בבירור ${n === 2 ? "משניהם" : "מכולם"}`,
       /** The card of a plan with nothing in it. */
       empty: "אין כסף בתוכנית",
-      emptyNote: "אין כסף בחשבון, אז לא נגבה ממנו כלום",
+      emptyNote: "אין כסף בחשבון, אז כל החשבונות משאירים 0 ₪",
       /** The card where no account is ranked with the fund, by why. */
       unranked: "אין מפה לקרן הזו",
       unrankedWhy: { "open-rule": "המס עליה תלוי בשאלה פתוחה, ולכן האתר לא מדרג חשבונות איתה", unpriced: "אף חשבון לא מדורג עם הקרן הזו" },
@@ -4220,7 +4220,7 @@ export const invest = {
       headCheapest: (w: string) => `בתוכנית שלכם ${w} הכי זול.`,
       headCheaper: (w: string, house: string) => `בתוכנית שלכם ${w} זול יותר ${fromPrefix(house)}${house}.`,
       headNear: (names: string[]) => `בתוכנית שלכם ${andList(names)} בערך אותו דבר.`,
-      headEmpty: "בתוכנית שלכם אין כסף, אז לא נגבה כלום. המפה מראה איזה חשבון זול יותר בכל צירוף אחר.",
+      headEmpty: "בתוכנית שלכם אין כסף, אז כל החשבונות משאירים 0 ₪. המפה מראה איזה חשבון זול יותר בכל צירוף אחר.",
       /** "אי.בי.אי זול יותר בבירור מעל כ־108 אלף ₪ היום", then ", או …" where the same account is clearly cheaper the other way, or a
        *  sentence of its own where another is. */
       cheaperFrom: (to: string) => `${to} זול יותר בבירור`,
@@ -4250,7 +4250,7 @@ export const invest = {
       less: "פחות",
       /** Where the two are within the tie threshold: neither is set apart. */
       sameNote: "בערך אותו דבר: ההפרש קטן מ־",
-      none: "אין כסף בחשבון, אז לא נגבה כלום: כל החשבונות משאירים 0 ₪.",
+      none: "אין כסף בחשבון: כל החשבונות משאירים 0 ₪.",
       /** A point where no account is ranked with the fund (its tax on an open rule, or no account priced there). */
       unrankedHere: "כאן אף חשבון לא מדורג עם הקרן הזו",
       onlyOne: "כאן אין עוד חשבון שמדורג עם הקרן הזו",
