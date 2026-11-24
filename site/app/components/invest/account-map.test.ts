@@ -89,6 +89,17 @@ describe("the account map's words", () => {
     expect(said(near).head).toBe("בתוכנית שלכם פסגות ואי.בי.אי בערך אותו דבר. אי.בי.אי זול יותר בבירור בצירופים אחרים במפה.");
   });
 
+  it("names an account clear elsewhere only over a share of the map: a hundredth of its areas, or a tenth of the bottom edge", () => {
+    // one clear node of 200 in the areas, and one of 20 on the bottom edge (no deposit, near 300 ₪): a lone node, not named
+    const lone = (n: number, at: number) => ({ cols: n, rows: 1, first: Array.from({ length: n }, (_, i) => (i === at ? 1 : 0)), second: Array.from({ length: n }, () => -1), ahead: Array.from({ length: n }, () => 1) });
+    expect(said({ ...base, field: lone(200, 7) }).answer).toBe("אף חשבון לא זול בבירור מפסגות");
+    expect(said({ ...base, field: lone(200, 7), edge: lone(20, 3) }).answer).toBe("אף חשבון לא זול בבירור מפסגות");
+    // two of 200 in the areas, or two neighbours of 20 on the edge: named
+    const two = (n: number) => ({ ...lone(n, 7), first: Array.from({ length: n }, (_, i) => (i === 7 || i === 8 ? 1 : 0)) });
+    expect(said({ ...base, field: two(200) }).answer).toBe("אי.בי.אי, בצירופים אחרים במפה");
+    expect(said({ ...base, field: lone(200, 7), edge: two(20) }).answer).toBe("אי.בי.אי, בצירופים אחרים במפה");
+  });
+
   it("one account cheapest everywhere on the map", () => {
     expect(said({ ...base, accounts: ["psagot"] })).toEqual({
       answer: "אף חשבון",

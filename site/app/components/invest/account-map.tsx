@@ -18,7 +18,7 @@ import { rankedAt } from "../../lib/stretch";
 import { asParameter, carriedBy, computed, differenceOf, entered, type SiteValue } from "../../lib/value";
 import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
-import { MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionGuide, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
+import { edgeStretches, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionGuide, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
 import { providerName } from "./sections";
 import { allFunds, type Pick } from "./pair";
 
@@ -72,11 +72,15 @@ export function mapWords<F>(map: AccountMap, house: string, name: (id: string) =
   const second = sa && sm ? sm : null;
   // the second change: the same account ("או מעל כ־2,300 ₪ בחודש"), or another in words of its own ("וואן זירו זול יותר בבירור מעל …")
   const then = (c: LineChange, to: string, where: "card" | "head"): (string | F)[] => (c.s.to === to ? [where === "card" ? `${m.or} ` : `, ${m.or} `] : [where === "card" ? `${name(c.s.to)} ` : `. ${m.cheaperFrom(name(c.s.to))} `]);
-  // with no change along the plan's lines, the accounts the map still shows clearly first somewhere (the plan's own first aside, where it is
-  // θ ahead at the plan): the words never say nothing changes where the map draws another's clear area
+  // with no change along the plan's lines, the accounts the map still shows clearly first over a share of it the eye can find (the plan's
+  // own first aside, where it is θ ahead at the plan): a hundredth of the areas' nodes (ELSEWHERE_SEEN), or a run the bottom edge names (a
+  // tenth of it, `edgeStretches`). The words never say nothing changes where the map draws another's clear area, and never name one
+  // that is clear at a lone node
   const elsewhere = (mine: readonly string[]): string[] => {
-    const seen = new Set<number>();
-    for (const f of [map.field, map.edge]) f.first.forEach((k, n) => k >= 0 && (f.ahead[n] ?? 0) >= 1 && seen.add(k));
+    const count = new Map<number, number>();
+    map.field.first.forEach((k, n) => k >= 0 && (map.field.ahead[n] ?? 0) >= 1 && count.set(k, (count.get(k) ?? 0) + 1));
+    const seen = new Set([...count].filter(([, c]) => c >= ELSEWHERE_SEEN * map.field.first.length).map(([k]) => k));
+    for (const r of edgeStretches(map.edge)) seen.add(r.area);
     return map.accounts.filter((id, k) => seen.has(k) && !mine.includes(id));
   };
   const switchesHead = (f: LineChange): (string | F)[] => [m.cheaperFrom(name(f.s.to)), " ", ...at(f, firstAxis, true), ...(second ? [...then(second, f.s.to, "head"), ...at(second, "monthly", true)] : []), "."];
@@ -113,6 +117,9 @@ export function mapWords<F>(map: AccountMap, house: string, name: (id: string) =
     head,
   };
 }
+
+/** The least share of the map's areas an account clearly first elsewhere covers for the words to name it: as a band shows in the legend. */
+const ELSEWHERE_SEEN = 0.01;
 
 /** P-01 as the card says it, and as a figure that opens its source. */
 const thetaText = (bundle: IndicesBundle) => fmt.pct(tieShareOf(bundle) * 100);
