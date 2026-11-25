@@ -1,8 +1,9 @@
 // The indices page computed over a grid of plans, to find rankings that look wrong on their face (tools/rank-flags.mjs reads the
-// output): for every index, every kind of fund, every fund and every house, the value left, the account's cost split by fee line,
+// output): for every index, every kind of fund, every fund and every house, the value left, the account's cost split by fee line (each
+// pair's receipt, pairCosts: a cell for a kind of fund with no fund record carries no split, as the page works one out only to show it),
 // and the fund's own part and the tax (per fund, from pairCosts at its best house). The plan is the page's: the return the site
 // illustrates with (A-01, 7%), inflation 2%, and every bank's current account counted (D64).
-// Run from the repository root (about three minutes, a 50 MB file):
+// Run from the repository root (about six minutes, a 50 MB file):
 //   npx tsx tools/rank-scan.ts <out.jsonl> [index ids...]
 //   node tools/rank-flags.mjs <out.jsonl>
 import { writeFileSync, appendFileSync } from "node:fs";
@@ -25,7 +26,8 @@ const YEARS = [1, 5, 10, 20, 30];
 const indices = inv.knownIndices(bundle).filter((i: any) => !only.length || only.includes(i.id));
 writeFileSync(out, "");
 const r2 = (n: number) => Math.round(n * 100) / 100;
-const linesOf = (ls: { line: string; cost: number }[]) => Object.fromEntries(ls.map((l) => [l.line, r2(l.cost)]));
+// the account's lines as the receipt writes them (`PairCosts.account`), each a figure
+const linesOf = (ls: { line: string; cost: { value: unknown } }[]) => Object.fromEntries(ls.map((l) => [l.line, r2(l.cost.value as number)]));
 for (const index of indices) {
   const t0 = Date.now();
   for (const a of AMOUNTS) for (const m of MONTHLY) for (const y of YEARS) {
@@ -38,8 +40,10 @@ for (const index of indices) {
       if (!o.exists) continue;
       for (const c of o.cells) {
         const r: any = { ...sc, opt: o.id, fund: "_generic", house: c.providerId, kind: c.kind };
-        if (c.kind === "cost") Object.assign(r, { value: r2(c.leftN), acct: r2(c.costN), lines: linesOf(c.lines), inter: r2(c.interaction), venue: c.venue, standing: c.standing, aside: c.aside });
-        else r.reason = c.reason?.code ?? (c.availability ? "unavailable" : null), r.reasonDetail = (c.reason as any)?.detail ?? null;
+        if (c.kind === "cost") {
+          if (c.costN === undefined) throw new Error(`rank-scan: ${c.providerId}'s priced cell for ${o.id} on ${index.id} has no cost`);
+          Object.assign(r, { acct: r2(c.costN), venue: c.venue, standing: c.standing, aside: c.aside });
+        } else r.reason = c.reason?.code ?? (c.availability ? "unavailable" : null), r.reasonDetail = (c.reason as any)?.detail ?? null;
         rows.push(r);
       }
       for (const f of o.funds) {
@@ -51,7 +55,11 @@ for (const index of indices) {
         }
         for (const [house, w] of Object.entries(f.byHouse) as [string, any][]) {
           const r: any = { ...sc, opt: o.id, fund: f.rec.id, house, hedged: f.rec.hedged === true, dist: f.rec.distribution_policy ?? null };
-          if ("valueN" in w) Object.assign(r, { kind: "cost", value: r2(w.valueN), acct: r2(w.accountCost), lines: linesOf(w.lines), inter: r2(w.interaction), open: w.open, venue: w.venue, standing: w.standing, aside: w.aside, units: w.units, fundPart, base, tax: base !== null && fundPart !== null ? r2(base - w.valueN - w.accountCost - fundPart) : null });
+          if ("valueN" in w) {
+            const pc = inv.pairCosts({ bundle, index, plan: p, fundId: f.rec.id, providerId: house });
+            if (!pc) throw new Error(`rank-scan: ${house} prices ${f.rec.id} on ${index.id}, and its receipt has no costs`);
+            Object.assign(r, { kind: "cost", value: r2(w.valueN), acct: r2(w.accountCost), lines: linesOf(pc.account), inter: r2(pc.interaction), venue: w.venue, standing: w.standing, aside: w.aside, units: w.units, fundPart, base, tax: base !== null && fundPart !== null ? r2(base - w.valueN - w.accountCost - fundPart) : null });
+          }
           else Object.assign(r, { kind: w.availability ? "unavailable" : "fail", reason: w.reason?.code ?? null, reasonDetail: w.reason?.detail ?? w.reason?.recorded ?? null });
           rows.push(r);
         }
