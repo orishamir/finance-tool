@@ -53,11 +53,13 @@ function Lead({ mark, lead, inked }: { mark?: PartMark; lead?: ReactNode; inked?
  * A part at rest, slim, in a case's row or a slim fee's line: its icon and first word (`lead`) in its kind's ink, then its `figure` (a `Num`,
  * in its own state) and `unit` ("%", "$") at the figure's size, then any words of its own in the foreground (`children`: a note's sentence, a
  * third party's name), then `words` in the muted ink ("לכל פעולה", "בלי סכום בתעריפון"). 30 px tall; a long part wraps inside its frame.
- * It is not a control: a tap on it is its row's, and a figure in it keeps its own tap.
+ * It is not a control: a tap on it is its row's, and a figure in it keeps its own tap. Read-only (`ReadOnly`), the same words with no frame
+ * and no fill, so nothing in a price shown as it stands looks like a field to fill.
  */
 export function PartChip({ kind, mark, lead, figure, unit, words, children }: { kind: ChipKind; mark?: PartMark; lead?: ReactNode; figure?: ReactNode; unit?: ReactNode; words?: ReactNode; children?: ReactNode }) {
+  const still = useReadOnly();
   return (
-    <span className={cx("inline-flex min-h-[30px] max-w-full flex-wrap items-center gap-x-1 gap-y-0.5 rounded-md border px-2.5 py-0.5 text-sm", PART_LOOK[kind])}>
+    <span className={cx("inline-flex max-w-full flex-wrap items-center gap-x-1 gap-y-0.5 text-sm", !still && cx("min-h-[30px] rounded-md border px-2.5 py-0.5", PART_LOOK[kind]))}>
       <Lead mark={mark} lead={lead} />
       {(figure !== undefined || unit !== undefined) && (
         // the figure and its unit as the page writes a figure, one left-to-right group with a sign on the number's right ("0.25%")

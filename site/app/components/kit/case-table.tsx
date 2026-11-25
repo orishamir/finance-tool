@@ -553,10 +553,19 @@ export interface EveryCaseCell extends Pick<CellExtras, "grip" | "onRemove" | "r
  * whole row (a drop zone: what lands there goes into every case). `label` is the row's spoken name. Nothing is drawn with no cell, no ask
  * and no add.
  */
-export function EveryCaseParts(props: { label: string; cells: EveryCaseCell[]; asking?: ReactNode; add?: AddSpec; zone?: (row: ReactNode) => ReactNode }) {
-  // read-only (`ReadOnly`): the cells as they stand, with no add and nothing that changes them
-  const still = useReadOnly();
-  const { label, cells, asking, add, zone } = still ? { ...props, cells: props.cells.map((c) => ({ ...c, grip: undefined, onRemove: undefined, copyKey: undefined })), add: undefined } : props;
+export function EveryCaseParts({ label, cells, asking, add, zone }: { label: string; cells: EveryCaseCell[]; asking?: ReactNode; add?: AddSpec; zone?: (row: ReactNode) => ReactNode }) {
+  // read-only (`ReadOnly`): the parts as plain words in a row, no cell's frame to look like a field, nothing that changes them
+  if (useReadOnly())
+    return cells.length === 0 ? null : (
+      <div role="group" aria-label={label} className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+        {cells.map((cell) => (
+          <span key={cell.id} className="inline-flex max-w-full flex-wrap items-center">
+            {cell.content}
+            {missingLine(cell)}
+          </span>
+        ))}
+      </div>
+    );
   if (cells.length === 0 && !asking && !add) return null;
   const onKeyDown = (cell: EveryCaseCell) => (e: KeyboardEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;

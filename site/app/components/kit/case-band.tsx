@@ -54,8 +54,16 @@ export interface HeadThing {
  * inside it takes what the chip takes.
  */
 export function ConditionHead({ things, onThing, openThing, label = copy.changesBy, zone }: { things: HeadThing[]; onThing: (id: string, at: HTMLElement) => void; openThing?: string | null; label?: ReactNode; zone?: (head: ReactNode) => ReactNode }) {
-  // read-only (`ReadOnly`): each thing's name in its chip, with no menu and no grip
-  const still = useReadOnly();
+  // read-only (`ReadOnly`): the things' names in bold words after the label, nothing that looks as if it opens a menu
+  if (useReadOnly())
+    return (
+      <p className="flex min-h-target items-center gap-x-2 px-3 py-2 text-sm text-when-ink">
+        <Split {...icon} />
+        <span>
+          <span className="font-medium">{label}</span> <strong className="font-semibold text-foreground">{things.map((t) => t.name).join(", ")}</strong>
+        </span>
+      </p>
+    );
   const head = (
     // 8 px above the chips and 12 px below, so a chip's 44 px tap area stays inside the band, which clips what passes its edge, and a
     // chip's grip and the first row's grip under the band keep their tap areas apart (2026-11-21: they shared 2 px on a phone); 12 px
@@ -64,11 +72,7 @@ export function ConditionHead({ things, onThing, openThing, label = copy.changes
       <Split {...icon} />
       <span className="font-medium">{label}</span>
       {things.map((t) => {
-        const pill = still ? (
-          <span key={t.id} className={cx("inline-flex min-h-[30px] items-center", menuChip(false))}>
-            {t.name}
-          </span>
-        ) : (
+        const pill = (
         <span key={t.id} data-thing-place={t.id} data-liftable="" className="inline-flex items-center gap-0.5 rounded-md">
           {t.grip}
           <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-2", menuChip(openThing === t.id))}>
@@ -77,7 +81,7 @@ export function ConditionHead({ things, onThing, openThing, label = copy.changes
           </button>
         </span>
         );
-        return t.zone && !still ? <span key={t.id}>{t.zone(pill)}</span> : pill;
+        return t.zone ? <span key={t.id}>{t.zone(pill)}</span> : pill;
       })}
     </div>
   );
@@ -133,14 +137,36 @@ export function CaseGroup({ head, shared, grip, zone, children }: { head: ReactN
 function CaseWords({ when, mark }: { when: CaseWord[]; mark?: ReactNode }) {
   return (
     <div className={"flex flex-wrap items-center gap-x-2 gap-y-0.5 px-3 pt-2 pb-1 text-sm font-medium text-when-words @min-[25rem]:flex-col @min-[25rem]:flex-nowrap @min-[25rem]:items-start @min-[25rem]:justify-center @min-[25rem]:gap-0.5 @min-[25rem]:py-2"}>
-      {when.map((w, k) => (
-        <span key={k} className={cx("inline-flex flex-wrap items-center gap-x-1.5 gap-y-0.5", w.any && "text-xs font-normal text-when-any")}>
-          {w.range && <ChartNoAxesColumnIncreasing {...icon} />}
-          {w.text}
-          {w.mine && <Tag tone="primary">{copy.mine}</Tag>}
-        </span>
-      ))}
+      <WordList when={when} />
       {mark != null && <CaseMark>{mark}</CaseMark>}
+    </div>
+  );
+}
+
+/** Each thing a case says, in its words: a range's after its icon, any value fainter, the person's own with "שלכם". */
+function WordList({ when }: { when: CaseWord[] }) {
+  return when.map((w, k) => (
+    <span key={k} className={cx("inline-flex flex-wrap items-center gap-x-1.5 gap-y-0.5", w.any && "text-xs font-normal text-when-any")}>
+      {w.range && <ChartNoAxesColumnIncreasing {...icon} />}
+      {w.text}
+      {w.mine && <Tag tone="primary">{copy.mine}</Tag>}
+    </span>
+  ));
+}
+
+/**
+ * A case read-only (`ReadOnly`), at any width: one row on the case's dark tile, its words at the start and its parts at the end, plain
+ * words that open nothing; the host's mark across the tile's top edge, as a table's tile carries it.
+ */
+function StillCaseRow({ when, missing, mark, children }: { when: CaseWord[]; missing?: ReactNode; mark?: ReactNode; children: ReactNode }) {
+  return (
+    <div className={cx("relative mx-3 flex min-h-target flex-wrap items-center justify-between gap-x-4 gap-y-1 rounded-md bg-card px-3 py-2 text-sm", missing != null && MISSING, mark != null && missing == null && MARKED, mark != null && "mt-2")}>
+      {mark != null && <CaseMark edge>{mark}</CaseMark>}
+      <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 font-medium text-when-words">
+        <WordList when={when} />
+      </span>
+      <span className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1">{children}</span>
+      {missing != null && <span className="basis-full text-foreground">{missing}</span>}
     </div>
   );
 }
@@ -150,11 +176,15 @@ function CaseWords({ when, mark }: { when: CaseWord[]; mark?: ReactNode }) {
  * that opens the case (`label` is its spoken name); a figure in it keeps its own tap. Under the pointer the cell lights up. The words stand
  * in a column of 8.5rem beside the cell, 12rem in a band of 44rem and more, where the parts have room to spare and a long condition (three
  * kinds of what is bought) then takes fewer lines; in a band under 25rem they stand on a line above the cell. `open`: the case is among
- * several the toolbox adds to at once, its cell outlined in the action colour as an open case's is.
+ * several the toolbox adds to at once, its cell outlined in the action colour as an open case's is. Read-only, `StillCaseRow`.
  */
-export function CaseRow({ when, label, onOpen: tap, grip, open, missing, mark, children }: { when: CaseWord[]; label: string; onOpen?: () => void; /** A grip that lifts the case, at the start of its cell. */ grip?: ReactNode; open?: boolean; /** Its price misses a figure: what is missing, on a line under its parts, the parts' cell dashed (`CellExtras.missing`). */ missing?: ReactNode; /** A host's mark on the case (`CaseMark`), after its words. */ mark?: ReactNode; children: ReactNode }) {
-  // read-only (`ReadOnly`): the case as it stands, opening nothing
-  const onOpen = useReadOnly() ? undefined : tap;
+export function CaseRow({ when, label, onOpen, grip, open, missing, mark, children }: { when: CaseWord[]; label: string; onOpen?: () => void; /** A grip that lifts the case, at the start of its cell. */ grip?: ReactNode; open?: boolean; /** Its price misses a figure: what is missing, on a line under its parts, the parts' cell dashed (`CellExtras.missing`). */ missing?: ReactNode; /** A host's mark on the case (`CaseMark`), after its words. */ mark?: ReactNode; children: ReactNode }) {
+  if (useReadOnly())
+    return (
+      <StillCaseRow when={when} missing={missing} mark={mark}>
+        {children}
+      </StillCaseRow>
+    );
   return (
     // a press on the parts' cell, which stands over the row's button where it holds a grip, goes through to the button (`PRESS_THROUGH`)
     <div data-liftable="" data-lift-body="" className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER, PRESS_THROUGH))}>
