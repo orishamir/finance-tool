@@ -74,7 +74,7 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   it("Bank Jerusalem with the accumulating iShares: to Interactive Brokers, then VOO there", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[76632, null], [83525, 6893], [vooAtIb(), vooAtIb() - 83525]]));
   it("Interactive Israel with the same iShares: to VOO there, then to Interactive Brokers (Tiered, the automatic conversion) with VOO", () => {
     const c = chainOf(grid, { start: { a: "interactive-israel", f: "ie00b5bmr087" }, taken: [] })!;
-    expect(c.chain.map((s) => [Math.round(s.v), s.d])).toEqual([[83486, null], [83998, 512], [vooAtIb(), vooAtIb() - 83998]]);
+    expect(c.chain.map((s) => [Math.round(s.v), s.d])).toEqual([[83486, null], [83974, 488], [vooAtIb(), vooAtIb() - 83974]]);
     expect(c.chain[1]!.pos).toMatchObject({ a: "interactive-israel", f: "us-voo" });
     expect(c.chain[2]!.pos).toMatchObject({ a: "interactive-brokers", f: "us-voo" });
   });

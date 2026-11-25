@@ -86,11 +86,11 @@
   },
   "distribution": {
     "yield": {
-      "value": 1.02,
+      "value": 1.0695290340230086,
       "unit": "pct_per_year",
       "source": {
         "url": "https://advisors.vanguard.com/investments/products/voo/vanguard-sp-500-etf",
-        "title": "Vanguard S&P 500 ETF (VOO), product page, 'Fund metrics': '30 day SEC yield as of 10/31/2026 1.02%' (library 665afd765684f1a4)",
+        "title": "Vanguard S&P 500 ETF (VOO): the 12-month trailing yield as of 10/31/2026, computed by F-132 from the income in the product page's distributions table and the NAV of 10/30/2026 (library 665afd765684f1a4, 751a586d819cc10c)",
         "publisher": "Vanguard",
         "strength": "institution"
       },
@@ -104,10 +104,81 @@
         "TXF-08",
         "TXF-12"
       ],
-      "state": "sourced",
-      "notes": "A 30-day SEC yield, not a 12-month trailing distribution yield: Vanguard prints no trailing yield of the fund's own distributions for VOO, on its fact sheet (F0968, as of September 30, 2026: no yield at all; library e96f5ad4c4aee46c) or on either profile page. The page's definition: 'A non-money-market fund's SEC yield is based on a formula mandated by the Securities and Exchange Commission (SEC) that calculates a fund's hypothetical annualized income as a percentage of its assets. A security's income, for the purposes of this calculation, is based on the current market yield to maturity (in the case of bonds) or projected dividend yield (for stocks) of the fund's holdings over a trailing 30-day period. This hypothetical income will differ (at times, significantly) from the fund's actual experience; as a result, income distributions from the fund may be higher or lower than implied by the SEC yield.' Its footnote B: 'BASED ON HOLDINGS' YIELD TO MATURITY/DIVIDEND FOR LAST 30 DAYS OF PRIOR MONTH'. The data the investor profile page renders from (investor.vanguard.com/irr/funds/profile/VOO, library 751a586d819cc10c) agrees: 'secYield' '1.02%', 'secYieldAsOfDate' '10/31/2026'. Not the same page's 'Dividend yield as of 10/31/2026 1.08%', which its own definition says 'represents the average dividend yield of the stocks held by the fund', a yield of the holdings, not of the fund (as the Irish Vanguard record also declines its factsheet's equity yield). The page's distribution table lists 'Income' of $1.822600, $1.962200, $1.872400 and $1.771000 a share (payable 09/30/2026, 06/30/2026, 03/31/2026, 12/24/2025). Payments a year: 'Distribution schedule Quarterly' on the same page. The distribution is taxed on the site's reading that it is a dividend (product D85, TXF open question 19)."
+      "state": "computed",
+      "computed_from": {
+        "formula": "F-132",
+        "inputs": {}
+      },
+      "notes": "A 12-month trailing yield computed by F-132 (iShares' definition, the one the other records' managers print), since Vanguard prints none for VOO: not on its fact sheet (F0968, as of September 30, 2026; library e96f5ad4c4aee46c) nor on either profile page. The income is the four payments with ex-dividend dates in the 12 months to 10/31/2026, all of type 'Income' (the one before, ex 09/29/2025, falls outside); no capital gains were paid in them. The same amounts are in the data the investor profile page renders from (library 751a586d819cc10c). For context only: the page's 'Fund metrics' print '30 day SEC yield as of 10/31/2026 1.02%', a yield the SEC's formula projects from the holdings over 30 days, and 'Dividend yield as of 10/31/2026 1.08%', the average yield of the stocks held; neither is a yield of the fund's own payments. Payments a year: 'Distribution schedule Quarterly' on the same page. The distribution is taxed on the site's reading that it is a dividend (product D85, TXF open question 19)."
     },
-    "per_year": 4
+    "per_year": 4,
+    "trailing": {
+      "nav": {
+        "date": "2026-10-30",
+        "value": 694.53,
+        "source": {
+          "url": "https://investor.vanguard.com/irr/funds/profile/VOO",
+          "title": "Vanguard S&P 500 ETF (VOO), the data the investor profile page renders from, its NAV history: '{\"asOfDate\":\"10/30/2026\",\"price\":\"$694.53\"}', the last NAV on or before 10/31/2026 (library 751a586d819cc10c; the same in library caef725f1844212d)",
+          "publisher": "Vanguard",
+          "strength": "institution"
+        },
+        "checked": "2026-11-25"
+      },
+      "payments": [
+        {
+          "kind": "income",
+          "ex_date": "2025-12-22",
+          "pay_date": "2025-12-24",
+          "per_share": 1.771,
+          "source": {
+            "url": "https://advisors.vanguard.com/investments/products/voo/vanguard-sp-500-etf",
+            "title": "Vanguard S&P 500 ETF (VOO), product page, distributions table 'TYPE $/SHARE PAYABLE DATE RECORD DATE EX-DIVIDEND DATE': 'Income $1.771000 12/24/2025 12/22/2025 12/22/2025' (library 665afd765684f1a4)",
+            "publisher": "Vanguard",
+            "strength": "institution"
+          },
+          "checked": "2026-11-25"
+        },
+        {
+          "kind": "income",
+          "ex_date": "2026-03-27",
+          "pay_date": "2026-03-31",
+          "per_share": 1.8724,
+          "source": {
+            "url": "https://advisors.vanguard.com/investments/products/voo/vanguard-sp-500-etf",
+            "title": "Vanguard S&P 500 ETF (VOO), product page, distributions table 'TYPE $/SHARE PAYABLE DATE RECORD DATE EX-DIVIDEND DATE': 'Income $1.872400 03/31/2026 03/27/2026 03/27/2026' (library 665afd765684f1a4)",
+            "publisher": "Vanguard",
+            "strength": "institution"
+          },
+          "checked": "2026-11-25"
+        },
+        {
+          "kind": "income",
+          "ex_date": "2026-06-26",
+          "pay_date": "2026-06-30",
+          "per_share": 1.9622,
+          "source": {
+            "url": "https://advisors.vanguard.com/investments/products/voo/vanguard-sp-500-etf",
+            "title": "Vanguard S&P 500 ETF (VOO), product page, distributions table 'TYPE $/SHARE PAYABLE DATE RECORD DATE EX-DIVIDEND DATE': 'Income $1.962200 06/30/2026 06/26/2026 06/26/2026' (library 665afd765684f1a4)",
+            "publisher": "Vanguard",
+            "strength": "institution"
+          },
+          "checked": "2026-11-25"
+        },
+        {
+          "kind": "income",
+          "ex_date": "2026-09-28",
+          "pay_date": "2026-09-30",
+          "per_share": 1.8226,
+          "source": {
+            "url": "https://advisors.vanguard.com/investments/products/voo/vanguard-sp-500-etf",
+            "title": "Vanguard S&P 500 ETF (VOO), product page, distributions table 'TYPE $/SHARE PAYABLE DATE RECORD DATE EX-DIVIDEND DATE': 'Income $1.822600 09/30/2026 09/28/2026 09/28/2026' (library 665afd765684f1a4)",
+            "publisher": "Vanguard",
+            "strength": "institution"
+          },
+          "checked": "2026-11-25"
+        }
+      ]
+    }
   },
   "share_price": {
     "value": 691.87,
