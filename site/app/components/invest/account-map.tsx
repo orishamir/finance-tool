@@ -18,7 +18,7 @@ import { rankedAt } from "../../lib/stretch";
 import { asParameter, carriedBy, differenceOf, entered, type SiteValue } from "../../lib/value";
 import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
-import { HelpMark, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionGuide, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
+import { HelpMark, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
 import { providerName } from "./sections";
 import { allFunds, type Pick } from "./pair";
 
@@ -42,8 +42,8 @@ export interface MapWords {
 /**
  * What the map says, for every case (F-131): `name` gives an account's short name, `house` is the receipt's account. The headline says only
  * which account leaves the most at the plan (or the accounts about the same there), and asks about plans like it, which the map answers;
- * the card names the accounts first somewhere on the map. Where another account becomes clearly cheaper is said on the plan's guides,
- * each on its own line from the plan, never in a sentence that could read as true at another plan.
+ * the card names the accounts first somewhere on the map. Where another account becomes clearly cheaper is shown by the map's areas
+ * alone, never in a sentence or on a line from the plan, which would read as true at another plan.
  */
 export function mapWords(map: AccountMap, house: string, name: (id: string) => string): MapWords {
   const lead = map.plan.lead;
@@ -189,28 +189,9 @@ export function NoMapPanel({ why }: { why: "open-rule" | "unpriced" }) {
 }
 
 /**
- * A dashed line along each axis from the plan, with no words: to the switch, else to a stretch's end nearer the plan, each within the axis,
- * else to where the two are equal, else to the axis's end. A change past the axis's end, too far from the plan to be shown (F-131), is not
- * drawn to. It carries no figure: one would hold along that line only, while the map's areas and the reading at a point hold at every point.
- */
-export function mapGuides(map: AccountMap): RegionGuide[] {
-  return (["amount", "monthly"] as const).map((axis): RegionGuide => {
-    const along = axis === "amount" ? ("x" as const) : ("y" as const);
-    const end = map.max[axis];
-    const s = map.switches[axis];
-    if (s && s.at <= end) return { axis: along, at: s.at };
-    const st = map.stretches[axis];
-    if (st && Math.min(st.lo, st.hi) <= end) return { axis: along, at: st.dir === "up" ? st.lo : st.hi };
-    const e = map.equal[axis];
-    if (e && e.at <= end) return { axis: along, at: e.at };
-    return { axis: along, at: end };
-  });
-}
-
-/**
- * The panel of the map. Memoised, as are the words and guides it hands the map: the section around it renders on every move of a plan's
- * slider (the receipt's live figures), while the map, its words and the figures each switch prices change only with a new map; a guide
- * that changed would make the map place its words again, a search over the plot.
+ * The panel of the map. Memoised, as are the words and the mark it hands the map: the section around it renders on every move of a plan's
+ * slider (the receipt's live figures), while the map and its words change only with a new map; a mark that changed would make the map
+ * place its words again, a search over the plot.
  */
 export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, house, map, on }: { view: InvestView; bundle: IndicesBundle; house: string; map: AccountMap; on: Asked<"map"> }) {
   const { fund } = on.ask;
@@ -219,12 +200,10 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
   // the map's accounts in the houses' order: the order the colours go by
   const { areas, toneOf, field, edge } = useMemo(() => mapAreas(view, map, providersOfInvest(on.bundle).map((s) => s.id).filter((id) => map.accounts.includes(id))), [view, map, on]);
 
-  const { head, guides, mark } = useMemo(() => {
+  const { head, mark } = useMemo(() => {
     const words = mapWords(map, house, (id) => shortOf(view, id));
-    const guides = mapGuides(map);
     return {
       head: words.head,
-      guides,
       mark: { at: [map.plan.amount, map.plan.monthly] as const, label: { text: m.plan } },
     };
   }, [view, house, map]);
@@ -256,7 +235,6 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
         edge={edge}
         bandLabel={{ text: m.same, pair: m.samePair, help: <HelpMark about={m.howTo.about} text={m.howTo.text(thetaText(bundle))} className="ms-0.5" /> }}
         mark={mark}
-        guides={guides}
         xTitle={m.xTitle}
         yTitle={m.yTitle}
         xTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}

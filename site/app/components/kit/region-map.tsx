@@ -104,6 +104,8 @@ const REACH = 22;
 const DIMMED = 0.75;
 /** A name stands where its area leads by θ or more (F-80: under it the two are a tie). */
 const CLEAR = 1;
+/** A map with no guides: one empty list, so the words' placement, which reads the guides, is not redone on every render. */
+const NO_GUIDES: readonly RegionGuide[] = [];
 
 /** Legend items with `help` after the last of them: the band's last item where the band shows, else the last account's. */
 function withHelp(items: LegendItem[], help: ReactNode): LegendItem[] {
@@ -410,7 +412,7 @@ export function RegionMap({
   edgeLabel,
   bandLabel,
   mark,
-  guides,
+  guides = NO_GUIDES,
   xTitle,
   yTitle,
   xTick,
@@ -437,7 +439,7 @@ export function RegionMap({
   bandLabel: { text: string; pair: (a: string, b: string) => string; help?: ReactNode };
   /** The reader's own point, and its words under it. */
   mark: { at: RegionPoint; label: RegionWords };
-  guides: readonly RegionGuide[];
+  guides?: readonly RegionGuide[];
   xTitle: string;
   yTitle: string;
   xTick: (v: number) => string;

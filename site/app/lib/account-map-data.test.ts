@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { bundle, html, lists, plan as fixturePlan, shown } from "../components/invest/render-fixtures";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
-import { AccountMapPanel, mapAreas, mapCard, mapGuides } from "../components/invest/account-map";
+import { AccountMapPanel, mapAreas, mapCard } from "../components/invest/account-map";
 import { invest, kit as kitCopy } from "../copy";
 import type { AccountMap } from "./account-map";
 import { buildInvest, indexById, knownIndices, providersOfInvest, tieShareOf } from "./invest";
@@ -173,22 +173,22 @@ describe("a plan of nothing at all on the collected data", () => {
   });
 });
 
-describe("the guides from the plan on the default S&P 500 plan", () => {
-  it("runs a dashed line along each axis from the plan, with no figure on it", () => {
+describe("the plan on the default S&P 500 plan", () => {
+  it("is a mark with no lines from it and no figure over the map", () => {
     const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
     const plan = planAt(10_000, 500, 10);
     const pick = need(pickOfHeadline(buildInvest({ bundle, index, plan })), "the page's pair");
     const answer = work.map(bundle, { index, plan, fund: pick.fund });
     const map = need(answer.kind === "map" ? answer.map : null, "the map");
     const out = html(createElement(AccountMapPanel, { view: buildInvest({ bundle, index, plan }), bundle, house: pick.house, map, on: { bundle, ask: { index, plan, fund: pick.fund } } }));
-    expect(out.match(/data-mark="guide"/g)?.length).toBe(2);
-    // a figure on a guide held along that line only, and read as true at another plan; nothing over the map says "כ־"
+    expect(out).not.toContain('data-mark="guide"');
+    // a figure on a line from the plan held along that line only, and read as true at another plan; nothing over the map says "כ־"
     expect(shown(out)).not.toMatch(/כ־/);
     // with no point kept, nothing under the map
     expect(shown(out)).not.toContain(invest.before.map.planHead);
   });
 
-  it("a change within 5× the plan is on the plot, a farther one is not, and its guide ends at the axis", () => {
+  it("a change within 5× the plan is on the plot, a farther one is not", () => {
     const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
     // whatever the data says: each axis at least 1.5 times the plan, past every change up its line within five times the plan (or a
     // fiftieth of the slider's reach), and no line drawn past its end
@@ -201,8 +201,7 @@ describe("the guides from the plan on the default S&P 500 plan", () => {
       const what = `${plan.amountNow}/${plan.monthly}/${plan.years}`;
       expect(map.max.amount, what).toBeGreaterThanOrEqual(1.5 * plan.amountNow);
       expect(map.max.monthly, what).toBeGreaterThanOrEqual(1.5 * plan.monthly);
-      const guides = mapGuides(map);
-      for (const [n, axis] of (["amount", "monthly"] as const).entries()) {
+      for (const axis of ["amount", "monthly"] as const) {
         const own = axis === "amount" ? plan.amountNow : plan.monthly;
         const near = 5 * Math.max(own, reach[axis] / 50);
         const end = map.max[axis];
@@ -212,20 +211,15 @@ describe("the guides from the plan on the default S&P 500 plan", () => {
         for (const v of ups) {
           if (v <= near) expect(1.5 * v, `${what} ${axis}: ${v} within 5×`).toBeLessThanOrEqual(end);
         }
-        // a switch past the axis's end has its guide at the axis's end, never past it
-        const guide = need(guides[n], `${what} ${axis}'s guide`);
-        expect(guide.at, `${what} ${axis}`).toBeLessThanOrEqual(end);
-        if (sw && sw.at > end) {
-          expect(sw.at, `${what} ${axis}: a switch past the axis lies past 5×`).toBeGreaterThan(near);
-          expect(guide.at, `${what} ${axis}`).toBe(map.equal[axis] && map.equal[axis].at <= end ? map.equal[axis].at : end);
-        }
+        // a switch past the axis's end lies past five times the plan
+        if (sw && sw.at > end) expect(sw.at, `${what} ${axis}: a switch past the axis lies past 5×`).toBeGreaterThan(near);
       }
     }
   });
 });
 
 describe("the words over the map on TA-125 at 10,000 ₪ today and 10,000 ₪ a month", () => {
-  it("stand clear of the guides and of the line where two accounts are equal", () => {
+  it("stand clear of the line where two accounts are equal", () => {
     const index = need(indexById(bundle, "index-ta125"), "TA-125");
     const plan = planAt(10_000, 10_000, 10);
     const view = buildInvest({ bundle, index, plan });
@@ -240,11 +234,9 @@ describe("the words over the map on TA-125 at 10,000 ₪ today and 10,000 ₪ a 
       return { text, b: { x: Number(x[1]), y: Number(x[2]), w: chartTextWidth(text), h: 20 } };
     });
     expect(words.length).toBeGreaterThanOrEqual(1);
-    const guides = [...host.matchAll(/data-mark="guide"><line x1="([\d.]+)" y1="([\d.]+)" x2="([\d.]+)" y2="([\d.]+)"/g)].map((x) => [Number(x[1]), Number(x[2]), Number(x[3]), Number(x[4])] as const);
-    expect(guides).toHaveLength(2);
     const d = /d="([^"]*)"[^>]*data-mark="equal"/.exec(host)?.[1] ?? "";
     const equal = [...d.matchAll(/M([\d.]+) ([\d.]+)L([\d.]+) ([\d.]+)/g)].map((x) => [Number(x[1]), Number(x[2]), Number(x[3]), Number(x[4])] as const);
-    const crossed = words.flatMap((w) => [...guides, ...equal].filter((l) => lineMeetsBox(l, w.b, 0)).map(() => w.text));
+    const crossed = words.flatMap((w) => equal.filter((l) => lineMeetsBox(l, w.b, 0)).map(() => w.text));
     expect([...new Set(crossed)]).toEqual([]);
   });
 });
