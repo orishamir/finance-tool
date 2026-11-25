@@ -411,7 +411,7 @@
    "site/app/components/company/bank-views.tsx": 8,
    "site/app/components/company/docs.tsx": 1,
    "site/app/components/company/template.tsx": 1,
-   "site/app/components/decoder/institutions/brokerage-card.test.ts": 10,
+   "site/app/components/decoder/institutions/brokerage-card.test.ts": 9,
    "site/app/components/decoder/institutions/brokerage-card.tsx": 6,
    "site/app/components/decoder/institutions/page.tsx": 2,
    "site/app/components/decoder/institutions/product-row.test.ts": 6,
