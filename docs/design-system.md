@@ -838,8 +838,9 @@ in the kit fits is added to the kit.
 - `DotLine`: what a calculation runs on, in one weak line, its caution said in sight.
 - `HouseAverageLine`: what a house actually charged on average beside its price-list line (F-122), for reference only; no calculation
   reads it.
-- `LeftOutLine`, `LeftOutMark`: what a house's documents hold and its price leaves out (D106), as a line under the price or a mark beside
-  an account's name.
+- `LeftOutLine`, `LeftOutFold`: what a house's documents hold and its price leaves out (D106): a line under a price whose words open it
+  (a sheet, or the page's own view of the house's terms), and, inside that view, one folded line that opens in place, so the catch is in
+  sight without taking the room the terms need.
 - `GroupPriceFold`, `GroupPriceRows`: group prices (D43), stated beside a ranking and never in it.
 - `ClaimCheck`, `ClaimList`: a claim of a house's advertising set against its binding documents (D56, D57); never a figure of a ranking.
 - `FormulaBlock`, `Tex`: a formula in math type on a formula's sheet, where docs/method.md writes it as math; math always runs left to
@@ -974,6 +975,8 @@ in the kit fits is added to the kit.
   `Switch` is on or off for a setting named beside it.
 - `OnOffSwitch`: a thing switched on or off where it stands, its state in a word; unlike `Switch`, it names no setting beside it.
 - `EditInPlace`: a figure edited where it is read, on a closed card or in a table's cell.
+- `ReadOnly`: the builder's pieces showing fees as they stand, with nothing that opens, adds, lifts or changes them (a house's terms on
+  the indices page, D106). One mode the pieces read, so a piece added later honours it too.
 - `RemoveButton`: the one control that takes something away, on every page (a ratchet); ✕ closes, and takes away only one part line of a
   cell. A cell's bin is out of the Tab order (Delete on the cell does the same); a fee's bin is in it, since nothing else reaches it
   by keyboard.
