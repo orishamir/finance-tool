@@ -1716,7 +1716,7 @@ export const depositBrowser = {
     line: "בשנה, לפני המס על הריבית. הקישו על משבצת כדי לראות את ההצעות של הבנק ברשימה.",
     helpAbout: "מה יש בכל משבצת",
     helpText:
-      "בכל משבצת: הריבית הגבוהה מבין ההצעות של הבנק לתקופה הזו. נספרות רק הצעות שאפשר לפתוח בסכום שבחרתם, מסוג הריבית שבחרתם, לא צמודות למדד, ושהבנק לא כותב שהן רק לחלק מהלקוחות. ״ועוד״ סופר את שאר ההצעות של הבנק לאותה תקופה, מכל סוג.",
+      "נספרות רק הצעות לא צמודות למדד, שהבנק לא כותב שהן רק לחלק מהלקוחות. ״ועוד״ סופר את שאר ההצעות של הבנק לאותה תקופה, מכל סוג.",
     about: "הריבית הגבוהה מבין ההצעות של הבנק לתקופה הזו שאפשר לפתוח בסכום שבחרתם",
     bank: "בנק",
     more: "ועוד",
@@ -3095,12 +3095,11 @@ export const r4catalogue = {
     /**
      * a distribution fee (MF-24): the fund manager pays it to the house the units are held through, under a distribution agreement. A
      * bank's price list prints it as a line charged to the unit's buyer ("עמלת הפצה מרוכש יחידת השתתפות"): without an agreement for the
-     * fund a bank may charge the holder up to that fee (MF-26), which `withoutAgreement` says on a bank's card
+     * fund a bank may charge the holder up to that fee (MF-26), which `chargeable` says in sight on a bank's card
      */
     distribution: {
       name: "עמלת הפצה",
       who: (to: string) => `מנהל הקרן משלם אותה ${to} על יחידות הקרן שמחזיקים דרכו, כשיש ביניהם הסכם הפצה.`,
-      withoutAgreement: "בלי הסכם כזה הבנק רשאי לגבות אותה מכם.",
       /** At a bank, the weak line with the fee's strip: what may fall on the reader stays in sight, its rules in the strip's "?". */
       chargeable: "בלי הסכם הפצה הבנק רשאי לגבות אותה מכם.",
       toBank: "לבנק",
@@ -3511,7 +3510,7 @@ export const guideSignature = {
     // "רוב" only where the rate is more than half the banks' (F-85 is the most common rate, which may be a half or less)
     commonRate: { before: "רוב הבנקים משלמים בעו״ש", beforeMode: "הריבית הנפוצה ביותר בעו״ש היא", of: "מתוך", after: "הבנקים שנאספו." },
     // after the fund's line in the legend: its return, the site's assumption (a caution: its short form stays in sight), and a "?" with why
-    fundAssumption: { note: "בשנה, הנחה של האתר", about: "התשואה שהאתר מניח לקרן", help: "האתר לא אסף תשואה שפורסמה לקרן כספית, ולכן הקרן רצה כאן על תשואה שהאתר מניח. זו הנחה של האתר, לא הבטחה ולא תחזית." },
+    fundAssumption: { note: "בשנה, הנחה של האתר", about: "התשואה שהאתר מניח לקרן", help: "האתר לא אסף תשואה שפורסמה לקרן כספית, ולכן הקרן רצה כאן על תשואה שהאתר מניח. היא לא הבטחה ולא תחזית." },
     years: "כמה שנים",
     todayMoney: "הסכומים בהתחשב באינפלציה, אחרי מס ועלויות.",
     drag: "גררו את הסמן, הקישו על הציר או השתמשו בחצים.",

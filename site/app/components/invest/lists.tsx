@@ -349,6 +349,8 @@ export function PairLists(props: ListsProps) {
     const x = cross.get(f.rec.id);
     spots[f.rec.id] = x ? [point + x.atLo, point + x.atHi] : (f.byHouse[pick.house] as WayPrice).valueN;
   }
+  // the range's "?" says the same on every row of the other kind: it stands on the first of them only
+  const firstCross = range ? pricedFunds.find((f) => f.rec.id !== pick.fund && cross.has(f.rec.id))?.rec.id : undefined;
   const fundRows: PickRow[] = pricedFunds.map((f, i) => {
     const at = f.byHouse[pick.house] as WayPrice;
     const selected = f.rec.id === pick.fund;
@@ -358,10 +360,16 @@ export function PairLists(props: ListsProps) {
     const figure = selected ? (
       chosenWord(chosen, "text-chart-by-fund")
     ) : x && range ? (
-      // the difference over the dollar's range, in place of one amount; what the range is, in its "?"
+      // the difference over the dollar's range, in place of one amount; what the range is, in the "?" of the first such row
       <span className="text-xs text-muted-foreground tabular-nums whitespace-nowrap">
         {c.kinds.between} <Num animate value={x.lo} display={fmt.signedNisWhole} /> {c.kinds.and}
-        <Num animate value={x.hi} display={fmt.signedNisWhole} /> <HelpMark about={sp.diffAbout} text={`${c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}.`} />
+        <Num animate value={x.hi} display={fmt.signedNisWhole} />
+        {f.rec.id === firstCross && (
+          <>
+            {" "}
+            <HelpMark about={sp.diffAbout} text={`${c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}.`} />
+          </>
+        )}
       </span>
     ) : (
       figureCell(n < 0 ? c.lists.funds.less : n > 0 ? c.lists.funds.more : null, <Num animate value={gap} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : fmt.nisWhole(Math.abs(v)))} />, n)

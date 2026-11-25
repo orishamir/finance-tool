@@ -379,9 +379,9 @@ function Facts({ tariff }: { tariff: TariffCardData }) {
 }
 
 /**
- * The distribution fee's strip: its name, and beside it a "?" that says who pays it, from the regulations (MF-24; MF-26 says what a bank may
- * charge without an agreement), with the chip of those rules: not a charge the account's price list adds. At a bank, that it may charge the
- * reader without an agreement is also the strip's weak line, in sight (a caution).
+ * The distribution fee's strip: its name, and beside it a "?" that says who pays it, from the regulations (MF-24), with the chip of the
+ * rules: not a charge the account's price list adds. At a bank, that it may charge the reader without an agreement (MF-26) is the strip's
+ * weak line, in sight (a caution), so the "?" doesn't say it again; its chip still opens MF-26.
  */
 function DistributionName({ kind }: { kind: InstitutionKind }) {
   const d = copy.card.distribution;
@@ -390,7 +390,7 @@ function DistributionName({ kind }: { kind: InstitutionKind }) {
       {d.name}
       {/* positioned, so where the strip's weak line wraps under the name (a phone) the mark lies over it and keeps its 44 px */}
       <span className="relative inline-flex">
-        <HelpMark about={d.name} text={`${d.who(kind === "bank" ? d.toBank : d.toBroker)}${kind === "bank" ? ` ${d.withoutAgreement}` : ""}`} rules={distributionRuleIds(kind)} />
+        <HelpMark about={d.name} text={d.who(kind === "bank" ? d.toBank : d.toBroker)} rules={distributionRuleIds(kind)} />
       </span>
     </span>
   );
