@@ -263,6 +263,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
   const currencies = exposureCurrencies(files, ctx.dataDir);
   checkForeignInvestmentFunds(files, ctx.dataDir, currencies, report);
+  checkLegalStructures(files, ctx.dataDir, report);
   checkStatedTaxIndex(files, ctx.dataDir, currencies, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
   checkHomeGuideDoor(files, ctx.dataDir, report);
@@ -1510,7 +1511,7 @@ function checkInstrumentsMap(files: string[], dataDir: string, ruleIds: Map<stri
 /**
  * data-schema §4 item 21 (TXS-14, method F-04): the latest record of every Israeli fund says whether its report names it a foreign-investment
  * fund, so no run reads a missing field as either answer; a foreign fund's record does not carry it; and a principal currency is the
- * exposure's currency, the one exchange-rate path a run has. An Israeli fund's record carries no `legal_structure`, a foreign fund's form (F-20).
+ * exposure's currency, the one exchange-rate path a run has.
  */
 function checkForeignInvestmentFunds(files: string[], dataDir: string, currencies: ReadonlyMap<string, string>, report: (file: string, message: string) => void) {
   const latest = new Map<string, string>();
@@ -1524,10 +1525,8 @@ function checkForeignInvestmentFunds(files: string[], dataDir: string, currencie
     const rel = relative(dataDir, file).split(/[\\/]/).join("/");
     const id = /^funds\/([^/@]+)@[^/]+\.json$/.exec(rel)?.[1];
     if (id === undefined) continue;
-    const rec = parseJson(readFileSync(file, "utf8")).value as Partial<Pick<FundRecord, "domicile" | "exposure_id" | "tax_status" | "legal_structure">> | undefined;
+    const rec = parseJson(readFileSync(file, "utf8")).value as Partial<Pick<FundRecord, "domicile" | "exposure_id" | "tax_status">> | undefined;
     const fif = rec?.tax_status?.foreign_investment_fund;
-    if (rec?.domicile === "IL" && rec.legal_structure !== undefined)
-      report(file, "legal_structure: a foreign fund's form, which decides whether its distribution's tax is settled (F-20); an Israeli fund's record leaves it out");
     if (rec?.domicile !== "IL") {
       if (fif !== undefined) report(file, "tax_status.foreign_investment_fund: only an Israeli fund can be one (TXS-14); a foreign fund's record leaves it out");
       continue;
@@ -1537,6 +1536,20 @@ function checkForeignInvestmentFunds(files: string[], dataDir: string, currencie
     const exposureCurrency = rec.exposure_id ? currencies.get(rec.exposure_id) : undefined;
     if (typeof fif?.value === "string" && exposureCurrency !== undefined && fif.value !== exposureCurrency)
       report(file, `tax_status.foreign_investment_fund: principal currency ${fif.value} is not the exposure's currency ${exposureCurrency}, the one exchange-rate path a run has (F-04)`);
+  }
+}
+
+/**
+ * data-schema §4 item 22 (F-20, product D85): `legal_structure` is a foreign fund's form, which decides whether its distribution's tax is
+ * settled, so an Israeli fund's record leaves it out. The schema refuses a form outside its set.
+ */
+function checkLegalStructures(files: string[], dataDir: string, report: (file: string, message: string) => void) {
+  for (const file of files) {
+    const rel = relative(dataDir, file).split(/[\\/]/).join("/");
+    if (!/^funds\/[^/@]+@[^/]+\.json$/.test(rel)) continue;
+    const rec = parseJson(readFileSync(file, "utf8")).value as Partial<Pick<FundRecord, "domicile" | "legal_structure">> | undefined;
+    if (rec?.domicile === "IL" && rec.legal_structure !== undefined)
+      report(file, "legal_structure: a foreign fund's form, which decides whether its distribution's tax is settled (F-20); an Israeli fund's record leaves it out");
   }
 }
 

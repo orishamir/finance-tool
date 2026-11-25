@@ -278,7 +278,7 @@ describe("foreign-investment funds (data-schema §4 item 21)", () => {
   });
 });
 
-describe("a foreign fund's legal structure (data-schema §3.5 legal_structure, F-20)", () => {
+describe("a foreign fund's legal structure (data-schema §3.5 legal_structure, §4 item 22, F-20)", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
   const structure = (form: string) => ({
     form,
