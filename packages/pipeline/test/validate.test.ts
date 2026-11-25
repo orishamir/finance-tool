@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { readFormulaIds, readQuestionPrefixes, readRuleBaseIds, validateData } from "../src/index.ts";
-import { checkCitedPages, checkEffectiveRateUnit, checkFirstExitPoint } from "../src/validate.ts";
+import { checkCitedPages, checkDealOnlyUnit, checkEffectiveRateUnit, checkFirstExitPoint } from "../src/validate.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const ruleBase = readRuleBaseIds(`${root}.claude/skills/il-finance/references`);
@@ -827,5 +827,13 @@ describe("the unit of a rate quoted as effective (data-schema §2)", () => {
     ]);
     expect(checkEffectiveRateUnit("parameters", { inputs: { "A-01": v("pct_per_year_effective") } })).toHaveLength(1);
     expect(checkEffectiveRateUnit("series", { points: [v("pct_per_year_effective")] })).toEqual([expect.stringContaining("points[0]")]);
+  });
+});
+
+describe("a price per dollar in agorot, a deal's unit (data-schema §2)", () => {
+  it("is refused in a record, which prices a dollar converted in shekels", () => {
+    const line = (unit: string) => ({ lines: [{ id: "x-fx", rate: { value: unit === "agorot_per_usd" ? 1.5 : 0.015, unit } }] });
+    expect(checkDealOnlyUnit(line("nis_per_usd"))).toEqual([]);
+    expect(checkDealOnlyUnit(line("agorot_per_usd"))).toEqual([expect.stringContaining("lines[0].rate: unit agorot_per_usd is a deal's")]);
   });
 });

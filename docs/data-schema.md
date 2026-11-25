@@ -74,7 +74,7 @@ Units that need a word:
 - `usd_per_share`: a dollar amount per share, a per-share commission rate. `nis_per_share`, `eur_per_share` and `gbp_per_share`: the same in shekels, euros or pounds, a sum per unit the person types on the fee page (method F-112); no price list collected prints one. `usd_per_trade` and `gbp_per_trade`: a dollar or pound amount per trade, a minimum or maximum commission in a foreign currency. They serve the foreign brokers' tariffs; the engine converts them at the run's exchange rate.
 - `usd_per_event`: a dollar amount for each corporate event of a security held abroad, as One Zero prints its custodian's cost (D67). F-103 charges it on each dividend of a fund bought abroad, converted at the run's rate.
 - `nis_per_usd`: shekels per dollar converted, for a conversion printed as agorot a dollar (Psagot's 1.5 agorot). F-13 charges it on the dollars converted.
-- `agorot_per_usd`: the same price in agorot, as the person types and reads it on the fee page (method F-114); no record holds it.
+- `agorot_per_usd`: the same price in agorot, as the person types and reads it on the fee page (method F-114); a deal's unit, which the data check refuses in a record (`checkDealOnlyUnit`).
 - `fx_per_eur`: units of a currency per one euro, the ECB reference rate, for the FX series of §3.8.
 
 The other vocabularies are enums in `packages/schema/src/value.ts` (fee bases, security types, wrapper, security and product IDs) and in each collection's schema (provider classes and regulators in `fees.ts`). What their names do not say:
