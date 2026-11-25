@@ -13,9 +13,11 @@ if (pathname.endsWith("/") && pathname !== import.meta.env.BASE_URL) {
 }
 
 // A page whose first view shows a house's terms hydrates once their code, a script of its own, is in: hydration finds it and keeps the
-// pre-rendered terms in place (components/decoder/institutions/terms-code.ts). A failed load hydrates all the same, and the terms' error
-// boundary says so.
-const terms = document.querySelector(`[${TERMS_MARK}]`) ? loadTermsCode().catch(() => null) : null;
+// pre-rendered terms in place (components/decoder/institutions/terms-code.ts). So does a company page whose address opens its securities
+// account (`?product=brokerage`, read only in the browser): its terms then show at once, with no empty space that fills as the code comes.
+// A failed load hydrates all the same, and the terms' error boundary says so.
+const opensAccount = /^\/companies\//.test(pathname.slice(import.meta.env.BASE_URL.length - 1)) && new URLSearchParams(search).get("product") === "brokerage";
+const terms = document.querySelector(`[${TERMS_MARK}]`) || opensAccount ? loadTermsCode().catch(() => null) : null;
 
 void Promise.resolve(terms).then(() => startTransition(() => {
   hydrateRoot(
