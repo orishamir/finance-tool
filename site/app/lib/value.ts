@@ -36,6 +36,12 @@ export interface SiteValue extends ValueObject {
   doubt?: string;
   /** The rules the doubt rests on, whose cards its sheet opens beside it: the open rule a cautious reading reads (TXF-04). */
   doubtRules?: string[];
+  /**
+   * The inputs, by their key in `computed_from.inputs`, whose doubt a figure worked out from them carries (`differenceOf`): its sheet names
+   * them, as it names the weak inputs, and each opens its own sheet with the doubt in words. A difference of two funds that said one fund's
+   * doubt ("the fund's documents say…") left the reader to guess which fund it was about.
+   */
+  doubtFrom?: string[];
   /** For a site parameter: its rationale (copy 3.8). */
   parameter?: { rationale: string; rationaleHe?: string | null };
   /** Rules a computed value read, with the strength the run recorded. */
@@ -215,16 +221,19 @@ export type ComputedOptions = Parameters<typeof computed>[4];
  * A figure worked out from two others on the page, `a − b` (a gap between two ways, what a change adds): the value is computed here from
  * the two as the page writes them (`amountShown`: 10,768 ₪ less 8,203 ₪ is 2,565 ₪, whatever agorot each holds), and its inputs are the
  * two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either is not a number. `round`
- * shapes the result (its size alone). A doubt on either figure is the difference's too, since it rests on both: the first one's, where
- * its own options give it none.
+ * shapes the result (its size alone). A doubt on either figure is the difference's too, since it rests on both, where its own options give
+ * it none: the first one's words, the rules of each, and which of the two carry it (`doubtFrom`).
  */
 export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const [an, av] = a;
   const [bn, bv] = b;
   const n = typeof av.value === "number" && typeof bv.value === "number" ? amountShown(av.value, av.unit, av.state, isParameter(av)) - amountShown(bv.value, bv.unit, bv.state, isParameter(bv)) : null;
   const v = computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? av.unit, formula, { [an]: av, [bn]: bv }, options);
-  const doubted = [av, bv].find((x) => x.doubt);
-  return v.doubt || !doubted ? v : { ...v, doubt: doubted.doubt, ...(doubted.doubtRules ? { doubtRules: doubted.doubtRules } : {}) };
+  const doubted = ([a, b] as const).filter(([, x]) => x.doubt);
+  const [first] = doubted;
+  if (v.doubt || !first) return v;
+  const rules = [...new Set(doubted.flatMap(([, x]) => x.doubtRules ?? []))];
+  return { ...v, doubt: first[1].doubt, ...(rules.length ? { doubtRules: rules } : {}), doubtFrom: doubted.map(([name]) => name) };
 }
 
 /** A fund statement's identity on a page: the term it states, its document and the page there, so one statement is carried and listed once. */

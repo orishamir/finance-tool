@@ -437,6 +437,7 @@ export const provenance = {
     /** The statement's document, linked at its page. */
     statementDoc: (title: string, page: number) => `${title}, עמוד ${page}`,
     weakInputs: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:",
+    doubtedInputs: "בין הערכים שנכנסו לחישוב, על אלה יש ספק:",
   },
   // a flag with no sentence of its own
   flagOther: "הערה על החישוב:",

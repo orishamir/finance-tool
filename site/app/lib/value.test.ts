@@ -164,6 +164,18 @@ describe("differenceOf and sumOf", () => {
     }
     expect(differenceOf(["א", plain], ["ב", plain], "F-65", { today }).doubt).toBeUndefined();
   });
+  it("a difference names which of its two figures carry the doubt, with the rules of each, so its sheet can say which fund it is about", () => {
+    const txf = computed(900, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXF-04" }] });
+    const txs = computed(850, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXS-14" }] });
+    const plain = computed(800, "nis", "F-65", {}, { today });
+    expect(differenceOf(["א", plain], ["ב", txf], "F-65", { today }).doubtFrom).toEqual(["ב"]);
+    const both = differenceOf(["א", txf], ["ב", txs], "F-65", { today });
+    expect(both.doubtFrom).toEqual(["א", "ב"]);
+    expect(both.doubtRules).toEqual(["TXF-04", "TXS-14"]);
+    expect(differenceOf(["א", plain], ["ב", plain], "F-65", { today }).doubtFrom).toBeUndefined();
+    // a difference whose own run is the cautious reading says its own doubt, from no input
+    expect(differenceOf(["א", plain], ["ב", txf], "F-65", { today, labels: [{ code: "cautious", ruleId: "TXS-14" }] }).doubtFrom).toBeUndefined();
+  });
 });
 
 describe("the doubt of the site's cautious reading (method §13)", () => {

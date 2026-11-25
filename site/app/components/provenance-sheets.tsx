@@ -480,6 +480,26 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
   const fromDate = startsAfter(value, today);
   const year = calendarYearOf(value);
   const weakNames = value.state === "computed" ? weakInputNames(value) : [];
+  const strengthNote = (isWeak(value) || strength === "open") && value.state !== "entered" && (
+    <Callout tone={strength === "open" ? "blocked" : "caution"} title={strengthCopy[strength].label}>
+      {strengthCopy[strength].line}
+      {/* the question an open value waits on, named in its source or notes ("TXI OQ19"): its chip opens the question */}
+      {blocked && openQuestionOf(value) && (
+        <>
+          {" "}
+          <IdRef id={openQuestionOf(value)!} />
+        </>
+      )}
+      {weakNames.length > 0 && (
+        <span className="block">
+          {copy.computed.weakInputs} {weakNames.join(" · ")}
+        </span>
+      )}
+    </Callout>
+  );
+  // a computed figure's warnings stand together under its name, above its formula and inputs: under a long list of inputs the strength note
+  // sat below a small phone's fold; a sourced figure's source stands directly under its name, and its strength note after it
+  const warningsFirst = value.state === "computed";
   return (
     <div className="flex flex-col gap-3.5">
       <header className="flex flex-col gap-1">
@@ -515,12 +535,14 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
 
       {/* the doubt about this figure (SiteValue.doubt), the record's own or the site's reading of an open rule, with the rules it rests on:
           said near the top of the figure's sheet, wherever the figure shows; at the end it sat below a phone's fold */}
+      {/* a doubt carried from the inputs names them, as the weak inputs are named; each input's own sheet says the doubt in words */}
       {value.doubt && (
         <Callout tone="caution" title={numbers.doubt}>
-          <PrintedText text={value.doubt} />
+          {value.doubtFrom ? `${copy.computed.doubtedInputs} ${value.doubtFrom.map(inputName).join(" · ")}` : <PrintedText text={value.doubt} />}
           {value.doubtRules && <RuleTitleList ids={value.doubtRules} className="mt-1.5" />}
         </Callout>
       )}
+      {warningsFirst && strengthNote}
 
       {/* the working notes are English; only a note written in Hebrew is shown */}
       {/* an open value's reason is the blocked callout below, and an empty value a rule explains ("לא נמצאה תקרה בחוק") has its rules under
@@ -674,23 +696,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
         </div>
       )}
 
-      {(isWeak(value) || strength === "open") && value.state !== "entered" && (
-        <Callout tone={strength === "open" ? "blocked" : "caution"} title={strengthCopy[strength].label}>
-          {strengthCopy[strength].line}
-          {/* the question an open value waits on, named in its source or notes ("TXI OQ19"): its chip opens the question */}
-          {blocked && openQuestionOf(value) && (
-            <>
-              {" "}
-              <IdRef id={openQuestionOf(value)!} />
-            </>
-          )}
-          {weakNames.length > 0 && (
-            <span className="block">
-              {copy.computed.weakInputs} {weakNames.join(" · ")}
-            </span>
-          )}
-        </Callout>
-      )}
+      {!warningsFirst && strengthNote}
       {value.stale && (
         <p className="text-sm text-caution-foreground flex items-start gap-2">
           <IconClock size={16} className="text-caution shrink-0 mt-1" />

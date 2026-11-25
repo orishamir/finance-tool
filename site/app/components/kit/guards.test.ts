@@ -54,10 +54,10 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { numbers } from "../../copy";
+import { numbers, provenance, strength as strengthCopy } from "../../copy";
 import { formatValue, joinLead } from "../../lib/format";
 import { buildInstitution, institutionIds } from "../../lib/institutions.server";
-import type { SiteValue } from "../../lib/value";
+import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { LeadTail, Num, ProvenanceProvider, valueItem } from "../provenance";
 import { ValueSheet } from "../provenance-sheets";
 import { When } from "./when";
@@ -669,6 +669,26 @@ describe("a reading is the site's reading, not a secondary source", () => {
     const sheet = (value: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(ValueSheet, { value, exact: false, data, headId: "h", descId: "d" }) })));
     expect(sheet(v)).toContain(numbers.reading);
     expect(sheet({ ...v, labels: [] } as SiteValue)).not.toContain(numbers.reading);
+  });
+  // A difference of two funds carries one fund's doubt; said in its words on the difference's sheet ("the fund's documents say…") it left
+  // the reader to guess which fund, and with the strength note under the inputs both no longer fit a small phone's sheet.
+  it("a difference's sheet names the figure its doubt comes from, and a computed figure's warnings stand above its formula", () => {
+    const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-07" };
+    const today = data.today;
+    const doubted = computed(900, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXS-14" }] });
+    const company = { value: 800, unit: "nis", state: "sourced", source: { url: "https://example.org/a.pdf", title: "תעריפון", strength: "institution" }, checked: today, effective_from: null, effective_to: null, update_rule: "provider-set" } as SiteValue;
+    const gap = differenceOf(["קרן א", doubted], ["קרן ב", company], "F-65", { today });
+    const sheet = (value: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(ValueSheet, { value, exact: false, data, headId: "h", descId: "d" }) }))).replace(/<!-- -->/g, "").replace(/<[^>]+>/g, "");
+    const html = sheet(gap);
+    expect(html).toContain(`${provenance.computed.doubtedInputs} קרן א`);
+    expect(html).not.toContain(numbers.readingDoubt["TXS-14"]?.known ?? "the words");
+    // the figure the doubt is about says it in words
+    expect(sheet(doubted)).toContain(numbers.readingDoubt["TXS-14"]?.known ?? "the words");
+    // the doubt, then the strength note, then the formula
+    const at = (words: string) => html.indexOf(words);
+    expect(at(provenance.computed.doubtedInputs)).toBeGreaterThan(-1);
+    expect(at(strengthCopy.institution.line)).toBeGreaterThan(at(provenance.computed.doubtedInputs));
+    expect(at(provenance.computed.formula)).toBeGreaterThan(at(strengthCopy.institution.line));
   });
   // A file that carries a run's flags into a figure carries its labels too, or the reading never reaches the sheet. Leftovers by name;
   // the list only shrinks. The timeline gathers flags over every year's run into one set; its labels would need the same per year.

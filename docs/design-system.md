@@ -427,8 +427,11 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   inside a sheet never keeps the scroll of the one before, its head out of sight.
 - **What it shows.** A sourced figure's source stands directly under the figure's name. The source's title shows when it is Hebrew,
   else the link's host with the English title behind "שם המקור באנגלית"; English working notes are never shown; a rule without a source
-  link says so. A computed figure shows each input as a Num, so the chain can be followed. An entered figure's sheet shows the value it
-  replaced. A source line wraps at every width and is never cut, so a figure's source, its name and date, stay in view.
+  link says so. A computed figure shows each input as a Num, so the chain can be followed, and its warnings (its doubt, its strength
+  note) stand under its name, above its formula and inputs, where the smallest phone shows them. A doubt a difference carries from its
+  figures names those figures, as the weak inputs are named: said in its own words on a difference of two funds, "the fund" named neither,
+  and each figure's own sheet says it in words. An entered figure's sheet shows the value it replaced. A source line wraps at every width
+  and is never cut, so a figure's source, its name and date, stay in view.
 - **A source opens where it says it.** A link to a cited source opens at the cited words: a web page by text fragment, a PDF at its page
   (Chrome's PDF viewer does not follow a text fragment), a dataset at this fund's own record rather than the dataset's front page. Every
   such link is built by `sourceHref` (`site/app/lib/sources.ts`), never from a raw address (guard 23), and `tools/quote-fragments.mjs`
