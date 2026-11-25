@@ -45,16 +45,31 @@ function exactAt(accounts: Record<string, (a: number, m: number) => number>, a: 
   const [p, q] = vs;
   return { first: p?.id, ahead: p && q ? Math.min(1, (p.v - q.v) / p.v / THETA) : 1 };
 }
-/** Every node of the field reads as the accounts do: the same first wherever the first is a third of θ ahead or more, and a lead within 0.15. */
+/** The surface's lattice step along an axis for a window to `span`, as the map reads it: the reach halved to the step nearest the window's
+ *  96th part. */
+const stepOf = (r: number, span: number) => r / 2 ** Math.round(Math.log2((r * 96) / span));
+/**
+ * Every node of the field reads as the accounts do, where they read the same a lattice step around it: the same first wherever the first is
+ * a third of θ ahead or more, and a lead within 0.15. The map reads the accounts at the surface's lattice points and a node between them
+ * from the cell it lies in, so within a step of where the first changes, or the lead turns by more than 0.15, a node can read either side.
+ */
 function expectFieldTrue(map: AccountMap, accounts: Record<string, (a: number, m: number) => number>) {
+  const [sx, sy] = [stepOf(reach.amount, map.max.amount), stepOf(reach.monthly, map.max.monthly)];
   const wrong: string[] = [];
+  let checked = 0;
   for (let j = 0; j < map.field.rows; j++)
     for (let i = 0; i < map.field.cols; i++) {
+      const [x, y] = [xOf(map, i), yOf(map, j)];
+      const want = exactAt(accounts, x, y);
+      const around = [[x - sx, y], [x + sx, y], [x, y - sy], [x, y + sy]].filter(([a, m]) => (a ?? 0) >= 0 && (m ?? 0) > 0).map(([a, m]) => exactAt(accounts, a ?? 0, m ?? 0));
+      if (around.some((w) => w.first !== want.first || Math.abs(w.ahead - want.ahead) > 0.15)) continue;
+      checked++;
       const got = nodeAt(map, i, j);
-      const want = exactAt(accounts, xOf(map, i), yOf(map, j));
-      if ((want.ahead > 0.33 && got.first !== want.first) || Math.abs(got.ahead - want.ahead) > 0.15) wrong.push(`(${xOf(map, i)}, ${yOf(map, j)}): ${got.first} ${got.ahead} against ${want.first} ${want.ahead}`);
+      if ((want.ahead > 0.33 && got.first !== want.first) || Math.abs(got.ahead - want.ahead) > 0.15) wrong.push(`(${x}, ${y}): ${got.first} ${got.ahead} against ${want.first} ${want.ahead}`);
     }
   expect(wrong.slice(0, 5), `${wrong.length} nodes read otherwise`).toEqual([]);
+  // most of the field lies away from any change
+  expect(checked).toBeGreaterThan(map.field.rows * map.field.cols * 0.5);
 }
 
 describe("the account map (F-131)", () => {
@@ -339,14 +354,14 @@ describe("the account map (F-131)", () => {
 
   it("a turn inside the first step of an axis is not carried up the cell above it", () => {
     // C leaves 0.2% less than A under 4.5 ₪ a month and 2.2% less from there; D the same under 100 ₪ today. On these maps the areas' rows
-    // start at 3 ₪ a month, 3.1 ₪ apart, and the columns are 156.25 ₪ apart: the turn falls between the first row (or column) and the next,
+    // start at 3.125 ₪ a month, 3.125 ₪ apart, and the columns are 156.25 ₪ apart: the turn falls between the first row (or column) and the next,
     // and a cell's corners on the first row (or column) would carry C (or D) within θ of A across the whole cell
     const base = (a: number, m: number) => left(a, m, 0.01 * a + m);
     const lowMonthly = { a: base, c: (a: number, m: number) => base(a, m) * (m < 4.5 ? 0.998 : 0.978) };
     const lowAmount = { a: base, d: (a: number, m: number) => base(a, m) * (a < 100 ? 0.998 : 0.978) };
     for (const accounts of [lowMonthly, lowAmount]) {
       const got = mapOf(accounts, { amount: 10_000, monthly: 200 });
-      expect([got.max, got.bottom]).toEqual([{ amount: 15_000, monthly: 300 }, 3]);
+      expect([got.max, got.bottom]).toEqual([{ amount: 15_000, monthly: 300 }, 3.125]);
       expectFieldTrue(got, accounts);
     }
   });
@@ -489,6 +504,25 @@ describe("the account map (F-131)", () => {
     const short = { a: base, b: (a: number, m: number) => base(a, m) * (1 - 0.9997 * THETA) };
     const got = mapOf(short, { amount: 10_000, monthly: 200 });
     expect(Math.max(...got.field.ahead, ...got.edge.ahead)).toBeLessThan(1);
+  });
+
+  it("reads points that do not move with the plan: a plan whose amount or deposit moved reads again most points of the one before", () => {
+    // the points each map asks for, by today's amount and deposit
+    const pointsOf = (plan: { amount: number; monthly: number }) => {
+      const seen = new Set<string>();
+      const each = leftOf(linear);
+      need(accountMap({ leftAt: (a, m, h) => (seen.add(`${a}|${m}`), each(a, m, h)), order: Object.keys(linear), theta: THETA, plan, reach }), "the map");
+      return seen;
+    };
+    // from 10,000 ₪ and 200 ₪ a month (a window of 60,000 ₪ by 1,000 ₪ a month): 12,000 ₪ widens today's amount to 100,000 ₪, whose lattice
+    // has every other point of the one before, and its line along the deposit is another; 260 ₪ a month keeps the window, and only its line
+    // along today's amount is another. Grids of their own would share about a fifth, and about three fifths
+    const before = pointsOf({ amount: 10_000, monthly: 200 });
+    for (const [plan, share] of [[{ amount: 12_000, monthly: 200 }, 0.4], [{ amount: 10_000, monthly: 260 }, 0.75]] as const) {
+      const after = pointsOf(plan);
+      const again = [...after].filter((k) => before.has(k)).length;
+      expect(again / after.size, `${plan.amount}/${plan.monthly}`).toBeGreaterThan(share);
+    }
   });
 
   it("rounds an axis's end up to a clean value", () => {

@@ -4,9 +4,11 @@
 // (`WayPrice.valueN`, F-65 on F-63), handed in as `LeftAt`; the list itself ranks each account by its cheapest fund of the kind, so the map,
 // which holds the pair's one fund, can name another account first than the list does. This module decides where to ask and draws nothing.
 //
-// Every point is a run per account, so it asks as little as it can. Every account is priced on a coarse grid, with a finer step in the
-// lowest part of each axis, where a per-trade minimum (F-12) bends the figures most; only the accounts first or second there, or within a few
-// θ of the first, are priced after that. A cell is split in four where its centre, priced, does not read as its corners say (another
+// Every point is a run per account, so it asks as little as it can, and only at points that do not move with the plan: the areas on a
+// lattice of the sliders' reach halved (`latticeOf`), the plan's lines at points fixed along each axis (LINE_POINTS), so a caller that keeps
+// the prices it was handed (lib/invest-work.ts) reads them again for a plan whose amount or deposit moved. Every account is priced on a coarse
+// grid, with a finer step in the lowest part of each axis, where a per-trade minimum (F-12) bends the figures most; only the accounts first
+// or second there, or within a few θ of the first, are priced after that. A cell is split in four where its centre, priced, does not read as its corners say (another
 // first, another second near the first, or another lead), and where its corners have different firsts, down to a smallest cell. Inside a
 // cell each account's figure is taken as the even blend of its corners' (bilinear), and the leads on the drawn grid are read from those:
 // near a border every account's figure is close to a plane, so the place where two are equal and the band where they are within θ come
@@ -119,15 +121,14 @@ const BORDER_CELL = 4;
 const AHEAD_TOLERANCE = 0.05;
 /** An account within this many θ of the first at a point priced with every account is priced at every point after. */
 const NEAR = 4;
-/** Samples along each of the plan's own lines, each way, with every account and then with those near the top, before the switch is narrowed
- *  down, and the steps narrowing it. */
-const LINE_SAMPLES = 8;
-const DENSE_SAMPLES = 32;
+/** The points a line along an axis is sampled at, whatever the plan: the axis's reach times (k / LINE_POINTS)², denser near 0 where small
+ *  plans lie; every LINE_EVERY-th of them, and the line's end, with every account, the rest with those near the top. Then the steps
+ *  narrowing a switch down. */
+const LINE_POINTS = 64;
+const LINE_EVERY = 8;
 const FINE_SAMPLES = 16;
 const FINE_ROUNDS = 2;
 const BISECT = 8;
-/** The map's areas start this share of the monthly range above 0: what is under it is the bottom edge's (no deposit). */
-const ABOVE_EDGE = 0.01;
 /** The least amount a search reaches, as a share of its reach, where the other axis is 0 (so it never lands on 0 ₪ and 0 ₪ a month), and the
  *  least monthly deposit (no deposit at all is the edge's). The edge starts at the same share of its axis. */
 const LOWEST = 1 / 1000;
@@ -145,6 +146,16 @@ const NEAR_CHANGE = 5;
 /** The least share of the sliders' reach an axis spans: 10,000 ₪ today and 200 ₪ a month, what a plan of a few thousand shekels and a
  *  small deposit spans, so a plan of nothing on an axis still shows a modest range from 0, never the whole reach. */
 const MIN_SPAN = 1 / 50;
+
+/**
+ * The surface's lattice along an axis: steps of `reach` / 2^k for a whole k, the same points whatever the window (a point of one level is a
+ * point of every finer one), each worked out from whole numbers (i × reach / 2^k), so the same point always comes out the same. A window
+ * reads the level whose step is nearest its N-th part (from 0.71 to 1.41 of it), so it reads about as many points as a grid of its own.
+ */
+function latticeOf(reach: number, span: number): { least: number; at: (i: number) => number } {
+  const k = Math.round(Math.log2((reach * N) / span));
+  return { least: reach / 2 ** k, at: (i) => (i * reach) / 2 ** k };
+}
 
 /** The accounts at a point, most first, a tie to the earlier in `order` (as the headline breaks it, `rankByValue`). */
 function rankedAt(left: ReadonlyMap<string, number>, order: readonly string[]): { id: string; v: number }[] {
@@ -203,7 +214,8 @@ type LineSample = { v: number; left: ReadonlyMap<string, number> };
 
 /** One of the plan's lines, one way, from the plan to `end`, and how it is priced: a few samples with every account; after them, only the
  *  plan's accounts and those near the top at any of them (`houses`), at many more samples (`samples`, from the plan outwards, made when
- *  first asked) and at any point (`price`). The samples are denser near the plan (spaced by the 1.5th power). */
+ *  first asked) and at any point (`price`). The samples are points fixed along the axis (LINE_POINTS), the same whatever the plan, so a line
+ *  a plan shares with an earlier one (the same deposit, or the same amount today) reads the points it read. */
 interface Line {
   own: number;
   end: number;
@@ -213,16 +225,23 @@ interface Line {
   price: (v: number) => ReadonlyMap<string, number>;
 }
 
-function lineOf(leftAt: LeftAt, order: readonly string[], theta: number, tied: readonly string[], plan: MapPoint, axis: 0 | 1, dir: MapSwitch["dir"], end: number): Line | null {
+function lineOf(leftAt: LeftAt, order: readonly string[], theta: number, tied: readonly string[], plan: MapPoint, axis: 0 | 1, dir: MapSwitch["dir"], end: number, reach: number): Line | null {
   const own = plan[axis];
   if (dir === "up" ? end <= own : end >= own) return null;
   const at = (v: number): MapPoint => (axis === 0 ? [v, plan[1]] : [plan[0], v]);
-  const spaced = (n: number) => Array.from({ length: n }, (_, k) => own + (end - own) * ((k + 1) / n) ** 1.5);
-  const all = spaced(LINE_SAMPLES).map((v) => ({ v, left: leftAt(...at(v), null) }));
+  // the fixed points strictly between the plan and the end, from the plan outwards, and the end
+  const inside = (k: number) => {
+    const v = (reach * k * k) / (LINE_POINTS * LINE_POINTS);
+    return dir === "up" ? v > own && v < end : v < own && v > end;
+  };
+  const ks = Array.from({ length: LINE_POINTS }, (_, k) => k + 1).filter(inside);
+  if (dir === "down") ks.reverse();
+  const point = (k: number) => (reach * k * k) / (LINE_POINTS * LINE_POINTS);
+  const all = [...ks.filter((k) => k % LINE_EVERY === 0).map(point), end].map((v) => ({ v, left: leftAt(...at(v), null) }));
   const houses = order.filter((id) => tied.includes(id) || all.some((s) => nearTop(s.left, order, theta).includes(id)));
   const price = (v: number) => leftAt(...at(v), houses);
   let dense: LineSample[] | null = null;
-  const samples = () => (dense ??= [...all, ...spaced(DENSE_SAMPLES).map((v) => ({ v, left: price(v) }))].sort((x, y) => (dir === "up" ? x.v - y.v : y.v - x.v)));
+  const samples = () => (dense ??= [...all, ...ks.filter((k) => k % LINE_EVERY !== 0).map((k) => ({ v: point(k), left: price(point(k)) }))].sort((x, y) => (dir === "up" ? x.v - y.v : y.v - x.v)));
   return { own, end, dir, all, samples, price };
 }
 
@@ -375,7 +394,7 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   // own, as the bottom edge is, and a change found only near it is too small to act on. The searches read nothing under it: a line down
   // ends there, and one up from a plan under it starts there
   const floor = { amount: Math.max(reachA * LOWEST, reach.amount * NAMED), monthly: Math.max(reachM * LOWEST, reach.monthly * NAMED) };
-  const lineOn = (axis: 0 | 1, dir: MapSwitch["dir"], to: number) => (tied.length === 0 ? null : lineOf(leftAt, order, theta, tied, planPt, axis, dir, to));
+  const lineOn = (axis: 0 | 1, dir: MapSwitch["dir"], to: number) => (tied.length === 0 ? null : lineOf(leftAt, order, theta, tied, planPt, axis, dir, to, axis === 0 ? reachA : reachM));
   const lines = { amount: { up: lineOn(0, "up", reachA), down: lineOn(0, "down", floor.amount) }, monthly: { up: lineOn(1, "up", reachM), down: lineOn(1, "down", floor.monthly) } };
   // each way along each line, the first change: the switch, unless an account is clearly cheaper first for a stretch before it (its first
   // run of samples, ending before the line does), then the stretch with the switch after it, so the words name what comes first, each
@@ -441,7 +460,7 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     const base: MapPoint = axis === 0 ? [plan.amount, floor.monthly] : [floor.amount, plan.monthly];
     const first = leadOf(leftAt(...base, null), order, theta)?.first;
     if (!first) return null;
-    const line = lineOf(leftAt, order, theta, [first], base, axis, "up", near);
+    const line = lineOf(leftAt, order, theta, [first], base, axis, "up", near, axis === 0 ? reachA : reachM);
     return firstChange(line, order, theta, axis === 0 ? floor.amount : floor.monthly, (l) => !!l && l.first !== first)?.at ?? null;
   };
   const nearUp = (axis: "amount" | "monthly", own: number, r: number) => {
@@ -452,18 +471,28 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const axisEnd = (own: number, to: number, r: number, cap: number) => Math.min(cleanUp(Math.max(PLAN_SPAN * own, ROOM * to, r * MIN_SPAN)), cap);
   const maxA = axisEnd(plan.amount, nearUp("amount", plan.amount, reach.amount), reach.amount, capA);
   const maxM = axisEnd(plan.monthly, nearUp("monthly", plan.monthly, reach.monthly), reach.monthly, capM);
-  const bottom = maxM * ABOVE_EDGE;
+  const bottom = maxM / N;
 
-  // ------------------------------------------------ the areas: every account on the coarse grid and its low rows and columns
-  const xOf = (i: number) => (maxA * i) / N;
-  const yOf = (j: number) => bottom + ((maxM - bottom) * j) / N;
-  const key = (i: number, j: number) => i * (N + 1) + j;
+  // ------------------------------------------------ the areas: read on the surface's lattice, which does not move with the plan
+  // each axis's lattice (`latticeOf`), in its least steps: today's amount from 0, the deposit from one least step a month up (no deposit at
+  // all is the edge's). A window of about the same size reads the same points, and one twice as large every other one, so the prices of
+  // points a window seen before read are read again; the drawn grid's nodes, N + 1 along today's amount and N along the deposit, are read
+  // from the cells they lie in, as a cell's inside is
+  const la = latticeOf(reach.amount, maxA);
+  const lm = latticeOf(reach.monthly, maxM);
+  const xOf = (i: number) => la.at(i);
+  const yOf = (j: number) => lm.at(j + 1);
+  const cols = Math.ceil(maxA / la.least - 1e-9);
+  const rows = Math.ceil(maxM / lm.least - 1 - 1e-9);
+  const coarse = 2 ** DEPTH;
+  const ci = Math.ceil(cols / coarse) * coarse;
+  const cj = Math.ceil(rows / coarse) * coarse;
+  const key = (i: number, j: number) => i * (cj + 1) + j;
   const priced = new Map<number, ReadonlyMap<string, number>>();
   const can = new Set<string>(tied);
-  const coarse = N / COARSE;
   // the coarse nodes, and the middle of each cell side along the first row and the first column
-  const steps = Array.from({ length: COARSE + 1 }, (_, k) => k * coarse);
-  const grid = [...steps.flatMap((i) => steps.map((j) => [i, j] as const)), ...steps.flatMap((k) => [[coarse / 2, k], [k, coarse / 2]] as const), [coarse / 2, coarse / 2] as const];
+  const every = (n: number, step: number) => Array.from({ length: Math.floor(n / step) + 1 }, (_, k) => k * step);
+  const grid = [...every(ci, coarse).flatMap((i) => every(cj, coarse).map((j) => [i, j] as const)), ...every(cj, coarse).map((k) => [coarse / 2, k] as const), ...every(ci, coarse).map((k) => [k, coarse / 2] as const), [coarse / 2, coarse / 2] as const];
   for (const [i, j] of grid) {
     if (priced.has(key(i, j))) continue;
     const left = leftAt(xOf(i), yOf(j), null);
@@ -480,49 +509,53 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     }
     return got;
   };
-  const cornersOf = (i: number, j: number, s: number) => [at(i, j), at(i + s, j), at(i + s, j + s), at(i, j + s)] as const;
+  const cornersOf = (i: number, j: number, z: number) => [at(i, j), at(i + z, j), at(i + z, j + z), at(i, j + z)] as const;
 
   // each cell split while its centre reads otherwise than its corners' blend, or its corners have different firsts and it is large. A cell on
   // the first row also reads the point a smallest step above the middle of its bottom side, and one on the first column the point a smallest
   // step right of the middle of its left side: there the figures can turn within that step (a deposit too small for a trade's minimum,
-  // F-12, or for a whole unit, F-109), and a blend from the side's corners would carry the turn across the whole cell
+  // F-12, or for a whole unit, F-109), and a blend from the side's corners would carry the turn across the whole cell. A cell past the
+  // window's end, where the last coarse cell runs over it, is not read
   const leaves: [number, number, number][] = [];
-  const cell = (i: number, j: number, s: number) => {
-    if (s > 1) {
-      const corners = cornersOf(i, j, s);
+  const cell = (i: number, j: number, z: number) => {
+    if (z > 1 && i < cols && j < rows) {
+      const corners = cornersOf(i, j, z);
       const firsts = new Set(corners.map((c) => leadOf(c, houses, theta)?.first));
-      const h = s / 2;
-      const otherwise = (u: number, w: number) => readsOtherwise(leadOf(blend(corners, houses, u / s, w / s), houses, theta), leadOf(at(i + u, j + w), houses, theta));
-      if ((firsts.size > 1 && s > BORDER_CELL) || otherwise(h, h) || (j === 0 && otherwise(h, 1)) || (i === 0 && otherwise(1, h))) {
+      const h = z / 2;
+      const otherwise = (u: number, w: number) => readsOtherwise(leadOf(blend(corners, houses, u / z, w / z), houses, theta), leadOf(at(i + u, j + w), houses, theta));
+      if ((firsts.size > 1 && z > BORDER_CELL) || otherwise(h, h) || (j === 0 && otherwise(h, 1)) || (i === 0 && otherwise(1, h))) {
         for (const [di, dj] of [[0, 0], [h, 0], [h, h], [0, h]] as const) cell(i + di, j + dj, h);
         return;
       }
     }
-    leaves.push([i, j, s]);
+    leaves.push([i, j, z]);
   };
-  for (let i = 0; i < N; i += coarse) for (let j = 0; j < N; j += coarse) cell(i, j, coarse);
+  for (let i = 0; i < ci; i += coarse) for (let j = 0; j < cj; j += coarse) cell(i, j, coarse);
   // the leaf over each smallest cell
-  const leafOf = new Int32Array(N * N);
-  leaves.forEach(([i, j, s], n) => {
-    for (let a = i; a < i + s; a++) for (let b = j; b < j + s; b++) leafOf[a * N + b] = n;
+  const leafOf = new Int32Array(ci * cj);
+  leaves.forEach(([i, j, z], n) => {
+    for (let a = i; a < i + z; a++) for (let b = j; b < j + z; b++) leafOf[a * cj + b] = n;
   });
+  // the drawn grid's nodes, each read from the leaf it lies in
   const leads: ReturnType<typeof leadOf>[] = [];
   // the accounts asked for at each node that have no ranked price there (one missing at any corner of its cell has none in the blend)
   const fieldGaps: string[][] = [];
-  for (let j = 0; j <= N; j++)
-    for (let i = 0; i <= N; i++) {
-      const [li, lj, ls] = leaves[leafOf[Math.min(i, N - 1) * N + Math.min(j, N - 1)] ?? 0] ?? [0, 0, coarse];
-      const left = blend(cornersOf(li, lj, ls), houses, (i - li) / ls, (j - lj) / ls);
+  for (let n = 0; n < N; n++)
+    for (let m = 0; m <= N; m++) {
+      const u = (maxA * m) / N / la.least;
+      const v = Math.max(0, (bottom + ((maxM - bottom) * n) / (N - 1)) / lm.least - 1);
+      const [li, lj, lz] = leaves[leafOf[Math.min(Math.floor(u), ci - 1) * cj + Math.min(Math.floor(v), cj - 1)] ?? 0] ?? [0, 0, coarse];
+      const left = blend(cornersOf(li, lj, lz), houses, (u - li) / lz, (v - lj) / lz);
       leads.push(leadOf(left, houses, theta));
       fieldGaps.push(houses.filter((id) => !left.has(id)));
     }
 
-  // ------------------------------------------------ the bottom edge: no monthly deposit at all, from a thousandth of the axis
-  const ex = (i: number) => Math.max(maxA * LOWEST, xOf(i));
+  // ------------------------------------------------ the bottom edge: no monthly deposit at all, on the amount's lattice, from a thousandth of the axis
+  const ex = (i: number) => (i === 0 ? maxA * LOWEST : xOf(i));
   const edgePriced = new Map<number, ReadonlyMap<string, number>>();
   // the plan's accounts are asked for along the edge too, as on the areas, so one with no price there is known to have none
   const edgeCan = new Set<string>(tied);
-  for (const i of [0, 2, 8, ...Array.from({ length: COARSE }, (_, k) => (k + 1) * coarse)]) {
+  for (const i of [0, 2, 8, ...every(ci, coarse).slice(1)]) {
     const left = leftAt(ex(i), 0, null);
     edgePriced.set(i, left);
     for (const id of nearTop(left, order, theta)) edgeCan.add(id);
@@ -537,29 +570,31 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     return got;
   };
   const edgeLeaves: [number, number][] = [];
-  const stretch = (i: number, s: number) => {
-    if (s > 1) {
-      const [a, b] = [eAt(i), eAt(i + s)];
-      const h = s / 2;
+  const stretch = (i: number, z: number) => {
+    if (z > 1 && i < cols) {
+      const [a, b] = [eAt(i), eAt(i + z)];
+      const h = z / 2;
       const firsts = new Set([leadOf(a, edgeHouses, theta)?.first, leadOf(b, edgeHouses, theta)?.first]);
-      if ((firsts.size > 1 && s > BORDER_CELL / 2) || readsOtherwise(leadOf(blend([a, b, b, a], edgeHouses, 0.5, 0), edgeHouses, theta), leadOf(eAt(i + h), edgeHouses, theta))) {
+      if ((firsts.size > 1 && z > BORDER_CELL / 2) || readsOtherwise(leadOf(blend([a, b, b, a], edgeHouses, 0.5, 0), edgeHouses, theta), leadOf(eAt(i + h), edgeHouses, theta))) {
         stretch(i, h);
         stretch(i + h, h);
         return;
       }
     }
-    edgeLeaves.push([i, s]);
+    edgeLeaves.push([i, z]);
   };
-  for (let i = 0; i < N; i += 8) stretch(i, 8);
-  const edgeLeafOf = new Int32Array(N);
-  edgeLeaves.forEach(([i, s], n) => {
-    for (let a = i; a < i + s; a++) edgeLeafOf[a] = n;
+  const ez = coarse / 2;
+  for (let i = 0; i < ci; i += ez) stretch(i, ez);
+  const edgeLeafOf = new Int32Array(ci);
+  edgeLeaves.forEach(([i, z], n) => {
+    for (let a = i; a < i + z; a++) edgeLeafOf[a] = n;
   });
   const edgeGaps: string[][] = [];
-  const edgeLeads = Array.from({ length: N + 1 }, (_, i) => {
-    const [li, ls] = edgeLeaves[edgeLeafOf[Math.min(i, N - 1)] ?? 0] ?? [0, 8];
-    const [a, b] = [eAt(li), eAt(li + ls)];
-    const left = blend([a, b, b, a], edgeHouses, (i - li) / ls, 0);
+  const edgeLeads = Array.from({ length: N + 1 }, (_, m) => {
+    const u = (maxA * m) / N / la.least;
+    const [li, lz] = edgeLeaves[edgeLeafOf[Math.min(Math.floor(u), ci - 1)] ?? 0] ?? [0, ez];
+    const [a, b] = [eAt(li), eAt(li + lz)];
+    const left = blend([a, b, b, a], edgeHouses, (u - li) / lz, 0);
     edgeGaps.push(edgeHouses.filter((id) => !left.has(id)));
     return leadOf(left, edgeHouses, theta);
   });
@@ -587,5 +622,5 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     ahead: ls.map((l) => (l ? Math.floor(l.ahead * 1000) / 1000 : 1)),
     missing: gaps.map((g) => g.reduce((m, id) => m | (bit.get(id) ?? 0), 0)),
   });
-  return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, floor, asked, field: fieldOf(leads, fieldGaps, N + 1, N + 1), edge: fieldOf(edgeLeads, edgeGaps, N + 1, 1), switches, stretches, changes, equal };
+  return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, floor, asked, field: fieldOf(leads, fieldGaps, N + 1, N), edge: fieldOf(edgeLeads, edgeGaps, N + 1, 1), switches, stretches, changes, equal };
 }
