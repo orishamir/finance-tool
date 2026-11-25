@@ -44,19 +44,18 @@ describe("invest page computation", () => {
       // paying out costs tax along the way: below the same house's accumulating fund at the same fee
       expect(of(id).best!.valueN).toBeLessThan(of("ie00b5bmr087").best!.valueN);
     }
-    // a US fund organised as a trust is priced as soon as its record carries its yield; until then it says the yield is missing
-    for (const id of ["us-voo", "us-ivv"]) {
-      if (of(id).rec.distribution) expect(of(id).best?.valueN, id).toBeGreaterThan(0);
-      else expect(of(id).reason, id).toEqual({ code: "need-yield" });
-    }
+    // a US fund organised as a trust is priced on the yield its record carries
+    for (const id of ["us-voo", "us-ivv"]) expect(of(id).best?.valueN, id).toBeGreaterThan(0);
+    // and a record that carries none says the yield is missing (D107)
+    const noYield = { ...bundle, funds: bundle.funds.map((r) => { if (r.id !== "us-voo") return r; const { distribution: _d, ...rest } = r; return rest; }) };
+    const voo = buildInvest({ bundle: noYield, index: sp, plan: plan() }).options.find((o) => o.id === "abroad")?.funds.find((f) => f.rec.id === "us-voo");
+    expect(voo?.best).toBeUndefined();
+    expect(voo?.reason).toEqual({ code: "need-yield" });
   });
 
-  it("prices and ranks a US fund organised as a trust once its record carries a yield, on the site's reading that its distribution is a dividend (F-20, D85)", () => {
-    const irish = bundle.funds.find((r) => r.id === "ie0031442068")?.distribution;
-    if (!irish) throw new Error("ie0031442068's record carries its yield");
-    const withYield = { ...bundle, funds: bundle.funds.map((r) => (r.id.startsWith("us-") && !r.distribution ? { ...r, distribution: irish } : r)) };
-    for (const index of knownIndices(withYield)) {
-      const v = buildInvest({ bundle: withYield, index, plan: plan() });
+  it("prices and ranks a US fund organised as a trust on its record's yield, on the site's reading that its distribution is a dividend (F-20, D85)", () => {
+    for (const index of knownIndices(bundle)) {
+      const v = buildInvest({ bundle, index, plan: plan() });
       for (const f of v.options.flatMap((o) => o.funds).filter((x) => x.rec.domicile === "US")) {
         expect(f.reason, f.rec.id).toBeUndefined();
         expect(f.best?.valueN, f.rec.id).toBeGreaterThan(0);

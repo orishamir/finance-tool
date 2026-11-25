@@ -518,23 +518,19 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
       for (const words of ["לא מדורג", "לא מדרג", "בלי דירוג"]) expect(text, `${house}: ${words}`).not.toContain(words);
     }
   });
-  it("a US fund organised as a trust whose record carries a yield is priced on the list with no caution mark, its sheet tagging the site's reading that its distribution is a dividend (F-20, D85)", () => {
-    // the records of VOO, IVV and ACWI as they stand, given the yield an Irish fund's record carries where theirs carries none
-    const irish = bundle.funds.find((r) => r.id === "ie0031442068")?.distribution;
-    if (!irish) throw new Error("ie0031442068's record carries its yield");
-    const withYield = { ...bundle, funds: bundle.funds.map((r) => (r.domicile === "US" && !r.distribution ? { ...r, distribution: irish } : r)) };
-    const index = indexById(withYield, "index-sp500");
+  it("a US fund organised as a trust is priced on the list with no caution mark, its sheet tagging the site's reading that its distribution is a dividend (F-20, D85)", () => {
+    const index = indexById(bundle, "index-sp500");
     const voo = bundle.funds.find((r) => r.id === "us-voo");
     if (!index || !voo) throw new Error("the S&P 500 is an index of the collected data, and VOO a fund of it");
-    const sp = buildInvest({ bundle: withYield, index, plan });
+    const sp = buildInvest({ bundle, index, plan });
     const f = allFunds(sp).find((x) => x.rec.id === "us-voo");
     if (!f) throw new Error("the S&P 500 holds VOO");
     const house = Object.keys(f.byHouse).find((id) => { const w = f.byHouse[id]; return w && "valueN" in w; });
-    if (!house) throw new Error("VOO is priced at a house once its record carries a yield");
+    if (!house) throw new Error("VOO is priced at a house");
     const at = f.byHouse[house];
     if (!at || !("valueN" in at)) throw new Error("VOO is priced there");
     // the pair of VOO and a house that prices it, as the reader picks it
-    const raw = lists(sp, withYield, plan, { house, fund: "us-voo" }, { ruler: true });
+    const raw = lists(sp, bundle, plan, { house, fund: "us-voo" }, { ruler: true });
     const a = raw.indexOf(`data-pick-key="us-voo"`);
     expect(a).toBeGreaterThanOrEqual(0);
     const rest = raw.slice(a + 1);
