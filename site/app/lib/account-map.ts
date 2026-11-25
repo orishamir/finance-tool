@@ -504,7 +504,7 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
  * How far a window the person moves may reach (F-131, *A window moved*): from 0 to the end the plan's own axes may reach on each axis (the
  * sliders' reach, P-05, or the plan with room past it, at a clean value), and no narrower than a hundredth of the sliders' reach.
  */
-export function mapLimits(plan: { amount: number; monthly: number }, reach: { amount: number; monthly: number }): MapLimits {
+function mapLimits(plan: { amount: number; monthly: number }, reach: { amount: number; monthly: number }): MapLimits {
   const end = (own: number, r: number) => cleanUp(Math.max(r, ROOM * own));
   return { amount: end(plan.amount, reach.amount), monthly: end(plan.monthly, reach.monthly), least: { amount: reach.amount * LEAST_SPAN, monthly: reach.monthly * LEAST_SPAN } };
 }
