@@ -11,14 +11,11 @@ import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { LANES, byGain, chainOf, gridOf, middleStart, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { receiptAmounts, type ReceiptAmounts } from "../../lib/receipt";
-import { IconLock } from "../icons";
 import { Num, type SheetPart } from "../provenance";
 import { Button, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
 import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, NoFundWords, whyNoFundAt } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
-/** The lock after a name, held to its last word by `LeadTail` so it never stands alone on a line. */
-const lockIcon = (label: string) => <IconLock size={14} aria-label={label} className="inline-block align-[-1px] mx-0.5 text-blocked" />;
 const NONE: Taken[] = [];
 const hueOf = (lane: Lane | null): StairHue => lane ?? "start";
 
@@ -186,7 +183,6 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       hue: hueOf(s.lane),
       loses: (s.d ?? 0) < 0,
       taken: s.taken,
-      open: false,
       current: fold + i === chain.here,
       label: `${s.lane ? t.lanes[s.lane].word : t.startPoint}: ${l.fundName}, ${l.house.short}`,
     };
@@ -354,7 +350,6 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
               left={<Num value={price.value} />}
               d={d}
               unit={unit}
-              open={false}
               turn={unseen ? i === 1 : i > 0 && priced[i - 1]!.d! >= 0 && d < 0}
               label={`${t.lanes[r.lane].word}: ${titleOf(r)}`}
               onTake={() => take(r)}
@@ -463,9 +458,6 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
           <span className="inline-flex items-center gap-1.5">
             <i className="inline-block size-3 rounded-[2px] border-[1.5px] border-muted-foreground" />
             {t.legendNext}
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            {lockIcon(t.lockLabel)} {t.legendOpen}
           </span>
         </div>
         <StairsChart

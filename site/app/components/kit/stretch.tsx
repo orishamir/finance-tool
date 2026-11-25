@@ -3,9 +3,8 @@
 // ruler beside a row, one scale for every row: the row's own stretch on it, and a spot where the row is a fund. `StretchChart` sets two
 // lists beside one ruler: the chosen start row opens onto its stretch, drawn as a band on the ruler, as a filled wedge; the band opens onto
 // the end list as a faint one, with one thin straight line from each end row's spot on the ruler to that row, the chosen row's solid; the
-// chosen pair is one point on the band, joined by a line straight up to the foot of what stands above (the receipt's total); a pair that is
-// shown but not ranked (`pointOpen`) is a hollow point joined by a dashed line, with no spot. Everything it draws is placed from the rows'
-// measured positions, again on every change and resize, so rows of any height join where they stand.
+// chosen pair is one point on the band, joined by a line straight up to the foot of what stands above (the receipt's total). Everything it
+// draws is placed from the rows' measured positions, again on every change and resize, so rows of any height join where they stand.
 import { useCallback, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { placeOn, ticksOf, type Scale } from "../../lib/stretch";
 import { cx } from "./cx";
@@ -101,8 +100,6 @@ export interface StretchChartProps {
   band: { best: number; worst: number } | null;
   /** The chosen pair's value: the point on the band. */
   point: number;
-  /** The chosen pair is shown, not ranked (an open rule): a hollow point at its value, a dashed line up, and no spot. */
-  pointOpen?: boolean;
   /** Each end row's spot, by its key; a row with none has no line. */
   spots: Record<string, StretchSpot>;
   chosenStart: string;
@@ -189,7 +186,7 @@ export function StretchChart(p: StretchChartProps) {
   );
 }
 
-function Drawing({ geo, scale, band, point, pointOpen = false, spots, chosenStart, chosenEnd, tick }: StretchChartProps & { geo: Geo }) {
+function Drawing({ geo, scale, band, point, spots, chosenStart, chosenEnd, tick }: StretchChartProps & { geo: Geo }) {
   const { ruler: R } = geo;
   const y0 = R.t + END;
   const y1 = R.b - END;
@@ -238,12 +235,11 @@ function Drawing({ geo, scale, band, point, pointOpen = false, spots, chosenStar
           </g>
         );
       })}
-      {/* the pair in the receipt: one point on the ruler, inside the stretch, joined straight up to the foot of what stands above; a pair
-          shown but not ranked: a hollow point at its value, the line dashed, and no spot */}
-      <path d={`M${cx0} ${geo.above ?? R.t}V${yPoint}`} className="stroke-primary" strokeWidth={pointOpen ? 2 : 3} {...(pointOpen ? { strokeDasharray: "5 5" } : {})} />
-      {!pointOpen && <path d={`M${endX} ${yPoint}H${cx0}`} className="stroke-primary" strokeWidth={3} />}
-      {!pointOpen && <circle cx={endX} cy={yPoint} r={6} className="fill-chart-by-fund" data-mark="point" />}
-      {pointOpen ? <circle cx={cx0} cy={yPoint} r={6} className="fill-card stroke-primary" strokeWidth={2.5} data-mark="point" /> : <circle cx={cx0} cy={yPoint} r={7} className="fill-primary" data-mark="point" />}
+      {/* the pair in the receipt: one point on the ruler, inside the stretch, joined straight up to the foot of what stands above */}
+      <path d={`M${cx0} ${geo.above ?? R.t}V${yPoint}`} className="stroke-primary" strokeWidth={3} />
+      <path d={`M${endX} ${yPoint}H${cx0}`} className="stroke-primary" strokeWidth={3} />
+      <circle cx={endX} cy={yPoint} r={6} className="fill-chart-by-fund" data-mark="point" />
+      <circle cx={cx0} cy={yPoint} r={7} className="fill-primary" data-mark="point" />
     </svg>
   );
 }

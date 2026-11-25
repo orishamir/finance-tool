@@ -1,7 +1,7 @@
 // The stairs (the indices page): money left at the end on the vertical axis, the order of the steps from left to right.
 // The first column is the start (grey, with a break mark because the axis does not begin at zero); every other column floats from the level
 // before it to its own, in the hue of what changed (the account, the kind of fund, the fund) and red when it loses money. A step taken is
-// solid; the largest one still ahead is lighter and outlined; one that rests on an open rule is hollow. The last column is the result: a
+// solid; the largest one still ahead is lighter and outlined. The last column is the result: a
 // bar from the floor to where the steps end, labelled with its total (charts.md). A dashed line marks the most any priced pair leaves, with
 // its words in the right margin where the steps end below it. Under the chart a table of the same columns on a computer, a list of the
 // steps on a phone. Own SVG.
@@ -25,8 +25,6 @@ export interface StairColumn {
   loses: boolean;
   /** Taken by the person (the start counts); the others are the suggested ones. */
   taken: boolean;
-  /** Rests on an open rule: hollow. */
-  open: boolean;
   /** Where the person is now. */
   current: boolean;
   /** What a screen reader and a tooltip say about the column. */
@@ -184,22 +182,14 @@ export function StairsChart({
               {first ? (
                 <>
                   <rect x={x} y={y(c.level)} width={bw} height={floor - y(c.level)} rx={3} className={FILL.start} data-mark="bar" />
-                  {/* never a negative height: a plan with no money puts the first bar on the floor ("-2" in the console) */}
-                  {c.open && <rect x={x + 1} y={y(c.level) + 1} width={bw - 2} height={Math.max(0, floor - y(c.level) - 2)} rx={3} className="fill-card stroke-chart-marker" strokeWidth={1.5} />}
                   {/* the axis does not begin at zero: a break mark across the foot of the bar */}
                   <path d={`M${x} ${floor - 12}l${bw / 6} -5l${bw / 3} 10l${bw / 3} -10l${bw / 6} 5`} fill="none" className="stroke-card" strokeWidth={3} />
                 </>
               ) : (
                 <>
                   <rect x={x} y={y(low)} width={bw} height={floor - y(low)} className="fill-chart-stairs-below" />
-                  {c.open ? (
-                    <rect x={x + 1} y={y(high) + 1} width={bw - 2} height={Math.max(y(low) - y(high) - 2, 2)} rx={3} className={cx("fill-card", STROKE[hue])} strokeWidth={2} data-mark="step" />
-                  ) : (
-                    <>
-                      <rect x={x} y={y(high)} width={bw} height={h} rx={3} className={FILL[hue]} opacity={c.taken ? 1 : 0.5} data-mark="step" />
-                      {!c.taken && <rect x={x + 0.75} y={y(high) + 0.75} width={bw - 1.5} height={Math.max(h - 1.5, 1)} rx={3} fill="none" className={STROKE[hue]} strokeWidth={1.5} />}
-                    </>
-                  )}
+                  <rect x={x} y={y(high)} width={bw} height={h} rx={3} className={FILL[hue]} opacity={c.taken ? 1 : 0.5} data-mark="step" />
+                  {!c.taken && <rect x={x + 0.75} y={y(high) + 0.75} width={bw - 1.5} height={Math.max(h - 1.5, 1)} rx={3} fill="none" className={STROKE[hue]} strokeWidth={1.5} />}
                 </>
               )}
               {i < columns.length - 1 && <line x1={x + bw} x2={bx(i + 1)} y1={y(c.level)} y2={y(c.level)} className="stroke-chart-marker" strokeWidth={1.5} />}

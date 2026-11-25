@@ -18,17 +18,16 @@ export function barShare(d: number, unit: number): { share: number; cut: boolean
   return { share: Math.min(raw, 100), cut: raw > 100 };
 }
 
-/** The bar of a row: its middle line is "as it is now"; money more goes right in green, money less goes left in red; an open rule is hollow. */
-export function DiffBar({ d, unit, open }: { d: number; unit: number; open?: boolean }) {
+/** The bar of a row: its middle line is "as it is now"; money more goes right in green, money less goes left in red. */
+export function DiffBar({ d, unit }: { d: number; unit: number }) {
   const zero = Math.round(d) === 0;
   const { share, cut } = barShare(d, unit);
   const up = d > 0;
   const tone = up ? "bg-gain" : "bg-loss";
-  const ring = up ? "border-gain" : "border-loss";
   return (
     <span aria-hidden="true" className="relative block flex-1 self-stretch min-h-[14px] [direction:ltr]">
       <i className="absolute inset-y-0 left-1/2 w-[1.5px] -ml-[0.75px] bg-chart-marker" />
-      {!zero && <i className={cx("absolute top-[calc(50%-6px)] h-3 min-w-[2px] rounded-[3px] box-border", up ? "left-1/2" : "right-1/2", open ? cx("border-[1.5px] bg-transparent", ring) : tone)} style={{ width: `${share / 2}%` }} />}
+      {!zero && <i className={cx("absolute top-[calc(50%-6px)] h-3 min-w-[2px] rounded-[3px] box-border", up ? "left-1/2" : "right-1/2", tone)} style={{ width: `${share / 2}%` }} />}
       {!zero && cut && <i className={cx("absolute top-[calc(50%-8px)] h-4 w-[3px] bg-card -skew-x-[20deg]", up ? "right-[5px]" : "left-[5px]")} />}
     </span>
   );
@@ -83,7 +82,6 @@ export interface DiffRowProps {
   left: ReactNode;
   d: number;
   unit: number;
-  open: boolean;
   /** The difference in words and figures (`DiffFigure`). */
   diff: ReactNode;
   /** The first row that leaves less than now: a thicker line above it, where the gains end. */
@@ -95,7 +93,7 @@ export interface DiffRowProps {
   kind?: ReactNode;
 }
 
-export function DiffRow({ name, sub, left, d, unit, open, diff, turn, label, onTake, kind }: DiffRowProps) {
+export function DiffRow({ name, sub, left, d, unit, diff, turn, label, onTake, kind }: DiffRowProps) {
   return (
     <div className={cx("group relative grid items-center gap-x-2.5 min-h-[44px] md:min-h-9 px-1.5 py-0.5 text-sm hover:bg-accent", turn ? "border-t-2 border-chart-axis" : "border-t border-border", COLS)}>
       <button type="button" aria-label={label} onClick={onTake} className="absolute inset-0 w-full cursor-pointer rounded-none" />
@@ -106,7 +104,7 @@ export function DiffRow({ name, sub, left, d, unit, open, diff, turn, label, onT
       </span>
       <span className={cx("pointer-events-none relative z-10 text-end whitespace-nowrap tabular-nums [&_.num]:pointer-events-auto max-md:col-start-1 max-md:row-start-2 max-md:text-start max-md:text-xs max-md:text-muted-foreground", d < 0 && "md:text-muted-foreground")}>{left}</span>
       <span className="pointer-events-none relative z-10 self-stretch flex max-md:col-start-2 max-md:row-start-1 max-md:row-span-2">
-        <DiffBar d={d} unit={unit} open={open} />
+        <DiffBar d={d} unit={unit} />
       </span>
       <span className="pointer-events-none relative z-10 text-sm max-md:col-start-3 max-md:row-start-1 max-md:row-span-2 [&_.num]:pointer-events-auto">{diff}</span>
     </div>

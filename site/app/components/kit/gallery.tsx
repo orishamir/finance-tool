@@ -1269,10 +1269,10 @@ function Fields({ today }: { today: string }) {
         <State label={g.states.interactive} wide>
           <StairsChart
             columns={[
-              { id: "0", level: 79273, from: 79273, top: "79,273 ₪", hue: "start", loses: false, taken: true, open: false, current: true, label: g.sample.rowA },
-              { id: "1", level: 84148, from: 79273, top: "+4,875 ₪", hue: "account", loses: false, taken: false, open: false, current: false, label: g.sample.rowB },
-              { id: "2", level: 82000, from: 84148, top: "−2,148 ₪", hue: "kind", loses: true, taken: false, open: false, current: false, label: g.sample.rowB },
-              { id: "3", level: 86492, from: 82000, top: "+4,492 ₪", hue: "fund", loses: false, taken: false, open: true, current: false, label: g.sample.rowB },
+              { id: "0", level: 79273, from: 79273, top: "79,273 ₪", hue: "start", loses: false, taken: true, current: true, label: g.sample.rowA },
+              { id: "1", level: 84148, from: 79273, top: "+4,875 ₪", hue: "account", loses: false, taken: false, current: false, label: g.sample.rowB },
+              { id: "2", level: 82000, from: 84148, top: "−2,148 ₪", hue: "kind", loses: true, taken: false, current: false, label: g.sample.rowB },
+              { id: "3", level: 86492, from: 82000, top: "+4,492 ₪", hue: "fund", loses: false, taken: false, current: false, label: g.sample.rowB },
             ]}
             fold={0}
             axis={{ lo: 70000, hi: 90000 }}
@@ -1289,9 +1289,9 @@ function Fields({ today }: { today: string }) {
       <Demo name="DiffRow, DiffHead, DiffFigure, GreyLine" use={g.uses.DiffRow}>
         <State label={g.states.interactive} wide>
           <DiffHead name={g.sample.rowA} left={g.sample.rowB} versus={g.sample.diff} less="פחות" more="יותר" money="כסף" />
-          <DiffRow name={g.sample.rowA} left="84,148 ₪" d={4875} unit={4875} open={false} label={g.sample.rowA} onTake={() => undefined} diff={<DiffFigure d={4875} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="4,875 ₪" />} />
-          <DiffRow name={g.sample.rowB} left="77,749 ₪" d={-1524} unit={4875} open={false} turn label={g.sample.rowB} onTake={() => undefined} diff={<DiffFigure d={-1524} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="1,524 ₪" />} />
-          <DiffRow name={g.sample.rowA} left="61,931 ₪" d={-17342} unit={4875} open={false} label={g.sample.rowA} onTake={() => undefined} diff={<DiffFigure d={-17342} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="17,342 ₪" />} />
+          <DiffRow name={g.sample.rowA} left="84,148 ₪" d={4875} unit={4875} label={g.sample.rowA} onTake={() => undefined} diff={<DiffFigure d={4875} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="4,875 ₪" />} />
+          <DiffRow name={g.sample.rowB} left="77,749 ₪" d={-1524} unit={4875} turn label={g.sample.rowB} onTake={() => undefined} diff={<DiffFigure d={-1524} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="1,524 ₪" />} />
+          <DiffRow name={g.sample.rowA} left="61,931 ₪" d={-17342} unit={4875} label={g.sample.rowA} onTake={() => undefined} diff={<DiffFigure d={-17342} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="17,342 ₪" />} />
           <GreyLine why={g.sample.note}>{g.sample.rowA}</GreyLine>
         </State>
       </Demo>
