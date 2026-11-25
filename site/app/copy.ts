@@ -4232,9 +4232,6 @@ export const invest = {
       xTitle: "סכום היום (₪)",
       yTitle: "הפקדה חודשית (₪)",
       plan: "התוכנית שלכם",
-      noDeposit: (w: string) => `בלי הפקדה חודשית: ${w}`,
-      /** The bottom edge where no account is clearly cheaper over enough of it to be named. */
-      noDepositSame: "בלי הפקדה חודשית: בערך אותו דבר",
       others: "אחרות",
       /** The reading at a point: its head, the account that leaves the most and what it leaves, the next and how much less it leaves. */
       pointHead: (amount: string, monthly: string) => `${amount} היום, ${monthly} בחודש`,

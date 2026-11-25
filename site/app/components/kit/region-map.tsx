@@ -429,7 +429,9 @@ export function RegionMap({
   edge: RegionGrid;
   /** The edge's words for the area of its longest clear stretch; null where no area is clear over enough of it to be named, the areas
    *  there being about the same. */
-  edgeLabel: (id: string | null) => RegionWords;
+  /** The bottom edge's words, by the area over its longest clear stretch (null: about the same all along); with none, the edge carries no
+   *  words, its colours alone saying which area leads along it. */
+  edgeLabel?: (id: string | null) => RegionWords;
   /** What the stripes mean, an item in the legend for each pair whose stripes show: its words, and its title naming the pair. */
   /** The band's words in the legend, the pair's for its hint, and a "?" after its item (the last such item; with none, after the last item). */
   bandLabel: { text: string; pair: (a: string, b: string) => string; help?: ReactNode };
@@ -552,7 +554,7 @@ export function RegionMap({
     const runs = edgeStretches(edge).map((r) => ({ area: r.area, from: nodeX(r.from), to: nodeX(r.to) }));
     const [longest, ...others] = runs;
     const longestArea = longest ? areas[longest.area] : undefined;
-    const edgeWords = edgeLabel(longestArea?.id ?? null);
+    const edgeWords = edgeLabel?.(longestArea?.id ?? null) ?? null;
 
     // the words, each placed clear of those placed before it: the bottom edge's, then the mark's, then each guide's; a box tries its places
     // in order and takes the first inside the plot that meets none, else the one that meets least
@@ -588,9 +590,9 @@ export function RegionMap({
       for (let x = Math.min(right - 4, sxL(r.to) - 4) - tw; x >= from; x -= 8) tries.push({ x, y: bottom - EDGE_PX - 6 - LINE, w: tw, h: LINE });
       return clearOf(tries);
     };
-    const edgeInside = overStretch(longest ?? { area: -1, from: 0, to: max.x }, textRoom(edgeWords.text));
+    const edgeInside = edgeWords ? overStretch(longest ?? { area: -1, from: 0, to: max.x }, textRoom(edgeWords.text)) : undefined;
     if (edgeInside) placed.push(edgeInside);
-    const edgeNames = others.flatMap((r) => {
+    const edgeNames = (edgeWords ? others : []).flatMap((r) => {
       const a = areas[r.area];
       const box = a ? overStretch(r, textRoom(a.name)) : undefined;
       if (!a || !box) return [];
@@ -796,7 +798,7 @@ export function RegionMap({
         {/* the words on the map: in HTML over the drawing, each in its box beside what it names */}
         {guideDraw.map(({ g, box }) => box && g.label && <Words key={g.axis} box={box} words={g.label} />)}
         <Words box={markBox} words={mark.label} />
-        {edgeInside && <Words box={edgeInside} words={edgeWords} />}
+        {edgeInside && edgeWords && <Words box={edgeInside} words={edgeWords} />}
         {layout.edgeNames.map((n) => (
           <Words key={n.id} box={n.box} words={n.words} />
         ))}
@@ -811,7 +813,7 @@ export function RegionMap({
       <p className="text-center text-xs text-muted-foreground" style={{ paddingLeft: left }}>
         {xTitle}
       </p>
-      {!edgeInside && (
+      {edgeWords && !edgeInside && (
         <p className="flex items-center gap-2 text-xs text-muted-foreground">
           {longestArea && <span className={cx("h-1.5 w-4 shrink-0 rounded-sm", SWATCH[longestArea.tone])} />}
           {edgeWords.node ?? edgeWords.text}

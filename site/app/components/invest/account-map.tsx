@@ -219,14 +219,13 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
   // the map's accounts in the houses' order: the order the colours go by
   const { areas, toneOf, field, edge } = useMemo(() => mapAreas(view, map, providersOfInvest(on.bundle).map((s) => s.id).filter((id) => map.accounts.includes(id))), [view, map, on]);
 
-  const { head, guides, mark, edgeLabel } = useMemo(() => {
+  const { head, guides, mark } = useMemo(() => {
     const words = mapWords(map, house, (id) => shortOf(view, id));
     const guides = mapGuides(map);
     return {
       head: words.head,
       guides,
       mark: { at: [map.plan.amount, map.plan.monthly] as const, label: { text: m.plan } },
-      edgeLabel: (id: string | null) => ({ text: id === null ? m.noDepositSame : m.noDeposit(shortOf(view, id)) }),
     };
   }, [view, house, map]);
 
@@ -255,7 +254,6 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
         areas={areas}
         field={field}
         edge={edge}
-        edgeLabel={edgeLabel}
         bandLabel={{ text: m.same, pair: m.samePair, help: <HelpMark about={m.howTo.about} text={m.howTo.text(thetaText(bundle))} className="ms-0.5" /> }}
         mark={mark}
         guides={guides}
