@@ -31,7 +31,13 @@ export const isFxToFx = (l: Pick<FeesSnapshot["lines"][number], "base" | "names"
 export const HOUSE_CLASSES: readonly string[] = ["bank", "broker", "foreign_broker"];
 
 /** A house of its own: a bank's, broker's or foreign broker's snapshot that is not part of another house (PEPPER of Leumi, D43), whose prices stand under that house. */
-const isHouseSnapshot = (s: FeesSnapshot): boolean => HOUSE_CLASSES.includes(s.provider.class) && !s.provider.part_of;
+const isHouseSnapshot = (s: Pick<FeesSnapshot, "provider">): boolean => HOUSE_CLASSES.includes(s.provider.class) && !s.provider.part_of;
+
+/**
+ * Whether a deal can start from a house's latest price list: a house of its own (`isHouseSnapshot`) whose record is not missing. The fee
+ * page's houses are these (`feesData`), so a deal filled from any other comes out empty; the indices page offers a house's terms only here.
+ */
+export const startsDeal = (s: Pick<FeesSnapshot, "provider" | "missing">): boolean => isHouseSnapshot(s) && !s.missing;
 
 /** The houses among `snapshots` (`isHouseSnapshot`), by name. */
 export const houseSnapshots = (snapshots: readonly FeesSnapshot[]): FeesSnapshot[] => snapshots.filter(isHouseSnapshot).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));

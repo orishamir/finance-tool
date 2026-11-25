@@ -21,6 +21,11 @@ import { PairReceipt } from "./receipt";
 import { PairLists } from "./lists";
 import { termsLeftOut } from "./deal-account";
 import { bundle, html, inHost, plan, shown, t } from "./render-fixtures";
+import { feesData } from "../../lib/fees.server";
+import { dealFromTemplate } from "../../lib/fee-deal/templates";
+import { newDeal } from "../../lib/fee-deal/model";
+import { ACCOUNT_KIND } from "../../lib/fee-deal/kinds";
+import { startsDeal } from "../../lib/providers";
 
 const WHY = "מי שקונה הרבה משלם לפי מדרגות. האתר מחשב לפי המסלול הקבוע.";
 /** The collected data with one house's record marking its first left-out thing as one that can change the price, with its reason. */
@@ -29,12 +34,20 @@ const marked = (house: string): IndicesBundle => ({
   snapshots: bundle.snapshots.map((s) => (s.id === house && s.left_out?.length ? { ...s, left_out: s.left_out.map((e, i) => (i === 0 ? { ...e, why_he: WHY, could_change_price: true } : e)) } : s)),
 });
 const termsLabel = (short: string) => `aria-label="${invest.dealAccount.terms.title(short)}"`;
+const fees = feesData();
+/** Whether house `id`'s latest price list fills a deal, as the terms are filled. */
+const fills = (id: string) => dealFromTemplate(newDeal(ACCOUNT_KIND), `house:${id}`, fees, t) !== null;
 
 describe("the indices page", () => {
   const index = indexById(bundle, "index-sp500")!;
   const view0 = buildInvest({ bundle, index, plan });
   const fund = pickOfHeadline(view0)!.fund;
-  it("every ranked house with a price list carries the button that opens its terms, and no other row does; the list says nothing of what a price leaves out", () => {
+  it("a house's terms are offered where its latest price list fills a deal, and nowhere else (`startsDeal`)", () => {
+    for (const s of bundle.snapshots) expect(startsDeal(s), s.id).toBe(fills(s.id));
+    // some house has a price list that fills no deal
+    expect(bundle.snapshots.some((s) => !fills(s.id))).toBe(true);
+  });
+  it("every ranked house whose price list fills a deal carries the button that opens its terms, and no other row does; the list says nothing of what a price leaves out", () => {
     const b = marked("interactive-brokers");
     let unranked = 0;
     for (const ref of knownIndices(b)) {
@@ -50,8 +63,7 @@ describe("the indices page", () => {
       for (const p of view.providers.filter((x) => rows.includes(x.id))) {
         const row = out.slice(out.indexOf(`data-pick-key="${p.id}"`));
         const own = row.slice(0, row.indexOf("data-pick-key=", 10));
-        const priceList = !p.custom && b.snapshots.some((s) => s.id === p.id);
-        expect(own.includes(termsLabel(p.short)), `${ref.id} ${p.id}`).toBe(ranked.has(p.id) && priceList);
+        expect(own.includes(termsLabel(p.short)), `${ref.id} ${p.id}`).toBe(ranked.has(p.id) && !p.custom && fills(p.id));
       }
       expect(shown(out), ref.id).not.toContain(c.lead);
     }

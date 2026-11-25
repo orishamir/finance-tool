@@ -16,7 +16,7 @@ import { ACCOUNT_CAP_RULES } from "./fee-deal/charts";
 import { houseTemplateRead } from "./fee-deal/templates";
 import { termKey, type FeesData, type TrackLite } from "./fee-page-data";
 import { loadFx } from "./fx.server";
-import { BROKERAGE, onlyWhatCanBeDone, providersOf } from "./providers";
+import { BROKERAGE, onlyWhatCanBeDone, providersOf, startsDeal } from "./providers";
 import { latestSnapshots } from "./providers.server";
 import { compactFee } from "./value";
 import { readParsedCached } from "./read-cache.server";
@@ -92,7 +92,7 @@ export function buildFeesData(): FeesData {
   const latest = latestSnapshots();
   const full = new Map(latest.map((s) => [s.id, s]));
   const houses = providersOf({ snapshots: latest.map(onlyWhatCanBeDone) }, BROKERAGE)
-    .filter((s) => !s.missing)
+    .filter(startsDeal)
     .map((s) => {
       // the lines reading the house as it can be done took away whole, which the template lists with why
       const kept = new Set(s.lines.map((l) => l.id));

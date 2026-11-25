@@ -23,7 +23,7 @@ import { isCustomFund } from "../../lib/custom-entries";
 import { fmt } from "../../lib/format";
 import { shortFundName } from "../../lib/fund-name";
 import { dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWay, type InvestView, type WayPrice } from "../../lib/invest";
-import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
+import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
 import { priced, scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
@@ -161,7 +161,8 @@ export function PairLists(props: ListsProps) {
   const shortOf = (id: string) => providerName(view, id)?.short ?? id;
 
   // ---------------------------------------------------------------- the accounts
-  const snapOf = (id: string) => bundle.snapshots.find((s) => s.id === id);
+  // a house's terms are a deal filled from its latest price list: only where one fills (`startsDeal`)
+  const hasTerms = (id: string) => bundle.snapshots.some((s) => s.id === id && startsDeal(s));
   const pricedHouses = providers.filter((p) => stretches.get(p.id)).sort((a, b) => stretches.get(b.id)!.best - stretches.get(a.id)!.best || a.short.localeCompare(b.short, "he"));
   const noWay = (p: (typeof providers)[number]) => {
     const at = fund.byHouse[p.id];
@@ -181,7 +182,7 @@ export function PairLists(props: ListsProps) {
   const nameWithMark = (p: (typeof providers)[number], selected: boolean) => (
     <span className="flex min-w-0 items-center gap-1">
       {nameOf(p, selected)}
-      {p.custom ? <DealEditMark id={p.id} /> : snapOf(p.id) && <TermsMark id={p.id} house={p.short} />}
+      {p.custom ? <DealEditMark id={p.id} /> : hasTerms(p.id) && <TermsMark id={p.id} house={p.short} />}
     </span>
   );
   const movedHere = (half: "fund" | "house") =>

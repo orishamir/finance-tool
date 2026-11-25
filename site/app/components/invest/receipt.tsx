@@ -15,7 +15,7 @@ import { fmt, wholeSum } from "../../lib/format";
 import { gapListFor, pricedVariable, accountSum, pairCostsKept, type FundWay, type InvestView, type PairCosts } from "../../lib/invest";
 import { priced } from "../../lib/stretch";
 import { assertNever, type FundRecord } from "@finance-tool/schema";
-import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
+import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
 import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
@@ -209,7 +209,7 @@ function AccountFacts({ view, bundle, plan, pick, refs }: { view: InvestView; bu
 /**
  * The account's price list, with the day it was collected, opening it: on the ticket beside the part's caption, in a sheet among its
  * details. Under it, where something its price leaves out can change what some reader pays (D106), the line that says how many, whose
- * words open the house's terms with them open.
+ * words open the house's terms with them open, or, where no deal starts from its price list (`startsDeal`), the line's own sheet.
  */
 function AccountRefs({ view, bundle, pick }: { view: InvestView; bundle: IndicesBundle; pick: Pick }) {
   const house = providerName(view, pick.house);
@@ -222,7 +222,7 @@ function AccountRefs({ view, bundle, pick }: { view: InvestView; bundle: Indices
       <DocLink look="inline" source={snap.tariff}>
         <When iso={snap.snapshot} lead={c.chosen.collected} />
       </DocLink>
-      {left && left.changes.length > 0 && dealApi && <LeftOutLine view={left} house={house.short} opens={() => dealApi.open({ terms: pick.house, leftOut: true })} />}
+      {left && left.changes.length > 0 && dealApi && <LeftOutLine view={left} house={house.short} {...(startsDeal(snap) ? { opens: () => dealApi.open({ terms: pick.house, leftOut: true }) } : {})} />}
     </span>
   );
 }
