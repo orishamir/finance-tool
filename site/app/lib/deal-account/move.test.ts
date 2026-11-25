@@ -162,9 +162,11 @@ describe("the move: a typed conversion keeps the list's steps by size (F-13)", (
     expect(differing(compare([a], true, small).get(a.id)!)).toEqual([]);
   });
 
-  it("interactive-brokers: a typed conversion is the sale's too, so a small sale pays the typed rate and not the spot order's minimum (F-13)", () => {
+  it("interactive-brokers: a typed conversion is laid over each side's line, so a small sale keeps the spot order's USD 2 minimum (F-101 (1), F-13)", () => {
     const small = { ...plan, amountNow: 0, monthly: 200, years: 1, values: { ...plan.values, amount: fig(0, "nis"), monthly: fig(200, "nis_per_month"), years: fig(1, "years") } };
     const a = onFx("interactive-brokers");
+    const fx = dealOfTypedAccount(a, ctx).fees.find((f) => f.kind === "fx");
+    expect(fx?.sale?.[0]?.price).toMatchObject({ form: "action", rate: { v: 0.2 }, min: { v: 2 }, currency: "USD" });
     expect(differing(compare([a], true, small).get(a.id) ?? [])).toEqual([]);
   });
 });

@@ -64,7 +64,7 @@ describe("F-13: the sale converts on the line that converts a sale", () => {
     expect(r.tariff.fxSale).toBeUndefined();
   });
 
-  it("a conversion price the person sets governs the sale too", () => {
+  it("an entered tariff that names no price for the sale converts the sale at its own conversion price", () => {
     const r = compared(providerWorkbench(input({ providers: [{ snapshot: ib, level: "entered", band: [london, autoFx], entered: { fx: 0.001 } }] }), ctx).rows[0]);
     expect(r.tariff.fxSale).toBeUndefined();
     expect(r.run.fees.fx).toBeGreaterThan(0.001 * exitOf(r).converted);

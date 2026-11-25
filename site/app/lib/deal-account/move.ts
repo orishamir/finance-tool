@@ -437,9 +437,8 @@ function withOwn(deal: FeeDeal, b: CustomBroker, ctx: ReadContext, list: FeeDeal
       });
     }
     if (f.kind === "custody" && (custodyPct !== null || custodyMin !== null)) return onRead(f, both(f.id), (x, c) => eachPrice(x, (p) => ownCustody(p, listOf(f, c) ?? p, custodyPct, custodyMin)));
-    // the person's conversion rate is the sale's too: a sale the list priced apart (F-13, a conversion that converts only on a purchase) goes,
-    // as `applyOwn` drops the list's own price for a sale
-    if (f.kind === "fx" && fx !== null) return hasCases(f) ? { ...f, cases: f.cases.map((c) => withPriced(c, eachPrice({ stages: c.stages }, (p) => ownFx(p, fx, isSizeStep(f, c))))) } : { ...f, ...priced(eachPrice({ stages: f.stages }, (p) => ownFx(p, fx, false))) };
+    // F-101 (1): the typed rate is laid over each side's own prices, a sale the list prices apart (F-13) among them, keeping its bounds
+    if (f.kind === "fx" && fx !== null) return hasCases(f) ? { ...f, cases: f.cases.map((c) => withPriced(c, eachPrice(c, (p) => ownFx(p, fx, isSizeStep(f, c))))) } : { ...f, ...priced(eachPrice(f, (p) => ownFx(p, fx, false))) };
     if (f.kind === "fixed_period" && monthly !== null) return { id: f.id, kind: f.kind, ...(f.house ? { house: f.house } : {}), stages: [{ price: { form: "sum", amount: typed(monthly), every: 1 } }] };
     return f;
   });

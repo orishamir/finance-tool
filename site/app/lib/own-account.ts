@@ -347,8 +347,9 @@ export function applyOwn(base: SecuritiesTariff, own: Own, list: SecuritiesTarif
     // dearer than the list (F-13)
     out.fx = base.fx === undefined ? fx / 100 : conversionWithRate(base.fx, fx / 100);
     if (base.fxStanding !== undefined) out.cheaperOfStandingFx = true;
-    // the person's conversion price is the sale's too: the list's own price for a sale goes (F-13)
-    delete out.fxSale;
+    // F-101 (1): the typed rate is laid over each side's own line, so a sale the list prices on a line of its own (F-13) keeps that line's
+    // bounds and steps (Interactive Brokers' spot order, its USD 2 minimum) at the typed rate
+    if (base.fxSale) out.fxSale = { ...base.fxSale, fx: conversionWithRate(base.fxSale.fx, fx / 100) };
   }
   const monthly = numberOf(own.monthlyFee);
   if (monthly !== null) out.monthlyFee = monthly;
