@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import { leftOut as c } from "../copy";
 import { ProvenanceProvider } from "../components/provenance";
 import { SheetContent } from "../components/provenance-sheets";
+import { LeftOutFold } from "../components/kit";
 import { leftOutOf, sheetOf } from "./left-out";
 
 const pdf = { url: "https://example.org/tariff.pdf", title: "תעריפון לדוגמה (BRK-12)" };
@@ -78,5 +79,31 @@ describe("the sheet the line opens", () => {
     expect(at('href="https://example.org/tariff.pdf#page=7"')).toBeLessThan(at(`>${c.other}</h3>`));
     expect(out).toMatch(/<ul[^>]*><li>מסלול IBKR Lite<\/li><li>נתוני שוק בארה״ב<\/li><\/ul>/);
     expect(out).not.toContain("ENGLISH-WORKING-NOTE");
+  });
+});
+
+describe("the fold in a house's terms", () => {
+  const view = leftOutOf({ tariff: pdf, left_out: [tiered, lite, quiet] })!;
+  const draw = (v: typeof view, open: boolean) => renderToStaticMarkup(createElement(LeftOutFold, { view: v, defaultOpen: open }));
+  const text = (html: string) => html.replace(/<[^>]+>/g, "");
+  it("folded, is one line saying how many things can change the price, or, where none can, how many there are", () => {
+    const out = draw(view, false);
+    expect(out).toMatch(/^<details(?![^>]*\bopen\b)/);
+    expect(text(out)).toContain(`${c.lead} ${c.canChange(1)}`);
+    const none = draw({ changes: [], others: view.others }, false);
+    expect(text(none)).toContain(`${c.lead} ${c.some(2)}`);
+  });
+  it("opened, gives each thing that can change the price under its name with its reason and document, then the rest by name in a fold of their own", () => {
+    const out = draw(view, true);
+    const at = (x: string) => out.indexOf(x);
+    expect(out).toMatch(/^<details[^>]*\bopen\b/);
+    expect(at("מסלול Tiered")).toBeLessThan(at(tiered.why_he));
+    expect(at(tiered.why_he)).toBeLessThan(at('href="https://example.org/tariff.pdf#page=7"'));
+    expect(at('href="https://example.org/tariff.pdf#page=7"')).toBeLessThan(at(c.otherCount(2)));
+    expect(at(c.otherCount(2))).toBeLessThan(at("מסלול IBKR Lite"));
+    // where nothing can change the price, the names stand at once, with no second fold
+    const none = draw({ changes: [], others: view.others }, true);
+    expect(text(none)).toContain("מסלול IBKR Lite");
+    expect(none).not.toContain(c.otherCount(2));
   });
 });

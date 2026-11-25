@@ -4176,8 +4176,8 @@ export const invest = {
       unpriced: (n: number) => (n === 1 ? "ועוד קרן אחת בלי מחיר בחשבון הזה" : `ועוד ${n} קרנות בלי מחיר בחשבון הזה`),
       unpricedLabel: (house: string) => `קרנות בלי מחיר ${inName(house)}`,
     },
-    /** The head, in the sheet of the mark beside an account's name, over a standing order's price its price list prints and the figure
-     *  leaves out (D41, D56), its reason and their documents. */
+    /** The head, first among what a house's terms say can change its price, over a standing order's price its price list prints and the
+     *  figure leaves out (D41, D56), its reason and their documents. */
     otherPriceWords: "מחיר אחר לקנייה בהוראת קבע",
   },
 
@@ -4286,8 +4286,17 @@ export const invest = {
   /** A securities-account deal the person saved, as an account of the lists, and the popup that edits it on the plan (F-128). */
   dealAccount: {
     add: "להזין תנאים שקיבלתם",
-    /** The link on a house's own page: the indices page opens with a new deal filled from that house's price list. */
+    /** The link on a house's own page, and the last button of its terms: a new deal filled from that house's price list. */
     fromHouse: (house: string) => `להזין תנאים שקיבלתם, על בסיס ${house}`,
+    /**
+     * A house's terms, read-only: its latest price list on the page's plan, opened from the file icon beside its name in the account list
+     * (whose name for the browser it is too) and from the receipt's line of what its price leaves out.
+     */
+    terms: {
+      title: (house: string) => `התעריפון של ${house}`,
+      /** Its price list's link: the words before the day it was collected (the kit's `When` lead). */
+      collected: "נאסף ב־",
+    },
     /** The pencil beside the deal's name in the lists: its name for the browser. */
     edit: "לערוך את העסקה",
     /** Where a deleted deal's row stood, before its name. */
@@ -5112,8 +5121,6 @@ export const leftOut = {
   otherCount: (n: number) => (n === 1 ? "עוד דבר אחד שבמסמכים ולא בחישוב" : `עוד ${n} דברים שבמסמכים ולא בחישוב`),
   /** The document's name with the page the thing is on. */
   page: (title: string, n: number) => `${title}, עמוד ${n}`,
-  /** The mark beside an account's name: what a screen reader says; a tap on it says what it is. */
-  mark: "יש דברים שלא נכללו במחיר",
 };
 
 /**

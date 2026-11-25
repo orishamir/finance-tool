@@ -12,31 +12,31 @@
 // as the person's, and a fund's kind, number, document, yield and manager. The page shows no star on the cheapest account, no
 // house's full name as a link, no deal's basis, no note that a fund is the same as one bought another way, and no choice of a customer
 // group: every house is priced at its general price (D43, D103). What
-// holds for the chosen row alone (an open question, no unit price, a standing order's price the figure leaves out, whose words open the
-// price, the record's reason and their documents) is said under the lists. A deal the person added that still misses a figure says which, on a
-// line under its row. Before any pick the pair is the page's own and is named by where it is shown, the receipt (`invest.shownPair`).
+// holds for the chosen row alone (an open question, no unit price) is said under the lists. A ranked house with a price list carries a
+// file icon beside its name that opens its terms (deal-account.tsx, `TermsPopup`): its price list read-only on the plan, with what its
+// price leaves out, a standing order's price the figure leaves out first (D41, D56, D106). The person's own deal carries its pencil
+// instead; one that still misses a figure says which, on a line under its row. Before any pick the pair is the page's own and is named by
+// where it is shown, the receipt (`invest.shownPair`).
 import { useMemo, useState, type ReactNode, type RefObject } from "react";
 import { invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
 import { fmt } from "../../lib/format";
 import { shortFundName } from "../../lib/fund-name";
-import { asideLines, dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWay, type InvestView, type WayPrice } from "../../lib/invest";
-import { leftOutOf, withAside, type LeftOutView } from "../../lib/left-out";
-import type { FeesSnapshot } from "@finance-tool/schema";
+import { dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWay, type InvestView, type WayPrice } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { priced, scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, MixedName, PickList, StretchBar, StretchChart, Tag, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot, type StretchTone } from "../kit";
+import { AlsoChanged, Button, Disclosure, HelpMark, MixedName, PickList, StretchBar, StretchChart, Tag, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot, type StretchTone } from "../kit";
 import { AddEntryButton, FundEditMark } from "./custom-entries";
-import { AddDealButton, DealEditMark, DealMissing, DeletedLine, NotMovedLines, useDealAccounts } from "./deal-account";
+import { AddDealButton, DealEditMark, DealMissing, DeletedLine, NotMovedLines, TermsMark, useDealAccounts } from "./deal-account";
 import { dealIdOf, isDealProviderId } from "../../lib/deal-account/bundle";
 import { feeNameOf } from "../../lib/fee-deal/part-words";
 import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
 import { ANCHOR, verdictOf } from "./receipt";
-import { allFunds, asideParts, inTieSet, labelsOf, pairVerdict, pickHalf, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
+import { allFunds, inTieSet, labelsOf, pairVerdict, pickHalf, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
 
 /** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the receipt has it whole. */
 export const listName = (view: InvestView, name: string) => shortFundName(name, [pillName(view.index.name), ...(view.index.exposure?.names.he ?? []), ...(view.index.exposure?.names.en ?? []), ...(view.index.custom ? [view.index.custom.name] : [])]);
@@ -111,12 +111,6 @@ function backAndFocus(button: HTMLElement, back: () => void) {
   );
 }
 
-/** What the mark beside an account's name opens (D106): what its documents hold and its price leaves out, led by a standing order's price
- *  its price list prints and the figure for this fund leaves out (D41, D56), with the record's reason and their documents. */
-export function markView(snap: FeesSnapshot | undefined, at: FundWay["byHouse"][string] | undefined): LeftOutView | null {
-  return withAside(leftOutOf(snap), c.lists.otherPriceWords, priced(at) ? asideParts(asideLines(snap, at.aside)) : []);
-}
-
 export function PairLists(props: ListsProps) {
   const { view, bundle, plan, livePlan, today, pick, chosen, onPick, moved, ruler = false, above } = props;
   const dealApi = useDealAccounts();
@@ -182,16 +176,12 @@ export function PairLists(props: ListsProps) {
   const nameOf = (p: (typeof providers)[number], selected: boolean) => (
     <span className={cx("min-w-0 text-sm", selected ? "font-semibold" : "font-medium", (p.id === view.yourBroker || p.custom) && "text-entered")}>{p.short}</span>
   );
-  // what an account's documents hold and its price leaves out, where it can change what some reader pays: a quiet mark beside the name
-  // that opens it, so it is seen before the account is chosen (D106); the receipt says it under the chosen account's lines. A standing
-  // order's price the account's price list prints and the figure for this fund leaves out (D41, D56) is the first thing its sheet says. A
-  // deal's record lists nothing left out (lib/deal-account/bundle, `snapshotOfDeal`): its place beside the name holds the pencil that edits it
-  const leftOutAt = new Map(providers.map((p) => [p.id, markView(snapOf(p.id), fund.byHouse[p.id])]));
+  // beside a ranked house's name, where it has a price list, the file icon that opens its terms, what its price leaves out among them
+  // (D106); beside the person's own deal, the pencil that edits it
   const nameWithMark = (p: (typeof providers)[number], selected: boolean) => (
     <span className="flex min-w-0 items-center gap-1">
       {nameOf(p, selected)}
-      <LeftOutMark view={leftOutAt.get(p.id) ?? null} house={p.short} />
-      {p.custom && <DealEditMark id={p.id} />}
+      {p.custom ? <DealEditMark id={p.id} /> : snapOf(p.id) && <TermsMark id={p.id} house={p.short} />}
     </span>
   );
   const movedHere = (half: "fund" | "house") =>

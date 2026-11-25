@@ -13,6 +13,7 @@ import { allFunds, pickOfHeadline, type Pick } from "./pair";
 import { DollarSection, useDollarCase } from "./dollar";
 import { StairsSection, useStairs } from "./stairs";
 import { PairReceipt } from "./receipt";
+import { DealAccountsHost } from "./deal-account";
 import type { IndicesBundle } from "../../lib/providers";
 import { buildInvest, type IndexRef, type InvestView } from "../../lib/invest";
 
@@ -44,6 +45,13 @@ export function StairsFor({ view, bundle: b, plan: p, startHouse, startFund, exa
   const s = useStairs({ view, bundle: b, plan: p, startHouse, startFund, example });
   return s ? createElement(StairsSection, { view, bundle: b, s }) : null;
 }
+
+/**
+ * `el` inside the page's deal popup host, its popup closed, as the page holds the lists and the receipt: a deal's pencil, a house's file
+ * icon and the receipt's line that opens a house's terms are drawn only there.
+ */
+export const inHost = (el: React.ReactElement) =>
+  createElement(DealAccountsHost, { data: null, onWant: () => undefined, failed: false, saved: [], writable: false, today: t, world: null, opening: null, onOpened: () => undefined, onOpenChange: () => undefined, onDeleted: () => undefined, left: [], children: el });
 
 /** The two linked lists as the page shows them, with the heading block above them: the page's own pair unless `chosen`. */
 export function lists(view: InvestView, b: IndicesBundle, p: WorkbenchInputs, pick: Pick, more: Partial<ListsProps> = {}) {

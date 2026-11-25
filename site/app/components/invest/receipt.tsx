@@ -20,7 +20,7 @@ import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, StateTag, shortRow } from "../provenance";
-import { DocLink, FEE_WORDS_HELP, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
+import { DocLink, FEE_WORDS_HELP, HelpMark, LabelChip, LeftOutLine, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
 import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, totalNoteOf, whole, type Pick } from "./pair";
 import { OptionTag } from "./parts";
@@ -28,7 +28,7 @@ import { brokerLabels } from "../../lib/labels";
 import { partName } from "./cost-lines";
 import { providerName } from "./sections";
 import { fundFeeItems } from "./funds";
-import { useDealAccounts } from "./deal-account";
+import { termsLeftOut, useDealAccounts } from "./deal-account";
 
 /** The names `data-anchor` gives the two lists, by which the ruler between them finds their rows. */
 export const ANCHOR = { accounts: "accounts", funds: "funds" } as const;
@@ -206,15 +206,24 @@ function AccountFacts({ view, bundle, plan, pick, refs }: { view: InvestView; bu
   return <PartFacts labels={labels} details={[refs ? <AccountRefs key="refs" view={view} bundle={bundle} pick={pick} /> : null]} />;
 }
 
-/** The account's price list, with the day it was collected, opening it: on the ticket beside the part's caption, in a sheet among its details. */
+/**
+ * The account's price list, with the day it was collected, opening it: on the ticket beside the part's caption, in a sheet among its
+ * details. Under it, where something its price leaves out can change what some reader pays (D106), the line that says how many, whose
+ * words open the house's terms with them open.
+ */
 function AccountRefs({ view, bundle, pick }: { view: InvestView; bundle: IndicesBundle; pick: Pick }) {
   const house = providerName(view, pick.house);
   const snap = bundle.snapshots.find((s) => s.id === pick.house);
+  const dealApi = useDealAccounts();
   if (!house || !snap || house.custom) return null;
+  const left = termsLeftOut(snap, allFunds(view).find((f) => f.rec.id === pick.fund)?.byHouse[pick.house]);
   return (
-    <DocLink look="inline" source={snap.tariff}>
-      <When iso={snap.snapshot} lead={c.chosen.collected} />
-    </DocLink>
+    <span className="inline-flex flex-col items-start gap-1">
+      <DocLink look="inline" source={snap.tariff}>
+        <When iso={snap.snapshot} lead={c.chosen.collected} />
+      </DocLink>
+      {left && left.changes.length > 0 && dealApi && <LeftOutLine view={left} house={house.short} opens={() => dealApi.open({ terms: pick.house, leftOut: true })} />}
+    </span>
   );
 }
 

@@ -6,7 +6,7 @@
 import type { ReactNode } from "react";
 import { leftOut as c } from "../../copy";
 import { sheetOf, type LeftOutView } from "../../lib/left-out";
-import { IconAlert, IconFile } from "../icons";
+import { IconAlert } from "../icons";
 import { Term } from "../provenance";
 import { Button } from "./button";
 import { cx } from "./cx";
@@ -105,17 +105,5 @@ export function LeftOutFold({ view, defaultOpen }: { view: LeftOutView; defaultO
           <Names names={view.others} />
         ))}
     </Disclosure>
-  );
-}
-
-/** The mark beside an account's name: only where something left out can change what some reader pays; a tap opens the line's sheet. */
-export function LeftOutMark({ view, house }: { view: LeftOutView | null; house: string }) {
-  if (!view || view.changes.length === 0) return null;
-  return (
-    // the icon is 14 px: the padding (cancelled by the margins) makes the touch area 44 px wide, the term's own area 44 px tall
-    <Term id={[]} name={c.title(house)} {...sheetOf(view)} className="-mx-[11px] inline-flex px-[15px] text-muted-foreground no-underline">
-      <IconFile size={14} />
-      <span className="sr-only">{c.mark}</span>
-    </Term>
   );
 }

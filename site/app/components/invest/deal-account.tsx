@@ -2,7 +2,8 @@
 // page's plan with the fee page's own editor (components/fee-deal/editor.tsx), so the two pages edit one deal one way. The popup opens on a
 // saved deal (its row's pencil), on a new deal from a house's latest price list (a house's "להזין מחיר שקיבלתם" on an
 // index with no fund, a house's page through the address), or on a new deal started from a house's list or empty (the button under the
-// account list). Its head
+// account list). The same popup shows a house's terms read-only (`TermsPopup`, from the file icon beside its name in the list and from the
+// receipt's line of what its price leaves out): a deal filled from its latest price list, never saved, with nothing to edit. A deal's head
 // names the deal and keeps its rename and delete; under it three tiles say what the deal leaves on the pair's fund, its place among the
 // accounts, and, for a deal filled from a house's list, what it leaves against that house's own row; the plan line says what it is read on,
 // and a pick bar what only the person knows (a track, a condition of their own). Each fee says under its block what the plan charges for it
@@ -15,10 +16,10 @@
 // it is not in the list.
 import { createContext, useCallback, useContext, useDeferredValue, useEffect, useEffectEvent, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Pencil } from "lucide-react";
-import { IconPencil } from "../icons";
+import { IconFile, IconPencil } from "../icons";
 import { feeDeal, invest as root } from "../../copy";
 import { fmt } from "../../lib/format";
-import { dealOnFunds, dealRunOf, pairCosts, type DealOnPlan, type FundWay, type IndexRef, type InvestView } from "../../lib/invest";
+import { asideLines, dealOnFunds, dealRunOf, pairCosts, type DealOnPlan, type FundWay, type IndexRef, type InvestView } from "../../lib/invest";
 import { accountLinesOf, receiptAmounts } from "../../lib/receipt";
 import { shortName, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
 import type { FeesData } from "../../lib/fee-page-data";
@@ -47,23 +48,28 @@ import { ACCOUNT_KIND } from "../../lib/fee-deal/kinds";
 import { dealTiles, listFunds } from "../../lib/deal-account/tiles";
 import { planCases } from "../../lib/deal-account/plan-cases";
 import { Sheet } from "../Sheet";
-import { allFunds, repick, type Pick } from "./pair";
+import { allFunds, asideParts, repick, type Pick } from "./pair";
+import { providerName } from "./sections";
+import { leftOutOf, withAside, type LeftOutView } from "../../lib/left-out";
+import { priced } from "../../lib/stretch";
+import type { FeesSnapshot } from "@finance-tool/schema";
 import { MQ, useMedia } from "../../lib/hooks";
 import { pickItems, useDealEditor, type DealEditor } from "../fee-deal/editor";
 import { whenText } from "../fee-deal/open-case";
 import { TemplateList, type TemplateListWords } from "../fee-deal/picker";
 import { NoticeRow } from "../fee-deal/deal-notices";
 import type { MoveLeft } from "../../lib/deal-account/move-run";
-import { Button, Card, HouseAverageLine, MixedName, ReadForBand, RemoveButton, Sentence, StatRow, StatTile, Tag, TextField, TextLink, cx, useStuckRoom, type FeeHeadSlot } from "../kit";
+import { Button, Card, DocLink, HouseAverageLine, LeftOutFold, MixedName, ReadForBand, ReadOnly, RemoveButton, Sentence, StatRow, StatTile, Tag, TextField, TextLink, When, cx, useStuckRoom, type FeeHeadSlot } from "../kit";
 import { ToolBoundary } from "../tool-boundary";
 
 const w = root.dealAccount;
 
 /**
- * What the popup opens on: a saved deal (at one of its fees, where its row's "להשלים" or the abroad line's "להוסיף לעסקה" opened it), or a
- * new deal from a house's list or from the start list (`house` null).
+ * What the popup opens on: a saved deal (at one of its fees, where its row's "להשלים" or the abroad line's "להוסיף לעסקה" opened it), a
+ * new deal from a house's list or from the start list (`house` null), or a house's terms, read-only (`terms`, its id; `leftOut`, with what
+ * its price leaves out open, where the receipt's line opened it).
  */
-export type DealTarget = { dealId: string; fee?: string } | { house: string | null };
+export type DealTarget = { dealId: string; fee?: string } | { house: string | null } | { terms: string; leftOut: boolean };
 
 /** A deal just deleted from the popup: its name, and its row's place in the account list (null: after the ranked rows). */
 export interface DeletedDeal {
@@ -200,16 +206,25 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
         : null,
     [page, data],
   );
-  // a new deal from a house's list, made once per opening
-  const fromHouse = useMemo(() => (target && "house" in target && target.house && data ? houseDeal(`house:${target.house}`, data, today) : null), [target, data, today]);
+  // a new deal from a house's list, made once per opening; a house's terms are a deal filled the same way, never saved
+  const fromHouse = useMemo(() => (target && data && "house" in target && target.house ? houseDeal(`house:${target.house}`, data, today) : target && data && "terms" in target ? houseDeal(`house:${target.terms}`, data, today) : null), [target, data, today]);
   const first = !target || !data ? null : "dealId" in target ? opened : (fromHouse ?? started);
+  const terms = target && "terms" in target ? target : null;
   return (
     <DealAccountsCtx.Provider value={api}>
       {children}
       {/* the start's list and each deal are a view of their own: a deal picked low in the list opens at its top (`view`) */}
       <Sheet open={isOpen} onClose={close} pc="center" height={100} labelledBy={headId} view={first?.id ?? "start"} focusAfter={() => (deleted ? document.getElementById(deletedLineId) : null)} className={target && data && world && !first ? "sheet-wide" : "sheet-deal"}>
         {target && data && world ? (
-          first ? (
+          first && terms ? (
+            <ProvenanceProvider data={provenance ?? EMPTY_PROVENANCE}>
+              <ToolBoundary resetKey={first.id}>
+                <ReadOnly>
+                  <TermsPopup key={first.id} data={data} today={today} saved={saved} writable={writable} first={first} world={world} house={terms.terms} leftOut={terms.leftOut} headId={headId} onOwn={() => api.open({ house: terms.terms })} />
+                </ReadOnly>
+              </ToolBoundary>
+            </ProvenanceProvider>
+          ) : first ? (
             <ProvenanceProvider data={provenance ?? EMPTY_PROVENANCE}>
             <ToolBoundary resetKey={first.id}>
             <DealPopup
@@ -240,7 +255,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
           </div>
         ) : target ? (
           <p id={headId} className="text-muted-foreground">
-            {root.dealAccount.start.title}
+            {terms ? w.terms.title(world ? (providerName(world.view, terms.terms)?.short ?? terms.terms) : terms.terms) : root.dealAccount.start.title}
           </p>
         ) : null}
       </Sheet>
@@ -366,6 +381,84 @@ function useDealOnPlan({ data, today, saved, writable, first, world, row }: { da
   const diffNum = diffFig && <Num value={diffFig} display={(n) => fmt.signedNisWhole(n)} />;
   const planLine = fund ? w.plan(fmt.nisWhole(p.amountNow), fmt.nisWhole(p.monthly), p.years, fmt.pct(p.grossReturn * 100), fund.name, where) : null;
   return { ed, deal, at, run, tiles, house, fund, own, where, leftNum, placeNum, diffNum, planLine };
+}
+
+/**
+ * What a house's documents hold and its price leaves out (D106), as its terms say it: first a standing order's price its price list prints
+ * and the figure for fund `at` leaves out (D41, D56), with the record's reason and their documents; then the record's own things.
+ */
+export function termsLeftOut(snap: FeesSnapshot | undefined, at: FundWay["byHouse"][string] | undefined): LeftOutView | null {
+  return withAside(leftOutOf(snap), root.lists.otherPriceWords, priced(at) ? asideParts(asideLines(snap, at.aside)) : []);
+}
+
+/**
+ * A house's terms, read-only (D106): the popup a deal opens in, on a deal filled from the house's latest price list, which is never saved.
+ * Its head names the price list and opens it, with the day it was collected; the tiles say what it leaves on the plan's fund and its place
+ * in the account list, over the plan line; then what its price leaves out, folded to a line; its fees as the editor shows them, each with
+ * what the plan charges, nothing to edit (the kit's `ReadOnly`); last, the way to enter terms of one's own from this house. On a phone, one
+ * column: the tiles on one line, the fold, the fees, the button. Not a kit piece: the page's own popup, built of kit pieces and the editor.
+ */
+function TermsPopup({ data, today, saved, writable, first, world, house, leftOut, headId, onOwn }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; world: DealWorld; house: string; /** What the price leaves out opens open. */ leftOut: boolean; headId: string; onOwn: () => void }) {
+  const { ed, tiles, fund, leftNum, placeNum, planLine } = useDealOnPlan({ data, today, saved, writable, first, world, row: house });
+  const wide = useMedia(MQ.md);
+  const p = world.plan;
+  const short = providerName(world.view, house)?.short ?? house;
+  const snap = world.bundle.snapshots.find((s) => s.id === house);
+  const left = termsLeftOut(snap, fund?.byHouse[house]);
+  const fold = left && <LeftOutFold view={left} defaultOpen={leftOut} />;
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-1 pe-12">
+        <h2 id={headId} className="text-lg font-semibold">
+          {w.terms.title(short)}
+        </h2>
+        {snap && (
+          <DocLink look="inline" source={snap.tariff} className="self-start text-sm">
+            <When iso={snap.snapshot} lead={w.terms.collected} />
+          </DocLink>
+        )}
+      </div>
+      {tiles &&
+        (wide ? (
+          <StatRow cols={2}>
+            <StatTile label={w.tiles.left(p.years)} note={tiles.missing ? w.tiles.waits(feeNameOf(tiles.missing.kind, tiles.missing.name)) : w.tiles.leftNote}>
+              {leftNum ?? <span className="text-base">{w.tiles.noSum}</span>}
+            </StatTile>
+            <StatTile label={w.tiles.place} note={tiles.place ? w.tiles.placeNote : w.tiles.unrankedNote}>
+              {placeNum ?? <span className="text-base">{w.tiles.unranked}</span>}
+            </StatTile>
+          </StatRow>
+        ) : (
+          // a phone: what is left and the place on one line, as the deal's popup has them
+          <p className="flex flex-wrap items-baseline justify-between gap-x-3 text-sm">
+            <span>
+              {w.tiles.left(p.years)} <strong className="text-lg">{leftNum ?? w.tiles.noSum}</strong>
+            </span>
+            <strong>{placeNum ?? w.tiles.unranked}</strong>
+          </p>
+        ))}
+      {wide && planLine && <p className="text-sm text-muted-foreground">{planLine}</p>}
+      {fold}
+      {ed.columns(null)}
+      <Button variant="framed" className="self-start" onClick={onOwn}>
+        {w.fromHouse(short)}
+      </Button>
+    </div>
+  );
+}
+
+/**
+ * Beside a house's name in the account list, where it has a price list: the file icon that opens its terms (`TermsPopup`). Not a kit piece:
+ * the kit's `Button`, wired to this page's popup.
+ */
+export function TermsMark({ id, house }: { id: string; house: string }) {
+  const api = useDealAccounts();
+  if (!api) return null;
+  return (
+    <Button variant="icon" size="mark" aria-label={w.terms.title(house)} onClick={() => api.open({ terms: id, leftOut: false })}>
+      <IconFile size={14} />
+    </Button>
+  );
 }
 
 /**
@@ -645,7 +738,7 @@ function DealHead({ deal, headId, isSaved, writable, onName, onDelete }: { deal:
 }
 
 /**
- * Beside a deal's name in the lists, where a house's row has its quiet mark: the pencil that opens the deal in the popup, on the fee the row
+ * Beside a deal's name in the lists, where a house's row has its file icon: the pencil that opens the deal in the popup, on the fee the row
  * waits for where it waits for one (`missing`, D1). With the name's entered ink it says the row is the person's own. `complete`: on a row
  * the plan cannot price, the button's words say it completes the deal. Not a kit piece: the kit's `Button`, wired to this page's popup.
  */

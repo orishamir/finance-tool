@@ -1,17 +1,17 @@
 // The receipt, with its account and fund parts, rendered on the collected data (part of render.test.ts, which says why it is split).
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { help, invest, leftOut, numbers } from "../../copy";
+import { help, invest, numbers } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "../../lib/custom-entries";
-import { PairLists, markView } from "./lists";
+import { PairLists } from "./lists";
+import { termsLeftOut } from "./deal-account";
 import { asideLines, buildInvest, indexById, kindOf, pairCostsKept, type InvestView } from "../../lib/invest";
-import { sheetOf } from "../../lib/left-out";
 import { receiptAmounts, receiptChain } from "../../lib/receipt";
 import { ANCHOR, PairReceipt, PairStub, addedOf, inflationOf, leftOf, nominalOf, taxOf } from "./receipt";
 import { allFunds, asideParts, labelsOf, pickOfHeadline, pairVerdict, steadyOf, totalNoteOf } from "./pair";
 import { stretchesOf } from "../../lib/stretch";
-import { bundle, plan, shown, html, nisIn, fundRow, t } from "./render-fixtures";
+import { bundle, plan, shown, html, inHost, nisIn, fundRow, t } from "./render-fixtures";
 import { entered, type SiteValue } from "../../lib/value";
 import type { IndicesBundle } from "../../lib/providers";
 import type { GroupEntry, GroupPrice } from "@finance-tool/schema";
@@ -340,15 +340,12 @@ describe("a standing order's price the figure leaves out, under the lists (D41, 
   it("the data has such a price", () => expect(ways.length).toBeGreaterThan(0));
   const first = ways[0];
   if (!first) return;
-  it("no line under the lists names it; the sheet of the mark beside the account's name leads with it", () => {
-    const out = html(createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick: { house: first.house, fund: first.fund }, chosen: true, onPick: () => undefined, moved: null }));
+  it("no line under the lists names it; the account's terms, which the button beside its name opens, lead with it", () => {
+    const out = html(inHost(createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick: { house: first.house, fund: first.fund }, chosen: true, onPick: () => undefined, moved: null })));
     expect(shown(out)).not.toContain(w.lists.otherPriceWords);
     const fund = allFunds(view).find((f) => f.rec.id === first.fund);
-    const lv = markView(bundle.snapshots.find((s) => s.id === first.house), fund?.byHouse[first.house]);
-    const sheet = lv ? sheetOf(lv) : null;
-    expect(sheet?.parts[0]?.head).toBe(w.lists.otherPriceWords);
-    // the mark opens a sheet, as a row's "why" words do
-    expect(out).toMatch(new RegExp(`aria-haspopup="dialog"[^>]*>(?:(?!</button>).)*${leftOut.mark}`));
+    expect(termsLeftOut(bundle.snapshots.find((s) => s.id === first.house), fund?.byHouse[first.house])?.changes[0]?.head).toBe(w.lists.otherPriceWords);
+    expect(out).toContain(`aria-label="${w.dealAccount.terms.title(first.short)}"`);
   });
   it("its sheet holds the printed price with the price list it is printed in, and the record's reason with its document", () => {
     const parts = asideParts(first.lines);

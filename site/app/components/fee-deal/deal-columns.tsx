@@ -5,7 +5,7 @@
 // so the fee page and a popup lay them out alike for the room each has. Each has its own place in the grid whatever the deal holds, so the
 // first fee, and the toolbox coming with it, move nothing. A figure the person typed shows in the entered ink, with no highlight behind it.
 import { useRef, type ReactNode, type RefObject } from "react";
-import { Card, cx, useStickyColumn } from "../kit";
+import { Card, cx, useReadOnly, useStickyColumn } from "../kit";
 
 /**
  * The toolbox's column sticks under the header as the fees scroll by, where it has a column (the editor's width, `TOOLBOX_COLUMN_PX`): 5rem
@@ -30,9 +30,11 @@ export function PaletteColumn({ children }: { children: ReactNode }) {
 
 /** The columns: `setup` (what the deal is about; none where the host shows none), `fees` (none while the deal has no kind), and `toolbox` in its own column (none where it has no room). */
 export function DealColumns({ hostRef, setup, fees, toolbox }: { hostRef?: RefObject<HTMLDivElement | null>; setup: ReactNode | null; fees: ReactNode | null; toolbox: ReactNode | null }) {
+  // read-only (the kit's `ReadOnly`) there is never a toolbox: the fees take the whole width
+  const still = useReadOnly();
   return (
     <div ref={hostRef} className="@container/deal">
-      <div className="grid grid-cols-1 items-start gap-4 @min-[75rem]/deal:grid-cols-[minmax(0,1fr)_28rem]">
+      <div className={cx("grid grid-cols-1 items-start gap-4", !still && "@min-[75rem]/deal:grid-cols-[minmax(0,1fr)_28rem]")}>
         <div className="flex flex-col gap-6 @min-[75rem]/deal:col-start-1 @min-[75rem]/deal:row-start-1">
           {/* once the deal has a kind (it has fees), what it is about is a strip of two lines, in a low card */}
           {setup && <Card pad={fees ? "strip" : "default"}>{setup}</Card>}
