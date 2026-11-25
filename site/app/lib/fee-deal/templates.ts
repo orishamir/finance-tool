@@ -9,6 +9,7 @@ import { memberKindOf, REDEMPTION_BAND, STANDING_CONVERSION_BAND, STANDING_ORDER
 import type { FeesSnapshot, ValueObject } from "@finance-tool/schema";
 import { HOUSE_CHANNELS, isFxToFx } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
+import { agorotOfShekels } from "../agorot";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
 import { BOUND_CURRENCIES, feeSources, hasCases, withNamed, isProductId, NAME_MAX, newDeal, newFeeId, pickKey, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When, type Price } from "./model";
@@ -323,7 +324,7 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
 function perDollarFees(l: Line, own: string): Mapped {
   if (!has(l.rate)) return { fees: [], left: ["no-value"] };
   if (has(l.min) || has(l.max) || l.flat_up_to || l.size_tiers?.length || has(l.spread)) return { fees: [], left: ["per-dollar"] };
-  const agorot: Num = { v: l.rate.value * 100, src: sourcedOf(l.rate, own) };
+  const agorot: Num = { v: agorotOfShekels(l.rate.value), src: sourcedOf(l.rate, own) };
   const fee: SlimTemplateFee = { kind: "fx", stages: [{ price: buildPrice("fx", { form: "perDollar", figures: { amount: agorot } }) }] };
   return { fees: [fee], left: l.spread ? ["spread-on-top"] : [] };
 }

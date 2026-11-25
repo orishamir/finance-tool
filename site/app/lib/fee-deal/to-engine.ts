@@ -8,6 +8,7 @@ import { fraction, monthOf, type FeeDeal, type Price, type ReadPick, type Stage,
 import { onAction } from "./offers/capabilities";
 import { engineBase } from "./shapes";
 import { assertNever } from "@finance-tool/schema";
+import { shekelsOfAgorot } from "../agorot";
 
 /** The parts a share of an action and a sum per unit share: bounds, the cap as a fraction, and the flat price where both its figures are given. */
 const actionParts = (p: Extract<Price, { form: "action" | "perUnit" }>) => ({
@@ -18,9 +19,6 @@ const actionParts = (p: Extract<Price, { form: "action" | "perUnit" }>) => ({
 });
 
 const currencyOf = (c: string | undefined) => (c && c !== "ILS" ? { currency: c } : {});
-
-/** A price per dollar typed in agorot, in the engine's shekels. */
-const shekelsOfAgorot = (agorot: number): number => agorot / 100;
 
 /** A third party's fee with its figure as the engine reads it (F-117): a share's currency only with a bound typed, a sum's always. */
 function engineThird(t: ThirdPrice): DealThird {
