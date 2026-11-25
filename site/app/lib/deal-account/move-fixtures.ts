@@ -82,16 +82,24 @@ export function readBack(a: CustomBroker): { wrote: FeeDeal; read: FeeDeal | nul
 export type Row = { ix: string; fund: string; abroad: boolean; before: number | null; after: number | null };
 
 /**
+ * The bundle with each account in it twice: as it was priced before the move (under its own id) and as its deal (`dealProviderId(movedDealId(id))`);
+ * `terms`: on the houses' records read on their deals' terms, F-128's stated exceptions taken out (exceptions-fixtures.ts).
+ */
+export function movedBundle(accounts: CustomBroker[], terms = false): IndicesBundle {
+  const deals = accounts.map((a) => dealOfTypedAccount(a, ctx));
+  const base = terms ? onDealsTerms(bundle, accounts.map((a, i) => ({ house: a.base!.houseId, deal: deals[i]! })), data.kinds).bundle : bundle;
+  const before = accounts.reduce((b, a) => withTypedAccount(b, base.snapshots.find((s) => s.id === a.base!.houseId) as BundleSnapshot, a), base);
+  return withDeals(before, deals, data.kinds);
+}
+
+/**
  * What each account leaves on each fund of each index, before the move (the typed account) and after it (its deal), rounded to the shekel:
  * after tax; null where it has no price. `terms`: on the houses' records read on
  * their deals' terms, F-128's stated exceptions taken out (exceptions-fixtures.ts); `p` and `fxChange`: the plan and A-03; `indices`: the
  * indices compared on, every index the bundle prices when absent.
  */
 export function compare(accounts: CustomBroker[], terms = false, p: WorkbenchInputs = plan, fxChange = 0, indices?: readonly string[]): Map<string, Row[]> {
-  const deals = accounts.map((a) => dealOfTypedAccount(a, ctx));
-  const base = terms ? onDealsTerms(bundle, accounts.map((a, i) => ({ house: a.base!.houseId, deal: deals[i]! })), data.kinds).bundle : bundle;
-  const before = accounts.reduce((b, a) => withTypedAccount(b, base.snapshots.find((s) => s.id === a.base!.houseId) as BundleSnapshot, a), base);
-  const both = withDeals(before, deals, data.kinds);
+  const both = movedBundle(accounts, terms);
   const out = new Map(accounts.map((a) => [a.id, [] as Row[]]));
   for (const e of bundle.exposures) {
     if (indices && !indices.includes(e.id)) continue;
