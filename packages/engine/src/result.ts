@@ -79,14 +79,6 @@ export const labelWeight: Record<Label["code"], number> = {
 };
 
 /**
- * Every rule the engine may label the site's own reading: `reading`, some only when a condition holds (an index that fell below a deposit's,
- * a payment after the period, a fund whose documents the site read on an open tax index), and `cautious`, the rule of every open reading
- * whose split takes the cautious reading (`SplitPolicy`): a page holds room for the reading mark on a row that cites one, so the mark never
- * moves the screen when it appears. A test holds this list to the engine's `label("reading", …)` calls and those open readings.
- */
-export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-04", "TXF-11", "TXH-11", "TXK-07", "TXS-14"];
-
-/**
  * Every flag code a ledger run can raise (`RunResult.flags`): the method gaps, assumptions, rules and open questions a page must say beside
  * a figure, each of which has a line on the site. A test holds this list to the engine: every code a ledger flags, the blocked exits' gaps
  * and open questions, the reliefs' (`reliefFlags`) and the open readings' (`readingFlag`).

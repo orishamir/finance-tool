@@ -91,16 +91,12 @@ export interface RuleBook {
   /** Adds a label the rule's strength does not imply (a reading, a derivation, a proxy). */
   label(code: RuleLabel["code"], ruleId: string): void;
   /**
-   * Method §13: the reading of an open case the run is made under (`RunContext.readings`). A run that has chosen none for the question
-   * stops so that `acrossReadings` can make it under each (`OpenReadingError`); one made with the question stopping it stops on the rule
-   * with the question (`BlockedError`). `notKnown`: what the site does not know of the fund the case is met for, which the label of a
-   * cautious reading carries (`CautiousLabel`).
-   */
-  reading<O extends OpenReading>(open: O, notKnown?: NotKnown): O["readings"][number];
-  /**
    * D119, F-04: the reading of a tax-index case a fund's run is made under. A fund whose own documents the site read (`notKnown` absent) is
    * run under the site's own reading (`siteReading`), with a `reading` label on the case's rule, which may be open and so is not read; the
-   * run never meets the case. A fund the site does not know meets it as `reading` does.
+   * run never meets the case. A fund the site does not know (`notKnown`) meets it: the run is made under the reading its context chooses
+   * (`RunContext.readings`, method §13); one that has chosen none for the question stops so that `acrossReadings` can make it under each
+   * (`OpenReadingError`, carrying `notKnown` for the label of a cautious reading, `CautiousLabel`), and one made with the question stopping it
+   * stops on the rule with the question (`BlockedError`).
    */
   taxIndex(open: TaxIndexOpenReading, notKnown: NotKnown | undefined): TaxIndexReadingId;
   used(): UsedRule[];
@@ -231,7 +227,6 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     cite(id) {
       rule(id);
     },
-    reading: readingOf,
     taxIndex(open, notKnown) {
       if (notKnown) return readingOf(open, notKnown).id;
       extraLabels.push({ code: "reading", ruleId: open.ruleId });

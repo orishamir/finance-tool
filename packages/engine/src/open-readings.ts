@@ -265,29 +265,38 @@ export function mergedRules(results: readonly { rules?: readonly UsedRule[] }[])
  * with the flags, labels and rules of every reading merged (`mergedFlags`, `mergedLabels`, `mergedRules`), flagged with the question.
  */
 export function acrossReadings<R extends { flags: Flag[]; labels?: Label[]; rules?: UsedRule[]; outcome: Outcome }>(ctx: RunContext, run: (ctx: RunContext) => R, fields: ResultFields<R>): R {
+  /**
+   * What a split between the readings of the case `e` met does, decided before they are explored: under `stop`, a split makes the run with
+   * the question stopping it; under `cautious`, the reading that leaves the holder less stands (`cautiousAcross`). Each gives null where the
+   * readings agree. A cautious case met for a fund the site knows is a broken invariant: such a fund takes the site's reading
+   * (`RuleBook.taxIndex`), and its label would have no `notKnown` to say.
+   */
+  const splitOf = (e: OpenReadingError, chosen: ReadingChoice): ((results: readonly R[], first: R) => R | null) => {
+    const q = e.open.question;
+    switch (e.open.onSplit) {
+      case "stop":
+        return (results, first) => (results.every((r) => sameResult(r, first, fields)) ? null : explore({ ...chosen, [q]: null }));
+      case "cautious": {
+        if (!e.notKnown) throw new Error(`${q} takes the cautious reading only for a fund the site does not know; it was met for one it knows (RuleBook.taxIndex)`);
+        const label: CautiousLabel = { code: "cautious", ruleId: e.open.ruleId, notKnown: e.notKnown };
+        return (results) => cautiousAcross(results, fields, label);
+      }
+      default:
+        return assertNever(e.open.onSplit);
+    }
+  };
   const explore = (chosen: ReadingChoice): R => {
     try {
       return run({ ...ctx, readings: chosen });
     } catch (e) {
       if (!(e instanceof OpenReadingError) || e.open.question in chosen) throw e;
       const q = e.open.question;
+      const split = splitOf(e, chosen);
       const results = e.open.readings.map((r) => explore({ ...chosen, [q]: r.id }));
       const [first] = results;
       if (!first) throw new Error(`${q} names no reading`);
-      switch (e.open.onSplit) {
-        case "stop":
-          if (!results.every((r) => sameResult(r, first, fields))) return explore({ ...chosen, [q]: null });
-          break;
-        case "cautious": {
-          if (!e.notKnown) throw new Error(`${q} takes the cautious reading only for a fund the site does not know; it was met for one it knows (RuleBook.taxIndex)`);
-          const label: CautiousLabel = { code: "cautious", ruleId: e.open.ruleId, notKnown: e.notKnown };
-          const split = cautiousAcross(results, fields, label);
-          if (split) return split;
-          break;
-        }
-        default:
-          return assertNever(e.open.onSplit);
-      }
+      const stood = split(results, first);
+      if (stood) return stood;
       // the readings agree; the caveats of every reading stand beside the result, with the question's own flag
       const code = readingFlag(q);
       const flags = mergedFlags([...results, { flags: [{ code }] }]);

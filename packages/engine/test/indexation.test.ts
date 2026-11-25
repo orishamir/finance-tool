@@ -219,6 +219,14 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     expect(() => acrossReadings(ctx, runOf(cautious, "status"), { real: "output", nominal: "output", outcome: "output", flags: "trail", labels: "trail" })).toThrow(/declares 0/);
     // a cautious case met for a fund the site knows is a broken invariant: such a fund takes the site's own reading (D119)
     expect(() => acrossReadings(ctx, runOf(cautious), fields)).toThrow(/only for a fund the site does not know/);
+    // and it stops before any reading is explored: the run is made once, with no reading chosen
+    const made: (string | null | undefined)[] = [];
+    const counted = (c: typeof ctx) => {
+      made.push(c.readings?.[cautious.question]);
+      return runOf(cautious)(c);
+    };
+    expect(() => acrossReadings(ctx, counted, fields)).toThrow(/only for a fund the site does not know/);
+    expect(made).toEqual([undefined]);
   });
 
   it("takes a cautious case's readings that leave the same value as agreeing, and weighs no value before the exit tax against one after it", () => {
