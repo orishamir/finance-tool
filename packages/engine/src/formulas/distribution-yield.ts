@@ -6,17 +6,23 @@ function yearBefore(asOf: string): string {
   return `${Number(asOf.slice(0, 4)) - 1}${asOf.slice(4)}`;
 }
 
+/** F-132: whether a payment whose ex-dividend date is `exDate` falls in the 12 months that end on `asOf`: after the same day a year before, up to `asOf`. */
+export function inTrailingYear(exDate: string, asOf: string): boolean {
+  return exDate > yearBefore(asOf) && exDate <= asOf;
+}
+
 /**
  * F-132 The 12-month trailing yield, in percent: the income a share paid in the 12 months that end on `asOf`, over the NAV a share `nav`
- * plus the capital gains a share paid in those months, × 100. A payment counts when its ex-dividend date falls after the same day a year
- * before `asOf` and on or before `asOf`. `nav` is the last NAV on or before `asOf`; the payments and the NAV are in one currency.
+ * plus the capital gains a share paid in those months, × 100. A payment counts when its ex-dividend date falls in those months
+ * (`inTrailingYear`). `nav` is the last NAV on or before `asOf`; the payments and the NAV are in one currency. The payments are summed in
+ * the order of their ex-dividend dates, whatever order they are given in, so the same payments always give the same figure to the last digit.
  */
 export function trailingDistributionYield(payments: readonly Pick<DistributionPayment, "kind" | "ex_date" | "per_share">[], nav: number, asOf: string): number {
-  const from = yearBefore(asOf);
   let income = 0;
   let capitalGains = 0;
-  for (const p of payments) {
-    if (p.ex_date <= from || p.ex_date > asOf) continue;
+  const inOrder = [...payments].sort((a, b) => (a.ex_date < b.ex_date ? -1 : a.ex_date > b.ex_date ? 1 : 0));
+  for (const p of inOrder) {
+    if (!inTrailingYear(p.ex_date, asOf)) continue;
     switch (p.kind) {
       case "income":
         income += p.per_share;

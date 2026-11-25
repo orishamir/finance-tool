@@ -56,4 +56,28 @@ describe("a yield computed by F-132", () => {
   it("fails a NAV after the yield's day", () => {
     expect(checkFundDistribution(record(stored, { trailing: { ...trailing, nav: { ...trailing.nav, date: "2026-11-02" } } })).some((m) => /after the yield's day/.test(m))).toBe(true);
   });
+  it("fails a payment paid before its ex-dividend date", () => {
+    const early = { ...trailing, payments: [...trailing.payments.slice(0, 3), payment("2026-09-15", "2026-09-14", 2.202607)] };
+    expect(checkFundDistribution(record(stored, { trailing: early }))).toEqual(["distribution.trailing.payments: paid 2026-09-14 before its ex-dividend date 2026-09-15"]);
+  });
+  it("fails two payments that share an ex-dividend date", () => {
+    const twice = { ...trailing, payments: [...trailing.payments.slice(0, 3), payment("2026-06-15", "2026-06-18", 2.202607)] };
+    expect(checkFundDistribution(record(trailingDistributionYield(twice.payments, twice.nav.value, "2026-10-31"), { trailing: twice }))).toEqual([
+      "distribution.trailing.payments: two payments share the ex-dividend date 2026-06-15; a record lists each payment once",
+    ]);
+  });
+  it("fails when the income payments in the 12 months are not as many as the fund pays a year", () => {
+    const three = { ...trailing, payments: trailing.payments.slice(1) };
+    expect(checkFundDistribution(record(trailingDistributionYield(three.payments, three.nav.value, "2026-10-31"), { trailing: three }))).toEqual([
+      "distribution.trailing.payments: 3 income payments in the 12 months to 2026-10-31, where the fund pays 4 a year (per_year)",
+    ]);
+    // a payment outside the 12 months does not count toward them
+    const older = { ...trailing, payments: [payment("2025-09-16", "2025-09-19", 2.0), ...trailing.payments] };
+    expect(checkFundDistribution(record(stored, { trailing: older }))).toEqual([]);
+  });
+  it("gives the same figure whatever order the payments are listed in", () => {
+    const reversed = { ...trailing, payments: [...trailing.payments].reverse() };
+    expect(trailingDistributionYield(reversed.payments, reversed.nav.value, "2026-10-31")).toBe(stored);
+    expect(checkFundDistribution(record(stored, { trailing: reversed }))).toEqual([]);
+  });
 });
