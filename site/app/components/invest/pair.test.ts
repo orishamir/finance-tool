@@ -86,8 +86,9 @@ describe("a click on a house moves to a way it has (founder, 2026-10-31)", () =>
 
   it("Interactive Brokers on the S&P 500 moves from the Israeli fund the page opens on to the fund that leaves most there", () => {
     const view = buildInvest({ bundle, index: knownIndices(bundle).find((i) => i.id === "index-sp500")!, plan });
-    // bought in whole units (F-109), Vanguard's distributing line (a unit of USD 143) leaves more there than CSPX (USD 815), whose
-    // monthly deposit waits for a unit
-    expect(repick(view, pickOfHeadline(view)!, { house: "interactive-brokers" }).fund).toBe("ie00b3xxrp09");
+    // bought in whole units (F-109), Vanguard's lines (units of about USD 145) leave more there than CSPX (USD 815), whose monthly deposit
+    // waits for a unit; of the two, the accumulating one, ranked on the site's reading of TXF-11 (D120), pays no tax on distributions
+    // along the way
+    expect(repick(view, pickOfHeadline(view)!, { house: "interactive-brokers" }).fund).toBe("ie00bfmxxd54");
   });
 });

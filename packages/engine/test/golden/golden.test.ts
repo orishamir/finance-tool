@@ -371,7 +371,7 @@ describe("Part A: the ledger on single instruments", () => {
     g.value("real gain vs the exchange rate", r.detail.realGain, 25_117.56);
     g.done();
     expect(labelOf(r, "TXF-11")).toBe("reading");
-    expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "G-18" });
+    expect(r.outcome).toEqual({ code: "eligible" });
   });
 
   // S17 to S19: a distributing ETF at a foreign broker, in USD. Filled in (Q5): 3.107 NIS/USD, USD 776.56 a share.

@@ -153,11 +153,12 @@ describe("a fund the person types is priced at the collected houses under its ki
     }
   });
 
-  it("a foreign fund carries the open rule's tag, shown and not ranked, as a collected one does", () => {
+  it("a foreign fund typed abroad that accumulates is ranked on the site's reading of TXF-11, its figure tagged with it, as a collected one is (D120)", () => {
     const at = mineAbroad.byHouse[dealProviderId(movedDealId(cheap.id))] as WayPrice;
-    expect(at.open).toBe(true);
+    expect(at.open).toBe(false);
     expect(at.valueN).toBeCloseTo(EXPECTED.cheapAbroad, 1);
-    expect(spView.headline!.fund.rec.id).not.toBe(abroad.id);
+    expect(at.value.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
+    expect(at.value.doubt).toBeUndefined();
   });
 
   it("an Israeli fund typed on an index in a foreign currency has a status not known: its chip says so, never that the currency is taxed (F-04)", () => {
@@ -272,7 +273,6 @@ describe("what the person says the fund does (2026-11-05): nothing is filled in 
     const f = fundFromDraft({ ...abroadDraft, payout: null }, "custom-fund-silent", "index-sp500", t);
     expect(priceOf(f).reason).toEqual({ code: "payout-unknown" });
     expect(ids(f)).not.toContain("pays-accumulating");
-    expect(ids(f)).not.toContain("tax-on-sale-open");
   });
 
   it("a fund saved before the question was asked reads as not said, not as accumulating", () => {

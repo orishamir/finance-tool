@@ -123,16 +123,30 @@ describe("surtax on the year's total (F-43, TXG-09, TXG-10)", () => {
   });
 });
 
-describe("an accumulating foreign fund bought abroad (TXF-11, G-18)", () => {
-  it("is taxed only at sale under TXF-11's reading by implication: labelled a reading, listed and not ranked; a ruling lifts both", () => {
-    const abroad = fund({ fund: { kind: "foreign-fund", domicile: "ireland", drag: { management: 0.0007 } } });
-    const r = runSecurities(abroad, ctx);
-    expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
-    expect(r.labels.some((l) => l.code === "secondary-source" && l.ruleId === "TXF-11")).toBe(false);
-    expect(r.outcome).toMatchObject({ code: "listed-not-ranked", reason: "G-18" });
-    const ruled = runSecurities(fund({ fund: { kind: "foreign-fund", domicile: "ireland", drag: { management: 0.0007 }, saleOnlyRuling: true } }), ctx);
-    expect(ruled.labels.some((l) => l.ruleId === "TXF-11")).toBe(false);
-    expect(ruled.outcome.code).toBe("eligible");
+describe("an accumulating foreign fund (TXF-11, G-18, product D120)", () => {
+  /** The same run of an accumulating foreign fund with and without the ruling its own annex reports (`saleOnlyRuling`). */
+  const pair = (f: Pick<SecuritiesInput["fund"], "kind" | "domicile" | "recordCurrency">, market: SecuritiesInput["market"]) => {
+    const base = { ...f, drag: { management: 0.0007 } };
+    return [runSecurities(fund({ market, fund: base }), ctx), runSecurities(fund({ market, fund: { ...base, saleOnlyRuling: true } }), ctx)] as const;
+  };
+  const markets: SecuritiesInput["market"][] = [
+    { grossReturn: 0.06, inflation: 0.025, fxChange: 0.01 },
+    { grossReturn: -0.04, inflation: 0.02, fxChange: -0.03 },
+  ];
+
+  it("is ranked on the site's reading, labelled a reading of TXF-11, and equals the run on a ruling apart from that label", () => {
+    for (const market of markets)
+      for (const f of [{ kind: "foreign-fund", domicile: "ireland" }, { kind: "tase-foreign-fund", recordCurrency: "USD" }] as const) {
+        const [reading, ruled] = pair(f, market);
+        expect(reading.outcome).toEqual({ code: "eligible" });
+        expect(reading.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
+        expect(reading.labels.some((l) => l.code === "secondary-source" && l.ruleId === "TXF-11")).toBe(false);
+        expect(ruled.labels.some((l) => l.ruleId === "TXF-11")).toBe(false);
+        const { labels, ...rest } = reading;
+        const { labels: ruledLabels, ...ruledRest } = ruled;
+        expect(rest).toEqual(ruledRest);
+        expect(labels.filter((l) => l.ruleId !== "TXF-11")).toEqual(ruledLabels);
+      }
   });
 });
 

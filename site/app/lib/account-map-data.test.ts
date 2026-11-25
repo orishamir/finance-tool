@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { bundle, html, lists, plan as fixturePlan, shown } from "../components/invest/render-fixtures";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
-import { AccountMapPanel, mapAreas, mapCard, planShown } from "../components/invest/account-map";
+import { AccountMapPanel, mapAreas, planShown } from "../components/invest/account-map";
 import { invest, kit as kitCopy } from "../copy";
 import type { AccountMap } from "./account-map";
 import { buildInvest, indexById, knownIndices, providersOfInvest, tieShareOf } from "./invest";
@@ -143,24 +143,18 @@ for (const [slug, plan] of [["index-sp500", planAt(10_000, 500, 10)], ["index-sp
   });
 }
 
-describe("a fund no account is ranked with", () => {
-  it("has no map, and says its tax rests on an open rule (G-18)", () => {
+describe("an accumulating foreign fund whose annex reports no ruling (D120)", () => {
+  it("is ranked with the accounts that price it, as every priced fund on the collected data is, and so has its map", () => {
     const plan = planAt(10_000, 500, 10);
-    const found = knownIndices(bundle).flatMap((index) => {
+    const unranked = knownIndices(bundle).flatMap((index) => {
       const view = buildInvest({ bundle, index, plan });
       return allFunds(view)
         .filter((f) => Object.values(f.byHouse).some((x) => "valueN" in x) && !Object.values(f.byHouse).some(rankedAt))
-        .map((f) => ({ index, fund: f.rec.id }));
+        .map((f) => f.rec.id);
     });
-    // each such fund the data holds (a few, to keep the run short)
-    expect(found.length).toBeGreaterThan(0);
-    for (const f of found.slice(0, 3)) {
-      const answer = work.map(bundle, { index: f.index, plan, fund: f.fund });
-      expect(answer, f.fund).toEqual({ kind: "unranked", why: "open-rule" });
-      // the card stays, saying why there is no map
-      const card = mapCard(answer, buildInvest({ bundle, index: f.index, plan }), bundle, "psagot", false);
-      expect([card.answer, card.note]).toEqual([invest.before.map.unranked, invest.before.map.unrankedWhy["open-rule"]]);
-    }
+    expect(unranked).toEqual([]);
+    const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
+    expect(work.map(bundle, { index, plan, fund: "1183441" }).kind).toBe("map");
   });
 });
 

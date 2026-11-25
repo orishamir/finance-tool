@@ -45,7 +45,6 @@ type LabelId =
   | "tax-currency-unknown"
   | "tax-fund-dividend"
   | "tax-distribution"
-  | "tax-on-sale-open"
   | "tax-on-sale-ruling"
   | "tax-index-currency"
   | "tax-index-cpi"
@@ -85,7 +84,6 @@ export const labelDefs: Record<RuleLabelId, LabelDef> = {
   "tax-currency-unknown": { icon: "scale", tone: "open", rules: ["TXS-14"] },
   "tax-fund-dividend": { icon: "badgePercent", tone: "neutral", rules: ["TXF-16"] },
   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08", "TXS-10"] },
-  "tax-on-sale-open": { icon: "lock", tone: "open", rules: ["TXF-11"] },
   "tax-on-sale-ruling": { icon: "gavel", tone: "neutral", rules: ["TXF-11"] },
   "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
   "pays-distributing": { icon: "handCoins", tone: "neutral", rules: ["MF-49"] },
@@ -149,7 +147,6 @@ const familyOf: Record<RuleLabelId, Label["family"]> = {
   "tax-currency-unknown": "tax",
   "tax-fund-dividend": "tax",
   "tax-distribution": "tax",
-  "tax-on-sale-open": "tax",
   "tax-on-sale-ruling": "tax",
   "pays-accumulating": "payout",
   "pays-distributing": "payout",
@@ -221,10 +218,11 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   }
   if (rec.domicile === "IE") out.push(label("tax-fund-dividend"));
   if (rec.distribution_policy === "distributing") out.push(label("tax-distribution"));
-  // an accumulating foreign fund: taxed only at sale on the ruling its own annex reports, else an open question (TXF-11);
-  // the same test the engine ranks it by (instruments.server.ts, saleOnlyRuling)
-  else if (rec.distribution_policy === "accumulating" && rec.domicile !== "IL")
-    out.push(rec.tax_ruling ? withDoc(label("tax-on-sale-ruling"), { href: sourceHref({ url: rec.tax_ruling.source.url, page: rec.tax_ruling.pages.ruling }), title: rec.tax_ruling.source.title }) : label("tax-on-sale-open"));
+  // an accumulating foreign fund taxed only at sale on the ruling its own annex reports (TXF-11), the same test the engine cites the rule by
+  // (instruments.server.ts, saleOnlyRuling); one with no ruling is run on the site's reading of the rule, which its figures' sheets say
+  // and no chip does (D120)
+  else if (rec.distribution_policy === "accumulating" && rec.domicile !== "IL" && rec.tax_ruling)
+    out.push(withDoc(label("tax-on-sale-ruling"), { href: sourceHref({ url: rec.tax_ruling.source.url, page: rec.tax_ruling.pages.ruling }), title: rec.tax_ruling.source.title }));
   // a fund whose own annex states its tax index under its ruling, where its runs are made on it: the fund's statement, its page linked (F-04,
   // D84), by the engine's own test (`readsStatedIndex`). A fund whose policy is not known is not run at all (`fundRun`), so says none.
   const stated = rec.distribution_policy !== null && readsStatedIndex(OPTION_KIND[option], rec.distribution_policy === "distributing") ? taxIndexStatementOf(rec) : undefined;

@@ -468,6 +468,51 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(text).not.toContain(invest.reasons.ruleOpen["TXF-04"]);
     for (const words of Object.values(numbers.readingDoubt).flatMap((w) => Object.values(w))) expect(text).not.toContain(words);
   });
+  it("an accumulating foreign fund whose annex reports no ruling is ranked like any fund: in the ranked list with its spot and no mark, its sheet tagging the site's reading of TXF-11; nothing on the page says a fund is not ranked (D120, G-18)", () => {
+    const index = indexById(bundle, "index-sp500");
+    if (!index) throw new Error("the S&P 500 is an index of the collected data");
+    const sp = buildInvest({ bundle, index, plan });
+    const pick = pickOfHeadline(sp);
+    const f = allFunds(sp).find((x) => x.rec.id === "1183441");
+    if (!pick || !f) throw new Error("the S&P 500 has its own pair and holds Invesco 1183441");
+    expect(f.rec.distribution_policy).toBe("accumulating");
+    expect(f.rec.tax_ruling).toBeUndefined();
+    const at = f.byHouse[pick.house];
+    if (!at || !("valueN" in at)) throw new Error("1183441 is priced at the page's own account");
+    const raw = lists(sp, bundle, plan, pick, { ruler: true });
+    const rowOf = (id: string) => { const a = raw.indexOf(`data-pick-key="${id}"`); const rest = raw.slice(a + 1); const b = rest.search(/data-pick-key=|data-case-of=/); return a < 0 ? "" : b < 0 ? rest : rest.slice(0, b); };
+    const row = rowOf("1183441");
+    expect(row).not.toBe("");
+    // a spot on the ruler, as every ranked fund has, and no caution mark or lock in its row
+    expect(row).toContain("data-spot-dot");
+    expect(row).not.toMatch(new RegExp(`<button[^>]*aria-label="[^"]*${numbers.doubt}[^"]*"`));
+    expect(at.value.doubt).toBeUndefined();
+    // its labels carry no chip on its tax (the one a fund whose annex reports a ruling has, citing it)
+    expect(fundLabels(f.rec, sp.index, f.option).map((l) => l.id).filter((id) => id.startsWith("tax-on-sale"))).toEqual([]);
+    const ruled = allFunds(sp).find((x) => x.rec.id === "ie00b5bmr087");
+    expect(ruled && fundLabels(ruled.rec, sp.index, ruled.option).map((l) => l.id)).toContain("tax-on-sale-ruling");
+    // ranked among the funds of its kind: above it only funds that leave more at the account
+    const order = [...raw.matchAll(/data-pick-key="([^"]+)"/g)].map((m) => m[1] ?? "");
+    for (const id of order.slice(0, order.indexOf("1183441"))) {
+      const other = allFunds(sp).find((x) => x.rec.id === id);
+      const w = other?.byHouse[pick.house];
+      if (other && w && "valueN" in w && kindOf(other.rec) === kindOf(f.rec)) expect(w.valueN, id).toBeGreaterThanOrEqual(at.valueN);
+    }
+    // its sheet tags the site's reading and names TXF-11 by its title
+    const rules = loadRules();
+    const record = rules["TXF-11"];
+    if (!record?.title_he) throw new Error("TXF-11 is in data/rules with its Hebrew title");
+    expect(at.value.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
+    const sheet = shown(renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { ...data, rules } } as never, createElement(ValueSheet, { value: at.value, exact: false, data, headId: "h", descId: "d" })))));
+    expect(sheet).toContain(numbers.reading);
+    expect(sheet).not.toContain(numbers.doubt);
+    expect(sheet.slice(sheet.indexOf(provenance.computed.rules))).toContain(record.title_he);
+    // no heading, row or note on the lists says a fund or an account is not ranked, with any account chosen
+    for (const house of sp.providers.map((p) => p.id)) {
+      const text = shown(lists(sp, bundle, plan, { house, fund: pick.fund }, { ruler: true }));
+      for (const words of ["לא מדורג", "לא מדרג", "בלי דירוג"]) expect(text, `${house}: ${words}`).not.toContain(words);
+    }
+  });
   it("a fund in Tel Aviv and abroad is counted once", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const funds = allFunds(sp).filter((f) => kindOf(f.rec) === "unhedged");

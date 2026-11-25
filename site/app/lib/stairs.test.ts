@@ -68,21 +68,23 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   const top = Math.round(view.headline?.valueN ?? Number.NaN);
   it("the ceiling is the page's own pair", () => expect(Math.round(ceilingOf(grid)?.v ?? Number.NaN)).toBe(top));
   it("Hapoalim with the MTF fund: two steps, then the page's own pair", () => expect(steps("hapoalim", "1150333")).toEqual([[79273, null], [84148, 4875], [top, top - 84148]]));
-  // the accumulating iShares is ranked (TXF-11: its own annex reports the ruling). Bought in whole units (F-109), its unit of USD 815 makes
-  // 500 a month wait: the climb goes to Interactive Brokers, then to the distributing iShares there, whose unit of USD 75 buys every month
-  it("Bank Jerusalem with the accumulating iShares", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[76632, null], [83525, 6893], [83587, 62]]));
-  it("Interactive Israel with the same iShares: to Interactive Brokers (Tiered, the automatic conversion), then the distributing iShares", () => {
+  // the accumulating iShares is ranked (TXF-11: its own annex reports the ruling), and so is the accumulating Vanguard, whose annex reports
+  // none, on the site's reading of the same rule (D120). Bought in whole units (F-109), the iShares unit of USD 815 makes 500 a month wait:
+  // the climb goes to Interactive Brokers, then to the Vanguard there, which leaves more than either iShares at that house
+  const vanguardAtIb = () => Math.round(grid.cell("interactive-brokers", "ie00bfmxxd54")?.v ?? Number.NaN);
+  it("Bank Jerusalem with the accumulating iShares", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[76632, null], [83525, 6893], [vanguardAtIb(), vanguardAtIb() - 83525]]));
+  it("Interactive Israel with the same iShares: to Interactive Brokers (Tiered, the automatic conversion), then the accumulating Vanguard", () => {
     const c = chainOf(grid, { start: { a: "interactive-israel", f: "ie00b5bmr087" }, taken: [] })!;
-    expect(c.chain.map((s) => [Math.round(s.v), s.d])).toEqual([[83486, null], [83525, 39], [83587, 62]]);
+    expect(c.chain.map((s) => [Math.round(s.v), s.d])).toEqual([[83486, null], [83525, 39], [vanguardAtIb(), vanguardAtIb() - 83525]]);
     expect(c.chain[1]!.pos).toMatchObject({ a: "interactive-brokers", f: "ie00b5bmr087" });
-    expect(c.chain[2]!.pos).toMatchObject({ a: "interactive-brokers", f: "ie0031442068" });
+    expect(c.chain[2]!.pos).toMatchObject({ a: "interactive-brokers", f: "ie00bfmxxd54" });
   });
-  it("Interactive Brokers with the distributing iShares: no single change improves, and the top is the page's own pair", () => {
+  it("Interactive Brokers with the distributing iShares: one change improves, to the accumulating Vanguard there, and the top is the page's own pair", () => {
     const c = chainOf(grid, { start: { a: "interactive-brokers", f: "ie0031442068" }, taken: [] })!;
-    expect(c.chain).toHaveLength(1);
-    const [only] = c.chain;
-    expect(Math.round(only?.v ?? Number.NaN)).toBe(83587);
-    expect(Math.round(c.ceiling.v) - Math.round(only?.v ?? Number.NaN)).toBe(top - 83587);
+    expect(c.chain.map((s) => s.pos)).toEqual([{ a: "interactive-brokers", f: "ie0031442068" }, { a: "interactive-brokers", f: "ie00bfmxxd54" }]);
+    expect(Math.round(c.chain[0]?.v ?? Number.NaN)).toBe(83587);
+    expect(vanguardAtIb()).toBeGreaterThan(83587);
+    expect(Math.round(c.ceiling.v)).toBe(top);
   });
   // the lanes' held heights are measured from these cases: every lane any start shows has a case with each of its rows, in the
   // same state, so no start draws a lane taller than its hold

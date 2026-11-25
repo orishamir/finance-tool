@@ -176,7 +176,8 @@ export const fundRecord = z.strictObject({
   /**
    * TXF-11: the fund's own Israeli prospectus annex ("נספח לתשקיף קרן חוץ נסחרת") reports a Tax Authority ruling given
    * to the fund, and names a sale and a distribution as the only taxed events. D10 judges that enough for that fund: an
-   * accumulating fund with it is ranked, not listed under G-18. Units of the same ISIN bought abroad are the same units, so both records carry it.
+   * accumulating fund with it is taxed at sale on the ruling, not on the site's reading of TXF-11 that one without it is ranked on (G-18,
+   * D120). Units of the same ISIN bought abroad are the same units, so both records carry it.
    */
   tax_ruling: z
     .strictObject({

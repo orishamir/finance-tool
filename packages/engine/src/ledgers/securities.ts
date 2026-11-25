@@ -97,7 +97,7 @@ export interface Fund {
   fixedDatesEveryMonths?: number;
   /**
    * An accumulating foreign fund whose own Israeli prospectus annex reports a Tax Authority ruling naming a sale and a distribution as the
-   * only taxed events (TXF-11): taxed at sale on that ruling, not on the reading by implication, and ranked rather than listed (G-18).
+   * only taxed events (TXF-11): taxed at sale on that ruling, which the run cites, rather than on the site's reading by implication (G-18).
    */
   saleOnlyRuling?: boolean;
 }
@@ -724,8 +724,8 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     }
   } else if (isForeign) {
     // An accumulating foreign fund is taxed only at sale under TXF-11, which the law supports by implication (no deemed-distribution
-    // rule reaches a non-controlling holder; no sentence says it): computed, labelled a reading, and listed, not ranked (F-65, G-18);
-    // unless its own annex reports a ruling that says so. No secondary source is cited.
+    // rule reaches a non-controlling holder; no sentence says it): computed and ranked on the site's reading, which its label says (F-65,
+    // G-18, product D120); a fund whose own annex reports a ruling that says so cites the rule instead. No secondary source is cited.
     if (fund.saleOnlyRuling) book.cite("TXF-11");
     else book.label("reading", "TXF-11");
   }
@@ -983,7 +983,6 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     } else outcome = step.outcome;
     if (realGain < 0) tally.flag("G-07");
     tally.flag("G-20");
-    if (isForeign && !fund.distribution && !fund.saleOnlyRuling && outcome.code === "eligible") outcome = { code: "listed-not-ranked", reason: "G-18" };
     // A sale at a foreign broker is not withheld in Israel: the gain is reported, and its advance paid, by 31 July and 31 January (TXF-22).
     if (atForeignBroker) tally.flag("TXF-22");
   }

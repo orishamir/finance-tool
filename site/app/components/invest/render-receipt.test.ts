@@ -1,7 +1,7 @@
 // The receipt, with its account and fund parts, rendered on the collected data (part of render.test.ts, which says why it is split).
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { flags, help, invest, leftOut, numbers } from "../../copy";
+import { help, invest, leftOut, numbers } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "../../lib/custom-entries";
 import { PairLists, markView } from "./lists";
@@ -430,29 +430,6 @@ describe("the lists beside the receipt", () => {
     // the ruler has no title over it (2026-11-24)
     expect(shown(out)).not.toContain("כמה נשאר לכם בסוף");
   });
-  it("a fund on an open rule is shown, not ranked: after the ranked funds of its kind, under one heading, with no spot and no tag on its row (G-18)", () => {
-    // an account that prices a fund on an open rule (an accumulating Irish fund bought abroad): the headline's house sells none abroad
-    const isOpen = (f: ReturnType<typeof allFunds>[number], house: string) => { const a = f.byHouse[house]; return !!a && "valueN" in a && a.open; };
-    const house = view.providers.find((p) => allFunds(view).some((f) => isOpen(f, p.id)))!.id;
-    const ranked = allFunds(view).find((f) => { const a = f.byHouse[house]; return !!a && "valueN" in a && !a.open; })!;
-    const pick = { house, fund: ranked.rec.id };
-    const at = (f: ReturnType<typeof allFunds>[number]) => f.byHouse[pick.house];
-    const open = allFunds(view).filter((f) => isOpen(f, house));
-    expect(open.length).toBeGreaterThan(0);
-    const out = html(createElement(PairLists, { ...props, pick, ruler: true }));
-    for (const f of open) {
-      const row = fundRow(out, f.rec.id);
-      expect(row, f.rec.id).not.toContain(w.lists.openRow);
-      expect(out.slice(out.indexOf(`data-pick-key="${f.rec.id}"`), out.indexOf(`data-pick-key="${f.rec.id}"`) + 400)).not.toContain("data-spot-dot");
-      // after every ranked fund of its kind
-      for (const r of allFunds(view).filter((x) => { const a = at(x); return kindOf(x.rec) === kindOf(f.rec) && !!a && "valueN" in a && !a.open; }))
-        expect(out.indexOf(`data-pick-key="${r.rec.id}"`), `${r.rec.id} before ${f.rec.id}`).toBeLessThan(out.indexOf(`data-pick-key="${f.rec.id}"`));
-    }
-    expect(shown(out)).toContain(w.lists.funds.unranked);
-    // chosen, the note under the lists says so, and the ruler keeps the account's band
-    const chosenOpen = html(createElement(PairLists, { ...props, pick: { house: pick.house, fund: open[0]!.rec.id }, chosen: true }));
-    expect(shown(chosenOpen)).toContain(w.lists.openRow);
-  });
   it("on an index with both kinds, the stretch counts the chosen fund's kind only: a hedged fund sets no account's stretch (D28)", () => {
     const funds = allFunds(view);
     const mine = kindOf(funds.find((f) => f.rec.id === pick.fund)!.rec);
@@ -469,26 +446,6 @@ describe("the lists beside the receipt", () => {
     const [, top, height] = /top:min\(([\d.]+)%[^;]*;height:([\d.]+)%/.exec(raw) ?? [];
     const [, spot] = /top:([\d.]+)%;height:calc/.exec(raw) ?? [];
     expect(Number(spot)).toBeCloseTo(Number(top) + Number(height), 2);
-  });
-  it("an account whose every priced fund is on an open rule has no stretch: after the ranked accounts, before the ones with no price, with G-18's words (MSCI World)", () => {
-    const v = buildInvest({ bundle, index: indexById(bundle, "index-msci-world")!, plan });
-    const pk = pickOfHeadline(v)!;
-    const out = html(createElement(PairLists, { ...props, view: v, pick: pk }));
-    const mine = kindOf(allFunds(v).find((f) => f.rec.id === pk.fund)!.rec);
-    const kindF = allFunds(v).filter((f) => kindOf(f.rec) === mine);
-    const allOpen = v.providers.filter((p) => { const a = kindF.map((f) => f.byHouse[p.id]).filter((x) => !!x && "valueN" in x) as { open: boolean }[]; return a.length > 0 && a.every((x) => x.open); });
-    expect(allOpen.map((p) => p.id).sort()).toEqual(["interactive-brokers", "interactive-israel"]);
-    const ranked = stretchesOf(kindF, v.providers.map((p) => p.id)).map((s) => s.house);
-    const none = v.providers.filter((p) => !allFunds(v).some((f) => "valueN" in (f.byHouse[p.id] ?? {}))).map((p) => p.id);
-    const pos = (id: string) => out.indexOf(`data-pick-key="${id}"`);
-    for (const p of allOpen) {
-      expect(fundRow(out, p.id)).toContain(w.lists.accounts.unranked);
-      // its "?" (G-18's words, which a tap opens)
-      expect(out.slice(pos(p.id), pos(p.id) + 1500)).toContain("help-mark");
-      expect(flags["G-18"]).toContain("לא מדרג");
-      for (const r of ranked) expect(pos(r), `${r} before ${p.id}`).toBeLessThan(pos(p.id));
-      for (const n of none) expect(pos(n), `${n} after ${p.id}`).toBeGreaterThan(pos(p.id));
-    }
   });
   it("on a wide screen the receipt is a ticket: the account with its own lines, the middle with what is left large, the fund with its own lines", () => {
     const pc = pairCostsKept({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house })!;

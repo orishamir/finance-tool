@@ -379,7 +379,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     // what the site does not know of the fund (its status), which keeps it from the site's reading and which the doubt on a cautious figure says
     if (built.notKnown) fund.notKnown = built.notKnown;
   }
-  // TXF-11: an accumulating foreign fund whose own annex reports the ruling is taxed at sale on it, and ranked
+  // TXF-11: an accumulating foreign fund whose own annex reports the ruling is taxed at sale on it, rather than on the site's reading (D120)
   if ((kind === "foreign-fund" || kind === "tase-foreign-fund") && rec.tax_ruling && rec.distribution_policy === "accumulating") fund.saleOnlyRuling = true;
   if (kind === "foreign-fund") {
     const d = rec.domicile.toUpperCase();
