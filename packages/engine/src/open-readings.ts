@@ -1,7 +1,9 @@
 // Open readings (method §13, F-04, F-119, F-120): a case the rule base leaves open between a few readings it names. The resolver does not
 // pick one. A run that meets the case is run once under each reading (`acrossReadings`); where the readings agree, the result stands and
 // carries the question as a flag; where they split, the case's own policy decides (`SplitPolicy`): the run stops on the question as on any
-// open rule (D10), or the reading that leaves the holder less stands, labelled the site's cautious reading of the rule.
+// open rule (D10), or the reading that leaves the holder less stands, labelled the site's cautious reading of the rule. A tax-index case
+// also names the site's own reading of the law (`TaxIndexOpenReading.siteReading`, D119), which a fund whose documents the site read is run
+// under alone, so its run never meets the case.
 import type { UsedRule } from "./resolver.ts";
 import { labelWeight, type CautiousLabel, type FieldRole, type Flag, type Label, type NotKnown, type Outcome, type ResultFields, type RunContext } from "./result.ts";
 import type { YearlyMove } from "./formulas/indexation.ts";
@@ -74,10 +76,15 @@ export interface FallOpenReading extends OpenReadingBase {
   readings: readonly FallReading[];
 }
 
-/** The index a fund's real gain is measured by at the exit (F-04): met by the tax index of a fund the case covers (`taxIndexOf`). */
+/**
+ * The index a fund's real gain is measured by at the exit (F-04): met by the tax index of a fund the case covers (`taxIndexOf`) whose
+ * documents the site did not read (`NotKnown`). A fund whose documents it read is run under `siteReading` alone (`RuleBook.taxIndex`).
+ */
 export interface TaxIndexOpenReading extends OpenReadingBase {
   kind: "tax-index";
   readings: readonly { id: TaxIndexReadingId }[];
+  /** D119: the site's own reading of the open law, one of `readings`, for a fund whose own documents the site read. */
+  siteReading: TaxIndexReadingId;
 }
 
 export type OpenReading = FallOpenReading | TaxIndexOpenReading;
@@ -85,18 +92,20 @@ export type OpenReading = FallOpenReading | TaxIndexOpenReading;
 /**
  * TXS OQ26: whether the 2003 regulations that measure a foreign-investment fund's inflationary amount by its principal currency still operate
  * (TXS-14). Until it is settled, the principal-currency index is a reading of their texts; if they no longer operate, the fund's shekel units
- * are measured by the CPI, TXS-14's first bullet. A fund whose record does not say whether it is one, on an index in a foreign currency, meets
- * the same two readings (method F-04). A split resolves to the reading that leaves the holder less after the exit tax (method F-04).
+ * are measured by the CPI, TXS-14's first bullet. The site reads them as operating (D119): a fund whose own documents name it one is run on
+ * its principal currency. A fund whose record does not say whether it is one, on an index in a foreign currency, or one the person typed,
+ * meets both readings, and a split resolves to the one that leaves the holder less after the exit tax (method F-04).
  */
-export const foreignInvestmentFundIndex: TaxIndexOpenReading = { kind: "tax-index", ruleId: "TXS-14", question: "TXS OQ26", onSplit: "cautious", readings: [{ id: "principal" }, { id: "cpi" }] };
+export const foreignInvestmentFundIndex: TaxIndexOpenReading = { kind: "tax-index", ruleId: "TXS-14", question: "TXS OQ26", onSplit: "cautious", readings: [{ id: "principal" }, { id: "cpi" }], siteReading: "principal" };
 
 /**
  * TXF OQ10: which index measures the inflationary amount on a sale of a TASE foreign fund whose own annex states none (TXF-04, open: the
- * Tax Authority's 2019 guidance was never published). The exchange rate of the fund's own currency, or the CPI. A split resolves to the
- * reading that leaves the holder less after the exit tax (product D84, method F-04), so the figure can only understate what the holder
- * keeps under either index the law may turn out to use.
+ * Tax Authority's 2019 guidance was never published). The exchange rate of the fund's own currency, or the CPI. The site reads the 2019
+ * wording (D119): the exchange rate only where the prospectus commits to the 90% condition, and no annex the site read that states no index
+ * makes that commitment, so a fund whose documents it read is run on the CPI. A fund the person typed meets both readings, and a split
+ * resolves to the one that leaves the holder less after the exit tax (method F-04).
  */
-export const taseForeignFundIndex: TaxIndexOpenReading = { kind: "tax-index", ruleId: "TXF-04", question: "TXF OQ10", onSplit: "cautious", readings: [{ id: "fx" }, { id: "cpi" }] };
+export const taseForeignFundIndex: TaxIndexOpenReading = { kind: "tax-index", ruleId: "TXF-04", question: "TXF OQ10", onSplit: "cautious", readings: [{ id: "fx" }, { id: "cpi" }], siteReading: "cpi" };
 
 /**
  * The open readings the resolver knows:
@@ -106,7 +115,8 @@ export const taseForeignFundIndex: TaxIndexOpenReading = { kind: "tax-index", ru
  *   (KGL-02) and says nothing of a fall; met the same way.
  * - TXS OQ26: the tax index of a foreign-investment fund (`foreignInvestmentFundIndex`, F-04).
  * - TXF OQ10: the tax index of a TASE foreign fund whose annex states none (`taseForeignFundIndex`, F-04).
- * The two tax-index cases take the cautious reading where their readings split; the two falling-CPI cases stop.
+ * The two tax-index cases are met only for a fund whose documents the site did not read, and take the cautious reading where their readings
+ * split; the two falling-CPI cases stop.
  * A figure linked to the CPI every 1 January of a rule not named here has no reading at a fall: the resolver stops on its rule, naming G-38.
  */
 export const openReadings: readonly OpenReading[] = [
@@ -228,8 +238,9 @@ export function mergedLabels(results: readonly { labels?: readonly Label[] }[]):
 
 /**
  * The rules every reading's result read, one per id in the order they first appear, each with the figures any reading read of it: a label
- * taken from another reading never names a rule missing from `rules`, which the dimension checklist reads. The one label that may name a rule
- * no reading read is the `cautious` label a cautious case's split adds, whose rule may be open (`SplitPolicy`).
+ * taken from another reading never names a rule missing from `rules`, which the dimension checklist reads. The labels that may name a rule
+ * no reading read are those of a tax-index case, whose rule may be open: the `cautious` label a split adds (`SplitPolicy`) and the `reading`
+ * label of the site's own reading (`RuleBook.taxIndex`).
  */
 export function mergedRules(results: readonly { rules?: readonly UsedRule[] }[]): UsedRule[] {
   const byId = new Map<string, UsedRule>();
@@ -268,7 +279,8 @@ export function acrossReadings<R extends { flags: Flag[]; labels?: Label[]; rule
           if (!results.every((r) => sameResult(r, first, fields))) return explore({ ...chosen, [q]: null });
           break;
         case "cautious": {
-          const label: CautiousLabel = { code: "cautious", ruleId: e.open.ruleId, ...(e.notKnown ? { notKnown: e.notKnown } : {}) };
+          if (!e.notKnown) throw new Error(`${q} takes the cautious reading only for a fund the site does not know; it was met for one it knows (RuleBook.taxIndex)`);
+          const label: CautiousLabel = { code: "cautious", ruleId: e.open.ruleId, notKnown: e.notKnown };
           const split = cautiousAcross(results, fields, label);
           if (split) return split;
           break;

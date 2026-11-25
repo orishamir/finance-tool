@@ -8,7 +8,7 @@ import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
-import { type SiteValue } from "../../lib/value";
+import { sheetRules, type SiteValue } from "../../lib/value";
 import { Fees } from "./funds";
 import { reasonText } from "./parts";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
@@ -412,29 +412,30 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
   });
-  it("a foreign fund in Tel Aviv whose annex states no index, and an Israeli fund whose status is open, wear the caution on their own figure, whose sheet says why; no note says it elsewhere (D84, F-04)", () => {
+  it("a foreign fund in Tel Aviv whose annex states no index, and an Israeli fund whose documents name it a foreign-investment fund, wear no caution: their sheet tags the site's reading and names its rule; no note says it elsewhere (D84, D119, F-04)", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const pick = pickOfHeadline(sp)!;
     const raw = lists(sp, bundle, plan, pick);
     // the row's own markup, from its key to the next row's
     const rowOf = (id: string) => { const a = raw.indexOf(`data-pick-key="${id}"`); const rest = raw.slice(a + 1); const b = rest.search(/data-pick-key=|data-case-of=/); return a < 0 ? "" : b < 0 ? rest : rest.slice(0, b); };
     const caution = new RegExp(`<button[^>]*aria-label="[^"]*${numbers.doubt}[^"]*"`);
-    const cases = [
-      { id: "1183441", rule: "TXF-04" },
-      ...allFunds(sp).filter((f) => f.rec.domicile === "IL" && typeof f.rec.tax_status.foreign_investment_fund?.value === "string" && f.byHouse[pick.house] && "valueN" in f.byHouse[pick.house]!).slice(0, 1).map((f) => ({ id: f.rec.id, rule: "TXS-14" })),
-    ];
-    expect(cases.length).toBe(2);
+    const named = allFunds(sp).filter((f) => f.rec.domicile === "IL" && typeof f.rec.tax_status.foreign_investment_fund?.value === "string" && f.byHouse[pick.house] && "valueN" in f.byHouse[pick.house]!);
+    const cases = [{ id: "1183441", rule: "TXF-04" }, ...named.map((f) => ({ id: f.rec.id, rule: "TXS-14" }))];
+    expect(named.length).toBeGreaterThan(0);
     for (const { id, rule } of cases) {
       const f = allFunds(sp).find((x) => x.rec.id === id)!;
       const at = f.byHouse[pick.house];
       if (!at || !("valueN" in at)) throw new Error(`${id} is priced at the chosen account`);
-      // the figure in its own row carries the caution mark
-      expect(rowOf(id), id).toMatch(caution);
-      // tapping it opens a sheet that says why, the site's reading, with the rule it rests on
+      // the figure in its own row carries no caution mark
+      expect(rowOf(id), id).not.toBe("");
+      expect(rowOf(id), id).not.toMatch(caution);
+      // tapping it opens a sheet that tags the site's reading and names the rule it rests on, whose card says why; no doubt
       const sheet = shown(html(createElement(ValueSheet, { value: at.value, exact: false, data, headId: "h", descId: "d" })));
-      expect(sheet, id).toContain(numbers.readingDoubt[rule]?.known ?? "words for the case");
       expect(sheet, id).toContain(numbers.reading);
-      expect(at.value.doubtRules, id).toEqual([rule]);
+      expect(sheet, id).not.toContain(numbers.doubt);
+      expect(at.value.doubt, id).toBeUndefined();
+      expect(at.value.labels, id).toContainEqual({ code: "reading", ruleId: rule });
+      expect(sheetRules(at.value).map((r) => r.id), id).toContain(rule);
     }
     // a fund whose annex states its index wears none
     const stated = rowOf("1159250");
@@ -450,8 +451,8 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     const funds = allFunds(sp).filter((f) => kindOf(f.rec) === "unhedged");
     const distinct = new Set(funds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size;
     expect(distinct).toBeLessThan(funds.length);
-    // a Tel Aviv line whose annex states no index is priced on the reading that leaves less (F-04, TXF OQ10); one whose annex states its
-    // index is priced on it (D84)
+    // a Tel Aviv line whose annex states no index is priced on the site's reading (F-04, TXF OQ10, D119); one whose annex states its index
+    // is priced on it (D84)
     expect(allFunds(sp).find((f) => f.rec.id === "1183441")?.reason).toBeUndefined();
     const stated = allFunds(sp).find((f) => f.rec.id === "1159250");
     expect(stated).toBeDefined();

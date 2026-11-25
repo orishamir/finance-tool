@@ -134,14 +134,17 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   // F-04, D84: the index a Tel Aviv line's own annex states; a record of the same units bought abroad may carry it, and keeps TXF-03
   const stated = kind === "tase-foreign-fund" ? taxIndexStatementOf(rec) : undefined;
   if (stated) fund.statedIndex = stated;
-  // F-04, TXF OQ10: the record's own currency, whose exchange rate is one reading of the index of a Tel Aviv line whose annex states none
+  // F-04, TXF OQ10: the record's own currency, whose exchange rate is one reading of the index of a Tel Aviv line whose annex states none,
+  // which a run reads where the site does not know the fund
   if (kind === "tase-foreign-fund") fund.recordCurrency = isoCurrency(rec.currency);
-  // TXS-14, F-04: the principal currency the fund's own documents name; where its record says the status is not known (`value: null`), the
-  // exposure's foreign currency as the candidate, so the run meets both readings rather than reading the gap as either answer
+  // TXS-14, F-04: the principal currency the fund's own documents name, which the run takes as the site's reading (D119); where its record
+  // says the status is not known (`value: null`), the exposure's foreign currency as the candidate, so the run meets both readings rather
+  // than reading the gap as either answer
   const status = rec.tax_status.foreign_investment_fund;
   const principal = typeof status?.value === "string" ? status.value : status?.value === null ? foreignCurrency : undefined;
   if (kind === "israeli-fund" && principal !== undefined) fund.principalCurrency = principal;
-  // F-04: what the site does not know of the fund beside an open tax index, which the doubt on a cautious figure says
+  // F-04: what the site does not know of the fund beside an open tax index, which keeps it from the site's reading (D119) and which the
+  // doubt on a cautious figure says
   if (typed) fund.notKnown = "documents";
   else if (kind === "israeli-fund" && principal !== undefined && status?.value === null) fund.notKnown = "status";
   // TXF-11: the fund's own annex reports a ruling that taxes it at sale and on distributions only.

@@ -1,7 +1,8 @@
-// F-04, TXS-14, method §13: an Israeli fund that may be measured by a principal currency (its documents name it a foreign-investment fund,
-// or its record says the status is not known and its index is in a foreign currency) is run under both readings of TXS OQ26: the principal
-// currency's exchange rate, and the CPI. Where they give the same result it stands, flagged; where not, the reading that leaves the holder
-// less after the exit tax stands, labelled the site's cautious reading of TXS-14, and is ranked (method §13, guidelines/research.md step 6).
+// F-04, TXS-14, method §13, D119: an Israeli fund whose documents name it a foreign-investment fund is run on its principal currency's
+// exchange rate, the site's reading of TXS OQ26, labelled `reading` on TXS-14. One the site does not know (its record says the status is not
+// known and its index is in a foreign currency, or the person typed it) is run under both readings: the principal currency's exchange rate,
+// and the CPI. Where they give the same result it stands, flagged; where not, the reading that leaves the holder less after the exit tax
+// stands, labelled the site's cautious reading of TXS-14 with what the site does not know, and is ranked (guidelines/research.md step 6).
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { fundOf, runSecurities, securitiesBlockedBy, securitiesStopOf, type SecuritiesInput } from "../src/index.ts";
@@ -16,7 +17,9 @@ const ids = (r: { rules: { id: string }[] }) => r.rules.map((u) => u.id);
 const amount = 100_000;
 const years = 5;
 const fif = { kind: "israeli-fund", drag: {}, principalCurrency: "USD" } as const;
-const input = (market: Partial<SecuritiesInput["market"]> = {}, fund: SecuritiesInput["fund"] = fif): SecuritiesInput => ({
+/** The same fund where the site does not know its status (`notKnown`), which meets both readings. */
+const unknown = { ...fif, notKnown: "status" } as const;
+const input = (market: Partial<SecuritiesInput["market"]> = {}, fund: SecuritiesInput["fund"] = unknown): SecuritiesInput => ({
   goal: { amountNow: amount, monthly: 0, months: 12 * years },
   market: { grossReturn: 0.06, inflation: 0.025, ...market },
   fund,
@@ -87,7 +90,7 @@ describe("both readings of TXS OQ26 (method §13)", () => {
       const { labels, ...rest } = r;
       const { labels: lowLabels, ...lowRest } = low;
       expect(rest).toEqual(lowRest);
-      expect(labels).toEqual([...lowLabels, { code: "cautious", ruleId: "TXS-14" }]);
+      expect(labels).toEqual([...lowLabels, { code: "cautious", ruleId: "TXS-14", notKnown: "status" }]);
       expect(r.outcome.code).toBe("eligible");
       expect(codes(r)).not.toContain("TXS-OQ26");
       expect(securitiesStopOf(split, ctx)).toBeNull();
@@ -95,8 +98,7 @@ describe("both readings of TXS OQ26 (method §13)", () => {
   });
 
   it("carries on its cautious label what the site does not know of the fund: its status, or its documents for a fund the person typed", () => {
-    const split = (notKnown?: "status" | "documents") => runSecurities(input({ principalFxChange: 0.05 }, { ...fif, ...(notKnown ? { notKnown } : {}) }), ctx);
-    expect(split().labels).toContainEqual({ code: "cautious", ruleId: "TXS-14" });
+    const split = (notKnown: "status" | "documents") => runSecurities(input({ principalFxChange: 0.05 }, { ...fif, notKnown }), ctx);
     expect(split("status").labels).toContainEqual({ code: "cautious", ruleId: "TXS-14", notKnown: "status" });
     expect(split("documents").labels).toContainEqual({ code: "cautious", ruleId: "TXS-14", notKnown: "documents" });
   });
@@ -115,6 +117,7 @@ describe("both readings of TXS OQ26 (method §13)", () => {
   });
 
   it("is never blocked before a run: whether the readings split is the run's to say", () => {
+    expect(securitiesBlockedBy(unknown, ctx)).toBeNull();
     expect(securitiesBlockedBy(fif, ctx)).toBeNull();
   });
 
@@ -145,6 +148,25 @@ describe("both readings of TXS OQ26 (method §13)", () => {
     const cpi = runSecurities(account, under("cpi"));
     expect(principal.taxAtExit).not.toBeCloseTo(cpi.taxAtExit, 0);
     expect(B(principal)).toBeCloseTo(B(cpi), 6);
+  });
+});
+
+describe("the site's reading of TXS OQ26 for a fund whose documents name it a foreign-investment fund (D119)", () => {
+  it("is the run made under the principal-currency reading, labelled the site's reading of TXS-14, with no cautious label and no flag of the question", () => {
+    // markets where the readings agree and where they split either way: the run is the principal reading's whatever the CPI does
+    for (const market of [{ principalFxChange: 0.025 }, { principalFxChange: 0 }, { principalFxChange: 0.05 }, { principalFxChange: -0.02, inflation: -0.01 }]) {
+      const known = runSecurities(input(market, fif), ctx);
+      const forced = runSecurities(input(market, unknown), under("principal"));
+      const { labels, ...rest } = known;
+      const { labels: forcedLabels, ...forcedRest } = forced;
+      expect(rest).toEqual(forcedRest);
+      expect(labels).toEqual([...(forcedLabels ?? []), { code: "reading", ruleId: "TXS-14" }]);
+      expect(labels?.some((l) => l.code === "cautious")).toBe(false);
+      expect(codes(known)).not.toContain("TXS-OQ26");
+      expect(ids(known)).toContain("TXS-14");
+      expect(known.outcome.code).toBe("eligible");
+      expect(securitiesStopOf(input(market, fif), ctx)).toBeNull();
+    }
   });
 });
 

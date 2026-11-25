@@ -1,6 +1,7 @@
 // READING_RULE_IDS lists every rule the engine labels the site's own reading (the goal comparison holds room for the reading mark on a row
-// that cites one of them, so the list must not fall behind the engine): those a ledger labels `reading` by name, and the rule of every open
-// reading whose split takes the cautious reading, which a run is labelled `cautious` with where its readings split.
+// that cites one of them, so the list must not fall behind the engine): those a ledger labels `reading` by name, the rule of every open
+// tax index, which a run is labelled `reading` with where it takes the site's own reading (D119, `RuleBook.taxIndex`), and the rule of every
+// open reading whose split takes the cautious reading, which a run is labelled `cautious` with where its readings split.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -24,7 +25,7 @@ describe("READING_RULE_IDS", () => {
     }
     // every rule is labelled by name: one labelled through a variable would have to be listed where the variable is set
     expect(dynamic).toBe(0);
-    for (const o of openReadings) if (o.onSplit === "cautious") labelled.add(o.ruleId);
+    for (const o of openReadings) if (o.onSplit === "cautious" || o.kind === "tax-index") labelled.add(o.ruleId);
     expect([...labelled].sort()).toEqual([...READING_RULE_IDS].sort());
   });
 });

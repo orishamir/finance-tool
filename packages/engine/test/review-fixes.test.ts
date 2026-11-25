@@ -137,12 +137,34 @@ describe("an accumulating foreign fund bought abroad (TXF-11, G-18)", () => {
 });
 
 describe("foreign funds on TASE (TXF-04)", () => {
-  const reading = { code: "cautious", ruleId: "TXF-04" } as const;
+  const reading = { code: "cautious", ruleId: "TXF-04", notKnown: "documents" } as const;
+  /** Whether a run carries any label on TXF-04: the site's reading of it or its cautious one. */
+  const labelsTxf04 = (r: { labels: { ruleId: string }[] }) => r.labels.some((l) => l.ruleId === "TXF-04");
   /** The same run made under one reading of TXF OQ10 (method §13): the exchange rate of the record's currency, or the CPI. */
   const under = (id: "fx" | "cpi") => ({ ...ctx, readings: { "TXF OQ10": id } });
+  /** A line whose annex states no index, its documents read (a collected record): the site's reading of TXF OQ10 applies (D119). */
   const unstated = { kind: "tase-foreign-fund" as const, drag: { management: 0.0007 }, saleOnlyRuling: true, recordCurrency: "USD" };
+  /** The same line typed by the person: the site read none of its documents, so it meets both readings. */
+  const typed = { ...unstated, notKnown: "documents" as const };
 
-  it("runs a fund whose annex states no index under both readings of TXF OQ10 and keeps the result that leaves less, labelled the site's cautious reading of TXF-04 (F-04, D84)", () => {
+  it("runs a line whose annex states no index, its documents read, on the CPI alone, labelled the site's reading of TXF-04 (F-04, D119)", () => {
+    for (const market of [{ grossReturn: 0.06, inflation: 0.025, fxChange: 0.01 }, { grossReturn: 0.06, inflation: 0.025, fxChange: -0.03 }, { grossReturn: -0.04, inflation: 0.02, fxChange: -0.01 }]) {
+      const input = fund({ market, fund: unstated });
+      expect(securitiesBlockedBy(unstated, ctx)).toBeNull();
+      const r = runSecurities(input, ctx);
+      const onCpi = runSecurities(fund({ market, fund: typed }), under("cpi"));
+      const { labels, ...rest } = r;
+      const { labels: cpiLabels, ...cpiRest } = onCpi;
+      expect(rest).toEqual(cpiRest);
+      expect(labels).toEqual([...cpiLabels, { code: "reading", ruleId: "TXF-04" }]);
+      expect(codes(r)).not.toContain("TXF-OQ10");
+      // the rule is open and gives the run nothing to read: the label names a rule the run's rules do not list
+      expect(ids(r)).not.toContain("TXF-04");
+      expect(r.outcome).toEqual({ code: "eligible" });
+    }
+  });
+
+  it("runs a line whose annex states no index, typed by the person, under both readings of TXF OQ10 and keeps the result that leaves less, labelled the site's cautious reading of TXF-04 (F-04, D84, D119)", () => {
     // a rising dollar, a falling one, a dollar that moves as prices do, a loss, and a plan with monthly deposits
     const markets = [
       { grossReturn: 0.06, inflation: 0.025, fxChange: 0.01 },
@@ -154,8 +176,8 @@ describe("foreign funds on TASE (TXF-04)", () => {
     let agreements = 0;
     for (const market of markets) {
       for (const goal of [{ amountNow: 100_000, monthly: 0, months: 60 }, { amountNow: 20_000, monthly: 1_500, months: 96 }]) {
-        const input = fund({ goal, market, fund: unstated });
-        expect(securitiesBlockedBy(unstated, ctx)).toBeNull();
+        const input = fund({ goal, market, fund: typed });
+        expect(securitiesBlockedBy(typed, ctx)).toBeNull();
         const r = runSecurities(input, ctx);
         const [onFx, onCpi] = [runSecurities(input, under("fx")), runSecurities(input, under("cpi"))];
         const byReading = [onFx, onCpi];
@@ -187,7 +209,7 @@ describe("foreign funds on TASE (TXF-04)", () => {
     const input = fund({
       goal: { amountNow: 1_000_000, monthly: 0, months: 72 },
       market: { grossReturn: 0.06, inflation: -0.01, fxChange: 0.03 },
-      fund: unstated,
+      fund: typed,
       tariff: {},
       profile: { ageAtStart: 65, otherIncome: 300_000 },
     });
@@ -201,10 +223,10 @@ describe("foreign funds on TASE (TXF-04)", () => {
   });
 
   it("takes the CPI under both readings for a Tel Aviv line in shekels, and stops the kind with no fund record and a line that distributes on TXF-04 (F-04, G-35)", () => {
-    const shekel = { ...unstated, recordCurrency: "ILS" };
+    const shekel = { ...typed, recordCurrency: "ILS" };
     const r = runSecurities(fund({ fund: shekel }), ctx);
     expect(r.detail.realGain).toBeCloseTo(runSecurities(fund({ fund: shekel }), under("cpi")).detail.realGain ?? Number.NaN, 9);
-    expect(r.detail.realGain).toBeCloseTo(runSecurities(fund({ fund: unstated }), under("cpi")).detail.realGain ?? Number.NaN, 9);
+    expect(r.detail.realGain).toBeCloseTo(runSecurities(fund({ fund: typed }), under("cpi")).detail.realGain ?? Number.NaN, 9);
     expect(codes(r)).toContain("TXF-OQ10");
     expect(r.labels).not.toContainEqual(reading);
     const kind = { kind: "tase-foreign-fund" as const };
@@ -223,7 +245,7 @@ describe("foreign funds on TASE (TXF-04)", () => {
   });
 
   it("stops a run in a foreign currency with no exchange-rate path for its record's currency (F-04)", () => {
-    expect(() => runSecurities(fund({ market: { grossReturn: 0.06, inflation: 0.025 }, fund: unstated }), under("fx"))).toThrow(/market\.fxChange/);
+    expect(() => runSecurities(fund({ market: { grossReturn: 0.06, inflation: 0.025 }, fund: typed }), under("fx"))).toThrow(/market\.fxChange/);
   });
 
   // D84: the fund's own annex states its index under its ruling. The oracle is the same fund with no statement, run under the reading of
@@ -243,18 +265,18 @@ describe("foreign funds on TASE (TXF-04)", () => {
       const f = { kind: "tase-foreign-fund" as const, drag: { management: 0.0007 }, saleOnlyRuling: true, statedIndex: stated };
       expect(securitiesBlockedBy(f, ctx)).toBeNull();
       const r = runSecurities(fund({ market, fund: f }), ctx);
-      const oracle = runSecurities(fund({ market, fund: unstated }), under("fx"));
-      const unforced = runSecurities(fund({ market, fund: unstated }), ctx);
+      const oracle = runSecurities(fund({ market, fund: typed }), under("fx"));
+      const unforced = runSecurities(fund({ market, fund: typed }), ctx);
       expect(r.detail.realGain).toBeCloseTo(oracle.detail.realGain ?? Number.NaN, 6);
       expect(r.nominal).toBeCloseTo(oracle.nominal, 6);
       expect(r.statements).toEqual([stated]);
       expect(ids(r)).not.toContain("TXF-04");
       expect(r.outcome).toEqual({ code: "eligible" });
-      // what makes the exchange rate the index is the statement, so the stated run carries no reading of TXF-04, where the unstated oracle
-      // carries the site's cautious reading if its two readings leave different values, and the question's flag if they leave the same
-      // (a loss, taxed under neither); on a fall the part of the loss equal to the fall is disallowed (TXS-02, F-09)
-      expect(r.labels).not.toContainEqual(reading);
-      const onCpi = runSecurities(fund({ market, fund: unstated }), under("cpi"));
+      // what makes the exchange rate the index is the statement, so the stated run carries no reading of TXF-04, where the unstated oracle,
+      // typed, carries the site's cautious reading if its two readings leave different values, and the question's flag if they leave the
+      // same (a loss, taxed under neither); on a fall the part of the loss equal to the fall is disallowed (TXS-02, F-09)
+      expect(labelsTxf04(r)).toBe(false);
+      const onCpi = runSecurities(fund({ market, fund: typed }), under("cpi"));
       if (Math.abs(oracle.real - onCpi.real) > 1e-6) expect(unforced.labels).toContainEqual(reading);
       else expect(codes(unforced)).toContain("TXF-OQ10");
       if (market.fxChange < 0) expect(r.detail.fallDisallowed).toBeGreaterThan(0);
@@ -265,13 +287,13 @@ describe("foreign funds on TASE (TXF-04)", () => {
     const stated = statement("cpi");
     const f = { kind: "tase-foreign-fund" as const, drag: { management: 0.0007 }, statedIndex: stated };
     const r = runSecurities(fund({ fund: f }), ctx);
-    const oracle = runSecurities(fund({ fund: { ...unstated, saleOnlyRuling: false } }), under("cpi"));
+    const oracle = runSecurities(fund({ fund: { ...typed, saleOnlyRuling: false } }), under("cpi"));
     const onFx = runSecurities(fund({ fund: { ...f, statedIndex: statement("fx") } }), ctx);
     expect(r.detail.realGain).toBeCloseTo(oracle.detail.realGain ?? Number.NaN, 6);
     expect(r.detail.realGain).not.toBeCloseTo(onFx.detail.realGain ?? Number.NaN, 0);
     expect(r.statements).toEqual([stated]);
     expect(ids(r)).not.toContain("TXF-04");
-    expect(r.labels).not.toContainEqual(reading);
+    expect(labelsTxf04(r)).toBe(false);
   });
 
   it("taxes the real gain over the index the annex states: worked by hand, one sum, no costs, five years (F-04, F-09, TXF-02)", () => {

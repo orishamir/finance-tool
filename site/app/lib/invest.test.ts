@@ -4,7 +4,7 @@ import { BlockedError } from "@finance-tool/engine";
 import { accountSum, blockedReason, buildInvest, listReading, typedFundOpenRule, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
-import { entered, type SiteValue } from "./value";
+import { entered, sheetRules, type SiteValue } from "./value";
 import { invest as words, numbers } from "../copy";
 
 // The page's data as built, but for the exchange rates: frozen at the ECB's rates of 16.11.2026 (units per euro) and dated today, so
@@ -198,7 +198,7 @@ describe("invest page computation", () => {
     expect(v.houses.some((h) => h.generic)).toBe(true);
   });
 
-  it("prices a foreign fund in Tel Aviv whose annex states no index on the reading that leaves less, its figure marked as the site's reading of TXF-04; one whose annex states it is priced on its statement (F-04, TXF OQ10, D84)", () => {
+  it("prices a foreign fund in Tel Aviv whose annex states no index on the site's reading of TXF-04, with no doubt on its figure; one whose annex states it is priced on its statement (F-04, TXF OQ10, D84, D119)", () => {
     let stated = 0, unstated = 0;
     for (const id of ["index-sp500", "index-msci-acwi", "index-msci-world", "index-nasdaq100"]) {
       const v = buildInvest({ bundle, index: indexById(bundle, id)!, plan: plan() });
@@ -213,10 +213,12 @@ describe("invest page computation", () => {
           expect(f.best?.value.doubt, f.rec.id).toBeUndefined();
         } else {
           unstated++;
-          // the plan's dollar stands still while prices rise, so the two readings split: the figure is the site's reading, on itself
-          expect(f.best?.value.labels, f.rec.id).toContainEqual({ code: "cautious", ruleId: "TXF-04" });
-          expect(f.best?.value.doubt, f.rec.id).toBe(numbers.readingDoubt["TXF-04"]?.known);
-          expect(f.best?.value.doubtRules, f.rec.id).toEqual(["TXF-04"]);
+          // the site read its documents, so its figure rests on the site's reading, which its sheet tags and whose rule it opens; no doubt
+          const v = f.best?.value;
+          expect(v?.labels, f.rec.id).toContainEqual({ code: "reading", ruleId: "TXF-04" });
+          expect(v?.labels?.some((l) => l.code === "cautious"), f.rec.id).toBe(false);
+          expect(v?.doubt, f.rec.id).toBeUndefined();
+          expect(v && sheetRules(v).map((r) => r.id), f.rec.id).toContain("TXF-04");
         }
       }
     }
@@ -252,7 +254,8 @@ describe("invest page computation", () => {
     expect(at.value.statements).toEqual([expect.objectContaining({ term: "tax-index", index: "fx", currency: "USD", page: 17, source: expect.objectContaining({ url: f.rec.tax_ruling!.source.url }) })]);
     // the account's cost before tax reads no tax index, and so no statement
     expect(at.cost.statements).toBeUndefined();
-    // with no index stated the same fund takes the reading that leaves less, so its figure is the lower of the two its annex could state
+    // with no index stated, its documents read, the same fund takes the site's reading of TXF OQ10, the CPI (D119), so its figure is the one
+    // an annex stating the CPI gives
     const ruling = f.rec.tax_ruling;
     if (!ruling?.index) throw new Error("1159250's record reports its ruling and its index");
     const { index: _stated, ...unstated } = ruling;
@@ -263,7 +266,7 @@ describe("invest page computation", () => {
       return x.valueN;
     };
     const onCpi = leftAt(withRuling({ ...ruling, index: { basis: "cpi", page: ruling.index.page, quote: ruling.index.quote, checked: ruling.index.checked } }));
-    expect(leftAt(withRuling(unstated as typeof ruling))).toBeCloseTo(Math.min(at.valueN, onCpi), 6);
+    expect(leftAt(withRuling(unstated as typeof ruling))).toBeCloseTo(onCpi, 6);
   });
 
   it("an Israeli index has two options only", () => {
@@ -689,27 +692,36 @@ describe("an Israeli fund that may be measured by a principal currency (F-04, TX
     return f;
   };
   const priced = (f: { best?: unknown; byHouse: Record<string, object> }) => f.best !== undefined && Object.values(f.byHouse).some((x) => "valueN" in x);
-  it("where A-03 and A-02 differ, both readings give the plan different taxes: the fund is priced on the one that leaves less, its figure marked as the site's reading of TXS-14", () => {
+  it("where A-03 and A-02 differ, a fund whose documents name it one is priced on the site's reading with no doubt; one whose status is not known on the reading that leaves less, its figure marked", () => {
     const view = buildInvest({ bundle: twins, index: sp, plan: plan() });
     const cpiOnly = at(view, known.rec.id);
     for (const id of [named, unknown]) {
       const f = at(view, id);
       expect(f.reason, id).toBeUndefined();
       expect(priced(f), id).toBe(true);
-      // the doubt says what the site knows of the fund: the documents name it one, or they do not settle whether it is one
-      expect(f.best?.value.doubt, id).toBe(numbers.readingDoubt["TXS-14"]?.[id === named ? "known" : "status"]);
-      expect(f.best?.value.doubtRules, id).toEqual(["TXS-14"]);
-      // the CPI is one of its two readings, and the fund it copies is measured by the CPI alone: at every house, never more than that fund
-      for (const [house, x] of Object.entries(f.byHouse)) {
-        const y = cpiOnly.byHouse[house];
-        if ("valueN" in x && y && "valueN" in y) expect(x.valueN, `${id} ${house}`).toBeLessThanOrEqual(y.valueN + 1e-6);
-      }
+    }
+    // the documents name it one: the site's reading of TXS-14, tagged in its sheet, no doubt on the figure (D119)
+    const n = at(view, named).best?.value;
+    expect(n?.labels).toContainEqual({ code: "reading", ruleId: "TXS-14" });
+    expect(n?.labels?.some((l) => l.code === "cautious")).toBe(false);
+    expect(n?.doubt).toBeUndefined();
+    // the documents do not settle whether it is one: the doubt says so, with the rule beside it
+    const u = at(view, unknown);
+    expect(u.best?.value.doubt).toBe(numbers.readingDoubt["TXS-14"]?.status);
+    expect(u.best?.value.doubtRules).toEqual(["TXS-14"]);
+    // the CPI is one of its two readings, and the fund it copies is measured by the CPI alone: at every house, never more than that fund
+    for (const [house, x] of Object.entries(u.byHouse)) {
+      const y = cpiOnly.byHouse[house];
+      if ("valueN" in x && y && "valueN" in y) expect(x.valueN, `${unknown} ${house}`).toBeLessThanOrEqual(y.valueN + 1e-6);
     }
     expect(cpiOnly.best?.value.doubt).toBeUndefined();
-    // every collected fund whose status is open is priced on this plan, its figure marked (a Harel or Tachlit S&P 500 tracker among them)
-    const open = base.options.flatMap((o) => o.funds).filter((x) => x.rec.domicile === "IL" && x.rec.tax_status.foreign_investment_fund?.value !== false && x.rec.tax_status.foreign_investment_fund !== undefined && x.best);
-    expect(open.length).toBeGreaterThan(0);
-    for (const f of open) expect(f.best?.value.doubtRules, f.rec.id).toEqual(["TXS-14"]);
+    // every collected fund whose documents name it one is priced on this plan with no doubt (a Harel or Tachlit S&P 500 tracker among
+    // them), and every one whose status is not known with the doubt
+    const funds = base.options.flatMap((o) => o.funds).filter((x) => x.rec.domicile === "IL" && x.best);
+    const namedOne = funds.filter((x) => typeof x.rec.tax_status.foreign_investment_fund?.value === "string");
+    expect(namedOne.length).toBeGreaterThan(0);
+    for (const f of namedOne) expect(f.best?.value.doubt, f.rec.id).toBeUndefined();
+    for (const f of funds.filter((x) => x.rec.tax_status.foreign_investment_fund?.value === null)) expect(f.best?.value.doubtRules, f.rec.id).toEqual(["TXS-14"]);
   });
   it("where the dollar moves as prices do (A-03 = A-02), both readings agree: the twins are ranked, each at the value of the fund they copy", () => {
     const view = buildInvest({ bundle: twins, index: sp, plan: plan(), assumptions: { fxChange: 2 } });

@@ -50,19 +50,21 @@ describe("a deal priced with a fee switched off", () => {
   });
 });
 
-describe("a deal priced on a fund whose figure rests on the site's cautious reading (method §13)", () => {
-  it("marks what is left, which rests on the exit tax, and none of the fee costs before it", () => {
+describe("a deal priced on a fund whose figure rests on the site's reading of an open tax index (D119, method §13)", () => {
+  it("tags what is left, which rests on the exit tax, and none of the fee costs before it", () => {
     const deal = fromHouse("psagot");
     const b = withDeals(bundle, [deal], data.kinds);
     const sp = indexById(b, "index-sp500");
     if (!sp) throw new Error("the bundle prices the S&P 500");
-    // a Tel Aviv line of a foreign fund whose annex states no index, on a plan whose dollar stands still while prices rise: its readings split
+    // a Tel Aviv line of a foreign fund whose annex states no index, its documents read: the site's reading of TXF-04
     const fundIds = bundle.funds.filter((f) => f.exposure_id === "index-sp500" && f.domicile !== "IL" && f.trading_currency_on_tase !== null && !f.tax_ruling?.index).map((f) => f.id);
     const got = [...dealOnFunds({ bundle: b, index: sp, plan, fundIds, providerId: dealProviderId(deal.id) }).values()].filter((x): x is Extract<DealOnPlan, { kind: "ok" }> => x.kind === "ok");
     expect(got.length).toBeGreaterThan(0);
     for (const at of got) {
-      expect(at.left(1_000, "left").doubtRules).toEqual(["TXF-04"]);
-      expect(at.figure(10, "fee").doubt).toBeUndefined();
+      const left = at.left(1_000, "left");
+      expect(left.labels).toContainEqual({ code: "reading", ruleId: "TXF-04" });
+      expect(left.doubt).toBeUndefined();
+      expect(at.figure(10, "fee").labels?.some((l) => l.ruleId === "TXF-04") ?? false).toBe(false);
     }
   });
 });

@@ -353,12 +353,12 @@ describe("Part A: the ledger on single instruments", () => {
     const s16: SecuritiesInput = {
       goal: { amountNow: 100_000, monthly: 0, months: 60 },
       market: { grossReturn: 0.06, inflation: 0.025, fxChange: 0.01 },
-      fund: { kind: "tase-foreign-fund", recordCurrency: "USD", drag: { management: 0.0007, foreignWithholding: 0.0023 } },
+      fund: { kind: "tase-foreign-fund", recordCurrency: "USD", notKnown: "documents", drag: { management: 0.0007, foreignWithholding: 0.0023 } },
       tariff: { ...s14Tariff, custody: { rate: 0.0015, everyMonths: 3 } },
       profile: {},
     };
-    // the fund's annex states no index, so TXF OQ10 holds it between the exchange rate and the CPI (F-04); the scenario's arithmetic is the
-    // exchange rate's, made under that reading
+    // the fund's annex states no index and the site did not read its documents (`notKnown`), so TXF OQ10 holds it between the exchange rate
+    // and the CPI (F-04, D119); the scenario's arithmetic is the exchange rate's, made under that reading
     const r = runSecurities(s16, { ...ctx, readings: { "TXF OQ10": "fx" as const } });
     const g = golden("S16");
     g.value("real", r.real, 106_853.98);

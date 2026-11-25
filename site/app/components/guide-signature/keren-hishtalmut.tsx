@@ -121,7 +121,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   // what a run qualifies travels with what comes out of it: the deposits are plain, the tax leaves the fee flags behind
   const ranValue = (value: number, about: string, isTax: boolean, formula = "F-96", inputs = common) => {
     const flags = [...new Set(picked.runs.flatMap((r) => r.flags.map((f) => f.code)))].filter(isTax ? notFeeFlag : () => true);
-    return computed(value, "nis", formula, inputs, { today, about, rules, flags, labels: picked.runs.flatMap((r) => r.labels.map((l) => ({ code: l.code, ruleId: l.ruleId }))) });
+    return computed(value, "nis", formula, inputs, { today, about, rules, flags, labels: picked.runs.flatMap((r) => r.labels) });
   };
   // the year picked as one bar: what went in, the return before fees, and what a loss, the fees and the tax took (F-96)
   const partValue = (part: PileBarPart): SiteValue | null => {

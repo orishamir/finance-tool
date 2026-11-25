@@ -13,7 +13,7 @@ import { fmt, formatValue } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isOpenValue, isParameter, isWeak, ownBy, ruleFigure, statementKey, strengthOf, type SiteValue } from "../lib/value";
+import { isOpenValue, isParameter, isWeak, ownBy, ruleFigure, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
@@ -500,6 +500,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
   // a computed figure's warnings stand together under its name, above its formula and inputs: under a long list of inputs the strength note
   // sat below a small phone's fold; a sourced figure's source stands directly under its name, and its strength note after it
   const warningsFirst = value.state === "computed";
+  const rulesNamed = sheetRules(value);
   return (
     <div className="flex flex-col gap-3.5">
       <header className="flex flex-col gap-1">
@@ -634,16 +635,16 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
             </dl>
           </div>
           )}
-          {value.rulesUsed && value.rulesUsed.length > 0 && (
+          {rulesNamed.length > 0 && (
             <div className="flex flex-col gap-1.5">
               <span className="text-sm text-muted-foreground">{copy.computed.rules}</span>
               <div className="flex flex-col gap-2">
                 {/* each rule is a chip that opens its card, with its source; beside it only a source weaker than primary, which the reader
                     must see here */}
-                {value.rulesUsed.map((r) => (
+                {rulesNamed.map((r) => (
                   <span key={r.id} className="flex flex-wrap items-center gap-1.5 min-w-0">
                     <RuleRef id={r.id} />
-                    {r.strength !== "primary" && <StrengthLabel strength={r.strength} />}
+                    {r.strength && r.strength !== "primary" && <StrengthLabel strength={r.strength} />}
                   </span>
                 ))}
               </div>

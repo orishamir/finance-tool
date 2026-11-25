@@ -40,7 +40,8 @@ export type Label = RuleLabel | CautiousLabel;
 
 /**
  * A label a rule's use gives a number: `secondary-source` and `institution-source` from the rule's strength; `reading` where the rule base
- * gives its own reading (TXI-04); `derived` where a figure is derived rather than stated (TXS-12(b)); `proxy` where an input stands in for
+ * gives its own reading (TXI-04), or where the run takes the site's own reading of an open tax index (D119, `RuleBook.taxIndex`), whose rule
+ * may be open; `derived` where a figure is derived rather than stated (TXS-12(b)); `proxy` where an input stands in for
  * another (MF-34).
  */
 export interface RuleLabel {
@@ -51,19 +52,19 @@ export interface RuleLabel {
 /**
  * The site's cautious reading of an open case (method §13, `SplitPolicy` "cautious"): its readings split, and the run took the one that
  * leaves the holder less, so the figure is the site's conclusion and a page marks it on the figure itself. `ruleId` is the case's rule, which
- * may be open. `notKnown`: what the site does not know of the fund the case is met for, beside the open law (`NotKnown`); absent where the
- * fund's own documents were read and settle its facts.
+ * may be open. `notKnown`: what the site does not know of the fund the case is met for, beside the open law (`NotKnown`); a fund whose own
+ * documents the site read takes its own reading and meets no such case (D119).
  */
 export interface CautiousLabel {
   code: "cautious";
   ruleId: string;
-  notKnown?: NotKnown;
+  notKnown: NotKnown;
 }
 
 /**
- * What the site does not know of a fund whose tax index is an open reading (F-04), which the doubt on its figures says beside the open law:
- * whether it is a foreign-investment fund, where the documents read do not settle it (`status`); or anything its own documents say, since
- * the site read none (`documents`: a fund the person typed, D44).
+ * What the site does not know of a fund whose tax index is an open reading (F-04), so that it has no reading of its own to apply (D119) and
+ * the doubt on its figures says why beside the open law: whether it is a foreign-investment fund, where the documents read do not settle it
+ * (`status`); or anything its own documents say, since the site read none (`documents`: a fund the person typed, D44).
  */
 export type NotKnown = "status" | "documents";
 
@@ -79,9 +80,9 @@ export const labelWeight: Record<Label["code"], number> = {
 
 /**
  * Every rule the engine may label the site's own reading: `reading`, some only when a condition holds (an index that fell below a deposit's,
- * a payment after the period), and `cautious`, the rule of every open reading whose split takes the cautious reading (`SplitPolicy`): a
- * page holds room for the reading mark on a row that cites one, so the mark never moves the screen when it appears. A test holds this list
- * to the engine's `label("reading", …)` calls and those open readings.
+ * a payment after the period, a fund whose documents the site read on an open tax index), and `cautious`, the rule of every open reading
+ * whose split takes the cautious reading (`SplitPolicy`): a page holds room for the reading mark on a row that cites one, so the mark never
+ * moves the screen when it appears. A test holds this list to the engine's `label("reading", …)` calls and those open readings.
  */
 export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-04", "TXF-11", "TXH-11", "TXK-07", "TXS-14"];
 

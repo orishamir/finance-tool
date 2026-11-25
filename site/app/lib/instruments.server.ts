@@ -358,14 +358,14 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
   if (!isShekel(rec.currency)) missing.push(`${wrapperId}: fund "${rec.id}" is in ${rec.currency}; the exchange-rate change (A-03) and the start rate are not in P-05`);
   if (kind === "tase-foreign-fund") {
     // F-04, D84: the index the fund's own annex states under its ruling, and the record's currency, whose exchange rate is one reading of
-    // the index of a line whose annex states none (TXF OQ10), read as the indices page reads them (`fundOf`)
+    // the index of a line whose annex states none (TXF OQ10) for a fund the site does not know, read as the indices page reads them (`fundOf`)
     const built = fundOf(rec, kind).fund;
     if (built.statedIndex) fund.statedIndex = built.statedIndex;
     if (built.recordCurrency) fund.recordCurrency = built.recordCurrency;
   }
   // TXS-14, F-04: the fund's status as a foreign-investment fund, read as the indices page reads it (`fundOf`): the principal currency its
-  // documents name, or, where its record says the status is not known, its index's foreign currency as the candidate; such a fund is run
-  // under both readings of TXS OQ26 (method §13), with A-03 for that currency at its default, 0 (`principalFxChange`, below)
+  // documents name, run on as the site's reading of TXS OQ26 (D119), or, where its record says the status is not known, its index's foreign
+  // currency as the candidate, run under both readings (method §13); A-03 for that currency at its default, 0 (`principalFxChange`, below)
   if (kind === "israeli-fund") {
     const exposure = loadExposures().find((e) => e.id === rec.exposure_id);
     const built = fundOf(rec, kind, { foreignCurrency: exposure && !isShekel(exposure.currency) ? exposure.currency : undefined }).fund;
@@ -374,7 +374,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
       if (principal !== exposure?.currency) missing.push(`${wrapperId}: fund "${rec.id}" names principal currency ${principal}, not its exposure's ${exposure?.currency ?? "(no exposure)"} (F-04)`);
       fund.principalCurrency = principal;
     }
-    // what the site does not know of the fund (its status), which the doubt on a cautious figure says
+    // what the site does not know of the fund (its status), which keeps it from the site's reading and which the doubt on a cautious figure says
     if (built.notKnown) fund.notKnown = built.notKnown;
   }
   // TXF-11: an accumulating foreign fund whose own annex reports the ruling is taxed at sale on it, and ranked

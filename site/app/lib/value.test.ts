@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { foreignInvestmentFundIndex, openReadings, type FundStatement, type Label } from "@finance-tool/engine";
 import { numbers } from "../copy";
-import { carriedBy, compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, recheckStale, staleCma, staleCmaFee, type SiteValue } from "./value";
+import { carriedBy, compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, recheckStale, sheetRules, staleCma, staleCmaFee, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -155,9 +155,9 @@ describe("differenceOf and sumOf", () => {
     expect(sumOf({}, "F-91", { today }).value).toBeNull();
   });
   it("a difference wears the doubt of either figure it is worked out from", () => {
-    const cautious = computed(900, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXF-04" }] });
+    const cautious = computed(900, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXF-04", notKnown: "documents" }] });
     const plain = computed(800, "nis", "F-65", {}, { today });
-    expect(cautious.doubt).toBe(numbers.readingDoubt["TXF-04"]?.known);
+    expect(cautious.doubt).toBe(numbers.readingDoubt["TXF-04"]?.documents);
     for (const d of [differenceOf(["א", cautious], ["ב", plain], "F-65", { today }), differenceOf(["א", plain], ["ב", cautious], "F-65", { today })]) {
       expect(d.doubt).toBe(cautious.doubt);
       expect(d.doubtRules).toEqual(["TXF-04"]);
@@ -165,8 +165,8 @@ describe("differenceOf and sumOf", () => {
     expect(differenceOf(["א", plain], ["ב", plain], "F-65", { today }).doubt).toBeUndefined();
   });
   it("a difference names which of its two figures carry the doubt, with the rules of each, so its sheet can say which fund it is about", () => {
-    const txf = computed(900, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXF-04" }] });
-    const txs = computed(850, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXS-14" }] });
+    const txf = computed(900, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXF-04", notKnown: "documents" }] });
+    const txs = computed(850, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXS-14", notKnown: "status" }] });
     const plain = computed(800, "nis", "F-65", {}, { today });
     expect(differenceOf(["א", plain], ["ב", txf], "F-65", { today }).doubtFrom).toEqual(["ב"]);
     const both = differenceOf(["א", txf], ["ב", txs], "F-65", { today });
@@ -174,7 +174,7 @@ describe("differenceOf and sumOf", () => {
     expect(both.doubtRules).toEqual(["TXF-04", "TXS-14"]);
     expect(differenceOf(["א", plain], ["ב", plain], "F-65", { today }).doubtFrom).toBeUndefined();
     // a difference whose own run is the cautious reading says its own doubt, from no input
-    expect(differenceOf(["א", plain], ["ב", txf], "F-65", { today, labels: [{ code: "cautious", ruleId: "TXS-14" }] }).doubtFrom).toBeUndefined();
+    expect(differenceOf(["א", plain], ["ב", txf], "F-65", { today, labels: [{ code: "cautious", ruleId: "TXS-14", notKnown: "status" }] }).doubtFrom).toBeUndefined();
   });
 });
 
@@ -183,11 +183,11 @@ describe("the doubt of the site's cautious reading (method §13)", () => {
   it("has words for the rule of every open case whose split takes the cautious reading, and for no other", () => {
     expect(Object.keys(numbers.readingDoubt).sort()).toEqual(openReadings.filter((o) => o.onSplit === "cautious").map((o) => o.ruleId).sort());
   });
-  it("has words for every fund a cautious case is met for: one whose documents were read, one the person typed, and one whose status is not known where the case reads a status", () => {
+  it("has words for every fund a cautious case is met for, one the site does not know: one the person typed, and one whose status is not known where the case reads a status, and none for a fund whose documents were read, which takes the site's own reading (D119)", () => {
     for (const o of openReadings.filter((x) => x.onSplit === "cautious")) {
       const words = numbers.readingDoubt[o.ruleId];
-      expect(words?.known, o.ruleId).toBeTruthy();
       expect(words?.documents, o.ruleId).toBeTruthy();
+      expect(Object.keys(words ?? {}).every((k) => k === "documents" || k === "status"), o.ruleId).toBe(true);
     }
     expect(numbers.readingDoubt[foreignInvestmentFundIndex.ruleId]?.status).toBeTruthy();
   });
@@ -197,6 +197,14 @@ describe("the doubt of the site's cautious reading (method §13)", () => {
     expect(of({ code: "cautious", ruleId: "TXS-14", notKnown: "documents" }).doubt).toBe(numbers.readingDoubt["TXS-14"]?.documents);
     expect(of({ code: "cautious", ruleId: "TXF-04", notKnown: "documents" }).doubt).toBe(numbers.readingDoubt["TXF-04"]?.documents);
     expect(of({ code: "reading", ruleId: "TXF-04" }).doubt).toBeUndefined();
+    expect(of({ code: "reading", ruleId: "TXS-14" }).doubt).toBeUndefined();
+  });
+  it("names in the sheet the open rule the site reads for the fund, which the run did not read, after the rules it read (D119)", () => {
+    const read = [{ id: "TXS-09", strength: "primary" as const }];
+    expect(sheetRules({ rulesUsed: read, labels: [{ code: "reading", ruleId: "TXF-04" }] })).toEqual([...read, { id: "TXF-04", strength: null }]);
+    // a rule read is named once, with its strength; a label of another kind names nothing
+    expect(sheetRules({ rulesUsed: [{ id: "TXS-14", strength: "primary" }], labels: [{ code: "reading", ruleId: "TXS-14" }] })).toEqual([{ id: "TXS-14", strength: "primary" }]);
+    expect(sheetRules({ rulesUsed: read, labels: [{ code: "cautious", ruleId: "TXF-04", notKnown: "documents" }] })).toEqual(read);
   });
 });
 

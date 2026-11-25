@@ -4,7 +4,7 @@
 // readings (open-readings.ts) is read under the reading the run's context chooses.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountInYear, movesBy, movingYears, yearlyMoveOf } from "./formulas/indexation.ts";
-import { OpenReadingError, openReadingOf, type OpenReading } from "./open-readings.ts";
+import { OpenReadingError, openReadingOf, type OpenReading, type TaxIndexOpenReading, type TaxIndexReadingId } from "./open-readings.ts";
 import { labelWeight, type Label, type NotKnown, type RuleLabel, type RunContext } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
@@ -70,7 +70,7 @@ export class MissingRuleError extends Error {
 
 const percentUnits = new Set(["pct", "pct_per_year", "pct_of_deposit", "pct_of_trade", "pct_of_balance_per_period"]);
 
-const labelFor: Partial<Record<Strength, Label["code"]>> = {
+const labelFor: Partial<Record<Strength, RuleLabel["code"]>> = {
   secondary: "secondary-source",
   institution: "institution-source",
 };
@@ -97,6 +97,12 @@ export interface RuleBook {
    * cautious reading carries (`CautiousLabel`).
    */
   reading<O extends OpenReading>(open: O, notKnown?: NotKnown): O["readings"][number];
+  /**
+   * D119, F-04: the reading of a tax-index case a fund's run is made under. A fund whose own documents the site read (`notKnown` absent) is
+   * run under the site's own reading (`siteReading`), with a `reading` label on the case's rule, which may be open and so is not read; the
+   * run never meets the case. A fund the site does not know meets it as `reading` does.
+   */
+  taxIndex(open: TaxIndexOpenReading, notKnown: NotKnown | undefined): TaxIndexReadingId;
   used(): UsedRule[];
   labels(): Label[];
   /**
@@ -226,6 +232,11 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
       rule(id);
     },
     reading: readingOf,
+    taxIndex(open, notKnown) {
+      if (notKnown) return readingOf(open, notKnown).id;
+      extraLabels.push({ code: "reading", ruleId: open.ruleId });
+      return open.siteReading;
+    },
     label(code, ruleId) {
       rule(ruleId);
       extraLabels.push({ code, ruleId });

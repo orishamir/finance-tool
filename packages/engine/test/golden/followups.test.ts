@@ -69,13 +69,13 @@ describe("Part E: follow-ups of 2026-10-26", () => {
   const s52 = (grossReturn: number): SecuritiesInput => ({
     goal: { amountNow: 100_000, monthly: 0, months: 60 },
     market: { grossReturn, inflation: 0.025, fxChange: -0.03 },
-    fund: { kind: "tase-foreign-fund", recordCurrency: "USD", drag: { management: 0.0007, foreignWithholding: 0.0023 } },
+    fund: { kind: "tase-foreign-fund", recordCurrency: "USD", notKnown: "documents", drag: { management: 0.0007, foreignWithholding: 0.0023 } },
     tariff: { ...s14Tariff, custody: { rate: 0.0015, everyMonths: 3 } },
     profile: {},
   });
 
-  // the fund's annex states no index, so TXF OQ10 holds it between the exchange rate and the CPI (F-04); S52's arithmetic is the exchange
-  // rate's, made under that reading
+  // the fund's annex states no index and the site did not read its documents (`notKnown`), so TXF OQ10 holds it between the exchange rate
+  // and the CPI (F-04, D119); S52's arithmetic is the exchange rate's, made under that reading
   const fxCtx = { ...ctx, readings: { "TXF OQ10": "fx" as const } };
 
   it("S52 (a) TASE foreign fund when the shekel strengthens: the real gain is the nominal gain (TXS-02, TXF OQ10)", () => {

@@ -200,27 +200,29 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
 
   it("lets the reading that leaves less stand, whole, where a cautious case's readings split; a stopping case stops on its question", () => {
     // a made-up case of each policy, over two readings whose results differ in the value and in another output
-    const cautious = { kind: "tax-index" as const, ruleId: "R-1", question: "R OQ1", onSplit: "cautious" as const, readings: [{ id: "principal" as const }, { id: "cpi" as const }] };
+    const cautious = { kind: "tax-index" as const, ruleId: "R-1", question: "R OQ1", onSplit: "cautious" as const, readings: [{ id: "principal" as const }, { id: "cpi" as const }], siteReading: "principal" as const };
     const stopping = { ...cautious, onSplit: "stop" as const };
     const none: Label[] = [];
     const outcome: Outcome = { code: "eligible" };
     const byReading = { principal: { real: 90, nominal: 120, outcome, flags: [{ code: "F" }], labels: none }, cpi: { real: 95, nominal: 125, outcome, flags: [{ code: "C" }], labels: none } };
-    const runOf = (open: typeof cautious | typeof stopping) => (c: typeof ctx) => {
+    const runOf = (open: typeof cautious | typeof stopping, notKnown?: "status") => (c: typeof ctx) => {
       const choice = c.readings?.[open.question];
-      if (choice === undefined) throw new OpenReadingError(open);
+      if (choice === undefined) throw new OpenReadingError(open, notKnown);
       if (choice === null) throw new BlockedError(open.ruleId, open.question);
       return byReading[choice as "principal" | "cpi"];
     };
     const fields = { real: "value", nominal: "output", outcome: "output", flags: "trail", labels: "trail" } as const;
     // the lower value's result, every field of it, no flag of the question, and the site's cautious reading of the case's rule
-    expect(acrossReadings(ctx, runOf(cautious), fields)).toEqual({ ...byReading.principal, labels: [{ code: "cautious", ruleId: "R-1" }] });
+    expect(acrossReadings(ctx, runOf(cautious, "status"), fields)).toEqual({ ...byReading.principal, labels: [{ code: "cautious", ruleId: "R-1", notKnown: "status" }] });
     expect(() => acrossReadings(ctx, runOf(stopping), fields)).toThrow(BlockedError);
     // a type that declares no value has none to read
-    expect(() => acrossReadings(ctx, runOf(cautious), { real: "output", nominal: "output", outcome: "output", flags: "trail", labels: "trail" })).toThrow(/declares 0/);
+    expect(() => acrossReadings(ctx, runOf(cautious, "status"), { real: "output", nominal: "output", outcome: "output", flags: "trail", labels: "trail" })).toThrow(/declares 0/);
+    // a cautious case met for a fund the site knows is a broken invariant: such a fund takes the site's own reading (D119)
+    expect(() => acrossReadings(ctx, runOf(cautious), fields)).toThrow(/only for a fund the site does not know/);
   });
 
   it("takes a cautious case's readings that leave the same value as agreeing, and weighs no value before the exit tax against one after it", () => {
-    const cautious = { kind: "tax-index" as const, ruleId: "R-1", question: "R OQ1", onSplit: "cautious" as const, readings: [{ id: "principal" as const }, { id: "cpi" as const }] };
+    const cautious = { kind: "tax-index" as const, ruleId: "R-1", question: "R OQ1", onSplit: "cautious" as const, readings: [{ id: "principal" as const }, { id: "cpi" as const }], siteReading: "principal" as const };
     const none: Label[] = [];
     const eligible: Outcome = { code: "eligible" };
     type Run = { real: number; nominal: number; outcome: Outcome; flags: { code: string }[]; labels: Label[] };

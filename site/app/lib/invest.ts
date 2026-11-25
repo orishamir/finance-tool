@@ -4,7 +4,7 @@
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { bestRanked } from "./rank";
 import { gershayim } from "./format";
-import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, fundOf, recordDistribution, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, openReadings, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, fundOf, recordDistribution, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
 import { isShekel, type ExposureRecord, type FeesSnapshot, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomFund } from "./custom-entries";
@@ -806,13 +806,17 @@ export function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): 
 const rulesOf = (row: ComparedProvider) => row.run.rules.map((u) => ({ id: u.id, strength: u.strength as Strength }));
 /** What a figure after the run's tax rests on besides its rules: the fund's own statements the run read in place of one (D84, the tax index its annex states). */
 const statementsOf = (row: ComparedProvider) => row.run.statements ?? [];
-/** The run's labels, which a figure that rests on its tax carries: a cautious reading among them makes the figure's doubt (`readingDoubtOf`). */
+/**
+ * The run's labels, which a figure that rests on its tax carries: a cautious reading among them makes the figure's doubt (`readingDoubtOf`),
+ * the site's own reading of an open tax index its sheet's tag (D119).
+ */
 const labelsOf = (row: ComparedProvider) => row.run.labels;
 /**
- * Whether a figure before the exit tax carries a run's label: every one but a cautious reading's, whose open cases (the tax index of TXS
- * OQ26 and TXF OQ10, F-04) only the exit tax reads, so a cost before tax wears no doubt of theirs.
+ * Whether a figure before the exit tax carries a run's label: every one but those on the rule of an open tax index (TXS OQ26 and TXF OQ10,
+ * F-04), the site's reading or its cautious one, which only the exit tax reads, so a cost before tax wears no doubt or tag of theirs.
  */
-const beforeExitTax = (l: Label): boolean => l.code !== "cautious";
+const beforeExitTax = (l: Label): boolean => !TAX_INDEX_RULES.has(l.ruleId);
+const TAX_INDEX_RULES = new Set(openReadings.filter((o) => o.kind === "tax-index").map((o) => o.ruleId));
 
 /** What one engine run reads, for the sheet of a figure that comes out of it (`inputsOfRun`). */
 interface RunReads {
@@ -1053,7 +1057,8 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   const listing = listingOf(rec, subject.instrumentClass);
   const spec: Spec = { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass, ...(listing ? { listing } : {}) };
   // a fund whose tax rests on an open rule is listed with the reason and no rank (F-04, G-35): a TASE foreign fund that distributes, on
-  // TXF-04; a fund whose tax index is an open reading (TXS OQ26, TXF OQ10) computes, on the reading that leaves less where they split
+  // TXF-04; a fund whose tax index is an open reading (TXS OQ26, TXF OQ10) computes, on the site's reading where the site read its
+  // documents (D119), else on the reading that leaves less where they split
   const own = { goal: goalOf(ctx), market: { ...spec.market, inflation: ctx.plan.inflation }, fund: spec.fund, tariff: spec.currency ? { currency: spec.currency } : {}, profile: profileOf(ctx) };
   const stop = securitiesStopOf(own, ruleContext(ctx.bundle));
   if (stop) {

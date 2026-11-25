@@ -162,15 +162,28 @@ export function entered(value: number, unit: ValueObject["unit"], today: string,
 
 /**
  * The doubt a figure carries for the run labels it rests on (method §13, `SplitPolicy` "cautious"): the engine's `cautious` label, the
- * site's cautious reading of an open case, in the words for what the site does not know of the fund (`notKnown`), with the case's rule
- * beside it; none for any other label. A cautious case with no words is a broken invariant (a test holds the words to the cases).
+ * site's cautious reading of an open case for a fund it does not know, in the words for what it does not know of the fund (`notKnown`),
+ * with the case's rule beside it; none for any other label, the site's own `reading` of an open tax index among them (D119), which its
+ * sheet tags. A cautious case with no words is a broken invariant (a test holds the words to the cases).
  */
 function readingDoubtOf(labels: readonly Label[] | undefined): Pick<SiteValue, "doubt" | "doubtRules"> {
   const l = labels?.find((x): x is CautiousLabel => x.code === "cautious");
   if (!l) return {};
-  const words = numbers.readingDoubt[l.ruleId]?.[l.notKnown ?? "known"];
-  if (!words) throw new Error(`the cautious reading of ${l.ruleId} has no doubt in words for ${l.notKnown ?? "a fund whose documents were read"} (copy.ts numbers.readingDoubt)`);
+  const words = numbers.readingDoubt[l.ruleId]?.[l.notKnown];
+  if (!words) throw new Error(`the cautious reading of ${l.ruleId} has no doubt in words for ${l.notKnown} (copy.ts numbers.readingDoubt)`);
   return { doubt: words, doubtRules: [l.ruleId] };
+}
+
+/**
+ * The rules a computed figure's sheet names: those its runs read, with the strength they recorded, then each rule it carries the site's own
+ * `reading` of and did not read (no strength): an open rule whose open tax index the site reads for the fund (TXF-04, D119), which gives
+ * the run nothing to read, so its card is where the sheet says why.
+ */
+export function sheetRules(v: Pick<SiteValue, "rulesUsed" | "labels">): { id: string; strength: Strength | null }[] {
+  const read = v.rulesUsed ?? [];
+  const readIds = new Set(read.map((r) => r.id));
+  const unread = [...new Set((v.labels ?? []).filter((l) => l.code === "reading" && !readIds.has(l.ruleId)).map((l) => l.ruleId))];
+  return [...read, ...unread.map((id) => ({ id, strength: null }))];
 }
 
 /** A computed value with the formula and the inputs it came from (architecture 3.4). A label of a cautious reading makes its doubt (`readingDoubtOf`). */
