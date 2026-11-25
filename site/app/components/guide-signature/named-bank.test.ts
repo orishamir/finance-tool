@@ -55,3 +55,16 @@ describe("one bank's rate is named where it is quoted", () => {
     expect(sentence).toContain("של לאומי");
   });
 });
+
+describe("the savings plan's legend", () => {
+  it("names only the states the bars are in at the marked month: at the plan's end every deposit is paid out", () => {
+    const sig = buildGuidePage("savings-plan")?.signature;
+    if (!sig) throw new Error("the savings-plan page has no signature");
+    const html = render(createElement(SavingsPlanVisual, { data: sig, today: "2026-10-26" }));
+    // the legend holds the room of all three states, laid out unseen, and shows the one drawn
+    const count = (w: string) => text(html).split(w).length - 1;
+    expect(count("נעולה")).toBe(1);
+    expect(count("עוד לא הופקדה")).toBe(1);
+    expect(count("פנויה")).toBe(2);
+  });
+});

@@ -11,7 +11,7 @@ import { IconCopy } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, DocLink, LongestCase, PickList, SourcedTag, Swatch, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
 import { AsideLine, barScale, GroupLine, HouseLine, LONGEST_AMOUNT, LONGEST_YEARS, NoFundWords, whyNoKindAt, type WhyNone } from "./pair";
-import { byLegend, hasCurrent, legendLines, legendName, lineClass, lineOf, partName } from "./cost-lines";
+import { byLegend, hasCurrent, isDrawn, legendLines, legendName, lineClass, lineOf, partName } from "./cost-lines";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, FundTerms } from "./custom-entries";
@@ -95,7 +95,8 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const row = rows.find((h) => h.provider.id === houseId);
   if (!house || !row) return null;
   const scale = barScale(ok.map((h) => h.generic.costN!));
-  const lines = legendLines(!!view.index.israeli, ok.flatMap((h) => h.split.lines.map((l) => lineOf(l.line))));
+  const lines = legendLines(ok.flatMap((h) => h.split.lines));
+  const remainderDrawn = ok.some((h) => isDrawn(h.split.interaction));
   const local = rows.filter((h) => !h.provider.foreign && !h.provider.custom);
   const saved = bundle.snapshots.filter((s) => rows.some((h) => h.provider.id === s.id && !h.provider.custom)).map((s) => s.snapshot).sort();
   const standingCount = local.filter((h) => h.standing).length;
@@ -228,7 +229,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
         <ChartLegend
           pick={legendPick}
           items={[
-            { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
+            ...(remainderDrawn ? [{ id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder }] : []),
             ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass(l)} />, label: legendName(l, ok.some((h) => hasCurrent(h.split.lines))) })),
             ...(ok.some((h) => h.generic.costN! > scale) ? [{ id: "broken", label: c.pair.broken }] : []),
           ]}

@@ -3,12 +3,12 @@
 // before the end), a draggable date, and what is free and what is still locked on that date. Each deposit's value at the end is an engine
 // run of the plan's record from its month to the end.
 import { scaleLinear } from "d3-scale";
-import { useId, useMemo, useState } from "react";
+import { useId, useMemo, useState, type ReactNode } from "react";
 import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, factNumber, planModel } from "../../lib/guide-signature";
 
-import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, Stat, StatRow, Swatch, useWidth } from "../kit";
+import { Callout, ChartLegend, InputSlot, LongestCase, Marker, MarkerMark, Stat, StatRow, Swatch, useWidth } from "../kit";
 import { Num, Ruled, Term } from "../provenance";
 import { figure, inputSite, rulesOfBundle, SigAmountField, useSigInputs, typed, type VisualProps } from "./kit";
 
@@ -16,6 +16,16 @@ const TOP = 22;
 const AXIS = 24;
 /** The bars' height in px: 5 px a row at a plan of 36 deposits. */
 const LADDER = 180;
+
+/** A deposit's state at the marked month: paid out, still locked in the plan, or not yet put in. */
+type LadderState = "free" | "locked" | "notYet";
+
+/** The legend's items, one per state, in the bars' order. */
+const legendItems = [
+  { id: "free", swatch: <Swatch shape="box" className="bg-chart-value" />, label: copy.plan.legend.free },
+  { id: "locked", swatch: <Swatch shape="box" className="bg-muted border border-chart-marker" />, label: copy.plan.legend.locked },
+  { id: "notYet", swatch: <Swatch shape="box" className="border border-chart-axis" />, label: copy.plan.legend.notYet },
+] satisfies { id: LadderState; swatch: ReactNode; label: string }[];
 
 export function SavingsPlanVisual({ data, today }: VisualProps) {
   const bundle = data.bundles["savings-plan"]!;
@@ -33,6 +43,8 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
   // the axis runs to the plan's end, where every deposit is paid out; the date starts there
   const last = term;
   const m = Math.min(last, Math.max(0, month ?? term));
+  const stateAt = (r: { unlock: number; from: number }): LadderState => (r.unlock <= m ? "free" : r.from <= m ? "locked" : "notYet");
+  const drawnStates = new Set<string>(model?.rows.map(stateAt) ?? []);
   const [box, width] = useWidth();
   const pid = useId().replace(/:/g, "");
   const rowH = LADDER / Math.max(1, model?.rows.length ?? term);
@@ -64,13 +76,10 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
         </Callout>
       )}
 
-      <ChartLegend
-        items={[
-          { id: "free", swatch: <Swatch shape="box" className="bg-chart-value" />, label: copy.plan.legend.free },
-          { id: "locked", swatch: <Swatch shape="box" className="bg-muted border border-chart-marker" />, label: copy.plan.legend.locked },
-          { id: "notYet", swatch: <Swatch shape="box" className="border border-chart-axis" />, label: copy.plan.legend.notYet },
-        ]}
-      />
+      {/* the legend names only the states drawn at the marked month, holding the room of all three so the chart stays put as the marker moves */}
+      <LongestCase cases={[<ChartLegend key="all" items={legendItems} />]}>
+        <ChartLegend items={legendItems.filter((it) => drawnStates.has(it.id))} />
+      </LongestCase>
 
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium">{copy.plan.marker}</span>
@@ -84,7 +93,7 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
             </defs>
             {model?.rows.map((r, i) => {
               const y = TOP + i * rowH;
-              const state = r.unlock <= m ? "free" : r.from <= m ? "locked" : "notYet";
+              const state = stateAt(r);
               return (
                 <rect
                   key={r.from}

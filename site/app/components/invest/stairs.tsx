@@ -443,22 +443,26 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
         </Button>
       </div>
         <p className="text-xs text-muted-foreground">{t.axisNote}</p>
-        {/* one legend for the chart, above it, in the order of the steps (charts.md) */}
+        {/* one legend for the chart, above it, in the order of the steps (charts.md), naming only the kinds of step the chart draws */}
         <div className="flex flex-wrap gap-x-[18px] gap-y-1 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5">
-            <i className={cx("inline-block size-3 rounded-[2px]", STAIR_SWATCH.start)} />
-            {t.startPoint}
-          </span>
-          {LANES.map((l) => (
+          {visible.some((l) => !l.stair.lane) && (
+            <span className="inline-flex items-center gap-1.5">
+              <i className={cx("inline-block size-3 rounded-[2px]", STAIR_SWATCH.start)} />
+              {t.startPoint}
+            </span>
+          )}
+          {LANES.filter((lane) => visible.some((l) => l.stair.lane === lane)).map((l) => (
             <span key={l} className="inline-flex items-center gap-1.5">
               <i className={cx("inline-block size-3 rounded-[2px]", STAIR_SWATCH[l])} />
               {t.lanes[l].word}
             </span>
           ))}
-          <span className="inline-flex items-center gap-1.5">
-            <i className="inline-block size-3 rounded-[2px] border-[1.5px] border-muted-foreground" />
-            {t.legendNext}
-          </span>
+          {visible.some((l) => !l.stair.taken) && (
+            <span className="inline-flex items-center gap-1.5">
+              <i className="inline-block size-3 rounded-[2px] border-[1.5px] border-muted-foreground" />
+              {t.legendNext}
+            </span>
+          )}
         </div>
         <StairsChart
           columns={columns}

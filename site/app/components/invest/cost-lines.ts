@@ -24,9 +24,17 @@ export const lineRank = (item: string): number => LINE_ORDER.indexOf(item);
 export const byLegend = <L extends { line: FeeLine }>(ls: readonly L[]): L[] =>
   [...ls].sort((a, b) => lineRank(lineOf(a.line)) - lineRank(lineOf(b.line)) || Number(a.line === "account") - Number(b.line === "account") || (a.line < b.line ? -1 : a.line > b.line ? 1 : 0));
 
-/** A legend names every account line whichever row or pair is shown, in one order, so its items keep their places from one pick to the next.
- *  An index in shekels has no conversion line to name. */
-export const legendLines = (israeli: boolean, used: readonly string[]) => [...Object.keys(CLASS).filter((l) => l !== "fx" || !israeli), ...(used.includes("other") ? ["other"] : [])];
+/** The least a part costs to be drawn on a bar: a part under half a shekel is a whole 0 there (the kit's cost stack). */
+const DRAWN = 0.5;
+/** Whether a part of this cost is drawn on a bar. */
+export const isDrawn = (cost: number): boolean => cost >= DRAWN;
+
+/** A legend's account lines, in the bars' order: each drawn on any of the bars it stands over (`lines`, every row's or pair's, whichever is
+ *  picked, so its items keep their places from one pick to the next), none that no bar draws (an index in shekels has no conversion). */
+export const legendLines = (lines: readonly { line: FeeLine; cost: number }[]): string[] => {
+  const drawn = new Set(lines.filter((l) => isDrawn(l.cost)).map((l) => lineOf(l.line)));
+  return LINE_ORDER.filter((l) => drawn.has(l));
+};
 
 /** A legend item's name: the account fee's item stands for a bank's current account too, which shares its colour, where a bar shown has
  *  one (`current`); else it names the securities account's fee alone (a legend item names only what is drawn). */
