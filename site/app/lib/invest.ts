@@ -393,6 +393,16 @@ function candidates(s: FeesSnapshot, option: OptionId): Cand[] {
   return [...out, plain];
 }
 
+/**
+ * The one exchange abroad a house trades on where every trade line of its list for funds bought abroad names it (One Zero's and Altshuler
+ * Trade's name the United States alone); null where a line names no exchange or the lines name more than one.
+ */
+function onlyVenueAbroad(s: FeesSnapshot): Venue | null {
+  const venues = new Set(s.lines.filter((l) => l.base === "trade" && l.level === "list" && l.applies_to.includes("foreign_securities")).map((l) => venueOfBand(l.band)));
+  const [only, ...more] = [...venues];
+  return more.length === 0 && only ? only : null;
+}
+
 // ---------------------------------------------------------------- the run
 
 interface Spec {
@@ -672,6 +682,13 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
       continue;
     }
     const fails = got.flatMap((g) => (g.row.kind === "not-comparable" ? [reasonOf(g.row, scoped(s))] : g.row.noLine.includes("trade") ? [{ code: "no-applicable-line" as const, detail: `no trade line of the ${s.snapshot} snapshot applies to ${spec.cls}` }] : []));
+    // a house that trades abroad only on another exchange does not sell the fund, whatever its other readings stop on: the readings on its
+    // exchange were never run for this fund, and the plain reading's failure (Altshuler Trade's three US plans read as "ambiguous") is not why
+    const elsewhere = option === "abroad" && fundVenue !== null ? onlyVenueAbroad(scoped(s)) : null;
+    if (elsewhere !== null && elsewhere !== fundVenue) {
+      out.set(s.id, { kind: "fail", reason: { code: "other-venue", venue: elsewhere } });
+      continue;
+    }
     // the most telling reason: any but "no line" and "ambiguous", then ambiguous, then no line
     const pick: NotComparable = fails.find((f) => f.code !== "no-applicable-line" && f.code !== "ambiguous") ?? (otherVenue ? { code: "other-venue", venue: otherVenue } : null) ?? fails.find((f) => f.code === "ambiguous") ?? fails[0] ?? { code: "data-missing" as const, recorded: null };
     out.set(s.id, { kind: "fail", reason: pick });

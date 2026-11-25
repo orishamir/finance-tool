@@ -135,6 +135,18 @@ describe("invest page computation", () => {
     }
   });
 
+  it("a house that trades abroad only in the United States says so of a fund that trades in Europe, whatever its other readings stop on (2026-11-25)", () => {
+    // Altshuler Trade prints three US plans: its plain reading stopped on "several lines apply", which the page showed in place of the reason
+    const abroad = view.options.find((o) => o.id === "abroad")?.funds ?? [];
+    const europe = abroad.filter((f) => f.rec.identifiers.isin?.startsWith("IE"));
+    expect(europe.length).toBeGreaterThan(0);
+    for (const id of ["altshuler-trade", "one-zero"]) {
+      for (const f of europe) expect((f.byHouse[id] as { reason?: unknown } | undefined)?.reason, `${id} ${f.rec.id}`).toEqual({ code: "other-venue", venue: "us" });
+      // and a fund that trades in the United States is priced there
+      expect((abroad.find((f) => f.rec.id === "us-voo")?.byHouse[id] as { valueN?: number } | undefined)?.valueN, id).toBeGreaterThan(0);
+    }
+  });
+
   it("lists the equity indices of the records, none chosen for the person", () => {
     expect(knownIndices(bundle).map((i) => i.id)).toContain("index-sp500");
     expect(knownIndices(bundle).every((i) => i.exposure?.kind === "equity_index")).toBe(true);

@@ -1,7 +1,7 @@
 // A house's terms on the indices page (D106, `TermsPopup`): the deal popup filled from the house's latest price list, inside the kit's
-// `ReadOnly`, which is never saved or changed. Rendered on the collected data: on an index with a fund bought abroad, at a house whose list
-// has no case for it, the terms say what the list lacks and offer nothing that changes the deal, while the editable popup on the same
-// deal offers to add that case. Under each fee's name, the terms keep the one average of what the plan buys.
+// `ReadOnly`, which is never saved or changed. Rendered on the collected data, but for one list: on an index with a fund bought abroad, at a
+// house that trades it but whose list has no case for it, the terms say what the list lacks and offer nothing that changes the deal, while
+// the editable popup on the same deal offers to add that case. Under each fee's name, the terms keep the one average of what the plan buys.
 import { createElement, type ReactElement } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { houseAverage, invest, numbers, provenance as provenanceWords, site } from "../../copy";
@@ -27,10 +27,10 @@ const terms = (world: DealWorld, house: string, on: FeesData = data): string | n
 };
 
 /** The popup on a new deal filled from house `house`'s latest list, editable, as the page opens it from the house. */
-const editable = (world: DealWorld, house: string): string | null => {
-  const first = houseDeal(`house:${house}`, data, t);
+const editable = (world: DealWorld, house: string, on: FeesData = data): string | null => {
+  const first = houseDeal(`house:${house}`, on, t);
   if (!first) return null;
-  return html(createElement(DealPopup, { data, today: t, saved: [], writable: true, first, world, headId: "deal", onDeleted: () => undefined }));
+  return html(createElement(DealPopup, { data: on, today: t, saved: [], writable: true, first, world, headId: "deal", onDeleted: () => undefined }));
 };
 
 /** The words that open the line under a fee saying what the deal lacks for the funds bought abroad (`AbroadCaseLine`). */
@@ -47,22 +47,27 @@ function worldOn(index: IndexRef): DealWorld {
 }
 
 /**
- * An index with a fund bought abroad, and a house whose latest list has no case for it: the deal the list fills, priced on that fund on the
- * page's plan, waits on a case of a trade or a conversion.
+ * An index with a fund bought abroad that trades in Europe, and a house that trades there whose list, in `on`, has no case for it: the
+ * collected lists have none since a house that trades abroad on one exchange only says it does not sell a fund on the other (2026-11-25),
+ * so `on` is the fee page's data with the Europe case taken out of Psagot's trade fee, while the page's bundle still prices Psagot there.
+ * The deal the list fills, priced on that fund on the page's plan, waits on a case of a trade.
  */
-function abroadGap(): { world: DealWorld; house: string } | null {
+const HOUSE = "psagot";
+const on: FeesData = {
+  ...data,
+  houses: data.houses.map((h) => (h.id !== HOUSE ? h : { ...h, fees: h.fees.map((f) => (f.kind === "trade" && f.cases ? { ...f, cases: f.cases.filter((c) => !c.when.some((w) => Array.isArray(w) && w.includes("europe"))) } : f)) })),
+};
+function abroadGap(): { world: DealWorld; house: string; on: FeesData } | null {
+  const deal = houseDeal(`house:${HOUSE}`, on, t);
+  if (!deal) return null;
   for (const index of knownIndices(bundle)) {
     const world = worldOn(index);
     const abroad = allFunds(world.view).filter((x) => x.option === "abroad").map((f) => f.rec.id);
     if (abroad.length === 0) continue;
-    for (const h of data.houses) {
-      const deal = houseDeal(`house:${h.id}`, data, t);
-      if (!deal) continue;
-      const got = dealOnFunds({ bundle: withDeals(bundle, [deal], data.kinds), index, plan, fundIds: abroad, providerId: dealProviderId(deal.id) });
-      for (const at of got.values()) {
-        const missing = at.kind === "fail" && at.reason.code === "deal-unpriced" ? at.reason.missing : null;
-        if (missing?.why === "case" && (missing.kind === "trade" || missing.kind === "fx")) return { world, house: h.id };
-      }
+    const got = dealOnFunds({ bundle: withDeals(bundle, [deal], on.kinds), index, plan, fundIds: abroad, providerId: dealProviderId(deal.id) });
+    for (const at of got.values()) {
+      const missing = at.kind === "fail" && at.reason.code === "deal-unpriced" ? at.reason.missing : null;
+      if (missing?.why === "case" && missing.kind === "trade") return { world, house: HOUSE, on };
     }
   }
   return null;
@@ -70,14 +75,14 @@ function abroadGap(): { world: DealWorld; house: string } | null {
 
 describe("a house's terms (TermsPopup, read-only)", () => {
   const found = abroadGap();
-  it("the data has an index with a fund bought abroad at a house whose list has no case for it", () => {
+  it("the data has an index with a fund bought abroad at a house that trades it, on a list with no case for it", () => {
     expect(found).not.toBeNull();
   });
   it("say what the house's list lacks for the funds bought abroad, and offer nothing that changes the deal: the only buttons are the figures' sources, the fold and the way to enter terms of one's own", () => {
     if (!found) throw new Error("no index has a fund bought abroad at a house whose list lacks its case");
-    const { world, house } = found;
+    const { world, house, on: list } = found;
     const writes = [vi.spyOn(dealStore, "update"), vi.spyOn(dealStore, "set")];
-    const out = terms(world, house) ?? "";
+    const out = terms(world, house, list) ?? "";
     expect(shown(out)).toContain(LACKS);
     expect(shown(out)).not.toContain(w.abroad.add);
     const short = world.view.providers.find((p) => p.id === house)?.short ?? house;
@@ -93,7 +98,7 @@ describe("the editable deal popup on the same house's list", () => {
   it("offers to add the case the list lacks for the funds bought abroad", () => {
     const found = abroadGap();
     if (!found) throw new Error("no index has a fund bought abroad at a house whose list lacks its case");
-    const out = editable(found.world, found.house) ?? "";
+    const out = editable(found.world, found.house, found.on) ?? "";
     expect(shown(out)).toContain(LACKS);
     expect(buttons(out)).toContain(`+ ${w.abroad.add}`);
   });
