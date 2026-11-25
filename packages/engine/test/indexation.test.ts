@@ -196,6 +196,25 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     expect(mergedLabels([{ labels: [{ code: "derived", ruleId: "Z" }] }, { labels: [{ code: "secondary-source", ruleId: "Z" }] }])).toEqual([{ code: "derived", ruleId: "Z" }]);
   });
 
+  it("lets the reading that leaves less stand, whole, where a cautious case's readings split; a stopping case stops on its question", () => {
+    // a made-up case of each policy, over two readings whose results differ in the value and in another output
+    const cautious = { kind: "tax-index" as const, ruleId: "R-1", question: "R OQ1", onSplit: "cautious" as const, readings: [{ id: "principal" as const }, { id: "cpi" as const }] };
+    const stopping = { ...cautious, onSplit: "stop" as const };
+    const byReading = { principal: { real: 90, nominal: 120, flags: [{ code: "F" }] }, cpi: { real: 95, nominal: 125, flags: [{ code: "C" }] } };
+    const runOf = (open: typeof cautious | typeof stopping) => (c: typeof ctx) => {
+      const choice = c.readings?.[open.question];
+      if (choice === undefined) throw new OpenReadingError(open);
+      if (choice === null) throw new BlockedError(open.ruleId, open.question);
+      return byReading[choice as "principal" | "cpi"];
+    };
+    const fields = { real: "value", nominal: "output", flags: "trail" } as const;
+    // the lower value's result, every field of it, and no flag of the question: the reading is the result's own
+    expect(acrossReadings(ctx, runOf(cautious), fields)).toEqual(byReading.principal);
+    expect(() => acrossReadings(ctx, runOf(stopping), fields)).toThrow(BlockedError);
+    // a type that declares no value has none to read
+    expect(() => acrossReadings(ctx, runOf(cautious), { real: "output", nominal: "output", flags: "trail" })).toThrow(/declares 0/);
+  });
+
   it("compares a field a result gains unless its type declares it working: a new output counts until it is declared otherwise", () => {
     // a field the declaration does not name, as a run's result would carry before its type's declaration lists it, is compared
     const a = { ...({ nominal: 100, flags: [] } as const), gained: 1 };
@@ -204,15 +223,17 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     expect(sameResult(a, b, declared as ResultFields<typeof a>)).toBe(false);
     expect(sameResult(a, b, { ...declared, gained: "working" })).toBe(true);
     // every field of every result type a ledger compares is declared, each with a role (a field added to a type fails to compile otherwise),
-    // and the fields that are not outputs are exactly these: re-declaring an output (`detail`, `routed`, `years`) as working or trail fails
-    const notOutputs = (fields: Readonly<Record<string, string>>) => Object.fromEntries(Object.entries(fields).filter(([, role]) => role !== "output"));
+    // and the fields that are not compared are exactly these: re-declaring an output (`detail`, `routed`, `years`) as working or trail fails;
+    // the value, what a cautious reading reads (`SplitPolicy`), is compared as an output, and every type declares the one, what is left
+    const notOutputs = (fields: Readonly<Record<string, string>>) => Object.fromEntries(Object.entries(fields).filter(([, role]) => role !== "output" && role !== "value"));
     const trail = { flags: "trail", labels: "trail", formulas: "trail", rules: "trail", statements: "trail" };
     expect(notOutputs(RUN_RESULT_FIELDS)).toEqual(trail);
     expect(notOutputs(PROVIDENT_RESULT_FIELDS)).toEqual(trail);
     expect(notOutputs(PENSION_RESULT_FIELDS)).toEqual({ ...trail, working: "working" });
     expect(notOutputs(EMPLOYER_LINE_FIELDS)).toEqual(trail);
     for (const fields of [RUN_RESULT_FIELDS, PROVIDENT_RESULT_FIELDS, PENSION_RESULT_FIELDS, EMPLOYER_LINE_FIELDS]) {
-      for (const role of Object.values(fields)) expect(["output", "trail", "working"]).toContain(role);
+      for (const role of Object.values(fields)) expect(["output", "value", "trail", "working"]).toContain(role);
+      expect(Object.entries(fields).filter(([, role]) => role === "value").map(([k]) => k)).toEqual(["real"]);
     }
     expect(PROVIDENT_RESULT_FIELDS.routed).toBe("output");
     expect(PENSION_RESULT_FIELDS).toMatchObject({ detail: "output", years: "output", deposits: "output", exit: "output" });

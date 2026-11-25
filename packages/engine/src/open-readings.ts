@@ -4,6 +4,7 @@
 import type { UsedRule } from "./resolver.ts";
 import { labelWeight, type FieldRole, type Flag, type Label, type Outcome, type ResultFields, type RunContext } from "./result.ts";
 import type { YearlyMove } from "./formulas/indexation.ts";
+import { assertNever } from "@finance-tool/schema";
 
 /** One way the rule base allows an amount to stand after a year in which the CPI fell. */
 export type FallReadingId = "lower" | "hold" | "carry";
@@ -39,12 +40,22 @@ export const fallReadings: readonly FallReading[] = [
 ];
 
 /**
- * A case the rule base holds open between named readings: the rule a run stops on when they disagree, the question that holds it open,
- * and the readings. Each kind of case says where a run meets it.
+ * What a run does where the readings of an open case give it different results (method §13):
+ * - `stop`: it stops on the rule with the question, as on any open rule (D10);
+ * - `cautious`: the reading whose result leaves the holder less stands, whole (guidelines/research.md step 6), the less read on the value
+ *   the result type declares (`FieldRole` "value"). The figure is the site's reading of the rule, and every reading's run says so with a
+ *   `reading` label on the rule (`RuleBook.reading`).
+ */
+export type SplitPolicy = "stop" | "cautious";
+
+/**
+ * A case the rule base holds open between named readings: the rule it rests on, the question that holds it open, what a split between
+ * the readings does (`onSplit`), and the readings. Each kind of case says where a run meets it.
  */
 interface OpenReadingBase {
   ruleId: string;
   question: string;
+  onSplit: SplitPolicy;
 }
 
 /** An amount moved by the CPI in a later tax year, at a falling CPI: the figures it covers and the ways the amount may stand. */
@@ -69,7 +80,7 @@ export type OpenReading = FallOpenReading | TaxIndexOpenReading;
  * are measured by the CPI, TXS-14's first bullet. A fund whose record does not say whether it is one, on an index in a foreign currency, meets
  * the same two readings (method F-04).
  */
-export const foreignInvestmentFundIndex: TaxIndexOpenReading = { kind: "tax-index", ruleId: "TXS-14", question: "TXS OQ26", readings: [{ id: "principal" }, { id: "cpi" }] };
+export const foreignInvestmentFundIndex: TaxIndexOpenReading = { kind: "tax-index", ruleId: "TXS-14", question: "TXS OQ26", onSplit: "stop", readings: [{ id: "principal" }, { id: "cpi" }] };
 
 /**
  * The open readings the resolver knows:
@@ -81,8 +92,8 @@ export const foreignInvestmentFundIndex: TaxIndexOpenReading = { kind: "tax-inde
  * A figure linked to the CPI every 1 January of a rule not named here has no reading at a fall: the resolver stops on its rule, naming G-38.
  */
 export const openReadings: readonly OpenReading[] = [
-  { kind: "fall", ruleId: "TXG-09", question: "TXG OQ17", covers: { move: "frozen" }, readings: fallReadings },
-  { kind: "fall", ruleId: "KGL-03", question: "KGL OQ15", covers: { move: "cpi-linked", rules: ["KGL-03"] }, readings: fallReadings },
+  { kind: "fall", ruleId: "TXG-09", question: "TXG OQ17", onSplit: "stop", covers: { move: "frozen" }, readings: fallReadings },
+  { kind: "fall", ruleId: "KGL-03", question: "KGL OQ15", onSplit: "stop", covers: { move: "cpi-linked", rules: ["KGL-03"] }, readings: fallReadings },
   foreignInvestmentFundIndex,
 ];
 
@@ -125,16 +136,28 @@ function sameValue(a: unknown, b: unknown): boolean {
 export function sameResult<R extends object>(a: R, b: R, fields: ResultFields<R>): boolean {
   const role = fields as Readonly<Record<string, FieldRole | undefined>>;
   const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
-  return [...keys].every((k) => (role[k] ?? "output") !== "output" || sameValue((a as Record<string, unknown>)[k], (b as Record<string, unknown>)[k]));
+  return [...keys].every((k) => !compared(role[k]) || sameValue((a as Record<string, unknown>)[k], (b as Record<string, unknown>)[k]));
 }
 
+/** Whether a field of this role is compared across readings: an output, the declared value among them, or a field not declared. */
+const compared = (role: FieldRole | undefined): boolean => role === undefined || role === "output" || role === "value";
+
 /**
- * A run evaluated under every reading of each open question it meets. The run is first made with the readings `ctx` already holds; when
- * the resolver meets a question it holds no reading for, the run is made again under each of that question's readings (and so on for a
- * question met inside those). If every reading gives the same outputs (`sameResult` by `fields`, the result type's declaration), that result stands
- * with the flags, labels and rules of every reading merged (`mergedFlags`, `mergedLabels`, `mergedRules`), flagged with the question; if not, the run is made
- * with the question stopping it (`BlockedError` with the rule and the question), and its ledger lists or stops it as for any open rule.
+ * The reading whose result leaves the holder less (`SplitPolicy` "cautious"): the lowest value of the one field `fields` declares the
+ * value, the first such reading where two give it alike. A result type that declares no value, or more than one, is a broken invariant.
  */
+function cautiousOf<R extends object>(results: readonly R[], fields: ResultFields<R>): R {
+  const values = Object.entries(fields as Readonly<Record<string, FieldRole>>).filter(([, role]) => role === "value");
+  if (values.length !== 1) throw new Error(`a cautious reading reads the one value its result type declares; this one declares ${values.length}`);
+  const key = values[0]![0];
+  const valueOf = (r: R): number => {
+    const v = (r as Record<string, unknown>)[key];
+    if (typeof v !== "number") throw new Error(`a cautious reading reads ${key}, which a result gave as ${typeof v}`);
+    return v;
+  };
+  return results.reduce((low, r) => (valueOf(r) < valueOf(low) ? r : low));
+}
+
 /**
  * The flags of every reading's result, one per code in the order they first appear, each from the earliest month any reading raises it, a
  * flag with no month (the whole run) counting as the earliest, as `Tally.flag` keeps a code's first occurrence: a caveat raised under one
@@ -180,6 +203,15 @@ export function mergedRules(results: readonly { rules?: readonly UsedRule[] }[])
   return [...byId.values()];
 }
 
+/**
+ * A run evaluated under every reading of each open question it meets. The run is first made with the readings `ctx` already holds; when
+ * the resolver meets a question it holds no reading for, the run is made again under each of that question's readings (and so on for a
+ * question met inside those). If every reading gives the same outputs (`sameResult` by `fields`, the result type's declaration), that
+ * result stands with the flags, labels and rules of every reading merged (`mergedFlags`, `mergedLabels`, `mergedRules`), flagged with the
+ * question. If not, the question's `onSplit` decides: `stop` makes the run with the question stopping it (`BlockedError` with the rule and
+ * the question), and its ledger lists or stops it as for any open rule; `cautious` lets the result that leaves the holder less stand,
+ * whole (`cautiousOf`).
+ */
 export function acrossReadings<R extends { flags: Flag[]; labels?: Label[]; rules?: UsedRule[] }>(ctx: RunContext, run: (ctx: RunContext) => R, fields: ResultFields<R>): R {
   const explore = (chosen: ReadingChoice): R => {
     try {
@@ -188,7 +220,16 @@ export function acrossReadings<R extends { flags: Flag[]; labels?: Label[]; rule
       if (!(e instanceof OpenReadingError) || e.open.question in chosen) throw e;
       const q = e.open.question;
       const results = e.open.readings.map((r) => explore({ ...chosen, [q]: r.id }));
-      if (!results.every((r) => sameResult(r, results[0]!, fields))) return explore({ ...chosen, [q]: null });
+      if (!results.every((r) => sameResult(r, results[0]!, fields))) {
+        switch (e.open.onSplit) {
+          case "stop":
+            return explore({ ...chosen, [q]: null });
+          case "cautious":
+            return cautiousOf(results, fields);
+          default:
+            return assertNever(e.open.onSplit);
+        }
+      }
       // the outputs agree; the caveats of every reading stand beside them, with the question's own flag
       const first = results[0]!;
       const code = readingFlag(q);

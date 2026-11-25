@@ -176,11 +176,12 @@ export interface RunResult {
 }
 
 /**
- * What a field of a result is to the comparison of readings (method §13, `sameResult`): an `output`, compared number for number; its
- * `trail`, what the run read and raised (flags, labels, rules, formulas); or its `working`, a figure the run computes on the way to an output
- * and shows nowhere, which can differ by reading while every output agrees.
+ * What a field of a result is to the comparison of readings (method §13, `sameResult`): an `output`, compared number for number; the
+ * `value`, the one output that says what the result leaves the holder, which a cautious reading reads to take the reading that leaves less
+ * (`SplitPolicy`), compared as an output; its `trail`, what the run read and raised (flags, labels, rules, formulas); or its `working`, a
+ * figure the run computes on the way to an output and shows nowhere, which can differ by reading while every output agrees.
  */
-export type FieldRole = "output" | "trail" | "working";
+export type FieldRole = "output" | "value" | "trail" | "working";
 
 /**
  * Every field of a result type `R` with its role: the type names each key of `R`, so a field added to a result does not compile until it is
@@ -192,7 +193,8 @@ export type ResultFields<R> = { readonly [K in keyof Required<R>]: FieldRole };
 export const RUN_RESULT_FIELDS: ResultFields<RunResult> = {
   exitMonth: "output",
   nominal: "output",
-  real: "output",
+  // V_T / I_T: what is left after the exit tax, in today's shekels (F-06)
+  real: "value",
   paidIn: "output",
   fees: "output",
   taxDuring: "output",
