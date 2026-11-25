@@ -8,7 +8,7 @@ import { useMemo } from "react";
 import { r4catalogue, feeDeal } from "../../copy";
 import type { FeesData } from "../../lib/fee-page-data";
 import type { Fee, FeeDeal } from "../../lib/fee-deal/model";
-import type { DistributionPrice } from "../../lib/fee-deal/templates";
+import type { DistributionPrice, HouseTemplate } from "../../lib/fee-deal/templates";
 import { figure, heldRateUnit } from "../../lib/fee-deal/values";
 import { shortName } from "../../lib/providers";
 import { recordsById } from "../../lib/scope";
@@ -40,7 +40,7 @@ export function HouseTerms({ data, today, first, house, leftOut, feeHead }: { da
     <ReadOnly>
       <div className="flex flex-col gap-4">
         {fold && <LeftOutFold view={fold} />}
-        <TermsColumns data={data} today={today} first={first} house={house} feeHead={feeHead} />
+        <TermsColumns data={data} today={today} first={first} template={template} feeHead={feeHead} />
         {template?.distribution && <DistributionFee prices={template.distribution} bank={template.provider === "bank"} today={today} />}
       </div>
     </ReadOnly>
@@ -48,9 +48,8 @@ export function HouseTerms({ data, today, first, house, leftOut, feeHead }: { da
 }
 
 /** The editor's columns on the deal, each fee's head the host's with the house's averages for its kind under it. */
-function TermsColumns({ data, today, first, house, feeHead }: { data: FeesData; today: string; first: FeeDeal; house: string; feeHead: ((fee: Fee) => FeeSlot | undefined) | undefined }) {
-  const template = data.houses.find((h) => h.id === house);
-  const name = template ? gershayim(shortName(house, template.name)) : "";
+function TermsColumns({ data, today, first, template, feeHead }: { data: FeesData; today: string; first: FeeDeal; template: HouseTemplate | undefined; feeHead: ((fee: Fee) => FeeSlot | undefined) | undefined }) {
+  const name = template ? gershayim(shortName(template.id, template.name)) : "";
   const head = (fee: Fee): FeeSlot | undefined => {
     const host = feeHead?.(fee);
     const of = template?.everyColumn?.columns.filter((c) => c.column.fee === fee.kind) ?? [];
