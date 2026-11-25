@@ -1534,11 +1534,12 @@ export const help = {
 export const trackBrowser = {
   title: "כל המסלולים בכל החברות",
   tabs: { aria: "איך לראות את החברות והמסלולים", byCompany: "לפי חברה", byProduct: "לפי מוצר", deposits: "פיקדונות בבנקים" },
-  /** The "?" by the page's title: how to read the list (the fees' year, the figures' date, the source, the companies' order); the cards of
-   *  the fee, the exposure and the money managed follow it. */
+  /** The "?" by the page's title: how to read the list. `own` is what no column head says (the source, the companies' order), all it holds
+   *  from md; on a phone, whose rows have no heads, `dates` (the fees' year, the figures' date) comes first and the columns' cards follow. */
   pageHelp: {
     about: "איך לקרוא את הרשימה",
-    text: (year: string | null, period: string) => `${year ? `דמי הניהול הם הממוצע שנגבה ב־${year}. ` : ""}החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}. מנתוני רשות שוק ההון. החברות מסודרות מהגדולה לקטנה לפי הכסף המנוהל.`,
+    own: "מנתוני רשות שוק ההון. החברות מסודרות מהגדולה לקטנה לפי הכסף המנוהל.",
+    dates: (year: string | null, period: string) => `${year ? `דמי הניהול הם הממוצע שנגבה ב־${year}. ` : ""}החשיפה, התשואה והכסף המנוהל נכונים לסוף ${period}.`,
   },
   controls: {
     product: "מוצר",
