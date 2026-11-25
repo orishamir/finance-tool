@@ -293,7 +293,7 @@ export function checkFundLoad(record: Pick<FundRecord, "fees">): string[] {
 /**
  * data-schema §3.5 (A-10): a yield belongs to a distributing fund, as a number in percent a year. A yield the site works out (F-132) is a
  * computed value with its inputs in `trailing`, and holds exactly what F-132 gives on them as of its `effective_from`; any other yield is
- * read from a document, never computed. The inputs list each payment once, each paid on or after its ex-dividend date, and the income
+ * read from a document, never computed. The inputs list each payment once (one of each kind on an ex-dividend date), each paid on or after its ex-dividend date, and the income
  * payments in the 12 months are as many as the fund pays a year (`per_year`), so a payment left out or copied twice fails here.
  */
 export function checkFundDistribution(record: Pick<FundRecord, "distribution_policy" | "distribution">): string[] {
@@ -316,8 +316,12 @@ export function checkFundDistribution(record: Pick<FundRecord, "distribution_pol
   }
   if (t.nav.date > asOf) out.push(`distribution.trailing.nav.date ${t.nav.date} is after the yield's day ${asOf}: F-132 takes the last NAV on or before it`);
   for (const p of t.payments) if (p.pay_date < p.ex_date) out.push(`distribution.trailing.payments: paid ${p.pay_date} before its ex-dividend date ${p.ex_date}`);
-  const exDates = t.payments.map((p) => p.ex_date);
-  for (const date of new Set(exDates.filter((x, i) => exDates.indexOf(x) !== i))) out.push(`distribution.trailing.payments: two payments share the ex-dividend date ${date}; a record lists each payment once`);
+  // an income and a capital gain payment may share an ex-dividend date; two of one kind on one date are one payment listed twice
+  const keys = t.payments.map((p) => `${p.kind} ${p.ex_date}`);
+  for (const key of new Set(keys.filter((x, i) => keys.indexOf(x) !== i))) {
+    const [kind, date] = key.split(" ");
+    out.push(`distribution.trailing.payments: two ${kind} payments share the ex-dividend date ${date}; a record lists each payment once`);
+  }
   const income = t.payments.filter((p) => p.kind === "income" && inTrailingYear(p.ex_date, asOf)).length;
   if (income !== d.per_year) out.push(`distribution.trailing.payments: ${income} income payments in the 12 months to ${asOf}, where the fund pays ${d.per_year} a year (per_year)`);
   const expected = trailingDistributionYield(t.payments, t.nav.value, asOf);

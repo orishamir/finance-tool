@@ -60,11 +60,13 @@ describe("a yield computed by F-132", () => {
     const early = { ...trailing, payments: [...trailing.payments.slice(0, 3), payment("2026-09-15", "2026-09-14", 2.202607)] };
     expect(checkFundDistribution(record(stored, { trailing: early }))).toEqual(["distribution.trailing.payments: paid 2026-09-14 before its ex-dividend date 2026-09-15"]);
   });
-  it("fails two payments that share an ex-dividend date", () => {
+  it("fails two payments of one kind that share an ex-dividend date, and passes an income and a capital gain on one", () => {
     const twice = { ...trailing, payments: [...trailing.payments.slice(0, 3), payment("2026-06-15", "2026-06-18", 2.202607)] };
     expect(checkFundDistribution(record(trailingDistributionYield(twice.payments, twice.nav.value, "2026-10-31"), { trailing: twice }))).toEqual([
-      "distribution.trailing.payments: two payments share the ex-dividend date 2026-06-15; a record lists each payment once",
+      "distribution.trailing.payments: two income payments share the ex-dividend date 2026-06-15; a record lists each payment once",
     ]);
+    const withGain = { ...trailing, payments: [...trailing.payments, { ...payment("2025-12-16", "2025-12-19", 0.5), kind: "capital_gain" as const }] };
+    expect(checkFundDistribution(record(trailingDistributionYield(withGain.payments, withGain.nav.value, "2026-10-31"), { trailing: withGain }))).toEqual([]);
   });
   it("fails when the income payments in the 12 months are not as many as the fund pays a year", () => {
     const three = { ...trailing, payments: trailing.payments.slice(1) };
