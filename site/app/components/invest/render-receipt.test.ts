@@ -6,6 +6,7 @@ import { fmt } from "../../lib/format";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "../../lib/custom-entries";
 import { PairLists, markView } from "./lists";
 import { asideLines, buildInvest, indexById, kindOf, pairCostsKept, type InvestView } from "../../lib/invest";
+import { sheetOf } from "../../lib/left-out";
 import { receiptAmounts, receiptChain } from "../../lib/receipt";
 import { ANCHOR, PairReceipt, PairStub, addedOf, inflationOf, leftOf, nominalOf, taxOf } from "./receipt";
 import { allFunds, asideParts, labelsOf, pickOfHeadline, pairVerdict, steadyOf, totalNoteOf } from "./pair";
@@ -343,7 +344,8 @@ describe("a standing order's price the figure leaves out, under the lists (D41, 
     const out = html(createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick: { house: first.house, fund: first.fund }, chosen: true, onPick: () => undefined, moved: null }));
     expect(shown(out)).not.toContain(w.lists.otherPriceWords);
     const fund = allFunds(view).find((f) => f.rec.id === first.fund);
-    const sheet = markView(bundle.snapshots.find((s) => s.id === first.house), fund?.byHouse[first.house]);
+    const lv = markView(bundle.snapshots.find((s) => s.id === first.house), fund?.byHouse[first.house]);
+    const sheet = lv ? sheetOf(lv) : null;
     expect(sheet?.parts[0]?.head).toBe(w.lists.otherPriceWords);
     // the mark opens a sheet, as a row's "why" words do
     expect(out).toMatch(new RegExp(`aria-haspopup="dialog"[^>]*>(?:(?!</button>).)*${leftOut.mark}`));

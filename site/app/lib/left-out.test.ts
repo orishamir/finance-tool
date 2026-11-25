@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 import { leftOut as c } from "../copy";
 import { ProvenanceProvider } from "../components/provenance";
 import { SheetContent } from "../components/provenance-sheets";
-import { leftOutOf } from "./left-out";
+import { leftOutOf, sheetOf } from "./left-out";
 
 const pdf = { url: "https://example.org/tariff.pdf", title: "תעריפון לדוגמה (BRK-12)" };
 const web = { url: "https://example.org/pricing", title: "Pricing page" };
@@ -23,9 +23,10 @@ describe("what a record leaves out", () => {
     expect(leftOutOf(undefined)).toBeNull();
   });
   it("warns only of what can change a price and has a reason in Hebrew; the rest are listed by name under a second heading", () => {
-    const v = leftOutOf({ tariff: pdf, left_out: [tiered, lite, quiet, noReason] })!;
-    expect(v.warn).toBe(1);
-    expect(v.other).toBe(3);
+    const view = leftOutOf({ tariff: pdf, left_out: [tiered, lite, quiet, noReason] })!;
+    expect(view.changes.length).toBe(1);
+    expect(view.others.length).toBe(3);
+    const v = sheetOf(view);
     expect(v.lead).toBe(c.sheetLead);
     expect(v.parts[0]).toEqual({ head: "מסלול Tiered", text: tiered.why_he, doc: { href: "https://example.org/tariff.pdf#page=7", title: c.page("תעריפון לדוגמה", 7) } });
     // the others: their names only, a quote drawn as gershayim, under the heading
@@ -34,18 +35,19 @@ describe("what a record leaves out", () => {
       { text: "נתוני שוק בארה״ב", group: c.other },
       { text: "החזר עמלות", group: c.other },
     ]);
-    expect(JSON.stringify(v)).not.toContain("ENGLISH-WORKING-NOTE");
+    expect(JSON.stringify(view)).not.toContain("ENGLISH-WORKING-NOTE");
   });
   it("with nothing that can change a price, lists every name with no second heading, and says so in its lead", () => {
-    const v = leftOutOf({ tariff: pdf, left_out: [lite, quiet] })!;
-    expect(v.warn).toBe(0);
+    const view = leftOutOf({ tariff: pdf, left_out: [lite, quiet] })!;
+    expect(view.changes.length).toBe(0);
+    const v = sheetOf(view);
     expect(v.lead).toBe(c.sheetLeadOther);
     expect(v.parts.every((p) => p.group === "" && !p.head && !p.doc)).toBe(true);
   });
   it("an entry that names its own document links that document at its page; one that names none links the price list", () => {
     const part1 = { url: "https://example.org/part-1.pdf", title: "תעריפון, חלק 1 (BRK-66)" };
     const exempt = { what: "חשבון צל", page: 1, why: "ENGLISH-WORKING-NOTE-5", why_he: "חשבון כזה פטור.", could_change_price: true, source: part1 };
-    const docs = (left_out: (typeof exempt | typeof tiered)[]) => (leftOutOf({ tariff: pdf, left_out })?.parts ?? []).map((p) => p.doc);
+    const docs = (left_out: (typeof exempt | typeof tiered)[]) => (sheetOf(leftOutOf({ tariff: pdf, left_out })!).parts).map((p) => p.doc);
     expect(docs([exempt, tiered])).toEqual([
       { href: "https://example.org/part-1.pdf#page=1", title: c.page("תעריפון, חלק 1", 1) },
       { href: "https://example.org/tariff.pdf#page=7", title: c.page("תעריפון לדוגמה", 7) },
@@ -54,13 +56,13 @@ describe("what a record leaves out", () => {
     expect(docs([{ ...exempt, page: 2, source: web }])).toEqual([{ href: "https://example.org/pricing", title: "Pricing page" }]);
   });
   it("a web page's price list opens at its address, with no page in its name", () => {
-    const v = leftOutOf({ tariff: web, left_out: [tiered] })!;
+    const v = sheetOf(leftOutOf({ tariff: web, left_out: [tiered] })!);
     expect(v.parts[0]!.doc).toEqual({ href: "https://example.org/pricing", title: "Pricing page" });
   });
 });
 
 describe("the sheet the line opens", () => {
-  const v = leftOutOf({ tariff: pdf, left_out: [tiered, lite, quiet] })!;
+  const v = sheetOf(leftOutOf({ tariff: pdf, left_out: [tiered, lite, quiet] })!);
   const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-12" };
   const out = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(SheetContent, { item: { kind: "terms", ids: [], name: c.title("בית"), lead: v.lead, parts: v.parts }, data, headId: "h", descId: "d" }) })));
   it("shows each warning's name, then its reason, then the price list at its page; then the second heading over a list of names", () => {

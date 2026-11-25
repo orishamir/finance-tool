@@ -37,7 +37,7 @@ describe("the indices page", () => {
   });
   it("before the records say what can change a price, no account carries the mark", () => {
     const listsOut = lists(view0, bundle, plan, { house: "leumi", fund }, { chosen: true });
-    if (bundle.snapshots.every((s) => !leftOutOf(s)?.warn)) {
+    if (bundle.snapshots.every((s) => !leftOutOf(s)?.changes.length)) {
       expect(listsOut).not.toContain(markLabel);
     }
   });
@@ -51,7 +51,7 @@ describe("the indices page", () => {
     // a row with no price has no price to change (One Zero, whose Israeli funds are unknown, BRK-38)
     const rows = [...new Set([...out.matchAll(/data-pick-key="([^"]+)"/g)].map((m) => m[1]!))];
     const pricesAny = (k: string) => allFunds(view).some((f) => "valueN" in (f.byHouse[k] ?? {}));
-    const warned = rows.filter((k) => pricesAny(k) && (leftOutOf(b.snapshots.find((s) => s.id === k))?.warn ?? 0) > 0);
+    const warned = rows.filter((k) => pricesAny(k) && (leftOutOf(b.snapshots.find((s) => s.id === k))?.changes.length ?? 0) > 0);
     expect(warned).toContain("interactive-brokers");
     expect(out.split(markLabel).length - 1).toBe(warned.length);
     expect(shown(out)).not.toContain("סמל המסמך");
@@ -65,6 +65,6 @@ describe("a company's price card", () => {
     const data = { rules: part.rules, terms: {}, dimensions: {}, today: bundle.today };
     const out = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(BrokerageGroupCard, { id: "interactive-brokers", tariff: part.tariff, kind: part.kind }) })));
     expect(shown(out)).toContain(c.lead);
-    expect(out).toContain(`data-left-out="${part.tariff.leftOut!.warn}"`);
+    expect(out).toContain(`data-left-out="${part.tariff.leftOut!.changes.length}"`);
   });
 });

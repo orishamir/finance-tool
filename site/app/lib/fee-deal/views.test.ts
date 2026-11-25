@@ -262,7 +262,7 @@ describe("templates", () => {
     expect(left).toEqual(leumi.left.map(({ lineId, ...rest }) => ({ line: lineId, ...rest })));
     // each line by its name as the list prints it, with its channel where it has one; and what the record says the price leaves out (D106)
     expect(left.every((l) => "line" in l && !!l.name)).toBe(true);
-    expect(templateOf(account(), "house:leumi", data, TODAY)!.leftOut?.warn).toBeGreaterThan(0);
+    expect(templateOf(account(), "house:leumi", data, TODAY)!.leftOut?.changes.length).toBeGreaterThan(0);
     // a track whose deposit fee the product may not charge (PF-06) says so; one with both figures leaves nothing out; a figure of zero
     // fills nothing and is not left out
     for (const t of data.tracks.filter((x) => x.wrapperId === "keren-hishtalmut").slice(0, 20)) {

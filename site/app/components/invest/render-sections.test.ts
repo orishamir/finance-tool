@@ -9,6 +9,7 @@ import { invest, leftOut, numbers, provenance } from "../../copy";
 import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
+import { sheetOf } from "../../lib/left-out";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
 import type { SiteValue } from "../../lib/value";
 import { Fees } from "./funds";
@@ -225,17 +226,19 @@ describe("a bank's standing-order price the figure leaves out is said in the she
       expect(shown(out), id).not.toContain("*");
       expect(shown(out), id).not.toContain(invest.lists.otherPriceWords);
       const snap = bundle.snapshots.find((s) => s.id === id);
-      const sheet = markView(snap, tracking.byHouse[id]);
+      const lv = markView(snap, tracking.byHouse[id]);
+      const sheet = lv ? sheetOf(lv) : null;
       expect(sheet?.parts[0]?.head, id).toBe(invest.lists.otherPriceWords);
       const reason = snap?.lines.find((l) => l.not_ranked)?.not_ranked?.reason_he;
       expect(reason, id).toBeTruthy();
       expect(sheet?.parts.some((p) => p.text === reason), id).toBe(true);
       // the other price counts among what can change what some reader pays, so the mark is drawn beside the name
-      expect(sheet?.warn, id).toBeGreaterThan(0);
+      expect(lv?.changes.length, id).toBeGreaterThan(0);
       expect(out, id).toContain(leftOut.mark);
     }
     // an account with no other price says nothing of one
-    expect(markView(bundle.snapshots.find((s) => s.id === "psagot"), tracking.byHouse.psagot)?.parts.some((p) => p.head === invest.lists.otherPriceWords) ?? false).toBe(false);
+    const psagot = markView(bundle.snapshots.find((s) => s.id === "psagot"), tracking.byHouse.psagot);
+    expect((psagot ? sheetOf(psagot).parts : []).some((p) => p.head === invest.lists.otherPriceWords)).toBe(false);
   });
   it("a custom index's account list says the same, and under its head that monthly purchases are priced on the regular line", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });

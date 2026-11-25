@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router";
-import { brands, companyFocus, dealCases as caseWords, feeDeal as dealWords, guideBlocks, formulaKeys, invest as investWords, kit as copy, leftOut as leftOutWords, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
+import { brands, companyFocus, dealCases as caseWords, feeDeal as dealWords, guideBlocks, formulaKeys, invest as investWords, kit as copy, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Copy, Lock, Plus, X, Zap } from "lucide-react";
@@ -33,10 +33,8 @@ const custodyName = (guideBlocks.fees.custody as { name: string }).name;
 const g = copy.gallery;
 /** LeftOutLine's demo: one thing that can change a price, with its reason and document (no real address: the kit's own page), and two listed. */
 const leftOutSample = {
-  warn: 1,
-  other: g.sample.leftOut.others.length,
-  lead: leftOutWords.sheetLead,
-  parts: [{ head: g.sample.leftOut.what, text: g.sample.leftOut.why, doc: { href: "#", title: g.sample.leftOut.doc } }, ...g.sample.leftOut.others.map((text) => ({ text, group: leftOutWords.other }))],
+  changes: [{ head: g.sample.leftOut.what, lines: [{ text: g.sample.leftOut.why, doc: { href: "#", title: g.sample.leftOut.doc } }] }],
+  others: [...g.sample.leftOut.others],
 };
 
 /** Samples: a sourced, a stale, a computed and an entered number, all clearly examples. */
@@ -1302,7 +1300,7 @@ function Fields({ today }: { today: string }) {
             <LeftOutMark view={leftOutSample} house={g.sample.leftOut.house} />
           </p>
           <LeftOutLine view={leftOutSample} house={g.sample.leftOut.house} />
-          <LeftOutLine view={{ ...leftOutSample, warn: 0, lead: leftOutWords.sheetLeadOther, parts: g.sample.leftOut.others.map((text) => ({ text, group: "" })) }} house={g.sample.leftOut.house} />
+          <LeftOutLine view={{ changes: [], others: leftOutSample.others }} house={g.sample.leftOut.house} />
         </State>
       </Demo>
       <Demo name="PercentField" use={g.uses.PercentField}>
