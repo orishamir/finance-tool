@@ -913,7 +913,8 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     if (fromCash > 0) {
       const nis = Math.min(waitingNis, fromCash);
       waitingNis -= nis;
-      // the fund's currency a distribution left, at the month's rate; converting a few shekels' worth is not priced (F-17)
+      // the fund's currency a distribution left, at the month's rate; that conversion is not priced, though a line's minimum could make it cost as
+      // much as the fee it pays (F-17 says when it arises and why it is left out)
       waitingHeld = Math.max(0, waitingHeld - (fromCash - nis) / fxRate(m));
     }
     // F-91: a shekel the fees did not take would have paid the share of the holdings this month charges at the margin (custody where its
