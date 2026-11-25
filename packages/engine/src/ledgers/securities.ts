@@ -732,6 +732,8 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
       book.cite("TXF-17");
       book.cite("TXF-18");
       if (fund.domicile === "us") {
+        // a US fund is a US corporation for the treaty, so the tax withheld on its distribution is a dividend's, credited as one (TXF-41)
+        book.cite("TXF-41");
         // D121: the form is taken as given unless the person said it was not; what happens without it, and that it lapses, is TXF-13's
         if (fund.w8ben === false) foreignWithholding = book.rate("TXF-13", "us_withholding_without_form");
         else {

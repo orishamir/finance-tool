@@ -155,6 +155,8 @@ describe("every rule a figure on the indices page names is a record the page hol
     const bad = ["index-sp500", "index-ta125"].flatMap((id) => {
       const cited = new Set(citedIn(figures(w, id)));
       expect(cited.size).toBeGreaterThan(0);
+      // a US fund's distribution cites the treaty's reading of its fund as a US corporation (TXF-41), which the S&P 500's VOO names
+      if (id === "index-sp500") expect(cited.has("TXF-41")).toBe(true);
       return [...cited].filter((r) => !have.has(r)).map((r) => `${id}: ${r}`);
     });
     expect(bad).toEqual([]);
