@@ -1095,6 +1095,9 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });
       continue;
     }
+    // a compared row is ranked, so both its runs may enter a ranking: a run listed, not ranked, on anything but an open rule (a wrapper
+    // locked at the horizon, B3) has no place in the workbench yet, and comparing it would rank it in silence
+    for (const r of [noneT, run]) if (r.outcome.code !== "eligible") throw new Error(`providerWorkbench: ${base.id} would be compared on a run listed, not ranked, on ${r.outcome.reason}`);
     const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind, units, deal) } as const;
     const run12 = runSecurities(plan(built.tariff, 12, memberKind, units, deal), ctx);
     const total = noneT.real - run.real;
