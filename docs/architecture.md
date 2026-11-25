@@ -73,6 +73,7 @@ Checks, data-schema §4 first:
 4. Exposure and fund cross-links (§4 item 8). Stored dimension marks equal the marks regenerated from `rule_ids` (§4 item 9).
 5. (No check: there is no change log, D24.)
 6. No typed digit in the pinned-rules facts and answers (`data/parameters/pinned-rules.json`): every figure there is a `{ID:figure}` slot over one of the row's rules.
+7. A fund's yield computed by F-132 (data-schema §3.5) is recomputed by the engine's own `trailingDistributionYield`, which the validator imports from `@finance-tool/engine`, so one number is worked out by one function and the stored figure cannot drift from what the site would compute. This is the one place the pipeline's code imports the engine.
 
 Staleness (§4 item 7) is **not** a build failure; it is computed in the browser (section 2, property 2). The validator only reports it.
 
