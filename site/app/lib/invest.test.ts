@@ -230,7 +230,9 @@ describe("invest page computation", () => {
   it("prices an Israeli fund whose documents name a principal currency on the site's reading of TXS-14, its figure naming the fund's document and its cost before tax neither (F-04, TXS OQ26, D119)", () => {
     let named = 0;
     for (const id of ["index-sp500", "index-msci-acwi", "index-msci-world", "index-nasdaq100"]) {
-      const v = buildInvest({ bundle, index: indexById(bundle, id)!, plan: plan() });
+      const ix = indexById(bundle, id);
+      if (!ix) throw new Error(`the bundle prices ${id}`);
+      const v = buildInvest({ bundle, index: ix, plan: plan() });
       for (const f of v.options.filter((o) => o.id === "il-tracking" || o.id === "il-etf").flatMap((o) => o.funds)) {
         const status = f.rec.tax_status.foreign_investment_fund;
         if (typeof status?.value !== "string") continue;
@@ -254,7 +256,9 @@ describe("invest page computation", () => {
     // a typed Israeli tracking fund on the S&P 500, on a plan whose prices rise while the dollar stands still: the two readings split
     const typed = fundFromDraft({ ...fundDraftOf(null, "il-tracking"), payout: "accumulating" as const, hedged: false, name: "typed", fixed: 0.1, variable: 0, trustee: 0 }, "custom-fund-typed", "index-sp500", t);
     const b = withCustomEntries(bundle, [typed]);
-    const v = buildInvest({ bundle: b, index: indexById(b, "index-sp500")!, plan: plan() });
+    const ix = indexById(b, "index-sp500");
+    if (!ix) throw new Error("the bundle prices the S&P 500");
+    const v = buildInvest({ bundle: b, index: ix, plan: plan() });
     const f = v.options.flatMap((o) => o.funds).find((x) => x.rec.id === "custom-fund-typed");
     const priced = f ? Object.values(f.byHouse).filter((x): x is Extract<typeof x, { value: SiteValue }> => "value" in x) : [];
     expect(priced.length).toBeGreaterThan(0);

@@ -425,7 +425,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     const caution = new RegExp(`<button[^>]*aria-label="[^"]*${numbers.doubt}[^"]*"`);
     // a sheet as a page shows it, with the rule records its chips name
     const rules = loadRules();
-    const withRules = (el: React.ReactElement) => renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { ...data, rules }, children: el })));
+    const withRules = (el: React.ReactElement) => renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { ...data, rules } } as never, el)));
     const named = allFunds(sp).filter((f) => f.rec.domicile === "IL" && typeof f.rec.tax_status.foreign_investment_fund?.value === "string" && f.byHouse[pick.house] && "valueN" in f.byHouse[pick.house]!);
     const cases = [{ id: "1183441", rule: "TXF-04" }, ...named.map((f) => ({ id: f.rec.id, rule: "TXS-14" }))];
     expect(named.length).toBeGreaterThan(0);
