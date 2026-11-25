@@ -230,7 +230,8 @@ Where code goes in `site/app/`, and the shared pieces a change reuses before wri
 | A figure worked out from two others on the page, from them as the page writes them (`amountShown`, `lib/format.ts`) | `differenceOf` (`lib/value.ts`) |
 | The date beside figures from many records: their oldest and newest, said once where they agree | `dateSpan` (`lib/date-span.ts`) and the kit's `DateSpanText`; a bank's rates `asOfSpan` (`lib/bank-table.ts`); the deposits list `readSpan` (`lib/deposit-browser.ts`) |
 | The end of a `switch` over a union's kind, so a new kind fails to compile where it isn't handled | `default: return assertNever(x)` (`@finance-tool/schema`) |
-| Numbers, dates and Hebrew sort order; the shekel's currency code | `fmt`, `parseNumber`, `heCollator` (`lib/format.ts`), every number format through `numberFormat` (`lib/number-format.ts`); `isShekel` (`lib/fx.ts`) |
+| Whether a fund record is a foreign fund's Tel Aviv line (TXF-04's "קרן חוץ") | `isTaseForeignLine` (`@finance-tool/schema`) |
+| Numbers, dates and Hebrew sort order; the shekel's currency code | `fmt`, `parseNumber`, `heCollator` (`lib/format.ts`), every number format through `numberFormat` (`lib/number-format.ts`); `isShekel`, `isoCurrency` (`@finance-tool/schema`) |
 | Reading `data/` at build | the `load*` functions, `readDirFiles`, `collectRuleIds`, `refLink` (`lib/data.server.ts`), all through the read cache (`lib/read-cache.server.ts`) |
 | A guide-style page | `GuideFrame`, `GuideHeader`, `GuideSection`, `SectionIndex` (`components/guide/sections.tsx`) |
 | A guide page that is prose only | a route file with its rule ids, `proseGuideData` (`lib/prose-guide.server.ts`) and `ProseGuide` (`components/guide/prose-guide.tsx`); `routes/guide-limited-bond-fund.tsx` is the smallest example |
