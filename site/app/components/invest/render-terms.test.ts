@@ -22,7 +22,7 @@ const data = feesData();
 const terms = (world: DealWorld, house: string, readOnly: boolean): string | null => {
   const first = dealFromTemplate(newDeal(ACCOUNT_KIND), `house:${house}`, data, t);
   if (!first) return null;
-  const popup: ReactElement = createElement(TermsPopup, { data, today: t, saved: [], writable: true, first, world, house, leftOut: false, headId: "terms", onOwn: () => undefined });
+  const popup: ReactElement = createElement(TermsPopup, { data, today: t, saved: [], writable: true, first, world, house, headId: "terms", onOwn: () => undefined });
   return html(readOnly ? createElement(ReadOnly, null, popup) : popup);
 };
 

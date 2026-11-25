@@ -839,7 +839,7 @@ in the kit fits is added to the kit.
 - `HouseAverageLine`: what a house actually charged on average beside its price-list line (F-122), for reference only; no calculation
   reads it.
 - `LeftOutLine`, `LeftOutFold`: what a house's documents hold and its price leaves out (D106): a line under a price whose words open it
-  (a sheet, or the page's own view of the house's terms), and, inside that view, one folded line that opens in place, so the catch is in
+  in a sheet, and, inside that view, one folded line that opens in place, so the catch is in
   sight without taking the room the terms need.
 - `GroupPriceFold`, `GroupPriceRows`: group prices (D43), stated beside a ranking and never in it.
 - `ClaimCheck`, `ClaimList`: a claim of a house's advertising set against its binding documents (D56, D57); never a figure of a ranking.

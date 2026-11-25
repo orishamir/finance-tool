@@ -8,7 +8,6 @@ import { leftOut as c } from "../../copy";
 import { sheetOf, type LeftOutView } from "../../lib/left-out";
 import { IconAlert } from "../icons";
 import { Term } from "../provenance";
-import { Button } from "./button";
 import { cx } from "./cx";
 import { Disclosure } from "./disclosure";
 import { DocLink } from "./doc-link";
@@ -18,25 +17,19 @@ const countWords = (view: LeftOutView): string => (view.changes.length > 0 ? c.c
 
 /**
  * "לא נכלל במחיר: 2 דברים שיכולים לשנות אותו" (or, where the record marks nothing so, "7 דברים מהמסמכים"); `more`, after a dot, is another
- * thing the price leaves out (the deal's lines a price list did not fill). Its words open the sheet, or with `opens` the host's own view of
- * the house's terms. Null with nothing left out.
+ * thing the price leaves out (the deal's lines a price list did not fill). Its words open the sheet. Null with nothing left out.
  */
-export function LeftOutLine({ view, house, more, opens, className }: { view: LeftOutView | null; house: string; more?: ReactNode; opens?: () => void; className?: string }) {
+export function LeftOutLine({ view, house, more, className }: { view: LeftOutView | null; house: string; more?: ReactNode; className?: string }) {
   if (!view && !more) return null;
   return (
     // the words wrap as the line does: a term keeps itself on one line elsewhere
     <p className={cx("text-xs text-muted-foreground [&_.term]:whitespace-normal", className)} data-left-out={view?.changes.length ?? 0}>
       {c.lead}{" "}
-      {view &&
-        (opens ? (
-          <Button variant="inline" onClick={opens}>
-            {countWords(view)}
-          </Button>
-        ) : (
-          <Term id={[]} name={c.title(house)} {...sheetOf(view)}>
-            {countWords(view)}
-          </Term>
-        ))}
+      {view && (
+        <Term id={[]} name={c.title(house)} {...sheetOf(view)}>
+          {countWords(view)}
+        </Term>
+      )}
       {view && more && " · "}
       {more}
     </p>
@@ -59,8 +52,7 @@ function Names({ names }: { names: readonly string[] }) {
  * The fold of what the price leaves out, in a view of the house's terms: one line while folded, in the caution colour with its alert mark
  * where something can change what some reader pays, plain grey where nothing can. Opened, each such thing under its short name, with its
  * reason and its document, two side by side where the fold is 40 rem wide or more; then the rest by name, folded again ("עוד 8 דברים
- * שבמסמכים ולא בחישוב"), or, where nothing can change the price, listed at once. `defaultOpen`: it opens open (the host opened the view
- * from the line that names them).
+ * שבמסמכים ולא בחישוב"), or, where nothing can change the price, listed at once. `defaultOpen`: it opens open (the gallery shows it so).
  */
 export function LeftOutFold({ view, defaultOpen }: { view: LeftOutView; defaultOpen?: boolean }) {
   const warn = view.changes.length > 0;

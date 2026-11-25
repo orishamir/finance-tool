@@ -66,10 +66,9 @@ const w = root.dealAccount;
 
 /**
  * What the popup opens on: a saved deal (at one of its fees, where its row's "להשלים" or the abroad line's "להוסיף לעסקה" opened it), a
- * new deal from a house's list or from the start list (`house` null), or a house's terms, read-only (`terms`, its id; `leftOut`, with what
- * its price leaves out open, where the receipt's line opened it).
+ * new deal from a house's list or from the start list (`house` null), or a house's terms, read-only (`terms`, its id).
  */
-export type DealTarget = { dealId: string; fee?: string } | { house: string | null } | { terms: string; leftOut: boolean };
+export type DealTarget = { dealId: string; fee?: string } | { house: string | null } | { terms: string };
 
 /** A deal just deleted from the popup: its name, and its row's place in the account list (null: after the ranked rows). */
 export interface DeletedDeal {
@@ -221,7 +220,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
             <ProvenanceProvider data={provenance ?? EMPTY_PROVENANCE}>
               <ToolBoundary resetKey={first.id}>
                 <ReadOnly>
-                  <TermsPopup key={first.id} data={data} today={today} saved={saved} writable={writable} first={first} world={world} house={terms.terms} leftOut={terms.leftOut} headId={headId} onOwn={() => api.open({ house: terms.terms })} />
+                  <TermsPopup key={first.id} data={data} today={today} saved={saved} writable={writable} first={first} world={world} house={terms.terms} headId={headId} onOwn={() => api.open({ house: terms.terms })} />
                 </ReadOnly>
               </ToolBoundary>
             </ProvenanceProvider>
@@ -396,27 +395,28 @@ export function termsLeftOut(snap: FeesSnapshot | undefined, at: FundWay["byHous
 
 /**
  * A house's terms, read-only (D106): the popup a deal opens in, on a deal filled from the house's latest price list, which is never saved.
- * Its head names the price list and opens it, with the day it was collected; the tiles say what it leaves on the plan's fund and its place
+ * Its head names the price list, then, on the same line, the day it was collected, opening it; the tiles say what it leaves on the plan's fund and its place
  * in the account list, over the plan line; then what its price leaves out, folded to a line; its fees as the editor shows them, each with
  * what the plan charges, nothing to edit (the kit's `ReadOnly`); last, the way to enter terms of one's own from this house. On a phone, one
  * column: the tiles on one line, the fold, the fees, the button. Not a kit piece: the page's own popup, built of kit pieces and the editor.
  */
-export function TermsPopup({ data, today, saved, writable, first, world, house, leftOut, headId, onOwn }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; world: DealWorld; house: string; /** What the price leaves out opens open. */ leftOut: boolean; headId: string; onOwn: () => void }) {
+export function TermsPopup({ data, today, saved, writable, first, world, house, headId, onOwn }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; world: DealWorld; house: string; headId: string; onOwn: () => void }) {
   const { ed, tiles, fund, leftNum, placeNum, planLine } = useDealOnPlan({ data, today, saved, writable, first, world, terms: house });
   const wide = useMedia(MQ.md);
   const p = world.plan;
   const short = providerName(world.view, house)?.short ?? house;
   const snap = world.bundle.snapshots.find((s) => s.id === house);
   const left = termsLeftOut(snap, fund?.byHouse[house]);
-  const fold = left && <LeftOutFold view={left} defaultOpen={leftOut} />;
+  const fold = left && <LeftOutFold view={left} />;
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1 pe-12">
+      {/* the price list's day and link follow the title on its line, and wrap under it where the line is full */}
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 pe-12">
         <h2 id={headId} className="text-lg font-semibold">
           {w.terms.title(short)}
         </h2>
         {snap && (
-          <DocLink look="inline" source={snap.tariff} className="self-start text-sm">
+          <DocLink look="inline" source={snap.tariff} className="text-sm">
             <When iso={snap.snapshot} lead={w.terms.collected} />
           </DocLink>
         )}
@@ -458,7 +458,7 @@ export function TermsMark({ id, house }: { id: string; house: string }) {
   const api = useDealAccounts();
   if (!api) return null;
   return (
-    <Button variant="icon" size="mark" aria-label={w.terms.title(house)} onClick={() => api.open({ terms: id, leftOut: false })}>
+    <Button variant="icon" size="mark" aria-label={w.terms.title(house)} onClick={() => api.open({ terms: id })}>
       <IconFile size={14} />
     </Button>
   );

@@ -5,7 +5,7 @@ import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { taxIndexStatementOf } from "@finance-tool/engine";
-import { invest, leftOut, numbers, provenance } from "../../copy";
+import { invest, numbers, provenance } from "../../copy";
 import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
@@ -220,7 +220,7 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
 describe("a bank's standing-order price the figure leaves out is said first in its terms, which the file icon beside its name opens (D41, D56, D104, D106)", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const tracking = view.options.find((o) => o.id === "il-tracking")!.funds[0]!;
-  it("no row carries a star or a line under the lists; the bank's terms lead with the other price and its reason, and its receipt says it can change the price", () => {
+  it("no row carries a star or a line under the lists; the bank's terms lead with the other price and its reason, and the icon beside its name opens them", () => {
     for (const id of ["leumi", "massad", "fibi"]) {
       const pick = { house: id, fund: tracking.rec.id };
       const out = lists(view, bundle, plan, pick);
@@ -232,11 +232,9 @@ describe("a bank's standing-order price the figure leaves out is said first in i
       const reason = snap?.lines.find((l) => l.not_ranked)?.not_ranked?.reason_he;
       expect(reason, id).toBeTruthy();
       expect(terms?.changes[0]?.lines.some((l) => l.text === reason), id).toBe(true);
-      // the other price counts among what can change what some reader pays: the receipt's line says so, and the list carries the icon
-      // that opens the terms
+      // the other price counts among what can change what some reader pays: the list carries the icon that opens the terms
       const short = view.providers.find((p) => p.id === id)?.short ?? id;
       expect(html(inHost(createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null }))), id).toContain(`aria-label="${invest.dealAccount.terms.title(short)}"`);
-      expect(shown(html(inHost(createElement(PairReceipt, { view, bundle, plan, pick, chosen: true, layout: "ticket" })))), id).toContain(`${leftOut.lead} ${leftOut.canChange(terms?.changes.length ?? 0)}`);
     }
     // an account with no other price says nothing of one
     const psagot = termsLeftOut(bundle.snapshots.find((s) => s.id === "psagot"), tracking.byHouse.psagot);

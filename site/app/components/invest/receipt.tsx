@@ -20,7 +20,7 @@ import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, StateTag, shortRow } from "../provenance";
-import { DocLink, FEE_WORDS_HELP, HelpMark, LabelChip, LeftOutLine, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
+import { DocLink, FEE_WORDS_HELP, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
 import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, totalNoteOf, whole, type Pick } from "./pair";
 import { OptionTag } from "./parts";
@@ -28,7 +28,7 @@ import { brokerLabels } from "../../lib/labels";
 import { partName } from "./cost-lines";
 import { providerName } from "./sections";
 import { fundFeeItems } from "./funds";
-import { termsLeftOut, useDealAccounts } from "./deal-account";
+import { TermsMark, useDealAccounts } from "./deal-account";
 
 /** The names `data-anchor` gives the two lists, by which the ruler between them finds their rows. */
 export const ANCHOR = { accounts: "accounts", funds: "funds" } as const;
@@ -189,7 +189,7 @@ const FUND_FAMILIES = ["follow", "payout", "currency", "tax"] as const;
 
 /**
  * The account's facts: a standing order's price where the monthly deposit is bought on one, the house's labels, a phone-only purchase
- * (its source behind the tag); then, in a sheet, the price list, with the day it was collected, opening it (on the ticket, beside the caption). The person's own deal is named in the
+ * (its source behind the tag); then, in a sheet, the house's terms (on the ticket, beside the caption). The person's own deal is named in the
  * entered ink in the part's head, not here. Not a kit piece: what it lists is the index page's reading of an account (its labels, its
  * price list, a deal), and only the receipt's account part shows it.
  */
@@ -207,23 +207,20 @@ function AccountFacts({ view, bundle, plan, pick, refs }: { view: InvestView; bu
 }
 
 /**
- * The account's price list, with the day it was collected, opening it: on the ticket beside the part's caption, in a sheet among its
- * details. Under it, where something its price leaves out can change what some reader pays (D106), the line that says how many, whose
- * words open the house's terms with them open, or, where no deal starts from its price list (`startsDeal`), the line's own sheet.
+ * The house's terms (D106): the list's file icon, opening its latest price list read-only on the plan, with the day it was collected and
+ * what its price leaves out; on the ticket beside the part's caption, in a sheet among its details. Where no deal starts from its price
+ * list (`startsDeal`), the price list itself with that day. The person's own deal has neither: its pencil edits it in the list.
  */
 function AccountRefs({ view, bundle, pick }: { view: InvestView; bundle: IndicesBundle; pick: Pick }) {
   const house = providerName(view, pick.house);
   const snap = bundle.snapshots.find((s) => s.id === pick.house);
   const dealApi = useDealAccounts();
   if (!house || !snap || house.custom) return null;
-  const left = termsLeftOut(snap, allFunds(view).find((f) => f.rec.id === pick.fund)?.byHouse[pick.house]);
+  if (dealApi && startsDeal(snap)) return <TermsMark id={pick.house} house={house.short} />;
   return (
-    <span className="inline-flex flex-col items-start gap-1">
-      <DocLink look="inline" source={snap.tariff}>
-        <When iso={snap.snapshot} lead={c.chosen.collected} />
-      </DocLink>
-      {left && left.changes.length > 0 && dealApi && <LeftOutLine view={left} house={house.short} {...(startsDeal(snap) ? { opens: () => dealApi.open({ terms: pick.house, leftOut: true }) } : {})} />}
-    </span>
+    <DocLink look="inline" source={snap.tariff}>
+      <When iso={snap.snapshot} lead={c.chosen.collected} />
+    </DocLink>
   );
 }
 

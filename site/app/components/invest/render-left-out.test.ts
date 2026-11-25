@@ -1,6 +1,6 @@
 // What a house's documents hold and its price leaves out (D106; the founder, 2026-11-12: "i would have expected some note about
 // interactive brokers that says the tiered fee system is ignored"): on the indices page in each ranked house's terms, which the file icon
-// beside its name opens, and in the receipt's line that opens them; on a company's price card under its prices. Rendered on the collected
+// beside its name, and the same icon in the receipt's account part, open; on a company's price card under its prices. Rendered on the collected
 // data with a fixture record: the records gain `why_he` and `could_change_price` house by house, so a page must read well both before and
 // after.
 import { createElement } from "react";
@@ -8,7 +8,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { invest, leftOut as c } from "../../copy";
-import { buildInvest, hasKinds, indexById, knownIndices, type InvestView } from "../../lib/invest";
+import { buildInvest, hasKinds, indexById, knownIndices } from "../../lib/invest";
 import { stretchOf } from "../../lib/stretch";
 import { listFunds } from "../../lib/deal-account/tiles";
 import type { IndicesBundle } from "../../lib/providers";
@@ -19,7 +19,6 @@ import { BrokerageGroupCard } from "../decoder/institutions/brokerage-card";
 import { allFunds, pickOfHeadline } from "./pair";
 import { PairReceipt } from "./receipt";
 import { PairLists } from "./lists";
-import { termsLeftOut } from "./deal-account";
 import { bundle, html, inHost, plan, shown, t } from "./render-fixtures";
 import { feesData } from "../../lib/fees.server";
 import { dealFromTemplate } from "../../lib/fee-deal/templates";
@@ -70,19 +69,14 @@ describe("the indices page", () => {
     // some index has a row the list does not rank
     expect(unranked).toBeGreaterThan(0);
   });
-  it("the receipt's account part says, under its price list's line, how many things its price leaves out can change it, its words a button; with none it says nothing", () => {
+  it("the receipt's account part carries the list's file icon, opening the house's terms, in place of its price list's line and of any line of what its price leaves out", () => {
     const b = marked("leumi");
     const view = buildInvest({ bundle: b, index, plan });
-    const receipt = (bb: IndicesBundle, v: InvestView) => html(inHost(createElement(PairReceipt, { view: v, bundle: bb, plan, pick: { house: "leumi", fund }, chosen: true, layout: "ticket" })));
-    const n = termsLeftOut(b.snapshots.find((s) => s.id === "leumi"), allFunds(view).find((f) => f.rec.id === fund)?.byHouse.leumi)?.changes.length ?? 0;
-    expect(n).toBeGreaterThan(0);
-    const out = receipt(b, view);
-    expect(shown(out)).toContain(`${c.lead} ${c.canChange(n)}`);
-    expect(out).toMatch(new RegExp(`<button[^>]*>${c.canChange(n)}</button>`));
-    expect(shown(out).indexOf(invest.chosen.collected)).toBeLessThan(shown(out).indexOf(c.lead));
-    // a house whose terms say nothing can change its price: no line
-    const quiet: IndicesBundle = { ...bundle, snapshots: bundle.snapshots.map((s) => (s.id === "leumi" ? { ...s, left_out: [], lines: s.lines.map((l) => ({ ...l, not_ranked: undefined })) } : s)) };
-    expect(shown(receipt(quiet, buildInvest({ bundle: quiet, index, plan })))).not.toContain(c.lead);
+    const out = html(inHost(createElement(PairReceipt, { view, bundle: b, plan, pick: { house: "leumi", fund }, chosen: true, layout: "ticket" })));
+    const short = view.providers.find((p) => p.id === "leumi")?.short ?? "leumi";
+    expect(out).toContain(`aria-label="${invest.dealAccount.terms.title(short)}"`);
+    expect(shown(out)).not.toContain(invest.chosen.collected);
+    expect(shown(out)).not.toContain(c.lead);
   });
 });
 
