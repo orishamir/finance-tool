@@ -208,7 +208,6 @@
    "site/app/components/home/body.test.ts": 1,
    "site/app/components/invest/render-fixtures.ts": 1,
    "site/app/components/invest/render-left-out.test.ts": 1,
-   "site/app/components/kit/guards.test.ts": 2,
    "site/app/components/kit/hebrew-quotes.test.ts": 1,
    "site/app/components/kit/kit.test.ts": 36,
    "site/app/components/own-figures.test.ts": 1,

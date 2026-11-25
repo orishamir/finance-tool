@@ -666,7 +666,7 @@ describe("a reading is the site's reading, not a secondary source", () => {
   it("a figure's sheet shows the reading tag when the value carries the reading label", () => {
     const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-07" };
     const v = { value: 1200, unit: "nis", state: "computed", source: { url: "", title: "" }, checked: "2026-11-07", effective_from: null, effective_to: null, update_rule: "computed", formula: "F-44", inputs: {}, labels: [{ code: "reading", ruleId: "TXK-07" }] } as unknown as SiteValue;
-    const sheet = (value: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(ValueSheet, { value, exact: false, data, headId: "h", descId: "d" }) })));
+    const sheet = (value: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(ValueSheet, { value, exact: false, data, headId: "h", descId: "d" }))));
     expect(sheet(v)).toContain(numbers.reading);
     expect(sheet({ ...v, labels: [] } as SiteValue)).not.toContain(numbers.reading);
   });
@@ -678,7 +678,7 @@ describe("a reading is the site's reading, not a secondary source", () => {
     const doubted = computed(900, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXS-14" }] });
     const company = { value: 800, unit: "nis", state: "sourced", source: { url: "https://example.org/a.pdf", title: "תעריפון", strength: "institution" }, checked: today, effective_from: null, effective_to: null, update_rule: "provider-set" } as SiteValue;
     const gap = differenceOf(["קרן א", doubted], ["קרן ב", company], "F-65", { today });
-    const sheet = (value: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(ValueSheet, { value, exact: false, data, headId: "h", descId: "d" }) }))).replace(/<!-- -->/g, "").replace(/<[^>]+>/g, "");
+    const sheet = (value: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(ValueSheet, { value, exact: false, data, headId: "h", descId: "d" })))).replace(/<!-- -->/g, "").replace(/<[^>]+>/g, "");
     const html = sheet(gap);
     expect(html).toContain(`${provenance.computed.doubtedInputs} קרן א`);
     expect(html).not.toContain(numbers.readingDoubt["TXS-14"]?.known ?? "the words");
@@ -742,7 +742,7 @@ describe("a figure's sheet never prints a record's raw English value", () => {
 
   it("the sheet heads with that word, not the record's value", () => {
     const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-07" };
-    const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(ValueSheet, { value: word("unlinked_15"), exact: false, display: "ריבית לא צמודה", data, headId: "h", descId: "d" }) })));
+    const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(ValueSheet, { value: word("unlinked_15"), exact: false, display: "ריבית לא צמודה", data, headId: "h", descId: "d" }))));
     expect(html).toContain("ריבית לא צמודה");
     expect(html).not.toContain("unlinked_15");
   });
