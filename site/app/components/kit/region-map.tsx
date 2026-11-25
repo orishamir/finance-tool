@@ -303,6 +303,21 @@ export function stripedPairs(grid: RegionGrid): [number, number][] {
     });
 }
 
+/**
+ * The areas the legend names: each that leads at STRIPES_SEEN or more of the plot's nodes or of the bottom edge's, and each of a pair whose
+ * band shows (`stripedPairs`). An account that leads only a sliver, or is only a close second somewhere, has no item: the legend would name
+ * a colour the eye cannot find on the map.
+ */
+export function seenAreas(field: RegionGrid, edge: RegionGrid | null, striped: readonly (readonly [number, number])[]): Set<number> {
+  const seen = new Set(striped.flat());
+  for (const g of edge ? [field, edge] : [field]) {
+    const count = new Map<number, number>();
+    for (const f of g.first) if (f >= 0) count.set(f, (count.get(f) ?? 0) + 1);
+    for (const [f, n] of count) if (n >= STRIPES_SEEN * g.first.length) seen.add(f);
+  }
+  return seen;
+}
+
 /** The bottom edge names an area only where it is clear over at least this share of the edge's nodes: a tenth, about 130 px on a computer
  *  and 35 on a phone, so a name never stands for a sliver the eye cannot find. */
 const EDGE_NAMED = 0.1;
@@ -433,7 +448,7 @@ interface RegionMove {
 interface RegionMapProps {
   /** The starting view: what the map shows first, and what its button returns to. */
   home: PlaneView;
-  /** Every area, in the legend's order. */
+  /** Every area, in the legend's order; the legend names those the map shows (`seenAreas`). */
   areas: RegionArea[];
   /** Who leads over a window of the plane (`window`): its columns across the window's x, its rows from `from` to its top (under `from`,
    *  where the window starts at 0, is the bottom edge's). Drawn where it lies in the view, so a move shows at once, before the next comes. */
@@ -444,7 +459,7 @@ interface RegionMapProps {
   /** The bottom edge's words, by the area over its longest clear stretch (null: about the same all along); with none, the edge carries no
    *  words, its colours alone saying which area leads along it. */
   edgeLabel?: (id: string | null) => RegionWords;
-  /** The band's words in the legend, the pair's for its hint, and a "?" after its item (the last such item; with none, after the last item). */
+  /** The band's words in the legend, the pair's for its hint, and a "?" after the last such item (none where no band's item shows). */
   bandLabel: { text: string; pair: (a: string, b: string) => string; help?: ReactNode };
   /** The reader's own point, and its words under it; neither is drawn where the point is out of view. */
   mark: { at: RegionPoint; label: RegionWords };
@@ -693,15 +708,18 @@ function Plot({
   // the legend's items for the band, one for each pair whose band shows, most first, in the pair's colours as the map draws them; the title
   // naming the pair is a hint under a computer's pointer
   const { text: sameText, pair: samePair, help: bandHelp } = bandLabel;
-  const striped = useMemo(
-    () =>
-      stripedPairs(field).flatMap(([p, q]) => {
-        const [one, two] = [areas[p], areas[q]];
-        if (!one || !two) return [];
-        return [{ id: `${STRIPED_ID}:${one.id}:${two.id}`, swatch: <BandSwatch p={one.tone} q={two.tone} />, label: <span title={samePair(one.name, two.name)}>{sameText}</span>, still: true }];
-      }),
-    [field, areas, sameText, samePair],
-  );
+  // the areas the eye finds on the map, then the band's items; the band's "?" only where a band's item shows, as it explains the band
+  const legend = useMemo(() => {
+    const pairs = stripedPairs(field);
+    const seen = seenAreas(field, edge, pairs);
+    const named = areas.flatMap((a, k) => (seen.has(k) ? [{ id: a.id, swatch: <Swatch shape="box" className={SWATCH[a.tone]} />, label: a.name }] : []));
+    const striped = pairs.flatMap(([p, q]) => {
+      const [one, two] = [areas[p], areas[q]];
+      if (!one || !two) return [];
+      return [{ id: `${STRIPED_ID}:${one.id}:${two.id}`, swatch: <BandSwatch p={one.tone} q={two.tone} />, label: <span title={samePair(one.name, two.name)}>{sameText}</span>, still: true }];
+    });
+    return striped.length ? withHelp([...named, ...striped], bandHelp) : named;
+  }, [field, edge, areas, sameText, samePair, bandHelp]);
   // the words over the map and where they stand, in the field's own frame: worked out again only when the field or the plot's size changes,
   // the names' and the band's places being a search over the plot
   const layout = useMemo(() => {
@@ -1006,7 +1024,7 @@ function Plot({
 
   return (
     <div className={cx("flex flex-col gap-2", full && "min-h-0 flex-1")}>
-      <ChartLegend items={withHelp([...areas.map((a) => ({ id: a.id, swatch: <Swatch shape="box" className={SWATCH[a.tone]} />, label: a.name })), ...striped], bandHelp)} pick={pick} />
+      <ChartLegend items={legend} pick={pick} />
       {/* the y axis's name over its figures, at the plot's left edge, as the axis reads left to right; the map's buttons at the other end */}
       <div dir="ltr" className="flex flex-wrap-reverse items-end justify-between gap-x-2">
         <p className="text-xs text-muted-foreground">

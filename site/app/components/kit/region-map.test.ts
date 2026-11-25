@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
-import { bandLayer, bandWeight, ease, edgeStretches, equalLines, laterShare, RegionMap, stripedPairs, type RegionGrid } from "./region-map";
+import { bandLayer, bandWeight, ease, edgeStretches, equalLines, laterShare, RegionMap, seenAreas, stripedPairs, type RegionGrid } from "./region-map";
 
 /** A grid whose two areas' lead is a plane, d = (i + 0.5 j − 6.3) / `per` in grid units: area 0 leads where d > 0, area 1 where d < 0,
  *  each ahead by |d|, so the two are equal on the line i + 0.5 j = 6.3; with `per` at 10 the two are within θ everywhere. */
@@ -128,15 +128,16 @@ describe("the band's layer over a grid", () => {
 
 describe("the legend's items for the band", () => {
   const SAME = "about the same";
+  const HELP = "what the band means";
   const legendOf = (field: RegionGrid, edge: RegionGrid = { cols: 2, rows: 1, first: [0, 0], second: [-1, -1], ahead: [1, 1] }, guides: { axis: "x" | "y"; at: number; label?: { text: string } }[] = []) =>
     renderToString(
       createElement(RegionMap, {
         home: { x: [0, 100], y: [0, 100] },
-        areas: [{ id: "p", name: "P", tone: "region-1" }, { id: "q", name: "Q", tone: "region-2" }],
+        areas: [{ id: "p", name: "P", tone: "region-1" }, { id: "q", name: "Q", tone: "region-2" }, { id: "r", name: "Rr", tone: "region-3" }],
         field: { ...field, window: { x: [0, 100], y: [0, 100] }, from: 1 },
         edge,
         edgeLabel: (id: string | null) => ({ text: id === null ? "the edge about the same" : `the edge: ${id}` }),
-        bandLabel: { text: SAME, pair: (a: string, b: string) => `${a} & ${b}: ${SAME}` },
+        bandLabel: { text: SAME, pair: (a: string, b: string) => `${a} & ${b}: ${SAME}`, help: createElement("i", null, HELP) },
         mark: { at: [10, 10], label: { text: "mark" } },
         guides,
         xTitle: "x",
@@ -189,11 +190,28 @@ describe("the legend's items for the band", () => {
     expect(stripedPairs(two).length).toBe(1);
   });
 
-  it("is absent where no two areas are within θ anywhere", () => {
+  it("is absent where no two areas are within θ anywhere, and so is its \"?\"", () => {
     const g = planeGrid();
     const clear: RegionGrid = { ...g, second: g.second.map(() => -1), ahead: g.ahead.map(() => 1) };
     expect(stripedPairs(clear)).toEqual([]);
     expect(legendOf(clear)).not.toContain(SAME);
+    expect(legendOf(clear)).not.toContain(HELP);
+    expect(legendOf(g)).toContain(HELP);
+  });
+
+  it("names only the areas the map shows: none that leads under a hundredth of the plot and of the edge, or is only a close second", () => {
+    const g = planeGrid(4);
+    const clear: RegionGrid = { ...g, ahead: g.ahead.map(() => 1) };
+    // R leads one node of the 121, and is a close second at one other: neither shows
+    const sliver: RegionGrid = { ...clear, first: clear.first.map((f, k) => (k === 0 ? 2 : f)), second: clear.second.map((s, k) => (k === 60 ? 2 : s)), ahead: clear.ahead.map((a, k) => (k === 60 ? 0.5 : a)) };
+    expect([...seenAreas(sliver, null, stripedPairs(sliver))].sort((a, b) => a - b)).toEqual([0, 1]);
+    expect(legendOf(sliver)).not.toContain(">Rr<");
+    expect(legendOf(sliver)).toContain(">P<");
+    // R leading two nodes of the 121 shows, as does R leading a hundredth of the edge
+    const patch: RegionGrid = { ...clear, first: clear.first.map((f, k) => (k === 0 || k === 1 ? 2 : f)) };
+    expect(seenAreas(patch, null, []).has(2)).toBe(true);
+    const edge: RegionGrid = { cols: 100, rows: 1, first: Array.from({ length: 100 }, (_, i) => (i === 0 ? 2 : 0)), second: Array.from({ length: 100 }, () => -1), ahead: Array.from({ length: 100 }, () => 1) };
+    expect(seenAreas(clear, edge, []).has(2)).toBe(true);
   });
 });
 
