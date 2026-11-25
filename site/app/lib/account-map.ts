@@ -428,14 +428,26 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
 
   // ------------------------------------------------ the axes
   // fitted to the plan: PLAN_SPAN times its own value, and past the farthest change up its line within NEAR_CHANGE of it with room (the
-  // switch up, the far end of the stretch up that comes first, the even point, where the plan's first stops being θ ahead), at a clean
+  // switch up, the far end of the stretch up that comes first, the even point, where the plan's first stops being θ ahead, and where the
+  // account first on the axis's low edge gives way), at a clean
   // value; at least MIN_SPAN of the sliders' reach, so a plan of no money on an axis still has a modest span to show; at most the reach (or
   // the plan with room, past it)
   const capA = cleanUp(Math.max(reachA, ROOM * plan.amount));
   const capM = cleanUp(Math.max(reachM, ROOM * plan.monthly));
+  // the change up the axis's low edge, at the least the search reads of the other (a deposit of a hundredth of its reach, or today's amount):
+  // where the account first there gives way, as the line where two leave the same meets that edge. It is on no line of the plan's, and
+  // an axis cut just short of it hides that a larger amount (or deposit) changes the answer for small deposits (or amounts) too
+  const baseUp = (axis: 0 | 1, near: number) => {
+    const base: MapPoint = axis === 0 ? [plan.amount, floor.monthly] : [floor.amount, plan.monthly];
+    const first = leadOf(leftAt(...base, null), order, theta)?.first;
+    if (!first) return null;
+    const line = lineOf(leftAt, order, theta, [first], base, axis, "up", near);
+    return firstChange(line, order, theta, axis === 0 ? floor.amount : floor.monthly, (l) => !!l && l.first !== first)?.at ?? null;
+  };
   const nearUp = (axis: "amount" | "monthly", own: number, r: number) => {
     const near = NEAR_CHANGE * Math.max(own, r * MIN_SPAN);
-    return Math.max(0, ...[up[axis]?.at, stretchBy[axis].up?.hi, changes[axis].even, changes[axis].band].filter((v): v is number => v != null && v <= near));
+    const changed = [up[axis]?.at, stretchBy[axis].up?.hi, changes[axis].even, changes[axis].band, baseUp(axis === "amount" ? 0 : 1, near)];
+    return Math.max(0, ...changed.filter((v): v is number => v != null && v <= near));
   };
   const axisEnd = (own: number, to: number, r: number, cap: number) => Math.min(cleanUp(Math.max(PLAN_SPAN * own, ROOM * to, r * MIN_SPAN)), cap);
   const maxA = axisEnd(plan.amount, nearUp("amount", plan.amount, reach.amount), reach.amount, capA);

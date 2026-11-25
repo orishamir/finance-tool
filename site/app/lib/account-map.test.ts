@@ -73,9 +73,11 @@ describe("the account map (F-131)", () => {
 
   it("runs each axis past the farthest change up the plan's line with room, to a clean value", () => {
     // a change is shown within five times the plan (50,000 ₪ today, 1,000 ₪ a month): the switches up, at 53,546 ₪ and 1,650 ₪, are past
-    // it; the farthest within it is the even point (below), past 1.5 times the plan (15,000 ₪, 300 ₪): 1.5 × 29,333 = 44,000, up to 50,000;
-    // 1.5 × 562.5 = 844, up to 1,000
-    expect(map.max).toEqual({ amount: 50_000, monthly: 1000 });
+    // it. Up today's amount the farthest within it is where A gives way along the low edge, at 100 ₪ a month (the least the search reads):
+    // B leaves 0.015 a + 80 − 600 more, from 34,666.7 ₪, past the even point at 200 ₪ (29,333 ₪): 1.5 × 34,667 = 52,000, up to 60,000. Up
+    // the deposit, the low edge's change at 5,000 ₪ today (B leaves 75 + 0.8 m − 600 more, from 656.3 ₪ a month) is past the even point at
+    // 562.5 ₪: 1.5 × 656.3 = 984, up to 1,000
+    expect(map.max).toEqual({ amount: 60_000, monthly: 1000 });
     // up today's amount at 200 ₪ a month, A is θ ahead while 440 − 0.015 a ≥ 0.005 (0.98 a + 19,800), to 17,135.7 ₪, and B leaves more
     // from 29,333.3 ₪; up the deposit at 10,000 ₪, A is θ ahead while 450 − 0.8 m ≥ 0.005 (9,800 + 99 m), to 309.7 ₪ a month, and B leaves
     // more from 562.5 ₪
@@ -228,11 +230,12 @@ describe("the account map (F-131)", () => {
     expect(got.max.monthly).toBe(2000);
     // up today's amount at 300 ₪ a month, B leaves 0.015 a − 480 more than A's 0.98 a + 29,820: A is θ ahead to 16,628.1 ₪ (330.9 ≥ 0.0199 a),
     // B leaves more from 32,000 ₪, and clearly from 62,513.7 ₪ (0.015 a − 480 ≥ 0.005 (0.995 a + 29,340)), past five times the plan
-    // (50,000 ₪): not shown, the axis run past the even point, 1.5 × 32,000 = 48,000, up to 50,000
+    // (50,000 ₪): not shown. Along the low edge, at 100 ₪ a month, B leaves 0.015 a + 40 − 600 more, from 37,333.3 ₪, past the even point:
+    // the axis runs to 1.5 × 37,333 = 56,000, up to 60,000
     expect(got.changes.amount.band).toBeCloseTo(16_628.1, -2);
     expect(got.changes.amount.even).toBeCloseTo(32_000, -2);
     expect(need(got.switches.amount, "the switch up today's amount").at).toBeCloseTo(62_513.7, 0);
-    expect(got.max.amount).toBe(50_000);
+    expect(got.max.amount).toBe(60_000);
     expectFieldTrue(got, slow);
   });
 
@@ -243,8 +246,11 @@ describe("the account map (F-131)", () => {
     const got = mapOf(still, { amount: 10_000, monthly: 200 });
     expect(got.changes).toEqual({ amount: { band: null, even: null }, monthly: { band: null, even: null } });
     expect(got.max).toEqual({ amount: 15_000, monthly: 300 });
-    // a plan of nothing has no line to change along: a fiftieth of the sliders' reach on each axis, 10,000 ₪ and 200 ₪ a month
-    expect(mapOf(linear, { amount: 0, monthly: 0 }).max).toEqual({ amount: 10_000, monthly: 200 });
+    // a plan of nothing has no line to change along: a fiftieth of the sliders' reach on each axis, 10,000 ₪ and 200 ₪ a month, past
+    // where the account first on each low edge gives way within five times that: with these accounts, B from 34,666.7 ₪ at 100 ₪ a month
+    // (1.5 × that, up to 60,000) and from 656.3 ₪ a month at 5,000 ₪ today (up to 1,000)
+    expect(mapOf(still, { amount: 0, monthly: 0 }).max).toEqual({ amount: 10_000, monthly: 200 });
+    expect(mapOf(linear, { amount: 0, monthly: 0 }).max).toEqual({ amount: 60_000, monthly: 1000 });
   });
 
   it("reads every node of the areas as the accounts do, the band between them included", () => {
@@ -288,9 +294,11 @@ describe("the account map (F-131)", () => {
     const empty = mapOf(linear, { amount: 0, monthly: 0 });
     expect(empty.plan.lead).toEqual({ kind: "empty" });
     expect(empty.switches).toEqual({ amount: null, monthly: null });
-    // on its axes (to 10,000 ₪ and 200 ₪ a month) B leaves 0.015 a + 0.8 m − 600 more than A, under 0 everywhere: A alone
-    expect(empty.accounts).toEqual(["a"]);
-    expect(empty.field.first.every((k) => empty.accounts[k] === "a")).toBe(true);
+    // its axes run past where B takes over along each low edge (to 60,000 ₪ and 1,000 ₪ a month), and B leaves 0.015 a + 0.8 m − 600 more
+    // than A: A first where that is under 0, B past it
+    expect(empty.max).toEqual({ amount: 60_000, monthly: 1000 });
+    expect(empty.accounts).toEqual(expect.arrayContaining(["a", "b"]));
+    expectFieldTrue(empty, linear);
   });
 
   it("the line for no monthly deposit: A clearly up to 30,150.8 ₪, B clearly from 59,551.1 ₪, the band between", () => {
