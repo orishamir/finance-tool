@@ -162,6 +162,19 @@ describe("a fund the person types is priced at the collected houses under its ki
     expect(at.value.doubt).toBeUndefined();
   });
 
+  it("a fund typed as US-domiciled and distributing is priced on the site's reading that its distribution is a dividend, its figures tagged with it, as a collected one's are (F-20, D85)", () => {
+    for (const kind of ["abroad", "tase-foreign"] as const) {
+      const f = fundFromDraft({ ...said(kind), name: kind, fixed: 0.1, payout: "distributing", yield: 1.2, perYear: 4, domicile: "US" }, `custom-fund-us-${kind}`, "index-sp500", t);
+      const v = buildInvest({ bundle: withCustomEntries(bundle, [f]), index: sp, plan });
+      const mineUs = allFunds(v).find((x) => x.rec.id === f.id);
+      if (!mineUs) throw new Error(`the typed ${kind} fund is on the S&P 500's list`);
+      expect(mineUs.reason, kind).toBeUndefined();
+      const priced = Object.values(mineUs.byHouse).flatMap((w) => ("valueN" in w ? [w] : []));
+      expect(priced.length, kind).toBeGreaterThan(0);
+      for (const w of priced) expect(w.value.labels, kind).toContainEqual({ code: "reading", ruleId: "TXF-08" });
+    }
+  });
+
   it("an Israeli fund typed on an index in a foreign currency has a status not known: its chip says so, never that the currency is taxed (F-04)", () => {
     for (const kind of ["il-tracking", "il-etf"] as const) {
       const f = fundFromDraft({ ...said(kind), name: kind, fixed: 0.1, variable: 0, trustee: 0 }, `custom-fund-${kind}`, "index-sp500", t);

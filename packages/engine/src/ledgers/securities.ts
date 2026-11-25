@@ -267,8 +267,8 @@ export function fundLevelTaxOn(gain: number, carried: number, rate: number): { t
 }
 
 /** F-04, D84: the statement a fund's own annex makes of its tax index, where its runs are made on it (`readsStatedIndex`); else null. */
-export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex" | "distribution">): TaxIndexStatement | null {
-  return readsStatedIndex(fund.kind, fund.distribution !== undefined) ? (fund.statedIndex ?? null) : null;
+export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex">): TaxIndexStatement | null {
+  return readsStatedIndex(fund.kind) ? (fund.statedIndex ?? null) : null;
 }
 
 /**
@@ -278,14 +278,13 @@ export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex" | "dist
  * the site's reading, for a fund whose documents name it a foreign-investment fund; the readings in turn for one the site does not know
  * (`RuleBook.taxIndex`, D119). A TASE foreign fund whose own annex states its index under its ruling takes that index
  * (`statedTaxIndexOf`, D84): the main currency's exchange rate, which is the record's own currency and the exposure's, and so the run's one
- * exchange-rate path, or the CPI; the run carries the statement, and no rule is cited for it. Any other TASE foreign fund that pays nothing
- * out takes the tax index TXF OQ10 leaves open (`taseForeignFundIndex`): the CPI, the site's reading, for a fund whose documents it read;
- * for one it does not know, its record's currency's exchange rate (the CPI for a record in shekels) or the CPI in turn. One that
- * distributes reads no statement and stops on TXF-04 with TXF open question 19 (D10): its distribution's tax is open for a fund organised as
- * a trust, and the run does not know its legal form. The kind with no fund record stops on TXF-04 alone: the run does not know its currency,
- * so it has no exchange-rate reading (G-35).
+ * exchange-rate path, or the CPI; the run carries the statement, and no rule is cited for it. Any other TASE foreign fund takes the tax
+ * index TXF OQ10 leaves open (`taseForeignFundIndex`): the CPI, the site's reading, for a fund whose documents it read; for one it does not
+ * know, its record's currency's exchange rate (the CPI for a record in shekels) or the CPI in turn, whether or not it
+ * pays out: its distributions are taxed on a reading of their own (`foreignDistributionRate`). The kind with no fund record stops on
+ * TXF-04: the run does not know its currency, so it has no exchange-rate reading (G-35).
  */
-export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "distribution" | "notKnown">, book: RuleBook): "fx" | "principal" | "cpi" {
+export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "notKnown">, book: RuleBook): "fx" | "principal" | "cpi" {
   if (fund.kind === "foreign-fund") {
     book.cite("TXF-03");
     return "fx";
@@ -301,11 +300,22 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "princip
   if (fund.kind !== "tase-foreign-fund") return "cpi";
   const stated = statedTaxIndexOf(fund);
   if (stated) return stated.index;
-  if (fund.distribution) throw new BlockedError("TXF-04", "TXF OQ19");
   if (fund.recordCurrency === undefined) throw new BlockedError("TXF-04");
   const reading = book.taxIndex(taseForeignFundIndex, fund.notKnown);
   // a record in shekels has no exchange rate of its own against the shekel: both readings are the CPI
   return reading === "fx" && isShekel(fund.recordCurrency) ? "cpi" : reading;
+}
+
+/**
+ * F-20, product D85: the Israeli rate on a foreign fund's distribution, TXF-08's rate on a dividend, read on the site's reading that the
+ * distribution is a dividend whatever the fund's legal form. Whether Israel classes the distribution of a fund organised as a trust or a
+ * contractual fund as a dividend is open (TXF open question 19), and nothing the run is given says a fund's legal form (a record's
+ * `legal_form` is words), so every foreign fund's distribution takes the reading, a `reading` label on TXF-08, the rule whose rate it
+ * applies: the run never meets the question and raises no flag of it.
+ */
+function foreignDistributionRate(book: RuleBook): number {
+  book.label("reading", "TXF-08");
+  return book.rate("TXF-08", "rate");
 }
 
 /**
@@ -314,7 +324,7 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "princip
  * reading (TXS OQ26, TXF OQ10) is not stopped by it before a run: it takes the site's reading, or, where the site does not know the fund,
  * whether its readings split, and what a split does, is the run's to say (`securitiesStopOf`).
  */
-export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "distribution" | "notKnown">, ctx: RunContext): SecuritiesStop | null {
+export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "notKnown">, ctx: RunContext): SecuritiesStop | null {
   try {
     taxIndexOf(fund, ruleBook(ctx));
     return null;
@@ -346,8 +356,8 @@ const ownRunOf = (input: SecuritiesInput): SecuritiesInput => ({
 });
 
 /**
- * Method §13, F-04: what the after-tax runs of an input's fund stop on, or null where they compute. A TASE foreign fund that distributes,
- * and the kind with no fund record, stop on TXF-04 before any run (`securitiesBlockedBy`). A fund whose tax index is an open reading and
+ * Method §13, F-04: what the after-tax runs of an input's fund stop on, or null where they compute. The kind of TASE foreign fund with no
+ * fund record stops on TXF-04 before any run (`securitiesBlockedBy`). A fund whose tax index is an open reading and
  * whose documents the site did not read is run on its own (`ownRunOf`) under each reading. Both such cases (TXS OQ26, TXF OQ10) take the
  * reading that leaves the holder less where their readings split, so such a run stops only where a question that stops splits it before its
  * exit. A fund whose documents the site read takes its reading (D119) and is a plain fund here.
@@ -704,7 +714,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     if (fund.kind === "money-market-taxable") {
       // The holder of a taxable fund pays nothing on its distributions; the fund has paid (TXS-11).
     } else if (isForeign) {
-      israeliDistRate = book.rate("TXF-08", "rate");
+      israeliDistRate = foreignDistributionRate(book);
       book.cite("TXF-17");
       book.cite("TXF-18");
       if (fund.domicile === "us") {

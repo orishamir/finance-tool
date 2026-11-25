@@ -5,7 +5,7 @@ import { invest as root } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
 import { customFundGap, DOMICILES, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type CustomFund, type EntryError, type EntryTerm, type FundDomicile, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { fundLabels, optionLabels, type Label } from "../../lib/labels";
-import { typedFundOpenRule, optionsOf, type IndexRef, type OptionId } from "../../lib/invest";
+import { optionsOf, type IndexRef, type OptionId } from "../../lib/invest";
 import { isoToday } from "../../lib/state";
 import { Num, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
@@ -290,11 +290,6 @@ function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
   const cls = optionClass[draft.kind];
   const rec = draftRecord(draft, index);
   const gap = customFundGap(rec);
-  // a fund whose tax rests on an open rule is never ranked or priced after tax (F-04: a Tel Aviv foreign fund that distributes, TXF-04 with
-  // TXF open question 19)
-  const bundle = useEditors()?.world?.bundle;
-  const open = bundle ? typedFundOpenRule(bundle, rec, draft.kind) : null;
-  const openLine = open ? reasonText({ code: "rule-open", ...open }, cls) : null;
   const body = (labels: Label[], line: string) => (
     <div className="flex flex-col gap-1.5">
       {labels.length > 0 ? <LabelRow labels={labels} still /> : <span className="text-xs text-muted-foreground">{c.previewNone}</span>}
@@ -308,15 +303,13 @@ function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
     for (const payout of [...PAYOUTS, null]) for (const domicile of [...DOMICILES, null]) for (const cur of currencies) for (const tracking of TRACKINGS) variants.push({ ...draft, payout, domicile, ...cur, tracking, yield: 1, perYear: 4 });
     const size = (ls: Label[]) => ls.reduce((n, l) => n + l.text.length + 4, 0);
     const rows = variants.map((v) => rowLabels(v, index)).sort((a, b) => size(b) - size(a));
-    // a reason any answer can give: a Tel Aviv foreign fund that distributes rests on an open rule, one that accumulates does not
-    const opens = bundle ? [...new Set(variants.flatMap((v) => { const stop = typedFundOpenRule(bundle, draftRecord(v, index), v.kind); return stop ? [reasonText({ code: "rule-open", ...stop }, cls)] : []; }))] : [];
-    const lines = [c.previewPriced, ...opens, ...(["fee-unknown", "payout-unknown", "need-yield", "domicile-unknown", "no-hedge-entered"] as const).map((code) => reasonText({ code }, cls))].sort((a, b) => b.length - a.length);
+    const lines = [c.previewPriced, ...(["fee-unknown", "payout-unknown", "need-yield", "domicile-unknown", "no-hedge-entered"] as const).map((code) => reasonText({ code }, cls))].sort((a, b) => b.length - a.length);
     return { row: rows[0]!, line: lines[0]! };
-  }, [draft.kind, index, cls, bundle]);
+  }, [draft.kind, index, cls]);
   return (
     <div className="flex flex-col gap-1.5">
       <p className="text-sm font-medium">{c.preview}</p>
-      <LongestCase cases={[body(longest.row, longest.line)]}>{body(rowLabels(draft, index), openLine ?? (gap ? reasonText({ code: gap }, cls) : draft.hedged === null ? c.errors["hedged-none"]! : c.previewPriced))}</LongestCase>
+      <LongestCase cases={[body(longest.row, longest.line)]}>{body(rowLabels(draft, index), gap ? reasonText({ code: gap }, cls) : draft.hedged === null ? c.errors["hedged-none"]! : c.previewPriced)}</LongestCase>
     </div>
   );
 }

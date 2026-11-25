@@ -10,7 +10,7 @@ import type { IndexRef, OptionId, ProviderInfo } from "./invest";
 import { assertNever, isShekel } from "@finance-tool/schema";
 
 /** The engine's fund kind for an option's funds (F-04). */
-export const OPTION_KIND = { "il-tracking": "israeli-fund", "il-etf": "israeli-fund", "tase-foreign": "tase-foreign-fund", abroad: "foreign-fund" } as const satisfies Record<OptionId, string>;
+const OPTION_KIND = { "il-tracking": "israeli-fund", "il-etf": "israeli-fund", "tase-foreign": "tase-foreign-fund", abroad: "foreign-fund" } as const satisfies Record<OptionId, string>;
 
 export type LabelTone = "neutral" | "caution" | "open";
 /** What each icon draws: each says what its label is about, and labels about different things never share one.
@@ -225,7 +225,7 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   if (ruling) out.push(withDoc(label("tax-on-sale-ruling"), { href: sourceHref({ url: ruling.source.url, page: ruling.pages.ruling }), title: ruling.source.title }));
   // a fund whose own annex states its tax index under its ruling, where its runs are made on it: the fund's statement, its page linked (F-04,
   // D84), by the engine's own test (`readsStatedIndex`). A fund whose policy is not known is not run at all (`fundRun`), so says none.
-  const stated = rec.distribution_policy !== null && readsStatedIndex(OPTION_KIND[option], rec.distribution_policy === "distributing") ? taxIndexStatementOf(rec) : undefined;
+  const stated = rec.distribution_policy !== null && readsStatedIndex(OPTION_KIND[option]) ? taxIndexStatementOf(rec) : undefined;
   if (stated) out.push(statementLabel(stated));
   if (rec.domicile === "US") out.push(label("ask-estate"), label("ask-w8"));
   return out;

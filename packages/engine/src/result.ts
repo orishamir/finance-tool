@@ -99,13 +99,11 @@ export const RUN_FLAG_CODES: readonly string[] = [
 export type FundStatement = TaxIndexStatement | ForeignInvestmentFundStatement;
 
 /**
- * F-04, D84: whether a fund's runs read the tax index its own annex states: only a TASE foreign fund's, and only one that pays nothing out.
- * A statement settles only the index: a fund that distributes stops on its distribution's open part whatever its annex states (G-35, TXF
- * open question 19: the run does not know its legal form), so its runs read none and stop on TXF-04. The site's labels say a statement
- * by this same test.
+ * F-04, D84: whether a fund's runs read the tax index its own annex states: only a TASE foreign fund's, whose annex speaks for its units
+ * listed in Tel Aviv; the same units bought abroad keep TXF-03. The site's labels say a statement by this same test.
  */
-export function readsStatedIndex(kind: Fund["kind"], distributes: boolean): boolean {
-  return kind === "tase-foreign-fund" && !distributes;
+export function readsStatedIndex(kind: Fund["kind"]): boolean {
+  return kind === "tase-foreign-fund";
 }
 
 

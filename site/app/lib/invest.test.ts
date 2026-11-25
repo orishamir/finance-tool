@@ -1,7 +1,7 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
 import { BlockedError } from "@finance-tool/engine";
-import { accountSum, blockedReason, buildInvest, listReading, typedFundOpenRule, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
+import { accountSum, blockedReason, buildInvest, listReading, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "./custom-entries";
 import type { WorkbenchInputs } from "./providers";
@@ -36,7 +36,7 @@ const steady = (over: Partial<WorkbenchInputs> = {}): WorkbenchInputs => plan({ 
 describe("invest page computation", () => {
   const view = buildInvest({ bundle, index: sp, plan: plan() });
 
-  it("prices the Irish distributing funds from their records' yields, and keeps a reason on the US ones", () => {
+  it("prices the distributing funds abroad from their records' yields, and names a missing yield as missing (A-10, D85, D107)", () => {
     const abroad = view.options.find((o) => o.id === "abroad")!;
     const of = (id: string) => abroad.funds.find((f) => f.rec.id === id)!;
     for (const id of ["ie0031442068", "ie00b3xxrp09"]) {
@@ -44,9 +44,31 @@ describe("invest page computation", () => {
       // paying out costs tax along the way: below the same house's accumulating fund at the same fee
       expect(of(id).best!.valueN).toBeLessThan(of("ie00b5bmr087").best!.valueN);
     }
+    // a US fund organised as a trust is priced as soon as its record carries its yield; until then it says the yield is missing
     for (const id of ["us-voo", "us-ivv"]) {
-      expect(of(id).best).toBeUndefined();
-      expect(of(id).reason).toEqual({ code: "us-fund-open" });
+      if (of(id).rec.distribution) expect(of(id).best?.valueN, id).toBeGreaterThan(0);
+      else expect(of(id).reason, id).toEqual({ code: "need-yield" });
+    }
+  });
+
+  it("prices and ranks a US fund organised as a trust once its record carries a yield, on the site's reading that its distribution is a dividend (F-20, D85)", () => {
+    const irish = bundle.funds.find((r) => r.id === "ie0031442068")?.distribution;
+    if (!irish) throw new Error("ie0031442068's record carries its yield");
+    const withYield = { ...bundle, funds: bundle.funds.map((r) => (r.id.startsWith("us-") && !r.distribution ? { ...r, distribution: irish } : r)) };
+    for (const index of knownIndices(withYield)) {
+      const v = buildInvest({ bundle: withYield, index, plan: plan() });
+      for (const f of v.options.flatMap((o) => o.funds).filter((x) => x.rec.domicile === "US")) {
+        expect(f.reason, f.rec.id).toBeUndefined();
+        expect(f.best?.valueN, f.rec.id).toBeGreaterThan(0);
+        const priced = Object.values(f.byHouse).flatMap((w) => ("valueN" in w ? [w] : []));
+        expect(priced.length, f.rec.id).toBeGreaterThan(0);
+        for (const w of priced) {
+          // the site's reading, said in the figure's sheet: no doubt on the figure, and TXF-08 among the rules it rests on
+          expect(w.value.labels, f.rec.id).toContainEqual({ code: "reading", ruleId: "TXF-08" });
+          expect(w.value.doubt, f.rec.id).toBeUndefined();
+          expect(w.value.labels?.some((l) => l.code === "cautious"), f.rec.id).toBe(false);
+        }
+      }
     }
   });
 
@@ -270,16 +292,6 @@ describe("invest page computation", () => {
       expect(at.cost.labels?.some((l) => l.ruleId === "TXS-14") ?? false).toBe(false);
       expect(at.cost.statements).toBeUndefined();
     }
-  });
-
-  it("tells a fund the person types as a foreign fund in Tel Aviv of an open rule only where it distributes (F-04, TXF-04)", () => {
-    const line = bundle.funds.find((r) => r.id === "1183441");
-    if (!line?.fees.fixed_management) throw new Error("1183441's record and its fixed fee are in the data");
-    expect(typedFundOpenRule(bundle, line, "tase-foreign")).toBeNull();
-    const fee = line.fees.fixed_management;
-    const paying = { ...line, distribution_policy: "distributing" as const, distribution: { yield: { ...fee, value: 1.5 }, per_year: 4 as const } };
-    // its distribution's tax is open for a fund organised as a trust, and the run does not know its legal form (TXF open question 19)
-    expect(typedFundOpenRule(bundle, paying as typeof line, "tase-foreign")).toEqual({ ruleId: "TXF-04", question: "TXF OQ19" });
   });
 
   it("pins one fund's account cost: the S&P 500's Tel Aviv line at Psagot on the plan, run on the dollar its annex states (F-91, D84)", () => {

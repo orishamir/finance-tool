@@ -4,7 +4,7 @@
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { rankByValue } from "./rank";
 import { gershayim } from "./format";
-import { BlockedError, openReadings, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, fundOf, recordDistribution, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, openReadings, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
 import { isShekel, type ExposureRecord, type FeesSnapshot, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomFund } from "./custom-entries";
@@ -14,7 +14,6 @@ import { feeNameOf } from "./fee-deal/part-words";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
-import { OPTION_KIND } from "./labels";
 import { computed, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
@@ -142,7 +141,6 @@ export type Reason =
   | NotComparable
   | { code: "fund-type" }
   | { code: "need-yield" }
-  | { code: "us-fund-open" }
   | { code: "need-rate"; currency: string }
   | { code: "no-fund-rate" }
   | { code: "no-hedge-record" }
@@ -447,14 +445,6 @@ function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
 /** The open rule a run of the spec's fund would rest on (F-04), with the question that stops it where one does, or null. A question whose
  *  readings split a run (TXG OQ17 at a falling CPI) is the run's own to say: its row is not comparable, "rule-open" (method §13). */
 const blockedBy = (ctx: Ctx, spec: Spec): SecuritiesStop | null => securitiesBlockedBy(spec.fund, ruleContext(ctx.bundle));
-
-/**
- * The open rule a fund the person types would rest on (F-04: a foreign fund in Tel Aviv that distributes, TXF-04 with TXF open question 19),
- * or null: what its row says before it is added. Read from its record as the list reads it (`fundOf`), with the yield it pays where it has one.
- */
-export function typedFundOpenRule(bundle: IndicesBundle, rec: FundRecord, option: OptionId): SecuritiesStop | null {
-  return securitiesBlockedBy(fundOf(rec, OPTION_KIND[option], { distribution: recordDistribution(rec) }).fund, ruleContext(bundle));
-}
 
 /**
  * The house whose price list a snapshot reads: its own, or, for an account built on a house (F-101), that house's. No page builds such an
@@ -1049,12 +1039,12 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   const list = gapListFor(ctx.bundle, rec);
   if (rec.hedged === true && !comparedYears(rec.tracking_record, list) && typeof rec.fees.tracking_difference_12m?.value !== "number") return { reason: { code: isCustomFund(rec) ? "no-hedge-entered" : "no-hedge-record" } };
   const run = fundRun(subject, exposure, ctx.plan.grossReturn, ctx.assumptions, ctx.bundle.fx, list);
-  if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: rec.domicile === "US" && !isCustomFund(rec) ? "us-fund-open" : "need-yield" } : { code: "fund-type" } };
+  if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: "need-yield" } : { code: "fund-type" } };
   const listing = listingOf(rec, subject.instrumentClass);
   const spec: Spec = { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass, ...(listing ? { listing } : {}) };
-  // a fund whose tax rests on an open rule is listed with the reason and no rank (F-04, G-35): a TASE foreign fund that distributes, on
-  // TXF-04; a fund whose tax index is an open reading (TXS OQ26, TXF OQ10) computes, on the site's reading where the site read its
-  // documents (D119), else on the reading that leaves less where they split
+  // a fund whose tax rests on an open rule is listed with the reason and no rank (F-04); a fund whose tax index is an open reading (TXS OQ26,
+  // TXF OQ10) computes, on the site's reading where the site read its documents (D119), else on the reading that leaves less where they
+  // split, and a foreign fund's distribution on the site's reading that it is a dividend (F-20, D85)
   const own = { goal: goalOf(ctx), market: { ...spec.market, inflation: ctx.plan.inflation }, fund: spec.fund, tariff: spec.currency ? { currency: spec.currency } : {}, profile: profileOf(ctx) };
   const stop = securitiesStopOf(own, ruleContext(ctx.bundle));
   if (stop) {

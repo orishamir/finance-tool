@@ -122,10 +122,8 @@ describe("an account whose run an open question stopped", () => {
     expect(told.why).toBe(invest.reasons.ruleOpen["TXG-09"]);
     expect(told.parts).toEqual([{ text: invest.reasons.ruleOpen["TXG-09"], question: "TXG OQ17" }]);
   });
-  it("says a Tel Aviv foreign fund that pays out stops on its distribution's open tax, and the kind with no fund record on its unknown currency (TXF-04)", () => {
-    expect(reasonText({ code: "rule-open", ruleId: "TXF-04", question: "TXF OQ19" }, "tase_foreign_fund_units")).toBe(invest.reasons.ruleOpen["TXF OQ19"]);
+  it("says the kind of Tel Aviv foreign fund with no fund record stops on its unknown currency (TXF-04)", () => {
     expect(reasonText({ code: "rule-open", ruleId: "TXF-04" }, "tase_foreign_fund_units")).toBe(invest.reasons.ruleOpen["TXF-04"]);
-    expect(invest.reasons.ruleOpen["TXF OQ19"]).not.toBe(invest.reasons.ruleOpen["TXF-04"]);
   });
 });
 
@@ -519,6 +517,44 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
       const text = shown(lists(sp, bundle, plan, { house, fund: pick.fund }, { ruler: true }));
       for (const words of ["לא מדורג", "לא מדרג", "בלי דירוג"]) expect(text, `${house}: ${words}`).not.toContain(words);
     }
+  });
+  it("a US fund organised as a trust whose record carries a yield is priced on the list with no caution mark, its sheet tagging the site's reading that its distribution is a dividend (F-20, D85)", () => {
+    // the records of VOO, IVV and ACWI as they stand, given the yield an Irish fund's record carries where theirs carries none
+    const irish = bundle.funds.find((r) => r.id === "ie0031442068")?.distribution;
+    if (!irish) throw new Error("ie0031442068's record carries its yield");
+    const withYield = { ...bundle, funds: bundle.funds.map((r) => (r.domicile === "US" && !r.distribution ? { ...r, distribution: irish } : r)) };
+    const index = indexById(withYield, "index-sp500");
+    const voo = bundle.funds.find((r) => r.id === "us-voo");
+    if (!index || !voo) throw new Error("the S&P 500 is an index of the collected data, and VOO a fund of it");
+    const sp = buildInvest({ bundle: withYield, index, plan });
+    const f = allFunds(sp).find((x) => x.rec.id === "us-voo");
+    if (!f) throw new Error("the S&P 500 holds VOO");
+    const house = Object.keys(f.byHouse).find((id) => { const w = f.byHouse[id]; return w && "valueN" in w; });
+    if (!house) throw new Error("VOO is priced at a house once its record carries a yield");
+    const at = f.byHouse[house];
+    if (!at || !("valueN" in at)) throw new Error("VOO is priced there");
+    // the pair of VOO and a house that prices it, as the reader picks it
+    const raw = lists(sp, withYield, plan, { house, fund: "us-voo" }, { ruler: true });
+    const a = raw.indexOf(`data-pick-key="us-voo"`);
+    expect(a).toBeGreaterThanOrEqual(0);
+    const rest = raw.slice(a + 1);
+    const end = rest.search(/data-pick-key=|data-case-of=/);
+    const row = end < 0 ? rest : rest.slice(0, end);
+    // priced and ranked: a spot on the ruler, and no caution mark in its row
+    expect(row).toContain("data-spot-dot");
+    expect(row).not.toMatch(new RegExp(`<button[^>]*aria-label="[^"]*${numbers.doubt}[^"]*"`));
+    expect(at.value.doubt).toBeUndefined();
+    expect(at.value.labels).toContainEqual({ code: "reading", ruleId: "TXF-08" });
+    // no chip on its row says the reading: its labels are those of a distributing US fund
+    expect(fundLabels(f.rec, sp.index, f.option).map((l) => l.id)).toEqual(fundLabels(voo, sp.index, f.option).map((l) => l.id));
+    // its sheet tags the site's reading and names TXF-08 by its title
+    const rules = loadRules();
+    const record = rules["TXF-08"];
+    if (!record?.title_he) throw new Error("TXF-08 is in data/rules with its Hebrew title");
+    const sheet = shown(renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { ...data, rules } } as never, createElement(ValueSheet, { value: at.value, exact: false, data, headId: "h", descId: "d" })))));
+    expect(sheet).toContain(numbers.reading);
+    expect(sheet).not.toContain(numbers.doubt);
+    expect(sheet.slice(sheet.indexOf(provenance.computed.rules))).toContain(record.title_he);
   });
   it("a fund in Tel Aviv and abroad is counted once", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });

@@ -252,7 +252,7 @@ describe("foreign funds on TASE (TXF-04)", () => {
     expect(r.labels).not.toContainEqual(reading);
   });
 
-  it("takes the CPI under both readings for a Tel Aviv line in shekels, and stops the kind with no fund record and a line that distributes on TXF-04 (F-04, G-35)", () => {
+  it("takes the CPI under both readings for a Tel Aviv line in shekels, stops the kind with no fund record on TXF-04, and runs a line that distributes on its index (F-04, F-20, G-35, D85)", () => {
     const shekel = { ...typed, recordCurrency: "ILS" };
     const r = runSecurities(fund({ fund: shekel }), ctx);
     expect(r.detail.realGain).toBeCloseTo(runSecurities(fund({ fund: shekel }), under("cpi")).detail.realGain ?? Number.NaN, 9);
@@ -260,18 +260,26 @@ describe("foreign funds on TASE (TXF-04)", () => {
     expect(codes(r)).toContain("TXF-OQ10");
     expect(r.labels).not.toContainEqual(reading);
     const kind = { kind: "tase-foreign-fund" as const };
-    // the kind with no fund record has no currency for the exchange-rate reading; a line that distributes stops on its distribution's open
-    // tax (TXF open question 19), its legal form unknown to the run
+    // the kind with no fund record has no currency for the exchange-rate reading
     expect(securitiesBlockedBy(kind, ctx)).toEqual({ ruleId: "TXF-04" });
     expect(() => runSecurities(fund({ fund: kind }), ctx)).toThrow(BlockedError);
-    const paying = { ...unstated, distribution: { yield: 0.015, perYear: 4 } };
-    expect(securitiesBlockedBy(paying, ctx)).toEqual({ ruleId: "TXF-04", question: "TXF OQ19" });
-    expect(() => runSecurities(fund({ fund: paying }), ctx)).toThrow(BlockedError);
-    // a statement settles only the index: a line that distributes stops whatever its annex states (TXF open question 19)
+    // a line that distributes, its legal form unknown to the run, runs on the same index as one that does not: the site's reading of TXF-04
+    // where its documents were read, the readings in turn where they were not, and the index its annex states where it states one; its
+    // distributions are taxed on the site's reading that they are a dividend (TXF open question 19), which stops nothing
+    const paying = { ...unstated, domicile: "ireland" as const, distribution: { yield: 0.015, perYear: 4 } };
+    expect(securitiesBlockedBy(paying, ctx)).toBeNull();
+    const paid = runSecurities(fund({ fund: paying }), ctx);
+    expect(paid.outcome).toEqual({ code: "eligible" });
+    expect(paid.labels).toContainEqual({ code: "reading", ruleId: "TXF-04" });
+    expect(paid.labels).toContainEqual({ code: "reading", ruleId: "TXF-08" });
+    expect(paid.detail.realGain).toBeCloseTo(runSecurities(fund({ fund: { ...paying, notKnown: "documents" as const } }), under("cpi")).detail.realGain ?? Number.NaN, 9);
+    expect(securitiesBlockedBy({ ...paying, notKnown: "documents" as const }, ctx)).toBeNull();
     const statedPaying = { ...paying, statedIndex: statement("fx") };
-    expect(securitiesBlockedBy(statedPaying, ctx)).toEqual({ ruleId: "TXF-04", question: "TXF OQ19" });
-    const { distribution: _paid, ...statedAccumulating } = statedPaying;
-    expect(securitiesBlockedBy(statedAccumulating, ctx)).toBeNull();
+    expect(securitiesBlockedBy(statedPaying, ctx)).toBeNull();
+    const statedPaid = runSecurities(fund({ fund: statedPaying }), ctx);
+    expect(statedPaid.statements).toEqual([statement("fx")]);
+    expect(statedPaid.detail.realGain).toBeCloseTo(runSecurities(fund({ fund: { ...paying, notKnown: "documents" as const } }), under("fx")).detail.realGain ?? Number.NaN, 9);
+    for (const r of [paid, statedPaid]) expect(codes(r)).not.toContain("TXF-OQ19");
   });
 
   it("stops a run in a foreign currency with no exchange-rate path for its record's currency (F-04)", () => {

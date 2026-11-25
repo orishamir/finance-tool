@@ -79,8 +79,9 @@ describe("the tax index a Tel Aviv foreign fund's own annex states (F-04, D84)",
     expect(tax({ ...rec, tax_ruling: { ...ruling, index: main } }, "abroad")).toEqual([]);
     expect(tax({ ...rec, tax_ruling: unstated }, "tase-foreign")).toEqual([]);
   });
-  it("says nothing of a distributing fund's statement: it stops on its distribution's open part whatever its annex states (G-35)", () => {
-    expect(tax({ ...rec, distribution_policy: "distributing", tax_ruling: { ...ruling, index: main } }, "tase-foreign")).toEqual([]);
+  it("says a distributing fund's statement as an accumulating one's: its runs read the index its annex states whether or not it pays out (F-04, D84, D85)", () => {
+    expect(tax({ ...rec, distribution_policy: "distributing", tax_ruling: { ...ruling, index: main } }, "tase-foreign").map((l) => l.id)).toEqual(["tax-index-currency"]);
+    expect(tax({ ...rec, distribution_policy: "distributing", tax_ruling: { ...ruling, index: main } }, "abroad")).toEqual([]);
   });
 });
 
