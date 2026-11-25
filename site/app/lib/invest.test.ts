@@ -278,12 +278,18 @@ describe("invest page computation", () => {
     expect(at.value.statements).toEqual([expect.objectContaining({ term: "tax-index", index: "fx", currency: "USD", page: 17, source: expect.objectContaining({ url: f.rec.tax_ruling!.source.url }) })]);
     // the account's cost before tax reads no tax index, and so no statement
     expect(at.cost.statements).toBeUndefined();
-    // the value before the exit tax reads no tax index either (F-118, F-91): the 165,162 NIS F-118 gave the fund before its index was
-    // known is what is left after tax plus the state's part (an accumulating fund pays no tax along the way), within a shekel of rounding;
-    // the cash waiting for a whole unit is inside both, since the sale's value holds it (F-109)
+    // the value before the exit tax reads no tax index either (F-118, F-91): what F-118 gives the same fund with no index stated is what
+    // is left after tax plus the state's part (an accumulating fund pays no tax along the way), within a shekel of rounding; the cash
+    // waiting for a whole unit is inside both, since the sale's value holds it (F-109)
     const pair = pairCosts({ bundle, index: v.index, plan: plan(), fundId: "1159250", providerId: "psagot" });
     if (!pair) throw new Error("Psagot prices 1159250's parts");
-    expect(Math.abs((pair.left.value as number) + (pair.tax.value as number) - 165_162)).toBeLessThan(1);
+    const ruling = f.rec.tax_ruling;
+    if (!ruling) throw new Error("1159250's record reports its ruling");
+    const { index: _stated, ...unstated } = ruling;
+    const withoutIndex = { ...bundle, funds: bundle.funds.map((r) => (r.id === "1159250" ? { ...r, tax_ruling: unstated } : r)) };
+    const before = buildInvest({ bundle: withoutIndex, index: v.index, plan: plan() }).options.find((o) => o.id === "tase-foreign")?.funds.find((x) => x.rec.id === "1159250")?.beforeTax?.byHouse.psagot;
+    if (!before) throw new Error("Psagot prices 1159250 before tax once its index is not stated");
+    expect(Math.abs((pair.left.value as number) + (pair.tax.value as number) - (before.left.value as number))).toBeLessThan(1);
   });
 
   it("an Israeli index has two options only", () => {
