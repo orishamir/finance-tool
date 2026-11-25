@@ -929,7 +929,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // the part of a nominal loss equal to the fall is not allowable (TXS-02; method F-09). With the exchange
   // rate as the index, what makes it the index is named beside it: TXF-03 for a foreign-currency security held directly, TXS-14 for an
   // Israeli foreign-investment fund's principal currency, and for a TASE foreign fund the statement its annex makes, which the run already
-  // carries, or, where its annex states none, the site's reading of TXF-04, which its `reading` label already says; no rule for either
+  // carries, or, where its annex states none, the site's reading of TXF-04, which its `cautious` label says where the readings split; no rule for either
   // (D84). The exit year's fees are deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits is an
   // open reading (G-07).
   const adjusted = indexedCost(lotsLeft, J[T]!, nav * (1 - spread));
