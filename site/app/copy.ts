@@ -460,7 +460,7 @@ export const provenance = {
   },
   questionSheet: {
     what: "זו שאלה פתוחה בבסיס החוקים: משהו שעוד לא נמצא לו מקור ברור, בחוק או אצל הרשות.",
-    onSite: "כל עוד היא פתוחה, האתר לא מנחש תשובה. הוא לא מחשב את מה שתלוי בה, או מציג אותו עם הערה.",
+    onSite: "כל עוד היא פתוחה, האתר לא מציג תשובה כאילו היא ודאית: הוא לא מחשב את מה שתלוי בה, מציג אותו עם הערה, או מחשב לפי קריאה שלו ואומר זאת בגיליון.",
     status: "מצב",
     blocks: "מה היא עוצרת",
     // the status line, from data/open-questions.json (an answered question is deleted from the rule base)
