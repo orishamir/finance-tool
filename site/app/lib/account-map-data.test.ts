@@ -6,7 +6,7 @@ import { allFunds, pickOfHeadline } from "../components/invest/pair";
 import { AccountMapPanel, mapAreas, planShown } from "../components/invest/account-map";
 import { invest, kit as kitCopy } from "../copy";
 import type { AccountMap } from "./account-map";
-import { buildInvest, indexById, knownIndices, providersOfInvest, tieShareOf } from "./invest";
+import { buildInvest, indexById, providersOfInvest, tieShareOf } from "./invest";
 import { leftWith, work } from "./invest-work";
 import { p05Range } from "./engine";
 import { priced } from "./stretch";
