@@ -91,7 +91,7 @@ export const labelDefs: Record<RuleLabelId, LabelDef> = {
   "ask-tax-service": { icon: "receipt", tone: "caution", rules: ["BRK-36", "TXF-22"] },
   "ask-estate": { icon: "scroll", tone: "caution", rules: ["TXF-27"] },
   "risk-unsupervised": { icon: "eyeOff", tone: "caution", rules: ["BRK-06", "ETF-24"] },
-  "ask-w8": { icon: "fileSignature", tone: "caution", rules: ["TXF-13"] },
+  "ask-w8": { icon: "fileSignature", tone: "neutral", rules: ["TXF-12", "TXF-13"] },
   unavailable: { icon: "ban", tone: "caution", rules: ["BRK-64", "BRK-65"] },
 };
 
@@ -154,7 +154,7 @@ const familyOf: Record<RuleLabelId, Label["family"]> = {
   "ask-tax-service": "asks",
   "ask-estate": "asks",
   "risk-unsupervised": "asks",
-  "ask-w8": "asks",
+  "ask-w8": "tax",
   unavailable: "availability",
 };
 

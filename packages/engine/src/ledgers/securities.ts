@@ -62,7 +62,10 @@ export interface Fund {
   exposureKind?: ExposureRecord["kind"];
   /** Domicile of a foreign-domiciled fund: decides the foreign withholding on distributions (F-20). */
   domicile?: "us" | "ireland";
-  /** W-8BEN on file with the US payer (TXF-13, A-31): absent, the run takes none and the US withholds 30%, the cautious figure (F-20). */
+  /**
+   * W-8BEN on file with the US payer (TXF-12, TXF-13, A-31): absent, the run takes it as given, the treaty's 25% (product D121); `false`,
+   * an entry that it was not, gives TXF-13's 30%, of which 25% is credited and 5% lost (F-20).
+   */
   w8ben?: boolean;
   /** Share price at the start, for per-share fees and the share count: in the instrument's currency, or in `sharePriceCurrency` where given. */
   sharePrice?: number;
@@ -729,7 +732,12 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
       book.cite("TXF-17");
       book.cite("TXF-18");
       if (fund.domicile === "us") {
-        foreignWithholding = fund.w8ben ? book.rate("TXF-12", "us_withholding") : book.rate("TXF-13", "us_withholding_without_form");
+        // D121: the form is taken as given unless the person said it was not; what happens without it, and that it lapses, is TXF-13's
+        if (fund.w8ben === false) foreignWithholding = book.rate("TXF-13", "us_withholding_without_form");
+        else {
+          foreignWithholding = book.rate("TXF-12", "us_withholding");
+          book.cite("TXF-13");
+        }
       } else if (fund.domicile === "ireland") {
         // An Irish ETF's distribution reaches an Israeli resident without Irish tax: units in a recognised clearing
         // system, or a non-resident declaration (TXF-28; G-05 closed), so the foreign withholding stays 0.

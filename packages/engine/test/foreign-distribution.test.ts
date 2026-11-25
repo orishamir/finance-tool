@@ -86,6 +86,23 @@ describe("a foreign fund's distribution, taxed on the site's reading that it is 
     });
   }
 
+  it("a US fund with no entry runs with the W-8BEN given (D121), and one entered as not given pays 30% and loses the 5% over the credit", () => {
+    const us: Fund = { kind: "foreign-fund", drag: {}, domicile: "us", distribution: { yield: yearly, perYear } };
+    const month3 = runSecurities(input({ ...us, distribution: undefined }, 3), ctx).series[3];
+    if (!month3) throw new Error("a three-month run has a month 3");
+    const dist = month3.balance * (yearly / perYear);
+    const assumed = runSecurities(input(us, 3), ctx);
+    expect(assumed.detail).toMatchObject({ israeliTaxOnDistributions: 0 });
+    expect(assumed.detail.foreignTax).toBeCloseTo(0.25 * dist, 6);
+    expect(assumed.real).toBe(runSecurities(input({ ...us, w8ben: true }, 3), ctx).real);
+    expect(assumed.rules.map((u) => u.id)).toEqual(expect.arrayContaining(["TXF-12", "TXF-13"]));
+    const notGiven = runSecurities(input({ ...us, w8ben: false }, 3), ctx);
+    expect(notGiven.detail.foreignTax).toBeCloseTo(0.3 * dist, 6);
+    expect(notGiven.detail.israeliTaxOnDistributions).toBe(0);
+    // the 5% the credit does not reach is lost: the taxes on the distribution are 30% of it, not 25%
+    expect(notGiven.taxDuring - assumed.taxDuring).toBeCloseTo(0.05 * dist, 6);
+  });
+
   it("a company that follows a bond index keeps the reading: whether its distribution is interest or a dividend is TXF open question 14", () => {
     const company: Fund = { kind: "foreign-fund", drag: {}, domicile: "ireland", legalStructure: "company", distribution: { yield: yearly, perYear } };
     const labelled = (f: Fund) => runSecurities(input(f, 60), ctx).labels.some((l) => l.code === "reading" && l.ruleId === "TXF-08");

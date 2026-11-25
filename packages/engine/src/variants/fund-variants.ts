@@ -77,7 +77,7 @@ export function foreignInvestmentFundStatementOf(rec: Pick<FundRecord, "tax_stat
 export interface FundOfOptions {
   /** A-10: the distribution the run pays out (yield and payments a year), for a fund that distributes. */
   distribution?: { yield: number; perYear: number };
-  /** W-8BEN on file with the US payer (TXF-12, TXF-13). */
+  /** W-8BEN on file with the US payer (TXF-12, TXF-13): absent, taken as given (D121); `false` where the person said it was not. */
   w8ben?: boolean;
   /** The list the fund is ranked on, for F-92 (d); without it a gross benchmark gives no A-07 from its years. */
   list?: GapList;
