@@ -47,8 +47,9 @@ export function LeftOutLine({ view, house, more, opens, className }: { view: Lef
 function Names({ names }: { names: readonly string[] }) {
   return (
     <ul className="flex flex-col gap-1 pb-3 text-sm text-muted-foreground">
-      {names.map((n) => (
-        <li key={n}>{n}</li>
+      {/* the record's order, which never changes while it is shown: a place is a stable key, where two things may share a name */}
+      {names.map((n, k) => (
+        <li key={k}>{n}</li>
       ))}
     </ul>
   );
@@ -79,11 +80,12 @@ export function LeftOutFold({ view, defaultOpen }: { view: LeftOutView; defaultO
     >
       {warn && (
         <ul className="grid gap-x-6 gap-y-4 pb-3 @[40rem]:grid-cols-2">
-          {view.changes.map((ch) => (
-            <li key={ch.head} className="flex min-w-0 flex-col gap-1 border-s-2 border-caution ps-3 text-sm">
+          {/* by place, as the names are (`Names`) */}
+          {view.changes.map((ch, k) => (
+            <li key={k} className="flex min-w-0 flex-col gap-1 border-s-2 border-caution ps-3 text-sm">
               <h3 className="font-semibold">{ch.head}</h3>
-              {ch.lines.map((l) => (
-                <div key={l.text} className="flex flex-col items-start gap-1">
+              {ch.lines.map((l, j) => (
+                <div key={j} className="flex flex-col items-start gap-1">
                   <p className="text-muted-foreground">{l.text}</p>
                   {l.doc && (
                     <DocLink look="inline" href={l.doc.href}>
