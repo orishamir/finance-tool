@@ -382,7 +382,7 @@ export function termsLeftOut(snap: FeesSnapshot | undefined, at: FundWay["byHous
  * pieces and the house's terms.
  */
 export function TermsPopup({ data, today, first, world, house, headId, onOwn }: { data: FeesData; today: string; first: FeeDeal; world: DealWorld; house: string; headId: string; onOwn: () => void }) {
-  const { head, tiles, fund, leftNum, placeNum, planLine } = usePlanOn({ data, deal: first, world, terms: house });
+  const { head, average, tiles, fund, leftNum, placeNum, planLine } = usePlanOn({ data, deal: first, world, terms: house });
   const wide = useMedia(MQ.md);
   const p = world.plan;
   const short = providerName(world.view, house)?.short ?? house;
@@ -421,7 +421,7 @@ export function TermsPopup({ data, today, first, world, house, headId, onOwn }: 
           </p>
         ))}
       {wide && planLine && <p className="text-sm text-muted-foreground">{planLine}</p>}
-      <HouseTerms data={data} today={today} first={first} house={house} leftOut={left} feeHead={head} />
+      <HouseTerms data={data} today={today} first={first} house={house} leftOut={left} feeHead={head} average={average} />
       <Button variant="framed" className="self-start" onClick={onOwn}>
         {w.fromHouse(short)}
       </Button>
