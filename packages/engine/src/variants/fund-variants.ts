@@ -55,6 +55,16 @@ export function taxIndexStatementOf(rec: Pick<FundRecord, "tax_ruling">): TaxInd
 }
 
 /**
+ * TXF-11, D120: the ruling a fund's own Tel Aviv annex reports, where its runs are taxed at sale on it rather than on the site's reading
+ * (G-18): only a Tel Aviv line's (`tase-foreign-fund`), and only one that pays nothing out. The annex covers the units listed in Tel Aviv;
+ * the same units bought at a foreign broker are outside it, so their record may carry the ruling and their runs rest on the reading.
+ * The engine's runs and the site's labels both ask this.
+ */
+export function saleOnlyRulingOf(rec: Pick<FundRecord, "tax_ruling" | "distribution_policy">, kind: Fund["kind"]): FundRecord["tax_ruling"] {
+  return kind === "tase-foreign-fund" && rec.distribution_policy === "accumulating" ? rec.tax_ruling : undefined;
+}
+
+/**
  * TXS-14, D119: the fund's own document naming it a foreign-investment fund with its principal currency (`tax_status.foreign_investment_fund`
  * holding a currency code), as the fund's statement. Undefined where the record says it is not one, or does not know.
  */
@@ -158,7 +168,7 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   // doubt on a cautious figure says
   if (typed) fund.notKnown = "documents";
   else if (kind === "israeli-fund" && principal !== undefined && status?.value === null) fund.notKnown = "status";
-  // TXF-11: the fund's own annex reports a ruling that taxes it at sale and on distributions only.
-  if (rec.tax_ruling && rec.distribution_policy === "accumulating") fund.saleOnlyRuling = true;
+  // TXF-11: a Tel Aviv line whose own annex reports a ruling that taxes it at sale and on distributions only
+  if (saleOnlyRulingOf(rec, kind)) fund.saleOnlyRuling = true;
   return { fund, notCollected, hasManagement: management !== undefined };
 }

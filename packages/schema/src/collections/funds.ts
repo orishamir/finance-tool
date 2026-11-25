@@ -175,9 +175,10 @@ export const fundRecord = z.strictObject({
     .optional(),
   /**
    * TXF-11: the fund's own Israeli prospectus annex ("נספח לתשקיף קרן חוץ נסחרת") reports a Tax Authority ruling given
-   * to the fund, and names a sale and a distribution as the only taxed events. D10 judges that enough for that fund: an
-   * accumulating fund with it is taxed at sale on the ruling, not on the site's reading of TXF-11 that one without it is ranked on (G-18,
-   * D120). Units of the same ISIN bought abroad are the same units, so both records carry it.
+   * to the fund, and names a sale and a distribution as the only taxed events. D10 judges that enough for the fund's Tel Aviv line: an
+   * accumulating line with it is taxed at sale on the ruling, not on the site's reading of TXF-11 that one without it is ranked on (G-18,
+   * D120). The ruling was given to the fund, so the record of its units bought abroad carries it too, but is not run on it: the annex
+   * covers the units listed in Tel Aviv, and the engine applies it by kind (`saleOnlyRulingOf`).
    */
   tax_ruling: z
     .strictObject({

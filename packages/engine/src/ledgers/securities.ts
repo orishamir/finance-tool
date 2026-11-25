@@ -96,8 +96,9 @@ export interface Fund {
   /** Renewable money-market fund: months between fixed dates (MF-35). */
   fixedDatesEveryMonths?: number;
   /**
-   * An accumulating foreign fund whose own Israeli prospectus annex reports a Tax Authority ruling naming a sale and a distribution as the
+   * An accumulating Tel Aviv line whose own Israeli prospectus annex reports a Tax Authority ruling naming a sale and a distribution as the
    * only taxed events (TXF-11): taxed at sale on that ruling, which the run cites, rather than on the site's reading by implication (G-18).
+   * Set by `saleOnlyRulingOf`, which keeps it off the same units bought abroad (D120).
    */
   saleOnlyRuling?: boolean;
 }

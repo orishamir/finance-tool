@@ -148,6 +148,22 @@ describe("an accumulating foreign fund (TXF-11, G-18, product D120)", () => {
         expect(labels.filter((l) => l.ruleId !== "TXF-11")).toEqual(ruledLabels);
       }
   });
+
+  it("keeps the Tel Aviv annex's ruling off the same units bought abroad: their run rests on the site's reading, with the same figures", () => {
+    const rec = JSON.parse(readFileSync(new URL("../../../data/funds/ie00b5bmr087@2026-11-07.json", import.meta.url), "utf8"));
+    if (!rec.tax_ruling || rec.distribution_policy !== "accumulating") throw new Error("ie00b5bmr087 is an accumulating fund whose record carries the Tel Aviv annex's ruling");
+    expect(fundOf(rec, "tase-foreign-fund").fund.saleOnlyRuling).toBe(true);
+    const abroad = fundOf(rec, "foreign-fund").fund;
+    expect(abroad.saleOnlyRuling).toBeUndefined();
+    for (const market of markets) {
+      const reading = runSecurities(fund({ market, fund: abroad }), ctx);
+      const ruled = runSecurities(fund({ market, fund: { ...abroad, saleOnlyRuling: true } }), ctx);
+      expect(reading.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
+      const { labels: _reading, ...rest } = reading;
+      const { labels: _ruled, ...ruledRest } = ruled;
+      expect(rest).toEqual(ruledRest);
+    }
+  });
 });
 
 describe("foreign funds on TASE (TXF-04)", () => {

@@ -3,7 +3,7 @@
 // a sourced fact or an open rule; it never praises. A label shows on every row it is true of, even when every row has it
 // ; its colour is its family's (the kit's LabelChip).
 import type { FundRecord } from "@finance-tool/schema";
-import { readsStatedIndex, taxIndexStatementOf, type TaxIndexStatement } from "@finance-tool/engine";
+import { readsStatedIndex, saleOnlyRulingOf, taxIndexStatementOf, type TaxIndexStatement } from "@finance-tool/engine";
 import { currencyWord, invest as c } from "../copy";
 import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
@@ -218,11 +218,11 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   }
   if (rec.domicile === "IE") out.push(label("tax-fund-dividend"));
   if (rec.distribution_policy === "distributing") out.push(label("tax-distribution"));
-  // an accumulating foreign fund taxed only at sale on the ruling its own annex reports (TXF-11), the same test the engine cites the rule by
-  // (instruments.server.ts, saleOnlyRuling); one with no ruling is run on the site's reading of the rule, which its figures' sheets say
-  // and no chip does (D120)
-  else if (rec.distribution_policy === "accumulating" && rec.domicile !== "IL" && rec.tax_ruling)
-    out.push(withDoc(label("tax-on-sale-ruling"), { href: sourceHref({ url: rec.tax_ruling.source.url, page: rec.tax_ruling.pages.ruling }), title: rec.tax_ruling.source.title }));
+  // a Tel Aviv line taxed only at sale on the ruling its own annex reports (TXF-11), by the engine's own test (`saleOnlyRulingOf`); any
+  // other accumulating foreign fund, the same units bought abroad among them, is run on the site's reading of the rule, which its figures'
+  // sheets say and no chip does (D120)
+  const ruling = saleOnlyRulingOf(rec, OPTION_KIND[option]);
+  if (ruling) out.push(withDoc(label("tax-on-sale-ruling"), { href: sourceHref({ url: ruling.source.url, page: ruling.pages.ruling }), title: ruling.source.title }));
   // a fund whose own annex states its tax index under its ruling, where its runs are made on it: the fund's statement, its page linked (F-04,
   // D84), by the engine's own test (`readsStatedIndex`). A fund whose policy is not known is not run at all (`fundRun`), so says none.
   const stated = rec.distribution_policy !== null && readsStatedIndex(OPTION_KIND[option], rec.distribution_policy === "distributing") ? taxIndexStatementOf(rec) : undefined;
