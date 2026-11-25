@@ -494,8 +494,9 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   const averageLevel = level === "regulator_average" || level === "tase_average" ? level : undefined;
   if (level === "entered" && !p.entered) throw new RecordInputError(`provider ${snapshot.id}: level "entered" needs the person's entered tariff`);
 
-  /** The line of a base at a level for the channel (`tariffLine`). */
-  const pick = (base: SnapLine["base"], at: SnapLine["level"]): SnapLine | undefined => tariffLine(snapshot, input, base, at, p.band);
+  /** The line of a base at a level for the channel (`tariffLine`), among the lines `keep` leaves (all where none is given). */
+  const pick = (base: SnapLine["base"], at: SnapLine["level"], keep?: (l: SnapLine) => boolean): SnapLine | undefined =>
+    tariffLine(keep ? { ...snapshot, lines: snapshot.lines.filter(keep) } : snapshot, input, base, at, p.band);
 
   const averageFor = (l: SnapLine): ValueObject | undefined => {
     if (!averageLevel) return undefined;
@@ -505,22 +506,22 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     return rows[0]?.rate;
   };
 
-  /** The line a base uses at the chosen level, with whether an average replaced it. */
-  const resolve = (base: SnapLine["base"]) => {
-    const own = averageLevel ? pick(base, averageLevel) : undefined;
-    if (own) {
-      // F-63: an average is a percentage with no bounds, also when the snapshot gives it as a line of its own level.
-      out.averagesApplied++;
-      return { line: own, rate: own.rate, min: null, max: null, cap: null };
-    }
-    const list = pick(base, "list");
+  /** The line a base uses at the chosen level among the lines `keep` leaves, with whether an average replaced it; counts nothing. */
+  const lineAt = (base: SnapLine["base"], keep?: (l: SnapLine) => boolean) => {
+    const own = averageLevel ? pick(base, averageLevel, keep) : undefined;
+    // F-63: an average is a percentage with no bounds, also when the snapshot gives it as a line of its own level.
+    if (own) return { line: own, rate: own.rate, min: null, max: null, cap: null, average: true };
+    const list = pick(base, "list", keep);
     if (!list) return undefined;
     const avg = averageFor(list);
-    if (avg) {
-      out.averagesApplied++;
-      return { line: list, rate: avg, min: null, max: null, cap: null, average: true };
-    }
-    return { line: list, rate: list.rate, min: list.min, max: list.max, cap: list.cap };
+    if (avg) return { line: list, rate: avg, min: null, max: null, cap: null, average: true };
+    return { line: list, rate: list.rate, min: list.min, max: list.max, cap: list.cap, average: false };
+  };
+  /** The line a base uses at the chosen level (`lineAt`), counting an average that replaced it. */
+  const resolve = (base: SnapLine["base"]) => {
+    const r = lineAt(base);
+    if (r?.average) out.averagesApplied++;
+    return r;
   };
 
   const entered = level === "entered" ? p.entered! : undefined;
@@ -690,6 +691,29 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     return { price: { line: line(), steps: sized.steps, in: sums.in }, read: sized.read };
   };
 
+  /**
+   * F-13: a resolved conversion line as the run charges it: its fee (`conversionOf`) and, beside it, the spread the price list limits, with every
+   * figure read for the line's sources. The steps by size, a flat price for a small conversion among them, and the spread are read at the list
+   * price only: on the list's own line at its own rate. An average is a percentage with no bounds (F-63).
+   */
+  const conversionAt = (r: NonNullable<ReturnType<typeof lineAt>>): { price: ConversionPrice; spread?: ConversionPrice; read: ValueObject[] } => {
+    const atList = r.rate === r.line.rate && r.line.level === "list";
+    const c = conversionOf({ ...r, sized: atList });
+    // F-13 (D56, D65): a spread the price list limits ("עד 0.7%") is priced at its ceiling, beside the conversion fee and in a field of its
+    // own (`fxSpread`), charged on every conversion, by its steps where the list prints the spread by the conversion's size; a spread with no
+    // ceiling (value null) is not priced. Only the list line carries it: an average row is what customers paid, spread and all.
+    const spread = atList ? r.line.spread : null;
+    if (!spread || typeof spread.value !== "number") return { price: c.price, read: c.read };
+    if (typeof c.price !== "number") throw new RecordInputError(`${r.line.id}: a priced spread beside a fee with bounds, steps by size or a price per dollar is not modelled`);
+    const s = pct(spread, "pct_of_trade", `${r.line.id} spread`);
+    // the spread's tops, each in its currency as the fee's are (`lineSums`)
+    const sums = lineSums(r.line, stepsOf(r.line, "spread").sums);
+    const steps = stepsOf(r.line, "spread", sums.value);
+    const read = [spread, ...steps.read, ...c.read];
+    if (steps.steps.length) return { price: c.price, spread: { line: s, steps: steps.steps, in: sums.in }, read };
+    return s > 0 ? { price: c.price, spread: s, read } : { price: c.price, read };
+  };
+
   // FX: only a fund quoted in a foreign currency is converted (F-13).
   if (input.currency) {
     out.tariff.currency = input.currency;
@@ -702,27 +726,11 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     } else {
       const r = resolve("fx");
       if (r) {
-        // F-13: the steps by size, a flat price for a small conversion among them, the spread and a recurring plan's price are read at the list
-        // price only: on the list's own line at its own rate. An average is a percentage with no bounds (F-63)
         const atList = r.rate === r.line.rate && r.line.level === "list";
-        const c = conversionOf({ ...r, sized: atList });
-        // F-13 (D56, D65): a spread the price list limits ("עד 0.7%") is priced at its ceiling, beside the conversion fee and in a field of its
-        // own (`fxSpread`), charged on every conversion, by its steps where the list prints the spread by the conversion's size; a spread with no
-        // ceiling (value null) is not priced. Only the list line carries it: an average row is what customers paid, spread and all.
-        const spread = atList ? r.line.spread : null;
-        const spreadRead: ValueObject[] = [];
-        if (spread && typeof spread.value === "number") {
-          if (typeof c.price !== "number") throw new RecordInputError(`${r.line.id}: a priced spread beside a fee with bounds, steps by size or a price per dollar is not modelled`);
-          const s = pct(spread, "pct_of_trade", `${r.line.id} spread`);
-          // the spread's tops, each in its currency as the fee's are (`lineSums`)
-          const sums = lineSums(r.line, stepsOf(r.line, "spread").sums);
-          const steps = stepsOf(r.line, "spread", sums.value);
-          spreadRead.push(spread, ...steps.read);
-          if (steps.steps.length) out.tariff.fxSpread = { line: s, steps: steps.steps, in: sums.in };
-          else if (s > 0) out.tariff.fxSpread = s;
-        }
+        const c = conversionAt(r);
         out.tariff.fx = c.price;
-        used(r.line, r.rate, r.min, r.max, ...spreadRead, ...c.read);
+        if (c.spread !== undefined) out.tariff.fxSpread = c.spread;
+        used(r.line, r.rate, r.min, r.max, ...c.read);
         // F-13: the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
         if (atList) {
           const every = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
