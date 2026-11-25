@@ -105,7 +105,9 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
   // another deal on screen (a saved one, a new one, one a template filled, or one an undo brought back): what belonged to the deal before
   // goes, and a new deal is saved once it is worth saving
   const doc = useDealDocument({ first, saved, today, data, onShown: () => afterShow(), remember });
-  const { deal, chosen, change, kept } = doc;
+  const { deal, change, kept } = doc;
+  // read-only, no fee is open
+  const chosen = still ? null : doc.chosen;
   // the toolbox has a column of its own where its host gives the editor the room (`TOOLBOX_COLUMN`), whatever the window
   const columnsRef = useRef<HTMLDivElement>(null);
   const windowWide = useMedia(MQ.xl);

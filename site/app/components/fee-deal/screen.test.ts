@@ -29,6 +29,7 @@ import { cardOf } from "../../lib/fee-deal/toolbox";
 import { changeFormKept, formStep, undo, undoWords } from "../../lib/fee-deal/undo";
 import { HeldBox, HeldChange, ReadingCards } from "./reading";
 import { ReadOnly, fill } from "../kit";
+import { useDealEditor } from "./editor";
 import { dealFromTemplate } from "../../lib/fee-deal/templates";
 import { newDeal } from "../../lib/fee-deal/model";
 import { ACCOUNT_KIND } from "../../lib/fee-deal/kinds";
@@ -1007,6 +1008,18 @@ describe("the fees read-only (the kit's ReadOnly: the indices page's terms view)
       expect(other, deal.template?.name).toEqual([]);
       // the same fees, editable, offer their cases and their bins
       expect(markup(el)).toContain(feeDeal.panel.remove);
+    }
+  });
+  it("the editor read-only opens no fee and offers no toolbox, palette, picker or menu, as the deal opens", () => {
+    function Editor({ deal }: { deal: FeeDeal }) {
+      const ed = useDealEditor({ data, today: TODAY, saved: [], writable: false, first: deal, withReading: false, untitled: true, remember: false });
+      return createElement("div", null, ed.columns(null), ed.picker, ed.menus, ed.footSheet);
+    }
+    for (const deal of houses.slice(0, 5)) {
+      const out = markup(createElement(ReadOnly, null, createElement(Editor, { deal })));
+      const labels = [...out.matchAll(/<button[^>]*>/g)].map((m) => /aria-label="([^"]*)"/.exec(m[0])?.[1] ?? m[0]);
+      expect(labels.filter((l) => !l.endsWith(`, ${numbers.details}`) && l !== provenanceWords.idRef.question && l !== site.close), deal.template?.name).toEqual([]);
+      expect(text(createElement(ReadOnly, null, createElement(Editor, { deal }))), deal.template?.name).not.toContain(dealCases.chosen);
     }
   });
 });
