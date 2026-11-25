@@ -20,7 +20,7 @@ import { allFunds, pickOfHeadline } from "./pair";
 import { PairReceipt } from "./receipt";
 import { PairLists } from "./lists";
 import { bundle, html, inHost, plan, shown, t } from "./render-fixtures";
-import { feesData } from "../../lib/fees.server";
+import { feesData, houseTermsData } from "../../lib/fees.server";
 import { dealFromTemplate } from "../../lib/fee-deal/templates";
 import { newDeal } from "../../lib/fee-deal/model";
 import { ACCOUNT_KIND } from "../../lib/fee-deal/kinds";
@@ -80,13 +80,16 @@ describe("the indices page", () => {
   });
 });
 
-describe("a company's price card", () => {
-  it("says under its prices what they leave out, as the indices page does", () => {
+describe("a company's brokerage fees", () => {
+  it("say over the house's terms what its price leaves out, folded, as the indices page's terms do", () => {
     const part = brokeragePart("interactive-brokers")!;
-    expect(part.tariff.leftOut).toEqual(leftOutOf(bundle.snapshots.find((s) => s.id === "interactive-brokers")));
+    const terms = houseTermsData("interactive-brokers", bundle.today, { rules: new Set(Object.keys(part.rules)), pointed: new Set() });
+    const view = leftOutOf(bundle.snapshots.find((s) => s.id === "interactive-brokers"));
+    expect(terms?.data.houses[0]?.leftOut).toEqual(view);
     const data = { rules: part.rules, terms: {}, dimensions: {}, today: bundle.today };
-    const out = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(BrokerageGroupCard, { id: "interactive-brokers", tariff: part.tariff, kind: part.kind }) })));
+    const out = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(BrokerageGroupCard, { id: "interactive-brokers", tariff: part.tariff, kind: part.kind, terms }) })));
     expect(shown(out)).toContain(c.lead);
-    expect(out).toContain(`data-left-out="${part.tariff.leftOut!.changes.length}"`);
+    expect(view?.changes.length).toBeGreaterThan(0);
+    for (const ch of view?.changes ?? []) expect(shown(out)).toContain(ch.head);
   });
 });

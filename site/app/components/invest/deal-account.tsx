@@ -21,7 +21,7 @@ import { feeDeal, invest as root } from "../../copy";
 import { fmt } from "../../lib/format";
 import { asideLines, dealOnFunds, dealRunOf, pairCosts, type DealOnPlan, type FundWay, type IndexRef, type InvestView } from "../../lib/invest";
 import { accountLinesOf, receiptAmounts } from "../../lib/receipt";
-import { shortName, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
+import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import type { FeesData } from "../../lib/fee-page-data";
 import { averageOf as columnAverage, type AverageColumn } from "../../lib/house-averages";
 import type { DealRun } from "@finance-tool/engine";
@@ -33,10 +33,10 @@ import type { DealRead } from "../../lib/fee-deal/deal-read";
 import { amountWords, formatValue } from "../../lib/format";
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { Num, ProvenanceProvider, useProvenanceData, type ProvenanceData } from "../provenance";
-import { recordsById } from "../../lib/scope";
 import { dealStore, rememberOpen, without } from "../../lib/fee-deal/store";
 import { DEAL_PATH } from "../../lib/site-paths";
-import { dealFromTemplate, houseName, templateOf, templateOptions } from "../../lib/fee-deal/templates";
+import { templateOf, templateOptions } from "../../lib/fee-deal/templates";
+import { houseDeal } from "../../lib/deal-account/house-deal";
 import { updateFee } from "../../lib/fee-deal/edits/deal";
 import { addBlankCase } from "../../lib/fee-deal/edits/case";
 import { pickLine } from "../../lib/fee-deal/reading";
@@ -55,11 +55,13 @@ import { priced } from "../../lib/stretch";
 import type { FeesSnapshot } from "@finance-tool/schema";
 import { MQ, useMedia } from "../../lib/hooks";
 import { pickItems, useDealEditor, type DealEditor } from "../fee-deal/editor";
+import { HouseTerms, withFeesData } from "../fee-deal/house-terms";
+import type { FeeSlot } from "../fee-deal/fee-block";
 import { whenText } from "../fee-deal/open-case";
 import { TemplateList, type TemplateListWords } from "../fee-deal/picker";
 import { NoticeRow } from "../fee-deal/deal-notices";
 import type { MoveLeft } from "../../lib/deal-account/move-run";
-import { Button, Card, DocLink, HouseAverageLine, LeftOutFold, MixedName, ReadForBand, ReadOnly, RemoveButton, Sentence, StatRow, StatTile, Tag, TextField, TextLink, When, cx, useReadOnly, useStuckRoom, type FeeHeadSlot } from "../kit";
+import { Button, Card, DocLink, HouseAverageLine, MixedName, ReadForBand, RemoveButton, Sentence, StatRow, StatTile, Tag, TextField, TextLink, When, cx, useReadOnly, useStuckRoom, type FeeHeadSlot } from "../kit";
 import { ToolBoundary } from "../tool-boundary";
 
 const w = root.dealAccount;
@@ -194,20 +196,9 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
   );
   // the editor's rule and term sheets read the fee page's data (its rules, the records they point at, its terms) over the page's own
   const page = useProvenanceData();
-  const provenance = useMemo<ProvenanceData | null>(
-    () =>
-      page && data
-        ? {
-            ...page,
-            rules: { ...page.rules, ...Object.fromEntries(data.rules.map((r) => [r.id, r])) },
-            ...(page.pointed || data.pointed ? { pointed: { ...page.pointed, ...recordsById(data.pointed) } } : {}),
-            terms: { ...page.terms, ...data.terms },
-          }
-        : null,
-    [page, data],
-  );
+  const provenance = useMemo<ProvenanceData | null>(() => (page && data ? withFeesData(page, data) : null), [page, data]);
   // a new deal from a house's list, made once per opening; a house's terms are a deal filled the same way, never saved
-  const fromHouse = useMemo(() => (target && data && "house" in target && target.house ? houseDeal(`house:${target.house}`, data, today) : target && data && "terms" in target ? houseDeal(`house:${target.terms}`, data, today) : null), [target, data, today]);
+  const fromHouse = useMemo(() => (target && data && "house" in target && target.house ? orFresh(houseDeal(`house:${target.house}`, data, today)) : target && data && "terms" in target ? orFresh(houseDeal(`house:${target.terms}`, data, today)) : null), [target, data, today]);
   const first = !target || !data ? null : "dealId" in target ? opened : (fromHouse ?? started);
   const terms = target && "terms" in target ? target : null;
   return (
@@ -219,9 +210,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
           first && terms ? (
             <ProvenanceProvider data={provenance ?? EMPTY_PROVENANCE}>
               <ToolBoundary resetKey={first.id}>
-                <ReadOnly>
-                  <TermsPopup key={first.id} data={data} today={today} saved={saved} writable={writable} first={first} world={world} house={terms.terms} headId={headId} onOwn={() => api.open({ house: terms.terms })} />
-                </ReadOnly>
+                  <TermsPopup key={first.id} data={data} today={today} first={first} world={world} house={terms.terms} headId={headId} onOwn={() => api.open({ house: terms.terms })} />
               </ToolBoundary>
             </ProvenanceProvider>
           ) : first ? (
@@ -246,7 +235,7 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
             </ToolBoundary>
             </ProvenanceProvider>
           ) : (
-            <DealStart data={data} today={today} headId={headId} onStart={(id) => setStarted(id ? houseDeal(id, data, today) : newDeal(ACCOUNT_KIND))} />
+            <DealStart data={data} today={today} headId={headId} onStart={(id) => setStarted(orFresh(id ? houseDeal(id, data, today) : null))} />
           )
         ) : target && failed ? (
           // the editor's data did not load: the line and its retry, as /deal's standing lines are said
@@ -266,16 +255,8 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
 /** What the popup reads before both the page's data and the fee page's are in (never on a page: its shell gives the one, the popup waits for the other). */
 const EMPTY_PROVENANCE: ProvenanceData = { rules: {}, terms: {}, dimensions: {}, today: "" };
 
-/**
- * A new deal filled from a house's latest price list (`house:<id>`, or one of its ways to buy), named "<house>, בתנאים שלי" by the house's
- * short name, as the account list writes it (`shortName`); a fresh deal where none fills.
- */
-function houseDeal(id: string, data: FeesData, today: string): FeeDeal {
-  const d = dealFromTemplate(newDeal(ACCOUNT_KIND), id, data, today);
-  const house = houseName(id, data);
-  const providerId = id.replace(/^house:/, "").split("/", 1)[0]!;
-  return d ? { ...d, name: house ? w.nameOf(shortName(providerId, house)).slice(0, NAME_MAX) : d.name } : newDeal(ACCOUNT_KIND);
-}
+/** A deal a house's list filled (`houseDeal`), or a fresh deal where none fills. */
+const orFresh = (d: FeeDeal | null): FeeDeal => d ?? newDeal(ACCOUNT_KIND);
 
 /**
  * The new deal's start: every house's latest price list, with what it leaves out of the deal (the template picker's list, `TemplateList`),
@@ -303,18 +284,14 @@ function DealStart({ data, today, headId, onStart }: { data: FeesData; today: st
 const START_WORDS: TemplateListWords = { search: w.start.search, clear: w.start.clear, none: w.start.none, houses: w.start.group };
 
 /**
- * A deal read on the page's plan, for a popup to lay out: the editor on it (its fees' heads saying what the plan charges for each, and
- * marking the cases the plan reads), its runs on the list's funds as it changes, and the tiles' figures (F-128): what it leaves, its
- * place in the account list, what it leaves against the house it was filled from, and the plan line, all on the account list's row the
- * deal stands for, whose fund the plan line names and whose place the tile gives: the house whose terms it shows (`terms`), else the
- * deal's own row, that of the deal on screen.
+ * A deal read on the page's plan, for a popup to lay out around its fees: each fee's head saying what the plan charges for it, marking the
+ * cases the plan reads (`head`), and the house's average for what the plan buys (`average`); its runs on the list's funds as it changes,
+ * and the tiles' figures (F-128): what it leaves, its place in the account list, what it leaves against the house it was filled from, and
+ * the plan line, all on the account list's row the deal stands for, whose fund the plan line names and whose place the tile gives: the
+ * house whose terms it shows (`terms`), else the deal's own row, that of the deal on screen. `onAddCase` adds a case a fund bought abroad
+ * needs to a fee (E); with none, the line under the fee says what is missing alone.
  */
-function useDealOnPlan({ data, today, saved, writable, first, world, terms }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; world: DealWorld; terms?: string }) {
-  // what each fee's head says is read with the deal as it is now, which the editor holds: the editor draws it after this render
-  const headRef = useRef<(fee: Fee) => FeeHeadSlot | undefined>(() => undefined);
-  // /deal reopens the deal last on screen there: only the popup's own links to it name this one (`rememberOpen`)
-  const ed = useDealEditor({ data, today, saved, writable, first, withReading: false, untitled: true, remember: false, feeHead: (fee) => headRef.current(fee) });
-  const deal = ed.deal;
+function usePlanOn({ data, deal, world, terms, onAddCase }: { data: FeesData; deal: FeeDeal; world: DealWorld; terms?: string; onAddCase?: (fee: Fee, gap: AbroadGap) => void }) {
   // the deal as it is counted, without the fees switched off in their corners: what every figure of the popup prices
   const off = feesOff.use();
   const counted = useMemo(() => countedDeal(deal, off), [deal, off]);
@@ -353,12 +330,15 @@ function useDealOnPlan({ data, today, saved, writable, first, world, terms }: { 
   const read = useMemo(() => (run ? planRead(deal, run, ctx) : null), [deal, run, ctx]);
   const countedRead = useMemo(() => (run ? (counted === deal ? read : planRead(counted, run, ctx)) : null), [counted, deal, run, ctx, read]);
   const picks = useMemo(() => (read ? pickLine(read) : null), [read]);
-  headRef.current = (fee) => {
-    const x = onPlan?.get(fee.id);
+  // what the house's customers paid on average for what the plan buys, under the fee's head
+  const average = (fee: Fee): ReactNode => {
     const avg = averages && house && run ? columnAverage(averages, planColumn(fee.kind, run)) : null;
-    const average = avg && averages && house ? <HouseAverageLine customers averages={[avg]} house={house.short} /> : null;
+    return avg && house ? <HouseAverageLine customers averages={[avg]} house={house.short} /> : null;
+  };
+  const head = (fee: Fee): FeeSlot => {
+    const x = onPlan?.get(fee.id);
     const gap = abroad.find((g) => g.missing.fee === fee.id);
-    const foot = gap ? <AbroadCaseLine words={gap.words} onAdd={() => addAbroadCase(ed, fee, gap)} /> : null;
+    const foot = gap ? <AbroadCaseLine words={gap.words} {...(onAddCase ? { onAdd: () => onAddCase(fee, gap) } : {})} /> : null;
     const switchedOff = isFeeOff(off, deal.id, fee.id);
     const whole = wholeByFee?.get(fee.id);
     const cost: FeeCost = switchedOff ? "off" : at?.kind === "ok" ? at.figure(whole !== undefined ? -whole || 0 : shownCost(at.byFee[fee.id] ?? 0), w.feeCostAbout(feeNameOf(fee.kind, fee.name))) : null;
@@ -367,7 +347,7 @@ function useDealOnPlan({ data, today, saved, writable, first, world, terms }: { 
     // plainly, where the plan charges the fee and it is counted
     const marks = countedRead && countedOn && !switchedOff && x?.on === "charged" && hasCases(fee) ? planCases(countedRead, fee.id, countedOn, at?.kind === "ok" ? at.reach : null) : null;
     const caseMark = marks && marks.size ? (id: string) => (marks.has(id) ? w.planCase(marks.get(id)!.years) : undefined) : undefined;
-    return { ...slot, ...(average || slot.under ? { under: <>{slot.under}{average}</> } : {}), ...(foot ? { foot } : {}), ...(caseMark ? { caseMark } : {}) };
+    return { ...slot, ...(foot ? { foot } : {}), ...(caseMark ? { caseMark } : {}) };
   };
   const own = picks?.things.filter((t) => !PLAN_KEYS.includes(t.by)) ?? [];
   const where = run ? (run.instrumentClass === "mutual_fund_units" ? w.where.manager! : w.where[whatOfRun(run) === "tase" ? "tase" : (run.listing ?? "world")]!) : "";
@@ -382,7 +362,7 @@ function useDealOnPlan({ data, today, saved, writable, first, world, terms }: { 
   const placeNum = placeFig && tiles?.place && <Num value={placeFig} display={() => w.tiles.placeValue(tiles.place!.k, tiles.place!.of)} />;
   const diffNum = diffFig && <Num value={diffFig} display={(n) => fmt.signedNisWhole(n)} />;
   const planLine = fund ? w.plan(fmt.nisWhole(p.amountNow), fmt.nisWhole(p.monthly), p.years, fmt.pct(p.grossReturn * 100), fund.name, where) : null;
-  return { ed, deal, at, run, tiles, house, fund, own, where, leftNum, placeNum, diffNum, planLine };
+  return { head, average, at, run, tiles, house, fund, own, where, leftNum, placeNum, diffNum, planLine };
 }
 
 /**
@@ -396,18 +376,18 @@ export function termsLeftOut(snap: FeesSnapshot | undefined, at: FundWay["byHous
 /**
  * A house's terms, read-only (D106): the popup a deal opens in, on a deal filled from the house's latest price list, which is never saved.
  * Its head names the price list, then, on the same line, the day it was collected, opening it; the tiles say what it leaves on the plan's fund and its place
- * in the account list, over the plan line; then what its price leaves out, folded to a line; its fees as the editor shows them, each with
- * what the plan charges, nothing to edit (the kit's `ReadOnly`); last, the way to enter terms of one's own from this house. On a phone, one
- * column: the tiles on one line, the fold, the fees, the button. Not a kit piece: the page's own popup, built of kit pieces and the editor.
+ * in the account list, over the plan line; then the house's terms as a company page shows them (`HouseTerms`), their fold holding the
+ * price it leaves out on the plan's fund too, and each fee with what the plan charges; last, the way to enter terms of one's own from this
+ * house. On a phone, one column: the tiles on one line, the fold, the fees, the button. Not a kit piece: the page's own popup, built of kit
+ * pieces and the house's terms.
  */
-export function TermsPopup({ data, today, saved, writable, first, world, house, headId, onOwn }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; world: DealWorld; house: string; headId: string; onOwn: () => void }) {
-  const { ed, tiles, fund, leftNum, placeNum, planLine } = useDealOnPlan({ data, today, saved, writable, first, world, terms: house });
+export function TermsPopup({ data, today, first, world, house, headId, onOwn }: { data: FeesData; today: string; first: FeeDeal; world: DealWorld; house: string; headId: string; onOwn: () => void }) {
+  const { head, tiles, fund, leftNum, placeNum, planLine } = usePlanOn({ data, deal: first, world, terms: house });
   const wide = useMedia(MQ.md);
   const p = world.plan;
   const short = providerName(world.view, house)?.short ?? house;
   const snap = world.bundle.snapshots.find((s) => s.id === house);
   const left = termsLeftOut(snap, fund?.byHouse[house]);
-  const fold = left && <LeftOutFold view={left} />;
   return (
     <div className="flex flex-col gap-4">
       {/* the price list's day and link follow the title on its line, and wrap under it where the line is full */}
@@ -441,8 +421,7 @@ export function TermsPopup({ data, today, saved, writable, first, world, house, 
           </p>
         ))}
       {wide && planLine && <p className="text-sm text-muted-foreground">{planLine}</p>}
-      {fold}
-      {ed.columns(null)}
+      <HouseTerms data={data} today={today} first={first} house={house} leftOut={left} feeHead={head} />
       <Button variant="framed" className="self-start" onClick={onOwn}>
         {w.fromHouse(short)}
       </Button>
@@ -469,7 +448,18 @@ export function TermsMark({ id, house }: { id: string; house: string }) {
  * stay together), the pick bar, and the editor. Not a kit piece: the page's own popup, built of kit pieces and /deal's editor.
  */
 function DealPopup({ data, today, saved, writable, first, openFee, world, headId, onDeleted }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; /** The fee it opens on, where its opener names one. */ openFee?: string | undefined; world: DealWorld; headId: string; onDeleted: (name: string, at: number | null) => void }) {
-  const { ed, deal, at, run, tiles, house, fund, own, where, leftNum, placeNum, diffNum, planLine } = useDealOnPlan({ data, today, saved, writable, first, world });
+  // what each fee's head says is read with the deal as it is now, which the editor holds: the editor draws it after this render
+  const headRef = useRef<(fee: Fee) => FeeSlot | undefined>(() => undefined);
+  // /deal reopens the deal last on screen there: only the popup's own links to it name this one (`rememberOpen`)
+  const ed = useDealEditor({ data, today, saved, writable, first, withReading: false, untitled: true, remember: false, feeHead: (fee) => headRef.current(fee) });
+  const deal = ed.deal;
+  const plan = usePlanOn({ data, deal, world, onAddCase: (fee, gap) => addAbroadCase(ed, fee, gap) });
+  const { at, run, tiles, house, fund, own, where, leftNum, placeNum, diffNum, planLine } = plan;
+  headRef.current = (fee) => {
+    const slot = plan.head(fee);
+    const average = plan.average(fee);
+    return average ? { ...slot, under: <>{slot.under}{average}</> } : slot;
+  };
   const isSaved = saved.some((d) => d.id === deal.id);
   const p = world.plan;
   const root = useRef<HTMLDivElement>(null);
@@ -688,12 +678,12 @@ function addAbroadCase(ed: DealEditor, fee: Fee, gap: AbroadGap) {
  * Under a fee's cases, where the deal has no case for a fund bought abroad: what is missing and its add (E); read-only (the kit's
  * `ReadOnly`, a house's terms), what is missing alone. Not a kit piece: one sentence and the kit's inline button, said only here.
  */
-function AbroadCaseLine({ words, onAdd }: { words: string; onAdd: () => void }) {
+function AbroadCaseLine({ words, onAdd }: { words: string; onAdd?: () => void }) {
   const still = useReadOnly();
   return (
     <p className="flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
       {w.abroad.lacks(words)}
-      {!still && (
+      {!still && onAdd && (
         <Button variant="inline" bold onClick={onAdd}>
           + {w.abroad.add}
         </Button>

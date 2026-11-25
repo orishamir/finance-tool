@@ -11,6 +11,7 @@ import { Callout, Card, DateSpanText, DocLink, Section, TariffDate, When, gersha
 import { BrokerageGroupCard } from "./brokerage-card";
 import { BankProductRow } from "./product-row";
 import type { InstitutionPageData, ProductGroup } from "./types";
+import type { HouseTermsData } from "../../../lib/fee-page-data";
 import { withoutLtd } from "../../../lib/company-name";
 import { entryIds, splitDocGroups } from "../../../lib/company-page";
 import { depositCount, rangeLinkage, rateRange, termRange } from "../../../lib/bank-table";
@@ -26,7 +27,7 @@ const groupTitle: Record<string, string> = { "bank-deposit": copy.groups.deposit
 
 type Notes = { advertising: readonly AdvertisingEntry[]; groups: FeesSnapshot["groups"] | null };
 
-export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /** What the page says beside the prices: advertising against the documents, group prices (D57 amended). */ notes?: Notes }) {
+export function InstitutionPage({ data, notes, terms = null }: { data: InstitutionPageData; /** What the page says beside the prices: advertising against the documents, group prices (D57 amended). */ notes?: Notes; /** The house's terms, where its latest list fills a deal (`BrokerageGroupCard`). */ terms?: HouseTermsData | null }) {
   const known = new Set(Object.keys(data.rules));
   const isBank = data.kind === "bank";
   const tariff = data.tariff;
@@ -35,7 +36,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
   const groups = data.groups.filter((g) => g.products.length > 0);
   const productIds = [...groups.map((g) => g.wrapperId), ...(tariff ? ["brokerage"] : [])];
   const docs = splitDocGroups(data.terms.groups, productIds);
-  const sections = hasAccount ? accountSections({ fees: tariff.lines.length > 0, canBuy: tariff.availability.length > 0, claims: (notes?.advertising ?? []).length > 0, groups: !!notes?.groups }) : [];
+  const sections = hasAccount ? accountSections({ fees: tariff.lines.length > 0 || !!terms, canBuy: tariff.availability.length > 0, claims: (notes?.advertising ?? []).length > 0, groups: !!notes?.groups }) : [];
 
   const bankPart = (g: ProductGroup): CompanyPart => {
     const label = groupTitle[g.wrapperId] ?? g.wrapperName;
@@ -73,7 +74,7 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
             parts: [...sections.map((s) => ({ id: s.id, label: s.title })), ...(brokerageDocs ? [{ id: docsAnchor, label: w.docs.part(brokerageDocs) }] : [])],
             anchors: [...sections.map((s) => s.id), docsAnchor, ...entryIds(docs.byProduct.brokerage)],
             body: (
-              <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} advertising={notes?.advertising} groups={notes?.groups} docs={<ProductDocs product={copy.groups.brokerage} groups={docs.byProduct.brokerage ?? []} id={docsAnchor} />} />
+              <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} terms={terms} advertising={notes?.advertising} groups={notes?.groups} docs={<ProductDocs product={copy.groups.brokerage} groups={docs.byProduct.brokerage ?? []} id={docsAnchor} />} />
             ),
           },
         ]

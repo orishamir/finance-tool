@@ -8,13 +8,14 @@ import { cmaPeriodFile, type RuleRecord, type ValueObject } from "@finance-tool/
 import { latestTracks, type CmaTrack } from "@finance-tool/engine";
 import { feeDeal, guideBlocks } from "../copy";
 import { classificationToWrapper, loadProducts, loadRules, openTracksOf, pointedRecords, root, termsFor } from "./data.server";
-import { dealKindsOf } from "./fee-deal/kinds";
+import { ACCOUNT_KIND, dealKindsOf } from "./fee-deal/kinds";
+import { houseDeal } from "./deal-account/house-deal";
 import { FEE_KIND_IDS } from "./fee-deal/shapes";
 import { STATED_RULES } from "./fee-deal/reading";
 import { BAN_RULES } from "./fee-deal/offers/rules";
 import { ACCOUNT_CAP_RULES } from "./fee-deal/charts";
 import { houseTemplateRead } from "./fee-deal/templates";
-import { termKey, type FeesData, type TrackLite } from "./fee-page-data";
+import { termKey, type FeesData, type HouseTermsData, type TrackLite } from "./fee-page-data";
 import { loadFx } from "./fx.server";
 import { BROKERAGE, onlyWhatCanBeDone, providersOf, startsDeal } from "./providers";
 import { latestSnapshots } from "./providers.server";
@@ -110,16 +111,41 @@ export function buildFeesData(): FeesData {
   const names = FEE_KIND_IDS.flatMap((k) => feeNameOf(k) ?? []);
   const terms = termsFor(names, "");
   for (const k of kinds) for (const [name, t] of Object.entries(termsFor(names, k.id))) if (t.explanation !== terms[name]?.explanation) terms[termKey(name, k.id)] = t;
+  return { ...citedRules({ kinds, templates, houses, fx, terms }), templates, tracks, kinds, houses, fx, terms };
+}
+
+/**
+ * The rules the data's figures and cap lines cite, with the records their cards point at: those its records name, the rules the reading's
+ * stated sentences state (a bank's order through a clerk, BRK-16), those of the rule table's bans, which a ban's words open and whose figure
+ * they show (MF-71's distribution fee), and BANK-35, whose cap flags a current account's year of holding (F-102, `accountCapOf`).
+ */
+function citedRules(parts: Pick<FeesData, "kinds" | "templates" | "houses" | "fx" | "terms">): Pick<FeesData, "rules" | "pointed"> {
   const allRules = loadRules();
-  // with the rules the reading's stated sentences state (a bank's order through a clerk, BRK-16), those of the rule table's bans, which a
-  // ban's words open and whose figure they show (MF-71's distribution fee),
-  // and BANK-35, whose cap flags a current account's year of holding (F-102, `accountCapOf`)
   const stated = [...Object.values(STATED_RULES).flatMap((ids) => ids ?? []), ...BAN_RULES, ...ACCOUNT_CAP_RULES];
-  const rules: RuleRecord[] = [...ruleIdsIn({ kinds, templates, houses, fx, terms }, new Set(stated))].sort().flatMap((id) => (allRules[id] ? [allRules[id]] : []));
-  return { rules, pointed: Object.values(pointedRecords(rules, allRules)), templates, tracks, kinds, houses, fx, terms };
+  const rules: RuleRecord[] = [...ruleIdsIn(parts, new Set(stated))].sort().flatMap((id) => (allRules[id] ? [allRules[id]] : []));
+  return { rules, pointed: Object.values(pointedRecords(rules, allRules)) };
 }
 
 let cached: FeesData | null = null;
 export function feesData(): FeesData {
   return (cached ??= buildFeesData());
+}
+
+/**
+ * What a house's terms draw in a page's first view (`HouseTerms`): the deal filled from the house's latest price list (`houseDeal`), and
+ * the fee page's data its read-only editor reads, cut to a securities account and this house, with the rules its figures' sheets cite
+ * but those the page holds already (`held`: a rule among its rules, a record its cards point at among its rules or those records), which
+ * the page's provenance gives the terms.
+ * Null where the house's list starts no deal (`startsDeal`): the fee page's houses are those.
+ */
+export function houseTermsData(id: string, today: string, held: { rules: ReadonlySet<string>; pointed: ReadonlySet<string> }): HouseTermsData | null {
+  const all = feesData();
+  const house = all.houses.find((h) => h.id === id);
+  const deal = house ? houseDeal(`house:${id}`, all, today) : null;
+  if (!house || !deal) return null;
+  const parts = { kinds: all.kinds.filter((k) => k.id === ACCOUNT_KIND), templates: {}, houses: [house], fx: null, terms: {} };
+  const { rules, pointed } = citedRules(parts);
+  const kept = rules.filter((r) => !held.rules.has(r.id));
+  const keptPointed = (pointed ?? []).filter((r) => !held.rules.has(r.id) && !held.pointed.has(r.id));
+  return { deal, data: { rules: kept, pointed: keptPointed, ...parts, tracks: [] } };
 }

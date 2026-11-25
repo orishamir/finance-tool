@@ -3,6 +3,7 @@
 // reference rates, and the rules the page cites. What a track's fees are as value objects is read here.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import type { DealKind } from "./fee-deal/kinds";
+import type { FeeDeal } from "./fee-deal/model";
 import type { HouseTemplate } from "./fee-deal/templates";
 import type { FxSnapshot } from "./fx";
 import type { TermRow } from "./data.server";
@@ -42,6 +43,15 @@ export interface FeesData {
    * name of its own, that card is kept under `termKey(name, product)` too.
    */
   terms: Record<string, TermRow>;
+}
+
+/**
+ * A house's terms as a page's first view draws them (`HouseTerms`, lib/fees.server.ts `houseTermsData`): the deal filled from its latest
+ * price list, and the fee page's data its read-only editor reads, cut to a securities account and that house.
+ */
+export interface HouseTermsData {
+  deal: FeeDeal;
+  data: FeesData;
 }
 
 /** The key of a fee name's glossary card in one product's sense, among `FeesData.terms`. */

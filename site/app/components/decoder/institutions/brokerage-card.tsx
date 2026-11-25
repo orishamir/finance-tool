@@ -1,8 +1,9 @@
 // A bank's or broker's securities account (design-system 8.7), as the company page shows its other products:
 // the price list as the account's name and quiet line, then parts with a heading
-// each: every fee of the price list as the table of products, grouped by kind (one row per line, one under the next on a phone), what can be bought there, the
-// advertising against the documents, the group prices, and the minimum and the supervisor as the kit's fact cards; the product's document
-// entries and the two links last (the designer's mock, 2026-11-10).
+// each: the fees, under who the prices are for, as the house's terms where its latest list fills a deal (fee-deal/house-terms.tsx), else
+// every line of the price list as the table of products, grouped by kind (one row per line, one under the next on a phone); what can be
+// bought there, the advertising against the documents, the group prices, and the minimum and the supervisor as the kit's fact cards; the
+// product's document entries and the two links last.
 // Its missing form is one card: the reason, the price list's page, the comparison.
 import { CircleDashed } from "lucide-react";
 import { useId, useMemo, useState, type ReactNode } from "react";
@@ -11,7 +12,9 @@ import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, g
 
 import { housePath, ownAccountPath } from "../../../lib/site-paths";
 import { IconAlert } from "../../icons";
-import { IdRef, Num, NumAfter, Ruled, RuleTitleRow } from "../../provenance";
+import { IdRef, Num, NumAfter, ProvenanceProvider, Ruled, RuleTitleRow, useProvenanceData } from "../../provenance";
+import { HouseTerms, withFeesData } from "../../fee-deal/house-terms";
+import type { HouseTermsData } from "../../../lib/fee-page-data";
 import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, HouseAverageLine, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
@@ -396,9 +399,12 @@ function DistributionName({ kind }: { kind: InstitutionKind }) {
   );
 }
 
-/** One bar over the fee table: who these prices are for, and, where the price list prices a fee by channel, where the order is given. */
-function FeeBar({ priceFor, byChannel, channel, onChannel }: { priceFor: string | null; byChannel: boolean; channel: Channel; onChannel: (c: Channel) => void }) {
-  if (!priceFor && !byChannel) return null;
+/**
+ * One bar over the fees: who these prices are for, and, over the price list's table where it prices a fee by channel (`channels`), where
+ * the order is given; a house's terms say a price by channel in its fee's cases.
+ */
+function FeeBar({ priceFor, channels }: { priceFor: string | null; channels: { channel: Channel; onChannel: (c: Channel) => void } | null }) {
+  if (!priceFor && !channels) return null;
   return (
     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 rounded-lg bg-muted px-4 py-3">
       {priceFor && (
@@ -406,7 +412,7 @@ function FeeBar({ priceFor, byChannel, channel, onChannel }: { priceFor: string 
           <span className="text-muted-foreground">{copy.card.priceFor}:</span> <bdi className="font-medium">{priceFor}</bdi>
         </p>
       )}
-      {byChannel && (
+      {channels && (
         // 20 px between the label and the switch on a phone: the "?" beside the label keeps its 44 px clear of the switch's own press area
         <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-3 md:shrink-0">
           {/* what the switch does to the rows, in the "?" beside its label */}
@@ -416,15 +422,16 @@ function FeeBar({ priceFor, byChannel, channel, onChannel }: { priceFor: string 
             </span>
             <HelpMark about={copy.card.channelPick} text={copy.card.channelNote} />
           </span>
-          <SegmentedControl<Channel> labelledBy="channel-pick" check={false} className="sm:w-auto sm:min-w-64 whitespace-nowrap" options={[{ value: "direct", label: copy.card.channel.direct }, { value: "branch", label: copy.card.channel.branch }]} value={channel} onChange={onChannel} />
+          <SegmentedControl<Channel> labelledBy="channel-pick" check={false} className="sm:w-auto sm:min-w-64 whitespace-nowrap" options={[{ value: "direct", label: copy.card.channel.direct }, { value: "branch", label: copy.card.channel.branch }]} value={channels.channel} onChange={channels.onChannel} />
         </div>
       )}
     </div>
   );
 }
 
-export function BrokerageGroupCard({ id, tariff, kind, className, advertising = [], groups = null, docs }: { id: string; tariff: TariffCardData | null; kind: InstitutionKind; className?: string; /** The product's document entries, before the links that end it. */ docs?: ReactNode; /** What its advertising says against its documents (D57). */ advertising?: readonly AdvertisingEntry[]; /** Its group prices and offers (D43). */ groups?: FeesSnapshot["groups"] | null; }) {
+export function BrokerageGroupCard({ id, tariff, kind, terms = null, className, advertising = [], groups = null, docs }: { id: string; tariff: TariffCardData | null; kind: InstitutionKind; /** The house's terms, where its latest list fills a deal (`houseTermsData`): its fees are drawn as those terms. */ terms?: HouseTermsData | null; className?: string; /** The product's document entries, before the links that end it. */ docs?: ReactNode; /** What its advertising says against its documents (D57). */ advertising?: readonly AdvertisingEntry[]; /** Its group prices and offers (D43). */ groups?: FeesSnapshot["groups"] | null; }) {
   const h = useId();
+  const page = useProvenanceData();
   const compareHref = housePath(id);
   const [channel, setChannel] = useState<Channel>("direct");
   const byChannel = useMemo(() => (tariff && !tariff.missing ? pricedByChannel(tariff.lines) : false), [tariff]);
@@ -485,9 +492,20 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
           </p>
         )}
       </div>
-      {tariff.lines.length > 0 && (
+      {terms ? (
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
-          <FeeBar priceFor={tariff.priceFor} byChannel={byChannel} channel={channel} onChannel={setChannel} />
+          <FeeBar priceFor={tariff.priceFor} channels={null} />
+          {/* the house's latest price list as its terms, read-only, as the indices page shows them, with nothing of a plan; its figures'
+              sheets read the rules the terms cite over the page's own */}
+          {page && (
+            <ProvenanceProvider data={withFeesData(page, terms.data)}>
+              <HouseTerms data={terms.data} today={page.today} first={terms.deal} house={id} />
+            </ProvenanceProvider>
+          )}
+        </Section>
+      ) : tariff.lines.length > 0 && (
+        <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
+          <FeeBar priceFor={tariff.priceFor} channels={byChannel ? { channel, onChannel: setChannel } : null} />
           <FeeTable lines={tariff.lines} channel={channel} kind={kind} average={(l) => (l.average && tariff.averages ? <HouseAverageLine averages={[l.average]} house={gershayim(tariff.providerName)} /> : null)} />
           {/* what the house's documents hold and these prices leave out (D106) */}
           <LeftOutLine view={tariff.leftOut ?? null} house={gershayim(tariff.providerName)} className="text-sm" />
