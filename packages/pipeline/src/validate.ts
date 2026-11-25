@@ -37,6 +37,7 @@ import {
   isTaseForeignLine,
   EFFECTIVE_RATE_PATHS,
 } from "@finance-tool/schema";
+import { trailingDistributionYield } from "@finance-tool/engine";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
 import { checkFundPromotions, checkLineFacts, checkSnapshotFacts } from "./price-list-facts.ts";
@@ -288,13 +289,33 @@ export function checkFundLoad(record: Pick<FundRecord, "fees">): string[] {
   return [`fees.load: this fund charges a load on purchase of ${value}%, and the page does not yet price it; show and price the load before adding this value`];
 }
 
-/** data-schema §3.5 (A-10): a yield belongs to a distributing fund, as a number in percent a year from a document. */
+/**
+ * data-schema §3.5 (A-10): a yield belongs to a distributing fund, as a number in percent a year. A yield the site works out (F-132) is a
+ * computed value with its inputs in `trailing`, and holds exactly what F-132 gives on them as of its `effective_from`; any other yield is
+ * read from a document, never computed.
+ */
 export function checkFundDistribution(record: Pick<FundRecord, "distribution_policy" | "distribution">): string[] {
   const d = record.distribution;
   if (!d) return [];
   const out: string[] = [];
   if (record.distribution_policy !== "distributing") out.push("distribution: a yield on a fund that does not distribute");
-  if (d.yield.unit !== "pct_per_year" || typeof d.yield.value !== "number" || d.yield.value <= 0) out.push("distribution.yield: a number above zero in pct_per_year, read from the fund's document");
+  if (d.yield.unit !== "pct_per_year" || typeof d.yield.value !== "number" || d.yield.value <= 0) out.push("distribution.yield: a number above zero in pct_per_year, read from the fund's document or computed by F-132");
+  const t = d.trailing;
+  const byF132 = d.yield.state === "computed" && d.yield.computed_from?.formula === "F-132";
+  if (!t) {
+    if (d.yield.state === "computed") out.push("distribution.yield: a computed yield needs its inputs in distribution.trailing (F-132)");
+    return out;
+  }
+  if (!byF132) out.push('distribution.trailing: its yield is state "computed" with computed_from.formula "F-132"');
+  const asOf = d.yield.effective_from;
+  if (asOf === null) {
+    out.push("distribution.yield.effective_from: the day F-132's 12 months end, which the NAV is on or before");
+    return out;
+  }
+  if (t.nav.date > asOf) out.push(`distribution.trailing.nav.date ${t.nav.date} is after the yield's day ${asOf}: F-132 takes the last NAV on or before it`);
+  for (const p of t.payments) if (p.pay_date < p.ex_date) out.push(`distribution.trailing.payments: paid ${p.pay_date} before its ex-dividend date ${p.ex_date}`);
+  const expected = trailingDistributionYield(t.payments, t.nav.value, asOf);
+  if (typeof d.yield.value === "number" && d.yield.value !== expected) out.push(`distribution.yield: ${d.yield.value} is not what F-132 gives on distribution.trailing as of ${asOf}, ${expected}`);
   return out;
 }
 

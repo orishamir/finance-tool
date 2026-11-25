@@ -43,6 +43,34 @@ const taxRulingIndex = z.discriminatedUnion("basis", [
   }),
 ]);
 
+/**
+ * data-schema §3.5, F-132: one payment a fund made, as the manager's own table prints it: its kind, ex-dividend and payable dates, and the
+ * amount a share in the record's `currency`, with the page and its words in `source.title`.
+ */
+export const distributionPayment = z.strictObject({
+  /** `income` (dividends and interest; Vanguard's "Income") or `capital_gain` (a capital gain distribution, short or long term). */
+  kind: z.enum(["income", "capital_gain"]),
+  ex_date: isoDate,
+  pay_date: isoDate,
+  per_share: z.number().positive(),
+  source,
+  checked: isoDate,
+});
+
+/** data-schema §3.5, F-132: the fund's NAV a share on one day, in the record's `currency`, from the manager's own page. */
+export const distributionNav = z.strictObject({
+  date: isoDate,
+  value: z.number().positive(),
+  source,
+  checked: isoDate,
+});
+
+/** data-schema §3.5, F-132: what a computed 12-month yield is worked out from. */
+const distributionTrailing = z.strictObject({
+  nav: distributionNav,
+  payments: z.array(distributionPayment).min(1),
+});
+
 export const fundRecord = z.strictObject({
   /** Lowercase ASCII, digits and hyphens, e.g. "ie00b5bmr087"; an exposure's variants name it as `fund:<id>`. */
   id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "id is lowercase ASCII, digits and single hyphens"),
@@ -164,13 +192,16 @@ export const fundRecord = z.strictObject({
     })
     .optional(),
   /**
-   * A-10: a distributing fund's yield, a value object in `pct_per_year` read from the fund's own factsheet or the
-   * manager's page with its date, and the payments a year the same source prints. Left out when it was not read: the fund then has no price.
+   * A-10: a distributing fund's yield, a value object in `pct_per_year`, and the payments a year the manager prints. The yield is the
+   * manager's own 12-month trailing figure, read from its factsheet or page with its date; or, where the manager publishes none, the site's
+   * F-132 on the manager's own payments and NAV held in `trailing`, a computed value the data check recomputes. Left out when it was not
+   * read: the fund then has no price.
    */
   distribution: z
     .strictObject({
       yield: valueObject,
       per_year: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(6), z.literal(12)]),
+      trailing: distributionTrailing.optional(),
     })
     .optional(),
   /**
@@ -211,6 +242,8 @@ export const fundRecord = z.strictObject({
 
 export type FundRecord = z.infer<typeof fundRecord>;
 export type FundPromotion = z.infer<typeof fundPromotion>;
+export type DistributionPayment = z.infer<typeof distributionPayment>;
+export type DistributionNav = z.infer<typeof distributionNav>;
 export type TaxRulingIndex = z.infer<typeof taxRulingIndex>;
 
 /**
