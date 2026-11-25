@@ -179,6 +179,13 @@ What goes on a page is his call. When he asks for a change, build it this way:
 - **Every surface people drag declares `touch-action`:** `pan-y` for a
   sideways drag, `none` only on a small handle. A mouse wheel never zooms
   a chart during a plain page scroll.
+- **A chart people browse, by moving or zooming it, shares a phone's page
+  this way:** one finger always scrolls the page, and a one-finger swipe
+  over the chart shows a short hint ("שתי אצבעות להזזת המפה"); two fingers
+  move it and pinch to zoom; a full-screen button opens it where every
+  gesture is the chart's, and closing it returns to the page. On a
+  computer, a drag moves it, Ctrl/⌘ + wheel zooms, + and − buttons do the
+  same, and a button returns to the starting view.
 - **Text whose direction isn't known gets `dir="auto"`:** what is typed in
   search, a name the reader entered. Never a figure.
 - **`scrollLeft` is negative in right to left.** Read it with `Math.abs`.
