@@ -368,7 +368,8 @@ export function PairLists(props: ListsProps) {
         )}
       </span>
     ) : (
-      figureCell(n < 0 ? c.lists.funds.less : n > 0 ? c.lists.funds.more : null, <Num animate value={gap} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : fmt.nisWhole(Math.abs(v)))} />, n)
+      // its difference signed, + or −, not in words (founder, 2026-11-25)
+      figureCell(null, <Num animate value={gap} display={(v) => (Math.round(v) === 0 ? c.lists.funds.same : fmt.signedNisWhole(v))} />, n)
     );
     const typed = isCustomFund(f.rec);
     return {

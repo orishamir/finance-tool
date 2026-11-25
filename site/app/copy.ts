@@ -4177,9 +4177,7 @@ export const invest = {
     /** The funds' side: a fund is a spot inside the chosen account's stretch. */
     funds: {
       title: "איך: הקרן",
-      /** A fund's figure against the pair in the receipt: less, more or the same as it leaves. */
-      less: "פחות",
-      more: "עוד",
+      /** A fund's figure against the pair in the receipt, said signed (+ or −) unless it leaves the same. */
       same: "אותו סכום",
       /** The fold under the list: the funds the chosen account gives no price, with their reasons. */
       unpriced: (n: number) => (n === 1 ? "ועוד קרן אחת בלי מחיר בחשבון הזה" : `ועוד ${n} קרנות בלי מחיר בחשבון הזה`),
