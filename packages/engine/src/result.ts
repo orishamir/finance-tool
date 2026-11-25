@@ -90,12 +90,13 @@ export const RUN_FLAG_CODES: readonly string[] = [
 ];
 
 /**
- * A fund's own document stating a tax term for its own units (product D84): its Israeli prospectus annex, stating the term under the tax
- * ruling given to the fund. It is the fund's statement, never a rule: it holds for that fund alone, and no official text of the Tax
- * Authority stands behind it. A run that reads one carries it (`RunResult.statements`), so a page names it as the fund's beside the figures
- * it moves, as a rule the run reads reaches the page by `rules`. One member per term it states, keyed by `term`.
+ * A fund's own document stating a tax term for its own units: its Israeli prospectus annex stating its tax index under the tax ruling given
+ * to it (product D84), or its annual report or its manager's prospectus naming it a foreign-investment fund (TXS-14, D119). It is the fund's
+ * statement, never a rule: it holds for that fund alone, and no official text of the Tax Authority stands behind it. A run that reads one
+ * carries it (`RunResult.statements`), so a page names it as the fund's beside the figures it moves, as a rule the run reads reaches the
+ * page by `rules`. One member per term it states, keyed by `term`.
  */
-export type FundStatement = TaxIndexStatement;
+export type FundStatement = TaxIndexStatement | ForeignInvestmentFundStatement;
 
 /**
  * F-04, D84: whether a fund's runs read the tax index its own annex states: only a TASE foreign fund's, and only one that pays nothing out.
@@ -108,24 +109,32 @@ export function readsStatedIndex(kind: Fund["kind"], distributes: boolean): bool
 }
 
 
-/**
- * What every fund statement carries: the document as the fund record holds it, the page of its PDF the words are on, its words there, and
- * the date they were read (ISO).
- */
+/** What every fund statement carries: the document as the fund record holds it, and the date its words were read (ISO). */
 interface StatementSource {
   source: ValueObject["source"];
-  page: number;
-  quote: string;
   checked: string;
 }
 
-/** The index of the inflationary amount on a sale by an individual (F-04) a fund's annex states. */
-export type TaxIndexStatement = StatementSource & { term: "tax-index" } & (
+/**
+ * The index of the inflationary amount on a sale by an individual (F-04) a fund's annex states: `page` is the PDF page of `source` the
+ * words are on, `quote` its words there.
+ */
+export type TaxIndexStatement = StatementSource & { term: "tax-index"; page: number; quote: string } & (
   /** The main currency's exchange rate (its ISO code), the record's own currency and the exposure's, and so the run's one exchange-rate path (`fx`). */
   | { index: "fx"; currency: string }
   /** The CPI. */
   | { index: "cpi" }
 );
+
+/**
+ * TXS-14, D119: the fund's own document naming it a foreign-investment fund under the 2003 regulations, with its principal currency (its
+ * ISO code), on which the site's reading of TXS OQ26 runs the fund. `source` is the document as the record holds it
+ * (`tax_status.foreign_investment_fund`, data-schema §3.5): its address opens at the page (`#page=`), and its title carries the words there.
+ */
+export interface ForeignInvestmentFundStatement extends StatementSource {
+  term: "foreign-investment-fund";
+  currency: string;
+}
 
 /** Section 8 and B3: whether the run may enter a ranking. */
 export type Outcome =

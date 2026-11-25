@@ -168,6 +168,18 @@ describe("the site's reading of TXS OQ26 for a fund whose documents name it a fo
       expect(securitiesStopOf(input(market, fif), ctx)).toBeNull();
     }
   });
+
+  it("carries the fund's own document naming it one as the fund's statement, beside TXS-14; a fund the site does not know carries none", () => {
+    const named = { term: "foreign-investment-fund", currency: "USD", source: { url: "https://example.org/report.pdf#page=1", title: "the report, p. 1", publisher: "the manager", strength: "institution" }, checked: "2026-11-22" } as const;
+    const known = runSecurities(input({ principalFxChange: 0.05 }, { ...fif, foreignInvestmentFund: named }), ctx);
+    expect(known.statements).toEqual([named]);
+    expect(ids(known)).toContain("TXS-14");
+    // the statement moves no figure: the run is the one made without it
+    const { statements: _named, ...rest } = known;
+    expect(rest).toEqual(runSecurities(input({ principalFxChange: 0.05 }, fif), ctx));
+    // a fund whose status is not known has no such document, and its cautious run carries no statement
+    expect(runSecurities(input({ principalFxChange: 0.05 }, unknown), ctx).statements).toBeUndefined();
+  });
 });
 
 describe("the fund a record gives (fundOf)", () => {
@@ -179,6 +191,13 @@ describe("the fund a record gives (fundOf)", () => {
   it("carries the principal currency the fund's documents name, and none where they say it is not one", () => {
     expect(fundOf(withStatus("USD"), "israeli-fund", { foreignCurrency: "USD" }).fund.principalCurrency).toBe("USD");
     expect(fundOf(withStatus(false), "israeli-fund", { foreignCurrency: "USD" }).fund.principalCurrency).toBeUndefined();
+  });
+  it("carries the document naming it one as the fund's statement, from the record's own value object, and none where it is not one or not known", () => {
+    const rec = withStatus("USD");
+    const vo = rec.tax_status.foreign_investment_fund;
+    expect(fundOf(rec, "israeli-fund", { foreignCurrency: "USD" }).fund.foreignInvestmentFund).toEqual({ term: "foreign-investment-fund", currency: "USD", source: vo.source, checked: vo.checked });
+    expect(fundOf(withStatus(false), "israeli-fund", { foreignCurrency: "USD" }).fund.foreignInvestmentFund).toBeUndefined();
+    expect(fundOf(withStatus(null), "israeli-fund", { foreignCurrency: "USD" }).fund.foreignInvestmentFund).toBeUndefined();
   });
   it("takes the index's foreign currency as the candidate where the status is not known, so the run meets both readings, and none on a shekel index", () => {
     expect(fundOf(withStatus(null), "israeli-fund", { foreignCurrency: "USD" }).fund.principalCurrency).toBe("USD");

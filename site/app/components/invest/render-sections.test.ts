@@ -1,6 +1,8 @@
 // The index page's sections rendered on the collected data (part of render.test.ts, which says why it is split).
 import { fileURLToPath } from "node:url";
 import { createElement } from "react";
+import { renderToString } from "react-dom/server";
+import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { taxIndexStatementOf } from "@finance-tool/engine";
 import { invest, leftOut, numbers, provenance } from "../../copy";
@@ -8,7 +10,7 @@ import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
-import { sheetRules, type SiteValue } from "../../lib/value";
+import type { SiteValue } from "../../lib/value";
 import { Fees } from "./funds";
 import { reasonText } from "./parts";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
@@ -16,6 +18,8 @@ import { TitleRow } from "./title";
 import { allFunds, GapCell, gapKindOf, gapNoteOf, gapStateOf, gapValue, pickOfHeadline, whyNoFundAt, whyNoKindAt } from "./pair";
 import { PlanCard } from "./plan-card";
 import { ValueSheet } from "../provenance-sheets";
+import { ProvenanceProvider } from "../provenance";
+import { loadRules } from "../../lib/data.server";
 import { PairLists, listName, markView } from "./lists";
 import { PairReceipt } from "./receipt";
 import { BeforeDeciding, hedgeCard, mapTab } from "./before";
@@ -412,13 +416,16 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
   });
-  it("a foreign fund in Tel Aviv whose annex states no index, and an Israeli fund whose documents name it a foreign-investment fund, wear no caution: their sheet tags the site's reading and names its rule; no note says it elsewhere (D84, D119, F-04)", () => {
+  it("a foreign fund in Tel Aviv whose annex states no index, and an Israeli fund whose documents name it a foreign-investment fund, wear no caution: their sheet tags the site's reading and names its rule, the Israeli fund's its document too; no note says it elsewhere (D84, D119, F-04)", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const pick = pickOfHeadline(sp)!;
     const raw = lists(sp, bundle, plan, pick);
     // the row's own markup, from its key to the next row's
     const rowOf = (id: string) => { const a = raw.indexOf(`data-pick-key="${id}"`); const rest = raw.slice(a + 1); const b = rest.search(/data-pick-key=|data-case-of=/); return a < 0 ? "" : b < 0 ? rest : rest.slice(0, b); };
     const caution = new RegExp(`<button[^>]*aria-label="[^"]*${numbers.doubt}[^"]*"`);
+    // a sheet as a page shows it, with the rule records its chips name
+    const rules = loadRules();
+    const withRules = (el: React.ReactElement) => renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { ...data, rules }, children: el })));
     const named = allFunds(sp).filter((f) => f.rec.domicile === "IL" && typeof f.rec.tax_status.foreign_investment_fund?.value === "string" && f.byHouse[pick.house] && "valueN" in f.byHouse[pick.house]!);
     const cases = [{ id: "1183441", rule: "TXF-04" }, ...named.map((f) => ({ id: f.rec.id, rule: "TXS-14" }))];
     expect(named.length).toBeGreaterThan(0);
@@ -430,12 +437,27 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
       expect(rowOf(id), id).not.toBe("");
       expect(rowOf(id), id).not.toMatch(caution);
       // tapping it opens a sheet that tags the site's reading and names the rule it rests on, whose card says why; no doubt
-      const sheet = shown(html(createElement(ValueSheet, { value: at.value, exact: false, data, headId: "h", descId: "d" })));
+      const record = rules[rule];
+      if (!record?.title_he) throw new Error(`${rule} is in data/rules with its Hebrew title`);
+      const markup = withRules(createElement(ValueSheet, { value: at.value, exact: false, data, headId: "h", descId: "d" }));
+      const sheet = shown(markup);
       expect(sheet, id).toContain(numbers.reading);
       expect(sheet, id).not.toContain(numbers.doubt);
       expect(at.value.doubt, id).toBeUndefined();
       expect(at.value.labels, id).toContainEqual({ code: "reading", ruleId: rule });
-      expect(sheetRules(at.value).map((r) => r.id), id).toContain(rule);
+      // its rules name the rule by its chip, whose title opens its card
+      expect(sheet, id).toContain(provenance.computed.rules);
+      expect(sheet.slice(sheet.indexOf(provenance.computed.rules)), id).toContain(record.title_he);
+      // an Israeli fund's sheet names the fund's own document that names it a foreign-investment fund, opened at its page (D119)
+      const status = f.rec.tax_status.foreign_investment_fund;
+      if (rule === "TXS-14") {
+        if (typeof status?.value !== "string") throw new Error(`${id}'s record names its principal currency`);
+        expect(sheet, id).toContain(provenance.computed.statements);
+        expect(sheet, id).toContain(provenance.computed.statement["foreign-investment-fund"]({ term: "foreign-investment-fund", currency: status.value, source: status.source, checked: status.checked }));
+        expect(sheet, id).toContain(fmt.date(status.checked));
+        expect(status.source.url, id).toMatch(/#page=\d+$/);
+        expect(markup, id).toContain(`href="${status.source.url}"`);
+      } else expect(sheet, id).not.toContain(provenance.computed.statements);
     }
     // a fund whose annex states its index wears none
     const stated = rowOf("1159250");

@@ -2,7 +2,7 @@
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
 import { countPhrase } from "./lib/count";
 import type { FeeCap } from "@finance-tool/schema";
-import type { ChangeKind, FundStatement, HeldKind, NotKnown, TaxIndexStatement } from "@finance-tool/engine";
+import type { ChangeKind, ForeignInvestmentFundStatement, FundStatement, HeldKind, NotKnown, TaxIndexStatement } from "@finance-tool/engine";
 import type { FeeKindId } from "./lib/fee-deal/core";
 
 /**
@@ -11,6 +11,14 @@ import type { FeeKindId } from "./lib/fee-deal/core";
  */
 function taxIndexStated(st: TaxIndexStatement): string {
   return `${st.index === "fx" ? `מס רווחי הון מחושב לפי שער ה${currencyWord(st.currency)}` : "מס רווחי הון מחושב לפי מדד המחירים לצרכן"}: כך כתוב בנספח לתשקיף הישראלי של הקרן, לפי החלטת המיסוי שהקרן קיבלה מרשות המסים. זו הצהרה של הקרן, ואין נוסח רשמי של רשות המסים שמאשר אותה.`;
+}
+/**
+ * TXS-14, D119: a fund's own document naming it a foreign-investment fund with its principal currency, said as the fund's statement, and the
+ * site's reading of TXS OQ26 that runs it on that currency, as TXS-14's own text says it (`readingDoubt` says the same law). The figure's sheet says it from the statement here.
+ */
+function foreignInvestmentFundStated(st: ForeignInvestmentFundStatement): string {
+  const c = currencyWord(st.currency);
+  return `מס רווחי הון מחושב לפי שער ה${c}: במסמך של הקרן כתוב שהיא קרן נאמנות להשקעות חוץ, ושהמטבע העיקרי שלה הוא ה${c}. זו הצהרה של הקרן. בקרן כזו הרווח נמדד מול שער המטבע העיקרי שלה, אם התקנות מ־2003 שקובעות זאת עדיין בתוקף. אין על זה נוסח רשמי, והאתר קורא אותן כעדיין בתוקף. זו קריאה של האתר, לא מקור.`;
 }
 /** What the site does with a fund's stated tax index, after the statement on the fund's chip. */
 const taxIndexRanked = "האתר מחשב לפיה את מס רווחי הון של הקרן הזו בלבד, ומדרג אותה.";
@@ -432,8 +440,10 @@ export const provenance = {
     statement: {
       /** F-04: the tax index the fund's annex states under its ruling: the main currency's exchange rate, or the CPI. */
       "tax-index": taxIndexStated,
+      /** TXS-14, D119: the fund's document naming it a foreign-investment fund, and the principal currency the site's reading runs it on. */
+      "foreign-investment-fund": foreignInvestmentFundStated,
     } satisfies { [T in FundStatement["term"]]: (st: Extract<FundStatement, { term: T }>) => string },
-    /** The statement's document, linked at its page. */
+    /** A stated tax index's annex, linked at its page; a document naming the fund a foreign-investment fund is linked by its own title, which names the page. */
     statementDoc: (title: string, page: number) => `${title}, עמוד ${page}`,
     weakInputs: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:",
     doubtedInputs: "בין הערכים שנכנסו לחישוב, על אלה יש ספק:",
@@ -5065,7 +5075,7 @@ export const invest = {
   statementLabels: {
     /** F-04: the tax index the fund's annex states under its ruling, the fund's statement and not a rule. */
     "tax-index": (st: TaxIndexStatement) => ({ text: st.index === "fx" ? `רווח מול שער ה${currencyWord(st.currency)}` : "רווח מול מדד המחירים", explain: `${taxIndexStated(st)} ${taxIndexRanked}` }),
-  } satisfies { [T in FundStatement["term"]]: (st: Extract<FundStatement, { term: T }>) => { text: string; explain: string } },
+  },
   labels: {
     "held-il": { text: "קרן ישראלית", explain: "הקרן רשומה בישראל ומפוקחת כאן. על מדד זר היא מקבלת את החשיפה בדרך כלל בעסקאות, ועל מדד ישראלי היא מחזיקה בדרך כלל את המניות." },
     "held-tase-foreign": { text: "קרן חוץ בת״א", explain: "קרן מחוץ לישראל שנסחרת גם בבורסה בתל אביב, בשקלים. קרן חוץ לא מתמחה בישראל, ולכן היא רק על מדדים זרים." },

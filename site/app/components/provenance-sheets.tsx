@@ -453,13 +453,19 @@ export function SlottedText({ text, rules, today }: { text: string; rules: Recor
   );
 }
 
-/** A fund statement's sentence on a figure's sheet, by the term it states (D84). */
-function statementSentence(st: FundStatement): string {
+/**
+ * A fund statement on a figure's sheet, by the term it states: its sentence, and its document linked at the page: a stated tax index's annex
+ * at the page the statement names (D84); a document naming the fund a foreign-investment fund by the record's own source, whose address opens
+ * at the page and whose title names it (D119, data-schema §3.5).
+ */
+function statementShown(st: FundStatement): { sentence: string; href: string; doc: string } {
   switch (st.term) {
     case "tax-index":
-      return copy.computed.statement["tax-index"](st);
+      return { sentence: copy.computed.statement["tax-index"](st), href: sourceHref({ url: st.source.url, page: st.page }), doc: copy.computed.statementDoc(st.source.title, st.page) };
+    case "foreign-investment-fund":
+      return { sentence: copy.computed.statement["foreign-investment-fund"](st), href: sourceHref({ url: st.source.url }), doc: st.source.title };
     default:
-      return assertNever(st.term);
+      return assertNever(st);
   }
 }
 
@@ -654,15 +660,18 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           {value.statements && value.statements.length > 0 && (
             <div className="flex flex-col gap-1.5">
               <span className="text-sm text-muted-foreground">{copy.computed.statements}</span>
-              {value.statements.map((st) => (
-                <div key={statementKey(st)} className="flex flex-col">
-                  <p className="text-sm">{statementSentence(st)}</p>
-                  <DocLink href={sourceHref({ url: st.source.url, page: st.page })}>{copy.computed.statementDoc(st.source.title, st.page)}</DocLink>
-                  <p className="text-xs text-muted-foreground">
-                    {sourceCopy.checked} <Iso ltr>{fmt.date(st.checked)}</Iso>
-                  </p>
-                </div>
-              ))}
+              {value.statements.map((st) => {
+                const shown = statementShown(st);
+                return (
+                  <div key={statementKey(st)} className="flex flex-col">
+                    <p className="text-sm">{shown.sentence}</p>
+                    <DocLink href={shown.href}>{shown.doc}</DocLink>
+                    <p className="text-xs text-muted-foreground">
+                      {sourceCopy.checked} <Iso ltr>{fmt.date(st.checked)}</Iso>
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           )}
           {value.flags?.map((code) => (

@@ -46,7 +46,10 @@ export interface SiteValue extends ValueObject {
   parameter?: { rationale: string; rationaleHe?: string | null };
   /** Rules a computed value read, with the strength the run recorded. */
   rulesUsed?: { id: string; strength: Strength }[];
-  /** A fund's own statements a computed value read in place of a rule (D84: the tax index its annex states): its sheet names each as the fund's. */
+  /**
+   * A fund's own statements a computed value rests on (`FundStatement`: the tax index its annex states, D84; the document naming it a
+   * foreign-investment fund, D119): its sheet names each as the fund's.
+   */
   statements?: readonly FundStatement[];
   /**
    * Engine labels on the run ("secondary-source", "reading": a rule applied as an inference, e.g. TXK-07 when the CPI fell; "cautious": the
@@ -249,9 +252,12 @@ export function differenceOf(a: readonly [name: string, value: SiteValue], b: re
   return { ...v, doubt: first[1].doubt, ...(rules.length ? { doubtRules: rules } : {}), doubtFrom: doubted.map(([name]) => name) };
 }
 
-/** A fund statement's identity on a page: the term it states, its document and the page there, so one statement is carried and listed once. */
+/**
+ * A fund statement's identity on a page: the term it states, its document and the page there (a stated index's own page; the address of a
+ * document naming the fund a foreign-investment fund carries its page), so one statement is carried and listed once.
+ */
 export function statementKey(st: FundStatement): string {
-  return `${st.term}|${st.source.url}|${st.page}`;
+  return `${st.term}|${st.source.url}|${st.term === "tax-index" ? st.page : ""}`;
 }
 
 /**

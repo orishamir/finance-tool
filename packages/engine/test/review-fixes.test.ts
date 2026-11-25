@@ -21,7 +21,7 @@ import {
   runSecurities,
   securitiesBlockedBy,
   surtax,
-  type FundStatement,
+  type TaxIndexStatement,
   type SecuritiesInput,
 } from "../src/index.ts";
 import { context, loadRules, runDate } from "./golden/harness.ts";
@@ -250,7 +250,7 @@ describe("foreign funds on TASE (TXF-04)", () => {
 
   // D84: the fund's own annex states its index under its ruling. The oracle is the same fund with no statement, run under the reading of
   // TXF OQ10 that names the same index: the figures must be the same, the source the fund's statement.
-  const statement = (index: "fx" | "cpi"): FundStatement => ({
+  const statement = (index: "fx" | "cpi"): TaxIndexStatement => ({
     term: "tax-index" as const,
     ...(index === "fx" ? { index, currency: "USD" } : { index }),
     source: { url: "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244042-01.pdf", title: "נספח לתשקיף קרן חוץ נסחרת", publisher: "BlackRock (iShares VII plc)", strength: "institution" as const },

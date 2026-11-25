@@ -10,7 +10,7 @@ import { promotedDrag } from "../formulas/fund-promotion.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
 import { acrossReadings, foreignInvestmentFundIndex, OpenReadingError, taseForeignFundIndex } from "../open-readings.ts";
 import { memoRun } from "../run-memo.ts";
-import { RUN_RESULT_FIELDS, readsStatedIndex, type NotKnown, type Outcome, type RunContext, type RunResult, type TaxIndexStatement } from "../result.ts";
+import { RUN_RESULT_FIELDS, readsStatedIndex, type NotKnown, type Outcome, type RunContext, type RunResult, type ForeignInvestmentFundStatement, type TaxIndexStatement } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, LotQueue } from "./lots.ts";
 import { dealCharges, scaled, type Charged, type DealAccount, type MonthActivity } from "./deal-account.ts";
@@ -80,6 +80,12 @@ export interface Fund {
    * whose status is not known is run with it and with the CPI as its tax index (`acrossReadings`).
    */
   principalCurrency?: string;
+  /**
+   * Israeli fund (TXS-14, D119): its own document naming it a foreign-investment fund, the statement behind `principalCurrency` where the
+   * documents name one (its `currency` is that one). A run on the site's reading carries it, so a page names the fund's document beside
+   * the figures the principal currency moves.
+   */
+  foreignInvestmentFund?: ForeignInvestmentFundStatement;
   /**
    * F-04: what the site does not know of a fund whose tax index is an open reading (TXS OQ26, TXF OQ10), beside the open law: whether an
    * Israeli fund is a foreign-investment fund (`status`), or anything its own documents say (`documents`, a fund the person typed). Such a
@@ -435,6 +441,8 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // D84: an index a fund's own annex states is the fund's statement, carried with the run's figures as a rule it reads is
   const stated = statedTaxIndexOf(fund);
   if (stated) tally.state(stated);
+  // TXS-14, D119: so is the document naming the fund a foreign-investment fund, behind the principal currency the site's reading runs it on
+  if (taxIndex === "principal" && fund.foreignInvestmentFund) tally.state(fund.foreignInvestmentFund);
   const formulas = ["F-08", "F-09", "F-10", "F-12", "F-13", "F-14", "F-40"];
   if (tariff.until) {
     formulas.push("F-101");

@@ -5,7 +5,7 @@ import { isoCurrency, type ExposureRecord, type FundRecord, type ValueObject } f
 import { comparedYears, trackingBeyondFees, variableForward, type GapList } from "../formulas/fund-gap.ts";
 import type { Fund } from "../ledgers/securities.ts";
 import { RecordInputError } from "../resolver.ts";
-import type { TaxIndexStatement } from "../result.ts";
+import type { ForeignInvestmentFundStatement, TaxIndexStatement } from "../result.ts";
 
 function fraction(vo: ValueObject | null | undefined, unit: ValueObject["unit"], what: string): number | undefined {
   if (!vo || vo.value === null) return undefined;
@@ -52,6 +52,15 @@ export function taxIndexStatementOf(rec: Pick<FundRecord, "tax_ruling">): TaxInd
   if (!ruling || !index) return undefined;
   const at = { term: "tax-index", source: ruling.source, page: index.page, quote: index.quote, checked: index.checked } as const;
   return index.basis === "main-currency" ? { ...at, index: "fx", currency: index.currency } : { ...at, index: "cpi" };
+}
+
+/**
+ * TXS-14, D119: the fund's own document naming it a foreign-investment fund with its principal currency (`tax_status.foreign_investment_fund`
+ * holding a currency code), as the fund's statement. Undefined where the record says it is not one, or does not know.
+ */
+export function foreignInvestmentFundStatementOf(rec: Pick<FundRecord, "tax_status">): ForeignInvestmentFundStatement | undefined {
+  const status = rec.tax_status.foreign_investment_fund;
+  return typeof status?.value === "string" ? { term: "foreign-investment-fund", currency: status.value, source: status.source, checked: status.checked } : undefined;
 }
 
 /** What `fundOf` reads beside the record and its kind; each left out where the caller has none. */
@@ -141,8 +150,10 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   // says the status is not known (`value: null`), the exposure's foreign currency as the candidate, so the run meets both readings rather
   // than reading the gap as either answer
   const status = rec.tax_status.foreign_investment_fund;
-  const principal = typeof status?.value === "string" ? status.value : status?.value === null ? foreignCurrency : undefined;
+  const named = foreignInvestmentFundStatementOf(rec);
+  const principal = named ? named.currency : status?.value === null ? foreignCurrency : undefined;
   if (kind === "israeli-fund" && principal !== undefined) fund.principalCurrency = principal;
+  if (kind === "israeli-fund" && named) fund.foreignInvestmentFund = named;
   // F-04: what the site does not know of the fund beside an open tax index, which keeps it from the site's reading (D119) and which the
   // doubt on a cautious figure says
   if (typed) fund.notKnown = "documents";

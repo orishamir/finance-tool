@@ -374,6 +374,8 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
       if (principal !== exposure?.currency) missing.push(`${wrapperId}: fund "${rec.id}" names principal currency ${principal}, not its exposure's ${exposure?.currency ?? "(no exposure)"} (F-04)`);
       fund.principalCurrency = principal;
     }
+    // the fund's own document naming it a foreign-investment fund, which a run on the site's reading carries as the fund's statement
+    if (built.foreignInvestmentFund) fund.foreignInvestmentFund = built.foreignInvestmentFund;
     // what the site does not know of the fund (its status), which keeps it from the site's reading and which the doubt on a cautious figure says
     if (built.notKnown) fund.notKnown = built.notKnown;
   }

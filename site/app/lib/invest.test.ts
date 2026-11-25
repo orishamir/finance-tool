@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { BlockedError } from "@finance-tool/engine";
 import { accountSum, blockedReason, buildInvest, listReading, typedFundOpenRule, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
+import { fundDraftOf, fundFromDraft, withCustomEntries } from "./custom-entries";
 import type { WorkbenchInputs } from "./providers";
 import { entered, sheetRules, type SiteValue } from "./value";
 import { invest as words, numbers } from "../copy";
@@ -224,6 +225,48 @@ describe("invest page computation", () => {
     }
     expect(stated).toBeGreaterThan(0);
     expect(unstated).toBeGreaterThan(0);
+  });
+
+  it("prices an Israeli fund whose documents name a principal currency on the site's reading of TXS-14, its figure naming the fund's document and its cost before tax neither (F-04, TXS OQ26, D119)", () => {
+    let named = 0;
+    for (const id of ["index-sp500", "index-msci-acwi", "index-msci-world", "index-nasdaq100"]) {
+      const v = buildInvest({ bundle, index: indexById(bundle, id)!, plan: plan() });
+      for (const f of v.options.filter((o) => o.id === "il-tracking" || o.id === "il-etf").flatMap((o) => o.funds)) {
+        const status = f.rec.tax_status.foreign_investment_fund;
+        if (typeof status?.value !== "string") continue;
+        const at = f.best ? f.byHouse[f.best.providerId] : undefined;
+        if (!at || !("value" in at)) continue;
+        named++;
+        // the site's reading, tagged in the sheet, no doubt; the document that names the fund one is the fund's statement, at its page
+        expect(at.value.labels, f.rec.id).toContainEqual({ code: "reading", ruleId: "TXS-14" });
+        expect(at.value.labels?.some((l) => l.code === "cautious"), f.rec.id).toBe(false);
+        expect(at.value.doubt, f.rec.id).toBeUndefined();
+        expect(at.value.statements, f.rec.id).toEqual([{ term: "foreign-investment-fund", currency: status.value, source: status.source, checked: status.checked }]);
+        // the account's cost before tax reads no tax index: no statement, no label of TXS-14
+        expect(at.cost.statements, f.rec.id).toBeUndefined();
+        expect(at.cost.labels?.some((l) => l.ruleId === "TXS-14"), f.rec.id).toBe(false);
+      }
+    }
+    expect(named).toBeGreaterThan(0);
+  });
+
+  it("prices an Israeli fund the person typed on the cautious reading of TXS-14 where the readings split, its cost before tax with no doubt and no label (F-04, method §13, D119)", () => {
+    // a typed Israeli tracking fund on the S&P 500, on a plan whose prices rise while the dollar stands still: the two readings split
+    const typed = fundFromDraft({ ...fundDraftOf(null, "il-tracking"), payout: "accumulating" as const, hedged: false, name: "typed", fixed: 0.1, variable: 0, trustee: 0 }, "custom-fund-typed", "index-sp500", t);
+    const b = withCustomEntries(bundle, [typed]);
+    const v = buildInvest({ bundle: b, index: indexById(b, "index-sp500")!, plan: plan() });
+    const f = v.options.flatMap((o) => o.funds).find((x) => x.rec.id === "custom-fund-typed");
+    const priced = f ? Object.values(f.byHouse).filter((x): x is Extract<typeof x, { value: SiteValue }> => "value" in x) : [];
+    expect(priced.length).toBeGreaterThan(0);
+    for (const at of priced) {
+      // what is left rests on the exit tax: the site's cautious reading, for a fund whose documents it did not read, with its doubt
+      expect(at.value.labels).toContainEqual({ code: "cautious", ruleId: "TXS-14", notKnown: "documents" });
+      expect(at.value.doubt).toBe(numbers.readingDoubt["TXS-14"]?.documents);
+      // the account's cost before tax reads no tax index: no doubt, no label of TXS-14, no statement
+      expect(at.cost.doubt).toBeUndefined();
+      expect(at.cost.labels?.some((l) => l.ruleId === "TXS-14") ?? false).toBe(false);
+      expect(at.cost.statements).toBeUndefined();
+    }
   });
 
   it("tells a fund the person types as a foreign fund in Tel Aviv of an open rule only where it distributes (F-04, TXF-04)", () => {

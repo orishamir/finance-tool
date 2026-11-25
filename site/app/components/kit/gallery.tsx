@@ -10,7 +10,7 @@ import { IconAlert, IconCheck, IconClose, IconCoins, IconCopy, IconExternal, Ico
 import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleList, RuleTitleRow, Ruled, StaleSaid, StrengthLabel, Term } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
-import type { FundStatement } from "@finance-tool/engine";
+import type { TaxIndexStatement } from "@finance-tool/engine";
 import { depositLabels } from "../../lib/deposit-kind";
 import { fmt, joinLead } from "../../lib/format";
 import { sourceHref } from "../../lib/sources";
@@ -1798,7 +1798,7 @@ function StubDemo() {
   );
 }
 
-function Lists({ today, statements }: { today: string; statements: readonly FundStatement[] }) {
+function Lists({ today, statements }: { today: string; statements: readonly TaxIndexStatement[] }) {
   const s = samples(today);
   const p = g.sample.products;
   const labels = [label("follow-physical"), label("pays-accumulating"), label("currency", "USD")];
@@ -2583,7 +2583,7 @@ function Lists({ today, statements }: { today: string; statements: readonly Fund
   );
 }
 
-export function KitGallery({ today, statements }: { today: string; /** Real fund statements, one for each statement label, that the gallery shows those labels by (`statementExamples`). */ statements: readonly FundStatement[] }) {
+export function KitGallery({ today, statements }: { today: string; /** Real fund statements, one for each statement label, that the gallery shows those labels by (`statementExamples`). */ statements: readonly TaxIndexStatement[] }) {
   return (
     <div className="flex flex-col gap-section">
       <PageHead title={g.title} lede={g.lede}>

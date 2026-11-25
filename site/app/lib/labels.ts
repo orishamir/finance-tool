@@ -3,7 +3,7 @@
 // a sourced fact or an open rule; it never praises. A label shows on every row it is true of, even when every row has it
 // ; its colour is its family's (the kit's LabelChip).
 import type { FundRecord } from "@finance-tool/schema";
-import { readsStatedIndex, taxIndexStatementOf, type FundStatement } from "@finance-tool/engine";
+import { readsStatedIndex, taxIndexStatementOf, type TaxIndexStatement } from "@finance-tool/engine";
 import { currencyWord, invest as c } from "../copy";
 import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
@@ -105,7 +105,7 @@ const signOf = (code: string | undefined): LabelIconKey =>
 export type DepositLabelId = "deposit-campaign" | "deposit-closed-system" | "deposit-new-customers" | "deposit-interest-during-term" | "deposit-best-of";
 
 /** What a label rests on: rules, with a document beside them where one is, or a fund's own statement, which is never a rule. */
-type LabelRests = RuleRests | { statement: FundStatement };
+type LabelRests = RuleRests | { statement: TaxIndexStatement };
 
 /** The rules whose cards a label's sheet opens. */
 interface RuleRests {
@@ -169,14 +169,12 @@ export function label(id: RuleLabelId, arg?: string): RuleLabel {
   return { id, text: say(words.text), explain: say(words.explain), icon: def.icon === "sign" ? signOf(arg ?? "USD") : def.icon, tone: def.tone, family: familyOf[id], rests: { rules: def.rules } };
 }
 
-/** The only way to a label resting on a fund's own statement (D84): its words from the statement, and the statement itself. */
-function statementLabel(st: FundStatement): Label {
-  switch (st.term) {
-    case "tax-index":
-      return { id: st.index === "fx" ? "tax-index-currency" : "tax-index-cpi", ...c.statementLabels["tax-index"](st), icon: "fileCheck", tone: "neutral", family: "tax", rests: { statement: st } };
-    default:
-      return assertNever(st.term);
-  }
+/**
+ * The only way to a label resting on a fund's own statement (D84): its words from the statement, and the statement itself. Only a stated
+ * tax index makes one: a document naming the fund a foreign-investment fund is said in its figures' sheets, and no chip says it (D119).
+ */
+function statementLabel(st: TaxIndexStatement): Label {
+  return { id: st.index === "fx" ? "tax-index-currency" : "tax-index-cpi", ...c.statementLabels["tax-index"](st), icon: "fileCheck", tone: "neutral", family: "tax", rests: { statement: st } };
 }
 
 
@@ -253,13 +251,13 @@ const withDoc = (l: RuleLabel, doc: { href: string; title: string }): RuleLabel 
  * Every label the page can show, for the kit's gallery: each one made from its id, then one for each
  * statement given, which a fund's own document makes (`statementExamples`).
  */
-export function allLabels(statements: readonly FundStatement[]): Label[] {
+export function allLabels(statements: readonly TaxIndexStatement[]): Label[] {
   return [...(Object.keys(labelDefs) as RuleLabelId[]).map((id) => label(id)), ...statements.map(statementLabel)];
 }
 
 /** One statement for each label the records' statements make, the first record's: real ones, with their documents, to show the labels by. */
-export function statementExamples(recs: readonly Pick<FundRecord, "tax_ruling">[]): FundStatement[] {
-  const by = new Map<Label["id"], FundStatement>();
+export function statementExamples(recs: readonly Pick<FundRecord, "tax_ruling">[]): TaxIndexStatement[] {
+  const by = new Map<Label["id"], TaxIndexStatement>();
   for (const st of recs.flatMap((r) => taxIndexStatementOf(r) ?? [])) {
     const id = statementLabel(st).id;
     if (!by.has(id)) by.set(id, st);

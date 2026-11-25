@@ -804,7 +804,10 @@ export function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): 
   return Object.fromEntries(which.map((k) => [copy.planInputs[k], of[k]]));
 }
 const rulesOf = (row: ComparedProvider) => row.run.rules.map((u) => ({ id: u.id, strength: u.strength as Strength }));
-/** What a figure after the run's tax rests on besides its rules: the fund's own statements the run read in place of one (D84, the tax index its annex states). */
+/**
+ * What a figure after the run's tax rests on besides its rules: the fund's own statements the run read (the tax index its annex states, D84;
+ * the document naming it a foreign-investment fund, behind the principal currency the site's reading runs it on, D119).
+ */
 const statementsOf = (row: ComparedProvider) => row.run.statements ?? [];
 /**
  * The run's labels, which a figure that rests on its tax carries: a cautious reading among them makes the figure's doubt (`readingDoubtOf`),
