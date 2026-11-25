@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { accountMap, cleanUp, type AccountMap, type LeftAt } from "./account-map";
+import { accountMap, cleanUp, mapWindow, windowIn, type AccountMap, type LeftAt, type MapWindow, type WindowMap } from "./account-map";
+import { SurfaceCache } from "./map-surface";
 
 /**
  * Made-up accounts over the same deposits: what each leaves is today's amount and 100 times the monthly deposit, less its own cost, so the
@@ -529,3 +530,102 @@ describe("the account map (F-131)", () => {
     expect([cleanUp(114_000), cleanUp(2812.5), cleanUp(100_000), cleanUp(31)]).toEqual([150_000, 3000, 100_000, 40]);
   });
 });
+
+/**
+ * Every node of a window's areas, and of its bottom edge where it has one, reads as the accounts do, where they read the same a lattice step
+ * around it (as `expectFieldTrue`): the nodes run over the window's amounts and from its `bottom` to its monthly end.
+ */
+function expectWindowTrue(w: WindowMap, accounts: Record<string, (a: number, m: number) => number>) {
+  const [x0, x1] = w.window.amount;
+  const [y0, y1] = w.window.monthly;
+  const [sx, sy] = [stepOf(reach.amount, x1 - x0), stepOf(reach.monthly, y1 - y0)];
+  const wrong: string[] = [];
+  let checked = 0;
+  const nodes = (f: WindowMap["field"], yAt: (j: number) => number) => {
+    for (let j = 0; j < f.rows; j++)
+      for (let i = 0; i < f.cols; i++) {
+        const [x, y] = [x0 + ((x1 - x0) * i) / (f.cols - 1), yAt(j)];
+        const want = exactAt(accounts, x, y);
+        const around = [[x - sx, y], [x + sx, y], ...(y > 0 ? [[x, y - sy], [x, y + sy]] : [])].filter(([a, m]) => (a ?? 0) >= 0 && (y === 0 || (m ?? 0) > 0)).map(([a, m]) => exactAt(accounts, a ?? 0, m ?? 0));
+        if (around.some((n) => n.first !== want.first || Math.abs(n.ahead - want.ahead) > 0.15)) continue;
+        checked++;
+        const k = j * f.cols + i;
+        const got = { first: w.accounts[f.first[k] ?? -1], ahead: f.ahead[k] ?? NaN };
+        if ((want.ahead > 0.33 && got.first !== want.first) || Math.abs(got.ahead - want.ahead) > 0.15) wrong.push(`(${x}, ${y}): ${got.first} ${got.ahead} against ${want.first} ${want.ahead}`);
+      }
+  };
+  nodes(w.field, (j) => w.bottom + ((y1 - w.bottom) * j) / (w.field.rows - 1));
+  if (w.edge) nodes(w.edge, () => 0);
+  expect(wrong.slice(0, 5), `${wrong.length} nodes read otherwise`).toEqual([]);
+  expect(checked).toBeGreaterThan(w.field.rows * w.field.cols * 0.5);
+}
+
+describe("a window the person moves the map to (F-131)", () => {
+  const plan = { amount: 10_000, monthly: 200 };
+  const windowOf = (window: MapWindow, leftAt: LeftAt = leftOf(linear)) => need(mapWindow({ leftAt, order: Object.keys(linear), theta: THETA, plan, reach, window }), "the window");
+
+  it("the plan's own window, asked for as a window, reads the plan's map", () => {
+    const map = mapOf(linear, plan);
+    const { window, ...areas } = windowOf({ amount: [0, map.max.amount], monthly: [0, map.max.monthly] });
+    expect(window).toEqual({ amount: [0, map.max.amount], monthly: [0, map.max.monthly] });
+    expect(areas).toEqual({ bottom: map.bottom, accounts: map.accounts, asked: map.asked, field: map.field, edge: map.edge });
+  });
+
+  it("reads every node of a window moved off 0 as the accounts do: above the bottom edge it has none, from 0 a month it has its own", () => {
+    // B is first past 0.015 a + 0.8 m = 600: from 24,000 ₪ today at 300 ₪ a month, and from 40,000 ₪ with no monthly deposit
+    const up = windowOf({ amount: [20_000, 50_000], monthly: [300, 800] });
+    expect(up.window).toEqual({ amount: [20_000, 50_000], monthly: [300, 800] });
+    expect(up.bottom).toBe(300);
+    expect(up.edge).toBeNull();
+    expectWindowTrue(up, linear);
+    const along = windowOf({ amount: [30_000, 45_000], monthly: [0, 400] });
+    expect(along.edge?.cols).toBe(97);
+    expectWindowTrue(along, linear);
+    // both accounts show in each: A first on one side of the equal line, B on the other
+    expect([up.accounts.toSorted(), along.accounts.toSorted()]).toEqual([["a", "b"], ["a", "b"]]);
+    // B's custody drops from 3% to 1% at 50,000 ₪: in a window starting 3,500 ₪ short of it, between the lattice's coarse points, A is first
+    // to exactly there and B clearly first from there on, along the bottom edge too
+    const step = { a: (a: number, m: number) => left(a, m, 0.02 * a), b: (a: number, m: number) => left(a, m, (a < 50_000 ? 0.03 : 0.01) * a) };
+    const over = need(mapWindow({ leftAt: leftOf(step), order: ["a", "b"], theta: THETA, plan, reach, window: { amount: [46_500, 76_500], monthly: [0, 600] } }), "the window over the step");
+    expect(over.edge).not.toBeNull();
+    expectWindowTrue(over, step);
+  });
+
+  it("holds a window inside the map's limits: no wider than the reach, no narrower than a hundredth of it, never under 0", () => {
+    const limits = mapOf(linear, plan).limits;
+    expect(limits).toEqual({ amount: 500_000, monthly: 10_000, least: { amount: 5000, monthly: 100 } });
+    expect(windowIn({ amount: [-2000, 18_000], monthly: [9900, 10_400] }, limits)).toEqual({ amount: [0, 20_000], monthly: [9500, 10_000] });
+    expect(windowIn({ amount: [10_000, 11_000], monthly: [300, 310] }, limits)).toEqual({ amount: [10_000, 15_000], monthly: [300, 400] });
+    expect(windowIn({ amount: [-1e6, 1e6], monthly: [0, 50_000] }, limits)).toEqual({ amount: [0, 500_000], monthly: [0, 10_000] });
+    expect(windowOf({ amount: [480_000, 520_000], monthly: [0, 50] }).window).toEqual({ amount: [460_000, 500_000], monthly: [0, 100] });
+  });
+
+  it("reads again the points a window before it read: a pan prices only the cells it does not share, and a pan back or the plan's window none", () => {
+    const priced = new Set<string>();
+    const counted: LeftAt = (a, m, h) => (priced.add(`${a}|${m}`), leftOf(linear)(a, m, h));
+    const cache = new SurfaceCache(8, 100e6);
+    const leftAt = () => cache.left("plan", counted);
+    const map = need(accountMap({ leftAt: leftAt(), order: Object.keys(linear), theta: THETA, plan, reach }), "the map");
+    // the points a window reads alone, with nothing kept
+    const alone = (w: MapWindow) => {
+      const seen = new Set<string>();
+      windowOf(w, (a, m, h) => (seen.add(`${a}|${m}`), leftOf(linear)(a, m, h)));
+      return seen.size;
+    };
+    const newIn = (w: MapWindow) => {
+      const before = priced.size;
+      windowOf(w, leftAt());
+      return priced.size - before;
+    };
+    // zoomed in twice around the plan, then moved a quarter of its width along today's amount: about three quarters of its cells are the
+    // ones before
+    const [ax, mx] = [map.max.amount / 4, map.max.monthly / 4];
+    const zoomed: MapWindow = { amount: [plan.amount - ax, plan.amount + ax], monthly: [plan.monthly - mx, plan.monthly + mx] };
+    newIn(zoomed);
+    const moved: MapWindow = { amount: [plan.amount - ax / 2, plan.amount + 1.5 * ax], monthly: zoomed.monthly };
+    expect(newIn(moved)).toBeLessThan(alone(moved) / 2);
+    expect(newIn(zoomed)).toBe(0);
+    expect(newIn({ amount: [0, map.max.amount], monthly: [0, map.max.monthly] })).toBe(0);
+  });
+});
+

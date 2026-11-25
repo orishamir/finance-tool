@@ -2,9 +2,11 @@
 // (lib/invest-run.ts): the view of one plan (`buildInvest`, about 830 ms on a phone slowed four times for the S&P 500), what each plan
 // number changed by the same share does to one pair's result (F-89, F-90: 4 lines of 21 runs), and which account leaves the most with one
 // fund at each mix of today's amount and monthly deposit (F-131, lib/account-map.ts: a few hundred points, most at two or three
-// accounts, about a second in node on the S&P 500, in a worker of its own; the prices it reads are kept between maps, lib/map-surface.ts). A request names its data by number, and carries it only the first time: the worker keeps the latest it was sent.
+// accounts, about a second in node on the S&P 500, in a worker of its own; the prices it reads are kept between maps, lib/map-surface.ts),
+// and the same areas over a window the person moved the map to, with none of the plan's line searches (`mapWindow`: over points priced
+// before, a few milliseconds). A request names its data by number, and carries it only the first time: the worker keeps the latest it was sent.
 import { changedByShare, sweep } from "@finance-tool/engine";
-import { accountMap, type AccountMap, type LeftAt } from "./account-map";
+import { accountMap, mapWindow, type AccountMap, type LeftAt, type MapWindow, type WindowMap } from "./account-map";
 import { p05Range } from "./engine";
 import { SurfaceCache } from "./map-surface";
 import { buildInvest, fundWayAt, pairCosts, pairLeft, providersOfInvest, tieShareOf, type IndexRef, type InvestView } from "./invest";
@@ -57,6 +59,11 @@ interface MapAsk {
   fund: string;
 }
 
+/** F-131 over a window the person moved the map of `MapAsk` to. */
+interface WindowAsk extends MapAsk {
+  window: MapWindow;
+}
+
 /** F-131's answer: the map, or why there is none (no account is ranked with the fund: its tax rests on an open rule, G-18, or none
  *  prices it). */
 export type MapAnswer = { kind: "map"; map: AccountMap } | { kind: "unranked"; why: "open-rule" | "unpriced" };
@@ -66,6 +73,8 @@ export interface Works {
   view: { ask: ViewAsk; answer: InvestView };
   changes: { ask: ChangesAsk; answer: PlanChanges | null };
   map: { ask: MapAsk; answer: MapAnswer };
+  /** Null where no account is ranked at the plan, where the plan's map is none either. */
+  window: { ask: WindowAsk; answer: WindowMap | null };
 }
 export type WorkKind = keyof Works;
 
@@ -114,17 +123,34 @@ function surfaceKey(bundle: IndicesBundle, a: MapAsk): string {
 /** The map's prices kept, for a test and a measure: how many surfaces, the points they hold, and the bytes estimated. */
 export const mapCache = () => surfaces.size();
 
-/** F-131: the map for the plan, its switches looked for as far as the plan's sliders reach (P-05), a tie to the house the headline takes. */
-function mapOf(bundle: IndicesBundle, a: MapAsk): MapAnswer {
+/** What a map of the request is worked out on: its prices read through the surface kept for it, the houses' order, θ, the plan's point, and
+ *  the reach of the plan's sliders (P-05). */
+function mapInputs(bundle: IndicesBundle, a: MapAsk) {
   // the reach is P-05's: with no slider range there is no axis to draw, and a map on 0 would be points at NaN, so the work fails, naming it
   const reach = (key: string) => {
     const max = p05Range(bundle.p05, "sliders", key)?.max;
     if (!(typeof max === "number" && max > 0)) throw new Error(`F-131: P-05 has no slider range for ${key}, so the account map has no reach`);
     return max;
   };
-  const order = providersOfInvest(bundle).map((s) => s.id);
-  const leftAt = surfaces.left(surfaceKey(bundle, a), leftWith(bundle, a.index, a.plan, a.fund));
-  const map = accountMap({ leftAt, order, theta: tieShareOf(bundle), plan: { amount: a.plan.amountNow, monthly: a.plan.monthly }, reach: { amount: reach("amount_now"), monthly: reach("monthly_deposit") } });
+  return {
+    leftAt: surfaces.left(surfaceKey(bundle, a), leftWith(bundle, a.index, a.plan, a.fund)),
+    order: providersOfInvest(bundle).map((s) => s.id),
+    theta: tieShareOf(bundle),
+    plan: { amount: a.plan.amountNow, monthly: a.plan.monthly },
+    reach: { amount: reach("amount_now"), monthly: reach("monthly_deposit") },
+  };
+}
+
+/** F-131 over a window the person moved the map to: the areas there, on the prices kept for the plan's map. */
+function windowOf(bundle: IndicesBundle, a: WindowAsk): WindowMap | null {
+  const got = mapWindow({ ...mapInputs(bundle, a), window: a.window });
+  surfaces.bound();
+  return got;
+}
+
+/** F-131: the map for the plan, its switches looked for as far as the plan's sliders reach (P-05), a tie to the house the headline takes. */
+function mapOf(bundle: IndicesBundle, a: MapAsk): MapAnswer {
+  const map = accountMap(mapInputs(bundle, a));
   surfaces.bound();
   if (map) return { kind: "map", map };
   const way = fundWayAt({ bundle, index: a.index, plan: a.plan, fundId: a.fund });
@@ -138,6 +164,7 @@ export const work: { [K in WorkKind]: (bundle: IndicesBundle, ask: Works[K]["ask
   view: (bundle, a) => buildInvest({ bundle, index: a.index, plan: a.plan, yourBroker: a.yourBroker }),
   changes: planChanges,
   map: mapOf,
+  window: windowOf,
 };
 
 /**

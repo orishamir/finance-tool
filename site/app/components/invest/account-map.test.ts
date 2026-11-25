@@ -8,7 +8,7 @@ const names: Record<string, string> = { psagot: "פסגות", ibi: "אי.בי.א
 /** A grid of four nodes, the k-th account first at each listed node (-1 where none is). */
 const gridOf = (first: number[], missing?: number[]): MapField => ({ cols: 2, rows: 2, first, second: first.map(() => -1), ahead: first.map(() => 1), ...(missing ? { missing } : {}) });
 const empty: MapField = { cols: 0, rows: 0, first: [], second: [], ahead: [] };
-const base: AccountMap = { max: { amount: 200_000, monthly: 4000 }, bottom: 40, plan: { amount: 10_000, monthly: 500, lead: { kind: "clear", first: "psagot" } }, accounts: ["psagot", "ibi", "one-zero"], floor: { amount: 5000, monthly: 100 }, asked: ["psagot", "ibi", "one-zero"], field: gridOf([0, 0, 1, 1]), edge: empty, switches: { amount: null, monthly: null }, stretches: { amount: null, monthly: null }, changes: { amount: { band: null, even: null }, monthly: { band: null, even: null } }, equal: { amount: null, monthly: null } };
+const base: AccountMap = { max: { amount: 200_000, monthly: 4000 }, limits: { amount: 500_000, monthly: 10_000, least: { amount: 5000, monthly: 100 } }, bottom: 40, plan: { amount: 10_000, monthly: 500, lead: { kind: "clear", first: "psagot" } }, accounts: ["psagot", "ibi", "one-zero"], floor: { amount: 5000, monthly: 100 }, asked: ["psagot", "ibi", "one-zero"], field: gridOf([0, 0, 1, 1]), edge: empty, switches: { amount: null, monthly: null }, stretches: { amount: null, monthly: null }, changes: { amount: { band: null, even: null }, monthly: { band: null, even: null } }, equal: { amount: null, monthly: null } };
 const up = (at: number, to = "ibi"): MapSwitch => ({ at, dir: "up", to });
 const said = (map: AccountMap, house = "psagot") => mapWords(map, house, (id) => names[id] ?? id);
 

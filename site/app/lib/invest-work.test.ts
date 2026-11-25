@@ -3,7 +3,7 @@ import { bundle, plan } from "../components/invest/render-fixtures";
 import { pickOfHeadline } from "../components/invest/pair";
 import { indexById, knownIndices, providersOfInvest, refOfCustom, tieShareOf } from "./invest";
 import { leftWith, mapCache, work } from "./invest-work";
-import { accountMap } from "./account-map";
+import { accountMap, mapWindow } from "./account-map";
 import { entered } from "./value";
 import { p05Range } from "./engine";
 
@@ -78,3 +78,34 @@ describe("the account map's prices are kept between maps (F-131, lib/map-surface
     expect(mapCache().points - kept).toBeLessThan(read.size / 2);
   });
 });
+
+describe("a window the person moved the map to is worked out on the map's prices (F-131, lib/map-surface.ts)", () => {
+  it("is the window worked out afresh, and a window zoomed in on the map, then moved, prices fewer than half the points it reads", () => {
+    const index = indexById(bundle, "index-sp500");
+    if (!index) throw new Error("missing: the S&P 500");
+    const at = (amount: number) => ({ ...plan, amountNow: amount, values: { ...plan.values, amount: entered(amount, "nis", bundle.today) } });
+    const fund = pickOfHeadline(work.view(bundle, { index, plan, yourBroker: null }))?.fund;
+    if (!fund) throw new Error("missing: the page's pair");
+    const answer = work.map(bundle, { index, plan: at(20_000), fund });
+    if (answer.kind !== "map") throw new Error("missing: the S&P 500's map");
+    const { max } = answer.map;
+    const slider = (key: string) => p05Range(bundle.p05, "sliders", key)?.max ?? NaN;
+    const ask = { order: providersOfInvest(bundle).map((s) => s.id), theta: tieShareOf(bundle), plan: { amount: 20_000, monthly: plan.monthly }, reach: { amount: slider("amount_now"), monthly: slider("monthly_deposit") } };
+    // the plan's own window prices nothing new
+    const kept = mapCache().points;
+    expect(work.window(bundle, { index, plan: at(20_000), fund, window: { amount: [0, max.amount], monthly: [0, max.monthly] } })?.field).toEqual(answer.map.field);
+    expect(mapCache().points).toBe(kept);
+    // the plan's window zoomed in twice about its middle, then moved a quarter of its width along today's amount
+    const half = { amount: [max.amount / 4, (3 * max.amount) / 4], monthly: [max.monthly / 4, (3 * max.monthly) / 4] } as const;
+    work.window(bundle, { index, plan: at(20_000), fund, window: half });
+    const before = mapCache().points;
+    const moved = { amount: [(3 * max.amount) / 8, (7 * max.amount) / 8], monthly: half.monthly } as const;
+    const got = work.window(bundle, { index, plan: at(20_000), fund, window: moved });
+    const read = new Set<string>();
+    const price = leftWith(bundle, index, at(20_000), fund);
+    const fresh = mapWindow({ ...ask, leftAt: (a, m, h) => (read.add(`${a}|${m}`), price(a, m, h)), window: moved });
+    expect(got).toEqual(fresh);
+    expect(mapCache().points - before).toBeLessThan(read.size / 2);
+  });
+});
+

@@ -7,6 +7,7 @@
 // the page shows beside it reads the same plan.
 import { startTransition, useEffect, useMemo, useState } from "react";
 import { KEPT_DATA, work, type FromWorker, type MapAnswer, type PlanChanges, type WorkKind, type Works } from "./invest-work";
+import type { WindowMap } from "./account-map";
 import type { InvestView } from "./invest";
 import type { IndicesBundle } from "./providers";
 
@@ -30,6 +31,7 @@ export const relink: { [K in WorkKind]: (asked: Asked<K>, answer: Works[K]["answ
   },
   changes: (asked, answer) => answer && { ...answer, plan: asked.ask.plan, shares: asked.ask.shares },
   map: (_asked, answer) => answer,
+  window: (_asked, answer) => answer,
 };
 
 const inPlace = <K extends WorkKind, A extends Asked<K>>(kind: K, asked: A): Got<K, A> => ({ asked, answer: work[kind](asked.bundle, asked.ask) });
@@ -144,9 +146,10 @@ export function makeClient(start: () => WorkerLike, warn: (why: string) => void)
 /**
  * Which worker each kind of work runs in. The map has one of its own: it takes about a second in node on the S&P 500 and several on a phone
  * slowed four times, a worker answers one request at a time and a running one cannot be stopped, so in a shared worker a moved slider's
- * view and sweep would wait behind a map no one looks at any more. The view and the sweep are short, and share the other.
+ * view and sweep would wait behind a map no one looks at any more. A window the person moved the map to is worked out in the map's worker,
+ * where the prices the map read are kept. The view and the sweep are short, and share the other.
  */
-const WORKER_OF = { view: "lists", changes: "lists", map: "map" } as const satisfies Record<WorkKind, string>;
+const WORKER_OF = { view: "lists", changes: "lists", map: "map", window: "map" } as const satisfies Record<WorkKind, string>;
 
 /** A client per worker of WORKER_OF, each started on its first request, each with its own data and its own restarts (`makeClient`). */
 export function clientsOf(start: () => WorkerLike, warn: (why: string) => void): (kind: WorkKind) => Client {
@@ -252,4 +255,13 @@ export function useAccountMapRun(asked: Asked<"map"> | null): { answer: MapAnswe
     if (!got) return "waiting";
     return { answer: got.answer, on: got.asked, held: got.asked !== asked };
   }, [got, asked]);
+}
+
+/**
+ * F-131 over a window the person moved the map to: the last window's areas that came, whichever window they are for (each says its own,
+ * and the map draws them where they lie while the next is worked out), so nothing waits on the page; null where no window is asked (the
+ * plan's own map shows) and until the first answer comes.
+ */
+export function useMapWindowRun(asked: Asked<"window"> | null): WindowMap | null {
+  return useWork("window", asked)?.answer ?? null;
 }
