@@ -25,7 +25,6 @@
   "distribution_policy": "accumulating",
   "tax_status": {
     "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null,
     "foreign_investment_fund": {
       "value": "USD",
       "unit": "text",

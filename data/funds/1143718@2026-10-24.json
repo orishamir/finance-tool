@@ -30,8 +30,7 @@
   "trading_currency_on_tase": "NIS",
   "distribution_policy": "accumulating",
   "tax_status": {
-    "il_fund_tax_track": "exempt",
-    "tase_foreign_fund_90pct_test": null
+    "il_fund_tax_track": "exempt"
   },
   "fees": {
     "fixed_management": {

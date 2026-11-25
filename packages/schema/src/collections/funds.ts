@@ -62,7 +62,6 @@ export const fundRecord = z.strictObject({
   distribution_policy: z.enum(["accumulating", "distributing"]).nullable(),
   tax_status: z.strictObject({
     il_fund_tax_track: z.enum(["exempt", "taxable"]).nullable(),
-    tase_foreign_fund_90pct_test: valueObject.nullable(),
     /**
      * TXS-14: whether the fund is a "קרן נאמנות להשקעות חוץ" under the 2003 regulations, as its own documents say. Unit `text`: the
      * principal currency's ISO 4217 code where its annual report or its manager's prospectus names one ("USD"); `false` where its own

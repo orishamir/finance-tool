@@ -106,7 +106,7 @@ const fund = {
   currency: "USD",
   trading_currency_on_tase: null,
   distribution_policy: "accumulating",
-  tax_status: { il_fund_tax_track: null, tase_foreign_fund_90pct_test: null },
+  tax_status: { il_fund_tax_track: null },
   fees: { fixed_management: { ...vo, value: 0.07, unit: "pct_per_year" }, trustee: null },
   dimensions: { "foreign-withholding-domicile": "covered" },
   prospectus: { url: "https://example.org/p.pdf", date: null },
@@ -250,7 +250,7 @@ describe("foreign-investment funds (data-schema §4 item 21)", () => {
     id: "5129275",
     domicile: "IL",
     currency: "NIS",
-    tax_status: { il_fund_tax_track: "exempt", tase_foreign_fund_90pct_test: null, ...(status === undefined ? {} : { foreign_investment_fund: fif(status) }) },
+    tax_status: { il_fund_tax_track: "exempt", ...(status === undefined ? {} : { foreign_investment_fund: fif(status) }) },
   });
   const files = (extra: Record<string, unknown>) => ({
     "instruments/exposures/index-sp500.json": { ...exposure, variants: ["fund:5129275", "fund:ie00b5bmr087"] },

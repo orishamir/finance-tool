@@ -332,7 +332,7 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     distribution_policy: f.payout,
     // TXS-14, F-04: whether a typed Israeli fund is a foreign-investment fund is not known (no document of it was read), so its status is
     // null and, on an index in a foreign currency, it is run under both readings of TXS OQ26, as a collected fund whose status is not known
-    tax_status: { il_fund_tax_track: foreign ? null : "exempt", tase_foreign_fund_90pct_test: null, ...(foreign ? {} : { foreign_investment_fund: notKnownStatus(f.added) }) },
+    tax_status: { il_fund_tax_track: foreign ? null : "exempt", ...(foreign ? {} : { foreign_investment_fund: notKnownStatus(f.added) }) },
     fees: { fixed_management: f.fixed, variable_management: foreign ? null : f.variable, trustee: foreign ? null : f.trustee, tracking_difference_12m: null, median_spread: null, fund_level_withholding_drag: null },
     dimensions: {},
     prospectus: { url: "local", date: null },

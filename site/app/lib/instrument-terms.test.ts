@@ -120,8 +120,7 @@ describe("buildInstrumentTerms: a Tel Aviv foreign fund's tax index (F-04, D84)"
     return "missing" in built ? built.missing : [];
   };
   it("asks for no 90% test value: a fund whose annex states no index is run on its currency's exchange rate and the CPI (TXF OQ10)", () => {
-    const noTest = { ...rec, tax_status: { ...rec.tax_status, tase_foreign_fund_90pct_test: null } };
-    expect(missingOf(noTest).some((m) => m.includes("90% test"))).toBe(false);
-    expect(missingOf({ ...noTest, tax_ruling: unstated }).some((m) => m.includes("90% test"))).toBe(false);
+    expect(missingOf(rec).some((m) => m.includes("90% test"))).toBe(false);
+    expect(missingOf({ ...rec, tax_ruling: unstated }).some((m) => m.includes("90% test"))).toBe(false);
   });
 });
