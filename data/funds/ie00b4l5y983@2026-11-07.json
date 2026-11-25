@@ -21,6 +21,18 @@
   "manager": "BlackRock (fund: iShares III plc)",
   "domicile": "IE",
   "legal_form": "UCITS ETF, share class USD Accumulating of iShares III plc, Ireland; 'Product Structure: Physical', 'Methodology: Optimised' (a sample of the index, not every share); launch 25-Sept-2009; benchmark 'MSCI World Index (Net)'. The factsheet has no Tel Aviv line and BlackRock's Israel brochure has no row for it.",
+  "legal_structure": {
+    "form": "company",
+    "source": {
+      "url": "https://www.ishares.com/gls-download/literature/prospectus/ishares-iii-plc-prospectus-en.pdf",
+      "title": "iShares III plc prospectus, 5 November 2026",
+      "publisher": "BlackRock (iShares III plc)",
+      "strength": "institution"
+    },
+    "page": 17,
+    "quote": "The Company is an umbrella open-ended investment company with variable capital and having segregated liability between its Funds. The Company is organised under the laws of Ireland as a public limited company pursuant to the Act.",
+    "checked": "2026-11-25"
+  },
   "exposure_id": "index-msci-world",
   "currency": "USD",
   "trading_currency_on_tase": null,

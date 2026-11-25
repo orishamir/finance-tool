@@ -18,6 +18,18 @@
   "manager": "Vanguard",
   "domicile": "US",
   "legal_form": "US-listed ETF; 'passively managed, full-replication strategy'; inception 2010-09-07; dividend schedule quarterly; benchmark 'S&P 500 Index'. The ISIN is not printed on this fact sheet. Legal form: an exchange-traded share class of Vanguard 500 Index Fund, a series of Vanguard Index Funds, a Delaware statutory trust. Source: Vanguard prospectus of 28.4.2026, https://fund-docs.vanguard.com/p968.pdf, PDF p.3 'an exchange-traded share class of Vanguard 500' and PDF p.9 'The Fund is a series of Vanguard Index Funds (the \"Trust\")'; the trust's form from Vanguard Index Funds' statement of additional information of 28.4.2014, https://www.sec.gov/Archives/edgar/data/0000036405/000093247114006076/indexfundssai040072014bl.htm, 'reorganized as a Delaware statutory trust in 1998' (an older edition, read through a fetch tool and not re-checked: sec.gov refuses a script, so it is not in the library; the current edition was not read). Checked 2026-11-12.",
+  "legal_structure": {
+    "form": "statutory-trust",
+    "source": {
+      "url": "https://advisors.vanguard.com/assets/corp/fund_communications/pdf_publish/us-products/prospectuses/sai040.pdf",
+      "title": "Vanguard Index Funds, statement of additional information, April 28, 2026 (with supplements to September 16, 2026)",
+      "publisher": "Vanguard (Vanguard Index Funds)",
+      "strength": "institution"
+    },
+    "page": 8,
+    "quote": "The Trust was organized as a Pennsylvania business trust in 1975 and was reorganized as a Delaware statutory trust in 1998.",
+    "checked": "2026-11-25"
+  },
   "exposure_id": "index-sp500",
   "currency": "USD",
   "trading_currency_on_tase": null,

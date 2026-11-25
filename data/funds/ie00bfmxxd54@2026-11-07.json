@@ -20,6 +20,18 @@
   "manager": "Vanguard Global Advisers, LLC (fund: Vanguard Funds plc)",
   "domicile": "IE",
   "legal_form": "UCITS ETF, share class USD Accumulating of Vanguard Funds plc, Ireland; investment method 'Physical'; inception 14 May 2019; benchmark 'S&P 500 Net Total Return'.",
+  "legal_structure": {
+    "form": "company",
+    "source": {
+      "url": "https://fund-docs.vanguard.com/etf-prospectus-en.pdf",
+      "title": "Vanguard Funds plc prospectus, 15 October 2026",
+      "publisher": "Vanguard (Vanguard Funds plc)",
+      "strength": "institution"
+    },
+    "page": 21,
+    "quote": "The Company is a public limited company incorporated in Ireland on 24 May 2011 under registration number 499158. The Company is established as an umbrella-type investment company with variable capital and with segregated liability between Funds",
+    "checked": "2026-11-25"
+  },
   "exposure_id": "index-sp500",
   "currency": "USD",
   "trading_currency_on_tase": null,

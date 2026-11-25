@@ -18,6 +18,18 @@
   "manager": "BlackRock (iShares)",
   "domicile": "US",
   "legal_form": "US-listed ETF; launch 03/26/2008; distribution frequency semi-annual; benchmark 'MSCI All Country World Index (Net)'. Replication and ISIN are not printed on this fact sheet. Legal form, inferred, not read in the fund's own words: a series of iShares Trust, a Delaware statutory trust. Inferred from iShares MSCI ACWI ETF summary prospectus of 28.11.2025, which names iShares Trust only as a party to the advisory agreement (read through a fetch tool, not in the library: sec.gov refuses a script), https://www.sec.gov/Archives/edgar/data/1100663/000119312525302112/d14758d497k.htm, 'between iShares Trust (the \"Trust\") and BlackRock Fund Advisors'; the trust's form from iShares Trust's statement of additional information for IVV dated 31.7.2026, https://www.blackrock.com/us/individual/literature/sai/sai-ishares-core-s-and-p-500-etf-3-31.pdf, PDF p.4 'The Trust was organized as a Delaware statutory trust'. Checked 2026-11-12.",
+  "legal_structure": {
+    "form": "statutory-trust",
+    "source": {
+      "url": "https://www.ishares.com/us/literature/sai/sai-ishares-trust-7-31-eo.pdf",
+      "title": "iShares Trust, statement of additional information, November 28, 2025 (with supplements to October 15, 2026), ACWI among its funds",
+      "publisher": "BlackRock (iShares Trust)",
+      "strength": "institution"
+    },
+    "page": 21,
+    "quote": "The Trust was organized as a Delaware statutory trust on December 16, 1999 and is authorized to have multiple series or portfolios. The Trust is an open-end management investment company registered with the SEC under the 1940 Act.",
+    "checked": "2026-11-25"
+  },
   "exposure_id": "index-msci-acwi",
   "currency": "USD",
   "trading_currency_on_tase": null,

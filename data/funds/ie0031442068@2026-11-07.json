@@ -20,6 +20,18 @@
   "manager": "BlackRock (fund: iShares plc)",
   "domicile": "IE",
   "legal_form": "UCITS ETF, share class USD Distributing of iShares plc, Ireland, paid quarterly; 'Product Structure: Physical', 'Methodology: Replicated'; launch 15-Mar-2002; benchmark 'S&P 500 Index'. The factsheet has no Tel Aviv line and BlackRock's Israel brochure has no row for it.",
+  "legal_structure": {
+    "form": "company",
+    "source": {
+      "url": "https://www.ishares.com/uk/individual/en/literature/prospectus/ishares-plc-prospectus-en.pdf",
+      "title": "iShares plc prospectus, 21 September 2026",
+      "publisher": "BlackRock (iShares plc)",
+      "strength": "institution"
+    },
+    "page": 16,
+    "quote": "The Company is an umbrella open-ended investment company with variable capital and having segregated liability between its Funds. The Company is organised under the laws of Ireland as a public limited company pursuant to the Act.",
+    "checked": "2026-11-25"
+  },
   "exposure_id": "index-sp500",
   "currency": "USD",
   "trading_currency_on_tase": null,
