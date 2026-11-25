@@ -730,7 +730,8 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
         book.cite("TXF-28");
       } else {
         // F-20 knows the foreign withholding of a US and an Irish fund only; the callers stop a distributing fund of any other
-        // domicile before the run (instruments.server.ts, fund-variants.ts), so reaching here is a caller's error.
+        // domicile before the run (the indices page's `fundRun` and `customFundGap`, the guides' `buildFund`), so reaching here is a
+        // caller's error.
         throw new Error("F-20: a distributing foreign fund needs its domicile (us or ireland) for the foreign withholding");
       }
       // A distribution at a foreign broker is not withheld in Israel: its advance is due by 30 April of the next year (TXF-21).

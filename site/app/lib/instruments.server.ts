@@ -356,12 +356,16 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     } else missing.push(`${wrapperId}: fund "${rec.id}" distributes, and its distribution yield (A-10) is not on the record`);
   }
   if (!isShekel(rec.currency)) missing.push(`${wrapperId}: fund "${rec.id}" is in ${rec.currency}; the exchange-rate change (A-03) and the start rate are not in P-05`);
-  if (kind === "tase-foreign-fund") {
-    // F-04, D84: the index the fund's own annex states under its ruling, and the record's currency, whose exchange rate is one reading of
-    // the index of a line whose annex states none (TXF OQ10) for a fund the site does not know, read as the indices page reads them (`fundOf`)
+  if (kind === "tase-foreign-fund" || kind === "foreign-fund") {
+    // read as the indices page reads them (`fundOf`): F-04, D84, the index a Tel Aviv line's own annex states under its ruling, and the
+    // record's currency, whose exchange rate is one reading of the index of a line whose annex states none (TXF OQ10) for a fund the site
+    // does not know; F-20, the domicile the foreign tax on a distribution is read by, and the legal form that settles its tax (D85)
     const built = fundOf(rec, kind).fund;
     if (built.statedIndex) fund.statedIndex = built.statedIndex;
     if (built.recordCurrency) fund.recordCurrency = built.recordCurrency;
+    if (built.domicile) fund.domicile = built.domicile;
+    else if (kind === "foreign-fund" || fund.distribution) missing.push(`${wrapperId}: fund "${rec.id}" is domiciled in ${rec.domicile}; the ledger knows US and Ireland`);
+    if (built.legalStructure) fund.legalStructure = built.legalStructure;
   }
   // TXS-14, F-04: the fund's status as a foreign-investment fund, read as the indices page reads it (`fundOf`): the principal currency its
   // documents name, run on as the site's reading of TXS OQ26 (D119), or, where its record says the status is not known, its index's foreign
@@ -381,11 +385,6 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
   }
   // TXF-11: a Tel Aviv line whose own annex reports the ruling is taxed at sale on it, rather than on the site's reading (D120)
   if (saleOnlyRulingOf(rec, kind)) fund.saleOnlyRuling = true;
-  if (kind === "foreign-fund") {
-    const d = rec.domicile.toUpperCase();
-    if (d === "US" || d === "IE") fund.domicile = d === "US" ? "us" : "ireland";
-    else missing.push(`${wrapperId}: fund "${rec.id}" is domiciled in ${rec.domicile}; the ledger knows US and Ireland`);
-  }
 
   // F-10 drag, percent to fraction. A renewable money-market fund's expected yield is already net of its fees (MF-37), so no drag.
   if (kind !== "money-market-renewable") {
