@@ -141,6 +141,8 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   if (dist) fund.distribution = dist;
   const domicile = rec.domicile === "US" ? "us" : rec.domicile === "IE" ? "ireland" : undefined;
   if (domicile) fund.domicile = domicile;
+  // F-20, D85: the form the fund's own document names, which settles whether its distribution is a dividend
+  if (rec.legal_structure) fund.legalStructure = rec.legal_structure.form;
   if (w8ben !== undefined) fund.w8ben = w8ben;
   // E1, F-109: the price of one unit, in the unit's currency, for per-share commissions and whole units.
   const price = rec.share_price;

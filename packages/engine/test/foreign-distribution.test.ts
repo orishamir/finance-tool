@@ -1,8 +1,10 @@
 // F-20, product D85: a foreign fund's distribution is taxed on the site's reading that it is a dividend, whatever the fund's legal form
 // (TXF open question 19): 25% in Israel (TXF-08), the foreign tax withheld from it credited up to that (TXF-17, TXF-18). The rates are
 // the rule base's: TXF-08's 25%, TXF-12's 25% for a US fund with a W-8BEN, TXF-13's 30% without one, Ireland's nothing (TXF-28).
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { runSecurities, securitiesBlockedBy, type Fund, type SecuritiesInput } from "../src/index.ts";
+import { fundRecord, legalStructures } from "@finance-tool/schema";
+import { fundOf, runSecurities, securitiesBlockedBy, type Fund, type SecuritiesInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -69,5 +71,27 @@ describe("a foreign fund's distribution, taxed on the site's reading that it is 
     const r = runSecurities(input(typed, 60), ctx);
     expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXF-08" });
     expect(r.detail.israeliTaxOnDistributions).toBe(0);
+  });
+
+  // a fund organised as a company pays a dividend, which TXF-08 taxes: settled, so no reading; any other form, or none known, is read
+  for (const form of [...legalStructures, undefined]) {
+    it(`a fund whose document names its form ${form ?? "nowhere"} ${form === "company" ? "cites TXF-08 with no label" : "carries the reading of TXF-08"}`, () => {
+      const f: Fund = { kind: "foreign-fund", drag: {}, domicile: "us", w8ben: true, distribution: { yield: yearly, perYear }, ...(form ? { legalStructure: form } : {}) };
+      const r = runSecurities(input(f, 60), ctx);
+      expect(r.rules.map((u) => u.id)).toContain("TXF-08");
+      expect(r.labels.some((l) => l.ruleId === "TXF-08")).toBe(form !== "company");
+      if (form !== "company") expect(r.labels).toContainEqual({ code: "reading", ruleId: "TXF-08" });
+      // the form changes the label, never the figure
+      expect(r.real).toBe(runSecurities(input({ ...f, legalStructure: "statutory-trust" }, 60), ctx).real);
+    });
+  }
+
+  it("a record's legal structure reaches the run: a company-form record runs with its form, one with none with none (fundOf)", () => {
+    const read = (f: string) => fundRecord.parse(JSON.parse(readFileSync(new URL(`../../../data/funds/${f}.json`, import.meta.url), "utf8")));
+    const company = read("ie00b5bmr087@2026-11-07");
+    expect(company.legal_structure?.form).toBe("company");
+    expect(fundOf(company, "foreign-fund").fund.legalStructure).toBe("company");
+    const { legal_structure: _form, ...unknown } = company;
+    expect(fundOf(unknown, "foreign-fund").fund.legalStructure).toBeUndefined();
   });
 });
