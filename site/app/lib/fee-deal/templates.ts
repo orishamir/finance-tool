@@ -35,6 +35,8 @@ export type TemplateFee = SlimTemplateFee | Omit<CasesFee, "id">;
 export type LeftWhy =
   /** A conversion priced in shekels a dollar beside a bound, a flat price or steps by size (F-13), which the deal's price per dollar does not hold. */
   | "per-dollar"
+  /** A conversion priced in shekels a dollar beside a spread the list limits: F-13 refuses the two together on the row, so the deal leaves the conversion out. */
+  | "per-dollar-spread"
   /** A line's sums in two currencies (its bounds, its flat price, its price per unit), or a bound of a held share not in shekels. */
   | "bound-currency"
   /** Two lines apply and the price list does not say which (the snapshot is ambiguous). */
@@ -265,12 +267,14 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       return { fees: [fee("trade", { ...p.spec, ...notes })], left: [] };
     }
     case "fx": {
-      // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee, whichever way the fee is priced
+      // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
       const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", figures: { rate: num(l.spread) } })] : [];
       // a spread recorded but not limited is not counted, and says so: on a conversion filled at nothing, so 0% does not read as free; on
       // one with a price, as a cost on top of it
       const unpriced = !!l.spread && !has(l.spread);
       if (l.rate.unit === "nis_per_usd") {
+        // F-13 refuses a priced spread beside a price per dollar on the row, so the deal never prices it either: the conversion is left out
+        if (spread.length) return { fees: [], left: ["per-dollar-spread"] };
         const p = perDollarSpec(l, own);
         return "left" in p ? { fees: [], left: [p.left] } : { fees: [fee("fx", p.spec), ...spread], left: unpriced ? ["spread-on-top"] : [] };
       }

@@ -674,6 +674,8 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     if (l.rate.unit === "nis_per_usd") {
       if (input.currency!.code !== "USD") throw new RecordInputError(`${l.line.id}: the price is per dollar but the instrument currency is ${input.currency!.code}`);
       if (typeof l.rate.value !== "number") throw new Unusable("line-without-value", `${l.line.id} rate has no value`);
+      // F-13 with F-116: a price per dollar takes no share off, as no deal can hold a discount on one
+      if (l.sized && (l.line.size_tiers ?? []).some((t) => t.on === "fee" && t.discount_pct)) throw new RecordInputError(`${l.line.id}: a share off a conversion priced per dollar is not modelled`);
       c.perCurrencyUnit = l.rate.value;
     } else c.rate = pct(l.rate, "pct_of_trade", `${l.line.id} rate`);
     const figures = [l.min, l.max, ...(l.sized ? stepsOf(l.line, "fee").sums : [])].filter(hasBound);

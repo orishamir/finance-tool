@@ -238,13 +238,15 @@ export function sizedOf(p: ConversionPrice): SizedConversion {
 }
 
 /**
- * F-13 with F-116 A conversion line with a share `off` taken off its price: its rate and its price per unit of currency, and its minimum where the
- * list says the discount is on the minimum too (`onMin`). The maximum stays, as F-116 reads the list's words.
+ * F-13 with F-116 A conversion line with a share `off` taken off its price: its rate, and its minimum where the list says the discount is on the
+ * minimum too (`onMin`). The maximum stays, as F-116 reads the list's words. A line priced per dollar takes no share off (the workbench refuses
+ * such a step, as no deal can hold a discount on a price per dollar), so one here is a broken invariant.
  */
 export function lineDiscounted(line: number | Commission, off: number, onMin: boolean): number | Commission {
   const keep = 1 - off;
   if (typeof line === "number") return line * keep;
-  return { ...line, rate: line.rate * keep, ...(line.perCurrencyUnit !== undefined ? { perCurrencyUnit: line.perCurrencyUnit * keep } : {}), ...(onMin && line.min !== undefined ? { min: line.min * keep } : {}) };
+  if (line.perCurrencyUnit !== undefined) throw new RangeError("F-13: a share off a conversion priced per dollar is refused where the line is read");
+  return { ...line, rate: line.rate * keep, ...(onMin && line.min !== undefined ? { min: line.min * keep } : {}) };
 }
 
 /** F-13: the step a deal worth `value` shekels falls in, its top included, or undefined above every top (the line). */

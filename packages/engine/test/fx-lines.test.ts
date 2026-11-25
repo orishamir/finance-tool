@@ -184,3 +184,15 @@ describe("a spread the price list limits (F-13, D56, D65)", () => {
     expect(build.strengths.filter((s) => s === "institution").length).toBeGreaterThanOrEqual(2);
   });
 });
+
+describe("F-13 with F-116: a price per dollar takes no share off", () => {
+  it("a step that takes a share off a conversion priced per dollar is refused, as no deal can hold one", () => {
+    // planted: Psagot's dollar line with a step half off up to USD 100, which no record prints
+    const line = psagot.lines.find((l: { id: string }) => l.id === "psagot-fx-conversion-usd");
+    const src = { url: "x", title: "x", checked: "2026-11-25", quote: "x" };
+    const off = { ...line, size_tiers: [{ up_to: { ...line.rate, value: 100, unit: "usd" }, on: "fee", discount_pct: { ...line.rate, value: 50, unit: "pct" }, source: src }, { up_to: null, on: "fee", exempt: true, source: src }] };
+    const snapshot = { ...psagot, lines: psagot.lines.map((l: { id: string }) => (l.id === line.id ? off : l)) };
+    const [row] = providerWorkbench(workbench({ providers: [{ snapshot, level: "list", band: EUROPE }] }), ctx).rows;
+    expect((row as NotComparableProvider).reason).toMatchObject({ code: "record-error", detail: expect.stringMatching(/share off a conversion priced per dollar/) });
+  });
+});
