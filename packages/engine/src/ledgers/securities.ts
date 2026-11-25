@@ -950,6 +950,12 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   tally.fee("fx", fx);
   if (dealOut) byFee(dealOut);
   const proceeds = converted - fx + waitingNis;
+  // F-09: the exit sale as a price per unit reads it, where the fund has a unit price in a foreign currency: its value at the bid, the
+  // month's exchange rate, one unit's price in shekels, so a page or test can count the units sold (`exitGross / exitUnitPrice`), and the
+  // shekels the sale's conversion converts
+  const exitUnitPrice = tariff.currency ? sharePrice(T) : undefined;
+  const exitDetail: Record<string, number> =
+    exitUnitPrice !== undefined ? { exitGross: gross, exitFxRate: fxRate(T), exitUnitPrice: exitUnitPrice * fxRate(T), exitConverted: converted } : {};
   // F-109: what whole units did to the monthly purchases, for the page's line on the row
   const unitDetail: Record<string, number> = unitBuy ? { wholeUnits: 1, unitPrice: unitBuy.price, monthlyBuys: wait.monthly, monthlyOrders: wait.placed, monthlySkipped: wait.skipped, cashLeft: waitingNis + heldAtExit } : {};
   // F-128: the months each of a deal's fees was charged within its steps, out of the run as data for the page's marks
@@ -1029,6 +1035,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
       israeliTaxOnDistributions: israeliDistTax,
       fundLevelTax,
       ...unitDetail,
+      ...exitDetail,
     },
     formulas,
   }));
