@@ -101,9 +101,10 @@ describe("the editable deal popup on the same house's list", () => {
 
 describe("the averages under a fee's name in a house's terms", () => {
   it("are the one column of what the plan buys, never every column of the fee's kind", () => {
-    const world = worldOn(knownIndices(bundle)[0]!);
-    const house = world.pick?.house;
-    if (!house) throw new Error("the first index's headline picks no house");
+    const index = knownIndices(bundle)[0];
+    const world = index ? worldOn(index) : null;
+    const house = world?.pick?.house;
+    if (!world || !house) throw new Error("the first index's headline picks no house");
     // the house's every column fixed: a trade's kind holds three, so every column would name each of them
     const on: FeesData = { ...data, houses: data.houses.map((h) => (h.id === house ? { ...h, everyColumn: FIXED_AVERAGES } : h)) };
     const text = shown(terms(world, house, on) ?? "");

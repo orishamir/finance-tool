@@ -309,12 +309,13 @@ describe("the templates", () => {
     const line = latestSnapshots().find((x) => x.id === "meitav-trade")?.lines.find((l) => l.base === "fx" && l.level === "list");
     expect(line).toBeDefined();
     const priceOf = (f: { stages?: { price: Price }[] } | undefined) => f?.stages?.[0]?.price;
-    const filled = lineFees({ ...line!, open_questions: ["BRK-OQ25"] }, "מיטב טרייד");
+    if (!line) return;
+    const filled = lineFees({ ...line, open_questions: ["BRK-OQ25"] }, "מיטב טרייד");
     const conversion = filled.fees.find((f) => f.kind === "fx");
     expect(priceOf(conversion)).toMatchObject({ form: "action", questions: ["BRK-OQ25"] });
     for (const f of filled.fees.filter((x) => x.kind !== "fx")) expect(priceOf(f)).not.toHaveProperty("questions");
     // a line with none carries none
-    const { open_questions: _q, ...plain } = line!;
+    const { open_questions: _q, ...plain } = line;
     expect(priceOf(lineFees(plain, "מיטב טרייד").fees.find((f) => f.kind === "fx"))).not.toHaveProperty("questions");
     // the open price says it after its figure
     const deal: FeeDeal = { ...newDeal("brokerage-account"), fees: [{ ...conversion, id: "q" } as Fee] };

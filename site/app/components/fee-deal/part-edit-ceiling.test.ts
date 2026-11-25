@@ -16,11 +16,12 @@ const BOX = "[box]";
 
 /** The words of the open part of fee `s`'s first price that `id` names, its figure's box drawn as BOX. */
 function openPart(deal: FeeDeal, id: string): string {
-  const fee = deal.fees[0]!;
-  const part = panel(readDealFor(deal, data.kinds, TODAY), fee.id)?.open.buy[0]?.parts.find((p) => p.id === id);
-  if (!part || !("stages" in fee) || !fee.stages) throw new Error(`no open ${id} part on ${fee.kind}`);
+  const fee = deal.fees[0];
+  const part = fee && panel(readDealFor(deal, data.kinds, TODAY), fee.id)?.open.buy[0]?.parts.find((p) => p.id === id);
+  const price = fee && "stages" in fee ? fee.stages?.[0]?.price : undefined;
+  if (!fee || !part || !price) throw new Error(`no open ${id} part on the deal's first fee`);
   // only what the part's words and box read: the box stands in as a marker
-  const at = { fee, side: "buy", k: 0, stages: fee.stages, price: fee.stages[0]!.price, deal, label: (f: string) => f, edit: () => undefined, onFee: () => undefined, box: () => BOX, chooser: null } as unknown as PartPlace;
+  const at = { fee, side: "buy", k: 0, stages: "stages" in fee ? fee.stages : [], price, deal, label: (f: string) => f, edit: () => undefined, onFee: () => undefined, box: () => BOX, chooser: null } as unknown as PartPlace;
   return renderToStaticMarkup(createElement(PartLine, { part, at, onRemove: undefined })).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 }
 
