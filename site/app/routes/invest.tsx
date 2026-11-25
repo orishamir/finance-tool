@@ -263,7 +263,7 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
 
   // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way
   const world = useMemo(() => (index && view && !held ? { wb, bundle, index, plan, view, customs } : null), [wb, bundle, index, plan, view, customs, held]);
-  // a fund priced nowhere (a distributing fund whose yield is not known, or a US fund, TXF-37) keeps its row with the reason, and is not a pair to show; nor is
+  // a fund priced nowhere (a distributing fund whose yield is not known, or one whose tax index is an open rule) keeps its row with the reason, and is not a pair to show; nor is
   // a pair the account no longer prices (a broker the person typed and changed, D44)
   const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x) && "valueN" in (f.byHouse[p.house] ?? {})) && view.providers.some((x) => x.id === p.house);
   // the pick lives in the address (`?house=` and `?fund=`), so a link opens the same pair: a house's page sends `house`

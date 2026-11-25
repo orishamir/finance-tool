@@ -601,8 +601,8 @@ function rowVenue(row: ComparedProvider, s: FeesSnapshot, cand: Cand): Venue | n
 const sameCand = (a: Cand, b: Cand) => a.venue === b.venue && JSON.stringify(a.band ?? null) === JSON.stringify(b.band ?? null);
 
 function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null): Map<string, Priced> {
-  // a fund whose tax rests on an open rule is priced nowhere after tax (F-04: a TASE foreign fund that distributes, or the kind with no fund
-  // record, TXF-04), so no house is ranked on a guess
+  // a fund whose tax index rests on an open rule is priced nowhere after tax (F-04: the kind with no fund record, TXF-04), so no house is
+  // ranked on a guess
   const open = blockedBy(ctx, spec);
   if (open) return new Map(snaps.map((s): [string, Priced] => [s.id, { kind: "fail", reason: { code: "rule-open", ...open } }]));
   return priceRows(ctx, spec, option, snaps, fundVenue);
