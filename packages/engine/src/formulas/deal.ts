@@ -1312,7 +1312,7 @@ export function stepStretch(tops: readonly number[], k: number): { from: number;
 }
 
 /**
- * F-116 A price with a discount: a share `d` (a fraction) off the price lowers its rate, its sum per unit, per action or per dollar to
+ * F-116 A price with a discount: a share `d` (a fraction) off the price lowers its rate, its sum per unit or per action to
  * `(1 − d)` of it, and, where the price list says the discount is on the minimum too (`alsoMin`), its minimum the same way. The maximum, the
  * percent maximum, the flat price for a small action and a third party's fee printed beside it are not the price the discount is off, and
  * stay as typed. Any other price is returned as it is.
@@ -1325,11 +1325,11 @@ export function discounted(price: DealPrice, d: number, alsoMin: boolean): DealP
     case "perUnit":
       return { ...price, amount: off(price.amount), ...(alsoMin && price.min !== undefined ? { min: off(price.min) } : {}) };
     case "perAction":
-    case "perDollar":
       return { ...price, amount: off(price.amount) };
     case "free":
     case "held":
     case "sum":
+    case "perDollar":
       return price;
     default:
       return assertNever(price);

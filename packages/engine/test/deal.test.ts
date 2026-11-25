@@ -404,7 +404,6 @@ describe("F-112 the sums a deal's prices mark", () => {
     expect(() => actionCost(deal, p, "trade", 3700, "sell", {})).toThrow(RangeError);
     expect(chargesNothing({ kind: "perDollar", amount: 0 })).toBe(true);
     expect(changeKind({ kind: "perDollar", amount: 0.015 }, { kind: "perDollar", amount: 0.02 })).toBe("rises");
-    expect(discounted({ kind: "perDollar", amount: 0.02 }, 0.25, false)).toEqual({ kind: "perDollar", amount: 0.015 });
     // it marks nothing: no bound decides it
     expect(dealMarks(deal, p)).toEqual([]);
   });
