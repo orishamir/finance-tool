@@ -4,7 +4,7 @@
 import { feeDeal as copy } from "../../copy";
 import type { SiteValue } from "../value";
 import { hasCases, isRange, namesPlaces, thingValues, type CasesFee, type Fee, type Price, type Priced, type Stage, type When } from "./model";
-import { amountWords, formatValue, joinLead } from "../format";
+import { amountWords, formatValue, gershayim, joinLead } from "../format";
 import { FIGURES, type Figure } from "./offers/figures";
 import { PARTS, partsSaid, type PartId, type PartKind } from "./offers/parts";
 import { SAID, signOfUnit, type PartContext, type PartWords } from "./part-words";
@@ -115,10 +115,10 @@ export function saidParts(c: PartContext, sale: boolean): SlimPart[] {
 
 // ---------------------------------------------------------------- a fee's cases
 
-/** The words of one value the site names, or the person's own words. */
+/** The words of one value the site names, or the person's own words or a price list's, with a Hebrew abbreviation's gershayim (אג״ח). */
 export function valueWords(kind: ByKind, v: string): string {
   const list = (copy.cases.values as Record<string, Record<string, string>>)[pickKind(kind)];
-  return list?.[v] ?? v;
+  return list?.[v] ?? gershayim(v);
 }
 
 /** How a case names its value for thing `t` (`WhenWords`). */
