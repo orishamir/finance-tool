@@ -100,8 +100,11 @@ export function yearlySurtax(book: RuleBook, profile: Profile, incomeInYear: num
 }
 
 /**
- * Runs the exit-tax step; if a rule it needs is open, the wrapper is listed with its pre-tax value and
- * the rule as the reason, not ranked (B3); `outcome` is that listing, with the open question where one stopped it.
+ * Runs the exit-tax step. If a rule it needs is open (a rule of strength open, an open question whose readings split, a method gap), the
+ * tax is not charged and `outcome` lists the run, not ranked, on that rule, with the question or the gap where one stopped it. The run
+ * then returns its value before the exit tax, and its notes on what came before the sale (G-07, G-20) stand. No ranking reads that value:
+ * the provider workbench does not compare such a run (F-118 is not built), the timeline stops on one an open question or a gap stopped
+ * (F-119), and the makam guide shows it beside a line saying the tax on a sale before redemption is not computed.
  */
 export function unlessBlocked<T>(step: () => T): { value: T; blocked?: undefined; outcome?: undefined } | { value?: undefined; blocked: string; outcome: Outcome } {
   try {
