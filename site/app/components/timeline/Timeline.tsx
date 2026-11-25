@@ -156,7 +156,7 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
       // the age and the income the year's tax rested on (the age-60 brackets, F-42; the surtax, F-43): listed only where they changed it
       const profile: Record<string, SiteValue> = {
         ...(p.profileUsed.includes("age") && state.age !== null ? { [investCopy.pair.ageInput]: enteredValue(state.age, "years", today, ci.age) } : {}),
-        ...(p.profileUsed.includes("income") ? { [investCopy.pair.incomeInput]: p05Value(bundle.p05, "annual_income") } : {}),
+        ...(p.profileUsed.includes("income") ? { [investCopy.pair.incomeInput]: inputValue("annual_income") } : {}),
       };
       const fees = computed(m === "real" ? p.feesReal : p.fees, "nis", "F-67", { ...yearInputs, ...feeInputs }, { today, rules: rules.filter((r) => r.id.startsWith("PF-") || r.id.startsWith("KGL-1")), flags: timeline.flags.filter((f) => f === "G-14" || f === "PF-13"), about: `${bundle.terms.tariff ? ci.about.feesTariff : ci.about.fees} ${p.year}` });
       // the real gain is the run's own, deposit by deposit (F-44: after each deposit's fee, at a falling CPI at its amount; F-09: lot by lot,
