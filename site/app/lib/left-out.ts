@@ -9,7 +9,7 @@ import { gershayim } from "./format";
 import { isPdfUrl, sourceHref, withoutCodes } from "./sources";
 
 /** A document, at the page a thing is on where it has pages. */
-export interface LeftOutDoc {
+interface LeftOutDoc {
   href: string;
   title: string;
 }
@@ -21,7 +21,7 @@ export interface LeftOutSentence {
 }
 
 /** A thing that can change what some reader pays: its short name, and what the documents and the record say of it. */
-export interface LeftOutChange {
+interface LeftOutChange {
   head: string;
   lines: LeftOutSentence[];
 }

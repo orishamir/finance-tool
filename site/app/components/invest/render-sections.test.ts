@@ -234,9 +234,9 @@ describe("a bank's standing-order price the figure leaves out is said first in i
       expect(terms?.changes[0]?.lines.some((l) => l.text === reason), id).toBe(true);
       // the other price counts among what can change what some reader pays: the receipt's line says so, and the list carries the icon
       // that opens the terms
-      const short = view.providers.find((p) => p.id === id)!.short;
+      const short = view.providers.find((p) => p.id === id)?.short ?? id;
       expect(html(inHost(createElement(PairLists, { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null }))), id).toContain(`aria-label="${invest.dealAccount.terms.title(short)}"`);
-      expect(shown(html(inHost(createElement(PairReceipt, { view, bundle, plan, pick, chosen: true, layout: "ticket" })))), id).toContain(`${leftOut.lead} ${leftOut.canChange(terms!.changes.length)}`);
+      expect(shown(html(inHost(createElement(PairReceipt, { view, bundle, plan, pick, chosen: true, layout: "ticket" })))), id).toContain(`${leftOut.lead} ${leftOut.canChange(terms?.changes.length ?? 0)}`);
     }
     // an account with no other price says nothing of one
     const psagot = termsLeftOut(bundle.snapshots.find((s) => s.id === "psagot"), tracking.byHouse.psagot);

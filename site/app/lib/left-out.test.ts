@@ -10,6 +10,13 @@ import { SheetContent } from "../components/provenance-sheets";
 import { LeftOutFold } from "../components/kit";
 import { leftOutOf, sheetOf } from "./left-out";
 
+/** The view of a record that lists something left out. */
+const viewOf = (snap: Parameters<typeof leftOutOf>[0]) => {
+  const v = leftOutOf(snap);
+  if (!v) throw new Error("the record lists nothing left out");
+  return v;
+};
+
 const pdf = { url: "https://example.org/tariff.pdf", title: "תעריפון לדוגמה (BRK-12)" };
 const web = { url: "https://example.org/pricing", title: "Pricing page" };
 const tiered = { what: "מסלול Tiered", page: 7, why: "ENGLISH-WORKING-NOTE", why_he: "מי שקונה הרבה משלם לפי מדרגות. האתר מחשב לפי המסלול הקבוע.", could_change_price: true };
@@ -24,7 +31,7 @@ describe("what a record leaves out", () => {
     expect(leftOutOf(undefined)).toBeNull();
   });
   it("warns only of what can change a price and has a reason in Hebrew; the rest are listed by name under a second heading", () => {
-    const view = leftOutOf({ tariff: pdf, left_out: [tiered, lite, quiet, noReason] })!;
+    const view = viewOf({ tariff: pdf, left_out: [tiered, lite, quiet, noReason] });
     expect(view.changes.length).toBe(1);
     expect(view.others.length).toBe(3);
     const v = sheetOf(view);
@@ -39,7 +46,7 @@ describe("what a record leaves out", () => {
     expect(JSON.stringify(view)).not.toContain("ENGLISH-WORKING-NOTE");
   });
   it("with nothing that can change a price, lists every name with no second heading, and says so in its lead", () => {
-    const view = leftOutOf({ tariff: pdf, left_out: [lite, quiet] })!;
+    const view = viewOf({ tariff: pdf, left_out: [lite, quiet] });
     expect(view.changes.length).toBe(0);
     const v = sheetOf(view);
     expect(v.lead).toBe(c.sheetLeadOther);
@@ -48,7 +55,7 @@ describe("what a record leaves out", () => {
   it("an entry that names its own document links that document at its page; one that names none links the price list", () => {
     const part1 = { url: "https://example.org/part-1.pdf", title: "תעריפון, חלק 1 (BRK-66)" };
     const exempt = { what: "חשבון צל", page: 1, why: "ENGLISH-WORKING-NOTE-5", why_he: "חשבון כזה פטור.", could_change_price: true, source: part1 };
-    const docs = (left_out: (typeof exempt | typeof tiered)[]) => (sheetOf(leftOutOf({ tariff: pdf, left_out })!).parts).map((p) => p.doc);
+    const docs = (left_out: (typeof exempt | typeof tiered)[]) => (sheetOf(viewOf({ tariff: pdf, left_out })).parts).map((p) => p.doc);
     expect(docs([exempt, tiered])).toEqual([
       { href: "https://example.org/part-1.pdf#page=1", title: c.page("תעריפון, חלק 1", 1) },
       { href: "https://example.org/tariff.pdf#page=7", title: c.page("תעריפון לדוגמה", 7) },
@@ -57,18 +64,18 @@ describe("what a record leaves out", () => {
     expect(docs([{ ...exempt, page: 2, source: web }])).toEqual([{ href: "https://example.org/pricing", title: "Pricing page" }]);
   });
   it("names each thing by its short name where the record gives one, both what can change a price and the others", () => {
-    const v = leftOutOf({ tariff: pdf, left_out: [{ ...tiered, name_he: "תמחור לפי מדרגות" }, { ...lite, name_he: "מסלול לני\"ע בחו\"ל" }, quiet] })!;
+    const v = viewOf({ tariff: pdf, left_out: [{ ...tiered, name_he: "תמחור לפי מדרגות" }, { ...lite, name_he: "מסלול לני\"ע בחו\"ל" }, quiet] });
     expect(v.changes.map((x) => x.head)).toEqual(["תמחור לפי מדרגות"]);
     expect(v.others).toEqual(["מסלול לני״ע בחו״ל", "נתוני שוק בארה״ב"]);
   });
   it("a web page's price list opens at its address, with no page in its name", () => {
-    const v = sheetOf(leftOutOf({ tariff: web, left_out: [tiered] })!);
+    const v = sheetOf(viewOf({ tariff: web, left_out: [tiered] }));
     expect(v.parts[0]!.doc).toEqual({ href: "https://example.org/pricing", title: "Pricing page" });
   });
 });
 
 describe("the sheet the line opens", () => {
-  const v = sheetOf(leftOutOf({ tariff: pdf, left_out: [tiered, lite, quiet] })!);
+  const v = sheetOf(viewOf({ tariff: pdf, left_out: [tiered, lite, quiet] }));
   const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-12" };
   const out = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(SheetContent, { item: { kind: "terms", ids: [], name: c.title("בית"), lead: v.lead, parts: v.parts }, data, headId: "h", descId: "d" }) })));
   it("shows each warning's name, then its reason, then the price list at its page; then the second heading over a list of names", () => {
@@ -83,7 +90,7 @@ describe("the sheet the line opens", () => {
 });
 
 describe("the fold in a house's terms", () => {
-  const view = leftOutOf({ tariff: pdf, left_out: [tiered, lite, quiet] })!;
+  const view = viewOf({ tariff: pdf, left_out: [tiered, lite, quiet] });
   const draw = (v: typeof view, open: boolean) => renderToStaticMarkup(createElement(LeftOutFold, { view: v, defaultOpen: open }));
   const text = (html: string) => html.replace(/<[^>]+>/g, "");
   it("folded, is one line saying how many things can change the price, or, where none can, how many there are", () => {

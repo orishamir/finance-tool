@@ -130,7 +130,8 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
   /** A deal was deleted from the popup: its account id on the page, which the page's address may still name. */
   onDeleted: (providerId: string) => void;
   left: readonly MoveLeft[];
-  children: ReactNode;
+  /** The page the popup's openers stand on. */
+  children?: ReactNode;
 }) {
   const [target, setTarget] = useState<DealTarget | null>(null);
   // the saved deal the popup opened on, held while it is open: one deleted in another tab stays on screen, and the popup says so

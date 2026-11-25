@@ -1301,7 +1301,7 @@ function Fields({ today }: { today: string }) {
         <State label="the fold in a house's terms: folded, in the caution colour where something can change the price; opened, each such thing with its reason and document, then the rest folded again" wide>
           <div className="flex max-w-3xl flex-col gap-3">
             <LeftOutFold view={leftOutSample} />
-            <LeftOutFold view={{ changes: [...leftOutSample.changes, { ...leftOutSample.changes[0]!, head: g.sample.leftOut.what2 }], others: leftOutSample.others }} defaultOpen />
+            <LeftOutFold view={{ changes: [...leftOutSample.changes, ...leftOutSample.changes.map((ch) => ({ ...ch, head: g.sample.leftOut.what2 }))], others: leftOutSample.others }} defaultOpen />
             <LeftOutFold view={{ changes: [], others: leftOutSample.others }} defaultOpen />
           </div>
         </State>

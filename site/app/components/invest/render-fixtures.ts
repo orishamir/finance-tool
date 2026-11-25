@@ -51,7 +51,7 @@ export function StairsFor({ view, bundle: b, plan: p, startHouse, startFund, exa
  * icon and the receipt's line that opens a house's terms are drawn only there.
  */
 export const inHost = (el: React.ReactElement) =>
-  createElement(DealAccountsHost, { data: null, onWant: () => undefined, failed: false, saved: [], writable: false, today: t, world: null, opening: null, onOpened: () => undefined, onOpenChange: () => undefined, onDeleted: () => undefined, left: [], children: el });
+  createElement(DealAccountsHost, { data: null, onWant: () => undefined, failed: false, saved: [], writable: false, today: t, world: null, opening: null, onOpened: () => undefined, onOpenChange: () => undefined, onDeleted: () => undefined, left: [] }, el);
 
 /** The two linked lists as the page shows them, with the heading block above them: the page's own pair unless `chosen`. */
 export function lists(view: InvestView, b: IndicesBundle, p: WorkbenchInputs, pick: Pick, more: Partial<ListsProps> = {}) {

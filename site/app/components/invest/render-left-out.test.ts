@@ -47,12 +47,11 @@ describe("the indices page", () => {
       // the account list's rows (the fund list's rows carry their own keys)
       const rows = [...new Set([...out.matchAll(/data-pick-key="([^"]+)"/g)].map((m) => m[1]!))].filter((k) => view.providers.some((p) => p.id === k));
       unranked += rows.filter((k) => !ranked.has(k)).length;
-      for (const k of rows) {
-        const p = view.providers.find((x) => x.id === k)!;
-        const row = out.slice(out.indexOf(`data-pick-key="${k}"`));
+      for (const p of view.providers.filter((x) => rows.includes(x.id))) {
+        const row = out.slice(out.indexOf(`data-pick-key="${p.id}"`));
         const own = row.slice(0, row.indexOf("data-pick-key=", 10));
-        const priceList = !p.custom && b.snapshots.some((s) => s.id === k);
-        expect(own.includes(termsLabel(p.short)), `${ref.id} ${k}`).toBe(ranked.has(k) && priceList);
+        const priceList = !p.custom && b.snapshots.some((s) => s.id === p.id);
+        expect(own.includes(termsLabel(p.short)), `${ref.id} ${p.id}`).toBe(ranked.has(p.id) && priceList);
       }
       expect(shown(out), ref.id).not.toContain(c.lead);
     }
@@ -63,14 +62,14 @@ describe("the indices page", () => {
     const b = marked("leumi");
     const view = buildInvest({ bundle: b, index, plan });
     const receipt = (bb: IndicesBundle, v: InvestView) => html(inHost(createElement(PairReceipt, { view: v, bundle: bb, plan, pick: { house: "leumi", fund }, chosen: true, layout: "ticket" })));
-    const n = termsLeftOut(b.snapshots.find((s) => s.id === "leumi"), allFunds(view).find((f) => f.rec.id === fund)?.byHouse.leumi)!.changes.length;
+    const n = termsLeftOut(b.snapshots.find((s) => s.id === "leumi"), allFunds(view).find((f) => f.rec.id === fund)?.byHouse.leumi)?.changes.length ?? 0;
     expect(n).toBeGreaterThan(0);
     const out = receipt(b, view);
     expect(shown(out)).toContain(`${c.lead} ${c.canChange(n)}`);
     expect(out).toMatch(new RegExp(`<button[^>]*>${c.canChange(n)}</button>`));
     expect(shown(out).indexOf(invest.chosen.collected)).toBeLessThan(shown(out).indexOf(c.lead));
     // a house whose terms say nothing can change its price: no line
-    const quiet: IndicesBundle = { ...bundle, snapshots: bundle.snapshots.map((s) => (s.id === "leumi" ? { ...s, left_out: [], lines: s.lines.map(({ not_ranked: _, ...l }) => l) } : s)) };
+    const quiet: IndicesBundle = { ...bundle, snapshots: bundle.snapshots.map((s) => (s.id === "leumi" ? { ...s, left_out: [], lines: s.lines.map((l) => ({ ...l, not_ranked: undefined })) } : s)) };
     expect(shown(receipt(quiet, buildInvest({ bundle: quiet, index, plan })))).not.toContain(c.lead);
   });
 });
