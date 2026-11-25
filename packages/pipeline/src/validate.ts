@@ -864,6 +864,8 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
   const out: string[] = [];
   if (!snap.price_for_he) out.push("price_for_he: a bank's or broker's record says who pays its prices");
   if (!snap.left_out) out.push("left_out: a bank's or broker's record lists what its documents hold that it does not use; empty means nothing was found");
+  // the pages list each thing under its short name (D106): a latest record names every one
+  for (const [i, e] of (snap.left_out ?? []).entries()) if (!(e as { name_he?: unknown }).name_he) out.push(`left_out[${i}]: a thing the price leaves out has a short name for the reader (name_he)`);
   // D64: a bank's row counts the monthly minimum of a current account there (F-102); an investment house has none, and a house that is
   // part of another is priced on that house's row
   const ca = snap.current_account;

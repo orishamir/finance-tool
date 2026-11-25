@@ -44,7 +44,7 @@ export interface LeftOutPart {
 type Record_ = Pick<FeesSnapshot, "left_out"> & { tariff: Pick<FeesSnapshot["tariff"], "url" | "title"> };
 type Entry = NonNullable<FeesSnapshot["left_out"]>[number];
 
-/** An entry's short name for the reader. `what` stands in for it until every house's latest record carries name_he. */
+/** An entry's short name for the reader: every latest bank's or broker's record gives one (the data check); an older record, never shown, may not. */
 const nameOf = (e: Entry): string => gershayim(e.name_he ?? e.what);
 
 /** What the record leaves out, or null where it lists nothing. */

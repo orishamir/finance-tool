@@ -51,6 +51,12 @@ describe("what a ranked price rests on", () => {
     expect(checkPricePremises({ ...named, current_account: { monthly_minimum: { value: 5.3, unit: "nis_per_month", source: {} } } })[0]).toMatch(/source\.quote/);
     expect(checkPricePremises({ ...named, current_account: { monthly_minimum: { value: 0, unit: "nis_per_month", source: {} } } })).toEqual([]);
   });
+  it("asks each thing a price leaves out for its short name (D106)", () => {
+    const named = { ...base, availability: [entry("מניות, אגרות חוב וקרנות סל")] };
+    const thing = { what: "עמלת קסטודיאן", why: "x", why_he: "x", could_change_price: true };
+    expect(checkPricePremises({ ...named, left_out: [{ ...thing, name_he: "עמלת קסטודיאן" }] })).toEqual([]);
+    expect(checkPricePremises({ ...named, left_out: [thing] })[0]).toMatch(/^left_out\[0\]: .*name_he/);
+  });
   it("records a group's free current account only where its quote names the minimum (lens review M2, D56)", () => {
     const named = { ...base, availability: [entry("מניות, אגרות חוב וקרנות סל")] };
     const group = (quote: string) => ({ ...named, groups: { state: "found", entries: [{ name_he: "סטודנטים", ends_printed: true, ends_he: "למשך 48 חודשים", prices: [], current_account: { price_he: "פטור", exempt: true, for_months: 48, source: { quote } } }] } });
