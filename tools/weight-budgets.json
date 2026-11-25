@@ -14,7 +14,7 @@
     "deposits": { "script": 345, "data": 61 },
     "deal": { "script": 556, "data": 137 },
     "transfer": { "script": 319, "data": 13 },
-    "indices": { "script": 614, "data": 1060 },
+    "indices": { "script": 634, "data": 1060 },
     "rules": { "script": 364, "data": 107 },
     "rules shelf": { "script": 311, "data": 134 },
     "documents": { "script": 342, "data": 84 },
