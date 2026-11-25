@@ -1,6 +1,6 @@
 // READING_RULE_IDS lists every rule the engine labels `reading` (the goal comparison holds room for the reading mark on a row that cites one
 // of them, so the list must not fall behind the engine): those a ledger labels by name, and the rule of every open reading whose split takes
-// the cautious reading, which the resolver labels whichever reading a run is under.
+// the cautious reading, which a run is labelled with where its readings split.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";

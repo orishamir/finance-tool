@@ -157,7 +157,8 @@ describe("foreign funds on TASE (TXF-04)", () => {
         const input = fund({ goal, market, fund: unstated });
         expect(securitiesBlockedBy(unstated, ctx)).toBeNull();
         const r = runSecurities(input, ctx);
-        const byReading = [runSecurities(input, under("fx")), runSecurities(input, under("cpi"))];
+        const [onFx, onCpi] = [runSecurities(input, under("fx")), runSecurities(input, under("cpi"))];
+        const byReading = [onFx, onCpi];
         const low = byReading.reduce((a, b) => (b.real < a.real ? b : a));
         const { flags: _f, labels, ...rest } = r;
         const { flags: _g, labels: lowLabels, ...lowRest } = low;
@@ -165,7 +166,7 @@ describe("foreign funds on TASE (TXF-04)", () => {
         // question's flag instead, as any open reading whose readings agree
         expect(rest).toEqual(lowRest);
         for (const x of byReading) expect(r.real).toBeLessThanOrEqual(x.real);
-        const split = !sameResult(byReading[0]!, byReading[1]!, RUN_RESULT_FIELDS);
+        const split = !sameResult(onFx, onCpi, RUN_RESULT_FIELDS);
         expect(labels).toEqual(split ? [...lowLabels, reading] : lowLabels);
         expect(codes(r).includes("TXF-OQ10")).toBe(!split);
         // the rule is open and gives the run nothing: the figures rest on the reading, not on a rule read

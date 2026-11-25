@@ -164,8 +164,9 @@ const compared = (role: FieldRole | undefined): boolean => role === undefined ||
  */
 function cautiousOf<R extends { labels?: Label[] }>(results: readonly R[], fields: ResultFields<R>, ruleId: string): R {
   const values = Object.entries(fields as Readonly<Record<string, FieldRole>>).filter(([, role]) => role === "value");
-  if (values.length !== 1) throw new Error(`a cautious reading reads the one value its result type declares; this one declares ${values.length}`);
-  const key = values[0]![0];
+  const [declared, ...more] = values;
+  if (!declared || more.length > 0) throw new Error(`a cautious reading reads the one value its result type declares; this one declares ${values.length}`);
+  const key = declared[0];
   const valueOf = (r: R): number => {
     const v = (r as Record<string, unknown>)[key];
     if (typeof v !== "number") throw new Error(`a cautious reading reads ${key}, which a result gave as ${typeof v}`);

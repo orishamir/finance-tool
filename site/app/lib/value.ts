@@ -155,7 +155,7 @@ export function entered(value: number, unit: ValueObject["unit"], today: string,
  * The doubt a figure carries for the run labels it rests on (method §13, `SplitPolicy` "cautious"): the engine's `reading` label on an open
  * rule whose readings the run took the cautious one of, with the rule beside it; none for any other label.
  */
-export function readingDoubtOf(labels: readonly { code: string; ruleId: string }[] | undefined): Pick<SiteValue, "doubt" | "doubtRules"> {
+function readingDoubtOf(labels: readonly { code: string; ruleId: string }[] | undefined): Pick<SiteValue, "doubt" | "doubtRules"> {
   const l = labels?.find((x) => x.code === "reading" && x.ruleId in numbers.readingDoubt);
   return l ? { doubt: numbers.readingDoubt[l.ruleId], doubtRules: [l.ruleId] } : {};
 }

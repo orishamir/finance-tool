@@ -79,8 +79,9 @@ describe("both readings of TXS OQ26 (method §13)", () => {
   it("where they give different results, the reading that leaves less after the exit tax stands, whole, labelled the site's reading of TXS-14", () => {
     for (const principalFxChange of [0, 0.05, -0.02]) {
       const split = input({ principalFxChange });
-      const byReading = [runSecurities(split, under("principal")), runSecurities(split, under("cpi"))];
-      expect(byReading[0]!.taxAtExit).not.toBeCloseTo(byReading[1]!.taxAtExit, 0);
+      const [onPrincipal, onCpi] = [runSecurities(split, under("principal")), runSecurities(split, under("cpi"))];
+      const byReading = [onPrincipal, onCpi];
+      expect(onPrincipal.taxAtExit).not.toBeCloseTo(onCpi.taxAtExit, 0);
       const low = byReading.reduce((a, b) => (b.real < a.real ? b : a));
       const r = runSecurities(split, ctx);
       const { labels, ...rest } = r;
