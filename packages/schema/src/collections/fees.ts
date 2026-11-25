@@ -422,12 +422,14 @@ export const feesSnapshot = z.strictObject({
    * the same reason in plain Hebrew for the reader, and `could_change_price` says whether leaving it out can make what some reader pays
    * differ from the price shown (another plan, a tier, a minimum by activity): a page tells the reader of those beside the house's price.
    * `source` is the document the entry quotes where that is not the tariff (another part of the price list, an account-type page), and
-   * `page` is then its page; with no `source`, the entry quotes the tariff, and a page links it there.
+   * `page` is then its page; with no `source`, the entry quotes the tariff, and a page links it there. `name_he` is the entry's short name
+   * for the reader (a few words, no figure), the head it is listed under.
    */
   left_out: z
     .array(
       z.strictObject({
         what: z.string().min(1),
+        name_he: z.string().min(1).optional(),
         page: z.number().int().positive().optional(),
         source: z.strictObject({ url: z.string().min(1), title: z.string().min(1) }).optional(),
         why: z.string().min(1),
