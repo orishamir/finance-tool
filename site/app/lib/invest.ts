@@ -1595,6 +1595,11 @@ function pairRun(a: PairValueArgs) {
   return row ? { ctx, rec: pair.rec, spec, row } : null;
 }
 
+/** One pair's run as the page prices it at a dollar change `fxChange` (F-91's `B(u, p)`): its result and the price list it ran on. */
+export function pairRow(a: PairValueArgs): ComparedProvider | null {
+  return pairRun(a)?.row ?? null;
+}
+
 /** One pair's real value left (F-65) at a dollar change `fxChange` (percent a year, A-03), A-07 replaced by `tracking` when given. */
 export function pairValue(a: PairValueArgs): number | null {
   return pairRun(a)?.row.real ?? null;
