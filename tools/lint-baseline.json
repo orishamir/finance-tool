@@ -521,7 +521,7 @@
    "site/app/components/provenance.tsx": 10,
    "site/app/components/question-chip.test.ts": 1,
    "site/app/components/shell.tsx": 2,
-   "site/app/components/timeline/Timeline.tsx": 20,
+   "site/app/components/timeline/Timeline.tsx": 19,
    "site/app/components/tracks/browser.tsx": 3,
    "site/app/components/tracks/company-browser.tsx": 1,
    "site/app/components/tracks/list.test.ts": 4,
