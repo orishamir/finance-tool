@@ -1209,8 +1209,9 @@ async function checkPage(page, path, width) {
   }
   if (width === SHEET_WIDTH) {
     const n = await page.evaluate((max) => {
-      // the first figures that carry a doubt or a lock, in page order
-      const figs = [...document.querySelectorAll("main button.num-doubt, main button.num:has(svg.text-blocked)")].filter((b) => b.checkVisibility());
+      // the first figures that carry a doubt or a lock, in page order, of those a reader can see: a folded row is laid out unseen
+      // (visibility: hidden) so its height can be measured, and a figure in it cannot be tapped
+      const figs = [...document.querySelectorAll("main button.num-doubt, main button.num:has(svg.text-blocked)")].filter((b) => b.checkVisibility({ visibilityProperty: true }));
       figs.slice(0, max).forEach((b, i) => b.setAttribute("data-layout-check", String(i)));
       return Math.min(figs.length, max);
     }, SHEET_FIGURES);
