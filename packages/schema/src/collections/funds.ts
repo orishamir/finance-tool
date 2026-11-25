@@ -71,6 +71,15 @@ const distributionTrailing = z.strictObject({
   payments: z.array(distributionPayment).min(1),
 });
 
+/**
+ * data-schema §3.5 `legal_structure`: the legal forms a foreign fund's own document names, in its own category. `company`: a company (a
+ * public limited company, an investment company incorporated with limited liability); `icav`: an Irish collective asset-management vehicle;
+ * `statutory-trust`: a US statutory trust; `unit-trust`; `common-contractual-fund`. Only `company` settles how Israel taxes the fund's
+ * distribution (TXF-08, F-20, product D85); any other form, or none recorded, is read by the site.
+ */
+export const legalStructures = ["company", "icav", "statutory-trust", "unit-trust", "common-contractual-fund"] as const;
+export type LegalStructure = (typeof legalStructures)[number];
+
 export const fundRecord = z.strictObject({
   /** Lowercase ASCII, digits and hyphens, e.g. "ie00b5bmr087"; an exposure's variants name it as `fund:<id>`. */
   id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "id is lowercase ASCII, digits and single hyphens"),
@@ -84,6 +93,14 @@ export const fundRecord = z.strictObject({
   manager: z.string().min(1),
   domicile: z.string().min(1),
   legal_form: z.string().min(1),
+  /**
+   * data-schema §3.5: the legal form a foreign fund's own document names, in the document's own category (`legalStructures`): `source` the
+   * document, `page` its PDF page, `quote` its words that name the form, `checked` the date they were read. Left out where the documents the
+   * record cites do not say; an Israeli fund's record leaves it out.
+   */
+  legal_structure: z
+    .strictObject({ form: z.enum(legalStructures), source, page: z.number().int().positive(), quote: z.string().min(1), checked: isoDate })
+    .optional(),
   exposure_id: z.string().min(1),
   currency: z.string().min(1),
   trading_currency_on_tase: z.string().min(1).nullable(),

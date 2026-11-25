@@ -278,6 +278,29 @@ describe("foreign-investment funds (data-schema §4 item 21)", () => {
   });
 });
 
+describe("a foreign fund's legal structure (data-schema §3.5 legal_structure, F-20)", () => {
+  const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
+  const structure = (form: string) => ({
+    form,
+    source: { url: "https://mayafiles.tase.co.il/rpdf/1763001-1764000/P1763539-00.pdf", title: "iShares VII plc prospectus, 2 June 2026", publisher: "BlackRock (iShares VII plc)", strength: "institution" },
+    page: 1,
+    quote: "An umbrella investment company with variable capital",
+    checked: "2026-10-31",
+  });
+  const files = (rec: unknown) => ({ "instruments/exposures/index-sp500.json": { ...exposure, variants: ["fund:ie00b5bmr087"] }, "funds/ie00b5bmr087@2026-10-23.json": rec });
+  const messages = (rec: unknown) => run(files(rec)).map((p) => p.message);
+  it("accepts each form of its set on a foreign fund", () => {
+    for (const form of ["company", "icav", "statutory-trust", "unit-trust", "common-contractual-fund"]) expect(messages({ ...fund, legal_structure: structure(form) }), form).toEqual([]);
+  });
+  it("refuses a form outside the set, a form with no page, and one on an Israeli fund", () => {
+    expect(messages({ ...fund, legal_structure: structure("corporation") })).toEqual([expect.stringMatching(/legal_structure/)]);
+    const { page: _page, ...unpaged } = structure("company");
+    expect(messages({ ...fund, legal_structure: unpaged })).toEqual([expect.stringMatching(/legal_structure/)]);
+    const israeli = { ...fund, domicile: "IL", currency: "NIS", legal_structure: structure("company"), tax_status: { il_fund_tax_track: "exempt", foreign_investment_fund: { ...vo, value: false, unit: "text", tax_year: null, update_rule: "provider-set", rule_ids: ["TXS-14"] } } };
+    expect(messages(israeli)).toEqual([expect.stringMatching(/legal_structure: a foreign fund's form/)]);
+  });
+});
+
 describe("a fund's stated tax index (data-schema §3.5 tax_ruling.index, F-04)", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
   const source = { url: "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244042-01.pdf", title: "נספח לתשקיף קרן חוץ נסחרת", publisher: "BlackRock (iShares VII plc)", strength: "institution" };
