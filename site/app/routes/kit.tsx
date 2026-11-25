@@ -3,12 +3,14 @@
 import { useLoaderData } from "react-router";
 import { kit as copy } from "../copy";
 import { pageMeta, type MetaPlace } from "../lib/page-meta";
+import { statementExamples } from "../lib/labels";
 import { KitGallery } from "../components/kit/gallery";
 import { PageShell } from "../components/shell";
 
 export async function loader() {
   const { today } = await import("../lib/data.server");
-  return { today: today() };
+  const { loadFunds } = await import("../lib/instruments.server");
+  return { today: today(), statements: statementExamples(loadFunds()) };
 }
 
 export function meta({ location }: MetaPlace) {
@@ -16,10 +18,10 @@ export function meta({ location }: MetaPlace) {
 }
 
 export default function Kit() {
-  const { today } = useLoaderData<typeof loader>();
+  const { today, statements } = useLoaderData<typeof loader>();
   return (
     <PageShell current="other" data={{ rules: {}, terms: {}, dimensions: {}, today }}>
-      <KitGallery today={today} />
+      <KitGallery today={today} statements={statements} />
     </PageShell>
   );
 }

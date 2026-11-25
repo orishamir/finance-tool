@@ -1,7 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, expectTypeOf, it } from "vitest";
+import { taxIndexStatementOf } from "@finance-tool/engine";
 import { loadFunds } from "./instruments.server";
 import { knownIndices } from "./invest";
-import { allLabels, fundLabels, label } from "./labels";
+import { allLabels, fundLabels, label, labelDoc, labelRules, statementExamples } from "./labels";
 import { buildIndicesBundle } from "./providers.server";
 
 describe("label icons (2026-11-05 sweep)", () => {
@@ -15,7 +16,7 @@ describe("label icons (2026-11-05 sweep)", () => {
   const kin = (a: string, b: string) => same.some((g) => g.includes(a) && g.includes(b));
 
   it("labels about different things never share an icon", () => {
-    const all = allLabels();
+    const all = allLabels(statementExamples(loadFunds()));
     for (const a of all) for (const b of all) if (a.id < b.id && !kin(a.id, b.id)) expect(`${a.id} ${a.icon}`).not.toBe(`${a.id} ${b.icon}`);
   });
 
@@ -67,15 +68,17 @@ describe("the tax index a Tel Aviv foreign fund's own annex states (F-04, D84)",
     const onDollar = tax({ ...rec, tax_ruling: { ...ruling, index: main } }, "tase-foreign");
     expect(onDollar.map((l) => l.id)).toEqual(["tax-index-currency"]);
     expect(onDollar[0]?.text).toBe("רווח מול שער הדולר");
-    expect(onDollar[0]?.doc?.href).toBe(`${ruling.source.url}#page=17`);
+    expect(onDollar.map((l) => labelDoc(l)?.href)).toEqual([`${ruling.source.url}#page=17`]);
     expect(onDollar[0]?.explain).toContain("זו הצהרה של הקרן, ואין נוסח רשמי של רשות המסים שמאשר אותה");
     const onCpi = tax({ ...rec, tax_ruling: { ...ruling, index: cpi } }, "tase-foreign");
     expect(onCpi.map((l) => l.id)).toEqual(["tax-index-cpi"]);
-    expect(onCpi[0]?.doc?.href).toBe(`${ruling.source.url}#page=16`);
+    expect(onCpi.map((l) => labelDoc(l)?.href)).toEqual([`${ruling.source.url}#page=16`]);
     expect(onCpi[0]?.explain).toContain("מדד המחירים לצרכן");
     // the statement is the fund's, never a rule: the chip opens no rule card, only the annex
-    for (const l of [...onDollar, ...onCpi]) expect(l.rules).toEqual([]);
-    for (const id of ["tax-index-currency", "tax-index-cpi"] as const) expect(label(id).rules).toEqual([]);
+    for (const l of [...onDollar, ...onCpi]) expect(labelRules(l)).toEqual([]);
+    expect(onDollar[0]?.rests).toEqual({ statement: taxIndexStatementOf({ tax_ruling: { ...ruling, index: main } }) });
+    // a statement label is made only from a statement, never from its id, so none is without its document
+    expectTypeOf<"tax-index-currency" | "tax-index-cpi">().not.toExtend<Parameters<typeof label>[0]>();
     // the same units bought abroad keep TXF-03; an annex that states no index says nothing
     expect(tax({ ...rec, tax_ruling: { ...ruling, index: main } }, "abroad")).toEqual([]);
     expect(tax({ ...rec, tax_ruling: unstated }, "tase-foreign")).toEqual([]);

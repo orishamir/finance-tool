@@ -2,6 +2,7 @@
 // (F-108); P-11's amounts and P-05's amount to start at. Server-only. Each rate and amount is the record's own value object.
 import type { DepositTerms, ValueObject } from "@finance-tool/schema";
 import { depositLabels, depositName, exitPointsOf, shownRate } from "./deposit-kind";
+import { labelRules } from "./labels";
 import { termOf, type DbBank, type DbData, type DbOffer } from "./deposit-browser";
 import { loadParameters, loadRules, today } from "./data.server";
 import { p05AmountMax, p05Number } from "./engine";
@@ -81,5 +82,5 @@ export function buildDepositBrowser(): DbData {
 
 /** The rules the page's sheets cite: the deposits' kinds and the standard table. */
 export function depositBrowserRuleIds(data: DbData): string[] {
-  return [...new Set(["BANK-13", "BANK-14", "BANK-21", "BANK-50", ...data.offers.flatMap((o) => o.labels.flatMap((l) => l.rules))])];
+  return [...new Set(["BANK-13", "BANK-14", "BANK-21", "BANK-50", ...data.offers.flatMap((o) => o.labels.flatMap(labelRules))])];
 }

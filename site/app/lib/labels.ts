@@ -4,7 +4,7 @@
 // ; its colour is its family's (the kit's LabelChip).
 import type { FundRecord } from "@finance-tool/schema";
 import { taxIndexStatementOf, type FundStatement } from "@finance-tool/engine";
-import { invest as c } from "../copy";
+import { currencyWord, invest as c } from "../copy";
 import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
 import { isShekel } from "./fx";
@@ -24,7 +24,7 @@ export type LabelIconKey =
   | "megaphone" | "building" | "coins" | "scale" | "userPlus";
 type IconDef = LabelIconKey | "sign";
 
-export type LabelId =
+type LabelId =
   | "held-il"
   | "held-tase-foreign"
   | "held-abroad"
@@ -57,14 +57,15 @@ export type LabelId =
   | "ask-w8"
   | "unavailable";
 
-/**
- * What a label rests on: the rules whose cards its sheet opens, or a fund's own statement about its units (product D84), which is never a
- * rule: such a label names no rule, and links the statement's document at its page where it is made from it (`statementLabel`).
- */
-type LabelDef = { icon: IconDef; tone: LabelTone } & ({ rules: string[] } | { statement: FundStatement["term"] });
+/** A label made only from a fund's own statement about its units (product D84, `statementLabel`), never from an id. */
+type StatementLabelId = "tax-index-currency" | "tax-index-cpi";
+/** A label made from its id (`label`), resting on rules. */
+export type RuleLabelId = Exclude<LabelId, StatementLabelId>;
+
+type LabelDef = { icon: IconDef; tone: LabelTone; rules: string[] };
 
 /** Structure only: the words are in copy.ts. */
-export const labelDefs: Record<LabelId, LabelDef> = {
+export const labelDefs: Record<RuleLabelId, LabelDef> = {
   "held-il": { icon: "home", tone: "neutral", rules: ["ETF-31", "ETF-52"] },
   "held-tase-foreign": { icon: "landmark", tone: "neutral", rules: ["ETF-31", "ETF-24"] },
   "held-abroad": { icon: "globe", tone: "neutral", rules: ["ETF-24"] },
@@ -86,8 +87,6 @@ export const labelDefs: Record<LabelId, LabelDef> = {
   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08", "TXS-10"] },
   "tax-on-sale-open": { icon: "lock", tone: "open", rules: ["TXF-11"] },
   "tax-on-sale-ruling": { icon: "gavel", tone: "neutral", rules: ["TXF-11"] },
-  "tax-index-currency": { icon: "fileCheck", tone: "neutral", statement: "tax-index" },
-  "tax-index-cpi": { icon: "fileCheck", tone: "neutral", statement: "tax-index" },
   "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
   "pays-distributing": { icon: "handCoins", tone: "neutral", rules: ["MF-49"] },
   "ask-self-report": { icon: "filePen", tone: "caution", rules: ["TXF-22", "TXF-29"] },
@@ -105,22 +104,33 @@ const signOf = (code: string | undefined): LabelIconKey =>
 /** A bank deposit's kind (`variant` in its record), labelled on the bank page (lib/deposit-kind.ts); not one of the index page's labels. */
 export type DepositLabelId = "deposit-campaign" | "deposit-closed-system" | "deposit-new-customers" | "deposit-interest-during-term" | "deposit-best-of";
 
+/** What a label rests on: rules, with a document beside them where one is, or a fund's own statement, which is never a rule. */
+type LabelRests = RuleRests | { statement: FundStatement };
+
+/** The rules whose cards a label's sheet opens. */
+interface RuleRests {
+  rules: string[];
+  /** A document the label rests on, shown under its rules: the ruling a fund's annex reports (TXF-11), a bank's table of rates for a deposit's kind. */
+  doc?: { href: string; title: string };
+  /** The words before that document, where it is not the fund's ("מסמך הקרן"): a bank's own table of rates for a deposit's kind. */
+  docLead?: string;
+}
+
 export interface Label {
   id: LabelId | DepositLabelId;
   text: string;
   explain: string;
   icon: LabelIconKey;
   tone: LabelTone;
-  rules: string[];
   /** The label's family, for the "what do the labels mean" list. */
   family: keyof typeof c.labelFamilies | "deposit";
-  /** A document of the fund's own that the label rests on, shown under its rules (the ruling its annex reports, TXF-11). */
-  doc?: { href: string; title: string };
-  /** The words before that document, where it is not the fund's ("מסמך הקרן"): a bank's own table of rates for a deposit's kind. */
-  docLead?: string;
+  rests: LabelRests;
 }
 
-const familyOf: Record<LabelId, Label["family"]> = {
+/** A label that rests on rules: every label but one made from a fund's statement. */
+export type RuleLabel = Label & { rests: RuleRests };
+
+const familyOf: Record<RuleLabelId, Label["family"]> = {
   "held-il": "held",
   "held-tase-foreign": "held",
   "held-abroad": "held",
@@ -142,8 +152,6 @@ const familyOf: Record<LabelId, Label["family"]> = {
   "tax-distribution": "tax",
   "tax-on-sale-open": "tax",
   "tax-on-sale-ruling": "tax",
-  "tax-index-currency": "tax",
-  "tax-index-cpi": "tax",
   "pays-accumulating": "payout",
   "pays-distributing": "payout",
   "ask-self-report": "asks",
@@ -154,30 +162,36 @@ const familyOf: Record<LabelId, Label["family"]> = {
   unavailable: "availability",
 };
 
-
-/** The currency's Hebrew name for the label ("חשיפה לדולר"), else its ISO code. */
-const currencyName = (code: string) => (c.currencies as Record<string, string>)[code] ?? code;
-
-export function label(id: LabelId, arg?: string): Label {
+/** A label resting on rules, from its id; `arg` is the currency a currency label names ("חשיפה לדולר"). */
+export function label(id: RuleLabelId, arg?: string): RuleLabel {
   const def = labelDefs[id];
   const words = c.labels[id] as { text: string | ((ccy: string) => string); explain: string | ((ccy: string) => string) };
-  const say = (w: string | ((ccy: string) => string)) => (typeof w === "function" ? w(currencyName(arg ?? "USD")) : w);
-  return { id, text: say(words.text), explain: say(words.explain), icon: def.icon === "sign" ? signOf(arg ?? "USD") : def.icon, tone: def.tone, rules: "rules" in def ? def.rules : [], family: familyOf[id] };
+  const say = (w: string | ((ccy: string) => string)) => (typeof w === "function" ? w(currencyWord(arg ?? "USD")) : w);
+  return { id, text: say(words.text), explain: say(words.explain), icon: def.icon === "sign" ? signOf(arg ?? "USD") : def.icon, tone: def.tone, family: familyOf[id], rests: { rules: def.rules } };
 }
 
-/** A label made from a fund's own statement (D84): its words, and its document opened at the page the statement is on, in place of rules. */
+/** The only way to a label resting on a fund's own statement (D84): its words from the statement, and the statement itself. */
 function statementLabel(st: FundStatement): Label {
-  const doc = { href: sourceHref({ url: st.source.url, page: st.page }), title: st.source.title };
   switch (st.term) {
     case "tax-index":
-      return { ...(st.index === "fx" ? label("tax-index-currency", st.currency) : label("tax-index-cpi")), doc };
+      return { id: st.index === "fx" ? "tax-index-currency" : "tax-index-cpi", ...c.statementLabels["tax-index"](st), icon: "fileCheck", tone: "neutral", family: "tax", rests: { statement: st } };
     default:
       return assertNever(st.term);
   }
 }
 
+/** The rules a label's sheet opens: none for one resting on a fund's statement. */
+export const labelRules = (l: Label): string[] => ("rules" in l.rests ? l.rests.rules : []);
+
+/** The document a label's sheet links, with the words before it where they are not "מסמך הקרן": a statement's opens at its page. */
+export function labelDoc(l: Label): { href: string; title: string; lead?: string } | undefined {
+  const r = l.rests;
+  if ("statement" in r) return { href: sourceHref({ url: r.statement.source.url, page: r.statement.page }), title: r.statement.source.title };
+  return r.doc && { ...r.doc, ...(r.docLead ? { lead: r.docLead } : {}) };
+}
+
 /** What holds for every fund in the option (shown once on its card): where it is held and how it trades. */
-export function optionLabels(option: OptionId): Label[] {
+export function optionLabels(option: OptionId): RuleLabel[] {
   switch (option) {
     case "il-tracking":
       return [label("held-il"), label("trade-tracking")];
@@ -222,7 +236,7 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   // an accumulating foreign fund: taxed only at sale on the ruling its own annex reports, else an open question (TXF-11);
   // the same test the engine ranks it by (instruments.server.ts, saleOnlyRuling)
   else if (rec.distribution_policy === "accumulating" && rec.domicile !== "IL")
-    out.push(rec.tax_ruling ? { ...label("tax-on-sale-ruling"), doc: { href: sourceHref({ url: rec.tax_ruling.source.url, page: rec.tax_ruling.pages.ruling }), title: rec.tax_ruling.source.title } } : label("tax-on-sale-open"));
+    out.push(rec.tax_ruling ? withDoc(label("tax-on-sale-ruling"), { href: sourceHref({ url: rec.tax_ruling.source.url, page: rec.tax_ruling.pages.ruling }), title: rec.tax_ruling.source.title }) : label("tax-on-sale-open"));
   // a foreign fund in Tel Aviv whose own annex states its tax index under its ruling: the fund's statement, its page linked (F-04, D84);
   // the same units bought abroad keep TXF-03 whatever the record carries, so only the Tel Aviv line says it, and a distributing one stops
   // on its distribution's open part whatever its annex states (G-35), so only an accumulating one does
@@ -236,14 +250,30 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
  * What a broker adds for an option: not available there, a foreign broker outside the Securities Authority's supervision, and who
  * deals with the tax. Reporting is the route's, never the fund's: a bank or a member of the exchange withholds on any fund (TXF-29).
  */
-export function brokerLabels(p: ProviderInfo, unavailable: boolean): Label[] {
-  const out: Label[] = [];
+export function brokerLabels(p: ProviderInfo, unavailable: boolean): RuleLabel[] {
+  const out: RuleLabel[] = [];
   if (unavailable) out.push(label("unavailable"));
   if (p.foreign) out.push(label("risk-unsupervised"), label(p.taxService ? "ask-tax-service" : "ask-self-report"));
   return out;
 }
 
-/** Every label the page can show, by family, for "מה אומרות התוויות?" (the ids that appear in `used` first). */
-export function allLabels(): Label[] {
-  return (Object.keys(labelDefs) as LabelId[]).map((id) => label(id));
+/** A label resting on rules with a document of the fund's own under them. */
+const withDoc = (l: RuleLabel, doc: { href: string; title: string }): RuleLabel => ({ ...l, rests: { ...l.rests, doc } });
+
+/**
+ * Every label the page can show, by family, for "מה אומרות התוויות?" and the kit's gallery: each one made from its id, then one for each
+ * statement given, which a fund's own document makes (`statementExamples`).
+ */
+export function allLabels(statements: readonly FundStatement[]): Label[] {
+  return [...(Object.keys(labelDefs) as RuleLabelId[]).map((id) => label(id)), ...statements.map(statementLabel)];
+}
+
+/** One statement for each label the records' statements make, the first record's: real ones, with their documents, to show the labels by. */
+export function statementExamples(recs: readonly Pick<FundRecord, "tax_ruling">[]): FundStatement[] {
+  const by = new Map<Label["id"], FundStatement>();
+  for (const st of recs.flatMap((r) => taxIndexStatementOf(r) ?? [])) {
+    const id = statementLabel(st).id;
+    if (!by.has(id)) by.set(id, st);
+  }
+  return [...by.values()];
 }

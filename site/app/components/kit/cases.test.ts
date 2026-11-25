@@ -7,6 +7,8 @@ import { describe, expect, it } from "vitest";
 import { dealCases as words } from "../../copy";
 import { ProvenanceProvider } from "../provenance";
 import { KitGallery } from "./gallery";
+import { loadFunds } from "../../lib/instruments.server";
+import { statementExamples } from "../../lib/labels";
 import { AddSlot, CaseGrid, CaseRow, CaseTable, ConditionBand, ConditionHead, EveryCaseParts, FeePalette, OpenCase, PartChip, PartEdit, ReadForBand, Toolbox } from "./index";
 
 const today = "2026-11-13";
@@ -16,7 +18,7 @@ const html = (el: React.ReactElement) => renderToString(h(MemoryRouter, null, h(
 const bare = (el: React.ReactElement) => renderToString(h(MemoryRouter, null, el));
 
 describe("the gallery's cases and parts", () => {
-  const out = html(h(KitGallery, { today }));
+  const out = html(h(KitGallery, { today, statements: statementExamples(loadFunds()) }));
   it("names every piece", () => {
     for (const name of ["PartChip, PartEdit, KindDot", "ConditionHead, ConditionBand, CaseRow, CaseGroup, CaseSlot, OpenCase", "CaseTable, CaseGrid, EveryCaseParts, SharedLine, AddSlot", "ChangeDivider, WhenRule", "FeePalette", "SlimFee, FeeBlock", "Toolbox", "AskValues", "TickMenu, TrackMenu, RangeMenu, ThingMenu, Switch, ValueMenuSheet", "ReadForBand"]) {
       expect(out, name).toContain(`>${name}</code>`);

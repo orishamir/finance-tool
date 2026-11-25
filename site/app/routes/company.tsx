@@ -25,6 +25,7 @@ import { MoreDocs, ProductDocs, docCount } from "../components/company/docs";
 import { accountSections } from "../components/decoder/institutions/sections";
 import { CAPS_FROM_AGE, addressId, entryIds, splitDocGroups } from "../lib/company-page";
 import { companyTermsAnchor } from "../lib/scope";
+import { labelRules } from "../lib/labels";
 import type { SiteValue } from "../lib/value";
 
 /**
@@ -109,7 +110,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const brokerage = brand?.brokerId ? brokeragePart(brand.brokerId) : null;
   const funds = brand ? brandFunds(brand) : [];
   // the rules the funds' label sheets name (the label set's own, as on the index page)
-  const labelRuleIds = [...new Set(funds.flatMap((g) => g.funds.flatMap((f) => f.labels.flatMap((l) => l.rules))))].filter((id) => allRules[id]);
+  const labelRuleIds = [...new Set(funds.flatMap((g) => g.funds.flatMap((f) => f.labels.flatMap(labelRules))))].filter((id) => allRules[id]);
   // the glossary cards behind the track list's "?" (the fee and exposure heads) and the fund lists' fees, with the rules they cite
   const { HELP_TERMS } = await import("../lib/track-browser");
   const helpNames = new Set<string>([...Object.values(HELP_TERMS), ...(funds.length ? brandsCopy.funds.feeTerms : [])]);

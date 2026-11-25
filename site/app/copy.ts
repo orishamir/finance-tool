@@ -7,15 +7,15 @@ import type { FeeKindId } from "./lib/fee-deal/core";
 
 /**
  * F-04, D84: the tax index a Tel Aviv foreign fund's own annex states under its ruling, said as the fund's statement and not a rule: the
- * main currency's exchange rate (its Hebrew name) or, with none, the CPI. The figure's sheet and the fund's chip say it in these words.
+ * main currency's exchange rate (its Hebrew name) or the CPI. The figure's sheet and the fund's chip both say it from the statement here.
  */
-function taxIndexStated(currency: string | null): string {
-  return `${currency ? `מס רווחי הון מחושב לפי שער ה${currency}` : "מס רווחי הון מחושב לפי מדד המחירים לצרכן"}: כך כתוב בנספח לתשקיף הישראלי של הקרן, לפי החלטת המיסוי שהקרן קיבלה מרשות המסים. זו הצהרה של הקרן, ואין נוסח רשמי של רשות המסים שמאשר אותה.`;
+function taxIndexStated(st: TaxIndexStatement): string {
+  return `${st.index === "fx" ? `מס רווחי הון מחושב לפי שער ה${currencyWord(st.currency)}` : "מס רווחי הון מחושב לפי מדד המחירים לצרכן"}: כך כתוב בנספח לתשקיף הישראלי של הקרן, לפי החלטת המיסוי שהקרן קיבלה מרשות המסים. זו הצהרה של הקרן, ואין נוסח רשמי של רשות המסים שמאשר אותה.`;
 }
 /** What the site does with a fund's stated tax index, after the statement on the fund's chip. */
 const taxIndexRanked = "האתר מחשב לפיה את מס רווחי הון של הקרן הזו בלבד, ומדרג אותה.";
-/** A currency's Hebrew name (`invest.currencies`), else its ISO code. */
-function currencyWord(code: string): string {
+/** A currency's Hebrew name (`invest.currencies`), else its ISO code: what a label or a statement names it by. */
+export function currencyWord(code: string): string {
   return invest.currencies[code] ?? code;
 }
 
@@ -415,7 +415,7 @@ export const provenance = {
     /** Each statement's sentence, by the term it states. */
     statement: {
       /** F-04: the tax index the fund's annex states under its ruling: the main currency's exchange rate, or the CPI. */
-      "tax-index": (st: TaxIndexStatement) => taxIndexStated(st.index === "fx" ? currencyWord(st.currency) : null),
+      "tax-index": taxIndexStated,
     } satisfies { [T in FundStatement["term"]]: (st: Extract<FundStatement, { term: T }>) => string },
     /** The statement's document, linked at its page. */
     statementDoc: (title: string, page: number) => `${title}, עמוד ${page}`,
@@ -5071,6 +5071,11 @@ export const invest = {
 
   labelFamilies: { held: "איפה הקרן מוחזקת", trade: "איך היא נסחרת", follow: "איך היא עוקבת אחרי המדד", currency: "מטבע", payout: "חלוקה", tax: "מס", asks: "מה היא דורשת מכם, וסיכון", availability: "זמינות" },
   labelsSheet: { rules: "מקורות", doc: "מסמך הקרן", close: "סגירה", forPlan: "" },
+  /** A label made from a fund's own statement (D84, lib/labels.ts `statementLabel`): its words, from the statement, by the term it states. */
+  statementLabels: {
+    /** F-04: the tax index the fund's annex states under its ruling, the fund's statement and not a rule. */
+    "tax-index": (st: TaxIndexStatement) => ({ text: st.index === "fx" ? `רווח מול שער ה${currencyWord(st.currency)}` : "רווח מול מדד המחירים", explain: `${taxIndexStated(st)} ${taxIndexRanked}` }),
+  } satisfies { [T in FundStatement["term"]]: (st: Extract<FundStatement, { term: T }>) => { text: string; explain: string } },
   labels: {
     "held-il": { text: "קרן ישראלית", explain: "הקרן רשומה בישראל ומפוקחת כאן. על מדד זר היא מקבלת את החשיפה בדרך כלל בעסקאות, ועל מדד ישראלי היא מחזיקה בדרך כלל את המניות." },
     "held-tase-foreign": { text: "קרן חוץ בת״א", explain: "קרן מחוץ לישראל שנסחרת גם בבורסה בתל אביב, בשקלים. קרן חוץ לא מתמחה בישראל, ולכן היא רק על מדדים זרים." },
@@ -5094,9 +5099,6 @@ export const invest = {
     "pays-accumulating": { text: "צוברת", explain: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש." },
     "pays-distributing": { text: "מחלקת דיבידנד", explain: "הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל." },
     "tax-on-sale-open": { text: "מס בצבירה: לא ידוע", explain: "לא ידוע אם משלמים מס על מה שהקרן צוברת לפני שמוכרים. לא נמצא חוק שמחייב מס כזה, אבל גם אין אישור רשמי שאין. האתר מחשב כאילו המס משולם רק במכירה, ולכן לא מדרג את הקרן." },
-    // F-04, D84: the tax index a Tel Aviv foreign fund's own annex states under its ruling, the fund's statement and not a rule
-    "tax-index-currency": { text: (ccy: string) => `רווח מול שער ה${ccy}`, explain: (ccy: string) => `${taxIndexStated(ccy)} ${taxIndexRanked}` },
-    "tax-index-cpi": { text: "רווח מול מדד המחירים", explain: `${taxIndexStated(null)} ${taxIndexRanked}` },
     "tax-on-sale-ruling": { text: "אין מס בצבירה", explain: "הקרן מדווחת בנספח לתשקיף הישראלי שלה שקיבלה החלטת מיסוי מרשות המסים: יחיד משלם מס רק כשהוא מוכר יחידות או כשהקרן מחלקת רווחים, ולא על מה שהקרן צוברת. ההחלטה עצמה לא פורסמה, ולכן המקור הוא מסמך הקרן. לפי ההחלטה הזאת הקרן מדורגת." },
     "ask-self-report": { text: "דיווח עצמי למס", explain: "ברוקר זר לא מנכה מס בישראל במכירה, ולכן מדווחים על הרווח ומשלמים מקדמה פעמיים בשנה, ומגישים דוח שנתי. בבנק או אצל חבר בורסה בישראל המס מנוכה במכירה, וגם קרן זרה לא מחייבת דיווח." },
     "ask-tax-service": { text: "ניכוי מס בשירות נוסף", explain: "החברה מצהירה שהיא מנכה מס ישראלי בחשבונות שנפתחו דרכה. אישור של רשות המסים לניכוי הזה לא נמצא. כשלא נוכה מס, מדווחים על הרווח בעצמכם, משלמים מקדמה פעמיים בשנה ומגישים דוח שנתי." },

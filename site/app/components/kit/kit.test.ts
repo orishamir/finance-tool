@@ -10,6 +10,8 @@ import { AbroadNote, GainBars, AddLine, Button, chipAfterAdd, ChoiceChips, Discl
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
+import { loadFunds } from "../../lib/instruments.server";
+import { statementExamples } from "../../lib/labels";
 import { SHORT_IN_ROW, shortBillions } from "../../lib/format";
 import { gershayim, keepTitleWhole } from "./name";
 import { chipName } from "./choice";
@@ -22,7 +24,7 @@ const data = { rules: {}, terms: {}, dimensions: {}, today };
 const html = (el: React.ReactElement) => renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: el })));
 
 describe("the gallery", () => {
-  const out = html(createElement(KitGallery, { today }));
+  const out = html(createElement(KitGallery, { today, statements: statementExamples(loadFunds()) }));
   it("names every component of the kit", () => {
     for (const name of ["Button, LinkButton", "Tag", "Callout", "EmptyState", "Card, pad", "Section", "Disclosure", "FoldGroup", "SegmentedControl", "ChoiceChips", "ChipList", "CostStack", "Sentence, Tpl", "Stat, StatRow", "StairsChart, StairsTable, StairsSteps", "DiffRow, DiffHead, DiffFigure, GreyLine", "LeftOutLine, LeftOutMark", "KeyValue, KeyValueList", "SourceLine, GapNote", "NumberField", "RangeField", "PercentField", "SelectField", "Marker, MarkerMark, LaneLabel", "GainBars", "ChartLegend, Swatch, ChartReadout, ChartTable, AxisLabels, yearTicksIn", "PrintedText, PrintedQuotes, DoubtNote", "MeterBar", "DocLink", "SourcedTag", "PageHead", "TextLink", "SearchField", "PickCard", "AnchorSpread, AmountRange", "AbroadNote"]) {
       expect(out, name).toContain(`>${name}</code>`);
