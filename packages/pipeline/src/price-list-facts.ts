@@ -1,5 +1,6 @@
 // The data check for the price-list facts of data-schema §3.6a and the distribution agreements of §3.6: each field on the kind of line it
 // belongs to, its words holding what it says, and a custody maximum's scope on every latest record that prints one.
+import { STANDING_CONVERSION_BAND } from "@finance-tool/engine";
 import type { FeesSnapshot, FundRecord } from "@finance-tool/schema";
 
 type Line = FeesSnapshot["lines"][number];
@@ -110,7 +111,8 @@ export function checkSnapshotFacts(snap: FeesSnapshot): string[] {
   const out: string[] = [];
   // 7. a conversion line that converts only on a purchase leaves a sale to another line of the list, for every class it names (F-13)
   for (const l of snap.lines.filter((x) => x.base === "fx" && x.conversion_side)) {
-    const sale = snap.lines.filter((x) => x.base === "fx" && x.level === l.level && !x.conversion_side && (x.channel === null || l.channel === null || x.channel === l.channel));
+    // a recurring plan's line converts that plan's purchases, and a line set aside (`not_ranked`) prices nothing ranked: neither converts a sale
+    const sale = snap.lines.filter((x) => x.base === "fx" && x.level === l.level && !x.conversion_side && x.band !== STANDING_CONVERSION_BAND && x.not_ranked === undefined && (x.channel === null || l.channel === null || x.channel === l.channel));
     const left = l.applies_to.filter((a) => !sale.some((x) => x.applies_to.includes(a) || x.applies_to.includes("all")));
     if (left.length) out.push(`lines ${l.id}: converts only on a purchase, and no other conversion line converts a sale of ${left.join(", ")}`);
   }

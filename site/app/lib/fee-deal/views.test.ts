@@ -240,6 +240,14 @@ describe("templates", () => {
     expect(fx[0]?.sale?.[0]?.price).toMatchObject({ form: "action", rate: { v: 0.002 }, min: { v: 2 }, currency: "USD" });
     expect(data.houses.find((h) => h.id === "interactive-brokers")?.left).not.toContainEqual(expect.objectContaining({ lineId: "interactive-brokers-fx-spot" }));
   });
+  it("leaves out a conversion that converts only on a purchase where no line of the list converts the sale, never filling a free sale (F-13)", () => {
+    const ib = latestSnapshots().find((x) => x.id === "interactive-brokers");
+    if (!ib) throw new Error("Interactive Brokers has a record");
+    const alone = { ...ib, lines: ib.lines.filter((l) => l.id !== "interactive-brokers-fx-spot") };
+    const t = houseTemplate(alone);
+    expect(t.fees.some((f) => f.kind === "fx")).toBe(false);
+    expect(t.left).toContainEqual(expect.objectContaining({ lineId: "interactive-brokers-fx-auto-conversion", why: "no-sale-line" }));
+  });
   it("offers the houses for a securities account and the kind's tracks for the provident family", () => {
     expect(templateOptions("brokerage-account", data, TODAY).every((o) => o.source === "house")).toBe(true);
     const tracks = templateOptions("kupat-gemel-lehashkaa", data, TODAY);

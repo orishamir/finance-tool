@@ -2737,6 +2737,8 @@ export const feeDeal = {
       "bank-funds": "לפי כללי העמלות של בנק ישראל, בבנק השורה הזו לא מתמחרת קרן נאמנות אקטיבית. לכן לקרן כזו אין כאן מחיר קנייה ומכירה. קרן מחקה פתוחה מתומחרת כמו ניירות ערך בתל אביב, ואפשר לבחור בזה בקריאה.",
       "spread-on-top": "על ההמרה נוסף מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
       redemption: "מחיר לפדיון במועד הפירעון: חל רק על פדיון כזה, לא על קנייה ומכירה.",
+      /** A conversion only on a purchase, and no single line of the list converts the sale (F-13). */
+      "no-sale-line": "המרה שחלה רק בקנייה, ובתעריפון אין שורה אחת שחלה על ההמרה במכירה. העסקה לא מנחשת את מחיר ההמרה במכירה, ולכן ההמרה לא נכנסת.",
       /** A yearly share of what is held, charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71). */
       "distribution-yearly": "עמלת הפצה בשנה על יחידות של קרן נאמנות, לפי סוג הקרן: העסקה עוד לא יכולה לרשום אחוז בשנה ממה שמוחזק בעמלה הזו, ולכן היא לא נכנסת.",
       /** A custody maximum the list prints with no scope (`max_per: unstated`, data-schema §3.6a item 2): left out, the cautious reading. */

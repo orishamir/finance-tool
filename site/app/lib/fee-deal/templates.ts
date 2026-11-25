@@ -69,6 +69,11 @@ export type LeftWhy =
   | "spread-on-top"
   /** A line for redeeming a security when it falls due (band `REDEMPTION_BAND`: makam's at maturity), which no purchase or sale pays (F-63). */
   | "redemption"
+  /**
+   * A conversion that converts only on a purchase (`conversion_side`) where no single line of the list converts the sale (`saleLineOf`): the
+   * conversion is left out, as the engine refuses the house's row, never filled with a free sale (F-13).
+   */
+  | "no-sale-line"
   /** A yearly share of what is held charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71): the deal holds no such price for that fee. */
   | "distribution-yearly"
   /** A custody maximum the list prints with no scope (`max_per: unstated`): the price is filled without it, the cautious reading. */
@@ -725,9 +730,11 @@ export function houseTemplateRead(snap: FeesSnapshot, unavailable: readonly Line
     const fees = (l: Line) => lineFees(l, ownName, bank, CAP_READ.has(snap.id));
     // F-13: a conversion that converts only on a purchase fills its sale from the line that converts a sale, which is read with it
     const sales = new Map(lines.flatMap((l) => (base === "fx" ? [[l, saleLineOf(snap, l)] as const] : [])).filter((x): x is readonly [Line, Line] => x[1] !== null));
-    const mapped = new Map(lines.map((l) => {
+    const mapped = new Map(lines.map((l): readonly [Line, Mapped] => {
+      if (!l.conversion_side) return [l, fees(l)];
       const sale = sales.get(l);
-      return [l, sale && has(l.rate) ? withSale(fees(l), fees(sale), { form: "free", src: sourcedOf(l.rate, ownName) }) : fees(l)] as const;
+      if (!has(l.rate)) return [l, { fees: [], left: ["no-value"] }];
+      return [l, sale ? withSale(fees(l), fees(sale), { form: "free", src: sourcedOf(l.rate, ownName) }) : { fees: [], left: ["no-sale-line"] }];
     }));
     // two lines alike fill the same fees at the same prices, whatever line each figure is from
     const termsOf = (l: Line) => JSON.stringify(mapped.get(l)!.fees.map((f) => [f.kind, priceTerms(f.stages), f.sale ? priceTerms(f.sale) : null]));

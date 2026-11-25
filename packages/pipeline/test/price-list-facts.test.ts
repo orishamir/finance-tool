@@ -116,6 +116,12 @@ describe("a conversion line that converts only on a purchase (§3.6a item 7)", (
     expect(checkLineFacts({ ...auto, base: "trade" }, true).join()).toMatch(/conversion_side belongs/);
     const alone = { ...ib, lines: ib.lines.filter((l) => l.id !== "interactive-brokers-fx-spot") };
     expect(checkSnapshotFacts(alone).join()).toMatch(/no other conversion line converts a sale of foreign_securities/);
+    // a recurring plan's line or a line set aside does not convert the sale
+    const spot = line(ib, "interactive-brokers-fx-spot");
+    const source = auto.conversion_side?.source;
+    if (!source) throw new Error("the automatic conversion cites its clause");
+    for (const other of [{ ...spot, band: "השקעה קבועה אוטומטית" }, { ...spot, band: "x", not_ranked: { reason_he: "x", source } }])
+      expect(checkSnapshotFacts({ ...alone, lines: [...alone.lines, other] }).join(), other.band ?? "").toMatch(/no other conversion line converts a sale/);
   });
 });
 
