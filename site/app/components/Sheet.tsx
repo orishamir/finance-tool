@@ -252,14 +252,18 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
+      // a sheet opened from inside this one (a card from a deal's popup) is its child in React's tree, though drawn apart: its cancel and
+      // close events reach these handlers too, and are its own, not this sheet's
       onCancel={(e) => {
+        if (e.target !== e.currentTarget) return;
         // the close request (Escape, the phone's Back) plays the sheet's closing; one that comes while it is leaving is for the sheet under it
         e.preventDefault();
         closeFollows.current = !e.cancelable;
         if (openNow.current) onClose();
         else if (stacked.current) closeUnder(stacked.current);
       }}
-      onClose={() => {
+      onClose={(e) => {
+        if (e.target !== e.currentTarget) return;
         if (closeFollows.current && closing.current) {
           // the browser closed the leaving sheet itself, after a close request the page could not refuse: nothing of it shows, so it
           // leaves at once and the sheet under it comes back now, not when its closing would have played out
@@ -332,6 +336,14 @@ function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popov
   const gap = 8;
   const fewLines = 120;
   const ceiling = Math.max(0, document.querySelector("[data-site-header]")?.getBoundingClientRect().bottom ?? 0);
+  // an anchor with no box (inside a sheet this card covers, which has closed as a dialog under it): the card stands in the window's middle
+  if (!anchor.getClientRects().length) {
+    const h = Math.min(natural, window.innerHeight * 0.6);
+    dialog.style.maxHeight = `${window.innerHeight * 0.6}px`;
+    dialog.style.top = `${Math.max(ceiling + gap, (window.innerHeight - h) / 2)}px`;
+    dialog.style.left = `${Math.max(gap, (window.innerWidth - w) / 2)}px`;
+    return;
+  }
   let r = anchor.getBoundingClientRect();
   if (Math.max(window.innerHeight - r.bottom, r.top - ceiling) - gap * 2 < fewLines) {
     window.scrollBy({ top: r.top - ceiling - gap, behavior: "instant" });

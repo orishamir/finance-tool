@@ -3,6 +3,7 @@
 // rule chips open their cards in the same sheet, with a back arrow when they were reached from a number. What the sheet shows (the cards) is in
 // provenance-sheets.tsx, fetched while the page hydrates, so the script a page needs to show itself holds only the figures and chips.
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, type MouseEvent, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router";
 import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { formulaNames, numbers, parametersPage, provenance as copy, rule as ruleCopy, scopeWords, strength as strengthCopy } from "../copy";
@@ -16,6 +17,7 @@ import { cx, Disclosure, Tag } from "./ui";
 import { CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
 import { decodedPart } from "../lib/address-hash";
+import { useHydrated } from "../lib/hooks";
 
 // ---------------------------------------------------------------- context
 
@@ -120,7 +122,14 @@ function usePreloadSheets(): void {
   }, []);
 }
 
+/** Set by a provider for what it holds: a provider inside it is nested (a deal's popup, which reads the fee page's data). */
+const NestedCtx = createContext(false);
+
 export function ProvenanceProvider({ data, children }: { data: ProvenanceData; children: ReactNode }) {
+  // A nested provider's sheet opens over the sheet that holds it, which then closes as a dialog (sheet-stack): drawn inside that sheet, it
+  // would close with it, out of sight yet modal, and leave the whole page inert. So it is drawn at the body's end, once in the browser.
+  const nested = useContext(NestedCtx);
+  const hydrated = useHydrated();
   const [stack, setStack] = useState<Item[]>([]);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
@@ -148,16 +157,19 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   const push = useCallback((item: Item) => setStack((s) => [...s, item]), []);
   const headId = useId();
   const descId = useId();
+  const sheet = (
+    <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={70} className="lg:max-h-[60vh] lg:backdrop:bg-transparent" labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
+      {top && code && <code.SheetContent item={top} data={data} headId={headId} descId={descId} />}
+    </Sheet>
+  );
   return (
     <Ctx.Provider value={api}>
       <DataCtx.Provider value={data}>
       <TodayCtx.Provider value={data.today}>
-      <OpenAnchorCtx.Provider value={open ? anchor : null}>{children}</OpenAnchorCtx.Provider>
+      <OpenAnchorCtx.Provider value={open ? anchor : null}><NestedCtx.Provider value={true}>{children}</NestedCtx.Provider></OpenAnchorCtx.Provider>
       <PushCtx.Provider value={push}>
        <CloseCtx.Provider value={close}>
-        <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={70} className="lg:max-h-[60vh] lg:backdrop:bg-transparent" labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
-          {top && code && <code.SheetContent item={top} data={data} headId={headId} descId={descId} />}
-        </Sheet>
+        {nested && hydrated ? createPortal(sheet, document.body) : sheet}
        </CloseCtx.Provider>
       </PushCtx.Provider>
       </TodayCtx.Provider>
