@@ -2,6 +2,7 @@
 import type { FundStatement, P05Input } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountShown } from "./format";
+import { numbers } from "../copy";
 
 export type Strength = ValueObject["source"]["strength"];
 
@@ -28,10 +29,13 @@ export interface SiteValue extends ValueObject {
    */
   own?: string;
   /**
-   * A doubt the record itself holds about this very figure, in Hebrew (a bank's `doubt_he`): the figure shows on an amber tint with the
-   * caution icon, and its sheet says the doubt. It is the value's own, so every place that shows the figure warns.
+   * A doubt about this very figure, in Hebrew: the record's own (a bank's `doubt_he`), or the site's cautious reading of an open rule the
+   * figure rests on (`readingDoubtOf`). The figure shows on an amber tint with the caution icon, and its sheet says the doubt. It is the
+   * value's own, so every place that shows the figure warns.
    */
   doubt?: string;
+  /** The rules the doubt rests on, whose cards its sheet opens beside it: the open rule a cautious reading reads (TXF-04). */
+  doubtRules?: string[];
   /** For a site parameter: its rationale (copy 3.8). */
   parameter?: { rationale: string; rationaleHe?: string | null };
   /** Rules a computed value read, with the strength the run recorded. */
@@ -147,7 +151,16 @@ export function entered(value: number, unit: ValueObject["unit"], today: string,
   };
 }
 
-/** A computed value with the formula and the inputs it came from (architecture 3.4). */
+/**
+ * The doubt a figure carries for the run labels it rests on (method §13, `SplitPolicy` "cautious"): the engine's `reading` label on an open
+ * rule whose readings the run took the cautious one of, with the rule beside it; none for any other label.
+ */
+export function readingDoubtOf(labels: readonly { code: string; ruleId: string }[] | undefined): Pick<SiteValue, "doubt" | "doubtRules"> {
+  const l = labels?.find((x) => x.code === "reading" && x.ruleId in numbers.readingDoubt);
+  return l ? { doubt: numbers.readingDoubt[l.ruleId], doubtRules: [l.ruleId] } : {};
+}
+
+/** A computed value with the formula and the inputs it came from (architecture 3.4). A label of a cautious reading makes its doubt (`readingDoubtOf`). */
 export function computed(
   value: number | null,
   unit: ValueObject["unit"],
@@ -179,6 +192,7 @@ export function computed(
     ...(options.statements?.length ? { statements: options.statements } : {}),
     flags: options.flags,
     labels: options.labels,
+    ...readingDoubtOf(options.labels),
     about: options.about,
     notes: options.notes,
     ...(options.lead ? { lead: options.lead } : {}),

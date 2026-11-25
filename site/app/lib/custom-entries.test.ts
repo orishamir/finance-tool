@@ -190,10 +190,11 @@ describe("a fund the person types is priced at the collected houses under its ki
     const f = allFunds(v).find((x) => x.rec.id === onCustom.id)!;
     expect(v.fundCount).toBe(1);
     // an Israeli fund the person typed on an index not in shekels: whether it is a foreign-investment fund is not known, so it is run under
-    // both readings of TXS OQ26 (F-04); at the plan's 2% inflation and a steady currency they differ, and it is listed before tax, not ranked
-    expect(f.reason).toEqual({ code: "rule-open", ruleId: "TXS-14", question: "TXS OQ26" });
-    expect(f.best).toBeUndefined();
-    expect(Object.values(f.beforeTax?.byHouse ?? {}).some((x) => x.leftN > 0)).toBe(true);
+    // both readings of TXS OQ26 (F-04); at the plan's 2% inflation and a steady currency they differ, and it is priced on the one that leaves
+    // less, its figure marked as the site's reading of TXS-14
+    expect(f.reason).toBeUndefined();
+    expect(f.best?.valueN).toBeGreaterThan(0);
+    expect(f.best?.value.doubtRules).toEqual(["TXS-14"]);
     // where the currency moves as prices do, the readings agree: it is ranked, and is the page's headline
     const agree = buildInvest({ bundle: withCustomEntries(bundle, [onCustom], [custom]), index: refOfCustom(custom), plan, assumptions: { fxChange: 2 } });
     expect(allFunds(agree).find((x) => x.rec.id === onCustom.id)?.best?.valueN).toBeGreaterThan(0);

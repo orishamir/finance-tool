@@ -1,6 +1,7 @@
 // Open readings (method §13, F-04, F-119, F-120): a case the rule base leaves open between a few readings it names. The resolver does not
 // pick one. A run that meets the case is run once under each reading (`acrossReadings`); where every reading gives the same result, that
-// result stands and carries the question as a flag; where they differ, the run stops on the question as on any open rule (D10).
+// result stands and carries the question as a flag; where they differ, the case's own policy decides (`SplitPolicy`): the run stops on
+// the question as on any open rule (D10), or the reading that leaves the holder less stands, labelled the site's reading of the rule.
 import type { UsedRule } from "./resolver.ts";
 import { labelWeight, type FieldRole, type Flag, type Label, type Outcome, type ResultFields, type RunContext } from "./result.ts";
 import type { YearlyMove } from "./formulas/indexation.ts";
@@ -8,8 +9,11 @@ import { assertNever } from "@finance-tool/schema";
 
 /** One way the rule base allows an amount to stand after a year in which the CPI fell. */
 export type FallReadingId = "lower" | "hold" | "carry";
-/** The index a foreign-investment fund's real gain is measured by (F-04): its principal currency's exchange rate, or the CPI. */
-export type TaxIndexReadingId = "principal" | "cpi";
+/**
+ * The index a fund's real gain is measured by at the exit (F-04): a foreign-investment fund's principal currency's exchange rate
+ * (`principal`), a TASE foreign fund's own currency's exchange rate (`fx`), or the CPI.
+ */
+export type TaxIndexReadingId = "principal" | "fx" | "cpi";
 export type ReadingId = FallReadingId | TaxIndexReadingId;
 
 export interface FallReading {
@@ -43,8 +47,8 @@ export const fallReadings: readonly FallReading[] = [
  * What a run does where the readings of an open case give it different results (method §13):
  * - `stop`: it stops on the rule with the question, as on any open rule (D10);
  * - `cautious`: the reading whose result leaves the holder less stands, whole (guidelines/research.md step 6), the less read on the value
- *   the result type declares (`FieldRole` "value"). The figure is the site's reading of the rule, and every reading's run says so with a
- *   `reading` label on the rule (`RuleBook.reading`).
+ *   the result type declares (`FieldRole` "value"). The figure is the site's reading of the rule, and says so with a `reading` label on it,
+ *   whose rule may be open and so gives the run nothing to read (`rules` does not list it then).
  */
 export type SplitPolicy = "stop" | "cautious";
 
@@ -78,9 +82,17 @@ export type OpenReading = FallOpenReading | TaxIndexOpenReading;
  * TXS OQ26: whether the 2003 regulations that measure a foreign-investment fund's inflationary amount by its principal currency still operate
  * (TXS-14). Until it is settled, the principal-currency index is a reading of their texts; if they no longer operate, the fund's shekel units
  * are measured by the CPI, TXS-14's first bullet. A fund whose record does not say whether it is one, on an index in a foreign currency, meets
- * the same two readings (method F-04).
+ * the same two readings (method F-04). A split resolves to the reading that leaves the holder less after the exit tax (method F-04).
  */
-export const foreignInvestmentFundIndex: TaxIndexOpenReading = { kind: "tax-index", ruleId: "TXS-14", question: "TXS OQ26", onSplit: "stop", readings: [{ id: "principal" }, { id: "cpi" }] };
+export const foreignInvestmentFundIndex: TaxIndexOpenReading = { kind: "tax-index", ruleId: "TXS-14", question: "TXS OQ26", onSplit: "cautious", readings: [{ id: "principal" }, { id: "cpi" }] };
+
+/**
+ * TXF OQ10: which index measures the inflationary amount on a sale of a TASE foreign fund whose own annex states none (TXF-04, open: the
+ * Tax Authority's 2019 guidance was never published). The exchange rate of the fund's own currency, or the CPI. A split resolves to the
+ * reading that leaves the holder less after the exit tax (product D84, method F-04), so the figure can only understate what the holder
+ * keeps under either index the law may turn out to use.
+ */
+export const taseForeignFundIndex: TaxIndexOpenReading = { kind: "tax-index", ruleId: "TXF-04", question: "TXF OQ10", onSplit: "cautious", readings: [{ id: "fx" }, { id: "cpi" }] };
 
 /**
  * The open readings the resolver knows:
@@ -89,12 +101,15 @@ export const foreignInvestmentFundIndex: TaxIndexOpenReading = { kind: "tax-inde
  * - KGL OQ15: KGL-03's yearly ceiling (F-120), which the Provident Funds Law s.22(א) updates every 1 January "by the rise in the CPI"
  *   (KGL-02) and says nothing of a fall; met the same way.
  * - TXS OQ26: the tax index of a foreign-investment fund (`foreignInvestmentFundIndex`, F-04).
+ * - TXF OQ10: the tax index of a TASE foreign fund whose annex states none (`taseForeignFundIndex`, F-04).
+ * The two tax-index cases take the cautious reading where their readings split; the two falling-CPI cases stop.
  * A figure linked to the CPI every 1 January of a rule not named here has no reading at a fall: the resolver stops on its rule, naming G-38.
  */
 export const openReadings: readonly OpenReading[] = [
   { kind: "fall", ruleId: "TXG-09", question: "TXG OQ17", onSplit: "stop", covers: { move: "frozen" }, readings: fallReadings },
   { kind: "fall", ruleId: "KGL-03", question: "KGL OQ15", onSplit: "stop", covers: { move: "cpi-linked", rules: ["KGL-03"] }, readings: fallReadings },
   foreignInvestmentFundIndex,
+  taseForeignFundIndex,
 ];
 
 /** The open reading that covers a figure of rule `ruleId` moving by `move` at a falling CPI, or null. */
@@ -144,9 +159,10 @@ const compared = (role: FieldRole | undefined): boolean => role === undefined ||
 
 /**
  * The reading whose result leaves the holder less (`SplitPolicy` "cautious"): the lowest value of the one field `fields` declares the
- * value, the first such reading where two give it alike. A result type that declares no value, or more than one, is a broken invariant.
+ * value, the first such reading where two give it alike, labelled the site's reading of `ruleId`. A result type that declares no value, or
+ * more than one, is a broken invariant.
  */
-function cautiousOf<R extends object>(results: readonly R[], fields: ResultFields<R>): R {
+function cautiousOf<R extends { labels?: Label[] }>(results: readonly R[], fields: ResultFields<R>, ruleId: string): R {
   const values = Object.entries(fields as Readonly<Record<string, FieldRole>>).filter(([, role]) => role === "value");
   if (values.length !== 1) throw new Error(`a cautious reading reads the one value its result type declares; this one declares ${values.length}`);
   const key = values[0]![0];
@@ -155,7 +171,8 @@ function cautiousOf<R extends object>(results: readonly R[], fields: ResultField
     if (typeof v !== "number") throw new Error(`a cautious reading reads ${key}, which a result gave as ${typeof v}`);
     return v;
   };
-  return results.reduce((low, r) => (valueOf(r) < valueOf(low) ? r : low));
+  const low = results.reduce((a, r) => (valueOf(r) < valueOf(a) ? r : a));
+  return { ...low, labels: mergedLabels([low, { labels: [{ code: "reading", ruleId }] }]) };
 }
 
 /**
@@ -189,7 +206,8 @@ export function mergedLabels(results: readonly { labels?: readonly Label[] }[]):
 
 /**
  * The rules every reading's result read, one per id in the order they first appear, each with the figures any reading read of it: a label
- * taken from another reading never names a rule missing from `rules`, which the dimension checklist reads.
+ * taken from another reading never names a rule missing from `rules`, which the dimension checklist reads. The one label that may name a rule
+ * no reading read is the `reading` label a cautious case's split adds, whose rule may be open (`SplitPolicy`).
  */
 export function mergedRules(results: readonly { rules?: readonly UsedRule[] }[]): UsedRule[] {
   const byId = new Map<string, UsedRule>();
@@ -210,7 +228,7 @@ export function mergedRules(results: readonly { rules?: readonly UsedRule[] }[])
  * result stands with the flags, labels and rules of every reading merged (`mergedFlags`, `mergedLabels`, `mergedRules`), flagged with the
  * question. If not, the question's `onSplit` decides: `stop` makes the run with the question stopping it (`BlockedError` with the rule and
  * the question), and its ledger lists or stops it as for any open rule; `cautious` lets the result that leaves the holder less stand,
- * whole (`cautiousOf`).
+ * whole, with a `reading` label on the case's rule (`cautiousOf`).
  */
 export function acrossReadings<R extends { flags: Flag[]; labels?: Label[]; rules?: UsedRule[] }>(ctx: RunContext, run: (ctx: RunContext) => R, fields: ResultFields<R>): R {
   const explore = (chosen: ReadingChoice): R => {
@@ -225,7 +243,7 @@ export function acrossReadings<R extends { flags: Flag[]; labels?: Label[]; rule
           case "stop":
             return explore({ ...chosen, [q]: null });
           case "cautious":
-            return cautiousOf(results, fields);
+            return cautiousOf(results, fields, e.open.ruleId);
           default:
             return assertNever(e.open.onSplit);
         }

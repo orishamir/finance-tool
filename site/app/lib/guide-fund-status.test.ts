@@ -1,5 +1,5 @@
 // A representative fund whose status as a foreign-investment fund is not known (TXS-14, F-04, method §13): the guides run it under both
-// readings of TXS OQ26, and a plan whose two readings give different taxes stops the example on the question.
+// readings of TXS OQ26, and a plan whose two readings give different taxes runs on the one that leaves less (method §13).
 import { describe, expect, it } from "vitest";
 import { loadFees, loadParameters, loadProducts, loadRules, today } from "./data.server";
 import { runTimeline } from "./engine";
@@ -31,12 +31,15 @@ describe("a representative fund whose status as a foreign-investment fund is not
     expect(termsOf(false).terms.fund?.principalCurrency).toBeUndefined();
   });
 
-  it("stops the guide's example on TXS-14 with the question, where a fund known not to be one runs on the CPI alone", () => {
+  it("runs the guide's example on the reading that leaves less where the two split, as a fund known not to be one runs on the CPI alone", () => {
     const timeline = (value: string | false | null) => {
       const { terms, feeValues } = termsOf(value);
       return runTimeline({ record, p05, terms, feeValues, rules: Object.values(loadRules()), runDate }, { entered: {}, age: null });
     };
-    expect(timeline(null)).toMatchObject({ kind: "blocked", ruleId: "TXS-14", question: "TXS OQ26" });
+    const open = timeline(null);
+    expect(open.kind).toBe("ok");
+    // the readings split, so the question's flag, which says they agree, is not raised
+    if (open.kind === "ok") expect(open.flags).not.toContain("TXS-OQ26");
     const settled = timeline(false);
     expect(settled.kind).toBe("ok");
     if (settled.kind === "ok") expect(settled.flags).not.toContain("TXS-OQ26");

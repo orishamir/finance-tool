@@ -1,10 +1,10 @@
 // F-04, TXS-14, method §13: an Israeli fund that may be measured by a principal currency (its documents name it a foreign-investment fund,
 // or its record says the status is not known and its index is in a foreign currency) is run under both readings of TXS OQ26: the principal
-// currency's exchange rate, and the CPI. Where they give the same result it stands, flagged; where not, the run stops on TXS-14 with the
-// question and the fund is read before tax (F-118).
+// currency's exchange rate, and the CPI. Where they give the same result it stands, flagged; where not, the reading that leaves the holder
+// less after the exit tax stands, labelled the site's reading of TXS-14, and is ranked (method §13, guidelines/research.md step 6).
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { BlockedError, fundOf, runSecurities, runSecuritiesBeforeTax, securitiesBlockedBy, securitiesStopOf, type SecuritiesInput } from "../src/index.ts";
+import { fundOf, runSecurities, securitiesBlockedBy, securitiesStopOf, type SecuritiesInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -76,21 +76,21 @@ describe("both readings of TXS OQ26 (method §13)", () => {
     expect(securitiesStopOf(input({ principalFxChange: 0.025 }), ctx)).toBeNull();
   });
 
-  it("where they give different results, the run stops on TXS-14 with the question, and the fund is read before tax instead", () => {
-    const split = input({ principalFxChange: 0 });
-    expect(runSecurities(split, under("principal")).taxAtExit).not.toBeCloseTo(runSecurities(split, under("cpi")).taxAtExit, 0);
-    let stopped: unknown;
-    try {
-      runSecurities(split, ctx);
-    } catch (e) {
-      stopped = e;
+  it("where they give different results, the reading that leaves less after the exit tax stands, whole, labelled the site's reading of TXS-14", () => {
+    for (const principalFxChange of [0, 0.05, -0.02]) {
+      const split = input({ principalFxChange });
+      const byReading = [runSecurities(split, under("principal")), runSecurities(split, under("cpi"))];
+      expect(byReading[0]!.taxAtExit).not.toBeCloseTo(byReading[1]!.taxAtExit, 0);
+      const low = byReading.reduce((a, b) => (b.real < a.real ? b : a));
+      const r = runSecurities(split, ctx);
+      const { labels, ...rest } = r;
+      const { labels: lowLabels, ...lowRest } = low;
+      expect(rest).toEqual(lowRest);
+      expect(labels).toEqual([...lowLabels, { code: "reading", ruleId: "TXS-14" }]);
+      expect(r.outcome.code).toBe("eligible");
+      expect(codes(r)).not.toContain("TXS-OQ26");
+      expect(securitiesStopOf(split, ctx)).toBeNull();
     }
-    expect(stopped).toBeInstanceOf(BlockedError);
-    expect(stopped).toMatchObject({ ruleId: "TXS-14", question: "TXS OQ26" });
-    expect(securitiesStopOf(split, ctx)).toEqual({ ruleId: "TXS-14", question: "TXS OQ26" });
-    const before = runSecuritiesBeforeTax(split, ctx);
-    expect(before.outcome).toEqual({ code: "listed-not-ranked", reason: "TXS-14", question: "TXS OQ26" });
-    expect(before.beforeTaxNominal).toBeCloseTo(gross(0.06), 4);
   });
 
   it("agree where A-03 and A-02 differ but both indices fall and every lot is a nominal gain: neither reading has an inflationary amount (F-09)", () => {
@@ -104,32 +104,6 @@ describe("both readings of TXS OQ26 (method §13)", () => {
     expect(r.taxAtExit).toBeCloseTo(0.25 * (gross(0.06) - amount), 2);
     expect(codes(r)).toContain("TXS-OQ26");
     expect(securitiesStopOf(falling, ctx)).toBeNull();
-  });
-
-  it("are read on the fund's own run: an account whose run agrees is still listed before tax where the fund's own run splits", () => {
-    // the fund's own run buys every month, and where the spread (A-08) is above a few months' growth its last lots are nominal losses,
-    // whose disallowed part is the fall of each reading's index (F-09); an account that buys whole units at a price about a year's deposits
-    // reach holds lots bought at least a few months before the sale, all gains, so its readings agree (A-02 = 0: the CPI does not move;
-    // the dollar falls)
-    const plan: SecuritiesInput = {
-      goal: { amountNow: 13_000, monthly: 1000, months: 30 },
-      market: { grossReturn: 0.02, inflation: 0, principalFxChange: -0.03 },
-      fund: { ...fif, halfSpread: 0.002 },
-      tariff: {},
-      profile: {},
-    };
-    const account: SecuritiesInput = { ...plan, wholeUnits: { price: 12_000 } };
-    expect(securitiesStopOf(plan, ctx)).toEqual({ ruleId: "TXS-14", question: "TXS OQ26" });
-    expect(runSecurities(account, ctx).outcome.code).toBe("eligible");
-    expect(securitiesStopOf(account, ctx)).toEqual({ ruleId: "TXS-14", question: "TXS OQ26" });
-    expect(runSecuritiesBeforeTax(account, ctx).outcome).toEqual({ code: "listed-not-ranked", reason: "TXS-14", question: "TXS OQ26" });
-  });
-
-  it("an Israeli fund's run before the exit tax rests on TXS-08 and TXS-09 for nothing taxed before the sale, never on TXF-11", () => {
-    const before = runSecuritiesBeforeTax(input({ principalFxChange: 0 }), ctx);
-    expect(ids(before)).toEqual(expect.arrayContaining(["TXS-08", "TXS-09"]));
-    expect(ids(before)).not.toContain("TXF-11");
-    expect(before.labels.map((l) => l.ruleId)).not.toContain("TXF-11");
   });
 
   it("is never blocked before a run: whether the readings split is the run's to say", () => {

@@ -1,5 +1,5 @@
 // The fund the engine runs for a fund record (`fundOf`): its fees, tracking difference, spread, promotions, distribution, domicile,
-// principal currency and unit price, read from `data/funds/`, with the record's distribution (A-10) and the exposure's F-107 inputs. The provider workbench and
+// principal currency, a Tel Aviv line's currency and unit price, read from `data/funds/`, with the record's distribution (A-10) and the exposure's F-107 inputs. The provider workbench and
 // the site build each fund they run through it. No I/O: the records arrive as data.
 import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/schema";
 import { comparedYears, trackingBeyondFees, variableForward, type GapList } from "../formulas/fund-gap.ts";
@@ -129,10 +129,11 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
     fund.sharePrice = price.value;
     fund.sharePriceCurrency = unitCode;
   }
-  if (kind === "tase-foreign-fund" && rec.tax_status.tase_foreign_fund_90pct_test?.value === true) fund.ninetyPercentTest = true;
   // F-04, D84: the index a Tel Aviv line's own annex states; a record of the same units bought abroad may carry it, and keeps TXF-03
   const stated = kind === "tase-foreign-fund" ? taxIndexStatementOf(rec) : undefined;
   if (stated) fund.statedIndex = stated;
+  // F-04, TXF OQ10: the record's own currency, whose exchange rate is one reading of the index of a Tel Aviv line whose annex states none
+  if (kind === "tase-foreign-fund") fund.recordCurrency = rec.currency === "NIS" ? "ILS" : rec.currency;
   // TXS-14, F-04: the principal currency the fund's own documents name; where its record says the status is not known (`value: null`), the
   // exposure's foreign currency as the candidate, so the run meets both readings rather than reading the gap as either answer
   const status = rec.tax_status.foreign_investment_fund;

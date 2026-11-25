@@ -1,11 +1,11 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
 import { BlockedError } from "@finance-tool/engine";
-import { accountSum, blockedReason, buildInvest, listReading, optionOpenRule, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
+import { accountSum, blockedReason, buildInvest, listReading, typedFundOpenRule, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered, type SiteValue } from "./value";
-import { invest as words } from "../copy";
+import { invest as words, numbers } from "../copy";
 
 // The page's data as built, but for the exchange rates: frozen at the ECB's rates of 16.11.2026 (units per euro) and dated today, so
 // the figures pinned below move with a fund's or a house's data, never with the daily rate refresh (which turned the check red on
@@ -201,69 +201,44 @@ describe("invest page computation", () => {
     expect(v.houses.some((h) => h.generic)).toBe(true);
   });
 
-  it("lists a foreign fund in Tel Aviv whose annex states no index with the open rule its tax rests on, with no price after tax at any house, never ranked; one whose annex states it is priced and ranked (F-04, TXF-04, D84)", () => {
-    // a fund the person types has no annex the site read: its kind stays on the open rule
-    expect(optionOpenRule(bundle, "tase-foreign")).toBe("TXF-04");
-    for (const o of ["il-tracking", "il-etf", "abroad"] as const) expect(optionOpenRule(bundle, o)).toBeNull();
+  it("prices a foreign fund in Tel Aviv whose annex states no index on the reading that leaves less, its figure marked as the site's reading of TXF-04; one whose annex states it is priced on its statement (F-04, TXF OQ10, D84)", () => {
     let stated = 0, unstated = 0;
     for (const id of ["index-sp500", "index-msci-acwi", "index-msci-world", "index-nasdaq100"]) {
       const v = buildInvest({ bundle, index: indexById(bundle, id)!, plan: plan() });
       const tase = v.options.find((o) => o.id === "tase-foreign")!;
       expect(tase.funds.length, id).toBeGreaterThan(0);
       for (const f of tase.funds) {
+        expect(f.reason, f.rec.id).toBeUndefined();
+        expect(f.best, f.rec.id).toBeDefined();
+        expect(pairCosts({ bundle, index: v.index, plan: plan(), fundId: f.rec.id, providerId: f.best!.providerId }), f.rec.id).not.toBeNull();
         if (f.rec.tax_ruling?.index) {
           stated++;
-          expect(f.reason, f.rec.id).toBeUndefined();
-          expect(f.beforeTax, f.rec.id).toBeUndefined();
-          expect(f.best?.open, f.rec.id).toBe(false);
-          expect(pairCosts({ bundle, index: v.index, plan: plan(), fundId: f.rec.id, providerId: f.best!.providerId }), f.rec.id).not.toBeNull();
+          expect(f.best!.value.doubt, f.rec.id).toBeUndefined();
         } else {
           unstated++;
-          expect(f.reason, f.rec.id).toEqual({ code: "rule-open", ruleId: "TXF-04" });
-          expect(f.best).toBeUndefined();
-          expect(Object.keys(f.byHouse)).toHaveLength(0);
-          expect(pairCosts({ bundle, index: v.index, plan: plan(), fundId: f.rec.id, providerId: "psagot" })).toBeNull();
+          // the plan's dollar stands still while prices rise, so the two readings split: the figure is the site's reading, on itself
+          expect(f.best!.value.labels, f.rec.id).toContainEqual({ code: "reading", ruleId: "TXF-04" });
+          expect(f.best!.value.doubt, f.rec.id).toBe(numbers.readingDoubt["TXF-04"]);
+          expect(f.best!.value.doubtRules, f.rec.id).toEqual(["TXF-04"]);
         }
       }
-      // an option of unstated funds alone has no way to rank, and never heads the page
-      if (tase.funds.every((f) => !f.rec.tax_ruling?.index)) {
-        expect(tase.bestWay, id).toBeNull();
-        expect(v.headline?.option, id).not.toBe("tase-foreign");
-      } else expect(tase.bestWay?.fund.rec.tax_ruling?.index, id).toBeDefined();
     }
     expect(stated).toBeGreaterThan(0);
     expect(unstated).toBeGreaterThan(0);
   });
 
-  it("gives a foreign fund in Tel Aviv its figures before tax at each house that sells it, apart from every price the page ranks (F-118, D84)", () => {
-    for (const id of ["index-sp500", "index-msci-acwi", "index-msci-world", "index-nasdaq100"]) {
-      const v = buildInvest({ bundle, index: indexById(bundle, id)!, plan: plan() });
-      const tase = v.options.find((o) => o.id === "tase-foreign")!;
-      for (const f of tase.funds.filter((x) => !x.rec.tax_ruling?.index)) {
-        expect(f.beforeTax?.ruleId, f.rec.id).toBe("TXF-04");
-        const houses = Object.values(f.beforeTax!.byHouse);
-        expect(houses.length, f.rec.id).toBeGreaterThan(0);
-        for (const at of houses) {
-          expect(at.left.computed_from?.formula).toBe("F-118");
-          expect(at.left.value).toBeCloseTo(at.leftN, 9);
-          expect(at.leftN).toBeGreaterThan(0);
-          expect(at.accountCost.computed_from?.formula).toBe("F-91");
-          expect(at.accountCost.value as number).toBeGreaterThan(0);
-          // a house abroad does not sell a fund in Tel Aviv
-          expect(v.providers.find((p) => p.id === at.providerId)!.foreign).toBe(false);
-        }
-      }
-      // never in a house's ranked entries, the stairs' ways or the headline: the houses read only `byHouse`
-      for (const h of v.houses) expect(h.best?.fund.option === "tase-foreign" && !h.best.fund.rec.tax_ruling?.index).toBe(false);
-    }
+  it("tells a fund the person types as a foreign fund in Tel Aviv of an open rule only where it distributes (F-04, TXF-04)", () => {
+    const line = bundle.funds.find((r) => r.id === "1183441")!;
+    expect(typedFundOpenRule(bundle, line, "tase-foreign")).toBeNull();
+    const fee = line.fees.fixed_management!;
+    const paying = { ...line, distribution_policy: "distributing" as const, distribution: { yield: { ...fee, value: 1.5 }, per_year: 4 as const } };
+    expect(typedFundOpenRule(bundle, paying as typeof line, "tase-foreign")).toBe("TXF-04");
   });
 
-  it("pins one fund's account cost: the S&P 500's Tel Aviv line at Psagot on the plan, run on the dollar its annex states (F-91, F-118, D84)", () => {
+  it("pins one fund's account cost: the S&P 500's Tel Aviv line at Psagot on the plan, run on the dollar its annex states (F-91, D84)", () => {
     // 6,000 NIS now and 400 a month for 20 years at 7% and CPI 2%; 1159250's record of 2026-11-07 (0.07% a year, F-107's US tax) and
     // Psagot's price list as the bundle holds it, its dollar sums at the frozen rates above. A change of either moves these figures:
-    // re-pin them with the data, never to fit. The account's fees are the 2,751 NIS F-118 gave the fund before its index was known: F-118
-    // says the figure F-91 gives once the index is known is the same, whichever index, where both runs buy the same way, as a Tel Aviv
-    // line always does (whole units).
+    // re-pin them with the data, never to fit.
     const v = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: plan() });
     const f = v.options.find((o) => o.id === "tase-foreign")!.funds.find((x) => x.rec.id === "1159250")!;
     const at = f.byHouse.psagot!;
@@ -278,18 +253,18 @@ describe("invest page computation", () => {
     expect(at.value.statements).toEqual([expect.objectContaining({ term: "tax-index", index: "fx", currency: "USD", page: 17, source: expect.objectContaining({ url: f.rec.tax_ruling!.source.url }) })]);
     // the account's cost before tax reads no tax index, and so no statement
     expect(at.cost.statements).toBeUndefined();
-    // the value before the exit tax reads no tax index either (F-118, F-91): what F-118 gives the same fund with no index stated is what
-    // is left after tax plus the state's part (an accumulating fund pays no tax along the way), within a shekel of rounding; the cash
-    // waiting for a whole unit is inside both, since the sale's value holds it (F-109)
-    const pair = pairCosts({ bundle, index: v.index, plan: plan(), fundId: "1159250", providerId: "psagot" });
-    if (!pair) throw new Error("Psagot prices 1159250's parts");
+    // with no index stated the same fund takes the reading that leaves less, so its figure is the lower of the two its annex could state
     const ruling = f.rec.tax_ruling;
-    if (!ruling) throw new Error("1159250's record reports its ruling");
+    if (!ruling?.index) throw new Error("1159250's record reports its ruling and its index");
     const { index: _stated, ...unstated } = ruling;
-    const withoutIndex = { ...bundle, funds: bundle.funds.map((r) => (r.id === "1159250" ? { ...r, tax_ruling: unstated } : r)) };
-    const before = buildInvest({ bundle: withoutIndex, index: v.index, plan: plan() }).options.find((o) => o.id === "tase-foreign")?.funds.find((x) => x.rec.id === "1159250")?.beforeTax?.byHouse.psagot;
-    if (!before) throw new Error("Psagot prices 1159250 before tax once its index is not stated");
-    expect(Math.abs((pair.left.value as number) + (pair.tax.value as number) - (before.left.value as number))).toBeLessThan(1);
+    const withRuling = (tax_ruling: typeof ruling) => ({ ...bundle, funds: bundle.funds.map((r) => (r.id === "1159250" ? { ...r, tax_ruling } : r)) });
+    const leftAt = (b: typeof bundle) => {
+      const x = buildInvest({ bundle: b, index: v.index, plan: plan() }).options.find((o) => o.id === "tase-foreign")?.funds.find((y) => y.rec.id === "1159250")?.byHouse.psagot;
+      if (!x || !("valueN" in x)) throw new Error("Psagot prices 1159250");
+      return x.valueN;
+    };
+    const onCpi = leftAt(withRuling({ ...ruling, index: { basis: "cpi", page: ruling.index.page, quote: ruling.index.quote, checked: ruling.index.checked } }));
+    expect(leftAt(withRuling(unstated as typeof ruling))).toBeCloseTo(Math.min(at.valueN, onCpi), 6);
   });
 
   it("an Israeli index has two options only", () => {
@@ -616,14 +591,10 @@ describe("what each figure's sheet lists", () => {
     // the run reads it: an income above the surtax's threshold adds the surtax to the tax on the gain (TXG-09)
     expect(high.tax.value as number).toBeGreaterThan(low.tax.value as number);
     expect(inputs(at(null).tax)[words.pair.incomeInput]).toBeUndefined();
-    // the costs before the tax they save, and a value before the exit tax (F-118), read no income
+    // the costs before the tax they save read no income
     for (const before of [high.baseValue, high.fund, high.remainder, ...high.account.map((l) => l.cost)]) expect(inputs(before)[words.pair.incomeInput]).toBeUndefined();
     const withIncome = plan({ income: 5_000_000, values: { ...plan().values, income: entered(5_000_000, "nis", t) }, currentAccounts: true });
     const v = buildInvest({ bundle, index: sp, plan: withIncome });
-    const tlv = v.options.find((o) => o.id === "tase-foreign")?.funds.find((x) => x.rec.id === "1183441")?.beforeTax?.byHouse.psagot;
-    expect(tlv).toBeDefined();
-    expect(inputs(tlv?.left ?? high.tax)[words.pair.incomeInput]).toBeUndefined();
-    expect(inputs(tlv?.accountCost ?? high.tax)[words.pair.incomeInput]).toBeUndefined();
     // what a list shows as left after the tax reads it
     const leumiFund = v.houses.find((h) => h.provider.id === "leumi")?.best;
     // an age on the device is listed beside it, since from 60 the brackets the gain falls into read both (F-42); never before the tax
@@ -719,18 +690,26 @@ describe("an Israeli fund that may be measured by a principal currency (F-04, TX
     return f;
   };
   const priced = (f: { best?: unknown; byHouse: Record<string, object> }) => f.best !== undefined && Object.values(f.byHouse).some((x) => "valueN" in x);
-  it("where A-03 and A-02 differ, both readings give the plan different taxes: listed before tax on TXS-14 with the question, never ranked", () => {
+  it("where A-03 and A-02 differ, both readings give the plan different taxes: the fund is priced on the one that leaves less, its figure marked as the site's reading of TXS-14", () => {
     const view = buildInvest({ bundle: twins, index: sp, plan: plan() });
+    const cpiOnly = at(view, known.rec.id);
     for (const id of [named, unknown]) {
       const f = at(view, id);
-      expect(f.reason, id).toEqual({ code: "rule-open", ruleId: "TXS-14", question: "TXS OQ26" });
-      expect(f.beforeTax?.ruleId, id).toBe("TXS-14");
-      expect(priced(f), id).toBe(false);
+      expect(f.reason, id).toBeUndefined();
+      expect(priced(f), id).toBe(true);
+      expect(f.best!.value.doubt, id).toBe(numbers.readingDoubt["TXS-14"]);
+      expect(f.best!.value.doubtRules, id).toEqual(["TXS-14"]);
+      // the CPI is one of its two readings, and the fund it copies is measured by the CPI alone: at every house, never more than that fund
+      for (const [house, x] of Object.entries(f.byHouse)) {
+        const y = cpiOnly.byHouse[house];
+        if ("valueN" in x && y && "valueN" in y) expect(x.valueN, `${id} ${house}`).toBeLessThanOrEqual(y.valueN + 1e-6);
+      }
     }
-    // the fund whose documents say it is not one is measured by the CPI alone, and ranked
-    expect(priced(at(view, known.rec.id))).toBe(true);
-    // whatever the records say, no collected fund whose status is open is ranked on this plan
-    for (const f of base.options.flatMap((o) => o.funds).filter((x) => x.rec.domicile === "IL" && x.rec.tax_status.foreign_investment_fund?.value !== false && x.rec.tax_status.foreign_investment_fund !== undefined)) expect(priced(f), f.rec.id).toBe(false);
+    expect(cpiOnly.best!.value.doubt).toBeUndefined();
+    // every collected fund whose status is open is priced on this plan, its figure marked (a Harel or Tachlit S&P 500 tracker among them)
+    const open = base.options.flatMap((o) => o.funds).filter((x) => x.rec.domicile === "IL" && x.rec.tax_status.foreign_investment_fund?.value !== false && x.rec.tax_status.foreign_investment_fund !== undefined && x.best);
+    expect(open.length).toBeGreaterThan(0);
+    for (const f of open) expect(f.best!.value.doubtRules, f.rec.id).toEqual(["TXS-14"]);
   });
   it("where the dollar moves as prices do (A-03 = A-02), both readings agree: the twins are ranked, each at the value of the fund they copy", () => {
     const view = buildInvest({ bundle: twins, index: sp, plan: plan(), assumptions: { fxChange: 2 } });

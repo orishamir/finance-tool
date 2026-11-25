@@ -56,10 +56,11 @@ export const labelWeight: Record<Label["code"], number> = {
 
 /**
  * Every rule the engine may label `reading`, some only when a condition holds (an index that fell below a deposit's, a payment
- * after the period): a page holds room for the reading mark on a row that cites one, so the mark never moves the screen when it
- * appears. A test holds this list to the engine's `label("reading", …)` calls.
+ * after the period), and the rule of every open reading whose split takes the cautious reading (`SplitPolicy`): a page holds room for the
+ * reading mark on a row that cites one, so the mark never moves the screen when it appears. A test holds this list to the engine's
+ * `label("reading", …)` calls and those open readings.
  */
-export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11", "TXK-07"];
+export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-04", "TXF-11", "TXH-11", "TXK-07", "TXS-14"];
 
 /**
  * Every flag code a ledger run can raise (`RunResult.flags`): the method gaps, assumptions, rules and open questions a page must say beside
@@ -68,7 +69,7 @@ export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11",
  */
 export const RUN_FLAG_CODES: readonly string[] = [
   "A-30", "BANK-35", "G-03", "G-07", "G-09", "G-10", "G-12", "G-13", "G-14", "G-16", "G-20", "G-21", "G-23", "G-27", "G-32",
-  "G-34", "G-36", "G-39", "KGL-OQ15", "PEN-08", "PEN-OQ7", "PF-13", "PF-OQ18", "TXF-21", "TXF-22", "TXF-27", "TXF-OQ7", "TXG-OQ17", "TXK-06", "TXK-26",
+  "G-34", "G-36", "G-39", "KGL-OQ15", "PEN-08", "PEN-OQ7", "PF-13", "PF-OQ18", "TXF-21", "TXF-22", "TXF-27", "TXF-OQ10", "TXF-OQ7", "TXG-OQ17", "TXK-06", "TXK-26",
   "TXP-03", "TXP-11", "TXP-OQ20", "TXS-18", "TXS-OQ26",
 ];
 
@@ -83,8 +84,8 @@ export type FundStatement = TaxIndexStatement;
 /**
  * F-04, D84: whether a fund's runs read the tax index its own annex states: only a TASE foreign fund's, and only one that pays nothing out.
  * A statement settles only the index: a fund that distributes stops on its distribution's open part whatever its annex states (G-35, TXF
- * open question 19: the run does not know its legal form), so its runs read none and stop on TXF-04 as an unstated one's do. The site's
- * labels say a statement by this same test.
+ * open question 19: the run does not know its legal form), so its runs read none and stop on TXF-04. The site's labels say a statement
+ * by this same test.
  */
 export function readsStatedIndex(kind: Fund["kind"], distributes: boolean): boolean {
   return kind === "tase-foreign-fund" && !distributes;

@@ -5,7 +5,7 @@
 import { paysAtPlanEnd } from "./plan-end";
 import { invest as investCopy } from "../copy";
 import { exposurePath, guidePath } from "./site-paths";
-import { fundOf, gapListOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, statedTaxIndexOf, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
+import { fundOf, gapListOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { feeAbsent, instrumentClassOf } from "./providers";
 import { isShekel } from "./fx";
 import {
@@ -357,15 +357,11 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
   }
   if (rec.currency !== "ILS" && rec.currency !== "NIS") missing.push(`${wrapperId}: fund "${rec.id}" is in ${rec.currency}; the exchange-rate change (A-03) and the start rate are not in P-05`);
   if (kind === "tase-foreign-fund") {
-    // F-04, D84: the index the fund's own annex states under its ruling, read as the indices page reads it (`fundOf`); a fund whose runs
-    // are made on it (one that pays nothing out, `statedTaxIndexOf`) needs no 90% test value, which only TXF-04's index reads
-    const stated = fundOf(rec, kind).fund.statedIndex;
-    if (stated) fund.statedIndex = stated;
-    const t = rec.tax_status.tase_foreign_fund_90pct_test;
-    if (t && typeof t.value === "boolean") {
-      fund.ninetyPercentTest = t.value;
-      feeValues.ninetyPercentTest = { ...t };
-    } else if (!statedTaxIndexOf(fund)) missing.push(`${wrapperId}: fund "${rec.id}" has no 90% test value (TXF-04)`);
+    // F-04, D84: the index the fund's own annex states under its ruling, and the record's currency, whose exchange rate is one reading of
+    // the index of a line whose annex states none (TXF OQ10), read as the indices page reads them (`fundOf`)
+    const built = fundOf(rec, kind).fund;
+    if (built.statedIndex) fund.statedIndex = built.statedIndex;
+    if (built.recordCurrency) fund.recordCurrency = built.recordCurrency;
   }
   // TXS-14, F-04: the fund's status as a foreign-investment fund, read as the indices page reads it (`fundOf`): the principal currency its
   // documents name, or, where its record says the status is not known, its index's foreign currency as the candidate; such a fund is run

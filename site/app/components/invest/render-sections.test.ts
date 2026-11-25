@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { taxIndexStatementOf } from "@finance-tool/engine";
-import { help, invest, leftOut, provenance } from "../../copy";
+import { invest, leftOut, numbers, provenance } from "../../copy";
 import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
@@ -407,40 +407,48 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
   });
-  it("a foreign fund in Tel Aviv stands in its own list under the funds, before tax, with why its tax is not known behind a caution \"?\" (F-118, D84)", () => {
+  it("a foreign fund in Tel Aviv whose annex states no index, and an Israeli fund whose status is open, wear the caution on their own figure, whose sheet says why; no note says it elsewhere (D84, F-04)", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const pick = pickOfHeadline(sp)!;
     const raw = lists(sp, bundle, plan, pick);
-    const text = shown(raw);
-    expect(text).toContain(invest.beforeTax.heading);
-    // why is behind the "?" beside the heading, not in sight
-    expect(raw).toContain(`aria-label="${help.markLabel.replace("{about}", invest.beforeTax.heading)}"`);
-    expect(text).not.toContain(invest.beforeTax.note["TXF-04"]!);
-    expect(text).toContain(invest.beforeTax.colLeft);
-    // the Invesco line's annex states no index (TXF-04 open); the iShares line's states the dollar, so it is ranked, not listed here (D84)
-    expect(allFunds(sp).find((x) => x.rec.id === "1159250")?.beforeTax).toBeUndefined();
-    for (const id of ["1183441"]) {
+    // the row's own markup, from its key to the next row's
+    const rowOf = (id: string) => { const a = raw.indexOf(`data-pick-key="${id}"`); const rest = raw.slice(a + 1); const b = rest.search(/data-pick-key=|data-case-of=/); return a < 0 ? "" : b < 0 ? rest : rest.slice(0, b); };
+    const caution = new RegExp(`<button[^>]*aria-label="[^"]*${numbers.doubt}[^"]*"`);
+    const cases = [
+      { id: "1183441", rule: "TXF-04" },
+      ...allFunds(sp).filter((f) => f.rec.domicile === "IL" && typeof f.rec.tax_status.foreign_investment_fund?.value === "string" && f.byHouse[pick.house] && "valueN" in f.byHouse[pick.house]!).slice(0, 1).map((f) => ({ id: f.rec.id, rule: "TXS-14" })),
+    ];
+    expect(cases.length).toBe(2);
+    for (const { id, rule } of cases) {
       const f = allFunds(sp).find((x) => x.rec.id === id)!;
-      const at = f.beforeTax!.byHouse[pick.house]!;
-      const row = fundRow(raw, id);
-      // its figure before tax at the chosen account, in place of a difference set against the pair; what the account charges is on its sheet
-      expect(row).toContain(fmt.nisWhole(at.leftN));
-      expect(row).not.toContain(fmt.nisWhole(at.accountCost.value as number));
-      expect(at.left.computed_from?.inputs[invest.beforeTax.costInput]).toEqual(at.accountCost);
-      // never chosen
-      expect(raw).toMatch(new RegExp(`aria-disabled="true"[^>]*data-pick-key="${id}"`));
+      const at = f.byHouse[pick.house];
+      if (!at || !("valueN" in at)) throw new Error(`${id} is priced at the chosen account`);
+      // the figure in its own row carries the caution mark
+      expect(rowOf(id), id).toMatch(caution);
+      // tapping it opens a sheet that says why, the site's reading, with the rule it rests on
+      const sheet = shown(html(createElement(ValueSheet, { value: at.value, exact: false, data, headId: "h", descId: "d" })));
+      expect(sheet, id).toContain(numbers.readingDoubt[rule]!);
+      expect(sheet, id).toContain(numbers.reading);
+      expect(at.value.doubtRules, id).toEqual([rule]);
     }
-    // the plain words of why stand only over a fund the chosen account gives no figure
+    // a fund whose annex states its index wears none
+    const stated = rowOf("1159250");
+    expect(stated).not.toBe("");
+    expect(stated).not.toMatch(caution);
+    // no list before tax and no note of the open index anywhere on the lists
+    const text = shown(raw);
+    expect(text).not.toContain(invest.beforeTax.heading);
     expect(text).not.toContain(invest.reasons.ruleOpen["TXF-04"]);
+    for (const id of ["TXF-04", "TXS-14"]) expect(text).not.toContain(numbers.readingDoubt[id]!);
   });
   it("a fund in Tel Aviv and abroad is counted once", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const funds = allFunds(sp).filter((f) => kindOf(f.rec) === "unhedged");
     const distinct = new Set(funds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size;
     expect(distinct).toBeLessThan(funds.length);
-    // a Tel Aviv line whose annex states no index has no price while its tax is open (F-04, TXF-04), so it is never chosen; one whose
-    // annex states its index is priced on it (D84)
-    expect(allFunds(sp).find((f) => f.rec.id === "1183441")?.reason).toEqual({ code: "rule-open", ruleId: "TXF-04" });
+    // a Tel Aviv line whose annex states no index is priced on the reading that leaves less (F-04, TXF OQ10); one whose annex states its
+    // index is priced on it (D84)
+    expect(allFunds(sp).find((f) => f.rec.id === "1183441")?.reason).toBeUndefined();
     const stated = allFunds(sp).find((f) => f.rec.id === "1159250");
     expect(stated).toBeDefined();
     expect(stated?.reason).toBeUndefined();

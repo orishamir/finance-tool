@@ -200,19 +200,20 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     // a made-up case of each policy, over two readings whose results differ in the value and in another output
     const cautious = { kind: "tax-index" as const, ruleId: "R-1", question: "R OQ1", onSplit: "cautious" as const, readings: [{ id: "principal" as const }, { id: "cpi" as const }] };
     const stopping = { ...cautious, onSplit: "stop" as const };
-    const byReading = { principal: { real: 90, nominal: 120, flags: [{ code: "F" }] }, cpi: { real: 95, nominal: 125, flags: [{ code: "C" }] } };
+    const none: { code: "reading"; ruleId: string }[] = [];
+    const byReading = { principal: { real: 90, nominal: 120, flags: [{ code: "F" }], labels: none }, cpi: { real: 95, nominal: 125, flags: [{ code: "C" }], labels: none } };
     const runOf = (open: typeof cautious | typeof stopping) => (c: typeof ctx) => {
       const choice = c.readings?.[open.question];
       if (choice === undefined) throw new OpenReadingError(open);
       if (choice === null) throw new BlockedError(open.ruleId, open.question);
       return byReading[choice as "principal" | "cpi"];
     };
-    const fields = { real: "value", nominal: "output", flags: "trail" } as const;
-    // the lower value's result, every field of it, and no flag of the question: the reading is the result's own
-    expect(acrossReadings(ctx, runOf(cautious), fields)).toEqual(byReading.principal);
+    const fields = { real: "value", nominal: "output", flags: "trail", labels: "trail" } as const;
+    // the lower value's result, every field of it, no flag of the question, and the site's reading of the case's rule
+    expect(acrossReadings(ctx, runOf(cautious), fields)).toEqual({ ...byReading.principal, labels: [{ code: "reading", ruleId: "R-1" }] });
     expect(() => acrossReadings(ctx, runOf(stopping), fields)).toThrow(BlockedError);
     // a type that declares no value has none to read
-    expect(() => acrossReadings(ctx, runOf(cautious), { real: "output", nominal: "output", flags: "trail" })).toThrow(/declares 0/);
+    expect(() => acrossReadings(ctx, runOf(cautious), { real: "output", nominal: "output", flags: "trail", labels: "trail" })).toThrow(/declares 0/);
   });
 
   it("compares a field a result gains unless its type declares it working: a new output counts until it is declared otherwise", () => {

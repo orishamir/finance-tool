@@ -220,7 +220,7 @@ export function buildInstrumentBundle(
   const tariffSnap = spec?.tariff ? latestOf(spec.tariff) : undefined;
   const depositRec = spec?.deposit_terms ? deposits.find((d) => d.id === spec.deposit_terms) : undefined;
   const ownerOf = (key: string, v: SiteValue): string =>
-    fundRec && (key.startsWith("fund") || key === "ninetyPercentTest") ? shortName("", fundRec.manager) : tariffSnap && !depositRec ? shortName(tariffSnap.id, tariffSnap.provider.name_he) : depositRec ? shortName(depositRec.bank, depositRec.bank) : publisherHe(v);
+    fundRec && key.startsWith("fund") ? shortName("", fundRec.manager) : tariffSnap && !depositRec ? shortName(tariffSnap.id, tariffSnap.provider.name_he) : depositRec ? shortName(depositRec.bank, depositRec.bank) : publisherHe(v);
   const ownOf = (v: SiteValue, key = ""): SiteValue => (v.state === "sourced" ? ownBy(v, ownerOf(key, v)) : v);
   const rate = common ? common.rate : published?.rate ? ownOf(published.rate, "rate") : undefined;
   const ceiling = common ? common.ceiling : published?.ceiling;

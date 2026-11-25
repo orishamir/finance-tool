@@ -3,8 +3,8 @@
 // cap (CS-18) or an entered rate, and money-market custody at a non-bank member (F-14). Expected values are the independent
 // check's (tests/golden/expected_calc.py), never the engine's; golden() confirms each one is printed in its scenario.
 import { describe, expect, it } from "vitest";
-import { BlockedError, memberKindOf, runProvident, runSecurities, type RunResult, type SecuritiesInput } from "../../src/index.ts";
-import { context, golden, loadRules, withTxf04AsTheLetterCopy } from "./harness.ts";
+import { memberKindOf, runProvident, runSecurities, type RunResult, type SecuritiesInput } from "../../src/index.ts";
+import { context, golden } from "./harness.ts";
 
 const ctx = context();
 const flagCodes = (r: RunResult) => r.flags.map((f) => f.code);
@@ -69,17 +69,17 @@ describe("Part E: follow-ups of 2026-10-26", () => {
   const s52 = (grossReturn: number): SecuritiesInput => ({
     goal: { amountNow: 100_000, monthly: 0, months: 60 },
     market: { grossReturn, inflation: 0.025, fxChange: -0.03 },
-    fund: { kind: "tase-foreign-fund", ninetyPercentTest: true, drag: { management: 0.0007, foreignWithholding: 0.0023 } },
+    fund: { kind: "tase-foreign-fund", recordCurrency: "USD", drag: { management: 0.0007, foreignWithholding: 0.0023 } },
     tariff: { ...s14Tariff, custody: { rate: 0.0015, everyMonths: 3 } },
     profile: {},
   });
 
-  // TXF-04 is open since 2026-11-07, so the data blocks a TASE foreign fund on the 90% test; S52's arithmetic runs on the letter's copy (harness)
-  const letterCtx = context(withTxf04AsTheLetterCopy(loadRules()));
+  // the fund's annex states no index, so TXF OQ10 holds it between the exchange rate and the CPI (F-04); S52's arithmetic is the exchange
+  // rate's, made under that reading
+  const fxCtx = { ...ctx, readings: { "TXF OQ10": "fx" as const } };
 
-  it("S52 (a) TASE foreign fund when the shekel strengthens: the real gain is the nominal gain (TXS-02, TXF-04)", () => {
-    expect(() => runSecurities(s52(0.06), ctx)).toThrow(BlockedError);
-    const r = runSecurities(s52(0.06), letterCtx);
+  it("S52 (a) TASE foreign fund when the shekel strengthens: the real gain is the nominal gain (TXS-02, TXF OQ10)", () => {
+    const r = runSecurities(s52(0.06), fxCtx);
     const g = golden("S52");
     g.value("real gain", r.detail.realGain, 30_052.89);
     g.value("tax at exit", r.taxAtExit, 7_513.22);
@@ -87,13 +87,15 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     g.value("real", r.real, 105_763.45);
     g.done();
     expect(r.detail.realGain!).toBeLessThanOrEqual(r.detail.nominalGain!);
-    // A TASE foreign fund takes the exchange rate as its index under TXF-04, not TXF-03 (which sends such a fund to TXF-04).
-    expect(ruleIds(r)).toEqual(expect.arrayContaining(["TXS-02", "TXF-04"]));
+    // A TASE foreign fund takes the exchange rate as its index as a reading of TXF-04, which gives the run nothing to read, not under TXF-03
+    // (which sends such a fund to TXF-04).
+    expect(ruleIds(r)).toContain("TXS-02");
+    expect(ruleIds(r)).not.toContain("TXF-04");
     expect(ruleIds(r)).not.toContain("TXF-03");
   });
 
   it("S52 (b) a nominal loss smaller than the currency's fall: none of it is allowable, and no tax", () => {
-    const r = runSecurities(s52(-0.01), letterCtx);
+    const r = runSecurities(s52(-0.01), fxCtx);
     const g = golden("S52");
     g.value("real gain", r.detail.realGain, -548.57);
     g.value("tax at exit", r.taxAtExit, 0);

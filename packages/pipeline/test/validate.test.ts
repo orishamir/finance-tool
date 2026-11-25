@@ -312,6 +312,13 @@ describe("a fund's stated tax index (data-schema §3.5 tax_ruling.index, F-04)",
       expect.arrayContaining([expect.stringMatching(/exposure index-none has no file with a currency/)]),
     );
   });
+  it("holds a Tel Aviv line with no stated index to its exposure's currency, one reading of its tax index (TXF OQ10); a shekel line and a fund bought abroad are not held", () => {
+    const line = { ...fund, trading_currency_on_tase: "NIS" };
+    expect(messages(line)).toEqual([]);
+    expect(messages({ ...line, currency: "EUR" })).toEqual([expect.stringMatching(/the record's currency EUR, one reading of its tax index \(TXF OQ10\), is not the exposure's currency USD/)]);
+    expect(messages({ ...line, currency: "NIS" })).toEqual([]);
+    expect(messages({ ...fund, currency: "EUR" })).toEqual([]);
+  });
 });
 
 describe("P-05 instruments map", () => {
