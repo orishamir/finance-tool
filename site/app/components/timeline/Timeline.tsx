@@ -3,7 +3,7 @@
 import { useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { paidInAsEntered, type P05Input } from "@finance-tool/engine";
 import type { ParameterRecord } from "@finance-tool/schema";
-import { buttons, computedInputs as ci, flags, guide as copy, guideBlocks, provenance as provCopy, system, values as valuesCopy } from "../../copy";
+import { buttons, computedInputs as ci, flags, guide as copy, guideBlocks, invest as investCopy, provenance as provCopy, system, values as valuesCopy } from "../../copy";
 import { p05Number, p05Range, p05Value, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
 import { fmt, nisShown } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
@@ -124,6 +124,7 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
       [ci.inflation]: inputValue("A-02"),
     };
     const feeInputs: Record<string, SiteValue> = {};
+    const ceilingInput: Record<string, SiteValue> = {};
     // a provident list names its fees by their own labels below (in the discount period and after it), so they are not listed twice
     if (bundle.feeValues.balance && !bundle.feeValues.listBalance && !bundle.feeValues.discountBalance) feeInputs[ci.balanceFee] = bundle.feeValues.balance;
     if (bundle.feeValues.deposit && !bundle.feeValues.listDeposit && !bundle.feeValues.discountDeposit) feeInputs[ci.depositFee] = bundle.feeValues.deposit;
@@ -131,12 +132,14 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
       const v = bundle.feeValues[key];
       if (!v || typeof v.value !== "number") continue;
       const per = custodyPeriodWord(bundle, key, v);
-      feeInputs[feeLabel(per ? `${termLabel(bundle, key, label)} ${per}` : termLabel(bundle, key, label), feeYear(v))] = v;
+      const name = feeLabel(per ? `${termLabel(bundle, key, label)} ${per}` : termLabel(bundle, key, label), feeYear(v));
+      feeInputs[name] = v;
+      // a current account's interest, and so its tax, stops at the balance ceiling (F-26, BANK-09)
+      if (key === "balanceCeiling") ceilingInput[name] = v;
     }
     const rules = rulesUsed(timeline);
     const taxRate = feeRule("TXK-07", "rate");
     const yearValues = (p: YearPoint, m: Mode) => {
-      const div = m === "real" ? p.index : 1;
       const yearText = p.year === 0 ? copy.readout.today : `${copy.readout.year} ${p.year}`;
       // what was paid in: in nominal shekels each deposit rises with the inflation (A-04, F-05); in today's money each is deflated at its
       // own month (F-06), which gives back the deposit as entered, so that figure reads no inflation: F-106's sum in each year the run took
@@ -147,9 +150,18 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
       const whole = Math.abs(p.paidInReal - asEntered) < 0.5;
       const contributions = m === "real" ? computed(p.paidInReal, "nis", whole ? "F-106" : "F-06", whole ? paid : { ...paid, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` }) : computed(p.paidIn, "nis", "F-05", { ...paid, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` });
       // the fees by type over the years are a series of the run (F-67): a balance fee is a share of a balance the whole plan grows
-      const fees = computed(m === "real" ? p.feesReal : p.fees, "nis", "F-67", { ...inputs, ...feeInputs }, { today, rules: rules.filter((r) => r.id.startsWith("PF-") || r.id.startsWith("KGL-1")), flags: timeline.flags.filter((f) => f === "G-14" || f === "PF-13"), about: `${bundle.terms.tariff ? ci.about.feesTariff : ci.about.fees} ${p.year}` });
-      const gross = computed(p.grossBalance / div, "nis", "F-08", { ...inputs, ...feeInputs }, { today, rules, about: `${ci.grossBalance}, ${copy.readout.year} ${p.year}` });
-      const realGainInputs: Record<string, SiteValue> = { [ci.grossBalance]: gross, [ci.paidIn]: contributions };
+      // each year is its own run of that many years (`runTimeline`), so its figures list that year, not the horizon
+      const yearIn = p.year === horizonYears ? inputValue("horizon_years") : enteredValue(p.year, "years", today);
+      const yearInputs: Record<string, SiteValue> = { ...inputs, [ci.years]: yearIn };
+      // the age and the income the year's tax rested on (the age-60 brackets, F-42; the surtax, F-43): listed only where they changed it
+      const profile: Record<string, SiteValue> = {
+        ...(p.profileUsed.includes("age") && state.age !== null ? { [investCopy.pair.ageInput]: enteredValue(state.age, "years", today, ci.age) } : {}),
+        ...(p.profileUsed.includes("income") ? { [investCopy.pair.incomeInput]: p05Value(bundle.p05, "annual_income") } : {}),
+      };
+      const fees = computed(m === "real" ? p.feesReal : p.fees, "nis", "F-67", { ...yearInputs, ...feeInputs }, { today, rules: rules.filter((r) => r.id.startsWith("PF-") || r.id.startsWith("KGL-1")), flags: timeline.flags.filter((f) => f === "G-14" || f === "PF-13"), about: `${bundle.terms.tariff ? ci.about.feesTariff : ci.about.fees} ${p.year}` });
+      // the real gain is the run's own, deposit by deposit (F-44: after each deposit's fee, at a falling CPI at its amount; F-09: lot by lot,
+      // after the spread and the fees the units sold paid): no two figures shown subtract to it, so its sheet lists what the run reads
+      const realGainInputs: Record<string, SiteValue> = { ...yearInputs, ...feeInputs };
       // the real gain by the record's own exit formula (F-44 the provident fund for investing, F-46 the study fund, F-50 child savings);
       // a security's is F-09's per-lot rule, which F-40 taxes
       const realGainFormula = bundle.record.tax_at_exit.formula === "F-40" ? "F-09" : bundle.record.tax_at_exit.formula;
@@ -160,15 +172,19 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
       // a cash-like page taxes the interest as it is paid (F-21, F-24, F-26): the tax rests on the amount, the deposits, the years and the
       // rate, and on the inflation only for a CPI-linked deposit, whose real interest is taxed
       if (cash && Object.keys(taxInputs).length === 0) {
-        Object.assign(taxInputs, { [ci.amountNow]: inputs[ci.amountNow]!, ...(lumpSum ? {} : { [ci.monthly]: inputs[ci.monthly]! }), [ci.years]: inputs[ci.years]!, [returnLabel]: inputs[returnLabel]! });
-        if (bundle.terms.deposit?.linkage === "cpi") taxInputs[ci.inflation] = inputs[ci.inflation]!;
+        Object.assign(taxInputs, { [ci.amountNow]: inputs[ci.amountNow]!, ...(lumpSum ? {} : { [ci.monthly]: inputs[ci.monthly]! }), [ci.years]: yearIn, [returnLabel]: inputs[returnLabel]! });
+        Object.assign(taxInputs, ceilingInput);
+        // in today's money each month's tax is deflated at its own month's index, so the figure reads the inflation too
+        // and the monthly deposits rise with prices (A-04, F-05), so the interest they earn does too
+        if (bundle.terms.deposit?.linkage === "cpi" || m === "real" || !lumpSum) taxInputs[ci.inflation] = inputs[ci.inflation]!;
       }
+      Object.assign(taxInputs, profile);
       const tax = computed(m === "real" ? p.taxReal : p.taxDuring + p.taxAtExit, "nis", bundle.record.tax_at_exit.formula, taxInputs, { today, rules: rules.filter((r) => r.id.startsWith("TX")), flags: timeline.flags.filter((f) => f !== "G-14" && f !== "PF-13"), labels: timeline.labels, about: `${ci.about.tax} ${p.year}` });
-      const net = computed(m === "real" ? p.real : p.nominal, "nis", "F-67", { ...inputs, [bundle.terms.tariff ? ci.feesTariff : ci.fees]: fees, [ci.taxAtExit]: tax }, { today, rules, flags: timeline.flags, labels: timeline.labels, about: p.year === horizonYears ? (bundle.terms.tariff ? ci.about.headlineTariff : ci.about.headline) : `${ci.about.net} ${p.year}` });
+      const net = computed(m === "real" ? p.real : p.nominal, "nis", "F-67", { ...yearInputs, ...profile, [bundle.terms.tariff ? ci.feesTariff : ci.fees]: fees, [ci.taxAtExit]: tax }, { today, rules, flags: timeline.flags, labels: timeline.labels, about: p.year === horizonYears ? (bundle.terms.tariff ? ci.about.headlineTariff : ci.about.headline) : `${ci.about.net} ${p.year}` });
       return { yearText, contributions, fees, tax, net };
     };
     return { inputs, yearValues };
-  }, [timeline, state.entered, ownRate, mode, bundle, today, horizonYears, lumpSum]);
+  }, [timeline, state.entered, state.age, ownRate, mode, bundle, today, horizonYears, lumpSum]);
 
   const points = useMemo<ChartPoint[]>(() => {
     if (timeline.kind !== "ok") return [];

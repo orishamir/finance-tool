@@ -22,8 +22,29 @@ export interface Profile {
 
 export const otherIncomeOf = (p: Profile) => p.otherIncome ?? p.annualIncome ?? 0;
 
+/** Records on the run's book that the person's income changed a figure (`RunResult.profileUsed`), where the profile holds one. */
+function incomeUsed(book: RuleBook, p: Profile): void {
+  if (otherIncomeOf(p) > 0) book.profile("income");
+}
+
+/**
+ * Records that the age-60 brackets (F-42) lowered a tax below the flat rate: the run rests on the age, which brought them in, and on the
+ * income, above which the slice starts. Brackets that give the flat rate (an income above the 20% band, a gain of nothing, A-14 off) change
+ * nothing, and are not recorded.
+ */
+export function sixtyLowered(book: RuleBook, profile: Profile, tax: number, flat: number): void {
+  if (tax >= flat - 1e-9) return;
+  book.profile("age");
+  incomeUsed(book, profile);
+}
+
+/** Whether the person reaches the age-60 rules' age (TXG-04) in the tax year containing month m. */
+export function reachesSixty(book: RuleBook, profile: Profile, month: number, firstMonth = 1): boolean {
+  return reachesAgeInYear(profile, month, book.amount("TXG-04", "age"), firstMonth);
+}
+
 /** Whether the person reaches the age in the tax year containing month m (TXG-04: "reached 60 in the tax year"). */
-export function reachesAgeInYear(profile: Profile, month: number, age: number, firstMonth = 1): boolean {
+function reachesAgeInYear(profile: Profile, month: number, age: number, firstMonth = 1): boolean {
   if (profile.ageAtStart === undefined) return false;
   // Whole years at the start, birthday unknown: the age at the end of that tax year is at least this.
   return profile.ageAtStart + Math.floor(lastMonthOfTaxYear(month, firstMonth) / 12) >= age;
@@ -36,19 +57,21 @@ export function reachesAgeInYear(profile: Profile, month: number, age: number, f
  */
 export function maxRateTax(book: RuleBook, profile: Profile, month: number, income: number, rate: number, firstMonth = 1) {
   const withheld = rate * Math.max(0, income);
-  if (!reachesAgeInYear(profile, month, book.amount("TXG-04", "age"), firstMonth)) return { tax: withheld, withheld, atBrackets: false };
+  if (!reachesSixty(book, profile, month, firstMonth)) return { tax: withheld, withheld, atBrackets: false };
   book.cite("TXS-23");
   book.cite("TXG-07");
   // F-119: the brackets of the tax year the income falls in
   const brackets = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, income), book.inYear(taxYearOf(month, firstMonth)).brackets("TXG-04", "brackets"), rate);
-  return { tax: profile.refundClaimed === false ? withheld : brackets, withheld, atBrackets: true };
+  const tax = profile.refundClaimed === false ? withheld : brackets;
+  sixtyLowered(book, profile, tax, withheld);
+  return { tax, withheld, atBrackets: true };
 }
 
 /**
  * F-43 Surtax owed because of `income` in tax year `year` of the run's grid (`taxYearOf`), in which `alreadyThisYear` of special-rate
  * income from the same run has been received: the surtax on the total less the surtax on what came before, at that year's threshold (F-119).
  */
-export function surtaxOn(book: RuleBook, profile: Profile, income: number, alreadyThisYear: number, year: number) {
+export function surtaxOn(book: RuleBook, profile: Profile, income: number, alreadyThisYear: number, year: number, markIncome = true) {
   const ofYear = book.inYear(year);
   const at = (x: number) =>
     surtax(
@@ -60,6 +83,8 @@ export function surtaxOn(book: RuleBook, profile: Profile, income: number, alrea
     );
   const before = at(Math.max(0, alreadyThisYear));
   const after = at(Math.max(0, alreadyThisYear) + Math.max(0, income));
+  // a caller whose `profile` holds an income it made up (F-47's 12 × salary) says so with `markIncome` and records the person's own itself
+  if (markIncome && after.general - before.general + after.onCapital - before.onCapital > 0) incomeUsed(book, profile);
   return { general: after.general - before.general, onCapital: after.onCapital - before.onCapital };
 }
 
@@ -273,6 +298,7 @@ export class Tally {
       outcome: r.outcome ?? { code: "eligible" },
       formulas: r.formulas,
       rules: book.used(),
+      profileUsed: book.profileUsed(),
       ...(this.statements.length ? { statements: this.statements } : {}),
       ...(this.grows ? { feesCarried: Object.fromEntries(Object.entries(this.carried).map(([k, v]) => [k, v * this.growth + this.carriedTax[k as FeeType]])) as Record<FeeType, number> } : {}),
       ...(this.grows && this.waits ? { waitingCarried: this.waited * this.growth + this.waitedTax } : {}),

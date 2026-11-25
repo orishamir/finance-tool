@@ -94,9 +94,14 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const inflationEntry: Record<string, SiteValue> = inflationPct ? { [copy.common.inputNames.inflation]: inflationPct } : {};
   const deposits: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? { ...ownShareEntry, ...employerShareEntry } : monthlyEntry) };
   const yearEntry = { [story.yearName]: typed(year, "years", today, story.yearName) };
+  // an employee's deposits count only up to the determining salary (TXH-02), which stays while the salary rises with prices: the runs rest on
+  // it where the salary is above it today or passes it within the strip (`studyStanding`'s `grows`)
+  const capEntry: Record<string, SiteValue> = cap ? { [copy.hishtalmut.inputNames.cap]: cap } : {};
+  const capBinds = isEmployee && !!cap && (income > Number(cap.value) || !!standing?.grows);
   // the run's inputs before the year it stops at: the deposits, the return, inflation and the balance fee
   const runIn: Record<string, SiteValue> = {
     ...deposits,
+    ...(capBinds ? capEntry : {}),
     [copy.common.inputNames.ret]: returnIn,
     ...inflationEntry,
     ...(feePick !== null ? { [story.fields.fee]: typed(feePick, "pct_per_year", today, story.fields.fee) } : trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
@@ -109,7 +114,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const ownIn: Record<string, SiteValue> = { ...(isEmployee ? { ...incomeEntry, ...ownShareEntry } : monthlyEntry), ...yearEntry };
   const extraIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : monthlyEntry), ...yearEntry };
   // the tax paid from the salary on the employer's money above the limit: the limit stays while the salary follows prices (F-96)
-  const salaryTaxIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : {}), ...inflationEntry, ...yearEntry };
+  const salaryTaxIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? { ...employerShareEntry, ...capEntry } : {}), ...inflationEntry, ...yearEntry };
   // each figure carries the rules of the runs it comes from: the year picked, the lock's end, the year before it, the strip's last year
   const runsAt = (y: number) => (y >= 1 && y <= YEARS ? (years[y - 1]?.runs ?? []) : []);
   const rules = rulesOfRuns(picked.runs);
@@ -167,10 +172,10 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       ? {
           more: nis(wait.more, story.about.waitMore, {
             [story.inputs.lockNet]: lockNet,
-            [story.inputs.lockPaid]: paidValue(paidIn(lockSlice), story.about.lockPaid, lockIn),
+            [story.inputs.lockPaid]: paidValue(paidIn(lockSlice), story.about.lockPaid, { ...deposits, ...(lockYears ? { [copy.hishtalmut.inputNames.lockYears]: lockYears } : {}) }),
             [story.inputs.lockSalaryTax]: nis(lockSlice.taxFromSalary, story.about.lockSalaryTax, lockIn, lockRules),
             [story.inputs.left]: leftValue,
-            [story.inputs.paid]: paidValue(paidIn(slice), story.about.paid, common),
+            [story.inputs.paid]: paidValue(paidIn(slice), story.about.paid, { ...deposits, ...yearEntry }),
             [story.inputs.salaryTax]: nis(slice.taxFromSalary, story.about.taxSalary),
           }, bothRules),
           saved: nis(wait.saved, story.about.taxSaved, { [story.inputs.tax]: nis(atWithdrawal(slice), story.about.taxAtWithdrawal), [story.inputs.lockTax]: nis(atWithdrawal(lockSlice), story.about.lockTax, lockIn, lockRules) }, bothRules),
@@ -229,8 +234,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   // F-97 stands the deposits against the limit: an employee's share of the salary up to the ceiling (TXH-02, which counts only above it),
   // a self-employed person's yearly benefited amount (TXH-08); the year a deposit crosses it also rests on inflation, since the deposits
   // rise with prices and the ceiling does not
-  const capEntry: Record<string, SiteValue> = cap ? { [copy.hishtalmut.inputNames.cap]: cap } : {};
-  const limitEntry: Record<string, SiteValue> = isEmployee ? (cap && income > Number(cap.value) ? capEntry : {}) : selfBenefited ? { [copy.hishtalmut.inputNames.selfBenefited]: selfBenefited } : {};
+  // the strip's last year is above the ceiling by a salary risen with prices, so it rests on the inflation too
+  const limitEntry: Record<string, SiteValue> = isEmployee ? (capBinds ? { ...capEntry, ...inflationEntry } : {}) : selfBenefited ? { [copy.hishtalmut.inputNames.selfBenefited]: selfBenefited } : {};
   const standingIn: Record<string, SiteValue> = { ...deposits, ...limitEntry };
   const crossIn: Record<string, SiteValue> = { ...deposits, ...(isEmployee ? capEntry : limitEntry), ...inflationEntry };
   // F-97 reads the strip's last year, whose runs hold every deposit (studyStanding)

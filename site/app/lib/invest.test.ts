@@ -653,10 +653,12 @@ describe("what each figure's sheet lists", () => {
     return pc;
   };
 
-  it("the tax lists the income the run tests the surtax on (F-43), which moves it; a figure before any tax lists none", () => {
+  it("the tax lists the income where it moves the tax, through the surtax (F-43) or the brackets from 60 (F-42); a figure before any tax lists none", () => {
     const at = (income: number | null) => leumiPair(plan({ income, values: { ...plan().values, ...(income === null ? {} : { income: entered(income, "nis", t) }) }, currentAccounts: true }));
     const low = at(1), high = at(5_000_000);
-    expect(inputs(low.tax)[words.pair.incomeInput]?.value).toBe(1);
+    // an income whose surtax test the gain never passes changes nothing, so it is not listed
+    expect(inputs(low.tax)[words.pair.incomeInput]).toBeUndefined();
+    expect(inputs(low.left)[words.pair.incomeInput]).toBeUndefined();
     expect(inputs(high.tax)[words.pair.incomeInput]?.value).toBe(5_000_000);
     expect(inputs(high.left)[words.pair.incomeInput]).toBeDefined();
     // the run reads it: an income above the surtax's threshold adds the surtax to the tax on the gain (TXG-09)
@@ -671,7 +673,12 @@ describe("what each figure's sheet lists", () => {
     // an age on the device is listed beside it, since from 60 the brackets the gain falls into read both (F-42); never before the tax
     const aged = leumiPair(plan({ age: 64, income: 100_000, values: { ...plan().values, income: entered(100_000, "nis", t), age: entered(64, "years", t) }, currentAccounts: true }));
     expect(inputs(aged.tax)[words.pair.ageInput]?.value).toBe(64);
+    expect(inputs(aged.tax)[words.pair.incomeInput]?.value).toBe(100_000);
     expect(inputs(aged.fund)[words.pair.ageInput]).toBeUndefined();
+    // an age that does not reach 60 by the sale changes nothing, so neither it nor an income below the surtax is listed
+    const young = leumiPair(plan({ age: 25, income: 144_000, values: { ...plan().values, income: entered(144_000, "nis", t), age: entered(25, "years", t) }, currentAccounts: true }));
+    expect(inputs(young.left)[words.pair.ageInput]).toBeUndefined();
+    expect(inputs(young.left)[words.pair.incomeInput]).toBeUndefined();
     expect(inputs(high.tax)[words.pair.ageInput]).toBeUndefined();
     expect(leumiFund?.price && inputs(leumiFund.price.value)[words.pair.incomeInput]?.value).toBe(5_000_000);
   });

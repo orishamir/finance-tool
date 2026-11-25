@@ -4,7 +4,7 @@
 // open rule (D10), or the reading that leaves the holder less stands, labelled the site's cautious reading of the rule. A tax-index case
 // also names the site's own reading of the law (`TaxIndexOpenReading.siteReading`, D119), which a fund whose documents the site read is run
 // under alone, so its run never meets the case.
-import type { UsedRule } from "./resolver.ts";
+import type { ProfileInput, UsedRule } from "./resolver.ts";
 import { labelWeight, type CautiousLabel, type FieldRole, type Flag, type Label, type NotKnown, type Outcome, type ResultFields, type RunContext } from "./result.ts";
 import type { YearlyMove } from "./formulas/indexation.ts";
 import { assertNever } from "@finance-tool/schema";
@@ -264,7 +264,7 @@ export function mergedRules(results: readonly { rules?: readonly UsedRule[] }[])
  * case's rule, or the reading that stopped where the outcomes differ (`cautiousAcross`). Where they agree, the first reading's result stands
  * with the flags, labels and rules of every reading merged (`mergedFlags`, `mergedLabels`, `mergedRules`), flagged with the question.
  */
-export function acrossReadings<R extends { flags: Flag[]; labels?: Label[]; rules?: UsedRule[]; outcome: Outcome }>(ctx: RunContext, run: (ctx: RunContext) => R, fields: ResultFields<R>): R {
+export function acrossReadings<R extends { flags: Flag[]; labels?: Label[]; rules?: UsedRule[]; profileUsed?: ProfileInput[]; outcome: Outcome }>(ctx: RunContext, run: (ctx: RunContext) => R, fields: ResultFields<R>): R {
   /**
    * What a split between the readings of the case `e` met does, decided before they are explored: under `stop`, a split makes the run with
    * the question stopping it; under `cautious`, the reading that leaves the holder less stands (`cautiousAcross`). Each gives null where the
@@ -300,7 +300,9 @@ export function acrossReadings<R extends { flags: Flag[]; labels?: Label[]; rule
       // the readings agree; the caveats of every reading stand beside the result, with the question's own flag
       const code = readingFlag(q);
       const flags = mergedFlags([...results, { flags: [{ code }] }]);
-      return { ...first, flags, ...(first.labels ? { labels: mergedLabels(results) } : {}), ...(first.rules ? { rules: mergedRules(results) } : {}) };
+      // what any reading rested on of the person's age and income stands too
+      const profileUsed = first.profileUsed ? { profileUsed: (["age", "income"] as const).filter((x) => results.some((r) => r.profileUsed?.includes(x))) } : {};
+      return { ...first, flags, ...(first.labels ? { labels: mergedLabels(results) } : {}), ...(first.rules ? { rules: mergedRules(results) } : {}), ...profileUsed };
     }
   };
   return explore(ctx.readings ?? {});

@@ -110,7 +110,14 @@ export interface RuleBook {
   inYear(year: number): RuleBook;
   /** F-119: the calendar years after a freeze in which an indexed figure was read (method G-36), in order. */
   indexedYears(): number[];
+  /** Records that the person's age or income changed what the run computed (A-12): a rule it brings in applied. */
+  profile(input: ProfileInput): void;
+  /** The profile inputs `profile` recorded, in a fixed order. */
+  profileUsed(): ProfileInput[];
 }
+
+/** A taxpayer input a run can rest on (A-12): the age at the start, the yearly income. */
+export type ProfileInput = "age" | "income";
 
 /** F-119, F-120: what a ledger tells its book so a figure can be read in a later tax year: the run's CPI assumption (A-02, F-03). */
 export interface RunYears {
@@ -137,6 +144,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
   const used = new Map<string, UsedRule>();
   const extraLabels: Label[] = [];
   const indexed = new Set<number>();
+  const profileUsed = new Set<ProfileInput>();
 
   function rule(id: string): RuleRecord {
     const r = byId.get(id);
@@ -254,6 +262,10 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     },
     inYear: (year) => bookFor(runYear + (years?.startsAfter ?? 0) + year - 1),
     indexedYears: () => [...indexed].sort((a, b) => a - b),
+    profile(input) {
+      profileUsed.add(input);
+    },
+    profileUsed: () => (["age", "income"] as const).filter((x) => profileUsed.has(x)),
     };
     return self;
   }

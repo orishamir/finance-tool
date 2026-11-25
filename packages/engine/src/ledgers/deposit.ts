@@ -248,6 +248,7 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
           )
         : 0;
       deductionUsed += deduction;
+      if (deduction > 0) book.profile("income");
       const owed = linked ? maxRateTax(book, profile, m, yearTaxable - deduction, rate, first) : { tax: rate * (yearTaxable - deduction), atBrackets: false };
       if (owed.atBrackets) tally.flag("G-21");
       const refund = refundClaimed ? yearWithheld - owed.tax : 0;

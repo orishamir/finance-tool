@@ -75,7 +75,8 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   const earlyAge = fact(data, "earlyAge");
   const ceiling = fact(data, "comprehensiveCeiling");
   // each part of the deposit is its own legal rate on min(salary, average wage) (F-67, PEN-03, PEN-04): its sheet names that rate, not the other two
-  const wageIn: Record<string, SiteValue> = { [copy.pension.salary]: salaryIn, ...(avgWage ? { [copy.pension.inputNames.avgWage]: avgWage } : {}) };
+  // the average wage takes part only where the salary is above it (PEN-04)
+  const wageIn: Record<string, SiteValue> = { [copy.pension.salary]: salaryIn, ...(avgWage && salary > Number(avgWage.value) ? { [copy.pension.inputNames.avgWage]: avgWage } : {}) };
   const youIn: Record<string, SiteValue> = { ...wageIn, ...(employeePct ? { [copy.pension.inputNames.employee]: employeePct } : {}) };
   const employerIn: Record<string, SiteValue> = { ...wageIn, ...(employerPct ? { [copy.pension.inputNames.employer]: employerPct } : {}) };
   const severanceIn: Record<string, SiteValue> = { ...wageIn, ...(severancePct ? { [copy.pension.inputNames.severance]: severancePct } : {}) };

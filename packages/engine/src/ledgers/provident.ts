@@ -9,7 +9,7 @@ import { annualToMonthly, contributions, cpiPath, taxYearOf, type Goal } from ".
 import { BlockedError, RecordInputError, ruleBook } from "../resolver.ts";
 import { acrossReadings } from "../open-readings.ts";
 import { RUN_RESULT_FIELDS, type ResultFields, type Outcome, type RunContext, type RunResult } from "../result.ts";
-import { exitTax, otherIncomeOf, reachesAgeInYear, surtaxOn, Tally, unlessBlocked, type Profile } from "./common.ts";
+import { exitTax, otherIncomeOf, reachesSixty, sixtyLowered, surtaxOn, Tally, unlessBlocked, type Profile } from "./common.ts";
 
 export interface ProvidentInput {
   wrapper: "kupat-gemel-lehashkaa" | "keren-hishtalmut";
@@ -120,6 +120,9 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       const reached = 12 * (book.amount("PEN-26", "retirement_age_men") - profile.ageAtStart);
       const short = Math.max(h.clockStartMonth + 12 * book.amount("TXH-10", "lock_years"), reached);
       if (short < lockMonth) {
+        // the age changes the run only where the six years end after the horizon and the short lock moves the exit: not where both run
+        // past it with an early withdrawal opted into, which exits at the horizon either way
+        if (lockMonth > goal.months && !(h.earlyWithdrawal && short > goal.months)) book.profile("age");
         lockMonth = short;
         book.cite("TXH-10");
         book.label("reading", "KH-12");
@@ -197,6 +200,7 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       throw new RecordInputError("profile.annualIncome is missing: a self-employed study fund's deduction (TXH-05, F-30) needs the person's income");
     } else {
       const income = profile.annualIncome;
+      book.profile("income");
       deductionCap = book.rate("TXH-05", "deduction_pct") * Math.min(income, book.amount("TXH-05", "income_ceiling"));
       const outlay = C.map((c, m) => (m === 0 || (m <= goal.months && due(m)) ? c : 0));
       // F-119: each tax year's ceiling and brackets
@@ -367,12 +371,13 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
     // (A-14 off) the run keeps the flat 25% and flags the relief it leaves out (TXK-06); with a 25% withholding that is the tax
     // withheld (until the record read 20% and this figure was called an upper bound; golden S51 is unchanged).
     let incomeTax = flatTax;
-    if (reachesAgeInYear(profile, T, book.amount("TXG-04", "age"), first)) {
+    if (reachesSixty(book, profile, T, first)) {
       book.cite("TXG-07");
       formulas.push("F-42");
       if (profile.refundClaimed === false) tally.flag("TXK-06");
       else {
         incomeTax = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, real), book.inYear(taxYearOf(T, first)).brackets("TXG-04", "brackets"), realRate);
+        sixtyLowered(book, profile, incomeTax, flatTax);
         book.cite("TXK-26");
         tally.flag("TXK-26");
       }
@@ -395,7 +400,11 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       // the s.121 rates; the benefited employer deposits are work income when received. G-27: NI and
       // health on the gains are not modelled.
       const y = profile.otherIncome ?? profile.annualIncome ?? 12 * salary;
-      const sixty = reachesAgeInYear(profile, T, book.amount("TXG-04", "age"), first);
+      const sixty = reachesSixty(book, profile, T, first);
+      // the brackets the gains and the employer's deposits fall into start above the person's income, where the profile holds one, and
+      // which brackets they are is the age's (TXG-04 from 60, else TXG-02)
+      if ((profile.otherIncome ?? profile.annualIncome) !== undefined) book.profile("income");
+      if (sixty) book.profile("age");
       const gains = nominalGain(benefited) + nominalGain(excess);
       const employerDeposits = employerMoney ? benefited.deposits.reduce((a, d) => a + d.amount, 0) : 0;
       // F-119: the brackets and the threshold of the exit's tax year
@@ -409,7 +418,7 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
         workBrackets: book.inYear(exitYear).brackets(sixty ? "TXG-04" : "TXG-02", "brackets"),
       });
       const withIncome = { ...profile, otherIncome: y };
-      const surtax = surtaxOn(book, withIncome, gains + employerDeposits, 0, exitYear).general + surtaxOn(book, withIncome, gains, 0, exitYear).onCapital;
+      const surtax = surtaxOn(book, withIncome, gains + employerDeposits, 0, exitYear, false).general + surtaxOn(book, withIncome, gains, 0, exitYear, false).onCapital;
       taxAtExit = t.tax + surtax;
       detail.earlyGains = gains;
       detail.earlyEmployerDeposits = employerDeposits;

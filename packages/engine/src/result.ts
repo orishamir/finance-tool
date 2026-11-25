@@ -2,7 +2,7 @@
 // behind them. The engine returns codes, never Hebrew text; the site maps codes to copy.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import type { ReadingChoice } from "./open-readings.ts";
-import type { UsedRule } from "./resolver.ts";
+import type { ProfileInput, UsedRule } from "./resolver.ts";
 import type { Fund } from "./ledgers/securities.ts";
 
 /** What a run needs besides its inputs: the resolved rule bundle and the run date (tax year, D3). */
@@ -180,6 +180,12 @@ export interface RunResult {
   /** Every fund statement the run read in place of a rule (D84): absent where it read none. */
   statements?: FundStatement[];
   /**
+   * The person's age and income where they changed the result (A-12): the age where it brought in the age-60 brackets (F-42) or a lawful
+   * exit at an age (TXH-10); the income where it set those brackets' slice, a surtax (F-43), a deduction (TXI-20, TXH-05). A figure's sheet
+   * lists them only then.
+   */
+  profileUsed: ProfileInput[];
+  /**
    * F-91 (securities runs): each fee line's payments carried to the exit at the fund's total return from the month each was paid, nominal at
    * the exit; what the money a line took would have been worth in the fund. The split of a whole-units run by fee line reads it (F-63).
    */
@@ -235,6 +241,7 @@ export const RUN_RESULT_FIELDS: ResultFields<RunResult> = {
   formulas: "trail",
   rules: "trail",
   statements: "trail",
+  profileUsed: "trail",
 };
 
 export function emptyFees(): Record<FeeType, number> {

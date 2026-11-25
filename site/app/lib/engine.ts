@@ -17,6 +17,7 @@ import {
   type InstrumentTerms,
   type Label,
   type P05Input,
+  type RunResult,
   type UsedRule,
 } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject, ProductRecord } from "@finance-tool/schema";
@@ -54,9 +55,10 @@ export interface YearPoint {
   taxDuring: number;
   taxAtExit: number;
   index: number;
-  grossBalance: number;
   /** Named intermediate figures of that year's run (the real gain, the tax at the full rate). */
   detail: Record<string, number>;
+  /** The age and income that year's run rested on (`RunResult.profileUsed`): its sheets list each only there. */
+  profileUsed: RunResult["profileUsed"];
 }
 
 export interface TimelineResult {
@@ -164,8 +166,8 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
         taxDuring: run.taxDuring,
         taxAtExit: run.taxAtExit,
         index: last.index,
-        grossBalance: last.balance,
         detail: run.detail,
+        profileUsed: run.profileUsed,
       });
       run.flags.forEach((f) => flags.add(f.code));
       run.rules.forEach((r) => rules.set(r.id, r));

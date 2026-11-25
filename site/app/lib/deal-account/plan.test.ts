@@ -351,13 +351,13 @@ describe("F-128 the cases the plan reads, marked in the popup", () => {
     const got = fundId ? dealOnFunds({ bundle: bs, index: indexById(bs, "index-ta125")!, plan, fundIds: [fundId], providerId: dealProviderId(sized.id) }).get(fundId) : undefined;
     expect(got?.kind).toBe("ok");
     if (got?.kind !== "ok") return;
-    // what is left after the tax lists the income the tax reads (F-43); a fee before the tax it saves does not
-    const withIncome = { ...plan, income: 300_000, values: { ...plan.values, income: entered(300_000, "nis", t) } };
+    // what is left after the tax lists an income above the surtax's threshold, which the tax reads (F-43); a fee before the tax it saves does not
+    const withIncome = { ...plan, income: 2_000_000, values: { ...plan.values, income: entered(2_000_000, "nis", t) } };
     const ta125 = indexById(bs, "index-ta125");
     const taxed = fundId && ta125 ? dealOnFunds({ bundle: bs, index: ta125, plan: withIncome, fundIds: [fundId], providerId: dealProviderId(sized.id) }).get(fundId) : undefined;
     if (taxed?.kind !== "ok") throw new Error("the deal prices the fund");
     const inputsOf = (v: SiteValue) => (v.computed_from?.inputs ?? {}) as Record<string, SiteValue>;
-    expect(inputsOf(taxed.left(1, "x"))[words.pair.incomeInput]?.value).toBe(300_000);
+    expect(inputsOf(taxed.left(1, "x"))[words.pair.incomeInput]?.value).toBe(2_000_000);
     expect(inputsOf(taxed.figure(1, "x"))[words.pair.incomeInput]).toBeUndefined();
     const cases = planCases(read, custody.id, on, got.reach);
     // the account grows past 50,000 within the plan: both steps are reached, the first in the early years and the second in the late ones

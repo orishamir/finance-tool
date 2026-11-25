@@ -1232,7 +1232,6 @@ export const computedInputs = {
   depositFee: "דמי ניהול מהפקדה",
   directExpenses: "הוצאות ישירות",
   paidIn: "סך ההפקדות",
-  grossBalance: "השווי לפני דמי ניהול ומס",
   realGain: "רווח ריאלי",
   taxRate: "שיעור המס",
   taxAtExit: "מס במשיכה",
