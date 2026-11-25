@@ -683,7 +683,7 @@
    "site/app/lib/provident-lists.server.ts": 7,
    "site/app/lib/provident-lists.test.ts": 40,
    "site/app/lib/quote-fragments-tool.test.ts": 1,
-   "site/app/lib/rate-words.test.ts": 21,
+   "site/app/lib/rate-words.test.ts": 19,
    "site/app/lib/rate-words.ts": 1,
    "site/app/lib/receipt-fixtures.ts": 1,
    "site/app/lib/receipt.test.ts": 6,
