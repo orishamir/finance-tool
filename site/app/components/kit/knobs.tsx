@@ -1,10 +1,15 @@
-import { useEffect, useEffectEvent, useId, useLayoutEffect, useRef, useState, type FocusEvent, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useEffectEvent, useId, useLayoutEffect, useRef, useState, type FocusEvent, type KeyboardEvent, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from "react";
 import { RangeControls, RangeField, startText, type RangeFieldProps } from "./fields";
 import { cx } from "./cx";
 import { dropRoom } from "./drop-list";
 
 export type Knob = RangeFieldProps & {
   id: string;
+  /**
+   * Tiles only: a number few plans turn on (an age, an income), shown as small words in the head's line (`KnobStrip`'s `head`) rather than
+   * as a tile, so it reads as less than the plan's own numbers; its popup is the tiles' own. An empty value shows as a blank.
+   */
+  quiet?: boolean;
   /** Tiles only: the tile's own id, for a control elsewhere that opens it (an `EmptyState`'s action clicks it); a generated one without it. */
   tileId?: string;
 };
@@ -20,12 +25,20 @@ export type KnobLayout = "columns" | "tiles";
  * The plan's numbers as controls that stay on screen, for a page meant to be played with (the indices page), in one of two layouts
  * (`KnobLayout`). The result across a range is `ResultCurves`.
  */
-export function KnobStrip({ knobs, lead, layout = "columns" }: { knobs: Knob[]; lead?: ReactNode; layout?: KnobLayout }) {
+export function KnobStrip({ knobs, lead, layout = "columns", head, quietLead }: {
+  knobs: Knob[];
+  lead?: ReactNode;
+  layout?: KnobLayout;
+  /** Tiles only: the card's heading, at the start of the line whose end holds the quiet knobs. */
+  head?: ReactNode;
+  /** Tiles only: the words before the quiet knobs, with any mark that explains them. */
+  quietLead?: ReactNode;
+}) {
   return (
     <div className="flex flex-col gap-3">
       {lead && <p className="text-sm text-muted-foreground">{lead}</p>}
       {layout === "tiles" ? (
-        <KnobTiles knobs={knobs} />
+        <KnobTiles knobs={knobs} head={head} quietLead={quietLead} />
       ) : (
         <div className={cx("grid gap-x-6 gap-y-1 md:grid-cols-2", knobs.length === 4 && "xl:grid-cols-4")}>
           {knobs.map((k) => (
@@ -52,7 +65,7 @@ const SIDE = 8;
  * a press outside it or the focus leaving it closes it, and Enter in its box closes it where the number is right. Tab from the open tile
  * goes into the popup, and out of it back to the tile or on to the next tile.
  */
-function KnobTiles({ knobs }: { knobs: Knob[] }) {
+function KnobTiles({ knobs, head, quietLead }: { knobs: Knob[]; head?: ReactNode; quietLead?: ReactNode }) {
   const uid = useId();
   const [open, setOpen] = useState<string | null>(null);
   const tiles = useRef<HTMLDivElement>(null);
@@ -153,33 +166,70 @@ function KnobTiles({ knobs }: { knobs: Knob[] }) {
     if (to && !pop.current?.contains(to) && !tiles.current?.contains(to)) setOpen(null);
   };
 
+  const tileProps = (k: Knob) => {
+    const on = k.id === open;
+    return {
+      type: "button" as const,
+      id: tileIdOf(k),
+      "data-knob-tile": "",
+      "aria-expanded": on,
+      "aria-controls": on ? popId : undefined,
+      disabled: k.disabled,
+      onPointerDown: (e: ReactPointerEvent<HTMLButtonElement>) => {
+        byFinger.current = e.pointerType === "touch";
+      },
+      onClick: (e: ReactMouseEvent<HTMLButtonElement>) => {
+        // Enter, Space and a click from code come with no pointer
+        if (e.detail === 0) byFinger.current = false;
+        setOpen(on ? null : k.id);
+      },
+      onKeyDown: (e: KeyboardEvent<HTMLButtonElement>) => onTileKey(e, k),
+    };
+  };
+  const main = knobs.filter((k) => !k.quiet);
+  const quiet = knobs.filter((k) => k.quiet);
+
   return (
     <div className="@container">
-      <div ref={tiles} className="grid grid-cols-6 gap-2 @2xl:grid-cols-5">
-        {knobs.map((k, n) => {
-          const on = k.id === open;
-          return (
+      <div ref={tiles} className="flex flex-col gap-3">
+        {(head || quiet.length > 0) && (
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            {head}
+            {quiet.length > 0 && (
+              <div className="flex flex-wrap items-baseline gap-x-3.5 gap-y-1 text-sm text-muted-foreground">
+                {quietLead}
+                {quiet.map((k) => (
+                  <button
+                    key={k.id}
+                    {...tileProps(k)}
+                    className={cx(
+                      "tap-wide inline-flex items-baseline gap-1.5 rounded-sm underline decoration-dotted decoration-muted-foreground/50 underline-offset-4 hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-60",
+                      k.id === open && "text-foreground decoration-primary",
+                    )}
+                  >
+                    <span id={`${tileIdOf(k)}-l`}>{k.label}</span>
+                    {k.value === null ? (
+                      <span className="inline-block w-6 self-end mb-1 border-b border-muted-foreground" />
+                    ) : (
+                      <bdi dir="ltr" className={cx("tabular-nums", k.isEntered ? "text-entered" : "text-foreground")}>
+                        {startText(k.value, k.unit)}
+                      </bdi>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        <div className="grid grid-cols-6 gap-2 @2xl:grid-cols-5">
+          {main.map((k, n) => (
             <button
               key={k.id}
-              type="button"
-              id={tileIdOf(k)}
-              data-knob-tile=""
-              aria-expanded={on}
-              aria-controls={on ? popId : undefined}
-              disabled={k.disabled}
-              onPointerDown={(e) => {
-                byFinger.current = e.pointerType === "touch";
-              }}
-              onClick={(e) => {
-                // Enter, Space and a click from code come with no pointer
-                if (e.detail === 0) byFinger.current = false;
-                setOpen(on ? null : k.id);
-              }}
-              onKeyDown={(e) => onTileKey(e, k)}
+              {...tileProps(k)}
               className={cx(
                 "flex min-h-target min-w-0 flex-col items-start gap-0.5 rounded-md border bg-card px-3 py-2 text-start transition-colors duration-(--duration-fast) hover:bg-accent/50 focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-60 @2xl:col-span-1",
                 n < 2 ? "col-span-3" : "col-span-2",
-                on ? "border-primary" : "border-input",
+                k.id === open ? "border-primary" : "border-input",
               )}
             >
               <span id={`${tileIdOf(k)}-l`} className="max-w-full text-xs text-muted-foreground">
@@ -189,8 +239,8 @@ function KnobTiles({ knobs }: { knobs: Knob[] }) {
                 {k.value === null ? "" : startText(k.value, k.unit)}
               </bdi>
             </button>
-          );
-        })}
+          ))}
+        </div>
       </div>
       {knob && (
         <div

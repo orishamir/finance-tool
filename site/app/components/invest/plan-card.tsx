@@ -5,10 +5,13 @@ import type { ReactNode } from "react";
 import { invest as c } from "../../copy";
 import { Card } from "../kit";
 
+/** The card's heading, which the plan's knobs set at the start of their own first line (`KnobStrip`'s `head`). */
+export const planHeading = <h2 className="text-lg font-semibold">{c.plan.heading}</h2>;
+
+/** The card around the plan's knobs. */
 export function PlanCard({ knobs }: { knobs: ReactNode }) {
   return (
     <Card as="section" pad="tight" className="flex flex-col gap-3" aria-label={c.plan.heading}>
-      <h2 className="text-lg font-semibold">{c.plan.heading}</h2>
       {knobs}
     </Card>
   );

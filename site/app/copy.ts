@@ -4491,6 +4491,20 @@ export const invest = {
       ret: "תשואה בשנה",
       /** The fifth tile, the yearly inflation the plan's figures are in today's money by (A-02). */
       inflation: "אינפלציה",
+      /** The two numbers few plans turn on, small in the heading's line: what the tax on the gain reads besides the plan (F-42, F-43). */
+      tax: {
+        lead: "לחישוב המס:",
+        age: "גיל היום",
+        income: "הכנסה בשנה",
+        about: "גיל והכנסה",
+        /** The "?" by them: when each changes the tax, the figures from their rules (TXG-04's age, TXS-09's rate, TXG-09's threshold). */
+        help: (age: string, rate: string, threshold: string) =>
+          `הגיל וההכנסה משנים את המס על הרווח רק בשני מקרים. אם תמכרו בגיל ${age} ומעלה, המס על הרווח הוא לפי מדרגות המס שלכם ולא יותר מ־${rate}, וההכנסה קובעת מאיזו מדרגה הוא מתחיל. ואם ההכנסה יחד עם הרווח עוברת ${threshold} בשנה, נוסף מס יסף.`,
+        /** What they do in the plan on the page, after the help. */
+        none: "בתוכנית הזאת הם לא משנים כלום.",
+        sixty: (saleAge: number, rate: string) => `בתוכנית הזאת המכירה בגיל ${saleAge}, ולכן המס נמוך מ־${rate}.`,
+        surtax: "בתוכנית הזאת ההכנסה יחד עם הרווח עוברת את הסף, ולכן נוסף מס יסף.",
+      },
       changes: {
         title: "מה הכי משנה את מה שיישאר לכם",
         lead: "בכל קו משתנה מספר אחד, והשאר נשארים כמו בתוכנית שלכם. גררו את הקו האנכי בגרף, או בחרו שינוי:",

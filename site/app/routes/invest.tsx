@@ -8,9 +8,9 @@ import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
 import { brands, invest as c } from "../copy";
 import { pageMeta } from "../lib/page-meta";
-import { PLAN_AMOUNT_TILE, PlanKnobs } from "../components/invest/knobs";
+import { PLAN_AMOUNT_TILE, PlanKnobs, type TaxUse } from "../components/invest/knobs";
 import { TitleRow } from "../components/invest/title";
-import { PlanCard } from "../components/invest/plan-card";
+import { PlanCard, planHeading } from "../components/invest/plan-card";
 import { PairReceipt, PairStub } from "../components/invest/receipt";
 import { pickOfHeadline, allFunds, type Moved, type Pick } from "../components/invest/pair";
 import { PairLists, listName } from "../components/invest/lists";
@@ -334,7 +334,10 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
     />
   );
 
-  const planCard = <PlanCard knobs={<PlanKnobs bundle={wb} ranges={data.form.knobs} bounds={data.form.bounds} />} />;
+  // what the person's age and income did in the pair the page prices (the pick's run): the "?" by them in the plan's heading says so
+  const pickWay = pick && view ? allFunds(view).find((f) => f.rec.id === pick.fund)?.byHouse[pick.house] : undefined;
+  const taxUse: TaxUse | null = pickWay && "valueN" in pickWay ? { used: pickWay.profileUsed, saleAge: plan.age !== null ? plan.age + plan.years : null } : null;
+  const planCard = <PlanCard knobs={<PlanKnobs bundle={wb} ranges={data.form.knobs} bounds={data.form.bounds} heading={planHeading} taxUse={taxUse} />} />;
   // the receipt: below 1280 px paper above the lists, the stub's way back leading to it (focusable for that, never tabbed to); from 1280 px
   // a ticket over the lists, whose total the ruler's point joins
   const receipt = pick && view && (

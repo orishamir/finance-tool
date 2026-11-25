@@ -235,6 +235,8 @@ export interface WayPrice {
    * waited for a later month). Null where it buys by amount.
    */
   units: { monthly: number; skipped: number } | null;
+  /** The person's age and income where the run's tax rested on them (`RunResult.profileUsed`): the plan's "?" by them says so. */
+  profileUsed: ComparedProvider["run"]["profileUsed"];
 }
 
 export interface FundWay {
@@ -1027,6 +1029,7 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     standing: p.standing,
     aside: p.aside,
     units: unitsOf(row.run),
+    profileUsed: row.run.profileUsed,
   };
 }
 

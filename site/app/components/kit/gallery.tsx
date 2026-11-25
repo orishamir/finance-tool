@@ -1122,6 +1122,7 @@ function Fields({ today }: { today: string }) {
   const [pct2, setPct2] = useState<number | null>(2);
   const [money, setMoney] = useState<number | null>(10_000);
   const [money2, setMoney2] = useState<number | null>(750);
+  const [quietAge, setQuietAge] = useState<number | null>(null);
   const [share, setShare] = useState(20);
   const [pick, setPick] = useState<string | null>(null);
   const [typed, setTyped] = useState("");
@@ -1202,6 +1203,20 @@ function Fields({ today }: { today: string }) {
                 { id: "years", label: g.sample.range, unit: "years", unitInLabel: true, value: years, start: 10, scale: YEARS_SCALE, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
                 { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, start: 5, scale: PCT_SCALE, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
                 { id: "pct2", label: g.sample.percent, unit: "pct_per_year", value: pct2, start: 2, scale: PCT_SCALE, isEntered: pct2 !== 2, validate: () => null, onCommit: (n) => setPct2(n), onReset: () => setPct2(2) },
+              ]}
+            />
+          </div>
+        </State>
+        <State label={'quiet knobs with a head: small words in the heading\'s line, the same popup; an empty one is a blank'}>
+          <div className="max-w-xl">
+            <KnobStrip
+              layout="tiles"
+              head={<span className="text-lg font-semibold">{g.sample.range}</span>}
+              quietLead={<span>{g.sample.percent}:</span>}
+              knobs={[
+                { id: "quiet-age", quiet: true, label: g.sample.range, unit: "years", unitInLabel: true, value: quietAge, start: null, optional: true, scale: YEARS_SCALE, isEntered: quietAge !== null, validate: () => null, onCommit: (n) => setQuietAge(n), onReset: () => setQuietAge(null), inputMode: "numeric" },
+                { id: "money", label: g.sample.money, unit: "nis", value: money, start: 10_000, scale: MONEY_SCALE, isEntered: money !== 10_000, validate: nonNegativeCheck, onCommit: (n) => setMoney(n), onReset: () => setMoney(10_000) },
+                { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, start: 5, scale: PCT_SCALE, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
               ]}
             />
           </div>

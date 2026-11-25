@@ -1,7 +1,9 @@
 // The plan controls of the indices page: the four plan numbers and inflation as tiles, each opening its slider; they write the values the person entered on this device (lib/inputs.tsx, the guide pages' own), never the saved goal
 // (only the goal page speaks of a goal). In a tab of the indices page, what each number changed by the same share does to the result
 // (F-89, F-90).
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
+import type { ProfileInput } from "@finance-tool/engine";
+import type { RuleRecord } from "@finance-tool/schema";
 import type { P05Input } from "@finance-tool/engine";
 import { invest as c, values as valuesCopy } from "../../copy";
 import { enteredPlan, type EnteredPlan } from "../../lib/entered-plan";
@@ -13,7 +15,8 @@ import { usePlanChangesRun } from "../../lib/invest-run";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, shortRow } from "../provenance";
-import { ChangeChart, KnobStrip, PanelHead, percentCheck, rangeScale, yearsCheck, type Knob } from "../kit";
+import { ChangeChart, HelpMark, KnobStrip, PanelHead, ageCheck, percentCheck, rangeScale, yearsCheck, type Knob } from "../kit";
+import { ruleFigure } from "../../lib/value";
 import type { PlanBounds } from "../../lib/plan-bounds";
 
 /** A slider's range as P-05 writes it: linear in `step`, or in `segments` for money (`rangeScale`). */
@@ -50,17 +53,54 @@ const valueOf = (entered: EnteredPlan, id: Id) => {
   return { value: v.value as number, entered: v.state === "entered" };
 };
 
-/** The plan's tiles; each field refuses a number outside its bound (`bounds`, P-05's), the years past the horizon slider's end among them. */
-export function PlanKnobs({ bundle, ranges, bounds }: { bundle: Pick<IndicesBundle, "p05" | "today">; ranges: KnobRanges; bounds: PlanBounds }) {
+/**
+ * The "?" by the age and the income: when each changes the tax on the gain (F-42 from TXG-04's age, F-43 above TXG-09's threshold, never above
+ * TXS-09's rate), then what they do in the plan the page prices (`taxUse`, the pick's `profileUsed`). In the caution role where they changed it.
+ */
+function TaxHelp({ rules, today, taxUse }: { rules: readonly RuleRecord[]; today: string; taxUse: TaxUse | null }) {
+  const t = k.tax;
+  const figure = (id: string, name: string) => {
+    const r = rules.find((x) => x.id === id);
+    const v = r ? ruleFigure(r, name, today) : null;
+    return v && typeof v.value === "number" ? v.value : null;
+  };
+  const age = figure("TXG-04", "age");
+  const rate = figure("TXS-09", "rate");
+  const threshold = figure("TXG-09", "threshold");
+  // a rule the bundle lacks leaves the "?" out rather than say a figure from memory
+  if (age === null || rate === null || threshold === null) return null;
+  const used = taxUse?.used ?? [];
+  const here = !taxUse ? "" : used.includes("age") && taxUse.saleAge !== null ? t.sixty(taxUse.saleAge, fmt.pct(rate)) : used.includes("income") ? t.surtax : t.none;
+  const text = [t.help(String(age), fmt.pct(rate), fmt.nisWhole(threshold)), here].filter(Boolean).join(" ");
+  return <HelpMark about={t.about} text={text} rules={["TXG-04", "TXG-09"]} {...(used.length > 0 ? { tone: "caution" as const } : {})} className="ms-1" />;
+}
+
+/** What the person's age and income did in the plan the page prices: which of them its tax rested on, and the age at the sale. */
+export interface TaxUse {
+  used: readonly ProfileInput[];
+  saleAge: number | null;
+}
+
+/**
+ * The plan's tiles, with the age and the income small in the heading's line (`quiet`): each field refuses a number outside its bound
+ * (`bounds`, P-05's), the years past the horizon slider's end among them.
+ */
+export function PlanKnobs({ bundle, ranges, bounds, heading, taxUse }: { bundle: Pick<IndicesBundle, "p05" | "today" | "rules">; ranges: KnobRanges; bounds: PlanBounds; heading: ReactNode; taxUse: TaxUse | null }) {
   const entered = useEnteredNow(bundle, bounds);
   const setKnob = useSetKnob();
-  const { setEntered } = useInputs();
+  const { setEntered, setAge } = useInputs();
+  const incomeV = entered.plan.values.income;
+  const p05Income = (bundle.p05 as unknown as { inputs: Record<string, { value: unknown }> }).inputs.annual_income?.value;
   const field = (id: Id) => {
     const v = valueOf(entered, id);
     return { id, label: labelOf[id], value: v.value, start: entered.starts[id === "amount" ? "amount" : id === "monthly" ? "monthly" : id === "years" ? "years" : "returnV"], isEntered: v.entered, onCommit: (n: number) => setKnob(id, n), onReset: () => setKnob(id, null) };
   };
   const negative = (n: number) => (n < 0 ? valuesCopy.errors.negative : null);
   const knobs: Knob[] = [
+    // the age and the income the tax reads (F-42, F-43): first, as they stand first in the heading's line; the age is optional, an empty one
+    // a blank, and the income starts at P-05's example
+    { id: "age", quiet: true, label: k.tax.age, value: entered.plan.age, start: null, optional: true, isEntered: entered.plan.age !== null, unit: "years", unitInLabel: true, inputMode: "numeric", scale: rangeScale({ min: bounds.age.min, max: bounds.age.max, step: 1 }), validate: ageCheck(bounds.age), onCommit: (n: number) => setAge(n), onReset: () => setAge(null) },
+    { id: "income", quiet: true, label: k.tax.income, value: entered.plan.income ?? 0, start: typeof p05Income === "number" ? p05Income : null, isEntered: incomeV?.state === "entered", unit: "nis", scale: rangeScale(ranges.amount_now), validate: negative, onCommit: (n: number) => setEntered("annual_income", n), onReset: () => setEntered("annual_income", null) },
     { ...field("amount"), unit: "nis", scale: rangeScale(ranges.amount_now), validate: negative, inputId: PLAN_AMOUNT_FIELD, tileId: PLAN_AMOUNT_TILE },
     { ...field("monthly"), unit: "nis_per_month", scale: rangeScale(ranges.monthly_deposit), validate: negative },
     { ...field("years"), unit: "years", unitInLabel: true, scale: rangeScale(ranges.horizon_years), inputMode: "numeric", validate: yearsCheck(bounds.horizon_years) },
@@ -69,7 +109,19 @@ export function PlanKnobs({ bundle, ranges, bounds }: { bundle: Pick<IndicesBund
     // four numbers that chart changes (F-89)
     { id: "inflation", label: k.inflation, value: entered.plan.values.inflation.value as number, start: entered.starts.inflation, isEntered: entered.plan.values.inflation.state === "entered", unit: "pct_per_year", scale: rangeScale(ranges["A-02"]), validate: percentCheck(bounds["A-02"]), onCommit: (n: number) => setEntered("A-02", n), onReset: () => setEntered("A-02", null) },
   ];
-  return <KnobStrip knobs={knobs} layout="tiles" />;
+  return (
+    <KnobStrip
+      knobs={knobs}
+      layout="tiles"
+      head={heading}
+      quietLead={
+        <span className="inline-flex items-center">
+          {k.tax.lead}
+          <TaxHelp rules={(bundle as Pick<IndicesBundle, "rules">).rules} today={bundle.today} taxUse={taxUse} />
+        </span>
+      }
+    />
+  );
 }
 
 type Share = { min: number; max: number; step: number; start: number };
