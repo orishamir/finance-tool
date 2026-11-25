@@ -288,10 +288,12 @@ function DealStart({ data, today, headId, onStart }: { data: FeesData; today: st
 const START_WORDS: TemplateListWords = { search: w.start.search, clear: w.start.clear, none: w.start.none, houses: w.start.group };
 
 /**
- * The popup on one deal: its head, the tiles and the plan line (sticky as the fees scroll; on a phone the head, the strip and the pick bar
- * stay together), the pick bar, and the editor. Not a kit piece: the page's own popup, built of kit pieces and /deal's editor.
+ * A deal read on the page's plan, for a popup to lay out: the editor on it (its fees' heads saying what the plan charges for each, and
+ * marking the cases the plan reads), its runs on the list's funds as it changes, and the tiles' figures (F-128): what it leaves, its
+ * place in the account list, what it leaves against the house it was filled from, and the plan line. `row`: the account list's row the
+ * deal stands for, whose fund the plan line names and whose place the tile gives (the deal's own, or the house whose terms it shows).
  */
-function DealPopup({ data, today, saved, writable, first, openFee, world, headId, onDeleted }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; /** The fee it opens on, where its opener names one. */ openFee?: string | undefined; world: DealWorld; headId: string; onDeleted: (name: string, at: number | null) => void }) {
+function useDealOnPlan({ data, today, saved, writable, first, world, row }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; world: DealWorld; row: string }) {
   // what each fee's head says is read with the deal as it is now, which the editor holds: the editor draws it after this render
   const headRef = useRef<(fee: Fee) => FeeHeadSlot | undefined>(() => undefined);
   // /deal reopens the deal last on screen there: only the popup's own links to it name this one (`rememberOpen`)
@@ -303,7 +305,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const providerId = dealProviderId(deal.id);
   const { view, pick } = world;
   // the fund the plan line names: the pair's where the deal is the pair's account, else the one the page would pair with it
-  const fundId = pick ? (pick.house === providerId ? pick.fund : repick(view, pick, { house: providerId }).fund) : null;
+  const fundId = pick ? (pick.house === row ? pick.fund : repick(view, pick, { house: row }).fund) : null;
   const funds = useMemo(() => (pick ? listFunds(allFunds(view), pick.fund, world.kinds) : []), [view, pick, world.kinds]);
   const abroadFunds = useMemo(() => abroadOf(view), [view]);
   // the deal alone in the bundle, priced on the list's funds and the funds bought abroad as it changes; the runs wait for the hand to rest
@@ -319,7 +321,7 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   }, [settled, world.index, world.plan, fundId, providerId, at?.kind]);
   const run = useMemo(() => (fundId ? dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId }) : null), [world.bundle, world.index, world.plan, fundId]);
   const houseId = dealHouseId(deal);
-  const tiles = fundId ? dealTiles(view, got, providerId, deal.name, houseId, fundId, funds) : null;
+  const tiles = fundId ? dealTiles(view, got, row, deal.name, houseId, fundId, funds) : null;
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.provider : undefined;
   // the deal is read on the page's plan as its run reads it: the page's run month, the page's current accounts and the house's line choice (F-128)
   const ctx = useMemo(() => planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? false), [world.bundle, deal, data.kinds, world.plan.currentAccounts]);
@@ -353,6 +355,25 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   const own = picks?.things.filter((t) => !PLAN_KEYS.includes(t.by)) ?? [];
   const where = run ? (run.instrumentClass === "mutual_fund_units" ? w.where.manager! : w.where[whatOfRun(run) === "tase" ? "tase" : (run.listing ?? "world")]!) : "";
   const fund = fundId ? allFunds(view).find((f) => f.rec.id === fundId) : undefined;
+  const p = world.plan;
+  // the tiles' figures, each computed from the run with its formula (F-128): what is left, the place, the difference from the house's row
+  const okAt = at?.kind === "ok" ? at : null;
+  const leftFig = tiles?.left !== null && tiles?.left !== undefined && okAt ? okAt.left(tiles.left, w.tiles.leftAbout) : null;
+  const placeFig = tiles?.place ? computed(tiles.place.k, "count", "F-128", leftFig ? { [w.tiles.leftAbout]: leftFig } : {}, { today: world.bundle.today, about: w.tiles.placeAbout(tiles.place.of) }) : null;
+  const diffFig = leftFig && tiles?.house && house ? differenceOf([w.tiles.leftAbout, leftFig], [w.tiles.houseAbout(house.short), tiles.house.value], "F-128", { today: world.bundle.today, about: w.tiles.diffAbout, round: Math.round, signed: true }) : null;
+  const leftNum = leftFig && <Num value={leftFig} display={(n) => fmt.nisWhole(n)} />;
+  const placeNum = placeFig && tiles?.place && <Num value={placeFig} display={() => w.tiles.placeValue(tiles.place!.k, tiles.place!.of)} />;
+  const diffNum = diffFig && <Num value={diffFig} display={(n) => fmt.signedNisWhole(n)} />;
+  const planLine = fund ? w.plan(fmt.nisWhole(p.amountNow), fmt.nisWhole(p.monthly), p.years, fmt.pct(p.grossReturn * 100), fund.name, where) : null;
+  return { ed, deal, at, run, tiles, house, fund, own, where, leftNum, placeNum, diffNum, planLine };
+}
+
+/**
+ * The popup on one deal: its head, the tiles and the plan line (sticky as the fees scroll; on a phone the head, the strip and the pick bar
+ * stay together), the pick bar, and the editor. Not a kit piece: the page's own popup, built of kit pieces and /deal's editor.
+ */
+function DealPopup({ data, today, saved, writable, first, openFee, world, headId, onDeleted }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; /** The fee it opens on, where its opener names one. */ openFee?: string | undefined; world: DealWorld; headId: string; onDeleted: (name: string, at: number | null) => void }) {
+  const { ed, deal, at, run, tiles, house, fund, own, where, leftNum, placeNum, diffNum, planLine } = useDealOnPlan({ data, today, saved, writable, first, world, row: dealProviderId(first.id) });
   const isSaved = saved.some((d) => d.id === deal.id);
   const p = world.plan;
   const root = useRef<HTMLDivElement>(null);
@@ -372,15 +393,6 @@ function DealPopup({ data, today, saved, writable, first, openFee, world, headId
   // the toolbox's column sticks under what stays at the top, not behind it (`TOOLBOX_STICKY`, `useStickyColumn`)
   const stuck = useRef<HTMLDivElement>(null);
   const toolTop = useStuckRoom(stuck, wide ? !!tiles : true, wide);
-  // the tiles' figures, each computed from the run with its formula (F-128): what is left, the place, the difference from the house's row
-  const okAt = at?.kind === "ok" ? at : null;
-  const leftFig = tiles?.left !== null && tiles?.left !== undefined && okAt ? okAt.left(tiles.left, w.tiles.leftAbout) : null;
-  const placeFig = tiles?.place ? computed(tiles.place.k, "count", "F-128", leftFig ? { [w.tiles.leftAbout]: leftFig } : {}, { today: world.bundle.today, about: w.tiles.placeAbout(tiles.place.of) }) : null;
-  const diffFig = leftFig && tiles?.house && house ? differenceOf([w.tiles.leftAbout, leftFig], [w.tiles.houseAbout(house.short), tiles.house.value], "F-128", { today: world.bundle.today, about: w.tiles.diffAbout, round: Math.round, signed: true }) : null;
-  const leftNum = leftFig && <Num value={leftFig} display={(n) => fmt.nisWhole(n)} />;
-  const placeNum = placeFig && tiles?.place && <Num value={placeFig} display={() => w.tiles.placeValue(tiles.place!.k, tiles.place!.of)} />;
-  const diffNum = diffFig && <Num value={diffFig} display={(n) => fmt.signedNisWhole(n)} />;
-  const planLine = fund ? w.plan(fmt.nisWhole(p.amountNow), fmt.nisWhole(p.monthly), p.years, fmt.pct(p.grossReturn * 100), fund.name, where) : null;
   const head = (
     <DealHead deal={deal} headId={headId} isSaved={isSaved} writable={writable} onName={(name) => ed.doc.change({ ...deal, name: name.slice(0, NAME_MAX) })} onDelete={() => {
       dealStore.update((ds) => without(ds, deal.id));
