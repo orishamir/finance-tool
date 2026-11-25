@@ -5,20 +5,20 @@
 // point. Everything the panel reads is the fund and plan the map shown was worked out for, so a map still shown while the next is worked out
 // never reads another fund. Its words cover every case: one account cheapest everywhere, the plan clearly in one account's area or in the
 // band, a switch one way or both, up or down, a plan with nothing in it, and a fund no account is ranked with.
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
 import { invest as c } from "../../copy";
-import type { AccountMap, MapField } from "../../lib/account-map";
+import type { AccountMap, MapField, MapWindow, WindowMap } from "../../lib/account-map";
 import { fmt } from "../../lib/format";
 import { fundWayAt, providersOfInvest, tieShareOf, type InvestView, type WayPrice } from "../../lib/invest";
 import { rankByValue } from "../../lib/rank";
-import { useAccountMapRun, type Asked } from "../../lib/invest-run";
+import { useAccountMapRun, useMapWindowRun, type Asked } from "../../lib/invest-run";
 import type { MapAnswer } from "../../lib/invest-work";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { rankedAt } from "../../lib/stretch";
 import { asParameter, carriedBy, differenceOf, entered, type SiteValue } from "../../lib/value";
 import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
-import { HelpMark, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, Swatch, type RegionArea, type RegionGrid, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
+import { HelpMark, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, sameView, Swatch, type PlaneView, type RegionArea, type RegionGrid, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
 import { providerName } from "./sections";
 import { allFunds, type Pick } from "./pair";
 
@@ -100,14 +100,24 @@ function gridOf(f: MapField, areaOf: (k: number) => number): RegionGrid {
   return { cols: f.cols, rows: f.rows, first, second: f.second.map((k, n) => (k < 0 || areaOf(k) === first[n] ? -1 : areaOf(k))), ahead: f.ahead };
 }
 
+/** What the map draws: the areas over a window, the plan's own or one the reader moved the map to. */
+type Shown = Omit<WindowMap, "asked">;
+
+/** The plan's own window, as the map draws it. */
+export const planShown = (map: AccountMap): Shown => ({ window: { amount: [0, map.max.amount], monthly: [0, map.max.monthly] }, bottom: map.bottom, accounts: map.accounts, field: map.field, edge: map.edge });
+
+/** A window of the map as the kit's view, and back. */
+const viewOf = (w: MapWindow): PlaneView => ({ x: w.amount, y: w.monthly });
+const windowOf = (v: PlaneView): MapWindow => ({ amount: v.x, monthly: v.y });
+
 /**
  * The map's areas, in the map's order (the plan's first first). Each account's colour is set by the houses' order among the accounts on
  * the map, never by its rank at the plan, so it does not move as a slider does while the same accounts show: the first four of `order`
- * (the map's accounts, in the houses' order) each their own, the rest the grey, under its own name where one such account shows and
- * gathered under "אחרות" where more do. With each account's tone,
- * and the field and the edge as the areas' grids.
+ * (the plan's map's accounts, in the houses' order, then those only a moved window shows) each their own, the rest the grey, under its own
+ * name where one such account shows and gathered under "אחרות" where more do. With each account's tone, and the field and the edge as the
+ * areas' grids.
  */
-export function mapAreas(view: InvestView, map: AccountMap, order: readonly string[]): { areas: RegionArea[]; toneOf: (id: string) => RegionTone; field: RegionGrid & { from: number }; edge: RegionGrid } {
+export function mapAreas(view: InvestView, map: Shown, order: readonly string[]): { areas: RegionArea[]; toneOf: (id: string) => RegionTone; field: RegionGrid & { window: PlaneView; from: number }; edge: RegionGrid | null } {
   const palette = regionTones(4);
   const fixed = (id: string): RegionTone => {
     const k = order.indexOf(id);
@@ -123,7 +133,7 @@ export function mapAreas(view: InvestView, map: AccountMap, order: readonly stri
     return at;
   };
   const toneOf = (id: string): RegionTone => fixed(id);
-  return { areas, toneOf, field: { ...gridOf(map.field, areaOf), from: map.bottom }, edge: gridOf(map.edge, areaOf) };
+  return { areas, toneOf, field: { ...gridOf(map.field, areaOf), window: viewOf(map.window), from: map.bottom }, edge: map.edge && gridOf(map.edge, areaOf) };
 }
 
 /**
@@ -196,20 +206,7 @@ export function NoMapPanel({ why }: { why: "open-rule" | "unpriced" }) {
 export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, house, map, on }: { view: InvestView; bundle: IndicesBundle; house: string; map: AccountMap; on: Asked<"map"> }) {
   const { fund } = on.ask;
   const fundName = allFunds(view).find((f) => f.rec.id === fund)?.name ?? fund;
-
-  // the map's accounts in the houses' order: the order the colours go by
-  const { areas, toneOf, field, edge } = useMemo(() => mapAreas(view, map, providersOfInvest(on.bundle).map((s) => s.id).filter((id) => map.accounts.includes(id))), [view, map, on]);
-
-  const { head, mark } = useMemo(() => {
-    const words = mapWords(map, house, (id) => shortOf(view, id));
-    return {
-      head: words.head,
-      mark: { at: [map.plan.amount, map.plan.monthly] as const, label: { text: m.plan } },
-    };
-  }, [view, house, map]);
-
-  const reading = useMemo(() => readerOf(view, bundle, on, toneOf), [view, bundle, on, toneOf]);
-
+  const head = useMemo(() => mapWords(map, house, (id) => shortOf(view, id)).head, [view, house, map]);
   return (
     <div className="flex flex-col gap-4">
       <PanelHead
@@ -226,25 +223,59 @@ export const AccountMapPanel = memo(function AccountMapPanel({ view, bundle, hou
       >
         {head}
       </PanelHead>
-      {/* a new map is another chart: a point kept on the old one goes with it */}
-      <RegionMap
-        key={`${fund}|${map.plan.amount}|${map.plan.monthly}|${map.max.amount}|${map.max.monthly}`}
-        max={{ x: map.max.amount, y: map.max.monthly }}
-        areas={areas}
-        field={field}
-        edge={edge}
-        bandLabel={{ text: m.same, pair: m.samePair, help: <HelpMark about={m.howTo.about} text={m.howTo.text(thetaText(bundle))} className="ms-0.5" /> }}
-        mark={mark}
-        xTitle={m.xTitle}
-        yTitle={m.yTitle}
-        xTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
-        yTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
-        snap={{ x: snapOf(map.max.amount), y: snapOf(map.max.monthly) }}
-        reading={reading}
-      />
+      {/* a new map is another chart: a point kept on the old one, and a window it was moved to, go with it */}
+      <PlanMap key={`${fund}|${map.plan.amount}|${map.plan.monthly}|${map.max.amount}|${map.max.monthly}`} view={view} bundle={bundle} map={map} on={on} />
     </div>
   );
 });
 
-/** The step a read point is rounded to: a power of ten about a fiftieth of the axis (1,000 ₪ on 200,000, 10 ₪ on 4,000). */
-const snapOf = (max: number) => 10 ** Math.floor(Math.log10(max / 50));
+/** The mark of the plan, the same object while the map is: a mark that changed would make the map place its words again. */
+const markOf = (map: AccountMap) => ({ at: [map.plan.amount, map.plan.monthly] as const, label: { text: m.plan } });
+
+/**
+ * The map of one plan: on the plan's own window, then on any window the reader moves it to, its areas worked out in the map's worker when
+ * the move comes to rest (lib/invest-run.ts, `useMapWindowRun`) and drawn where they lie while the next are worked out. The colours keep
+ * to the plan's map's accounts, so a moved window does not paint an account another colour.
+ */
+function PlanMap({ view, bundle, map, on }: { view: InvestView; bundle: IndicesBundle; map: AccountMap; on: Asked<"map"> }) {
+  const home = useMemo(() => viewOf(planShown(map).window), [map]);
+  const [want, setWant] = useState<MapWindow | null>(null);
+  const asked = useMemo(() => want && { bundle: on.bundle, ask: { ...on.ask, window: want } }, [want, on]);
+  const got = useMapWindowRun(asked);
+  const shown = useMemo(() => (want && got ? got : planShown(map)), [want, got, map]);
+  // the map's accounts in the houses' order: the order the colours go by; an account only a moved window shows comes after them
+  const { areas, toneOf, field, edge } = useMemo(() => {
+    const houses = providersOfInvest(on.bundle).map((s) => s.id);
+    const order = [...houses.filter((id) => map.accounts.includes(id)), ...houses.filter((id) => !map.accounts.includes(id) && shown.accounts.includes(id))];
+    return mapAreas(view, shown, order);
+  }, [view, map, shown, on]);
+  const mark = useMemo(() => markOf(map), [map]);
+  const reading = useMemo(() => readerOf(view, bundle, on, toneOf), [view, bundle, on, toneOf]);
+  const move = useMemo(
+    () => ({
+      limits: { x: [0, map.limits.amount] as const, y: [0, map.limits.monthly] as const, least: { x: map.limits.least.amount, y: map.limits.least.monthly } },
+      onView: (v: PlaneView) => setWant(sameView(v, home) ? null : windowOf(v)),
+      homeLabel: m.home,
+    }),
+    [map, home],
+  );
+  return (
+    <RegionMap
+      home={home}
+      areas={areas}
+      field={field}
+      edge={edge}
+      bandLabel={{ text: m.same, pair: m.samePair, help: <HelpMark about={m.howTo.about} text={m.howTo.text(thetaText(bundle))} className="ms-0.5" /> }}
+      mark={mark}
+      xTitle={m.xTitle}
+      yTitle={m.yTitle}
+      xTick={axisTick}
+      yTick={axisTick}
+      reading={reading}
+      move={move}
+    />
+  );
+}
+
+/** An axis's figure: thousands as "אלף", 0 as itself. */
+const axisTick = (v: number) => (v === 0 ? "0" : fmt.compactAxis(v));

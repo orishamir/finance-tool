@@ -103,3 +103,4 @@ export { RangeMenu, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet } from "./val
 export { OnOffSwitch, Switch } from "./switch";
 export { ReadForBand, type ReadPick } from "./read-for-band";
 export { RegionMap, regionSwatch, regionTones, regionWash, type RegionArea, type RegionGrid, type RegionPoint, type RegionReading, type RegionTone } from "./region-map";
+export { sameView, type PlaneView } from "./region-view";

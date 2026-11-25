@@ -131,9 +131,9 @@ describe("the legend's items for the band", () => {
   const legendOf = (field: RegionGrid, edge: RegionGrid = { cols: 2, rows: 1, first: [0, 0], second: [-1, -1], ahead: [1, 1] }, guides: { axis: "x" | "y"; at: number; label?: { text: string } }[] = []) =>
     renderToString(
       createElement(RegionMap, {
-        max: { x: 100, y: 100 },
+        home: { x: [0, 100], y: [0, 100] },
         areas: [{ id: "p", name: "P", tone: "region-1" }, { id: "q", name: "Q", tone: "region-2" }],
-        field: { ...field, from: 1 },
+        field: { ...field, window: { x: [0, 100], y: [0, 100] }, from: 1 },
         edge,
         edgeLabel: (id: string | null) => ({ text: id === null ? "the edge about the same" : `the edge: ${id}` }),
         bandLabel: { text: SAME, pair: (a: string, b: string) => `${a} & ${b}: ${SAME}` },
@@ -143,7 +143,6 @@ describe("the legend's items for the band", () => {
         yTitle: "y",
         xTick: String,
         yTick: String,
-        snap: { x: 1, y: 1 },
         reading: () => ({ head: "", rows: [] }),
       }),
     );

@@ -14,14 +14,24 @@
 // its box stay, and the box's figures can be tapped), a second one elsewhere moves it, and a tap on it or Escape lets it go. The map takes
 // the focus, and the arrow keys move the kept point (from the marked one; with Shift in larger steps). A legend item or an area's name sets
 // that area apart while pointed at, and keeps it on a click or a tap, without keeping a point.
+// Where the caller lets it move (`move`), it shares a phone's page as design.md says of a chart people browse: on a computer a drag moves it,
+// Ctrl or ⌘ with the wheel zooms about the pointer (a plain wheel scrolls the page), + and − zoom about the middle and a button returns to the
+// starting view; on a phone one finger scrolls the page and a swipe shows a short hint, two fingers move it and pinch it, and a full-screen
+// button opens it in a dialog where every gesture is the map's. While a hand moves it, what is drawn is carried with the view at once (the
+// canvases placed where the field lies, the words and lines by a transform, the axes' ticks drawn for the view), and the caller hears the
+// view where the move comes to rest and hands in the field for it; a press that moved reads no point.
 // The caller gives who leads at each node of an even grid and says what a reading holds; the piece draws and answers the pointer.
-import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
+import { useEffect, useEffectEvent, useId, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import { scaleLinear } from "d3-scale";
+import { kit as copy, site } from "../../copy";
+import { IconClose } from "../icons";
+import { Button } from "./button";
 import { pickDim, useChartPick, ChartTip } from "./chart-interact";
 import { ChartLegend, Swatch, type LegendItem, type ReadoutRow } from "./chart-parts";
 import { chartTextWidth } from "./chart-text";
 import { cx } from "./cx";
-import { useWidth } from "./marker";
+import { useBox } from "./marker";
+import { canZoom, movedView, sameView, snapOf, viewBetween, type PlaneLimits, type PlaneView, type Share } from "./region-view";
 
 /** A point of the plot, in its own units. */
 export type RegionPoint = readonly [x: number, y: number];
@@ -73,7 +83,7 @@ export interface RegionGrid {
 
 /** Words drawn on the map over the drawing, in HTML so a figure among them keeps its order on every browser and opens its source:
  *  `text` is what they say, for their measure, and `node` how they are written (the text itself where none is given). */
-export interface RegionWords {
+interface RegionWords {
   text: string;
   node?: ReactNode;
 }
@@ -409,8 +419,184 @@ export function equalLines(grid: RegionGrid): Seg[] {
   return out;
 }
 
-export function RegionMap({
-  max,
+/** How the reader moves the map: how far it may go, what the caller hears when a move comes to rest, and the words of the button that
+ *  returns to the starting view. */
+interface RegionMove {
+  limits: PlaneLimits;
+  /** The view where a move or a zoom comes to rest (a drag let go, the fingers lifted, the wheel still, a button's move done): the caller
+   *  works out the areas over it and hands them in as `field` when they come; till then the field it has is drawn where it lies. */
+  onView: (v: PlaneView) => void;
+  /** The button that returns to the starting view. */
+  homeLabel: string;
+}
+
+interface RegionMapProps {
+  /** The starting view: what the map shows first, and what its button returns to. */
+  home: PlaneView;
+  /** Every area, in the legend's order. */
+  areas: RegionArea[];
+  /** Who leads over a window of the plane (`window`): its columns across the window's x, its rows from `from` to its top (under `from`,
+   *  where the window starts at 0, is the bottom edge's). Drawn where it lies in the view, so a move shows at once, before the next comes. */
+  field: RegionGrid & { window: PlaneView; from: number };
+  /** The bottom edge's value at 0, one row across the field's x: the words over its longest clear stretch, and each other area's name over
+   *  its own (`edgeStretches`); null where the field's window starts above 0. */
+  edge: RegionGrid | null;
+  /** The bottom edge's words, by the area over its longest clear stretch (null: about the same all along); with none, the edge carries no
+   *  words, its colours alone saying which area leads along it. */
+  edgeLabel?: (id: string | null) => RegionWords;
+  /** The band's words in the legend, the pair's for its hint, and a "?" after its item (the last such item; with none, after the last item). */
+  bandLabel: { text: string; pair: (a: string, b: string) => string; help?: ReactNode };
+  /** The reader's own point, and its words under it; neither is drawn where the point is out of view. */
+  mark: { at: RegionPoint; label: RegionWords };
+  guides?: readonly RegionGuide[];
+  xTitle: string;
+  yTitle: string;
+  xTick: (v: number) => string;
+  yTick: (v: number) => string;
+  /** What a point holds, in the box that follows the pointer and the one that stays at a kept point; `null` reads the marked point. */
+  reading: (p: RegionPoint | null) => RegionReading;
+  /** How the reader moves and zooms the map; with none, it stays on its starting view. */
+  move?: RegionMove;
+}
+
+/** A button's move of the view, played over this many ms (design.md: a one-off change), at once under reduced motion. */
+const MOVE_MS = 400;
+/** The wheel is still for this long: the zoom it made comes to rest. */
+const WHEEL_REST_MS = 200;
+/** How long the hint that two fingers move the map stays, after a finger's swipe over it on the page. */
+const HINT_MS = 1600;
+/** A press that moves farther than this, in px, is a drag, never a click that reads a point. */
+const DRAG_PX = 4;
+/** A zoom button's step: the view's width and height divided or multiplied by it. */
+const ZOOM_STEP = 1.5;
+
+/** What a frame of the plot holds for a view: the axes' ticks at clean values, and the plot's left and right edges, so the y axis's figures
+ *  and the last x figure fit (chart-text.ts). */
+function frameOf(view: PlaneView, w: number, narrow: boolean, xTick: (v: number) => string, yTick: (v: number) => string) {
+  const yTicks = scaleLinear().domain(view.y).ticks(narrow ? 4 : 6);
+  const left = 10 + Math.ceil(Math.max(...yTicks.map((t) => textRoom(yTick(t))), textRoom(xTick(view.x[0])) / 2));
+  // the x axis's ticks: as many clean values as fit with room between their words, measured
+  const widest = (ts: number[]) => Math.max(0, ...ts.map((t) => textRoom(xTick(t))));
+  const roomFor = (ts: number[]) => ts.length < 2 || (w - left - RIGHT) / (ts.length - 1) > widest(ts) + 16;
+  const xTicks = [6, 5, 4, 3, 2].map((n) => scaleLinear().domain(view.x).ticks(n)).find(roomFor) ?? [...view.x];
+  const lastHalf = textRoom(xTick(xTicks.at(-1) ?? view.x[1])) / 2;
+  return { left, right: w - Math.max(RIGHT, Math.ceil(lastHalf) + 4), xTicks, yTicks };
+}
+
+const inView = (v: PlaneView, p: RegionPoint) => p[0] >= v.x[0] && p[0] <= v.x[1] && p[1] >= v.y[0] && p[1] <= v.y[1];
+
+export function RegionMap(props: RegionMapProps) {
+  const { home, move } = props;
+  const [view, setView] = useState<PlaneView>(home);
+  // the view as the latest move left it, for the listeners and a button's move, which come between renders
+  const viewNow = useRef(home);
+  const [pinned, setPinned] = useState<RegionPoint | null>(null);
+  const [full, setFull] = useState(false);
+  const frame = useRef<number | null>(null);
+  const put = (v: PlaneView) => {
+    viewNow.current = v;
+    setView(v);
+  };
+  const stop = () => {
+    if (frame.current !== null) cancelAnimationFrame(frame.current);
+    frame.current = null;
+  };
+  // a button's move: played to `to`, then at rest there; at once under reduced motion
+  const go = (to: PlaneView) => {
+    stop();
+    const from = viewNow.current;
+    if (sameView(from, to)) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      put(to);
+      move?.onView(to);
+      return;
+    }
+    const t0 = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - t0) / MOVE_MS);
+      const eased = 1 - (1 - t) ** 3;
+      put(t < 1 ? viewBetween(from, to, eased) : to);
+      if (t < 1) frame.current = requestAnimationFrame(step);
+      else {
+        frame.current = null;
+        move?.onView(to);
+      }
+    };
+    frame.current = requestAnimationFrame(step);
+  };
+  useEffect(
+    () => () => {
+      if (frame.current !== null) cancelAnimationFrame(frame.current);
+    },
+    [],
+  );
+  const hand: Hand = { view, viewNow, put, go, stop, pinned, setPinned };
+  return (
+    <>
+      <Plot {...props} hand={hand} variant="page" onFull={() => setFull(true)} />
+      {move && (
+        <FullScreen open={full} onClose={() => setFull(false)}>
+          <Plot {...props} hand={hand} variant="full" onFull={() => setFull(false)} />
+        </FullScreen>
+      )}
+    </>
+  );
+}
+
+/** The view and the kept point the map on the page and the one in full screen share, and how they move. */
+interface Hand {
+  view: PlaneView;
+  viewNow: { current: PlaneView };
+  put: (v: PlaneView) => void;
+  go: (to: PlaneView) => void;
+  stop: () => void;
+  pinned: RegionPoint | null;
+  setPinned: (p: RegionPoint | null) => void;
+}
+
+/** The map in full screen: a modal dialog over the whole window, where every gesture is the map's (no touch or wheel reaches the page). Its
+ *  close button, Escape and the phone's Back close it, and the focus goes back to the button that opened it. */
+function FullScreen({ open, onClose, children }: { open: boolean; onClose: () => void; children: ReactNode }) {
+  const ref = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const d = ref.current;
+    if (!d) return;
+    if (open && !d.open) {
+      d.showModal();
+      d.querySelector<HTMLElement>("[data-autofocus]")?.focus();
+    } else if (!open && d.open) d.close();
+  }, [open]);
+  // the wheel anywhere over it is the map's: the page under it never scrolls
+  useEffect(() => {
+    const d = ref.current;
+    if (!d) return;
+    const still = (e: WheelEvent) => e.preventDefault();
+    d.addEventListener("wheel", still, { passive: false });
+    return () => d.removeEventListener("wheel", still);
+  }, []);
+  return (
+    <dialog
+      ref={ref}
+      className="m-0 h-dvh max-h-none w-dvw max-w-none touch-none overscroll-contain border-0 bg-card p-3 text-foreground backdrop:bg-background"
+      onCancel={(e) => {
+        e.preventDefault();
+        onClose();
+      }}
+      onClose={onClose}
+      data-region-full
+    >
+      {open && <div className="flex h-full flex-col">{children}</div>}
+    </dialog>
+  );
+}
+
+/** A finger's or the mouse's press on the plot: where it started, on which view, and whether it has moved enough to be a drag. */
+type Press = { x: number; y: number; type: string; view: PlaneView; dragging: boolean };
+/** Two fingers on the plot: the view they started on, the point between them as a share of the plot, and how far apart they were. */
+type Pinch = { view: PlaneView; at: Share; apart: number };
+
+function Plot({
+  home,
   areas,
   field,
   edge,
@@ -422,65 +608,47 @@ export function RegionMap({
   yTitle,
   xTick,
   yTick,
-  snap,
   reading,
-}: {
-  /** The plot runs from 0 to `max` on each axis. */
-  max: { x: number; y: number };
-  /** Every area, in the legend's order. */
-  areas: RegionArea[];
-  /** Who leads over the plane: its columns from 0 to `max.x`, its rows from `from` to `max.y` (under `from` is the bottom edge's). */
-  field: RegionGrid & { from: number };
-  /** The bottom edge's value, one row from 0 to `max.x`: the words over its longest clear stretch, and each other area's name over its own
-   *  (`edgeStretches`). */
-  edge: RegionGrid;
-  /** The edge's words for the area of its longest clear stretch; null where no area is clear over enough of it to be named, the areas
-   *  there being about the same. */
-  /** The bottom edge's words, by the area over its longest clear stretch (null: about the same all along); with none, the edge carries no
-   *  words, its colours alone saying which area leads along it. */
-  edgeLabel?: (id: string | null) => RegionWords;
-  /** What the stripes mean, an item in the legend for each pair whose stripes show: its words, and its title naming the pair. */
-  /** The band's words in the legend, the pair's for its hint, and a "?" after its item (the last such item; with none, after the last item). */
-  bandLabel: { text: string; pair: (a: string, b: string) => string; help?: ReactNode };
-  /** The reader's own point, and its words under it. */
-  mark: { at: RegionPoint; label: RegionWords };
-  guides?: readonly RegionGuide[];
-  xTitle: string;
-  yTitle: string;
-  xTick: (v: number) => string;
-  yTick: (v: number) => string;
-  /** The steps a read point is rounded to, on each axis, so a reading names round amounts. */
-  snap: { x: number; y: number };
-  /** What a point holds, in the box that follows the pointer and the one that stays at a kept point; `null` reads the marked point. */
-  reading: (p: RegionPoint | null) => RegionReading;
-}) {
-  const [ref, w] = useWidth(600);
+  move,
+  hand,
+  variant,
+  onFull,
+}: RegionMapProps & { hand: Hand; variant: "page" | "full"; onFull: () => void }) {
+  const { view, viewNow, put, go, stop, pinned, setPinned } = hand;
+  const [ref, box] = useBox(240, 180, 600);
+  const w = box.width;
   const plane = useRef<HTMLCanvasElement>(null);
   const line = useRef<HTMLCanvasElement>(null);
   const band = useRef<HTMLCanvasElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const clip = useId();
   const pick = useChartPick();
   const [hover, setHover] = useState<{ p: RegionPoint; onMark: boolean } | null>(null);
-  const [pinned, setPinned] = useState<RegionPoint | null>(null);
-  const pressed = useRef<{ x: number; y: number; type: string } | null>(null);
+  const [hint, setHint] = useState(0);
+  const pressed = useRef<Press | null>(null);
+  // a drag or a pinch since the last press: the click that follows reads no point
+  const moved = useRef(false);
+  const full = variant === "full";
 
-  // the plot: the y axis's figures measured at its start (chart-text.ts), the axis titles above and under it
+  // the plot: on the page as high as its width allows, in full screen as high as the screen
   const narrow = w < 520;
-  const height = narrow ? 400 : Math.min(500, Math.max(380, Math.round(w * 0.5)));
-  const yTicks = scaleLinear().domain([0, max.y]).ticks(narrow ? 4 : 6);
-  const left = 10 + Math.ceil(Math.max(...yTicks.map((t) => textRoom(yTick(t))), textRoom(xTick(0)) / 2));
-  // the x axis's ticks: as many clean values as fit with room between their words, measured (chart-text.ts)
-  const widest = (ts: number[]) => Math.max(0, ...ts.map((t) => textRoom(xTick(t))));
-  const roomFor = (ts: number[]) => ts.length < 2 || (w - left - RIGHT) / (ts.length - 1) > widest(ts) + 16;
-  const xTicks = [6, 5, 4, 3, 2].map((n) => scaleLinear().domain([0, max.x]).ticks(n)).find(roomFor) ?? [0, max.x];
-  const lastHalf = textRoom(xTick(xTicks.at(-1) ?? max.x)) / 2;
-  const right = w - Math.max(RIGHT, Math.ceil(lastHalf) + 4);
+  const height = full ? box.height : narrow ? 400 : Math.min(500, Math.max(380, Math.round(w * 0.5)));
   const bottom = height - BOTTOM;
-  const sx = scaleLinear().domain([0, max.x]).range([left, right]);
-  const sy = scaleLinear().domain([0, max.y]).range([bottom, TOP]);
-  const fromPx = (px: number) => Math.min(max.x, Math.max(0, sx.invert(px)));
-  const fromPy = (py: number) => Math.min(max.y, Math.max(0, sy.invert(py)));
+  const { left, right, xTicks, yTicks } = frameOf(view, w, narrow, xTick, yTick);
+  const sx = scaleLinear().domain(view.x).range([left, right]);
+  const sy = scaleLinear().domain(view.y).range([bottom, TOP]);
+  const fromPx = (px: number) => Math.min(view.x[1], Math.max(view.x[0], sx.invert(px)));
+  const fromPy = (py: number) => Math.min(view.y[1], Math.max(view.y[0], sy.invert(py)));
+  const snap = { x: snapOf(view.x), y: snapOf(view.y) };
   const round = (p: RegionPoint): RegionPoint => [Math.round(p[0] / snap.x) * snap.x, Math.round(p[1] / snap.y) * snap.y];
+  // a point of the plot, in px from the map's corner, as shares of the plot from its left and its bottom
+  const shareOf = (px: number, py: number): Share => [(px - left) / Math.max(1, right - left), (bottom - py) / Math.max(1, bottom - TOP)];
+
+  // the field's own frame: the plot as it is drawn when the view is the field's window. The words over the map are placed in it, once per
+  // field, and carried with the field while the view moves (`carry`)
+  const fw = field.window;
+  const own = frameOf(fw, w, narrow, xTick, yTick);
+  const [fl, fr] = [own.left, own.right];
 
   const active = pick.active === null ? -1 : areas.findIndex((a) => a.id === pick.active);
   // the canvases, painted again when the field or the area set apart changes; each colour read from the page
@@ -493,12 +661,13 @@ export function RegionMap({
       return active >= 0 && k !== active ? mixRgb(c, card, DIMMED) : c;
     };
     if (plane.current) paint(plane.current, field, colour, card, false);
-    if (line.current) paint(line.current, edge, colour, card, true);
+    if (line.current && edge) paint(line.current, edge, colour, card, true);
   }, [ref, areas, field, edge, active]);
-  // the band over the areas, painted at the screen's own pixels so its stripes stay sharp: again when the field, its size or the area set
-  // apart changes, never as the pointer moves; the stripes' weight and period are the theme's
-  const plotW = right - left;
-  const plotH = sy(field.from) - TOP;
+  // the band over the areas, painted at the screen's own pixels of the field's frame so its stripes stay sharp: again when the field, its
+  // size or the area set apart changes, never as the pointer or the view moves; the stripes' weight and period are the theme's
+  const syOwn = scaleLinear().domain(fw.y).range([bottom, TOP]);
+  const plotW = fr - fl;
+  const plotH = syOwn(field.from) - TOP;
   useEffect(() => {
     const host = ref.current;
     const canvas = band.current;
@@ -521,8 +690,6 @@ export function RegionMap({
     ctx.putImageData(img, 0, 0);
   }, [ref, areas, field, active, plotW, plotH]);
 
-  const mx = sx(mark.at[0]);
-  const my = sy(mark.at[1]);
   // the legend's items for the band, one for each pair whose band shows, most first, in the pair's colours as the map draws them; the title
   // naming the pair is a hint under a computer's pointer
   const { text: sameText, pair: samePair, help: bandHelp } = bandLabel;
@@ -535,33 +702,38 @@ export function RegionMap({
       }),
     [field, areas, sameText, samePair],
   );
-  // the words over the map and where they stand: worked out again only when the map or its size changes, the names' and the band's places
-  // being a search over the plot
+  // the words over the map and where they stand, in the field's own frame: worked out again only when the field or the plot's size changes,
+  // the names' and the band's places being a search over the plot
   const layout = useMemo(() => {
-    const sxL = scaleLinear().domain([0, max.x]).range([left, right]);
-    const syL = scaleLinear().domain([0, max.y]).range([bottom, TOP]);
+    const [x0, x1] = fw.x;
+    const y1 = fw.y[1];
+    const sxL = scaleLinear().domain(fw.x).range([fl, fr]);
+    const syL = scaleLinear().domain(fw.y).range([bottom, TOP]);
+    // the mark, its words and its guides only where it lies in the field's window
+    const markIn = inView(fw, mark.at);
     const mxL = sxL(mark.at[0]);
     const myL = syL(mark.at[1]);
     const meets = (a: Box, b: Box) => a.x < b.x + b.w + 6 && b.x < a.x + a.w + 6 && a.y < b.y + b.h && b.y < a.y + a.h;
     const overlap = (a: Box, b: Box) => Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x)) * Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
     // the lines words keep clear of: each guide, from the mark to its end, and the line where two areas are equal
-    const gxL = (i: number) => sxL((max.x * i) / (field.cols - 1));
-    const gyL = (j: number) => syL(field.from + ((max.y - field.from) * j) / (field.rows - 1));
-    const equalPx = equalLines(field).map(([x0, y0, x1, y1]) => [gxL(x0), gyL(y0), gxL(x1), gyL(y1)] as const);
+    const gxL = (i: number) => sxL(x0 + ((x1 - x0) * i) / (field.cols - 1));
+    const gyL = (j: number) => syL(field.from + ((y1 - field.from) * j) / (field.rows - 1));
+    const equalPx = equalLines(field).map(([a0, b0, a1, b1]) => [gxL(a0), gyL(b0), gxL(a1), gyL(b1)] as const);
     // a guide shorter than the mark's dot is not drawn: its line would hide under the dot and its words stand away from its point
-    const shown = guides.filter((g) => Math.abs(g.axis === "x" ? sxL(g.at) - mxL : syL(g.at) - myL) >= GUIDE_MIN);
+    const shown = markIn ? guides.filter((g) => Math.abs(g.axis === "x" ? sxL(g.at) - mxL : syL(g.at) - myL) >= GUIDE_MIN) : [];
     const guidePx = shown.map((g) => [mxL, myL, g.axis === "x" ? sxL(g.at) : mxL, g.axis === "x" ? myL : syL(g.at)] as const);
     const crossed = (b: Box) => guidePx.some((l) => lineMeetsBox(l, b)) || equalPx.some((l) => lineMeetsBox(l, b));
-    const inPlot = (b: Box) => b.x >= left && b.x + b.w <= right && b.y >= TOP && b.y + b.h <= bottom - EDGE_PX;
+    const inPlot = (b: Box) => b.x >= fl && b.x + b.w <= fr && b.y >= TOP && b.y + b.h <= bottom - (edge ? EDGE_PX : 0);
     const fits = (b: Box) => inPlot(b) && !crossed(b);
+    const foot = bottom - (edge ? EDGE_PX : 0);
 
     // the bottom edge's named stretches, in px, the longest first: it carries the edge's words, each other its area's name; with none, the
     // edge's words say the areas there are about the same, over the whole edge
-    const nodeX = (i: number) => (max.x * i) / (edge.cols - 1);
-    const runs = edgeStretches(edge).map((r) => ({ area: r.area, from: nodeX(r.from), to: nodeX(r.to) }));
+    const nodeX = (i: number) => x0 + ((x1 - x0) * i) / ((edge?.cols ?? 2) - 1);
+    const runs = edge ? edgeStretches(edge).map((r) => ({ area: r.area, from: nodeX(r.from), to: nodeX(r.to) })) : [];
     const [longest, ...others] = runs;
     const longestArea = longest ? areas[longest.area] : undefined;
-    const edgeWords = edgeLabel?.(longestArea?.id ?? null) ?? null;
+    const edgeWords = edge ? (edgeLabel?.(longestArea?.id ?? null) ?? null) : null;
 
     // the words, each placed clear of those placed before it: the bottom edge's, then the mark's, then each guide's; a box tries its places
     // in order and takes the first inside the plot that meets none, else the one that meets least
@@ -570,10 +742,10 @@ export function RegionMap({
     // where none of its places is clear, the words stand in the nearest clear place around the point they name, a line at a time further
     // up or down, beside it or held inside the plot; only where none is clear either, in the place that meets least
     const around = (b: Box, at: [number, number]): Box[] => {
-      const near = [10, -30, 30, -50, 50, -70, 70, -90, 90].flatMap((dy) => [at[0] + 8, at[0] - 8 - b.w, at[0] - b.w / 2].map((x) => ({ ...b, x: Math.min(right - b.w - 4, Math.max(left + 4, x)), y: at[1] + dy - b.h / 2 })));
+      const near = [10, -30, 30, -50, 50, -70, 70, -90, 90].flatMap((dy) => [at[0] + 8, at[0] - 8 - b.w, at[0] - b.w / 2].map((x) => ({ ...b, x: Math.min(fr - b.w - 4, Math.max(fl + 4, x)), y: at[1] + dy - b.h / 2 })));
       // then wider, nearest first: on a phone's narrow plot the lines (a guide, the equal line) can cross every place beside the point
       const wide: Box[] = [];
-      for (let dy = -150; dy <= 150; dy += 10) for (let dx = -160; dx <= 160; dx += 16) wide.push({ ...b, x: Math.min(right - b.w - 4, Math.max(left + 4, at[0] + dx - b.w / 2)), y: at[1] + dy - b.h / 2 });
+      for (let dy = -150; dy <= 150; dy += 10) for (let dx = -160; dx <= 160; dx += 16) wide.push({ ...b, x: Math.min(fr - b.w - 4, Math.max(fl + 4, at[0] + dx - b.w / 2)), y: at[1] + dy - b.h / 2 });
       const dist = (x: Box) => Math.hypot(x.x + x.w / 2 - at[0], x.y + x.h / 2 - at[1]);
       return [...near, ...wide.sort((x, y) => dist(x) - dist(y))];
     };
@@ -583,8 +755,8 @@ export function RegionMap({
       const first = tries[0];
       const wider = first ? around(first, at) : [];
       // held inside the plot, or at its left edge where the words are wider than it
-      const held = (b: Box): Box => ({ ...b, x: Math.max(0, Math.min(right - b.w - 4, Math.max(left + 4, b.x))), y: Math.min(bottom - EDGE_PX - b.h, Math.max(TOP, b.y)) });
-      const got = clearOf(tries) ?? clearOf(wider) ?? [...tries, ...wider].map(held).sort((x, y) => cost(x) - cost(y))[0] ?? { x: left, y: TOP, w: 0, h: 0 };
+      const held = (b: Box): Box => ({ ...b, x: Math.max(0, Math.min(fr - b.w - 4, Math.max(fl + 4, b.x))), y: Math.min(foot - b.h, Math.max(TOP, b.y)) });
+      const got = clearOf(tries) ?? clearOf(wider) ?? [...tries, ...wider].map(held).sort((x, y) => cost(x) - cost(y))[0] ?? { x: fl, y: TOP, w: 0, h: 0 };
       placed.push(got);
       return got;
     };
@@ -592,32 +764,34 @@ export function RegionMap({
     // not fit inside the stretch, they stand under the map, after a piece of the edge's line. Each other stretch carries its area's name
     // where it fits inside it, so an edge that changes hands names each account along it
     const overStretch = (r: (typeof runs)[number], tw: number) => {
-      const from = Math.max(left + 4, sxL(r.from));
+      const from = Math.max(fl + 4, sxL(r.from));
       const tries: Box[] = [];
-      for (let x = Math.min(right - 4, sxL(r.to) - 4) - tw; x >= from; x -= 8) tries.push({ x, y: bottom - EDGE_PX - 6 - LINE, w: tw, h: LINE });
+      for (let x = Math.min(fr - 4, sxL(r.to) - 4) - tw; x >= from; x -= 8) tries.push({ x, y: bottom - EDGE_PX - 6 - LINE, w: tw, h: LINE });
       return clearOf(tries);
     };
-    const edgeInside = edgeWords ? overStretch(longest ?? { area: -1, from: 0, to: max.x }, textRoom(edgeWords.text)) : undefined;
+    const edgeInside = edgeWords ? overStretch(longest ?? { area: -1, from: x0, to: x1 }, textRoom(edgeWords.text)) : undefined;
     if (edgeInside) placed.push(edgeInside);
     const edgeNames = (edgeWords ? others : []).flatMap((r) => {
       const a = areas[r.area];
-      const box = a ? overStretch(r, textRoom(a.name)) : undefined;
-      if (!a || !box) return [];
-      placed.push(box);
-      return [{ id: a.id, box, words: { text: a.name } }];
+      const b = a ? overStretch(r, textRoom(a.name)) : undefined;
+      if (!a || !b) return [];
+      placed.push(b);
+      return [{ id: a.id, box: b, words: { text: a.name } }];
     });
     // a box's left edge moved inside the plot, where its words are narrower than the plot
-    const inside = (x: number, tw: number) => Math.min(right - tw - 4, Math.max(left + 4, x));
+    const inside = (x: number, tw: number) => Math.min(fr - tw - 4, Math.max(fl + 4, x));
     // the mark's words: under the dot, else over it beside its vertical guide, else beside the dot, else a line higher, held inside the plot
     const markTw = textRoom(mark.label.text);
-    const markBox = place([
-      { x: inside(mxL - markTw / 2, markTw), y: myL + 10, w: markTw, h: LINE },
-      { x: mxL + 8, y: myL - 26, w: markTw, h: LINE },
-      { x: mxL - 8 - markTw, y: myL - 26, w: markTw, h: LINE },
-      { x: mxL + 12, y: myL + 4, w: markTw, h: LINE },
-      { x: mxL - 12 - markTw, y: myL + 4, w: markTw, h: LINE },
-      ...[myL - 26, myL - 46].map((y) => ({ x: inside(mxL + 8, markTw), y, w: markTw, h: LINE })),
-    ], [mxL, myL]);
+    const markBox = markIn
+      ? place([
+          { x: inside(mxL - markTw / 2, markTw), y: myL + 10, w: markTw, h: LINE },
+          { x: mxL + 8, y: myL - 26, w: markTw, h: LINE },
+          { x: mxL - 8 - markTw, y: myL - 26, w: markTw, h: LINE },
+          { x: mxL + 12, y: myL + 4, w: markTw, h: LINE },
+          { x: mxL - 12 - markTw, y: myL + 4, w: markTw, h: LINE },
+          ...[myL - 26, myL - 46].map((y) => ({ x: inside(mxL + 8, markTw), y, w: markTw, h: LINE })),
+        ], [mxL, myL])
+      : null;
     // each guide's dot and its words beside it: over the dashed line or under it, after the dot or before it; where no place near it is
     // clear of the lines and of the words before them, the guide has no words (its figure is in the headline the map stands under), as a
     // guide shorter than the dot has none: words a line runs through are hard to read and stand away from the point they name
@@ -631,28 +805,28 @@ export function RegionMap({
         g.axis === "x"
           ? [gy - 24, gy + 4, gy - 46].flatMap((y) => [{ x: gx + 8, y, w: tw, h: LINE }, { x: gx - 8 - tw, y, w: tw, h: LINE }, { x: inside(gx - tw / 2, tw), y, w: tw, h: LINE }])
           : [gy - 10, gy - 30, gy + 10].flatMap((y) => [{ x: gx + 8, y, w: tw, h: LINE }, { x: gx - 8 - tw, y, w: tw, h: LINE }, { x: inside(gx + 8, tw), y, w: tw, h: LINE }]);
-      const box = clearOf(tries) ?? (tries[0] ? clearOf(around(tries[0], [gx, gy])) : undefined) ?? null;
-      if (box) placed.push(box);
-      return { g, gx, gy, box };
+      const b = clearOf(tries) ?? (tries[0] ? clearOf(around(tries[0], [gx, gy])) : undefined) ?? null;
+      if (b) placed.push(b);
+      return { g, gx, gy, box: b };
     });
 
     // each area's name, and the band's words, where they have the most room: a box whose every sampled point the area leads clearly (or,
     // for the band, where the next one's colour shows), clear of the words above, as far as it can be from the mark and the guides' dots
     const node = (px: number, py: number) => {
-      const i = Math.round((sxL.invert(px) / max.x) * (field.cols - 1));
-      const j = Math.round(((syL.invert(py) - field.from) / (max.y - field.from)) * (field.rows - 1));
+      const i = Math.round(((sxL.invert(px) - x0) / (x1 - x0)) * (field.cols - 1));
+      const j = Math.round(((syL.invert(py) - field.from) / (y1 - field.from)) * (field.rows - 1));
       return i < 0 || j < 0 || i >= field.cols || j >= field.rows ? -1 : j * field.cols + i;
     };
     // a box's sampled points: five across, three down
     const samples = (b: Box) => Array.from({ length: 15 }, (_, n) => node(b.x + (b.w * (n % 5)) / 4, b.y + (b.h * Math.floor(n / 5)) / 2));
     const holds = (b: Box, ok: (k: number) => boolean) => samples(b).every((k) => k >= 0 && ok(k));
-    const dots: [number, number][] = [[mxL, myL], ...guideDraw.flatMap(({ g, gx, gy }) => (g.label ? [[gx, gy] as [number, number]] : []))];
+    const dots: [number, number][] = [...(markIn ? [[mxL, myL] as [number, number]] : []), ...guideDraw.flatMap(({ g, gx, gy }) => (g.label ? [[gx, gy] as [number, number]] : []))];
     const taken: Box[] = [...placed];
     // the box with the most room
     const find = (tw: number, h: number, ok: (k: number) => boolean): { b: Box; room: number } | null => {
       let best: { b: Box; room: number } | null = null;
-      for (let cy = TOP + h / 2 + 4; cy <= bottom - EDGE_PX - h / 2 - 4; cy += 8)
-        for (let cx0 = left + tw / 2 + 8; cx0 <= right - tw / 2 - 8; cx0 += 8) {
+      for (let cy = TOP + h / 2 + 4; cy <= foot - h / 2 - 4; cy += 8)
+        for (let cx0 = fl + tw / 2 + 8; cx0 <= fr - tw / 2 - 8; cx0 += 8) {
           const b = { x: cx0 - tw / 2 - 4, y: cy - h / 2, w: tw + 8, h };
           if (!holds(b, ok) || taken.some((t) => meets(b, t)) || crossed(b)) continue;
           // the room: how far the box grows before it leaves its area, and how far it is from the mark and the guides' dots
@@ -673,19 +847,33 @@ export function RegionMap({
       const b = take(find(textRoom(a.name, 16), 24, (k) => field.first[k] === n && (field.ahead[k] ?? 0) >= CLEAR));
       return b ? [{ a, b }] : [];
     });
-    const equal = equalPx.map(([x0, y0, x1, y1]) => `M${x0.toFixed(1)} ${y0.toFixed(1)}L${x1.toFixed(1)} ${y1.toFixed(1)}`).join("");
-    return { edgeWords, edgeInside, edgeNames, longestArea, markBox, guideDraw, names, equal };
-  }, [field, edge, areas, mark, guides, edgeLabel, max.x, max.y, left, right, bottom]);
+    const equal = equalPx.map(([a0, b0, a1, b1]) => `M${a0.toFixed(1)} ${b0.toFixed(1)}L${a1.toFixed(1)} ${b1.toFixed(1)}`).join("");
+    return { edgeWords, edgeInside, edgeNames, longestArea, markBox, guideDraw, names, equal, mxL, myL };
+  }, [field, edge, areas, mark, guides, edgeLabel, fw, fl, fr, bottom]);
   const { edgeWords, edgeInside, longestArea, markBox, guideDraw, equal } = layout;
 
-  const set = (p: RegionPoint | null) => setPinned(p);
-  const onMarkAt = (px: number, py: number) => Math.hypot(px - mx, py - my) <= REACH;
-  const onPinAt = (px: number, py: number) => !!pinned && Math.hypot(px - sx(pinned[0]), py - sy(pinned[1])) <= REACH;
+  // from the field's own frame to the view's: what is drawn moves at once with the view, as a transform, and is placed again for the next
+  // field once it comes
+  const carryX = (sx(fw.x[1]) - sx(fw.x[0])) / Math.max(1e-9, fr - fl);
+  const carryE = sx(fw.x[0]) - carryX * fl;
+  const carryY = (sy(fw.y[1]) - sy(fw.y[0])) / (TOP - bottom);
+  const carryF = sy(fw.y[0]) - carryY * bottom;
+  const still = Math.abs(carryX - 1) < 1e-6 && Math.abs(carryY - 1) < 1e-6 && Math.abs(carryE) < 0.01 && Math.abs(carryF) < 0.01;
+  const carry = still ? undefined : `matrix(${carryX} 0 0 ${carryY} ${carryE} ${carryF})`;
+  const carryCss = still ? undefined : `matrix(${carryX}, 0, 0, ${carryY}, ${carryE}, ${carryF})`;
+
+  // the mark and a kept point are drawn on the view itself, and only where they lie in it
+  const markShown = inView(view, mark.at);
+  const mx = sx(mark.at[0]);
+  const my = sy(mark.at[1]);
+  const pinShown = !!pinned && inView(view, pinned);
+  const onMarkAt = (px: number, py: number) => markShown && Math.hypot(px - mx, py - my) <= REACH;
+  const onPinAt = (px: number, py: number) => !!pinned && pinShown && Math.hypot(px - sx(pinned[0]), py - sy(pinned[1])) <= REACH;
   const step = (e: KeyboardEvent<HTMLDivElement>) => {
     const k = e.key;
     if (k === "Escape") {
       if (pinned) {
-        set(null);
+        setPinned(null);
         e.preventDefault();
       }
       return;
@@ -694,45 +882,190 @@ export function RegionMap({
     const dy = k === "ArrowUp" ? 1 : k === "ArrowDown" ? -1 : 0;
     if (!dx && !dy) return;
     e.preventDefault();
-    const from = pinned ?? round(mark.at);
+    const from = pinned && pinShown ? pinned : round(markShown ? mark.at : [(view.x[0] + view.x[1]) / 2, (view.y[0] + view.y[1]) / 2]);
     const n = e.shiftKey ? 10 : 1;
-    set([Math.min(max.x, Math.max(0, from[0] + dx * n * snap.x)), Math.min(max.y, Math.max(0, from[1] + dy * n * snap.y))]);
+    setPinned([Math.min(view.x[1], Math.max(view.x[0], from[0] + dx * n * snap.x)), Math.min(view.y[1], Math.max(view.y[0], from[1] + dy * n * snap.y))]);
   };
+
+  // ---- moving the map: a mouse's drag, the wheel with Ctrl or ⌘ (any wheel in full screen), two fingers on the page and any in full
+  // screen; the field it has is carried with the view at once, and the caller hears where the move comes to rest
+  const limits = move?.limits;
+  const rest = (v: PlaneView) => move?.onView(v);
+  const resting = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // the listeners read the latest geometry and move, not those of the render they were set up in
+  const onWheel = useEffectEvent((e: WheelEvent) => {
+    if (!limits || !(full || e.ctrlKey || e.metaKey)) return;
+    e.preventDefault();
+    stop();
+    const box = svgRef.current?.getBoundingClientRect();
+    if (!box) return;
+    const at = shareOf(e.clientX - box.left, e.clientY - box.top);
+    const lines = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1;
+    put(movedView(viewNow.current, at, at, Math.exp(e.deltaY * lines * 0.002), limits));
+    setHover(null);
+    if (resting.current) clearTimeout(resting.current);
+    resting.current = setTimeout(() => {
+      resting.current = null;
+      rest(viewNow.current);
+    }, WHEEL_REST_MS);
+  });
+  const pinch = useRef<Pinch | null>(null);
+  const fingers = useRef<{ x: number; y: number; at: Share; view: PlaneView } | null>(null);
+  const onTouch = useEffectEvent((e: TouchEvent) => {
+    const box = svgRef.current?.getBoundingClientRect();
+    if (!box || !limits) return;
+    const pts = [...e.touches].map((t) => [t.clientX - box.left, t.clientY - box.top] as const);
+    const [p, q] = pts;
+    if (e.type === "touchstart" && pts.length === 1) moved.current = false;
+    if (p && q) {
+      // two fingers: they move the map and pinch it, on the page as in full screen; where the page took the gesture first (a finger already
+      // scrolling it when the second came), its moves are the page's
+      if (!e.cancelable) {
+        pinch.current = null;
+        return;
+      }
+      e.preventDefault();
+      const mid: [number, number] = [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
+      const apart = Math.max(1, Math.hypot(p[0] - q[0], p[1] - q[1]));
+      const at = shareOf(...mid);
+      if (!pinch.current || e.type === "touchstart") {
+        stop();
+        pinch.current = { view: viewNow.current, at, apart };
+        fingers.current = null;
+        moved.current = true;
+        setHint(0);
+        setHover(null);
+        return;
+      }
+      put(movedView(pinch.current.view, pinch.current.at, at, pinch.current.apart / apart, limits));
+      return;
+    }
+    if (pinch.current) {
+      // a finger lifted: the move rests, and in full screen the finger left moves the map on from here
+      pinch.current = null;
+      rest(viewNow.current);
+      fingers.current = full && p ? { x: p[0], y: p[1], at: shareOf(...p), view: viewNow.current } : null;
+      return;
+    }
+    if (!p) {
+      if (fingers.current && moved.current) rest(viewNow.current);
+      fingers.current = null;
+      return;
+    }
+    if (e.type === "touchstart") {
+      fingers.current = { x: p[0], y: p[1], at: shareOf(...p), view: viewNow.current };
+      return;
+    }
+    const f = fingers.current;
+    if (!f || Math.hypot(p[0] - f.x, p[1] - f.y) <= 10) return;
+    if (!full) {
+      // one finger on the page scrolls it: a short hint says how the map moves, once per swipe
+      if (!moved.current) setHint((n) => n + 1);
+      moved.current = true;
+      return;
+    }
+    moved.current = true;
+    stop();
+    put(movedView(f.view, f.at, shareOf(...p), 1, limits));
+  });
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const wheel = (e: WheelEvent) => onWheel(e);
+    const touch = (e: TouchEvent) => onTouch(e);
+    svg.addEventListener("wheel", wheel, { passive: false });
+    for (const t of ["touchstart", "touchmove", "touchend", "touchcancel"] as const) svg.addEventListener(t, touch, { passive: false });
+    return () => {
+      svg.removeEventListener("wheel", wheel);
+      for (const t of ["touchstart", "touchmove", "touchend", "touchcancel"] as const) svg.removeEventListener(t, touch);
+      if (resting.current) clearTimeout(resting.current);
+    };
+  }, []);
+  // the hint goes after a moment
+  useEffect(() => {
+    if (!hint) return;
+    const t = setTimeout(() => setHint(0), HINT_MS);
+    return () => clearTimeout(t);
+  }, [hint]);
 
   // the box: the kept point's while a point is kept, so the mouse can reach its figures; else the pointer's point (the marked one's words on
   // the mark) while it is over the map
-  const tip: { at: RegionPoint; reads: RegionPoint | null; kept: boolean } | null = pinned ? { at: pinned, reads: pinned, kept: true } : hover ? { at: hover.onMark ? mark.at : hover.p, reads: hover.onMark ? null : hover.p, kept: false } : null;
+  const tip: { at: RegionPoint; reads: RegionPoint | null; kept: boolean } | null = pinned && pinShown ? { at: pinned, reads: pinned, kept: true } : hover && !pinned ? { at: hover.onMark ? mark.at : hover.p, reads: hover.onMark ? null : hover.p, kept: false } : null;
   const pinX = pinned ? sx(pinned[0]) : 0;
   const pinY = pinned ? sy(pinned[1]) : 0;
-  // the canvases reach half a node past the plot on each side, so each node's colour sits on its own point and the browser's smoothing
-  // runs between them; the plot clips them
-  const cellX = (right - left) / (field.cols - 1);
-  const cellY = (sy(field.from) - TOP) / (field.rows - 1);
-  const edgeCellX = (right - left) / (edge.cols - 1);
+  // the field where it lies in the view: the canvases reach half a node past it on each side, so each node's colour sits on its own point
+  // and the browser's smoothing runs between them; the plot clips them
+  const [fx0, fx1] = [sx(fw.x[0]), sx(fw.x[1])];
+  const [fTop, fFrom] = [sy(fw.y[1]), sy(field.from)];
+  const cellX = (fx1 - fx0) / (field.cols - 1);
+  const cellY = (fFrom - fTop) / (field.rows - 1);
+  const edgeCellX = edge ? (fx1 - fx0) / (edge.cols - 1) : 0;
+  const zero = sy(0);
+  const atHome = sameView(view, home);
+  const words = copy.regionMap;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={cx("flex flex-col gap-2", full && "min-h-0 flex-1")}>
       <ChartLegend items={withHelp([...areas.map((a) => ({ id: a.id, swatch: <Swatch shape="box" className={SWATCH[a.tone]} />, label: a.name })), ...striped], bandHelp)} pick={pick} />
-      {/* the y axis's name over its figures, at the plot's left edge, as the axis reads left to right */}
-      <p dir="ltr" className="text-xs text-muted-foreground">
-        <bdi dir="rtl">{yTitle}</bdi>
-      </p>
-      <div ref={ref} dir="ltr" tabIndex={0} onKeyDown={step} className="relative select-none rounded-md outline-none focus-visible:outline-2 focus-visible:outline-ring" data-region-map>
+      {/* the y axis's name over its figures, at the plot's left edge, as the axis reads left to right; the map's buttons at the other end */}
+      <div dir="ltr" className="flex flex-wrap-reverse items-end justify-between gap-x-2">
+        <p className="text-xs text-muted-foreground">
+          <bdi dir="rtl">{yTitle}</bdi>
+        </p>
+        {move && (
+          <div className="ms-auto flex items-center gap-1" data-region-buttons>
+            <Button variant="quiet" disabled={atHome} onClick={() => go(home)}>
+              <bdi dir="rtl">{move.homeLabel}</bdi>
+            </Button>
+            <Button variant="icon" className="disabled:opacity-40" aria-label={words.zoomOut} title={words.zoomOut} disabled={!limits || !canZoom(view, ZOOM_STEP, limits)} onClick={() => limits && go(movedView(viewNow.current, [0.5, 0.5], [0.5, 0.5], ZOOM_STEP, limits))}>
+              <span className="text-lg leading-none">−</span>
+            </Button>
+            <Button variant="icon" className="disabled:opacity-40" aria-label={words.zoomIn} title={words.zoomIn} disabled={!limits || !canZoom(view, 1 / ZOOM_STEP, limits)} onClick={() => limits && go(movedView(viewNow.current, [0.5, 0.5], [0.5, 0.5], 1 / ZOOM_STEP, limits))}>
+              <span className="text-lg leading-none">+</span>
+            </Button>
+            {full ? (
+              <Button variant="icon" aria-label={site.close} title={site.close} onClick={onFull} data-autofocus>
+                <IconClose size={20} />
+              </Button>
+            ) : (
+              <Button variant="quiet" onClick={onFull}>
+                <bdi dir="rtl">{words.full}</bdi>
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+      <div ref={ref} dir="ltr" tabIndex={0} onKeyDown={step} className={cx("relative select-none rounded-md outline-none focus-visible:outline-2 focus-visible:outline-ring", full && "min-h-0 flex-1")} data-region-map>
         <div className="pointer-events-none absolute overflow-clip" style={{ left, top: TOP, width: right - left, height: bottom - TOP }}>
-          <canvas ref={plane} className="absolute block" style={{ left: -cellX / 2, top: -cellY / 2, width: right - left + cellX, height: sy(field.from) - TOP + cellY }} data-mark="areas" />
-          <canvas ref={band} className="absolute block" style={{ left: 0, top: 0, width: plotW, height: plotH }} data-mark="band" />
-          <canvas ref={line} className="absolute block" style={{ left: -edgeCellX / 2, top: bottom - TOP - EDGE_PX, width: right - left + edgeCellX, height: EDGE_PX }} data-mark="edge" />
+          <canvas ref={plane} className="absolute block" style={{ left: fx0 - left - cellX / 2, top: fTop - TOP - cellY / 2, width: fx1 - fx0 + cellX, height: fFrom - fTop + cellY }} data-mark="areas" />
+          <canvas ref={band} className="absolute block" style={{ left: fx0 - left, top: fTop - TOP, width: fx1 - fx0, height: fFrom - fTop }} data-mark="band" />
+          {edge && <canvas ref={line} className="absolute block" style={{ left: fx0 - left - edgeCellX / 2, top: zero - TOP - EDGE_PX, width: fx1 - fx0 + edgeCellX, height: EDGE_PX }} data-mark="edge" />}
         </div>
         <svg
+          ref={svgRef}
           width={w}
           height={height}
           aria-hidden="true"
-          className="relative block touch-pan-y cursor-crosshair"
+          className={cx("relative block", full ? "touch-none" : "touch-pan-y", move ? "cursor-grab active:cursor-grabbing" : "cursor-crosshair")}
           onPointerMove={(e: PointerEvent<SVGSVGElement>) => {
-            if (e.pointerType !== "mouse") return;
+            if (e.pointerType === "touch") return;
             const box = e.currentTarget.getBoundingClientRect();
             const px = e.clientX - box.left;
             const py = e.clientY - box.top;
+            const pr = pressed.current;
+            if (pr && limits && (pr.dragging || Math.hypot(px - pr.x, py - pr.y) > DRAG_PX)) {
+              // a drag moves the map: the point under the press stays under the pointer
+              if (!pr.dragging) {
+                pr.dragging = true;
+                moved.current = true;
+                stop();
+                e.currentTarget.setPointerCapture(e.pointerId);
+                setHover(null);
+              }
+              put(movedView(pr.view, shareOf(pr.x, pr.y), shareOf(px, py), 1, limits));
+              return;
+            }
+            if (pr) return;
             const p = round([fromPx(px), fromPy(py)]);
             const onMark = onMarkAt(px, py);
             // a new reading only where the rounded point or the mark under the pointer changes
@@ -741,21 +1074,33 @@ export function RegionMap({
           onPointerLeave={() => setHover(null)}
           onPointerDown={(e) => {
             const box = e.currentTarget.getBoundingClientRect();
-            pressed.current = { x: e.clientX - box.left, y: e.clientY - box.top, type: e.pointerType };
+            if (e.pointerType !== "touch") moved.current = false;
+            // a mouse's press can start a drag; a finger's only says where a tap was
+            pressed.current = { x: e.clientX - box.left, y: e.clientY - box.top, type: e.pointerType, view: viewNow.current, dragging: false };
           }}
+          onPointerUp={() => {
+            const pr = pressed.current;
+            if (pr?.dragging) {
+              pressed.current = null;
+              rest(viewNow.current);
+            }
+          }}
+          onPointerCancel={() => (pressed.current = null)}
           onClick={(e) => {
             const box = e.currentTarget.getBoundingClientRect();
             const px = e.clientX - box.left;
             const py = e.clientY - box.top;
             const p = pressed.current;
             pressed.current = null;
+            // a drag or a pinch moved the map: no point is read
+            if (moved.current) return;
             // an area's name sets its area apart (its own handler), and keeps no point
             if (e.target instanceof Element && e.target.closest("[data-region-name]")) return;
             // a finger that moved was scrolling the page
-            if (p && p.type !== "mouse" && Math.hypot(p.x - px, p.y - py) > 10) return;
+            if (p && p.type === "touch" && Math.hypot(p.x - px, p.y - py) > 10) return;
             if (px < left - REACH || px > right + REACH || py < TOP - REACH || py > bottom + REACH) return;
-            if (onPinAt(px, py)) set(null);
-            else set(onMarkAt(px, py) ? round(mark.at) : round([fromPx(px), fromPy(py)]));
+            if (onPinAt(px, py)) setPinned(null);
+            else setPinned(onMarkAt(px, py) ? round(mark.at) : round([fromPx(px), fromPy(py)]));
           }}
         >
           <defs>
@@ -764,8 +1109,8 @@ export function RegionMap({
             </clipPath>
           </defs>
           {/* the bottom edge: no range above it, one value, its own line, set off from the areas by a thin rule */}
-          <line x1={left} x2={right} y1={bottom - EDGE_PX - 0.5} y2={bottom - EDGE_PX - 0.5} className="stroke-chart-region-ink" strokeWidth={1} />
-          {/* the axes: ticks at clean values, each axis's title */}
+          {edge && zero <= bottom + 0.5 && <line x1={left} x2={right} y1={zero - EDGE_PX - 0.5} y2={zero - EDGE_PX - 0.5} className="stroke-chart-region-ink" strokeWidth={1} />}
+          {/* the axes: ticks at clean values over the view, each axis's title */}
           {yTicks.map((t) => (
             <text key={`y${t}`} x={left - 8} y={sy(t) + 4} textAnchor="end" className="fill-chart-text text-xs tabular-nums">
               {yTick(t)}
@@ -777,38 +1122,56 @@ export function RegionMap({
             </text>
           ))}
           <g clipPath={`url(#${clip})`}>
-            {/* where two areas are equal, over the band */}
-            {equal && <path d={equal} className="stroke-chart-region-equal pointer-events-none" fill="none" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" data-mark="equal" />}
-            {/* the names inside their areas: a pointer on one sets its area apart */}
-            {layout.names.map(({ a, b }) => (
-              <text key={a.id} x={b.x + b.w / 2} y={b.y + b.h / 2 + 5} textAnchor="middle" {...pick.bind(a.id)} data-region-name className={cx("fill-chart-region-ink text-base font-semibold cursor-pointer", pickDim(pick.active, a.id))}>
-                {a.name}
-              </text>
-            ))}
-          </g>
-          {/* the guides from the mark, and the mark itself on top */}
-          {guideDraw.map(({ g, gx, gy }) => (
-            <g key={g.axis} className="pointer-events-none" data-mark="guide">
-              <line x1={mx} y1={my} x2={gx} y2={gy} className="stroke-chart-region-ink" strokeWidth={1.5} strokeDasharray="4 3" />
-              {g.label && <circle cx={gx} cy={gy} r={4} className="fill-chart-region-ink" />}
+            <g transform={carry}>
+              {/* where two areas are equal, over the band */}
+              {equal && <path d={equal} className="stroke-chart-region-equal pointer-events-none" fill="none" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" data-mark="equal" />}
+              {/* the names inside their areas: a pointer on one sets its area apart */}
+              {layout.names.map(({ a, b }) => (
+                <text key={a.id} x={b.x + b.w / 2} y={b.y + b.h / 2 + 5} textAnchor="middle" {...pick.bind(a.id)} data-region-name className={cx("fill-chart-region-ink text-base font-semibold cursor-pointer", pickDim(pick.active, a.id))}>
+                  {a.name}
+                </text>
+              ))}
+              {/* the guides from the mark */}
+              {guideDraw.map(({ g, gx, gy }) => (
+                <g key={g.axis} className="pointer-events-none" data-mark="guide">
+                  <line x1={layout.mxL} y1={layout.myL} x2={gx} y2={gy} className="stroke-chart-region-ink" strokeWidth={1.5} strokeDasharray="4 3" vectorEffect="non-scaling-stroke" />
+                  {g.label && <circle cx={gx} cy={gy} r={4} className="fill-chart-region-ink" />}
+                </g>
+              ))}
             </g>
-          ))}
-          <circle cx={mx} cy={my} r={6.5} className="fill-card stroke-chart-region-ink pointer-events-none" strokeWidth={2.5} />
-          <circle cx={mx} cy={my} r={2.5} className="fill-foreground pointer-events-none" />
-          {pinned && (
+          </g>
+          {/* the mark on top, where it lies in the view */}
+          {markShown && (
+            <g className="pointer-events-none" data-mark="plan">
+              <circle cx={mx} cy={my} r={6.5} className="fill-card stroke-chart-region-ink" strokeWidth={2.5} />
+              <circle cx={mx} cy={my} r={2.5} className="fill-foreground" />
+            </g>
+          )}
+          {pinShown && (
             <g className="pointer-events-none" data-mark="pin">
               <circle cx={pinX} cy={pinY} r={7} className="fill-chart-region-ink" fillOpacity={0.25} />
               <circle cx={pinX} cy={pinY} r={4} className="fill-chart-region-ink stroke-card" strokeWidth={1.5} />
             </g>
           )}
         </svg>
-        {/* the words on the map: in HTML over the drawing, each in its box beside what it names */}
-        {guideDraw.map(({ g, box }) => box && g.label && <Words key={g.axis} box={box} words={g.label} />)}
-        <Words box={markBox} words={mark.label} />
-        {edgeInside && edgeWords && <Words box={edgeInside} words={edgeWords} />}
-        {layout.edgeNames.map((n) => (
-          <Words key={n.id} box={n.box} words={n.words} />
-        ))}
+        {/* the words on the map: in HTML over the drawing, each in its box beside what it names, carried with the field */}
+        <div className="pointer-events-none absolute overflow-clip" style={{ left: 0, top: 0, width: w, height: bottom }}>
+          <div className="absolute inset-0 origin-top-left" style={{ transform: carryCss }}>
+            {guideDraw.map(({ g, box: b }) => b && g.label && <Words key={g.axis} box={b} words={g.label} />)}
+            {markBox && <Words box={markBox} words={mark.label} />}
+            {edgeInside && edgeWords && <Words box={edgeInside} words={edgeWords} />}
+            {layout.edgeNames.map((n) => (
+              <Words key={n.id} box={n.box} words={n.words} />
+            ))}
+          </div>
+        </div>
+        {hint > 0 && (
+          <div className="pointer-events-none absolute flex items-center justify-center" style={{ left, top: TOP, width: right - left, height: bottom - TOP }} data-region-hint>
+            <p dir="rtl" className="rounded-md bg-popover/90 px-3 py-2 text-sm text-popover-foreground shadow-sm motion-safe:animate-[fade-in_var(--duration-base)_linear]">
+              {words.twoFingers}
+            </p>
+          </div>
+        )}
         {tip && (
           <div className="contents" data-region-tip={tip.kept ? "kept" : "pointer"}>
             <ChartTip x={sx(tip.at[0])} width={w} near={{ y: sy(tip.at[1]), bottom: height }} variant={tip.kept ? "kept" : "follow"}>

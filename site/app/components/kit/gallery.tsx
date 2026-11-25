@@ -25,7 +25,8 @@ import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKno
 import type { AdvertisingEntry } from "@finance-tool/schema";
 import { linearScale, steppedScale } from "./slider-scale";
 import { RegionMap, regionSwatch, regionTones, regionWash, type RegionArea, type RegionGuide, type RegionPoint } from "./region-map";
-import { accountMap, type LeftAt } from "../../lib/account-map";
+import { sameView } from "./region-view";
+import { accountMap, mapWindow, type LeftAt, type WindowMap } from "../../lib/account-map";
 
 /** A fee's name that is a glossary term, for the HelpMark with words. */
 const custodyName = (guideBlocks.fees.custody as { name: string }).name;
@@ -4138,15 +4139,22 @@ function CaseDemos({ today }: { today: string }) {
  */
 const REGION_COSTS: Record<string, (a: number, m: number) => number> = { a: (a, m) => 0.08 * a + 4 * m, b: (a, m) => 2500 + 0.016 * a + 0.8 * m, c: (a, m) => 1200 + 0.04 * a + 2 * m };
 const regionLeft: LeftAt = (a, m, ids) => new Map((ids ?? ["a", "b", "c"]).map((id) => [id, a + 100 * m - (REGION_COSTS[id]?.(a, m) ?? Infinity)]));
-const REGION_MAP = accountMap({ leftAt: regionLeft, order: ["a", "b", "c"], theta: 0.005, plan: { amount: 10_000, monthly: 200 }, reach: { amount: 500_000, monthly: 10_000 } });
+const REGION_ASK = { leftAt: regionLeft, order: ["a", "b", "c"], theta: 0.005, plan: { amount: 10_000, monthly: 200 }, reach: { amount: 500_000, monthly: 10_000 } };
+const REGION_MAP = accountMap(REGION_ASK);
 
 function RegionDemo({ today }: { today: string }) {
   const r = g.sample.regions;
+  // a window the map is moved to, worked out here at once (on the index page, in the map's worker)
+  const [moved, setMoved] = useState<WindowMap | null>(null);
   if (!REGION_MAP) return null;
   const map = REGION_MAP;
+  const home = { x: [0, map.max.amount] as const, y: [0, map.max.monthly] as const };
+  const shown = moved ?? { window: { amount: home.x, monthly: home.y }, bottom: map.bottom, accounts: map.accounts, field: map.field, edge: map.edge };
   const names: Record<string, string> = { a: r.a, b: r.b, c: r.c };
+  // each option's colour by its place on the starting view, whichever a window shows
   const tones = regionTones(map.accounts.length);
-  const areas: RegionArea[] = map.accounts.map((id, k) => ({ id, name: names[id] ?? id, tone: tones[k] ?? "other" }));
+  const toneOf = (id: string) => tones[map.accounts.indexOf(id)] ?? "other";
+  const areas: RegionArea[] = shown.accounts.map((id) => ({ id, name: names[id] ?? id, tone: toneOf(id) }));
   const best = (p: RegionPoint | null) => {
     const at = p ?? ([map.plan.amount, map.plan.monthly] as const);
     const left = [...regionLeft(at[0], at[1], null)].sort((x, y) => y[1] - x[1]);
@@ -4164,10 +4172,10 @@ function RegionDemo({ today }: { today: string }) {
   };
   return (
     <RegionMap
-      max={{ x: map.max.amount, y: map.max.monthly }}
+      home={home}
       areas={areas}
-      field={{ ...map.field, from: map.bottom }}
-      edge={map.edge}
+      field={{ ...shown.field, window: { x: shown.window.amount, y: shown.window.monthly }, from: shown.bottom }}
+      edge={shown.edge}
       edgeLabel={(id) => ({ text: id === null ? r.edgeSame : r.edge(names[id] ?? id) })}
       bandLabel={{ text: r.same, pair: r.samePair }}
       mark={{ at: [map.plan.amount, map.plan.monthly], label: { text: r.mark } }}
@@ -4176,10 +4184,14 @@ function RegionDemo({ today }: { today: string }) {
       yTitle={r.y}
       xTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
       yTick={(v) => (v === 0 ? "0" : fmt.compactAxis(v))}
-      snap={{ x: 1000, y: 10 }}
       reading={(p) => {
         const b = best(p);
         return { head: r.point(fmt.nisWhole(b.at[0]), fmt.nisWhole(b.at[1])), rows: b.rows };
+      }}
+      move={{
+        limits: { x: [0, map.limits.amount], y: [0, map.limits.monthly], least: { x: map.limits.least.amount, y: map.limits.least.monthly } },
+        onView: (v) => setMoved(sameView(v, home) ? null : mapWindow({ ...REGION_ASK, window: { amount: v.x, monthly: v.y } })),
+        homeLabel: r.home,
       }}
     />
   );

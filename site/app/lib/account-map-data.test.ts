@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { bundle, html, lists, plan as fixturePlan, shown } from "../components/invest/render-fixtures";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
-import { AccountMapPanel, mapAreas, mapCard } from "../components/invest/account-map";
+import { AccountMapPanel, mapAreas, mapCard, planShown } from "../components/invest/account-map";
 import { invest, kit as kitCopy } from "../copy";
 import type { AccountMap } from "./account-map";
 import { buildInvest, indexById, knownIndices, providersOfInvest, tieShareOf } from "./invest";
@@ -252,14 +252,14 @@ describe("each account's colour on the map", () => {
       const answer = work.map(bundle, { index, plan, fund: pick.fund });
       const map = need(answer.kind === "map" ? answer.map : null, "the map");
       const order = houses.filter((id) => map.accounts.includes(id));
-      const { toneOf } = mapAreas(buildInvest({ bundle, index, plan }), map, order);
+      const { toneOf } = mapAreas(buildInvest({ bundle, index, plan }), planShown(map), order);
       // the first four in the houses' order each their own colour, whatever leads at the plan; the rest the grey
       const tones = order.map((id) => toneOf(id));
       expect(tones.slice(0, 4), `${plan.amountNow}`).toEqual(regionTones(4).slice(0, Math.min(4, order.length)));
       expect(tones.slice(4).every((t) => t === "other")).toBe(true);
       // the same accounts in another order (as a plan that ranks them otherwise has them): the same colours
       const shuffled: AccountMap = { ...map, accounts: [...map.accounts].reverse(), field: { ...map.field, first: map.field.first.map((k) => map.accounts.length - 1 - k) } };
-      const again = mapAreas(buildInvest({ bundle, index, plan }), shuffled, order).toneOf;
+      const again = mapAreas(buildInvest({ bundle, index, plan }), planShown(shuffled), order).toneOf;
       for (const id of map.accounts) expect(again(id), id).toBe(toneOf(id));
       // the panel colours them so: the legend names each of the first four, never all of them "אחרות"
       const view = buildInvest({ bundle, index, plan });
