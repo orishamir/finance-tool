@@ -529,6 +529,16 @@ describe("a conversion priced in agorot for each dollar converted (F-13)", () =>
     expect(euros.fees.find((f) => f.kind === "fx")).toBeUndefined();
     expect(euros.notPrinted).toContain("fee-fx");
   });
+  it("leaves a fee out whole, with its reason said, where only a later price of it is per dollar and what is bought converts another currency", () => {
+    // 0.5% until next year, then 1.5 agorot a dollar: the first price alone would read as the conversion's price for good
+    const stages = [{ price: { form: "action" as const, rate: typed(0.5) }, until: "2027-11" }, { price: { form: "perDollar" as const, amount: typed(1.5) } }];
+    const at = (what: string) => read({ ...deal([{ by: "what", is: what }]), id: `deal-later-${what}`, fees: [{ id: "fee-fx", kind: "fx", stages }] });
+    const euros = at("europe");
+    expect(euros.fees.find((f) => f.kind === "fx")).toBeUndefined();
+    expect(euros.notPrinted).toEqual(["fee-fx"]);
+    expect(leftOut(euros).unmatched).toEqual([expect.objectContaining({ fee: "fee-fx", notPrinted: true })]);
+    expect(at("us").fees.find((f) => f.kind === "fx")).toBeDefined();
+  });
 });
 
 describe("a third party's fee on the curve (F-117)", () => {

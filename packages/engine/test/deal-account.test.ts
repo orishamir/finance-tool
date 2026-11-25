@@ -1,7 +1,7 @@
 // F-128 An account priced by a deal: the securities run reads every charge from the deal's own formulas (F-110 to F-117). A deal that states
 // the same prices as a tariff runs to the same figures, so the indices page and the fee page never disagree about a fee.
 import { describe, expect, it } from "vitest";
-import { boughtFor, conversionStretches, dealCharges, planChargeOf, providerWorkbench, runSecurities, tradeForCash, type Deal, type DealAccount, type DealProvider, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
+import { boughtFor, conversionStretches, dealCharges, planChargeOf, providerWorkbench, runSecurities, RecordInputError, tradeForCash, type Deal, type DealAccount, type DealProvider, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -491,5 +491,26 @@ describe("F-102 with BANK-35 on a deal's current account: the cap is compared wi
   it("never reads a current account within the plan's orders: its count of actions is the deal's pick (F-102)", () => {
     const byCount: DealAccount["planWithin"] = [[{ on: "count", from: 0, to: 1, unit: "actions" }], [{ on: "count", from: 1, to: null, unit: "actions" }]];
     expect(() => runSecurities({ ...base, deal: withAccount([monthly(4), monthly(6)], byCount) }, ctx)).toThrow(/F-102/);
+  });
+});
+
+describe("F-128 a conversion priced per dollar converted (F-13)", () => {
+  const facts = (currency: string | null) => ({ currency, fxRate: () => 3.7, unitPrice: () => 100, unitPriceOfMonth: () => 100, gridOffset: 0, distributes: false, activity: () => ({ count: 1, trading: 0 }) });
+  // 0.5% for the first year, then 1.5 agorot a dollar: a later price per dollar is refused as the first would be
+  const later: Deal = { foreign: false, fees: [{ base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.005 }, until: { y: 2027, m: 11 } }, { price: { kind: "perDollar", amount: 0.015 } }] }] };
+  const now: Deal = { foreign: false, fees: [{ base: { key: "fx" }, stages: [{ price: { kind: "perDollar", amount: 0.015 } }] }] };
+
+  it("is refused on a fund in another currency, as a house's line in shekels a dollar is, whichever of its prices it is", () => {
+    for (const d of [now, later]) {
+      expect(() => dealCharges(account(d), facts("EUR"))).toThrow(RecordInputError);
+      expect(() => dealCharges(account(d), facts("GBP"))).toThrow(/per dollar/);
+    }
+  });
+
+  it("is read on a fund in dollars, and never on a fund in shekels, which converts nothing", () => {
+    for (const d of [now, later]) {
+      expect(() => dealCharges(account(d), facts("USD"))).not.toThrow();
+      expect(() => dealCharges(account(d), facts(null))).not.toThrow();
+    }
   });
 });
