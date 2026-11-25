@@ -262,10 +262,12 @@
 }
 
 @layer components {
-  /* a fee card's stripe (kit/fee-block.tsx): the card's shape in the fee's colour, masked to its top border, so it bends down the corners */
-  .fee-stripe {
-    mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
+  /* a fee card's head (kit/fee-block.tsx): its background the fee's colour (its `dot` class), under the card's own at 86%, so a faint
+     wash of it; its top corners bend inside the card's 1 px border */
+  .fee-tint {
+    background-image: linear-gradient(color-mix(in oklab, var(--card) 86%, transparent) 0 0);
+    border-start-start-radius: calc(var(--radius-lg) - 1px);
+    border-start-end-radius: calc(var(--radius-lg) - 1px);
   }
 
   /* ---- the provenance number (D7) */

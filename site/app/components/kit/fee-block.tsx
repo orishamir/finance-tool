@@ -1,6 +1,6 @@
-// A fee in the builder (design-system 11, "Cases and parts"): its mark (an emoji on a faint tile of its colour) and name, between thin
-// stripes of its colour along the card's top and bottom, then its price. A fee whose price does not change is
-// one slim line, its parts after its name (`SlimFee`), which opens in place as a case does; a fee whose price changes holds its cases
+// A fee in the builder (design-system 11, "Cases and parts"): its mark (an emoji on a faint tile of its colour) and name, on a faint wash
+// of its colour across the card's top, then its price. A fee whose price does not change is
+// one slim card, its parts on the line under its name (`SlimFee`), which opens in place as a case does; a fee whose price changes holds its cases
 // under its name's line (`FeeBlock`): the parts every case holds alike, then the cases' band. Each fee keeps its own dot colour; no block takes it. Its actions (`tools`: its duplicate and its bin) stand right after its
 // name: drawn always while the fee is open, and on a closed card only once a fine pointer has rested on it (app.css, `data-fee-tools`),
 // their room kept either way so nothing moves when they show. A fee with a switch (`FeeHeadSlot.counted`) has it at the end of its
@@ -37,18 +37,11 @@ function FeeName({ dot, mark, name, end }: { dot: string; mark?: string | undefi
 }
 
 /**
- * The stripes of the fee's colour along its card's top and bottom edges, bending round its rounded corners as borders do: the card's
- * shape in the fee's colour, masked to its 3 px top and bottom borders, so the card stands between the two (founder, 2026-11-23).
+ * The fee's head on a faint wash of its colour (`dot`, under the card's own: app.css, `.fee-tint`), from edge to edge of its card over the
+ * card's padding (`px-4`, `pt-1`), its top corners bending with the card's (founder, 2026-11-25). In a row that wraps, it takes a line of
+ * its own (`basis-full`, its width the line's and its padding's: `box-content`).
  */
-const Stripe = ({ dot }: { dot: string }) => (
-  <span
-    aria-hidden
-    className={cx(
-      "fee-stripe pointer-events-none absolute -inset-px rounded-lg border-y-[3px] border-transparent",
-      dot,
-    )}
-  />
-);
+const HEAD_BAND = "fee-tint -mx-4 -mt-1 px-4 pt-1 pb-1";
 
 /** The fee's actions right after its name (`tools`): shown while the fee is open, else on a resting fine pointer (app.css). */
 function NameTools({ open, children }: { open: boolean; children: ReactNode }) {
@@ -100,13 +93,12 @@ export function FeeBlock({ dot, mark, name, open, tools, head: given, children }
   const head = useShownHead(given);
   return (
     <div data-open-fee={open ? "" : undefined} data-fee-card="" className={cx("@container relative flex flex-col gap-2 rounded-lg border border-border bg-card px-4 pt-1 pb-4", dimmed(head) && "opacity-60")}>
-      <Stripe dot={dot} />
-      <span data-fee-head="" data-lift-head="" className={cx("flex items-center gap-2", hasEnd(head) ? "flex-nowrap" : "flex-wrap")}>
+      <span data-fee-head="" data-lift-head="" className={cx(HEAD_BAND, dot, "flex items-center gap-2", hasEnd(head) ? "flex-nowrap" : "flex-wrap")}>
         <FeeName dot={dot} mark={mark} name={name} end={hasEnd(head)} />
         {tools && <NameTools open={!!open}>{tools}</NameTools>}
         {head && hasEnd(head) && <HeadEnd head={head} />}
       </span>
-      {head?.under && <div className="-mt-1 text-sm text-muted-foreground">{head.under}</div>}
+      {head?.under && <div className="text-sm text-muted-foreground">{head.under}</div>}
       {children}
       {head?.foot}
     </div>
@@ -128,8 +120,8 @@ export interface FeeHeadSlot {
 }
 
 /**
- * A fee with one price, on one line: its dot, its name, then its parts (`PartChip`s), wrapping under the name where the line is short. The
- * whole line is one button that opens the fee (`label` is its spoken name); a figure in it keeps its own tap. `open`: the fee is open in
+ * A fee with one price, in a slim card: its dot and name on the card's tinted head, then its parts (`PartChip`s) on the line under it. The
+ * whole card is one button that opens the fee (`label` is its spoken name); a figure in it keeps its own tap. `open`: the fee is open in
  * place, as an open case is: the outline in the action colour, "נבחר" at the end of the name's line, and its parts in edit (`PartEdit`s,
  * the `children` then) stacked under it, with `actions` after them; its `tools` (its duplicate, its bin) right after its name.
  */
@@ -139,11 +131,9 @@ export function SlimFee({ dot, mark, name, label, onOpen, open, actions, tools, 
   const look = cx("@container bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-1 pb-3", dimmed(head) && "opacity-60");
   const body = (
     <>
-      {/* open, the outline in the action colour frames it; a stripe of the fee's colour over it would cut its corners */}
-      {!open && <Stripe dot={dot} />}
       {open ? (
         <div data-open-fee="" className="contents">
-          <span data-fee-head="" data-lift-head="" className="flex flex-wrap items-center gap-2">
+          <span data-fee-head="" data-lift-head="" className={cx(HEAD_BAND, dot, "flex flex-wrap items-center gap-2")}>
             <FeeName dot={dot} mark={mark} name={name} end={hasEnd(head)} />
             {tools && <NameTools open>{tools}</NameTools>}
             {head?.end && <span className="ms-auto self-baseline">{head.end}</span>}
@@ -152,7 +142,7 @@ export function SlimFee({ dot, mark, name, label, onOpen, open, actions, tools, 
             </Tag>
             {head?.counted && <CountedSwitch counted={head.counted} />}
           </span>
-          {head?.under && <div className="-mt-1 text-sm text-muted-foreground">{head.under}</div>}
+          {head?.under && <div className="text-sm text-muted-foreground">{head.under}</div>}
           <div className="flex flex-col gap-2" data-figures data-case-parts="">
             {children}
           </div>
@@ -162,18 +152,18 @@ export function SlimFee({ dot, mark, name, label, onOpen, open, actions, tools, 
       ) : (
         <>
           {head && hasEnd(head) ? (
-            <span className="flex min-w-0 flex-1 items-center gap-x-3">
+            <span className={cx(HEAD_BAND, dot, "box-content flex min-w-0 basis-full items-center gap-x-3")}>
               <FeeName dot={dot} mark={mark} name={name} end />
               {tools && <NameTools open={false}>{tools}</NameTools>}
               <HeadEnd head={head} />
             </span>
           ) : (
-            <>
+            <span className={cx(HEAD_BAND, dot, "box-content flex min-w-0 basis-full items-center gap-x-3")}>
               <FeeName dot={dot} mark={mark} name={name} />
               {tools && <NameTools open={false}>{tools}</NameTools>}
-            </>
+            </span>
           )}
-          {head?.under && <div className="basis-full -mt-1 text-sm text-muted-foreground">{head.under}</div>}
+          {head?.under && <div className="basis-full text-sm text-muted-foreground">{head.under}</div>}
           {hasEnd(head) || head?.under ? <div className="flex basis-full flex-wrap items-center gap-x-3 gap-y-1.5">{children}</div> : children}
           {head?.foot && <div className="basis-full">{head.foot}</div>}
         </>
