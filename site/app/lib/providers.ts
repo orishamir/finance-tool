@@ -388,8 +388,8 @@ export type NotComparable =
   | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] }
   /** the house's trade lines abroad name one exchange (`venue`) and the fund trades on the other. */
   | { code: "other-venue"; venue: "us" | "europe" }
-  /** the run would rest on a rule that is open (F-04: a TASE foreign fund's tax index, TXF-04): nothing is computed after tax or ranked; the
-   *  indices page shows such a fund's figures before tax beside it (F-118). `question`: the open question that stopped the run, its
+  /** the run would rest on a rule that is open (F-04: a TASE foreign fund that distributes, TXF-04): nothing is computed after tax or
+   *  ranked. `question`: the open question that stopped the run, its
    *  readings giving it different results (method §13), whose card the reason opens; `gap`: the method gap that stopped it where no reading of
    *  the case exists (G-38). */
   | { code: "rule-open"; ruleId: string; question?: string; gap?: string }

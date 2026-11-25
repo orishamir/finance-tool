@@ -144,15 +144,16 @@ for (const [slug, plan] of [["index-sp500", planAt(10_000, 500, 10)], ["index-sp
 }
 
 describe("a fund no account is ranked with", () => {
-  it("has no map, and says its tax rests on an open rule (F-118)", () => {
+  it("has no map, and says its tax rests on an open rule (G-18)", () => {
     const plan = planAt(10_000, 500, 10);
     const found = knownIndices(bundle).flatMap((index) => {
       const view = buildInvest({ bundle, index, plan });
       return allFunds(view)
-        .filter((f) => f.beforeTax && !Object.values(f.byHouse).some(rankedAt))
+        .filter((f) => Object.values(f.byHouse).some((x) => "valueN" in x) && !Object.values(f.byHouse).some(rankedAt))
         .map((f) => ({ index, fund: f.rec.id }));
     });
     // each such fund the data holds (a few, to keep the run short)
+    expect(found.length).toBeGreaterThan(0);
     for (const f of found.slice(0, 3)) {
       const answer = work.map(bundle, { index: f.index, plan, fund: f.fund });
       expect(answer, f.fund).toEqual({ kind: "unranked", why: "open-rule" });

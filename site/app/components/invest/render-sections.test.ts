@@ -437,7 +437,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(stated).not.toMatch(caution);
     // no list before tax and no note of the open index anywhere on the lists
     const text = shown(raw);
-    expect(text).not.toContain(invest.beforeTax.heading);
+    expect(text).not.toContain("לפני מס רווחי הון, בלי דירוג");
     expect(text).not.toContain(invest.reasons.ruleOpen["TXF-04"]);
     for (const id of ["TXF-04", "TXS-14"]) expect(text).not.toContain(numbers.readingDoubt[id]!);
   });
@@ -494,7 +494,7 @@ describe("the receipt's fund line names the variable fee the site prices beside 
     // 1144237 charged 0.3% in each of its years at a 0.3% rate: nothing to name beside it
     const same = bundle.funds.find((f) => f.id === "1144237")!;
     expect(pricedVariable(same, gapListFor(bundle, same), t)).toBeNull();
-    // the receipt draws a ranked pair (a fund listed before tax, F-118, has none): of every index's ranked Israeli funds, each one's ticket
+    // the receipt draws a ranked pair (a fund on an open rule, G-18, has none): of every index's ranked Israeli funds, each one's ticket
     // shows one variable line, its figure the mean charged where the site prices one (the run's), not the listed rate beside it
     let named = 0;
     let plain = 0;
@@ -619,8 +619,7 @@ describe("the page's finish line (2026-10-31)", () => {
 
 describe("no price on what no document says can be done (2026-10-31)", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
-  // a fund's entry at a house, for the funds the page prices house by house (a fund listed before tax, F-118, is priced only where it is
-  // sold, `beforeTax`)
+  // a fund's entry at a house, for the funds the page prices house by house
   const at = (option: string, house: string) => view.options.find((o) => o.id === option)!.funds.filter((f) => !f.reason).map((f) => f.byHouse[house]!);
   it("PEPPER is no house of its own (its prices stand under Leumi, D43 amended 2026-11-04)", () => {
     expect(view.providers.map((p) => p.id)).not.toContain("pepper");
@@ -628,7 +627,6 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
   });
   it("Interactive Brokers prices nothing on Tel Aviv: not possible there, by its own FAQ entry (it was no data until the entry was read, 2026-11-12)", () => {
     expect(at("il-etf", "interactive-brokers").length).toBeGreaterThan(0);
-    for (const f of view.options.find((o) => o.id === "il-etf")!.funds) expect(f.beforeTax?.byHouse["interactive-brokers"], f.rec.id).toBeUndefined();
     for (const x of at("il-etf", "interactive-brokers")) {
       expect("valueN" in x).toBe(false);
       expect("availability" in x && x.availability ? x.availability.source.url : "").toContain("faq/#/content/56713690");

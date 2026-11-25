@@ -1,6 +1,6 @@
 // F-63 Provider workbench: one fund held, the same goal and behaviour, each provider's tariff at the chosen fee
 // level (D4). Built on F-08 (`runSecurities`), F-61's building blocks (`withoutFeeLine`, `feeLines`) and F-80's
-// tie test; F-118's workbench reads a fund whose exit tax an open rule blocks before that tax, with no ranking. No I/O: the fee
+// tie test. No I/O: the fee
 // snapshots (`data/fees/`) arrive as data.
 import { feesSnapshot, type FeesSnapshot, type ValueObject } from "@finance-tool/schema";
 import { coverageLine } from "../compare/coverage.ts";
@@ -12,7 +12,7 @@ import type { Commission, ConversionPrice, Custody, SizeStep } from "../formulas
 import { perUnitOf } from "../formulas/deal.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { beforeTaxPathOf, checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, runSecuritiesBeforeTax, type BeforeTaxRun, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
+import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
 import type { DealAccount } from "../ledgers/deal-account.ts";
 import { stoppedOnGap, stoppedOnQuestion } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
@@ -937,7 +937,7 @@ interface ReadyProvider {
 
 /**
  * A provider's tariff for the run, or its row "not comparable" with the reason (F-63): a snapshot marked missing, a line with no value, an
- * unreadable record (E5), no line that applies, no average at an average level. The one reading both workbenches share (F-63, F-118).
+ * unreadable record (E5), no line that applies, no average at an average level.
  */
 function prepareProvider(input: WorkbenchInput, given: ProviderInput): ReadyProvider | NotComparableProvider {
   let p = given;
@@ -1055,84 +1055,6 @@ function planOf(input: WorkbenchInput, runFund: Fund) {
     if (wholeUnits) p.wholeUnits = wholeUnits;
     return p;
   };
-}
-
-/** F-118: a provider's run of a fund whose exit tax an open rule blocks, read before that tax. Not a compared row: it is never ranked. */
-export interface BeforeTaxProvider extends ProviderBase {
-  kind: "before-tax";
-  /** D7: list and average are sourced; entered is the person's. */
-  feeState: "sourced" | "entered";
-  /** F-128: the deal the row is priced by, read for this run. */
-  account?: DealAccount;
-  tariff: SecuritiesInput["tariff"];
-  linesUsed: string[];
-  lineSources: TariffBuild["lineSources"];
-  noLine: ("trade" | "custody")[];
-  notModelled: NotModelled[];
-  flags: string[];
-  standingAside: string[];
-  /** `V_T^pre / I_T`: the real value at the horizon before the exit tax, today's shekels (F-118). */
-  beforeTax: number;
-  /** `B(∅) − B(F_p)`, F-91's account part, with `B = V_T^pre / I_T` for these runs (no tax inside them), real NIS. */
-  horizonCostBeforeTax: number;
-  run: BeforeTaxRun;
-}
-
-/** F-118's workbench: every provider once, read before the exit tax, with no ranking. */
-export interface BeforeTaxWorkbench {
-  formula: "F-118";
-  /** The open rule the exit tax rests on: every row is listed with it, never ranked (B3, D84). */
-  blockedBy: string;
-  /** The open question whose readings split the fund's after-tax runs (TXS OQ26), where that is why. */
-  question?: string;
-  /** The same run with no provider fees, before the exit tax: the base of every account's cost. */
-  beforeTaxWithoutProviderFees: number;
-  rows: (BeforeTaxProvider | NotComparableProvider)[];
-}
-
-/**
- * F-118 on F-63: each provider's run of a fund whose exit tax an open rule blocks (`beforeTaxPathOf`), read before that tax, with the
- * account's cost from the same runs (F-91's account part). Nothing is ranked and no after-tax figure is computed. Of a house's ways of buying
- * (F-109), the one that leaves more before tax is the row's, as F-63 takes the one that leaves more after tax.
- */
-export function providerWorkbenchBeforeTax(input: WorkbenchInput, ctx: RunContext): BeforeTaxWorkbench {
-  const runFund = fundForRun(input);
-  const plan = planOf(input, runFund);
-  const bare: SecuritiesInput["tariff"] = input.currency ? { currency: input.currency } : {};
-  const horizon = input.goal.months;
-  const stop = beforeTaxPathOf(plan(bare, horizon), ctx);
-  if (stop === null) throw new Error("F-118: the fund's exit tax is not blocked by an open rule; its workbench is providerWorkbench's");
-  const noneT = runSecuritiesBeforeTax(plan(bare, horizon), ctx);
-  const rows: BeforeTaxWorkbench["rows"] = [];
-  for (const ready of preparedAll(input, runFund)) {
-    if (ready.kind === "not-comparable") {
-      rows.push(ready);
-      continue;
-    }
-    const { base, level, built, memberKind, ways, deal } = ready;
-    let run = runSecuritiesBeforeTax(plan(built.tariff, horizon, memberKind, ways[0], deal), ctx);
-    for (const w of ways.slice(1)) {
-      const other = runSecuritiesBeforeTax(plan(built.tariff, horizon, memberKind, w, deal), ctx);
-      if (other.beforeTaxReal > run.beforeTaxReal) run = other;
-    }
-    rows.push({
-      ...base,
-      kind: "before-tax",
-      feeState: level === "entered" ? "entered" : "sourced",
-      ...(deal ? { account: deal } : {}),
-      tariff: built.tariff,
-      linesUsed: built.linesUsed,
-      lineSources: built.lineSources,
-      noLine: built.noLine,
-      notModelled: built.notModelled,
-      flags: built.flags,
-      standingAside: built.standingAside,
-      beforeTax: run.beforeTaxReal,
-      horizonCostBeforeTax: noneT.beforeTaxReal - run.beforeTaxReal,
-      run,
-    });
-  }
-  return { formula: "F-118", blockedBy: stop.ruleId, ...(stop.question ? { question: stop.question } : {}), beforeTaxWithoutProviderFees: noneT.beforeTaxReal, rows };
 }
 
 /**

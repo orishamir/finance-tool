@@ -83,7 +83,7 @@ export type Row = { ix: string; fund: string; abroad: boolean; before: number | 
 
 /**
  * What each account leaves on each fund of each index, before the move (the typed account) and after it (its deal), rounded to the shekel:
- * after tax, or before it on a fund an open rule leaves untaxed (F-118); null where it has no price. `terms`: on the houses' records read on
+ * after tax; null where it has no price. `terms`: on the houses' records read on
  * their deals' terms, F-128's stated exceptions taken out (exceptions-fixtures.ts); `p` and `fxChange`: the plan and A-03; `indices`: the
  * indices compared on, every index the bundle prices when absent.
  */
@@ -100,8 +100,7 @@ export function compare(accounts: CustomBroker[], terms = false, p: WorkbenchInp
     const funds = buildInvest({ bundle: both, index, plan: p, assumptions: { fxChange } }).options.flatMap((o) => o.funds);
     const left = (f: (typeof funds)[number], id: string): number | null => {
       const at = f.byHouse[id];
-      const n = at && "valueN" in at ? at.valueN : f.beforeTax?.byHouse[id]?.leftN;
-      return n === undefined ? null : Math.round(n);
+      return at && "valueN" in at ? Math.round(at.valueN) : null;
     };
     for (const a of accounts) for (const f of funds) out.get(a.id)!.push({ ix: e.id, fund: f.rec.id, abroad: f.option === "abroad", before: left(f, a.id), after: left(f, dealProviderId(movedDealId(a.id))) });
   }

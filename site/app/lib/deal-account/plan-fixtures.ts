@@ -53,7 +53,7 @@ export const PLANS: [string, WorkbenchInputs, number][] = [
 export type Differing = { id: string; ix: string; fund: string; row: number | null; deal: number | null };
 
 /**
- * Every fund of `funds` on which the deal from house `id` leaves another amount than the house's row, after tax or before it (F-118),
+ * Every fund of `funds` on which the deal from house `id` leaves another amount than the house's row, after tax,
  * compared to `unit` shekels. A fund neither prices is not compared.
  */
 export const differing = (id: string, ix: string, funds: FundWay[], unit: number): Differing[] =>
@@ -108,7 +108,7 @@ export function onHouse(s: Beside, id: string) {
 
 /**
  * Every house's deal on plan `p` at A-03 `fxChange`, over `s`'s indices, to the agora, so a difference of a fraction of a shekel (the rate
- * the amount now is converted at) shows: as `onHouse`, and the funds where the deal has a price, after tax or before it (F-118), where its
+ * the amount now is converted at) shows: as `onHouse`, and the funds where the deal has a price where its
  * house's row has none or the other way round (`pricedApart`).
  */
 export function onPlan(s: Beside, p: WorkbenchInputs, fxChange: number) {
@@ -116,7 +116,7 @@ export function onPlan(s: Beside, p: WorkbenchInputs, fxChange: number) {
   const unexplained: Differing[] = [];
   const onTerms: Differing[] = [];
   const pricedApart: { id: string; ix: string; fund: string }[] = [];
-  const priced = (f: FundWay, at: string) => `${!!f.byHouse[at] && "valueN" in f.byHouse[at]!} ${!!f.beforeTax?.byHouse[at]}`;
+  const priced = (f: FundWay, at: string) => `${!!f.byHouse[at] && "valueN" in f.byHouse[at]!}`;
   for (const ix of s.indices) {
     const funds = buildInvest({ bundle: s.b, index: indexById(s.b, ix)!, plan: p, assumptions: { fxChange } }).options.flatMap((o) => o.funds);
     const fundsT = buildInvest({ bundle: s.bTerms, index: indexById(s.bTerms, ix)!, plan: p, assumptions: { fxChange } }).options.flatMap((o) => o.funds);

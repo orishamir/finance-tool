@@ -4168,30 +4168,6 @@ export const invest = {
     otherPriceWords: "מחיר אחר לקנייה בהוראת קבע",
   },
 
-  /**
-   * F-118 (D84): the funds whose tax rests on an open rule, listed under the funds with their figures before tax at the chosen account, never
-   * ranked and never chosen as the pair.
-   */
-  beforeTax: {
-    /** The heading over them, in the blocked colours with the lock, and a caution "?" beside it that holds the note below. */
-    heading: "לפני מס רווחי הון, בלי דירוג",
-    /** The caution "?"'s text, by the rule, ended by the rule's chip (`HelpMark` `rules`): the sentence names the funds it speaks of. */
-    note: {
-      "TXS-14": "בקרנות הישראליות כאן מס רווחי הון עוד לא ידוע: לא ידוע אם הרווח בהן נמדד מול שער המטבע העיקרי שלהן או מול מדד המחירים לצרכן, ובתוכנית הזו שתי הדרכים נותנות תוצאה שונה. כמטבע העיקרי האתר לוקח את המטבע שהמדד מחושב בו.",
-    } as Record<string, string>,
-    noteOther: "המס על הקרנות האלה עוד לא ידוע: הוא תלוי בכלל שעוד לא נקבע.",
-    /** The note's last sentence: what the figures are and what is not done with them. */
-    noteTail: "לכן הסכומים כאן לפני מס רווחי הון, ואי אפשר להשוות אותם לקרנות שלמעלה או לבחור בהן.",
-    /** The list's name, for a screen reader. */
-    label: (house: string) => `קרנות לפני מס רווחי הון ${inName(house)}`,
-    /** The list's one figure column, as the fund list's: the figure's sheet lists what the account charges among what it reads. */
-    colLeft: "נשאר לפני מס",
-    /** What the account charges, on the sheet of the figure before tax, among what it reads. */
-    costInput: "מה החשבון גובה בכל התקופה, בהתחשב באינפלציה",
-    leftAbout: (fund: string, house: string) => `נשאר לפני מס רווחי הון: ${fund}, ${inName(house)}`,
-    costAbout: (house: string) => `מה החשבון גובה: ${house}`,
-  },
-
   /** "לפני שמחליטים" under the lists: a few questions about the chosen pair, a card each with its answer, one panel open at a time. */
   before: {
     title: "לפני שמחליטים",
@@ -5042,9 +5018,8 @@ export const invest = {
     soldFundByFund: "אין מחיר בלי קרן מסוימת: הבית מוכר קרן כזו רק אם מנהל הקרן חתם איתו על הסכם הפצה.",
     /** The same house, and a fund no report of an agreement names: open, never "not sold" (the record's own words show where it has them). */
     noAgreementFound: "לא ידוע אם אפשר לקנות את הקרן הזו שם: לא נמצא הסכם הפצה עליה.",
-    /** A fund whose tax rests on an open rule (F-04, G-35), where no figure before tax is shown for it (an account that does not price it, a
-     *  kind with no fund record, a fund that pays out, the preview of a fund being typed): by the rule, said plainly; nothing is ranked. Where
-     *  F-118 prices it, a typed accumulating fund with its fees among them, `beforeTax` says it. */
+    /** A fund whose tax rests on an open rule (F-04, G-35: the kind of Tel Aviv foreign fund with no fund record, one that pays out, the
+     *  preview of one being typed): by the rule, said plainly; nothing is ranked. */
     ruleOpen: {
       "TXF-04": "אי אפשר לחשב את מס רווחי הון: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע או לפי מדד המחירים לצרכן. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
       // F-119 at a falling CPI (TXG OQ17), its readings giving the run different results (method §13)
