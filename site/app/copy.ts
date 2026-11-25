@@ -4211,9 +4211,9 @@ export const invest = {
       /** The card of a plan with nothing in it. */
       empty: "אין כסף בתוכנית",
       emptyNote: "אין כסף בחשבון, אז כל החשבונות משאירים 0 ₪",
-      /** The card where no account is ranked with the fund, and why. */
+      /** The card where no account gives the fund a price, and why. */
       unranked: "אין מפה לקרן הזו",
-      unrankedWhy: "אף חשבון לא מדורג עם הקרן הזו",
+      unrankedWhy: "הקרן הזו בלי מחיר בכל החשבונות",
       headEmpty: "בתוכנית שלכם אין כסף, אז כל החשבונות משאירים 0 ₪. המפה מראה איזה חשבון זול יותר בכל צירוף אחר.",
       /** The line under the headline: how to read the map, short enough for one line on a computer. */
       what: "הצבע של כל נקודה הוא החשבון שמשאיר לכם הכי הרבה בסכום ובהפקדה שלה.",

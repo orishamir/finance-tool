@@ -144,17 +144,19 @@ for (const [slug, plan] of [["index-sp500", planAt(10_000, 500, 10)], ["index-sp
 }
 
 describe("an accumulating foreign fund whose annex reports no ruling (D120)", () => {
-  it("is ranked with the accounts that price it, as every priced fund on the collected data is, and so has its map", () => {
+  it("is ranked with the accounts that price it, so its map leads at the plan with the one where it leaves the most", () => {
     const plan = planAt(10_000, 500, 10);
-    const unranked = knownIndices(bundle).flatMap((index) => {
-      const view = buildInvest({ bundle, index, plan });
-      return allFunds(view)
-        .filter((f) => Object.values(f.byHouse).some((x) => "valueN" in x) && !Object.values(f.byHouse).some(priced))
-        .map((f) => f.rec.id);
-    });
-    expect(unranked).toEqual([]);
     const index = need(indexById(bundle, "index-sp500"), "the S&P 500");
-    expect(work.map(bundle, { index, plan, fund: "1183441" }).kind).toBe("map");
+    const f = need(allFunds(buildInvest({ bundle, index, plan })).find((x) => x.rec.id === "1183441"), "Invesco 1183441 on the S&P 500");
+    expect([f.rec.distribution_policy, f.rec.tax_ruling]).toEqual(["accumulating", undefined]);
+    const values = Object.values(f.byHouse).filter(priced).sort((a, b) => b.valueN - a.valueN);
+    const top = need(values[0], "an account that prices 1183441");
+    const got = work.map(bundle, { index, plan, fund: "1183441" });
+    const map = need(got.kind === "map" ? got.map : null, "1183441's map");
+    // the map names only accounts that price the fund, and at the plan the one where it leaves the most
+    expect(map.accounts.filter((id) => !values.some((w) => w.providerId === id))).toEqual([]);
+    const lead = map.plan.lead;
+    expect(lead.kind === "near" ? lead.tied : lead.kind === "clear" ? [lead.first] : []).toContain(top.providerId);
   });
 });
 
