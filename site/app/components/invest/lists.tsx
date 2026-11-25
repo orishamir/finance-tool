@@ -274,13 +274,14 @@ export function PairLists(props: ListsProps) {
   const tieN = chosen ? 0 : tieFundCount(view, tieBest, theta);
   const markedTie = tieN > 1 && inTieSet(view, tieBest, pick, theta) ? tieN : 0;
   const tiedHere = (id: string) => markedTie > 0 && tiedFunds.includes(id);
-  // two funds that would show one name: each also says the labels that tell them apart (where it trades, its kind), else its number
+  // two funds that would show one name: each also says the labels that tell them apart (where it trades, its kind), else its number;
+  // never its tax labels (founder, 2026-11-25)
   const byName = new Map<string, FundWay[]>();
   for (const f of funds) byName.set(listName(view, f.name), [...(byName.get(listName(view, f.name)) ?? []), f]);
   const apart = (f: FundWay): string | null => {
     const same = byName.get(listName(view, f.name))!;
     if (same.length < 2) return null;
-    const texts = (x: FundWay) => labelsOf(view, x, bundle).map((l) => l.text);
+    const texts = (x: FundWay) => labelsOf(view, x, bundle).filter((l) => l.family !== "tax").map((l) => l.text);
     const mineL = texts(f);
     const differs = mineL.filter((t) => !same.every((x) => texts(x).includes(t)));
     return differs.length > 0 ? differs.join(" · ") : `${c.pair.colNumber} ${f.number}`;
