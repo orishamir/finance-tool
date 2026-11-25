@@ -44,7 +44,7 @@
         "TXS-14"
       ],
       "state": "sourced",
-      "notes": "The report names the fund a foreign-investment fund under the 2003 regulations, with the US dollar as its principal currency (TXS-14). Whether those regulations still operate is TXS OQ26, so a run is made with the dollar and with the CPI as its tax index (F-04)."
+      "notes": "The report names the fund a foreign-investment fund under the 2003 regulations, with the US dollar as its principal currency (TXS-14). Whether those regulations still operate is TXS OQ26; the site reads them as operating, so a run takes the dollar as its tax index (F-04, product D119)."
     }
   },
   "fees": {
