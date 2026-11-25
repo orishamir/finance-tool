@@ -1434,6 +1434,7 @@
   "left_out": [
     {
       "what": "מחיר מופחת בערוץ ישיר למניות בחוץ לארץ: 0.30% בארצות הברית ו-0.50% מחוצה לה, מינימום 20 דולר, מקסימום 7,000 דולר",
+      "name_he": "מחיר מופחת למניות בחו״ל בערוץ הישיר",
       "page": 1,
       "source": {
         "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/attache-5.pdf",
@@ -1445,12 +1446,14 @@
     },
     {
       "what": "חבילת המסחר לצעירים, 'צעירים משקיעים בחינם': '0 עמלות מסחר בדיגיטל ו-0 דמי ניהול בניירות ערך בארץ ובחו\"ל', החזר עד 2,000 ₪ לרבעון",
+      "name_he": "חבילת ״צעירים משקיעים בחינם״",
       "why": "Advertising on a page still live on 2026-11-04 (library 97281897a61a02a9; Wayback from 2025-11-26), in no binding document read (annex A has no such row). Its own terms: ages 18-35 or the student club; existing customers 1.7.2025-31.12.2025; new customers who joined 23.11.2025-31.3.2026, refunds 'עד ל- 30.6.2026'; digital actions only; 'הבנק רשאי להאריך או לשנות את תוקף ההטבה בהתאם לשיקול דעתו'. Ended; a refund, not a price.",
       "why_he": "חבילת ״צעירים משקיעים בחינם״ לגילי 18 עד 35 החזירה עמלות מסחר ודמי ניהול, וההחזרים בה הסתיימו ב־30.6.2026, ולכן היא לא משנה את המחיר היום.",
       "could_change_price": false
     },
     {
       "what": "פועלים פלוס: 'הטבות בעמלות ניירות ערך'",
+      "name_he": "הטבות במסלול פועלים פלוס",
       "source": {
         "url": "https://www.bankhapoalim.co.il/he/open-account/poalim-plus",
         "title": "פועלים פלוס - בנק הפועלים"
@@ -1461,24 +1464,28 @@
     },
     {
       "what": "הוצאות צד ג' בחו\"ל: ברוקר בארה\"ב 0.40 סנט למניה, מינימום 1$, מקסימום 3,000$; קסטודיאן לא נקוב",
+      "name_he": "הוצאות של צד שלישי בחו״ל",
       "why": "Printed in the third-party chapter (sheet row 2089) for every customer abroad; custodian costs have no amount or ceiling. Not priced: no record prices third-party costs (decision for the lead, as for FIBI).",
       "why_he": "על כל עסקה בחו״ל הבנק מוסיף הוצאות ברוקר בארה״ב של 0.40 סנט למניה, מינימום 1 דולר, וגם הוצאות משמורן בלי סכום ובלי תקרה. האתר לא מחשב אותן, ולכן קרן שנקנתה בחו״ל יכולה לעלות יותר מהמחיר שמוצג.",
       "could_change_price": true
     },
     {
       "what": "עמלת קסטודיאן 0.01%, מינימום 20 ₪ לנייר ערך, מקסימום 500 ₪ לנייר ערך",
+      "name_he": "״עמלת קסטודיאן״ בשירותים המיוחדים",
       "why": "Securities chapter, special services (sheet row 1054; PDF p.48, checked on the page image). Note (05) says only 'כולל אופציות וחוזים עתידיים על נכסי בסיס במעו\"ף'; what it is charged on is not printed. Not priced, as at Leumi, Discount and Meitav Trade.",
       "why_he": "התעריפון מציין ״עמלת קסטודיאן״ של 0.01%, מינימום 20 ₪ לנייר, בין השירותים המיוחדים, בלי לומר על מה היא נגבית. האתר לא מחשב אותה, ואם היא חלה על קנייה, מכירה או החזקה רגילה, המחיר יכול לצאת יקר יותר.",
       "could_change_price": true
     },
     {
       "what": "חשבון עובר ושב: עמלת מינימום חודשית עד 5.30 ₪ (מחיר פעולה על ידי פקיד), פעולה בערוץ ישיר 1.75 ₪, מסלול בסיסי 10 ₪ ומורחב 22 ₪ לחודש",
+      "name_he": "פעולות ומסלולים בחשבון העו״ש",
       "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Sheet row 705, note (03): the bank may charge the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י פקיד'; tracks rows 752-753. A standing-order debit is itself a direct action (row 697).",
       "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 5.30 ₪ לחודש. האתר סופר רק את עמלת המינימום שבתעריפון, בלי עמלות על פעולות בחשבון ובלי מסלולי עו״ש בתשלום חודשי.",
       "could_change_price": false
     },
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.08%-0.40% לשנה, זרים 0.07%-0.39%; קנייה ומכירה של מניות ואג\"ח 0.15%-0.30%",
+      "name_he": "ממוצעי העמלות שנגבו בפועל",
       "source": {
         "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/hitpalgut-amalot.pdf",
         "title": "התפלגות עמלות ני\"ע, 1.1.26-30.6.26 - בנק הפועלים"

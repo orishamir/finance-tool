@@ -790,54 +790,63 @@
   "left_out": [
     {
       "what": "מסלול IBKR Lite",
+      "name_he": "מסלול IBKR Lite",
       "why": "For US residents only (BRK-42).",
       "why_he": "מסלול בלי עמלה על מניות וקרנות סל בארה״ב, רק למי שגר בארה״ב. מי שגר בישראל לא יכול לבחור בו, ולכן האתר לא מתמחר אותו.",
       "could_change_price": false
     },
     {
       "what": "לקוח שהגיע דרך ברוקר מציג",
+      "name_he": "חשבון שנפתח דרך ברוקר אחר",
       "why": "Pays the introducing broker's own tariff; Interactive Israel has its own row.",
       "why_he": "מי שפתח את החשבון דרך ברוקר שמפנה ל־Interactive Brokers, כמו אינטראקטיב ישראל, משלם לפי התעריפון של הברוקר הזה ולא לפי המחירים כאן. לאינטראקטיב ישראל יש שורה משלה.",
       "could_change_price": false
     },
     {
       "what": "משיכות כספים מעבר לשתיים בחודש",
+      "name_he": "עמלה על משיכות כסף נוספות בחודש",
       "why": "'IBKR allows two free withdrawal requests per calendar month'; after that a fee per currency (ILS bank transfer 30.00, USD wire 10.00; other-fees page). The reader who withdraws rarely pays nothing.",
       "why_he": "שתי משיכות כסף בחודש הן בלי עמלה, ומהשלישית באותו חודש משלמים, למשל 30 ₪ על העברה בשקלים. מי שמושך כסף לעיתים רחוקות לא משלם אותה.",
       "could_change_price": false
     },
     {
       "what": "אגרות רגולטוריות במכירה בארה\"ב",
+      "name_he": "אגרות של הרשויות במכירה בארה״ב",
       "why": "Fixed pricing adds 'SEC Transaction Fee: USD 0.0000206 * Value of Aggregate Sales' and 'FINRA Consolidated Audit Trail Fees: USD 0.000003 * Quantity' (FINRA trading activity fee on holiday to 31.12.2026); written in the US lines' notes, about 0.002% of a sale, not priced.",
       "why_he": "במכירה בארה״ב נוספות אגרות קטנות של הרשויות שם, לפי סכום המכירה ומספר המניות. האתר לא מוסיף אותן, ולכן מכירה עולה בפועל מעט יותר.",
       "could_change_price": true
     },
     {
       "what": "נתוני שוק",
+      "name_he": "מנוי לנתוני שוק",
       "why": "Real-time US quotes are free (non-consolidated) and other markets have free delayed data; paid subscriptions are optional (market-data page, BRK-42). Not needed to trade.",
       "why_he": "שערים בזמן אמת של מניות בארה״ב ניתנים בלי תשלום, ומנוי לשווקים אחרים הוא בחירה. לא צריך אותו כדי לקנות ולמכור.",
       "could_change_price": false
     },
     {
       "what": "עמלות בורסה וסליקה בבורסת לונדון במסלול Tiered",
+      "name_he": "אגרות בורסה וסליקה בלונדון במסלול ״Tiered״",
       "why": "IBKR's LSE fee page (https://www.interactivebrokers.com/en/accounts/fees/LSEstkfees.php, read 2026-11-10; the same figures on interactivebrokers.ie) adds to the Tiered price an exchange fee, for ETFs 'Trade Value * 0.000045' with a minimum of 'GBP 0.10 per Trade', and a clearing fee of 'GBP 0.06'. What an exchange and a clearing house charge, passed on: left out of every price (D66).",
       "why_he": "במסלול ״Tiered״ בבורסת לונדון נוספות על העמלה אגרת בורסה של לפחות 0.10 ליש״ט ואגרת סליקה של 0.06 ליש״ט בכל פעולה. האתר לא מוסיף אותן, כמו אצל כל בית השקעות, ולכן פעולה במסלול הזה עולה בפועל מעט יותר.",
       "could_change_price": true
     },
     {
       "what": "עמלות בורסה, סליקה ועמלות מועברות בארה\"ב במסלול Tiered",
+      "name_he": "אגרות בורסה וסליקה בארה״ב במסלול ״Tiered״",
       "why": "The commissions page adds to the Tiered US price exchange, clearing (NSCC, DTC USD 0.00020 per share) and pass-through fees (NYSE commissions * 0.000175, FINRA commissions * 0.000565); see interactive-brokers-buy-sell-us-tiered. What exchanges, clearing houses and a regulator charge, passed on: left out of every price (D66).",
       "why_he": "במסלול ״Tiered״ בארה״ב נוספות על העמלה אגרות של הבורסה ושל הסליקה, למשל 0.0002 דולר לכל מניה על הסליקה. האתר לא מוסיף אותן, כמו אצל כל בית השקעות, ולכן פעולה במסלול הזה עולה בפועל מעט יותר.",
       "could_change_price": true
     },
     {
       "what": "המרה אוטומטית (auto currency conversion): 'IB will typically add or subtract (at its discretion) 0.03% to the exchange rate that would otherwise apply'",
+      "name_he": "מרווח המרה בהמרת מטבע אוטומטית",
       "why": "The automatic conversion is priced with no commission ('IB does not separately charge a commission on these auto-conversion trades'), and its markup, 'typically ... (at its discretion) 0.03%', is not limited by the documents, so it is not priced (D65). The indices page reads the house with each way it converts and takes the cheapest, so the price shown carries no conversion cost at all; the spot order costs '0.20 basis point * Trade Value', minimum USD 2.00. Spot Currencies page, re-read 2026-11-12.",
       "why_he": "כשהחשבון ממיר שקלים לדולרים לבד בזמן קנייה, Interactive Brokers לא גובה עמלה, אבל מוסיפה מרווח לשער: לפי החברה בדרך כלל 0.03%, ולפי שיקול דעתה. האתר לא מחשב את המרווח הזה, ולכן ההמרה נראית בחינם והמחיר בפועל יקר יותר.",
       "could_change_price": true
     },
     {
       "what": "מדרגות לפי היקף מסחר חודשי במסלול Tiered: בארה\"ב '≤ 300,000' מניות ב־'USD 0.0035', ומעל זה '0.0020' ומטה; בבורסת לונדון '0.05% of Trade Value' עד '50,000,000' בחודש, ומעל זה '0.03%' ומטה",
+      "name_he": "מדרגות עמלה למסחר בהיקף גדול",
       "why": "The Tiered lines record the first tier; the lower rates start above 300,000 US shares a month and above 50,000,000 of value a month in London (Commissions Stocks page, re-read 2026-11-12). A saver's monthly purchases stay in the first tier, so leaving the others out changes no price on this site.",
       "why_he": "במסלול ״Tiered״ העמלה יורדת למי שסוחר בהיקף גדול מאוד בחודש, למשל יותר מ־300,000 מניות בארה״ב. האתר מתמחר את המדרגה הראשונה, זו שחוסך רגיל נמצא בה.",
       "could_change_price": false

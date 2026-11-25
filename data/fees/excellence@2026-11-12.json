@@ -727,24 +727,28 @@
   "left_out": [
     {
       "what": "דף ההצטרפות lp.xnes.co.il/trade: \"80% מעמלות הבנקים\" ו\"ללא עמלת אי-ביצוע, ללא עמלת מט\"ח וללא דמי משמרת\"",
+      "name_he": "עמלות שדף ההצטרפות אומר שאין",
       "why": "Advertising (library bd8f20b36b20db2b; Last-Modified 11.10.2026), with no condition. Contradicted by the tariff: custody 'דמי ניהול/טיפול פיקדון ניירות ערך' 0.6% a quarter, minimum 40 NIS a month (p.4, item 8); 'עמלת חליפין 0.1%' (p.5); and the trade line's heading includes '(כולל קניה או מכירה שלא בוצעה)' with no exemption printed (p.3). Priced at the tariff (D56).",
       "why_he": "בדף ההצטרפות כתוב שאין עמלת המרה, אין דמי משמרת ואין עמלה על פעולה שלא בוצעה, אבל התעריפון מפרסם את כל אלה. האתר מתמחר לפי התעריפון.",
       "could_change_price": false
     },
     {
       "what": "דף ההצטרפות: \"פטור מדמי טיפול לכל החיים!\" (תקנון \"פטור מדמי טיפול לכל חיי החשבון\")",
+      "name_he": "פטור מדמי טיפול לכל חיי החשבון",
       "why": "An offer. Terms dated 1.10.26 on /trading/full-disclosure/ (library b93a77c489a2d38d): private clients with no account in the past year who open a new self-trading account and deposit 10,000 NIS by 31.12.2026; it waives 'דמי טיפול חודשיים' only, for that account until it closes, and 'אינה חלה על עמלות מסחר, דמי משמרת, עמלות צדדים שלישיים ... עלויות המרה'. The company may change or shorten it 'על פי שיקול דעתה הבלעדי, בכל עת וללא הודעה מוקדמת' and raise tariff fees the same way. Not a group price (the schema's group fees are trade and custody only), so it is kept here; the handling fee is priced at 99 NIS.",
       "why_he": "לקוח פרטי חדש שמפקיד 10,000 ₪ עד 31.12.2026 פטור מדמי הטיפול החודשיים כל עוד החשבון פתוח, והחברה רשאית לשנות את ההטבה בכל עת. זו הטבת הצטרפות, והאתר מתמחר את דמי הטיפול הרגילים.",
       "could_change_price": false
     },
     {
       "what": "דף המסחר העצמאי /trading/: \"פטור מדמי טיפול לשנתיים\" (תקנון \"פטור מדמי טיפול לשנתיים\")",
+      "name_he": "פטור זמני מדמי טיפול בדף המסחר העצמאי",
       "why": "An offer. Terms on the disclosure page: from 12.10.2025 to 31.12.2027, new private clients depositing 10,000 NIS get 'פטור מדמי טיפול חודשיים' for 24 months, 36 months with a further deposit above 10,000 NIS within 30 days; 'יתר התשלומים המפורטים בנספח העמלות ו/או בהסכם פתיחת חשבון יהיו ללא שינוי'. The page advertises it beside 'מינימום הפקדה רק 4,500 ש\"ח', but the exemption's own terms require 10,000 NIS.",
       "why_he": "לקוח פרטי חדש שמפקיד 10,000 ₪ פטור מדמי הטיפול החודשיים לשנתיים, ולשלוש שנים בהפקדה נוספת של יותר מ־10,000 ₪ בתוך 30 ימים. זו הטבת הצטרפות, והאתר מתמחר את דמי הטיפול הרגילים.",
       "could_change_price": false
     },
     {
       "what": "דף חשבון השקעות לילדים: \"פטור מלא מדמי ניהול\" בשנתיים הראשונות, \"ולאחר מכן תשלמו 15 ₪ בלבד בכל חודש - שיתקזזו עם עמלות פעולות המסחר\"",
+      "name_he": "דמי טיפול בחשבון השקעות לילדים",
       "source": {
         "url": "https://www.xnes.co.il/trading/kids-investments/",
         "title": "חשבון השקעות לילדים - אקסלנס"
@@ -755,12 +759,14 @@
     },
     {
       "what": "\"רבע מעמלות הבנקים\" (/trading/, דף הילדים) לצד \"80% מעמלות הבנקים\" (lp)",
+      "name_he": "השוואות פרסומיות לעמלות הבנקים",
       "why": "Advertising comparisons with no binding basis; the two pages contradict each other. Not a price.",
       "why_he": "השוואות פרסומיות לעמלות הבנקים, בלי בסיס במסמך מחייב. זה לא מחיר.",
       "could_change_price": false
     },
     {
       "what": "תעריפון (4ב)2: \"דמי משמרת 0.1%\", רבעוני, \"לחשבונות מנוהלים ו/או לחשבונות שמהות פעילותם היא אחזקת נכסים ולא מסחר פעיל\"",
+      "name_he": "״דמי משמרת״ לחשבונות שעיקרם החזקה",
       "page": 4,
       "why": "A second custody charge for accounts the company deems holding rather than active trading, which fits a buy-and-hold reader. The tariff prints no period for the 0.1% (collected quarterly, computed daily) and does not say whether it replaces item 8 or is added to it. Not priced: the engine reads one custody line, and adding it is the lead's decision. At most it adds 0.1% a quarter (0.4% a year) to item 8's 2.4%.",
       "why_he": "לחשבונות שעיקרם החזקה ולא מסחר פעיל התעריפון מפרסם עוד ״דמי משמרת״ של 0.1%, שנגבים כל רבעון; התעריפון לא אומר אם השיעור לרבעון או לשנה, ולא אומר אם הם במקום דמי הניהול של הפיקדון או בנוסף להם. האתר לא מחשב אותם; אם הם בנוסף, חוסך שקונה ומחזיק ישלם בפועל יותר.",
@@ -768,12 +774,14 @@
     },
     {
       "what": "מחשבון העמלות של הבורסה, ממוצעים בפועל 01/01/26-30/06/26: \"דמי ניהול - ני\"ע ישראלים\" 0.0492% עד 25 אלף ₪, 0.0402%, 0.0235%, 0.0171%, 0.0109%, 0.0054%, 0.0029%, 0.0019%, 0.0005% מעל מיליון; קנייה ומכירה ני\"ע ישראלים 0.0859% עד 0.0600%, זרים 0.2818% עד 0.0693%",
+      "name_he": "עמלות שנגבו בפועל לפי מחשבון הבורסה",
       "why": "A sourced fact, not a price (D56). Read in Chrome on 2026-11-04. Customers actually paid custody at a small fraction of the tariff's 2.4% a year and trade fees at a fifth of 0.4%; presumably through the unpublished fee annex, which binds nothing for a new customer.",
       "why_he": "במחשבון של הבורסה מופיע שלקוחות החברה שילמו בממוצע בפועל הרבה פחות מהתעריפון. זה נתון על העבר ולא מחיר שלקוח חדש מקבל, ולכן האתר מתמחר לפי התעריפון.",
       "could_change_price": false
     },
     {
       "what": "מתווה פטור מעמלת קנייה בקרנות קסם (קרנות מסורתיות, מחקות פתוחות וקרנות סל), עד 40 קניות, 1.1.2026-31.12.2026",
+      "name_he": "פטור מעמלת קנייה בקרנות של קסם",
       "source": {
         "url": "https://www.xnes.co.il/trading/ksm-mutual-funds/",
         "title": "מתווה לפטור מעמלות ברכישת קרנות קסם ומפיצים נוספים - אקסלנס"
@@ -784,18 +792,21 @@
     },
     {
       "what": "הוראה מחזורית (הוראת קבע לקנייה חודשית)",
+      "name_he": "הוראה מחזורית לקנייה חודשית",
       "why": "Advertised on /trading/extrade-pro/recurring-instruction/ (library 281434618d0953df), monthly, any security in the system. No tariff line prices it; each buy is an ordinary trade at 0.4%, minimum 10 NIS (2% of a 500 NIS buy).",
       "why_he": "אפשר להגדיר קנייה חודשית קבועה, אבל כל קנייה משלמת את העמלה הרגילה. האתר מחשב כל קנייה חודשית כפעולה נפרדת.",
       "could_change_price": false
     },
     {
       "what": "טיפול בדיבידנדים וחלוקות",
+      "name_he": "טיפול בדיבידנדים ובחלוקות",
       "why": "No tariff line for receiving a dividend or distribution; item 6.1 'עמלת Dividend re-invest' is 'בכפוף לעמלות קניה ומכירה שנקבעו מול הלקוח'. An accumulating fund pays none.",
       "why_he": "אין בתעריפון עמלה על קבלת דיבידנד, וקרן צוברת לא מחלקת אותו.",
       "could_change_price": false
     },
     {
       "what": "העברת ניירות ערך (העברה החוצה), תעריפון (4א)9",
+      "name_he": "העברת ניירות ערך לבית השקעות אחר",
       "page": 4,
       "why": "Israeli securities 0.1% of the value transferred, minimum 99 NIS; foreign 0.1%, minimum 10 USD; 'שלא במסגרת עסקה'. No maximum printed. Not modelled by the comparison. The FAQ: depositing securities into Excellence has no fee.",
       "why_he": "העברת ניירות ערך לבית השקעות אחר עולה 0.1% מהשווי, לפחות 99 ₪ לנייר ישראלי ולפחות 10 דולר לנייר זר. זו עלות של עזיבה, והאתר לא מחשב אותה.",
@@ -803,6 +814,7 @@
     },
     {
       "what": "מערכות מתקדמות/ציטוטים, תעריפון (6א)3: \"עד 3,000 ₪\" לחודש",
+      "name_he": "מערכות מסחר מתקדמות ושערים בזמן אמת",
       "page": 5,
       "why": "A charge for advanced systems or quotes; the tariff does not say which systems, or whether the basic Extrade Pro system is free. The advertising pages describe the system as included.",
       "why_he": "מערכות מסחר מתקדמות ושערים בזמן אמת עולים עד 3,000 ₪ בחודש, למי שבוחר בהם. לא צריך אותם כדי לקנות ולמכור.",
@@ -810,6 +822,7 @@
     },
     {
       "what": "ארה\"ב, המסלול השלישי: \"או + 0.3% עמלת ברוקר\"; ועמלות צד שלישי מחוץ לארה\"ב",
+      "name_he": "מסלול עמלת ברוקר בארה״ב ועמלות צד שלישי",
       "page": 4,
       "why": "Since 2026-11-12 the two quantified US tracks ('3 סנט למניה מינימום 8$', 'או 11$ פיקס לעסקה') are priced as lines and the cheaper is read; the third, '0.3% + עמלת ברוקר', adds a broker fee the tariff does not quantify, so it is not priced (it can only cost 0.3% or more). Outside the US: 'ייתכנו עמלות צדדים שלישיים בשווקים מסוימים', not limited (D66).",
       "why_he": "במסחר בארה״ב יש מסלול שלישי, 0.3% ועוד עמלת ברוקר שלא מפורסמת, שהאתר לא מתמחר. מחוץ לארה״ב ייתכנו עמלות של גופים אחרים בחלק מהבורסות; האתר לא מוסיף אותן, כמו אצל כל בית השקעות, ולכן המחיר בפועל יקר יותר.",
@@ -817,6 +830,7 @@
     },
     {
       "what": "מט\"ח: הפקדת מזומן או משיכת מזומן 40$; העברה לצד ג' עד 2,200 ₪/$; העברה לחשבון אחר 65 ₪ ב-RTGS או 30$; אין ריבית על יתרת זכות במט\"ח",
+      "name_he": "עמלות מזומן והעברות במט״ח",
       "page": 1,
       "why": "Account services outside the reader's two cases, except that dollars held uninvested earn no interest: part 1, item 5 says 'בגין יתרת זכות במטבע שאינו במטבע שקלי, הלקוח לא יהא זכאי לריבית זכות', the arrangement of the class-action settlement ת\"צ 42919-11-23 (library 47c4169bd38b479b).",
       "why_he": "עמלות על הפקדה ומשיכה של מזומן במט״ח ועל העברות כסף, ואין ריבית על דולרים שלא הושקעו. אלה לא חלק מקנייה והחזקה של קרן.",
@@ -824,12 +838,14 @@
     },
     {
       "what": "מבצע \"חבר מביא חבר\" (7.10-31.12.2026)",
+      "name_he": "הטבת חבר מביא חבר",
       "why": "A referral reward (100 NIS to the new client, 300 to 700 NIS to the referrer), not a fee; and the site carries no referral links.",
       "why_he": "בתוכנית ״חבר מביא חבר״ המצטרף מקבל 100 ₪ פעם אחת. זו הטבה, והאתר מתמחר את המחיר הרגיל.",
       "could_change_price": false
     },
     {
       "what": "ארה\"ב: \"3 סנט למניה מינימום 8$\" \"או 11$ פיקס לעסקה\" ... \"עמלת מקסימום 2% משווי העסקה\"",
+      "name_he": "עמלת מינימום ועמלת מקסימום בארה״ב",
       "page": 4,
       "why": "The tariff (p.4, item 6, library 6c9ec0ada66f77d8) prints a ceiling of 2% of the trade and a minimum on the same line and does not say which applies to a small order. The site applies the ceiling, as the schema does for any cap (docs/data-schema.md: \"a cap below the minimum wins\"), so a US order below 400 USD on the per-share track (8 / 0.02) or below 550 USD on the fixed track (11 / 0.02) is priced at 2% of the trade. If the minimum governs, such an order costs up to the minimum.",
       "why_he": "התעריפון מפרסם גם עמלת מינימום וגם עמלת מקסימום של 2% משווי העסקה, ולא אומר מה משלמים בעסקה קטנה. האתר מחשב לפי עמלת המקסימום. אם חלה עמלת המינימום, עסקה של פחות מ־400 דולר (במסלול של 3 סנט למניה) או של פחות מ־550 דולר (במסלול הקבוע) עולה בפועל יותר.",

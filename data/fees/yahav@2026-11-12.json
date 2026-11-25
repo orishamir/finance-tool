@@ -1515,12 +1515,14 @@
   "left_out": [
     {
       "what": "מחיר מופחת באינטרנט למניות בחוץ לארץ: 0.3%, מינימום 24 דולר, מקסימום 1,000 דולר",
+      "name_he": "מחיר מופחת למניות בחו״ל באינטרנט",
       "why": "The printed row names shares, not funds, so a fund abroad is priced on the row that names funds (founder, 2026-10-31: no price from analogy). Annex E (p.43) repeats it for 'ניירות ערך בחוץ לארץ -מניות' only. The exchange's sheet ('עדכון אחרון: 01/07/26'), which the bank supplies, labels the same 0.30% / 24$ / 1,000$ 'קניה/ מכירה/ פדיון - ני\"ע בחו\"ל - מניות, אג\"ח, קרנות נאמנות - כללי'; the sheet is not a binding document, and the price list's note (08) names shares, so a fund abroad stays at 0.95%, 25$ minimum. Re-read 2026-11-20: the price list at its address is the same 2.2026 file (md5 3998663c…). The bank's own disclosure of the securities it trades (customer-info-market.pdf, July 2025, library 93f175065b12da1e) defines 'מניות' as 'נייר ערך המייצג בעלות בחברה' (p.6) and lists 'קרנות סל (ETF)' under 'להלן סוגים עיקריים של קרנות' (p.8): in the bank's words an ETF is a fund, not a share, and nothing the bank publishes prices a fund abroad at the internet price.",
       "why_he": "באינטרנט ובאפליקציה הבנק גובה על מניות בחו״ל 0.3% במינימום 24 דולר, אבל התעריפון לא מזכיר קרנות, ולכן האתר מחשב קרן שנקנית בחו״ל לפי 0.95% במינימום 25 דולר. אם הבנק נותן את המחיר המופחת גם על קרנות, המחיר זול יותר מזה שמוצג, ובעסקה גדולה זול בהרבה.",
       "could_change_price": true
     },
     {
       "what": "הוצאות צד ג' לעסקאות בני\"ע: 'לפי החיוב בפועל', 'כגון: הוצאות ברוקר, הוצאות קסטודיאן, תשלומים לבורסה והוצאות נוספות אשר תידרש להשלמת הפעולה בחו\"ל'",
+      "name_he": "הוצאות של צד שלישי בחו״ל",
       "page": 41,
       "why": "Third-party chapter (PDF p.41) and agreement chapter 5 s.11.2 (p.44: 'כל עמלות צד ג', כפי שיידרשו על-ידו בעת הביצוע או אחזקת הנייר (לרבות עמלות שייגבו בשל אירועי חברה)'). Printed for every customer abroad, with no amount and no ceiling: not limited by the documents. Not priced: no record prices third-party costs (a decision for the lead, as at FIBI, Hapoalim, Mizrahi-Tefahot and Bank of Jerusalem).",
       "why_he": "על ניירות ערך בחו״ל הבנק מוסיף לעמלה שלו הוצאות של צד שלישי, כמו ברוקר, משמורן ותשלומים לבורסה, ״לפי החיוב בפועל״, בלי סכום ובלי תקרה, וגם עמלות על אירועי חברה. האתר לא מחשב אותן, ולכן המחיר בחו״ל יכול לצאת יקר יותר.",
@@ -1528,12 +1530,14 @@
     },
     {
       "what": "הוראת קבע לרכישת ני\"ע/קרן נאמנות: אין מחיר מודפס",
+      "name_he": "הוראת קבע לקניית ניירות ערך",
       "why": "The agreement (chapter 5 s.1.1.2, p.39) knows a standing order to buy securities or fund units; no price list prints a price for one. The reduced rate is for 'פעולה המבוצעת ישירות באמצעות האינטרנט' (note 06; annex E 'אינטרנט / יישומון'), which a standing order the bank carries out is not, so the most the documents allow is the clerk price, 0.55% with a 32 NIS minimum (the same reading as FIBI, Mizrahi-Tefahot and Bank of Jerusalem). The record prices a purchase the reader places online each month at 0.40%, 20 NIS minimum; up to 5,000 NIS a purchase both minimums bind, so the two differ by 12 NIS a purchase (32 against 20).",
       "why_he": "אפשר לקנות ניירות ערך בהוראת קבע, אבל התעריפון לא מדפיס לה מחיר, והמחיר המופחת הוא רק לפעולה שהלקוח עושה בעצמו באינטרנט. האתר מחשב קנייה חודשית שעושים באינטרנט, 0.4% במינימום 20 ₪; מי שקונה בהוראת קבע עלול לשלם את מחיר הפקיד, 0.55% במינימום 32 ₪.",
       "could_change_price": true
     },
     {
       "what": "חשבון עובר ושב: פעולה על ידי פקיד 4.00 ₪, פעולה בערוץ ישיר 1.20 ₪ (בפיקוח), ועמלת מינימום חודשית 'שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (4.00 ₪); מסלול בסיסי 10.00 ₪ ומסלול מורחב 20.00 ₪ לחודש",
+      "name_he": "פעולות ומסלולים בחשבון העו״ש",
       "page": 3,
       "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Part 1 (PDF pp.3-6), notes (02) and (07): a customer whose fees in the month do not reach 4.00 NIS is charged the difference, and one with no action pays 4.00 NIS, so an ordinary customer pays at least 4 NIS a month (48 NIS a year). Annex A exempts young customers, soldiers and students; the state-employee page advertises the same exemption.",
       "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, 4 ₪ לחודש. האתר סופר רק את עמלת המינימום שבתעריפון, בלי עמלות על פעולות בחשבון ובלי מסלולי עו״ש בתשלום חודשי. לקוחות צעירים, חיילים וסטודנטים פטורים מהעמלה הזו, ולהם המחיר זול ב־4 ₪ לחודש.",
@@ -1541,12 +1545,14 @@
     },
     {
       "what": "החזר עמלות מסחר בניירות ערך לצעירים 'במסגרת מתווה בנק ישראל': החזר רטרואקטיבי של עמלות קנייה ומכירה ששולמו ברבעון השלישי של 2026, עד 500 ₪ לחשבון, לחשבון שאחד מבעליו בן 18 עד 35 ותיקו עד 450,000 ₪ ביום 30.09.2026",
+      "name_he": "החזר עמלות מסחר לצעירים",
       "why": "Advertising only (page trading-benefits-young, read 2026-11-04, library 4b5d6522bfe22050; first captured by the Wayback Machine 2026-06-24); its link for details (/niyaroterech/) is refused and no terms are published. It refunds a quarter that has ended, so a new customer cannot earn it; a news report of 13.4.2026 (ice.co.il 1109358) describes an earlier round for the first quarter of 2026 (up to age 35, portfolio up to 400,000 NIS). An offer, never a price (D56).",
       "why_he": "הבנק מפרסם לצעירים בני 18 עד 35 החזר של עמלות קנייה ומכירה, עד 500 ₪ לחשבון, על רבעון שכבר הסתיים. אין לו תנאים מפורסמים ואין הבטחה לסבב הבא, ולכן האתר לא מחשב אותו; לצעיר שיקבל החזר כזה המחיר יוצא זול יותר.",
       "could_change_price": true
     },
     {
       "what": "עובדי מדינה: 'פטור מדמי ניהול פיקדון ני\"ע (עמלת דמי משמרת)', 'הטבות בעמלת קניה / מכירה', 'פטור מעמלת אי ביצוע' (עלון 'שיווק 11.24'); בעמוד הטבות לעובדי מדינה היום: 'שירותי ני\"ע - עמלות מופחתות'",
+      "name_he": "הטבות לעובדי מדינה",
       "page": 2,
       "source": {
         "url": "https://bank-yahav.co.il/media/h01eqxjk/%D7%A2%D7%95%D7%91%D7%93%D7%99-%D7%9E%D7%93%D7%99%D7%A0%D7%94-11-2024.pdf",
@@ -1558,6 +1564,7 @@
     },
     {
       "what": "עמלות ממוצעות בפועל, 01/01/2026-30/06/2026: דמי ניהול ני\"ע ישראליים 0.03%-0.28% לשנה וזרים 0.03%-0.37%; קנייה ומכירה של מניות ואג\"ח 0.15%-0.36%, מק\"מ 0.05%-0.07%, ני\"ע זרים 0.17%-0.42%",
+      "name_he": "ממוצעי העמלות שנגבו בפועל",
       "source": {
         "url": "https://www.bank-yahav.co.il/media/drhhivrw/securities-commissions-split.pdf",
         "title": "התפלגות עמלות ניירות ערך, 01/01/2026-30/06/2026 - בנק יהב"

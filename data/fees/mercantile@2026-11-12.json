@@ -1365,6 +1365,7 @@
   "left_out": [
     {
       "what": "מרכנתיל טופ ודלקס: 'דמי ניהול חשבון ני\"ע - פטור', קניה/מכירה בישראל 0.12% מינימום 10 ₪, בחו\"ל 0.15%",
+      "name_he": "הטבות בחשבונות טופ ודלקס",
       "source": {
         "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
         "title": "מרכנתיל פרו, טופ ודלקס - בנק מרכנתיל"
@@ -1375,6 +1376,7 @@
     },
     {
       "what": "הוצאות צד ג' בחו\"ל: עמלת סוכן, Sec fee, הוצאות קסטודיאן בחו\"ל",
+      "name_he": "הוצאות של צד שלישי בחו״ל",
       "page": 29,
       "why": "Part 11 prices them 'משתנה' or 'בהתאם להוצאה הממשית'; not limited by the documents, not priced.",
       "why_he": "על ניירות ערך בחו״ל הבנק מוסיף לעמלה שלו הוצאות של צד שלישי: עמלת הסוכן בחו״ל על כל עסקה, עמלה לרשות ניירות הערך האמריקאית והוצאות המשמורן בחו״ל. התעריפון לא נוקב בסכום שלהן אלא ״בהתאם להוצאה הממשית״ או ״משתנה״, ולכן האתר לא מחשב אותן והמחיר בחו״ל יכול לצאת יקר יותר.",
@@ -1382,6 +1384,7 @@
     },
     {
       "what": "מחיר מופחת בערוץ ישיר למניות בארה\"ב: 0.59%, מינימום 23.5 דולר, מקסימום 10,680 דולר (הערה (8) לסעיף 4.4.1; נספח ה': 'השרות ניתן עבור מניות בארה\"ב בלבד')",
+      "name_he": "מחיר מופחת למניות בארה״ב בערוץ הישיר",
       "page": 38,
       "why": "Note (8) to 4.4.1 (p.14) prices orders through a direct channel at 0.59%, min $23.5, max $10,680; annex E (p.38) prints the same under 'באינטרנט, בסלולר' and adds '(**) השרות ניתן עבור מניות בארה\"ב בלבד'. The service is named for US shares, and the bank's own documents name exchange-traded funds apart from shares: its execution policy (mediniyut_bitua.pdf, July 2025, p.5) lists 'מניות הנסחרות בישראל ומחוץ לישראל' beside 'קרנות סל סחירות' and 'קרנות נאמנות סחירות', and its instruments disclosure (mutzarim_vesicunim.pdf, p.7, 3.3.2) says 'קרנות הסל נסחרות בבורסה כמו מניה'. The record already reads the group annex's 'מניות' as naming no fund. Words that name shares are silence for a fund (D56; founder, 2026-10-31: no price from analogy), so a fund bought abroad, a US-listed ETF included, is priced on 4.4.1's 0.79%, min $25, max $10,900. The gap: a small order pays the minimum on either price ($25 against $23.5); $10,000 pays $79 against $59. A written answer from the bank would settle it.",
       "why_he": "בערוץ הישיר הבנק גובה 0.59% במינימום 23.5 דולר, אבל נספח הערוצים הישירים אומר שהשירות ניתן \"עבור מניות בארה״ב בלבד\", ומסמכי הבנק מונים קרנות סל בנפרד ממניות. לכן האתר מחשב קרן שנקנית בחו״ל לפי 0.79% במינימום 25 דולר. אם הבנק נותן את המחיר המופחת גם על קרן סל בארה״ב, המחיר זול יותר מזה שמוצג.",
@@ -1389,6 +1392,7 @@
     },
     {
       "what": "4.11.1 עמלת קסטודיאן 0.1% משווי העסקה, מינימום 50 ₪, מקסימום 10,000 ₪ לני\"ע",
+      "name_he": "״עמלת קסטודיאן״ בתעריפון",
       "page": 17,
       "why": "Printed with no scope; not priced for the reader's trades.",
       "why_he": "התעריפון מדפיס ״עמלת קסטודיאן״ של 0.1% משווי העסקה, מינימום 50 ₪ לנייר, בלי לומר על אילו פעולות היא חלה. האתר לא מחשב אותה; אם היא חלה גם על קנייה או מכירה רגילה, המחיר יקר יותר.",
@@ -1396,6 +1400,7 @@
     },
     {
       "what": "שימוש במערכת מסחר עצמאי ונתוני מסחר שוטפים (11.20-11.22)",
+      "name_he": "מערכת מסחר עצמאי ונתוני מסחר",
       "page": 29,
       "why": "'בהתאם להוצאה הממשית', for the advanced trading system; the website and app need neither. Optional, not priced.",
       "why_he": "רישיון למערכת המסחר המתקדמת ונתוני מסחר שוטפים עולים לפי ההוצאה בפועל, אבל רק למי שבוחר במערכת הזו. קנייה דרך האתר או האפליקציה לא צריכה אותם, ולכן הם לא נכללים במחיר.",
@@ -1403,6 +1408,7 @@
     },
     {
       "what": "חשבון עו\"ש: פעולה ע\"י פקיד 6.40 ₪, בערוץ ישיר 2.00 ₪, עמלת מינימום חודשית עד מחיר פעולה אחת ע\"י פקיד; מסלול בסיסי 8.50 ₪, מורחב 26.50 ₪",
+      "name_he": "פעולות ומסלולים בחשבון העו״ש",
       "page": 2,
       "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Abridged tariff 01/10/2026, library 897991154e216138.",
       "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 6.40 ₪ לחודש. האתר סופר רק את עמלת המינימום שבתעריפון, בלי עמלות על פעולות בחשבון ובלי מסלולי עו״ש בתשלום חודשי.",
@@ -1410,6 +1416,7 @@
     },
     {
       "what": "ממוצעי העמלות שנגבו בפועל, 1-6/2026",
+      "name_he": "ממוצעי העמלות שנגבו בפועל",
       "why": "Israeli custody 0.08%-0.43% a year by portfolio size, foreign 0.05%-0.44% (the exchange's sheet). A fact, not a price (D56); kept in the custody line's notes.",
       "why_he": "לפי הממוצעים שהבורסה מפרסמת על הבנק, לקוחות שילמו בחצי הראשון של 2026 דמי ניהול של 0.08% עד 0.43% בשנה על ניירות ערך בארץ, לפי גודל התיק, ובתעריפון כתוב 0.2% לרבעון. זה ממוצע של מה שלקוחות שילמו בפועל, לא מחיר שמובטח לכל לקוח, ולכן האתר מחשב את המחירון. המחיר בפועל יכול לצאת נמוך יותר.",
       "could_change_price": true

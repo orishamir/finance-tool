@@ -683,48 +683,56 @@
   "left_out": [
     {
       "what": "מסלולי ONE ו-ONE PLUS",
+      "name_he": "מסלולי ONE ו־ONE PLUS",
       "why": "Plans with a monthly fee (49 and 89 NIS); not required to trade (legal terms on plans, s.1). Ranked at the plan-less (ZERO) price; the ONE plan's prices are a group entry (D43 amended (2)), ONE PLUS stays out because its price depends on the number of trades a month. 2026-11-12 (annex ו' re-read by the lead in the founder's browser, no stored copy): ONE PLUS, p.27, 'פטור מעמלה בגין ביצוע עד 10 עסקאות בחודש קלאנדרי (שמהווה לעניין זה את מגבלת השימוש הסביר)', the ten counted 'בניירות ערך הנסחרים בבורסה בתל אביב ובחוץ לארץ גם יחד'; abroad a pre-market trade is never free; from the 11th trade 0.1% (min 10 NIS, max 2,000 NIS in Tel Aviv; min 8 USD, max 500 USD abroad); conversion 'פטור מעמלה' (p.28). The site knows no monthly trade count, so ONE PLUS cannot be priced. The plan fee is not in any group price: an account built on the ONE group gets 0.1% without the 49 NIS a month unless the person types it (reported to the lead).",
       "why_he": "המחיר כאן הוא בלי מסלול (ZERO), כמו שלקוח משלם אם לא בחר מסלול. במסלול ONE, ב־49 ₪ לחודש, קנייה ומכירה עולות 0.1% במקום 0.3% והמרת מטבע פטורה מעמלה; במסלול ONE PLUS, ב־89 ₪ לחודש, עד 10 עסקאות בחודש בארץ ובחו״ל יחד פטורות מעמלה, ומהעסקה ה־11 משלמים 0.1%. למי שקונה הרבה או בסכומים גדולים מסלול יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
       "what": "פטור מדמי מנוי בהעברת משכורת או העברות: One ללא עלות בהעברת 5,000₪ בחודש, +One בהעברת 10,000₪ (עמוד המסלולים, עמוד ניירות ערך, lp/tradenew)",
+      "name_he": "פטור מדמי מנוי בהעברת משכורת",
       "why": "An offer with a condition (a monthly inflow), advertised as 'אינה מוגבלת בזמן' in the securities page FAQ and 'בהתאם לתקנון ההטבה' on lp/tradenew; no promotion terms were found on the site (information/5504 and /one/ answer 404). Not a price for the ordinary customer (D56).",
       "why_he": "הבנק מפרסם שמי שמעביר לחשבון 5,000 ₪ בחודש מקבל את מסלול ONE בלי דמי מנוי, ומי שמעביר 10,000 ₪ את ONE PLUS. תנאי ההטבה לא נמצאו במסמכים המחייבים של הבנק, ולכן האתר לא מחשב אותה, ולמי שמעביר משכורת לבנק המחיר יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
       "what": "הוצאות קסטודיאן בחו\"ל: 'עד 5,000 דולר ארה\"ב לחודש'; העברת ני\"ע זרים 'עד 2 דולר ארה\"ב לכל סימבול'; נתוני בורסות בחו\"ל 'עד 10 דולר ארה\"ב ללקוח לחודש'",
+      "name_he": "הוצאות המשמורן בחו״ל",
       "why": "Third-party costs in part 11 (PDF page 17) charged 'בהתאם להוצאה הממשית' on top of the 0% custody abroad. The 5,000 USD monthly ceiling is not stated per client; a transfer and real-time data abroad are not part of the plan the site prices. The same row's 'עד 50 דולר ארה\"ב ללקוח לכל אירוע חברה' is priced (line one-zero-custodian-corporate-event, D67). 2026-11-12: the custodian policy linked on the tariff page ('מדיניות קסטודיאנים', updated January 2025, read by the lead in the founder's browser) names APEX Clearing as the custodian and states no price; no row of part 11 names a dividend, so pricing 50 USD on each dividend stays the site's reading (D67).",
       "why_he": "על ניירות ערך בחו״ל הבנק מוסיף הוצאות של המשמורן בחו״ל לפי העלות בפועל, עד 5,000 דולר בחודש, והתעריפון לא אומר אם התקרה היא לכל לקוח. האתר מחשב רק את החיוב של עד 50 דולר על ״אירוע חברה״, ולכן קרן שנקנתה בחו״ל יכולה לעלות יותר מהמחיר שמוצג. את החיוב הזה האתר מחיל על כל חלוקת דיבידנד, וזו קריאה של האתר: התעריפון לא מזכיר דיבידנד.",
       "could_change_price": true
     },
     {
       "what": "הוצאות ברוקר בחו\"ל 'עד 1 דולר ארה\"ב לעסקה'; קורספונדנט 'עד 100 יורו לעסקה'; SEC ומסים בארה\"ב 'עד 30 דולר ארה\"ב בגין כל 1 מיליון דולר' במכירה",
+      "name_he": "הוצאות של צד שלישי על עסקאות בחו״ל",
       "why": "Third-party costs per trade abroad (part 11 items 2, 3 and 14), on top of the 0.3% commission; printed ceilings, not modelled. Part 11 item (22) adds taxes and levies in European and Eastern markets up to 0.4% of the trade and 10,000 USD a month; the bank offers US-traded securities only, so it does not touch the reader's trades (read by the lead in the founder's browser, 2026-11-12).",
       "why_he": "על כל עסקה בחו״ל הבנק מוסיף לעמלה שלו הוצאות של צד שלישי לפי העלות בפועל: ברוקר עד 1 דולר, קורספונדנט עד 100 יורו, ובמכירה בארה״ב מסים ועמלה לרשות ניירות הערך האמריקאית עד 30 דולר לכל מיליון דולר. האתר לא מחשב אותן, ולכן עסקה בחו״ל יכולה לעלות יותר מהמחיר שמוצג.",
       "could_change_price": true
     },
     {
       "what": "הוצאות בורסה בארץ בגין נתוני מסחר שוטפים (חלק 11 פריט 10); הוצאות הבורסה בהפקדה, משיכה או העברה (פריט 18)",
+      "name_he": "הוצאות הבורסה בתל אביב",
       "why": "Passed on at actual cost up to TASE's own tariff; the documents do not say whether every customer pays the data cost or only one who asks for real-time data. Not priced.",
       "why_he": "הבנק רשאי להעביר ללקוח הוצאות של הבורסה בתל אביב על נתוני מסחר שוטפים ועל הפקדה, משיכה או העברה של ניירות ערך, לפי תעריף הבורסה. המסמכים לא אומרים אם כל לקוח משלם על הנתונים, ולכן האתר לא מחשב אותם והמחיר יכול לצאת יקר יותר.",
       "could_change_price": true
     },
     {
       "what": "הוראת קבע להשקעה בניירות ערך (information/5751)",
+      "name_he": "הוראת קבע להשקעה חודשית",
       "why": "Offered only for 'קרנות סל הנסחרות בבורסות בארצות הברית' (s.9.1), so not for a tracking fund on TASE. No separate fee: each purchase pays the tariff's commission for the account's plan (s.7.2), for ZERO 0.3% with a 24 USD minimum, plus conversion at the bank's own rate (s.4.4.2). The bank 'יכול לשנות או לבטל את השירות ותנאיו בכל עת' (s.9.6).",
       "why_he": "הוראת קבע להשקעה חודשית פתוחה אצל הבנק רק לקרנות סל שנסחרות בארה״ב, ואין לה עמלה משלה: כל קנייה משלמת את עמלת הקנייה ואת עמלת ההמרה הרגילות. האתר ממילא מחשב כל הפקדה חודשית כקנייה נפרדת, ולכן זה לא משנה את המחיר.",
       "could_change_price": false
     },
     {
       "what": "Startrade: 'ZERO/ Startrade' בהודעה על עדכון התעריפון (24.6.26): '66.66% הנחה על שיעור העמלה' בני\"ע בחו\"ל; כתבות (financa, יוני 2026): 'עמלות של 2 שקלים ו-2 דולרים'",
+      "name_he": "הנחה לקבוצת Startrade",
       "why": "Named in the change notice but absent from the 26.7.26 tariff; who qualifies is not stated in any document read, and the press figures are not a document. Not the ordinary customer's price.",
       "why_he": "הודעת הבנק על עדכון התעריפון (24.6.2026) מזכירה קבוצת לקוחות בשם Startrade עם הנחה של 66.66% על העמלה בניירות ערך בחו״ל. התעריפון עצמו לא מזכיר אותה ולא אומר מי זכאי לה, ולכן האתר לא מחשב אותה, ולמי שזכאי לה המחיר בחו״ל יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
       "what": "כרטיס direct Mastercard (חיוב מיידי): 7 ש\"ח לחודש ללקוח ZERO (נספח ד', עמ' 19; עיקרי העמלות)",
+      "name_he": "כרטיס חיוב מיידי",
       "why": "A current-account cost, not a securities fee; no document read says a securities customer must hold this card (the Platinum card is 0 NIS, credit at the bank's discretion). Recorded for the reader's current-account cost.",
       "why_he": "כרטיס חיוב מיידי (direct Mastercard) עולה ללקוח בלי מסלול 7 ₪ לחודש. זו עלות של כרטיס ולא של ההשקעה, ואף מסמך שנקרא לא מחייב להחזיק אותו כדי להשקיע, ולכן האתר לא מוסיף אותה.",
       "could_change_price": false

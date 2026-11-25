@@ -834,36 +834,42 @@
   "left_out": [
     {
       "what": "דף אודות: \"מחירים אטרקטיביים במיוחד, ללא דמי משמרת\"",
+      "name_he": "״ללא דמי משמרת״ בדף אודות",
       "why": "Advertising (as-invest.co.il/trade/about/, library 22f5007bbc67cda4; the same words in the Wayback copies of 2025-04-28 and 2026-01-18), with no condition. Contradicted: the tariff prints 'דמי ניהול/טיפול פקדון ני\"ע' at 0.15% a year, minimum 75 NIS a month (p.2), priced (D56).",
       "why_he": "בדף \"אודות\" החברה כותבת שאין דמי משמרת, אבל התעריפון שלה גובה דמי ניהול על התיק: 0.15% בשנה, לפחות 75 ₪ בחודש. האתר מחשב לפי התעריפון.",
       "could_change_price": false
     },
     {
       "what": "דף הבית ודף ההטבות: \"פטור מלא מדמי ניהול ללא הגבלת זמן\"",
+      "name_he": "פטור מדמי ניהול למצטרפים חדשים",
       "why": "An offer, stated under groups with the terms' conditions (new customers, 5,000 NIS, 'ביצוע תדיר של עסקאות', sole discretion, until the company decides otherwise). The claim grew over time on the landing page (Wayback): 'פטור מדמי ניהול לשנתיים' in 2025, 'פטור מלא מדמי ניהול ו-200 ₪ מתנת הצטרפות' from April to 17 October 2026, 'ללא הגבלת זמן' since the terms of 26.10.2026 (PDF created 22.10.2026).",
       "why_he": "פטור מדמי ניהול הוא מבצע למצטרפים חדשים: הוא תלוי בכך שתקנו ותמכרו לעיתים קרובות, והחברה רשאית לשנות אותו או לבטל אותו. לכן האתר לא מוריד אותו מהמחיר, ומציג אותו ליד השורה.",
       "could_change_price": false
     },
     {
       "what": "מחשבון העמלות של הבורסה, ממוצעים 01/01/26-30/06/26: \"דמי ניהול - ני\"ע ישראלים\" ו\"ני\"ע זרים\": \"לא בוצעו עסקאות / לא נגבו עמלות\" בכל שווי תיק",
+      "name_he": "עמלות שנגבו בפועל לפי מחשבון הבורסה",
       "why": "What customers paid is a sourced fact, not a price (D56): no custody fee was collected from individuals in H1 2026 in any band. Recorded in the custody line's notes, not in averages. Read in Chrome 2026-11-04 (the mark's own label, under each of the 18 cells).",
       "why_he": "לפי מחשבון העמלות של הבורסה, במחצית הראשונה של 2026 לא נגבו מלקוחות פרטיים דמי ניהול על התיק. זה מה ששילמו לקוחות בפועל, לא מחיר שהחברה מתחייבת אליו.",
       "could_change_price": false
     },
     {
       "what": "דף ההטבות: \"קנייה / מכירה קרנות נאמנות אקטיביות וכספיות - פטור\"; \"השקעה חודשית קבועה בהוראת קבע - ללא עלות\"; \"מערכת ALTrade+ ווב ואפליקציה לישראל וחו\"ל - ללא עלות\"",
+      "name_he": "קרנות, הוראת קבע ומערכת מסחר בלי עלות",
       "why": "Advertising on the joining page (library e7f582848e27b188), 'למצטרפים חדשים' and 'בכפוף לתקנון המבצע'; the terms print none of them. Not the reader's case anyway: a tracking fund is not an active or money-market fund.",
       "why_he": "דף ההטבות מבטיח למצטרפים חדשים קנייה חינם של קרנות אקטיביות וכספיות, הוראת קבע בלי עלות ומערכת מסחר בלי עלות. התעריפון לא כותב אף אחד מאלה, וקרן מחקה מדד היא לא קרן אקטיבית או כספית.",
       "could_change_price": false
     },
     {
       "what": "השקעה חודשית קבועה והפקדה בהוראת קבע",
+      "name_he": "השקעה חודשית קבועה בהוראת קבע",
       "why": "The tariff prints no standing-order fee; each monthly buy is a trade at the fund line (0.15%, min NIS 16, or NIS 3.5 for an ETF in continuous trading). The monthly-investment page (library 3f2efb55be47f51f) lets any security be chosen; the older direct-deposit page (library 1aea85b4bdef7273) buys only funds 'המנוהלות על ידי אלטשולר שחם ניהול קרנות נאמנות בלבד', from 500 NIS.",
       "why_he": "לקנייה חודשית קבועה אין בתעריפון עמלה נפרדת. כל קנייה כזו נחשבת עסקה רגילה, והאתר מחשב אותה כך.",
       "could_change_price": false
     },
     {
       "what": "טיפול בתשלומי ריבית/דיבידנד: \"0.3% מסכום הריבית/דיבידנד\", ישראל/חו\"ל",
+      "name_he": "טיפול בריבית ובדיבידנד",
       "page": 2,
       "why": "Charged on each interest or dividend payment; an accumulating tracking fund pays none, a distributing ETF pays 0.3% of each distribution. No engine field holds a fee on distributions, so it is not priced.",
       "why_he": "מכל ריבית או דיבידנד שמשולמים לכם נגבים 0.3%. קרן צוברת לא מחלקת דיבידנד ולכן לא משלמת את זה, אבל בקרן מחלקת זה עולה כסף. האתר עדיין לא יודע לחשב עמלה על חלוקה.",
@@ -871,6 +877,7 @@
     },
     {
       "what": "העברת ני\"ע ונכסים פיננסיים אחרים: ישראליים \"20 ₪ לנייר/נכס, מקסימום 99 ₪ להעברה שתבוצע באותו יום\"; זרים \"10$ לנייר/נכס\", ועמלות צד ג'",
+      "name_he": "העברת ניירות ערך לבית השקעות אחר",
       "page": 2,
       "why": "A cost on leaving, not in the holding calculation; at most 99 NIS for Israeli securities, foreign third-party costs not limited.",
       "why_he": "העברת ניירות ערך לבית השקעות אחר עולה 20 ₪ לכל נייר ישראלי (עד 99 ₪ ביום) ו־10 דולר לכל נייר זר, ועוד עמלות של גופים אחרים. זו עלות של עזיבה, והאתר לא מחשב אותה.",
@@ -878,6 +885,7 @@
     },
     {
       "what": "תשלום בגין מערכות מסחר מתקדמות/ציטוט: \"עד ₪ 3,000\" אחת לחודש",
+      "name_he": "מערכות מסחר מתקדמות ושערים בזמן אמת",
       "page": 3,
       "why": "For advanced systems and quotes, by the client's choice. No binding document says whether the basic ALTrade+ platform is free; only the joining page says 'ללא עלות'. The 2025 launch terms (library de0715cf8a9e5c36) gave real-time level 1 data free for a year as a benefit.",
       "why_he": "מערכות מסחר מתקדמות ושערים בזמן אמת עולים עד 3,000 ₪ בחודש, אם בוחרים בהם. אף מסמך מחייב לא כותב אם המערכת הבסיסית חינם; רק דף המבצע כותב \"ללא עלות\".",
@@ -885,6 +893,7 @@
     },
     {
       "what": "ני\"ע זרים: \"ECN, SEC, TAF, ORF, TAX ועוד\" \"וייגבו בנוסף\"; העברת/הפקדת מט\"ח 36$; העברת מט\"ח לצד ג' עד 450$",
+      "name_he": "עמלות של צד שלישי בארה״ב והעברת דולרים",
       "page": 2,
       "why": "Third-party charges on top of the commission, at whatever they cost; not limited by the documents. FX transfers are paid only when asked for.",
       "why_he": "במסחר בארה\"ב גובים בנוסף עמלות של גופים אחרים, כמו עמלות הרגולטור והבורסה. סכומן לא כתוב מראש ואין להן תקרה, ולכן האתר לא מחשב אותן. העברת דולרים מהחשבון או אליו עולה 36 דולר, רק אם מבקשים.",
@@ -892,6 +901,7 @@
     },
     {
       "what": "ני\"ע זרים בארה\"ב \"על פי אחד מהמסלולים\": (1) \"1 סנט למניה, מינימום 9$\"; (2) \"עמלה קבועה בסך 11$ לעסקה\"; (3) \"0.15% משווי העסקה, מינימום 9$\"",
+      "name_he": "מסלולי העמלה למסחר בארה״ב",
       "page": 2,
       "why": "The tariff prints three US tracks 'על פי אחד מהמסלולים' and does not say who picks one. Since 2026-11-12 all three are priced lines, and for a fund bought in the US the engine takes the cheapest that computes. The company's written answers of 5.11.2026 (docs/company-answers.md) name only tracks (1) and (2) for a new customer: the regular track is the 9-dollar one ('מסלול 9$ מינימום זה עמלות פעולה קנייה/מכירה ללא ההטבה שבה כיום המינימום הוא 6$', the offer's line being '1 סנט למניה (מינימום $6)'), and 'ניתן לעבור למסלול פיקס העומד על 11$ לפעולה'. No document read says a customer can be put on track (3), 0.15% with a 9-dollar minimum; for an order under about 7,333 dollars it is cheaper than the fixed track. Review of 2026-11-12: tracks (2) and (3) should carry not_ranked (D41, D56): track (2) opens only 'לאחר פתיחת החשבון ואישור מחדר מסחר' (second answer, item 6; first answer, item 2: 'להגיש בקשה דרך חדר מסחר'), and no document shows a new customer can have track (3). Not done: the data check accepts not_ranked only on standing-order and recurring-plan lines, because the page lists only those as set aside (for the lead). A shown price depends on it: the indices page's generic fund abroad, and a typed fund, have no share price, so track (1) cannot price them and the house is priced on tracks (3) and (2); with both set aside, its abroad cell on all four indices would read 'needs-share-price' instead of a cost (probe of 2026-11-12).",
       "why_he": "לקנייה בארה\"ב יש בתעריפון שלושה מסלולים: סנט למניה (לפחות 9 דולר), 11 דולר קבוע, או 0.15% (לפחות 9 דולר). בתשובה בכתב החברה כתבה שלקוח חדש נמצא במסלול של סנט למניה, ושאפשר לעבור למסלול הקבוע אחרי פתיחת החשבון ובאישור חדר המסחר. היא לא כתבה שאפשר לבחור במסלול של 0.15%, שזול מהמסלול הקבוע בקנייה של פחות מכ־7,300 דולר. אם הוא לא פתוח לכם, קנייה כזו עולה בפועל יותר.",
@@ -899,18 +909,21 @@
     },
     {
       "what": "צדדים שלישיים: \"פטור מדמי ניהול לשנתיים (לאחר מכן 15 ₪ בחודש)\" ו-0.08% מינימום 4.65 ₪ באתרי השוואה; לקוח בפורום hasolidit (19.1.2026) מספר שההסכם מפנה לתעריפון באתר ומתיר לשנות עמלות ודמי ניהול בלי התראה",
+      "name_he": "מחירים שכתובים באתרי השוואה ובפורום",
       "why": "Not Altshuler documents: comparison sites and a customer's report. No binding document read prints 15 NIS or 0.08%.",
       "why_he": "אתרי השוואה ופורום כותבים על דמי ניהול של 15 ₪ בחודש ועל עמלה של 0.08%. אף מסמך של החברה שהאתר קרא לא כותב את המספרים האלה, ולכן האתר לא משתמש בהם.",
       "could_change_price": false
     },
     {
       "what": "חבר מביא חבר: 200, 300 ו-500 ₪ לממליץ, עד 5,000 ₪ בשנה",
+      "name_he": "הטבת חבר מביא חבר",
       "why": "Paid to the referrer, not the joiner; terms in a separate PDF (/media/fkydzujw/), not read.",
       "why_he": "מי שמביא חבר מקבל 200 עד 500 ₪. ההטבה ניתנת למי שממליץ, לא למצטרף, ולכן היא לא משנה את המחיר שלכם.",
       "could_change_price": false
     },
     {
       "what": "קרנות סל: \"קרנות סל במסלול מסחר רציף, מינימום ₪ 3.5\" (הערה לסעיף 5, קרנות נאמנות וסל, מינימום ₪ 16)",
+      "name_he": "עמלת המינימום לקרן סל במסחר הרציף",
       "page": 2,
       "why": "The site prices an ETF (and a foreign fund traded in Tel Aviv) at the 3.5 NIS minimum, since continuous trading is the way those funds trade on TASE (ETF-04, ETF-26, ETF-67). The tariff does not say whether an order filled in the opening or closing auction, or a standing monthly order, is 'במסלול מסחר רציף'; if the house charges such an order the row's 16 NIS minimum, a small monthly buy costs up to 12.5 NIS more. Read 2026-11-12 on the stored copy of the price list (library 500b2b74e04bd53e, p.2).",
       "why_he": "לפי התעריפון, קנייה של קרן סל במסחר הרציף עולה 0.15% ולפחות 3.5 ₪, וקרן נאמנות לפחות 16 ₪. האתר מחשב קרן סל לפי 3.5 ₪. התעריפון לא כותב אם גם פקודה שמתבצעת בפתיחת המסחר או בסגירתו, או קנייה בהוראת קבע, נחשבת מסחר רציף. אם החברה תגבה עליה 16 ₪, כל קנייה קטנה תעלה עד 12.5 ₪ יותר.",

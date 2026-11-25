@@ -1100,6 +1100,7 @@
   "left_out": [
     {
       "what": "כל קרן על מדד",
+      "name_he": "קרן על מדד",
       "page": 11,
       "why": "No PEPPER document names one.",
       "why_he": "המחירון של פפר לא מזכיר קרן על מדד, ואף מסמך של פפר לא אומר שאפשר לקנות בו קרן כזו, ולכן האתר לא מחשב לפפר מחיר לקרן על מדד.",
@@ -1107,6 +1108,7 @@
     },
     {
       "what": "\"וכל הוצאות צד ג' (עמלות ברוקר, בורסה, קסטודיאן ועוד) – עלינו!\" (שאלות נפוצות בדף הבית); \"פטור מהוצאות צד ג' לניירות ערך זרים\" (דף ההצטרפות)",
+      "name_he": "הוצאות צד שלישי ״עלינו״ בפרסום של פפר",
       "page": 11,
       "why": "Advertising only. The PEPPER annex (p.11) prints 4 NIS, 4 USD, custody and conversion and says nothing on third-party costs, so Leumi's part 4(א)(4) note 8 and part 11 apply: custodian and broker costs at actual cost, for funds with no ceiling. Not found in a binding document; not limited.",
       "why_he": "פפר מפרסם שהוצאות צד שלישי בחו״ל, כמו ברוקר ומשמורן, ״עלינו״, אבל המחירון המחייב לא אומר זאת, ולכן חלות הוצאות הצד השלישי של לאומי לפי העלות בפועל, ובקרנות בלי תקרה. האתר לא מחשב אותן, ולכן עסקה בחו״ל יכולה לעלות יותר מהמחיר שמוצג.",
@@ -1114,18 +1116,21 @@
     },
     {
       "what": "חבילת שוק ההון: 0 עמלות קנייה ומכירה, 0 הוצאות צד ג', 0 עמלות מט\"ח לשנה, ומענק עד 1,500 ש\"ח",
+      "name_he": "חבילת שוק ההון שהסתיימה",
       "why": "Press releases of 17.3.2026 and 10.6.2026 (library 89f9941e9bae954e, c0e2624db2fe7212): new customers or existing ones who start moving a salary to PEPPER, for a year; in June one choice among three. The only terms read are the student pages (salary 1,200 NIS net and 100 NIS on the PEPPER card, 30 trades a month, joining to 31.10.2026, now past). The joining page read 2026-11-04 (to 30.11.2026, library ebcd26280b067495) offers a grant and card FX, no securities package. An offer, not the price.",
       "why_he": "פפר פרסם ב־2026 חבילה לשנה בלי עמלות קנייה ומכירה, בלי הוצאות צד שלישי ובלי עמלות המרה, למי שמעביר משכורת לפפר. התנאים שנמצאו הסתיימו ב־31.10.2026, ודף ההצטרפות כבר לא מציע אותה, ולכן היא לא משנה את המחיר.",
       "could_change_price": false
     },
     {
       "what": "מבצעי שוק ההון של לאומי ב־2026",
+      "name_he": "מבצעי שוק ההון של לאומי",
       "why": "Both Leumi campaign terms say 'המבצע אינו חל על... לקוחות פפר'.",
       "why_he": "מבצעי שוק ההון של לאומי ב־2026 לא חלו על לקוחות פפר, ושניהם כבר נסגרו, ולכן הם לא משנים את המחיר.",
       "could_change_price": false
     },
     {
       "what": "מגבלות החשבון: פעולה עד 250,000 ש\"ח, יתרת נכסים עד 1,500,000 ש\"ח",
+      "name_he": "מגבלות הסכום בחשבון",
       "page": 2,
       "source": {
         "url": "https://www.pepper.co.il/pepper/s3fs-public/home-v11/key_features_pepper.pdf",

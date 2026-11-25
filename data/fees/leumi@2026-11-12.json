@@ -1576,6 +1576,7 @@
   "left_out": [
     {
       "what": "לקוחות ישיר לאומי: החזר 20% מעמלות מסוימות",
+      "name_he": "החזר עמלות ללקוחות ישיר לאומי",
       "page": 10,
       "why": "Annex p.10: 'החזר 20% מעמלות מסוימות ... בתנאי שבשנה שחלפה נגבו עמלות כאמור בסכום כולל של לפחות 100 ש\"ח', for parts 1, 2, 3 and 5 (part 5 holds the conversion fee); part 4, securities, is not listed. Only for customers of ישיר לאומי, a year-end refund: not priced.",
       "why_he": "לקוחות ישיר לאומי מקבלים בסוף השנה החזר של 20% מחלק מהעמלות, כולל עמלת המרת מטבע, אם שילמו עליהן לפחות 100 ₪ בשנה. ההחזר לא חל על עמלות ניירות הערך והאתר לא מחשב אותו, ולכן למי שמנהל חשבון בישיר לאומי וקונה בחו״ל המחיר יכול לצאת מעט זול יותר.",
@@ -1583,6 +1584,7 @@
     },
     {
       "what": "'קניה מרוכזת לתיק' בלאומי טרייד: 'תיגבה עמלה אחוזית ללא מינימום' (חלק 4(א)(1) הערה 15, עמ' 30; 4(א)(4) הערה 12, עמ' 31)",
+      "name_he": "״קניה מרוכזת לתיק״ בלאומי טרייד",
       "why": "p.30 note 15 (TASE) and p.31 note 12 (abroad): a purchase made by the action 'קניה מרוכזת לתיק' in Leumi Trade pays the percentage with no minimum. No Leumi document read says what the action is or who may use it (searched 2026-11-12: the Leumi Trade page, the hybrid-advice pages, a web search). If one fund can be bought this way, a small monthly purchase pays 0.4% instead of the 26 NIS minimum. Not priced; open.",
       "page": 30,
       "why_he": "התעריפון אומר שקנייה בפעולה בשם ״קניה מרוכזת לתיק״ בלאומי טרייד משלמת את אחוז העמלה בלי עמלת המינימום. האתר לא מצא מסמך של הבנק שמסביר מהי הפעולה ומי יכול להשתמש בה, ולכן לא מחשב אותה: אם אפשר לקנות בה קרן אחת, הפקדה חודשית קטנה יוצאת זולה בהרבה.",
@@ -1590,6 +1592,7 @@
     },
     {
       "what": "הערה 8 לדמי ניהול פיקדון: בשנה הראשונה לפיקדון שנפתח באפליקציה, עד 50% מהמחיר",
+      "name_he": "הנחה בשנה הראשונה לתיק שנפתח באפליקציה",
       "page": 32,
       "why": "Binding but conditional: only a deposit opened in the mobile app, and only its first year ('שלא יעלה על 50%'). An offer, not the ordinary price (D56). No page or terms advertising it was found.",
       "why_he": "מי שפותח תיק ניירות ערך באפליקציה משלם בשנה הראשונה לכל היותר חצי מדמי ניהול הפיקדון. ההנחה רק לשנה אחת ורק לתיק שנפתח באפליקציה, ולכן האתר מחשב את המחיר המלא, ובשנה הראשונה המחיר יכול לצאת זול יותר.",
@@ -1597,24 +1600,28 @@
     },
     {
       "what": "מבצע 'לא הרווחתם, לא שילמתם': פטור מדמי ניהול בשנה הראשונה והחזר עמלות עד 3,000 ש\"ח",
+      "name_he": "מבצע ״לא הרווחתם, לא שילמתם״",
       "why": "Campaign terms (Campiagn/2535, Wayback 2026-02-24, library 67363811a4dad6e3): new joiners and customers without securities activity, joining to 31.03.26, benefits for a year, refund for 2026 only, excludes PEPPER, 'הבנק רשאי לשנות... או להפסיקם בכל עת'. Closed: the page now redirects to the home page. An offer.",
       "why_he": "מבצע של הבנק ב־2026 נתן למצטרפים חדשים פטור מדמי ניהול לשנה והחזר עמלות עד 3,000 ₪. ההצטרפות אליו נסגרה ב־31.3.2026, ולכן הוא לא משנה את המחיר היום.",
       "could_change_price": false
     },
     {
       "what": "מבצע 'מאיץ הכסף': מסחר ללא עמלות קנייה, מכירה ודמי ניהול כנגד פיקדון 4% מ־50,000 ש\"ח",
+      "name_he": "מבצע ״מאיץ הכסף״",
       "why": "Campaign terms (Campiagn/2606, Wayback 2026-06-13, library 4901f16fc0b24856): 50,000 NIS moved in from outside, up to 20 trades a month for portfolios to 250,000 NIS, then 0.08% min 8 NIS or 8 USD, a year, joining to 31.8.26. Closed: the page now redirects to the open-account page. An offer.",
       "why_he": "מבצע של הבנק ב־2026 נתן לשנה מסחר בלי עמלות ובלי דמי ניהול למי שהפקיד 50,000 ₪ בפיקדון. ההצטרפות אליו נסגרה ב־31.8.2026, ולכן הוא לא משנה את המחיר היום.",
       "could_change_price": false
     },
     {
       "what": "הטבות בני\"ע לארגונים ולמקצועות (יועצי מס, מתווכים, מורים, עורכי דין)",
+      "name_he": "הטבות לארגונים ולמקצועות",
       "why": "Leumi pages with lower trade and custody rates by portfolio size (e.g. private-account-benefits, for tax advisers; Teacher-Securities-Benefits). One profession or organisation each, so not the ordinary customer and not a group in this record.",
       "why_he": "לבנק יש הטבות בעמלות ניירות ערך למקצועות ולארגונים מסוימים, כמו יועצי מס, מורים ועורכי דין. הן לא פתוחות לכל לקוח, ולכן האתר לא מחשב אותן, ולמי ששייך לאחת הקבוצות המחיר יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
       "what": "הוצאות צד ג' בחו\"ל (חלק 11): קסטודיאן עד 3 דולר לנייר בארה\"ב, בקרנות לפי חיוב בפועל; ברוקר עד 2 סנט לע.נ.; מיסים והיטלים",
+      "name_he": "הוצאות של צד שלישי בחו״ל",
       "page": 60,
       "why": "Passed on at actual cost; the fund custodian line and the taxes and levies have no ceiling. Not limited by the documents, not priced.",
       "why_he": "על ניירות ערך בחו״ל הבנק מוסיף הוצאות של צד שלישי לפי העלות בפועל: ברוקר עד 2 סנט ליחידה בארה״ב, משמורן עד 3 דולר לנייר בארה״ב ובקרנות בלי תקרה, ומסים והיטלים של המדינה. האתר לא מחשב אותן, ולכן קרן שנקנתה בחו״ל יכולה לעלות יותר מהמחיר שמוצג.",
@@ -1622,6 +1629,7 @@
     },
     {
       "what": "עמלת קסטודיאן 0.030%, מינימום 27, מכסימום 15,000 ש\"ח (4(ב)(4))",
+      "name_he": "״עמלת קסטודיאן״ בשירותים המיוחדים",
       "page": 34,
       "why": "Listed among special or business services with no scope, base or period printed; the exchange's sheet omits it. Not priced; open.",
       "why_he": "התעריפון מציין גם ״עמלת קסטודיאן״ של 0.03%, מינימום 27 ₪, בין השירותים המיוחדים, בלי לומר על מה היא נגבית. האתר לא מחשב אותה, ואם היא חלה על קנייה, מכירה או החזקה רגילה, המחיר יכול לצאת יקר יותר.",
@@ -1629,6 +1637,7 @@
     },
     {
       "what": "עו\"ש: עמלת מינימום עד 5.50 ש\"ח לחודש, 1.65 ש\"ח לפעולה בערוץ ישיר, או מסלול 10 או 25 ש\"ח לחודש",
+      "name_he": "פעולות ומסלולים בחשבון העו״ש",
       "page": 17,
       "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Part 1 (1)(א)(2) note 3: the bank may charge each month the higher of the actual action fees and 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (5.50 NIS); tracks 'לאומי Digital' 10 NIS and 'Digital Plus' 25 NIS are optional.",
       "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 5.50 ₪ לחודש. האתר סופר רק את עמלת המינימום שבתעריפון, בלי עמלות על פעולות בחשבון ובלי מסלולי עו״ש בתשלום חודשי.",
@@ -1636,6 +1645,7 @@
     },
     {
       "what": "גישה ישירה למחשב הבנק, ללקוח יחיד 50 ש\"ח לחודש (חלק 2(ב)(4))",
+      "name_he": "גישה ישירה למחשב הבנק",
       "page": 25,
       "why": "Optional: the direct-channel trade price applies to 'אינטרנט וסלולר' as well as 'גישה ישירה TRADE ON', so the account works without it. No paid data is required by any document read.",
       "why_he": "גישה ישירה למחשב הבנק עולה 50 ₪ לחודש, אבל המחיר המופחת לקנייה ומכירה חל גם באתר ובאפליקציה, ולכן אין צורך בה כדי להשקיע, והאתר לא מוסיף אותה.",
@@ -1643,6 +1653,7 @@
     },
     {
       "what": "עמלות ממוצעות בפועל, 1.1-30.6.2026",
+      "name_he": "ממוצעי העמלות שנגבו בפועל",
       "source": {
         "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/amlot/Hitpalgotnetonim_acc1.pdf",
         "title": "התפלגות נתונים על גביית עמלות ניירות ערך בפועל, 1.1.2026-30.6.2026 - בנק לאומי"

@@ -1451,6 +1451,7 @@
   "left_out": [
     {
       "what": "מסלול INVEST או ניהול תיקים",
+      "name_he": "מסלול INVEST וניהול תיקים",
       "page": 33,
       "why": "Every annex A group page ends 'ללקוחות שחשבונם משויך למסלול INVEST או ניהול תיקים יחולו הטבות בשירותי ני\"ע ומט\"ח ... בהתאם לתנאי מסלול INVEST או ניהול תיקים' (p.33 and on). The track's terms are not published (searched 2026-11-12: the tariff, the young-investor page, a web search; forms 03-068 are advisory agreements with no price). Not collected.",
       "why_he": "לקוחות במסלול INVEST או בניהול תיקים משלמים בניירות ערך ובהמרת מטבע לפי תנאי המסלול, שהבנק לא מפרסם. האתר לא מחשב אותם, ולמי שבמסלול כזה המחיר יכול לצאת זול יותר.",
@@ -1458,6 +1459,7 @@
     },
     {
       "what": "דיגיטל פרימיום: פטור מדמי ניהול פיקדון ני\"ע בארץ ובחו\"ל ומעמלת חליפין, 0.20% מינימום 25 ₪ בת\"א, 0.25% מינימום 25$ בחו\"ל",
+      "name_he": "הטבות דיגיטל פרימיום בסניף הדיגיטלי",
       "page": 41,
       "why": "Binding (annex A, 22/06/2026) but conditional: the digital branch (טאצ'ר, 535), a monthly salary above 8,000 NIS (14,000 for a couple) or a portfolio above 500,000 NIS, kept 'בכפוף להתמדה'; no end date printed; the toucher page reserves 'לשנותם... ואף לבטלם, בכפוף למתן הודעה'. An offer, listed under groups and not ranked (D56). The trade rows name only 'מניות ואגרות חוב'; the custody rows name fund units.",
       "why_he": "בסניף הדיגיטלי, לקוח עם משכורת של יותר מ־8,000 ₪ (14,000 ₪ לזוג) או תיק של יותר מ־500,000 ₪ פטור מדמי ניהול פיקדון ומעמלת המרה, ומשלם 0.20% על קנייה ומכירה של מניות ואג״ח בתל אביב (שורת העמלה הזו לא מזכירה קרנות). ההטבה מותנית והבנק רשאי לבטל אותה, ולכן האתר מחשב את המחירון הרגיל, ולמי שעומד בתנאים המחיר זול יותר.",
@@ -1465,6 +1467,7 @@
     },
     {
       "what": "דיגיטל קלאסיק: פטור מעמלת פעולה בערוץ ישיר ומעמלת מינימום בעו\"ש",
+      "name_he": "הטבות דיגיטל קלאסיק בסניף הדיגיטלי",
       "page": 40,
       "why": "Annex A, open to every resident private customer who joins the digital branch, with no threshold and no end date. It touches only the current account, and no securities price. Joining the digital branch is a choice of service, so it is an offer under D56: the row counts the ordinary minimum (`current_account`, F-102).",
       "why_he": "בסניף הדיגיטלי כל לקוח פטור מעמלת המינימום בעו״ש ומעמלת פעולה בערוץ ישיר. זו בחירה בסוג שירות ולא המחיר הרגיל, ולכן האתר מוסיף את עמלת המינימום, ולמי שמצטרף לסניף הדיגיטלי העלות זולה בעד 5.90 ₪ לחודש.",
@@ -1472,6 +1475,7 @@
     },
     {
       "what": "הוצאות צד ג' בחו\"ל: עמלת סוכן, Sec fee, הוצאות קסטודיאן בחו\"ל",
+      "name_he": "הוצאות של צד שלישי בחו״ל",
       "page": 31,
       "why": "Part 11 of the edition of 12/11/2026 (p.31) charges them 'לפי הגביה בפועל' under printed ceilings: 11.3.1 broker abroad, US 'עד 5 סנט למניה, מינימום 7.5$ לעסקה', other markets 'עד 0.15% משווי העסקה, מינימום 5-30$ בהתאם לשוק'; 11.3.3 SEC fee 'ולא יעלה על תעריפון הרשות לני\"ע בארה\"ב'; 11.3.7 custodian abroad, US 'עד 2.5$ לפעולה', other markets 'עד 30$ לפעולה', funds '15 אירו ועד 250 אירו', holding US 'עד 0.01% שנתי', other markets (funds included) 'עד 0.12% שנתי'. Not priced in this snapshot: the edition of 01/10/2026 printed them 'משתנה' or 'בהתאם להוצאה הממשית' with no ceiling, and whether and how these new ceilings enter the price (a per-share cost, a range of minimums by market, a range by fund type) is a decision for the lead, since 'עד X' is priced at X (guidelines/research.md) and One Zero's part 11 ceilings are priced (D67). The young-investor page's 7.5$ or 0.5 cent a share (minimum 5.5$) for the agent is advertising, in no tariff line.",
       "why_he": "על עסקה בחו״ל הבנק מוסיף הוצאות ברוקר בחו״ל (בארה״ב עד 5 סנט למניה ולפחות 7.5 דולר לעסקה), עמלה לרשות ניירות הערך האמריקאית והוצאות משמורן בחו״ל (בארה״ב עד 2.5 דולר לפעולה ועד 0.01% בשנה על ההחזקה; בשווקים אחרים ובקרנות יותר), לפי העלות בפועל ועד התקרות שבתעריפון. האתר לא מחשב אותן עדיין, ולכן קרן שנקנתה בחו״ל יכולה לעלות יותר מהמחיר שמוצג.",
@@ -1479,6 +1483,7 @@
     },
     {
       "what": "4.11.1 עמלת קסטודיאן 0.1% משווי העסקה, מינימום 50 ₪, מקסימום 10,000 ₪ לני\"ע",
+      "name_he": "״עמלת קסטודיאן״ בשירותים המיוחדים",
       "page": 16,
       "why": "Printed under 'שרותים מיוחדים או עסקיים' with no scope; not priced for the reader's trades. The bank could say what it covers.",
       "why_he": "התעריפון מציין ״עמלת קסטודיאן״ של 0.1%, מינימום 50 ₪, בין השירותים המיוחדים, בלי לומר על מה היא נגבית. האתר לא מחשב אותה, ואם היא חלה על קנייה, מכירה או החזקה רגילה, המחיר יכול לצאת יקר יותר.",
@@ -1486,6 +1491,7 @@
     },
     {
       "what": "שימוש במערכת מסחר עצמאי וקו תקשורת עבורה (11.3.4-11.3.5)",
+      "name_he": "מערכת מסחר עצמאי וקו תקשורת",
       "page": 31,
       "why": "Part 11 of the edition of 12/11/2026 (p.31): 11.3.4 the licence for a self-trading system 'לפי הגביה בפועל, ולא יעלה על 1000$ לחודש, בתוספת עלויות דאטה עד 2500$'; 11.3.5 its communication line 'בטווח של 2,000 - 15,000 ש\"ח לחודש' plus a one-off installation. For the advanced trading systems; the website and app need neither. Optional, not priced.",
       "why_he": "מערכות המסחר המתקדמות ונתוני המסחר השוטפים מחויבים לפי העלות בפועל, אבל כדי להשקיע מספיקים האתר והאפליקציה של הבנק, ולכן האתר לא מוסיף אותם.",
@@ -1493,6 +1499,7 @@
     },
     {
       "what": "חשבון עו\"ש: פעולה ע\"י פקיד 5.90 ₪, בערוץ ישיר 1.85 ₪, עמלת מינימום חודשית עד מחיר פעולה אחת ע\"י פקיד; מסלול בסיסי 9 ₪, מורחב 25 ₪",
+      "name_he": "פעולות ומסלולים בחשבון העו״ש",
       "page": 1,
       "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it. The per-action fees and the tracks are not counted: the row counts the minimum alone, since no rule read says whether a securities order, or the movement it makes, is an action on the account (F-102). Abridged tariff 01/10/2026, library 7a22f08024c4cf3d.",
       "why_he": "האתר מוסיף לבנק את עמלת המינימום של חשבון העו״ש, עד 5.90 ₪ לחודש. האתר סופר רק את עמלת המינימום שבתעריפון, בלי עמלות על פעולות בחשבון ובלי מסלולי עו״ש בתשלום חודשי.",
@@ -1500,12 +1507,14 @@
     },
     {
       "what": "מסלולי מקצוע: עובדי מדינה ורופאים 'פטור מדמי ניהול פיקדון ני\"ע בארץ ובחו\"ל'; הייטקיסטים ועורכי דין הנחות",
+      "name_he": "הטבות לפי מקצוע",
       "why": "Account-types page only; for one profession or employer each, with documents to show. No tariff line prints them. Not the ordinary customer's price.",
       "why_he": "לעובדי מדינה ולרופאים יש פטור מדמי ניהול פיקדון, ולהייטקיסטים ולעורכי דין הנחות. אלה הטבות למקצוע מסוים, ולכן האתר לא מחשב אותן, ולמי ששייך לאחת הקבוצות המחיר יכול לצאת זול יותר.",
       "could_change_price": true
     },
     {
       "what": "ממוצעי העמלות שנגבו בפועל, 1-6/2026",
+      "name_he": "ממוצעי העמלות שנגבו בפועל",
       "source": {
         "url": "https://www.discountbank.co.il/media/fsqnorrh/fees_collection_first_half_2026.pdf",
         "title": "התפלגות נתונים על גביית עמלות ניירות ערך בפועל, 1.1-30.6.2026 - בנק דיסקונט"
