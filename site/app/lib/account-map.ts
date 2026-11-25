@@ -71,23 +71,28 @@ export interface MapField {
   missing?: number[];
 }
 
-export interface AccountMap {
-  /** The map runs from 0 to `amount` today and from 0 to `monthly` a month; its areas' rows from `bottom` a month up. */
-  max: { amount: number; monthly: number };
+/** Who leads over a map's window, read on the surface's lattice (`areasIn`). */
+interface Areas {
+  /** The areas' rows run from `bottom` a month up. */
   bottom: number;
-  plan: { amount: number; monthly: number; lead: PlanLead };
   /** The accounts the map shows: first somewhere, or within θ of the first somewhere. The plan's first comes first, then by the area each is
    *  first in, largest first. */
   accounts: string[];
-  /** The least today's amount and monthly deposit the search reads (a hundredth of the sliders' reach): a switch down holds from there
-   *  to its point, so its words name that range. */
-  floor: { amount: number; monthly: number };
   /** The accounts priced on the map, in the order `MapField.missing` names them by. */
   asked: string[];
   /** The areas: `cols` nodes from 0 to the amount's end, `rows` from `bottom` to the monthly end. */
   field: MapField;
   /** The bottom edge, no monthly deposit: one row of nodes along today's amount. */
   edge: MapField;
+}
+
+export interface AccountMap extends Areas {
+  /** The map runs from 0 to `amount` today and from 0 to `monthly` a month. */
+  max: { amount: number; monthly: number };
+  plan: { amount: number; monthly: number; lead: PlanLead };
+  /** The least today's amount and monthly deposit the search reads (a hundredth of the sliders' reach): a switch down holds from there
+   *  to its point, so its words name that range. */
+  floor: { amount: number; monthly: number };
   /** The nearest point along today's amount (the monthly deposit held), and along the monthly deposit, where another account becomes clearly
    *  cheaper and stays so to the end of the search, up or down. */
   switches: { amount: MapSwitch | null; monthly: MapSwitch | null };
@@ -378,16 +383,9 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const planPt: MapPoint = [plan.amount, plan.monthly];
   const reachA = Math.max(reach.amount, plan.amount);
   const reachM = Math.max(reach.monthly, plan.monthly);
-  // a plan of nothing is read at a tenth of the reach, only to know some account is ranked with the fund
-  const empty = plan.amount === 0 && plan.monthly === 0;
-  const planLeft = empty ? leftAt(reachA / 10, reachM / 10, null) : leftAt(plan.amount, plan.monthly, null);
-  const atPlan = rankedAt(planLeft, order);
-  const top = atPlan[0];
-  if (!top) return null;
-  const tiedIds = atPlan.filter((x) => isTie(top.v, x.v, theta)).map((x) => x.id);
-  const [t0, t1, ...rest] = tiedIds;
-  const lead: PlanLead = empty ? { kind: "empty" } : t0 && t1 ? { kind: "near", tied: [t0, t1, ...rest] } : { kind: "clear", first: top.id };
-  const tied = lead.kind === "empty" ? [] : tiedIds;
+  const atPlan = planLeadOf(leftAt, order, theta, plan, reachA, reachM);
+  if (!atPlan) return null;
+  const { lead, tied, first: planFirst } = atPlan;
 
   // ------------------------------------------------ the plan's two lines: the switch along each, the nearer of up and down, and the changes up
   // under a hundredth of the sliders' reach no point is named, either way (NAMED): no money at all today (or a month) is a value of its
@@ -425,7 +423,6 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const picked = { amount: pick("amount"), monthly: pick("monthly") };
   const switches = { amount: picked.amount.sw, monthly: picked.monthly.sw };
   const stretches = { amount: picked.amount.st, monthly: picked.monthly.st };
-  const planFirst = lead.kind === "clear" ? lead.first : lead.kind === "near" ? lead.tied[0] : null;
   // where another account first leaves more than the plan's first, up or down a line: there the two leave the same. Where the plan's first
   // has no ranked price it is not compared (F-80), so its reading has not changed there
   const firstPriced = (left: ReadonlyMap<string, number>) => planFirst !== null && left.has(planFirst);
@@ -471,6 +468,33 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
   const axisEnd = (own: number, to: number, r: number, cap: number) => Math.min(cleanUp(Math.max(PLAN_SPAN * own, ROOM * to, r * MIN_SPAN)), cap);
   const maxA = axisEnd(plan.amount, nearUp("amount", plan.amount, reach.amount), reach.amount, capA);
   const maxM = axisEnd(plan.monthly, nearUp("monthly", plan.monthly, reach.monthly), reach.monthly, capM);
+  return { max: { amount: maxA, monthly: maxM }, plan: { ...plan, lead }, floor, switches, stretches, changes, equal, ...areasIn({ leftAt, order, theta, tied, planFirst, reach, max: { amount: maxA, monthly: maxM } }) };
+}
+
+/**
+ * The plan's own lead (F-131, *The plan*), the accounts within θ of its first (none for a plan of nothing) and that first; null where no
+ * account is ranked at the plan (for a plan of nothing, at a tenth of the reach).
+ */
+function planLeadOf(leftAt: LeftAt, order: readonly string[], theta: number, plan: { amount: number; monthly: number }, reachA: number, reachM: number): { lead: PlanLead; tied: string[]; first: string | null } | null {
+  // a plan of nothing is read at a tenth of the reach, only to know some account is ranked with the fund
+  const empty = plan.amount === 0 && plan.monthly === 0;
+  const planLeft = empty ? leftAt(reachA / 10, reachM / 10, null) : leftAt(plan.amount, plan.monthly, null);
+  const atPlan = rankedAt(planLeft, order);
+  const top = atPlan[0];
+  if (!top) return null;
+  const tiedIds = atPlan.filter((x) => isTie(top.v, x.v, theta)).map((x) => x.id);
+  const [t0, t1, ...rest] = tiedIds;
+  const lead: PlanLead = empty ? { kind: "empty" } : t0 && t1 ? { kind: "near", tied: [t0, t1, ...rest] } : { kind: "clear", first: top.id };
+  return { lead, tied: lead.kind === "empty" ? [] : tiedIds, first: lead.kind === "clear" ? lead.first : lead.kind === "near" ? lead.tied[0] : null };
+}
+
+/**
+ * Who leads over the window from 0 to `max` (F-131, *Where it is read*): the areas on the surface's lattice, the bottom edge, and the
+ * accounts shown. Every account is priced at the coarse nodes, then `tied` (the plan's accounts) and those near the top there; `planFirst`
+ * comes first among the accounts shown.
+ */
+function areasIn({ leftAt, order, theta, tied, planFirst, reach, max }: { leftAt: LeftAt; order: readonly string[]; theta: number; tied: readonly string[]; planFirst: string | null; reach: { amount: number; monthly: number }; max: { amount: number; monthly: number } }): Areas {
+  const { amount: maxA, monthly: maxM } = max;
   const bottom = maxM / N;
 
   // ------------------------------------------------ the areas: read on the surface's lattice, which does not move with the plan
@@ -622,5 +646,5 @@ export function accountMap({ leftAt, order, theta, plan, reach }: { leftAt: Left
     ahead: ls.map((l) => (l ? Math.floor(l.ahead * 1000) / 1000 : 1)),
     missing: gaps.map((g) => g.reduce((m, id) => m | (bit.get(id) ?? 0), 0)),
   });
-  return { max: { amount: maxA, monthly: maxM }, bottom, plan: { ...plan, lead }, accounts, floor, asked, field: fieldOf(leads, fieldGaps, N + 1, N), edge: fieldOf(edgeLeads, edgeGaps, N + 1, 1), switches, stretches, changes, equal };
+  return { bottom, accounts, asked, field: fieldOf(leads, fieldGaps, N + 1, N), edge: fieldOf(edgeLeads, edgeGaps, N + 1, 1) };
 }
