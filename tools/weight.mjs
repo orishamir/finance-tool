@@ -28,10 +28,18 @@ const gz = (b) => gzipSync(b).length;
 const kb = (n) => (n / 1024).toFixed(1).padStart(7);
 
 // ---------------------------------------------------------------- which pages
+/**
+ * A company page with a securities account: one whose overview links to the account's part (`companyPath(id, { product: "brokerage" })`),
+ * or, the account its only part, draws its fees' section (components/decoder/institutions/sections.ts, `accountSectionIds.fees`).
+ */
+const hasAccount = (html) => html.includes("product=brokerage") || html.includes('id="account-fees"');
 const firstDir = (dir, test = () => true) => (existsSync(dir) ? readdirSync(dir).filter((d) => !d.includes(".") && test(d)).sort()[0] : undefined);
 const company = firstDir(join(root, "companies"));
 const track = company && firstDir(join(root, "companies", company));
 const shelf = firstDir(join(root, "rules"));
+// a company page with a securities account, which the first company page may lack: its fees, the house's terms or its price list's
+// table, are data no other company page carries
+const account = firstDir(join(root, "companies"), (d) => existsSync(join(root, "companies", d, "index.html")) && hasAccount(readFileSync(join(root, "companies", d, "index.html"), "utf8")));
 // one page of each page route; a route whose pages differ (the guides) is weighed on one that draws a chart
 const allKinds = [
   ["front page", "/"],
@@ -42,6 +50,7 @@ const allKinds = [
   ["exposure", "/exposure/index-sp500"],
   ["companies", "/companies"],
   ["company", company && `/companies/${company}`],
+  ["company with an account", account && `/companies/${account}`],
   ["track", track && `/companies/${company}/${track}`],
   ["tracks", "/tracks"],
   ["deposits", "/deposits"],

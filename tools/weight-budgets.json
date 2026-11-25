@@ -9,6 +9,7 @@
     "exposure": { "script": 332, "data": 77 },
     "companies": { "script": 344, "data": 69 },
     "company": { "script": 372, "data": 73 },
+    "company with an account": { "script": 549, "data": 132 },
     "track": { "script": 335, "data": 53 },
     "tracks": { "script": 335, "data": 100 },
     "deposits": { "script": 345, "data": 61 },
