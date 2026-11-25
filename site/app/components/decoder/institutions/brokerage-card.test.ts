@@ -13,9 +13,10 @@ import { latestSnapshots } from "../../../lib/providers.server";
 import { loadBrands } from "../../../lib/brands.server";
 import { startsDeal } from "../../../lib/providers";
 import { feeNameOf } from "../../../lib/fee-deal/part-words";
-import { feeDeal, help, invest, provenance as provenanceWords, r4catalogue } from "../../../copy";
+import { feeDeal, help, houseAverage, invest, provenance as provenanceWords, r4catalogue } from "../../../copy";
 import { ProvenanceProvider } from "../../provenance";
-import { shown } from "../../invest/render-fixtures";
+import { FIXED_AVERAGES, shown } from "../../invest/render-fixtures";
+import type { TermsHouse } from "../../../lib/fee-page-data";
 import { BrokerageGroupCard } from "./brokerage-card";
 import { accountOf, type InstitutionKind, type TariffCardData } from "./types";
 import type { RuleRecord } from "@finance-tool/schema";
@@ -37,9 +38,10 @@ function partOf(id: string): { kind: InstitutionKind; tariff: TariffCardData; ru
 const NONE_HELD = { rules: new Set<string>(), pointed: new Set<string>() };
 
 /** The part as the server draws it, with the house's terms where its latest list fills a deal, less the rules the page holds already. */
-const render = (id: string) => {
+const render = (id: string, house?: (h: TermsHouse) => TermsHouse) => {
   const part = partOf(id);
-  const terms = houseTermsData(id, TODAY, { rules: new Set(Object.keys(part.rules)), pointed: new Set() });
+  const filled = houseTermsData(id, TODAY, { rules: new Set(Object.keys(part.rules)), pointed: new Set() });
+  const terms = filled && house ? { ...filled, house: house(filled.house) } : filled;
   const data = { rules: part.rules, terms: {}, dimensions: {}, today: TODAY };
   const { tariff, fees } = accountOf(part.tariff, terms);
   const out = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(BrokerageGroupCard, { id, tariff, fees, kind: part.kind }) })));
@@ -93,6 +95,28 @@ describe("a company's brokerage fees, as the house's terms", () => {
       for (const why of Object.values(w.off)) expect(text).not.toContain(why);
       expect(out).not.toMatch(new RegExp(`<button[^>]*>[^<]*${w.fromHouse("").slice(0, 12)}`));
     }
+  });
+});
+
+describe("a company's brokerage terms, under each fee's name", () => {
+  /** The text with the marks that keep a figure's direction taken out. */
+  const plain = (text: string) => text.replace(/[\u2066-\u2069\u200e\u200f]/g, "");
+  it("say what the house's customers paid on average, every column of the fee's kind, each by its name where the kind has several", () => {
+    const { text } = render("meitav-trade", (h) => ({ ...h, everyColumn: FIXED_AVERAGES }));
+    const c = houseAverage.columns;
+    const paid = houseAverage.paidBy("(.+?)");
+    // a trade's three columns on one line, each by its name, in the averages' order; custody's one column with no name
+    expect(plain(text)).toMatch(new RegExp(`${paid} ${c.trade_il_shares_bonds} 0\\.07% עד 0\\.08%, ${c.trade_il_makam} 0\\.05%, ${c.trade_foreign} 0\\.12% עד 0\\.28%, ${houseAverage.byPortfolio}`));
+    expect(plain(text)).toMatch(new RegExp(`${paid} 0\\.02% ${houseAverage.perYear}`));
+    expect(text).not.toContain(c.custody_il);
+  });
+  it("print Hapoalim's flat price for a small conversion: 3.30 $ up to 99 $, online, from its own line of the list", () => {
+    const { terms, text } = render("hapoalim");
+    const fx = terms?.deal.fees.find((f) => f.kind === "fx");
+    const small = fx && "cases" in fx ? fx.cases?.[0]?.stages[0]?.price : undefined;
+    expect(small).toMatchObject({ form: "perAction", currency: "USD", amount: { v: 3.3, src: { url: expect.stringContaining("single_small_51026.xls") } } });
+    const direct = feeDeal.cases.values.channel.direct;
+    expect(plain(text)).toMatch(new RegExp(`${direct}\\s*\\S+\\s99\\s\\$\\s*3\\.30\\s\\$\\s*${feeDeal.price.perAction.fx}`));
   });
 });
 

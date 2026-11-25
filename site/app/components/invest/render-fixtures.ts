@@ -16,6 +16,8 @@ import { PairReceipt } from "./receipt";
 import { DealAccountsHost } from "./deal-account";
 import type { IndicesBundle } from "../../lib/providers";
 import { buildInvest, type IndexRef, type InvestView } from "../../lib/invest";
+import type { ColumnAverage, HouseAverages } from "../../lib/house-averages";
+import type { SiteValue } from "../../lib/value";
 
 export const bundle = buildIndicesBundle();
 export const t = bundle.today;
@@ -24,6 +26,16 @@ export const plan: WorkbenchInputs = {
   values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
 };
 export const data = { rules: {}, terms: {}, dimensions: {}, today: t };
+/** A figure of a house's averages, fixed, as the exchange's calculator prints one (F-122). */
+const averageFigure = (value: number, unit: string): SiteValue => ({ value, unit, source: { url: "https://market.tase.co.il/he/market_data/trading_fees", title: "מחשבון עמלות מסחר", publisher: "Tel Aviv Stock Exchange", strength: "primary" }, checked: "2026-11-14", state: "sourced" }) as SiteValue;
+const column = (fee: "trade" | "custody", securities: string, lo: number, hi: number): ColumnAverage => ({ column: { fee, securities }, lo: averageFigure(lo, fee === "trade" ? "pct_of_trade" : "pct_of_balance_per_year"), hi: averageFigure(hi, fee === "trade" ? "pct_of_trade" : "pct_of_balance_per_year") }) as ColumnAverage;
+/** A house's every column, fixed: three of a trade and one of custody, so a fee's kind holds several columns or one. */
+export const FIXED_AVERAGES: HouseAverages = {
+  from: "2026-01-01",
+  to: "2026-06-30",
+  page: { url: "https://market.tase.co.il/he/market_data/trading_fees" },
+  columns: [column("trade", "il_shares_bonds", 0.07, 0.08), column("trade", "il_makam", 0.05, 0.05), column("trade", "foreign", 0.12, 0.28), column("custody", "il", 0.02, 0.02)],
+};
 /** What the reader sees: the page's text without the unseen longest cases that only hold a block's height (LongestCase). */
 export const shown = (out: string) => out.replace(/<div aria-hidden="true" class="invisible">[\s\S]*?<\/div>/g, "").replace(/<[^>]+>/g, "").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
 /** A fund list row's own markup as the reader sees it, without the unseen cases laid out beside it. */

@@ -448,7 +448,7 @@ export function TermsMark({ id, house }: { id: string; house: string }) {
  * The popup on one deal: its head, the tiles and the plan line (sticky as the fees scroll; on a phone the head, the strip and the pick bar
  * stay together), the pick bar, and the editor. Not a kit piece: the page's own popup, built of kit pieces and /deal's editor.
  */
-function DealPopup({ data, today, saved, writable, first, openFee, world, headId, onDeleted }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; /** The fee it opens on, where its opener names one. */ openFee?: string | undefined; world: DealWorld; headId: string; onDeleted: (name: string, at: number | null) => void }) {
+export function DealPopup({ data, today, saved, writable, first, openFee, world, headId, onDeleted }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; /** The fee it opens on, where its opener names one. */ openFee?: string | undefined; world: DealWorld; headId: string; onDeleted: (name: string, at: number | null) => void }) {
   // what each fee's head says is read with the deal as it is now, which the editor holds: the editor draws it after this render
   const headRef = useRef<(fee: Fee) => FeeSlot | undefined>(() => undefined);
   // /deal reopens the deal last on screen there: only the popup's own links to it name this one (`rememberOpen`)

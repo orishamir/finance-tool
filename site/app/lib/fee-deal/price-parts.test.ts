@@ -18,7 +18,7 @@ import type { ActionView, HeldView } from "./charts";
 import { CAPACITY } from "./offers/capacity";
 import { builder } from "./rows";
 import { panel } from "./panel";
-import { chargesUnfilled, fillDeal, houseName, houseTemplate, houseTemplateRead, templateOf, templateOptions } from "./templates";
+import { chargesUnfilled, fillDeal, houseName, houseTemplate, houseTemplateRead, lineFees, templateOf, templateOptions } from "./templates";
 import { onlyWhatCanBeDone } from "../providers";
 import { latestOf, latestSnapshots } from "../providers.server";
 import { feeDeal as copy } from "../../copy";
@@ -304,6 +304,21 @@ describe("the templates", () => {
     // a saved deal and a link keep it
     expect(ceilingOf(firstPrice(readDeal(JSON.parse(JSON.stringify(deal)))?.fees[0]))).toBe(true);
     expect(ceilingOf(firstPrice((await throughLink(deal))?.fees[0]))).toBe(true);
+  });
+  it("carry a conversion's open questions on its price, which say them beside its figure, as a trade's do, and none on its spread", () => {
+    const line = latestSnapshots().find((x) => x.id === "meitav-trade")?.lines.find((l) => l.base === "fx" && l.level === "list");
+    expect(line).toBeDefined();
+    const priceOf = (f: { stages?: { price: Price }[] } | undefined) => f?.stages?.[0]?.price;
+    const filled = lineFees({ ...line!, open_questions: ["BRK-OQ25"] }, "מיטב טרייד");
+    const conversion = filled.fees.find((f) => f.kind === "fx");
+    expect(priceOf(conversion)).toMatchObject({ form: "action", questions: ["BRK-OQ25"] });
+    for (const f of filled.fees.filter((x) => x.kind !== "fx")) expect(priceOf(f)).not.toHaveProperty("questions");
+    // a line with none carries none
+    const { open_questions: _q, ...plain } = line!;
+    expect(priceOf(lineFees(plain, "מיטב טרייד").fees.find((f) => f.kind === "fx"))).not.toHaveProperty("questions");
+    // the open price says it after its figure
+    const deal: FeeDeal = { ...newDeal("brokerage-account"), fees: [{ ...conversion, id: "q" } as Fee] };
+    expect(panel(read(deal), "q")?.open.buy[0]?.parts.find((p) => p.id === "share")?.words.questions).toEqual(["BRK-OQ25"]);
   });
   it("hold a bank's distribution fee beside the deal, each type of fund's yearly share with its source, and none at a house whose list prints none", () => {
     const leumi = house("leumi").distribution ?? [];
