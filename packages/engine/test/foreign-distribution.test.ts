@@ -4,7 +4,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { fundRecord, legalStructures } from "@finance-tool/schema";
-import { fundOf, runSecurities, securitiesBlockedBy, type Fund, type SecuritiesInput } from "../src/index.ts";
+import { beforeTax, fundOf, runSecurities, securitiesBlockedBy, waitingReal, type Fund, type SecuritiesInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -94,4 +94,36 @@ describe("a foreign fund's distribution, taxed on the site's reading that it is 
     const { legal_structure: _form, ...unknown } = company;
     expect(fundOf(unknown, "foreign-fund").fund.legalStructure).toBeUndefined();
   });
+
+});
+
+describe("F-91, F-109: the cash waiting for a whole unit of a fund that pays out is carried at what the holder keeps", () => {
+  // an account that charges nothing: bought in whole units, the run leaves less than bought by amount only by what the waiting cash missed
+  // (W), which is the whole of the account's cost, so its fees are nothing. Carried at the fund's return before the tax on its
+  // distributions, W would count a tax the waiting cash never paid.
+  const fund = (over: Partial<Fund>): Fund => ({ kind: "foreign-fund", drag: { management: 0.0003 }, domicile: "us", w8ben: true, distribution: { yield: 0.02, perYear: 4 }, ...over });
+  const plan = (f: Fund, units: boolean): SecuritiesInput => ({
+    goal: { amountNow: 10_000, monthly: 500, months: 120 },
+    market: { grossReturn: 0.07, returnIn: "instrument", inflation: 0.02, fxChange: 0 },
+    fund: f,
+    tariff: { currency: { code: "USD", startRate: 3.5 } },
+    profile: {},
+    ...(units ? { wholeUnits: { price: 2_400 } } : {}),
+  });
+  for (const [name, f] of [
+    ["a US fund, its tax taken in the US", fund({})],
+    ["an Irish fund, its tax taken in Israel", fund({ domicile: "ireland" })],
+    ["a fund paying 6% a year", fund({ distribution: { yield: 0.06, perYear: 4 } })],
+    ["a fund that pays nothing out", fund({ distribution: undefined })],
+  ] as const) {
+    it(`${name}: the account's cost is the waiting cash alone`, () => {
+      const byAmount = runSecurities(plan(f, false), ctx);
+      const inUnits = runSecurities(plan(f, true), ctx);
+      const w = waitingReal(inUnits);
+      if (w === null) throw new Error("a run in whole units reports its waiting cash");
+      expect(w).toBeGreaterThan(0);
+      const cost = beforeTax(byAmount) - beforeTax(inUnits);
+      expect(Math.abs(cost - w), `cost ${cost} w ${w}`).toBeLessThan(0.01);
+    });
+  }
 });

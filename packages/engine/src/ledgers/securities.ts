@@ -825,6 +825,9 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
       const dist = units * nav * share;
       nav *= 1 - share;
       const t = distributionTax(dist, israeliDistRate, foreignWithholding);
+      // F-91: a shekel held pays the distribution's tax and keeps the rest, as the money fees and the waiting cash are carried with would have
+      const perShekel = distributionTax(1, israeliDistRate, foreignWithholding);
+      tally.distributionTaxed(share * (perShekel.foreign + perShekel.israeli));
       foreignTax += t.foreign;
       israeliDistTax += t.israeli;
       tally.taxDuring += t.foreign + t.israeli;

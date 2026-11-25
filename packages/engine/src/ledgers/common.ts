@@ -171,6 +171,10 @@ export class Tally {
   private waits = false;
   /** F-128 on a run of a deal account: each of the deal's fees in units of the same index (`feeBy`), by its index in the deal. */
   private carriedBy: number[] = [];
+  /** F-91: the tax on distributions the money each pot carries would have paid, nominal, as `tax_real` counts tax (`distributionTaxed`). */
+  private carriedTax = emptyFees();
+  private waitedTax = 0;
+  private carriedByTax: number[] = [];
 
   fee(type: FeeType, amount: number) {
     // nothing to add: a total that starts at 0 never becomes -0, so adding 0 leaves it as it is, and 0 over a growth that is a number other
@@ -190,6 +194,22 @@ export class Tally {
   grow(factor: number) {
     this.growth *= factor;
     this.grows = true;
+  }
+
+  /**
+   * F-91: a month's distribution, taxed at `s` of what is held (its share of the holding × the tax on a shekel of it). The money each pot
+   * carries, fees and the waiting cash, would have paid that tax, which a value before tax counts at face (`tax_real`), and kept the rest:
+   * the tax is added to the pot as paid, and the return the pots grow at shrinks by it, so a pot is what the holder keeps of it plus the tax
+   * it paid, as `B` counts it.
+   */
+  distributionTaxed(s: number) {
+    if (s === 0) return;
+    for (const k of Object.keys(this.carried) as FeeType[]) this.carriedTax[k] += this.carried[k] * this.growth * s;
+    this.carriedBy.forEach((v, i) => {
+      this.carriedByTax[i] = (this.carriedByTax[i] ?? 0) + v * this.growth * s;
+    });
+    this.waitedTax += this.waited * this.growth * s;
+    this.grow(1 - s);
   }
 
   /** F-109: the cash waiting for a whole unit at a month's start, before the month's growth: what it would have become in the fund. */
@@ -254,9 +274,9 @@ export class Tally {
       formulas: r.formulas,
       rules: book.used(),
       ...(this.statements.length ? { statements: this.statements } : {}),
-      ...(this.grows ? { feesCarried: Object.fromEntries(Object.entries(this.carried).map(([k, v]) => [k, v * this.growth])) as Record<FeeType, number> } : {}),
-      ...(this.grows && this.waits ? { waitingCarried: this.waited * this.growth } : {}),
-      ...(this.carriedBy.length ? { feesCarriedBy: Array.from(this.carriedBy, (v) => (v ?? 0) * this.growth) } : {}),
+      ...(this.grows ? { feesCarried: Object.fromEntries(Object.entries(this.carried).map(([k, v]) => [k, v * this.growth + this.carriedTax[k as FeeType]])) as Record<FeeType, number> } : {}),
+      ...(this.grows && this.waits ? { waitingCarried: this.waited * this.growth + this.waitedTax } : {}),
+      ...(this.carriedBy.length ? { feesCarriedBy: Array.from(this.carriedBy, (v, i) => (v ?? 0) * this.growth + (this.carriedByTax[i] ?? 0)) } : {}),
     };
   }
 }
