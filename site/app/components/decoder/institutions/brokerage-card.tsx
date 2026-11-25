@@ -14,6 +14,7 @@ import { housePath, ownAccountPath } from "../../../lib/site-paths";
 import { IconAlert } from "../../icons";
 import { IdRef, Num, NumAfter, ProvenanceProvider, Ruled, RuleTitleRow, useProvenanceData } from "../../provenance";
 import { HouseTerms, withFeesData } from "../../fee-deal/house-terms";
+import { ToolBoundary } from "../../tool-boundary";
 import { termsEditorData, type HouseTermsData } from "../../../lib/fee-page-data";
 import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, HouseAverageLine, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
@@ -431,7 +432,8 @@ function FeeBar({ priceFor, channels }: { priceFor: string | null; channels: { c
 
 /**
  * The house's latest price list as its terms, read-only, as the indices page shows them, with nothing of a plan; its figures' sheets read
- * the rules the terms cite over the page's own.
+ * the rules the terms cite over the page's own. The deal editor draws them, inside its own error boundary as in the popup, so a house
+ * whose deal it cannot draw leaves the rest of the page standing.
  */
 function CompanyTerms({ terms }: { terms: HouseTermsData }) {
   const page = useProvenanceData();
@@ -439,7 +441,9 @@ function CompanyTerms({ terms }: { terms: HouseTermsData }) {
   if (!page) return null;
   return (
     <ProvenanceProvider data={withFeesData(page, terms.data)}>
-      <HouseTerms data={data} today={page.today} first={terms.deal} house={terms.house} />
+      <ToolBoundary resetKey={terms.house.id}>
+        <HouseTerms data={data} today={page.today} first={terms.deal} house={terms.house} />
+      </ToolBoundary>
     </ProvenanceProvider>
   );
 }
