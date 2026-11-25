@@ -65,7 +65,7 @@ const FIGURE_SHORT: Readonly<Record<FigureKey, string>> = { rate: "r", amount: "
 const SHORT: Record<string, string> = {
   name: "n", kind: "k", provider: "p", held: "h", fees: "f", template: "T", stages: "s", sale: "S", price: "P", until: "u", form: "F",
   currency: "c", per: "q", every: "e", place: "l", payout: "o", id: "i",
-  url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", feesKept: "Fk", laterFills: "Lf", page: "Pg",
+  url: "U", title: "Ti", publisher: "Pu", strength: "St", checked: "Ch", effectiveFrom: "Ef", effectiveTo: "Et", ruleIds: "Ri", own: "Ow", ceiling: "Ce", feesKept: "Fk", laterFills: "Lf", page: "Pg",
   by: "B", cases: "C", when: "W", mine: "Mi", readFor: "R", is: "Is", label: "Lb", unit: "Un", tops: "Tp",
   alsoMin: "Am", who: "Wh", boundsEvery: "Be", src: "Sr", questions: "Qs",
   spans: "Sp", row: "Rw", along: "Al", span: "Sn", rank: "Rk", house: "Ho", values: "Vs",

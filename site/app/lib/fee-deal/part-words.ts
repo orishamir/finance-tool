@@ -4,7 +4,7 @@
 import { feeDeal as copy, guideBlocks } from "../../copy";
 import { fmt, joinLead } from "../format";
 import type { SiteValue } from "../value";
-import type { MonthKey, Note, Price } from "./model";
+import { mainFigure, type MonthKey, type Note, type Price } from "./model";
 import { charged, onAction } from "./offers/capabilities";
 import type { FigureUnit } from "./offers/figures";
 import type { Figure } from "./offers/figures";
@@ -58,10 +58,14 @@ const perAction = (kind: FeeKindId): string => copy.price.perAction[kind] ?? cop
 const shareOf = (kind: FeeKindId): string => copy.price.of[kind] ?? copy.price.of.default!;
 const boundPer = (kind: FeeKindId): string => pp.boundPer[kind] ?? pp.boundPer.default!;
 const fig = (v: SiteValue | undefined) => (v ? { figure: v } : {});
-/** A price's main figure: its value, or, not given yet, the figure missing in its place (`PartWords.missing`). */
-const main = (view: PriceView, v: SiteValue | undefined): Pick<PartWords, "figure" | "missing"> => {
+/**
+ * A price's main figure: its value, or, not given yet, the figure missing in its place (`PartWords.missing`); "עד" before it where its
+ * source prints it as a ceiling (`Sourced.ceiling`: a conversion's spread, F-13).
+ */
+const main = (view: PriceView, v: SiteValue | undefined, p: Price): Pick<PartWords, "figure" | "missing" | "lead"> => {
   const missing = view.blank ? missingOfForm(view.form) : null;
-  return missing ? { missing } : fig(v);
+  if (missing) return { missing };
+  return { ...(mainFigure(p)?.src?.ceiling ? { lead: pp.ceiling } : {}), ...fig(v) };
 };
 /** The open questions a price on an action rests on (data-schema §3.6), said after its main figure with their chips. */
 const questionsOf = (p: Price): Pick<PartWords, "questions"> => (onAction(p) && p.questions?.length ? { questions: p.questions } : {});
@@ -117,11 +121,11 @@ const note = (id: Note) => (): PartWords => ({ lead: pp.notes[id]! });
 export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>> = {
   // a free price a template filled is its sourced value, which says it and opens its source; one the person made is the word alone
   free: ({ view }) => (view.free ? { figure: view.free } : { lead: copy.price.free }),
-  share: ({ kind, p, view }) => ({ ...main(view, view.figures.rate), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
-  perUnit: ({ p, view }) => ({ ...main(view, view.figures.amount), tail: ` ${pp.perUnit}`, ...questionsOf(p) }),
-  perAction: ({ kind, p, view }) => ({ ...main(view, view.figures.amount), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
-  held: ({ p, view }) => (p.form === "held" ? { ...main(view, view.figures.rate), tail: ` ${copy.price.per[p.per]}` } : null),
-  sum: ({ p, view }) => (p.form === "sum" ? { ...main(view, view.figures.amount), tail: ` ${copy.price.per[p.every]}` } : null),
+  share: ({ kind, p, view }) => ({ ...main(view, view.figures.rate, p), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
+  perUnit: ({ p, view }) => ({ ...main(view, view.figures.amount, p), tail: ` ${pp.perUnit}`, ...questionsOf(p) }),
+  perAction: ({ kind, p, view }) => ({ ...main(view, view.figures.amount, p), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
+  held: ({ p, view }) => (p.form === "held" ? { ...main(view, view.figures.rate, p), tail: ` ${copy.price.per[p.per]}` } : null),
+  sum: ({ p, view }) => (p.form === "sum" ? { ...main(view, view.figures.amount, p), tail: ` ${copy.price.per[p.every]}` } : null),
   discount: ({ p, view }) => (onAction(p) && p.discount ? { lead: pp.discount.lead, ...fig(view.figures.discount), tail: `${pp.discount.tail}${p.discount.alsoMin ? pp.discount.alsoMin : ""}` } : null),
   third: ({ p, view }) => {
     if (!onAction(p) || !p.third) return null;

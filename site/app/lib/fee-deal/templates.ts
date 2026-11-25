@@ -116,6 +116,18 @@ export interface HouseTemplate {
    * what its plan buys under each fee, whichever line of the list the fee came from.
    */
   everyColumn?: HouseAverages;
+  /**
+   * The distribution fee the list prints on a mutual fund's units, one price for each type of fund (MF-24; at a bank, MF-26), which the deal
+   * holds no price for (`distribution-yearly`): its terms show it beside the deal's fees. Absent where the list prints none.
+   */
+  distribution?: DistributionPrice[];
+}
+
+/** One price of a list's distribution fee: the type of fund it is for, in the list's words ("קרן מסוג 1"), and its share of what is held, for each `per` months. */
+export interface DistributionPrice {
+  name: string;
+  rate: Num;
+  per: Months;
 }
 
 /**
@@ -136,6 +148,9 @@ type Line = FeesSnapshot["lines"][number];
 type Mapped = { fees: SlimTemplateFee[]; left: LeftWhy[] };
 
 const has = (v: ValueObject | null | undefined): v is ValueObject & { value: number } => !!v && typeof v.value === "number";
+
+/** A spread's figure as a list prints it: the most the spread may be, which F-13 prices at that ceiling (`Sourced.ceiling`). */
+const atCeiling = (n: Num): Num => (n.src ? { ...n, src: { ...n.src, ceiling: true } } : n);
 
 /**
  * A price on each action from a line: a share of the action (its rate in percent of the trade), or a sum per unit (F-12's price per share,
@@ -211,12 +226,26 @@ function fixedSum(l: Line): { sum: ValueObject & { value: number }; currency: Bo
 
 
 /**
+ * A distribution fee: a share of what is held, charged on a mutual fund's units by the fund's type (BRK-16 part 4(ב)(2), MF-24, MF-71), which
+ * the records keep under the base `distribution_handling` beside the fee on each payment of interest or a dividend.
+ */
+const isDistributionShare = (l: Line): boolean => l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period";
+
+/** The list's distribution fee, each price with its fund type and its period; none where it prints none, or prints one with no period. */
+function distributionOf(snap: FeesSnapshot, own: string): DistributionPrice[] {
+  return snap.lines.flatMap((l) => {
+    const per = l.period ? PERIOD_MONTHS[l.period] : undefined;
+    return l.level === "list" && isDistributionShare(l) && has(l.rate) && per ? [{ name: l.band ?? lineName(l), rate: { v: l.rate.value, src: sourcedOf(l.rate, own) }, per }] : [];
+  });
+}
+
+/**
  * Why a line no fee reads fills nothing: a bank's yearly distribution share, a redemption at maturity, a line of no list or of another base,
  * one set aside from ranking, a plan's line, or another line of the same base.
  */
 function unreadWhy(l: Line): LeftWhy {
   const houseBase = (HOUSE_BASES as readonly string[]).includes(l.base);
-  if (l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period") return "distribution-yearly";
+  if (isDistributionShare(l)) return "distribution-yearly";
   if (l.band === REDEMPTION_BAND) return "redemption";
   if (l.level !== "list") return "other-base";
   if (l.not_ranked !== undefined) return "set-aside";
@@ -263,11 +292,13 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       const p = actionPrice(l, num);
       if ("left" in p) return { fees: [], left: [p.left] };
       // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
-      const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", figures: { rate: num(l.spread) } })] : [];
+      const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", figures: { rate: atCeiling(num(l.spread)) } })] : [];
       // a spread recorded but not limited is not counted, and says so: on a conversion filled at nothing, so 0% does not read as free; on
       // one with a price, as a cost on top of it
       const unpriced = !!l.spread && !has(l.spread);
-      return { fees: [fee("fx", p.spec), ...spread], left: unpriced ? [convertsFree(l) ? "spread-unpriced" : "spread-on-top"] : [] };
+      // the open questions the conversion's price rests on (data-schema §3.6), which the price says beside it, as a trade's does
+      const questions = l.open_questions ? { questions: [...l.open_questions] } : {};
+      return { fees: [fee("fx", { ...p.spec, ...questions }), ...spread], left: unpriced ? [convertsFree(l) ? "spread-unpriced" : "spread-on-top"] : [] };
     }
     case "custody": {
       if (!has(l.rate)) return { fees: [], left: ["no-value"] };
@@ -556,7 +587,8 @@ function sizeStepsOf(kind: FeeKindId, l: Line, price: Price | undefined, own: st
       const { rate: _r, min: _min, max: _max, cap: _cap, currency: _c, ...parts } = line;
       return { ...parts, form: "perAction", amount: num(t.flat), currency: "USD" };
     }
-    if (has(t.rate)) return { ...line, rate: num(t.rate) };
+    // a step's own rate is the spread in that step (`on: spread`): a ceiling, as the line's spread is (F-13)
+    if (has(t.rate)) return { ...line, rate: atCeiling(num(t.rate)) };
     return null;
   };
   const steps: SizeSteps["steps"] = [];
@@ -709,7 +741,8 @@ export function houseTemplateRead(snap: FeesSnapshot, unavailable: readonly Line
     if (read.has(l.id) || left.some((x) => x.lineId === l.id)) continue;
     leave(l, unreadWhy(l));
   }
-  return { template: { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left, leftOut: leftOutOf(snap) }, read: [...read] };
+  const distribution = distributionOf(snap, ownName);
+  return { template: { id: snap.id, snapshot: snap.snapshot, name: snap.provider.name_he, provider: memberKindOf(snap.provider.class), fees, left, leftOut: leftOutOf(snap), ...(distribution.length ? { distribution } : {}) }, read: [...read] };
 }
 
 /**

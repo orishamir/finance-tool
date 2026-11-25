@@ -2314,6 +2314,8 @@ export const feeDeal = {
       from: "מ־",
       min: "מינימום ",
       max: "מקסימום ",
+      /** Before a price's figure its source prints as the most it may be (`Sourced.ceiling`): a conversion's spread, "עד 0.8% לכל המרה" (F-13). */
+      ceiling: "עד ",
       /** A held share's maximum on each security, after its sum: "מקסימום 7,500 ₪ לכל נייר ערך בכל חיוב" (§10.6's stated parts). */
       perSecurity: { each: " לכל נייר ערך", charge: " בכל חיוב" },
       /** After a bound's sum: on each action, by the fee (`price.perAction` names the action). */

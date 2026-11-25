@@ -96,6 +96,8 @@ interface BodyProps {
  */
 const MainBody = ({ part, at }: BodyProps) => (
   <>
+    {/* "עד" where the figure is a ceiling its source prints (`Sourced.ceiling`) */}
+    {quiet(part.words.lead?.trim())}
     {at.box(part.id, part.fields[0]!, part.chooser && part.fields[0]!.bare && at.chooser ? { unit: at.chooser } : {})}
     {part.chooser && !part.fields[0]!.bare && at.chooser}
     {quiet(bare(part.words.tail))}

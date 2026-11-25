@@ -36,6 +36,11 @@ export interface Sourced {
   ruleIds?: string[];
   /** D31: the company whose own product the figure prices, where the deal is that company's product. */
   own?: string;
+  /**
+   * The source prints the figure as the most it may be, not as what is charged: a conversion's spread "עד 0.8% משער ההמרה", priced at
+   * that ceiling (F-13). The figure is said with "עד" before it while it is the source's.
+   */
+  ceiling?: true;
 }
 
 /**

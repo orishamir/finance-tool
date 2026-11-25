@@ -283,6 +283,34 @@ describe("the templates", () => {
     expect(direct).toMatchObject([{ form: "free" }, { form: "action", discount: { pct: { v: 50 }, alsoMin: true } }, { form: "action" }]);
     expect(direct[2]).not.toHaveProperty("discount");
   });
+  it("mark a spread the list prints as a ceiling, each of its steps too, and say \"עד\" before it, while it is the list's (F-13)", async () => {
+    const pp = copy.cases.parts;
+    const ceilingOf = (p: Price | undefined) => (p?.form === "action" ? p.rate.src?.ceiling : undefined) ?? false;
+    const firstPrice = (f: Pick<Fee, "stages"> | undefined) => f?.stages?.[0]?.price;
+    // Meitav Trade prints "מרווח המרה עד 0.8% משער ההמרה"; IBI's annex 0.7% under 15,000 $ and 0.5% above (method F-13)
+    const meitav = house("meitav-trade").fees.find((f) => f.kind === "fx_spread");
+    expect(firstPrice(meitav)).toMatchObject({ rate: { v: 0.8 } });
+    expect(ceilingOf(firstPrice(meitav))).toBe(true);
+    const ibi = house("ibi").fees.find((f) => f.kind === "fx_spread");
+    expect(ibi?.cases?.map((c) => ceilingOf(c.stages[0]?.price))).toEqual([true, true]);
+    // a conversion's own fee is what is charged, no ceiling
+    expect(ceilingOf(firstPrice(house("meitav-trade").fees.find((f) => f.kind === "fx")))).toBe(false);
+    // the words: "עד" leads the share while the figure is the list's; typed over, it is the person's figure and says none
+    const deal: FeeDeal = { ...newDeal("brokerage-account"), fees: meitav ? [{ ...meitav, id: "s" } as Fee] : [] };
+    const leadOf = (d: FeeDeal) => panel(read(d), "s")?.open.buy[0]?.parts.find((p) => p.id === "share")?.words.lead;
+    expect(leadOf(deal)).toBe(pp.ceiling);
+    const typedOver: FeeDeal = { ...deal, fees: deal.fees.map((f) => ({ ...f, stages: [{ price: { form: "action", rate: typed(0.8) } }] }) as Fee) };
+    expect(leadOf(typedOver)).toBeUndefined();
+    // a saved deal and a link keep it
+    expect(ceilingOf(firstPrice(readDeal(JSON.parse(JSON.stringify(deal)))?.fees[0]))).toBe(true);
+    expect(ceilingOf(firstPrice((await throughLink(deal))?.fees[0]))).toBe(true);
+  });
+  it("hold a bank's distribution fee beside the deal, each type of fund's yearly share with its source, and none at a house whose list prints none", () => {
+    const leumi = house("leumi").distribution ?? [];
+    expect(leumi.map((p) => [p.name, p.rate.v, p.per])).toEqual([["קרן מסוג 1", 0.2, 12], ["קרן מסוג 3", 0.35, 12], ["קרן מסוג 4", 0.1, 12]]);
+    expect(leumi.every((p) => p.rate.src?.ruleIds?.includes("MF-24"))).toBe(true);
+    expect(house("meitav-trade").distribution).toBeUndefined();
+  });
   it("fill One Zero's 50 $ for each corporate event as a sum per action in dollars, on what is bought abroad alone", () => {
     const event = house("one-zero").fees.find((f) => f.kind === "corporate_event")!;
     expect(event.by).toEqual([{ kind: "what", values: ["us", "europe", "world"] }]);

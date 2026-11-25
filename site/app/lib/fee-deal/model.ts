@@ -448,6 +448,10 @@ function readSourced(raw: unknown): Sourced | null {
     if (!str(raw.own, 120)) return null;
     out.own = raw.own;
   }
+  if (raw.ceiling !== undefined) {
+    if (raw.ceiling !== true) return null;
+    out.ceiling = true;
+  }
   return out;
 }
 
