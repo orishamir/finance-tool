@@ -398,9 +398,9 @@ export function PairLists(props: ListsProps) {
       name
     );
   };
-  // what a fund leaves against the pick, the two as the list writes them (method §13): its word and its order come from it. It carries the
-  // fund's own labels, so a figure that rests on the site's cautious reading wears its doubt in the fund's row (`readingDoubtOf`)
-  const diff = (f: FundWay, at: WayPrice) => differenceOf([c.pair.input(f.name, c.pair.colLeft), at.value], [pickKey, selAt.value], "F-65", { today, about: sp.diffAbout, labels: at.value.labels });
+  // what a fund leaves against the pick, the two as the list writes them (method §13): its word and its order come from it, and a doubt on
+  // either (the site's cautious reading of an open tax index) is the difference's (`differenceOf`)
+  const diff = (f: FundWay, at: WayPrice) => differenceOf([c.pair.input(f.name, c.pair.colLeft), at.value], [pickKey, selAt.value], "F-65", { today, about: sp.diffAbout });
   // each ranked fund's spot in the chosen account's stretch: its pair's value, or, for a fund of the other kind, where its difference from the
   // pair in the receipt runs over the dollar's range (a segment, held inside the scale's ends); a fund on an open rule has none
   const spots: Record<string, StretchSpot> = {};

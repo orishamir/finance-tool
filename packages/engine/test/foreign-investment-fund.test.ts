@@ -1,7 +1,7 @@
 // F-04, TXS-14, method §13: an Israeli fund that may be measured by a principal currency (its documents name it a foreign-investment fund,
 // or its record says the status is not known and its index is in a foreign currency) is run under both readings of TXS OQ26: the principal
 // currency's exchange rate, and the CPI. Where they give the same result it stands, flagged; where not, the reading that leaves the holder
-// less after the exit tax stands, labelled the site's reading of TXS-14, and is ranked (method §13, guidelines/research.md step 6).
+// less after the exit tax stands, labelled the site's cautious reading of TXS-14, and is ranked (method §13, guidelines/research.md step 6).
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { fundOf, runSecurities, securitiesBlockedBy, securitiesStopOf, type SecuritiesInput } from "../src/index.ts";
@@ -76,7 +76,7 @@ describe("both readings of TXS OQ26 (method §13)", () => {
     expect(securitiesStopOf(input({ principalFxChange: 0.025 }), ctx)).toBeNull();
   });
 
-  it("where they give different results, the reading that leaves less after the exit tax stands, whole, labelled the site's reading of TXS-14", () => {
+  it("where they give different results, the reading that leaves less after the exit tax stands, whole, labelled the site's cautious reading of TXS-14", () => {
     for (const principalFxChange of [0, 0.05, -0.02]) {
       const split = input({ principalFxChange });
       const [onPrincipal, onCpi] = [runSecurities(split, under("principal")), runSecurities(split, under("cpi"))];
@@ -87,11 +87,18 @@ describe("both readings of TXS OQ26 (method §13)", () => {
       const { labels, ...rest } = r;
       const { labels: lowLabels, ...lowRest } = low;
       expect(rest).toEqual(lowRest);
-      expect(labels).toEqual([...lowLabels, { code: "reading", ruleId: "TXS-14" }]);
+      expect(labels).toEqual([...lowLabels, { code: "cautious", ruleId: "TXS-14" }]);
       expect(r.outcome.code).toBe("eligible");
       expect(codes(r)).not.toContain("TXS-OQ26");
       expect(securitiesStopOf(split, ctx)).toBeNull();
     }
+  });
+
+  it("carries on its cautious label what the site does not know of the fund: its status, or its documents for a fund the person typed", () => {
+    const split = (notKnown?: "status" | "documents") => runSecurities(input({ principalFxChange: 0.05 }, { ...fif, ...(notKnown ? { notKnown } : {}) }), ctx);
+    expect(split().labels).toContainEqual({ code: "cautious", ruleId: "TXS-14" });
+    expect(split("status").labels).toContainEqual({ code: "cautious", ruleId: "TXS-14", notKnown: "status" });
+    expect(split("documents").labels).toContainEqual({ code: "cautious", ruleId: "TXS-14", notKnown: "documents" });
   });
 
   it("agree where A-03 and A-02 differ but both indices fall and every lot is a nominal gain: neither reading has an inflationary amount (F-09)", () => {
@@ -154,5 +161,10 @@ describe("the fund a record gives (fundOf)", () => {
   it("takes the index's foreign currency as the candidate where the status is not known, so the run meets both readings, and none on a shekel index", () => {
     expect(fundOf(withStatus(null), "israeli-fund", { foreignCurrency: "USD" }).fund.principalCurrency).toBe("USD");
     expect(fundOf(withStatus(null), "israeli-fund").fund.principalCurrency).toBeUndefined();
+  });
+  it("says what the site does not know of the fund: its status where the documents read leave it open, its documents where the person typed it", () => {
+    expect(fundOf(withStatus("USD"), "israeli-fund", { foreignCurrency: "USD" }).fund.notKnown).toBeUndefined();
+    expect(fundOf(withStatus(null), "israeli-fund", { foreignCurrency: "USD" }).fund.notKnown).toBe("status");
+    expect(fundOf(withStatus(null), "israeli-fund", { foreignCurrency: "USD", typed: true }).fund.notKnown).toBe("documents");
   });
 });

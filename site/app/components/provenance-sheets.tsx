@@ -491,7 +491,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           {!blocked && <StateTag state={param ? "parameter" : value.state} />}
           {/* a figure that rests on the site's reading of official texts says so wherever it is opened (the
               guide visuals and the holdings page carried the engine's reading label and nothing showed it) */}
-          {value.labels?.some((l) => l.code === "reading") && <ReadingTag />}
+          {value.labels?.some((l) => l.code === "reading" || l.code === "cautious") && <ReadingTag />}
           {value.stale && <IconClock size={16} className="text-caution" />}
         </div>
         {value.about && (

@@ -1,6 +1,7 @@
 // D31: a company's figure about its own product is not weak; the same figure out of context is.
 import { describe, expect, it } from "vitest";
-import type { FundStatement } from "@finance-tool/engine";
+import { foreignInvestmentFundIndex, openReadings, type FundStatement, type Label } from "@finance-tool/engine";
+import { numbers } from "../copy";
 import { carriedBy, compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, recheckStale, staleCma, staleCmaFee, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
@@ -152,6 +153,38 @@ describe("differenceOf and sumOf", () => {
   it("are null when a figure is not a number", () => {
     expect(differenceOf(["א", a], ["ב", { ...b, value: null }], "F-91", { today }).value).toBeNull();
     expect(sumOf({}, "F-91", { today }).value).toBeNull();
+  });
+  it("a difference wears the doubt of either figure it is worked out from", () => {
+    const cautious = computed(900, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXF-04" }] });
+    const plain = computed(800, "nis", "F-65", {}, { today });
+    expect(cautious.doubt).toBe(numbers.readingDoubt["TXF-04"]?.known);
+    for (const d of [differenceOf(["א", cautious], ["ב", plain], "F-65", { today }), differenceOf(["א", plain], ["ב", cautious], "F-65", { today })]) {
+      expect(d.doubt).toBe(cautious.doubt);
+      expect(d.doubtRules).toEqual(["TXF-04"]);
+    }
+    expect(differenceOf(["א", plain], ["ב", plain], "F-65", { today }).doubt).toBeUndefined();
+  });
+});
+
+describe("the doubt of the site's cautious reading (method §13)", () => {
+  const today = "2026-11-08";
+  it("has words for the rule of every open case whose split takes the cautious reading, and for no other", () => {
+    expect(Object.keys(numbers.readingDoubt).sort()).toEqual(openReadings.filter((o) => o.onSplit === "cautious").map((o) => o.ruleId).sort());
+  });
+  it("has words for every fund a cautious case is met for: one whose documents were read, one the person typed, and one whose status is not known where the case reads a status", () => {
+    for (const o of openReadings.filter((x) => x.onSplit === "cautious")) {
+      const words = numbers.readingDoubt[o.ruleId];
+      expect(words?.known, o.ruleId).toBeTruthy();
+      expect(words?.documents, o.ruleId).toBeTruthy();
+    }
+    expect(numbers.readingDoubt[foreignInvestmentFundIndex.ruleId]?.status).toBeTruthy();
+  });
+  it("takes the words for what the label says the site does not know, and wears no doubt for a rule's own reading", () => {
+    const of = (label: Label) => computed(1, "nis", "F-65", {}, { today, labels: [label] });
+    expect(of({ code: "cautious", ruleId: "TXS-14", notKnown: "status" }).doubt).toBe(numbers.readingDoubt["TXS-14"]?.status);
+    expect(of({ code: "cautious", ruleId: "TXS-14", notKnown: "documents" }).doubt).toBe(numbers.readingDoubt["TXS-14"]?.documents);
+    expect(of({ code: "cautious", ruleId: "TXF-04", notKnown: "documents" }).doubt).toBe(numbers.readingDoubt["TXF-04"]?.documents);
+    expect(of({ code: "reading", ruleId: "TXF-04" }).doubt).toBeUndefined();
   });
 });
 

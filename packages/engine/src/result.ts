@@ -35,30 +35,53 @@ export interface Flag {
   month?: number;
 }
 
+/** How a number that rests on a rule must be labelled (D10): what a rule's use says of it (`RuleLabel`), or the site's cautious reading of an open case (`CautiousLabel`). */
+export type Label = RuleLabel | CautiousLabel;
+
 /**
- * How a number that rests on a rule must be labelled (D10): `secondary-source` and `institution-source`
- * from the rule's strength; `reading` where the rule base gives its own reading (TXI-04); `derived` where
- * a figure is derived rather than stated (TXS-12(b)); `proxy` where an input stands in for another (MF-34).
+ * A label a rule's use gives a number: `secondary-source` and `institution-source` from the rule's strength; `reading` where the rule base
+ * gives its own reading (TXI-04); `derived` where a figure is derived rather than stated (TXS-12(b)); `proxy` where an input stands in for
+ * another (MF-34).
  */
-export interface Label {
+export interface RuleLabel {
   code: "secondary-source" | "institution-source" | "reading" | "derived" | "proxy";
   ruleId: string;
 }
 
-/** How much a label says, so a rule keeps its strongest one: a reading, derivation or proxy over a source's strength. */
+/**
+ * The site's cautious reading of an open case (method §13, `SplitPolicy` "cautious"): its readings split, and the run took the one that
+ * leaves the holder less, so the figure is the site's conclusion and a page marks it on the figure itself. `ruleId` is the case's rule, which
+ * may be open. `notKnown`: what the site does not know of the fund the case is met for, beside the open law (`NotKnown`); absent where the
+ * fund's own documents were read and settle its facts.
+ */
+export interface CautiousLabel {
+  code: "cautious";
+  ruleId: string;
+  notKnown?: NotKnown;
+}
+
+/**
+ * What the site does not know of a fund whose tax index is an open reading (F-04), which the doubt on its figures says beside the open law:
+ * whether it is a foreign-investment fund, where the documents read do not settle it (`status`); or anything its own documents say, since
+ * the site read none (`documents`: a fund the person typed, D44).
+ */
+export type NotKnown = "status" | "documents";
+
+/** How much a label says, so a rule keeps its strongest one: the site's cautious reading, then a reading, derivation or proxy, over a source's strength. */
 export const labelWeight: Record<Label["code"], number> = {
   "secondary-source": 3,
   "institution-source": 2,
   reading: 4,
   derived: 4,
   proxy: 4,
+  cautious: 5,
 };
 
 /**
- * Every rule the engine may label `reading`, some only when a condition holds (an index that fell below a deposit's, a payment
- * after the period), and the rule of every open reading whose split takes the cautious reading (`SplitPolicy`): a page holds room for the
- * reading mark on a row that cites one, so the mark never moves the screen when it appears. A test holds this list to the engine's
- * `label("reading", …)` calls and those open readings.
+ * Every rule the engine may label the site's own reading: `reading`, some only when a condition holds (an index that fell below a deposit's,
+ * a payment after the period), and `cautious`, the rule of every open reading whose split takes the cautious reading (`SplitPolicy`): a
+ * page holds room for the reading mark on a row that cites one, so the mark never moves the screen when it appears. A test holds this list
+ * to the engine's `label("reading", …)` calls and those open readings.
  */
 export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-04", "TXF-11", "TXH-11", "TXK-07", "TXS-14"];
 

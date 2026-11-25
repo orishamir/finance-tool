@@ -1,5 +1,5 @@
 // Value objects on the site: the schema's object plus what a page needs to show it (D7, D3, D10).
-import type { FundStatement, P05Input } from "@finance-tool/engine";
+import type { CautiousLabel, FundStatement, Label, P05Input } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountShown } from "./format";
 import { numbers } from "../copy";
@@ -42,8 +42,11 @@ export interface SiteValue extends ValueObject {
   rulesUsed?: { id: string; strength: Strength }[];
   /** A fund's own statements a computed value read in place of a rule (D84: the tax index its annex states): its sheet names each as the fund's. */
   statements?: readonly FundStatement[];
-  /** Engine labels on the run ("secondary-source", "reading": a rule applied as an inference, e.g. TXK-07 when the CPI fell). */
-  labels?: { code: string; ruleId: string }[];
+  /**
+   * Engine labels on the run ("secondary-source", "reading": a rule applied as an inference, e.g. TXK-07 when the CPI fell; "cautious": the
+   * site's cautious reading of an open case, which makes the figure's doubt).
+   */
+  labels?: Label[];
   /** Engine flags (G-IDs, open questions) that qualify the value. */
   flags?: string[];
   /** What the value is, in one line, for the sheet header. */
@@ -152,12 +155,16 @@ export function entered(value: number, unit: ValueObject["unit"], today: string,
 }
 
 /**
- * The doubt a figure carries for the run labels it rests on (method §13, `SplitPolicy` "cautious"): the engine's `reading` label on an open
- * rule whose readings the run took the cautious one of, with the rule beside it; none for any other label.
+ * The doubt a figure carries for the run labels it rests on (method §13, `SplitPolicy` "cautious"): the engine's `cautious` label, the
+ * site's cautious reading of an open case, in the words for what the site does not know of the fund (`notKnown`), with the case's rule
+ * beside it; none for any other label. A cautious case with no words is a broken invariant (a test holds the words to the cases).
  */
-function readingDoubtOf(labels: readonly { code: string; ruleId: string }[] | undefined): Pick<SiteValue, "doubt" | "doubtRules"> {
-  const l = labels?.find((x) => x.code === "reading" && x.ruleId in numbers.readingDoubt);
-  return l ? { doubt: numbers.readingDoubt[l.ruleId], doubtRules: [l.ruleId] } : {};
+function readingDoubtOf(labels: readonly Label[] | undefined): Pick<SiteValue, "doubt" | "doubtRules"> {
+  const l = labels?.find((x): x is CautiousLabel => x.code === "cautious");
+  if (!l) return {};
+  const words = numbers.readingDoubt[l.ruleId]?.[l.notKnown ?? "known"];
+  if (!words) throw new Error(`the cautious reading of ${l.ruleId} has no doubt in words for ${l.notKnown ?? "a fund whose documents were read"} (copy.ts numbers.readingDoubt)`);
+  return { doubt: words, doubtRules: [l.ruleId] };
 }
 
 /** A computed value with the formula and the inputs it came from (architecture 3.4). A label of a cautious reading makes its doubt (`readingDoubtOf`). */
@@ -166,7 +173,7 @@ export function computed(
   unit: ValueObject["unit"],
   formula: string,
   inputs: Record<string, SiteValue>,
-  options: { today: string; rules?: { id: string; strength: Strength }[]; statements?: readonly FundStatement[]; flags?: string[]; labels?: { code: string; ruleId: string }[]; about?: string; notes?: string; lead?: string; signed?: boolean; unitText?: string } ,
+  options: { today: string; rules?: { id: string; strength: Strength }[]; statements?: readonly FundStatement[]; flags?: string[]; labels?: Label[]; about?: string; notes?: string; lead?: string; signed?: boolean; unitText?: string } ,
 ): SiteValue {
   let weakest: Strength | undefined;
   for (const input of Object.values(inputs)) {
@@ -208,13 +215,16 @@ export type ComputedOptions = Parameters<typeof computed>[4];
  * A figure worked out from two others on the page, `a − b` (a gap between two ways, what a change adds): the value is computed here from
  * the two as the page writes them (`amountShown`: 10,768 ₪ less 8,203 ₪ is 2,565 ₪, whatever agorot each holds), and its inputs are the
  * two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either is not a number. `round`
- * shapes the result (its size alone).
+ * shapes the result (its size alone). A doubt on either figure is the difference's too, since it rests on both: the first one's, where
+ * its own options give it none.
  */
 export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const [an, av] = a;
   const [bn, bv] = b;
   const n = typeof av.value === "number" && typeof bv.value === "number" ? amountShown(av.value, av.unit, av.state, isParameter(av)) - amountShown(bv.value, bv.unit, bv.state, isParameter(bv)) : null;
-  return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? av.unit, formula, { [an]: av, [bn]: bv }, options);
+  const v = computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? av.unit, formula, { [an]: av, [bn]: bv }, options);
+  const doubted = [av, bv].find((x) => x.doubt);
+  return v.doubt || !doubted ? v : { ...v, doubt: doubted.doubt, ...(doubted.doubtRules ? { doubtRules: doubted.doubtRules } : {}) };
 }
 
 /** A fund statement's identity on a page: the term it states, its document and the page there, so one statement is carried and listed once. */
@@ -230,7 +240,7 @@ export function carriedBy(values: readonly SiteValue[]): Pick<ComputedOptions, "
   const rules = new Map<string, { id: string; strength: Strength }>();
   const statements = new Map<string, FundStatement>();
   const flags = new Set<string>();
-  const labels = new Map<string, { code: string; ruleId: string }>();
+  const labels = new Map<string, Label>();
   for (const v of values) {
     for (const r of v.rulesUsed ?? []) rules.set(r.id, r);
     for (const st of v.statements ?? []) statements.set(statementKey(st), st);

@@ -8,7 +8,7 @@ import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContex
 import { isoCurrency, isShekel, isTaseForeignLine, type ExposureRecord, type FeesSnapshot, type FundListFile, type FundRecord, type ParameterRecord, type RuleRecord } from "@finance-tool/schema";
 import { nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
 import { withoutLtd } from "./company-name";
-import type { EnteredInBundle } from "./custom-entries";
+import { isCustomFund, type EnteredInBundle } from "./custom-entries";
 import { type SiteValue } from "./value";
 import type { RefLink } from "./sources";
 
@@ -316,6 +316,7 @@ export function fundRun(
     list,
     usDividends: exposure.id ? usDividendsOf({ id: exposure.id, us_dividends: exposure.us_dividends }) : undefined,
     foreignCurrency: isShekel(exposure.currency) ? undefined : exposure.currency,
+    typed: isCustomFund(rec),
   });
   if (!built.hasManagement) return { kind: "fund-type" };
   const f = (assumptions.fxChange ?? 0) / 100;

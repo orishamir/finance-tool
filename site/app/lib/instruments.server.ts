@@ -368,11 +368,14 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
   // under both readings of TXS OQ26 (method §13), with A-03 for that currency at its default, 0 (`principalFxChange`, below)
   if (kind === "israeli-fund") {
     const exposure = loadExposures().find((e) => e.id === rec.exposure_id);
-    const principal = fundOf(rec, kind, { foreignCurrency: exposure && !isShekel(exposure.currency) ? exposure.currency : undefined }).fund.principalCurrency;
+    const built = fundOf(rec, kind, { foreignCurrency: exposure && !isShekel(exposure.currency) ? exposure.currency : undefined }).fund;
+    const principal = built.principalCurrency;
     if (principal !== undefined) {
       if (principal !== exposure?.currency) missing.push(`${wrapperId}: fund "${rec.id}" names principal currency ${principal}, not its exposure's ${exposure?.currency ?? "(no exposure)"} (F-04)`);
       fund.principalCurrency = principal;
     }
+    // what the site does not know of the fund (its status), which the doubt on a cautious figure says
+    if (built.notKnown) fund.notKnown = built.notKnown;
   }
   // TXF-11: an accumulating foreign fund whose own annex reports the ruling is taxed at sale on it, and ranked
   if ((kind === "foreign-fund" || kind === "tase-foreign-fund") && rec.tax_ruling && rec.distribution_policy === "accumulating") fund.saleOnlyRuling = true;

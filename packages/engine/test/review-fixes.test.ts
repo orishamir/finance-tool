@@ -25,8 +25,6 @@ import {
   type SecuritiesInput,
 } from "../src/index.ts";
 import { context, loadRules, runDate } from "./golden/harness.ts";
-import { sameResult } from "../src/open-readings.ts";
-import { RUN_RESULT_FIELDS } from "../src/result.ts";
 
 const rules = loadRules();
 const ctx = context(rules);
@@ -139,12 +137,12 @@ describe("an accumulating foreign fund bought abroad (TXF-11, G-18)", () => {
 });
 
 describe("foreign funds on TASE (TXF-04)", () => {
-  const reading = { code: "reading", ruleId: "TXF-04" } as const;
+  const reading = { code: "cautious", ruleId: "TXF-04" } as const;
   /** The same run made under one reading of TXF OQ10 (method §13): the exchange rate of the record's currency, or the CPI. */
   const under = (id: "fx" | "cpi") => ({ ...ctx, readings: { "TXF OQ10": id } });
   const unstated = { kind: "tase-foreign-fund" as const, drag: { management: 0.0007 }, saleOnlyRuling: true, recordCurrency: "USD" };
 
-  it("runs a fund whose annex states no index under both readings of TXF OQ10 and keeps the result that leaves less, labelled the site's reading of TXF-04 (F-04, D84)", () => {
+  it("runs a fund whose annex states no index under both readings of TXF OQ10 and keeps the result that leaves less, labelled the site's cautious reading of TXF-04 (F-04, D84)", () => {
     // a rising dollar, a falling one, a dollar that moves as prices do, a loss, and a plan with monthly deposits
     const markets = [
       { grossReturn: 0.06, inflation: 0.025, fxChange: 0.01 },
@@ -152,6 +150,8 @@ describe("foreign funds on TASE (TXF-04)", () => {
       { grossReturn: 0.06, inflation: 0.025, fxChange: 0.025 },
       { grossReturn: -0.04, inflation: 0.02, fxChange: -0.01 },
     ];
+    let splits = 0;
+    let agreements = 0;
     for (const market of markets) {
       for (const goal of [{ amountNow: 100_000, monthly: 0, months: 60 }, { amountNow: 20_000, monthly: 1_500, months: 96 }]) {
         const input = fund({ goal, market, fund: unstated });
@@ -162,11 +162,13 @@ describe("foreign funds on TASE (TXF-04)", () => {
         const low = byReading.reduce((a, b) => (b.real < a.real ? b : a));
         const { flags: _f, labels, ...rest } = r;
         const { flags: _g, labels: lowLabels, ...lowRest } = low;
-        // the result is the lower reading's, whole; where the two split it carries the site's reading of TXF-04, and where they agree the
-        // question's flag instead, as any open reading whose readings agree
+        // the result is the lower reading's, whole; where the two values split it carries the site's cautious reading of TXF-04, and where
+        // they are the same the question's flag instead, as any open reading whose readings agree (method §13)
         expect(rest).toEqual(lowRest);
         for (const x of byReading) expect(r.real).toBeLessThanOrEqual(x.real);
-        const split = !sameResult(onFx, onCpi, RUN_RESULT_FIELDS);
+        const split = Math.abs(onFx.real - onCpi.real) > 1e-9 * Math.max(1, Math.abs(onFx.real), Math.abs(onCpi.real));
+        if (split) splits++;
+        else agreements++;
         expect(labels).toEqual(split ? [...lowLabels, reading] : lowLabels);
         expect(codes(r).includes("TXF-OQ10")).toBe(!split);
         // the rule is open and gives the run nothing: the figures rest on the reading, not on a rule read
@@ -174,6 +176,28 @@ describe("foreign funds on TASE (TXF-04)", () => {
         expect(r.outcome).toEqual({ code: "eligible" });
       }
     }
+    // the markets reach both: a dollar that moves as prices do gives the readings one value, and the others split them
+    expect(splits).toBeGreaterThan(0);
+    expect(agreements).toBeGreaterThan(0);
+  });
+
+  it("stops a run on a question nested in a cautious case where under one reading it stops the exit tax: no reading is taken (method §13)", () => {
+    // A-02 below 0 and an exit after 2027 move the s.120ב amounts at a falling CPI (TXG OQ17); with this income the surtax's readings split
+    // under the CPI reading, whose run then has a value before the exit tax only, while the exchange-rate reading's run is taxed
+    const input = fund({
+      goal: { amountNow: 1_000_000, monthly: 0, months: 72 },
+      market: { grossReturn: 0.06, inflation: -0.01, fxChange: 0.03 },
+      fund: unstated,
+      tariff: {},
+      profile: { ageAtStart: 65, otherIncome: 300_000 },
+    });
+    const [onFx, onCpi] = [runSecurities(input, under("fx")), runSecurities(input, under("cpi"))];
+    expect(onFx.outcome).toEqual({ code: "eligible" });
+    expect(onCpi.outcome).toEqual({ code: "listed-not-ranked", reason: "TXG-09", question: "TXG OQ17" });
+    const r = runSecurities(input, ctx);
+    // the run stands as the reading that stopped, whole: listed on the nested question, with no cautious label and no figure to rank
+    expect(r).toEqual(onCpi);
+    expect(r.labels).not.toContainEqual(reading);
   });
 
   it("takes the CPI under both readings for a Tel Aviv line in shekels, and stops the kind with no fund record and a line that distributes on TXF-04 (F-04, G-35)", () => {
@@ -224,10 +248,13 @@ describe("foreign funds on TASE (TXF-04)", () => {
       expect(r.statements).toEqual([stated]);
       expect(ids(r)).not.toContain("TXF-04");
       expect(r.outcome).toEqual({ code: "eligible" });
-      // what makes the exchange rate the index is the statement, so the stated run carries no reading of TXF-04 where the unstated oracle
-      // does; on a fall the part of the loss equal to the fall is disallowed (TXS-02, F-09)
+      // what makes the exchange rate the index is the statement, so the stated run carries no reading of TXF-04, where the unstated oracle
+      // carries the site's cautious reading if its two readings leave different values, and the question's flag if they leave the same
+      // (a loss, taxed under neither); on a fall the part of the loss equal to the fall is disallowed (TXS-02, F-09)
       expect(r.labels).not.toContainEqual(reading);
-      expect(unforced.labels).toContainEqual(reading);
+      const onCpi = runSecurities(fund({ market, fund: unstated }), under("cpi"));
+      if (Math.abs(oracle.real - onCpi.real) > 1e-6) expect(unforced.labels).toContainEqual(reading);
+      else expect(codes(unforced)).toContain("TXF-OQ10");
       if (market.fxChange < 0) expect(r.detail.fallDisallowed).toBeGreaterThan(0);
     }
   });

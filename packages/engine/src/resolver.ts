@@ -5,7 +5,7 @@
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountInYear, movesBy, movingYears, yearlyMoveOf } from "./formulas/indexation.ts";
 import { OpenReadingError, openReadingOf, type OpenReading } from "./open-readings.ts";
-import { labelWeight, type Label, type RunContext } from "./result.ts";
+import { labelWeight, type Label, type NotKnown, type RuleLabel, type RunContext } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
 
@@ -89,13 +89,14 @@ export interface RuleBook {
   /** Records that a rule with no figure governs this run (a treatment, not a number). */
   cite(ruleId: string): void;
   /** Adds a label the rule's strength does not imply (a reading, a derivation, a proxy). */
-  label(code: Label["code"], ruleId: string): void;
+  label(code: RuleLabel["code"], ruleId: string): void;
   /**
    * Method §13: the reading of an open case the run is made under (`RunContext.readings`). A run that has chosen none for the question
    * stops so that `acrossReadings` can make it under each (`OpenReadingError`); one made with the question stopping it stops on the rule
-   * with the question (`BlockedError`).
+   * with the question (`BlockedError`). `notKnown`: what the site does not know of the fund the case is met for, which the label of a
+   * cautious reading carries (`CautiousLabel`).
    */
-  reading<O extends OpenReading>(open: O): O["readings"][number];
+  reading<O extends OpenReading>(open: O, notKnown?: NotKnown): O["readings"][number];
   used(): UsedRule[];
   labels(): Label[];
   /**
@@ -184,9 +185,9 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     return readingOf(open).amount(amount, Array.from({ length: movingYears(move, runYear, year) }, () => years.inflation));
   }
 
-  function readingOf<O extends OpenReading>(open: O): O["readings"][number] {
+  function readingOf<O extends OpenReading>(open: O, notKnown?: NotKnown): O["readings"][number] {
     const choice = ctx.readings?.[open.question];
-    if (choice === undefined) throw new OpenReadingError(open);
+    if (choice === undefined) throw new OpenReadingError(open, notKnown);
     if (choice === null) throw new BlockedError(open.ruleId, open.question);
     const readings: readonly O["readings"][number][] = open.readings;
     const reading = readings.find((r) => r.id === choice);

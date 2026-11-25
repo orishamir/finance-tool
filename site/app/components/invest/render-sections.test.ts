@@ -427,7 +427,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
       expect(rowOf(id), id).toMatch(caution);
       // tapping it opens a sheet that says why, the site's reading, with the rule it rests on
       const sheet = shown(html(createElement(ValueSheet, { value: at.value, exact: false, data, headId: "h", descId: "d" })));
-      expect(sheet, id).toContain(numbers.readingDoubt[rule]!);
+      expect(sheet, id).toContain(numbers.readingDoubt[rule]?.known ?? "words for the case");
       expect(sheet, id).toContain(numbers.reading);
       expect(at.value.doubtRules, id).toEqual([rule]);
     }
@@ -435,11 +435,10 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     const stated = rowOf("1159250");
     expect(stated).not.toBe("");
     expect(stated).not.toMatch(caution);
-    // no list before tax and no note of the open index anywhere on the lists
+    // no note of the open index anywhere on the lists
     const text = shown(raw);
-    expect(text).not.toContain("לפני מס רווחי הון, בלי דירוג");
     expect(text).not.toContain(invest.reasons.ruleOpen["TXF-04"]);
-    for (const id of ["TXF-04", "TXS-14"]) expect(text).not.toContain(numbers.readingDoubt[id]!);
+    for (const words of Object.values(numbers.readingDoubt).flatMap((w) => Object.values(w))) expect(text).not.toContain(words);
   });
   it("a fund in Tel Aviv and abroad is counted once", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });

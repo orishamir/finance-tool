@@ -69,10 +69,12 @@ export interface FundOfOptions {
    * a foreign-investment fund is not known (F-04).
    */
   foreignCurrency?: string;
+  /** The site read none of the fund's own documents: a fund the person typed (D44), whose record holds only what was typed (F-04, `Fund.notKnown`). */
+  typed?: boolean;
 }
 
 /** The fund the engine runs for a record, and the fee fields the record leaves empty. */
-export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist, w8ben, list, usDividends, foreignCurrency }: FundOfOptions = {}) {
+export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist, w8ben, list, usDividends, foreignCurrency, typed }: FundOfOptions = {}) {
   const notCollected: string[] = [];
   const f = rec.fees;
   const get = (key: keyof FundRecord["fees"], unit: ValueObject["unit"]) => {
@@ -139,6 +141,9 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   const status = rec.tax_status.foreign_investment_fund;
   const principal = typeof status?.value === "string" ? status.value : status?.value === null ? foreignCurrency : undefined;
   if (kind === "israeli-fund" && principal !== undefined) fund.principalCurrency = principal;
+  // F-04: what the site does not know of the fund beside an open tax index, which the doubt on a cautious figure says
+  if (typed) fund.notKnown = "documents";
+  else if (kind === "israeli-fund" && principal !== undefined && status?.value === null) fund.notKnown = "status";
   // TXF-11: the fund's own annex reports a ruling that taxes it at sale and on distributions only.
   if (rec.tax_ruling && rec.distribution_policy === "accumulating") fund.saleOnlyRuling = true;
   return { fund, notCollected, hasManagement: management !== undefined };

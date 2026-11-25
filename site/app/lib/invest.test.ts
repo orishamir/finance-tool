@@ -214,8 +214,8 @@ describe("invest page computation", () => {
         } else {
           unstated++;
           // the plan's dollar stands still while prices rise, so the two readings split: the figure is the site's reading, on itself
-          expect(f.best?.value.labels, f.rec.id).toContainEqual({ code: "reading", ruleId: "TXF-04" });
-          expect(f.best?.value.doubt, f.rec.id).toBe(numbers.readingDoubt["TXF-04"]);
+          expect(f.best?.value.labels, f.rec.id).toContainEqual({ code: "cautious", ruleId: "TXF-04" });
+          expect(f.best?.value.doubt, f.rec.id).toBe(numbers.readingDoubt["TXF-04"]?.known);
           expect(f.best?.value.doubtRules, f.rec.id).toEqual(["TXF-04"]);
         }
       }
@@ -695,7 +695,8 @@ describe("an Israeli fund that may be measured by a principal currency (F-04, TX
       const f = at(view, id);
       expect(f.reason, id).toBeUndefined();
       expect(priced(f), id).toBe(true);
-      expect(f.best?.value.doubt, id).toBe(numbers.readingDoubt["TXS-14"]);
+      // the doubt says what the site knows of the fund: the documents name it one, or they do not settle whether it is one
+      expect(f.best?.value.doubt, id).toBe(numbers.readingDoubt["TXS-14"]?.[id === named ? "known" : "status"]);
       expect(f.best?.value.doubtRules, id).toEqual(["TXS-14"]);
       // the CPI is one of its two readings, and the fund it copies is measured by the CPI alone: at every house, never more than that fund
       for (const [house, x] of Object.entries(f.byHouse)) {

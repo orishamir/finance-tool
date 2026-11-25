@@ -10,7 +10,7 @@ import { promotedDrag } from "../formulas/fund-promotion.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
 import { acrossReadings, foreignInvestmentFundIndex, OpenReadingError, taseForeignFundIndex } from "../open-readings.ts";
 import { memoRun } from "../run-memo.ts";
-import { RUN_RESULT_FIELDS, readsStatedIndex, type Outcome, type RunContext, type RunResult, type TaxIndexStatement } from "../result.ts";
+import { RUN_RESULT_FIELDS, readsStatedIndex, type NotKnown, type Outcome, type RunContext, type RunResult, type TaxIndexStatement } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, LotQueue } from "./lots.ts";
 import { dealCharges, scaled, type Charged, type DealAccount, type MonthActivity } from "./deal-account.ts";
@@ -79,6 +79,12 @@ export interface Fund {
    * made with that currency's exchange rate (`market.principalFxChange`) and with the CPI as its tax index (TXS OQ26, `acrossReadings`).
    */
   principalCurrency?: string;
+  /**
+   * F-04: what the site does not know of a fund whose tax index is an open reading (TXS OQ26, TXF OQ10), beside the open law: whether an
+   * Israeli fund is a foreign-investment fund (`status`), or anything its own documents say (`documents`, a fund the person typed). Its
+   * cautious reading's label carries it, so the doubt on the figure says it. Absent where the fund's own documents were read and settle it.
+   */
+  notKnown?: NotKnown;
   /** Renewable money-market fund: months between fixed dates (MF-35). */
   fixedDatesEveryMonths?: number;
   /**
@@ -268,14 +274,14 @@ export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex" | "dist
  * stops on TXF-04 (D10): its distribution's tax is open for a fund organised as a trust (TXF open question 19), and the run does not know
  * its legal form. So does the kind with no fund record, whose currency the run does not know (G-35).
  */
-export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "distribution">, book: RuleBook): "fx" | "principal" | "cpi" {
+export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "distribution" | "notKnown">, book: RuleBook): "fx" | "principal" | "cpi" {
   if (fund.kind === "foreign-fund") {
     book.cite("TXF-03");
     return "fx";
   }
   if (fund.kind === "israeli-fund" && fund.principalCurrency !== undefined) {
     book.cite("TXS-14");
-    return book.reading(foreignInvestmentFundIndex).id;
+    return book.reading(foreignInvestmentFundIndex, fund.notKnown).id;
   }
   if (fund.kind === "israeli-fund") {
     book.cite("TXS-14");
@@ -285,7 +291,7 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "princip
   const stated = statedTaxIndexOf(fund);
   if (stated) return stated.index;
   if (fund.distribution || fund.recordCurrency === undefined) throw new BlockedError("TXF-04");
-  const reading = book.reading(taseForeignFundIndex).id;
+  const reading = book.reading(taseForeignFundIndex, fund.notKnown).id;
   // a record in shekels has no exchange rate of its own against the shekel: both readings are the CPI
   return reading === "fx" && isShekel(fund.recordCurrency) ? "cpi" : reading;
 }
