@@ -207,8 +207,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     },
     amount(id, name, currency) {
       const v = current(id, name, figure(id, name));
-      const actual = (v as { currency?: string }).currency;
-      if ((actual ?? "NIS") !== (currency ?? "NIS")) throw new MissingRuleError(id, `${name} in ${currency ?? "NIS"}`);
+      if ((v.currency ?? "NIS") !== (currency ?? "NIS")) throw new MissingRuleError(id, `${name} in ${currency ?? "NIS"}`);
       const n = numeric(id, name, v);
       return percentUnits.has(v.unit) ? n : inYearOf(id, name, v, n, taxYear);
     },

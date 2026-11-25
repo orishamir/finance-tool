@@ -136,6 +136,8 @@ export const valueObject = z
     effective_from: isoDate.nullable(),
     effective_to: isoDate.nullable(),
     tax_year: z.number().int().nullable().optional(),
+    /** data-schema "Dates and money": money is in NIS unless this says otherwise (an ISO 4217 code, `USD`), so a run reading an amount in another currency names it. */
+    currency: z.string().regex(/^[A-Z]{3}$/).optional(),
     update_rule: updateRule,
     rule_ids: z.array(z.string()).optional(),
     state: numberState,

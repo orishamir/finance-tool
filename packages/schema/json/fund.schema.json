@@ -256,6 +256,10 @@
                 }
               ]
             },
+            "currency": {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$"
+            },
             "update_rule": {
               "anyOf": [
                 {
@@ -464,6 +468,10 @@
                     }
                   ]
                 },
+                "currency": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3}$"
+                },
                 "update_rule": {
                   "anyOf": [
                     {
@@ -667,6 +675,10 @@
                       "type": "null"
                     }
                   ]
+                },
+                "currency": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3}$"
                 },
                 "update_rule": {
                   "anyOf": [
@@ -872,6 +884,10 @@
                     }
                   ]
                 },
+                "currency": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3}$"
+                },
                 "update_rule": {
                   "anyOf": [
                     {
@@ -1075,6 +1091,10 @@
                       "type": "null"
                     }
                   ]
+                },
+                "currency": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3}$"
                 },
                 "update_rule": {
                   "anyOf": [
@@ -1280,6 +1300,10 @@
                     }
                   ]
                 },
+                "currency": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3}$"
+                },
                 "update_rule": {
                   "anyOf": [
                     {
@@ -1484,6 +1508,10 @@
                     }
                   ]
                 },
+                "currency": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3}$"
+                },
                 "update_rule": {
                   "anyOf": [
                     {
@@ -1687,6 +1715,10 @@
                       "type": "null"
                     }
                   ]
+                },
+                "currency": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3}$"
                 },
                 "update_rule": {
                   "anyOf": [
@@ -2203,6 +2235,10 @@
                   "type": "null"
                 }
               ]
+            },
+            "currency": {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$"
             },
             "update_rule": {
               "anyOf": [
@@ -2736,6 +2772,10 @@
             }
           ]
         },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
         "update_rule": {
           "anyOf": [
             {
@@ -2946,6 +2986,10 @@
                     "type": "null"
                   }
                 ]
+              },
+              "currency": {
+                "type": "string",
+                "pattern": "^[A-Z]{3}$"
               },
               "update_rule": {
                 "anyOf": [
