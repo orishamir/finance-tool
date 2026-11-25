@@ -51,3 +51,19 @@ describe("fundRun: the principal currency's path (F-04, TXS-14)", () => {
     expect(market(false, false).principalFxChange).toBeUndefined();
   });
 });
+
+describe("fundRun: a Tel Aviv foreign fund's stated main currency (F-04, D84)", () => {
+  const rec = loadFunds().find((f) => f.id === "1159250");
+  const stated = rec?.tax_ruling?.index;
+  if (!rec?.tax_ruling || stated?.basis !== "main-currency") throw new Error("the S&P 500's Tel Aviv line 1159250 and the main currency its annex states are in the data");
+  const ruling = rec.tax_ruling;
+  const run = (currency: string) => {
+    const record = { ...rec, tax_ruling: { ...ruling, index: { ...stated, currency } } };
+    const subject = { recordId: rec.id, name: "", number: rec.id, instrumentClass: "tase_foreign_fund_units", currency: rec.currency, exposureId: rec.exposure_id, fromP05: false, record };
+    return () => fundRun(subject, { id: rec.exposure_id, cash_like: false, currency: rec.currency }, 0.07, {});
+  };
+  it("runs a fund whose annex states its own currency, and stops on one that states another", () => {
+    expect(run(rec.currency)).not.toThrow();
+    expect(run("EUR")).toThrow(`F-04: fund 1159250 states main currency EUR, not its own ${rec.currency}`);
+  });
+});
