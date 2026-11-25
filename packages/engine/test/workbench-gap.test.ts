@@ -1,5 +1,6 @@
 // F-63: a provider's run its ledger lists on a method gap (G-38: a figure linked to the CPI every 1 January, of a rule no open reading covers,
-// at a falling CPI) never charged its exit tax, so the workbench does not compare it: the row is not comparable on the rule, with the gap.
+// at a falling CPI), or on a rule of strength open read at its exit, never charged its exit tax, so the workbench does not compare it: the row
+// is not comparable on the rule, with the gap where one stopped it.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { providerWorkbench, runSecurities, type ComparedProvider, type WorkbenchInput } from "../src/index.ts";
@@ -34,5 +35,19 @@ describe("F-63 a run listed on a method gap", () => {
     if (row.kind === "not-comparable") expect(row.reason).toEqual({ code: "rule-open", ruleId: "TXG-09", gap: "G-38" });
     // at a rising CPI the same figure reads by F-120, and the row is compared
     expect((providerWorkbench(input(0.02), ctx).rows[0] as ComparedProvider).kind).toBe("compared");
+  });
+});
+
+describe("F-63 a run listed on an open rule at its exit", () => {
+  it("is not compared as if its exit tax were zero: the row is not comparable on the rule (F-118, not built)", () => {
+    const open = rules.map((r) => (r.id === "TXS-09" ? { ...r, strength: "open" as const, figures: undefined } : r)) as typeof rules;
+    const ctx = context(open);
+    const run = runSecurities({ goal: input(0.02).goal, market: input(0.02).market, fund: { kind: "israeli-fund" }, tariff: {}, profile: {} }, ctx);
+    expect(run.outcome).toEqual({ code: "listed-not-ranked", reason: "TXS-09" });
+    const row = providerWorkbench(input(0.02), ctx).rows[0];
+    expect(row?.kind).toBe("not-comparable");
+    if (row?.kind === "not-comparable") expect(row.reason).toEqual({ code: "rule-open", ruleId: "TXS-09" });
+    // with the rule as the rule base holds it, the row is compared
+    expect(providerWorkbench(input(0.02), context(rules)).rows[0]?.kind).toBe("compared");
   });
 });

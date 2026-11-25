@@ -14,7 +14,7 @@ import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
 import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
 import type { DealAccount } from "../ledgers/deal-account.ts";
-import { stoppedOnGap, stoppedOnQuestion } from "../open-readings.ts";
+import { stoppedOnRule } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 
@@ -1088,9 +1088,9 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       const other = runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx);
       if (other.real > run.real) [units, run] = [w, other];
     }
-    // a run the readings of an open question split (TXG OQ17 at a falling CPI), or one its ledger listed on a method gap (G-38), has no value
-    // after tax to compare, with or without the fees: its exit tax was never charged
-    const stopped = stoppedOnQuestion(noneT) ?? stoppedOnGap(noneT) ?? stoppedOnQuestion(run) ?? stoppedOnGap(run);
+    // a run its ledger listed on an open rule at its exit (a rule of strength open, a question whose readings split it, TXG OQ17 at a falling
+    // CPI, or a method gap, G-38) has no value after tax to compare, with or without the fees: its exit tax was never charged (F-118, not built)
+    const stopped = stoppedOnRule(noneT) ?? stoppedOnRule(run);
     if (stopped) {
       rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });
       continue;

@@ -315,6 +315,16 @@ export function stoppedOnGap(r: { outcome: Outcome }): { ruleId: string; gap: st
   return o.code === "listed-not-ranked" && o.gap ? { ruleId: o.reason, gap: o.gap } : null;
 }
 
+/**
+ * The rule a run's ledger listed it on before its exit tax, with the open question whose readings split it or the method gap where one
+ * stopped it, or null: a run with no value after that tax to compare (F-118, not built). A wrapper locked at the horizon (B3, `untilMonth`)
+ * is not stopped on a rule.
+ */
+export function stoppedOnRule(r: { outcome: Outcome }): { ruleId: string; question?: string; gap?: string } | null {
+  const o = r.outcome;
+  return o.code === "listed-not-ranked" && o.untilMonth === undefined ? { ruleId: o.reason, ...(o.question ? { question: o.question } : {}), ...(o.gap ? { gap: o.gap } : {}) } : null;
+}
+
 /** The rule and open question a run stopped on because the question's readings gave it different results, or null. */
 export function stoppedOnQuestion(r: { outcome: Outcome }): { ruleId: string; question: string } | null {
   const o = r.outcome;
