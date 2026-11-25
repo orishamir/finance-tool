@@ -224,6 +224,9 @@ export function bandLayer(grid: RegionGrid, w: number, h: number, look: { period
     if (f === q) return 1;
     return null;
   };
+  // the nodes where two areas are close: a pixel none of whose four nodes is one is clear, and is passed over at once
+  const close = new Uint8Array(cols * rows);
+  for (let k = 0; k < close.length; k++) close[k] = (second[k] ?? -1) >= 0 && (ahead[k] ?? 1) < 1 ? 1 : 0;
   for (let py = 0; py < h; py++) {
     const gy = (rows - 1) * (1 - py / Math.max(1, h - 1));
     const j0 = Math.min(rows - 2, Math.max(0, Math.floor(gy)));
@@ -231,6 +234,8 @@ export function bandLayer(grid: RegionGrid, w: number, h: number, look: { period
     for (let px = 0; px < w; px++) {
       const gx = (cols - 1) * (px / Math.max(1, w - 1));
       const i0 = Math.min(cols - 2, Math.max(0, Math.floor(gx)));
+      const at0 = j0 * cols + i0;
+      if (!close[at0] && !close[at0 + 1] && !close[at0 + cols] && !close[at0 + cols + 1]) continue;
       const u = gx - i0;
       const corners = [
         [j0 * cols + i0, (1 - u) * (1 - v)],
