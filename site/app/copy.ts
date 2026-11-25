@@ -4752,7 +4752,6 @@ export const invest = {
     labels: "תוויות",
     value: (broker: string) => `נשאר ב${broker}`,
     yours: (broker: string) => `ב${broker}`,
-    whatLabels: "מה אומרות התוויות?",
     /**
      * The note under the list: only the sentences for the states the list shows, the kind of index once, and that a lead over
      * the index is not counted as a gain. `unstated`: how many funds' index is of no stated kind; `grossApart`: a
