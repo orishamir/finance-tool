@@ -7,8 +7,7 @@ import { readsStatedIndex, taxIndexStatementOf, type FundStatement } from "@fina
 import { currencyWord, invest as c } from "../copy";
 import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
-import { isShekel } from "./fx";
-import { assertNever } from "@finance-tool/schema";
+import { assertNever, isShekel } from "@finance-tool/schema";
 
 /** The engine's fund kind for an option's funds (F-04). */
 export const OPTION_KIND = { "il-tracking": "israeli-fund", "il-etf": "israeli-fund", "tase-foreign": "tase-foreign-fund", abroad: "foreign-fund" } as const satisfies Record<OptionId, string>;

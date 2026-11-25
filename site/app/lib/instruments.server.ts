@@ -7,12 +7,12 @@ import { invest as investCopy } from "../copy";
 import { exposurePath, guidePath } from "./site-paths";
 import { fundOf, gapListOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { feeAbsent, instrumentClassOf } from "./providers";
-import { isShekel } from "./fx";
 import {
   catalogEntry,
   depositTerms,
   exposureRecord,
   fundRecord,
+  isShekel,
   type CatalogEntry,
   type DepositTerms,
   type ExposureRecord,

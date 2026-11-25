@@ -5,8 +5,8 @@
 import type { DealsInBundle } from "./deal-account/bundle";
 import type { Missing } from "./deal-account/plan";
 import { fundOf, recordDistribution, usDividendsOf, type GapList, type RunContext } from "@finance-tool/engine";
-import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord } from "@finance-tool/schema";
-import { isShekel, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
+import { isoCurrency, isShekel, isTaseForeignLine, type ExposureRecord, type FeesSnapshot, type FundListFile, type FundRecord, type ParameterRecord, type RuleRecord } from "@finance-tool/schema";
+import { nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
 import { withoutLtd } from "./company-name";
 import type { EnteredInBundle } from "./custom-entries";
 import { type SiteValue } from "./value";
@@ -249,7 +249,7 @@ export const feeAbsent = (rec: FundRecord, key: keyof FundRecord["fees"]): boole
 export function instrumentClassOf(rec: FundRecord, exposure: ExposureRecord | undefined): string {
   if (exposure?.cash_like) return "money_market_units";
   const israeli = rec.domicile === "IL";
-  if (!israeli) return rec.trading_currency_on_tase ? "tase_foreign_fund_units" : "foreign_securities";
+  if (!israeli) return isTaseForeignLine(rec) ? "tase_foreign_fund_units" : "foreign_securities";
   // an open tracking fund's legal form says "not traded on the exchange, ETF-04": the rule id must not read as an ETF
   const lf = rec.legal_form;
   return /קרן סל/.test(lf) || (!/קרן מחקה/.test(lf) && /\bETF\b/i.test(lf)) ? "etf_units" : "mutual_fund_units";
@@ -267,7 +267,7 @@ export function subjectOf(bundle: IndicesBundle, recordId: string | null): Subje
     name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id,
     number: rec.identifiers.tase_number ?? rec.identifiers.isin ?? rec.id,
     instrumentClass: instrumentClassOf(rec, exposure),
-    currency: rec.currency === "NIS" ? "ILS" : rec.currency,
+    currency: isoCurrency(rec.currency),
     exposureId: rec.exposure_id,
     fromP05: recordId === null,
     record: rec,
@@ -304,7 +304,7 @@ export function fundRun(
   const israeli = rec.domicile === "IL";
   if (israeli && rec.tax_status.il_fund_tax_track !== "exempt") return { kind: "fund-type" };
   if (rec.distribution_policy === null) return { kind: "fund-type" };
-  const kind = !israeli && rec.trading_currency_on_tase !== null ? "tase-foreign-fund" : israeli ? "israeli-fund" : "foreign-fund";
+  const kind = isTaseForeignLine(rec) ? "tase-foreign-fund" : israeli ? "israeli-fund" : "foreign-fund";
   // A-10: the record's yield, read from the fund's own documents; a yield is entered only for a fund whose record has none
   const entered = assumptions.distributions?.[rec.id];
   const dist = recordDistribution(rec) ?? (entered ? { yield: entered.yield / 100, perYear: entered.perYear } : undefined);
@@ -328,7 +328,7 @@ export function fundRun(
     if (principal !== exposure.currency) throw new Error(`F-04: fund ${rec.id} principal currency ${principal} is not its exposure's ${exposure.currency}`);
     market.principalFxChange = f;
   }
-  const fundCurrency = isShekel(rec.currency) ? "ILS" : rec.currency;
+  const fundCurrency = isoCurrency(rec.currency);
   // F-04, D84: a main currency the fund's annex states is run as the record's own currency's path, which the data check holds it to
   const stated = built.fund.statedIndex;
   if (stated?.index === "fx" && stated.currency !== fundCurrency) throw new Error(`F-04: fund ${rec.id} states main currency ${stated.currency}, not its own ${fundCurrency}`);

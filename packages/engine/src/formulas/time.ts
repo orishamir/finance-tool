@@ -1,5 +1,6 @@
 // docs/method.md §3: time, money and the deflator.
 // No I/O, no DOM, no clock: the engine runs unchanged in tests, at build time and in a Web Worker.
+import { isoCurrency } from "@finance-tool/schema";
 
 /** The goal's outlay and horizon (method §2: A-04, A-05). */
 export interface Goal {
@@ -102,7 +103,7 @@ export function fxPath(annualChange: number, months: number): number[] {
  * as "ILS"). Null when the day holds no shekel rate or no rate for `code` (D26).
  */
 export function crossRate(perEur: Readonly<Record<string, number>>, code: string): number | null {
-  const c = code === "NIS" ? "ILS" : code.toUpperCase();
+  const c = isoCurrency(code).toUpperCase();
   const ils = perEur.ILS;
   if (!ils) return null;
   if (c === "ILS") return 1;

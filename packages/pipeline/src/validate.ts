@@ -33,6 +33,8 @@ import {
   sourcesFile,
   israelToday,
   isReligiousLaw,
+  isShekel,
+  isTaseForeignLine,
   EFFECTIVE_RATE_PATHS,
 } from "@finance-tool/schema";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
@@ -1546,8 +1548,8 @@ function checkStatedTaxIndex(files: string[], dataDir: string, currencies: Reado
       continue;
     }
     // a Tel Aviv line of a foreign fund with no stated index, in a foreign currency: its exchange-rate reading reads the record's currency
-    const taseForeign = rec?.domicile !== undefined && !/^(il|israel)$/i.test(rec.domicile) && typeof rec.trading_currency_on_tase === "string";
-    if (index || !taseForeign || rec?.currency === undefined || ["ILS", "NIS"].includes(rec.currency) || rec.exposure_id === undefined) continue;
+    const taseForeign = rec?.domicile !== undefined && rec.trading_currency_on_tase !== undefined && isTaseForeignLine({ domicile: rec.domicile, trading_currency_on_tase: rec.trading_currency_on_tase });
+    if (index || !taseForeign || rec?.currency === undefined || isShekel(rec.currency) || rec.exposure_id === undefined) continue;
     const exposureCurrency = currencies.get(rec.exposure_id);
     if (exposureCurrency === undefined) report(file, `currency: exposure ${rec.exposure_id} has no file with a currency, so the record's currency ${rec.currency}, one reading of its tax index (TXF OQ10), cannot be held to the exposure's (F-04)`);
     else if (rec.currency !== exposureCurrency)

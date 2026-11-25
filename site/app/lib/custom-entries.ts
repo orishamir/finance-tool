@@ -4,14 +4,13 @@
 // typed account is read back only to move it into a deal (the move, method §10.4; lib/deal-account/move.ts).
 //
 // No runtime import of invest.ts or the engine: state.ts reads this file on every page.
-import { groupPrice, valueObject, type ExposureRecord, type FundRecord, type ValueObject } from "@finance-tool/schema";
+import { groupPrice, isShekel, valueObject, type ExposureRecord, type FundRecord, type ValueObject } from "@finance-tool/schema";
 import type { ProviderInput } from "@finance-tool/engine";
 import { invest as copy } from "../copy";
 import type { CustomIndex, OptionId } from "./invest";
 import type { BrokerBase, GroupCopy } from "./own-account";
 import type { IndicesBundle } from "./providers";
 import { entered, numberOf, type SiteValue } from "./value";
-import { isShekel } from "./fx";
 import { newId } from "./ids";
 
 const c = copy.customEntries;

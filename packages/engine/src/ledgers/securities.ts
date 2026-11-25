@@ -1,6 +1,7 @@
 // Funds and ETFs held as securities: the F-08 month step and the F-09 exit, with F-10 drag, F-12 to F-14
 // and F-17 costs, F-20 distributions, F-23 money-market funds and F-40 to F-43 exit tax. Also the
 // brokerage account inside an IRA hishtalmut (F-51).
+import { isShekel } from "@finance-tool/schema";
 import { buyWithCash, convertedAtMost, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, navBought, orderByAmount, orderInUnits, saleCommission, saleConversion, sumRate, tradeCommission, type Commission, type ConversionPrice, type Custody, type Sum } from "../formulas/fees.ts";
 import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
@@ -263,7 +264,7 @@ export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex" | "dist
  * states its index under its ruling takes that index (`statedTaxIndexOf`, D84): the main currency's exchange rate, which is the record's own
  * currency and the exposure's, and so the run's one exchange-rate path, or the CPI; the run carries the statement, and no rule is cited
  * for it. Any other TASE foreign fund that pays nothing out is read under each reading of TXF OQ10 (`taseForeignFundIndex`): its record's
- * currency's exchange rate, or the CPI, the run taking the one that leaves the holder less. One that distributes reads no statement and
+ * currency's exchange rate (the CPI for a record in shekels), or the CPI, the run taking the one that leaves the holder less. One that distributes reads no statement and
  * stops on TXF-04 (D10): its distribution's tax is open for a fund organised as a trust (TXF open question 19), and the run does not know
  * its legal form. So does the kind with no fund record, whose currency the run does not know (G-35).
  */
@@ -284,7 +285,9 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "princip
   const stated = statedTaxIndexOf(fund);
   if (stated) return stated.index;
   if (fund.distribution || fund.recordCurrency === undefined) throw new BlockedError("TXF-04");
-  return book.reading(taseForeignFundIndex).id;
+  const reading = book.reading(taseForeignFundIndex).id;
+  // a record in shekels has no exchange rate of its own against the shekel: both readings are the CPI
+  return reading === "fx" && isShekel(fund.recordCurrency) ? "cpi" : reading;
 }
 
 /**
@@ -466,9 +469,9 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   const X = fxPath(market.fxChange ?? 0, T);
   const C = contributions(goal, I);
   // F-04, TXF OQ10: under the exchange-rate reading, a TASE foreign fund whose annex states no index takes its record's currency's path,
-  // the run's one; a record in shekels takes the CPI under both readings
+  // the run's one (`taxIndexOf` reads a record in shekels on the CPI under both readings)
   const unstated = fund.kind === "tase-foreign-fund" && !stated;
-  const fxIndexed = (taxIndex === "fx" && !(unstated && fund.recordCurrency === "ILS")) || taxIndex === "principal";
+  const fxIndexed = taxIndex === "fx" || taxIndex === "principal";
   if (fxIndexed && unstated && market.fxChange === undefined) throw new Error(`F-04: TASE foreign fund in ${fund.recordCurrency} run without market.fxChange, the exchange-rate path its tax index reads`);
   // F-04, TXS-14: under the principal-currency reading of TXS OQ26, a foreign-investment fund's index is that currency's path
   let principal: number[] | null = null;

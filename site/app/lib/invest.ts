@@ -5,14 +5,14 @@
 import { bestRanked } from "./rank";
 import { gershayim } from "./format";
 import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, fundOf, recordDistribution, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
-import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
+import { isShekel, type ExposureRecord, type FeesSnapshot, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomFund } from "./custom-entries";
 import { dealProviderOf, houseSnap, isDealProviderId } from "./deal-account/bundle";
 import { feeIdsOf, missingOf } from "./deal-account/plan";
 import { feeNameOf } from "./fee-deal/part-words";
 import { aliasRows } from "./search-aliases";
-import { fxRunInput, isShekel, nisPer } from "./fx";
+import { fxRunInput, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
 import { OPTION_KIND } from "./labels";
 import { computed, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
