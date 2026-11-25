@@ -6,9 +6,9 @@
 // the deal editor, which the kit does not hold, laid out for a house's terms.
 import { useMemo, type ReactNode } from "react";
 import { r4catalogue, feeDeal } from "../../copy";
-import type { FeesData } from "../../lib/fee-page-data";
+import type { FeesData, TermsFeesData, TermsHouse } from "../../lib/fee-page-data";
 import type { Fee, FeeDeal } from "../../lib/fee-deal/model";
-import type { DistributionPrice, HouseTemplate } from "../../lib/fee-deal/templates";
+import type { DistributionPrice } from "../../lib/fee-deal/templates";
 import { figure, heldRateUnit } from "../../lib/fee-deal/values";
 import { shortName } from "../../lib/providers";
 import { recordsById } from "../../lib/scope";
@@ -20,7 +20,7 @@ import { useDealEditor } from "./editor";
 import type { FeeSlot } from "./fee-block";
 
 /** The page's provenance with the fee page's data over it (its rules, the records they point at, its terms), which the editor's sheets read. */
-export function withFeesData(page: ProvenanceData, data: Pick<FeesData, "rules" | "pointed" | "terms">): ProvenanceData {
+export function withFeesData(page: ProvenanceData, data: Pick<TermsFeesData, "rules" | "pointed" | "terms">): ProvenanceData {
   return {
     ...page,
     rules: { ...page.rules, ...Object.fromEntries(data.rules.map((r) => [r.id, r])) },
@@ -30,12 +30,11 @@ export function withFeesData(page: ProvenanceData, data: Pick<FeesData, "rules" 
 }
 
 /**
- * The terms of house `house` (its provider id) on `first`, the deal filled from its latest list. `leftOut` stands in the fold in place of
- * the list's own (the popup's, with the price it leaves out on the plan's fund); `feeHead` is what the host adds to each fee's head;
+ * The terms of house `house` on `first`, the deal filled from its latest list, drawn by the editor on `data`. `leftOut` stands in the fold
+ * in place of the list's own (the popup's, with the price it leaves out on the plan's fund); `feeHead` is what the host adds to each fee's head;
  * `average`, the host's own average under a fee's name in place of every column of its kind (the popup's, for what the plan buys).
  */
-export function HouseTerms({ data, today, first, house, leftOut, feeHead, average }: { data: FeesData; today: string; first: FeeDeal; house: string; leftOut?: LeftOutView | null; feeHead?: (fee: Fee) => FeeSlot | undefined; average?: (fee: Fee) => ReactNode }) {
-  const template = data.houses.find((h) => h.id === house);
+export function HouseTerms({ data, today, first, house: template, leftOut, feeHead, average }: { data: FeesData; today: string; first: FeeDeal; house: TermsHouse | undefined; leftOut?: LeftOutView | null; feeHead?: (fee: Fee) => FeeSlot | undefined; average?: (fee: Fee) => ReactNode }) {
   const fold = leftOut === undefined ? (template?.leftOut ?? null) : leftOut;
   return (
     <ReadOnly>
@@ -49,7 +48,7 @@ export function HouseTerms({ data, today, first, house, leftOut, feeHead, averag
 }
 
 /** The editor's columns on the deal, each fee's head the host's with an average under it: the host's, else the house's every column of its kind. */
-function TermsColumns({ data, today, first, template, feeHead, average }: { data: FeesData; today: string; first: FeeDeal; template: HouseTemplate | undefined; feeHead: ((fee: Fee) => FeeSlot | undefined) | undefined; average: ((fee: Fee) => ReactNode) | undefined }) {
+function TermsColumns({ data, today, first, template, feeHead, average }: { data: FeesData; today: string; first: FeeDeal; template: TermsHouse | undefined; feeHead: ((fee: Fee) => FeeSlot | undefined) | undefined; average: ((fee: Fee) => ReactNode) | undefined }) {
   const name = template ? gershayim(shortName(template.id, template.name)) : "";
   const everyColumn = (fee: Fee): ReactNode => {
     const of = template?.everyColumn?.columns.filter((c) => c.column.fee === fee.kind) ?? [];

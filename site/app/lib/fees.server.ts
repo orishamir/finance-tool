@@ -15,7 +15,8 @@ import { STATED_RULES } from "./fee-deal/reading";
 import { BAN_RULES } from "./fee-deal/offers/rules";
 import { ACCOUNT_CAP_RULES } from "./fee-deal/charts";
 import { houseTemplateRead } from "./fee-deal/templates";
-import { termKey, type FeesData, type HouseTermsData, type TrackLite } from "./fee-page-data";
+import { termKey, termsHouse, type FeesData, type HouseTermsData, type TrackLite } from "./fee-page-data";
+import { distributionRuleIds } from "../components/decoder/institutions/types";
 import { loadFx } from "./fx.server";
 import { BROKERAGE, onlyWhatCanBeDone, providersOf, startsDeal } from "./providers";
 import { latestSnapshots } from "./providers.server";
@@ -132,20 +133,22 @@ export function feesData(): FeesData {
 }
 
 /**
- * What a house's terms draw in a page's first view (`HouseTerms`): the deal filled from the house's latest price list (`houseDeal`), and
- * the fee page's data its read-only editor reads, cut to a securities account and this house, with the rules its figures' sheets cite
- * but those the page holds already (`held`: a rule among its rules, a record its cards point at among its rules or those records), which
- * the page's provenance gives the terms.
+ * What a house's terms draw in a company page's first view (`HouseTerms`): the deal filled from the house's latest price list
+ * (`houseDeal`), the house cut to what its terms draw (`termsHouse`), and the fee page's data their read-only editor reads, cut to a
+ * securities account: the rules the deal's figures and the house's lines cite, those its distribution fee's "?" opens where it prints one,
+ * and the records they point at, but those the page holds already (`held`: a rule among its rules, a record its cards point at among its
+ * rules or those records), which the page's provenance gives the terms.
  * Null where the house's list starts no deal (`startsDeal`): the fee page's houses are those.
  */
 export function houseTermsData(id: string, today: string, held: { rules: ReadonlySet<string>; pointed: ReadonlySet<string> }): HouseTermsData | null {
   const all = feesData();
-  const house = all.houses.find((h) => h.id === id);
-  const deal = house ? houseDeal(`house:${id}`, all, today) : null;
-  if (!house || !deal) return null;
-  const parts = { kinds: all.kinds.filter((k) => k.id === ACCOUNT_KIND), templates: {}, houses: [house], fx: null, terms: {} };
-  const { rules, pointed } = citedRules(parts);
-  const kept = rules.filter((r) => !held.rules.has(r.id));
-  const keptPointed = (pointed ?? []).filter((r) => !held.rules.has(r.id) && !held.pointed.has(r.id));
-  return { deal, data: { rules: kept, pointed: keptPointed, ...parts, tracks: [] } };
+  const template = all.houses.find((h) => h.id === id);
+  const deal = template ? houseDeal(`house:${id}`, all, today) : null;
+  if (!template || !deal) return null;
+  const house = termsHouse(template);
+  const allRules = loadRules();
+  const asks = house.distribution ? distributionRuleIds(house.provider === "bank" ? "bank" : "broker") : [];
+  const rules = [...ruleIdsIn({ deal, house }, new Set(asks))].filter((r) => !held.rules.has(r)).sort().flatMap((r) => (allRules[r] ? [allRules[r]] : []));
+  const pointed = Object.values(pointedRecords(rules, allRules)).filter((r) => !held.rules.has(r.id) && !held.pointed.has(r.id));
+  return { deal, house, data: { rules, pointed, kinds: all.kinds.filter((k) => k.id === ACCOUNT_KIND), terms: {} } };
 }

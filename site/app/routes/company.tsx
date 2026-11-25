@@ -23,6 +23,7 @@ import { CompanyTemplate, type CompanyPart } from "../components/company/templat
 import { Overview, OverviewTable, type OverviewHeads, type OverviewTableRow } from "../components/company/overview";
 import { MoreDocs, ProductDocs, docCount } from "../components/company/docs";
 import { accountSections } from "../components/decoder/institutions/sections";
+import { accountOf, hasFees, type TariffCardData } from "../components/decoder/institutions/types";
 import { CAPS_FROM_AGE, addressId, entryIds, splitDocGroups } from "../lib/company-page";
 import { companyTermsAnchor } from "../lib/scope";
 import { labelRules } from "../lib/label-rests";
@@ -47,13 +48,13 @@ async function houseNotes(id: string) {
 }
 
 /**
- * The house's terms, where its latest list fills a deal: the deal and the data its read-only fees draw on the first view, without the
- * rules and records the page holds already (`page`, its provenance's).
+ * The house's price list split into its head and its fees (`accountOf`): its terms where its latest list fills a deal, with the data their
+ * read-only fees draw on the first view but the rules and records the page holds already (`page`, its provenance's); else its table.
  */
-async function houseTerms(id: string, page: { rules: Record<string, unknown>; pointed?: Record<string, unknown> | undefined }) {
+async function houseAccount(id: string, tariff: TariffCardData, page: { rules: Record<string, unknown>; pointed?: Record<string, unknown> | undefined }) {
   const { houseTermsData } = await import("../lib/fees.server");
   const { today } = await import("../lib/data.server");
-  return houseTermsData(id, today(), { rules: new Set(Object.keys(page.rules)), pointed: new Set(Object.keys(page.pointed ?? {})) });
+  return accountOf(tariff, houseTermsData(id, today(), { rules: new Set(Object.keys(page.rules)), pointed: new Set(Object.keys(page.pointed ?? {})) }));
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -71,7 +72,9 @@ export async function loader({ params }: Route.LoaderArgs) {
     const { buildInstitution } = await import("../lib/institutions.server");
     const institution = buildInstitution(params.id);
     if (!institution) throw new Response("Not found", { status: 404 });
-    return { kind: "institution" as const, institution, notes: await houseNotes(params.id), terms: await houseTerms(params.id, institution) };
+    const { tariff, ...rest } = institution;
+    const account = tariff ? await houseAccount(params.id, tariff, institution) : null;
+    return { kind: "institution" as const, institution: { ...rest, tariff: account?.tariff ?? null }, fees: account?.fees ?? null, notes: await houseNotes(params.id) };
   }
   const wrapperCaps = new Map<string, { balance: SiteValue | null; deposit: SiteValue | null }>(
     loadWrappers()
@@ -135,7 +138,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const companyTerms = { groups: termGroups, rules: termRules, pointed: pointedRecords(termRules, allRules), company: registryIds[0] ?? null, pageCompanies: registryIds, helpTerms, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
   // the legal companies the page stands for, as their own data writes them (the CMA, the tariff, the fund records)
   const members = brand ? [...new Set([company?.name, brokerage?.tariff.providerName, ...brand.fundManagers].filter((x): x is string => !!x))] : [];
-  const brokerageCard = brokerage && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, tariff: brokerage.tariff, ...(await houseNotes(brand.brokerId)), terms: await houseTerms(brand.brokerId, companyTerms) } : null;
+  const brokerageCard = brokerage && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, ...(await houseAccount(brand.brokerId, brokerage.tariff, companyTerms)), ...(await houseNotes(brand.brokerId)) } : null;
   return { kind: "company" as const, pageId, name, company: company ?? null, browser, caps, funds, brokerage: brokerageCard, members, period: cma.periodValue, defaultIds, unassigned, today: t, companyTerms };
 }
 
@@ -153,7 +156,7 @@ export function meta({ loaderData: data, location }: Route.MetaArgs) {
 export default function Company() {
   const data = useLoaderData<typeof loader>();
   // a page about one company: its own figures carry no "לפי החברה"
-  return <OwnCompanyPage>{data.kind === "institution" ? <InstitutionPage data={data.institution} notes={data.notes} terms={data.terms} /> : <ManagerCompany data={data} />}</OwnCompanyPage>;
+  return <OwnCompanyPage>{data.kind === "institution" ? <InstitutionPage data={data.institution} fees={data.fees} notes={data.notes} /> : <ManagerCompany data={data} />}</OwnCompanyPage>;
 }
 
 type CompanyData = Extract<ReturnType<typeof useLoaderData<typeof loader>>, { kind: "company" }>;
@@ -165,7 +168,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
   const fundIds = data.funds.map((g) => `funds-${g.kind}`);
   const docs = splitDocGroups(data.companyTerms.groups, [...views.map((v) => v.id), ...fundIds, ...(data.brokerage ? ["brokerage"] : [])]);
   const b = data.brokerage;
-  const sections = b && !b.tariff.missing ? accountSections({ fees: b.tariff.lines.length > 0 || !!b.terms, canBuy: b.tariff.availability.length > 0, claims: b.advertising.length > 0, groups: !!b.groups }) : [];
+  const sections = b && !b.tariff.missing ? accountSections({ fees: hasFees(b.fees), canBuy: b.tariff.availability.length > 0, claims: b.advertising.length > 0, groups: !!b.groups }) : [];
   const many = views.length + data.funds.length + (b ? 1 : 0) > 4;
   const tracksPart = (v: ProductView): CompanyPart => ({
     id: addressId(v.id),
@@ -214,7 +217,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
           parts: [...sections.map((s) => ({ id: s.id, label: s.title })), ...(brokerageDocs ? [{ id: "brokerage-docs", label: w.docs.part(brokerageDocs) }] : [])],
           anchors: [...sections.map((s) => s.id), "brokerage-docs", ...entryIds(docs.byProduct.brokerage)],
           body: (
-            <BrokerageGroupCard id={b.id} tariff={b.tariff} kind={b.kind} terms={b.terms} advertising={b.advertising} groups={b.groups} docs={<ProductDocs product={r4catalogue.groups.brokerage} groups={docs.byProduct.brokerage ?? []} id="brokerage-docs" />} />
+            <BrokerageGroupCard id={b.id} tariff={b.tariff} fees={b.fees} kind={b.kind} advertising={b.advertising} groups={b.groups} docs={<ProductDocs product={r4catalogue.groups.brokerage} groups={docs.byProduct.brokerage ?? []} id="brokerage-docs" />} />
           ),
         },
       ]

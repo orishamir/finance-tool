@@ -14,10 +14,10 @@ import { housePath, ownAccountPath } from "../../../lib/site-paths";
 import { IconAlert } from "../../icons";
 import { IdRef, Num, NumAfter, ProvenanceProvider, Ruled, RuleTitleRow, useProvenanceData } from "../../provenance";
 import { HouseTerms, withFeesData } from "../../fee-deal/house-terms";
-import type { HouseTermsData } from "../../../lib/fee-page-data";
+import { termsEditorData, type HouseTermsData } from "../../../lib/fee-page-data";
 import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, HouseAverageLine, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
-import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
+import { distributionRuleIds, type AccountFees, type AvailabilityRow, type InstitutionKind, type TariffHead, type TariffLineRow } from "./types";
 import { isPdfUrl, withoutCodes, type CitedPlace } from "../../../lib/sources";
 import { wholeSum } from "../../../lib/format";
 import { accountSectionIds, feeKindName, feeKindOf, feeKinds } from "./sections";
@@ -344,7 +344,7 @@ function Groups({ groups }: { groups: FeesSnapshot["groups"] | null }) {
 }
 
 /** The minimum to open an account and who supervises the house, as two cards side by side; then what protects the money, as a list. */
-function Facts({ tariff }: { tariff: TariffCardData }) {
+function Facts({ tariff }: { tariff: TariffHead }) {
   const regulator = tariff.regulator === "foreign" ? (tariff.foreignRegulator ?? "") : copy.regulators[tariff.regulator];
   const items: KeyValueItem[] = [
     {
@@ -429,12 +429,38 @@ function FeeBar({ priceFor, channels }: { priceFor: string | null; channels: { c
   );
 }
 
-export function BrokerageGroupCard({ id, tariff, kind, terms = null, className, advertising = [], groups = null, docs }: { id: string; tariff: TariffCardData | null; kind: InstitutionKind; /** The house's terms, where its latest list fills a deal (`houseTermsData`): its fees are drawn as those terms. */ terms?: HouseTermsData | null; className?: string; /** The product's document entries, before the links that end it. */ docs?: ReactNode; /** What its advertising says against its documents (D57). */ advertising?: readonly AdvertisingEntry[]; /** Its group prices and offers (D43). */ groups?: FeesSnapshot["groups"] | null; }) {
-  const h = useId();
+/**
+ * The house's latest price list as its terms, read-only, as the indices page shows them, with nothing of a plan; its figures' sheets read
+ * the rules the terms cite over the page's own.
+ */
+function CompanyTerms({ terms }: { terms: HouseTermsData }) {
   const page = useProvenanceData();
-  const compareHref = housePath(id);
+  const data = useMemo(() => termsEditorData(terms.data), [terms.data]);
+  if (!page) return null;
+  return (
+    <ProvenanceProvider data={withFeesData(page, terms.data)}>
+      <HouseTerms data={data} today={page.today} first={terms.deal} house={terms.house} />
+    </ProvenanceProvider>
+  );
+}
+
+/** The price list's table: who its prices are for and the channel's switch where it prices a fee by channel, its lines, what they leave out (D106). */
+function PriceTable({ table, priceFor, house, kind }: { table: Extract<AccountFees, { kind: "table" }>["table"]; priceFor: string | null; house: string; kind: InstitutionKind }) {
   const [channel, setChannel] = useState<Channel>("direct");
-  const byChannel = useMemo(() => (tariff && !tariff.missing ? pricedByChannel(tariff.lines) : false), [tariff]);
+  const byChannel = useMemo(() => pricedByChannel(table.lines), [table.lines]);
+  return (
+    <>
+      <FeeBar priceFor={priceFor} channels={byChannel ? { channel, onChannel: setChannel } : null} />
+      <FeeTable lines={table.lines} channel={channel} kind={kind} average={(l) => (l.average && table.averages ? <HouseAverageLine averages={[l.average]} house={gershayim(house)} /> : null)} />
+      {/* what the house's documents hold and these prices leave out (D106) */}
+      <LeftOutLine view={table.leftOut ?? null} house={gershayim(house)} className="text-sm" />
+    </>
+  );
+}
+
+export function BrokerageGroupCard({ id, tariff, fees, kind, className, advertising = [], groups = null, docs }: { id: string; tariff: TariffHead | null; /** Its fees: the house's terms where its latest list fills a deal (`houseTermsData`), else the price list's table. */ fees: AccountFees | null; kind: InstitutionKind; className?: string; /** The product's document entries, before the links that end it. */ docs?: ReactNode; /** What its advertising says against its documents (D57). */ advertising?: readonly AdvertisingEntry[]; /** Its group prices and offers (D43). */ groups?: FeesSnapshot["groups"] | null; }) {
+  const h = useId();
+  const compareHref = housePath(id);
   if (!tariff || tariff.missing) {
     return (
       <>
@@ -492,23 +518,14 @@ export function BrokerageGroupCard({ id, tariff, kind, terms = null, className, 
           </p>
         )}
       </div>
-      {terms ? (
+      {fees?.kind === "terms" ? (
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
           <FeeBar priceFor={tariff.priceFor} channels={null} />
-          {/* the house's latest price list as its terms, read-only, as the indices page shows them, with nothing of a plan; its figures'
-              sheets read the rules the terms cite over the page's own */}
-          {page && (
-            <ProvenanceProvider data={withFeesData(page, terms.data)}>
-              <HouseTerms data={terms.data} today={page.today} first={terms.deal} house={id} />
-            </ProvenanceProvider>
-          )}
+          <CompanyTerms terms={fees.terms} />
         </Section>
-      ) : tariff.lines.length > 0 && (
+      ) : fees?.kind === "table" && fees.table.lines.length > 0 && (
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
-          <FeeBar priceFor={tariff.priceFor} channels={byChannel ? { channel, onChannel: setChannel } : null} />
-          <FeeTable lines={tariff.lines} channel={channel} kind={kind} average={(l) => (l.average && tariff.averages ? <HouseAverageLine averages={[l.average]} house={gershayim(tariff.providerName)} /> : null)} />
-          {/* what the house's documents hold and these prices leave out (D106) */}
-          <LeftOutLine view={tariff.leftOut ?? null} house={gershayim(tariff.providerName)} className="text-sm" />
+          <PriceTable table={fees.table} priceFor={tariff.priceFor} house={tariff.providerName} kind={kind} />
         </Section>
       )}
       <CanBuy rows={tariff.availability} />

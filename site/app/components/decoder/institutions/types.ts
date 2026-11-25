@@ -9,6 +9,7 @@ import type { SiteValue } from "../../../lib/value";
 import type { DepositVariant, ExitPoints } from "../../../lib/deposit-kind";
 import type { TermRow } from "../../../lib/data.server";
 import type { ColumnAverage } from "../../../lib/house-averages";
+import type { HouseTermsData } from "../../../lib/fee-page-data";
 
 export type InstitutionKind = "bank" | "broker";
 
@@ -149,6 +150,25 @@ export interface TariffCardData {
   /** What the house's documents hold and its prices leave out (D106), or null where the record lists nothing. */
   leftOut?: LeftOutView | null;
 }
+
+/** A price list as a securities account's card draws it around its fees: all of it but what its fees hold (`AccountFees`). */
+export type TariffHead = Omit<TariffCardData, "lines" | "averages" | "leftOut">;
+
+/**
+ * A securities account's fees as its card draws them: the house's terms where its latest list fills a deal (`HouseTermsData`), else the
+ * price list's table, its lines with the period and page of their averages and what its prices leave out.
+ */
+export type AccountFees = { kind: "terms"; terms: HouseTermsData } | { kind: "table"; table: Pick<TariffCardData, "lines" | "averages" | "leftOut"> };
+
+/** A price list split into its head and its fees: the house's terms where they fill a deal (`terms`), else its table. */
+export function accountOf(tariff: TariffCardData, terms: HouseTermsData | null): { tariff: TariffHead; fees: AccountFees } {
+  const { lines, averages, leftOut, ...head } = tariff;
+  const table = { lines, ...(averages ? { averages } : {}), ...(leftOut !== undefined ? { leftOut } : {}) };
+  return { tariff: head, fees: terms ? { kind: "terms", terms } : { kind: "table", table } };
+}
+
+/** Whether a card has fees to draw: a house's terms always have; a table, where the price list prints a line. */
+export const hasFees = (fees: AccountFees): boolean => fees.kind === "terms" || fees.table.lines.length > 0;
 
 export interface InstitutionPageData {
   id: string;

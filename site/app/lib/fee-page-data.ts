@@ -46,12 +46,33 @@ export interface FeesData {
 }
 
 /**
- * A house's terms as a page's first view draws them (`HouseTerms`, lib/fees.server.ts `houseTermsData`): the deal filled from its latest
- * price list, and the fee page's data its read-only editor reads, cut to a securities account and that house.
+ * A house as its terms draw it (`HouseTerms`): its name and kind of provider, what its price leaves out, every column of its averages and
+ * its distribution fee. Its fees are those of the deal its list fills, and the lines it leaves are drawn in the fold.
+ */
+export type TermsHouse = Pick<HouseTemplate, "id" | "name" | "provider" | "leftOut" | "everyColumn" | "distribution">;
+
+/** A house's template cut to what its terms draw (`TermsHouse`). */
+export function termsHouse(t: HouseTemplate): TermsHouse {
+  return { id: t.id, name: t.name, provider: t.provider, leftOut: t.leftOut, ...(t.everyColumn ? { everyColumn: t.everyColumn } : {}), ...(t.distribution ? { distribution: t.distribution } : {}) };
+}
+
+/** What of the fee page's data a house's terms read: the rules their figures cite with the records those point at, the kinds with their caps, the glossary cards. */
+export type TermsFeesData = Pick<FeesData, "rules" | "pointed" | "kinds" | "terms">;
+
+/**
+ * The fee page's data for the read-only editor of a house's terms, from what the terms read: no track, house or exchange rate, which only
+ * filling or changing a deal reads.
+ */
+export const termsEditorData = (d: TermsFeesData): FeesData => ({ ...d, templates: {}, tracks: [], houses: [], fx: null });
+
+/**
+ * A house's terms as a company page's first view draws them (`HouseTerms`, lib/fees.server.ts `houseTermsData`): the deal filled from its
+ * latest price list, the house cut to what its terms draw, and what of the fee page's data they read, cut to a securities account.
  */
 export interface HouseTermsData {
   deal: FeeDeal;
-  data: FeesData;
+  house: TermsHouse;
+  data: TermsFeesData;
 }
 
 /** The key of a fee name's glossary card in one product's sense, among `FeesData.terms`. */

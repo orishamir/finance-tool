@@ -17,7 +17,7 @@ import { feeDeal, help, invest, provenance as provenanceWords, r4catalogue } fro
 import { ProvenanceProvider } from "../../provenance";
 import { shown } from "../../invest/render-fixtures";
 import { BrokerageGroupCard } from "./brokerage-card";
-import type { InstitutionKind, TariffCardData } from "./types";
+import { accountOf, type InstitutionKind, type TariffCardData } from "./types";
 import type { RuleRecord } from "@finance-tool/schema";
 
 const TODAY = "2026-11-25";
@@ -41,7 +41,8 @@ const render = (id: string) => {
   const part = partOf(id);
   const terms = houseTermsData(id, TODAY, { rules: new Set(Object.keys(part.rules)), pointed: new Set() });
   const data = { rules: part.rules, terms: {}, dimensions: {}, today: TODAY };
-  const out = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(BrokerageGroupCard, { id, tariff: part.tariff, kind: part.kind, terms }) })));
+  const { tariff, fees } = accountOf(part.tariff, terms);
+  const out = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(BrokerageGroupCard, { id, tariff, fees, kind: part.kind }) })));
   return { part, terms, out, text: shown(out) };
 };
 

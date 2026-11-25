@@ -22,7 +22,7 @@ import { fmt } from "../../lib/format";
 import { asideLines, dealOnFunds, dealRunOf, pairCosts, type DealOnPlan, type FundWay, type IndexRef, type InvestView } from "../../lib/invest";
 import { accountLinesOf, receiptAmounts } from "../../lib/receipt";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
-import type { FeesData } from "../../lib/fee-page-data";
+import { termsHouse, type FeesData } from "../../lib/fee-page-data";
 import { averageOf as columnAverage, type AverageColumn } from "../../lib/house-averages";
 import type { DealRun } from "@finance-tool/engine";
 import { hasCases, newDeal, NAME_MAX, pickKey, type Fee, type FeeDeal } from "../../lib/fee-deal/model";
@@ -388,6 +388,7 @@ export function TermsPopup({ data, today, first, world, house, headId, onOwn }: 
   const short = providerName(world.view, house)?.short ?? house;
   const snap = world.bundle.snapshots.find((s) => s.id === house);
   const left = termsLeftOut(snap, fund?.byHouse[house]);
+  const template = data.houses.find((h) => h.id === house);
   return (
     <div className="flex flex-col gap-4">
       {/* the price list's day and link follow the title on its line, and wrap under it where the line is full */}
@@ -421,7 +422,7 @@ export function TermsPopup({ data, today, first, world, house, headId, onOwn }: 
           </p>
         ))}
       {wide && planLine && <p className="text-sm text-muted-foreground">{planLine}</p>}
-      <HouseTerms data={data} today={today} first={first} house={house} leftOut={left} feeHead={head} average={average} />
+      <HouseTerms data={data} today={today} first={first} house={template && termsHouse(template)} leftOut={left} feeHead={head} average={average} />
       <Button variant="framed" className="self-start" onClick={onOwn}>
         {w.fromHouse(short)}
       </Button>
