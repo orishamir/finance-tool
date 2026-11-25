@@ -5,7 +5,7 @@ import { createElement, type ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { dealCases, feeDeal, help, site } from "../../copy";
+import { dealCases, feeDeal, help, numbers, provenance as provenanceWords, site } from "../../copy";
 import { fmt, formatValue } from "../../lib/format";
 import { feesData } from "../../lib/fees.server";
 import { builder } from "../../lib/fee-deal/rows";
@@ -28,7 +28,10 @@ import { tapStep } from "../../lib/fee-deal/places";
 import { cardOf } from "../../lib/fee-deal/toolbox";
 import { changeFormKept, formStep, undo, undoWords } from "../../lib/fee-deal/undo";
 import { HeldBox, HeldChange, ReadingCards } from "./reading";
-import { fill } from "../kit";
+import { ReadOnly, fill } from "../kit";
+import { dealFromTemplate } from "../../lib/fee-deal/templates";
+import { newDeal } from "../../lib/fee-deal/model";
+import { ACCOUNT_KIND } from "../../lib/fee-deal/kinds";
 import type { HeldView } from "../../lib/fee-deal/charts";
 import { sumDisplay, upToDisplay } from "./words";
 
@@ -985,5 +988,25 @@ describe("the card \"חינם\"", () => {
     const f = feeDeal.cases.formChanged;
     expect(undoWords(got(r.undo), (x) => x.kind, data)).toBe(f.lost.replace("{parts}", got(f.parts.min)).replace("{verb}", f.one));
     expect(got(undo(r.deal, got(r.undo), "fee-trade")).deal).toEqual(d);
+  });
+});
+
+describe("the fees read-only (the kit's ReadOnly: the indices page's terms view)", () => {
+  // every house's latest price list, as a new deal fills from it: their tables, grids and slim fees
+  const houses = data.houses.map((h) => dealFromTemplate(newDeal(ACCOUNT_KIND), `house:${h.id}`, data, TODAY)).filter((d): d is FeeDeal => !!d && d.fees.length > 0);
+  it("the data has houses whose fees change by something, laid out as cases", () => {
+    expect(houses.some((d) => d.fees.some(hasCases))).toBe(true);
+  });
+  it("shows each fee by its name, and every button left opens what a figure or a price rests on (its source, an open question): nothing opens a case, adds, moves or takes away", () => {
+    for (const deal of houses) {
+      const el = createElement(FeesColumn, { ...builderOf(deal, null).props, adding: null });
+      const out = markup(createElement(ReadOnly, null, el));
+      for (const f of deal.fees) expect(out, deal.id).toContain(feeName(f.kind, f.name));
+      const labels = [...out.matchAll(/<button[^>]*>/g)].map((m) => /aria-label="([^"]*)"/.exec(m[0])?.[1] ?? m[0]);
+      const other = labels.filter((l) => !l.endsWith(`, ${numbers.details}`) && l !== provenanceWords.idRef.question && l !== site.close);
+      expect(other, deal.template?.name).toEqual([]);
+      // the same fees, editable, offer their cases and their bins
+      expect(markup(el)).toContain(feeDeal.panel.remove);
+    }
   });
 });

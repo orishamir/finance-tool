@@ -22,6 +22,7 @@ import { useIsoLayoutEffect } from "../../lib/hooks";
 import { cx } from "./cx";
 import { KnobButton } from "./knob-button";
 import { RemoveButton } from "./remove-button";
+import { useReadOnly } from "./read-only";
 import { Tag } from "./tag";
 
 const icon = { size: 16, strokeWidth: 1.75, "aria-hidden": true, className: "shrink-0" } as const;
@@ -161,6 +162,7 @@ export interface AddSpec {
  * title. Beside the heads the add is a bare plus (`TileAdd`), or, on the line between two heads, a plus knob (`BetweenAdd`).
  */
 export function AddSlot({ add, className, bare }: { add: AddSpec; className?: string; bare?: boolean }) {
+  if (useReadOnly()) return null;
   if (bare)
     return (
       <button
@@ -201,6 +203,7 @@ export function AddSlot({ add, className, bare }: { add: AddSpec; className?: st
  * `className` places the plus in that place (default: in its middle).
  */
 function TileAdd({ add, style, className = "items-center justify-center" }: { add: AddSpec; style: CSSProperties; className?: string }) {
+  if (useReadOnly()) return null;
   return (
     <div style={style} className={cx("flex min-w-target", className)}>
       <button
@@ -320,6 +323,14 @@ const binOf = (cell: CellExtras) => (cell.onRemove && cell.removeLabel ? <CellBi
 const BIN_ROOM = "pe-[1.875rem]";
 const binRoom = (cell: CellExtras) => (cell.onRemove && cell.removeLabel ? BIN_ROOM : undefined);
 
+/**
+ * A cell read-only (`ReadOnly`): what it shows, with nothing that changes it or opens its case (its tap, its keys' hands, its grip,
+ * knobs and bin, its copy and paste).
+ */
+const stillCell = <C extends CellExtras & { onOpen?: () => void }>(c: C): C => ({ ...c, onOpen: undefined, onRemove: undefined, onStretch: undefined, onStretchDown: undefined, grip: undefined, knobs: undefined, copyKey: undefined });
+/** A head read-only: its words, with no grip and no rename. */
+const stillHead = <H extends { grip?: ReactNode; onRename?: () => void }>(h: H): H => ({ ...h, grip: undefined, onRename: undefined });
+
 /** What a cell the page copies and pastes on spreads: its key. */
 const copyAttr = (key: string | undefined) => (key !== undefined ? { "data-copy-key": key } : {});
 
@@ -418,7 +429,10 @@ const TILE_CELL = "flex min-h-target min-w-0 flex-wrap content-start items-cente
  * laid over what follows: the table is the element it is placed by). Wider than its block, it scrolls inside itself, sideways only: what
  * reaches past its foot for a moment (a cell sliding into place) never gives it a scrollbar down.
  */
-export function CaseTable({ columns, rows, add, insert, ladder, foot, label }: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; insert?: (k: number) => AddSpec | null; ladder?: boolean; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
+export function CaseTable(props: { columns: CaseColumn[]; rows: CaseTableRow[]; add?: AddSpec; insert?: (k: number) => AddSpec | null; ladder?: boolean; foot?: ReactNode; /** The table's spoken name: its fee's. */ label?: string }) {
+  // read-only (`ReadOnly`): no add, no grip, no head or cell that opens or changes its case
+  const still = useReadOnly();
+  const { columns, rows, add, insert, ladder, foot, label } = still ? { ...props, columns: props.columns.map(stillHead), rows: props.rows.map((r) => ({ ...r, cells: r.cells.map(stillCell) })), add: undefined, insert: undefined } : props;
   const n = columns.length;
   const keys = useCellKeys();
   const gapCol = carriedAt(columns, useCarried());
@@ -438,7 +452,7 @@ export function CaseTable({ columns, rows, add, insert, ladder, foot, label }: {
         ))}
         <div role="row" className="contents">
           {columns.map((c, k) => {
-            const head = c.empty ? (
+            const head = c.empty || still ? (
               <StillHead key={c.id} grip={c.grip} onRename={c.onRename}>
                 {c.head}
               </StillHead>
@@ -539,7 +553,10 @@ export interface EveryCaseCell extends Pick<CellExtras, "grip" | "onRemove" | "r
  * whole row (a drop zone: what lands there goes into every case). `label` is the row's spoken name. Nothing is drawn with no cell, no ask
  * and no add.
  */
-export function EveryCaseParts({ label, cells, asking, add, zone }: { label: string; cells: EveryCaseCell[]; asking?: ReactNode; add?: AddSpec; zone?: (row: ReactNode) => ReactNode }) {
+export function EveryCaseParts(props: { label: string; cells: EveryCaseCell[]; asking?: ReactNode; add?: AddSpec; zone?: (row: ReactNode) => ReactNode }) {
+  // read-only (`ReadOnly`): the cells as they stand, with no add and nothing that changes them
+  const still = useReadOnly();
+  const { label, cells, asking, add, zone } = still ? { ...props, cells: props.cells.map((c) => ({ ...c, grip: undefined, onRemove: undefined, copyKey: undefined })), add: undefined } : props;
   if (cells.length === 0 && !asking && !add) return null;
   const onKeyDown = (cell: EveryCaseCell) => (e: KeyboardEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
@@ -703,7 +720,12 @@ function GridCorner({ across, down }: { across: string; down: string }) {
  * than its block, it scrolls inside itself, sideways only, as a table does. `corner`: what the two things are, in the place over the row
  * heads and beside the column heads (`GridCorner`).
  */
-export function CaseGrid({ columns, rows, addRow, addColumn, insertRow, insertColumn, above, steps, foot, label, corner }: { /** The things' names: `across` the second's (the columns'), `down` the first's (the rows'). */ corner?: { across: string; down: string }; columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; /** The plus between row `k - 1` and row `k`. */ insertRow?: (k: number) => AddSpec | null; /** The plus between column `k - 1` and column `k`. */ insertColumn?: (k: number) => AddSpec | null; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
+export function CaseGrid(props: { /** The things' names: `across` the second's (the columns'), `down` the first's (the rows'). */ corner?: { across: string; down: string }; columns: GridHead[]; rows: (GridHead & { cells: GridCellView[]; lines?: { id: string; cells: PartCellView[] }[]; addPart?: AddSpec })[]; addRow?: AddSpec; addColumn?: AddSpec; /** The plus between row `k - 1` and row `k`. */ insertRow?: (k: number) => AddSpec | null; /** The plus between column `k - 1` and column `k`. */ insertColumn?: (k: number) => AddSpec | null; above?: ReactNode; steps?: boolean; foot?: ReactNode; /** The grid's spoken name: its fee's. */ label?: string }) {
+  // read-only (`ReadOnly`): no add, no grip, no cell that opens or changes its case; a place no case holds stays empty
+  const still = useReadOnly();
+  const { columns, rows, addRow, addColumn, insertRow, insertColumn, above, steps, foot, label, corner } = still
+    ? { ...props, columns: props.columns.map(stillHead), rows: props.rows.map((r) => ({ ...stillHead(r), addPart: undefined, cells: r.cells.map(stillCell), lines: r.lines?.map((l) => ({ ...l, cells: l.cells.map(stillCell) })) })), addRow: undefined, addColumn: undefined, insertRow: undefined, insertColumn: undefined }
+    : props;
   const n = columns.length;
   const keys = useCellKeys();
   const carried = useCarried();

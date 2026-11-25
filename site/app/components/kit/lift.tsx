@@ -26,6 +26,7 @@ import { atRest, easing, flip, measure, motionMs, play } from "./flip";
 import { around, inside, landing, placeAt, readingOrder, shifts, type Axis, type Box } from "./sortable";
 import { onOwnSurface } from "./choice";
 import { cx } from "./cx";
+import { useReadOnly } from "./read-only";
 import { BinIcon } from "./remove-button";
 import { fixedOrigin, layerOf } from "./carry-layer";
 
@@ -612,9 +613,11 @@ export interface GripAction {
 /**
  * What lifts a thing (`from`, an element marked `data-liftable`) as `item`, `name` its words: on touch a long press anywhere on it (on
  * what is inside it that lifts itself, that alone; where it is marked `data-lift-body`, not on a button, a link or a choice inside it); with a mouse, where it is marked `data-lift-body`, a press on its own surface moved a
- * few pixels (`bodyPress`). `still`: it lifts nothing. A grip calls it on the thing around it; a thing with no grip (a fee's card) on itself.
+ * few pixels (`bodyPress`). `alone`: it lifts nothing. A grip calls it on the thing around it; a thing with no grip (a fee's card) on itself.
  */
-export function useLiftFrom(fromOf: () => HTMLElement | null, item: string, name: string | undefined, still = false): void {
+export function useLiftFrom(fromOf: () => HTMLElement | null, item: string, name: string | undefined, alone = false): void {
+  // read-only (`ReadOnly`): nothing is lifted
+  const still = useReadOnly() || alone;
   const resolve = useEffectEvent(fromOf);
   useEffect(() => {
     const from = resolve();
@@ -675,7 +678,13 @@ export function useLiftFrom(fromOf: () => HTMLElement | null, item: string, name
  * it, over the room between it and its neighbour (`outside`, a table's cell, a fee's name). It is drawn while what it lifts
  * is under a fine pointer or has the focus; on touch only inside the open fee, where what it stands over makes room for it.
  */
-export function Grip({ item, name, label, actions = [], onRemove, still, place = "inside", className }: { item: string; name?: string; label: string; actions?: GripAction[]; onRemove?: () => void; still?: boolean; place?: "inside" | "outside"; className?: string }) {
+export function Grip(props: GripProps) {
+  return useReadOnly() ? null : <LiveGrip {...props} />;
+}
+
+type GripProps = { item: string; name?: string; label: string; actions?: GripAction[]; onRemove?: () => void; still?: boolean; place?: "inside" | "outside"; className?: string };
+
+function LiveGrip({ item, name, label, actions = [], onRemove, still, place = "inside", className }: GripProps) {
   const press = useRef<{ x: number; y: number; id: number; timer: number; touch: boolean } | null>(null);
   const lifted = useRef(false);
   const btn = useRef<HTMLButtonElement>(null);
@@ -872,7 +881,8 @@ export function menuSpot(g: { top: number; bottom: number; left: number; right: 
 export function DropBin({ accepts, onDrop, phone }: { accepts: (item: string) => boolean; onDrop: (item: string) => void; phone?: boolean }) {
   const item = useCarried();
   const name = useCarriedName();
-  if (item === null || !accepts(item)) return null;
+  const still = useReadOnly();
+  if (still || item === null || !accepts(item)) return null;
   return (
     <DropZone accepts={accepts} onDrop={(it) => onDrop(it)} tone="danger" rounded="rounded-md" className={cx("come-in z-(--z-carry-over) bg-card shadow-lg", phone ? "fixed inset-x-3 bottom-3" : "absolute inset-x-0 top-full mt-2")}>
       <BinWords name={name} />
@@ -903,7 +913,13 @@ function BinWords({ name }: { name: string | null }) {
  * pressed (`done` true). `valueText` says the reach ("חל על 2 מתוך 3 גדלים"). The columns are found across from the pointer by their heads'
  * `data-col` (their index) inside the nearest `data-span-table`.
  */
-export function SpanKnob({ edge, from, to, min, max, label, valueText, onReach, axis = "x" }: { edge: "before" | "after"; from: number; to: number; min: number; max: number; label: string; valueText: string; onReach: (from: number, to: number, done: boolean) => void; /** Across the columns (`x`), or down the rows of a grid (`y`: its edges above and below the cell, found by the rows' `data-rowpos`). */ axis?: "x" | "y" }) {
+export function SpanKnob(props: SpanKnobProps) {
+  return useReadOnly() ? null : <LiveSpanKnob {...props} />;
+}
+
+type SpanKnobProps = { edge: "before" | "after"; from: number; to: number; min: number; max: number; label: string; valueText: string; onReach: (from: number, to: number, done: boolean) => void; /** Across the columns (`x`), or down the rows of a grid (`y`: its edges above and below the cell, found by the rows' `data-rowpos`). */ axis?: "x" | "y" };
+
+function LiveSpanKnob({ edge, from, to, min, max, label, valueText, onReach, axis = "x" }: SpanKnobProps) {
   const drag = useRef<{ id: number; reach: [number, number]; frame: HTMLElement; origin: { x: number; y: number }; cell: DOMRect } | null>(null);
   const reachTo = (col: number): [number, number] => (edge === "after" ? [from, Math.max(from, Math.min(max, col))] : [Math.min(to, Math.max(min, col)), to]);
   const heads = (el: HTMLElement) => [...(el.closest("[data-span-table]")?.querySelectorAll<HTMLElement>(axis === "x" ? "[data-col]" : "[data-rowpos]") ?? [])];

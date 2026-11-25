@@ -5,12 +5,13 @@
 // name: drawn always while the fee is open, and on a closed card only once a fine pointer has rested on it (app.css, `data-fee-tools`),
 // their room kept either way so nothing moves when they show. A fee with a switch (`FeeHeadSlot.counted`) has it at the end of its
 // name's line, and is dimmed while it is off. Each card is a container: what stands at the end of the name's line is one line where the
-// card is wide, and stacked, the switch on top, where it is narrow.
+// card is wide, and stacked, the switch on top, where it is narrow. Read-only (`ReadOnly`), a card opens nothing and has no actions.
 import type { ReactNode } from "react";
 import { dealCases as copy } from "../../copy";
 import { IconCheck } from "../icons";
 import { PickCard } from "./choice";
 import { cx } from "./cx";
+import { useReadOnly } from "./read-only";
 import { OnOffSwitch } from "./switch";
 import { Tag } from "./tag";
 
@@ -51,6 +52,8 @@ const Stripe = ({ dot }: { dot: string }) => (
 
 /** The fee's actions right after its name (`tools`): shown while the fee is open, else on a resting fine pointer (app.css). */
 function NameTools({ open, children }: { open: boolean; children: ReactNode }) {
+  // read-only (`ReadOnly`): the fee is neither duplicated nor taken away
+  if (useReadOnly()) return null;
   return (
     <span data-fee-tools="" data-shown={open ? "" : undefined} className="flex shrink-0 items-center gap-1 self-center">
       {children}
@@ -122,9 +125,10 @@ export interface FeeHeadSlot {
  * the `children` then) stacked under it, with `actions` after them; its `tools` (its duplicate, its bin) right after its name.
  */
 export function SlimFee({ dot, mark, name, label, onOpen, open, actions, tools, head, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; label: string; onOpen: () => void; open?: boolean; actions?: ReactNode; /** Its actions after its name (its duplicate, its bin). */ tools?: ReactNode; head?: FeeHeadSlot | undefined; children: ReactNode }) {
-  return (
-    <div data-fee-card="" className="contents">
-    <PickCard label={label} onPick={onOpen} chosen={open} className={cx("@container bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-1 pb-3", dimmed(head) && "opacity-60")}>
+  const still = useReadOnly();
+  const look = cx("@container bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-1 pb-3", dimmed(head) && "opacity-60");
+  const body = (
+    <>
       {/* open, the outline in the action colour frames it; a stripe of the fee's colour over it would cut its corners */}
       {!open && <Stripe dot={dot} />}
       {open ? (
@@ -164,7 +168,18 @@ export function SlimFee({ dot, mark, name, label, onOpen, open, actions, tools, 
           {head?.foot && <div className="basis-full">{head.foot}</div>}
         </>
       )}
-    </PickCard>
+    </>
+  );
+  // read-only (`ReadOnly`): the same card, which opens nothing
+  return (
+    <div data-fee-card="" className="contents">
+      {still ? (
+        <div className={cx("relative rounded-lg border border-border", look)}>{body}</div>
+      ) : (
+        <PickCard label={label} onPick={onOpen} chosen={open} className={look}>
+          {body}
+        </PickCard>
+      )}
     </div>
   );
 }

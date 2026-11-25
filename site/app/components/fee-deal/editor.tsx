@@ -16,7 +16,8 @@
 // lives through edits elsewhere until it is undone, a newer such change replaces it, another deal opens, the part it would put back into
 // changes, or ten seconds pass while neither the focus nor the pointer is on it. Each fee carries a switch in its card's corner: a fee
 // switched off (lib/fee-deal/off.ts) is left out of the reading and of what it says is left out, read on the deal as it is counted
-// (`counted`), while the columns draw it dimmed, still open to edit, and everything that writes the deal sees the whole deal.
+// (`counted`), while the columns draw it dimmed, still open to edit, and everything that writes the deal sees the whole deal. Inside the
+// kit's `ReadOnly` the editor shows the deal and changes nothing: the fees' cards alone, with what the host adds to their heads.
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { ProductId } from "@finance-tool/schema";
 import { dealCases } from "../../copy";
@@ -46,7 +47,7 @@ import { cardThing } from "../../lib/fee-deal/toolbox";
 import type { FeesData } from "../../lib/fee-page-data";
 import { MQ, useMedia, useWiderThan } from "../../lib/hooks";
 import { feeDeal as copy } from "../../copy";
-import { ThingMenu, ValueMenuSheet, holdFloors, type ReadPick } from "../kit";
+import { ThingMenu, ValueMenuSheet, holdFloors, useReadOnly, type ReadPick } from "../kit";
 import { FeesColumn, Palette, SetupStrip, feeGroup, paletteItems, shownFeeOrder } from "./builder";
 import { DealColumns, PaletteColumn } from "./deal-columns";
 import { useSaid } from "./deal-notices";
@@ -98,6 +99,9 @@ export interface EditorInput {
 export type DealEditor = ReturnType<typeof useDealEditor>;
 
 export function useDealEditor({ data, today, saved, writable, first, onShown, withReading = true, feeHead, untitled = false, remember = true }: EditorInput) {
+  // inside the kit's `ReadOnly` the deal is shown, never changed: its fees as their cards show them, with no switch, toolbox, palette,
+  // picker or menu, and nothing opened in place (the kit's pieces draw nothing that changes it)
+  const still = useReadOnly();
   // another deal on screen (a saved one, a new one, one a template filled, or one an undo brought back): what belonged to the deal before
   // goes, and a new deal is saved once it is worth saving
   const doc = useDealDocument({ first, saved, today, data, onShown: () => afterShow(), remember });
@@ -414,7 +418,7 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
   // why the reading reads no fee, where it reads none: the deal has no fee with a price, or every fee that has one is switched off
   const none: NoneRead | null = countedRead.fees.length > 0 ? null : read.fees.length > 0 ? "off" : "unpriced";
   // each fee's head: the host's (`feeHead`), and the fee's switch in its corner
-  const headOf = (fee: Fee): FeeSlot => ({ ...feeHead?.(fee), counted: { on: !isFeeOff(off, deal.id, fee.id), onChange: (on) => feesOff.set(deal, fee.id, !on) } });
+  const headOf = (fee: Fee): FeeSlot => (still ? { ...feeHead?.(fee) } : { ...feeHead?.(fee), counted: { on: !isFeeOff(off, deal.id, fee.id), onChange: (on) => feesOff.set(deal, fee.id, !on) } });
   // the toolbox for the open case: in a column of its own where the window has the room, sticking under the header as the fees scroll by;
   // anywhere narrower a short sheet pinned to the foot of the screen
   const toolboxView =
@@ -473,8 +477,8 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
         },
       }
     : null;
-  const adding = panelColumn ? (panelView ? ("line" as const) : null) : { palette, copy: copyFee };
-  const paletteColumn = panelColumn && !panelView && kind && palette.length > 0 ? (
+  const adding = still ? null : panelColumn ? (panelView ? ("line" as const) : null) : { palette, copy: copyFee };
+  const paletteColumn = !still && panelColumn && !panelView && kind && palette.length > 0 ? (
     <PaletteColumn>
       <Palette items={palette} onAdd={onAdd} copy={copyFee} />
     </PaletteColumn>
@@ -537,13 +541,13 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
     onDelete,
     oc,
     /** The template picker, a sheet over the host. */
-    picker: <TemplatePicker open={picker.anchor !== null} onClose={picker.onClose} anchor={picker.anchor} options={picker.options} left={picker.left} newDeal={picker.newDeal} product={kind?.name ?? null} onPick={picker.onPick} />,
+    picker: still ? null : <TemplatePicker open={picker.anchor !== null} onClose={picker.onClose} anchor={picker.anchor} options={picker.options} left={picker.left} newDeal={picker.newDeal} product={kind?.name ?? null} onPick={picker.onPick} />,
     pickerHands: picker,
     /** The columns: what the deal is about over its fees (the host's own `setup`, /deal's strip or none), and the toolbox in a column of its own where the host gives the room. */
     columns: (setup: ReactNode | null) => <DealColumns hostRef={columnsRef} setup={setup} fees={feesColumn} toolbox={panelColumn ? (panelView ?? paletteColumn) : null} />,
     setupStrip,
     /** The slot's and the band thing's menus, beside their chip on a computer, a sheet on a phone. */
-    menus: (
+    menus: still ? null : (
       <>
         <ValueMenuSheet open={!!slot} onClose={oc.menus.closeSlot} anchor={slot ? menu!.at : null} label={slot?.title ?? ""}>
           {slot && menu && chosenFee && <SlotMenu key={`${menu.fee}:${menu.case}:${menu.t}`} edit={slot} fee={chosenFee} caseId={menu.case} t={menu.t} top={panel?.open.slots[menu.t]?.words.figure ?? null} onFee={onFee} />}
@@ -554,6 +558,6 @@ export function useDealEditor({ data, today, saved, writable, first, onShown, wi
       </>
     ),
     /** The toolbox where it has no column, pinned to the foot of the screen; the host keeps its room at its end. */
-    footSheet: sheeted ? toolboxView : null,
+    footSheet: sheeted && !still ? toolboxView : null,
   };
 }

@@ -12,6 +12,7 @@ import { IconCheck } from "../icons";
 import { Button } from "./button";
 import { LIFT_INNER, PRESS_THROUGH } from "./choice";
 import { RemoveButton } from "./remove-button";
+import { useReadOnly } from "./read-only";
 import { cx } from "./cx";
 import { Tag } from "./tag";
 import { CaseMark, MARKED, MISSING } from "./case-table";
@@ -53,6 +54,8 @@ export interface HeadThing {
  * inside it takes what the chip takes.
  */
 export function ConditionHead({ things, onThing, openThing, label = copy.changesBy, zone }: { things: HeadThing[]; onThing: (id: string, at: HTMLElement) => void; openThing?: string | null; label?: ReactNode; zone?: (head: ReactNode) => ReactNode }) {
+  // read-only (`ReadOnly`): each thing's name in its chip, with no menu and no grip
+  const still = useReadOnly();
   const head = (
     // 8 px above the chips and 12 px below, so a chip's 44 px tap area stays inside the band, which clips what passes its edge, and a
     // chip's grip and the first row's grip under the band keep their tap areas apart (2026-11-21: they shared 2 px on a phone); 12 px
@@ -61,7 +64,11 @@ export function ConditionHead({ things, onThing, openThing, label = copy.changes
       <Split {...icon} />
       <span className="font-medium">{label}</span>
       {things.map((t) => {
-        const pill = (
+        const pill = still ? (
+          <span key={t.id} className={cx("inline-flex min-h-[30px] items-center", menuChip(false))}>
+            {t.name}
+          </span>
+        ) : (
         <span key={t.id} data-thing-place={t.id} data-liftable="" className="inline-flex items-center gap-0.5 rounded-md">
           {t.grip}
           <button type="button" data-thing={t.id} aria-haspopup="dialog" aria-expanded={openThing === t.id} onClick={(e) => onThing(t.id, e.currentTarget)} className={cx("tap-area inline-flex min-h-[30px] items-center gap-2", menuChip(openThing === t.id))}>
@@ -70,7 +77,7 @@ export function ConditionHead({ things, onThing, openThing, label = copy.changes
           </button>
         </span>
         );
-        return t.zone ? <span key={t.id}>{t.zone(pill)}</span> : pill;
+        return t.zone && !still ? <span key={t.id}>{t.zone(pill)}</span> : pill;
       })}
     </div>
   );
@@ -145,7 +152,9 @@ function CaseWords({ when, mark }: { when: CaseWord[]; mark?: ReactNode }) {
  * kinds of what is bought) then takes fewer lines; in a band under 25rem they stand on a line above the cell. `open`: the case is among
  * several the toolbox adds to at once, its cell outlined in the action colour as an open case's is.
  */
-export function CaseRow({ when, label, onOpen, grip, open, missing, mark, children }: { when: CaseWord[]; label: string; onOpen?: () => void; /** A grip that lifts the case, at the start of its cell. */ grip?: ReactNode; open?: boolean; /** Its price misses a figure: what is missing, on a line under its parts, the parts' cell dashed (`CellExtras.missing`). */ missing?: ReactNode; /** A host's mark on the case (`CaseMark`), after its words. */ mark?: ReactNode; children: ReactNode }) {
+export function CaseRow({ when, label, onOpen: tap, grip, open, missing, mark, children }: { when: CaseWord[]; label: string; onOpen?: () => void; /** A grip that lifts the case, at the start of its cell. */ grip?: ReactNode; open?: boolean; /** Its price misses a figure: what is missing, on a line under its parts, the parts' cell dashed (`CellExtras.missing`). */ missing?: ReactNode; /** A host's mark on the case (`CaseMark`), after its words. */ mark?: ReactNode; children: ReactNode }) {
+  // read-only (`ReadOnly`): the case as it stands, opening nothing
+  const onOpen = useReadOnly() ? undefined : tap;
   return (
     // a press on the parts' cell, which stands over the row's button where it holds a grip, goes through to the button (`PRESS_THROUGH`)
     <div data-liftable="" data-lift-body="" className={cx("group relative @min-[25rem]:grid @min-[25rem]:grid-cols-[8.5rem_minmax(0,1fr)] @min-[44rem]:grid-cols-[12rem_minmax(0,1fr)]", onOpen && cx("cursor-pointer", LIFT_INNER, PRESS_THROUGH))}>

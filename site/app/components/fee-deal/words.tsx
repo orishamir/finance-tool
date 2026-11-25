@@ -11,7 +11,7 @@ import type { UnpricedSaid } from "../../lib/fee-deal/case-words";
 import type { FeeKindId } from "../../lib/fee-deal/shapes";
 import { amountWords, computedSum, fmt, formatValue, typedSum, wholeSum } from "../../lib/format";
 import { ruleFigure, type SiteValue } from "../../lib/value";
-import { Button, GapNote, HelpMark, Swatch, Tag, When, cx } from "../kit";
+import { Button, GapNote, HelpMark, Swatch, Tag, When, cx, useReadOnly } from "../kit";
 import { Num, Ruled, useProvenanceData } from "../provenance";
 import { assertNever } from "@finance-tool/schema";
 
@@ -379,16 +379,23 @@ export const formOf = (f: Pick<FeeRef, "kind">) => (f.kind !== "own" && copy.nam
  */
 export function UnpricedNote({ fee, unpriced, onOpen }: { fee: Pick<FeeRef, "kind">; unpriced: UnpricedSaid; onOpen: () => void }) {
   const u = copy.unpriced;
+  // read-only (the kit's `ReadOnly`): what is missing, with no way to give it
+  const still = useReadOnly();
   return (
     <GapNote
       mark
       label={u.label[formOf(fee)]}
       reason={
         <>
-          {u.noPrice(unpriced.where)}{" "}
-          <Button variant="inline" onClick={onOpen}>
-            {unpriced.where ? u.toCase : u.toPrice}
-          </Button>
+          {u.noPrice(unpriced.where)}
+          {!still && (
+            <>
+              {" "}
+              <Button variant="inline" onClick={onOpen}>
+                {unpriced.where ? u.toCase : u.toPrice}
+              </Button>
+            </>
+          )}
         </>
       }
     />

@@ -88,6 +88,7 @@ export { CaseGroup, CaseRow, CaseSlot, ConditionBand, ConditionHead, OpenCase, t
 export { ConfirmAsk } from "./confirm-ask";
 export { AddSlot, CaseGrid, CaseMark, CaseTable, EveryCaseParts, SharedLine, type AddSpec, type CaseColumn, type CaseTableRow, type CellExtras, type EveryCaseCell, type GridCellView, type GridHead } from "./case-table";
 export { ActionMenu, DropBin, Grip, SpanKnob, holdFloors, lift, useCanDrag, useDragSource, useLiftFrom, type DragSourceProps, type GripAction, type LiftAbout } from "./lift";
+export { ReadOnly, useReadOnly } from "./read-only";
 export { flip } from "./flip";
 export { KnobButton } from "./knob-button";
 export { EditInPlace } from "./edit-in-place";

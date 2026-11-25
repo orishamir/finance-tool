@@ -4,6 +4,7 @@
 // holds. The field is the page's own (`field`), so it keeps the figure's unit, its rules and its source as the open case's box does.
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cx } from "./cx";
+import { useReadOnly } from "./read-only";
 
 /**
  * Where the focus goes back to once a figure edited in place is at rest again: its table's cell; else the card it stands on, by the card's
@@ -25,7 +26,12 @@ export function restStop(el: HTMLElement | null): HTMLElement | null {
  * what a tap does ("לשנות את המינימום"). Nothing inside it keeps a tap of its own while it rests: the figure's own tap is the edit. The
  * open field is done on Enter once its text is kept (`FigureField` sends `edit-done`, `enterToNext`), on Esc, or when the focus leaves it.
  */
-export function EditInPlace({ label, field, onOpen, children, className }: { label: string; field: (done: () => void) => ReactNode; /** Told as the field opens (what it holds then is what Esc puts back). */ onOpen?: () => void; children: ReactNode; className?: string }) {
+export function EditInPlace(props: { label: string; field: (done: () => void) => ReactNode; /** Told as the field opens (what it holds then is what Esc puts back). */ onOpen?: () => void; children: ReactNode; className?: string }) {
+  // read-only (`ReadOnly`): the figure at rest, its own tap kept
+  return useReadOnly() ? <>{props.children}</> : <LiveEdit {...props} />;
+}
+
+function LiveEdit({ label, field, onOpen, children, className }: Parameters<typeof EditInPlace>[0]) {
   const [on, setOn] = useState(false);
   const box = useRef<HTMLSpanElement>(null);
   // Enter or Esc closed the field: the focus goes back to where the figure rests
