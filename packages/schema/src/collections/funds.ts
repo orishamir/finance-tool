@@ -211,3 +211,9 @@ export const fundRecord = z.strictObject({
 export type FundRecord = z.infer<typeof fundRecord>;
 export type FundPromotion = z.infer<typeof fundPromotion>;
 export type TaxRulingIndex = z.infer<typeof taxRulingIndex>;
+
+/**
+ * Whether a record is a foreign fund's Tel Aviv line (TXF-04's "קרן חוץ", method F-04): a fund domiciled outside Israel that trades on
+ * TASE. The one test of that kind, for the engine's run kind and the data check alike.
+ */
+export const isTaseForeignLine = (rec: Pick<FundRecord, "domicile" | "trading_currency_on_tase">): boolean => rec.domicile !== "IL" && rec.trading_currency_on_tase !== null;

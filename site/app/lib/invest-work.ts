@@ -57,7 +57,7 @@ interface MapAsk {
   fund: string;
 }
 
-/** F-131's answer: the map, or why there is none (no account is ranked with the fund: its tax rests on an open rule, F-118 or G-18, or none
+/** F-131's answer: the map, or why there is none (no account is ranked with the fund: its tax rests on an open rule, G-18, or none
  *  prices it). */
 export type MapAnswer = { kind: "map"; map: AccountMap } | { kind: "unranked"; why: "open-rule" | "unpriced" };
 
@@ -128,8 +128,8 @@ function mapOf(bundle: IndicesBundle, a: MapAsk): MapAnswer {
   surfaces.bound();
   if (map) return { kind: "map", map };
   const way = fundWayAt({ bundle, index: a.index, plan: a.plan, fundId: a.fund });
-  // a fund priced only before its exit tax (F-118) or on an open rule (G-18) is shown, never ranked
-  const open = !!way?.beforeTax || Object.values(way?.byHouse ?? {}).some((w) => "valueN" in w && w.open);
+  // a fund priced on an open rule (G-18) is shown, never ranked
+  const open = Object.values(way?.byHouse ?? {}).some((w) => "valueN" in w && w.open);
   return { kind: "unranked", why: open ? "open-rule" : "unpriced" };
 }
 

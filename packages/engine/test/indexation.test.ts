@@ -9,7 +9,7 @@ import { runPension } from "../src/ledgers/pension.ts";
 import { runSecurities } from "../src/ledgers/securities.ts";
 import { PROVIDENT_RESULT_FIELDS } from "../src/ledgers/provident.ts";
 import { EMPLOYER_LINE_FIELDS, PENSION_RESULT_FIELDS } from "../src/ledgers/pension.ts";
-import { RUN_RESULT_FIELDS, type ResultFields } from "../src/result.ts";
+import { RUN_RESULT_FIELDS, type Label, type Outcome, type ResultFields } from "../src/result.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context(); // run date 2026-10-23: grid year 1 is 2026
@@ -168,21 +168,23 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
   it("keeps the flags, labels and rules of every reading where their outputs agree, so a caveat raised under one reading only is not dropped", () => {
     const open = openReadings.find((o) => o.question === "TXG OQ17")!;
     const [one, two] = open.readings;
+    const eligible = { code: "eligible" as const };
     const run = (c: typeof ctx) => {
       const choice = c.readings?.[open.question];
       if (choice === undefined) throw new OpenReadingError(open);
       const rule = (id: string, figure: string) => ({ id, strength: "primary" as const, dimensions: [], figures: [{ name: figure, strength: "primary" as const }] });
       return choice === one!.id
-        ? { nominal: 1, flags: [{ code: "A" }, { code: "C", month: 9 }], labels: [{ code: "institution-source" as const, ruleId: "X" }], rules: [rule("X", "a")] }
+        ? { nominal: 1, outcome: eligible, flags: [{ code: "A" }, { code: "C", month: 9 }], labels: [{ code: "institution-source" as const, ruleId: "X" }], rules: [rule("X", "a")] }
         : {
             nominal: 1,
+            outcome: eligible,
             flags: [{ code: "A", month: 2 }, { code: "B", month: 3 }, { code: "C", month: 4 }],
             labels: [{ code: "reading" as const, ruleId: "X" }, { code: "derived" as const, ruleId: "Y" }],
             rules: [rule("X", "b"), rule("Y", "c")],
           };
     };
     expect(two).toBeDefined();
-    const r = acrossReadings(ctx, run, { nominal: "output", flags: "trail", labels: "trail", rules: "trail" });
+    const r = acrossReadings(ctx, run, { nominal: "output", outcome: "output", flags: "trail", labels: "trail", rules: "trail" });
     // one flag a code, in the order they first appear, from the earliest month a reading raises it, a flag with no month (the whole run)
     // the earliest of all, then the question's own
     expect(r.flags).toEqual([{ code: "A" }, { code: "C", month: 4 }, { code: "B", month: 3 }, { code: "TXG-OQ17" }]);
@@ -196,6 +198,53 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     expect(mergedLabels([{ labels: [{ code: "derived", ruleId: "Z" }] }, { labels: [{ code: "secondary-source", ruleId: "Z" }] }])).toEqual([{ code: "derived", ruleId: "Z" }]);
   });
 
+  it("lets the reading that leaves less stand, whole, where a cautious case's readings split; a stopping case stops on its question", () => {
+    // a made-up case of each policy, over two readings whose results differ in the value and in another output
+    const cautious = { kind: "tax-index" as const, ruleId: "R-1", question: "R OQ1", onSplit: "cautious" as const, readings: [{ id: "principal" as const }, { id: "cpi" as const }] };
+    const stopping = { ...cautious, onSplit: "stop" as const };
+    const none: Label[] = [];
+    const outcome: Outcome = { code: "eligible" };
+    const byReading = { principal: { real: 90, nominal: 120, outcome, flags: [{ code: "F" }], labels: none }, cpi: { real: 95, nominal: 125, outcome, flags: [{ code: "C" }], labels: none } };
+    const runOf = (open: typeof cautious | typeof stopping) => (c: typeof ctx) => {
+      const choice = c.readings?.[open.question];
+      if (choice === undefined) throw new OpenReadingError(open);
+      if (choice === null) throw new BlockedError(open.ruleId, open.question);
+      return byReading[choice as "principal" | "cpi"];
+    };
+    const fields = { real: "value", nominal: "output", outcome: "output", flags: "trail", labels: "trail" } as const;
+    // the lower value's result, every field of it, no flag of the question, and the site's cautious reading of the case's rule
+    expect(acrossReadings(ctx, runOf(cautious), fields)).toEqual({ ...byReading.principal, labels: [{ code: "cautious", ruleId: "R-1" }] });
+    expect(() => acrossReadings(ctx, runOf(stopping), fields)).toThrow(BlockedError);
+    // a type that declares no value has none to read
+    expect(() => acrossReadings(ctx, runOf(cautious), { real: "output", nominal: "output", outcome: "output", flags: "trail", labels: "trail" })).toThrow(/declares 0/);
+  });
+
+  it("takes a cautious case's readings that leave the same value as agreeing, and weighs no value before the exit tax against one after it", () => {
+    const cautious = { kind: "tax-index" as const, ruleId: "R-1", question: "R OQ1", onSplit: "cautious" as const, readings: [{ id: "principal" as const }, { id: "cpi" as const }] };
+    const none: Label[] = [];
+    const eligible: Outcome = { code: "eligible" };
+    type Run = { real: number; nominal: number; outcome: Outcome; flags: { code: string }[]; labels: Label[] };
+    const runOf = (byReading: Record<"principal" | "cpi", Run>) => (c: typeof ctx) => {
+      const choice = c.readings?.[cautious.question];
+      if (choice === undefined) throw new OpenReadingError(cautious, "status");
+      return byReading[choice as "principal" | "cpi"];
+    };
+    const fields = { real: "value", nominal: "output", outcome: "output", flags: "trail", labels: "trail" } as const;
+    // the same value, another output different: the readings agree, the first stands with the question's flag, and no label
+    const tie = { principal: { real: 90, nominal: 120, outcome: eligible, flags: [], labels: none }, cpi: { real: 90, nominal: 125, outcome: eligible, flags: [], labels: none } };
+    expect(acrossReadings(ctx, runOf(tie), fields)).toEqual({ ...tie.principal, flags: [{ code: "R-OQ1" }] });
+    // one reading's run stopped before its exit tax on a nested question, its value before that tax above the other's after it: the run
+    // stands as the reading that stopped, with no label
+    const stopped: Outcome = { code: "listed-not-ranked", reason: "TXG-09", question: "TXG OQ17" };
+    const nested = { principal: { real: 90, nominal: 120, outcome: eligible, flags: [], labels: none }, cpi: { real: 95, nominal: 125, outcome: stopped, flags: [], labels: none } };
+    expect(acrossReadings(ctx, runOf(nested), fields)).toEqual(nested.cpi);
+    const below = { ...nested, cpi: { ...nested.cpi, real: 80 } };
+    expect(acrossReadings(ctx, runOf(below), fields)).toEqual(below.cpi);
+    // where they split, the label says what the case was met knowing of the fund
+    const split = { ...tie, cpi: { ...tie.cpi, real: 85 } };
+    expect(acrossReadings(ctx, runOf(split), fields).labels).toEqual([{ code: "cautious", ruleId: "R-1", notKnown: "status" }]);
+  });
+
   it("compares a field a result gains unless its type declares it working: a new output counts until it is declared otherwise", () => {
     // a field the declaration does not name, as a run's result would carry before its type's declaration lists it, is compared
     const a = { ...({ nominal: 100, flags: [] } as const), gained: 1 };
@@ -204,15 +253,17 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     expect(sameResult(a, b, declared as ResultFields<typeof a>)).toBe(false);
     expect(sameResult(a, b, { ...declared, gained: "working" })).toBe(true);
     // every field of every result type a ledger compares is declared, each with a role (a field added to a type fails to compile otherwise),
-    // and the fields that are not outputs are exactly these: re-declaring an output (`detail`, `routed`, `years`) as working or trail fails
-    const notOutputs = (fields: Readonly<Record<string, string>>) => Object.fromEntries(Object.entries(fields).filter(([, role]) => role !== "output"));
+    // and the fields that are not compared are exactly these: re-declaring an output (`detail`, `routed`, `years`) as working or trail fails;
+    // the value, what a cautious reading reads (`SplitPolicy`), is compared as an output, and every type declares the one, what is left
+    const notOutputs = (fields: Readonly<Record<string, string>>) => Object.fromEntries(Object.entries(fields).filter(([, role]) => role !== "output" && role !== "value"));
     const trail = { flags: "trail", labels: "trail", formulas: "trail", rules: "trail", statements: "trail" };
     expect(notOutputs(RUN_RESULT_FIELDS)).toEqual(trail);
     expect(notOutputs(PROVIDENT_RESULT_FIELDS)).toEqual(trail);
     expect(notOutputs(PENSION_RESULT_FIELDS)).toEqual({ ...trail, working: "working" });
     expect(notOutputs(EMPLOYER_LINE_FIELDS)).toEqual(trail);
     for (const fields of [RUN_RESULT_FIELDS, PROVIDENT_RESULT_FIELDS, PENSION_RESULT_FIELDS, EMPLOYER_LINE_FIELDS]) {
-      for (const role of Object.values(fields)) expect(["output", "trail", "working"]).toContain(role);
+      for (const role of Object.values(fields)) expect(["output", "value", "trail", "working"]).toContain(role);
+      expect(Object.entries(fields).filter(([, role]) => role === "value").map(([k]) => k)).toEqual(["real"]);
     }
     expect(PROVIDENT_RESULT_FIELDS.routed).toBe("output");
     expect(PENSION_RESULT_FIELDS).toMatchObject({ detail: "output", years: "output", deposits: "output", exit: "output" });

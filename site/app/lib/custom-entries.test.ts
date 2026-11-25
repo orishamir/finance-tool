@@ -10,7 +10,7 @@ import { calendarMonthOf } from "@finance-tool/engine";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
 import { PairLists } from "../components/invest/lists";
 import { EditorsContext, type Editors } from "../components/invest/editors";
-import { invest } from "../copy";
+import { invest, numbers } from "../copy";
 import { LabelSheetHost } from "../components/kit";
 import { ProvenanceProvider } from "../components/provenance";
 import { fundDraftOf, fundErrors, fundFromDraft, validCustomBrokers, validCustomFunds, withCustomEntries, type CustomBroker, type CustomFund } from "./custom-entries";
@@ -174,6 +174,18 @@ describe("a fund the person types is priced at the collected houses under its ki
     expect(withCustomEntries(bundle, [abroad]).funds.at(-1)?.tax_status).not.toHaveProperty("foreign_investment_fund");
   });
 
+  it("a Tel Aviv foreign fund typed on a dollar index is priced on the reading that leaves less, its doubt saying the site read none of its documents (F-04)", () => {
+    const f = fundFromDraft({ ...said("tase-foreign"), name: "חוץ", fixed: 0.1, variable: 0, trustee: 0 }, "custom-fund-tase", "index-sp500", t);
+    const v = buildInvest({ bundle: withCustomEntries(bundle, [f]), index: sp, plan });
+    const typed = allFunds(v).find((x) => x.rec.id === f.id);
+    const figures = Object.values(typed?.byHouse ?? {}).filter((x): x is WayPrice => "valueN" in x);
+    expect(figures.length).toBeGreaterThan(0);
+    for (const at of figures) {
+      expect(at.value.doubt).toBe(numbers.readingDoubt["TXF-04"]?.documents);
+      expect(at.value.doubtRules).toEqual(["TXF-04"]);
+    }
+  });
+
   it("a hedged fund has no price, with the reason, as a collected fund with no report", () => {
     const hedged = fundFromDraft({ ...said("il-tracking"), name: "מנוטרלת", fixed: 0.1, variable: 0, trustee: 0, hedged: true }, "custom-fund-hedged", "index-sp500", t);
     const v = buildInvest({ bundle: withCustomEntries(bundle, [hedged]), index: sp, plan });
@@ -190,10 +202,13 @@ describe("a fund the person types is priced at the collected houses under its ki
     const f = allFunds(v).find((x) => x.rec.id === onCustom.id)!;
     expect(v.fundCount).toBe(1);
     // an Israeli fund the person typed on an index not in shekels: whether it is a foreign-investment fund is not known, so it is run under
-    // both readings of TXS OQ26 (F-04); at the plan's 2% inflation and a steady currency they differ, and it is listed before tax, not ranked
-    expect(f.reason).toEqual({ code: "rule-open", ruleId: "TXS-14", question: "TXS OQ26" });
-    expect(f.best).toBeUndefined();
-    expect(Object.values(f.beforeTax?.byHouse ?? {}).some((x) => x.leftN > 0)).toBe(true);
+    // both readings of TXS OQ26 (F-04); at the plan's 2% inflation and a steady currency they differ, and it is priced on the one that leaves
+    // less, its figure marked as the site's reading of TXS-14
+    expect(f.reason).toBeUndefined();
+    expect(f.best?.valueN).toBeGreaterThan(0);
+    expect(f.best?.value.doubtRules).toEqual(["TXS-14"]);
+    // the site read none of its documents, and its doubt says so
+    expect(f.best?.value.doubt).toBe(numbers.readingDoubt["TXS-14"]?.documents);
     // where the currency moves as prices do, the readings agree: it is ranked, and is the page's headline
     const agree = buildInvest({ bundle: withCustomEntries(bundle, [onCustom], [custom]), index: refOfCustom(custom), plan, assumptions: { fxChange: 2 } });
     expect(allFunds(agree).find((x) => x.rec.id === onCustom.id)?.best?.valueN).toBeGreaterThan(0);

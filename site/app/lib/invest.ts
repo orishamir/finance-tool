@@ -4,15 +4,15 @@
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { bestRanked } from "./rank";
 import { gershayim } from "./format";
-import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, providerWorkbenchBeforeTax, isTie, beforeTaxPathOf, securitiesBlockedBy, securitiesStopOf, tieThreshold, type BeforeTaxProvider, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
-import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
+import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, fundOf, recordDistribution, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
+import { isShekel, type ExposureRecord, type FeesSnapshot, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomFund } from "./custom-entries";
 import { dealProviderOf, houseSnap, isDealProviderId } from "./deal-account/bundle";
 import { feeIdsOf, missingOf } from "./deal-account/plan";
 import { feeNameOf } from "./fee-deal/part-words";
 import { aliasRows } from "./search-aliases";
-import { fxRunInput, isShekel, nisPer } from "./fx";
+import { fxRunInput, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
 import { OPTION_KIND } from "./labels";
 import { computed, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
@@ -241,19 +241,6 @@ export interface WayPrice {
   units: { monthly: number; skipped: number } | null;
 }
 
-/**
- * F-118 (D84): a fund whose exit tax rests on an open rule, at one house, read before that tax. Kept apart from `FundWay.byHouse`, so no
- * list, tie, headline, stairs or pair ever reads it: it is shown, labelled before tax, and never ranked.
- */
-export interface BeforeTaxPrice {
-  providerId: string;
-  /** What is left at the horizon before the exit tax, today's shekels (F-118). */
-  left: SiteValue;
-  leftN: number;
-  /** What the account's fees take over the horizon (F-91's account part from the same runs, less what the cash waiting for a whole unit did, F-109), in whole shekels. */
-  accountCost: SiteValue;
-}
-
 export interface FundWay {
   rec: FundRecord;
   name: string;
@@ -268,8 +255,6 @@ export interface FundWay {
   currencyMismatch: boolean;
   /** F-109: the fund is bought in whole units and its record holds no unit price, so it is priced by amount and its row says so. */
   noUnitPrice: boolean;
-  /** F-118 (D84): the fund's tax rests on an open rule (`reason` is `rule-open`), and its figures before tax at each house that prices it. */
-  beforeTax?: { ruleId: string; byHouse: Record<string, BeforeTaxPrice> };
 }
 
 export interface OptionView {
@@ -464,13 +449,16 @@ function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
   return { fund: { kind: "foreign-fund", drag: {} }, market: { ...market, returnIn: "instrument", fxChange: 0 }, currency: { code: "USD", startRate: usd }, cls: OPTION_CLASS.abroad };
 }
 
-/** The open rule a run of the spec's fund would rest on (F-04), or null. A question whose readings split a run (TXG OQ17 at a falling CPI)
- *  is the run's own to say: its row is not comparable, "rule-open" (method §13). */
-const blockedBy = (ctx: Ctx, spec: Spec): string | null => securitiesBlockedBy(spec.fund, ruleContext(ctx.bundle));
+/** The open rule a run of the spec's fund would rest on (F-04), with the question that stops it where one does, or null. A question whose
+ *  readings split a run (TXG OQ17 at a falling CPI) is the run's own to say: its row is not comparable, "rule-open" (method §13). */
+const blockedBy = (ctx: Ctx, spec: Spec): SecuritiesStop | null => securitiesBlockedBy(spec.fund, ruleContext(ctx.bundle));
 
-/** The open rule every fund of a kind would rest on (F-04: a foreign fund in Tel Aviv, TXF-04), or null: what a fund the person types of that kind is told. */
-export function optionOpenRule(bundle: IndicesBundle, option: OptionId): string | null {
-  return securitiesBlockedBy({ kind: OPTION_KIND[option] }, ruleContext(bundle));
+/**
+ * The open rule a fund the person types would rest on (F-04: a foreign fund in Tel Aviv that distributes, TXF-04 with TXF open question 19),
+ * or null: what its row says before it is added. Read from its record as the list reads it (`fundOf`), with the yield it pays where it has one.
+ */
+export function typedFundOpenRule(bundle: IndicesBundle, rec: FundRecord, option: OptionId): SecuritiesStop | null {
+  return securitiesBlockedBy(fundOf(rec, OPTION_KIND[option], { distribution: recordDistribution(rec) }).fund, ruleContext(bundle));
 }
 
 /**
@@ -489,8 +477,6 @@ function currentAccountOf(ctx: Ctx, s: FeesSnapshot): FeesSnapshot["current_acco
   return record && countsCurrentAccount({ current_account: record.current_account }) ? record.current_account! : null;
 }
 
-/** A row of either workbench: F-63's, or F-118's for a fund whose exit tax rests on an open rule. */
-type SlotRow = ProviderRow | BeforeTaxProvider;
 
 /** The person's age and income as a run's tax reads them: the surtax on the income with the gain (F-43), and from 60 the brackets the gain falls into (F-42). */
 function profileOf(ctx: Ctx): { ageAtStart?: number; annualIncome?: number } {
@@ -502,7 +488,7 @@ function profileOf(ctx: Ctx): { ageAtStart?: number; annualIncome?: number } {
 
 const goalOf = (ctx: Ctx) => ({ amountNow: ctx.plan.amountNow, monthly: ctx.plan.monthly, months: 12 * ctx.plan.years, firstMonth: calendarMonthOf(ctx.bundle.today) });
 
-function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[], untilExitTax = false): SlotRow[] {
+function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[]): ProviderRow[] {
   const profile = profileOf(ctx);
   const input = (list: typeof items) => ({
     goal: goalOf(ctx),
@@ -533,10 +519,9 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[],
       return { snapshot: scoped(x.s), level: "list" as const, ...account, ...(x.cand.band ? { band: x.cand.band } : {}) };
     }),
   });
-  // F-118: a fund whose exit tax rests on an open rule is read before that tax, and its rows are never compared rows
   // the rows in the items' order, a deal's among the houses' (the workbench lists the price lists first)
-  const inOrder = (list: typeof items, rows: SlotRow[]): SlotRow[] => list.map((x) => rows.find((r) => r.id === x.s.id)!);
-  const run = (list: typeof items): SlotRow[] => inOrder(list, untilExitTax ? providerWorkbenchBeforeTax(input(list), ruleContext(ctx.bundle)).rows : providerWorkbench(input(list), ruleContext(ctx.bundle)).rows);
+  const inOrder = (list: typeof items, rows: ProviderRow[]): ProviderRow[] => list.map((x) => rows.find((r) => r.id === x.s.id)!);
+  const run = (list: typeof items): ProviderRow[] => inOrder(list, providerWorkbench(input(list), ruleContext(ctx.bundle)).rows);
   try {
     return run(items);
   } catch {
@@ -611,12 +596,12 @@ function reasonOf(row: NotComparableProvider, s: FeesSnapshot): NotComparable {
 }
 
 /** `cand`: the reading of the tariff the price is on (an account built on a house: the house's). */
-type Priced<R extends ComparedProvider | BeforeTaxProvider = ComparedProvider> = { kind: "ok"; row: R; venue: Venue | null; standing: boolean; aside: string[]; cand: Cand } | { kind: "fail"; reason: NotComparable };
-/** What a row leaves at the horizon, the figure a house's readings are chosen on: after tax (F-63), or before it (F-118); null when not priced. */
-const leftOf = (row: SlotRow): number | null => (row.kind === "compared" ? row.real : row.kind === "before-tax" ? row.beforeTax : null);
+type Priced = { kind: "ok"; row: ComparedProvider; venue: Venue | null; standing: boolean; aside: string[]; cand: Cand } | { kind: "fail"; reason: NotComparable };
+/** What a row leaves at the horizon after tax, the figure a house's readings are chosen on (F-63); null when not priced. */
+const leftOf = (row: ProviderRow): number | null => (row.kind === "compared" ? row.real : null);
 
 /** The venue the tariff line a row used names (a trade line's band), else the reading's venue. */
-function rowVenue(row: ComparedProvider | BeforeTaxProvider, s: FeesSnapshot, cand: Cand): Venue | null {
+function rowVenue(row: ComparedProvider, s: FeesSnapshot, cand: Cand): Venue | null {
   for (const id of row.linesUsed) {
     const l = s.lines.find((x) => x.id === id);
     if (l && l.base === "trade") return venueOfBand(l.band) ?? cand.venue;
@@ -631,22 +616,15 @@ function rowVenue(row: ComparedProvider | BeforeTaxProvider, s: FeesSnapshot, ca
 const sameCand = (a: Cand, b: Cand) => a.venue === b.venue && JSON.stringify(a.band ?? null) === JSON.stringify(b.band ?? null);
 
 function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null): Map<string, Priced> {
-  // a fund whose tax rests on an open rule is priced nowhere after tax (F-04: a TASE foreign fund, TXF-04), so no house is ranked on a guess
+  // a fund whose tax rests on an open rule is priced nowhere after tax (F-04: a TASE foreign fund that distributes, or the kind with no fund
+  // record, TXF-04), so no house is ranked on a guess
   const open = blockedBy(ctx, spec);
-  if (open) return new Map(snaps.map((s): [string, Priced] => [s.id, { kind: "fail", reason: { code: "rule-open", ruleId: open } }]));
-  return priceRows(ctx, spec, option, snaps, fundVenue, false) as Map<string, Priced>;
+  if (open) return new Map(snaps.map((s): [string, Priced] => [s.id, { kind: "fail", reason: { code: "rule-open", ...open } }]));
+  return priceRows(ctx, spec, option, snaps, fundVenue);
 }
 
-/**
- * F-118: the same readings for a fund whose exit tax rests on an open rule, each house read before that tax (`providerWorkbenchBeforeTax`).
- * The caller has checked the fund's path (`beforeTaxPathOf`).
- */
-function priceBeforeTax(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null): Map<string, Priced<BeforeTaxProvider>> {
-  return priceRows(ctx, spec, option, snaps, fundVenue, true) as Map<string, Priced<BeforeTaxProvider>>;
-}
-
-function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null, untilExitTax: boolean): Map<string, Priced<ComparedProvider | BeforeTaxProvider>> {
-  type Got = Priced<ComparedProvider | BeforeTaxProvider>;
+function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null): Map<string, Priced> {
+  type Got = Priced;
   const baseOf = (s: FeesSnapshot) => (houseOfSnap(ctx, s) === s.id ? null : houseOfSnap(ctx, s));
   // a deal filled from a house's whole price list is an account at that house (F-128): it takes the house's availability as the house's own
   // row reads it (`houseSells`), so it is priced only where the house sells the fund
@@ -659,11 +637,11 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
   const bases = [...new Set(snaps.flatMap((s) => { const b = baseOf(s) ?? dealHouseOf(s); return b && !snaps.some((x) => x.id === b) ? [b] : []; }))].flatMap((b) => ctx.bundle.snapshots.filter((x) => x.id === b));
   const all = [...snaps, ...bases];
   const per = all.map((s) => ({ s, cands: candidates(scoped(s), option).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
-  const results = new Map<string, { row: SlotRow; cand: Cand }[]>();
+  const results = new Map<string, { row: ProviderRow; cand: Cand }[]>();
   const slots = Math.max(0, ...per.map((p) => p.cands.length));
   for (let k = 0; k < slots; k++) {
     const items = per.filter((p) => p.cands[k]).map((p) => ({ s: p.s, cand: p.cands[k]! }));
-    const rows = runSlot(ctx, spec, items, untilExitTax);
+    const rows = runSlot(ctx, spec, items);
     items.forEach((x, i) => results.set(x.s.id, [...(results.get(x.s.id) ?? []), { row: rows[i]!, cand: x.cand }]));
   }
   const out = new Map<string, Got>();
@@ -688,7 +666,7 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
       continue;
     }
     const got = results.get(s.id) ?? [];
-    let best: { row: ComparedProvider | BeforeTaxProvider; venue: Venue | null; cand: Cand } | null = null;
+    let best: { row: ComparedProvider; venue: Venue | null; cand: Cand } | null = null;
     // the exchange of a reading set aside because the fund trades on another: the house's lines abroad name only that one
     let otherVenue: Venue | null = null;
     for (const g of got) {
@@ -724,7 +702,7 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
  * nothing of what the house sells, and the deal is read on its own prices. What a record says a house does not sell, and what it sells
  * fund by fund, the deal's record carries itself (`snapshotOfDeal`).
  */
-function houseSells(house: Priced<ComparedProvider | BeforeTaxProvider> | undefined): Extract<Priced, { kind: "fail" }> | null {
+function houseSells(house: Priced | undefined): Extract<Priced, { kind: "fail" }> | null {
   return house?.kind === "fail" && (house.reason.code === "no-applicable-line" || house.reason.code === "other-venue") ? house : null;
 }
 
@@ -828,6 +806,13 @@ export function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): 
 const rulesOf = (row: ComparedProvider) => row.run.rules.map((u) => ({ id: u.id, strength: u.strength as Strength }));
 /** What a figure after the run's tax rests on besides its rules: the fund's own statements the run read in place of one (D84, the tax index its annex states). */
 const statementsOf = (row: ComparedProvider) => row.run.statements ?? [];
+/** The run's labels, which a figure that rests on its tax carries: a cautious reading among them makes the figure's doubt (`readingDoubtOf`). */
+const labelsOf = (row: ComparedProvider) => row.run.labels;
+/**
+ * Whether a figure before the exit tax carries a run's label: every one but a cautious reading's, whose open cases (the tax index of TXS
+ * OQ26 and TXF OQ10, F-04) only the exit tax reads, so a cost before tax wears no doubt of theirs.
+ */
+const beforeExitTax = (l: Label): boolean => l.code !== "cautious";
 
 /** What one engine run reads, for the sheet of a figure that comes out of it (`inputsOfRun`). */
 interface RunReads {
@@ -846,7 +831,7 @@ interface RunReads {
    * surtax on (F-43) and, with an age, the brackets from 60 (F-42); `before`, a difference of two `B = V_T^real + tax_real` (F-91: the
    * account's whole part, its lines bought by amount, the remainder, the fund's part), reads the income only on a fund that pays out, whose
    * yearly surtax on each payout counts in `tax_real` (`taxDuring`) though it never leaves the holdings. None: a figure that reads no tax (a
-   * line carried in whole units or of a deal, the waiting cash, a value before the exit tax, F-118).
+   * line carried in whole units or of a deal, the waiting cash).
    */
   tax?: "after" | "before";
 }
@@ -1010,7 +995,7 @@ function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string | 
 
 /** What is left with one account and one fund (F-65's real value), as every list and the stairs show it, with what its run reads. */
 function valueFigure(ctx: Ctx, row: ComparedProvider, reads: RunReads, about: string, extra: Record<string, SiteValue> = {}): SiteValue {
-  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, { ...reads, tax: "after" }), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, { ...reads, tax: "after" }), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: labelsOf(row), about });
 }
 
 function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string, spec: Spec): WayPrice {
@@ -1027,8 +1012,7 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     venue: p.venue,
     open,
     accountCost: fees,
-    // the cost before tax carries the run's labels on its sources; every reading the engine gives is a tax rule's (READING_RULE_IDS), which a cost before tax does not rest on
-    cost: computed(fees, "nis", "F-91", inputsOfRun(ctx, { ...reads, tax: "before" }), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter((l) => l.code !== "reading").map((l) => ({ code: l.code, ruleId: l.ruleId })) }),
+    cost: computed(fees, "nis", "F-91", inputsOfRun(ctx, { ...reads, tax: "before" }), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter(beforeExitTax) }),
     standing: p.standing,
     aside: p.aside,
     units: unitsOf(row.run),
@@ -1053,7 +1037,7 @@ function exposureOf(ctx: Ctx, rec: FundRecord) {
   return ctx.bundle.exposures.find((e) => e.id === rec.exposure_id) ?? (entered && ctx.bundle.entered!.shekelFunds.includes(rec.id) ? { ...entered, currency: "ILS" } : entered);
 }
 
-function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } | { reason: Reason; beforeTax?: { spec: Spec; ruleId: string } } {
+function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } | { reason: Reason } {
   const exposure = exposureOf(ctx, rec);
   const subject = subjectOf(ctx.bundle, rec.id);
   if (!subject) return { reason: { code: "fund-type" } };
@@ -1068,17 +1052,15 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: rec.domicile === "US" && !isCustomFund(rec) ? "us-fund-open" : "need-yield" } : { code: "fund-type" } };
   const listing = listingOf(rec, subject.instrumentClass);
   const spec: Spec = { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass, ...(listing ? { listing } : {}) };
-  // a fund whose tax rests on an open rule is listed with the reason and no rank (F-04, G-35), with its figures before tax where F-118 reads
-  // them (D84: a fund that pays nothing out): a TASE foreign fund on TXF-04, or a fund whose tax index is an open reading (TXS OQ26) where
-  // its readings give the plan different results (method §13)
+  // a fund whose tax rests on an open rule is listed with the reason and no rank (F-04, G-35): a TASE foreign fund that distributes, on
+  // TXF-04; a fund whose tax index is an open reading (TXS OQ26, TXF OQ10) computes, on the reading that leaves less where they split
   const own = { goal: goalOf(ctx), market: { ...spec.market, inflation: ctx.plan.inflation }, fund: spec.fund, tariff: spec.currency ? { currency: spec.currency } : {}, profile: profileOf(ctx) };
   const stop = securitiesStopOf(own, ruleContext(ctx.bundle));
   if (stop) {
-    const path = beforeTaxPathOf(own, ruleContext(ctx.bundle), stop);
-    return { reason: { code: "rule-open", ruleId: stop.ruleId, ...(stop.question ? { question: stop.question } : {}) }, ...(path ? { beforeTax: { spec, ruleId: path.ruleId } } : {}) };
+    return { reason: { code: "rule-open", ruleId: stop.ruleId, ...(stop.question ? { question: stop.question } : {}) } };
   }
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
-  const mismatch = !!exposure && !["NIS", "ILS"].includes(rec.currency) && rec.currency !== exposure.currency;
+  const mismatch = !!exposure && !isShekel(rec.currency) && rec.currency !== exposure.currency;
   return { spec, mismatch };
 }
 
@@ -1108,30 +1090,6 @@ const nameOf = (rec: FundRecord) => rec.names.he[0] ?? rec.names.en[0] ?? rec.id
 const tickerOf = (rec: FundRecord) => Object.values(rec.identifiers.ticker ?? {})[0] ?? null;
 const numberOf = (rec: FundRecord) => rec.identifiers.tase_number ?? rec.identifiers.isin ?? tickerOf(rec) ?? (isCustomFund(rec) ? "" : rec.id);
 
-/**
- * F-118 (D84): a fund whose exit tax rests on an open rule, at every house that prices it before that tax: what is left before the tax and
- * what the account charges, from the same runs. Never a `WayPrice`, so nothing ranks it.
- */
-function beforeTaxPrices(ctx: Ctx, rec: FundRecord, option: OptionId, spec: Spec, snaps: FeesSnapshot[], venue: Venue | null): Record<string, BeforeTaxPrice> {
-  const out: Record<string, BeforeTaxPrice> = {};
-  for (const [id, p] of priceBeforeTax(ctx, spec, option, snaps, venue)) {
-    if (p.kind !== "ok") continue;
-    const row = p.row;
-    const reads: RunReads = { house: id, fund: rec.id, spec, row };
-    const rules = row.run.rules.map((u) => ({ id: u.id, strength: u.strength as Strength }));
-    const name = shortOf(ctx, id);
-    // what the account charges, which the list shows no column for: listed among what the figure before tax reads, so its sheet holds it
-    const accountCost = computed(Math.round(row.horizonCostBeforeTax - (unitsOf(row.run) ? (waitingReal({ ...row.run, nominal: row.run.beforeTaxNominal, real: row.run.beforeTaxReal }) ?? 0) : 0)), "nis", "F-91", inputsOfRun(ctx, reads), { today: ctx.bundle.today, rules, flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about: copy.beforeTax.costAbout(name) });
-    out[id] = {
-      providerId: id,
-      left: computed(row.beforeTax, "nis", "F-118", { ...inputsOfRun(ctx, reads), [copy.beforeTax.costInput]: accountCost }, { today: ctx.bundle.today, rules, flags: row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about: copy.beforeTax.leftAbout(nameOf(rec), name) }),
-      leftN: row.beforeTax,
-      accountCost,
-    };
-  }
-  return out;
-}
-
 // ---------------------------------------------------------------- the option
 
 /** One fund of an option at every house (F-63, F-65): its price at each house that sells it, or why it has none, and its cheapest ranked house. */
@@ -1141,7 +1099,7 @@ function fundWayOf(ctx: Ctx, rec: FundRecord, option: OptionId): FundWay {
   const venue = option === "abroad" ? venueOfFund(rec) : null;
   // the houses that sell this fund: the kind, and where a house sells it fund by fund, the fund itself (BRK-38)
   const sells = ctx.snaps.filter((s) => sellsFund(s, option, rec));
-  if ("reason" in fs) return { ...base, reason: fs.reason, ...(fs.beforeTax && sells.length ? { beforeTax: { ruleId: fs.beforeTax.ruleId, byHouse: beforeTaxPrices(ctx, rec, option, fs.beforeTax.spec, sells, venue) } } : {}) };
+  if ("reason" in fs) return { ...base, reason: fs.reason };
   // the fund at every house that sells it, the exchange it trades on for a fund abroad
   const got = sells.length ? priceMany(ctx, fs.spec, option, sells, venue) : new Map<string, Priced>();
   const ways: WayPrice[] = [];
@@ -1240,10 +1198,6 @@ function headlineOf(options: OptionView[]): Way | null {
   return from.sort((a, b) => b.valueN - a.valueN)[0] ?? null;
 }
 
-const shortOf = (ctx: Ctx, id: string) => {
-  const s = ctx.snaps.find((x) => x.id === id);
-  return s ? providerInfo(s).short : id;
-};
 
 /** Fund first by value left: ranked ones, then ones on an open rule, then the ones with no price. */
 const entryOrder = (a: HouseEntry, b: HouseEntry) => {
@@ -1477,7 +1431,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout, lead: copy.pair.paidInLead }),
     paidInNominal: computed(row.run.paidIn, "nis", "F-05", planInputs(ctx.plan, ["amount", "monthly", "years", "inflation"]), { today: ctx.bundle.today, about: copy.pair.paidInNominalAbout, lead: copy.pair.paidInLead }),
     index: computed(end.index, "index_points", "F-03", planInputs(ctx.plan, ["inflation", "years"]), { today: ctx.bundle.today, about: copy.pair.indexAbout }),
-    left: computed(row.real, "nis", "F-65", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), about: nameOf(rec) }),
+    left: computed(row.real, "nis", "F-65", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), labels: labelsOf(row), about: nameOf(rec) }),
     account: lines,
     interaction,
     remainder: at(interaction, "F-91", copy.pair.lineAbout(copy.pair.remainder), bInputs),
@@ -1487,7 +1441,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     waiting: unitsOf(row.run) ? at(waitingN, "F-109", copy.pair.waitingAbout) : null,
     distributes: !!distribution,
     fund: at(parts.fund, "F-91", copy.pair.fundAbout, inputsOfRun(ctx, { fund: rec.id, spec: fs.spec, tax: "before" })),
-    tax: computed(parts.state, "nis", "F-91", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), about: distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout }),
+    tax: computed(parts.state, "nis", "F-91", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), labels: labelsOf(row), about: distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout }),
     base,
     // X reads the plan and the rate alone: no fund cost, no distribution, no account (its run's rules are a tax's, which X is before)
     baseValue: computed(base, "nis", "F-91", inputsOfRun(ctx, { spec: fs.spec, costsOff: true }), { today: ctx.bundle.today, about: copy.pair.baseAbout }),
@@ -1531,7 +1485,7 @@ export type DealOnPlan =
   | {
       kind: "ok";
       valueN: number;
-      /** The run rests on an open rule (F-118, G-18), as a house's `WayPrice.open`: shown before the tax, not ranked. */
+      /** The run rests on an open rule (G-18), as a house's `WayPrice.open`: shown, not ranked. */
       open: boolean;
       byFee: Record<string, number>;
       accountCost: number;
@@ -1580,7 +1534,7 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
     }
     const row = got.row;
     const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row };
-    const of = (tax: RunReads["tax"]) => (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, tax }), { today: ctx.bundle.today, rules: rulesOf(row), ...(tax === "after" ? { statements: statementsOf(row) } : {}), labels: row.run.labels.map((l) => ({ code: l.code, ruleId: l.ruleId })), about });
+    const of = (tax: RunReads["tax"]) => (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, tax }), { today: ctx.bundle.today, rules: rulesOf(row), ...(tax === "after" ? { statements: statementsOf(row), labels: labelsOf(row) } : { labels: row.run.labels.filter(beforeExitTax) }), about });
     out.set(fundId, { kind: "ok", valueN: row.real, open: row.run.outcome.code === "listed-not-ranked", byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure: of(undefined), left: of("after") });
   }
   return out;

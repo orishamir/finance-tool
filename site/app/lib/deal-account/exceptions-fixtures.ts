@@ -56,9 +56,8 @@ export function onDealsTerms(bundle: IndicesBundle, deals: readonly { house: str
   return { bundle: { ...bundle, snapshots }, changed };
 }
 
-/** What account `id` leaves on fund `f`: after tax, or before it on a fund an open rule leaves untaxed (F-118); null where it has no price. */
+/** What account `id` leaves on fund `f`: after tax; null where it has no price. */
 export function leftOn(f: FundWay, id: string): number | null {
   const at = f.byHouse[id];
-  const n = at && "valueN" in at ? at.valueN : f.beforeTax?.byHouse[id]?.leftN;
-  return n === undefined ? null : n;
+  return at && "valueN" in at ? at.valueN : null;
 }

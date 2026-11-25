@@ -2,7 +2,7 @@
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
 import { countPhrase } from "./lib/count";
 import type { FeeCap } from "@finance-tool/schema";
-import type { ChangeKind, FundStatement, HeldKind, TaxIndexStatement } from "@finance-tool/engine";
+import type { ChangeKind, FundStatement, HeldKind, NotKnown, TaxIndexStatement } from "@finance-tool/engine";
 import type { FeeKindId } from "./lib/fee-deal/core";
 
 /**
@@ -87,6 +87,23 @@ export const numbers = {
   weak: { secondary: "משני", institution: "לפי החברה" },
   /** A figure the record itself doubts (SiteValue.doubt): the word in its label and the title over the doubt in its sheet. */
   doubt: "יש ספק",
+  /**
+   * The doubt of a figure that rests on the site's cautious reading of an open case (lib/value.ts `readingDoubtOf`), by the case's rule: its
+   * readings split, and the run took the one that leaves less (method §13, product D119). Its sheet opens the rule beside it. One text for
+   * each thing the site may not know of the fund beside the open law (the engine's `NotKnown`): `known`, the fund's own documents were read;
+   * `status`, they do not say whether it is a foreign-investment fund; `documents`, the person typed the fund and the site read none of them.
+   */
+  readingDoubt: {
+    "TXF-04": {
+      known: "אין נוסח רשמי שאומר לפי איזה מדד מחשבים את מס רווחי ההון כשמוכרים את הקרן הזו, וגם הנספח הישראלי לתשקיף שלה לא אומר. לכן האתר חישב את מס רווחי ההון פעמיים, לפי שער המטבע של הקרן ולפי מדד המחירים לצרכן, ומציג את החישוב שמשאיר פחות כסף. זו קריאה של האתר, לא מקור.",
+      documents: "אין נוסח רשמי שאומר לפי איזה מדד מחשבים את מס רווחי ההון כשמוכרים קרן חוץ שנסחרת בתל אביב. את הקרן הזו הזנתם, והאתר לא קרא את המסמכים שלה, כך שגם לא ידוע מה הנספח הישראלי לתשקיף שלה אומר על כך. לכן האתר חישב את מס רווחי ההון פעמיים, לפי שער המטבע של הקרן ולפי מדד המחירים לצרכן, ומציג את החישוב שמשאיר פחות כסף. זו קריאה של האתר, לא מקור.",
+    },
+    "TXS-14": {
+      known: "לפי המסמכים של הקרן היא קרן נאמנות להשקעות חוץ. אין נוסח רשמי שאומר אם התקנות מ־2003, שלפיהן הרווח בקרן כזו נמדד מול שער המטבע העיקרי שלה, עדיין בתוקף. לכן האתר חישב את מס רווחי ההון פעמיים, לפי שער המטבע העיקרי של הקרן ולפי מדד המחירים לצרכן, ומציג את החישוב שמשאיר פחות כסף. זו קריאה של האתר, לא מקור.",
+      status: "לא ידוע אם הקרן הזו היא קרן נאמנות להשקעות חוץ: המסמכים שלה שהאתר קרא לא אומרים. בקרן כזו הרווח נמדד מול שער המטבע העיקרי שלה, אם התקנות מ־2003 שקובעות זאת עדיין בתוקף, וגם על זה אין נוסח רשמי. בקרן אחרת הרווח נמדד מול מדד המחירים לצרכן. לכן האתר חישב את מס רווחי ההון פעמיים, לפי שער המטבע שהמדד מחושב בו ולפי מדד המחירים לצרכן, ומציג את החישוב שמשאיר פחות כסף. זו קריאה של האתר, לא מקור.",
+      documents: "את הקרן הזו הזנתם, והאתר לא קרא את המסמכים שלה, כך שלא ידוע אם היא קרן נאמנות להשקעות חוץ. בקרן כזו הרווח נמדד מול שער המטבע העיקרי שלה, אם התקנות מ־2003 שקובעות זאת עדיין בתוקף, וגם על זה אין נוסח רשמי. בקרן אחרת הרווח נמדד מול מדד המחירים לצרכן. לכן האתר חישב את מס רווחי ההון פעמיים, לפי שער המטבע שהמדד מחושב בו ולפי מדד המחירים לצרכן, ומציג את החישוב שמשאיר פחות כסף. זו קריאה של האתר, לא מקור.",
+    },
+  } as Record<string, Partial<Record<"known" | NotKnown, string>>>,
   yes: "כן",
   no: "לא",
   /** values the rule records write as English words, shown in Hebrew */
@@ -855,7 +872,6 @@ export const formulaNames: Record<string, string> = {
   "F-115": "מחיר שמשתנה לפי הגודל, בכל גודל",
   "F-116": "הנחה מהמחיר",
   "F-117": "עמלה של צד שלישי",
-  "F-118": "מה שנשאר לפני מס רווחי הון, כשהמס תלוי בשאלה פתוחה",
   "F-121": "עמלה של קרן שהורדה לתקופה קצובה",
   "F-122": "העמלה שנגבתה בפועל בממוצע, לידיעה בלבד",
   "F-123": "העלות באחוזים מהסכום",
@@ -1063,7 +1079,9 @@ export const flags: Record<string, string> = {
   "BRK-OQ25": "עמלת המינימום בקנייה ובמכירה כאן חושבה לפי 2.5 במטבע העסקה, כלשון התעריפון. אותו עמוד אומר גם שהעמלה נגבית במטבע הראשי של הבורסה. הוא לא אומר איך זה מתיישב עם מינימום בעסקה בדולרים, ולכן העמלה בפועל יכולה להיות שונה.",
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה. האתר עוד לא בדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
   // F-04, method §13: a fund run under both readings of TXS OQ26 (TXS-14), beside a figure both readings give
-  "TXS-OQ26": "לא ידוע אם הרווח בקרן הזו נמדד מול שער המטבע העיקרי שלה או מול מדד המחירים לצרכן. כמטבע העיקרי האתר לוקח את המטבע שהמדד מחושב בו. בתוכנית הזו שתי הדרכים נותנות אותו מס.",
+  "TXS-OQ26": "לא ידוע אם הרווח בקרן הזו נמדד מול שער המטבע העיקרי שלה או מול מדד המחירים לצרכן. כמטבע העיקרי האתר לוקח את המטבע שהמדד מחושב בו. בתוכנית הזו שתי הדרכים נותנות אותו מס רווחי הון.",
+  // F-04, method §13: a TASE foreign fund whose annex states no index, run under both readings of TXF OQ10 (TXF-04), beside a figure both give
+  "TXF-OQ10": "לא ידוע אם הרווח בקרן הזו נמדד מול שער המטבע שלה או מול מדד המחירים לצרכן. בתוכנית הזו שתי הדרכים נותנות אותו מס רווחי הון.",
   "G-14": "הוצאות ישירות של המסלול עוד לא נאספו, ולכן לא נכללו בחישוב.",
   // F-119: an s.120ב amount read for a year after its freeze; TXG OQ16 (the rounding, the CPI readings, the unrounded 2024 amount) keeps it from being exact
   // the person's income stays as entered (A-12, A-13), and the figures linked to the average wage stay at 2026's (method G-36); a fall of the CPI is TXG OQ17,
@@ -1455,7 +1473,6 @@ export const guideBlocks = {
       // the regulator's own words for the figure in members' reports (CAT-37, which the value's sheet cites)
       regBalance: "ממוצע דמי הניהול מחיסכון שנגבו בפועל בשנת {year} (לא תעריפון)",
       regDeposit: "ממוצע דמי הניהול מהפקדה שנגבו בפועל בשנת {year} (לא תעריפון)",
-      ninetyPercentTest: "מבחן 90% בקרן זרה",
     } as Record<string, string>,
     linkage: { unlinked: "לא צמוד", cpi: "צמוד למדד", prime: "צמוד לפריים" } as Record<string, string>,
   },
@@ -4159,34 +4176,6 @@ export const invest = {
     otherPriceWords: "מחיר אחר לקנייה בהוראת קבע",
   },
 
-  /**
-   * F-118 (D84): the funds whose tax rests on an open rule, listed under the funds with their figures before tax at the chosen account, never
-   * ranked and never chosen as the pair.
-   */
-  beforeTax: {
-    /** The heading over them, in the blocked colours with the lock, and a caution "?" beside it that holds the note below. */
-    heading: "לפני מס רווחי הון, בלי דירוג",
-    /**
-     * The caution "?"'s text, by the rule, ended by the rule's chip (`HelpMark` `rules`). A list can hold funds of both rules (a TASE foreign
-     * fund stops before any run, an Israeli fund whose readings split stops by its run), so each sentence names the funds it speaks of.
-     */
-    note: {
-      "TXF-04": "בקרנות החוץ כאן מס רווחי הון עוד לא ידוע: אין נוסח רשמי שאומר אם הרווח בקרן חוץ שנסחרת בתל אביב נמדד מול שער המטבע או מול מדד המחירים לצרכן.",
-      "TXS-14": "בקרנות הישראליות כאן מס רווחי הון עוד לא ידוע: לא ידוע אם הרווח בהן נמדד מול שער המטבע העיקרי שלהן או מול מדד המחירים לצרכן, ובתוכנית הזו שתי הדרכים נותנות תוצאה שונה. כמטבע העיקרי האתר לוקח את המטבע שהמדד מחושב בו.",
-    } as Record<string, string>,
-    noteOther: "המס על הקרנות האלה עוד לא ידוע: הוא תלוי בכלל שעוד לא נקבע.",
-    /** The note's last sentence: what the figures are and what is not done with them. */
-    noteTail: "לכן הסכומים כאן לפני מס רווחי הון, ואי אפשר להשוות אותם לקרנות שלמעלה או לבחור בהן.",
-    /** The list's name, for a screen reader. */
-    label: (house: string) => `קרנות לפני מס רווחי הון ${inName(house)}`,
-    /** The list's one figure column, as the fund list's: the figure's sheet lists what the account charges among what it reads. */
-    colLeft: "נשאר לפני מס",
-    /** What the account charges, on the sheet of the figure before tax, among what it reads. */
-    costInput: "מה החשבון גובה בכל התקופה, בהתחשב באינפלציה",
-    leftAbout: (fund: string, house: string) => `נשאר לפני מס רווחי הון: ${fund}, ${inName(house)}`,
-    costAbout: (house: string) => `מה החשבון גובה: ${house}`,
-  },
-
   /** "לפני שמחליטים" under the lists: a few questions about the chosen pair, a card each with its answer, one panel open at a time. */
   before: {
     title: "לפני שמחליטים",
@@ -5034,11 +5023,13 @@ export const invest = {
     soldFundByFund: "אין מחיר בלי קרן מסוימת: הבית מוכר קרן כזו רק אם מנהל הקרן חתם איתו על הסכם הפצה.",
     /** The same house, and a fund no report of an agreement names: open, never "not sold" (the record's own words show where it has them). */
     noAgreementFound: "לא ידוע אם אפשר לקנות את הקרן הזו שם: לא נמצא הסכם הפצה עליה.",
-    /** A fund whose tax rests on an open rule (F-04, G-35), where no figure before tax is shown for it (an account that does not price it, a
-     *  kind with no fund record, a fund that pays out, the preview of a fund being typed): by the rule, said plainly; nothing is ranked. Where
-     *  F-118 prices it, a typed accumulating fund with its fees among them, `beforeTax` says it. */
+    /** A fund whose tax rests on an open rule (F-04, G-35), said plainly, by the open question that stops it where one does, else by the
+     *  rule; nothing is ranked. */
     ruleOpen: {
-      "TXF-04": "אי אפשר לחשב את מס רווחי הון: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע או לפי מדד המחירים לצרכן. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
+      // the kind of Tel Aviv foreign fund with no fund record: no currency for the exchange-rate reading of TXF OQ10
+      "TXF-04": "אי אפשר לחשב את מס רווחי הון בלי קרן מסוימת: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע של הקרן או לפי מדד המחירים לצרכן, וכדי לחשב לפי שתי הדרכים האתר צריך לדעת את המטבע של הקרן.",
+      // a Tel Aviv foreign fund that pays out, collected or being typed: its legal form is not known to the run
+      "TXF OQ19": "אי אפשר לחשב את מס ההכנסה על החלוקות של הקרן: כשקרן חוץ שנסחרת בתל אביב מאוגדת כנאמנות או כהסדר חוזי ולא כחברה, לא ידוע אם החלוקה שלה ממוסה כדיבידנד או כריבית, והאתר לא יודע איך הקרן הזו מאוגדת. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
       // F-119 at a falling CPI (TXG OQ17), its readings giving the run different results (method §13)
       "TXG-09": "אי אפשר לחשב את המס במכירה אחרי 2027 כשהאינפלציה שלילית: החוק מעדכן את מדרגות המס ואת הסף של המס הנוסף לפי עליית המדד, ולא אומר מה קורה כשהמדד יורד. כאן כל אחת מהאפשרויות נותנת מס אחר, ולכן אין כאן חישוב ודירוג.",
     } as Record<string, string>,
@@ -5088,8 +5079,8 @@ export const invest = {
     "currency-foreign": { text: "חשיפה למט״ח", explain: "את המדד הזה הוספתם, והאתר לא יודע באיזה מטבע הוא מחושב. ערך הקרן עולה ויורד גם עם שער המטבע הזה מול השקל. בדיקת השער באתר זהה לכל מטבע, ולכן היא לא תלויה בשאלה איזה מטבע זה." },
     "currency-many": { text: (ccy: string) => `חשיפה ל${ccy} ולמטבעות נוספים`, explain: (ccy: string) => `ערך הקרן עולה ויורד עם שער ה${ccy} מול השקל, ועם המטבעות האחרים שבמדד, כי המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות.` },
     "tax-currency": { text: "מס גם על שינויי המטבע", explain: "ביחידות שקליות של קרן ישראלית שאינה קרן נאמנות להשקעות חוץ, הרווח הריאלי נמדד מול מדד המחירים לצרכן, ולכן גם עליית המטבע שבתוך הרווח ממוסה." },
-    "tax-currency-open": { text: "מס על המטבע: לא ידוע", explain: "לפי מסמכי הקרן היא קרן נאמנות להשקעות חוץ. בקרן כזו הרווח הריאלי נמדד מול שער המטבע העיקרי שלה, אם תקנות מ־2003 שקובעות זאת עדיין בתוקף, ולא ידוע אם הן בתוקף. אם לא, הרווח נמדד מול מדד המחירים לצרכן. האתר מחשב את שתי הדרכים, ומדרג את הקרן רק כשהן נותנות אותו מס." },
-    "tax-currency-unknown": { text: "מס על המטבע: לא ידוע", explain: "האתר לא יודע אם הקרן הזו היא קרן נאמנות להשקעות חוץ. בקרן כזו הרווח הריאלי נמדד מול שער המטבע העיקרי שלה, אם תקנות מ־2003 שקובעות זאת עדיין בתוקף, וגם זה לא ידוע. בקרן אחרת הוא נמדד מול מדד המחירים לצרכן. המטבע העיקרי נקבע בתשקיף, והאתר לוקח במקומו את המטבע שהמדד מחושב בו. האתר מחשב את שתי הדרכים, ומדרג את הקרן רק כשהן נותנות אותו מס." },
+    "tax-currency-open": { text: "מס רווחי הון על המטבע: לא ידוע", explain: "לפי מסמכי הקרן היא קרן נאמנות להשקעות חוץ. בקרן כזו הרווח הריאלי נמדד מול שער המטבע העיקרי שלה, אם תקנות מ־2003 שקובעות זאת עדיין בתוקף, ולא ידוע אם הן בתוקף. אם לא, הרווח נמדד מול מדד המחירים לצרכן. האתר מחשב את שתי הדרכים, וכשהן נותנות מס רווחי הון שונה, מציג את זו שמשאירה פחות כסף." },
+    "tax-currency-unknown": { text: "מס רווחי הון על המטבע: לא ידוע", explain: "האתר לא יודע אם הקרן הזו היא קרן נאמנות להשקעות חוץ. בקרן כזו הרווח הריאלי נמדד מול שער המטבע העיקרי שלה, אם תקנות מ־2003 שקובעות זאת עדיין בתוקף, וגם זה לא ידוע. בקרן אחרת הוא נמדד מול מדד המחירים לצרכן. המטבע העיקרי נקבע בתשקיף, והאתר לוקח במקומו את המטבע שהמדד מחושב בו. האתר מחשב את שתי הדרכים, וכשהן נותנות מס רווחי הון שונה, מציג את זו שמשאירה פחות כסף." },
     "tax-fund-dividend": { text: "מס דיבידנד בתוך הקרן", explain: "קרן אירית משלמת מס אמריקני על דיבידנדים מחברות אמריקניות. המס הזה הוא עלות של הקרן ולא מזוכה בישראל: כך רשות המסים אומרת על קרן חוץ שרשומה בבורסה בתל אביב, ועל קרן שנקנית בחו״ל זו קריאה של האתר." },
     "tax-distribution": { text: "מס על כל חלוקה", explain: "קרן שמחלקת משלמת לכם דיבידנד, וממנו משלמים מס בכל חלוקה, לפני המכירה." },
     "pays-accumulating": { text: "צוברת", explain: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש." },

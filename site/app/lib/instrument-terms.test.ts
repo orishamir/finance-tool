@@ -119,16 +119,9 @@ describe("buildInstrumentTerms: a Tel Aviv foreign fund's tax index (F-04, D84)"
     const built = buildInstrumentTerms("brokerage-account", "securities", { fund: r.id }, { fees: [], funds: [r], deposits, rules, today: "2026-11-12" });
     return "missing" in built ? built.missing : [];
   };
-  it("asks for a 90% test value only of a fund whose annex states no index: only TXF-04's index reads it", () => {
+  it("asks for no 90% test value: a fund whose annex states no index is run on its currency's exchange rate and the CPI (TXF OQ10)", () => {
     const noTest = { ...rec, tax_status: { ...rec.tax_status, tase_foreign_fund_90pct_test: null } };
-    expect(missingOf(noTest).some((m) => m.includes("90% test value"))).toBe(false);
-    expect(missingOf({ ...noTest, tax_ruling: unstated }).some((m) => m.includes("90% test value"))).toBe(true);
-  });
-  it("asks for it of a fund that states one and distributes: its runs read no statement and stop on TXF-04 (G-35)", () => {
-    // the yield the run pays out (A-10), in the record's own value shape: a fee's, which is a percent a year too
-    const fee = rec.fees.fixed_management;
-    if (fee?.unit !== "pct_per_year") throw new Error("1159250's fixed fee is a percent a year");
-    const noTest = { ...rec, distribution_policy: "distributing" as const, distribution: { yield: { ...fee, value: 1.5 }, per_year: 4 as const }, tax_status: { ...rec.tax_status, tase_foreign_fund_90pct_test: null } };
-    expect(missingOf(noTest).some((m) => m.includes("90% test value"))).toBe(true);
+    expect(missingOf(noTest).some((m) => m.includes("90% test"))).toBe(false);
+    expect(missingOf({ ...noTest, tax_ruling: unstated }).some((m) => m.includes("90% test"))).toBe(false);
   });
 });

@@ -3,6 +3,7 @@
 //   ILS per EUR / code per EUR   (EUR itself: ILS per EUR).
 // This file is pure (it runs in the browser); fx.server.ts reads the series file.
 import { crossRate } from "@finance-tool/engine";
+import { isoCurrency } from "@finance-tool/schema";
 import { computed, type SiteValue } from "./value";
 import { signatureFacts } from "../copy";
 import { daysBetween } from "./dates";
@@ -23,9 +24,7 @@ export interface FxSnapshot {
   sourceUrl: string;
 }
 
-/** The shekel's code, which records write either way. */
-export const isShekel = (code: string): boolean => code === "ILS" || code === "NIS";
-const norm = (code: string) => (isShekel(code) ? "ILS" : code.toUpperCase());
+const norm = (code: string) => isoCurrency(code).toUpperCase();
 
 /** Plain number, NIS per one unit of `code`; null when the ECB has no rate for it. */
 export function nisPerNumber(fx: FxSnapshot, code: string): number | null {

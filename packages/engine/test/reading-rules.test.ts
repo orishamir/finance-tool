@@ -1,10 +1,12 @@
-// READING_RULE_IDS lists every rule the engine labels `reading` (third check, 2026-11-07: the goal comparison holds room for the
-// reading mark on a row that cites one of them, so the list must not fall behind the engine).
+// READING_RULE_IDS lists every rule the engine labels the site's own reading (the goal comparison holds room for the reading mark on a row
+// that cites one of them, so the list must not fall behind the engine): those a ledger labels `reading` by name, and the rule of every open
+// reading whose split takes the cautious reading, which a run is labelled `cautious` with where its readings split.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { READING_RULE_IDS } from "../src/result.ts";
+import { openReadings } from "../src/open-readings.ts";
 
 const src = fileURLToPath(new URL("../src/", import.meta.url));
 const walk = (dir: string): string[] => readdirSync(dir).flatMap((n) => (statSync(join(dir, n)).isDirectory() ? walk(join(dir, n)) : [join(dir, n)]));
@@ -22,6 +24,7 @@ describe("READING_RULE_IDS", () => {
     }
     // every rule is labelled by name: one labelled through a variable would have to be listed where the variable is set
     expect(dynamic).toBe(0);
+    for (const o of openReadings) if (o.onSplit === "cautious") labelled.add(o.ruleId);
     expect([...labelled].sort()).toEqual([...READING_RULE_IDS].sort());
   });
 });

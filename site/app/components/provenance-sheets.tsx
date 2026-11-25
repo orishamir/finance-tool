@@ -491,7 +491,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           {!blocked && <StateTag state={param ? "parameter" : value.state} />}
           {/* a figure that rests on the site's reading of official texts says so wherever it is opened (the
               guide visuals and the holdings page carried the engine's reading label and nothing showed it) */}
-          {value.labels?.some((l) => l.code === "reading") && <ReadingTag />}
+          {value.labels?.some((l) => l.code === "reading" || l.code === "cautious") && <ReadingTag />}
           {value.stale && <IconClock size={16} className="text-caution" />}
         </div>
         {value.about && (
@@ -513,10 +513,12 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
         </p>
       )}
 
-      {/* the record's own doubt about this figure (SiteValue.doubt): said near the top of the figure's sheet, wherever the figure shows; at the end it sat below a phone's fold */}
+      {/* the doubt about this figure (SiteValue.doubt), the record's own or the site's reading of an open rule, with the rules it rests on:
+          said near the top of the figure's sheet, wherever the figure shows; at the end it sat below a phone's fold */}
       {value.doubt && (
         <Callout tone="caution" title={numbers.doubt}>
           <PrintedText text={value.doubt} />
+          {value.doubtRules && <RuleTitleList ids={value.doubtRules} className="mt-1.5" />}
         </Callout>
       )}
 

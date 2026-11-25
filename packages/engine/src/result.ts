@@ -35,31 +35,55 @@ export interface Flag {
   month?: number;
 }
 
+/** How a number that rests on a rule must be labelled (D10): what a rule's use says of it (`RuleLabel`), or the site's cautious reading of an open case (`CautiousLabel`). */
+export type Label = RuleLabel | CautiousLabel;
+
 /**
- * How a number that rests on a rule must be labelled (D10): `secondary-source` and `institution-source`
- * from the rule's strength; `reading` where the rule base gives its own reading (TXI-04); `derived` where
- * a figure is derived rather than stated (TXS-12(b)); `proxy` where an input stands in for another (MF-34).
+ * A label a rule's use gives a number: `secondary-source` and `institution-source` from the rule's strength; `reading` where the rule base
+ * gives its own reading (TXI-04); `derived` where a figure is derived rather than stated (TXS-12(b)); `proxy` where an input stands in for
+ * another (MF-34).
  */
-export interface Label {
+export interface RuleLabel {
   code: "secondary-source" | "institution-source" | "reading" | "derived" | "proxy";
   ruleId: string;
 }
 
-/** How much a label says, so a rule keeps its strongest one: a reading, derivation or proxy over a source's strength. */
+/**
+ * The site's cautious reading of an open case (method §13, `SplitPolicy` "cautious"): its readings split, and the run took the one that
+ * leaves the holder less, so the figure is the site's conclusion and a page marks it on the figure itself. `ruleId` is the case's rule, which
+ * may be open. `notKnown`: what the site does not know of the fund the case is met for, beside the open law (`NotKnown`); absent where the
+ * fund's own documents were read and settle its facts.
+ */
+export interface CautiousLabel {
+  code: "cautious";
+  ruleId: string;
+  notKnown?: NotKnown;
+}
+
+/**
+ * What the site does not know of a fund whose tax index is an open reading (F-04), which the doubt on its figures says beside the open law:
+ * whether it is a foreign-investment fund, where the documents read do not settle it (`status`); or anything its own documents say, since
+ * the site read none (`documents`: a fund the person typed, D44).
+ */
+export type NotKnown = "status" | "documents";
+
+/** How much a label says, so a rule keeps its strongest one: the site's cautious reading, then a reading, derivation or proxy, over a source's strength. */
 export const labelWeight: Record<Label["code"], number> = {
   "secondary-source": 3,
   "institution-source": 2,
   reading: 4,
   derived: 4,
   proxy: 4,
+  cautious: 5,
 };
 
 /**
- * Every rule the engine may label `reading`, some only when a condition holds (an index that fell below a deposit's, a payment
- * after the period): a page holds room for the reading mark on a row that cites one, so the mark never moves the screen when it
- * appears. A test holds this list to the engine's `label("reading", …)` calls.
+ * Every rule the engine may label the site's own reading: `reading`, some only when a condition holds (an index that fell below a deposit's,
+ * a payment after the period), and `cautious`, the rule of every open reading whose split takes the cautious reading (`SplitPolicy`): a
+ * page holds room for the reading mark on a row that cites one, so the mark never moves the screen when it appears. A test holds this list
+ * to the engine's `label("reading", …)` calls and those open readings.
  */
-export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11", "TXK-07"];
+export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-04", "TXF-11", "TXH-11", "TXK-07", "TXS-14"];
 
 /**
  * Every flag code a ledger run can raise (`RunResult.flags`): the method gaps, assumptions, rules and open questions a page must say beside
@@ -68,7 +92,7 @@ export const READING_RULE_IDS: readonly string[] = ["KH-12", "TXF-11", "TXH-11",
  */
 export const RUN_FLAG_CODES: readonly string[] = [
   "A-30", "BANK-35", "G-03", "G-07", "G-09", "G-10", "G-12", "G-13", "G-14", "G-16", "G-20", "G-21", "G-23", "G-27", "G-32",
-  "G-34", "G-36", "G-39", "KGL-OQ15", "PEN-08", "PEN-OQ7", "PF-13", "PF-OQ18", "TXF-21", "TXF-22", "TXF-27", "TXF-OQ7", "TXG-OQ17", "TXK-06", "TXK-26",
+  "G-34", "G-36", "G-39", "KGL-OQ15", "PEN-08", "PEN-OQ7", "PF-13", "PF-OQ18", "TXF-21", "TXF-22", "TXF-27", "TXF-OQ10", "TXF-OQ7", "TXG-OQ17", "TXK-06", "TXK-26",
   "TXP-03", "TXP-11", "TXP-OQ20", "TXS-18", "TXS-OQ26",
 ];
 
@@ -83,8 +107,8 @@ export type FundStatement = TaxIndexStatement;
 /**
  * F-04, D84: whether a fund's runs read the tax index its own annex states: only a TASE foreign fund's, and only one that pays nothing out.
  * A statement settles only the index: a fund that distributes stops on its distribution's open part whatever its annex states (G-35, TXF
- * open question 19: the run does not know its legal form), so its runs read none and stop on TXF-04 as an unstated one's do. The site's
- * labels say a statement by this same test.
+ * open question 19: the run does not know its legal form), so its runs read none and stop on TXF-04. The site's labels say a statement
+ * by this same test.
  */
 export function readsStatedIndex(kind: Fund["kind"], distributes: boolean): boolean {
   return kind === "tase-foreign-fund" && !distributes;
@@ -176,11 +200,12 @@ export interface RunResult {
 }
 
 /**
- * What a field of a result is to the comparison of readings (method §13, `sameResult`): an `output`, compared number for number; its
- * `trail`, what the run read and raised (flags, labels, rules, formulas); or its `working`, a figure the run computes on the way to an output
- * and shows nowhere, which can differ by reading while every output agrees.
+ * What a field of a result is to the comparison of readings (method §13, `sameResult`): an `output`, compared number for number; the
+ * `value`, the one output that says what the result leaves the holder, which a cautious reading reads to take the reading that leaves less
+ * (`SplitPolicy`), compared as an output; its `trail`, what the run read and raised (flags, labels, rules, formulas); or its `working`, a
+ * figure the run computes on the way to an output and shows nowhere, which can differ by reading while every output agrees.
  */
-export type FieldRole = "output" | "trail" | "working";
+export type FieldRole = "output" | "value" | "trail" | "working";
 
 /**
  * Every field of a result type `R` with its role: the type names each key of `R`, so a field added to a result does not compile until it is
@@ -192,7 +217,8 @@ export type ResultFields<R> = { readonly [K in keyof Required<R>]: FieldRole };
 export const RUN_RESULT_FIELDS: ResultFields<RunResult> = {
   exitMonth: "output",
   nominal: "output",
-  real: "output",
+  // V_T / I_T: what is left after the exit tax, in today's shekels (F-06)
+  real: "value",
   paidIn: "output",
   fees: "output",
   taxDuring: "output",

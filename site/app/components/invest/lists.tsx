@@ -345,14 +345,10 @@ export function PairLists(props: ListsProps) {
     const fs = pricedAt(h);
     return { keys: fs.map((f) => f.rec.id), headings: new Set(groupStarts(fs, h).keys()), choosable: new Set(fs.map((f) => f.rec.id)), keep: new Set(fs.filter((f) => isCustomFund(f.rec)).map((f) => f.rec.id)) };
   });
-  // F-118 (D84): a fund whose tax rests on an open rule, priced before tax at the chosen account, stands in its own list under the funds
-  const beforeTaxAt = (f: FundWay) => (priced(f.byHouse[pick.house]) ? undefined : f.beforeTax?.byHouse[pick.house]);
-  const beforeTaxFunds = funds.filter((f) => beforeTaxAt(f));
-  // the chosen account is the person's deal with no price for buying abroad (E): its funds bought abroad, read before tax at every other
-  // account, fold into one line that says so and opens the deal on its buy-and-sell block
+  // the chosen account is the person's deal with no price for buying abroad (E): its funds bought abroad, priced at every other account, fold into one line that says so and opens the deal on its buy-and-sell block
   const abroadLacks = isDealProviderId(pick.house) ? (dealApi?.abroadLacks(pick.house) ?? null) : null;
-  const abroadFolded = abroadLacks ? funds.filter((f) => f.option === "abroad" && !beforeTaxAt(f) && !priced(f.byHouse[pick.house])) : [];
-  const unpricedFunds = funds.filter((f) => !priced(f.byHouse[pick.house]) && !beforeTaxAt(f) && !abroadFolded.includes(f)).sort((a, b) => kindRank(a) - kindRank(b));
+  const abroadFolded = abroadLacks ? funds.filter((f) => f.option === "abroad" && !priced(f.byHouse[pick.house])) : [];
+  const unpricedFunds = funds.filter((f) => !priced(f.byHouse[pick.house]) && !abroadFolded.includes(f)).sort((a, b) => kindRank(a) - kindRank(b));
   const cur = view.index.exposure?.currency ?? "USD";
   const names = view.index.exposure?.other_currencies === true ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
   const hedgedHeading = (
@@ -402,7 +398,8 @@ export function PairLists(props: ListsProps) {
       name
     );
   };
-  // what a fund leaves against the pick, the two as the list writes them (method §13): its word and its order come from it
+  // what a fund leaves against the pick, the two as the list writes them (method §13): its word and its order come from it, and a doubt on
+  // either (the site's cautious reading of an open tax index) is the difference's (`differenceOf`)
   const diff = (f: FundWay, at: WayPrice) => differenceOf([c.pair.input(f.name, c.pair.colLeft), at.value], [pickKey, selAt.value], "F-65", { today, about: sp.diffAbout });
   // each ranked fund's spot in the chosen account's stretch: its pair's value, or, for a fund of the other kind, where its difference from the
   // pair in the receipt runs over the dollar's range (a segment, held inside the scale's ends); a fund on an open rule has none
@@ -499,28 +496,6 @@ export function PairLists(props: ListsProps) {
     };
   });
 
-  // the funds on an open rule with their figures before tax at the chosen account (F-118, D84): never chosen, never set against the pair,
-  // in the order of the fund list's records (no order by value: they are not ranked)
-  const beforeTaxRows: PickRow[] = beforeTaxFunds.map((f) => {
-    const at = beforeTaxAt(f)!;
-    const typed = isCustomFund(f.rec);
-    return {
-      key: f.rec.id,
-      ...(typed ? { keep: true } : {}),
-      selected: false,
-      disabled: true,
-      onSelect: () => {},
-      cells: (
-        <>
-          {fundName(f, false)}
-          <span className="text-end text-sm font-semibold tabular-nums whitespace-nowrap">
-            <Num value={at.left} />
-          </span>
-        </>
-      ),
-    };
-  });
-  const beforeTaxRules = [...new Set(beforeTaxFunds.map((f) => f.beforeTax!.ruleId))];
   const dealId = isDealProviderId(pick.house) ? dealIdOf(pick.house) : null;
   const abroadLine =
     abroadLacks && abroadFolded.length > 0 && dealId ? (
@@ -540,39 +515,6 @@ export function PairLists(props: ListsProps) {
         </Disclosure>
       </div>
     ) : null;
-  const beforeTaxList =
-    beforeTaxRows.length > 0 ? (
-      <section className="flex flex-col">
-        <div className="nums-plain">
-          <PickList
-            look="line"
-            tone="fund"
-            label={c.beforeTax.label(short)}
-            columns="minmax(0,1fr) auto"
-            head={
-              <Head
-                figure={c.beforeTax.colLeft}
-                lead={
-                  // why these funds have no figure after tax, and so no rank, behind a caution "?" beside the heading, with the rules it rests on
-                  <h4 className="flex items-center gap-1.5 text-sm font-medium text-blocked-foreground">
-                    <IconLock size={14} />
-                    {c.beforeTax.heading}
-                    <HelpMark
-                      tone="caution"
-                      about={c.beforeTax.heading}
-                      text={[...beforeTaxRules.map((id) => c.beforeTax.note[id] ?? c.beforeTax.noteOther), c.beforeTax.noteTail].join(" ")}
-                      rules={beforeTaxRules}
-                    />
-                  </h4>
-                }
-              />
-            }
-            rows={beforeTaxRows}
-          />
-        </div>
-      </section>
-    ) : null;
-
   // ---------------------------------------------------------------- what the page says of the chosen rows, under both lists
   const at = selAt;
   const chosenNotes = [
@@ -648,7 +590,6 @@ export function PairLists(props: ListsProps) {
   const fundsFoot = (
     <div className="flex flex-col gap-3">
       {abroadLine}
-      {beforeTaxList}
       {greyRows.length > 0 && (
         <Disclosure label={c.lists.funds.unpriced(new Set(unpricedFunds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size)} open={unpricedOpen} onOpenChange={setUnpricedOpen} look="link" summaryClassName="text-sm">
           <div className="nums-plain pt-1">

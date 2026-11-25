@@ -5,7 +5,7 @@ import { invest as root } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
 import { customFundGap, DOMICILES, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type CustomFund, type EntryError, type EntryTerm, type FundDomicile, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { fundLabels, optionLabels, type Label } from "../../lib/labels";
-import { optionOpenRule, optionsOf, type IndexRef, type OptionId } from "../../lib/invest";
+import { typedFundOpenRule, optionsOf, type IndexRef, type OptionId } from "../../lib/invest";
 import { isoToday } from "../../lib/state";
 import { Num, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
@@ -288,12 +288,13 @@ function FundTraits({ draft, set, index, hedgedError }: { draft: FundDraft; set:
 /** The fund's row as it will stand on the list, and whether the page can price it; held at its longest case, so the buttons under it stay put. */
 function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
   const cls = optionClass[draft.kind];
-  const gap = customFundGap(draftRecord(draft, index));
-  // a kind whose tax rests on an open rule is never ranked or priced after tax, whatever is typed (F-04); once added, an accumulating one with
-  // its fees typed shows its figures before tax in its own list (F-118)
+  const rec = draftRecord(draft, index);
+  const gap = customFundGap(rec);
+  // a fund whose tax rests on an open rule is never ranked or priced after tax (F-04: a Tel Aviv foreign fund that distributes, TXF-04 with
+  // TXF open question 19)
   const bundle = useEditors()?.world?.bundle;
-  const open = bundle ? optionOpenRule(bundle, draft.kind) : null;
-  const openLine = open ? reasonText({ code: "rule-open", ruleId: open }, cls) : null;
+  const open = bundle ? typedFundOpenRule(bundle, rec, draft.kind) : null;
+  const openLine = open ? reasonText({ code: "rule-open", ...open }, cls) : null;
   const body = (labels: Label[], line: string) => (
     <div className="flex flex-col gap-1.5">
       {labels.length > 0 ? <LabelRow labels={labels} still /> : <span className="text-xs text-muted-foreground">{c.previewNone}</span>}
@@ -307,9 +308,11 @@ function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
     for (const payout of [...PAYOUTS, null]) for (const domicile of [...DOMICILES, null]) for (const cur of currencies) for (const tracking of TRACKINGS) variants.push({ ...draft, payout, domicile, ...cur, tracking, yield: 1, perYear: 4 });
     const size = (ls: Label[]) => ls.reduce((n, l) => n + l.text.length + 4, 0);
     const rows = variants.map((v) => rowLabels(v, index)).sort((a, b) => size(b) - size(a));
-    const lines = [c.previewPriced, ...(openLine ? [openLine] : []), ...(["fee-unknown", "payout-unknown", "need-yield", "domicile-unknown", "no-hedge-entered"] as const).map((code) => reasonText({ code }, cls))].sort((a, b) => b.length - a.length);
+    // a reason any answer can give: a Tel Aviv foreign fund that distributes rests on an open rule, one that accumulates does not
+    const opens = bundle ? [...new Set(variants.flatMap((v) => { const stop = typedFundOpenRule(bundle, draftRecord(v, index), v.kind); return stop ? [reasonText({ code: "rule-open", ...stop }, cls)] : []; }))] : [];
+    const lines = [c.previewPriced, ...opens, ...(["fee-unknown", "payout-unknown", "need-yield", "domicile-unknown", "no-hedge-entered"] as const).map((code) => reasonText({ code }, cls))].sort((a, b) => b.length - a.length);
     return { row: rows[0]!, line: lines[0]! };
-  }, [draft.kind, index, cls, openLine]);
+  }, [draft.kind, index, cls, bundle]);
   return (
     <div className="flex flex-col gap-1.5">
       <p className="text-sm font-medium">{c.preview}</p>

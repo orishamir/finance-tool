@@ -13,7 +13,9 @@ import {
   RecordInputError,
   runInputs,
   runPlanned,
+  mergedLabels,
   type InstrumentTerms,
+  type Label,
   type P05Input,
   type UsedRule,
 } from "@finance-tool/engine";
@@ -63,6 +65,8 @@ export interface TimelineResult {
   years: YearPoint[];
   rules: UsedRule[];
   flags: string[];
+  /** The labels of every year's run, one per rule, the strongest any gives it: the site's cautious reading among them makes the doubt of a figure that rests on the exit tax. */
+  labels: Label[];
   enteredReturn: boolean;
 }
 
@@ -136,6 +140,7 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
     const years: YearPoint[] = [];
     const flags = new Set<string>();
     const rules = new Map<string, UsedRule>();
+    const runs: { labels: Label[] }[] = [];
     for (let n = 1; n <= horizon; n++) {
       const yearPlan = { ...plan, input: { ...plan.input, goal: { ...plan.input.goal, months: 12 * n } } } as typeof plan;
       const run = runPlanned(yearPlan, ctx);
@@ -164,8 +169,9 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
       });
       run.flags.forEach((f) => flags.add(f.code));
       run.rules.forEach((r) => rules.set(r.id, r));
+      runs.push(run);
     }
-    return { kind: "ok", horizon, years, rules: [...rules.values()], flags: [...flags], enteredReturn: "A-01" in entered };
+    return { kind: "ok", horizon, years, rules: [...rules.values()], flags: [...flags], labels: mergedLabels(runs), enteredReturn: "A-01" in entered };
   } catch (e) {
     if (e instanceof BlockedError) return { kind: "blocked", ruleId: e.ruleId, ...(e.question ? { question: e.question } : {}), ...(e.gap ? { gap: e.gap } : {}), messageHe: blockedHe };
     if (e instanceof FigureNotUpdatedError) return { kind: "figure-not-updated", ruleId: e.ruleId, figure: e.figure, messageHe: figureNotUpdatedHe };

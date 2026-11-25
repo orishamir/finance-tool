@@ -37,7 +37,7 @@ import { beneficiaryRelief, employeeCredit, equalNetOutlay } from "./formulas/de
 import { studyFundEarlyWithdrawal } from "./formulas/early-withdrawal.ts";
 import { blockedWrapperExit } from "./formulas/blocked-exit.ts";
 import { insuranceCost } from "./formulas/insurance.ts";
-import { runSecurities, runSecuritiesBeforeTax } from "./ledgers/securities.ts";
+import { runSecurities } from "./ledgers/securities.ts";
 import { cpiLinkedAmount, indexedAmount } from "./formulas/indexation.ts";
 import { isTie } from "./compare/ranking.ts";
 import { costByWho, providerWorkbench } from "./providers/workbench.ts";
@@ -120,7 +120,6 @@ export const formulas = {
   "F-115": inStep,
   "F-116": discounted,
   "F-117": actionShare,
-  "F-118": runSecuritiesBeforeTax,
   "F-119": indexedAmount,
   "F-120": cpiLinkedAmount,
   "F-121": promotedDrag,
@@ -154,6 +153,7 @@ export const pending: Record<string, string> = {
   "F-64": "not built: no page uses this formula; its code is removed, but for the guides' range of the fees reported on the tracks (site/app/lib/guide.server.ts)",
   "F-65": "computed on the site for the funds with a record: site/app/lib/invest.ts, each fund built by `fundOf`; the candidates from the fund lists are not built",
   "F-66": "not built: no page uses this formula; its code is removed",
+  "F-118": "not built: no case reaches it (F-04 takes the cautious reading of an open tax index); its code is removed",
   "F-67": "computed on the site from each run's series: site/app/lib/engine.ts `runTimeline`, and the guide signatures' own year-by-year models",
   "F-68": "not built: no page uses this formula; its code is removed",
   "F-70": "not built: no page uses this formula; its code is removed",

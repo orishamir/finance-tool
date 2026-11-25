@@ -33,6 +33,8 @@ import {
   sourcesFile,
   israelToday,
   isReligiousLaw,
+  isShekel,
+  isTaseForeignLine,
   EFFECTIVE_RATE_PATHS,
 } from "@finance-tool/schema";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
@@ -1525,22 +1527,33 @@ function exposureCurrencies(files: string[], dataDir: string): Map<string, strin
 /**
  * data-schema §3.5 `tax_ruling.index` (method F-04, D84): the main currency a fund's annex states as its tax index is the record's own
  * `currency` and the exposure's, since a run measures the index on the one exchange-rate path it has, built from the record's currency. A
- * record whose exposure has no file leaves that path unchecked, and is reported rather than passed.
+ * Tel Aviv line of a foreign fund whose annex states no index is run on its record's currency's exchange rate as one reading (TXF OQ10),
+ * so a foreign `currency` of such a record is held to the exposure's the same way. A record whose exposure has no file leaves that path
+ * unchecked, and is reported rather than passed.
  */
 function checkStatedTaxIndex(files: string[], dataDir: string, currencies: ReadonlyMap<string, string>, report: (file: string, message: string) => void) {
   for (const file of files) {
     const rel = relative(dataDir, file).split(/[\\/]/).join("/");
     if (!/^funds\/[^/@]+@[^/]+\.json$/.test(rel)) continue;
-    const rec = parseJson(readFileSync(file, "utf8")).value as Partial<Pick<FundRecord, "currency" | "exposure_id" | "tax_ruling">> | undefined;
+    const rec = parseJson(readFileSync(file, "utf8")).value as Partial<Pick<FundRecord, "currency" | "exposure_id" | "tax_ruling" | "domicile" | "trading_currency_on_tase">> | undefined;
     const index = rec?.tax_ruling?.index;
-    if (index?.basis !== "main-currency") continue;
-    if (rec?.currency !== undefined && index.currency !== rec.currency)
-      report(file, `tax_ruling.index.currency: the main currency ${index.currency} is not the record's own currency ${rec.currency}, whose exchange-rate path the run indexes on (F-04)`);
-    if (rec?.exposure_id === undefined) continue;
+    if (index?.basis === "main-currency") {
+      if (rec?.currency !== undefined && index.currency !== rec.currency)
+        report(file, `tax_ruling.index.currency: the main currency ${index.currency} is not the record's own currency ${rec.currency}, whose exchange-rate path the run indexes on (F-04)`);
+      if (rec?.exposure_id === undefined) continue;
+      const exposureCurrency = currencies.get(rec.exposure_id);
+      if (exposureCurrency === undefined) report(file, `tax_ruling.index.currency: exposure ${rec.exposure_id} has no file with a currency, so the main currency ${index.currency} cannot be held to the exposure's (F-04)`);
+      else if (index.currency !== exposureCurrency)
+        report(file, `tax_ruling.index.currency: the main currency ${index.currency} is not the exposure's currency ${exposureCurrency}, the one exchange-rate path a run has (F-04)`);
+      continue;
+    }
+    // a Tel Aviv line of a foreign fund with no stated index, in a foreign currency: its exchange-rate reading reads the record's currency
+    const taseForeign = rec?.domicile !== undefined && rec.trading_currency_on_tase !== undefined && isTaseForeignLine({ domicile: rec.domicile, trading_currency_on_tase: rec.trading_currency_on_tase });
+    if (index || !taseForeign || rec?.currency === undefined || isShekel(rec.currency) || rec.exposure_id === undefined) continue;
     const exposureCurrency = currencies.get(rec.exposure_id);
-    if (exposureCurrency === undefined) report(file, `tax_ruling.index.currency: exposure ${rec.exposure_id} has no file with a currency, so the main currency ${index.currency} cannot be held to the exposure's (F-04)`);
-    else if (index.currency !== exposureCurrency)
-      report(file, `tax_ruling.index.currency: the main currency ${index.currency} is not the exposure's currency ${exposureCurrency}, the one exchange-rate path a run has (F-04)`);
+    if (exposureCurrency === undefined) report(file, `currency: exposure ${rec.exposure_id} has no file with a currency, so the record's currency ${rec.currency}, one reading of its tax index (TXF OQ10), cannot be held to the exposure's (F-04)`);
+    else if (rec.currency !== exposureCurrency)
+      report(file, `currency: the record's currency ${rec.currency}, one reading of its tax index (TXF OQ10), is not the exposure's currency ${exposureCurrency}, the one exchange-rate path a run has (F-04)`);
   }
 }
 

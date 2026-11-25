@@ -153,7 +153,7 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
       // the real gain by the record's own exit formula (F-44 the provident fund for investing, F-46 the study fund, F-50 child savings);
       // a security's is F-09's per-lot rule, which F-40 taxes
       const realGainFormula = bundle.record.tax_at_exit.formula === "F-40" ? "F-09" : bundle.record.tax_at_exit.formula;
-      const realGain = p.detail.realGain !== undefined ? computed(p.detail.realGain / (m === "real" ? p.index : 1), "nis", realGainFormula, realGainInputs, { today, about: `${ci.about.realGain} ${p.year}` }) : null;
+      const realGain = p.detail.realGain !== undefined ? computed(p.detail.realGain / (m === "real" ? p.index : 1), "nis", realGainFormula, realGainInputs, { today, labels: timeline.labels, about: `${ci.about.realGain} ${p.year}` }) : null;
       const taxInputs: Record<string, SiteValue> = {};
       if (realGain) taxInputs[ci.realGain] = realGain;
       if (taxRate) taxInputs[ci.taxRate] = taxRate;
@@ -163,8 +163,8 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
         Object.assign(taxInputs, { [ci.amountNow]: inputs[ci.amountNow]!, ...(lumpSum ? {} : { [ci.monthly]: inputs[ci.monthly]! }), [ci.years]: inputs[ci.years]!, [returnLabel]: inputs[returnLabel]! });
         if (bundle.terms.deposit?.linkage === "cpi") taxInputs[ci.inflation] = inputs[ci.inflation]!;
       }
-      const tax = computed(m === "real" ? p.taxReal : p.taxDuring + p.taxAtExit, "nis", bundle.record.tax_at_exit.formula, taxInputs, { today, rules: rules.filter((r) => r.id.startsWith("TX")), flags: timeline.flags.filter((f) => f !== "G-14" && f !== "PF-13"), about: `${ci.about.tax} ${p.year}` });
-      const net = computed(m === "real" ? p.real : p.nominal, "nis", "F-67", { ...inputs, [bundle.terms.tariff ? ci.feesTariff : ci.fees]: fees, [ci.taxAtExit]: tax }, { today, rules, flags: timeline.flags, about: p.year === horizonYears ? (bundle.terms.tariff ? ci.about.headlineTariff : ci.about.headline) : `${ci.about.net} ${p.year}` });
+      const tax = computed(m === "real" ? p.taxReal : p.taxDuring + p.taxAtExit, "nis", bundle.record.tax_at_exit.formula, taxInputs, { today, rules: rules.filter((r) => r.id.startsWith("TX")), flags: timeline.flags.filter((f) => f !== "G-14" && f !== "PF-13"), labels: timeline.labels, about: `${ci.about.tax} ${p.year}` });
+      const net = computed(m === "real" ? p.real : p.nominal, "nis", "F-67", { ...inputs, [bundle.terms.tariff ? ci.feesTariff : ci.fees]: fees, [ci.taxAtExit]: tax }, { today, rules, flags: timeline.flags, labels: timeline.labels, about: p.year === horizonYears ? (bundle.terms.tariff ? ci.about.headlineTariff : ci.about.headline) : `${ci.about.net} ${p.year}` });
       return { yearText, contributions, fees, tax, net };
     };
     return { inputs, yearValues };

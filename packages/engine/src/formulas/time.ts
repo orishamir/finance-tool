@@ -1,5 +1,6 @@
 // docs/method.md §3: time, money and the deflator.
 // No I/O, no DOM, no clock: the engine runs unchanged in tests, at build time and in a Web Worker.
+import { isoCurrency } from "@finance-tool/schema";
 
 /** The goal's outlay and horizon (method §2: A-04, A-05). */
 export interface Goal {
@@ -86,8 +87,8 @@ export function cpiPath(annualInflation: number, months: number): number[] {
 /**
  * F-04 Exchange-rate path. `X_0 = 1`; `X_m = X_{m−1} × (1 + f)^(1/12)` (A-03). For a foreign-currency
  * security held directly it replaces `I` as the tax index (TXF-03), and so it does for a TASE foreign fund whose own annex states its main
- * currency's exchange rate as its index (D84); for a TASE foreign fund whose annex states none the index is TXF-04's, open. As a market
- * path it moves a fund's value and every price set in a foreign currency, which F-118 reads with no tax index.
+ * currency's exchange rate as its index (D84); for a TASE foreign fund whose annex states none it is one of the two readings of TXF OQ10. As a market
+ * path it moves a fund's value and every price set in a foreign currency.
  */
 export function fxPath(annualChange: number, months: number): number[] {
   const step = Math.pow(1 + annualChange, 1 / 12);
@@ -102,7 +103,7 @@ export function fxPath(annualChange: number, months: number): number[] {
  * as "ILS"). Null when the day holds no shekel rate or no rate for `code` (D26).
  */
 export function crossRate(perEur: Readonly<Record<string, number>>, code: string): number | null {
-  const c = code === "NIS" ? "ILS" : code.toUpperCase();
+  const c = isoCurrency(code).toUpperCase();
   const ils = perEur.ILS;
   if (!ils) return null;
   if (c === "ILS") return 1;
