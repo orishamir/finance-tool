@@ -57,7 +57,7 @@ export interface Fund {
   legalStructure?: LegalStructure;
   /** Domicile of a foreign-domiciled fund: decides the foreign withholding on distributions (F-20). */
   domicile?: "us" | "ireland";
-  /** W-8BEN on file with the US payer (TXF-13). */
+  /** W-8BEN on file with the US payer (TXF-13, A-31): absent, the run takes none and the US withholds 30%, the cautious figure (F-20). */
   w8ben?: boolean;
   /** Share price at the start, for per-share fees and the share count: in the instrument's currency, or in `sharePriceCurrency` where given. */
   sharePrice?: number;
