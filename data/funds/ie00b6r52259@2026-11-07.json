@@ -21,6 +21,18 @@
   "manager": "BlackRock (fund: iShares V plc)",
   "domicile": "IE",
   "legal_form": "UCITS ETF, share class USD Accumulating of iShares V plc, Ireland; 'Product Structure: Physical', 'Methodology: Optimised'; launch 21-Oct-2011; benchmark 'MSCI All Country World Index (Net)'. The share class also has a Tel Aviv line, record 1159235.",
+  "legal_structure": {
+    "form": "company",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244039-01.pdf",
+      "title": "נספח לתשקיף קרן חוץ נסחרת: iShares MSCI ACWI UCITS ETF USD (Acc), 2019",
+      "publisher": "BlackRock (iShares V plc)",
+      "strength": "institution"
+    },
+    "page": 3,
+    "quote": "iShares V Public Limited Company",
+    "checked": "2026-11-04"
+  },
   "exposure_id": "index-msci-acwi",
   "currency": "USD",
   "trading_currency_on_tase": null,

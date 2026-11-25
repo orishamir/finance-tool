@@ -26,6 +26,18 @@
   "manager": "BlackRock Asset Management Ireland Limited (fund: iShares VII plc)",
   "domicile": "IE",
   "legal_form": "UCITS ETF, sub-fund (share class USD Accumulating) of iShares VII plc, Ireland; physical replication ('Product Structure: Physical', 'Methodology: Physical Replication'); 'UK Reporting Status: Yes'; fund launch date 18-May-2010, share class launch date 19-May-2010; benchmark 'S&P 500 Index'. Its Tel Aviv line: number 1159250, ticker iSFF702, in shekels, 0.07% (BlackRock's Israel brochure (library 5fae6c1d0933c1bc, p. 1, 2026-10-01)). The same share class bought abroad is record ie00b5bmr087.",
+  "legal_structure": {
+    "form": "company",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244042-01.pdf",
+      "title": "נספח לתשקיף קרן חוץ נסחרת: iShares Core S&P 500 UCITS ETF USD (Acc), IE00B5BMR087 (iShares VII plc), 2019",
+      "publisher": "BlackRock (iShares VII plc)",
+      "strength": "institution"
+    },
+    "page": 3,
+    "quote": "iShares VII Public Limited Company",
+    "checked": "2026-11-04"
+  },
   "exposure_id": "index-sp500",
   "currency": "USD",
   "trading_currency_on_tase": "NIS",

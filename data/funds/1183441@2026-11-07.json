@@ -21,6 +21,18 @@
   "manager": "Invesco Investment Management Limited (fund: Invesco Markets plc)",
   "domicile": "IE",
   "legal_form": "UCITS ETF, sub-fund (share class Acc, ISIN IE00B3YCGJ38) of Invesco Markets plc, Ireland; 'This Fund is authorised in Ireland and regulated by the Central Bank of Ireland' (KIID p. 2). Synthetic: 'To achieve the objective the Fund will use unfunded swaps (\"Swaps\")' on a basket of equities it holds, which 'will purchase securities that are not contained in the Index' (KIID p. 1). Objective: 'the net total return performance of the S&P 500 Index' (KIID p. 1). The Fund launched in 2010. The Share Class launched in 2010. Its Tel Aviv line: number 1183441, in shekels; TASE names the reference asset 'S&P 500 - NTR' and the share class ISIN IE00B3YCGJ38 (TASE security page, read 2026-11-07); the Israeli prospectus annex (library 438ff46e945eccc0, 2021, p. 2) offers 'יחידות מסוג Acc של הקרן' with the same ISIN and describes the unfunded swaps ('Unfunded Swaps').",
+  "legal_structure": {
+    "form": "company",
+    "source": {
+      "url": "https://www.invesco.com/content/dam/invesco/uk/en/product-documents/etf/share-class/kiid/IE00B3YCGJ38_kiid_en-uk.pdf",
+      "title": "Key Investor Information, Invesco S&P 500 UCITS ETF Acc (IE00B3YCGJ38), accurate as at 26 June 2026 (text read in the founder's Chrome with pdf.js, the host refusing scripts; no PDF copy)",
+      "publisher": "Invesco Investment Management Limited",
+      "strength": "institution"
+    },
+    "page": 2,
+    "quote": "The Umbrella Fund is incorporated in Ireland and authorised by the Central Bank of Ireland as a limited liability umbrella type open ended UCITS investment company with variable capital.",
+    "checked": "2026-11-07"
+  },
   "exposure_id": "index-sp500",
   "currency": "USD",
   "trading_currency_on_tase": "NIS",

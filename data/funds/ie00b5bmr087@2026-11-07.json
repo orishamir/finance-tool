@@ -23,6 +23,18 @@
   "manager": "BlackRock Asset Management Ireland Limited (fund: iShares VII plc)",
   "domicile": "IE",
   "legal_form": "UCITS ETF, sub-fund (share class USD Accumulating) of iShares VII plc, Ireland; physical replication ('Product Structure: Physical', 'Methodology: Physical Replication'); 'UK Reporting Status: Yes'; fund launch date 18-May-2010, share class launch date 19-May-2010; benchmark 'S&P 500 Index'. The factsheet's trading table lists the London Stock Exchange (CSPX in USD, CSP1 in GBP) and Euronext Amsterdam (CSPX in EUR) and says the product 'is also listed on: Tel Aviv Stock Exchange, Bolsa Mexicana De Valores, Santiago Stock Exchange, ...'; the Tel Aviv line is record 1159250.",
+  "legal_structure": {
+    "form": "company",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1763001-1764000/P1763539-00.pdf",
+      "title": "iShares VII plc prospectus, 2 June 2026",
+      "publisher": "BlackRock (iShares VII plc)",
+      "strength": "institution"
+    },
+    "page": 1,
+    "quote": "An umbrella investment company with variable capital and having segregated liability between its Funds incorporated with limited liability in Ireland",
+    "checked": "2026-10-31"
+  },
   "exposure_id": "index-sp500",
   "currency": "USD",
   "trading_currency_on_tase": null,

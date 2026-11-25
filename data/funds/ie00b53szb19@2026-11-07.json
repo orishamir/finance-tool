@@ -21,6 +21,18 @@
   "manager": "BlackRock (fund: iShares VII plc)",
   "domicile": "IE",
   "legal_form": "UCITS ETF, share class USD Accumulating of iShares VII plc, Ireland; 'Product Structure: Physical', 'Methodology: Replicated'; launch 26-Jan-2010; benchmark 'NASDAQ 100 Index'. The share class also has a Tel Aviv line, record 1159243.",
+  "legal_structure": {
+    "form": "company",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1763001-1764000/P1763539-00.pdf",
+      "title": "iShares VII plc prospectus, 2 June 2026",
+      "publisher": "BlackRock (iShares VII plc)",
+      "strength": "institution"
+    },
+    "page": 1,
+    "quote": "An umbrella investment company with variable capital and having segregated liability between its Funds incorporated with limited liability in Ireland",
+    "checked": "2026-10-31"
+  },
   "exposure_id": "index-nasdaq100",
   "currency": "USD",
   "trading_currency_on_tase": null,
