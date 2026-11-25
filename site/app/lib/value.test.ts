@@ -90,6 +90,48 @@ describe("a fund's own statement a computed figure reads (D84)", () => {
   });
 });
 
+describe("a figure computed from figures on a reading carries the reading (D119, method §13)", () => {
+  const today = "2026-10-26";
+  const named: FundStatement = {
+    term: "foreign-investment-fund",
+    currency: "USD",
+    source: { url: "https://example.org/report.pdf#page=1", title: "הדוח השנתי של הקרן, עמ' 1", publisher: "מנהל הקרן", strength: "institution" },
+    checked: "2026-11-22",
+  };
+  // what a fund leaves on the site's reading of TXS-14, as a run's figure after its tax carries it, and the same on the cautious reading
+  const onReading = computed(100, "nis", "F-65", { rate: fig("primary") }, { today, rules: [{ id: "TXS-14", strength: "primary" }], statements: [named], labels: [{ code: "reading", ruleId: "TXS-14" }] });
+  const onCautious = computed(90, "nis", "F-65", { rate: fig("primary") }, { today, rules: [{ id: "TXS-14", strength: "primary" }], labels: [{ code: "cautious", ruleId: "TXS-14", notKnown: "status" }] });
+  it("carries an input's reading label, with its rule as the input recorded it, and the fund's statements, through computed and differenceOf alike", () => {
+    const share = computed(0.1, "pct", "F-95", { left: onReading, other: fig("primary") }, { today });
+    expect(share.labels).toEqual([{ code: "reading", ruleId: "TXS-14" }]);
+    expect(share.rulesUsed).toEqual([{ id: "TXS-14", strength: "primary" }]);
+    expect(share.statements).toEqual([named]);
+    expect(share.doubt).toBeUndefined();
+    const gap = differenceOf(["a", onReading], ["b", fig("primary", { value: 50, unit: "nis" })], "F-80", { today });
+    expect(gap.labels).toEqual([{ code: "reading", ruleId: "TXS-14" }]);
+    expect(gap.statements).toEqual([named]);
+    expect(sheetRules(gap).map((r) => r.id)).toEqual(["TXS-14"]);
+  });
+  it("keeps its own options first and carries each once; carries no cautious label, whose doubt only differenceOf carries", () => {
+    const both = computed(1, "nis", "F-80", { a: onReading, b: { ...onReading } }, { today, labels: [{ code: "derived", ruleId: "X-1" }] });
+    expect(both.labels).toEqual([{ code: "derived", ruleId: "X-1" }, { code: "reading", ruleId: "TXS-14" }]);
+    expect(both.statements).toEqual([named]);
+    const fromCautious = computed(1, "nis", "F-95", { a: onCautious }, { today });
+    expect(fromCautious.labels).toBeUndefined();
+    expect(fromCautious.doubt).toBeUndefined();
+    expect(differenceOf(["a", onCautious], ["b", fig("primary", { value: 50, unit: "nis" })], "F-80", { today }).doubt).toBe(onCautious.doubt);
+  });
+  it("leaves the strength to its inputs: a company's own figure on a reading does not weaken what is computed from it", () => {
+    const own = { ...onReading, own: "מנהל הקרן", weakest: "institution" as const, source: { ...onReading.source, strength: "institution" as const } };
+    expect(computed(1, "nis", "F-95", { a: own }, { today }).weakest).toBe("primary");
+  });
+  it("carries nothing from inputs on no reading: a cost before the exit tax stays as its options make it", () => {
+    const cost = computed(5, "nis", "F-91", { fee: fig("primary") }, { today, labels: [] });
+    expect(computed(1, "nis", "F-80", { a: cost, b: fig("primary") }, { today }).labels).toBeUndefined();
+    expect(computed(1, "nis", "F-80", { a: cost }, { today }).statements).toBeUndefined();
+  });
+});
+
 describe("compact fees keep the rule that explains an empty deposit fee (PF-06)", () => {
   const tpl = fig("primary", { value: 0.1, rule_ids: ["CAT-35"], notes: "ממוצע" });
   const none = fig("primary", { value: null, rule_ids: ["CAT-35", "PF-06"], notes: "לא דווח: PF-06" });

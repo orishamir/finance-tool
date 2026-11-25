@@ -189,7 +189,41 @@ export function sheetRules(v: Pick<SiteValue, "rulesUsed" | "labels">): { id: st
   return [...read, ...unread.map((id) => ({ id, strength: null }))];
 }
 
-/** A computed value with the formula and the inputs it came from (architecture 3.4). A label of a cautious reading makes its doubt (`readingDoubtOf`). */
+/**
+ * What a computed figure carries of the inputs it rests on beside its own options: each input's `reading` labels, the site's own reading of
+ * a rule (an open tax index's among them, D119), with that rule as the input recorded it, and each input's fund statements, so a figure
+ * worked out from a figure on a reading tags the reading and names the fund's document as that figure does. A cautious label is not carried:
+ * the doubt it makes travels by `differenceOf`. A cost before the exit tax carries none of an open tax index's, since its inputs wear none
+ * (invest.ts `beforeExitTax`). Carried rules and statements leave the strength alone: each input's own strength already counts them.
+ */
+function carriedFromInputs(inputs: Record<string, SiteValue>): { labels: Label[]; rules: { id: string; strength: Strength }[]; statements: FundStatement[] } {
+  const labels: Label[] = [];
+  const rules: { id: string; strength: Strength }[] = [];
+  const statements: FundStatement[] = [];
+  for (const input of Object.values(inputs)) {
+    for (const l of input.labels ?? []) {
+      if (l.code !== "reading") continue;
+      labels.push(l);
+      const rule = input.rulesUsed?.find((r) => r.id === l.ruleId);
+      if (rule) rules.push(rule);
+    }
+    statements.push(...(input.statements ?? []));
+  }
+  return { labels, rules, statements };
+}
+
+/** `own` with each of `more` whose key it does not hold yet, in order; undefined where both are empty. */
+function withMore<T>(own: readonly T[] | undefined, more: readonly T[], key: (x: T) => string): T[] | undefined {
+  if (more.length === 0) return own ? [...own] : undefined;
+  const byKey = new Map((own ?? []).map((x) => [key(x), x] as const));
+  for (const x of more) if (!byKey.has(key(x))) byKey.set(key(x), x);
+  return [...byKey.values()];
+}
+
+/**
+ * A computed value with the formula and the inputs it came from (architecture 3.4), carrying the reading labels and fund statements of the
+ * inputs it rests on (`carriedFromInputs`). A label of a cautious reading among its own makes its doubt (`readingDoubtOf`).
+ */
 export function computed(
   value: number | null,
   unit: ValueObject["unit"],
@@ -206,6 +240,12 @@ export function computed(
   }
   for (const r of options.rules ?? []) weakest = weaker(weakest, r.strength);
   for (const st of options.statements ?? []) weakest = weaker(weakest, st.source.strength);
+  const carried = carriedFromInputs(inputs);
+  const merged = {
+    rules: withMore(options.rules, carried.rules, (r) => r.id),
+    statements: withMore(options.statements, carried.statements, statementKey),
+    labels: withMore(options.labels, carried.labels, (l) => `${l.code}|${l.ruleId}`),
+  };
   return {
     value,
     unit,
@@ -217,10 +257,10 @@ export function computed(
     state: "computed",
     computed_from: { formula, inputs },
     weakest: weakest ?? "primary",
-    rulesUsed: options.rules,
-    ...(options.statements?.length ? { statements: options.statements } : {}),
+    rulesUsed: merged.rules,
+    ...(merged.statements?.length ? { statements: merged.statements } : {}),
     flags: options.flags,
-    labels: options.labels,
+    labels: merged.labels,
     ...readingDoubtOf(options.labels),
     about: options.about,
     notes: options.notes,
@@ -238,7 +278,8 @@ export type ComputedOptions = Parameters<typeof computed>[4];
  * the two as the page writes them (`amountShown`: 10,768 ₪ less 8,203 ₪ is 2,565 ₪, whatever agorot each holds), and its inputs are the
  * two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either is not a number. `round`
  * shapes the result (its size alone). A doubt on either figure is the difference's too, since it rests on both, where its own options give
- * it none: the first one's words, the rules of each, and which of the two carry it (`doubtFrom`).
+ * it none: the first one's words, the rules of each, and which of the two carry it (`doubtFrom`). Their reading labels and fund statements
+ * it carries as every computed figure does (`computed`).
  */
 export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const [an, av] = a;
