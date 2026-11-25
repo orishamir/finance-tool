@@ -355,7 +355,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
       feeValues.distributionYield = { ...rec.distribution!.yield };
     } else missing.push(`${wrapperId}: fund "${rec.id}" distributes, and its distribution yield (A-10) is not on the record`);
   }
-  if (rec.currency !== "ILS" && rec.currency !== "NIS") missing.push(`${wrapperId}: fund "${rec.id}" is in ${rec.currency}; the exchange-rate change (A-03) and the start rate are not in P-05`);
+  if (!isShekel(rec.currency)) missing.push(`${wrapperId}: fund "${rec.id}" is in ${rec.currency}; the exchange-rate change (A-03) and the start rate are not in P-05`);
   if (kind === "tase-foreign-fund") {
     // F-04, D84: the index the fund's own annex states under its ruling, and the record's currency, whose exchange rate is one reading of
     // the index of a line whose annex states none (TXF OQ10), read as the indices page reads them (`fundOf`)

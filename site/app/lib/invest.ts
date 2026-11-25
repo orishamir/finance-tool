@@ -1060,7 +1060,7 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
     return { reason: { code: "rule-open", ruleId: stop.ruleId, ...(stop.question ? { question: stop.question } : {}) } };
   }
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
-  const mismatch = !!exposure && !["NIS", "ILS"].includes(rec.currency) && rec.currency !== exposure.currency;
+  const mismatch = !!exposure && !isShekel(rec.currency) && rec.currency !== exposure.currency;
   return { spec, mismatch };
 }
 
