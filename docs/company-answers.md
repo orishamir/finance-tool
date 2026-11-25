@@ -61,6 +61,14 @@ And of the second:
 - The European minimum: the answer says 15 euros; the annex says 15 units of the trade's currency, so 15 dollars on a fund bought in dollars.
 - The annex carries no date, and Psagot did not say since when it is in force.
 
+### Where the site uses it
+
+- Psagot's record from 4.11.2026 (`data/fees/psagot@2026-11-04.json`) prices the conversion to or from dollars per dollar converted, 0.015 ₪ a dollar, as the answer reads the price list's "1.5 אגורות עבור כל דולר/שקל" (item 3); a fee deal filled from Psagot holds the same price in agorot for each dollar, and charges it as Psagot's row does (`docs/method.md` F-13, F-114). The spread the answer says the price is taken in stays unlimited and unpriced (D65).
+- That record shows foreign securities on sale to a private customer (`availability`), on the London and German exchanges online and on others by phone through the trading desk (the first answer, item 1).
+- It prices an Irish UCITS ETF bought in Europe, such as the iShares Core S&P 500 UCITS ETF (CSPX), on the price list's row for European shares and ETFs, 0.15% with at least 15 euros (item 2), not on its row for foreign funds.
+- The European minimum is 15 euros, converted into the trade's currency, as the price list and the answer both say, not the annex's 15 units of the trade's currency.
+- The annex is not taken as a new customer's terms: it carries no date, and Psagot did not confirm it as what a new customer signs (the second answer, items 1 and 2), so the price list and the answer stand where the annex differs (`docs/product.md` D56): the custody fee, the free conversion, the minimum in the trade's currency.
+
 ## Altshuler Trade 2026-11-09
 
 **Who answered.** Altshuler Trade, its customer service, in writing by mail on 9.11.2026.
