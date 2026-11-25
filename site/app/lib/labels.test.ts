@@ -1,8 +1,10 @@
 import { describe, expect, expectTypeOf, it } from "vitest";
+import type { FundRecord } from "@finance-tool/schema";
 import { taxIndexStatementOf } from "@finance-tool/engine";
 import { loadFunds } from "./instruments.server";
 import { knownIndices } from "./invest";
-import { allLabels, fundLabels, label, labelDoc, labelRules, statementExamples } from "./labels";
+import { allLabels, fundLabels, label, statementExamples } from "./labels";
+import { labelDoc, labelRules } from "./label-rests";
 import { buildIndicesBundle } from "./providers.server";
 
 describe("label icons (2026-11-05 sweep)", () => {
@@ -85,5 +87,22 @@ describe("the tax index a Tel Aviv foreign fund's own annex states (F-04, D84)",
   });
   it("says nothing of a distributing fund's statement: it stops on its distribution's open part whatever its annex states (G-35)", () => {
     expect(tax({ ...rec, distribution_policy: "distributing", tax_ruling: { ...ruling, index: main } }, "tase-foreign")).toEqual([]);
+  });
+});
+
+describe("statementExamples", () => {
+  // made-up rulings over fixed inputs: what the gallery shows its statement labels by
+  const ruling = (url: string, index?: Record<string, unknown>) => ({
+    tax_ruling: { ruling_date: "2019-07-01", source: { url, title: url, publisher: "test", strength: "institution" }, pages: { ruling: 1, sale: 1, distribution: 1 }, quote: "q", checked: "2026-11-25", ...(index ? { index } : {}) },
+  }) as unknown as Pick<FundRecord, "tax_ruling">;
+  const usd = ruling("https://a.invalid/usd.pdf", { basis: "main-currency", currency: "USD", page: 3, quote: "q", currency_quote: "q", checked: "2026-11-25" });
+  const eur = ruling("https://a.invalid/eur.pdf", { basis: "main-currency", currency: "EUR", page: 4, quote: "q", currency_quote: "q", checked: "2026-11-25" });
+  const cpi = ruling("https://a.invalid/cpi.pdf", { basis: "cpi", page: 5, quote: "q", checked: "2026-11-25" });
+  const none = ruling("https://a.invalid/none.pdf");
+
+  it("keeps one statement for each label, the first record's, and skips a ruling that states no index", () => {
+    const got = statementExamples([none, usd, eur, cpi]);
+    expect(got.map((s) => s.source.url)).toEqual(["https://a.invalid/usd.pdf", "https://a.invalid/cpi.pdf"]);
+    expect(statementExamples([none])).toEqual([]);
   });
 });

@@ -9,7 +9,7 @@ import { promotedDrag } from "../formulas/fund-promotion.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
 import { acrossReadings, foreignInvestmentFundIndex, OpenReadingError } from "../open-readings.ts";
 import { memoRun } from "../run-memo.ts";
-import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult, type TaxIndexStatement } from "../result.ts";
+import { RUN_RESULT_FIELDS, readsStatedIndex, type Outcome, type RunContext, type RunResult, type TaxIndexStatement } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, LotQueue } from "./lots.ts";
 import { dealCharges, scaled, type Charged, type DealAccount, type MonthActivity } from "./deal-account.ts";
@@ -246,16 +246,6 @@ export function fundLevelTaxOn(gain: number, carried: number, rate: number): { t
   if (gain <= 0) return { tax: 0, carried: carried - gain };
   const offset = Math.min(carried, gain);
   return { tax: rate * (gain - offset), carried: carried - offset };
-}
-
-/**
- * F-04, D84: whether a fund's runs read the tax index its own annex states: only a TASE foreign fund's, and only one that pays nothing out.
- * A statement settles only the index: a fund that distributes stops on its distribution's open part whatever its annex states (G-35, TXF
- * open question 19: the run does not know its legal form), so its runs read none and stop on TXF-04 as an unstated one's do. The site's
- * labels say a statement by this same test.
- */
-export function readsStatedIndex(kind: Fund["kind"], distributes: boolean): boolean {
-  return kind === "tase-foreign-fund" && !distributes;
 }
 
 /** F-04, D84: the statement a fund's own annex makes of its tax index, where its runs are made on it (`readsStatedIndex`); else null. */

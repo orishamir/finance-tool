@@ -4,7 +4,8 @@
 import { createContext, useContext, useId, useState, type ReactNode } from "react";
 import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, Building2, CalendarClock, Coins, Currency, DollarSign, Euro, EyeOff, FileCheck, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Megaphone, Percent, Package, PiggyBank, PoundSterling, ReceiptText, Scale, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, UserPlus, type LucideProps } from "lucide-react";
 import { invest as c } from "../../copy";
-import { labelDoc, labelRules, type Label, type LabelIconKey } from "../../lib/labels";
+import type { Label, LabelIconKey } from "../../lib/labels";
+import { labelDoc, labelRules } from "../../lib/label-rests";
 import { RuleRef } from "../provenance";
 import { Sheet } from "../Sheet";
 import { cx } from "./cx";

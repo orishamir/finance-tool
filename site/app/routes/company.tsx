@@ -25,7 +25,7 @@ import { MoreDocs, ProductDocs, docCount } from "../components/company/docs";
 import { accountSections } from "../components/decoder/institutions/sections";
 import { CAPS_FROM_AGE, addressId, entryIds, splitDocGroups } from "../lib/company-page";
 import { companyTermsAnchor } from "../lib/scope";
-import { labelRules } from "../lib/labels";
+import { labelRules } from "../lib/label-rests";
 import type { SiteValue } from "../lib/value";
 
 /**

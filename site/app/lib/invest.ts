@@ -14,6 +14,7 @@ import { feeNameOf } from "./fee-deal/part-words";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput, isShekel, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
+import { OPTION_KIND } from "./labels";
 import { computed, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
@@ -22,8 +23,6 @@ export type OptionId = "il-tracking" | "il-etf" | "tase-foreign" | "abroad";
 export const OPTION_IDS: readonly OptionId[] = ["il-tracking", "il-etf", "tase-foreign", "abroad"];
 
 /** The tariff class each option is priced in (spec §2); a fund is priced in its own class (`instrumentClassOf`). */
-/** The engine's fund kind for an option's funds (F-04). */
-export const OPTION_KIND = { "il-tracking": "israeli-fund", "il-etf": "israeli-fund", "tase-foreign": "tase-foreign-fund", abroad: "foreign-fund" } as const satisfies Record<OptionId, string>;
 export const OPTION_CLASS: Record<OptionId, string> = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "tase_foreign_fund_units", abroad: "foreign_securities" };
 /** The classes a snapshot's `availability` entry may name for the option. */
 const AVAILABILITY_CLASSES: Record<OptionId, string[]> = { "il-tracking": ["mutual_fund_units"], "il-etf": ["etf_units"], "tase-foreign": ["etf_units", "tase_foreign_fund_units"], abroad: ["foreign_securities"] };

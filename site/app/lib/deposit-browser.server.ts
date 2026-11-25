@@ -2,7 +2,7 @@
 // (F-108); P-11's amounts and P-05's amount to start at. Server-only. Each rate and amount is the record's own value object.
 import type { DepositTerms, ValueObject } from "@finance-tool/schema";
 import { depositLabels, depositName, exitPointsOf, shownRate } from "./deposit-kind";
-import { labelRules } from "./labels";
+import { labelRules } from "./label-rests";
 import { termOf, type DbBank, type DbData, type DbOffer } from "./deposit-browser";
 import { loadParameters, loadRules, today } from "./data.server";
 import { p05AmountMax, p05Number } from "./engine";

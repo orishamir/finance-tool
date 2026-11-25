@@ -6,9 +6,12 @@ import type { FundRecord } from "@finance-tool/schema";
 import { readsStatedIndex, taxIndexStatementOf, type FundStatement } from "@finance-tool/engine";
 import { currencyWord, invest as c } from "../copy";
 import { sourceHref } from "./sources";
-import { OPTION_KIND, type IndexRef, type OptionId, type ProviderInfo } from "./invest";
+import type { IndexRef, OptionId, ProviderInfo } from "./invest";
 import { isShekel } from "./fx";
 import { assertNever } from "@finance-tool/schema";
+
+/** The engine's fund kind for an option's funds (F-04). */
+export const OPTION_KIND = { "il-tracking": "israeli-fund", "il-etf": "israeli-fund", "tase-foreign": "tase-foreign-fund", abroad: "foreign-fund" } as const satisfies Record<OptionId, string>;
 
 export type LabelTone = "neutral" | "caution" | "open";
 /** What each icon draws: each says what its label is about, and labels about different things never share one.
@@ -122,7 +125,7 @@ export interface Label {
   explain: string;
   icon: LabelIconKey;
   tone: LabelTone;
-  /** The label's family, for the "what do the labels mean" list. */
+  /** The label's family, which picks its chip's colour. */
   family: keyof typeof c.labelFamilies | "deposit";
   rests: LabelRests;
 }
@@ -180,15 +183,7 @@ function statementLabel(st: FundStatement): Label {
   }
 }
 
-/** The rules a label's sheet opens: none for one resting on a fund's statement. */
-export const labelRules = (l: Label): string[] => ("rules" in l.rests ? l.rests.rules : []);
 
-/** The document a label's sheet links, with the words before it where they are not "מסמך הקרן": a statement's opens at its page. */
-export function labelDoc(l: Label): { href: string; title: string; lead?: string } | undefined {
-  const r = l.rests;
-  if ("statement" in r) return { href: sourceHref({ url: r.statement.source.url, page: r.statement.page }), title: r.statement.source.title };
-  return r.doc && { ...r.doc, ...(r.docLead ? { lead: r.docLead } : {}) };
-}
 
 /** What holds for every fund in the option (shown once on its card): where it is held and how it trades. */
 export function optionLabels(option: OptionId): RuleLabel[] {
@@ -260,7 +255,7 @@ export function brokerLabels(p: ProviderInfo, unavailable: boolean): RuleLabel[]
 const withDoc = (l: RuleLabel, doc: { href: string; title: string }): RuleLabel => ({ ...l, rests: { ...l.rests, doc } });
 
 /**
- * Every label the page can show, by family, for "מה אומרות התוויות?" and the kit's gallery: each one made from its id, then one for each
+ * Every label the page can show, for the kit's gallery: each one made from its id, then one for each
  * statement given, which a fund's own document makes (`statementExamples`).
  */
 export function allLabels(statements: readonly FundStatement[]): Label[] {
