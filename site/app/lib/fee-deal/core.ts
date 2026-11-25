@@ -15,7 +15,7 @@ export type FeeKindId = FeeBase | "fund_management" | "fx_spread" | "current_acc
 /**
  * A price's form (F-110): `free` (nothing charged), `action` (a share of each action, with a minimum and a maximum), `perUnit` (a sum for
  * each unit traded, with the same bounds), `held` (a share of what is held, charged every few months), `sum` (a sum every few months,
- * whatever the account holds), `perAction` (a sum on each action).
+ * whatever the account holds), `perAction` (a sum on each action), `perDollar` (a conversion's sum for each dollar converted).
  */
 export type FormId = DealPrice["kind"];
 
@@ -151,7 +151,12 @@ export type Price =
    * A sum on each action, in `currency` (the shekel where absent), held to a percent of the action (`cap`, the percent maximum) where the
    * list prints one over it ("11$ פיקס לעסקה" under "עמלת מקסימום 2% משווי העסקה").
    */
-  | ({ form: "perAction"; amount: Num; cap?: Num; currency?: BoundCurrency } & ActionParts);
+  | ({ form: "perAction"; amount: Num; cap?: Num; currency?: BoundCurrency } & ActionParts)
+  /**
+   * A conversion's price for each dollar converted, `amount` agorot a dollar, as the price lists print it (Psagot's "1.5 אגורות עבור כל
+   * דולר", F-13); `engineDeal` makes it shekels. It has no bounds and no parts on an action: no list prints one beside it.
+   */
+  | ({ form: "perDollar"; amount: Num } & Linked);
 
 /** The currencies a bound, a flat price, a sum per unit or a sum per action may be typed in: the ones the price lists print (F-12, F-13, F-103). */
 export type BoundCurrency = "ILS" | "USD" | "EUR" | "GBP";

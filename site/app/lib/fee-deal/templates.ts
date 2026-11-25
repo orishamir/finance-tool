@@ -32,7 +32,7 @@ export type TemplateFee = SlimTemplateFee | Omit<CasesFee, "id">;
 
 /** Why a line of a price list does not fill a deal's field: the deal has no field for it, or the line cannot be read here. */
 export type LeftWhy =
-  /** A conversion priced in shekels a dollar (F-13). */
+  /** A conversion priced in shekels a dollar beside a bound, a flat price or steps by size (F-13), which the deal's price per dollar does not hold. */
   | "per-dollar"
   /** A line's sums in two currencies (its bounds, its flat price, its price per unit), or a bound of a held share not in shekels. */
   | "bound-currency"
@@ -259,7 +259,7 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       return { fees: [fee("trade", { ...p.spec, ...notes })], left: [] };
     }
     case "fx": {
-      if (l.rate.unit === "nis_per_usd") return { fees: [], left: ["per-dollar"] };
+      if (l.rate.unit === "nis_per_usd") return perDollarFees(l, own);
       const p = actionPrice(l, num);
       if ("left" in p) return { fees: [], left: [p.left] };
       // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
@@ -313,6 +313,19 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
     default:
       return { fees: [], left: ["other-base"] };
   }
+}
+
+/**
+ * A conversion line priced in shekels a dollar (F-13: Psagot's "1.5 אגורות עבור כל דולר"): the deal's price per dollar, in agorot as the
+ * list prints it, its source kept. A line that prints a bound, a flat price or steps by size beside it is left (`per-dollar`); a spread the
+ * documents do not limit is said as a cost on top, as on any conversion with a price (`spread-on-top`).
+ */
+function perDollarFees(l: Line, own: string): Mapped {
+  if (!has(l.rate)) return { fees: [], left: ["no-value"] };
+  if (has(l.min) || has(l.max) || l.flat_up_to || l.size_tiers?.length || has(l.spread)) return { fees: [], left: ["per-dollar"] };
+  const agorot: Num = { v: l.rate.value * 100, src: sourcedOf(l.rate, own) };
+  const fee: SlimTemplateFee = { kind: "fx", stages: [{ price: buildPrice("fx", { form: "perDollar", figures: { amount: agorot } }) }] };
+  return { fees: [fee], left: l.spread ? ["spread-on-top"] : [] };
 }
 
 /**

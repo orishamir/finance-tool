@@ -92,7 +92,7 @@ export interface Toolbox {
  * (§10.6, a size of the action's first range).
  */
 export const TOOL_ORDER = {
-  charge: ["share", "perUnit", "perAction", "held", "sum", "third", "free"],
+  charge: ["share", "perUnit", "perAction", "perDollar", "held", "sum", "third", "free"],
   off: ["discount", "offset", "refund"],
   bound: ["min", "max", "cap", "maxPerSecurity"],
   by: ["sale"],

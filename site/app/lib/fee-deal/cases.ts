@@ -219,13 +219,21 @@ const asksTrade = (f: ReadFee): boolean => [...f.stages, ...(f.sale ?? [])].some
 const notPrintedFor = (f: ReadFee, currency: BoundCurrency): boolean => [...f.stages, ...(f.sale ?? [])].some((s) => "inTrade" in s.price && Array.isArray(s.price.inTrade) && !s.price.inTrade.includes(currency));
 
 /**
+ * Whether a read fee has a price per dollar converted (F-13) where what is bought converts another currency (`conversionCurrency`): its
+ * sum is printed for dollars alone, so the fee is not read there (F-114), as a sum printed for other currencies only is not.
+ */
+const perDollarElsewhere = (f: ReadFee, conversion: string | null): boolean => conversion !== null && conversion !== "USD" && [...f.stages, ...(f.sale ?? [])].some((s) => s.price.form === "perDollar");
+
+/**
  * The deal read for its picks (for a month the method reads as it is, `month`, with its picks set by `monthPicks`): the fees read (`readFee`), in the deal's order, each price whose sums are in the action's currency in what is
  * bought's (`tradeCurrency`); the ids of the fees the picks give no case (`unmatched`), and among them the ones read in a case whose sums
- * are in a currency the deal does not know (`noCurrency`) or in one the list prints them not for (`notPrinted`).
+ * are in a currency the deal does not know (`noCurrency`) or in one the list prints them not for (`notPrinted`: a price per dollar where
+ * what is bought converts another currency among them, `perDollarElsewhere`).
  */
 export function readFees(deal: FeeDeal, month?: MonthHeld): { fees: ReadFee[]; unmatched: string[]; noCurrency: string[]; notPrinted: string[]; picks: ReadPick[] } {
   const picks = month ? monthPicks(deal.fees, picksOf(deal), month) : picksOf(deal);
   const trade = tradeCurrency(deal.fees, picks);
+  const conversion = conversionCurrency(deal.fees, picks);
   const fees: ReadFee[] = [];
   const unmatched: string[] = [];
   const noCurrency: string[] = [];
@@ -237,7 +245,7 @@ export function readFees(deal: FeeDeal, month?: MonthHeld): { fees: ReadFee[]; u
     else if (read.some(asksTrade) && !trade) {
       unmatched.push(fee.id);
       noCurrency.push(fee.id);
-    } else if (trade && read.some((f) => notPrintedFor(f, trade))) {
+    } else if ((trade && read.some((f) => notPrintedFor(f, trade))) || read.some((f) => perDollarElsewhere(f, conversion))) {
       unmatched.push(fee.id);
       notPrinted.push(fee.id);
     } else fees.push(...(trade ? read.map((f) => (asksTrade(f) ? { ...f, stages: resolve(f.stages), ...(f.sale ? { sale: resolve(f.sale) } : {}) } : f)) : read));

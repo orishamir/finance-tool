@@ -342,6 +342,8 @@ export function formatValue(value: number | string | boolean | null, unit: strin
       return `${fmt.number(value)} ${numbers.nisMillions}`;
     case "nis_per_usd":
       return `${fmt.number(value * 100)} ${numbers.agorotPerDollar}`;
+    case "agorot_per_usd":
+      return `${fmt.number(value)} ${numbers.agorot}`;
     case "trade_ccy_per_trade":
       return `${fmt.number(value)} ${numbers.inTradeCurrency}`;
     case "fx_per_eur":

@@ -1019,7 +1019,7 @@ function prepareDeal(input: WorkbenchInput, runFund: Fund, d: DealProvider): Rea
   return { kind: "ready", base, level: "entered", deal: { ...account, rates: { ...rates, ...account.rates } }, built, memberKind: memberKindOf(d.providerClass), ways: unitWaysAt(input, { by_amount: d.byAmount ?? [] }, tariff) };
 }
 
-/** The currencies a deal's sums are in (F-112): its bounds, flat prices, sums per action or per unit, third parties' sums and steps, and the steps of what the plan sets (F-128). */
+/** The currencies a deal's sums are in (F-112): its bounds, flat prices, sums per action or per unit, third parties' sums and steps, the dollar of a sum per dollar converted, and the steps of what the plan sets (F-128). */
 function dealCurrencies(a: DealAccount): string[] {
   const out = new Set<string>();
   for (const ws of a.planWithin ?? []) for (const w of ws ?? []) if (w.on !== "count" && w.unit !== "units") out.add(w.unit);
@@ -1029,6 +1029,7 @@ function dealCurrencies(a: DealAccount): string[] {
       const p = st.price;
       if ((p.kind === "action" || p.kind === "perUnit" || p.kind === "perAction") && p.currency) out.add(p.currency);
       if ((p.kind === "action" || p.kind === "perUnit" || p.kind === "perAction") && p.third?.currency) out.add(p.third.currency);
+      if (p.kind === "perDollar") out.add("USD");
     }
   }
   return [...out];

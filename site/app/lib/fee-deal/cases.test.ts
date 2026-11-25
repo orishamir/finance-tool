@@ -455,15 +455,15 @@ describe("the conversion's currency is what is bought's (F-114)", () => {
   const psagot = (picks: FeeDeal["readFor"]) => read({ ...fillDeal(newDeal("brokerage-account"), "house:psagot", data, TODAY)!, readFor: picks });
   const fxOf = (r: ReturnType<typeof read>) => r.fees.find((f) => f.kind === "fx");
   const fxId = (r: ReturnType<typeof read>) => r.deal.fees.find((f) => f.kind === "fx")!.id;
-  it("reads a holding in euros in the euro's case, and one in dollars in none where the list prices dollars per dollar", () => {
+  it("reads a holding in euros in the euro's case, and one in dollars in the dollar's, priced per dollar", () => {
     const eur = psagot([{ by: "what", is: "europe" }]);
     expect(eur.picks).toContainEqual({ by: "currency", is: "EUR" });
     expect(fxOf(eur)!.stages[0]!.price).toMatchObject({ form: "action", rate: { v: 0.5 } });
-    // never the price of another currency: the dollar's line is per dollar, which fills nothing
+    // never the price of another currency: the dollar's line is 1.5 agorot a dollar (Psagot's price list, part 5)
     const usd = psagot([{ by: "what", is: "us" }]);
     expect(usd.picks).toContainEqual({ by: "currency", is: "USD" });
-    expect(fxOf(usd)).toBeUndefined();
-    expect(usd.unmatched).toContain(fxId(usd));
+    expect(fxOf(usd)?.stages[0]?.price).toMatchObject({ form: "perDollar", amount: { v: 1.5 } });
+    expect(usd.unmatched).not.toContain(fxId(usd));
   });
   it("picks no currency for a holding in shekels, nor the deal's own pick of one", () => {
     const tase = psagot([{ by: "what", is: "tase" }, { by: "currency", is: "other" }]);
@@ -502,6 +502,32 @@ describe("a deal saved before cases", () => {
     expect((await throughLink(d))!.readFor).toEqual([{ by: "what", is: "tase", place: "israel", currency: "USD" }]);
     expect(readDeal({ ...JSON.parse(JSON.stringify(d)), readFor: [{ by: "channel", is: "direct", place: "israel", currency: "USD" }] })).toBeNull();
     expect(readDeal({ ...JSON.parse(JSON.stringify(d)), readFor: [{ by: "what", is: "tase", place: "israel" }] })).toBeNull();
+  });
+});
+
+describe("a conversion priced in agorot for each dollar converted (F-13)", () => {
+  const perDollar = (agorot: number, what: string) =>
+    read({ ...deal([{ by: "what", is: what }]), id: `deal-${agorot}-${what}`, fees: [{ id: "fee-fx", kind: "fx", stages: [{ price: { form: "perDollar", amount: typed(agorot) } }] }] });
+  it("charges the agorot typed on each dollar a purchase or a sale converts, at the dollar's rate", () => {
+    // 3,700 ₪ at 3.70 ₪ a dollar is 1,000 dollars: 3 agorot a dollar is 30 ₪ on a sale; on a purchase the cash pays the conversion too, so
+    // it converts the whole 3,700 ₪ and the price is charged on that (F-13's buy)
+    const cost = (agorot: number, side: "buy" | "sell") => {
+      const r = perDollar(agorot, "us");
+      const [period] = r.reading.periods;
+      if (!period) throw new Error("a deal has a first period");
+      return actionCost(r.engine, period, "trade", 3700, side, { USD: 3.7 }).total;
+    };
+    expect(cost(3, "sell")).toBeCloseTo(30, 9);
+    expect(cost(3, "buy")).toBeCloseTo(30, 9);
+    // typing 1.5 agorot halves it
+    expect(cost(1.5, "sell")).toBeCloseTo(15, 9);
+  });
+  it("is one price on every amount, read at the dollar's rate, and is not read where what is bought converts another currency", () => {
+    const shown = readingOf(perDollar(1.5, "us"), data.fx).panels.actions.find((t) => t.action === "trade")?.views[0];
+    expect(shown && "one" in shown && shown.one.rates.map((x) => x.currency)).toEqual(["USD"]);
+    const euros = perDollar(1.5, "europe");
+    expect(euros.fees.find((f) => f.kind === "fx")).toBeUndefined();
+    expect(euros.notPrinted).toContain("fee-fx");
   });
 });
 

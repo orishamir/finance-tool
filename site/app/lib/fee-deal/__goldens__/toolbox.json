@@ -54,25 +54,35 @@
   "rule: unfilled✓ partial✓ inTrade✓"
  ],
  "brokerage-account · fx · action · plain": [
-  "charge: share✓ perAction⊘ free",
+  "charge: share✓ perAction⊘ perDollar⊘ free",
   "off: discount refund",
   "bound: min max",
   "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
  ],
  "brokerage-account · fx · action · full": [
-  "charge: share✓ perAction⊘ free",
+  "charge: share✓ perAction⊘ perDollar⊘ free",
   "off: discount✓ refund✓",
   "bound: min✓ max✓",
   "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
  ],
  "brokerage-account · fx · perAction · plain": [
-  "charge: share⊘ perAction✓ free",
+  "charge: share⊘ perAction✓ perDollar⊘ free",
   "off: discount refund",
   "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
  ],
  "brokerage-account · fx · perAction · full": [
-  "charge: share⊘ perAction✓ free",
+  "charge: share⊘ perAction✓ perDollar⊘ free",
   "off: discount✓ refund✓",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
+ ],
+ "brokerage-account · fx · perDollar · plain": [
+  "charge: share⊘ perAction⊘ perDollar✓ free",
+  "off: refund",
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
+ ],
+ "brokerage-account · fx · perDollar · full": [
+  "charge: share⊘ perAction⊘ perDollar✓ free",
+  "off: refund✓",
   "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
  ],
  "brokerage-account · fx_spread · action · plain": [
@@ -259,6 +269,14 @@
   "charge: share⊘ free",
   "by: by:currency"
  ],
+ "ira-hishtalmut · fx · perDollar · plain": [
+  "charge: share⊘ free",
+  "by: by:currency"
+ ],
+ "ira-hishtalmut · fx · perDollar · full": [
+  "charge: share⊘ free",
+  "by: by:currency"
+ ],
  "ira-hishtalmut · fx_spread · action · plain": [
   "charge: share✓ free"
  ],
@@ -366,6 +384,14 @@
   "by: by:currency"
  ],
  "ira-provident · fx · perAction · full": [
+  "charge: share⊘ free",
+  "by: by:currency"
+ ],
+ "ira-provident · fx · perDollar · plain": [
+  "charge: share⊘ free",
+  "by: by:currency"
+ ],
+ "ira-provident · fx · perDollar · full": [
   "charge: share⊘ free",
   "by: by:currency"
  ],

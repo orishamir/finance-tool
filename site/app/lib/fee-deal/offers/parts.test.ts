@@ -28,7 +28,7 @@ function priced(form: Price["form"]): Price {
 describe("the part registry", () => {
   it("derives which parts ask, which are forms, which the toolbox offers and where each goes", () => {
     expect(PART_IDS.filter(isPending)).toEqual(["until", "min", "max", "cap", "maxPerSecurity", "offset"]);
-    expect(PART_IDS.filter(isFormPart)).toEqual(["share", "perUnit", "perAction", "held", "sum", "free"]);
+    expect(PART_IDS.filter(isFormPart)).toEqual(["share", "perUnit", "perAction", "perDollar", "held", "sum", "free"]);
     expect(PART_IDS.filter((id) => PARTS[id].tool === null)).toEqual(["until", "flat", "unfilledClerk", "unfilledClerkAbroad", "capRead"]);
     expect(PART_IDS.filter((id) => partGoes(id) !== "price")).toEqual(["until", "sale"]);
     expect([partGoes("until"), partGoes("sale")]).toEqual(["side", "fee"]);

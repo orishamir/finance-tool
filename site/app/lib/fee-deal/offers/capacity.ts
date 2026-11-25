@@ -55,6 +55,8 @@ const SUM: readonly FieldId[] = ["amount", "every"];
 const AMOUNT: readonly FieldId[] = ["amount"];
 /** A sum per action in a currency of its own (F-103's charge in dollars for each corporate event). */
 const AMOUNT_IN: readonly FieldId[] = ["amount", "currency"];
+/** A conversion's agorot for each dollar converted (F-13: Psagot's 1.5 agorot), with nothing beside them: no list prints a bound on it. */
+const PER_DOLLAR: readonly FieldId[] = ["amount"];
 /** A trade's sum on each order, in its currency or the trade's, under a percent ceiling where the list prints one (Excellence's US fixed track). */
 const AMOUNT_IN_CAP: readonly FieldId[] = ["amount", "currency", "cap", "inTrade"];
 
@@ -73,7 +75,7 @@ export const CAPACITY: Readonly<Record<FeeKindId, Capacity>> = {
   load: { ...action(RATE), base: "load", oneSide: "buy" },
   redemption_deduction: { ...action(RATE), base: "redemption_deduction", oneSide: "sell" },
   // a small conversion's flat price is a sum on each conversion, up to its size (fold-flat.ts)
-  fx: { base: "fx", forms: ["action", "perAction"], usual: "action", fields: { action: FX, perAction: AMOUNT_IN }, saleApart: false },
+  fx: { base: "fx", forms: ["action", "perAction", "perDollar"], usual: "action", fields: { action: FX, perAction: AMOUNT_IN, perDollar: PER_DOLLAR }, saleApart: false },
   fx_spread: { ...action(RATE), base: null },
   deposit: { ...action(RATE), base: "deposit" },
   distribution_handling: { base: "distribution_handling", forms: ["action", "perAction"], usual: "action", fields: { action: ACTION_ALL, perAction: AMOUNT }, saleApart: false },

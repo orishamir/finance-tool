@@ -10,6 +10,7 @@ import {
   chargesNothing,
   conversionStretches,
   convertedAtMost,
+  convertFor,
   curveEnd,
   dealMarks,
   dealPeriods,
@@ -385,6 +386,27 @@ describe("F-112 the sums a deal's prices mark", () => {
     const deal: Deal = { foreign: true, fees: [{ base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.002, currency: "USD" } }] }] };
     const [p] = dealPeriods(deal, today).periods;
     expect(actionCost(deal, p!, "trade", 1000, "buy", {}).total).toBeCloseTo(2, 10);
+  });
+
+  it("prices a conversion per dollar on the dollars converted, as a house's line priced per dollar is (F-13)", () => {
+    const at = (amount: number): Deal => ({ foreign: true, fees: [{ base: { key: "fx" }, stages: [{ price: { kind: "perDollar", amount } }] }] });
+    const deal = at(0.015);
+    const p = dealPeriods(deal, today).periods[0];
+    if (!p) throw new Error("a deal has a first period");
+    // a sale of 3,700 ₪ at 3.70 ₪ a dollar converts 1,000 dollars: 1.5 agorot each is 15 ₪
+    expect(actionCost(deal, p, "trade", 3700, "sell", { USD: 3.7 }).total).toBeCloseTo(15, 10);
+    // a purchase converts the whole cash, its price paid out of it: 15 ₪ on 3,700 ₪, as the house's line charges (`convertFor`)
+    expect(actionCost(deal, p, "trade", 3700, "buy", { USD: 3.7 }).total).toBeCloseTo(15, 10);
+    const row = convertFor(3700 - 15, { rate: 0, perCurrencyUnit: 0.015 }, { fxRate: 3.7 });
+    expect(row.converted).toBeCloseTo(3700, 9);
+    expect(row.cost).toBeCloseTo(15, 9);
+    // it reads the dollar's rate, and no other
+    expect(() => actionCost(deal, p, "trade", 3700, "sell", {})).toThrow(RangeError);
+    expect(chargesNothing({ kind: "perDollar", amount: 0 })).toBe(true);
+    expect(changeKind({ kind: "perDollar", amount: 0.015 }, { kind: "perDollar", amount: 0.02 })).toBe("rises");
+    expect(discounted({ kind: "perDollar", amount: 0.02 }, 0.25, false)).toEqual({ kind: "perDollar", amount: 0.015 });
+    // it marks nothing: no bound decides it
+    expect(dealMarks(deal, p)).toEqual([]);
   });
 
   it("gives a bound typed in another currency its sum in that currency, and converts it only for a cost", () => {

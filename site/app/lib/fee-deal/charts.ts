@@ -189,6 +189,7 @@ function partFigure(r: DealRead, i: number, part: PricePart, e: DealPrice, s: Pr
       return {};
     case "rate":
       if (e.kind === "held") return { ...opt("figure", charged(r, i, f, "rate", e.rate, true)), per: (s as Extract<Price, { form: "held" }>).per };
+      if (e.kind === "perDollar") return opt("figure", f.amount);
       return opt("figure", e.kind === "perUnit" ? charged(r, i, f, "amount", e.amount, false) : charged(r, i, f, "rate", get("rate"), true));
     case "min":
       return { ...opt("figure", charged(r, i, f, part, get(part), false)), ...(e.kind === "held" ? { per: (s as Extract<Price, { form: "held" }>).every } : {}) };
@@ -634,9 +635,13 @@ function heldLanesOf(r: DealRead, p: DealPeriod): Map<number, HeldKind> {
   return out;
 }
 
-/** The currencies a price's sums are in where the cost converts them (F-112): a share's only where a bound or a flat price is typed. */
+/**
+ * The currencies a price's sums are in where the cost converts them (F-112): a share's only where a bound or a flat price is typed; a price
+ * per dollar converted reads the dollar's rate (F-13).
+ */
 function sumCurrencies(x: DealPrice | undefined): string[] {
   if (!x) return [];
+  if (x.kind === "perDollar") return ["USD"];
   const own = x.kind === "perUnit" || x.kind === "perAction" || x.kind === "action" ? partCurrency(x) : "ILS";
   const t = x.kind === "action" || x.kind === "perUnit" || x.kind === "perAction" ? x.third : undefined;
   const third = t && (t.kind !== "action" || t.min !== undefined || t.max !== undefined) ? (t.currency ?? "ILS") : "ILS";
