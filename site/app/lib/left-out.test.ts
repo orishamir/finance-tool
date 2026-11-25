@@ -55,6 +55,11 @@ describe("what a record leaves out", () => {
     // a web page of its own, beside a PDF price list: its address, no page in its name
     expect(docs([{ ...exempt, page: 2, source: web }])).toEqual([{ href: "https://example.org/pricing", title: "Pricing page" }]);
   });
+  it("names each thing by its short name where the record gives one, both what can change a price and the others", () => {
+    const v = leftOutOf({ tariff: pdf, left_out: [{ ...tiered, name_he: "תמחור לפי מדרגות" }, { ...lite, name_he: "מסלול לני\"ע בחו\"ל" }, quiet] })!;
+    expect(v.changes.map((x) => x.head)).toEqual(["תמחור לפי מדרגות"]);
+    expect(v.others).toEqual(["מסלול לני״ע בחו״ל", "נתוני שוק בארה״ב"]);
+  });
   it("a web page's price list opens at its address, with no page in its name", () => {
     const v = sheetOf(leftOutOf({ tariff: web, left_out: [tiered] })!);
     expect(v.parts[0]!.doc).toEqual({ href: "https://example.org/pricing", title: "Pricing page" });

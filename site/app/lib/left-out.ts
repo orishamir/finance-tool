@@ -44,8 +44,8 @@ export interface LeftOutPart {
 type Record_ = Pick<FeesSnapshot, "left_out"> & { tariff: Pick<FeesSnapshot["tariff"], "url" | "title"> };
 type Entry = NonNullable<FeesSnapshot["left_out"]>[number];
 
-/** An entry's name for the reader. */
-const nameOf = (e: Entry): string => gershayim(e.what);
+/** An entry's short name for the reader. `what` stands in for it until every house's latest record carries name_he. */
+const nameOf = (e: Entry): string => gershayim(e.name_he ?? e.what);
 
 /** What the record leaves out, or null where it lists nothing. */
 export function leftOutOf(snap: Record_ | undefined | null): LeftOutView | null {
