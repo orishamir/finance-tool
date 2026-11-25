@@ -14,6 +14,7 @@ import { feeNameOf } from "./fee-deal/part-words";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput, isShekel, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
+import { OPTION_KIND } from "./labels";
 import { computed, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
@@ -469,8 +470,7 @@ const blockedBy = (ctx: Ctx, spec: Spec): string | null => securitiesBlockedBy(s
 
 /** The open rule every fund of a kind would rest on (F-04: a foreign fund in Tel Aviv, TXF-04), or null: what a fund the person types of that kind is told. */
 export function optionOpenRule(bundle: IndicesBundle, option: OptionId): string | null {
-  const kind = option === "tase-foreign" ? "tase-foreign-fund" : option === "abroad" ? "foreign-fund" : "israeli-fund";
-  return securitiesBlockedBy({ kind }, ruleContext(bundle));
+  return securitiesBlockedBy({ kind: OPTION_KIND[option] }, ruleContext(bundle));
 }
 
 /**

@@ -10,6 +10,7 @@ import { IconAlert, IconCheck, IconClose, IconCoins, IconCopy, IconExternal, Ico
 import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleList, RuleTitleRow, Ruled, StaleSaid, StrengthLabel, Term } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
+import type { FundStatement } from "@finance-tool/engine";
 import { depositLabels } from "../../lib/deposit-kind";
 import { fmt, joinLead } from "../../lib/format";
 import { sourceHref } from "../../lib/sources";
@@ -1796,7 +1797,7 @@ function StubDemo() {
   );
 }
 
-function Lists({ today }: { today: string }) {
+function Lists({ today, statements }: { today: string; statements: readonly FundStatement[] }) {
   const s = samples(today);
   const p = g.sample.products;
   const labels = [label("follow-physical"), label("pays-accumulating"), label("currency", "USD")];
@@ -2564,9 +2565,9 @@ function Lists({ today }: { today: string }) {
         <State label="a bank deposit's kinds (lib/deposit-kind.ts): grey, with no family colour; a tap opens the meaning and the bank's table" wide>
           <LabelRow labels={depositLabels(["campaign", "closed_system", "interest_during_term", "best_of"], new Set(["BANK-21"]), { url: "https://www.discountbank.co.il/", title: g.sample.depositTable })} />
         </State>
-        <State label="every label, in its family's colour (allLabels): each icon says what its label is about, and labels about different things never share one" wide>
+        <State label="every label, in its family's colour (allLabels): each icon says what its label is about, and labels about different things never share one; a statement label is made from a real fund's statement, whose annex its sheet opens" wide>
           <span data-testid="all-labels">
-            <LabelRow labels={allLabels()} />
+            <LabelRow labels={allLabels(statements)} />
           </span>
         </State>
         <State label="LabelIcon alone, size 18 (the sheet's heading)">
@@ -2581,7 +2582,7 @@ function Lists({ today }: { today: string }) {
   );
 }
 
-export function KitGallery({ today }: { today: string }) {
+export function KitGallery({ today, statements }: { today: string; /** Real fund statements, one for each statement label, that the gallery shows those labels by (`statementExamples`). */ statements: readonly FundStatement[] }) {
   return (
     <div className="flex flex-col gap-section">
       <PageHead title={g.title} lede={g.lede}>
@@ -2596,7 +2597,7 @@ export function KitGallery({ today }: { today: string }) {
         <Fields today={today} />
         <MarkerDemo today={today} />
         <ChartParts today={today} />
-        <Lists today={today} />
+        <Lists today={today} statements={statements} />
       </div>
     </div>
   );

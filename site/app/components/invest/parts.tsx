@@ -1,12 +1,12 @@
-// Shared pieces of the index page: the type tag, the "what do the labels mean" list, and the sentence for a cell the engine
+// Shared pieces of the index page: the type tag and the sentence for a cell the engine
 // could not price. The label chip, its row and its sheet are in the kit.
 import { feeNameOf } from "../../lib/fee-deal/part-words";
 import { invest as c, r4workbench } from "../../copy";
-import { allLabels, optionLabels, type Label } from "../../lib/labels";
+import { optionLabels } from "../../lib/labels";
 import type { OptionId } from "../../lib/invest";
 import type { Reason } from "../../lib/invest";
 import type { NotComparable } from "../../lib/providers";
-import { Disclosure, LabelChip } from "../kit";
+import { LabelChip } from "../kit";
 import { assertNever } from "@finance-tool/schema";
 
 // ---------------------------------------------------------------- labels
@@ -18,31 +18,8 @@ import { assertNever } from "@finance-tool/schema";
 export function OptionTag({ option }: { option: OptionId }) {
   const parts = optionLabels(option);
   const first = parts[0]!;
-  const rules = [...new Set(parts.flatMap((l) => l.rules))];
-  return <LabelChip label={{ ...first, text: c.typeTags[option]!, explain: parts.map((l) => l.explain).join(" "), rules }} />;
-}
-
-/** "מה אומרות התוויות?": every label of the page, by family. */
-export function LabelsLegend() {
-  const by = new Map<string, Label[]>();
-  for (const l of allLabels()) by.set(l.family, [...(by.get(l.family) ?? []), l]);
-  return (
-    <Disclosure label={c.funds.whatLabels}>
-      <dl className="flex flex-col gap-4 pt-2">
-        {[...by.entries()].map(([family, list]) => (
-          <div key={family} className="flex flex-col gap-1.5">
-            <dt className="text-sm font-medium">{(c.labelFamilies as Record<string, string>)[family]}</dt>
-            {list.map((l) => (
-              <dd key={l.id} className="flex flex-col gap-1">
-                <LabelChip label={l} />
-                <span className="text-sm text-muted-foreground max-w-measure">{l.explain}</span>
-              </dd>
-            ))}
-          </div>
-        ))}
-      </dl>
-    </Disclosure>
-  );
+  const rules = [...new Set(parts.flatMap((l) => l.rests.rules))];
+  return <LabelChip label={{ ...first, text: c.typeTags[option]!, explain: parts.map((l) => l.explain).join(" "), rests: { rules } }} />;
 }
 
 // ---------------------------------------------------------------- reasons

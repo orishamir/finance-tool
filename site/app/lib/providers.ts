@@ -329,6 +329,9 @@ export function fundRun(
     market.principalFxChange = f;
   }
   const fundCurrency = isShekel(rec.currency) ? "ILS" : rec.currency;
+  // F-04, D84: a main currency the fund's annex states is run as the record's own currency's path, which the data check holds it to
+  const stated = built.fund.statedIndex;
+  if (stated?.index === "fx" && stated.currency !== fundCurrency) throw new Error(`F-04: fund ${rec.id} states main currency ${stated.currency}, not its own ${fundCurrency}`);
   if (fundCurrency === "ILS") {
     // a fund that neutralises the exposure's currency is not moved by A-03 (F-04)
     if (!isShekel(exposure.currency) && rec.hedged !== true) market.grossReturn = (1 + grossReturn) * (1 + f) - 1;

@@ -5,7 +5,7 @@
 import type { DepositTerms } from "@finance-tool/schema";
 import { r4catalogue as copy } from "../copy";
 import { fmt } from "./format";
-import type { DepositLabelId, Label, LabelIconKey } from "./labels";
+import type { DepositLabelId, LabelIconKey, RuleLabel } from "./labels";
 import { sourceHref } from "./sources";
 
 /**
@@ -149,11 +149,11 @@ export function depositKindRules(variant: readonly DepositVariant[] | undefined)
  * The labels of a deposit's kinds, in the record's order. A rule the site does not hold is left out (`known`); the bank's own table,
  * where the record read the deposit, stands under the meaning, since the terms of a kind are each bank's own (D31).
  */
-export function depositLabels(variant: readonly DepositVariant[] | undefined, known: ReadonlySet<string>, table?: { url: string; title: string }): Label[] {
+export function depositLabels(variant: readonly DepositVariant[] | undefined, known: ReadonlySet<string>, table?: { url: string; title: string }): RuleLabel[] {
   return (variant ?? []).map((v) => {
     const k = kinds[v];
     const words = copy.kindLabels[k.id];
-    return { id: k.id, text: words.text, explain: words.explain, icon: k.icon, tone: "neutral", rules: k.rules.filter((r) => known.has(r)), family: "deposit", ...(table ? { doc: { href: sourceHref(table), title: table.title }, docLead: copy.kindDoc } : {}) };
+    return { id: k.id, text: words.text, explain: words.explain, icon: k.icon, tone: "neutral", family: "deposit", rests: { rules: k.rules.filter((r) => known.has(r)), ...(table ? { doc: { href: sourceHref(table), title: table.title }, docLead: copy.kindDoc } : {}) } };
   });
 }
 

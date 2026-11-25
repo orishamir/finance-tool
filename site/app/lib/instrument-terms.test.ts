@@ -124,4 +124,11 @@ describe("buildInstrumentTerms: a Tel Aviv foreign fund's tax index (F-04, D84)"
     expect(missingOf(noTest).some((m) => m.includes("90% test value"))).toBe(false);
     expect(missingOf({ ...noTest, tax_ruling: unstated }).some((m) => m.includes("90% test value"))).toBe(true);
   });
+  it("asks for it of a fund that states one and distributes: its runs read no statement and stop on TXF-04 (G-35)", () => {
+    // the yield the run pays out (A-10), in the record's own value shape: a fee's, which is a percent a year too
+    const fee = rec.fees.fixed_management;
+    if (fee?.unit !== "pct_per_year") throw new Error("1159250's fixed fee is a percent a year");
+    const noTest = { ...rec, distribution_policy: "distributing" as const, distribution: { yield: { ...fee, value: 1.5 }, per_year: 4 as const }, tax_status: { ...rec.tax_status, tase_foreign_fund_90pct_test: null } };
+    expect(missingOf(noTest).some((m) => m.includes("90% test value"))).toBe(true);
+  });
 });

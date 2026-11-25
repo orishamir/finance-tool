@@ -74,7 +74,7 @@ describe("bank product rows", () => {
     const closed = rows.find((r) => r.p.id === "discount-shana-kvua-kol-habankim-0513")!;
     expect(text(render(closed))).toContain("רק למי שאין לו חשבון עו״ש בדיסקונט");
     // the label's sheet gives its rule: the page loads the rules its labels cite (BANK-21 was missing)
-    expect(depositLabels(closed.p.variant, closed.known, closed.p.table).find((l) => l.id === "deposit-closed-system")?.rules).toEqual(["BANK-21"]);
+    expect(depositLabels(closed.p.variant, closed.known, closed.p.table).find((l) => l.id === "deposit-closed-system")?.rests.rules).toEqual(["BANK-21"]);
     for (const r of rows) for (const id of depositKindRules(r.p.variant).filter((id) => allRules[id])) expect(r.known.has(id), `${r.p.id} ${id}`).toBe(true);
     expect(rows.find((r) => r.p.id === "discount-kvua-leshana-mivtza-0183")!.p.variant).toContain("campaign");
     const litchi = rows.find((r) => r.p.id === "mizrahi-tefahot-litchi-kvua-shana-189")!;

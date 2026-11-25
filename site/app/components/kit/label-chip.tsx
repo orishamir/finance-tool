@@ -5,6 +5,7 @@ import { createContext, useContext, useId, useState, type ReactNode } from "reac
 import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, Building2, CalendarClock, Coins, Currency, DollarSign, Euro, EyeOff, FileCheck, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Megaphone, Percent, Package, PiggyBank, PoundSterling, ReceiptText, Scale, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, UserPlus, type LucideProps } from "lucide-react";
 import { invest as c } from "../../copy";
 import type { Label, LabelIconKey } from "../../lib/labels";
+import { labelDoc, labelRules } from "../../lib/label-rests";
 import { RuleRef } from "../provenance";
 import { Sheet } from "../Sheet";
 import { cx } from "./cx";
@@ -71,24 +72,35 @@ export function LabelSheetHost({ children }: { children: ReactNode }) {
               {open.label.text}
             </h2>
             <p className="max-w-measure">{open.label.explain}</p>
-            {open.label.rules.length > 0 && (
-              <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
-                {c.labelsSheet.rules}:
-                {open.label.rules.map((r) => (
-                  <RuleRef key={r} id={r} />
-                ))}
-              </p>
-            )}
-            {open.label.doc && (
-              <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
-                {open.label.docLead ?? c.labelsSheet.doc}:
-                <DocLink href={open.label.doc.href}>{open.label.doc.title}</DocLink>
-              </p>
-            )}
+            <SheetRests label={open.label} />
           </div>
         )}
       </Sheet>
     </OpenCtx.Provider>
+  );
+}
+
+/** What the sheet says a label rests on: its rules, and the document under them, or the fund's statement's document at its page. */
+function SheetRests({ label }: { label: Label }) {
+  const rules = labelRules(label);
+  const doc = labelDoc(label);
+  return (
+    <>
+      {rules.length > 0 && (
+        <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
+          {c.labelsSheet.rules}:
+          {rules.map((r) => (
+            <RuleRef key={r} id={r} />
+          ))}
+        </p>
+      )}
+      {doc && (
+        <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
+          {doc.lead ?? c.labelsSheet.doc}:
+          <DocLink href={doc.href}>{doc.title}</DocLink>
+        </p>
+      )}
+    </>
   );
 }
 
