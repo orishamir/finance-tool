@@ -5026,10 +5026,13 @@ export const invest = {
     soldFundByFund: "אין מחיר בלי קרן מסוימת: הבית מוכר קרן כזו רק אם מנהל הקרן חתם איתו על הסכם הפצה.",
     /** The same house, and a fund no report of an agreement names: open, never "not sold" (the record's own words show where it has them). */
     noAgreementFound: "לא ידוע אם אפשר לקנות את הקרן הזו שם: לא נמצא הסכם הפצה עליה.",
-    /** A fund whose tax rests on an open rule (F-04, G-35: the kind of Tel Aviv foreign fund with no fund record, one that pays out, the
-     *  preview of one being typed): by the rule, said plainly; nothing is ranked. */
+    /** A fund whose tax rests on an open rule (F-04, G-35), said plainly, by the open question that stops it where one does, else by the
+     *  rule; nothing is ranked. */
     ruleOpen: {
-      "TXF-04": "אי אפשר לחשב את מס רווחי הון: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע או לפי מדד המחירים לצרכן. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
+      // the kind of Tel Aviv foreign fund with no fund record: no currency for the exchange-rate reading of TXF OQ10
+      "TXF-04": "אי אפשר לחשב את מס רווחי הון בלי קרן מסוימת: לא ידוע אם המס על רווח בקרן חוץ שנסחרת בתל אביב מחושב לפי שער המטבע של הקרן או לפי מדד המחירים לצרכן, וכדי לחשב לפי שתי הדרכים האתר צריך לדעת את המטבע של הקרן.",
+      // a Tel Aviv foreign fund that pays out, collected or being typed: its legal form is not known to the run
+      "TXF OQ19": "אי אפשר לחשב את המס: לא ידוע כמה מס משלמים על חלוקה של קרן חוץ שנסחרת בתל אביב כשהקרן מאוגדת כנאמנות או כהסדר חוזי ולא כחברה, והאתר לא יודע איך הקרן הזו מאוגדת. זו שאלה פתוחה, ולכן הקרן לא מדורגת.",
       // F-119 at a falling CPI (TXG OQ17), its readings giving the run different results (method §13)
       "TXG-09": "אי אפשר לחשב את המס במכירה אחרי 2027 כשהאינפלציה שלילית: החוק מעדכן את מדרגות המס ואת הסף של המס הנוסף לפי עליית המדד, ולא אומר מה קורה כשהמדד יורד. כאן כל אחת מהאפשרויות נותנת מס אחר, ולכן אין כאן חישוב ודירוג.",
     } as Record<string, string>,

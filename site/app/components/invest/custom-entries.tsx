@@ -290,10 +290,11 @@ function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
   const cls = optionClass[draft.kind];
   const rec = draftRecord(draft, index);
   const gap = customFundGap(rec);
-  // a fund whose tax rests on an open rule is never ranked or priced after tax (F-04: a Tel Aviv foreign fund that distributes, TXF-04)
+  // a fund whose tax rests on an open rule is never ranked or priced after tax (F-04: a Tel Aviv foreign fund that distributes, TXF-04 with
+  // TXF open question 19)
   const bundle = useEditors()?.world?.bundle;
   const open = bundle ? typedFundOpenRule(bundle, rec, draft.kind) : null;
-  const openLine = open ? reasonText({ code: "rule-open", ruleId: open }, cls) : null;
+  const openLine = open ? reasonText({ code: "rule-open", ...open }, cls) : null;
   const body = (labels: Label[], line: string) => (
     <div className="flex flex-col gap-1.5">
       {labels.length > 0 ? <LabelRow labels={labels} still /> : <span className="text-xs text-muted-foreground">{c.previewNone}</span>}
@@ -308,7 +309,7 @@ function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
     const size = (ls: Label[]) => ls.reduce((n, l) => n + l.text.length + 4, 0);
     const rows = variants.map((v) => rowLabels(v, index)).sort((a, b) => size(b) - size(a));
     // a reason any answer can give: a Tel Aviv foreign fund that distributes rests on an open rule, one that accumulates does not
-    const opens = bundle ? [...new Set(variants.map((v) => typedFundOpenRule(bundle, draftRecord(v, index), v.kind)))].flatMap((id) => (id ? [reasonText({ code: "rule-open", ruleId: id }, cls)] : [])) : [];
+    const opens = bundle ? [...new Set(variants.flatMap((v) => { const stop = typedFundOpenRule(bundle, draftRecord(v, index), v.kind); return stop ? [reasonText({ code: "rule-open", ...stop }, cls)] : []; }))] : [];
     const lines = [c.previewPriced, ...opens, ...(["fee-unknown", "payout-unknown", "need-yield", "domicile-unknown", "no-hedge-entered"] as const).map((code) => reasonText({ code }, cls))].sort((a, b) => b.length - a.length);
     return { row: rows[0]!, line: lines[0]! };
   }, [draft.kind, index, cls, bundle]);

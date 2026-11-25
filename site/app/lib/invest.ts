@@ -4,7 +4,7 @@
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { bestRanked } from "./rank";
 import { gershayim } from "./format";
-import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, fundOf, recordDistribution, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, fundOf, recordDistribution, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
 import { isShekel, type ExposureRecord, type FeesSnapshot, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomFund } from "./custom-entries";
@@ -449,15 +449,15 @@ function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
   return { fund: { kind: "foreign-fund", drag: {} }, market: { ...market, returnIn: "instrument", fxChange: 0 }, currency: { code: "USD", startRate: usd }, cls: OPTION_CLASS.abroad };
 }
 
-/** The open rule a run of the spec's fund would rest on (F-04), or null. A question whose readings split a run (TXG OQ17 at a falling CPI)
- *  is the run's own to say: its row is not comparable, "rule-open" (method §13). */
-const blockedBy = (ctx: Ctx, spec: Spec): string | null => securitiesBlockedBy(spec.fund, ruleContext(ctx.bundle));
+/** The open rule a run of the spec's fund would rest on (F-04), with the question that stops it where one does, or null. A question whose
+ *  readings split a run (TXG OQ17 at a falling CPI) is the run's own to say: its row is not comparable, "rule-open" (method §13). */
+const blockedBy = (ctx: Ctx, spec: Spec): SecuritiesStop | null => securitiesBlockedBy(spec.fund, ruleContext(ctx.bundle));
 
 /**
- * The open rule a fund the person types would rest on (F-04: a foreign fund in Tel Aviv that distributes, TXF-04), or null: what its row
- * says before it is added. Read from its record as the list reads it (`fundOf`), with the yield it pays where it has one.
+ * The open rule a fund the person types would rest on (F-04: a foreign fund in Tel Aviv that distributes, TXF-04 with TXF open question 19),
+ * or null: what its row says before it is added. Read from its record as the list reads it (`fundOf`), with the yield it pays where it has one.
  */
-export function typedFundOpenRule(bundle: IndicesBundle, rec: FundRecord, option: OptionId): string | null {
+export function typedFundOpenRule(bundle: IndicesBundle, rec: FundRecord, option: OptionId): SecuritiesStop | null {
   return securitiesBlockedBy(fundOf(rec, OPTION_KIND[option], { distribution: recordDistribution(rec) }).fund, ruleContext(bundle));
 }
 
@@ -619,7 +619,7 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
   // a fund whose tax rests on an open rule is priced nowhere after tax (F-04: a TASE foreign fund that distributes, or the kind with no fund
   // record, TXF-04), so no house is ranked on a guess
   const open = blockedBy(ctx, spec);
-  if (open) return new Map(snaps.map((s): [string, Priced] => [s.id, { kind: "fail", reason: { code: "rule-open", ruleId: open } }]));
+  if (open) return new Map(snaps.map((s): [string, Priced] => [s.id, { kind: "fail", reason: { code: "rule-open", ...open } }]));
   return priceRows(ctx, spec, option, snaps, fundVenue);
 }
 

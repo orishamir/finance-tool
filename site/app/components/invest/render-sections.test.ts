@@ -118,6 +118,11 @@ describe("an account whose run an open question stopped", () => {
     expect(told.why).toBe(invest.reasons.ruleOpen["TXG-09"]);
     expect(told.parts).toEqual([{ text: invest.reasons.ruleOpen["TXG-09"], question: "TXG OQ17" }]);
   });
+  it("says a Tel Aviv foreign fund that pays out stops on its distribution's open tax, and the kind with no fund record on its unknown currency (TXF-04)", () => {
+    expect(reasonText({ code: "rule-open", ruleId: "TXF-04", question: "TXF OQ19" }, "tase_foreign_fund_units")).toBe(invest.reasons.ruleOpen["TXF OQ19"]);
+    expect(reasonText({ code: "rule-open", ruleId: "TXF-04" }, "tase_foreign_fund_units")).toBe(invest.reasons.ruleOpen["TXF-04"]);
+    expect(invest.reasons.ruleOpen["TXF OQ19"]).not.toBe(invest.reasons.ruleOpen["TXF-04"]);
+  });
 });
 
 describe("an account that prices no fund on an index says why, over every kind of fund the index has", () => {

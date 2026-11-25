@@ -208,14 +208,16 @@ describe("foreign funds on TASE (TXF-04)", () => {
     expect(codes(r)).toContain("TXF-OQ10");
     expect(r.labels).not.toContainEqual(reading);
     const kind = { kind: "tase-foreign-fund" as const };
-    expect(securitiesBlockedBy(kind, ctx)).toBe("TXF-04");
+    // the kind with no fund record has no currency for the exchange-rate reading; a line that distributes stops on its distribution's open
+    // tax (TXF open question 19), its legal form unknown to the run
+    expect(securitiesBlockedBy(kind, ctx)).toEqual({ ruleId: "TXF-04" });
     expect(() => runSecurities(fund({ fund: kind }), ctx)).toThrow(BlockedError);
     const paying = { ...unstated, distribution: { yield: 0.015, perYear: 4 } };
-    expect(securitiesBlockedBy(paying, ctx)).toBe("TXF-04");
+    expect(securitiesBlockedBy(paying, ctx)).toEqual({ ruleId: "TXF-04", question: "TXF OQ19" });
     expect(() => runSecurities(fund({ fund: paying }), ctx)).toThrow(BlockedError);
     // a statement settles only the index: a line that distributes stops whatever its annex states (TXF open question 19)
     const statedPaying = { ...paying, statedIndex: statement("fx") };
-    expect(securitiesBlockedBy(statedPaying, ctx)).toBe("TXF-04");
+    expect(securitiesBlockedBy(statedPaying, ctx)).toEqual({ ruleId: "TXF-04", question: "TXF OQ19" });
     const { distribution: _paid, ...statedAccumulating } = statedPaying;
     expect(securitiesBlockedBy(statedAccumulating, ctx)).toBeNull();
   });

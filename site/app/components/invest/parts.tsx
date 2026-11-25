@@ -86,7 +86,7 @@ export function reasonSentence(r: NotComparable, instrumentClass: string, channe
     case "other-venue":
       return n.otherVenue(r.venue);
     case "rule-open":
-      return c.reasons.ruleOpen[r.ruleId] ?? c.reasons.ruleOpenOther;
+      return (r.question ? c.reasons.ruleOpen[r.question] : undefined) ?? c.reasons.ruleOpen[r.ruleId] ?? c.reasons.ruleOpenOther;
     case "deal-unpriced":
       // the deal's own reading says what it lacks, by its fee's name (lib/deal-account)
       return r.missing ? (c.dealAccount.missing[r.missing.why] ?? c.dealAccount.missing.price!)(feeNameOf(r.missing.kind, r.missing.name)) : c.dealAccount.missing.price!("");

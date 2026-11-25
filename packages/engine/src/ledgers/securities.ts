@@ -270,9 +270,10 @@ export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex" | "dist
  * states its index under its ruling takes that index (`statedTaxIndexOf`, D84): the main currency's exchange rate, which is the record's own
  * currency and the exposure's, and so the run's one exchange-rate path, or the CPI; the run carries the statement, and no rule is cited
  * for it. Any other TASE foreign fund that pays nothing out is read under each reading of TXF OQ10 (`taseForeignFundIndex`): its record's
- * currency's exchange rate (the CPI for a record in shekels), or the CPI, the run taking the one that leaves the holder less. One that distributes reads no statement and
- * stops on TXF-04 (D10): its distribution's tax is open for a fund organised as a trust (TXF open question 19), and the run does not know
- * its legal form. So does the kind with no fund record, whose currency the run does not know (G-35).
+ * currency's exchange rate (the CPI for a record in shekels), or the CPI, the run taking the one that leaves the holder less. One that
+ * distributes reads no statement and stops on TXF-04 with TXF open question 19 (D10): its distribution's tax is open for a fund organised as
+ * a trust, and the run does not know its legal form. The kind with no fund record stops on TXF-04 alone: the run does not know its currency,
+ * so it has no exchange-rate reading (G-35).
  */
 export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "distribution" | "notKnown">, book: RuleBook): "fx" | "principal" | "cpi" {
   if (fund.kind === "foreign-fund") {
@@ -290,23 +291,25 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "princip
   if (fund.kind !== "tase-foreign-fund") return "cpi";
   const stated = statedTaxIndexOf(fund);
   if (stated) return stated.index;
-  if (fund.distribution || fund.recordCurrency === undefined) throw new BlockedError("TXF-04");
+  if (fund.distribution) throw new BlockedError("TXF-04", "TXF OQ19");
+  if (fund.recordCurrency === undefined) throw new BlockedError("TXF-04");
   const reading = book.reading(taseForeignFundIndex, fund.notKnown).id;
   // a record in shekels has no exchange rate of its own against the shekel: both readings are the CPI
   return reading === "fx" && isShekel(fund.recordCurrency) ? "cpi" : reading;
 }
 
 /**
- * The open rule every securities run of this fund stops on (F-04), or null: what a page reads to list the fund with its reason before
- * running it, so nothing is ranked on a guessed index. A fund whose tax index is an open reading (TXS OQ26, TXF OQ10) is not stopped by
- * it before a run: whether its readings split, and what a split does, is the run's to say (`securitiesStopOf`).
+ * The open rule every securities run of this fund stops on (F-04), with the open question that stops it where one does, or null: what a
+ * page reads to list the fund with its reason before running it, so nothing is ranked on a guessed index. A fund whose tax index is an open
+ * reading (TXS OQ26, TXF OQ10) is not stopped by it before a run: whether its readings split, and what a split does, is the run's to say
+ * (`securitiesStopOf`).
  */
-export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "distribution">, ctx: RunContext): string | null {
+export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "distribution">, ctx: RunContext): SecuritiesStop | null {
   try {
     taxIndexOf(fund, ruleBook(ctx));
     return null;
   } catch (e) {
-    if (e instanceof BlockedError) return e.ruleId;
+    if (e instanceof BlockedError) return { ruleId: e.ruleId, ...(e.question ? { question: e.question } : {}) };
     if (e instanceof OpenReadingError) return null;
     throw e;
   }

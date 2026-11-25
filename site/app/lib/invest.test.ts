@@ -230,7 +230,8 @@ describe("invest page computation", () => {
     expect(typedFundOpenRule(bundle, line, "tase-foreign")).toBeNull();
     const fee = line.fees.fixed_management;
     const paying = { ...line, distribution_policy: "distributing" as const, distribution: { yield: { ...fee, value: 1.5 }, per_year: 4 as const } };
-    expect(typedFundOpenRule(bundle, paying as typeof line, "tase-foreign")).toBe("TXF-04");
+    // its distribution's tax is open for a fund organised as a trust, and the run does not know its legal form (TXF open question 19)
+    expect(typedFundOpenRule(bundle, paying as typeof line, "tase-foreign")).toEqual({ ruleId: "TXF-04", question: "TXF OQ19" });
   });
 
   it("pins one fund's account cost: the S&P 500's Tel Aviv line at Psagot on the plan, run on the dollar its annex states (F-91, D84)", () => {
