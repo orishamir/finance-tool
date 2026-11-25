@@ -3,7 +3,7 @@
 // entries are set here, so the test holds whatever the records carry.
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import { invest } from "../../copy";
+import { help, invest } from "../../copy";
 import { buildInvest, indexById, knownIndices, pairCosts, type WayPrice } from "../../lib/invest";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "../../lib/custom-entries";
 import { PairReceipt } from "./receipt";
@@ -66,7 +66,7 @@ describe("whole units on the indices page (F-109, D94)", () => {
     expect(w.units?.monthly).toBe(240);
     expect(w.units?.skipped).toBe(0);
   });
-  it("the receipt's account part says why the cash waited, and a fund with no unit price is marked on its row", () => {
+  it("the receipt's account part says why the cash waited, behind a \"?\", and a fund with no unit price is marked on its row", () => {
     // with, built for the test, a second ETF on the index with no unit price (the priced one's twin under its own number), so a ranked
     // ETF with none is there whatever the records carry
     const base = priced.funds.find((f) => f.id === etfId);
@@ -75,8 +75,8 @@ describe("whole units on the indices page (F-109, D94)", () => {
     const twin = { ...unpriced, id: "9999902", names: { ...base.names, he: ["קרן סל תאומה לבדיקה"] }, identifiers: { ...base.identifiers, tase_number: "9999902" } };
     const withTwin = { ...priced, funds: [...priced.funds, twin] as Funds };
     const view = buildInvest({ bundle: withTwin, index: sp, plan });
-    const accounts = shown(html(createElement(PairReceipt, { view, bundle: withTwin, plan, pick: { house: "leumi", fund: etfId }, chosen: true, layout: "ticket" })));
-    expect(accounts).toContain(invest.pair.waitingWhy.rose);
+    const accounts = html(createElement(PairReceipt, { view, bundle: withTwin, plan, pick: { house: "leumi", fund: etfId }, chosen: true, layout: "ticket" }));
+    expect(accounts).toContain(help.markLabel.replace("{about}", invest.pair.waiting));
     const etf = view.options.find((o) => o.id === "il-etf")!.funds.find((f) => !f.reason && f.rec.id !== etfId)!;
     expect(etf.noUnitPrice).toBe(true);
     const funds = shown(lists(view, withTwin, plan, { house: "leumi", fund: etf.rec.id }, { today: priced.today }));

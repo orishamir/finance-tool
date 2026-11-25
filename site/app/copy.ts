@@ -4651,7 +4651,7 @@ export const invest = {
     remainder: "תוספת משילוב עמלות החשבון",
     remainderAbout: "החלק הזה לא שייך לעמלה אחת: גם בלי אחת מעמלות החשבון הוא עדיין היה נגבה. שאר עמלות החשבון היו גובות אותו מהכסף שאותה עמלה כבר לא הייתה לוקחת, ומהצמיחה של הכסף הזה.",
     /** F-109, F-91 (D94): where the house buys the fund in whole units, what the cash waiting for a unit did against the fund. Not a fee: its
-     *  own line beside the account's fees, a minus where the fund rose while the cash waited and a plus where it fell; `why` under it by its sign */
+     *  own line beside the account's fees, a minus where the fund rose while the cash waited and a plus where it fell; `why` behind its "?" by its sign */
     waiting: "כסף שחיכה ליחידה שלמה",
     waitingAbout: "ההפרש בין הכסף שחיכה ליחידה שלמה לבין מה שהיה נעשה ממנו בקרן, עד המכירה, בהתחשב באינפלציה",
     waitingWhy: { rose: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא עלה עם הקרן.", fell: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא ירד עם הקרן." },

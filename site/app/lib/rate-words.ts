@@ -132,9 +132,10 @@ const PARTS: Record<string, (l: SnapLine) => RatePart[] | null> = { trade: trade
 export function rateWords(line: FeeLine, priced: PairCosts["priced"], monthly: number): RateWords[] | null {
   if (priced.entered) return null;
   if (line === "account") {
-    // the bank's current account (F-102): its monthly minimum, the figure the run counts
+    // the bank's current account (F-102): the run counts the price list's monthly minimum as the month's whole price, so it is said as a
+    // price a month, not as a bound ("מינימום") over a price the line does not count
     const m = priced.currentAccount?.monthly_minimum;
-    return num(m) && m.unit === "nis_per_month" ? [{ standing: false, parts: [{ kind: "min", value: m, per: "month" }] }] : null;
+    return num(m) && m.unit === "nis_per_month" ? [{ standing: false, parts: [{ kind: "rate", value: m, per: "month" }] }] : null;
   }
   const base = BASE[line];
   if (!base) return null;

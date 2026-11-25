@@ -20,7 +20,7 @@ import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, StateTag, shortRow } from "../provenance";
-import { DocLink, FEE_WORDS_HELP, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
+import { DocLink, FEE_WORDS_HELP, HeldMark, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
 import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, totalNoteOf, whole, type Pick } from "./pair";
 import { OptionTag } from "./parts";
@@ -354,7 +354,9 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       {accountLinesOf(pc, r).map((l) => {
         const name = accountLineName(l);
         const sub = accountLineSub(l, { pc, plan, pick, dealApi });
-        return <ReceiptLine key={l.key} size="sm" label={name} value={<Num value={nom(l.cost, name)} display={minus(l.amount)} />} sub={sub ?? undefined} />;
+        // the remainder is no one fee: its "?" says where it comes from
+        const label = l.kind === "remainder" ? <HeldMark words={name} mark={<HelpMark about={name} text={c.pair.remainderAbout} />} /> : name;
+        return <ReceiptLine key={l.key} size="sm" label={label} value={<Num value={nom(l.cost, name)} display={minus(l.amount)} />} sub={sub ?? undefined} />;
       })}
     </>
   );
@@ -369,7 +371,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
     <>
       <AccountFacts view={view} bundle={bundle} plan={plan} pick={pick} refs={!ticket} />
       <ReceiptLine size="sm" edge="border-chart-by-account" label={c.receipt.accountCharges} value={accountValue} parts={accountParts} />
-      {waits && <ReceiptLine size="sm" label={c.pair.waiting} value={waitingValue} sub={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />}
+      {waits && <ReceiptLine size="sm" label={<HeldMark words={c.pair.waiting} mark={<HelpMark about={c.pair.waiting} text={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />} />} value={waitingValue} />}
     </>
   );
   const fundOwn = (

@@ -55,9 +55,9 @@ describe("a fee's rate as the price list prints it (the receipt's account lines)
     expect(rateWords("fx", priced([line({ base: "fx", rate: fig(0.5, "pct_of_trade"), spread: fig(0.3, "pct_of_trade") } as Partial<Line> & Pick<Line, "base" | "rate">)]), 500)![0]!.parts.map((p) => p.kind)).toEqual(["rate", "spread"]);
     expect(rateWords("fx", priced([line({ base: "fx", rate: fig(0.015, "nis_per_usd") })]), 500)![0]!.parts[0]!.per).toBeNull();
   });
-  it("a bank's current account: the monthly minimum the run counts; the remainder and the fund are never a line of the list", () => {
+  it("a bank's current account: the monthly minimum the run counts, said as the month's price and not as a bound; the remainder and the fund are never a line of the list", () => {
     const cur = { monthly_minimum: fig(5.5, "nis_per_month") } as NonNullable<FeesSnapshot["current_account"]>;
-    expect(rateWords("account", priced([], { currentAccount: cur }), 500)![0]!.parts[0]).toMatchObject({ kind: "min", per: "month" });
+    expect(rateWords("account", priced([], { currentAccount: cur }), 500)).toEqual([{ standing: false, parts: [{ kind: "rate", value: expect.objectContaining({ value: 5.5 }), per: "month" }] }]);
     expect(rateWords("fund" as never, priced([]), 500)).toBeNull();
   });
 });

@@ -235,8 +235,14 @@ describe("in whole units, the fees charged and the waiting cash apart (F-91, F-1
         expect(at).toBeGreaterThan(0);
         const sign = returnPct < 0 ? "+" : "−";
         expect(out.slice(at, at + 60)).toContain(`${sign}${Math.abs(r.waiting).toLocaleString("en-US")} ₪`);
-        // why it waited: on the account's own lines, the ticket's side part, and on paper behind a tap on the account's name
-        if (layout === "ticket") expect(out).toContain(returnPct < 0 ? w.pair.waitingWhy.fell : w.pair.waitingWhy.rose);
+        // why it waited: behind a "?" on the account's own lines (the ticket's side part; on paper behind a tap on the account's name),
+        // never a line of words under it
+        if (layout === "ticket") {
+          const raw = html(createElement(PairReceipt, { view, bundle, plan: p, pick, chosen: true, layout }));
+          expect(raw).toContain(help.markLabel.replace("{about}", w.pair.waiting));
+          expect(out).not.toContain(w.pair.waitingWhy.fell);
+          expect(out).not.toContain(w.pair.waitingWhy.rose);
+        }
         // the waiting cash is among the lines that add up to the total
         expect(r.paidIn + r.added - r.account - r.fund - r.waiting - ch.inflation - ch.tax).toBe(ch.left);
         expect(lines(out)[w.receipt.left]).toBe(ch.left);
