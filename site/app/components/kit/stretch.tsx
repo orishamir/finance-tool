@@ -3,7 +3,7 @@
 // ruler beside a row, one scale for every row: the row's own stretch on it, and a spot where the row is a fund. `StretchChart` sets two
 // lists beside one ruler: the chosen start row opens onto its stretch, drawn as a band on the ruler, as a filled wedge in the start's colour;
 // the band opens onto the end list as a faint one in the end's colour, with one thin straight line from each end row's spot on the ruler to
-// that row, the chosen row's solid, each in its row's tone (a fund's, or a hedged fund's); the chosen pair is one point on the band, joined by a line straight up to the foot of what stands above (the receipt's total). Everything it
+// that row, the chosen row's solid, each in its row's tone (a fund's, or a hedged fund's); the chosen pair is one point on the band, the chosen fund's; a line runs straight down from the foot of what stands above (the receipt's total) and wraps the ruler's top. Everything it
 // draws is placed from the rows' measured positions, again on every change and resize, so rows of any height join where they stand.
 import { useCallback, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { placeOn, ticksOf, type Scale } from "../../lib/stretch";
@@ -49,6 +49,11 @@ const FOLLOW_MS = 900;
 const END = 32;
 /** The band's room past its two values, px, and its corners. */
 const BAND_PAD = 10;
+/** The ruler box's corners, px. */
+const RULER_R = 12;
+/** The line from above wraps the ruler's top this far outside its edge, and runs this far down each side past the corners, px. */
+const CAP_GAP = 2;
+const CAP_ARM = 4;
 /** Ticks at least this far apart, px. */
 const TICK_GAP = 56;
 
@@ -215,7 +220,7 @@ function Drawing({ geo, scale, band, point, spots, tones, chosenStart, chosenEnd
   const ticks = ticksOf(scale, Math.max(1, Math.floor((y1 - y0) / TICK_GAP))).filter((v) => Math.abs(y(v) - yPoint) >= 16 && (yBest === null || Math.abs(y(v) - yBest) >= 11) && (yWorst === null || Math.abs(y(v) - yWorst) >= 11));
   return (
     <svg aria-hidden="true" width={geo.w} height={geo.h} className="pointer-events-none absolute inset-0 overflow-visible" data-chart="stretch">
-      <rect x={R.l} y={R.t} width={R.r - R.l} height={R.b - R.t} rx={12} className="fill-card stroke-border" />
+      <rect x={R.l} y={R.t} width={R.r - R.l} height={R.b - R.t} rx={RULER_R} className="fill-card stroke-border" />
       {/* the chosen start row opens onto its stretch, and the stretch opens onto the end list */}
       {chosen && yBest !== null && yWorst !== null && <path d={`M${chosen.edge} ${chosen.top}L${startX} ${yBest}V${yWorst}L${chosen.edge} ${chosen.bottom}Z`} className="fill-chart-by-account" fillOpacity={0.2} />}
       {first !== null && last !== null && endEdge !== null && yBest !== null && yWorst !== null && <path d={`M${endX} ${yBest}L${endEdge} ${first}V${last}L${endX} ${yWorst}Z`} className="fill-chart-by-fund" fillOpacity={0.07} />}
@@ -243,11 +248,11 @@ function Drawing({ geo, scale, band, point, spots, tones, chosenStart, chosenEnd
           </g>
         );
       })}
-      {/* the pair in the receipt: one point on the ruler, inside the stretch, joined straight up to the foot of what stands above */}
-      <path d={`M${cx0} ${geo.above ?? R.t}V${yPoint}`} className="stroke-primary" strokeWidth={3} />
-      <path d={`M${endX} ${yPoint}H${cx0}`} className="stroke-primary" strokeWidth={3} />
+      {/* what stands above (the receipt's total) joined straight down to the ruler, the line wrapping the ruler's top and its two corners;
+          the pair is the chosen fund's point on the ruler */}
+      {geo.above !== null && geo.above < R.t && <path d={`M${cx0} ${geo.above}V${R.t - CAP_GAP}`} className="stroke-primary" strokeWidth={3} />}
+      <path d={`M${R.l - CAP_GAP} ${R.t + RULER_R + CAP_ARM}V${R.t + RULER_R}A${RULER_R + CAP_GAP} ${RULER_R + CAP_GAP} 0 0 1 ${R.l + RULER_R} ${R.t - CAP_GAP}H${R.r - RULER_R}A${RULER_R + CAP_GAP} ${RULER_R + CAP_GAP} 0 0 1 ${R.r + CAP_GAP} ${R.t + RULER_R}V${R.t + RULER_R + CAP_ARM}`} className="stroke-primary" strokeWidth={3} strokeLinecap="round" fill="none" />
       <circle cx={endX} cy={yPoint} r={6} className={TONE[tones?.[chosenEnd] ?? "fund"].fill} data-mark="point" />
-      <circle cx={cx0} cy={yPoint} r={7} className="fill-primary" data-mark="point" />
     </svg>
   );
 }
