@@ -55,6 +55,8 @@ export function checkLineFacts(line: Line, latest: boolean): string[] {
   // 4. a fixed fee the month's trading offsets; 6. when a fee is collected
   if (line.offset && line.base !== "fixed_period") out.push(`${at}: offset belongs to a fixed_period line`);
   if (line.collection && line.base !== "custody" && line.base !== "fixed_period") out.push(`${at}: collection belongs to a custody or fixed_period line`);
+  // 7. a conversion line that converts only on a purchase
+  if (line.conversion_side && line.base !== "fx") out.push(`${at}: conversion_side belongs to a conversion line`);
   return out;
 }
 
@@ -103,9 +105,15 @@ function stepsNeverDearer(line: Line, at: string): string[] {
   return out;
 }
 
-/** data-schema §3.6a item 5 and §3.6's distribution agreements, on the snapshot. */
+/** data-schema §3.6a items 5 and 7 and §3.6's distribution agreements, on the snapshot. */
 export function checkSnapshotFacts(snap: FeesSnapshot): string[] {
   const out: string[] = [];
+  // 7. a conversion line that converts only on a purchase leaves a sale to another line of the list, for every class it names (F-13)
+  for (const l of snap.lines.filter((x) => x.base === "fx" && x.conversion_side)) {
+    const sale = snap.lines.filter((x) => x.base === "fx" && x.level === l.level && !x.conversion_side && (x.channel === null || l.channel === null || x.channel === l.channel));
+    const left = l.applies_to.filter((a) => !sale.some((x) => x.applies_to.includes(a) || x.applies_to.includes("all")));
+    if (left.length) out.push(`lines ${l.id}: converts only on a purchase, and no other conversion line converts a sale of ${left.join(", ")}`);
+  }
   const houseClass = ["bank", "broker", "foreign_broker"].includes(snap.provider.class);
   if (snap.third_party && !houseClass) out.push("third_party: only a bank's, broker's or foreign broker's record says what third parties may add");
   const da = snap.distribution_agreements;
