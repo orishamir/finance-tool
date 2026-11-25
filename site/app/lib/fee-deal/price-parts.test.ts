@@ -531,7 +531,7 @@ describe("the templates", () => {
     expect(house("excellence").fees.find((f) => f.kind === "custody")!.cases).toBeUndefined();
     // Interactive Israel sells foreign securities alone: its custody and account fee on them are on everything it sells, so general
     for (const kind of ["custody", "fixed_period"]) expect(house("interactive-israel").fees.find((f) => f.kind === kind)!.cases, kind).toBeUndefined();
-    // Psagot's custody line names every class; its foreign securities are not shown to be on sale there, and the rest it covers whole
+    // Psagot's custody line names every class it sells, so it covers them whole
     expect(house("psagot").fees.find((f) => f.kind === "custody")!.cases).toBeUndefined();
     // One Zero sells on the Tel Aviv exchange too: its fee for each corporate event abroad keeps what is bought, with one case for it
     const event = house("one-zero").fees.find((f) => f.kind === "corporate_event")!;
@@ -586,9 +586,9 @@ describe("the templates", () => {
     expect(copy.filled.why["fx-to-fx"]).toBeTruthy();
   });
   it("list with why every line reading the house as it can be done takes away whole", () => {
-    // Psagot's documents do not show a private customer can buy abroad there: its two foreign trade lines
+    // Psagot sells abroad to a private customer (its written answer of 10.11.2026): none of its lines is taken away
     const gone = house("psagot").left.filter((l) => l.why === "unavailable").map((l) => l.lineId).sort();
-    expect(gone).toEqual(["psagot-buy-sell-foreign-europe", "psagot-buy-sell-foreign-us"]);
+    expect(gone).toEqual([]);
     // every line of every house's record fills a fee or is listed with why
     for (const full of latestSnapshots().filter((x) => data.houses.some((h) => h.id === x.id))) {
       const kept = onlyWhatCanBeDone(full);

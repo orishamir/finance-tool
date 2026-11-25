@@ -109,12 +109,12 @@ describe("invest page computation", () => {
   });
 
 
-  it("Psagot is grey on funds abroad, with its tariff's own words on why (D42)", () => {
+  it("Psagot prices funds abroad with no doubt on the row, as its written answer of 10.11.2026 settles them (D42)", () => {
     const abroad = view.options.find((o) => o.id === "abroad")!;
     const accumulating = abroad.funds.filter((f) => f.rec.distribution_policy === "accumulating");
     expect(accumulating.length).toBeGreaterThan(0);
-    for (const f of accumulating) expect("valueN" in f.byHouse.psagot!).toBe(false);
-    expect(doubtOf(bundle.snapshots.find((s) => s.id === "psagot"), "abroad")).toContain("עשויה להשתנות");
+    for (const f of accumulating) expect("valueN" in f.byHouse.psagot!).toBe(true);
+    expect(doubtOf(bundle.snapshots.find((s) => s.id === "psagot"), "abroad")).toBeNull();
     expect(view.headline!.providerId).toBe("psagot");
   });
 
@@ -160,12 +160,12 @@ describe("invest page computation", () => {
     expect(abroad.cells.length).toBe(view.providers.length);
     for (const c of abroad.cells) expect(c.kind === "cost" ? typeof c.costN === "number" : c.kind === "unavailable" || !!c.reason).toBe(true);
     expect(abroad.cells.some((c) => c.kind === "cost")).toBe(true);
-    // One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); a house whose price
-    // list leaves the price abroad open (Psagot, IBI) is a grey cell with its reason. Altshuler answered in writing that it
+    // One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); every house prices a fund
+    // abroad, Psagot on its written answer of 10.11.2026. Altshuler answered in writing that it
     // trades only on the Israeli and US exchanges, so it is priced on its US line for a fund that trades in the US, as One Zero is.
     // IBI answered in writing that its line for other markets prices a fund bought in Europe, and sent the annex that prints it
     expect(abroad.cells.filter((c) => c.kind === "not-comparable")).toEqual([]);
-    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["psagot"]);
+    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual([]);
     expect(abroad.cells.find((c) => c.providerId === "ibi")?.kind).toBe("cost");
     expect(abroad.cells.find((c) => c.providerId === "altshuler-trade")).toMatchObject({ kind: "cost", venue: "us" });
   });

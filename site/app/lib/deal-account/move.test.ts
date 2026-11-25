@@ -14,7 +14,7 @@ import { baseOf, startingPointsOf } from "../own-account";
 import { hasCases, NAME_MAX, readDeal } from "../fee-deal/model";
 import { dealProviderId, withDeals } from "./bundle";
 import { dealOfTypedAccount, movedDealId, withMoved } from "./move";
-import { account, bundle, compare, ctx, data, differing, fig, full, houses, on, plan, unstated } from "./move-fixtures";
+import { account, bundle, compare, ctx, data, differing, fig, full, houses, on, plan, unstated, withPsagotAbroadOpen } from "./move-fixtures";
 
 /** The indices the fast comparisons run on: the Tel Aviv 125 (bought in shekels) and the MSCI World (bought abroad, and the dollar's rate). */
 const FEW = ["index-ta125", "index-msci-world"];
@@ -83,18 +83,20 @@ describe("the move: an account typed from scratch", () => {
 });
 
 describe("the move: an account selling only the side its house does not sell", () => {
-  // the account had no price anywhere: the side it does not sell was closed to it, and the house sells nothing on the other
+  // the account had no price anywhere: the side it does not sell was closed to it, and the house sells nothing on the other. Psagot now
+  // sells abroad, so "abroad only" is held on its record planted with abroad left open (`withPsagotAbroadOpen`)
+  const { ctx: at, bundle: planted } = withPsagotAbroadOpen();
   const shapes: [string, CustomBroker][] = [
     ["psagot, abroad only", { ...on("psagot", full), sells: { israeli: false, abroad: true } }],
     ["interactive-brokers, in Israel only", { ...on("interactive-brokers", full), sells: { israeli: true, abroad: false } }],
     ["interactive-israel, in Israel only", { ...on("interactive-israel", full), sells: { israeli: true, abroad: false } }],
   ];
-  const deals = shapes.map(([, a]) => dealOfTypedAccount(a, ctx));
-  const b = withDeals(bundle, deals, data.kinds);
+  const deals = shapes.map(([, a]) => dealOfTypedAccount(a, at));
+  const b = withDeals(planted, deals, data.kinds);
   const has = (at: unknown) => !!at && typeof at === "object" && "valueN" in at;
 
   it.each(shapes)("%s: its trade fee has a case for each value on the side sold, its price not given, and the deal reads back as written", (_n, a) => {
-    const d = dealOfTypedAccount(a, ctx);
+    const d = dealOfTypedAccount(a, at);
     const trade = d.fees.find((f) => f.kind === "trade")!;
     expect(hasCases(trade) && trade.cases.length).toBeGreaterThan(0);
     expect(readDeal(JSON.parse(JSON.stringify(d)))).toEqual(d);

@@ -97,7 +97,7 @@ describe("the move on the device", () => {
 
     it("loaded four times, an account on a house that sells only the side it does not leaves one stored entry", () => {
       const kept = device();
-      replaceState({ ...getSnapshot().state, customBrokers: [{ ...on("psagot", full), sells: { israeli: false, abroad: true } }] });
+      replaceState({ ...getSnapshot().state, customBrokers: [{ ...on("interactive-brokers", full), sells: { israeli: true, abroad: false } }] });
       flush(true);
       for (let n = 0; n < 4; n++) load();
       expect(entries(kept)).toBe(1);

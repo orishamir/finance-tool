@@ -16,6 +16,13 @@ const render = (id: string) => {
   return { part, out: renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(BrokerageGroupCard, { id, tariff: part.tariff, kind: part.kind }) }))) };
 };
 
+/** A bank's card, as its institution page draws it. */
+const renderBank = (id: string) => {
+  const page = buildInstitution(id)!;
+  const data = { rules: page.rules, terms: {}, dimensions: {}, today: "2026-11-12" };
+  return { page, out: renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(BrokerageGroupCard, { id, tariff: page.tariff, kind: page.kind }) }))) };
+};
+
 describe("the can-buy rows on a company's card", () => {
   it("Interactive Brokers' \"no\" on Tel Aviv opens its rule, which the page holds", () => {
     const { part, out } = render("interactive-brokers");
@@ -26,21 +33,17 @@ describe("the can-buy rows on a company's card", () => {
     expect(out).toMatch(new RegExp(`class="ruled"[^>]*>${r4catalogue.card.canBuy.state.no}<`));
   });
   it("a row whose record names no rule keeps its plain word; a doubt reads \"לא ברור\"", () => {
-    const { part, out } = render("psagot");
-    const doubt = part.tariff.availability.find((a) => a.state === "unknown")!;
+    // Pepper's record leaves open whether funds and foreign securities can be bought there, and names no rule for it
+    const { page, out } = renderBank("pepper");
+    const doubt = page.tariff?.availability.find((a) => a.state === "unknown");
     expect(doubt).toBeTruthy();
-    expect(doubt.rules).toBeUndefined();
+    expect(doubt?.rules).toBeUndefined();
     expect(out).toContain(`>${r4catalogue.card.canBuy.state.unknown}<`);
     expect(r4catalogue.card.canBuy.state.unknown).toBe("לא ברור");
   });
 });
 
 describe("a fee line with a flat price for a small order or conversion", () => {
-  const renderBank = (id: string) => {
-    const page = buildInstitution(id)!;
-    const data = { rules: page.rules, terms: {}, dimensions: {}, today: "2026-11-12" };
-    return { page, out: renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(BrokerageGroupCard, { id, tariff: page.tariff, kind: page.kind }) }))) };
-  };
   it("Hapoalim's conversion prints its flat price beside the percent, with its own link to where it stands", () => {
     const { page, out } = renderBank("hapoalim");
     const direct = page.tariff!.lines.find((l) => l.id === "hapoalim-fx-conversion-direct")!;
