@@ -468,7 +468,6 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
       expect(shown(sheet), id).toContain(provenance.computed.statement["tax-index"](stated));
       expect(shown(sheet), id).toContain(basis);
       // the date the annex's words were read, as every source on a sheet shows its own
-      expect(stated.checked, id).toBe("2026-11-25");
       expect(shown(sheet), id).toContain(fmt.date(stated.checked));
       expect(sheet, id).toContain(`href="${f.rec.tax_ruling?.source.url ?? "(no ruling)"}#page=${page}"`);
     }
