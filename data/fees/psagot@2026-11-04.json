@@ -434,7 +434,8 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
         "notes": "'עמלה בגובה 0.15% מהעסקה, מינימום 15 יורו לעסקה'. Other rows: foreign bonds 0.25% min 50 currency units; Canada 0.15% min CAD 10; foreign funds 0.25% no minimum. 2026-11-04 (research/2026-11-04-binding-prices/psagot-abroad.md): the tariff adds 'באחריות הלקוח לפנות לחברה, על מנת לברר גובה העמלה לפני ביצוע הפעילות'. The fee is collected in the trade currency and the 15 euro minimum is converted into it ('העמלה המינימלית תהיה 15 יורו לאחר המרתם', the Swiss franc example). Which row an Irish UCITS ETF falls under, this one or 'קרנות זרות' (0.25%, no minimum), the price list does not state; Psagot's written answer of 10.11.2026 (docs/company-answers.md#psagot-2026-11-10, item 2), asked it for the iShares Core S&P 500 UCITS ETF (IE00B5BMR087) given the warning, puts it on this row: 'העמלה על פעולות באירופה היא 0.15% משווי העסקה עם מינימום 15 אירו לפעולה'. 2026-11-25: re-read, unchanged (dateModified 2026-08-09)."
@@ -456,7 +457,8 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
         "notes": "'מינימום 15 יורו לעסקה'. Psagot's written answer of 10.11.2026 (docs/company-answers.md#psagot-2026-11-10, item 2) says the same, 'מינימום 15 אירו לפעולה'. The general fee annex sent with it prints 'מינימום של 15 יח'* מטבע שלמות בהתאם למטבע שבו בוצעה העסקה', 15 dollars on a fund bought in dollars, less than 15 euros while the euro is above the dollar; that annex is undated and Psagot did not say it is a new customer's current terms, so the minimum stays the price list's and the answer's 15 euros, the most the documents let it charge (D56)."
@@ -543,7 +545,8 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
         "notes": "Printed as an amount per dollar, not a percentage: 'עבור המרה מדולר או לדולר – 1.5 אגורות עבור כל דולר/שקל'. Recorded as 0.015 NIS per dollar converted, the unit Psagot gave in writing on 10.11.2026 (docs/company-answers.md#psagot-2026-11-10, item 3): 'הכוונה ל-1.5 אגורות לכל דולר שמומר (כ-0.5% מהסכום), העלות הזאת מגולמת במרווח ההמרה', so it is taken in the rate rather than charged apart. Until that answer it was the record's reading: the words 'כל דולר/שקל' also allowed per shekel, 1.5%. Charged on execution. 2026-11-04 (research/2026-11-04-binding-prices/psagot-abroad.md): no Psagot page, guide, form or the exchange's sheet gives the unit; a dollar security is bought in dollars ('רכישה של ניירות ערך תתבצע במטבע הנקוב של אותו נייר'). 2026-11-25: the price list re-read, unchanged (dateModified 2026-08-09)."
@@ -567,7 +570,8 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents (D56): the tariff prints a conversion fee but no spread and no limit on the rate the company applies. Advertising only: 'שערי המרה מועדפים' (landing page) and 'בשערים תחרותיים, במרווחים צמודים וללא עמלות המרה' (trade_heb page); the words 'ללא עמלות המרה' are contradicted by this line. 2026-11-25: Psagot's written answer of 10.11.2026 (docs/company-answers.md#psagot-2026-11-10, item 3) says the 1.5 agorot is 'מגולמת במרווח ההמרה' and sets no limit on the spread; the general fee annex sent with it prints 'עמלת המרת מט\"ח' פטור and 'בהתאם לשיקול דעת, פסגות עשויה לגבות עמלה נוספת (מרווח) הגלומה בשער ההמרה', with no limit. Still limited by no document, so nothing beyond the 1.5 agorot is priced (D65)."
@@ -608,7 +612,8 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
         "notes": "'עבור המרה למטבע אחר או ממטבע אחר – עד 0.5% משווי העסקה' (a ceiling)."
@@ -632,7 +637,8 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents (D56): the tariff prints a conversion fee but no spread and no limit on the rate the company applies. Advertising only: 'שערי המרה מועדפים' (landing page) and 'בשערים תחרותיים, במרווחים צמודים וללא עמלות המרה' (trade_heb page); the words 'ללא עמלות המרה' are contradicted by this line."
