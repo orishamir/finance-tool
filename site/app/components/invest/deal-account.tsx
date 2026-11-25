@@ -59,7 +59,7 @@ import { whenText } from "../fee-deal/open-case";
 import { TemplateList, type TemplateListWords } from "../fee-deal/picker";
 import { NoticeRow } from "../fee-deal/deal-notices";
 import type { MoveLeft } from "../../lib/deal-account/move-run";
-import { Button, Card, DocLink, HouseAverageLine, LeftOutFold, MixedName, ReadForBand, ReadOnly, RemoveButton, Sentence, StatRow, StatTile, Tag, TextField, TextLink, When, cx, useStuckRoom, type FeeHeadSlot } from "../kit";
+import { Button, Card, DocLink, HouseAverageLine, LeftOutFold, MixedName, ReadForBand, ReadOnly, RemoveButton, Sentence, StatRow, StatTile, Tag, TextField, TextLink, When, cx, useReadOnly, useStuckRoom, type FeeHeadSlot } from "../kit";
 import { ToolBoundary } from "../tool-boundary";
 
 const w = root.dealAccount;
@@ -399,7 +399,7 @@ export function termsLeftOut(snap: FeesSnapshot | undefined, at: FundWay["byHous
  * what the plan charges, nothing to edit (the kit's `ReadOnly`); last, the way to enter terms of one's own from this house. On a phone, one
  * column: the tiles on one line, the fold, the fees, the button. Not a kit piece: the page's own popup, built of kit pieces and the editor.
  */
-function TermsPopup({ data, today, saved, writable, first, world, house, leftOut, headId, onOwn }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; world: DealWorld; house: string; /** What the price leaves out opens open. */ leftOut: boolean; headId: string; onOwn: () => void }) {
+export function TermsPopup({ data, today, saved, writable, first, world, house, leftOut, headId, onOwn }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; world: DealWorld; house: string; /** What the price leaves out opens open. */ leftOut: boolean; headId: string; onOwn: () => void }) {
   const { ed, tiles, fund, leftNum, placeNum, planLine } = useDealOnPlan({ data, today, saved, writable, first, world, row: house });
   const wide = useMedia(MQ.md);
   const p = world.plan;
@@ -682,14 +682,20 @@ function addAbroadCase(ed: DealEditor, fee: Fee, gap: AbroadGap) {
   ed.oc.onOpenCase(fee.id, next.cases.at(-1)!.id, "pointer");
 }
 
-/** Under a fee's cases, where the deal has no case for a fund bought abroad: what is missing and its add (E). Not a kit piece: one sentence and the kit's inline button, said only here. */
+/**
+ * Under a fee's cases, where the deal has no case for a fund bought abroad: what is missing and its add (E); read-only (the kit's
+ * `ReadOnly`, a house's terms), what is missing alone. Not a kit piece: one sentence and the kit's inline button, said only here.
+ */
 function AbroadCaseLine({ words, onAdd }: { words: string; onAdd: () => void }) {
+  const still = useReadOnly();
   return (
     <p className="flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
       {w.abroad.lacks(words)}
-      <Button variant="inline" bold onClick={onAdd}>
-        + {w.abroad.add}
-      </Button>
+      {!still && (
+        <Button variant="inline" bold onClick={onAdd}>
+          + {w.abroad.add}
+        </Button>
+      )}
     </p>
   );
 }

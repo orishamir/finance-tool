@@ -12,6 +12,7 @@ import { RemoveButton } from "./remove-button";
 import { LandingCover, landingBody, type Landing } from "./landing";
 import { cx } from "./cx";
 import { useLiftFrom } from "./lift";
+import { useReadOnly } from "./read-only";
 
 /**
  * What a part does to the price: what is charged, what comes off it, its floor and ceiling (a bound's told by its icon too), the month it
@@ -88,13 +89,16 @@ export interface PartLift {
  * a card whose whole face is one button (an open slim fee, `PickCard`) it stands over that button and a press on its surface is its own. With an `id` the page can
  * give it the focus (`focusPartEdit`): the part itself then takes it, out of the Tab order and named by its own words, where it has no box
  * or choice. With `landing`, it is the landing copy of a part not yet there (landing.tsx): no fill, no kind's colour, its lead in the muted
- * ink, its bin kept unseen for its room, and it lifts nothing.
+ * ink, its bin kept unseen for its room, and it lifts nothing. Read-only (`ReadOnly`), it has no bin and lifts nothing, and a landing copy,
+ * a part nothing will add, is not drawn.
  */
 export function PartEdit({ id, kind, mark, lead, onRemove, removeLabel = copy.removePart, asking, lift, landing, children }: { /** Its element's id, where the page gives the focus into it. */ id?: string; kind: PartKind; mark?: PartMark; lead?: ReactNode; onRemove?: () => void; /** The bin's spoken name: what it removes. */ removeLabel?: string; /** A part still asking its amount, in a box that gives it when left: a press on its bin leaves the focus in the box (`RemoveButton`'s `keepsFocus`). */ asking?: boolean; /** What it is carried as, where it can be. */ lift?: PartLift; /** Drawn as the landing copy of the part a toolbox card would put here. */ landing?: Landing; children?: ReactNode }) {
   const root = useRef<HTMLDivElement>(null);
   useLiftFrom(() => root.current, lift?.item ?? "", lift?.name, !lift || !!landing);
+  const still = useReadOnly();
   const words = id && !landing ? `${id}-words` : undefined;
   const bin = onRemove && <RemoveButton label={removeLabel} onRemove={onRemove} {...(asking ? { keepsFocus: true } : {})} className={cx("mt-0.5", landing && "invisible")} />;
+  if (landing && still) return null;
   if (landing)
     return (
       <div data-landing="" data-kind={kind} className="relative flex w-fit max-w-full items-start gap-2 rounded-md border-s-[3px] border-s-transparent py-0.5 ps-2 pe-1">

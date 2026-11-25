@@ -13,6 +13,7 @@ import { cx } from "./cx";
 import { InlineSelect, TextField } from "./fields";
 import { MQ, useMedia } from "../../lib/hooks";
 import { Switch } from "./switch";
+import { useReadOnly } from "./read-only";
 import { Tag } from "./tag";
 
 /** A short line that heads a menu, in the muted ink: what is chosen there ("מה קונים במקרה הזה. אפשר לסמן כמה."). */
@@ -97,10 +98,11 @@ export function RangeMenu({ title, side, onSide, figure, before }: { title: Reac
 /**
  * What a thing of a band's head opens, its fee open or not: the values the cases name for it (`values`, each once, in the muted ink where
  * it is any value), the action that stops the price changing by it (`stop`, its words naming the thing), and one line under it on what that
- * does to the cases (`after`).
+ * does to the cases (`after`). Read-only (`ReadOnly`), the values alone.
  */
 export function ThingMenu({ title, values, stop, onStop, after }: { title: ReactNode; values: { text: ReactNode; any?: boolean }[]; stop: string; onStop: () => void; after: ReactNode }) {
   const id = useId();
+  const still = useReadOnly();
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-1">
@@ -113,12 +115,14 @@ export function ThingMenu({ title, values, stop, onStop, after }: { title: React
           ))}
         </ul>
       </div>
-      <div className="flex flex-col items-start gap-1 border-t border-border pt-3">
-        <Button variant="outline" onClick={onStop}>
-          {stop}
-        </Button>
-        <p className="text-sm text-muted-foreground">{after}</p>
-      </div>
+      {!still && (
+        <div className="flex flex-col items-start gap-1 border-t border-border pt-3">
+          <Button variant="outline" onClick={onStop}>
+            {stop}
+          </Button>
+          <p className="text-sm text-muted-foreground">{after}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -129,11 +133,12 @@ export function ThingMenu({ title, values, stop, onStop, after }: { title: React
  * leaves the page as it is: nothing is dimmed and the page still scrolls, there is no ✕, and the focus goes into it, to its first field
  * where it has one (a track's name, a range's number), else its first control. Escape closes it and gives the focus back to the value; a
  * press outside it, or the focus leaving it for the page, closes it and leaves the focus where it went. On a phone it is a sheet from the
- * foot of the screen (the kit's `Sheet`). `label` is its spoken name.
+ * foot of the screen (the kit's `Sheet`). `label` is its spoken name. Read-only (`ReadOnly`), no value opens a menu, and none is drawn.
  */
 export function ValueMenuSheet({ open, onClose, anchor, label, children }: { open: boolean; onClose: () => void; anchor: HTMLElement | null; label: string; children: ReactNode }) {
   const id = useId();
   const wide = useMedia(MQ.md);
+  if (useReadOnly()) return null;
   if (wide)
     return open && anchor ? (
       // a card per value: another value's menu is placed by it and takes the focus anew

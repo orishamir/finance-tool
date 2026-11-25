@@ -8,6 +8,7 @@ import { IconChevronDown, IconClose, IconReset, IconSearch } from "../icons";
 import { cx } from "./cx";
 import { useErrorRest } from "./error-rest";
 import { NameStack, useListSelect, type ListOption } from "./list-select";
+import { useReadOnly } from "./read-only";
 import { keyValue, placeOf, valueAt, type SliderScale } from "./slider-scale";
 
 export interface FieldProps {
@@ -605,9 +606,25 @@ export function FieldGroup({ title, children, note, className }: { title: ReactN
  * chevron, no outline and 8 px corners, its label for a screen reader only, a choice made in place beside a figure (a price's currency
  * "$ ▾", its period "לרבעון ▾"), 44 px tall; a chosen value in the entered blue, or plain where a template filled it (`plain`), while
  * nothing is chosen `all` in the muted ink, and `all` is then no option of the list. Either way the button is as wide as its longest name (`NameStack`), so it keeps
- * one width whichever is chosen.
+ * one width whichever is chosen. Read-only (`ReadOnly`), the chosen name in words, nothing to open.
  */
-export function InlineSelect({ label, all, options, value, onChange, labelHidden, chip, plain }: { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean; chip?: boolean; /** A chip whose value a template filled, drawn plain until the person changes it. */ plain?: boolean }) {
+export function InlineSelect(props: InlineSelectProps) {
+  return useReadOnly() ? <ChosenName {...props} /> : <LiveSelect {...props} />;
+}
+
+type InlineSelectProps = { label: string; all?: string; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; labelHidden?: boolean; chip?: boolean; /** A chip whose value a template filled, drawn plain until the person changes it. */ plain?: boolean };
+
+/** An `InlineSelect` read-only: its label where it shows one, and the chosen name (`all` where none is chosen). */
+function ChosenName({ label, all, options, value, labelHidden, chip }: InlineSelectProps) {
+  return (
+    <span className="inline-flex items-center gap-1 text-sm">
+      {!labelHidden && !chip && <span className="text-muted-foreground">{label}:</span>}
+      <span className="font-medium">{options.find((o) => o.id === value)?.name ?? all}</span>
+    </span>
+  );
+}
+
+function LiveSelect({ label, all, options, value, onChange, labelHidden, chip, plain }: InlineSelectProps) {
   // a chip's `all` only says nothing is chosen yet; a line's is an option, the one that chooses none
   const list: ListOption[] = chip || all === undefined ? options : [{ id: null, name: all }, ...options];
   const s = useListSelect({ options: list, value, onChange });

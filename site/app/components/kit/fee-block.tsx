@@ -67,6 +67,14 @@ const hasEnd = (head: FeeHeadSlot | undefined): boolean => !!(head?.end || head?
 /** The fee is switched off: its card is dimmed (its switch says so in a word). */
 const dimmed = (head: FeeHeadSlot | undefined): boolean => !!head?.counted && !head.counted.on;
 
+/** The head as the card draws it: read-only (`ReadOnly`) a fee has no switch, so nothing dims its card or keeps room for one. */
+function useShownHead(head: FeeHeadSlot | undefined): FeeHeadSlot | undefined {
+  const still = useReadOnly();
+  if (!still || !head?.counted) return head;
+  const { counted: _, ...rest } = head;
+  return rest;
+}
+
 /** The fee's switch (`FeeHeadSlot.counted`). */
 const CountedSwitch = ({ counted }: { counted: NonNullable<FeeHeadSlot["counted"]> }) => <OnOffSwitch on={counted.on} words={copy.counted} onChange={counted.onChange} />;
 
@@ -88,7 +96,8 @@ function HeadEnd({ head }: { head: FeeHeadSlot }) {
  * case holds alike (`EveryCaseParts`) and its cases in their band (`ConditionBand`, its head saying what the price changes by over a
  * `CaseTable`, a `CaseGrid` or the cases read as rows); carried by its name.
  */
-export function FeeBlock({ dot, mark, name, open, tools, head, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; /** The fee is open: on touch its grips are drawn. */ open?: boolean; /** Its actions after its name (its duplicate, its bin). */ tools?: ReactNode; head?: FeeHeadSlot | undefined; children: ReactNode }) {
+export function FeeBlock({ dot, mark, name, open, tools, head: given, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; /** The fee is open: on touch its grips are drawn. */ open?: boolean; /** Its actions after its name (its duplicate, its bin). */ tools?: ReactNode; head?: FeeHeadSlot | undefined; children: ReactNode }) {
+  const head = useShownHead(given);
   return (
     <div data-open-fee={open ? "" : undefined} data-fee-card="" className={cx("@container relative flex flex-col gap-2 rounded-lg border border-border bg-card px-4 pt-1 pb-4", dimmed(head) && "opacity-60")}>
       <Stripe dot={dot} />
@@ -124,8 +133,9 @@ export interface FeeHeadSlot {
  * place, as an open case is: the outline in the action colour, "נבחר" at the end of the name's line, and its parts in edit (`PartEdit`s,
  * the `children` then) stacked under it, with `actions` after them; its `tools` (its duplicate, its bin) right after its name.
  */
-export function SlimFee({ dot, mark, name, label, onOpen, open, actions, tools, head, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; label: string; onOpen: () => void; open?: boolean; actions?: ReactNode; /** Its actions after its name (its duplicate, its bin). */ tools?: ReactNode; head?: FeeHeadSlot | undefined; children: ReactNode }) {
+export function SlimFee({ dot, mark, name, label, onOpen, open, actions, tools, head: given, children }: { dot: string; /** Its emoji, beside its name. */ mark?: string | undefined; name: ReactNode; label: string; onOpen: () => void; open?: boolean; actions?: ReactNode; /** Its actions after its name (its duplicate, its bin). */ tools?: ReactNode; head?: FeeHeadSlot | undefined; children: ReactNode }) {
   const still = useReadOnly();
+  const head = useShownHead(given);
   const look = cx("@container bg-card px-4", open ? "flex flex-col gap-2 pt-1 pb-3" : "flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-1 pb-3", dimmed(head) && "opacity-60");
   const body = (
     <>

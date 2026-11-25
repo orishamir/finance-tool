@@ -2,6 +2,7 @@
 // when off, on a muted one. `Switch` is a setting named by the words beside it ("זה המסלול שלי"); `OnOffSwitch` says its own state in a word.
 import { useId, type ReactNode } from "react";
 import { cx } from "./cx";
+import { useReadOnly } from "./read-only";
 
 /** The track and its knob, drawn only: the control that holds it says what it is and takes the tap. */
 function SwitchTrack({ on }: { on: boolean }) {
@@ -33,9 +34,10 @@ export function Switch({ label, checked, onChange }: { label: ReactNode; checked
 /**
  * A thing switched on or off where it stands, its state said in a word after the track ("בחישוב", "לא בחישוב"), never by the colour alone:
  * a fee of a deal in its card's corner. One button (`aria-pressed`, on when pressed); its words hold the room of the longer of the two, so
- * switching it moves nothing beside it; 44 px tall.
+ * switching it moves nothing beside it; 44 px tall. Read-only (`ReadOnly`), it is not drawn.
  */
 export function OnOffSwitch({ on, words, onChange }: { on: boolean; words: { on: string; off: string }; onChange: (on: boolean) => void }) {
+  if (useReadOnly()) return null;
   return (
     <button type="button" aria-pressed={on} onClick={() => onChange(!on)} className="inline-flex min-h-target shrink-0 cursor-pointer items-center gap-2 rounded-md text-sm text-muted-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2">
       <SwitchTrack on={on} />

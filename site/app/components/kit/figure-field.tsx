@@ -10,12 +10,13 @@ import { formatTyped, parseNumber, type NumberKind } from "../../lib/format";
 import { useMedia } from "../../lib/hooks";
 import type { SiteValue } from "../../lib/value";
 import { IconCalendar } from "../icons";
-import { useOpen, valueItem } from "../provenance";
+import { Num, useOpen, valueItem } from "../provenance";
 import { Button } from "./button";
 import { cx } from "./cx";
 import { usePressAway } from "./drop-list";
 import { useErrorRest } from "./error-rest";
 import { MonthPicker, pickCommit } from "./month-picker";
+import { useReadOnly } from "./read-only";
 
 /**
  * The box of a typed figure or month: its edge and ink say whose the value is, on the card's fill (an entered figure has the entered
@@ -220,7 +221,11 @@ function placeNote(note: HTMLElement, field: HTMLElement) {
  * the box from under the typing. Nothing given while typing, Escape only puts back the text; a box left empty or holding no number gives
  * nothing; Enter that gives the figure does not move on, as the page draws what it gave in the box's place and places the focus.
  */
-export function FigureField({ value, label, from, unit, sign, kind, words, inside, tight, wide, asks, settles, onCommit, onClear, onFocus, onRevert, validate, placeholder, step, id: givenId, className }: {
+export function FigureField(props: FigureFieldProps) {
+  return useReadOnly() ? <StillFigure {...props} /> : <LiveFigure {...props} />;
+}
+
+type FigureFieldProps = {
   value: SiteValue | null;
   /** The spoken name: what the figure is. */
   label: string;
@@ -258,7 +263,24 @@ export function FigureField({ value, label, from, unit, sign, kind, words, insid
   /** The field's own id, for a page that gives it the focus. */
   id?: string;
   className?: string;
-}) {
+};
+
+/** A figure read-only (`ReadOnly`): the figure in its number state with its unit, then its words; no box to type in. */
+function StillFigure({ value, unit, words }: FigureFieldProps) {
+  return (
+    <span className="text-sm">
+      {typeof value?.value === "number" && (
+        <span dir="ltr" className="whitespace-nowrap tabular-nums">
+          <Num value={value} display={formatTyped(value.value)} />
+          {unit !== undefined && <span className="ms-1">{unit}</span>}
+        </span>
+      )}
+      {words !== undefined && <> {words}</>}
+    </span>
+  );
+}
+
+function LiveFigure({ value, label, from, unit, sign, kind, words, inside, tight, wide, asks, settles, onCommit, onClear, onFocus, onRevert, validate, placeholder, step, id: givenId, className }: FigureFieldProps) {
   const ownId = useId();
   const id = givenId ?? ownId;
   const open = useOpen();

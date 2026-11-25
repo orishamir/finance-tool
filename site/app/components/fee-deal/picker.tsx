@@ -15,7 +15,7 @@ import { countPhrase, formatValue } from "../../lib/format";
 import { matching, rowTitle, templateSource, type LeftOut, type TemplateOption } from "../../lib/fee-deal/templates";
 import { Sheet } from "../Sheet";
 import { Term, type SheetPart } from "../provenance";
-import { GroupHead, HouseAverageTerm, LeftOutLine, ListRow, RowList, SearchField, Tag, gershayim } from "../kit";
+import { GroupHead, HouseAverageTerm, LeftOutLine, ListRow, RowList, SearchField, Tag, gershayim, useReadOnly } from "../kit";
 import type { HouseAverages } from "../../lib/house-averages";
 import type { LeftOutView } from "../../lib/left-out";
 import type { SiteValue } from "../../lib/value";
@@ -126,6 +126,8 @@ export function TemplatePicker({ open, onClose, anchor, options, left, newDeal, 
   const headId = useId();
   const tracks = options.some((o) => o.source === "track");
   const head = tracks ? w.track : w.house;
+  // read-only (the kit's `ReadOnly`): no price list fills the deal, and the sheet is not drawn
+  if (useReadOnly()) return null;
   return (
     <Sheet open={open} onClose={onClose} anchor={anchor} pc="center" height={80} labelledBy={headId}>
       <div className="flex flex-col gap-4">

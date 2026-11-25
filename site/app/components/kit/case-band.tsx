@@ -177,6 +177,14 @@ export function CaseRow({ when, label, onOpen: tap, grip, open, missing, mark, c
  * colour while its menu is open. `range` puts the range's icon before it.
  */
 export function CaseSlot({ children, range, open, onOpen }: { children: ReactNode; range?: boolean; /** Its menu is open. */ open?: boolean; onOpen: (at: HTMLElement) => void }) {
+  // read-only (`ReadOnly`): the value in words, opening no menu
+  if (useReadOnly())
+    return (
+      <span className="inline-flex min-h-target max-w-full items-center gap-2 text-sm font-medium">
+        {range && <ChartNoAxesColumnIncreasing {...icon} className="shrink-0 text-when-ink" />}
+        <span className="min-w-0">{children}</span>
+      </span>
+    );
   return (
     <button type="button" aria-haspopup="dialog" aria-expanded={open ?? false} onClick={(e) => onOpen(e.currentTarget)} className={cx("inline-flex min-h-target max-w-full items-center gap-2", menuChip(!!open))}>
       {range && <ChartNoAxesColumnIncreasing {...icon} className="shrink-0 text-when-ink" />}
@@ -191,7 +199,9 @@ export function CaseSlot({ children, range, open, onOpen }: { children: ReactNod
  * after them where it is the person's track (`mine`), and at the head's end its actions as icons, copying it ("להעתיק את המקרה") and its
  * bin ("להסיר את המקרה"); under them its parts in edit (`PartEdit`s, the `children`). Enter in a box goes on to the next box of the case.
  */
-export function OpenCase({ slots, mine, onCopy, onRemove, children }: { slots: ReactNode; mine?: boolean; onCopy?: () => void; onRemove?: () => void; children: ReactNode }) {
+export function OpenCase({ slots, mine, onCopy: copyIt, onRemove, children }: { slots: ReactNode; mine?: boolean; onCopy?: () => void; onRemove?: () => void; children: ReactNode }) {
+  // read-only (`ReadOnly`): the case is neither copied nor taken away (its bin draws itself so)
+  const onCopy = useReadOnly() ? undefined : copyIt;
   return (
     <div className="rounded-lg outline-2 -outline-offset-2 outline-primary" data-figures data-open-case="">
       <div className="flex flex-wrap items-center gap-2 px-3 py-2">

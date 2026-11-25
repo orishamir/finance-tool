@@ -6,12 +6,13 @@
 // draws only while its cell is under a fine pointer or has the keyboard's focus), a closed fee card's corner. Its tap area is 44 px tall in
 // the controls' layer, out of the Tab order (the keyboard has Delete, or the grip's menu), and its press is its own alone. A ✕ closes
 // something (a panel, a sheet, a menu), or takes one part line out of a table's cell, standing at that line's end; anything else is taken
-// away by this bin.
+// away by this bin. Read-only (`ReadOnly`), nothing is taken away and no bin is drawn.
 import type { MouseEvent } from "react";
 import { Trash2 } from "lucide-react";
 import { Button } from "./button";
 import { cx } from "./cx";
 import { KnobButton } from "./knob-button";
+import { useReadOnly } from "./read-only";
 
 /** The bin's icon, for a picture of the control that is not itself a button (a chip drawn under the pointer while it is dragged). */
 export const BinIcon = () => <Trash2 size={16} strokeWidth={1.75} aria-hidden className="shrink-0" />;
@@ -34,6 +35,7 @@ export function RemoveButton({ label, onRemove, expanded, knob, cell, keepsFocus
   tabIndex?: number;
   className?: string;
 }) {
+  if (useReadOnly()) return null;
   if (knob)
     return (
       <KnobButton
