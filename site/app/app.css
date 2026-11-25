@@ -1611,15 +1611,12 @@
    attribute or a class of this stylesheet, never by an escaped Tailwind class name; the short-screen rule names the one utility it
    undoes, `sticky`. */
 @layer overrides {
-  /* Under a table's caption row (ProductTable `band`), a head's "?" takes its 44 px from 4 px over its line downward, as a sorting head's
-     button beside it does, instead of centred on its line: centred, it reached 12 px up into the caption row, where a cap's figure ("4%")
-     stands over the deposit fee's "?" and took 8 px of it (2026-11-13). Its mark is drawn where it was, 2 px under its line's top. Here,
-     so it wins over the mark's own margins. */
-  .tbl-banded thead tr:not(.tbl-band) .help-mark {
-    margin-top: -4px;
-    margin-bottom: -20px;
-    align-items: flex-start;
-    padding-top: 6px;
+  /* Under a table's caption row (ProductTable `band`), a head's "?" takes its 44 px tap area from 6 px over its mark downward, as a
+     sorting head's button beside it does, instead of centred on it: centred, it reached up into the caption row, where a cap's figure
+     ("4%") stands over the deposit fee's "?" and took part of it. Here, so it wins over the `tap-wide` utility's own placing. */
+  .tbl-banded thead tr:not(.tbl-band) .help-mark::after {
+    top: -6px;
+    translate: none;
   }
 
   /* Short screens (a phone on its side): the sticky chip bars, table heads and bottom bars would take most of it, so they
