@@ -2,10 +2,11 @@
 // (lib/invest-run.ts): the view of one plan (`buildInvest`, about 830 ms on a phone slowed four times for the S&P 500), what each plan
 // number changed by the same share does to one pair's result (F-89, F-90: 4 lines of 21 runs), and which account leaves the most with one
 // fund at each mix of today's amount and monthly deposit (F-131, lib/account-map.ts: a few hundred points, most at two or three
-// accounts, about a second in node on the S&P 500, in a worker of its own). A request names its data by number, and carries it only the first time: the worker keeps the latest it was sent.
+// accounts, about a second in node on the S&P 500, in a worker of its own; the prices it reads are kept between maps, lib/map-surface.ts). A request names its data by number, and carries it only the first time: the worker keeps the latest it was sent.
 import { changedByShare, sweep } from "@finance-tool/engine";
 import { accountMap, type AccountMap, type LeftAt } from "./account-map";
 import { p05Range } from "./engine";
+import { SurfaceCache } from "./map-surface";
 import { buildInvest, fundWayAt, pairCosts, pairLeft, providersOfInvest, tieShareOf, type IndexRef, type InvestView } from "./invest";
 import { rankedAt } from "./stretch";
 import type { IndicesBundle, WorkbenchInputs } from "./providers";
@@ -92,6 +93,27 @@ export function leftWith(bundle: IndicesBundle, index: IndexRef, plan: Workbench
   };
 }
 
+/** The map's prices kept between maps (`SurfaceCache`): the last 8 surfaces, about 100 MB in all at most. */
+const surfaces = new SurfaceCache(8, 100e6);
+/** Each set of data by number, for the surfaces' keys. */
+const dataIds = new WeakMap<IndicesBundle, number>();
+let dataCount = 0;
+
+/** The surface key of a map's request: its data, index and fund, and the plan without today's amount and the monthly deposit. */
+function surfaceKey(bundle: IndicesBundle, a: MapAsk): string {
+  let n = dataIds.get(bundle);
+  if (n === undefined) {
+    n = ++dataCount;
+    dataIds.set(bundle, n);
+  }
+  const { amountNow: _a, monthly: _m, values, ...rest } = a.plan;
+  const { amount: _va, monthly: _vm, ...others } = values;
+  return JSON.stringify([n, a.index.id, a.fund, rest, others]);
+}
+
+/** The map's prices kept, for a test and a measure: how many surfaces, the points they hold, and the bytes estimated. */
+export const mapCache = () => surfaces.size();
+
 /** F-131: the map for the plan, its switches looked for as far as the plan's sliders reach (P-05), a tie to the house the headline takes. */
 function mapOf(bundle: IndicesBundle, a: MapAsk): MapAnswer {
   // the reach is P-05's: with no slider range there is no axis to draw, and a map on 0 would be points at NaN, so the work fails, naming it
@@ -101,7 +123,9 @@ function mapOf(bundle: IndicesBundle, a: MapAsk): MapAnswer {
     return max;
   };
   const order = providersOfInvest(bundle).map((s) => s.id);
-  const map = accountMap({ leftAt: leftWith(bundle, a.index, a.plan, a.fund), order, theta: tieShareOf(bundle), plan: { amount: a.plan.amountNow, monthly: a.plan.monthly }, reach: { amount: reach("amount_now"), monthly: reach("monthly_deposit") } });
+  const leftAt = surfaces.left(surfaceKey(bundle, a), leftWith(bundle, a.index, a.plan, a.fund));
+  const map = accountMap({ leftAt, order, theta: tieShareOf(bundle), plan: { amount: a.plan.amountNow, monthly: a.plan.monthly }, reach: { amount: reach("amount_now"), monthly: reach("monthly_deposit") } });
+  surfaces.bound();
   if (map) return { kind: "map", map };
   const way = fundWayAt({ bundle, index: a.index, plan: a.plan, fundId: a.fund });
   // a fund priced only before its exit tax (F-118) or on an open rule (G-18) is shown, never ranked

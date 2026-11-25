@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { bundle, plan } from "../components/invest/render-fixtures";
 import { pickOfHeadline } from "../components/invest/pair";
-import { knownIndices, refOfCustom } from "./invest";
-import { work } from "./invest-work";
+import { indexById, knownIndices, providersOfInvest, refOfCustom, tieShareOf } from "./invest";
+import { leftWith, mapCache, work } from "./invest-work";
+import { accountMap } from "./account-map";
+import { entered } from "./value";
+import { p05Range } from "./engine";
 
 /** Where a value holds something a structured clone would not copy as it is: a function, a getter, an object of a class. */
 function notPlain(v: unknown, at = "", seen = new Set<object>()): string[] {
@@ -52,5 +55,26 @@ describe("the account map's work (F-131)", () => {
     const { sliders: _gone, ...rest } = bundle.p05 as unknown as Record<string, unknown>;
     const bare = { ...bundle, p05: rest as unknown as typeof bundle.p05 };
     expect(() => work.map(bare, { index, plan, fund: pick.fund })).toThrow(/P-05 has no slider range for amount_now/);
+  });
+});
+
+describe("the account map's prices are kept between maps (F-131, lib/map-surface.ts)", () => {
+  it("a map whose amount moved reads the points it shares with the one before, and is the map worked out afresh", () => {
+    const index = indexById(bundle, "index-sp500");
+    if (!index) throw new Error("missing: the S&P 500");
+    const at = (amount: number) => ({ ...plan, amountNow: amount, values: { ...plan.values, amount: entered(amount, "nis", bundle.today) } });
+    const fund = pickOfHeadline(work.view(bundle, { index, plan, yourBroker: null }))?.fund;
+    if (!fund) throw new Error("missing: the page's pair");
+    work.map(bundle, { index, plan: at(10_000), fund });
+    const kept = mapCache().points;
+    const moved = work.map(bundle, { index, plan: at(12_000), fund });
+    const slider = (key: string) => p05Range(bundle.p05, "sliders", key)?.max ?? NaN;
+    // afresh, counting the points it reads
+    const read = new Set<string>();
+    const price = leftWith(bundle, index, at(12_000), fund);
+    const fresh = accountMap({ leftAt: (a, m, h) => (read.add(`${a}|${m}`), price(a, m, h)), order: providersOfInvest(bundle).map((s) => s.id), theta: tieShareOf(bundle), plan: { amount: 12_000, monthly: plan.monthly }, reach: { amount: slider("amount_now"), monthly: slider("monthly_deposit") } });
+    expect(moved).toEqual({ kind: "map", map: fresh });
+    // fewer than half of its points are new
+    expect(mapCache().points - kept).toBeLessThan(read.size / 2);
   });
 });
