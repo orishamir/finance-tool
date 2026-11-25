@@ -49,8 +49,8 @@ export default function Tracks() {
       <div className="flex flex-col gap-5 lg:gap-6">
         <PageHead
           tabs={<CompanyTabs current="product" />}
-          // how to read the list is one "?" held to the title's last word (`TracksHelp` says what it holds at each width); the figures'
-          // underlines say they open, and each figure's sheet says whether it is sourced or computed
+          // on a phone, how to read the list is one "?" held to the title's last word (`TracksHelp`); the figures' underlines say they open,
+          // and each figure's sheet says whether it is sourced or computed
           title={<HeldMark words={copy.title} mark={<TracksHelp data={data} childAge={childAge} />} />}
         >
           {data.period.stale && (

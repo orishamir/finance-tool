@@ -1534,8 +1534,8 @@ export const help = {
 export const trackBrowser = {
   title: "כל המסלולים בכל החברות",
   tabs: { aria: "איך לראות את החברות והמסלולים", byCompany: "לפי חברה", byProduct: "לפי מוצר", deposits: "פיקדונות בבנקים" },
-  /** The "?" by the page's title: how to read the list. `own` is what no column head says (the source, the companies' order), all it holds
-   *  from md; on a phone, whose rows have no heads, `dates` (the fees' year, the figures' date) comes first and the columns' cards follow. */
+  /** A phone's "?" by the page's title, whose rows have no heads: how to read the list. `dates` (the fees' year, the figures' date), then
+   *  `own` (the source, the companies' order); the columns' cards follow. */
   pageHelp: {
     about: "איך לקרוא את הרשימה",
     own: "מנתוני רשות שוק ההון. החברות מסודרות מהגדולה לקטנה לפי הכסף המנוהל.",

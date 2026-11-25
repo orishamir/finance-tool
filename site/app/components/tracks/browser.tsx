@@ -5,9 +5,8 @@
 // track one line that opens in place; on a computer the companies fold the same way and the table keeps its rows.
 // The product, the kind and the sort stand first; on a phone they fold into one line that says what is chosen (`PhoneFold`), and the
 // search stays open under them. The count is said right over the list; the order is the sorted head's arrow and the phone's sort control.
-// How to read the list is one "?" by the page's title (`TracksHelp`): from md the source and the companies' order, what no head says; on a
-// phone, whose rows have no heads, also the fees' year, the figures' date and the columns' cards, caution where the product's fee figure
-// has a catch (child savings, CS OQ9).
+// On a phone, whose rows have no heads, how to read the list is one "?" by the page's title (`TracksHelp`), caution where the product's fee
+// figure has a catch (child savings, CS OQ9); from md the heads and their own "?" say it.
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { guidePath, trackBrowserPath } from "../../lib/site-paths";
 import { useNavigate, useParams } from "react-router";
@@ -42,11 +41,11 @@ function productOf(data: TbData, param: string | undefined): TbProduct {
 }
 
 /**
- * The "?" by the page's title: how to read the list of the product the address names. From md it says only what no column head says: the
- * source, and that the companies stand from the largest to the smallest by money managed; the heads and their own "?" say the rest. On a
- * phone, whose rows have no heads, it says that too: the fees' year and the figures' date, what the past yield is (the rows saying only
- * "before fees and tax"), on a pension product that the fees are the whole fund's (CAT-39), on child savings first what the fee figure is
- * not, in the caution role, with CS-18 under it (CS OQ9); then the cards of the fee, the exposure and the money managed.
+ * The "?" by the page's title, on a phone only: how to read the list of the product the address names, which the column heads and their
+ * own "?" say from md. The phone's rows have no heads, so it says the fees' year and the figures' date, the source, that the companies stand
+ * from the largest to the smallest by money managed, what the past yield is (the rows saying only "before fees and tax"), on a pension
+ * product that the fees are the whole fund's (CAT-39), on child savings first what the fee figure is not, in the caution role, with CS-18
+ * under it (CS OQ9); then the cards of the fee, the exposure and the money managed.
  */
 export function TracksHelp({ data, childAge = null }: { data: TbData; childAge?: SiteValue | null }) {
   const params = useParams();
@@ -55,14 +54,9 @@ export function TracksHelp({ data, childAge = null }: { data: TbData; childAge?:
   const child = product.id === CHILD_SAVINGS ? childFeeHelp(childAge) : null;
   const lead = [child?.text, product.dataset === "pensia-net" ? t.wholeFund : null, t.pageHelp.dates(feeYear, fmt.period(product.period)), t.pageHelp.own, t.pastNote].filter(Boolean).join(" ");
   return (
-    <>
-      <span className="md:hidden">
-        <HelpMark term={[HELP_TERMS.fee, HELP_TERMS.exposure, HELP_TERMS.assets]} about={t.pageHelp.about} lead={lead} rules={child?.rules} tone={child ? "caution" : undefined} />
-      </span>
-      <span className="hidden md:inline">
-        <HelpMark about={t.pageHelp.about} text={t.pageHelp.own} />
-      </span>
-    </>
+    <span className="md:hidden">
+      <HelpMark term={[HELP_TERMS.fee, HELP_TERMS.exposure, HELP_TERMS.assets]} about={t.pageHelp.about} lead={lead} rules={child?.rules} tone={child ? "caution" : undefined} />
+    </span>
   );
 }
 
