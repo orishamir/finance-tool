@@ -201,29 +201,45 @@ describe("invest page computation", () => {
     expect(v.houses.some((h) => h.generic)).toBe(true);
   });
 
-  it("lists a foreign fund in Tel Aviv with the open rule its tax rests on, with no price after tax at any house, never ranked (F-04, TXF-04, D84)", () => {
+  it("lists a foreign fund in Tel Aviv whose annex states no index with the open rule its tax rests on, with no price after tax at any house, never ranked; one whose annex states it is priced and ranked (F-04, TXF-04, D84)", () => {
+    // a fund the person types has no annex the site read: its kind stays on the open rule
     expect(optionOpenRule(bundle, "tase-foreign")).toBe("TXF-04");
     for (const o of ["il-tracking", "il-etf", "abroad"] as const) expect(optionOpenRule(bundle, o)).toBeNull();
+    let stated = 0, unstated = 0;
     for (const id of ["index-sp500", "index-msci-acwi", "index-msci-world", "index-nasdaq100"]) {
       const v = buildInvest({ bundle, index: indexById(bundle, id)!, plan: plan() });
       const tase = v.options.find((o) => o.id === "tase-foreign")!;
       expect(tase.funds.length, id).toBeGreaterThan(0);
       for (const f of tase.funds) {
-        expect(f.reason, f.rec.id).toEqual({ code: "rule-open", ruleId: "TXF-04" });
-        expect(f.best).toBeUndefined();
-        expect(Object.keys(f.byHouse)).toHaveLength(0);
+        if (f.rec.tax_ruling?.index) {
+          stated++;
+          expect(f.reason, f.rec.id).toBeUndefined();
+          expect(f.beforeTax, f.rec.id).toBeUndefined();
+          expect(f.best?.open, f.rec.id).toBe(false);
+          expect(pairCosts({ bundle, index: v.index, plan: plan(), fundId: f.rec.id, providerId: f.best!.providerId }), f.rec.id).not.toBeNull();
+        } else {
+          unstated++;
+          expect(f.reason, f.rec.id).toEqual({ code: "rule-open", ruleId: "TXF-04" });
+          expect(f.best).toBeUndefined();
+          expect(Object.keys(f.byHouse)).toHaveLength(0);
+          expect(pairCosts({ bundle, index: v.index, plan: plan(), fundId: f.rec.id, providerId: "psagot" })).toBeNull();
+        }
       }
-      expect(tase.bestWay).toBeNull();
-      expect(v.headline?.option).not.toBe("tase-foreign");
-      expect(pairCosts({ bundle, index: v.index, plan: plan(), fundId: tase.funds[0]!.rec.id, providerId: "psagot" })).toBeNull();
+      // an option of unstated funds alone has no way to rank, and never heads the page
+      if (tase.funds.every((f) => !f.rec.tax_ruling?.index)) {
+        expect(tase.bestWay, id).toBeNull();
+        expect(v.headline?.option, id).not.toBe("tase-foreign");
+      } else expect(tase.bestWay?.fund.rec.tax_ruling?.index, id).toBeDefined();
     }
+    expect(stated).toBeGreaterThan(0);
+    expect(unstated).toBeGreaterThan(0);
   });
 
   it("gives a foreign fund in Tel Aviv its figures before tax at each house that sells it, apart from every price the page ranks (F-118, D84)", () => {
     for (const id of ["index-sp500", "index-msci-acwi", "index-msci-world", "index-nasdaq100"]) {
       const v = buildInvest({ bundle, index: indexById(bundle, id)!, plan: plan() });
       const tase = v.options.find((o) => o.id === "tase-foreign")!;
-      for (const f of tase.funds) {
+      for (const f of tase.funds.filter((x) => !x.rec.tax_ruling?.index)) {
         expect(f.beforeTax?.ruleId, f.rec.id).toBe("TXF-04");
         const houses = Object.values(f.beforeTax!.byHouse);
         expect(houses.length, f.rec.id).toBeGreaterThan(0);
@@ -238,24 +254,36 @@ describe("invest page computation", () => {
         }
       }
       // never in a house's ranked entries, the stairs' ways or the headline: the houses read only `byHouse`
-      for (const h of v.houses) expect(h.best?.fund.option).not.toBe("tase-foreign");
+      for (const h of v.houses) expect(h.best?.fund.option === "tase-foreign" && !h.best.fund.rec.tax_ruling?.index).toBe(false);
     }
   });
 
-  it("pins one fund's figures before tax: the S&P 500's Tel Aviv line at Psagot on the plan (F-118, F-91)", () => {
+  it("pins one fund's account cost: the S&P 500's Tel Aviv line at Psagot on the plan, run on the dollar its annex states (F-91, F-118, D84)", () => {
     // 6,000 NIS now and 400 a month for 20 years at 7% and CPI 2%; 1159250's record of 2026-11-07 (0.07% a year, F-107's US tax) and
     // Psagot's price list as the bundle holds it, its dollar sums at the frozen rates above. A change of either moves these figures:
-    // re-pin them with the data, never to fit.
+    // re-pin them with the data, never to fit. The account's fees are the 2,751 NIS F-118 gave the fund before its index was known: F-118
+    // says the figure F-91 gives once the index is known is the same, whichever index, where both runs buy the same way, as a Tel Aviv
+    // line always does (whole units).
     const v = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: plan() });
     const f = v.options.find((o) => o.id === "tase-foreign")!.funds.find((x) => x.rec.id === "1159250")!;
-    const at = f.beforeTax!.byHouse.psagot!;
-    expect(Math.round(at.leftN)).toBe(165_162);
+    const at = f.byHouse.psagot!;
+    if (!("value" in at)) throw new Error("Psagot prices 1159250");
     // the account's fees: its whole part (F-91) less what the cash waiting for a whole unit did (F-109), as the receipt writes them
-    expect(at.accountCost.value).toBe(2_751);
-    // what it rests on: the fund's US tax (TXF-16) and that nothing is taxed before the sale (TXF-11, the fund's own ruling); never TXF-04
-    const used = at.left.rulesUsed!.map((r) => r.id);
+    expect(Math.round(at.accountCost)).toBe(2_751);
+    // what it rests on: the fund's US tax (TXF-16) and that nothing is taxed before the sale (TXF-11, the fund's own ruling); never TXF-04,
+    // whose place the annex's own statement takes, named as the fund's, its page linked
+    const used = at.value.rulesUsed!.map((r) => r.id);
     expect(used).toEqual(expect.arrayContaining(["TXF-16", "TXF-11"]));
     expect(used).not.toContain("TXF-04");
+    expect(at.value.statements).toEqual([expect.objectContaining({ term: "tax-index", index: "fx", currency: "USD", page: 17, source: expect.objectContaining({ url: f.rec.tax_ruling!.source.url }) })]);
+    // the account's cost before tax reads no tax index, and so no statement
+    expect(at.cost.statements).toBeUndefined();
+    // the value before the exit tax reads no tax index either (F-118, F-91): the 165,162 NIS F-118 gave the fund before its index was
+    // known is what is left after tax plus the state's part (an accumulating fund pays no tax along the way), within a shekel of rounding;
+    // the cash waiting for a whole unit is inside both, since the sale's value holds it (F-109)
+    const pair = pairCosts({ bundle, index: v.index, plan: plan(), fundId: "1159250", providerId: "psagot" });
+    if (!pair) throw new Error("Psagot prices 1159250's parts");
+    expect(Math.abs((pair.left.value as number) + (pair.tax.value as number) - 165_162)).toBeLessThan(1);
   });
 
   it("an Israeli index has two options only", () => {
@@ -586,7 +614,7 @@ describe("what each figure's sheet lists", () => {
     for (const before of [high.baseValue, high.fund, high.remainder, ...high.account.map((l) => l.cost)]) expect(inputs(before)[words.pair.incomeInput]).toBeUndefined();
     const withIncome = plan({ income: 5_000_000, values: { ...plan().values, income: entered(5_000_000, "nis", t) }, currentAccounts: true });
     const v = buildInvest({ bundle, index: sp, plan: withIncome });
-    const tlv = v.options.find((o) => o.id === "tase-foreign")?.funds.find((x) => x.rec.id === "1159250")?.beforeTax?.byHouse.psagot;
+    const tlv = v.options.find((o) => o.id === "tase-foreign")?.funds.find((x) => x.rec.id === "1183441")?.beforeTax?.byHouse.psagot;
     expect(tlv).toBeDefined();
     expect(inputs(tlv?.left ?? high.tax)[words.pair.incomeInput]).toBeUndefined();
     expect(inputs(tlv?.accountCost ?? high.tax)[words.pair.incomeInput]).toBeUndefined();

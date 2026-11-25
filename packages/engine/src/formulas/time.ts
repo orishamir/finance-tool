@@ -85,8 +85,9 @@ export function cpiPath(annualInflation: number, months: number): number[] {
 
 /**
  * F-04 Exchange-rate path. `X_0 = 1`; `X_m = X_{m−1} × (1 + f)^(1/12)` (A-03). For a foreign-currency
- * security held directly it replaces `I` as the tax index (TXF-03); for a TASE foreign fund the index is TXF-04's, open. As a market path it
- * moves a fund's value and every price set in a foreign currency, which F-118 reads with no tax index.
+ * security held directly it replaces `I` as the tax index (TXF-03), and so it does for a TASE foreign fund whose own annex states its main
+ * currency's exchange rate as its index (D84); for a TASE foreign fund whose annex states none the index is TXF-04's, open. As a market
+ * path it moves a fund's value and every price set in a foreign currency, which F-118 reads with no tax index.
  */
 export function fxPath(annualChange: number, months: number): number[] {
   const step = Math.pow(1 + annualChange, 1 / 12);

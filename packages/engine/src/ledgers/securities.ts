@@ -9,7 +9,7 @@ import { promotedDrag } from "../formulas/fund-promotion.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
 import { acrossReadings, foreignInvestmentFundIndex, OpenReadingError } from "../open-readings.ts";
 import { memoRun } from "../run-memo.ts";
-import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult } from "../result.ts";
+import { RUN_RESULT_FIELDS, type Outcome, type RunContext, type RunResult, type TaxIndexStatement } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, LotQueue } from "./lots.ts";
 import { dealCharges, scaled, type Charged, type DealAccount, type MonthActivity } from "./deal-account.ts";
@@ -60,8 +60,16 @@ export interface Fund {
   /** The instrument's currency per one unit of `sharePriceCurrency` at the start (the run's rate), where the two differ: the price is taken
    *  to the instrument's currency with it. Absent where it is needed, the run has no share price (a per-share fee then cannot be priced). */
   sharePriceRate?: number;
-  /** TASE foreign fund: the prospectus commits to the 90% main-currency test (TXF-04); while TXF-04 is open the run stops whatever its value (F-04). */
+  /**
+   * TASE foreign fund: the prospectus commits to the 90% main-currency test (TXF-04). Only TXF-04's index reads it: a fund whose annex states
+   * its index is run on that (`statedIndex`), and while TXF-04 is open any other stops whatever this value (F-04).
+   */
   ninetyPercentTest?: boolean;
+  /**
+   * TASE foreign fund (F-04, D84): the tax index its own Israeli prospectus annex states under the tax ruling given to it, the fund's
+   * statement for its own units. Only a `tase-foreign-fund` reads it (`statedTaxIndexOf`): units of the same ISIN bought abroad keep TXF-03.
+   */
+  statedIndex?: TaxIndexStatement;
   /**
    * Israeli fund that may be measured by a principal currency (TXS-14, F-04): the currency (ISO code) its own documents name where they name
    * it a foreign-investment fund, or, where its record says the status is not known, its exposure's currency as the candidate. The run is
@@ -241,15 +249,27 @@ export function fundLevelTaxOn(gain: number, carried: number, rate: number): { t
 }
 
 /**
+ * F-04, D84: the statement a TASE foreign fund's own annex makes of its tax index, which its runs are made on; null for any other fund. A
+ * statement settles only the index: a fund that distributes stops on its distribution's open part whatever its annex states (G-35, TXF open
+ * question 19: the run does not know its legal form), so its runs read none and stop on TXF-04 as an unstated one's do.
+ */
+export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex" | "distribution">): TaxIndexStatement | null {
+  return fund.kind === "tase-foreign-fund" && !fund.distribution ? (fund.statedIndex ?? null) : null;
+}
+
+/**
  * F-04 The tax index of a fund held in a securities account: the exchange rate for a foreign-currency fund held directly (TXF-03), the CPI
  * for an Israeli fund's shekel units (TXS-14's first bullet). An Israeli fund that may be measured by a principal currency
  * (`principalCurrency`) is read under each reading of TXS OQ26 (`foreignInvestmentFundIndex`): the principal currency's exchange rate, or
- * the CPI; a book with no reading chosen stops so that `acrossReadings` makes the run under each. A TASE foreign fund takes the index TXF-04
- * states, and TXF-04 is open, so neither is known for it, with or without its 90% test: the book stops on it (BlockedError) and the run
- * computes nothing after tax (D10); F-118 reads its value before the exit tax. Were TXF-04 settled as the letter's copy states it (the
- * golden harness), a fund on the 90% test would take the exchange rate and any other the CPI.
+ * the CPI; a book with no reading chosen stops so that `acrossReadings` makes the run under each. A TASE foreign fund whose own annex
+ * states its index under its ruling takes that index (`statedTaxIndexOf`, D84): the main currency's exchange rate, which is the record's own
+ * currency and the exposure's, and so the run's one exchange-rate path, or the CPI; the run carries the statement, and no rule is cited for it. A distributing one
+ * reads no statement (`statedTaxIndexOf`). Any other TASE foreign fund takes the index TXF-04 states, and TXF-04 is open, so neither is
+ * known for it, with or without its 90% test: the book stops on it (BlockedError) and the run computes nothing after tax (D10); F-118
+ * reads the value before the exit tax of one that pays nothing out. Were TXF-04 settled as the letter's copy states it (the golden
+ * harness), a fund on the 90% test would take the exchange rate and any other the CPI.
  */
-export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency">, book: RuleBook): "fx" | "principal" | "cpi" {
+export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency" | "statedIndex" | "distribution">, book: RuleBook): "fx" | "principal" | "cpi" {
   if (fund.kind === "foreign-fund") {
     book.cite("TXF-03");
     return "fx";
@@ -263,6 +283,8 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "prin
     return "cpi";
   }
   if (fund.kind !== "tase-foreign-fund") return "cpi";
+  const stated = statedTaxIndexOf(fund);
+  if (stated) return stated.index;
   book.cite("TXF-04");
   if (fund.ninetyPercentTest !== true) return "cpi";
   book.rate("TXF-04", "threshold_pct");
@@ -274,7 +296,7 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "prin
  * running it, so nothing is ranked on a guessed index. A fund whose tax index is an open reading (TXS OQ26) is not stopped by it before a
  * run: whether its readings split is the run's to say (`securitiesStopOf`).
  */
-export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency">, ctx: RunContext): string | null {
+export function securitiesBlockedBy(fund: Pick<Fund, "kind" | "ninetyPercentTest" | "principalCurrency" | "statedIndex" | "distribution">, ctx: RunContext): string | null {
   try {
     taxIndexOf(fund, ruleBook(ctx));
     return null;
@@ -308,10 +330,10 @@ const ownRunOf = (input: SecuritiesInput): SecuritiesInput => ({
 });
 
 /**
- * Method §13, F-04: what the after-tax runs of an input's fund stop on, or null where they compute. A TASE foreign fund stops on TXF-04
- * before any run (`securitiesBlockedBy`). A fund whose tax index is an open reading (a foreign-investment fund, TXS OQ26) is run on its own
- * (`ownRunOf`) under each reading: where they give different results, its runs stop on TXS-14 with the question; where they agree, they
- * compute and carry the question as a flag.
+ * Method §13, F-04: what the after-tax runs of an input's fund stop on, or null where they compute. A TASE foreign fund whose annex states
+ * no index, or that distributes, stops on TXF-04 before any run (`securitiesBlockedBy`). A fund whose tax index is an open reading (a
+ * foreign-investment fund, TXS OQ26) is run on its own (`ownRunOf`) under each reading: where they give different results, its runs stop
+ * on TXS-14 with the question; where they agree, they compute and carry the question as a flag.
  */
 export function securitiesStopOf(input: SecuritiesInput, ctx: RunContext): SecuritiesStop | null {
   try {
@@ -468,6 +490,9 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   // F-04 first: a fund whose tax index rests on an open rule computes nothing after tax; F-118 never reads the index
   const taxIndex = beforeTaxOf === null ? taxIndexOf(fund, book) : null;
   const tally = new Tally();
+  // D84: an index a fund's own annex states is the fund's statement, carried with the run's figures as a rule it reads is
+  const stated = taxIndex === null ? null : statedTaxIndexOf(fund);
+  if (stated) tally.state(stated);
   const formulas = ["F-08", "F-09", "F-10", "F-12", "F-13", "F-14", beforeTaxOf === null ? "F-40" : "F-118"];
   if (tariff.until) {
     formulas.push("F-101");
@@ -969,16 +994,17 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, beforeTaxOf
   const cost = lotsLeft.reduce((s, l) => s + l.basis, 0);
   // Each lot indexed by J_T / J_lot; when the index (CPI or exchange rate) fell, its inflationary amount is zero and
   // the part of a nominal loss equal to the fall is not allowable (TXS-02; method F-09). With the exchange
-  // rate as the index, the rule that makes it the index is cited beside it: TXF-03 for a foreign-currency security held
-  // directly, TXS-14 for an Israeli foreign-investment fund's principal currency, TXF-04 for a TASE foreign fund (TXF-03 says its own test
-  // does not answer for such a fund; TXF-04 is open). The exit
-  // year's fees are deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits is an open reading (G-07).
+  // rate as the index, what makes it the index is named beside it: TXF-03 for a foreign-currency security held directly, TXS-14 for an
+  // Israeli foreign-investment fund's principal currency, and for a TASE foreign fund the statement its annex makes, which the run already
+  // carries, and no rule (D84). A TASE foreign fund whose annex states none reaches here only with TXF-04 settled (the golden harness),
+  // and cites it. The exit year's fees are deducted after the fall's cap (TXS-06); whether they sit inside the nominal loss the cap limits
+  // is an open reading (G-07).
   const adjusted = indexedCost(lotsLeft, J![T]!, nav * (1 - spread));
   const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;
   const nominalGain = gross - cost;
   book.cite("TXS-06");
   book.cite("TXS-02");
-  if (adjusted.fell && fxIndexed) book.cite(fund.kind === "foreign-fund" ? "TXF-03" : fund.kind === "israeli-fund" ? "TXS-14" : "TXF-04");
+  if (adjusted.fell && fxIndexed && !stated) book.cite(fund.kind === "foreign-fund" ? "TXF-03" : fund.kind === "israeli-fund" ? "TXS-14" : "TXF-04");
 
   let outcome: Outcome = { code: "eligible" };
   let lossOffset = 0;

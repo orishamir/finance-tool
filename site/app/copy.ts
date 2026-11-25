@@ -2,8 +2,22 @@
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
 import { countPhrase } from "./lib/count";
 import type { FeeCap } from "@finance-tool/schema";
-import type { ChangeKind, HeldKind } from "@finance-tool/engine";
+import type { ChangeKind, FundStatement, HeldKind, TaxIndexStatement } from "@finance-tool/engine";
 import type { FeeKindId } from "./lib/fee-deal/core";
+
+/**
+ * F-04, D84: the tax index a Tel Aviv foreign fund's own annex states under its ruling, said as the fund's statement and not a rule: the
+ * main currency's exchange rate (its Hebrew name) or, with none, the CPI. The figure's sheet and the fund's chip say it in these words.
+ */
+function taxIndexStated(currency: string | null): string {
+  return `${currency ? `מס רווחי הון מחושב לפי שער ה${currency}` : "מס רווחי הון מחושב לפי מדד המחירים לצרכן"}: כך כתוב בנספח לתשקיף הישראלי של הקרן, לפי החלטת המיסוי שהקרן קיבלה מרשות המסים. זו הצהרה של הקרן, ואין נוסח רשמי של רשות המסים שמאשר אותה.`;
+}
+/** What the site does with a fund's stated tax index, after the statement on the fund's chip. */
+const taxIndexRanked = "האתר מחשב לפיה את מס רווחי הון של הקרן הזו בלבד, ומדרג אותה.";
+/** A currency's Hebrew name (`invest.currencies`), else its ISO code. */
+function currencyWord(code: string): string {
+  return invest.currencies[code] ?? code;
+}
 
 /** A name's gender and number, which the words after it agree with: masculine, feminine, and each plural. */
 export type NameForm = "m" | "f" | "mp" | "fp";
@@ -396,6 +410,15 @@ export const provenance = {
     formula: "נוסחה",
     inputs: "ערכים שנכנסו לחישוב",
     rules: "חוקים וכללים שנכנסו לחישוב",
+    /** D84: a fund's own statement the figure rests on in place of a rule, each said with its document's page linked under it. */
+    statements: "הצהרות של הקרן שנכנסו לחישוב",
+    /** Each statement's sentence, by the term it states. */
+    statement: {
+      /** F-04: the tax index the fund's annex states under its ruling: the main currency's exchange rate, or the CPI. */
+      "tax-index": (st: TaxIndexStatement) => taxIndexStated(st.index === "fx" ? currencyWord(st.currency) : null),
+    } satisfies { [T in FundStatement["term"]]: (st: Extract<FundStatement, { term: T }>) => string },
+    /** The statement's document, linked at its page. */
+    statementDoc: (title: string, page: number) => `${title}, עמוד ${page}`,
     weakInputs: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:",
   },
   // a flag with no sentence of its own
@@ -5071,6 +5094,9 @@ export const invest = {
     "pays-accumulating": { text: "צוברת", explain: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש." },
     "pays-distributing": { text: "מחלקת דיבידנד", explain: "הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל." },
     "tax-on-sale-open": { text: "מס בצבירה: לא ידוע", explain: "לא ידוע אם משלמים מס על מה שהקרן צוברת לפני שמוכרים. לא נמצא חוק שמחייב מס כזה, אבל גם אין אישור רשמי שאין. האתר מחשב כאילו המס משולם רק במכירה, ולכן לא מדרג את הקרן." },
+    // F-04, D84: the tax index a Tel Aviv foreign fund's own annex states under its ruling, the fund's statement and not a rule
+    "tax-index-currency": { text: (ccy: string) => `רווח מול שער ה${ccy}`, explain: (ccy: string) => `${taxIndexStated(ccy)} ${taxIndexRanked}` },
+    "tax-index-cpi": { text: "רווח מול מדד המחירים", explain: `${taxIndexStated(null)} ${taxIndexRanked}` },
     "tax-on-sale-ruling": { text: "אין מס בצבירה", explain: "הקרן מדווחת בנספח לתשקיף הישראלי שלה שקיבלה החלטת מיסוי מרשות המסים: יחיד משלם מס רק כשהוא מוכר יחידות או כשהקרן מחלקת רווחים, ולא על מה שהקרן צוברת. ההחלטה עצמה לא פורסמה, ולכן המקור הוא מסמך הקרן. לפי ההחלטה הזאת הקרן מדורגת." },
     "ask-self-report": { text: "דיווח עצמי למס", explain: "ברוקר זר לא מנכה מס בישראל במכירה, ולכן מדווחים על הרווח ומשלמים מקדמה פעמיים בשנה, ומגישים דוח שנתי. בבנק או אצל חבר בורסה בישראל המס מנוכה במכירה, וגם קרן זרה לא מחייבת דיווח." },
     "ask-tax-service": { text: "ניכוי מס בשירות נוסף", explain: "החברה מצהירה שהיא מנכה מס ישראלי בחשבונות שנפתחו דרכה. אישור של רשות המסים לניכוי הזה לא נמצא. כשלא נוכה מס, מדווחים על הרווח בעצמכם, משלמים מקדמה פעמיים בשנה ומגישים דוח שנתי." },

@@ -25,6 +25,24 @@ const foreignInvestmentFund = valueObject.refine(
   { message: 'foreign_investment_fund: unit "text", value an ISO 4217 code (the principal currency), false, or null (not known)', path: ["value"] },
 );
 
+/** data-schema §3.5 `tax_ruling.index`: the tax index a fund's annex states under its ruling, each basis with only the fields it carries. */
+const taxRulingIndex = z.discriminatedUnion("basis", [
+  z.strictObject({
+    basis: z.literal("main-currency"),
+    currency: z.string().regex(/^[A-Z]{3}$/, "currency is an ISO 4217 code"),
+    page: z.number().int().positive(),
+    quote: z.string().min(1),
+    currency_quote: z.string().min(1),
+    checked: isoDate,
+  }),
+  z.strictObject({
+    basis: z.literal("cpi"),
+    page: z.number().int().positive(),
+    quote: z.string().min(1),
+    checked: isoDate,
+  }),
+]);
+
 export const fundRecord = z.strictObject({
   /** Lowercase ASCII, digits and hyphens, e.g. "ie00b5bmr087"; an exposure's variants name it as `fund:<id>`. */
   id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "id is lowercase ASCII, digits and single hyphens"),
@@ -169,6 +187,14 @@ export const fundRecord = z.strictObject({
       pages: z.strictObject({ ruling: z.number().int().positive(), sale: z.number().int().positive(), distribution: z.number().int().positive() }),
       quote: z.string().min(1),
       checked: isoDate,
+      /**
+       * TXF-04, F-04, D84: the index of the inflationary amount on a sale by an individual, where the same annex states it under the ruling:
+       * the main currency's exchange rate (`main-currency`, with the currency the annex names as the fund's main currency) or the CPI
+       * (`cpi`). `page` is the annex's PDF page, `quote` its words on the index and `currency_quote` its words naming the currency, `checked` the date the index was read. It is
+       * the fund's statement for its own units, never a rule; only a Tel Aviv line reads it. The data check holds `currency` to the
+       * record's own `currency` and the exposure's.
+       */
+      index: taxRulingIndex.optional(),
     })
     .optional(),
   /**
@@ -184,3 +210,4 @@ export const fundRecord = z.strictObject({
 
 export type FundRecord = z.infer<typeof fundRecord>;
 export type FundPromotion = z.infer<typeof fundPromotion>;
+export type TaxRulingIndex = z.infer<typeof taxRulingIndex>;

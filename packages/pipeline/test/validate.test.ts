@@ -278,6 +278,42 @@ describe("foreign-investment funds (data-schema §4 item 21)", () => {
   });
 });
 
+describe("a fund's stated tax index (data-schema §3.5 tax_ruling.index, F-04)", () => {
+  const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
+  const source = { url: "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244042-01.pdf", title: "נספח לתשקיף קרן חוץ נסחרת", publisher: "BlackRock (iShares VII plc)", strength: "institution" };
+  const ruled = (index: unknown) => ({
+    ...fund,
+    tax_ruling: { ruling_date: "2019-07-01", source, pages: { ruling: 15, sale: 16, distribution: 17 }, quote: "התקבלה בידי הקרן החלטת המיסוי", checked: "2026-11-04", index },
+  });
+  const main = (currency: string) => ({ basis: "main-currency", currency, page: 17, quote: "בסיס המדד לחישוב סכום אינפלציוני", currency_quote: "בקרן זו הינו דולר ארה\"ב", checked: "2026-11-25" });
+  const files = (rec: unknown) => ({ "instruments/exposures/index-sp500.json": { ...exposure, variants: ["fund:ie00b5bmr087"] }, "funds/ie00b5bmr087@2026-10-23.json": rec });
+  const messages = (rec: unknown) => run(files(rec)).map((p) => p.message);
+  it("accepts the exposure's currency as the main currency, and the CPI", () => {
+    expect(messages(ruled(main("USD")))).toEqual([]);
+    expect(messages(ruled({ basis: "cpi", page: 16, quote: "בסיס ההצמדה לחישוב סכום אינפלציוני יהא מדד המחירים לצרכן", checked: "2026-11-25" }))).toEqual([]);
+  });
+  it("refuses a main currency that is not the exposure's, a main currency with no currency or no words naming it, a CPI that names one, and an index with no date it was read", () => {
+    expect(messages(ruled(main("EUR")))).toEqual([
+      expect.stringMatching(/tax_ruling\.index\.currency: the main currency EUR is not the record's own currency USD/),
+      expect.stringMatching(/tax_ruling\.index\.currency: the main currency EUR is not the exposure's currency USD/),
+    ]);
+    const { currency: _c, ...noCurrency } = main("USD");
+    expect(messages(ruled(noCurrency)).length).toBeGreaterThan(0);
+    const { currency_quote: _q, ...noWords } = main("USD");
+    expect(messages(ruled(noWords)).length).toBeGreaterThan(0);
+    expect(messages(ruled({ basis: "cpi", currency: "USD", page: 16, quote: "מדד המחירים לצרכן", checked: "2026-11-25" })).length).toBeGreaterThan(0);
+    const { checked: _d, ...undated } = main("USD");
+    expect(messages(ruled(undated)).length).toBeGreaterThan(0);
+  });
+  it("refuses a main currency that is the exposure's but not the record's own, and one whose exposure has no file", () => {
+    expect(messages({ ...ruled(main("USD")), currency: "EUR" })).toEqual([expect.stringMatching(/the main currency USD is not the record's own currency EUR/)]);
+    const orphan = { ...ruled(main("USD")), exposure_id: "index-none" };
+    expect(run({ "instruments/exposures/index-sp500.json": { ...exposure, variants: ["fund:ie00b5bmr087"] }, "funds/ie00b5bmr087@2026-10-23.json": orphan }).map((p) => p.message)).toEqual(
+      expect.arrayContaining([expect.stringMatching(/exposure index-none has no file with a currency/)]),
+    );
+  });
+});
+
 describe("P-05 instruments map", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
   const p05 = (instruments: unknown) => ({

@@ -1,5 +1,5 @@
 // Value objects on the site: the schema's object plus what a page needs to show it (D7, D3, D10).
-import type { P05Input } from "@finance-tool/engine";
+import type { FundStatement, P05Input } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountShown } from "./format";
 
@@ -36,6 +36,8 @@ export interface SiteValue extends ValueObject {
   parameter?: { rationale: string; rationaleHe?: string | null };
   /** Rules a computed value read, with the strength the run recorded. */
   rulesUsed?: { id: string; strength: Strength }[];
+  /** A fund's own statements a computed value read in place of a rule (D84: the tax index its annex states): its sheet names each as the fund's. */
+  statements?: readonly FundStatement[];
   /** Engine labels on the run ("secondary-source", "reading": a rule applied as an inference, e.g. TXK-07 when the CPI fell). */
   labels?: { code: string; ruleId: string }[];
   /** Engine flags (G-IDs, open questions) that qualify the value. */
@@ -151,7 +153,7 @@ export function computed(
   unit: ValueObject["unit"],
   formula: string,
   inputs: Record<string, SiteValue>,
-  options: { today: string; rules?: { id: string; strength: Strength }[]; flags?: string[]; labels?: { code: string; ruleId: string }[]; about?: string; notes?: string; lead?: string; signed?: boolean; unitText?: string } ,
+  options: { today: string; rules?: { id: string; strength: Strength }[]; statements?: readonly FundStatement[]; flags?: string[]; labels?: { code: string; ruleId: string }[]; about?: string; notes?: string; lead?: string; signed?: boolean; unitText?: string } ,
 ): SiteValue {
   let weakest: Strength | undefined;
   for (const input of Object.values(inputs)) {
@@ -161,6 +163,7 @@ export function computed(
     weakest = weaker(weakest, input.state === "entered" || own ? "primary" : st);
   }
   for (const r of options.rules ?? []) weakest = weaker(weakest, r.strength);
+  for (const st of options.statements ?? []) weakest = weaker(weakest, st.source.strength);
   return {
     value,
     unit,
@@ -173,6 +176,7 @@ export function computed(
     computed_from: { formula, inputs },
     weakest: weakest ?? "primary",
     rulesUsed: options.rules,
+    ...(options.statements?.length ? { statements: options.statements } : {}),
     flags: options.flags,
     labels: options.labels,
     about: options.about,
@@ -199,20 +203,27 @@ export function differenceOf(a: readonly [name: string, value: SiteValue], b: re
   return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? av.unit, formula, { [an]: av, [bn]: bv }, options);
 }
 
+/** A fund statement's identity on a page: the term it states, its document and the page there, so one statement is carried and listed once. */
+export function statementKey(st: FundStatement): string {
+  return `${st.term}|${st.source.url}|${st.page}`;
+}
+
 /**
  * The rules, flags and labels of the runs a figure rests on, each once, for a figure computed from them that is not their sum or difference
  * alone (a point where two runs cross): every run that reads a rule or a line carries what it carries (F-12, F-128).
  */
-export function carriedBy(values: readonly SiteValue[]): Pick<ComputedOptions, "rules" | "flags" | "labels"> {
+export function carriedBy(values: readonly SiteValue[]): Pick<ComputedOptions, "rules" | "statements" | "flags" | "labels"> {
   const rules = new Map<string, { id: string; strength: Strength }>();
+  const statements = new Map<string, FundStatement>();
   const flags = new Set<string>();
   const labels = new Map<string, { code: string; ruleId: string }>();
   for (const v of values) {
     for (const r of v.rulesUsed ?? []) rules.set(r.id, r);
+    for (const st of v.statements ?? []) statements.set(statementKey(st), st);
     for (const f of v.flags ?? []) flags.add(f);
     for (const l of v.labels ?? []) labels.set(`${l.code}|${l.ruleId}`, l);
   }
-  return { rules: [...rules.values()], flags: [...flags], labels: [...labels.values()] };
+  return { rules: [...rules.values()], statements: [...statements.values()], flags: [...flags], labels: [...labels.values()] };
 }
 
 /** A figure that adds up others on the page (a cost of several lines, a total of parts): the same as `differenceOf`, for a sum. Null when any part is not a number. */

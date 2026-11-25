@@ -258,7 +258,9 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkStaleUnknowns(files, ctx.dataDir, ruleRecords, warn);
   checkUnofficialSources(files, ctx.dataDir, report);
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
-  checkForeignInvestmentFunds(files, ctx.dataDir, report);
+  const currencies = exposureCurrencies(files, ctx.dataDir);
+  checkForeignInvestmentFunds(files, ctx.dataDir, currencies, report);
+  checkStatedTaxIndex(files, ctx.dataDir, currencies, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
   checkHomeGuideDoor(files, ctx.dataDir, report);
   checkDepositAmounts(files, ctx.dataDir, report);
@@ -1482,16 +1484,11 @@ function checkInstrumentsMap(files: string[], dataDir: string, ruleIds: Map<stri
  * fund, so no run reads a missing field as either answer; a foreign fund's record does not carry it; and a principal currency is the
  * exposure's currency, the one exchange-rate path a run has.
  */
-function checkForeignInvestmentFunds(files: string[], dataDir: string, report: (file: string, message: string) => void) {
-  const currencies = new Map<string, string>();
+function checkForeignInvestmentFunds(files: string[], dataDir: string, currencies: ReadonlyMap<string, string>, report: (file: string, message: string) => void) {
   const latest = new Map<string, string>();
   for (const file of files) {
     const rel = relative(dataDir, file).split(/[\\/]/).join("/");
     if (!file.endsWith(".json")) continue;
-    if (rel.startsWith("instruments/exposures/")) {
-      const v = parseJson(readFileSync(file, "utf8")).value as { id?: unknown; currency?: unknown } | undefined;
-      if (typeof v?.id === "string" && typeof v.currency === "string") currencies.set(v.id, v.currency);
-    }
     const id = /^funds\/([^/@]+)@[^/]+\.json$/.exec(rel)?.[1];
     if (id !== undefined && rel > (latest.get(id) ?? "")) latest.set(id, rel);
   }
@@ -1510,6 +1507,40 @@ function checkForeignInvestmentFunds(files: string[], dataDir: string, report: (
     const exposureCurrency = rec.exposure_id ? currencies.get(rec.exposure_id) : undefined;
     if (typeof fif?.value === "string" && exposureCurrency !== undefined && fif.value !== exposureCurrency)
       report(file, `tax_status.foreign_investment_fund: principal currency ${fif.value} is not the exposure's currency ${exposureCurrency}, the one exchange-rate path a run has (F-04)`);
+  }
+}
+
+/** Each exposure's currency by its id (data/instruments/exposures/): the one exchange-rate path a run of a fund on it has (F-04). */
+function exposureCurrencies(files: string[], dataDir: string): Map<string, string> {
+  const currencies = new Map<string, string>();
+  for (const file of files) {
+    const rel = relative(dataDir, file).split(/[\\/]/).join("/");
+    if (!file.endsWith(".json") || !rel.startsWith("instruments/exposures/")) continue;
+    const v = parseJson(readFileSync(file, "utf8")).value as { id?: unknown; currency?: unknown } | undefined;
+    if (typeof v?.id === "string" && typeof v.currency === "string") currencies.set(v.id, v.currency);
+  }
+  return currencies;
+}
+
+/**
+ * data-schema §3.5 `tax_ruling.index` (method F-04, D84): the main currency a fund's annex states as its tax index is the record's own
+ * `currency` and the exposure's, since a run measures the index on the one exchange-rate path it has, built from the record's currency. A
+ * record whose exposure has no file leaves that path unchecked, and is reported rather than passed.
+ */
+function checkStatedTaxIndex(files: string[], dataDir: string, currencies: ReadonlyMap<string, string>, report: (file: string, message: string) => void) {
+  for (const file of files) {
+    const rel = relative(dataDir, file).split(/[\\/]/).join("/");
+    if (!/^funds\/[^/@]+@[^/]+\.json$/.test(rel)) continue;
+    const rec = parseJson(readFileSync(file, "utf8")).value as Partial<Pick<FundRecord, "currency" | "exposure_id" | "tax_ruling">> | undefined;
+    const index = rec?.tax_ruling?.index;
+    if (index?.basis !== "main-currency") continue;
+    if (rec?.currency !== undefined && index.currency !== rec.currency)
+      report(file, `tax_ruling.index.currency: the main currency ${index.currency} is not the record's own currency ${rec.currency}, whose exchange-rate path the run indexes on (F-04)`);
+    if (rec?.exposure_id === undefined) continue;
+    const exposureCurrency = currencies.get(rec.exposure_id);
+    if (exposureCurrency === undefined) report(file, `tax_ruling.index.currency: exposure ${rec.exposure_id} has no file with a currency, so the main currency ${index.currency} cannot be held to the exposure's (F-04)`);
+    else if (index.currency !== exposureCurrency)
+      report(file, `tax_ruling.index.currency: the main currency ${index.currency} is not the exposure's currency ${exposureCurrency}, the one exchange-rate path a run has (F-04)`);
   }
 }
 

@@ -146,7 +146,7 @@ function gainOf(pc: Costs, today: string): SiteValue {
  */
 export function leftOf(pc: Costs, today: string): SiteValue {
   const run = pc.left;
-  return sumOf({ [c.receipt.paidInToday]: whole(pc.paidIn), [c.receipt.gain]: gainOf(pc, today) }, "F-91", { today, about: c.receipt.leftAbout, rules: run.rulesUsed, flags: run.flags, labels: run.labels });
+  return sumOf({ [c.receipt.paidInToday]: whole(pc.paidIn), [c.receipt.gain]: gainOf(pc, today) }, "F-91", { today, about: c.receipt.leftAbout, rules: run.rulesUsed, statements: run.statements, flags: run.flags, labels: run.labels });
 }
 
 /** The tax line, in today's money (F-91's state); its sheet says so, and that it holds the surtax where the income with the gain passes its threshold (F-43). */

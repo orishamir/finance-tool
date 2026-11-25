@@ -172,6 +172,7 @@
                     "gbp_per_share",
                     "usd_per_trade",
                     "gbp_per_trade",
+                    "trade_ccy_per_trade",
                     "usd_per_event",
                     "nis_per_usd",
                     "fx_per_eur",
@@ -338,6 +339,203 @@
               "type": "null"
             }
           ]
+        },
+        "foreign_investment_fund": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "string",
+                "boolean",
+                "null"
+              ]
+            },
+            "unit": {
+              "type": "string",
+              "enum": [
+                "nis",
+                "nis_millions",
+                "usd",
+                "eur",
+                "gbp",
+                "pct",
+                "pct_per_year",
+                "pct_per_year_effective",
+                "pct_of_deposit",
+                "pct_of_trade",
+                "pct_of_balance_per_period",
+                "nis_per_month",
+                "nis_per_trade",
+                "nis_per_transfer",
+                "usd_per_share",
+                "nis_per_share",
+                "eur_per_share",
+                "gbp_per_share",
+                "usd_per_trade",
+                "gbp_per_trade",
+                "trade_ccy_per_trade",
+                "usd_per_event",
+                "nis_per_usd",
+                "fx_per_eur",
+                "months",
+                "years",
+                "days",
+                "business_days",
+                "index_points",
+                "count",
+                "boolean",
+                "text"
+              ]
+            },
+            "source": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "title": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "publisher": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "strength": {
+                  "type": "string",
+                  "enum": [
+                    "primary",
+                    "institution",
+                    "secondary",
+                    "open",
+                    "entered"
+                  ]
+                }
+              },
+              "required": [
+                "url",
+                "title",
+                "publisher",
+                "strength"
+              ],
+              "additionalProperties": false
+            },
+            "checked": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "effective_from": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "effective_to": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "tax_year": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "update_rule": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "fixed in law",
+                    "fixed in regulation",
+                    "fixed in document",
+                    "cpi-linked 1 jan",
+                    "average-wage-linked",
+                    "provider-set",
+                    "market",
+                    "founder",
+                    "set yearly"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "pattern": "^frozen \\d{4}-\\d{4}$"
+                }
+              ]
+            },
+            "rule_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "state": {
+              "type": "string",
+              "enum": [
+                "sourced",
+                "computed",
+                "entered"
+              ]
+            },
+            "computed_from": {
+              "type": "object",
+              "properties": {
+                "formula": {
+                  "type": "string",
+                  "pattern": "^[FA]-\\d{2,3}$"
+                },
+                "inputs": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {}
+                }
+              },
+              "required": [
+                "formula",
+                "inputs"
+              ],
+              "additionalProperties": false
+            },
+            "notes": {
+              "type": "string"
+            },
+            "rationale_he": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "source",
+            "checked",
+            "effective_from",
+            "effective_to",
+            "update_rule",
+            "state"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -385,6 +583,7 @@
                     "gbp_per_share",
                     "usd_per_trade",
                     "gbp_per_trade",
+                    "trade_ccy_per_trade",
                     "usd_per_event",
                     "nis_per_usd",
                     "fx_per_eur",
@@ -588,6 +787,7 @@
                     "gbp_per_share",
                     "usd_per_trade",
                     "gbp_per_trade",
+                    "trade_ccy_per_trade",
                     "usd_per_event",
                     "nis_per_usd",
                     "fx_per_eur",
@@ -791,6 +991,7 @@
                     "gbp_per_share",
                     "usd_per_trade",
                     "gbp_per_trade",
+                    "trade_ccy_per_trade",
                     "usd_per_event",
                     "nis_per_usd",
                     "fx_per_eur",
@@ -994,6 +1195,7 @@
                     "gbp_per_share",
                     "usd_per_trade",
                     "gbp_per_trade",
+                    "trade_ccy_per_trade",
                     "usd_per_event",
                     "nis_per_usd",
                     "fx_per_eur",
@@ -1197,6 +1399,7 @@
                     "gbp_per_share",
                     "usd_per_trade",
                     "gbp_per_trade",
+                    "trade_ccy_per_trade",
                     "usd_per_event",
                     "nis_per_usd",
                     "fx_per_eur",
@@ -1400,6 +1603,7 @@
                     "gbp_per_share",
                     "usd_per_trade",
                     "gbp_per_trade",
+                    "trade_ccy_per_trade",
                     "usd_per_event",
                     "nis_per_usd",
                     "fx_per_eur",
@@ -1603,6 +1807,7 @@
                     "gbp_per_share",
                     "usd_per_trade",
                     "gbp_per_trade",
+                    "trade_ccy_per_trade",
                     "usd_per_event",
                     "nis_per_usd",
                     "fx_per_eur",
@@ -2118,6 +2323,7 @@
                 "gbp_per_share",
                 "usd_per_trade",
                 "gbp_per_trade",
+                "trade_ccy_per_trade",
                 "usd_per_event",
                 "nis_per_usd",
                 "fx_per_eur",
@@ -2389,6 +2595,78 @@
         "checked": {
           "type": "string",
           "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "index": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "basis": {
+                  "type": "string",
+                  "const": "main-currency"
+                },
+                "currency": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3}$"
+                },
+                "page": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "quote": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "currency_quote": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "checked": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                }
+              },
+              "required": [
+                "basis",
+                "currency",
+                "page",
+                "quote",
+                "currency_quote",
+                "checked"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "basis": {
+                  "type": "string",
+                  "const": "cpi"
+                },
+                "page": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "quote": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "checked": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                }
+              },
+              "required": [
+                "basis",
+                "page",
+                "quote",
+                "checked"
+              ],
+              "additionalProperties": false
+            }
+          ]
         }
       },
       "required": [
@@ -2434,6 +2712,7 @@
             "gbp_per_share",
             "usd_per_trade",
             "gbp_per_trade",
+            "trade_ccy_per_trade",
             "usd_per_event",
             "nis_per_usd",
             "fx_per_eur",
@@ -2595,6 +2874,225 @@
         "state"
       ],
       "additionalProperties": false
+    },
+    "promotions": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fee": {
+            "type": "string",
+            "enum": [
+              "fixed_management",
+              "variable_management",
+              "trustee"
+            ]
+          },
+          "rate": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": [
+                  "number",
+                  "string",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "nis",
+                  "nis_millions",
+                  "usd",
+                  "eur",
+                  "gbp",
+                  "pct",
+                  "pct_per_year",
+                  "pct_per_year_effective",
+                  "pct_of_deposit",
+                  "pct_of_trade",
+                  "pct_of_balance_per_period",
+                  "nis_per_month",
+                  "nis_per_trade",
+                  "nis_per_transfer",
+                  "usd_per_share",
+                  "nis_per_share",
+                  "eur_per_share",
+                  "gbp_per_share",
+                  "usd_per_trade",
+                  "gbp_per_trade",
+                  "trade_ccy_per_trade",
+                  "usd_per_event",
+                  "nis_per_usd",
+                  "fx_per_eur",
+                  "months",
+                  "years",
+                  "days",
+                  "business_days",
+                  "index_points",
+                  "count",
+                  "boolean",
+                  "text"
+                ]
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "publisher": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "strength": {
+                    "type": "string",
+                    "enum": [
+                      "primary",
+                      "institution",
+                      "secondary",
+                      "open",
+                      "entered"
+                    ]
+                  }
+                },
+                "required": [
+                  "url",
+                  "title",
+                  "publisher",
+                  "strength"
+                ],
+                "additionalProperties": false
+              },
+              "checked": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "effective_from": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "effective_to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tax_year": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "update_rule": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "fixed in law",
+                      "fixed in regulation",
+                      "fixed in document",
+                      "cpi-linked 1 jan",
+                      "average-wage-linked",
+                      "provider-set",
+                      "market",
+                      "founder",
+                      "set yearly"
+                    ]
+                  },
+                  {
+                    "type": "string",
+                    "pattern": "^frozen \\d{4}-\\d{4}$"
+                  }
+                ]
+              },
+              "rule_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "sourced",
+                  "computed",
+                  "entered"
+                ]
+              },
+              "computed_from": {
+                "type": "object",
+                "properties": {
+                  "formula": {
+                    "type": "string",
+                    "pattern": "^[FA]-\\d{2,3}$"
+                  },
+                  "inputs": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string"
+                    },
+                    "additionalProperties": {}
+                  }
+                },
+                "required": [
+                  "formula",
+                  "inputs"
+                ],
+                "additionalProperties": false
+              },
+              "notes": {
+                "type": "string"
+              },
+              "rationale_he": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "value",
+              "unit",
+              "source",
+              "checked",
+              "effective_from",
+              "effective_to",
+              "update_rule",
+              "state"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "fee",
+          "rate"
+        ],
+        "additionalProperties": false
+      }
     },
     "snapshot": {
       "type": "string",

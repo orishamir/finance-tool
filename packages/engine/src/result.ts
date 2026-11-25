@@ -1,6 +1,6 @@
 // What every run returns (docs/architecture.md 3.4): numbers with the formulas, rules, labels and flags
 // behind them. The engine returns codes, never Hebrew text; the site maps codes to copy.
-import type { RuleRecord } from "@finance-tool/schema";
+import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import type { ReadingChoice } from "./open-readings.ts";
 import type { UsedRule } from "./resolver.ts";
 
@@ -71,6 +71,33 @@ export const RUN_FLAG_CODES: readonly string[] = [
   "TXP-03", "TXP-11", "TXP-OQ20", "TXS-18", "TXS-OQ26",
 ];
 
+/**
+ * A fund's own document stating a tax term for its own units (product D84): its Israeli prospectus annex, stating the term under the tax
+ * ruling given to the fund. It is the fund's statement, never a rule: it holds for that fund alone, and no official text of the Tax
+ * Authority stands behind it. A run that reads one carries it (`RunResult.statements`), so a page names it as the fund's beside the figures
+ * it moves, as a rule the run reads reaches the page by `rules`. One member per term it states, keyed by `term`.
+ */
+export type FundStatement = TaxIndexStatement;
+
+/**
+ * What every fund statement carries: the document as the fund record holds it, the page of its PDF the words are on, its words there, and
+ * the date they were read (ISO).
+ */
+interface StatementSource {
+  source: ValueObject["source"];
+  page: number;
+  quote: string;
+  checked: string;
+}
+
+/** The index of the inflationary amount on a sale by an individual (F-04) a fund's annex states. */
+export type TaxIndexStatement = StatementSource & { term: "tax-index" } & (
+  /** The main currency's exchange rate (its ISO code), the record's own currency and the exposure's, and so the run's one exchange-rate path (`fx`). */
+  | { index: "fx"; currency: string }
+  /** The CPI. */
+  | { index: "cpi" }
+);
+
 /** Section 8 and B3: whether the run may enter a ranking. */
 export type Outcome =
   | { code: "eligible" }
@@ -114,6 +141,8 @@ export interface RunResult {
   formulas: string[];
   /** Every rule the run read, with its strength and dimensions: the dimension checklist derives from it. */
   rules: UsedRule[];
+  /** Every fund statement the run read in place of a rule (D84): absent where it read none. */
+  statements?: FundStatement[];
   /**
    * F-91 (securities runs): each fee line's payments carried to the exit at the fund's total return from the month each was paid, nominal at
    * the exit; what the money a line took would have been worth in the fund. The split of a whole-units run by fee line reads it (F-63).
@@ -167,6 +196,7 @@ export const RUN_RESULT_FIELDS: ResultFields<RunResult> = {
   labels: "trail",
   formulas: "trail",
   rules: "trail",
+  statements: "trail",
 };
 
 export function emptyFees(): Record<FeeType, number> {

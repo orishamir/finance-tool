@@ -1,6 +1,7 @@
 // D31: a company's figure about its own product is not weak; the same figure out of context is.
 import { describe, expect, it } from "vitest";
-import { compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, recheckStale, staleCma, staleCmaFee, type SiteValue } from "./value";
+import type { FundStatement } from "@finance-tool/engine";
+import { carriedBy, compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isWeak, ownBy, ownEach, recheckStale, staleCma, staleCmaFee, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -60,6 +61,31 @@ describe("computed() weakest", () => {
   it("a secondary input stays weak next to an own one", () => {
     const v = computed(2, "nis", "F-1", { fee: fig("institution", { own: "הראל" }), s: fig("secondary") }, { today });
     expect(v.weakest).toBe("secondary");
+  });
+});
+
+describe("a fund's own statement a computed figure reads (D84)", () => {
+  const today = "2026-10-26";
+  const statement: FundStatement = {
+    term: "tax-index",
+    index: "fx",
+    currency: "USD",
+    source: { url: "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244042-01.pdf", title: "נספח לתשקיף קרן חוץ נסחרת", publisher: "BlackRock (iShares VII plc)", strength: "institution" },
+    page: 17,
+    quote: "בסיס המדד לחישוב סכום אינפלציוני יהא על פי השינוי בשער המטבע העיקרי",
+    checked: "2026-11-25",
+  };
+  it("is as weak as its document: a company's, where the inputs and the rules are primary", () => {
+    const v = computed(2, "nis", "F-65", { rate: fig("primary") }, { today, rules: [{ id: "TXS-02", strength: "primary" }], statements: [statement] });
+    expect(v.weakest).toBe("institution");
+    expect(v.statements).toEqual([statement]);
+    expect(computed(2, "nis", "F-65", { rate: fig("primary") }, { today, rules: [{ id: "TXS-02", strength: "primary" }] }).weakest).toBe("primary");
+  });
+  it("is carried once by a figure made of two values that each read it (carriedBy)", () => {
+    const a = computed(1, "nis", "F-65", { rate: fig("primary") }, { today, statements: [statement] });
+    const b = computed(2, "nis", "F-65", { rate: fig("primary") }, { today, statements: [{ ...statement }] });
+    expect(carriedBy([a, b]).statements).toEqual([statement]);
+    expect(carriedBy([fig("primary")]).statements).toEqual([]);
   });
 });
 
