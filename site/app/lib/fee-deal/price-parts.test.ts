@@ -671,13 +671,13 @@ describe("the templates", () => {
     const fixed = filledFor("interactive-brokers", [{ by: "what", is: "us" }, { by: "track", is: "IBKR Pro - Fixed" }]);
     expect(fixed("trade")).toMatchObject({ form: "perUnit", amount: { v: 0.005 }, cap: { v: 1 } });
     expect(filledFor("interactive-brokers", [{ by: "what", is: "europe" }, { by: "track", is: "IBKR Pro - Tiered" }])("trade")).toMatchObject({ form: "action", rate: { v: 0.05 }, min: { v: 1.7 }, max: { v: 39 } });
-    // the automatic conversion's markup is not counted (D65), and the spot conversion stays out, since F-63 converts by the automatic one
+    // the automatic conversion's markup is not counted (D65); the spot conversion prices the sale, since the automatic one converts only on a
+    // purchase (F-13), so it is read and not left
     // its lines on the Tel Aviv exchange price nothing for a private customer resident in Israel (its availability): listed with why
     expect(templateOf(newDeal("brokerage-account"), "house:interactive-brokers", data, TODAY)!.left).toEqual([
       expect.objectContaining({ line: "interactive-brokers-buy-sell-tase-fixed", why: "unavailable" }),
       expect.objectContaining({ line: "interactive-brokers-buy-sell-tase-tiered", why: "unavailable" }),
       expect.objectContaining({ line: "interactive-brokers-custody-tase", why: "unavailable" }),
-      expect.objectContaining({ line: "interactive-brokers-fx-spot", why: "another-line" }),
       expect.objectContaining({ line: "interactive-brokers-fx-auto-conversion", why: "spread-unpriced" }),
     ]);
     expect(templateOf(newDeal("brokerage-account"), "house:interactive-brokers/no-such-line", data, TODAY)).toBeNull();

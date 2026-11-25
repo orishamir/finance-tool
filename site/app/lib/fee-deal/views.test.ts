@@ -230,13 +230,15 @@ describe("templates", () => {
   it("fills One Zero's charge for each corporate event, as its list prints it", () => {
     expect(fillDeal(newDeal("brokerage-account"), "house:one-zero", data, TODAY)!.fees.map((f) => f.kind)).toContain("corporate_event");
   });
-  it("fills the conversion F-63 prices a house by: Interactive Brokers' automatic conversion, which charges nothing, over its spot line", () => {
+  it("fills the conversion F-63 prices a house by: Interactive Brokers' automatic conversion, which charges nothing on a purchase, its sale priced apart on its spot line", () => {
     const filled = fillDeal({ ...newDeal("brokerage-account"), readFor: [{ by: "what", is: "us" }] }, "house:interactive-brokers", data, TODAY)!;
     const fx = filled.fees.filter((f) => f.kind === "fx");
     expect(fx).toHaveLength(1);
     expect(fx[0]!.stages![0]!.price).toMatchObject({ form: "action", rate: { v: 0 } });
     expect(fx[0]!.stages![0]!.price).not.toHaveProperty("min.v");
-    expect(data.houses.find((h) => h.id === "interactive-brokers")!.left).toContainEqual(expect.objectContaining({ lineId: "interactive-brokers-fx-spot", why: "another-line" }));
+    // the automatic conversion converts only on a purchase (form 3203 s.30C): a sale converts by a spot order, 0.002% with a minimum of USD 2
+    expect(fx[0]?.sale?.[0]?.price).toMatchObject({ form: "action", rate: { v: 0.002 }, min: { v: 2 }, currency: "USD" });
+    expect(data.houses.find((h) => h.id === "interactive-brokers")?.left).not.toContainEqual(expect.objectContaining({ lineId: "interactive-brokers-fx-spot" }));
   });
   it("offers the houses for a securities account and the kind's tracks for the provident family", () => {
     expect(templateOptions("brokerage-account", data, TODAY).every((o) => o.source === "house")).toBe(true);

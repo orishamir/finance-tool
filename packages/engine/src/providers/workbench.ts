@@ -12,7 +12,7 @@ import type { Commission, ConversionPrice, Custody, SizeStep } from "../formulas
 import { perUnitOf } from "../formulas/deal.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
+import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, type Fund, type SaleConversionPrice, type SecuritiesInput } from "../ledgers/securities.ts";
 import type { DealAccount } from "../ledgers/deal-account.ts";
 import { stoppedOnRule } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
@@ -36,6 +36,8 @@ export interface EnteredTariff {
   fxStanding?: ConversionPrice;
   /** F-13 (D65): the spread the provider's list limits, at its ceiling, kept beside a conversion price the person or a group sets. Absent with `fx`: the list's spread, if any. */
   fxSpread?: ConversionPrice;
+  /** F-13: the list's own price for a sale's conversion (`SecuritiesTariff.fxSale`); dropped where the person sets the conversion price, which then governs the sale too. */
+  fxSale?: SaleConversionPrice;
   monthlyFee?: number;
   /** F-102 with F-101: the current account's monthly price in this stretch where a group's annex prints its own (0 for an exempt group);
    *  read only where the caller counts the bank's current account. Absent: the bank's ordinary minimum. */
@@ -723,6 +725,8 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       if (entered.cheaperOfStandingFx) out.tariff.cheaperOfStandingFx = true;
       // F-13 (D65): a conversion price set over a house's list (F-101) keeps the list's spread, carried in the layers
       if (entered.fxSpread) out.tariff.fxSpread = entered.fxSpread;
+      // F-13: the list's own price for a sale, carried in the layers where no conversion price of the person's replaced the list's
+      if (entered.fxSale) out.tariff.fxSale = entered.fxSale;
     } else {
       const r = resolve("fx");
       if (r) {
@@ -731,6 +735,16 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
         out.tariff.fx = c.price;
         if (c.spread !== undefined) out.tariff.fxSpread = c.spread;
         used(r.line, r.rate, r.min, r.max, ...c.read);
+        // F-13 (D56): a line that converts only on a purchase (`conversion_side`) leaves the sale's proceeds to the line that converts a sale,
+        // chosen as the purchase's line is among the lines that convert a sale, and charged as it is charged (`conversionAt`)
+        if (r.line.conversion_side) {
+          const s = lineAt("fx", (l) => !l.conversion_side);
+          if (!s) throw new RecordInputError(`provider ${snapshot.id}: ${r.line.id} converts only on a purchase, and no conversion line converts the sale`);
+          if (s.average) out.averagesApplied++;
+          const sale = conversionAt(s);
+          out.tariff.fxSale = { fx: sale.price, ...(sale.spread !== undefined ? { fxSpread: sale.spread } : {}) };
+          used(s.line, s.rate, s.min, s.max, ...sale.read);
+        }
         // F-13: the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
         if (atList) {
           const every = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));

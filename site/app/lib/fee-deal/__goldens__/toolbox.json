@@ -57,33 +57,33 @@
   "charge: share✓ perAction⊘ perDollar⊘ free",
   "off: discount refund",
   "bound: min max",
-  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own sale"
  ],
  "brokerage-account · fx · action · full": [
   "charge: share✓ perAction⊘ perDollar⊘ free",
   "off: discount✓ refund✓",
   "bound: min✓ max✓",
-  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own sale"
  ],
  "brokerage-account · fx · perAction · plain": [
   "charge: share⊘ perAction✓ perDollar⊘ free",
   "off: discount refund",
-  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own sale"
  ],
  "brokerage-account · fx · perAction · full": [
   "charge: share⊘ perAction✓ perDollar⊘ free",
   "off: discount✓ refund✓",
-  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own sale"
  ],
  "brokerage-account · fx · perDollar · plain": [
   "charge: share⊘ perAction⊘ perDollar✓ free",
   "off: refund",
-  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own sale"
  ],
  "brokerage-account · fx · perDollar · full": [
   "charge: share⊘ perAction⊘ perDollar✓ free",
   "off: refund✓",
-  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own"
+  "by: by:currency by:track by:channel by:actionSize by:portfolioSize by:own sale"
  ],
  "brokerage-account · fx_spread · action · plain": [
   "charge: share✓ free",

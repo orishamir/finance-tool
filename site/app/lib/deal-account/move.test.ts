@@ -161,6 +161,12 @@ describe("the move: a typed conversion keeps the list's steps by size (F-13)", (
     const a = onFx("mizrahi-tefahot");
     expect(differing(compare([a], true, small).get(a.id)!)).toEqual([]);
   });
+
+  it("interactive-brokers: a typed conversion is the sale's too, so a small sale pays the typed rate and not the spot order's minimum (F-13)", () => {
+    const small = { ...plan, amountNow: 0, monthly: 200, years: 1, values: { ...plan.values, amount: fig(0, "nis"), monthly: fig(200, "nis_per_month"), years: fig(1, "years") } };
+    const a = onFx("interactive-brokers");
+    expect(differing(compare([a], true, small).get(a.id) ?? [])).toEqual([]);
+  });
 });
 
 describe("the move with the dollar moving: A-03 = +3% a year over 20 years, on a few indices", () => {

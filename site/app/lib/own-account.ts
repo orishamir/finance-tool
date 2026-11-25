@@ -347,6 +347,8 @@ export function applyOwn(base: SecuritiesTariff, own: Own, list: SecuritiesTarif
     // dearer than the list (F-13)
     out.fx = base.fx === undefined ? fx / 100 : conversionWithRate(base.fx, fx / 100);
     if (base.fxStanding !== undefined) out.cheaperOfStandingFx = true;
+    // the person's conversion price is the sale's too: the list's own price for a sale goes (F-13)
+    delete out.fxSale;
   }
   const monthly = numberOf(own.monthlyFee);
   if (monthly !== null) out.monthlyFee = monthly;
@@ -366,6 +368,7 @@ function enteredOf(t: SecuritiesTariff): Omit<EnteredTariff, "until"> {
   if (t.fx !== undefined) out.fx = t.fx;
   if (t.fxStanding !== undefined) out.fxStanding = t.fxStanding;
   if (t.fxSpread !== undefined) out.fxSpread = t.fxSpread;
+  if (t.fxSale !== undefined) out.fxSale = t.fxSale;
   if (t.monthlyFee !== undefined) out.monthlyFee = t.monthlyFee;
   if (t.currentAccount !== undefined) out.currentAccount = t.currentAccount;
   if (t.cheaperOfStandingTrade) out.cheaperOfStandingTrade = true;

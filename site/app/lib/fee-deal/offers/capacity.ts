@@ -75,7 +75,8 @@ export const CAPACITY: Readonly<Record<FeeKindId, Capacity>> = {
   load: { ...action(RATE), base: "load", oneSide: "buy" },
   redemption_deduction: { ...action(RATE), base: "redemption_deduction", oneSide: "sell" },
   // a small conversion's flat price is a sum on each conversion, up to its size (fold-flat.ts)
-  fx: { base: "fx", forms: ["action", "perAction", "perDollar"], usual: "action", fields: { action: FX, perAction: AMOUNT_IN, perDollar: PER_DOLLAR }, saleApart: false },
+  // a sale's conversion priced apart: a list whose purchase converts on a line of its own (F-13, data-schema §3.6a item 7)
+  fx: { base: "fx", forms: ["action", "perAction", "perDollar"], usual: "action", fields: { action: FX, perAction: AMOUNT_IN, perDollar: PER_DOLLAR }, saleApart: true },
   fx_spread: { ...action(RATE), base: null },
   deposit: { ...action(RATE), base: "deposit" },
   distribution_handling: { base: "distribution_handling", forms: ["action", "perAction"], usual: "action", fields: { action: ACTION_ALL, perAction: AMOUNT }, saleApart: false },

@@ -150,6 +150,12 @@ export type SecuritiesTariff = {
    * fraction, or a `SizedConversion` whose steps set the spread by the conversion's size.
    */
   fxSpread?: ConversionPrice;
+  /**
+   * F-13: the sale's conversion, set only where the line that converts a sale is not the one that converts a purchase (a line that converts
+   * only on a purchase, `conversion_side`: Interactive Brokers' automatic conversion, whose sale converts by a spot order): that line's price
+   * and spread. Unset, a sale converts at `fx` and `fxSpread`. Read through `saleConversionOf`.
+   */
+  fxSale?: SaleConversionPrice;
   /** The instrument's currency, for tariff lines set in it: code and NIS per unit at the start. */
   currency?: { code: string; startRate: number };
   /**
@@ -161,6 +167,13 @@ export type SecuritiesTariff = {
   /** F-13 (own account): the same for the conversion; set only where the group or the person set the regular conversion price. */
   cheaperOfStandingFx?: boolean;
 };
+
+/** F-13: a sale's conversion price and the spread beside it (`SecuritiesTariff.fxSale`). */
+export type SaleConversionPrice = { fx: ConversionPrice; fxSpread?: ConversionPrice };
+
+/** F-13: the price a sale's proceeds convert at: the tariff's own for a sale where it has one (`fxSale`), else the purchase's with its spread. */
+export const saleConversionOf = (t: Pick<SecuritiesTariff, "fx" | "fxSpread" | "fxSale">): { fx: ConversionPrice | undefined; fxSpread: ConversionPrice | undefined } =>
+  t.fxSale ? { fx: t.fxSale.fx, fxSpread: t.fxSale.fxSpread } : { fx: t.fx, fxSpread: t.fxSpread };
 
 /**
  * F-101 A sequence of tariffs. The tariff applies to the run's months 1 to `until.months`, `until.then` to the months after
@@ -900,7 +913,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     if (fromCash > 0) {
       const nis = Math.min(waitingNis, fromCash);
       waitingNis -= nis;
-      // the fund's currency a distribution left, at the month's rate; converting a few shekels' worth is left out, as F-13 leaves out a sale's spot conversion
+      // the fund's currency a distribution left, at the month's rate; converting a few shekels' worth is not priced (F-17)
       waitingHeld = Math.max(0, waitingHeld - (fromCash - nis) / fxRate(m));
     }
     // F-91: a shekel the fees did not take would have paid the share of the holdings this month charges at the margin (custody where its
@@ -962,7 +975,8 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     const read = trace.read;
     trace.settled = read !== null && dc.activityKey((m) => read[m] ?? NO_ACTIVITY, T) === dc.activityKey((m) => trace.placed[m] ?? NO_ACTIVITY, T);
   }
-  const fx = dealOut ? dealOut.total : tariff.currency ? saleConversion(atExit.fx, converted, { fxRate: fxRate(T) }, atExit.fxSpread) : 0;
+  const saleFx = saleConversionOf(atExit);
+  const fx = dealOut ? dealOut.total : tariff.currency ? saleConversion(saleFx.fx, converted, { fxRate: fxRate(T) }, saleFx.fxSpread) : 0;
   tally.fee("fx", fx);
   if (dealOut) byFee(dealOut);
   const proceeds = converted - fx + waitingNis;
