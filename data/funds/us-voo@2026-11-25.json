@@ -232,13 +232,13 @@
       2025
     ],
     "source": {
-      "url": "https://investor.vanguard.com/investment-products/etfs/profile/voo#performance-fees",
-      "title": "Vanguard S&P 500 ETF (VOO), fund profile, 'Performance & Fees', 'Total returns', 'Annually' (as of 10/31/2026)",
+      "url": "https://investor.vanguard.com/irr/funds/profile/VOO",
+      "title": "Vanguard S&P 500 ETF, VOO: the data the profile page (investor.vanguard.com/investment-products/etfs/profile/voo) renders from, its annual returns as of '12/31/2025', each 'year' with 'totalRtn' (the fund, by NAV) and 'benchmarkTotalRtn' ('S&P 500 Index')",
       "publisher": "Vanguard",
       "strength": "institution"
     },
     "page": null,
-    "checked": "2026-11-07",
+    "checked": "2026-11-25",
     "benchmark": {
       "name": "S&P 500 Index",
       "dividends": "unstated"

@@ -181,6 +181,26 @@ export function feeColumns(page: string): Record<Fee, Map<number, number>> {
   return out;
 }
 
+/**
+ * Vanguard's profile data (investor.vanguard.com/irr/funds/profile/<ticker>), the JSON its fund page renders from: each calendar year of
+ * `performancefees.totalReturns.annualReturn.annualReturns[0].item` with the fund's `totalRtn` at NAV and its `benchmarkTotalRtn`, printed
+ * as "17.84%". Null when the text is not that JSON; a figure not printed as a percentage reads NaN, which equals no record's figure.
+ */
+export function vanguardAnnualReturns(text: string): Map<number, { fund: number; index: number }> | null {
+  let data: unknown;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    return null;
+  }
+  type Item = { year: string; totalRtn: string; benchmarkTotalRtn: string };
+  const lists = (data as { performancefees?: { totalReturns?: { annualReturn?: { annualReturns?: { item?: Item[] }[] } } } })?.performancefees?.totalReturns?.annualReturn?.annualReturns;
+  const items = lists?.length === 1 ? lists[0]?.item : undefined;
+  if (!Array.isArray(items)) return null;
+  const pct = (s: string) => (/^-?\d+(?:\.\d+)?%$/.test(s) ? Number(s.slice(0, -1)) : NaN);
+  return new Map(items.map((x) => [Number(x.year), { fund: pct(x.totalRtn), index: pct(x.benchmarkTotalRtn) }]));
+}
+
 const records: Rec[] = readdirSync(join(root, "data/funds"))
   .filter((f) => f.endsWith(".json"))
   .map((f) => JSON.parse(readFileSync(join(root, "data/funds", f), "utf8")) as Rec)
@@ -190,11 +210,25 @@ const records: Rec[] = readdirSync(join(root, "data/funds"))
  * S1 (pass 5): the records whose source is not in the library as text, each by name with its reason. The list only shrinks; any other
  * record without its text fails, so no record skips silently.
  */
-const EXCUSED: Record<string, string> = {
-  "us-voo": "Vanguard's fund page, a web page whose figures load by script; read by the lead (8dd1f013:research/audit/2026-11-07-indices-data/voo-read-by-lead.md)",
+const EXCUSED: Record<string, string> = {};
+
+/** The record's source as Vanguard's profile data, its calendar years read by `vanguardAnnualReturns`; null for any other source. */
+const annualOf = (r: Rec) => {
+  const text = r.tracking_record ? libraryText(r.tracking_record.source.url) : null;
+  return text === null ? null : vanguardAnnualReturns(text);
 };
 
 describe.skipIf(!hasLibrary)("tracking records against their reports in the library", () => {
+  it("reads each calendar year's two returns from Vanguard's profile data", () => {
+    const item = (year: string, totalRtn: string, benchmarkTotalRtn: string) => ({ year, totalRtn, benchmarkTotalRtn, capitalRtn: "1.00%" });
+    const data = (items: object[]) => JSON.stringify({ performancefees: { totalReturns: { annualReturn: { annualReturns: [{ item: items }] } } } });
+    const read = vanguardAnnualReturns(data([item("2025", "17.84%", "17.88%"), item("2022", "-18.15%", "-18.11%")]));
+    expect([...(read ?? [])]).toEqual([[2025, { fund: 17.84, index: 17.88 }], [2022, { fund: -18.15, index: -18.11 }]]);
+    expect(vanguardAnnualReturns(data([item("2025", "—", "17.88%")]))?.get(2025)?.fund).toBeNaN();
+    expect(vanguardAnnualReturns("2023 2024 2025\n 3.81% 4.07%")).toBeNull();
+    expect(vanguardAnnualReturns(JSON.stringify({ dashboard: {} }))).toBeNull();
+  });
+
   it("reads the years a report prints", () => {
     expect(printedYears("תשואות, סטיות תקן ונתוני השוואה - לפי תקופות\n 2023 2024 2025 מ 01.01.2026-עד\n 30.06.2026\n 3.81% 4.07%")).toEqual([2023, 2024, 2025]);
     expect(printedYears("סטיות תקן ונתוני השוואה\n מ 06.12.2024 -עד מ 01.01.2025 -עד\n 31.12.2024 31.12.2025\n -2.63% 18.20%")).toEqual([2025]);
@@ -254,7 +288,22 @@ describe.skipIf(!hasLibrary)("tracking records against their reports in the libr
     expect(stale, "excused records that are now in the library or gone: remove them from EXCUSED").toEqual([]);
   });
 
+  // Vanguard's profile data: every calendar year it holds, and each year's two returns as that year's, figure for figure
   for (const r of records.filter((x) => !EXCUSED[x.id])) {
+    const t = r.tracking_record;
+    const rows = annualOf(r);
+    if (!t || !rows) continue;
+    it(`${r.id}: every calendar year Vanguard's profile data holds, each year's fund and benchmark returns as that year's`, () => {
+      const printed = [...rows.keys()].sort((a, b) => a - b);
+      expect(t.years_printed, `${r.id}: the profile data holds ${printed.join(", ")}`).toEqual(printed);
+      for (const y of t.years) {
+        expect(rows.get(y.year)?.fund, `${r.id} ${y.year}: the fund's ${y.fund_pct} is not the data's totalRtn`).toBe(y.fund_pct);
+        expect(rows.get(y.year)?.index, `${r.id} ${y.year}: the index's ${y.tracking_pct} is not the data's benchmarkTotalRtn`).toBe(y.tracking_pct);
+      }
+    });
+  }
+
+  for (const r of records.filter((x) => !EXCUSED[x.id] && !annualOf(x))) {
     const t = r.tracking_record!;
     it(`${r.id}: every full year the report prints, each year's figures in its own column, and the fees charged on their page`, () => {
       const text = libraryText(t.source.url);
