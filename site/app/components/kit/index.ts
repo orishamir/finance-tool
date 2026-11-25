@@ -38,7 +38,7 @@ export { ShareBar, type SharePart } from "./share-bar";
 export { PartFacts, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, clearOfReceiptStub } from "./receipt";
 export { PERIOD_WIDE, PeriodTrack, periodColumns } from "./period-track";
 export { PickList, figureFit, type PickRow } from "./pick-list";
-export { StretchBar, StretchChart, type StretchSpot } from "./stretch";
+export { StretchBar, StretchChart, type StretchSpot, type StretchTone } from "./stretch";
 export { foldShown, type FoldOrder } from "./pick-list-hold";
 export { PairBars, type PairBarYear } from "./pair-bars";
 export { YearBars } from "./year-bars";

@@ -27,7 +27,7 @@ import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { priced, scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, MixedName, PickList, StretchBar, StretchChart, Tag, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
+import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, MixedName, PickList, StretchBar, StretchChart, Tag, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot, type StretchTone } from "../kit";
 import { AddEntryButton, FundEditMark } from "./custom-entries";
 import { AddDealButton, DealEditMark, DealMissing, DeletedLine, NotMovedLines, useDealAccounts } from "./deal-account";
 import { dealIdOf, isDealProviderId } from "../../lib/deal-account/bundle";
@@ -345,10 +345,14 @@ export function PairLists(props: ListsProps) {
   // each ranked fund's spot in the chosen account's stretch: its pair's value, or, for a fund of the other kind, where its difference from the
   // pair in the receipt runs over the dollar's range (a segment, held inside the scale's ends)
   const spots: Record<string, StretchSpot> = {};
+  // a hedged fund's spot, line and dot in the hedged kind's colour (the dollar charts' and the group head's), on an index with both kinds
+  const tones: Record<string, StretchTone> = {};
   for (const f of pricedFunds) {
     const x = cross.get(f.rec.id);
     spots[f.rec.id] = x ? [point + x.atLo, point + x.atHi] : (f.byHouse[pick.house] as WayPrice).valueN;
+    if (kinds && kindOf(f.rec) === "hedged") tones[f.rec.id] = "hedged";
   }
+  const dotTone = { fund: { ring: "ring-chart-by-fund", fill: "bg-chart-by-fund" }, hedged: { ring: "ring-chart-kind-hedged", fill: "bg-chart-kind-hedged" } } satisfies Record<StretchTone, { ring: string; fill: string }>;
   // the range's "?" says the same on every row of the other kind: it stands on the first of them only
   const firstCross = range ? pricedFunds.find((f) => f.rec.id !== pick.fund && cross.has(f.rec.id))?.rec.id : undefined;
   const fundRows: PickRow[] = pricedFunds.map((f, i) => {
@@ -385,10 +389,10 @@ export function PairLists(props: ListsProps) {
       onSelect: () => pickHalf(view, pick, { fund: f.rec.id }, onPick),
       cells: (
         <>
-          {ruler && (spots[f.rec.id] !== undefined ? <span data-spot-dot="" aria-hidden="true" className={cx("size-[7px] rounded-full ring-[1.5px] ring-inset ring-chart-by-fund", selected && "bg-chart-by-fund")} /> : <span aria-hidden="true" className="size-[7px]" />)}
+          {ruler && (spots[f.rec.id] !== undefined ? <span data-spot-dot="" aria-hidden="true" className={cx("size-[7px] rounded-full ring-[1.5px] ring-inset", dotTone[tones[f.rec.id] ?? "fund"].ring, selected && dotTone[tones[f.rec.id] ?? "fund"].fill)} /> : <span aria-hidden="true" className="size-[7px]" />)}
           {fundName(f, selected)}
           {figure}
-          {!ruler && <StretchBar scale={scale} best={pickStretch?.best ?? null} worst={pickStretch?.worst ?? null} {...(spots[f.rec.id] !== undefined ? { spot: spots[f.rec.id] } : {})} className="h-8" />}
+          {!ruler && <StretchBar scale={scale} best={pickStretch?.best ?? null} worst={pickStretch?.worst ?? null} {...(spots[f.rec.id] !== undefined ? { spot: spots[f.rec.id] } : {})} spotTone={tones[f.rec.id] ?? "fund"} className="h-8" />}
           {selected && movedHere("house")}
         </>
       ),
@@ -560,6 +564,7 @@ export function PairLists(props: ListsProps) {
         band={pickStretch ? { best: pickStretch.best, worst: pickStretch.worst } : null}
         point={point}
         spots={spots}
+        tones={tones}
         chosenStart={pick.house}
         chosenEnd={pick.fund}
         {...(above ? { above } : {})}

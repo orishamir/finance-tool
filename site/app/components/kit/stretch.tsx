@@ -1,9 +1,9 @@
 // Stretches on a money ruler (the index page's accounts and funds): an account is a stretch of the ruler, from what is left with its dearest
 // fund to what is left with its cheapest, and a fund is a spot inside the chosen account's stretch. `StretchBar` is a small copy of the
 // ruler beside a row, one scale for every row: the row's own stretch on it, and a spot where the row is a fund. `StretchChart` sets two
-// lists beside one ruler: the chosen start row opens onto its stretch, drawn as a band on the ruler, as a filled wedge; the band opens onto
-// the end list as a faint one, with one thin straight line from each end row's spot on the ruler to that row, the chosen row's solid; the
-// chosen pair is one point on the band, joined by a line straight up to the foot of what stands above (the receipt's total). Everything it
+// lists beside one ruler: the chosen start row opens onto its stretch, drawn as a band on the ruler, as a filled wedge in the start's colour;
+// the band opens onto the end list as a faint one in the end's colour, with one thin straight line from each end row's spot on the ruler to
+// that row, the chosen row's solid, each in its row's tone (a fund's, or a hedged fund's); the chosen pair is one point on the band, joined by a line straight up to the foot of what stands above (the receipt's total). Everything it
 // draws is placed from the rows' measured positions, again on every change and resize, so rows of any height join where they stand.
 import { useCallback, useLayoutEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { placeOn, ticksOf, type Scale } from "../../lib/stretch";
@@ -11,6 +11,12 @@ import { cx } from "./cx";
 
 /** A spot: one value, or a range drawn as a short segment (a fund whose difference runs over the dollar's range). */
 export type StretchSpot = number | readonly [number, number];
+/** A spot's colour: a fund's, or a fund hedged against the dollar's, as the site colours each kind. */
+export type StretchTone = "fund" | "hedged";
+const TONE: Record<StretchTone, { fill: string; stroke: string; ring: string; faint: string }> = {
+  fund: { fill: "fill-chart-by-fund", stroke: "stroke-chart-by-fund", ring: "bg-chart-by-fund", faint: "color-mix(in oklab, var(--chart-by-fund) 55%, var(--card))" },
+  hedged: { fill: "fill-chart-kind-hedged", stroke: "stroke-chart-kind-hedged", ring: "bg-chart-kind-hedged", faint: "color-mix(in oklab, var(--chart-kind-hedged) 55%, var(--card))" },
+};
 
 const pct = (x: number) => `${(x * 100).toFixed(3)}%`;
 
@@ -19,7 +25,7 @@ const pct = (x: number) => `${(x * 100).toFixed(3)}%`;
  * stretch from `worst` to `best` filled in the account's colour, and `spot` (a fund in that stretch) as a dot in the fund's colour. Decoration
  * beside the row's own figure, which says the amount: hidden from screen readers.
  */
-export function StretchBar({ scale, best, worst, spot, className }: { scale: Scale; best: number | null; worst: number | null; spot?: StretchSpot; className?: string }) {
+export function StretchBar({ scale, best, worst, spot, spotTone = "fund", className }: { scale: Scale; best: number | null; worst: number | null; spot?: StretchSpot; spotTone?: StretchTone; className?: string }) {
   // no stretch (an account that ranks no fund of the kind): the empty bar
   const top = best === null ? null : placeOn(scale, best);
   const bottom = worst === null ? null : placeOn(scale, worst);
@@ -29,7 +35,7 @@ export function StretchBar({ scale, best, worst, spot, className }: { scale: Sca
       {top !== null && bottom !== null && <span className="absolute inset-x-[1.5px] min-h-[2.5px] rounded-[2px] bg-chart-by-account" style={{ top: `min(${pct(top)}, calc(100% - 2.5px))`, height: pct(bottom - top) }} />}
       {spotAt && (
         <span
-          className="absolute left-1/2 min-h-[7px] w-[7px] -translate-x-1/2 -translate-y-[3.5px] rounded-full bg-chart-by-fund ring-[1.5px] ring-background"
+          className={cx("absolute left-1/2 min-h-[7px] w-[7px] -translate-x-1/2 -translate-y-[3.5px] rounded-full ring-[1.5px] ring-background", TONE[spotTone].ring)}
           style={{ top: pct(spotAt[0]!), height: `calc(${pct(spotAt[1]! - spotAt[0]!)} + 7px)` }}
         />
       )}
@@ -102,6 +108,8 @@ export interface StretchChartProps {
   point: number;
   /** Each end row's spot, by its key; a row with none has no line. */
   spots: Record<string, StretchSpot>;
+  /** Each end row's tone, by its key; a row with none is a fund's. */
+  tones?: Readonly<Record<string, StretchTone>>;
   chosenStart: string;
   chosenEnd: string;
   /** What stands above the chart (the receipt), whose foot the point's line reaches, over its middle. */
@@ -186,7 +194,7 @@ export function StretchChart(p: StretchChartProps) {
   );
 }
 
-function Drawing({ geo, scale, band, point, spots, chosenStart, chosenEnd, tick }: StretchChartProps & { geo: Geo }) {
+function Drawing({ geo, scale, band, point, spots, tones, chosenStart, chosenEnd, tick }: StretchChartProps & { geo: Geo }) {
   const { ruler: R } = geo;
   const y0 = R.t + END;
   const y1 = R.b - END;
@@ -210,7 +218,7 @@ function Drawing({ geo, scale, band, point, spots, chosenStart, chosenEnd, tick 
       <rect x={R.l} y={R.t} width={R.r - R.l} height={R.b - R.t} rx={12} className="fill-card stroke-border" />
       {/* the chosen start row opens onto its stretch, and the stretch opens onto the end list */}
       {chosen && yBest !== null && yWorst !== null && <path d={`M${chosen.edge} ${chosen.top}L${startX} ${yBest}V${yWorst}L${chosen.edge} ${chosen.bottom}Z`} className="fill-chart-by-account" fillOpacity={0.2} />}
-      {first !== null && last !== null && endEdge !== null && yBest !== null && yWorst !== null && <path d={`M${endX} ${yBest}L${endEdge} ${first}V${last}L${endX} ${yWorst}Z`} className="fill-chart-by-account" fillOpacity={0.07} />}
+      {first !== null && last !== null && endEdge !== null && yBest !== null && yWorst !== null && <path d={`M${endX} ${yBest}L${endEdge} ${first}V${last}L${endX} ${yWorst}Z`} className="fill-chart-by-fund" fillOpacity={0.07} />}
       {yBest !== null && yWorst !== null && <rect x={R.l + 1} y={yBest} width={R.r - R.l - 2} height={Math.max(yWorst - yBest, 2 * BAND_PAD)} rx={BAND_PAD} className="fill-chart-by-account" fillOpacity={0.3} />}
       {ticks.map((v) => (
         <g key={v}>
@@ -220,25 +228,25 @@ function Drawing({ geo, scale, band, point, spots, chosenStart, chosenEnd, tick 
           </text>
         </g>
       ))}
-      {/* one straight line from each end row's spot on the ruler to the row; the chosen one solid */}
+      {/* one straight line from each end row's spot on the ruler to the row, in the row's tone; the chosen one solid. A spot that is a range
+          (a fund of the other kind, over the dollar's range) is joined at its middle: its row says the range in words */}
       {ends.map(([k, r]) => {
         const s = spots[k]!;
         const on = k === chosenEnd;
-        const [a, b] = typeof s === "number" ? [y(s), y(s)] : [y(Math.max(...s)), y(Math.min(...s))];
-        const mid = (a + b) / 2;
+        const mid = typeof s === "number" ? y(s) : (y(Math.max(...s)) + y(Math.min(...s))) / 2;
+        const t = TONE[tones?.[k] ?? "fund"];
         return (
           <g key={k}>
             {/* a faint line is a solid mix, not a see-through one: it reads as one colour over the wedge and over the card */}
-            <path d={`M${endX} ${mid}L${r.dot} ${(r.top + r.bottom) / 2}`} className="stroke-chart-by-fund" style={on ? undefined : { stroke: "color-mix(in oklab, var(--chart-by-fund) 55%, var(--card))" }} strokeWidth={on ? 2.5 : 1} fill="none" />
-            {b - a > 1 && <path d={`M${endX} ${a}V${b}`} className="stroke-chart-by-fund" strokeWidth={3} strokeLinecap="round" data-mark="line" />}
-            {!on && <circle cx={endX} cy={mid} r={3} className="fill-background stroke-chart-by-fund" strokeWidth={1.25} data-mark="point" />}
+            <path d={`M${endX} ${mid}L${r.dot} ${(r.top + r.bottom) / 2}`} className={t.stroke} style={on ? undefined : { stroke: t.faint }} strokeWidth={on ? 2.5 : 1} fill="none" />
+            {!on && <circle cx={endX} cy={mid} r={3} className={cx("fill-background", t.stroke)} strokeWidth={1.25} data-mark="point" />}
           </g>
         );
       })}
       {/* the pair in the receipt: one point on the ruler, inside the stretch, joined straight up to the foot of what stands above */}
       <path d={`M${cx0} ${geo.above ?? R.t}V${yPoint}`} className="stroke-primary" strokeWidth={3} />
       <path d={`M${endX} ${yPoint}H${cx0}`} className="stroke-primary" strokeWidth={3} />
-      <circle cx={endX} cy={yPoint} r={6} className="fill-chart-by-fund" data-mark="point" />
+      <circle cx={endX} cy={yPoint} r={6} className={TONE[tones?.[chosenEnd] ?? "fund"].fill} data-mark="point" />
       <circle cx={cx0} cy={yPoint} r={7} className="fill-primary" data-mark="point" />
     </svg>
   );
