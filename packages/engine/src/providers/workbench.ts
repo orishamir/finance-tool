@@ -1058,6 +1058,22 @@ function planOf(input: WorkbenchInput, runFund: Fund) {
 }
 
 /**
+ * F-63: the open rule that keeps a provider's runs out of the comparison, or null where both may be compared. A run its ledger listed on
+ * an open rule at its exit (a rule of strength open, a question whose readings split it, TXG OQ17 at a falling CPI, or a method gap, G-38)
+ * has no value after tax to compare, with or without the fees: its exit tax was never charged (F-118, not built). A compared row is
+ * ranked, so a run listed, not ranked, for any other reason (a wrapper locked at the horizon, B3) has no place in it yet: comparing it would
+ * rank it in silence, so it throws.
+ */
+export function stoppedBeforeComparing(runs: readonly Pick<RunResult, "outcome">[]): { ruleId: string; question?: string; gap?: string } | null {
+  for (const r of runs) {
+    const stopped = stoppedOnRule(r);
+    if (stopped) return stopped;
+  }
+  for (const r of runs) if (r.outcome.code !== "eligible") throw new Error(`F-63: a run listed, not ranked, on ${r.outcome.reason} would be compared`);
+  return null;
+}
+
+/**
  * F-63 Provider workbench. For each provider `p` with tariff `F_p` at its chosen level (list, regulator or TASE
  * average, entered; D4): `cost_p(horizon) = V_T^real(∅) − V_T^real(F_p)` and `cost_p(year 1) = V_12(∅) − V_12(F_p)`
  * nominal, where `∅` is the same run with no provider fees (the fund's own costs and the spread stay, Q16). The
@@ -1088,16 +1104,11 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       const other = runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx);
       if (other.real > run.real) [units, run] = [w, other];
     }
-    // a run its ledger listed on an open rule at its exit (a rule of strength open, a question whose readings split it, TXG OQ17 at a falling
-    // CPI, or a method gap, G-38) has no value after tax to compare, with or without the fees: its exit tax was never charged (F-118, not built)
-    const stopped = stoppedOnRule(noneT) ?? stoppedOnRule(run);
+    const stopped = stoppedBeforeComparing([noneT, run]);
     if (stopped) {
       rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });
       continue;
     }
-    // a compared row is ranked, so both its runs may enter a ranking: a run listed, not ranked, on anything but an open rule (a wrapper
-    // locked at the horizon, B3) has no place in the workbench yet, and comparing it would rank it in silence
-    for (const r of [noneT, run]) if (r.outcome.code !== "eligible") throw new Error(`providerWorkbench: ${base.id} would be compared on a run listed, not ranked, on ${r.outcome.reason}`);
     const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind, units, deal) } as const;
     const run12 = runSecurities(plan(built.tariff, 12, memberKind, units, deal), ctx);
     const total = noneT.real - run.real;
