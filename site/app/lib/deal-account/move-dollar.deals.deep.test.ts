@@ -26,17 +26,19 @@ function statedDollarGap(a: CustomBroker, r: Row, p: WorkbenchInputs, fxChange: 
   const before = pairRow({ ...args, providerId: a.id });
   const after = pairRow({ ...args, providerId: dealProviderId(movedDealId(a.id)) });
   if (!before || !after) return "a side has no run";
+  // each comparison is written so that a NaN fails it (`!(x <= bound)`)
+  if (before.run.series.length !== after.run.series.length) return "the two runs have different months";
   const months = before.run.series.map((x, m) => Math.abs(x.fees - (after.run.series[m]?.fees ?? Number.NaN)));
-  if (Math.max(...months) > 1e-6) return "a month before the exit charged differently";
-  const lines = Object.keys(before.run.fees).filter((k) => k !== "trade" && k !== "fx" && Math.abs(before.run.fees[k as keyof typeof before.run.fees] - after.run.fees[k as keyof typeof after.run.fees]) > 0.01);
+  if (!months.every((d) => d <= 1e-6)) return "a month before the exit charged differently";
+  const lines = Object.keys(before.run.fees).filter((k) => k !== "trade" && k !== "fx" && !(Math.abs(before.run.fees[k as keyof typeof before.run.fees] - after.run.fees[k as keyof typeof after.run.fees]) <= 0.01));
   if (lines.length) return `lines other than the trade fee differ: ${lines.join(", ")}`;
   const trade = before.run.fees.trade - after.run.fees.trade;
   const fx = before.run.fees.fx - after.run.fees.fx;
   const exitIndex = before.run.series.at(-1)?.index ?? Number.NaN;
   // the sale's proceeds are converted after its commission, so the conversion moves the other way by the commission's gap at the rate the
   // account converts at (a price list's line or a deal's, some houses' rate outside `tariff.fx`): at most 1% of it on every list
-  if (trade <= 0 || fx > 1e-6 || -fx > 0.01 * trade) return `the trade fee's gap is ${trade}, the conversion's ${fx}`;
-  if (Math.abs(after.run.real - before.run.real - (trade + fx) / exitIndex) > 0.01 || Math.abs(after.run.taxAtExit - before.run.taxAtExit) > 1e-6) return `the gap is not the exit's fees alone: ${after.run.real - before.run.real} against ${(trade + fx) / exitIndex}, tax ${before.run.taxAtExit} ${after.run.taxAtExit}`;
+  if (!(trade > 0 && fx <= 1e-6 && -fx <= 0.01 * trade)) return `the trade fee's gap is ${trade}, the conversion's ${fx}`;
+  if (!(Math.abs(after.run.real - before.run.real - (trade + fx) / exitIndex) <= 0.01 && Math.abs(after.run.taxAtExit - before.run.taxAtExit) <= 1e-6)) return `the gap is not the exit's fees alone: ${after.run.real - before.run.real} against ${(trade + fx) / exitIndex}, tax ${before.run.taxAtExit} ${after.run.taxAtExit}`;
   const sell = before.tariff.sell;
   const start = before.tariff.currency?.startRate;
   const perShare = sell?.perShare;
