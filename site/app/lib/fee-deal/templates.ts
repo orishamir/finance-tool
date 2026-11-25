@@ -227,7 +227,8 @@ function fixedSum(l: Line): { sum: ValueObject & { value: number }; currency: Bo
 
 /**
  * A distribution fee: a share of what is held, charged on a mutual fund's units by the fund's type (BRK-16 part 4(ב)(2), MF-24, MF-71), which
- * the records keep under the base `distribution_handling` beside the fee on each payment of interest or a dividend.
+ * the records keep under the base `distribution_handling` beside the fee on each payment of interest or a dividend. Told apart by its unit,
+ * a share of what is held each period, as a stand-in until the records give the distribution fee a base of its own.
  */
 const isDistributionShare = (l: Line): boolean => l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period";
 
