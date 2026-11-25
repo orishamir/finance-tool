@@ -613,15 +613,15 @@ export interface GripAction {
 /**
  * What lifts a thing (`from`, an element marked `data-liftable`) as `item`, `name` its words: on touch a long press anywhere on it (on
  * what is inside it that lifts itself, that alone; where it is marked `data-lift-body`, not on a button, a link or a choice inside it); with a mouse, where it is marked `data-lift-body`, a press on its own surface moved a
- * few pixels (`bodyPress`). `alone`: it lifts nothing. A grip calls it on the thing around it; a thing with no grip (a fee's card) on itself.
+ * few pixels (`bodyPress`). `fixed`: it lifts nothing. A grip calls it on the thing around it; a thing with no grip (a fee's card) on itself.
  */
-export function useLiftFrom(fromOf: () => HTMLElement | null, item: string, name: string | undefined, alone = false): void {
-  // read-only (`ReadOnly`): nothing is lifted
-  const still = useReadOnly() || alone;
+export function useLiftFrom(fromOf: () => HTMLElement | null, item: string, name: string | undefined, fixed = false): void {
+  // read-only (`ReadOnly`) nothing is lifted either
+  const lifts = !useReadOnly() && !fixed;
   const resolve = useEffectEvent(fromOf);
   useEffect(() => {
     const from = resolve();
-    if (!from || still) return;
+    if (!from || !lifts) return;
     const body = from.hasAttribute("data-lift-body");
     if (body) from.setAttribute("data-lift-grab", "");
     let hold: { x: number; y: number; id: number; timer: number } | null = null;
@@ -666,14 +666,14 @@ export function useLiftFrom(fromOf: () => HTMLElement | null, item: string, name
       from.removeEventListener("pointerup", stop);
       from.removeEventListener("pointercancel", stop);
     };
-  }, [item, name, still]);
+  }, [item, name, lifts]);
 }
 
 /**
  * A grip (⋮⋮): pressed and moved (on a phone, a long press anywhere on what it lifts; with a mouse, a press on the surface of a thing
  * marked `data-lift-body`, moved, which shows the grab hand by `data-lift-grab`), it lifts the nearest element marked `data-liftable`
  * around it as `item`, `name` the thing's words (the bin says them); tapped or pressed with Enter, it opens its menu (`actions`), where there
- * is one. `still`: it lifts nothing (nothing would take the thing), its menu alone. `label` is its spoken name. Delete takes the thing
+ * is one. `fixed`: it lifts nothing (nothing would take the thing), its menu alone. `label` is its spoken name. Delete takes the thing
  * away where the menu can (`onRemove`). It takes no room: it stands over the start of the element around it (`inside`), or just before
  * it, over the room between it and its neighbour (`outside`, a table's cell, a fee's name). It is drawn while what it lifts
  * is under a fine pointer or has the focus; on touch only inside the open fee, where what it stands over makes room for it.
@@ -682,9 +682,9 @@ export function Grip(props: GripProps) {
   return useReadOnly() ? null : <LiveGrip {...props} />;
 }
 
-type GripProps = { item: string; name?: string; label: string; actions?: GripAction[]; onRemove?: () => void; still?: boolean; place?: "inside" | "outside"; className?: string };
+type GripProps = { item: string; name?: string; label: string; actions?: GripAction[]; onRemove?: () => void; fixed?: boolean; place?: "inside" | "outside"; className?: string };
 
-function LiveGrip({ item, name, label, actions = [], onRemove, still, place = "inside", className }: GripProps) {
+function LiveGrip({ item, name, label, actions = [], onRemove, fixed, place = "inside", className }: GripProps) {
   const press = useRef<{ x: number; y: number; id: number; timer: number; touch: boolean } | null>(null);
   const lifted = useRef(false);
   const btn = useRef<HTMLButtonElement>(null);
@@ -696,7 +696,7 @@ function LiveGrip({ item, name, label, actions = [], onRemove, still, place = "i
   const start = (x: number, y: number) => {
     const from = btn.current?.closest<HTMLElement>("[data-liftable]");
     clear();
-    if (!from || still) return;
+    if (!from || fixed) return;
     lifted.current = true;
     setMenu(false);
     lift(item, from, x, y, { ...(name ? { name } : {}) });
@@ -708,7 +708,7 @@ function LiveGrip({ item, name, label, actions = [], onRemove, still, place = "i
     // the moves that follow come here even once the pointer leaves the grip, so a quick drag still lifts
     e.currentTarget.setPointerCapture(e.pointerId);
     const x = e.clientX, y = e.clientY;
-    press.current = { x, y, id: e.pointerId, touch, timer: touch && !still ? window.setTimeout(() => start(x, y), HOLD_MS) : 0 };
+    press.current = { x, y, id: e.pointerId, touch, timer: touch && !fixed ? window.setTimeout(() => start(x, y), HOLD_MS) : 0 };
   };
   const onPointerMove = (e: ReactPointerEvent<HTMLButtonElement>) => {
     const p = press.current;
@@ -718,7 +718,7 @@ function LiveGrip({ item, name, label, actions = [], onRemove, still, place = "i
       if (far > TOUCH_SLOP) clear();
     } else if (far > MOUSE_SLOP) start(e.clientX, e.clientY);
   };
-  useLiftFrom(() => btn.current?.closest<HTMLElement>("[data-liftable]") ?? null, item, name, still);
+  useLiftFrom(() => btn.current?.closest<HTMLElement>("[data-liftable]") ?? null, item, name, fixed);
   const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
     if ((e.key === "Delete" || e.key === "Backspace") && onRemove) {
       e.preventDefault();
@@ -747,7 +747,7 @@ function LiveGrip({ item, name, label, actions = [], onRemove, still, place = "i
           if (actions.length) setMenu((m) => !m);
         }}
         onKeyDown={onKeyDown}
-        className={cx("tap-wide inline-flex h-7 w-5 shrink-0 touch-none select-none items-center justify-center rounded border border-border bg-popover text-muted-foreground shadow-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring", still ? "cursor-pointer" : "cursor-grab active:cursor-grabbing")}
+        className={cx("tap-wide inline-flex h-7 w-5 shrink-0 touch-none select-none items-center justify-center rounded border border-border bg-popover text-muted-foreground shadow-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring", fixed ? "cursor-pointer" : "cursor-grab active:cursor-grabbing")}
       >
         <GripVertical size={14} strokeWidth={1.75} aria-hidden />
       </button>

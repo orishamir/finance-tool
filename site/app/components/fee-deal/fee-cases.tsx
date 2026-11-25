@@ -425,11 +425,11 @@ export function FeeCases({
   const removeAction = (l: Lifted): GripAction[] => (lift.binTakes(l) ? [{ label: lw.menu.remove, danger: true, onPick: () => lift.onBin(l) }] : []);
   /**
    * A grip that lifts `l`: its spoken name, its menu's other actions, the thing's own words (the bin says them), where it stands
-   * (`outside`: just before a table's cell), and `still` where nothing would take the thing (its menu alone).
+   * (`outside`: just before a table's cell), and `fixed` where nothing would take the thing (its menu alone).
    */
-  const grip = (l: Lifted, spoken: string, more: GripAction[] = [], o: { name?: string; place?: "inside" | "outside"; still?: boolean } = {}) => {
+  const grip = (l: Lifted, spoken: string, more: GripAction[] = [], o: { name?: string; place?: "inside" | "outside"; fixed?: boolean } = {}) => {
     const actions = [...more, ...removeAction(l)];
-    return <Grip item={liftId(l)} label={spoken} actions={actions} {...(o.name ? { name: o.name } : {})} {...(o.place ? { place: o.place } : {})} {...(o.still ? { still: true } : {})} {...(lift.binTakes(l) ? { onRemove: () => lift.onBin(l) } : {})} />;
+    return <Grip item={liftId(l)} label={spoken} actions={actions} {...(o.name ? { name: o.name } : {})} {...(o.place ? { place: o.place } : {})} {...(o.fixed ? { fixed: true } : {})} {...(lift.binTakes(l) ? { onRemove: () => lift.onBin(l) } : {})} />;
   };
   /** The sortable lists of this fee's places: a table's columns, a grid's rows and columns, the cases read as rows. */
   const list = (name: string, axis: "x" | "y") => ({ list: `${name}:${fee.id}`, axis });
@@ -482,7 +482,7 @@ export function FeeCases({
     const words = headName(h, t);
     // a head's grip stands inside it: a head's words fill its column, and nothing of it may pass the column's edge (layout-check's `head`)
     const place = "inside" as const;
-    if (l.k === "step") return grip(l, `${lw.grip.step}${words}`, more, { name: stepWords(words), place, still: !lift.binTakes(l) });
+    if (l.k === "step") return grip(l, `${lw.grip.step}${words}`, more, { name: stepWords(words), place, fixed: !lift.binTakes(l) });
     return grip(l, `${t === 0 ? lw.grip.row : lw.grip.column}${words}`, [...valueActions(t, h.key, words, heads.map((x) => x.key), t === 0), ...more], { name: (t === 0 ? lw.name.row : lw.name.column).replace("{name}", words), place });
   };
   const stepWords = (words: string) => lw.name.step.replace("{name}", words);
@@ -751,16 +751,16 @@ export function FeeCases({
   const openRow = openCase && open.view ? byCase.get(openCase) : undefined;
 
   /**
-   * A case as a band row: its grip (`still` where nothing would take it), its words (`when`), the parts it still shows, its standing; open,
+   * A case as a band row: its grip (`fixed` where nothing would take it), its words (`when`), the parts it still shows, its standing; open,
    * in place. `sort`: the rows are a sortable list (a list thing's cases), so a row carried among them lands where the pointer stands.
    */
-  const bandRow = (r: CaseRowView, when: CaseWord[], l: Lifted, spoken: string, o: { more?: GripAction[]; also?: LiftTarget[]; name?: string; still?: boolean; sort?: SortOf } = {}) =>
+  const bandRow = (r: CaseRowView, when: CaseWord[], l: Lifted, spoken: string, o: { more?: GripAction[]; also?: LiftTarget[]; name?: string; fixed?: boolean; sort?: SortOf } = {}) =>
     r.case === openCase && open.view
       ? openView(r)
       : zone(
           [...(o.also ?? []), caseTarget(r.case)],
           r.case,
-          <CaseRow when={when} label={label(r)} onOpen={openIt(r.case)} open={shownOpen([r.case], null)} mark={caseMark?.(r.case)} {...missingSaid(shownParts(r.case))} grip={grip(l, spoken, o.more ?? [], { ...(o.name ? { name: o.name } : {}), ...(o.still ? { still: true } : {}) })}>
+          <CaseRow when={when} label={label(r)} onOpen={openIt(r.case)} open={shownOpen([r.case], null)} mark={caseMark?.(r.case)} {...missingSaid(shownParts(r.case))} grip={grip(l, spoken, o.more ?? [], { ...(o.name ? { name: o.name } : {}), ...(o.fixed ? { fixed: true } : {}) })}>
             {here(
               [r.case],
               shownParts(r.case).map((p) => <RestPart key={`${p.stage ?? 0}:${p.id}`} part={p} />),
@@ -865,9 +865,9 @@ export function FeeCases({
           const l = colLifted(col, words);
           const moves = listThing && n > 1;
           const more = [...(listThing ? caseActions(k, layout.columns, words, t) : []), ...(inserts ? insertActions(t, k, heads) : [])];
-          const still = !!l && !moves && !lift.binTakes(l);
-          const spoken = layout.ladder ? `${lw.grip.step}${words}` : still ? `${lw.grip.colOnly}${words}` : `${lw.grip.col}${words}`;
-          const cg = l ? grip(l, spoken, more, { name: layout.ladder ? stepWords(words) : (col.case ? lw.name.case : lw.name.column).replace("{name}", words), still }) : null;
+          const fixed = !!l && !moves && !lift.binTakes(l);
+          const spoken = layout.ladder ? `${lw.grip.step}${words}` : fixed ? `${lw.grip.colOnly}${words}` : `${lw.grip.col}${words}`;
+          const cg = l ? grip(l, spoken, more, { name: layout.ladder ? stepWords(words) : (col.case ? lw.name.case : lw.name.column).replace("{name}", words), fixed }) : null;
           const valueTarget: LiftTarget = { k: "value", fee: fee.id, t, key: valueKey(col.when) };
           if (!col.case)
             return {
@@ -1187,14 +1187,14 @@ export function FeeCases({
           const step = ladder && typeof w === "number" ? w : null;
           const l: Lifted = step !== null ? { k: "step", fee: fee.id, t, step, name: words } : { k: "col", fee: fee.id, case: id };
           const moves = listThing && columns.length > 1;
-          const still = !moves && !lift.binTakes(l);
-          const spoken = step !== null ? `${lw.grip.step}${words}` : still ? `${lw.grip.colOnly}${words}` : `${lw.grip.col}${words}`;
+          const fixed = !moves && !lift.binTakes(l);
+          const spoken = step !== null ? `${lw.grip.step}${words}` : fixed ? `${lw.grip.colOnly}${words}` : `${lw.grip.col}${words}`;
           return (
             <div key={id}>
               {bandRow(r, caseWords(r.when, r.mine, band.things, r.bounds), l, spoken, {
                 ...(listThing ? { more: caseActions(k, columns, words, t), also: [{ k: "col", fee: fee.id, case: id }], sort: list("caserows", "y") } : {}),
                 name: step !== null ? stepWords(words) : lw.name.case.replace("{name}", words),
-                still,
+                fixed,
               })}
             </div>
           );

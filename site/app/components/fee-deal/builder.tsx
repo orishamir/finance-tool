@@ -370,7 +370,7 @@ export function FeesColumn({
   const shownIds = shown.flatMap((it) => (it === "line" ? [] : [it.fee.id]));
   // a fee's card moves within its group: lifted by a press on its own card onto another card of the group (`FeeItem`); alone in its group
   // it lifts nothing
-  const feeLift = (fee: Fee, group: string, count: number): FeeLift => ({ item: liftId({ k: "fee", fee: fee.id, group }), name: feeName(fee.kind, fee.name, rows.get(fee.id)?.house), still: count < 2 });
+  const feeLift = (fee: Fee, group: string, count: number): FeeLift => ({ item: liftId({ k: "fee", fee: fee.id, group }), name: feeName(fee.kind, fee.name, rows.get(fee.id)?.house), fixed: count < 2 });
   /** A fee's actions after its name: its duplicate, where the page duplicates it, and its bin, which takes it away with the undo line. */
   const tools = (fee: Fee) => {
     const dup = onDuplicate?.(fee) ?? null;
@@ -497,18 +497,18 @@ function RefusalLine({ refusal }: { refusal: Refusal }) {
   );
 }
 
-/** How a fee's card is lifted from its own surface (`useLiftFrom`): what it carries, the name the bin says, and `still`, alone in its group. */
+/** How a fee's card is lifted from its own surface (`useLiftFrom`): what it carries, the name the bin says, and `fixed`, alone in its group. */
 interface FeeLift {
   item: string;
   name: string;
-  still: boolean;
+  fixed: boolean;
 }
 
 /** One fee among the column's: under the pointer or the focus it marks its fee in the summary; a press on its card moved lifts it (`lift`). */
 function FeeItem({ id, lift, children }: { id: string; lift: FeeLift; children: ReactNode }) {
   const { handlers } = useFeeMark(id);
   const li = useRef<HTMLLIElement>(null);
-  useLiftFrom(() => li.current, lift.item, lift.name, lift.still);
+  useLiftFrom(() => li.current, lift.item, lift.name, lift.fixed);
   return (
     <li ref={li} data-fee={id} data-figures="" data-liftable="" data-lift-body="" className="come-in" {...handlers}>
       {children}
