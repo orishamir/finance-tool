@@ -1,0 +1,180 @@
+{
+  "id": "us-ivv",
+  "names": {
+    "en": [
+      "iShares Core S&P 500 ETF"
+    ],
+    "he": [],
+    "tase": []
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": null,
+    "cusip": "464287200",
+    "ticker": {
+      "NYSE Arca": "IVV"
+    }
+  },
+  "manager": "BlackRock (iShares)",
+  "domicile": "US",
+  "legal_form": "US-listed ETF; launch 05/15/2000; distribution frequency quarterly; benchmark 'S&P 500 Index (USD)'. Replication and ISIN are not printed on this fact sheet. Legal form: a series of iShares Trust, a Delaware statutory trust; the fund intends to qualify as a separate regulated investment company. Source: iShares Core S&P 500 ETF statement of additional information dated 31.7.2026, https://www.blackrock.com/us/individual/literature/sai/sai-ishares-core-s-and-p-500-etf-3-31.pdf, PDF p.4 'The Trust was organized as a Delaware statutory trust on December 16, 1999 and is authorized to have multiple series or portfolios', PDF p.71 'The Fund intends to qualify for treatment as a separate RIC'. Checked 2026-11-12.",
+  "exposure_id": "index-sp500",
+  "currency": "USD",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "distributing",
+  "tax_status": {
+    "il_fund_tax_track": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.03,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf#page=1",
+        "title": "iShares Core S&P 500 ETF (IVV), fact sheet as of June 30, 2026, p. 1: 'Expense Ratio 0.03%' (library d3b9d8ac355f1dcf)",
+        "publisher": "BlackRock (iShares)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXF-12",
+        "TXF-27",
+        "TXF-29"
+      ],
+      "state": "sourced",
+      "notes": "The link served the June edition on 2026-10-31, one quarter older than the ACWI fact sheet from the same site. A US-domiciled fund: rules TXF-12 and TXF-27 apply to the holder; ETF-23 and ETF-29 frame how it may be offered in Israel. Under US law it is a series of a Delaware statutory trust (legal_form, TXF-37); how Israeli tax classifies such a fund stays open (tax open question 19). The prospectus was not opened."
+    },
+    "trustee": null,
+    "variable_management": null,
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+        "title": "iShares Core S&P 500 ETF, IVV, Fact Sheet as of June 30, 2026, p. 1 'Calendar year performance (%)'",
+        "publisher": "BlackRock (iShares Trust)",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-08",
+        "ETF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. The Fact Sheet as of June 30, 2026 prints the fund's return and its benchmark's for each calendar year 2021 to 2025 on p. 1; they are in tracking_record. Fund basis: the 'NAV' row (the sheet also prints a 'Market Price' row, not copied), in US dollars. Benchmark as the document names it: 'S&P 500 Index (USD)'. A total return on the S&P 500 with no word on withholding; set it apart from the Irish funds, whose MSCI benchmarks say (Net). The difference is not computed here (data-update rule)."
+    },
+    "median_spread": null,
+    "fund_level_withholding_drag": null
+  },
+  "dimensions": {
+    "foreign-withholding-domicile": "covered:TXF-12",
+    "distribution-policy": "covered:ETF-28",
+    "currency": "covered:ETF-28",
+    "fee-management-balance": "covered:ETF-28"
+  },
+  "prospectus": {
+    "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+    "date": null
+  },
+  "distribution": {
+    "yield": {
+      "value": 1.11,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf",
+        "title": "iShares Core S&P 500 ETF (IVV), product page: '12m Trailing Yield as of Oct 31, 2026 1.11%' (library e74d162fae3aa589)",
+        "publisher": "BlackRock (iShares)",
+        "strength": "institution"
+      },
+      "checked": "2026-11-25",
+      "effective_from": "2026-10-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-28",
+        "ETF-30",
+        "TXF-08",
+        "TXF-12"
+      ],
+      "state": "sourced",
+      "notes": "A 12-month trailing yield, the kind the Irish distributing records hold. The page's own definition: 'The yield an investor would have received if they had held the fund over the last twelve months assuming the most recent NAV. The 12-Month yield is calculated by assuming any income distributions over the past twelve months and dividing by the sum of the most recent NAV and any capital gain distributions made over the past twelve months.' The page's distribution table lists income of 2.202607, 1.995653, 1.783517 and 2.413592 USD a share (ex-dates Sep 15, 2026, Jun 15, 2026, Mar 17, 2026, Dec 16, 2025). The same page prints '30 Day SEC Yield as of Oct 31, 2026 0.96%', and the fact sheet (as of June 30, 2026, library f39d95418be9ba30, p. 1) only '30 Day SEC Yield : 0.98%'. Payments a year: 'Distribution Frequency Quarterly' on the same page. The distribution is taxed on the site's reading that it is a dividend (product D85, TXF open question 19)."
+    },
+    "per_year": 4
+  },
+  "share_price": {
+    "value": 756.04,
+    "unit": "usd",
+    "source": {
+      "url": "https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf",
+      "title": "iShares Core S&P 500 ETF, IVV, product page: 'NAV as of Nov 09, 2026', USD 756.04",
+      "publisher": "BlackRock (iShares)",
+      "strength": "institution"
+    },
+    "checked": "2026-11-10",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [],
+    "state": "sourced",
+    "notes": "F-109: the issuer's net asset value per share, the price a whole unit is bought at in the run (grown there like the fund). A market price differs slightly from the NAV and was not collected."
+  },
+  "snapshot": "2026-11-25",
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2021,
+        "fund_pct": 28.66,
+        "tracking_pct": 28.71
+      },
+      {
+        "year": 2022,
+        "fund_pct": -18.13,
+        "tracking_pct": -18.11
+      },
+      {
+        "year": 2023,
+        "fund_pct": 26.27,
+        "tracking_pct": 26.29
+      },
+      {
+        "year": 2024,
+        "fund_pct": 24.98,
+        "tracking_pct": 25.02
+      },
+      {
+        "year": 2025,
+        "fund_pct": 17.85,
+        "tracking_pct": 17.88
+      }
+    ],
+    "years_printed": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "source": {
+      "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+      "title": "iShares Core S&P 500 ETF, IVV, Fact Sheet as of June 30, 2026, p. 1 'Calendar year performance (%)'",
+      "publisher": "BlackRock (iShares Trust)",
+      "strength": "institution"
+    },
+    "page": 1,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "S&P 500 Index (USD)",
+      "dividends": "unstated"
+    }
+  }
+}

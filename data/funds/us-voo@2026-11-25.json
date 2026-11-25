@@ -1,0 +1,247 @@
+{
+  "id": "us-voo",
+  "names": {
+    "en": [
+      "Vanguard S&P 500 ETF"
+    ],
+    "he": [],
+    "tase": []
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": null,
+    "cusip": "922908363",
+    "ticker": {
+      "NYSE Arca": "VOO"
+    }
+  },
+  "manager": "Vanguard",
+  "domicile": "US",
+  "legal_form": "US-listed ETF; 'passively managed, full-replication strategy'; inception 2010-09-07; dividend schedule quarterly; benchmark 'S&P 500 Index'. The ISIN is not printed on this fact sheet. Legal form: an exchange-traded share class of Vanguard 500 Index Fund, a series of Vanguard Index Funds, a Delaware statutory trust. Source: Vanguard prospectus of 28.4.2026, https://fund-docs.vanguard.com/p968.pdf, PDF p.3 'an exchange-traded share class of Vanguard 500' and PDF p.9 'The Fund is a series of Vanguard Index Funds (the \"Trust\")'; the trust's form from Vanguard Index Funds' statement of additional information of 28.4.2014, https://www.sec.gov/Archives/edgar/data/0000036405/000093247114006076/indexfundssai040072014bl.htm, 'reorganized as a Delaware statutory trust in 1998' (an older edition, read through a fetch tool and not re-checked: sec.gov refuses a script, so it is not in the library; the current edition was not read). Checked 2026-11-12.",
+  "exposure_id": "index-sp500",
+  "currency": "USD",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "distributing",
+  "tax_status": {
+    "il_fund_tax_track": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.03,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://fund-docs.vanguard.com/F0968.pdf#page=1",
+        "title": "Vanguard S&P 500 ETF (VOO), fact sheet as of September 30, 2026, p. 1: 'Expense ratio 0.03%' (library e96f5ad4c4aee46c)",
+        "publisher": "Vanguard",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXF-12",
+        "TXF-27",
+        "TXF-29"
+      ],
+      "state": "sourced",
+      "notes": "Expense ratio 'as reported in the most recent prospectus'. A US-domiciled fund: rules TXF-12 and TXF-27 apply to the holder; ETF-23 and ETF-29 frame how it may be offered in Israel. Under US law it is a series of a Delaware statutory trust (legal_form, TXF-37); how Israeli tax classifies such a fund stays open (tax open question 19). The prospectus (p968.pdf) was read for the legal form only."
+    },
+    "trustee": null,
+    "variable_management": null,
+    "tracking_difference_12m": {
+      "value": null,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://investor.vanguard.com/investment-products/etfs/profile/voo#performance-fees",
+        "title": "Vanguard S&P 500 ETF (VOO), fund profile, 'Performance & Fees', 'Total returns', 'Annually' (as of 10/31/2026)",
+        "publisher": "Vanguard",
+        "strength": "institution"
+      },
+      "checked": "2026-11-07",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-08",
+        "ETF-09"
+      ],
+      "state": "sourced",
+      "notes": "Not printed as one number. Vanguard's profile page prints the fund's total return by NAV, by market price and its benchmark's for each calendar year 2011 to 2025; they are in tracking_record. Fund basis: 'Total return by NAV' (the market-price column is not copied), in US dollars. Benchmark as the page names it: 'S&P 500 Index'. A total return on the S&P 500 with no word on withholding, like IVV. The page is a web page drawn by script, not a binding document; it was read from the rendered page by the lead, not from a file. The difference is not computed here (data-update rule)."
+    },
+    "median_spread": null,
+    "fund_level_withholding_drag": null
+  },
+  "dimensions": {
+    "foreign-withholding-domicile": "covered:TXF-12",
+    "distribution-policy": "covered:ETF-28",
+    "currency": "covered:ETF-28",
+    "fee-management-balance": "covered:ETF-28"
+  },
+  "prospectus": {
+    "url": "https://fund-docs.vanguard.com/F0968.pdf",
+    "date": null
+  },
+  "distribution": {
+    "yield": {
+      "value": 1.02,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://advisors.vanguard.com/investments/products/voo/vanguard-sp-500-etf",
+        "title": "Vanguard S&P 500 ETF (VOO), product page, 'Fund metrics': '30 day SEC yield as of 10/31/2026 1.02%' (library 665afd765684f1a4)",
+        "publisher": "Vanguard",
+        "strength": "institution"
+      },
+      "checked": "2026-11-25",
+      "effective_from": "2026-10-31",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-28",
+        "TXF-08",
+        "TXF-12"
+      ],
+      "state": "sourced",
+      "notes": "A 30-day SEC yield, not a 12-month trailing distribution yield: Vanguard prints no trailing yield of the fund's own distributions for VOO, on its fact sheet (F0968, as of September 30, 2026: no yield at all; library e96f5ad4c4aee46c) or on either profile page. The page's definition: 'A non-money-market fund's SEC yield is based on a formula mandated by the Securities and Exchange Commission (SEC) that calculates a fund's hypothetical annualized income as a percentage of its assets. A security's income, for the purposes of this calculation, is based on the current market yield to maturity (in the case of bonds) or projected dividend yield (for stocks) of the fund's holdings over a trailing 30-day period. This hypothetical income will differ (at times, significantly) from the fund's actual experience; as a result, income distributions from the fund may be higher or lower than implied by the SEC yield.' Its footnote B: 'BASED ON HOLDINGS' YIELD TO MATURITY/DIVIDEND FOR LAST 30 DAYS OF PRIOR MONTH'. The data the investor profile page renders from (investor.vanguard.com/irr/funds/profile/VOO, library 751a586d819cc10c) agrees: 'secYield' '1.02%', 'secYieldAsOfDate' '10/31/2026'. Not the same page's 'Dividend yield as of 10/31/2026 1.08%', which its own definition says 'represents the average dividend yield of the stocks held by the fund', a yield of the holdings, not of the fund (as the Irish Vanguard record also declines its factsheet's equity yield). The page's distribution table lists 'Income' of $1.822600, $1.962200, $1.872400 and $1.771000 a share (payable 09/30/2026, 06/30/2026, 03/31/2026, 12/24/2025). Payments a year: 'Distribution schedule Quarterly' on the same page. The distribution is taxed on the site's reading that it is a dividend (product D85, TXF open question 19)."
+    },
+    "per_year": 4
+  },
+  "share_price": {
+    "value": 691.87,
+    "unit": "usd",
+    "source": {
+      "url": "https://investor.vanguard.com/irr/funds/profile/VOO",
+      "title": "Vanguard S&P 500 ETF, VOO: the data the profile page (investor.vanguard.com/investment-products/etfs/profile/voo) renders from, 'navPrice' 691.87, 'navPriceAsOfDate' '11/09/2026'",
+      "publisher": "Vanguard",
+      "strength": "institution"
+    },
+    "checked": "2026-11-10",
+    "effective_from": "2026-11-09",
+    "effective_to": null,
+    "tax_year": null,
+    "update_rule": "provider-set",
+    "rule_ids": [],
+    "state": "sourced",
+    "notes": "F-109: the issuer's net asset value per share, the price a whole unit is bought at in the run (grown there like the fund). A market price differs slightly from the NAV and was not collected."
+  },
+  "snapshot": "2026-11-25",
+  "replication": {
+    "method": "physical",
+    "source": {
+      "url": "https://fund-docs.vanguard.com/F0968.pdf",
+      "page": 1,
+      "checked": "2026-10-31"
+    }
+  },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2011,
+        "fund_pct": 2.09,
+        "tracking_pct": 2.11
+      },
+      {
+        "year": 2012,
+        "fund_pct": 15.98,
+        "tracking_pct": 16
+      },
+      {
+        "year": 2013,
+        "fund_pct": 32.33,
+        "tracking_pct": 32.39
+      },
+      {
+        "year": 2014,
+        "fund_pct": 13.63,
+        "tracking_pct": 13.69
+      },
+      {
+        "year": 2015,
+        "fund_pct": 1.35,
+        "tracking_pct": 1.38
+      },
+      {
+        "year": 2016,
+        "fund_pct": 11.93,
+        "tracking_pct": 11.96
+      },
+      {
+        "year": 2017,
+        "fund_pct": 21.78,
+        "tracking_pct": 21.83
+      },
+      {
+        "year": 2018,
+        "fund_pct": -4.42,
+        "tracking_pct": -4.38
+      },
+      {
+        "year": 2019,
+        "fund_pct": 31.46,
+        "tracking_pct": 31.49
+      },
+      {
+        "year": 2020,
+        "fund_pct": 18.35,
+        "tracking_pct": 18.4
+      },
+      {
+        "year": 2021,
+        "fund_pct": 28.66,
+        "tracking_pct": 28.71
+      },
+      {
+        "year": 2022,
+        "fund_pct": -18.15,
+        "tracking_pct": -18.11
+      },
+      {
+        "year": 2023,
+        "fund_pct": 26.25,
+        "tracking_pct": 26.29
+      },
+      {
+        "year": 2024,
+        "fund_pct": 24.98,
+        "tracking_pct": 25.02
+      },
+      {
+        "year": 2025,
+        "fund_pct": 17.84,
+        "tracking_pct": 17.88
+      }
+    ],
+    "years_printed": [
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "source": {
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/voo#performance-fees",
+      "title": "Vanguard S&P 500 ETF (VOO), fund profile, 'Performance & Fees', 'Total returns', 'Annually' (as of 10/31/2026)",
+      "publisher": "Vanguard",
+      "strength": "institution"
+    },
+    "page": null,
+    "checked": "2026-11-07",
+    "benchmark": {
+      "name": "S&P 500 Index",
+      "dividends": "unstated"
+    }
+  }
+}
