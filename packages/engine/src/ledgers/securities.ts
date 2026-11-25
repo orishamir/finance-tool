@@ -249,12 +249,18 @@ export function fundLevelTaxOn(gain: number, carried: number, rate: number): { t
 }
 
 /**
- * F-04, D84: the statement a TASE foreign fund's own annex makes of its tax index, which its runs are made on; null for any other fund. A
- * statement settles only the index: a fund that distributes stops on its distribution's open part whatever its annex states (G-35, TXF open
- * question 19: the run does not know its legal form), so its runs read none and stop on TXF-04 as an unstated one's do.
+ * F-04, D84: whether a fund's runs read the tax index its own annex states: only a TASE foreign fund's, and only one that pays nothing out.
+ * A statement settles only the index: a fund that distributes stops on its distribution's open part whatever its annex states (G-35, TXF
+ * open question 19: the run does not know its legal form), so its runs read none and stop on TXF-04 as an unstated one's do. The site's
+ * labels say a statement by this same test.
  */
+export function readsStatedIndex(kind: Fund["kind"], distributes: boolean): boolean {
+  return kind === "tase-foreign-fund" && !distributes;
+}
+
+/** F-04, D84: the statement a fund's own annex makes of its tax index, where its runs are made on it (`readsStatedIndex`); else null. */
 export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex" | "distribution">): TaxIndexStatement | null {
-  return fund.kind === "tase-foreign-fund" && !fund.distribution ? (fund.statedIndex ?? null) : null;
+  return readsStatedIndex(fund.kind, fund.distribution !== undefined) ? (fund.statedIndex ?? null) : null;
 }
 
 /**

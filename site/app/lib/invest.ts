@@ -22,6 +22,8 @@ export type OptionId = "il-tracking" | "il-etf" | "tase-foreign" | "abroad";
 export const OPTION_IDS: readonly OptionId[] = ["il-tracking", "il-etf", "tase-foreign", "abroad"];
 
 /** The tariff class each option is priced in (spec §2); a fund is priced in its own class (`instrumentClassOf`). */
+/** The engine's fund kind for an option's funds (F-04). */
+export const OPTION_KIND = { "il-tracking": "israeli-fund", "il-etf": "israeli-fund", "tase-foreign": "tase-foreign-fund", abroad: "foreign-fund" } as const satisfies Record<OptionId, string>;
 export const OPTION_CLASS: Record<OptionId, string> = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "tase_foreign_fund_units", abroad: "foreign_securities" };
 /** The classes a snapshot's `availability` entry may name for the option. */
 const AVAILABILITY_CLASSES: Record<OptionId, string[]> = { "il-tracking": ["mutual_fund_units"], "il-etf": ["etf_units"], "tase-foreign": ["etf_units", "tase_foreign_fund_units"], abroad: ["foreign_securities"] };
@@ -469,8 +471,7 @@ const blockedBy = (ctx: Ctx, spec: Spec): string | null => securitiesBlockedBy(s
 
 /** The open rule every fund of a kind would rest on (F-04: a foreign fund in Tel Aviv, TXF-04), or null: what a fund the person types of that kind is told. */
 export function optionOpenRule(bundle: IndicesBundle, option: OptionId): string | null {
-  const kind = option === "tase-foreign" ? "tase-foreign-fund" : option === "abroad" ? "foreign-fund" : "israeli-fund";
-  return securitiesBlockedBy({ kind }, ruleContext(bundle));
+  return securitiesBlockedBy({ kind: OPTION_KIND[option] }, ruleContext(bundle));
 }
 
 /**

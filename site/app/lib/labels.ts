@@ -3,10 +3,10 @@
 // a sourced fact or an open rule; it never praises. A label shows on every row it is true of, even when every row has it
 // ; its colour is its family's (the kit's LabelChip).
 import type { FundRecord } from "@finance-tool/schema";
-import { taxIndexStatementOf, type FundStatement } from "@finance-tool/engine";
+import { readsStatedIndex, taxIndexStatementOf, type FundStatement } from "@finance-tool/engine";
 import { currencyWord, invest as c } from "../copy";
 import { sourceHref } from "./sources";
-import type { IndexRef, OptionId, ProviderInfo } from "./invest";
+import { OPTION_KIND, type IndexRef, type OptionId, type ProviderInfo } from "./invest";
 import { isShekel } from "./fx";
 import { assertNever } from "@finance-tool/schema";
 
@@ -237,10 +237,9 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   // the same test the engine ranks it by (instruments.server.ts, saleOnlyRuling)
   else if (rec.distribution_policy === "accumulating" && rec.domicile !== "IL")
     out.push(rec.tax_ruling ? withDoc(label("tax-on-sale-ruling"), { href: sourceHref({ url: rec.tax_ruling.source.url, page: rec.tax_ruling.pages.ruling }), title: rec.tax_ruling.source.title }) : label("tax-on-sale-open"));
-  // a foreign fund in Tel Aviv whose own annex states its tax index under its ruling: the fund's statement, its page linked (F-04, D84);
-  // the same units bought abroad keep TXF-03 whatever the record carries, so only the Tel Aviv line says it, and a distributing one stops
-  // on its distribution's open part whatever its annex states (G-35), so only an accumulating one does
-  const stated = option === "tase-foreign" && rec.distribution_policy === "accumulating" ? taxIndexStatementOf(rec) : undefined;
+  // a fund whose own annex states its tax index under its ruling, where its runs are made on it: the fund's statement, its page linked (F-04,
+  // D84), by the engine's own test (`readsStatedIndex`). A fund whose policy is not known is not run at all (`fundRun`), so says none.
+  const stated = rec.distribution_policy !== null && readsStatedIndex(OPTION_KIND[option], rec.distribution_policy === "distributing") ? taxIndexStatementOf(rec) : undefined;
   if (stated) out.push(statementLabel(stated));
   if (rec.domicile === "US") out.push(label("ask-estate"), label("ask-w8"));
   return out;
