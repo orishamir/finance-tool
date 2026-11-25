@@ -142,6 +142,23 @@ describe("templates", () => {
     const line = { ...custody, id: "x-per-payment", base: "distribution_handling" as const, applies_to: ["all"], period: null, min: null, max: null, rate: { ...custody.rate, unit: "nis_per_trade" as const, value: 0.25 } };
     expect(houseTemplate({ ...snap, lines: [...snap.lines, line] }).left).toContainEqual(expect.objectContaining({ lineId: "x-per-payment", why: "other-base" }));
   });
+  it("prices a conversion in agorot a dollar with a spread the list limits as the price per dollar and the spread at its ceiling beside it (F-13)", () => {
+    // planted: Psagot's conversion line with a limit on its spread, which no record prints beside a price per dollar now
+    const snap = latestSnapshots().find((s) => s.id === "psagot");
+    const line = snap?.lines.find((l) => l.base === "fx" && l.rate.unit === "nis_per_usd");
+    if (!line?.spread) throw new Error("Psagot's record has a conversion priced per dollar, with a spread");
+    const capped = { ...line, spread: { ...line.spread, value: 0.7 } };
+    const { fees, left } = lineFees(capped, "");
+    expect(fees.map((f) => [f.kind, f.stages[0]?.price.form])).toEqual([["fx", "perDollar"], ["fx_spread", "action"]]);
+    const [fx, spread] = fees.map((f) => f.stages[0]?.price);
+    expect(fx && fx.form === "perDollar" && fx.amount.v).toBe(1.5);
+    expect(spread && spread.form === "action" && spread.rate.v).toBe(0.7);
+    expect(left).toEqual([]);
+    // the line as recorded, its spread not limited: the price per dollar alone, and the spread said as a cost on top
+    expect(lineFees(line, "")).toEqual({ fees: [fees[0]], left: ["spread-on-top"] });
+    // a bound beside the price per dollar is still one the deal does not hold
+    expect(lineFees({ ...capped, min: { ...line.rate, value: 5, unit: "nis_per_trade" } }, "")).toEqual({ fees: [], left: ["per-dollar"] });
+  });
   it("lists a bank's yearly distribution fee on the units of a mutual or money-market fund as a fee the deal holds no price for", () => {
     const snaps = latestSnapshots();
     const distribution = snaps.flatMap((s) => s.lines.filter((l) => l.base === "distribution_handling" && l.rate.unit === "pct_of_balance_per_period"));

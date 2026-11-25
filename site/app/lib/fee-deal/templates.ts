@@ -260,14 +260,17 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       return { fees: [fee("trade", { ...p.spec, ...notes })], left: [] };
     }
     case "fx": {
-      if (l.rate.unit === "nis_per_usd") return perDollarFees(l, own);
-      const p = actionPrice(l, num);
-      if ("left" in p) return { fees: [], left: [p.left] };
-      // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
+      // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee, whichever way the fee is priced
       const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", figures: { rate: num(l.spread) } })] : [];
       // a spread recorded but not limited is not counted, and says so: on a conversion filled at nothing, so 0% does not read as free; on
       // one with a price, as a cost on top of it
       const unpriced = !!l.spread && !has(l.spread);
+      if (l.rate.unit === "nis_per_usd") {
+        const p = perDollarSpec(l, own);
+        return "left" in p ? { fees: [], left: [p.left] } : { fees: [fee("fx", p.spec), ...spread], left: unpriced ? ["spread-on-top"] : [] };
+      }
+      const p = actionPrice(l, num);
+      if ("left" in p) return { fees: [], left: [p.left] };
       return { fees: [fee("fx", p.spec), ...spread], left: unpriced ? [convertsFree(l) ? "spread-unpriced" : "spread-on-top"] : [] };
     }
     case "custody": {
@@ -318,15 +321,13 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
 
 /**
  * A conversion line priced in shekels a dollar (F-13: Psagot's "1.5 אגורות עבור כל דולר"): the deal's price per dollar, in agorot as the
- * list prints it, its source kept. A line that prints a bound, a flat price or steps by size beside it is left (`per-dollar`); a spread the
- * documents do not limit is said as a cost on top, as on any conversion with a price (`spread-on-top`).
+ * list prints it, its source kept. A line that prints a bound, a flat price or steps by size beside it is left (`per-dollar`); a spread
+ * beside it is the conversion's either way (`lineFees`).
  */
-function perDollarFees(l: Line, own: string): Mapped {
-  if (!has(l.rate)) return { fees: [], left: ["no-value"] };
-  if (has(l.min) || has(l.max) || l.flat_up_to || l.size_tiers?.length || has(l.spread)) return { fees: [], left: ["per-dollar"] };
-  const agorot: Num = { v: agorotOfShekels(l.rate.value), src: sourcedOf(l.rate, own) };
-  const fee: SlimTemplateFee = { kind: "fx", stages: [{ price: buildPrice("fx", { form: "perDollar", figures: { amount: agorot } }) }] };
-  return { fees: [fee], left: l.spread ? ["spread-on-top"] : [] };
+function perDollarSpec(l: Line, own: string): { spec: PriceSpec } | { left: LeftWhy } {
+  if (!has(l.rate)) return { left: "no-value" };
+  if (has(l.min) || has(l.max) || l.flat_up_to || l.size_tiers?.length) return { left: "per-dollar" };
+  return { spec: { form: "perDollar", figures: { amount: { v: agorotOfShekels(l.rate.value), src: sourcedOf(l.rate, own) } } } };
 }
 
 /**
