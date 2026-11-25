@@ -69,9 +69,14 @@
 //            point or do not move it; a name inside an area, or a legend item, that does not set its area apart (the areas' colours), or a
 //            name's click that keeps a point; the pointer over the band or an area that lights any of the map; the band's words missing; the line where
 //            two areas are equal missing, or drawn only along the grid (no piece of it slanted); a guide missing along either axis; the
-//            bottom edge's line not drawn as a thin band at the plot's foot in more than one colour. At 390 with a
-//            finger: a tap that keeps no point, a tap on it that does not let it go, and a finger moving up the map that keeps a point or
-//            does not scroll the page.
+//            bottom edge's line not drawn as a thin band at the plot's foot in more than one colour. Moving it (design.md, "A chart people
+//            browse"), at 1440: a drag that does not move the axes' figures, or keeps a point; Ctrl with the wheel that does not zoom, or a
+//            plain wheel that zooms rather than scroll the page; + and − that do not zoom in and back out; the button back to the starting
+//            view that does not bring its figures back, or is not disabled there. At 390 with a
+//            finger: a tap that keeps no point, a tap on it that does not let it go, and a finger moving up the map that keeps a point, does
+//            not scroll the page, moves the map, or shows no hint that two fingers move it; two fingers (Chrome's touch events) that do not
+//            move the map, scroll the page or keep a point; the full-screen button that does not open the map over the whole screen, where
+//            one finger moves it and the page under it stays, or whose close does not close it and give the focus back to that button.
 //   chip     at 1440 and 390, an option of a row that chooses one (`ChoiceChips`, `SegmentedControl`) whose box moves or changes size
 //            when another option of the row is chosen (a chosen chip's check that widened it and moved its neighbours). An option planted
 //            to widen when chosen must be caught first.
@@ -1633,10 +1638,124 @@ async function regionCheck(browser, base) {
       if (await kept()) found.push("region: a tap on the kept point does not let it go");
     }
     const top = await page.evaluate(() => window.scrollY);
+    const figures = await axisFigures(page);
     await touchDrag(page, { x: r.x + r.width * 0.5, y: r.y + r.height * 0.7 }, { x: r.x + r.width * 0.5, y: r.y + r.height * 0.3 }, 12);
+    if (!(await map.locator("[data-region-hint]", { hasText: "שתי אצבעות" }).count())) found.push("region: a finger's swipe over the map on the page shows no hint that two fingers move it");
     await page.evaluate(settled, TIMERS_MS);
     if (await kept()) found.push("region: a finger moving up the map keeps a point");
     if ((await page.evaluate(() => window.scrollY)) === top) found.push("region: a finger moving up the map does not scroll the page");
+    if ((await axisFigures(page)) !== figures) found.push("region: a finger moving up the map moves the map, not only the page");
+    await ctx.close();
+  }
+  found.push(...(await regionMoveCheck(browser, base)));
+  return found;
+}
+
+/** The figures on the region map's axes, as the reader sees them: they follow the view as it moves and zooms. */
+async function axisFigures(page) {
+  const texts = await page.locator('article[aria-label="RegionMap"] [data-region-map] svg').first().locator("text").allTextContents();
+  return texts.filter((t) => /\d/.test(t)).join(" ");
+}
+
+/** Two fingers pressed at `from`, moved to `to` together in steps, and lifted, through Chrome's touch events (a pinch where they part). */
+async function twoFingers(page, from, to, steps = 10) {
+  const cdp = await page.context().newCDPSession(page);
+  const at = (pts) => pts.map((p, id) => ({ x: p.x, y: p.y, id }));
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: at(from) });
+  for (let i = 1; i <= steps; i++) await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: at(from.map((p, k) => ({ x: p.x + ((to[k].x - p.x) * i) / steps, y: p.y + ((to[k].y - p.y) * i) / steps }))) });
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await cdp.detach();
+}
+
+/** The region map moved and zoomed (design.md, "A chart people browse"): by a mouse and its wheel at 1440, by fingers and in full screen at 390. */
+async function regionMoveCheck(browser, base) {
+  const found = [];
+  {
+    const { ctx, page } = await open(browser, base, DESK);
+    const { demo, map, svg, kept } = regionParts(page);
+    await map.scrollIntoViewIfNeeded();
+    await page.evaluate(settled, TIMERS_MS);
+    const start = await axisFigures(page);
+    const home = demo.getByRole("button", { name: "לחזור להתחלה" });
+    if (!(await home.isDisabled())) found.push("region: the button back to the starting view is not disabled on it");
+    let r = await svg.boundingBox();
+    // a drag along the amounts: the map moves under the mouse, and no point is kept
+    await page.mouse.move(r.x + r.width * 0.5, r.y + r.height * 0.4);
+    await page.mouse.down();
+    await page.mouse.move(r.x + r.width * 0.3, r.y + r.height * 0.4, { steps: 8 });
+    await page.mouse.up();
+    await page.evaluate(settled, TIMERS_MS);
+    const dragged = await axisFigures(page);
+    if (dragged === start) found.push("region: a mouse's drag does not move the map (its axes' figures stay)");
+    if (await kept()) found.push("region: a mouse's drag over the map keeps a point, as a click would");
+    // a plain wheel scrolls the page and leaves the map; with Ctrl it zooms the map and the page stays
+    r = await svg.boundingBox();
+    await page.mouse.move(r.x + r.width * 0.5, r.y + r.height * 0.5);
+    const top = await page.evaluate(() => window.scrollY);
+    await page.mouse.wheel(0, 200);
+    await page.evaluate(settled, TIMERS_MS);
+    if ((await page.evaluate(() => window.scrollY)) === top) found.push("region: a plain wheel over the map does not scroll the page");
+    if ((await axisFigures(page)) !== dragged) found.push("region: a plain wheel over the map zooms it");
+    r = await svg.boundingBox();
+    await page.mouse.move(r.x + r.width * 0.5, r.y + r.height * 0.5);
+    const before = await page.evaluate(() => window.scrollY);
+    await page.keyboard.down("Control");
+    await page.mouse.wheel(0, -240);
+    await page.keyboard.up("Control");
+    await page.evaluate(settled, TIMERS_MS);
+    const wheeled = await axisFigures(page);
+    if (wheeled === dragged) found.push("region: Ctrl with the wheel does not zoom the map");
+    if ((await page.evaluate(() => window.scrollY)) !== before) found.push("region: Ctrl with the wheel over the map scrolls the page");
+    // + zooms in and − back out; the button back to the starting view brings its figures back
+    await demo.getByRole("button", { name: "התקרבות" }).click();
+    await page.evaluate(settled, TIMERS_MS);
+    const closer = await axisFigures(page);
+    if (closer === wheeled) found.push("region: + does not zoom the map in");
+    await demo.getByRole("button", { name: "התרחקות" }).click();
+    await page.evaluate(settled, TIMERS_MS);
+    if ((await axisFigures(page)) !== wheeled) found.push("region: − does not zoom back out to where + started");
+    await home.click();
+    await page.evaluate(settled, TIMERS_MS);
+    if ((await axisFigures(page)) !== start) found.push("region: the button back to the starting view does not bring its figures back");
+    await ctx.close();
+  }
+  {
+    const { ctx, page } = await open(browser, base, PHONE);
+    const { demo, map, svg, kept } = regionParts(page);
+    await map.scrollIntoViewIfNeeded();
+    await page.evaluate(settled, TIMERS_MS);
+    const start = await axisFigures(page);
+    let r = await svg.boundingBox();
+    const top = await page.evaluate(() => window.scrollY);
+    // two fingers moving left and parting: the map moves and zooms, the page stays, no point is kept
+    const [a, b] = [{ x: r.x + r.width * 0.4, y: r.y + r.height * 0.5 }, { x: r.x + r.width * 0.6, y: r.y + r.height * 0.5 }];
+    await twoFingers(page, [a, b], [{ x: a.x - 60, y: a.y - 20 }, { x: b.x - 20, y: b.y + 20 }]);
+    await page.evaluate(settled, TIMERS_MS);
+    if ((await axisFigures(page)) === start) found.push("region: two fingers do not move the map");
+    if (Math.abs((await page.evaluate(() => window.scrollY)) - top) > 1) found.push("region: two fingers over the map scroll the page");
+    if (await kept()) found.push("region: two fingers over the map keep a point");
+    // full screen: the map over the whole screen, where one finger moves it and the page under it stays; its close gives the focus back
+    const opener = demo.getByRole("button", { name: "מסך מלא" });
+    await opener.tap();
+    await page.evaluate(settled, TIMERS_MS);
+    const dialog = page.locator("dialog[open]");
+    const d = await dialog.boundingBox().catch(() => null);
+    if (!d || d.width < 389 || d.height < 843) found.push(`region: the full-screen button does not open the map over the whole screen (${JSON.stringify(d)})`);
+    else {
+      const fsvg = dialog.locator("[data-region-map] svg").first();
+      const figures = () => fsvg.locator("text").allTextContents().then((ts) => ts.filter((t) => /\d/.test(t)).join(" "));
+      const was = await figures();
+      const under = await page.evaluate(() => window.scrollY);
+      r = await fsvg.boundingBox();
+      await touchDrag(page, { x: r.x + r.width * 0.5, y: r.y + r.height * 0.5 }, { x: r.x + r.width * 0.7, y: r.y + r.height * 0.3 }, 10);
+      await page.evaluate(settled, TIMERS_MS);
+      if ((await figures()) === was) found.push("region: one finger does not move the map in full screen");
+      if ((await page.evaluate(() => window.scrollY)) !== under) found.push("region: one finger on the full-screen map scrolls the page under it");
+      await dialog.getByRole("button", { name: "סגירה" }).tap();
+      await page.evaluate(settled, TIMERS_MS);
+      if (await page.locator("dialog[open]").count()) found.push("region: the full-screen map's close does not close it");
+      else if (!(await opener.evaluate((el) => el === document.activeElement))) found.push("region: closing the full-screen map does not give the focus back to its button");
+    }
     await ctx.close();
   }
   return found;
