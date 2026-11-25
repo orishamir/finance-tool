@@ -1,6 +1,6 @@
 // A bank's or broker's securities account (design-system 8.7), as the company page shows its other products:
 // the price list as the account's name and quiet line, then parts with a heading
-// each: the fees, under who the prices are for, as the house's terms where its latest list fills a deal (fee-deal/house-terms.tsx), else
+// each: the fees, under who the prices are for, as the house's terms where its latest list fills a deal (company-terms.tsx), else
 // every line of the price list as the table of products, grouped by kind (one row per line, one under the next on a phone); what can be
 // bought there, the advertising against the documents, the group prices, and the minimum and the supervisor as the kit's fact cards; the
 // product's document entries and the two links last.
@@ -12,10 +12,9 @@ import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, g
 
 import { housePath, ownAccountPath } from "../../../lib/site-paths";
 import { IconAlert } from "../../icons";
-import { IdRef, Num, NumAfter, ProvenanceProvider, Ruled, RuleTitleRow, useProvenanceData } from "../../provenance";
-import { HouseTerms, withFeesData } from "../../fee-deal/house-terms";
+import { IdRef, Num, NumAfter, Ruled, RuleTitleRow } from "../../provenance";
 import { ToolBoundary } from "../../tool-boundary";
-import { termsEditorData, type HouseTermsData } from "../../../lib/fee-page-data";
+import { CompanyTerms } from "./company-terms";
 import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, HouseAverageLine, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AccountFees, type AvailabilityRow, type InstitutionKind, type TariffHead, type TariffLineRow } from "./types";
@@ -430,24 +429,6 @@ function FeeBar({ priceFor, channels }: { priceFor: string | null; channels: { c
   );
 }
 
-/**
- * The house's latest price list as its terms, read-only, as the indices page shows them, with nothing of a plan; its figures' sheets read
- * the rules the terms cite over the page's own. The deal editor draws them, inside its own error boundary as in the popup, so a house
- * whose deal it cannot draw leaves the rest of the page standing.
- */
-function CompanyTerms({ terms }: { terms: HouseTermsData }) {
-  const page = useProvenanceData();
-  const data = useMemo(() => termsEditorData(terms.data), [terms.data]);
-  if (!page) return null;
-  return (
-    <ProvenanceProvider data={withFeesData(page, terms.data)}>
-      <ToolBoundary resetKey={terms.house.id}>
-        <HouseTerms data={data} today={page.today} first={terms.deal} house={terms.house} />
-      </ToolBoundary>
-    </ProvenanceProvider>
-  );
-}
-
 /** The price list's table: who its prices are for and the channel's switch where it prices a fee by channel, its lines, what they leave out (D106). */
 function PriceTable({ table, priceFor, house, kind }: { table: Extract<AccountFees, { kind: "table" }>["table"]; priceFor: string | null; house: string; kind: InstitutionKind }) {
   const [channel, setChannel] = useState<Channel>("direct");
@@ -525,7 +506,11 @@ export function BrokerageGroupCard({ id, tariff, fees, kind, className, advertis
       {fees?.kind === "terms" ? (
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
           <FeeBar priceFor={tariff.priceFor} channels={null} />
-          <CompanyTerms terms={fees.terms} />
+          {/* the deal editor draws the terms, inside its own error boundary as in the popup, so a house whose deal it cannot draw leaves
+              the rest of the page standing */}
+          <ToolBoundary resetKey={fees.terms.house.id}>
+            <CompanyTerms terms={fees.terms} />
+          </ToolBoundary>
         </Section>
       ) : fees?.kind === "table" && fees.table.lines.length > 0 && (
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
