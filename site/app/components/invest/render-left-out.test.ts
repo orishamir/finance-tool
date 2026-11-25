@@ -6,7 +6,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { invest, leftOut as c } from "../../copy";
 import { buildInvest, hasKinds, indexById, knownIndices } from "../../lib/invest";
 import { stretchOf } from "../../lib/stretch";
@@ -16,6 +16,7 @@ import { brokeragePart } from "../../lib/institutions.server";
 import { leftOutOf } from "../../lib/left-out";
 import { ProvenanceProvider } from "../provenance";
 import { BrokerageGroupCard } from "../decoder/institutions/brokerage-card";
+import { loadTermsCode } from "../decoder/institutions/terms-code";
 import { accountOf } from "../decoder/institutions/types";
 import { allFunds, pickOfHeadline } from "./pair";
 import { PairReceipt } from "./receipt";
@@ -26,6 +27,11 @@ import { dealFromTemplate } from "../../lib/fee-deal/templates";
 import { newDeal } from "../../lib/fee-deal/model";
 import { ACCOUNT_KIND } from "../../lib/fee-deal/kinds";
 import { startsDeal } from "../../lib/providers";
+
+// the house's terms' code, a script of its own, loaded before the render as a company page's loader does
+beforeAll(async () => {
+  await loadTermsCode();
+});
 
 const WHY = "מי שקונה הרבה משלם לפי מדרגות. האתר מחשב לפי המסלול הקבוע.";
 /** The collected data with one house's record marking its first left-out thing as one that can change the price, with its reason. */

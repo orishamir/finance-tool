@@ -6,7 +6,7 @@
 // product's document entries and the two links last.
 // Its missing form is one card: the reason, the price list's page, the comparison.
 import { CircleDashed } from "lucide-react";
-import { useId, useMemo, useState, type ReactNode } from "react";
+import { Suspense, use, useId, useMemo, useState, type ReactNode } from "react";
 import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
 import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, guideBlocks } from "../../../copy";
 
@@ -14,7 +14,8 @@ import { housePath, ownAccountPath } from "../../../lib/site-paths";
 import { IconAlert } from "../../icons";
 import { IdRef, Num, NumAfter, Ruled, RuleTitleRow } from "../../provenance";
 import { ToolBoundary } from "../../tool-boundary";
-import { CompanyTerms } from "./company-terms";
+import type { HouseTermsData } from "../../../lib/fee-page-data";
+import { TERMS_MARK, loadTermsCode, termsCode } from "./terms-code";
 import { Card, ClaimList, DocLink, GoLink, GroupPriceRows, HelpMark, HouseAverageLine, LeftOutLine, MixedName, RowList, TariffDate, KeyValueList, LinkButton, LongestCase, ProductPhoneRow, ProductTable, ProductFigures, Section, SegmentedControl, Sentence, Tag, cx, gershayim, type KeyValueItem, type ProductColumn, When } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
 import { distributionRuleIds, type AccountFees, type AvailabilityRow, type InstitutionKind, type TariffHead, type TariffLineRow } from "./types";
@@ -429,6 +430,12 @@ function FeeBar({ priceFor, channels }: { priceFor: string | null; channels: { c
   );
 }
 
+/** The house's terms once their code is here; until then it suspends, starting the load as `lazy` does. */
+function LoadedTerms({ terms }: { terms: HouseTermsData }) {
+  const { CompanyTerms } = termsCode() ?? use(loadTermsCode());
+  return <CompanyTerms terms={terms} />;
+}
+
 /** The price list's table: who its prices are for and the channel's switch where it prices a fee by channel, its lines, what they leave out (D106). */
 function PriceTable({ table, priceFor, house, kind }: { table: Extract<AccountFees, { kind: "table" }>["table"]; priceFor: string | null; house: string; kind: InstitutionKind }) {
   const [channel, setChannel] = useState<Channel>("direct");
@@ -507,10 +514,15 @@ export function BrokerageGroupCard({ id, tariff, fees, kind, className, advertis
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
           <FeeBar priceFor={tariff.priceFor} channels={null} />
           {/* the deal editor draws the terms, inside its own error boundary as in the popup, so a house whose deal it cannot draw leaves
-              the rest of the page standing */}
-          <ToolBoundary resetKey={fees.terms.house.id}>
-            <CompanyTerms terms={fees.terms} />
-          </ToolBoundary>
+              the rest of the page standing. Their code is a script of its own (terms-code.ts), in before the page hydrates where its
+              first view shows them (the mark); shown later, the part stands empty (the fallback) while it loads */}
+          <div {...{ [TERMS_MARK]: "" }} className="contents">
+            <ToolBoundary resetKey={fees.terms.house.id}>
+              <Suspense fallback={null}>
+                <LoadedTerms terms={fees.terms} />
+              </Suspense>
+            </ToolBoundary>
+          </div>
         </Section>
       ) : fees?.kind === "table" && fees.table.lines.length > 0 && (
         <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>

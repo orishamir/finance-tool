@@ -13,6 +13,7 @@ import { fmt } from "../lib/format";
 import { InstitutionPage } from "../components/decoder/institutions/page";
 import { BrandFundList } from "../components/decoder/brand-funds";
 import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage-card";
+import { loadTermsCode } from "../components/decoder/institutions/terms-code";
 import { Num, NumAfter, OwnCompanyPage, StaleSaid } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { CompanyTracks } from "../components/tracks/company-browser";
@@ -54,7 +55,10 @@ async function houseNotes(id: string) {
 async function houseAccount(id: string, tariff: TariffCardData, page: { rules: Record<string, unknown>; pointed?: Record<string, unknown> | undefined }) {
   const { houseTermsData } = await import("../lib/fees.server");
   const { today } = await import("../lib/data.server");
-  return accountOf(tariff, houseTermsData(id, today(), { rules: new Set(Object.keys(page.rules)), pointed: new Set(Object.keys(page.pointed ?? {})) }));
+  const account = accountOf(tariff, houseTermsData(id, today(), { rules: new Set(Object.keys(page.rules)), pointed: new Set(Object.keys(page.pointed ?? {})) }));
+  // the terms' code is a script of its own, in before the render so the pre-rendered page holds them
+  if (account.fees.kind === "terms") await loadTermsCode();
+  return account;
 }
 
 export async function loader({ params }: Route.LoaderArgs) {

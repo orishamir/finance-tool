@@ -6,7 +6,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { brokeragePart, buildInstitution, institutionIds } from "../../../lib/institutions.server";
 import { houseTermsData } from "../../../lib/fees.server";
 import { latestSnapshots } from "../../../lib/providers.server";
@@ -18,8 +18,14 @@ import { ProvenanceProvider } from "../../provenance";
 import { FIXED_AVERAGES, shown } from "../../invest/render-fixtures";
 import type { TermsHouse } from "../../../lib/fee-page-data";
 import { BrokerageGroupCard } from "./brokerage-card";
+import { loadTermsCode } from "./terms-code";
 import { accountOf, type InstitutionKind, type TariffCardData } from "./types";
 import type { RuleRecord } from "@finance-tool/schema";
+
+// the house's terms' code, a script of its own, loaded before the render as a company page's loader does
+beforeAll(async () => {
+  await loadTermsCode();
+});
 
 const TODAY = "2026-11-25";
 const w = invest.dealAccount;

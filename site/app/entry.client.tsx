@@ -1,6 +1,7 @@
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { HydratedRouter } from "react-router/dom";
+import { TERMS_MARK, loadTermsCode } from "./components/decoder/institutions/terms-code";
 
 // GitHub Pages serves every page from a folder, so /guide loads as /guide/. Left in the history,
 // that form makes the router fetch guide/_.data when it comes back to it (the back button), and the
@@ -11,7 +12,12 @@ if (pathname.endsWith("/") && pathname !== import.meta.env.BASE_URL) {
   window.history.replaceState(window.history.state, "", pathname.replace(/\/+$/, "") + search + hash);
 }
 
-startTransition(() => {
+// A page whose first view shows a house's terms hydrates once their code, a script of its own, is in: hydration finds it and keeps the
+// pre-rendered terms in place (components/decoder/institutions/terms-code.ts). A failed load hydrates all the same, and the terms' error
+// boundary says so.
+const terms = document.querySelector(`[${TERMS_MARK}]`) ? loadTermsCode().catch(() => null) : null;
+
+void Promise.resolve(terms).then(() => startTransition(() => {
   hydrateRoot(
     document,
     <StrictMode>
@@ -21,7 +27,7 @@ startTransition(() => {
     // (lib/page-failure.ts): nothing on the screen is left wrong by it
     { onRecoverableError: (e) => console.error(e) },
   );
-});
+}));
 
 // What a tap opens (the provenance sheet's cards) and what the search runs on are scripts of their own, kept out of what a page needs
 // to show itself. They are fetched now, while the page hydrates and the connection is otherwise idle, so the first tap finds them in
