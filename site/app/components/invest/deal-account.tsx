@@ -306,10 +306,11 @@ const START_WORDS: TemplateListWords = { search: w.start.search, clear: w.start.
 /**
  * A deal read on the page's plan, for a popup to lay out: the editor on it (its fees' heads saying what the plan charges for each, and
  * marking the cases the plan reads), its runs on the list's funds as it changes, and the tiles' figures (F-128): what it leaves, its
- * place in the account list, what it leaves against the house it was filled from, and the plan line. `row`: the account list's row the
- * deal stands for, whose fund the plan line names and whose place the tile gives (the deal's own, or the house whose terms it shows).
+ * place in the account list, what it leaves against the house it was filled from, and the plan line, all on the account list's row the
+ * deal stands for, whose fund the plan line names and whose place the tile gives: the house whose terms it shows (`terms`), else the
+ * deal's own row, that of the deal on screen.
  */
-function useDealOnPlan({ data, today, saved, writable, first, world, row }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; world: DealWorld; row: string }) {
+function useDealOnPlan({ data, today, saved, writable, first, world, terms }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; world: DealWorld; terms?: string }) {
   // what each fee's head says is read with the deal as it is now, which the editor holds: the editor draws it after this render
   const headRef = useRef<(fee: Fee) => FeeHeadSlot | undefined>(() => undefined);
   // /deal reopens the deal last on screen there: only the popup's own links to it name this one (`rememberOpen`)
@@ -319,6 +320,7 @@ function useDealOnPlan({ data, today, saved, writable, first, world, row }: { da
   const off = feesOff.use();
   const counted = useMemo(() => countedDeal(deal, off), [deal, off]);
   const providerId = dealProviderId(deal.id);
+  const row = terms ?? providerId;
   const { view, pick } = world;
   // the fund the plan line names: the pair's where the deal is the pair's account, else the one the page would pair with it
   const fundId = pick ? (pick.house === row ? pick.fund : repick(view, pick, { house: row }).fund) : null;
@@ -400,7 +402,7 @@ export function termsLeftOut(snap: FeesSnapshot | undefined, at: FundWay["byHous
  * column: the tiles on one line, the fold, the fees, the button. Not a kit piece: the page's own popup, built of kit pieces and the editor.
  */
 export function TermsPopup({ data, today, saved, writable, first, world, house, leftOut, headId, onOwn }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; world: DealWorld; house: string; /** What the price leaves out opens open. */ leftOut: boolean; headId: string; onOwn: () => void }) {
-  const { ed, tiles, fund, leftNum, placeNum, planLine } = useDealOnPlan({ data, today, saved, writable, first, world, row: house });
+  const { ed, tiles, fund, leftNum, placeNum, planLine } = useDealOnPlan({ data, today, saved, writable, first, world, terms: house });
   const wide = useMedia(MQ.md);
   const p = world.plan;
   const short = providerName(world.view, house)?.short ?? house;
@@ -467,7 +469,7 @@ export function TermsMark({ id, house }: { id: string; house: string }) {
  * stay together), the pick bar, and the editor. Not a kit piece: the page's own popup, built of kit pieces and /deal's editor.
  */
 function DealPopup({ data, today, saved, writable, first, openFee, world, headId, onDeleted }: { data: FeesData; today: string; saved: readonly FeeDeal[]; writable: boolean; first: FeeDeal; /** The fee it opens on, where its opener names one. */ openFee?: string | undefined; world: DealWorld; headId: string; onDeleted: (name: string, at: number | null) => void }) {
-  const { ed, deal, at, run, tiles, house, fund, own, where, leftNum, placeNum, diffNum, planLine } = useDealOnPlan({ data, today, saved, writable, first, world, row: dealProviderId(first.id) });
+  const { ed, deal, at, run, tiles, house, fund, own, where, leftNum, placeNum, diffNum, planLine } = useDealOnPlan({ data, today, saved, writable, first, world });
   const isSaved = saved.some((d) => d.id === deal.id);
   const p = world.plan;
   const root = useRef<HTMLDivElement>(null);
