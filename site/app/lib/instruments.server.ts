@@ -359,13 +359,15 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
   if (kind === "tase-foreign-fund" || kind === "foreign-fund") {
     // read as the indices page reads them (`fundOf`): F-04, D84, the index a Tel Aviv line's own annex states under its ruling, and the
     // record's currency, whose exchange rate is one reading of the index of a line whose annex states none (TXF OQ10) for a fund the site
-    // does not know; F-20, the domicile the foreign tax on a distribution is read by, and the legal form that settles its tax (D85)
-    const built = fundOf(rec, kind).fund;
+    // does not know; F-20, the domicile the foreign tax on a distribution is read by, and the legal form that settles its tax (D85) unless the
+    // fund follows a bond index (TXF OQ14)
+    const built = fundOf(rec, kind, { exposureKind: loadExposures().find((e) => e.id === rec.exposure_id)?.kind }).fund;
     if (built.statedIndex) fund.statedIndex = built.statedIndex;
     if (built.recordCurrency) fund.recordCurrency = built.recordCurrency;
     if (built.domicile) fund.domicile = built.domicile;
     else if (kind === "foreign-fund" || fund.distribution) missing.push(`${wrapperId}: fund "${rec.id}" is domiciled in ${rec.domicile}; the ledger knows US and Ireland`);
     if (built.legalStructure) fund.legalStructure = built.legalStructure;
+    if (built.exposureKind) fund.exposureKind = built.exposureKind;
   }
   // TXS-14, F-04: the fund's status as a foreign-investment fund, read as the indices page reads it (`fundOf`): the principal currency its
   // documents name, run on as the site's reading of TXS OQ26 (D119), or, where its record says the status is not known, its index's foreign

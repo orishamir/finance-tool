@@ -292,7 +292,7 @@ type FundMarket = { grossReturn: number; returnIn?: "instrument"; fxChange?: num
 /** The run inputs a fund fixes: its kind and drag (the same builder as F-65), the currency and how the return is quoted (F-04). */
 export function fundRun(
   s: SubjectFund,
-  exposure: Pick<ExposureRecord, "cash_like" | "currency"> & Partial<Pick<ExposureRecord, "id" | "us_dividends">> | undefined,
+  exposure: Pick<ExposureRecord, "cash_like" | "currency"> & Partial<Pick<ExposureRecord, "id" | "us_dividends" | "kind">> | undefined,
   grossReturn: number,
   assumptions: FundAssumptions,
   fx?: FxSnapshot,
@@ -316,6 +316,7 @@ export function fundRun(
     list,
     usDividends: exposure.id ? usDividendsOf({ id: exposure.id, us_dividends: exposure.us_dividends }) : undefined,
     foreignCurrency: isShekel(exposure.currency) ? undefined : exposure.currency,
+    exposureKind: exposure.kind,
     typed: isCustomFund(rec),
   });
   if (!built.hasManagement) return { kind: "fund-type" };

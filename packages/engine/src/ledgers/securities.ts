@@ -1,7 +1,7 @@
 // Funds and ETFs held as securities: the F-08 month step and the F-09 exit, with F-10 drag, F-12 to F-14
 // and F-17 costs, F-20 distributions, F-23 money-market funds and F-40 to F-43 exit tax. Also the
 // brokerage account inside an IRA hishtalmut (F-51).
-import { isShekel, type LegalStructure } from "@finance-tool/schema";
+import { isShekel, type ExposureRecord, type LegalStructure } from "@finance-tool/schema";
 import { buyWithCash, convertedAtMost, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, navBought, orderByAmount, orderInUnits, saleCommission, saleConversion, sumRate, tradeCommission, type Commission, type ConversionPrice, type Custody, type Sum } from "../formulas/fees.ts";
 import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
@@ -55,6 +55,11 @@ export interface Fund {
    * site read do not say, and for a fund the person typed. Only a company's distribution is settled as a dividend (`foreignDistributionRate`).
    */
   legalStructure?: LegalStructure;
+  /**
+   * F-20, TXF open question 14: the kind of the exposure the fund follows (the exposure record's `kind`), where the caller knows it. A bond
+   * fund's distribution is not settled as a dividend by its form: whether it is interest or a dividend is open (`foreignDistributionRate`).
+   */
+  exposureKind?: ExposureRecord["kind"];
   /** Domicile of a foreign-domiciled fund: decides the foreign withholding on distributions (F-20). */
   domicile?: "us" | "ireland";
   /** W-8BEN on file with the US payer (TXF-13, A-31): absent, the run takes none and the US withholds 30%, the cautious figure (F-20). */
@@ -316,10 +321,11 @@ export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "princip
  * company pays a dividend, which TXF-08 taxes ("דיבידנד מחברות זרות"), so the run cites the rule and labels nothing. For any other form, or
  * a form the site does not know (none recorded, or a fund the person typed), whether Israel classes the distribution as a dividend is open
  * (TXF open question 19): the run taxes it on the site's reading that it is one, a `reading` label on TXF-08, the rule whose rate it
- * applies, and never meets the question nor raises a flag of it.
+ * applies, and never meets the question nor raises a flag of it. A company that follows a bond index is not settled by its form: whether a
+ * foreign bond fund's distribution is interest or a dividend is TXF open question 14, so it keeps the reading's label.
  */
-function foreignDistributionRate(book: RuleBook, form: LegalStructure | undefined): number {
-  if (form !== "company") book.label("reading", "TXF-08");
+function foreignDistributionRate(book: RuleBook, fund: Pick<Fund, "legalStructure" | "exposureKind">): number {
+  if (fund.legalStructure !== "company" || fund.exposureKind === "bond_index") book.label("reading", "TXF-08");
   return book.rate("TXF-08", "rate");
 }
 
@@ -719,7 +725,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     if (fund.kind === "money-market-taxable") {
       // The holder of a taxable fund pays nothing on its distributions; the fund has paid (TXS-11).
     } else if (isForeign) {
-      israeliDistRate = foreignDistributionRate(book, fund.legalStructure);
+      israeliDistRate = foreignDistributionRate(book, fund);
       book.cite("TXF-17");
       book.cite("TXF-18");
       if (fund.domicile === "us") {

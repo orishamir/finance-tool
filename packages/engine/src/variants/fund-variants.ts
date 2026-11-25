@@ -88,12 +88,14 @@ export interface FundOfOptions {
    * a foreign-investment fund is not known (F-04).
    */
   foreignCurrency?: string;
+  /** F-20: the kind of the exposure the fund follows, which keeps a bond fund's distribution on the reading whatever its form (TXF OQ14). */
+  exposureKind?: Fund["exposureKind"];
   /** The site read none of the fund's own documents: a fund the person typed (D44), whose record holds only what was typed (F-04, `Fund.notKnown`). */
   typed?: boolean;
 }
 
 /** The fund the engine runs for a record, and the fee fields the record leaves empty. */
-export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist, w8ben, list, usDividends, foreignCurrency, typed }: FundOfOptions = {}) {
+export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist, w8ben, list, usDividends, foreignCurrency, exposureKind, typed }: FundOfOptions = {}) {
   const notCollected: string[] = [];
   const f = rec.fees;
   const get = (key: keyof FundRecord["fees"], unit: ValueObject["unit"]) => {
@@ -143,6 +145,7 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   if (domicile) fund.domicile = domicile;
   // F-20, D85: the form the fund's own document names, which settles whether its distribution is a dividend
   if (rec.legal_structure) fund.legalStructure = rec.legal_structure.form;
+  if (exposureKind !== undefined) fund.exposureKind = exposureKind;
   if (w8ben !== undefined) fund.w8ben = w8ben;
   // E1, F-109: the price of one unit, in the unit's currency, for per-share commissions and whole units.
   const price = rec.share_price;

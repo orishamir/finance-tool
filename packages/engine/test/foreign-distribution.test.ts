@@ -86,6 +86,15 @@ describe("a foreign fund's distribution, taxed on the site's reading that it is 
     });
   }
 
+  it("a company that follows a bond index keeps the reading: whether its distribution is interest or a dividend is TXF open question 14", () => {
+    const company: Fund = { kind: "foreign-fund", drag: {}, domicile: "ireland", legalStructure: "company", distribution: { yield: yearly, perYear } };
+    const labelled = (f: Fund) => runSecurities(input(f, 60), ctx).labels.some((l) => l.code === "reading" && l.ruleId === "TXF-08");
+    expect(labelled({ ...company, exposureKind: "equity_index" })).toBe(false);
+    expect(labelled(company)).toBe(false);
+    expect(labelled({ ...company, exposureKind: "bond_index" })).toBe(true);
+    expect(fundOf(fundRecord.parse(JSON.parse(readFileSync(new URL("../../../data/funds/ie00b5bmr087@2026-11-07.json", import.meta.url), "utf8"))), "foreign-fund", { exposureKind: "bond_index" }).fund.exposureKind).toBe("bond_index");
+  });
+
   it("a record's legal structure reaches the run: a company-form record runs with its form, one with none with none (fundOf)", () => {
     const read = (f: string) => fundRecord.parse(JSON.parse(readFileSync(new URL(`../../../data/funds/${f}.json`, import.meta.url), "utf8")));
     const company = read("ie00b5bmr087@2026-11-07");
