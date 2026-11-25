@@ -67,12 +67,12 @@ describe("the securities account is priced at the houses that sell P-05's fund",
     const ids = brokerageRows.map((r) => r.id);
     for (const id of ["psagot", "ibi"]) expect(ids).toContain(id);
     expect(ids).toContain("meitav-trade"); // priced at its price list (D56): custody 0.15% a quarter, at least 270 NIS, and a handling fee up to 90 NIS a month
-    // the representative fund (5139100) is a tracking fund, `mutual_fund_units`: a tariff with no buy/sell line for that class gives no price, never a free trade (F-63 "No line, no price", MF-26)
+    // the representative fund (5139282) is a tracking fund, `mutual_fund_units`: a tariff with no buy/sell line for that class gives no price, never a free trade (F-63 "No line, no price", MF-26)
     expect(ids).not.toContain("interactive-brokers");
     expect(ids).toContain("leumi"); // its TASE line covers tracking funds by footnote (MF-27; snapshot)
     // One Zero sells a tracking fund only where its manager reports a distribution agreement with it (BRK-38): its record's reports in force
-    // name P-05's 5139100 (data/fees/one-zero@2026-11-12.json), so it sells the account's fund
-    expect(ids).toContain("one-zero");
+    // do not name P-05's 5139282 (data/fees/one-zero@2026-11-12.json), so it does not sell the account's fund
+    expect(ids).not.toContain("one-zero");
     expect(row(brokerageRows, "psagot").bundle.terms.tariff!.buy!.rate).toBeCloseTo(0.0007, 8);
   });
 });
