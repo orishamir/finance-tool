@@ -13,6 +13,7 @@ import { Fragment, type ReactNode, type Ref, type RefObject } from "react";
 import { brands, invest as c, site } from "../../copy";
 import { fmt, wholeSum } from "../../lib/format";
 import { gapListFor, pricedVariable, accountSum, pairCostsKept, type FundWay, type InvestView, type PairCosts } from "../../lib/invest";
+import { priced } from "../../lib/stretch";
 import { assertNever, type FundRecord } from "@finance-tool/schema";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
@@ -21,7 +22,7 @@ import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/
 import { Num, ShortRow, StateTag, shortRow } from "../provenance";
 import { DocLink, FEE_WORDS_HELP, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
-import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, priced, totalNoteOf, whole, type Pick } from "./pair";
+import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, totalNoteOf, whole, type Pick } from "./pair";
 import { OptionTag } from "./parts";
 import { brokerLabels } from "../../lib/labels";
 import { partName } from "./cost-lines";
@@ -84,7 +85,7 @@ export function verdictOf(v: ReturnType<typeof pairVerdict>, chosen: boolean): {
   ) : onBest ? (
     tie ? c.pair.tieTop(n, nFunds) : c.pair.cheapestStar
   ) : (
-    c.pair.openTop
+    c.shownPair(false).name
   );
   return { top, words };
 }

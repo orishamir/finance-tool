@@ -183,7 +183,7 @@ describe("the guides' securities-account range and the indices page", () => {
   // the fund the guides' brokerage account holds (P-05's), as the study fund's page names it
   const study = page("keren-hishtalmut").signature;
   const held = String(study ? fact(study, "fundNumber")?.value : "");
-  const onFund = view.houses.flatMap((h) => h.entries.filter((e) => e.fund.number === held && e.price && !e.price.open).map((e) => ({ id: h.provider.id, value: e.price!.valueN }))).sort((a, b) => b.value - a.value);
+  const onFund = view.houses.flatMap((h) => h.entries.filter((e) => e.fund.number === held && e.price).map((e) => ({ id: h.provider.id, value: e.price!.valueN }))).sort((a, b) => b.value - a.value);
   it("keren-hishtalmut: counts the same houses and names the same pick", () => {
     const d = page("keren-hishtalmut").signature!;
     expect(fact(d, "brokerCount")!.value).toBe(onFund.length);

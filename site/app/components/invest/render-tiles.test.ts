@@ -41,7 +41,7 @@ describe("hedged or not: what happened (F-95, founder 2026-10-31)", () => {
       const v = buildInvest({ bundle: b, index: indexById(b, "index-nasdaq100")!, plan });
       return html(createElement(DollarFor, { view: v, bundle: b, plan, pick: pickOfHeadline(v)! })).replace(/<!-- -->/g, "");
     };
-    // the report made uncompared is, where one of the two is not ranked (a fund on an open rule, G-18), that one: the tile reads the
+    // the report made uncompared is, where one of the two is not priced, that one: the tile reads the
     // hedged kind's pair, which the other then still gives
     const nq = buildInvest({ bundle, index: sure(indexById(bundle, "index-nasdaq100"), "the NASDAQ-100"), plan });
     const ranked = (id: string) => allFunds(nq).some((f) => f.rec.id === id && f.best !== undefined);

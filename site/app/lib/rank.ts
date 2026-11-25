@@ -8,11 +8,3 @@
 export function rankByValue<T>(items: readonly T[], value: (t: T) => number): T[] {
   return items.map((t, k) => ({ t, k, v: value(t) })).sort((a, b) => b.v - a.v || a.k - b.k).map((x) => x.t);
 }
-
-/**
- * The first of `items` by `value` among those ranked (F-80: a price on an open rule, G-18, is shown and never ranked), and only where none
- * is ranked, the first of the open ones, which then carries its `open` mark wherever it is shown.
- */
-export function bestRanked<T extends { open: boolean }>(items: readonly T[], value: (t: T) => number): T | undefined {
-  return rankByValue(items.filter((t) => !t.open), value)[0] ?? rankByValue(items, value)[0];
-}

@@ -58,7 +58,7 @@ describe("the receipt", () => {
   });
   it("carries no verdict of its own: the headline above the lists says it, for the page's pair and for a pick that is not the cheapest", () => {
     const own = shown(html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false })));
-    for (const said of [w.pair.cheapestStar, w.pair.openTop, w.pair.yours]) expect(own).not.toContain(said);
+    for (const said of [w.pair.cheapestStar, w.pair.yours]) expect(own).not.toContain(said);
     const leumi = { house: "leumi", fund: pick.fund };
     const v = pairVerdict(view, bundle, plan, leumi, true);
     expect(v.onBest || v.tied).toBe(false);
@@ -425,7 +425,7 @@ describe("the lists beside the receipt", () => {
     const at = (name: string) => out.indexOf(`data-anchor="${name}"`);
     expect(at(ANCHOR.accounts)).toBeGreaterThan(0);
     expect(at(ANCHOR.accounts)).toBeLessThan(at(ANCHOR.funds));
-    const priced = allFunds(view).filter((f) => { const a = f.byHouse[pick.house]; return !!a && "valueN" in a && !a.open; }).length;
+    const priced = allFunds(view).filter((f) => { const a = f.byHouse[pick.house]; return !!a && "valueN" in a; }).length;
     expect((out.match(/data-spot-dot=""/g) ?? []).length).toBe(priced);
     // the ruler has no title over it (2026-11-24)
     expect(shown(out)).not.toContain("כמה נשאר לכם בסוף");
@@ -433,7 +433,7 @@ describe("the lists beside the receipt", () => {
   it("on an index with both kinds, the stretch counts the chosen fund's kind only: a hedged fund sets no account's stretch (D28)", () => {
     const funds = allFunds(view);
     const mine = kindOf(funds.find((f) => f.rec.id === pick.fund)!.rec);
-    const ranked = (f: (typeof funds)[number]) => { const a = f.byHouse[pick.house]; return a && "valueN" in a && !a.open ? a.valueN : null; };
+    const ranked = (f: (typeof funds)[number]) => { const a = f.byHouse[pick.house]; return a && "valueN" in a ? a.valueN : null; };
     const kindValues = funds.filter((f) => kindOf(f.rec) === mine).map(ranked).filter((v): v is number => v !== null);
     const otherValues = funds.filter((f) => kindOf(f.rec) !== mine).map(ranked).filter((v): v is number => v !== null);
     expect(otherValues.length).toBeGreaterThan(0);

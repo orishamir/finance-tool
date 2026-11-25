@@ -14,7 +14,7 @@ import { rankByValue } from "../../lib/rank";
 import { useAccountMapRun, useMapWindowRun, type Asked } from "../../lib/invest-run";
 import type { MapAnswer } from "../../lib/invest-work";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
-import { rankedAt } from "../../lib/stretch";
+import { priced } from "../../lib/stretch";
 import { asParameter, carriedBy, differenceOf, entered, type SiteValue } from "../../lib/value";
 import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
@@ -67,7 +67,7 @@ const thetaValue = (bundle: IndicesBundle): SiteValue | null => {
 
 /** The card of the map, in plain words (a card is a tab, and a tab holds no control); where there is no map, why. */
 export function mapCard(answer: MapAnswer, view: InvestView, bundle: IndicesBundle, house: string, held: boolean): TabCard {
-  if (answer.kind === "unranked") return { key: "map", question: m.question, answer: m.unranked, note: m.unrankedWhy[answer.why], held };
+  if (answer.kind === "unranked") return { key: "map", question: m.question, answer: m.unranked, note: m.unrankedWhy, held };
   const words = mapWords(answer.map, house, (id) => shortOf(view, id));
   return { key: "map", question: m.question, answer: words.answer, note: words.note, held };
 }
@@ -89,7 +89,7 @@ function rankedWays(on: Asked<"map">, plan: WorkbenchInputs, houses?: readonly s
   const way = fundWayAt({ bundle, index: on.ask.index, plan, fundId: on.ask.fund, ...(houses ? { houses } : {}) });
   const ways = providersOfInvest(bundle).flatMap((s) => {
     const w = way?.byHouse[s.id];
-    return rankedAt(w) ? [w] : [];
+    return priced(w) ? [w] : [];
   });
   return rankByValue(ways, (w) => w.valueN);
 }
@@ -194,8 +194,8 @@ export function MapWaitingPanel() {
 }
 
 /** The panel where there is no map: why. */
-export function NoMapPanel({ why }: { why: "open-rule" | "unpriced" }) {
-  return <PanelHead kicker={m.question} sub={<p className="text-sm text-muted-foreground">{m.unrankedWhy[why]}.</p>}>{m.unranked}</PanelHead>;
+export function NoMapPanel() {
+  return <PanelHead kicker={m.question} sub={<p className="text-sm text-muted-foreground">{m.unrankedWhy}.</p>}>{m.unranked}</PanelHead>;
 }
 
 /**

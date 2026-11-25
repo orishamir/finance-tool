@@ -1166,8 +1166,7 @@ export const flags: Record<string, string> = {
   "G-27": "על רווח שנמשך לפני הזמן וממוסה לפי מדרגות המס ייתכן שחלים גם ביטוח לאומי ומס בריאות. האתר עוד לא מחשב אותם. החישוב כולל רק את מס ההכנסה.",
   // F-50's bank route runs on the rate entered (A-26); the Ministry of Finance's dataset holds each bank's rates (CS-23)
   "CS-23": "הריבית בחיסכון בבנק היא הריבית שהזנתם. הריביות של כל הבנקים מתפרסמות במאגר הנתונים של משרד האוצר, ומתעדכנות בערך כל יומיים.",
-  // compare and the indices page: a foreign fund that does not distribute (method G-18), the foreign funds traded abroad (G-29), a fee on distributions (F-18)
-  "G-18": "קרן זרה שלא מחלקת: רשות המסים לא אישרה שהיא ממוסה רק במכירה. האתר מחשב לפי מקור משני ולא מדרג.",
+  // compare and the indices page: the foreign funds traded abroad (G-29), a fee on distributions (F-18)
   "G-29": "לקרנות זרות הנסחרות בחו״ל אין רשימה מלאה: האתר משווה את אלה שאסף אחת־אחת, והשאר הן שורה אחת.",
   "F-18": "העמלה על חלוקת רווחים עוד לא מחושבת, ולכן התוצאה חלקית.",
   "TXP-11": "הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שנבדקת כל חודש. החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה. האתר עוד לא מחשב את המס עליו.", // the monthly test is circular 4/2019 s.2.1.1 (TXP-11); the engine flag had been the open question
@@ -4157,8 +4156,6 @@ export const invest = {
   lists: {
     kicker: "איפה ואיך: החשבון והקרן",
     colLeft: "נשאר בסוף",
-    /** Under the lists, where the chosen pair's price rests on a rule that is an open question. */
-    openRow: "לא מדורגת: שאלה פתוחה",
     /** Above several funds with no price at the chosen account, after why: a pick moves the account (`pair.pickMoves` for one fund). */
     pickMovesMany: (house: string) => `בחירה באחת מהן מעבירה את החשבון ${toName(house)}`,
     /** The accounts' side beside the ruler: an account is a stretch of it. */
@@ -4166,8 +4163,6 @@ export const invest = {
       title: "איפה: החשבון",
       /** An account's figure: what is left with its cheapest fund. */
       upTo: "עד",
-      /** An account whose every priced fund of the kind rests on an open rule (G-18): shown, not ranked, no stretch; why is G-18's text. */
-      unranked: "לא מדורג",
     },
     /** The funds' side: a fund is a spot inside the chosen account's stretch. */
     funds: {
@@ -4179,8 +4174,6 @@ export const invest = {
       /** The fold under the list: the funds the chosen account gives no price, with their reasons. */
       unpriced: (n: number) => (n === 1 ? "ועוד קרן אחת בלי מחיר בחשבון הזה" : `ועוד ${n} קרנות בלי מחיר בחשבון הזה`),
       unpricedLabel: (house: string) => `קרנות בלי מחיר ${inName(house)}`,
-      /** The heading over the funds on an open rule (G-18), after the ranked ones of their kind: shown, not ranked. */
-      unranked: "לא מדורגות",
     },
     /** The head, in the sheet of the mark beside an account's name, over a standing order's price its price list prints and the figure
      *  leaves out (D41, D56), its reason and their documents. */
@@ -4218,9 +4211,9 @@ export const invest = {
       /** The card of a plan with nothing in it. */
       empty: "אין כסף בתוכנית",
       emptyNote: "אין כסף בחשבון, אז כל החשבונות משאירים 0 ₪",
-      /** The card where no account is ranked with the fund, by why. */
+      /** The card where no account is ranked with the fund, and why. */
       unranked: "אין מפה לקרן הזו",
-      unrankedWhy: { "open-rule": "המס עליה תלוי בשאלה פתוחה, ולכן האתר לא מדרג חשבונות איתה", unpriced: "אף חשבון לא מדורג עם הקרן הזו" },
+      unrankedWhy: "אף חשבון לא מדורג עם הקרן הזו",
       headEmpty: "בתוכנית שלכם אין כסף, אז כל החשבונות משאירים 0 ₪. המפה מראה איזה חשבון זול יותר בכל צירוף אחר.",
       /** The line under the headline: how to read the map, short enough for one line on a computer. */
       what: "הצבע של כל נקודה הוא החשבון שמשאיר לכם הכי הרבה בסכום ובהפקדה שלה.",
@@ -4241,7 +4234,7 @@ export const invest = {
       /** Where the two are within the tie threshold: neither is set apart. */
       sameNote: "בערך אותו דבר: ההפרש קטן מ־",
       none: "אין כסף בחשבון: כל החשבונות משאירים 0 ₪.",
-      /** A point where no account is ranked with the fund (its tax on an open rule, or no account priced there). */
+      /** A point where no account is ranked with the fund (no account priced there). */
       unrankedHere: "כאן אף חשבון לא מדורג עם הקרן הזו",
       onlyOne: "כאן אין עוד חשבון שמדורג עם הקרן הזו",
       /** The sheets of the map's figures. */
@@ -4577,8 +4570,6 @@ export const invest = {
     cheapestStar: "★ הזוג הזול ביותר לתוכנית שלכם",
     yours: "הבחירה שלכם",
     next: "הזוג הבא בתור",
-    /** Before any pick, on an index with no ranked pair: the pair shown is the one that leaves the most, on an open rule, and says why it is not ranked. */
-    openTop: "הזוג שמשאיר הכי הרבה, בלי דירוג כי המס תלוי בשאלה פתוחה",
     /** Every pair within the site's tie threshold of the top (P-01, F-80): none is crowned, and the count is said; with the
      *  funds they hold where fewer ("אחד מ־5 הזוגות, שבהם 3 קרנות שונות"). */
     tieTop: (n: number, funds = n) =>
@@ -4919,7 +4910,6 @@ export const invest = {
     statusNone: "מכאן אין שינוי אחד שמשפר. עד הכי הרבה חסרים עוד",
     statusTogether: ", וכדי להגיע אליו צריך לשנות כמה דברים יחד.",
     jump: "לעבור אל",
-    openNote: "עם שאלת מס פתוחה מופיע גם",
     legendNext: "הצעד הכי גדול שנשאר, עוד לא נלקח",
     legendOpen: "נשען על שאלת מס פתוחה: מוצג, לא מדורג",
     about: { left: "מה שנשאר בסוף", versus: "ההפרש מההחזקה שבה עומדים", cost: "ההפרש בעלות", ceilingGap: "מה שחסר עד הכי הרבה" },

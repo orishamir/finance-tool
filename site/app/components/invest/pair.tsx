@@ -21,6 +21,7 @@ import { providerName } from "./sections";
 import { DealFromHouseButton } from "./deal-account";
 import { StateTag } from "../provenance";
 import { sourceHref, withoutCodes, type CitedPlace } from "../../lib/sources";
+import { priced } from "../../lib/stretch";
 
 export interface Pick {
   house: string;
@@ -29,8 +30,6 @@ export interface Pick {
 
 /** A figure rounded to whole shekels, as the receipt's lines show it: the input of a difference taken between shown figures (F-91). */
 export const whole = (v: SiteValue): SiteValue => ({ ...v, value: Math.round(v.value as number) });
-/** A fund's entry at a house is a price, not a reason it has none. */
-export const priced = (x: FundWay["byHouse"][string] | undefined): x is WayPrice => !!x && "valueN" in x;
 
 /** A pair's "by phone only": the house's words for the exchange its price rests on, as the value its tag opens; null for any other pair. */
 export function phoneOf(view: InvestView, bundle: IndicesBundle, p: { house: string; fund: string }): SiteValue | null {
@@ -45,11 +44,6 @@ export const allFunds = (view: InvestView): FundWay[] => view.options.filter((o)
 
 /** The default pick: the cheapest complete way. */
 export const pickOfHeadline = (view: InvestView): Pick | null => (view.headline ? { house: view.headline.providerId, fund: view.headline.fund.rec.id } : null);
-/** With no ranked way, the way that leaves the most on an open rule (a fund the person typed abroad that accumulates): shown, not ranked. */
-export const pickOfOpen = (view: InvestView): Pick | null => {
-  const w = view.options.find((o) => o.bestWay)?.bestWay;
-  return w ? { house: w.providerId, fund: w.fund.rec.id } : null;
-};
 
 /**
  * The cheapest pair to set beside the person's: the headline, unless they picked a currency-hedged fund, which is compared with the best
@@ -60,7 +54,7 @@ export function bestFor(view: InvestView, pick: Pick): Pick | null {
   if (!rec || opensOn(rec)) return pickOfHeadline(view);
   const top = allFunds(view)
     .filter((f) => !opensOn(f.rec))
-    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
     .sort((a, b) => b.v - a.v)[0];
   return top ? { house: top.house, fund: top.fund } : pickOfHeadline(view);
 }
@@ -69,9 +63,9 @@ export function bestFor(view: InvestView, pick: Pick): Pick | null {
 const waysOf = (view: InvestView, house: string): { fund: FundWay; at: WayPrice }[] =>
   allFunds(view).flatMap((f) => { const at = f.byHouse[house]; return priced(at) ? [{ fund: f, at }] : []; });
 
-/** A house's way that leaves the most: a ranked one first, else one on an open rule, which is shown and not ranked. Its row names it when the picked fund has no price there. */
+/** A house's way that leaves the most. Its row names it when the picked fund has no price there. */
 export function otherWay(view: InvestView, house: string): { fund: FundWay; at: WayPrice } | null {
-  return waysOf(view, house).sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN)[0] ?? null;
+  return waysOf(view, house).sort((a, b) => b.at.valueN - a.at.valueN)[0] ?? null;
 }
 
 /**
@@ -224,7 +218,7 @@ export function pickHalf(view: InvestView, cur: Pick, change: Partial<Pick>, onP
 export function bestOfKind(view: InvestView, kind: Kind): Pick | null {
   const top = allFunds(view)
     .filter((f) => kindOf(f.rec) === kind)
-    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
     .sort((a, b) => b.v - a.v)[0];
   return top ? { house: top.house, fund: top.fund } : null;
 }
@@ -246,7 +240,7 @@ function pairsOfKind(view: InvestView, best: Pick): { house: string; fund: strin
   const bestRec = allFunds(view).find((f) => f.rec.id === best.fund)?.rec;
   return allFunds(view)
     .filter((f) => !bestRec || opensOn(f.rec) === opensOn(bestRec))
-    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
     .sort((a, b) => b.v - a.v);
 }
 
@@ -320,7 +314,7 @@ export function pairVerdict(view: InvestView, bundle: IndicesBundle, plan: Workb
   const tied = !!pc && !!pcOther && isTie(pc.left.value as number, pcOther.left.value as number, theta);
   // under a tie no pair is first: the pairs are named by what they are and by where they stand, never by an order the page does not show
   const tie = onBest && n > 1;
-  const mineRole = chosen ? c.pair.yours : onBest ? (tie ? c.pair.tieRole : c.pair.cheapest) : c.pair.openTop;
+  const mineRole = chosen ? c.pair.yours : onBest ? (tie ? c.pair.tieRole : c.pair.cheapest) : c.shownPair(false).name;
   const otherRole = onBest ? (tie ? c.pair.tieRole : c.pair.next) : crown ? c.pair.cheapest : c.pair.tieRole;
   // the exact tax the state's parts hold (docs/copy.md 1): the capital gains tax at the sale, and the tax on what a fund pays out where either
   // pair's fund pays out (A-10, TXS-10, TXF-10)

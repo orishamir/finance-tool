@@ -41,8 +41,7 @@ describe("invest page computation", () => {
     const of = (id: string) => abroad.funds.find((f) => f.rec.id === id)!;
     for (const id of ["ie0031442068", "ie00b3xxrp09"]) {
       expect(of(id).best?.valueN).toBeGreaterThan(0);
-      expect(of(id).best?.open).toBe(false);
-      // paying out costs tax along the way: below the same house's accumulating fund at the same fee, which is not ranked
+      // paying out costs tax along the way: below the same house's accumulating fund at the same fee
       expect(of(id).best!.valueN).toBeLessThan(of("ie00b5bmr087").best!.valueN);
     }
     for (const id of ["us-voo", "us-ivv"]) {
@@ -61,7 +60,7 @@ describe("invest page computation", () => {
     const banks = ["leumi", "massad", "fibi"];
     // the same houses with no standing-order line at all: every Israeli fund's figure is the same to the shekel
     const without = { ...bundle, snapshots: bundle.snapshots.map((s) => (banks.includes(s.id) ? { ...s, lines: s.lines.filter((l) => l.not_ranked === undefined) } : s)) };
-    // every index's Israeli funds, so the count does not rest on which of one index's funds are ranked (a fund on an open rule, G-18, has none)
+    // every index's Israeli funds, so the count does not rest on which of one index's funds are priced
     const israeli = (b: typeof bundle) => knownIndices(b).flatMap((i) => buildInvest({ bundle: b, index: i, plan: plan() }).options.filter((o) => o.id === "il-tracking" || o.id === "il-etf").flatMap((o) => o.funds.map((f) => ({ key: `${i.id} ${f.rec.id}`, f }))));
     const withLines = israeli(bundle);
     const bare = new Map(israeli(without).map((x) => [x.key, x.f]));
@@ -348,7 +347,7 @@ describe("invest page computation", () => {
     expect(Math.max(...hedged.map((f) => f.best!.valueN))).toBeLessThan(v.headline!.valueN);
     expect(funds.find((f) => f.rec.id === "5140165")!.reason).toEqual({ code: "no-hedge-record" });
     expect(v.headline!.fund.rec.hedged).not.toBe(true);
-    const unhedged = funds.filter((f) => f.rec.hedged !== true && f.best && !f.best.open);
+    const unhedged = funds.filter((f) => f.rec.hedged !== true && f.best);
     expect(v.headline!.valueN).toBe(Math.max(...unhedged.map((f) => f.best!.valueN)));
   });
 

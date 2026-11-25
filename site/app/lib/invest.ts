@@ -2,7 +2,7 @@
 // owning it, the cheapest broker for each option and the cheapest complete way (broker + fund) for the plan. Pure: the
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the indices bundle. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { bestRanked } from "./rank";
+import { rankByValue } from "./rank";
 import { gershayim } from "./format";
 import { BlockedError, openReadings, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, fundOf, recordDistribution, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
 import { isShekel, type ExposureRecord, type FeesSnapshot, type FundRecord } from "@finance-tool/schema";
@@ -220,8 +220,6 @@ export interface WayPrice {
   value: SiteValue;
   valueN: number;
   venue: Venue | null;
-  /** The run rests on an open rule (an accumulating foreign fund, G-18): shown, not ranked. */
-  open: boolean;
   /**
    * What the account's fees take over the horizon, before the tax they save (F-91 on F-63), real shekels: the receipt's fees. In whole units
    * the account's part also holds what the cash waiting for a unit did (F-109), which is not a fee and is left out here, as the receipt
@@ -267,8 +265,6 @@ export interface OptionView {
   funds: FundWay[];
   /** The best complete way inside the option (the fund with the highest value at its broker). */
   bestWay: Way | null;
-  /** The option's funds rest on an open rule. */
-  open: boolean;
 }
 
 export interface Way {
@@ -277,7 +273,6 @@ export interface Way {
   providerId: string;
   value: SiteValue;
   valueN: number;
-  open: boolean;
 }
 
 export interface ProviderInfo {
@@ -308,9 +303,9 @@ export interface HouseEntry {
 export interface HouseRow {
   provider: ProviderInfo;
   group: HouseGroup;
-  /** Every fund of the group on the index at this house: ranked ones by value left, then ones on an open rule, then the ones with no price. */
+  /** Every fund of the group on the index at this house: priced ones by value left, then the ones with no price. */
   entries: HouseEntry[];
-  /** The house's cheapest way: the best ranked entry. */
+  /** The house's cheapest way: the best priced entry. */
   best: HouseEntry | null;
   /** Why the house has no way: not sold there (sourced), or the reason it cannot be priced. */
   unavailable: Availability | null;
@@ -1007,7 +1002,6 @@ function valueFigure(ctx: Ctx, row: ComparedProvider, reads: RunReads, about: st
 
 function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string, spec: Spec): WayPrice {
   const row = p.row;
-  const open = row.run.outcome.code === "listed-not-ranked";
   const reads: RunReads = { house: providerId, fund: fundId, spec, row };
   const value = valueFigure(ctx, row, reads, about);
   // F-91, F-109: the account's part less what the cash waiting for a whole unit did, so the figure is its fees, as on the receipt
@@ -1017,7 +1011,6 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     value,
     valueN: row.real,
     venue: p.venue,
-    open,
     accountCost: fees,
     cost: computed(fees, "nis", "F-91", inputsOfRun(ctx, { ...reads, tax: "before" }), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), labels: row.run.labels.filter(beforeExitTax) }),
     standing: p.standing,
@@ -1138,13 +1131,13 @@ function fundWayOf(ctx: Ctx, rec: FundRecord, option: OptionId): FundWay {
       failure ??= p.reason;
     }
   }
-  const best = bestRanked(ways, (w) => w.valueN);
+  const best = rankByValue(ways, (w) => w.valueN)[0];
   return { ...base, currencyMismatch: fs.mismatch, ...(best ? { best } : failure ? { reason: failure } : { reason: { code: "no-applicable-line", detail: "no broker" } }) };
 }
 
 function computeOption(ctx: Ctx, index: IndexRef, option: OptionId): OptionView {
   const exists = optionsOf(index.israeli).includes(option);
-  const empty: OptionView = { id: option, exists, notRunnable: null, cells: [], funds: [], bestWay: null, open: false };
+  const empty: OptionView = { id: option, exists, notRunnable: null, cells: [], funds: [], bestWay: null };
   if (!exists) return empty;
   const spec = genericSpec(ctx, option);
   if (!spec) return { ...empty, notRunnable: "no-rate" };
@@ -1182,8 +1175,8 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId): OptionView 
   const funds: FundWay[] = recs.map((rec) => fundWayOf(ctx, rec, option));
   funds.sort((a, b) => (b.best?.valueN ?? -Infinity) - (a.best?.valueN ?? -Infinity));
   const top = funds.find((f) => f.best);
-  const bestWay: Way | null = top?.best ? { option, fund: top, providerId: top.best.providerId, value: top.best.value, valueN: top.best.valueN, open: top.best.open } : null;
-  return { ...empty, cells, funds, bestWay, open: funds.some((f) => f.best?.open) };
+  const bestWay: Way | null = top?.best ? { option, fund: top, providerId: top.best.providerId, value: top.best.value, valueN: top.best.valueN } : null;
+  return { ...empty, cells, funds, bestWay };
 }
 
 // ---------------------------------------------------------------- the view
@@ -1199,19 +1192,16 @@ function core(ctx: Ctx, index: IndexRef): OptionView[] {
  */
 export const opensOn = (rec: FundRecord): boolean => rec.hedged !== true;
 
-/** The headline: the best ranked way over the options (an open way is shown, not ranked, G-18), among funds the page may open on when there are any. */
+/** The headline: the best way over the options, among funds the page may open on when there are any. */
 function headlineOf(options: OptionView[]): Way | null {
-  const ways = options.flatMap((o) => o.funds.flatMap((f): Way[] => (f.best && !f.best.open ? [{ option: o.id, fund: f, providerId: f.best.providerId, value: f.best.value, valueN: f.best.valueN, open: false }] : [])));
+  const ways = options.flatMap((o) => o.funds.flatMap((f): Way[] => (f.best ? [{ option: o.id, fund: f, providerId: f.best.providerId, value: f.best.value, valueN: f.best.valueN }] : [])));
   const from = ways.some((w) => opensOn(w.fund.rec)) ? ways.filter((w) => opensOn(w.fund.rec)) : ways;
   return from.sort((a, b) => b.valueN - a.valueN)[0] ?? null;
 }
 
 
-/** Fund first by value left: ranked ones, then ones on an open rule, then the ones with no price. */
-const entryOrder = (a: HouseEntry, b: HouseEntry) => {
-  const rank = (e: HouseEntry) => (e.price && !e.price.open ? 0 : e.price ? 1 : 2);
-  return rank(a) - rank(b) || (b.price?.valueN ?? 0) - (a.price?.valueN ?? 0);
-};
+/** Fund first by value left, then the ones with no price. */
+const entryOrder = (a: HouseEntry, b: HouseEntry) => Number(!a.price) - Number(!b.price) || (b.price?.valueN ?? 0) - (a.price?.valueN ?? 0);
 
 /** The run behind each priced cell, for the house rows that show its split (`splitOf`): a cell holds only what it shows. */
 const cellRuns = new WeakMap<BrokerCell, { row: ComparedProvider; spec: Spec }>();
@@ -1238,7 +1228,7 @@ function housesOf(ctx: Ctx, options: OptionView[], providers: ProviderInfo[]): H
       const at = fund.byHouse[provider.id];
       return at && "value" in at ? { fund, price: at, reason: null } : { fund, price: null, reason: at?.reason ?? fund.reason ?? { code: "data-missing", recorded: null } };
     }).sort(entryOrder);
-    const best = entries.find((e) => e.price && !e.price.open) ?? null;
+    const best = entries.find((e) => e.price) ?? null;
     // no fund record at all: the broker cost of the group's options, the cheapest
     const cells = opts.flatMap((o) => o.cells.filter((c) => c.providerId === provider.id));
     const generic = cells.filter((c) => c.kind === "cost").sort((a, b) => a.costN! - b.costN!)[0] ?? null;
@@ -1493,8 +1483,6 @@ export type DealOnPlan =
   | {
       kind: "ok";
       valueN: number;
-      /** The run rests on an open rule (G-18), as a house's `WayPrice.open`: shown, not ranked. */
-      open: boolean;
       byFee: Record<string, number>;
       accountCost: number;
       reach: number[][];
@@ -1543,7 +1531,7 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
     const row = got.row;
     const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row };
     const of = (tax: RunReads["tax"]) => (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, tax }), { today: ctx.bundle.today, rules: rulesOf(row), ...(tax === "after" ? { statements: statementsOf(row), labels: labelsOf(row) } : { labels: row.run.labels.filter(beforeExitTax) }), about });
-    out.set(fundId, { kind: "ok", valueN: row.real, open: row.run.outcome.code === "listed-not-ranked", byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure: of(undefined), left: of("after") });
+    out.set(fundId, { kind: "ok", valueN: row.real, byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure: of(undefined), left: of("after") });
   }
   return out;
 }
@@ -1598,7 +1586,7 @@ export function hasKinds(view: InvestView): boolean {
   const cur = view.index.exposure?.currency;
   if (!cur || isShekel(cur)) return false;
   const funds = view.options.filter((o) => o.exists).flatMap((o) => o.funds);
-  return (["unhedged", "hedged"] as const).every((k) => funds.some((f) => kindOf(f.rec) === k && Object.values(f.byHouse).some((x) => "valueN" in x && !x.open)));
+  return (["unhedged", "hedged"] as const).every((k) => funds.some((f) => kindOf(f.rec) === k && Object.values(f.byHouse).some((x) => "valueN" in x)));
 }
 
 type PairValueArgs = InvestArgs & { fundId: string; providerId: string; fxChange: number; tracking?: number };

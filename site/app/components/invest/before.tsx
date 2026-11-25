@@ -31,7 +31,7 @@ export function mapTab(mapRun: ReturnType<typeof useAccountMap>, view: InvestVie
   if (mapRun === null) return null;
   if (mapRun === "waiting") return { key: "map", question: c.before.map.question, answer: "\u00a0", note: "\u00a0", panel: () => <MapWaitingPanel /> };
   const { answer, on, held } = mapRun;
-  return { ...mapCard(answer, view, bundle, pick.house, held), key: "map", panel: () => (answer.kind === "map" ? <AccountMapPanel view={view} bundle={on.bundle} house={pick.house} map={answer.map} on={on} /> : <NoMapPanel why={answer.why} />) };
+  return { ...mapCard(answer, view, bundle, pick.house, held), key: "map", panel: () => (answer.kind === "map" ? <AccountMapPanel view={view} bundle={on.bundle} house={pick.house} map={answer.map} on={on} /> : <NoMapPanel />) };
 }
 
 /** The hedged-or-not card: what the plan's pair of one kind leaves more than the other's; where the plan has no such figure (no pair of

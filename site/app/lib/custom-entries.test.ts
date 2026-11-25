@@ -26,6 +26,7 @@ import type { WorkbenchInputs } from "./providers";
 import { applyImport, buildStateFile, dropTypedAccounts, replaceState, ensureLoaded, exportCounts, flush, getSnapshot, isEmptyState, readImport, removeCustomFund, removeCustomIndex, resetStore, saveCustomFund, saveCustomIndex, STATE_KEY, stateFileText, type StateV3 } from "./state";
 import type { PlanBounds } from "./plan-bounds";
 import { entered, type SiteValue } from "./value";
+import { stretchOf } from "./stretch";
 
 /** The plan numbers' bounds an import checks against, fixed here (P-05's as written on 2026-11-23: the horizon slider's 1 to 40 years, its
  *  `pct` and `age` ranges). */
@@ -155,7 +156,7 @@ describe("a fund the person types is priced at the collected houses under its ki
 
   it("a foreign fund typed abroad that accumulates is ranked on the site's reading of TXF-11, its figure tagged with it, as a collected one is (D120)", () => {
     const at = mineAbroad.byHouse[dealProviderId(movedDealId(cheap.id))] as WayPrice;
-    expect(at.open).toBe(false);
+    expect(stretchOf([mineAbroad], dealProviderId(movedDealId(cheap.id)))?.best).toBe(at.valueN);
     expect(at.valueN).toBeCloseTo(EXPECTED.cheapAbroad, 1);
     expect(at.value.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
     expect(at.value.doubt).toBeUndefined();

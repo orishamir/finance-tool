@@ -17,7 +17,7 @@ import { data as dealData, fromHouse } from "../../lib/deal-account/plan-fixture
 
 describe("the pair set beside the person's (2026-10-28)", () => {
   it("an unhedged pick is set beside the headline; a hedged pick beside the best hedged pair, never one that leaves less", () => {
-    // on every index with a hedged fund ranked at the headline's house (one on an open rule, G-18, has no pair)
+    // on every index with a hedged fund priced at the headline's house
     let seen = 0;
     for (const index of knownIndices(bundle)) {
       const view = buildInvest({ bundle, index, plan });

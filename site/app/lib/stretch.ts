@@ -1,12 +1,12 @@
 // The index page's stretches: an account is a stretch of the money ruler, from what is left with its dearest fund to what is left with its
 // cheapest, and a fund is a spot inside the chosen account's stretch. Every figure here is a pair's value as the lists price it (`valueN`,
-// F-65 on F-63) or the difference of two of them: no formula of its own. Only ranked pairs make a stretch: a pair on an open rule (G-18) is
-// shown, not ranked, so it is in no stretch, spot or scale. The caller gives the funds of one kind (an index with both kinds: the chosen
-// fund's), since a hedged fund is another holding (D28). Pure, for the lists, the ruler and the small bars.
+// F-65 on F-63) or the difference of two of them: no formula of its own. Every priced pair is ranked (F-80) and makes the stretch. The caller
+// gives the funds of one kind (an index with both kinds: the chosen fund's), since a hedged fund is another holding (D28). Pure, for the
+// lists, the ruler and the small bars.
 import type { FundWay, WayPrice } from "./invest";
 
-/** A ranked pair: priced, and not on an open rule. */
-export const rankedAt = (x: FundWay["byHouse"][string] | undefined): x is WayPrice => !!x && "valueN" in x && !x.open;
+/** A fund's entry at a house is a price, not a reason it has none: a pair the lists rank (F-80). */
+export const priced = (x: FundWay["byHouse"][string] | undefined): x is WayPrice => !!x && "valueN" in x;
 
 /** One fund's spot in an account's stretch: the pair's value. */
 export interface Spot {
@@ -28,7 +28,7 @@ export interface Stretch {
 export function stretchOf(funds: readonly FundWay[], house: string): Stretch | null {
   const spots = funds.flatMap((f) => {
     const at = f.byHouse[house];
-    return rankedAt(at) ? [{ fund: f.rec.id, value: at.valueN }] : [];
+    return priced(at) ? [{ fund: f.rec.id, value: at.valueN }] : [];
   });
   if (spots.length === 0) return null;
   spots.sort((a, b) => b.value - a.value || (a.fund < b.fund ? -1 : a.fund > b.fund ? 1 : 0));

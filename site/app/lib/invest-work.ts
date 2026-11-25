@@ -10,7 +10,7 @@ import { accountMap, mapWindow, type AccountMap, type LeftAt, type MapWindow, ty
 import { p05Range } from "./engine";
 import { SurfaceCache } from "./map-surface";
 import { buildInvest, fundWayAt, pairCosts, pairLeft, providersOfInvest, tieShareOf, type IndexRef, type InvestView } from "./invest";
-import { rankedAt } from "./stretch";
+import { priced } from "./stretch";
 import type { IndicesBundle, WorkbenchInputs } from "./providers";
 import type { SiteValue } from "./value";
 
@@ -64,9 +64,8 @@ interface WindowAsk extends MapAsk {
   window: MapWindow;
 }
 
-/** F-131's answer: the map, or why there is none (no account is ranked with the fund: its tax rests on an open rule, G-18, or none
- *  prices it). */
-export type MapAnswer = { kind: "map"; map: AccountMap } | { kind: "unranked"; why: "open-rule" | "unpriced" };
+/** F-131's answer: the map, or none, where no account prices the fund. */
+export type MapAnswer = { kind: "map"; map: AccountMap } | { kind: "unranked" };
 
 /** Each kind of work: what it is asked, and what it answers. */
 export interface Works {
@@ -98,7 +97,7 @@ function planChanges(bundle: IndicesBundle, a: ChangesAsk): PlanChanges | null {
 export function leftWith(bundle: IndicesBundle, index: IndexRef, plan: WorkbenchInputs, fund: string): LeftAt {
   return (amount, monthly, houses) => {
     const way = fundWayAt({ bundle, index, plan: { ...plan, amountNow: amount, monthly }, fundId: fund, ...(houses ? { houses } : {}) });
-    return new Map(Object.values(way?.byHouse ?? {}).flatMap((w) => (rankedAt(w) ? [[w.providerId, w.valueN] as const] : [])));
+    return new Map(Object.values(way?.byHouse ?? {}).flatMap((w) => (priced(w) ? [[w.providerId, w.valueN] as const] : [])));
   };
 }
 
@@ -152,11 +151,7 @@ function windowOf(bundle: IndicesBundle, a: WindowAsk): WindowMap | null {
 function mapOf(bundle: IndicesBundle, a: MapAsk): MapAnswer {
   const map = accountMap(mapInputs(bundle, a));
   surfaces.bound();
-  if (map) return { kind: "map", map };
-  const way = fundWayAt({ bundle, index: a.index, plan: a.plan, fundId: a.fund });
-  // a fund priced on an open rule (G-18) is shown, never ranked
-  const open = Object.values(way?.byHouse ?? {}).some((w) => "valueN" in w && w.open);
-  return { kind: "unranked", why: open ? "open-rule" : "unpriced" };
+  return map ? { kind: "map", map } : { kind: "unranked" };
 }
 
 /** The work of each kind, on the data it names. */

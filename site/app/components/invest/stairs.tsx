@@ -8,11 +8,11 @@ import { fmt } from "../../lib/format";
 import { fundLabels } from "../../lib/labels";
 import { pairCosts, type FundWay, type InvestView, type ProviderInfo, type WayPrice } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
-import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
+import { LANES, byGain, chainOf, gridOf, middleStart, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
 import { receiptAmounts, type ReceiptAmounts } from "../../lib/receipt";
 import { IconLock } from "../icons";
-import { LeadTail, Num, type SheetPart } from "../provenance";
+import { Num, type SheetPart } from "../provenance";
 import { Button, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
 import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, NoFundWords, whyNoFundAt } from "./pair";
 import { ProviderLink, providerName } from "./sections";
@@ -186,7 +186,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       hue: hueOf(s.lane),
       loses: (s.d ?? 0) < 0,
       taken: s.taken,
-      open: s.open,
+      open: false,
       current: fold + i === chain.here,
       label: `${s.lane ? t.lanes[s.lane].word : t.startPoint}: ${l.fundName}, ${l.house.short}`,
     };
@@ -246,7 +246,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       head: t.table.fund,
       cells: visible.map((l) => (
         <span key={l.stair.pos.f + l.stair.pos.a} className={cx("block min-h-[3lh]", l.stair.lane === "kind" || l.stair.lane === "fund" ? "font-semibold" : "text-muted-foreground")}>
-          <MixedName show={l.stair.open ? <LeadTail lead={l.fundName}>{lockIcon(t.lockLabel)}</LeadTail> : undefined}>{l.fundName}</MixedName>
+          <MixedName>{l.fundName}</MixedName>
         </span>
       )),
     },
@@ -289,11 +289,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       id: `${s.pos.a}|${s.pos.f}|${i}`,
       hue: hueOf(s.lane),
       loses: (s.d ?? 0) < 0,
-      head: (
-        <>
-          {s.open ? <LeadTail lead={what}>{lockIcon(t.lockLabel)}</LeadTail> : what}
-        </>
-      ),
+      head: <>{what}</>,
       delta: s.lane && prev ? <Num value={diffOf(l, prev)} display={fmt.signedNisWhole} /> : <Num value={l.left} />,
       parts: parts && parts.length ? <>{parts}</> : null,
       next: !s.taken,
@@ -348,11 +344,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
           return (
             <DiffRow
               key={r.key}
-              name={
-                <>
-                  {r.open ? <LeadTail lead={titleOf(r)}>{lockIcon(t.lockLabel)}</LeadTail> : titleOf(r)}
-                </>
-              }
+              name={<>{titleOf(r)}</>}
               sub={
                 <>
                   {sub}
@@ -362,7 +354,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
               left={<Num value={price.value} />}
               d={d}
               unit={unit}
-              open={r.open}
+              open={false}
               turn={unseen ? i === 1 : i > 0 && priced[i - 1]!.d! >= 0 && d < 0}
               label={`${t.lanes[r.lane].word}: ${titleOf(r)}`}
               onTake={() => take(r)}
@@ -397,21 +389,10 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const heldLane = (lane: Lane) => laneBlock(lane);
 
   // ---------------------------------------------------------------- what is true where the climb stopped
-  const openTop = openTopOf(g);
-  const openNote =
-    openTop && openTop.v > ceiling.v ? (
-      <>
-        {" "}
-        {t.openNote} <Num value={priceAt(openTop.pos)!.value} />: {nameOfPos(openTop.pos)}.
-      </>
-    ) : null;
   const gap = Math.round(ceiling.v) - Math.round(end.stair.v);
   const status =
     gap <= 0 ? (
-      <>
-        {t.statusTop}
-        {openNote}
-      </>
+      <>{t.statusTop}</>
     ) : (
       <>
         {t.statusNone} <Num value={delta(gap, ceilingPrice.value, `${t.about.left}: ${nameOfPos(ceiling.pos)}`, end.left, `${t.about.left}: ${end.fundName}, ${end.house.name}`, t.about.ceilingGap)} />
@@ -419,7 +400,6 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
         <JumpLink onClick={() => jump(ceiling.pos)}>
           {t.jump} {nameOfPos(ceiling.pos)}
         </JumpLink>
-        {openNote}
       </>
     );
 
@@ -439,13 +419,9 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
         <JumpLink>
           {t.jump} {n}, {longestHouse}
         </JumpLink>
-        {openTop && <> {t.openNote} {sampleLeft}: {longestName}, {longestHouse}.</>}
       </span>
     )),
-    <span key="top">
-      {t.statusTop}
-      {openTop && <> {t.openNote} {sampleLeft}: {longestName}, {longestHouse}.</>}
-    </span>,
+    <span key="top">{t.statusTop}</span>,
   ];
   const ceilingCases = fundNames.map((n) => (
     <span key={n}>

@@ -12,7 +12,7 @@ import { PLAN_AMOUNT_TILE, PlanKnobs } from "../components/invest/knobs";
 import { TitleRow } from "../components/invest/title";
 import { PlanCard } from "../components/invest/plan-card";
 import { PairReceipt, PairStub } from "../components/invest/receipt";
-import { pickOfHeadline, pickOfOpen, allFunds, type Moved, type Pick } from "../components/invest/pair";
+import { pickOfHeadline, allFunds, type Moved, type Pick } from "../components/invest/pair";
 import { PairLists, listName } from "../components/invest/lists";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
 import { LabelSheetHost } from "../components/kit";
@@ -283,7 +283,7 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
   })();
   // a plan that puts in nothing has no pair to show: the page says so in place of the pair and the lists
   const nothing = livePlan.amountNow <= 0 && livePlan.monthly <= 0;
-  const pick: Pick | null = nothing ? null : (addressPick ?? (view ? (pickOfHeadline(view) ?? pickOfOpen(view)) : null));
+  const pick: Pick | null = nothing ? null : (addressPick ?? (view ? pickOfHeadline(view) : null));
   // the stairs start from the person's own pick; with none they open on the middle account and the middle exchange-traded fund
   const picks = addressPick !== null;
   // a tap that changed the other half too: the row tapped says so, with the way back, until the next pick

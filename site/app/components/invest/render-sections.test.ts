@@ -566,7 +566,7 @@ describe("the receipt's fund line names the variable fee the site prices beside 
     // 1144237 charged 0.3% in each of its years at a 0.3% rate: nothing to name beside it
     const same = bundle.funds.find((f) => f.id === "1144237")!;
     expect(pricedVariable(same, gapListFor(bundle, same), t)).toBeNull();
-    // the receipt draws a ranked pair (a fund on an open rule, G-18, has none): of every index's ranked Israeli funds, each one's ticket
+    // the receipt draws a priced pair: of every index's priced Israeli funds, each one's ticket
     // shows one variable line, its figure the mean charged where the site prices one (the run's), not the listed rate beside it
     let named = 0;
     let plain = 0;

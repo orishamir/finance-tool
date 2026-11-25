@@ -1,8 +1,7 @@
 // The popup's three tiles for a deal on the plan: what the deal leaves at the end on the fund the plan line names (F-128), its place in
 // the account list, and, for a deal filled from a house's list, what it leaves less what that house's own row leaves on the same fund. The
-// place is the list's own: every account at its cheapest ranked way among the funds of the pair's kind (`stretchOf`, a run on an open rule
-// left out as the list leaves it out), in the list's order, most first and equal figures by name, so the tile always says where the deal's
-// row stands. Pure: the page's view and the deal's runs.
+// place is the list's own: every account at its cheapest way among the funds of the pair's kind (`stretchOf`), in the list's order, most
+// first and equal figures by name, so the tile always says where the deal's row stands. Pure: the page's view and the deal's runs.
 import { kindOf, type DealOnPlan, type FundWay, type InvestView, type WayPrice } from "../invest";
 import { stretchOf } from "../stretch";
 import type { Missing } from "./plan";
@@ -47,10 +46,9 @@ export function dealTiles(view: InvestView, got: ReadonlyMap<string, DealOnPlan>
   const at = got.get(fundId) ?? null;
   const ok = at?.kind === "ok" ? at : null;
   const missing = at?.kind === "fail" && "missing" in at.reason ? at.reason.missing : null;
-  // a run on an open rule is shown before the tax and ranks nowhere, as the list's stretches leave it out (`rankedAt`)
   const own = funds.flatMap((f) => {
     const g = got.get(f.rec.id);
-    return g?.kind === "ok" && !g.open ? [g.valueN] : [];
+    return g?.kind === "ok" ? [g.valueN] : [];
   });
   const others = view.providers.filter((p) => p.id !== providerId).flatMap((p) => {
     const s = stretchOf(funds, p.id);
@@ -59,6 +57,6 @@ export function dealTiles(view: InvestView, got: ReadonlyMap<string, DealOnPlan>
   const best = own.length ? Math.max(...own) : null;
   const place = best === null ? null : { k: listPlace(others, { best, name: view.providers.find((p) => p.id === providerId)?.short ?? name }), of: others.length + 1 };
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.entries.find((e) => e.fund.rec.id === fundId)?.price : null;
-  const priced = ok && house && !house.open ? house : null;
+  const priced = ok && house ? house : null;
   return { left: ok ? ok.valueN : null, missing, place, diff: ok && priced ? ok.valueN - priced.valueN : null, house: priced };
 }

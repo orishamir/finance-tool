@@ -9,7 +9,7 @@ import type { AccountMap } from "./account-map";
 import { buildInvest, indexById, knownIndices, providersOfInvest, tieShareOf } from "./invest";
 import { leftWith, work } from "./invest-work";
 import { p05Range } from "./engine";
-import { rankedAt } from "./stretch";
+import { priced } from "./stretch";
 import { entered } from "./value";
 import { chartTextWidth } from "../components/kit/chart-text";
 import { lineMeetsBox, regionTones } from "../components/kit/region-map";
@@ -42,7 +42,7 @@ for (const [slug, plan] of [["index-sp500", planAt(10_000, 500, 10)], ["index-sp
 
     it("with the headline's fund, names at the plan the account the account list shows first", () => {
       const out = lists(view, bundle, plan, pick);
-      const ranked = view.providers.filter((p) => allFunds(view).some((f) => rankedAt(f.byHouse[p.id])));
+      const ranked = view.providers.filter((p) => allFunds(view).some((f) => priced(f.byHouse[p.id])));
       const at = (id: string) => out.indexOf(`data-pick-key="${id}"`);
       const shownFirst = [...ranked].sort((a, b) => at(a.id) - at(b.id))[0]?.id;
       expect(firstOf(map)).toBe(shownFirst);
@@ -50,12 +50,12 @@ for (const [slug, plan] of [["index-sp500", planAt(10_000, 500, 10)], ["index-sp
 
     it("with another fund, names at the plan the account that leaves the most with that fund", () => {
       const other = need(
-        allFunds(view).find((f) => f.rec.id !== pick.fund && Object.values(f.byHouse).filter(rankedAt).length > 1),
+        allFunds(view).find((f) => f.rec.id !== pick.fund && Object.values(f.byHouse).filter(priced).length > 1),
         "a fund other than the headline's, ranked at two accounts",
       );
       const got = work.map(bundle, { index, plan, fund: other.rec.id });
       const otherMap = need(got.kind === "map" ? got.map : null, "the other fund's map");
-      const values = Object.values(other.byHouse).filter(rankedAt).sort((a, b) => b.valueN - a.valueN);
+      const values = Object.values(other.byHouse).filter(priced).sort((a, b) => b.valueN - a.valueN);
       const top = need(values[0], "the other fund's first account");
       const lead = otherMap.plan.lead;
       if (lead.kind === "near") expect(lead.tied).toContain(top.providerId);
@@ -149,7 +149,7 @@ describe("an accumulating foreign fund whose annex reports no ruling (D120)", ()
     const unranked = knownIndices(bundle).flatMap((index) => {
       const view = buildInvest({ bundle, index, plan });
       return allFunds(view)
-        .filter((f) => Object.values(f.byHouse).some((x) => "valueN" in x) && !Object.values(f.byHouse).some(rankedAt))
+        .filter((f) => Object.values(f.byHouse).some((x) => "valueN" in x) && !Object.values(f.byHouse).some(priced))
         .map((f) => f.rec.id);
     });
     expect(unranked).toEqual([]);

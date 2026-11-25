@@ -1,12 +1,10 @@
 // The index page's two linked lists. Nobody chooses an account or a fund alone: the outcome belongs to the pair. So an account is a stretch
 // of what can be left, from what is left with its dearest fund to what is left with its cheapest (lib/stretch), and a fund is a spot
-// inside the chosen account's stretch. Only ranked pairs make a stretch (a pair on an open rule is shown, not ranked, G-18), and on an index
-// with both kinds only funds of the chosen fund's kind (a hedged fund is another holding, D28). The account list: every account, by what is
-// left with its cheapest ranked fund ("עד X"), each with a small copy of the ruler with its own stretch on it; after them an account that
-// ranks none ("לא מדורג", G-18), then one that prices only the other kind, then those that price no fund on the index, with why. The fund
-// list: the funds the chosen account prices, in each kind the ranked ones by what they leave there and then the ones on an open rule under
-// their heading, each by how much less (or more) it leaves than the pair in the receipt; the funds it gives no price stay a tap away, in a
-// fold under the list, with why. Each row is one line: a name and one figure. From 1280 px the two lists stand
+// inside the chosen account's stretch. Every priced pair makes the stretch, and on an index with both kinds only funds of the chosen fund's
+// kind (a hedged fund is another holding, D28). The account list: every account, by what is left with its cheapest fund ("עד X"), each with
+// a small copy of the ruler with its own stretch on it; after them one that prices only the other kind, then those that price no fund on
+// the index, with why. The fund list: the funds the chosen account prices, in each kind by what they leave there, each by how much less (or
+// more) it leaves than the pair in the receipt; the funds it gives no price stay a tap away, in a fold under the list, with why. Each row is one line: a name and one figure. From 1280 px the two lists stand
 // either side of a ruler (`StretchChart`), the chosen account's stretch a band on it, every fund a spot in the band joined to its row; below
 // that they stand one under the other, and each fund row carries a small copy of the chosen account's stretch with its own spot. What a
 // row said beyond this (its standing-order and phone-only prices, a fund's labels and gap from the index) is in the receipt's account
@@ -18,7 +16,7 @@
 // price, the record's reason and their documents) is said under the lists. A deal the person added that still misses a figure says which, on a
 // line under its row. Before any pick the pair is the page's own and is named by where it is shown, the receipt (`invest.shownPair`).
 import { useMemo, useState, type ReactNode, type RefObject } from "react";
-import { flags, invest as c } from "../../copy";
+import { invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
 import { fmt } from "../../lib/format";
 import { shortFundName } from "../../lib/fund-name";
@@ -26,9 +24,8 @@ import { asideLines, dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf,
 import { leftOutOf, withAside, type LeftOutView } from "../../lib/left-out";
 import type { FeesSnapshot } from "@finance-tool/schema";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
-import { scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
+import { priced, scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
-import { IconLock } from "../icons";
 import { Num } from "../provenance";
 import { AlsoChanged, Button, Disclosure, HelpMark, LeftOutMark, MixedName, PickList, StretchBar, StretchChart, Tag, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot } from "../kit";
 import { AddEntryButton, FundEditMark } from "./custom-entries";
@@ -39,7 +36,7 @@ import { optionClass, reasonText } from "./parts";
 import { providerName } from "./sections";
 import { pillName } from "./title";
 import { ANCHOR, verdictOf } from "./receipt";
-import { allFunds, asideParts, inTieSet, labelsOf, pairVerdict, pickHalf, priced, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
+import { allFunds, asideParts, inTieSet, labelsOf, pairVerdict, pickHalf, tieFundCount, tieFunds, bestFor, whyNoFundAt, noPriceLine, NoFundWords, type Moved, type OnPick, type Pick } from "./pair";
 
 /** A fund's name in the lists: without the index's own name where the fund's name holds it (lib/fund-name); the receipt has it whole. */
 export const listName = (view: InvestView, name: string) => shortFundName(name, [pillName(view.index.name), ...(view.index.exposure?.names.he ?? []), ...(view.index.exposure?.names.en ?? []), ...(view.index.custom ? [view.index.custom.name] : [])]);
@@ -154,8 +151,7 @@ export function PairLists(props: ListsProps) {
   if (!fund || !house || !priced(selAt)) return null;
 
   // ---------------------------------------------------------------- the stretches and the scale
-  // on an index with both kinds, only the chosen fund's kind sets a stretch: a hedged fund is another holding (D28, `opensOn`); a pair on
-  // an open rule is shown, not ranked (G-18), and sets none either (`stretchOf`)
+  // on an index with both kinds, only the chosen fund's kind sets a stretch: a hedged fund is another holding (D28, `opensOn`)
   const kindFunds = kinds ? funds.filter((f) => kindOf(f.rec) === mine) : funds;
   const providers = view.providers;
   const stretches = new Map<string, Stretch | null>(providers.map((p) => [p.id, stretchOf(kindFunds, p.id)]));
@@ -178,12 +174,10 @@ export function PairLists(props: ListsProps) {
     return at && "availability" in at && at.availability ? at.availability : null;
   };
   const pricesAny = (id: string) => funds.some((f) => priced(f.byHouse[id]));
-  const pricesKind = (id: string) => kindFunds.some((f) => priced(f.byHouse[id]));
-  // after the ranked accounts: one whose every priced fund of the kind is on an open rule (shown, not ranked, G-18), then one that prices
-  // only the other kind, then one that prices no fund on the index ("no data" first and "not possible there" last), each with why
-  const unrankedHouses = providers.filter((p) => !stretches.get(p.id) && pricesKind(p.id)).sort((a, b) => a.short.localeCompare(b.short, "he"));
+  // after the ranked accounts: one that prices only the other kind, then one that prices no fund on the index ("no data" first and "not
+  // possible there" last), each with why
   const unpricedHouses = providers
-    .filter((p) => !stretches.get(p.id) && !pricesKind(p.id))
+    .filter((p) => !stretches.get(p.id))
     .sort((a, b) => Number(!pricesAny(a.id)) - Number(!pricesAny(b.id)) || Number(!!noWay(a)) - Number(!!noWay(b)) || a.short.localeCompare(b.short, "he"));
   const nameOf = (p: (typeof providers)[number], selected: boolean) => (
     <span className={cx("min-w-0 text-sm", selected ? "font-semibold" : "font-medium", (p.id === view.yourBroker || p.custom) && "text-entered")}>{p.short}</span>
@@ -222,29 +216,6 @@ export function PairLists(props: ListsProps) {
             {nameWithMark(p, selected)}
             {selected ? chosenWord(chosen, "text-chart-by-account") : figureCell(c.lists.accounts.upTo, priced(best) && <Num animate value={best.value} />, s.best)}
             <StretchBar scale={scale} best={s.best} worst={s.worst} className="h-6 max-xl:h-8" />
-            {selected && movedHere("fund")}
-          </>
-        ),
-      };
-    }),
-    ...unrankedHouses.map((p): PickRow => {
-      const selected = p.id === pick.house;
-      return {
-        key: p.id,
-        selected,
-        muted: true,
-        onSelect: () => pickHalf(view, pick, { house: p.id }, onPick),
-        cells: (
-          <>
-            <span className="flex min-w-0 items-center gap-1">
-              {nameOf(p, selected)}
-              {/* why its funds are shown and not ranked, in the rule's own words */}
-              <HelpMark about={c.lists.accounts.unranked} text={flags["G-18"] ?? ""} />
-              <LeftOutMark view={leftOutAt.get(p.id) ?? null} house={p.short} />
-              {p.custom && <DealEditMark id={p.id} />}
-            </span>
-            {selected ? chosenWord(chosen, "text-chart-by-account") : <span className="inline-flex items-center gap-1 text-xs text-blocked-foreground whitespace-nowrap"><IconLock size={14} />{c.lists.accounts.unranked}</span>}
-            <StretchBar scale={scale} best={null} worst={null} className="h-6 max-xl:h-8" />
             {selected && movedHere("fund")}
           </>
         ),
@@ -324,26 +295,16 @@ export function PairLists(props: ListsProps) {
     return differs.length > 0 ? differs.join(" · ") : `${c.pair.colNumber} ${f.number}`;
   };
   const kindRank = (f: FundWay) => (kinds && kindOf(f.rec) === "hedged" ? 1 : 0);
-  const openAt = (f: FundWay, house: string) => ((f.byHouse[house] as WayPrice).open ? 1 : 0);
-  // each kind: the ranked funds by what is left, then the ones on an open rule, shown and not ranked (`HouseRow.entries`'s order)
-  const pricedAt = (house: string) => funds.filter((f) => priced(f.byHouse[house])).sort((a, b) => kindRank(a) - kindRank(b) || openAt(a, house) - openAt(b, house) || (b.byHouse[house] as WayPrice).valueN - (a.byHouse[house] as WayPrice).valueN);
+  // each kind: the funds by what is left (`HouseRow.entries`'s order)
+  const pricedAt = (house: string) => funds.filter((f) => priced(f.byHouse[house])).sort((a, b) => kindRank(a) - kindRank(b) || (b.byHouse[house] as WayPrice).valueN - (a.byHouse[house] as WayPrice).valueN);
   const pricedFunds = pricedAt(pick.house);
   // every order the fund list can take, one per account: a phone's fold holds the tallest rows of any of them, so a pick of an account
   // moves nothing below the list
-  // the rows that open a group: the hedged kind's first, and the first on an open rule within each kind
-  const groupStarts = (fs: FundWay[], house: string) => {
-    const out = new Map<string, { hedged: boolean; open: boolean }>();
-    fs.forEach((f, i) => {
-      const prev = fs[i - 1];
-      const hedged = kinds && kindOf(f.rec) === "hedged" && (!prev || kindOf(prev.rec) !== "hedged");
-      const open = openAt(f, house) === 1 && (!prev || openAt(prev, house) === 0 || kindRank(prev) !== kindRank(f));
-      if (hedged || open) out.set(f.rec.id, { hedged, open });
-    });
-    return out;
-  };
-  const orders: FoldOrder[] = [...new Set([...pricedHouses.map((p) => p.id), ...unrankedHouses.map((p) => p.id), pick.house])].map((h) => {
+  // the row that opens a group: the hedged kind's first
+  const groupStarts = (fs: FundWay[]) => new Set(fs.filter((f, i) => { const prev = fs[i - 1]; return kinds && kindOf(f.rec) === "hedged" && (!prev || kindOf(prev.rec) !== "hedged"); }).map((f) => f.rec.id));
+  const orders: FoldOrder[] = [...new Set([...pricedHouses.map((p) => p.id), pick.house])].map((h) => {
     const fs = pricedAt(h);
-    return { keys: fs.map((f) => f.rec.id), headings: new Set(groupStarts(fs, h).keys()), choosable: new Set(fs.map((f) => f.rec.id)), keep: new Set(fs.filter((f) => isCustomFund(f.rec)).map((f) => f.rec.id)) };
+    return { keys: fs.map((f) => f.rec.id), headings: groupStarts(fs), choosable: new Set(fs.map((f) => f.rec.id)), keep: new Set(fs.filter((f) => isCustomFund(f.rec)).map((f) => f.rec.id)) };
   });
   // the chosen account is the person's deal with no price for buying abroad (E): its funds bought abroad, priced at every other account, fold into one line that says so and opens the deal on its buy-and-sell block
   const abroadLacks = isDealProviderId(pick.house) ? (dealApi?.abroadLacks(pick.house) ?? null) : null;
@@ -357,28 +318,8 @@ export function PairLists(props: ListsProps) {
       {names.hedged}
     </span>
   );
-  // the funds on an open rule: one quiet heading over them, in the blocked colours, with the lock; their rows carry no tag
-  const openHeading = (
-    <span className="flex items-center gap-1.5 font-medium text-blocked-foreground">
-      <IconLock size={14} />
-      {c.lists.funds.unranked}
-    </span>
-  );
-  const starts = groupStarts(pricedFunds, pick.house);
-  const headingOf = (id: string) => {
-    const g = starts.get(id);
-    if (!g) return null;
-    return g.hedged && g.open ? (
-      <span className="flex flex-col gap-1.5">
-        {hedgedHeading}
-        {openHeading}
-      </span>
-    ) : g.hedged ? (
-      hedgedHeading
-    ) : (
-      openHeading
-    );
-  };
+  const starts = groupStarts(pricedFunds);
+  const headingOf = (id: string) => (starts.has(id) ? hedgedHeading : null);
   // a fund the person typed: its name in the entered ink and, beside it, the pencil that opens its panel, as a deal's row in the account list
   const fundName = (f: FundWay, selected: boolean) => {
     const sub = [apart(f), tiedHere(f.rec.id) ? c.pair.tiedWord : null].filter(Boolean).join(" · ");
@@ -402,10 +343,9 @@ export function PairLists(props: ListsProps) {
   // either (the site's cautious reading of an open tax index) is the difference's (`differenceOf`)
   const diff = (f: FundWay, at: WayPrice) => differenceOf([c.pair.input(f.name, c.pair.colLeft), at.value], [pickKey, selAt.value], "F-65", { today, about: sp.diffAbout });
   // each ranked fund's spot in the chosen account's stretch: its pair's value, or, for a fund of the other kind, where its difference from the
-  // pair in the receipt runs over the dollar's range (a segment, held inside the scale's ends); a fund on an open rule has none
+  // pair in the receipt runs over the dollar's range (a segment, held inside the scale's ends)
   const spots: Record<string, StretchSpot> = {};
   for (const f of pricedFunds) {
-    if ((f.byHouse[pick.house] as WayPrice).open) continue;
     const x = cross.get(f.rec.id);
     spots[f.rec.id] = x ? [point + x.atLo, point + x.atHi] : (f.byHouse[pick.house] as WayPrice).valueN;
   }
@@ -516,14 +456,7 @@ export function PairLists(props: ListsProps) {
       </div>
     ) : null;
   // ---------------------------------------------------------------- what the page says of the chosen rows, under both lists
-  const at = selAt;
   const chosenNotes = [
-    at.open ? (
-      <span key="open" className="inline-flex items-center gap-1 text-blocked-foreground">
-        <IconLock size={14} />
-        {c.lists.openRow}
-      </span>
-    ) : null,
     fund.noUnitPrice ? <span key="unit">{c.pair.unitPriceMissing}</span> : null,
   ].filter(Boolean);
   // under the lists, what holds for the chosen pair
@@ -618,7 +551,6 @@ export function PairLists(props: ListsProps) {
         scale={scale}
         band={pickStretch ? { best: pickStretch.best, worst: pickStretch.worst } : null}
         point={point}
-        pointOpen={selAt.open}
         spots={spots}
         chosenStart={pick.house}
         chosenEnd={pick.fund}

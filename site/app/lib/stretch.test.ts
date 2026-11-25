@@ -7,12 +7,12 @@ import { cleanStep, placeOn, scaleOf, stretchOf, stretchesOf, ticksOf } from "./
 import { allFunds } from "../components/invest/pair";
 import { bundle, plan } from "../components/invest/render-fixtures";
 
-/** A fund priced at the houses given, by their values; a house given null holds a row with no price, one given `{ open }` a pair on an open rule. */
-const way = (id: string, at: Record<string, number | null | { open: number }>) =>
+/** A fund priced at the houses given, by their values; a house given null holds a row with no price. */
+const way = (id: string, at: Record<string, number | null>) =>
   ({
     rec: { id },
     byHouse: Object.fromEntries(
-      Object.entries(at).map(([h, v]) => [h, v === null ? { availability: null } : typeof v === "number" ? { valueN: v, value: v, open: false } : { valueN: v.open, value: v.open, open: true }]),
+      Object.entries(at).map(([h, v]) => [h, v === null ? { availability: null } : { valueN: v, value: v }]),
     ),
   }) as unknown as FundWay;
 
@@ -39,16 +39,6 @@ describe("an account's stretch", () => {
   it("one priced fund is a stretch of one spot, its best and worst the same", () => {
     const z = stretchOf(funds, "z")!;
     expect([z.best, z.worst, z.spots.length]).toEqual([70, 70, 1]);
-  });
-  it("leaves out a pair on an open rule (G-18, shown, not ranked): no spot, no end, and no stretch where every pair is open", () => {
-    const withOpen = [...funds, way("e", { x: 150, y: { open: 200 } }), way("f", { v: { open: 99 } })];
-    const x = stretchOf(withOpen, "x")!;
-    expect(x.best).toBe(150);
-    const y = stretchOf(withOpen, "y")!;
-    expect(y.spots.map((s) => s.fund)).toEqual(["c", "a"]);
-    expect(y.best).toBe(95);
-    expect(stretchOf(withOpen, "v")).toBeNull();
-    expect(scaleOf(stretchesOf(withOpen, ["x", "y", "z", "v"]))).toEqual({ lo: 70, hi: 150 });
   });
   it("every account in the order given, one that prices nothing left out", () => {
     expect(stretchesOf(funds, ["z", "w", "x"]).map((s) => s.house)).toEqual(["z", "x"]);
@@ -88,7 +78,7 @@ describe("on the collected data", () => {
     for (const s of stretches) {
       const values = all.flatMap((f) => {
         const at = f.byHouse[s.house];
-        return at && "valueN" in at && !at.open ? [at.valueN] : [];
+        return at && "valueN" in at ? [at.valueN] : [];
       });
       expect(s.spots.length, s.house).toBe(values.length);
       expect(s.best, s.house).toBe(Math.max(...values));

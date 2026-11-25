@@ -150,17 +150,15 @@ describe("F-128 a deal filled from a house prices as the house does, on a few in
     expect(snapshotOfDeal(newDeal("brokerage-account", "own"), undefined, t).provider.class).toBe("broker");
   });
 
-  it("the popup's place is the deal row's place in the account list: after every account that leaves more, ranked runs alone", () => {
+  it("the popup's place is the deal row's place in the account list: after every account that leaves more", () => {
     const funds = view.options.filter((o) => o.exists).flatMap((o) => o.funds);
     const tops = view.providers.flatMap((p) => { const st = stretchOf(funds, p.id); return st ? [st.best] : []; }).sort((a, z) => z - a);
     const fundId = funds[0]!.rec.id;
-    const at = (valueN: number, open = false) => new Map([[fundId, { kind: "ok" as const, valueN, open, byFee: {}, accountCost: 0, reach: [], figure: () => { throw new Error("unused"); }, left: () => { throw new Error("unused"); } }]]);
+    const at = (valueN: number) => new Map([[fundId, { kind: "ok" as const, valueN, byFee: {}, accountCost: 0, reach: [], figure: () => { throw new Error("unused"); }, left: () => { throw new Error("unused"); } }]]);
     const pid = "deal:none";
     // just under the first: second, as the list puts its row, however close to the first
     expect(dealTiles(view, at(tops[0]! * 0.999), pid, "x", null, fundId, funds).place).toEqual({ k: 1 + tops.filter((v) => v > tops[0]! * 0.999).length, of: tops.length + 1 });
     expect(dealTiles(view, at(tops[0]! + 1), pid, "x", null, fundId, funds).place?.k).toBe(1);
-    // a run on an open rule ranks nowhere, as the list's stretches leave it out
-    expect(dealTiles(view, at(tops[0]! + 1, true), pid, "x", null, fundId, funds).place).toBeNull();
     // equal figures stand by name, as the list sorts them
     expect(listPlace([{ best: 10, name: "ב" }, { best: 12, name: "ג" }], { best: 10, name: "א" })).toBe(2);
     expect(listPlace([{ best: 10, name: "א" }, { best: 12, name: "ג" }], { best: 10, name: "ב" })).toBe(3);

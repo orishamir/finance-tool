@@ -5,33 +5,32 @@ import { buildIndicesBundle } from "./providers.server";
 import { chainOf, ceilingOf, climbFrom, gridOf, laneCases, LANES, middleStart, rowsAt, unitOf, type Grid } from "./stairs";
 import { entered } from "./value";
 
-/** accounts A..C, funds: t1, t2 (tracking), h1 (hedged tracking), e1 (etf), o1 (abroad, open). */
-const V: Record<string, number | null> = { "A|t1": 100, "B|t1": 110, "C|t1": null, "A|t2": 105, "B|t2": 120, "C|t2": 90, "A|e1": 95, "B|e1": 99, "C|e1": 98, "A|h1": 200, "B|h1": 200, "C|h1": null, "A|o1": 300, "B|o1": 310, "C|o1": null };
+/** accounts A..C, funds: t1, t2 (tracking), h1 (hedged tracking), e1 (etf). */
+const V: Record<string, number | null> = { "A|t1": 100, "B|t1": 110, "C|t1": null, "A|t2": 105, "B|t2": 120, "C|t2": 90, "A|e1": 95, "B|e1": 99, "C|e1": 98, "A|h1": 200, "B|h1": 200, "C|h1": null };
 const g: Grid = {
   accounts: ["A", "B", "C"],
-  funds: [{ id: "t1", kind: "tr", hedged: false }, { id: "t2", kind: "tr", hedged: false }, { id: "h1", kind: "tr", hedged: true }, { id: "e1", kind: "etf", hedged: false }, { id: "o1", kind: "ab", hedged: false }],
-  kinds: ["tr", "etf", "ab"],
-  cell: (a, f) => (V[`${a}|${f}`] == null ? null : { v: V[`${a}|${f}`]!, open: f === "o1" }),
+  funds: [{ id: "t1", kind: "tr", hedged: false }, { id: "t2", kind: "tr", hedged: false }, { id: "h1", kind: "tr", hedged: true }, { id: "e1", kind: "etf", hedged: false }],
+  kinds: ["tr", "etf"],
+  cell: (a, f) => (V[`${a}|${f}`] == null ? null : { v: V[`${a}|${f}`]! }),
   why: () => "n",
 };
 
 describe("rowsAt", () => {
   const rows = rowsAt(g, { a: "A", f: "t1" });
   it("has one row per single change: other accounts, other kinds, other funds of the kind", () => {
-    expect(rows.map((r) => r.key)).toEqual(["account|B", "account|C", "kind|etf", "kind|ab", "fund|t2", "fund|h1"]);
+    expect(rows.map((r) => r.key)).toEqual(["account|B", "account|C", "kind|etf", "fund|t2", "fund|h1"]);
   });
   it("gives a difference only where both ends are priced, and a reason where not", () => {
     expect(rows.find((r) => r.key === "account|B")!.d).toBe(10);
     expect(rows.find((r) => r.key === "account|C")).toMatchObject({ d: null, why: "n" });
   });
-  it("hedged and open rows are shown but never rank", () => {
+  it("hedged rows are shown but never rank", () => {
     expect(rows.find((r) => r.key === "fund|h1")).toMatchObject({ hedged: true, d: 100 });
-    expect(rows.find((r) => r.key === "kind|ab")).toMatchObject({ open: true });
   });
 });
 
 describe("climb and ceiling", () => {
-  it("the ceiling ignores hedged and open pairs", () => expect(ceilingOf(g)).toEqual({ v: 120, pos: { a: "B", f: "t2" } }));
+  it("the ceiling ignores hedged pairs", () => expect(ceilingOf(g)).toEqual({ v: 120, pos: { a: "B", f: "t2" } }));
   it("climbs by the largest ranked gain each time, and stops", () => {
     expect(climbFrom(g, { a: "A", f: "t1" }).map((r) => r.to)).toEqual([{ a: "B", f: "t1" }, { a: "B", f: "t2" }]);
   });
@@ -47,7 +46,7 @@ describe("climb and ceiling", () => {
 });
 
 describe("unitOf", () => {
-  const row = (d: number) => ({ lane: "account", to: { a: "x", f: "y" }, key: String(d), kind: null, v: 0, d, open: false, hedged: false, why: null }) as const;
+  const row = (d: number) => ({ lane: "account", to: { a: "x", f: "y" }, key: String(d), kind: null, v: 0, d, hedged: false, why: null }) as const;
   it("is the larger of the biggest gain and the second-largest loss among rows that rank", () => {
     expect(unitOf([row(50), row(-30), row(-400), row(-900)])).toBe(400);
     expect(unitOf([row(500), row(-30), row(-400)])).toBe(500);
@@ -90,7 +89,7 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   // same state, so no start draws a lane taller than its hold
   it("every lane from every priced start is covered by one of the lane's cases", () => {
     const cases = laneCases(grid);
-    const sig = (r: { key: string; d: number | null; why: string | null; open: boolean; hedged: boolean; to: { f: string }; lane: string }) => `${r.key}:${r.d == null ? r.why : "p"}:${r.open}:${r.hedged}:${r.lane === "kind" ? r.to.f : ""}`;
+    const sig = (r: { key: string; d: number | null; why: string | null; hedged: boolean; to: { f: string }; lane: string }) => `${r.key}:${r.d == null ? r.why : "p"}:${r.hedged}:${r.lane === "kind" ? r.to.f : ""}`;
     for (const a of grid.accounts)
       for (const f of grid.funds) {
         if (!grid.cell(a, f.id)) continue;
@@ -105,7 +104,7 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   });
   it("opens with no pick on a priced pair that ranks, of an exchange-traded fund", () => {
     const s = middleStart(grid)!;
-    expect(grid.cell(s.a, s.f)).toMatchObject({ open: false });
+    expect(grid.cell(s.a, s.f)).not.toBeNull();
     expect(grid.funds.find((f) => f.id === s.f)!.kind).toBe("il-etf");
   });
 });

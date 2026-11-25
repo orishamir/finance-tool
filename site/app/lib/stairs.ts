@@ -31,8 +31,8 @@ export interface Grid {
   funds: readonly StairFund[];
   /** The kinds in the order the lane lists them. */
   kinds: readonly string[];
-  /** Real value left at the horizon (F-65) and whether it rests on an open rule; null when the pair has no price. */
-  cell(a: string, f: string): { v: number; open: boolean } | null;
+  /** Real value left at the horizon (F-65); null when the pair has no price. */
+  cell(a: string, f: string): { v: number } | null;
   why(a: string, f: string): Why;
 }
 
@@ -50,7 +50,7 @@ export function gridOf(view: InvestView, snapshots: readonly FeesSnapshot[]): Gr
     kinds: options.filter((o) => o.funds.length > 0).map((o) => o.id),
     cell(a, f) {
       const at = byFund.get(f)?.byHouse[a];
-      return at && "valueN" in at ? { v: at.valueN, open: at.open } : null;
+      return at && "valueN" in at ? { v: at.valueN } : null;
     },
     why(a, f) {
       const w = byFund.get(f);
@@ -68,7 +68,6 @@ export function gridOf(view: InvestView, snapshots: readonly FeesSnapshot[]): Gr
 
 const fundOf = (g: Grid, id: string): StairFund => g.funds.find((x) => x.id === id)!;
 const val = (g: Grid, p: Pos): number | null => g.cell(p.a, p.f)?.v ?? null;
-const openAt = (g: Grid, p: Pos): boolean => g.cell(p.a, p.f)?.open ?? false;
 const fundsOfKind = (g: Grid, kind: string): StairFund[] => g.funds.filter((x) => x.kind === kind);
 
 export interface Row {
@@ -81,7 +80,6 @@ export interface Row {
   v: number | null;
   /** The value left at `to` less the value left at the current position, each in whole shekels as shown, so the figures on the page add up; null when either has no price. */
   d: number | null;
-  open: boolean;
   hedged: boolean;
   why: Why | null;
 }
@@ -89,7 +87,7 @@ export interface Row {
 /** Every single change from one holding: another account, another kind of fund, another fund of the same kind. */
 const rowOf = (g: Grid, cur: number | null, lane: Lane, to: Pos, key: string, kind: string | null): Row => {
   const v = val(g, to);
-  return { lane, to, key: `${lane}|${key}`, kind, v, d: v == null || cur == null ? null : Math.round(v) - Math.round(cur), open: openAt(g, to), hedged: fundOf(g, to.f).hedged, why: v == null ? g.why(to.a, to.f) : null };
+  return { lane, to, key: `${lane}|${key}`, kind, v, d: v == null || cur == null ? null : Math.round(v) - Math.round(cur), hedged: fundOf(g, to.f).hedged, why: v == null ? g.why(to.a, to.f) : null };
 };
 /** The kind lane's row for kind `k` at account `a`: the kind's fund that leaves the most there; a currency-hedged fund is another holding, so it does not stand for the kind. */
 const kindRow = (g: Grid, cur: number | null, a: string, k: string): Row | null => {
@@ -115,7 +113,7 @@ export function rowsAt(g: Grid, pos: Pos): Row[] {
 
 /**
  * Every list a lane can show on this grid, each one row longer than any start can show (the start's own row is among them), told apart
- * by what sets a row's height (priced or why not, open, hedged, the kind's fund) and kept once: what each lane's held height is measured
+ * by what sets a row's height (priced or why not, hedged, the kind's fund) and kept once: what each lane's held height is measured
  * from, so a pick or a step moves nothing below a lane (on a phone the lanes stand one under another, and a fund bought abroad
  * after one bought here grew the account lane by 357 px). The figures are any priced start's; only their presence counts.
  */
@@ -123,7 +121,7 @@ export function laneCases(g: Grid): Record<Lane, Row[][]> {
   const seen: Record<Lane, Map<string, Row[]>> = { account: new Map(), kind: new Map(), fund: new Map() };
   const add = (lane: Lane, rows: Row[]) => {
     if (!rows.length) return;
-    const sig = rows.map((r) => `${r.key}:${r.d == null ? r.why : "p"}:${r.open ? 1 : 0}:${r.hedged ? 1 : 0}:${r.lane === "kind" ? r.to.f : ""}`).join(",");
+    const sig = rows.map((r) => `${r.key}:${r.d == null ? r.why : "p"}:${r.hedged ? 1 : 0}:${r.lane === "kind" ? r.to.f : ""}`).join(",");
     if (!seen[lane].has(sig)) seen[lane].set(sig, rows);
   };
   const anyAt = (pick: (a: string) => number | null) => {
@@ -148,30 +146,26 @@ export function laneCases(g: Grid): Record<Lane, Row[][]> {
 
 /** The larger gain first; a row with no figure last. */
 export const byGain = (x: Row, y: Row): number => (y.d ?? -Infinity) - (x.d ?? -Infinity);
-/** A row ranks when it has a figure, rests on no open rule and is not a currency-hedged holding (hedging is a label, not a filter, D28). */
-export const ranks = (r: Row): boolean => r.d != null && !r.open && !r.hedged;
+/** A row ranks when it has a figure and is not a currency-hedged holding (hedging is a label, not a filter, D28). */
+export const ranks = (r: Row): boolean => r.d != null && !r.hedged;
 
 export interface Top {
   v: number;
   pos: Pos;
 }
 
-function topOf(g: Grid, wantOpen: boolean): Top | null {
+/** The most left over every priced pair that ranks. */
+export function ceilingOf(g: Grid): Top | null {
   let top: Top | null = null;
   for (const f of g.funds) {
     if (f.hedged) continue;
     for (const a of g.accounts) {
       const c = g.cell(a, f.id);
-      if (!c || c.open !== wantOpen) continue;
-      if (!top || c.v > top.v) top = { v: c.v, pos: { a, f: f.id } };
+      if (c && (!top || c.v > top.v)) top = { v: c.v, pos: { a, f: f.id } };
     }
   }
   return top;
 }
-/** The most left over every priced pair that ranks. */
-export const ceilingOf = (g: Grid): Top | null => topOf(g, false);
-/** The most left over pairs on an open rule: shown beside the ceiling, never counted in it. */
-export const openTopOf = (g: Grid): Top | null => topOf(g, true);
 
 /** The largest single gain each time, from `from`, until none is left (at most six). */
 export function climbFrom(g: Grid, from: Pos, limit = 6): Row[] {
@@ -205,7 +199,6 @@ export interface Stair {
   v: number;
   /** The value left here less the stair before; null for the start. */
   d: number | null;
-  open: boolean;
 }
 export interface Chain {
   /** The start, what was taken, then the largest single gain left each time. */
@@ -233,7 +226,7 @@ export function chainOf(g: Grid, s: StairsState): Chain | null {
   const items = [{ pos: s.start, lane: null as Lane | null, taken: true }, ...taken.map((t) => ({ pos: t.to, lane: t.lane as Lane | null, taken: true })), ...next.map((n) => ({ pos: n.to, lane: n.lane as Lane | null, taken: false }))];
   const chain = items.map((it, i): Stair => {
     const v = val(g, it.pos)!;
-    return { ...it, v, d: i ? Math.round(v) - Math.round(val(g, items[i - 1]!.pos)!) : null, open: openAt(g, it.pos) };
+    return { ...it, v, d: i ? Math.round(v) - Math.round(val(g, items[i - 1]!.pos)!) : null };
   });
   return { chain, here: taken.length, at, ceiling, taken };
 }
@@ -280,7 +273,7 @@ export function unitOf(rows: readonly Row[]): number {
  */
 export function middleStart(g: Grid, order: readonly string[] = ["il-etf", "tase-foreign", "il-tracking", "abroad"]): Pos | null {
   const median = (xs: number[]) => [...xs].sort((x, y) => x - y)[Math.floor((xs.length - 1) / 2)]!;
-  const pricedBy = (f: StairFund) => g.accounts.flatMap((a) => { const c = g.cell(a, f.id); return c && !c.open ? [{ a, v: c.v }] : []; });
+  const pricedBy = (f: StairFund) => g.accounts.flatMap((a) => { const c = g.cell(a, f.id); return c ? [{ a, v: c.v }] : []; });
   for (const kind of order) {
     const funds = fundsOfKind(g, kind).filter((f) => !f.hedged && pricedBy(f).length > 0);
     if (!funds.length) continue;
