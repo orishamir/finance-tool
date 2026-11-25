@@ -18,6 +18,7 @@ import { feesOnPlan, missingKey, missingOf, planAccount, planDeal, planFees, pla
 import { planCases, yearSpans } from "./plan-cases";
 import { pickLine } from "../fee-deal/reading";
 import { bundle, data, flagsOf, fromHouse, housesBeside, onHouse, onPlan, plan, PLANS, t } from "./plan-fixtures";
+import { leftOn } from "./exceptions-fixtures";
 
 /**
  * The indices the fast run compares on: the Tel Aviv 125 (a fund on the Tel Aviv exchange and an open mutual fund, bought in shekels) and
@@ -82,6 +83,29 @@ describe("F-128 the plan sets what is bought and the channel", () => {
     const miss = feesOnPlan(without, mutual, line).find((x) => x.on === "missing");
     expect(miss && miss.on === "missing" && miss.missing).toMatchObject({ why: "case", kind: "trade", fee: trade.id });
     expect(missingOf(missingKey({ why: "case", fee: deal.fees[0]!.id, kind: "trade" }))).toEqual({ why: "case", fee: deal.fees[0]!.id, kind: "trade" });
+  });
+});
+
+describe("F-128 a deal filled from Psagot converts a fund bought abroad at the price per dollar its row charges (F-13)", () => {
+  const b = withDeals(bundle, [fromHouse("psagot")], data.kinds);
+  const deal = dealProviderId("deal-psagot");
+  const several = ["50,000 now, 20 years at 5%", "40,000 a month, 10 years at 7%, the dollar down 3% a year", "1,000 now and 300 a month, 10 years at 7%, the dollar up 3% a year"];
+  it.each(PLANS.filter(([n]) => several.includes(n)))("%s: on every fund bought abroad, the deal leaves to the agora what Psagot's row leaves, and has a price exactly where it has one", (_, p, fxChange) => {
+    let compared = 0;
+    for (const ix of ["index-msci-world", "index-sp500"]) {
+      const index = indexById(b, ix);
+      if (!index) throw new Error(`the bundle prices ${ix}`);
+      const abroad = buildInvest({ bundle: b, index, plan: p, assumptions: { fxChange } }).options.find((o) => o.id === "abroad");
+      for (const f of abroad?.funds ?? []) {
+        const row = leftOn(f, "psagot");
+        const dealLeft = leftOn(f, deal);
+        expect([ix, f.rec.id, dealLeft === null]).toEqual([ix, f.rec.id, row === null]);
+        if (row === null || dealLeft === null) continue;
+        expect(Math.abs(dealLeft - row), `${ix} ${f.rec.id}`).toBeLessThan(0.005);
+        compared++;
+      }
+    }
+    expect(compared).toBeGreaterThan(0);
   });
 });
 

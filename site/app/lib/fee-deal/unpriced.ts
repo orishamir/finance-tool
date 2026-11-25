@@ -13,7 +13,7 @@ export type Missing = "rate" | "unit" | "sum" | "price";
 
 /** The main figure of a price of form `form`, as `Missing` names it; none for a free price, which has no figure. */
 export const missingOfForm = (form: FormId): Exclude<Missing, "price"> | null =>
-  form === "action" || form === "held" ? "rate" : form === "perUnit" ? "unit" : form === "perAction" || form === "sum" ? "sum" : null;
+  form === "action" || form === "held" ? "rate" : form === "perUnit" ? "unit" : form === "perAction" || form === "sum" || form === "perDollar" ? "sum" : null;
 
 /** The figure a price not given is missing: its main figure where that is blank, else another of its figures. */
 export const missingOf = (p: Price): Missing => (mainFigure(p)?.blank ? (missingOfForm(p.form) ?? "price") : "price");

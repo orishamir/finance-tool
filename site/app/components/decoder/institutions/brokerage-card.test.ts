@@ -157,10 +157,11 @@ describe("the can-buy rows on a company's card", () => {
     expect(out).toMatch(new RegExp(`class="ruled"[^>]*>${card.canBuy.state.no}<`));
   });
   it("a row whose record names no rule keeps its plain word; a doubt reads \"לא ברור\"", () => {
-    const { part, out } = render("psagot");
-    const doubt = part.tariff.availability.find((a) => a.state === "unknown")!;
+    // Pepper's record leaves open whether funds and foreign securities can be bought there, and names no rule for it
+    const { part, out } = render("pepper");
+    const doubt = part.tariff.availability.find((a) => a.state === "unknown");
     expect(doubt).toBeTruthy();
-    expect(doubt.rules).toBeUndefined();
+    expect(doubt?.rules).toBeUndefined();
     expect(out).toContain(`>${card.canBuy.state.unknown}<`);
     expect(card.canBuy.state.unknown).toBe("לא ברור");
   });

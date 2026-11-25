@@ -45,8 +45,8 @@ export const feeNameOf = (kind: FeeKindId, own?: string): string => (kind === "o
 /** The sign after a sum's box: its currency's. */
 export const signOf = (currency: string | undefined): string => copy.panel.signs[currency ?? "ILS"] ?? "₪";
 
-/** The sign after a figure's box: a percent, or its currency's sign. */
-export const signOfUnit = (u: FigureUnit): "pct" | string => ("pct" in u ? "pct" : signOf(u.currency));
+/** The sign after a figure's box: a percent, agorot for a price per dollar, or its currency's sign. */
+export const signOfUnit = (u: FigureUnit): "pct" | string => ("pct" in u ? "pct" : "agorotPerDollar" in u ? pp.perDollar.sign : signOf(u.currency));
 
 const pp = copy.cases.parts;
 /** The month a later price starts, in words, with "מ־" held to it: "מינואר 2027". */
@@ -124,6 +124,7 @@ export const SAID: Readonly<Record<PartId, (c: PartContext) => PartWords | null>
   share: ({ kind, p, view }) => ({ ...main(view, view.figures.rate, p), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
   perUnit: ({ p, view }) => ({ ...main(view, view.figures.amount, p), tail: ` ${pp.perUnit}`, ...questionsOf(p) }),
   perAction: ({ kind, p, view }) => ({ ...main(view, view.figures.amount, p), tail: ` ${perAction(kind)}`, ...questionsOf(p) }),
+  perDollar: ({ p, view }) => ({ ...main(view, view.figures.amount, p), tail: ` ${pp.perDollar.tail}`, ...questionsOf(p) }),
   held: ({ p, view }) => (p.form === "held" ? { ...main(view, view.figures.rate, p), tail: ` ${copy.price.per[p.per]}` } : null),
   sum: ({ p, view }) => (p.form === "sum" ? { ...main(view, view.figures.amount, p), tail: ` ${copy.price.per[p.every]}` } : null),
   discount: ({ p, view }) => (onAction(p) && p.discount ? { lead: pp.discount.lead, ...fig(view.figures.discount), tail: `${pp.discount.tail}${p.discount.alsoMin ? pp.discount.alsoMin : ""}` } : null),
@@ -199,6 +200,7 @@ export const OFFERED: Readonly<Record<ToolPartId, (c: ToolContext) => ToolWords>
   share: ({ kind }) => ({ words: { tail: ` ${perAction(kind)}` }, box: "pct" }),
   perUnit: (c) => ({ words: { tail: ` ${pp.perUnit}` }, box: inPrice(c, "perUnit") }),
   perAction: (c) => ({ words: { tail: ` ${perAction(c.kind)}` }, box: inPrice(c, "perAction") }),
+  perDollar: () => ({ words: { tail: ` ${pp.perDollar.tail}` }, box: { sign: pp.perDollar.sign } }),
   held: () => ({ words: { tail: ` ${copy.price.per[12]}` }, box: "pct" }),
   sum: () => ({ words: { tail: ` ${copy.price.per[1]}` }, box: { sign: signOf("ILS") } }),
   free: () => ({ words: { lead: copy.panel.forms.free ?? "" } }),

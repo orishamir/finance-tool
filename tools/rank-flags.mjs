@@ -19,9 +19,13 @@ const key = (r, ...ks) => ks.map((k) => r[k]).join("|");
 const out = [];
 const say = (s) => out.push(s);
 const allCost = rows.filter((r) => r.kind === "cost");
-// a plan the account eats whole (nothing left): every such house ties at 0, so it is counted apart and left out of the rules below
-const eaten = allCost.filter((r) => r.value <= 0);
-const cost = allCost.filter((r) => r.value > 0);
+// a plan the account eats whole (nothing left): every such house ties at 0, so it is counted apart and left out of the rules below. A
+// cell for a kind of fund with no fund record (`_generic`) carries the account's cost alone (no value left, no split by line: a generic
+// fund has no cost of its own, so the account's cost orders its houses), and is kept.
+const generic = (r) => r.fund === "_generic";
+const eaten = allCost.filter((r) => !generic(r) && r.value <= 0);
+const cost = allCost.filter((r) => generic(r) || r.value > 0);
+const linesOf = (r) => r.lines ?? {};
 const houses = [...new Set(rows.map((r) => r.house))].filter((h) => !h.startsWith("_"));
 const scen = new Set(rows.map((r) => key(r, "idx", "a", "m", "y")));
 say(`eaten (nothing left): ${eaten.length} cells; by house: ${JSON.stringify(Object.fromEntries(Object.entries(eaten.reduce((o, r) => ((o[r.house] = (o[r.house] ?? 0) + 1), o), {})).sort((a, b) => b[1] - a[1])))}`);
@@ -45,7 +49,7 @@ const pairCmp = (lo, hi, label, lineCheck) => {
     if (!o) continue;
     n++;
     if (r.acct < o.acct - 0.5) { cheaper++; const gap = o.acct - r.acct; if (!worst || gap / Math.max(o.acct, 1) > worst.rel) worst = { rel: gap / Math.max(o.acct, 1), r, o }; }
-    if (lineCheck) for (const l of new Set([...Object.keys(r.lines), ...Object.keys(o.lines)])) { const a = r.lines[l] ?? 0, b = o.lines[l] ?? 0; if (Math.abs(a - b) > 0.01 * Math.max(a, b, 1)) { lineDiff[l] ??= { n: 0, ex: null }; lineDiff[l].n++; lineDiff[l].ex ??= `${r.idx} ${r.opt} ${r.fund} a=${r.a} m=${r.m} y=${r.y}: ${lo} ${a} vs ${hi} ${b}`; } }
+    if (lineCheck) for (const l of new Set([...Object.keys(linesOf(r)), ...Object.keys(linesOf(o))])) { const a = linesOf(r)[l] ?? 0, b = linesOf(o)[l] ?? 0; if (Math.abs(a - b) > 0.01 * Math.max(a, b, 1)) { lineDiff[l] ??= { n: 0, ex: null }; lineDiff[l].n++; lineDiff[l].ex ??= `${r.idx} ${r.opt} ${r.fund} a=${r.a} m=${r.m} y=${r.y}: ${lo} ${a} vs ${hi} ${b}`; } }
   }
   say(`  ${label}: ${n} shared cells; ${lo} cheaper in ${cheaper}` + (worst ? `; widest: ${worst.r.idx} ${worst.r.opt} ${worst.r.fund} a=${worst.r.a} m=${worst.r.m} y=${worst.r.y} ${lo}=${worst.r.acct} ${JSON.stringify(worst.r.lines)} vs ${hi}=${worst.o.acct} ${JSON.stringify(worst.o.lines)}` : ""));
   for (const [l, v] of Object.entries(lineDiff)) say(`     line ${l} differs in ${v.n}; e.g. ${v.ex}`);
@@ -68,7 +72,7 @@ for (const [k, rs] of series) {
     const n = at.get(key({ ...r, [ax]: vals[i + 1] }, "a", "m", "y")); if (!n) continue;
     if (n.acct < r.acct - Math.max(1, 0.005 * r.acct)) { const h = `${r.house} ${r.opt} along ${ax}`; (falls[h] ??= []).push(`${r.idx} ${r.fund} a=${r.a} m=${r.m} y=${r.y}: ${r.acct} ${JSON.stringify(r.lines)} -> ${ax}=${n[ax]}: ${n.acct} ${JSON.stringify(n.lines)}`); }
     if (ax !== "y" && r[ax] > 0 && r.acct > 20 && n.acct / r.acct > (grown(n) / grown(r)) * 1.15) { const h = `${r.house} ${r.opt} along ${ax}`; (jumps[h] ??= []).push(`${r.idx} ${r.fund} a=${r.a} m=${r.m} y=${r.y}: ${r.acct} -> ${n.acct} (money x${(grown(n) / grown(r)).toFixed(2)}, cost x${(n.acct / r.acct).toFixed(2)}) ${JSON.stringify(r.lines)} -> ${JSON.stringify(n.lines)}`); }
-    for (const l of Object.keys(r.lines)) { const a = r.lines[l], b = n.lines[l] ?? 0; if (b < a - Math.max(1, 0.005 * a)) { const h = `${r.house} ${r.opt} line ${l} along ${ax}`; (lineFalls[h] ??= []).push(`${r.idx} ${r.fund} a=${r.a} m=${r.m} y=${r.y}: ${a} -> ${b}`); } }
+    for (const l of Object.keys(linesOf(r))) { const a = linesOf(r)[l], b = linesOf(n)[l] ?? 0; if (b < a - Math.max(1, 0.005 * a)) { const h = `${r.house} ${r.opt} line ${l} along ${ax}`; (lineFalls[h] ??= []).push(`${r.idx} ${r.fund} a=${r.a} m=${r.m} y=${r.y}: ${a} -> ${b}`); } }
   }
 }
 for (const [h, xs] of Object.entries(falls)) say(`  FALL ${h}: ${xs.length}; e.g. ${xs[0]}`);
@@ -82,7 +86,8 @@ for (const r of cost) { if (r.open) continue; const k = key(r, "idx", "a", "m", 
 const wideFirst = {}, wideLast = {}, rankOf = new Map(), winners = {};
 for (const [k, rs] of groups) {
   if (rs.length < 3) continue;
-  rs.sort((x, y) => y.value - x.value);
+  // the most left first; a generic fund's houses by the least account cost, the same order (its fund costs nothing)
+  rs.sort((x, y) => (generic(x) ? x.acct - y.acct : y.value - x.value));
   rs.forEach((r, i) => rankOf.set(key(r, "idx", "a", "m", "y", "opt", "fund", "house"), i + 1));
   const [b, s] = [rs[0], rs[1]]; const [w, sw] = [rs[rs.length - 1], rs[rs.length - 2]];
   if (s.acct > 100 && b.acct < 0.5 * s.acct) (wideFirst[`${b.house} ${b.opt}`] ??= []).push(`${b.idx} ${b.fund} a=${b.a} m=${b.m} y=${b.y}: ${b.acct} vs next ${s.house} ${s.acct}`);
@@ -116,7 +121,9 @@ for (const h of houses) {
   }
 }
 const parts = {};
+// a fund's row carries its split by line; a generic cell carries none, so R5 reads fund rows
 for (const r of cost) {
+  if (!r.lines) continue;
   const e = expect[r.house]?.[r.opt]; if (!e) continue;
   // an account that eats half the money or more: the split by line floors and says nothing (counted apart)
   if (r.value < 0.5 * paid(r)) continue;

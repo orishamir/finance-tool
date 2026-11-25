@@ -673,7 +673,7 @@
           "BRK-43"
         ],
         "state": "sourced",
-        "notes": "'Please note that IB does not separately charge a commission on these auto-conversion trades': no commission; the markup on the rate is recorded in `spread` with no value, so it is not priced (D65), and left_out says so (2026-11-12): the conversion part of this house's price is zero whenever it converts this way. A cash account converts by itself when it buys in a currency it does not hold: 'If Client incurs an obligation in a cash (or IRA) account in a currency as a result of a purchase denominated in such currency (the \"Purchase Currency\"), and if insufficient funds exist in the account in that currency, IBKR will automatically convert the necessary amount of Client's long currency balance(s) to the required amount of the Purchase Currency' (Interactive Brokers LLC client agreement, form 3203, s.30C, p.15, library b866cea6e6d76d50; Interactive Brokers Ireland, form 4750, 'Automatic Currency Conversion Functionality of CASH Accounts', p.23, library 8344401953b5e137, in the same words), so shekels held in the account pay for a fund quoted in dollars with no conversion order of the client's own. The clause speaks of a purchase: a sale's proceeds are converted by a spot order (interactive-brokers-fx-spot). A margin account is not covered by the clause."
+        "notes": "'Please note that IB does not separately charge a commission on these auto-conversion trades': no commission; the markup on the rate is recorded in `spread` with no value, so it is not priced (D65), and left_out says so (2026-11-12): the conversion part of this house's price is zero whenever it converts this way. A cash account converts by itself when it buys in a currency it does not hold: 'If Client incurs an obligation in a cash (or IRA) account in a currency as a result of a purchase denominated in such currency (the \"Purchase Currency\"), and if insufficient funds exist in the account in that currency, IBKR will automatically convert the necessary amount of Client's long currency balance(s) to the required amount of the Purchase Currency' (Interactive Brokers LLC client agreement, form 3203, s.30C, p.15, library b866cea6e6d76d50; Interactive Brokers Ireland, form 4750, 'Automatic Currency Conversion Functionality of CASH Accounts', p.23, library 8344401953b5e137, in the same words), so shekels held in the account pay for a fund quoted in dollars with no conversion order of the client's own. The clause speaks of a purchase, and no document read says how a sale's proceeds convert: the site reads them as converted by a spot order (interactive-brokers-fx-spot), its printed charge priced (D56, F-13). A margin account is not covered by the clause."
       },
       "min": null,
       "max": null,
@@ -685,6 +685,16 @@
         "tariff": [
           "auto currency conversion"
         ]
+      },
+      "conversion_side": {
+        "only": "buy",
+        "source": {
+          "url": "https://ndcdyn.interactivebrokers.com/Universal/servlet/Registration_v2.formSampleView?formdb=3203#page=15",
+          "title": "Interactive Brokers LLC Client Agreement, form 3203, s.30C (library b866cea6e6d76d50)",
+          "checked": "2026-11-25",
+          "page": 15,
+          "quote": "If Client incurs an obligation in a cash (or IRA) account in a currency as a result of a purchase denominated in such currency (the \"Purchase Currency\")"
+        }
       },
       "spread": {
         "value": null,
@@ -840,8 +850,8 @@
     {
       "what": "המרה אוטומטית (auto currency conversion): 'IB will typically add or subtract (at its discretion) 0.03% to the exchange rate that would otherwise apply'",
       "name_he": "מרווח המרה בהמרת מטבע אוטומטית",
-      "why": "The automatic conversion is priced with no commission ('IB does not separately charge a commission on these auto-conversion trades'), and its markup, 'typically ... (at its discretion) 0.03%', is not limited by the documents, so it is not priced (D65). The indices page reads the house with each way it converts and takes the cheapest, so the price shown carries no conversion cost at all; the spot order costs '0.20 basis point * Trade Value', minimum USD 2.00. Spot Currencies page, re-read 2026-11-12.",
-      "why_he": "כשהחשבון ממיר שקלים לדולרים לבד בזמן קנייה, Interactive Brokers לא גובה עמלה, אבל מוסיפה מרווח לשער: לפי החברה בדרך כלל 0.03%, ולפי שיקול דעתה. האתר לא מחשב את המרווח הזה, ולכן ההמרה נראית בחינם והמחיר בפועל יקר יותר.",
+      "why": "The automatic conversion is priced with no commission ('IB does not separately charge a commission on these auto-conversion trades'), and its markup, 'typically ... (at its discretion) 0.03%', is not limited by the documents, so it is not priced (D65). The indices page reads the house with each way it converts and takes the cheapest: the purchases convert this way, so the price shown carries no conversion cost on them. The automatic conversion covers a purchase only (form 3203 s.30C; `conversion_side`), and no document read says how a sale's proceeds convert: the site reads the sale as a spot order, '0.20 basis point * Trade Value', minimum USD 2.00, and prices it (F-13, D56). Spot Currencies page, re-read 2026-11-12.",
+      "why_he": "כשהחשבון ממיר שקלים לדולרים לבד בזמן קנייה, Interactive Brokers לא גובה עמלה, אבל מוסיפה מרווח לשער: לפי החברה בדרך כלל 0.03%, ולפי שיקול דעתה. האתר לא מחשב את המרווח הזה, ולכן ההמרה בקנייה נראית בחינם והמחיר בפועל יקר יותר.",
       "could_change_price": true
     },
     {

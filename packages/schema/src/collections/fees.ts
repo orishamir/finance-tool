@@ -69,6 +69,12 @@ export const feeLine = z.strictObject({
   band: z.string().nullable(),
   /** F-13: a conversion line for one currency (ISO code); it prices a fund in that currency, and a line with no currency prices the others. */
   conversion_currency: z.string().regex(/^[A-Z]{3}$/).optional(),
+  /**
+   * data-schema §3.6a item 7: a conversion line that converts only on a purchase (`only: "buy"`), as the line's own source says, with its words
+   * there. A sale's proceeds are then converted on the line that converts a sale, which the run resolves apart (F-13). Absent, the line converts
+   * both ways.
+   */
+  conversion_side: z.strictObject({ only: z.literal("buy"), source: quotedSource }).optional(),
   statement_code: z.string().nullable(),
   /** The CMA fund number, when the line is for one track. */
   track_id: z.number().int().positive().optional(),

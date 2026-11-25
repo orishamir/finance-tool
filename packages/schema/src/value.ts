@@ -45,6 +45,8 @@ export const unit = z.enum([
   /** A dollar amount for each corporate event, as One Zero prints its custodian's cost abroad (D67, F-103). */
   "usd_per_event",
   "nis_per_usd",
+  /** Agorot for each dollar converted: a conversion's price per dollar as the person types it on the fee page (F-13); a price list's is `nis_per_usd`. */
+  "agorot_per_usd",
   "fx_per_eur",
   "months",
   "years",

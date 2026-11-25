@@ -1,6 +1,6 @@
-// A deal as the engine reads it (method §10.6): typed percents become the engine's fractions here and nowhere else, a discount lowers the
-// price it is off (F-116), a third party's fee with a figure goes with its price (F-117), and a fee read on one step of sizes carries its
-// stretch (F-115). The parts the page states without computing (§10.6's stated parts) do not go to the engine; a maximum on each security
+// A deal as the engine reads it (method §10.6): typed percents become the engine's fractions, and agorot a dollar shekels, here and
+// nowhere else; a discount lowers the price it is off (F-116), a third party's fee with a figure goes with its price (F-117), and a fee
+// read on one step of sizes carries its stretch (F-115). The parts the page states without computing (§10.6's stated parts) do not go to the engine; a maximum on each security
 // is stated and goes too, since the deal reads its holding as one security (F-14, `heldBounds`).
 import { discounted, type Deal, type DealFee, type DealPrice, type DealStage, type DealThird } from "@finance-tool/engine";
 import { isForeign, readFees, type ReadFee } from "./cases";
@@ -8,6 +8,7 @@ import { fraction, monthOf, type FeeDeal, type Price, type ReadPick, type Stage,
 import { onAction } from "./offers/capabilities";
 import { engineBase } from "./shapes";
 import { assertNever } from "@finance-tool/schema";
+import { shekelsOfAgorot } from "../agorot";
 
 /** The parts a share of an action and a sum per unit share: bounds, the cap as a fraction, and the flat price where both its figures are given. */
 const actionParts = (p: Extract<Price, { form: "action" | "perUnit" }>) => ({
@@ -71,6 +72,8 @@ function basePrice(p: Price): DealPrice {
       return { kind: "sum", amount: p.amount.v, everyMonths: p.every };
     case "perAction":
       return { kind: "perAction", amount: p.amount.v, ...(p.cap ? { cap: fraction(p.cap.v) } : {}), ...currencyOf(p.currency) };
+    case "perDollar":
+      return { kind: "perDollar", amount: shekelsOfAgorot(p.amount.v) };
     default:
       return assertNever(p);
   }

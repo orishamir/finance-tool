@@ -240,6 +240,13 @@ export function PriceWords({ price, kind, saved, insideFund, ofSaid, discount }:
         </>
       );
       break;
+    case "perDollar":
+      body = f.amount ? (
+        <>
+          <Fig value={f.amount} /> {copy.cases.parts.perDollar.tail}
+        </>
+      ) : null;
+      break;
     default:
       assertNever(price.form);
   }

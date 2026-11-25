@@ -2,6 +2,7 @@
 import { numbers, values as valuesCopy } from "../copy";
 import { countPhrase } from "./count";
 import { numberFormat, plainNumber, withMinus } from "./number-format";
+import { agorotOfShekels } from "./agorot";
 
 export { countPhrase, type CountWords } from "./count";
 export { withMinus } from "./number-format";
@@ -341,7 +342,9 @@ export function formatValue(value: number | string | boolean | null, unit: strin
     case "nis_millions":
       return `${fmt.number(value)} ${numbers.nisMillions}`;
     case "nis_per_usd":
-      return `${fmt.number(value * 100)} ${numbers.agorotPerDollar}`;
+      return `${fmt.number(agorotOfShekels(value))} ${numbers.agorotPerDollar}`;
+    case "agorot_per_usd":
+      return `${fmt.number(value)} ${numbers.agorot}`;
     case "trade_ccy_per_trade":
       return `${fmt.number(value)} ${numbers.inTradeCurrency}`;
     case "fx_per_eur":

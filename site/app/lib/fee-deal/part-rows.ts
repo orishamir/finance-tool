@@ -14,6 +14,7 @@ export const ROW_OF: Readonly<Record<PartId, PartRow>> = {
   share: "price",
   perUnit: "price",
   perAction: "price",
+  perDollar: "price",
   held: "price",
   sum: "price",
   free: "price",

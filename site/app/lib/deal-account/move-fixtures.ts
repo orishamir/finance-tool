@@ -2,10 +2,11 @@
 // fund before the move and after it.
 import { feesData } from "../fees.server";
 import { fxRunInput } from "../fx";
-import { buildIndicesBundle } from "../providers.server";
+import { buildIndicesBundle, latestSnapshots } from "../providers.server";
 import { entered } from "../value";
 import { buildInvest, indexById } from "../invest";
-import type { BundleSnapshot, IndicesBundle, WorkbenchInputs } from "../providers";
+import { BROKERAGE, onlyWhatCanBeDone, type BundleSnapshot, type IndicesBundle, type WorkbenchInputs } from "../providers";
+import { houseTemplateRead } from "../fee-deal/templates";
 import type { CustomBroker } from "../custom-entries";
 import { baseOf, groupInputs, layeredOf } from "../own-account";
 import { dealProviderId, withDeals } from "./bundle";
@@ -43,6 +44,24 @@ export const plan: WorkbenchInputs = {
   currentAccounts: true,
 };
 export const ctx: MoveContext = { houses: data.houses, kinds: data.kinds, snapshots: bundle.snapshots, fx: bundle.fx ? fxRunInput(bundle.fx) : {}, today: t };
+
+/**
+ * A planted record for a direction no house's record holds now: Psagot's with its foreign securities set back to "unknown", as it stood
+ * before its written answer of 10.11.2026, so a house that sells in Israel and leaves abroad open is there to test. Its template and its
+ * bundle record are read from it as fees.server.ts and the bundle read the real one: the lines of what cannot be done are taken away whole.
+ */
+export function withPsagotAbroadOpen(): { ctx: MoveContext; bundle: IndicesBundle } {
+  const record = latestSnapshots().find((s) => s.id === "psagot");
+  if (!record?.availability?.some((a) => a.applies_to.includes("foreign_securities"))) throw new Error("no Psagot record with an entry for foreign securities to plant");
+  const availability = record.availability.map((a) => (a.applies_to.includes("foreign_securities") ? { ...a, available: "unknown" as const } : a));
+  const planted = { ...record, availability };
+  const read = onlyWhatCanBeDone(planted);
+  const kept = new Set(read.lines.map((l) => l.id));
+  const { template } = houseTemplateRead(read, planted.lines.filter((l) => !kept.has(l.id)), data.kinds.find((k) => k.id === BROKERAGE) ?? null);
+  const houses = data.houses.map((h) => (h.id === "psagot" ? { ...h, ...template } : h));
+  const snapshots = bundle.snapshots.map((s) => (s.id === "psagot" ? { ...s, availability, lines: s.lines.filter((l) => kept.has(l.id)) } : s));
+  return { ctx: { ...ctx, houses, snapshots }, bundle: { ...bundle, snapshots } };
+}
 
 export const fig = (v: number, unit: Parameters<typeof entered>[1]) => entered(v, unit, t);
 /** A value for every field of a typed account. */

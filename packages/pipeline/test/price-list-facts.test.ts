@@ -104,6 +104,27 @@ describe("an offset and when a fee is collected (§3.6a items 4 and 6)", () => {
   });
 });
 
+describe("a conversion line that converts only on a purchase (§3.6a item 7)", () => {
+  const ib = snap("interactive-brokers@2026-11-12");
+  const auto = line(ib, "interactive-brokers-fx-auto-conversion");
+  it("the record passes: its automatic conversion converts a purchase, and its spot line a sale", () => {
+    expect(auto.conversion_side?.only).toBe("buy");
+    expect(checkLineFacts(auto, true)).toEqual([]);
+    expect(checkSnapshotFacts(ib)).toEqual([]);
+  });
+  it("sits on a conversion line, and leaves a sale to another conversion line", () => {
+    expect(checkLineFacts({ ...auto, base: "trade" }, true).join()).toMatch(/conversion_side belongs/);
+    const alone = { ...ib, lines: ib.lines.filter((l) => l.id !== "interactive-brokers-fx-spot") };
+    expect(checkSnapshotFacts(alone).join()).toMatch(/no other conversion line converts a sale of foreign_securities/);
+    // a recurring plan's line or a line set aside does not convert the sale
+    const spot = line(ib, "interactive-brokers-fx-spot");
+    const source = auto.conversion_side?.source;
+    if (!source) throw new Error("the automatic conversion cites its clause");
+    for (const other of [{ ...spot, band: "השקעה קבועה אוטומטית" }, { ...spot, band: "x", not_ranked: { reason_he: "x", source } }])
+      expect(checkSnapshotFacts({ ...alone, lines: [...alone.lines, other] }).join(), other.band ?? "").toMatch(/no other conversion line converts a sale/);
+  });
+});
+
 describe("distribution agreements (§3.6)", () => {
   const oneZero = snap("one-zero@2026-11-12");
   it("the record passes, and holds every report the search found with every fund number each lists", () => {

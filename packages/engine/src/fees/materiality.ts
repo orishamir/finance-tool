@@ -35,7 +35,7 @@ export function feeLines(plan: RunPlan): FeeLine[] {
       for (const t of chain) {
         if (configured(t.buy) || configured(t.sell)) has.add("trade");
         if (configured(t.custody)) has.add("custody");
-        if (conversionCharges(t.fx) || conversionCharges(t.fxSpread)) has.add("fx");
+        if (conversionCharges(t.fx) || conversionCharges(t.fxSpread) || conversionCharges(t.fxSale?.fx) || conversionCharges(t.fxSale?.fxSpread)) has.add("fx");
         if (positive(t.monthlyFee)) has.add("fixed");
       }
       // F-102 is read from each stretch (F-101: a group exempt for a time); F-103 from the first tariff only, and the custodian's charge per
@@ -119,10 +119,11 @@ export function withoutFeeLine(plan: RunPlan, line: FeeLine): RunPlan {
           return { run: "runSecurities", input: { ...input, tariff } };
         case "fx":
           if (tariff.fx === undefined) return noLine(plan, line);
-          // F-13 (D65): the spread and a recurring plan's conversion are part of the conversion line
+          // F-13 (D65): the spread, a recurring plan's conversion and a sale's own are part of the conversion line
           delete tariff.fxSpread;
           delete tariff.fx;
           delete tariff.fxStanding;
+          delete tariff.fxSale;
           return { run: "runSecurities", input: { ...input, tariff } };
         case "fixed":
           if (tariff.monthlyFee === undefined) return noLine(plan, line);

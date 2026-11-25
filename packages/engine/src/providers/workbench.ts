@@ -12,7 +12,7 @@ import type { Commission, ConversionPrice, Custody, SizeStep } from "../formulas
 import { perUnitOf } from "../formulas/deal.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
+import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, type Fund, type SaleConversionPrice, type SecuritiesInput } from "../ledgers/securities.ts";
 import type { DealAccount } from "../ledgers/deal-account.ts";
 import { stoppedOnRule } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
@@ -36,6 +36,8 @@ export interface EnteredTariff {
   fxStanding?: ConversionPrice;
   /** F-13 (D65): the spread the provider's list limits, at its ceiling, kept beside a conversion price the person or a group sets. Absent with `fx`: the list's spread, if any. */
   fxSpread?: ConversionPrice;
+  /** F-13: the list's own price for a sale's conversion (`SecuritiesTariff.fxSale`); dropped where the person sets the conversion price, which then governs the sale too. */
+  fxSale?: SaleConversionPrice;
   monthlyFee?: number;
   /** F-102 with F-101: the current account's monthly price in this stretch where a group's annex prints its own (0 for an exempt group);
    *  read only where the caller counts the bank's current account. Absent: the bank's ordinary minimum. */
@@ -494,8 +496,9 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   const averageLevel = level === "regulator_average" || level === "tase_average" ? level : undefined;
   if (level === "entered" && !p.entered) throw new RecordInputError(`provider ${snapshot.id}: level "entered" needs the person's entered tariff`);
 
-  /** The line of a base at a level for the channel (`tariffLine`). */
-  const pick = (base: SnapLine["base"], at: SnapLine["level"]): SnapLine | undefined => tariffLine(snapshot, input, base, at, p.band);
+  /** The line of a base at a level for the channel (`tariffLine`), among the lines `keep` leaves (all where none is given). */
+  const pick = (base: SnapLine["base"], at: SnapLine["level"], keep?: (l: SnapLine) => boolean): SnapLine | undefined =>
+    tariffLine(keep ? { ...snapshot, lines: snapshot.lines.filter(keep) } : snapshot, input, base, at, p.band);
 
   const averageFor = (l: SnapLine): ValueObject | undefined => {
     if (!averageLevel) return undefined;
@@ -505,22 +508,22 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     return rows[0]?.rate;
   };
 
-  /** The line a base uses at the chosen level, with whether an average replaced it. */
-  const resolve = (base: SnapLine["base"]) => {
-    const own = averageLevel ? pick(base, averageLevel) : undefined;
-    if (own) {
-      // F-63: an average is a percentage with no bounds, also when the snapshot gives it as a line of its own level.
-      out.averagesApplied++;
-      return { line: own, rate: own.rate, min: null, max: null, cap: null };
-    }
-    const list = pick(base, "list");
+  /** The line a base uses at the chosen level among the lines `keep` leaves, with whether an average replaced it; counts nothing. */
+  const lineAt = (base: SnapLine["base"], keep?: (l: SnapLine) => boolean) => {
+    const own = averageLevel ? pick(base, averageLevel, keep) : undefined;
+    // F-63: an average is a percentage with no bounds, also when the snapshot gives it as a line of its own level.
+    if (own) return { line: own, rate: own.rate, min: null, max: null, cap: null, average: true };
+    const list = pick(base, "list", keep);
     if (!list) return undefined;
     const avg = averageFor(list);
-    if (avg) {
-      out.averagesApplied++;
-      return { line: list, rate: avg, min: null, max: null, cap: null, average: true };
-    }
-    return { line: list, rate: list.rate, min: list.min, max: list.max, cap: list.cap };
+    if (avg) return { line: list, rate: avg, min: null, max: null, cap: null, average: true };
+    return { line: list, rate: list.rate, min: list.min, max: list.max, cap: list.cap, average: false };
+  };
+  /** The line a base uses at the chosen level (`lineAt`), counting an average that replaced it. */
+  const resolve = (base: SnapLine["base"]) => {
+    const r = lineAt(base);
+    if (r?.average) out.averagesApplied++;
+    return r;
   };
 
   const entered = level === "entered" ? p.entered! : undefined;
@@ -671,6 +674,8 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     if (l.rate.unit === "nis_per_usd") {
       if (input.currency!.code !== "USD") throw new RecordInputError(`${l.line.id}: the price is per dollar but the instrument currency is ${input.currency!.code}`);
       if (typeof l.rate.value !== "number") throw new Unusable("line-without-value", `${l.line.id} rate has no value`);
+      // F-13 with F-116: a price per dollar takes no share off, as no deal can hold a discount on one
+      if (l.sized && (l.line.size_tiers ?? []).some((t) => t.on === "fee" && t.discount_pct)) throw new RecordInputError(`${l.line.id}: a share off a conversion priced per dollar is not modelled`);
       c.perCurrencyUnit = l.rate.value;
     } else c.rate = pct(l.rate, "pct_of_trade", `${l.line.id} rate`);
     const figures = [l.min, l.max, ...(l.sized ? stepsOf(l.line, "fee").sums : [])].filter(hasBound);
@@ -690,6 +695,29 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     return { price: { line: line(), steps: sized.steps, in: sums.in }, read: sized.read };
   };
 
+  /**
+   * F-13: a resolved conversion line as the run charges it: its fee (`conversionOf`) and, beside it, the spread the price list limits, with every
+   * figure read for the line's sources. The steps by size, a flat price for a small conversion among them, and the spread are read at the list
+   * price only: on the list's own line at its own rate. An average is a percentage with no bounds (F-63).
+   */
+  const conversionAt = (r: NonNullable<ReturnType<typeof lineAt>>): { price: ConversionPrice; spread?: ConversionPrice; read: ValueObject[] } => {
+    const atList = r.rate === r.line.rate && r.line.level === "list";
+    const c = conversionOf({ ...r, sized: atList });
+    // F-13 (D56, D65): a spread the price list limits ("עד 0.7%") is priced at its ceiling, beside the conversion fee and in a field of its
+    // own (`fxSpread`), charged on every conversion, by its steps where the list prints the spread by the conversion's size; a spread with no
+    // ceiling (value null) is not priced. Only the list line carries it: an average row is what customers paid, spread and all.
+    const spread = atList ? r.line.spread : null;
+    if (!spread || typeof spread.value !== "number") return { price: c.price, read: c.read };
+    if (typeof c.price !== "number") throw new RecordInputError(`${r.line.id}: a priced spread beside a fee with bounds, steps by size or a price per dollar is not modelled`);
+    const s = pct(spread, "pct_of_trade", `${r.line.id} spread`);
+    // the spread's tops, each in its currency as the fee's are (`lineSums`)
+    const sums = lineSums(r.line, stepsOf(r.line, "spread").sums);
+    const steps = stepsOf(r.line, "spread", sums.value);
+    const read = [spread, ...steps.read, ...c.read];
+    if (steps.steps.length) return { price: c.price, spread: { line: s, steps: steps.steps, in: sums.in }, read };
+    return s > 0 ? { price: c.price, spread: s, read } : { price: c.price, read };
+  };
+
   // FX: only a fund quoted in a foreign currency is converted (F-13).
   if (input.currency) {
     out.tariff.currency = input.currency;
@@ -699,30 +727,26 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       if (entered.cheaperOfStandingFx) out.tariff.cheaperOfStandingFx = true;
       // F-13 (D65): a conversion price set over a house's list (F-101) keeps the list's spread, carried in the layers
       if (entered.fxSpread) out.tariff.fxSpread = entered.fxSpread;
+      // F-13: the list's own price for a sale, carried in the layers where no conversion price of the person's replaced the list's
+      if (entered.fxSale) out.tariff.fxSale = entered.fxSale;
     } else {
       const r = resolve("fx");
       if (r) {
-        // F-13: the steps by size, a flat price for a small conversion among them, the spread and a recurring plan's price are read at the list
-        // price only: on the list's own line at its own rate. An average is a percentage with no bounds (F-63)
         const atList = r.rate === r.line.rate && r.line.level === "list";
-        const c = conversionOf({ ...r, sized: atList });
-        // F-13 (D56, D65): a spread the price list limits ("עד 0.7%") is priced at its ceiling, beside the conversion fee and in a field of its
-        // own (`fxSpread`), charged on every conversion, by its steps where the list prints the spread by the conversion's size; a spread with no
-        // ceiling (value null) is not priced. Only the list line carries it: an average row is what customers paid, spread and all.
-        const spread = atList ? r.line.spread : null;
-        const spreadRead: ValueObject[] = [];
-        if (spread && typeof spread.value === "number") {
-          if (typeof c.price !== "number") throw new RecordInputError(`${r.line.id}: a priced spread beside a fee with bounds, steps by size or a price per dollar is not modelled`);
-          const s = pct(spread, "pct_of_trade", `${r.line.id} spread`);
-          // the spread's tops, each in its currency as the fee's are (`lineSums`)
-          const sums = lineSums(r.line, stepsOf(r.line, "spread").sums);
-          const steps = stepsOf(r.line, "spread", sums.value);
-          spreadRead.push(spread, ...steps.read);
-          if (steps.steps.length) out.tariff.fxSpread = { line: s, steps: steps.steps, in: sums.in };
-          else if (s > 0) out.tariff.fxSpread = s;
-        }
+        const c = conversionAt(r);
         out.tariff.fx = c.price;
-        used(r.line, r.rate, r.min, r.max, ...spreadRead, ...c.read);
+        if (c.spread !== undefined) out.tariff.fxSpread = c.spread;
+        used(r.line, r.rate, r.min, r.max, ...c.read);
+        // F-13 (D56): a line that converts only on a purchase (`conversion_side`) leaves the sale's proceeds to the line that converts a sale,
+        // chosen as the purchase's line is among the lines that convert a sale, and charged as it is charged (`conversionAt`)
+        if (r.line.conversion_side) {
+          const s = lineAt("fx", (l) => !l.conversion_side);
+          if (!s) throw new RecordInputError(`provider ${snapshot.id}: ${r.line.id} converts only on a purchase, and no conversion line converts the sale`);
+          if (s.average) out.averagesApplied++;
+          const sale = conversionAt(s);
+          out.tariff.fxSale = { fx: sale.price, ...(sale.spread !== undefined ? { fxSpread: sale.spread } : {}) };
+          used(s.line, s.rate, s.min, s.max, ...sale.read);
+        }
         // F-13: the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
         if (atList) {
           const every = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
@@ -1019,7 +1043,7 @@ function prepareDeal(input: WorkbenchInput, runFund: Fund, d: DealProvider): Rea
   return { kind: "ready", base, level: "entered", deal: { ...account, rates: { ...rates, ...account.rates } }, built, memberKind: memberKindOf(d.providerClass), ways: unitWaysAt(input, { by_amount: d.byAmount ?? [] }, tariff) };
 }
 
-/** The currencies a deal's sums are in (F-112): its bounds, flat prices, sums per action or per unit, third parties' sums and steps, and the steps of what the plan sets (F-128). */
+/** The currencies a deal's sums are in (F-112): its bounds, flat prices, sums per action or per unit, third parties' sums and steps, the dollar of a sum per dollar converted, and the steps of what the plan sets (F-128). */
 function dealCurrencies(a: DealAccount): string[] {
   const out = new Set<string>();
   for (const ws of a.planWithin ?? []) for (const w of ws ?? []) if (w.on !== "count" && w.unit !== "units") out.add(w.unit);
@@ -1029,6 +1053,7 @@ function dealCurrencies(a: DealAccount): string[] {
       const p = st.price;
       if ((p.kind === "action" || p.kind === "perUnit" || p.kind === "perAction") && p.currency) out.add(p.currency);
       if ((p.kind === "action" || p.kind === "perUnit" || p.kind === "perAction") && p.third?.currency) out.add(p.third.currency);
+      if (p.kind === "perDollar") out.add("USD");
     }
   }
   return [...out];

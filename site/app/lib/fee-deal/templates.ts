@@ -9,6 +9,7 @@ import { memberKindOf, REDEMPTION_BAND, STANDING_CONVERSION_BAND, STANDING_ORDER
 import type { FeesSnapshot, ValueObject } from "@finance-tool/schema";
 import { HOUSE_CHANNELS, isFxToFx } from "../providers";
 import { depositFeeNoneByRule, type SiteValue } from "../value";
+import { agorotOfShekels } from "../agorot";
 import type { FeesData, TrackLite } from "../fee-page-data";
 import { trackFees } from "../fee-page-data";
 import { BOUND_CURRENCIES, feeSources, hasCases, withNamed, isProductId, NAME_MAX, newDeal, newFeeId, pickKey, pricedOf, pricePriced, untouched, type BoundCurrency, type Note, type By, type Case, type CasesFee, type Fee, type FeeDeal, type Months, type Num, type OwnPlace, type ProviderKind, type SlimFee, type When, type Price } from "./model";
@@ -32,8 +33,10 @@ export type TemplateFee = SlimTemplateFee | Omit<CasesFee, "id">;
 
 /** Why a line of a price list does not fill a deal's field: the deal has no field for it, or the line cannot be read here. */
 export type LeftWhy =
-  /** A conversion priced in shekels a dollar (F-13). */
+  /** A conversion priced in shekels a dollar beside a bound, a flat price or steps by size (F-13), which the deal's price per dollar does not hold. */
   | "per-dollar"
+  /** A conversion priced in shekels a dollar beside a spread the list limits: F-13 refuses the two together on the row, so the deal leaves the conversion out. */
+  | "per-dollar-spread"
   /** A line's sums in two currencies (its bounds, its flat price, its price per unit), or a bound of a held share not in shekels. */
   | "bound-currency"
   /** Two lines apply and the price list does not say which (the snapshot is ambiguous). */
@@ -68,6 +71,11 @@ export type LeftWhy =
   | "spread-on-top"
   /** A line for redeeming a security when it falls due (band `REDEMPTION_BAND`: makam's at maturity), which no purchase or sale pays (F-63). */
   | "redemption"
+  /**
+   * A conversion that converts only on a purchase (`conversion_side`) where no single line of the list converts the sale (`saleLineOf`): the
+   * conversion is left out, as the engine refuses the house's row, never filled with a free sale (F-13).
+   */
+  | "no-sale-line"
   /** A yearly share of what is held charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71): the deal holds no such price for that fee. */
   | "distribution-yearly"
   /** A custody maximum the list prints with no scope (`max_per: unstated`): the price is filled without it, the cautious reading. */
@@ -289,9 +297,6 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       return { fees: [fee("trade", { ...p.spec, ...notes })], left: [] };
     }
     case "fx": {
-      if (l.rate.unit === "nis_per_usd") return { fees: [], left: ["per-dollar"] };
-      const p = actionPrice(l, num);
-      if ("left" in p) return { fees: [], left: [p.left] };
       // F-13 (D65): a spread the price list limits is priced at its ceiling beside the conversion fee
       const spread = has(l.spread) && l.spread.value > 0 ? [fee("fx_spread", { form: "action", figures: { rate: atCeiling(num(l.spread)) } })] : [];
       // a spread recorded but not limited is not counted, and says so: on a conversion filled at nothing, so 0% does not read as free; on
@@ -299,6 +304,14 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
       const unpriced = !!l.spread && !has(l.spread);
       // the open questions the conversion's price rests on (data-schema §3.6), which the price says beside it, as a trade's does
       const questions = l.open_questions ? { questions: [...l.open_questions] } : {};
+      if (l.rate.unit === "nis_per_usd") {
+        // F-13 refuses a priced spread beside a price per dollar on the row, so the deal never prices it either: the conversion is left out
+        if (spread.length) return { fees: [], left: ["per-dollar-spread"] };
+        const p = perDollarSpec(l, own);
+        return "left" in p ? { fees: [], left: [p.left] } : { fees: [fee("fx", { ...p.spec, ...questions }), ...spread], left: unpriced ? ["spread-on-top"] : [] };
+      }
+      const p = actionPrice(l, num);
+      if ("left" in p) return { fees: [], left: [p.left] };
       return { fees: [fee("fx", { ...p.spec, ...questions }), ...spread], left: unpriced ? [convertsFree(l) ? "spread-unpriced" : "spread-on-top"] : [] };
     }
     case "custody": {
@@ -348,9 +361,21 @@ export function lineFees(l: Line, own: string, bank = false, capRead = false): M
 }
 
 /**
- * A conversion line that charges nothing on any conversion: a rate of nothing with no minimum and no flat price, and no spread priced
- * beside it (F-13: a spread with no ceiling is not priced, D65). No other way to convert costs less on any amount, so F-63's cheapest
- * reading of the house converts this way whatever the plan.
+ * A conversion line priced in shekels a dollar (F-13: Psagot's "1.5 אגורות עבור כל דולר"): the deal's price per dollar, in agorot as the
+ * list prints it, its source kept. A line that prints a bound, a flat price or steps by size beside it is left (`per-dollar`); a spread
+ * beside it is the conversion's either way (`lineFees`).
+ */
+function perDollarSpec(l: Line, own: string): { spec: PriceSpec } | { left: LeftWhy } {
+  if (!has(l.rate)) return { left: "no-value" };
+  if (has(l.min) || has(l.max) || l.flat_up_to || l.size_tiers?.length) return { left: "per-dollar" };
+  return { spec: { form: "perDollar", figures: { amount: { v: agorotOfShekels(l.rate.value), src: sourcedOf(l.rate, own) } } } };
+}
+
+/**
+ * A conversion line that charges nothing on any conversion it makes: a rate of nothing with no minimum and no flat price, and no spread
+ * priced beside it (F-13: a spread with no ceiling is not priced, D65). No other way to convert costs less on any amount, so F-63's cheapest
+ * reading of the house converts this way whatever the plan; a line that converts only on a purchase leaves the sale to the line that
+ * converts a sale whichever way the house converts (`saleLineOf`), so it still wins.
  */
 const convertsFree = (l: Line): boolean =>
   has(l.rate) && l.rate.unit === "pct_of_trade" && l.rate.value === 0 && !has(l.min) && !(l.flat_up_to && has(l.flat_up_to.amount) && l.flat_up_to.amount.value > 0) && !(has(l.spread) && l.spread.value > 0);
@@ -479,10 +504,15 @@ function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: r
   // a value the law bans the fee on at this house is read as nothing charged whatever the fee holds (§10.6), so it needs no price here
   const covers = allValues.every((v) => pricedValues.has(v) || banned.has(v)) && own.every((o) => pricedValues.has(o.name));
   const byTrack = priced.some((x) => x.track !== null);
-  const general = (merged: Line[]) => ({ fee: { kind, stages: priceOf(lines[0]!)!.stages }, merged, lineOf: (id: string | null) => (id === null ? lines[0] : undefined) });
+  // a line's prices, and its sale's where the sale is priced apart (a conversion that converts only on a purchase, F-13)
+  const pricesOf = (l: Line) => {
+    const f = priceOf(l)!;
+    return { stages: f.stages, ...(f.sale ? { sale: f.sale } : {}) };
+  };
+  const general = (merged: Line[]) => ({ fee: { kind, ...pricesOf(lines[0]!) }, merged, lineOf: (id: string | null) => (id === null ? lines[0] : undefined) });
   if (lines.length === 1 && !byTrack && !unpricedValue && covers) return general([]);
   // several lines, one price on everything the house sells: the price is the same whatever the picks, so the fee changes by nothing
-  const terms = (l: Line) => priceTerms(priceOf(l)!.stages);
+  const terms = (l: Line) => JSON.stringify([priceTerms(pricesOf(l).stages), priceTerms(pricesOf(l).sale ?? [])]);
   if (!byTrack && !unpricedValue && covers && lines.every((l) => terms(l) === terms(lines[0]!))) return general(lines.slice(1));
   const channels = [...new Set(priced.map((x) => x.channel))].filter((c): c is string => c !== null);
   const differ = (key: (x: Raw) => string) => {
@@ -517,7 +547,7 @@ function feeOfRaws(kind: FeeKindId, first: "what" | "held" | "currency", raws: r
       ...(byTrack ? [c.track === null ? ("any" as const) : [c.track]] : []),
       ...(byChannel ? [channels.every((ch) => c.channels.has(ch)) ? ("any" as const) : [...c.channels]] : []),
     ];
-    return { id: `c${k + 1}`, when, stages: structuredClone(priceOf(c.line)!.stages) };
+    return { id: `c${k + 1}`, when, ...structuredClone(pricesOf(c.line)) };
   });
   const { id: _id, ...fee } = withNamed({ id: "", kind, by, cases });
   return { fee, merged: [], lineOf: (id: string | null) => cells[cases.findIndex((c) => c.id === id)]?.line };
@@ -639,6 +669,37 @@ function ownValuesOf(snap: FeesSnapshot): { own: OwnValues; places: OwnPlace[] }
 }
 
 /**
+ * F-13: the line a sale's proceeds convert on, where conversion line `l` converts only on a purchase (`conversion_side`): the line the engine
+ * resolves among the lines that convert a sale (`tariffLine`, at the list price, bought online), the same for every class `l` names; null where
+ * `l` converts both ways, or where its classes leave the choice open.
+ */
+function saleLineOf(snap: FeesSnapshot, l: Line): Line | null {
+  if (!l.conversion_side) return null;
+  const sells = { ...snap, lines: snap.lines.filter((x) => !x.conversion_side) };
+  const found = new Set(
+    l.applies_to.map((cls) => {
+      try {
+        return tariffLine(sells, { instrumentClass: cls, channel: l.channel ?? "direct", ...(l.conversion_currency ? { currency: { code: l.conversion_currency } } : {}) }, "fx", "list") ?? null;
+      } catch {
+        return null;
+      }
+    }),
+  );
+  const [line] = found;
+  return found.size === 1 && line ? line : null;
+}
+
+/**
+ * F-13: the fees a conversion line that converts only on a purchase fills, with the sale priced apart by the line that converts a sale: each
+ * kind's purchase from `buy` and its sale from `sale`, and a side whose line fills no fee of the kind charges nothing on it.
+ */
+function withSale(buy: Mapped, sale: Mapped, free: Price): Mapped {
+  const kinds = [...new Set([...buy.fees, ...sale.fees].map((f) => f.kind))];
+  const stagesOf = (m: Mapped, kind: FeeKindId) => m.fees.find((f) => f.kind === kind)?.stages ?? [{ price: free }];
+  return { fees: kinds.map((kind) => ({ kind, stages: stagesOf(buy, kind), sale: stagesOf(sale, kind) })), left: buy.left };
+}
+
+/**
  * F-63's line choice in the deal's words (F-128): the value of what is bought, or of what is held, that a house's template files the line
  * under which the house's own row reads for a fund (`tariffLine`, at the list price, bought online as the indices page buys), so a deal
  * filled from the house reads the case that line filled. `value` is the value the fund's class names (F-114); it stays where the line
@@ -692,24 +753,35 @@ export function houseTemplateRead(snap: FeesSnapshot, unavailable: readonly Line
       // a conversion between two foreign currencies is not the one a purchase in shekels makes: the shekel line is read (`isFxToFx`)
       for (const l of lines) if (isFxToFx(l)) leave(l, "fx-to-fx");
       lines = lines.filter((l) => !isFxToFx(l));
-      // F-63: a way to convert that charges nothing on any conversion is the cheapest whatever the plan, and the house converts that way
+      // F-63: a way to convert that charges nothing on any conversion is the cheapest whatever the plan, and the house converts that way;
+      // where it converts only on a purchase, the line that converts a sale prices the sale (`saleLineOf`) and is not another line
       const free = lines.find((l) => l.band !== null && !l.conversion_currency && convertsFree(l));
       if (free) {
-        for (const l of lines) if (l !== free && !l.conversion_currency && (l.channel === null || l.channel === free.channel)) leave(l, "another-line");
+        const sale = saleLineOf(snap, free);
+        for (const l of lines) if (l !== free && l !== sale && !l.conversion_currency && (l.channel === null || l.channel === free.channel)) leave(l, "another-line");
         lines = lines.filter((l) => l === free || !!l.conversion_currency);
       }
       if (lines.length === 0) return [];
     }
     const valueOf = base === "fx" ? (l: Line) => (l.conversion_currency ? [CURRENCY_IDS.includes(l.conversion_currency) ? l.conversion_currency : "other"] : CURRENCY_IDS.filter((c) => !lines.some((x) => x.conversion_currency === c))) : (l: Line) => valuesOf(l, ownOf, bank);
-    const mapped = new Map(lines.map((l) => [l, lineFees(l, ownName, bank, CAP_READ.has(snap.id))]));
+    const fees = (l: Line) => lineFees(l, ownName, bank, CAP_READ.has(snap.id));
+    // F-13: a conversion that converts only on a purchase fills its sale from the line that converts a sale, which is read with it
+    const sales = new Map(lines.flatMap((l) => (base === "fx" ? [[l, saleLineOf(snap, l)] as const] : [])).filter((x): x is readonly [Line, Line] => x[1] !== null));
+    const mapped = new Map(lines.map((l): readonly [Line, Mapped] => {
+      if (!l.conversion_side) return [l, fees(l)];
+      const sale = sales.get(l);
+      if (!has(l.rate)) return [l, { fees: [], left: ["no-value"] }];
+      return [l, sale ? withSale(fees(l), fees(sale), { form: "free", src: sourcedOf(l.rate, ownName) }) : { fees: [], left: ["no-sale-line"] }];
+    }));
     // two lines alike fill the same fees at the same prices, whatever line each figure is from
-    const alike = (a: Line, b: Line) => JSON.stringify(mapped.get(a)!.fees.map((f) => [f.kind, priceTerms(f.stages)])) === JSON.stringify(mapped.get(b)!.fees.map((f) => [f.kind, priceTerms(f.stages)]));
-    return [{ base, lines, valueOf, mapped, ...rawsOf(lines, valueOf, alike) }];
+    const termsOf = (l: Line) => JSON.stringify(mapped.get(l)!.fees.map((f) => [f.kind, priceTerms(f.stages), f.sale ? priceTerms(f.sale) : null]));
+    const alike = (a: Line, b: Line) => termsOf(a) === termsOf(b);
+    return [{ base, lines, valueOf, mapped, sales, ...rawsOf(lines, valueOf, alike) }];
   });
   // a line on the whole account ("all") says nothing of what the house sells; where every line is such, every value is counted
   const named = bases.filter((b) => b.base !== "fx").flatMap((b) => b.lines.filter((l) => breadth(l) !== Infinity).flatMap(b.valueOf));
   const sold = new Set(named.length ? named : WHAT_IDS);
-  for (const { base, mapped, raws, ambiguous, same, unread } of bases) {
+  for (const { base, mapped, sales, raws, ambiguous, same, unread } of bases) {
     for (const l of ambiguous) leave(l, "ambiguous");
     for (const l of same) leave(l, "same-price");
     for (const l of unread) leave(l, "another-line");
@@ -718,6 +790,12 @@ export function houseTemplateRead(snap: FeesSnapshot, unavailable: readonly Line
       read.add(l.id);
       for (const why of m.left) leave(l, why);
       if (bankTradeLeavesFunds(l, bank)) leave(l, "bank-funds");
+      // the line a sale converts on is read with it, and says what of it is left
+      const sale = sales.get(l);
+      if (sale && !read.has(sale.id)) {
+        read.add(sale.id);
+        for (const why of lineFees(sale, ownName, bank, CAP_READ.has(snap.id)).left) leave(sale, why);
+      }
     }
     const first = base === "fx" ? "currency" : base === "custody" || base === "fixed_period" ? "held" : "what";
     const own = first === "currency" ? [] : ownPlaces.filter((o) => raws.some((x) => x.value === o.name));

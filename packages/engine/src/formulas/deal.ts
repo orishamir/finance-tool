@@ -54,7 +54,14 @@ export type DealPrice =
    * A sum on each action, in `currency` (the shekel where absent; One Zero's 50 dollars for each corporate event, F-103), held to `cap`, a
    * share of the action, where the list prints one over it (Excellence's "11$ פיקס לעסקה" under "עמלת מקסימום 2% משווי העסקה").
    */
-  | { kind: "perAction"; amount: number; cap?: number; currency?: string; third?: DealThird };
+  | { kind: "perAction"; amount: number; cap?: number; currency?: string; third?: DealThird }
+  /**
+   * A conversion priced in shekels for each dollar converted (F-13: Psagot's "1.5 אגורות עבור כל דולר"), `amount` shekels a dollar: an
+   * action of `a` shekels converts `a` over the dollar's rate, and pays `amount` on each of those dollars. It is the same price a house's
+   * row charges for the line (`Commission.perCurrencyUnit`), and is charged through it (`priceCost`). It has no bounds: the price lists
+   * print none beside it.
+   */
+  | { kind: "perDollar"; amount: number };
 
 /** A price and the calendar month at whose start it ends; the last price of a fee has no end (F-110). */
 export interface DealStage {
@@ -174,7 +181,7 @@ function priceIn(stages: readonly DealStage[], i: number): DealPrice {
 
 /**
  * The figure a change rises or falls by: the rate of a share of an action, the yearly rate or sum of F-111, a sum per action or per unit
- * (each in its currency).
+ * (each in its currency), a sum per dollar converted.
  */
 function mainFigure(p: DealPrice): { of: string; value: number } | null {
   switch (p.kind) {
@@ -190,6 +197,8 @@ function mainFigure(p: DealPrice): { of: string; value: number } | null {
       return { of: `sum-per-action:${p.currency ?? "ILS"}`, value: p.amount };
     case "perUnit":
       return { of: `sum-per-unit:${p.currency ?? "ILS"}`, value: p.amount };
+    case "perDollar":
+      return { of: "sum-per-dollar", value: p.amount };
     default:
       return assertNever(p);
   }
@@ -218,6 +227,8 @@ export function chargesNothing(p: DealPrice): boolean {
       return p.amount === 0;
     case "perAction":
       return (p.amount === 0 || p.cap === 0) && !thirdCharges(p.third);
+    case "perDollar":
+      return p.amount === 0;
     default:
       return assertNever(p);
   }
@@ -667,12 +678,16 @@ function costOf(deal: Deal, period: DealPeriod, amount: number, side: "buy" | "s
   return { total: parts.reduce((x, p) => x + p.cost, 0), parts };
 }
 
-/** The fees an action on side `side` charges in a period: each on that action whose price there is on an action (a share, a sum per unit or per action). */
+/** A price charged on an action: a share of it, a sum per unit, a sum per action, a sum per dollar converted. */
+type OnActionPrice = Extract<DealPrice, { kind: "action" | "perUnit" | "perAction" | "perDollar" }>;
+const isOnAction = (p: DealPrice): p is OnActionPrice => p.kind === "action" || p.kind === "perUnit" || p.kind === "perAction" || p.kind === "perDollar";
+
+/** The fees an action on side `side` charges in a period: each on that action whose price there is on an action (`isOnAction`). */
 function chargedOnAction(deal: Deal, period: DealPeriod, action: DealAction, side: "buy" | "sell"): number[] {
   return onAction(deal, period, action).fees.filter((i) => {
     const fee = deal.fees[i]!;
     const price = priceOn(fee, period.prices[i]!, side);
-    return !!price && groupAction(deal, fee.base, price) === action && (price.kind === "action" || price.kind === "perUnit" || price.kind === "perAction");
+    return !!price && groupAction(deal, fee.base, price) === action && isOnAction(price);
   });
 }
 
@@ -693,10 +708,10 @@ export function perUnitOf(p: DealPrice): Extract<DealPrice, { kind: "perUnit" }>
 
 /** The cost of fee `fee`'s price on an action of `a` shekels, with a third party's fee printed with it (F-117), and that party's part of it. */
 function feeCost(fee: DealFee, price: DealPrice, a: number, rates: Readonly<Record<string, number>>, unitPrice: number | undefined): Omit<DealPart, "fee"> {
-  if (price.kind !== "action" && price.kind !== "perUnit" && price.kind !== "perAction") return { cost: 0 };
+  if (!isOnAction(price)) return { cost: 0 };
   const isFx = isConversionFee(fee);
   const rateOf = (currency: string) => shekelsPer(currency, rates);
-  const third = price.third ? priceCost(price.third, a, rateOf, unitPrice, isFx) : 0;
+  const third = price.kind !== "perDollar" && price.third ? priceCost(price.third, a, rateOf, unitPrice, isFx) : 0;
   return { cost: priceCost(price, a, rateOf, unitPrice, isFx) + third, ...(third > 0 ? { third } : {}) };
 }
 
@@ -718,7 +733,7 @@ export interface DealStretch extends ConversionStretch {
 export function dealConversionStretches(deal: Deal, period: DealPeriod, fees: readonly number[], side: "buy" | "sell", rates: Readonly<Record<string, number>>, unitPrice?: number): DealStretch[] {
   const priced = fees.flatMap((i) => {
     const price = priceOn(deal.fees[i]!, period.prices[i]!, side);
-    return price && (price.kind === "action" || price.kind === "perUnit" || price.kind === "perAction") ? [{ i, fee: deal.fees[i]!, price }] : [];
+    return price && isOnAction(price) ? [{ i, fee: deal.fees[i]!, price }] : [];
   });
   const tops = new Set<number>();
   for (const { fee, price } of priced) {
@@ -768,12 +783,22 @@ export function buyConversion(stretches: readonly DealStretch[], cash: number): 
  * sum per action, held to its cap as a share's minimum is; a third party's fee (F-117) is priced the same way on its own. A conversion is priced as F-13 prices it.
  */
 function priceCost(
-  price: { kind: "action"; rate: number; min?: number; max?: number; cap?: number; flat?: DealFlat; currency?: string } | { kind: "perUnit"; amount: number; min?: number; max?: number; cap?: number; flat?: DealFlat; currency?: string } | { kind: "perAction"; amount: number; cap?: number; currency?: string },
+  price:
+    | { kind: "action"; rate: number; min?: number; max?: number; cap?: number; flat?: DealFlat; currency?: string }
+    | { kind: "perUnit"; amount: number; min?: number; max?: number; cap?: number; flat?: DealFlat; currency?: string }
+    | { kind: "perAction"; amount: number; cap?: number; currency?: string }
+    | { kind: "perDollar"; amount: number },
   a: number,
   rateOf: (currency: string) => number,
   unitPrice: number | undefined,
   isFx: boolean,
 ): number {
+  // F-13: a sum per dollar converted is a house's line priced per unit of the currency (`perCurrencyUnit`), read at the dollar's rate
+  if (price.kind === "perDollar") {
+    const line: Commission = { rate: 0, perCurrencyUnit: price.amount };
+    const terms: TradeTerms = { fxRate: rateOf("USD") };
+    return isFx ? fxFee(line, a, terms) : tradeCommission(line, a, terms);
+  }
   // a sum per action held to a percent ceiling is F-12's line of a share of nothing whose minimum and maximum are the sum, with the cap:
   // the share of the action wins over the sum where it is lower, as it wins over a share's minimum
   if (price.kind === "perAction" && price.cap !== undefined) return priceCost({ kind: "action", rate: 0, min: price.amount, max: price.amount, cap: price.cap, ...(price.currency ? { currency: price.currency } : {}) }, a, rateOf, unitPrice, isFx);
@@ -886,8 +911,8 @@ export interface PartStretch {
  * F-112 The parts of one price along the size of the action, or of the value held per charge: F-112's stretches (`stretchesOf`), each
  * read at its middle, in the price's currency. A free price is free throughout; a sum per action is its sum throughout, and under a
  * percent maximum its cap up to `amount / cap`, then the sum; a sum per unit is read as a share of `amount / unitPrice` (F-12's `c × n`
- * on `a / U` units), so it needs `unitPrice`, what one unit costs in the price's currency. Null for a sum per period, which no size
- * moves, and for a sum per unit without its unit's price.
+ * on `a / U` units), so it needs `unitPrice`, what one unit costs in the price's currency; a sum per dollar converted has no bound, so
+ * its rate decides throughout. Null for a sum per period, which no size moves, and for a sum per unit without its unit's price.
  */
 export function priceParts(price: DealPrice, unitPrice?: number): PartStretch[] | null {
   switch (price.kind) {
@@ -905,6 +930,8 @@ export function priceParts(price: DealPrice, unitPrice?: number): PartStretch[] 
       return stretchesOf({ rate: price.rate, ...bounds(price) });
     case "held":
       return stretchesOf({ rate: price.rate, ...heldBounds(price) });
+    case "perDollar":
+      return [{ part: "rate", from: 0, to: null }];
     default:
       return assertNever(price);
   }
@@ -1285,7 +1312,7 @@ export function stepStretch(tops: readonly number[], k: number): { from: number;
 }
 
 /**
- * F-116 A price with a discount: a share `d` (a fraction) off the price lowers its rate, its sum per unit or its sum per action to
+ * F-116 A price with a discount: a share `d` (a fraction) off the price lowers its rate, its sum per unit or per action to
  * `(1 − d)` of it, and, where the price list says the discount is on the minimum too (`alsoMin`), its minimum the same way. The maximum, the
  * percent maximum, the flat price for a small action and a third party's fee printed beside it are not the price the discount is off, and
  * stay as typed. Any other price is returned as it is.
@@ -1302,6 +1329,7 @@ export function discounted(price: DealPrice, d: number, alsoMin: boolean): DealP
     case "free":
     case "held":
     case "sum":
+    case "perDollar":
       return price;
     default:
       return assertNever(price);

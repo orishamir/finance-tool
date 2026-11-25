@@ -575,7 +575,7 @@ describe("the templates", () => {
     expect(house("excellence").fees.find((f) => f.kind === "custody")!.cases).toBeUndefined();
     // Interactive Israel sells foreign securities alone: its custody and account fee on them are on everything it sells, so general
     for (const kind of ["custody", "fixed_period"]) expect(house("interactive-israel").fees.find((f) => f.kind === kind)!.cases, kind).toBeUndefined();
-    // Psagot's custody line names every class; its foreign securities are not shown to be on sale there, and the rest it covers whole
+    // Psagot's custody line names every class it sells, so it covers them whole
     expect(house("psagot").fees.find((f) => f.kind === "custody")!.cases).toBeUndefined();
     // One Zero sells on the Tel Aviv exchange too: its fee for each corporate event abroad keeps what is bought, with one case for it
     const event = house("one-zero").fees.find((f) => f.kind === "corporate_event")!;
@@ -630,9 +630,9 @@ describe("the templates", () => {
     expect(copy.filled.why["fx-to-fx"]).toBeTruthy();
   });
   it("list with why every line reading the house as it can be done takes away whole", () => {
-    // Psagot's documents do not show a private customer can buy abroad there: its two foreign trade lines
+    // Psagot sells abroad to a private customer (its written answer of 10.11.2026): none of its lines is taken away
     const gone = house("psagot").left.filter((l) => l.why === "unavailable").map((l) => l.lineId).sort();
-    expect(gone).toEqual(["psagot-buy-sell-foreign-europe", "psagot-buy-sell-foreign-us"]);
+    expect(gone).toEqual([]);
     // every line of every house's record fills a fee or is listed with why
     for (const full of latestSnapshots().filter((x) => data.houses.some((h) => h.id === x.id))) {
       const kept = onlyWhatCanBeDone(full);
@@ -715,13 +715,13 @@ describe("the templates", () => {
     const fixed = filledFor("interactive-brokers", [{ by: "what", is: "us" }, { by: "track", is: "IBKR Pro - Fixed" }]);
     expect(fixed("trade")).toMatchObject({ form: "perUnit", amount: { v: 0.005 }, cap: { v: 1 } });
     expect(filledFor("interactive-brokers", [{ by: "what", is: "europe" }, { by: "track", is: "IBKR Pro - Tiered" }])("trade")).toMatchObject({ form: "action", rate: { v: 0.05 }, min: { v: 1.7 }, max: { v: 39 } });
-    // the automatic conversion's markup is not counted (D65), and the spot conversion stays out, since F-63 converts by the automatic one
+    // the automatic conversion's markup is not counted (D65); the spot conversion prices the sale, since the automatic one converts only on a
+    // purchase (F-13), so it is read and not left
     // its lines on the Tel Aviv exchange price nothing for a private customer resident in Israel (its availability): listed with why
     expect(templateOf(newDeal("brokerage-account"), "house:interactive-brokers", data, TODAY)!.left).toEqual([
       expect.objectContaining({ line: "interactive-brokers-buy-sell-tase-fixed", why: "unavailable" }),
       expect.objectContaining({ line: "interactive-brokers-buy-sell-tase-tiered", why: "unavailable" }),
       expect.objectContaining({ line: "interactive-brokers-custody-tase", why: "unavailable" }),
-      expect.objectContaining({ line: "interactive-brokers-fx-spot", why: "another-line" }),
       expect.objectContaining({ line: "interactive-brokers-fx-auto-conversion", why: "spread-unpriced" }),
     ]);
     expect(templateOf(newDeal("brokerage-account"), "house:interactive-brokers/no-such-line", data, TODAY)).toBeNull();

@@ -108,6 +108,23 @@ export function checkEffectiveRateUnit(collection: string, record: unknown): str
   return out;
 }
 
+/**
+ * data-schema §2: `agorot_per_usd` is a deal's unit, the price per dollar converted as the person types and reads it on the fee page; a
+ * record prices the same in `nis_per_usd`, so no record holds a value in agorot.
+ */
+export function checkDealOnlyUnit(record: unknown): string[] {
+  const out: string[] = [];
+  const walk = (v: unknown, at: string) => {
+    if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${at}[${i}]`));
+    else if (v && typeof v === "object") {
+      if ((v as { unit?: unknown }).unit === "agorot_per_usd") out.push(`${at || "(record)"}: unit agorot_per_usd is a deal's, not a record's; a record prices a dollar converted in nis_per_usd (data-schema §2)`);
+      for (const [k, x] of Object.entries(v)) walk(x, at ? `${at}.${k}` : k);
+    }
+  };
+  walk(record, "");
+  return out;
+}
+
 /** The first string anywhere in a parsed JSON value that names a product defined by religious law, if any. */
 function religiousLawText(v: unknown): string | undefined {
   if (typeof v === "string") return isReligiousLaw(v) ? v : undefined;
@@ -181,6 +198,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     }
     for (const message of checkCitedPages(parsed.value, ctx.filePages)) report(file, message);
     for (const message of checkEffectiveRateUnit(collection, parsed.value)) report(file, message);
+    for (const message of checkDealOnlyUnit(parsed.value)) report(file, message);
     if (collection === "terms/deposits" && result.success) for (const message of checkFirstExitPoint(parsed.value)) report(file, message);
     if (collection === "rules" && result.success) {
       const rec = parsed.value as RuleLike;

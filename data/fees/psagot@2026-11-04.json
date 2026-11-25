@@ -17,7 +17,7 @@
   "tariff": {
     "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
     "title": "תעריפון עמלות פסגות טרייד",
-    "notes": "תעריפון עמלות פסגות טרייד - עמוד HTML באתר פסגות (ללא תאריך מודפס; לפי ה-API של האתר נוצר 13.1.2026 ועודכן 9.8.2026). הקישור 'להורדת התעריפון עמלות המלא' מפנה לקובץ PDF (7 עמ', ללא תאריך מודפס, CreationDate/ModDate 6.8.2026, Last-Modified 9.8.2026, ספרייה 40313c4c1c6f1d21) באותו תוכן; גרסת ינואר 2026 (PDF 13.1.2026, ספרייה 6aa0467f9b7f4207) נושאת אותם שיעורים. נקרא שוב 4.11.2026: אין תעריפון חדש יותר. חלק 4 – ניירות ערך, חלק 5 – מטבע חוץ, חלק 6 – שירותים ועמלות נוספות. הסכם פתיחת החשבון ונספח העמלות החתום אינם מפורסמים.",
+    "notes": "תעריפון עמלות פסגות טרייד - עמוד HTML באתר פסגות (ללא תאריך מודפס; לפי ה-API של האתר נוצר 13.1.2026 ועודכן 9.8.2026). הקישור 'להורדת התעריפון עמלות המלא' מפנה לקובץ PDF (7 עמ', ללא תאריך מודפס, CreationDate/ModDate 6.8.2026, Last-Modified 9.8.2026, ספרייה 40313c4c1c6f1d21) באותו תוכן; גרסת ינואר 2026 (PDF 13.1.2026, ספרייה 6aa0467f9b7f4207) נושאת אותם שיעורים. נקרא שוב 4.11.2026: אין תעריפון חדש יותר. חלק 4 – ניירות ערך, חלק 5 – מטבע חוץ, חלק 6 – שירותים ועמלות נוספות. הסכם פתיחת החשבון ונספח העמלות החתום אינם מפורסמים. נקרא שוב 25.11.2026: ללא שינוי (dateModified 2026-08-09).",
     "published": null,
     "printed": {
       "kind": "none"
@@ -427,17 +427,18 @@
           "strength": "institution",
           "quote": "עמלה בגובה 0.15% מהעסקה, מינימום 15 יורו לעסקה"
         },
-        "checked": "2026-11-04",
+        "checked": "2026-11-25",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
-        "notes": "'עמלה בגובה 0.15% מהעסקה, מינימום 15 יורו לעסקה'. Other rows: foreign bonds 0.25% min 50 currency units; Canada 0.15% min CAD 10; foreign funds 0.25% no minimum. 2026-11-04 (research/2026-11-04-binding-prices/psagot-abroad.md): the tariff adds 'באחריות הלקוח לפנות לחברה, על מנת לברר גובה העמלה לפני ביצוע הפעילות'. The fee is collected in the trade currency and the 15 euro minimum is converted into it ('העמלה המינימלית תהיה 15 יורו לאחר המרתם', the Swiss franc example). Which row an Irish UCITS ETF falls under, this one or 'קרנות זרות' (0.25%, no minimum), is not stated."
+        "notes": "'עמלה בגובה 0.15% מהעסקה, מינימום 15 יורו לעסקה'. Other rows: foreign bonds 0.25% min 50 currency units; Canada 0.15% min CAD 10; foreign funds 0.25% no minimum. 2026-11-04 (research/2026-11-04-binding-prices/psagot-abroad.md): the tariff adds 'באחריות הלקוח לפנות לחברה, על מנת לברר גובה העמלה לפני ביצוע הפעילות'. The fee is collected in the trade currency and the 15 euro minimum is converted into it ('העמלה המינימלית תהיה 15 יורו לאחר המרתם', the Swiss franc example). Which row an Irish UCITS ETF falls under, this one or 'קרנות זרות' (0.25%, no minimum), the price list does not state; Psagot's written answer of 10.11.2026 (docs/company-answers.md#psagot-2026-11-10, item 2), asked it for the iShares Core S&P 500 UCITS ETF (IE00B5BMR087) given the warning, puts it on this row: 'העמלה על פעולות באירופה היא 0.15% משווי העסקה עם מינימום 15 אירו לפעולה'. 2026-11-25: re-read, unchanged (dateModified 2026-08-09)."
       },
       "min": {
         "value": 15,
@@ -449,17 +450,18 @@
           "strength": "institution",
           "quote": "עמלה בגובה 0.15% מהעסקה, מינימום 15 יורו לעסקה"
         },
-        "checked": "2026-11-04",
+        "checked": "2026-11-25",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
-        "notes": "'מינימום 15 יורו לעסקה'."
+        "notes": "'מינימום 15 יורו לעסקה'. Psagot's written answer of 10.11.2026 (docs/company-answers.md#psagot-2026-11-10, item 2) says the same, 'מינימום 15 אירו לפעולה'. The general fee annex sent with it prints 'מינימום של 15 יח'* מטבע שלמות בהתאם למטבע שבו בוצעה העסקה', 15 dollars on a fund bought in dollars, less than 15 euros while the euro is above the dollar; that annex is undated and Psagot did not say it is a new customer's current terms, so the minimum stays the price list's and the answer's 15 euros, the most the documents let it charge (D56)."
       },
       "max": null,
       "period": null,
@@ -536,17 +538,18 @@
           "strength": "institution",
           "quote": "עבור המרה מדולר או לדולר – 1.5 אגורות עבור כל דולר/שקל"
         },
-        "checked": "2026-11-04",
+        "checked": "2026-11-25",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
-        "notes": "Printed as an amount per dollar, not a percentage: 'עבור המרה מדולר או לדולר – 1.5 אגורות עבור כל דולר/שקל'. Recorded as 0.015 NIS per dollar converted. Reading, not the document's words: 'כל דולר/שקל' is read as each dollar exchanged for shekels; at about 3.12 NIS a dollar that is about 0.48% of the amount, beside the same list's ceiling of 0.5% on other currencies, while per shekel it would be 1.5%. Charged on execution. 2026-11-04 (research/2026-11-04-binding-prices/psagot-abroad.md): no Psagot page, guide, form or the exchange's sheet gives the unit; a dollar security is bought in dollars ('רכישה של ניירות ערך תתבצע במטבע הנקוב של אותו נייר')."
+        "notes": "Printed as an amount per dollar, not a percentage: 'עבור המרה מדולר או לדולר – 1.5 אגורות עבור כל דולר/שקל'. Recorded as 0.015 NIS per dollar converted, the unit Psagot gave in writing on 10.11.2026 (docs/company-answers.md#psagot-2026-11-10, item 3): 'הכוונה ל-1.5 אגורות לכל דולר שמומר (כ-0.5% מהסכום), העלות הזאת מגולמת במרווח ההמרה', so it is taken in the rate rather than charged apart. Until that answer it was the record's reading: the words 'כל דולר/שקל' also allowed per shekel, 1.5%. Charged on execution. 2026-11-04 (research/2026-11-04-binding-prices/psagot-abroad.md): no Psagot page, guide, form or the exchange's sheet gives the unit; a dollar security is bought in dollars ('רכישה של ניירות ערך תתבצע במטבע הנקוב של אותו נייר'). 2026-11-25: the price list re-read, unchanged (dateModified 2026-08-09)."
       },
       "min": null,
       "max": null,
@@ -567,10 +570,11 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
-        "notes": "Not limited by the documents (D56): the tariff prints a conversion fee but no spread and no limit on the rate the company applies. Advertising only: 'שערי המרה מועדפים' (landing page) and 'בשערים תחרותיים, במרווחים צמודים וללא עמלות המרה' (trade_heb page); the words 'ללא עמלות המרה' are contradicted by this line."
+        "notes": "Not limited by the documents (D56): the tariff prints a conversion fee but no spread and no limit on the rate the company applies. Advertising only: 'שערי המרה מועדפים' (landing page) and 'בשערים תחרותיים, במרווחים צמודים וללא עמלות המרה' (trade_heb page); the words 'ללא עמלות המרה' are contradicted by this line. 2026-11-25: Psagot's written answer of 10.11.2026 (docs/company-answers.md#psagot-2026-11-10, item 3) says the 1.5 agorot is 'מגולמת במרווח ההמרה' and sets no limit on the spread; the general fee annex sent with it prints 'עמלת המרת מט\"ח' פטור and 'בהתאם לשיקול דעת, פסגות עשויה לגבות עמלה נוספת (מרווח) הגלומה בשער ההמרה', with no limit. Still limited by no document, so nothing beyond the 1.5 agorot is priced (D65)."
       },
       "period": null,
       "channel": null,
@@ -608,7 +612,8 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
         "notes": "'עבור המרה למטבע אחר או ממטבע אחר – עד 0.5% משווי העסקה' (a ceiling)."
@@ -632,7 +637,8 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-24",
-          "BRK-15"
+          "BRK-15",
+          "BRK-48"
         ],
         "state": "sourced",
         "notes": "Not limited by the documents (D56): the tariff prints a conversion fee but no spread and no limit on the rate the company applies. Advertising only: 'שערי המרה מועדפים' (landing page) and 'בשערים תחרותיים, במרווחים צמודים וללא עמלות המרה' (trade_heb page); the words 'ללא עמלות המרה' are contradicted by this line."
@@ -743,15 +749,14 @@
       "applies_to": [
         "foreign_securities"
       ],
-      "available": "unknown",
-      "reason_he": "בתעריפון המחיר על ניירות ערך באירופה לא סופי: ״עמלת ני״ע באסיה ובאירופה עשויה להשתנות בהתאם לסוג המניה ואופי הפעילות. באחריות הלקוח לפנות לחברה, על מנת לברר גובה העמלה לפני ביצוע הפעילות״. אף מסמך של פסגות לא מונה את הבורסות באירופה שאפשר לקנות בהן. גם ההמרה לדולר, ״1.5 אגורות עבור כל דולר/שקל״, אפשר לקרוא ביותר מדרך אחת, בין 0.48% ל־1.5%, ולכן האתר לא מחשב לה מחיר.",
-      "note": "2026-10-31, an independent reader of the tariff: the euro minimum is computed since that day, but the document itself leaves the European price open and the conversion wording has more than one reading (per dollar about 0.48% at 3.12, per shekel 1.5%). A doubt is a grey row (D42). The lines stay recorded as printed. 2026-11-04: the exchange's member sheet (updated 10/08/26) prints for outside the US '0.2500% משווי עסקה', minimum '50.00 במטבע העסקה', while the tariff prints 0.15% with a 15 euro minimum for European shares and ETFs: one more reason the European price is open. 2026-11-04 (research/2026-11-04-binding-prices/psagot-abroad.md): the exchange's sheet, read through api.tase.co.il loadmembercommissions?memberId=2881, has one row outside the US ('מניות, אג\"ח, קרנות נאמנות - מחוץ לארה\"ב', 0.25%, min 50 in the trade currency), equal to the tariff's 'אג\"ח חו\"ל' row, so the two need not contradict; no Psagot page or PDF names London or any European exchange.",
+      "available": true,
       "source": {
         "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
-        "title": "תעריפון עמלות פסגות טרייד",
-        "checked": "2026-11-04",
-        "quote": "מניות ו-ETF הנסחרים בבורסות ארה\"ב"
-      }
+        "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 5, קניה, מכירה, ופדיון של ניירות ערך בחו״ל",
+        "checked": "2026-11-25",
+        "quote": "מניות ו-ETF הנסחרים בבורסות ארה\"ב … מניות ו-ETF הנסחרות בבורסות אירופה"
+      },
+      "note": "2026-11-25: available. The price list names ETFs in the US and in Europe (part 4, item 5, re-read 2026-11-25, unchanged, dateModified 2026-08-09). Until then 'unknown' for three reasons, written on 31.10 and 4.11, before Psagot answered: the price list's warning on Europe ('עמלת ני\"ע באסיה ובאירופה עשויה להשתנות בהתאם לסוג המניה ואופי הפעילות. באחריות הלקוח לפנות לחברה, על מנת לברר גובה העמלה לפני ביצוע הפעילות'); '1.5 אגורות עבור כל דולר/שקל', which read per dollar is about 0.48% and per shekel 1.5%; and no Psagot document naming a European exchange. Psagot's written answer of 10.11.2026 (docs/company-answers.md#psagot-2026-11-10) settles all three, as IBI's written answer settled the same warning on 2026-11-08 (ibi@2026-11-08). Asked, for the iShares Core S&P 500 UCITS ETF (IE00B5BMR087, London, in dollars), which line applies given the warning, it answered 'העמלה על פעולות באירופה היא 0.15% משווי העסקה עם מינימום 15 אירו לפעולה' (item 2): the price list's Europe row, not its 'קרנות זרות' row. On the conversion: 'הכוונה ל-1.5 אגורות לכל דולר שמומר (כ-0.5% מהסכום), העלות הזאת מגולמת במרווח ההמרה' (item 3), the unit the record already priced. On exchanges: 'אפשר לסחור אוטומטית בבורסות לונדון וגרמניה דרך המערכת, בבורסות אחרות אפשר לסחור דרך חדר המסחר בטלפון בשלוחה 2' (item 1). Every fund the site holds abroad in Europe has a London line in dollars (data/funds), so none is bought by phone only and no phone_only is recorded. The exchange's member sheet (updated 10/08/26) has one row outside the US (0.25%, min 50 in the trade currency), equal to the price list's 'אג\"ח חו\"ל' row, so the two need not conflict. Not settled, and none of it greys the row: the general fee annex Psagot sent with the answer (undated, not confirmed as a new customer's current terms) prints the conversion fee 'פטור' with a spread at Psagot's discretion and the European minimum as 15 units of the trade's currency; the record keeps the price list as the answer reads it, the most the documents let Psagot charge (D56; left_out, the annex entry). Third parties' charges abroad ('בהתאם לקרן', item 4) are left out of every price (D66); the conversion spread is limited by no document and not priced (D65). Before: 2026-10-31, an independent reader of the tariff: the euro minimum is computed since that day, but the document itself leaves the European price open and the conversion wording has more than one reading (per dollar about 0.48% at 3.12, per shekel 1.5%). A doubt is a grey row (D42). The lines stay recorded as printed. 2026-11-04: the exchange's member sheet (updated 10/08/26) prints for outside the US '0.2500% משווי עסקה', minimum '50.00 במטבע העסקה', while the tariff prints 0.15% with a 15 euro minimum for European shares and ETFs: one more reason the European price is open. 2026-11-04 (research/2026-11-04-binding-prices/psagot-abroad.md): the exchange's sheet, read through api.tase.co.il loadmembercommissions?memberId=2881, has one row outside the US ('מניות, אג\"ח, קרנות נאמנות - מחוץ לארה\"ב', 0.25%, min 50 in the trade currency), equal to the tariff's 'אג\"ח חו\"ל' row, so the two need not contradict; no Psagot page or PDF names London or any European exchange."
     }
   ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
@@ -773,15 +778,15 @@
     {
       "what": "עמוד trade_heb: המרת מט\"ח \"בשערים תחרותיים, במרווחים צמודים וללא עמלות המרה\"",
       "name_he": "״ללא עמלות המרה״ בדף אחר של החברה",
-      "why": "Advertising, contradicted by the tariff's conversion line (1.5 agorot per dollar); the spread is not limited by any document.",
-      "why_he": "בדף אחר של החברה כתוב שאין עמלות המרה, אבל התעריפון מפרסם עמלת המרה, והאתר מתמחר לפי התעריפון.",
+      "why": "Advertising, contradicted by the tariff's conversion line (1.5 agorot per dollar); the spread is not limited by any document. Psagot's written answer of 10.11.2026 (docs/company-answers.md#psagot-2026-11-10, item 3) says the 1.5 agorot a dollar is 'מגולמת במרווח ההמרה', about 0.5% of the sum: a cost taken in the rate.",
+      "why_he": "בדף אחר של החברה כתוב שאין עמלות המרה, אבל בתעריפון יש עמלת המרה של 1.5 אגורות לכל דולר. פסגות כתבה שהעלות הזאת כלולה בשער ההמרה, והאתר מחשב אותה.",
       "could_change_price": false
     },
     {
       "what": "ני\"ע בחו\"ל: \"עמלת הקורספונדנט ו/או עמלות צד שלישי\" בקנייה, במכירה ו\"בעת חלוקת דיבידנד\"; \"SEC ORF, ECN, TAF TAX ועוד\"",
       "name_he": "עמלות של צד שלישי על ניירות ערך בחו״ל",
-      "why": "Charged on top of the commission at whatever the bank or correspondent charges; the tariff sets no amount or limit, so not limited by the documents. Foreign funds are grey on this record anyway.",
-      "why_he": "על ניירות ערך בחו״ל נוספות עמלות של הבנק בחו״ל ושל גופים אחרים, גם בחלוקת דיבידנד, בלי סכום כתוב. האתר לא מוסיף אותן, כמו אצל כל בית השקעות, ולכן המחיר בפועל יקר יותר.",
+      "why": "Charged on top of the commission at whatever the bank or correspondent charges; the tariff sets no amount or limit, so not limited by the documents. Psagot's written answer of 10.11.2026 (docs/company-answers.md#psagot-2026-11-10, item 4): 'בהתאם לקרן, ניתן לשאול את חדר המסחר בטלפון על קרן ספציפית'. Left out of every price (D66).",
+      "why_he": "על ניירות ערך בחו״ל נוספות עמלות של הבנק בחו״ל ושל גופים אחרים, גם בחלוקת דיבידנד, בלי סכום כתוב. האתר לא מוסיף אותן, כמו אצל כל בית השקעות, ולכן המחיר בפועל יקר יותר. פסגות כתבה שהן ״בהתאם לקרן״.",
       "could_change_price": true
     },
     {
@@ -808,8 +813,8 @@
     {
       "what": "הוראת קבע לקנייה חודשית, דמי אי-פעילות, טיפול בדיבידנד מני\"ע ישראליים",
       "name_he": "הוראת קבע, אי פעילות וטיפול בדיבידנד",
-      "why": "None printed in the tariff or the exchange's sheet. Advertising (psagot.co.il/en/website1, modified 2026-09-16, library 505596403a04c846) offers 'אפשרות להוראת קבע לרכישת ניירות ערך'; no fee for it is printed.",
-      "why_he": "התעריפון לא מפרסם עמלה על הוראת קבע לקנייה, דמי אי פעילות או טיפול בדיבידנד מניירות ערך ישראליים, ולכן האתר לא מחשב כאלה.",
+      "why": "None printed in the tariff or the exchange's sheet. Advertising (psagot.co.il/en/website1, modified 2026-09-16, library 505596403a04c846) offers 'אפשרות להוראת קבע לרכישת ניירות ערך'; no fee for it is printed. Psagot's written answer of 10.11.2026 (docs/company-answers.md#psagot-2026-11-10, item 5): 'לא, רק קרנות שנסחרות בבורסת תל אביב בשקלים ניתן לקנות בהוראת קבע'; a fund abroad is bought order by order, on the regular line the site prices every purchase here on (D41).",
+      "why_he": "התעריפון לא מפרסם עמלה על הוראת קבע לקנייה, דמי אי פעילות או טיפול בדיבידנד מניירות ערך ישראליים, ולכן האתר לא מחשב כאלה. פסגות כתבה שבהוראת קבע אפשר לקנות רק קרנות שנסחרות בתל אביב בשקלים, ולכן קרן בחו״ל קונים בפקודה רגילה.",
       "could_change_price": false
     },
     {
@@ -822,7 +827,7 @@
     {
       "what": "נספח העמלות הכללי שפסגות שלחה בכתב ב־10.11.2026 (\"טבלת מחירים ועמלות\", ללא תאריך): \"דמי שמירת ני\"ע\" פטור; \"עמלת המרת מט\"ח\" פטור, \"בהתאם לשיקול דעת, פסגות עשויה לגבות עמלה נוספת (מרווח) הגלומה בשער ההמרה\"; אירופה \"מינימום של 15 יח' מטבע שלמות בהתאם למטבע שבו בוצעה העסקה\"",
       "name_he": "נספח עמלות ששלחה פסגות בכתב",
-      "why": "docs/company-answers.md#psagot-2026-11-10. Psagot sent it as 'נספח העמלות הכללי' and said other customers get other agreements by promotions, groups or portfolio size; it carries no date, and Psagot did not say it is current for a new customer. The record still prices the published tariff (dateModified 2026-08-09, re-read 2026-11-12): custody 0.12% a year ('גבייה רבעונית 0.03%'), conversion '1.5 אגורות עבור כל דולר/שקל', Europe 'מינימום 15 יורו'. If the annex is the ordinary new customer's price, as the lead ruled for IBI's confirmed annex (D56, 2026-11-08), Psagot's custody falls to zero on every holding; the exchange's averages (0% custody actually charged in every band) agree with it. For the lead.",
+      "why": "docs/company-answers.md#psagot-2026-11-10. Psagot sent it as 'נספח העמלות הכללי' and said other customers get other agreements by promotions, groups or portfolio size; it carries no date, and Psagot did not say it is current for a new customer. The record still prices the published tariff (dateModified 2026-08-09, re-read 2026-11-12 and 2026-11-25): custody 0.12% a year ('גבייה רבעונית 0.03%'), conversion '1.5 אגורות עבור כל דולר/שקל', Europe 'מינימום 15 יורו'. If the annex is the ordinary new customer's price, as the lead ruled for IBI's confirmed annex (D56, 2026-11-08), Psagot's custody falls to zero on every holding; the exchange's averages (0% custody actually charged in every band) agree with it. For the lead. 2026-11-25: funds abroad are priced since that day, on the price list as Psagot's answer reads it (conversion 1.5 agorot a dollar, Europe 0.15% with at least 15 euros). On every line of the annex that docs/company-answers.md quotes, the annex prices lower than the price list or the same: custody nothing, conversion no fee (its spread limited by no document, not priced, D65), the European minimum 15 dollars on the site's funds. So if the annex is the ordinary new customer's price, Psagot's price only falls.",
       "why_he": "בנספח העמלות הכללי שפסגות שלחה בכתב כתוב שאין דמי שמירה על ניירות ערך, ובתעריפון שבאתר החברה כתוב 0.12% בשנה. האתר מחשב לפי התעריפון; אם הנספח הוא המחיר שלכם, החשבון זול בפועל יותר. באותו נספח גם אין עמלת המרה, אבל פסגות ״עשויה לגבות עמלה נוספת (מרווח) הגלומה בשער ההמרה״ לפי שיקול דעתה, והמינימום באירופה הוא 15 במטבע העסקה ולא 15 יורו.",
       "could_change_price": true
     }

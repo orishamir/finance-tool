@@ -344,6 +344,8 @@ export function blankPrice(form: FormId): Price {
       return { form: "perAction", amount: blankFigure() };
     case "perUnit":
       return { form: "perUnit", amount: blankFigure() };
+    case "perDollar":
+      return { form: "perDollar", amount: blankFigure() };
     default:
       return assertNever(form);
   }
@@ -569,6 +571,7 @@ const READ_FORM: Readonly<Record<ChargedForm, (raw: Rec) => Rec | null>> = {
   action: (raw) => figureOf("rate", readNum(raw.rate, PCT_MAX)),
   perUnit: (raw) => figureOf("amount", readNum(raw.amount, SUM_MAX)),
   perAction: (raw) => figureOf("amount", readNum(raw.amount, SUM_MAX)),
+  perDollar: (raw) => figureOf("amount", readNum(raw.amount, SUM_MAX)),
   held: (raw) => (isMonths(raw.per) && isMonths(raw.every) ? withMain(figureOf("rate", readNum(raw.rate, PCT_MAX)), { per: raw.per, every: raw.every }) : null),
   sum: (raw) => (isMonths(raw.every) ? withMain(figureOf("amount", readNum(raw.amount, SUM_MAX)), { every: raw.every }) : null),
 };

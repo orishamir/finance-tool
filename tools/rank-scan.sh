@@ -1,5 +1,5 @@
 #!/bin/bash
-# The ranking scan (about three minutes): the indices page computed over a grid of plans (tools/rank-scan.ts), then the flags
+# The ranking scan (about six minutes): the indices page computed over a grid of plans (tools/rank-scan.ts), then the flags
 # (tools/rank-flags.mjs): results that deserve a look after a price list changes, such as an introducing broker cheaper than the
 # broker that holds the account, two banks of one group apart, or a cost that falls as the money grows.
 # Usage: npm run rank-scan -- <folder outside the repository>      (the grid is about 50 MB)

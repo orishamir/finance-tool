@@ -109,12 +109,12 @@ describe("invest page computation", () => {
   });
 
 
-  it("Psagot is grey on funds abroad, with its tariff's own words on why (D42)", () => {
+  it("Psagot prices funds abroad with no doubt on the row, as its written answer of 10.11.2026 settles them (D42)", () => {
     const abroad = view.options.find((o) => o.id === "abroad")!;
     const accumulating = abroad.funds.filter((f) => f.rec.distribution_policy === "accumulating");
     expect(accumulating.length).toBeGreaterThan(0);
-    for (const f of accumulating) expect("valueN" in f.byHouse.psagot!).toBe(false);
-    expect(doubtOf(bundle.snapshots.find((s) => s.id === "psagot"), "abroad")).toContain("עשויה להשתנות");
+    for (const f of accumulating) expect("valueN" in f.byHouse.psagot!).toBe(true);
+    expect(doubtOf(bundle.snapshots.find((s) => s.id === "psagot"), "abroad")).toBeNull();
     expect(view.headline!.providerId).toBe("psagot");
   });
 
@@ -160,12 +160,12 @@ describe("invest page computation", () => {
     expect(abroad.cells.length).toBe(view.providers.length);
     for (const c of abroad.cells) expect(c.kind === "cost" ? typeof c.costN === "number" : c.kind === "unavailable" || !!c.reason).toBe(true);
     expect(abroad.cells.some((c) => c.kind === "cost")).toBe(true);
-    // One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); a house whose price
-    // list leaves the price abroad open (Psagot, IBI) is a grey cell with its reason. Altshuler answered in writing that it
+    // One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); every house prices a fund
+    // abroad, Psagot on its written answer of 10.11.2026. Altshuler answered in writing that it
     // trades only on the Israeli and US exchanges, so it is priced on its US line for a fund that trades in the US, as One Zero is.
     // IBI answered in writing that its line for other markets prices a fund bought in Europe, and sent the annex that prints it
     expect(abroad.cells.filter((c) => c.kind === "not-comparable")).toEqual([]);
-    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["psagot"]);
+    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual([]);
     expect(abroad.cells.find((c) => c.providerId === "ibi")?.kind).toBe("cost");
     expect(abroad.cells.find((c) => c.providerId === "altshuler-trade")).toMatchObject({ kind: "cost", venue: "us" });
   });
@@ -687,21 +687,46 @@ describe("what each figure's sheet lists", () => {
 
 describe("Interactive Brokers abroad: its pricing plans and ways to convert", () => {
   // CSPX on the LSE, 2,000 a month for 10 years: Tiered (minimum USD 1.70) beats Fixed (USD 4), and a cash account's automatic conversion
-  // (no commission, a markup the documents do not limit, D65) beats a spot order (at least USD 2), as Interactive Israel's plan conversion does
+  // (no commission, a markup the documents do not limit, D65) beats a spot order (at least USD 2) on every purchase, as Interactive Israel's
+  // plan conversion does; the sale converts by a spot order whichever way the purchases convert (form 3203 s.30C covers a purchase only, F-13)
   const monthly = plan({ amountNow: 0, monthly: 2000, years: 10, values: { ...plan().values, amount: entered(0, "nis", t), monthly: entered(2000, "nis_per_month", t), years: entered(10, "years", t) } });
   const ibkr = bundle.snapshots.find((s) => s.id === "interactive-brokers")!;
   it("an account built on it starts from the reading the comparison prices it on", () => {
     expect(listReading(bundle, ibkr, "abroad", monthly)!.built.linesUsed).toEqual(expect.arrayContaining(["interactive-brokers-buy-sell-lse-usd-tiered", "interactive-brokers-fx-auto-conversion"]));
   });
-  it("charges no conversion at Interactive Brokers, and costs less there than at Interactive Israel on a unit 2,000 a month buys", () => {
+  it("charges at Interactive Brokers only the sale's conversion, a spot order's minimum, and costs less there than at Interactive Israel on a unit 2,000 a month buys", () => {
     const at = (fundId: string, providerId: string) => pairCosts({ bundle, index: sp, plan: monthly, fundId, providerId })!;
-    expect(at("ie00b5bmr087", "interactive-brokers").account.map((l) => l.line)).not.toContain("fx");
+    expect(listReading(bundle, ibkr, "abroad", monthly)?.built.linesUsed).toEqual(expect.arrayContaining(["interactive-brokers-fx-spot"]));
+    // the proceeds, under USD 100,000, pay the spot order's minimum of USD 2 once, at the exit, carried to today's money: a few shekels
+    const fx = at("ie00b5bmr087", "interactive-brokers").account.find((l) => l.line === "fx")?.cost.value as number;
+    const usd = (bundle.fx?.perEur.ILS ?? Number.NaN) / (bundle.fx?.perEur.USD ?? Number.NaN);
+    expect(fx).toBeGreaterThan(0);
+    expect(fx).toBeLessThan(2 * usd * 1.5);
     // F-109 (D94): VUAA's unit (USD 146) is bought every month in whole units at Interactive Brokers, and costs less there
     expect(at("ie00bfmxxd54", "interactive-brokers").accountCost).toBeLessThan(at("ie00bfmxxd54", "interactive-israel").accountCost);
     // CSPX's unit (USD 815) is more than 2,000 a month: at Interactive Brokers the money waits for a unit, earning nothing, while
     // Interactive Israel's recurring plan buys each month by amount, so there it costs less
     expect(at("ie00b5bmr087", "interactive-brokers").units).not.toBeNull();
     expect(at("ie00b5bmr087", "interactive-israel").accountCost).toBeLessThan(at("ie00b5bmr087", "interactive-brokers").accountCost);
+  });
+  // the ranking scan's R5 (tools/rank-flags.mjs): a record with a non-zero conversion line whose row's conversion part is nothing, with no
+  // spread part to explain it. Each fund bought abroad on these indices, on small and large plans, pays the sale's spot order
+  it("its conversion part is never nothing abroad, where its record has a non-zero conversion line (the ranking scan's R5)", () => {
+    const acwi = indexById(bundle, "index-msci-acwi");
+    if (!acwi) throw new Error("index-msci-acwi is an index of the records");
+    const plans = [plan({ amountNow: 0, monthly: 200, years: 1 }), plan({ amountNow: 50_000, monthly: 1_000, years: 20 }), plan({ amountNow: 6_000, monthly: 0, years: 5 })];
+    let seen = 0;
+    for (const index of [sp, acwi])
+      for (const p of plans)
+        for (const f of buildInvest({ bundle, index, plan: p }).options.find((o) => o.id === "abroad")?.funds ?? []) {
+          const c = pairCosts({ bundle, index, plan: p, fundId: f.rec.id, providerId: "interactive-brokers" });
+          // F-109: a plan whose money never buys a whole unit converts nothing, buys or sale
+          if (!c || (p.amountNow === 0 && c.units && c.units.skipped === c.units.monthly)) continue;
+          seen++;
+          const part = (line: string) => (c.account.find((l) => l.line === line)?.cost.value as number | undefined) ?? 0;
+          expect(part("fx") > 0.005 || part("spread") > 0, `${index.id} ${f.rec.id} ${p.amountNow}+${p.monthly}x${p.years}`).toBe(true);
+        }
+    expect(seen).toBeGreaterThan(6);
   });
 });
 

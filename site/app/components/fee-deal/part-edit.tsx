@@ -218,6 +218,7 @@ const BODIES: Readonly<Record<LinePart, { Body: ComponentType<BodyProps>; lead?:
   share: { Body: MainBody },
   perUnit: { Body: MainBody },
   perAction: { Body: MainBody },
+  perDollar: { Body: MainBody },
   held: { Body: HeldBody },
   sum: { Body: SumBody },
   free: { Body: FreeBody },

@@ -15,8 +15,8 @@ export type Figure = "rate" | "min" | "max" | "amount" | "cap" | "flat" | "upTo"
 /** A key a figure is kept under, in the price or in its part (a flat price's two, a discount's share, a third party's figure and bounds). */
 export type FigureKey = "rate" | "amount" | "min" | "max" | "cap" | "upTo" | "pct" | "perSecurity" | "refund";
 
-/** What a figure is counted in: a percent, or a sum in a currency (the shekel where none is named). */
-export type FigureUnit = { pct: true } | { currency: BoundCurrency | undefined };
+/** What a figure is counted in: a percent, a sum in a currency (the shekel where none is named), or agorot for each dollar converted. */
+export type FigureUnit = { pct: true } | { currency: BoundCurrency | undefined } | { agorotPerDollar: true };
 
 interface FigureDef {
   /** The figure as it stands, with its source; none where the price has no place for it, or has not the part that holds it. */
@@ -36,6 +36,8 @@ interface FigureDef {
 const PCT: FigureUnit = { pct: true };
 /** The price's own currency, for a sum (a share of what is held and a sum per period are in shekels). */
 const inPrice = (p: Price): FigureUnit => ({ currency: onAction(p) ? p.currency : undefined });
+/** A price's main sum: agorot a dollar for a price per dollar converted, else in the price's own currency. */
+const ofAmount = (p: Price): FigureUnit => (p.form === "perDollar" ? { agorotPerDollar: true } : inPrice(p));
 
 /** A key of a price set to a figure, or taken away. */
 function keyed<P extends object>(p: P, key: string, n: Num | undefined): P {
@@ -100,7 +102,7 @@ export const FIGURES: Readonly<Record<Figure, FigureDef>> = {
     set: (p, n) => (byAmount(p) && n ? { ...p, amount: n } : p),
     emptied: "blank",
     placed: byAmount,
-    unit: inPrice,
+    unit: ofAmount,
     keys: ["amount"],
   },
   min: bound("min"),

@@ -10,8 +10,8 @@ export type ActionBoundedPrice = Extract<Price, { form: "action" | "perUnit" }>;
 export type BoundedPrice = Extract<Price, { form: "action" | "perUnit" | "held" }>;
 /** A price whose main figure is a rate: a share of each action, a share of what is held. */
 export type RatePrice = Extract<Price, { form: "action" | "held" }>;
-/** A price whose main figure is a sum: a sum for each unit, a sum per period, a sum on each action. */
-export type AmountPrice = Extract<Price, { form: "perUnit" | "sum" | "perAction" }>;
+/** A price whose main figure is a sum: a sum for each unit, a sum per period, a sum on each action, a sum for each dollar converted. */
+export type AmountPrice = Extract<Price, { form: "perUnit" | "sum" | "perAction" | "perDollar" }>;
 /** A price that charges something: every form but free. */
 export type ChargedPrice = Exclude<Price, { form: "free" }>;
 
@@ -23,10 +23,11 @@ const BOUNDED: readonly FormId[] = ["action", "perUnit", "held"];
 const BY_RATE: readonly FormId[] = ["action", "held"];
 
 /**
- * What a form's main figure is: a rate (a share of each action or of what is held), a sum (per period or on each action), or a sum for
- * each unit, which is neither. A change of form carries the figure only into a form whose figure is of the same kind.
+ * What a form's main figure is: a rate (a share of each action or of what is held), a sum (per period or on each action), a sum for each
+ * unit, or agorot for each dollar converted, which are neither. A change of form carries the figure only into a form whose figure is of
+ * the same kind.
  */
-const FIGURE_KIND: Readonly<Record<Exclude<FormId, "free">, "rate" | "sum" | "unit">> = { action: "rate", held: "rate", sum: "sum", perAction: "sum", perUnit: "unit" };
+const FIGURE_KIND: Readonly<Record<Exclude<FormId, "free">, "rate" | "sum" | "unit" | "dollar">> = { action: "rate", held: "rate", sum: "sum", perAction: "sum", perUnit: "unit", perDollar: "dollar" };
 
 /**
  * Whether a form is on an action: its price has a place for a discount, a third party's fee, notes on an order, a percent maximum and a
@@ -40,7 +41,7 @@ export const formBounded = (form: FormId): boolean => BOUNDED.includes(form);
 /** Whether a form charges something. */
 export const formCharged = (form: FormId): boolean => form !== "free";
 /** Whether a form is charged on what is held or on the account: a share of what is held, a sum per period. */
-export const formOnHolding = (form: FormId): boolean => formCharged(form) && !formOnAction(form);
+export const formOnHolding = (form: FormId): boolean => form === "held" || form === "sum";
 /** Whether two forms' main figures are of the same kind (`FIGURE_KIND`). */
 export const sameFigureKind = (a: FormId, b: FormId): boolean => a !== "free" && b !== "free" && FIGURE_KIND[a] === FIGURE_KIND[b];
 

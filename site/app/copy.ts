@@ -88,7 +88,9 @@ export const numbers = {
   /** A count of years and of months in words (lib/format.ts `fmt.years`, `fmt.months`): "שנה", "שנתיים", "5 שנים". */
   yearWords: { one: "שנה", two: "שנתיים", many: "שנים" },
   monthWords: { one: "חודש", two: "חודשיים", many: "חודשים" },
-  agorotPerDollar: "אגורות לדולר", // the tariff's own words, Psagot part 5
+  agorotPerDollar: "אגורות לכל דולר", // as Psagot's price list prints it, part 5: "1.5 אגורות עבור כל דולר"
+  /** A sum in agorot, the figure of a conversion's price per dollar on the fee page, whose words say "לכל דולר" after it. */
+  agorot: "אגורות",
   inTradeCurrency: "במטבע העסקה", // a bound printed in whatever currency the trade is in (data-schema §3.6a item 1)
   parameter: "פרמטר של האתר",
   staleSince: "לא עודכן מאז",
@@ -1995,7 +1997,7 @@ export const feeDeal = {
   panel: {
     title: "העמלה שבחרתם",
     ownName: "שם העמלה",
-    forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה", perUnit: "סכום לכל יחידה" } as Record<string, string>,
+    forms: { free: "חינם", action: "אחוז מכל פעולה", held: "אחוז ממה שמוחזק", sum: "סכום קבוע", perAction: "סכום לכל פעולה", perUnit: "סכום לכל יחידה", perDollar: "אגורות לכל דולר" } as Record<string, string>,
     /** The price parts beyond a rate and its bounds, by the name the reading's sheets give them (values.ts `inputKey`; reading.ts `UNIT_PRICE_KEY`). */
     parts: { cap: "המקסימום באחוזים", flat: "המחיר הקבוע לפעולה קטנה", upTo: "עד כמה חל המחיר הקבוע", discount: "ההנחה", third: "העמלה של הצד השלישי", thirdMin: "המינימום של הצד השלישי", thirdMax: "המקסימום של הצד השלישי", refund: "ההחזר", perSecurity: "המקסימום לכל נייר ערך", unitPrice: "מחיר יחידה" },
     howMuch: "כמה",
@@ -2305,6 +2307,8 @@ export const feeDeal = {
     /** A part of a price, as a toolbox card and as the open case's line; `perAction` and `of` follow the fee (`price.perAction`, `price.of`). */
     parts: {
       perUnit: "לכל יחידה",
+      /** A conversion's price for each dollar converted, around its box: "[1.5] אגורות לכל דולר" (Psagot's "1.5 אגורות עבור כל דולר"). */
+      perDollar: { sign: numbers.agorot, tail: "לכל דולר" },
       discount: { lead: "הנחה ", tail: " מהמחיר", alsoMin: ", גם על המינימום" },
       third: "ועוד עמלה של צד שלישי",
       /** A third party's fee named in the list's words: "ועוד עמלת הברוקר". */
@@ -2721,7 +2725,8 @@ export const feeDeal = {
     lead: { house: "השורות האלה בתעריפון לא נכנסו לעסקה, כל אחת מהסיבה שמעליה.", track: "אלה לא נכנסו לעסקה מהמסלול." },
     /** Why a price list's line fills nothing (templates.ts, `LeftWhy`). */
     why: {
-      "per-dollar": "מחיר המרה בשקלים לכל דולר: העסקה מתמחרת המרה באחוז ממנה.",
+      "per-dollar": "מחיר המרה באגורות לכל דולר, ולידו מינימום, מקסימום או מחיר לפי גודל ההמרה: העסקה לא יכולה לרשום אותם יחד.",
+      "per-dollar-spread": "מחיר המרה באגורות לכל דולר, ולידו מרווח בשער שהתעריפון מגביל: האתר לא מחשב את השניים יחד, ולכן ההמרה לא נכנסת.",
       "bound-currency": "מינימום ומקסימום בשני מטבעות, או מינימום ומקסימום על מה שמוחזק שלא בשקלים: העסקה לא יכולה לרשום אותם.",
       ambiguous: "שתי שורות בתעריפון חלות על העמלה, והתעריפון לא אומר איזו מהן.",
       "no-value": "שורה בלי מחיר.",
@@ -2735,6 +2740,8 @@ export const feeDeal = {
       "bank-funds": "לפי כללי העמלות של בנק ישראל, בבנק השורה הזו לא מתמחרת קרן נאמנות אקטיבית. לכן לקרן כזו אין כאן מחיר קנייה ומכירה. קרן מחקה פתוחה מתומחרת כמו ניירות ערך בתל אביב, ואפשר לבחור בזה בקריאה.",
       "spread-on-top": "על ההמרה נוסף מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
       redemption: "מחיר לפדיון במועד הפירעון: חל רק על פדיון כזה, לא על קנייה ומכירה.",
+      /** A conversion only on a purchase, and no single line of the list converts the sale (F-13). */
+      "no-sale-line": "המרה שחלה רק בקנייה, ובתעריפון אין שורה אחת שחלה על ההמרה במכירה. העסקה לא מנחשת את מחיר ההמרה במכירה, ולכן ההמרה לא נכנסת.",
       /** A yearly share of what is held, charged on a fund's units by its type (a bank's distribution fee, BRK-16 part 4(ב)(2), MF-71). */
       "distribution-yearly": "עמלת הפצה בשנה על יחידות של קרן נאמנות, לפי סוג הקרן: העסקה עוד לא יכולה לרשום אחוז בשנה ממה שמוחזק בעמלה הזו, ולכן היא לא נכנסת.",
       /** A custody maximum the list prints with no scope (`max_per: unstated`, data-schema §3.6a item 2): left out, the cautious reading. */

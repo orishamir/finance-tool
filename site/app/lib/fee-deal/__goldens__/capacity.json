@@ -8,6 +8,7 @@
  "redemption_deduction · action": "kept",
  "fx · action": "kept",
  "fx · perAction": "kept",
+ "fx · perDollar": "kept",
  "fx_spread · action": "kept",
  "deposit · action": "kept",
  "distribution_handling · action": "kept",

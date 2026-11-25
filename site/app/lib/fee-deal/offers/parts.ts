@@ -16,7 +16,8 @@ import { FIGURES, type Figure } from "./figures";
 
 /**
  * Every part a price may have, by id (the toolbox's cards and the open case's lines): its main figure as a share of each action (`share`),
- * a sum for each unit (`perUnit`), a sum on each action (`perAction`), a share of what is held (`held`), a sum per period (`sum`), free
+ * a sum for each unit (`perUnit`), a sum on each action (`perAction`), a conversion's sum for each dollar converted (`perDollar`), a share
+ * of what is held (`held`), a sum per period (`sum`), free
  * (`free`), a discount, a third party's fee, a later price (`until`); a minimum, a maximum, a percent maximum (`cap`), a flat price for a
  * small action (`flat`), a held share's maximum on each security (`maxPerSecurity`); an offset, a refund; notes on an order (`unfilled`,
  * `unfilledClerk`, `unfilledClerkAbroad`, `capRead`, `partial`), sums in the action's currency (`inTrade`) and a sale priced apart (`sale`).
@@ -26,6 +27,7 @@ export type PartId =
   | "share"
   | "perUnit"
   | "perAction"
+  | "perDollar"
   | "held"
   | "sum"
   | "free"
@@ -156,6 +158,7 @@ const SPECS = {
   share: { kind: "charge", form: "action", figures: ["rate"], ask: null, tool: "charge", ...formEdit("action") },
   perUnit: { kind: "charge", form: "perUnit", figures: ["amount"], ask: null, tool: "charge", ...formEdit("perUnit") },
   perAction: { kind: "charge", form: "perAction", figures: ["amount"], ask: null, tool: "charge", ...formEdit("perAction") },
+  perDollar: { kind: "charge", form: "perDollar", figures: ["amount"], ask: null, tool: "charge", ...formEdit("perDollar") },
   held: { kind: "charge", form: "held", figures: ["rate"], ask: null, tool: "charge", ...formEdit("held") },
   sum: { kind: "charge", form: "sum", figures: ["amount"], ask: null, tool: "charge", ...formEdit("sum") },
   // a price that charges nothing reads "חינם": the toolbox adds a charge to it; its own card, and the bin of a price's charge, make a price

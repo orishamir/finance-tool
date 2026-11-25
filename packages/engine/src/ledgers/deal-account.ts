@@ -2,6 +2,7 @@
 // the deal's own formulas (F-110 to F-117, `actionCost`, `heldCharge`, `sumCharge`), so the indices page and the fee page never disagree
 // about what a fee costs at an amount. Which fee the plan charges, and how, is `planChargeOf`; `dealCharges` is what the run asks of the
 // account each month. Rates are fractions and sums shekels, as in formulas/deal.ts.
+import { RecordInputError } from "../resolver.ts";
 import { boughtFor, orderByAmount, orderInUnits, paidOutOf, tradeOfCash } from "../formulas/fees.ts";
 import { actionCost, buyConversion, chargedOn, dealConversionStretches, dealPeriods, heldCharge, inHeldStep, inStep, sumCharge, type CalendarMonth, type Deal, type DealAction, type DealBase, type DealPeriod, type DealPrice } from "../formulas/deal.ts";
 
@@ -242,6 +243,13 @@ export function dealCharges(account: DealAccount, run: DealRunFacts): DealCharge
     if (isAccount(i)) return "holding" as const;
     const c = planChargeOf(f.base, facts, [...f.stages, ...(f.sale ?? [])].map((s) => s.price));
     return "charge" in c ? c.charge : null;
+  });
+  // F-13: a conversion priced per dollar converted is a price for dollars alone; on a fund in another currency it is no price, as a house's
+  // line in `nis_per_usd` is not (the caller reads such a fee as having no case there, F-114)
+  deal.fees.forEach((f, i) => {
+    if (roles[i] === "conversion" && run.currency !== "USD" && [...f.stages, ...(f.sale ?? [])].some((s) => s.price.kind === "perDollar")) {
+      throw new RecordInputError(`F-13: fee ${i} prices the conversion per dollar, and the fund's currency is ${run.currency}`);
+    }
   });
   const reading = dealPeriods(deal, account.start);
   const first = monthIndex(account.start);

@@ -194,6 +194,8 @@ export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: 
     case "perAction":
     case "perUnit":
       return { form: p.form, figures, ...currency, ...parts };
+    case "perDollar":
+      return { form: "perDollar", figures, ...parts };
     default:
       return assertNever(p);
   }
