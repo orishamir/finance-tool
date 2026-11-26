@@ -156,3 +156,39 @@ export function rateWords(line: FeeLine, priced: PairCosts["priced"], monthly: n
   }
   return out;
 }
+
+/**
+ * F-133: the charge on each purchase that does not shrink with its size, which fewer, larger purchases pay fewer times, from the lines the
+ * run priced, as the list prints it. An order placed every few months runs at the regular lines (F-133), so a standing order's line is not
+ * read. The trade line's minimum first, then its price per order, then its flat price for a small order; then the conversion line's minimum
+ * and flat price. A base with more than one regular line is not read. Null where the prices are the person's or none of these is printed.
+ */
+export type OrderCharge = { kind: "tradeMin" | "tradeFlat" | "fxMin"; value: Figure } | { kind: "tradeUpTo" | "fxUpTo"; value: Figure; upTo: Figure };
+
+export function orderCharge(priced: PairCosts["priced"]): OrderCharge | null {
+  if (priced.entered) return null;
+  const regular = (base: SnapLine["base"]): SnapLine | null => {
+    const lines = priced.lines.filter((l) => l.base === base && l.band !== STANDING_ORDER_BAND && l.band !== STANDING_CONVERSION_BAND);
+    return lines.length === 1 ? lines[0]! : null;
+  };
+  const upTo = (l: SnapLine): { value: Figure; upTo: Figure } | null => {
+    const f = l.flat_up_to;
+    return f && num(f.amount) && num(f.up_to) && PER_ORDER.has(f.amount.unit) && PER_ORDER.has(f.up_to.unit) ? { value: f.amount, upTo: f.up_to } : null;
+  };
+  const trade = regular("trade");
+  if (trade) {
+    const min = bound(trade.min);
+    if (min && PER_ORDER.has(min.unit)) return { kind: "tradeMin", value: min };
+    if (num(trade.rate) && trade.rate.unit === "nis_per_trade") return { kind: "tradeFlat", value: trade.rate };
+    const flat = upTo(trade);
+    if (flat) return { kind: "tradeUpTo", ...flat };
+  }
+  const fx = regular("fx");
+  if (fx) {
+    const min = bound(fx.min);
+    if (min && PER_ORDER.has(min.unit)) return { kind: "fxMin", value: min };
+    const flat = upTo(fx);
+    if (flat) return { kind: "fxUpTo", ...flat };
+  }
+  return null;
+}

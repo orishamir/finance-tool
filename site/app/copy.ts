@@ -4141,6 +4141,27 @@ export const invest = {
     gain: "הרווח שלכם",
     /** The account and the fund, by who takes their part. */
     parts: { account: "החשבון", fund: "הקרן" },
+    /**
+     * F-133: under what is left, where the pair is priced buying every few months: the interval and what each purchase buys (`{amount}`, the
+     * monthly deposit times the interval), or the interval alone with no monthly deposit; a tap opens why, its title `why`. `charge`: the
+     * charge each purchase pays whatever its size (lib/rate-words `orderCharge`, `{figure}` its price, `{upTo}` the sum a flat price holds up
+     * to), `general` where no one charge is printed; `monthly`: what the same pair leaves bought every month (`{figure}`).
+     */
+    batched: {
+      line: (months: number) => `אם קונים ${everyMonths(months)}, כ־{amount} בכל פעם`,
+      lineAlone: (months: number) => `אם קונים ${everyMonths(months)}`,
+      why: (months: number) => `למה ${everyMonths(months)}?`,
+      charge: {
+        tradeMin: (house: string) => `${inName(house)} כל קנייה עולה לפחות {figure}. כשקונים פחות פעמים, משלמים את המינימום הזה פחות פעמים, ונשאר יותר.`,
+        tradeFlat: (house: string) => `${inName(house)} כל קנייה עולה {figure}. כשקונים פחות פעמים, משלמים את העמלה הזו פחות פעמים, ונשאר יותר.`,
+        tradeUpTo: (house: string) => `${inName(house)} קנייה של עד {upTo} עולה {figure}. כשקונים פחות פעמים, משלמים את המחיר הזה פחות פעמים, ונשאר יותר.`,
+        fxMin: (house: string) => `${inName(house)} כל המרת מטבע לקנייה עולה לפחות {figure}. כשקונים פחות פעמים, משלמים את המינימום הזה פחות פעמים, ונשאר יותר.`,
+        fxUpTo: (house: string) => `${inName(house)} המרת מטבע של עד {upTo} עולה {figure}. כשקונים פחות פעמים, משלמים את המחיר הזה פחות פעמים, ונשאר יותר.`,
+      },
+      general: (house: string) => `${inName(house)} כל קנייה נושאת עמלה שלא קטנה כשהקנייה קטנה. כשקונים פחות פעמים, משלמים אותה פחות פעמים, ונשאר יותר.`,
+      monthly: "בקנייה כל חודש היה נשאר {figure}.",
+      waits: "הכסף שמחכה בין הקניות לא מרוויח בינתיים, וזה כבר נכלל בחישוב.",
+    },
     /** The fund's fees as rows under its line, each by its whole name; `charged`: the variable fee the costs rest on, after its years. */
     fundFees: { fixed: "דמי ניהול קבועים", variable: "דמי ניהול משתנים", trustee: "שכר נאמן", yearly: "דמי ניהול שנתיים" },
   },
@@ -4695,8 +4716,10 @@ export const invest = {
       rose: `החישוב קונה ${everyMonths(months)}, כי כך נשאר יותר. הכסף שחיכה בין הקניות לא עלה עם הקרן.`,
       fell: `החישוב קונה ${everyMonths(months)}, כי כך נשאר יותר. הכסף שחיכה בין הקניות לא ירד עם הקרן.`,
     }),
-    /** F-133: beside a figure priced buying every few months, the interval that leaves the most (the fund's row at a house, the receipt) */
+    /** F-133: beside a figure priced buying every few months, the interval that leaves the most (the fund's row at a house) */
     orderEvery: (months: number) => `בקנייה ${everyMonths(months)}`,
+    /** F-133: the sheet of what the same pair leaves with its orders placed every month */
+    monthlyLeftAbout: "מה שהיה נשאר בקנייה כל חודש, בהתחשב באינפלציה",
     /** F-109: a fund bought in whole units whose unit price the site did not collect is priced by amount, and its row says so */
     unitPriceMissing: "מחיר יחידה של הקרן לא נאסף, אז החישוב קונה בכל סכום, גם חלק מיחידה.",
     /** The same, on a fund the person typed: they left its unit price empty (F-109). */
@@ -5418,6 +5441,7 @@ export const kit = {
       SourcedTag: "תגית קצרה על חברה שמקור עומד מאחוריה, כמו ״בטלפון בלבד״ ליד בית השקעות שמוכר סוג קרן רק בטלפון. הקשה פותחת את המקור, כמו בכל מספר. התגית לא משנה אף מספר, ושטח המגע שלה בגובה 44 פיקסלים בלי להגדיל את השורה.",
       Formula: "נוסחה בכתב מתמטי, עם מקרא שאומר מה כל סימן בה: בכרטיס של נוסחה שמסמך שיטת החישוב כותב כך, במקום קישור למסמך.",
       HelpMark: "סימן שאלה ליד כותרת או תווית, שפותח בהקשה את כרטיס המונח ממילון המונחים, עם המקור, או הסבר קצר משלו: רק במקום שהוא מוסיף משהו שהכותרת לא אומרת.",
+      WordsSheet: "מילים בקו מנוקד אפור, כמו מונח, שפותחות בהקשה הסבר קצר של העמוד עצמו, עם מספרים שכל אחד מהם נפתח למקור שלו. לכרטיס ממילון המונחים, Term; להסבר בלי מספרים, HelpMark.",
       TabCards: "שאלות בכרטיסים בשורה, ולוח אחד פתוח מתחתיהן: בכל כרטיס השאלה, התשובה בכמה מילים ושורה מתחתיה, והכרטיס כולו הוא הלשונית. התשובה מילים פשוטות, והמספר שבה נפתח מתוך הלוח. הכרטיס הפתוח במסגרת בצבע הפעולה, עם חץ קטן אל הלוח, ובמסך צר עם מילה שאומרת שהוא פתוח. החצים במקלדת עוברים בין הכרטיסים. כל לוח נפתח בשורה קטנה בצבע הפעולה ובמסקנה שלו (PanelHead).",
       TabStrip: "לשוניות בתוך עמוד שמחליפות חלק אחד שלו לתצוגה משלה, עם תוכן מסוג אחר, בלי לעזוב אותו (בחיפוש בעמוד החוקים והכללים: מה כתוב בחוק, ומה כתבו החברות): כל לשונית היא כפתור עם מספר השורות שבה, והחצים במקלדת עוברים ביניהן. בחירה שרק מצמצמת רשימה אחת היא ChoiceChips עם counts.",
       InlineSelect: "בחירה שיושבת בשורה של פקדים אחרים (הסינון בסוף שורת הלשוניות בחיפוש): התווית והבחירה בתוך רשימה נפתחת אחת, בלי מסגרת של שדה. labelHidden: התווית רק לקורא מסך, כשהמילים שסביבה כבר אומרות מה בוחרים.",
@@ -5649,6 +5673,7 @@ export const kit = {
       pickCardLink: "קישור בתוך הכרטיס",
       legendAfter: "הנחה לדוגמה",
       helpText: { head: "ריבית בשנה", text: "כך כל בנק פרסם את הריבית שלו. היא לא מגיעה לכל לקוח: כל בנק קובע תנאים." },
+      wordsSheet: { line: "אם קונים כל 6 חודשים, כ־3,000 ₪ בכל פעם (דוגמה)", title: "למה כל 6 חודשים? (דוגמה)", body: "הסבר לדוגמה, עם מספר שנפתח למקור שלו:" },
       lead: "שורת פתיחה קצרה שמסבירה מה יש בקבוצה.",
       body: "גוף הקבוצה: טקסט, רשימה או טבלה.",
       foldLabel: "הצגת הפרטים",

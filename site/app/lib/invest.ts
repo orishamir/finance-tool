@@ -1478,6 +1478,13 @@ export interface PairCosts {
   /** F-133: the months between the plan's purchase orders (`WayPrice.orderEvery`); above 1, the deposits between them wait and `waiting` holds what that did too. */
   orderEvery: OrderInterval;
   /**
+   * F-133, where the plan's orders are placed every few months (`orderEvery` above 1): what each order buys of the deposits that waited for
+   * it, the monthly deposit times the interval in today's shekels (each deposit is the same in today's money, A-04; null with no monthly
+   * deposit, where only payouts wait), and what the same pair leaves at the horizon with its orders placed every month (its run given
+   * `k = 1`), run only when first read and then kept. Null where the orders are placed every month.
+   */
+  batched: { perOrder: number | null; monthly: () => SiteValue | null } | null;
+  /**
    * The price list as the run read it, so a fee's rate can be said as the list prints it (`lib/rate-words`): the record's lines the run
    * priced at the list's own level, the bank's current account where the run counts one, and the house's name for their source. `entered`:
    * the prices are the person's (an account they typed or built on a house), so no line is the list's.
@@ -1601,8 +1608,27 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     baseValue: computed(base, "nis", "F-91", inputsOfRun(ctx, { spec: fs.spec, costsOff: true }), { today: ctx.bundle.today, about: copy.pair.baseAbout }),
     units: unitsOf(row.run),
     orderEvery: row.way.orderEvery,
+    batched: row.way.orderEvery > 1 ? { perOrder: ctx.plan.monthly > 0 ? ctx.plan.monthly * row.way.orderEvery : null, monthly: keptOnce(() => leftMonthly(ctx, pair)) } : null,
     priced: pricedLines(ctx, s, row),
   };
+}
+
+/** A value worked out on its first read and kept for every read after. */
+function keptOnce<T>(work: () => T): () => T {
+  let kept: { v: T } | null = null;
+  return () => (kept ??= { v: work() }).v;
+}
+
+/**
+ * F-133: what the pair leaves at the horizon (F-65) with the plan's orders placed every month, its run given `k = 1` and its way chosen
+ * among the house's ways as on any run (F-109); null where that run cannot be priced.
+ */
+function leftMonthly(ctx: Ctx, pair: NonNullable<ReturnType<typeof pairOf>>): SiteValue | null {
+  const spec: Spec = { ...pair.fs.spec, orderEvery: 1 };
+  const row = pair.price(spec);
+  if (!row) return null;
+  const inputs = inputsOfRun(ctx, { house: pair.s.id, fund: pair.rec.id, spec, row, tax: "after", profileUsed: row.run.profileUsed });
+  return computed(row.real, "nis", "F-133", inputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), labels: labelsOf(row, spec), about: copy.pair.monthlyLeftAbout });
 }
 
 /**

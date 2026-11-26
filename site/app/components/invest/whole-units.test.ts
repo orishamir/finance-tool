@@ -105,12 +105,14 @@ describe("whole units on the indices page (F-109, D94)", () => {
     expect(byAmount.orderEvery).toBeGreaterThan(1);
     const words = invest.pair.orderEvery(byAmount.orderEvery);
     expect(shown(lists(view, bare, plan, { house: "leumi", fund: etfId }, { today: bare.today }))).toContain(words);
-    expect(shown(html(createElement(PairReceipt, { view, bundle: bare, plan, pick: { house: "leumi", fund: etfId }, chosen: true, layout: "ticket" })))).toContain(words);
+    // the receipt says it in the line under what is left
+    const line = invest.receipt.batched.lineAlone(byAmount.orderEvery);
+    expect(shown(html(createElement(PairReceipt, { view, bundle: bare, plan, pick: { house: "leumi", fund: etfId }, chosen: true, layout: "ticket" })))).toContain(line);
     // in whole units at the same bank the plan buys whenever the cash covers a unit, every month
     const unitView = buildInvest({ bundle: priced, index: sp, plan });
     expect(at(priced, etfId, "leumi").orderEvery).toBe(1);
     const unitReceipt = shown(html(createElement(PairReceipt, { view: unitView, bundle: priced, plan, pick: { house: "leumi", fund: etfId }, chosen: true, layout: "ticket" })));
-    expect(unitReceipt).not.toContain(invest.pair.orderEvery(byAmount.orderEvery).split(" ")[0]!);
+    expect(unitReceipt).not.toContain(line.split(" ").slice(0, 2).join(" "));
     expect(unitReceipt).not.toContain(invest.pair.waitingBatched);
   });
   it("a fund the person typed has no unit price: an ETF or a fund abroad says so on its row; a tracking fund is bought by amount anyway", () => {

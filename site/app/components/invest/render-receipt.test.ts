@@ -231,12 +231,11 @@ describe("in whole units, the fees charged and the waiting cash apart (F-91, F-1
         expect(r.account).toBeGreaterThan(0);
         expect(out).toContain(`−${r.account.toLocaleString("en-US")} ₪`);
         // the waiting cash: its own words and its own sign, a plus where the fund fell, a minus where it rose. Its words say what it waited
-        // for: a unit, or, priced buying every few months (F-133: at a fall the cash that waits gains), the next purchase, which the
-        // account's tags say
+        // for: a unit, or, priced buying every few months (F-133: at a fall the cash that waits gains), the next purchase, which the line
+        // under the total says: each purchase the plan's 500 ₪ a month times the interval
         const waitingWords = pc.orderEvery > 1 ? w.pair.waitingBatched : w.pair.waiting;
         const why = pc.orderEvery > 1 ? w.pair.waitingBatchedWhy(pc.orderEvery) : w.pair.waitingWhy;
-        // (the ticket shows the account's tags; on paper they are behind a tap on the account's name)
-        if (pc.orderEvery > 1 && layout === "ticket") expect(out).toContain(w.pair.orderEvery(pc.orderEvery));
+        if (pc.orderEvery > 1) expect(out).toContain(w.receipt.batched.line(pc.orderEvery).replace("{amount}", `${(500 * pc.orderEvery).toLocaleString("en-US")} ₪`));
         if (pc.orderEvery === 1) expect(out).not.toContain(w.pair.waitingBatched);
         const at = out.indexOf(waitingWords);
         expect(at).toBeGreaterThan(0);

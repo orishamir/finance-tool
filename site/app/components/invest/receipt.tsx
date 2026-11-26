@@ -1,10 +1,11 @@
 // The index page's answer: the chosen pair's receipt (F-91, F-106, F-129, F-130), one line each, top to bottom, to one total: what was
 // paid in, what the index added before any cost, what the account and the fund took (and, beside the account's fees, what the cash waiting
 // for a whole unit did, F-109, not a fee), all in the shekels of the horizon; then what the inflation takes from what they leave on the
-// way to today's money, the tax in today's money (F-91's state), and what is left, in today's money. Nothing stands under the
-// total: a "?" beside it says in what money it is and, where it rests on it, that the dollar holds still (a caution "?"), and its sheet
-// holds the gain. The figures follow the plan as a slider moves (the pair is priced once per plan for this card and what else reads it,
-// `pairCostsKept`), and they add up as a reader adds them (lib/receipt).
+// way to today's money, the tax in today's money (F-91's state), and what is left, in today's money. Under the total stands only, where
+// the pair is priced buying every few months (F-133), one line that says so and opens why: a "?" beside the total says in what money it
+// is and, where it rests on it, that the dollar holds still (a caution "?"), and its sheet holds the gain. The figures follow the plan as
+// a slider moves (the pair is priced once per plan for this card and what else reads it, `pairCostsKept`), and they add up as a reader
+// adds them (lib/receipt).
 // From 1280 px it is a ticket across the page's column, above the two lists and the ruler: the account's part at the start side and the
 // fund's at the end side, each with its facts as labels under its name and its own lines (each fee and its rate), and the lines that add
 // up to the total in the middle. Below 1280 px it is paper above the lists with the middle's lines only, each part (the same facts and
@@ -16,11 +17,11 @@ import { gapListFor, pricedVariable, accountSum, pairCostsKept, type FundWay, ty
 import { priced } from "../../lib/stretch";
 import { assertNever, type FundRecord } from "@finance-tool/schema";
 import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
-import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
+import { orderCharge, rateWords, type OrderCharge, type RatePart, type RateWords } from "../../lib/rate-words";
 import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, StateTag, shortRow } from "../provenance";
-import { DocLink, FEE_WORDS_HELP, HeldMark, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
+import { DocLink, FEE_WORDS_HELP, HeldMark, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, Sentence, SourcedTag, Tag, TicketPart, Tpl, When, WordsSheet } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
 import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, totalNoteOf, whole, type Pick } from "./pair";
 import { OptionTag } from "./parts";
@@ -192,6 +193,41 @@ const waitingWhy = (pc: Costs, rose: boolean): string => {
   return rose ? why.rose : why.fell;
 };
 
+/**
+ * F-133: under what is left, where the pair is priced buying every few months: the interval and what each purchase buys, words that open
+ * why: the charge each purchase pays whatever its size, as the run's price list prints it (`orderCharge`), what the same pair leaves bought
+ * every month, and that the waiting cash earned nothing. Nothing where the orders are placed every month.
+ */
+function BatchedLine({ pc, className }: { pc: PairCosts; className?: string }) {
+  const b = pc.batched;
+  if (!b) return null;
+  const w = c.receipt.batched;
+  const k = pc.orderEvery;
+  const words = b.perOrder === null ? w.lineAlone(k) : <Tpl t={w.line(k)} vars={{ amount: <bdi>{fmt.nisWhole(b.perOrder)}</bdi> }} />;
+  return (
+    <WordsSheet title={w.why(k)} body={() => <BatchedWhy pc={pc} />} className={className}>
+      {words}
+    </WordsSheet>
+  );
+}
+
+/** What `BatchedLine` opens: why the pair is priced buying every few months, with the figures that say it. */
+export function BatchedWhy({ pc }: { pc: PairCosts }) {
+  const w = c.receipt.batched;
+  const house = pc.priced.house;
+  const charge = orderCharge(pc.priced);
+  // a price from the list, in its own currency, opening the list (as the account's rates do)
+  const figure = (v: OrderCharge["value"]) => <Num value={ownBy({ ...v } as SiteValue, house)} />;
+  const monthly = pc.batched?.monthly() ?? null;
+  return (
+    <>
+      <Sentence t={charge ? w.charge[charge.kind](house) : w.general(house)} vars={charge ? { figure: figure(charge.value), ...("upTo" in charge ? { upTo: figure(charge.upTo) } : {}) } : {}} />
+      {monthly && <Sentence t={w.monthly} vars={{ figure: <Num value={monthly} /> }} />}
+      <Sentence t={w.waits} />
+    </>
+  );
+}
+
 /** The label families a fund's part shows after its kind, in this order; a family the fund has no label in shows nothing. */
 const FUND_FAMILIES = ["follow", "payout", "currency", "tax"] as const;
 
@@ -208,8 +244,6 @@ function AccountFacts({ view, bundle, plan, pick, refs }: { view: InvestView; bu
   const phone = phoneOf(view, bundle, pick);
   const labels = [
     priced(at) && at.standing && plan.monthly > 0 ? <Tag key="standing">{c.pair.standingTag}</Tag> : null,
-    // F-133: the figure is priced buying every few months, the interval that leaves the most
-    priced(at) && at.orderEvery > 1 ? <Tag key="every">{c.pair.orderEvery(at.orderEvery)}</Tag> : null,
     ...brokerLabels(house, false).map((l) => <LabelChip key={l.id} label={l} />),
     phone ? <SourcedTag key="phone" value={phone}>{c.pair.phoneTag}</SourcedTag> : null,
   ];
@@ -440,6 +474,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
             <div className="flex flex-col items-center gap-1 text-center">
               {leftName}
               <span className="text-total font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
+              <BatchedLine pc={pc} className="text-sm" />
             </div>
           </>
         }
@@ -457,9 +492,13 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       <div className="flex items-baseline justify-between gap-3 text-xs text-muted-foreground">{top}</div>
       {lines}
       <ReceiptRule kind="double" />
-      <div className="flex flex-wrap items-baseline justify-between gap-x-2 pb-1">
-        {leftName}
-        <span className="text-figure font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
+      <div className="flex flex-col gap-1 pb-1">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-2">
+          {leftName}
+          <span className="text-figure font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
+        </div>
+        {/* under the figure, at its side */}
+        <BatchedLine pc={pc} className="self-end text-end text-sm" />
       </div>
     </ReceiptPaper>
     </ShortRow>
