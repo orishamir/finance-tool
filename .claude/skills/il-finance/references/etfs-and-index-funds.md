@@ -235,22 +235,29 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
   - tax expenses;
   - the total.
   Reg. 20 also requires a breakdown of the transaction commissions by kind (Israeli securities, foreign securities, options and futures, units of funds, other) and any expense outside the regular course of the fund's management, as a rate of the average net assets (reg. 20(2)(ו), (ז)); for a fund of funds (אגד) the manager's fee line includes the weighted average fee of the funds held (reg. 20(2)(א)). Under the table the report states "כי לפי החוק רשאי מנהל הקרן לפרוע מנכסי הקרן עמלות והוצאות אחרות הכרוכות בביצוע עסקאות בעד הקרן" and that the prospectus lists the commissions the manager pays the fund's banker and broker for the fund's transactions (reg. 20(3)). These come on top of exchange-side costs: the spread or premium paid (ETF-06, ETF-07) and the creation and redemption fees on direct orders (ETF-05). Broker commissions are in `brokerage-account.md`.
-- Conditions / exceptions: The rates are set per fund and can change (ETF-16). Two funds' 2025 rates are ETF-60. Split on 2026-10-25 (scope pass): the companies' part is ETF-60.
-- Figures: none of its own (the rates are each fund's: ETF-60).
+- Conditions / exceptions: The rates are set per fund and can change (ETF-16). Two funds' 2025 rates are ETF-60 (IBI) and ETF-100 (Yalin Lapidot). Split on 2026-10-25 (scope pass): the companies' part is ETF-60.
+- Figures: none of its own (the rates are each fund's: ETF-60, ETF-100).
 - Source: [תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות](https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb), file pp.16-17 (gazette pp.1016-1017), reg. 20: "בלוח שכותרתו "הוצאות שנפרעו מנכסי הקרן כשיעור מהשווי הנקי הממוצע של נכסי הקרן" יצוינו הפרטים האלה" · checked 2026-11-07 · primary. Re-read 2026-11-07 in the official booklet: the earlier record, read in an unofficial copy byte-identical to the booklet, now cites the booklet too (lead only), matched on every item it named; the breakdown, the out-of-course expense and the fund-of-funds line were added. No later amendment of reg. 20 was found (searched 2026-11-07: the leads found only the Securities Authority's 2024 circular on reporting dates under the same regulations). ETF-14, ETF-05.
 - Scope: general
 - Dimensions: fee-management-balance, fee-trade, fee-change-over-time
 - Likely to change: no.
 
-### ETF-60 IBI and Yalin Lapidot: 2025 expense rates of two S&P 500 funds
-- Rule: The two funds' annual reports for 2025:
-  - IBI S&P 500 ETF: fixed management fee 0.80%, variable 0.30%, trustee 0.0085%, total 1.1085%. The report also states that the trustee fee changes from 1 July 2026 to 0.015%.
-  - Yalin Lapidot open tracking fund S&P 500: manager 0%, variable 0%, trustee 0.02%, total 0.02%, no front load (שיעור הוספה: "ללא תוספת הוספה"). The Yalin Lapidot report lists "עלויות ניהול קרנות סל ו/או ETF", meaning fees of funds the fund holds, as a separate cost line, marked negligible in 2025.
-- Conditions / exceptions: Two funds' own rates, not a rule. General rule: ETF-13 (the expense table every annual report carries). Split from ETF-13 on 2026-10-25 (scope pass).
-- Figures: as stated, calendar 2025 (IBI, Yalin Lapidot).
-- Source: [IBI ETF annual report 31.12.2025](https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf), pp.1, 8-9 · institution · checked 2026-10-25. [Yalin Lapidot annual report 31.12.2025](https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf), pp.1, 8 · institution · checked 2026-10-25. General rule: ETF-13.
-- Scope: institution: IBI, Yalin Lapidot
+### ETF-60 IBI S&P 500 ETF: 2025 expenses 1.1085% (0.80% fixed, 0.30% variable, 0.0085% trustee), trustee fee rising to 0.015% from 1.7.2026
+- Rule: IBI's annual report for 2025: IBI S&P 500 ETF: fixed management fee 0.80%, variable 0.30%, trustee 0.0085%, total 1.1085%. The report also states that the trustee fee changes from 1 July 2026 to 0.015%.
+- Conditions / exceptions: One fund's own rates, not a rule. General rule: ETF-13 (the expense table every annual report carries). Split from ETF-13 on 2026-10-25 (scope pass); on 2026-11-26 the Yalin Lapidot fund beside it became ETF-100.
+- Figures: as stated, calendar 2025 (IBI).
+- Source: [IBI ETF annual report 31.12.2025](https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf), pp.1, 8-9 · institution · checked 2026-10-25. General rule: ETF-13.
+- Scope: institution: IBI
 - Dimensions: fee-management-balance, fee-change-over-time
+- Likely to change: yes. Fees are set per fund and can change (see ETF-16).
+
+### ETF-100 Yalin Lapidot S&P 500 open tracking fund: 2025 expenses 0.02% (trustee only, no load), with held-ETF fees as a separate line
+- Rule: Yalin Lapidot's annual report for 2025: Yalin Lapidot open tracking fund S&P 500: manager 0%, variable 0%, trustee 0.02%, total 0.02%, no front load (שיעור הוספה: "ללא תוספת הוספה"). The Yalin Lapidot report lists "עלויות ניהול קרנות סל ו/או ETF", meaning fees of funds the fund holds, as a separate cost line, marked negligible in 2025.
+- Conditions / exceptions: One fund's own rates, not a rule. General rule: ETF-13 (the expense table every annual report carries). Split from ETF-60 on 2026-11-26 (ETF-60 was split from ETF-13 on 2026-10-25, scope pass).
+- Figures: as stated, calendar 2025 (Yalin Lapidot).
+- Source: [Yalin Lapidot annual report 31.12.2025](https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf), pp.1, 8 · institution · checked 2026-10-25. General rule: ETF-13.
+- Scope: institution: Yalin Lapidot
+- Dimensions: fee-management-balance
 - Likely to change: yes. Fees are set per fund and can change (see ETF-16).
 
 ### ETF-14 Variable management fee: definition, cap, timing
