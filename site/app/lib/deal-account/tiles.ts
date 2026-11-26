@@ -11,7 +11,7 @@ export interface DealTiles {
   left: number | null;
   /** What it lacks, where it has no price for what it lacks (`DealOnPlan`'s reason). */
   missing: Missing | null;
-  /** Its row's place in the account list, of how many ranked rows with it (`listPlace`); null where it ranks no fund. */
+  /** Its row's place in the account list, of how many ranked rows with it (`listPlace`); null where it ranks no fund or has no price on the named one. */
   place: { k: number; of: number } | null;
   /** What it leaves less what the house it was filled from leaves on the same fund; null where it was filled from none or either has no price. */
   diff: number | null;
@@ -55,7 +55,8 @@ export function dealTiles(view: InvestView, got: ReadonlyMap<string, DealOnPlan>
     return s ? [{ best: s.best, name: p.short }] : [];
   });
   const best = own.length ? Math.max(...own) : null;
-  const place = best === null ? null : { k: listPlace(others, { best, name: view.providers.find((p) => p.id === providerId)?.short ?? name }), of: others.length + 1 };
+  // a place beside no amount on the named fund would rank what the tile does not show
+  const place = best === null || !ok ? null : { k: listPlace(others, { best, name: view.providers.find((p) => p.id === providerId)?.short ?? name }), of: others.length + 1 };
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.entries.find((e) => e.fund.rec.id === fundId)?.price : null;
   const priced = ok && house ? house : null;
   return { left: ok ? ok.valueN : null, missing, place, diff: ok && priced ? ok.valueN - priced.valueN : null, house: priced };

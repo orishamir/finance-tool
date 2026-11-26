@@ -4443,7 +4443,10 @@ export const invest = {
       yearly: "דמי ניהול שנתיים",
       yield: "תשואת החלוקה",
       perYear: "תשלומים בשנה",
+      unitPrice: "מחיר יחידה (לא חובה)",
     },
+    /** Under the unit price: what it changes in the calculation (F-109). */
+    unitPriceHint: "עם מחיר, החישוב קונה רק יחידות שלמות, כמו בקרנות שהאתר אסף.",
     /** The panel of the person's own fund: its three parts, the questions about the fund, and the preview of its row. */
     fundParts: { fund: "הקרן", fees: "דמי ניהול", traits: "מה הקרן עושה" },
     traitsSub: "כל תשובה מוסיפה לשורה של הקרן את התוויות שמופיעות בה.",
@@ -4454,7 +4457,14 @@ export const invest = {
       hedged: "האם הקרן מנטרלת את שער המטבע?",
       /** On an index the person added, which may be in shekels. */
       currency: "האם ערך הקרן זז עם שער של מטבע זר?",
+      exchange: "באיזו בורסה בחו״ל הקרן נסחרת?",
     },
+    exchangeNames: { us: "ארה״ב", europe: "אירופה" },
+    /** Under each answer: which fees each account is priced on (F-128). */
+    exchangeNotes: { us: "העמלות של כל חשבון בארה״ב", europe: "העמלות של כל חשבון באירופה", unknown: "כל חשבון לפי הבורסה הזולה אצלו מהשתיים" },
+    /** The caution "?" beside the name of a typed fund bought abroad whose exchange was not given. */
+    exchangeUnknownAbout: "לא ידוע באיזו בורסה",
+    exchangeUnknownText: "לא הזנתם באיזו בורסה הקרן נסחרת. לכן כל חשבון מחושב בבורסה שזולה יותר אצלו, בארה״ב או באירופה. אפשר לבחור בורסה בעריכת הקרן.",
     unknown: "לא ידוע",
     domicileNames: { IE: "אירלנד", US: "ארצות הברית", other: "מדינה אחרת, או לא ידוע" } as Record<string, string>,
     noLabel: "בלי תווית",

@@ -3,14 +3,14 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "rea
 import { Pencil } from "lucide-react";
 import { invest as root } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
-import { customFundGap, DOMICILES, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type CustomFund, type EntryError, type EntryTerm, type FundDomicile, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
+import { customFundGap, DOMICILES, EXCHANGES, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, unitPriceUnit, type CustomFund, type EntryError, type EntryTerm, type FundDomicile, type FundDraft, type FundExchange, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { optionsOf, type IndexRef, type OptionId } from "../../lib/invest";
 import { isoToday } from "../../lib/state";
 import { Num, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Actions, EditButton, useDraft, isInvalid, EditorsContext, useEditors, type Editing, type Editors, type PanelWorld } from "./editors";
-import { Button, ChoiceChips, FieldGroup, LabelRow, LongestCase, NumberField, percentCheck, SelectField, TextField, TileChoice, type Tile } from "../kit";
+import { aboveZeroCheck, Button, ChoiceChips, FieldGroup, LabelRow, LongestCase, NumberField, percentCheck, SelectField, TextField, TileChoice, type Tile } from "../kit";
 import { optionClass, reasonText } from "./parts";
 
 const c = root.customEntries;
@@ -136,6 +136,8 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
   const form = useRef<HTMLDivElement>(null);
   const w = c.fields;
   const foreign = isForeignKind(draft.kind);
+  // in the currency the fund trades in; none for a fund bought by amount
+  const priceUnit = unitPriceUnit(draft.kind, index.exposure?.currency ?? null);
   // no "0" in an empty field: an empty fee is not known, not a fee of zero
   const percent = (k: "fixed" | "variable" | "trustee", label: string) => <NumberField label={label} unit="pct_per_year" value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
   const save = () => {
@@ -143,7 +145,7 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
     const e = fundErrors(d, others, fund?.id ?? null);
     setErrors(e);
     if (e.length > 0 || isInvalid(form.current)) return;
-    onSave(fundFromDraft(d, fund?.id ?? newFundId(), fund?.indexId ?? index.id, isoToday()));
+    onSave(fundFromDraft(d, fund?.id ?? newFundId(), fund?.indexId ?? index.id, isoToday(), index.exposure?.currency ?? null));
   };
   return (
     <div ref={form} className="flex flex-col gap-5">
@@ -160,6 +162,7 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
             <TextField label={w.fundName} value={draft.name} onChange={(v) => set("name", v)} maxLength={NAME_MAX} error={errors.includes("name-empty") ? c.errors["name-empty"] : errors.includes("name-taken") ? c.errors["name-taken"] : null} />
             <TextField label={w.number} value={draft.number} onChange={(v) => set("number", v)} maxLength={20} dir="ltr" />
             <SelectField className="max-w-none" label={w.kind} value={draft.kind} options={kinds.map((k: OptionId) => ({ id: k, name: c.kinds[k]! }))} onChange={(k) => k && set("kind", k as OptionId)} />
+            {priceUnit && <NumberField label={w.unitPrice} unit={priceUnit} value={draft.unitPrice} isEntered={draft.unitPrice !== null} validate={aboveZeroCheck} onCommit={(n) => set("unitPrice", n)} onReset={() => set("unitPrice", null)} hint={c.unitPriceHint} agorot optional />}
           </FieldGroup>
           <FieldGroup title={c.fundParts.fees} className="@xl:border-t-0 @xl:pt-0">
             {foreign ? (
@@ -190,7 +193,7 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
 
 /** The record a draft would save, as the page would read it: the labels and the gap come from it, never from words of their own. */
 function draftRecord(d: FundDraft, index: IndexRef): FundRecord {
-  const f = fundFromDraft({ ...d, name: d.name || "-", hedged: d.hedged ?? false }, "custom-fund-preview", index.id, isoToday());
+  const f = fundFromDraft({ ...d, name: d.name || "-", hedged: d.hedged ?? false }, "custom-fund-preview", index.id, isoToday(), index.exposure?.currency ?? null);
   return recordOfFund(f, index.exposure?.currency ?? null);
 }
 
@@ -234,6 +237,7 @@ function FundTraits({ draft, set, index, hedgedError }: { draft: FundDraft; set:
     </div>
   );
   const payoutTiles = tilesOf(draft, index, [...PAYOUTS.map((p) => ({ value: p as string, as: { payout: p } })), { value: UNKNOWN, as: { payout: null }, title: c.unknown, empty: c.noPrice }]);
+  const exchangeTiles = tilesOf(draft, index, [...EXCHANGES.map((x) => ({ value: x as string, as: { exchange: x }, title: c.exchangeNames[x], empty: c.exchangeNotes[x] })), { value: UNKNOWN, as: { exchange: null }, title: c.unknown, empty: c.exchangeNotes.unknown }]);
   const trackingTiles = tilesOf(draft, index, [...TRACKINGS.map((t) => ({ value: t as string, as: { tracking: t } })), { value: UNKNOWN, as: { tracking: null }, title: c.unknown }]);
   const domicileTiles = tilesOf(draft, index, [...DOMICILES.map((x) => ({ value: x as string, as: { domicile: x }, title: c.domicileNames[x]! })), { value: UNKNOWN, as: { domicile: null }, title: c.domicileNames.other!, empty: draft.payout === "distributing" ? c.noPrice : c.noLabel }]);
   // a hedged fund the person typed has no price (its gap to the index is not known): the tile says so beside its label. On an index the
@@ -258,6 +262,7 @@ function FundTraits({ draft, set, index, hedgedError }: { draft: FundDraft; set:
   return (
     <div className="flex flex-col gap-5">
       <p className="text-sm text-muted-foreground -mt-1">{c.traitsSub}</p>
+      {draft.kind === "abroad" && question(0, c.ask.exchange, <TileChoice labelledBy={`${ids}-0`} tiles={exchangeTiles} value={draft.exchange ?? UNKNOWN} onChange={(v) => set("exchange", v === UNKNOWN ? null : (v as FundExchange))} columns={3} />)}
       {question(
         1,
         c.ask.payout,

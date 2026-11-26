@@ -32,7 +32,7 @@ describe("a deal priced with a fee switched off", () => {
   it("charges nothing for the fee and leaves more than with it on", () => {
     const deal = fromHouse("psagot");
     const b = withDeals(bundle, [deal], data.kinds);
-    const fundId = bundle.funds.find((f) => dealRunOf({ bundle: b, index: indexOf(b), plan, fundId: f.id })?.instrumentClass === "etf_units")?.id;
+    const fundId = bundle.funds.find((f) => dealRunOf({ bundle: b, index: indexOf(b), plan, fundId: f.id, providerId: dealProviderId(deal.id) })?.instrumentClass === "etf_units")?.id;
     if (!fundId) throw new Error("the index has a fund traded in Tel Aviv");
     const on = priced(deal, fundId);
     // the fee that charges the most on the plan with every fee on

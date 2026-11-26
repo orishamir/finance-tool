@@ -73,6 +73,10 @@ export interface CustomFund {
   domicile: FundDomicile | null;
   /** How it follows its index; null: not said. A label only: no calculation reads it. */
   tracking: FundTracking | null;
+  /** A fund bought abroad: the exchange it trades on, as the person said; absent: not sure, or saved before it was asked (F-65, F-128). */
+  exchange?: FundExchange;
+  /** A fund bought on an exchange: the price of one unit, in the currency it trades in (`unitPriceUnit`), dated the day it was typed; absent: not typed (F-109). */
+  unitPrice?: ValueObject;
   added: string;
 }
 
@@ -80,10 +84,17 @@ export type FundPayout = "accumulating" | "distributing";
 export type FundDomicile = "IE" | "US";
 export type FundTracking = "physical" | "swap" | "futures" | "mixed";
 export type PerYear = 1 | 2 | 4 | 12;
+export type FundExchange = "us" | "europe";
 export const PAYOUTS: readonly FundPayout[] = ["accumulating", "distributing"];
 export const DOMICILES: readonly FundDomicile[] = ["IE", "US"];
 export const TRACKINGS: readonly FundTracking[] = ["physical", "swap", "futures", "mixed"];
 export const PER_YEAR: readonly PerYear[] = [1, 2, 4, 12];
+export const EXCHANGES: readonly FundExchange[] = ["us", "europe"];
+
+/** A unit price's unit, by the currency it is in. */
+const PRICE_UNITS = { USD: "usd", EUR: "eur", NIS: "nis" } as const satisfies Record<string, ValueObject["unit"]>;
+type PriceUnit = (typeof PRICE_UNITS)[keyof typeof PRICE_UNITS];
+const isPriceUnit = (u: unknown): u is PriceUnit => Object.values(PRICE_UNITS).includes(u as PriceUnit);
 
 const BROKER_ID = /^custom-broker-[a-z0-9-]+$/;
 const FUND_ID = /^custom-fund-[a-z0-9-]+$/;
@@ -96,6 +107,25 @@ export const isCustomFund = (rec: Pick<FundRecord, "id">) => rec.id.startsWith("
 export const isForeignKind = (k: OptionId) => k === "tase-foreign" || k === "abroad";
 
 export const newFundId = () => newId("custom-fund-");
+
+/**
+ * The currency a typed fund is in (F-65): a foreign one its index's, in dollars where the index is in shekels or is a custom one (as the
+ * page's generic fund abroad); an Israeli one the shekel.
+ */
+const currencyOfTypedFund = (kind: OptionId, currencyOfIndex: string | null): string => (isForeignKind(kind) ? (currencyOfIndex && !isShekel(currencyOfIndex) ? currencyOfIndex : "USD") : "NIS");
+
+/** Whether a fund of the kind is bought on an exchange (F-109): every kind but a tracking fund, which is bought from its manager by amount. */
+const onExchange = (kind: OptionId): boolean => kind !== "il-tracking";
+
+/**
+ * The unit a typed fund's unit price is in: the currency it trades in, on TASE the shekel (`trading_currency_on_tase`), abroad its own
+ * currency; null where it is bought by amount, or trades in a currency the engine has no unit price in.
+ */
+export function unitPriceUnit(kind: OptionId, currencyOfIndex: string | null): PriceUnit | null {
+  if (!onExchange(kind)) return null;
+  const code = kind === "abroad" ? currencyOfTypedFund(kind, currencyOfIndex) : "NIS";
+  return (PRICE_UNITS as Record<string, PriceUnit>)[code] ?? null;
+}
 
 // ---------------------------------------------------------------- reading it back
 
@@ -193,7 +223,12 @@ export function validCustomFunds(list: unknown[]): CustomFund[] {
     const perYear = payout === "distributing" && PER_YEAR.includes(f.perYear as PerYear) ? (f.perYear as PerYear) : null;
     const domicile = foreign && DOMICILES.includes(f.domicile as FundDomicile) ? (f.domicile as FundDomicile) : null;
     const tracking = TRACKINGS.includes(f.tracking as FundTracking) ? (f.tracking as FundTracking) : null;
-    out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: foreign ? null : variable, trustee: foreign ? null : trustee, hedged: f.hedged, ...(f.shekelIndex === true && !f.hedged ? { shekelIndex: true as const } : {}), payout, yield: yieldPct, perYear, domicile, tracking, added: f.added });
+    // a fund saved before these were asked has neither: it reads as not sure, and as no unit price typed
+    const exchange = kind === "abroad" && EXCHANGES.includes(f.exchange as FundExchange) ? (f.exchange as FundExchange) : null;
+    const rawUnit = isObj(f.unitPrice) ? f.unitPrice.unit : undefined;
+    const unitPrice = onExchange(kind) && isPriceUnit(rawUnit) ? figure(f.unitPrice, rawUnit, ANY_SUM) : null;
+    if (unitPrice === undefined) continue;
+    out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: foreign ? null : variable, trustee: foreign ? null : trustee, hedged: f.hedged, ...(f.shekelIndex === true && !f.hedged ? { shekelIndex: true as const } : {}), payout, yield: yieldPct, perYear, domicile, tracking, ...(exchange ? { exchange } : {}), ...(unitPrice && unitPrice.value !== 0 ? { unitPrice } : {}), added: f.added });
   }
   return out;
 }
@@ -216,6 +251,10 @@ export interface FundDraft {
   perYear: PerYear | null;
   domicile: FundDomicile | null;
   tracking: FundTracking | null;
+  /** Null: not sure, asked only of a fund bought abroad. */
+  exchange: FundExchange | null;
+  /** In the currency the fund trades in (`unitPriceUnit`); null: not typed. */
+  unitPrice: number | null;
 }
 
 const norm = (s: string) => s.trim().replace(/\s+/g, " ");
@@ -223,8 +262,8 @@ const norm = (s: string) => s.trim().replace(/\s+/g, " ");
 /** `israeliIndex`: a fund on an Israeli index has no currency to neutralise, so it starts and stays unhedged. */
 export const fundDraftOf = (f: CustomFund | null, kind: OptionId, israeliIndex = false): FundDraft =>
   f
-    ? { name: f.name, number: f.number ?? "", kind: f.kind, fixed: numberOf(f.fixed), variable: numberOf(f.variable), trustee: numberOf(f.trustee), hedged: f.hedged, shekelIndex: f.shekelIndex === true, payout: f.payout, yield: numberOf(f.yield), perYear: f.perYear, domicile: f.domicile, tracking: f.tracking }
-    : { name: "", number: "", kind, fixed: null, variable: null, trustee: null, hedged: israeliIndex ? false : null, shekelIndex: false, payout: null, yield: null, perYear: null, domicile: null, tracking: null };
+    ? { name: f.name, number: f.number ?? "", kind: f.kind, fixed: numberOf(f.fixed), variable: numberOf(f.variable), trustee: numberOf(f.trustee), hedged: f.hedged, shekelIndex: f.shekelIndex === true, payout: f.payout, yield: numberOf(f.yield), perYear: f.perYear, domicile: f.domicile, tracking: f.tracking, exchange: f.exchange ?? null, unitPrice: f.unitPrice ? numberOf(f.unitPrice) : null }
+    : { name: "", number: "", kind, fixed: null, variable: null, trustee: null, hedged: israeliIndex ? false : null, shekelIndex: false, payout: null, yield: null, perYear: null, domicile: null, tracking: null, exchange: null, unitPrice: null };
 
 export type EntryError = "name-empty" | "name-taken" | "hedged-none";
 
@@ -240,9 +279,11 @@ export function fundErrors(d: FundDraft, others: readonly { id: string; name: st
 
 const vo = (v: number | null, unit: ValueObject["unit"], today: string, about: string): ValueObject | null => (v === null ? null : entered(v, unit, today, about));
 
-export function fundFromDraft(d: FundDraft, id: string, indexId: string, today: string): CustomFund {
+/** `currencyOfIndex`: the currency of the index the fund is on, which sets the unit its unit price is typed in (`unitPriceUnit`); none known, a fund abroad's is in dollars. */
+export function fundFromDraft(d: FundDraft, id: string, indexId: string, today: string, currencyOfIndex: string | null = null): CustomFund {
   const w = c.fields;
   const foreign = isForeignKind(d.kind);
+  const priceUnit = unitPriceUnit(d.kind, currencyOfIndex);
   return {
     id,
     name: norm(d.name).slice(0, NAME_MAX),
@@ -259,6 +300,8 @@ export function fundFromDraft(d: FundDraft, id: string, indexId: string, today: 
     perYear: d.payout === "distributing" ? d.perYear : null,
     domicile: foreign ? d.domicile : null,
     tracking: d.tracking,
+    ...(d.kind === "abroad" && d.exchange ? { exchange: d.exchange } : {}),
+    ...(priceUnit && d.unitPrice ? { unitPrice: entered(d.unitPrice, priceUnit, today, w.unitPrice) } : {}),
     added: today,
   };
 }
@@ -288,6 +331,8 @@ export function fundTerms(f: CustomFund): { shown: EntryTerm[]; empty: string[] 
   }
   // a yield left empty is not zero: the fund then has no price, and its row says why
   if (f.payout === "distributing" && f.yield) shown.push({ id: "yield", word: w.yield, figures: [{ before: null, value: asSite(f.yield) }] });
+  // a unit price left empty stops no price: the fund is bought by amount (F-109), so it is not among what is not known
+  if (f.unitPrice) shown.push({ id: "unitPrice", word: w.unitPrice, figures: [{ before: null, value: asSite(f.unitPrice) }] });
   return { shown, empty };
 }
 
@@ -327,7 +372,7 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     // instrumentClassOf reads the two Israeli kinds from these words
     legal_form: foreign ? c.kinds[f.kind]! : copy.typeTags[f.kind]!,
     exposure_id: f.indexId,
-    currency: foreign ? (currencyOfIndex && !isShekel(currencyOfIndex) ? currencyOfIndex : "USD") : "NIS",
+    currency: currencyOfTypedFund(f.kind, currencyOfIndex),
     trading_currency_on_tase: f.kind === "abroad" ? null : "NIS",
     distribution_policy: f.payout,
     // TXS-14, F-04: whether a typed Israeli fund is a foreign-investment fund is not known (no document of it was read), so its status is
@@ -339,6 +384,9 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     ...(f.hedged ? { hedged: true } : {}),
     ...(f.payout === "distributing" && f.yield && f.perYear ? { distribution: { yield: f.yield, per_year: f.perYear } } : {}),
     ...(f.tracking ? { replication: { method: f.tracking, source: { url: "local", checked: f.added } } } : {}),
+    // F-109, F-128: the exchange abroad as the person said it, or stated as not known; the unit price as they typed it
+    ...(f.kind === "abroad" ? { exchange: f.exchange ?? null } : {}),
+    ...(f.unitPrice ? { share_price: f.unitPrice } : {}),
     snapshot: f.added,
   };
 }

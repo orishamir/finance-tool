@@ -178,13 +178,13 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
       deleted,
       abroadLacks: (id) => {
         if (!world) return null;
-        const gaps = abroadGaps(abroadOf(world.view), (f) => f.byHouse[id], (f) => dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId: f.rec.id }));
+        const gaps = abroadGaps(abroadOf(world.view), (f) => f.byHouse[id], (f) => dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId: f.rec.id, providerId: id }));
         return gaps[0]?.missing ?? null;
       },
       feeWords: (id, fundId, feeId) => {
         const deal = saved.find((d) => dealProviderId(d.id) === id);
         if (!deal || !data || !world) return null;
-        const run = dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId });
+        const run = dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId, providerId: id });
         if (!run) return null;
         // the ticket asks only for the fees the page's run charges, the counted ones, whose words are the same read on the whole deal
         return <DealFeeWords read={planRead(deal, run, planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? false))} feeId={feeId} />;
@@ -313,7 +313,7 @@ function usePlanOn({ data, deal, world, terms, onAddCase }: { data: FeesData; de
     const pc = fundId && at?.kind === "ok" ? pairCosts({ bundle: settled, index: world.index, plan: world.plan, fundId, providerId }) : null;
     return pc ? new Map(accountLinesOf(pc, receiptAmounts(pc)).flatMap((l) => (l.kind === "deal" ? [[l.fee, l.amount] as const] : []))) : null;
   }, [settled, world.index, world.plan, fundId, providerId, at?.kind]);
-  const run = useMemo(() => (fundId ? dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId }) : null), [world.bundle, world.index, world.plan, fundId]);
+  const run = useMemo(() => (fundId ? dealRunOf({ bundle: settled, index: world.index, plan: world.plan, fundId, providerId }) : null), [settled, world.index, world.plan, fundId, providerId]);
   const houseId = dealHouseId(deal);
   const tiles = fundId ? dealTiles(view, got, row, deal.name, houseId, fundId, funds) : null;
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.provider : undefined;
@@ -323,7 +323,7 @@ function usePlanOn({ data, deal, world, terms, onAddCase }: { data: FeesData; de
   const onPlan = useMemo(() => (run ? new Map(feesOnPlan(deal, run, ctx).map((x) => [x.fee, x])) : null), [deal, run, ctx]);
   const countedOn = useMemo(() => (run ? (counted === deal ? [...(onPlan?.values() ?? [])] : feesOnPlan(counted, run, ctx)) : null), [counted, deal, run, ctx, onPlan]);
   // a fund bought abroad whose price waits on a case the deal lacks (E): each such fee, with the values the funds are bought as
-  const abroad = useMemo(() => abroadGaps(abroadFunds, (f) => got.get(f.rec.id), (f) => dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId: f.rec.id })), [abroadFunds, got, world.bundle, world.index, world.plan]);
+  const abroad = useMemo(() => abroadGaps(abroadFunds, (f) => got.get(f.rec.id), (f) => dealRunOf({ bundle: settled, index: world.index, plan: world.plan, fundId: f.rec.id, providerId })), [abroadFunds, got, settled, world.index, world.plan, providerId]);
   const averages = houseId ? data.houses.find((h) => h.id === houseId)?.everyColumn : undefined;
   // the deal read for the plan: the picks it cannot set, what only the person knows, saved with the deal, of every fee; and the cases the
   // plan reads, of the fees counted

@@ -325,6 +325,8 @@ export function PairLists(props: ListsProps) {
     return typed ? (
       <span className="flex min-w-0 items-center gap-1">
         {name}
+        {/* a fund bought abroad whose exchange was not given: each account is priced on the exchange cheaper there (F-65) */}
+        {f.option === "abroad" && f.rec.exchange === null && <HelpMark tone="caution" about={c.customEntries.exchangeUnknownAbout} text={c.customEntries.exchangeUnknownText} />}
         <FundEditMark id={f.rec.id} />
       </span>
     ) : (

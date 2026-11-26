@@ -2933,6 +2933,20 @@
       ],
       "additionalProperties": false
     },
+    "exchange": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "us",
+            "europe"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
     "promotions": {
       "minItems": 1,
       "type": "array",

@@ -252,6 +252,12 @@ export const fundRecord = z.strictObject({
    * document names; never a price from TASE or Maya (the data check refuses one).
    */
   share_price: valueObject.optional(),
+  /**
+   * data-schema §3.5, F-109, F-128: the exchange abroad a fund bought abroad trades on where the record states it (`us`, `europe`), or `null`
+   * where it states that the exchange is not known. Left out on a collected record, whose tickers name its exchanges; a fund the person
+   * types abroad carries it, from their answer.
+   */
+  exchange: z.enum(["us", "europe"]).nullable().optional(),
   /** data-schema §3.5: the fund's fees lowered for a stated period (F-121); the data check holds each to its fee. */
   promotions: z.array(fundPromotion).min(1).optional(),
   snapshot: isoDate,

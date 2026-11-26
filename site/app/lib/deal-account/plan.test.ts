@@ -347,7 +347,7 @@ describe("F-128 the cases the plan reads, marked in the popup", () => {
 
   it("carries out of the deal's own run the months each step is reached, as the run measures them", () => {
     const bs = withDeals(bundle, [sized], data.kinds);
-    const fundId = bundle.funds.find((f) => dealRunOf({ bundle: bs, index: indexById(bs, "index-ta125")!, plan, fundId: f.id })?.instrumentClass === "etf_units")?.id;
+    const fundId = bundle.funds.find((f) => dealRunOf({ bundle: bs, index: indexById(bs, "index-ta125")!, plan, fundId: f.id, providerId: dealProviderId(sized.id) })?.instrumentClass === "etf_units")?.id;
     const got = fundId ? dealOnFunds({ bundle: bs, index: indexById(bs, "index-ta125")!, plan, fundIds: [fundId], providerId: dealProviderId(sized.id) }).get(fundId) : undefined;
     expect(got?.kind).toBe("ok");
     if (got?.kind !== "ok") return;
