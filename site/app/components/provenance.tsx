@@ -7,7 +7,7 @@ import { createPortal } from "react-dom";
 import { Link } from "react-router";
 import { companyTermRule, isOwnDocument, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { formulaNames, numbers, parametersPage, provenance as copy, rule as ruleCopy, scopeWords, strength as strengthCopy } from "../copy";
-import { ruleTitle } from "../lib/rule-title";
+import { ruleHeadOf, type RuleHead } from "../lib/rule-card-file";
 import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
 import { isOpenValue, isParameter, isWeak, ownBy, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
@@ -73,6 +73,11 @@ export interface ProvenanceData {
    * opens its record (`pointedRecords` in data.server.ts). Only chips and cards read it; the page's own logic reads `rules`.
    */
   pointed?: Record<string, RuleRecord>;
+  /**
+   * The heads of the other rules those cards point at (`pointedShipment` in data.server.ts): a chip says the rule's title and its
+   * company from it, and its card is fetched from the rule's own file when the chip is tapped (`RuleCard`).
+   */
+  heads?: Record<string, RuleHead>;
   /** On a company's page, its registry id: a chip of a term that names several companies shows this one's name. */
   company?: string;
   /** On a company's page, every registry id it stands for (a brand's companies): a rule card leads with their documents and names another company's figure. */
@@ -87,6 +92,13 @@ export interface RuleUses {
 
 /** A rule's record for a chip or a card: the page's own, else one of the records its cards point at (`pointed`). */
 export const ruleOf = (data: ProvenanceData | null | undefined, id: string): RuleRecord | undefined => data?.rules[id] ?? data?.pointed?.[id];
+
+/** What a chip names of a rule (`RuleHead`): read from its record where the page holds it, else its head; nothing when the page has neither. */
+export function headOf(data: ProvenanceData | null | undefined, id: string): RuleHead | undefined {
+  const rule = ruleOf(data, id);
+  if (!rule || !data) return data?.heads?.[id];
+  return ruleHeadOf(rule, data);
+}
 
 type Sheets = typeof import("./provenance-sheets");
 let sheets: Sheets | null = null;
@@ -629,13 +641,13 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   const plain = <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>;
   if (!kind) return plain;
   const shown = kind === "question" ? id.replace("-OQ", " OQ") : id;
-  // a rule's chip says its title; a record the page does not hold says "חוק או כלל", and its card says the page does not hold it
-  const rule = kind === "rule" ? ruleOf(data, shown) : undefined;
+  // a rule's chip says its title, from its record or its head; a rule the page has neither of says "חוק או כלל", and its card says so
+  const rule = kind === "rule" ? headOf(data, shown) : undefined;
   // a proof's chip says "הוכחה"; its title is in the sheet's script (content/proofs.ts), which a page's own script does not carry
   if (kind === "proof" && !asLabel) return <ProofsChip ids={[id]} className={className} />;
   // an open question's chip says a word, not its code: the sentence around it says "שאלה פתוחה", the sheet says which
   const title = titled && kind === "question" ? questionOf(data, shown)?.title_he : undefined;
-  const ruleName = rule && data ? ruleTitle(rule, data) : undefined;
+  const ruleName = rule?.title;
   let card: string | undefined;
   if (kind === "parameter") card = data?.parameters ? data.parameters[id] : id;
   if (kind === "assumption") card = data?.parameters?.[id];
@@ -695,7 +707,7 @@ export function IdText({ text, assumptions }: { text: string; assumptions?: bool
 export function RuleRef({ id, className, end }: { id: string; className?: string; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
   const open = useOpen();
   const data = useContext(DataCtx);
-  const rule = ruleOf(data, id);
+  const rule = headOf(data, id);
   const name = rule && !isGeneral(rule) ? chipName(rule, data?.ownDocs, data?.company, chipMore) : null;
   if (!name) return <IdRef id={id} className={className} end={end} />;
   return (
@@ -716,7 +728,7 @@ const chipMore = (n: number) => (n === 1 ? scopeWords.chipMore.one : n === 2 ? s
  * The card's scope label: "חל על כולם", "של הראל ואלטשולר שחם" (the companies whose own documents say it), "לא הוכח שחל על כולם";
  * "על סלייס וגלובלנט" for a record about companies that rests on none of their documents (a regulator's announcement about them).
  */
-export function scopeTag(rule: RuleRecord, ownDocs: OwnDocs | undefined, short?: { company: string | undefined }): string {
+export function scopeTag(rule: Pick<RuleRecord, "id" | "scope" | "scope_institutions">, ownDocs: OwnDocs | undefined, short?: { company: string | undefined }): string {
   if (rule.scope === "general") return scopeWords.tag.general;
   if (rule.scope === "unsettled") return scopeWords.tag.unsettled;
   // the same companies the chip counts (`shownCompanies`): those whose own documents say it, else everyone it is about. `short` (the card's
@@ -738,7 +750,7 @@ export function VariesByCompany({ ids, lead = scopeWords.varies, size, end, clas
   const seen = new Set<string>();
   const items = ids
     .flatMap((ref) => {
-      const r = ruleOf(data, companyTermRule(ref));
+      const r = headOf(data, companyTermRule(ref));
       if (!r) return [];
       const listed = listedCompanies(r, data?.ownDocs);
       return companyLinksOf(typeof ref === "string" ? listed : listed.filter((c) => ref.companies.includes(c.id)), data?.companies);
@@ -782,10 +794,10 @@ export function ProofsChip({ ids, className }: { ids: readonly string[]; classNa
 export function RuleTitleRow({ id, scope = true, className }: { id: string; /** Under a company's term, the companies it is about. */ scope?: boolean; className?: string }) {
   const open = useOpen();
   const data = useContext(DataCtx);
-  const rule = ruleOf(data, id);
-  // a record the page does not hold: the row still opens the card, which says so
+  const rule = headOf(data, id);
+  // a rule the page has neither the record nor the head of: the row still opens the card, which says so
   if (!rule || !data) return <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} opens={id} className={className}>{ruleCopy.title}</TitleRow>;
-  const title = ruleTitle(rule, data);
+  const title = rule.title;
   return (
     <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} opens={id} under={scope && !isGeneral(rule) ? scopeTag(rule, data.ownDocs, { company: data.company }) : undefined} className={className}>
       {title.english ? <bdi dir="ltr">{title.text}</bdi> : gershayim(title.text)}
