@@ -141,7 +141,7 @@ describe("an account that prices no fund on an index says why, over every kind o
     expect(fundRow(out, "interactive-israel")).toContain(invest.pair.noFund.notSold);
     expect(fundRow(out, "interactive-israel")).not.toContain(invest.pair.noFund.doubt);
     // its words open the company's rule, and no document's title in the reasons carries a rule's code
-    expect(w.rules).toEqual(["BRK-65"]);
+    expect(w.rules).toEqual(["BRK-82", "BRK-65"]);
     expect(w.parts.map((p) => p.doc?.title ?? "").join(" ")).not.toMatch(/BRK-\d/);
   });
   it("Interactive Brokers on TA-125: not possible there, in its FAQ's words on Tel Aviv and its fund list for a resident of Israel (read 2026-11-12)", () => {

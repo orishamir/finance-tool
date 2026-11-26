@@ -115,7 +115,7 @@ export const RULES: readonly RuleRow[] = [
   { id: "money-market-redemption", when: { products: MONEY_MARKET, fees: ["redemption_deduction"] }, verdict: { kind: "only", forms: ["action"], parts: [], conditions: ["own"] }, cite: ["MF-22", "MF-10"], records: true },
   // a fund order is executed at its day's price, at the fund's own hour; no rule limits what a non-bank that markets investments charges on
   // these units, and no collected line names them, so there a sum per order and a minimum are open (a bank charges none, the bans below)
-  { id: "money-market-trade", when: { products: MONEY_MARKET, fees: ["trade"] }, verdict: { kind: "only", forms: ["action", "perAction"], parts: ["min"], conditions: ["own"] }, cite: ["MF-10", "MF-67", "MF-26", "BRK-52", "BRK-64", "BRK-65"], records: true },
+  { id: "money-market-trade", when: { products: MONEY_MARKET, fees: ["trade"] }, verdict: { kind: "only", forms: ["action", "perAction"], parts: ["min"], conditions: ["own"] }, cite: ["MF-10", "MF-67", "MF-26", "BRK-52", "BRK-64", "BRK-82"], records: true },
   { id: "money-market-own", when: { products: MONEY_MARKET, fees: ["own"] }, verdict: { kind: "only", forms: ["held"], parts: [], conditions: ["own"] }, records: true, cite: [] },
 
   // ---- the securities account and what is bought in it, as the collected price lists print them
