@@ -1113,6 +1113,19 @@ function fundInputs(rec: FundRecord, list: GapList, today: string): Record<strin
  */
 const COST_FLAGS: readonly string[] = ["BANK-35"];
 
+/**
+ * `v` without the run's flags about the account's cost (`COST_FLAGS`): for a figure of what is left that a cost figure goes into (the
+ * receipt's value before tax, F-129, and the inflation on it, F-130), since a computed figure carries its inputs' flags and a cost too high
+ * would make that figure too low, not too high (F-102).
+ */
+export function withoutCostFlags(v: SiteValue): SiteValue {
+  if (!v.flags?.some((f) => COST_FLAGS.includes(f))) return v;
+  const { flags, flagMonths, ...rest } = v;
+  const kept = flags.filter((f) => !COST_FLAGS.includes(f));
+  const months = Object.entries(flagMonths ?? {}).filter(([code]) => !COST_FLAGS.includes(code));
+  return { ...rest, ...(kept.length ? { flags: kept } : {}), ...(months.length ? { flagMonths: Object.fromEntries(months) } : {}) };
+}
+
 /** The open questions the house's price list leaves the run resting on (a line's `open_questions`, data-schema §3.6): said on what is left. */
 const tariffQuestions = (row: ComparedProvider): string[] => row.flags.filter((f) => /^[A-Z0-9]+-OQ\d+$/.test(f));
 

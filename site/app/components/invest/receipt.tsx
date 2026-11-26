@@ -12,7 +12,7 @@
 import { Fragment, type ReactNode, type Ref, type RefObject } from "react";
 import { brands, invest as c, site } from "../../copy";
 import { amountShown, fmt, wholeSum } from "../../lib/format";
-import { gapListFor, pricedVariable, accountSum, pairCostsKept, type FundWay, type InvestView, type PairCosts } from "../../lib/invest";
+import { gapListFor, pricedVariable, accountSum, pairCostsKept, withoutCostFlags, type FundWay, type InvestView, type PairCosts } from "../../lib/invest";
 import { priced } from "../../lib/stretch";
 import { assertNever, type FundRecord } from "@finance-tool/schema";
 import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
@@ -180,7 +180,8 @@ function beforeTaxOf(pc: Costs, ch: ReceiptChain, today: string): SiteValue {
     ...(pc.waiting && r.waiting !== 0 ? { [c.pair.waiting]: nom(pc.waiting, c.pair.waiting, r.waiting) } : {}),
     [c.receipt.parts.fund]: nom(pc.fund, c.receipt.parts.fund, r.fund),
   };
-  return computed(ch.beforeTax, "nis", "F-129", lines, { today, about: c.receipt.beforeTax.nominal, lead: c.receipt.beforeTax.lead });
+  // what is left before tax is no cost: the account line's flag about its cost stays on that line (F-102)
+  return withoutCostFlags(computed(ch.beforeTax, "nis", "F-129", lines, { today, about: c.receipt.beforeTax.nominal, lead: c.receipt.beforeTax.lead }));
 }
 
 /**

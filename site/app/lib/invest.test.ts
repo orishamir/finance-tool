@@ -11,7 +11,8 @@ import { feesData } from "./fees.server";
 import { houseDeal } from "./deal-account/house-deal";
 import { dealProviderId, withDeals } from "./deal-account/bundle";
 import { invest as words, numbers } from "../copy";
-import { leftOf } from "../components/invest/receipt";
+import { inflationOf, leftOf } from "../components/invest/receipt";
+import { receiptChain } from "./receipt";
 
 // The page's data as built, but for the exchange rates: frozen at the ECB's rates of 16.11.2026 (units per euro) and dated today, so
 // the figures pinned below move with a fund's or a house's data, never with the daily rate refresh (which turned the check red on
@@ -602,6 +603,14 @@ describe("BANK-35 sits on the account's cost, not on what is left (independent c
     expect(sum.flags).toContain("BANK-35");
     expect(sum.rulesUsed ?? []).toEqual([]);
     expect(pc.left.flags ?? []).not.toContain("BANK-35");
+    // the receipt's value before tax (F-129) and the inflation on it (F-130) are what is left, not a cost: the flag stays on the account's row
+    const inflation = inflationOf(pc, receiptChain(pc), "x", t);
+    const before = (inflation.computed_from!.inputs as Record<string, SiteValue>)[words.receipt.beforeTax.nominal]!;
+    expect((before.computed_from!.inputs as Record<string, SiteValue>)[words.receipt.parts.account]!.flags).toContain("BANK-35");
+    for (const v of [before, inflation]) {
+      expect(v.flags ?? []).not.toContain("BANK-35");
+      expect(v.flagMonths?.["BANK-35"]).toBeUndefined();
+    }
   });
   const view0 = () => buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: true }) });
 });
