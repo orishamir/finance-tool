@@ -1,0 +1,37 @@
+{
+  "id": "ETF-102",
+  "title": "Vanguard: its Irish ETFs are normally first listed on Euronext Dublin, the LSE, Xetra, Borsa Italiana, Cboe Europe or SIX",
+  "title_he": "הרישום העיקרי של הקרנות האיריות של Vanguard: בדרך כלל בבורסה אירופית",
+  "text_he": "בתשקיף של Vanguard כתוב שהרישום העיקרי של הקרנות האיריות שלה יהיה בדרך כלל באחת מכמה בורסות אירופיות: דבלין, לונדון, Xetra בגרמניה, איטליה, Cboe Europe או SIX. Vanguard עשויה לרשום אותן גם בבורסות נוספות, ובהן אמסטרדם, פריז ושתי בורסות במקסיקו. התשקיף מפנה לאתר של החברה כדי לדעת איפה קרן רשומה בפועל. זה הנוהג של Vanguard בקרנות האיריות שלה, לא כלל: החוק לא קובע איפה קרן אירית נסחרת.",
+  "strength": "institution",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-26",
+  "recheck_date": "2027-04-01",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "vanguard",
+      "name_he": "Vanguard"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://fund-docs.vanguard.com/etf-prospectus-en.pdf#page=3",
+      "title": "Vanguard Funds plc prospectus, dated 15 October 2026",
+      "publisher": "Vanguard",
+      "publisher_he": "Vanguard",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "file p.3",
+      "locator_he": "עמוד הקובץ 3",
+      "page": 3,
+      "quote": "normally be primarily listed and/or admitted for trading on either the Regulated Market of Euronext Dublin",
+      "checked": "2026-11-26"
+    }
+  ]
+}
