@@ -920,11 +920,19 @@ export function intervalChosen(runs: readonly { way: BuyWay; run: RunResult }[])
   if (orderEveryOf(first.way) !== 1) return 0;
   let chosen = 0;
   let most = beforeTax(first.run);
-  for (let i = 1; i < runs.length; i++) {
-    const b = beforeTax(runs[i]!.run);
+  for (const [i, r] of runs.entries()) {
+    if (i === 0) continue;
+    const b = beforeTax(r.run);
     if (leavesMore(b, most)) [chosen, most] = [i, b];
   }
   return chosen;
+}
+
+/** The item at the index a choice (`intervalChosen`, `wayChosen`) returns, which is always one of its own list's. */
+function chosenOf<T>(list: readonly T[], i: number, what: string): T {
+  const item = list[i];
+  if (item === undefined) throw new Error(`unreachable: ${what}`);
+  return item;
 }
 
 /**
@@ -1209,9 +1217,9 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
     // F-133: each way at the interval it chooses, before tax; F-109: of the ways, the one that leaves the most at the horizon, its own on a tie
     const byWay = intervalWays(ways, { monthly: input.goal.monthly, months: horizon, paysOut: !!input.fund.distribution, ...(input.behaviour ? { behaviour: input.behaviour } : {}) }).map((tried) => {
       const runs = tried.map((w) => ({ way: w, run: runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx) }));
-      return runs[intervalChosen(runs)]!;
+      return chosenOf(runs, intervalChosen(runs), "F-133: the interval chosen is one of the way's runs");
     });
-    const { way, run } = byWay[wayChosen(byWay)]!;
+    const { way, run } = chosenOf(byWay, wayChosen(byWay), "F-109: the way chosen is one of the house's ways");
     const stopped = stoppedBeforeComparing([noneT, run]);
     if (stopped) {
       rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });

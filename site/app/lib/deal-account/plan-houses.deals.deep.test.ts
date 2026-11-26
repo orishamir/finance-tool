@@ -5,6 +5,11 @@ import { describe, expect, it } from "vitest";
 import { dealProviderId } from "./bundle";
 import { flagsOf, housesBeside, onHouse } from "./plan-fixtures";
 
+function must<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
+  return v;
+}
+
 describe("F-128 a deal filled from a house prices as the house does, on every index", () => {
   const s = housesBeside();
 
@@ -24,7 +29,7 @@ describe("F-128 a deal filled from a house prices as the house does, on every in
     // deal's terms, as the values are
     const id = "interactive-israel";
     const on = s.terms.changed.has(id) ? s.termsViews() : s.views;
-    const fundsOn = s.indices.flatMap((ix) => on.get(ix)!.options.flatMap((o) => o.funds));
+    const fundsOn = s.indices.flatMap((ix) => must(on.get(ix), `the view of ${ix}`).options.flatMap((o) => o.funds));
     for (const f of fundsOn) expect([f.rec.id, flagsOf(f, dealProviderId(`deal-${id}`))]).toEqual([f.rec.id, flagsOf(f, id)]);
   });
 });

@@ -26,6 +26,10 @@ const plan = (over: Partial<WorkbenchInputs> = {}, ret = 7): WorkbenchInputs => 
   values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(ret, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
   ...over,
 });
+function must<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
+  return v;
+}
 const sp = indexById(bundle, "index-sp500")!;
 /**
  * A plan where neither the CPI nor the dollar moves (A-02 = A-03 = 0): the two readings of TXS OQ26 give one result (method §13), so every
@@ -112,7 +116,12 @@ describe("invest page computation", () => {
   it("a price whose orders are placed every few months carries no standing-order tag, its orders being at the regular lines (F-133, D41)", () => {
     // the three banks' standing-order lines ranked, so a monthly plan at a bank runs on them and carries the tag
     const banks = ["leumi", "massad", "fibi"];
-    const ranked = { ...bundle, snapshots: bundle.snapshots.map((s) => (banks.includes(s.id) ? { ...s, lines: s.lines.map(({ not_ranked: _, ...l }) => l) } : s)) };
+    const rankedLine = (l: (typeof bundle.snapshots)[number]["lines"][number]) => {
+      const c = { ...l };
+      delete c.not_ranked;
+      return c;
+    };
+    const ranked = { ...bundle, snapshots: bundle.snapshots.map((s) => (banks.includes(s.id) ? { ...s, lines: s.lines.map(rankedLine) } : s)) };
     const small = plan({ amountNow: 0, monthly: 100, years: 10, values: { ...plan().values, amount: entered(0, "nis", t), monthly: entered(100, "nis_per_month", t), years: entered(10, "years", t) } });
     let batched = 0;
     let tagged = 0;
@@ -442,19 +451,20 @@ describe("invest page computation", () => {
       const priced = v.houses.filter((h) => h.generic && h.split);
       expect(priced.length).toBeGreaterThan(1);
       // the whole part: the fees shown and the waiting cash on its own line
-      const whole = (h: (typeof priced)[number]) => h.generic!.costN! + ((h.split!.waiting?.value.value as number | undefined) ?? 0);
+      const fees = (h: (typeof priced)[number]) => must(h.generic?.costN, `${h.provider.id}: the fees' cost`);
+      const whole = (h: (typeof priced)[number]) => fees(h) + ((h.split?.waiting?.value.value as number | undefined) ?? 0);
       // the houses stand by group, Israeli first, then by cost
       for (const group of ["il", "foreign"]) {
         const inGroup = priced.filter((h) => h.group === group);
         const shown = inGroup.map(whole);
         expect(shown, `${group} ${p.amountNow}/${p.monthly}/${p.years}`).toEqual([...shown].sort((a, b) => a - b));
-        const byFees = inGroup.map((h) => h.generic!.costN!);
-        if (byFees.some((x, i) => i > 0 && x < byFees[i - 1]!)) feesAloneDiffer = true;
+        const byFees = inGroup.map(fees);
+        if (byFees.some((x, i) => i > 0 && x < must(byFees[i - 1], "the house before"))) feesAloneDiffer = true;
       }
       for (const h of priced) {
-        expect(h.generic!.rankN, h.provider.id).toBeCloseTo(whole(h), 6);
+        expect(h.generic?.rankN, h.provider.id).toBeCloseTo(whole(h), 6);
         const cells = v.options.flatMap((o) => o.cells).filter((x) => x.providerId === h.provider.id && x.kind === "cost");
-        expect(h.generic!.rankN, h.provider.id).toBe(Math.min(...cells.map((x) => x.rankN!)));
+        expect(h.generic?.rankN, h.provider.id).toBe(Math.min(...cells.map((x) => must(x.rankN, `${h.provider.id}: a cell's rank`))));
       }
     }
     expect(feesAloneDiffer, "on none of these plans do the fees alone order the houses otherwise: pick another").toBe(true);

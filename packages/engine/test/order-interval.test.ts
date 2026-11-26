@@ -9,6 +9,10 @@ import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
 const read = (p: string) => JSON.parse(readFileSync(new URL(`../../../data/${p}`, import.meta.url), "utf8")) as Record<string, unknown>;
+function must<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
+  return v;
+}
 const row = (wb: ProviderWorkbench, id?: string): ComparedProvider => {
   const r = id ? wb.rows.find((x) => x.id === id) : wb.rows[0];
   if (!r || r.kind !== "compared") throw new Error(`not compared: ${JSON.stringify(r && "reason" in r ? r.reason : r)}`);
@@ -124,11 +128,12 @@ describe("the run at an order interval (F-133)", () => {
 describe("the ways the workbench tries (F-133)", () => {
   it("each way at each interval, monthly first; a way whose recurring plan buys by amount is not tried again above monthly", () => {
     const ways = [{ units: { price: 300, monthlyByAmount: true } }, { units: { price: 300 } }];
-    const [own, units] = intervalWays(ways, { monthly: 500, months: 120, paysOut: false });
+    const [own, unitsOrNone] = intervalWays(ways, { monthly: 500, months: 120, paysOut: false });
+    const units = must(unitsOrNone, "the second way's runs");
     expect(own).toEqual([ways[0]]);
-    expect(units![0]).toEqual(ways[1]);
-    expect(units!.slice(1).map((w) => w.orderEvery)).toEqual([2, 3, 4, 6, 12]);
-    expect(units!.every((w) => !w.units?.monthlyByAmount)).toBe(true);
+    expect(units[0]).toEqual(ways[1]);
+    expect(units.slice(1).map((w) => w.orderEvery)).toEqual([2, 3, 4, 6, 12]);
+    expect(units.every((w) => !w.units?.monthlyByAmount)).toBe(true);
   });
   it("monthly alone with no monthly deposit and no payout, with several orders a month, and the person's own interval alone where given", () => {
     expect(intervalWays([{}], { monthly: 0, months: 120, paysOut: false })).toEqual([[{}]]);
@@ -140,11 +145,11 @@ describe("the ways the workbench tries (F-133)", () => {
     expect(intervalWays(ways, { monthly: 500, months: 120, paysOut: false, behaviour: { orderEvery: 3 } })).toEqual([[{ units: { price: 300 }, orderEvery: 3 }]]);
   });
   it("every interval with no monthly deposit where the fund pays out, since its net waits for the next order", () => {
-    expect(intervalWays([{}], { monthly: 0, months: 120, paysOut: true })[0]!.map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 3, 4, 6, 12]);
+    expect(must(intervalWays([{}], { monthly: 0, months: 120, paysOut: true })[0], "the one way's runs").map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 3, 4, 6, 12]);
   });
   it("no interval of the plan's months or more, which would place no order before the sale", () => {
-    expect(intervalWays([{}], { monthly: 200, months: 12, paysOut: false })[0]!.map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 3, 4, 6]);
-    expect(intervalWays([{}], { monthly: 200, months: 4, paysOut: false })[0]!.map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 3]);
+    expect(must(intervalWays([{}], { monthly: 200, months: 12, paysOut: false })[0], "the one way's runs").map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 3, 4, 6]);
+    expect(must(intervalWays([{}], { monthly: 200, months: 4, paysOut: false })[0], "the one way's runs").map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 3]);
   });
 });
 
@@ -214,9 +219,9 @@ describe("a fund bought abroad with no unit price at Psagot (F-133, F-63)", () =
     expect(best.real - monthly.real).toBeGreaterThan(2_000);
     expect(best.run.fees.trade).toBeLessThan(monthly.run.fees.trade / 3);
     // the deposits waited: what they missed is its own part (F-91), apart from the account's fees
-    expect(waitingReal(best.run)!).toBeGreaterThan(0);
+    expect(must(waitingReal(best.run), "the money waiting at the horizon")).toBeGreaterThan(0);
     // F-61's split is by what each line paid, carried (F-63): with the waiting cash, the lines add up to the account's cost but for a small rest
-    const rest = best.horizonCostBeforeTax - best.byType.reduce((s, t) => s + t.costBeforeTax, 0) - waitingReal(best.run)!;
+    const rest = best.horizonCostBeforeTax - best.byType.reduce((s, t) => s + t.costBeforeTax, 0) - must(waitingReal(best.run), "the money waiting at the horizon");
     expect(Math.abs(rest)).toBeLessThan(0.05 * best.horizonCostBeforeTax);
     // year one is run on the interval chosen at the horizon
     expect(best.yearOneCost.value).not.toBeCloseTo(monthly.yearOneCost.value as number, 0);
@@ -250,7 +255,7 @@ describe("monthly where no order pays a minimum, and on a tie (F-133)", () => {
     minimums: { account_opening: null },
     notice_rule_ids: [],
   });
-  const cheap = feesSnapshot.parse({ ...free, id: "broker-cheap", lines: [{ ...free.lines[0]!, id: "cheap-trade", rate: vo(0.1, "pct_of_trade"), min: vo(5, "nis_per_trade") }] });
+  const cheap = feesSnapshot.parse({ ...free, id: "broker-cheap", lines: [{ ...must(free.lines[0], "the free broker's first line"), id: "cheap-trade", rate: vo(0.1, "pct_of_trade"), min: vo(5, "nis_per_trade") }] });
   it("₪5,000 a month where 0.1% of every order is above its 5 ₪ minimum: monthly leaves the most", () => {
     const r = row(providerWorkbench({ goal: { amountNow: 30_000, monthly: 5_000, months: 120 }, market: { grossReturn: 0.07, inflation: 0.02 }, fund: { kind: "israeli-fund", drag: {} }, profile: {}, instrumentClass: "etf_units", theta: 0.005, providers: [{ snapshot: cheap, level: "list" }] }, ctx));
     expect(r.way.orderEvery).toBe(1);
@@ -298,8 +303,8 @@ describe("a deal account buys every few months too (F-133, F-128)", () => {
     expect(best.run.fees.trade).toBeLessThan(monthly.run.fees.trade);
     expect(best.run.fees.trade).toBeGreaterThanOrEqual(30 * orders - 1e-9);
     // the deal's fees are carried as its lines, and the waiting cash is apart from them
-    expect(best.byFee!.length).toBe(1);
-    expect(waitingReal(best.run)!).toBeGreaterThan(0);
+    expect(must(best.byFee, "the cost by fee").length).toBe(1);
+    expect(must(waitingReal(best.run), "the money waiting at the horizon")).toBeGreaterThan(0);
   });
 });
 

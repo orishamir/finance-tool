@@ -28,6 +28,11 @@ import { BeforeDeciding, hedgeCard, mapTab } from "./before";
 import { useDollarCase } from "./dollar";
 import { bundle, t, plan, data, shown, html, inHost, lists, fundRow, StairsFor } from "./render-fixtures";
 
+function must<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
+  return v;
+}
+
 describe("the index page's sections render", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: plan, yourBroker: "leumi" });
   it("all sections of a known index: the title, the plan, the receipt with its account and fund parts and the two linked lists", () => {
@@ -98,17 +103,19 @@ describe("the index page's sections render", () => {
     const out = html(createElement(NoFundAccountColumn, { view: v, bundle, years: 20, chosen: null, onPick: () => undefined }));
     const waits = v.houses.filter((h) => h.split?.waiting && Math.round(h.split.waiting.value.value as number) !== 0);
     expect(waits.length, "no house's way leaves cash waiting on this plan: pick another").toBeGreaterThan(0);
-    for (const h of v.houses.filter((x) => x.split)) {
-      const sp = h.split!;
+    for (const h of v.houses) {
+      const sp = h.split;
+      if (!sp) continue;
+      const fees = must(h.generic?.costN, `${h.provider.id}: the account's cost`);
       // the charge is the fees: the lines and the remainder add up to it, with no waiting cash among them
-      expect(sp.lines.reduce((a, l) => a + l.cost, 0) + sp.interaction, h.provider.id).toBeCloseTo(h.generic!.costN!, 6);
-      expect(sp.whole.value, h.provider.id).toBe(Math.round(h.generic!.costN!));
+      expect(sp.lines.reduce((a, l) => a + l.cost, 0) + sp.interaction, h.provider.id).toBeCloseTo(fees, 6);
+      expect(sp.whole.value, h.provider.id).toBe(Math.round(fees));
     }
     for (const h of waits) {
       const from = out.indexOf(`data-pick-key="${h.provider.id}"`);
       const next = out.indexOf("data-pick-key=", from + 1);
       const row = out.slice(from, next < 0 ? undefined : next);
-      expect(row, h.provider.id).toContain(h.split!.waiting!.orderEvery > 1 ? invest.pair.waitingBatched : invest.pair.waiting);
+      expect(row, h.provider.id).toContain(must(h.split?.waiting, `${h.provider.id}: the waiting cash`).orderEvery > 1 ? invest.pair.waitingBatched : invest.pair.waiting);
     }
   });
   it("a custom index's account that prices no kind of fund says why in the pair page's words, which open the reason: no tag, no \"no data\", no separate source link (D105)", () => {

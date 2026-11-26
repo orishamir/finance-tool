@@ -567,14 +567,15 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // F-133: the months a plan placed every few months orders in, and the deposits each such order spends (each month's own where it orders
   // every month); 0 in a month that places none. Deposits after the last such month wait to the sale
   const batchMonth = (m: number) => every > 1 && m % every === 0 && m < T;
-  const planned: number[] = new Array<number>(T + 1).fill(0);
+  const planned: number[] = Array.from({ length: T + 1 }, () => 0);
   for (let m = 1, since = 0; m <= T; m++) {
-    since += m <= goal.months ? C[m]! : 0;
+    since += m <= goal.months ? (C[m] ?? 0) : 0;
     if (every === 1 ? m <= goal.months : batchMonth(m)) {
       planned[m] = since;
       since = 0;
     }
   }
+  const plannedIn = (m: number) => planned[m] ?? 0;
   // F-04, TXF OQ10: under the exchange-rate reading, a TASE foreign fund whose annex states no index, of a fund the site does not know, takes
   // its record's currency's path, the run's one (`taxIndexOf` reads a record in shekels on the CPI under both readings)
   const unstated = fund.kind === "tase-foreign-fund" && !stated;
@@ -664,10 +665,10 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   const paidOutSince = (m: number) => Array.from({ length: every }, (_, i) => m - every + i).some(paysOutIn);
   const ordersIn = (m: number) =>
     (m === 1 && C[0]! > 0 ? 1 : 0) +
-    (every === 1 ? (planned[m]! > 0 ? orders : 0) + (paysOutIn(m) ? 1 : 0) : batchMonth(m) && (planned[m]! > 0 || paidOutSince(m)) ? 1 : 0) +
+    (every === 1 ? (plannedIn(m) > 0 ? orders : 0) + (paysOutIn(m) ? 1 : 0) : batchMonth(m) && (plannedIn(m) > 0 || paidOutSince(m)) ? 1 : 0) +
     (m === T ? 1 : 0);
   const countIn = (m: number) => trace?.read?.[m]?.count ?? (trace?.read ? 0 : ordersIn(m));
-  const tradingIn = (m: number) => trace?.read?.[m]?.trading ?? (trace?.read ? 0 : (m === 1 ? C[0]! : 0) + planned[m]!);
+  const tradingIn = (m: number) => trace?.read?.[m]?.trading ?? (trace?.read ? 0 : (m === 1 ? C[0]! : 0) + plannedIn(m));
   const placedIn = (m: number, amount: number) => {
     if (!trace || !(amount > 0)) return;
     const at = trace.placed[m] ?? { count: 0, trading: 0 };
@@ -893,7 +894,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     // F-133: with no deposit since the last order, the order spends what waits (a distribution's net), where something does
     if (every > 1) {
       if (m <= goal.months) waitingNis += C[m]!;
-      if (batchMonth(m) && waiting(m) > 0) buy(0, m, m, true, planned[m]! > 0 ? "batched" : null);
+      if (batchMonth(m) && waiting(m) > 0) buy(0, m, m, true, plannedIn(m) > 0 ? "batched" : null);
     }
     tally.paidIn += (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
 
