@@ -2326,8 +2326,7 @@
     "variants_he": [],
     "explain_he": "התאריך שבו נקבע למי משולמת הריבית הקרובה: למחזיקים הרשומים באיגרת החוב באותו יום",
     "rule_ids": [
-      "GOV-11",
-      "GOV-21"
+      "GOV-27"
     ],
     "source": {
       "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006, קובץ התקנות 6457, עמוד 4",
@@ -2339,7 +2338,7 @@
     "where": [
       "guide:government-bond"
     ],
-    "notes": "Buyers after the record date do not get that period's interest (GOV-11, GOV-21). Exact day per the Nevo summary only. Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law01/999_564.htm) to the official text.",
+    "notes": "Buyers after the record date do not get that period's interest (GOV-27). Exact day per the Nevo summary only. Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law01/999_564.htm) to the official text.",
     "id": "mvad-kvba-lzkavt"
   },
   {
