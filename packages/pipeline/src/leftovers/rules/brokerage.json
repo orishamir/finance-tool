@@ -1,34 +1,6 @@
 {
   "long": [
-    "BRK-04",
-    "BRK-06",
-    "BRK-07",
-    "BRK-08",
-    "BRK-09",
-    "BRK-10",
-    "BRK-12",
     "BRK-14",
-    "BRK-15",
-    "BRK-19",
-    "BRK-21",
-    "BRK-23",
-    "BRK-24",
-    "BRK-27",
-    "BRK-32",
-    "BRK-33",
-    "BRK-35",
-    "BRK-40",
-    "BRK-42",
-    "BRK-43",
-    "BRK-44",
-    "BRK-47",
-    "BRK-50",
-    "BRK-51",
-    "BRK-54",
-    "BRK-58",
-    "BRK-59",
-    "BRK-67",
-    "BRK-69",
     "CORP-02",
     "CORP-04",
     "CORP-05",
@@ -50,20 +22,10 @@
     "SHR-01"
   ],
   "research-talk": [
-    "BRK-06",
-    "BRK-23",
-    "BRK-33",
-    "BRK-35",
-    "BRK-47",
-    "BRK-54",
-    "BRK-55",
     "CORP-14",
     "RG-20"
   ],
-  "fixed-line": [
-    "BRK-23",
-    "BRK-47"
-  ],
+  "fixed-line": [],
   "spelled-number": [
     "CORP-18"
   ],
@@ -98,14 +60,12 @@
     "RG-07"
   ],
   "pointer-word": [
-    "BRK-35",
     "CORP-24"
   ],
   "title-ditto": [
     "BRK-25",
     "BRK-28",
     "BRK-46",
-    "BRK-59",
     "BRK-70",
     "BRK-74",
     "BRK-75"
