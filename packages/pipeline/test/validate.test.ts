@@ -552,8 +552,10 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // near its redemption (ETF OQ39), whether Israeli bond ETFs pay out (ETF OQ40) and a bond's removal within the month on default
     // (CORP OQ21); CORP OQ8 deleted, the Tel-Bond and Tel-Gov rules now read on TASE's own pages and board decisions (ETF-84 to ETF-88);
     // 2026-11-22 one more, whether a securities order at the same bank, or the movement it makes, is an action on a current account (BANK OQ23);
-    // 2026-11-23 one more, how interest below zero is taxed (TXI OQ20)
-    expect(items.length).toBe(450);
+    // 2026-11-23 one more, how interest below zero is taxed (TXI OQ20);
+    // 2026-11-26 three more, which step table an ETF's orders follow (ETF OQ41), whether a US fund trades only in the US or an Irish one
+    // only in Europe (ETF OQ42), and Invesco Markets plc's own prospectus (ETF OQ43)
+    expect(items.length).toBe(453);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
