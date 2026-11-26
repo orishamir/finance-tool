@@ -135,6 +135,10 @@ describe("the ways the workbench tries (F-133)", () => {
     expect(intervalWays([{}], { monthly: 500, months: 120, paysOut: false, behaviour: { ordersPerMonth: 2 } })).toEqual([[{}]]);
     expect(intervalWays([{}], { monthly: 500, months: 120, paysOut: false, behaviour: { orderEvery: 6 } })).toEqual([[{ orderEvery: 6 }]]);
   });
+  it("at a given interval above a month, a way whose recurring plan buys by amount is not tried, and the house's other way is", () => {
+    const ways = [{ units: { price: 300, monthlyByAmount: true } }, { units: { price: 300 } }];
+    expect(intervalWays(ways, { monthly: 500, months: 120, paysOut: false, behaviour: { orderEvery: 3 } })).toEqual([[{ units: { price: 300 }, orderEvery: 3 }]]);
+  });
   it("every interval with no monthly deposit where the fund pays out, since its net waits for the next order", () => {
     expect(intervalWays([{}], { monthly: 0, months: 120, paysOut: true })[0]!.map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 3, 4, 6, 12]);
   });

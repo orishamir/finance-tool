@@ -904,7 +904,8 @@ export function intervalWays(ways: readonly BuyWay[], plan: { monthly: number; m
   const given = plan.behaviour?.orderEvery;
   const batches = (plan.monthly > 0 || plan.paysOut) && (plan.behaviour?.ordersPerMonth ?? 1) === 1;
   const intervals: readonly OrderInterval[] = given !== undefined ? [given] : batches ? ORDER_INTERVALS.filter((k) => k === 1 || k < plan.months) : [1];
-  return ways.map((w) => intervals.flatMap((k) => (k === 1 ? [w] : w.units?.monthlyByAmount ? [] : [{ ...w, orderEvery: k }])));
+  // a way with no interval left to try (a recurring plan's, at a given interval above a month) is not tried
+  return ways.map((w) => intervals.flatMap((k) => (k === 1 ? [w] : w.units?.monthlyByAmount ? [] : [{ ...w, orderEvery: k }]))).filter((tried) => tried.length > 0);
 }
 
 /**
