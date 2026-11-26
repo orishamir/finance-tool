@@ -872,7 +872,7 @@ export const formulaNames: Record<string, string> = {
   "A-06": "העלות בתוך הקרן: סכום כל מרכיביה",
   // a method assumption with a formula of its own: half of the spread a fund publishes, the cost of one exchange trade
   "A-08": "חצי ממרווח הקנייה והמכירה",
-  "F-31": "ההטבה במס על הפקדה לפנסיה, לשכיר שאינו עמית מוטב",
+  "F-31": "ההטבה במס על הפקדה לפנסיה, לשכיר שהוא לא עמית מוטב",
   "F-32": "ההטבה במס על הפקדה לפנסיה, לעמית מוטב ולעצמאי",
   // blocked: the balance before the annuity, which needs the funds' conversion factors
   "F-49": "פנסיה מגיל הפרישה: הסכום בקופה לפני הקצבה",
