@@ -5,7 +5,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { checkAdvertising, checkByAmount, checkDiscountLines, checkFlatPrices, checkFundExchange, checkSharePrice, checkGroupValues, checkGroupWords, checkLinesUnderCap, checkPricePremises } from "../src/validate.ts";
+import { checkAdvertising, checkByAmount, checkDiscountLines, checkFlatPrices, checkFundExchange, checkFundTickerExchange, checkSharePrice, checkGroupValues, checkGroupWords, checkLinesUnderCap, checkPricePremises } from "../src/validate.ts";
 
 const dir = fileURLToPath(new URL("../../../data/fees", import.meta.url));
 type Line = { id: string; base: string; applies_to: string[]; [k: string]: unknown };
@@ -360,10 +360,24 @@ describe("a unit's price (F-109)", () => {
 });
 
 describe("the exchange of a fund bought abroad (F-65)", () => {
-  it("is refused on a collected record, whose tickers and domicile name it", () => {
+  it("is refused on a collected record, whose tickers name it", () => {
     expect(checkFundExchange({})).toEqual([]);
     expect(checkFundExchange({ exchange: "us" })[0]).toMatch(/typed fund's only/);
     expect(checkFundExchange({ exchange: "unknown" })[0]).toMatch(/typed fund's only/);
+  });
+  const rec = (domicile: string, ticker: Record<string, string>, onTase: string | null = null) => ({ domicile, trading_currency_on_tase: onTase, identifiers: { isin: null, tase_number: null, cusip: null, ticker } });
+  it("is named by a ticker key on a collected record bought abroad, whatever its domicile", () => {
+    const named: Record<string, string>[] = [{ "NYSE Arca": "VOO" }, { NASDAQ: "QQQM" }, { LSE: "CSPX", LSE_GBP: "CSP1" }, { "Euronext Amsterdam": "CSPX" }, { "Deutsche Boerse": "SXR8" }, { SIX: "CSSPX" }, { Xetra: "SXR8" }];
+    for (const ticker of named)
+      expect([ticker, checkFundTickerExchange(rec("IE", ticker))]).toEqual([ticker, []]);
+    // an Israeli fund and a foreign fund's Tel Aviv line are not bought abroad
+    expect(checkFundTickerExchange(rec("IL", {}))).toEqual([]);
+    expect(checkFundTickerExchange(rec("IE", { TASE: "1159250" }, "ILS"))).toEqual([]);
+  });
+  it("refuses a collected fund bought abroad with no ticker that names an exchange: its domicile does not say where it lists", () => {
+    expect(checkFundTickerExchange(rec("LU", {}))[0]).toMatch(/names its exchange by a ticker key/);
+    expect(checkFundTickerExchange(rec("LU", { Bloomberg: "X LN", SEDOL: "B5BMR08" }))[0]).toMatch(/Bloomberg, SEDOL name none/);
+    expect(checkFundTickerExchange(rec("US", { TASE: "1" }))[0]).toMatch(/names its exchange by a ticker key/);
   });
 });
 

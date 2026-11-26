@@ -8,6 +8,8 @@ import type { FundExchange, FundRecord } from "@finance-tool/schema";
 import { draftWithKind, fundDraftOf, fundFromDraft, fundsAsRead, recordOfFund, validCustomFunds, withCustomEntries, type CustomFund, type FundDomicile } from "./custom-entries";
 import { buildInvest, dealOnPlan, pairCosts, dealRunOf, fundWayAt, indexById, venueOfFund, type DealOnPlan, type FundWay, type WayPrice } from "./invest";
 import { invest as copy } from "../copy";
+import { leftOf } from "../components/invest/receipt";
+import type { SiteValue } from "./value";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered } from "./value";
@@ -340,17 +342,17 @@ describe("what the record says of the exchange (F-65)", () => {
     expect(recordOfFund(typed("us", null, null), "USD").exchange).toBe("us");
   });
 
-  it("a collected record with no exchange ticker and a country other than the two is read on Europe at every house, not on each exchange", () => {
-    const europe = typed("europe", 100, null);
+  it("a collected record with no exchange ticker, registered outside the United States, names no exchange and is never priced: the data check refuses it", () => {
     const { exchange: _, ...rec } = recordOfFund(typed(null, 100, null), "USD");
     const collected: FundRecord = { ...rec, id: "collected-lu", domicile: "LU" };
-    expect(venueOfFund(collected)).toBe("europe");
-    const b0 = withCustomEntries(bundle, [europe]);
-    const b = { ...b0, funds: [...b0.funds, collected] };
-    const mine = wayOf(b, collected.id);
-    const known = wayOf(b, europe.id);
-    expect(houses.filter((h) => left(known, h) !== null).length).toBeGreaterThan(3);
-    for (const h of houses) expect([h, left(mine, h), reasonAt(mine, h)]).toEqual([h, left(known, h), reasonAt(known, h)]);
+    expect(venueOfFund(collected)).toBeNull();
+    const b = { ...bundle, funds: [...bundle.funds, collected] };
+    expect(() => wayOf(b, collected.id)).toThrow(/names no exchange/);
+  });
+  it("a collected record's tickers name its exchange, the keys of SIX and Deutsche Boerse among them", () => {
+    const { exchange: _, ...rec } = recordOfFund(typed(null, 100, null), "USD");
+    for (const key of ["SIX", "Deutsche Boerse", "Xetra", "LSE_GBP", "Euronext Amsterdam"]) expect([key, venueOfFund({ ...rec, domicile: "IE", identifiers: { ...rec.identifiers, ticker: { [key]: "X" } } })]).toEqual([key, "europe"]);
+    for (const key of ["NYSE Arca", "NASDAQ"]) expect([key, venueOfFund({ ...rec, domicile: "IE", identifiers: { ...rec.identifiers, ticker: { [key]: "X" } } })]).toEqual([key, "us"]);
   });
 });
 
@@ -377,6 +379,24 @@ describe("the caution of a fund whose exchange is not known is on its figure (F-
     expect(pc.left.doubt).toBe(copy.customEntries.exchangeUnknownDoubt);
     const pk = must(pairCosts({ bundle: b, index, plan, fundId: known.id, providerId: at.providerId }), "the known pair");
     expect(pk.left.doubt).toBeUndefined();
+  });
+
+  it("the receipt's total and its gain, worked out from the pair's figure, carry the same doubt and open ETF-95's card", () => {
+    const index = must(indexById(b, SP), SP);
+    const at = must(pricedAt(wayOf(b, unsure.id))[0], "a priced account");
+    const pc = must(pairCosts({ bundle: b, index, plan, fundId: unsure.id, providerId: at.providerId }), "the pair");
+    const total = leftOf(pc, bundle.today);
+    // the sum's inputs are the figures it adds up (`sumOf`)
+    const gainOf = (v: SiteValue) => v.computed_from?.inputs[copy.receipt.gain] as SiteValue | undefined;
+    const gain = must(gainOf(total), "the gain");
+    for (const v of [pc.left, total, gain]) {
+      expect(v.doubt).toBe(copy.customEntries.exchangeUnknownDoubt);
+      expect(v.doubtRules).toEqual(["ETF-95"]);
+    }
+    const pk = must(pairCosts({ bundle: b, index, plan, fundId: known.id, providerId: at.providerId }), "the known pair");
+    const knownTotal = leftOf(pk, bundle.today);
+    expect(knownTotal.doubt).toBeUndefined();
+    expect(must(gainOf(knownTotal), "the known gain").doubt).toBeUndefined();
   });
 });
 

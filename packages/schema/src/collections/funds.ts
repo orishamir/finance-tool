@@ -81,6 +81,18 @@ const distributionTrailing = z.strictObject({
 export const fundExchange = z.enum(["us", "europe"]);
 export type FundExchange = z.infer<typeof fundExchange>;
 
+/**
+ * F-65, data-schema §3.5: the exchange abroad a key of a record's `identifiers.ticker` names: Europe for the London Stock Exchange, Euronext,
+ * Xetra or Deutsche Börse, and SIX; the United States for NYSE (NYSE Arca among them), NASDAQ, Cboe and BATS; null for a key that names no
+ * exchange abroad (TASE, Bloomberg, SEDOL). The one reading of a key, for the exchange a page buys a collected fund on and for the data check
+ * that every collected fund bought abroad names one.
+ */
+export function exchangeOfTicker(key: string): FundExchange | null {
+  if (/^(LSE|London|Euronext|Xetra|Deutsche Boerse|SIX)/i.test(key)) return "europe";
+  if (/^(NYSE|NASDAQ|Cboe|BATS|Arca)/i.test(key)) return "us";
+  return null;
+}
+
 export const legalStructures = ["company", "icav", "statutory-trust", "unit-trust", "common-contractual-fund"] as const;
 export type LegalStructure = (typeof legalStructures)[number];
 
@@ -260,9 +272,9 @@ export const fundRecord = z.strictObject({
   share_price: valueObject.optional(),
   /**
    * data-schema §3.5, F-65, F-128: the exchange abroad a fund the person types abroad trades on, as they said it (`us`, `europe`), or
-   * `unknown` where they did not say it and did not say the fund is registered in the United States (ETF-93). Left out where the exchange
-   * follows the domicile: on a collected record, whose tickers and domicile name it (the data check refuses the field there), and on a
-   * typed fund registered in the United States whose exchange was not said.
+   * `unknown` where they did not say it and did not say the fund is registered in the United States (ETF-93). Left out on a collected
+   * record, whose tickers name it (`exchangeOfTicker`; the data check refuses the field there and a fund bought abroad with no exchange
+   * ticker), and on a typed fund registered in the United States whose exchange was not said, which follows its domicile.
    */
   exchange: z.union([fundExchange, z.literal("unknown")]).optional(),
   /** data-schema §3.5: the fund's fees lowered for a stated period (F-121); the data check holds each to its fee. */

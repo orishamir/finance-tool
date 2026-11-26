@@ -416,8 +416,8 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     ...(f.payout === "distributing" && f.yield && f.perYear ? { distribution: { yield: f.yield, per_year: f.perYear } } : {}),
     ...(f.tracking ? { replication: { method: f.tracking, source: { url: "local", checked: f.added } } } : {}),
     // F-65, F-109, F-128: the exchange abroad as the person said it; not said, a fund registered in the United States is listed there
-    // (ETF-93), as a collected record's with no exchange ticker; any other is not known, its issuer not known either (ETF-95: Irish law
-    // does not fix the market). The unit price as they typed it
+    // (ETF-93); any other is not known, its issuer not known either (ETF-95: Irish law does not fix the market). The unit price as they
+    // typed it
     ...(f.kind === "abroad" && (f.exchange || f.domicile !== "US") ? { exchange: f.exchange ?? ("unknown" as const) } : {}),
     ...(f.unitPrice ? { share_price: f.unitPrice } : {}),
     snapshot: f.added,

@@ -35,6 +35,7 @@ import {
   isReligiousLaw,
   isShekel,
   isTaseForeignLine,
+  exchangeOfTicker,
   EFFECTIVE_RATE_PATHS,
   isUnitPriceUnit,
 } from "@finance-tool/schema";
@@ -239,6 +240,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       for (const message of checkTrackingRecord(parsed.value as Pick<FundRecord, "exposure_id" | "tracking_record" | "domicile" | "fees">)) report(file, message);
       for (const message of checkSharePrice(parsed.value as Pick<FundRecord, "share_price">)) report(file, message);
       for (const message of checkFundExchange(parsed.value as Pick<FundRecord, "exchange">)) report(file, message);
+      for (const message of checkFundTickerExchange(parsed.value as Pick<FundRecord, "domicile" | "trading_currency_on_tase" | "identifiers">)) report(file, message);
       for (const message of checkFundPromotions(parsed.value as Pick<FundRecord, "fees" | "promotions">)) report(file, message);
     }
     if (collection === "catalog" && result.success && cmaFundIds) {
@@ -823,9 +825,20 @@ export function checkSharePrice(rec: Pick<FundRecord, "share_price">): string[] 
   return out;
 }
 
-/** data-schema §3.5, F-65: `exchange` is a typed fund's answer; a collected record's tickers and domicile name its exchange. */
+/** data-schema §3.5, F-65: `exchange` is a typed fund's answer; a collected record's tickers name its exchange (`checkFundTickerExchange`). */
 export function checkFundExchange(rec: Pick<FundRecord, "exchange">): string[] {
-  return rec.exchange === undefined ? [] : [`exchange: a collected record names its exchange by its tickers and domicile; the field is a typed fund's only (F-65)`];
+  return rec.exchange === undefined ? [] : [`exchange: a collected record names its exchange by its tickers; the field is a typed fund's only (F-65)`];
+}
+
+/**
+ * data-schema §3.5, F-65: a collected fund bought abroad (registered outside Israel, with no Tel Aviv line) names the exchange it trades on
+ * by a ticker key (`exchangeOfTicker`), since its domicile does not say where it lists (ETF-95, ETF OQ42), so no page guesses it.
+ */
+export function checkFundTickerExchange(rec: Pick<FundRecord, "domicile" | "trading_currency_on_tase" | "identifiers">): string[] {
+  if (rec.domicile === "IL" || isTaseForeignLine(rec)) return [];
+  const keys = Object.keys(rec.identifiers.ticker);
+  if (keys.some((k) => exchangeOfTicker(k) !== null)) return [];
+  return [`identifiers.ticker: a fund bought abroad names its exchange by a ticker key (LSE, Euronext, Xetra, Deutsche Boerse, SIX, NYSE, NASDAQ, Cboe, BATS); ${keys.length ? `${keys.join(", ")} name none` : "it has none"} (F-65)`];
 }
 
 interface DiscountSnapshot {

@@ -5,7 +5,7 @@
 import { rankByValue } from "./rank";
 import { gershayim } from "./format";
 import { BlockedError, listingChangesRun, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
-import { fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
+import { exchangeOfTicker, fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomFund } from "./custom-entries";
 import { dealProviderOf, houseSnap, isDealProviderId } from "./deal-account/bundle";
@@ -14,7 +14,7 @@ import { feeNameOf } from "./fee-deal/part-words";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
-import { computed, ownBy, ruleFigure, sumOf, type SiteValue, type Strength } from "./value";
+import { computed, ownBy, ruleFigure, sumOf, type ExchangeLabel, type SiteLabel, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
 
@@ -54,19 +54,19 @@ const OUTSIDE_US_RE = /מחוץ לארה|למעט ארה/;
 export const venueOfBand = (band: string | null | undefined): Venue | null => (!band ? null : OUTSIDE_US_RE.test(band) ? "europe" : US_RE.test(band) ? "us" : EU_RE.test(band) ? "europe" : null);
 
 /**
- * The exchange a fund bought abroad trades on (F-65): the one a typed fund's record states; else the one its tickers name; else by its
- * domicile, the United States for a fund registered there (ETF-93), Europe for any other foreign one, as iShares and Vanguard list their
- * Irish funds (ETF-96; no general rule says where another issuer's fund lists, ETF OQ42, and no collected record reaches this without an
- * exchange ticker). Null where none says: an Israeli fund, and a typed fund whose record says its exchange is not known
- * (`exchange: "unknown"`), which every account reads on each exchange (`Place` "unknown-exchange").
+ * The exchange a fund bought abroad trades on (F-65): the one a typed fund's record states; else the one its tickers name
+ * (`exchangeOfTicker`, Europe before the United States); else the United States for a fund registered there, a typed fund whose exchange
+ * was not said (ETF-93: a US ETF is listed on at least one US exchange; ETF OQ42: no source says only there). Null where none says: an Israeli
+ * fund; a typed fund whose record says its exchange is not known (`exchange: "unknown"`), which every account reads on each exchange
+ * (`Place` "unknown-exchange"); and a collected record with no exchange ticker registered outside the United States, which the data check
+ * refuses (validate.ts `checkFundTickerExchange`), since no rule says where such a fund lists (ETF-95, ETF OQ42), so no page guesses it.
  */
 export function venueOfFund(rec: FundRecord): Venue | null {
   if (rec.exchange !== undefined) return rec.exchange === "unknown" ? null : rec.exchange;
-  const keys = Object.keys(rec.identifiers.ticker ?? {});
-  if (keys.some((k) => /^(LSE|Euronext|Xetra|London)/i.test(k))) return "europe";
-  if (keys.some((k) => /^(NYSE|NASDAQ|Cboe|BATS|Arca)/i.test(k))) return "us";
-  if (rec.domicile === "US") return "us";
-  return rec.domicile === "IL" ? null : "europe";
+  const named = Object.keys(rec.identifiers.ticker ?? {}).map(exchangeOfTicker);
+  if (named.includes("europe")) return "europe";
+  if (named.includes("us")) return "us";
+  return rec.domicile === "US" ? "us" : null;
 }
 
 // ---------------------------------------------------------------- the index
@@ -432,8 +432,8 @@ function onlyVenueAbroad(s: FeesSnapshot): Venue | null {
  *   reading is on (a house's cheapest, F-63);
  * - `unknown-exchange`: one fund bought abroad whose record says its exchange is not known, priced on the exchange whose best reading
  *   leaves the least (F-65, as D56 prices a house at the most its documents let it charge);
- * - `none`: no listing, so every order is by amount: a tracking fund (bought from its manager), a generic fund of a TASE kind, and a fund
- *   abroad whose record names no exchange and no foreign domicile.
+ * - `none`: no listing, so every order is by amount: a tracking fund (bought from its manager) and a generic fund of a TASE kind. A fund
+ *   abroad always has an exchange, given or not known (`placeOf`).
  */
 type Place = { at: "listed"; listing: Listing } | { at: "any-exchange" } | { at: "unknown-exchange" } | { at: "none" };
 
@@ -904,11 +904,14 @@ const rulesOf = (row: ComparedProvider) => row.run.rules.map((u) => ({ id: u.id,
  * the document naming it a foreign-investment fund, behind the principal currency the site's reading runs it on, D119).
  */
 const statementsOf = (row: ComparedProvider) => row.run.statements ?? [];
+/** F-65: the site's cautious reading of where a fund whose exchange is not known is bought, on ETF-95: no rule fixes where it lists. */
+const EXCHANGE_READING: ExchangeLabel = { code: "unknown-exchange", ruleId: "ETF-95" };
 /**
  * The run's labels, which a figure that rests on its tax carries: a cautious reading among them makes the figure's doubt (`readingDoubtOf`),
- * the site's own reading of an open tax index its sheet's tag (D119).
+ * the site's own reading of an open tax index its sheet's tag (D119). For a fund whose exchange is not known, the site's cautious reading of
+ * its exchange too (`ExchangeLabel`, F-65): the run is the one on the exchange that leaves the least, so what it leaves and its tax rest on it.
  */
-const labelsOf = (row: ComparedProvider) => row.run.labels;
+const labelsOf = (row: ComparedProvider, spec: Spec): SiteLabel[] => (spec.place.at === "unknown-exchange" ? [...row.run.labels, EXCHANGE_READING] : row.run.labels);
 /**
  * Whether a figure before the exit tax carries a run's label: every one but those on the rule of an open tax index (TXS OQ26 and TXF OQ10,
  * F-04), the site's reading or its cautious one, which only the exit tax reads, so a cost before tax wears no doubt or tag of theirs.
@@ -1100,23 +1103,13 @@ function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string | 
 }
 
 /** What is left with one account and one fund (F-65's real value), as every list and the stairs show it, with what its run reads. */
-/**
- * F-65: what a fund whose exchange is not known leaves, priced on the exchange whose best reading leaves the least, carries that as its
- * doubt, as F-04's cautious figures carry theirs (`SiteValue.doubt`), beside any doubt of its own.
- */
-function withPlaceDoubt(v: SiteValue, spec: Spec | undefined): SiteValue {
-  if (spec?.place.at !== "unknown-exchange") return v;
-  const words = copy.customEntries.exchangeUnknownDoubt;
-  return { ...v, doubt: v.doubt ? `${v.doubt} ${words}` : words };
-}
-
-function valueFigure(ctx: Ctx, row: ComparedProvider, reads: RunReads, about: string, extra: Record<string, SiteValue> = {}): SiteValue {
-  return withPlaceDoubt(computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, { ...reads, tax: "after", profileUsed: row.run.profileUsed }), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: labelsOf(row), about }), reads.spec);
+function valueFigure(ctx: Ctx, row: ComparedProvider, reads: RunReads & { spec: Spec }, about: string, extra: Record<string, SiteValue> = {}): SiteValue {
+  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, { ...reads, tax: "after", profileUsed: row.run.profileUsed }), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: labelsOf(row, reads.spec), about });
 }
 
 function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string, spec: Spec): WayPrice {
   const row = p.row;
-  const reads: RunReads = { house: providerId, fund: fundId, spec, row, profileUsed: row.run.profileUsed };
+  const reads: RunReads & { spec: Spec } = { house: providerId, fund: fundId, spec, row, profileUsed: row.run.profileUsed };
   const value = valueFigure(ctx, row, reads, about);
   // F-91, F-109: the account's part less what the cash waiting for a whole unit did, so the figure is its fees, as on the receipt
   const fees = row.horizonCostBeforeTax - (unitsOf(row.run) ? (waitingReal(row.run) ?? 0) : 0);
@@ -1182,14 +1175,17 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
 
 /**
  * F-109 (D94), F-65: where a fund is bought: an Israeli ETF and a foreign fund's Tel Aviv line on TASE, a fund abroad on the exchange it
- * trades on, or on each where its record says that is not known. A tracking fund is bought from its manager by amount and has none.
+ * trades on, or on each where its record says that is not known. A tracking fund is bought from its manager by amount and has none. A fund
+ * abroad whose exchange nothing names is a collected record the data check refuses (`venueOfFund`): a broken invariant, never priced by
+ * amount or on a guessed exchange.
  */
 function placeOf(rec: FundRecord, cls: string): Place {
   if (cls === "etf_units" || cls === "tase_foreign_fund_units") return { at: "listed", listing: "tase" };
   if (cls !== "foreign_securities") return { at: "none" };
   if (rec.exchange === "unknown") return { at: "unknown-exchange" };
   const venue = venueOfFund(rec);
-  return venue ? { at: "listed", listing: venue } : { at: "none" };
+  if (!venue) throw new Error(`fund ${rec.id} is bought abroad and names no exchange: a collected record needs an exchange ticker (validate.ts checkFundTickerExchange)`);
+  return { at: "listed", listing: venue };
 }
 
 /** F-109: a fund bought in whole units whose record holds no unit price: priced by amount, and its row says the price was not collected, or, on a fund the person typed, not entered. */
@@ -1546,8 +1542,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout, lead: copy.pair.paidInLead }),
     paidInNominal: computed(row.run.paidIn, "nis", "F-05", planInputs(ctx.plan, ["amount", "monthly", "years", "inflation"]), { today: ctx.bundle.today, about: copy.pair.paidInNominalAbout, lead: copy.pair.paidInLead }),
     index: computed(end.index, "index_points", "F-03", planInputs(ctx.plan, ["inflation", "years"]), { today: ctx.bundle.today, about: copy.pair.indexAbout }),
-    // the same amount as the row's (`valueFigure`), with the same caution where the fund's exchange is not known, so the headline and the receipt carry it
-    left: withPlaceDoubt(computed(row.real, "nis", "F-65", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), labels: labelsOf(row), about: nameOf(rec) }), fs.spec),
+    left: computed(row.real, "nis", "F-65", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), labels: labelsOf(row, fs.spec), about: nameOf(rec) }),
     account: lines,
     interaction,
     remainder: at(interaction, "F-91", copy.pair.lineAbout(copy.pair.remainder), bInputs),
@@ -1557,7 +1552,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     waiting: unitsOf(row.run) ? at(waitingN, "F-109", copy.pair.waitingAbout) : null,
     distributes: !!distribution,
     fund: at(parts.fund, "F-91", copy.pair.fundAbout, inputsOfRun(ctx, { fund: rec.id, spec: fs.spec, tax: "before", profileUsed: row.run.profileUsed })),
-    tax: computed(parts.state, "nis", "F-91", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), labels: labelsOf(row), about: distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout }),
+    tax: computed(parts.state, "nis", "F-91", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), labels: labelsOf(row, fs.spec), about: distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout }),
     base,
     // X reads the plan and the rate alone: no fund cost, no distribution, no account (its run's rules are a tax's, which X is before)
     baseValue: computed(base, "nis", "F-91", inputsOfRun(ctx, { spec: fs.spec, costsOff: true }), { today: ctx.bundle.today, about: copy.pair.baseAbout }),
@@ -1654,10 +1649,8 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
     }
     const row = got.row;
     const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row, profileUsed: row.run.profileUsed };
-    const of = (tax: RunReads["tax"]) => (n: number, about: string) => {
-      const v = computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, tax }), { today: ctx.bundle.today, rules: rulesOf(row), ...(tax === "after" ? { statements: statementsOf(row), labels: labelsOf(row) } : { labels: row.run.labels.filter(beforeExitTax) }), about });
-      return tax === "after" ? withPlaceDoubt(v, fs.spec) : v;
-    };
+    const of = (tax: RunReads["tax"]) => (n: number, about: string) =>
+      computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, tax }), { today: ctx.bundle.today, rules: rulesOf(row), ...(tax === "after" ? { statements: statementsOf(row), labels: labelsOf(row, fs.spec) } : { labels: row.run.labels.filter(beforeExitTax) }), about });
     out.set(fundId, { kind: "ok", valueN: row.real, byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure: of(undefined), left: of("after"), listing: got.listing });
   }
   return out;
