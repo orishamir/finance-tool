@@ -276,13 +276,15 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       }
     : undefined;
 
+  // the month's salary: the entered salary, or that salary moved with prices (F-96)
+  const salaryOfMonth = (m: number) => (hish?.salaryFollowsPrices ? salary * I[m]! : salary);
   // F-96: the benefited limit of the month's own salary, under the ceiling that does not move (TXH-02)
   const limitOfMonth = (m: number) => {
     if (!hish?.salaryFollowsPrices || hish.employment !== "employee") return benefitedMonthly;
-    return share * Math.min(salary * I[m]!, determiningCap);
+    return share * Math.min(salaryOfMonth(m), determiningCap);
   };
   // the salary a month's limit is a share of is above the determining salary's ceiling (TXH-02)
-  const capBinds = (m: number) => (hish?.salaryFollowsPrices ? salary * I[m]! : salary) > determiningCap;
+  const capBinds = (m: number) => salaryOfMonth(m) > determiningCap;
   // the limits that cut a deposit (a part of it above them goes to the excess), each taken on the deposit after the loop, on the exit's tax
   // where the excess is taxed, and on the salary tax where the employer's money above its limit is taxed (F-52)
   const limitsCut = new Set<string>();

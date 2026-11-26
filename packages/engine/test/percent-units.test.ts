@@ -15,8 +15,9 @@ describe("the percent units", () => {
 
   it("are what the resolver reads a rate in, as a fraction", () => {
     const rules = loadRules();
-    const rule = rules.find((r) => r.id === "TXS-09")!;
-    const figure = rule.figures!["rate"] as Record<string, unknown>;
+    const rule = rules.find((r) => r.id === "TXS-09");
+    if (!rule?.figures) throw new Error("TXS-09 has no figures");
+    const figure = rule.figures["rate"] as Record<string, unknown>;
     const effective = rules.map((r) => (r.id === "TXS-09" ? { ...r, figures: { ...r.figures, rate: { ...figure, unit: "pct_per_year_effective" } } } : r)) as typeof rules;
     expect(ruleBook(context(effective)).rate("TXS-09", "rate")).toBe(ruleBook(context(rules)).rate("TXS-09", "rate"));
   });
