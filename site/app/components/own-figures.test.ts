@@ -5,7 +5,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { formulaNames } from "../copy";
 import { computed, type SiteValue } from "../lib/value";
-import { Num, ProvenanceProvider } from "./provenance";
+import { Num, OwnCompanyPage, ProvenanceProvider } from "./provenance";
 import { ValueSheet } from "./provenance-sheets";
 import { FeeFigure } from "./kit";
 
@@ -69,5 +69,27 @@ describe("a fund's fee in a list of funds", () => {
     const html = inProvider(createElement(FeeFigure, { value: fee({ own: "הראל" }) }));
     expect(html).toContain("0.24");
     expect(caution(html)).toBe(0);
+  });
+});
+
+describe("a figure on a page about one company", () => {
+  // the page's company and where its own documents live, as PageShell fills them
+  const page = { ...data, pageCompanies: ["harel"], companies: { harel: { name: "הראל", href: "/companies/harel", hasPage: true, docs: { own_hosts: ["harel-group.co.il"] } } } };
+  const onPage = (v: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(OwnCompanyPage, null, createElement(ProvenanceProvider, { data: page } as never, createElement(Num, { value: v })))));
+  it("is the company's own where its source is the company's document: no caution", () => {
+    expect(caution(onPage(fee({ source: { url: "https://www.harel-group.co.il/fees.pdf", title: "דוח", publisher: "הראל", strength: "institution" } })))).toBe(0);
+  });
+  it("keeps its caution where its source is another company's document", () => {
+    expect(caution(onPage(fee({ source: { url: "https://example.org/other.pdf", title: "דוח", publisher: "אחרת", strength: "institution" } })))).toBeGreaterThan(0);
+  });
+  // a figure worked out from company figures, at figure size where a computed figure shows the caution of a company source it rests on
+  const big = (v: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(OwnCompanyPage, null, createElement(ProvenanceProvider, { data: page } as never, createElement(Num, { value: v, size: "figure" })))));
+  const harel = fee({ source: { url: "https://www.harel-group.co.il/fees.pdf", title: "דוח", publisher: "הראל", strength: "institution" } });
+  const other = fee({ source: { url: "https://example.org/other.pdf", title: "דוח", publisher: "אחרת", strength: "institution" } });
+  it("worked out from the company's own documents only, is its own: no caution", () => {
+    expect(caution(big(computed(0.48, "pct_per_year", "F-111", { a: harel, b: harel }, { today: "2026-10-26" })))).toBe(0);
+  });
+  it("worked out from another company's document too, keeps its caution", () => {
+    expect(caution(big(computed(0.48, "pct_per_year", "F-111", { a: harel, b: other }, { today: "2026-10-26" })))).toBeGreaterThan(0);
   });
 });
