@@ -445,6 +445,15 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Dimensions: `protection`, `regulator`
 - Likely to change: no sign of it.
 
+### PF-47 A withdrawal from any provident fund is paid within 4 business days of the request (rule 41יא)
+- Rule: A member who asks for all or part of the money "יקבל את הכספים כאמור בתוך 4 ימי עסקים מהיום שהגיעה בקשתו לקופה"; if that date falls in one of the first three business days of a month, the fund may defer payment to the fourth business day of that month (Income Tax Rules (Approval and Management of Provident Funds), 1964, reg. 41יא(א)). This binds pension funds and provident funds alike.
+- Conditions / exceptions: Split from PEN-33 on 2026-11-26. The CMA standard pension bylaw repeats the payment time for a comprehensive pension fund (s.108(ז)); its other service times are PEN-33. *2026-10-25 scope pass:* the payout timetable is the regulation's; the Mor pension and gemel bylaws are no longer cited.
+- Figures: 4 business days to pay a withdrawal, with the deferral to the 4th business day (fixed in regulation).
+- Source: [תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות](https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=19), file p.19 (gazette p.873), reg. 44 (substituting reg. 41יא; payment within 5 business days, monthly instalments on a fixed day) "ביקש העמית לקבל את הכספים בתשלומים חודשיים רצופים"; [תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס"ה-2005, קובץ התקנות 6380 (10.4.2005), סריקת רשומות](https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6380%2Fheb#page=3), file p.3 (gazette p.603), reg. 9 (amending reg. 41יא: '5 ימי עסקים' becomes '4 ימי עסקים', and the deferral to the fourth business day) "רשאית הקופה לדחות את מועד התשלום ליום העסקים הרביעי באותו חודש" · checked 2026-11-07 · primary
+- Scope: general
+- Dimensions: `liquidity-lockup`
+- Likely to change: no
+
 ### PF-41 Each pension fund's average management fees in 2025, as the CMA report prints them (Menora Mivtachim, Harel, Clal, Migdal, Altshuler Shaham, The Phoenix, Meitav, Mor, Infinity)
 - Rule: Table ד-9 of the Commissioner's 2025 report gives each new comprehensive pension fund's 2025 average management fees, for all members and for the employees of its five largest employers (balance / deposits, all members): Menora Mivtachim 0.15% / 1.73%, Harel 0.16% / 1.47%, Clal 0.14% / 1.52%, Migdal (Migdal Makefet) 0.14% / 1.56%, Altshuler Shaham 0.15% / 1.24%, The Phoenix 0.14% / 1.53%, Meitav 0.11% / 1.25%, Mor 0.19% / 1.05%, Infinity 0.18% / 1.00%.
 - Conditions / exceptions: Split from PF-39 on 2026-10-26 (scope settling). Each figure is that company's own average actually charged, printed by the regulator from the companies' reports; it describes that fund only, not pension funds in general (the class average is PF-39). These are statistics rather than a rule; their natural home is a dated series per fund in data/ (request to the lead). Averages actually charged, not prices (D4).
