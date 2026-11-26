@@ -50,12 +50,17 @@ export interface DbOffer {
   limited: boolean;
   /** Its kinds (`variant`) as label chips, the bank's own table under each meaning. */
   labels: Label[];
+  /** The rate; it carries the record's doubt when the doubt is about the rate (no `doubt_on`). */
   rate_offered: SiteValue;
   /** A variable rate's anchor and spread, as the table prints them. */
   anchor: string | null;
   spread: SiteValue | null;
-  /** The amounts the bank takes, with how the amount at each bound stands where the table says it is out or does not say (F-108). */
+  /** The amounts the bank takes, with how the amount at each bound stands where the table says it is out or does not say (F-108); its top (else its bottom) carries a doubt about the amounts. */
   amount_range: { min: SiteValue; max: SiteValue | null; min_edge?: "excluded" | "unknown"; max_edge?: "excluded" | "unknown" };
+  /** The record's doubt where it is about a field that is no figure here: the term, the linkage, the exit points or the break (`doubt_on`). */
+  doubt?: { on: "term_months" | "linkage" | "exits" | "break"; text: string };
+  /** The conditions the bank prints, in plain Hebrew (`conditions_he`); absent where it prints none. */
+  conditions?: string;
   breakTerm: BreakTerm;
   exits: ExitPoints;
   /** F-21 (BANK-50): the term's days as the table prints them, how the product calculates interest (its printed effective rate, as a

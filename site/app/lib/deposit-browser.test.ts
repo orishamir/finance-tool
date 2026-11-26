@@ -1,8 +1,10 @@
 // The deposits page's list (D92): offers a bank prints under one name stand as one row, linked offers never rank among unlinked ones, and
 // a chip counts the offers the chosen amount opens, as the count line does.
 import { describe, expect, it } from "vitest";
-import { buildDepositBrowser } from "./deposit-browser.server";
-import { TERMS, accessOf, interestOn, interestUnknown, isLinked, offersOf, periodBest, readSpan, rowSplit, rowsOf, sortRows, type DbData, type DbOffer, type DbRow } from "./deposit-browser";
+import { depositBrowser as copyDeposits } from "../copy";
+import { buildDepositBrowser, offerOf } from "./deposit-browser.server";
+import { loadDepositTerms } from "./instruments.server";
+import { TERMS, type BarGap, accessOf, interestOn, interestUnknown, isLinked, offersOf, periodBest, readSpan, rowSplit, rowsOf, sortRows, type DbData, type DbOffer, type DbRow } from "./deposit-browser";
 import { depositName, shownName } from "./deposit-kind";
 import { entered } from "./value";
 import type { SiteValue } from "./value";
@@ -158,5 +160,67 @@ describe("the days a list's rates were read (readSpan)", () => {
     expect(readSpan([row("2026-11-09", "2026-10-23"), row("2026-11-14")])).toEqual({ from: "2026-10-23", to: "2026-11-14" });
     expect(readSpan([row("2026-11-09")])).toEqual({ from: "2026-11-09", to: "2026-11-09" });
     expect(readSpan([])).toBeNull();
+  });
+});
+
+describe("a record's doubt and notes on the deposits page", () => {
+  const records = loadDepositTerms();
+  const record = (id: string) => {
+    const d = records.find((r) => r.id === id);
+    if (!d) throw new Error(`no deposit record ${id}`);
+    return d;
+  };
+  const offerOfRecord = (d: ReturnType<typeof record>) => {
+    const o = offerOf(d, "2026-11-27", new Set());
+    if (!o) throw new Error(`${d.id} is not on the deposits page`);
+    return o;
+  };
+
+  it("puts a doubt about the rate on the rate, and one about another field beside that field, never on the rate", () => {
+    const litchi = offerOfRecord(record("mizrahi-tefahot-litchi-kvua-shana-189"));
+    expect(litchi.rate_offered.doubt).toBe(record("mizrahi-tefahot-litchi-kvua-shana-189").doubt_he);
+    expect(litchi.doubt).toBeUndefined();
+    const exits = offerOfRecord(record("fibi-pikadon-leshana-kavua-901-from-10000"));
+    expect(exits.rate_offered.doubt).toBeUndefined();
+    expect(exits.doubt).toEqual({ on: "exits", text: record("fibi-pikadon-leshana-kavua-901-from-10000").doubt_he });
+    const linkage = offerOfRecord(record("jerusalem-pikadon-leshana-madad"));
+    expect(linkage.rate_offered.doubt).toBeUndefined();
+    expect(linkage.doubt?.on).toBe("linkage");
+  });
+
+  it("puts a doubt about the amounts on the top of the range", () => {
+    const d = { ...record("discount-pikadon-leshana-0122"), doubt_he: "הטבלה מציינת סכום אחר בתנאי התוכנית.", doubt_on: "amount_range" as const };
+    const o = offerOfRecord(d);
+    expect(o.amount_range.max?.doubt ?? o.amount_range.min.doubt).toBe(d.doubt_he);
+    expect(o.rate_offered.doubt).toBeUndefined();
+  });
+
+  it("drops a rate's note that says again what the doubt says, and keeps one that carries another limit", () => {
+    const litchi = record("mizrahi-tefahot-litchi-kvua-shana-189");
+    // Litchi's rate is its printed effective rate, whose Hebrew note gives the four rates its doubt speaks of
+    expect(litchi.rate_effective?.notes).toMatch(/ארבעה שיעורי ריבית/);
+    expect(offerOfRecord(litchi).rate_offered.notes).toBe("");
+    const limit = "השיעור שבטבלה הוא לתקופה הראשונה של הפיקדון.";
+    const other = { ...litchi, rate_effective: { ...litchi.rate_effective!, notes: limit } };
+    expect(offerOfRecord(other).rate_offered.notes).toBe(limit);
+  });
+
+  it("carries the bank's printed conditions", () => {
+    const withConditions = records.filter((r) => r.wrapper_id === "bank-deposit" && r.conditions_he);
+    expect(withConditions.length).toBeGreaterThan(0);
+    const offers = buildDepositBrowser().offers;
+    for (const r of withConditions) {
+      const o = offers.find((x) => x.id === r.id);
+      if (o) expect(o.conditions).toBe(r.conditions_he);
+    }
+  });
+});
+
+describe("a period's bar with no rate", () => {
+  it("says which of the four gaps it is, each in words of its own", () => {
+    const t = copyDeposits.chart.gap;
+    const words: Record<BarGap, string> = { otherKind: t.otherKind.fixed, unknownAtAmount: t.unknownAtAmount, notAtAmount: t.notAtAmount, none: t.none };
+    expect(new Set(Object.values(words)).size).toBe(4);
+    expect(new Set([t.otherKind.variable, t.unknownAtAmount, t.notAtAmount, t.none]).size).toBe(4);
   });
 });

@@ -1,30 +1,43 @@
 // The deposits page's list (D92): one table on a computer, one row per offer on a phone, on the kit's ProductTable. Five columns: the bank
 // and the deposit, the rate, the interest on the reader's amount over the term (F-21), the
 // amounts the bank takes, and how the money can come out before the end (exit points, a break, or neither). Offers a bank prints under one
-// name stand as one row, the others of the name as short lines under it ("אותו פיקדון, עם תחנות יציאה"). An offer only some customers may
-// open ranks among the rest with an amber tag; linked offers follow the rest under one line. The reader's bank is tinted. Every rate and
+// name stand as one row, the others of the name as short lines under it ("אותו פיקדון, עם תחנות יציאה"); the conditions the bank prints
+// fold under the row, as on its own page. An offer only some customers may open ranks among the rest with its tag; linked offers follow
+// the rest under one line. The reader's bank is tinted. Every rate and
 // amount goes through the provenance component, as the record's own figure; the interest as a computed one.
-import { Fragment, type ReactNode } from "react";
+import { Fragment, useId, useState, type ReactNode } from "react";
 import { companyPath } from "../../lib/site-paths";
 import { Link } from "react-router";
-import { depositBrowser as t } from "../../copy";
+import { companyPage, depositBrowser as t, r4catalogue } from "../../copy";
 import { HELP_TERMS, accessOf, ascending, interestOn, interestText, interestUnknown, isLinked, rowSplit, variantWords, type DbBank, type DbOffer, type DbRow, type RowSplit, type SortId, type SortState, type TermId } from "../../lib/deposit-browser";
 import { exitTiming } from "../../lib/deposit-kind";
 import { fmt } from "../../lib/format";
 import type { Label } from "../../lib/labels";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, Term } from "../provenance";
-import { AmountRange, AnchorSpread, HelpMark, LabelChip, MixedName, ProductPhoneRow, ProductTable, SortHead, Tag, cx, type ProductColumn, type ProductGroup, type ProductRow } from "../kit";
-import { IconChevronDown } from "../icons";
+import { AmountRange, AnchorSpread, HelpMark, LabelChip, MixedName, PrintedText, ProductPhoneRow, ProductTable, RowFoldButton, SortHead, Tag, cx, gershayim, type FoldMark, type ProductColumn, type ProductGroup, type ProductRow } from "../kit";
+import { IconChevronDown, IconFile } from "../icons";
 
 const muted = "text-sm text-muted-foreground";
 
-/** How the money can come out before the end: a teal chip for exit points, a neutral one for a break, muted words for neither. */
+/** The record's doubt about a field that is no figure here (`DbOffer.doubt`), as a caution mark beside that field that opens the doubt. */
+function DoubtMark({ o, on, about }: { o: DbOffer | undefined; on: readonly NonNullable<DbOffer["doubt"]>["on"][]; about: string }) {
+  return o?.doubt && on.includes(o.doubt.on) ? <HelpMark tone="caution" note about={about} text={o.doubt.text} /> : null;
+}
+
+/** How the money can come out before the end: a teal chip for exit points, a neutral one for a break, muted words for neither; a doubt about them beside. */
 function Access({ o, plain, only }: { o: DbOffer; /** The phone's words, without chips. */ plain?: boolean; /** On an offer's line under the first of its name: only what differs from it. */ only?: RowSplit }) {
   const all = accessOf(o).filter((a) => !only || (a.kind === "exits" ? only.exits : a.kind === "break" ? only.break : only.exits || only.break));
-  if (plain) return <span>{all.map((a) => a.words).join(" · ")}</span>;
+  const doubt = <DoubtMark o={o} on={["exits", "break"]} about={t.columns.access} />;
+  if (plain)
+    return (
+      <span className="inline-flex items-start gap-1">
+        <span>{all.map((a) => a.words).join(" · ")}</span>
+        {doubt}
+      </span>
+    );
   return (
-    <span className="flex flex-wrap gap-1.5">
+    <span className="flex flex-wrap items-center gap-1.5">
       {all.map((a) =>
         a.kind === "locked" ? (
           <span key={a.kind} className={muted}>
@@ -36,27 +49,61 @@ function Access({ o, plain, only }: { o: DbOffer; /** The phone's words, without
           </Tag>
         ),
       )}
+      {doubt}
     </span>
   );
 }
 
-/** An offer only some customers may open: its kind as an amber tag with a lock (the condition), apart from the kinds that only say how it works. */
-const conditionOf = (l: Label): Label => ({ ...l, tone: "caution", icon: "lock" });
+/**
+ * An offer only some customers may open: its kind as a tag apart from the kinds that only say how it works. Only joining the bank is a
+ * restriction its card states, amber with a lock; a closed-system deposit's card states how the money moves, and keeps its own look.
+ */
+const conditionOf = (l: Label): Label => (l.id === "deposit-new-customers" ? { ...l, tone: "caution", icon: "lock" } : l);
 
-/** What the row carries under its name: a condition, a linkage. */
+/** What the row carries under its name: a condition, a linkage, and a doubt about the linkage or the term beside them. */
 function Tags({ row }: { row: DbRow }) {
   const first = row.offers[0]!;
   const conditions = first.limited ? row.labels.filter((l) => l.id === "deposit-new-customers" || l.id === "deposit-closed-system") : [];
   const linked = isLinked(first);
-  if (conditions.length === 0 && !linked) return null;
+  const doubted = (on: NonNullable<DbOffer["doubt"]>["on"]) => row.offers.find((o) => o.doubt?.on === on);
+  const termDoubt = doubted("term_months");
+  if (conditions.length === 0 && !linked && !termDoubt) return null;
   return (
-    <span className="flex flex-wrap gap-1.5 pt-1">
+    <span className="flex flex-wrap items-center gap-1.5 pt-1">
       {conditions.map((l) => (
         <LabelChip key={l.id} label={conditionOf(l)} />
       ))}
-      {linked && <Tag tone="outline">{t.linked[first.linkage as "cpi" | "fx"]}</Tag>}
+      {linked && (
+        <span className="inline-flex items-center gap-1">
+          <Tag tone="outline">{t.linked[first.linkage as "cpi" | "fx"]}</Tag>
+          <DoubtMark o={doubted("linkage")} on={["linkage"]} about={t.linked[first.linkage as "cpi" | "fx"]} />
+        </span>
+      )}
+      <DoubtMark o={termDoubt} on={["term_months"]} about={t.terms[row.term]} />
     </span>
   );
+}
+
+/**
+ * The bank's printed conditions of a row's offers, each once, folded under the row with the bank page's words and mark ("בתנאי הבנק:",
+ * "יש הערה של הבנק"), so the two pages draw one record alike. Null when the bank prints none.
+ */
+function rowConditions(row: DbRow): { body: ReactNode; marks: FoldMark[]; label: string } | null {
+  const all = [...new Set(row.offers.map((o) => o.conditions).filter((c): c is string => !!c))];
+  if (all.length === 0) return null;
+  return {
+    body: (
+      <span className="flex flex-col items-start gap-1.5 text-sm max-w-measure">
+        {all.map((c) => (
+          <span key={c}>
+            <span className="text-muted-foreground">{r4catalogue.conditionsLead}</span> <PrintedText text={c} />
+          </span>
+        ))}
+      </span>
+    ),
+    marks: [{ key: "note", icon: <IconFile size={16} />, label: companyPage.deposits.marks.note }],
+    label: companyPage.deposits.detail(gershayim(row.name)),
+  };
 }
 
 /** The kinds that say how the deposit works ("מבצע", "ריבית במהלך התקופה"), as words after its name; each opens its meaning. */
@@ -141,8 +188,10 @@ function tableRow({ row, top }: ListRow, ctx: ListContext): ProductRow {
     <Access o={o} only={rowSplit(row)} />,
   ];
   const ids = ctx.amount ? ["name", "rate", "interest", "amount", "access"] : ["name", "rate", "amount", "access"];
+  const detail = rowConditions(row);
   return {
     key: row.key,
+    ...(detail ? { detail } : {}),
     rowOf: row.bank,
     lit: ctx.lit === row.bank,
     phone: <PhoneRow row={row} top={top} ctx={ctx} />,
@@ -154,12 +203,16 @@ function tableRow({ row, top }: ListRow, ctx: ListContext): ProductRow {
 function PhoneRow({ row, top, ctx }: { row: DbRow; top: boolean; ctx: ListContext }) {
   const bank = ctx.banks.find((b) => b.id === row.bank);
   const first = row.offers[0]!;
+  const detail = rowConditions(row);
+  const [open, setOpen] = useState(false);
+  const id = useId();
   return (
     <ProductPhoneRow stacked rowOf={row.bank} lit={ctx.lit === row.bank} roomy>
       <span className="flex items-start justify-between gap-3">
         <span className="flex flex-col items-start gap-0.5 min-w-0">
           <BankName bank={bank} />
           <OfferName row={row} />
+          {detail && <RowFoldButton open={open} onToggle={() => setOpen(!open)} marks={detail.marks} label={detail.label} controls={id} className="-ms-2" />}
         </span>
         {/* the rate over the interest, 12 px apart: each figure's 44 px area stays clear of the other's own box */}
         <span className="flex flex-col items-end shrink-0 gap-3">
@@ -190,6 +243,11 @@ function PhoneRow({ row, top, ctx }: { row: DbRow; top: boolean; ctx: ListContex
           <Num value={o.rate_offered} className="font-semibold shrink-0" />
         </span>
       ))}
+      {detail && open && (
+        <div id={id} className="pt-1">
+          {detail.body}
+        </div>
+      )}
     </ProductPhoneRow>
   );
 }
