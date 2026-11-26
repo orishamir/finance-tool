@@ -877,6 +877,7 @@ export const formulaNames: Record<string, string> = {
   "F-106": "סך ההפקדות במחירים של היום",
   "F-107": "מס אמריקני על דיבידנדים בתוך קרן אירית",
   "F-109": "קנייה ביחידות שלמות, והכסף שמחכה ליחידה",
+  "F-133": "קנייה כל כמה חודשים, והכסף שמחכה לקנייה",
   "F-110": "התקופות של העסקה: מתי כל עמלה משתנה",
   "F-111": "על מה כל עמלה נגבית, ומה מצטבר יחד",
   "F-112": "הסכומים שהמחירים בעסקה מסמנים",
@@ -4001,6 +4002,8 @@ const fromPrefix = (name: string) => (/^[A-Za-z0-9]/.test(name.replace(/^[\u2066
 const gapUnit = (n: number, year?: number) => (n === 1 && year ? `ב־${year}` : "בשנה");
 /** "בשנה אחת", "בשנתיים", "ב־10 שנים". */
 const inYears = (n: number) => countPhrase(n, { one: "בשנה אחת", two: "בשנתיים", many: "ב־{n} שנים" });
+/** F-133's interval in words: "כל חודשיים", "כל 4 חודשים", "כל 12 חודשים". */
+const everyMonths = (n: number) => countPhrase(n, { one: "כל חודש", two: "כל חודשיים", many: "כל {n} חודשים" });
 
 /**
  * The pair the receipt shows, named by whether the person picked it. Picked, it is the chosen pair. Before any pick it is the page's own:
@@ -4682,6 +4685,15 @@ export const invest = {
     waiting: "כסף שחיכה ליחידה שלמה",
     waitingAbout: "ההפרש בין הכסף שחיכה ליחידה שלמה לבין מה שהיה נעשה ממנו בקרן, עד המכירה, בהתחשב באינפלציה",
     waitingWhy: { rose: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא עלה עם הקרן.", fell: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא ירד עם הקרן." },
+    /** F-133, F-91: the same line where the figure is priced buying every few months: the deposits waited for the next purchase */
+    waitingBatched: "כסף שחיכה לקנייה",
+    waitingBatchedAbout: "ההפרש בין הכסף שחיכה לקנייה הבאה לבין מה שהיה נעשה ממנו בקרן, עד המכירה, בהתחשב באינפלציה",
+    waitingBatchedWhy: (months: number) => ({
+      rose: `החישוב קונה ${everyMonths(months)}, כי כך נשאר יותר. הכסף שחיכה בין הקניות לא עלה עם הקרן.`,
+      fell: `החישוב קונה ${everyMonths(months)}, כי כך נשאר יותר. הכסף שחיכה בין הקניות לא ירד עם הקרן.`,
+    }),
+    /** F-133: beside a figure priced buying every few months, the interval that leaves the most (the fund's row at a house, the receipt) */
+    orderEvery: (months: number) => `בקנייה ${everyMonths(months)}`,
     /** F-109: a fund bought in whole units whose unit price the site did not collect is priced by amount, and its row says so */
     unitPriceMissing: "מחיר יחידה של הקרן לא נאסף, אז החישוב קונה בכל סכום, גם חלק מיחידה.",
     /** The same, on a fund the person typed: they left its unit price empty (F-109). */
@@ -4939,7 +4951,7 @@ export const invest = {
     noOtherFund: "אין קרן אחרת מהסוג הזה.",
     /** `notSplit`: a step whose cost could not be split by who takes it says so, in place of a figure (no 0 that reads as a cost of nothing). */
     // the account's fees, and apart from them what the cash waiting for a whole unit did (F-91, F-109), as the receipt writes them
-    table: { step: "הצעד", fund: "הקרן", account: "החשבון", accountCost: "עמלות החשבון", waiting: "כסף שחיכה ליחידה שלמה", fundCost: "עלות הקרן", tax: "מס", left: "נשאר בסוף", notSplit: "לא חושב" },
+    table: { step: "הצעד", fund: "הקרן", account: "החשבון", accountCost: "עמלות החשבון", waiting: "כסף שחיכה ליחידה שלמה", waitingBatched: "כסף שחיכה לקנייה", fundCost: "עלות הקרן", tax: "מס", left: "נשאר בסוף", notSplit: "לא חושב" },
     stepStart: "נקודת ההתחלה:",
     here: "עכשיו:",
     hereExample: "נקודת התחלה לדוגמה:",

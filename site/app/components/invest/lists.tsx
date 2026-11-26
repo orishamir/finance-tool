@@ -313,8 +313,9 @@ export function PairLists(props: ListsProps) {
   const starts = groupStarts(pricedFunds);
   const headingOf = (id: string) => (starts.has(id) ? hedgedHeading : null);
   // a fund the person typed: its name in the entered ink and, beside it, the pencil that opens its panel, as a deal's row in the account list
-  const fundName = (f: FundWay, selected: boolean) => {
-    const sub = [apart(f), tiedHere(f.rec.id) ? c.pair.tiedWord : null].filter(Boolean).join(" · ");
+  // at the chosen account, a figure priced buying every few months says so (F-133)
+  const fundName = (f: FundWay, selected: boolean, at?: WayPrice) => {
+    const sub = [apart(f), tiedHere(f.rec.id) ? c.pair.tiedWord : null, at && at.orderEvery > 1 ? c.pair.orderEvery(at.orderEvery) : null].filter(Boolean).join(" · ");
     const typed = isCustomFund(f.rec);
     const name = (
       <span className={cx("min-w-0 text-sm [overflow-wrap:anywhere]", selected ? "font-semibold" : "font-medium", typed && "text-entered")}>
@@ -383,7 +384,7 @@ export function PairLists(props: ListsProps) {
       cells: (
         <>
           {ruler && (spots[f.rec.id] !== undefined ? <span data-spot-dot="" aria-hidden="true" className={cx("size-[7px] rounded-full ring-[1.5px] ring-inset", dotTone[tones[f.rec.id] ?? "fund"].ring, selected && dotTone[tones[f.rec.id] ?? "fund"].fill)} /> : <span aria-hidden="true" className="size-[7px]" />)}
-          {fundName(f, selected)}
+          {fundName(f, selected, at)}
           {figure}
           {!ruler && <StretchBar scale={scale} best={pickStretch?.best ?? null} worst={pickStretch?.worst ?? null} {...(spots[f.rec.id] !== undefined ? { spot: spots[f.rec.id] } : {})} spotTone={tones[f.rec.id] ?? "fund"} className="h-8" />}
           {selected && movedHere("house")}

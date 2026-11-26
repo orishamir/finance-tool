@@ -12,7 +12,7 @@ import type { Commission, ConversionPrice, Custody, SizeStep } from "../formulas
 import { perUnitOf } from "../formulas/deal.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, type BuyWay, type Fund, type SaleConversionPrice, type SecuritiesInput, type WholeUnits } from "../ledgers/securities.ts";
+import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, cashWaits, orderEveryOf, ORDER_INTERVALS, type BuyWay, type OrderInterval, type Fund, type SaleConversionPrice, type SecuritiesInput, type WholeUnits } from "../ledgers/securities.ts";
 import type { DealAccount } from "../ledgers/deal-account.ts";
 import { stoppedOnRule } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
@@ -142,7 +142,11 @@ export interface WorkbenchInput {
   profile: Profile;
   broker?: SecuritiesInput["broker"];
   /** A-28: trades a month, as the person says they trade. FX is a percentage of each conversion, so the number of conversions does not change its cost; custody follows the tariff's own period. */
-  behaviour?: { ordersPerMonth?: number };
+  behaviour?: {
+    ordersPerMonth?: number;
+    /** F-133: the interval the person places the plan's orders at. Absent, each of `ORDER_INTERVALS` is tried and the row takes the one that leaves the most. */
+    orderEvery?: OrderInterval;
+  };
   /** The snapshot's instrument class the fund is (`applies_to` of a line), for example `etf_units`. */
   instrumentClass: string;
   /** The wrapper whose lines apply, default `brokerage-account`. */
@@ -237,6 +241,8 @@ export interface ComparedProvider extends ProviderBase {
   /** D7: list and average are sourced; entered is the person's. */
   feeState: "sourced" | "entered";
   tariff: SecuritiesInput["tariff"];
+  /** F-109, F-133: the way the row is priced on, the one that leaves the most at the horizon, with its order interval. */
+  way: BuyWay & { orderEvery: NonNullable<BuyWay["orderEvery"]> };
   linesUsed: string[];
   /** Level and source of the rate each line used (additive). */
   lineSources: TariffBuild["lineSources"];
@@ -883,6 +889,26 @@ export function unitWaysAt(input: Pick<WorkbenchInput, "listing" | "instrumentCl
   return [ownWay, { units: { price } }];
 }
 
+/**
+ * F-133 The order interval: the ways a row tries, each of a house's ways (F-109) at each order interval, monthly first and, at one interval, in the house's own
+ * order, so a tie keeps the smaller interval and then the house's own way. Above monthly no order is a recurring plan's, so a way that buys
+ * the monthly purchases by amount on one buys every order in whole units, as the house's other way already does, and is not tried twice.
+ * A plan with no monthly deposit places no order the interval moves, and A-28's several orders a month is a plan that orders every month:
+ * both try monthly alone. An interval the person gives (`behaviour.orderEvery`) is the only one tried.
+ */
+export function intervalWays(ways: readonly BuyWay[], plan: { monthly: number; behaviour?: WorkbenchInput["behaviour"] }): BuyWay[] {
+  const given = plan.behaviour?.orderEvery;
+  const batches = plan.monthly > 0 && (plan.behaviour?.ordersPerMonth ?? 1) === 1;
+  const intervals = given !== undefined ? [given] : batches ? ORDER_INTERVALS : [1];
+  return intervals.flatMap((k) => (k === 1 ? [...ways] : ways.filter((w) => !w.units?.monthlyByAmount).map((w) => ({ ...w, orderEvery: k }))));
+}
+
+/**
+ * F-109, F-133: whether a way leaves more than the one before it, by more than the rounding of a double (a part in a billion): two ways that
+ * leave the same are a tie, which keeps the one tried first.
+ */
+const leavesMore = (a: number, b: number): boolean => a - b > 1e-9 * Math.abs(b);
+
 /** The fund as the run takes it: a share price printed in another currency than the instrument's carries the run's rate between them. */
 function fundForRun(input: Pick<WorkbenchInput, "fund" | "currency" | "fx">): Fund {
   const f = input.fund;
@@ -932,7 +958,8 @@ export function beforeTax(r: RunResult): number {
 
 /**
  * F-91, F-109 helper: what the cash waiting for a whole unit did against the fund, at the horizon in today's shekels (`waitingCarried / I_T`):
- * above zero where it missed a rise, below zero where it missed a fall; null for a run that is not in whole units.
+ * above zero where it missed a rise, below zero where it missed a fall; null for a run whose way leaves no cash waiting (`cashWaits`: by
+ * amount, every month). F-133: a run placed every few months counts the deposits waiting for their order here too.
  */
 export function waitingReal(r: Pick<RunResult, "waitingCarried" | "series" | "exitMonth" | "nominal" | "real">): number | null {
   return r.waitingCarried === undefined ? null : r.waitingCarried / indexAtExit(r as RunResult);
@@ -1094,7 +1121,7 @@ function planOf(input: WorkbenchInput, runFund: Fund) {
     if (input.broker) p.broker = input.broker;
     if (memberKind) p.memberKind = memberKind;
     if (input.behaviour?.ordersPerMonth !== undefined) p.ordersPerMonth = input.behaviour.ordersPerMonth;
-    if (way?.units) p.way = way;
+    if (way && cashWaits(way)) p.way = way;
     return p;
   };
 }
@@ -1140,11 +1167,13 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       continue;
     }
     const { base, level, built, memberKind, ways, deal } = ready;
-    let way = ways[0];
+    // F-109, F-133: the way and the order interval that leave the most at the horizon
+    const tried = intervalWays(ways, { monthly: input.goal.monthly, ...(input.behaviour ? { behaviour: input.behaviour } : {}) });
+    let way = tried[0]!;
     let run = runSecurities(plan(built.tariff, horizon, memberKind, way, deal), ctx);
-    for (const w of ways.slice(1)) {
+    for (const w of tried.slice(1)) {
       const other = runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx);
-      if (other.real > run.real) [way, run] = [w, other];
+      if (leavesMore(other.real, run.real)) [way, run] = [w, other];
     }
     const stopped = stoppedBeforeComparing([noneT, run]);
     if (stopped) {
@@ -1160,10 +1189,11 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       // F-63, F-91 in whole units (F-109): a run without one line places its orders in other months (the cash a fee no longer takes buys a unit
       // sooner, and each order pays its own minimum), so removing a line can leave less and the line would read below zero. A line is instead
       // what was paid on it, each payment carried to the horizon at the fund's total return from the month it was paid, in today's shekels;
-      // the same figure before and after tax, the tax and what whole units do left to the remainder, so the whole is unchanged.
+      // the same figure before and after tax, the tax and what whole units do left to the remainder, so the whole is unchanged. So is a run
+      // placed every few months (F-133): no line removed takes back what its waiting cash missed.
       // F-128: a deal account's lines are what each was paid, carried the same way: a run without a deal's line has no meaning apart from its
       // fees. Its lines are the ones its fees were charged on (`byFee` splits the same carry by the deal's own fees)
-      const carried = way?.units || deal ? run.feesCarried : undefined;
+      const carried = cashWaits(way) || deal ? run.feesCarried : undefined;
       if (carried) {
         if (deal) lines.push(...providerLines.filter((l) => carried[l] !== 0 && !lines.includes(l)));
         const index = run.series.find((pt) => pt.month === run.exitMonth)?.index ?? 1;
@@ -1193,6 +1223,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       feeState: level === "entered" ? "entered" : "sourced",
       ...(deal ? { account: deal, byFee: (run.feesCarriedBy ?? []).map((c, fee) => ({ fee, costBeforeTax: c / exitIndex })).filter((x) => x.costBeforeTax !== 0) } : {}),
       tariff: built.tariff,
+      way: { ...way, orderEvery: orderEveryOf(way) },
       linesUsed: built.linesUsed,
       lineSources: built.lineSources,
       noLine: built.noLine,

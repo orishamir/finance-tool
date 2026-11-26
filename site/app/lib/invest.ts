@@ -4,7 +4,7 @@
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { rankByValue } from "./rank";
 import { gershayim } from "./format";
-import { BlockedError, listingChangesRun, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, cashWaits, listingChangesRun, type OrderInterval, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
 import { exchangeOfTicker, fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomFund } from "./custom-entries";
@@ -243,10 +243,12 @@ export interface WayPrice {
   /** The house's standing-order lines for this purchase that the ranked price leaves out (`not_ranked`, D41, D56): shown beside the row. */
   aside: string[];
   /**
-   * F-109 (D94): the house buys the fund in whole units: the monthly purchases of the plan and how many of them bought no unit (their cash
-   * waited for a later month). Null where it buys by amount.
+   * F-109 (D94): the house buys the fund in whole units: the plan's purchase orders (every month, or every `orderEvery` months, F-133) and
+   * how many of them bought no unit (their cash waited for a later order). Null where it buys by amount.
    */
   units: { monthly: number; skipped: number } | null;
+  /** F-133: the months between the plan's purchase orders the figure is priced on, the interval that leaves the most; 1 is every month. */
+  orderEvery: OrderInterval;
   /** The person's age and income where the run's tax rested on them (`RunResult.profileUsed`): the plan's "?" by them says so. */
   profileUsed: ComparedProvider["run"]["profileUsed"];
 }
@@ -696,6 +698,9 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
   return priceRows(ctx, spec, option, snaps, fundVenue);
 }
 
+/** F-133: a row whose plan orders every month; one priced every few months places no standing order (D41's line is not its price). */
+const monthlyOrders = (row: ProviderRow): boolean => row.kind !== "compared" || row.way.orderEvery === 1;
+
 function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null): Map<string, Priced> {
   type Got = Priced;
   const baseOf = (s: FeesSnapshot) => (houseOfSnap(ctx, s) === s.id ? null : houseOfSnap(ctx, s));
@@ -735,7 +740,7 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
       const cand = at?.kind === "ok" ? at.cand : undefined;
       const mine = cand ? (results.get(s.id) ?? []).find((g) => sameCand(g.cand, cand)) : undefined;
       if (!at || at.kind === "fail") out.set(s.id, at ?? { kind: "fail", reason: { code: "data-missing", recorded: null }, listing });
-      else if (mine && mine.row.kind !== "not-comparable") out.set(s.id, { kind: "ok", row: mine.row, venue: at.venue, standing: at.standing, aside: [], cand: at.cand, listing: at.listing });
+      else if (mine && mine.row.kind !== "not-comparable") out.set(s.id, { kind: "ok", row: mine.row, venue: at.venue, standing: at.standing && monthlyOrders(mine.row), aside: [], cand: at.cand, listing: at.listing });
       else out.set(s.id, { kind: "fail", reason: mine?.row.kind === "not-comparable" ? reasonOf(mine.row, scoped(s)) : { code: "data-missing", recorded: null }, listing: at.listing });
       continue;
     }
@@ -760,7 +765,7 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
     const best = least ? ("reading" in least ? least.reading : null) : mostOf(priced);
     if (best) {
       const on = least && "reading" in least ? least.listing : undefined;
-      out.set(s.id, { kind: "ok", row: best.row, venue: best.venue ?? on ?? null, standing: best.row.linesUsed.some((id) => { const band = s.lines.find((l) => l.id === id)?.band; return band === STANDING_ORDER_BAND || band === STANDING_CONVERSION_BAND; }), aside: best.row.standingAside, cand: best.cand, listing: listing ?? on ?? best.cand.listing });
+      out.set(s.id, { kind: "ok", row: best.row, venue: best.venue ?? on ?? null, standing: monthlyOrders(best.row) && best.row.linesUsed.some((id) => { const band = s.lines.find((l) => l.id === id)?.band; return band === STANDING_ORDER_BAND || band === STANDING_CONVERSION_BAND; }), aside: best.row.standingAside, cand: best.cand, listing: listing ?? on ?? best.cand.listing });
       continue;
     }
     // where a fund of no known exchange is priced on one exchange and not the other, the reasons are those of the exchange with no price
@@ -1111,8 +1116,8 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
   const row = p.row;
   const reads: RunReads & { spec: Spec } = { house: providerId, fund: fundId, spec, row, profileUsed: row.run.profileUsed };
   const value = valueFigure(ctx, row, reads, about);
-  // F-91, F-109: the account's part less what the cash waiting for a whole unit did, so the figure is its fees, as on the receipt
-  const fees = row.horizonCostBeforeTax - (unitsOf(row.run) ? (waitingReal(row.run) ?? 0) : 0);
+  // F-91, F-109, F-133: the account's part less what the cash waiting for a whole unit or an order did, so the figure is its fees, as on the receipt
+  const fees = row.horizonCostBeforeTax - waitingOf(row);
   return {
     providerId,
     value,
@@ -1124,9 +1129,13 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     standing: p.standing,
     aside: p.aside,
     units: unitsOf(row.run),
+    orderEvery: row.way.orderEvery,
     profileUsed: row.run.profileUsed,
   };
 }
+
+/** F-91 on F-109 and F-133: what the cash a row's way leaves waiting did against the fund (`waitingReal`); 0 for a way that leaves none. */
+const waitingOf = (row: ComparedProvider): number => (cashWaits(row.way) ? (waitingReal(row.run) ?? 0) : 0);
 
 /** The record's lines a run priced at the list's own level, and the current account it counted (`PairCosts.priced`). */
 function pricedLines(ctx: Ctx, s: FeesSnapshot, row: ComparedProvider): PairCosts["priced"] {
@@ -1419,13 +1428,14 @@ export interface PairCosts {
   interaction: number;
   /** `interaction` as a figure (F-91), so the account's fees add up figures that each open (`accountSum`). */
   remainder: SiteValue;
-  /** The account's whole part before the tax it saves (F-91): its fees (`accountFees`) and, in whole units, the waiting cash (`waitingN`). */
+  /** The account's whole part before the tax it saves (F-91): its fees (`accountFees`) and, in whole units or every few months, the waiting cash (`waitingN`). */
   accountCost: number;
   /** What the account's fees took before the tax they save (F-91): its lines and `interaction` together, without the waiting cash. */
   accountFees: number;
   /**
-   * F-109, F-91: in whole units, what the cash waiting for a unit did against the fund, before tax, in today's shekels: above zero where it
-   * missed a rise, below zero where it missed a fall (a gain). Not a fee: the receipt writes it on its own line. 0 and null by amount.
+   * F-109, F-133, F-91: in whole units, or placed every few months, what the cash waiting for a unit or an order did against the fund, before
+   * tax, in today's shekels: above zero where it missed a rise, below zero where it missed a fall (a gain). Not a fee: the receipt writes it on
+   * its own line. 0 and null by amount every month.
    */
   waitingN: number;
   waiting: SiteValue | null;
@@ -1437,6 +1447,8 @@ export interface PairCosts {
   tax: SiteValue;
   /** F-109: the house buys the fund in whole units (`WayPrice.units`); what the waiting cash did is then `waiting`. */
   units: WayPrice["units"];
+  /** F-133: the months between the plan's purchase orders (`WayPrice.orderEvery`); above 1, the deposits between them wait and `waiting` holds what that did too. */
+  orderEvery: OrderInterval;
   /**
    * The price list as the run read it, so a fee's rate can be said as the list prints it (`lib/rate-words`): the record's lines the run
    * priced at the list's own level, the bank's current account where the run counts one, and the house's name for their source. `entered`:
@@ -1499,13 +1511,14 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   if (!r0 || !rX) return null;
   const noAccount = (r: ComparedProvider) => r.horizonCostBeforeTax + beforeTax(r.run);
   const base = noAccount(rX);
-  // F-109: in whole units, the waiting cash's part of the account's, its own line (F-91)
-  const waitingN = unitsOf(row.run) ? (waitingReal(row.run) ?? 0) : 0;
+  // F-109, F-133: in whole units or placed every few months, the waiting cash's part of the account's, its own line (F-91)
+  const waits = cashWaits(row.way);
+  const waitingN = waitingOf(row);
   const parts = costByWho({ base, left: row.real, account: row.horizonCostBeforeTax, fund: noAccount(r0) - noAccount(row), waiting: waitingN });
   // the whole run (the account and the fund); the fund's part is measured with no account, so it reads none of the account's prices
   const run = { house: s.id, fund: rec.id, spec: fs.spec, row, profileUsed: row.run.profileUsed };
   // what each figure reads of the run's tax (`RunReads.tax`): what is left and the tax read it all, a difference of `B` reads it on a fund
-  // that pays out, and a line carried in whole units or of a deal, and the waiting cash, read none
+  // that pays out, and a line carried in whole units, every few months or of a deal, and the waiting cash, read none
   const inputs = inputsOfRun(ctx, run);
   const taxedInputs = inputsOfRun(ctx, { ...run, tax: "after" });
   const bInputs = inputsOfRun(ctx, { ...run, tax: "before" });
@@ -1529,7 +1542,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     return feeNameOf(f.kind, f.name);
   };
   const dealLines = deal && ids ? [...byDealFee].map(([fee, n]) => ({ fee, name: feeWords(fee), cost: at(n, "F-91", copy.pair.lineAbout(feeWords(fee))) })) : undefined;
-  const lines = dealLines ? [] : row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!), unitsOf(row.run) ? inputs : bInputs) }));
+  const lines = dealLines ? [] : row.byType.map((x) => ({ line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!), waits ? inputs : bInputs) }));
   // what no single line explains, without the waiting cash: the account's fees less its lines, the deal's own where it is priced by a deal
   const interaction = parts.fees - (dealLines ? [...byDealFee.values()].reduce((t, n) => t + n, 0) : row.byType.reduce((t, x) => t + x.costBeforeTax, 0));
   return {
@@ -1549,7 +1562,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     accountCost: row.horizonCostBeforeTax,
     accountFees: parts.fees,
     waitingN,
-    waiting: unitsOf(row.run) ? at(waitingN, "F-109", copy.pair.waitingAbout) : null,
+    waiting: waits ? (row.way.orderEvery > 1 ? at(waitingN, "F-133", copy.pair.waitingBatchedAbout) : at(waitingN, "F-109", copy.pair.waitingAbout)) : null,
     distributes: !!distribution,
     fund: at(parts.fund, "F-91", copy.pair.fundAbout, inputsOfRun(ctx, { fund: rec.id, spec: fs.spec, tax: "before", profileUsed: row.run.profileUsed })),
     tax: computed(parts.state, "nis", "F-91", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), labels: labelsOf(row, fs.spec), about: distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout }),
@@ -1557,6 +1570,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     // X reads the plan and the rate alone: no fund cost, no distribution, no account (its run's rules are a tax's, which X is before)
     baseValue: computed(base, "nis", "F-91", inputsOfRun(ctx, { spec: fs.spec, costsOff: true }), { today: ctx.bundle.today, about: copy.pair.baseAbout }),
     units: unitsOf(row.run),
+    orderEvery: row.way.orderEvery,
     priced: pricedLines(ctx, s, row),
   };
 }

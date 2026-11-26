@@ -226,6 +226,8 @@ describe("a house that sells by amount can also buy whole units (F-109, D94)", (
     listing: "us",
     theta: 0.005,
     providers: [{ snapshot: snap, level: "list" }],
+    // the two ways at monthly orders; placed every few months, by amount can leave more (F-133, order-interval.test.ts)
+    behaviour: { orderEvery: 1 },
   });
   const compared = (wb: ReturnType<typeof providerWorkbench>) => {
     const r = wb.rows.find((x) => x.id === "altshuler-trade")!;
@@ -344,6 +346,8 @@ describe("the split of a whole-units run by fee line (F-63, F-91, F-109)", () =>
       channel: "direct",
       theta: 0.005,
       providers: [{ snapshot: fibi, level: "list" }],
+      // the remainder below is small where the cash waits only for a unit; placed every few months it waits longer (F-133, order-interval.test.ts)
+      behaviour: { orderEvery: 1 },
     });
     for (const [monthly, months] of [[200, 12], [200, 60], [1_000, 120]] as const) {
       const r = providerWorkbench(wb(monthly, months), ctx).rows[0]!;

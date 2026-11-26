@@ -641,7 +641,8 @@ describe("what each figure's sheet lists", () => {
     expect(inputs(pc.tax)[words.pair.accountMinimum]).toBeDefined();
     expect(inputs(pc.fund)[words.pair.fundInputs.fixed]).toBeDefined();
     expect(Object.keys(inputs(pc.baseValue)).sort()).toEqual(Object.values(words.planInputs).sort());
-    expect(accountSum(pc, "x", t).value).toBeCloseTo(pc.accountCost, 6);
+    // the account's fees, its lines and their remainder; with the cash that waited for a unit or an order beside them (F-109, F-133), its whole part
+    expect((accountSum(pc, "x", t).value as number) + pc.waitingN).toBeCloseTo(pc.accountCost, 6);
     expect(Object.keys(inputs(accountSum(pc, "x", t)))).toContain(words.pair.remainder);
   });
 

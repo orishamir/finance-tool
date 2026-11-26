@@ -79,18 +79,18 @@ const abroad = fundFromDraft({ ...said("abroad"), name: "קרן בחו״ל של�
 type Expected = { cheapIl: number; dearIl: number; cheapAbroad: number; ibiIl: number; zerosIl: number };
 /** Printed by the script, by the calendar month of month 1: the run starts in its run date's month (F-01). */
 const EXPECTED_BY_MONTH: Record<number, Expected> = {
-  1: { cheapIl: 153279.00, dearIl: 132143.22, cheapAbroad: 150677.85, ibiIl: 148189.56, zerosIl: 154017.67 },
-  2: { cheapIl: 153271.54, dearIl: 131977.52, cheapAbroad: 150670.25, ibiIl: 148161.80, zerosIl: 154017.67 },
-  3: { cheapIl: 153272.24, dearIl: 131993.03, cheapAbroad: 150670.96, ibiIl: 148164.33, zerosIl: 154017.67 },
-  4: { cheapIl: 153272.94, dearIl: 132008.46, cheapAbroad: 150671.68, ibiIl: 148166.85, zerosIl: 154017.67 },
-  5: { cheapIl: 153273.64, dearIl: 132023.79, cheapAbroad: 150672.38, ibiIl: 148169.37, zerosIl: 154017.67 },
-  6: { cheapIl: 153274.33, dearIl: 132039.03, cheapAbroad: 150673.09, ibiIl: 148171.90, zerosIl: 154017.67 },
-  7: { cheapIl: 153275.01, dearIl: 132054.18, cheapAbroad: 150673.78, ibiIl: 148174.42, zerosIl: 154017.67 },
-  8: { cheapIl: 153275.69, dearIl: 132069.25, cheapAbroad: 150674.47, ibiIl: 148176.94, zerosIl: 154017.67 },
-  9: { cheapIl: 153276.36, dearIl: 132084.22, cheapAbroad: 150675.16, ibiIl: 148179.47, zerosIl: 154017.67 },
-  10: { cheapIl: 153277.03, dearIl: 132099.10, cheapAbroad: 150675.84, ibiIl: 148181.99, zerosIl: 154017.67 },
-  11: { cheapIl: 153277.69, dearIl: 132113.89, cheapAbroad: 150676.51, ibiIl: 148184.52, zerosIl: 154017.67 },
-  12: { cheapIl: 153278.35, dearIl: 132128.60, cheapAbroad: 150677.18, ibiIl: 148187.04, zerosIl: 154017.67 },
+  1: { cheapIl: 153279.00, dearIl: 137761.99, cheapAbroad: 150677.85, ibiIl: 148600.70, zerosIl: 154017.67 },
+  2: { cheapIl: 153271.54, dearIl: 137591.97, cheapAbroad: 150670.25, ibiIl: 148572.94, zerosIl: 154017.67 },
+  3: { cheapIl: 153272.24, dearIl: 137607.82, cheapAbroad: 150670.96, ibiIl: 148575.46, zerosIl: 154017.67 },
+  4: { cheapIl: 153272.94, dearIl: 137623.61, cheapAbroad: 150671.68, ibiIl: 148577.99, zerosIl: 154017.67 },
+  5: { cheapIl: 153273.64, dearIl: 137639.33, cheapAbroad: 150672.38, ibiIl: 148580.51, zerosIl: 154017.67 },
+  6: { cheapIl: 153274.33, dearIl: 137655.00, cheapAbroad: 150673.09, ibiIl: 148583.03, zerosIl: 154017.67 },
+  7: { cheapIl: 153275.01, dearIl: 137670.60, cheapAbroad: 150673.78, ibiIl: 148585.56, zerosIl: 154017.67 },
+  8: { cheapIl: 153275.69, dearIl: 137686.15, cheapAbroad: 150674.47, ibiIl: 148588.08, zerosIl: 154017.67 },
+  9: { cheapIl: 153276.36, dearIl: 137701.43, cheapAbroad: 150675.16, ibiIl: 148590.60, zerosIl: 154017.67 },
+  10: { cheapIl: 153277.03, dearIl: 137716.66, cheapAbroad: 150675.84, ibiIl: 148593.13, zerosIl: 154017.67 },
+  11: { cheapIl: 153277.69, dearIl: 137731.83, cheapAbroad: 150676.51, ibiIl: 148595.65, zerosIl: 154017.67 },
+  12: { cheapIl: 153278.35, dearIl: 137746.94, cheapAbroad: 150677.18, ibiIl: 148598.17, zerosIl: 154017.67 },
 };
 const EXPECTED = EXPECTED_BY_MONTH[calendarMonthOf(t)]!;
 

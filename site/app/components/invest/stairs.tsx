@@ -31,8 +31,10 @@ interface Level {
   left: SiteValue;
   /** The account's fees (F-91), as the receipt writes them. */
   account: SiteValue;
-  /** In whole units, what the cash waiting for a unit did against the fund (F-109): not a fee, so apart from `account`; null where the house buys by amount, where it is 0. */
+  /** In whole units, or placed every few months, what the cash waiting for a unit or an order did against the fund (F-109, F-133): not a fee, so apart from `account`; null where the house buys by amount every month, where it is 0. */
   waiting: SiteValue | null;
+  /** F-133: the months between the plan's orders the stair's figure is priced on. */
+  orderEvery: number;
   /** The fund's and the state's parts (F-91); null where the way's cost could not be split by who takes it (`pairCosts` gave none): the cell says so, never a 0. */
   fund: SiteValue | null;
   tax: SiteValue | null;
@@ -97,6 +99,7 @@ export function useStairs({ view, bundle, plan, startHouse, startFund, example }
         left: p.value,
         account: { ...p.cost, about: `${t.table.accountCost}: ${fundName}, ${house(stair.pos.a).short}` },
         waiting: pc?.waiting ?? null,
+        orderEvery: p.orderEvery,
         fund: pc?.fund ?? null,
         tax: pc?.tax ?? null,
         whole: pc ? wholeOf(receiptAmounts(pc)) : null,
@@ -161,7 +164,9 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   // a stair's difference is the difference of what is left as the two levels write it, in whole shekels
   const shownDiff = (l: Level, prev: Level) => Math.round(l.left.value as number) - Math.round(prev.left.value as number);
   const diffOf = (l: Level, prev: Level) => delta(shownDiff(l, prev), l.left, `${t.about.left}: ${l.fundName}, ${l.house.short}`, prev.left, `${t.about.left}: ${prev.fundName}, ${prev.house.short}`, t.about.versus);
-  const partName = (k: Part) => [t.table.accountCost, t.table.waiting, t.table.fundCost, t.table.tax][k]!;
+  // the waiting cash's row says what it waited for: the next purchase where a stair is priced buying every few months (F-133), else a unit
+  const waitingHead = levels.some((l) => l.waiting !== null && l.orderEvery > 1) ? t.table.waitingBatched : t.table.waiting;
+  const partName = (k: Part) => [t.table.accountCost, waitingHead, t.table.fundCost, t.table.tax][k]!;
   const partOf = (l: Level, prev: Level, k: Part) => {
     const name = partName(k);
     // read only where both stairs have their split (`dParts`), so every part is a figure; a way by amount has no waiting cash, and its 0 is the only side
@@ -256,8 +261,8 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       )),
     },
     { id: "ac", head: t.table.accountCost, cells: visible.map((l, i) => <span key={i}>{costCell(l, i, 0)}</span>), className: "border-t border-border" },
-    // the waiting cash has a row only on stairs where some house buys in whole units (F-109)
-    ...(waits ? [{ id: "wt", head: t.table.waiting, cells: visible.map((l, i) => <span key={i}>{costCell(l, i, 1)}</span>) }] : []),
+    // the waiting cash has a row only on stairs where some house buys in whole units or every few months (F-109, F-133)
+    ...(waits ? [{ id: "wt", head: waitingHead, cells: visible.map((l, i) => <span key={i}>{costCell(l, i, 1)}</span>) }] : []),
     { id: "fc", head: t.table.fundCost, cells: visible.map((l, i) => <span key={i}>{costCell(l, i, 2)}</span>) },
     { id: "tx", head: t.table.tax, cells: visible.map((l, i) => <span key={i}>{costCell(l, i, 3)}</span>) },
     { id: "left", head: t.table.left, cells: visible.map((l, i) => <span key={i} className="block border-t border-border pt-1.5 text-base font-semibold"><Num value={l.left} /></span>) },

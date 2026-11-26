@@ -3,7 +3,8 @@
 
 A fund the person types, and a securities account typed by hand before a deal took its place, which moves into a deal of its own (the
 move of a typed account, method §10.4): the figures check that deal, priced as F-128 prices a deal, against what the typed account left.
-On a plain plan: one order a month, no spread, no tracking gap, no surtax. The tax rates and the
+On a plain plan: no spread, no tracking gap, no surtax. The plan's purchases are placed every k months (F-133: k of 1, 2, 3, 4, 6 and 12, the
+deposits between orders waiting in shekels, earning nothing), and each figure is the k that leaves the most, the smaller k on a tie. The tax rates and the
 collected tariff come from the data files, the terms from the test. A run on the site starts month 1 in its run date's month, so the
 exit's tax year, whose fees are deducted from the gain (F-09), holds the months since the last January: the figures are printed for each
 calendar month of month 1, and the test reads the one of its run date. Run it and copy nothing by hand:
@@ -38,9 +39,23 @@ def commission(amount, rate, minimum, maximum=None):
     return fee
 
 
-def run(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly_fee, fund_fee_pct, tax_rate, foreign, trade_max=None, first_month=1):
+INTERVALS = (1, 2, 3, 4, 6, 12)
+
+
+def run(*args, **kwargs):
+    """F-133: the run at each order interval, the one that leaves the most (the smaller interval on a tie)."""
+    best = None
+    for k in INTERVALS:
+        v = run_every(*args, every=k, **kwargs)
+        if best is None or v > best:
+            best = v
+    return best
+
+
+def run_every(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly_fee, fund_fee_pct, tax_rate, foreign, trade_max=None, first_month=1, every=1):
     """F-08 month by month, F-09 at exit. Custody was typed as a percent a year: a twelfth a month, with the monthly minimum (F-14), as the
-    moved deal's custody charges it each month."""
+    moved deal's custody charges it each month. The deposits wait in shekels for the plan's order, placed in each month `every` divides and
+    in the last (F-133); the plan's T is a whole number of years, so every interval orders in month T and nothing waits at the sale."""
     I = [(1 + INFLATION) ** (m / 12) for m in range(T + 1)]
     # F-03 and F-04: a foreign security is indexed on the exchange rate, flat here (A-03 = 0); an Israeli fund on the CPI
     J = [1.0] * (T + 1) if foreign else I
@@ -58,10 +73,14 @@ def run(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly_fee, 
         lots.append([trade / nav, trade, J[event]])
 
     exit_year_fees = 0.0
+    waiting = 0.0
     for m in range(1, T + 1):
         if m == 1:
             buy(AMOUNT, 0)
-        buy(MONTHLY * I[m], m)
+        waiting += MONTHLY * I[m]
+        if m % every == 0 or m == T:
+            buy(waiting, m)
+            waiting = 0.0
         nav *= 1 + g - delta / 12
         value = sum(lot[0] for lot in lots) * nav
         custody = 0.0

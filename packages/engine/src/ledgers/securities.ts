@@ -270,10 +270,29 @@ export interface WholeUnits {
   monthlyByAmount?: boolean;
 }
 
-/** How an account buys the fund: in whole units (`units`, F-109), or by amount where absent (F-08). */
+/** F-133: the order intervals a plan's purchases may be placed at, in months: every month, and every 2, 3, 4, 6 or 12 months. */
+export const ORDER_INTERVALS = [1, 2, 3, 4, 6, 12] as const;
+export type OrderInterval = (typeof ORDER_INTERVALS)[number];
+
+/**
+ * How an account buys the fund: in whole units (`units`, F-109), or by amount where absent (F-08); and how often the plan's purchases are
+ * placed (`orderEvery`, F-133), every month where absent.
+ */
 export interface BuyWay {
   units?: WholeUnits;
+  /**
+   * F-133: the plan's purchase orders are placed every this many months, in the months it divides and in the month of the last deposit;
+   * the deposits between them wait in shekels, unconverted and earning nothing. Above 1, an order is placed at the regular trade and
+   * conversion lines, never a standing order's or a recurring plan's. The amount now is bought at the start, as always.
+   */
+  orderEvery?: OrderInterval;
 }
+
+/** F-133: the months between a way's purchase orders. */
+export const orderEveryOf = (way: BuyWay | undefined): OrderInterval => way?.orderEvery ?? 1;
+
+/** F-109, F-133: whether a way leaves cash waiting between orders by design: in whole units, or placed less often than every month. */
+export const cashWaits = (way: BuyWay | undefined): boolean => !!way?.units || orderEveryOf(way) > 1;
 
 /** The run cannot be done for this input; the comparison shows "not evaluated" with the gap. */
 export class NotEvaluatedError extends Error {
@@ -534,10 +553,25 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   const first = ((goal.firstMonth ?? 1) - 1 + offset) % 12 + 1;
   const orders = input.ordersPerMonth ?? 1;
   if (!Number.isInteger(orders) || orders < 1) throw new RangeError(`ordersPerMonth ${orders} must be a whole number of 1 or more (A-28)`);
+  // F-133: the plan's purchases are placed every `every` months, and in the month of the last deposit
+  const every = orderEveryOf(input.way);
+  if (!(ORDER_INTERVALS as readonly number[]).includes(every)) throw new RangeError(`F-133: an order interval of ${every} months is not one of ${ORDER_INTERVALS.join(", ")}`);
+  if (every > 1 && orders > 1) throw new RangeError(`F-133: a plan placed every ${every} months places one order then, not ${orders} a month (A-28)`);
+  if (every > 1) formulas.push("F-133");
+  const placesOrder = (m: number) => m <= goal.months && (m % every === 0 || m === goal.months);
   if (!Number.isInteger(offset) || offset < 0) throw new RangeError(`gridOffset ${offset} must be a whole number of months, 0 or more`);
   const I = cpiPath(market.inflation, T);
   const X = fxPath(market.fxChange ?? 0, T);
   const C = contributions(goal, I);
+  // F-133: the deposits a plan's order in month m spends, each month's own where it orders every month; 0 in a month that places none
+  const planned: number[] = new Array<number>(T + 1).fill(0);
+  for (let m = 1, since = 0; m <= Math.min(goal.months, T); m++) {
+    since += C[m]!;
+    if (placesOrder(m)) {
+      planned[m] = since;
+      since = 0;
+    }
+  }
   // F-04, TXF OQ10: under the exchange-rate reading, a TASE foreign fund whose annex states no index, of a fund the site does not know, takes
   // its record's currency's path, the run's one (`taxIndexOf` reads a record in shekels on the CPI under both readings)
   const unstated = fund.kind === "tase-foreign-fund" && !stated;
@@ -622,9 +656,9 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // in it (the amount now and the month's deposits, a distribution reinvested, and the sale), and its trading, the trading the run reads for
   // it, else the cash the plan puts in it. An order is counted where it buys something; one that buys no unit is not placed (F-109)
   const ordersIn = (m: number) =>
-    (m === 1 && C[0]! > 0 ? 1 : 0) + (m <= goal.months && C[m]! > 0 ? orders : 0) + (fund.distribution && m % (12 / fund.distribution.perYear) === 0 ? 1 : 0) + (m === T ? 1 : 0);
+    (m === 1 && C[0]! > 0 ? 1 : 0) + (planned[m]! > 0 ? orders : 0) + (every === 1 && fund.distribution && m % (12 / fund.distribution.perYear) === 0 ? 1 : 0) + (m === T ? 1 : 0);
   const countIn = (m: number) => trace?.read?.[m]?.count ?? (trace?.read ? 0 : ordersIn(m));
-  const tradingIn = (m: number) => trace?.read?.[m]?.trading ?? (trace?.read ? 0 : (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0));
+  const tradingIn = (m: number) => trace?.read?.[m]?.trading ?? (trace?.read ? 0 : (m === 1 ? C[0]! : 0) + planned[m]!);
   const placedIn = (m: number, amount: number) => {
     if (!trace || !(amount > 0)) return;
     const at = trace.placed[m] ?? { count: 0, trading: 0 };
@@ -638,6 +672,8 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   const unitBuy = input.way?.units;
   if (unitBuy && !(unitBuy.price > 0)) throw new RangeError(`F-109: a unit's price of ${unitBuy.price} must be above 0`);
   if (unitBuy) formulas.push("F-109");
+  // F-91 on F-109 and F-133: the cash the way leaves waiting between orders is followed month by month (`waitingCarried`)
+  const waits = cashWaits(input.way);
   let waitingNis = 0;
   let waitingHeld = 0;
   const wait = { monthly: 0, placed: 0, skipped: 0 };
@@ -684,13 +720,15 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   };
 
   /**
-   * One order: FX fee on a contribution, then trade value and commission, bought at the ask. A monthly purchase (`standing`) is placed the
-   * standing-order way: the standing commission with the standing conversion, where the tariff prints them. Where the group or the person set the
-   * regular price of a side (`cheaperOfStandingTrade`, `cheaperOfStandingFx`), the person can place the order the regular way instead: the regular
-   * commission (a side with no flag keeps its standing commission, F-12) with the regular conversion. The order pays the cheaper whole order
-   * (F-101); a commission of one way never combines with the conversion of the other.
+   * One order: FX fee on a contribution, then trade value and commission, bought at the ask. A plan's purchase (`plan`) is counted for the
+   * row's line on whole units. A monthly one is placed the standing-order way: the standing commission with the standing conversion, where
+   * the tariff prints them. Where the group or the person set the regular price of a side (`cheaperOfStandingTrade`, `cheaperOfStandingFx`),
+   * the person can place the order the regular way instead: the regular commission (a side with no flag keeps its standing commission, F-12)
+   * with the regular conversion. The order pays the cheaper whole order (F-101); a commission of one way never combines with the conversion
+   * of the other. A batched one (F-133) is a regular order at the regular lines.
    */
-  const buy = (cash: number, month: number, eventMonth: number, convert: boolean, standing = false) => {
+  const buy = (cash: number, month: number, eventMonth: number, convert: boolean, plan: "monthly" | "batched" | null = null) => {
+    const standing = plan === "monthly";
     const at = tariffAt(month);
     const terms = { fxRate: fxRate(eventMonth) };
     const tradeTerms = { fxRate: terms.fxRate, sharePrice: sharePrice(month) };
@@ -706,7 +744,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
       placedIn(month, placed.trade);
       waitingNis = placed.leftNis;
       waitingHeld = placed.leftHeld / fxRate(eventMonth);
-      if (standing) {
+      if (plan) {
         wait.monthly++;
         if (placed.trade > 0) wait.placed++;
         else wait.skipped++;
@@ -729,7 +767,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     }
     waitingNis = chosen.leftNis;
     waitingHeld = chosen.leftHeld / fxRate(eventMonth);
-    if (standing) {
+    if (plan) {
       wait.monthly++;
       if (chosen.trade > 0) wait.placed++;
       else wait.skipped++;
@@ -839,14 +877,20 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
 
   for (let m = 1; m <= T; m++) {
     navAt[m] = nav;
-    // 1-2. Contributions at the start of the month, each its own order (A-28).
+    // 1-2. Contributions at the start of the month, each its own order (A-28); placed every `every` months, a deposit waits in shekels for
+    // its month's order (F-133)
     if (m === 1 && C[0]! > 0) buy(C[0]!, m, 0, true);
-    if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, true);
+    if (every === 1 && m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, "monthly");
+    if (every > 1 && m <= goal.months) {
+      waitingNis += C[m]!;
+      if (planned[m]! > 0) buy(0, m, m, true, "batched");
+    }
     tally.paidIn += (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
 
-    // F-109, F-91: the cash waiting for a unit this month, which the month's growth and its share of the holdings do not reach (`waitingCarried`)
-    const waitingNow = unitBuy ? waiting(m) : 0;
-    if (unitBuy) tally.waitFrom(waitingNow);
+    // F-109, F-133, F-91: the cash waiting for a unit or an order this month, which the month's growth and its share of the holdings do not
+    // reach (`waitingCarried`)
+    const waitingNow = waits ? waiting(m) : 0;
+    if (waits) tally.waitFrom(waitingNow);
     // 3. Growth less drag (F-10). The sum over the lots is kept while the lots stand: at 40 years it is 480 lots, several times a month, in every run.
     let units = lots.totalUnits();
     const before = units * nav;
@@ -874,7 +918,9 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
       tally.taxDuring += t.foreign + t.israeli;
       // the year's taxable distributions, for the surtax (TXG-09); a taxable fund's are exempt to the holder (TXS-11), so they are none
       if (fund.kind !== "money-market-taxable") distThisYear += dist;
-      buy(t.net, m, m, false);
+      // F-133: a plan placed every few months places no order for it: the net waits in the fund's currency and joins the next order
+      if (every === 1) buy(t.net, m, m, false);
+      else waitingHeld += t.net / fxRate(m);
       units = lots.totalUnits();
       // F-103: the custodian's charge for the dividend, paid by removing units oldest first; it is not a fee the sale gain is reduced by
       const asked = dc ? scaled(dc.event(m, units * nav), units * nav) : null;
@@ -935,7 +981,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     const custodyAtRate = custodyLine !== undefined && custody > 0 && Math.abs(custody - custodyLine.rate * (held - manager)) <= 1e-9 * Math.max(1, custody);
     const marginal = dealHeld ? dealHeld.atRate : custodyAtRate ? custodyLine.rate : 0;
     tally.grow(1 - marginal * (1 - wrapperFee / 12) - wrapperFee / 12);
-    if (unitBuy) tally.waitTo(waitingNow);
+    if (waits) tally.waitTo(waitingNow);
     const fromUnits = custody + custodySum + manager + fixed + account - fromCash;
     if (fromUnits > 0) {
       lots.removeFifo(fromUnits / nav);

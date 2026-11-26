@@ -167,7 +167,7 @@ function beforeTaxOf(pc: Costs, ch: ReceiptChain, today: string): SiteValue {
     [c.pair.paidIn]: at(pc.paidInNominal, r.paidIn),
     [c.receipt.added]: addedOf(pc, today),
     [c.receipt.parts.account]: nom(accountSum(pc, c.pair.who.account, today), c.receipt.parts.account, r.account),
-    ...(pc.waiting && r.waiting !== 0 ? { [c.pair.waiting]: nom(pc.waiting, c.pair.waiting, r.waiting) } : {}),
+    ...(pc.waiting && r.waiting !== 0 ? { [waitingName(pc)]: nom(pc.waiting, waitingName(pc), r.waiting) } : {}),
     [c.receipt.parts.fund]: nom(pc.fund, c.receipt.parts.fund, r.fund),
   };
   return computed(ch.beforeTax, "nis", "F-129", lines, { today, about: c.receipt.beforeTax.nominal, lead: c.receipt.beforeTax.lead });
@@ -183,6 +183,14 @@ export function inflationOf(pc: Costs, ch: ReceiptChain, taxName: string, today:
   const real = sumOf({ [c.receipt.left]: at(pc.left, ch.left), [taxName]: at(taxOf(pc), ch.tax) }, "F-130", { today, about: b.today });
   return differenceOf([b.nominal, beforeTaxOf(pc, ch, today)], [b.today, real], "F-130", { today, about: c.receipt.inflation, lead: c.receipt.inflationLead });
 }
+
+/** F-109, F-133: the waiting cash's line by what it waited for: a whole unit, or, priced buying every few months, the next purchase. */
+const waitingName = (pc: Costs): string => (pc.orderEvery > 1 ? c.pair.waitingBatched : c.pair.waiting);
+/** Why the waiting cash's line is there, by whether the fund rose while it waited (`rose`) or fell. */
+const waitingWhy = (pc: Costs, rose: boolean): string => {
+  const why = pc.orderEvery > 1 ? c.pair.waitingBatchedWhy(pc.orderEvery) : c.pair.waitingWhy;
+  return rose ? why.rose : why.fell;
+};
 
 /** The label families a fund's part shows after its kind, in this order; a family the fund has no label in shows nothing. */
 const FUND_FAMILIES = ["follow", "payout", "currency", "tax"] as const;
@@ -200,6 +208,8 @@ function AccountFacts({ view, bundle, plan, pick, refs }: { view: InvestView; bu
   const phone = phoneOf(view, bundle, pick);
   const labels = [
     priced(at) && at.standing && plan.monthly > 0 ? <Tag key="standing">{c.pair.standingTag}</Tag> : null,
+    // F-133: the figure is priced buying every few months, the interval that leaves the most
+    priced(at) && at.orderEvery > 1 ? <Tag key="every">{c.pair.orderEvery(at.orderEvery)}</Tag> : null,
     ...brokerLabels(house, false).map((l) => <LabelChip key={l.id} label={l} />),
     phone ? <SourcedTag key="phone" value={phone}>{c.pair.phoneTag}</SourcedTag> : null,
   ];
@@ -361,17 +371,19 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
     </>
   );
   const accountValue = <Num value={nom(accountSum(pc, c.pair.who.account, today), c.receipt.parts.account)} display={minus(r.account)} />;
-  // F-109: what the cash waiting for a whole unit did, beside the account's fees and never among them: a minus where the fund rose while it
-  // waited, a plus where it fell; on the account's own lines with why, and among the lines that add up to the total without it
+  // F-109, F-133: what the cash waiting for a whole unit or the next purchase did, beside the account's fees and never among them: a minus
+  // where the fund rose while it waited, a plus where it fell; on the account's own lines with why, and among the lines that add up to the
+  // total without it
   const waits = !!pc.waiting && r.waiting !== 0;
-  const waitingValue = pc.waiting && <Num value={nom(pc.waiting, c.pair.waiting)} display={minus(r.waiting)} />;
+  const waitingLabel = waitingName(pc);
+  const waitingValue = pc.waiting && <Num value={nom(pc.waiting, waitingLabel)} display={minus(r.waiting)} />;
   const fundValue = <Num value={nom(pc.fund, c.receipt.parts.fund)} display={minus(r.fund)} />;
   // the account's and the fund's own facts and lines, written once: the ticket's side parts, and on paper the sheet each one's name opens
   const accountOwn = (
     <>
       <AccountFacts view={view} bundle={bundle} plan={plan} pick={pick} refs={!ticket} />
       <ReceiptLine size="sm" edge="border-chart-by-account" label={c.receipt.accountCharges} value={accountValue} parts={accountParts} />
-      {waits && <ReceiptLine size="sm" label={<HeldMark words={c.pair.waiting} mark={<HelpMark about={c.pair.waiting} text={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />} />} value={waitingValue} />}
+      {waits && <ReceiptLine size="sm" label={<HeldMark words={waitingLabel} mark={<HelpMark about={waitingLabel} text={waitingWhy(pc, r.waiting > 0)} />} />} value={waitingValue} />}
     </>
   );
   const fundOwn = (
@@ -393,7 +405,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       <ReceiptLine size="sm" label={c.pair.paidIn} value={<Num value={pc.paidInNominal} display={fmt.nisWhole(r.paidIn)} />} />
       <ReceiptLine size="sm" label={c.receipt.added} value={<Num value={addedOf(pc, today)} display={fmt.signedNisWhole(r.added)} />} />
       <ReceiptLine size="sm" swatch={ticket ? "bg-chart-by-account" : undefined} label={accountName} value={accountValue} opens={ticket ? undefined : { title: accountName, body: accountOwn }} />
-      {waits && <ReceiptLine size="sm" label={c.pair.waiting} value={waitingValue} />}
+      {waits && <ReceiptLine size="sm" label={waitingLabel} value={waitingValue} />}
       <ReceiptLine size="sm" swatch={ticket ? "bg-chart-by-fund" : undefined} label={fundLabel} value={fundValue} opens={ticket ? undefined : { title: <>{c.pair.who.fund} {fundName}</>, body: fundOwn }} />
       <ReceiptLine size="sm" label={c.receipt.inflation} value={<Num value={inflationOf(pc, ch, v.taxName, today)} display={minus(ch.inflation)} />} />
       <ReceiptLine size="sm" label={v.taxName} value={<Num value={taxOf(pc)} display={minus(ch.tax)} />} />

@@ -66,12 +66,13 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   // the top the climbs reach is the page's own pair (its headline), whichever fund the records put there
   const top = Math.round(view.headline?.valueN ?? Number.NaN);
   it("the ceiling is the page's own pair", () => expect(Math.round(ceilingOf(grid)?.v ?? Number.NaN)).toBe(top));
-  it("Hapoalim with the MTF fund: two steps, then the page's own pair", () => expect(steps("hapoalim", "1150333")).toEqual([[79273, null], [84148, 4875], [top, top - 84148]]));
+  // Hapoalim buys the MTF fund every 4 months, paying its minimum commission once in four (F-133)
+  it("Hapoalim with the MTF fund: two steps, then the page's own pair", () => expect(steps("hapoalim", "1150333")).toEqual([[80751, null], [84148, 3397], [top, top - 84148]]));
   // the accumulating iShares is ranked (TXF-11: its own annex reports the ruling). Bought in whole units (F-109), the iShares unit of USD 815
-  // makes 500 a month wait. VOO, priced since its record carries its yield (D85, D107), leaves the most of the S&P 500's funds at Interactive
+  // makes 500 a month wait; Bank Jerusalem buys it every 12 months (F-133). VOO, priced since its record carries its yield (D85, D107), leaves the most of the S&P 500's funds at Interactive
   // Brokers, so each climb abroad ends on it
   const vooAtIb = () => Math.round(grid.cell("interactive-brokers", "us-voo")?.v ?? Number.NaN);
-  it("Bank Jerusalem with the accumulating iShares: to Interactive Brokers, then VOO there", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[76632, null], [83520, 6888], [vooAtIb(), vooAtIb() - 83520]]));
+  it("Bank Jerusalem with the accumulating iShares: to Interactive Brokers, then VOO there", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[76903, null], [83520, 6617], [vooAtIb(), vooAtIb() - 83520]]));
   it("Interactive Israel with the same iShares: to VOO there, then to Interactive Brokers (Tiered, the automatic conversion) with VOO", () => {
     const c = chainOf(grid, { start: { a: "interactive-israel", f: "ie00b5bmr087" }, taken: [] })!;
     expect(c.chain.map((s) => [Math.round(s.v), s.d])).toEqual([[83486, null], [84263, 777], [vooAtIb(), vooAtIb() - 84263]]);
@@ -81,8 +82,9 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   it("Interactive Brokers with the distributing iShares: one change improves, to VOO there, and the top is the page's own pair", () => {
     const c = chainOf(grid, { start: { a: "interactive-brokers", f: "ie0031442068" }, taken: [] })!;
     expect(c.chain.map((s) => s.pos)).toEqual([{ a: "interactive-brokers", f: "ie0031442068" }, { a: "interactive-brokers", f: "us-voo" }]);
-    expect(Math.round(c.chain[0]?.v ?? Number.NaN)).toBe(83582);
-    expect(vooAtIb()).toBeGreaterThan(83582);
+    // the distributing iShares bought every 2 months (F-133)
+    expect(Math.round(c.chain[0]?.v ?? Number.NaN)).toBe(83837);
+    expect(vooAtIb()).toBeGreaterThan(83837);
     expect(Math.round(c.ceiling.v)).toBe(top);
   });
   // the lanes' held heights are measured from these cases: every lane any start shows has a case with each of its rows, in the
