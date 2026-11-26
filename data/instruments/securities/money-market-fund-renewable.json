@@ -322,12 +322,12 @@
       }
     ],
     "fee-account": [
+      "BRK-48",
+      "BRK-76",
+      "BRK-77",
       {
-        "rule": "BRK-48",
+        "rule": "BRK-28",
         "companies": [
-          "ibi",
-          "excellence",
-          "altshuler-trade",
           "psagot"
         ]
       }

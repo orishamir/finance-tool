@@ -15,7 +15,9 @@
   "variants": [],
   "rule_ids": [
     "BRK-48",
-    "BRK-61"
+    "BRK-61",
+    "BRK-76",
+    "BRK-77"
   ],
   "source": {
     "url": "https://www.boi.org.il/media/n2dlnqyf/415.pdf",

@@ -152,7 +152,7 @@ describe("sums in the trade's currency", () => {
 });
 
 describe("sums in the trade's currency printed for some currencies only (trade_currencies, F-114, §10.6)", () => {
-  /** Excellence's line outside the US: 0.4%, at least 35 in the trade's currency, printed for shekels, dollars and euros (BRK-48). */
+  /** Excellence's line outside the US: 0.4%, at least 35 in the trade's currency, printed for shekels, dollars and euros (BRK-76). */
   const printed: Price = { form: "action", rate: typed(0.4), min: typed(35), inTrade: ["ILS", "USD", "EUR"] };
   const own = (currency: string): FeeDeal => ({ ...newDeal("brokerage-account"), readFor: [{ by: "what", is: "mine", place: "abroad", currency }], fees: [trade(printed)] } as FeeDeal);
   it("reads the minimum in a currency the list prints it for", () => {
@@ -678,7 +678,7 @@ describe("the templates", () => {
     // a value of its own abroad, in a currency it does not name, puts a conversion on a purchase (F-111)
     expect(read({ ...fillDeal(newDeal("brokerage-account"), "house:ibi", data, TODAY)!, readFor: [{ by: "what", is: band }] }).engine.foreign).toBe(true);
   });
-  it("fill a minimum printed in the trade's own currency as one, never as dollars (BRK-48)", () => {
+  it("fill a minimum printed in the trade's own currency as one, never as dollars (BRK-48, BRK-76, BRK-78)", () => {
     // Excellence outside the US: 35 euros in Europe, and not read where the currency is not known ("בשאר העולם")
     const europe = filledFor("excellence", [{ by: "what", is: "europe" }])("trade");
     expect(europe).toMatchObject({ rate: { v: 0.4 }, min: { v: 35 }, currency: "EUR" });
@@ -688,7 +688,7 @@ describe("the templates", () => {
     const lines = latestSnapshots().flatMap((x) => x.lines).filter((l) => l.min?.unit === "trade_ccy_per_trade");
     expect(lines.map((l) => l.id).sort()).toEqual(["excellence-buy-sell-foreign-non-us", "ibi-buy-sell-foreign-other-markets", "interactive-israel-buy-sell-europe", "meitav-trade-buy-sell-foreign-world"]);
   });
-  it("say a minimum in the trade's currency in the builder in that currency where the reading reads its case, else with no currency sign (BRK-48)", () => {
+  it("say a minimum in the trade's currency in the builder in that currency where the reading reads its case, else with no currency sign (BRK-76)", () => {
     const minOf = (is: string) => {
       const r = read({ ...fillDeal(newDeal("brokerage-account"), "house:excellence", data, TODAY)!, readFor: [{ by: "what", is }] });
       const band = builder(r).rows.find((x) => x.kind === "trade")!.block;

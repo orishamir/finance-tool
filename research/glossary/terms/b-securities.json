@@ -2040,6 +2040,8 @@
     "explain_he": "עמלה תקופתית על שירות לתקופה שנקבעה מראש, למשל דמי ניהול רבעוניים. בנק שגבה אותה מראש, והשירות הופסק לפני סוף התקופה, מחזיר את החלק היחסי לפי ימים.",
     "rule_ids": [
       "BRK-48",
+      "BRK-76",
+      "BRK-77",
       "BRK-61"
     ],
     "source": {
@@ -2056,7 +2058,7 @@
       "guide:makam",
       "tariff"
     ],
-    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base fixed_period (docs/data-schema.md). Directive 415 s.2(ז)(1) names a fee charged in advance for a set period, such as quarterly management fees; the non-bank tariffs' monthly account fee is BRK-48 (its own row: דמי טיפול). 2026-11-06 fix pass (check item 5): the explanation was cut to what s.2(ז)(1) says (library f2301515371e486a, p.2); it no longer says the fee is on the account itself rather than on an action, which the directive does not say."
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base fixed_period (docs/data-schema.md). Directive 415 s.2(ז)(1) names a fee charged in advance for a set period, such as quarterly management fees; the non-bank tariffs' monthly account fees are BRK-48, BRK-76 and BRK-77 (its own row: דמי טיפול). 2026-11-06 fix pass (check item 5): the explanation was cut to what s.2(ז)(1) says (library f2301515371e486a, p.2); it no longer says the fee is on the account itself rather than on an action, which the directive does not say."
   },
   {
     "term_he": "טיפול בריבית ובדיבידנד",
@@ -2065,7 +2067,7 @@
     ],
     "explain_he": "כך קוראת אלטשולר שחם טרייד בתעריפון שלה (״טיפול בתשלומי ריבית/דיבידנד״) לעמלה שהיא גובה על תשלום ריבית או דיבידנד שנכנס לחשבון ניירות הערך",
     "rule_ids": [
-      "BRK-48"
+      "BRK-77"
     ],
     "source": {
       "title": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך), עמ' 2",
@@ -2078,7 +2080,7 @@
       "guide:brokerage-account",
       "tariff"
     ],
-    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base distribution_handling. Only companies' tariffs name this fee (BRK-48: Altshuler Shaham Trade, Psagot); no general rule defines it, so the row names the company. 2026-11-06 fix pass (check item 6): the explanation now opens with the company, so no clause reads as a fact about the market (library 500b2b74e04bd53e, p.2, line 5); the variant 'דמי טיפול ריבית ופדיון' was dropped, because it is Psagot's line for foreign bonds' interest and redemption, a different fee. Round 2 (2026-11-07): no general source names this fee. The joint report of June 2026 (library 421f4282b6dda3a8, p.10, note 18) counts \"תפעול חלוקת דיבידנד וריבית\" among the custody services the securities-custody fee pays for, and the TASE rules (part 1, p.34) oblige a member to secure clients' dividends and interest; neither names a separate fee. The row stays the company's, named in the line, graded institution."
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base distribution_handling. Only companies' tariffs name this fee (BRK-77: Altshuler Shaham Trade; BRK-79: Psagot); no general rule defines it, so the row names the company. 2026-11-06 fix pass (check item 6): the explanation now opens with the company, so no clause reads as a fact about the market (library 500b2b74e04bd53e, p.2, line 5); the variant 'דמי טיפול ריבית ופדיון' was dropped, because it is Psagot's line for foreign bonds' interest and redemption, a different fee. Round 2 (2026-11-07): no general source names this fee. The joint report of June 2026 (library 421f4282b6dda3a8, p.10, note 18) counts \"תפעול חלוקת דיבידנד וריבית\" among the custody services the securities-custody fee pays for, and the TASE rules (part 1, p.34) oblige a member to secure clients' dividends and interest; neither names a separate fee. The row stays the company's, named in the line, graded institution."
   },
   {
     "term_he": "מדד מניות",

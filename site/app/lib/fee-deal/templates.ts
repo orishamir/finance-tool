@@ -265,7 +265,7 @@ function unreadWhy(l: Line): LeftWhy {
 
 /**
  * The houses whose list prints a percent maximum beside a minimum with nothing on which wins on a small action, so that the maximum wins
- * is the site's reading (F-12: Excellence's 2%, BRK-48; Interactive Israel's 2%, BRK-40). A template notes it on those trade prices.
+ * is the site's reading (F-12: Excellence's 2%, BRK-76; Interactive Israel's 2%, BRK-40). A template notes it on those trade prices.
  */
 export const CAP_READ: ReadonlySet<string> = new Set(["excellence", "interactive-israel"]);
 

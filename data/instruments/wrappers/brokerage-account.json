@@ -136,7 +136,7 @@
         "BRK-16"
       ],
       "state": "sourced",
-      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). A bank may charge only for services in the Governor's full tariff, or added with the Supervisor's approval (BRK-16, BANK-16). Whether a member charges a monthly account fee, and how much, is its own tariff (BRK-48, BRK-28, on the companies' pages)."
+      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). A bank may charge only for services in the Governor's full tariff, or added with the Supervisor's approval (BRK-16, BANK-16). Whether a member charges a monthly account fee, and how much, is its own tariff (BRK-48, BRK-76, BRK-77, BRK-28, on the companies' pages)."
     },
     "distribution_handling": {
       "value": null,
@@ -156,7 +156,7 @@
         "BRK-24"
       ],
       "state": "sourced",
-      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). Whether a member charges on interest, dividend and redemption payments is its own tariff (BRK-48, on the companies' pages)."
+      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). Whether a member charges on interest, dividend and redemption payments is its own tariff (BRK-77, BRK-79, on the companies' pages)."
     },
     "transfer_out": {
       "value": 10,
@@ -338,27 +338,21 @@
       "BRK-40"
     ],
     "fee-account": [
+      "BRK-48",
+      "BRK-76",
+      "BRK-77",
       {
-        "rule": "BRK-48",
+        "rule": "BRK-28",
         "companies": [
-          "ibi",
-          "excellence",
-          "altshuler-trade",
           "psagot"
         ]
       }
     ],
     "fee-fx": [
       "BRK-23",
-      {
-        "rule": "BRK-48",
-        "companies": [
-          "ibi",
-          "excellence",
-          "altshuler-trade",
-          "psagot"
-        ]
-      },
+      "BRK-48",
+      "BRK-76",
+      "BRK-79",
       "BRK-40",
       "BRK-42"
     ]
