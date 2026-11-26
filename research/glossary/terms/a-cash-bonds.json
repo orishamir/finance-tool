@@ -2071,7 +2071,7 @@
     ],
     "explain_he": "סוג ישן של איגרות חוב ממשלתיות בריבית משתנה, שכבר לא מונפק, והריבית בו מתעדכנת לפי התשואה של מק\"מ, בתוספת מרווח",
     "rule_ids": [
-      "GOV-14"
+      "GOV-29"
     ],
     "source": {
       "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999, קובץ התקנות, עמוד 2",
@@ -2137,7 +2137,7 @@
       "statement",
       "guide:government-bond"
     ],
-    "notes": "missing Hebrew spelling in il-finance: the word 'קופון' appears nowhere in the rule base; the files describe the coupon only in English and the 2006 regulations call it interest ('ריבית'). Spelling taken from the starting list, not from a source. Coupon frequency: CPI-linked yearly (GOV-11); floating-rate quarterly under the 1999 regulations (GOV-14); fixed-rate shekel unsourced (GOV OQ4). Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law01/999_564.htm) to the official text.",
+    "notes": "missing Hebrew spelling in il-finance: the word 'קופון' appears nowhere in the rule base; the files describe the coupon only in English and the 2006 regulations call it interest ('ריבית'). Spelling taken from the starting list, not from a source. Coupon frequency: CPI-linked yearly (GOV-11); floating-rate quarterly under the 1999 regulations (GOV-29); fixed-rate shekel unsourced (GOV OQ4). Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law01/999_564.htm) to the official text.",
     "id": "kvpvn"
   },
   {
