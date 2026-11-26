@@ -337,8 +337,8 @@ function employerLinePensionUnder(input: PensionInput, ctx: RunContext): Pension
   // TXP-10: employer component above the exempt limit. TXP-11: the severance ceiling, applied monthly as 1/12 of the yearly
   // amount (Income Tax circular 4/2019 s.2.1.1); a severance deposit above it is work income at
   // deposit, which this run does not tax yet, so it is flagged under the rule.
-  // the tax on the employer's excess, paid from the salary when deposited, is a tax during the run (F-52)
-  const salaryTax = book.on("taxDuring");
+  // the tax on the employer's excess, paid from the salary when deposited, is a tax during the run (F-52), on its own line (`TaxLine`)
+  const salaryTax = book.on("taxDuring", "salaryTax");
   const ceiling = salaryTax.amount("TXP-10", "employer_ceiling");
   const exemptPct = salaryTax.rate("TXP-10", "employer_exempt_pct");
   const pensionPart = p.employer.pensionRate * deposited;

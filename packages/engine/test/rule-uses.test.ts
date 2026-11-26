@@ -3,7 +3,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { BlockedError, employerLinePension, FigureNotUpdatedError, mergedRules, MissingRuleError, ruleBook, runBond, runDeposit, runPension, runProvident, type RunPart, type RunResult, type UsedRule } from "../src/index.ts";
+import { BlockedError, employerLinePension, FigureNotUpdatedError, mergedRules, MissingRuleError, ruleBook, runBond, runDeposit, runPension, runProvident, runSecurities, type RunPart, type RunResult, type UsedRule } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 import { reliefPaths, runs, s23, s23Hishtalmut, s27 } from "./rule-uses-runs.ts";
 
@@ -164,6 +164,20 @@ describe("the parts each run's rules went into", () => {
     const above = run("S36 surtax year");
     expect(changedIn(above, "TXG-09")).toEqual(["taxAtExit"]);
     expect(changedIn(above, "TXG-10")).toEqual([]);
+  });
+
+  it("files the surtax on a year's distributions on its own line of the tax during the run", () => {
+    // a fund that pays out, held by a person whose other income is above the threshold: each year's distributions pay the general surtax
+    const payout = runSecurities({ goal: { amountNow: 2_000_000, monthly: 0, months: 36 }, market: { grossReturn: 0.08, inflation: 0.02 }, fund: { kind: "israeli-fund", drag: { management: 0.001 }, distribution: { yield: 0.02, perYear: 1 } }, tariff: {}, profile: { otherIncome: 1_000_000 } }, ctx);
+    expect(changedIn(payout, "TXG-09")).toContain("taxDuring:surtax");
+    expect(changedIn(payout, "TXG-09")).not.toContain("taxDuring");
+  });
+
+  it("files the F-52 salary tax of a study fund's employer money on its own line of the tax during the run", () => {
+    const over = run("keren hishtalmut, employer money above its limit");
+    expect(detailOf(over, "employerDepositTax")).toBeGreaterThan(0);
+    for (const id of ["TXH-03", "TXG-02", "TXG-35"]) expect(changedIn(over, id), id).toContain("taxDuring:salaryTax");
+    for (const id of ["TXH-03", "TXG-35"]) expect(changedIn(over, id), id).not.toContain("taxDuring");
   });
 
   it("takes TXG-10 for an early withdrawal only from the surtax on the gains, not from the one on gains and employer deposits", () => {
@@ -400,20 +414,20 @@ describe("the pension runs", () => {
   it("flags the employer's severance above its ceiling and takes the ceiling on no part", () => {
     const high = employerLinePension({ ...s27, pension: { ...s27.pension, monthlySalary: 50_000, employer: { pensionRate: 0.065, severanceRate: 0.0833 } } }, ctx);
     expect(high.flags.map((f) => f.code)).toContain("TXP-11");
-    expect(high.rules.find((u) => u.id === "TXP-11")?.uses).toEqual([{ part: "taxDuring", changed: false, figures: ["severance_ceiling"] }]);
+    expect(high.rules.find((u) => u.id === "TXP-11")?.uses).toEqual([{ part: "taxDuring", line: "salaryTax", changed: false, figures: ["severance_ceiling"] }]);
   });
 
   it("takes the brackets on the employer line's salary tax only where the employer's money passes its exempt limit", () => {
     // S27: 6.5% of a salary under the ceiling, under TXP-10's 7.5%: no tax, and the exemption is what makes it none
     const under = employerLinePension(s27, ctx);
     expect(detailOf(under, "depositTax")).toBe(0);
-    expect(changedIn(under, "TXP-10")).toEqual(["taxDuring"]);
+    expect(changedIn(under, "TXP-10")).toEqual(["taxDuring:salaryTax"]);
     expect(read(under, "TXG-02")).toBe(true);
     expect(changedIn(under, "TXG-02")).toEqual([]);
     // a salary above TXP-10's ceiling: the 6.5% on the part above it is salary, taxed at the brackets
     const over = employerLinePension({ ...s27, pension: { ...s27.pension, monthlySalary: 50_000 } }, ctx);
     expect(detailOf(over, "depositTax")).toBeGreaterThan(0);
-    for (const id of ["TXP-10", "TXG-02"]) expect(changedIn(over, id), id).toEqual(["taxDuring"]);
+    for (const id of ["TXP-10", "TXG-02"]) expect(changedIn(over, id), id).toEqual(["taxDuring:salaryTax"]);
   });
 });
 

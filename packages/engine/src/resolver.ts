@@ -6,7 +6,7 @@
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountInYear, movesBy, movingYears, yearlyMoveOf } from "./formulas/indexation.ts";
 import { OpenReadingError, openReadingOf, type OpenReading, type TaxIndexOpenReading, type TaxIndexReadingId } from "./open-readings.ts";
-import { labelWeight, type FeeType, type Label, type NotKnown, type RuleLabel, type RuleUse, type RunContext, type RunPart } from "./result.ts";
+import { labelWeight, type FeeType, type Label, type NotKnown, type RuleLabel, type RuleUse, type RunContext, type RunPart, type TaxLine } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
 
@@ -95,10 +95,11 @@ export interface RuleBook {
   /** Records that a rule with no figure governs this run (a treatment, not a number). */
   cite(ruleId: string): void;
   /**
-   * A view on the same store whose every read is a changed use on `part` (a `fees` use always on its fee line). The view's `inYear` keeps
-   * the part and the line; the root book records part null.
+   * A view on the same store whose every read is a changed use on `part` (a `fees` use always on its fee line, a `taxDuring` use on its
+   * `TaxLine` where it has one). The view's `inYear` keeps the part and the line; the root book records part null.
    */
-  on(part: Exclude<RunPart, "fees">): RuleBook;
+  on(part: Exclude<RunPart, "fees" | "taxDuring">): RuleBook;
+  on(part: "taxDuring", line?: TaxLine): RuleBook;
   on(part: "fees", line: FeeType): RuleBook;
   /**
    * The same reads with the same checks (an open, stale or missing rule stops the run as a read does), recorded on this book's part and line
@@ -173,7 +174,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
   /** Where a book's reads go: the part of the result and the fee line, part null on the root book. */
   interface At {
     part: RunPart | null;
-    line?: FeeType;
+    line?: FeeType | TaxLine;
   }
 
   /** The rule's use at `at`, added if absent with `figures`; `changed` is ORed into it. */
@@ -291,7 +292,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     taxYear,
     ...readsFor(taxYear, at, true),
     peek: readsFor(taxYear, at, false),
-    on: (part: RunPart, line?: FeeType) => bookFor(taxYear, line === undefined ? { part } : { part, line }),
+    on: (part: RunPart, line?: FeeType | TaxLine) => bookFor(taxYear, line === undefined ? { part } : { part, line }),
     took(id) {
       const u = used.get(id);
       if (!u) throw new Error(`took(${id}): the run holds no read of ${id}, so it cannot have changed the number`);

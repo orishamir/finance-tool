@@ -166,7 +166,7 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
         employerLimit = book.rate("TXH-01", "employer_exempt_pct") * determining;
         // F-52: the part of the employer's deposit above this limit is salary when paid (TXH-03) and runs
         // separately below; the part up to the limit stays benefited (TXH-01).
-        if (h.employerMonthly > employerLimit) book.on("taxDuring").cite("TXH-03");
+        if (h.employerMonthly > employerLimit) book.on("taxDuring", "salaryTax").cite("TXH-03");
       }
     } else {
       benefitedYearly = book.amount("TXH-08", "self_employed_benefited");
@@ -253,8 +253,8 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   let firstExcessMonth: number | null = null;
   const salary = hish?.monthlySalary ?? 0;
   const employerOverActive = !kgl && hish?.employerMonthly !== undefined && hish.employerMonthly > employerLimit;
-  // the salary tax on the employer's excess (F-52) is a tax during the run
-  const salaryTax = book.on("taxDuring");
+  // the salary tax on the employer's excess (F-52) is a tax during the run, on its own line (`TaxLine`)
+  const salaryTax = book.on("taxDuring", "salaryTax");
   const social = employerMoney || employerOverActive
     ? {
         reducedUpTo: salaryTax.amount("TXG-35", "reduced_threshold"),
