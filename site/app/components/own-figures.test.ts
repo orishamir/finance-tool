@@ -75,7 +75,7 @@ describe("a fund's fee in a list of funds", () => {
 describe("a figure on a page about one company", () => {
   // the page's company and where its own documents live, as PageShell fills them
   const page = { ...data, pageCompanies: ["harel"], companies: { harel: { name: "הראל", href: "/companies/harel", hasPage: true, docs: { own_hosts: ["harel-group.co.il"] } } } };
-  const onPage = (v: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(OwnCompanyPage, null, createElement(ProvenanceProvider, { data: page, children: createElement(Num, { value: v }) }))));
+  const onPage = (v: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(OwnCompanyPage, null, createElement(ProvenanceProvider, { data: page } as never, createElement(Num, { value: v })))));
   it("is the company's own where its source is the company's document: no caution", () => {
     expect(caution(onPage(fee({ source: { url: "https://www.harel-group.co.il/fees.pdf", title: "דוח", publisher: "הראל", strength: "institution" } })))).toBe(0);
   });

@@ -119,9 +119,9 @@ describe("what the page says around its figures", () => {
   const v = { value: 10, unit: "nis", source: { url: "https://example.org/a.pdf", title: "תעריפון", publisher: "Bank", strength: "institution" }, checked: "2025-01-01", effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced", stale: { since: "2025-01-01", cadence: "yearly" } } as SiteValue;
   const marks = (html: string) => (html.match(/text-caution/g) ?? []).length;
   const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-26", pageCompanies: ["bank"], companies: { bank: { name: "בנק", href: "/companies/bank", hasPage: true, docs: { own_hosts: ["example.org"] } } } };
-  const on = (child: ReturnType<typeof createElement>) => renderToString(createElement(MemoryRouter, null, createElement(OwnCompanyPage, null, createElement(ProvenanceProvider, { data, children: createElement(StaleSaid, null, child) }))));
+  const on = (child: ReturnType<typeof createElement>) => renderToString(createElement(MemoryRouter, null, createElement(OwnCompanyPage, null, createElement(ProvenanceProvider, { data } as never, createElement(StaleSaid, null, child)))));
   it("does not reach inside a sheet", () => {
     expect(marks(on(createElement(Num, { value: v })))).toBe(0);
-    expect(marks(on(createElement(Sheet, { open: true, onClose: () => undefined, children: createElement(Num, { value: v }) })))).toBe(2);
+    expect(marks(on(createElement(Sheet, { open: true, onClose: () => undefined } as never, createElement(Num, { value: v }))))).toBe(2);
   });
 });
