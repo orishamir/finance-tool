@@ -20,11 +20,20 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
 
 ### ETF-01 What an Israeli ETF and an Israeli tracking fund are in law
 - Rule: A tracking fund (קרן מחקה) is a fund whose investment policy is to achieve results derived from the rate of change in the price of an index or commodity. An ETF (קרן סל) is a tracking fund that is a closed fund, whose fund agreement states that it will be an ETF. An open fund (קרן פתוחה) is one whose fund agreement makes it open.
-- Conditions / exceptions: An open tracking fund may become an ETF by publishing a prospectus for the change of type, filing a report with the ISA and TASE, and sending the report to unit holders. The change takes effect no earlier than 14 days after the report (s. 102(ה)–(ו)). After such a conversion, the return history from before the relevant date is not shown, and the conversion date counts as the date of first offer (tracking-fund regulations, reg. 18(b)).
+- Conditions / exceptions: How an open tracking fund becomes an ETF is ETF-97.
 - Figures: none.
-- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.4, s.1 · primary · checked 2026-10-25. [חוק השקעות משותפות בנאמנות, התשנ"ד-1994](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.67, s.102(ה)-(ו) · primary · checked 2026-10-25. [תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע"ח-2018 (קובץ התקנות 8038)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=7), p.7 (gazette p.2399), reg. 18(ב) (continues p.8) · primary · checked 2026-10-25.
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.4, s.1 · primary · checked 2026-10-25.
 - Scope: general
 - Dimensions: regulator, liquidity-lockup
+- Likely to change: no.
+
+### ETF-97 An open tracking fund can become an ETF: a prospectus for the change, a report, 14 days, and its earlier return history is not shown
+- Rule: An open tracking fund may become an ETF by publishing a prospectus for the change of type, filing a report with the ISA and TASE, and sending the report to unit holders.
+- Conditions / exceptions: The change takes effect no earlier than 14 days after the report (s. 102(ה)–(ו)). After such a conversion, the return history from before the relevant date is not shown, and the conversion date counts as the date of first offer (tracking-fund regulations, reg. 18(b)). What a tracking fund, an ETF and an open fund are in law is ETF-01. Split from ETF-01 on 2026-11-26.
+- Figures: none.
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.67, s.102(ה)-(ו) · primary · checked 2026-10-25. [תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע"ח-2018 (קובץ התקנות 8038)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=7), p.7 (gazette p.2399), reg. 18(ב) (continues p.8) · primary · checked 2026-10-25. Definitions: ETF-01.
+- Scope: general
+- Dimensions: regulator
 - Likely to change: no.
 
 ### ETF-02 Israeli ETNs became ETFs in October 2018 (Amendment 28)
