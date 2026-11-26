@@ -1299,7 +1299,7 @@ Strength is the one recorded on the rule's first source.
 | [GOV-13](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf>) | Fixed-rate shekel bond (אג"ח ממשלתית; the type "שחר", first issued 1995, is separate) | 2026-10-25 | primary |
 | [GOV-22](<https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/>) | Bank of Israel's consumer page on makam | 2026-10-25 | primary |
 | [GOV-23](<https://www.boi.org.il/boi_files/hanpaka.pdf>) | Makam issue schedule | 2026-11-23 | primary |
-| [IRA-17](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6>) | Management fee level and cap | 2026-10-25 | primary; |
+| [IRA-17](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6>) | Management fee level: the agreed rate and Gemel-Net's averages | 2026-10-25 | primary; |
 | [IRA-21](<https://www.meitav.co.il/media/r2djwzpw/26061426l-תוצאות-מכרז-לניהול-אישי-2026-לאומי.pdf>) | Meitav: brokerage tariffs inside the IRA, effective 01.05.2026 | 2026-10-25 | institution; |
 | [KGL-02](<https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf>) | Annual deposit ceiling: one ceiling per person across all managers, CPI-linked | 2026-10-25 | primary |
 | [KGL-03](<https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf>) | The 2026 ceiling figure: the law's NIS 70,000 indexed to the CPI | 2026-10-25 | primary; |
