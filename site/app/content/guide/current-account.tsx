@@ -12,7 +12,7 @@ export const content: GuideContent = {
     const basicDirect = figure("BANK-17", "basic_direct_actions");
     const extendedTeller = figure("BANK-17", "extended_teller_actions");
     const extendedDirect = figure("BANK-17", "extended_direct_actions");
-    const basicCap = figure("BANK-17", "basic_track_max_fee");
+    const basicCap = figure("BANK-60", "basic_track_max_fee");
     const cardCap = figure("BANK-35", "immediate_debit_card_fee");
     const cardFrom = effectiveFromValue(cardCap, "המועד שבו התקרה לדמי כרטיס חיוב מיידי נכנסה לתוקף");
     const accountFrom = effectiveFromValue(figure("BANK-35", "account_fee_3_to_100_actions"), "המועד שבו התקרות לעמלת ניהול חשבון נכנסות לתוקף והמסלולים מתבטלים");
@@ -30,7 +30,7 @@ export const content: GuideContent = {
         <Sentence measure>
           העלות היא עמלות החשבון. כל בנק חייב להציע שני מסלולים ולתת לכל לקוח להצטרף אליהם. <Term prefix="ה" id="מסלול בסיסי">מסלול הבסיסי</Term> כולל {basicTeller ? <>עד <Num value={basicTeller} /> פעולה בפקיד ו</> : null}
           {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, <Term prefix="וה" id="מסלול מורחב">מסלול המורחב</Term>{" "}
-          {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. פעולות מעבר למסלול מחויבות לפי <Term id="התעריפון המלא">התעריפון המלא</Term>. המחיר של המסלול הבסיסי <Ruled id="BANK-17">מוגבל בצו</Ruled>{basicCap ? <>: עד <Num value={basicCap} /> בחודש</> : null}.
+          {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. פעולות מעבר למסלול מחויבות לפי <Term id="התעריפון המלא">התעריפון המלא</Term>. המחיר של המסלול הבסיסי <Ruled id="BANK-60">מוגבל בצו</Ruled>{basicCap ? <>: עד <Num value={basicCap} /> בחודש</> : null}.
         </Sentence>
         <Sentence measure>
           חוץ מבנק חדש: בשנים הראשונות אחרי שקיבל רישיון הוא <Ruled id="BANK-51">לא כפוף לתעריפון המלא</Ruled>, ומפרסם תעריפון משלו. אבל תקרה שהנגיד קבע לשירות בפיקוח חלה גם עליו. גם בנק קטן <Ruled id="BANK-52">מקבל הקלות</Ruled> בחלק מהכללים של <Term id="בנק ישראל">בנק ישראל</Term> ללקוחות, למשל בשירותי התשלום שהוא חייב להציע בחשבון.

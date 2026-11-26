@@ -124,7 +124,8 @@
     "explain_he": "חבילת עמלות בעו\"ש עם מעט פעולות בחודש במחיר מפוקח, וכל בנק חייב להציע אותה",
     "rule_ids": [
       "BANK-16",
-      "BANK-17"
+      "BANK-17",
+      "BANK-60"
     ],
     "source": {
       "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",

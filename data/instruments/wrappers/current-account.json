@@ -108,9 +108,10 @@
       "BANK-01",
       "BANK-09",
       "BANK-17",
+      "BANK-60",
       "BANK-35"
     ],
-    "text": "any individual; a bank may not unreasonably refuse to open and run a current account that stays in credit (anti-money-laundering identification still applies); credit interest, where a bank pays any, may need a separate signature and carry conditions the bank must display; every bank must let any customer join the basic or the extended fee track (the basic track capped at NIS 10 a month, BANK-17); from 1.7.2027 the tracks end and payment-account management fees are capped instead (BANK-35)"
+    "text": "any individual; a bank may not unreasonably refuse to open and run a current account that stays in credit (anti-money-laundering identification still applies); credit interest, where a bank pays any, may need a separate signature and carry conditions the bank must display; every bank must let any customer join the basic or the extended fee track (the basic track capped at NIS 10 a month, BANK-60); from 1.7.2027 the tracks end and payment-account management fees are capped instead (BANK-35)"
   },
   "protection": {
     "rule_ids": [
