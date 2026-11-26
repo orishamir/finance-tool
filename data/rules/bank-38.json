@@ -2,11 +2,9 @@
   "id": "BANK-38",
   "title": "Ten banks' savings plans: 52 monthly standing-order plans, and how their deposits, rates and withdrawals work",
   "title_he": "עשרה בנקים: 52 תוכניות חיסכון בהוראת קבע חודשית, ואיך עובדות בהן ההפקדות, הריבית והמשיכה",
-  "text_he": "בעשרה בנקים נמצאו 52 תוכניות חיסכון שמפקידים אליהן בהוראת קבע חודשית: בבינלאומי 14, במרכנתיל 8, בדיסקונט 6, בבנק הפועלים 5, במזרחי טפחות 5, בלאומי 4, במסד 4, בבנק יהב 3, בבנק ירושלים 2 ובוואן זירו 1. כל בנק קובע בעצמו איך התוכנית עובדת. בבנק יהב, הריבית בחיסכון חרמון נקבעת לפי מועד כל הפקדה. במזרחי טפחות אפשר למשוך חלק בתחנת יציאה, ולהשאיר בתוכנית את ההפקדות האחרונות. במרכנתיל הריבית יורדת כשההפקדות לא רצופות. במסמכים שנקראו אין תנאי גיל או השתייכות לתוכניות האלה. בבינלאומי צריך לפתוח חשבון בבנק, ובבנק ירושלים התוכניות פתוחות גם ללקוחות של בנקים אחרים. לאומי מציע גם חיסכון באפליקציה, עם כמה הפקדות ביום.",
+  "text_he": "בעשרה בנקים נמצאו 52 תוכניות חיסכון שמפקידים אליהן בהוראת קבע חודשית: בבינלאומי 14, במרכנתיל 8, בדיסקונט 6, בבנק הפועלים 5, במזרחי טפחות 5, בלאומי 4, במסד 4, בבנק יהב 3, בבנק ירושלים 2 ובוואן זירו 1. כל בנק קובע בעצמו איך התוכנית עובדת. בבנק יהב, הריבית בחיסכון חרמון נקבעת לפי מועד כל הפקדה. במזרחי טפחות אפשר למשוך חלק בתחנת יציאה, ולהשאיר בתוכנית את ההפקדות האחרונות. במרכנתיל הריבית יורדת כשההפקדות לא רצופות. במסמכים שנקראו אין תנאי גיל או השתייכות לתוכניות האלה. בבינלאומי צריך לפתוח חשבון בבנק, ובבנק ירושלים התוכניות פתוחות גם ללקוחות של בנקים אחרים.",
   "figure_names_he": {
-    "yahav_flexible_min_monthly": "הפקדה חודשית מינימלית בחיסכון הגמיש (יהב)",
-    "leumi_touch_daily_min": "סכום מינימלי ליום בחיסכון בנגיעה (לאומי)",
-    "leumi_touch_daily_max": "סכום מרבי ליום בחיסכון בנגיעה (לאומי)"
+    "yahav_flexible_min_monthly": "הפקדה חודשית מינימלית בחיסכון הגמיש (יהב)"
   },
   "strength": "institution",
   "dimensions": [
@@ -37,46 +35,6 @@
       ],
       "state": "sourced",
       "notes": "Bank Yahav \"חסכון גמיש חדש\": \"פיקדון בהוראת קבע חודשית לתקופה של שנתיים בריבית משתנה על בסיס הפריים\", from NIS 200 (board 13_26, p.2, in force from 06/10/2026, re-read 2026-11-07; BANK-38)."
-    },
-    "leumi_touch_daily_min": {
-      "value": 10,
-      "unit": "nis",
-      "source": {
-        "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
-        "title": "לאומי: חיסכון בנגיעה",
-        "publisher": "Bank Leumi",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "BANK-38"
-      ],
-      "state": "sourced",
-      "notes": "Bank Leumi \"חיסכון בטאצ'\": NIS 10 to 5,000 a day (BANK-38)."
-    },
-    "leumi_touch_daily_max": {
-      "value": 5000,
-      "unit": "nis",
-      "source": {
-        "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
-        "title": "לאומי: חיסכון בנגיעה",
-        "publisher": "Bank Leumi",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "BANK-38"
-      ],
-      "state": "sourced",
-      "notes": "Bank Leumi \"חיסכון בטאצ'\": NIS 10 to 5,000 a day (BANK-38)."
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
@@ -401,26 +359,6 @@
       "strength": "institution",
       "quote": "חיסכון חודשי (לתקופה של שנה)",
       "checked": "2026-11-07"
-    },
-    {
-      "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
-      "title": "לאומי: חיסכון בנגיעה",
-      "title_he": "לאומי: חיסכון בנגיעה",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.leumi.co.il/he/savings",
-      "title": "לאומי: חסכונות",
-      "title_he": "לאומי: חסכונות",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
     }
   ],
   "derived_from": [
