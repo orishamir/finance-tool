@@ -2018,7 +2018,7 @@
     "variants_he": [],
     "explain_he": "סוג נפרד של איגרות חוב ממשלתיות בשקלים בריבית קבועה, לא צמודות למדד, עם תקנות משלו, שהונפק לראשונה ב־1995",
     "rule_ids": [
-      "GOV-13"
+      "GOV-28"
     ],
     "source": {
       "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו",
@@ -2031,7 +2031,7 @@
       "ad",
       "guide:government-bond"
     ],
-    "notes": "Only a secondary source (Hebrew Wikipedia) maps 'שחר' to today's fixed-rate shekel bonds; BoI EDGE series codes (SHACHAR) are only codes (GOV-13, GOV OQ12).",
+    "notes": "Only a secondary source (Hebrew Wikipedia) maps 'שחר' to today's fixed-rate shekel bonds; BoI EDGE series codes (SHACHAR) are only codes (GOV-28, GOV OQ12).",
     "id": "shchr"
   },
   {
