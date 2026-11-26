@@ -4099,8 +4099,8 @@ export const invest = {
     trade: "ההדגמה מניחה שלבנק יש הסכם הפצה עם הקרן.",
     custody: "ההדגמה מניחה שהקרן נקנית דרך הבנק.",
   },
-  /** The note on a deposit fee of 0 where the regulator's field is empty and the product may charge from the balance only (PF-06, the chip). */
-  depositFeeNoneByRule: (track: number) => `השדה של ממוצע דמי הניהול מהפקדות ריק בנתוני רשות שוק ההון למסלול ${track}, ולכן החישוב לוקח 0.`,
+  /** The note on a deposit fee of 0 where the regulator's field is empty: it says why that empty field means 0, that the product may charge from the balance only (PF-06, also the chip). */
+  depositFeeNoneByRule: (track: number) => `השדה של ממוצע דמי הניהול מהפקדות ריק בנתוני רשות שוק ההון למסלול ${track}. בסוג הקופה הזה מותר לגבות דמי ניהול רק מהיתרה, ולכן החישוב לוקח 0.`,
   shownPair,
   /** The plan's inputs as a computed figure's sheet lists them (`planInputs` in lib/invest.ts): a figure lists only those its formula uses. */
   planInputs: { amount: "סכום", monthly: "הפקדה חודשית", years: "שנים", return: "תשואה", inflation: "אינפלציה" },
