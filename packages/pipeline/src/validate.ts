@@ -220,6 +220,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       for (const message of checkFundNames(parsed.value as Pick<FundRecord, "names">)) report(file, message);
       for (const message of checkTrackingRecord(parsed.value as Pick<FundRecord, "exposure_id" | "tracking_record" | "domicile" | "fees">)) report(file, message);
       for (const message of checkSharePrice(parsed.value as Pick<FundRecord, "share_price">)) report(file, message);
+      for (const message of checkFundExchange(parsed.value as Pick<FundRecord, "exchange">)) report(file, message);
       for (const message of checkFundPromotions(parsed.value as Pick<FundRecord, "fees" | "promotions">)) report(file, message);
     }
     if (collection === "catalog" && result.success && cmaFundIds) {
@@ -798,9 +799,15 @@ export function checkSharePrice(rec: Pick<FundRecord, "share_price">): string[] 
   const p = rec.share_price;
   if (!p) return [];
   const out: string[] = [];
-  if (!["usd", "nis", "eur"].includes(p.unit)) out.push(`share_price: unit ${p.unit} is not a currency`);
+  // agorot are TASE's quote of a unit, which only a fund the person types carries (data-schema §3.5)
+  if (!["usd", "nis", "eur"].includes(p.unit)) out.push(`share_price: unit ${p.unit} is not a currency an issuer's NAV is printed in`);
   if (/tase\.co\.il/i.test(p.source.url)) out.push(`share_price: ${p.source.url} is TASE's or Maya's; a unit's price is the issuer's NAV from its own page (D94)`);
   return out;
+}
+
+/** data-schema §3.5, F-65: `exchange` is a typed fund's answer; a collected record's tickers and domicile name its exchange. */
+export function checkFundExchange(rec: Pick<FundRecord, "exchange">): string[] {
+  return rec.exchange === undefined ? [] : [`exchange: a collected record names its exchange by its tickers and domicile; the field is a typed fund's only (F-65)`];
 }
 
 interface DiscountSnapshot {

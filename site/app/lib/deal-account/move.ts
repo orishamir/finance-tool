@@ -79,7 +79,8 @@ const addMonths = (key: MonthKey, n: number): MonthKey => {
 const RUNS: { side: Place; run: DealRun }[] = OPTION_IDS.flatMap((o) => {
   const cls = OPTION_CLASS[o];
   const foreign = cls === "foreign_securities";
-  const listings: DealRun["listing"][] = foreign ? ["us", "europe", undefined] : ["tase"];
+  // a fund abroad is bought on one of the two exchanges, its own or each in turn where it is not known (F-65, F-128)
+  const listings: DealRun["listing"][] = foreign ? ["us", "europe"] : ["tase"];
   return listings.map((listing) => ({ side: (foreign ? "abroad" : "israel") as Place, run: { instrumentClass: cls, listing, currency: null, distributes: false, fx: {} } }));
 });
 

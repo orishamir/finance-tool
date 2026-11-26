@@ -159,6 +159,7 @@
               "type": "string",
               "enum": [
                 "nis",
+                "agorot",
                 "nis_millions",
                 "usd",
                 "eur",
@@ -361,6 +362,7 @@
               "type": "string",
               "enum": [
                 "nis",
+                "agorot",
                 "nis_millions",
                 "usd",
                 "eur",

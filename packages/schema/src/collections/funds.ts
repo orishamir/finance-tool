@@ -77,6 +77,10 @@ const distributionTrailing = z.strictObject({
  * `statutory-trust`: a US statutory trust; `unit-trust`; `common-contractual-fund`. Only `company` settles how Israel taxes the fund's
  * distribution (TXF-08, F-20, product D85); any other form, or none recorded, is read by the site.
  */
+/** F-65, F-109: the exchanges abroad a fund bought abroad is priced on. */
+export const fundExchange = z.enum(["us", "europe"]);
+export type FundExchange = z.infer<typeof fundExchange>;
+
 export const legalStructures = ["company", "icav", "statutory-trust", "unit-trust", "common-contractual-fund"] as const;
 export type LegalStructure = (typeof legalStructures)[number];
 
@@ -247,17 +251,19 @@ export const fundRecord = z.strictObject({
     })
     .optional(),
   /**
-   * S4, F-109: the price of one unit, in a currency unit (`usd`, `nis`, `eur`), from the issuer's own page, for per-share commissions and for
-   * buying whole units. A Tel Aviv line of a foreign fund takes its issuer's NAV of the same share class, which the line's own Israeli
-   * document names; never a price from TASE or Maya (the data check refuses one).
+   * S4, F-109: the price of one unit, read by its unit. On a collected record, the issuer's NAV from its own page in a currency unit (`usd`,
+   * `nis`, `eur`), for per-share commissions and for buying whole units; a Tel Aviv line of a foreign fund takes its issuer's NAV of the same
+   * share class, which the line's own Israeli document names; never a price from TASE or Maya (the data check refuses one). On a fund the
+   * person types, the price they type, dated the day they typed it: abroad in the fund's own currency, on TASE in `agorot`, as TASE quotes
+   * a unit (ETF-32).
    */
   share_price: valueObject.optional(),
   /**
-   * data-schema §3.5, F-109, F-128: the exchange abroad a fund bought abroad trades on where the record states it (`us`, `europe`), or `null`
-   * where it states that the exchange is not known. Left out on a collected record, whose tickers name its exchanges; a fund the person
-   * types abroad carries it, from their answer.
+   * data-schema §3.5, F-65, F-128: the exchange abroad a fund the person types abroad trades on, as they said it (`us`, `europe`), or `null`
+   * for "not sure", the exchange then following the domicile they gave. Left out on a collected record, whose tickers and domicile name its
+   * exchange; the data check refuses it there.
    */
-  exchange: z.enum(["us", "europe"]).nullable().optional(),
+  exchange: fundExchange.nullable().optional(),
   /** data-schema §3.5: the fund's fees lowered for a stated period (F-121); the data check holds each to its fee. */
   promotions: z.array(fundPromotion).min(1).optional(),
   snapshot: isoDate,

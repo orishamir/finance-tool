@@ -96,10 +96,15 @@ describe("whole units on the indices page (F-109, D94)", () => {
     const typed = (kind: Parameters<typeof fundDraftOf>[1]) =>
       fundFromDraft({ ...fundDraftOf(null, kind), payout: "accumulating" as const, hedged: false, name: kind, fixed: 0.1, variable: 0, trustee: 0 }, `custom-fund-${kind}`, "index-sp500", bundle.today);
     const b = withCustomEntries(bundle, [typed("abroad"), typed("il-etf"), typed("il-tracking")]);
-    const all = buildInvest({ bundle: b, index: indexById(b, "index-sp500")!, plan }).options.flatMap((o) => o.funds);
+    const view = buildInvest({ bundle: b, index: indexById(b, "index-sp500")!, plan });
+    const all = view.options.flatMap((o) => o.funds);
     const of = (kind: string) => all.find((f) => f.rec.id === `custom-fund-${kind}`)!;
     expect(of("abroad").noUnitPrice).toBe(true);
     expect(of("il-etf").noUnitPrice).toBe(true);
     expect(of("il-tracking").noUnitPrice).toBe(false);
+    // the row says the person did not enter it, not that the site did not collect it
+    const words = shown(lists(view, b, plan, { house: "leumi", fund: "custom-fund-il-etf" }, { today: b.today }));
+    expect(words).toContain(invest.pair.unitPriceNotTyped);
+    expect(words).not.toContain(invest.pair.unitPriceMissing);
   });
 });

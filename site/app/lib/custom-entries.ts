@@ -4,7 +4,7 @@
 // typed account is read back only to move it into a deal (the move, method §10.4; lib/deal-account/move.ts).
 //
 // No runtime import of invest.ts or the engine: state.ts reads this file on every page.
-import { groupPrice, isShekel, valueObject, type ExposureRecord, type FundRecord, type ValueObject } from "@finance-tool/schema";
+import { fundExchange, groupPrice, isShekel, valueObject, type ExposureRecord, type FundExchange, type FundRecord, type ValueObject } from "@finance-tool/schema";
 import type { ProviderInput } from "@finance-tool/engine";
 import { invest as copy } from "../copy";
 import type { CustomIndex, OptionId } from "./invest";
@@ -73,9 +73,9 @@ export interface CustomFund {
   domicile: FundDomicile | null;
   /** How it follows its index; null: not said. A label only: no calculation reads it. */
   tracking: FundTracking | null;
-  /** A fund bought abroad: the exchange it trades on, as the person said; absent: not sure, or saved before it was asked (F-65, F-128). */
+  /** A fund bought abroad: the exchange it trades on, as the person said; absent: not sure, or saved before it was asked, and the exchange follows its domicile (F-65). */
   exchange?: FundExchange;
-  /** A fund bought on an exchange: the price of one unit, in the currency it trades in (`unitPriceUnit`), dated the day it was typed; absent: not typed (F-109). */
+  /** A fund bought on an exchange: the price of one unit in its kind's unit (`unitPriceUnit`), dated the day it was typed; absent: not typed (F-109). */
   unitPrice?: ValueObject;
   added: string;
 }
@@ -84,17 +84,20 @@ export type FundPayout = "accumulating" | "distributing";
 export type FundDomicile = "IE" | "US";
 export type FundTracking = "physical" | "swap" | "futures" | "mixed";
 export type PerYear = 1 | 2 | 4 | 12;
-export type FundExchange = "us" | "europe";
 export const PAYOUTS: readonly FundPayout[] = ["accumulating", "distributing"];
 export const DOMICILES: readonly FundDomicile[] = ["IE", "US"];
 export const TRACKINGS: readonly FundTracking[] = ["physical", "swap", "futures", "mixed"];
 export const PER_YEAR: readonly PerYear[] = [1, 2, 4, 12];
-export const EXCHANGES: readonly FundExchange[] = ["us", "europe"];
+export const EXCHANGES = fundExchange.options;
 
-/** A unit price's unit, by the currency it is in. */
-const PRICE_UNITS = { USD: "usd", EUR: "eur", NIS: "nis" } as const satisfies Record<string, ValueObject["unit"]>;
-type PriceUnit = (typeof PRICE_UNITS)[keyof typeof PRICE_UNITS];
-const isPriceUnit = (u: unknown): u is PriceUnit => Object.values(PRICE_UNITS).includes(u as PriceUnit);
+/**
+ * The units a typed fund's unit price can be in, by its kind (F-109): abroad the fund's own currency, which the engine has a unit price in;
+ * on TASE agorot, as TASE quotes a unit (ETF-32); none for a tracking fund, bought from its manager by amount.
+ */
+const PRICE_UNITS = { abroad: ["usd", "eur"], "il-etf": ["agorot"], "tase-foreign": ["agorot"], "il-tracking": [] } as const satisfies Record<OptionId, readonly ValueObject["unit"][]>;
+type PriceUnit = (typeof PRICE_UNITS)[OptionId][number];
+/** A fund abroad's unit price unit, by the currency it is in. */
+const ABROAD_PRICE_UNIT: Readonly<Record<string, PriceUnit>> = { USD: "usd", EUR: "eur" };
 
 const BROKER_ID = /^custom-broker-[a-z0-9-]+$/;
 const FUND_ID = /^custom-fund-[a-z0-9-]+$/;
@@ -114,17 +117,15 @@ export const newFundId = () => newId("custom-fund-");
  */
 const currencyOfTypedFund = (kind: OptionId, currencyOfIndex: string | null): string => (isForeignKind(kind) ? (currencyOfIndex && !isShekel(currencyOfIndex) ? currencyOfIndex : "USD") : "NIS");
 
-/** Whether a fund of the kind is bought on an exchange (F-109): every kind but a tracking fund, which is bought from its manager by amount. */
-const onExchange = (kind: OptionId): boolean => kind !== "il-tracking";
-
 /**
- * The unit a typed fund's unit price is in: the currency it trades in, on TASE the shekel (`trading_currency_on_tase`), abroad its own
- * currency; null where it is bought by amount, or trades in a currency the engine has no unit price in.
+ * The unit a typed fund's unit price is typed in (`PRICE_UNITS`): abroad the fund's currency, on TASE agorot; null where it is bought by
+ * amount, or is in a currency the engine has no unit price in.
  */
 export function unitPriceUnit(kind: OptionId, currencyOfIndex: string | null): PriceUnit | null {
-  if (!onExchange(kind)) return null;
-  const code = kind === "abroad" ? currencyOfTypedFund(kind, currencyOfIndex) : "NIS";
-  return (PRICE_UNITS as Record<string, PriceUnit>)[code] ?? null;
+  const units: readonly PriceUnit[] = PRICE_UNITS[kind];
+  // a fund abroad has one unit of the two, its currency's
+  const unit = units.length > 1 ? ABROAD_PRICE_UNIT[currencyOfTypedFund(kind, currencyOfIndex)] : units[0];
+  return unit !== undefined && units.includes(unit) ? unit : null;
 }
 
 // ---------------------------------------------------------------- reading it back
@@ -224,9 +225,11 @@ export function validCustomFunds(list: unknown[]): CustomFund[] {
     const domicile = foreign && DOMICILES.includes(f.domicile as FundDomicile) ? (f.domicile as FundDomicile) : null;
     const tracking = TRACKINGS.includes(f.tracking as FundTracking) ? (f.tracking as FundTracking) : null;
     // a fund saved before these were asked has neither: it reads as not sure, and as no unit price typed
-    const exchange = kind === "abroad" && EXCHANGES.includes(f.exchange as FundExchange) ? (f.exchange as FundExchange) : null;
+    const exchange = kind === "abroad" ? fundExchange.safeParse(f.exchange).data ?? null : null;
+    // a price in a unit its kind is not typed in is not read: the fund is kept, bought by amount
+    const units: readonly unknown[] = PRICE_UNITS[kind];
     const rawUnit = isObj(f.unitPrice) ? f.unitPrice.unit : undefined;
-    const unitPrice = onExchange(kind) && isPriceUnit(rawUnit) ? figure(f.unitPrice, rawUnit, ANY_SUM) : null;
+    const unitPrice = units.includes(rawUnit) ? figure(f.unitPrice, rawUnit as PriceUnit, ANY_SUM) : null;
     if (unitPrice === undefined) continue;
     out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: foreign ? null : variable, trustee: foreign ? null : trustee, hedged: f.hedged, ...(f.shekelIndex === true && !f.hedged ? { shekelIndex: true as const } : {}), payout, yield: yieldPct, perYear, domicile, tracking, ...(exchange ? { exchange } : {}), ...(unitPrice && unitPrice.value !== 0 ? { unitPrice } : {}), added: f.added });
   }
@@ -253,7 +256,7 @@ export interface FundDraft {
   tracking: FundTracking | null;
   /** Null: not sure, asked only of a fund bought abroad. */
   exchange: FundExchange | null;
-  /** In the currency the fund trades in (`unitPriceUnit`); null: not typed. */
+  /** In its kind's unit (`unitPriceUnit`); null: not typed. */
   unitPrice: number | null;
 }
 
@@ -279,11 +282,16 @@ export function fundErrors(d: FundDraft, others: readonly { id: string; name: st
 
 const vo = (v: number | null, unit: ValueObject["unit"], today: string, about: string): ValueObject | null => (v === null ? null : entered(v, unit, today, about));
 
-/** `currencyOfIndex`: the currency of the index the fund is on, which sets the unit its unit price is typed in (`unitPriceUnit`); none known, a fund abroad's is in dollars. */
-export function fundFromDraft(d: FundDraft, id: string, indexId: string, today: string, currencyOfIndex: string | null = null): CustomFund {
+/**
+ * `currencyOfIndex`: the currency of the index the fund is on, which sets the unit its unit price is typed in (`unitPriceUnit`); none known,
+ * a fund abroad's is in dollars. `before`: the fund as saved, whose unit price keeps its date where its value is the same (F-65: dated the
+ * day it was typed).
+ */
+export function fundFromDraft(d: FundDraft, id: string, indexId: string, today: string, currencyOfIndex: string | null = null, before: CustomFund | null = null): CustomFund {
   const w = c.fields;
   const foreign = isForeignKind(d.kind);
   const priceUnit = unitPriceUnit(d.kind, currencyOfIndex);
+  const kept = before?.unitPrice && before.unitPrice.unit === priceUnit && before.unitPrice.value === d.unitPrice ? before.unitPrice : null;
   return {
     id,
     name: norm(d.name).slice(0, NAME_MAX),
@@ -301,7 +309,7 @@ export function fundFromDraft(d: FundDraft, id: string, indexId: string, today: 
     domicile: foreign ? d.domicile : null,
     tracking: d.tracking,
     ...(d.kind === "abroad" && d.exchange ? { exchange: d.exchange } : {}),
-    ...(priceUnit && d.unitPrice ? { unitPrice: entered(d.unitPrice, priceUnit, today, w.unitPrice) } : {}),
+    ...(priceUnit && d.unitPrice ? { unitPrice: kept ?? entered(d.unitPrice, priceUnit, today, w.unitPrice) } : {}),
     added: today,
   };
 }

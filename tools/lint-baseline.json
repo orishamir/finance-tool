@@ -85,7 +85,7 @@
    "site/app/lib/guide-signature.server.ts": 1,
    "site/app/lib/guide.server.ts": 2,
    "site/app/lib/import-check.ts": 2,
-   "site/app/lib/invest.ts": 5,
+   "site/app/lib/invest.ts": 4,
    "site/app/lib/labels.ts": 1,
    "site/app/lib/list-sort.ts": 2,
    "site/app/lib/own-account.ts": 5,

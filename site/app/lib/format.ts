@@ -343,6 +343,7 @@ export function formatValue(value: number | string | boolean | null, unit: strin
       return `${fmt.number(value)} ${numbers.nisMillions}`;
     case "nis_per_usd":
       return `${fmt.number(agorotOfShekels(value))} ${numbers.agorotPerDollar}`;
+    case "agorot":
     case "agorot_per_usd":
       return `${fmt.number(value)} ${numbers.agorot}`;
     case "trade_ccy_per_trade":
@@ -363,6 +364,7 @@ export function formatValue(value: number | string | boolean | null, unit: strin
 /** Unit word beside an input field (values sheet). */
 export function unitWord(unit: string): string {
   if (unit.startsWith("nis")) return valuesCopy.units.nis;
+  if (unit === "agorot") return valuesCopy.units.agorot;
   if (unit.startsWith("pct")) return valuesCopy.units.pct;
   if (unit.startsWith("usd")) return valuesCopy.units.usd;
   if (unit.startsWith("eur")) return valuesCopy.units.eur;

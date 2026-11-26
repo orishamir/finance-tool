@@ -388,7 +388,7 @@ export const values = {
   fields: { amount_now: "סכום היום", monthly_deposit: "הפקדה חודשית", horizon_years: "כמה שנים", "A-01": "תשואה בשנה", cash_rate: "ריבית בשנה", "A-02": "אינפלציה בשנה", age: "גיל", employment: "סוג ההעסקה" },
   optional: "(לא חובה)",
   employment: { employee: "שכירים", "self-employed": "עצמאים" },
-  units: { nis: "₪", pct: "%", years: "שנים", usd: "$", eur: "€", gbp: "£" },
+  units: { nis: "₪", pct: "%", years: "שנים", usd: "$", eur: "€", gbp: "£", agorot: numbers.agorot },
   hints: { return: "התשואה ההתחלתית היא דוגמה, לא תחזית.", cashCommon: { before: "הריבית ההתחלתית היא הריבית שהכי הרבה בנקים משלמים בעו״ש:", prefix: "ב־", of: "מתוך", after: "הבנקים שנאספו. ריבית שתזינו תחול על כל היתרה." }, cashPublished: "הריבית שהבנק פרסם. ריבית שתזינו תחול על כל היתרה.", cashAssumption: "הריבית ההתחלתית היא ריבית בנק ישראל: הנחה של האתר, לא התשואה של המוצר הזה.", cashRenews: { deposit: "אחרי התקופה הראשונה זו הנחה: בכל חידוש הפיקדון מקבל את הריבית שהבנק מפרסם באותו יום. הגרף מניח שהריבית הזו נשארת כמו היום.", "savings-plan": "אחרי התקופה הראשונה זו הנחה: תוכנית חדשה מקבלת את הריבית שהבנק מפרסם באותו יום. הגרף מניח שהריבית הזו נשארת כמו היום." }, asOf: "נכון ל־", inflation: "בכמה המחירים עולים בשנה, בממוצע.", deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.", age: "מסמן בגרף גילים שבהם החוקים והכללים משתנים.", employment: "מסמן בעמוד את החלקים שנוגעים לכם." },
   returnNote: "תשואה שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר.",
   returnNoteCash: "ריבית שתזינו תסומן בגרף בקו מקווקו, כי היא שלכם.",
@@ -4444,9 +4444,11 @@ export const invest = {
       yield: "תשואת החלוקה",
       perYear: "תשלומים בשנה",
       unitPrice: "מחיר יחידה (לא חובה)",
+      /** A fund bought in Tel Aviv: its price as TASE quotes it (ETF-32). */
+      unitPriceAgorot: "מחיר יחידה באגורות (לא חובה)",
     },
     /** Under the unit price: what it changes in the calculation (F-109). */
-    unitPriceHint: "עם מחיר, החישוב קונה רק יחידות שלמות, כמו בקרנות שהאתר אסף.",
+    unitPriceHint: "עם מחיר, החישוב קונה יחידות שלמות, כמו בקרנות שהאתר אסף. חשבון שקונה גם בסכום מחושב בדרך שמשאירה לכם יותר.",
     /** The panel of the person's own fund: its three parts, the questions about the fund, and the preview of its row. */
     fundParts: { fund: "הקרן", fees: "דמי ניהול", traits: "מה הקרן עושה" },
     traitsSub: "כל תשובה מוסיפה לשורה של הקרן את התוויות שמופיעות בה.",
@@ -4460,11 +4462,12 @@ export const invest = {
       exchange: "באיזו בורסה בחו״ל הקרן נסחרת?",
     },
     exchangeNames: { us: "ארה״ב", europe: "אירופה" },
-    /** Under each answer: which fees each account is priced on (F-128). */
-    exchangeNotes: { us: "העמלות של כל חשבון בארה״ב", europe: "העמלות של כל חשבון באירופה", unknown: "כל חשבון לפי הבורסה הזולה אצלו מהשתיים" },
-    /** The caution "?" beside the name of a typed fund bought abroad whose exchange was not given. */
+    /** Under each answer: which fees each account is priced on (F-65). "Not sure" goes by the country the fund is registered in, the answer below. */
+    exchangeNotes: { us: "העמלות של כל חשבון בארה״ב", europe: "העמלות של כל חשבון באירופה" },
+    exchangeByDomicile: { US: "לפי המדינה שבה הקרן רשומה: העמלות בארה״ב", IE: "לפי המדינה שבה הקרן רשומה: העמלות באירופה", none: "לפי המדינה שבה הקרן רשומה. בלי מדינה: כל חשבון לפי הבורסה שמשאירה פחות" } as Record<string, string>,
+    /** The caution "?" beside the name of a typed fund bought abroad whose exchange and country were not given. */
     exchangeUnknownAbout: "לא ידוע באיזו בורסה",
-    exchangeUnknownText: "לא הזנתם באיזו בורסה הקרן נסחרת. לכן כל חשבון מחושב בבורסה שזולה יותר אצלו, בארה״ב או באירופה. אפשר לבחור בורסה בעריכת הקרן.",
+    exchangeUnknownText: "לא הזנתם באיזו בורסה הקרן נסחרת או באיזו מדינה היא רשומה. לכן כל חשבון מחושב בבורסה שמשאירה לכם פחות אצלו, בארה״ב או באירופה. אפשר לבחור בורסה או מדינה בעריכת הקרן.",
     unknown: "לא ידוע",
     domicileNames: { IE: "אירלנד", US: "ארצות הברית", other: "מדינה אחרת, או לא ידוע" } as Record<string, string>,
     noLabel: "בלי תווית",
@@ -4680,6 +4683,8 @@ export const invest = {
     waitingWhy: { rose: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא עלה עם הקרן.", fell: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא ירד עם הקרן." },
     /** F-109: a fund bought in whole units whose unit price the site did not collect is priced by amount, and its row says so */
     unitPriceMissing: "מחיר יחידה של הקרן לא נאסף, אז החישוב קונה בכל סכום, גם חלק מיחידה.",
+    /** The same, on a fund the person typed: they left its unit price empty (F-109). */
+    unitPriceNotTyped: "לא הזנתם מחיר יחידה, אז החישוב קונה בכל סכום, גם חלק מיחידה.",
     accountSlot: "חשבון ניירות ערך",
     fundSlot: "קרן",
     accounts: "כל החשבונות",

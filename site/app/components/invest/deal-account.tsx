@@ -178,13 +178,15 @@ export function DealAccountsHost({ data, onWant, failed, saved, writable, today,
       deleted,
       abroadLacks: (id) => {
         if (!world) return null;
-        const gaps = abroadGaps(abroadOf(world.view), (f) => f.byHouse[id], (f) => dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId: f.rec.id, providerId: id }));
+        const gaps = abroadGaps(abroadOf(world.view), (f) => f.byHouse[id], (f, listing) => dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId: f.rec.id, listing }));
         return gaps[0]?.missing ?? null;
       },
       feeWords: (id, fundId, feeId) => {
         const deal = saved.find((d) => dealProviderId(d.id) === id);
         if (!deal || !data || !world) return null;
-        const run = dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId, providerId: id });
+        // where the page priced the fund at the deal, for a fund whose exchange is not known
+        const listing = allFunds(world.view).find((f) => f.rec.id === fundId)?.byHouse[id]?.listing;
+        const run = dealRunOf({ bundle: world.bundle, index: world.index, plan: world.plan, fundId, listing });
         if (!run) return null;
         // the ticket asks only for the fees the page's run charges, the counted ones, whose words are the same read on the whole deal
         return <DealFeeWords read={planRead(deal, run, planContextOf(world.bundle, deal, data.kinds, world.plan.currentAccounts ?? false))} feeId={feeId} />;
@@ -313,7 +315,8 @@ function usePlanOn({ data, deal, world, terms, onAddCase }: { data: FeesData; de
     const pc = fundId && at?.kind === "ok" ? pairCosts({ bundle: settled, index: world.index, plan: world.plan, fundId, providerId }) : null;
     return pc ? new Map(accountLinesOf(pc, receiptAmounts(pc)).flatMap((l) => (l.kind === "deal" ? [[l.fee, l.amount] as const] : []))) : null;
   }, [settled, world.index, world.plan, fundId, providerId, at?.kind]);
-  const run = useMemo(() => (fundId ? dealRunOf({ bundle: settled, index: world.index, plan: world.plan, fundId, providerId }) : null), [settled, world.index, world.plan, fundId, providerId]);
+  const listing = at?.listing;
+  const run = useMemo(() => (fundId ? dealRunOf({ bundle: settled, index: world.index, plan: world.plan, fundId, listing }) : null), [settled, world.index, world.plan, fundId, listing]);
   const houseId = dealHouseId(deal);
   const tiles = fundId ? dealTiles(view, got, row, deal.name, houseId, fundId, funds) : null;
   const house = houseId ? view.houses.find((h) => h.provider.id === houseId)?.provider : undefined;
@@ -323,7 +326,7 @@ function usePlanOn({ data, deal, world, terms, onAddCase }: { data: FeesData; de
   const onPlan = useMemo(() => (run ? new Map(feesOnPlan(deal, run, ctx).map((x) => [x.fee, x])) : null), [deal, run, ctx]);
   const countedOn = useMemo(() => (run ? (counted === deal ? [...(onPlan?.values() ?? [])] : feesOnPlan(counted, run, ctx)) : null), [counted, deal, run, ctx, onPlan]);
   // a fund bought abroad whose price waits on a case the deal lacks (E): each such fee, with the values the funds are bought as
-  const abroad = useMemo(() => abroadGaps(abroadFunds, (f) => got.get(f.rec.id), (f) => dealRunOf({ bundle: settled, index: world.index, plan: world.plan, fundId: f.rec.id, providerId })), [abroadFunds, got, settled, world.index, world.plan, providerId]);
+  const abroad = useMemo(() => abroadGaps(abroadFunds, (f) => got.get(f.rec.id), (f, listing) => dealRunOf({ bundle: settled, index: world.index, plan: world.plan, fundId: f.rec.id, listing })), [abroadFunds, got, settled, world.index, world.plan]);
   const averages = houseId ? data.houses.find((h) => h.id === houseId)?.everyColumn : undefined;
   // the deal read for the plan: the picks it cannot set, what only the person knows, saved with the deal, of every fee; and the cases the
   // plan reads, of the fees counted
@@ -641,16 +644,17 @@ interface AbroadGap {
  * The deal's fees that lack a case for the page's funds bought abroad (E), each once, in the order the funds name them: only where that case
  * is what keeps the deal from a price on the fund (`at`, the deal's row there: its reason says so), so a fund the house it was filled from
  * does not sell, which the deal takes from the house (F-128), offers no case that could never price it. The case is what the fund is bought
- * as (a trade's) or the currency it is bought in (a conversion's), from the fund's run.
+ * as (a trade's) or the currency it is bought in (a conversion's), from the fund's run on the exchange of the reading whose reason the row
+ * gives (`listing`), for a fund whose exchange is not known.
  */
-function abroadGaps(funds: readonly FundWay[], at: (f: FundWay) => FundWay["byHouse"][string] | DealOnPlan | undefined, runOf: (f: FundWay) => DealRun | null): AbroadGap[] {
+function abroadGaps(funds: readonly FundWay[], at: (f: FundWay) => FundWay["byHouse"][string] | DealOnPlan | undefined, runOf: (f: FundWay, listing: DealRun["listing"]) => DealRun | null): AbroadGap[] {
   const out: AbroadGap[] = [];
   for (const f of funds) {
     const got = at(f);
     const reason = got && "reason" in got ? got.reason : undefined;
     const missing = reason && reason.code === "deal-unpriced" ? reason.missing : null;
     if (!missing || missing.why !== "case" || (missing.kind !== "trade" && missing.kind !== "fx")) continue;
-    const run = runOf(f);
+    const run = runOf(f, got?.listing);
     const value = run ? (missing.kind === "trade" ? whatOfRun(run) : run.currency) : null;
     if (!value) continue;
     const by = missing.kind === "trade" ? "what" : "currency";

@@ -15,6 +15,9 @@ function fraction(vo: ValueObject | null | undefined, unit: ValueObject["unit"],
 }
 
 /** The drag part each fee a promotion may lower is charged in (F-10, F-121). */
+/** F-109: the currency a unit price is in and what one of its units is in that currency, by the price's unit. */
+const PRICE_UNITS: Partial<Record<ValueObject["unit"], { code: string; scale: number }>> = { nis: { code: "ILS", scale: 1 }, agorot: { code: "ILS", scale: 0.01 }, usd: { code: "USD", scale: 1 }, eur: { code: "EUR", scale: 1 } };
+
 const PROMOTED_PART = { fixed_management: "management", variable_management: "variable", trustee: "trustee" } as const;
 
 /** The fund's listed fixed, variable and trustee fees together, as an annual fraction (0 for a fee not collected). */
@@ -147,13 +150,14 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   if (rec.legal_structure) fund.legalStructure = rec.legal_structure.form;
   if (exposureKind !== undefined) fund.exposureKind = exposureKind;
   if (w8ben !== undefined) fund.w8ben = w8ben;
-  // E1, F-109: the price of one unit, in the unit's currency, for per-share commissions and whole units.
+  // E1, F-109: the price of one unit, in the unit's currency, for per-share commissions and whole units; a price in agorot (a typed TASE
+  // unit's, as TASE quotes it, ETF-32) is a hundredth of a shekel.
   const price = rec.share_price;
   if (price && typeof price.value === "number") {
-    const unitCode = { nis: "ILS", usd: "USD", eur: "EUR" }[price.unit as string];
-    if (!unitCode) throw new RecordInputError(`fund ${rec.id} share_price: unit is ${price.unit}, expected a currency`);
-    fund.sharePrice = price.value;
-    fund.sharePriceCurrency = unitCode;
+    const read = PRICE_UNITS[price.unit];
+    if (!read) throw new RecordInputError(`fund ${rec.id} share_price: unit is ${price.unit}, expected a currency`);
+    fund.sharePrice = price.value * read.scale;
+    fund.sharePriceCurrency = read.code;
   }
   // F-04, D84: the index a Tel Aviv line's own annex states; a record of the same units bought abroad may carry it, and keeps TXF-03
   const stated = kind === "tase-foreign-fund" ? taxIndexStatementOf(rec) : undefined;

@@ -5,7 +5,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { checkAdvertising, checkByAmount, checkDiscountLines, checkFlatPrices, checkSharePrice, checkGroupValues, checkGroupWords, checkLinesUnderCap, checkPricePremises } from "../src/validate.ts";
+import { checkAdvertising, checkByAmount, checkDiscountLines, checkFlatPrices, checkFundExchange, checkSharePrice, checkGroupValues, checkGroupWords, checkLinesUnderCap, checkPricePremises } from "../src/validate.ts";
 
 const dir = fileURLToPath(new URL("../../../data/fees", import.meta.url));
 type Line = { id: string; base: string; applies_to: string[]; [k: string]: unknown };
@@ -355,6 +355,15 @@ describe("a unit's price (F-109)", () => {
     expect(checkSharePrice(price("https://api.tase.co.il/api/company/securitydata?securityId=1159250"))[0]).toMatch(/issuer.s NAV/);
     expect(checkSharePrice(price("https://maya.tase.co.il/api/v1/funds/mutual/5139282"))[0]).toMatch(/issuer.s NAV/);
     expect(checkSharePrice(price("https://www.ishares.com/", "pct"))[0]).toMatch(/not a currency/);
+    expect(checkSharePrice(price("https://www.ishares.com/", "agorot"))[0]).toMatch(/not a currency/);
+  });
+});
+
+describe("the exchange of a fund bought abroad (F-65)", () => {
+  it("is refused on a collected record, whose tickers and domicile name it", () => {
+    expect(checkFundExchange({})).toEqual([]);
+    expect(checkFundExchange({ exchange: "us" })[0]).toMatch(/typed fund's only/);
+    expect(checkFundExchange({ exchange: null })[0]).toMatch(/typed fund's only/);
   });
 });
 
