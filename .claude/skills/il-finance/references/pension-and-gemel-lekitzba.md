@@ -589,7 +589,7 @@ Every employee in Israel aged 21 (men) or 20 (women) and up must be insured in a
 - Dimensions: liquidity-lockup, age-or-use-exemption, regulator
 - Likely to change: no
 
-### PEN-35 Provident fund for annuity versus pension fund
+### PEN-35 Provident fund for annuity: insurance only if the manager buys a group policy; deposits up to fixed shares of the wage
 - Rule: Deposits to a provident fund for annuity are limited by the 1964 regulations: employer tagmulim "שיעור שלא יעלה על 7.5% מן המשכורת" (reg. 19(א)(1)(א), and 19(א)(1)(ג)(1) for an annuity fund), severance "לא יעלה על השיעור של 8 אחוזים ושליש" (reg. 19(א)(1)(ב)(1)), employee tagmulim "אינו עולה על 7% ממשכורתו" (reg. 19(ב)(2)). Its other differences from a pension fund are in other records: not an eligible fund for the guaranteed return (PEN-69); annuity terms set where the money moves at retirement (PEN-34); mandatory pension only with death and disability cover (PEN-05); fee caps (PEN-22, against PF-04 in a comprehensive fund).
 - Conditions / exceptions: Whether a provident fund for annuity carries insurance cover depends on whether its manager buys it for members: the 2013 insurance-cover regulations allow it only through a group life or group disability policy and do not require it (PEN-66, read 2026-11-15); whether such a fund balances actuarially is open (PEN OQ34). Trimmed on 2026-11-26: its restatements of PEN-69, PEN-34, PEN-05, PEN-22 and PF-04 became pointers. Split on 2026-10-25 (scope pass): Mor's statement that its fund has no insurance cover is PEN-43; the loan limits seen in Mor's bylaws are an unsettled claim, PEN-44.
 - Figures: deposit limits 7.5% employer tagmulim, 7% employee tagmulim, 8⅓% severance (fixed in regulation).
