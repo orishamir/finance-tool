@@ -281,9 +281,10 @@ export type OrderInterval = (typeof ORDER_INTERVALS)[number];
 export interface BuyWay {
   units?: WholeUnits;
   /**
-   * F-133: the plan's purchase orders are placed every this many months, in the months it divides and in the month of the last deposit;
-   * the deposits between them wait in shekels, unconverted and earning nothing. Above 1, an order is placed at the regular trade and
-   * conversion lines, never a standing order's or a recurring plan's. The amount now is bought at the start, as always.
+   * F-133: the plan's purchase orders are placed every this many months, in the months it divides before the month of the sale, none in
+   * that month; the deposits between orders wait in shekels, unconverted and earning nothing, and those after the last order wait to the
+   * sale. Above 1, an order is placed at the regular trade and conversion lines, never a standing order's or a recurring plan's. The amount
+   * now is bought at the start, as always.
    */
   orderEvery?: OrderInterval;
 }

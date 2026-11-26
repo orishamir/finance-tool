@@ -292,8 +292,9 @@ describe("a deal account buys every few months too (F-133, F-128)", () => {
     const monthly = row(providerWorkbench(input(1), ctx));
     expect(best.way.orderEvery).toBeGreaterThan(1);
     expect(best.real).toBeGreaterThan(monthly.real);
-    // monthly: the amount now, 120 deposits and the sale pay at least 30 ₪ each; every k months, 120 / k orders of the deposits
-    const orders = 2 + 120 / best.way.orderEvery;
+    // monthly: the amount now, 120 deposits and the sale pay at least 30 ₪ each; every k months, the amount now, an order in each month k
+    // divides before the sale (120 / k − 1 of them, none in month 120, whose deposits wait to the sale) and the sale: 1 + 120 / k orders
+    const orders = 1 + 120 / best.way.orderEvery;
     expect(best.run.fees.trade).toBeLessThan(monthly.run.fees.trade);
     expect(best.run.fees.trade).toBeGreaterThanOrEqual(30 * orders - 1e-9);
     // the deal's fees are carried as its lines, and the waiting cash is apart from them
