@@ -54,7 +54,6 @@
       "update_rule": "fixed in regulation",
       "rule_ids": [
         "PF-05",
-        "PEN-21",
         "PEN-10"
       ],
       "state": "sourced",

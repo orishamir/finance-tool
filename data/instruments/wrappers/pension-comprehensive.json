@@ -58,8 +58,7 @@
       "tax_year": null,
       "update_rule": "fixed in regulation",
       "rule_ids": [
-        "PF-04",
-        "PEN-21"
+        "PF-04"
       ],
       "state": "sourced",
       "notes": "Maximum fee on payments transferred to a new comprehensive pension fund. Selected funds charge 1% for new members, fixed for at least 10 years (PEN-23); the 2024 average charged was 1.57% (PEN-24)."

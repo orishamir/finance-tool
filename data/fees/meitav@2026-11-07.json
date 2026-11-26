@@ -167,7 +167,6 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-04",
-          "PEN-21",
           "PEN-23"
         ],
         "state": "sourced",
@@ -210,7 +209,6 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-04",
-          "PEN-21",
           "PEN-23"
         ],
         "state": "sourced",
