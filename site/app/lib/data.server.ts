@@ -126,11 +126,11 @@ export interface PointedShipment {
  * (`ruleCardData`). A rule reached only from inside another card so never travels with the page.
  */
 export function pointedShipment(have: Record<string, RuleRecord> | readonly RuleRecord[], all: Record<string, RuleRecord> = loadRules()): PointedShipment {
+  // `Array.isArray` does not narrow a readonly array, hence the casts after it
   const own: Record<string, RuleRecord> = Array.isArray(have) ? Object.fromEntries((have as readonly RuleRecord[]).map((r) => [r.id, r])) : (have as Record<string, RuleRecord>);
   const pointed: Record<string, RuleRecord> = {};
   const queue = Object.values(own);
-  while (queue.length > 0) {
-    const r = queue.pop()!;
+  for (let r = queue.pop(); r; r = queue.pop()) {
     for (const id of slotIds(r.text_he ?? "")) {
       const target = all[id];
       if (own[id] || pointed[id] || !target) continue;

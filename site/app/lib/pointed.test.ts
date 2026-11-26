@@ -42,6 +42,11 @@ import { ProvenanceProvider, ruleOf, type ProvenanceData } from "../components/p
 import { RuleCard, loadCardFile, withFetched, type CardFetch } from "../components/provenance-sheets";
 
 const all = loadRules();
+/** A value the test needs, or a failure that names it. */
+function must<T>(v: T | undefined | null, what: string): T {
+  if (v === undefined || v === null) throw new Error(`missing: ${what}`);
+  return v;
+}
 type Map_ = Record<string, RuleRecord>;
 const asMap = (x: Map_ | readonly RuleRecord[] | undefined): Map_ => (Array.isArray(x) ? Object.fromEntries(x.map((r) => [r.id, r])) : ((x as Map_ | undefined) ?? {}));
 
@@ -89,14 +94,14 @@ describe("every chip on a page's rule cards opens its record", () => {
   }, 60000);
 
   it("a chip whose rule the page holds no record of, nor a head with a file, is caught", () => {
-    const r = all["BRK-35"]!;
+    const r = must(all["BRK-35"], "BRK-35");
     const heads = Object.fromEntries(chipsOf(r).map((id) => [id, {}]));
     expect(unopened({ [r.id]: r }, {}, heads)).toEqual([]);
     const without = Object.fromEntries(Object.entries(heads).filter(([id]) => id !== "BRK-51"));
     expect(unopened({ [r.id]: r }, {}, without)).toEqual(["BRK-35 → BRK-51"]);
     const slotted = Object.values(all).find((x) => slotIds(x.text_he ?? "").some((id) => all[id] && id !== x.id));
     if (!slotted) throw new Error("no record's text has a slot of another record");
-    const target = slotIds(slotted.text_he ?? "").find((id) => all[id] && id !== slotted.id)!;
+    const target = must(slotIds(slotted.text_he ?? "").find((id) => all[id] && id !== slotted.id), "a slot of another record");
     expect(unopened({ [slotted.id]: slotted }, {}, { [target]: {} })).toContain(`${slotted.id} → ${target} (slot)`);
   });
 
@@ -339,13 +344,13 @@ describe("a card whose rule the page does not ship is fetched when opened", () =
   afterEach(() => {
     vi.unstubAllGlobals();
   });
-  const page = (more: Partial<ProvenanceData> = {}): ProvenanceData => ({ rules: { "BRK-35": all["BRK-35"]! }, terms: {}, dimensions: {}, today: "2026-11-26", ...more });
+  const page = (more: Partial<ProvenanceData> = {}): ProvenanceData => ({ rules: { "BRK-35": must(all["BRK-35"], "BRK-35") }, terms: {}, dimensions: {}, today: "2026-11-26", ...more });
   const drawn = (data: ProvenanceData, id: string) =>
-    renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(RuleCard, { id, data }) })))
+    renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(RuleCard, { id, data }))))
       .replace(/<!-- -->/g, "")
       .replace(/<[^>]+>/g, " ")
       .replace(/\s+/g, " ");
-  const file = ruleCardData("BRK-51")!;
+  const file = must(ruleCardData("BRK-51"), "BRK-51's card data");
   const answer = (body: unknown, status = 200) => vi.fn(async () => new Response(JSON.stringify(body), { status }));
 
   it("while its file is on its way, the card heads with the title its chip shows and says it is loading", () => {
