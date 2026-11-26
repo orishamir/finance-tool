@@ -754,6 +754,12 @@
         width: 30rem;
       }
     }
+    /* a figure's calculation (Sheet `size` "roomy"): a line of math with its values and a key that names each input beside its figure;
+       its height is capped where the card is placed (Sheet.tsx, `place`) */
+    .sheet[data-pc="popover"][data-size="roomy"] {
+      width: min(42rem, calc(100vw - 2rem));
+      max-height: 85vh;
+    }
     .sheet[data-pc="popover"][open] {
       animation: pop-in var(--duration-base) var(--ease-standard);
     }

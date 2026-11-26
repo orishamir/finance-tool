@@ -125,6 +125,18 @@ function usePreloadSheets(): void {
 /** Set by a provider for what it holds: a provider inside it is nested (a deal's popup, which reads the fee page's data). */
 const NestedCtx = createContext(false);
 
+/**
+ * How much room the provenance sheet takes, by what it opened to show (`roomOf`): a card (a sourced figure, a rule, a term), or more for a
+ * computed figure, whose working holds a line of math with its values, the key to its symbols, or the lines of a difference or a sum:
+ * taller on a phone and wider and taller on a computer.
+ */
+const SHEET_ROOM = {
+  card: { height: 70, size: "card", className: "lg:max-h-[60vh] lg:backdrop:bg-transparent" },
+  calculation: { height: 80, size: "roomy", className: "lg:backdrop:bg-transparent" },
+} as const satisfies Record<string, { height: 70 | 80; size: "card" | "roomy"; className: string }>;
+
+const roomOf = (item: Item | undefined): keyof typeof SHEET_ROOM => (item?.kind === "value" && item.value.state === "computed" ? "calculation" : "card");
+
 export function ProvenanceProvider({ data, children }: { data: ProvenanceData; children: ReactNode }) {
   // A nested provider's sheet opens over the sheet that holds it, which then closes as a dialog (sheet-stack): drawn inside that sheet, it
   // would close with it, out of sight yet modal, and leave the whole page inert. So it is drawn at the body's end, once in the browser.
@@ -157,8 +169,10 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   const push = useCallback((item: Item) => setStack((s) => [...s, item]), []);
   const headId = useId();
   const descId = useId();
+  // the sheet takes its room from what it opened to show, and keeps it while a card opened from inside replaces it and on the way back
+  const room = SHEET_ROOM[roomOf(stack[0])];
   const sheet = (
-    <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={70} className="lg:max-h-[60vh] lg:backdrop:bg-transparent" labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
+    <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={room.height} size={room.size} className={room.className} labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
       {top && code && <code.SheetContent item={top} data={data} headId={headId} descId={descId} />}
     </Sheet>
   );
