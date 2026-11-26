@@ -219,6 +219,13 @@ describe("the parts each run's rules went into", () => {
 
   it("files the lock's exemption on the exit as well as on the term", () => {
     expect(changedIn(run("S23 keren hishtalmut"), "TXH-09")).toEqual(["term", "taxAtExit"]);
+    // the short lock's exit, four years from the first payment: the three years at retirement age are what exempt it
+    const short = run("keren hishtalmut, the short lock at 67");
+    expect(short.taxAtExit).toBe(0);
+    expect(changedIn(short, "TXH-10")).toEqual(["term", "taxAtExit"]);
+    expect(changedIn(short, "TXH-09")).toEqual(["term", "taxAtExit"]);
+    // past the six years the short lock exempts nothing the six years do not
+    expect(changedIn(runProvident({ ...s23, profile: { ageAtStart: 63 } }, ctx), "TXH-10")).toEqual([]);
     // an early withdrawal is taxed: the exemption does not reach it
     expect(changedIn(run("S24 keren hishtalmut, early withdrawal"), "TXH-09")).toEqual(["term"]);
     const ira = run("S33 IRA hishtalmut");
@@ -228,7 +235,7 @@ describe("the parts each run's rules went into", () => {
 
   it("takes the short lock, the retirement age and its reading on the term only where the short lock moves the exit", () => {
     const short = run("keren hishtalmut, the short lock at 67");
-    expect(changedIn(short, "TXH-10")).toEqual(["term"]);
+    expect(changedIn(short, "TXH-10")).toContain("term");
     expect(changedIn(short, "PEN-26")).toEqual(["term"]);
     const six = run("keren hishtalmut, early withdrawal at 65");
     expect(changedIn(six, "TXH-10")).toEqual([]);

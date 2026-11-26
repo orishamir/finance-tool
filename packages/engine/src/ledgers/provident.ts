@@ -116,10 +116,13 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   let benefitedMonthly = Infinity;
   let benefitedYearly = Infinity;
   let employerLimit = Infinity;
+  // the month the six years from the first payment end (TXH-09): an exit before it is exempt under the short lock (TXH-10)
+  let sixYearsEnd = -Infinity;
   if (!kgl) {
     const h = input.hishtalmut!;
     const term = book.on("term");
-    let lockMonth = h.clockStartMonth + 12 * term.amount("TXH-09", "lock_years");
+    sixYearsEnd = h.clockStartMonth + 12 * term.amount("TXH-09", "lock_years");
+    let lockMonth = sixYearsEnd;
     // TXH-10: 3 years from the first payment instead of 6 for a person who has reached retirement age. The
     // exit is lawful once both 3 years have passed and the person is at that age. Which age of the Retirement
     // Age Law applies is an inference (KH-12: the s.3 age); the profile has no sex, so the higher age, 67
@@ -425,8 +428,12 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
     const excessReal = realGain(excess);
     if (excess.deposits.length > 0 && !early && fellFor(excess)) exit.label("reading", "TXH-11");
     taxAtExit = 0;
-    // after the lock the benefited money's exemption zeroes its tax at exit
-    if (!early && benefited.deposits.length > 0) exit.took("TXH-09");
+    // after the lock the benefited money's exemption zeroes its tax at exit: TXH-09's, which says what it covers, and before the six years
+    // TXH-10's, whose three years for a person at retirement age stand in for them
+    if (!early && benefited.deposits.length > 0) {
+      exit.took("TXH-09");
+      if (T < sixYearsEnd) exit.took("TXH-10");
+    }
     if (early) {
       // F-47: early withdrawal at the horizon, opted into (B3). All gains, benefited or not, are taxed at
       // the s.121 rates; the benefited employer deposits are work income when received. G-27: NI and
