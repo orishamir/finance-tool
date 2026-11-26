@@ -62,12 +62,5 @@
   "pointer-word": [
     "CORP-24"
   ],
-  "title-ditto": [
-    "BRK-25",
-    "BRK-28",
-    "BRK-46",
-    "BRK-70",
-    "BRK-74",
-    "BRK-75"
-  ]
+  "title-ditto": []
 }
