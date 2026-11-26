@@ -33,7 +33,7 @@ export interface DocumentCard {
   strength: Strength;
   checked: string;
   rules: { id: string; title: string; href: string }[];
-  /** How many figures of the site's data records (prices, funds, deposit terms, series) cite the document. */
+  /** How many figures of the site's data records (prices, funds, deposit terms, series) cite the document beside its rules. */
   values: number;
   section: SectionId;
   /** Shown as a full card (named in documents.json, or three or more rules rest on it); the rest are one-line rows. */
@@ -159,8 +159,8 @@ export function entriesOf(rules: Record<string, RuleRecord>): Entry[] {
 /** One entry per figure of the data records (not the rules) that cites a web address: the documents the site's prices, funds and series rest on. */
 export function valueEntriesOf(records: readonly unknown[]): Entry[] {
   return records.flatMap(valueObjects).flatMap((v) => {
-    const s = v.source as (Sourced["source"] & { publisher_he?: string }) | undefined;
-    return s && /^https?:/.test(s.url) ? [{ url: s.url, title: s.title, publisher: s.publisher, ...(s.publisher_he ? { publisher_he: s.publisher_he } : {}), strength: s.strength as Strength, checked: v.checked }] : [];
+    const s = v.source;
+    return s && /^https?:/.test(s.url) ? [{ url: s.url, title: s.title, publisher: s.publisher, strength: s.strength as Strength, checked: v.checked }] : [];
   });
 }
 
@@ -204,7 +204,7 @@ function sectionOf(kind: string, strength: Strength, host: string, publisherKind
 
 /** The grouping itself, on given inputs (the tests use fixtures). */
 /** `hrefOf`: where a rule's link goes; by default the rules page (a company's term goes to where it is listed, D30: loadDocuments passes that). */
-/** `values`: the data records' figures (`valueEntriesOf`); a document only they cite is a card too, with no rule. */
+/** `values`: the data records' figures (`valueEntriesOf`), counted on the card of each document a rule cites too. */
 export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDoc[], publishers: Record<string, PublisherRow>, hrefOf: (id: string) => string = (id) => rulesPath({ hash: id }), values: readonly Entry[] = []): DocumentCard[] {
   const groups = new Map<string, { doc: TableDoc | null; entries: Entry[] }>();
   const all = [...entriesOf(rules), ...values];
@@ -224,8 +224,10 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
   }
   const cards: DocumentCard[] = [];
   for (const [key, { doc, entries: cited }] of groups) {
-    // a document is named by the rules that cite it; by the data records' figures only when no rule does
-    const entries = cited.some((e) => e.ruleId) ? cited.filter((e) => e.ruleId) : cited;
+    // a document is named by the rules that cite it; one only the data records' figures cite is shown with those records, in the
+    // page's data part, not as a document
+    const entries = cited.filter((e) => e.ruleId);
+    if (entries.length === 0) continue;
     const hosts = entries.map((e) => hostOf(e.url));
     const pub = (e: Entry): PublisherRow | undefined => publishers[hostOf(e.url)];
     // a title written in Hebrew, a web host before it allowed: "data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים" is a Hebrew title, and
