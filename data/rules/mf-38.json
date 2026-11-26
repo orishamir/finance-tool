@@ -18,9 +18,12 @@
       "unit": "years",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
-        "title": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024), pp.33-34, ss.6, 7.4",
+        "title": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
         "publisher": "רשות ניירות ערך",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.33-34, ss.6, 7.4",
+        "locator_he": "עמודים 33 עד 34, סעיפים 6, 7.4",
+        "page": 33
       },
       "checked": "2026-10-25",
       "effective_from": "2024-10-03",

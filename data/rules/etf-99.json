@@ -19,9 +19,12 @@
       "unit": "pct",
       "source": {
         "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
-        "title": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500 (5139282), p.6",
+        "title": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500 (5139282)",
         "publisher": "ילין לפידות",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.6",
+        "locator_he": "עמוד 6",
+        "page": 6
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -39,9 +42,12 @@
       "unit": "pct",
       "source": {
         "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
-        "title": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500 (5139282), p.6",
+        "title": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500 (5139282)",
         "publisher": "ילין לפידות",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.6",
+        "locator_he": "עמוד 6",
+        "page": 6
       },
       "checked": "2026-10-25",
       "effective_from": null,

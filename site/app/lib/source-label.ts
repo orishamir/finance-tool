@@ -1,26 +1,15 @@
+import { isHebrewTitle, mostlyHebrew } from "@finance-tool/schema";
 import { provenance } from "../copy";
 
 // How a source is named on screen. The data's titles are mostly English working titles; the
 // page shows a title that is written in Hebrew, otherwise the link's host, with the English title in a collapsed line.
 
-const hebrew = /[֐-׿]/g;
-const latin = /[A-Za-z]/g;
+// Whether a title or a note is written in Hebrew is the data check's question too (it reads the shown notes by it), so the schema
+// package answers it once.
+export { isHebrewTitle, mostlyHebrew };
 
 /** True when the text has Hebrew letters (a Hebrew sentence, possibly quoting a Latin name). */
 export const hasHebrew = (text: string | null | undefined): boolean => !!text && /[֐-׿]/.test(text);
-
-/** True when Hebrew letters outnumber Latin ones: the title is a Hebrew title, not an English one with a Hebrew quote. */
-export function isHebrewTitle(text: string): boolean {
-  return (text.match(hebrew)?.length ?? 0) > (text.match(latin)?.length ?? 0);
-}
-
-/**
- * True when the text is written in Hebrew: its first word is Hebrew and Hebrew letters outnumber Latin ones; false for null, empty and
- * English text that merely quotes a Hebrew phrase. Notes and rationales use this: the English working notes are never shown. An English
- * note that quotes a long Hebrew line from a report ("Trustee fee (שכר נאמן): p. 1 '0.02% מהשווי הנקי…'") has more Hebrew letters
- * than Latin ones, and showed in a fund's fee sheet; its first word is English.
- */
-export const mostlyHebrew = (text: string | null | undefined): boolean => !!text && /^[^A-Za-z֐-׿]*[֐-׿]/.test(text) && isHebrewTitle(text);
 
 /**
  * A document's title written in Hebrew: `mostlyHebrew` once a leading web host is set aside. "data.gov.il, בנק ישראל: רשימת תאגידים

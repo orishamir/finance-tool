@@ -26,7 +26,8 @@
       "page": 5,
       "quote": "ימוסו ההכנסות (הריבית, הפרשי ההצמדה החלקיים ורווחים אחרים) בשיעור מס של 10%",
       "checked": "2026-11-12",
-      "qualifier": "(a 2003 circular: its rates are historical; library 44b84074ff2f63df)"
+      "qualifier": "(a 2003 circular: its rates are historical; library 44b84074ff2f63df)",
+      "standing": "superseded"
     }
   ],
   "derived_from": [

@@ -1,13 +1,16 @@
 // Smoke: each G1 visual renders on the server with its page data, inside the providers the guide page gives.
-import { createElement, type ReactNode } from "react";
+import { createElement, type ComponentProps, type ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+import { guideSignature as sigCopy } from "../../copy";
+import { sheetRules, type SiteValue } from "../../lib/value";
 import { buildGuidePage } from "../../lib/guide.server";
 import { InputsProvider } from "../../lib/inputs";
 import { ProvenanceProvider } from "../provenance";
 import { WorthKnowing, worthRows } from "../guide/worth-knowing";
 import { accountWorthRow } from "./current-account";
+import { typedShareLimits } from "./keren-hishtalmut";
 import { SignatureFrame, signatureRegistry } from "./index";
 import { fact } from "../../lib/guide-signature";
 import { studyYears, waitFigures } from "../../lib/guide-signature-g2";
@@ -137,6 +140,19 @@ describe("study fund page", () => {
   const html = renderToString(inProviders(p, createElement(SignatureFrame, { id: "keren-hishtalmut", data: d, today: p.today, timeline: null })));
   const text = html.replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ");
 
+  it("a share the reader typed keeps the limit it is measured against within the figure's reach (TXH-01, TXH-08); a default share is that limit", () => {
+    const employerPct = fact(d, "employerPct");
+    const ownPct = fact(d, "ownPct");
+    // a limit's figure opens the rule it is from (`ruleFigure`)
+    const reached = (inputs: Record<string, SiteValue>) => Object.values(inputs).flatMap((v) => v.rule_ids ?? []);
+    const typedBoth = typedShareLimits({ employee: true, employerTyped: true, ownTyped: true, employerPct, ownPct });
+    expect(reached(typedBoth.employer)).toContain("TXH-01");
+    expect(reached(typedBoth.own)).toContain("TXH-08");
+    // at its default the share's own input is the limit's figure, so it is not listed twice; a self-employed person types no share
+    expect(typedShareLimits({ employee: true, employerTyped: false, ownTyped: false, employerPct, ownPct })).toEqual({ employer: {}, own: {} });
+    expect(typedShareLimits({ employee: false, employerTyped: true, ownTyped: true, employerPct, ownPct })).toEqual({ employer: {}, own: {} });
+  });
+
   it("counts what waiting adds above the deposits of the years between, which are paid either way (F-96)", () => {
     const income = p05Number(d.bundles["keren-hishtalmut"]!.p05, "annual_income") / 12;
     const plan = { employment: "employee" as const, income, ownMonthly: (income * Number(fact(d, "ownPct")!.value)) / 100, employerMonthly: (income * Number(fact(d, "employerPct")!.value)) / 100, returnPct: p05Number(d.bundles["keren-hishtalmut"]!.p05, "A-01"), feePct: null };
@@ -151,5 +167,73 @@ describe("study fund page", () => {
     expect(text).toContain("מס הכנסה במשיכה שלא משלמים:");
     // the multiple is of everything deposited, the employer's money too, not of the person's own deposits alone
     expect(text).toContain("ממה שהופקד, מכם ומהמעסיק");
+  });
+});
+
+describe("each figure of a visual lists only the rules that changed it (method §13)", () => {
+  // every figure a visual hands to `Num`, kept by a `Num` that records its value: the visuals are loaded afresh with it in place (the fast
+  // tests share their modules, so a mock declared for the file alone would not reach a module another file already loaded)
+  let all: { id: string; figures: { about: string; ids: string[] }[] }[] = [];
+  const figuresOf = (id: string) => {
+    const visual = all.find((x) => x.id === id);
+    if (!visual) throw new Error(`no visual drawn for ${id}`);
+    return visual.figures;
+  };
+  beforeAll(async () => {
+    const shown: SiteValue[] = [];
+    vi.resetModules();
+    vi.doMock("../provenance", async (importOriginal) => {
+      const real = await importOriginal<typeof import("../provenance")>();
+      const Num: typeof real.Num = (props) => {
+        shown.push(props.value);
+        return real.Num(props);
+      };
+      return { ...real, Num };
+    });
+    const prov = await import("../provenance");
+    const frame = await import("./index");
+    const { InputsProvider: Inputs } = await import("../../lib/inputs");
+    const { buildGuidePage: build } = await import("../../lib/guide.server");
+    // the visuals as the page first draws them: no age entered, and the example income, far below the surtax's threshold
+    all = Object.keys(frame.signatureRegistry).map((id) => {
+      shown.length = 0;
+      const p = build(id);
+      if (!p?.signature) throw new Error(`${id}: no guide page with a signature`);
+      const page = createElement(frame.SignatureFrame, { id, data: p.signature, today: p.today, timeline: null });
+      // the provider's children come as createElement's own argument, so its props are given without them
+      const provProps = { data: { rules: p.rules, terms: {}, dimensions: {}, today: p.today } } as ComponentProps<typeof prov.ProvenanceProvider>;
+      renderToString(createElement(MemoryRouter, null, createElement(Inputs, null, createElement(prov.ProvenanceProvider, provProps, page))));
+      return { id, figures: shown.filter((v) => v.state === "computed").map((v) => ({ about: v.about ?? "", ids: sheetRules(v).map((r) => r.id) })) };
+    });
+    vi.doUnmock("../provenance");
+    vi.resetModules();
+  });
+
+  it("no figure names the rules from 60 with no age, nor the surtax where it is 0", () => {
+    for (const { id, figures: fs } of all) {
+      expect(fs.length, id).toBeGreaterThan(0);
+      for (const f of fs) {
+        expect(f.ids.filter((r) => ["TXG-04", "TXG-07", "TXS-23"].includes(r)), `${id}: ${f.about}`).toEqual([]);
+        expect(f.ids.filter((r) => ["TXG-09", "TXG-10"].includes(r)), `${id}: ${f.about}`).toEqual([]);
+      }
+    }
+  });
+  it("a makam fee names no tax rule", () => {
+    const fees = figuresOf("makam").filter((f) => f.about === sigCopy.makam.about.fees || f.about === sigCopy.makam.about.custody);
+    expect(fees.length).toBeGreaterThan(0);
+    for (const f of fees) expect(f.ids.filter((r) => r.startsWith("TX")), f.about).toEqual([]);
+  });
+  it("a pension deposit names only the minimum rates and the average wage", () => {
+    const deposits: string[] = [sigCopy.pension.about.you, sigCopy.pension.about.employer, sigCopy.pension.about.severance, sigCopy.pension.about.total];
+    for (const id of ["pension-comprehensive", "pension-general", "provident-for-annuity"]) {
+      const fs = all.find((x) => x.id === id)?.figures.filter((f) => deposits.includes(f.about)) ?? [];
+      expect(fs.length, id).toBeGreaterThan(0);
+      for (const f of fs) expect(f.ids.filter((r) => r !== "PEN-03" && r !== "PEN-04"), `${id}: ${f.about}`).toEqual([]);
+    }
+  });
+  it("the current account's headline at 0% names no tax rule: no interest, no tax", () => {
+    const head = figuresOf("current-account").filter((f) => f.about === sigCopy.account.about.account);
+    expect(head.length).toBeGreaterThan(0);
+    for (const f of head) expect(f.ids.filter((r) => r.startsWith("TX")), f.about).toEqual([]);
   });
 });

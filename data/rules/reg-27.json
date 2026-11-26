@@ -21,7 +21,8 @@
       "kind": "regulator_page",
       "strength": "primary",
       "checked": "2026-10-25",
-      "qualifier": "(foreign statutory body)"
+      "qualifier": "(foreign statutory body)",
+      "standing": "foreign-view"
     }
   ]
 }

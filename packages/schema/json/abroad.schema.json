@@ -593,6 +593,21 @@
                     "notes": {
                       "type": "string"
                     },
+                    "notes_he": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "empty_because": {
+                      "type": "string",
+                      "enum": [
+                        "too-young",
+                        "none-by-rule",
+                        "not-reported",
+                        "not-collected",
+                        "not-applicable",
+                        "unknown"
+                      ]
+                    },
                     "rationale_he": {
                       "type": "string",
                       "minLength": 1

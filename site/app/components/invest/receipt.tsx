@@ -11,8 +11,8 @@
 // lines) behind a tap on its name; its stub at the screen's foot keeps what is left in sight and leads back to it.
 import { Fragment, type ReactNode, type Ref, type RefObject } from "react";
 import { brands, invest as c, site } from "../../copy";
-import { fmt, wholeSum } from "../../lib/format";
-import { gapListFor, pricedVariable, accountSum, pairCostsKept, type FundWay, type InvestView, type PairCosts } from "../../lib/invest";
+import { amountShown, fmt, wholeSum } from "../../lib/format";
+import { gapListFor, pricedVariable, accountSum, pairCostsKept, withoutCostFlags, type FundWay, type InvestView, type PairCosts } from "../../lib/invest";
 import { priced } from "../../lib/stretch";
 import { assertNever, type FundRecord } from "@finance-tool/schema";
 import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
@@ -145,11 +145,19 @@ function gainOf(pc: Costs, today: string): SiteValue {
 
 /**
  * What is left, in today's money, as its sheet opens it: what was paid in at today's prices (F-106) and the gain, which add up to it, the
- * gain opening the run's own figure. It carries the run's rules, labels and notes, which the figure rests on.
+ * gain opening the run's own figure, where the run's rules and statements are. It carries the run's labels, which the figure rests on, and
+ * the run's flags, each with the month it applies from, through the gain (`sumOf` carries its inputs' flags).
  */
 export function leftOf(pc: Costs, today: string): SiteValue {
-  const run = pc.left;
-  return sumOf({ [c.receipt.paidInToday]: whole(pc.paidIn), [c.receipt.gain]: gainOf(pc, today) }, "F-91", { today, about: c.receipt.leftAbout, rules: run.rulesUsed, statements: run.statements, flags: run.flags, labels: run.labels });
+  return sumOf({ [c.receipt.paidInToday]: whole(pc.paidIn), [c.receipt.gain]: gainOf(pc, today) }, "F-91", { today, about: c.receipt.leftAbout, labels: pc.left.labels });
+}
+
+/**
+ * A line as the receipt writes it, in whole shekels (`n`): the figure with that number, its working kept where the figure as the page
+ * writes it is that number, so its sheet still works it out; otherwise its working is left off (`restated`), since it comes to another number.
+ */
+function asWritten(v: SiteValue, n: number): SiteValue {
+  return typeof v.value === "number" && amountShown(v.value, v.unit, v.state) === n ? { ...v, value: n } : restated(v, n);
 }
 
 /** The tax line, in today's money (F-91's state); its sheet says so, and that it holds the surtax where the income with the gain passes its threshold (F-43). */
@@ -162,7 +170,7 @@ export function taxOf(pc: Costs): SiteValue {
  * them, whole shekels each, so its sheet lists each line, the costs as the amounts they take.
  */
 function beforeTaxOf(pc: Costs, ch: ReceiptChain, today: string): SiteValue {
-  const at = restated;
+  const at = asWritten;
   const r = ch.nominal;
   const nom = (v: SiteValue, label: string, n: number) => at(nominalOf(pc, v, label, today), n);
   const lines: Record<string, SiteValue> = {
@@ -172,7 +180,8 @@ function beforeTaxOf(pc: Costs, ch: ReceiptChain, today: string): SiteValue {
     ...(pc.waiting && r.waiting !== 0 ? { [c.pair.waiting]: nom(pc.waiting, c.pair.waiting, r.waiting) } : {}),
     [c.receipt.parts.fund]: nom(pc.fund, c.receipt.parts.fund, r.fund),
   };
-  return computed(ch.beforeTax, "nis", "F-129", lines, { today, about: c.receipt.beforeTax.nominal, lead: c.receipt.beforeTax.lead });
+  // what is left before tax is no cost: the account line's flag about its cost stays on that line (F-102)
+  return withoutCostFlags(computed(ch.beforeTax, "nis", "F-129", lines, { today, about: c.receipt.beforeTax.nominal, lead: c.receipt.beforeTax.lead }));
 }
 
 /**
@@ -180,7 +189,7 @@ function beforeTaxOf(pc: Costs, ch: ReceiptChain, today: string): SiteValue {
  * same value in today's money, what is left and the state. Each input holds the whole shekels the receipt writes.
  */
 export function inflationOf(pc: Costs, ch: ReceiptChain, taxName: string, today: string): SiteValue {
-  const at = restated;
+  const at = asWritten;
   const b = c.receipt.beforeTax;
   const real = sumOf({ [c.receipt.left]: at(pc.left, ch.left), [taxName]: at(taxOf(pc), ch.tax) }, "F-130", { today, about: b.today });
   // F-130's first line, `inflation = B^nom − B^real`

@@ -3,7 +3,7 @@
 // (provenance.tsx `loadSheets`), fetched while the page hydrates (entry.client.tsx), so a page shows itself without waiting for it.
 import { useContext, useEffect, useState, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { assertNever, type RuleRecord } from "@finance-tool/schema";
 import type { FundStatement } from "@finance-tool/engine";
 import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
@@ -15,7 +15,7 @@ import { digitsFor, headText, keyOfLine, receiptLines, withValues } from "../lib
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
+import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetFlags, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
@@ -343,16 +343,6 @@ function SourceLink({ url, title }: { url: string; title: string }) {
   );
 }
 
-/** The inputs of a computed value that rest on a weak source (institution or secondary), by their names: what the caution in the sheet points at. */
-export function weakInputNames(value: SiteValue): string[] {
-  const out: string[] = [];
-  for (const [key, input] of Object.entries((value.computed_from?.inputs ?? {}) as Record<string, SiteValue>)) {
-    if (!input || typeof input !== "object" || !("state" in input)) continue;
-    if (isWeak(input)) out.push(inputName(key));
-  }
-  return out;
-}
-
 /**
  * The Hebrew name of a computed input: the copy's name for an English key, else the key as written (already Hebrew). A deal's key numbered
  * after its fee's kind (`deal:custody 5.min`, the fifth custody fee of a deal) takes the unnumbered key's name with the number after the
@@ -603,9 +593,9 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
   const { setEntered } = useInputs();
   const fromDate = startsAfter(value, today);
   const year = calendarYearOf(value);
-  const weakNames = value.state === "computed" ? weakInputNames(value) : [];
-  // the sheet says a weak or open strength once, in this callout: a sourced figure's source line leaves its word out
-  const strengthSaid = (isWeak(value) || strength === "open") && value.state !== "entered";
+  // the sheet says a weak or open strength once, in this callout: a sourced figure's source line leaves its word out. A figure worked out
+  // from a company's document says nothing of it: the remark is the sourced input's, whose own sheet (opened from its row) says it
+  const strengthSaid = (isWeak(value) || strength === "open") && value.state !== "entered" && !(value.state === "computed" && strength === "institution");
   const strengthNote = strengthSaid && (
     <Callout tone={strength === "open" ? "blocked" : "caution"} title={strengthCopy[strength].label}>
       {strengthCopy[strength].line}
@@ -615,11 +605,6 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
           {" "}
           <IdRef id={openQuestionOf(value)!} />
         </>
-      )}
-      {weakNames.length > 0 && (
-        <span className="block">
-          {copy.computed.weakInputs} {weakNames.join(" · ")}
-        </span>
       )}
     </Callout>
   );
@@ -766,7 +751,8 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
               })}
             </div>
           )}
-          {value.flags?.map((code) => (
+          {/* a plain difference or sum leaves out the flags its inputs carry: each row of its receipt opens them (`sheetFlags`) */}
+          {sheetFlags(value).map((code) => (
             <Callout key={code} tone="caution">
               {/* a flag's words may carry {ID:figure} slots: the rule's figure, from the page's records or those its cards point at */}
               <SlottedText text={flagCopy[code] ?? copy.flagOther} source={data} /> <bdi dir="ltr" className="text-xs">{code}</bdi>
@@ -965,9 +951,10 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         {/* who it applies to (D30): a neutral label, never a warning; the strength tag stays only for an open or second-hand source, or a general rule read from a company's document */}
         <div className="flex flex-wrap items-center gap-1.5">
           <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs, { company: data.company })}</Tag>
-          {/* a record the rule base keeps that is not a rule says so: its foot leads to "לא נכלל ככלל" on /companies */}
-          {isNotRule(id) && !isGeneral(rule) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
-          {(rule.strength === "open" || rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />}
+          {/* a record the rule base keeps that is not a rule says so, general or not: its foot leads to "לא נכלל ככלל" on /companies */}
+          {isNotRule(id) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
+          {/* an open record's heading already says it is an open question */}
+          {(rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />}
         </div>
       </header>
       {open ? (
@@ -975,7 +962,13 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
           <span className="block">
             <ShownRuleTitle rule={rule} slots={slots} />
           </span>
-          <span className="block">{ruleCopy.open.last}</span>
+          {rule.text_he && (
+            <span className="block">
+              <SlottedText text={rule.text_he} source={slots} />
+            </span>
+          )}
+          {/* only where the page knows the calculation does not read the record (TXF-04's text says what the site computes meanwhile) */}
+          {uses && !uses.engine && <span className="block">{ruleCopy.open.last}</span>}
         </Callout>
       ) : rule.text_he ? (
         // its figure slots read the card's own view of the record and the records it points at (`pointedIds`)
@@ -985,8 +978,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       ) : (
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
       )}
-      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs, tagCompanies(rule, data.ownDocs, { company: data.company }))}</p>}
-      <RulePointers rule={rule} />
+      {/* the text's sources right under it, then who it applies to and the rules it points to */}
       {sources.length > 0 ? (
         // a company's term read from that company's own document is its own context (D31): the source line carries no "לפי החברה"
         <SourceBlock source={sources} rule={sourced} today={data.today} inline={inline} own={rule.scope === "institution" ? (s) => isOwnSourceOf(rule, s, data.ownDocs, data.companies) : false} />
@@ -994,6 +986,8 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         // rule records without a source link are shown as such, not hidden
         <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>
       )}
+      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs, tagCompanies(rule, data.ownDocs, { company: data.company }))}</p>}
+      <RulePointers rule={rule} />
       <RuleFigures rule={rule} id={id} pageValue={pageValue} />
       <dl className="sheet-dl">
         {/* each source line says the day the site read it; the record's own date stands only on a card with no source */}
@@ -1199,13 +1193,19 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
           ))}
           {/* who it applies to: shown only when it is not every case (D30) */}
           {!isGeneral(rule) && <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs)}</Tag>}
-          {isNotRule(id) && !isGeneral(rule) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
-          {(rule.strength === "open" || rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />}
+          {isNotRule(id) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
+          {/* an open record's heading already says it is an open question */}
+          {(rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />}
         </div>
       </header>
       {open ? (
         <Callout tone="blocked">
-          <span className="block">{ruleCopy.open.last}</span>
+          {rule.text_he && (
+            <span className="block">
+              <SlottedText text={rule.text_he} source={data} />
+            </span>
+          )}
+          {uses && !uses.engine && <span className="block">{ruleCopy.open.last}</span>}
         </Callout>
       ) : rule.text_he ? (
         <p className="text-base leading-relaxed">
@@ -1346,13 +1346,23 @@ function scopeLine(rule: RuleRecord, ownDocs: OwnDocs | undefined, tagged: reado
  * everything found at each company whose section lists it (one link per company), and a record no section lists (a not-rule) to its
  * group on /companies.
  */
+/** An address without its fragment and its trailing slash: the page it opens. */
+const pageOfHref = (href: string): string => (href.split("#")[0] ?? "").replace(/(.)\/$/, "$1");
+
+/** The card's foot: where the record is listed. A link to the page the card is open on is left out, and two links to one place are one. */
 function CardFoot({ rule, data }: { rule: RuleRecord; data: ProvenanceData }) {
   const close = useContext(CloseCtx);
+  const here = pageOfHref(useLocation().pathname);
+  const elsewhere = (href: string) => pageOfHref(href) !== here;
   if (isGeneral(rule)) {
-    return data.rulesOf ? <LinkButton to={`${data.rulesOf.href}#${rule.id}`} onClick={close}>{scopeWords.rulesOf.replace("{product}", data.rulesOf.name)}</LinkButton> : <LinkButton to={rulesPath({ hash: rule.id })} onClick={close}>{ruleCopy.all}</LinkButton>;
+    const to = data.rulesOf ? `${data.rulesOf.href}#${rule.id}` : rulesPath({ hash: rule.id });
+    if (!elsewhere(to)) return null;
+    return data.rulesOf ? <LinkButton to={to} onClick={close}>{scopeWords.rulesOf.replace("{product}", data.rulesOf.name)}</LinkButton> : <LinkButton to={to} onClick={close}>{ruleCopy.all}</LinkButton>;
   }
-  const links = companyLinksOf(listedCompanies(rule, data.ownDocs), data.companies).map((c) => ({ name: c.name, href: c.hasPage ? `${c.href}#${rule.id}` : c.href }));
-  if (links.length === 0) return <LinkButton to={documentsPath({ hash: noCompanyAnchor })} onClick={close}>{scopeWords.allNoCompany}</LinkButton>;
+  const listed = companyLinksOf(listedCompanies(rule, data.ownDocs), data.companies).map((c) => ({ name: c.name, href: c.hasPage ? `${c.href}#${rule.id}` : c.href }));
+  const links = listed.filter((l, i) => elsewhere(l.href) && listed.findIndex((x) => x.href === l.href) === i);
+  if (listed.length > 0 && links.length === 0) return null;
+  if (links.length === 0) return elsewhere(documentsPath({ hash: noCompanyAnchor })) ? <LinkButton to={documentsPath({ hash: noCompanyAnchor })} onClick={close}>{scopeWords.allNoCompany}</LinkButton> : null;
   if (links.length === 1) return <LinkButton to={links[0]!.href} onClick={close}>{scopeWords.allAt.replace("{name}", links[0]!.name)}</LinkButton>;
   return (
     <span onClick={close}>
@@ -1417,14 +1427,18 @@ export function TermCard({ id, data, headId, sub }: { id: string; data: Provenan
           <Row label={copy.sourced.checked}>
             <When iso={term.source.checked} />
           </Row>
-          <Row label="">
-            <StrengthLabel strength={term.source.strength} />
-          </Row>
         </dl>
       )}
+      {/* a weak source says so in its tag, as on a rule card; a primary one needs no word, and no row with an empty label */}
+      {term.source && term.source.strength !== "primary" && (
+        <div className="flex flex-wrap items-center gap-1.5">
+          <StrengthLabel strength={term.source.strength} />
+        </div>
+      )}
       {/* a definition rests on general rules only (D30): a company's term the glossary row cites is on that company's page; the rules are
-          a list whose rows are the rules, each by its title (D116) */}
-      <RuleTitleList ids={generalOnly(term.ruleIds, data.rules)} />
+          a list whose rows are the rules, each by its title (D116), and only those whose record the page holds (a row whose rule has no
+          record anywhere would open an empty card) */}
+      <RuleTitleList ids={generalOnly(term.ruleIds.filter((r) => ruleOf(data, r)), { ...data.pointed, ...data.rules })} />
     </div>
   );
 }

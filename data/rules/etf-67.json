@@ -22,9 +22,13 @@
       "unit": "count",
       "source": {
         "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
-        "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון, file p.9, ch. ב' s.1(י)-(יא): \"בקרנות סל - יחידת מסחר הינה יחידת קרן סל אחת\"",
+        "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "file p.9, ch. ב' s.1(י)-(יא)",
+        "locator_he": "עמוד הקובץ 9, פרק ב' סעיף 1(י)-(יא)",
+        "page": 9,
+        "quote": "בקרנות סל - יחידת מסחר הינה יחידת קרן סל אחת"
       },
       "checked": "2026-10-26",
       "effective_from": null,
@@ -82,9 +86,12 @@
       "unit": "nis",
       "source": {
         "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
-        "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון, ch. ה' s.2ב(2)(א): \"כמות ניירות ערך בשווי כספי כפי שיקבע הדירקטוריון, שלא יעלה על 10,000 ש\"ח\"",
+        "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "ch. ה' s.2ב(2)(א)",
+        "locator_he": "פרק ה' סעיף 2ב(2)(א)",
+        "quote": "כמות ניירות ערך בשווי כספי כפי שיקבע הדירקטוריון, שלא יעלה על 10,000 ש״ח"
       },
       "checked": "2026-10-26",
       "effective_from": null,

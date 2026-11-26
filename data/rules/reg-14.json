@@ -18,9 +18,12 @@
       "unit": "count",
       "source": {
         "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",
-        "title": "TASE, How to become a non-banking corporation member, January 2026, p.3",
+        "title": "TASE, How to become a non-banking corporation member, January 2026",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3",
+        "locator_he": "עמוד 3",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,

@@ -20,9 +20,12 @@
       "unit": "nis",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
-        "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו-2026 (פ/6522/25), tabled 02.02.2026, pp.2-3, ss.1 to 4",
+        "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו-2026 (פ/6522/25), tabled 02.02.2026",
         "publisher": "Knesset",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.2-3, ss.1 to 4",
+        "locator_he": "עמודים 2 עד 3, סעיפים 1 עד 4",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -40,9 +43,13 @@
       "unit": "pct",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
-        "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו-2026 (פ/6522/25), tabled 02.02.2026, p.2, s.1 (\"אינו עולה על חמישה אחוזים\")",
+        "title": "הצעת חוק ביטוח פיקדונות בתאגיד בנקאי, התשפ\"ו-2026 (פ/6522/25), tabled 02.02.2026",
         "publisher": "Knesset",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, s.1",
+        "locator_he": "עמוד 2, סעיף 1",
+        "page": 2,
+        "quote": "אינו עולה על חמישה אחוזים"
       },
       "checked": "2026-10-25",
       "effective_from": null,

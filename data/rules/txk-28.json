@@ -18,9 +18,13 @@
       "unit": "pct",
       "source": {
         "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
-        "title": "קופת גמל להשקעה (עלון הראל, 2023), p.1: \"בניכוי 25% מס רווחי הון על הרווח הריאלי בלבד\"",
+        "title": "קופת גמל להשקעה (עלון הראל, 2023)",
         "publisher": "Harel Insurance and Finance",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1,
+        "quote": "בניכוי 25% מס רווחי הון על הרווח הריאלי בלבד"
       },
       "checked": "2026-10-25",
       "effective_from": null,

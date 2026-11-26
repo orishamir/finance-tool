@@ -23,7 +23,8 @@
       "locator": "p.81, s.45א(ב)",
       "locator_he": "עמוד 81, סעיף 45א(ב)",
       "page": 81,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -37,7 +38,8 @@
       "locator_he": "עמוד 85, סעיף 47(ב)",
       "page": 85,
       "quote": "לקופת גמל לקצבה בלבד",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -50,7 +52,8 @@
       "locator": "p.49, s.9א(א)",
       "locator_he": "עמוד 49, סעיף 9א(א)",
       "page": 49,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

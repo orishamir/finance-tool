@@ -25,7 +25,8 @@
       "page": 1,
       "quote": "Whose shares are listed on a national securities exchange and traded at market-determined prices",
       "checked": "2026-11-26",
-      "qualifier": "(foreign regulator)"
+      "qualifier": "(foreign regulator)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title15/html/USCODE-2024-title15-chap2D-subchapI-sec80a-2.htm",
@@ -38,7 +39,8 @@
       "locator_he": "סעיף 80א-2(א)(26)",
       "quote": "means an exchange registered under section 6 of the Securities Exchange Act of 1934",
       "checked": "2026-11-26",
-      "qualifier": "(foreign law)"
+      "qualifier": "(foreign law)",
+      "standing": "foreign-view"
     }
   ]
 }

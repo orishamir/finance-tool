@@ -22,9 +22,12 @@
       "unit": "text",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5",
-        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457), p.5, reg. 8",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5, reg. 8",
+        "locator_he": "עמוד 5, תקנה 8",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -42,9 +45,12 @@
       "unit": "months",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4",
-        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457), p.4, reg. 1 (תקופת ריבית)",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.4, reg. 1 (תקופת ריבית)",
+        "locator_he": "עמוד 4, תקנה 1 (תקופת ריבית)",
+        "page": 4
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -62,9 +68,12 @@
       "unit": "nis",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4",
-        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457), p.4, reg. 3",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.4, reg. 3",
+        "locator_he": "עמוד 4, תקנה 3",
+        "page": 4
       },
       "checked": "2026-10-25",
       "effective_from": null,

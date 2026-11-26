@@ -42,9 +42,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
-        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.204, s.125ג(ב)",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
         "publisher": "Israel Tax Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.204, s.125ג(ב)",
+        "locator_he": "עמוד 204, סעיף 125ג(ב)",
+        "page": 204
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -102,7 +105,8 @@
       "locator_he": "עמוד 22, סעיף 3(ה6)",
       "page": 22,
       "quote": "הכנסה מהפרשי הצמדה חלקיים, יראו אותה כהכנסה מריבית",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -116,7 +120,8 @@
       "locator_he": "עמוד 41, סעיף 9(13)(1)",
       "page": 41,
       "quote": "הפרשי ההצמדה אינם הפרשי הצמדה חלקיים",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -130,7 +135,8 @@
       "locator_he": "עמוד 204, סעיף 125ג(ב), (ג)(1)",
       "page": 204,
       "quote": "שאינו צמוד למדד, או שהוא צמוד בחלקו לשיעור עליית המדד",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -143,7 +149,8 @@
       "locator": "p.12, s.1 definition `הפרשי הצמדה`",
       "locator_he": "עמוד 12, סעיף 1 הגדרת `הפרשי הצמדה`",
       "page": 12,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nwBbruf4iR7WF16iEKrq2yI=#page=9",

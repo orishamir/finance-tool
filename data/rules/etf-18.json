@@ -21,9 +21,12 @@
       "unit": "count",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
-        "title": "פעילות קרנות נאמנות בישראל 2025, p.3",
+        "title": "פעילות קרנות נאמנות בישראל 2025",
         "publisher": "רשות ניירות ערך",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3",
+        "locator_he": "עמוד 3",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -41,9 +44,12 @@
       "unit": "count",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
-        "title": "פעילות קרנות נאמנות בישראל 2025, p.3",
+        "title": "פעילות קרנות נאמנות בישראל 2025",
         "publisher": "רשות ניירות ערך",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3",
+        "locator_he": "עמוד 3",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -60,9 +66,12 @@
       "unit": "count",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
-        "title": "פעילות קרנות נאמנות בישראל 2025, p.3",
+        "title": "פעילות קרנות נאמנות בישראל 2025",
         "publisher": "רשות ניירות ערך",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3",
+        "locator_he": "עמוד 3",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -79,9 +88,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf#page=3",
-        "title": "פעילות קרנות נאמנות בישראל 2025, p.3",
+        "title": "פעילות קרנות נאמנות בישראל 2025",
         "publisher": "Israel Securities Authority",
         "strength": "primary",
+        "locator": "p.3",
+        "locator_he": "עמוד 3",
+        "page": 3,
         "quote": "שווי נכסים לסוף שנה במיליארדי"
       },
       "checked": "2026-11-12",

@@ -24,7 +24,8 @@
       "kind": "regulation",
       "strength": "primary",
       "locator": "s.2-4, First and Second Schedules",
-      "checked": "2026-10-22"
+      "checked": "2026-10-22",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://boi.org.il/media/y3akar3j/חוק-הבנקאות-שירות-ללקוח-התשמא-1981.pdf",
@@ -36,7 +37,8 @@
       "strength": "primary",
       "locator": "s.9T (9ט), 9Y (9י)",
       "checked": "2026-10-22",
-      "qualifier": "(unofficial consolidation)"
+      "qualifier": "(unofficial consolidation)",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

@@ -47,6 +47,9 @@
 // 25. a FilterChip is an on-or-off filter: one comparing a value in `on` is one of several values, which is ChoiceChips with counts.
 // 26. a physical direction class (`ml-`, `pr-`, `left-`, `text-right`, `rounded-l…`, `border-r…`) stands only in a chart's drawing, whose
 //     axes read left to right; everywhere else the layout is logical (`ms-`, `pe-`, `inset-s-`, `text-start`, `rounded-s…`, `border-e…`).
+// 27. a figure lists the rules that changed it, as the engine's run or the data records them: no code types a rule's id and strength into
+//     a figure's rules (`{ id: "TXI-03", strength: … }`) or a value's `rule_ids` (`rule_ids: ["PF-06"]`), outside the files whose figures
+//     are defined by a rule the code names (run-rules.ts, track-exposure.ts, custom-entries.ts).
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -684,11 +687,13 @@ describe("a reading is the site's reading, not a secondary source", () => {
     expect(html).not.toContain(numbers.readingDoubt["TXS-14"]?.status ?? "the words");
     // the figure the doubt is about says it in words
     expect(sheet(doubted)).toContain(numbers.readingDoubt["TXS-14"]?.status ?? "the words");
-    // the doubt, then the strength note, then the working (a difference's lines)
+    // the doubt, then the working (a difference's lines); a computed figure's sheet carries no company-document note, which stands in the
+    // sheet of the input that came from the company's document
     const at = (words: string) => html.indexOf(words);
     expect(at(provenance.computed.doubtedInputs)).toBeGreaterThan(-1);
-    expect(at(strengthCopy.institution.line)).toBeGreaterThan(at(provenance.computed.doubtedInputs));
-    expect(at(provenance.computed.working)).toBeGreaterThan(at(strengthCopy.institution.line));
+    expect(html).not.toContain(strengthCopy.institution.line);
+    expect(sheet(company as SiteValue)).toContain(strengthCopy.institution.line);
+    expect(at(provenance.computed.working)).toBeGreaterThan(at(provenance.computed.doubtedInputs));
   });
   // A file that carries a run's flags into a figure carries its labels too, or the reading never reaches the sheet. Leftovers by name;
   // the list only shrinks. The timeline gathers flags over every year's run into one set; its labels would need the same per year.
@@ -1022,5 +1027,18 @@ describe("a physical direction class stands only in a chart's drawing (26)", () 
     for (const fine of ["ms-2", "pe-1.5", "inset-s-0", "-inset-e-3", "text-start", "text-end", "rounded-s-md", "border-e", "border-s-[3px]", "border-b-0", "rounded-t-md", "left-to-right", "a left-out row", "right-hand"])
       expect(physicalClasses(`const x = "${fine}";`), fine).toEqual([]);
     expect(physicalClasses(`// the bar grows from ml-2\nconst x = 1;`)).toEqual([]);
+  });
+});
+
+describe("no code types a rule into a figure's rules (27)", () => {
+  const ALLOWED = new Set(["lib/run-rules.ts", "lib/track-exposure.ts", "lib/custom-entries.ts"]);
+  const typed = (src: string): string[] => [...code(src).matchAll(/\{\s*id:\s*"[A-Z][A-Z0-9]*-[A-Z0-9]+",\s*strength|rule_ids:\s*\["/g)].map((m) => m[0]);
+  it("no source outside the allowed files does", () => {
+    expect(files.filter((f) => /\.tsx?$/.test(f) && !ALLOWED.has(rel(f))).flatMap((f) => typed(read(f)).map((x) => `${rel(f)}: ${x}`))).toEqual([]);
+  });
+  it("the scan sees both forms", () => {
+    expect(typed(`rules: [{ id: "BANK-35", strength: cap.strength }]`)).toHaveLength(1);
+    expect(typed(`rule_ids: ["PF-06"],`)).toHaveLength(1);
+    expect(typed(`rules: [{ id: rule.id, strength: rule.strength }], rule_ids: [pf06.id]`)).toEqual([]);
   });
 });

@@ -25,7 +25,8 @@
       "page": 36,
       "quote": "יחזיק ניירות ערך ונכסים פיננסיים של לקוחותיו בנפרד",
       "checked": "2026-11-12",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf",
@@ -39,7 +40,8 @@
       "locator_he": "עמוד 37, סעיף 23",
       "page": 37,
       "checked": "2026-11-12",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/Investments_intermediates_report25.pdf",

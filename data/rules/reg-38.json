@@ -23,7 +23,8 @@
       "locator": "pp.67-68, s.104; p.69, s.105",
       "locator_he": "עמודים 67 עד 68, סעיף 104; עמוד 69, סעיף 105",
       "page": 67,
-      "checked": "2026-11-02"
+      "checked": "2026-11-02",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=71",
@@ -37,7 +38,8 @@
       "locator_he": "עמוד 71, סעיפים 108(ה), 109",
       "page": 71,
       "quote": "מפרק קרן יפדה את יחידות הקרן במועד הפירוק",
-      "checked": "2026-11-02"
+      "checked": "2026-11-02",
+      "standing": "consolidated-not-binding"
     }
   ],
   "derived_from": [

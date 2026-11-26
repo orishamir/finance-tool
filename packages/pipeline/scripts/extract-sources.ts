@@ -1,20 +1,24 @@
-// Extracts the `sources` of every rule record from the rule base markdown (`- Source:` line under `### <ID>`),
-// plus `derived_from` (and, for a general rule, `examples`: the companies' terms its line names, review 2026-10-26) and
-// `sources_missing_reason`, and, since 2026-10-26, who it applies to from the `- Scope:` line:
-// `scope`, `scope_institutions` and `scope_settle` (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §3), with the company names
-// resolved against data/sources/institutions.json. Re-runnable: it strips its own keys from a record and writes them again,
-// never touches any other field and never touches the markdown. Spec: 8dd1f013:research/knowledge/2026-10-24-synthesis.md 3.2,
-// docs/data-schema.md 3.1. Run: `npm run extract:sources -w @finance-tool/pipeline` (it prints its report; add `--dry` to
+// Extracts the `sources` of every rule record from the rule base markdown (`- Source:` line under `### <ID>`), each with the standing
+// its qualifier gives (`QUALIFIER_STANDING`; the run fails on a qualifier the table does not name), or else its title gives
+// (`STATE_CONSOLIDATION`) or another passage of the same file in the record carries (`shareDocumentStanding`), plus `derived_from` (and, for a
+// general rule, `examples`: the companies' terms its line names), `see_also` (the method entries and open questions its Source and
+// Conditions lines point to), `sources_missing_reason`, and who it applies to from the `- Scope:` line: `scope`, `scope_institutions`
+// and `scope_settle` (D30), with the company names resolved against data/sources/institutions.json. It also moves the place written at
+// the end of a figure's source title into that source's own fields (`placeInTitle`). Re-runnable: it strips its own keys from a record
+// and writes them again, touches no other field but its figures' sources, and never touches the markdown. docs/data-schema.md 3.1.
+// Run: `npm run extract:sources -w @finance-tool/pipeline` (it prints its report; add `--dry` to
 // write nothing). After editing blocks, write only their records: `-- --only=KGL-12,MF-25`; every other record stays as it is, so a
 // run never re-dates or reorders a card nobody touched. `-- --drift` writes nothing and lists the records that differ from what
 // their blocks give today (a block edited without its record, or a record edited by hand).
 // A link that cites several passages ("p.4, s.1; p.8, s.2 "…"") may become several sources, each opening at the first page its own
 // locator names; where the link carries `#page=`, each one's address names its own page, the one difference from the block's address
-// the data check accepts (`urlInBlock`).
+// the data check accepts (`urlInBlock`). A link title that points back to the link before it ("same rules", "s.2") is written out
+// from that link's title (`writeOutTitle`).
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { readRuleBaseIds, type RuleBlock } from "../src/references.ts";
+import type { SeeAlso, SourceStanding } from "@finance-tool/schema";
+import { questionCodesIn, readFormulaIds, readRuleBaseIds, type RuleBlock } from "../src/references.ts";
 import { readRegistry, scopeFromLine, scopeLineOf } from "../src/scope.ts";
 import { isCopySource } from "../src/validate.ts";
 
@@ -35,6 +39,7 @@ export interface ExtractedSource {
   quote?: string;
   checked: string;
   qualifier?: string;
+  standing?: SourceStanding;
   note?: string;
 }
 
@@ -76,6 +81,8 @@ export interface LineResult {
   raw: string;
   /** Link-less entries and unresolved reference links that were skipped. */
   skipped: string[];
+  /** Parentheticals after a strength word that `QUALIFIER_STANDING` does not name: the extraction fails on them. */
+  unmapped: string[];
 }
 
 // ---------------------------------------------------------------- link parsing
@@ -434,6 +441,139 @@ export function findQuote(segment: string): string | undefined {
   return pick?.replace(/[\s,;:]+$/, "");
 }
 
+// ---------------------------------------------------------------- standing
+
+/**
+ * What a source's parenthetical after its strength word says it is (docs/data-schema.md §3.1, `standing`), first row that matches:
+ * one of the closed words; `none`, a source that is what its kind says (a binding gazette text, an exchange's rules, a company's own
+ * document, an official statement), whatever the parenthetical adds about it; or `working-note`, how or where the text was read (a
+ * library copy, a page image, a browser), which says nothing of what the source is. A parenthetical no row matches fails the extraction,
+ * so a new one is read and given its row before it is written.
+ */
+export const QUALIFIER_STANDING: readonly { match: RegExp; standing: SourceStanding | "none" | "working-note" }[] = [
+  // a text cited beside the rule whose reach it leaves unstated, or a ruling read by analogy
+  { match: /is not stated\)$|\bdoes not name\b|\banalogy only\b/, standing: "does-not-answer" },
+  { match: /\btranslation\b/, standing: "translation" },
+  // the gazette is the binding text, whatever the parenthetical adds about a consolidated copy read beside it
+  { match: /^\(gazette\b/, standing: "none" },
+  { match: /consolidated copy|unofficial consolidation/, standing: "consolidated-not-binding" },
+  { match: /\bbill\b|^\(explanatory notes\b|^\(Knesset document, descriptive\)$/, standing: "bill" },
+  { match: /\bdraft\b/, standing: "draft" },
+  { match: /^\((?:superseded|historical|history)\b|\bits rates are historical\b|^\(contrary, before Amendment \d+\)$|^\(text before the \d{4} amendments\b/, standing: "superseded" },
+  { match: /\bforeign (?:regulator|central bank|law|tax authority|statutory body)\b|^\(EU law\)$/, standing: "foreign-view" },
+  {
+    match:
+      /^\(library\b|^\((?:read|recorded only|fetched again)\b|^\((?:gazette )?page image\)$|^\(gov\.il copy\)$|^\(the gov\.il copy\b|^\(court ruling, read in Chrome\b/,
+    standing: "working-note",
+  },
+  // the exchange's own texts and lists
+  {
+    match: /^\(exchange rules\b|^\(clearing-house rules\b|^\(exchange's statutory report\)$|^\(TASE rule guidelines\)$|^\(the exchange's (?:list|own data pages|own register)\b|^\(the file on TASE's site\b/,
+    standing: "none",
+  },
+  // a company's or an index provider's own document, often a named example
+  {
+    match:
+      /^\(index provider's own document\b|^\((?:TASE|TASE Ltd)'s\b|^\((?:BlackRock|Invesco|Meitav)'s own\b|^\(the (?:fund|bank)'s own\b|^\(its own funds?\b|^\(each manager's own\b|^\(percent display, Meitav's own page\)$|^\(named example\)$/,
+    standing: "none",
+  },
+  // an official body's statement, report, ruling or explanation, which its kind and strength already name
+  {
+    match:
+      /^\(a published (?:tax )?ruling\b|^\(the Minister(?: of Finance)?'s explanation; not a provision\)$|^\(National Insurance's statement\b|^\(regulator statement\)$|^\(the Ministry of Finance; not a tax authority\)$|^\(policy analysis, not law\)$|^\(official report of a Ministry of Finance team\b|^\(regulators' report\b/,
+    standing: "none",
+  },
+  { match: /^\(the State's (?:memorandum|own prospectus)\b|^\(filed by the State\)$|^\(official record of publication, not of the text\)$/, standing: "none" },
+  { match: /^\(dated\b|^\(the April 2026 edition of the file\)$|^\(in force \d/, standing: "none" },
+  // what the rule takes from the text: a reading derived from it, a definition, a figure or a code it lists
+  {
+    match: /^\((?:FX part |application )?derived\)$|^\(definition\b|^\(the law's definition\b|^\(the unit of the exposure fields, inferred\)$|^\(the regulator's data, filtered\b|^\(reporting codes\)$|^\(TXA-\d+\)$/,
+    standing: "none",
+  },
+  // the text as enacted or published, or what an amending text changes
+  {
+    match:
+      /^\((?:the law )?as enacted\b|^\(as published\b|^\(amends reg\.|^\(for what they change\)$|^\(s\.\d+ amends\b|^\(an employer's transfers only\b|^\(the whole text has no\b|^\(the cover as it states it\)$|^\(the publication s\.\d+\S* requires\b/,
+    standing: "none",
+  },
+];
+
+/** The row of `QUALIFIER_STANDING` a parenthetical takes, or undefined when no row names it. */
+export function standingOf(parenthetical: string): SourceStanding | "none" | "working-note" | undefined {
+  return QUALIFIER_STANDING.find((row) => row.match.test(parenthetical))?.standing;
+}
+
+/**
+ * A title that names the text as an Israeli state body's own consolidated version or copy, which is not the binding gazette wording
+ * (`consolidated-not-binding`): "…, נוסח משולב (רשות המסים)", "…, נוסח משולב (בנק ישראל)", "נוסח רשות המסים", "נוסח משולב של רשות
+ * ניירות ערך", "(נוסח רשות ניירות ערך)", "נוסח באתר רשות ניירות ערך", the Bank of Israel's banking legislation file ("קובץ חקיקה
+ * בנקאית של בנק ישראל"), or an English working title saying the Bank of Israel's copy or the Bank of Israel's or the Securities
+ * Authority's consolidated copy. A Knesset consolidation, "[נוסח משולב]" in brackets or "(נוסח משולב)" inside an order's own name, is
+ * the binding text and does not match.
+ */
+export const STATE_CONSOLIDATION =
+  /נוסח משולב (?:\((?:רשות המסים|בנק ישראל)\)|של רשות ניירות ערך)|נוסח (?:באתר )?רשות (?:המסים|ניירות ערך)|קובץ חקיקה בנקאית של בנק ישראל|\bconsolidated\b.*\b(?:BoI|Bank of Israel)\b|\b(?:BoI|Bank of Israel)\b.*\bconsolidated\b|\b(?:BoI|Bank of Israel's) copy\b|\bSecurities Authority's consolidated\b/;
+
+/**
+ * Words of `standing` that belong to the whole document, so every passage of one file in a record shares them. `does-not-answer` is
+ * the citation's own, and `superseded` may hold for one passage only (a historical rate, a section before an amendment).
+ */
+const DOCUMENT_STANDING: ReadonlySet<SourceStanding> = new Set(["draft", "bill", "consolidated-not-binding", "translation", "foreign-view"]);
+
+/**
+ * Gives each source of one record with no standing the document standing that another source of the same file (its address without the
+ * fragment) carries, when those sources carry exactly one such word, so one file never reads as binding at one passage and not at
+ * another.
+ */
+export function shareDocumentStanding(sources: ExtractedSource[]): void {
+  const fileOf = (u: string) => u.replace(/#.*$/, "");
+  const words = new Map<string, Set<SourceStanding>>();
+  for (const s of sources) {
+    if (!s.standing || !DOCUMENT_STANDING.has(s.standing)) continue;
+    const file = fileOf(s.url);
+    const set = words.get(file) ?? new Set<SourceStanding>();
+    set.add(s.standing);
+    words.set(file, set);
+  }
+  for (const s of sources) {
+    const w = words.get(fileOf(s.url));
+    const only = w?.size === 1 ? w.values().next().value : undefined;
+    if (!s.standing && only) s.standing = only;
+  }
+}
+
+// ---------------------------------------------------------------- ditto titles
+
+/** A title that is only a place in a document ("s.2", "file p.15", "pp.94-96"). */
+const BARE_PLACE = /^(?:file\s+)?(?:pp?|ss?|regs?)\.\s*[\dא-ת(][^,]*$/i;
+/** A title that points back to the link before it, after an optional place: "same rules, …", "s.62, same gazette", "אותן תקנות". */
+const DITTO = /^((?:(?:file\s+)?(?:pp?|ss?|regs?)\.\s*[^,]*,\s*)?)((?:the\s+)?same\s+[^,]+|ibid\.?|(?:אותו|אותה|אותם|אותן)\s+[^,]+|[^,\s]+\s+(?:האלה|האלו))(.*)$/i;
+
+/** A title's document name: a place before it ("s.1, …") and a place after it (", p.4", ", s.3") left out. */
+export function documentName(title: string): string {
+  return titleKey(title.replace(/^(?:file\s+)?(?:pp?|ss?|regs?)\.\s*[^,]*,\s*/i, ""));
+}
+
+const urlBase = (url: string): string => url.replace(/#.*$/, "");
+
+/**
+ * A link title written out from the link before it on the line (the ditto rule, docs/data-schema.md §3.1): a ditto names that link's
+ * document in place of its pointer, its other parts kept unless that name already holds them; a title that is only a place takes the
+ * document's name when the link before it opens the same document. Any other title, or one with no link before it, stays as written.
+ */
+export function writeOutTitle(title: string, url: string, before: { title: string; url: string } | undefined): string {
+  if (!before) return title;
+  const name = documentName(before.title);
+  if (BARE_PLACE.test(title)) return urlBase(url) === urlBase(before.url) ? name : title;
+  const m = DITTO.exec(title);
+  if (!m) return title;
+  const rest = (m[3] ?? "")
+    .split(",")
+    .map((x) => x.trim())
+    .filter((x) => x && !name.includes(x));
+  return [`${m[1] ?? ""}${name}`, ...rest].join(", ");
+}
+
 // ---------------------------------------------------------------- kind, rank
 
 function kindOf(url: string, host: string, title: string, locator: string, strength: SourceStrength, publisherKind?: SourceKind): SourceKind {
@@ -464,7 +604,7 @@ function rankOf(s: ExtractedSource, host: string): number {
   return 2;
 }
 
-const KEY_ORDER = ["url", "title", "title_he", "publisher", "publisher_he", "kind", "strength", "locator", "locator_he", "page", "quote", "checked", "qualifier", "note"];
+const KEY_ORDER = ["url", "title", "title_he", "publisher", "publisher_he", "kind", "strength", "locator", "locator_he", "page", "quote", "checked", "qualifier", "standing", "note"];
 /** The keys in the order `ruleSource` declares them (packages/schema/src/collections/rules.ts), so the JSON reads the same in every record. */
 function orderKeys(e: ExtractedSource): ExtractedSource {
   const src = e as unknown as Record<string, unknown>;
@@ -481,8 +621,13 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
   const lineStrengthWord = lineHits.length > 0 ? lineHits[lineHits.length - 1]!.word : undefined;
   const lineChecked = [...raw.matchAll(/checked (\d{4}-\d{2}-\d{2})/g)].map((m) => m[1]!).pop();
   const sources: ExtractedSource[] = [];
+  const unmapped: string[] = [];
+  let before: { title: string; url: string } | undefined;
 
   links.forEach((link, idx) => {
+    // a ditto is written out from the link before it, as written out itself (a run of bare places takes the first one's document)
+    const written = writeOutTitle(link.title.replace(/\s+/g, " ").trim(), link.url, before);
+    before = { title: written, url: link.url };
     const nextStart = idx + 1 < links.length ? links[idx + 1]!.start : raw.length;
     let rest = raw.slice(link.end, nextStart);
     const hit = strengthHits(rest)[0];
@@ -529,7 +674,7 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     const strength: SourceStrength = word0 === "primary" || word0 === "institution" || word0 === "secondary" ? word0 : "secondary";
 
     const pub = ctx.publishers?.[host];
-    const title = link.title.replace(/\s+/g, " ").trim() || host;
+    const title = written || host;
     // the longest matching token wins across the table (tokens nest); a tie keeps the table's order. A link whose title names an
     // amendment is not the document a row names, unless the row's own token names the amendment: an amendment's title holds the name
     // of what it amends, and the row would give the card the amended regulations' title and date for the amendment's booklet
@@ -587,7 +732,12 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     if (note) {
       if (note.length <= 120) entry.qualifier = note;
       else entry.note = note;
+      const standing = standingOf(note);
+      if (standing === undefined) unmapped.push(note);
+      else if (standing !== "none" && standing !== "working-note") entry.standing = standing;
     }
+    // a title that names a state body's consolidated version says what the source is where its qualifier gives no word of its own
+    if (!entry.standing && (STATE_CONSOLIDATION.test(title) || STATE_CONSOLIDATION.test(entry.title_he ?? ""))) entry.standing = "consolidated-not-binding";
     const own: ExtractedSource[] = leadLocator || !quoteApart ? [entry] : [];
     for (const passage of passages.slice(lead.length)) {
       const loc = cleanLocator(passage);
@@ -619,6 +769,8 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
   const derived = pointed.filter((id) => !isExample(id));
   const examples = pointed.filter(isExample);
 
+  shareDocumentStanding(sources);
+
   // Dedupe (same url and locator), then sort by preference.
   const seen = new Set<string>();
   const unique = sources.filter((s) => {
@@ -636,27 +788,167 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     if (a.checked !== b.checked) return a.checked < b.checked ? 1 : -1;
     return order.get(a)! - order.get(b)!;
   });
-  return { sources: unique, derived_from: derived, examples, raw, skipped };
+  return { sources: unique, derived_from: derived, examples, raw, skipped, unmapped };
 }
 
 // ---------------------------------------------------------------- records
 
-/** The `- Source:` line of a block, with its continuation lines. */
-export function sourceLineOf(body: string): string | undefined {
+/** The line of a block that opens with `label` ("- Source:"), with its continuation lines, the label left out. */
+function blockLineOf(body: string, label: RegExp): string | undefined {
   const lines = body.split("\n");
-  const i = lines.findIndex((l) => /^- Sources?:/i.test(l.trim()));
-  if (i < 0) return undefined;
-  let line = lines[i]!.replace(/^- Sources?:\s*/i, "");
+  const i = lines.findIndex((l) => label.test(l.trim()));
+  const first = lines[i];
+  if (i < 0 || first === undefined) return undefined;
+  let line = first.trim().replace(label, "").trim();
   for (let j = i + 1; j < lines.length && lines[j]!.trim() && !/^- /.test(lines[j]!.trim()); j++) line += " " + lines[j]!.trim();
   return line;
 }
 
-const OWN_KEYS = ["scope", "scope_institutions", "scope_settle", "sources", "sources_missing_reason", "derived_from", "examples"];
+/** The `- Source:` line of a block, with its continuation lines. */
+export function sourceLineOf(body: string): string | undefined {
+  return blockLineOf(body, /^- Sources?:/i);
+}
+
+/** The `- Conditions / exceptions:` line of a block, with its continuation lines. */
+export function conditionsLineOf(body: string): string | undefined {
+  return blockLineOf(body, /^- Conditions(?: \/ exceptions)?:/i);
+}
+
+/**
+ * What a block's lines point to that is not a rule (docs/data-schema.md §3.1, `see_also`), in the order they first name it: a method
+ * entry (`F-104`) that `formulas` holds and an open question written with its file's prefix (`TXS OQ26`, `TXI-OQ19`) that `questions`
+ * holds. Words inside a link (its title, its address) are not read. A pointer to an entry or a question that does not exist is listed in
+ * `skipped` and left out.
+ */
+export function seeAlsoFrom(lines: readonly string[], formulas: ReadonlySet<string>, questions: ReadonlySet<string>, skipped: string[] = []): SeeAlso[] {
+  const out: SeeAlso[] = [];
+  const seen = new Set<string>();
+  for (const line of lines) {
+    const text = findLinks(line, {}).reduceRight((acc, l) => acc.slice(0, l.start) + " " + acc.slice(l.end), line);
+    const found = [
+      ...[...text.matchAll(/\bF-\d{2,3}\b/g)].map((m) => ({ at: m.index, kind: "method" as const, id: m[0] })),
+      ...[...text.matchAll(/\b[A-Z][A-Z0-9]*[ -]OQ ?\d+\b(?:(?:,| and|, and| to) OQ ?\d+\b)*/g)].flatMap((m) => questionCodesIn(m[0]).map((id) => ({ at: m.index, kind: "question" as const, id }))),
+    ].sort((a, b) => a.at - b.at);
+    for (const f of found) {
+      if (seen.has(f.id)) continue;
+      seen.add(f.id);
+      if ((f.kind === "method" ? formulas : questions).has(f.id)) out.push({ kind: f.kind, id: f.id });
+      else skipped.push(`see_also: ${f.id} is no ${f.kind === "method" ? "method entry of docs/method.md" : "question of the rule base"}`);
+    }
+  }
+  return out;
+}
+
+// ---------------------------------------------------------------- figure places
+
+/** What may open a place at the end of a figure's source title, after its comma: "p.10", "s.47(ב)", "table ד-12", "עמודים 7 עד 10". */
+const TITLE_PLACE =
+  /^\s*(?:(?:file|gazette)\s+)?(?:pp?|ss?|regs?|arts?|paras?|cl|ch)\.\s*[\dא-ת(]|^\s*(?:sections?|regulations?|clauses?|annex(?:es)?|appendix|schedules?|tables?|footnotes?|notes?|paragraphs?|items?|parts?|chapters?|articles?|rows?|questions?|pages?)\s+[\dא-תA-Z"]|^\s*first schedule\b|^\s*(?:עמוד|עמודים|סעיף|סעיפים|תקנה|תקנות|טבלה|טבלת|תרשים|נספח|פרק)\s/i;
+
+/** The comma where a figure title's place begins: the first one outside brackets and quotes that a place follows; -1 when none does. */
+function placeCut(title: string): number {
+  // a quote mark between two Hebrew letters is an abbreviation's gershayim, never a quotation's edge
+  const t = title.replace(/(?<=[א-ת])["״](?=[א-ת])/g, "\uE001");
+  let depth = 0;
+  let quoted = false;
+  for (let i = 0; i < t.length; i++) {
+    const c = t.charAt(i);
+    if (c === '"' || c === "״") quoted = !quoted;
+    else if (c === "“") quoted = true;
+    else if (c === "”") quoted = false;
+    else if (quoted) continue;
+    else if (c === "(" || c === "[") depth++;
+    else if (c === ")" || c === "]") depth = Math.max(0, depth - 1);
+    else if (c === "," && depth === 0 && TITLE_PLACE.test(t.slice(i + 1))) return i;
+  }
+  return -1;
+}
+
+/** A figure source's place, read from the end of its title. */
+export interface TitlePlace {
+  title: string;
+  locator: string;
+  locator_he?: string;
+  page?: number;
+  quote?: string;
+}
+
+/**
+ * The place written at the end of a figure's source title, read as a Source line's place is read (`cleanLocator`, `findQuote`,
+ * `toHebrewLocator`, `firstPage`), with the title left naming the document; a remark in English in brackets there ("(2026 tables)")
+ * stays with the title. Undefined when the title ends on no place; "kept" when the place cannot be moved whole: reading it would drop
+ * words, it names a second passage or document (after a semicolon, or in a remark that cites a page), it holds a sum worked out, or it
+ * names no place the locator keeps.
+ */
+export function placeInTitle(title: string, url: string): TitlePlace | "kept" | undefined {
+  const cut = placeCut(title);
+  if (cut < 0) return undefined;
+  const remarks: string[] = [];
+  const tail = title
+    .slice(cut + 1)
+    .replace(/\s*\((?!\s*(?:(?:gazette|file) (?:pp?\.|pages?)\s*\d|printed\b))[^()]*[A-Za-z]{3,}[^()]*\)/g, (m) => {
+      remarks.push(m.trim());
+      return "";
+    })
+    .trim();
+  // a second passage or document after a semicolon, a sum worked out there, or a remark that cites a place of its own (another
+  // document's page) belongs to no one place of this document
+  if (/[;=×]/.test(tail.replace(/["“״][^"”״]*["”״]/g, "")) || remarks.some((r) => /\b(?:pp?|ss?|regs?|arts?)\.\s*\d/i.test(r))) return "kept";
+  const locator = cleanLocator(tail);
+  if (!locator) return "kept";
+  const quote = findQuote(tail);
+  // nothing but the place and its quoted words may stand there, or reading it would lose them
+  const bare = (x: string) => x.replace(/["“”״\uE001]/g, "").replace(/[\s,;:.()]/g, "");
+  if (bare(tail).replace(quote ? bare(quote) : "", "") !== bare(locator)) return "kept";
+  const he = toHebrewLocator(locator, url);
+  const page = firstPage(locator, url);
+  return { title: [title.slice(0, cut).trim(), ...remarks].join(" "), locator, ...(he ? { locator_he: he } : {}), ...(page ? { page } : {}), ...(quote ? { quote } : {}) };
+}
+
+const FIGURE_SOURCE_ORDER = ["url", "title", "publisher", "publisher_he", "strength", "fetched_from", "locator", "locator_he", "page", "quote"];
+
+/**
+ * A figure's source with the place its title ends on moved into its own fields. A field the source already holds stands, and a place
+ * that disagrees with it is kept in the title; a page other than the one the link's address opens at is left out (the address wins).
+ */
+function placeFigureSource(src: Record<string, unknown>): Record<string, unknown> | "kept" | undefined {
+  const url = String(src.url);
+  const place = placeInTitle(String(src.title), url);
+  if (place === undefined || place === "kept") return place;
+  const linkPage = pageInUrl(url);
+  const moved: Record<string, unknown> = { ...place, ...(place.page !== undefined && linkPage !== undefined && linkPage !== place.page ? { page: undefined } : {}) };
+  for (const k of ["locator", "locator_he", "page", "quote"]) if (src[k] !== undefined && moved[k] !== undefined && src[k] !== moved[k]) return "kept";
+  const all: Record<string, unknown> = { ...src, ...Object.fromEntries(Object.entries(moved).filter(([, v]) => v !== undefined)) };
+  const keys = [...FIGURE_SOURCE_ORDER.filter((k) => all[k] !== undefined), ...Object.keys(all).filter((k) => !FIGURE_SOURCE_ORDER.includes(k))];
+  return Object.fromEntries(keys.map((k) => [k, all[k]]));
+}
+
+/** A rule's figures with each value's source placed (`placeFigureSource`): how many moved, and the titles whose place stays. */
+export function placeFigures(figures: unknown): { figures: unknown; moved: number; kept: string[] } {
+  let moved = 0;
+  const kept: string[] = [];
+  const walk = (node: unknown): unknown => {
+    if (Array.isArray(node)) return node.map(walk);
+    if (typeof node !== "object" || node === null) return node;
+    const obj = node as Record<string, unknown>;
+    if ("value" in obj && typeof obj.source === "object" && obj.source !== null) {
+      const placed = placeFigureSource(obj.source as Record<string, unknown>);
+      if (placed === "kept") kept.push(String((obj.source as { title: unknown }).title));
+      if (placed === undefined || placed === "kept") return obj;
+      moved++;
+      return { ...obj, source: placed };
+    }
+    return Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, walk(v)]));
+  };
+  return { figures: walk(figures), moved, kept };
+}
+
+const OWN_KEYS = ["scope", "scope_institutions", "scope_settle", "sources", "sources_missing_reason", "derived_from", "examples", "see_also"];
 
 /** Removes the keys this script wrote from the text of a record (they are always last, at two-space indent), then appends the new ones. */
 export function writeKeys(text: string, add: Record<string, unknown>): string {
   let body = text;
-  const cut = [...body.matchAll(/,\n  "(scope|scope_institutions|scope_settle|sources|sources_missing_reason|derived_from|examples)":/g)].map((m) => m.index!);
+  const cut = [...body.matchAll(/,\n  "(scope|scope_institutions|scope_settle|sources|sources_missing_reason|derived_from|examples|see_also)":/g)].flatMap((m) => (m.index === undefined ? [] : [m.index]));
   if (cut.length > 0) body = body.slice(0, Math.min(...cut)) + body.slice(body.lastIndexOf("\n}"));
   const close = body.lastIndexOf("}");
   const head = body.slice(0, close).replace(/\s+$/, "");
@@ -678,6 +970,8 @@ interface Report {
   hostsMissing: Map<string, number>;
   untitled: Map<string, number>;
   noPublisherHe: string[];
+  /** Figure source titles whose place stays in the title (`placeInTitle` gave "kept"), as `<ID>: <title>`. */
+  titlesKept: string[];
 }
 
 const titleKey = (t: string): string =>
@@ -698,6 +992,8 @@ export interface ExtractionRun {
   tables: { publishers: boolean; documents: boolean };
   scopeCounts: Record<string, number>;
   scopeProblems: string[];
+  /** Parentheticals no row of `QUALIFIER_STANDING` names, as `<ID>: <parenthetical>`: the extraction fails while any is left. */
+  qualifierProblems: string[];
 }
 
 /**
@@ -711,6 +1007,9 @@ export function extractAll(root: string, opts: { write?: boolean; only?: Set<str
   const rulesDir = join(root, "data/rules");
   const base = readRuleBaseIds(join(root, ".claude/skills/il-finance/references"));
   const blocks = base.blocks!;
+  const formulas = readFormulaIds(join(root, "docs/method.md"));
+  const questions = new Set((base.questions ?? []).map((q) => q.id));
+  const qualifierProblems: string[] = [];
   const publishersPath = join(root, "data/sources/publishers.json");
   const documentsPath = join(root, "data/sources/documents.json");
   const publishers = existsSync(publishersPath) ? (JSON.parse(readFileSync(publishersPath, "utf8")) as Record<string, PublisherRow>) : undefined;
@@ -732,7 +1031,7 @@ export function extractAll(root: string, opts: { write?: boolean; only?: Set<str
 
   const rep: Report = {
     perFile: new Map(),
-    totals: { rules: 0, withSources: 0, entries: 0, locator: 0, locator_he: 0, quote: 0, page: 0, title_he: 0, publisher_he: 0, derived: 0, examples: 0 },
+    totals: { rules: 0, withSources: 0, entries: 0, locator: 0, locator_he: 0, quote: 0, page: 0, title_he: 0, publisher_he: 0, derived: 0, examples: 0, seeAlso: 0, standing: 0, figurePlaces: 0 },
     strengths: {},
     kinds: {},
     unresolved: [],
@@ -740,13 +1039,14 @@ export function extractAll(root: string, opts: { write?: boolean; only?: Set<str
     hostsMissing: new Map(),
     untitled: new Map(),
     noPublisherHe: [],
+    titlesKept: [],
   };
   const bump = (o: Record<string, number>, k: string) => (o[k] = (o[k] ?? 0) + 1);
 
   for (const f of files) {
     const path = join(rulesDir, f);
     const text = readFileSync(path, "utf8");
-    const rec = JSON.parse(text) as { id: string; strength: string; checked: string; il_finance_file?: string };
+    const rec = JSON.parse(text) as { id: string; strength: string; checked: string; il_finance_file?: string; figures?: unknown };
     const block: RuleBlock | undefined = blocks.get(rec.id);
     const fileKey = block?.file ?? rec.il_finance_file ?? "?";
     const pf = rep.perFile.get(fileKey) ?? { rules: 0, entries: 0, missing: 0 };
@@ -775,6 +1075,7 @@ export function extractAll(root: string, opts: { write?: boolean; only?: Set<str
     } else {
       const res = extractFromLine(line, { ruleId: rec.id, ruleStrength: rec.strength, ruleChecked: rec.checked, defs: block!.defs, knownIds: known, ruleScope: scopeOf.get(rec.id), scopeOf, publishers, documents });
       res.skipped.forEach((what) => rep.skipped.push({ id: rec.id, what }));
+      res.unmapped.forEach((q) => qualifierProblems.push(`${rec.id}: ${q}`));
       if (res.sources.length > 0) {
         add.sources = res.sources;
         rep.totals.withSources!++;
@@ -788,6 +1089,7 @@ export function extractAll(root: string, opts: { write?: boolean; only?: Set<str
           if (s.title_he) rep.totals.title_he!++;
           else rep.untitled.set(titleKey(s.title), (rep.untitled.get(titleKey(s.title)) ?? 0) + 1);
           if (s.publisher_he) rep.totals.publisher_he!++;
+          if (s.standing) bump(rep.totals, "standing");
           bump(rep.strengths, s.strength);
           bump(rep.kinds, s.kind);
           const host = hostOf(s.url);
@@ -808,11 +1110,29 @@ export function extractAll(root: string, opts: { write?: boolean; only?: Set<str
         rep.totals.examples!++;
       }
     }
-    const out = writeKeys(text, add);
+    const pointerSkips: string[] = [];
+    const seeAlso = block ? seeAlsoFrom([line ?? "", conditionsLineOf(block.body) ?? ""], formulas, questions, pointerSkips) : [];
+    pointerSkips.forEach((what) => rep.skipped.push({ id: rec.id, what }));
+    if (seeAlso.length > 0) {
+      add.see_also = seeAlso;
+      bump(rep.totals, "seeAlso");
+    }
+    // a figure's source title names its document; the place written at its end moves into the source's own fields (§3.1)
+    const placed = rec.figures === undefined ? { figures: undefined, moved: 0, kept: [] } : placeFigures(rec.figures);
+    placed.kept.forEach((t) => rep.titlesKept.push(`${rec.id}: ${t}`));
+    let base = text;
+    if (placed.moved > 0) {
+      // the record is rewritten whole, so it must already read as JSON.stringify writes it; otherwise nothing else may move with it
+      if (JSON.stringify(JSON.parse(text), null, 2) + "\n" === text) {
+        base = JSON.stringify({ ...rec, figures: placed.figures }, null, 2) + "\n";
+        rep.totals.figurePlaces = (rep.totals.figurePlaces ?? 0) + placed.moved;
+      } else rep.titlesKept.push(`${rec.id}: the record is not written as JSON.stringify writes it, so its figures' places stay in their titles`);
+    }
+    const out = writeKeys(base, add);
     if (out !== text) drifted.push(rec.id);
     if (write && out !== text && (!only || only.has(rec.id))) writeFileSync(path, out);
   }
-  return { drifted, records: files.length, unknownOnly: only ? [...only].filter((id) => !known.has(id)) : [], rep, tables: { publishers: !!publishers, documents: !!documents }, scopeCounts, scopeProblems };
+  return { drifted, records: files.length, unknownOnly: only ? [...only].filter((id) => !known.has(id)) : [], rep, tables: { publishers: !!publishers, documents: !!documents }, scopeCounts, scopeProblems, qualifierProblems };
 }
 
 function main() {
@@ -821,8 +1141,11 @@ function main() {
   const dry = process.argv.includes("--dry") || drift;
   const onlyArg = process.argv.find((a) => a.startsWith("--only="));
   const only = onlyArg ? new Set(onlyArg.slice("--only=".length).split(",").map((x) => x.trim().toUpperCase()).filter(Boolean)) : undefined;
-  const { drifted, records, unknownOnly, rep, tables, scopeCounts, scopeProblems } = extractAll(root, { write: !dry, only });
+  const { drifted, records, unknownOnly, rep, tables, scopeCounts, scopeProblems, qualifierProblems } = extractAll(root, { write: !dry, only });
   for (const id of unknownOnly) console.error(`--only: no record for ${id}`);
+  // a parenthetical the standing table does not name is read and given its row (QUALIFIER_STANDING) before the record is trusted
+  for (const q of qualifierProblems) console.error(`qualifier with no row in QUALIFIER_STANDING: ${q}`);
+  if (qualifierProblems.length > 0) process.exitCode = 1;
   if (drift) {
     console.log(`${drifted.length} of ${records} records differ from what their blocks give today${drifted.length ? `:\n${drifted.join(", ")}` : ""}`);
     return;
@@ -845,7 +1168,8 @@ function renderReport(r: Report, tables: { publishers: boolean; documents: boole
   L.push(`- Rules: ${t.rules}; with sources: ${t.withSources}; unresolved (sources_missing_reason): ${r.unresolved.length}`);
   L.push(`- Entries: ${t.entries}; with locator ${t.locator}, locator_he ${t.locator_he}, quote ${t.quote}, page ${t.page}`);
   L.push(`- Entries with title_he: ${t.title_he}; with publisher_he: ${t.publisher_he}; rules whose first source lacks publisher_he: ${r.noPublisherHe.length}`);
-  L.push(`- Rules with derived_from: ${t.derived}; general rules with examples (companies' terms they point to): ${t.examples}`);
+  L.push(`- Rules with derived_from: ${t.derived}; general rules with examples (companies' terms they point to): ${t.examples}; rules with see_also: ${t.seeAlso}`);
+  L.push(`- Entries with a standing: ${t.standing}; figure sources whose place moved out of the title: ${t.figurePlaces}`);
   L.push(`- Strengths: ${Object.entries(r.strengths).map(([k, v]) => `${k} ${v}`).join(", ")}`);
   L.push(`- Kinds: ${Object.entries(r.kinds).map(([k, v]) => `${k} ${v}`).join(", ")}`, "");
   L.push("## Per rule base file", "", "| file | rules | entries | unresolved |", "|---|---|---|---|");
@@ -859,6 +1183,9 @@ function renderReport(r: Report, tables: { publishers: boolean; documents: boole
   L.push("", "## Most frequent document titles without title_he (title up to the locator)", "");
   for (const [k, n] of top(r.untitled, 80)) L.push(`- ${n} x ${k}`);
   L.push("", "## Rules whose first source lacks publisher_he", "", r.noPublisherHe.join(", ") || "(none)", "");
+  L.push(`## Figure source titles whose place stays in the title (${r.titlesKept.length})`, "");
+  for (const k of r.titlesKept) L.push(`- ${k}`);
+  L.push("");
   return L.join("\n");
 }
 

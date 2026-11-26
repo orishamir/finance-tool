@@ -20,9 +20,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=14",
-        "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017), p.14, annex 2 s.ד(1)",
+        "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.14, annex 2 s.ד(1)",
+        "locator_he": "עמוד 14, נספח 2 סעיף ד(1)",
+        "page": 14,
         "quote": "על 1.00% מסך התחייבויות הקרן כלפי פנסיונרים"
       },
       "checked": "2026-11-15",
@@ -41,9 +44,12 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1016/he/regulation_h_2017-3-3.pdf#page=14",
-        "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017), p.14, annex 2 s.ד(1)(ד)",
+        "title": "חוזר פנסיה 2017-3-3 – הוראות דיווח כספי לקרנות פנסיה חדשות (3.5.2017)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.14, annex 2 s.ד(1)(ד)",
+        "locator_he": "עמוד 14, נספח 2 סעיף ד(1)(ד)",
+        "page": 14,
         "quote": "של עד שלוש שנים ממועד המאזן"
       },
       "checked": "2026-11-15",

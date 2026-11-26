@@ -4,7 +4,7 @@
 import { currencyExposureShare, stockExposureShare } from "@finance-tool/engine";
 import { cmaAbout, company as copy } from "../copy";
 import { fmt } from "./format";
-import { compactFee, computed, expandFee, staleCma, type CompactFee, type SiteValue } from "./value";
+import { compactFee, computed, expandFee, staleCma, templateRow, type CompactFee, type SiteValue } from "./value";
 import type { ValueObject } from "@finance-tool/schema";
 
 /** A track's amounts of data-schema 3.13 `holdings`, NIS millions at the period end. */
@@ -33,18 +33,23 @@ export interface ExposureShares {
 }
 
 /**
- * One group's template: the first track's amounts, with the monthly stale rule of the CMA data and each amount's head line for its sheet.
- * Null when no track has them.
+ * One group's template: for each amount, a track's that has a number and no note where one exists (`templateRow`), with the monthly stale
+ * rule of the CMA data and the amount's head line for its sheet. Null when no track has them.
  */
 export function holdingsTemplate(list: (Holdings | undefined)[], period: string, today: string): HoldingsTemplate | null {
-  const first = list.find((h): h is Holdings => !!h);
-  if (!first) return null;
+  const held = list.filter((h): h is Holdings => !!h);
+  if (held.length === 0) return null;
   const stale = staleCma(period, today);
   const month = fmt.period(period);
-  const fx = list.find((h) => h?.foreign_currency_exposure)?.foreign_currency_exposure;
+  const assetsRow = templateRow(held, (h) => h.total_assets);
+  const exposureRow = templateRow(held, (h) => h.stock_market_exposure);
+  if (!assetsRow || !exposureRow) return null;
+  const assets = assetsRow.total_assets;
+  const exposure = exposureRow.stock_market_exposure;
+  const fx = templateRow(held.filter((h) => h.foreign_currency_exposure), (h) => h.foreign_currency_exposure)?.foreign_currency_exposure;
   return {
-    assets: { ...first.total_assets, stale, about: cmaAbout.total_assets(month) },
-    exposure: { ...first.stock_market_exposure, stale, about: cmaAbout.stock_market_exposure(month) },
+    assets: { ...assets, stale, about: cmaAbout.total_assets(month) },
+    exposure: { ...exposure, stale, about: cmaAbout.stock_market_exposure(month) },
     currency: fx ? { ...fx, stale, about: cmaAbout.foreign_currency_exposure(month) } : null,
   };
 }
@@ -66,8 +71,9 @@ function shareNote(value: number | null, reported: boolean): string | undefined 
 }
 
 /**
- * One share as a computed site value over two sourced amounts. A share that cannot be computed is a value of null whose note says why:
- * an amount not reported, or assets of 0; such a value names no rule. A page that shows a share ships the rules its `rulesUsed` names.
+ * One share as a computed site value over two sourced amounts, stale where the amounts are (`computed` carries it). A share that cannot be
+ * computed is a value of null whose note says why: an amount not reported, or assets of 0; such a value names no rule. A page that shows a
+ * share ships the rules its `rulesUsed` names.
  */
 function share(formula: "F-87" | "F-88", amount: SiteValue, assets: SiteValue, period: string, today: string): SiteValue {
   const reported = typeof assets.value === "number" && typeof amount.value === "number";
@@ -79,8 +85,7 @@ function share(formula: "F-87" | "F-88", amount: SiteValue, assets: SiteValue, p
   const inputs: Record<string, SiteValue> = { [amountKey]: amount, total_assets: assets };
   // the share is the one line method.md draws for each, `s = E / A × 100` and `c = X / A × 100`
   const working = { kind: "formula", entry: formula, line: 0, symbols: { [amountKey]: formula === "F-87" ? "E" : "X", total_assets: "A" } } as const;
-  const v = computed(value, "pct", formula, inputs, { today, rules: value === null ? [] : [{ id: EXPOSURE_RULE, strength: "primary" }], about, notes, working });
-  return { ...v, stale: assets.stale ?? null };
+  return computed(value, "pct", formula, inputs, { today, rules: [{ id: EXPOSURE_RULE, strength: "primary" }], about, notes, working });
 }
 
 /** F-87 and F-88 for one track; null only when the track's data file has no amounts at all. */

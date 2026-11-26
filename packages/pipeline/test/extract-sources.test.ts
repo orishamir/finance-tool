@@ -1,8 +1,32 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { cleanLocator, extractFromLine, findLinks, findQuote, firstPage, pageInUrl, sourceLineOf, splitPassages, toHebrewLocator, writeKeys, type LineContext } from "../scripts/extract-sources.ts";
+import {
+  cleanLocator,
+  conditionsLineOf,
+  extractFromLine,
+  findLinks,
+  findQuote,
+  firstPage,
+  pageInUrl,
+  placeFigures,
+  placeInTitle,
+  seeAlsoFrom,
+  sourceLineOf,
+  splitPassages,
+  standingOf,
+  toHebrewLocator,
+  writeKeys,
+  writeOutTitle,
+  type LineContext,
+} from "../scripts/extract-sources.ts";
 import { readRuleBaseIds, urlInBlock } from "../src/references.ts";
+
+/** The value, or the test fails here where it is missing. */
+function need<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
+  return v;
+}
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const ctx = (over: Partial<LineContext> = {}): LineContext => ({
@@ -340,6 +364,148 @@ describe("extract-sources: parts", () => {
     const twice = writeKeys(once, { sources_missing_reason: "none" });
     expect(JSON.parse(twice)).toEqual({ id: "A-1", n: 83, sources_missing_reason: "none" });
     expect(twice.endsWith("\n}\n")).toBe(true);
+    const pointed = writeKeys(twice, { sources_missing_reason: "none", see_also: [{ kind: "method", id: "F-04" }] });
+    expect(JSON.parse(writeKeys(pointed, { sources_missing_reason: "none" }))).toEqual({ id: "A-1", n: 83, sources_missing_reason: "none" });
+  });
+});
+
+describe("extract-sources: a source's standing", () => {
+  const line = (q: string) => `[a text](https://www.gov.il/BlobFolder/x/he/a.pdf), p.3 · checked 2026-11-20 · primary ${q}`;
+  it("comes from the parenthetical after the strength word, by the table's first matching row", () => {
+    const at = (q: string) => need(extractFromLine(line(q), ctx()).sources[0], `a source for ${q}`);
+    expect(at("(draft)")).toMatchObject({ qualifier: "(draft)", standing: "draft" });
+    expect(at("(a bill, not binding)").standing).toBe("bill");
+    expect(at("(explanatory notes)").standing).toBe("bill");
+    expect(at("(superseded)").standing).toBe("superseded");
+    expect(at("(state body's consolidated copy, not the binding gazette wording)").standing).toBe("consolidated-not-binding");
+    expect(at("(official translation; the Hebrew text binds)").standing).toBe("translation");
+    expect(at("(foreign regulator, general mechanism)").standing).toBe("foreign-view");
+    expect(at("(the law's definition; whether it reaches tax inside a fund is not stated)").standing).toBe("does-not-answer");
+    // a gazette is the binding text, whatever it says of a consolidated copy beside it
+    expect(at("(gazette: the consolidated version as published in 1995; a state body's consolidated copy prints the same words)").standing).toBeUndefined();
+  });
+
+  it("writes none for a working note or a source that is what its kind says, and keeps the qualifier as written", () => {
+    expect(standingOf("(library copy; read on the page image)")).toBe("working-note");
+    expect(standingOf("(read in Chrome)")).toBe("working-note");
+    expect(standingOf("(exchange rules, ISA-approved)")).toBe("none");
+    const s = need(extractFromLine(line("(library 0527d8b9da405f0d)"), ctx()).sources[0], "the library source");
+    expect(s.qualifier).toBe("(library 0527d8b9da405f0d)");
+    expect(s.standing).toBeUndefined();
+  });
+
+  it("comes from a title naming a state body's consolidated version where the qualifier gives no word, never from a Knesset consolidation", () => {
+    const titled = (title: string, q = "") => need(extractFromLine(`[${title}](https://www.gov.il/BlobFolder/x/he/a.pdf), s.3 · checked 2026-11-20 · primary${q ? ` ${q}` : ""}`, ctx()).sources[0], `a source titled ${title}`);
+    expect(titled("פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)").standing).toBe("consolidated-not-binding");
+    expect(titled("כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)").standing).toBe("consolidated-not-binding");
+    expect(titled("Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy").standing).toBe("consolidated-not-binding");
+    expect(titled("Securities Law, Securities Authority's consolidated copy, file of 26.8.2026").standing).toBe("consolidated-not-binding");
+    expect(titled("חוק השקעות משותפות בנאמנות, התשנ\"ד-1994 (נוסח רשות ניירות ערך)").standing).toBe("consolidated-not-binding");
+    expect(titled("פקודת הבנקאות, 1941 (קובץ חקיקה בנקאית של בנק ישראל, פריט 103)").standing).toBe("consolidated-not-binding");
+    expect(titled("Disclosure rules 1992 (BoI copy)").standing).toBe("consolidated-not-binding");
+    expect(titled("פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)", "(derived)").standing).toBe("consolidated-not-binding");
+    expect(titled("פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)", "(draft)").standing).toBe("draft");
+    expect(titled("חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, ספר החוקים 1522").standing).toBeUndefined();
+    expect(titled("צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302").standing).toBeUndefined();
+  });
+
+  it("is shared by every passage of one file in a record, but for a citation's own does-not-answer", () => {
+    const line =
+      "[פקודת הבנקאות, Bank of Israel's copy](https://boi.org.il/media/a/103.pdf#page=10), p.10, s.8 · primary (state body's consolidated copy); [פקודת הבנקאות, 1941](https://boi.org.il/media/a/103.pdf), p.6, s.8ד · primary · checked 2026-11-20";
+    expect(extractFromLine(line, ctx()).sources.map((s) => s.standing)).toEqual(["consolidated-not-binding", "consolidated-not-binding"]);
+    const unsettled =
+      "[a definition](https://www.gov.il/BlobFolder/x/he/b.pdf), p.2 · primary (the law's definition; whether it reaches tax inside a fund is not stated); [the same law](https://www.gov.il/BlobFolder/x/he/b.pdf#page=5), p.5 · primary · checked 2026-11-20";
+    expect(extractFromLine(unsettled, ctx()).sources.map((s) => s.standing)).toEqual(["does-not-answer", undefined]);
+  });
+
+  it("lists a parenthetical no row names, so the run fails on it", () => {
+    expect(standingOf("(a remark no one has read)")).toBeUndefined();
+    expect(extractFromLine(line("(a remark no one has read)"), ctx()).unmapped).toEqual(["(a remark no one has read)"]);
+    expect(extractFromLine(line("(draft)"), ctx()).unmapped).toEqual([]);
+  });
+});
+
+describe("extract-sources: a title that points back to the link before it", () => {
+  it("a ditto is written out from that link's document, its own parts kept unless the name holds them", () => {
+    const line =
+      '[כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/x/159a.pdf) pp.17-19 · checked 2026-10-25 · primary; [the same rules, first schedule, general note 3](https://www.boi.org.il/media/x/159a.pdf#page=24) p.24 · checked 2026-10-31 · primary';
+    const second = need(extractFromLine(line, ctx()).sources.find((s) => s.page === 24), "the source on page 24");
+    expect(second.title).toBe('כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל), first schedule, general note 3');
+    expect(second.locator).toBe("p.24");
+    expect(writeOutTitle("same rules, נוסח משולב (בנק ישראל)", "https://b.org/r.pdf", { title: "כללי X, התשנ\"ב-1992, נוסח משולב (בנק ישראל)", url: "https://b.org/r.pdf" })).toBe('כללי X, התשנ"ב-1992, נוסח משולב (בנק ישראל)');
+    expect(writeOutTitle("s.62, same gazette", "https://k.org/l.pdf#page=14", { title: "s.60, gazette ס״ח תשמ״א, 208", url: "https://k.org/l.pdf#page=14" })).toBe("s.62, gazette ס״ח תשמ״א, 208");
+    expect(writeOutTitle("אותן תקנות, תיקון", "https://k.org/b.pdf", { title: "תקנות מס הכנסה (ניכוי מריבית), p.4", url: "https://k.org/a.pdf" })).toBe("תקנות מס הכנסה (ניכוי מריבית), תיקון");
+  });
+
+  it("a title that is only a place takes the document's name when the link before it opens the same document", () => {
+    const line = "[s.1, gazette ס״ח תשע״ד, 418](https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=2), [s.2](https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=3), [s.4](https://fs.knesset.gov.il/19/law/19_lsr_301590.pdf#page=3) · checked 2026-11-08 · primary";
+    const titles = extractFromLine(line, ctx()).sources.map((s) => [s.locator, s.title]);
+    expect(titles).toContainEqual(["s.2", "gazette ס״ח תשע״ד, 418"]);
+    expect(titles).toContainEqual(["s.4", "gazette ס״ח תשע״ד, 418"]);
+    // another document's address: the place stays the title, and with no link before it nothing is written out
+    expect(writeOutTitle("p.119", "https://b.org/other.pdf#page=119", { title: "iShares VII plc, annual report", url: "https://b.org/report.pdf#page=104" })).toBe("p.119");
+    expect(writeOutTitle("same rules", "https://b.org/r.pdf", undefined)).toBe("same rules");
+  });
+});
+
+describe("extract-sources: see_also", () => {
+  const formulas = new Set(["F-04", "F-104"]);
+  const questions = new Set(["TXS OQ26", "GOV OQ2", "GOV OQ8"]);
+  it("lists the method entries and prefixed open questions a block points to, once each, in the order named", () => {
+    const skipped: string[] = [];
+    const lines = ["the count over the one-year deposits is `docs/method.md` F-104 (GOV OQ2, OQ8); see [F-12 table](https://example.org/F-12)", "How the site runs a fund on it: docs/method.md F-04; TXS OQ26 and F-104 again; F-999; TXS OQ99; open question 4"];
+    expect(seeAlsoFrom(lines, formulas, questions, skipped)).toEqual([
+      { kind: "method", id: "F-104" },
+      { kind: "question", id: "GOV OQ2" },
+      { kind: "question", id: "GOV OQ8" },
+      { kind: "method", id: "F-04" },
+      { kind: "question", id: "TXS OQ26" },
+    ]);
+    expect(skipped).toEqual(["see_also: F-999 is no method entry of docs/method.md", "see_also: TXS OQ99 is no question of the rule base"]);
+  });
+
+  it("reads the Conditions line with its continuation lines", () => {
+    expect(conditionsLineOf("- Rule: x\n- Conditions / exceptions: first part\n  second part (F-04)\n- Source: y")).toBe("first part second part (F-04)");
+  });
+});
+
+describe("extract-sources: a figure source's place", () => {
+  const pdf = "https://www.gov.il/BlobFolder/policy/x/he/booklet.pdf";
+  it("moves the place at the end of the title into its own fields, its quoted words into the quote", () => {
+    expect(placeInTitle('Tax Authority deductions booklet 2026 (April update), p.10, "שיעורי המס החלים על הכנסה שאינה מיגיעה אישית"', pdf)).toEqual({
+      title: "Tax Authority deductions booklet 2026 (April update)",
+      locator: "p.10",
+      locator_he: "עמוד 10",
+      page: 10,
+      quote: "שיעורי המס החלים על הכנסה שאינה מיגיעה אישית",
+    });
+    expect(placeInTitle("תשקיף עיקרי של קסם, 9.8.2026, עמודים 15 עד 19", "https://example.org/p")).toEqual({ title: "תשקיף עיקרי של קסם, 9.8.2026", locator: "עמודים 15 עד 19", locator_he: "עמודים 15 עד 19" });
+    // a comma inside brackets or quotes is no place's start; an English remark after the place stays with the title
+    expect(placeInTitle('Tax Authority deductions booklet "לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026", p.10 (2026 tables)', pdf)).toMatchObject({
+      title: 'Tax Authority deductions booklet "לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026" (2026 tables)',
+      locator: "p.10",
+    });
+  });
+
+  it("keeps in the title a place it cannot move whole, and leaves a title with no place alone", () => {
+    expect(placeInTitle("פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.85, s.47(ב1)(2); guide 2025 pp.62-64", pdf)).toBe("kept");
+    expect(placeInTitle("תקנות (תיקון), p.3, reg. 2(ג): 5,306 (Tax Authority deductions booklet 2026, p.12) × 180", pdf)).toBe("kept");
+    expect(placeInTitle('IRS Tax Treaty Table 1 (rev. May 2023), p.2, row "Israel"', pdf)).toBe("kept");
+    expect(placeInTitle("National Insurance Institute, child savings: withdrawal page", pdf)).toBeUndefined();
+  });
+
+  it("rewrites every figure value's source, and the link's own #page= wins over the locator's page", () => {
+    const value = (title: string, url = pdf) => ({ value: 1, unit: "pct", source: { url, title, publisher: "Tax Authority", strength: "primary" } });
+    const placed = placeFigures({ a: value("Booklet, p.10"), b: { by_tax_year: { "2026": value("Booklet, p.12") } }, c: [{ up_to: value("Booklet"), rate: value("Booklet, p.3", `${pdf}#page=4`) }] });
+    const f = placed.figures as { a: { source: object }; b: { by_tax_year: Record<string, { source: object }> }; c: { up_to: { source: object }; rate: { source: object } }[] };
+    expect(placed.moved).toBe(3);
+    expect(Object.keys(f.a.source)).toEqual(["url", "title", "publisher", "strength", "locator", "locator_he", "page"]);
+    expect(f.a.source).toMatchObject({ title: "Booklet", locator: "p.10", page: 10 });
+    expect(need(f.b.by_tax_year["2026"], "the 2026 value").source).toMatchObject({ title: "Booklet", page: 12 });
+    const c0 = need(f.c[0], "the first bracket");
+    expect(c0.up_to.source).toEqual(value("Booklet").source);
+    expect(c0.rate.source).toMatchObject({ title: "Booklet", locator: "p.3" });
+    expect(c0.rate.source).not.toHaveProperty("page");
   });
 });
 
@@ -355,6 +521,14 @@ describe("extract-sources: the real records", () => {
       const line = sourceLineOf(block.body) ?? "";
       const res = extractFromLine(line, { ruleId: r.id, ruleStrength: r.strength, ruleChecked: r.checked, defs: block.defs, knownIds: known });
       for (const s of res.sources) expect(urlInBlock(s.url, block), `${r.id} ${s.url}`).toBe(true);
+    }
+  }, 30000);
+
+  it("every parenthetical after a strength word has its row in the standing table", () => {
+    for (const r of records) {
+      const block = need(base.blocks?.get(r.id), `the block of ${r.id}`);
+      const res = extractFromLine(sourceLineOf(block.body) ?? "", { ruleId: r.id, ruleStrength: r.strength, ruleChecked: r.checked, defs: block.defs, knownIds: known });
+      expect(res.unmapped, r.id).toEqual([]);
     }
   }, 30000);
 

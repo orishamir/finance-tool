@@ -29,7 +29,14 @@
       "page": 146,
       "quote": "לענין נייר ערך בידי יחיד, הנקוב במטבע חוץ או שערכו צמוד למטבע חוץ, יראו את שער המטבע כמדד",
       "checked": "2026-10-25",
-      "qualifier": "(the law's general test; whether a TASE-listed foreign fund's unit meets it is not stated)"
+      "qualifier": "(the law's general test; whether a TASE-listed foreign fund's unit meets it is not stated)",
+      "standing": "does-not-answer"
+    }
+  ],
+  "see_also": [
+    {
+      "kind": "method",
+      "id": "F-04"
     }
   ]
 }

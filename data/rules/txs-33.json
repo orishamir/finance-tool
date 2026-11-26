@@ -52,7 +52,8 @@
       "locator": "file p.67, s.103; file p.70, s.107(ב)(1)",
       "locator_he": "עמוד הקובץ 67, סעיף 103; עמוד הקובץ 70, סעיף 107(ב)(1)",
       "page": 67,
-      "checked": "2026-11-01"
+      "checked": "2026-11-01",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=71",
@@ -66,7 +67,8 @@
       "locator_he": "עמוד הקובץ 71, סעיף 108(ה)",
       "page": 71,
       "quote": "מפרק קרן יפדה את יחידות הקרן במועד הפירוק",
-      "checked": "2026-11-01"
+      "checked": "2026-11-01",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=150",
@@ -80,7 +82,8 @@
       "locator_he": "סעיף 88",
       "page": 150,
       "quote": "כמשמעותם בחוק השקעות משותפות בנאמנות",
-      "checked": "2026-11-01"
+      "checked": "2026-11-01",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=148",
@@ -93,7 +96,8 @@
       "locator": "s.88, definition מכירה",
       "locator_he": "סעיף 88, הגדרת מכירה",
       "page": 148,
-      "checked": "2026-11-01"
+      "checked": "2026-11-01",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=156",
@@ -106,7 +110,8 @@
       "locator": "s.93(א)(3), (4)",
       "locator_he": "סעיף 93(א)(3), (4)",
       "page": 156,
-      "checked": "2026-11-01"
+      "checked": "2026-11-01",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=12",
@@ -119,7 +124,8 @@
       "locator": "s.1, definition חבר בני אדם",
       "locator_he": "סעיף 1, הגדרת חבר בני אדם",
       "page": 12,
-      "checked": "2026-11-01"
+      "checked": "2026-11-01",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf#page=4",

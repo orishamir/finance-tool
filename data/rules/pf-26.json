@@ -20,9 +20,12 @@
       "unit": "months",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
-        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.2, s.3(א)",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, s.3(א)",
+        "locator_he": "עמוד 2, סעיף 3(א)",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -40,9 +43,12 @@
       "unit": "days",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
-        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.3, s.4(א)",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, s.4(א)",
+        "locator_he": "עמוד 3, סעיף 4(א)",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -60,9 +66,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
-        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, p.3, s.4(ה)",
+        "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, s.4(ה)",
+        "locator_he": "עמוד 3, סעיף 4(ה)",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,

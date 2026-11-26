@@ -68,7 +68,8 @@
       "locator_he": "עמוד 155, סעיף 92(א)(5)",
       "page": 155,
       "quote": "שלא נוכו בשנת המס, ייחשבו לענין סעיף זה כהפסד הון מניירות ערך",
-      "checked": "2026-11-07"
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n9TN+DoBVFvYjWC1z45JPDc=#page=4",
@@ -137,7 +138,8 @@
       "locator_he": "עמוד 147, סעיף 88",
       "page": 147,
       "quote": "מועד קובע",
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/service/reporting-and-payment-2025-annual-tax-report-for-individuals/he/Service_Pages_Income_tax_annual-report-2026_1325-2025.pdf",

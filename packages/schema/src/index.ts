@@ -19,3 +19,4 @@ export * from "./collections/averages.ts";
 export * from "./religious-law.ts";
 export * from "./never.ts";
 export * from "./currency.ts";
+export * from "./note-text.ts";

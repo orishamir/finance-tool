@@ -17,9 +17,13 @@
       "unit": "pct",
       "source": {
         "url": "https://www.btl.gov.il/benefits/HozrimGimlaot/Hozrim/11.16%d7%97%d7%95%d7%96%d7%a8%20%d7%aa%d7%95%d7%9b%d7%a0%d7%99%d7%aa%20%d7%97%d7%99%d7%a1%d7%9b%d7%95%d7%9f%20%d7%9c%d7%9b%d7%9c%20%d7%99%d7%9c%d7%93_.pdf#page=11",
-        "title": "ביטוח לאומי, חוזר 1356: תוכנית חיסכון לכל ילד, 30.11.2016, p.11, s.6 \"תחויב במס רווחי הון בשיעור של 25% מהרווחים\"",
+        "title": "ביטוח לאומי, חוזר 1356: תוכנית חיסכון לכל ילד, 30.11.2016",
         "publisher": "National Insurance Institute",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.11, s.6",
+        "locator_he": "עמוד 11, סעיף 6",
+        "page": 11,
+        "quote": "תחויב במס רווחי הון בשיעור של 25% מהרווחים"
       },
       "checked": "2026-11-06",
       "effective_from": null,

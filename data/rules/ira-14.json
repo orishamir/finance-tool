@@ -15,9 +15,12 @@
       "unit": "months",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=3",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820), p.3, reg. 5(ג)(1)",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
         "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, reg. 5(ג)(1)",
+        "locator_he": "עמוד 3, תקנה 5(ג)(1)",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -35,9 +38,11 @@
       "unit": "business_days",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820), pp.3-4, reg. 5(ג)(2)",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
         "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.3-4, reg. 5(ג)(2)",
+        "locator_he": "עמודים 3 עד 4, תקנה 5(ג)(2)"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -55,9 +60,12 @@
       "unit": "business_days",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820), p.4, reg. 5(ג)(2)",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), התש\"ע-2009 (קובץ התקנות 6820)",
         "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.4, reg. 5(ג)(2)",
+        "locator_he": "עמוד 4, תקנה 5(ג)(2)",
+        "page": 4
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -121,7 +129,8 @@
       "page": 4,
       "quote": "לכל הפחות",
       "checked": "2026-10-25",
-      "qualifier": "(draft)"
+      "qualifier": "(draft)",
+      "standing": "draft"
     }
   ]
 }

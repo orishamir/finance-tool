@@ -20,9 +20,12 @@
       "unit": "business_days",
       "source": {
         "url": "https://www.boi.org.il/media/rrcbh2gl/%D7%94%D7%94%D7%95%D7%A8%D7%90%D7%94-%D7%91%D7%9E%D7%9C%D7%95%D7%90%D7%94.pdf",
-        "title": "בנק ישראל – הוראת ניהול בנקאי תקין 432, העברת פעילות וסגירת חשבון של לקוח (נוסח [10] 6/2020, מצורף לחוזר ח-06-2623), p.5, s.8א(ב)(1)",
+        "title": "בנק ישראל – הוראת ניהול בנקאי תקין 432, העברת פעילות וסגירת חשבון של לקוח (נוסח [10] 6/2020, מצורף לחוזר ח-06-2623)",
         "publisher": "Bank of Israel",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5, s.8א(ב)(1)",
+        "locator_he": "עמוד 5, סעיף 8א(ב)(1)",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -40,9 +43,12 @@
       "unit": "business_days",
       "source": {
         "url": "https://www.boi.org.il/media/rrcbh2gl/%D7%94%D7%94%D7%95%D7%A8%D7%90%D7%94-%D7%91%D7%9E%D7%9C%D7%95%D7%90%D7%94.pdf",
-        "title": "בנק ישראל – הוראת ניהול בנקאי תקין 432, העברת פעילות וסגירת חשבון של לקוח (נוסח [10] 6/2020, מצורף לחוזר ח-06-2623), p.5, s.8א(ב)(2)",
+        "title": "בנק ישראל – הוראת ניהול בנקאי תקין 432, העברת פעילות וסגירת חשבון של לקוח (נוסח [10] 6/2020, מצורף לחוזר ח-06-2623)",
         "publisher": "Bank of Israel",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5, s.8א(ב)(2)",
+        "locator_he": "עמוד 5, סעיף 8א(ב)(2)",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": null,

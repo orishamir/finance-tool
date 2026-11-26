@@ -6,7 +6,7 @@
 // card or its figures can show opens a record the page holds. The chips are read from the record here, not through `pointedIds`.
 import { describe, expect, it } from "vitest";
 import { wrapperId, type RuleRecord } from "@finance-tool/schema";
-import { loadCma, loadRules } from "./data.server";
+import { loadCma, loadRules, loadTerms } from "./data.server";
 import { buildExposurePage, buildGuidePage } from "./guide.server";
 import { buildInstitution, institutionIds } from "./institutions.server";
 import { loadExposures } from "./instruments.server";
@@ -17,7 +17,11 @@ import { loader as companiesLoader } from "../routes/companies";
 import { loader as companyLoader } from "../routes/company";
 import { loader as notCoveredLoader } from "../routes/not-covered";
 import { loader as indicesLoader } from "../routes/invest";
+import { loader as trackLoader } from "../routes/track";
+import { loader as bondGuideLoader } from "../routes/guide-limited-bond-fund";
+import { loader as fundsGuideLoader } from "../routes/guide-mutual-funds";
 import { shelfBundle } from "./rule-uses.server";
+import { valueRuleIds } from "./page-rules.server";
 import { shelfIds } from "./rule-shelves";
 import { flags } from "../copy";
 import { parseAnswer } from "./answer-slots";
@@ -29,21 +33,26 @@ const all = loadRules();
 type Map_ = Record<string, RuleRecord>;
 const asMap = (x: Map_ | readonly RuleRecord[] | undefined): Map_ => (Array.isArray(x) ? Object.fromEntries(x.map((r) => [r.id, r])) : ((x as Map_ | undefined) ?? {}));
 
-/** Every `rule_ids` anywhere inside a node (a figure, a bracket, a tax year's value). */
-function ruleIdsIn(node: unknown): string[] {
-  if (Array.isArray(node)) return node.flatMap(ruleIdsIn);
-  if (node === null || typeof node !== "object") return [];
-  return Object.entries(node).flatMap(([k, v]) => (k === "rule_ids" && Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : ruleIdsIn(v)));
-}
-
 /** The chips a record's card can show: its derivations and examples, the rules its figures' sheets name, and the rules whose figures fill its text's slots. */
-const chipsOf = (r: RuleRecord): string[] => [...new Set([...(r.derived_from ?? []), ...(r.examples ?? []), ...ruleIdsIn(r.figures), ...slotIds(r.text_he ?? "")])].filter((id) => id !== r.id);
+const chipsOf = (r: RuleRecord): string[] => [...new Set([...(r.derived_from ?? []), ...(r.examples ?? []), ...valueRuleIds(r.figures), ...slotIds(r.text_he ?? "")])].filter((id) => id !== r.id);
 
 /** The chips of the page's cards whose record the page does not hold: "BRK-35 → BRK-51". */
 function unopened(rules: Map_ | readonly RuleRecord[] | undefined, pointed: Map_ | readonly RuleRecord[] | undefined): string[] {
   const have = { ...asMap(rules), ...asMap(pointed) };
   return Object.values(have).flatMap((r) => chipsOf(r).filter((id) => all[id] && !have[id]).map((id) => `${r.id} → ${id}`));
 }
+
+/** Every guide page's loader data, by wrapper id: read once for the tests that walk it. */
+let guides: Promise<[string, Record<string, unknown> & { rules: Map_; pointed: Map_ }][]> | null = null;
+const guidePages = () =>
+  (guides ??= (async () => {
+    const out: [string, Record<string, unknown> & { rules: Map_; pointed: Map_ }][] = [];
+    for (const id of wrapperId.options) {
+      if (!buildGuidePage(id)) continue;
+      out.push([id, (await guideLoader({ params: { id } } as never)) as Record<string, unknown> & { rules: Map_; pointed: Map_ }]);
+    }
+    return out;
+  })());
 
 describe("every chip on a page's rule cards opens its record", () => {
   it("the chips are read from the figures too: TXG-04's figures name TXG-02 and TXG-03", () => {
@@ -58,11 +67,7 @@ describe("every chip on a page's rule cards opens its record", () => {
 
   it("guide pages", async () => {
     const bad: string[] = [];
-    for (const id of wrapperId.options) {
-      if (!buildGuidePage(id)) continue;
-      const d = (await guideLoader({ params: { id } } as never)) as { rules: Map_; pointed: Map_ };
-      bad.push(...unopened(d.rules, d.pointed).map((x) => `${id}: ${x}`));
-    }
+    for (const [id, d] of await guidePages()) bad.push(...unopened(d.rules, d.pointed).map((x) => `${id}: ${x}`));
     expect(bad).toEqual([]);
   }, 300000);
 
@@ -161,4 +166,122 @@ describe("every rule a figure on the indices page names is a record the page hol
     });
     expect(bad).toEqual([]);
   }, 300000);
+});
+
+/**
+ * The ids the glossary rows cite that have no record in data/rules: live rules of the rule base that were never extracted into a record
+ * (TXH-16, under the term "הפקדה שאינה מוטבת", among them). A term card's list leaves them out (`TermCard`), and each waits for its
+ * record. A ratchet: an id leaves the list when it gains a record or when no glossary row cites it any more, and none joins it.
+ */
+const noRecord = new Set(["BRK-03", "BRK-30", "CAT-01", "CAT-02", "CAT-25", "CAT-26", "CAT-29", "CAT-30", "CORP-10", "FXD-06", "FXD-12", "FXD-15", "FXD-16", "INS-23", "KH-24", "MF-42", "MF-57", "MGD-20", "PEN-24", "REG-28", "RG-16", "RG-17", "RG-18", "RG-19", "RG-23", "TXH-16", "TXP-25"]);
+
+/** The rows of the page's term cards whose rule has no record: rows `TermCard` leaves out. Held at what they are, as a ratchet. */
+const PLACEHOLDER_ROWS = 60;
+
+type PageData = { rules?: Map_ | readonly RuleRecord[]; pointed?: Map_ | readonly RuleRecord[]; terms: Record<string, { ruleIds: readonly string[] }> };
+
+const isRecord = (r: unknown): r is RuleRecord => typeof r === "object" && r !== null && "id" in r;
+
+/** The records one key of a node holds, as a list of records or a map by id; nothing where it holds something else (a list of ids). */
+function recordsAt(v: unknown): Map_ {
+  if (v === null || typeof v !== "object") return {};
+  const list: unknown[] = Array.isArray(v) ? v : Object.values(v);
+  return list.length > 0 && list.every(isRecord) ? asMap(list) : {};
+}
+
+/**
+ * The records a part of the page's data carries for itself: under its own `rules` and `pointed`, or under its `data`'s, as a house's terms
+ * keep them beside the deal they draw (`HouseTermsData`). The part's figures open their chips from these and the page's.
+ */
+function ownRecords(o: Record<string, unknown>): Map_ {
+  const data = o.data !== null && typeof o.data === "object" && !Array.isArray(o.data) ? (o.data as Record<string, unknown>) : {};
+  return { ...recordsAt(o.rules), ...recordsAt(o.pointed), ...recordsAt(data.rules), ...recordsAt(data.pointed) };
+}
+
+/**
+ * Every `rule_ids` inside the page's data that has a record the figure's provider does not hold: `have` is what the page holds, and a part
+ * with records of its own adds them for its own figures only. The records themselves are not walked (the tests above walk their chips).
+ */
+function unheldValueIds(node: unknown, have: Map_, skip: ReadonlySet<string>): string[] {
+  if (Array.isArray(node)) return node.flatMap((x) => unheldValueIds(x, have, skip));
+  if (node === null || typeof node !== "object") return [];
+  const o = node as Record<string, unknown>;
+  const own = ownRecords(o);
+  const scope = Object.keys(own).length > 0 ? { ...have, ...own } : have;
+  return Object.entries(o).flatMap(([k, v]) => {
+    if (k === "rules" || k === "pointed" || skip.has(k)) return [];
+    // a run's product record (a bundle's, beside its `feeValues`) is the engine's input: what the run's figures' sheets name is its fees
+    // and the rules it read, which the bundle carries
+    if (k === "record" && "feeValues" in o) return [];
+    if (k === "rule_ids" && Array.isArray(v)) return v.filter((x): x is string => typeof x === "string" && !!all[x] && !scope[x]);
+    return unheldValueIds(v, scope, skip);
+  });
+}
+
+/**
+ * What a page points at that it does not ship: a term card's rule that has a record (`unshipped`), a figure's rule that has a record
+ * (`values`), and a term card's rule with no record at all (`missing`, one per row). `d` is what the page's provider holds, `data` all the
+ * loader returns; `skip` names the keys whose ids are not figures' (the glossary rows, read through `d.terms`).
+ */
+function gaps(page: string, d: PageData, data: unknown, skip: readonly string[]): { unshipped: string[]; values: string[]; missing: string[] } {
+  const have = { ...asMap(d.rules), ...asMap(d.pointed) };
+  const termIds = Object.values(d.terms).flatMap((t) => t.ruleIds);
+  return {
+    unshipped: termIds.filter((id) => all[id] && !have[id]).map((id) => `${page}: ${id}`),
+    values: [...new Set(unheldValueIds(data, have, new Set(skip)))].map((id) => `${page}: ${id}`),
+    missing: termIds.filter((id) => !all[id]),
+  };
+}
+
+describe("every rule a page's term cards and figures name is a record the page ships", () => {
+  it("a part's own records open its own figures' chips and no other part's", () => {
+    const rec = (id: string) => ({ id }) as RuleRecord;
+    const [a, b] = Object.keys(all);
+    if (!a || !b) throw new Error("data/rules holds fewer than two records");
+    const page = { rules: { [a]: rec(a) }, account: { terms: { data: { rules: [rec(b)] }, deal: { fee: { rule_ids: [b] } } } }, tariff: { line: { rule_ids: [a, b] } } };
+    expect(unheldValueIds(page, { [a]: rec(a) }, new Set())).toEqual([b]);
+  });
+
+  const found = { unshipped: [] as string[], values: [] as string[], missing: [] as string[] };
+  const add = (g: ReturnType<typeof gaps>) => {
+    found.unshipped.push(...g.unshipped);
+    found.values.push(...g.values);
+    found.missing.push(...g.missing);
+  };
+
+  it("guide and exposure pages, the prose guides, the company and track pages", async () => {
+    for (const [id, d] of await guidePages()) add(gaps(id, { ...d, terms: d.termsById as PageData["terms"] }, d, ["termsById"]));
+    for (const e of loadExposures()) {
+      const d = buildExposurePage(e.id);
+      if (d) add(gaps(e.id, { ...d, terms: d.termsById }, d, ["termsById"]));
+    }
+    for (const [name, load] of [["limited-bond-fund", bondGuideLoader], ["mutual-funds", fundsGuideLoader]] as const) {
+      const d = await load();
+      add(gaps(name, d, d, ["terms"]));
+    }
+    for (const id of institutionIds()) {
+      const d = (await companyLoader({ params: { id } } as never)) as { kind: string; institution?: PageData & { helpTerms: PageData["terms"] } };
+      if (d.kind === "institution" && d.institution) add(gaps(id, { ...d.institution, terms: d.institution.helpTerms }, d, ["helpTerms", "terms"]));
+    }
+    const cma = loadCma();
+    for (const c of cma.companies) {
+      const d = (await companyLoader({ params: { id: c.id } } as never)) as { kind: string; companyTerms?: PageData & { helpTerms: PageData["terms"] } };
+      if (d.kind === "company" && d.companyTerms) add(gaps(c.id, { ...d.companyTerms, terms: d.companyTerms.helpTerms }, d, ["helpTerms"]));
+    }
+    // one track of each product: their loaders differ by the product's record and the track's own figures
+    const seen = new Set<string>();
+    for (const t of cma.tracks) {
+      const product = t.selfDirected ?? t.wrapperId ?? t.classification;
+      if (seen.has(product)) continue;
+      seen.add(product);
+      const d = await trackLoader({ params: { id: t.companyId, fund: String(t.fundId) } } as never);
+      add(gaps(`${t.companyId}/${t.fundId}`, d, d, ["terms"]));
+    }
+    expect(found.unshipped).toEqual([]);
+    expect(found.values).toEqual([]);
+    expect([...new Set(found.missing)].filter((id) => !noRecord.has(id))).toEqual([]);
+    // the list is exactly the glossary's ids with no record: one leaves it when it gains a record or no row cites it any more
+    expect([...new Set(loadTerms().flatMap((t) => t.ruleIds))].filter((id) => !all[id]).sort()).toEqual([...noRecord].sort());
+    expect(found.missing.length).toBeLessThanOrEqual(PLACEHOLDER_ROWS);
+  }, 600000);
 });

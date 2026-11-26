@@ -9,11 +9,11 @@ import { fundLabels } from "../../lib/labels";
 import { pairCosts, type FundWay, type InvestView, type ProviderInfo, type WayPrice } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { LANES, byGain, chainOf, gridOf, middleStart, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
-import { computed, differenceOf, type SiteValue } from "../../lib/value";
+import { computed, differenceOf, restated, type SiteValue } from "../../lib/value";
 import { receiptAmounts, type ReceiptAmounts } from "../../lib/receipt";
 import { Num, type SheetPart } from "../provenance";
 import { Button, MixedName, LongestCase, PanelHead, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, stairsSlots, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
-import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, NoFundWords, whyNoFundAt } from "./pair";
+import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, NoFundWords, whole, whyNoFundAt } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
 const NONE: Taken[] = [];
@@ -159,9 +159,13 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
 
   // a stair's difference is the difference of what is left as the two levels write it, in whole shekels
   const shownDiff = (l: Level, prev: Level) => Math.round(l.left.value as number) - Math.round(prev.left.value as number);
-  // the size of a difference between two figures as the page writes them: the larger less the smaller, so its sheet's working comes to it
-  const sizeOf = (a: readonly [string, SiteValue], b: readonly [string, SiteValue], aFirst: boolean, about: string) => differenceOf(aFirst ? a : b, aFirst ? b : a, "F-91", { today, about });
-  const diffOf = (l: Level, prev: Level) => differenceOf([`${t.about.left}: ${l.fundName}, ${l.house.short}`, l.left], [`${t.about.left}: ${prev.fundName}, ${prev.house.short}`, prev.left], "F-91", { today, about: t.about.versus });
+  // the size of a difference between two figures as the page writes them, in whole shekels as each stair's words, order and top label
+  // read them (`shownDiff`): the larger less the smaller, so its sheet's working comes to it
+  const sizeOf = (a: readonly [string, SiteValue], b: readonly [string, SiteValue], aFirst: boolean, about: string) => {
+    const [x, y] = aFirst ? [a, b] : [b, a];
+    return differenceOf([x[0], whole(x[1])], [y[0], whole(y[1])], "F-91", { today, about });
+  };
+  const diffOf = (l: Level, prev: Level) => differenceOf([`${t.about.left}: ${l.fundName}, ${l.house.short}`, whole(l.left)], [`${t.about.left}: ${prev.fundName}, ${prev.house.short}`, whole(prev.left)], "F-91", { today, about: t.about.versus });
   const partName = (k: Part) => [t.table.accountCost, t.table.waiting, t.table.fundCost, t.table.tax][k]!;
   const partOf = (l: Level, prev: Level, k: Part) => {
     const name = partName(k);
@@ -171,7 +175,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
     const label = (x: Level) => `${name}: ${x.fundName}, ${x.house.short}`;
     // each side as its pair's receipt writes it (`Level.whole`), so the difference is the one the table shows
     const a = side(l), b = side(prev);
-    if (a && b && l.whole && prev.whole) return differenceOf([label(l), { ...a, value: l.whole[k] }], [label(prev), { ...b, value: prev.whole[k] }], "F-91", { today, about });
+    if (a && b && l.whole && prev.whole) return differenceOf([label(l), restated(a, l.whole[k])], [label(prev), restated(b, prev.whole[k])], "F-91", { today, about });
     const inputs: [SiteValue, string][] = ([l, prev] as const).flatMap((x) => (side(x) ? [[side(x)!, label(x)] as [SiteValue, string]] : []));
     return computed(l.dParts![k], "nis", "F-91", Object.fromEntries(inputs.map(([v, n]) => [n, v])), { today, about });
   };

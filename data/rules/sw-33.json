@@ -40,9 +40,11 @@
       "unit": "nis_per_transfer",
       "source": {
         "url": "https://boi.org.il/information/fees/",
-        "title": "בנק ישראל, מידע ושירות לציבור: עמלות, סעיף 'העברת ניירות ערך לחשבון אחר של אותו לקוח בגוף פיננסי אחר'",
+        "title": "בנק ישראל, מידע ושירות לציבור: עמלות",
         "publisher": "Bank of Israel",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "סעיף 'העברת ניירות ערך לחשבון אחר של אותו לקוח בגוף פיננסי אחר'",
+        "locator_he": "סעיף 'העברת ניירות ערך לחשבון אחר של אותו לקוח בגוף פיננסי אחר'"
       },
       "checked": "2026-10-26",
       "effective_from": null,
@@ -62,16 +64,18 @@
   "sources": [
     {
       "url": "https://www.boi.org.il/media/mi2driua/159a.pdf#page=24",
-      "title": "the same rules, first schedule, general note 3",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל), first schedule, general note 3",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
       "publisher": "Bank of Israel",
       "publisher_he": "בנק ישראל",
-      "kind": "regulator_page",
+      "kind": "regulation",
       "strength": "primary",
       "locator": "p.24",
       "locator_he": "עמוד 24",
       "page": 24,
       "quote": "לא יעלה על 40 ש״ח",
-      "checked": "2026-10-31"
+      "checked": "2026-10-31",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.boi.org.il/media/bccb1fj2/act08.pdf",
@@ -98,7 +102,8 @@
       "locator_he": "עמודים 17 עד 19",
       "page": 17,
       "quote": "בעת סגירת חשבון לא תעלה על 10",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://boi.org.il/information/fees/",

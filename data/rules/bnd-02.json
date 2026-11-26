@@ -22,7 +22,8 @@
       "strength": "primary",
       "quote": "If you sell a bond before maturity, you’ll get the market value. This could be lower than the face value.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign regulator, general mechanism)"
+      "qualifier": "(foreign regulator, general mechanism)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/how-bonds-work/",
@@ -33,7 +34,8 @@
       "strength": "primary",
       "quote": "You can lose money on a bond if you sell it before the maturity date for less than you paid or if the issuer defaults on their payments.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign regulator, general mechanism; page modified 3.7.2025)"
+      "qualifier": "(foreign regulator, general mechanism; page modified 3.7.2025)",
+      "standing": "foreign-view"
     }
   ],
   "derived_from": [

@@ -246,6 +246,11 @@ export function loadRuleUses(ids?: Iterable<string>): RuleUsesSlim {
   return out;
 }
 
+/** Where each rule a page can open a card of is used: its own rules' and the records its cards point at, so every card it draws says it. */
+export function pageRuleUses(rules: Record<string, RuleRecord>, pointed: Record<string, RuleRecord> = {}): RuleUsesSlim {
+  return loadRuleUses(new Set([...Object.keys(rules), ...Object.keys(pointed)]));
+}
+
 /** The score of every rule (orders rules inside a group and picks teasers; never the pinned list). */
 export function ruleScores(): Record<string, number> {
   return Object.fromEntries(Object.entries(scan().uses).map(([id, u]) => [id, u.score]));

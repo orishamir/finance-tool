@@ -13,6 +13,7 @@ import { type FeeKindId, type FormId } from "./shapes";
 import { engineDeal, engineFee } from "./to-engine";
 import { figure, freeValue, inputKey, priceFigures, reading, sumUnit, type PriceFigures } from "./values";
 import { unpricedOf, type Unpriced } from "./unpriced";
+import { feeNameOf } from "./part-words";
 
 /**
  * Why a fee is not read, in the order the page says it: banned here, its sums in a currency the deal does not know, its sums printed for
@@ -172,7 +173,7 @@ function partsView(p: Price): PartsView | undefined {
   return Object.keys(out).length ? out : undefined;
 }
 
-export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: Price, today: string): PriceView {
+export function priceView(fees: readonly Pick<SlimFee, "kind" | "name">[], i: number, p: Price, today: string): PriceView {
   const fee = fees[i]!;
   const figures = priceFigures(fee, p, today);
   const currency = onAction(p) ? { currency: p.currency ?? "ILS" } : {};
@@ -181,7 +182,7 @@ export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: 
   if (mainFigure(p)?.blank) return { form: p.form, blank: true, figures, ...(p.form === "held" ? { per: p.per, every: p.every } : p.form === "sum" ? { every: p.every } : currency), ...parts };
   switch (p.form) {
     case "held": {
-      const yearly = p.per === 12 ? figures.rate! : reading((p.rate.v * 12) / p.per, "pct_per_year", "F-111", { [inputKey(fees, i)]: figures.rate! }, today);
+      const yearly = p.per === 12 ? figures.rate! : reading((p.rate.v * 12) / p.per, "pct_per_year", "F-111", { [inputKey(fees, i)]: figures.rate! }, today, feeNameOf(fee.kind, fee.name));
       return { form: "held", figures, per: p.per, every: p.every, ...(p.boundsEvery ? { boundsEvery: p.boundsEvery } : {}), yearly, ...parts };
     }
     case "sum": {

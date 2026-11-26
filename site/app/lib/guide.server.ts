@@ -13,6 +13,7 @@ import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature
 import { breakFact, breakInput, buildSignatureData } from "./guide-signature.server";
 import { loadDepositTerms } from "./instruments.server";
 import { loadInstitutionRegistry } from "./institutions.server";
+import { addTermRules, valueRuleIds } from "./page-rules.server";
 import { depositName, exitNameWords, exitPointsOf, exitWords } from "./deposit-kind";
 import { lumpSumEntered, lumpSumIds, type BreakTerms, type SignatureData } from "./guide-signature";
 import { cmaFeeValue, computed, ownBy, ruleFigure, staleCma, type SiteValue } from "./value";
@@ -295,6 +296,7 @@ export function buildGuidePage(id: string, extraTermIds: string[] = [], relatedI
   for (const row of [...all].sort((a, b) => Number(onPage(b)) - Number(onPage(a)))) if (!termsById[row.he]) termsById[row.he] = row;
   const lede = termsById[record.names.he[0]!]?.explanation ?? null;
   for (const key of Object.keys(termsById)) if (!onPage(termsById[key]!) && !extraTermIds.includes(key)) delete termsById[key];
+  addTermRules(rules, termsById, allRules);
 
   const cma = loadCma();
   const seen = new Map<string, string>();
@@ -326,6 +328,13 @@ export function buildGuidePage(id: string, extraTermIds: string[] = [], relatedI
   const exampleFund = exampleFundId === undefined ? null : (loadFunds().find((f) => f.id === String(exampleFundId))?.names.he[0] ?? null);
   // the break rules of each bank the prose links to (its records' own), so each link opens
   for (const r of breakTerms?.breakable.flatMap((b) => b.rules) ?? []) if (allRules[r]) rules[r] = allRules[r]!;
+  // the rules the figures of the fee range, the managers' range, the break terms, the visual's facts and each run's fees name, so every
+  // chip in their sheets opens
+  const runFees = [bundle, ...Object.values(signature?.bundles ?? {})].map((b) => b?.feeValues);
+  for (const r of valueRuleIds([feeRange, listRange, breakTerms, signature?.facts, runFees])) {
+    const rec = allRules[r];
+    if (rec) rules[r] = rec;
+  }
 
   return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, feeRange, listRange, breakTerms, exampleFund, today: t };
 }
@@ -390,6 +399,7 @@ export function buildExposurePage(id: string, extraTermIds: string[] = []): Expo
   const termsById: Record<string, TermRow> = {};
   for (const row of [...all].sort((a, b) => Number(onPage(b)) - Number(onPage(a)))) if (!termsById[row.he]) termsById[row.he] = row;
   for (const key of Object.keys(termsById)) if (!onPage(termsById[key]!) && !extraTermIds.includes(key)) delete termsById[key];
+  addTermRules(rules, termsById, allRules);
   const name = record.names.he[0] ?? record.id;
   // the exposure record's own one-line description, else the glossary line (F: one_line_he)
   const lede = record.one_line_he ?? termsById[name]?.explanation ?? all.find((r) => r.he === name)?.explanation ?? null;

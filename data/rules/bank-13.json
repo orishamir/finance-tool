@@ -19,9 +19,12 @@
       "unit": "text",
       "source": {
         "url": "https://boi.org.il/media/nxzbaarp/h2781.pdf",
-        "title": "חוזר הפיקוח על הבנקים ח-2781-06 (20.5.2024) להוראה 447, p.4, s.11",
+        "title": "חוזר הפיקוח על הבנקים ח-2781-06 (20.5.2024) להוראה 447",
         "publisher": "בנק ישראל",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.4, s.11",
+        "locator_he": "עמוד 4, סעיף 11",
+        "page": 4
       },
       "checked": "2026-10-25",
       "effective_from": "2025-04-01",

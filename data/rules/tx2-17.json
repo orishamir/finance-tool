@@ -41,9 +41,12 @@
       "unit": "pct",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/KyvxBcEw7jx5BmW90PVjDMbbzloLDvqysbFwywmwKio=#page=3",
-        "title": "צו מס ערך מוסף (קביעת מוסד כספי), התשל\"ז-1977 (קובץ התקנות 3687), p.3, s.1(א)(1)-(2) (75% of turnover)",
+        "title": "צו מס ערך מוסף (קביעת מוסד כספי), התשל\"ז-1977 (קובץ התקנות 3687) (75% of turnover)",
         "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, s.1(א)(1)-(2)",
+        "locator_he": "עמוד 3, סעיף 1(א)(1)-(2)",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,

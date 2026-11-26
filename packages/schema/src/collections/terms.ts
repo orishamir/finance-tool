@@ -20,6 +20,10 @@ export const termRecord = z.strictObject({
   exposure_ids: z.array(z.string().regex(/^[a-z0-9-]+$/)).optional(),
   /** Other spellings of the term. */
   variants: z.array(z.string().min(1)),
+  /** Other names of the same thing, as a reader meets them, which the card lists under "נקרא גם"; never a spelling, an inflection or a label. */
+  also_called: z.array(z.string().min(1)).optional(),
+  /** Strings a search finds the term by (spellings, inflections, hyphen variants, labels as a dataset prints them); never shown on the card. */
+  search: z.array(z.string().min(1)).optional(),
   rule_ids: ruleIds,
   source: termSource,
   /** Payslip labels carry strength "institution" and seen_by (G-19). */

@@ -1,15 +1,39 @@
 // data/rules/: rule figures the engine reads. docs/data-schema.md §3.1.
 import { z } from "zod";
-import { isoDate, textFragment, valueObject } from "../value.ts";
+import { citedPlace, isoDate, source, textFragment, valueObject } from "../value.ts";
 import { ruleScope, scopeInstitution } from "../scope.ts";
+import { openQuestionId } from "./open-questions.ts";
 
-const bracket = z.object({ up_to: valueObject, rate: valueObject });
+/** A rule figure: its source names its place in the document (`citedPlace`), so the source's title names the document alone. */
+const figureValue = valueObject.safeExtend({ source: source.extend(citedPlace) });
+
+const bracket = z.object({ up_to: figureValue, rate: figureValue });
 
 const figure = z.union([
-  valueObject,
-  z.object({ by_tax_year: z.record(z.string().regex(/^\d{4}$/), valueObject) }),
+  figureValue,
+  z.object({ by_tax_year: z.record(z.string().regex(/^\d{4}$/), figureValue) }),
   z.array(bracket),
 ]);
+
+/**
+ * What a source is, where it is not the binding text in force that its kind names (docs/data-schema.md §3.1): `draft`, a draft not
+ * in force; `bill`, a bill before the Knesset or its explanatory notes; `superseded`, a text no longer in force; `consolidated-not-binding`,
+ * a state body's consolidated copy, not the binding gazette wording; `translation`, a translation, the Hebrew text binding;
+ * `foreign-view`, a foreign authority's text or a foreign law; `does-not-answer`, a text cited beside the rule that does not itself
+ * settle it. Absent where nothing the extraction reads (the qualifier, the title, another passage of the same file in the record) names
+ * one: that is not a claim that the source is the binding text in force.
+ */
+export const sourceStanding = z.enum(["draft", "bill", "superseded", "consolidated-not-binding", "translation", "foreign-view", "does-not-answer"]);
+
+export type SourceStanding = z.infer<typeof sourceStanding>;
+
+/** A pointer of a rule to what is not a rule: a method entry (`F-nn`) or an open question (`<PREFIX> OQnn`). */
+export const seeAlso = z.discriminatedUnion("kind", [
+  z.strictObject({ kind: z.literal("method"), id: z.string().regex(/^F-\d{2,3}$/, "a method entry is `F-nn`") }),
+  z.strictObject({ kind: z.literal("question"), id: openQuestionId }),
+]);
+
+export type SeeAlso = z.infer<typeof seeAlso>;
 
 /** The strength vocabulary of a source entry (value.ts without `open` and `entered`). */
 const sourceStrength = z.enum(["primary", "institution", "secondary"]);
@@ -43,8 +67,10 @@ export const ruleSource = z.object({
   /** Attached when the site reads the record, never written here (`textFragment`). */
   fragment: textFragment.optional(),
   checked: isoDate,
-  /** "(historical)", "(unofficial consolidation)" ... */
+  /** "(historical)", "(unofficial consolidation)" ...: the rule base's words after the strength word, never shown. */
   qualifier: z.string().optional(),
+  /** What the source is where it is not the binding text in force (`sourceStanding`), read from `qualifier` by the extraction. */
+  standing: sourceStanding.optional(),
   /** English working note; never shown. */
   note: z.string().optional(),
 });
@@ -83,6 +109,8 @@ export const ruleRecord = z
      * company applies it (spec §1), never a derivation. The card shows them under "לדוגמה".
      */
     examples: z.array(z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/)).optional(),
+    /** The method entries and open questions the rule's Source and Conditions lines point to (`derived_from` holds its rule ids). */
+    see_also: z.array(seeAlso).min(1).optional(),
     il_finance_file: z.string().regex(/\.md$/),
     checked: isoDate,
   })
