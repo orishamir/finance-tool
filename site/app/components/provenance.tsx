@@ -233,13 +233,13 @@ export const InsideSheetCtx = createContext(false);
 /** The element whose tap opened the sheet, while the sheet is open (null when it is closed): words that opened it show so (`TapWords`). */
 const OpenAnchorCtx = createContext<HTMLElement | null>(null);
 /**
- * A page about one company (its company page, a track's page): a company-sourced figure on it whose source is a document of the page's
- * company is that company's own (D31), so it carries no "לפי החברה" or its caution (`Num`). A sheet opened on it does not inherit it.
+ * A page about one company (its company page, a track's page): a company-sourced figure on it that rests on a document of the page's
+ * company is that company's own (D31), so it carries no "לפי החברה" or its caution (`Num`), in the page and in every sheet opened on it
+ * alike; a figure from another company's document keeps both.
  */
 export function OwnCompanyPage({ children }: { children: ReactNode }) {
   return <OwnCompanyCtx.Provider value={true}>{children}</OwnCompanyCtx.Provider>;
 }
-
 
 /**
  * Inside a block that sums up figures the person typed in boxes elsewhere on the screen (the kit's `TypedPlain`): an entered figure is
@@ -345,12 +345,28 @@ export function opensAround(el: Element, insideSheet: boolean): string[] {
   return [...ids];
 }
 
-/** A company-sourced figure on a page about one company: that company's own (D31) where its source is a document of one of the page's companies. */
+/**
+ * The page's company a company-sourced figure is the own figure of (D31): the one whose document is its source, or, for a computed
+ * figure, the one company whose documents every company-sourced input it rests on comes from; none where that is not one of the page's.
+ */
+function pageOwner(v: SiteValue, data: ProvenanceData | null): string | null {
+  if (v.state === "computed") {
+    const weak = Object.values(v.computed_from?.inputs ?? {}).filter((x) => strengthOf(x) === "institution" && !x.own);
+    const owners = new Set(weak.map((x) => pageOwner(x, data)));
+    const [c] = owners;
+    return owners.size === 1 && c ? c : null;
+  }
+  return (
+    (data?.pageCompanies ?? []).find((id) => {
+      const docs = data?.companies?.[id]?.docs;
+      return !!docs && isOwnDocument(v.source, docs);
+    }) ?? null
+  );
+}
+
+/** A company-sourced figure on a page about one company, marked as that company's own where it rests on that company's documents. */
 function ownOnPage(v: SiteValue, data: ProvenanceData | null): SiteValue {
-  const c = (data?.pageCompanies ?? []).find((id) => {
-    const docs = data?.companies?.[id]?.docs;
-    return !!docs && isOwnDocument(v.source, docs);
-  });
+  const c = pageOwner(v, data);
   return c ? ownBy(v, c) : v;
 }
 
