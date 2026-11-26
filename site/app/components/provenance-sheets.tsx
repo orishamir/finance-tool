@@ -887,9 +887,12 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       )}
       <RuleFigures rule={rule} id={id} pageValue={pageValue} />
       <dl className="sheet-dl">
-        <Row label={ruleCopy.checked}>
-          <When iso={rule.checked} />
-        </Row>
+        {/* each source line says the day the site read it; the record's own date stands only on a card with no source */}
+        {sources.length === 0 && (
+          <Row label={ruleCopy.checked}>
+            <When iso={rule.checked} />
+          </Row>
+        )}
         {rule.recheck_date && (
           <Row label={ruleCopy.recheck}>
             <When iso={rule.recheck_date} />
@@ -1102,6 +1105,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
       <RulePointers rule={rule} />
       <RuleFigures rule={rule} id={id} head={<GroupHead>{ruleCopy.figures}</GroupHead>} />
       {sources.length > 0 ? <SourcesByDocument sources={sources} rule={sourced} today={data.today} /> : <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>}
+      {(dims.length > 0 || uses || sources.length === 0 || rule.recheck_date) && (
       <dl className="sheet-dl border-t border-border pt-3">
         {dims.length > 0 && (
           <Row label={ruleCopy.dimensions}>
@@ -1130,19 +1134,32 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
             )}
           </Row>
         )}
-        <Row label={ruleCopy.checked}>
-          <span className="text-sm flex flex-wrap gap-x-2">
-            <When iso={rule.checked} />
-            {rule.recheck_date ? (
-              <span className="text-caution-foreground">
-                · <When iso={rule.recheck_date} lead={`${ruleCopy.recheck} `} />
+        {/* each document says the day the site read it; the record's own date stands only on a rule with no source */}
+        {sources.length === 0 ? (
+          <Row label={ruleCopy.checked}>
+            <span className="text-sm flex flex-wrap gap-x-2">
+              <When iso={rule.checked} />
+              {rule.recheck_date ? (
+                <span className="text-caution-foreground">
+                  · <When iso={rule.recheck_date} lead={`${ruleCopy.recheck} `} />
+                </span>
+              ) : rule.likely_to_change === "no" ? (
+                <span className="text-muted-foreground">· {ruleCardMore.stable}</span>
+              ) : null}
+            </span>
+          </Row>
+        ) : (
+          rule.recheck_date && (
+            <Row label={ruleCopy.recheck}>
+              <span className="text-sm text-caution-foreground">
+                <When iso={rule.recheck_date} />
               </span>
-            ) : rule.likely_to_change === "no" ? (
-              <span className="text-muted-foreground">· {ruleCardMore.stable}</span>
-            ) : null}
-          </span>
-        </Row>
+            </Row>
+          )
+        )}
       </dl>
+      )}
+      {sources.length > 0 && !rule.recheck_date && rule.likely_to_change === "no" && <p className="text-xs text-muted-foreground">{ruleCardMore.stable}</p>}
       {after}
     </article>
   );
