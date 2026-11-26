@@ -928,6 +928,21 @@ export function intervalChosen(runs: readonly { way: BuyWay; run: RunResult }[])
 }
 
 /**
+ * F-109 Which way: the index of the way chosen among a house's ways, each at its own interval (`intervalChosen`), the one that leaves the most
+ * at the horizon after tax (`RunResult.real`), the house's own way, the first, on a tie.
+ */
+export function wayChosen(byWay: readonly { way: BuyWay; run: RunResult }[]): number {
+  const first = byWay[0];
+  if (!first) throw new Error("F-109: a house is tried in one way at least");
+  let chosen = 0;
+  let most = first.run.real;
+  byWay.forEach((w, i) => {
+    if (w.run.real > most) [chosen, most] = [i, w.run.real];
+  });
+  return chosen;
+}
+
+/**
  * F-133: whether an interval leaves more than the most of the smaller ones, by more than the rounding of a double (a part in a
  * billion): two that leave the same are a tie, which keeps the smaller interval.
  */
@@ -1196,8 +1211,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       const runs = tried.map((w) => ({ way: w, run: runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx) }));
       return runs[intervalChosen(runs)]!;
     });
-    let { way, run } = byWay[0]!;
-    for (const other of byWay.slice(1)) if (other.run.real > run.real) ({ way, run } = other);
+    const { way, run } = byWay[wayChosen(byWay)]!;
     const stopped = stoppedBeforeComparing([noneT, run]);
     if (stopped) {
       rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });
