@@ -87,7 +87,7 @@ const patterns: Record<string, { kit: string; count: (s: string) => number; allo
 patterns["a row of rule chips"] = {
   count: (s) => (s.match(/\.map\(\([^)]*\)\s*=>\s*\(?\s*(?:<span key=\{\w+\}>\s*)?<RuleRef\b/g) ?? []).length,
   kit: "RuleTitleList (provenance.tsx)",
-  allowed: { "components/provenance-sheets.tsx": 4, "routes/exposure.tsx": 2 },
+  allowed: { "components/provenance-sheets.tsx": 3, "routes/exposure.tsx": 2 },
 };
 
 // a name in a plain <bdi> takes its direction from its first letter, so a Hebrew name that starts with Latin
