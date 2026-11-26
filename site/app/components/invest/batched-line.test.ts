@@ -93,8 +93,9 @@ describe("what the line opens (F-133)", () => {
     // the trade line the run read: Psagot's line for an exchange in Europe prints a minimum in euros
     const line = pc.priced.lines.find((l) => l.base === "trade");
     expect(line?.min?.unit, "the run's trade line prints no minimum in euros: pick another pair").toBe("eur");
-    const out = bare(html(createElement(BatchedWhy, { pc })));
-    const [before, after] = w.charge.tradeMin(pc.priced.house).split("{figure}");
+    // the house by its short name, as the receipt names it
+    const out = bare(html(createElement(BatchedWhy, { pc, house: "פסגות" })));
+    const [before, after] = w.charge.tradeMin("פסגות").split("{figure}");
     expect(out).toContain(`${before}${line!.min!.value} €${after}`);
     expect(out).toContain(w.monthly.replace("{figure}", `${Math.round(atMonthly().real).toLocaleString("en-US")} ₪`));
     expect(out).toContain(w.waits);

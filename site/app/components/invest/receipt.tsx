@@ -198,26 +198,25 @@ const waitingWhy = (pc: Costs, rose: boolean): string => {
  * why: the charge each purchase pays whatever its size, as the run's price list prints it (`orderCharge`), what the same pair leaves bought
  * every month, and that the waiting cash earned nothing. Nothing where the orders are placed every month.
  */
-function BatchedLine({ pc, className }: { pc: PairCosts; className?: string }) {
+function BatchedLine({ pc, house, className }: { pc: PairCosts; /** The house's short name, as the receipt names it. */ house: string; className?: string }) {
   const b = pc.batched;
   if (!b) return null;
   const w = c.receipt.batched;
   const k = pc.orderEvery;
   const words = b.perOrder === null ? w.lineAlone(k) : <Tpl t={w.line(k)} vars={{ amount: <bdi>{fmt.nisWhole(b.perOrder)}</bdi> }} />;
   return (
-    <WordsSheet title={w.why(k)} body={() => <BatchedWhy pc={pc} />} className={className}>
+    <WordsSheet title={w.why(k)} body={() => <BatchedWhy pc={pc} house={house} />} className={className}>
       {words}
     </WordsSheet>
   );
 }
 
 /** What `BatchedLine` opens: why the pair is priced buying every few months, with the figures that say it. */
-export function BatchedWhy({ pc }: { pc: PairCosts }) {
+export function BatchedWhy({ pc, house }: { pc: PairCosts; /** The house's short name, as the receipt names it. */ house: string }) {
   const w = c.receipt.batched;
-  const house = pc.priced.house;
   const charge = orderCharge(pc.priced);
-  // a price from the list, in its own currency, opening the list (as the account's rates do)
-  const figure = (v: OrderCharge["value"]) => <Num value={ownBy({ ...v } as SiteValue, house)} />;
+  // a price from the list, in its own currency, opening the list by the house's own name (as the account's rates do)
+  const figure = (v: OrderCharge["value"]) => <Num value={ownBy({ ...v } as SiteValue, pc.priced.house)} />;
   const monthly = pc.batched?.monthly() ?? null;
   return (
     <>
@@ -474,7 +473,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
             <div className="flex flex-col items-center gap-1 text-center">
               {leftName}
               <span className="text-total font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
-              <BatchedLine pc={pc} className="text-sm" />
+              <BatchedLine pc={pc} house={short} className="text-sm" />
             </div>
           </>
         }
@@ -498,7 +497,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
           <span className="text-figure font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
         </div>
         {/* under the figure, at its side */}
-        <BatchedLine pc={pc} className="self-end text-end text-sm" />
+        <BatchedLine pc={pc} house={short} className="self-end text-end text-sm" />
       </div>
     </ReceiptPaper>
     </ShortRow>
