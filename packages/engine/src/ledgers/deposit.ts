@@ -150,18 +150,21 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
   const termInterest = (principal: number, months: number) => (growth === null ? currentAccountInterest(principal, Math.pow(1 + accountMonth, months) - 1) : interestOver(growth, principal, months));
 
   // The bank withholds when it pays the interest, at maturity or, for interest paid out, each month (TXI-07, TXI-08): 25% of the real
-  // interest on a fully linked deposit with linkage exempt (TXI-02, TXI-05), 15% on everything else (TXI-03).
-  let rate: number;
+  // interest on a fully linked deposit with linkage exempt (TXI-02, TXI-05), 15% on everything else (TXI-03). The rate is looked at and
+  // taken where a year's tax is above 0; the rules that decide what is taxed are uses on the tax during the run at any tax. What makes a
+  // deposit linked (BANK-26) is the product's term, which the whole value rests on, not a tax rule.
+  const during = book.on("taxDuring");
+  const rateRule = linked ? "TXI-02" : "TXI-03";
+  const rate = during.peek.rate(rateRule, "rate");
   if (linked) {
-    rate = book.rate("TXI-02", "rate");
-    book.cite("TXI-05");
-    book.cite("TXI-25");
+    during.cite("TXI-05");
+    during.cite("TXI-25");
     book.cite("BANK-26");
-  } else {
-    rate = book.rate("TXI-03", "rate");
+  } else if (deposit.linkage === "prime") {
     // a prime-linked deposit is unlinked: the statutory index is the CPI or an exchange rate (TXI-04, a statement, not a reading)
-    if (deposit.linkage === "prime") book.cite("TXI-04");
+    during.cite("TXI-04");
   }
+  let taxed = false;
 
   // TXI-20 applies to deposit and savings-plan interest when the income is known; whether it reaches
   // current-account interest is open (TXI OQ11), so it is not applied there. The bank withholds in full
@@ -244,15 +247,19 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
         ? Math.min(
             yearTaxable,
             // F-119: the year's own amounts
-            lowIncomeDeduction(profile.annualIncome! + yearIncome, book.inYear(taxYearOf(m, first)).amount("TXI-20", "favoured_ceiling"), book.inYear(taxYearOf(m, first)).amount("TXI-20", "deduction")),
+            lowIncomeDeduction(profile.annualIncome! + yearIncome, during.inYear(taxYearOf(m, first)).peek.amount("TXI-20", "favoured_ceiling"), during.inYear(taxYearOf(m, first)).peek.amount("TXI-20", "deduction")),
           )
         : 0;
       deductionUsed += deduction;
-      if (deduction > 0) book.profile("income");
-      const owed = linked ? maxRateTax(book, profile, m, yearTaxable - deduction, rate, first) : { tax: rate * (yearTaxable - deduction), atBrackets: false };
+      if (deduction > 0) {
+        book.profile("income");
+        during.took("TXI-20");
+      }
+      const owed = linked ? maxRateTax(during, profile, m, yearTaxable - deduction, rate, first) : { tax: rate * (yearTaxable - deduction), atBrackets: false };
       if (owed.atBrackets) tally.flag("G-21");
       const refund = refundClaimed ? yearWithheld - owed.tax : 0;
-      tally.taxDuring += yearlySurtax(book, profile, yearTaxable - deduction, taxYearOf(m, first)) - refund;
+      if (yearWithheld - refund > 0) taxed = true;
+      tally.taxDuring += yearlySurtax(during, profile, yearTaxable - deduction, taxYearOf(m, first)) - refund;
       rolled += refund;
       yearTaxable = yearIncome = yearWithheld = 0;
     }
@@ -271,6 +278,7 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
     tally.point(m, I[m]!, m < T ? accrued : finalValue);
   }
 
+  if (taxed) during.took(rateRule);
   return tally.result(book, {
     exitMonth: T,
     nominal: finalValue,

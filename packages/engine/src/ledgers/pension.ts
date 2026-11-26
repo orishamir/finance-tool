@@ -225,9 +225,11 @@ function runPensionUnder(input: PensionInput, ctx: RunContext): PensionResult {
   const working: PensionResult["working"] = { years: [] };
   const gross = spreadReliefByYear(C, first, taxYearOf, (year, netYear) => {
     const facts: PensionRelief = { taxableIncome: income, insuredIncome: insured, existingOwn, employer: 12 * employerMonth, businessIncome: !employee };
-    // F-119: each tax year's caps, floor and brackets; the credit is capped at the year's tax, which leaves out credit points (G-23)
-    const ofYear = book.inYear(year);
-    const r = grossForYear(ofYear, facts, netYear, taxAtBrackets(ofYear.brackets("TXG-02", "brackets")));
+    // F-119: each tax year's caps, floor and brackets; the credit is capped at the year's tax, which leaves out credit points (G-23).
+    // The brackets change an F-31 credit only where that cap bound; they value every F-32 deduction and cap.
+    const ofYear = book.on("relief").inYear(year);
+    const r = grossForYear(ofYear, facts, netYear, taxAtBrackets(ofYear.peek.brackets("TXG-02", "brackets")));
+    if (r.relief.formula === "F-32" || r.relief.creditCap.binds) ofYear.took("TXG-02");
     if (r.gap) tally.flag("TXP-03");
     for (const code of reliefFlags(r.relief)) tally.flag(code);
     // A-30: a yearly cap reached in the run date's tax year, which the run starts with none of its new money deposited: part of the year's
@@ -246,7 +248,7 @@ function runPensionUnder(input: PensionInput, ctx: RunContext): PensionResult {
   const out = ledger(book, tally, input, gross, C, T, I);
 
   if (input.wrapper === "pension-comprehensive") {
-    const ceiling = book.amount("PEN-08", "monthly_deposit_ceiling");
+    const ceiling = book.on("deposit").amount("PEN-08", "monthly_deposit_ceiling");
     for (let m = 1; m <= T; m++) if ((gross[m] ?? 0) + employerMonth > ceiling) { tally.flag("PEN-08", m); break; }
   }
 
@@ -254,12 +256,13 @@ function runPensionUnder(input: PensionInput, ctx: RunContext): PensionResult {
   formulas.push(exit.formula);
   if (exit.gap) tally.flag(exit.gap);
   for (const q of exit.openQuestions) tally.flag(q);
-  citeIfPresent(book, exit.ruleIds);
+  // the rules of the blocked exit govern the withdrawal's tax
+  citeIfPresent(book.on("taxAtExit"), exit.ruleIds);
 
   // PEN-26: the lawful exit is an old-age annuity from 60. The wrapper is blocked either way; when 60 is after the horizon it is also locked.
   let outcome: Outcome = { code: "listed-not-ranked", reason: exit.reason };
   if (input.profile.ageAtStart !== undefined) {
-    const lawful = 12 * (book.amount("PEN-26", "early_retirement_age") - input.profile.ageAtStart);
+    const lawful = 12 * (book.on("term").amount("PEN-26", "early_retirement_age") - input.profile.ageAtStart);
     if (lawful > T) outcome = { code: "listed-not-ranked", reason: exit.reason, untilMonth: lawful };
   }
 
@@ -326,8 +329,10 @@ function employerLinePensionUnder(input: PensionInput, ctx: RunContext): Pension
   // TXP-10: employer component above the exempt limit. TXP-11: the severance ceiling, applied monthly as 1/12 of the yearly
   // amount (Income Tax circular 4/2019 s.2.1.1); a severance deposit above it is work income at
   // deposit, which this run does not tax yet, so it is flagged under the rule.
-  const ceiling = book.amount("TXP-10", "employer_ceiling");
-  const exemptPct = book.rate("TXP-10", "employer_exempt_pct");
+  // the tax on the employer's excess, paid from the salary when deposited, is a tax during the run (F-52)
+  const salaryTax = book.on("taxDuring");
+  const ceiling = salaryTax.amount("TXP-10", "employer_ceiling");
+  const exemptPct = salaryTax.rate("TXP-10", "employer_exempt_pct");
   const pensionPart = p.employer.pensionRate * deposited;
   const excessMonthly = Math.max(0, pensionPart - Math.min(exemptPct, p.employer.pensionRate) * Math.min(deposited, ceiling));
   if (p.employer.severanceRate * deposited > book.amount("TXP-11", "severance_ceiling") / 12) tally.flag("TXP-11");
@@ -335,14 +340,15 @@ function employerLinePensionUnder(input: PensionInput, ctx: RunContext): Pension
   for (let m = 1; m <= T; m++) perYear.set(taxYearOf(m, first), (perYear.get(taxYearOf(m, first)) ?? 0) + excessMonthly);
   let depositTax = 0;
   // F-119: the brackets of each year the excess is paid in
-  for (const [y, x] of perYear) depositTax += deductionValue(book.inYear(y).brackets("TXG-02", "brackets"), 12 * salary + x, x);
+  for (const [y, x] of perYear) depositTax += deductionValue(salaryTax.inYear(y).brackets("TXG-02", "brackets"), 12 * salary + x, x);
   // G-23: that tax is at the brackets, which leave out the person's credit points
   if (depositTax > 0) tally.flag("G-23");
 
   const exit = blockedWrapperExit("F-49", out.balance);
   if (exit.gap) tally.flag(exit.gap);
   for (const q of exit.openQuestions) tally.flag(q);
-  citeIfPresent(book, exit.ruleIds);
+  // the rules of the blocked exit govern the withdrawal's tax
+  citeIfPresent(book.on("taxAtExit"), exit.ruleIds);
   const result = tally.result(book, {
     exitMonth: T,
     nominal: out.balance - depositTax,
