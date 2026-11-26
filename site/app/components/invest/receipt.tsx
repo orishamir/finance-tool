@@ -196,7 +196,8 @@ const waitingWhy = (pc: Costs, rose: boolean): string => {
 /**
  * F-133: under what is left, where the pair is priced buying every few months: the interval and what each purchase buys, words that open
  * why: the charge each purchase pays whatever its size, as the run's price list prints it (`orderCharge`), what the same pair leaves bought
- * every month, and that the waiting cash earned nothing. Nothing where the orders are placed every month.
+ * every month, and that the waiting cash earned nothing. Nothing where the orders are placed every month. Not a kit piece: the kit's part is
+ * `WordsSheet`; what this says is the index page's reading of one pair's run (`PairCosts.batched`), and only the receipt shows it.
  */
 function BatchedLine({ pc, house, className }: { pc: PairCosts; /** The house's short name, as the receipt names it. */ house: string; className?: string }) {
   const b = pc.batched;
@@ -211,7 +212,7 @@ function BatchedLine({ pc, house, className }: { pc: PairCosts; /** The house's 
   );
 }
 
-/** What `BatchedLine` opens: why the pair is priced buying every few months, with the figures that say it. */
+/** What `BatchedLine` opens: why the pair is priced buying every few months, with the figures that say it; a one-off for the same reason. */
 export function BatchedWhy({ pc, house }: { pc: PairCosts; /** The house's short name, as the receipt names it. */ house: string }) {
   const w = c.receipt.batched;
   const charge = orderCharge(pc.priced);
