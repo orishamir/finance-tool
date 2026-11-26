@@ -538,7 +538,7 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
     theta: ctx.theta,
     // a deal the person saved is priced by the deal itself (F-128), beside the price lists
     deals: list.flatMap((x) => { const d = dealProviderOf(ctx.bundle, x.s as BundleSnapshot, { currentAccounts: ctx.plan.currentAccounts ?? false }); return d ? [d] : []; }),
-    providers: list.filter((x) => !isDealProviderId(x.s.id)).map((x) => {
+    providers: list.filter((x) => accountKindOf(ctx, x.s) === "price-list").map((x) => {
       // an account built on a house (F-101): the house's own list tariff for this fund and reading, with the group's and the person's prices over
       // it. No page puts one in the bundle: the branch stays as the move tests' oracle, what a typed account left before its move into a deal
       // (deal-account/move-fixtures.ts), which no other code can price without a second copy of this run
@@ -1546,7 +1546,8 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout, lead: copy.pair.paidInLead }),
     paidInNominal: computed(row.run.paidIn, "nis", "F-05", planInputs(ctx.plan, ["amount", "monthly", "years", "inflation"]), { today: ctx.bundle.today, about: copy.pair.paidInNominalAbout, lead: copy.pair.paidInLead }),
     index: computed(end.index, "index_points", "F-03", planInputs(ctx.plan, ["inflation", "years"]), { today: ctx.bundle.today, about: copy.pair.indexAbout }),
-    left: computed(row.real, "nis", "F-65", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), labels: labelsOf(row), about: nameOf(rec) }),
+    // the same amount as the row's (`valueFigure`), with the same caution where the fund's exchange is not known, so the headline and the receipt carry it
+    left: withPlaceDoubt(computed(row.real, "nis", "F-65", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), labels: labelsOf(row), about: nameOf(rec) }), fs.spec),
     account: lines,
     interaction,
     remainder: at(interaction, "F-91", copy.pair.lineAbout(copy.pair.remainder), bInputs),

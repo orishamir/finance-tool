@@ -6,7 +6,7 @@
 import { describe, expect, it } from "vitest";
 import type { FundExchange, FundRecord } from "@finance-tool/schema";
 import { draftWithKind, fundDraftOf, fundFromDraft, fundsAsRead, recordOfFund, validCustomFunds, withCustomEntries, type CustomFund, type FundDomicile } from "./custom-entries";
-import { buildInvest, dealOnPlan, dealRunOf, fundWayAt, indexById, venueOfFund, type DealOnPlan, type FundWay, type WayPrice } from "./invest";
+import { buildInvest, dealOnPlan, pairCosts, dealRunOf, fundWayAt, indexById, venueOfFund, type DealOnPlan, type FundWay, type WayPrice } from "./invest";
 import { invest as copy } from "../copy";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
@@ -368,6 +368,15 @@ describe("the caution of a fund whose exchange is not known is on its figure (F-
 
   it("a fund whose exchange was given carries none", () => {
     for (const at of pricedAt(wayOf(b, known.id))) expect([at.providerId, at.value.doubt]).toEqual([at.providerId, undefined]);
+  });
+
+  it("the pair's own figure, which its headline and receipt show, carries the same doubt as its row", () => {
+    const index = must(indexById(b, SP), SP);
+    const at = must(pricedAt(wayOf(b, unsure.id))[0], "a priced account");
+    const pc = must(pairCosts({ bundle: b, index, plan, fundId: unsure.id, providerId: at.providerId }), "the pair");
+    expect(pc.left.doubt).toBe(copy.customEntries.exchangeUnknownDoubt);
+    const pk = must(pairCosts({ bundle: b, index, plan, fundId: known.id, providerId: at.providerId }), "the known pair");
+    expect(pk.left.doubt).toBeUndefined();
   });
 });
 
