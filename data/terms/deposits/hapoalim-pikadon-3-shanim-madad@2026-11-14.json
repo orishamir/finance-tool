@@ -115,7 +115,7 @@
     "value": false,
     "max_renewals": null
   },
-  "conditions_he": "אפשר למשוך את הכסף מהחודש ה-25 ובכל יום אחריו, לפי תנאי העסקה.",
+  "conditions_he": "אפשר למשוך את הכסף מהחודש ה־25 ובכל יום אחריו, לפי תנאי העסקה.",
   "snapshot": "2026-11-14",
   "source": {
     "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",

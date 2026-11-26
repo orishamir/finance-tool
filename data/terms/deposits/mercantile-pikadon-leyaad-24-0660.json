@@ -134,7 +134,7 @@
     "value": false,
     "max_renewals": null
   },
-  "conditions_he": "אפשר להוסיף פעם בחודש הפקדה חד-פעמית של עד 10,000 ₪. בחודש שבו לא מפקידים, הריבית יורדת ב-0.04%.",
+  "conditions_he": "אפשר להוסיף פעם בחודש הפקדה חד-פעמית של עד 10,000 ₪. בחודש שבו לא מפקידים, הריבית יורדת ב־0.04%.",
   "snapshot": "2026-11-07",
   "source": {
     "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",
