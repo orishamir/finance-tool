@@ -46,6 +46,14 @@ describe("value object (data-schema §1)", () => {
     expect(valueObject.safeParse({ ...empty, state: "entered", empty_because: "unknown" }).success).toBe(false);
   });
 
+  it("says a sourced value is empty by a rule only where it names that rule", () => {
+    const { rule_ids: _, ...unruled } = sourced;
+    const empty = { ...unruled, value: null, notes: "התקנות אינן מתירות דמי ניהול מההפקדה." };
+    expect(valueObject.safeParse({ ...empty, empty_because: "none-by-rule" }).success).toBe(false);
+    expect(valueObject.safeParse({ ...empty, empty_because: "none-by-rule", rule_ids: [] }).success).toBe(false);
+    expect(valueObject.safeParse({ ...empty, empty_because: "none-by-rule", rule_ids: ["PF-06"] }).success).toBe(true);
+  });
+
   it("keeps a Hebrew note, a Hebrew publisher and a machine address apart from the fields a reader opens", () => {
     const parsed = valueObject.parse({ ...sourced, notes_he: "לפני מס.", source: { ...sourced.source, publisher_he: "הכנסת", fetched_from: "https://example.org/api/data.json" } });
     expect(parsed.notes_he).toBe("לפני מס.");

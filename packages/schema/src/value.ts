@@ -184,11 +184,13 @@ export const computedFrom = z.object({
 
 /**
  * data-schema §1: why a sourced value is empty, one word per state, so a page names each state in words of its own. `too-young`: the
- * product or track is younger than the period the figure covers (a yield's window, a fee's calendar year). `none-by-rule`: a rule sets
- * no such charge or figure for this product, so empty means none. `not-reported`: the source has a place for the figure and states that
- * the body reporting to it gave none. `not-collected`: the site has not read the figure from its source. `not-applicable`: the figure
- * does not apply to this product, though the record's shape has a place for it. `unknown`: the source leaves it empty and nothing read
- * says why.
+ * product or track is younger than the period the figure covers (a yield's window, a fee's calendar year). `none-by-rule`: a rule named
+ * in `rule_ids` states that the product has no such charge or figure, so empty means none; the schema fails it without that rule, since
+ * no rule found is not a rule saying none. `not-reported`: the source has a place for the figure and states that the body reporting to it
+ * gave none. `not-collected`: the site has not read the figure from its source. `not-applicable`: the figure does not exist for the
+ * product by its nature, with no rule involved, though the record's shape has a place for it. `unknown`: the source leaves it empty and
+ * nothing read says why. A rule's own figure for a fee it bars stays a 0 value (data-schema §3.1); `none-by-rule` is for a source's own
+ * empty field, which keeps its null.
  */
 export const emptyBecause = z.enum(["too-young", "none-by-rule", "not-reported", "not-collected", "not-applicable", "unknown"]);
 
@@ -233,6 +235,10 @@ export const valueObject = z
   .refine((v) => v.empty_because === undefined || (v.value === null && v.state === "sourced"), {
     message: "empty_because says why a sourced value is empty: only on a sourced value whose value is null",
     path: ["empty_because"],
+  })
+  .refine((v) => v.empty_because !== "none-by-rule" || (v.rule_ids ?? []).length > 0, {
+    message: "empty_because none-by-rule says a rule states there is none: rule_ids must name that rule",
+    path: ["rule_ids"],
   });
 
 export type ValueObject = z.infer<typeof valueObject>;
