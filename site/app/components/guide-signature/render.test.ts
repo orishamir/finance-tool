@@ -2,20 +2,9 @@
 import { createElement, type ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import { guideSignature as sigCopy } from "../../copy";
 import { sheetRules, type SiteValue } from "../../lib/value";
-
-// every figure a visual hands to `Num`, kept for the sweep below, which reads the rules each figure's sheet names
-const shown: SiteValue[] = [];
-vi.mock("../provenance", async (importOriginal) => {
-  const real = await importOriginal<typeof import("../provenance")>();
-  const Num: typeof real.Num = (props) => {
-    shown.push(props.value);
-    return real.Num(props);
-  };
-  return { ...real, Num };
-});
 import { buildGuidePage } from "../../lib/guide.server";
 import { InputsProvider } from "../../lib/inputs";
 import { ProvenanceProvider } from "../provenance";
@@ -168,14 +157,35 @@ describe("study fund page", () => {
 });
 
 describe("each figure of a visual lists only the rules that changed it (method §13)", () => {
-  // the visuals as the page first draws them: no age entered, and the example income, far below the surtax's threshold
-  const figures = (id: string) => {
-    shown.length = 0;
-    const p = buildGuidePage(id)!;
-    renderToString(inProviders(p, createElement(SignatureFrame, { id, data: p.signature!, today: p.today, timeline: null })));
-    return shown.filter((v) => v.state === "computed").map((v) => ({ about: v.about ?? "", ids: sheetRules(v).map((r) => r.id) }));
-  };
-  const all = Object.keys(signatureRegistry).map((id) => ({ id, figures: figures(id) }));
+  // every figure a visual hands to `Num`, kept by a `Num` that records its value: the visuals are loaded afresh with it in place (the fast
+  // tests share their modules, so a mock declared for the file alone would not reach a module another file already loaded)
+  let all: { id: string; figures: { about: string; ids: string[] }[] }[] = [];
+  beforeAll(async () => {
+    const shown: SiteValue[] = [];
+    vi.resetModules();
+    vi.doMock("../provenance", async (importOriginal) => {
+      const real = await importOriginal<typeof import("../provenance")>();
+      const Num: typeof real.Num = (props) => {
+        shown.push(props.value);
+        return real.Num(props);
+      };
+      return { ...real, Num };
+    });
+    const prov = await import("../provenance");
+    const frame = await import("./index");
+    const { InputsProvider: Inputs } = await import("../../lib/inputs");
+    const { buildGuidePage: build } = await import("../../lib/guide.server");
+    // the visuals as the page first draws them: no age entered, and the example income, far below the surtax's threshold
+    all = Object.keys(frame.signatureRegistry).map((id) => {
+      shown.length = 0;
+      const p = build(id)!;
+      const page = createElement(frame.SignatureFrame, { id, data: p.signature!, today: p.today, timeline: null });
+      renderToString(createElement(MemoryRouter, null, createElement(Inputs, { children: createElement(prov.ProvenanceProvider, { data: { rules: p.rules, terms: {}, dimensions: {}, today: p.today }, children: page }) })));
+      return { id, figures: shown.filter((v) => v.state === "computed").map((v) => ({ about: v.about ?? "", ids: sheetRules(v).map((r) => r.id) })) };
+    });
+    vi.doUnmock("../provenance");
+    vi.resetModules();
+  });
 
   it("no figure names the rules from 60 with no age, nor the surtax where it is 0", () => {
     for (const { id, figures: fs } of all) {
