@@ -652,7 +652,7 @@ describe("the templates", () => {
     expect(filledFor("ibi", [{ by: "what", is: "mutualFunds" }])("trade")).toMatchObject({ rate: { v: 0.08 }, min: { v: 5 } });
     expect(copy.cases.values.what.mutualFunds).toBe("קרנות נאמנות");
   });
-  it("price no mutual fund on a bank's line for the Tel Aviv exchange, which takes back only tracking and listed funds (BRK-16, MF-27), and say why", () => {
+  it("price no mutual fund on a bank's line for the Tel Aviv exchange, which takes back only tracking and listed funds (BRK-72, MF-27), and say why", () => {
     for (const id of ["discount", "leumi", "mizrahi-tefahot", "one-zero"]) {
       const trade = house(id).fees.find((f) => f.kind === "trade")!;
       const named = (trade.cases ?? []).flatMap((c) => (Array.isArray(c.when[0]) ? c.when[0] : []));

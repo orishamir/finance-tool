@@ -98,8 +98,8 @@ export interface Offset {
 
 /**
  * What a price list says of an order, beside its price (§10.6's stated parts): charged on an order not carried out too; at a bank, an order
- * through a clerk not carried out for a reason on the client's side charged its minimum, on the Tel Aviv exchange (`unfilledClerk`, BRK-16,
- * notes to part 4(א)(1)) and abroad (`unfilledClerkAbroad`, BRK-16, part 4(א)(4) note 1); each partial fill charged apart; and, where the
+ * through a clerk not carried out for a reason on the client's side charged its minimum, on the Tel Aviv exchange (`unfilledClerk`, BRK-71,
+ * notes to part 4(א)(1)) and abroad (`unfilledClerkAbroad`, BRK-71, part 4(א)(4) note 1); each partial fill charged apart; and, where the
  * list prints a percent maximum beside a minimum and does not say which wins on a small action, that the page reads the maximum as
  * winning (`capRead`, F-12: the site's reading, not the list's words).
  */

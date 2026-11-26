@@ -1,0 +1,61 @@
+{
+  "id": "BRK-71",
+  "title": "Banks: an order not carried out for a reason on the client's side pays the minimum only through a clerk, in Tel Aviv and abroad",
+  "title_he": "בנקים: הוראה שלא בוצעה בגלל הלקוח נגבית במינימום רק אם ניתנה דרך פקיד",
+  "text_he": "בבנק, הוראה לקנות או למכור ניירות ערך שלא בוצעה מסיבה שתלויה בלקוח נגבית בעמלת מינימום רק אם ניתנה דרך פקיד. הכלל חל גם על ניירות ערך בבורסה בתל אביב וגם על ניירות ערך בחו״ל. הוראה שמתפצלת לכמה ביצועים חלקיים באותו יום משלמת מינימום אחד ביום, אבל בשורה של ניירות ערך בחו״ל אין את ההערה הזו. באופציות במעו״ף חלות שתי ההערות, ובחוזים העתידיים במעו״ף רק הערת הפיצול.",
+  "strength": "primary",
+  "dimensions": [
+    "fee-trade"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-14",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/mi2driua/159a.pdf#page=16",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.16, part 4(א)(4)",
+      "locator_he": "עמוד 16, חלק 4(א)(4)",
+      "page": 16,
+      "quote": "כולל קניה או מכירה שלא",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.boi.org.il/media/mi2driua/159a.pdf#page=16",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.16, part 4(א)(4), note 1",
+      "locator_he": "עמוד 16, חלק 4(א)(4), הערה 1",
+      "page": 16,
+      "quote": "שלא בוצעה מסיבה התלויה בלקוח",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.15, part 4(א)(1), note 1; p.16, part 4(א)(1), note 2; p.16, part 4(א)(2), part 4(א)(3)",
+      "locator_he": "עמוד 15, חלק 4(א)(1), הערה 1; עמוד 16, חלק 4(א)(1), הערה 2; עמוד 16, חלק 4(א)(2), חלק 4(א)(3)",
+      "page": 15,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BRK-16"
+  ]
+}

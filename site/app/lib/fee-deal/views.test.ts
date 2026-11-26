@@ -477,7 +477,7 @@ describe("a fee the law bans at a bank (BRK-17, MF-71)", () => {
     expect(read(makam).banned).toEqual([{ fee: "fee-c", rules: ["BRK-17", "BANK-18", "BANK-51"] }]);
     // the trade's ban is the site's reading of the rules (MF-71), and the distribution fee may still be charged; custody's is the rules' words
     const mm = read(at("bank", "moneyMarket", fees)).banned;
-    expect(mm.find((b) => b.fee === "fee-t")).toEqual({ fee: "fee-t", rules: ["MF-71", "BRK-16", "BANK-51"], reading: true, distribution: true });
+    expect(mm.find((b) => b.fee === "fee-t")).toEqual({ fee: "fee-t", rules: ["MF-71", "BRK-72", "BANK-51"], reading: true, distribution: true });
     expect(mm.find((b) => b.fee === "fee-c")).toEqual({ fee: "fee-c", rules: ["BRK-17", "BANK-18", "MF-71", "BANK-51"] });
     // a money-market fund's own deal at a bank: custody by the rules' words, its trade as the site's reading
     const fund: FeeDeal = { ...newDeal("money-market-fund-daily"), id: "deal-f", provider: "bank", fees };

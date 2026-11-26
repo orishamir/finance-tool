@@ -72,7 +72,7 @@ describe("F-128 the plan sets what is bought and the channel", () => {
     const deal = fromHouse("leumi");
     const mutual = { ...run, instrumentClass: "mutual_fund_units", listing: undefined as never };
     const line = { ...ctx, lineValue: lineValueOf(bundle.snapshots.find((s) => s.id === "leumi")!) };
-    // the bank files an open mutual fund under its line for securities in Tel Aviv (BRK-16): the deal reads that line's case
+    // the bank files an open mutual fund under its line for securities in Tel Aviv (BRK-72): the deal reads that line's case
     const trade = deal.fees.find((f) => f.kind === "trade")!;
     expect(feesOnPlan(deal, mutual, line).find((x) => x.fee === trade.id)?.on).toBe("charged");
     // the same deal with no case for that line lacks one
@@ -188,7 +188,7 @@ describe("F-128 a deal filled from a house prices as the house does, on a few in
     expect(listPlace([{ best: 10, name: "א" }, { best: 12, name: "ג" }], { best: 10, name: "ב" })).toBe(3);
   });
 
-  it("a bank's open mutual fund is bought on its line for securities on the Tel Aviv exchange, as its row buys it (BRK-16)", () => {
+  it("a bank's open mutual fund is bought on its line for securities on the Tel Aviv exchange, as its row buys it (BRK-72)", () => {
     const deal = view.houses.find((r) => r.provider.id === dealProviderId("deal-leumi"))!;
     const mutual = deal.entries.find((e) => e.fund.option === "il-tracking");
     expect(mutual?.price).not.toBeNull();
