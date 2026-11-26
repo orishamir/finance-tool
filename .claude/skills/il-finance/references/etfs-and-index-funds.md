@@ -81,7 +81,7 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
 - Rule: An Israeli ETF is offered to the public in two ways: (1) continuous trading on TASE, and (2) creation or redemption orders placed through TASE members on the fund's trading days. The ISA puts it this way: in ETFs the public can buy or sell units directly from the manager or on the exchange against the market maker. How units of an open tracking fund are bought and redeemed (order cut-off, price) is part of the mutual-fund framework in `mutual-funds-and-money-market-funds.md`.
 - Conditions / exceptions: How creation and redemption work (the distributor, dormant units, limits on order size) is ETF-98. Split on 2026-10-25 (scope pass): the company's part is ETF-55. Split on 2026-11-26: creation and redemption went to ETF-98.
 - Figures: none.
-- Source: [פעילות קרנות נאמנות בישראל 2024](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf), p.20 · primary · checked 2026-10-25.
+- Source: [פעילות קרנות נאמנות בישראל 2024](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf), p.20 · primary · checked 2026-10-25. [תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע"ח-2018 (קובץ התקנות 8038)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=4), p.4 (gazette p.2396), reg. 5 · primary · checked 2026-10-25.
 - Scope: general
 - Dimensions: liquidity-lockup
 - Likely to change: no.
