@@ -6,7 +6,8 @@
   "strength": "primary",
   "dimensions": [
     "tax-during",
-    "tax-at-exit"
+    "tax-at-exit",
+    "fund-tax-track"
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-securities-israeli.md",

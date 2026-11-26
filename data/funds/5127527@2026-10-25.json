@@ -198,7 +198,7 @@
     }
   },
   "dimensions": {
-    "fund-tax-track": "covered:TXS-24",
+    "fund-tax-track": "covered:TXS-07",
     "fee-management-balance": "covered:ETF-13",
     "distribution-policy": "covered:MF-49",
     "currency": "covered:ETF-10",

@@ -153,7 +153,7 @@
     }
   },
   "dimensions": {
-    "fund-tax-track": "covered:TXS-24",
+    "fund-tax-track": "covered:TXS-07",
     "liquidity-lockup": "covered:MF-34",
     "fee-custody": "covered:BRK-17",
     "fee-management-balance": "covered:MF-16",

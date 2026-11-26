@@ -81,7 +81,7 @@ How the law was read: the Income Tax Ordinance and the regulations were read on 
 - Figures: notice at least 30 days before the tax year.
 - Source: [פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים](https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf), p.150, s.88, definitions קרן נאמנות, קרן נאמנות חייבת, קרן נאמנות פטורה; s.88א ("בקביעה שאינה ניתנת לשינוי") · checked 2026-10-26 · primary.
 - Scope: general
-- Dimensions: `tax-during`, `tax-at-exit`
+- Dimensions: `tax-during`, `tax-at-exit`, `fund-tax-track`
 - Likely to change: no
 
 ### TXS-08 Exempt fund: what the fund itself pays
@@ -268,11 +268,11 @@ How the law was read: the Income Tax Ordinance and the regulations were read on 
 - Dimensions: `age-or-use-exemption`, `tax-at-exit`
 - Likely to change: yes, the brackets change by law (TXG)
 
-### TXS-24 Each fund's tax status is published by TASE, and some money-market funds are taxable
-- Rule: Maya's fund-data export gives every Israeli open-end fund a tax status ("מעמד מס"). A count over every fund in the export, on 2026-10-22: 1,986 exempt ("פטורה"), 21 taxable ("חייבת") and 2 taxable for non-residents. Of 73 money-market funds, 71 are exempt and 2 are taxable, one a foreign-currency money-market fund and one a shekel fund that distributes monthly (the two funds, named: TXS-26). Several other taxable funds are distributing funds ("מחלקת").
-- Conditions / exceptions: TXS-11 and TXS-12 still decide what a saver pays in each case; this rule only shows that the status must be read per fund and where to read it. It narrows F1, because the tax track no longer depends only on each prospectus. Not a rule: a count over every listed fund and a per-fund field, which belong in `data/` (a computed count with its method, and a tax-track field on each fund record); the two named taxable funds moved to TXS-26 on 2026-10-26 (scope settling). The export is script-rendered and was read in Chrome; it was not re-run on 2026-10-26.
+### TXS-24 Most money-market funds are exempt, a few are taxable (a count over Maya's fund export)
+- Rule: Maya's fund-data export gives every Israeli open-end fund a tax status ("מעמד מס"). Of 73 money-market funds in it on 2026-10-22, 71 are exempt and 2 are taxable, one a foreign-currency money-market fund and one a shekel fund that distributes monthly (the two funds, named: TXS-26). A count over every fund in the export the same day: 1,986 exempt ("פטורה"), 21 taxable ("חייבת") and 2 taxable for non-residents. Several other taxable funds are distributing funds ("מחלקת").
+- Conditions / exceptions: TXS-11 and TXS-12 still decide what a saver pays in each case; this rule only shows that the status must be read per fund (the two tracks, set in each fund's agreement or prospectus: TXS-07) and where to read it. Narrowed to the money-market count on 2026-11-26: what opens a single fund's tax track points to TXS-07. It narrows F1, because the tax track no longer depends only on each prospectus. Not a rule: a count over every listed fund and a per-fund field, which belong in `data/` (a computed count with its method, and a tax-track field on each fund record); the two named taxable funds moved to TXS-26 on 2026-10-26 (scope settling). The export is script-rendered and was read in Chrome; it was not re-run on 2026-10-26.
 - Figures: counts as above, 2026-10-22.
-- Source: [Maya, רשימת קרנות — "הורדת נתונים" export](https://maya.tase.co.il/he/funds/mutual-funds) · checked 2026-10-25 · primary
+- Source: [Maya, רשימת קרנות — "הורדת נתונים" export](https://maya.tase.co.il/he/funds/mutual-funds) · checked 2026-10-25 · primary. The two tracks: TXS-07.
 - Scope: general
 - Dimensions: `fund-tax-track`, `tax-during`, `tax-at-exit`, `distribution-policy`
 - Likely to change: yes, as funds open or change.
