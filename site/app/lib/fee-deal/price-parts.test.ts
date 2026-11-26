@@ -351,14 +351,14 @@ describe("the templates", () => {
     expect(texts("hapoalim")).toContain("ניירות ערך בחו״ל");
     expect(texts("hapoalim")).not.toContain("ניירות ערך בחו״ל, בארה״ב, באירופה, בשאר העולם");
   });
-  it("note an order through a bank's clerk not carried out as BRK-16 says, on a branch line on the exchange alone, whatever the heading", () => {
+  it("note an order through a bank's clerk not carried out as BRK-71 says, on a branch line on the exchange alone, whatever the heading", () => {
     const notesOf = (id: string) =>
       data.houses.find((h) => h.id === id)!.fees.find((f) => f.kind === "trade")!.cases!.map((c) => ({ when: JSON.stringify(c.when), notes: (c.stages[0]!.price as { notes?: string[] }).notes ?? [] }));
     for (const bank of ["discount", "hapoalim"]) {
       const cases = notesOf(bank);
       // never the plain note, whatever the bank's heading says
       expect(cases.some((c) => c.notes.includes("unfilled"))).toBe(false);
-      // the branch's case on the exchange carries BRK-16's note; a direct one none
+      // the branch's case on the exchange carries BRK-71's note; a direct one none
       expect(cases.some((c) => c.when.includes("branch") && c.when.includes("tase") && c.notes.includes("unfilledClerk"))).toBe(true);
       expect(cases.filter((c) => c.when.includes("direct") && !c.when.includes("branch")).every((c) => c.notes.length === 0)).toBe(true);
     }
@@ -370,13 +370,13 @@ describe("the templates", () => {
     const foreign = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "us" }, { by: "channel", is: "branch" }] };
     const said = readingOf(read(foreign), data.fx).stated.find((x) => x.part === "unfilledClerkAbroad")!;
     expect(said.words).toEqual(copy.cases.stated.unfilledClerkAbroad);
-    expect(said.rules).toEqual(["BRK-16"]);
-    // the reading states it in the rule's terms and cites BRK-16, which the page's data carries
+    expect(said.rules).toEqual(["BRK-71"]);
+    // the reading states it in the rule's terms and cites BRK-71, which the page's data carries
     const d = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "branch" }] };
     const stated = readingOf(read(d), data.fx).stated.find((s) => s.part === "unfilledClerk")!;
     expect(stated.words).toEqual(copy.cases.stated.unfilledClerk);
-    expect(stated.rules).toEqual(["BRK-16"]);
-    expect(data.rules.some((r) => r.id === "BRK-16")).toBe(true);
+    expect(stated.rules).toEqual(["BRK-71"]);
+    expect(data.rules.some((r) => r.id === "BRK-71")).toBe(true);
     const direct = { ...d, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "direct" }] };
     expect(readingOf(read(direct), data.fx).stated.some((s) => s.part === "unfilledClerk" || s.part === "unfilled")).toBe(false);
   });

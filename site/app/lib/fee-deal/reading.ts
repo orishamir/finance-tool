@@ -228,14 +228,14 @@ export interface StatedPart {
   fee: FeeRef;
   part: StatedPartId;
   words: PartWords;
-  /** The rules its sentence states, where it states one (a bank's order through a clerk, BRK-16). */
+  /** The rules its sentence states, where it states one (a bank's order through a clerk, BRK-71). */
   rules?: readonly string[];
   /** The action costs more than the chart shows (`STATED_UNDERSTATES`). */
   understates?: true;
 }
 
-/** The rules a stated part's sentence states, by the part: a bank's order through a clerk not carried out, at home and abroad (BRK-16). */
-export const STATED_RULES: Partial<Record<StatedPartId, readonly string[]>> = { unfilledClerk: ["BRK-16"], unfilledClerkAbroad: ["BRK-16"] };
+/** The rules a stated part's sentence states, by the part: a bank's order through a clerk not carried out, at home and abroad (BRK-71). */
+export const STATED_RULES: Partial<Record<StatedPartId, readonly string[]>> = { unfilledClerk: ["BRK-71"], unfilledClerkAbroad: ["BRK-71"] };
 
 /** The stated parts that may make an action cost more than the chart shows: a third party's fee with no figure in the list. */
 export const STATED_UNDERSTATES: Partial<Record<StatedPartId, true>> = { third: true };

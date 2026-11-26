@@ -2411,7 +2411,7 @@ export const feeDeal = {
       offset: { lead: "מתקזזת מול ", tail: " של אותו חודש, עד הסכום שלה. האתר מראה אותה בסכום המלא." },
       refund: { lead: "יש החזר של ", tail: ". האתר לא מנכה אותו." },
       unfilled: "נגבית גם על הוראה שלא בוצעה.",
-      /** At a bank, in the terms of the Bank of Israel's fee rules (BRK-71, notes to part 4(א)(1)); `stated` is the words that state BRK-16 (D116). */
+      /** At a bank, in the terms of the Bank of Israel's fee rules (BRK-71, notes to part 4(א)(1)); `stated` is the words that state BRK-71 (D116). */
       unfilledClerk: { lead: "בניירות ערך בבורסה בתל אביב, חוץ מקרנות נאמנות, ", stated: "הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום", tail: "." },
       /** At a bank, abroad, in the terms of the fee rules' own line for securities abroad (BRK-71, part 4(א)(4) note 1). */
       unfilledClerkAbroad: { lead: "בניירות ערך בחו״ל, ", stated: "הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום", tail: "." },
