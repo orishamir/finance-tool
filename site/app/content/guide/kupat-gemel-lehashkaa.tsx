@@ -15,7 +15,7 @@ export const content: GuideContent = {
     return (
     <>
       <p className="max-w-measure">
-        אתם מפקידים לקופה בעצמכם, <Ruled id="KGL-02">עד</Ruled> {ceiling ? <Num value={ceiling} /> : "התקרה"} <Ruled id="KGL-04">בשנה, בכל הקופות שלכם יחד</Ruled>. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ומי שלא בוחר <Ruled id="KGL-11">מצורף</Ruled> <Term prefix="ל" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term> של הקופה.
+        אתם מפקידים לקופה בעצמכם, <Ruled id="KGL-02">עד</Ruled> {ceiling ? <Num value={ceiling} /> : "התקרה"} <Ruled id="KGL-02">בשנה, בכל הקופות שלכם יחד</Ruled>. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ומי שלא בוחר <Ruled id="KGL-11">מצורף</Ruled> <Term prefix="ל" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term> של הקופה.
       </p>
       <p className="max-w-measure">
         <Ruled id="TXK-03">על הרווחים בתוך הקופה לא משלמים מס</Ruled>. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, <Ruled id="TXK-05" prefix="ו">רק על הרווח</Ruled>: <Ruled id={["TXK-06", "TXK-07"]}>עד</Ruled> {rate ? <Num value={rate} /> : "השיעור המרבי"} <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>.
