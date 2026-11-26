@@ -335,6 +335,19 @@ describe("the pension runs", () => {
     expect(high.flags.map((f) => f.code)).toContain("TXP-11");
     expect(high.rules.find((u) => u.id === "TXP-11")?.uses).toEqual([{ part: "taxDuring", changed: false, figures: ["severance_ceiling"] }]);
   });
+
+  it("takes the brackets on the employer line's salary tax only where the employer's money passes its exempt limit", () => {
+    // S27: 6.5% of a salary under the ceiling, under TXP-10's 7.5%: no tax, and the exemption is what makes it none
+    const under = employerLinePension(s27, ctx);
+    expect(detailOf(under, "depositTax")).toBe(0);
+    expect(changedIn(under, "TXP-10")).toEqual(["taxDuring"]);
+    expect(read(under, "TXG-02")).toBe(true);
+    expect(changedIn(under, "TXG-02")).toEqual([]);
+    // a salary above TXP-10's ceiling: the 6.5% on the part above it is salary, taxed at the brackets
+    const over = employerLinePension({ ...s27, pension: { ...s27.pension, monthlySalary: 50_000 } }, ctx);
+    expect(detailOf(over, "depositTax")).toBeGreaterThan(0);
+    for (const id of ["TXP-10", "TXG-02"]) expect(changedIn(over, id), id).toEqual(["taxDuring"]);
+  });
 });
 
 describe("the relief paths (F-30 to F-32)", () => {

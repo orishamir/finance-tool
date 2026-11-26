@@ -341,8 +341,9 @@ function employerLinePensionUnder(input: PensionInput, ctx: RunContext): Pension
   const perYear = new Map<number, number>();
   for (let m = 1; m <= T; m++) perYear.set(taxYearOf(m, first), (perYear.get(taxYearOf(m, first)) ?? 0) + excessMonthly);
   let depositTax = 0;
-  // F-119: the brackets of each year the excess is paid in
-  for (const [y, x] of perYear) depositTax += deductionValue(salaryTax.inYear(y).brackets("TXG-02", "brackets"), 12 * salary + x, x);
+  // F-119: the brackets of each year the excess is paid in, taken only where there is an excess to tax
+  for (const [y, x] of perYear) depositTax += deductionValue(salaryTax.inYear(y).peek.brackets("TXG-02", "brackets"), 12 * salary + x, x);
+  if (excessMonthly > 0) salaryTax.took("TXG-02");
   // G-23: that tax is at the brackets, which leave out the person's credit points
   if (depositTax > 0) tally.flag("G-23");
 
