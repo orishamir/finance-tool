@@ -4,7 +4,7 @@ import type { SearchEntry } from "../lib/search";
 import { companyPath, documentsPath, guidePath, rulesPath, trackBrowserPath, trackPath } from "../lib/site-paths";
 
 export async function loader() {
-  const { loadCma, loadTerms, loadProducts, loadRules, loadParameters } = await import("../lib/data.server");
+  const { loadCma, loadTerms, loadProducts, loadRules, loadParameters, today } = await import("../lib/data.server");
   const { exposureHref, loadCatalog, loadExposures } = await import("../lib/instruments.server");
   const { normalize, ruleFigs, shownEntry } = await import("../lib/search");
   const { gershayim } = await import("../lib/format");
@@ -110,8 +110,10 @@ export async function loader() {
   const { scopeWords } = await import("../copy");
   const links = companyLinks();
   const ownDocs = ownDocuments();
-  for (const rule of Object.values(loadRules())) {
-    const title = ruleTitle(rule).text;
+  const allRules = loadRules();
+  const slots = { rules: allRules, today: today() };
+  for (const rule of Object.values(allRules)) {
+    const title = ruleTitle(rule, slots).text;
     const topic = topicName(rule.il_finance_file);
     if (rule.scope !== "general") {
       // the row names the companies whose sections list it; a not-rule, which none lists, says "לא נכלל ככלל",

@@ -5,6 +5,7 @@
 import { isOwnDocument, listedAt, notRules, type OwnDocumentKeys, type RuleRecord } from "@finance-tool/schema";
 import { documentsPath } from "./site-paths";
 import { scopeWords } from "../copy";
+import { slotIds } from "./figure-slots";
 
 export type Scope = RuleRecord["scope"];
 
@@ -138,17 +139,40 @@ export function sourcesForPage<S extends { url: string; title: string; title_he?
 }
 
 /**
- * The chip's words for a record that is not general (spec §4: the chip shows the company's name, not a code): on the page of a company
- * the record shows, that company alone; else the first, with "and N more" (copy) and the count of the others, over the same companies
- * the card names (`shownCompanies`). Null when it names none (the code stays).
+ * The companies a record's chip and its card's tag name, and how many more they count without naming (spec §4: the chip shows the
+ * company's name, not a code): on the page of a company the record shows, that company alone; else the first, with the count of the
+ * others, over the same companies the card names (`shownCompanies`). None when it names none.
  */
-export function chipName(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined, more: (n: number) => string): string | null {
+function chipCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined): { named: { id: string; name_he: string }[]; more: number } {
   const list = shownCompanies(rule, ownDocs);
-  if (list.length === 0) return null;
   // on the page of a company the record names, the chip names that company alone (D30)
   const here = list.find((c) => c.id === current);
-  if (here) return here.name_he;
-  return list.length === 1 ? list[0]!.name_he : `${list[0]!.name_he} ${more(list.length - 1)}`;
+  if (here) return { named: [here], more: 0 };
+  return { named: list.slice(0, 1), more: Math.max(0, list.length - 1) };
+}
+
+/** The chip's words for a record that is not general (`chipCompanies`), with "and N more" (copy) after the first name. Null when it names none (the code stays). */
+export function chipName(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined, more: (n: number) => string): string | null {
+  const { named, more: others } = chipCompanies(rule, ownDocs, current);
+  const first = named[0];
+  if (!first) return null;
+  return others === 0 ? first.name_he : `${first.name_he} ${more(others)}`;
+}
+
+/**
+ * The companies a card's tag names in full (`scopeTag`): with `short` (a rule card's tag, worded as the chip) the chip's companies when
+ * it counts none unnamed, and none when it shortens them ("לאומי ועוד 3"); without it every company the card names.
+ */
+export function tagCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, short?: { company: string | undefined }): { id: string; name_he: string }[] {
+  if (!short) return shownCompanies(rule, ownDocs);
+  const { named, more } = chipCompanies(rule, ownDocs, short.company);
+  return more === 0 ? named : [];
+}
+
+/** Whether two lists name the same companies, in any order. */
+export function sameCompanies(a: readonly { id: string }[], b: readonly { id: string }[]): boolean {
+  const ids = new Set(a.map((c) => c.id));
+  return a.length > 0 && ids.size === new Set(b.map((c) => c.id)).size && b.every((c) => ids.has(c.id));
 }
 
 /** A Hebrew list of names (copy.md 10.4): commas, and the conjunction only before the last. */
@@ -170,11 +194,12 @@ export function figureRuleIds(rule: Pick<RuleRecord, "figures">): string[] {
 }
 
 /**
- * The records a rule card points at: its derivations, its examples (a general rule's companies' terms) and the rules its figures cite.
- * They travel with the card, so each chip on it, or on a figure's sheet, opens its record.
+ * The records a rule card points at: its derivations, its examples (a general rule's companies' terms), the rules its figures cite and
+ * the rules whose figures fill its text's slots. They travel with the card, so each chip on it, or on a figure's sheet, opens its
+ * record, and each slot in its text is a figure, never "—".
  */
-export function pointedIds(rule: Pick<RuleRecord, "id" | "derived_from" | "examples" | "figures">): string[] {
-  return [...new Set([...(rule.derived_from ?? []), ...(rule.examples ?? []), ...figureRuleIds(rule)])].filter((id) => id !== rule.id);
+export function pointedIds(rule: Pick<RuleRecord, "id" | "derived_from" | "examples" | "figures" | "text_he">): string[] {
+  return [...new Set([...(rule.derived_from ?? []), ...(rule.examples ?? []), ...figureRuleIds(rule), ...slotIds(rule.text_he ?? "")])].filter((id) => id !== rule.id);
 }
 
 /** Records by id from bundles' lists (a bundle's `pointed`), for `ProvenanceData.pointed` on a page built from bundles. */

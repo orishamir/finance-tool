@@ -56,7 +56,7 @@ What the guideline's voice, sentence and word-choice rules don't already say:
 - **"החברה קובעת"** for a figure a company sets, in the active voice, so it is not confused with the strength tag "לפי החברה".
 - **"עד"** before a "worth knowing" figure that is a legal cap, so a cap never reads as the rate charged. A cap set in the fee regulations is "שבתקנות", not "שבחוק" (a scan in `kit/guards.test.ts`, guard 18, fails "התקרה שבחוק" and "התקרה בחוק" in the copy, the guide prose and the records).
 - **"ריבית הבנק, בתוקף מ־{תאריך}"** for a deposit's own rate: the date is the record's `effective_from`, which can be after today; it is not a publication date.
-- **No typed figure even for a fixed count:** a default reads "ברירת המחדל: החודש האחרון", paging reads "להציג עוד" with no page size, and an age, a rate or a period in a flag is its rule's figure, read through a `{ID:figure}` slot (`{ID:figure.from}` for the month it takes effect), never typed in digits or in words (D108, D111).
+- **No typed figure even for a fixed count:** a default reads "ברירת המחדל: החודש האחרון", paging reads "להציג עוד" with no page size, and an age, a rate or a period in a flag is its rule's figure, read through a `{ID:figure}` slot (`{ID:figure.from}` for the month it takes effect), never typed in digits or in words (D108, D111). A rule's own text (`text_he`) takes the same slots, so a figure it states is the record's.
 
 ## 4. Laws and rules, documents and questions
 
@@ -65,6 +65,7 @@ What the guideline's voice, sentence and word-choice rules don't already say:
 - **Text a record holds is rendered from the record, never retyped**: a rule's text, opening its rule (a condition, a protection line, a statement field), an exposure's name (`names.he[0]`) and its one-line explanation (`one_line_he`).
 - **A topic's Hebrew name, never a file name**, on the page; a file without a name in the map shows "נושא נוסף במאגר החוקים והכללים". The reader's names of the topics drop the "מס:" prefix.
 - **"מראה מקום"** for a citation (the founder: "הפניה" is not the Hebrew word for it).
+- **"ראו גם:"** before the rules a record's Source line points to (`derived_from`), never "נגזר מ־" or a sentence that calls the record a conclusion: every record that has them cites sources of its own, and many are a company's term pointing at the general rule it sits under.
 - **"נבדק"** followed by the date, with no colon: a sentence fragment.
 - **One date, one word.** The day the site read a record (a fee record's `snapshot`) is "נאסף ב־" on every page that shows it; "נבדק ב־" promises that someone confirmed the document is still the current one, and two words for one date read as two promises (fresh readers: "נבדק" on the companies list and "נאסף" on the bank's page for the same 04.11.2026: "Is 'collected' the same as 'checked that it's still the current one'?").
 - **"שאלה פתוחה"** for a rule without a source, its code after the words; its sign is **"מנעול"** ("מסומן במנעול", not "בנעילה").

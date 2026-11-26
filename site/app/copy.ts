@@ -426,7 +426,6 @@ export const provenance = {
     forYear: "תקף לשנת",
     englishTitle: "שם המקור באנגלית",
     localFile: "קובץ נתונים של האתר",
-    lineBefore: "הנתון נלקח מהמקור שלמטה.",
     noValue: "הנתון הזה לא נמצא במקור, ולכן האתר לא מציג מספר.",
     notYetInForce: "עד אז הנתון הזה עוד לא חל. האתר מציג אותו כפי שפורסם.",
   },
@@ -3328,6 +3327,8 @@ export const scopeWords = {
   tag: { general: "חל על כולם", institution: "של {names}", unsettled: "לא הוכח שחל על כולם", about: "על {names}" },
   line: {
     institution: "נמצא במסמכים של {names}. בחברות אחרות זה יכול להיות אחרת.",
+    /** A company's term whose tag above already names the companies whose documents say it. */
+    institutionTagged: "בחברות אחרות זה יכול להיות אחרת.",
     notTheirs: "המקורות כאן הם לא מסמכים של {names}.",
     unsettledSeen: "נמצא במסמכים של {names}. אולי כך בכל החברות. האתר לא מצא לזה מקור רשמי.",
     unsettled: "אולי כך בכל החברות. האתר לא מצא לזה מקור רשמי.",
@@ -3364,8 +3365,8 @@ export const scopeWords = {
 /** Additions to the rule card (synthesis §3.3). */
 export const ruleCardMore = {
   forTaxYear: "לשנת המס",
-  derivedFrom: "נגזר מ־",
-  derivedLine: "זו מסקנה משילוב של כמה חוקים וכללים, לא משפט אחד שנמצא במקור.",
+  /** Before the rules a record's Source line points to (`derived_from`), which stand beside its own sources: a pointer, not a derivation. */
+  seeAlso: "ראו גם:",
   /** A general rule's pointers to companies' terms: named examples, never a derivation. */
   examples: "לדוגמה:",
   stable: "לא משתנה מעצמו",

@@ -1,7 +1,7 @@
 // Every chip on a rule card opens its record: on /guide/brokerage-account BRK-35's "לדוגמה" chip opened an
 // empty card, because BRK-51 was not in the page's data; then a probe found 24 figure chips (TXG-04's figures cite TXG-02 and TXG-03)
 // that did the same. A card's chips are its record's `derived_from` and `examples`, and every `rule_ids` inside its figures (each
-// figure opens a value sheet that shows them); each page that shows cards passes the records they point at as `pointed`
+// figure opens a value sheet that shows them), with the rules whose figures fill its text's `{ID:figure}` slots; each page that shows cards passes the records they point at as `pointed`
 // (`pointedRecords`). This walks the pages' data: for every record a page holds (its own rules and the pointed ones), every chip its
 // card or its figures can show opens a record the page holds. The chips are read from the record here, not through `pointedIds`.
 import { describe, expect, it } from "vitest";
@@ -36,8 +36,8 @@ function ruleIdsIn(node: unknown): string[] {
   return Object.entries(node).flatMap(([k, v]) => (k === "rule_ids" && Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : ruleIdsIn(v)));
 }
 
-/** The chips a record's card can show: its derivations and examples, and the rules its figures' sheets name. */
-const chipsOf = (r: RuleRecord): string[] => [...new Set([...(r.derived_from ?? []), ...(r.examples ?? []), ...ruleIdsIn(r.figures)])].filter((id) => id !== r.id);
+/** The chips a record's card can show: its derivations and examples, the rules its figures' sheets name, and the rules whose figures fill its text's slots. */
+const chipsOf = (r: RuleRecord): string[] => [...new Set([...(r.derived_from ?? []), ...(r.examples ?? []), ...ruleIdsIn(r.figures), ...slotIds(r.text_he ?? "")])].filter((id) => id !== r.id);
 
 /** The chips of the page's cards whose record the page does not hold: "BRK-35 → BRK-51". */
 function unopened(rules: Map_ | readonly RuleRecord[] | undefined, pointed: Map_ | readonly RuleRecord[] | undefined): string[] {
