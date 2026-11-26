@@ -56,6 +56,14 @@ describe("fee values by state", () => {
     expect(later.notes).toBe("הממוצע הוא של שנת 2025. תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא 26.03.2026, אחרי סוף השנה.");
   });
 
+  it("an empty Pension-Net fee names no rule and says the reason is unknown, whatever the track's start date", () => {
+    const v = fees({ AVG_ANNUAL_MANAGEMENT_FEE: "", AVG_DEPOSIT_FEE: "" }, { inception_date: "2026-03-26" }, pension);
+    for (const x of [v.avg_annual_management_fee, v.avg_deposit_fee]) {
+      expect(x.rule_ids).toEqual([]);
+      expect(x.notes).toBe(UNKNOWN);
+    }
+  });
+
   it("a track whose start date is 1 January of the fee's year had that full year, so its empty fee is unexplained", () => {
     const v = fees({ AVG_ANNUAL_MANAGEMENT_FEE: "", AVG_DEPOSIT_FEE: "" }, { inception_date: "2025-01-01" }).avg_annual_management_fee;
     expect(v.rule_ids).toEqual([]);

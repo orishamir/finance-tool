@@ -526,8 +526,8 @@ const startDate = (inception: string): string => `תאריך ההקמה של ה�
  * CMA fee fields to value objects (data-schema 3.13). The rules and note follow the value's state:
  * - a number: CAT-36 and CAT-37 (the year and what the average is), CAT-35 on the deposit fee (a share of the deposits), CAT-39 on
  *   Pension-Net (the fund's pair on every track); no note, but a negative value says it is as reported (CAT-40);
- * - empty, the track's start date after 1 January of the fee's calendar year: CAT-36, and a note setting the file's start date against
- *   that year;
+ * - empty on Gemel-Net, the track's start date after 1 January of the fee's calendar year: CAT-36, and a note setting the file's start
+ *   date against that year;
  * - empty, a deposit fee of a type whose regulation has none (`balanceFeeOnly`): PF-06 alone, and a note saying so;
  * - empty for any other reason: no rule, and a note that the reason is unknown, naming CAT OQ22 on the tracks it lists.
  * Pure.
@@ -550,8 +550,9 @@ export function buildFees(
       notes = "אין דמי ניהול מהפקדה בסוג הקופה הזה: התקנות מתירות דמי ניהול מהיתרה בלבד, ולכן השדה ריק גם בנתוני רשות שוק ההון.";
       ruleIds = ["PF-06"];
     } else if (value === null) {
-      // the fee is the average of one calendar year (CAT-36), so the start date is set against that year, never against the reading date
-      if (fund.inception_date && fund.inception_date > `${year}-01-01`) {
+      // the fee is the average of one calendar year (CAT-36), so the start date is set against that year, never against the reading date;
+      // a Pension-Net fee is the fund's pair on every track (CAT-39), so a pension track's start date explains nothing
+      if (!pension && fund.inception_date && fund.inception_date > `${year}-01-01`) {
         const after = fund.inception_date > `${year}-12-31` ? "סוף" : "תחילת";
         notes = `הממוצע הוא של שנת ${year}. ${startDate(fund.inception_date)}, אחרי ${after} השנה.`;
         ruleIds = ["CAT-36"];
