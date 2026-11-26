@@ -2,7 +2,7 @@
 // page. The loader sends each track's CMA amounts compacted against one template per group (as the fees are); this rebuilds them and
 // computes the shares. Pure: no React, no storage.
 import { currencyExposureShare, stockExposureShare } from "@finance-tool/engine";
-import { company as copy } from "../copy";
+import { cmaAbout, company as copy } from "../copy";
 import { fmt } from "./format";
 import { compactFee, computed, expandFee, staleCma, type CompactFee, type SiteValue } from "./value";
 import type { ValueObject } from "@finance-tool/schema";
@@ -32,13 +32,21 @@ export interface ExposureShares {
   currency: SiteValue | null;
 }
 
-/** One group's template: the first track's amounts, with the monthly stale rule of the CMA data. Null when no track has them. */
+/**
+ * One group's template: the first track's amounts, with the monthly stale rule of the CMA data and each amount's head line for its sheet.
+ * Null when no track has them.
+ */
 export function holdingsTemplate(list: (Holdings | undefined)[], period: string, today: string): HoldingsTemplate | null {
   const first = list.find((h): h is Holdings => !!h);
   if (!first) return null;
   const stale = staleCma(period, today);
+  const month = fmt.period(period);
   const fx = list.find((h) => h?.foreign_currency_exposure)?.foreign_currency_exposure;
-  return { assets: { ...first.total_assets, stale }, exposure: { ...first.stock_market_exposure, stale }, currency: fx ? { ...fx, stale } : null };
+  return {
+    assets: { ...first.total_assets, stale, about: cmaAbout.total_assets(month) },
+    exposure: { ...first.stock_market_exposure, stale, about: cmaAbout.stock_market_exposure(month) },
+    currency: fx ? { ...fx, stale, about: cmaAbout.foreign_currency_exposure(month) } : null,
+  };
 }
 
 export function compactHoldings(h: Holdings | undefined, template: HoldingsTemplate | null): CompactHoldings | null {
@@ -48,27 +56,30 @@ export function compactHoldings(h: Holdings | undefined, template: HoldingsTempl
   return out;
 }
 
-/**
- * The rules both shares rest on (CAT-24: the exposure in plain words comes from the regulator's dated fields; CAT-44: those fields are total
- * exposure, derivatives included, as the share's note says); a page that shows a share loads them for the share's sheet.
- */
-export const EXPOSURE_RULE_IDS = ["CAT-24", "CAT-44"] as const;
+/** The rule a share rests on: CAT-44 defines the exposure the share divides, what is held plus exposure through derivatives on it. */
+const EXPOSURE_RULE = "CAT-44";
+
+/** A share's note, by its value: above 100% why exposure can pass the assets (CAT-44); at or below, none; no share, why not. */
+function shareNote(value: number | null, reported: boolean): string | undefined {
+  if (value === null) return reported ? copy.stock.noteNoAssets : copy.stock.noteMissing;
+  return value > 100 ? copy.stock.above100 : undefined;
+}
 
 /**
  * One share as a computed site value over two sourced amounts. A share that cannot be computed is a value of null whose note says why:
- * an amount not reported, or assets of 0.
+ * an amount not reported, or assets of 0; such a value names no rule. A page that shows a share ships the rules its `rulesUsed` names.
  */
 function share(formula: "F-87" | "F-88", amount: SiteValue, assets: SiteValue, period: string, today: string): SiteValue {
   const reported = typeof assets.value === "number" && typeof amount.value === "number";
   const fn = formula === "F-87" ? stockExposureShare : currencyExposureShare;
   const value = reported ? fn(amount.value as number, assets.value as number) : null;
-  const notes = value !== null ? copy.stock.note : reported ? copy.stock.noteNoAssets : copy.stock.noteMissing;
+  const notes = shareNote(value, reported);
   const about = `${formula === "F-87" ? copy.stock.about : copy.stock.aboutCurrency} ${fmt.period(period)}`;
   const amountKey = formula === "F-87" ? "stock_market_exposure" : "foreign_currency_exposure";
   const inputs: Record<string, SiteValue> = { [amountKey]: amount, total_assets: assets };
   // the share is the one line method.md draws for each, `s = E / A × 100` and `c = X / A × 100`
   const working = { kind: "formula", entry: formula, line: 0, symbols: { [amountKey]: formula === "F-87" ? "E" : "X", total_assets: "A" } } as const;
-  const v = computed(value, "pct", formula, inputs, { today, rules: EXPOSURE_RULE_IDS.map((id) => ({ id, strength: "primary" as const })), about, notes, working });
+  const v = computed(value, "pct", formula, inputs, { today, rules: value === null ? [] : [{ id: EXPOSURE_RULE, strength: "primary" }], about, notes, working });
   return { ...v, stale: assets.stale ?? null };
 }
 

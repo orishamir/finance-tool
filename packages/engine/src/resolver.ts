@@ -1,11 +1,12 @@
 // Figure resolver (docs/architecture.md 3.4, method §13). The engine never holds a rule figure: it asks for
 // (rule ID, figure name) in the run's tax year. An open rule never computes; a figure past its
-// effective_to, or for another tax year, stops the run; every rule served is recorded. A case the rule base holds open between named
-// readings (open-readings.ts) is read under the reading the run's context chooses.
+// effective_to, or for another tax year, stops the run; every rule served is recorded, with the part of the result it went into and
+// whether it changed the number (`RuleUse`). A case the rule base holds open between named readings (open-readings.ts) is read under the
+// reading the run's context chooses.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountInYear, movesBy, movingYears, yearlyMoveOf } from "./formulas/indexation.ts";
 import { OpenReadingError, openReadingOf, type OpenReading, type TaxIndexOpenReading, type TaxIndexReadingId } from "./open-readings.ts";
-import { labelWeight, type Label, type NotKnown, type RuleLabel, type RunContext } from "./result.ts";
+import { labelWeight, type FeeType, type Label, type NotKnown, type RuleLabel, type RuleUse, type RunContext, type RunPart } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
 
@@ -15,6 +16,8 @@ export interface UsedRule {
   dimensions: string[];
   /** Figure names read, with the strength of each figure's own source. */
   figures: { name: string; strength: Strength }[];
+  /** How the run used the rule: one use per part and fee line, `changed` if any read through it changed the number (`RuleUse`). */
+  uses: RuleUse[];
 }
 
 export interface Bracket {
@@ -75,6 +78,9 @@ const labelFor: Partial<Record<Strength, RuleLabel["code"]>> = {
   institution: "institution-source",
 };
 
+/** The reads a book makes: through `peek` they record a use that changed nothing. */
+export type RuleReads = Pick<RuleBook, "rate" | "amount" | "fact" | "brackets" | "cite">;
+
 export interface RuleBook {
   /** The calendar tax year the book reads in: the run's, or a later one (`inYear`). */
   readonly taxYear: number;
@@ -88,6 +94,23 @@ export interface RuleBook {
   brackets(ruleId: string, figure: string): Bracket[];
   /** Records that a rule with no figure governs this run (a treatment, not a number). */
   cite(ruleId: string): void;
+  /**
+   * A view on the same store whose every read is a changed use on `part` (a `fees` use always on its fee line). The view's `inYear` keeps
+   * the part and the line; the root book records part null.
+   */
+  on(part: Exclude<RunPart, "fees">): RuleBook;
+  on(part: "fees", line: FeeType): RuleBook;
+  /**
+   * The same reads with the same checks (an open, stale or missing rule stops the run as a read does), recorded on this book's part and line
+   * as a use that changed nothing and so gives no label: a rule looked at before the run knows whether it applies. `took` marks it changed.
+   */
+  readonly peek: RuleReads;
+  /**
+   * Marks the use of `ruleId` on this book's part and line as changed, adding it if absent, with the figures of the rule's unchanged uses,
+   * which are the reads it now says went into this part. It works on the store, so a peek through `inYear(year)` is taken on the book
+   * it came from. Throws if the run holds no read of the rule: a rule is taken only after it was read.
+   */
+  took(ruleId: string): void;
   /** Adds a label the rule's strength does not imply (a reading, a derivation, a proxy). */
   label(code: RuleLabel["code"], ruleId: string): void;
   /**
@@ -100,6 +123,7 @@ export interface RuleBook {
    */
   taxIndex(open: TaxIndexOpenReading, notKnown: NotKnown | undefined): TaxIndexReadingId;
   used(): UsedRule[];
+  /** The labels of the rules with a changed use (`RuleUse`), and those added (`label`, `taxIndex`). */
   labels(): Label[];
   /**
    * F-119, F-120: the same rules read in the run's tax year `year` on its grid (1 = the run's own, `taxYearOf`): a money figure or a band's
@@ -146,21 +170,42 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
   const indexed = new Set<number>();
   const profileUsed = new Set<ProfileInput>();
 
-  function rule(id: string): RuleRecord {
+  /** Where a book's reads go: the part of the result and the fee line, part null on the root book. */
+  interface At {
+    part: RunPart | null;
+    line?: FeeType;
+  }
+
+  /** The rule's use at `at`, added if absent with `figures`; `changed` is ORed into it. */
+  function ruleUse(u: UsedRule, at: At, changed: boolean, figures: () => string[] = () => []): RuleUse {
+    let use = u.uses.find((x) => x.part === at.part && x.line === at.line);
+    if (!use) {
+      use = { part: at.part, ...(at.line === undefined ? {} : { line: at.line }), changed, figures: figures() };
+      u.uses.push(use);
+    } else use.changed ||= changed;
+    return use;
+  }
+
+  function rule(id: string, at: At, changed: boolean): { record: RuleRecord; use: RuleUse } {
     const r = byId.get(id);
     if (!r) throw new MissingRuleError(id);
     if (r.strength === "open") throw new BlockedError(id);
-    if (!used.has(id)) used.set(id, { id, strength: r.strength, dimensions: r.dimensions, figures: [] });
-    return r;
+    let u = used.get(id);
+    if (!u) {
+      u = { id, strength: r.strength, dimensions: r.dimensions, figures: [], uses: [] };
+      used.set(id, u);
+    }
+    return { record: r, use: ruleUse(u, at, changed) };
   }
 
-  function figure(id: string, name: string): unknown {
-    const f = rule(id).figures?.[name];
+  function figure(id: string, name: string, at: At, changed: boolean): { f: unknown; use: RuleUse } {
+    const { record, use } = rule(id, at, changed);
+    const f = record.figures?.[name];
     if (f === undefined) throw new MissingRuleError(id, name);
-    return f;
+    return { f, use };
   }
 
-  function current(id: string, name: string, f: unknown): ValueObject {
+  function current(id: string, name: string, f: unknown, use: RuleUse): ValueObject {
     const byYear = (f as { by_tax_year?: Record<string, ValueObject> }).by_tax_year;
     const v = byYear ? byYear[String(runYear)] : (f as ValueObject);
     if (!v) throw new FigureNotUpdatedError(id, name);
@@ -168,6 +213,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     if (v.effective_to !== null && v.effective_to < ctx.runDate) throw new FigureNotUpdatedError(id, name);
     if (v.tax_year != null && v.tax_year !== runYear) throw new FigureNotUpdatedError(id, name);
     used.get(id)!.figures.push({ name, strength: v.source.strength });
+    if (!use.figures.includes(name)) use.figures.push(name);
     return v;
   }
 
@@ -205,34 +251,51 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     return reading;
   }
 
-  function bookFor(taxYear: number): RuleBook {
+  /** The reads of a book reading in `taxYear` at `at`, each a use that changed the number or, for `peek`, one that did not. */
+  function readsFor(taxYear: number, at: At, changed: boolean): RuleReads {
+    return {
+      rate(id, name) {
+        const { f, use } = figure(id, name, at, changed);
+        const v = current(id, name, f, use);
+        if (!percentUnits.has(v.unit)) throw new MissingRuleError(id, `${name} as a percentage`);
+        return numeric(id, name, v);
+      },
+      amount(id, name, currency) {
+        const { f, use } = figure(id, name, at, changed);
+        const v = current(id, name, f, use);
+        if ((v.currency ?? "NIS") !== (currency ?? "NIS")) throw new MissingRuleError(id, `${name} in ${currency ?? "NIS"}`);
+        const n = numeric(id, name, v);
+        return percentUnits.has(v.unit) ? n : inYearOf(id, name, v, n, taxYear);
+      },
+      fact(id, name) {
+        const { f, use } = figure(id, name, at, changed);
+        return current(id, name, f, use).value;
+      },
+      brackets(id, name) {
+        const { f, use } = figure(id, name, at, changed);
+        if (!Array.isArray(f)) throw new MissingRuleError(id, `${name} as brackets`);
+        return (f as { up_to: ValueObject; rate: ValueObject }[]).map((b) => {
+          const bound = current(id, name, b.up_to, use);
+          const upTo = typeof bound.value === "number" ? inYearOf(id, name, bound, bound.value, taxYear) : null;
+          return { upTo, rate: numeric(id, name, current(id, name, b.rate, use)) };
+        });
+      },
+      cite(id) {
+        rule(id, at, changed);
+      },
+    };
+  }
+
+  function bookFor(taxYear: number, at: At): RuleBook {
     const self: RuleBook = {
     taxYear,
-    rate(id, name) {
-      const v = current(id, name, figure(id, name));
-      if (!percentUnits.has(v.unit)) throw new MissingRuleError(id, `${name} as a percentage`);
-      return numeric(id, name, v);
-    },
-    amount(id, name, currency) {
-      const v = current(id, name, figure(id, name));
-      if ((v.currency ?? "NIS") !== (currency ?? "NIS")) throw new MissingRuleError(id, `${name} in ${currency ?? "NIS"}`);
-      const n = numeric(id, name, v);
-      return percentUnits.has(v.unit) ? n : inYearOf(id, name, v, n, taxYear);
-    },
-    fact(id, name) {
-      return current(id, name, figure(id, name)).value;
-    },
-    brackets(id, name) {
-      const f = figure(id, name);
-      if (!Array.isArray(f)) throw new MissingRuleError(id, `${name} as brackets`);
-      return (f as { up_to: ValueObject; rate: ValueObject }[]).map((b) => {
-        const bound = current(id, name, b.up_to);
-        const upTo = typeof bound.value === "number" ? inYearOf(id, name, bound, bound.value, taxYear) : null;
-        return { upTo, rate: numeric(id, name, current(id, name, b.rate)) };
-      });
-    },
-    cite(id) {
-      rule(id);
+    ...readsFor(taxYear, at, true),
+    peek: readsFor(taxYear, at, false),
+    on: (part: RunPart, line?: FeeType) => bookFor(taxYear, line === undefined ? { part } : { part, line }),
+    took(id) {
+      const u = used.get(id);
+      if (!u) throw new Error(`took(${id}): the run holds no read of ${id}, so it cannot have changed the number`);
+      ruleUse(u, at, true, () => [...new Set(u.uses.filter((x) => !x.changed).flatMap((x) => x.figures))]);
     },
     taxIndex(open, notKnown) {
       if (notKnown) return readingOf(open, notKnown).id;
@@ -240,7 +303,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
       return open.siteReading;
     },
     label(code, ruleId) {
-      rule(ruleId);
+      rule(ruleId, at, true);
       extraLabels.push({ code, ruleId });
     },
     used: () => [...used.values()],
@@ -251,6 +314,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
         if (!prev || labelWeight[l.code] > labelWeight[prev.code]) best.set(l.ruleId, l);
       };
       for (const u of used.values()) {
+        if (!u.uses.some((x) => x.changed)) continue;
         const strengths = [u.strength, ...u.figures.map((f) => f.strength)];
         for (const s of strengths) {
           const code = labelFor[s];
@@ -260,7 +324,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
       extraLabels.forEach(consider);
       return [...best.values()];
     },
-    inYear: (year) => bookFor(runYear + (years?.startsAfter ?? 0) + year - 1),
+    inYear: (year) => bookFor(runYear + (years?.startsAfter ?? 0) + year - 1, at),
     indexedYears: () => [...indexed].sort((a, b) => a - b),
     profile(input) {
       profileUsed.add(input);
@@ -270,5 +334,5 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     return self;
   }
 
-  return bookFor(runYear);
+  return bookFor(runYear, { part: null });
 }

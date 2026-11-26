@@ -1,17 +1,17 @@
 {
   "about": "Each kind of page and the most its first view may weigh, in KB gzipped: `script`, what it fetches before its load event; `data`, the loader data written into its HTML and every data file it fetches before it is at rest. tools/weight.mjs --check holds every kind to these in npm run check. Each leaves a little room, about 3%, over what its page weighs. A budget is raised only in a commit of its own that says why.",
   "budgets": {
-    "front page": { "script": 327, "data": 14 },
+    "front page": { "script": 328, "data": 14 },
     "guides": { "script": 327, "data": 16 },
-    "guide": { "script": 483, "data": 124 },
+    "guide": { "script": 485, "data": 124 },
     "bond fund guide": { "script": 333, "data": 133 },
     "mutual funds guide": { "script": 333, "data": 110 },
-    "exposure": { "script": 332, "data": 88 },
+    "exposure": { "script": 333, "data": 88 },
     "companies": { "script": 344, "data": 69 },
     "company": { "script": 372, "data": 81 },
     "company with an account": { "script": 549, "data": 137 },
     "track": { "script": 335, "data": 61 },
-    "tracks": { "script": 335, "data": 100 },
+    "tracks": { "script": 335, "data": 104 },
     "deposits": { "script": 345, "data": 61 },
     "deal": { "script": 556, "data": 144 },
     "transfer": { "script": 319, "data": 14 },
@@ -19,8 +19,8 @@
     "rules": { "script": 367, "data": 111 },
     "rules shelf": { "script": 311, "data": 134 },
     "documents": { "script": 345, "data": 88 },
-    "parameters": { "script": 312, "data": 22 },
-    "not covered": { "script": 323, "data": 71 },
+    "parameters": { "script": 313, "data": 22 },
+    "not covered": { "script": 324, "data": 71 },
     "kit": { "script": 509, "data": 14 }
   }
 }

@@ -504,39 +504,65 @@ export function balanceFeeOnly(fund: Partial<Pick<CmaFund, "fund_classification"
   return (fund.names?.cma ?? []).some((n) => IRA_NAME.test(n));
 }
 
-/** CMA fee fields to value objects (data-schema 3.13; CAT-35 to CAT-39). Pure. */
+/** The note of an empty value whose reason the file does not give. */
+const REASON_UNKNOWN = "הסיבה לא ידועה.";
+
+/**
+ * The thirteen tracks opened in 2024 that the tracks catalogue's open question 22 names (CAT OQ22): under CAT-36 they should carry a
+ * 2025 fee average from 202601, and the file still has none, for no reason the rule base knows. Gemel-Net fund numbers, as OQ22 lists them.
+ */
+export const OQ22_TRACKS: ReadonlySet<number> = new Set([15424, 15425, 15426, 15427, 15428, 15429, 15430, 15431, 15376, 15377, 15444, 15472, 15482]);
+
+/** A date of the file ("2024-09-09") as the site writes one ("09.09.2024", design-system 2.7). */
+const heDate = (iso: string): string => iso.slice(0, 10).split("-").reverse().join(".");
+
+/**
+ * The start date the file gives a track, said as that field and no more (CAT OQ6: which date INCEPTION_DATE means is not known, so
+ * never "opened on").
+ */
+const startDate = (inception: string): string => `תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא ${heDate(inception)}`;
+
+/**
+ * CMA fee fields to value objects (data-schema 3.13). The rules and note follow the value's state:
+ * - a number: CAT-36 and CAT-37 (the year and what the average is), CAT-35 on the deposit fee (a share of the deposits), CAT-39 on
+ *   Pension-Net (the fund's pair on every track); no note, but a negative value says it is as reported (CAT-40);
+ * - empty on Gemel-Net, the track's start date after 1 January of the fee's calendar year: CAT-36, and a note setting the file's start
+ *   date against that year;
+ * - empty, a deposit fee of a type whose regulation has none (`balanceFeeOnly`): PF-06 alone, and a note saying so;
+ * - empty for any other reason: no rule, and a note that the reason is unknown, naming CAT OQ22 on the tracks it lists.
+ * Pure.
+ */
 export function buildFees(
   file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
-  fund: Pick<CmaFund, "raw_fields" | "inception_date"> & Partial<Pick<CmaFund, "fund_classification" | "names">>,
+  fund: Pick<CmaFund, "raw_fields" | "inception_date"> & Partial<Pick<CmaFund, "fund_classification" | "names" | "fund_id">>,
 ): CmaFund["fees"] {
   const config = DATASETS.find((d) => d.dataset === file.dataset)!;
   const year = feeYear(file.report_period);
   const pension = file.dataset === "pensia-net";
-  const ruleIds = ["CAT-35", "CAT-36", "CAT-37", ...(pension ? ["CAT-39"] : [])];
   const make = (f: (typeof FEE_FIELDS)[number]) => {
     const rawText = (fund.raw_fields[f.raw] ?? "").trim();
     const n = rawText === "" ? null : Number(rawText);
     const value = n !== null && Number.isFinite(n) ? n : null;
-    let notes: string;
-    let ruleIdsHere = ruleIds;
+    let notes: string | undefined;
+    let ruleIds: string[];
     if (value === null && f.key === "avg_deposit_fee" && file.dataset === "gemelnet" && balanceFeeOnly(fund)) {
       // the rule is in rule_ids, which the sheet shows as a chip; an id inside the Hebrew sentence broke across lines
       notes = "אין דמי ניהול מהפקדה בסוג הקופה הזה: התקנות מתירות דמי ניהול מהיתרה בלבד, ולכן השדה ריק גם בנתוני רשות שוק ההון.";
-      ruleIdsHere = [...ruleIds, "PF-06"];
+      ruleIds = ["PF-06"];
     } else if (value === null) {
-      const incYear = fund.inception_date ? Number(fund.inception_date.slice(0, 4)) : null;
-      const young = incYear !== null && incYear >= year;
-      const why = young
-        ? `למסלול אין עדיין שנה קלנדרית מלאה (נפתח ${fund.inception_date})`
-        : f.key === "avg_annual_management_fee"
-          ? "הסיבה לא ידועה (CAT OQ22)"
-          : "הסיבה לא ידועה";
-      notes = `לא דווח: ${why}.`;
+      // the fee is the average of one calendar year (CAT-36), so the start date is set against that year, never against the reading date;
+      // a Pension-Net fee is the fund's pair on every track (CAT-39), so a pension track's start date explains nothing
+      if (!pension && fund.inception_date && fund.inception_date > `${year}-01-01`) {
+        const after = fund.inception_date > `${year}-12-31` ? "סוף" : "תחילת";
+        notes = `הממוצע הוא של שנת ${year}. ${startDate(fund.inception_date)}, אחרי ${after} השנה.`;
+        ruleIds = ["CAT-36"];
+      } else {
+        notes = file.dataset === "gemelnet" && fund.fund_id !== undefined && OQ22_TRACKS.has(fund.fund_id) ? "הסיבה לא ידועה (CAT OQ22)." : REASON_UNKNOWN;
+        ruleIds = [];
+      }
     } else {
-      const what = f.key === "avg_annual_management_fee" ? "מהנכסים" : "מההפקדות";
-      notes = `ממוצע דמי הניהול ${what} שנגבו בפועל מכלל העמיתים בשנת ${year} (השנה הקלנדרית האחרונה שהסתיימה); לא מחיר מחירון ולא מה שעמית מסוים משלם. שיטת השקלול לא פורסמה (CAT OQ2).`;
-      if (pension) notes += " הערך לקרן כולה, לא למסלול (CAT-39).";
-      if (value < 0) notes += " ערך שלילי כפי שדווח; ייתכן שמשקף החזר, ואינו מחיר.";
+      ruleIds = [...(f.key === "avg_deposit_fee" ? ["CAT-35"] : []), "CAT-36", "CAT-37", ...(pension ? ["CAT-39"] : [])];
+      if (value < 0) notes = "ערך שלילי, כפי שדווח.";
     }
     return {
       value,
@@ -552,9 +578,9 @@ export function buildFees(
       effective_to: `${year}-12-31`,
       tax_year: null,
       update_rule: "market" as const,
-      rule_ids: ruleIdsHere,
+      rule_ids: ruleIds,
       state: "sourced" as const,
-      notes,
+      ...(notes === undefined ? {} : { notes }),
     };
   };
   return { avg_annual_management_fee: make(FEE_FIELDS[0]), avg_deposit_fee: make(FEE_FIELDS[1]) };
@@ -573,8 +599,18 @@ const periodEnd = (period: string): string => {
 };
 
 /**
+ * What the note of an exposure amount adds to CAT-44's card: the unit, written as the site writes amounts (copy.ts `nisMillions`), which
+ * the dictionary does not state and which is inferred by comparing the amount with the track's total assets (CAT-44, CAT OQ4), and that
+ * the circular's definition does not say whether a holding through a fund counts by what the fund holds (CAT-44's look-through).
+ */
+const EXPOSURE_NOTE =
+  "היחידה של הסכום היא מיליון ₪: מילון השדות של הרשות לא כותב אותה, והיא נלמדת מהשוואה לסך הנכסים של המסלול (CAT OQ4). ההגדרה של החשיפה בחוזר הדיווח של רשות שוק ההון לא אומרת אם השקעה דרך קרן נאמנות, קרן סל או קרן בחו״ל נספרת לפי מה שהקרן מחזיקה.";
+
+/**
  * CMA amount fields to value objects, in NIS millions at the period end (CAT-03 for the unit of TOTAL_ASSETS; the units of
  * STOCK_MARKET_EXPOSURE and FOREIGN_CURRENCY_EXPOSURE are read the same way, inferred: the dictionary does not state them, CAT-44, CAT OQ4).
+ * A total is a number with no rule and no note: its about line says what it is. An exposure that is a number names CAT-44, which
+ * defines it, with `EXPOSURE_NOTE`. An empty field names no rule, and its note says the reason is unknown.
  * Undefined when the file has none of the columns. Pure.
  */
 export function buildHoldings(
@@ -587,12 +623,8 @@ export function buildHoldings(
     const rawText = (fund.raw_fields[f.raw] ?? "").trim();
     const n = rawText === "" ? null : Number(rawText);
     const value = n !== null && Number.isFinite(n) ? n : null;
-    const notes =
-      value === null
-        ? "לא דווח."
-        : f.key === "total_assets"
-          ? `סך נכסי המסלול בסוף ${file.report_period}, במיליוני ש״ח כפי שהרשות מדווחת.`
-          : `${f.key === "stock_market_exposure" ? "החשיפה של המסלול לשוק המניות" : "החשיפה של המסלול למטבע חוץ"} בסוף ${file.report_period}, במיליוני ש״ח (היחידה לא כתובה במילון השדות; היא נקראת כמו סך הנכסים, CAT OQ4). לא פורסם אם החשיפה נמדדת כולל נגזרים או דרך קרנות שהמסלול מחזיק.`;
+    const exposure = f.key !== "total_assets";
+    const notes = value === null ? REASON_UNKNOWN : exposure ? EXPOSURE_NOTE : undefined;
     return {
       value,
       unit: "nis_millions" as const,
@@ -607,9 +639,9 @@ export function buildHoldings(
       effective_to: periodEnd(file.report_period),
       tax_year: null,
       update_rule: "market" as const,
-      rule_ids: ["CAT-24"],
+      rule_ids: value !== null && exposure ? ["CAT-44"] : [],
       state: "sourced" as const,
-      notes,
+      ...(notes === undefined ? {} : { notes }),
     };
   };
   return {
@@ -634,7 +666,9 @@ export const youngerThan = (inception: string | null | undefined, period: string
 /**
  * CMA average annual yields (3 and 5 years) to value objects, in percent per year (CAT-04, CAT-05). The regulator states they are
  * nominal and gross: before management fees, and not net of tax. That the window ends at the report month and that the figure is a
- * geometric annualisation are read from the data, not stated by the regulator (CAT-05). Undefined when the file has neither column. Pure.
+ * geometric annualisation are read from the data, not stated by the regulator (CAT-05). A number names CAT-04 and CAT-05 with no note;
+ * an empty field of a track younger than the window names CAT-05 (null then), with the file's start date; any other empty field names
+ * no rule, and its note says the reason is unknown. Undefined when the file has neither column. Pure.
  */
 export function buildYields(
   file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
@@ -646,12 +680,14 @@ export function buildYields(
     const rawText = (fund.raw_fields[f.raw] ?? "").trim();
     const n = rawText === "" ? null : Number(rawText);
     const value = n !== null && Number.isFinite(n) ? n : null;
+    const young = value === null && !!fund.inception_date && youngerThan(fund.inception_date, file.report_period, f.years);
+    // the window ends at the report month (CAT-05, CAT-41), so the years are counted to the period's end, never to the reading date
     const notes =
-      value === null
-        ? youngerThan(fund.inception_date, file.report_period, f.years)
-          ? `לא דווח: למסלול עוד אין ${f.years} שנים מלאות (נפתח ${fund.inception_date}).`
-          : "לא דווח."
-        : `התשואה השנתית הממוצעת של המסלול ב־${f.years} השנים עד סוף ${file.report_period}: נומינלית וברוטו, כלומר לפני דמי ניהול ולפני מס. זו תשואת עבר, לא הבטחה לעתיד. שנות החישוב נקראות כמסתיימות בחודש הדיווח, והרשות לא כותבת זאת במפורש (CAT-05).`;
+      value !== null
+        ? undefined
+        : young && fund.inception_date
+          ? `${startDate(fund.inception_date)}. מאז ועד ${heDate(periodEnd(file.report_period))}, סוף תקופת הדיווח, לא עברו ${f.years} שנים מלאות.`
+          : REASON_UNKNOWN;
     return {
       value,
       unit: "pct_per_year" as const,
@@ -666,9 +702,9 @@ export function buildYields(
       effective_to: periodEnd(file.report_period),
       tax_year: null,
       update_rule: "market" as const,
-      rule_ids: ["CAT-04", "CAT-05"],
+      rule_ids: value !== null ? ["CAT-04", "CAT-05"] : young ? ["CAT-05"] : [],
       state: "sourced" as const,
-      notes,
+      ...(notes === undefined ? {} : { notes }),
     };
   };
   return { avg_annual_yield_3y: make(YIELD_FIELDS[0]), avg_annual_yield_5y: make(YIELD_FIELDS[1]) };

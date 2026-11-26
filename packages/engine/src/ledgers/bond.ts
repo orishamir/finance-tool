@@ -48,12 +48,19 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
   // G-41: a coupon below zero is interest below zero, whose tax the rule base holds no rule for (TXI OQ20): the run stops on the coupon's rule
   // rather than tax it at a negative amount
   if (bond.coupon < 0) throw new BlockedError(linked ? "TXI-14" : "TXI-15", undefined, "G-41");
-  const couponRate = linked ? book.rate("TXI-14", "rate") : book.rate("TXI-15", "rate");
+  // as on a deposit: the coupon's rate, and on an unlinked bond TXI-03's 15%, are looked at and taken where a coupon was taxed; the rules
+  // that decide what a linked coupon's tax is on are uses at any tax, but TXI-25 (a fall in the index does not lower it) only where the CPI
+  // fell and a coupon was taxed. The exit year's fees off the gain (TXS-06) are taken where there were any.
+  const during = book.on("taxDuring");
+  const atExit = book.on("taxAtExit");
+  const couponRule = linked ? "TXI-14" : "TXI-15";
+  const couponRate = during.peek.rate(couponRule, "rate");
   if (linked) {
-    book.cite("TXI-05");
-    book.cite("TXI-25");
-  } else book.cite("TXI-03");
-  book.cite("TXS-06");
+    during.cite("TXI-05");
+    during.peek.cite("TXI-25");
+  } else during.peek.cite("TXI-03");
+  atExit.peek.cite("TXS-06");
+  let couponTaxed = false;
   const tally = new Tally();
   // Buying between coupon dates pays accrued interest, which the method does not model (G-10).
   if (goal.monthly > 0) tally.flag("G-10");
@@ -88,6 +95,7 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
       const face = lots.reduce((s, l) => s + l.units, 0);
       const coupon = bondCoupon((bond.coupon * bond.couponEveryMonths) / 12, face, price(m));
       const tax = couponRate * coupon;
+      if (tax > 0) couponTaxed = true;
       detail[`coupon${++couponCount}`] = coupon;
       couponsThisYear += coupon;
       withheldThisYear += tax;
@@ -114,7 +122,7 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
       // A linked coupon is a "maximum rate" item: at 60 or over the brackets apply, settled through the
       // return (F-42, TXI-19); an unlinked coupon keeps its fixed 15% (TXG-08 case (c)).
       if (linked) {
-        const owed = maxRateTax(book, profile, m, couponsThisYear, couponRate, first);
+        const owed = maxRateTax(during, profile, m, couponsThisYear, couponRate, first);
         if (owed.atBrackets) {
           tally.flag("G-21");
           const refund = profile.refundClaimed === false ? 0 : withheldThisYear - owed.tax;
@@ -123,7 +131,7 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
           else couponCashAtExit += refund;
         }
       }
-      tally.taxDuring += yearlySurtax(book, profile, couponsThisYear, taxYearOf(m, first));
+      tally.taxDuring += yearlySurtax(during, profile, couponsThisYear, taxYearOf(m, first));
       if (m === T) exitYearCoupons = couponsThisYear;
       couponsThisYear = withheldThisYear = 0;
     }
@@ -142,17 +150,26 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
   const gain = adjusted
     ? gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed
     : gross - lots.reduce((s, l) => s + l.basis, 0) - exitYearFees;
-  if (adjusted) book.cite("TXS-02");
+  if (adjusted) atExit.cite("TXS-02");
   // a run in which every order waited holds no bond at T: nothing is sold, so no gain, no loss and no exit tax
   const sells = lots.length > 0;
   if (sells && gain < 0) tally.flag("G-07");
   if (sells) tally.flag("G-20");
+  const exitRule = linked ? "TXI-14" : "TXI-12";
   const exit = !sells ? undefined : unlessBlocked(() =>
     linked
-      ? exitTax(book, profile, T, gain, book.rate("TXI-14", "rate"), false, exitYearCoupons, first)
-      : exitTax(book, profile, T, gain, book.rate("TXI-12", "rate"), true, exitYearCoupons, first),
+      ? exitTax(atExit, profile, T, gain, atExit.peek.rate(exitRule, "rate"), false, exitYearCoupons, first)
+      : exitTax(atExit, profile, T, gain, atExit.peek.rate(exitRule, "rate"), true, exitYearCoupons, first),
   );
-  if (!linked) book.cite("TXS-03");
+  if (!linked) atExit.cite("TXS-03");
+  if (couponTaxed) {
+    during.took(couponRule);
+    if (!linked) during.took("TXI-03");
+    // on the run's one CPI path every coupon's index is below its lot's base index exactly when the CPI falls
+    if (linked && input.market.inflation < 0) during.took("TXI-25");
+  }
+  if (sells && exitYearFees > 0) atExit.took("TXS-06");
+  if ((exit?.value?.capitalGainsTax ?? 0) > 0) atExit.took(exitRule);
   if (exit?.value?.settledByReturn) tally.flag("G-21");
   const taxAtExit = exit?.value?.tax ?? 0;
 

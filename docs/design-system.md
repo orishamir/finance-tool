@@ -432,6 +432,21 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   figures names those figures, as the weak inputs are named: said in its own words on a difference of two funds, "the fund" named neither,
   and each figure's own sheet says it in words. An entered figure's sheet shows the value it replaced. A source line wraps at every width
   and is never cut, so a figure's source, its name and date, stay in view.
+- **The rules a figure names.** A figure lists the rules that set it, under "חוק או כלל" for one and "חוקים וכללים" for more. It leaves
+  out a rule the place it was opened from already opens, and a row left empty goes: on a rule's card that rule (its root is marked
+  `data-opens-scope` with the rule's id), on a /rules fact row its rule, in a paragraph or list item a rule its words state, in a part of
+  a company's card (each part that holds a figure is its own place, never the whole card) a rule that part opens. Every element that
+  opens a rule carries `data-opens` with its ids, and the figure reads them when it is tapped (`opensAround`); inside a sheet only a
+  marked place counts, so a computed figure's input keeps its chips. A rule the figure's doubt opens is named once, under the doubt.
+- **A note only where it is true of the value.** A figure's note says what is true of this value beyond its head's line, its chips and
+  the page, and a builder sets it by value: a stock exposure share above 100% says why exposure can pass the assets, and one at or below
+  says nothing. A sheet says what the figure is once, in its head's line: a line of math keeps its own name only where the figure has
+  no head's line, and the key row of the symbol it works out points at the head ("המספר שבראש הגיליון").
+- **A missing figure** (`value: null`) heads its sheet with the word it was shown as and no state tag. Its reason is said once: its note;
+  else, for a sourced figure, that the source does not hold it; else, for a computed one, that a value it reads is missing, and only when
+  one is. A sourced one shows its source line, where the figure was looked for, without dates, and the chips of the rules that explain
+  the absence; a computed one keeps its inputs. An open value is unchanged. A figure not in force yet says its first day once, in the
+  caution line, with no "from" row beside it.
 - **A computed figure shows its working,** under its warnings, so the formula and the numbers that went into it are on screen together:
   - a difference or a sum: the lines of a receipt, each figure as the page writes it (so the lines add up exactly), its sign at the start
     of its line, then "=" and the figure as its head shows it. No formula chip: a subtraction under the name of a large formula explained

@@ -51,6 +51,14 @@ describe("the data the loader ships", () => {
     expect(x.assets?.unit).toBe("nis_millions");
     expect(x.exposure?.stock?.state).toBe("computed");
     expect(x.exposure?.stock?.computed_from?.formula).toBe("F-87");
+    // a figure's rules follow its own state through the compacted list: a young track's missing return names only CAT-05, and a total none
+    const young = gemel.tracks.find((t) => t.id === 15256);
+    if (!young) throw new Error("track 15256 is not in the list");
+    expect(young.y3?.value).toBeNull();
+    expect(young.y3?.rule_ids).toEqual(["CAT-05"]);
+    expect(young.y3?.notes).toContain("23.06.2024");
+    expect(young.assets?.rule_ids).toEqual([]);
+    expect(young.assets?.notes).toBeUndefined();
   });
 });
 
