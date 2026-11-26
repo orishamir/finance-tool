@@ -464,7 +464,6 @@
     ],
     "explain_he": "ריבית שיכולה לעלות או לרדת במהלך התקופה, כי היא נגזרת מריבית אחרת, בדרך כלל ריבית הפריים",
     "rule_ids": [
-      "BANK-13",
       "BANK-25",
       "BANK-47"
     ],
@@ -481,7 +480,7 @@
       "guide:bank-deposit",
       "guide:savings-plan"
     ],
-    "notes": "Same wording note as 'ריבית קבועה'. 447 requires a variable rate to be shown as anchor and spread with the result (BANK-13).",
+    "notes": "Same wording note as 'ריבית קבועה'. 447 requires a variable rate to be shown as anchor and spread with the result (BANK-25).",
     "id": "rybyt-mshtnh"
   },
   {
@@ -493,7 +492,6 @@
     "variants_he": [],
     "explain_he": "הריבית שממנה נגזרת ריבית משתנה, בדרך כלל ריבית הפריים, והבנק מוסיף לה או מוריד ממנה מרווח",
     "rule_ids": [
-      "BANK-13",
       "BANK-25",
       "BANK-47"
     ],
@@ -522,7 +520,6 @@
     ],
     "explain_he": "כמה נקודות אחוז מוסיפים לריבית העוגן או מורידים ממנה בפיקדון בריבית משתנה, ולפי בנק ישראל המרווח נשאר קבוע לכל תקופת הפיקדון",
     "rule_ids": [
-      "BANK-13",
       "BANK-25",
       "BANK-47"
     ],
