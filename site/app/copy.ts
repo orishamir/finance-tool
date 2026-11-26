@@ -1231,6 +1231,13 @@ export const computedInputs = {
     move: "הסכום שעובר",
     rule_ids: "החוקים והכללים",
   } as Record<string, string>,
+  /** The inputs of a fee the site works out from a price list's line or a fund's record (instruments.server.ts): A-08, F-17, F-51. */
+  fee: {
+    medianSpread: "המרווח החציוני שהקרן מפרסמת",
+    perPeriod: "דמי הניהול לכל תקופה",
+    monthsPerPeriod: "חודשים בכל תקופה",
+    periodsPerYear: "תקופות בשנה",
+  },
   /** Values the engine writes in English (the `statistic` input, a fee level): shown in Hebrew. */
   valueWords: { mean: "ממוצע", median: "חציון", list: "תעריפון", average: "ממוצע הרשות", entered: "שהזנתם" } as Record<string, string>,
   amountNow: "סכום היום",
