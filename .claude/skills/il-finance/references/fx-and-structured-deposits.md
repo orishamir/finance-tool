@@ -27,10 +27,10 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Note: A bank's duty not to refuse unreasonably a deposit "in Israeli or foreign currency" is in `bank-current-account-deposits.md` BANK-01.
 
 ### FXD-02 The deposit disclosure rules cover FX and FX-linked deposits; "index" includes an exchange rate
-- Rule: In the 1992 disclosure rules, "מדד" means "מדד מחירים או שער מטבע חוץ". So the linkage disclosures apply to FX-linked deposits too. When the bank must disclose linkage terms, it must say whether linkage applies only when the index rises or also when it falls (s.2(ד)). A deposit agreement for a linked deposit must state the type and base of the linkage, its rate, whether it also applies to interest, and any minimum or maximum time on which linkage of principal or interest depends (s.7(א)(5)). The duty to quote an effective annual rate ("ריבית מתואמת שנתית") applies only to "אשראים ופיקדונות במטבע ישראלי שאינם צמודים" (s.2(ב)), so it does not apply to FX deposits or FX-linked shekel deposits.
+- Rule: In the 1992 disclosure rules, "מדד" means "מדד מחירים או שער מטבע חוץ". So the linkage disclosures apply to FX-linked deposits too: the bank must say whether linkage to an exchange rate applies only when the rate rises or also when it falls (s.2(ד), as in BANK-26), and the agreement must state the linkage terms of s.7(א)(5) (BANK-02). The duty to quote an effective annual rate ("ריבית מתואמת שנתית") applies only to "אשראים ופיקדונות במטבע ישראלי שאינם צמודים" (s.2(ב)), so it does not apply to FX deposits or FX-linked shekel deposits.
 - Conditions / exceptions: The other deposit rules (agreement contents, renewal and maturity notices, break forms, statements) are recorded in BANK-02 to BANK-11 and are written for deposits generally. No FX-specific section was seen in the pages read (definitions and Part C, ss.1 to 7).
 - Figures: none.
-- Source: [Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy](https://boi.org.il/media/rvzi1ngd/151.pdf), s.1 (definition "מדד"), s.2(ב), 2(ד), 7(א)(5) · checked 2026-10-22 · primary
+- Source: [Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy](https://boi.org.il/media/rvzi1ngd/151.pdf), s.1 (definition "מדד"), s.2(ב), 2(ד), 7(א)(5) · checked 2026-10-22 · primary. As in BANK-02, BANK-26.
 - Scope: general
 - Dimensions: currency, real-vs-nominal, reporting-obligation
 - Likely to change: no
