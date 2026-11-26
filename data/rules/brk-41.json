@@ -1,7 +1,7 @@
 {
   "id": "BRK-41",
   "title": "Interactive Israel: the account is at Interactive Brokers LLC (US) or Interactive Brokers Ireland, by the client's choice of a US- or Irish-regulated account; US ETFs and Irish UCITS ETFs are offered; TASE securities only to institutional clients",
-  "title_he": "אינטראקטיב ישראל: חשבון אמריקאי או אירי לבחירה, תעודות סל אמריקאיות ואיריות, בורסת תל אביב למוסדיים בלבד",
+  "title_he": "חשבון בפיקוח אמריקאי או אירי, הכיסוי שלו ומה אפשר לקנות בו: אינטראקטיב ישראל",
   "strength": "institution",
   "dimensions": [
     "eligibility",
@@ -10,7 +10,7 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-25",
-  "text_he": "דרך אינטראקטיב ישראל אפשר לבחור חשבון בפיקוח אמריקאי אצל אינטראקטיב ברוקרס בארצות הברית, או חשבון בפיקוח אירי אצל אינטראקטיב ברוקרס אירלנד. העמלות זהות בשני החשבונות. החברה מציגה כזמינות למסחר תעודות סל אמריקאיות על מדדי ארצות הברית ותעודות סל איריות הנסחרות באירופה. לפי האתר שלה, מסחר בניירות ערך בבורסת תל אביב פתוח נכון להיום ללקוחות מוסדיים בלבד. גם קרן נאמנות ישראלית אי אפשר לקנות שם.",
+  "text_he": "דרך אינטראקטיב ישראל אפשר לבחור חשבון בפיקוח אמריקאי אצל אינטראקטיב ברוקרס בארצות הברית, או חשבון בפיקוח אירי אצל אינטראקטיב ברוקרס אירלנד, באותן עמלות. לפי החברה, חשבון אמריקאי מוגן בביטוח של עד 500,000 דולר לחשבון, וחשבון אירי מוגן בקרן לפיצוי משקיעים עד 20,000 יורו. החברה מציגה כזמינות למסחר תעודות סל אמריקאיות על מדדי ארצות הברית ותעודות סל איריות הנסחרות באירופה. לפי האתר שלה, מסחר בניירות ערך בבורסת תל אביב פתוח נכון להיום ללקוחות מוסדיים בלבד.",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-25",
   "scope": "institution",
@@ -72,9 +72,21 @@
       "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://lp3.inter-il.com/about-3",
+      "title": "Interactive Israel, about",
+      "title_he": "אינטראקטיב ישראל: עמוד אודות",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25",
+      "qualifier": "(the cover as it states it)"
     }
   ],
   "derived_from": [
-    "BRK-06"
+    "BRK-06",
+    "REG-27"
   ]
 }
