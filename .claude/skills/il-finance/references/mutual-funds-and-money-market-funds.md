@@ -427,6 +427,7 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Rule: Facts for the guide page, not rules.
 - Figures: 66 money-market funds holding NIS 178.9 bn at end-2025 (p. 3). By category (table 1, funds active during the year): shekel money-market 42 funds, NIS 155.4 bn, average 2025 return 4.43%; FX money-market with corporate 24 funds, NIS 23.4 bn, average return -8.70% (shekel terms). Average return of shekel money-market funds in 2025 4.4% against an average weighted BoI rate of 4.48% (p. 19). Net creations NIS 24.4 bn in 2025, with net redemptions of NIS 2.3 bn in Q4 (p. 10). Self-directed investors accounted for about 46% of money-market creations and 39% of redemptions in 2025 (p. 12).
 - Source: [ISA 2025 report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf), pp. 3, 6, 10, 12, 19 · checked 2026-11-08 · primary
+- Scope: general
 - Dimensions: currency
 - Likely to change: yes, yearly
 
