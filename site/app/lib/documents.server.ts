@@ -2,12 +2,13 @@
 // document it points at, and the data records (tariffs, funds, deposit terms, series) as cards pointing at their pages.
 // Server-only. The sources of a rule are read loosely: the `sources` field is W1's, and a record without it contributes
 // only its figures' own sources.
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync, statSync } from "node:fs";
 import { companyPath, rulesPath } from "./site-paths";
 import { join } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { documents as documentsCopy } from "../copy";
 import { hebrewDocTitle } from "./source-label";
+import { publisherName } from "./sources";
 import { ruleTitle } from "./rule-title";
 import type { Strength } from "./value";
 import * as dataServer from "./data.server";
@@ -32,6 +33,8 @@ export interface DocumentCard {
   strength: Strength;
   checked: string;
   rules: { id: string; title: string; href: string }[];
+  /** How many figures of the site's data records (prices, funds, deposit terms, series) cite the document. */
+  values: number;
   section: SectionId;
   /** Shown as a full card (named in documents.json, or three or more rules rest on it); the rest are one-line rows. */
   featured: boolean;
@@ -53,9 +56,9 @@ interface PublisherRow {
   kind?: string;
 }
 
-/** One source entry, from a rule's `sources[]` or from a figure's own `source`. */
+/** One source entry: from a rule's `sources[]` or a rule figure's own `source` (with its rule), or a data record's figure (without). */
 export interface Entry {
-  ruleId: string;
+  ruleId?: string;
   url: string;
   title: string;
   title_he?: string;
@@ -153,6 +156,38 @@ export function entriesOf(rules: Record<string, RuleRecord>): Entry[] {
   return out;
 }
 
+/** One entry per figure of the data records (not the rules) that cites a web address: the documents the site's prices, funds and series rest on. */
+export function valueEntriesOf(records: readonly unknown[]): Entry[] {
+  return records.flatMap(valueObjects).flatMap((v) => {
+    const s = v.source as (Sourced["source"] & { publisher_he?: string }) | undefined;
+    return s && /^https?:/.test(s.url) ? [{ url: s.url, title: s.title, publisher: s.publisher, ...(s.publisher_he ? { publisher_he: s.publisher_he } : {}), strength: s.strength as Strength, checked: v.checked }] : [];
+  });
+}
+
+/**
+ * The data records the site reads, under data/ outside the rule base, the glossary and the source tables: the newest snapshot of a
+ * record kept in dated files ("<id>@<date>.json"), and every other file as it is.
+ */
+function dataRecords(root: string): unknown[] {
+  const skip = new Set(["rules", "terms", "dimensions", "sources"]);
+  const latest = new Map<string, string>();
+  const walk = (dir: string, top: boolean) => {
+    for (const name of readdirSync(dir)) {
+      const path = join(dir, name);
+      if (statSync(path).isDirectory()) {
+        if (!(top && skip.has(name))) walk(path, false);
+      } else if (name.endsWith(".json")) {
+        const id = join(dir, name.replace(/\.json$/, "").split("@")[0]!);
+        const seen = latest.get(id);
+        if (!seen || path > seen) latest.set(id, path);
+      }
+    }
+  };
+  const data = join(root, "data");
+  if (existsSync(data)) walk(data, true);
+  return [...latest.values()].sort().map((path) => readJsonCached(path));
+}
+
 const mostCommon = <T,>(xs: T[]): T | undefined => {
   const n = new Map<T, number>();
   for (const x of xs) n.set(x, (n.get(x) ?? 0) + 1);
@@ -169,9 +204,11 @@ function sectionOf(kind: string, strength: Strength, host: string, publisherKind
 
 /** The grouping itself, on given inputs (the tests use fixtures). */
 /** `hrefOf`: where a rule's link goes; by default the rules page (a company's term goes to where it is listed, D30: loadDocuments passes that). */
-export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDoc[], publishers: Record<string, PublisherRow>, hrefOf: (id: string) => string = (id) => rulesPath({ hash: id })): DocumentCard[] {
+/** `values`: the data records' figures (`valueEntriesOf`); a document only they cite is a card too, with no rule. */
+export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDoc[], publishers: Record<string, PublisherRow>, hrefOf: (id: string) => string = (id) => rulesPath({ hash: id }), values: readonly Entry[] = []): DocumentCard[] {
   const groups = new Map<string, { doc: TableDoc | null; entries: Entry[] }>();
-  const all = entriesOf(rules);
+  const all = [...entriesOf(rules), ...values];
+  const publishersHe = Object.fromEntries(Object.entries(publishers).flatMap(([host, r]) => (r.publisher_he ? [[host, r.publisher_he]] : [])));
   // the same address is the same document whatever a link called it ("[1](url)"): the table match found by any entry of an address serves them all
   const docByUrl = new Map<string, TableDoc>();
   for (const e of all) {
@@ -186,7 +223,9 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
     groups.set(key, g);
   }
   const cards: DocumentCard[] = [];
-  for (const [key, { doc, entries }] of groups) {
+  for (const [key, { doc, entries: cited }] of groups) {
+    // a document is named by the rules that cite it; by the data records' figures only when no rule does
+    const entries = cited.some((e) => e.ruleId) ? cited.filter((e) => e.ruleId) : cited;
     const hosts = entries.map((e) => hostOf(e.url));
     const pub = (e: Entry): PublisherRow | undefined => publishers[hostOf(e.url)];
     // a title written in Hebrew, a web host before it allowed: "data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים" is a Hebrew title, and
@@ -196,18 +235,19 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
     const kind0 = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x));
     // never an English working title: the kind's word stands in
     const title = titleHe ?? (kind0 ? (documentsCopy.kinds as Record<string, string>)[kind0] : undefined) ?? hostOf(url0);
-    const publisher = doc?.publisher_he ?? mostCommon(entries.map((e) => pub(e)?.publisher_he ?? e.publisher_he).filter((x): x is string => !!x)) ?? mostCommon(entries.map((e) => e.publisher).filter((x): x is string => !!x)) ?? hosts[0] ?? "";
+    // the record's own Hebrew name before the host table's, and never a shared portal's (`publisherName`)
+    const publisher = doc?.publisher_he ?? mostCommon(entries.map((e) => publisherName({ url: e.url, publisher: e.publisher ?? "", ...(e.publisher_he ? { publisher_he: e.publisher_he } : {}) }, publishersHe)).filter((x) => !!x)) ?? hosts[0] ?? "";
     const kind = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x)) ?? pub(entries[0]!)?.kind ?? "other";
     // an official url is the card's link; without one the most common url
     const url = doc?.official_url ?? mostCommon(entries.map((e) => e.url))!;
     const strength = entries.map((e) => e.strength ?? "secondary").sort((a, b) => (strengthOrder[a] ?? 9) - (strengthOrder[b] ?? 9))[0]! as Strength;
     const checked = entries.map((e) => e.checked ?? "").sort().at(-1) ?? "";
-    const ids = [...new Set(entries.map((e) => e.ruleId))].sort();
+    const ids = [...new Set(entries.flatMap((e) => (e.ruleId ? [e.ruleId] : [])))].sort();
     const cardRules = ids.map((id) => ({ id, title: ruleTitle(rules[id]!, { rules, today: dataServer.today() }).text, href: hrefOf(id) }));
     // a card for a document the table names or that several rules rest on; the long tail of single-rule pages and articles is a row
     const featured = !!doc || ids.length >= 3;
     const section = sectionOf(kind, strength, hostOf(url), doc ? undefined : pub(entries[0]!)?.kind);
-    cards.push({ key, title, titleEnglish: !titleHe && !(kind0 && (documentsCopy.kinds as Record<string, string>)[kind0]), publisher, kind, url, strength, checked, rules: cardRules, section, featured });
+    cards.push({ key, title, titleEnglish: !titleHe && !(kind0 && (documentsCopy.kinds as Record<string, string>)[kind0]), publisher, kind, url, strength, checked, rules: cardRules, values: cited.filter((e) => !e.ruleId).length, section, featured });
   }
   return cards.sort((a, b) => b.rules.length - a.rules.length || a.title.localeCompare(b.title, "he"));
 }
@@ -221,7 +261,7 @@ export function loadDocuments(): DocumentCard[] {
   const links = companyLinks();
   const ownDocs = ownDocuments(rules);
   const hrefOf = (id: string) => (rules[id] && rules[id]!.scope !== "general" ? companyTermsHref(rules[id]!, links, ownDocs) : rulesPath({ hash: id }));
-  return groupDocuments(rules, (Array.isArray(table) ? table : []).filter((d) => !d.doc_kind), publishers, hrefOf);
+  return groupDocuments(rules, (Array.isArray(table) ? table : []).filter((d) => !d.doc_kind), publishers, hrefOf, valueEntriesOf(dataRecords(root)));
 }
 
 /** A kind of document on the documents page, as its first HTML carries it: the count on its head, and the anchors of its documents, so a link

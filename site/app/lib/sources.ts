@@ -6,7 +6,7 @@ import { documents as documentsCopy, sourceBlock } from "../copy";
 import { countPhrase, fmt } from "./format";
 import { monthsBefore } from "./dates";
 import { recheckStale } from "./value";
-import { hostOf, isHebrewTitle, hebrewCitation } from "./source-label";
+import { hostOf, isHebrewTitle, hebrewCitation, shownTitleLtr } from "./source-label";
 import { ruleTitle } from "./rule-title";
 import type { SlotSource } from "./figure-slots";
 
@@ -279,7 +279,7 @@ function documentNames(group: readonly RuleSource[], publishersHe: Readonly<Reco
   const title = shownTitle(head.title_he ?? head.title, head.url, head.kind ?? group.find((s) => s.kind)?.kind);
   // the head's own publisher first: a Hebrew name written beside the Hebrew title
   const publisher = [head, ...group].map((s) => publisherName(s, publishersHe)).find((p) => !!p) ?? null;
-  const hebrew = !title.host && isHebrewTitle(title.text);
+  const hebrew = !shownTitleLtr(title);
   if (!publisher) return { publisher: null, title, hebrew };
   if (title.host && publisher.includes(title.text)) return { publisher, title: null, hebrew: false };
   return { publisher: title.text.includes(publisher) ? null : publisher, title, hebrew };

@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { citationFor, citationText, documentKey, isPdfUrl, mayHaveChanged, moreSourcesLabel, onSharedPortal, pickSources, publicUrl, publisherName, sourceChange, sourceHref, sourceLabel2, sourceView, withoutCodes, type RuleSource } from "./sources";
+import { groupDocuments } from "./documents.server";
+import { publisherHe } from "./publisher-he.server";
 
 const src = (o: Partial<RuleSource> = {}): RuleSource => ({ url: "https://example.gov.il/a", title: "T", publisher: "Pub", strength: "primary", checked: "2026-10-01", ...o });
 const fig = (url: string, strength: string) => ({
@@ -156,5 +158,20 @@ describe("sourceChange (Q58, Q68)", () => {
   });
   it("takes the source's own date: read again on or after the recheck date, it is current", () => {
     expect(sourceChange([{ recheck_date: "2026-12-01" }], { checked: "2026-12-05" }, today)).toBe("current");
+  });
+});
+
+// The drawings that name a source each read its names from one place (Q20): the source block, the copied citation, the documents
+// page and the company a figure belongs to agree on who published one source and what it is called.
+describe("one source, named alike by every drawing (Q20)", () => {
+  const source = src({ url: "https://www.boi.org.il/x", publisher: "Bank of Israel", title_he: "הוראת ניהול בנקאי תקין 425", locator_he: "סעיף 3", kind: "regulation" });
+  const publishers = { "boi.org.il": { publisher_he: "בנק ישראל" } };
+  const [view] = sourceView([source], { "boi.org.il": "בנק ישראל" });
+  it("the source block, the citation and the documents page give the same publisher and title", () => {
+    const card = groupDocuments({ "A-1": { id: "A-1", title: "A-1", title_he: "כלל", strength: "primary", sources: [source] } as never }, [], publishers)[0]!;
+    expect([view!.publisher, view!.title!.text]).toEqual(["בנק ישראל", "הוראת ניהול בנקאי תקין 425"]);
+    expect([card.publisher, card.title]).toEqual([view!.publisher, view!.title!.text]);
+    expect(citationFor({ title: "x", title_he: "כלל" }, view!, { rules: {}, today: "2026-10-24" })).toContain(`— ${view!.publisher}, ${view!.title!.text}, סעיף 3.`);
+    expect(publisherHe({ source } as never)).toBe(view!.publisher);
   });
 });
