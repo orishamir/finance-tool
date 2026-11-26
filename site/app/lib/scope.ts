@@ -143,7 +143,7 @@ export function sourcesForPage<S extends { url: string; title: string; title_he?
  * company's name, not a code): on the page of a company the record shows, that company alone; else the first, with the count of the
  * others, over the same companies the card names (`shownCompanies`). None when it names none.
  */
-export function chipCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined): { named: { id: string; name_he: string }[]; more: number } {
+function chipCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined): { named: { id: string; name_he: string }[]; more: number } {
   const list = shownCompanies(rule, ownDocs);
   // on the page of a company the record names, the chip names that company alone (D30)
   const here = list.find((c) => c.id === current);

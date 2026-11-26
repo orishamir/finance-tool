@@ -18,8 +18,13 @@ const record = (id: string): RuleRecord => JSON.parse(readFileSync(new URL(`data
 const dataOf = (rules: Record<string, RuleRecord>, more: Partial<ProvenanceData> = {}): ProvenanceData => ({ rules, terms: {}, dimensions: {}, today: "2026-11-26", ...more }) as ProvenanceData;
 /** The card's words, tags gone. */
 const words = (el: ReturnType<typeof createElement>, data: ProvenanceData) =>
-  renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: el }))).replace(/<!-- -->/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data }, el))).replace(/<!-- -->/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 const count = (text: string, part: string) => text.split(part).length - 1;
+/** A value the test needs, or a failure that names it. */
+function must<T>(v: T | undefined | null, what: string): T {
+  if (v === undefined || v === null) throw new Error(`missing: ${what}`);
+  return v;
+}
 
 /** TXA-30 with its record's date apart from every source's, so each date on the card says which it is. */
 function dated(sources: boolean): RuleRecord {
@@ -40,7 +45,7 @@ describe("the day a rule was read", () => {
     for (const el of [createElement(RuleCard, { id: r.id, data, inline: true }), createElement(RuleDetail, { id: r.id, data, products: [] })]) {
       const text = words(el, data);
       expect(text).not.toContain(fmt.date(r.checked));
-      expect(text).toContain(`${ruleCopy.checked} ${fmt.date(r.sources![0]!.checked)}`);
+      expect(text).toContain(`${ruleCopy.checked} ${fmt.date(must(r.sources?.[0], "TXA-30's first source").checked)}`);
       // the day it is read again stays
       expect(text).toContain(ruleCopy.recheck);
     }
@@ -77,12 +82,12 @@ describe("the companies of a company's term", () => {
     const rules = loadRules();
     return dataOf(rules, { ownDocs: ownDocuments(rules), companies: companyLinks() });
   };
-  const named = (data: ProvenanceData, id: string) => scopeWords.line.institution.replace("{names}", joinNames(ownDocCompanies(data.rules[id]!, data.ownDocs).map((c) => c.name_he)));
+  const named = (data: ProvenanceData, id: string) => scopeWords.line.institution.replace("{names}", joinNames(ownDocCompanies(must(data.rules[id], id), data.ownDocs).map((c) => c.name_he)));
 
   it("are named once, in the tag, when the tag names them all", async () => {
     const data = await real();
     const id = "BANK-30";
-    expect(ownDocCompanies(data.rules[id]!, data.ownDocs)).toHaveLength(1);
+    expect(ownDocCompanies(must(data.rules[id], id), data.ownDocs)).toHaveLength(1);
     for (const el of [createElement(RuleCard, { id, data, inline: true }), createElement(RuleDetail, { id, data, products: [] })]) {
       const text = words(el, data);
       expect(text).toContain(scopeWords.line.institutionTagged);
@@ -92,7 +97,7 @@ describe("the companies of a company's term", () => {
   it("are named in the line too when the card's tag names only the first (BANK-37's four banks)", async () => {
     const data = await real();
     const id = "BANK-37";
-    expect(ownDocCompanies(data.rules[id]!, data.ownDocs).length).toBeGreaterThan(1);
+    expect(ownDocCompanies(must(data.rules[id], id), data.ownDocs).length).toBeGreaterThan(1);
     expect(words(createElement(RuleCard, { id, data, inline: true }), data)).toContain(named(data, id));
     // the rules page's tag names them all
     const detail = words(createElement(RuleDetail, { id, data, products: [] }), data);
@@ -122,7 +127,7 @@ describe("a sourced figure's sheet", () => {
       const text = sheet(figure(st));
       expect(count(text, strength[st].label)).toBe(1);
       expect(text).toContain(strength[st].line);
-      expect(count(text, sourceBlock.weak[st]!)).toBe(sourceBlock.weak[st] === strength[st].label ? 1 : 0);
+      expect(count(text, must(sourceBlock.weak[st], st))).toBe(sourceBlock.weak[st] === strength[st].label ? 1 : 0);
     }
   });
   it("goes from its tag straight to its source, with no sentence that only points at it", () => {

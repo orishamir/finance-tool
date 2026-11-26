@@ -39,7 +39,8 @@ const txa30 = record("TXA-30");
 const txs01 = record("TXS-01");
 const own = txa30.figures?.minimum_age as { value: number; unit: string } | undefined;
 if (!own || own.unit !== "years") throw new Error("TXA-30's minimum age is a figure in years");
-const slotted: RuleRecord = { ...txa30, title_he: undefined, text_he: "הגיל הוא {TXA-30:minimum_age} לפי המסמך, והמס {TXS-01:rate}. משפט שני." };
+const slottedText = "הגיל הוא {TXA-30:minimum_age} לפי המסמך, והמס {TXS-01:rate}. משפט שני.";
+const slotted: RuleRecord = { ...txa30, title_he: undefined, text_he: slottedText };
 
 describe("a rule text with slots", () => {
   // a number in years carries the unit's word after it, as on the card's figures
@@ -53,11 +54,11 @@ describe("a rule text with slots", () => {
   it("is drawn on the card and on the rules page with each slot as its figure", () => {
     const data = { ...source, terms: {}, dimensions: {} } as unknown as ProvenanceData;
     for (const el of [createElement(RuleCard, { id: slotted.id, data, inline: true }), createElement(RuleDetail, { id: slotted.id, data, products: [] })]) {
-      const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: el }))).replace(/<!-- -->/g, "");
+      const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data }, el))).replace(/<!-- -->/g, "");
       const text = html.replace(/<[^>]+>/g, "");
       // the sentence reads as the plain text writes it: each figure in its place, no slot and no "—" left
       expect(text).toContain(`הגיל הוא ${ownShown} לפי המסמך, והמס `);
-      expect(text).toContain(slotsAsText(slotted.text_he!, source));
+      expect(text).toContain(slotsAsText(slottedText, source));
       expect(text).not.toMatch(/\{[A-Z0-9]+-[A-Z0-9]+:/);
       // a slot is a figure the reader opens, as anywhere else on the site
       expect(html).toMatch(/num-sourced/);
@@ -65,13 +66,14 @@ describe("a rule text with slots", () => {
   });
 
   it("is written as plain text with the same figures, wherever it is read as a string", () => {
-    const plain = slotsAsText(slotted.text_he!, source);
+    const plain = slotsAsText(slottedText, source);
     expect(plain.startsWith(`הגיל הוא ${ownShown} לפי המסמך`)).toBe(true);
     expect(plain).not.toContain("{");
     expect(plain).not.toContain(missingSlot);
     // the title read from the text, and the citation that opens with it
     expect(ruleTitle(slotted, source).text).toBe(plain.split(". ")[0]);
-    const first = pickSources(slotted as unknown as SourcedRule)[0]!;
+    const first = pickSources(slotted as unknown as SourcedRule)[0];
+    if (!first) throw new Error("TXA-30 has a source");
     expect(citationText(slotted as unknown as SourcedRule, first, first.checked, source).startsWith(`הגיל הוא ${ownShown}`)).toBe(true);
   });
 
