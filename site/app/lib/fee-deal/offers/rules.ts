@@ -75,12 +75,12 @@ export const RULES: readonly RuleRow[] = [
 
   // ---- the provident family's management fees, from deposits and from the balance
   // a rate, discounted only for a period, with nothing on top, no refund and no order; on money deposited before 2008 a fund may charge a
-  // monthly sum of up to NIS 6, indexed, where higher (PEN-22), a floor the page does not offer, since a balance fee's price holds no minimum
+  // monthly sum of up to NIS 6, indexed, where higher (PF-02), a floor the page does not offer, since a balance fee's price holds no minimum
   {
     id: "provident-management-rate",
     when: { products: providentFamily, fees: ["deposit", "balance"] },
     verdict: { kind: "only", forms: ["action", "held"], parts: ["until"] },
-    cite: ["PF-01", "PF-02", "PF-03", "PF-04", "PF-05", "PF-06", "KGL-14", "PEN-21", "PEN-22", "CS-18", "KH-22", "IRA-17", "PF-08", "PF-13", "PF-21"],
+    cite: ["PF-01", "PF-02", "PF-03", "PF-04", "PF-05", "PF-06", "PEN-21", "PEN-22", "CS-18", "KH-22", "IRA-17", "PF-08", "PF-13", "PF-21"],
     records: true,
   },
   // set per track and graded by the balance; the size of a deposit and an arrangement of the person's own are open (PF open question 19)

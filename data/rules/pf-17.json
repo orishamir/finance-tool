@@ -2,7 +2,7 @@
   "id": "PF-17",
   "title": "A member may transfer money between provident funds; which routes are allowed",
   "title_he": "העברת כסף בין קופות גמל: המסלולים המותרים",
-  "text_he": "משיכה והעברה מקופת גמל מותרות רק כפי שהחוק מונה, והתקנות קובעות את המסלולים. לקופת גמל לקצבה מעבירים מקופת קצבה אחרת, מקופת תגמולים או פיצויים אם הקופה המקבלת משלמת קצבה, מקרן השתלמות אם העמית יכול למשוך בפטור, ומקופת גמל להשקעה מגיל הפרישה המוקדמת. לקופה שלא לקצבה מעבירים תגמולים לתגמולים, פיצויים לפיצויים, קרן השתלמות לקרן השתלמות, וקופת גמל להשקעה לקופת גמל להשקעה אחרת. העברה אחרת לקופה כזו מותרת רק באישור הממונה. לא נמצא מסלול מקרן השתלמות או מתגמולים לקופת גמל להשקעה, או ממנה לקרן השתלמות. ההעברה חסומה כשיש עיקול או שעבוד על כל היתרה, הלוואה פתוחה, קצבה שהתחילה, או קופה מקבלת סגורה.",
+  "text_he": "משיכה והעברה מקופת גמל מותרות רק כפי שהחוק מונה, ותקנות ההעברה קובעות לאן מותר להעביר. לקופת גמל לקצבה מעבירים מקופת קצבה אחרת, מקופת תגמולים או פיצויים אם הקופה המקבלת משלמת קצבה, מקרן השתלמות אם העמית זכאי למשוך את הכסף בפטור ממס, מקופת גמל להשקעה מגיל 60, גיל הפרישה המוקדמת, ומקופה אחרת שהממונה אישר. לקופה שלא לקצבה מעבירים תגמולים לתגמולים, פיצויים לפיצויים, קרן השתלמות לקרן השתלמות וקופת גמל להשקעה לקופת גמל להשקעה אחרת, וכל העברה אחרת לקופה כזו רק באישור הממונה. לא נמצא מסלול מקרן השתלמות או מתגמולים לקופת גמל להשקעה, או ממנה לקרן השתלמות.",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
@@ -27,6 +27,20 @@
       "checked": "2026-10-25"
     },
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.4, reg. 2(א)(1), (4), (6)",
+      "locator_he": "עמוד 4, תקנה 2(א)(1), (4), (6)",
+      "page": 4,
+      "quote": "ובלבד שהעמית היה זכאי למשוך את הכספים בפטור ממס",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=5",
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
@@ -41,17 +55,17 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=5",
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.6, reg. 4",
-      "locator_he": "עמוד 6, תקנה 4",
-      "page": 6,
-      "quote": "לא ניתן להעביר כספים מקופה מעבירה לקופה מקבלת במקרים אלה",
+      "locator": "p.5, reg. 3(א)(1), (4), (12)",
+      "locator_he": "עמוד 5, תקנה 3(א)(1), (4), (12)",
+      "page": 5,
+      "quote": "מקרן השתלמות לקרן השתלמות אחרת",
       "checked": "2026-10-25"
     },
     {
@@ -75,8 +89,8 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
+      "locator": "p.2, ss.2-3",
+      "locator_he": "עמוד 2, סעיפים 2-3",
       "page": 2,
       "quote": "מקופת גמל להשקעה לקופת גמל להשקעה אחרת",
       "checked": "2026-10-25"
@@ -95,5 +109,8 @@
       "quote": "תהיה כמפורט להלן, בלבד",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "SW-13"
   ]
 }

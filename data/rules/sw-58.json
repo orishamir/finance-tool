@@ -1,0 +1,84 @@
+{
+  "id": "SW-58",
+  "title": "Altshuler Shaham Trade: not every security moves automatically; up to 5 trading days for Israeli securities, 14 for foreign",
+  "title_he": "העברת תיק לאלטשולר שחם טרייד: לא כל נייר עובר אוטומטית, וכמה ימי מסחר זה לוקח",
+  "text_he": "לפי אלטשולר שחם טרייד, לא כל נייר ערך אפשר להעביר אוטומטית. ניירות שנסחרים בבורסה בתל אביב ורוב הניירות שנסחרים בארה״ב אפשר להעביר, בכפוף לשני המוסדות. ההעברה לוקחת עד {SW-58:israeli_securities_trading_days} לניירות ישראליים ועד {SW-58:foreign_securities_trading_days} לניירות זרים, וסופרים רק ימי מסחר. אלה אותם מספרים שהוראה 432 של בנק ישראל קובעת לבנק, שם בימי עסקים.",
+  "figure_names_he": {
+    "israeli_securities_trading_days": "ימי מסחר להעברת ניירות ישראליים (אלטשולר שחם טרייד)",
+    "foreign_securities_trading_days": "ימי מסחר להעברת ניירות זרים (אלטשולר שחם טרייד)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "israeli_securities_trading_days": {
+      "value": 5,
+      "unit": "days",
+      "source": {
+        "url": "https://www.as-invest.co.il/trade/faq_transfer/",
+        "title": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד (שאלות ותשובות)",
+        "publisher": "Altshuler Shaham Trade",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-58"
+      ],
+      "state": "sourced",
+      "notes": "Altshuler Shaham Trade: up to 5 trading days for Israeli securities, up to 14 for foreign ones. Its own statement; a bank's deadlines are directive 432's (SW-35)."
+    },
+    "foreign_securities_trading_days": {
+      "value": 14,
+      "unit": "days",
+      "source": {
+        "url": "https://www.as-invest.co.il/trade/faq_transfer/",
+        "title": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד (שאלות ותשובות)",
+        "publisher": "Altshuler Shaham Trade",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "SW-58"
+      ],
+      "state": "sourced",
+      "notes": "Altshuler Shaham Trade: up to 14 trading days for foreign securities. Its own statement."
+    }
+  },
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "altshuler-trade",
+      "name_he": "אלטשולר שחם טרייד"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/trade/faq_transfer/",
+      "title": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
+      "title_he": "אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "ניירות ערך ישראליים - עד 5 ימי מסחר",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "SW-35"
+  ]
+}

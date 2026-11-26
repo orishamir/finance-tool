@@ -1,0 +1,35 @@
+{
+  "id": "PEN-71",
+  "title": "Money moved from a kupat gemel lehashkaa for an annuity: the Commissioner's 2020 draft bars going back on the annuity choice",
+  "title_he": "כסף מקופת גמל להשקעה שעבר לקצבה: לפי טיוטת הממונה מ־2020 אי אפשר לחזור מהבחירה",
+  "text_he": "כסף שהועבר מקופת גמל להשקעה לקופה שמשלמת קצבה נועד לקבלת קצבה בלבד. לפי טיוטת הבהרה של הממונה על שוק ההון, ביטוח וחיסכון מ־13.10.2020, הקופה המקבלת לא תאפשר לחזור מהבחירה בקצבה, למשל במשיכה בסכום חד־פעמי או בהשארת הכסף לירושה. אם העמית נפטר, הזכויות של השאירים או של היורשים הן לפי מסלול הקצבה שבחר. הטיוטה לא אומרת אם היוון של חלק מהקצבה, מעל סכום הקצבה המזערי, נחשב חזרה מהבחירה.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-01",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/kupot_gemel_kitzva/he/kupot_gemel_niud.pdf#page=1",
+      "title": "הבהרה לעניין העברת כספים מקופת גמל להשקעה לקופת גמל לקצבה - טיוטה (הממונה על שוק ההון, 13.10.2020, שה 2020-7709)",
+      "title_he": "הבהרה לעניין העברת כספים מקופת גמל להשקעה לקופת גמל לקצבה - טיוטה (הממונה על שוק ההון, 13.10.2020, שה 2020-7709)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.1, ss.1-2",
+      "locator_he": "עמוד 1, סעיפים 1-2",
+      "page": 1,
+      "quote": "החברה המנהלת של הקופה המקבלת לא תאפשר לעמית לחזור בו מבחירתו לקבלת קצבה",
+      "checked": "2026-11-07",
+      "qualifier": "(the regulator's draft)"
+    }
+  ],
+  "derived_from": [
+    "KGL-09"
+  ]
+}

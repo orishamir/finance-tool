@@ -1,60 +1,17 @@
 {
   "id": "SW-06",
-  "title": "Step 3: the money moves within 10 business days, directly, in cash, with no transfer fee",
-  "title_he": "שלב שלישי: הכסף עובר במזומן, ישירות, בלי עמלה",
-  "text_he": "הקופה המעבירה מעבירה את הכסף בתוך מספר ימי העסקים שהתקנות קובעות מבקשה שלמה וחתומה, אלא אם הבקשה בוטלה. במקרים מיוחדים הממונה רשאי להתיר הארכה. הכסף עובר ישירות בין הגופים המנהלים ולא דרך העמית. הוא עובר במזומן, אלא אם הגופים הסכימו אחרת. קופה שמאחרת מפצה את העמית מדמי הניהול שלה. היא גם שולחת לקופה המקבלת את היתרה והתשואות היומיות, כדי שאפשר יהיה לתבוע את הפרש התשואה. אין עמלת העברה. מה שכן יכול לעלות הוא סיום מוקדם של הנחה. בקופה בניהול אישי ההעברה יכולה להיות בעין.",
+  "title": "Step 3: the money moves in cash, and the return data on a late transfer",
+  "title_he": "שלב שלישי בניוד: הכסף עובר במזומן, ונתוני התשואה בהעברה מאוחרת",
+  "text_he": "בניוד בין קופות הכסף עובר במזומן, אלא אם הגופים המנהלים הסכימו אחרת. אם ההעברה מאחרת, הקופה המעבירה שולחת לקופה המקבלת בתוך {SW-06:late_transfer_data_business_days} את היתרה והתשואות היומיות, כדי שאפשר יהיה לתבוע את הפרש התשואה. בקופה בניהול אישי ההעברה יכולה להיות בעין.",
   "figure_names_he": {
-    "transfer_business_days": "ימי עסקים להעברת הכסף",
-    "commissioner_extension_business_days": "ימי עסקים נוספים שהממונה רשאי להתיר",
     "late_transfer_data_business_days": "ימי עסקים למסירת נתוני התשואה בהעברה מאוחרת"
   },
   "strength": "primary",
   "dimensions": [
-    "transfer-switch-process",
-    "fee-exit"
+    "transfer-switch-process"
   ],
   "likely_to_change": "no",
   "figures": {
-    "transfer_business_days": {
-      "value": 10,
-      "unit": "business_days",
-      "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657), p.6, reg. 5(א)",
-        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "SW-06"
-      ],
-      "state": "sourced",
-      "notes": "The transferring fund transfers within ten business days of a complete, signed request unless cancelled (reg. 5(א)), counted from the day the request reaches it."
-    },
-    "commissioner_extension_business_days": {
-      "value": 20,
-      "unit": "business_days",
-      "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657), p.6, reg. 5(א)",
-        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "SW-06"
-      ],
-      "state": "sourced",
-      "notes": "The Commissioner may allow up to twenty more business days in special cases (reg. 5(א))."
-    },
     "late_transfer_data_business_days": {
       "value": 5,
       "unit": "business_days",
@@ -146,5 +103,8 @@
       "page": 8,
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "PF-19"
   ]
 }

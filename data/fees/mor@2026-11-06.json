@@ -6,7 +6,7 @@
     "regulator": "CMA",
     "tase_member": false,
     "protection_rule_ids": [
-      "REG-18",
+      "PF-29",
       "REG-19"
     ]
   },
@@ -47,7 +47,6 @@
         "rule_ids": [
           "PF-02",
           "PF-03",
-          "KGL-14",
           "KGL-16"
         ],
         "state": "sourced",
@@ -91,7 +90,6 @@
         "rule_ids": [
           "PF-02",
           "PF-03",
-          "KGL-14",
           "KGL-16"
         ],
         "state": "sourced",

@@ -6,7 +6,7 @@
     "regulator": "CMA",
     "tase_member": false,
     "protection_rule_ids": [
-      "REG-18",
+      "PF-29",
       "REG-19"
     ]
   },
@@ -46,8 +46,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Meitav's joining request for מיטב גמל להשקעה (form 1118, footer 1.118.13.2.26, p.2, section 5) leaves both rates blank (\"שיעור דמי ניהול מצבירה (שנתי) __%\", \"שיעור דמי ניהול מהפקדה (חודשי) __%\"); the fund's bylaws (dated July 2024, in force from 1.7.2024, s.35.1, p.9) let the company charge up to the maximum the law sets on the balance and on each payment. Recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee; what a joiner is offered is set in the blank, not published. Until 2026-11-07 the record held 0.8% of the balance and 0% of deposits from the product page (\"עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי\", for new members joining digitally): advertising, not a binding document (D56), so not recorded. The joining request also prints the fund's 2025 average fee, 0.61% of savings (p.10): an average actually charged, not a list fee, not recorded. The bylaws let a discount last \"לפחות שנתיים\" (s.36.1); the CMA circular sets at least five years (KGL-16). On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
@@ -89,8 +88,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Meitav's joining request for מיטב גמל להשקעה (form 1118, footer 1.118.13.2.26, p.2, section 5) leaves both rates blank (\"שיעור דמי ניהול מצבירה (שנתי) __%\", \"שיעור דמי ניהול מהפקדה (חודשי) __%\"); the fund's bylaws (dated July 2024, in force from 1.7.2024, s.35.1, p.9) let the company charge up to the maximum the law sets on the balance and on each payment. Recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee; what a joiner is offered is set in the blank, not published. Until 2026-11-07 the record held 0.8% of the balance and 0% of deposits from the product page (\"עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי\", for new members joining digitally): advertising, not a binding document (D56), so not recorded. The joining request also prints the fund's 2025 average fee, 0.61% of savings (p.10): an average actually charged, not a list fee, not recorded. The bylaws let a discount last \"לפחות שנתיים\" (s.36.1); the CMA circular sets at least five years (KGL-16). On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
@@ -169,7 +167,6 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-04",
-          "PEN-21",
           "PEN-23"
         ],
         "state": "sourced",
@@ -212,7 +209,6 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-04",
-          "PEN-21",
           "PEN-23"
         ],
         "state": "sourced",

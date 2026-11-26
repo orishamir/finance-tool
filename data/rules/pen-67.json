@@ -1,0 +1,29 @@
+{
+  "id": "PEN-67",
+  "title": "Employer severance deposits under the order replace statutory severance pay",
+  "title_he": "הפקדות המעסיק לפיצויים באות במקום פיצויי פיטורים",
+  "text_he": "הפקדות המעסיק לפיצויים לפי צו ההרחבה לפנסיה חובה באות במקום פיצויי פיטורים, על השכר ועל התקופות שהן מכסות (סעיף 14 לחוק פיצויי פיטורים). הכסף הזה לא חוזר למעסיק, אלא אם העובד משך כסף לפני אירוע מזכה (מוות, נכות או פרישה בגיל 60 ומעלה), או שהזכות שלו לפיצויים נשללה לפי סעיפים 16 ו־17 לחוק. המעסיק רשאי להשלים את הפקדות הפיצויים עד 8.33%.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
+      "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011",
+      "title_he": "צו הרחבה [נוסח משולב] לפנסיה חובה, 2011",
+      "publisher": "gov.il",
+      "publisher_he": "משרד העבודה",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5 (gazette p.6942), ss.7-9",
+      "locator_he": "עמוד 5 (עמוד הרשומות 6942), סעיפים 7-9",
+      "page": 5,
+      "checked": "2026-10-25"
+    }
+  ]
+}

@@ -6,7 +6,7 @@
     "regulator": "CMA",
     "tase_member": false,
     "protection_rule_ids": [
-      "REG-18",
+      "PF-29",
       "REG-19"
     ]
   },

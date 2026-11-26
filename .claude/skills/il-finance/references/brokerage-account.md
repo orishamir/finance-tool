@@ -251,10 +251,10 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 - Dimensions: `fee-custody`, `fee-trade`
 - Likely to change: yes. The report recommends legislation on fees at non-bank members.
 
-### BRK-18 Banks: supervised price for moving securities to the client's own account elsewhere
-- Rule: Part 4(א)(6) "העברת ניירות ערך" has two prices: to the same client's account at another financial body, a shekel amount per transfer marked "(בפיקוח)"; to another client's account, a percentage with minimum and maximum per portfolio. The notes say "the same client" includes a joint account with the client's spouse ("בן או בת זוגו"; corrected 2026-10-22 per SW-33, the earlier reading "spouse or child" was wrong), and (as read from the consolidated text) that a transfer to the same client's account on closing the account "לא תעלה על 10 ש"ח להעברת התיק והוצאות צד ג'". "בפיקוח" marks a service whose price is supervised under section 7 of the Banking (Service to Customer) Law (list published 1.5.2008).
-- Conditions / exceptions: The supervised price itself is set outside the rules; the Bank of Israel's fees page states it: at most NIS 5 for the service plus what the bank paid a third party (such as the exchange or a foreign broker), to the same client's account at another financial body (SW-33, read 2026-10-26). The process and full cost of a move belong to `switching-and-transfers.md`.
-- Figures: the NIS 10 cap on closing an account, as read from the consolidated rules (consolidated to 5.11.2024); fixed in the rules.
+### BRK-18 Banks: supervised price for moving securities to the client's own account elsewhere (retired: see SW-33)
+- Rule: Retired on 2026-11-26. It stated the same rule as SW-33 from the same sources (the fee rules' part 4(א)(6) and its notes, and the Bank of Israel's fees page: a supervised price to the same client's account at another financial body, at most NIS 5 plus the third party's cost, and NIS 10 on closing), and SW-33 now holds it alone, with BRK-18's source on what "בפיקוח" means (the 2008 activity summary). The id stays so that references to it resolve; they should point to SW-33.
+- Conditions / exceptions: none of its own; see SW-33.
+- Figures: none
 - Source: [כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/mi2driua/159a.pdf), p.17, part 4(א)(6) · checked 2026-10-25 · primary; [בנק ישראל, הפיקוח על הבנקים: סיכום פעילות הפיקוח על הבנקים להגנת הצרכן הבנקאי בשנת 2008 (2.2.2009)](https://www.boi.org.il/media/bccb1fj2/act08.pdf), p.3 · checked 2026-10-26 · primary; [בנק ישראל, מידע ושירות לציבור: עמלות](https://boi.org.il/information/fees/), section "העברת ניירות ערך לחשבון אחר של אותו לקוח בגוף פיננסי אחר" "סכום העמלה המרבי שניתן לגבות בעד השירות יהיה 5 שקלים חדשים" · checked 2026-10-26 · primary
 - Scope: general
 - Dimensions: `fee-exit`, `transfer-switch-process`

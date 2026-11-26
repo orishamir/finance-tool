@@ -1,108 +1,19 @@
 {
   "id": "PEN-21",
-  "title": "Regulated fee caps for pension funds and pensioners",
-  "title_he": "תקרות דמי הניהול לקרנות פנסיה ולפנסיונרים",
-  "text_he": "תקנות דמי הניהול קובעות את דמי הניהול המרביים בקרנות פנסיה. בקרן חדשה מקיפה: עד התקרה של דמי ניהול מחיסכון ועד התקרה של דמי ניהול מהפקדה. מפנסיונרים: עד שיעור מהנכסים שעומדים כנגד התחייבויות הקצבה, ונמוך יותר למקבלי קצבת זקנה שהחלה אחרי המועד שבתקנות. לקצבה שמתחת לקצבת המינימום: עד שיעור מההפרש בין קצבת המינימום לקצבה המשולמת. בקרן חדשה כללית, התקרה מחיסכון גבוהה יותר והתקרה מהפקדה נמוכה יותר. בקרן רב מסלולית התקרות חלות לכל מסלול. דמי הניהול מיתרת עמית נכה לא יעלו על מה שנגבה לפני הנכות. לחשבונות של עמיתים שנותק איתם הקשר או שנפטרו יש תקרה נמוכה, בתנאים. התקנות נקראו ברשומות, וסעיף עמית הנכה בא מהתקנון האחיד של רשות שוק ההון.",
+  "title": "Regulated fee caps for pensioners in a pension fund",
+  "title_he": "תקרות דמי הניהול ממקבלי קצבה בקרן פנסיה",
+  "text_he": "ממקבלי קצבה בקרן פנסיה מותר לגבות עד 0.5% לשנה מהנכסים שעומדים כנגד הקצבה בקרן חדשה מקיפה, ועד 0.6% בקרן חדשה כללית (2% לקצבה שהתחילה לפני 2013). למי שקצבת הזקנה שלו התחילה מ־1 בפברואר 2022, התקרה בשתיהן היא {PEN-21:annuitant_balance_cap_from_2022}. לקצבה שמתחת לקצבת המינימום בקרן מקיפה, מותר לגבות עד 6% מההפרש בינה לבין קצבת המינימום. מיתרה של עמית נכה לא גובים יותר ממה שנגבה לפני הנכות, ולחשבונות של עמיתים שנותק איתם הקשר או שנפטרו יש תקרה נמוכה, בתנאים.",
   "figure_names_he": {
-    "comprehensive_balance_cap": "תקרת דמי ניהול מחיסכון, קרן מקיפה",
-    "comprehensive_deposit_cap": "תקרת דמי ניהול מהפקדה, קרן מקיפה",
-    "general_balance_cap": "תקרת דמי ניהול מחיסכון, קרן כללית",
-    "general_deposit_cap": "תקרת דמי ניהול מהפקדה, קרן כללית",
     "annuitant_balance_cap_from_2022": "תקרת דמי ניהול ממקבלי קצבת זקנה חדשים"
   },
   "strength": "primary",
   "dimensions": [
     "fee-management-balance",
-    "fee-deposit",
     "fee-change-over-time"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "figures": {
-    "comprehensive_balance_cap": {
-      "value": 0.5,
-      "unit": "pct_per_year",
-      "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.5, reg. 3",
-        "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "PEN-21",
-        "PF-04"
-      ],
-      "state": "sourced",
-      "notes": "New comprehensive fund: up to 0.5% a year of the balance (monthly equivalent 0.04157% in the bylaws). Caps are set by regulation with Finance Committee approval (law s.32(ב))."
-    },
-    "comprehensive_deposit_cap": {
-      "value": 6,
-      "unit": "pct_of_deposit",
-      "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.5, reg. 3",
-        "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "PEN-21",
-        "PF-04"
-      ],
-      "state": "sourced",
-      "notes": "New comprehensive fund: up to 6% of deposits."
-    },
-    "general_balance_cap": {
-      "value": 1.05,
-      "unit": "pct_per_year",
-      "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.5, reg. 3",
-        "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "PEN-21",
-        "PF-05"
-      ],
-      "state": "sourced",
-      "notes": "New general fund: up to 1.05% a year of the balance (monthly 0.08708%)."
-    },
-    "general_deposit_cap": {
-      "value": 4,
-      "unit": "pct_of_deposit",
-      "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.5, reg. 3",
-        "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "PEN-21",
-        "PF-05"
-      ],
-      "state": "sourced",
-      "notes": "New general fund: up to 4% of deposits."
-    },
     "annuitant_balance_cap_from_2022": {
       "value": 0.3,
       "unit": "pct_per_year",
@@ -207,5 +118,10 @@
       "quote": "לכלל מקבלי קצבת הזקנה שהחלו לקבל קצבת זקנה",
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "PF-04",
+    "PF-05",
+    "PF-07"
   ]
 }

@@ -16,7 +16,7 @@ Scope: in:
 
 Out, and where it lives:
 - licensing counts, the ISA and its powers, the custody split (90% / 2% / 8%), the Meitav legal entities, and bank failure: `regulators-and-protection.md` (REG-07, REG-08, REG-09, REG-28, REG-04 to REG-06);
-- custody rules at TASE members and banks, and bank fee types such as custody and transfer fees: `brokerage-account.md` (BRK-07 to BRK-18);
+- custody rules at TASE members and banks, and bank fee types such as custody and transfer fees: `brokerage-account.md` (BRK-07 to BRK-17) and `switching-and-transfers.md` (SW-33);
 - mutual-fund fees and hosting from the fund side: `mutual-funds-and-money-market-funds.md` (MF-19, MF-25, MF-28, MF-51);
 - portfolio managers directing an IRA: `ira-self-directed.md` (IRA-05, IRA-06, IRA-16);
 - tax, including any VAT on fees: `tax-tier2-other.md`;
@@ -113,7 +113,7 @@ Out, and where it lives:
 - Likely to change: no
 
 ### MGD-05 Exit: the client may cancel at any time; the assets are already in the client's account
-- Rule: Every agreement must state that the client may cancel the engagement at any time (s.13(ב)(4)). The assets are held in the client's own account (MGD-14). Ending the service therefore means ending the agreement and the power of attorney; the assets stay where they are. Moving them to another custodian is a separate brokerage transfer: see BRK-18 for the supervised price at banks, and `switching-and-transfers.md`.
+- Rule: Every agreement must state that the client may cancel the engagement at any time (s.13(ב)(4)). The assets are held in the client's own account (MGD-14). Ending the service therefore means ending the agreement and the power of attorney; the assets stay where they are. Moving them to another custodian is a separate brokerage transfer: see SW-33 for the supervised price at banks, and `switching-and-transfers.md`.
 - What providers state:
   - Meitav, private clients: an existing securities portfolio can be brought in without selling it.
   - Meitav Manager: "ניתן לבקש משיכה מלאה / חלקית בכל עת". The money is paid "עד 7 ימי עסקים מקבלת הבקשה", and only to the bank account it came from. Moving the Manager holdings in kind is not addressed on the page (open question 4).
@@ -504,7 +504,7 @@ Digital offerings confirmed on own pages: Meitav Manager, Phoenix digital portfo
 10. **Fjord's licence and custody, and VIDEA's status.** The ISA register is unreadable; videa.co.il does not resolve.
 11. **What a qualified client gives up.** Which duties of the Investment Advice Law, the regulations or ISA directives do not apply to a "לקוח כשיר". Also whether the NIS 12 m threshold is indexed.
 12. **ISA complaints channel for portfolio-management clients.** Same as REG open question 5.
-13. **Termination fees.** Whether a manager may charge for ending the agreement, or for transferring securities out. The law read only says the client may cancel at any time. Custodian transfer fees are in BRK-18. **[2026-11-07]** Still open. Read: the Bank of Israel's directive 462 (השקעות של לקוחות בנכסים פיננסיים באמצעות מנהלי תיקים, [boi.org.il](https://boi.org.il/media/h0nhnpwx/462_7.pdf), edition 9/11), which governs a bank's arrangements with portfolio managers (separate collection of the manager's fee; the power of attorney and the bank-manager agreement) and says nothing of a fee to the client for ending the agreement; one web search (press and tariffs only). Would settle: a Securities Authority directive on the portfolio-management agreement, or each manager's own agreement (a company term). Money: the custodian's fee per security moved (BRK-18) plus any exit fee of the manager; not found as a figure.
+13. **Termination fees.** Whether a manager may charge for ending the agreement, or for transferring securities out. The law read only says the client may cancel at any time. Custodian transfer fees are in SW-33. **[2026-11-07]** Still open. Read: the Bank of Israel's directive 462 (השקעות של לקוחות בנכסים פיננסיים באמצעות מנהלי תיקים, [boi.org.il](https://boi.org.il/media/h0nhnpwx/462_7.pdf), edition 9/11), which governs a bank's arrangements with portfolio managers (separate collection of the manager's fee; the power of attorney and the bank-manager agreement) and says nothing of a fee to the client for ending the agreement; one web search (press and tariffs only). Would settle: a Securities Authority directive on the portfolio-management agreement, or each manager's own agreement (a company term). Money: the custodian's fee per security moved (SW-33) plus any exit fee of the manager; not found as a figure.
 14. **"Special risk" trades (s.18).** Which trades count. Section 18 was read only in summary.
 16. **Investor compensation beyond the manager's security.** Whether any scheme covers a client loss from the manager's misconduct beyond reg. 3 security. None found.
 17. **Psagot's managed-portfolio offering and minimums.** The own site shows only a client login.

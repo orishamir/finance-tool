@@ -22,13 +22,13 @@
     "פנסיה מקיפה"
   ],
   "rule_ids": [
-    "PEN-08",
     "PEN-12",
     "PEN-13",
     "PEN-27",
+    "PEN-68",
+    "PEN-69",
     "PF-04",
-    "REG-17",
-    "REG-21"
+    "REG-17"
   ],
   "source": {
     "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf#page=3",

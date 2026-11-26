@@ -1,15 +1,14 @@
 {
   "id": "PEN-08",
-  "title": "New comprehensive pension fund and its monthly deposit ceiling",
-  "title_he": "קרן פנסיה חדשה מקיפה ותקרת ההפקדה החודשית",
-  "text_he": "קרן פנסיה חדשה מקיפה היא קרן פנסיה שאישרו הממונה ורשות המסים כקופת גמל לקצבה, אחרי 1 בינואר 1995. התקנון שלה נותן לעמית זכויות לקצבת זקנה, קצבת שאירים וקצבת נכות. ההפקדות של המעסיק והעובד אליה לא יכולות לעלות על תקרת ההפקדה החודשית שבתקנות מס הכנסה. התקרה היא שיעור קבוע מתקרת השכר המבוטח, שהיא פעמיים השכר הממוצע במשק לפי הביטוח הלאומי. התקנון האחיד של רשות שוק ההון מוסיף שהתקרה לא עולה על שיעור קבוע מכל רכיבי השכר שהמעסיק מדווח. הפקדות מעל התקרה עוברות לחשבון העמית בקרן הפנסיה הכללית של אותה חברה. תקרה שלא נוצלה בחודש אחד עוברת לחודשים הבאים באותה שנה.",
+  "title": "The comprehensive fund's monthly deposit ceiling",
+  "title_he": "תקרת ההפקדה החודשית לקרן פנסיה מקיפה",
+  "text_he": "ההפקדות של המעסיק והעובד לקרן פנסיה חדשה מקיפה לא יעלו על תקרת ההפקדה החודשית: 20.5% מתקרת השכר המבוטח, שהיא פעמיים השכר הממוצע במשק לפי הביטוח הלאומי, כלומר {PEN-08:monthly_deposit_ceiling} בחודש. לפי התקנון האחיד של רשות שוק ההון, התקרה גם לא עולה על 22.83% מכל רכיבי השכר שהמעסיק מדווח. הפקדות מעל התקרה עוברות לחשבון העמית בקרן הפנסיה הכללית של אותה חברה. תקרה שלא נוצלה בחודש אחד עוברת לחודשים הבאים באותה שנה.",
   "figure_names_he": {
     "monthly_deposit_ceiling": "תקרת ההפקדה החודשית לקרן מקיפה"
   },
   "strength": "primary",
   "dimensions": [
-    "deposit-ceiling",
-    "insurance-cover"
+    "deposit-ceiling"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
@@ -80,19 +79,6 @@
       "locator_he": "עמוד הקובץ 6, תוספת שביעית",
       "page": 6,
       "checked": "2026-11-07"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
-      "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011",
-      "title_he": "צו הרחבה [נוסח משולב] לפנסיה חובה, 2011",
-      "publisher": "gov.il",
-      "publisher_he": "משרד העבודה",
-      "kind": "official_pdf",
-      "strength": "primary",
-      "locator": "p.2, s.2(ד)",
-      "locator_he": "עמוד 2, סעיף 2(ד)",
-      "page": 2,
-      "checked": "2026-10-25"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",

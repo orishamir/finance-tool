@@ -6,7 +6,7 @@
     "regulator": "CMA",
     "tase_member": false,
     "protection_rule_ids": [
-      "REG-18",
+      "PF-29",
       "REG-19"
     ]
   },
@@ -46,8 +46,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Ayalon's joining form for איילון קופת גמל להשקעה (form 102, edition 06.2026, fund code 15969; the product page links two files of this edition, …062026-1.pdf and …062026-2.pdf, both read) leaves both rates blank on p.2 (\"שיעור דמי ניהול מצבירה (שנתי) __%\", \"שיעור דמי ניהול מהפקדה שוטפת (חודשי) __%\"); the fund's standard bylaws (edition 07.2026, s.35.1, p.9) let the company charge up to the maximum the law sets on the balance (s.35.1.1) and on each payment (s.35.1.2). Recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee; what a joiner is offered is set in the blank, not published. The form's p.3 prints no average fee: \"החברה החלה לפעול בשנת 2026 - טרם נבחנו דמי ניהול ממוצעים בקופה\". The bylaws let a lower fee be offered only if it holds for \"תקופת חמש שנים או יותר\" (s.36.1, p.9), as the CMA circular sets (KGL-16). On top of the fees the company may charge direct expenses for transactions from the fund's assets (bylaws s.27.1.2, p.8; no rate printed, not recorded). Both documents read in a browser 2026-11-07 (ayalon-ins.co.il refuses scripts, so they are not in the library). The product page's own fee wording, if any, was not read: advertising (D56). A member's own agreement sets the fee actually paid (D4)."
@@ -89,8 +88,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Ayalon's joining form for איילון קופת גמל להשקעה (form 102, edition 06.2026, fund code 15969; the product page links two files of this edition, …062026-1.pdf and …062026-2.pdf, both read) leaves both rates blank on p.2 (\"שיעור דמי ניהול מצבירה (שנתי) __%\", \"שיעור דמי ניהול מהפקדה שוטפת (חודשי) __%\"); the fund's standard bylaws (edition 07.2026, s.35.1, p.9) let the company charge up to the maximum the law sets on the balance (s.35.1.1) and on each payment (s.35.1.2). Recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee; what a joiner is offered is set in the blank, not published. The form's p.3 prints no average fee: \"החברה החלה לפעול בשנת 2026 - טרם נבחנו דמי ניהול ממוצעים בקופה\". The bylaws let a lower fee be offered only if it holds for \"תקופת חמש שנים או יותר\" (s.36.1, p.9), as the CMA circular sets (KGL-16). On top of the fees the company may charge direct expenses for transactions from the fund's assets (bylaws s.27.1.2, p.8; no rate printed, not recorded). Both documents read in a browser 2026-11-07 (ayalon-ins.co.il refuses scripts, so they are not in the library). The product page's own fee wording, if any, was not read: advertising (D56). A member's own agreement sets the fee actually paid (D4)."

@@ -875,7 +875,7 @@
       "guide:keren-hishtalmut",
       "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Each track counts as a separate fund for fee caps (KGL-14, KH-22).",
+    "notes": "Each track counts as a separate fund for fee caps (PF-07, KH-22).",
     "id": "mslvl-hshkah-c"
   },
   {
@@ -1603,8 +1603,8 @@
       "CS-18",
       "IRA-16",
       "IRA-17",
-      "KGL-14",
-      "KH-22"
+      "KH-22",
+      "PF-03"
     ],
     "source": {
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, קובץ התקנות 7131, עמוד 4",
@@ -1624,7 +1624,7 @@
       "guide:keren-hishtalmut",
       "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Gemel lehashkaa: capped on the balance and on deposits (KGL-14). Study fund: balance only; a deposit fee is not authorised (inference, KH-22). Child savings: NII pays until 21 (CS-18). IRA: brokerage and custody are charged on top (IRA-16). The fee actually paid is set per member. The last variant is Meitav's IRA form wording. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)) to the official text.",
+    "notes": "Gemel lehashkaa: capped on the balance and on deposits (PF-03). Study fund: balance only; a deposit fee is not authorised (inference, KH-22). Child savings: NII pays until 21 (CS-18). IRA: brokerage and custody are charged on top (IRA-16). The fee actually paid is set per member. The last variant is Meitav's IRA form wording. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)) to the official text.",
     "id": "dmy-nyhvl-c"
   },
   {
@@ -1639,8 +1639,8 @@
     ],
     "explain_he": "כל הכסף שנמצא כרגע בחשבון שלכם בקופה, כולל הרווחים או ההפסדים",
     "rule_ids": [
-      "KGL-14",
-      "KH-22"
+      "KH-22",
+      "PF-02"
     ],
     "source": {
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012, קובץ התקנות 7131, עמוד 4",
@@ -2348,7 +2348,8 @@
     ],
     "explain_he": "תפיסה של כסף או נכס של מי שחייב כסף, אצל מי שמחזיק אותו, כמו בנק או קופת גמל, כדי לפרוע את החוב",
     "rule_ids": [
-      "REG-18",
+      "PF-29",
+      "PF-48",
       "KGL-18"
     ],
     "source": {

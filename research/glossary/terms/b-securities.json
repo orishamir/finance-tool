@@ -427,7 +427,7 @@
     "explain_he": "העברת ניירות ערך וקרנות לחשבון אחר, למשל לבנק או לבית השקעות אחר, והיא כרוכה בעמלה.",
     "rule_ids": [
       "BRK-16",
-      "BRK-18"
+      "SW-33"
     ],
     "source": {
       "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
@@ -440,7 +440,7 @@
       "tariff",
       "guide:brokerage-account"
     ],
-    "notes": "At banks the price of a move to the same client's account elsewhere is supervised, and on closing the account it is capped (BRK-18). The full process is in switching-and-transfers.md.",
+    "notes": "At banks the price of a move to the same client's account elsewhere is supervised, and on closing the account it is capped (SW-33). The full process is in switching-and-transfers.md.",
     "id": "habrt-nyyrvt-ark"
   },
   {

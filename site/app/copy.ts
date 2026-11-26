@@ -3884,7 +3884,7 @@ export const guideSignature = {
     inputNames: { trackFee: "דמי הניהול של המסלול", lockYears: "שנות הנעילה", cap: "תקרת המשכורת הקובעת", selfBenefited: "תקרת ההפקדה המוטבת לעצמאי בשנה" },
   },
   pension: {
-    // the `stated` parts below are the words that state a rule and open it (D116): here PEN-05, severance deposits in place of severance pay
+    // the `stated` parts below are the words that state a rule and open it (D116): here PEN-67, severance deposits in place of severance pay
     lead: { before: "הפקדה לפנסיה של שכיר מורכבת משלושה חלקים: מה שמנוכה לכם מהמשכורת, מה שהמעסיק מוסיף,", prefix: "ו", stated: "פיצויים שהמעסיק שומר לכם בקרן", after: ". כך זה נראה במשכורת שבחרתם:" },
     // `stated`: TXP-05 and TXP-06, the deduction, beside TXP-02 and TXP-04, the credit on what was not deducted
     selfEmployed: { before: "כאן מוצג שכיר שהמעסיק מפקיד לו. עצמאי מפקיד בעצמו, בלי מעסיק, וההטבה שלו היא", stated: "ניכוי מההכנסה לצד זיכוי", after: ". החישוב לעצמאי עוד לא מוצג כאן." },

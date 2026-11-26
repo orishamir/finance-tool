@@ -52,8 +52,7 @@
       "update_rule": "fixed in regulation",
       "rule_ids": [
         "PF-02",
-        "PF-03",
-        "KGL-14"
+        "PF-03"
       ],
       "state": "sourced",
       "notes": "Maximum fee of a kupat gemel (as defined for reg. 2) on the payments transferred for each member, as a share of each deposit."
@@ -74,8 +73,7 @@
       "update_rule": "fixed in regulation",
       "rule_ids": [
         "PF-02",
-        "PF-03",
-        "KGL-14"
+        "PF-03"
       ],
       "state": "sourced",
       "notes": "Maximum management fee of a \"קופת גמל\" (kupat gemel lehashkaa among them), per year, of each member's accumulated balance. In force since 2014 (a transitional 1.1% applied to 31 Dec 2013, reg. 7). Excludes fund types with their own caps (hishtalmut, IRA, pension). Legacy accounts (pre-2008 contributions, non-insurance fund) may be charged up to NIS 6 a month instead (reg. 2(א)(2א)); that amount was not read."
@@ -203,7 +201,7 @@
   },
   "protection": {
     "rule_ids": [
-      "REG-18",
+      "PF-29",
       "REG-19"
     ],
     "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value"
