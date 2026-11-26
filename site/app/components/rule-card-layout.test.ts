@@ -1,4 +1,4 @@
-// On one rule card, each fact is shown once: the day a source was read stands on its source line, and the record's own date only
+// On one rule card or figure sheet, each fact is shown once: the day a source was read stands on its source line, and the record's own date only
 // on a card with no source. What a card says is true of the record: the rules its Source line points to are pointers.
 import { readFileSync } from "node:fs";
 import { createElement } from "react";
@@ -6,11 +6,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { ruleCardMore, rule as ruleCopy, scopeWords } from "../copy";
+import { ruleCardMore, rule as ruleCopy, scopeWords, sourceBlock, strength } from "../copy";
 import { fmt } from "../lib/format";
 import { joinNames, ownDocCompanies } from "../lib/scope";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
-import { RuleCard, RuleDetail } from "./provenance-sheets";
+import { RuleCard, RuleDetail, ValueSheet } from "./provenance-sheets";
+import type { SiteValue } from "../lib/value";
 
 const root = new URL("../../../", import.meta.url);
 const record = (id: string): RuleRecord => JSON.parse(readFileSync(new URL(`data/rules/${id.toLowerCase()}.json`, root), "utf8")) as RuleRecord;
@@ -97,5 +98,37 @@ describe("the companies of a company's term", () => {
     const detail = words(createElement(RuleDetail, { id, data, products: [] }), data);
     expect(detail).toContain(scopeWords.line.institutionTagged);
     expect(detail).not.toContain(named(data, id));
+  });
+});
+
+describe("a sourced figure's sheet", () => {
+  /** A bank's fee from its own price list, read on 25.10.2026, shown away from the bank's own product. */
+  const figure = (sourceStrength: "institution" | "secondary"): SiteValue => ({
+    value: 10,
+    unit: "nis",
+    source: { url: "https://example.org/tariff.pdf", title: "תעריפון", publisher: "Bank", strength: sourceStrength },
+    checked: "2026-10-25",
+    effective_from: null,
+    effective_to: null,
+    update_rule: "provider-set",
+    state: "sourced",
+  });
+  const sheet = (v: SiteValue) => {
+    const data = dataOf({});
+    return words(createElement(ValueSheet, { value: v, exact: false, data, headId: "h", descId: "d" }), data);
+  };
+  it("names a weak source's strength once, in its callout, beside its explanation", () => {
+    for (const st of ["institution", "secondary"] as const) {
+      const text = sheet(figure(st));
+      expect(count(text, strength[st].label)).toBe(1);
+      expect(text).toContain(strength[st].line);
+      expect(count(text, sourceBlock.weak[st]!)).toBe(sourceBlock.weak[st] === strength[st].label ? 1 : 0);
+    }
+  });
+  it("goes from its tag straight to its source, with no sentence that only points at it", () => {
+    const text = sheet({ ...figure("institution"), own: "bank" });
+    expect(text).not.toMatch(/מהמקור שלמטה/);
+    expect(text).not.toContain(strength.institution.label);
+    expect(text).toContain(`${sourceBlock.checked} ${fmt.date("2026-10-25")}`);
   });
 });

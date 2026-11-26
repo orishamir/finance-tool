@@ -75,8 +75,11 @@ function SourceNames({ parts, hebrewTitle }: { parts: ReturnType<typeof sourcePa
   );
 }
 
-/** One source: the link line, the quoted words, then when it was read (synthesis 3.3). */
-function OneSource({ source, rule, today, english, own }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; english?: boolean; own?: OwnSource }) {
+/**
+ * One source: the link line, the quoted words, then when it was read and how strong it is (synthesis 3.3). `strengthSaid`: the sheet
+ * states the strength itself (a figure's strength callout over its one source), so the line leaves its word out.
+ */
+function OneSource({ source, rule, today, english, own, strengthSaid }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; english?: boolean; own?: OwnSource; strengthSaid?: boolean }) {
   // a data file names its company in English: the publishers table gives the Hebrew name by the source's host
   const publishersHe = useContext(DataCtx)?.publishersHe;
   const host = hostOf(source.url);
@@ -86,7 +89,7 @@ function OneSource({ source, rule, today, english, own }: { source: RuleSource; 
   // D31: a company's own document on its own term is shown with a neutral source line, no "לפי החברה"; `own` lifts only that label,
   // never "מקור משני"
   const isOwn = typeof own === "function" ? own(source) : !!own;
-  const weak = source.strength !== "primary" && !(isOwn && source.strength === "institution") ? sourceCopy.weak[source.strength] : null;
+  const weak = !strengthSaid && source.strength !== "primary" && !(isOwn && source.strength === "institution") ? sourceCopy.weak[source.strength] : null;
   const changed = mayHaveChanged(rule ?? { likely_to_change: "no" }, source, today);
   return (
     <div className="flex flex-col gap-1">
@@ -124,16 +127,16 @@ function OneSource({ source, rule, today, english, own }: { source: RuleSource; 
  * The source block (synthesis 3.3): the first source in full; further ones behind "עוד מקור אחד" in the sheet and all
  * shown when `inline` (the rules pages). `english` keeps the English title in a collapsed line when the shown name is a host.
  */
-export function SourceBlock({ source, rule, today, inline, english, own }: { source: RuleSource | readonly RuleSource[]; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; inline?: boolean; english?: boolean; own?: OwnSource }) {
+export function SourceBlock({ source, rule, today, inline, english, own, strengthSaid }: { source: RuleSource | readonly RuleSource[]; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; inline?: boolean; english?: boolean; own?: OwnSource; strengthSaid?: boolean }) {
   const list = Array.isArray(source) ? (source as readonly RuleSource[]) : [source as RuleSource];
   const [first, ...rest] = list;
   if (!first) return null;
   // no "לקריאה נוחה" copy after an official source any more: pickSources leaves copies out when there is one
   // one page may be cited twice, for two quotes (IRA-29): the place in the list keeps the keys apart
-  const more = rest.map((s, i) => <OneSource key={`${i}:${s.url}${s.locator ?? ""}`} source={s} rule={rule} today={today} english={english} own={own} />);
+  const more = rest.map((s, i) => <OneSource key={`${i}:${s.url}${s.locator ?? ""}`} source={s} rule={rule} today={today} english={english} own={own} strengthSaid={strengthSaid} />);
   return (
     <div className="flex flex-col gap-3">
-      <OneSource source={first} rule={rule} today={today} english={english} own={own} />
+      <OneSource source={first} rule={rule} today={today} english={english} own={own} strengthSaid={strengthSaid} />
       {rest.length > 0 &&
         (inline ? (
           more
@@ -368,8 +371,11 @@ function unitWordOf(unit: string): string | null {
   return (copy.unit as Record<string, string>)[unit] ?? null;
 }
 
-/** The sourced figure's one source block: the figure's own source and date, with the Hebrew names and the locator of the same link in its rule record when there is one. */
-function FigureSource({ value, data }: { value: SiteValue; data: ProvenanceData }) {
+/**
+ * The sourced figure's one source block: the figure's own source and date, with the Hebrew names and the locator of the same link in its
+ * rule record when there is one. `strengthSaid`: the sheet's strength callout already names the source's strength.
+ */
+function FigureSource({ value, data, strengthSaid }: { value: SiteValue; data: ProvenanceData; strengthSaid: boolean }) {
   if (value.state !== "sourced") return null;
   const ids = value.rule_ids ?? [];
   const strengthOk = (st: string): st is RuleSource["strength"] => st === "primary" || st === "institution" || st === "secondary";
@@ -397,7 +403,7 @@ function FigureSource({ value, data }: { value: SiteValue; data: ProvenanceData 
   };
   // a figure's source can be a file of the site, not a web address: the old plain label stays for it
   if (!/^https?:/.test(publicUrl(source.url))) return <SourceLink url={source.url} title={source.title} />;
-  return <SourceBlock source={source} rule={owner} today={data.today} english own={!!value.own} />;
+  return <SourceBlock source={source} rule={owner} today={data.today} english own={!!value.own} strengthSaid={strengthSaid} />;
 }
 
 /**
@@ -482,7 +488,9 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
   const fromDate = startsAfter(value, today);
   const year = calendarYearOf(value);
   const weakNames = value.state === "computed" ? weakInputNames(value) : [];
-  const strengthNote = (isWeak(value) || strength === "open") && value.state !== "entered" && (
+  // the sheet says a weak or open strength once, in this callout: a sourced figure's source line leaves its word out
+  const strengthSaid = (isWeak(value) || strength === "open") && value.state !== "entered";
+  const strengthNote = strengthSaid && (
     <Callout tone={strength === "open" ? "blocked" : "caution"} title={strengthCopy[strength].label}>
       {strengthCopy[strength].line}
       {/* the question an open value waits on, named in its source or notes ("TXI OQ19"): its chip opens the question */}
@@ -562,12 +570,6 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
         </dl>
       )}
 
-      {value.state === "sourced" && !param && value.value !== null && !value.about && (
-        <p className="text-sm text-muted-foreground">
-          {copy.sourced.lineBefore}
-        </p>
-      )}
-
       {value.state === "sourced" && param && (
         <dl className="sheet-dl">
           <Row label={copy.parameter.why}>
@@ -578,7 +580,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
 
       {value.state === "sourced" && !param && value.value !== null && (
         <>
-        <FigureSource value={value} data={data} />
+        <FigureSource value={value} data={data} strengthSaid={strengthSaid} />
         <dl className="sheet-dl">
           {year ? (
             <Row label={copy.sourced.forYear}>
