@@ -1,0 +1,85 @@
+{
+  "id": "TX2-03",
+  "title": "FX-deposit interest exempt for olim (20 years) and returning residents (5 years)",
+  "title_he": "ריבית על פיקדון במטבע חוץ: פטור ממס לעולה חדש ולתושב חוזר",
+  "strength": "primary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "eligibility",
+    "currency",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-15",
+  "text_he": "ריבית על פיקדון במטבע חוץ בבנק, כולל הפרשי שער, פטורה ממס לעולה חדש עד {TX2-19:olim_exemption_years} מהיום שהיה לתושב ישראל לראשונה, ולתושב חוזר במשך {TX2-19:returning_resident_exemption_years} מהיום שחזר. הפטור חל רק על כסף שהיה לאדם בחוץ לארץ לפני שהיה לתושב, ולתושב חוזר גם לא על כסף ממכירת נכסים בישראל, ורק אם הכסף הופקד בתוך {TX2-19:deposit_within_days} מהעברתו לישראל. האדם צריך להצהיר לבנק על מעמדו בתוך {TX2-19:declaration_within_days} מפתיחת הפיקדון, הריבית צריכה להיות לא הכנסה מעסק, והפיקדון לא יכול לשמש הלוואה או בטוחה להלוואה לקרוב או לחברה בשליטת האדם, אם הם תושבי ישראל. על ריבית שפטורה כך הבנק לא מנכה מס במקור.",
+  "il_finance_file": "tax-tier2-other.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=6",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "gazette p.288, reg. 1, definition צווי הפטור and נכס שאינו צמוד למדד",
+      "locator_he": "עמוד הרשומות 288, תקנה 1, הגדרת צווי הפטור ונכס שאינו צמוד למדד",
+      "page": 6,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "שר האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "gazette p.289, reg. 4",
+      "locator_he": "עמוד הרשומות 289, תקנה 4",
+      "page": 7,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7076%2Fheb#page=2",
+      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים) (תיקון), התשע\"ב-2012, קובץ התקנות 7076 (11.1.2012)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "gazette p.600, s.3",
+      "locator_he": "עמוד הרשומות 600, סעיף 3",
+      "page": 2,
+      "quote": "בתקנה 4 לתקנות העיקריות, במקום \"20%\" יבוא \"25%\"",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.54, section ג.2(ב)",
+      "locator_he": "עמוד 54, סעיף ג.2(ב)",
+      "page": 54,
+      "quote": "פטור מריבית והצמדה למי שהיה לתושב ישראל לראשונה (עולה חדש)",
+      "checked": "2026-10-22",
+      "qualifier": "(page image)"
+    },
+    {
+      "url": "https://www.leumi.co.il/he/Articles/9929",
+      "title": "Bank Leumi, \"פיקדונות במטבע חוץ\"",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "פטור ל-20 שנה מתאריך העלייה ארצה",
+      "checked": "2026-10-22"
+    }
+  ]
+}
