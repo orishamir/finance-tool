@@ -248,7 +248,8 @@ function runPensionUnder(input: PensionInput, ctx: RunContext): PensionResult {
   const out = ledger(book, tally, input, gross, C, T, I);
 
   if (input.wrapper === "pension-comprehensive") {
-    const ceiling = book.on("deposit").amount("PEN-08", "monthly_deposit_ceiling");
+    // the ceiling decides only the flag: the excess's move to the general fund (PEN-10) is not modelled, so it sets no number
+    const ceiling = book.on("deposit").peek.amount("PEN-08", "monthly_deposit_ceiling");
     for (let m = 1; m <= T; m++) if ((gross[m] ?? 0) + employerMonth > ceiling) { tally.flag("PEN-08", m); break; }
   }
 

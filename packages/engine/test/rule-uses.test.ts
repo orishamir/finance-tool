@@ -322,6 +322,15 @@ describe("the parts each run's rules went into", () => {
   });
 });
 
+describe("the pension runs", () => {
+  it("flags the comprehensive fund's deposit ceiling and takes it on no part", () => {
+    const over = runPension({ ...reliefPaths["F-32, beneficiary member"], goal: { amountNow: 0, monthly: 30_000, months: 24 } }, ctx);
+    expect(over.flags.map((f) => f.code)).toContain("PEN-08");
+    expect(read(over, "PEN-08")).toBe(true);
+    expect(changedIn(over, "PEN-08")).toEqual([]);
+  });
+});
+
 describe("the relief paths (F-30 to F-32)", () => {
   // The rules that change each path's relief, from the rule base: the credit is TXP-01's rate on an amount TXP-02 caps; a beneficiary member
   // (TXP-03) takes TXP-06's two-tier deduction and TXP-04's credit cap; one who is not takes TXP-05's deduction, whose limb (1), on income that
