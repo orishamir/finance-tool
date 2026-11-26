@@ -5,6 +5,7 @@
 // reading the run's context chooses.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountInYear, movesBy, movingYears, yearlyMoveOf } from "./formulas/indexation.ts";
+import { PERCENT_UNITS } from "./units.ts";
 import { OpenReadingError, openReadingOf, type OpenReading, type TaxIndexOpenReading, type TaxIndexReadingId } from "./open-readings.ts";
 import { labelWeight, type FeeType, type Label, type NotKnown, type RuleLabel, type RuleUse, type RunContext, type RunPart, type TaxLine } from "./result.ts";
 
@@ -70,8 +71,6 @@ export class MissingRuleError extends Error {
     this.figure = figure;
   }
 }
-
-const percentUnits = new Set(["pct", "pct_per_year", "pct_of_deposit", "pct_of_trade", "pct_of_balance_per_period"]);
 
 const labelFor: Partial<Record<Strength, RuleLabel["code"]>> = {
   secondary: "secondary-source",
@@ -220,7 +219,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
 
   function numeric(id: string, name: string, v: ValueObject): number {
     if (typeof v.value !== "number") throw new MissingRuleError(id, name);
-    return percentUnits.has(v.unit) ? v.value / 100 : v.value;
+    return PERCENT_UNITS.has(v.unit) ? v.value / 100 : v.value;
   }
 
   /**
@@ -258,7 +257,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
       rate(id, name) {
         const { f, use } = figure(id, name, at, changed);
         const v = current(id, name, f, use);
-        if (!percentUnits.has(v.unit)) throw new MissingRuleError(id, `${name} as a percentage`);
+        if (!PERCENT_UNITS.has(v.unit)) throw new MissingRuleError(id, `${name} as a percentage`);
         return numeric(id, name, v);
       },
       amount(id, name, currency) {
@@ -266,7 +265,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
         const v = current(id, name, f, use);
         if ((v.currency ?? "NIS") !== (currency ?? "NIS")) throw new MissingRuleError(id, `${name} in ${currency ?? "NIS"}`);
         const n = numeric(id, name, v);
-        return percentUnits.has(v.unit) ? n : inYearOf(id, name, v, n, taxYear);
+        return PERCENT_UNITS.has(v.unit) ? n : inYearOf(id, name, v, n, taxYear);
       },
       fact(id, name) {
         const { f, use } = figure(id, name, at, changed);
