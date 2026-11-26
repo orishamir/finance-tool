@@ -35,7 +35,9 @@ export type FeeType =
  * - `relief`: a tax benefit at deposit (TXP-*, TXG-02 used for relief or grossing up);
  * - `fees`: a fee, always with its `FeeType` line, as the Tally books it (the fund's drag on "fund", the spread on "spread");
  * - `fundTax`: the tax a fund pays inside its price (TXS-12, TXS-44);
- * - `taxDuring` and `taxAtExit`: the `RunResult` fields of those names; an exemption that zeroes one is a use on it;
+ * - `taxDuring` and `taxAtExit`: the `RunResult` fields of those names; an exemption that zeroes one is a use on it. `taxDuring` also holds
+ *   the F-52 salary tax on an employer's deposit above its exempt limit, which a run deducts from `nominal` as a detail
+ *   (`employerDepositTax`, `depositTax`) and does not add to the field;
  * - `term`: when the money can come out (a lock, a fund's fixed dates).
  */
 export type RunPart = "deposit" | "relief" | "fees" | "fundTax" | "taxDuring" | "taxAtExit" | "term";
