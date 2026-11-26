@@ -137,7 +137,7 @@ Importance is a judgement, so it is a parameter: the data-driven score (engine u
 | 9 | PF-13, PF-14, SW-15 | a fee discount: for how long is it guaranteed |
 | 10 | TXS-24, MF-37 | whether all money-market funds are the same |
 | 11 | BANK-20 | money sitting in a current account: what the bank must say |
-| 12 | REG-18, REG-19 | what happens to a pension if the managing company fails |
+| 12 | PF-29, REG-19 | what happens to a pension if the managing company fails |
 
 **Facts** (`facts`): the short facts of the rules page's "הידעת?" block, 36 today, each with its `text_he`. The validator checks that each rests on one general rule (never a company's term) with a primary source, appears once, and carries no typed digit: every figure is a `{ID:figure}` slot over that rule.
 
@@ -153,9 +153,9 @@ Importance is a judgement, so it is a parameter: the data-driven score (engine u
 - brokerage-account: TXS-21, TXS-02, TXS-19
 - kupat-gemel-lehashkaa: TXK-04, KGL-02, TXK-05
 - keren-hishtalmut: KH-19, KH-15, PF-18
-- pension-comprehensive: PEN-23, PEN-15, REG-18
-- pension-general: REG-18, PEN-15, TXP-15
-- provident-for-annuity: TXP-15, REG-18, PF-19
+- pension-comprehensive: PEN-23, PEN-15, PF-29
+- pension-general: PF-29, PEN-15, TXP-15
+- provident-for-annuity: TXP-15, PF-29, PF-19
 - child-savings-provident: CS-18, CS-20, CS-12
 - child-savings-bank: CS-05, CS-12, CS-10
 - ira-hishtalmut: TXH-09, IRA-16, IRA-18

@@ -279,7 +279,7 @@
   },
   "protection": {
     "rule_ids": [
-      "REG-18",
+      "PF-29",
       "REG-19",
       "IRA-26",
       "IRA-12",

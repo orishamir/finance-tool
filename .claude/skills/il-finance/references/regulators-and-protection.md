@@ -231,14 +231,10 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Dimensions: `regulator`
 - Likely to change: no
 
-### REG-18 Provident, study, investment-provident and pension assets: held in trust, separate, not attachable
-- Rule:
-  - "חברה מנהלת תשמש נאמן על נכסי קופות הגמל שבניהולה, לטובת העמיתים" (s.3(א)).
-  - "חברה מנהלת תחזיק ותנהל את נכסי קופת הגמל שבניהולה בנפרד מרכושה, לטובת העמיתים באותה קופה" (s.27(א)), with a separate account system per fund (s.27(ב)).
-  - "נכסי קופת גמל אינם ניתנים לעיקול" (s.30(א)).
-  - A member's rights cannot be attached except under rules set by the Minister (s.25(ב)).
-- Conditions / exceptions: Applies to every tier-1 CMA wrapper (definitions in REG-17). Market losses are not protected. For child savings held at a provident fund, see REG-23.
-- Figures: none.
+### REG-18 Provident, study, investment-provident and pension assets: held in trust, separate, not attachable (retired: see PF-29)
+- Rule: Retired on 2026-11-26. It stated the same sections of the Provident Funds Law as PF-29 (the managing company is trustee of the funds' assets for the members, s.3(א); it holds them apart from its own property, with a separate account system per fund, s.27; they cannot be attached, s.30(א)), and PF-29 now holds them alone, with REG-18's conditions (every tier-1 CMA wrapper, market losses not protected, the pointer to REG-23 for child savings). Its sentence that a member's rights can be attached only under rules set by the Minister (s.25(ב)) moved to PF-48. The id stays so that references to it resolve; they should point to PF-29 (the fund's assets) or PF-48 (a member's rights).
+- Conditions / exceptions: none of its own; see PF-29 and PF-48.
+- Figures: none
 - Source: [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005 (ספר החוקים 2024)](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf), p.4, s.3; p.11, s.25; p.12, ss.27, 30(א) · checked 2026-10-25 · primary.
 - Scope: general
 - Dimensions: `protection`
@@ -286,7 +282,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 
 ### REG-23 Child savings: protection follows where the parents put it
 - Rule: The plan is opened "בקופת גמל או בבנק לפי בחירתכם". Questions about the balance go to "קופת הגמל או לבנק שמנהלים את החיסכון".
-- Conditions / exceptions: At a provident fund, REG-18 and REG-19 apply. At a bank, the money is a bank deposit with no deposit insurance (REG-04 to REG-06). The NII page names no supervising regulator, and the default when parents do not choose is not stated on this page (see `child-savings.md`).
+- Conditions / exceptions: At a provident fund, PF-29, PF-48 and REG-19 apply. At a bank, the money is a bank deposit with no deposit insurance (REG-04 to REG-06). The NII page names no supervising regulator, and the default when parents do not choose is not stated on this page (see `child-savings.md`).
 - Figures: none here.
 - Source: [ביטוח לאומי: תכנית חיסכון לכל ילד](https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx) · checked 2026-10-25 · primary.
 - Scope: general
@@ -344,7 +340,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   | Parent | מיטב בית השקעות בע"מ (site) | (listed) | Meitav home page and portfolio-management footer. |
   | Loans | מיטב הלוואות בע"מ | not determined | Meitav home page. Out of scope. |
 
-- Conditions / exceptions: The Meitav home page also shows "מיטב תכלית קרנות נאמנות בע"מ" in an executive's title, while the ISA report and Meitav's own fund page use "מיטב קרנות נאמנות בע"מ". The controlling corporation is "מיטב דש השקעות בע"מ" in the CMA data and "מיטב בית השקעות בע"מ" on the site. Whether these are renames or distinct companies needs the Companies Registrar or ISA register (open question 15). For the catalogue: the Meitav app's "open a new saving" products run on the CMA licence of מיטב גמל ופנסיה, which REG-18 and REG-19 govern.
+- Conditions / exceptions: The Meitav home page also shows "מיטב תכלית קרנות נאמנות בע"מ" in an executive's title, while the ISA report and Meitav's own fund page use "מיטב קרנות נאמנות בע"מ". The controlling corporation is "מיטב דש השקעות בע"מ" in the CMA data and "מיטב בית השקעות בע"מ" on the site. Whether these are renames or distinct companies needs the Companies Registrar or ISA register (open question 15). For the catalogue: the Meitav app's "open a new saving" products run on the CMA licence of מיטב גמל ופנסיה, which PF-29 and REG-19 govern.
 - Figures: as in the table.
 - Source: [Gemel-Net API, period 202609, q=מיטב](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters={"REPORT_PERIOD":202609}&q=מיטב&limit=60); [Pensia-Net API, period 202609](https://data.gov.il/api/3/action/datastore_search?resource_id=6d47d6b5-cb08-488b-b333-f1e717b1e1bd&filters={"REPORT_PERIOD":202609}&q=מיטב&limit=30) · checked 2026-10-22 · primary. [ISA 2025 fund report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf) p.7 · primary. [TASE NBCM guide (Hebrew)](https://content.tase.co.il/media/chilpz2c/1150_nbcm_372306_heb.pdf) p.12 · primary. [Meitav home](https://www.meitav.co.il/), [mutual funds](https://www.meitav.co.il/mutual_funds/), [Meitav Trade terms](https://www.meitav.co.il/trade/customer-service/meitav_terms/), [portfolio management](https://www.meitav.co.il/portfolio_management/) · checked 2026-10-22 · institution
 - Dimensions: `regulator`, `protection`
@@ -393,7 +389,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 ### REG-34 Assets held in trust: the trustee's creditors cannot reach them
 - Rule: A trust can be created by law ("נאמנות נוצרת על פי חוק, על פי חוזה עם נאמן או על פי כתב הקדש", s.2). "אין לרדת לנכסי הנאמנות אלא בשל חובות המוטלים עליהם או הנובעים מפעולות הנאמנות" (s.3(ב)), and "הנאמן חייב להחזיק את נכסי הנאמנות בנפרד מנכסים אחרים או בדרך המאפשרת להבחין ביניהם" (s.3(ג)).
 - Who holds a saver's assets as a trustee, by law or by a binding rule:
-  - a provident, study or pension fund's managing company, for the fund's assets (Provident Funds Law s.3(א), REG-18);
+  - a provident, study or pension fund's managing company, for the fund's assets (Provident Funds Law s.3(א), PF-29);
   - a mutual fund's trustee, in whom the fund's assets are vested for the unit holders as a separate estate (Joint Investment Trust Law s.76(א), REG-10);
   - every TASE clearing member, banks included, for its clients' TASE securities (clearing-house bylaws, REG-35, BRK-58);
   - a non-bank TASE member, for its clients' financial assets and cash (TASE rules, BRK-07, BRK-08).
@@ -491,7 +487,7 @@ What protects a saver's money if the company holding it fails, for every kind of
 | Single shares, REIT | A share in a company | Equity, not a debt: the members receive only what is left after every debt and the expenses (s.242(2)); a debt owed to members because they are members is deferred (s.237(2)) (derived) | None | ISA, TASE | REG-33 · the holding itself: securities-account row |
 | Structured notes and bonds | Not researched | Not researched | Not researched | Not researched | open 25 |
 | Managed portfolio | In the client's own account at a bank or TASE member; the manager holds a power of attorney only (read) | The manager's failure leaves the assets at the custodian (derived); the manager must keep equity and security against negligence and employees' breach of trust (read) | None; protection follows the custodian | ISA | REG-09, MGD-14, MGD-15 |
-| Provident fund for investing, study fund, provident fund for annuity, pension fund, IRA run by a managing company | Held by the managing company **as trustee** for the members, apart from its own property, not attachable (read; for an IRA because Provident Funds Law s.57(א)(1) keeps ss.3, 27 and 30, read as enacted) | Management moves to another managing company; the Commissioner may appoint an authorised manager (read); out of the company's creditors' reach (derived) | None, except the state return top-up on 30% of an eligible pension fund's assets (old funds and new comprehensive funds only). Pension rights also move with the fund's actuarial surplus or deficit | CMA | REG-18, REG-19, PEN-18, PEN-69, PEN-19, PF-29, IRA-01 · IRA: `ira-self-directed.md` open question 11 |
+| Provident fund for investing, study fund, provident fund for annuity, pension fund, IRA run by a managing company | Held by the managing company **as trustee** for the members, apart from its own property, not attachable (read; for an IRA because Provident Funds Law s.57(א)(1) keeps ss.3, 27 and 30, read as enacted) | Management moves to another managing company; the Commissioner may appoint an authorised manager (read); out of the company's creditors' reach (derived) | None, except the state return top-up on 30% of an eligible pension fund's assets (old funds and new comprehensive funds only). Pension rights also move with the fund's actuarial surplus or deficit | CMA | REG-19, PEN-18, PEN-69, PEN-19, PF-29, IRA-01 · IRA: `ira-self-directed.md` open question 11 |
 | Provident fund for annuity, at payout | The annuity is paid by the pension fund or insurer the money moves to | Follows that payer's row | As that payer | CMA | PEN-34 |
 | Child savings | Bank route: a bank deposit; provident route: a provident fund. Either way the child's, held in trust by the parent, and not attachable (National Insurance Law s.74ב) | As the bank row or the provident row | Bank route: none (the principal-at-end promise is a product term, not failure cover) | Supervisor of Banks or CMA; National Insurance pays in | REG-23, CS-05 |
 | Savings policy, executive insurance; an IRA that is an insurer's insurance fund | In the insurer's life-insurance assets, which serve life-insurance liabilities first, liquidation included (read); an insurance fund's assets are not attachable. An insurer's IRA keeps s.3(ב)-(ה) and s.30 but not s.3(א) or s.27 (s.57(א)(2), read as enacted), so it is not held in trust under s.3(א); whether its assets are among the life-insurance assets of s.54 is not stated (derived) | The Commissioner may appoint an authorised manager (read) | None; no state return top-up | CMA | REG-22, INS-14, INS-21 · whether any insurer offers an IRA: `ira-self-directed.md` open question 14 |
@@ -528,7 +524,7 @@ What protects a saver's money if the company holding it fails, for every kind of
 | חשבון נוסטרו | nostro account | Member's own account, as distinct from clients' | TASE | REG-14 |
 | חשבון נאמנות בבנק | bank trust account | Where Meitav Trade says client cash is held | broker site | REG-16 |
 | רשות שוק ההון, ביטוח וחיסכון / הממונה | CMA / the Commissioner | Regulator of provident and pension funds and insurers | law | REG-17 |
-| חברה מנהלת | managing company | Licensed manager of provident or pension funds | law, statements | REG-17, REG-18 |
+| חברה מנהלת | managing company | Licensed manager of provident or pension funds | law, statements | REG-17, PF-29 |
 | עמית | member | Person with money recorded in a provident fund | law, statements | REG-17 |
 | אישור קופת גמל | provident-fund approval | Commissioner's approval of a fund | law | REG-17 |
 | קופת גמל לקצבה | provident fund for annuity | Includes pension funds | law | REG-17 |
