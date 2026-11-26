@@ -322,7 +322,7 @@ describe("invest page computation", () => {
     const used = at.value.rulesUsed!.map((r) => r.id);
     expect(used).toEqual(expect.arrayContaining(["TXF-11"]));
     expect(used).not.toContain("TXF-16");
-    expect(Object.values(at.value.computed_from!.inputs).flatMap((x) => x.rulesUsed ?? []).map((r) => r.id)).toContain("TXF-16");
+    expect(Object.values(at.value.computed_from!.inputs as Record<string, SiteValue>).flatMap((x) => x.rulesUsed ?? []).map((r) => r.id)).toContain("TXF-16");
     expect(used).not.toContain("TXF-04");
     expect(at.value.statements).toEqual([expect.objectContaining({ term: "tax-index", index: "fx", currency: "USD", page: 17, source: expect.objectContaining({ url: f.rec.tax_ruling!.source.url }) })]);
     // the account's cost before tax reads no tax index, and so no statement
@@ -637,7 +637,7 @@ describe("each figure of a run lists the rules of the parts its number is made o
     const gap = differenceOf(["א", a.best!.value], ["ב", b.best!.value], "F-65", { today: t });
     expect(gap.rulesUsed ?? []).toEqual([]);
     expect(sheetRules(gap)).toEqual([]);
-    const reached = Object.values(gap.computed_from!.inputs).flatMap((v) => sheetRules(v).map((r) => r.id));
+    const reached = Object.values(gap.computed_from!.inputs as Record<string, SiteValue>).flatMap((v) => sheetRules(v).map((r) => r.id));
     expect(reached.length).toBeGreaterThan(0);
     for (const id of reached) expect(shipped.has(id), id).toBe(true);
   });
