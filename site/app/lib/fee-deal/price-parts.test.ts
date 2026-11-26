@@ -277,7 +277,7 @@ describe("the templates", () => {
     const spread = house("ibi").fees.find((f) => f.kind === "fx_spread")!;
     expect(spread.by).toMatchObject([{ kind: "actionSize", unit: "USD", tops: [{ v: 15_000 }] }]);
     expect(spread.cases!.map((c) => c.stages[0]!.price)).toMatchObject([{ rate: { v: 0.7 } }, { rate: { v: 0.5 } }]);
-    // Discount: nothing up to 10 $, half its price up to 100 $ with the minimum halved too (BRK-68), the full price above
+    // Discount: nothing up to 10 $, half its price up to 100 $ with the minimum halved too (BRK-86), the full price above
     const fx = house("discount").fees.find((f) => f.kind === "fx")!;
     const direct = fx.cases!.filter((c) => (c.when[0] as string[])[0] === "direct").map((c) => c.stages[0]!.price);
     expect(direct).toMatchObject([{ form: "free" }, { form: "action", discount: { pct: { v: 50 }, alsoMin: true } }, { form: "action" }]);

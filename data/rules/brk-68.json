@@ -1,8 +1,8 @@
 {
   "id": "BRK-68",
-  "title": "Six banks: a flat price, a free band or a discount for a small currency conversion",
-  "title_he": "שישה בנקים: מחיר קבוע, פטור או הנחה בהמרה של סכום קטן",
-  "text_he": "שישה בנקים מתמחרים המרה קטנה של מטבע חוץ בנפרד מהאחוז הרגיל. בבנק הפועלים המרה של עד 99 דולר עולה 5.50 דולר בפקיד ו־3.3 דולר בערוץ ישיר. במזרחי טפחות המרה של עד 10 דולר פטורה מעמלה, והמרה של עד 50 דולר עולה 3.00 דולר בפקיד ו־2.85 דולר באינטרנט. בבנק הבינלאומי ובבנק מסד המרה של עד 10 דולר פטורה, והמרה של עד 100 דולר עולה 3.0 דולר בפקיד. בערוצים הישירים היא עולה 1.5 דולר בבינלאומי ו־1.0 דולר במסד. בבנק דיסקונט ובבנק מרכנתיל המרה של עד 10 דולר פטורה, והמרה של עד 100 דולר מקבלת 50% הנחה, גם על המינימום. אלה תנאים של הבנקים עצמם. כללי העמלות של בנק ישראל משאירים לכל בנק לקבוע את פירוט עמלת החליפין.",
+  "title": "First International and Massad: a conversion up to $10 is free and up to $100 a flat fee, in both channels on the reading of annex E's closing note",
+  "title_he": "המרת מטבע בסכום קטן בבנק הבינלאומי ובבנק מסד: עד 10 דולר בלי עמלה, ועד 100 דולר מחיר קבוע",
+  "text_he": "בבנק הבינלאומי ובבנק מסד, המרה של מטבע חוץ עד שווה ערך של 10 דולר פטורה מעמלה. המרה של עד 100 דולר עולה 3.0 דולר בפקיד, ובערוצים הישירים 1.5 דולר בבינלאומי ו־1.0 דולר במסד. לפי קריאה של האתר, הפטור עד 10 דולר חל גם בערוצים הישירים, כי הנספח שלהם קובע שההערות בתעריפון המלא חלות גם עליהם ״לפי העניין״. המילים ״לפי העניין״ משאירות לבנק את ההחלטה איך ההערה חלה.",
   "strength": "institution",
   "dimensions": [
     "fee-fx"
@@ -14,28 +14,12 @@
   "scope": "institution",
   "scope_institutions": [
     {
-      "id": "hapoalim",
-      "name_he": "בנק הפועלים"
-    },
-    {
-      "id": "mizrahi-tefahot",
-      "name_he": "בנק מזרחי טפחות"
-    },
-    {
       "id": "fibi",
       "name_he": "הבנק הבינלאומי"
     },
     {
       "id": "massad",
       "name_he": "בנק מסד"
-    },
-    {
-      "id": "discount",
-      "name_he": "בנק דיסקונט"
-    },
-    {
-      "id": "mercantile",
-      "name_he": "בנק מרכנתיל דיסקונט"
     }
   ],
   "sources": [
@@ -68,47 +52,6 @@
       "checked": "2026-11-21"
     },
     {
-      "url": "https://www.discountbank.co.il/media/xq0bggwd/תעריפון-יחיד-עסק-קטן-מאוגד-12102026.pdf",
-      "title": "בנק דיסקונט: תעריפון יחיד/עסק קטן, התעריפון המאוחד (12/11/2026)",
-      "title_he": "בנק דיסקונט: תעריפון יחיד/עסק קטן, התעריפון המאוחד (12/11/2026)",
-      "publisher": "Discount Bank",
-      "publisher_he": "בנק דיסקונט",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.18, part 5",
-      "locator_he": "עמוד 18, חלק 5",
-      "page": 18,
-      "quote": "לרבות על המינימום",
-      "checked": "2026-11-21"
-    },
-    {
-      "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
-      "title": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
-      "title_he": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
-      "publisher": "Mizrahi Tefahot Bank",
-      "publisher_he": "בנק מזרחי טפחות",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.14, part 5",
-      "locator_he": "עמוד 14, חלק 5",
-      "page": 14,
-      "quote": "עד $10.00 - פטור",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
-      "title": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
-      "title_he": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
-      "publisher": "Mizrahi Tefahot Bank",
-      "publisher_he": "בנק מזרחי טפחות",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.48, annex E",
-      "locator_he": "עמוד 48, נספח ה",
-      "page": 48,
-      "checked": "2026-11-12"
-    },
-    {
       "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
       "title": "הבנק הבינלאומי: תעריפון, חלק 5 מטבע חוץ",
       "title_he": "הבנק הבינלאומי: תעריפון, חלק 5 מטבע חוץ",
@@ -134,31 +77,6 @@
       "locator_he": "עמוד 1",
       "page": 1,
       "quote": "המרות בחשבון - עד 3.0$ - 100$",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
-      "title": "בנק מרכנתיל: תעריפון יחיד/עסק קטן - התעריפון המלא (01/10/2026)",
-      "title_he": "בנק מרכנתיל: תעריפון יחיד/עסק קטן - התעריפון המלא (01/10/2026)",
-      "publisher": "Mercantile Discount Bank",
-      "publisher_he": "בנק מרכנתיל דיסקונט",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.19, part 5",
-      "locator_he": "עמוד 19, חלק 5",
-      "page": 19,
-      "quote": "לרבות על המינימום",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
-      "title": "בנק הפועלים: תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן (גיליון, 'נכון ליום: 05/10/2026')",
-      "title_he": "בנק הפועלים: תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן (גיליון, 'נכון ליום: 05/10/2026')",
-      "publisher": "Bank Hapoalim",
-      "publisher_he": "בנק הפועלים",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים",
       "checked": "2026-11-12"
     }
   ],
