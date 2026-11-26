@@ -11,7 +11,7 @@ export const claims: { claim: string; rules: string[] }[] = [
   { claim: "מה קורה לכסף אם הבנק קורס", rules: ["REG-06"] },
   { claim: "הברוקר פושט רגל", rules: ["BRK-07", "BRK-08", "REG-16", "REG-27", "BRK-35"] },
   { claim: "מה קורה לכסף אם בית ההשקעות נסגר", rules: ["BRK-07", "BRK-08", "REG-16"] },
-  { claim: "מה קורה לקרן נאמנות אם מנהל הקרן קורס", rules: ["REG-11", "MF-02"] },
+  { claim: "מה קורה לקרן נאמנות אם מנהל הקרן קורס", rules: ["REG-11", "REG-38", "MF-02"] },
   { claim: "קרן כספית פטורה ממס", rules: ["TXS-12"] },
   { claim: "מס רווח הון 25 אחוז", rules: ["TXS-01", "TXF-02", "TXS-09"] },
   { claim: "כמה מס משלמים על ריבית בפיקדון", rules: ["TXI-03", "TXI-07"] },

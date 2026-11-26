@@ -4516,6 +4516,7 @@
     "rule_ids": [
       "REG-10",
       "REG-11",
+      "REG-38",
       "REG-12"
     ],
     "source": {
