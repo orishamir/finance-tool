@@ -212,7 +212,7 @@
       "condition": "not while still an active member of the general fund (transfer regulations reg. 4); up to the comprehensive monthly ceiling",
       "rule_ids": [
         "PF-17",
-        "SW-22",
+        "SW-13",
         "PEN-08"
       ]
     },
