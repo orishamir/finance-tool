@@ -5,6 +5,12 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { OQ22_TRACKS, buildFees, buildHoldings, buildYields, readCmaFile } from "../src/adapters/cma.ts";
 
+/** The value, or the test fails here where it is missing. */
+function need<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
+  return v;
+}
+
 const source = { url: "https://data.gov.il/he/datasets/cma/gemelnet", title: "t", publisher: "רשות שוק ההון, ביטוח וחיסכון", strength: "primary" as const };
 const gemel = { dataset: "gemelnet" as const, report_period: "2026-09", checked: "2026-10-23", source };
 const pension = { ...gemel, dataset: "pensia-net" as const };
@@ -92,12 +98,13 @@ describe("fee values by state", () => {
   it("the list of open question 22 is the one the rule base writes", () => {
     const md = readFileSync(fileURLToPath(new URL("../../../.claude/skills/il-finance/references/tracks-catalogue-and-decoder.md", import.meta.url)), "utf8");
     const open = md.slice(md.indexOf("## Open questions"));
-    const line = open.split("\n").find((l) => l.startsWith("22. "))!;
-    const listed = /\(([^)]*);/.exec(line)![1]!;
+    const line = need(open.split("\n").find((l) => l.startsWith("22. ")), "open question 22");
+    const listed = need(/\(([^)]*);/.exec(line)?.[1], "the tracks listed in open question 22");
     const ids = new Set<number>();
     for (const m of listed.matchAll(/(\d{5})(?: to (\d{5}))?/g)) for (let id = Number(m[1]); id <= Number(m[2] ?? m[1]); id++) ids.add(id);
     expect(ids.size).toBe(13);
-    expect([...OQ22_TRACKS].sort()).toEqual([...ids].sort());
+    const byNumber = (a: number, b: number) => a - b;
+    expect([...OQ22_TRACKS].sort(byNumber)).toEqual([...ids].sort(byNumber));
   });
 
   it("an empty deposit fee that the product's regulation has no item for names PF-06 alone", () => {
@@ -108,7 +115,7 @@ describe("fee values by state", () => {
 });
 
 describe("holdings values by state", () => {
-  const h = buildHoldings(gemel, { raw_fields: { TOTAL_ASSETS: "699.8", STOCK_MARKET_EXPOSURE: "681.81", FOREIGN_CURRENCY_EXPOSURE: "-2.1" } })!;
+  const h = need(buildHoldings(gemel, { raw_fields: { TOTAL_ASSETS: "699.8", STOCK_MARKET_EXPOSURE: "681.81", FOREIGN_CURRENCY_EXPOSURE: "-2.1" } }), "holdings");
 
   it("a reported total names no rule and carries no note", () => {
     expect(h.total_assets.rule_ids).toEqual([]);
@@ -128,13 +135,13 @@ describe("holdings values by state", () => {
   });
 
   it("a reported currency exposure, negative ones included, carries the same rule and note", () => {
-    expect(h.foreign_currency_exposure!.rule_ids).toEqual(["CAT-44"]);
-    expect(h.foreign_currency_exposure!.notes).toBe(h.stock_market_exposure.notes);
+    expect(need(h.foreign_currency_exposure, "currency exposure").rule_ids).toEqual(["CAT-44"]);
+    expect(need(h.foreign_currency_exposure, "currency exposure").notes).toBe(h.stock_market_exposure.notes);
   });
 
   it("an empty total or exposure names no rule and says the reason is unknown", () => {
-    const e = buildHoldings(gemel, { raw_fields: { TOTAL_ASSETS: "", STOCK_MARKET_EXPOSURE: "", FOREIGN_CURRENCY_EXPOSURE: "" } })!;
-    for (const v of [e.total_assets, e.stock_market_exposure, e.foreign_currency_exposure!]) {
+    const e = need(buildHoldings(gemel, { raw_fields: { TOTAL_ASSETS: "", STOCK_MARKET_EXPOSURE: "", FOREIGN_CURRENCY_EXPOSURE: "" } }), "holdings");
+    for (const v of [e.total_assets, e.stock_market_exposure, need(e.foreign_currency_exposure, "currency exposure")]) {
       expect(v.rule_ids).toEqual([]);
       expect(v.notes).toBe(UNKNOWN);
     }
@@ -143,7 +150,7 @@ describe("holdings values by state", () => {
 
 describe("yield values by state", () => {
   const at = { ...gemel, report_period: "2026-10" };
-  const y = (raw: Record<string, string>, inception_date: string | null) => buildYields(at, { raw_fields: raw, inception_date })!;
+  const y = (raw: Record<string, string>, inception_date: string | null) => need(buildYields(at, { raw_fields: raw, inception_date }), "yields");
 
   it("a reported yield names CAT-04 and CAT-05, and no note", () => {
     const v = y({ AVG_ANNUAL_YIELD_TRAILING_3YRS: "13.95", AVG_ANNUAL_YIELD_TRAILING_5YRS: "-0.4" }, "2003-09-21");
@@ -176,14 +183,14 @@ describe("yield values by state", () => {
 describe("the stored files", () => {
   const cmaDir = fileURLToPath(new URL("../../../data/cma", import.meta.url));
   const oct = readCmaFile(cmaDir, "gemelnet", "2026-10");
-  const track = (id: number) => oct.funds.find((f) => f.fund_id === id)!;
+  const track = (id: number) => need(oct.funds.find((f) => f.fund_id === id), `track ${id}`);
 
   it("hold the four worked cases: an exposure, a young track's return, a fee average and a total", () => {
-    const t15256 = track(15256).holdings!;
+    const t15256 = need(track(15256).holdings, "holdings of 15256");
     expect(t15256.stock_market_exposure).toMatchObject({ value: 681.81, rule_ids: ["CAT-44"] });
     expect(t15256.total_assets).toMatchObject({ value: 699.8, rule_ids: [] });
     expect(t15256.total_assets.notes).toBeUndefined();
-    const y = track(14790).yields!.avg_annual_yield_3y;
+    const y = need(track(14790).yields, "yields of 14790").avg_annual_yield_3y;
     expect(y).toMatchObject({ value: null, rule_ids: ["CAT-05"] });
     expect(y.notes).toBe("תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא 14.11.2023. מאז ועד 31.10.2026, סוף תקופת הדיווח, לא עברו 3 שנים מלאות.");
     const fee = track(886).fees.avg_annual_management_fee;
