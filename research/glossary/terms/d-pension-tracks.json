@@ -20,8 +20,7 @@
       "PEN-13",
       "PEN-27",
       "PF-04",
-      "REG-17",
-      "REG-21"
+      "REG-17"
     ],
     "source": {
       "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
@@ -40,7 +39,7 @@
       "decoder:company",
       "decoder:track"
     ],
-    "notes": "Provident Funds Law s.1 and the Management Fees Regulations write 'קרן חדשה מקיפה' (REG-21 quotes 'קרן ותיקה או קרן חדשה מקיפה'; read via Wikisource mirror). The 2011 extension order (gov.il scan, primary) writes 'קרן פנסיה מקיפה חדשה' (PEN-68); PEN summary and Terms table also give 'קרן פנסיה חדשה מקיפה' as used in ads and statements. Pension-Net classifies these funds as 'קרנות חדשות'. The starting-list order 'קרן פנסיה מקיפה (חדשה)' is not used by any source. Disability and survivors detail rests on Mor's bylaws only (institution; PEN OQ13). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
+    "notes": "Provident Funds Law s.1 and the Management Fees Regulations write 'קרן חדשה מקיפה' (PEN-69 quotes 'קרן ותיקה או קרן חדשה מקיפה'; read via Wikisource mirror). The 2011 extension order (gov.il scan, primary) writes 'קרן פנסיה מקיפה חדשה' (PEN-68); PEN summary and Terms table also give 'קרן פנסיה חדשה מקיפה' as used in ads and statements. Pension-Net classifies these funds as 'קרנות חדשות'. The starting-list order 'קרן פנסיה מקיפה (חדשה)' is not used by any source. Disability and survivors detail rests on Mor's bylaws only (institution; PEN OQ13). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "krn-chdshh-mkyph"
   },
   {
@@ -59,8 +58,7 @@
       "PEN-10",
       "PEN-69",
       "PF-05",
-      "REG-17",
-      "REG-21"
+      "REG-17"
     ],
     "source": {
       "title": "צו הרחבה [נוסח משולב] לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011 (scan on gov.il)",
@@ -77,7 +75,7 @@
       "decoder:company",
       "decoder:track"
     ],
-    "notes": "Law and Fees Regulations write 'קרן חדשה כללית'; the extension order writes 'קרן פנסיה כללית' and defines it only as a new pension fund not entitled to designated bonds. That excess deposits above the comprehensive ceiling move to the same manager's general fund comes from Mor's bylaws (institution). Not an eligible fund for the state return top-up (PEN-69, REG-21). Pension-Net label: 'קרנות כלליות'. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
+    "notes": "Law and Fees Regulations write 'קרן חדשה כללית'; the extension order writes 'קרן פנסיה כללית' and defines it only as a new pension fund not entitled to designated bonds. That excess deposits above the comprehensive ceiling move to the same manager's general fund comes from Mor's bylaws (institution). Not an eligible fund for the state return top-up (PEN-69). Pension-Net label: 'קרנות כלליות'. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "krn-chdshh-kllyt"
   },
   {
@@ -92,7 +90,6 @@
     "explain_he": "קרן פנסיה מהסוג הישן, שאושרה לפני הקרנות החדשות ופועלת לפי כללים אחרים",
     "rule_ids": [
       "REG-17",
-      "REG-21",
       "PEN-69",
       "TXP-12",
       "TXP-24"
@@ -122,7 +119,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Meaning (approved before 1.1.1995) is from the PEN Terms table citing extension order s.2(ה), not from a numbered rule. PEN 'Left out' says old funds are closed to new members, but that line carries no source. Differences found: no commutation (TXP-24), no recognized annuity (TXP-12); covered by the return top-up (PEN-69, REG-21). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
+    "notes": "Meaning (approved before 1.1.1995) is from the PEN Terms table citing extension order s.2(ה), not from a numbered rule. PEN 'Left out' says old funds are closed to new members, but that line carries no source. Differences found: no commutation (TXP-24), no recognized annuity (TXP-12); covered by the return top-up (PEN-69). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "krn-vtykh"
   },
   {
@@ -1164,8 +1161,7 @@
     ],
     "explain_he": "איגרות חוב של המדינה שלא נסחרות בבורסה, שהונפקו במיוחד לקרנות הפנסיה",
     "rule_ids": [
-      "PEN-18",
-      "REG-21"
+      "PEN-18"
     ],
     "source": {
       "title": "ספר החוקים 2932 (15.11.2021): חוק ההתייעלות הכלכלית, תיקון חוק הפיקוח על שירותים פיננסיים (קופות גמל), ס' 34ב, עמ' 33",
@@ -1209,8 +1205,7 @@
     "explain_he": "התחייבות של המדינה להשלים לקרן הפנסיה המקיפה תשואה עד יעד שנקבע בחוק, על חלק מהנכסים",
     "rule_ids": [
       "PEN-18",
-      "PEN-69",
-      "REG-21"
+      "PEN-69"
     ],
     "source": {
       "title": "ספר החוקים 2932 (15.11.2021): תיקון חוק הפיקוח על שירותים פיננסיים (קופות גמל), ס' 34א, \"הבטחת השלמת תשואה לקרנות הפנסיה\", עמ' 33",
@@ -1238,7 +1233,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Covers comprehensive and old funds only, not general funds or provident funds. A return above the target goes to a dedicated fund. Conflict between files: REG-21 states the 5.15% target is 'plus the CPI change' (real), while PEN-18 says CPI-linkage is not stated in the text read (PEN OQ8). Determining date: law text says 1 July 2022, annotated as postponed to 1.10.2022 (REG OQ18). Copy struck Round 2 (2026-11-07): from Wikisource to the gazette (library 063900783f7a23ce, pp.33-34; the target return is on p.34).",
+    "notes": "Covers comprehensive and old funds only, not general funds or provident funds. A return above the target goes to a dedicated fund. Conflict between files: REG-21 (merged into PEN-18 on 2026-11-26) states the 5.15% target is 'plus the CPI change' (real), while PEN-18 says CPI-linkage is not stated in the text read (PEN OQ8). Determining date: law text says 1 July 2022, annotated as postponed to 1.10.2022 (REG OQ18). Copy struck Round 2 (2026-11-07): from Wikisource to the gazette (library 063900783f7a23ce, pp.33-34; the target return is on p.34).",
     "id": "hshlmt-tshvah"
   },
   {
@@ -4122,7 +4117,7 @@
     "where": [
       "decoder:track"
     ],
-    "notes": "'Without adjustment for price rises' rests on the rule base's real-vs-nominal usage (for example REG-21 'real' = target plus CPI); the CMA text says only 'nominal gross, without deducting management fees'. Yields are not net of tax (CAT-04).",
+    "notes": "'Without adjustment for price rises' rests on the rule base's real-vs-nominal usage (for example PEN-18 'real' = target plus CPI); the CMA text says only 'nominal gross, without deducting management fees'. Yields are not net of tax (CAT-04).",
     "id": "tshvavt-nvmynlyvt-brvtv"
   },
   {
@@ -4505,7 +4500,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Law wording: 'חברה מנהלת תשמש נאמן על נכסי קופות הגמל', 'בנפרד מרכושה', 'נכסי קופת גמל אינם ניתנים לעיקול'. Market losses are not protected and there is no state guarantee of value, except the pension return top-up (PF-29, REG-21). Mutual funds have a parallel rule with a separate trustee (see 'נאמן'). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
+    "notes": "Law wording: 'חברה מנהלת תשמש נאמן על נכסי קופות הגמל', 'בנפרד מרכושה', 'נכסי קופת גמל אינם ניתנים לעיקול'. Market losses are not protected and there is no state guarantee of value, except the pension return top-up (PF-29, PEN-18). Mutual funds have a parallel rule with a separate trustee (see 'נאמן'). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "namnvt-vhprdt-nksym"
   },
   {

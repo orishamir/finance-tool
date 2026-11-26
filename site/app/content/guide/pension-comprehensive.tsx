@@ -70,7 +70,7 @@ export const content: GuideContent = {
         היתרה שלכם משתנה גם בלי קשר להשקעות. כל <N v={figure("PEN-19", "balancing_every_months")} /> חודשים הקרן <Ruled id="PEN-19">מעדכנת את כל החשבונות</Ruled> לפי <Term id="איזון אקטוארי">איזון אקטוארי</Term>: העודף או הגירעון שנובעים מגורמים דמוגרפיים, כמו תמותה ונכות. עודף או גירעון מתשואות חל רק על מקבלי הקצבה. גם <Ruled id="PEN-15">דמי הביטוח יורדים מההפקדות</Ruled>, כל עוד אתם מבוטחים.
       </p>
       <p className="max-w-measure">
-        על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים, ולמי שהיה זכאי לפני המועד שבחוק על חלק גדול יותר, <Ruled id="REG-21">המדינה משלימה</Ruled> <Term id="תשואה">תשואה</Term> ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>. <Ruled id="PEN-18">היעד נבדק</Ruled> כל <N v={figure("PEN-18", "check_period_months")} /> חודשים. השאר עולה ויורד עם המסלול.
+        על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים, ולמי שהיה זכאי לפני המועד שבחוק על חלק גדול יותר, <Ruled id="PEN-18">המדינה משלימה</Ruled> <Term id="תשואה">תשואה</Term> ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>. היעד נבדק כל <N v={figure("PEN-18", "check_period_months")} /> חודשים. השאר עולה ויורד עם המסלול.
       </p>
     </>
   ),
