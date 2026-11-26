@@ -18,6 +18,12 @@ export const hasHebrew = (text: string | null | undefined): boolean => !!text &&
  */
 export const hebrewDocTitle = (text: string | null | undefined): boolean => !!text && mostlyHebrew(text.replace(/^[a-z0-9-]+(?:\.[a-z0-9-]+)+\s*,\s*/i, ""));
 
+/**
+ * Whether a source's title, as shown, runs left to right: a host, or words with no Hebrew letter. The shown words decide, never the
+ * record's raw title: a kind's word ("חוק", "מסמך של החברה") stands in for an English working title and reads right to left.
+ */
+export const shownTitleLtr = (title: { text: string; host: boolean }): boolean => title.host || !hasHebrew(title.text);
+
 /** The host of a web address without "www.", or null when it is not one. */
 export function hostOf(url: string): string | null {
   if (!/^https?:\/\//.test(url)) return null;
