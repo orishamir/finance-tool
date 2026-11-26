@@ -158,6 +158,9 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const jump = (p: Pos) => set({ start: p, taken: [] });
 
   // a stair's difference is the difference of what is left as the two levels write it, in whole shekels
+  const shownDiff = (l: Level, prev: Level) => Math.round(l.left.value as number) - Math.round(prev.left.value as number);
+  // the size of a difference between two figures as the page writes them: the larger less the smaller, so its sheet's working comes to it
+  const sizeOf = (a: readonly [string, SiteValue], b: readonly [string, SiteValue], aFirst: boolean, about: string) => differenceOf(aFirst ? a : b, aFirst ? b : a, "F-91", { today, about });
   const diffOf = (l: Level, prev: Level) => differenceOf([`${t.about.left}: ${l.fundName}, ${l.house.short}`, l.left], [`${t.about.left}: ${prev.fundName}, ${prev.house.short}`, prev.left], "F-91", { today, about: t.about.versus });
   const partName = (k: Part) => [t.table.accountCost, t.table.waiting, t.table.fundCost, t.table.tax][k]!;
   const partOf = (l: Level, prev: Level, k: Part) => {
@@ -339,7 +342,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
           const sub = r.lane === "kind" ? <small className="text-xs font-normal text-muted-foreground"><MixedName>{nameOfFund(r.to.f)}</MixedName></small> : null;
           const chips = r.hedged ? hedgedChip(r.to.f) : [];
           const d = r.d!;
-          const diffValue = delta(Math.abs(d), price.value, `${t.about.left}: ${nameOfFund(r.to.f)}, ${house(r.to.a).short}`, here.left, `${t.about.left}: ${here.fundName}, ${here.house.name}`, t.about.versus);
+          const diffValue = sizeOf([`${t.about.left}: ${nameOfFund(r.to.f)}, ${house(r.to.a).short}`, price.value], [`${t.about.left}: ${here.fundName}, ${here.house.name}`, here.left], d >= 0, t.about.versus);
           return (
             <DiffRow
               key={r.key}
@@ -393,7 +396,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       <>{t.statusTop}</>
     ) : (
       <>
-        {t.statusNone} <Num value={delta(gap, ceilingPrice.value, `${t.about.left}: ${nameOfPos(ceiling.pos)}`, end.left, `${t.about.left}: ${end.fundName}, ${end.house.name}`, t.about.ceilingGap)} />
+        {t.statusNone} <Num value={sizeOf([`${t.about.left}: ${nameOfPos(ceiling.pos)}`, ceilingPrice.value], [`${t.about.left}: ${end.fundName}, ${end.house.name}`, end.left], true, t.about.ceilingGap)} />
         {t.statusTogether}{" "}
         <JumpLink onClick={() => jump(ceiling.pos)}>
           {t.jump} {nameOfPos(ceiling.pos)}
