@@ -5,7 +5,8 @@ import { accountSum, blockedReason, buildInvest, listReading, pairCosts, indexBy
 import { buildIndicesBundle } from "./providers.server";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "./custom-entries";
 import type { WorkbenchInputs } from "./providers";
-import { entered, sheetRules, type SiteValue } from "./value";
+import { differenceOf, entered, sheetRules, type SiteValue } from "./value";
+import { ACCOUNT_LINES, FUND_LINES } from "./run-rules";
 import { invest as words, numbers } from "../copy";
 
 // The page's data as built, but for the exchange rates: frozen at the ECB's rates of 16.11.2026 (units per euro) and dated today, so
@@ -581,7 +582,64 @@ describe("BANK-35 sits on the account's cost, not on what is left (independent c
     for (const w of ways) {
       expect(w.cost.flags).toContain("BANK-35");
       expect(w.value.flags ?? []).not.toContain("BANK-35");
+      // a flag only: it sets none of the cost, so no figure lists it as a rule (method F-102)
+      expect(w.cost.rulesUsed?.map((r) => r.id) ?? []).not.toContain("BANK-35");
     }
+  });
+  it("the pair's current-account line and the account's sum carry it, with the month the run found it from; what is left does not", () => {
+    const fundId = view0().houses.find((h) => h.provider.id === "leumi")!.best!.fund.rec.id;
+    const pc = pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: true }), fundId, providerId: "leumi" })!;
+    const line = pc.account.find((l) => l.line === "account");
+    expect(line, "Leumi's pair counts its current account").toBeDefined();
+    expect(line!.cost.flags).toContain("BANK-35");
+    expect(line!.cost.flagMonths?.["BANK-35"]).toBeGreaterThan(0);
+    for (const l of pc.account.filter((x) => x.line !== "account")) expect(l.cost.flags ?? []).not.toContain("BANK-35");
+    const sum = accountSum(pc, "x", t);
+    expect(sum.flags).toContain("BANK-35");
+    expect(sum.rulesUsed ?? []).toEqual([]);
+    expect(pc.left.flags ?? []).not.toContain("BANK-35");
+  });
+  const view0 = () => buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: true }) });
+});
+
+describe("each figure of a run lists the rules of the parts its number is made of", () => {
+  const view = buildInvest({ bundle, index: sp, plan: plan() });
+  const ids = (v: SiteValue) => (v.rulesUsed ?? []).map((r) => r.id);
+  const pairs = view.houses.flatMap((h) => (h.best ? [pairCosts({ bundle, index: sp, plan: plan(), fundId: h.best.fund.rec.id, providerId: h.provider.id })] : [])).filter((x): x is NonNullable<typeof x> => !!x);
+  it("an account's line is one of the account's fee lines, and the account's and the fund's lines are apart", () => {
+    expect(pairs.length).toBeGreaterThan(3);
+    expect(ACCOUNT_LINES.filter((l) => FUND_LINES.includes(l))).toEqual([]);
+    for (const pc of pairs) for (const l of pc.account) expect(ACCOUNT_LINES, `${pc.providerId} ${l.line}`).toContain(l.line);
+  });
+  it("a figure before tax on a fund that pays nothing out lists no tax rule, and the fund's part, before all tax, lists none on any fund", () => {
+    const ways = view.options.flatMap((o) => o.funds).flatMap((f) => Object.values(f.byHouse).flatMap((x) => ("valueN" in x ? [{ f, x }] : [])));
+    expect(ways.length).toBeGreaterThan(10);
+    for (const { f, x } of ways) if (!f.rec.distribution) expect(ids(x.cost).filter((id) => id.startsWith("TX")), `${f.rec.id} cost`).toEqual([]);
+    for (const pc of pairs) {
+      const rec = bundle.funds.find((r) => r.id === pc.fundId)!;
+      expect(ids(pc.fund).filter((id) => id.startsWith("TX") && id !== "TXF-16"), `${pc.fundId} fund`).toEqual([]);
+      if (pc.distributes) continue;
+      for (const l of pc.account) expect(ids(l.cost).filter((id) => id.startsWith("TX")), `${pc.providerId} ${l.line}`).toEqual([]);
+      expect(ids(pc.remainder).filter((id) => id.startsWith("TX")), `${pc.providerId} remainder`).toEqual([]);
+      expect(rec.distribution).toBeFalsy();
+    }
+  });
+  it("the state's part lists only tax rules, and what is left lists every rule its own step adds", () => {
+    for (const pc of pairs) {
+      for (const id of ids(pc.tax)) expect(id.startsWith("TX"), `${pc.providerId} tax ${id}`).toBe(true);
+      expect(ids(pc.left).length, pc.providerId).toBeGreaterThan(0);
+    }
+  });
+  it("a difference from the pair on the receipt lists no rule; each of its two figures lists its own, which the page ships", () => {
+    const shipped = new Set(bundle.rules.map((r) => r.id));
+    const ways = view.options.flatMap((o) => o.funds).filter((f) => f.best);
+    const [a, b] = [ways[0]!, ways[1]!];
+    const gap = differenceOf(["א", a.best!.value], ["ב", b.best!.value], "F-65", { today: t });
+    expect(gap.rulesUsed ?? []).toEqual([]);
+    expect(sheetRules(gap)).toEqual([]);
+    const reached = Object.values(gap.computed_from!.inputs).flatMap((v) => sheetRules(v).map((r) => r.id));
+    expect(reached.length).toBeGreaterThan(0);
+    for (const id of reached) expect(shipped.has(id), id).toBe(true);
   });
 });
 
