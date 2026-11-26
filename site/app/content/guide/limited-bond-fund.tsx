@@ -86,7 +86,7 @@ export function Compare() {
             ),
             cells: [
               <Fragment key="bond">
-                <Ruled id="TX2-06">על הריבית כשהיא משולמת</Ruled>, ועל <Term id="רווח הון">רווח הון</Term> <Ruled id={["TXS-03", "TXI-12"]} prefix="ב">מכירה</Ruled> או בפדיון
+                <Ruled id="TX2-06">על הריבית כשהיא משולמת</Ruled>, ועל <Term id="רווח הון">רווח הון</Term> <Ruled id="TXS-03" prefix="ב">מכירה</Ruled> או בפדיון
               </Fragment>,
               <Fragment key="limited">
                 {/* two words in a column 64 px wide on a 320 px phone: the term breaks between them there rather than run out of its cell */}
