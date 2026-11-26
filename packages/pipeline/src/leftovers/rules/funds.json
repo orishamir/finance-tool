@@ -1,12 +1,8 @@
 {
   "long": [
-    "BND-01",
     "BND-02",
-    "BND-03",
-    "BND-05",
     "BND-06",
     "BND-07",
-    "BND-09",
     "BND-10",
     "BND-11",
     "BND-12",
@@ -117,7 +113,6 @@
     "ETF-55"
   ],
   "spelled-number": [
-    "BND-10",
     "ETF-37",
     "ETF-38",
     "ETF-41",
@@ -164,8 +159,6 @@
     "MF-07"
   ],
   "title-ditto": [
-    "BND-08",
-    "BND-13",
     "ETF-28",
     "MF-36",
     "MF-48",
