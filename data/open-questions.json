@@ -9,12 +9,15 @@
   },
   {
     "id": "BANK OQ4",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "BANK OQ5",
     "status": "narrowed",
-    "title_he": "אילו בנקים נחשבים קטנים ופטורים, וממתי חל התיקון החדש"
+    "title_he": "אילו בנקים נחשבים קטנים ופטורים, וממתי חל התיקון החדש",
+    "answered_by": [
+      "BANK-21"
+    ]
   },
   {
     "id": "BANK OQ6",
@@ -23,7 +26,12 @@
   {
     "id": "BANK OQ8",
     "status": "narrowed",
-    "title_he": "מה מגן על המפקידים אם בנק קורס"
+    "title_he": "מה מגן על המפקידים אם בנק קורס",
+    "answered_by": [
+      "REG-04",
+      "REG-06",
+      "REG-33"
+    ]
   },
   {
     "id": "BANK OQ10",
@@ -31,21 +39,43 @@
   },
   {
     "id": "BANK OQ11",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "BANK-38",
+      "BANK-49",
+      "BRK-34",
+      "BRK-74",
+      "BANK-21",
+      "BANK-34",
+      "BANK-56",
+      "BRK-30"
+    ]
   },
   {
     "id": "BANK OQ12",
     "status": "narrowed",
     "title_he": "בתוכנית חיסכון: כמה עולה שבירה בפועל בבנקים שמאפשרים אותה",
-    "blocks_he": "הנזילות של תוכנית חיסכון, וחישוב שבירה לפני הזמן"
+    "blocks_he": "הנזילות של תוכנית חיסכון, וחישוב שבירה לפני הזמן",
+    "answered_by": [
+      "BPN-10",
+      "BANK-02",
+      "BANK-32",
+      "BANK-06",
+      "BANK-28",
+      "BANK-33",
+      "BANK-38",
+      "BANK-48",
+      "BANK-49",
+      "BANK-56"
+    ]
   },
   {
     "id": "BANK OQ15",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "BANK OQ16",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "BANK OQ17",
@@ -66,7 +96,8 @@
   },
   {
     "id": "BANK OQ21",
-    "status": "open"
+    "status": "open",
+    "title_he": "כל כמה זמן כל פיקדון מחשב את הריבית"
   },
   {
     "id": "BANK OQ22",
@@ -78,15 +109,24 @@
   },
   {
     "id": "BPN OQ2",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "BPN-02"
+    ]
   },
   {
     "id": "BPN OQ3",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "BPN-02"
+    ]
   },
   {
     "id": "BPN OQ5",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "BPN-11"
+    ]
   },
   {
     "id": "BPN OQ6",
@@ -98,7 +138,11 @@
   },
   {
     "id": "BPN OQ8",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "BANK-30",
+      "BANK-31"
+    ]
   },
   {
     "id": "BPN OQ9",
@@ -162,7 +206,13 @@
   },
   {
     "id": "BND OQ10",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "BND-15",
+      "MF-59",
+      "MF-72",
+      "ETF-07"
+    ]
   },
   {
     "id": "BND OQ12",
@@ -174,17 +224,35 @@
   },
   {
     "id": "BRK OQ4",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "BRK-10",
+      "BRK-47"
+    ]
   },
   {
     "id": "BRK OQ5",
     "status": "narrowed",
-    "title_he": "מה קורה לניירות הערך של הלקוחות אם הבנק קורס"
+    "title_he": "מה קורה לניירות הערך של הלקוחות אם הבנק קורס",
+    "answered_by": [
+      "BRK-10",
+      "REG-34",
+      "REG-35",
+      "REG-37",
+      "BRK-63"
+    ]
   },
   {
     "id": "BRK OQ9",
     "status": "narrowed",
-    "title_he": "איזו חברה של אינטראקטיב ברוקרס ושל eToro משרתת תושב ישראל בחשבון ישיר"
+    "title_he": "איזו חברה של אינטראקטיב ברוקרס ושל eToro משרתת תושב ישראל בחשבון ישיר",
+    "answered_by": [
+      "BRK-43",
+      "BRK-42",
+      "BRK-70",
+      "BRK-06",
+      "BRK-64"
+    ]
   },
   {
     "id": "BRK OQ13",
@@ -192,12 +260,18 @@
   },
   {
     "id": "BRK OQ14",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "BRK-24"
+    ]
   },
   {
     "id": "BRK OQ17",
     "status": "narrowed",
-    "title_he": "כללים לחשבון ניירות ערך של קטין ולחשבון משותף"
+    "title_he": "כללים לחשבון ניירות ערך של קטין ולחשבון משותף",
+    "answered_by": [
+      "BRK-57"
+    ]
   },
   {
     "id": "BRK OQ20",
@@ -205,7 +279,10 @@
   },
   {
     "id": "BRK OQ21",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "ETF-67"
+    ]
   },
   {
     "id": "BRK OQ22",
@@ -213,7 +290,8 @@
   },
   {
     "id": "BRK OQ23",
-    "status": "open"
+    "status": "narrowed",
+    "title_he": "האם השעבוד של המסלקה חל גם על ניירות ערך שחבר מסלקה מחזיק בנאמנות בשביל לקוחות"
   },
   {
     "id": "BRK OQ24",
@@ -222,8 +300,11 @@
   },
   {
     "id": "BRK OQ25",
-    "status": "open",
-    "title_he": "באיזה מטבע עמלת המינימום של אינטראקטיב ישראל על קרן שנסחרת בדולרים בבורסת לונדון"
+    "status": "narrowed",
+    "title_he": "באיזה מטבע עמלת המינימום של אינטראקטיב ישראל על קרן שנסחרת בדולרים בבורסת לונדון",
+    "answered_by": [
+      "ETF-63"
+    ]
   },
   {
     "id": "BRK OQ26",
@@ -231,11 +312,17 @@
   },
   {
     "id": "CS OQ2",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "CS-24"
+    ]
   },
   {
     "id": "CS OQ3",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "CS-07"
+    ]
   },
   {
     "id": "CS OQ4",
@@ -244,17 +331,30 @@
   },
   {
     "id": "CS OQ7",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "CS-09",
+      "CS-26"
+    ]
   },
   {
     "id": "CS OQ9",
-    "status": "narrowed"
+    "status": "narrowed",
+    "title_he": "האם שדה דמי הניהול בגמל נט במסלולי חיסכון לכל ילד הוא דמי הניהול שנגבים מהחיסכון",
+    "answered_by": [
+      "CAT-03",
+      "CAT-35",
+      "CS-27"
+    ]
   },
   {
     "id": "CS OQ10",
     "status": "narrowed",
     "title_he": "האם הורה יכול לראות אם המסלול נבחר או שהוא ברירת מחדל",
-    "blocks_he": "הבדיקה בעמוד ההחזקות אם מסלול החיסכון לכל ילד נבחר או ברירת מחדל"
+    "answered_by": [
+      "CS-27",
+      "CS-07"
+    ]
   },
   {
     "id": "CS OQ12",
@@ -268,11 +368,14 @@
   {
     "id": "CS OQ16",
     "status": "narrowed",
-    "title_he": "האם הפקדות הביטוח הלאומי נספרות בתקרת ההפקדה לקופת גמל להשקעה"
+    "title_he": "האם הפקדות הביטוח הלאומי נספרות בתקרת ההפקדה לקופת גמל להשקעה",
+    "answered_by": [
+      "CS-18"
+    ]
   },
   {
     "id": "CS OQ17",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "CS OQ18",
@@ -288,7 +391,10 @@
   },
   {
     "id": "CORP OQ3",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "CORP-07"
+    ]
   },
   {
     "id": "CORP OQ4",
@@ -300,7 +406,12 @@
   },
   {
     "id": "CORP OQ6",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "GOV-24",
+      "GOV-30",
+      "GOV-31"
+    ]
   },
   {
     "id": "CORP OQ7",
@@ -320,7 +431,10 @@
   },
   {
     "id": "CORP OQ12",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "REG-33"
+    ]
   },
   {
     "id": "CORP OQ13",
@@ -369,19 +483,25 @@
   {
     "id": "ETF OQ4",
     "status": "narrowed",
-    "title_he": "רשימת קרנות החוץ הרשומות בישראל, ומי הנציג של כל אחת"
+    "title_he": "רשימת קרנות החוץ הרשומות בישראל, ומי הנציג של כל אחת",
+    "answered_by": [
+      "ETF-32"
+    ]
   },
   {
     "id": "ETF OQ5",
-    "status": "open"
-  },
-  {
-    "id": "ETF OQ7",
     "status": "narrowed"
   },
   {
+    "id": "ETF OQ7",
+    "status": "narrowed",
+    "answered_by": [
+      "ETF-17"
+    ]
+  },
+  {
     "id": "ETF OQ8",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "ETF OQ10",
@@ -390,11 +510,19 @@
   {
     "id": "ETF OQ11",
     "status": "narrowed",
-    "title_he": "האם מגבלות האיחוד האירופי מונעות מתושב ישראל לקנות קרנות אמריקאיות אצל ברוקר באירופה"
+    "title_he": "האם מגבלות האיחוד האירופי מונעות מתושב ישראל לקנות קרנות אמריקאיות אצל ברוקר באירופה",
+    "answered_by": [
+      "BRK-44",
+      "BRK-41"
+    ]
   },
   {
     "id": "ETF OQ13",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "MF-49",
+      "ETF-19"
+    ]
   },
   {
     "id": "ETF OQ15",
@@ -402,15 +530,15 @@
   },
   {
     "id": "ETF OQ16",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "ETF OQ18",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "ETF OQ21",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "ETF OQ22",
@@ -426,7 +554,7 @@
   },
   {
     "id": "ETF OQ25",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "ETF OQ26",
@@ -515,7 +643,10 @@
   {
     "id": "FXD OQ4",
     "status": "narrowed",
-    "title_he": "תנאי השבירה של פיקדון במטבע חוץ בכל בנק"
+    "title_he": "תנאי השבירה של פיקדון במטבע חוץ בכל בנק",
+    "answered_by": [
+      "FXD-22"
+    ]
   },
   {
     "id": "FXD OQ5",
@@ -523,11 +654,18 @@
   },
   {
     "id": "FXD OQ6",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "FXD-12"
+    ]
   },
   {
     "id": "FXD OQ7",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "FXD-24",
+      "FXD-22"
+    ]
   },
   {
     "id": "FXD OQ8",
@@ -540,11 +678,15 @@
   {
     "id": "FXD OQ10",
     "status": "narrowed",
-    "title_he": "האם תושבי ישראל רשאים לקנות אגרות בונדס, ודרך מי"
+    "title_he": "האם תושבי ישראל רשאים לקנות אגרות בונדס, ודרך מי",
+    "answered_by": [
+      "FXD-18",
+      "FXD-21"
+    ]
   },
   {
     "id": "FXD OQ11",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "FXD OQ12",
@@ -558,42 +700,82 @@
   {
     "id": "GOV OQ2",
     "status": "narrowed",
-    "title_he": "סכום מינימלי ועמלה להזמנה של אדם פרטי במכרז מק״מ"
+    "title_he": "סכום מינימלי ועמלה להזמנה של אדם פרטי במכרז מק״מ",
+    "answered_by": [
+      "GOV-22"
+    ]
   },
   {
     "id": "GOV OQ3",
     "status": "narrowed",
-    "title_he": "האם מסמך התנאים הכלליים של בנק ישראל למק״מ עדכני"
+    "title_he": "האם מסמך התנאים הכלליים של בנק ישראל למק״מ עדכני",
+    "answered_by": [
+      "GOV-23"
+    ]
   },
   {
     "id": "GOV OQ4",
     "status": "narrowed",
-    "title_he": "הנוסח המקורי של התקנות של הסוג הישן ״שחר״, לסדרות שלו שאולי עוד נסחרות, ותיקונים מאוחרים לתקנות"
+    "title_he": "הנוסח המקורי של התקנות של הסוג הישן ״שחר״, לסדרות שלו שאולי עוד נסחרות, ותיקונים מאוחרים לתקנות",
+    "answered_by": [
+      "GOV-13",
+      "GOV-27",
+      "GOV-28"
+    ]
   },
   {
     "id": "GOV OQ6",
     "status": "narrowed",
-    "title_he": "האם לסדרה צמודת מדד יש רצפה בירידת מדד"
+    "title_he": "האם לסדרה צמודת מדד יש רצפה בירידת מדד",
+    "answered_by": [
+      "GOV-12",
+      "GOV-25"
+    ]
   },
   {
     "id": "GOV OQ7",
     "status": "narrowed",
     "title_he": "גודל יחידת המסחר במק״מ, מועד האקס של הקופון באג״ח ממשלתית, והאם מסכי הבנקים מפרידים בין מק״מ לאג״ח ממשלתית קצרה",
-    "blocks_he": "גודל הפקודה הקטנה ביותר במק״מ מחוץ למסחר הרציף. בהשוואה, מק״מ עדיין מוצג בלי דירוג בגלל השאלה הזאת, אף שהפקודה המזערית שלו במסחר הרציף ידועה."
+    "blocks_he": "גודל הפקודה הקטנה ביותר במק״מ מחוץ למסחר הרציף",
+    "answered_by": [
+      "GOV-24",
+      "CORP-18",
+      "GOV-09",
+      "GOV-06"
+    ],
+    "meanwhile_he": "בינתיים מק״מ מוצג בהשוואה בלי דירוג, אף שהפקודה הקטנה ביותר שלו במסחר הרציף ידועה."
   },
   {
     "id": "GOV OQ8",
     "status": "narrowed",
-    "title_he": "אם בנק או ברוקר מעבירים הזמנה של אדם פרטי למכרז לציבור של אג״ח ממשלתיות, ובאיזה מינימום ועמלה משלהם"
+    "title_he": "אם בנק או ברוקר מעבירים הזמנה של אדם פרטי למכרז לציבור של אג״ח ממשלתיות, ובאיזה מינימום ועמלה משלהם",
+    "answered_by": [
+      "GOV-10"
+    ]
   },
   {
     "id": "GOV OQ9",
     "status": "narrowed",
-    "title_he": "כמה קל למכור אג״ח ממשלתית צמודה קצרה לפני הפדיון"
+    "title_he": "כמה קל למכור אג״ח ממשלתית צמודה קצרה לפני הפדיון",
+    "answered_by": [
+      "GOV-22",
+      "GOV-26",
+      "BND-01",
+      "BND-04",
+      "BND-13",
+      "BND-07",
+      "BND-09",
+      "BND-02",
+      "BND-08"
+    ]
   },
   {
     "id": "GOV OQ11",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "FXD-18",
+      "FXD-21"
+    ]
   },
   {
     "id": "GOV OQ14",
@@ -621,20 +803,33 @@
   },
   {
     "id": "IRA OQ9",
-    "status": "narrowed"
+    "status": "narrowed",
+    "title_he": "האם כסף שמוחזק בקופת גמל לקצבה יכול לעמוד בתנאים של תקנות 34(ב)(1) ו־38(א)(2) ו־(6)"
   },
   {
     "id": "IRA OQ10",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "IRA-11"
+    ]
   },
   {
     "id": "IRA OQ11",
     "status": "narrowed",
-    "title_he": "מה מגן על הנכסים בניהול אישי אם החברה או הברוקר קורסים"
+    "title_he": "מה מגן על הנכסים בניהול אישי אם החברה או הברוקר קורסים",
+    "answered_by": [
+      "PF-29",
+      "REG-19",
+      "REG-34",
+      "REG-22",
+      "REG-35",
+      "BRK-58",
+      "IRA-28"
+    ]
   },
   {
     "id": "IRA OQ12",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "IRA OQ13",
@@ -674,7 +869,7 @@
   },
   {
     "id": "KH OQ7",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "KH OQ9",
@@ -686,15 +881,18 @@
   },
   {
     "id": "KH OQ14",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "KH OQ15",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "KGL OQ4",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "KGL-04"
+    ]
   },
   {
     "id": "KGL OQ5",
@@ -702,7 +900,12 @@
   },
   {
     "id": "KGL OQ6",
-    "status": "narrowed"
+    "status": "narrowed",
+    "title_he": "מי מנהל ומקבל את הכסף של קטין בקופה, והאם מי שלא גר בישראל יכול לפתוח קופה",
+    "answered_by": [
+      "KGL-06",
+      "KGL-27"
+    ]
   },
   {
     "id": "KGL OQ7",
@@ -710,7 +913,7 @@
   },
   {
     "id": "KGL OQ9",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "KGL OQ15",
@@ -718,13 +921,20 @@
   },
   {
     "id": "MGD OQ1",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "MGD-23"
+    ]
   },
   {
     "id": "MGD OQ2",
     "status": "narrowed",
     "title_he": "מה דורשת הוראת רשות ניירות ערך לבירור צורכי הלקוח בניהול תיקים",
-    "blocks_he": "הכיסוי של ניהול תיקי השקעות באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+    "blocks_he": "הכיסוי של ניהול תיקי השקעות באתר",
+    "answered_by": [
+      "MGD-21"
+    ],
+    "meanwhile_he": "בינתיים הנושא נמצא בעמוד ״מה האתר עוד לא מכסה״."
   },
   {
     "id": "MGD OQ3",
@@ -740,7 +950,7 @@
   },
   {
     "id": "MGD OQ6",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "MGD OQ7",
@@ -756,7 +966,7 @@
   },
   {
     "id": "MGD OQ10",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "MGD OQ11",
@@ -785,15 +995,22 @@
   {
     "id": "MF OQ1",
     "status": "narrowed",
-    "title_he": "ההודעה ברשומות על הוראת רשות ניירות ערך לקרנות כספיות, והכללים לקרנות במועדים קבועים"
+    "title_he": "ההודעה ברשומות על הוראת רשות ניירות ערך לקרנות כספיות, והכללים לקרנות במועדים קבועים",
+    "answered_by": [
+      "MF-29"
+    ]
   },
   {
     "id": "MF OQ6",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "MF OQ7",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "MF-21",
+      "CAT-34"
+    ]
   },
   {
     "id": "MF OQ8",
@@ -801,11 +1018,22 @@
   },
   {
     "id": "MF OQ9",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "MF-54",
+      "MF-57"
+    ]
   },
   {
     "id": "MF OQ10",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "MF-27",
+      "MF-56",
+      "BRK-52",
+      "MF-70",
+      "BRK-33"
+    ]
   },
   {
     "id": "MF OQ11",
@@ -819,7 +1047,7 @@
   },
   {
     "id": "MF OQ14",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "MF OQ15",
@@ -851,7 +1079,12 @@
   },
   {
     "id": "MF OQ23",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "BRK-52",
+      "MF-07",
+      "MF-67"
+    ]
   },
   {
     "id": "PEN OQ2",
@@ -865,7 +1098,14 @@
     "id": "PEN OQ7",
     "status": "narrowed",
     "title_he": "טבלאות דמי הביטוח ומקדמי ההמרה לקצבה של כל קרן",
-    "blocks_he": "חישוב הקצבה והמס עליה בקרן פנסיה, בקופת גמל לקצבה ובניהול אישי לתגמולים; עד אז האתר מציג את היתרה לפני מס"
+    "blocks_he": "חישוב הקצבה והמס עליה בקרן פנסיה, בקופת גמל לקצבה ובניהול אישי לתגמולים",
+    "answered_by": [
+      "PEN-15",
+      "PEN-27",
+      "PEN-48",
+      "PEN-60"
+    ],
+    "meanwhile_he": "בינתיים האתר מציג את היתרה לפני מס."
   },
   {
     "id": "PEN OQ9",
@@ -881,7 +1121,7 @@
   },
   {
     "id": "PEN OQ14",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "PEN OQ15",
@@ -895,11 +1135,23 @@
     "id": "PEN OQ19",
     "status": "narrowed",
     "title_he": "מי מקבל כסף מקופת גמל לקצבה לתשלום קצבה, ובאילו מקדמים",
-    "blocks_he": "חישוב הקצבה מקופת גמל לקצבה"
+    "blocks_he": "חישוב הקצבה מקופת גמל לקצבה",
+    "answered_by": [
+      "PEN-61",
+      "PEN-27",
+      "PEN-28",
+      "PEN-30",
+      "PEN-62",
+      "INS-17",
+      "PEN-63",
+      "PEN-71",
+      "PEN-48",
+      "PEN-51"
+    ]
   },
   {
     "id": "PEN OQ21",
-    "status": "narrowed",
+    "status": "open",
     "title_he": "האם משהו מעבר לצו ההרחבה מחייב לבטח בפנסיה את השכר המלא"
   },
   {
@@ -924,7 +1176,10 @@
   },
   {
     "id": "PEN OQ29",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "PEN-50"
+    ]
   },
   {
     "id": "PEN OQ31",
@@ -945,7 +1200,7 @@
   },
   {
     "id": "PF OQ1",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "PF OQ3",
@@ -953,12 +1208,16 @@
   },
   {
     "id": "PF OQ4",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "PF OQ6",
     "status": "narrowed",
-    "title_he": "המחיר שהמסלקה הפנסיונית גובה היום על שירות לחוסך"
+    "title_he": "המחיר שהמסלקה הפנסיונית גובה היום על שירות לחוסך",
+    "answered_by": [
+      "SW-44",
+      "SW-18"
+    ]
   },
   {
     "id": "PF OQ8",
@@ -966,11 +1225,11 @@
   },
   {
     "id": "PF OQ9",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "PF OQ12",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "PF OQ13",
@@ -978,7 +1237,7 @@
   },
   {
     "id": "PF OQ14",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "PF OQ15",
@@ -987,7 +1246,10 @@
   {
     "id": "PF OQ16",
     "status": "narrowed",
-    "title_he": "האם טיוטת התיקון לחוזר הדוחות השנתיים אומצה"
+    "title_he": "האם טיוטת התיקון לחוזר הדוחות השנתיים אומצה",
+    "answered_by": [
+      "PF-33"
+    ]
   },
   {
     "id": "PF OQ17",
@@ -1004,7 +1266,11 @@
   },
   {
     "id": "REG OQ2",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "REG-30",
+      "MGD-23"
+    ]
   },
   {
     "id": "REG OQ3",
@@ -1033,16 +1299,33 @@
   {
     "id": "REG OQ9",
     "status": "narrowed",
-    "title_he": "מי מעביר את חשבונות הלקוחות של חבר בורסה שאינו בנק אם הוא קורס, ומי נושא בחוסר"
+    "title_he": "מי מעביר את חשבונות הלקוחות של חבר בורסה שאינו בנק אם הוא קורס, ומי נושא בחוסר",
+    "answered_by": [
+      "REG-16",
+      "BRK-07",
+      "BRK-08",
+      "BRK-58",
+      "REG-33",
+      "REG-34"
+    ]
   },
   {
     "id": "REG OQ10",
     "status": "narrowed",
-    "title_he": "מי מעביר את חשבונות ניירות הערך של בנק שקורס"
+    "title_he": "מי מעביר את חשבונות ניירות הערך של בנק שקורס",
+    "answered_by": [
+      "BRK-10",
+      "REG-35",
+      "REG-34",
+      "REG-37"
+    ]
   },
   {
     "id": "REG OQ12",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "REG-04"
+    ]
   },
   {
     "id": "REG OQ13",
@@ -1051,11 +1334,17 @@
   },
   {
     "id": "REG OQ14",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "BRK-35"
+    ]
   },
   {
     "id": "REG OQ15",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "REG-31"
+    ]
   },
   {
     "id": "REG OQ17",
@@ -1064,18 +1353,34 @@
   {
     "id": "REG OQ21",
     "status": "narrowed",
-    "title_he": "האם ערבות מדינה לפיקדונות תספור חשבון נאמנות משותף של ברוקר לפי כל לקוח"
+    "title_he": "האם ערבות מדינה לפיקדונות תספור חשבון נאמנות משותף של ברוקר לפי כל לקוח",
+    "answered_by": [
+      "BRK-08",
+      "REG-04",
+      "REG-06",
+      "REG-33"
+    ]
   },
   {
     "id": "REG OQ22",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "מה קורה לכסף של בעלי היחידות בחדלות הפירעון של מנהל הקרן או של הנאמן",
-    "blocks_he": "ההגנה בקרן נאמנות"
+    "blocks_he": "ההגנה בקרן נאמנות",
+    "answered_by": [
+      "REG-33",
+      "REG-34"
+    ]
   },
   {
     "id": "REG OQ23",
     "status": "narrowed",
-    "title_he": "מה קורה לניירות ערך זרים שמוחזקים דרך בנק ישראלי אם הבנק קורס"
+    "title_he": "מה קורה לניירות ערך זרים שמוחזקים דרך בנק ישראלי אם הבנק קורס",
+    "answered_by": [
+      "REG-37",
+      "BRK-63",
+      "BRK-47",
+      "REG-33"
+    ]
   },
   {
     "id": "REG OQ24",
@@ -1111,11 +1416,18 @@
   },
   {
     "id": "RG OQ8",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "RG-16"
+    ]
   },
   {
     "id": "RG OQ10",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "ETF-75",
+      "ETF-78"
+    ]
   },
   {
     "id": "RG OQ11",
@@ -1143,7 +1455,11 @@
   },
   {
     "id": "INS OQ1",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "INS-25",
+      "INS-01"
+    ]
   },
   {
     "id": "INS OQ4",
@@ -1183,7 +1499,12 @@
   },
   {
     "id": "INS OQ14",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "INS-07",
+      "INS-28",
+      "INS-24"
+    ]
   },
   {
     "id": "INS OQ15",
@@ -1191,11 +1512,18 @@
   },
   {
     "id": "INS OQ16",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "INS-25"
+    ]
   },
   {
     "id": "INS OQ17",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "INS-28",
+      "INS-07"
+    ]
   },
   {
     "id": "INS OQ18",
@@ -1209,13 +1537,14 @@
     "id": "SW OQ2",
     "status": "narrowed",
     "title_he": "האם חוזר ההעברה חל על קופת גמל להשקעה",
-    "blocks_he": "השלבים ״לאן אפשר להעביר קופת גמל להשקעה״ ו״חתמו על בקשת ההעברה בקופה המקבלת״ במדריך המעבר"
+    "answered_by": [
+      "SW-39"
+    ]
   },
   {
     "id": "SW OQ3",
     "status": "open",
-    "title_he": "מה קובעים לגבי פניות שימור במוצרי גמל",
-    "blocks_he": "השלב ״שיחת שימור: לא נמצא כלל״ במדריך המעבר"
+    "title_he": "מה קובעים לגבי פניות שימור במוצרי גמל"
   },
   {
     "id": "SW OQ4",
@@ -1226,19 +1555,23 @@
     "id": "SW OQ9",
     "status": "narrowed",
     "title_he": "אילו בנקים פטורים מהמעבר, ואיך נספר יום העסקים השישי",
-    "blocks_he": "השלב ״בקשו את המעבר בבנק הקולט״ במדריך המעבר"
+    "answered_by": [
+      "SW-26"
+    ]
   },
   {
     "id": "SW OQ11",
     "status": "narrowed",
     "title_he": "המס על העברת ניירות ערך בין חשבונות של אותו בעלים",
-    "blocks_he": "השלב ״מס במעבר ניירות ערך״ במדריך המעבר"
+    "answered_by": [
+      "SW-36",
+      "SW-55"
+    ]
   },
   {
     "id": "SW OQ12",
     "status": "open",
-    "title_he": "העברת ניירות ערך בין מוסד ישראלי לברוקר זר",
-    "blocks_he": "השלב ״ברוקר זר: לא נמצא תהליך״ במדריך המעבר"
+    "title_he": "העברת ניירות ערך בין מוסד ישראלי לברוקר זר"
   },
   {
     "id": "SW OQ13",
@@ -1246,7 +1579,7 @@
   },
   {
     "id": "SW OQ14",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "SW OQ17",
@@ -1256,12 +1589,28 @@
     "id": "TXK OQ1",
     "status": "narrowed",
     "title_he": "שיעור המס, הבסיס והניכוי במשיכה מחיסכון לכל ילד",
-    "blocks_he": "המס כשמסלול הבנק משתנה בתחנת יציאה; המס במשיכה ממסלול הבנק מחושב לפי מקור משני"
+    "blocks_he": "המס כשמסלול הבנק משתנה בתחנת יציאה",
+    "answered_by": [
+      "TXK-19",
+      "TXK-20",
+      "TXK-22",
+      "TXK-24",
+      "TXK-25",
+      "TXK-23",
+      "TXK-29",
+      "TXK-26",
+      "TXK-07"
+    ]
   },
   {
     "id": "TXK OQ3",
     "status": "narrowed",
-    "title_he": "שיעור הניכוי במקור במשיכה מקופת גמל להשקעה"
+    "title_he": "שיעור הניכוי במקור במשיכה מקופת גמל להשקעה",
+    "answered_by": [
+      "TXK-26",
+      "TXK-28",
+      "TXK-07"
+    ]
   },
   {
     "id": "TXK OQ4",
@@ -1283,13 +1632,21 @@
   },
   {
     "id": "TXK OQ9",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "TXK-27",
+      "TXG-34"
+    ]
   },
   {
     "id": "TXK OQ10",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "האם משיכה מתחת להפקדות יוצרת הפסד שאפשר לקזז",
-    "blocks_he": "קיזוז ההפסדים בקופת גמל להשקעה, גם בניהול אישי, ובחיסכון לכל ילד בקופה"
+    "blocks_he": "קיזוז ההפסדים בקופת גמל להשקעה, גם בניהול אישי, ובחיסכון לכל ילד בקופה",
+    "answered_by": [
+      "TXK-30",
+      "TXI-25"
+    ]
   },
   {
     "id": "TXK OQ13",
@@ -1309,7 +1666,10 @@
   },
   {
     "id": "TXG OQ2",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "TXG-34"
+    ]
   },
   {
     "id": "TXG OQ3",
@@ -1319,7 +1679,10 @@
     "id": "TXG OQ4",
     "status": "narrowed",
     "title_he": "האם מי שמחזיק אצל ברוקר זר חייב להגיש דוח שנתי",
-    "blocks_he": "האילוץ ״בלי צורך בדוח שנתי למס״ בטופס המטרה"
+    "answered_by": [
+      "TXG-20",
+      "TXG-19"
+    ]
   },
   {
     "id": "TXG OQ10",
@@ -1349,15 +1712,25 @@
   },
   {
     "id": "TXH OQ4",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "TXH-26",
+      "TXH-05"
+    ]
   },
   {
     "id": "TXH OQ6",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXH-10"
+    ]
   },
   {
     "id": "TXH OQ7",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXH-06"
+    ]
   },
   {
     "id": "TXH OQ8",
@@ -1370,7 +1743,10 @@
   {
     "id": "TXH OQ11",
     "status": "narrowed",
-    "title_he": "נוסח מפורש שמעבר בין קרנות השתלמות אינו אירוע מס"
+    "title_he": "נוסח מפורש שמעבר בין קרנות השתלמות אינו אירוע מס",
+    "answered_by": [
+      "TXH-19"
+    ]
   },
   {
     "id": "TXH OQ12",
@@ -1378,7 +1754,10 @@
   },
   {
     "id": "TXH OQ13",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "KH-15"
+    ]
   },
   {
     "id": "TXH OQ15",
@@ -1402,7 +1781,14 @@
     "id": "TXA OQ1",
     "status": "narrowed",
     "title_he": "האם השיעור על ריבית לא צמודה יכול לחול על רווח בפוליסת חיסכון",
-    "blocks_he": "הכיסוי של פוליסת חיסכון באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+    "blocks_he": "הכיסוי של פוליסת חיסכון באתר",
+    "answered_by": [
+      "TXA-03",
+      "TXA-05",
+      "TXA-28",
+      "TXA-29"
+    ],
+    "meanwhile_he": "בינתיים הנושא נמצא בעמוד ״מה האתר עוד לא מכסה״."
   },
   {
     "id": "TXA OQ2",
@@ -1414,13 +1800,14 @@
   },
   {
     "id": "TXA OQ5",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "TXA OQ6",
     "status": "open",
     "title_he": "איך ממוסות הכנסות ההשקעה בתוך ביטוח מנהלים",
-    "blocks_he": "הכיסוי של ביטוח מנהלים באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+    "blocks_he": "הכיסוי של ביטוח מנהלים באתר",
+    "meanwhile_he": "בינתיים הנושא נמצא בעמוד ״מה האתר עוד לא מכסה״."
   },
   {
     "id": "TXA OQ7",
@@ -1442,7 +1829,8 @@
     "id": "TXA OQ14",
     "status": "narrowed",
     "title_he": "דמי ביטוח לאומי ומס בריאות על קצבה מוכרת ועל היוון שלה",
-    "blocks_he": "הכיסוי של הפקדות לפי תיקון 190 באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+    "blocks_he": "הכיסוי של הפקדות לפי תיקון 190 באתר",
+    "meanwhile_he": "בינתיים הנושא נמצא בעמוד ״מה האתר עוד לא מכסה״."
   },
   {
     "id": "TXA OQ16",
@@ -1455,7 +1843,13 @@
   {
     "id": "TXI OQ3",
     "status": "narrowed",
-    "title_he": "השורה במדריך רשות המסים שסותרת את החוק על המס על דמי ניכיון במק״מ"
+    "title_he": "השורה במדריך רשות המסים שסותרת את החוק על המס על דמי ניכיון במק״מ",
+    "answered_by": [
+      "TXG-31",
+      "TXI-11",
+      "GOV-26",
+      "TXI-12"
+    ]
   },
   {
     "id": "TXI OQ4",
@@ -1463,13 +1857,17 @@
   },
   {
     "id": "TXI OQ5",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "איך ממוסה ריבית צבורה כשקונים אג״ח בין מועדי קופון",
-    "blocks_he": "הדירוג של אג״ח ממשלתית בהשוואה: בלי הריבית הצבורה היא מוצגת בלי דירוג"
+    "blocks_he": "הדירוג של אג״ח ממשלתית בהשוואה",
+    "answered_by": [
+      "TXI-16"
+    ],
+    "meanwhile_he": "בינתיים אג״ח ממשלתית מוצגת בהשוואה בלי דירוג."
   },
   {
     "id": "TXI OQ9",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "האם השיעור על ריבית לא צמודה קבוע גם לבני 60 ומעלה",
     "blocks_he": "ההקלה במס לפי גיל על ריבית לא צמודה במק״מ"
   },
@@ -1481,7 +1879,10 @@
     "id": "TXI OQ11",
     "status": "narrowed",
     "title_he": "האם הפטור למעוטי הכנסה חל גם על ריבית בעו״ש",
-    "blocks_he": "הפטור למעוטי הכנסה על ריבית בעו״ש"
+    "blocks_he": "הפטור למעוטי הכנסה על ריבית בעו״ש",
+    "answered_by": [
+      "TXI-20"
+    ]
   },
   {
     "id": "TXI OQ13",
@@ -1489,9 +1890,15 @@
   },
   {
     "id": "TXI OQ14",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "המס על ריבית בפיקדון או בתוכנית חיסכון שנשברו",
-    "blocks_he": "חישוב שבירה של פיקדון או של תוכנית חיסכון לפני הזמן"
+    "blocks_he": "חישוב שבירה של פיקדון או של תוכנית חיסכון לפני הזמן",
+    "answered_by": [
+      "TXI-07",
+      "BANK-06",
+      "TXI-26",
+      "TXI-25"
+    ]
   },
   {
     "id": "TXI OQ16",
@@ -1499,7 +1906,7 @@
   },
   {
     "id": "TXI OQ17",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "TXI OQ19",
@@ -1514,15 +1921,21 @@
   {
     "id": "TXP OQ6",
     "status": "narrowed",
-    "title_he": "האם יש היום הודעה של מנהל רשות המסים שמתירה למעסיקים לתת בשכר את הזיכוי על הפקדה לפנסיה"
+    "title_he": "האם יש היום הודעה של מנהל רשות המסים שמתירה למעסיקים לתת בשכר את הזיכוי על הפקדה לפנסיה",
+    "answered_by": [
+      "TXP-34"
+    ]
   },
   {
     "id": "TXP OQ7",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "TXP-27"
+    ]
   },
   {
     "id": "TXP OQ8",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "TXP OQ9",
@@ -1539,7 +1952,7 @@
   },
   {
     "id": "TXP OQ14",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "TXP OQ16",
@@ -1567,7 +1980,12 @@
   {
     "id": "TXF OQ1",
     "status": "narrowed",
-    "title_he": "האם קרן זרה צוברת ממוסה רק במכירה"
+    "title_he": "האם קרן זרה צוברת ממוסה רק במכירה",
+    "answered_by": [
+      "TXF-11",
+      "TXF-31",
+      "TXF-36"
+    ]
   },
   {
     "id": "TXF OQ2",
@@ -1575,8 +1993,11 @@
   },
   {
     "id": "TXF OQ3",
-    "status": "open",
-    "title_he": "האם בנק בישראל מנכה מדיבידנד זר את מלוא המס, או מקזז את המס הזר"
+    "status": "narrowed",
+    "title_he": "האם בנק בישראל מנכה מדיבידנד זר את מלוא המס, או מקזז את המס הזר",
+    "answered_by": [
+      "TXF-10"
+    ]
   },
   {
     "id": "TXF OQ4",
@@ -1585,15 +2006,29 @@
   {
     "id": "TXF OQ7",
     "status": "narrowed",
-    "title_he": "איזה מס אמריקני קרן אירית על מדד של כמה מדינות סופגת בפועל"
+    "title_he": "איזה מס אמריקני קרן אירית על מדד של כמה מדינות סופגת בפועל",
+    "answered_by": [
+      "TXF-16",
+      "TXF-48"
+    ]
   },
   {
     "id": "TXF OQ8",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "TXS-41",
+      "TXF-16",
+      "TXF-04",
+      "TXF-11"
+    ]
   },
   {
     "id": "TXF OQ9",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "TXS-10",
+      "TXF-07"
+    ]
   },
   {
     "id": "TXF OQ10",
@@ -1601,7 +2036,11 @@
   },
   {
     "id": "TXF OQ11",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXF-37",
+      "TXF-27"
+    ]
   },
   {
     "id": "TXF OQ12",
@@ -1610,16 +2049,31 @@
   {
     "id": "TXF OQ13",
     "status": "narrowed",
-    "title_he": "האם מס אמריקאי חל על ריבית שקרן אג״ח אמריקאית משלמת למשקיע ישראלי"
+    "title_he": "האם מס אמריקאי חל על ריבית שקרן אג״ח אמריקאית משלמת למשקיע ישראלי",
+    "answered_by": [
+      "ETF-32"
+    ]
   },
   {
     "id": "TXF OQ14",
     "status": "narrowed",
-    "title_he": "האם חלוקה מקרן אג״ח זרה ממוסה כריבית או כדיבידנד"
+    "title_he": "האם חלוקה מקרן אג״ח זרה ממוסה כריבית או כדיבידנד",
+    "answered_by": [
+      "TXF-49",
+      "TXF-10",
+      "TXF-07",
+      "TXF-05"
+    ]
   },
   {
     "id": "TXF OQ15",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXF-29",
+      "TXF-03",
+      "TXF-04",
+      "TXF-33"
+    ]
   },
   {
     "id": "TXF OQ18",
@@ -1627,7 +2081,11 @@
   },
   {
     "id": "TXF OQ19",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXF-41",
+      "TXF-37"
+    ]
   },
   {
     "id": "TXF OQ20",
@@ -1635,15 +2093,23 @@
   },
   {
     "id": "TXF OQ21",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "TXF OQ22",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXF-39",
+      "TXF-40"
+    ]
   },
   {
     "id": "TXF OQ23",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXF-37",
+      "TXF-41"
+    ]
   },
   {
     "id": "TXF OQ24",
@@ -1675,11 +2141,14 @@
   },
   {
     "id": "TXS OQ5",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "TXS OQ8",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "TXS-15"
+    ]
   },
   {
     "id": "TXS OQ9",
@@ -1687,16 +2156,23 @@
   },
   {
     "id": "TXS OQ10",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "TXS OQ12",
     "status": "narrowed",
-    "title_he": "האם בנקים מנכים דמי ניהול ודמי משמרת בחישוב המס במקור"
+    "title_he": "האם בנקים מנכים דמי ניהול ודמי משמרת בחישוב המס במקור",
+    "answered_by": [
+      "TXS-06",
+      "TXI-17"
+    ]
   },
   {
     "id": "TXS OQ13",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXS-12"
+    ]
   },
   {
     "id": "TXS OQ16",
@@ -1704,7 +2180,16 @@
   },
   {
     "id": "TXS OQ17",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXS-21",
+      "TXS-29",
+      "SW-36",
+      "TXS-38",
+      "TXS-39",
+      "TXG-20",
+      "TXS-40"
+    ]
   },
   {
     "id": "TXS OQ18",
@@ -1732,11 +2217,11 @@
   },
   {
     "id": "TXS OQ24",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "TXS OQ25",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "מתי אדם פרטי יכול בכל זאת לקבל פטור מניכוי מס במקור בניירות ערך"
   },
   {
@@ -1753,11 +2238,12 @@
     "id": "TX2 OQ2",
     "status": "open",
     "title_he": "על איזה בסיס, ולפי איזה חוק, בנק מנכה מס מריבית על פיקדון במטבע חוץ",
-    "blocks_he": "הכיסוי של פיקדון במטבע חוץ באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+    "blocks_he": "הכיסוי של פיקדון במטבע חוץ באתר",
+    "meanwhile_he": "בינתיים הנושא נמצא בעמוד ״מה האתר עוד לא מכסה״."
   },
   {
     "id": "TX2 OQ3",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "TX2 OQ4",
@@ -1767,37 +2253,56 @@
     "id": "TX2 OQ5",
     "status": "narrowed",
     "title_he": "איך ממוסה כל סוג תשלום בפיקדון מובנה",
-    "blocks_he": "הכיסוי של פיקדון מובנה באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+    "blocks_he": "הכיסוי של פיקדון מובנה באתר",
+    "answered_by": [
+      "TX2-18"
+    ],
+    "meanwhile_he": "בינתיים הנושא נמצא בעמוד ״מה האתר עוד לא מכסה״."
   },
   {
     "id": "TX2 OQ6",
     "status": "narrowed",
     "title_he": "מתי נוצר הפסד כשאג״ח קונצרנית מפסיקה לשלם, ואיך בנקים מנכים מס במקרה כזה",
-    "blocks_he": "הכיסוי של אג״ח קונצרניות באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+    "blocks_he": "הכיסוי של אג״ח קונצרניות באתר",
+    "answered_by": [
+      "TX2-08",
+      "TXS-37"
+    ],
+    "meanwhile_he": "בינתיים הנושא נמצא בעמוד ״מה האתר עוד לא מכסה״."
   },
   {
     "id": "TX2 OQ7",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "TX2-21",
+      "TX2-20"
+    ]
   },
   {
     "id": "TX2 OQ8",
     "status": "open",
     "title_he": "האם חלים דמי ביטוח לאומי על חלוקה של קרן להשקעות במקרקעין",
-    "blocks_he": "הכיסוי של קרן להשקעות במקרקעין באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+    "blocks_he": "הכיסוי של קרן להשקעות במקרקעין באתר",
+    "meanwhile_he": "בינתיים הנושא נמצא בעמוד ״מה האתר עוד לא מכסה״."
   },
   {
     "id": "TX2 OQ10",
     "status": "open",
     "title_he": "איך ממוסות תעודות זהב זרות וקרנות זהב אמריקאיות",
-    "blocks_he": "הכיסוי של השקעה בזהב דרך קרנות סל באתר: עד שתיסגר, הוא בעמוד ״מה האתר עוד לא מכסה״"
+    "blocks_he": "הכיסוי של השקעה בזהב דרך קרנות סל באתר",
+    "meanwhile_he": "בינתיים הנושא נמצא בעמוד ״מה האתר עוד לא מכסה״."
   },
   {
     "id": "TX2 OQ11",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "TXI-13",
+      "TXI-17"
+    ]
   },
   {
     "id": "TX2 OQ13",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "TX2 OQ14",
@@ -1809,7 +2314,7 @@
   },
   {
     "id": "TX2 OQ17",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "TX2 OQ18",
@@ -1825,7 +2330,14 @@
   },
   {
     "id": "CAT OQ1",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "CAT-32",
+      "CAT-04",
+      "CAT-35",
+      "CAT-40",
+      "CAT-41"
+    ]
   },
   {
     "id": "CAT OQ2",
@@ -1834,12 +2346,19 @@
   },
   {
     "id": "CAT OQ3",
-    "status": "open",
-    "title_he": "ההגדרות של שדות הסיכון בנתוני הרשות: אלפא, שארפ, סטיית תקן ונזילות"
+    "status": "narrowed",
+    "title_he": "ההגדרות של שדות הסיכון בנתוני הרשות: אלפא, שארפ, סטיית תקן ונזילות",
+    "answered_by": [
+      "CAT-46"
+    ]
   },
   {
     "id": "CAT OQ4",
-    "status": "open"
+    "status": "narrowed",
+    "title_he": "איך נמדדת החשיפה בנתוני רשות שוק ההון: היחידה, חוזים עתידיים, גידור מטבע וקרנות שהמסלול מחזיק",
+    "answered_by": [
+      "CAT-44"
+    ]
   },
   {
     "id": "CAT OQ5",
@@ -1859,16 +2378,16 @@
   },
   {
     "id": "CAT OQ10",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "CAT OQ11",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "האם תקופת המסלול הכספי חלה גם על קופת גמל להשקעה ועל קרן השתלמות"
   },
   {
     "id": "CAT OQ13",
-    "status": "narrowed"
+    "status": "open"
   },
   {
     "id": "CAT OQ16",
@@ -1893,7 +2412,8 @@
   },
   {
     "id": "CAT OQ22",
-    "status": "open"
+    "status": "open",
+    "title_he": "למה ל־13 מסלולים של כלל שנפתחו ב־2024 אין דמי ניהול בנתוני רשות שוק ההון"
   },
   {
     "id": "CAT OQ23",
@@ -1949,6 +2469,11 @@
   },
   {
     "id": "CAT OQ36",
-    "status": "narrowed"
+    "status": "narrowed",
+    "title_he": "איזו קופה היא ״ישיר ביטחון״, והאם ההחרגה של קופה עם תשואה מובטחת חלה על כל הקופה",
+    "answered_by": [
+      "CAT-53",
+      "CAT-54"
+    ]
   }
 ]
