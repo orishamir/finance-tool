@@ -1,6 +1,6 @@
 // Guide prose for a bond fund with a limited period (the market's "קרן בולט"). A page of its own and not a product id, so it
 // stays out of the comparison until the founder decides otherwise. Every figure, year and date is a Num over a rule figure (a fund's id is not a
-// figure); the words that state a rule open it (Ruled, D116), and a figure from a rule opens it from its sheet (il-finance MF-59 to MF-66, MF-75, MF-76,
+// figure); the words that state a rule open it (Ruled, D116), and a figure from a rule opens it from its sheet (il-finance MF-59 to MF-66, MF-75 to MF-77,
 // TXS-33 to TXS-37). A company's term appears under that company's name.
 import { Fragment, type ReactNode } from "react";
 import { Num, ProofsChip, Ruled, Term } from "../../components/provenance";
@@ -44,7 +44,7 @@ export function Compare() {
         rows={[
           { key: "end", head: "מתי זה נגמר", cells: [<Fragment key="bond">במועד <Term prefix="שה" id="מנפיק">מנפיק</Term> קבע</Fragment>, <Fragment key="limited"><Ruled id="MF-60">בסוף התקופה של הקרן</Ruled></Fragment>, <Fragment key="open">לפי קריאה של האתר, <Ruled id="MF-59">אין מועד סיום בחוק</Ruled>, רק פירוק מסיבה אחרת</Fragment>] },
           { key: "back", head: "מה חוזר", cells: [<Fragment key="bond"><Ruled id="CORP-01">מה שהמנפיק התחייב לשלם</Ruled>, אם ישלם</Fragment>, <Fragment key="limited"><Ruled id="MF-60">המפרק פודה את היחידות</Ruled>, אבל אצל ילין לפידות <Ruled id="MF-75">״אין בכך התחייבות״</Ruled></Fragment>, <Fragment key="open"><Term prefix="ב" id="קרן פתוחה">קרן פתוחה</Term>, <Ruled id="MF-05">לפי שווי הנכסים</Ruled> ביום הפדיון; <Term prefix="ב" id="קרן סל">קרן סל</Term>, <Ruled id="ETF-06">המחיר בבורסה</Ruled></Fragment>] },
-          { key: "issuers", head: "כמה מנפיקים", cells: ["אחד", <Fragment key="limited">כמה, ו<Ruled id="MF-66">לפי דיווח אחד יכולים להישאר פחות</Ruled> קרוב לסוף</Fragment>, "תלוי בקרן"] },
+          { key: "issuers", head: "כמה מנפיקים", cells: ["אחד", <Fragment key="limited">כמה, ו<Ruled id="MF-77">לפי דיווח אחד יכולים להישאר פחות</Ruled> קרוב לסוף</Fragment>, "תלוי בקרן"] },
           { key: "cost", head: "עלות שוטפת", cells: [
               <Fragment key="bond">
                 בלי <Term id="דמי ניהול">דמי ניהול</Term>, אבל <Ruled id="CORP-23">יש עמלות</Ruled> <Term prefix="ו" id="דמי ניהול פיקדון ניירות ערך">דמי משמרת</Term>
@@ -191,7 +191,7 @@ export function Risks({ figure }: ContentProps) {
       <Sentence measure>מכירה לפני הסוף נעשית <Ruled id="MF-10" prefix="ב">מחיר של אותו יום</Ruled>, שיכול להיות נמוך ממה ששולם.</Sentence>
       <Sentence measure>חדלות פירעון של מנפיק פוגעת בחלק מהקרן, והפגיעה <Ruled id="TXS-37">מגיעה למחזיק דרך מחיר היחידה</Ruled>.</Sentence>
       <Sentence measure>
-        קרוב לסוף <Ruled id="MF-66">יכולות להישאר פחות החזקות</Ruled>. זו מסקנה מדיווח אחד: במדד של קרן 5138565 של קסם, שמסתיימת ב־{kesem("MF-62", "end_first")}, היו ב־{kesem("MF-66", "index_date")} רק {kesem("MF-66", "holdings")} <Term id="נייר ערך">ניירות ערך</Term>, וחמשת הגדולים שקלו {kesem("MF-66", "top_five")}.
+        קרוב לסוף <Ruled id="MF-77">יכולות להישאר פחות החזקות</Ruled>. זו מסקנה מדיווח אחד: במדד של קרן 5138565 של קסם, שמסתיימת ב־{kesem("MF-62", "end_first")}, היו ב־{kesem("MF-77", "index_date")} רק {kesem("MF-77", "holdings")} <Term id="נייר ערך">ניירות ערך</Term>, וחמשת הגדולים שקלו {kesem("MF-77", "top_five")}.
       </Sentence>
       <Sentence measure>
         בקרן יכולות להיות איגרות שמועד הפדיון הסופי שלהן <Ruled id="MF-66">אחרי השנה שבשם</Ruled>, אם למנפיק יש זכות לפדות אותן מוקדם במועד מוגדר. אם הוא לא משתמש בזכות, האיגרת יוצאת מהמדד. כך הבהירו קסם ב־{kesem("MF-66", "kesem_note")} וילין לפידות ב־{yalin("MF-66", "yalin_note")}.
