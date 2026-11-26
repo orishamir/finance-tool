@@ -885,30 +885,6 @@
     "id": "chshbvn-bmarkt-sgvrh"
   },
   {
-    "term_he": "ביטוח פיקדונות",
-    "term_source": {
-      "title": "Deposit-insurance bill P/6522/25, text tabled 02.02.2026",
-      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf#page=2"
-    },
-    "variants_he": [],
-    "explain_he": "ערבות שהחוק נותן מראש לכסף שהופקד בבנק, אם הבנק נכשל. בישראל אין חוק כזה. מה שיש: סמכות של הנגיד, באישור הממשלה, להכריז על ערבות לפיקדונות בבנק שנקלע לקשיים, חוק שמחייב לבחון את הצורך, והצעת חוק.",
-    "rule_ids": [
-      "BANK-23"
-    ],
-    "source": {
-      "title": "Deposit-insurance bill P/6522/25, text tabled 02.02.2026",
-      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf#page=2",
-      "checked": "2026-10-22",
-      "strength": "primary",
-      "publisher": "Knesset"
-    },
-    "where": [
-      "guide:bank-deposit"
-    ],
-    "notes": "BANK-23 says no statute was found; the bill was at the preliminary stage on 2026-10-22, so this line may date. Even the bill would not cover current-account balances.",
-    "id": "bytvch-pykdvnvt-a"
-  },
-  {
     "term_he": "פק\"מ",
     "term_source": {
       "title": "רשות שוק ההון, גמל נט: פירוט נכסי קופה (קובץ XML), השורה \"פק\"מ לתקופה של עד שלושה חודשים\"",
@@ -1696,7 +1672,6 @@
     ],
     "explain_he": "הערכה של מנהל הקרן לתשואה בקרן כספית מתחדשת, במונחים שנתיים, אחרי דמי ניהול ולפני מס, והיא לא מובטחת",
     "rule_ids": [
-      "BANK-15",
       "MF-36",
       "MF-37"
     ],

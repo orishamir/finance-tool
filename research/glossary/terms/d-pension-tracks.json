@@ -1239,7 +1239,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Covers comprehensive and old funds only, not general funds or provident funds. A return above the target goes to a dedicated fund. Conflict between files: REG-21 (merged into PEN-18 on 2026-11-26) states the 5.15% target is 'plus the CPI change' (real), while PEN-18 says CPI-linkage is not stated in the text read (PEN OQ8). Determining date: law text says 1 July 2022, annotated as postponed to 1.10.2022 (REG OQ18). Copy struck Round 2 (2026-11-07): from Wikisource to the gazette (library 063900783f7a23ce, pp.33-34; the target return is on p.34).",
+    "notes": "Covers comprehensive and old funds only, not general funds or provident funds. A return above the target goes to a dedicated fund. PEN-18 states the target return as a rate a year plus the CPI rise. Determining date: law text says 1 July 2022, annotated as postponed to 1.10.2022 (REG OQ18). Copy struck Round 2 (2026-11-07): from Wikisource to the gazette (library 063900783f7a23ce, pp.33-34; the target return is on p.34).",
     "id": "hshlmt-tshvah"
   },
   {
@@ -4574,6 +4574,7 @@
     "variants_he": [],
     "explain_he": "ערבות שהחוק נותן מראש לכסף שהופקד בבנק, אם הבנק נכשל. בישראל אין חוק כזה. מה שיש: סמכות של הנגיד, באישור הממשלה, להכריז על ערבות לפיקדונות בבנק שנקלע לקשיים, חוק שמחייב לבחון את הצורך, והצעת חוק.",
     "rule_ids": [
+      "BANK-23",
       "REG-04",
       "REG-05"
     ],
@@ -4585,6 +4586,7 @@
       "publisher": "Bank of Israel"
     },
     "where": [
+      "guide:bank-deposit",
       "guide:brokerage-account",
       "guide:child-savings-bank",
       "guide:child-savings-provident",
