@@ -1,7 +1,7 @@
 // Value objects on the site: the schema's object plus what a page needs to show it (D7, D3, D10).
 import type { FundStatement, Label, P05Input } from "@finance-tool/engine";
-import type { ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
-import { amountShown } from "./format";
+import type { ParameterRecord, RuleRecord, ValueObject, Working } from "@finance-tool/schema";
+import { amountShown, numberShown } from "./format";
 import { invest, numbers } from "../copy";
 
 export type Strength = ValueObject["source"]["strength"];
@@ -244,14 +244,14 @@ function withMore<T>(own: readonly T[] | undefined, more: readonly T[], key: (x:
 /**
  * A computed value with the formula and the inputs it came from (architecture 3.4), carrying the reading labels and fund statements of the
  * inputs it rests on (`carriedFromInputs`). A label of a cautious reading among its own, the engine's or the site's (`SiteLabel`), makes its
- * doubt (`readingDoubtOf`).
+ * doubt (`readingDoubtOf`). `working` says how its sheet shows the calculation (`Working`), where the value is exactly that.
  */
 export function computed(
   value: number | null,
   unit: ValueObject["unit"],
   formula: string,
   inputs: Record<string, SiteValue>,
-  options: { today: string; rules?: { id: string; strength: Strength }[]; statements?: readonly FundStatement[]; flags?: string[]; labels?: SiteLabel[]; about?: string; notes?: string; lead?: string; signed?: boolean; unitText?: string },
+  options: { today: string; rules?: { id: string; strength: Strength }[]; statements?: readonly FundStatement[]; flags?: string[]; labels?: SiteLabel[]; about?: string; notes?: string; lead?: string; signed?: boolean; unitText?: string; working?: Working },
 ): SiteValue {
   let weakest: Strength | undefined;
   for (const input of Object.values(inputs)) {
@@ -277,7 +277,7 @@ export function computed(
     effective_to: null,
     update_rule: "market",
     state: "computed",
-    computed_from: { formula, inputs },
+    computed_from: { formula, inputs, ...(options.working ? { working: options.working } : {}) },
     weakest: weakest ?? "primary",
     rulesUsed: merged.rules,
     ...(merged.statements?.length ? { statements: merged.statements } : {}),
@@ -296,23 +296,45 @@ export function computed(
 export type ComputedOptions = Parameters<typeof computed>[4];
 
 /**
+ * Whether the lines of a difference or a sum, each with its sign, come to the figure as the page writes each of them: only then does its
+ * sheet show them as a receipt (`Working`), whose lines a reader adds up. A sum of figures with agorot, written in whole shekels each, can
+ * miss its total by a shekel; its sheet lists its inputs instead.
+ */
+function addsUp(lines: readonly (readonly [sign: 1 | -1, v: SiteValue])[], result: number, unit: ValueObject["unit"]): boolean {
+  const sum = lines.reduce((t, [sign, v]) => t + sign * numberShown(v.value as number, v.unit, v.state, isParameter(v)), 0);
+  return Math.abs(sum - numberShown(result, unit, "computed")) < 1e-9;
+}
+
+/**
  * A figure worked out from two others on the page, `a − b` (a gap between two ways, what a change adds): the value is computed here from
  * the two as the page writes them (`amountShown`: 10,768 ₪ less 8,203 ₪ is 2,565 ₪, whatever agorot each holds), and its inputs are the
  * two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either is not a number. `round`
  * shapes the result (its size alone). A doubt on either figure is the difference's too, since it rests on both, where its own options give
  * it none: the first one's words, the rules of each, and which of the two carry it (`doubtFrom`). Their reading labels and fund statements
- * it carries as every computed figure does (`computed`).
+ * it carries as every computed figure does (`computed`). Its sheet shows it as the difference it is (`Working` "difference"), where the
+ * two as written come to it as written (`addsUp`), unless the options name a line of math it is (`working`).
  */
 export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const [an, av] = a;
   const [bn, bv] = b;
   const n = typeof av.value === "number" && typeof bv.value === "number" ? amountShown(av.value, av.unit, av.state, isParameter(av)) - amountShown(bv.value, bv.unit, bv.state, isParameter(bv)) : null;
-  const v = computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? av.unit, formula, { [an]: av, [bn]: bv }, options);
+  const value = n === null ? null : (options.round ?? ((x: number) => x))(n);
+  const unit = options.unit ?? av.unit;
+  const shown = options.working ?? (value !== null && addsUp([[1, av], [-1, bv]], value, unit) ? ({ kind: "difference", from: an, less: bn } as const) : undefined);
+  const v = computed(value, unit, formula, { [an]: av, [bn]: bv }, { ...options, ...(shown ? { working: shown } : {}) });
   const doubted = ([a, b] as const).filter(([, x]) => x.doubt);
   const [first] = doubted;
   if (v.doubt || !first) return v;
   const rules = [...new Set(doubted.flatMap(([, x]) => x.doubtRules ?? []))];
   return { ...v, doubt: first[1].doubt, ...(rules.length ? { doubtRules: rules } : {}), doubtFrom: doubted.map(([name]) => name) };
+}
+
+/**
+ * A figure with another number in its place (a line's whole shekels as a receipt writes them, which may differ from the figure's own rounding
+ * by a shekel): its working, which comes to the figure's own number, is left off, so its sheet shows its formula and its inputs.
+ */
+export function restated(v: SiteValue, value: number): SiteValue {
+  return v.computed_from ? { ...v, value, computed_from: { formula: v.computed_from.formula, inputs: v.computed_from.inputs } } : { ...v, value };
 }
 
 /**
@@ -341,11 +363,17 @@ export function carriedBy(values: readonly SiteValue[]): Pick<ComputedOptions, "
   return { rules: [...rules.values()], statements: [...statements.values()], flags: [...flags], labels: [...labels.values()] };
 }
 
-/** A figure that adds up others on the page (a cost of several lines, a total of parts): the same as `differenceOf`, for a sum. Null when any part is not a number. */
+/**
+ * A figure that adds up others on the page (a cost of several lines, a total of parts): the same as `differenceOf`, for a sum, which its
+ * sheet shows as one (`Working` "sum") where its parts as written come to it as written (`addsUp`). Null when any part is not a number.
+ */
 export function sumOf(parts: Record<string, SiteValue>, formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const list = Object.values(parts);
   const n = list.length > 0 && list.every((p) => typeof p.value === "number") ? list.reduce((t, p) => t + (p.value as number), 0) : null;
-  return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? list[0]?.unit ?? "nis", formula, parts, options);
+  const value = n === null ? null : (options.round ?? ((x: number) => x))(n);
+  const unit = options.unit ?? list[0]?.unit ?? "nis";
+  const shown = options.working ?? (value !== null && addsUp(list.map((p) => [1, p] as const), value, unit) ? ({ kind: "sum", parts: Object.keys(parts) } as const) : undefined);
+  return computed(value, unit, formula, parts, { ...options, ...(shown ? { working: shown } : {}) });
 }
 
 /**

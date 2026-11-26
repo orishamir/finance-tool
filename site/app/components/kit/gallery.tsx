@@ -2,12 +2,13 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router";
-import { brands, companyFocus, dealCases as caseWords, feeDeal as dealWords, guideBlocks, formulaKeys, invest as investWords, kit as copy, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
+import { brands, companyFocus, computedInputs, dealCases as caseWords, feeDeal as dealWords, guideBlocks, formulaKeys, formulaNames, invest as investWords, kit as copy, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { asField, computed, entered } from "../../lib/value";
+import { digitsFor, headText, keyOfLine, withValues, type FormulaWorking } from "../../lib/working";
 import { CalendarCheck, CalendarDays, Copy, Lock, Plus, X, Zap } from "lucide-react";
 import { IconAlert, IconCheck, IconClose, IconCoins, IconCopy, IconExternal, IconLock, IconPencil } from "../icons";
-import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleList, RuleTitleRow, Ruled, StaleSaid, StrengthLabel, Term } from "../provenance";
+import { FormulaLink, IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleList, RuleTitleRow, Ruled, StaleSaid, StrengthLabel, Term } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
 import type { TaxIndexStatement } from "@finance-tool/engine";
@@ -804,6 +805,61 @@ function Chips() {
           <MenuPicker name={w.heading} placeholder={w.heading} buttonLabel={g.sample.menuFace} items={order.map((id) => ({ id, label: label(id), editable: true }))} value={on} words={words} onSelect={setOn} onDelete={(id) => setOrder((o) => o.filter((x) => x !== id))} add={{ label: w.add, onClick: () => setOrder((o) => (o.length < 5 ? [...o, "n" + o.length] : o)) }} />
         </State>
       </Demo>
+    </>
+  );
+}
+
+/**
+ * FormulaBlock's working states, built as a figure's sheet builds them (lib/working.ts): a stock share with its values put in, a company's
+ * assets as a sum written out in a line that runs past a phone's width, and the lines of a difference and of a sum. Made-up figures.
+ */
+function WorkedStates({ today }: { today: string }) {
+  const s = samples(today);
+  const millions = (value: number): SiteValue => ({ ...s.sourced, value, unit: "nis_millions" });
+  const exposure = computedInputs.names.stock_market_exposure ?? "stock_market_exposure";
+  const assets = computedInputs.names.total_assets ?? "total_assets";
+  const share = { [exposure]: millions(1325.38), [assets]: millions(1332.41) };
+  const shareWorking = { kind: "formula", entry: "F-87", line: 0, symbols: { [exposure]: "E", [assets]: "A" } } as const;
+  const shareValue = computed((1325.38 / 1332.41) * 100, "pct", "F-87", share, { today, working: shareWorking });
+  const tracks = Object.fromEntries(g.sample.working.tracks.map((name, i) => [name, millions(1234.56 * (i + 1))]));
+  const tracksWorking = { kind: "formula", entry: "F-99", line: 0, symbols: {}, terms: "A_i" } as const;
+  const tracksValue = computed(Object.values(tracks).reduce((t, v) => t + (v.value as number), 0), "nis_millions", "F-99", tracks, { today, working: tracksWorking });
+  const worked = (value: SiteValue, working: FormulaWorking, tex: string) => {
+    const inputs = (value.computed_from?.inputs ?? {}) as Record<string, SiteValue>;
+    const head = headText(value, false);
+    return (
+      <FormulaBlock
+        variant="worked"
+        label={formulaNames[working.entry]}
+        tex={tex}
+        values={withValues(tex, working, inputs, digitsFor(head))}
+        result={head}
+        rows={keyOfLine(tex, formulaKeys[working.entry]?.symbols ?? [], working, inputs).map((r) => ({ tex: r.tex, words: r.words, inputs: r.inputs.map((x) => ({ key: x.key, name: x.key, value: <Num value={x.input} /> })) }))}
+        where={provenanceWords.formulaSheet.where}
+        after={<FormulaLink id={working.entry} />}
+      />
+    );
+  };
+  const left: SiteValue = { ...s.comp, value: 102_345 };
+  const paid: SiteValue = { ...s.ent, value: 70_000 };
+  const gain: SiteValue = { ...s.comp, value: 32_345 };
+  const receipt = (lines: [string, SiteValue, "minus" | "plus" | null][], result: string) => (
+    <FormulaBlock variant="receipt" label={provenanceWords.computed.working} lines={lines.map(([name, v, sign]) => ({ key: name, sign, name, value: <Num value={v} /> }))} result={result} />
+  );
+  return (
+    <>
+      <State label="worked: one figure's line in symbols, the same line with its values put in, and the figure as its head shows it; the key gives each symbol its words and the figure's own input, which opens its sheet (a provident track's stock share)">
+        {worked(shareValue, shareWorking, String.raw`s = \frac{E}{A} \times 100`)}
+      </State>
+      <State label="worked, a sum written out: the line with its values runs past a phone's width and scrolls inside its box, its edge fading where more of it lies; a symbol several inputs stand for lists each by its name (a company's assets in a product)">
+        {worked(tracksValue, tracksWorking, String.raw`S = \sum_i A_i`)}
+      </State>
+      <State label="receipt of a difference: the two figures as the page writes them, a minus at the start of the line it takes away, then = and the result">
+        {receipt([[investWords.receipt.left, left, null], [investWords.receipt.paidInToday, paid, "minus"]], headText(gain, false))}
+      </State>
+      <State label="receipt of a sum: each part as the page writes it, a plus at the start of each line after the first, then = and the total">
+        {receipt([[investWords.receipt.paidInToday, paid, null], [investWords.receipt.gain, gain, "plus"]], headText(left, false))}
+      </State>
     </>
   );
 }
@@ -2134,6 +2190,7 @@ function Lists({ today, statements }: { today: string; statements: readonly TaxI
             where={provenanceWords.formulaSheet.where}
           />
         </State>
+        <WorkedStates today={today} />
       </Demo>
       <Demo name="LeadTail, MarkHead" use={g.uses.MarkHold}>
         <State label="in a narrow box: the mark after a text wraps with the text's last word, the mark before it with its first word; never alone on a line">

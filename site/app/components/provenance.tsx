@@ -13,7 +13,7 @@ import { isOpenValue, isParameter, isWeak, strengthOf, type SiteValue, type Stre
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconClock, IconDrillIn, IconFile, IconLock, IconPencil } from "./icons";
 import { Sheet } from "./Sheet";
-import { cx, Disclosure, Tag } from "./ui";
+import { Button, cx, Disclosure, Tag } from "./ui";
 import { CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
 import { decodedPart } from "../lib/address-hash";
@@ -54,7 +54,7 @@ export interface ProvenanceData {
   /** Where each rule is used (the rules pages fill it): pages that show it, and whether the calculation engine reads it. */
   ruleUses?: Record<string, RuleUses>;
   /** Per formula, its Hebrew name and the site parameters it uses (the formula sheet). A page that does not pass it still gets the name from `formulaNames`. */
-  formulas?: Record<string, { name: string; parameters: string[]; /** The math docs/method.md writes for it, in order (`loadFormulaTex`). */ tex?: string[] }>;
+  formulas?: Record<string, { name: string; parameters: string[]; /** The math docs/method.md writes for it, in order (`loadFormulaTex`). */ tex?: string[]; }>;
   /** Per id a card on /parameters answers to: `P-01` to itself, an `A-01` that is an input of a card to that card. PageShell fills it for every page. */
   parameters?: Record<string, string>;
   /**
@@ -125,6 +125,18 @@ function usePreloadSheets(): void {
 /** Set by a provider for what it holds: a provider inside it is nested (a deal's popup, which reads the fee page's data). */
 const NestedCtx = createContext(false);
 
+/**
+ * How much room the provenance sheet takes, by what it opened to show (`roomOf`): a card (a sourced figure, a rule, a term), or more for a
+ * computed figure, whose working holds a line of math with its values, the key to its symbols, or the lines of a difference or a sum:
+ * taller on a phone and wider and taller on a computer.
+ */
+const SHEET_ROOM = {
+  card: { height: 70, size: "card", className: "lg:max-h-[60vh] lg:backdrop:bg-transparent" },
+  calculation: { height: 80, size: "roomy", className: "lg:backdrop:bg-transparent" },
+} as const satisfies Record<string, { height: 70 | 80; size: "card" | "roomy"; className: string }>;
+
+const roomOf = (item: Item | undefined): keyof typeof SHEET_ROOM => (item?.kind === "value" && item.value.state === "computed" ? "calculation" : "card");
+
 export function ProvenanceProvider({ data, children }: { data: ProvenanceData; children: ReactNode }) {
   // A nested provider's sheet opens over the sheet that holds it, which then closes as a dialog (sheet-stack): drawn inside that sheet, it
   // would close with it, out of sight yet modal, and leave the whole page inert. So it is drawn at the body's end, once in the browser.
@@ -157,8 +169,10 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   const push = useCallback((item: Item) => setStack((s) => [...s, item]), []);
   const headId = useId();
   const descId = useId();
+  // the sheet takes its room from what it opened to show, and keeps it while a card opened from inside replaces it and on the way back
+  const room = SHEET_ROOM[roomOf(stack[0])];
   const sheet = (
-    <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={70} className="lg:max-h-[60vh] lg:backdrop:bg-transparent" labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
+    <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={room.height} size={room.size} className={room.className} labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
       {top && code && <code.SheetContent item={top} data={data} headId={headId} descId={descId} />}
     </Sheet>
   );
@@ -542,6 +556,19 @@ function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
       {chip}
       {end}
     </span>
+  );
+}
+
+/**
+ * The way from a figure's working to its formula's own sheet (every line the entry draws, its key and the site parameters it uses): a quiet
+ * line of words at the end of the working, which opens that sheet in place of the figure's, with the way back.
+ */
+export function FormulaLink({ id }: { id: string }) {
+  const open = useOpen();
+  return (
+    <Button variant="quiet" flush size="sm" className="self-start" onClick={(e) => open({ kind: "formula", id }, e.currentTarget)}>
+      {copy.computed.toFormula}
+    </Button>
   );
 }
 

@@ -684,11 +684,11 @@ describe("a reading is the site's reading, not a secondary source", () => {
     expect(html).not.toContain(numbers.readingDoubt["TXS-14"]?.status ?? "the words");
     // the figure the doubt is about says it in words
     expect(sheet(doubted)).toContain(numbers.readingDoubt["TXS-14"]?.status ?? "the words");
-    // the doubt, then the strength note, then the formula
+    // the doubt, then the strength note, then the working (a difference's lines)
     const at = (words: string) => html.indexOf(words);
     expect(at(provenance.computed.doubtedInputs)).toBeGreaterThan(-1);
     expect(at(strengthCopy.institution.line)).toBeGreaterThan(at(provenance.computed.doubtedInputs));
-    expect(at(provenance.computed.formula)).toBeGreaterThan(at(strengthCopy.institution.line));
+    expect(at(provenance.computed.working)).toBeGreaterThan(at(strengthCopy.institution.line));
   });
   // A file that carries a run's flags into a figure carries its labels too, or the reading never reaches the sheet. Leftovers by name;
   // the list only shrinks. The timeline gathers flags over every year's run into one set; its labels would need the same per year.

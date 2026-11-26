@@ -20,6 +20,7 @@ export default [
   route("not-covered", "routes/not-covered.tsx"),
   route("search-index.json", "routes/search-index.ts"),
   route("search-texts.json", "routes/search-texts.ts"),
+  route("method-anchors.json", "routes/method-anchors.ts"),
   // one route for /tracks and every /tracks/<product>: choosing another product keeps the page and fetches nothing (routes/tracks.tsx)
   route("tracks/:product?", "routes/tracks.tsx"),
   route("deposits", "routes/deposits.tsx"),

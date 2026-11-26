@@ -138,9 +138,27 @@ export const source = z.object({
   strength,
 });
 
+/**
+ * How a computed value's sheet shows its working, by kind: `difference`, the input `from` less the input `less`; `sum`, the inputs `parts`
+ * added up, in order; `formula`, one line of math docs/method.md draws for an entry (`line`, its place among the entry's $`…`$ lines,
+ * from 0), with the symbol of that line each input stands for (`symbols`, input key to the symbol's TeX as the line writes it; several
+ * inputs that stand for one symbol are the terms of a sum over it) and the symbol every other input that holds a number stands for
+ * (`terms`, the terms of a sum over it: a company's tracks, named once however many; one that reported no number adds nothing and is
+ * listed beside the line). Presentation only: the engine never reads it. A computed value without it
+ * shows its formula's name and its inputs.
+ */
+export const working = z.discriminatedUnion("kind", [
+  z.strictObject({ kind: z.literal("difference"), from: z.string(), less: z.string() }),
+  z.strictObject({ kind: z.literal("sum"), parts: z.array(z.string()).min(1) }),
+  z.strictObject({ kind: z.literal("formula"), entry: z.string().regex(/^F-\d{2,3}$/), line: z.number().int().min(0), symbols: z.record(z.string(), z.string()), terms: z.string().optional() }),
+]);
+
+export type Working = z.infer<typeof working>;
+
 export const computedFrom = z.object({
   formula: z.string().regex(/^[FA]-\d{2,3}$/),
   inputs: z.record(z.string(), z.unknown()),
+  working: working.optional(),
 });
 
 /** data-schema §1: a number never appears bare. */

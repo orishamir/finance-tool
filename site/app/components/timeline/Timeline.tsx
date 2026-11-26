@@ -10,6 +10,7 @@ import { useInputs, type Employment } from "../../lib/inputs";
 import { useOwnRates } from "../../lib/own-rate";
 import { useValueMode, type ValueMode as Mode } from "../../lib/mode-store";
 import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
+import { paidInWorking } from "../../lib/working";
 import { lumpSumEntered, type CashRateRange } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconReset } from "../icons";
@@ -148,7 +149,9 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
       const paid: Record<string, SiteValue> = { [ci.amountNow]: inputs[ci.amountNow]!, ...(lumpSum ? {} : { [ci.monthly]: inputs[ci.monthly]! }), [ci.years]: enteredValue(p.year, "years", today) };
       const asEntered = paidInAsEntered(Number(paid[ci.amountNow]!.value), lumpSum ? 0 : Number(paid[ci.monthly]!.value), p.year);
       const whole = Math.abs(p.paidInReal - asEntered) < 0.5;
-      const contributions = m === "real" ? computed(p.paidInReal, "nis", whole ? "F-106" : "F-06", whole ? paid : { ...paid, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` }) : computed(p.paidIn, "nis", "F-05", { ...paid, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` });
+      // F-106's line, worked out with these values, where there is a monthly deposit to put in it
+      const working = whole && !lumpSum ? { working: paidInWorking(ci.amountNow, ci.monthly, ci.years) } : {};
+      const contributions = m === "real" ? computed(p.paidInReal, "nis", whole ? "F-106" : "F-06", whole ? paid : { ...paid, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}`, ...working }) : computed(p.paidIn, "nis", "F-05", { ...paid, [ci.inflation]: inputs[ci.inflation]! }, { today, about: `${ci.about.contributions} ${p.year}` });
       // the fees by type over the years are a series of the run (F-67): a balance fee is a share of a balance the whole plan grows
       // each year is its own run of that many years (`runTimeline`), so its figures list that year, not the horizon
       const yearIn = p.year === horizonYears ? inputValue("horizon_years") : enteredValue(p.year, "years", today);

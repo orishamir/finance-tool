@@ -5,8 +5,8 @@ import { useMemo } from "react";
 import { comparedYears, kindRecord, stretchRange, yearlyChanges, type GapYear, type Spread, type Stretch } from "@finance-tool/engine";
 import { invest as c } from "../../copy";
 import { fmt } from "../../lib/format";
-import { monthEndRate, type FxHistory } from "../../lib/fx";
-import { gapListFor, kindMoney, kindOf, planInputs, reportFigure, reportsInShekels, type InvestView } from "../../lib/invest";
+import { dollarStretchChange, dollarYearChange, type FxHistory } from "../../lib/fx";
+import { gapListFor, kindMoney, kindOf, reportFigure, reportsInShekels, type InvestView } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, Ruled } from "../provenance";
@@ -104,17 +104,9 @@ export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bun
   const fig = (x: number, about: string, formula: string, inputs: Record<string, SiteValue>) => computed(Math.round(x * 100) / 100, "pct", formula, inputs, { today, about });
   const num = (x: number, about: string, formula: string, inputs: Record<string, SiteValue>) => <Num value={fig(x, about, formula, inputs)} display={fmt.signedPct(x, 1)} />;
   // a change of the dollar (F-93) is computed from shekels per dollar at two month ends, each from the ECB's two end-of-month rates (F-84)
-  const rateInput = (p: FxHistory["points"][number]): [string, SiteValue] => {
-    const label = c.dollar.inputRate(fmt.period(p.date.slice(0, 7)));
-    return [label, monthEndRate(history, p, today, label)];
-  };
-  const december = (year: number) => history.points.find((p) => p.date.startsWith(`${year}-12`));
-  const yearInputs = (year: number): Record<string, SiteValue> => {
-    const a = december(year - 1), b = december(year);
-    return a && b ? Object.fromEntries([rateInput(a), rateInput(b)]) : {};
-  };
-  const dollarOf = (year: number, pct: number) => fig(pct, c.dollar.inputDollar(year), "F-93", yearInputs(year));
-  const stretchInputs = (s: Stretch<FxHistory["points"][number]>): Record<string, SiteValue> => ({ ...Object.fromEntries([rateInput(s.start), rateInput(s.end)]), ...planInputs(plan, ["years"]) });
+  const dollarOf = (year: number, pct: number) => dollarYearChange(history, year, pct, today, c.dollar.inputDollar(year));
+  const yearsInput = [c.planInputs.years, plan.values.years] as const;
+  const stretchNum = (s: Stretch<FxHistory["points"][number]>, pct: number, about: string) => <Num value={dollarStretchChange(history, s, pct, yearsInput, today, about)} display={fmt.signedPct(pct, 1)} />;
   // each year's dollar and index; the years together compound them (F-95), so their sheet lists each year's
   const yearFigs = new Map(rec.years.map((y) => [y.year, { dollar: dollarOf(y.year, y.dollar), index: fig(y.index, c.dollar.colIndex, "F-95", indexInputs(y.year)) }]));
   const range = (s: Spread, about: string, inputs: Record<string, SiteValue>, note?: string) => (
@@ -255,7 +247,7 @@ export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bun
             <span className="max-lg:min-h-[4lh]">
               {c.dollar.cancelsNote(from, to)}{" "}
               {stretch ? (
-                <Tpl t={c.dollar.cancelsStretch(h)} vars={{ lo: num(stretch.low, c.dollar.stretchAbout(h), "F-93", stretchInputs(stretch.lowAt)), hi: num(stretch.high, c.dollar.stretchAbout(h), "F-93", stretchInputs(stretch.highAt)) }} />
+                <Tpl t={c.dollar.cancelsStretch(h)} vars={{ lo: stretchNum(stretch.lowAt, stretch.low, c.dollar.stretchAbout(h)), hi: stretchNum(stretch.highAt, stretch.high, c.dollar.stretchAbout(h)) }} />
               ) : (
                 c.dollar.cancelsNoStretch(h)
               )}
