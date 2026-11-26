@@ -682,7 +682,7 @@ export function regulatorAverageFees(
         effective_to: null,
         update_rule: "fixed in regulation",
         state: "sourced",
-        rule_ids: ["PF-06"],
+        rule_ids: [pf06.id],
         notes: investCopy.depositFeeNoneByRule(spec.track),
       };
   } else missing.push(`${wrapperId}: track ${spec.track} reports no average deposit fee (tariff fees)`);
