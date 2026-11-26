@@ -155,8 +155,18 @@
       {
         "rule": "BANK-36",
         "companies": [
-          "leumi",
-          "yahav",
+          "leumi"
+        ]
+      },
+      {
+        "rule": "BANK-63",
+        "companies": [
+          "yahav"
+        ]
+      },
+      {
+        "rule": "BANK-64",
+        "companies": [
           "discount"
         ]
       }

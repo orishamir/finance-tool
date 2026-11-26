@@ -286,20 +286,38 @@ A competition-authority declaration of the five large banking groups as a "conce
 
 ### BANK-26 CPI-linked vs unlinked deposits
 - Rule: Short deposits (up to six months) in the 447 template are unlinked; for one-year-and-over types the bank states "לא צמוד" or "צמוד למדד המחירים לצרכן". A linked deposit's agreement must state linkage type and base, rate, whether linkage applies to interest, and whether it applies on index falls (BANK-02, BANK-04): wherever the rules require linkage terms to be disclosed, the bank must say whether linkage applies only when the index rises or also when it falls (s.2(ד)). So whether an index fall can reduce a linked deposit is a term of each deposit, which its agreement must state.
-- Conditions / exceptions: How banks quote linked deposits (a real rate "+ הצמדה למדד") and their linked products are each bank's own terms: BANK-36 (moved there on 2026-10-26, scope settling).
+- Conditions / exceptions: How banks quote linked deposits (a real rate "+ הצמדה למדד") and their linked products are each bank's own terms: BANK-36 (moved there on 2026-10-26, scope settling; Bank Leumi), BANK-63 (Bank Yahav) and BANK-64 (Discount Bank), split on 2026-11-26.
 - Figures: none.
 - Source: [הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)](https://www.boi.org.il/media/orgfwntb/447.pdf), p.3, Annex A, column "סוג הצמדה": "לא צמוד/ צמוד למדד המחירים לצרכן" · checked 2026-10-26 · primary; [כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ"ב-1992, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/rvzi1ngd/151.pdf), p.2, s.2(ד): "יש לציין גם האם ההצמדה חלה רק במקרה של עליית המדד ,או גם במקרה של ירידת המדד"; p.5, s.7(א)(5) · checked 2026-10-26 · primary
 - Scope: general
 - Dimensions: real-vs-nominal, protection
 - Likely to change: no
 
-### BANK-36 Bank Leumi, Bank Yahav and Discount Bank: how they quote and build CPI-linked deposits
-- Rule: The three banks read quote a linked deposit as a real rate plus linkage ("+ הצמדה למדד"). Their linked products: Bank Leumi "חסכון צמוד למדד לשנה" (1 year, no exit points, fixed rate) and "תשלומים צמוד מדד 15 שנים" (exit points after 12 and 13 years); Bank Yahav "חסכון אודם" (1 and 2 years, "מעניק הבטחת קרן", a principal guarantee) and "חיסכון נבו ברירה מדד" (at the end of a year the customer gets the higher of CPI-linked fixed and unlinked fixed); Discount Bank: "פיקדונות מסוג צמוד מדד הינם צמודים למדד המחירים לצרכן".
-- Conditions / exceptions: Split from BANK-26 on 2026-10-26 (scope settling). The general rule (the 447 linkage column; the agreement says whether linkage applies on a fall, s.2(ד)) is BANK-26. Other banks' linked products and quoting were not read, so this is not a count over all banks.
+### BANK-36 Bank Leumi: how it quotes and builds CPI-linked deposits
+- Rule: Bank Leumi quotes a linked deposit as a real rate plus linkage ("+ הצמדה למדד"). Its linked products: "חסכון צמוד למדד לשנה" (1 year, no exit points, fixed rate) and "תשלומים צמוד מדד 15 שנים" (exit points after 12 and 13 years).
+- Conditions / exceptions: Split from BANK-26 on 2026-10-26 (scope settling). The general rule (the 447 linkage column; the agreement says whether linkage applies on a fall, s.2(ד)) is BANK-26. On 2026-11-26 (card sweep) Bank Yahav's linked products and quoting moved to BANK-63 and Discount Bank's to BANK-64. Other banks' linked products and quoting were not read, so the three records are not a count over all banks.
 - Figures: none.
-- Source: [לאומי: טבלת שיעורי הריבית](https://www.leumi.co.il/he/savings/interest-rate-table) · checked 2026-10-25 · institution; [בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26](https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf), pp.4, 6, 8 · checked 2026-10-25 · institution; [דיסקונט: חיסכון וריבית](https://www.discountbank.co.il/private/savings-investments/savings-interest/) · checked 2026-10-25 · institution. General rule: BANK-26.
-- Scope: institution: Bank Leumi, Bank Yahav, Discount Bank
+- Source: [לאומי: טבלת שיעורי הריבית](https://www.leumi.co.il/he/savings/interest-rate-table) · checked 2026-10-25 · institution. General rule: BANK-26.
+- Scope: institution: Bank Leumi
+- Dimensions: real-vs-nominal
+- Likely to change: possible, on a product or tariff revision.
+
+### BANK-63 Bank Yahav: how it quotes and builds CPI-linked savings (a principal guarantee; the better of linked and unlinked)
+- Rule: Bank Yahav quotes a linked deposit as a real rate plus linkage ("+ הצמדה למדד"). Its linked products: "חסכון אודם" (1 and 2 years, "מעניק הבטחת קרן", a principal guarantee) and "חיסכון נבו ברירה מדד" (at the end of a year the customer gets the higher of CPI-linked fixed and unlinked fixed).
+- Conditions / exceptions: Split from BANK-36 on 2026-11-26 (card sweep). The general rule (the 447 linkage column; the agreement says whether linkage applies on a fall, s.2(ד)) is BANK-26.
+- Figures: none.
+- Source: [בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26](https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf), pp.4, 6, 8 · checked 2026-10-25 · institution. General rule: BANK-26.
+- Scope: institution: Bank Yahav
 - Dimensions: real-vs-nominal, protection
+- Likely to change: possible, on a product or tariff revision.
+
+### BANK-64 Discount Bank: its CPI-linked deposits are linked to the consumer price index
+- Rule: Discount Bank quotes a linked deposit as a real rate plus linkage ("+ הצמדה למדד"), and writes: "פיקדונות מסוג צמוד מדד הינם צמודים למדד המחירים לצרכן".
+- Conditions / exceptions: Split from BANK-36 on 2026-11-26 (card sweep). The general rule (the 447 linkage column; the agreement says whether linkage applies on a fall, s.2(ד)) is BANK-26.
+- Figures: none.
+- Source: [דיסקונט: חיסכון וריבית](https://www.discountbank.co.il/private/savings-investments/savings-interest/) · checked 2026-10-25 · institution. General rule: BANK-26.
+- Scope: institution: Discount Bank
+- Dimensions: real-vs-nominal
 - Likely to change: possible, on a product or tariff revision.
 
 ### BANK-27 Exit points, amount tiers and minimums are product terms
