@@ -43,7 +43,7 @@ export const s23: ProvidentInput = {
   hishtalmut: s23Hishtalmut,
   profile: {},
 };
-const s27: PensionInput = {
+export const s27: PensionInput = {
   wrapper: "pension-comprehensive",
   goal: { amountNow: 0, monthly: 300, months: 360 },
   market: { grossReturn: 0.05, inflation: 0.02 },

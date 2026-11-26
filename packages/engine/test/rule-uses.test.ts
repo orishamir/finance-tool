@@ -3,9 +3,9 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { BlockedError, FigureNotUpdatedError, mergedRules, MissingRuleError, ruleBook, runBond, runDeposit, runPension, runProvident, type RunPart, type RunResult, type UsedRule } from "../src/index.ts";
+import { BlockedError, employerLinePension, FigureNotUpdatedError, mergedRules, MissingRuleError, ruleBook, runBond, runDeposit, runPension, runProvident, type RunPart, type RunResult, type UsedRule } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
-import { reliefPaths, runs, s23, s23Hishtalmut } from "./rule-uses-runs.ts";
+import { reliefPaths, runs, s23, s23Hishtalmut, s27 } from "./rule-uses-runs.ts";
 
 const rules = loadRules();
 const ctx = context(rules);
@@ -328,6 +328,12 @@ describe("the pension runs", () => {
     expect(over.flags.map((f) => f.code)).toContain("PEN-08");
     expect(read(over, "PEN-08")).toBe(true);
     expect(changedIn(over, "PEN-08")).toEqual([]);
+  });
+
+  it("flags the employer's severance above its ceiling and takes the ceiling on no part", () => {
+    const high = employerLinePension({ ...s27, pension: { ...s27.pension, monthlySalary: 50_000, employer: { pensionRate: 0.065, severanceRate: 0.0833 } } }, ctx);
+    expect(high.flags.map((f) => f.code)).toContain("TXP-11");
+    expect(high.rules.find((u) => u.id === "TXP-11")?.uses).toEqual([{ part: "taxDuring", changed: false, figures: ["severance_ceiling"] }]);
   });
 });
 

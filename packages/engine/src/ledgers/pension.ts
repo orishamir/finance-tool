@@ -336,7 +336,8 @@ function employerLinePensionUnder(input: PensionInput, ctx: RunContext): Pension
   const exemptPct = salaryTax.rate("TXP-10", "employer_exempt_pct");
   const pensionPart = p.employer.pensionRate * deposited;
   const excessMonthly = Math.max(0, pensionPart - Math.min(exemptPct, p.employer.pensionRate) * Math.min(deposited, ceiling));
-  if (p.employer.severanceRate * deposited > book.amount("TXP-11", "severance_ceiling") / 12) tally.flag("TXP-11");
+  // the severance ceiling decides only the flag, so it is looked at: the run taxes no severance above it
+  if (p.employer.severanceRate * deposited > salaryTax.peek.amount("TXP-11", "severance_ceiling") / 12) tally.flag("TXP-11");
   const perYear = new Map<number, number>();
   for (let m = 1; m <= T; m++) perYear.set(taxYearOf(m, first), (perYear.get(taxYearOf(m, first)) ?? 0) + excessMonthly);
   let depositTax = 0;
