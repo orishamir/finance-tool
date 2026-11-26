@@ -39,6 +39,7 @@ const rule = {
   dimensions: ["tax-at-exit"],
   likely_to_change: "no",
   figures: { rate_on_real_gain: vo },
+  figure_names_he: { rate_on_real_gain: "שיעור המס על הרווח הריאלי" },
   il_finance_file: "tax-securities-israeli.md",
   checked: "2026-10-22",
   scope: "general",

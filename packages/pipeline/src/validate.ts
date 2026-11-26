@@ -1,5 +1,6 @@
 // The validator: docs/data-schema.md §4 and docs/architecture.md 3.2. A problem fails the run; a warning (rule sources, dates) is printed in
-// one line per category and does not.
+// one line per category and does not. Besides the checks written here, it runs every module of ./checks/, found by reading the folder:
+// each is one check, which one package owns, with its ratchet lists under ./leftovers/ (checks/lib/kit.ts).
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import type { z } from "zod";
@@ -42,7 +43,8 @@ import {
 import { inTrailingYear, trailingDistributionYield } from "@finance-tool/engine";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
-import { figureSlots, readTextLeftovers, ruleTextProblems, withoutSlots, type TextLeftovers } from "./rule-text.ts";
+import { figureSlots, readTextLeftovers, withoutSlots, type TextLeftovers } from "./rule-text.ts";
+import { forgetReads, isOwnData, rememberRead, unreadRuleLists, type CheckProblem, type DataCheck } from "./checks/lib/kit.ts";
 import { checkFundPromotions, checkLineFacts, checkSnapshotFacts } from "./price-list-facts.ts";
 
 /**
@@ -69,6 +71,29 @@ const collections: Record<string, z.ZodType> = {
   abroad: abroadRecord,
   averages: averagesRecord,
 };
+
+const CHECKS = new URL("./checks/", import.meta.url);
+/** A module of ./checks/ as a check: it exports its name and its check function, or the run stops here, saying which is missing. */
+function asCheck(file: string, mod: Record<string, unknown>): DataCheck {
+  if (typeof mod.name !== "string" || typeof mod.check !== "function") throw new Error(`checks/${file} exports a name (a string) and a check (a function)`);
+  return { name: mod.name, check: mod.check as DataCheck["check"] };
+}
+/** Every check module of ./checks/ (its lib/ folder holds what they share, and no check), in file order. */
+const dataChecks: DataCheck[] = await Promise.all(
+  readdirSync(CHECKS)
+    .filter((f) => f.endsWith(".ts") && !f.endsWith(".test.ts"))
+    .sort()
+    .map(async (f) => asCheck(f, (await import(new URL(f, CHECKS).href)) as Record<string, unknown>)),
+);
+
+/** The problems the check modules find in `dataDir`, each named by its check, and every list in a group file that no check reads. */
+function runChecks(dataDir: string, files: string[]): CheckProblem[] {
+  const whole = isOwnData(dataDir);
+  const out = dataChecks.flatMap((c) => c.check({ dataDir, files, whole }).map((p) => ({ file: p.file, message: `${c.name}: ${p.message}` })));
+  forgetReads();
+  for (const message of unreadRuleLists()) out.push({ file: dataDir, message });
+  return out;
+}
 
 export interface ValidationContext {
   dataDir: string;
@@ -174,7 +199,6 @@ export function validateData(ctx: ValidationContext): Problem[] {
   const feeCaps = readFeeCaps(files, ctx.dataDir);
   const warnings = new Map<string, string[]>();
   const warn = (category: string, id: string) => warnings.set(category, [...(warnings.get(category) ?? []), id]);
-  const ruleFiles = new Map<string, string>();
   const textLeftovers = readTextLeftovers();
 
   for (const file of files) {
@@ -193,6 +217,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       continue;
     }
     const parsed = parseJson(readFileSync(file, "utf8"));
+    rememberRead(file, parsed.value);
     if (parsed.error) {
       report(file, parsed.error);
       continue;
@@ -224,7 +249,6 @@ export function validateData(ctx: ValidationContext): Problem[] {
     if (collection === "terms/deposits" && result.success) for (const message of checkFirstExitPoint(parsed.value)) report(file, message);
     if (collection === "rules" && result.success) {
       const rec = parsed.value as RuleLike;
-      ruleFiles.set(rec.id, file);
       for (const message of checkRuleSources(rec, ctx, ruleRecords, warn)) report(file, message);
     }
     // data-schema §3.16: one record per guide page, named by the guide's id
@@ -309,8 +333,6 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkLegalStructures(files, ctx.dataDir, report);
   checkStatedTaxIndex(files, ctx.dataDir, currencies, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
-  // data-schema §4 item 23: the rule cards' texts (rule-text.ts)
-  for (const p of ruleTextProblems(ruleRecords, textLeftovers)) report(ruleFiles.get(p.id) ?? join(ctx.dataDir, "rules"), p.message);
   checkHomeGuideDoor(files, ctx.dataDir, report);
   checkDepositAmounts(files, ctx.dataDir, report);
   checkTermNames(files, ctx.dataDir, report);
@@ -318,6 +340,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkOpenQuestions(files, ctx, report, warn);
   // who each rule applies to and where it may appear (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §3): scope.ts
   const scopeCounts = checkScope(ctx, ruleRecords, report, warn);
+  for (const p of runChecks(ctx.dataDir, files)) report(p.file, p.message);
   const emit = ctx.warn ?? ((line: string) => console.warn(line));
   emit(`scope: ${scopeCounts.general} general, ${scopeCounts.institution} institution, ${scopeCounts.unsettled} unsettled`);
   for (const [category, ids] of warnings) {
@@ -1450,7 +1473,7 @@ function checkTermNames(files: string[], dataDir: string, report: (file: string,
 /**
  * Glossary copies (data-schema §4 item 16): two `data/terms/` records with the same Hebrew name and the same explanation, byte for byte
  * after trimming, are one term written twice, whatever pages each names; the glossary lists both. The pairs still allowed, each
- * "<id> <id>" in file order, are text-leftovers.json's "term-copy", which only shrinks.
+ * "<id> <id>" in file order, are leftovers/terms.json's "term-copy", which only shrinks.
  */
 export function termCopies(terms: readonly { id: string; he: string; meaning: string }[]): string[] {
   return terms.flatMap((a, i) => terms.slice(i + 1).flatMap((b) => (a.he.trim() === b.he.trim() && a.meaning.trim() === b.meaning.trim() ? [`${a.id} ${b.id}`] : [])));
@@ -1478,8 +1501,8 @@ export function staleTermCopies(terms: readonly { id: string; he: string; meanin
   const found = termCopies(terms);
   return allowed.flatMap((pair) => {
     const gone = pair.split(" ").filter((id) => !ids.has(id));
-    if (gone.length > 0) return [`terms: text-leftovers.json lists the copy "${pair}", and ${gone.join(" and ")} has no record under data/terms/: strike it (the list only shrinks)`];
-    return found.includes(pair) ? [] : [`terms: text-leftovers.json lists the copy "${pair}", which is no longer one: strike it (the list only shrinks)`];
+    if (gone.length > 0) return [`terms: leftovers/terms.json lists the copy "${pair}", and ${gone.join(" and ")} has no record under data/terms/: strike it (the list only shrinks)`];
+    return found.includes(pair) ? [] : [`terms: leftovers/terms.json lists the copy "${pair}", which is no longer one: strike it (the list only shrinks)`];
   });
 }
 

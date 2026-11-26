@@ -2,9 +2,11 @@
 // questions' answers, the "הידעת?" facts, a rule's own text). A card's text states the rule in 2 to 4 sentences, never how the site read
 // it, never the line the card already prints for a company's term, and a number that is one of the rule's figures is a slot, never typed
 // in digits or spelled in words. Each kind of flaw a script can find is a `TextFlaw`; the records that still carry one are listed by id in
-// text-leftovers.json, with the phrases the checks look for, and each list only shrinks (data-schema §4 item 23).
-import { readFileSync } from "node:fs";
+// their group's file, leftovers/rules/<group>.json, the phrases the checks look for are in leftovers/phrases.json, and each list only
+// shrinks (data-schema §4 item 23). checks/rule-text.ts runs it in the data check.
+import { phrasesIn, sentenceCount } from "@finance-tool/schema";
 import { z } from "zod";
+import { readLeftovers, readRuleList, ruleListFile } from "./checks/lib/kit.ts";
 
 /** A figure slot: "{ID:figure}", a rule's id and the name of one of its figures; "{ID:figure.from}" is the month that figure takes effect (the site's `parseAnswer`). */
 const FIGURE_SLOT = /\{([A-Z0-9-]+):([a-z0-9_]+)(?:\.from)?\}/g;
@@ -19,28 +21,8 @@ export function withoutSlots(text: string): string {
   return text.replace(FIGURE_SLOT, " ");
 }
 
-/** A full stop after letters joined by full stops ("U.S.", "ע.מ."), after any prefix joined by a hyphen ("ה־U.S."), is part of the abbreviation. */
-const ABBREVIATION = /^(?:[A-Za-zא-ת]\.)+[A-Za-zא-ת]$/;
-/** A sentence's end: ".", "?" or "!" (with any closing quote or bracket) before a space or the end of the text. */
-const SENTENCE_END = /[.?!]+["'״׳”)\]]*(?=\s|$)/g;
-
-/**
- * The number of sentences in a text. A sentence ends at ".", "?" or "!" followed by a space or the end; a full stop inside a number or a
- * date (2.5, 10.11.2026) is followed by a digit, and one inside an abbreviation written with full stops ("ע.מ.") follows letters joined
- * by them, so neither ends one. Words after the last end are a sentence too.
- */
-export function sentenceCount(text: string): number {
-  const t = text.trim();
-  if (!t) return 0;
-  let ends = 0;
-  let last = 0;
-  for (const m of t.matchAll(SENTENCE_END)) {
-    last = m.index + m[0].length;
-    if (m[0].startsWith(".") && ABBREVIATION.test(t.slice(0, m.index).split(/[\s־-]/).pop() ?? "")) continue;
-    ends++;
-  }
-  return ends + (t.slice(last).trim() ? 1 : 0);
-}
+/** The number of sentences in a text and the phrases of a list a text holds: the schema package's, which the note checks read by too. */
+export { phrasesIn, sentenceCount };
 
 const LETTER = "\\u05D0-\\u05EA";
 /** The Hebrew number words of ten and more: the tens, ten itself, the teens, hundreds and thousands. */
@@ -75,12 +57,6 @@ export function spelledNumbers(text: string): string[] {
   return [...text.matchAll(SPELLED_NUMBER)].map((m) => m[0]);
 }
 
-/** Each phrase of `phrases` the text holds, after taking out the allowed phrases that contain one. */
-export function phrasesIn(text: string, phrases: readonly string[], allowed: readonly string[] = []): string[] {
-  const t = allowed.reduce((s, a) => s.split(a).join(" "), text);
-  return phrases.filter((p) => t.includes(p));
-}
-
 /** A figure's value objects: itself, or one per tax year. A table of brackets has no single value to type. */
 function figureValues(figure: unknown): { value?: unknown; unit?: unknown }[] {
   if (!figure || typeof figure !== "object" || Array.isArray(figure)) return [];
@@ -90,7 +66,6 @@ function figureValues(figure: unknown): { value?: unknown; unit?: unknown }[] {
 
 const grouped = new Intl.NumberFormat("he-IL", { maximumFractionDigits: 6 });
 const plain = new Intl.NumberFormat("he-IL", { maximumFractionDigits: 6, useGrouping: false });
-const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /**
  * The ways a reader sees a figure's value printed: a percent with its sign ("25%"), an amount of money with thousands separators
@@ -102,18 +77,25 @@ export function printedForms(value: number, unit: string): string[] {
   return [...new Set([plain.format(value), grouped.format(value)])];
 }
 
+const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 /**
- * The figures of a rule whose value its text types in digits, outside a slot. A number counts only standing alone: not part of a longer
- * number or of an id joined by hyphens or slashes ("2020-9-2"), not a section's number ("סעיף 3"), and a plain number not followed by "%".
+ * The pattern of a printed form of a figure (printedForms) typed in a text, standing alone: not part of a longer number or of an id joined
+ * by hyphens or slashes ("2020-9-2"), not a section's number ("סעיף 3"), and a form without "%" not followed by "%". The checks that read
+ * a typed figure, a card's own (typedFigures) or another card's (checks/data-figures.ts), match by it.
  */
+export function typedForm(form: string): RegExp {
+  return new RegExp(`(?<![\\d.,/-])(?<!סעיף\\s)${escape(form)}(?!\\d|[.,/-]\\d${form.endsWith("%") ? "" : "|\\s?%"})`);
+}
+
+/** The figures of a rule whose value its text types in digits, outside a slot, each form standing alone (typedForm). */
 export function typedFigures(rule: { text_he?: string; figures?: Record<string, unknown> }): string[] {
   const text = withoutSlots(rule.text_he ?? "");
   return Object.entries(rule.figures ?? {})
     .filter(([, figure]) =>
       figureValues(figure).some(({ value, unit }) => {
         if (typeof value !== "number" || typeof unit !== "string") return false;
-        const pct = unit.startsWith("pct");
-        return printedForms(value, unit).some((s) => new RegExp(`(?<![\\d.,/-])(?<!סעיף\\s)${escape(s)}(?!\\d|[.,/-]\\d${pct ? "" : "|\\s?%"})`).test(text));
+        return printedForms(value, unit).some((s) => typedForm(s).test(text));
       }),
     )
     .map(([name]) => name);
@@ -132,26 +114,29 @@ export interface RuleText {
 export type TextFlaw = "long" | "research-talk" | "fixed-line" | "spelled-number" | "typed-figure";
 const TEXT_FLAWS: readonly TextFlaw[] = ["long", "research-talk", "fixed-line", "spelled-number", "typed-figure"];
 
-const leftoversFile = z.strictObject({
+const phrasesFile = z.strictObject({
   /** The phrases that report how the site read a rule, and the phrases holding one that are allowed (the site's reading said as such). */
   research_talk: z.strictObject({ phrases: z.array(z.string().min(1)), allowed: z.array(z.string().min(1)) }),
   /** The phrases that say again the line a company's-term card prints ("בחברות אחרות זה יכול להיות אחרת."). */
   fixed_line: z.strictObject({ phrases: z.array(z.string().min(1)) }),
-  /** By flaw, the ids of the rule records still allowed to carry it; and the glossary copies, each "<id> <id>". */
-  leftovers: z.strictObject({
-    long: z.array(z.string()),
-    "research-talk": z.array(z.string()),
-    "fixed-line": z.array(z.string()),
-    "spelled-number": z.array(z.string()),
-    "typed-figure": z.array(z.string()),
-    "term-copy": z.array(z.string()),
-  }),
 });
-export type TextLeftovers = z.infer<typeof leftoversFile>;
+/** The glossary copies still allowed, each "<id> <id>" (validate.ts, checkTermCopies). */
+const termsFile = z.strictObject({ "term-copy": z.array(z.string()) });
 
-/** text-leftovers.json, parsed. */
+/** The phrase lists, and by flaw the ids of the rule records still allowed to carry it, with the glossary copies still allowed. */
+export interface TextLeftovers extends z.infer<typeof phrasesFile> {
+  leftovers: Record<TextFlaw | "term-copy", string[]>;
+}
+
+/** The phrase lists of leftovers/phrases.json, which the note checks read too. */
+export function readPhrases(): z.infer<typeof phrasesFile> {
+  return phrasesFile.parse(readLeftovers("phrases.json"));
+}
+
+/** The text leftovers: leftovers/phrases.json, each flaw's list from the group files, and leftovers/terms.json. */
 export function readTextLeftovers(): TextLeftovers {
-  return leftoversFile.parse(JSON.parse(readFileSync(new URL("./text-leftovers.json", import.meta.url), "utf8")));
+  const flaws = Object.fromEntries(TEXT_FLAWS.map((flaw) => [flaw, readRuleList(flaw)])) as Record<TextFlaw, string[]>;
+  return { ...readPhrases(), leftovers: { ...flaws, "term-copy": termsFile.parse(readLeftovers("terms.json"))["term-copy"] } };
 }
 
 /** The flaws a rule card's text carries, each with what was found. A record with neither text has none. */
@@ -204,8 +189,8 @@ export function staleTextLeftovers(rules: ReadonlyMap<string, RuleText>, leftove
   for (const flaw of TEXT_FLAWS)
     for (const id of leftovers.leftovers[flaw]) {
       const rule = rules.get(id);
-      if (!rule) out.push(`text-leftovers.json lists ${id} under "${flaw}", and it has no record under data/rules/: strike it`);
-      else if (!(flaw in textFlaws(rule, leftovers))) out.push(`text-leftovers.json lists ${id} under "${flaw}", which its text no longer carries: strike it (the list only shrinks)`);
+      if (!rule) out.push(`${ruleListFile(id)} lists ${id} under "${flaw}", and it has no record under data/rules/: strike it`);
+      else if (!(flaw in textFlaws(rule, leftovers))) out.push(`${ruleListFile(id)} lists ${id} under "${flaw}", which its text no longer carries: strike it (the list only shrinks)`);
     }
   return out;
 }
