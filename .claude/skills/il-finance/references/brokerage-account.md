@@ -424,19 +424,19 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 - Likely to change: possible.
 
 ### BRK-49 IBI: interest on a credit balance is a tariff line, with conditions, and none on foreign-currency balances
-- Rule: IBI's tariff ("ריבית זכות") carries a line for interest on a credit balance, with conditions such as a client type or a minimum, and no interest on foreign-currency balances.
-- Conditions / exceptions: What every non-bank member must report is BRK-25; what every bank must publish is BANK-09 and BANK-13. Tariffs of members other than IBI and Excellence (BRK-87) were not read for this line. Split from BRK-25 on 2026-10-25 (scope pass). Split on 2026-11-26: Excellence's line went to BRK-87; the words "conditions such as a client type or a minimum" were written of the two tariffs together and are kept as written in each part.
+- Rule: IBI's tariff ("ריבית זכות") carries a line for interest on a credit balance in shekel deposits, for self-trading clients only ("עבור לקוחות מסחר עצמאי"), at "פריים פחות 2.5% ועד שיעור של 0.3%", and only where the month's interest comes to more than NIS 30 ("בכפוף לכך שסך הריבית יהא גבוה מ-30 ₪ לחודש"); the interest is annual, computed daily and credited monthly, and there is none on foreign-currency balances ("בגין יתרות זכות במט"ח הלקוח לא יהא זכאי לריבית").
+- Conditions / exceptions: What every non-bank member must report is BRK-25; what every bank must publish is BANK-09 and BANK-13. Tariffs of members other than IBI and Excellence (BRK-87) were not read for this line. Split from BRK-25 on 2026-10-25 (scope pass). Split on 2026-11-26: Excellence's line went to BRK-87. Re-read 2026-11-27 (the file is headed "נכון לתאריך: 1.7.2026"): the words "conditions such as a client type or a minimum", written of IBI's and Excellence's tariffs together, are replaced by what IBI's line says, which is both a client type and a monthly minimum.
 - Figures: none here.
-- Source: [IBI tariff](https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf), p.2, part 3 item 6 · checked 2026-10-25 · institution. General rule: BRK-25.
+- Source: [IBI tariff](https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf), p.2, part 3 item 6 "בכפוף לכך שסך הריבית יהא גבוה מ-30 ₪ לחודש" · checked 2026-11-27 · institution. General rule: BRK-25.
 - Scope: institution: IBI
 - Dimensions: `fee-interest-on-cash` (proposed), `currency`
 - Likely to change: yes.
 
 ### BRK-87 Excellence: interest on a credit balance is a tariff line, with conditions, and none on foreign-currency balances
-- Rule: Excellence's tariff ("ריבית בגין יתרת זכות ₪ בחשבון") carries a line for interest on a credit balance, with conditions such as a client type or a minimum, and no interest on foreign-currency balances.
-- Conditions / exceptions: What every non-bank member must report is BRK-25; what every bank must publish is BANK-09 and BANK-13. Split from BRK-49 on 2026-11-26; the words "conditions such as a client type or a minimum" were written of IBI's and Excellence's tariffs together and are kept as written in each part.
+- Rule: Excellence's tariff ("ריבית בגין יתרת זכות ₪ בחשבון") carries a line for interest on a shekel credit balance: private clients get "ריבית הפריים מינוס 2.45% ובלבד שלא תעלה על שיעור של 0.4% לשנה", annual, computed daily and credited on the last day of each calendar month; a client who is not a private client gets none unless agreed otherwise in writing ("מי שאינו לקוח פרטי: לא תשולם ריבית, אלא אם הוסכם עם הלקוח במפורש אחרת בכתב"); and there is no interest on a balance in a currency other than the shekel.
+- Conditions / exceptions: What every non-bank member must report is BRK-25; what every bank must publish is BANK-09 and BANK-13. Split from BRK-49 on 2026-11-26. Re-read 2026-11-27: the words "conditions such as a client type or a minimum", written of IBI's and Excellence's tariffs together, are replaced by what Excellence's line says, which is a client type (private clients) and a cap, with no minimum.
 - Figures: none here.
-- Source: [Excellence tariff](https://www.xnes.co.il/media/nwogkoos/taarifon.pdf), p.1, part 1 item 5 · checked 2026-10-25 · institution. General rule: BRK-25.
+- Source: [Excellence tariff](https://www.xnes.co.il/media/nwogkoos/taarifon.pdf), p.1, part 1 item 5 "מי שאינו לקוח פרטי: לא תשולם ריבית, אלא אם הוסכם עם הלקוח במפורש אחרת בכתב" · checked 2026-11-27 · institution. General rule: BRK-25.
 - Scope: institution: Excellence
 - Dimensions: `fee-interest-on-cash` (proposed), `currency`
 - Likely to change: yes.

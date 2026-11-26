@@ -2,7 +2,7 @@
   "id": "BRK-87",
   "title": "Excellence: interest on a credit balance is a tariff line, with conditions, and none on foreign-currency balances",
   "title_he": "ריבית על יתרת זכות בתעריפון של אקסלנס",
-  "text_he": "בתעריפון של אקסלנס יש שורה לריבית על יתרת זכות בשקלים בחשבון, עם תנאים כמו סוג לקוח או מינימום. על יתרות במטבע חוץ אקסלנס לא משלמת ריבית.",
+  "text_he": "בתעריפון של אקסלנס, לקוחות פרטיים מקבלים על יתרת זכות בשקלים ריבית הפריים מינוס 2.45%, עד 0.4% לשנה. מי שלא לקוח פרטי לא מקבל ריבית, אלא אם הוסכם איתו אחרת בכתב. על יתרות במטבע חוץ אקסלנס לא משלמת ריבית.",
   "strength": "institution",
   "dimensions": [
     "currency"
@@ -10,7 +10,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-25",
+  "checked": "2026-11-27",
   "scope": "institution",
   "scope_institutions": [
     {
@@ -30,7 +30,8 @@
       "locator": "p.1, part 1 item 5",
       "locator_he": "עמוד 1, חלק 1 פרט 5",
       "page": 1,
-      "checked": "2026-10-25"
+      "quote": "מי שאינו לקוח פרטי: לא תשולם ריבית, אלא אם הוסכם עם הלקוח במפורש אחרת בכתב",
+      "checked": "2026-11-27"
     }
   ],
   "derived_from": [
