@@ -11,10 +11,11 @@ import { useHash } from "../../lib/address";
 import { p05Value } from "../../lib/engine";
 import { accountAxis, accountFact, bankYearlyMax, brokenCondition, currentAccountModel, fact, payingBanks, silentBanks, type AccountCondition, type SignatureData } from "../../lib/guide-signature";
 import { differenceOf, type SiteValue } from "../../lib/value";
+import { rulesOfRun } from "../../lib/run-rules";
 import type { WorthFactRow } from "../guide/worth-knowing";
 import { AxisLabels, ChartLegend, ChartTip, cx, Disclosure, HelpMark, PrintedText, InputSlot, pickDim, Sentence, Stat, StatRow, Swatch, TableCols, Tag, tickFade, useChartPick, useFadingTicks, useGlidingNumbers, useGlidingRows, useWidth, useYearZoom, YearLabels, ZoomBar, ZoomBrush, ticksOn, When, yearTicksIn, MixedName } from "../kit";
 import { LeadTail, Num, Ruled, Term } from "../provenance";
-import { CommonRateLine, Gap, isMajority, figure, inputSite, rulesOfBundle, SigAmountField, SigYearsField, termInputs, typed, useSigInputs, type VisualProps } from "./kit";
+import { CommonRateLine, Gap, isMajority, figure, inputSite, SigAmountField, SigYearsField, termInputs, typed, useSigInputs, type VisualProps } from "./kit";
 
 const HEIGHT = 250;
 const TOP = 20;
@@ -83,8 +84,9 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
   const yearIn = (year: number) => typed(year, "years", today, copy.common.inputNames.years);
   const values = model
     ? {
-        account: figure(model.end.account, "nis", "F-67", accountIn(yearsValue), today, copy.account.about.account, rulesOfBundle(account)),
-        fund: figure(model.end.fund, "nis", "F-67", fundIn(yearsValue), today, copy.account.about.fund, rulesOfBundle(fundBundle)),
+        // each side lists the rules that changed its run (method §13): at 0% no tax rule changes the account, so it lists none
+        account: figure(model.end.account, "nis", "F-67", accountIn(yearsValue), today, copy.account.about.account, rulesOfRun(model.rules.account, "all")),
+        fund: figure(model.end.fund, "nis", "F-67", fundIn(yearsValue), today, copy.account.about.fund, rulesOfRun(model.rules.fund, "all")),
       }
     : null;
   const cost = values ? differenceOf([copy.account.figures.fund, values.fund], [copy.account.figures.account, values.account], "F-67", { today, about: copy.account.about.cost }) : null;
@@ -185,7 +187,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
               <tbody className="block md:table-row-group">
                 {paying.map((b, row) => {
                   const broken = brokenCondition(b, inputs.amount);
-                  const yearly = tax && !broken ? figure(bankYearlyMax(b, inputs.amount, Number(tax.value)), "nis", "F-26", { [copy.account.inputs.rate]: b.rate, ...(b.ceiling ? { [copy.account.inputs.ceiling]: b.ceiling } : {}), [copy.account.balance]: balanceValue, [copy.account.inputs.tax]: tax }, today, copy.account.about.maxYear, rulesOfBundle(account)) : null;
+                  const yearly = tax && !broken ? figure(bankYearlyMax(b, inputs.amount, Number(tax.value)), "nis", "F-26", { [copy.account.inputs.rate]: b.rate, ...(b.ceiling ? { [copy.account.inputs.ceiling]: b.ceiling } : {}), [copy.account.balance]: balanceValue, [copy.account.inputs.tax]: tax }, today, copy.account.about.maxYear) : null;
                   return (
                     <tr key={b.id} className={cx("flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-border py-3 md:table-row")}>
                       <td className="md:table-cell md:py-3 md:pe-4 md:align-top flex-1 min-w-32">

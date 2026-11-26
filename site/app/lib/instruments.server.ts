@@ -449,14 +449,8 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     if (spread.unit !== "pct_of_trade") missing.push(`${wrapperId}: fund "${rec.id}" fees.median_spread is not a percent of trade`);
     else {
       fund.halfSpread = pct(spread) / 2;
-      feeValues.fundHalfSpread = {
-        ...spread,
-        value: (spread.value as number) / 2,
-        state: "computed",
-        // the half is the assumption's own (its name says it), so the one input is the spread the fund publishes
-        computed_from: { formula: "A-08", inputs: { [computedInputs.fee.medianSpread]: { ...spread } } },
-        notes: "half of the fund's published median spread (A-08)",
-      };
+      // the half is the assumption's own (its name says it), so the one input is the spread the fund publishes
+      feeValues.fundHalfSpread = computed((spread.value as number) / 2, spread.unit, "A-08", { [computedInputs.fee.medianSpread]: { ...spread } }, { today: src.today });
     }
   }
   return missing.length === before ? fund : null;
@@ -603,15 +597,8 @@ function buildTariff(
       feeValues.monthlyFee = { ...line.rate };
     } else if (isNum(line.rate) && line.rate.unit === "nis" && every) {
       tariff.monthlyFee = (line.rate.value as number) / every;
-      feeValues.monthlyFee = {
-        ...line.rate,
-        value: tariff.monthlyFee,
-        unit: "nis_per_month",
-        state: "computed",
-        // the months come from the period the price list prints for the line, so both inputs carry the line's source
-        computed_from: { formula: "F-17", inputs: { [computedInputs.fee.perPeriod]: { ...line.rate }, [computedInputs.fee.monthsPerPeriod]: { ...line.rate, value: every, unit: "months" } } },
-        notes: `fee per ${line.period} divided by ${every} months (F-17 is a monthly fee)`,
-      };
+      // the months come from the period the price list prints for the line, so both inputs carry the line's source
+      feeValues.monthlyFee = computed(tariff.monthlyFee, "nis_per_month", "F-17", { [computedInputs.fee.perPeriod]: { ...line.rate }, [computedInputs.fee.monthsPerPeriod]: { ...line.rate, value: every, unit: "months" } }, { today: src.today });
     } else missing.push(`${wrapperId}: ${snap.id} line ${line.id} is not a fee in NIS per month or per period`);
   }
 
@@ -638,15 +625,8 @@ function buildIraFee(wrapperId: string, spec: InstrumentSpec, src: InstrumentSou
   }
   if (isNum(line.rate) && line.rate.unit === "pct_of_balance_per_period" && line.period) {
     const k = 12 / monthsOf[line.period];
-    feeValues.iraManagerFee = {
-      ...line.rate,
-      value: (line.rate.value as number) * k,
-      unit: "pct_per_year",
-      state: "computed",
-      // the periods a year come from the period the price list prints for the line, so both inputs carry the line's source
-      computed_from: { formula: "F-51", inputs: { [computedInputs.fee.perPeriod]: { ...line.rate }, [computedInputs.fee.periodsPerYear]: { ...line.rate, value: k, unit: "count" } } },
-      notes: `${line.period}ly rate times ${k} periods a year (simple, no compounding)`,
-    };
+    // the periods a year come from the period the price list prints for the line, so both inputs carry the line's source
+    feeValues.iraManagerFee = computed((line.rate.value as number) * k, "pct_per_year", "F-51", { [computedInputs.fee.perPeriod]: { ...line.rate }, [computedInputs.fee.periodsPerYear]: { ...line.rate, value: k, unit: "count" } }, { today: src.today });
     return pct(line.rate) * k;
   }
   missing.push(`${wrapperId}: ${snap.id} line ${line.id} has no usable balance rate and period`);
@@ -702,7 +682,7 @@ export function regulatorAverageFees(
         effective_to: null,
         update_rule: "fixed in regulation",
         state: "sourced",
-        rule_ids: ["PF-06"],
+        rule_ids: [pf06.id],
         notes: investCopy.depositFeeNoneByRule(spec.track),
       };
   } else missing.push(`${wrapperId}: track ${spec.track} reports no average deposit fee (tariff fees)`);

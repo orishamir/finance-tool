@@ -344,7 +344,7 @@ function usePlanOn({ data, deal, world, terms, onAddCase }: { data: FeesData; de
     const foot = gap ? <AbroadCaseLine words={gap.words} {...(onAddCase ? { onAdd: () => onAddCase(fee, gap) } : {})} /> : null;
     const switchedOff = isFeeOff(off, deal.id, fee.id);
     const whole = wholeByFee?.get(fee.id);
-    const cost: FeeCost = switchedOff ? "off" : at?.kind === "ok" ? at.figure(whole !== undefined ? -whole || 0 : shownCost(at.byFee[fee.id] ?? 0), w.feeCostAbout(feeNameOf(fee.kind, fee.name))) : null;
+    const cost: FeeCost = switchedOff ? "off" : at?.kind === "ok" ? at.figure(whole !== undefined ? -whole || 0 : shownCost(at.byFee[fee.id] ?? 0), w.feeCostAbout(feeNameOf(fee.kind, fee.name)), fee.id) : null;
     const slot = x ? feeHeadOf(x, cost) : {};
     // the cases the plan reads, a step of the account's size with the years the plan spends in it (B, F), any other step the plan reaches
     // plainly, where the plan charges the fee and it is counted
