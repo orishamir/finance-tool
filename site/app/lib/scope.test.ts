@@ -9,8 +9,9 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { isOwnDocument, notRuleAllowedIn, notRules, ownContextExposures, ownContextGuides, type RuleRecord } from "@finance-tool/schema";
-import { chipName, companyTermsHref, generalOnly, isOwnSourceOf, joinNames, listedCompanies, ownDocCompanies, shownCompanies } from "./scope";
+import { chipName, companyTermsHref, generalOnly, isOwnSourceOf, joinNames, listedCompanies, ownDocCompanies, shownCompanies, tagCompanies } from "./scope";
 import { companyLinks, companyTermGroups, loadInstitutionRegistry, noPageCompanyTerms, ownDocuments, registryIdsOfPage } from "./institutions.server";
+import { brandOfMember } from "./brands.server";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const rules = new Map<string, { id: string; scope: string; scope_institutions?: { id: string; name_he: string }[]; sources?: { url: string; title: string; title_he?: string }[] }>();
@@ -92,6 +93,12 @@ describe("scope helpers", () => {
     expect(chipName({ id: "X-1", scope_institutions: [harel, as] }, own, undefined, more)).toBe("הראל ועוד 1");
     expect(chipName({ id: "X-2", scope_institutions: [harel] }, own, undefined, more)).toBe("הראל");
     expect(chipName({ id: "X-3" }, own, undefined, more)).toBeNull();
+  });
+  it("on a brand's page names the member the record names, though it is not the brand's first (Q68)", () => {
+    const own = { "X-1": ["harel", "altshuler-shaham"] };
+    expect(chipName({ id: "X-1", scope_institutions: [harel, as] }, own, ["altshuler-shaham-funds", "altshuler-shaham"], more)).toBe("אלטשולר שחם");
+    expect(tagCompanies({ id: "X-1", scope_institutions: [harel, as] }, own, { company: ["altshuler-shaham-funds", "altshuler-shaham"] })).toEqual([as]);
+    expect(chipName({ id: "X-1", scope_institutions: [harel, as] }, own, ["mor"], more)).toBe("הראל ועוד 1");
   });
   it("the chip counts the companies the card names: those whose documents it cites, else all it is about (review, 2026-10-26)", () => {
     // PEN-37 names Meitav among five, but cites no document of Meitav: the chip says "ועוד 3", not "ועוד 4", as its card names four
@@ -182,5 +189,58 @@ describe("a company's section holds only records from its own documents", () => 
     expect(none).toContain("IRA-28");
     expect(none.filter((id) => !Object.hasOwn(notRules, id))).toEqual([]);
     expect(companies.flatMap((c) => c.ids).filter((id) => Object.hasOwn(notRules, id))).toEqual([]);
+  });
+});
+
+// A company's page shows a record that names several companies narrowed to its own (pageView): its tag, its sources and its figures.
+// Its text stays whole, so it may still name the other companies; until the data gives such records a text per company, the records
+// that do are listed here, and the list only shrinks.
+describe("a record's text on a company's page names no other company (Q64, a ratchet)", () => {
+  const all = Object.fromEntries([...rules].map(([id, r]) => [id, r as unknown as RuleRecord]));
+  const own = ownDocuments(all);
+  const known = new Set<string>([
+    "BANK-31",
+    "BANK-34",
+    "BANK-38",
+    "BANK-48",
+    "BPN-09",
+    "BRK-50",
+    "BRK-66",
+    "BRK-67",
+    "BRK-68",
+    "BRK-86",
+    "CAT-54",
+    "CAT-55",
+    "CS-30",
+    "FXD-07",
+    "FXD-09",
+    "FXD-11",
+    "KGL-29",
+    "KGL-30",
+    "KH-31",
+    "KH-32",
+    "KH-33",
+    "MF-65",
+    "PEN-37",
+    "PEN-40",
+    "PEN-44",
+    "SW-52",
+    "SW-55",
+    "TX2-02",
+    "TXF-48",
+  ]);
+  const offenders = new Set<string>();
+  for (const r of Object.values(all)) {
+    if (r.scope === "general" || !r.text_he) continue;
+    for (const c of listedCompanies(r, own)) {
+      const page = brandOfMember(c.id)?.members.map((m) => m.id) ?? [c.id];
+      if ((r.scope_institutions ?? []).some((o) => !page.includes(o.id) && r.text_he!.includes(o.name_he))) offenders.add(r.id);
+    }
+  }
+  it("no record outside the list names another company in its text", () => {
+    expect([...offenders].filter((id) => !known.has(id)).sort()).toEqual([]);
+  });
+  it("every listed record still does (strike it once it no longer does)", () => {
+    expect([...known].filter((id) => !offenders.has(id))).toEqual([]);
   });
 });
