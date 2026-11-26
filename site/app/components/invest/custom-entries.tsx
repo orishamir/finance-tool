@@ -240,7 +240,7 @@ function FundTraits({ draft, set, index, hedgedError }: { draft: FundDraft; set:
   );
   const payoutTiles = tilesOf(draft, index, [...PAYOUTS.map((p) => ({ value: p as string, as: { payout: p } })), { value: UNKNOWN, as: { payout: null }, title: c.unknown, empty: c.noPrice }]);
   // "not sure" goes by the country the fund is registered in, the question below (F-65)
-  const exchangeTiles = tilesOf(draft, index, [...fundExchange.options.map((x) => ({ value: x as string, as: { exchange: x }, title: c.exchangeNames[x], empty: c.exchangeNotes[x] })), { value: UNKNOWN, as: { exchange: null }, title: c.unknown, empty: c.exchangeByDomicile[draft.domicile ?? "none"] }]);
+  const exchangeTiles = tilesOf(draft, index, [...fundExchange.options.map((x) => ({ value: x as string, as: { exchange: x }, title: c.exchangeNames[x], empty: c.exchangeNotes[x] })), { value: UNKNOWN, as: { exchange: null }, title: c.unknown, empty: draft.domicile === "US" ? c.exchangeByDomicile.US : c.exchangeByDomicile.other }]);
   const trackingTiles = tilesOf(draft, index, [...TRACKINGS.map((t) => ({ value: t as string, as: { tracking: t } })), { value: UNKNOWN, as: { tracking: null }, title: c.unknown }]);
   const domicileTiles = tilesOf(draft, index, [...DOMICILES.map((x) => ({ value: x as string, as: { domicile: x }, title: c.domicileNames[x]! })), { value: UNKNOWN, as: { domicile: null }, title: c.domicileNames.other!, empty: draft.payout === "distributing" ? c.noPrice : c.noLabel }]);
   // a hedged fund the person typed has no price (its gap to the index is not known): the tile says so beside its label. On an index the

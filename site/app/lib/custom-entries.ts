@@ -73,7 +73,7 @@ export interface CustomFund {
   domicile: FundDomicile | null;
   /** How it follows its index; null: not said. A label only: no calculation reads it. */
   tracking: FundTracking | null;
-  /** A fund bought abroad: the exchange it trades on, as the person said; absent: not sure, or saved before it was asked, and the exchange follows its domicile (F-65). */
+  /** A fund bought abroad: the exchange it trades on, as the person said; absent: not sure, or saved before it was asked, and the exchange is the United States for a fund registered there and otherwise not known (F-65). */
   exchange?: FundExchange;
   /** A fund bought on an exchange: the price of one unit in its kind's unit (`unitPriceUnit`), dated the day it was typed; absent: not typed (F-109). */
   unitPrice?: ValueObject & { unit: UnitPriceUnit };
@@ -91,8 +91,8 @@ export const PER_YEAR: readonly PerYear[] = [1, 2, 4, 12];
 
 /**
  * How a typed fund's unit price is typed, by its kind (F-109): abroad in the fund's own currency (a unit price unit of scale one in that
- * currency, `unitPriceUnits`); on TASE in agorot, as TASE quotes a unit (ETF-32, for the foreign funds traded on TASE; no rule yet for
- * Israeli ETFs); none for a tracking fund, bought from its manager by amount.
+ * currency, `unitPriceUnits`); on TASE in agorot, as TASE quotes a unit (ETF-92); none for a tracking fund, bought from its manager by
+ * amount.
  */
 const UNIT_PRICE_BY_KIND = { abroad: "fund-currency", "il-etf": "agorot", "tase-foreign": "agorot", "il-tracking": null } as const satisfies Record<OptionId, "fund-currency" | UnitPriceUnit | null>;
 
@@ -415,9 +415,10 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     ...(f.hedged ? { hedged: true } : {}),
     ...(f.payout === "distributing" && f.yield && f.perYear ? { distribution: { yield: f.yield, per_year: f.perYear } } : {}),
     ...(f.tracking ? { replication: { method: f.tracking, source: { url: "local", checked: f.added } } } : {}),
-    // F-65, F-109, F-128: the exchange abroad as the person said it; not said, it follows the country they gave, as a collected record's
-    // with no exchange ticker; with neither, the record says it is not known. The unit price as they typed it
-    ...(f.kind === "abroad" && (f.exchange || !f.domicile) ? { exchange: f.exchange ?? ("unknown" as const) } : {}),
+    // F-65, F-109, F-128: the exchange abroad as the person said it; not said, a fund registered in the United States is listed there
+    // (ETF-93), as a collected record's with no exchange ticker; any other is not known, its issuer not known either (ETF-95: Irish law
+    // does not fix the market). The unit price as they typed it
+    ...(f.kind === "abroad" && (f.exchange || f.domicile !== "US") ? { exchange: f.exchange ?? ("unknown" as const) } : {}),
     ...(f.unitPrice ? { share_price: f.unitPrice } : {}),
     snapshot: f.added,
   };

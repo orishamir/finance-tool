@@ -148,7 +148,7 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   if (exposureKind !== undefined) fund.exposureKind = exposureKind;
   if (w8ben !== undefined) fund.w8ben = w8ben;
   // E1, F-109: the price of one unit, in the unit's currency, for per-share commissions and whole units; a price in agorot (a typed TASE
-  // unit's, as TASE quotes it, ETF-32) is a hundredth of a shekel.
+  // unit's, as TASE quotes it, ETF-92) is a hundredth of a shekel.
   const price = rec.share_price;
   if (price && typeof price.value === "number") {
     if (!isUnitPriceUnit(price.unit)) throw new RecordInputError(`fund ${rec.id} share_price: unit is ${price.unit}, expected a currency`);

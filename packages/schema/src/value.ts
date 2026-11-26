@@ -16,7 +16,7 @@ export function israelToday(now: Date = new Date()): string {
 /** data-schema §2, units. */
 export const unit = z.enum([
   "nis",
-  /** An amount in agorot, as TASE quotes a unit's price (ETF-32, for the foreign funds traded on TASE; no rule yet for Israeli ETFs): the unit price a person types for a fund bought in Tel Aviv (F-109). */
+  /** An amount in agorot, as TASE quotes a unit's price (ETF-92): the unit price a person types for a fund bought in Tel Aviv (F-109). */
   "agorot",
   "nis_millions",
   "usd",

@@ -4446,7 +4446,7 @@ export const invest = {
       yield: "תשואת החלוקה",
       perYear: "תשלומים בשנה",
       unitPrice: "מחיר יחידה (לא חובה)",
-      /** A fund bought in Tel Aviv: its price as TASE quotes it (ETF-32). */
+      /** A fund bought in Tel Aviv: its price as TASE quotes it (ETF-92). */
       unitPriceAgorot: "מחיר יחידה באגורות (לא חובה)",
     },
     /** Under the unit price: what it changes in the calculation (F-109). */
@@ -4464,11 +4464,11 @@ export const invest = {
       exchange: "באיזו בורסה בחו״ל הקרן נסחרת?",
     },
     exchangeNames: { us: "ארה״ב", europe: "אירופה" },
-    /** Under each answer: which fees each account is priced on (F-65). "Not sure" goes by the country the fund is registered in, the answer below. */
+    /** Under each answer: which fees each account is priced on (F-65). "Not sure" goes by the country the fund is registered in, the answer below: the United States only (ETF-93). */
     exchangeNotes: { us: "העמלות של כל חשבון בארה״ב", europe: "העמלות של כל חשבון באירופה" },
-    exchangeByDomicile: { US: "לפי המדינה שבה הקרן רשומה: העמלות בארה״ב", IE: "לפי המדינה שבה הקרן רשומה: העמלות באירופה", none: "לפי המדינה שבה הקרן רשומה. בלי מדינה: כל חשבון לפי הבורסה שמשאירה פחות" } as Record<string, string>,
-    /** The doubt of what a typed fund bought abroad leaves at an account, where its exchange and country were not given (F-65, invest.ts `withPlaceDoubt`). */
-    exchangeUnknownDoubt: "לא הזנתם באיזו בורסה הקרן נסחרת או באיזו מדינה היא רשומה. לכן כל חשבון מחושב בבורסה שמשאירה לכם פחות אצלו, בארה״ב או באירופה. חשבון שיש לו מחיר רק באחת משתי הבורסות מופיע בלי מחיר. אפשר לבחור בורסה או מדינה בעריכת הקרן.",
+    exchangeByDomicile: { US: "לפי המדינה שבה הקרן רשומה: העמלות בארה״ב", other: "כל חשבון לפי הבורסה שמשאירה לכם פחות" },
+    /** The doubt of what a typed fund bought abroad leaves at an account, where its exchange is not known (F-65, invest.ts `withPlaceDoubt`). */
+    exchangeUnknownDoubt: "לא הזנתם באיזו בורסה הקרן נסחרת. לכן כל חשבון מחושב בבורסה שמשאירה לכם פחות אצלו, בארה״ב או באירופה. חשבון שיש לו מחיר רק באחת משתי הבורסות מופיע בלי מחיר. אפשר לבחור בורסה בעריכת הקרן.",
     unknown: "לא ידוע",
     domicileNames: { IE: "אירלנד", US: "ארצות הברית", other: "מדינה אחרת, או לא ידוע" } as Record<string, string>,
     noLabel: "בלי תווית",

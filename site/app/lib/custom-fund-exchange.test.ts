@@ -1,7 +1,7 @@
 // A fund the person types abroad (D44): the exchange it trades on and its unit price, as they say them (F-65, F-109, F-128). Said, the fund
-// is read on that exchange everywhere, as a collected fund whose tickers name it; not said, the exchange follows the domicile they gave, as
-// a collected fund with no exchange ticker; with neither, every account is read on each exchange and priced on the one that leaves the
-// least, a deal filled from a house's list among them. No figure here is written by hand: each side of a comparison is the page's own
+// is read on that exchange everywhere, as a collected fund whose tickers name it; not said, a fund registered in the United States is read
+// there (ETF-93), as a collected fund with no exchange ticker; any other is of no known exchange (ETF-95), and every account is read on each
+// exchange and priced on the one that leaves the least, a deal filled from a house's list among them. No figure here is written by hand: each side of a comparison is the page's own
 // pricing of another fund or another answer.
 import { describe, expect, it } from "vitest";
 import type { FundExchange, FundRecord } from "@finance-tool/schema";
@@ -82,28 +82,38 @@ describe("a fund typed abroad on a named exchange is read there, as a collected 
   });
 });
 
-describe("a fund typed abroad whose exchange is not given follows the country it is registered in (F-65)", () => {
-  it.each([
-    ["IE", "europe"],
-    ["US", "us"],
-  ] as const)("registered in %s, every house reads it as on %s", (domicile, exchange) => {
-    const unsure = typed(null, 100, domicile);
-    const known = typed(exchange, 100, domicile);
+describe("a fund typed abroad whose exchange is not given goes by its country only where it is registered in the United States (F-65)", () => {
+  it("registered in the United States, every house reads it as on the US exchange (ETF-93)", () => {
+    const unsure = typed(null, 100, "US");
+    const known = typed("us", 100, "US");
     const b = withCustomEntries(bundle, [unsure, known]);
-    expect(venueOfFund(recordOfFund(unsure, "USD"))).toBe(exchange);
+    expect(venueOfFund(recordOfFund(unsure, "USD"))).toBe("us");
     const a = wayOf(b, unsure.id);
     const k = wayOf(b, known.id);
     expect(houses.filter((h) => left(k, h) !== null).length).toBeGreaterThan(3);
     for (const h of houses) expect([h, left(a, h), reasonAt(a, h)]).toEqual([h, left(k, h), reasonAt(k, h)]);
   });
 
-  it("registered in Ireland, One Zero, whose lines abroad name the United States alone, does not sell it, as it does not sell the collected iShares Core S&P 500", () => {
+  it("registered in Ireland, every house reads it as a fund of no known exchange: the less of the two, none where either has none (ETF-95)", () => {
+    const funds = [typed("us", 100, "IE"), typed("europe", 100, "IE"), typed(null, 100, "IE")];
+    const b = withCustomEntries(bundle, funds);
+    expect(venueOfFund(recordOfFund(typed(null, 100, "IE"), "USD"))).toBeNull();
+    const [us, europe, unsure] = funds.map((f) => wayOf(b, f.id)) as [FundWay, FundWay, FundWay];
+    expect(houses.filter((h) => left(unsure, h) !== null).length).toBeGreaterThan(3);
+    for (const h of houses) {
+      const a = left(us, h);
+      const e = left(europe, h);
+      expect([h, left(unsure, h)]).toEqual([h, a === null || e === null ? null : Math.min(a, e)]);
+    }
+  });
+
+  it("registered in Ireland, One Zero, whose lines abroad name the United States alone, does not sell it, as it does not sell the collected iShares Core S&P 500, saying no exchange of the fund's", () => {
     const f = typed(null, null, "IE");
     const b = withCustomEntries(bundle, [f]);
     expect(reasonAt(wayOf(b, "ie00b5bmr087"), "one-zero")).toBe("other-venue");
     expect(reasonAt(wayOf(b, f.id), "one-zero")).toBe("other-venue");
     const at = wayOf(b, f.id).byHouse["one-zero"];
-    expect(at && "reason" in at ? at.reason : null).toEqual({ code: "other-venue", venue: "us", fundVenue: "europe" });
+    expect(at && "reason" in at ? at.reason : null).toEqual({ code: "other-venue", venue: "us", fundVenue: null });
   });
 });
 
@@ -173,16 +183,19 @@ describe("a typed fund as saved and read back (F-65, F-109)", () => {
     added: "2026-11-01",
   };
 
-  it("a fund saved before the questions loads unchanged, as the same answers saved now with both left empty, and reads by its country", () => {
+  it("a fund saved before the questions loads unchanged, as the same answers saved now with both left empty, and, registered in Ireland, reads as of no known exchange", () => {
     const back = must(validCustomFunds([PRE_BRANCH])[0], "the saved fund read back");
     expect(back).toEqual(PRE_BRANCH);
     const now = fundFromDraft({ ...fundDraftOf(null, "abroad"), name: PRE_BRANCH.name, fixed: 0.07, payout: "accumulating", hedged: false, domicile: "IE", exchange: null, unitPrice: null }, PRE_BRANCH.id, SP, PRE_BRANCH.added, "USD");
     expect(now).toEqual(back);
-    const europe = typed("europe");
-    const b = withCustomEntries(bundle, [back, europe]);
+    const b = withCustomEntries(bundle, [back, typed("us"), typed("europe")]);
     const old = wayOf(b, back.id);
-    const known = wayOf(b, europe.id);
-    for (const h of houses) expect([h, left(old, h)]).toEqual([h, left(known, h)]);
+    const [us, europe] = [typed("us"), typed("europe")].map((f) => wayOf(b, f.id)) as [FundWay, FundWay];
+    for (const h of houses) {
+      const a = left(us, h);
+      const e = left(europe, h);
+      expect([h, left(old, h)]).toEqual([h, a === null || e === null ? null : Math.min(a, e)]);
+    }
   });
 
   it("the exchange and the unit price are kept through a save and a reload", () => {
@@ -320,9 +333,10 @@ describe("the popup's place tile (F-128)", () => {
 });
 
 describe("what the record says of the exchange (F-65)", () => {
-  it("says it is not known only where neither the exchange nor the country was given; with a country it follows it, as a collected record's", () => {
+  it("says it is not known where the exchange was not given and the country is not the United States; registered there it follows it, as a collected record's", () => {
     expect(recordOfFund(typed(null, null, null), "USD").exchange).toBe("unknown");
-    expect(recordOfFund(typed(null, null, "IE"), "USD").exchange).toBeUndefined();
+    expect(recordOfFund(typed(null, null, "IE"), "USD").exchange).toBe("unknown");
+    expect(recordOfFund(typed(null, null, "US"), "USD").exchange).toBeUndefined();
     expect(recordOfFund(typed("us", null, null), "USD").exchange).toBe("us");
   });
 

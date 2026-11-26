@@ -255,14 +255,14 @@ export const fundRecord = z.strictObject({
    * `nis`, `eur`), for per-share commissions and for buying whole units; a Tel Aviv line of a foreign fund takes its issuer's NAV of the same
    * share class, which the line's own Israeli document names; never a price from TASE or Maya (the data check refuses one). On a fund the
    * person types, the price they type, dated the day they typed it: abroad in the fund's own currency, on TASE in `agorot`, as TASE quotes
-   * a unit (ETF-32, for the foreign funds traded on TASE; no rule yet for Israeli ETFs).
+   * a unit (ETF-92).
    */
   share_price: valueObject.optional(),
   /**
    * data-schema §3.5, F-65, F-128: the exchange abroad a fund the person types abroad trades on, as they said it (`us`, `europe`), or
-   * `unknown` where they said neither it nor the country the fund is registered in. Left out where the exchange follows the domicile: on a
-   * collected record, whose tickers and domicile name it (the data check refuses the field there), and on a typed fund whose exchange was
-   * not said and whose country was.
+   * `unknown` where they did not say it and did not say the fund is registered in the United States (ETF-93). Left out where the exchange
+   * follows the domicile: on a collected record, whose tickers and domicile name it (the data check refuses the field there), and on a
+   * typed fund registered in the United States whose exchange was not said.
    */
   exchange: z.union([fundExchange, z.literal("unknown")]).optional(),
   /** data-schema §3.5: the fund's fees lowered for a stated period (F-121); the data check holds each to its fee. */

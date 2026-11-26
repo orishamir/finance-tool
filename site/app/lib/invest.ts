@@ -55,9 +55,10 @@ export const venueOfBand = (band: string | null | undefined): Venue | null => (!
 
 /**
  * The exchange a fund bought abroad trades on (F-65): the one a typed fund's record states; else the one its tickers name; else by its
- * domicile, the United States for a fund registered there, Europe for any other foreign one. Null where none says: an Israeli fund, and a
- * typed fund whose record says its exchange is not known (`exchange: "unknown"`), which every account reads on each exchange
- * (`Place` "unknown-exchange").
+ * domicile, the United States for a fund registered there (ETF-93), Europe for any other foreign one, as iShares and Vanguard list their
+ * Irish funds (ETF-96; no general rule says where another issuer's fund lists, ETF OQ42, and no collected record reaches this without an
+ * exchange ticker). Null where none says: an Israeli fund, and a typed fund whose record says its exchange is not known
+ * (`exchange: "unknown"`), which every account reads on each exchange (`Place` "unknown-exchange").
  */
 export function venueOfFund(rec: FundRecord): Venue | null {
   if (rec.exchange !== undefined) return rec.exchange === "unknown" ? null : rec.exchange;
