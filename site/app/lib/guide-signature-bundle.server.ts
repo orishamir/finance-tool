@@ -94,17 +94,18 @@ export function accountBanks(records: DepositTerms[]): AccountBank[] {
   for (const r of records) {
     if (typeof r.rate_offered.value !== "number" || r.rate_offered.unit !== "pct_per_year") continue;
     const max = r.amount_range.max;
-    // the record's doubt is the number's own (SiteValue.doubt): wherever the rate shows, it shows tinted and its sheet says the doubt
-    // ; the record's English notes stay in the data
+    // the record's doubt is the number's own (SiteValue.doubt): a doubt about the rate (no doubt_on) tints the rate wherever it shows and
+    // its sheet says it, one about the amounts the ceiling; the record's English notes stay in the data
     // D31: each rate and ceiling is the bank's own, shown on the line that names the bank
     const name = shortName(r.bank, r.bank);
-    const rate = ownBy({ ...r.rate_offered, ...(r.doubt_he ? { doubt: r.doubt_he } : {}) } as SiteValue, name);
+    const doubtOn = (on: "rate" | "amount_range") => (r.doubt_he && (r.doubt_on ?? "rate") === on ? { doubt: r.doubt_he } : {});
+    const rate = ownBy({ ...r.rate_offered, ...doubtOn("rate") } as SiteValue, name);
     banks.push({
       id: r.id,
       bank: r.bank,
       name,
       rate,
-      ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ownBy({ ...max } as SiteValue, name) : null,
+      ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ownBy({ ...max, ...doubtOn("amount_range") } as SiteValue, name) : null,
       conditions: r.conditions_he ?? null,
       ...(typeof r.interest_calc?.periods_per_year?.value === "number" ? { periodsPerYear: r.interest_calc.periods_per_year.value } : {}),
       balanceConditions: (r.balance_conditions ?? []).map((c) => ({ measure: c.measure, bound: c.bound, inclusive: c.inclusive, value: ownBy({ ...c.value } as SiteValue, name) })),
