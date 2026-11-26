@@ -43,10 +43,10 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Likely to change: no
 
 ### BANK-04 Interest is quoted as an annual rate; effective annual rate for unlinked shekel deposits
-- Rule: Wherever the rules require an interest rate it means an annual tariff rate unless stated otherwise. For unlinked credit and shekel deposits, the effective annual rate (ריבית מתואמת שנתית) must also be stated, unless interest payment dates are not fixed in advance. For linked deposits the bank must say whether linkage applies only when the index rises or also when it falls.
+- Rule: Wherever the rules require an interest rate it means an annual tariff rate unless stated otherwise. For unlinked credit and shekel deposits, the effective annual rate (ריבית מתואמת שנתית) must also be stated, unless interest payment dates are not fixed in advance.
 - Conditions / exceptions: The effective annual rate formula is in Schedule A of the rules (compounding by the number of interest calculation periods per year, or by the deposit length in days on a 365-day year).
 - Figures: none.
-- Source: [Disclosure rules 1992 (BoI copy)](https://boi.org.il/media/rvzi1ngd/151.pdf), s.1 (definition "ריבית מתואמת שנתית"), s.2(a), (b), (d), Schedule A · checked 2026-10-22 · primary
+- Source: [Disclosure rules 1992 (BoI copy)](https://boi.org.il/media/rvzi1ngd/151.pdf), s.1 (definition "ריבית מתואמת שנתית"), s.2(a), (b), Schedule A · checked 2026-10-22 · primary. For linked deposits, whether linkage applies when the index falls: BANK-26.
 - Scope: general
 - Dimensions: real-vs-nominal, reporting-obligation
 - Likely to change: no
@@ -285,7 +285,7 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Likely to change: yes: prime moves with every BoI rate decision, and each bank's text is its own.
 
 ### BANK-26 CPI-linked vs unlinked deposits
-- Rule: Short deposits (up to six months) in the 447 template are unlinked; for one-year-and-over types the bank states "לא צמוד" or "צמוד למדד המחירים לצרכן". A linked deposit's agreement must state linkage type and base, rate, whether linkage applies to interest, and whether it applies on index falls (BANK-02, BANK-04): wherever the rules require linkage terms to be disclosed, the bank must say whether linkage applies only when the index rises or also when it falls (s.2(ד)). So whether an index fall can reduce a linked deposit is a term of each deposit, which its agreement must state.
+- Rule: Short deposits (up to six months) in the 447 template are unlinked; for one-year-and-over types the bank states "לא צמוד" or "צמוד למדד המחירים לצרכן". A linked deposit's agreement must state linkage type and base, rate, whether linkage applies to interest, and whether it applies on index falls (BANK-02): wherever the rules require linkage terms to be disclosed, the bank must say whether linkage applies only when the index rises or also when it falls (s.2(ד)). So whether an index fall can reduce a linked deposit is a term of each deposit, which its agreement must state.
 - Conditions / exceptions: How banks quote linked deposits (a real rate "+ הצמדה למדד") and their linked products are each bank's own terms: BANK-36 (moved there on 2026-10-26, scope settling; Bank Leumi), BANK-63 (Bank Yahav) and BANK-64 (Discount Bank), split on 2026-11-26.
 - Figures: none.
 - Source: [הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)](https://www.boi.org.il/media/orgfwntb/447.pdf), p.3, Annex A, column "סוג הצמדה": "לא צמוד/ צמוד למדד המחירים לצרכן" · checked 2026-10-26 · primary; [כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ"ב-1992, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/rvzi1ngd/151.pdf), p.2, s.2(ד): "יש לציין גם האם ההצמדה חלה רק במקרה של עליית המדד ,או גם במקרה של ירידת המדד"; p.5, s.7(א)(5) · checked 2026-10-26 · primary
