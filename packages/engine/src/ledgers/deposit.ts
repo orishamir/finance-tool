@@ -151,14 +151,15 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
 
   // The bank withholds when it pays the interest, at maturity or, for interest paid out, each month (TXI-07, TXI-08): 25% of the real
   // interest on a fully linked deposit with linkage exempt (TXI-02, TXI-05), 15% on everything else (TXI-03). The rate is looked at and
-  // taken where a year's tax is above 0; the rules that decide what is taxed are uses on the tax during the run at any tax. What makes a
-  // deposit linked (BANK-26) is the product's term, which the whole value rests on, not a tax rule.
+  // taken where a year's tax is above 0; the rules that decide what is taxed are uses on the tax during the run at any tax. TXI-25, that a
+  // fall in the index does not lower the tax on the interest, is looked at and taken only where the CPI fell and a year was taxed. What
+  // makes a deposit linked (BANK-26) is the product's term, which the whole value rests on, not a tax rule.
   const during = book.on("taxDuring");
   const rateRule = linked ? "TXI-02" : "TXI-03";
   const rate = during.peek.rate(rateRule, "rate");
   if (linked) {
     during.cite("TXI-05");
-    during.cite("TXI-25");
+    during.peek.cite("TXI-25");
     book.cite("BANK-26");
   } else if (deposit.linkage === "prime") {
     // a prime-linked deposit is unlinked: the statutory index is the CPI or an exchange rate (TXI-04, a statement, not a reading)
@@ -279,6 +280,8 @@ function runDepositUnder(input: DepositInput, ctx: RunContext): RunResult {
   }
 
   if (taxed) during.took(rateRule);
+  // on the run's one CPI path every piece's index at payment is below its base index exactly when the CPI falls
+  if (taxed && linked && input.market.inflation < 0) during.took("TXI-25");
   return tally.result(book, {
     exitMonth: T,
     nominal: finalValue,

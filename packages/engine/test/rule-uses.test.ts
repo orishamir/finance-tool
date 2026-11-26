@@ -3,7 +3,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { BlockedError, FigureNotUpdatedError, mergedRules, MissingRuleError, ruleBook, runPension, runProvident, type RunPart, type RunResult, type UsedRule } from "../src/index.ts";
+import { BlockedError, FigureNotUpdatedError, mergedRules, MissingRuleError, ruleBook, runBond, runDeposit, runPension, runProvident, type RunPart, type RunResult, type UsedRule } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 import { reliefPaths, runs, s23, s23Hishtalmut } from "./rule-uses-runs.ts";
 
@@ -218,13 +218,30 @@ describe("the parts each run's rules went into", () => {
 
   it("files a linked deposit's tax rules on the tax during the run, TXI-20 there and not on relief", () => {
     const linked = run("S03 linked deposit");
-    for (const id of ["TXI-02", "TXI-05", "TXI-25"]) expect(changedIn(linked, id), id).toEqual(["taxDuring"]);
+    for (const id of ["TXI-02", "TXI-05"]) expect(changedIn(linked, id), id).toEqual(["taxDuring"]);
+    // a rise in the CPI: that a fall would not lower the tax changes nothing
+    expect(read(linked, "TXI-25")).toBe(true);
+    expect(changedIn(linked, "TXI-25")).toEqual([]);
     const relieved = run("S03 linked deposit, TXI-20");
     expect(changedIn(relieved, "TXI-20")).toEqual(["taxDuring"]);
     // the deduction takes the whole tax, so the rate changed nothing
     expect(relieved.taxDuring).toBe(0);
     expect(changedIn(relieved, "TXI-02")).toEqual([]);
     expect(changedIn(run("S01 unlinked deposit"), "TXI-20")).toEqual([]);
+  });
+
+  it("takes TXI-25 on a linked deposit's and a linked bond's tax only where the CPI fell", () => {
+    const falling = { inflation: -0.01 };
+    const deposit = runDeposit({ goal: { amountNow: 100_000, monthly: 0, months: 36 }, market: falling, deposit: { rate: 0.012, termMonths: 12, linkage: "cpi" }, profile: {} }, ctx);
+    expect(deposit.taxDuring).toBeGreaterThan(0);
+    expect(changedIn(deposit, "TXI-25")).toEqual(["taxDuring"]);
+    const bond = { goal: { amountNow: 100_000, monthly: 0, months: 36 }, bond: { coupon: 0.019, linkage: "cpi" as const, couponEveryMonths: 12 }, tariff: {}, profile: {} };
+    const fell = runBond({ ...bond, market: falling }, ctx);
+    expect(fell.taxDuring).toBeGreaterThan(0);
+    expect(changedIn(fell, "TXI-25")).toEqual(["taxDuring"]);
+    const rose = run("S09 linked bond");
+    expect(read(rose, "TXI-25")).toBe(true);
+    expect(changedIn(rose, "TXI-25")).toEqual([]);
   });
 
   it("takes no rate on a current account that pays nothing", () => {

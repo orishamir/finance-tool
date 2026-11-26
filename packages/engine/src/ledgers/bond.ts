@@ -49,14 +49,15 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
   // rather than tax it at a negative amount
   if (bond.coupon < 0) throw new BlockedError(linked ? "TXI-14" : "TXI-15", undefined, "G-41");
   // as on a deposit: the coupon's rate, and on an unlinked bond TXI-03's 15%, are looked at and taken where a coupon was taxed; the rules
-  // that decide what a linked coupon's tax is on are uses at any tax. The exit year's fees off the gain (TXS-06) are taken where there were any.
+  // that decide what a linked coupon's tax is on are uses at any tax, but TXI-25 (a fall in the index does not lower it) only where the CPI
+  // fell and a coupon was taxed. The exit year's fees off the gain (TXS-06) are taken where there were any.
   const during = book.on("taxDuring");
   const atExit = book.on("taxAtExit");
   const couponRule = linked ? "TXI-14" : "TXI-15";
   const couponRate = during.peek.rate(couponRule, "rate");
   if (linked) {
     during.cite("TXI-05");
-    during.cite("TXI-25");
+    during.peek.cite("TXI-25");
   } else during.peek.cite("TXI-03");
   atExit.peek.cite("TXS-06");
   let couponTaxed = false;
@@ -164,6 +165,8 @@ function runBondUnder(input: BondInput, ctx: RunContext): RunResult {
   if (couponTaxed) {
     during.took(couponRule);
     if (!linked) during.took("TXI-03");
+    // on the run's one CPI path every coupon's index is below its lot's base index exactly when the CPI falls
+    if (linked && input.market.inflation < 0) during.took("TXI-25");
   }
   if (sells && exitYearFees > 0) atExit.took("TXS-06");
   if ((exit?.value?.capitalGainsTax ?? 0) > 0) atExit.took(exitRule);
