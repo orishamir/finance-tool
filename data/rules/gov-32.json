@@ -94,5 +94,8 @@
       "strength": "primary",
       "checked": "2026-11-15"
     }
+  ],
+  "derived_from": [
+    "GOV-09"
   ]
 }
