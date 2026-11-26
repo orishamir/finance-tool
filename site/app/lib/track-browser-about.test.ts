@@ -1,22 +1,26 @@
 // The head line of each regulator figure the track browser ships (copy.cmaAbout): set on every product's templates and kept by each
-// track's figure when it is expanded from them, over the real October 2026 tracks (data/cma/).
+// track's figure when it is expanded from them, over the real tracks of the latest report (data/cma/). The month and the fee year are
+// read from that data, so a monthly refresh does not change what the test holds.
 import { describe, expect, it } from "vitest";
 import { cmaAbout } from "../copy";
+import { fmt } from "./format";
 import { buildTrackBrowser } from "./track-browser.server";
-import { expandFee } from "./value";
+import { expandFee, feeYear } from "./value";
 
 const data = buildTrackBrowser();
 const found = data.products.find((p) => p.id === "kupat-gemel-lehashkaa");
 if (!found) throw new Error("the track browser has no kupat gemel lehashkaa");
 const gemel = found;
-const month = "אוקטובר 2026";
+const month = fmt.period(gemel.period);
+const year = feeYear(gemel.templates.balance) ?? "";
 
 describe("the regulator figures' head lines", () => {
   it("each template says what its figure is: a fee with its year, an amount or a yield with its month", () => {
     const { balance, deposit, holdings, y3, y5 } = gemel.templates;
-    expect(gemel.period).toBe("2026-10");
-    expect(balance.about).toBe(cmaAbout.avg_annual_management_fee("2025"));
-    expect(deposit.about).toBe(cmaAbout.avg_deposit_fee("2025"));
+    expect(gemel.period).toMatch(/^\d{4}-\d{2}$/);
+    expect(year).toMatch(/^\d{4}$/);
+    expect(balance.about).toBe(cmaAbout.avg_annual_management_fee(year));
+    expect(deposit.about).toBe(cmaAbout.avg_deposit_fee(year));
     expect(holdings?.assets.about).toBe(cmaAbout.total_assets(month));
     expect(holdings?.exposure.about).toBe(cmaAbout.stock_market_exposure(month));
     expect(holdings?.currency?.about).toBe(cmaAbout.foreign_currency_exposure(month));
