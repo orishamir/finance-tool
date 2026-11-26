@@ -217,6 +217,14 @@ describe("the parts each run's rules went into", () => {
   it("takes TXG-04 on the exit of a keren hishtalmut withdrawn early at 65", () => {
     expect(changedIn(run("keren hishtalmut, early withdrawal at 65"), "TXG-04")).toEqual(["taxAtExit"]);
     expect(changedIn(run("S24 keren hishtalmut, early withdrawal"), "TXG-04")).toEqual([]);
+    // at 65 with the refund not claimed the tax is the fund's withholding: the age-60 brackets are looked at and set nothing, nor does the age
+    const withheld = runProvident({ ...s23, goal: { ...s23.goal, months: 48 }, hishtalmut: { ...s23Hishtalmut, earlyWithdrawal: true }, profile: { ageAtStart: 61, refundClaimed: false } }, ctx);
+    expect(withheld.taxAtExit).toBeGreaterThan(0);
+    expect(read(withheld, "TXG-04")).toBe(true);
+    expect(changedIn(withheld, "TXG-04")).toEqual([]);
+    expect(changedIn(withheld, "TXH-15")).toEqual(["taxAtExit"]);
+    expect(withheld.profileUsed).not.toContain("age");
+    expect(run("keren hishtalmut, early withdrawal at 65").profileUsed).toContain("age");
   });
 
   it("takes the work brackets on an early withdrawal only where the employer's deposits are taxed by them", () => {

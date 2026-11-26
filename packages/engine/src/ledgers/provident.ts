@@ -482,10 +482,6 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       // the brackets the gains and the employer's deposits fall into start above the person's income, where the profile holds one, and
       // which brackets they are is the age's (TXG-04 from 60, else TXG-02)
       if ((profile.otherIncome ?? profile.annualIncome) !== undefined) book.profile("income");
-      if (sixty) {
-        book.profile("age");
-        exit.took("TXG-04");
-      }
       const gains = nominalGain(benefited) + nominalGain(excess);
       const employerDeposits = employerMoney ? benefited.deposits.reduce((a, d) => a + d.amount, 0) : 0;
       // F-119: the brackets and the threshold of the exit's tax year
@@ -503,6 +499,9 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
         workBrackets: exit.inYear(exitYear).peek.brackets(workRule, "brackets"),
       });
       if (employerDeposits > 0 && refundClaimed) exit.took(workRule);
+      // from 60 the age brought in TXG-04's brackets only where they set the tax: the refund claimed, on gains or employer deposits (TXG-04
+      // is then taken above); with the refund not claimed the tax is the withholding, which no age sets (A-14)
+      if (sixty && refundClaimed && (gains > 0 || employerDeposits > 0)) book.profile("age");
       const withIncome = { ...profile, otherIncome: y };
       const surtax = surtaxOn(exit, withIncome, gains + employerDeposits, 0, exitYear, false, "general").general + surtaxOn(exit, withIncome, gains, 0, exitYear, false, "onCapital").onCapital;
       taxAtExit = t.tax + surtax;
