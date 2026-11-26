@@ -1,0 +1,235 @@
+// Which rules a figure under data/ may name in its rule_ids (docs/data-schema.md §1): the rules that set, cap or define the value in its
+// current state, or that are the tax or the fee it is; never background, never the record's topic. A figure's sheet opens each id it
+// names as a chip, so an id that sets nothing about the figure sends the reader to a card that does not explain it.
+//
+// FIGURE_RULES is the table: for a collection and a path inside its records, each id a value there may name, the state it is allowed in
+// (`when`; absent, always) and why. An id a row lists with a `when` that is false is one the row knows and disallows in that state (a
+// row lists the ids it drops with `never`): packages/pipeline/scripts/apply-figure-rules.ts removes it. An id no row lists is unknown: it
+// is kept and listed, and goes to a finance reviewer before a row admits it. Besides the rows, one standing allow holds for every id a
+// row does not list: an id whose card under data/rules/ lists, among its sources, the document the value's own source is (its address
+// without the part after "#"), since that card holds the source the figure's sheet names. A row that lists the id decides it: a tax
+// bucket's source is the Income Tax Ordinance, which many tax cards cite, and its row still says which of them set the bucket.
+//
+// Only the record the site reads (the latest snapshot of each record) is judged; the older dated snapshots stay as they were.
+
+/** The collections the table covers. */
+export type FigureCollection = "terms/deposits" | "fees" | "funds" | "instruments" | "averages";
+
+/** A record or a value as the table reads it: a JSON object. */
+type Json = Readonly<Record<string, unknown>>;
+
+/** One id a row admits: in the state `when` holds of the record and the value (always, when absent), for the reason `why`. */
+export interface FigureAllow {
+  id: string;
+  when?: (record: Json, value: Json) => boolean;
+  why: string;
+}
+
+/** One row of the table: the ids a value at `path` of a `collection` record may name. */
+export interface FigureRow {
+  collection: FigureCollection;
+  /** The value's place in the record, its keys joined by "." and any array index written "[]" ("balance_conditions[].value"). A row covers the values under its path too ("amount_range" covers "amount_range.min"). */
+  path: string;
+  allow: readonly FigureAllow[];
+}
+
+/** An id the row knows and never admits, with why it does not belong on that value. */
+const never = (id: string, why: string): FigureAllow => ({ id, when: () => false, why });
+
+const field = (record: Json, key: string): unknown => record[key];
+/** A current account (BANK-09 is its rule), not a deposit or a savings plan. */
+const currentAccount = (r: Json) => field(r, "wrapper_id") === "current-account";
+const variableRate = (r: Json) => field(r, "rate_type") === "variable";
+/** The record's tax bucket (`tax_bucket.value`): "unlinked_15", "linked_25" or null while open. */
+const bucket = (r: Json): unknown => {
+  const t = field(r, "tax_bucket");
+  return t && typeof t === "object" ? (t as Json).value : undefined;
+};
+const bankIs = (...banks: string[]) => (r: Json) => banks.includes(String(field(r, "bank")));
+
+const deposits = "terms/deposits" as const;
+
+export const FIGURE_RULES: readonly FigureRow[] = [
+  {
+    collection: deposits,
+    path: "term_months",
+    allow: [
+      never("BANK-09", "a current account has no term, and BANK-09 sets none"),
+      never("BANK-14", "the bank sets each product's term; the annex's list of accepted types sets no product's term"),
+      never("BANK-27", "BANK-27 is about exit points and amount ranges, not the term"),
+      never("BANK-28", "BANK-28 is what a savings plan's agreement says about breaking it: the break line opens it"),
+    ],
+  },
+  {
+    collection: deposits,
+    path: "term_days",
+    allow: [
+      { id: "BANK-14", why: "the annex lists the accepted shekel deposit types by their period, which these days count" },
+      { id: "BANK-50", when: (_r, v) => typeof v.value === "number", why: "F-21 counts a term under a year by these days, by the formula BANK-50 holds" },
+    ],
+  },
+  {
+    collection: deposits,
+    path: "amount_range",
+    allow: [
+      { id: "BANK-27", why: "each bank sets the amounts a product takes, and the table prints each range on a row of its own" },
+      { id: "BANK-09", when: currentAccount, why: "the minimum and maximum balance a current account's interest is paid on, which BANK-09 says the bank must show" },
+      never("BANK-28", "BANK-28 is what a savings plan's agreement says about breaking it: the break line opens it"),
+    ],
+  },
+  {
+    collection: deposits,
+    path: "rate_offered",
+    allow: [
+      { id: "BANK-13", why: "the offered rate is the minimum the bank commits to in its consolidated publication, a yearly nominal rate before tax" },
+      { id: "BANK-25", when: variableRate, why: "a variable rate is its anchor with a spread known in advance, as the table must print it" },
+      { id: "BANK-09", when: currentAccount, why: "the interest on a current account's credit balance, which BANK-09 says the bank must show" },
+      never("BANK-34", "what the prime is: the spread rests on it, and the spread names it"),
+      never("BANK-28", "BANK-28 is what a savings plan's agreement says about breaking it: the break line opens it"),
+    ],
+  },
+  {
+    collection: deposits,
+    path: "rate_effective",
+    allow: [
+      { id: "BANK-50", why: "the printed rate is nominal, and BANK-50 holds how it becomes the rate over the deposit's period" },
+      { id: "BANK-04", why: "the disclosure rules make the bank state the adjusted yearly rate of an unlinked shekel deposit, compounded" },
+    ],
+  },
+  {
+    collection: deposits,
+    path: "interest_calc.effective_annual",
+    allow: [
+      { id: "BANK-50", why: "the printed rate is nominal, and BANK-50 holds how it becomes the rate over the deposit's period" },
+      { id: "BANK-04", why: "the disclosure rules make the bank state the adjusted yearly rate of an unlinked shekel deposit, compounded" },
+    ],
+  },
+  {
+    collection: deposits,
+    path: "interest_calc.effective_decimals",
+    allow: [{ id: "BANK-50", why: "the precision F-21 reads the times a year from, in the formula BANK-50 holds" }],
+  },
+  {
+    collection: deposits,
+    path: "interest_calc.periods_per_year",
+    allow: [
+      { id: "BANK-50", why: "the times a year interest is calculated, which BANK-50's formula leaves to each product" },
+      { id: "BANK-09", when: currentAccount, why: "the dates a current account's interest is credited, which BANK-09 says the bank must show" },
+    ],
+  },
+  {
+    collection: deposits,
+    path: "balance_conditions[].value",
+    allow: [{ id: "BANK-09", why: "the balance a current account's interest is paid on, which BANK-09 says the bank must show" }],
+  },
+  {
+    collection: deposits,
+    path: "spread",
+    allow: [
+      { id: "BANK-25", why: "a variable rate's spread over its anchor, known in advance, as the table must print it" },
+      { id: "BANK-34", why: "the spread is over the prime, and BANK-34 says what each bank calls the prime" },
+    ],
+  },
+  {
+    collection: deposits,
+    path: "tax_bucket",
+    allow: [
+      { id: "TXI-03", when: (r) => bucket(r) === "unlinked_15", why: "the fixed rate on the whole nominal interest of an asset not fully linked to the index" },
+      {
+        id: "TXI-04",
+        when: (r) => bucket(r) === "unlinked_15" && (variableRate(r) || field(r, "linkage") !== "none"),
+        why: "what counts as linked: a prime-linked or partly linked deposit counts as unlinked",
+      },
+      { id: "TXI-02", when: (r) => bucket(r) === "linked_25", why: "the ceiling on the tax on interest, which a fully linked deposit's real interest bears" },
+      { id: "TXI-05", when: (r) => bucket(r) === "linked_25", why: "the linkage of a fully linked asset is exempt, and the interest above it is taxed" },
+      { id: "TXI-08", when: currentAccount, why: "the bank withholds the tax on interest it pays an individual, a current account's credit interest included" },
+      {
+        id: "BPN-09",
+        when: (r, v) => v.value === null && Array.isArray(field(r, "variant")) && (field(r, "variant") as unknown[]).includes("best_of"),
+        why: "a deposit that pays the better of its alternatives at the end: which tax it bears is open, and BPN-09 describes its alternatives",
+      },
+      never("TXI-19", "a lower bracket from the qualifying age: no figure of the deposit, and the tax's own rules name it"),
+      never("BANK-09", "BANK-09 is what a bank must show about a current account's interest, not its tax"),
+    ],
+  },
+  {
+    collection: deposits,
+    path: "break",
+    allow: [
+      { id: "BANK-06", why: "breaking a deposit: the bank's consent, the form and what it costs" },
+      { id: "BANK-14", why: "the annex makes the table show whether each accepted type can be broken" },
+      { id: "BANK-28", why: "what a savings plan's agreement and disclosure must say about breaking it, and that no rule sets the price" },
+      { id: "BANK-09", when: currentAccount, why: "a current account is not broken: its money is there at any time" },
+      { id: "BANK-33", when: bankIs("discount", "mercantile"), why: "Discount's and Mercantile's own break penalty" },
+      { id: "BANK-49", when: bankIs("one-zero"), why: "One Zero's own break terms" },
+      { id: "BANK-55", when: bankIs("yahav"), why: "Yahav's own break terms" },
+      { id: "BANK-56", when: bankIs("jerusalem"), why: "Bank of Jerusalem's own break terms" },
+      { id: "BPN-10", when: bankIs("hapoalim"), why: "Hapoalim's savings plans' own withdrawal and break terms" },
+    ],
+  },
+];
+
+/** A JSON pointer ("/balance_conditions/0/value") as the table's path ("balance_conditions[].value"). */
+export function pathOf(pointer: string): string {
+  return pointer
+    .split("/")
+    .slice(1)
+    .map((k) => k.replace(/~1/g, "/").replace(/~0/g, "~"))
+    .reduce((path, k) => (/^\d+$/.test(k) ? `${path}[]` : path ? `${path}.${k}` : k), "");
+}
+
+/** The row for a value at `pointer` of a `collection` record: the one with the longest path that is the value's path or holds it; null for none. */
+export function rowFor(collection: FigureCollection, pointer: string): FigureRow | null {
+  const path = pathOf(pointer);
+  let best: FigureRow | null = null;
+  for (const row of FIGURE_RULES)
+    if (row.collection === collection && (path === row.path || path.startsWith(`${row.path}.`) || path.startsWith(`${row.path}[]`)) && (!best || row.path.length > best.path.length)) best = row;
+  return best;
+}
+
+/** A document's address without the part after "#": two links to one document at two places are one source. */
+const documentOf = (url: string): string => url.replace(/#.*$/, "");
+
+/** By rule id, the addresses of the sources its card under data/rules/ lists. */
+export type CardSources = ReadonlyMap<string, readonly string[]>;
+
+/** What the table says of one id on one value: admitted, known and disallowed in this state, or unknown to the row. */
+export type IdVerdict = "allowed" | "disallowed" | "unknown";
+
+/** The verdict on `id` named by `value` at `pointer` of `record`. */
+export function judgeId(collection: FigureCollection, record: Json, pointer: string, value: Json, id: string, cards: CardSources): IdVerdict {
+  const allow = rowFor(collection, pointer)?.allow.filter((a) => a.id === id) ?? [];
+  if (allow.length > 0) return allow.some((a) => !a.when || a.when(record, value)) ? "allowed" : "disallowed";
+  const url = (value.source as Json | undefined)?.url;
+  return typeof url === "string" && (cards.get(id) ?? []).some((u) => documentOf(u) === documentOf(url)) ? "allowed" : "unknown";
+}
+
+/** Each object inside `node` that names rule ids (a value object, a deposit's break), with its JSON pointer from `node`, in document order. */
+export function ruleHolders(node: unknown, pointer = ""): { pointer: string; value: Json; ids: string[] }[] {
+  if (Array.isArray(node)) return node.flatMap((n, i) => ruleHolders(n, `${pointer}/${i}`));
+  if (!node || typeof node !== "object") return [];
+  const o = node as Json;
+  const ids = Array.isArray(o.rule_ids) ? o.rule_ids.filter((x): x is string => typeof x === "string") : null;
+  return [
+    ...(ids ? [{ pointer, value: o, ids }] : []),
+    ...Object.entries(o).flatMap(([k, v]) => (k === "rule_ids" ? [] : ruleHolders(v, `${pointer}/${k.replace(/~/g, "~0").replace(/\//g, "~1")}`))),
+  ];
+}
+
+/** One id a value names that the table does not admit: disallowed in the value's state, or unknown to its row. */
+export interface FigureRuleProblem {
+  pointer: string;
+  id: string;
+  verdict: Exclude<IdVerdict, "allowed">;
+}
+
+/** Every id the record's values name that the table does not admit, in document order. Run it on the snapshot the site reads. */
+export function figureRuleProblems(collection: FigureCollection, record: unknown, cards: CardSources): FigureRuleProblem[] {
+  if (!record || typeof record !== "object") return [];
+  return ruleHolders(record).flatMap(({ pointer, value, ids }) =>
+    ids.flatMap((id) => {
+      const verdict = judgeId(collection, record as Json, pointer, value, id, cards);
+      return verdict === "allowed" ? [] : [{ pointer, id, verdict }];
+    }),
+  );
+}

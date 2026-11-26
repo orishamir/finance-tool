@@ -1,0 +1,86 @@
+// The figure-rules table (src/figure-rules.ts): which ids a deposit's values may name, in which state, and the standing allow for the
+// card that holds a value's source. Over the repository's own data the check in src/checks/figure-rules.ts runs in validate.test.ts.
+import { describe, expect, it } from "vitest";
+import { FIGURE_RULES, figureRuleProblems, judgeId, pathOf, rowFor, type CardSources } from "../src/figure-rules.ts";
+
+const src = (url: string) => ({ url, title: "t", publisher: "p", strength: "institution" });
+const vo = (value: unknown, rule_ids: string[], url = "https://bank.example/rates") => ({ value, unit: "pct_per_year", source: src(url), rule_ids });
+const noCards: CardSources = new Map();
+
+/** A deposit record as the table reads it, with the fields its rows look at. */
+function deposit(over: Record<string, unknown> = {}) {
+  return {
+    id: "bank-pikadon-leshana",
+    bank: "leumi",
+    wrapper_id: "bank-deposit",
+    rate_type: "fixed",
+    linkage: "none",
+    term_months: vo(12, []),
+    rate_offered: vo(2, ["BANK-13"]),
+    tax_bucket: vo("unlinked_15", ["TXI-03"], "https://www.gov.il/ordinance.pdf"),
+    amount_range: { min: vo(1000, ["BANK-27"]), max: null },
+    break: { allowed: false, penalty: "not_allowed", mechanism_text: "", rule_ids: ["BANK-06"] },
+    ...over,
+  };
+}
+
+describe("figure-rules table", () => {
+  it("writes a pointer as the table's path", () => {
+    expect(pathOf("/balance_conditions/0/value")).toBe("balance_conditions[].value");
+    expect(pathOf("/interest_calc/effective_annual")).toBe("interest_calc.effective_annual");
+    expect(pathOf("/amount_range/max")).toBe("amount_range.max");
+  });
+
+  it("covers a value under a row's path, and picks the longest row", () => {
+    expect(rowFor("terms/deposits", "/amount_range/min")?.path).toBe("amount_range");
+    expect(rowFor("terms/deposits", "/balance_conditions/2/value")?.path).toBe("balance_conditions[].value");
+    expect(rowFor("terms/deposits", "/interest_calc/effective_decimals")?.path).toBe("interest_calc.effective_decimals");
+    expect(rowFor("terms/deposits", "/names")).toBeNull();
+  });
+
+  it("gives every deposit row's id a reason", () => {
+    for (const row of FIGURE_RULES) for (const a of row.allow) expect(a.why.length, `${row.path} ${a.id}`).toBeGreaterThan(10);
+  });
+
+  it("admits a fixed deposit's rate with BANK-13 alone, and a variable one's with BANK-25 too", () => {
+    expect(figureRuleProblems("terms/deposits", deposit(), noCards)).toEqual([]);
+    expect(figureRuleProblems("terms/deposits", deposit({ rate_offered: vo(2, ["BANK-13", "BANK-25"]) }), noCards)).toEqual([{ pointer: "/rate_offered", id: "BANK-25", verdict: "disallowed" }]);
+    expect(figureRuleProblems("terms/deposits", deposit({ rate_type: "variable", rate_offered: vo(2, ["BANK-13", "BANK-25"]), spread: vo(-2, ["BANK-25", "BANK-34"]) }), noCards)).toEqual([]);
+  });
+
+  it("drops the prime's card and the savings plans' break rule from the rate, and every rule from the term", () => {
+    expect(figureRuleProblems("terms/deposits", deposit({ rate_type: "variable", rate_offered: vo(2, ["BANK-13", "BANK-25", "BANK-34", "BANK-28"]), term_months: vo(12, ["BANK-14"]) }), noCards)).toEqual([
+      { pointer: "/term_months", id: "BANK-14", verdict: "disallowed" },
+      { pointer: "/rate_offered", id: "BANK-34", verdict: "disallowed" },
+      { pointer: "/rate_offered", id: "BANK-28", verdict: "disallowed" },
+    ]);
+  });
+
+  it("names the tax bucket's rules by the bucket: unlinked, linked, prime-linked, a current account", () => {
+    const tax = (value: unknown, ids: string[]) => vo(value, ids, "https://www.gov.il/ordinance.pdf");
+    expect(figureRuleProblems("terms/deposits", deposit({ tax_bucket: tax("unlinked_15", ["TXI-03", "TXI-04", "TXI-08"]) }), noCards).map((p) => p.id)).toEqual(["TXI-04", "TXI-08"]);
+    expect(figureRuleProblems("terms/deposits", deposit({ rate_type: "variable", tax_bucket: tax("unlinked_15", ["TXI-03", "TXI-04"]) }), noCards)).toEqual([]);
+    expect(figureRuleProblems("terms/deposits", deposit({ linkage: "cpi", tax_bucket: tax("linked_25", ["TXI-02", "TXI-04", "TXI-05", "TXI-19"]) }), noCards).map((p) => p.id)).toEqual(["TXI-04", "TXI-19"]);
+    expect(figureRuleProblems("terms/deposits", deposit({ wrapper_id: "current-account", tax_bucket: tax("unlinked_15", ["TXI-03", "TXI-08", "BANK-09"]) }), noCards).map((p) => p.id)).toEqual(["BANK-09"]);
+  });
+
+  it("keeps an id no row knows and lists it as unknown", () => {
+    expect(figureRuleProblems("terms/deposits", deposit({ rate_offered: vo(2, ["BANK-13", "BANK-99"]) }), noCards)).toEqual([{ pointer: "/rate_offered", id: "BANK-99", verdict: "unknown" }]);
+  });
+
+  it("allows an id the row does not list when its card holds the value's source, and lets a row that lists the id decide", () => {
+    const cards: CardSources = new Map([
+      ["BANK-99", ["https://bank.example/rates#page=2"]],
+      ["TXI-19", ["https://www.gov.il/ordinance.pdf"]],
+    ]);
+    const record = deposit({ rate_offered: vo(2, ["BANK-13", "BANK-99"]), linkage: "cpi", tax_bucket: vo("linked_25", ["TXI-02", "TXI-05", "TXI-19"], "https://www.gov.il/ordinance.pdf") });
+    expect(judgeId("terms/deposits", record, "/rate_offered", record.rate_offered, "BANK-99", cards)).toBe("allowed");
+    expect(figureRuleProblems("terms/deposits", record, cards)).toEqual([{ pointer: "/tax_bucket", id: "TXI-19", verdict: "disallowed" }]);
+  });
+
+  it("keeps a bank's own break card on that bank's records only", () => {
+    const brk = (bank: string) => deposit({ bank, break: { allowed: true, penalty: "with_penalty", mechanism_text: "", rule_ids: ["BANK-06", "BANK-33"] } });
+    expect(figureRuleProblems("terms/deposits", brk("discount"), noCards)).toEqual([]);
+    expect(figureRuleProblems("terms/deposits", brk("leumi"), noCards)).toEqual([{ pointer: "/break", id: "BANK-33", verdict: "disallowed" }]);
+  });
+});
