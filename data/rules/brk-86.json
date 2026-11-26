@@ -1,0 +1,58 @@
+{
+  "id": "BRK-86",
+  "title": "Discount and Mercantile: a conversion up to $10 is free, and up to $100 gets 50% off, the minimum included",
+  "title_he": "המרת מטבע בסכום קטן בבנק דיסקונט ובבנק מרכנתיל: עד 10 דולר בלי עמלה, ועד 100 דולר הנחה של 50%",
+  "text_he": "בבנק דיסקונט ובבנק מרכנתיל, עסקת מטבע חוץ עד 10 דולר פטורה מעמלה. עסקה של עד 100 דולר מקבלת הנחה של 50% בעמלה, גם על המינימום.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-fx"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-12",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "discount",
+      "name_he": "בנק דיסקונט"
+    },
+    {
+      "id": "mercantile",
+      "name_he": "בנק מרכנתיל דיסקונט"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.discountbank.co.il/media/xq0bggwd/תעריפון-יחיד-עסק-קטן-מאוגד-12102026.pdf",
+      "title": "בנק דיסקונט: תעריפון יחיד/עסק קטן, התעריפון המאוחד (12/11/2026)",
+      "title_he": "בנק דיסקונט: תעריפון יחיד/עסק קטן, התעריפון המאוחד (12/11/2026)",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.18, part 5",
+      "locator_he": "עמוד 18, חלק 5",
+      "page": 18,
+      "quote": "לרבות על המינימום",
+      "checked": "2026-11-21"
+    },
+    {
+      "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+      "title": "בנק מרכנתיל: תעריפון יחיד/עסק קטן - התעריפון המלא (01/10/2026)",
+      "title_he": "בנק מרכנתיל: תעריפון יחיד/עסק קטן - התעריפון המלא (01/10/2026)",
+      "publisher": "Mercantile Discount Bank",
+      "publisher_he": "בנק מרכנתיל דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.19, part 5",
+      "locator_he": "עמוד 19, חלק 5",
+      "page": 19,
+      "quote": "לרבות על המינימום",
+      "checked": "2026-11-12"
+    }
+  ],
+  "derived_from": [
+    "BRK-16"
+  ]
+}

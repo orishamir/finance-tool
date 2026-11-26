@@ -42,6 +42,7 @@ import {
 import { inTrailingYear, trailingDistributionYield } from "@finance-tool/engine";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
+import { figureSlots, readTextLeftovers, ruleTextProblems, withoutSlots, type TextLeftovers } from "./rule-text.ts";
 import { checkFundPromotions, checkLineFacts, checkSnapshotFacts } from "./price-list-facts.ts";
 
 /**
@@ -173,6 +174,8 @@ export function validateData(ctx: ValidationContext): Problem[] {
   const feeCaps = readFeeCaps(files, ctx.dataDir);
   const warnings = new Map<string, string[]>();
   const warn = (category: string, id: string) => warnings.set(category, [...(warnings.get(category) ?? []), id]);
+  const ruleFiles = new Map<string, string>();
+  const textLeftovers = readTextLeftovers();
 
   for (const file of files) {
     const rel = relative(ctx.dataDir, file);
@@ -221,6 +224,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     if (collection === "terms/deposits" && result.success) for (const message of checkFirstExitPoint(parsed.value)) report(file, message);
     if (collection === "rules" && result.success) {
       const rec = parsed.value as RuleLike;
+      ruleFiles.set(rec.id, file);
       for (const message of checkRuleSources(rec, ctx, ruleRecords, warn)) report(file, message);
     }
     // data-schema §3.16: one record per guide page, named by the guide's id
@@ -305,9 +309,12 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkLegalStructures(files, ctx.dataDir, report);
   checkStatedTaxIndex(files, ctx.dataDir, currencies, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
+  // data-schema §4 item 23: the rule cards' texts (rule-text.ts)
+  for (const p of ruleTextProblems(ruleRecords, textLeftovers)) report(ruleFiles.get(p.id) ?? join(ctx.dataDir, "rules"), p.message);
   checkHomeGuideDoor(files, ctx.dataDir, report);
   checkDepositAmounts(files, ctx.dataDir, report);
   checkTermNames(files, ctx.dataDir, report);
+  checkTermCopies(files, ctx.dataDir, textLeftovers, report);
   checkOpenQuestions(files, ctx, report, warn);
   // who each rule applies to and where it may appear (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §3): scope.ts
   const scopeCounts = checkScope(ctx, ruleRecords, report, warn);
@@ -1004,6 +1011,8 @@ export interface RuleLike {
   scope?: string;
   scope_institutions?: { id: string; name_he: string }[];
   scope_settle?: string;
+  title_he?: string;
+  text_he?: string;
 }
 
 const STRENGTH_RANK: Record<string, number> = { primary: 2, institution: 1, secondary: 0 };
@@ -1345,9 +1354,8 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
     if (rule.sources && !rule.sources.some((s) => s.strength === "primary")) report(file, `pinned-rules: fact ${id} has no primary source`);
     const text = fact.text_he ?? "";
     if (text.length > 200) report(file, `pinned-rules: fact ${id} is ${text.length} characters; the block's cards hold 200`);
-    if (/\d/.test(text.replace(/\{[A-Z0-9-]+:[a-z0-9_]+\}/g, ""))) report(file, `pinned-rules: fact ${id} carries a typed digit; use a {ID:figure} slot`);
-    for (const m of text.matchAll(/\{([A-Z0-9-]+):([a-z0-9_]+)\}/g)) {
-      const [, slotId, figure] = m as unknown as [string, string, string];
+    if (/\d/.test(withoutSlots(text))) report(file, `pinned-rules: fact ${id} carries a typed digit; use a {ID:figure} slot`);
+    for (const { id: slotId, figure } of figureSlots(text)) {
       if (slotId !== id) report(file, `pinned-rules: fact ${id} has a slot of another rule ({${slotId}:${figure}})`);
       else if (!(figure in (rule.figures ?? {}))) report(file, `pinned-rules: fact ${id} names a figure the rule does not have (${figure})`);
     }
@@ -1359,10 +1367,8 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
       report(file, `pinned-rules: the first rule of a row (${first}) has no primary source`);
     // the answer line of the questions page: no digit typed by hand; every figure is a {ID:figure} slot over one of the row's rules
     if (typeof row.answer_he === "string") {
-      const plain = row.answer_he.replace(/\{[A-Z0-9-]+:[a-z0-9_]+\}/g, "");
-      if (/\d/.test(plain)) report(file, `pinned-rules: the answer to "${row.ids?.join(",")}" carries a typed digit; use a {ID:figure} slot`);
-      for (const m of row.answer_he.matchAll(/\{([A-Z0-9-]+):([a-z0-9_]+)\}/g)) {
-        const [, id, figure] = m as unknown as [string, string, string];
+      if (/\d/.test(withoutSlots(row.answer_he))) report(file, `pinned-rules: the answer to "${row.ids?.join(",")}" carries a typed digit; use a {ID:figure} slot`);
+      for (const { id, figure } of figureSlots(row.answer_he)) {
         if (!row.ids?.includes(id)) report(file, `pinned-rules: the answer slot {${id}:${figure}} names a rule outside the row (${row.ids?.join(",")})`);
         const figures = (all.get(id) as { figures?: Record<string, unknown> } | undefined)?.figures ?? {};
         if (!(figure in figures)) report(file, `pinned-rules: the answer slot {${id}:${figure}} names a figure ${id} does not have (${Object.keys(figures).join(",") || "none"})`);
@@ -1439,6 +1445,42 @@ function checkTermNames(files: string[], dataDir: string, report: (file: string,
     }
   }
   if (terms.length > 0) for (const pair of TERM_NAME_LEFTOVERS) if (!used.has(pair)) report(join(dataDir, "terms"), `terms: the leftover pair "${pair}" no longer shares a page; take it off TERM_NAME_LEFTOVERS (the list only shrinks)`);
+}
+
+/**
+ * Glossary copies (data-schema §4 item 16): two `data/terms/` records with the same Hebrew name and the same explanation, byte for byte
+ * after trimming, are one term written twice, whatever pages each names; the glossary lists both. The pairs still allowed, each
+ * "<id> <id>" in file order, are text-leftovers.json's "term-copy", which only shrinks.
+ */
+export function termCopies(terms: readonly { id: string; he: string; meaning: string }[]): string[] {
+  return terms.flatMap((a, i) => terms.slice(i + 1).flatMap((b) => (a.he.trim() === b.he.trim() && a.meaning.trim() === b.meaning.trim() ? [`${a.id} ${b.id}`] : [])));
+}
+function checkTermCopies(files: string[], dataDir: string, leftovers: TextLeftovers, report: (file: string, message: string) => void) {
+  const at = (f: string) => relative(dataDir, f).replace(/\\/g, "/");
+  const terms = files
+    .filter((f) => /^terms\/[^/]+\.json$/.test(at(f)))
+    .sort()
+    .map((f) => ({ file: f, rec: parseJson(readFileSync(f, "utf8")).value as { id?: unknown; he?: unknown; meaning?: unknown } | undefined }))
+    .flatMap(({ file, rec }) => (typeof rec?.id === "string" && typeof rec.he === "string" && typeof rec.meaning === "string" ? [{ file, id: rec.id, he: rec.he, meaning: rec.meaning }] : []));
+  const allowed = leftovers.leftovers["term-copy"];
+  const found = termCopies(terms);
+  for (const pair of found)
+    if (!allowed.includes(pair)) report(terms.find((t) => t.id === pair.split(" ")[1])?.file ?? join(dataDir, "terms"), `terms: ${pair.replace(" ", " and ")} carry the same name and the same explanation; one term is one record, so merge them (its products are the two records' together)`);
+  // A folder of a few records stands in for no listed pair, so here a pair is judged only while both its records are present; a pair
+  // naming a record that is gone is staleTermCopies' over the whole of data/terms, held by a test.
+  const ids = new Set(terms.map((t) => t.id));
+  for (const message of staleTermCopies(terms, allowed.filter((pair) => pair.split(" ").every((id) => ids.has(id))))) report(join(dataDir, "terms"), message);
+}
+
+/** The listed copies `allowed` of the whole terms collection `terms` that are gone: a pair naming a record that is not there, or two records no longer the same. */
+export function staleTermCopies(terms: readonly { id: string; he: string; meaning: string }[], allowed: readonly string[]): string[] {
+  const ids = new Set(terms.map((t) => t.id));
+  const found = termCopies(terms);
+  return allowed.flatMap((pair) => {
+    const gone = pair.split(" ").filter((id) => !ids.has(id));
+    if (gone.length > 0) return [`terms: text-leftovers.json lists the copy "${pair}", and ${gone.join(" and ")} has no record under data/terms/: strike it (the list only shrinks)`];
+    return found.includes(pair) ? [] : [`terms: text-leftovers.json lists the copy "${pair}", which is no longer one: strike it (the list only shrinks)`];
+  });
 }
 
 /**

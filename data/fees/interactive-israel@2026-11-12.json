@@ -490,7 +490,7 @@
       "reason_he": "לפי תנאי השימוש של החברה החשבון וכל קנייה הם אצל אינטראקטיב ברוקרס, וברשימת קרנות הנאמנות שהיא מציעה למי שגר בישראל אין קרן ישראלית ואין קרן בשקלים.",
       "note": "Read 2026-11-12 (second pass). A 'no' from a chain of binding and official texts, not from a sentence of the company: its Terms of Use (dateModified 2026-10-08; the English text prevails) put the client's account and every order at Interactive Brokers ('Platform', 'Orders'); its Order Execution Policy: 'The Company routes client orders for execution to another broker, Interactive Brokers'; Interactive Brokers' fund inventory for residence Israel, on .com and on .ie, holds 14,972 funds, none with an Israeli ISIN and none in shekels (BRK-64); units of an Israeli fund are ordered through a distributor and the clearing house (MF-11), only a clearing-house member submits them (clearing-house bylaws part B ch. י\"ב s.3א), and neither Mexem nor any Interactive Brokers company is on TASE's member or clearing-house lists. The tariff's 'קרנות נאמנות' table (p.5) has an EUR row and a USD row and no ILS row. All pages in the site's sitemaps were searched: none names an Israeli mutual fund. Until this pass the entry was 'unknown'. BRK-65.",
       "rule_ids": [
-        "BRK-65"
+        "BRK-82"
       ]
     },
     {

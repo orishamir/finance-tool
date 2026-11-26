@@ -1,15 +1,14 @@
 {
   "id": "BRK-38",
-  "title": "One Zero's full tariff (published 24/6/2026, in force 26.7.2026): trading limited to TA-125 shares, the Israeli mutual funds it has distribution agreements for, and US-traded securities; no custody fee; one buy/sell rate for clerk and internet; plan benefits in annex ו'",
-  "title_he": "תעריפון וואן זירו: מניות מדד מאה עשרים וחמש, קרנות שיש לבנק הסכם הפצה עליהן וניירות אמריקאיים בלבד, בלי דמי ניהול פיקדון ניירות ערך",
+  "title": "One Zero: what can be traded: TA-125 shares, the Israeli mutual funds it has distribution agreements for, and US-traded securities",
+  "title_he": "מה אפשר לקנות בוואן זירו: מניות ממדד ת״א 125, קרנות נאמנות שיש לבנק הסכם הפצה עליהן וניירות ערך שנסחרים בארצות הברית",
   "strength": "institution",
   "dimensions": [
-    "fee-trade",
-    "fee-custody"
+    "eligibility"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
-  "text_he": "הבנק הדיגיטלי מאפשר בשלב זה מסחר במניות ישראליות הנכללות במדד הדגל, בקרנות נאמנות ישראליות ובניירות ערך זרים הנסחרים בארצות הברית בלבד. לפי הוראות הביצוע של הבנק, אפשר לקנות דרכו קרן נאמנות ישראלית רק אם הבנק חתם על הסכם הפצה לגביה. את ההסכמים אפשר למצוא בדיווחים של מנהלי הקרנות באתר מאיה. בתעריפון אין שורת מק״מ, אופציות או עמלת הפצה. דמי ניהול פיקדון ניירות ערך ועמלת קסטודיאן נקובים באפס אחוז. עמלת הקנייה והמכירה זהה בפקיד ובאינטרנט. חברי המסלולים בתשלום חודשי מקבלים הנחה ניכרת בעמלת המסחר, ופטור מעמלת חליפין. מעל העמלות של הבנק, חלק 11 בתעריפון מעביר ללקוח הוצאות של צד שלישי לפי העלות בפועל, עד תקרות מודפסות. על ניירות ערך בחו״ל, ההוצאות הן עד 50 דולר ללקוח לכל ״אירוע חברה״. על כל עסקה בחו״ל, הן עד 1 דולר לברוקר ועד 100 יורו לקורספונדנט. התעריפון לא מגדיר מה הוא ״אירוע חברה״. המספרים עצמם נמצאים ברשומה שנאספה מהתעריפון.",
+  "text_he": "בנק וואן זירו מאפשר בשלב זה מסחר במניות ישראליות שבמדד ת״א 125, בקרנות נאמנות ישראליות ובניירות ערך זרים שנסחרים בארצות הברית. לפי הוראות הביצוע של הבנק, הוא סוחר בקרן נאמנות ישראלית רק אם חתם על הסכם הפצה לגביה. את ההסכמים אפשר למצוא בדיווחים של מנהלי הקרנות באתר מאיה. בהוראות אין שורה לקרן סל ישראלית, וקרנות סל זרות נקנות לפי רשימת הקרנות שהבנק תומך בהן.",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-11-12",
   "scope": "institution",
@@ -20,46 +19,6 @@
     }
   ],
   "sources": [
-    {
-      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-      "title": "תעריפון העמלות המלא, מהדורה מיום 26.7.26",
-      "title_he": "תעריפון העמלות המלא (וואן זירו, מהדורה מיום 26.7.26)",
-      "publisher": "One Zero Bank",
-      "publisher_he": "וואן זירו",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.17, part 11",
-      "locator_he": "עמוד 17, חלק 11",
-      "page": 17,
-      "quote": "בעלות מרבית של עד 50 דולר ארה״ב ללקוח לכל אירוע חברה",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-      "title": "תעריפון העמלות המלא, מהדורה מיום 26.7.26",
-      "title_he": "תעריפון העמלות המלא (וואן זירו, מהדורה מיום 26.7.26)",
-      "publisher": "One Zero Bank",
-      "publisher_he": "וואן זירו",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.16, part 11 items (2) and (3)",
-      "page": 16,
-      "quote": "עד 100 יורו לעסקה",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-      "title": "תעריפון העמלות המלא, מהדורה מיום 26.7.26",
-      "title_he": "תעריפון העמלות המלא (וואן זירו, מהדורה מיום 26.7.26)",
-      "publisher": "One Zero Bank",
-      "publisher_he": "וואן זירו",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.17, part 11 items on SEC and US",
-      "page": 17,
-      "quote": "עד 10 דולר ארה״ב ללקוח לחודש",
-      "checked": "2026-11-12"
-    },
     {
       "url": "https://www.onezerobank.com/company/information/5683",
       "title": "וואן זירו: הוראות ביצוע כלליות (מסמכים בקשר לפעילות בשוק ההון)",
@@ -80,20 +39,6 @@
       "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-      "title": "תעריפון העמלות המלא, מהדורה מיום 26.7.26",
-      "title_he": "תעריפון העמלות המלא (וואן זירו, מהדורה מיום 26.7.26)",
-      "publisher": "One Zero Bank",
-      "publisher_he": "וואן זירו",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
     }
-  ],
-  "derived_from": [
-    "BRK-16",
-    "BRK-33"
   ]
 }

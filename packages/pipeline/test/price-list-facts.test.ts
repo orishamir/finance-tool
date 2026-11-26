@@ -198,9 +198,10 @@ describe("the averages a house charged (§3.9)", () => {
 });
 
 describe("the citations of the price-list facts (2026-11-14)", () => {
-  it("each step of the six banks' small conversions cites BRK-68", () => {
-    for (const name of ["discount@2026-11-14", "mercantile@2026-11-12", "fibi@2026-11-21", "massad@2026-11-21", "mizrahi-tefahot@2026-11-12", "hapoalim@2026-11-12"])
+  it("each step of the six banks' small conversions cites its own bank's record", () => {
+    const own: Record<string, string> = { "discount@2026-11-14": "BRK-86", "mercantile@2026-11-12": "BRK-86", "fibi@2026-11-21": "BRK-68", "massad@2026-11-21": "BRK-68", "mizrahi-tefahot@2026-11-12": "BRK-85", "hapoalim@2026-11-12": "BRK-84" };
+    for (const [name, id] of Object.entries(own))
       for (const l of snap(name).lines)
-        for (const t of l.size_tiers ?? []) for (const v of [t.up_to, t.discount_pct, t.flat, t.rate]) if (v) expect(v.rule_ids, `${name} ${l.id}`).toContain("BRK-68");
+        for (const t of l.size_tiers ?? []) for (const v of [t.up_to, t.discount_pct, t.flat, t.rate]) if (v) expect(v.rule_ids, `${name} ${l.id}`).toContain(id);
   });
 });

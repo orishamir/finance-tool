@@ -1,5 +1,7 @@
-// The title a rule shows in lists and on cards (F4): the record's Hebrew title, else the first sentence of its Hebrew text, else the English title.
+// The title a rule shows in lists and on cards (F4): the record's Hebrew title, else the first sentence of its Hebrew text with its
+// figure slots written as the page shows them, else the English title.
 import type { RuleRecord } from "@finance-tool/schema";
+import { slotsAsText, type SlotSource } from "./figure-slots";
 
 export interface ShownTitle {
   text: string;
@@ -14,8 +16,8 @@ export function firstSentence(text: string): string {
   return (m ? m[1]! : t).replace(/[.]$/, "");
 }
 
-export function ruleTitle(rule: Pick<RuleRecord, "title" | "title_he" | "text_he">): ShownTitle {
+export function ruleTitle(rule: Pick<RuleRecord, "title" | "title_he" | "text_he">, slots: SlotSource): ShownTitle {
   if (rule.title_he) return { text: rule.title_he, english: false };
-  if (rule.text_he) return { text: firstSentence(rule.text_he), english: false };
+  if (rule.text_he) return { text: firstSentence(slotsAsText(rule.text_he, slots)), english: false };
   return { text: rule.title, english: true };
 }

@@ -132,8 +132,7 @@
     "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות שבירה' (447 table column). The data's flag 'isBreakable' is true, beside the printed words.",
     "rule_ids": [
       "BANK-06",
-      "BANK-28",
-      "BANK-48"
+      "BANK-28"
     ]
   },
   "exit_points": {

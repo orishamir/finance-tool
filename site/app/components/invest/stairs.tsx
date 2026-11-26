@@ -160,22 +160,27 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const reset = () => set({ taken: [] });
   const jump = (p: Pos) => set({ start: p, taken: [] });
 
-  const delta = (n: number, a: SiteValue, an: string, b: SiteValue, bn: string, about: string) => computed(n, "nis", "F-91", { [an]: a, [bn]: b }, { today, about });
   // a stair's difference is the difference of what is left as the two levels write it, in whole shekels
   const shownDiff = (l: Level, prev: Level) => Math.round(l.left.value as number) - Math.round(prev.left.value as number);
-  const diffOf = (l: Level, prev: Level) => delta(shownDiff(l, prev), l.left, `${t.about.left}: ${l.fundName}, ${l.house.short}`, prev.left, `${t.about.left}: ${prev.fundName}, ${prev.house.short}`, t.about.versus);
-  // the waiting cash's row says what it waited for: the next purchase where every stair with waiting cash is priced buying every few months
-  // (F-133), else the general waiting heading
+  // the size of a difference between two figures as the page writes them: the larger less the smaller, so its sheet's working comes to it
+  const sizeOf = (a: readonly [string, SiteValue], b: readonly [string, SiteValue], aFirst: boolean, about: string) => differenceOf(aFirst ? a : b, aFirst ? b : a, "F-91", { today, about });
+  const diffOf = (l: Level, prev: Level) => differenceOf([`${t.about.left}: ${l.fundName}, ${l.house.short}`, l.left], [`${t.about.left}: ${prev.fundName}, ${prev.house.short}`, prev.left], "F-91", { today, about: t.about.versus });
+  // the waiting cash's row says what it waited for (F-133): a whole unit's heading only where every stair waited for one; money that waited
+  // for the next purchase, every few months, fits both
   const waiters = levels.filter((l) => l.waiting !== null);
-  // a whole unit's heading only where every stair waited for one; money that waited for the next purchase, every few months, fits both
   const waitingHead = waiters.some((l) => l.orderEvery > 1) ? t.table.waitingBatched : t.table.waiting;
   const partName = (k: Part) => [t.table.accountCost, waitingHead, t.table.fundCost, t.table.tax][k]!;
   const partOf = (l: Level, prev: Level, k: Part) => {
     const name = partName(k);
+    const about = `${t.about.cost}: ${name}`;
     // read only where both stairs have their split (`dParts`), so every part is a figure; a way by amount has no waiting cash, and its 0 is the only side
     const side = (x: Level) => (PARTS[k] === "waiting" ? x.waiting : x[PARTS[k]]);
-    const inputs: [SiteValue, string][] = ([l, prev] as const).flatMap((x) => (side(x) ? [[side(x)!, `${name}: ${x.fundName}, ${x.house.short}`] as [SiteValue, string]] : []));
-    return computed(l.dParts![k], "nis", "F-91", Object.fromEntries(inputs.map(([v, n]) => [n, v])), { today, about: `${t.about.cost}: ${name}` });
+    const label = (x: Level) => `${name}: ${x.fundName}, ${x.house.short}`;
+    // each side as its pair's receipt writes it (`Level.whole`), so the difference is the one the table shows
+    const a = side(l), b = side(prev);
+    if (a && b && l.whole && prev.whole) return differenceOf([label(l), { ...a, value: l.whole[k] }], [label(prev), { ...b, value: prev.whole[k] }], "F-91", { today, about });
+    const inputs: [SiteValue, string][] = ([l, prev] as const).flatMap((x) => (side(x) ? [[side(x)!, label(x)] as [SiteValue, string]] : []));
+    return computed(l.dParts![k], "nis", "F-91", Object.fromEntries(inputs.map(([v, n]) => [n, v])), { today, about });
   };
 
   // ---------------------------------------------------------------- the chart and what sits under it
@@ -344,7 +349,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
           const sub = r.lane === "kind" ? <small className="text-xs font-normal text-muted-foreground"><MixedName>{nameOfFund(r.to.f)}</MixedName></small> : null;
           const chips = r.hedged ? hedgedChip(r.to.f) : [];
           const d = r.d!;
-          const diffValue = delta(Math.abs(d), price.value, `${t.about.left}: ${nameOfFund(r.to.f)}, ${house(r.to.a).short}`, here.left, `${t.about.left}: ${here.fundName}, ${here.house.name}`, t.about.versus);
+          const diffValue = sizeOf([`${t.about.left}: ${nameOfFund(r.to.f)}, ${house(r.to.a).short}`, price.value], [`${t.about.left}: ${here.fundName}, ${here.house.name}`, here.left], d >= 0, t.about.versus);
           return (
             <DiffRow
               key={r.key}
@@ -398,7 +403,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
       <>{t.statusTop}</>
     ) : (
       <>
-        {t.statusNone} <Num value={delta(gap, ceilingPrice.value, `${t.about.left}: ${nameOfPos(ceiling.pos)}`, end.left, `${t.about.left}: ${end.fundName}, ${end.house.name}`, t.about.ceilingGap)} />
+        {t.statusNone} <Num value={sizeOf([`${t.about.left}: ${nameOfPos(ceiling.pos)}`, ceilingPrice.value], [`${t.about.left}: ${end.fundName}, ${end.house.name}`, end.left], true, t.about.ceilingGap)} />
         {t.statusTogether}{" "}
         <JumpLink onClick={() => jump(ceiling.pos)}>
           {t.jump} {nameOfPos(ceiling.pos)}

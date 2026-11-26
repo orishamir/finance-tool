@@ -1,13 +1,11 @@
 {
   "id": "GOV-14",
-  "title": "Floating-rate bond (אג\"ח ממשלתית בריבית משתנה; the older type \"גילון חדש\" is separate)",
-  "title_he": "אג״ח ממשלתית בריבית משתנה (וסוג ישן נפרד: גילון חדש)",
-  "text_he": "לפי מילון יחידת ניהול החוב, אג״ח ממשלתית בריבית משתנה היא איגרת לא צמודה, והריבית בה נקבעת מתשואת המק״מ הממוצעת לתקופה של שנה. הסדרות שמונפקות היום הן מהסוג ״אג״ח ממשלתית בריבית משתנה״. לפי התקנות של הסוג הזה, הריבית השנתית היא ממוצע של תשואות המק״מ שנותרה לו כשנה לפדיון. הממוצע הוא של ימי המסחר שלפני סוף תקופת הריבית, משוקלל לפי היקף העסקאות. תקופות הריבית הן של שלושה חודשים. בנוסח התקנות אין מרווח ואין רצפה. לסוג הישן ״גילון חדש״, שכבר לא מונפק, יש תקנות נפרדות. לפיהן הריבית היא ממוצע תשואות של מק״מ שנותרו לו שלושה חודשים עד שנה לפדיון. אליו מוסיפים מרווח שנקבע בהנפקה, עד תקרת המרווח. הקופון שם לא יורד מתחת לרצפה. התקנות האלה חלות רק על הסדרות הישנות.",
+  "title": "Floating-rate bond (אג\"ח ממשלתית בריבית משתנה)",
+  "title_he": "אג״ח ממשלתית בריבית משתנה",
+  "text_he": "אג״ח ממשלתית בריבית משתנה היא איגרת לא צמודה, שהריבית שלה נקבעת מתשואת המק״מ, והסדרות בריבית משתנה שמונפקות היום הן מהסוג הזה. לפי התקנות של הסוג, הריבית השנתית היא ממוצע תשואות המק״מ שנותרה לו כשנה לפדיון, בחמשת ימי המסחר שלפני סוף תקופת הריבית, משוקלל לפי היקף העסקאות. כל תקופת ריבית היא {GOV-14:coupon_every_months}, ובנוסח התקנות אין מרווח ואין רצפה. ״גילון חדש״ הוא סוג ישן ונפרד של איגרת בריבית משתנה, שכבר לא מונפק.",
   "figure_names_he": {
     "linkage": "הצמדה",
-    "coupon_every_months": "תדירות תשלום הקופון (חודשים)",
-    "margin_cap": "תקרת המרווח מעל תשואת המק״מ (רק בסוג הישן ״גילון חדש״)",
-    "coupon_floor": "רצפת הקופון (רק בסוג הישן ״גילון חדש״)"
+    "coupon_every_months": "תדירות תשלום הקופון (חודשים)"
   },
   "strength": "primary",
   "dimensions": [
@@ -55,46 +53,6 @@
       ],
       "state": "sourced",
       "notes": "Under the 2006 regulations for the type auctioned now, \"אג\"ח ממשלתית בריבית משתנה\", each interest period ends on a payment day and starts on the last bank business day of the third month before it, so the coupon is paid every three months (reg. 1). The older \"גילון חדש\" type (1999 regulations, no longer issued) also has three-month periods after the first. The Accountant General's bond page lists the current type with interest \"אחת ל-3 חודשים\" (GOV open question 5 closed 2026-10-26)."
-    },
-    "margin_cap": {
-      "value": 4,
-      "unit": "pct",
-      "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=3",
-        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951), p.3, reg. 1 (ריבית משתנה): \"ושלא יעלה על 4%\"",
-        "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "GOV-14"
-      ],
-      "state": "sourced",
-      "notes": "Margin over the makam reference yield, set at issue, of no more than 4%: the 1999 \"גילון חדש\" regulations only, which govern the older series and are no longer issued. The 2006 regulations for the type auctioned now have no margin."
-    },
-    "coupon_floor": {
-      "value": 0,
-      "unit": "pct",
-      "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=3",
-        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951), p.3, reg. 7(ג)-(ד)",
-        "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "GOV-14"
-      ],
-      "state": "sourced",
-      "notes": "The coupon \"לא יפחת מ-0%\" (1999 \"גילון חדש\" regulations, reg. 9): the older series only. The 2006 regulations for the type auctioned now have no floor."
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
@@ -155,55 +113,6 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=2",
-      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951)",
-      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״), התשנ״ט-1999",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "p.2, reg. 1; p.3, regs. 4, 7; p.4, reg. 9",
-      "locator_he": "עמוד 2, תקנה 1; עמוד 3, תקנות 4, 7; עמוד 4, תקנה 9",
-      "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpNDaj2+z9ida9BlI~8SpmA=#page=3",
-      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"א-2000 (קובץ התקנות 6069)",
-      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״א-2000 (קובץ התקנות 6069)",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "p.3, reg. 7(ב) as",
-      "page": 3,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=9",
-      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"ו-2006 (קובץ התקנות 6457)",
-      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״ו-2006 (קובץ התקנות 6457)",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "p.9, reg. 5 as",
-      "page": 9,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=6",
-      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"ז-2007 (קובץ התקנות 6597)",
-      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״ז-2007 (קובץ התקנות 6597)",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "p.6, reg. 9א as",
-      "page": 6,
-      "checked": "2026-10-25"
-    },
-    {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=c92fdda2-0939-4110-8ebc-edfcf35e8723&limit=3&sort=ISSUANCEDATE%20desc&filters=%7B%22SERIES%22%3A1205145%7D",
       "title": "משרד האוצר (data.gov.il): הנפקת אג\"ח סחירות בשוק המקומי, סדרה 1205145",
       "publisher": "data.gov.il",
@@ -213,5 +122,10 @@
       "quote": "ממשלתית בריבית משתנה",
       "checked": "2026-10-26"
     }
+  ],
+  "derived_from": [
+    "GOV-10",
+    "GOV-27",
+    "GOV-29"
   ]
 }

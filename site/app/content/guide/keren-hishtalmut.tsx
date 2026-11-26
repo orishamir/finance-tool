@@ -23,7 +23,7 @@ export const content: GuideContent = {
         <Ruled id="KH-03">אם הסכם העבודה כולל קרן השתלמות</Ruled>, <Term id="הפקדות המעסיק">המעסיק</Term> מפקיד לקרן כל חודש כסף, ואתם מפקידים חלק מהשכר שלכם. האחוז שכל צד מעביר לקרן <Ruled id="KH-04">כתוב בהסכם העבודה</Ruled>. <Term id="עמית-עצמאי">עצמאים</Term> <Ruled id="KH-02">מפקידים בעצמם</Ruled>.
       </p>
       <p className="max-w-measure">
-        אחרי <N v={figure("TXH-09", "lock_years")} /> שנים <Term prefix="מ" id="מועד התשלום הראשון">ההפקדה הראשונה</Term> אפשר <Term id="משיכה">למשוך</Term> את הכסף <Ruled id="TXH-09">בלי מס הכנסה</Ruled> ובלי <Term id="מס רווחי הון">מס רווחי הון</Term>. למי שהגיע <Term prefix="ל" id="גיל הפרישה">גיל הפרישה</Term> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים. גם על כסף שמושכים <Ruled id="TXH-10">כדי לשלם על לימודים</Ruled> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים: בחוק זה נקרא ״השתלמות״. אילו אישורים הקרן דורשת על הלימודים כתוב <Term prefix="ב" id="תקנון">תקנון</Term> של כל קרן.
+        אחרי <N v={figure("TXH-09", "lock_years")} /> שנים <Term prefix="מ" id="מועד התשלום הראשון">ההפקדה הראשונה</Term> אפשר <Term id="משיכה">למשוך</Term> את הכסף <Ruled id="TXH-09">בלי מס הכנסה</Ruled> ובלי <Term id="מס רווחי הון">מס רווחי הון</Term>. למי שהגיע <Term prefix="ל" id="גיל הפרישה">גיל הפרישה</Term> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים. גם על כסף שמושכים <Ruled id="TXH-10">כדי לשלם על לימודים</Ruled> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים: בחוק זה נקרא ״השתלמות״. אילו אישורים הקרן דורשת על הלימודים כתוב <Term prefix="ב" id="תקנון">תקנון</Term> של כל קרן. החישוב בעמוד לא מחשב משיכה להשתלמות אחרי <N v={figure("TXH-10", "lock_years")} /> שנים.
       </p>
       <p className="max-w-measure">
         הפטור לא חל על כל סכום. לשכירים הוא חל על הפקדות של עד <N v={figure("KH-04", "employer_pct")} /> מהשכר מהמעסיק (<Ruled id="TXH-01">לעובדי הוראה בקרנות מסוימות השיעור גבוה יותר</Ruled>) ועד <N v={figure("KH-04", "employee_pct")} /> מהשכר שלכם. הוא חל רק על שכר של עד <Whole v={figure("TXH-02", "determining_salary_cap")} /> בחודש: גם מי שמרוויח יותר מחשב את האחוזים לפי <Whole v={figure("TXH-02", "determining_salary_cap")} />. לעצמאים הוא חל על הפקדות של עד <Whole v={figure("TXH-08", "self_employed_benefited")} /> בשנה.
@@ -112,7 +112,7 @@ export const content: GuideContent = {
   risks: () => (
     <>
       <p className="max-w-measure">הפסד בהשקעות הוא שלכם: שווי הקרן עולה ויורד עם ההשקעות של המסלול שבחרתם, והמדינה לא ערבה לו.</p>
-      <p className="max-w-measure">החברה המנהלת <Ruled id="PF-29">מחזיקה את הכסף בנפרד מהרכוש שלה</Ruled>, ומי שהיא חייבת לו כסף לא יכול לעקל אותו. אם היא קורסת, הניהול <Ruled id="REG-19">עובר לחברה אחרת</Ruled>. ומי שאתם חייבים לו כסף יכול לעקל את הזכויות שלכם בקרן <Ruled id="REG-18">רק לפי כללים מיוחדים</Ruled>.</p>
+      <p className="max-w-measure">החברה המנהלת <Ruled id="PF-29">מחזיקה את הכסף בנפרד מהרכוש שלה</Ruled>, ומי שהיא חייבת לו כסף לא יכול לעקל אותו. אם היא קורסת, הניהול <Ruled id="REG-19">עובר לחברה אחרת</Ruled>. ומי שאתם חייבים לו כסף יכול לעקל את הזכויות שלכם בקרן <Ruled id="PF-48">רק לפי כללים מיוחדים</Ruled>.</p>
     </>
   ),
 };

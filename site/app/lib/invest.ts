@@ -15,6 +15,7 @@ import { aliasRows } from "./search-aliases";
 import { fxRunInput, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
 import { computed, ownBy, ruleFigure, sumOf, type ExchangeLabel, type SiteLabel, type SiteValue, type Strength } from "./value";
+import { paidInWorking } from "./working";
 
 // ---------------------------------------------------------------- the options
 
@@ -914,7 +915,7 @@ const WHOLE_PLAN: readonly PlanInput[] = ["amount", "monthly", "years", "return"
  * The plan's inputs a figure rests on, each named by the caller, so a figure lists only what its formula uses: what was paid in rests on
  * the amount, the deposit and the years, not on the return.
  */
-export function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): Record<string, SiteValue> {
+function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): Record<string, SiteValue> {
   const v = plan.values;
   const of: Record<PlanInput, SiteValue> = { amount: v.amount, monthly: v.monthly, years: v.years, return: v.returnV, inflation: v.inflation };
   return Object.fromEntries(which.map((k) => [copy.planInputs[k], of[k]]));
@@ -1051,7 +1052,10 @@ function usWithholdingInput(ctx: Ctx, r: RunReads, rec: FundRecord): Record<stri
   const inputs: Record<string, SiteValue> = { [w.usRate]: rate, [w.usYield]: us.yield as SiteValue };
   if (us.weight) inputs[w.usWeight] = us.weight as SiteValue;
   const value = irishFundUsWithholding(rate.value / 100, u.yield, u.weight) * 100;
-  return { [w.usWithholding]: computed(Math.round(value * 1000) / 1000, "pct_per_year", "F-107", inputs, { today: ctx.bundle.today, rules: [{ id: rule.id, strength: rule.strength as Strength }], flags: ["TXF-OQ7"], about: w.usWithholdingAbout }) };
+  // `w = ρ × y_US × s_US`; an index of US companies alone has no weight among the inputs (its 1 is the method's), so its line is drawn with
+  // the key and no values
+  const working = { kind: "formula", entry: "F-107", line: 0, symbols: { [w.usRate]: String.raw`\rho`, [w.usYield]: "y_{US}", ...(us.weight ? { [w.usWeight]: "s_{US}" } : {}) } } as const;
+  return { [w.usWithholding]: computed(Math.round(value * 1000) / 1000, "pct_per_year", "F-107", inputs, { today: ctx.bundle.today, rules: [{ id: rule.id, strength: rule.strength as Strength }], flags: ["TXF-OQ7"], about: w.usWithholdingAbout, working }) };
 }
 
 /** A figure of a fund's annual report (a year's return, its index's, a fee it charged), from the report at its page: the fund's own document (D31). */
@@ -1589,7 +1593,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     // what was paid in, in today's money (F-106): the amount, the deposit and the years, and nothing else
     // the monthly deposit rises with prices each month (A-04 "constant real", F-05), so in today's money it is the same each month: said in
     // its sheet, since A-04 is the method's setting and no value to list
-    paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout, lead: copy.pair.paidInLead }),
+    paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout, lead: copy.pair.paidInLead, working: paidInWorking(copy.planInputs.amount, copy.planInputs.monthly, copy.planInputs.years) }),
     paidInNominal: computed(row.run.paidIn, "nis", "F-05", planInputs(ctx.plan, ["amount", "monthly", "years", "inflation"]), { today: ctx.bundle.today, about: copy.pair.paidInNominalAbout, lead: copy.pair.paidInLead }),
     index: computed(end.index, "index_points", "F-03", planInputs(ctx.plan, ["inflation", "years"]), { today: ctx.bundle.today, about: copy.pair.indexAbout }),
     left: computed(row.real, "nis", "F-65", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), labels: labelsOf(row, fs.spec), about: nameOf(rec) }),

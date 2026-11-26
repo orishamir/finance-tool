@@ -2,7 +2,7 @@
   "id": "ETF-09",
   "title": "Tracking difference is reported per year in the annual report; the manager explains the gap only above a threshold",
   "title_he": "פער העקיבה בדוח השנתי",
-  "text_he": "כל דוח שנתי, חוץ מזה של קרן גמישה, משווה את תשואת הקרן בשנה האחרונה לשינוי בנכס הייחוס שנקבע בתשקיף. המנהל חייב להסביר את הפער רק כשהוא עולה על סף ההסבר, והסף של קרן מחקה נמוך מזה של קרן אחרת. מנהל קרן מחקה גם מפרסם בכל יום תמחור את הפרש העקיבה של שנים עשר החודשים האחרונים.",
+  "text_he": "כל דוח שנתי, חוץ מזה של קרן גמישה, משווה את תשואת הקרן בשנה האחרונה לשינוי בנכס הייחוס שנקבע בתשקיף. המנהל חייב להסביר את הפער רק כשהוא עולה על {ETF-09:explanation_threshold_tracking_fund_pct} מהשינוי בנכס הייחוס בקרן מחקה, ועל {ETF-09:explanation_threshold_other_fund_pct} בקרן אחרת.",
   "figure_names_he": {
     "explanation_threshold_tracking_fund_pct": "סף ההסבר בקרן מחקה (אחוז מהשינוי בנכס הייחוס)",
     "explanation_threshold_other_fund_pct": "סף ההסבר בקרן שאינה מחקה (אחוז מהשינוי בנכס הייחוס)"

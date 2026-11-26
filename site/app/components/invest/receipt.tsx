@@ -19,7 +19,7 @@ import { assertNever, type FundRecord } from "@finance-tool/schema";
 import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
 import { orderCharge, rateWords, type OrderCharge, type RatePart, type RateWords } from "../../lib/rate-words";
 import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
-import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
+import { computed, differenceOf, ownBy, restated, sumOf, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, StateTag, shortRow } from "../provenance";
 import { DocLink, FEE_WORDS_HELP, HeldMark, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, Sentence, SourcedTag, Tag, TicketPart, Tpl, When, MarkSheet } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
@@ -129,7 +129,9 @@ type Costs = NonNullable<ReturnType<typeof pairCostsKept>>;
  */
 export function nominalOf(pc: Costs, v: SiteValue, label: string, today: string): SiteValue {
   const n = typeof v.value === "number" && typeof pc.index.value === "number" ? v.value * pc.index.value : null;
-  return computed(n, "nis", "F-129", { [c.receipt.nominal.today]: v, [c.pair.indexInput]: pc.index }, { today, about: c.receipt.nominal.about(label) });
+  // F-129's first line, `Y^nom = Y × I_T`
+  const working = { kind: "formula", entry: "F-129", line: 0, symbols: { [c.receipt.nominal.today]: "Y", [c.pair.indexInput]: "I_T" } } as const;
+  return computed(n, "nis", "F-129", { [c.receipt.nominal.today]: v, [c.pair.indexInput]: pc.index }, { today, about: c.receipt.nominal.about(label), working });
 }
 
 /** What the index added before any cost, in the shekels of the horizon: F-91's X there less the deposits as they are paid (F-05). */
@@ -161,7 +163,7 @@ export function taxOf(pc: Costs): SiteValue {
  * them, whole shekels each, so its sheet lists each line, the costs as the amounts they take.
  */
 function beforeTaxOf(pc: Costs, ch: ReceiptChain, today: string): SiteValue {
-  const at = (v: SiteValue, n: number): SiteValue => ({ ...v, value: n });
+  const at = restated;
   const r = ch.nominal;
   const nom = (v: SiteValue, label: string, n: number) => at(nominalOf(pc, v, label, today), n);
   const lines: Record<string, SiteValue> = {
@@ -179,10 +181,12 @@ function beforeTaxOf(pc: Costs, ch: ReceiptChain, today: string): SiteValue {
  * same value in today's money, what is left and the state. Each input holds the whole shekels the receipt writes.
  */
 export function inflationOf(pc: Costs, ch: ReceiptChain, taxName: string, today: string): SiteValue {
-  const at = (v: SiteValue, n: number): SiteValue => ({ ...v, value: n });
+  const at = restated;
   const b = c.receipt.beforeTax;
   const real = sumOf({ [c.receipt.left]: at(pc.left, ch.left), [taxName]: at(taxOf(pc), ch.tax) }, "F-130", { today, about: b.today });
-  return differenceOf([b.nominal, beforeTaxOf(pc, ch, today)], [b.today, real], "F-130", { today, about: c.receipt.inflation, lead: c.receipt.inflationLead });
+  // F-130's first line, `inflation = B^nom − B^real`
+  const working = { kind: "formula", entry: "F-130", line: 0, symbols: { [b.nominal]: "B^{nom}", [b.today]: "B^{real}" } } as const;
+  return differenceOf([b.nominal, beforeTaxOf(pc, ch, today)], [b.today, real], "F-130", { today, about: c.receipt.inflation, lead: c.receipt.inflationLead, working });
 }
 
 /** F-109, F-133: the waiting cash's line by what it waited for: a whole unit, or, priced buying every few months, the next purchase. */

@@ -1,0 +1,53 @@
+{
+  "id": "INS-31",
+  "title": "Harel's executive policies: the fees they state (plan 1286 of 2009; the 2016 policy \"הראל מור למנהלים\")",
+  "title_he": "דמי הניהול בפוליסות ביטוח המנהלים של הראל: תוכנית 1286 מ־2009 והפוליסה מ־2016",
+  "text_he": "בתוכנית ביטוח המנהלים של הראל מ־2009 (תוכנית 1286), דמי הניהול מהיתרה הם עד 1.7% בשנה, ובתקופת תשלום הקצבה 0.5% בשנה. אין בה דמי ניהול מהפקדה, גם לא מהפקדה חד־פעמית או מהעברה, והראל רשאית להוריד את דמי הניהול בתוכנית הזו. בפוליסה ״הראל מור למנהלים״ מ־2016, דמי הניהול הם 3% מהפרמיה ו־0.5% בשנה מהיתרה. אם ההפקדות נפסקות, דמי הניהול מהיתרה בפוליסה הזו עולים ל־1.05%.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-10-31",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "harel-insurance",
+      "name_he": "הראל חברה לביטוח"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.harel-group.co.il/Policies/2010.pdf",
+      "title": "Harel plan 1286",
+      "title_he": "הראל מגוון למנהלים קצבה משלמת (תוכנית 1286, מהדורת 7/2009)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.13, s.10",
+      "locator_he": "עמוד 13, סעיף 10",
+      "page": 13,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf",
+      "title": "Harel, הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016",
+      "title_he": "הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה (מכתב הראל, יוני 2016)",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3; pp. 2, 4",
+      "locator_he": "עמוד 3; עמודים 2, 4",
+      "page": 3,
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "INS-15"
+  ]
+}

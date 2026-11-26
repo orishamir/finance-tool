@@ -1,0 +1,58 @@
+{
+  "id": "MF-75",
+  "title": "Yalin Lapidot fund 5137492: how it reaches its end in 2026, payment by 15.1.2027, and no promise to reach the fund's aim",
+  "title_he": "ילין לפידות, קרן 5137492: איך הקרן מגיעה לסוף ב־2026 ועד מתי משלמים",
+  "text_he": "לפי הדוח השנתי של קרן 5137492 של ילין לפידות, 2026 היא שנת הפדיון שלה: האיגרות במדד נפדות, וכך הקרן מגיעה לפירוק. כל סדרה שיוצאת מהמדד מוחלפת במק״מ, ביום המסחר האחרון גם המק״מ יוצא, ואחרי סוף השנה המנהל מוכר את מה שנשאר ומחזיק מזומן בשקלים. התשלום לבעלי היחידות במועד הפירוק יהיה לא יאוחר מ־{MF-75:last_payment}. באותו מסמך כתוב שאין בכך התחייבות של מנהל הקרן או הבטחה שלו להשיג את מטרת הקרן.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-07-01",
+  "figures": {
+    "last_payment": {
+      "value": "2027-01-15",
+      "unit": "text",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629790-00.pdf#page=1",
+        "title": "דוח שנתי של קרן 5137492, 30.9.2024",
+        "publisher": "ילין לפידות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-75"
+      ],
+      "state": "sourced",
+      "notes": "המועד האחרון לתשלום, קרן 5137492"
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-11-14",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yalin-funds",
+      "name_he": "ילין לפידות קרנות נאמנות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629790-00.pdf#page=1",
+      "title": "Yalin Lapidot, annual report, fund 5137492, 30.9.2024",
+      "title_he": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "ילין לפידות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.1, 2",
+      "locator_he": "עמודים 1, 2",
+      "page": 1,
+      "checked": "2026-11-01"
+    }
+  ]
+}

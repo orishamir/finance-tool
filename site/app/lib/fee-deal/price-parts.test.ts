@@ -152,7 +152,7 @@ describe("sums in the trade's currency", () => {
 });
 
 describe("sums in the trade's currency printed for some currencies only (trade_currencies, F-114, §10.6)", () => {
-  /** Excellence's line outside the US: 0.4%, at least 35 in the trade's currency, printed for shekels, dollars and euros (BRK-48). */
+  /** Excellence's line outside the US: 0.4%, at least 35 in the trade's currency, printed for shekels, dollars and euros (BRK-76). */
   const printed: Price = { form: "action", rate: typed(0.4), min: typed(35), inTrade: ["ILS", "USD", "EUR"] };
   const own = (currency: string): FeeDeal => ({ ...newDeal("brokerage-account"), readFor: [{ by: "what", is: "mine", place: "abroad", currency }], fees: [trade(printed)] } as FeeDeal);
   it("reads the minimum in a currency the list prints it for", () => {
@@ -277,7 +277,7 @@ describe("the templates", () => {
     const spread = house("ibi").fees.find((f) => f.kind === "fx_spread")!;
     expect(spread.by).toMatchObject([{ kind: "actionSize", unit: "USD", tops: [{ v: 15_000 }] }]);
     expect(spread.cases!.map((c) => c.stages[0]!.price)).toMatchObject([{ rate: { v: 0.7 } }, { rate: { v: 0.5 } }]);
-    // Discount: nothing up to 10 $, half its price up to 100 $ with the minimum halved too (BRK-68), the full price above
+    // Discount: nothing up to 10 $, half its price up to 100 $ with the minimum halved too (BRK-86), the full price above
     const fx = house("discount").fees.find((f) => f.kind === "fx")!;
     const direct = fx.cases!.filter((c) => (c.when[0] as string[])[0] === "direct").map((c) => c.stages[0]!.price);
     expect(direct).toMatchObject([{ form: "free" }, { form: "action", discount: { pct: { v: 50 }, alsoMin: true } }, { form: "action" }]);
@@ -351,14 +351,14 @@ describe("the templates", () => {
     expect(texts("hapoalim")).toContain("ניירות ערך בחו״ל");
     expect(texts("hapoalim")).not.toContain("ניירות ערך בחו״ל, בארה״ב, באירופה, בשאר העולם");
   });
-  it("note an order through a bank's clerk not carried out as BRK-16 says, on a branch line on the exchange alone, whatever the heading", () => {
+  it("note an order through a bank's clerk not carried out as BRK-71 says, on a branch line on the exchange alone, whatever the heading", () => {
     const notesOf = (id: string) =>
       data.houses.find((h) => h.id === id)!.fees.find((f) => f.kind === "trade")!.cases!.map((c) => ({ when: JSON.stringify(c.when), notes: (c.stages[0]!.price as { notes?: string[] }).notes ?? [] }));
     for (const bank of ["discount", "hapoalim"]) {
       const cases = notesOf(bank);
       // never the plain note, whatever the bank's heading says
       expect(cases.some((c) => c.notes.includes("unfilled"))).toBe(false);
-      // the branch's case on the exchange carries BRK-16's note; a direct one none
+      // the branch's case on the exchange carries BRK-71's note; a direct one none
       expect(cases.some((c) => c.when.includes("branch") && c.when.includes("tase") && c.notes.includes("unfilledClerk"))).toBe(true);
       expect(cases.filter((c) => c.when.includes("direct") && !c.when.includes("branch")).every((c) => c.notes.length === 0)).toBe(true);
     }
@@ -370,13 +370,13 @@ describe("the templates", () => {
     const foreign = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "us" }, { by: "channel", is: "branch" }] };
     const said = readingOf(read(foreign), data.fx).stated.find((x) => x.part === "unfilledClerkAbroad")!;
     expect(said.words).toEqual(copy.cases.stated.unfilledClerkAbroad);
-    expect(said.rules).toEqual(["BRK-16"]);
-    // the reading states it in the rule's terms and cites BRK-16, which the page's data carries
+    expect(said.rules).toEqual(["BRK-71"]);
+    // the reading states it in the rule's terms and cites BRK-71, which the page's data carries
     const d = { ...fillDeal(newDeal("brokerage-account"), "house:discount", data, TODAY)!, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "branch" }] };
     const stated = readingOf(read(d), data.fx).stated.find((s) => s.part === "unfilledClerk")!;
     expect(stated.words).toEqual(copy.cases.stated.unfilledClerk);
-    expect(stated.rules).toEqual(["BRK-16"]);
-    expect(data.rules.some((r) => r.id === "BRK-16")).toBe(true);
+    expect(stated.rules).toEqual(["BRK-71"]);
+    expect(data.rules.some((r) => r.id === "BRK-71")).toBe(true);
     const direct = { ...d, readFor: [{ by: "what", is: "tase" }, { by: "channel", is: "direct" }] };
     expect(readingOf(read(direct), data.fx).stated.some((s) => s.part === "unfilledClerk" || s.part === "unfilled")).toBe(false);
   });
@@ -652,7 +652,7 @@ describe("the templates", () => {
     expect(filledFor("ibi", [{ by: "what", is: "mutualFunds" }])("trade")).toMatchObject({ rate: { v: 0.08 }, min: { v: 5 } });
     expect(copy.cases.values.what.mutualFunds).toBe("קרנות נאמנות");
   });
-  it("price no mutual fund on a bank's line for the Tel Aviv exchange, which takes back only tracking and listed funds (BRK-16, MF-27), and say why", () => {
+  it("price no mutual fund on a bank's line for the Tel Aviv exchange, which takes back only tracking and listed funds (BRK-72, MF-27), and say why", () => {
     for (const id of ["discount", "leumi", "mizrahi-tefahot", "one-zero"]) {
       const trade = house(id).fees.find((f) => f.kind === "trade")!;
       const named = (trade.cases ?? []).flatMap((c) => (Array.isArray(c.when[0]) ? c.when[0] : []));
@@ -678,7 +678,7 @@ describe("the templates", () => {
     // a value of its own abroad, in a currency it does not name, puts a conversion on a purchase (F-111)
     expect(read({ ...fillDeal(newDeal("brokerage-account"), "house:ibi", data, TODAY)!, readFor: [{ by: "what", is: band }] }).engine.foreign).toBe(true);
   });
-  it("fill a minimum printed in the trade's own currency as one, never as dollars (BRK-48)", () => {
+  it("fill a minimum printed in the trade's own currency as one, never as dollars (BRK-48, BRK-76, BRK-78)", () => {
     // Excellence outside the US: 35 euros in Europe, and not read where the currency is not known ("בשאר העולם")
     const europe = filledFor("excellence", [{ by: "what", is: "europe" }])("trade");
     expect(europe).toMatchObject({ rate: { v: 0.4 }, min: { v: 35 }, currency: "EUR" });
@@ -688,7 +688,7 @@ describe("the templates", () => {
     const lines = latestSnapshots().flatMap((x) => x.lines).filter((l) => l.min?.unit === "trade_ccy_per_trade");
     expect(lines.map((l) => l.id).sort()).toEqual(["excellence-buy-sell-foreign-non-us", "ibi-buy-sell-foreign-other-markets", "interactive-israel-buy-sell-europe", "meitav-trade-buy-sell-foreign-world"]);
   });
-  it("say a minimum in the trade's currency in the builder in that currency where the reading reads its case, else with no currency sign (BRK-48)", () => {
+  it("say a minimum in the trade's currency in the builder in that currency where the reading reads its case, else with no currency sign (BRK-76)", () => {
     const minOf = (is: string) => {
       const r = read({ ...fillDeal(newDeal("brokerage-account"), "house:excellence", data, TODAY)!, readFor: [{ by: "what", is }] });
       const band = builder(r).rows.find((x) => x.kind === "trade")!.block;

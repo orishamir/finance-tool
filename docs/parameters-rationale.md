@@ -93,7 +93,7 @@ P-05, `data/parameters/illustrative-scenario.json`: the starting values of the g
 
 **Pension and annuity tracks:** no managing company publishes a list fee for a general pension fund or a provident fund for annuity, so, as for the study fund, the guides use the regulator's average on a named track (method 2.4).
 - `pension-general` names track **2158**, "מיטב פנסיה כללית לבני 50 ומטה" (Meitav, classification "קרנות כלליות", the age-banded default track for someone under 50). The CMA reports the pension fees per fund and not per track (CAT-39), so every Meitav general-pension track shows the same 0.14% balance and 1.07% deposit average for 2025, and the choice moves no number.
-- `provident-for-annuity` names track **7215**, "מיטב גמל לבני 50 ומטה" (Meitav, classification "תגמולים ואישית לפיצויים", specialization "מדרגות", sub-specialization "עד 50"): the age-banded default track a new member under 50 joins when they choose none (CAT-19 s.4(ב)), as 2158 is for the general pension fund. A provident fund for annuity may keep a general track only closed to members who were not in it on 1.1.2016 (CAT-19), so its "כללי" tracks are not what a new member can join, except in a fund the circular leaves out: Gemel-Net's general tracks 119, 260 and 263 sit in guaranteed-yield funds the circular leaves out, and whether that takes their general tracks is open (CAT-53, CAT OQ36, D51); 923 "מיטב בטחון" is closed to new members on Meitav's own terms (CAT-54, D51). **Chosen by Claude**: the entry says so (`chosen_by`). The regulator has no separate classification for a provident fund for annuity, so this classification is the nearest the data offers.
+- `provident-for-annuity` names track **7215**, "מיטב גמל לבני 50 ומטה" (Meitav, classification "תגמולים ואישית לפיצויים", specialization "מדרגות", sub-specialization "עד 50"): the age-banded default track a new member under 50 joins when they choose none (CAT-58 s.4(ב)), as 2158 is for the general pension fund. A provident fund for annuity may keep a general track only closed to members who were not in it on 1.1.2016 (CAT-19), so its "כללי" tracks are not what a new member can join, except in a fund the circular leaves out: Gemel-Net's general tracks 119, 260 and 263 sit in guaranteed-yield funds the circular leaves out, and whether that takes their general tracks is open (CAT-53, CAT OQ36, D51); 923 "מיטב בטחון" is closed to new members on Meitav's own terms (CAT-54, D51). **Chosen by Claude**: the entry says so (`chosen_by`). The regulator has no separate classification for a provident fund for annuity, so this classification is the nearest the data offers.
 - The comprehensive pension fund keeps Meitav's list fee lines.
 
 **Why:** the first collected Meitav track of each kind, chosen by Claude at the founder's request, revisable; the page names the track and every fee carries the CMA record's source and year. The insurance cost (A-17) is not a site parameter: the person enters it, and a pension fund without it is "not evaluated".
@@ -133,11 +133,11 @@ Importance is a judgement, so it is a parameter: the data-driven score (engine u
 | 5 | TXH-09, KH-15 | when a study fund is liquid without tax |
 | 6 | BANK-23, REG-04, REG-06 | is money in a deposit insured |
 | 7 | PF-06, PF-02 | the management-fee cap |
-| 8 | PF-19, SW-06 | transfer between funds: how long, what it costs |
+| 8 | PF-19 | transfer between funds: how long, what it costs |
 | 9 | PF-13, PF-14, SW-15 | a fee discount: for how long is it guaranteed |
 | 10 | TXS-24, MF-37 | whether all money-market funds are the same |
 | 11 | BANK-20 | money sitting in a current account: what the bank must say |
-| 12 | REG-18, REG-19 | what happens to a pension if the managing company fails |
+| 12 | PF-29, REG-19 | what happens to a pension if the managing company fails |
 
 **Facts** (`facts`): the short facts of the rules page's "הידעת?" block, 36 today, each with its `text_he`. The validator checks that each rests on one general rule (never a company's term) with a primary source, appears once, and carries no typed digit: every figure is a `{ID:figure}` slot over that rule.
 
@@ -153,9 +153,9 @@ Importance is a judgement, so it is a parameter: the data-driven score (engine u
 - brokerage-account: TXS-21, TXS-02, TXS-19
 - kupat-gemel-lehashkaa: TXK-04, KGL-02, TXK-05
 - keren-hishtalmut: KH-19, KH-15, PF-18
-- pension-comprehensive: PEN-23, PEN-15, REG-18
-- pension-general: REG-18, PEN-15, TXP-15
-- provident-for-annuity: TXP-15, REG-18, PF-19
+- pension-comprehensive: PEN-23, PEN-15, PF-29
+- pension-general: PF-29, PEN-15, TXP-15
+- provident-for-annuity: TXP-15, PF-29, PF-19
 - child-savings-provident: CS-18, CS-20, CS-12
 - child-savings-bank: CS-05, CS-12, CS-10
 - ira-hishtalmut: TXH-09, IRA-16, IRA-18

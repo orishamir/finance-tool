@@ -2,7 +2,7 @@
   "id": "TXG-18",
   "title": "Must file regardless: surtax, foreign assets and accounts, transfers abroad",
   "title_he": "מתי חייבים להגיש דוח שנתי גם כשיש פטור",
-  "text_he": "גם מי שפטור מהגשת דוח חייב להגיש אם הוא או בן הזוג חייבים במס נוסף. הוא חייב להגיש גם אם הוא, בן הזוג והילדים עד גיל 18 החזיקו ביום כלשהו בשנה נכסים בחו״ל בשווי של יותר מ־2,086,000 שקלים. כך גם אם החזיקו חשבונות בנק בחו״ל עם יתרה כוללת של יותר מ־2,086,000 שקלים. חייבים להגיש גם מי ששולט בחברה זרה או מחזיק בזכויות בגוף זר כפי שהתקנות מונות, ומי שהיה חייב להגיש בשנה הקודמת. כך גם תושב ישראל שהעביר לחו״ל 500,000 שקלים או יותר בתוך 12 חודשים. הסכומים נקובים לשנת המס 2025 ומוקפאים עד 2027. תנאי הנכסים והחשבונות בחו״ל לא חלים על עולה חדש או תושב חוזר שזכאים לפטור, וגם לא על בן הזוג והילדים שלהם.",
+  "text_he": "גם מי שפטור מהגשת דוח חייב להגיש אם הוא או בן הזוג חייבים במס נוסף או בעלי שליטה בחברה, או אם הוא, בן הזוג והילדים עד גיל 18 החזיקו ביום כלשהו בשנה נכסים בחו״ל בשווי של יותר מ־2,086,000 שקלים או חשבונות בנק בחו״ל עם יתרה כוללת של יותר מ־2,086,000 שקלים. חייבים להגיש גם מי ששולט בחברה זרה או מחזיק בזכויות בגוף זר כפי שהתקנות מונות, מי שהיה חייב להגיש בשנה הקודמת, ותושב ישראל שהעביר לחו״ל 500,000 שקלים או יותר בתוך 12 חודשים. הסכומים נקובים לשנת המס 2025 ומוקפאים עד 2027. התקנות פטרו מחלק מהתנאים האלה, בתנאים, תושב חדש ותושב חוזר ותיק, וההקלה הזו בוטלה למי שנעשה כזה מ־2026.",
   "strength": "primary",
   "dimensions": [
     "reporting-obligation",
@@ -15,6 +15,35 @@
   "checked": "2026-11-07",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=#page=8",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.8, s.3(2)",
+      "locator_he": "עמוד 8, סעיף 3(2)",
+      "page": 8,
+      "quote": "לא יחול על יחיד שהיה לתושב ישראל",
+      "checked": "2026-11-12",
+      "qualifier": "(read from the page image: the text layer is poor)"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/7ImSG7R~31kgMHXzY2UjRTIi0nZwJhLAGkfNjyZo+zU=#page=2",
+      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11460)",
+      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11460)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, ss.2-3",
+      "locator_he": "עמוד 2, סעיפים 2-3",
+      "page": 2,
+      "quote": "תקנות משנה (ג) ו–(ד) - בטלות",
+      "checked": "2026-11-12"
+    },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=#page=8",
       "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",

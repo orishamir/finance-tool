@@ -328,6 +328,11 @@ export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex">): TaxI
   return readsStatedIndex(fund.kind) ? (fund.statedIndex ?? null) : null;
 }
 
+/** F-04: the rule `taxIndexOf` cites for a fund's tax index: TXF-03 for a foreign-currency fund held directly, TXS-14 for an Israeli fund; else none. */
+export function taxIndexRule(fund: Pick<Fund, "kind">): "TXF-03" | "TXS-14" | null {
+  return fund.kind === "foreign-fund" ? "TXF-03" : fund.kind === "israeli-fund" ? "TXS-14" : null;
+}
+
 /**
  * F-04 The tax index of a fund held in a securities account: the exchange rate for a foreign-currency fund held directly (TXF-03), the CPI
  * for an Israeli fund's shekel units (TXS-14's first bullet). An Israeli fund that may be measured by a principal currency
@@ -339,21 +344,15 @@ export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex">): TaxI
  * index TXF OQ10 leaves open (`taseForeignFundIndex`): the CPI, the site's reading, for a fund whose documents it read; for one it does not
  * know, its record's currency's exchange rate (the CPI for a record in shekels) or the CPI in turn, whether or not it
  * pays out: its distributions are taxed on a reading of their own (`foreignDistributionRate`). The kind with no fund record stops on
- * TXF-04: the run does not know its currency, so it has no exchange-rate reading (G-35).
+ * TXF-04: the run does not know its currency, so it has no exchange-rate reading (G-35). The rule that names the index is cited through
+ * `reads`, the book's own reads unless the caller only looks at it (`peek`) until it knows the index went into a number (`taxIndexRule`).
  */
-export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "notKnown">, book: RuleBook): "fx" | "principal" | "cpi" {
-  if (fund.kind === "foreign-fund") {
-    book.cite("TXF-03");
-    return "fx";
-  }
-  if (fund.kind === "israeli-fund" && fund.principalCurrency !== undefined) {
-    book.cite("TXS-14");
-    return book.taxIndex(foreignInvestmentFundIndex, fund.notKnown);
-  }
-  if (fund.kind === "israeli-fund") {
-    book.cite("TXS-14");
-    return "cpi";
-  }
+export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "notKnown">, book: RuleBook, reads: Pick<RuleBook, "cite"> = book): "fx" | "principal" | "cpi" {
+  const rule = taxIndexRule(fund);
+  if (rule) reads.cite(rule);
+  if (fund.kind === "foreign-fund") return "fx";
+  if (fund.kind === "israeli-fund" && fund.principalCurrency !== undefined) return book.taxIndex(foreignInvestmentFundIndex, fund.notKnown);
+  if (fund.kind === "israeli-fund") return "cpi";
   if (fund.kind !== "tase-foreign-fund") return "cpi";
   const stated = statedTaxIndexOf(fund);
   if (stated) return stated.index;
@@ -504,8 +503,11 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // F-119: a later leg's grid starts that many tax years after the run date's
   const book = ruleBook(ctx, { inflation: input.market.inflation, startsAfter: Math.floor(((input.goal.firstMonth ?? 1) - 1 + (input.gridOffset ?? 0)) / 12) });
   const { goal, market, fund, tariff, profile } = input;
-  // F-04 first: a fund whose tax index rests on an open rule computes nothing after tax
-  const taxIndex = taxIndexOf(fund, book);
+  // F-04 first: a fund whose tax index rests on an open rule computes nothing after tax. The rule naming the index is looked at, and taken
+  // with TXS-02 where the exit taxes the real gain
+  const exitTaxes = book.on("taxAtExit");
+  const during = book.on("taxDuring");
+  const taxIndex = taxIndexOf(fund, exitTaxes, exitTaxes.peek);
   const tally = new Tally();
   // D84: an index a fund's own annex states is the fund's statement, carried with the run's figures as a rule it reads is
   const stated = statedTaxIndexOf(fund);
@@ -532,21 +534,23 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   let exitMonth = goal.months;
   let lockMonth: number | undefined;
   if (input.wrapper) {
-    lockMonth = input.wrapper.clockStartMonth + 12 * book.amount("TXH-09", "lock_years");
+    lockMonth = input.wrapper.clockStartMonth + 12 * book.on("term").amount("TXH-09", "lock_years");
     exitMonth = Math.max(exitMonth, lockMonth);
   }
   if (fund.kind === "money-market-renewable") {
     if (goal.monthly > 0) throw new NotEvaluatedError("G-30");
     const every = fund.fixedDatesEveryMonths ?? 1;
     exitMonth = Math.floor(goal.months / every) * every;
-    book.cite("MF-35");
-    book.cite("MF-37");
+    book.on("term").cite("MF-35");
+    book.on("term").cite("MF-37");
   }
   if (fund.kind === "money-market-daily") book.label("proxy", "MF-34");
+  // what a member may charge on money-market units is looked at on every such fund; BRK-17 is taken below where it frees a bank's custody
+  const custodyBook = book.on("fees", "custody");
   if (isMmf) {
     formulas.push("F-23");
-    book.cite("MF-26");
-    book.cite("BRK-17");
+    custodyBook.peek.cite("MF-26");
+    custodyBook.peek.cite("BRK-17");
   }
 
   const T = exitMonth;
@@ -595,7 +599,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // A-11: the record's figure, else F-107 for an Irish fund that holds US shares (TXF-16's rate on their dividends)
   let withheld = d.foreignWithholding ?? 0;
   if (d.foreignWithholding === undefined && d.usDividends) {
-    withheld = irishFundUsWithholding(book.rate("TXF-16", "irish_fund_us_dividend_treaty_rate"), d.usDividends.yield, d.usDividends.weight);
+    withheld = irishFundUsWithholding(book.on("fees", "fund").rate("TXF-16", "irish_fund_us_dividend_treaty_rate"), d.usDividends.yield, d.usDividends.weight);
     formulas.push("F-107");
     // whether the fund obtains the treaty rate (its limitation-on-benefits article) is TXF open question 7 (method G-33)
     tally.flag("TXF-OQ7");
@@ -607,15 +611,17 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   if (promoted.applies) formulas.push("F-121");
   const deltaAt = promoted.at;
   const spread = fund.halfSpread ?? 0;
-  if (spread > 0) book.cite("ETF-06");
+  if (spread > 0) book.on("fees", "spread").cite("ETF-06");
 
   // F-20, taxable fund: the fund pays 15% of its nominal interest (TXS-12(b), derived), after its own losses (TXS-44); the holder pays nothing.
   let fundLevelRate = 0;
   if (fund.kind === "money-market-taxable") {
-    fundLevelRate = book.rate("TXS-12", "taxable_fund_rate");
-    book.label("derived", "TXS-12");
-    book.cite("TXS-11");
-    book.cite("TXS-44");
+    const fundTax = book.on("fundTax");
+    fundLevelRate = fundTax.rate("TXS-12", "taxable_fund_rate");
+    fundTax.label("derived", "TXS-12");
+    // the holder of a taxable fund pays nothing at sale: its exemption zeroes the tax at exit
+    exitTaxes.cite("TXS-11");
+    fundTax.cite("TXS-44");
     formulas.push("F-20");
   }
 
@@ -799,23 +805,25 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     formulas.push("F-20");
     if (fund.kind === "money-market-taxable") {
       // The holder of a taxable fund pays nothing on its distributions; the fund has paid (TXS-11).
+      during.cite("TXS-11");
     } else if (isForeign) {
-      israeliDistRate = foreignDistributionRate(book, fund);
-      book.cite("TXF-17");
-      book.cite("TXF-18");
+      israeliDistRate = foreignDistributionRate(during, fund);
+      // the foreign tax credit and its cap are looked at here and taken after the run where they changed the tax
+      during.peek.cite("TXF-17");
+      during.peek.cite("TXF-18");
       if (fund.domicile === "us") {
         // a US fund is a US corporation for the treaty, so the tax withheld on its distribution is a dividend's, credited as one (TXF-41)
-        book.cite("TXF-41");
+        during.cite("TXF-41");
         // D121: the form is taken as given unless the person said it was not; what happens without it, and that it lapses, is TXF-13's
-        if (fund.w8ben === false) foreignWithholding = book.rate("TXF-13", "us_withholding_without_form");
+        if (fund.w8ben === false) foreignWithholding = during.rate("TXF-13", "us_withholding_without_form");
         else {
-          foreignWithholding = book.rate("TXF-12", "us_withholding");
-          book.cite("TXF-13");
+          foreignWithholding = during.rate("TXF-12", "us_withholding");
+          during.peek.cite("TXF-13");
         }
       } else if (fund.domicile === "ireland") {
         // An Irish ETF's distribution reaches an Israeli resident without Irish tax: units in a recognised clearing
         // system, or a non-resident declaration (TXF-28; G-05 closed), so the foreign withholding stays 0.
-        book.cite("TXF-28");
+        during.cite("TXF-28");
       } else {
         // F-20 knows the foreign withholding of a US and an Irish fund only; the callers stop a distributing fund of any other
         // domicile before the run (the indices page's `fundRun` and `customFundGap`, the guides' `buildFund`), so reaching here is a
@@ -825,24 +833,30 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
       // A distribution at a foreign broker is not withheld in Israel: its advance is due by 30 April of the next year (TXF-21).
       if (atForeignBroker) tally.flag("TXF-21");
     } else {
-      israeliDistRate = book.rate("TXS-10", "rate");
+      israeliDistRate = during.rate("TXS-10", "rate");
     }
   } else if (isForeign) {
     // An accumulating foreign fund is taxed only at sale under TXF-11, which the law supports by implication (no deemed-distribution
     // rule reaches a non-controlling holder; no sentence says it): computed and ranked on the site's reading, which its label says (F-65,
     // G-18, product D120); a fund whose own annex reports a ruling that says so cites the rule instead. No secondary source is cited.
-    if (fund.saleOnlyRuling) book.cite("TXF-11");
-    else book.label("reading", "TXF-11");
+    if (fund.saleOnlyRuling) during.cite("TXF-11");
+    else during.label("reading", "TXF-11");
   }
-  // The dollar value is known only when the tariff gives the currency's rate.
-  const estateThreshold = fund.domicile === "us" && tariff.currency ? book.amount("TXF-27", "estate_threshold", "USD") : undefined;
+  // The dollar value is known only when the tariff gives the currency's rate. It is looked at for a flag and changes no number.
+  const estateThreshold = fund.domicile === "us" && tariff.currency ? book.peek.amount("TXF-27", "estate_threshold", "USD") : undefined;
 
-  const wrapperFee = input.wrapper ? Math.min(input.wrapper.managerFee, book.rate("PF-06", "balance_cap")) : 0;
+  // the IRA manager's fee cap is looked at, and taken where it cut the fee
+  const managerCap = input.wrapper ? book.on("fees", "manager").peek.rate("PF-06", "balance_cap") : 0;
+  const wrapperFee = input.wrapper ? Math.min(input.wrapper.managerFee, managerCap) : 0;
+  if (input.wrapper && input.wrapper.managerFee > managerCap) book.on("fees", "manager").took("PF-06");
   if (input.wrapper) formulas.push("F-51", "F-15", "F-46");
   // No custody fee on money-market fund units at a bank (BRK-17, BANK-18); at a non-bank member the tariff's custody line
   // applies as published (F-14; BRK-17 binds banks only, and MF-26 does not bind an investment marketer).
   const mmfFree = isMmf && input.memberKind !== "non-bank";
-  if (mmfFree) book.cite("BANK-18");
+  if (mmfFree) {
+    custodyBook.cite("BRK-17");
+    custodyBook.peek.cite("BANK-18");
+  }
   // F-102 with BANK-35: from the order's start the Governor caps managing a payment account (a current account included) by the month's
   // actions, lower for 0 to 2 actions than the minimum a bank's row counts. How the amended rules count an action is not in the rule base,
   // so the run keeps the price list's minimum for the whole plan and flags the first month, from the cap's start on, whose stretch charges a
@@ -862,7 +876,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
       else {
         for (let m = capMonth; m <= T; m++) {
           if ((tariffAt(m).currentAccount ?? 0) > cap.value) {
-            book.amount("BANK-35", "account_fee_up_to_2_actions");
+            book.on("fees", "account").peek.amount("BANK-35", "account_fee_up_to_2_actions");
             tally.flag("BANK-35", m);
             break;
           }
@@ -966,7 +980,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     const sumsAsked = dc ? dc.sums(m, units * nav - manager) : null;
     // F-102 with BANK-35 on a deal: the first month from the cap's start whose current account is charged above the cap for 0 to 2 actions
     if (dc && accountCap && m >= accountCap.from && dc.accountMonthly(m, units * nav - manager) > accountCap.value) {
-      book.amount("BANK-35", "account_fee_up_to_2_actions");
+      book.on("fees", "account").peek.amount("BANK-35", "account_fee_up_to_2_actions");
       tally.flag("BANK-35", m);
       accountCap = null;
     }
@@ -1018,7 +1032,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += custody + custodySum + fixed;
 
     if (closesTaxYear(m, T, first)) {
-      if (distThisYear > 0) tally.taxDuring += yearlySurtax(book, profile, distThisYear, taxYearOf(m, first));
+      if (distThisYear > 0) tally.taxDuring += yearlySurtax(during, profile, distThisYear, taxYearOf(m, first));
       if (m === T) exitYearDist = distThisYear;
       distThisYear = 0;
     }
@@ -1026,6 +1040,12 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     tally.point(m, I[m]!, units * nav + waiting(m));
   }
 
+  // TXF-17's credit changed the tax where foreign tax was withheld on a distribution Israel taxes, and TXF-18's cap where it held the credit
+  // below the foreign tax
+  if (foreignTax > 0 && israeliDistRate > 0) {
+    during.took("TXF-17");
+    if (foreignWithholding > israeliDistRate) during.took("TXF-18");
+  }
   if (accountCharged) formulas.push("F-102");
   if (eventCharged) formulas.push("F-103");
 
@@ -1077,9 +1097,11 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   const adjusted = indexedCost(lotsLeft, J[T]!, nav * (1 - spread));
   const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;
   const nominalGain = gross - cost;
-  book.cite("TXS-06");
-  book.cite("TXS-02");
-  if (adjusted.fell && fxIndexed && fund.kind !== "tase-foreign-fund") book.cite(fund.kind === "foreign-fund" ? "TXF-03" : "TXS-14");
+  // the exit year's fees off the gain are looked at, and taken where a taxed exit had any; the real gain's rule and the index's are looked at,
+  // and taken only on an exit that taxes the real gain, not on one exempt for another reason (a wrapper's, a taxable fund's holder)
+  exitTaxes.peek.cite("TXS-02");
+  exitTaxes.peek.cite("TXS-06");
+  if (adjusted.fell && fxIndexed && fund.kind !== "tase-foreign-fund") exitTaxes.peek.cite(fund.kind === "foreign-fund" ? "TXF-03" : "TXS-14");
 
   let outcome: Outcome = { code: "eligible" };
   let lossOffset = 0;
@@ -1089,26 +1111,35 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     // F-51: an IRA hishtalmut follows the study fund's exit (TXK-17); after the lock everything from
     // benefited deposits is exempt (TXH-09). The account is taken as all benefited money; an excess above
     // TXH-08 would be taxed under TXH-11 and is not split out here.
-    book.cite("TXK-17");
+    exitTaxes.cite("TXK-17");
+    exitTaxes.took("TXH-09");
     if (lockMonth! > goal.months) outcome = { code: "listed-not-ranked", reason: "B3", untilMonth: lockMonth! };
   } else if (fund.kind === "money-market-taxable") {
-    // The holder pays nothing at sale (TXS-11); the fund's tax is inside the price.
+    // The holder pays nothing at sale (TXS-11, cited above); the fund's tax is inside the price.
   } else {
     // F-66: a loss carried from an earlier leg offsets the real gain first (TXS-17, TXS-18); a loss is not a negative tax.
     const carried = input.carriedLoss;
     const offset = carried ? Math.min(Math.max(0, carried.amount), Math.max(0, realGain)) : 0;
     if (carried && carried.amount > 0) {
-      carried.ruleIds.forEach((id) => book.cite(id));
+      carried.ruleIds.forEach((id) => exitTaxes.cite(id));
       if (carried.carriedForward) tally.flag("TXS-18");
     }
     lossOffset = offset;
     lossUnused = carried ? Math.max(0, carried.amount) - offset : 0;
+    // this exit taxes the real gain: the gain's indexing (TXS-02) and the rule naming its index went into the tax
+    exitTaxes.took("TXS-02");
+    const indexRule = taxIndexRule(fund);
+    if (indexRule) exitTaxes.took(indexRule);
+    // the exit's capital-gains rate is looked at and taken where the exit's tax is above 0
+    const exitRule = isForeign ? "TXF-02" : isMmf ? "TXS-12" : "TXS-09";
     const step = unlessBlocked(() => {
-      const rate = isForeign ? book.rate("TXF-02", "rate") : isMmf ? book.rate("TXS-12", "rate") : book.rate("TXS-09", "rate");
-      return exitTax(book, profile, T, realGain - offset, rate, false, exitYearDist, first);
+      const rate = exitTaxes.peek.rate(exitRule, "rate");
+      return exitTax(exitTaxes, profile, T, realGain - offset, rate, false, exitYearDist, first);
     });
     if (step.value) {
       exit = step.value;
+      if (step.value.capitalGainsTax > 0) exitTaxes.took(exitRule);
+      if (exitYearFees > 0) exitTaxes.took("TXS-06");
       if (step.value.settledByReturn) tally.flag("G-21");
     } else outcome = step.outcome;
     if (realGain < 0) tally.flag("G-07");

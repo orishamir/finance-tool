@@ -95,7 +95,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 
 ### REG-07 Israel Securities Authority: legal basis
 - Rule: The ISA (רשות ניירות ערך) is established by Securities Law s.2. Its role is "שמירת עניניו של ציבור המשקיעים בניירות ערך". It reports to the Finance Minister and the Knesset Finance Committee at least once a year (s.14).
-- Conditions / exceptions: Its powers over funds come from the Joint Investment Trust Law (REG-10, REG-11), over portfolio managers from the Investment Advice Law (REG-08), and over the exchange and clearing house from the Securities Law (REG-13, REG-15).
+- Conditions / exceptions: Its powers over funds come from the Joint Investment Trust Law (REG-10, REG-11, REG-38), over portfolio managers from the Investment Advice Law (REG-08), and over the exchange and clearing house from the Securities Law (REG-13, REG-15).
 - Figures: none.
 - Source: [חוק ניירות ערך, התשכ"ח-1968 (פרסום מקורי ברשומות)](https://fs.knesset.gov.il/6/law/6_lsr_210358.pdf), p.1, s.2; p.3, s.14 · checked 2026-10-25 · primary. [חוק ניירות ערך (תיקון מס' 63), התשע"ז-2017 (ספר החוקים 2633)](https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf), p.2, s.2 of the amending law (s.3 as amended) · checked 2026-10-25 · primary.
 - Scope: general
@@ -119,27 +119,36 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Dimensions: `protection`, `regulator`
 - Likely to change: no (shares change yearly)
 
-### REG-10 Mutual funds (including money-market funds): trustee holds the assets
-- Rule: The fund agreement is made between a manager and a trustee approved under s.9, "שיוקנו לה נכסי הקרן" (s.4).
-  - The assets "יהיו מוקנים לנאמן לטובת בעלי היחידות". They are a separate estate from the trustee's other property, and non-traded assets are registered in the trustee's name (s.76(א)).
-  - The manager must deposit fund cash in a bank account (s.76(ד)).
-  - "נכסי קרן אינם ניתנים לעיקול" (s.79).
-  - The trustee supervises the manager's compliance with the law, the fund agreement and the prospectus (s.78(א)).
-- Conditions / exceptions: Market losses are not protected. Fund cash held at a bank is a bank deposit of the fund (see REG-04 for banks). How that cash is treated if the bank fails was not found.
+### REG-10 Mutual funds (including money-market funds): market losses are not protected, and fund cash is a bank deposit
+- Rule: Market losses are not protected. The manager must deposit fund cash in a bank account (s.76(ד)), and fund cash held at a bank is a bank deposit of the fund (see REG-04 for banks).
+- Conditions / exceptions:
+  - How that cash is treated if the bank fails was not found.
+  - The fund agreement is made between a manager and a trustee approved under s.9, "שיוקנו לה נכסי הקרן" (s.4): as in MF-01.
+  - The assets "יהיו מוקנים לנאמן לטובת בעלי היחידות" and are a separate estate from the trustee's other property (s.76(א)), and "נכסי קרן אינם ניתנים לעיקול" (s.79): as in MF-02. Non-traded assets are registered in the trustee's name (s.76(א)); MF-02 does not state this.
+  - The trustee supervises the manager's compliance with the law, the fund agreement and the prospectus (s.78(א)): as in MF-03.
+  - *2026-11-26 trim:* the fund agreement, the vesting, separation and immunity from attachment of the assets, and the trustee's supervision, stated in full here before, are MF-01's, MF-02's and MF-03's from the same law.
 - Figures: none.
-- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.5, s.4; p.56, s.76; p.57, s.78; p.58, s.79 · checked 2026-10-25 · primary.
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.5, s.4; p.56, s.76; p.57, s.78; p.58, s.79 · checked 2026-10-25 · primary. See also MF-01, MF-02, MF-03.
 - Scope: general
 - Dimensions: `protection`
 - Likely to change: no
 
-### REG-11 If a fund manager or trustee fails
+### REG-11 If a fund manager or trustee fails: who takes over
 - Rule:
   - **Trustee:** its office ends if a temporary receiver or temporary liquidator is appointed and the order is not lifted within 60 days, or a later date the ISA chair sets (s.11(א)(4)). The manager must then have another approved trustee sign the fund agreement and start within 90 days (s.12(א)); the old trustee stays in office until then (s.12(ב)). If none starts within 90 days, the ISA may order the manager to transfer the fund to another manager (s.12(ג)).
   - **Manager:** its approval lapses if a temporary receiver or temporary liquidator is appointed and the order is not lifted within 60 days, or a later date the ISA chair sets (s.14(ב)). On that lapse, as on revocation or suspension, the company must transfer management of the funds to another manager, one it does not control or belong with, within a period the ISA chair sets (s.15(ד), (ו)). Failing that, the court may at the ISA's request appoint a receiver to transfer them (s.15(ה)).
-  - **Liquidation of the fund:** the ISA may petition to liquidate a fund where the holders' interest calls for it (s.104(א)). The court may instead order an arrangement to keep the fund running or a transfer to another manager (s.104(ד)). On a court order the trustee is the liquidator unless the court finds reason for another (s.105(א)). The liquidator sells the assets by the liquidation date in the way that best keeps the holders' rights, and redeems the units on that date (ss.109(א), 108(ה)).
-- Conditions / exceptions: These sections say who takes over; they do not say in words what happens to the holders' money in the failing company's own insolvency (open question 22). Read: the assets are vested in the trustee for the holders, apart from its other property, and cannot be attached (MF-02). Inferred, not stated: that they therefore stay out of the trustee's or manager's insolvency estate (2026-11-06: the Trust Law and the Insolvency Law's estate were read in the gazette for this, REG-33, REG-34; still derived). Corrected 2026-11-02: the 60-day condition was missing for the manager, s.15(ד) was given for revocation only although it names the s.14(ב) lapse, and ss.105 to 109 were added.
+- Conditions / exceptions: These sections say who takes over; they do not say in words what happens to the holders' money in the failing company's own insolvency (open question 22). Read: the assets are vested in the trustee for the holders, apart from its other property, and cannot be attached (MF-02). Inferred, not stated: that they therefore stay out of the trustee's or manager's insolvency estate (2026-11-06: the Trust Law and the Insolvency Law's estate were read in the gazette for this, REG-33, REG-34; still derived). Corrected 2026-11-02: the 60-day condition was missing for the manager, s.15(ד) was given for revocation only although it names the s.14(ב) lapse, and ss.105 to 109 were added. *2026-11-26 split:* the liquidation of the fund (ss.104, 105, 108(ה), 109) is now REG-38.
 - Figures: 60 days (order not lifted, ss.11(א)(4), 14(ב)); 90 days (s.12(א), (ג)).
-- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=11), pp.11-12, ss.11, 12 "ניתן צו בית משפט למינוי כונס נכסים זמני או מפרק זמני"; p.14, ss.14, 15(ד) "תעביר החברה את ניהול הקרנות למנהל אחר"; pp.67-68, s.104; p.69, s.105; p.71, ss.108(ה), 109 "מפרק קרן יפדה את יחידות הקרן במועד הפירוק" · checked 2026-11-02 · primary.
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=11), pp.11-12, ss.11, 12 "ניתן צו בית משפט למינוי כונס נכסים זמני או מפרק זמני"; p.14, ss.14, 15(ד) "תעביר החברה את ניהול הקרנות למנהל אחר" · checked 2026-11-02 · primary. See also REG-38.
+- Scope: general
+- Dimensions: `protection`
+- Likely to change: no
+
+### REG-38 Liquidation of a mutual fund: the trustee is the liquidator, sells the assets and redeems the units
+- Rule: The ISA may petition to liquidate a fund where the holders' interest calls for it (s.104(א)). The court may instead order an arrangement to keep the fund running or a transfer to another manager (s.104(ד)). On a court order the trustee is the liquidator unless the court finds reason for another (s.105(א)). The liquidator sells the assets by the liquidation date in the way that best keeps the holders' rights, and redeems the units on that date (ss.109(א), 108(ה)).
+- Conditions / exceptions: Who takes over when a fund's manager or trustee fails is REG-11. Added to REG-11 on 2026-11-02; *2026-11-26 split:* split from REG-11 as its own rule.
+- Figures: none.
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=67), pp.67-68, s.104; p.69, s.105; p.71, ss.108(ה), 109 "מפרק קרן יפדה את יחידות הקרן במועד הפירוק" · checked 2026-11-02 · primary. See also REG-11.
 - Scope: general
 - Dimensions: `protection`
 - Likely to change: no
@@ -231,14 +240,10 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Dimensions: `regulator`
 - Likely to change: no
 
-### REG-18 Provident, study, investment-provident and pension assets: held in trust, separate, not attachable
-- Rule:
-  - "חברה מנהלת תשמש נאמן על נכסי קופות הגמל שבניהולה, לטובת העמיתים" (s.3(א)).
-  - "חברה מנהלת תחזיק ותנהל את נכסי קופת הגמל שבניהולה בנפרד מרכושה, לטובת העמיתים באותה קופה" (s.27(א)), with a separate account system per fund (s.27(ב)).
-  - "נכסי קופת גמל אינם ניתנים לעיקול" (s.30(א)).
-  - A member's rights cannot be attached except under rules set by the Minister (s.25(ב)).
-- Conditions / exceptions: Applies to every tier-1 CMA wrapper (definitions in REG-17). Market losses are not protected. For child savings held at a provident fund, see REG-23.
-- Figures: none.
+### REG-18 Provident, study, investment-provident and pension assets: held in trust, separate, not attachable (retired: see PF-29)
+- Rule: Retired on 2026-11-26. It stated the same sections of the Provident Funds Law as PF-29 (the managing company is trustee of the funds' assets for the members, s.3(א); it holds them apart from its own property, with a separate account system per fund, s.27; they cannot be attached, s.30(א)), and PF-29 now holds them alone, with REG-18's conditions (every tier-1 CMA wrapper, market losses not protected, the pointer to REG-23 for child savings). Its sentence that a member's rights can be attached only under rules set by the Minister (s.25(ב)) moved to PF-48. The id stays so that references to it resolve; they should point to PF-29 (the fund's assets) or PF-48 (a member's rights).
+- Conditions / exceptions: none of its own; see PF-29 and PF-48.
+- Figures: none
 - Source: [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005 (ספר החוקים 2024)](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf), p.4, s.3; p.11, s.25; p.12, ss.27, 30(א) · checked 2026-10-25 · primary.
 - Scope: general
 - Dimensions: `protection`
@@ -265,15 +270,10 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Dimensions: `regulator`
 - Likely to change: no
 
-### REG-21 Pension funds: state return guarantee in place of designated bonds
-- Rule: Chapter ה'1 (ss.34א to 34ז) of the Provident Funds Law provides a state return top-up ("השלמת תשואה") for a "קרן זכאית" ("קרן ותיקה או קרן חדשה מקיפה"):
-  - **Assets covered:** 30% of the relevant assets ("ולעניין זכאים קיימים – 70%"), held in a separate guaranteed-return track.
-  - **Target return:** "ריבית שנתית בשיעור 5.15%", compounded over 60 months, plus the CPI change.
-  - **60-month check:** after each 60-month period, if the fund's return was below the cumulative target, the Government pays the difference to the fund. If it was above, the fund pays the excess to a dedicated fund.
-  - **Dedicated fund:** "החשב הכללי יקים קרן ייעודית להשלמת תשואה" (s.34ה(א)), and its money cannot be attached (s.34ה(ד)).
-  - "איגרות חוב מיועדות" are defined as Arad (ערד) and Miron (מירון) bonds (s.34ב).
-- Conditions / exceptions: The law defines the determining date as "יום ב' בתמוז התשפ"ב (1 ביולי 2022), או מועד מאוחר יותר שקבע השר בהתאם לסעיף 34ו(ד)" (s.34ב, p.34); the Finance Minister's report under s.34ז (28.5.2023) says "ביום 1 באוקטובר 2022 נכנס לתוקף החוק המסדיר את מנגנון הבטחת השלמת תשואה" (p.2), and CMA circular 2022-3-3 starts on 1.10.2022 (PEN-18). The guarantee stays in force for covered assets even if the rules later change (s.34ד). It does not cover a comprehensive fund's other 70% of assets, provident funds, study funds or investment provident funds (not "קרן זכאית").
-- Figures: 30% or 70%; 5.15% a year real (target plus CPI); 60 months. Fixed in law.
+### REG-21 Pension funds: state return guarantee in place of designated bonds (retired: see PEN-18)
+- Rule: Retired on 2026-11-26. It stated the same mechanism as PEN-18 from the same law and report (chapter ה'1 of the Provident Funds Law: 30% of the assets, 70% for existing entitled members, a 5.15% annual target plus the CPI over 60 months, the state paying a shortfall and a dedicated fund taking an excess), and PEN-18 now holds it alone, with REG-21's Accountant General clause (s.34ה(א), (ד)); which funds are eligible, and what the guarantee does not cover, is PEN-69. The id stays so that references to it resolve; they should point to PEN-18 (the mechanism) or PEN-69 (the eligible funds).
+- Conditions / exceptions: none of its own; see PEN-18 and PEN-69.
+- Figures: none
 - Source: [חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ"ב-2021 (ספר החוקים 2932)](https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf), pp.33-39, ss.34א to 34ז; p.34, s.34ב "או מועד מאוחר יותר שקבע השר" · checked 2026-10-26 · primary; [משרד האוצר: דיווח לממשלה על יישום הוראות סעיף 34 לחוק הפיקוח על שירותים פיננסים (קופות גמל) ליום 31.12.2022 (28.5.2023)](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/pension-funds-guaranteed-return-completion-2022/he/pension-funds-guaranteed-return-completion_pension-funds-guaranteed-return-completion-2022-file2.pdf), p.1, footnote 1; p.2 "ביום 1 באוקטובר 2022 נכנס לתוקף החוק המסדיר את מנגנון הבטחת השלמת תשואה" · checked 2026-10-26 · primary
 - Scope: general
 - Dimensions: `protection`, `real-vs-nominal`
@@ -291,7 +291,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 
 ### REG-23 Child savings: protection follows where the parents put it
 - Rule: The plan is opened "בקופת גמל או בבנק לפי בחירתכם". Questions about the balance go to "קופת הגמל או לבנק שמנהלים את החיסכון".
-- Conditions / exceptions: At a provident fund, REG-18 and REG-19 apply. At a bank, the money is a bank deposit with no deposit insurance (REG-04 to REG-06). The NII page names no supervising regulator, and the default when parents do not choose is not stated on this page (see `child-savings.md`).
+- Conditions / exceptions: At a provident fund, PF-29, PF-48 and REG-19 apply. At a bank, the money is a bank deposit with no deposit insurance (REG-04 to REG-06). The NII page names no supervising regulator, and the default when parents do not choose is not stated on this page (see `child-savings.md`).
 - Figures: none here.
 - Source: [ביטוח לאומי: תכנית חיסכון לכל ילד](https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx) · checked 2026-10-25 · primary.
 - Scope: general
@@ -315,22 +315,18 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Dimensions: `regulator`
 - Likely to change: no
 
-### REG-26 Interactive Israel: a foreign broker reached through an Israeli introducer, not ISA-supervised, as it states
-- Rule (Interactive Israel's own statement):
-  - "Israel Interactive Trading is a brand of Mexem LTD", "regulated by the Cyprus Securities and Exchange Commission – CySEC (Licence number: 325/17)".
-  - "החברה פועלת בישראל תחת היתר לפי סעיף 49א לחוק ניירות ערך" and "אינה מפוקחת על-ידי רשות ניירות ערך בישראל".
-  - It acts as an introducing broker to Interactive Brokers LLC. Client accounts are opened at Interactive Brokers LLC (supervised by FINRA, SEC, CFTC) or at Interactive Brokers Ireland (Central Bank of Ireland).
-- Protection as Interactive Israel states it: US accounts "מוגנים ע"י ביטוח של 500,000 דולר ארה"ב עבור כל חשבון". Irish accounts "מוגנים ע"י הקרן לפיצוי משקיעים עד 20,000 יורו".
-- Conditions / exceptions: Only Interactive Israel's own page supports the record, so its scope is Interactive Israel alone (settled 2026-10-26: no Interactive Brokers document is cited). IBKR's own protection pages returned 403 at the time; the amounts are as the introducer states them (open question 14). General counterpart: section 49A and the ISA's alternative-B disclosure ("Said entity's activity is not subject to the supervision of the Israel Securities Authority", BRK-06); SIPC's own terms (REG-27). The CySEC licence was not checked on CySEC's register.
-- Figures: USD 500,000 (US); EUR 20,000 (Ireland), as the introducer states them. Both set by foreign schemes.
-- Source: [Interactive Israel, about](https://lp3.inter-il.com/about-3) · checked 2026-10-25 · institution. General counterpart: BRK-06, REG-27.
+### REG-26 Interactive Israel: a foreign broker reached through an Israeli introducer, not ISA-supervised, as it states (retired: see BRK-46)
+- Rule: Retired on 2026-11-26. It gave Interactive Israel's own statement of its status from its about page (a brand of Mexem LTD under CySEC licence 325/17, a section 49A permit, no ISA supervision, an introducing broker to Interactive Brokers LLC with accounts at IB LLC or IB Ireland), which BRK-46 in `brokerage-account.md` holds from the same page with the ISA's list. Its protection statement from the same page (USD 500,000 per US account, EUR 20,000 for Irish accounts, as the introducer states them) moved to BRK-41 with its doubt, and the note that the CySEC licence was not checked on CySEC's register moved to BRK-46. The id stays so that references to it resolve; they should point to BRK-46.
+- Conditions / exceptions: none of its own; see BRK-46 and BRK-41 in `brokerage-account.md`.
+- Figures: none
+- Source: [Interactive Israel, about](https://lp3.inter-il.com/about-3) · checked 2026-10-25 · institution. Its status: BRK-46; its stated cover: BRK-41.
 - Scope: institution: Interactive Israel
-- Dimensions: `protection`, `regulator`, `currency`
-- Likely to change: yes (foreign scheme limits)
+- Dimensions: `regulator`
+- Likely to change: no
 
 ### REG-27 SIPC: custody failure only, residence not required
 - Rule: "The limit of SIPC protection is $500,000, which includes a $250,000 limit for cash." "SIPC only protects the custody function of the broker dealer". "SIPC does not protect against the decline in value of your securities." "There is no requirement that a customer reside in or be a citizen of the United States."
-- Conditions / exceptions: Applies only to accounts at SIPC-member broker-dealers (for example IBKR LLC per REG-26). It does not apply to non-US entities of the same group.
+- Conditions / exceptions: Applies only to accounts at SIPC-member broker-dealers (for example IBKR LLC per BRK-43). It does not apply to non-US entities of the same group.
 - Figures: USD 500,000 total, USD 250,000 cash. Set by SIPC.
 - Source: [SIPC, What SIPC Protects](https://www.sipc.org/for-investors/what-sipc-protects) · checked 2026-10-25 · primary (foreign statutory body).
 - Scope: general
@@ -349,7 +345,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   | Parent | מיטב בית השקעות בע"מ (site) | (listed) | Meitav home page and portfolio-management footer. |
   | Loans | מיטב הלוואות בע"מ | not determined | Meitav home page. Out of scope. |
 
-- Conditions / exceptions: The Meitav home page also shows "מיטב תכלית קרנות נאמנות בע"מ" in an executive's title, while the ISA report and Meitav's own fund page use "מיטב קרנות נאמנות בע"מ". The controlling corporation is "מיטב דש השקעות בע"מ" in the CMA data and "מיטב בית השקעות בע"מ" on the site. Whether these are renames or distinct companies needs the Companies Registrar or ISA register (open question 15). For the catalogue: the Meitav app's "open a new saving" products run on the CMA licence of מיטב גמל ופנסיה, which REG-18 and REG-19 govern.
+- Conditions / exceptions: The Meitav home page also shows "מיטב תכלית קרנות נאמנות בע"מ" in an executive's title, while the ISA report and Meitav's own fund page use "מיטב קרנות נאמנות בע"מ". The controlling corporation is "מיטב דש השקעות בע"מ" in the CMA data and "מיטב בית השקעות בע"מ" on the site. Whether these are renames or distinct companies needs the Companies Registrar or ISA register (open question 15). For the catalogue: the Meitav app's "open a new saving" products run on the CMA licence of מיטב גמל ופנסיה, which PF-29 and REG-19 govern.
 - Figures: as in the table.
 - Source: [Gemel-Net API, period 202609, q=מיטב](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters={"REPORT_PERIOD":202609}&q=מיטב&limit=60); [Pensia-Net API, period 202609](https://data.gov.il/api/3/action/datastore_search?resource_id=6d47d6b5-cb08-488b-b333-f1e717b1e1bd&filters={"REPORT_PERIOD":202609}&q=מיטב&limit=30) · checked 2026-10-22 · primary. [ISA 2025 fund report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf) p.7 · primary. [TASE NBCM guide (Hebrew)](https://content.tase.co.il/media/chilpz2c/1150_nbcm_372306_heb.pdf) p.12 · primary. [Meitav home](https://www.meitav.co.il/), [mutual funds](https://www.meitav.co.il/mutual_funds/), [Meitav Trade terms](https://www.meitav.co.il/trade/customer-service/meitav_terms/), [portfolio management](https://www.meitav.co.il/portfolio_management/) · checked 2026-10-22 · institution
 - Dimensions: `regulator`, `protection`
@@ -398,8 +394,8 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 ### REG-34 Assets held in trust: the trustee's creditors cannot reach them
 - Rule: A trust can be created by law ("נאמנות נוצרת על פי חוק, על פי חוזה עם נאמן או על פי כתב הקדש", s.2). "אין לרדת לנכסי הנאמנות אלא בשל חובות המוטלים עליהם או הנובעים מפעולות הנאמנות" (s.3(ב)), and "הנאמן חייב להחזיק את נכסי הנאמנות בנפרד מנכסים אחרים או בדרך המאפשרת להבחין ביניהם" (s.3(ג)).
 - Who holds a saver's assets as a trustee, by law or by a binding rule:
-  - a provident, study or pension fund's managing company, for the fund's assets (Provident Funds Law s.3(א), REG-18);
-  - a mutual fund's trustee, in whom the fund's assets are vested for the unit holders as a separate estate (Joint Investment Trust Law s.76(א), REG-10);
+  - a provident, study or pension fund's managing company, for the fund's assets (Provident Funds Law s.3(א), PF-29);
+  - a mutual fund's trustee, in whom the fund's assets are vested for the unit holders as a separate estate (Joint Investment Trust Law s.76(א), MF-02);
   - every TASE clearing member, banks included, for its clients' TASE securities (clearing-house bylaws, REG-35, BRK-58);
   - a non-bank TASE member, for its clients' financial assets and cash (TASE rules, BRK-07, BRK-08).
 
@@ -469,11 +465,11 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 | BoI, Supervisor of Banks (הפיקוח על הבנקים) | Banking Ordinance s.5 (REG-01) | Banks: current account, deposits, savings plans, bank-held child savings; banks as brokers (TASE membership via TASE) | Supervisor, Banking (Service to Customer) Law s.16 (REG-02); web page blocked | data.gov.il/dataset/375, CSV, **read** (REG-03). boi.org.il banklist page: Radware, **blocked**. |
 | ISA (רשות ניירות ערך) | Securities Law s.2 (REG-07) | Mutual and money-market funds, ETFs (JIT Law); portfolio managers, advisers, marketers; TASE and clearing houses | Not verified (open question 5); candidate form URLs found in the ISA sitemap | investors.isa.gov.il/page/search-advisor, JS app, **not readable**. Counts only, from the ISA report (REG-08). |
 | CMA (רשות שוק ההון, ביטוח וחיסכון) | Insurance Supervision Law ss.1א, 2; Provident Funds Law s.39 (REG-17) | Managing companies: pension, provident, study, investment provident, child savings (gemel), IRA; insurers (tier 2) | Commissioner, Insurance Law ss.60 to 62 via Provident Law s.39(ג) (REG-20); gov.il page 403 | Gemel-Net, Pensia-Net, Bituach-Net on data.gov.il, CSV/API, **read** (managing companies with funds). cmainfo.cma.gov.il/fslproviders: **403**. |
-| MoF, Accountant General (החשב הכללי) | Provident Funds Law s.34ה (REG-21) | Dedicated return-completion fund for pension funds. Government bond issuance: not verified here. | Via State Comptroller Ombudsman (REG-25), coverage unverified | none |
+| MoF, Accountant General (החשב הכללי) | Provident Funds Law s.34ה (PEN-18) | Dedicated return-completion fund for pension funds. Government bond issuance: not verified here. | Via State Comptroller Ombudsman (REG-25), coverage unverified | none |
 | Tax Authority (רשות המסים) | Provident Funds Law s.13(ג)(1): consent of "המנהל" to first fund approval (REG-17) | Tax approval role only, in this file | Not verified (gov.il 403; open question 8) | none |
 | NII (המוסד לביטוח לאומי) | Not read here | Funds child savings (REG-23) | אגף לפניות הציבור (REG-24) | none |
 | TASE, as self-regulator | Securities Law ss.45 to 51 (REG-13) | Its members (banks, non-bank members, remote members) and clearing houses | Not found | TASE member list page: JS, **not readable**. TASE guides (PDF): counts and clearing members, **read** (REG-14). |
-| Foreign regulators (CySEC, SEC/FINRA, Central Bank of Ireland) | n/a | Foreign brokers used by Israeli residents (REG-26) | Foreign | Not checked |
+| Foreign regulators (CySEC, SEC/FINRA, Central Bank of Ireland) | n/a | Foreign brokers used by Israeli residents (BRK-46) | Foreign | Not checked |
 
 ## Protection by kind of holding (from the rules above and the files they name)
 
@@ -489,14 +485,14 @@ What protects a saver's money if the company holding it fails, for every kind of
 | Securities account: foreign securities | Non-bank member: abroad, in its name in trust for clients or a client-designated account (read); bank: at a custodian abroad, apart from the bank's and the custodian's own assets, in an account in the bank's name marked for its clients (read, the custody recommendations the Supervisor made binding), trust not stated | Non-bank: as above (derived); bank: open; which law governs the account abroad not read (the committee: foreign law may protect ownership less) | None | As above | BRK-07, BRK-10, REG-37, BRK-63 · open 10, 23 |
 | Securities account: cash | Non-bank member: in a bank account in the member's name in trust for clients (read); bank: a balance the bank owes (derived) | Non-bank: out of the member's creditors' reach (derived), but a deposit at that bank; bank: a general debt (derived) | None; a s.8יא guarantee is set per deposit, and a pooled trust account's treatment is not stated | As above | BRK-08, REG-33, REG-35 · open 21 |
 | Account at a foreign broker | Under the broker's home law | Under the foreign scheme | SIPC (US): USD 500,000, of which 250,000 cash, custody failure only; Ireland: 90% up to EUR 20,000 | The foreign regulator; not the ISA | REG-27, BRK-14, BRK-35, BRK-51 |
-| Money-market fund, active mutual fund, Israeli index fund or ETF, bond fund with an end date, Israeli gold fund | Vested in the fund's trustee for the holders, a separate estate, not attachable (read); fund cash in a bank account | Manager or trustee replaced; the ISA or a court moves the fund, or the fund is wound up and redeemed (read); out of either company's creditors' reach (derived) | None. The fund's own bank deposits are exposed to that bank's failure; a swap fund carries its counterparty within legal limits | ISA | REG-10, REG-11, REG-34, MF-02, ETF-51 · open 22 |
+| Money-market fund, active mutual fund, Israeli index fund or ETF, bond fund with an end date, Israeli gold fund | Vested in the fund's trustee for the holders, a separate estate, not attachable (read); fund cash in a bank account | Manager or trustee replaced; the ISA or a court moves the fund, or the fund is wound up and redeemed (read); out of either company's creditors' reach (derived) | None. The fund's own bank deposits are exposed to that bank's failure; a swap fund carries its counterparty within legal limits | ISA | REG-10, REG-11, REG-38, REG-34, MF-02, ETF-51 · open 22 |
 | Foreign-domiciled fund (UCITS) | At the fund's depositary, apart from the depositary's own assets | Unavailable to the depositary's creditors, and a lost instrument is replaced (derived: the EU directive obliges member states to ensure it; Irish and Luxembourg law not read) | None beyond that | The home regulator (and the ISA for funds offered in Israel) | REG-36, ETF-23 · US funds: open 24 |
 | Foreign gold ETC | The one ETC read, iShares Physical Gold ETC: a debt security of its issuer, iShares Physical Metals plc, "limited recourse" to the gold held (that issuer's own factsheet) | That ETC's holders are paid only from that gold (its issuer's terms) | None | Foreign | RG-20 (institution: iShares Physical Metals plc; other issuers' ETCs not read) |
 | Corporate bond | A claim on the issuer; collateral only if the trust deed gives it (read) | A general debt unless secured (derived), or lower if its own terms subordinate it (not researched); the bond trustee enforces, it does not pay | None | ISA (issuer reporting, trustees) | CORP-04 to CORP-08, CORP-24, REG-33 · CORP open question 12 |
 | Single shares, REIT | A share in a company | Equity, not a debt: the members receive only what is left after every debt and the expenses (s.242(2)); a debt owed to members because they are members is deferred (s.237(2)) (derived) | None | ISA, TASE | REG-33 · the holding itself: securities-account row |
 | Structured notes and bonds | Not researched | Not researched | Not researched | Not researched | open 25 |
 | Managed portfolio | In the client's own account at a bank or TASE member; the manager holds a power of attorney only (read) | The manager's failure leaves the assets at the custodian (derived); the manager must keep equity and security against negligence and employees' breach of trust (read) | None; protection follows the custodian | ISA | REG-09, MGD-14, MGD-15 |
-| Provident fund for investing, study fund, provident fund for annuity, pension fund, IRA run by a managing company | Held by the managing company **as trustee** for the members, apart from its own property, not attachable (read; for an IRA because Provident Funds Law s.57(א)(1) keeps ss.3, 27 and 30, read as enacted) | Management moves to another managing company; the Commissioner may appoint an authorised manager (read); out of the company's creditors' reach (derived) | None, except the state return top-up on 30% of an eligible pension fund's assets (old funds and new comprehensive funds only). Pension rights also move with the fund's actuarial surplus or deficit | CMA | REG-18, REG-19, REG-21, PEN-19, PF-29, IRA-01 · IRA: `ira-self-directed.md` open question 11 |
+| Provident fund for investing, study fund, provident fund for annuity, pension fund, IRA run by a managing company | Held by the managing company **as trustee** for the members, apart from its own property, not attachable (read; for an IRA because Provident Funds Law s.57(א)(1) keeps ss.3, 27 and 30, read as enacted) | Management moves to another managing company; the Commissioner may appoint an authorised manager (read); out of the company's creditors' reach (derived) | None, except the state return top-up on 30% of an eligible pension fund's assets (old funds and new comprehensive funds only). Pension rights also move with the fund's actuarial surplus or deficit | CMA | REG-19, PEN-18, PEN-69, PEN-19, PF-29, IRA-01 · IRA: `ira-self-directed.md` open question 11 |
 | Provident fund for annuity, at payout | The annuity is paid by the pension fund or insurer the money moves to | Follows that payer's row | As that payer | CMA | PEN-34 |
 | Child savings | Bank route: a bank deposit; provident route: a provident fund. Either way the child's, held in trust by the parent, and not attachable (National Insurance Law s.74ב) | As the bank row or the provident row | Bank route: none (the principal-at-end promise is a product term, not failure cover) | Supervisor of Banks or CMA; National Insurance pays in | REG-23, CS-05 |
 | Savings policy, executive insurance; an IRA that is an insurer's insurance fund | In the insurer's life-insurance assets, which serve life-insurance liabilities first, liquidation included (read); an insurance fund's assets are not attachable. An insurer's IRA keeps s.3(ב)-(ה) and s.30 but not s.3(א) or s.27 (s.57(א)(2), read as enacted), so it is not held in trust under s.3(א); whether its assets are among the life-insurance assets of s.54 is not stated (derived) | The Commissioner may appoint an authorised manager (read) | None; no state return top-up | CMA | REG-22, INS-14, INS-21 · whether any insurer offers an IRA: `ira-self-directed.md` open question 14 |
@@ -520,8 +516,8 @@ What protects a saver's money if the company holding it fails, for every kind of
 | רשות ניירות ערך | Israel Securities Authority | Securities regulator | law, ISA | REG-07 |
 | ניהול תיקי השקעות | portfolio management | Discretionary trading for others' accounts | law, ads | REG-08 |
 | חשבון מסחר | trading account | Client's own account at a TASE member, where managed assets are held | ISA report | REG-09 |
-| מנהל קרן / נאמן / בעלי היחידות | fund manager / trustee / unit holders | Parties to a mutual fund | law, prospectus | REG-10 |
-| נכסי קרן אינם ניתנים לעיקול | fund assets cannot be attached | Creditor protection | law | REG-10 |
+| מנהל קרן / נאמן / בעלי היחידות | fund manager / trustee / unit holders | Parties to a mutual fund | law, prospectus | MF-01 |
+| נכסי קרן אינם ניתנים לעיקול | fund assets cannot be attached | Creditor protection | law | MF-02 |
 | חברה לנאמנות | trust company | Trustee legal name form (e.g. יובנק חברה לנאמנות בע"מ) | ISA report, prospectus | REG-12 |
 | חבר בורסה | TASE member | Bank or broker allowed to trade on TASE | law, TASE, apps | REG-13, REG-14 |
 | חש"ב (חבר בורסה שאינו תאגיד בנקאי) | non-bank TASE member (NBCM) | Investment-house broker | TASE | REG-14 |
@@ -533,18 +529,18 @@ What protects a saver's money if the company holding it fails, for every kind of
 | חשבון נוסטרו | nostro account | Member's own account, as distinct from clients' | TASE | REG-14 |
 | חשבון נאמנות בבנק | bank trust account | Where Meitav Trade says client cash is held | broker site | REG-16 |
 | רשות שוק ההון, ביטוח וחיסכון / הממונה | CMA / the Commissioner | Regulator of provident and pension funds and insurers | law | REG-17 |
-| חברה מנהלת | managing company | Licensed manager of provident or pension funds | law, statements | REG-17, REG-18 |
+| חברה מנהלת | managing company | Licensed manager of provident or pension funds | law, statements | REG-17, PF-29 |
 | עמית | member | Person with money recorded in a provident fund | law, statements | REG-17 |
 | אישור קופת גמל | provident-fund approval | Commissioner's approval of a fund | law | REG-17 |
 | קופת גמל לקצבה | provident fund for annuity | Includes pension funds | law | REG-17 |
-| איגרות חוב מיועדות (ערד, מירון) | designated bonds (Arad, Miron) | Government bonds for pension funds | law, pension reports | REG-21 |
-| השלמת תשואה / תשואת היעד / קרן ייעודית להשלמת תשואה / קרן זכאית | return top-up / target return / dedicated return-completion fund / eligible fund | Return-guarantee mechanism | law | REG-21 |
-| אפיק השקעה מובטח תשואה | guaranteed-return investment track | Separate track for the covered 30% | law | REG-21 |
-| החשב הכללי | Accountant General | Establishes the dedicated fund | law | REG-21 |
+| איגרות חוב מיועדות (ערד, מירון) | designated bonds (Arad, Miron) | Government bonds for pension funds | law, pension reports | PEN-18 |
+| השלמת תשואה / תשואת היעד / קרן ייעודית להשלמת תשואה / קרן זכאית | return top-up / target return / dedicated return-completion fund / eligible fund | Return-guarantee mechanism | law | PEN-18, PEN-69 |
+| אפיק השקעה מובטח תשואה | guaranteed-return investment track | Separate track for the covered 30% | law | PEN-18 |
+| החשב הכללי | Accountant General | Establishes the dedicated fund | law | PEN-18 |
 | אגף לפניות הציבור | public complaints department | NII complaints unit | NII site | REG-24 |
 | נציבות תלונות הציבור | Ombudsman (State Comptroller) | Complaints against public bodies | mevaker.gov.il | REG-25 |
-| היתר לפי סעיף 49א | section 49A permit | Basis on which a foreign broker operates in Israel without ISA supervision | broker site | REG-26 |
-| הקרן לפיצוי משקיעים | investor compensation fund | Foreign scheme (EU) | broker site | REG-26 |
+| היתר לפי סעיף 49א | section 49A permit | Basis on which a foreign broker operates in Israel without ISA supervision | broker site | BRK-46 |
+| הקרן לפיצוי משקיעים | investor compensation fund | Foreign scheme (EU) | broker site | BRK-41 |
 | הממונה על פניות הציבור | public complaints officer | Institution's complaint officer | institution site | REG-29 |
 | נכסי קופת הנשייה | the estate | What an insolvent company pays its creditors from | law | REG-33 |
 | חובות מובטחים / חובות בדין קדימה / חובות כלליים / חובות דחויים | secured / priority / general / deferred debts | Ranks in the order of payment | law | REG-33 |
@@ -566,7 +562,7 @@ Registers used and what each listed on 2026-10-22:
 3. **ISA licensees (portfolio managers, advisers, marketers):** the register at investors.isa.gov.il/page/search-advisor is a JS app and could not be read. The ISA 2025 activity report gives counts (131 / 46 / 13) but no names (REG-08). Domain OQ3 stays open for names.
 4. **Mutual-fund managers and trustees:** ISA 2025 fund report, 15 managers and 4 trustees (REG-12).
 5. **CMA managing companies:** the Gemel-Net and Pensia-Net datasets are the de facto register of managing companies with funds (domain report 5.1). Re-read for Meitav only in this pass (REG-28). The CMA financial-service-provider registry returned 403.
-6. **Foreign brokers:** no Israeli register. Interactive Israel's own page (REG-26).
+6. **Foreign brokers:** no Israeli register. Interactive Israel's own page (BRK-46).
 
 ## Open questions
 

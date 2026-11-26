@@ -1,13 +1,12 @@
 {
   "id": "BANK-37",
-  "title": "Bank Leumi, Bank Massad, Bank Yahav and Mercantile: their exit points and minimum deposits",
-  "title_he": "לאומי, מסד, יהב ומרכנתיל: תחנות היציאה והסכום המינימלי בפיקדונות שלהם",
-  "text_he": "בלאומי ובמסד נמצאו תחנות יציאה בתדירויות שונות: כל יום (בלאומי), כל שבוע (בלאומי ובמסד), כל רבעון (בלאומי ובמסד), אחרי חצי שנה ואחר כך כל חודש (בלאומי), כל שנה (בלאומי), ומשיכה בהודעה מוקדמת (במסד). הסכום המינימלי שונה לפי בנק ומוצר: בחיסכון בנגיעה של לאומי לכל הפקדה, ביהב לפי המוצר, ובמרכנתיל לפיקדון של מי שהוא לא לקוח הבנק. ביהב, מועד חידוש או פירעון שהוא לא יום עסקים עובר ליום העסקים הבא. בנקים ומוצרים אחרים לא נבדקו.",
+  "title": "Bank Leumi: exit points and minimums in its deposits, and its app saving (חיסכון בטאצ')",
+  "title_he": "תחנות יציאה וסכום מינימלי בפיקדונות של לאומי, והחיסכון בנגיעה",
+  "text_he": "בפיקדונות של לאומי יש תחנות יציאה בתדירויות שונות: כל יום, כל שבוע, כל רבעון, כל שנה, או אחרי חצי שנה ואחר כך כל חודש. בחיסכון בנגיעה של לאומי מפקידים באפליקציה כמה פעמים ביום, מ־{BANK-37:leumi_touch_daily_min} עד {BANK-37:leumi_touch_daily_max} ביום, ולפחות {BANK-37:leumi_touch_min_deposit} בכל הפקדה. החיסכון הוא לשנה, בריבית משתנה של פריים פחות מרווח, עם תחנות יציאה מתום חצי שנה ואחר כך כל חודש, ואפשר לבטל אותו באותו יום עסקים.",
   "figure_names_he": {
     "leumi_touch_min_deposit": "הפקדה מינימלית בחיסכון בנגיעה (לאומי)",
-    "yahav_min_deposit_low": "פיקדון מינימלי, הנמוך שבין המוצרים (יהב)",
-    "yahav_min_deposit_high": "פיקדון מינימלי, הגבוה שבין המוצרים (יהב)",
-    "mercantile_non_customer_min": "פיקדון מינימלי למי שהוא לא לקוח (מרכנתיל)"
+    "leumi_touch_daily_min": "סכום מינימלי ליום בחיסכון בנגיעה (לאומי)",
+    "leumi_touch_daily_max": "סכום מרבי ליום בחיסכון בנגיעה (לאומי)"
   },
   "strength": "institution",
   "dimensions": [
@@ -37,13 +36,13 @@
       "state": "sourced",
       "notes": "Bank Leumi's touch savings: NIS 10 per deposit (BANK-37, read 2026-10-22)."
     },
-    "yahav_min_deposit_low": {
-      "value": 50,
+    "leumi_touch_daily_min": {
+      "value": 10,
       "unit": "nis",
       "source": {
-        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-        "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-        "publisher": "Bank Yahav",
+        "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
+        "title": "לאומי: חיסכון בנגיעה",
+        "publisher": "Bank Leumi",
         "strength": "institution"
       },
       "checked": "2026-10-25",
@@ -55,15 +54,15 @@
         "BANK-37"
       ],
       "state": "sourced",
-      "notes": "Bank Yahav: from NIS 50 or NIS 1,000 depending on the product (BANK-37)."
+      "notes": "Bank Leumi \"חיסכון בטאצ'\": NIS 10 to 5,000 a day (BANK-37)."
     },
-    "yahav_min_deposit_high": {
-      "value": 1000,
+    "leumi_touch_daily_max": {
+      "value": 5000,
       "unit": "nis",
       "source": {
-        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-        "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-        "publisher": "Bank Yahav",
+        "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
+        "title": "לאומי: חיסכון בנגיעה",
+        "publisher": "Bank Leumi",
         "strength": "institution"
       },
       "checked": "2026-10-25",
@@ -75,27 +74,7 @@
         "BANK-37"
       ],
       "state": "sourced",
-      "notes": "Bank Yahav: from NIS 50 or NIS 1,000 depending on the product (BANK-37)."
-    },
-    "mercantile_non_customer_min": {
-      "value": 250,
-      "unit": "nis",
-      "source": {
-        "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
-        "title": "מרכנתיל: פיקדונות ללא חשבון",
-        "publisher": "Mercantile Discount Bank",
-        "strength": "institution"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "BANK-37"
-      ],
-      "state": "sourced",
-      "notes": "Mercantile Discount Bank's deposits for non-customers: NIS 250 (BANK-37)."
+      "notes": "Bank Leumi \"חיסכון בטאצ'\": NIS 10 to 5,000 a day (BANK-37)."
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
@@ -105,18 +84,6 @@
     {
       "id": "leumi",
       "name_he": "בנק לאומי"
-    },
-    {
-      "id": "massad",
-      "name_he": "בנק מסד"
-    },
-    {
-      "id": "yahav",
-      "name_he": "בנק יהב"
-    },
-    {
-      "id": "mercantile",
-      "name_he": "בנק מרכנתיל דיסקונט"
     }
   ],
   "sources": [
@@ -141,31 +108,11 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/",
-      "title": "מסד: סוגי חסכונות",
-      "title_he": "מסד: סוגי חסכונות",
-      "publisher": "Bank Massad",
-      "publisher_he": "בנק מסד",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
-      "title": "מרכנתיל: פיקדונות ללא חשבון",
-      "title_he": "מרכנתיל: פיקדונות ללא חשבון",
-      "publisher": "Mercantile Discount Bank",
-      "publisher_he": "בנק מרכנתיל דיסקונט",
+      "url": "https://www.leumi.co.il/he/savings/saving_by_touch",
+      "title": "לאומי: חיסכון בנגיעה",
+      "title_he": "לאומי: חיסכון בנגיעה",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-25"

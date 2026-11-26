@@ -121,7 +121,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   return (
     <div className="flex flex-col gap-5">
       <p className="max-w-measure">
-        {copy.pension.lead.before} <Ruled prefix={copy.pension.lead.prefix} id="PEN-05">{copy.pension.lead.stated}</Ruled>
+        {copy.pension.lead.before} <Ruled prefix={copy.pension.lead.prefix} id="PEN-67">{copy.pension.lead.stated}</Ruled>
         {copy.pension.lead.after}
       </p>
       <div className="grid gap-4 sm:grid-cols-2">

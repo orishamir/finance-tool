@@ -7,7 +7,6 @@
     "tase_member": false,
     "protection_rule_ids": [
       "PF-29",
-      "REG-18",
       "REG-19"
     ]
   },
@@ -47,8 +46,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "The fund's bylaws (March 2025 edition, s.35.1, p.10) let the company charge up to the maximum the law sets on the balance and on each payment; recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee. The joining kit (February 2021, p.3) leaves the agreed rates blank and prints the same ceiling in the member's declaration. A member's own agreement sets the fee actually paid (D4)."
@@ -90,8 +88,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "The fund's bylaws (March 2025 edition, s.35.1, p.10) let the company charge up to the maximum the law sets on the balance and on each payment; recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee. The joining kit (February 2021, p.3) leaves the agreed rates blank and prints the same ceiling in the member's declaration. A member's own agreement sets the fee actually paid (D4)."

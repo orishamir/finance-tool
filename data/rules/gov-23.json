@@ -1,11 +1,13 @@
 {
   "id": "GOV-23",
-  "title": "Makam issue schedule",
-  "title_he": "לוח ההנפקות של המק״מ",
-  "text_he": "לוח ההנפקות של בנק ישראל מראה סדרת מק״מ חדשה אחת בחודש, כל אחת לתקופה של כשנה, בין הטווח הקצר לארוך שבלוח. בנק ישראל מציין שהמועדים עשויים להשתנות בהודעה מראש. התקופות האלה נמצאות בתוך הטווח שבתנאים הכלליים של המכרז. תוצאות המכרזים מתפרסמות בדף הסטטיסטיקה של בנק ישראל.",
+  "title": "Makam issue schedule: one new series a month, about a year each, twelve series outstanding",
+  "title_he": "לוח ההנפקות של המק״מ: סדרה חדשה בכל חודש, לכשנה",
+  "text_he": "בכל חודש בנק ישראל מנפיק סדרת מק״מ חדשה, וכל סדרה נפרעת אחרי {GOV-23:term_days_min} עד {GOV-23:term_days_max}. בכל רגע יש בשוק {GOV-23:series_outstanding} סדרות: בכל חודש נפרעת סדרה ומונפקת סדרה חדשה. בנק ישראל מציין שהמועדים עשויים להשתנות בהודעה מראש.",
   "figure_names_he": {
     "term_days_min": "ימים לפדיון, הקצר ביותר בלוח",
-    "term_days_max": "ימים לפדיון, הארוך ביותר בלוח"
+    "term_days_max": "ימים לפדיון, הארוך ביותר בלוח",
+    "series_outstanding": "מספר הסדרות הקיימות בכל רגע",
+    "issues_per_month": "הנפקות בחודש"
   },
   "strength": "primary",
   "dimensions": [
@@ -53,6 +55,46 @@
       ],
       "state": "sourced",
       "notes": "See term_days_min. Inside the general conditions' 14-day to 13-month range (GOV-03, GOV open question 3)."
+    },
+    "series_outstanding": {
+      "value": 12,
+      "unit": "count",
+      "source": {
+        "url": "https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/",
+        "title": "בנק ישראל, מק\"ם (consumer page, updated 25/02/2025)",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "GOV-23"
+      ],
+      "state": "sourced",
+      "notes": "Twelve series exist at any time; each month one matures and a new one is issued. Moved from GOV-22 on 2026-11-26."
+    },
+    "issues_per_month": {
+      "value": 1,
+      "unit": "count",
+      "source": {
+        "url": "https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/",
+        "title": "בנק ישראל, מק\"ם (consumer page, updated 25/02/2025)",
+        "publisher": "Bank of Israel",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "GOV-23"
+      ],
+      "state": "sourced",
+      "notes": "The issue auction is held \"usually once a month\"; the series runs about a year (GOV-23). Method F-24 rolls the net redemption proceeds into the next series. Moved from GOV-22 on 2026-11-26."
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
@@ -81,6 +123,19 @@
       "kind": "regulator_page",
       "strength": "primary",
       "checked": "2026-11-23"
+    },
+    {
+      "url": "https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/",
+      "title": "בנק ישראל: מק\"ם",
+      "title_he": "בנק ישראל: מק\"ם",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "GOV-03"
   ]
 }

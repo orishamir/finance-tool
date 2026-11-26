@@ -432,6 +432,34 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   figures names those figures, as the weak inputs are named: said in its own words on a difference of two funds, "the fund" named neither,
   and each figure's own sheet says it in words. An entered figure's sheet shows the value it replaced. A source line wraps at every width
   and is never cut, so a figure's source, its name and date, stay in view.
+- **The rules a figure names.** A figure lists the rules that set it, under "חוק או כלל" for one and "חוקים וכללים" for more. It leaves
+  out a rule the place it was opened from already opens, and a row left empty goes: on a rule's card that rule (its root is marked
+  `data-opens-scope` with the rule's id), on a /rules fact row its rule, in a paragraph or list item a rule its words state, in a part of
+  a company's card (each part that holds a figure is its own place, never the whole card) a rule that part opens. Every element that
+  opens a rule carries `data-opens` with its ids, and the figure reads them when it is tapped (`opensAround`); inside a sheet only a
+  marked place counts, so a computed figure's input keeps its chips. A rule the figure's doubt opens is named once, under the doubt.
+- **A note only where it is true of the value.** A figure's note says what is true of this value beyond its head's line, its chips and
+  the page, and a builder sets it by value: a stock exposure share above 100% says why exposure can pass the assets, and one at or below
+  says nothing. A sheet says what the figure is once, in its head's line: a line of math keeps its own name only where the figure has
+  no head's line, and the key row of the symbol it works out points at the head ("המספר שבראש הגיליון").
+- **A missing figure** (`value: null`) heads its sheet with the word it was shown as and no state tag. Its reason is said once: its note;
+  else, for a sourced figure, that the source does not hold it; else, for a computed one, that a value it reads is missing, and only when
+  one is. A sourced one shows its source line, where the figure was looked for, without dates, and the chips of the rules that explain
+  the absence; a computed one keeps its inputs. An open value is unchanged. A figure not in force yet says its first day once, in the
+  caution line, with no "from" row beside it.
+- **A computed figure shows its working,** under its warnings, so the formula and the numbers that went into it are on screen together:
+  - a difference or a sum: the lines of a receipt, each figure as the page writes it (so the lines add up exactly), its sign at the start
+    of its line, then "=" and the figure as its head shows it. No formula chip: a subtraction under the name of a large formula explained
+    nothing.
+  - a figure that is exactly one line of math docs/method.md draws: that line in symbols, the same line with the figure's values put in,
+    and "=" with the figure. The values are put in by code from the line and the inputs, never typed, each with the digits the result
+    needs, units and names left to the key. Under it the key: each symbol's words, with this figure's input beside the symbol it stands
+    for, so each input shows once; then one quiet line to the formula's own sheet. A line that cannot be worked out from the inputs (a
+    symbol no input holds) shows the symbols and the key without values.
+  - any other figure: its formula's name as a chip to the formula's sheet, and its inputs.
+
+  A computed figure's sheet is taller on a phone and wider on a computer than a card. It keeps that size for everything opened from
+  inside it and on the way back, so the card never jumps.
 - **A source opens where it says it.** A link to a cited source opens at the cited words: a web page by text fragment, a PDF at its page
   (Chrome's PDF viewer does not follow a text fragment), a dataset at this fund's own record rather than the dataset's front page. Every
   such link is built by `sourceHref` (`site/app/lib/sources.ts`), never from a raw address (guard 23), and `tools/quote-fragments.mjs`
@@ -678,7 +706,7 @@ of 2.3, one per fee across the whole page.
   point starts at the deal's first mark, never a sum the site picks. Why a fee costs what it does is said only where the two figures
   differ as shown, and the total is the sum of the lines as shown. A chart with a sum per unit asks for the unit's price, empty at first,
   and is drawn once it is given. The holding chart's range is typed or dragged, with no presets; its
-  sub never names a band of 0%. The foot says what changes and when (F-110, F-126, F-127, and directive 415's bound at a bank stated once, BRK-61)
+  sub never names a band of 0%. The foot says what changes and when (F-110, F-126, F-127, and directive 415's bound at a bank stated once, BRK-80)
   and what the law says (F-113).
 - **One fee, one look.** A fee's name, its colour, its price in words and its standing against its cap are written through
   `components/fee-deal/words.tsx`, so a fee reads the same in every column.
@@ -845,8 +873,9 @@ in the kit fits is added to the kit.
   sight without taking the room the terms need.
 - `GroupPriceFold`, `GroupPriceRows`: group prices (D43), stated beside a ranking and never in it.
 - `ClaimCheck`, `ClaimList`: a claim of a house's advertising set against its binding documents (D56, D57); never a figure of a ranking.
-- `FormulaBlock`, `Tex`: a formula in math type on a formula's sheet, where docs/method.md writes it as math; math always runs left to
-  right.
+- `FormulaBlock`, `Tex`: a formula in math type on a formula's sheet, where docs/method.md writes it as math; on a computed figure's
+  sheet, its working (3.2): its line with its values put in, or the lines of a difference or a sum. Math always runs left to right, and a
+  line too wide for its box scrolls inside it with a fading edge.
 
 *Surfaces and structure*
 

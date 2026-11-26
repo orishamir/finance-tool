@@ -1,7 +1,7 @@
 // Provident-family wrappers without a deposit-side tax effect: kupat gemel lehashkaa and the own-money
 // part of a keren hishtalmut. F-08 with no trade (F-27), F-11, F-15, F-16, the section 8 ceiling and lock,
 // and the exits F-44 and F-46.
-import { balanceFee, depositFee, feeForMonth, type Discount } from "../formulas/fees.ts";
+import { balanceFee, depositFee, discountEnd, feeForMonth, type Discount } from "../formulas/fees.ts";
 import { deductionValue, equalNetOutlay, spreadReliefByYear } from "../formulas/deposit-side.ts";
 import { studyFundEarlyWithdrawal } from "../formulas/early-withdrawal.ts";
 import { bracketTaxOnTopSlice, hishtalmutExitTax, kglExitTax } from "../formulas/exit-tax.ts";
@@ -92,13 +92,20 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   const formulas = ["F-08", "F-27", "F-11", "F-15", "F-16"];
 
   // Caps on fee rates (F-11, F-15): PF-02 for provident funds and kupat gemel lehashkaa; PF-06 for a
-  // study fund, which has no deposit-fee item at all.
-  const balanceCap = kgl ? book.rate("PF-02", "balance_cap") : book.rate("PF-06", "balance_cap");
-  const depositCap = kgl ? book.rate("PF-02", "deposit_cap") : 0;
+  // study fund, which has no deposit-fee item at all. Each is looked at, and taken on its fee line where it cut a fee.
+  const balanceRule = kgl ? "PF-02" : "PF-06";
+  const balanceCap = book.on("fees", "balance").peek.rate(balanceRule, "balance_cap");
+  const depositCap = kgl ? book.on("fees", "deposit").peek.rate("PF-02", "deposit_cap") : 0;
+  let balanceCapCut = false;
+  let depositCapCut = false;
   if (fees.direct > 0) book.cite("PF-10");
   else tally.flag("G-14");
-  const minDiscountMonths = 12 * book.amount("PF-13", "min_discount_years");
-  book.cite(kgl ? "TXK-03" : "TXH-18");
+  // PF-13's minimum is looked at, and taken on the line whose discount it extended
+  const minDiscountMonths = 12 * book.peek.amount("PF-13", "min_discount_years");
+  let depositDiscountExtended = false;
+  let balanceDiscountExtended = false;
+  // the exemption while invested zeroes the tax during the run
+  book.on("taxDuring").cite(kgl ? "TXK-03" : "TXH-18");
 
   // Section 8: lawful exit. A study fund is locked until 6 years after its first payment (TXH-09).
   let exitMonth = goal.months;
@@ -109,23 +116,31 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   let benefitedMonthly = Infinity;
   let benefitedYearly = Infinity;
   let employerLimit = Infinity;
+  // the month the six years from the first payment end (TXH-09): an exit before it is exempt under the short lock (TXH-10)
+  let sixYearsEnd = -Infinity;
   if (!kgl) {
     const h = input.hishtalmut!;
-    let lockMonth = h.clockStartMonth + 12 * book.amount("TXH-09", "lock_years");
+    const term = book.on("term");
+    sixYearsEnd = h.clockStartMonth + 12 * term.amount("TXH-09", "lock_years");
+    let lockMonth = sixYearsEnd;
     // TXH-10: 3 years from the first payment instead of 6 for a person who has reached retirement age. The
     // exit is lawful once both 3 years have passed and the person is at that age. Which age of the Retirement
     // Age Law applies is an inference (KH-12: the s.3 age); the profile has no sex, so the higher age, 67
     // (PEN-26, also the mandatory age for both), is used and the exit is never earlier than the law allows.
     if (profile.ageAtStart !== undefined) {
-      const reached = 12 * (book.amount("PEN-26", "retirement_age_men") - profile.ageAtStart);
-      const short = Math.max(h.clockStartMonth + 12 * book.amount("TXH-10", "lock_years"), reached);
+      // the age and the short lock are looked at, and taken where the short lock moves the exit
+      const reached = 12 * (term.peek.amount("PEN-26", "retirement_age_men") - profile.ageAtStart);
+      const short = Math.max(h.clockStartMonth + 12 * term.peek.amount("TXH-10", "lock_years"), reached);
       if (short < lockMonth) {
-        // the age changes the run only where the six years end after the horizon and the short lock moves the exit: not where both run
-        // past it with an early withdrawal opted into, which exits at the horizon either way
-        if (lockMonth > goal.months && !(h.earlyWithdrawal && short > goal.months)) book.profile("age");
+        // the short lock moves the exit only where the six years end after the horizon: not where both run past it with an early
+        // withdrawal opted into, which exits at the horizon either way
+        if (lockMonth > goal.months && !(h.earlyWithdrawal && short > goal.months)) {
+          book.profile("age");
+          term.took("TXH-10");
+          term.took("PEN-26");
+          term.label("reading", "KH-12");
+        } else term.peek.cite("KH-12");
         lockMonth = short;
-        book.cite("TXH-10");
-        book.label("reading", "KH-12");
       }
     }
     if (lockMonth > goal.months) {
@@ -151,19 +166,21 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
         employerLimit = book.rate("TXH-01", "employer_exempt_pct") * determining;
         // F-52: the part of the employer's deposit above this limit is salary when paid (TXH-03) and runs
         // separately below; the part up to the limit stays benefited (TXH-01).
-        if (h.employerMonthly > employerLimit) book.cite("TXH-03");
+        if (h.employerMonthly > employerLimit) book.on("taxDuring").cite("TXH-03");
       }
     } else {
       benefitedYearly = book.amount("TXH-08", "self_employed_benefited");
     }
     formulas.push("F-46");
   } else {
-    book.cite("KGL-02");
-    book.cite("KGL-04");
+    // the ceiling and when it is checked are looked at, and taken where a deposit was cut
+    book.on("deposit").peek.cite("KGL-02");
+    book.on("deposit").peek.cite("KGL-04");
     formulas.push("F-05", "F-44");
   }
   // F-120: KGL-03's yearly ceiling is linked to the CPI every 1 January (Provident Funds Law s.22(א)), so each tax year reads its own
-  let ceiling = kgl ? book.amount("KGL-03", "ceiling") : Infinity;
+  let ceiling = kgl ? book.on("deposit").peek.amount("KGL-03", "ceiling") : Infinity;
+  let ceilingCut = false;
 
   const T = exitMonth;
   const first = goal.firstMonth ?? 1;
@@ -201,11 +218,12 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
     } else {
       const income = profile.annualIncome;
       book.profile("income");
-      deductionCap = book.rate("TXH-05", "deduction_pct") * Math.min(income, book.amount("TXH-05", "income_ceiling"));
+      const relief = book.on("relief");
+      deductionCap = relief.rate("TXH-05", "deduction_pct") * Math.min(income, relief.amount("TXH-05", "income_ceiling"));
       const outlay = C.map((c, m) => (m === 0 || (m <= goal.months && due(m)) ? c : 0));
       // F-119: each tax year's ceiling and brackets
       const grossOfYear = (y: number, netYear: number) => {
-        const ofYear = book.inYear(y);
+        const ofYear = relief.inYear(y);
         const cap = ofYear.rate("TXH-05", "deduction_pct") * Math.min(income, ofYear.amount("TXH-05", "income_ceiling"));
         const brackets = ofYear.brackets("TXG-02", "brackets");
         const gross = equalNetOutlay(netYear, (d) => deductionValue(brackets, income, Math.min(d, cap)));
@@ -215,7 +233,7 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       };
       grossDeposits = spreadReliefByYear(outlay, first, taxYearOf, grossOfYear);
       // F-97: that whole year grossed up for the tax back at the run date's year's cap and brackets
-      fullYearGross = equalNetOutlay(fullYearNet, (d) => deductionValue(book.brackets("TXG-02", "brackets"), income, Math.min(d, deductionCap)));
+      fullYearGross = equalNetOutlay(fullYearNet, (d) => deductionValue(relief.brackets("TXG-02", "brackets"), income, Math.min(d, deductionCap)));
       // G-23: the deduction is valued at the brackets, which leave out the person's credit points
       if (grossDeposits.some((d, m) => d > C[m]! + 1e-9)) tally.flag("G-23");
       formulas.push("F-30");
@@ -235,12 +253,14 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   let firstExcessMonth: number | null = null;
   const salary = hish?.monthlySalary ?? 0;
   const employerOverActive = !kgl && hish?.employerMonthly !== undefined && hish.employerMonthly > employerLimit;
+  // the salary tax on the employer's excess (F-52) is a tax during the run
+  const salaryTax = book.on("taxDuring");
   const social = employerMoney || employerOverActive
     ? {
-        reducedUpTo: book.amount("TXG-35", "reduced_threshold"),
-        maxIncome: book.amount("TXG-35", "max_income"),
-        reduced: book.rate("TXG-35", "reduced_rate"),
-        full: book.rate("TXG-35", "full_rate"),
+        reducedUpTo: salaryTax.amount("TXG-35", "reduced_threshold"),
+        maxIncome: salaryTax.amount("TXG-35", "max_income"),
+        reduced: salaryTax.rate("TXG-35", "reduced_rate"),
+        full: salaryTax.rate("TXG-35", "full_rate"),
       }
     : undefined;
 
@@ -258,6 +278,7 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       accepted = Math.min(amount, Math.max(0, ceiling - yearTotal));
       yearTotal += accepted;
       if (accepted < amount) {
+        ceilingCut = true;
         routed.push({ month: eventMonth, amount: amount - accepted });
         if (taxYearOf(eventMonth, first) === 1) firstYearCapBinds = true;
       }
@@ -269,6 +290,9 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
     // F-16: a discounted deposit fee reverts to its list rate when the period ends, no earlier than PF-13's minimum
     const dep = feeForMonth(fees.deposit, fees.depositDiscount, minDiscountMonths, eventMonth, endsBy);
     discountExtended ||= dep.extended;
+    depositDiscountExtended ||= dep.extended;
+    // a study fund's deposit-fee cap is no rule's figure but 0, its fee item absent
+    if (kgl && dep.rate > depositCap && accepted > 0) depositCapCut = true;
     const fee = depositFee(dep.rate, depositCap, accepted);
     tally.fee("deposit", fee);
     const net = accepted - fee;
@@ -311,14 +335,17 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   // discount holds for PF-14's months (six) and the fee without it is charged after them. PF-14 is read only where the case can arise.
   let laterDeposit = false;
   for (let m = 1; m <= Math.min(T, goal.months); m++) if (due(m) && (grossDeposits[m] ?? 0) > 0) laterDeposit = true;
-  const stopMonths = Boolean(fees.discount || fees.depositDiscount) && !laterDeposit ? book.amount("PF-14", "months_after_deposits_stop") : undefined;
+  const stopMonths = Boolean(fees.discount || fees.depositDiscount) && !laterDeposit ? book.on("fees", fees.discount ? "balance" : "deposit").peek.amount("PF-14", "months_after_deposits_stop") : undefined;
   const oneDeposit = stopMonths !== undefined && T > stopMonths;
   const endsBy = oneDeposit ? stopMonths : undefined;
+  // PF-14's end is taken on the balance fee where it cuts that discount short; the deposit fee is charged on the first deposit alone,
+  // inside any discount, so the end never changes it
+  if (endsBy !== undefined && fees.discount && discountEnd(fees.discount, minDiscountMonths) > endsBy) book.on("fees", "balance").took("PF-14");
 
   for (let m = 1; m <= T; m++) {
     if (m > 1 && taxYearOf(m, first) !== taxYearOf(m - 1, first)) {
       yearTotal = 0;
-      if (kgl) ceiling = book.inYear(taxYearOf(m, first)).amount("KGL-03", "ceiling");
+      if (kgl) ceiling = book.on("deposit").inYear(taxYearOf(m, first)).peek.amount("KGL-03", "ceiling");
       // F-119: the self-employed benefited amount of the new tax year
       benefitedLeft = hish?.employment === "self-employed" ? book.inYear(taxYearOf(m, first)).amount("TXH-08", "self_employed_benefited") : benefitedYearly;
     }
@@ -327,8 +354,10 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
 
     const { rate, extended } = feeForMonth(fees.balance, fees.discount, minDiscountMonths, m, endsBy);
     discountExtended ||= extended;
+    balanceDiscountExtended ||= extended;
     for (const pot of [benefited, excess]) {
       pot.balance *= 1 + g;
+      if (rate > balanceCap && pot.balance > 0) balanceCapCut = true;
       const bal = balanceFee(rate, balanceCap, pot.balance);
       const direct = (fees.direct / 12) * pot.balance;
       tally.fee("balance", bal);
@@ -338,6 +367,11 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
     tally.point(m, I[m]!, benefited.balance + excess.balance);
   }
   if (discountExtended) tally.flag("PF-13");
+  if (depositDiscountExtended) book.on("fees", "deposit").took("PF-13");
+  if (balanceDiscountExtended) book.on("fees", "balance").took("PF-13");
+  if (depositCapCut) book.on("fees", "deposit").took("PF-02");
+  if (balanceCapCut) book.on("fees", "balance").took(balanceRule);
+  if (ceilingCut) for (const id of ["KGL-02", "KGL-03", "KGL-04"]) book.on("deposit").took(id);
   if (oneDeposit) tally.flag("PF-OQ18");
   // A-30: the run's first tax year holds only the months from the run date, and a yearly cap reached in it assumes nothing was deposited
   // earlier that year
@@ -353,13 +387,14 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   const detail: Record<string, number> = { grossBalance: gross };
   let taxAtExit: number;
 
+  const exit = book.on("taxAtExit");
   if (kgl) {
     // F-44: 25% of the real gain (TXK-07, primary); TXK-06 is the up-to-25% rate on the deemed interest.
-    book.cite("TXK-05");
-    const realRate = book.rate("TXK-07", "rate");
-    book.cite("TXK-06");
+    exit.cite("TXK-05");
+    const realRate = exit.rate("TXK-07", "rate");
+    exit.cite("TXK-06");
     const real = realGain(benefited);
-    if (fellFor(benefited)) book.label("reading", "TXK-07");
+    if (fellFor(benefited)) exit.label("reading", "TXK-07");
     const flatTax = kglExitTax(real, realRate);
     // F-42 at this exit: from 60 the reduced brackets apply first to this deemed interest, since s.125C(b) is a
     // maximum rate and s.121(ב)(1) gives the reduced brackets to all taxable income of an individual aged 60 or over; the
@@ -371,54 +406,69 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
     // (A-14 off) the run keeps the flat 25% and flags the relief it leaves out (TXK-06); with a 25% withholding that is the tax
     // withheld (until the record read 20% and this figure was called an upper bound; golden S51 is unchanged).
     let incomeTax = flatTax;
-    if (reachesSixty(book, profile, T, first)) {
-      book.cite("TXG-07");
+    if (reachesSixty(exit, profile, T, first)) {
+      exit.peek.cite("TXG-07");
       formulas.push("F-42");
       if (profile.refundClaimed === false) tally.flag("TXK-06");
       else {
-        incomeTax = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, real), book.inYear(taxYearOf(T, first)).brackets("TXG-04", "brackets"), realRate);
-        sixtyLowered(book, profile, incomeTax, flatTax);
-        book.cite("TXK-26");
+        incomeTax = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, real), exit.inYear(taxYearOf(T, first)).peek.brackets("TXG-04", "brackets"), realRate);
+        sixtyLowered(exit, profile, incomeTax, flatTax, ["TXG-04", "TXG-07"]);
+        // the 25% withheld is settled by the annual return to the tax above: it sets no figure, and the flag says the settlement
+        exit.peek.cite("TXK-26");
         tally.flag("TXK-26");
       }
       detail.fullRateTax = flatTax;
     }
-    const s = surtaxOn(book, profile, real, 0, taxYearOf(T, first));
+    const s = surtaxOn(exit, profile, real, 0, taxYearOf(T, first));
     taxAtExit = incomeTax + s.general + s.onCapital;
     detail.realGain = real;
     // No National Insurance or health contributions on the gains: they are income taxed under s.125C(b)-(c) (TXK-27, G-11 answered for the lump sum).
-    book.cite("TXK-27");
+    exit.cite("TXK-27");
     // G-02 (the exit base) is answered by law, so no flag: the base is TXK-07's, cited above.
   } else {
     // F-46: benefited money is exempt (TXH-09); gains on the excess are taxed at 25% of their real gain
     // (TXH-11; the real base is the Ministry of Finance Chief Economist paper's, primary).
     const excessReal = realGain(excess);
-    if (excess.deposits.length > 0 && !early && fellFor(excess)) book.label("reading", "TXH-11");
+    if (excess.deposits.length > 0 && !early && fellFor(excess)) exit.label("reading", "TXH-11");
     taxAtExit = 0;
+    // after the lock the benefited money's exemption zeroes its tax at exit: TXH-09's, which says what it covers, and before the six years
+    // TXH-10's, whose three years for a person at retirement age stand in for them
+    if (!early && benefited.deposits.length > 0) {
+      exit.took("TXH-09");
+      if (T < sixYearsEnd) exit.took("TXH-10");
+    }
     if (early) {
       // F-47: early withdrawal at the horizon, opted into (B3). All gains, benefited or not, are taxed at
       // the s.121 rates; the benefited employer deposits are work income when received. G-27: NI and
       // health on the gains are not modelled.
       const y = profile.otherIncome ?? profile.annualIncome ?? 12 * salary;
-      const sixty = reachesSixty(book, profile, T, first);
+      const sixty = reachesSixty(exit, profile, T, first);
       // the brackets the gains and the employer's deposits fall into start above the person's income, where the profile holds one, and
       // which brackets they are is the age's (TXG-04 from 60, else TXG-02)
       if ((profile.otherIncome ?? profile.annualIncome) !== undefined) book.profile("income");
-      if (sixty) book.profile("age");
+      if (sixty) {
+        book.profile("age");
+        exit.took("TXG-04");
+      }
       const gains = nominalGain(benefited) + nominalGain(excess);
       const employerDeposits = employerMoney ? benefited.deposits.reduce((a, d) => a + d.amount, 0) : 0;
       // F-119: the brackets and the threshold of the exit's tax year
       const exitYear = taxYearOf(T, first);
-      const t = studyFundEarlyWithdrawal(book.inYear(exitYear), {
+      // the brackets of the employer's deposits are looked at, and taken where there are such deposits and the tax is the one computed
+      // rather than the one withheld
+      const workRule = sixty ? "TXG-04" : "TXG-02";
+      const refundClaimed = profile.refundClaimed !== false;
+      const t = studyFundEarlyWithdrawal(exit.inYear(exitYear), {
         gains,
         employerDeposits,
         otherIncome: y,
         sixtyOrOver: sixty,
-        refundClaimed: profile.refundClaimed !== false,
-        workBrackets: book.inYear(exitYear).brackets(sixty ? "TXG-04" : "TXG-02", "brackets"),
+        refundClaimed,
+        workBrackets: exit.inYear(exitYear).peek.brackets(workRule, "brackets"),
       });
+      if (employerDeposits > 0 && refundClaimed) exit.took(workRule);
       const withIncome = { ...profile, otherIncome: y };
-      const surtax = surtaxOn(book, withIncome, gains + employerDeposits, 0, exitYear, false).general + surtaxOn(book, withIncome, gains, 0, exitYear, false).onCapital;
+      const surtax = surtaxOn(exit, withIncome, gains + employerDeposits, 0, exitYear, false, "general").general + surtaxOn(exit, withIncome, gains, 0, exitYear, false, "onCapital").onCapital;
       taxAtExit = t.tax + surtax;
       detail.earlyGains = gains;
       detail.earlyEmployerDeposits = employerDeposits;
@@ -431,9 +481,9 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       formulas.push("F-47");
     } else if (excess.deposits.length > 0) {
       const step = unlessBlocked(() => {
-        const rate = book.rate("TXH-11", "rate");
-        if (book.fact("TXH-11", "real_base") !== true) throw new BlockedError("TXH-11");
-        return { flat: hishtalmutExitTax(excessReal, rate), full: exitTax(book, profile, T, excessReal, rate, false, 0, first) };
+        const rate = exit.rate("TXH-11", "rate");
+        if (exit.fact("TXH-11", "real_base") !== true) throw new BlockedError("TXH-11");
+        return { flat: hishtalmutExitTax(excessReal, rate), full: exitTax(exit, profile, T, excessReal, rate, false, 0, first) };
       });
       if (step.value) {
         // F-46 gives the flat 25%; F-42 and F-43 adjust it when they apply.
@@ -465,12 +515,12 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   if (employerMoney || employerOverActive) {
     for (const [y, x] of employerExcessByYear) {
       // F-119: the brackets of the year the excess was paid
-      const paid = deductionValue(book.inYear(y).brackets("TXG-02", "brackets"), 12 * salary + x, x);
+      const paid = deductionValue(salaryTax.inYear(y).brackets("TXG-02", "brackets"), 12 * salary + x, x);
       employerDepositTax += paid;
       // F-96: each year's tax at the index of the deposits it is on, as F-06 has an amount of month m
       employerPaidToday += (paid * employerExcessTodayByYear.get(y)!) / x;
     }
-    book.cite("TXH-03");
+    salaryTax.cite("TXH-03");
     // G-23: that tax is at the brackets, which leave out the person's credit points, whether or not the run owes tax at its exit
     if (employerDepositTax > 0) tally.flag("G-23");
     detail.employerDepositTax = employerDepositTax;

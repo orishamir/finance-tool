@@ -1,0 +1,51 @@
+{
+  "id": "KH-37",
+  "title": "Meitav: its study-fund bylaw 880 offers a two-year discount and early raises the circular does not list",
+  "title_he": "הנחה בדמי הניהול והעלאה לפני תום ההנחה, בתקנון קרן ההשתלמות של מיטב",
+  "text_he": "מיטב כותבת שהחברה רשאית להעלות את דמי הניהול בכפוף להוראות הדין. בתקנון קרן ההשתלמות שלה, הנחה בדמי הניהול ניתנת לשנתיים או יותר, ומותר להעלות את דמי הניהול לפני תום ההנחה אם הוסכם על כך מראש בכתב. המקרים הם הפסקת ההפקדות מסיבה שלא קשורה למעסיק, העברה או משיכה, עמית שקיבל את ההנחה דרך מקום עבודה ועזב אותו, או מנגנון מאושר כמו תוספת של עמלת מפיץ. חוזר של רשות שוק ההון קובע שהנחה נמשכת 5 שנים לפחות ומונה מקרים אחרים, והוא חל גם על קרנות השתלמות, ולכן הוא גובר על התקנון.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.meitav.co.il/media/vgtmhdow/תקנון-קרן-השתלמות-172024.pdf",
+      "title": "מיטב: תקנון קרן השתלמות 880, 7.24",
+      "title_he": "מיטב: תקנון קרן השתלמות 880, 7.24",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.15, s.20.3",
+      "locator_he": "עמוד 15, סעיף 20.3",
+      "page": 15,
+      "quote": "תקופה של שנתיים או יותר",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/hishtalmut/",
+      "title": "מיטב – קרנות השתלמות: כל המידע אודות קרן השתלמות",
+      "title_he": "מיטב – קרנות השתלמות: כל המידע אודות קרן השתלמות",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "PF-13",
+    "PF-14"
+  ]
+}

@@ -10,8 +10,7 @@
     "התשואה הינה לפני ניכוי דמי ניהול"
   ],
   "rule_ids": [
-    "CAT-04",
-    "CAT-32"
+    "CAT-04"
   ],
   "source": {
     "url": "https://gemelnet.cma.gov.il/views/dafMakdim_Link3.aspx",

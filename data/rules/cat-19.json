@@ -1,60 +1,14 @@
 {
   "id": "CAT-19",
-  "title": "Age-dependent and general tracks in pension and tagmulim-type funds (decoding names like \"לבני 50 ומטה\"): a general track is closed to new joiners",
-  "title_he": "בקופות גמל אחרות ברירת המחדל היא מסלול תלוי גיל",
-  "text_he": "בקופות גמל שהן לא קרן השתלמות ולא קופת גמל להשקעה, עמית חדש שלא בחר מסלול מצטרף למסלול ברירת המחדל המתאים לגילו. המודל הוא שלושה מסלולים: עד גיל המדרגה הראשונה, בין המדרגה הראשונה לשנייה, ומגיל המדרגה השנייה ומעלה. המודל יכול להיות גם מסלולים לפי שנתוני לידה, שכל אחד מהם מכסה טווח של כמה שנים לפי החוזר. זה מסביר שמות כמו לבני חמישים ומטה או לבני שישים ומעלה. קופה כזו, וגם קרן פנסיה, רשאית להמשיך לנהל מסלול כללי רק אם הוא סגור למי שלא היה בו ביום תחילת החוזר. לכן מצטרף חדש לא יכול להצטרף למסלול הכללי של קרן פנסיה או של קופת גמל לקצבה. החוזר לא חל על קופות מסוימות. ביניהן קרנות פנסיה ותיקות, קופות גמל מרכזיות, קופות לדמי מחלה וקופות בניהול אישי. הוא גם לא חל על חמש קופות הגמל מבטיחות התשואה שתקנות דמי הניהול מונות בשמן, ועל שתי הקופות של עובדי בנק לאומי. טיוטת תקנות על העברת עמיתים למסלולים לפי גיל נראתה רק ככותרת בחיפוש.",
-  "figure_names_he": {
-    "age_band_1": "גיל המדרגה הראשונה",
-    "age_band_2": "גיל המדרגה השנייה"
-  },
+  "title": "A general track is closed to new joiners in pension funds and in provident funds that are not study or investment provident funds",
+  "title_he": "בקרנות פנסיה ובקופות גמל לקצבה המסלול הכללי סגור למצטרפים חדשים",
+  "text_he": "קופת גמל שאינה קרן השתלמות או קופת גמל להשקעה, וגם קרן פנסיה חדשה, רשאית להמשיך לנהל מסלול כללי רק אם הוא סגור למי שלא היה בו ביום תחילת החוזר, 1.1.2016. לכן מצטרף חדש לא יכול להצטרף למסלול הכללי של קרן פנסיה או של קופת גמל לקצבה. מסלול כללי הוא מסלול שאינו מתמחה, אינו מסלול ברירת מחדל ואינו מסלול למקבלי קצבה. החוזר לא חל על קופות מסוימות, ביניהן קרנות פנסיה ותיקות, קופות גמל מרכזיות, קופות לדמי מחלה, קופות בניהול אישי, 5 קופות הגמל מבטיחות התשואה שתקנות דמי הניהול מונות בשמן ו־2 הקופות של עובדי בנק לאומי.",
   "strength": "primary",
   "dimensions": [
-    "age-or-use-exemption",
     "eligibility"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
-  "figures": {
-    "age_band_1": {
-      "value": 50,
-      "unit": "years",
-      "source": {
-        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-        "title": "חוזר גופים מוסדיים 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\", p.4, s.4(א)",
-        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "CAT-19"
-      ],
-      "state": "sourced",
-      "notes": "Three-track model: up to 50; 50 to 60; 60 and over (appendix s.4(א)(1)); or birth-cohort tracks spanning 5 to 10 years."
-    },
-    "age_band_2": {
-      "value": 60,
-      "unit": "years",
-      "source": {
-        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-        "title": "חוזר גופים מוסדיים 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\", p.4, s.4(א)",
-        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "CAT-19"
-      ],
-      "state": "sourced"
-    }
-  },
   "il_finance_file": "tracks-catalogue-and-decoder.md",
   "checked": "2026-11-14",
   "scope": "general",
@@ -81,7 +35,7 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.4, ss.3 to 4; s.3(ד) as",
+      "locator": "p.4, s.3; s.3(ד) as",
       "page": 4,
       "quote": "במסגרת פוליסות ביטוח שהן קופות ביטוח ששווקו לפני שנת 2004",
       "checked": "2026-11-14"
@@ -124,5 +78,8 @@
       "quote": "ביטול מסלול מתמחה גמיש",
       "checked": "2026-10-26"
     }
+  ],
+  "derived_from": [
+    "CAT-58"
   ]
 }

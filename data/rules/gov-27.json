@@ -1,0 +1,61 @@
+{
+  "id": "GOV-27",
+  "title": "Record date (מועד קובע לזכאות) of the 2006 government bond types: the end of the 20th of the payment month",
+  "title_he": "המועד הקובע לזכאות בסוגי האג״ח הממשלתיות של 2006: סוף היום ה־20 בחודש התשלום",
+  "text_he": "בסוגים ״אג״ח ממשלתית״ ו״אג״ח ממשלתית צמודה״, מי שקונה אחרי המועד הקובע לזכאות לא מקבל את הריבית של אותה תקופה. לפי התקנות משנת 2006 של שני הסוגים האלה, המועד הקובע הוא סוף היום ה־20 בחודש התשלום. אותו מועד קובע נקבע גם בתקנות משנת 2006 של ״אג״ח ממשלתית בריבית משתנה״.",
+  "strength": "primary",
+  "dimensions": [
+    "distribution-policy"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-11-15",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית צמודה״), התשס״ו-2006",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.4 (gazette p.402), reg. 1",
+      "locator_he": "עמוד הקובץ 4 (עמוד הרשומות 402), תקנה 1",
+      "page": 4,
+      "checked": "2026-11-15",
+      "qualifier": "(read on the page images)"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=6",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file pp.6-8 (gazette pp.404-406), reg. 1",
+      "locator_he": "עמודי הקובץ 6 עד 8 (עמודי הרשומות 404 עד 406), תקנה 1",
+      "page": 6,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=2",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.2-3, regs. 1, 5(ג), 8",
+      "locator_he": "עמודים 2 עד 3, תקנות 1, 5(ג), 8",
+      "page": 2,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "GOV-11",
+    "GOV-13",
+    "GOV-14"
+  ]
+}

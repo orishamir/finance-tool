@@ -1,0 +1,94 @@
+{
+  "id": "MF-77",
+  "title": "Kesem fund 5138565 (2026): its index held 12 securities on 26.8.2026, the five largest 60.22%",
+  "title_he": "קסם, קרן 5138565: כמה ניירות ערך נשארו במדד קרוב לסוף",
+  "text_he": "לפי דיווח של קסם, במדד של קרן 5138565, קרן שקלית שמסתיימת ב־2026, היו ב־{MF-77:index_date} רק {MF-77:holdings} ניירות ערך, וחמשת הגדולים שקלו {MF-77:top_five}. זה נתון על מדד אחד בתאריך אחד. לפי קריאה של האתר, קרן שמתקרבת לסוף מחזיקה פחות סדרות, כי סדרות שנפדות יוצאות מהמדד.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-07-01",
+  "figures": {
+    "holdings": {
+      "value": 12,
+      "unit": "count",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rhtm/1766001-1767000/H1766613.htm",
+        "title": "קסם, דיווח ריכוזיות מדד, 27.8.2026",
+        "publisher": "קסם קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-77"
+      ],
+      "state": "sourced",
+      "notes": "ניירות ערך במדד של קרן 5138565, ב־26.8.2026"
+    },
+    "top_five": {
+      "value": 60.22,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rhtm/1766001-1767000/H1766613.htm",
+        "title": "קסם, דיווח ריכוזיות מדד, 27.8.2026",
+        "publisher": "קסם קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-77"
+      ],
+      "state": "sourced",
+      "notes": "משקל חמשת הגדולים במדד של קרן 5138565, ב־26.8.2026"
+    },
+    "index_date": {
+      "value": "2026-08-26",
+      "unit": "text",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rhtm/1766001-1767000/H1766613.htm",
+        "title": "קסם, דיווח ריכוזיות מדד, 27.8.2026",
+        "publisher": "קסם קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-77"
+      ],
+      "state": "sourced",
+      "notes": "תאריך הנתונים על המדד של קרן 5138565"
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-11-23",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "kesem",
+      "name_he": "קסם קרנות נאמנות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rhtm/1766001-1767000/H1766613.htm",
+      "title": "Kesem, report of 27.8.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-02"
+    }
+  ]
+}

@@ -1,14 +1,14 @@
 {
   "id": "BRK-65",
-  "title": "Interactive Israel: Tel Aviv trading only for a limited company with a withholding exemption, and no Israeli mutual fund for a private client",
-  "title_he": "אינטראקטיב ישראל: מסחר בבורסת תל אביב רק לחברה בע״מ, ובלי קרנות ישראליות ללקוח פרטי",
+  "title": "Interactive Israel: Tel Aviv trading only for a limited company with a withholding exemption",
+  "title_he": "מסחר בבורסת תל אביב באינטראקטיב ישראל: רק לחברה בע״מ עם פטור מניכוי מס במקור",
   "strength": "institution",
   "dimensions": [
     "eligibility"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-02-12",
-  "text_he": "לפי תשובה בכתב של אינטראקטיב ישראל מ־15.11.2026, מסחר בבורסת תל אביב אפשרי אצלה רק לחשבון של חברה בע״מ. החברה צריכה להגיש לה אישור פטור מניכוי מס במקור מרשות המסים. בעמודים באתר שלה כתוב פעם שהמסחר הזה ללקוחות מוסדיים בלבד, ופעם שהוא גם לחברות ולאנשים פרטיים עם פטור כזה. לפי רשות המסים, ככלל אדם פרטי לא מקבל פטור כזה, אלא במקרים חריגים, כמו מי שעוסק בשוק ההון כעסק. גם קרן נאמנות ישראלית, כולל קרן מחקה, לקוח פרטי לא יכול לקנות שם. לפי תנאי השימוש שלה, החשבון וכל הוראת קנייה הם אצל אינטראקטיב ברוקרס. ברשימת הקרנות שאינטראקטיב ברוקרס מציעה למי שגר בישראל אין קרן ישראלית ואין קרן בשקלים. יחידות של קרן ישראלית קונים דרך חבר בבורסה בתל אביב, ושתי החברות לא נמצאות ברשימת חברי הבורסה.",
+  "text_he": "לפי תשובה בכתב של אינטראקטיב ישראל מ־15.11.2026, מסחר בבורסת תל אביב אפשרי אצלה רק לחשבון של חברה בע״מ. החברה צריכה להגיש לה אישור פטור מניכוי מס במקור מרשות המסים. לדברי אינטראקטיב ישראל, אישור כזה יש רק לישראלים שיש להם חברה בע״מ. לפי רשות המסים, ככלל אדם פרטי לא מקבל פטור כזה, אלא במקרים חריגים, כמו מי שעוסק בשוק ההון כעסק.",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-11-15",
   "scope": "institution",
@@ -19,34 +19,6 @@
     }
   ],
   "sources": [
-    {
-      "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
-      "title": "תעריף עמלות מסחר - אינטראקטיב ישראל",
-      "title_he": "תעריף עמלות מסחר - אינטראקטיב ישראל",
-      "publisher": "Interactive Israel",
-      "publisher_he": "אינטראקטיב ישראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.5",
-      "locator_he": "עמוד 5",
-      "page": 5,
-      "quote": "קרנות נאמנות",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf",
-      "title": "מסלקת הבורסה: חוקי העזר, חלק ב",
-      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק ב'",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
-      "strength": "institution",
-      "locator": "p.89",
-      "locator_he": "עמוד 89",
-      "page": 89,
-      "quote": "חבר משמורן, שאינו חבר בורסה, אינו רשאי להגיש הזמנות ליצירה או הוראות לפדיון",
-      "checked": "2026-11-12"
-    },
     {
       "url": "https://github.com/orishamir/finance-tool/blob/main/docs/company-answers.md#interactive-israel-2026-11-15",
       "title": "אינטראקטיב ישראל: תשובה בכתב במייל, 15.11.2026",
@@ -89,50 +61,9 @@
       "strength": "institution",
       "quote": "באינטראקטיב ישראל, קנייה ומכירה של ניירות ערך ישראליים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד",
       "checked": "2026-11-12"
-    },
-    {
-      "url": "https://www.inter-il.com/terms-and-conditions/",
-      "title": "אינטראקטיב ישראל: תנאי שימוש",
-      "title_he": "אינטראקטיב ישראל: תנאי שימוש",
-      "publisher": "Interactive Israel",
-      "publisher_he": "אינטראקטיב ישראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "shall mean the IB’s online trading platform located at where you can trade in financial instruments and where your Client Account is located",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://www.inter-il.com/order-execution-policy-oct-2023-2/",
-      "title": "אינטראקטיב ישראל: מדיניות ביצוע הוראות",
-      "title_he": "אינטראקטיב ישראל: מדיניות ביצוע הוראות",
-      "publisher": "Interactive Israel",
-      "publisher_he": "אינטראקטיב ישראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "The Company routes client orders for execution to another broker, Interactive Brokers",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://market.tase.co.il/he/about_tase/tase_members/tase_members_list",
-      "title": "הבורסה לניירות ערך בתל אביב: רשימת חברי הבורסה",
-      "title_he": "הבורסה לניירות ערך בתל אביב: רשימת חברי הבורסה",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "dataset",
-      "strength": "institution",
-      "quote": "הרשימה לא כוללת חברים משמורנים",
-      "checked": "2026-11-12"
-    },
-    {
-      "url": "https://market.tase.co.il/he/about_tase/tase_members/tasech_members_list",
-      "title": "הבורסה לניירות ערך בתל אביב: רשימת חברי מסלקת הבורסה",
-      "title_he": "הבורסה לניירות ערך בתל אביב: רשימת חברי מסלקת הבורסה",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "dataset",
-      "strength": "institution",
-      "quote": "חבר משמורן (אינו פועל במסחר כחבר)",
-      "checked": "2026-11-12"
     }
+  ],
+  "derived_from": [
+    "TXS-42"
   ]
 }

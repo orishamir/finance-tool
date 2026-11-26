@@ -1,0 +1,48 @@
+{
+  "id": "BND-15",
+  "title": "A fund on a bond index keeps replacing its bonds: the index drops bonds before or at redemption and adds new ones, and the fund must follow it at all times",
+  "title_he": "קרן על מדד אג״ח מחליפה כל הזמן את איגרות החוב שלה",
+  "text_he": "לפי הוראה של רשות ניירות ערך, קרן מחקה חייבת להחזיק בכל עת נכסים שיוצרים חשיפה במתאם גבוה למדד שהיא עוקבת אחריו. כללי המדדים של הבורסה מוציאים איגרות מהמדד לפני הפדיון או בו, ומכניסים איגרות חדשות. לפי קריאה של האתר בשני אלה, קרן על מדד אג״ח מוכרת את האיגרות שיוצאות וקונה את אלה שנכנסות, ולכן האיגרות שלה מתחדשות כל הזמן ואין לה מועד פדיון משלה. החריג הוא מדד שמסתיים כשהאיגרת האחרונה בו נפדית, ואיתו הקרנות שעליו.",
+  "strength": "primary",
+  "dimensions": [
+    "rate-sensitivity",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-18",
+  "il_finance_file": "bond-behaviour.md",
+  "checked": "2026-11-18",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf#page=1",
+      "title": "הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה, update 3 (15.10.2024)",
+      "title_he": "הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "על מנהל הקרן להחזיק, בכל עת, בנכסים היוצרים חשיפה במתאם גבוה לנכס המעקב",
+      "checked": "2026-11-18",
+      "qualifier": "(fetched again at its address 2026-11-18, byte-identical to library copy ce7b1bbac7f8e5c2; read on the page image)"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf#page=5",
+      "title": "הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה, update 3 (15.10.2024)",
+      "title_he": "הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (עדכון 3, 15.10.2024)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.5, s.9(א)",
+      "locator_he": "עמוד 5, סעיף 9(א)",
+      "page": 5,
+      "quote": "חשיפה לאג״ח שיוצא לפדיון מיום גריעת האג״ח מהמדד ועד ליום התשלום בפועל לא תהווה חריגה מהוראות הדין",
+      "checked": "2026-11-18",
+      "qualifier": "(fetched again at its address 2026-11-18, byte-identical to library copy ce7b1bbac7f8e5c2; read on the page image)"
+    }
+  ]
+}

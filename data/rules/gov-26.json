@@ -1,0 +1,30 @@
+{
+  "id": "GOV-26",
+  "title": "Bank of Israel: makam is \"considered a risk-free investment with a yield known in advance\"",
+  "title_he": "בנק ישראל: מק״מ נחשב להשקעה חסרת סיכון עם תשואה ידועה מראש",
+  "text_he": "בנק ישראל מתאר מק״מ כנייר ערך שהוא מנפיק בניכיון, לתקופה של עד שנה. לפי בנק ישראל, מק״מ ״נחשב להשקעה חסרת סיכון עם תשואה ידועה מראש״.",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/",
+      "title": "בנק ישראל: מק\"ם",
+      "title_he": "בנק ישראל: מק\"ם",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "GOV-02",
+    "GOV-03"
+  ]
+}

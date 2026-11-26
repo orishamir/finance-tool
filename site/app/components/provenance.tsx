@@ -13,7 +13,7 @@ import { isOpenValue, isParameter, isWeak, strengthOf, type SiteValue, type Stre
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconClock, IconDrillIn, IconFile, IconLock, IconPencil } from "./icons";
 import { Sheet } from "./Sheet";
-import { cx, Disclosure, Tag } from "./ui";
+import { Button, cx, Disclosure, Tag } from "./ui";
 import { CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
 import { decodedPart } from "../lib/address-hash";
@@ -21,7 +21,7 @@ import { useHydrated } from "../lib/hooks";
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string; /** After the line: the chip of the rules it rests on (a "?" with a sentence of its own and its rules). */ rules?: readonly string[]; /** After the lead: sentences of the sheet's own, each with what it is about and the document it rests on (why an account sells no fund on an index, a sentence and a source for each kind of fund). */ parts?: readonly SheetPart[] } | { kind: "formula"; id: string } | { kind: "question"; id: string } | { kind: "proof"; id: string } | { kind: "proofs"; ids: readonly string[] };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string; /** The rules the place the figure was opened from already opens (`opensAround`): its sheet leaves their chips out. */ shown?: readonly string[] } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string; /** After the line: the chip of the rules it rests on (a "?" with a sentence of its own and its rules). */ rules?: readonly string[]; /** After the lead: sentences of the sheet's own, each with what it is about and the document it rests on (why an account sells no fund on an index, a sentence and a source for each kind of fund). */ parts?: readonly SheetPart[] } | { kind: "formula"; id: string } | { kind: "question"; id: string } | { kind: "proof"; id: string } | { kind: "proofs"; ids: readonly string[] };
 
 /** One sentence of a sheet's own text (`Item` "terms", `parts`): what it is about, the sentence, and the document it rests on. */
 export interface SheetPart {
@@ -54,7 +54,7 @@ export interface ProvenanceData {
   /** Where each rule is used (the rules pages fill it): pages that show it, and whether the calculation engine reads it. */
   ruleUses?: Record<string, RuleUses>;
   /** Per formula, its Hebrew name and the site parameters it uses (the formula sheet). A page that does not pass it still gets the name from `formulaNames`. */
-  formulas?: Record<string, { name: string; parameters: string[]; /** The math docs/method.md writes for it, in order (`loadFormulaTex`). */ tex?: string[] }>;
+  formulas?: Record<string, { name: string; parameters: string[]; /** The math docs/method.md writes for it, in order (`loadFormulaTex`). */ tex?: string[]; }>;
   /** Per id a card on /parameters answers to: `P-01` to itself, an `A-01` that is an input of a card to that card. PageShell fills it for every page. */
   parameters?: Record<string, string>;
   /**
@@ -125,6 +125,18 @@ function usePreloadSheets(): void {
 /** Set by a provider for what it holds: a provider inside it is nested (a deal's popup, which reads the fee page's data). */
 const NestedCtx = createContext(false);
 
+/**
+ * How much room the provenance sheet takes, by what it opened to show (`roomOf`): a card (a sourced figure, a rule, a term), or more for a
+ * computed figure, whose working holds a line of math with its values, the key to its symbols, or the lines of a difference or a sum:
+ * taller on a phone and wider and taller on a computer.
+ */
+const SHEET_ROOM = {
+  card: { height: 70, size: "card", className: "lg:max-h-[60vh] lg:backdrop:bg-transparent" },
+  calculation: { height: 80, size: "roomy", className: "lg:backdrop:bg-transparent" },
+} as const satisfies Record<string, { height: 70 | 80; size: "card" | "roomy"; className: string }>;
+
+const roomOf = (item: Item | undefined): keyof typeof SHEET_ROOM => (item?.kind === "value" && item.value.state === "computed" ? "calculation" : "card");
+
 export function ProvenanceProvider({ data, children }: { data: ProvenanceData; children: ReactNode }) {
   // A nested provider's sheet opens over the sheet that holds it, which then closes as a dialog (sheet-stack): drawn inside that sheet, it
   // would close with it, out of sight yet modal, and leave the whole page inert. So it is drawn at the body's end, once in the browser.
@@ -157,8 +169,10 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   const push = useCallback((item: Item) => setStack((s) => [...s, item]), []);
   const headId = useId();
   const descId = useId();
+  // the sheet takes its room from what it opened to show, and keeps it while a card opened from inside replaces it and on the way back
+  const room = SHEET_ROOM[roomOf(stack[0])];
   const sheet = (
-    <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={70} className="lg:max-h-[60vh] lg:backdrop:bg-transparent" labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
+    <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={room.height} size={room.size} className={room.className} labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
       {top && code && <code.SheetContent item={top} data={data} headId={headId} descId={descId} />}
     </Sheet>
   );
@@ -308,10 +322,30 @@ function ShortText({ text, className }: { text: string; className: string }) {
 /**
  * What a figure's sheet opens with. A value that is not a number (a word, yes or no, or empty) heads its sheet with the word the figure was
  * shown as, so the sheet never prints the record's raw value: the linkage and tax sheets on every deposit card headed with "none" and
- * "unlinked_15". A number keeps its digits, exact or rounded as shown.
+ * "unlinked_15". A number keeps its digits, exact or rounded as shown. `shown`: the rules the place it was opened from opens (`opensAround`).
  */
-export function valueItem(value: SiteValue, written: string | undefined, exact: boolean): Item {
-  return { kind: "value", value, ...(exact ? { exact: true } : {}), ...(typeof value.value !== "number" && written ? { display: written } : {}) };
+export function valueItem(value: SiteValue, written: string | undefined, exact: boolean, shown: readonly string[] = []): Item {
+  return { kind: "value", value, ...(exact ? { exact: true } : {}), ...(typeof value.value !== "number" && written ? { display: written } : {}), ...(shown.length ? { shown } : {}) };
+}
+
+/** The ids an element's `data-opens` names, space-separated. */
+const opensOf = (el: Element): string[] => (el.getAttribute("data-opens") ?? "").split(/\s+/).filter(Boolean);
+
+/**
+ * The rules the place a figure is tapped in already opens, which its sheet then leaves out. The place is the closest element marked
+ * `data-opens-scope` (a rule's card, a /rules fact row, a section of a company's card) and, outside a sheet only, else the paragraph or list
+ * item the figure stands in. Every element that opens a rule carries `data-opens` with its ids (a phrase that states it, a chip, a row
+ * of a list of rules), and a scope may carry the id it is about itself. Inside a sheet only an explicit scope inside that sheet counts, so a
+ * computed figure's input keeps its chips. No place, no ids.
+ */
+export function opensAround(el: Element, insideSheet: boolean): string[] {
+  const sheet = insideSheet ? el.closest("dialog") : null;
+  const marked = el.closest("[data-opens-scope]");
+  const scope = insideSheet ? (marked && (!sheet || sheet.contains(marked)) ? marked : null) : (marked ?? el.closest("p, li"));
+  if (!scope) return [];
+  const ids = new Set(opensOf(scope));
+  for (const n of scope.querySelectorAll("[data-opens]")) for (const id of opensOf(n)) ids.add(id);
+  return [...ids];
 }
 
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
@@ -319,6 +353,7 @@ export function Num({ value: given, size = "inline", display, animate, className
   const ownPage = useContext(OwnCompanyCtx);
   const value = ownPage && !given.own && strengthOf(given) === "institution" ? { ...given, own: "page" } : given;
   const open = useOpen();
+  const inside = useContext(InsideSheetCtx);
   const today = useContext(TodayCtx);
   const staleSaid = useContext(StaleSaidCtx);
   const aheadSaid = useAheadSaid();
@@ -377,7 +412,7 @@ export function Num({ value: given, size = "inline", display, animate, className
       type="button"
       className={cx("num", `num-${value.state}`, doubt && "num-doubt", size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", oneLine && "whitespace-nowrap", className)}
       aria-label={label}
-      onClick={(e) => open(valueItem(value, fullWord ?? written, keepDecimals), e.currentTarget)}
+      onClick={(e) => open(valueItem(value, fullWord ?? written, keepDecimals, opensAround(e.currentTarget, inside)), e.currentTarget)}
     >
       {value.stale && !staleSaid && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {(fromDate || markWeak || doubt) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
@@ -545,6 +580,19 @@ function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
   );
 }
 
+/**
+ * The way from a figure's working to its formula's own sheet (every line the entry draws, its key and the site parameters it uses): a quiet
+ * line of words at the end of the working, which opens that sheet in place of the figure's, with the way back.
+ */
+export function FormulaLink({ id }: { id: string }) {
+  const open = useOpen();
+  return (
+    <Button variant="quiet" flush size="sm" className="self-start" onClick={(e) => open({ kind: "formula", id }, e.currentTarget)}>
+      {copy.computed.toFormula}
+    </Button>
+  );
+}
+
 export function IdRef(props: { id: string; className?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
   return <ChipEnd chip={<IdChip {...props} />} end={props.end} />;
 }
@@ -564,7 +612,7 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   if (kind === "proof" && !asLabel) return <ProofsChip ids={[id]} className={className} />;
   // an open question's chip says a word, not its code: the sentence around it says "שאלה פתוחה", the sheet says which
   const title = titled && kind === "question" ? questionOf(data, shown)?.title_he : undefined;
-  const ruleName = rule ? ruleTitle(rule) : undefined;
+  const ruleName = rule && data ? ruleTitle(rule, data) : undefined;
   let card: string | undefined;
   if (kind === "parameter") card = data?.parameters ? data.parameters[id] : id;
   if (kind === "assumption") card = data?.parameters?.[id];
@@ -585,7 +633,7 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   const aria = kind === "rule" ? (rule ? `${ruleCopy.title}: ${words}` : ruleCopy.title) : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed}: ${words}` : kind === "question" ? copy.idRef.question : `${copy.idRef.formula}: ${words}`;
   const item: Item = kind === "question" ? { kind: "question", id: shown } : { kind: kind as "rule" | "formula", id: shown };
   return (
-    <button type="button" className={cx("rule-chip", long && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
+    <button type="button" className={cx("rule-chip", long && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria} data-opens={kind === "rule" ? shown : undefined}>
       {chip}
     </button>
   );
@@ -631,7 +679,7 @@ export function RuleRef({ id, className, end }: { id: string; className?: string
     <ChipEnd
       end={end}
       chip={
-        <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`}>
+        <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`} data-opens={id}>
           <bdi className="whitespace-nowrap">{name}</bdi>
         </button>
       }
@@ -713,10 +761,10 @@ export function RuleTitleRow({ id, scope = true, className }: { id: string; /** 
   const data = useContext(DataCtx);
   const rule = ruleOf(data, id);
   // a record the page does not hold: the row still opens the card, which says so
-  if (!rule) return <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} className={className}>{ruleCopy.title}</TitleRow>;
-  const title = ruleTitle(rule);
+  if (!rule || !data) return <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} opens={id} className={className}>{ruleCopy.title}</TitleRow>;
+  const title = ruleTitle(rule, data);
   return (
-    <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} under={scope && !isGeneral(rule) ? scopeTag(rule, data?.ownDocs, { company: data?.company }) : undefined} className={className}>
+    <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} opens={id} under={scope && !isGeneral(rule) ? scopeTag(rule, data.ownDocs, { company: data.company }) : undefined} className={className}>
       {title.english ? <bdi dir="ltr">{title.text}</bdi> : gershayim(title.text)}
     </TitleRow>
   );
@@ -741,11 +789,11 @@ export function RuleTitleList({ ids, className }: { ids: readonly string[]; clas
 
 /**
  * A row of a list whose row is the thing itself (a rule, a proof): its title in the link colour opens it, with a drill-in arrow and an
- * optional line under the title. The whole row is one button, at least 44 px.
+ * optional line under the title. The whole row is one button, at least 44 px. `opens`: the rule a rule's row opens (`opensAround`).
  */
-export function TitleRow({ children, under, onClick, className }: { children: ReactNode; under?: string; onClick: (e: MouseEvent<HTMLButtonElement>) => void; className?: string }) {
+export function TitleRow({ children, under, onClick, opens, className }: { children: ReactNode; under?: string; onClick: (e: MouseEvent<HTMLButtonElement>) => void; opens?: string; className?: string }) {
   return (
-    <button type="button" onClick={onClick} className={cx("group flex w-full min-h-target items-center gap-3 py-2 text-start text-sm", className)}>
+    <button type="button" onClick={onClick} data-opens={opens} className={cx("group flex w-full min-h-target items-center gap-3 py-2 text-start text-sm", className)}>
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="text-link group-hover:underline leading-snug [overflow-wrap:anywhere]">{children}</span>
         {under && <span className="text-xs text-muted-foreground">{under}</span>}
@@ -775,6 +823,7 @@ function TapWords({ item, look, prefix, data, children }: { item: Item; look: st
       className={look}
       data-tap={tap}
       data-term={data}
+      data-opens={item.kind === "rule" ? item.id : item.kind === "rules" ? item.ids.join(" ") : undefined}
       onClick={(e) => open(item, e.currentTarget)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {

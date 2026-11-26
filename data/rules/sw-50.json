@@ -1,8 +1,8 @@
 {
   "id": "SW-50",
-  "title": "Bank Leumi and Mizrahi Tefahot: a free clearing-house report through the bank",
-  "title_he": "לאומי ומזרחי טפחות: דוח מסלקה בלי עלות",
-  "text_he": "בנק לאומי מציע את דוח המסלקה בלי עלות ללקוחות פרטיים של כל בנק מגיל בגרות, פעם אחת ללקוח. ההרשמה מסתיימת באתר המסלקה, ושם מזינים כרטיס אשראי לזיהוי בלבד. המידע זמין לצפייה חודשים ספורים בלבד. מזרחי טפחות מממן את מלוא עלות הפנייה למסלקה, אבל מרוויח עמלות הפצה על הייעוץ. בנקים אחרים לא נבדקו.",
+  "title": "Bank Leumi: a free clearing-house report",
+  "title_he": "דוח מסלקה בלי עלות דרך בנק לאומי",
+  "text_he": "בנק לאומי מציע את דוח המסלקה בלי עלות ללקוחות פרטיים של כל בנק מגיל 18, פעם אחת ללקוח. ההרשמה מסתיימת באתר המסלקה, ושם מזינים כרטיס אשראי לזיהוי בלבד, לא לחיוב. המידע זמין לצפייה {SW-50:leumi_report_available_months} בלבד.",
   "figure_names_he": {
     "leumi_report_available_months": "חודשים שבהם דוח המסלקה זמין לצפייה (לאומי)"
   },
@@ -42,10 +42,6 @@
     {
       "id": "leumi",
       "name_he": "בנק לאומי"
-    },
-    {
-      "id": "mizrahi-tefahot",
-      "name_he": "בנק מזרחי טפחות"
     }
   ],
   "sources": [
@@ -58,17 +54,6 @@
       "kind": "institution_doc",
       "strength": "institution",
       "quote": "המידע יהיה זמין לצפייה במשך שלושה חודשים בלבד",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.mizrahi-tefahot.co.il/brokerage/pension/pension-consulting/",
-      "title": "מזרחי טפחות – ייעוץ פנסיוני",
-      "title_he": "מזרחי טפחות – ייעוץ פנסיוני",
-      "publisher": "Mizrahi Tefahot Bank",
-      "publisher_he": "בנק מזרחי טפחות",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "הבנק מממן את מלוא עלות הפנייה למסלקה",
       "checked": "2026-10-25"
     }
   ],

@@ -1280,7 +1280,7 @@
             "update_rule": "provider-set",
             "rule_ids": [
               "BRK-16",
-              "BRK-68"
+              "BRK-85"
             ],
             "state": "sourced",
             "notes": "The step's top, in dollars, as the list prints it."
@@ -1313,7 +1313,7 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-68",
+              "BRK-85",
               "BRK-16"
             ],
             "state": "sourced",
@@ -1337,7 +1337,7 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-68",
+              "BRK-85",
               "BRK-16"
             ],
             "state": "sourced",
@@ -1370,7 +1370,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-68",
+            "BRK-85",
             "BRK-16"
           ],
           "state": "sourced",
@@ -1393,7 +1393,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-68",
+            "BRK-85",
             "BRK-16"
           ],
           "state": "sourced",
@@ -1528,7 +1528,7 @@
             "rule_ids": [
               "BRK-16",
               "BRK-19",
-              "BRK-68"
+              "BRK-85"
             ],
             "state": "sourced",
             "notes": "The step's top, in dollars, as the list prints it: part 5, note (6) (p.14), which names no channel; annex E (p.48) prints none of its own. Annex E's internet price is the clerk's with its discount column (3.00 $ there, 2.85 $ here), so the free step is free in the internet service too."
@@ -1561,7 +1561,7 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-68",
+              "BRK-85",
               "BRK-16",
               "BRK-19"
             ],
@@ -1586,7 +1586,7 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-68",
+              "BRK-85",
               "BRK-16",
               "BRK-19"
             ],
@@ -1620,7 +1620,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-68",
+            "BRK-85",
             "BRK-16",
             "BRK-19"
           ],
@@ -1644,7 +1644,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-68",
+            "BRK-85",
             "BRK-16",
             "BRK-19"
           ],
@@ -1682,7 +1682,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-18",
           "SW-33"
         ],
         "state": "sourced",

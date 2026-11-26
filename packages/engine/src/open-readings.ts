@@ -237,7 +237,8 @@ export function mergedLabels(results: readonly { labels?: readonly Label[] }[]):
 }
 
 /**
- * The rules every reading's result read, one per id in the order they first appear, each with the figures any reading read of it: a label
+ * The rules every reading's result read, one per id in the order they first appear, each with the figures any reading read of it and its
+ * uses merged by part and fee line (a use changed if it changed in any reading, with the figures of each): a label
  * taken from another reading never names a rule missing from `rules`, which the dimension checklist reads. The labels that may name a rule
  * no reading read are those of a tax-index case, whose rule may be open: the `cautious` label a split adds (`SplitPolicy`) and the `reading`
  * label of the site's own reading (`RuleBook.taxIndex`).
@@ -247,8 +248,19 @@ export function mergedRules(results: readonly { rules?: readonly UsedRule[] }[])
   for (const r of results) {
     for (const u of r.rules ?? []) {
       const seen = byId.get(u.id);
-      if (!seen) byId.set(u.id, { ...u, figures: [...u.figures] });
-      else for (const f of u.figures) if (!seen.figures.some((g) => g.name === f.name)) seen.figures.push(f);
+      if (!seen) {
+        byId.set(u.id, { ...u, figures: [...u.figures], uses: u.uses.map((x) => ({ ...x, figures: [...x.figures] })) });
+        continue;
+      }
+      for (const f of u.figures) if (!seen.figures.some((g) => g.name === f.name)) seen.figures.push(f);
+      for (const x of u.uses) {
+        const same = seen.uses.find((y) => y.part === x.part && y.line === x.line);
+        if (!same) seen.uses.push({ ...x, figures: [...x.figures] });
+        else {
+          same.changed ||= x.changed;
+          for (const name of x.figures) if (!same.figures.includes(name)) same.figures.push(name);
+        }
+      }
     }
   }
   return [...byId.values()];

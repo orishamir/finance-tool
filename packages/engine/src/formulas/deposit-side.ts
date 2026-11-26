@@ -89,7 +89,10 @@ export interface ReliefResult {
   credited: number;
   /** The credit for the new deposit, after the cap at the year's tax (`creditCap`). */
   credit: number;
-  /** The cap on the credit: the year's tax before the credit, after any deduction (TXP-01, TXP OQ20), and whether it bound. */
+  /**
+   * The cap on the credit: the year's tax before the credit, after any deduction (TXP-01, TXP OQ20), and whether it bound. On F-31 the
+   * brackets the tax is counted at (TXG-02) change the relief only where it bound: the caller takes them then.
+   */
   creditCap: { tax: number; binds: boolean; gap: YearTax["gap"] };
   /** s.47 deduction in two tiers (TXP-06) or the TXP-05 deduction (in `tier1`). */
   tier1: number;
@@ -172,6 +175,8 @@ export function employeeCredit(book: RuleBook, p: PensionRelief, gross: number, 
  * Not modelled (G-13): the extra 0.5% credit (TXP-07) and the enlarged deduction from age 50 (TXP-08,
  * 2026 amounts not found).
  * `forceBeneficiary` fixes the side of the beneficiary test, so that F-30 can solve each side on its own.
+ * `book` is the caller's relief view (`RuleBook.on`). The figures read before the side is known (TXP-03's threshold, TXP-06's second-tier
+ * extras) are looked at (`peek`) and taken on the side that uses them.
  */
 export function beneficiaryRelief(
   book: RuleBook,
@@ -180,7 +185,7 @@ export function beneficiaryRelief(
   tax: YearTax,
   forceBeneficiary?: boolean,
 ): ReliefResult {
-  const threshold = book.amount("TXP-03", "threshold");
+  const threshold = book.peek.amount("TXP-03", "threshold");
   const own = p.existingOwn + gross;
   const beneficiary = forceBeneficiary ?? own + p.employer >= threshold;
   const incomeCap = book.amount("TXP-02", "eligible_income_cap");
@@ -191,8 +196,8 @@ export function beneficiaryRelief(
   let tier2 = 0;
   let creditCap: number;
   // TXP-05 limb (1) and TXP-06 share the second-tier extras (TXP-31): 4% more above 12% of the income.
-  const extraPct = book.rate("TXP-06", "second_tier_extra_pct");
-  const above12 = book.rate("TXP-06", "second_tier_extra_above_pct");
+  const extraPct = book.peek.rate("TXP-06", "second_tier_extra_pct");
+  const above12 = book.peek.rate("TXP-06", "second_tier_extra_above_pct");
 
   if (beneficiary) {
     book.cite("TXP-03");
@@ -220,6 +225,7 @@ export function beneficiaryRelief(
     // that is not work income (up to 164,400) plus up to 4% of it on the part of the deposit above 12% of it.
     // The credit is on what is left, at the "no work income" 5% of TXP-02 (floor on money paid).
     book.cite("TXP-05");
+    book.took("TXP-06");
     const eligible = Math.min(p.taxableIncome, book.amount("TXP-05", "eligible_income_cap_non_work"));
     const base = book.rate("TXP-05", "deduction_pct_non_work");
     tier1 = Math.min(gross, base * eligible) + Math.min(extraPct * eligible, Math.max(0, gross - above12 * eligible));
@@ -252,19 +258,25 @@ export function beneficiaryRelief(
  * beneficiary-member side of TXP-03 that the answer falls on: the beneficiary side if its answer reaches
  * the threshold, else the other side. If the two sides leave the outlay between them, the beneficiary side
  * is returned and `gap` is true (the person would have to deposit exactly up to the threshold).
+ * Both sides are solved on reads that are only looked at (`peek`); the side returned is then worked once more on `book`, the caller's
+ * relief view, so that only its reads are uses that changed the relief.
  */
 export function grossForYear(book: RuleBook, p: PensionRelief, netYear: number, tax: YearTax) {
-  const threshold = book.amount("TXP-03", "threshold");
-  const solve = (beneficiary: boolean) => {
-    const f = (g: number) => (beneficiary ? beneficiaryRelief(book, p, g, tax, true) : employeeOrSelf(book, p, g, tax)).relief;
-    const gross = equalNetOutlay(netYear, f);
-    return { gross, result: beneficiary ? beneficiaryRelief(book, p, gross, tax, true) : employeeOrSelf(book, p, gross, tax) };
-  };
+  const trial = lookingOnly(book);
+  const threshold = book.peek.amount("TXP-03", "threshold");
+  const side = (on: RuleBook, beneficiary: boolean, g: number) => (beneficiary ? beneficiaryRelief(on, p, g, tax, true) : employeeOrSelf(on, p, g, tax));
+  const solve = (beneficiary: boolean) => equalNetOutlay(netYear, (g) => side(trial, beneficiary, g).relief);
+  const chosen = (beneficiary: boolean, gross: number, gap: boolean) => ({ gross, relief: side(book, beneficiary, gross), gap });
   const high = solve(true);
-  if (p.existingOwn + high.gross + p.employer >= threshold) return { gross: high.gross, relief: high.result, gap: false };
+  if (p.existingOwn + high + p.employer >= threshold) return chosen(true, high, false);
   const low = solve(false);
-  if (p.existingOwn + low.gross + p.employer < threshold) return { gross: low.gross, relief: low.result, gap: false };
-  return { gross: high.gross, relief: high.result, gap: true };
+  if (p.existingOwn + low + p.employer < threshold) return chosen(false, low, false);
+  return chosen(true, high, true);
+}
+
+/** `book` with every read only looked at (`peek`) and nothing taken: a trial whose reads change no number. */
+function lookingOnly(book: RuleBook): RuleBook {
+  return { ...book, ...book.peek, took: () => {} };
 }
 
 /** Below the beneficiary threshold: F-31 for a person with insured (employee) income, else the F-32 self-employed side. */

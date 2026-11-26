@@ -7,7 +7,6 @@
     "tase_member": false,
     "protection_rule_ids": [
       "PF-29",
-      "REG-18",
       "REG-19"
     ]
   },
@@ -48,7 +47,6 @@
         "rule_ids": [
           "PF-02",
           "PF-03",
-          "KGL-14",
           "KGL-16",
           "KGL-30"
         ],
@@ -103,8 +101,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "The bylaws bind the fee only up to the maximum the law sets (s.35.1.1 on the balance, s.35.1.2 on payments), recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee."
@@ -141,7 +138,6 @@
         "rule_ids": [
           "PF-02",
           "PF-03",
-          "KGL-14",
           "KGL-16",
           "KGL-30"
         ],
@@ -196,8 +192,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "The bylaws bind the fee only up to the maximum the law sets (s.35.1.1 on the balance, s.35.1.2 on payments), recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee."

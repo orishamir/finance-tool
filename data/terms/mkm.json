@@ -20,8 +20,8 @@
   "rule_ids": [
     "GOV-01",
     "GOV-03",
-    "GOV-22",
-    "GOV-23"
+    "GOV-23",
+    "GOV-26"
   ],
   "source": {
     "url": "https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/",

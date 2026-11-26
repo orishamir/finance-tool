@@ -91,7 +91,8 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
   // the account's change, the two as the page writes them (method §13): its size is shown, and its sign says less, more or the same
   const signedChange = values ? differenceOf([copy.account.figures.account, values.account], [copy.account.balance, balanceValue], "F-67", { today, about: copy.account.about.change }) : null;
   const moved = typeof signedChange?.value === "number" ? signedChange.value : 0;
-  const change = signedChange ? { ...signedChange, value: Math.abs(moved) } : null;
+  // the size of the change, as the larger of the two less the smaller, so its sheet's working comes to the figure shown
+  const change = values && moved < 0 ? differenceOf([copy.account.balance, balanceValue], [copy.account.figures.account, values.account], "F-67", { today, about: copy.account.about.change }) : signedChange;
   const direction = moved < 0 ? copy.account.headline.less : moved > 0 ? copy.account.headline.more : null;
 
   const paying = payingBanks(data);

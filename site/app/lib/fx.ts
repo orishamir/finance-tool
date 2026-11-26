@@ -2,10 +2,11 @@
 // The person never types a rate. NIS per one unit of any currency is a cross rate (method F-84):
 //   ILS per EUR / code per EUR   (EUR itself: ILS per EUR).
 // This file is pure (it runs in the browser); fx.server.ts reads the series file.
-import { crossRate } from "@finance-tool/engine";
+import { crossRate, type Stretch } from "@finance-tool/engine";
 import { isoCurrency } from "@finance-tool/schema";
 import { computed, type SiteValue } from "./value";
-import { signatureFacts } from "../copy";
+import type { FormulaWorking } from "./working";
+import { invest as investCopy, signatureFacts } from "../copy";
 import { daysBetween } from "./dates";
 import { fmt } from "./format";
 
@@ -67,7 +68,9 @@ export function nisPer(fx: FxSnapshot, code: string, today: string): SiteValue |
   });
   const inputs: Record<string, SiteValue> = { [signatureFacts.perEur("ILS")]: source("ILS") };
   if (c !== "EUR") inputs[signatureFacts.perEur(c)] = source(c);
-  const v = computed(n, "nis", "F-84", inputs, { today, about: fxLabel(fx), notes: fx.attribution });
+  // the euro's and the shekel's own rates are no division (`S_EUR = E_ILS`, `S_ILS = 1`); any other currency's is the line F-84 draws
+  const working = c === "EUR" || c === "ILS" ? undefined : crossRateWorking(c);
+  const v = computed(n, "nis", "F-84", inputs, { today, about: fxLabel(fx), notes: fx.attribution, ...(working ? { working } : {}) });
   const stale = daysBetween(fx.date, today) > fx.staleAfterDays ? { since: fx.date, cadence: "daily" as const } : null;
   return { ...v, stale };
 }
@@ -99,5 +102,48 @@ export function monthEndRate(history: FxHistory, point: FxHistory["points"][numb
     update_rule: "market",
     state: "sourced",
   });
-  return computed(point.rate, "nis", "F-84", { [signatureFacts.perEur("ILS")]: ecb(point.ils), [signatureFacts.perEur("USD")]: ecb(point.usd) }, { today, about, notes: history.attribution });
+  return computed(point.rate, "nis", "F-84", { [signatureFacts.perEur("ILS")]: ecb(point.ils), [signatureFacts.perEur("USD")]: ecb(point.usd) }, { today, about, notes: history.attribution, working: crossRateWorking("USD") });
+}
+
+/** F-84's line, `S_c = E_ILS / E_c`, for a currency other than the shekel and the euro: each ECB rate by the input that holds it. */
+function crossRateWorking(code: string): FormulaWorking {
+  return { kind: "formula", entry: "F-84", line: 0, symbols: { [signatureFacts.perEur("ILS")]: String.raw`E_{\text{ILS}}`, [signatureFacts.perEur(code)]: "E_c" } };
+}
+
+type MonthEnd = FxHistory["points"][number];
+
+/** A month end's shekels per dollar (F-84) as an input of a change of the dollar (F-93), under its month's name. */
+function rateInput(history: FxHistory, p: MonthEnd, today: string): [string, SiteValue] {
+  const label = investCopy.dollar.inputRate(fmt.period(p.date.slice(0, 7)));
+  return [label, monthEndRate(history, p, today, label)];
+}
+
+/** A change of the dollar in percent (F-93) as the page shows it: to the hundredth. */
+const dollarPct = (pct: number) => Math.round(pct * 100) / 100;
+
+/**
+ * F-93 (a) as the site's computed value: the dollar's change against the shekel in `year` (`pct`, the engine's, in percent), from the
+ * previous December's rate and that year's, each an input, its sheet working out the line `r_Dec(y) / r_Dec(y−1) − 1`. A year the series
+ * lacks either December for has no inputs.
+ */
+export function dollarYearChange(history: FxHistory, year: number, pct: number, today: string, about: string): SiteValue {
+  const december = (y: number) => history.points.find((p) => p.date.startsWith(`${y}-12`));
+  const a = december(year - 1), b = december(year);
+  if (!a || !b) return computed(dollarPct(pct), "pct", "F-93", {}, { today, about });
+  const [an, av] = rateInput(history, a, today);
+  const [bn, bv] = rateInput(history, b, today);
+  const working: FormulaWorking = { kind: "formula", entry: "F-93", line: 1, symbols: { [an]: String.raw`r_{\text{Dec}(y-1)}`, [bn]: String.raw`r_{\text{Dec}(y)}` } };
+  return computed(dollarPct(pct), "pct", "F-93", { [an]: av, [bn]: bv }, { today, about, working });
+}
+
+/**
+ * F-93 (b) as the site's computed value: the dollar's average yearly change over one stretch of the plan's years (`pct`, the engine's, in
+ * percent), from the rates at its two month ends and the years (`years`, the plan's input by its name), its sheet working out the line
+ * `(r_{t+12H} / r_t)^{1/H} − 1`.
+ */
+export function dollarStretchChange(history: FxHistory, stretch: Stretch<MonthEnd>, pct: number, years: readonly [name: string, value: SiteValue], today: string, about: string): SiteValue {
+  const [sn, sv] = rateInput(history, stretch.start, today);
+  const [en, ev] = rateInput(history, stretch.end, today);
+  const working: FormulaWorking = { kind: "formula", entry: "F-93", line: 2, symbols: { [sn]: "r_t", [en]: "r_{t+12H}", [years[0]]: "H" } };
+  return computed(dollarPct(pct), "pct", "F-93", { [sn]: sv, [en]: ev, [years[0]]: years[1] }, { today, about, working });
 }

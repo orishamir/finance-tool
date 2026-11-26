@@ -312,7 +312,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-16",
-          "BRK-38"
+          "BRK-74"
         ],
         "state": "sourced",
         "notes": "Part 11 (PDF page 17, read in the founder's Chrome with pdf.js on 2026-11-04 and checked against the page image): 'הוצאות קסטודיאן בחו\"ל, לרבות בגין אירועי חברה | בהתאם להוצאה הממשית | בעלות מרבית של עד 5,000 דולר ארה\"ב לחודש, ובעלות מרבית של עד 50 דולר ארה\"ב ללקוח לכל אירוע חברה'. Priced at its ceiling, 50 USD per corporate event (D56), charged on each dividend of a fund bought abroad that pays dividends (D67): the price list does not define 'אירוע חברה', and that a dividend is one is the site's reading, decided by the founder. The 5,000 USD a month is a ceiling the price list does not tie to one customer, so it is not priced."
@@ -356,7 +356,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-18",
           "SW-33"
         ],
         "state": "sourced",
@@ -402,7 +401,7 @@
           "BRK-16"
         ],
         "state": "sourced",
-        "notes": "'0.15 אחוז, מינימום 5 דולר ארה\"ב, מקסימום 3,000 דולר ארה\"ב', charged on execution. No channel split. The spread is not printed, and no general rule limits a conversion spread or says how it is disclosed (FXD OQ2, open); the spreads some non-bank price lists print beside or instead of the conversion fee are BRK-48. Under annex ו' the ONE and ONE PLUS plans are exempt from this fee (see the plan line). 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
+        "notes": "'0.15 אחוז, מינימום 5 דולר ארה\"ב, מקסימום 3,000 דולר ארה\"ב', charged on execution. No channel split. The spread is not printed, and no general rule limits a conversion spread or says how it is disclosed (FXD OQ2, open); the spreads some non-bank price lists print beside or instead of the conversion fee are BRK-48 and BRK-76. Under annex ו' the ONE and ONE PLUS plans are exempt from this fee (see the plan line). 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
       },
       "min": {
         "value": 5,

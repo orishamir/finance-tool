@@ -29,18 +29,22 @@ function incomeUsed(book: RuleBook, p: Profile): void {
 
 /**
  * Records that the age-60 brackets (F-42) lowered a tax below the flat rate: the run rests on the age, which brought them in, and on the
- * income, above which the slice starts. Brackets that give the flat rate (an income above the 20% band, a gain of nothing, A-14 off) change
- * nothing, and are not recorded.
+ * income, above which the slice starts, and the rules that bring them in (`took`, on the book given) changed the number. Brackets that give
+ * the flat rate (an income above the 20% band, a gain of nothing, A-14 off) change nothing, and are not recorded.
  */
-export function sixtyLowered(book: RuleBook, profile: Profile, tax: number, flat: number): void {
+export function sixtyLowered(book: RuleBook, profile: Profile, tax: number, flat: number, rules: readonly string[]): void {
   if (tax >= flat - 1e-9) return;
   book.profile("age");
   incomeUsed(book, profile);
+  for (const id of rules) book.took(id);
 }
 
-/** Whether the person reaches the age-60 rules' age (TXG-04) in the tax year containing month m. */
+/**
+ * Whether the person reaches the age-60 rules' age (TXG-04) in the tax year containing month m. The age is looked at (`peek`) whether or not
+ * the profile holds an age: the caller takes TXG-04 where its brackets change a tax.
+ */
 export function reachesSixty(book: RuleBook, profile: Profile, month: number, firstMonth = 1): boolean {
-  return reachesAgeInYear(profile, month, book.amount("TXG-04", "age"), firstMonth);
+  return reachesAgeInYear(profile, month, book.peek.amount("TXG-04", "age"), firstMonth);
 }
 
 /** Whether the person reaches the age in the tax year containing month m (TXG-04: "reached 60 in the tax year"). */
@@ -58,21 +62,23 @@ function reachesAgeInYear(profile: Profile, month: number, age: number, firstMon
 export function maxRateTax(book: RuleBook, profile: Profile, month: number, income: number, rate: number, firstMonth = 1) {
   const withheld = rate * Math.max(0, income);
   if (!reachesSixty(book, profile, month, firstMonth)) return { tax: withheld, withheld, atBrackets: false };
-  book.cite("TXS-23");
-  book.cite("TXG-07");
+  book.peek.cite("TXS-23");
+  book.peek.cite("TXG-07");
   // F-119: the brackets of the tax year the income falls in
-  const brackets = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, income), book.inYear(taxYearOf(month, firstMonth)).brackets("TXG-04", "brackets"), rate);
+  const brackets = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, income), book.inYear(taxYearOf(month, firstMonth)).peek.brackets("TXG-04", "brackets"), rate);
   const tax = profile.refundClaimed === false ? withheld : brackets;
-  sixtyLowered(book, profile, tax, withheld);
+  sixtyLowered(book, profile, tax, withheld, ["TXG-04", "TXS-23", "TXG-07"]);
   return { tax, withheld, atBrackets: true };
 }
 
 /**
  * F-43 Surtax owed because of `income` in tax year `year` of the run's grid (`taxYearOf`), in which `alreadyThisYear` of special-rate
  * income from the same run has been received: the surtax on the total less the surtax on what came before, at that year's threshold (F-119).
+ * TXG-09 and TXG-10 are looked at (`peek`) and taken on the book given only where the part the caller uses (`use`) is above 0: TXG-09 for
+ * the general surtax, TXG-10 for the one on capital income.
  */
-export function surtaxOn(book: RuleBook, profile: Profile, income: number, alreadyThisYear: number, year: number, markIncome = true) {
-  const ofYear = book.inYear(year);
+export function surtaxOn(book: RuleBook, profile: Profile, income: number, alreadyThisYear: number, year: number, markIncome = true, use: "both" | "general" | "onCapital" = "both") {
+  const ofYear = book.inYear(year).peek;
   const at = (x: number) =>
     surtax(
       otherIncomeOf(profile),
@@ -83,9 +89,13 @@ export function surtaxOn(book: RuleBook, profile: Profile, income: number, alrea
     );
   const before = at(Math.max(0, alreadyThisYear));
   const after = at(Math.max(0, alreadyThisYear) + Math.max(0, income));
+  const general = after.general - before.general;
+  const onCapital = after.onCapital - before.onCapital;
   // a caller whose `profile` holds an income it made up (F-47's 12 × salary) says so with `markIncome` and records the person's own itself
-  if (markIncome && after.general - before.general + after.onCapital - before.onCapital > 0) incomeUsed(book, profile);
-  return { general: after.general - before.general, onCapital: after.onCapital - before.onCapital };
+  if (markIncome && general + onCapital > 0) incomeUsed(book, profile);
+  if (use !== "onCapital" && general > 0) book.took("TXG-09");
+  if (use !== "general" && onCapital > 0) book.took("TXG-10");
+  return { general, onCapital };
 }
 
 /**

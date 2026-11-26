@@ -3,7 +3,7 @@
 // `InstrumentTerms`. Server-only. Nothing here holds a rate or a term: every number comes from a record under
 // `data/` and keeps its value object, so the values sheet can show its source.
 import { paysAtPlanEnd } from "./plan-end";
-import { invest as investCopy } from "../copy";
+import { computedInputs, invest as investCopy } from "../copy";
 import { exposurePath, guidePath } from "./site-paths";
 import { fundOf, gapListOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, saleOnlyRulingOf, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { feeAbsent, instrumentClassOf } from "./providers";
@@ -215,7 +215,7 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
     // F-14: a bank may not charge custody on makam (BRK-17); P-05's tariff names its provider, whose class says which it is
     const member = memberOf(src, spec.tariff);
     if (tariff && member) terms.memberKind = member;
-    // The series term is optional (GOV-22, GOV-23): read from the rule P-05 names, else the ledger's default.
+    // The series term is optional (GOV-23): read from the rule P-05 names, else the ledger's default.
     if (spec.series_rule) {
       const term = figure(src, spec.series_rule, "term_months");
       if (isNum(term) && term.unit === "months") {
@@ -453,7 +453,8 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
         ...spread,
         value: (spread.value as number) / 2,
         state: "computed",
-        computed_from: { formula: "A-08", inputs: { median_spread: spread.value, divisor: 2 } },
+        // the half is the assumption's own (its name says it), so the one input is the spread the fund publishes
+        computed_from: { formula: "A-08", inputs: { [computedInputs.fee.medianSpread]: { ...spread } } },
         notes: "half of the fund's published median spread (A-08)",
       };
     }
@@ -607,7 +608,8 @@ function buildTariff(
         value: tariff.monthlyFee,
         unit: "nis_per_month",
         state: "computed",
-        computed_from: { formula: "F-17", inputs: { fee_per_period: line.rate.value, months_per_period: every } },
+        // the months come from the period the price list prints for the line, so both inputs carry the line's source
+        computed_from: { formula: "F-17", inputs: { [computedInputs.fee.perPeriod]: { ...line.rate }, [computedInputs.fee.monthsPerPeriod]: { ...line.rate, value: every, unit: "months" } } },
         notes: `fee per ${line.period} divided by ${every} months (F-17 is a monthly fee)`,
       };
     } else missing.push(`${wrapperId}: ${snap.id} line ${line.id} is not a fee in NIS per month or per period`);
@@ -641,7 +643,8 @@ function buildIraFee(wrapperId: string, spec: InstrumentSpec, src: InstrumentSou
       value: (line.rate.value as number) * k,
       unit: "pct_per_year",
       state: "computed",
-      computed_from: { formula: "F-51", inputs: { rate_per_period: line.rate.value, periods_per_year: k } },
+      // the periods a year come from the period the price list prints for the line, so both inputs carry the line's source
+      computed_from: { formula: "F-51", inputs: { [computedInputs.fee.perPeriod]: { ...line.rate }, [computedInputs.fee.periodsPerYear]: { ...line.rate, value: k, unit: "count" } } },
       notes: `${line.period}ly rate times ${k} periods a year (simple, no compounding)`,
     };
     return pct(line.rate) * k;
@@ -700,7 +703,7 @@ export function regulatorAverageFees(
         update_rule: "fixed in regulation",
         state: "sourced",
         rule_ids: ["PF-06"],
-        notes: `השדה של ממוצע דמי הניהול מהפקדות ריק בנתוני רשות שוק ההון למסלול ${spec.track}. בסוג הקופה הזה התקנות מתירות דמי ניהול מהיתרה בלבד (PF-06), ולכן החישוב לוקח 0.`,
+        notes: investCopy.depositFeeNoneByRule(spec.track),
       };
   } else missing.push(`${wrapperId}: track ${spec.track} reports no average deposit fee (tariff fees)`);
   if (missing.length > 0) return { missing };

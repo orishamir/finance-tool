@@ -33,7 +33,7 @@
         "PEN-47"
       ],
       "state": "sourced",
-      "notes": "Mor's bylaws s.45.1; out of date: circular 2017-9-15 sets five years (PEN-25)."
+      "notes": "Mor's bylaws s.45.1; out of date: circular 2017-9-15 sets five years (PF-13)."
     },
     "early_raise_notice_window": {
       "value": 3,
@@ -102,6 +102,6 @@
     }
   ],
   "derived_from": [
-    "PEN-25"
+    "PF-13"
   ]
 }

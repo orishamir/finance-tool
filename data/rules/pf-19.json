@@ -2,9 +2,10 @@
   "id": "PF-19",
   "title": "Transfer deadline 10 business days; late-transfer compensation from the manager's fees; no transfer fee",
   "title_he": "מועד ההעברה, פיצוי על איחור, ואין עמלת העברה",
-  "text_he": "הקופה המעבירה מעבירה את היתרה בתוך ימי העסקים להעברה בין קופות, מהיום שקיבלה בקשה מפורטת, חתומה ומלאה. הממונה רשאי להאריך במקרים מיוחדים. אם הקופה המעבירה איחרה, היא משלמת לקופה המקבלת ריבית פיגורים מתוך דמי הניהול שהיא גובה, ואת הפרש התשואה אם הוא גדול יותר, לזכות העמית. אם הקופה המקבלת איחרה, היא מזכה את העמית מדמי הניהול שלה. ההעברה נעשית ישירות בין הגופים, ולא דרך העמית. התקנות לא קובעות עמלת העברה. ביחד עם הכלל על רשימת החיובים הסגורה, המשמעות היא שאסור לגבות עמלת העברה. העברה החוצה מתירה לחברה לסיים הנחה בדמי ניהול מוקדם, בהודעה לעמית במסמך נפרד.",
+  "text_he": "הקופה המעבירה מעבירה את היתרה ישירות לקופה המקבלת, ולא דרך העמית, בתוך {PF-19:transfer_business_days} מהיום שקיבלה בקשה מפורטת, חתומה ומלאה, והממונה רשאי להאריך בעד {PF-19:commissioner_extension_business_days} במקרים מיוחדים. קופה מעבירה שאיחרה משלמת לקופה המקבלת ריבית פיגורים מתוך דמי הניהול שהיא גובה, ואת הפרש התשואה אם הוא גדול יותר, לזכות העמית, וקופה מקבלת שאיחרה מזכה את העמית מדמי הניהול שלה. התקנות לא קובעות עמלת העברה, ולכן לפי רשימת החיובים הסגורה אסור לגבות אותה. העברה החוצה מתירה לחברה לסיים הנחה בדמי ניהול מוקדם, בהודעה לעמית במסמך נפרד.",
   "figure_names_he": {
-    "transfer_business_days": "ימי עסקים להעברה בין קופות"
+    "transfer_business_days": "ימי עסקים להעברה בין קופות",
+    "commissioner_extension_business_days": "ימי עסקים נוספים שהממונה רשאי להתיר"
   },
   "strength": "primary",
   "dimensions": [
@@ -32,6 +33,26 @@
       ],
       "state": "sourced",
       "notes": "From a complete, signed request; the Commissioner may approve up to 20 more business days in special cases."
+    },
+    "commissioner_extension_business_days": {
+      "value": 20,
+      "unit": "business_days",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (קובץ התקנות 6657), p.6, reg. 5(א)",
+        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-19"
+      ],
+      "state": "sourced",
+      "notes": "The Commissioner may allow up to twenty more business days in special cases (reg. 5(א))."
     }
   },
   "il_finance_file": "provident-family-common.md",

@@ -1,0 +1,111 @@
+{
+  "id": "BRK-78",
+  "title": "Meitav Trade: charges abroad its tariff notes without an amount, and its prices for a trade abroad",
+  "title_he": "מחירי מסחר בחו״ל וחיובים בלי סכום במיטב טרייד",
+  "text_he": "מניה בארצות הברית במיטב טרייד עולה סנט למניה או 0.7% משווי העסקה, בשני המסלולים עם מינימום 12 דולר, והתעריפון לא אומר מי בוחר את המסלול. בשאר הבורסות בעולם העמלה היא 0.25% עם מינימום 25 במטבע העסקה, ועשויות להיגבות גם עמלות ברוקר או צד שלישי. על עסקה בארצות הברית מחוץ לשעות המסחר, או דרך ECN או עושה שוק שמחוץ להסדר שלה, יש עמלת ברוקר נוספת. עמלה על קרן זרה פתוחה היא 0.2% עם מינימום 20 דולר, ולא כוללת עמלת סליקה ועמלת קורספונדנט, והתעריפון לא כותב סכום לאף אחד מהחיובים הנוספים האלה.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "fee-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-14",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "meitav-trade",
+      "name_he": "מיטב טרייד"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+      "title": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "title_he": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3, item 5",
+      "locator_he": "עמוד 3, פרט 5",
+      "page": 3,
+      "quote": "יתכן חיוב בעמלות ברוקר/עמלות צד ג' נוספות",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+      "title": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "title_he": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2, item 5",
+      "locator_he": "עמוד 2, פרט 5",
+      "page": 2,
+      "quote": "עסקאות מחוץ לשעות המסחר",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+      "title": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "title_he": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3, item 7",
+      "locator_he": "עמוד 3, פרט 7",
+      "page": 3,
+      "quote": "לא כולל עמלת סליקה ועמלת קורספונדנט",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+      "title": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "title_he": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "1 סנט למניה, מינימום 12 $ לעסקה",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+      "title": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "title_he": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "מסחר בשאר בורסות העולם",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf",
+      "title": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "title_he": "מיטב טרייד: תעריפון עמלות, גרסת 04/2026",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3, item 9",
+      "locator_he": "עמוד 3, פרט 9",
+      "page": 3,
+      "quote": "העברת ניירות ערך",
+      "checked": "2026-10-31"
+    }
+  ],
+  "derived_from": [
+    "BRK-24"
+  ]
+}

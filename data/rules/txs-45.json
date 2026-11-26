@@ -1,0 +1,39 @@
+{
+  "id": "TXS-45",
+  "title": "Yalin Lapidot: the foreign-tax situations its money-market prospectus lists",
+  "title_he": "מס בחו״ל בקרן פטורה: שני סוגי ניירות ערך בילין לפידות",
+  "text_he": "בתשקיף של קרן כספית של ילין לפידות כתוב שקרן פטורה עשויה לשלם מס בחו״ל על הכנסות ורווחים משני סוגים של ניירות ערך. אלה ניירות ערך שנסחרים בחו״ל, וניירות ערך דואליים שנסחרים בארץ ובחו״ל.",
+  "strength": "institution",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yalin-funds",
+      "name_he": "ילין לפידות קרנות נאמנות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf",
+      "title": "ילין לפידות (00) כספית ניהול נזילות, תשקיף קרן חדשה מיום 26.11.2024",
+      "title_he": "ילין לפידות (00) כספית ניהול נזילות, תשקיף קרן חדשה מיום 26.11.2024",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1, footnote 3",
+      "locator_he": "עמוד 1, הערת שוליים 3",
+      "page": 1,
+      "checked": "2026-10-26"
+    }
+  ],
+  "derived_from": [
+    "TXS-15"
+  ]
+}

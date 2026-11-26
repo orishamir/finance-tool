@@ -52,7 +52,7 @@ export function MakamVisual({ data, today }: VisualProps) {
 
   const amountIn = inputSite(bundle, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
   const sale = typed(m, "months", today, copy.makam.marker);
-  // the series' term sets the price curve (F-24, GOV-22): the prices list it beside the yield
+  // the series' term sets the price curve (F-24, GOV-23): the prices list it beside the yield
   const priceIn: Record<string, SiteValue> = { [copy.common.inputNames.assumption]: cash, ...termOf(bundle) };
   // the run's own inputs: the amount, the yield, the sale month and every line of the tariff it ran on (termInputs); the tax rate only on the tax and what is left
   const runInputs: Record<string, SiteValue> = { [copy.common.inputNames.amount]: amountIn, [copy.common.inputNames.assumption]: cash, [copy.makam.marker]: sale, ...termInputs(bundle) };

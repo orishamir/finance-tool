@@ -2,7 +2,7 @@
 // so a difference worked out from the shown amounts agrees with them as written, and a whole amount shows no agorot.
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
-import { amountShown, fmt, formatValue } from "./format";
+import { amountShown, fmt, formatValue, numberShown } from "./format";
 
 const states = [undefined, "sourced", "computed", "entered"] as const;
 const units = ["nis", "nis_per_month", "nis_per_trade", "nis_per_transfer"] as const;
@@ -33,5 +33,26 @@ describe("amountShown is the number formatValue writes", () => {
 
   it("returns any other unit as it is", () => {
     expect(amountShown(2.345, "pct_per_year", "computed")).toBe(2.345);
+  });
+});
+
+describe("numberShown is the number formatValue writes, in every unit it writes as a number", () => {
+  it("reads a percent back to the decimals it shows", () => {
+    fc.assert(
+      fc.property(fc.integer({ min: -1_000_000, max: 1_000_000 }).map((n) => n / 10_000), fc.constantFrom("pct", "pct_per_year", "pct_of_deposit"), (v, unit) => {
+        expect(formatValue(numberShown(v, unit, "computed"), unit, "computed")).toBe(formatValue(v, unit, "computed"));
+      }),
+    );
+    expect(numberShown(2.3456, "pct_per_year", "computed")).toBe(2.35);
+    expect(numberShown(-1.2349, "pct", "computed")).toBe(-1.23);
+  });
+
+  it("is amountShown for a shekel amount", () => {
+    expect(numberShown(-1234.4, "nis", "computed")).toBe(amountShown(-1234.4, "nis", "computed"));
+  });
+
+  it("returns the value as it is where the text is not the number in its own unit", () => {
+    // a rate in shekels per dollar is written in agorot: 3.7 is "370 agorot", whose digits are not the value
+    expect(numberShown(3.7, "nis_per_usd")).toBe(3.7);
   });
 });

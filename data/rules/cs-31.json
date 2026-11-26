@@ -1,0 +1,64 @@
+{
+  "id": "CS-31",
+  "title": "Bank Yahav: a partial child-savings withdrawal must leave the agreement's minimum",
+  "title_he": "יתרת מינימום אחרי משיכה חלקית מחיסכון לכל ילד, בבנק יהב",
+  "text_he": "בבנק יהב, משיכה חלקית מחיסכון לכל ילד מותרת רק אם נשארת בחשבון יתרה של {CS-31:partial_withdrawal_min_balance} לפחות. זה הסכום בהסכם של בנק יהב, נכון ל־1.5.2017.",
+  "figure_names_he": {
+    "partial_withdrawal_min_balance": "יתרת מינימום אחרי משיכה חלקית"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "minimum"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "partial_withdrawal_min_balance": {
+      "value": 100,
+      "unit": "nis",
+      "source": {
+        "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
+        "title": "Bank Yahav, child-savings agreement, pp.5-6, s.6.6: a partial withdrawal only if at least NIS 100 stays in the account (as of 1.5.2017)",
+        "publisher": "Bank Yahav",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "CS-31"
+      ],
+      "state": "sourced",
+      "notes": "Bank Yahav's agreement only (undated, 2017-era figures); other banks were not read."
+    }
+  },
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
+      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.5-6, s.6",
+      "locator_he": "עמודים 5 עד 6, סעיף 6",
+      "page": 5,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "CS-14"
+  ]
+}
