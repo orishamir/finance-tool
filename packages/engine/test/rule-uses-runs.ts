@@ -1,8 +1,8 @@
 // The runs rule-uses.test.ts reads the uses of: golden scenarios' own inputs (tests/golden/scenarios.md), one or more on each ledger and on
 // each branch that tags a rule (architecture 3.4), and a few cases the golden set does not hold (a bank money-market fund, the current
-// account's cap, an early withdrawal at 65, each relief path).
+// account's cap, an early withdrawal at 65, each relief path, a fee discount on a plan that deposits once).
 import type { PensionInput, ProvidentInput, RunContext, RunResult, SecuritiesInput } from "../src/index.ts";
-import { runBond, runDeposit, runMakam, runPension, runProvident, runSecurities } from "../src/index.ts";
+import { employerLinePension, runBond, runDeposit, runMakam, runPension, runProvident, runSecurities } from "../src/index.ts";
 
 const s11: SecuritiesInput = {
   goal: { amountNow: 50_000, monthly: 1_000, months: 24 },
@@ -52,6 +52,10 @@ export const s27: PensionInput = {
   pension: { employment: "employee", monthlySalary: 10_000, existingEmployeeRate: 0.06, employer: { pensionRate: 0.065, severanceRate: 0.06 } },
   profile: { ageAtStart: 30 },
 };
+// S30: the same money in a provident fund for annuity
+const s30: PensionInput = { ...s27, wrapper: "provident-for-annuity", fees: { deposit: 0, balance: 0.005, direct: 0 }, insurance: { rate: 0 } };
+// a balance-fee discount longer than PF-14's months, on a plan that deposits once
+const discount = { months: 24, listRate: 0.007 };
 
 /** The relief paths of F-30 to F-32 (method), each a pension run whose every year falls on that path. */
 export const reliefPaths = {
@@ -109,6 +113,13 @@ export function runs(ctx: RunContext): Record<string, () => RunResult> {
     "S34 exit at 60": () => runSecurities({ goal: { amountNow: 300_000, monthly: 0, months: 60 }, market: { grossReturn: 0.06, inflation: 0.025 }, fund: s14Fund, tariff: s14Tariff, profile: { ageAtStart: 55, otherIncome: 60_000 } }, ctx),
     "S36 surtax year": () => runSecurities({ goal: { amountNow: 2_000_000, monthly: 0, months: 36 }, market: { grossReturn: 0.08, inflation: 0.02 }, fund: s14Fund, tariff: s14Tariff, profile: { otherIncome: 600_000 } }, ctx),
     "S37 negative real gain": () => runSecurities({ ...s11, goal: { amountNow: 100_000, monthly: 0, months: 24 }, market: { grossReturn: 0.01, inflation: 0.03 } }, ctx),
+    "kupat gemel lehashkaa, one deposit with a discount": () => runProvident({ ...kgl, goal: { amountNow: 50_000, monthly: 0, months: 36 }, fees: { deposit: 0, balance: 0.002, direct: 0, discount } }, ctx),
     ...Object.fromEntries(Object.entries(reliefPaths).map(([name, input]) => [`pension, ${name}`, () => runPension(input, ctx)])),
+    "S27 pension employer line": () => employerLinePension(s27, ctx),
+    "S27 pension employer line, severance above its ceiling": () => employerLinePension({ ...s27, pension: { ...s27.pension, monthlySalary: 50_000, employer: { pensionRate: 0.065, severanceRate: 0.0833 } } }, ctx),
+    "S30 provident fund for annuity": () => runPension(s30, ctx),
+    "S30 provident fund for annuity, employer line": () => employerLinePension(s30, ctx),
+    "general pension fund": () => runPension({ ...s27, wrapper: "pension-general" }, ctx),
+    "provident fund for annuity, one deposit with a discount": () => runPension({ ...s30, goal: { amountNow: 50_000, monthly: 0, months: 120 }, fees: { deposit: 0, balance: 0.002, direct: 0, discount } }, ctx),
   };
 }
