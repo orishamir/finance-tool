@@ -1,7 +1,7 @@
 // What the provenance sheet shows (design-system 3.2, design-spec 1.3 and 3): a figure's source and how it was computed, a rule's card,
 // a term's card, a formula, an open question, a statement math proves, and the cards the rules page lays out. A script apart from the figures and chips
 // (provenance.tsx `loadSheets`), fetched while the page hydrates (entry.client.tsx), so a page shows itself without waiting for it.
-import { useContext, useState, type ReactNode } from "react";
+import { useContext, useEffect, useState, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link } from "react-router";
 import { assertNever, type RuleRecord } from "@finance-tool/schema";
@@ -169,6 +169,24 @@ export function SheetContent({ item, data, headId, descId }: { item: Item; data:
   );
 }
 
+let anchorsOnce: Promise<Record<string, string>> | undefined;
+/** The anchor of the heading docs/method.md defines this formula under (routes/method-anchors.ts), once fetched; undefined before then, or if the fetch fails. */
+function useMethodAnchor(id: string, wanted: boolean): string | undefined {
+  const [anchors, setAnchors] = useState<Record<string, string>>();
+  useEffect(() => {
+    if (!wanted) return;
+    let live = true;
+    anchorsOnce ??= fetch(`${import.meta.env.BASE_URL}method-anchors.json`).then((r) => (r.ok ? (r.json() as Promise<Record<string, string>>) : {}), () => ({}));
+    void anchorsOnce.then((a) => {
+      if (live) setAnchors(a);
+    });
+    return () => {
+      live = false;
+    };
+  }, [wanted]);
+  return anchors?.[id];
+}
+
 /**
  * A formula's sheet: its Hebrew name; the formula itself in math type with a key to its symbols, when docs/method.md writes it as math,
  * else a link to its full definition there, at the section it stands in; and the
@@ -180,6 +198,7 @@ function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; 
   const parameters = known?.parameters ?? [];
   const tex = known?.tex ?? [];
   const key = formulaKeys[id];
+  const anchor = useMethodAnchor(id, tex.length === 0);
   return (
     <div className="flex flex-col gap-3">
       <h2 id={headId} data-code-ok className="text-lg font-semibold">
@@ -188,7 +207,7 @@ function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; 
       {tex.length > 0 ? (
         <FormulaBlock lines={tex.map((t, i) => ({ tex: t, label: tex.length > 1 ? key?.lines?.[i] : undefined }))} symbols={key?.symbols ?? []} where={copy.formulaSheet.where} />
       ) : (
-        <a href={known?.anchor ? `${METHOD_URL}#${known.anchor}` : METHOD_URL} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-start gap-1 text-sm hover:underline" dir="ltr">
+        <a href={anchor ? `${METHOD_URL}#${anchor}` : METHOD_URL} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-start gap-1 text-sm hover:underline" dir="ltr">
           <span className="min-w-0 [overflow-wrap:anywhere]">{copy.formulaSheet.full}</span>
           <IconExternal size={16} className="shrink-0 mt-0.5" />
         </a>
