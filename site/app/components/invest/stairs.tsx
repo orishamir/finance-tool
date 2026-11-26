@@ -157,17 +157,20 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   const reset = () => set({ taken: [] });
   const jump = (p: Pos) => set({ start: p, taken: [] });
 
-  const delta = (n: number, a: SiteValue, an: string, b: SiteValue, bn: string, about: string) => computed(n, "nis", "F-91", { [an]: a, [bn]: b }, { today, about });
   // a stair's difference is the difference of what is left as the two levels write it, in whole shekels
-  const shownDiff = (l: Level, prev: Level) => Math.round(l.left.value as number) - Math.round(prev.left.value as number);
-  const diffOf = (l: Level, prev: Level) => delta(shownDiff(l, prev), l.left, `${t.about.left}: ${l.fundName}, ${l.house.short}`, prev.left, `${t.about.left}: ${prev.fundName}, ${prev.house.short}`, t.about.versus);
+  const diffOf = (l: Level, prev: Level) => differenceOf([`${t.about.left}: ${l.fundName}, ${l.house.short}`, l.left], [`${t.about.left}: ${prev.fundName}, ${prev.house.short}`, prev.left], "F-91", { today, about: t.about.versus });
   const partName = (k: Part) => [t.table.accountCost, t.table.waiting, t.table.fundCost, t.table.tax][k]!;
   const partOf = (l: Level, prev: Level, k: Part) => {
     const name = partName(k);
+    const about = `${t.about.cost}: ${name}`;
     // read only where both stairs have their split (`dParts`), so every part is a figure; a way by amount has no waiting cash, and its 0 is the only side
     const side = (x: Level) => (PARTS[k] === "waiting" ? x.waiting : x[PARTS[k]]);
-    const inputs: [SiteValue, string][] = ([l, prev] as const).flatMap((x) => (side(x) ? [[side(x)!, `${name}: ${x.fundName}, ${x.house.short}`] as [SiteValue, string]] : []));
-    return computed(l.dParts![k], "nis", "F-91", Object.fromEntries(inputs.map(([v, n]) => [n, v])), { today, about: `${t.about.cost}: ${name}` });
+    const label = (x: Level) => `${name}: ${x.fundName}, ${x.house.short}`;
+    // each side as its pair's receipt writes it (`Level.whole`), so the difference is the one the table shows
+    const a = side(l), b = side(prev);
+    if (a && b && l.whole && prev.whole) return differenceOf([label(l), { ...a, value: l.whole[k] }], [label(prev), { ...b, value: prev.whole[k] }], "F-91", { today, about });
+    const inputs: [SiteValue, string][] = ([l, prev] as const).flatMap((x) => (side(x) ? [[side(x)!, label(x)] as [SiteValue, string]] : []));
+    return computed(l.dParts![k], "nis", "F-91", Object.fromEntries(inputs.map(([v, n]) => [n, v])), { today, about });
   };
 
   // ---------------------------------------------------------------- the chart and what sits under it
