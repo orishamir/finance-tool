@@ -297,6 +297,11 @@ export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex">): TaxI
   return readsStatedIndex(fund.kind) ? (fund.statedIndex ?? null) : null;
 }
 
+/** F-04: the rule `taxIndexOf` cites for a fund's tax index: TXF-03 for a foreign-currency fund held directly, TXS-14 for an Israeli fund; else none. */
+export function taxIndexRule(fund: Pick<Fund, "kind">): "TXF-03" | "TXS-14" | null {
+  return fund.kind === "foreign-fund" ? "TXF-03" : fund.kind === "israeli-fund" ? "TXS-14" : null;
+}
+
 /**
  * F-04 The tax index of a fund held in a securities account: the exchange rate for a foreign-currency fund held directly (TXF-03), the CPI
  * for an Israeli fund's shekel units (TXS-14's first bullet). An Israeli fund that may be measured by a principal currency
@@ -308,21 +313,15 @@ export function statedTaxIndexOf(fund: Pick<Fund, "kind" | "statedIndex">): TaxI
  * index TXF OQ10 leaves open (`taseForeignFundIndex`): the CPI, the site's reading, for a fund whose documents it read; for one it does not
  * know, its record's currency's exchange rate (the CPI for a record in shekels) or the CPI in turn, whether or not it
  * pays out: its distributions are taxed on a reading of their own (`foreignDistributionRate`). The kind with no fund record stops on
- * TXF-04: the run does not know its currency, so it has no exchange-rate reading (G-35).
+ * TXF-04: the run does not know its currency, so it has no exchange-rate reading (G-35). The rule that names the index is cited through
+ * `reads`, the book's own reads unless the caller only looks at it (`peek`) until it knows the index went into a number (`taxIndexRule`).
  */
-export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "notKnown">, book: RuleBook): "fx" | "principal" | "cpi" {
-  if (fund.kind === "foreign-fund") {
-    book.cite("TXF-03");
-    return "fx";
-  }
-  if (fund.kind === "israeli-fund" && fund.principalCurrency !== undefined) {
-    book.cite("TXS-14");
-    return book.taxIndex(foreignInvestmentFundIndex, fund.notKnown);
-  }
-  if (fund.kind === "israeli-fund") {
-    book.cite("TXS-14");
-    return "cpi";
-  }
+export function taxIndexOf(fund: Pick<Fund, "kind" | "recordCurrency" | "principalCurrency" | "statedIndex" | "notKnown">, book: RuleBook, reads: Pick<RuleBook, "cite"> = book): "fx" | "principal" | "cpi" {
+  const rule = taxIndexRule(fund);
+  if (rule) reads.cite(rule);
+  if (fund.kind === "foreign-fund") return "fx";
+  if (fund.kind === "israeli-fund" && fund.principalCurrency !== undefined) return book.taxIndex(foreignInvestmentFundIndex, fund.notKnown);
+  if (fund.kind === "israeli-fund") return "cpi";
   if (fund.kind !== "tase-foreign-fund") return "cpi";
   const stated = statedTaxIndexOf(fund);
   if (stated) return stated.index;
@@ -473,10 +472,11 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // F-119: a later leg's grid starts that many tax years after the run date's
   const book = ruleBook(ctx, { inflation: input.market.inflation, startsAfter: Math.floor(((input.goal.firstMonth ?? 1) - 1 + (input.gridOffset ?? 0)) / 12) });
   const { goal, market, fund, tariff, profile } = input;
-  // F-04 first: a fund whose tax index rests on an open rule computes nothing after tax
+  // F-04 first: a fund whose tax index rests on an open rule computes nothing after tax. The rule naming the index is looked at, and taken
+  // with TXS-02 where the exit taxes the real gain
   const exitTaxes = book.on("taxAtExit");
   const during = book.on("taxDuring");
-  const taxIndex = taxIndexOf(fund, exitTaxes);
+  const taxIndex = taxIndexOf(fund, exitTaxes, exitTaxes.peek);
   const tally = new Tally();
   // D84: an index a fund's own annex states is the fund's statement, carried with the run's figures as a rule it reads is
   const stated = statedTaxIndexOf(fund);
@@ -1024,10 +1024,11 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   const adjusted = indexedCost(lotsLeft, J[T]!, nav * (1 - spread));
   const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;
   const nominalGain = gross - cost;
-  // the exit year's fees off the gain are looked at, and taken where a taxed exit had any
+  // the exit year's fees off the gain are looked at, and taken where a taxed exit had any; the real gain's rule and the index's are looked at,
+  // and taken only on an exit that taxes the real gain, not on one exempt for another reason (a wrapper's, a taxable fund's holder)
+  exitTaxes.peek.cite("TXS-02");
   exitTaxes.peek.cite("TXS-06");
-  exitTaxes.cite("TXS-02");
-  if (adjusted.fell && fxIndexed && fund.kind !== "tase-foreign-fund") exitTaxes.cite(fund.kind === "foreign-fund" ? "TXF-03" : "TXS-14");
+  if (adjusted.fell && fxIndexed && fund.kind !== "tase-foreign-fund") exitTaxes.peek.cite(fund.kind === "foreign-fund" ? "TXF-03" : "TXS-14");
 
   let outcome: Outcome = { code: "eligible" };
   let lossOffset = 0;
@@ -1052,6 +1053,10 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     }
     lossOffset = offset;
     lossUnused = carried ? Math.max(0, carried.amount) - offset : 0;
+    // this exit taxes the real gain: the gain's indexing (TXS-02) and the rule naming its index went into the tax
+    exitTaxes.took("TXS-02");
+    const indexRule = taxIndexRule(fund);
+    if (indexRule) exitTaxes.took(indexRule);
     // the exit's capital-gains rate is looked at and taken where the exit's tax is above 0
     const exitRule = isForeign ? "TXF-02" : isMmf ? "TXS-12" : "TXS-09";
     const step = unlessBlocked(() => {

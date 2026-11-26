@@ -282,6 +282,19 @@ describe("the parts each run's rules went into", () => {
     expect(changedIn(noForm, "TXF-13")).toEqual(["taxDuring"]);
   });
 
+  it("takes the real gain's rule and the tax index's only on an exit that taxes the real gain", () => {
+    const taxed = run("S14 Israeli ETF");
+    for (const id of ["TXS-02", "TXS-14"]) expect(changedIn(taxed, id), id).toEqual(["taxAtExit"]);
+    expect(changedIn(run("S17 US ETF with a W-8BEN"), "TXF-03")).toEqual(["taxAtExit"]);
+    // the wrapper's exemption and the taxable fund's holder's zero the exit's tax whatever the gain's index
+    for (const [name, ids] of [["S33 IRA hishtalmut", ["TXS-02", "TXS-14"]], ["S13 taxable money-market fund", ["TXS-02"]]] as const) {
+      for (const id of ids) {
+        expect(read(run(name), id), `${name}: ${id}`).toBe(true);
+        expect(changedIn(run(name), id), `${name}: ${id}`).toEqual([]);
+      }
+    }
+  });
+
   it("files a fund's drag, spread and own tax on their lines and part", () => {
     expect(changedIn(run("S14 Israeli ETF"), "ETF-06")).toEqual(["fees:spread"]);
     const taxable = run("S13 taxable money-market fund");
