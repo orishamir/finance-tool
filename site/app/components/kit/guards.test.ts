@@ -644,7 +644,7 @@ describe("a reading is the site's reading, not a secondary source", () => {
     expect(offenders(files.filter((f) => f.endsWith(".tsx")).map((f) => ({ name: rel(f), text: read(f) })))).toEqual([]);
   });
   it("the files that read it use ReadingTag", () => {
-    const readers = files.filter((f) => f.endsWith(".tsx") && /===\s*["']reading["']|hasReading\(|\.readingRules\b/.test(read(f)));
+    const readers = files.filter((f) => f.endsWith(".tsx") && /===\s*["']reading["']|hasReading\(|sheetReading\(|\.readingRules\b/.test(read(f)));
     expect(readers.length).toBeGreaterThan(1);
     for (const f of readers) expect(read(f), rel(f)).toMatch(/ReadingTag/);
   });

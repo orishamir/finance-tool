@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { foreignInvestmentFundIndex, openReadings, type FundStatement, type Label } from "@finance-tool/engine";
 import { numbers } from "../copy";
-import { asParameter, compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isParameter, isWeak, ownBy, ownEach, recheckStale, ruleFigure, sheetFlags, sheetRules, staleCma, staleCmaFee, strengthOf, templateRow, type SiteValue } from "./value";
+import { asParameter, compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isParameter, isWeak, ownBy, ownEach, recheckStale, ruleFigure, sheetFlags, sheetReading, sheetRules, staleCma, staleCmaFee, strengthOf, templateRow, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -114,9 +114,12 @@ describe("a figure computed from figures on a reading carries the reading (D119,
       expect(v.statements ?? []).toEqual([]);
       expect(v.labels).toEqual([{ code: "reading", ruleId: "TXS-14" }]);
       expect(sheetRules(v)).toEqual([]);
-      // the input it opens still lists the rule and the fund's statement
+      // the reading is its input's, so the tag of the site's reading stands in the input's sheet, not in the difference's or the sum's
+      expect(sheetReading(v)).toBe(false);
+      // the input it opens still lists the rule and the fund's statement, and carries the tag
       const input = (v.computed_from?.inputs as Record<string, SiteValue> | undefined)?.a;
       if (!input) throw new Error("the figure lost its input a");
+      expect(sheetReading(input)).toBe(true);
       expect(sheetRules(input).map((r) => r.id)).toEqual(["TXS-14"]);
       expect(input.statements).toEqual([named]);
     }
@@ -133,6 +136,8 @@ describe("a figure computed from figures on a reading carries the reading (D119,
       if (!input) throw new Error("the figure lost its input a");
       expect(sheetFlags(input)).toEqual(["G-20", "G-23"]);
     }
+    // a reading of its own, which no input carries, keeps the tag on a plain difference
+    expect(sheetReading(differenceOf(["a", flagged], ["b", other], "F-80", { today, labels: [{ code: "reading", ruleId: "TXF-04" }] }))).toBe(true);
     // a figure that is not a plain difference or sum says every flag it carries
     expect(sheetFlags(computed(1, "nis", "F-80", { a: flagged }, { today }))).toEqual(["G-20", "G-23"]);
   });

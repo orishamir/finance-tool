@@ -219,6 +219,19 @@ function readingDoubtOf(labels: readonly SiteLabel[] | undefined): Pick<SiteValu
 }
 
 /**
+ * Whether a figure's sheet carries the tag of the site's own reading (`numbers.reading`): it does where the figure rests on a reading, except
+ * on a plain difference or sum (`SiteValue.plain`) whose readings are all an input's: the tag stands in that input's own sheet, which its
+ * row of the receipt opens, with the rule that is read. A reading of its own, which no input carries, keeps the tag.
+ */
+export function sheetReading(v: Pick<SiteValue, "labels" | "plain" | "computed_from">): boolean {
+  const readings = (v.labels ?? []).filter((l) => l.code === "reading" || l.code === "cautious");
+  if (!v.plain) return readings.length > 0;
+  const key = (l: SiteLabel) => `${l.code} ${l.ruleId}`;
+  const carried = new Set(Object.values((v.computed_from?.inputs ?? {}) as Record<string, SiteValue>).flatMap((x) => (x.labels ?? []).map(key)));
+  return readings.some((l) => !carried.has(key(l)));
+}
+
+/**
  * The flags a figure's sheet says: every flag it carries, except on a plain difference or sum (`SiteValue.plain`), whose sheet leaves out a
  * flag one of its inputs already carries: each row of its receipt is that input's own figure and opens its sheet, where the flag stands in
  * full. A flag of its own, which no input carries, stays.
