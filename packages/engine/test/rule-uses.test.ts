@@ -358,6 +358,19 @@ describe("the parts each run's rules went into", () => {
     expect(changedIn(estate, "TXF-27")).toEqual([]);
   });
 
+  it("takes PF-14's end on the balance fee where it cuts a discount short on a plan that deposits once", () => {
+    for (const name of ["kupat gemel lehashkaa, one deposit with a discount", "provident fund for annuity, one deposit with a discount"]) {
+      const r = run(name);
+      expect(r.flags.map((f) => f.code), name).toContain("PF-OQ18");
+      expect(changedIn(r, "PF-14"), name).toEqual(["fees:balance"]);
+    }
+    // a plan that ends within PF-14's months keeps its discount to the end: the rule is looked at and changes nothing
+    const fees = { deposit: 0, balance: 0.002, direct: 0, discount: { months: 24, listRate: 0.007 } };
+    const short = runPension({ ...s27, wrapper: "provident-for-annuity", insurance: { rate: 0 }, goal: { amountNow: 50_000, monthly: 0, months: 6 }, fees }, ctx);
+    expect(read(short, "PF-14")).toBe(true);
+    expect(changedIn(short, "PF-14")).toEqual([]);
+  });
+
   it("takes a fee cap and a deposit ceiling only where they cut", () => {
     const under = run("S20 kupat gemel lehashkaa");
     for (const id of ["PF-02", "KGL-02", "KGL-03", "KGL-04"]) expect(changedIn(under, id), id).toEqual([]);

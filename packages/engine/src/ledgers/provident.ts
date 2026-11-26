@@ -1,7 +1,7 @@
 // Provident-family wrappers without a deposit-side tax effect: kupat gemel lehashkaa and the own-money
 // part of a keren hishtalmut. F-08 with no trade (F-27), F-11, F-15, F-16, the section 8 ceiling and lock,
 // and the exits F-44 and F-46.
-import { balanceFee, depositFee, feeForMonth, type Discount } from "../formulas/fees.ts";
+import { balanceFee, depositFee, discountEnd, feeForMonth, type Discount } from "../formulas/fees.ts";
 import { deductionValue, equalNetOutlay, spreadReliefByYear } from "../formulas/deposit-side.ts";
 import { studyFundEarlyWithdrawal } from "../formulas/early-withdrawal.ts";
 import { bracketTaxOnTopSlice, hishtalmutExitTax, kglExitTax } from "../formulas/exit-tax.ts";
@@ -335,9 +335,12 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   // discount holds for PF-14's months (six) and the fee without it is charged after them. PF-14 is read only where the case can arise.
   let laterDeposit = false;
   for (let m = 1; m <= Math.min(T, goal.months); m++) if (due(m) && (grossDeposits[m] ?? 0) > 0) laterDeposit = true;
-  const stopMonths = Boolean(fees.discount || fees.depositDiscount) && !laterDeposit ? book.amount("PF-14", "months_after_deposits_stop") : undefined;
+  const stopMonths = Boolean(fees.discount || fees.depositDiscount) && !laterDeposit ? book.on("fees", fees.discount ? "balance" : "deposit").peek.amount("PF-14", "months_after_deposits_stop") : undefined;
   const oneDeposit = stopMonths !== undefined && T > stopMonths;
   const endsBy = oneDeposit ? stopMonths : undefined;
+  // PF-14's end is taken on the balance fee where it cuts that discount short; the deposit fee is charged on the first deposit alone,
+  // inside any discount, so the end never changes it
+  if (endsBy !== undefined && fees.discount && discountEnd(fees.discount, minDiscountMonths) > endsBy) book.on("fees", "balance").took("PF-14");
 
   for (let m = 1; m <= T; m++) {
     if (m > 1 && taxYearOf(m, first) !== taxYearOf(m - 1, first)) {

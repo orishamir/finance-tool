@@ -4,7 +4,7 @@
 // line (F-52, B2).
 import { reliefFlags, deductionValue, grossForYear, spreadReliefByYear, taxAtBrackets, type PensionRelief, type ReliefResult } from "../formulas/deposit-side.ts";
 import { blockedWrapperExit, type BlockedExit } from "../formulas/blocked-exit.ts";
-import { balanceFee, depositFee, feeForMonth, type Discount } from "../formulas/fees.ts";
+import { balanceFee, depositFee, discountEnd, feeForMonth, type Discount } from "../formulas/fees.ts";
 import { insuranceCost } from "../formulas/insurance.ts";
 import { annualToMonthly, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { MissingRuleError, ruleBook, type RuleBook } from "../resolver.ts";
@@ -138,9 +138,12 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
   // cautious reading); PF-14 is read only where the case can arise
   let laterDeposit = false;
   for (let m = 1; m <= Math.min(months, input.goal.months); m++) if ((gross[m] ?? 0) > 0) laterDeposit = true;
-  const stopMonths = Boolean(fees.discount || fees.depositDiscount) && !laterDeposit ? book.amount("PF-14", "months_after_deposits_stop") : undefined;
+  const stopMonths = Boolean(fees.discount || fees.depositDiscount) && !laterDeposit ? book.on("fees", fees.discount ? "balance" : "deposit").peek.amount("PF-14", "months_after_deposits_stop") : undefined;
   const oneDeposit = stopMonths !== undefined && months > stopMonths;
   const endsBy = oneDeposit ? stopMonths : undefined;
+  // PF-14's end is taken on the balance fee where it cuts that discount short; the deposit fee is charged on the first deposit alone,
+  // inside any discount, so the end never changes it
+  if (endsBy !== undefined && fees.discount && discountEnd(fees.discount, minDiscountMonths) > endsBy) book.on("fees", "balance").took("PF-14");
   tally.point(0, 1, balance);
   const deposit = (amount: number, paid: number, month: number) => {
     if (amount <= 0) return;
