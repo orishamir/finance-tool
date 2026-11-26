@@ -67,6 +67,8 @@ export interface ProductRowData {
   conditions: string | null;
   /** An open doubt about the record (`doubt_he`), or null. */
   doubt: string | null;
+  /** The field the doubt is about (`doubt_on`; the rate where the record names none): the card shows it under that line. Absent with no doubt. */
+  doubtOn?: "rate" | "term_months" | "amount_range" | "linkage" | "exits" | "break";
   /** The bank's table the record was read from: a kind's sheet links to it. */
   table: { url: string; title: string };
   stale: boolean;

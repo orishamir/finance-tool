@@ -167,8 +167,9 @@ function SharedBox({ products, shared, known, title, deposits }: { products: rea
   const say = w.deposits.say;
   const renew = p.autoRenew.value ? (p.autoRenew.maxRenewals !== null ? say.renew.upTo(fmt.number(p.autoRenew.maxRenewals)) : say.renew.yes) : say.renew.no;
   const brk = breakText(p.breakTerms.penalty, products.every((x) => onlyAtExits(x.breakTerms.penalty, x.exitPoints.exists)));
-  // what the rate figure is stands in the "?" of the rate's head from md (RateHead); a phone, with no heads, keeps it here
-  const brkWords = statedKnown(brk, p.breakTerms.rules, known);
+  // what the rate figure is stands in the "?" of the rate's head from md (RateHead); a phone, with no heads, keeps it here. The break's
+  // words open the rules every record shares (`Shared.breakRules`), stated only when they are shared
+  const brkWords = statedKnown(brk, shared.breakRules ?? [], known);
   const firstParts = [shared.rateType ? say.rateType[p.rateType === "variable" ? "variable" : "fixed"] : null, shared.linkage && p.linkage === "none" ? say.unlinked[deposits ? "deposits" : "plans"] : null, shared.breakTerms && shared.autoRenew ? <>{brkWords}{say.and.mid}{renew}{say.and.end}</> : shared.breakTerms ? <>{brkWords}.</> : shared.autoRenew ? `${renew}.` : null, shared.exits ? say.exits(exitsOf(p)) : null].filter((x) => x !== null);
   const first = firstParts.length > 0 ? <>{firstParts.map((x, i) => <Fragment key={i}>{i > 0 && " "}{x}</Fragment>)}</> : null;
   const items: { key: string; text: ReactNode; className?: string }[] = [

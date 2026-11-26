@@ -108,7 +108,9 @@ export const lineAt = (row: TableRow, band: string): ProductRowData | null => ro
 export interface Shared {
   rateType: boolean;
   exits: boolean;
+  /** Whether a deposit can be broken, and by the same rules, on every record: then the box says it once, opening those rules (`breakRules`). */
   breakTerms: boolean;
+  breakRules: string[] | null;
   autoRenew: boolean;
   linkage: boolean;
   tax: boolean;
@@ -126,8 +128,9 @@ export function sharedFacts(products: readonly ProductRowData[]): Shared {
   return {
     rateType: one((p) => p.rateType),
     exits: one((p) => p.exitPoints),
-    // whether a deposit can be broken; where some have exit points, the exits column says so on their rows
-    breakTerms: one((p) => p.breakTerms.penalty),
+    // whether a deposit can be broken, and the rules its words open; where some have exit points, the exits column says so on their rows
+    breakTerms: one((p) => [p.breakTerms.penalty, p.breakTerms.rules]),
+    breakRules: one((p) => [p.breakTerms.penalty, p.breakTerms.rules]) ? (products[0]?.breakTerms.rules ?? []) : null,
     autoRenew: one((p) => p.autoRenew),
     linkage: one((p) => p.linkage),
     tax: one((p) => p.taxBucket.value),
