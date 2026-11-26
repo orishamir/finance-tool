@@ -1,68 +1,4 @@
 {
-  "long": [
-    "SW-02",
-    "SW-03",
-    "SW-04",
-    "SW-05",
-    "SW-07",
-    "SW-08",
-    "SW-09",
-    "SW-10",
-    "SW-11",
-    "SW-14",
-    "SW-15",
-    "SW-16",
-    "SW-17",
-    "SW-19",
-    "SW-21",
-    "SW-24",
-    "SW-25",
-    "SW-26",
-    "SW-27",
-    "SW-28",
-    "SW-29",
-    "SW-30",
-    "SW-31",
-    "SW-32",
-    "SW-35",
-    "SW-36",
-    "SW-38",
-    "SW-39",
-    "SW-41",
-    "SW-42",
-    "SW-43",
-    "SW-44",
-    "SW-53"
-  ],
-  "research-talk": [
-    "SW-03",
-    "SW-04",
-    "SW-11",
-    "SW-14",
-    "SW-41",
-    "SW-45",
-    "SW-47",
-    "SW-48",
-    "SW-56"
-  ],
-  "fixed-line": [
-    "SW-45",
-    "SW-47",
-    "SW-48",
-    "SW-56"
-  ],
-  "spelled-number": [
-    "SW-17",
-    "SW-25",
-    "SW-30",
-    "SW-41",
-    "SW-42",
-    "SW-43"
-  ],
-  "typed-figure": [
-    "SW-44",
-    "SW-52"
-  ],
   "figure-title": [
     "PEN-04#average_wage",
     "PEN-18#check_period_months",
@@ -87,10 +23,6 @@
     "PEN-70",
     "PF-04",
     "PF-27"
-  ],
-  "title-ditto": [
-    "SW-23",
-    "SW-55"
   ],
   "page-copy": [
     "PEN-08#pension-general"
