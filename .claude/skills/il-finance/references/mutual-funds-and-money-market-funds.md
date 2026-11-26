@@ -50,9 +50,9 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 
 ### MF-05 Open and closed funds
 - Rule: An open fund (קרן פתוחה) and a closed fund (קרן סגורה) are whatever the fund agreement designates (section 1). The ISA guide describes an open fund as one that sells and redeems units on demand at a price based on the fund's net asset value at the end of each trading day, with no limit on the number of units, and whose units are not traded on the exchange. A closed fund issues a limited number of units under the prospectus, which trade on the exchange at supply-and-demand prices.
-- Conditions / exceptions: An ETF (קרן סל) is a closed tracking fund designated as an ETF in its fund agreement (section 1); ETFs are covered in `etfs-and-index-funds.md`.
+- Conditions / exceptions: An ETF (קרן סל) is a closed tracking fund designated as an ETF in its fund agreement (section 1); the ETF definition: ETF-01.
 - Figures: none
-- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.4, s.1 · primary · checked 2026-10-25. [מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf), p.8 · primary (dated; still linked by the ISA as its full guide) · checked 2026-10-25.
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.4, s.1 · primary · checked 2026-10-25. [מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf), p.8 · primary (dated; still linked by the ISA as its full guide) · checked 2026-10-25. The ETF definition: as in ETF-01.
 - Scope: general
 - Dimensions: liquidity-lockup
 - Likely to change: no
