@@ -745,8 +745,8 @@ export const company = {
     aboutCurrency: "החלק מנכסי המסלול שחשוף למטבע חוץ בסוף",
     missing: "לא דווח",
     noAssets: "אין נכסים",
-    /** The sheet's note on a share above 100% only: the exposure counts what is held plus exposure through derivatives on it (CAT-44). */
-    above100: "החשיפה כוללת גם חשיפה דרך נגזרים על אותו נכס, ולכן היא יכולה לעבור את 100% מנכסי המסלול.",
+    /** The sheet's note on a share above 100% only: the circular's exposure counts what is held plus exposure through derivatives on it, and that the dataset's field is that exposure is the site's reading of its name (CAT-44). */
+    above100: "חוזר של רשות שוק ההון מגדיר את החשיפה כך שהיא כוללת גם חשיפה דרך נגזרים על אותו נכס, ולכן היא יכולה לעבור את 100% מנכסי המסלול. האתר מסיק משם השדה שהנתון כאן הוא החשיפה הזו.",
     noteMissing: "המסלול לא דיווח לרשות את סך הנכסים או את החשיפה לתקופה הזו.",
     noteNoAssets: "המסלול דיווח לרשות על סך נכסים 0 לתקופה הזו, ולכן אין חלק לחשב.",
   },
