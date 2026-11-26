@@ -156,21 +156,28 @@ Out (and where): the general mutual-fund framework (trustee, open-fund pricing a
 
 ### ETF-09 Tracking difference is reported per year in the annual report
 - Rule: Every annual report, except a flexible fund's, shows "תשואת הקרן בהשוואה לשיעור השינוי בנכס הייחוס כפי שנקבע בתשקיף הקודם של הקרן או בדוח" over the last twelve months (reg. 18(ה)(1)). The manager must explain the gap only when it is large: "בקרן מחקה יינתן הסבר כאמור אם עלה הפער האמור על עשרה אחוזים משיעור השינוי במחירי נכס הייחוס", and above 20% for other funds (reg. 18(ה)(2)). The ISA directive also makes the manager publish the 12-month tracking difference every pricing day (s.7(ה), ETF-07).
-- Conditions / exceptions: Corrected 2026-10-25 (scope pass): the record said the report always gives the manager's explanation of the gap; the regulation requires one only above 10% of the tracking asset's change (20% for funds that are not tracking funds). Two funds' 2025 results and explanations are ETF-57. Split on 2026-10-25 (scope pass): the companies' part is ETF-57.
+- Conditions / exceptions: Corrected 2026-10-25 (scope pass): the record said the report always gives the manager's explanation of the gap; the regulation requires one only above 10% of the tracking asset's change (20% for funds that are not tracking funds). Two funds' 2025 results and explanations are ETF-57 (IBI) and ETF-99 (Yalin Lapidot). Split on 2026-10-25 (scope pass): the companies' part is ETF-57.
 - Figures: 10% of the reference asset's change for a tracking fund, 20% for other funds (the explanation threshold).
 - Source: [תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות](https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#page=15), file p.15 (gazette p.1015), reg. 18(ה)(1)-(2) ("בקרן מחקה יינתן הסבר כאמור אם עלה הפער האמור על עשרה אחוזים משיעור השינוי במחירי נכס הייחוס") · checked 2026-11-07 · primary. Re-cited 2026-11-07 from the olaw.org.il and Wikisource copies to the official Reshumot booklet (byte-identical to the olaw.org.il file); no amendment of these regulations was found (the Knesset's database binds none to them). ETF-07.
 - Scope: general
 - Dimensions: (proposed) tracking-difference, fee-management-balance
 - Likely to change: no.
 
-### ETF-57 IBI and Yalin Lapidot: 2025 tracking results of two S&P 500 funds, with the managers' explanations
-- Rule: Two funds' annual reports for 2025:
-  - IBI S&P 500 ETF (1148162): fund 1.85% vs tracking asset (S&P 500 100%, USD 100%) 2.61%. IBI attributes the gap mainly to expenses of about 0.8085% (management plus trustee fees).
-  - Yalin Lapidot open tracking fund S&P 500 (5139282): fund 2.98% vs 2.61%. Yalin Lapidot attributes the excess to exposure through derivatives, with the remaining assets invested in liquid assets.
-- Conditions / exceptions: Two examples, not a rule about all funds. General rule: ETF-09 (what every annual report must show, and when the manager must explain the gap). Split from ETF-09 on 2026-10-25 (scope pass).
-- Figures: 2025 calendar year, as stated (IBI, Yalin Lapidot).
-- Source: [IBI ETF annual report 31.12.2025](https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf), p.7 · institution · checked 2026-10-25. [Yalin Lapidot annual report 31.12.2025](https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf), p.6 · institution · checked 2026-10-25. General rule: ETF-09.
-- Scope: institution: IBI, Yalin Lapidot
+### ETF-57 IBI S&P 500 ETF (1148162): 2025 return 1.85% against 2.61% for its tracking asset, which IBI puts down mainly to expenses
+- Rule: IBI's annual report for 2025: IBI S&P 500 ETF (1148162): fund 1.85% vs tracking asset (S&P 500 100%, USD 100%) 2.61%. IBI attributes the gap mainly to expenses of about 0.8085% (management plus trustee fees).
+- Conditions / exceptions: One fund's result for one year, not a rule about all funds. General rule: ETF-09 (what every annual report must show, and when the manager must explain the gap). Split from ETF-09 on 2026-10-25 (scope pass); on 2026-11-26 the Yalin Lapidot fund beside it became ETF-99.
+- Figures: 2025 calendar year, as stated (IBI).
+- Source: [IBI ETF annual report 31.12.2025](https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf), p.7 · institution · checked 2026-10-25. General rule: ETF-09.
+- Scope: institution: IBI
+- Dimensions: (proposed) tracking-difference, fee-management-balance
+- Likely to change: yes. These are annual figures.
+
+### ETF-99 Yalin Lapidot S&P 500 open tracking fund (5139282): 2025 return 2.98% against 2.61% for its tracking asset, which Yalin Lapidot puts down to exposure through derivatives
+- Rule: Yalin Lapidot's annual report for 2025: Yalin Lapidot open tracking fund S&P 500 (5139282): fund 2.98% vs 2.61%. Yalin Lapidot attributes the excess to exposure through derivatives, with the remaining assets invested in liquid assets.
+- Conditions / exceptions: One fund's result for one year, not a rule about all funds. General rule: ETF-09 (what every annual report must show, and when the manager must explain the gap). Split from ETF-57 on 2026-11-26 (ETF-57 was split from ETF-09 on 2026-10-25, scope pass).
+- Figures: 2025 calendar year, as stated (Yalin Lapidot).
+- Source: [Yalin Lapidot annual report 31.12.2025](https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf), p.6 · institution · checked 2026-10-25. General rule: ETF-09.
+- Scope: institution: Yalin Lapidot
 - Dimensions: (proposed) tracking-difference, fee-management-balance
 - Likely to change: yes. These are annual figures.
 
