@@ -477,7 +477,8 @@
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), s.121(b)(1) ('הכנסה חייבת בשנת המס של יחיד שמלאו לו 60 שנים')",
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf"
     },
-    "variants_he": [
+    "variants_he": [],
+    "search_he": [
       "בן 60 ומעלה",
       "מי שמלאו לו שישים שנה בשנת המס"
     ],
@@ -658,7 +659,9 @@
     },
     "variants_he": [
       "ריווח הון ריאלי",
-      "רווח ההון הריאלי",
+      "רווח ההון הריאלי"
+    ],
+    "search_he": [
       "הרווח הריאלי"
     ],
     "explain_he": "הרווח פחות החלק שרק מפצה על עליית המחירים מאז הקנייה (בנייר צמוד למטבע חוץ: על שינוי השער), ועליו משלמים מס רווחי הון",
@@ -915,7 +918,9 @@
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf#page=3"
     },
     "variants_he": [
-      "נומינלית",
+      "נומינלית"
+    ],
+    "search_he": [
       "נומינליות"
     ],
     "explain_he": "הסכום כפי שהוא בשקלים, בלי להוריד את החלק שנבע מהאינפלציה",
@@ -1087,7 +1092,9 @@
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=40"
     },
     "variants_he": [
-      "אישור שנתי",
+      "אישור שנתי"
+    ],
+    "search_he": [
       "טופס 0867"
     ],
     "explain_he": "אישור שנתי מהבנק או מהגוף המשלם: כמה ריבית, דיבידנד או רווח שולמו לכם וכמה מס נוכה",
@@ -1131,7 +1138,9 @@
     },
     "variants_he": [
       "דין וחשבון",
-      "דו\"ח",
+      "דו\"ח"
+    ],
+    "search_he": [
       "טופס 1301"
     ],
     "explain_he": "טופס שבו מדווחים למס הכנסה על כל הכנסות השנה, וחלק מהאנשים פטורים מהגשתו",
@@ -1267,7 +1276,8 @@
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.7 s.4 ('טופס מקוצר - בקשה להחזר מס')",
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
     },
-    "variants_he": [
+    "variants_he": [],
+    "search_he": [
       "טופס מקוצר - בקשה להחזר מס"
     ],
     "explain_he": "טופס מקוצר לבקשת החזר מס, למי שלא חייב להגיש דוח שנתי",
