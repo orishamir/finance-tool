@@ -279,7 +279,7 @@ The guide page has a fixed structure. These are the parts not yet sourced for ea
   - portfolio managers (ISA report, MGD);
   - provident tracks (CMA);
   - *2026-10-23:* per product class, the CMA annual report for 2025 on gov.il (PF-39: provident 0.53% of assets / 0.08% of deposits, new comprehensive pension 0.15% / 1.54%, life insurance 0.79% / 1.74%; no separate study-fund or gemel lehashkaa class); the ISA's 2025 mutual-fund report on the ISA's own site (MF-55, same figures as MF-18, MF-19); TASE's per-member averages (BRK-33, BRK-37).
-  - *Terms, 2026-10-23:* the ISA site and TASE's terms do not permit republishing their figures without written consent (MF-55, BRK-37); gov.il's terms allow a reasonable quotation with attribution as fair use (PF-39).
+  - *Terms, 2026-10-23:* the ISA site and TASE's terms do not permit republishing their figures without written consent (MF-55, CAT-43); gov.il's terms allow a reasonable quotation with attribution as fair use (PF-39).
   
   For non-bank brokers, see F2.
 - **Fund variants.** Tax by domicile is sourced except for accumulating funds (F4). The US estate-tax exposure of US-domiciled funds is sourced (TXF). `data/funds/` itself is data work.
